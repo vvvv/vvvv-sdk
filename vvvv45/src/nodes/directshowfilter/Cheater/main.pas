@@ -1,4 +1,4 @@
-unit main;
+unit Main;
 
 interface
 uses
@@ -36,7 +36,7 @@ type
     FOutputWidth: LongWord;
     FOutputHeight: LongWord;
   public
-    constructor Create(Unk: IUnKnown; out hr: HRESULT);
+    constructor Create(ObjName: String; Unk: IUnKnown; out hr: HRESULT);
     destructor Destroy; override;
     constructor CreateFromFactory(Factory: TBCClassFactory; const Controller: IUnknown); override;
     function Transform(pIn, pOut: IMediaSample): HRESULT; overload; override;
@@ -133,9 +133,9 @@ end;
     if (pmtTarget.pUnk <> nil) then  pmtTarget.pUnk._AddRef;
   end;
 
-constructor TMCheater.Create(Unk: IUnknown; out hr: HRESULT);
+constructor TMCheater.Create(ObjName: String; Unk: IUnKnown; out hr: HRESULT);
 begin
-  inherited Create('Cheater Filter', Unk, CLSID_Cheater);
+  inherited Create(ObjName, Unk, CLSID_Cheater);
 
   FCritSec := TBCCritSec.Create;
   FFirstFieldFirst := true;
@@ -153,7 +153,7 @@ end;
 constructor TMCheater.CreateFromFactory(Factory: TBCClassFactory; const Controller: IUnknown);
 var hr: HRESULT;
 begin
-  Create(Controller, hr);
+  Create(Factory.Name, Controller, hr);
 end;
 
 function TMCheater.Transform(pIn, pOut: IMediaSample): HRESULT;
