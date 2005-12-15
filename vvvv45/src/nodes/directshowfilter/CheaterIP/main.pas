@@ -1,4 +1,4 @@
-unit main;
+unit Main;
 
 interface
 uses

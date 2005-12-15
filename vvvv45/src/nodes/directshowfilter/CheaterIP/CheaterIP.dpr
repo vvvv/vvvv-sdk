@@ -2,7 +2,7 @@ library CheaterIP;
 
 uses
   BaseClass,
-  main in 'main.pas';
+  Main in 'Main.pas';
 
 {$E ax}
 
