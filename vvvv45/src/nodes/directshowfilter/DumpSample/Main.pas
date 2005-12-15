@@ -22,7 +22,7 @@ Type
     function GetActualDataLength(out DataLength: DWord): HRESULT; stdcall;
   end;
 
-  TMyPin = Class (TBCRenderedInputPin)
+  TMPin = class(TBCRenderedInputPin)
   private
     FActualDataLength: DWord;
     FDumpString: PChar;
@@ -37,7 +37,7 @@ Type
   TMDump = class(TBCBaseFilter, IDumpString)
   private
     xxx: integer;
-    FPin: TMyPin;
+    FPin: TMPin;
   protected
   public
     function GetPin(n: Integer): TBCBasePin; override;
@@ -51,13 +51,13 @@ Type
 
 implementation
 
-constructor TMyPin.Create(ObjectName: string;pUnk: IUnKnown; Filter: TBCBaseFilter;
+constructor TMPin.Create(ObjectName: string;pUnk: IUnKnown; Filter: TBCBaseFilter;
       Lock: TBCCritSec; out hr: HRESULT; Name: WideString);
 begin
   inherited Create(ObjectName, Filter, Lock, hr, Name);
 end;
 
-function TMyPin.Receive(pSample: IMediaSample): HRESULT;
+function TMPin.Receive(pSample: IMediaSample): HRESULT;
 var
   pbData: PBYTE;
 begin
@@ -67,7 +67,7 @@ begin
   result := S_OK;
 end;
 
-function TMyPin.CheckMediaType(mt: PAMMediaType): HRESULT;
+function TMPin.CheckMediaType(mt: PAMMediaType): HRESULT;
 begin
   result := S_OK;
 end;
@@ -90,7 +90,7 @@ begin
   if (xxx = 0) then
   begin
     xxx := 1;
-    FPin := TMyPin.Create('Input pin', GetOwner, self, TBCCritSec.Create, hr, 'Input');
+    FPin := TMPin.Create('Input pin', GetOwner, self, TBCCritSec.Create, hr, 'Input');
   end;
   result := FPin;
 end;
