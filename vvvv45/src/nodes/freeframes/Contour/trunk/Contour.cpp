@@ -95,42 +95,66 @@ DWORD initialise()
 {
     cvSetErrMode(CV_ErrModeSilent);
       
-    // populate the parameters constants structs
-    GParamConstants[0].Type = 10;
+  // populate the parameters constants structs
+  GParamConstants[0].Type = 10;
 	GParamConstants[1].Type = 10;
 	GParamConstants[2].Type = 0;
-	GParamConstants[3].Type = 10;
+	GParamConstants[3].Type = 0;
+	GParamConstants[4].Type = 0;
+	GParamConstants[5].Type = 10;
     
 	GParamConstants[0].Default = 0.5f;
 	GParamConstants[1].Default = 0.0f;
 	GParamConstants[2].Default = 0.0f;
-	GParamConstants[3].Default = 0.01f;
+	GParamConstants[4].Default = 0.01f;
+  GParamConstants[4].Default = 1.00f;
 
 	char tempName0[17] = "Threshold";
 	char tempName1[17] = "Levels";
 	char tempName2[17] = "Show Contours";
-	char tempName3[17] = "Thickness";
+	char tempName3[17] = "Cleanse";
+	char tempName4[17] = "Scaled Values";
+	char tempName5[17] = "Thickness";
 	
 	memcpy(GParamConstants[0].Name, tempName0, 16);
 	memcpy(GParamConstants[1].Name, tempName1, 16);
 	memcpy(GParamConstants[2].Name, tempName2, 16);
 	memcpy(GParamConstants[3].Name, tempName3, 16);
+	memcpy(GParamConstants[4].Name, tempName4, 16);
+	memcpy(GParamConstants[5].Name, tempName5, 16);
 
     // populate the output structs
     GOutputConstants[0].Type = 10;
     GOutputConstants[1].Type = 10;
     GOutputConstants[2].Type = 10;
     GOutputConstants[3].Type = 10;
-
-	char outName0[17] = "X";
-	char outName1[17] = "Y";
+    GOutputConstants[4].Type = 10;
+    GOutputConstants[5].Type = 10;
+    GOutputConstants[6].Type = 10;
+    GOutputConstants[7].Type = 10;
+    GOutputConstants[8].Type = 10;
+    
+    
+	char outName0[17] = "PixelsX";
+	char outName1[17] = "PixelsY";
 	char outName2[17] = "Contours BinSize";
-	char outName3[17] = "Orientation";
+	char outName3[17] = "XPos";
+	char outName4[17] = "YPos";
+	char outName5[17] = "Width";
+	char outName6[17] = "Height";
+	char outName7[17] = "Orientation";
+	char outName8[17] = "Area";
+	
 
 	memcpy(GOutputConstants[0].Name, outName0, 16);
 	memcpy(GOutputConstants[1].Name, outName1, 16);
 	memcpy(GOutputConstants[2].Name, outName2, 16);
 	memcpy(GOutputConstants[3].Name, outName3, 16);
+	memcpy(GOutputConstants[4].Name, outName4, 16);
+	memcpy(GOutputConstants[5].Name, outName5, 16);
+	memcpy(GOutputConstants[6].Name, outName6, 16);
+	memcpy(GOutputConstants[7].Name, outName7, 16);
+	memcpy(GOutputConstants[8].Name, outName8, 16);
 	
 	return FF_SUCCESS;
 }
@@ -185,12 +209,27 @@ plugClass::plugClass()
     FOutputs[1].SliceCount = 0;
     FOutputs[2].SliceCount = 0;
     FOutputs[3].SliceCount = 0;
+    FOutputs[4].SliceCount = 0;
+    FOutputs[5].SliceCount = 0;
+    FOutputs[6].SliceCount = 0;
+    FOutputs[7].SliceCount = 0;
+    FOutputs[8].SliceCount = 0;
     
     //initialize spreads
     FOutputs[0].Spread = (float*) calloc(1, sizeof(float));
     FOutputs[1].Spread = (float*) calloc(1, sizeof(float));
     FOutputs[2].Spread = (float*) calloc(1, sizeof(float));
     FOutputs[3].Spread = (float*) calloc(1, sizeof(float));
+    FOutputs[4].Spread = (float*) calloc(1, sizeof(float));
+    FOutputs[5].Spread = (float*) calloc(1, sizeof(float));
+    FOutputs[6].Spread = (float*) calloc(1, sizeof(float));
+    FOutputs[7].Spread = (float*) calloc(1, sizeof(float));
+    FOutputs[8].Spread = (float*) calloc(1, sizeof(float));
+    
+    
+    angledamp   = (float*) calloc(1, sizeof(float));
+    lastangle   = (float*) calloc(1, sizeof(float));
+    angleoffset = (float*) calloc(1, sizeof(float));
     
     InitializeCriticalSection(&CriticalSection); 
 }
@@ -202,18 +241,29 @@ void plugClass::init()
 
     FCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
     FGrayImage = cvCreateImage(FImageSize, IPL_DEPTH_8U, 1);
+    tmp = cvCreateImage(FImageSize, IPL_DEPTH_8U, 1);
 }
 
 plugClass::~plugClass()
 {
     cvReleaseImage(&FGrayImage);
+    cvReleaseImage(&tmp);
     cvReleaseMemStorage(&FStorage);
     
     free(FOutputs[0].Spread);
     free(FOutputs[1].Spread);
     free(FOutputs[2].Spread);
     free(FOutputs[3].Spread);
+    free(FOutputs[4].Spread);
+    free(FOutputs[5].Spread);
+    free(FOutputs[6].Spread); 
+    free(FOutputs[7].Spread);
+    free(FOutputs[8].Spread);
     
+    free(angledamp);
+    free(lastangle);   
+    free(angleoffset); 
+        
     DeleteCriticalSection(&CriticalSection);
 }
 
@@ -251,7 +301,6 @@ DWORD plugClass::getOutputSliceCount(DWORD index)
 	return FOutputs[index].SliceCount;
 }
 
-#define PI 3.14159265
 
 float* plugClass::getOutput(DWORD index)
 {
@@ -264,13 +313,24 @@ float* plugClass::getOutput(DWORD index)
         FOutputs[1].Spread = (float*) realloc(FOutputs[1].Spread, sizeof(float) * FPointCount);
         FOutputs[2].Spread = (float*) realloc(FOutputs[2].Spread, sizeof(float) * FContoursCount);
         FOutputs[3].Spread = (float*) realloc(FOutputs[3].Spread, sizeof(float) * FContoursCount);
-
+        
+        FOutputs[4].Spread = (float*) realloc(FOutputs[4].Spread, sizeof(float) * FContoursCount);
+        FOutputs[5].Spread = (float*) realloc(FOutputs[5].Spread, sizeof(float) * FContoursCount);
+        FOutputs[6].Spread = (float*) realloc(FOutputs[6].Spread, sizeof(float) * FContoursCount);
+        FOutputs[7].Spread = (float*) realloc(FOutputs[7].Spread, sizeof(float) * FContoursCount);
+        FOutputs[8].Spread = (float*) realloc(FOutputs[8].Spread, sizeof(float) * FContoursCount);
+        
+        angledamp   = (float*) realloc(angledamp, sizeof(float) * FContoursCount);
+        lastangle   = (float*) realloc(lastangle, sizeof(float) * FContoursCount);
+        angleoffset = (float*) realloc(angleoffset, sizeof(float) * FContoursCount);
+        
         memcpy(FOutputs[2].Spread, FBinSizes, FContoursCount * sizeof(float)); 
                
         int c;
         int p = 0;
-        float theta;
+        float theta, cs, sn, rotate_a, rotate_c, width, height, ratio;
         CvPoint* PointArray;
+        float ImageSize=(FImageSize.width*FImageSize.height);
         
         //go through all contours again and output the points
         for(int i=0; i<FContoursCount; i++)
@@ -286,15 +346,50 @@ float* plugClass::getOutput(DWORD index)
     
            for(int j=0; j<c; j++)
            {
-              FOutputs[0].Spread[p] = ((float)PointArray[j].x / FImageSize.width) * 2 - 1;
-              FOutputs[1].Spread[p] = ((float)PointArray[j].y / FImageSize.height) * 2 - 1;
+              FOutputs[0].Spread[p] = ((float)PointArray[j].x / FImageSize.width) * 1 - 0.5;
+              FOutputs[1].Spread[p] = ((float)PointArray[j].y / FImageSize.height) * 1 - 0.5;
               p++;
            } 
                       
            //calculate orientation of contour
+           //cvMoments(FFirstContour, &FMoments);
            cvMoments(FFirstContour, &FMoments);
-           theta = 0.5 * atan2(2 * FMoments.mu11, FMoments.mu20 - FMoments.mu02);
-           FOutputs[3].Spread[i] = theta/2/PI;
+             
+           //output area of object
+           float nPixels         = cvGetCentralMoment( &FMoments, 0, 0 );  
+           FOutputs[3].Spread[i] = (FMoments.m00!=0)? ( (((float)FMoments.m10/(float)FMoments.m00) /FImageSize.width )*1 - 0.5 ) : -200 ;//cvGetNormalizedCentralMoment( &FMoments,0,0);//FMoments.mu20 /nPixels;//(float)(cvGetCentralMoment( &FMoments, 0, 0 ));
+           FOutputs[4].Spread[i] = (FMoments.m00!=0)? ( (((float)FMoments.m01/(float)FMoments.m00) /FImageSize.height)*1 - 0.5 ) : -200;//cvGetNormalizedCentralMoment( &FMoments,1,1);//FMoments.mu02 /nPixels;//(float)(cvGetCentralMoment( &FMoments, 0, 1 ));
+              
+           if (FParams[4].Value) 
+              {
+               ratio = (float) FImageSize.width  / (float) FImageSize.height ;
+               theta = 0.5 * atan2(2 * FMoments.mu11 * ratio, FMoments.mu20 - FMoments.mu02);  
+              }
+           else
+              {
+               theta = 0.5 * atan2(2 * FMoments.mu11, FMoments.mu20 - FMoments.mu02);
+              }
+           
+            cs = cos( theta  ); 
+            sn = sin( theta );              
+            rotate_a = cs * cs * FMoments.mu20 + 2 * cs * sn * FMoments.mu11 + sn * sn * FMoments.mu02;
+            rotate_c = sn * sn * FMoments.mu20 - 2 * cs * sn * FMoments.mu11 + cs * cs * FMoments.mu02;
+            width = sqrt( rotate_a * (1.0/(float)nPixels) ) * 4 ;
+            height = sqrt( rotate_c * (1.0/(float)nPixels) ) * 4;
+           
+           if (FParams[4].Value) 
+              {
+               FOutputs[5].Spread[i] = (width - (width*cos(theta)*0.25 ) )    / (float) FImageSize.width ;
+               FOutputs[6].Spread[i] = (height - (height*cos(theta)*0.25 ) )  / (float) FImageSize.height ;                  
+              }
+           else
+              {
+               FOutputs[5].Spread[i] =  width                                 / (float) FImageSize.width ;  
+               FOutputs[6].Spread[i] =  height                                / (float) FImageSize.height ;                   
+              }
+            
+           FOutputs[7].Spread[i] = theta/2/CV_PI;
+           FOutputs[8].Spread[i] = (float) nPixels / ImageSize ;
            
            FFirstContour = FFirstContour->h_next; 
            free(PointArray);
@@ -326,19 +421,63 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     
     FCurrentImage->origin = 1;
     FCurrentImage->imageData = (char*)pFrame;
+    int size = FCurrentImage->height * FCurrentImage->width;
+    int h = FCurrentImage->height;
+    int w = FCurrentImage->width;
     
     cvCvtColor(FCurrentImage, FGrayImage, CV_BGR2GRAY);
     
     //threshold the image
     cvThreshold(FGrayImage, FGrayImage, FParams[0].Value * 255, 255, CV_THRESH_BINARY);
+    //cvCopy(FGrayImage, tmp, NULL);
+    
+    if (FParams[3].Value > 0) 
+    {
+    //cvSmooth( tmp, FGrayImage, CV_MEDIAN, 3, 3, 0 ); 
+    
+    // -> opening image //
+    
+    // -> erode //
+    
+    register int offset0 = 0, offset =w, offset1=w-1, offset2=2*w;
+    
+    for ( register int py=0; py<h-2; py++)
+        {
+         for ( register int px=0; px<w-1; px++)
+             {
+              tmp->imageData[px+offset]=  (FGrayImage->imageData[px+offset0] && FGrayImage->imageData[px+offset1] && FGrayImage->imageData[px+offset] && FGrayImage->imageData[px+offset1+2] && FGrayImage->imageData[px+offset2])? FGrayImage->imageData[px+offset] : 0;
+              }
+         offset0+=w;
+         offset+=w;
+         offset1+=w;
+         offset2+=w;
+        }
+   
+    // -> dilate //
+      
+    offset0 = 0; offset =w; offset1=w-1; offset2=2*w;
+    
+    for ( register int py=0; py<h-2; py++)
+        {
+         for ( register int px=0; px<w-1; px++)
+             {
+              FGrayImage->imageData[px+offset]=  (tmp->imageData[px+offset0] || tmp->imageData[px+offset1] || tmp->imageData[px+offset] || tmp->imageData[px+offset1+2] || tmp->imageData[px+offset2])? tmp->imageData[px+offset] : 0;
+              }
+         offset0+=w;
+         offset+=w;
+         offset1+=w;
+         offset2+=w;
+        }
+    }        
+               
     cvCvtColor(FGrayImage, FCurrentImage, CV_GRAY2BGR);
-
     //clear memory from last round
     cvClearMemStorage(FStorage);
 
     //find the contours
     FContoursCount = cvFindContours(FGrayImage, FStorage, &FContours, sizeof(CvContour), CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
     
+    if (FContoursCount>200) FContoursCount=200;
     FPointCount = 0;
     free(FBinSizes);
     FBinSizes = (float*) calloc(FContoursCount, sizeof(float));
@@ -350,7 +489,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     for(int i=0; i<FContoursCount; i++)
     {
        if (FParams[2].Value > 0)
-         cvDrawContours(FCurrentImage, FContours, CV_RGB(255,0,0), CV_RGB(0,255,0), (int)(FParams[1].Value * 255), (int)(FParams[3].Value * 255), CV_AA);
+         cvDrawContours(FCurrentImage, FContours, CV_RGB(255,0,0), CV_RGB(0,255,0), (int)(FParams[1].Value * 255), (int)(FParams[5].Value * 255), CV_AA);
          
        FPointCount += FContours->total;
        FBinSizes[i] = (float)FContours->total;
@@ -362,10 +501,17 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     FOutputs[1].SliceCount = FPointCount;
     FOutputs[2].SliceCount = FContoursCount;
     FOutputs[3].SliceCount = FContoursCount;
+    FOutputs[4].SliceCount = FContoursCount;
+    FOutputs[5].SliceCount = FContoursCount;
+    FOutputs[6].SliceCount = FContoursCount;
+    FOutputs[7].SliceCount = FContoursCount;
+    FOutputs[8].SliceCount = FContoursCount;
+    
   
     //retrieving of points is done in getOutput    
 
     FContoursChanged = true;
+    //cvCvtColor(FGrayImage, FCurrentImage, CV_GRAY2BGR);
     LeaveCriticalSection(&CriticalSection);
         
 	return FF_SUCCESS;

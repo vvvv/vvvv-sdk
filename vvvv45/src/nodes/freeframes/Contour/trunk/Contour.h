@@ -39,9 +39,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include <highgui.h>
 
 //pin constants
-#define NUM_PARAMS 4
+#define NUM_PARAMS 6
 #define NUM_INPUTS 1
-#define NUM_OUTPUTS 4
+#define NUM_OUTPUTS 9
 
 
 // implementation specific definitions
@@ -121,16 +121,23 @@ public:
  
 private:
     CRITICAL_SECTION CriticalSection; 
+    
+    IplImage* FCurrentImage;
+    IplImage* FGrayImage;
+    IplImage* tmp;
+    
+    CvSize FImageSize;
+    bool FContoursChanged;
+    int scaled_before;
+    int FPointCount;
+    int FContoursCount;
+    
     CvMemStorage* FStorage;
     CvSeq* FContours;
     CvSeq* FFirstContour;
-    CvSize FImageSize;
-    IplImage* FCurrentImage;
-    IplImage* FGrayImage;
-    int FPointCount;
-    int FContoursCount;
     float* FBinSizes;
-    bool FContoursChanged;
+    float* angledamp, * lastangle, * angleoffset;
+    
     CvMoments FMoments;
 };
 
@@ -163,3 +170,5 @@ LPVOID getExtendedInfo();
 DWORD	getNumOutputs();
 unsigned int getOutputType(DWORD index);
 char*	getOutputName(DWORD index);
+
+
