@@ -1,3 +1,28 @@
+//////project name
+//TextureSource
+
+//////description
+//directshow source filter.
+//lets you pump a DirextX9 texture into a directshow graph.
+
+//////licence
+//GNU Lesser General Public License (LGPL)
+//english: http://www.gnu.org/licenses/lgpl.html
+//german: http://www.gnu.de/lgpl-ger.html
+
+//////language/ide
+//delphi 5
+
+//////dependencies
+//directshow baseclasses coming with DSPack2.3.4:
+//http://www.progdigy.com/modules.php?name=DSPack
+
+//////initial author
+//jhno -> ear@subminimal.com
+
+//////edited by
+//your name here
+
 unit Main;
 
 interface
@@ -41,7 +66,7 @@ const
   FPS_20 = UNITS div 20;
   FPS_10 = UNITS div 10;
 
-  DefaultFrameLength: TReferenceTime = FPS_30;
+  DefaultFrameLength: TReferenceTime = FPS_25;
 
 
 type
