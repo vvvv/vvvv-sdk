@@ -1,11 +1,31 @@
-delphi5 code for dumpsample directshow filter.
+//////project name
+//DumpSample
+
+//////description
+//directshow renderer filter.
+//hands you over the mediasamples bytes as string.
+
+//////licence
+//GNU Lesser General Public License (LGPL)
+//english: http://www.gnu.org/licenses/lgpl.html
+//german: http://www.gnu.de/lgpl-ger.html
+
+//////language/ide
+//delphi 5
+
+//////dependencies
+//directshow baseclasses coming with DSPack2.3.4:
+//http://www.progdigy.com/modules.php?name=DSPack
+
+//////initial author
+//joreg -> joreg@gmx.at
+
+//////edited by
+//your name here
 
 
-via the IDumpString interface you can:
-- function GetDumpString: get the mediasample as string
-- function GetActualDataLength: get the length of the mediasample in bytes
-
-to compile you'll need the ds-baseclasses from progdigy:
-http://www.progdigy.com/modules.php?name=DSPack
-
-
+___________________________________
+people that have been interested in
+DumpSample 
+have also been interested in
+http://vvvv.meso.net
