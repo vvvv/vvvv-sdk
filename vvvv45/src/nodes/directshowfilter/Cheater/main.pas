@@ -276,7 +276,7 @@ end;
 function TMCheater.CheckInputType(mtIn: PAMMediaType): HRESULT;
 begin
   //The Input.CheckMediaType member function is implemented to call the CheckInputType member function of the derived filter class
-  if IsEqualGUID(mtIn.subtype, MEDIASUBTYPE_YUY2)   //any packed yuv source
+  if (IsEqualGUID(mtIn.subtype, MEDIASUBTYPE_YUY2)   //any packed yuv source
   or IsEqualGUID(mtIn.subtype, MEDIASUBTYPE_UYVY)
   or IsEqualGUID(mtIn.subtype, MEDIASUBTYPE_AYUV)
   or IsEqualGUID(mtIn.subtype, MEDIASUBTYPE_UYVY)
@@ -285,7 +285,8 @@ begin
   or IsEqualGUID(mtIn.subtype, MEDIASUBTYPE_Y211)
   or IsEqualGUID(mtIn.subtype, MEDIASUBTYPE_YUY2)
   or IsEqualGUID(mtIn.subtype, MEDIASUBTYPE_YVYU)
-  or IsEqualGUID(mtIn.subtype, MEDIASUBTYPE_YUYV) then   //todo: update for packed yuv sources
+  or IsEqualGUID(mtIn.subtype, MEDIASUBTYPE_YUYV))
+  and IsEqualGUID(mtIn.formattype, FORMAT_VideoInfo) then   //todo: update for packed yuv sources
     Result := S_OK
   else
     Result := VFW_E_TYPE_NOT_ACCEPTED;
