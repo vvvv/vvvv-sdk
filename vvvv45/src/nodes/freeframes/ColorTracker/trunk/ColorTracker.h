@@ -41,6 +41,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #define NUM_PARAMS 11
 #define NUM_INPUTS 1
 #define NUM_OUTPUTS 6
+#define NOBS 4
 
 
 // implementation specific definitions
@@ -126,9 +127,28 @@ public:
 private:
     CRITICAL_SECTION CriticalSection;  
     CvSize FImageSize;
-    IplImage* CCurrentImage;
-    IplImage *Chsv, *Ghue, *Gmask, *Gbackproject;
+    IplImage *CCurrentImage;
+    IplImage *Chsv, *Ghue, *Gbackproject;
+    IplImage *Gmask, *Gmasktemp;
     CvHistogram *hist;
+    
+    int first_round;
+    int scaled_before;
+    CvRect selectall;
+    CvRect track_window ;
+    CvBox2D track_box;
+    CvConnectedComp track_comp ;
+    int lowerbound, upperbound ;
+    int smin , smax ;
+    int vmin , vmax ;
+    int hmin , hmax ;
+    
+    CvScalar hsv ;
+        
+    float angledamp , lastangle , angleoffset , is_tracked ;
+    
+    int click;
+    
     float Pos[7];
 };
 

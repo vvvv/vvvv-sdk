@@ -172,6 +172,7 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
             float* angledamp, 
             float* lastangle, 
             float* angleoffset,
+            float trackingthresh,
             float* IsTracked)
             //float ratio )
 {
@@ -341,14 +342,14 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
         *angledamp = box->angle + *angleoffset;
         *lastangle = box->angle; // Update History  
         
-        /* Note that TrackThresh has been chosen empiricaly */
-        float TrackThresh=8.0;
+        /* Note that TrackThresh default has been chosen empiricaly */
         
-        if ( m00/(windowIn.width*windowIn.height)>TrackThresh &&  windowIn.width>5 && windowIn.height>5) 
+        float TrackThresh=trackingthresh*trackingthresh*0.4;
+        
+        if ( m00/((float)windowIn.width*(float)windowIn.height)>TrackThresh)
               *IsTracked=1.0;
         else  *IsTracked=0.0;
         
-        //  *IsTracked=m00 / (windowIn.width*windowIn.height);
                                     
         /* MOD ->*/
     }

@@ -17,5 +17,6 @@ int cvCamShift_mod( const void* imgProb,
                     float* angledamp, 
                     float* lastangle, 
                     float* angleoffset,
-                    float* IsTracked);
-                    //float ratio);
+                    float trackingthresh,
+                    float* IsTracked );
+                    
