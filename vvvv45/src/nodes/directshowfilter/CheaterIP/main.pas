@@ -82,7 +82,10 @@ implementation
 
 function TMCheaterInPlace.CheckInputType(mtIn: PAMMediaType): HRESULT;
 begin
-  result := S_OK;
+  if IsEqualGUID(mtIn.formattype, FORMAT_VideoInfo2) then
+    Result := S_OK
+  else
+    Result := E_FAIL;
 end;
 
 constructor TMCheaterInPlace.Create(ObjName: string; unk: IUnKnown;
