@@ -33,10 +33,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 */
 
-/*
-non standard additions to support output by joreg@gmx.at
-*/
-
 ///////////////////////////////////////////////////////////////////////////////////////////
 //
 // includes 

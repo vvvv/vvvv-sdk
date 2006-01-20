@@ -1,39 +1,50 @@
-//////project name
-//Contour
+//////////////////////////////////////////////////////////////////////////////////
+// FreeFrame.h
+//
+// FreeFrame Open Video Plugin Prototype
+// ANSI C Version
 
-//////description
-//freeframe plugin.
-//outputs points(x/y) along contours found in the thresholded input.
+// www.freeframe.org
+// marcus@freeframe.org
 
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
+/*
 
-//////language/ide
-//dev-c++ 5
+Copyright (c) 2002, Marcus Clements www.freeframe.org
+All rights reserved.
 
-//////dependencies
-//opencv beta5 libraries:
-//http://sourceforge.net/projects/opencvlibrary
+FreeFrame 1.0 upgrade by Russell Blakeborough
+email: boblists@brightonart.org
 
-//////initial author
-//joreg -> joreg@gmx.at
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
-//////edited by
-//Marc Sandner -> ms@saphmar.net
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the
+     distribution.
+   * Neither the name of FreeFrame nor the names of its
+     contributors may be used to endorse or promote products derived
+     from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*/
 
 //freeframe includes
 #include "FreeFrame.h"
 
+//contour node includes
+#include "Indexsort.h"
+
 //opencv includes
-#include <cv.h>
+#include "cv_mod.h"
 #include <highgui.h>
 
 //pin constants
-#define NUM_PARAMS 6
+#define NUM_PARAMS 7
 #define NUM_INPUTS 1
-#define NUM_OUTPUTS 9
+#define NUM_OUTPUTS 10
 
 
 // implementation specific definitions
@@ -118,19 +129,24 @@ private:
     IplImage* FGrayImage;
     IplImage* tmp;
     
+    Obj* Objlist_old;
+    Obj* Objlist_new;
+    
     CvSize FImageSize;
-    bool FContoursChanged;
-    int scaled_before;
+    bool B_firstRound;
     int FPointCount;
-    int FContoursCount;
+    int FContoursCount, FContoursCount_old, FContoursCount_temp;
     
     CvMemStorage* FStorage;
     CvSeq* FContours;
-    CvSeq* FFirstContour;
+    CvSeq* FContours_temp;
     float* FBinSizes;
-    float* angledamp, * lastangle, * angleoffset;
+    float* angledamp, * lastangle, * angleoffset, * lastangle_temp, * angleoffset_temp;
+    //int* New_Indexlist, 
+    int *IDs_old, *IDs_new, *Sortlist;
+    int inc;
     
-    CvMoments FMoments;
+    CvMoments*  FMoments;
 };
 
 // Function prototypes - Global Plugin Functions that lie outside the instance object
