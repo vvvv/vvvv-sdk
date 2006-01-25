@@ -30,21 +30,20 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
-
 //freeframe includes
 #include "FreeFrame.h"
 
-//contour node includes
-#include "Indexsort.h"
-
 //opencv includes
-#include "cv_mod.h"
-#include <highgui.h>
+#include "cv.h"
+#include "highgui.h"
 
 //pin constants
 #define NUM_PARAMS 7
 #define NUM_INPUTS 1
 #define NUM_OUTPUTS 10
+
+//contour node includes
+#include "Indexsort.h"
 
 
 // implementation specific definitions
@@ -92,7 +91,8 @@ typedef struct VideoPixel32bitTag {
 // PluginInstance Object - these calls relate to instances of plugObj
 // created by FF_INSTANTIATE
 
-class plugClass {
+class plugClass 
+{
 
 public:
     plugClass();
@@ -125,24 +125,25 @@ public:
 private:
     CRITICAL_SECTION CriticalSection; 
     
-    IplImage* FCurrentImage;
-    IplImage* FGrayImage;
+    IplImage* CCurrentImage;
+    IplImage* GGrayImage;
     IplImage* tmp;
     
-    Obj* Objlist_old;
-    Obj* Objlist_new;
-    
     CvSize FImageSize;
-    bool B_firstRound;
-    int FPointCount;
-    int FContoursCount, FContoursCount_old, FContoursCount_temp;
+    
+    Obj* Objlist_old;
+    Obj* Objlist_new; 
     
     CvMemStorage* FStorage;
     CvSeq* FContours;
     CvSeq* FContours_temp;
+    
+    bool B_firstRound;
+    int FPointCount;
+    int FContoursCount, FContoursCount_old, FContoursCount_temp;
+    
     float* FBinSizes;
     float* angledamp, * lastangle, * angleoffset, * lastangle_temp, * angleoffset_temp;
-    //int* New_Indexlist, 
     int *IDs_old, *IDs_new, *Sortlist;
     int inc;
     
@@ -178,5 +179,10 @@ LPVOID getExtendedInfo();
 DWORD	getNumOutputs();
 unsigned int getOutputType(DWORD index);
 char*	getOutputName(DWORD index);
+
+
+
+
+
 
 

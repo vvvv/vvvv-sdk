@@ -41,8 +41,7 @@
 #include "_cv.h"
 
 /* The function calculates center of gravity and central second order moments */
-static void
-icvCompleteMomentState( CvMoments* moments )
+static void icvCompleteMomentState( CvMoments* moments )
 {
     double cx = 0, cy = 0;
     double mu20, mu11, mu02;
@@ -383,8 +382,7 @@ icvGetSpatialMoment_64f_t icvGetSpatialMoment_64f_p = 0;
 typedef CvStatus (CV_STDCALL * CvMomentIPPFunc)
     ( const void* img, int step, CvSize size, void* momentstate );
 
-CV_IMPL void
-cvMoments_mod( const void* array, CvMoments* moments, float width, float height, int binary )
+void cvMoments_mod( const void* array, CvMoments* moments, float width, float height, int binary )
 {
     static CvFuncTable mom_tab;
     static CvFuncTable mombin_tab;

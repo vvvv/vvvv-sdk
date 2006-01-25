@@ -34,8 +34,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 //includes
-
 #include "Contour.h"
+#include "cvmoments_mod.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -92,9 +92,12 @@ DWORD deInstantiate(LPVOID instanceID)
 
 DWORD initialise()
 {
+     // -> Input pins ///////////////// 
+  
     cvSetErrMode(CV_ErrModeSilent);
+    
+    // -> Types & default values for input pins //
       
-    // populate the parameters constants structs
     GParamConstants[0].Type = 10;
    	GParamConstants[1].Type = 0;
    	GParamConstants[2].Type = 0;
@@ -104,13 +107,15 @@ DWORD initialise()
    	GParamConstants[6].Type = 0;
        
    	GParamConstants[0].Default = 0.5f;
-   	GParamConstants[1].Default = 1.0f;
-   	GParamConstants[2].Default = 1.0f;
-   	GParamConstants[3].Default = 1.0f;
+   	GParamConstants[1].Default = 0.0f;
+   	GParamConstants[2].Default = 0.0f;
+   	GParamConstants[3].Default = 0.0f;
     GParamConstants[4].Default = 0.01f;
     GParamConstants[5].Default = 1.0f;
     GParamConstants[6].Default = 0.0f;
    
+  	 // -> Naming of input pins // 
+      	
    	char tempName0[17] = "Threshold";
    	char tempName1[17] = "Invert";
    	char tempName2[17] = "Cleanse";
@@ -127,8 +132,10 @@ DWORD initialise()
    	memcpy(GParamConstants[5].Name, tempName5, 16);
    	memcpy(GParamConstants[6].Name, tempName6, 16);
    
+    // -> Output pins // 
    
-    // populate the output structs
+    // -> Types for output pins //
+       
     GOutputConstants[0].Type = 10;
     GOutputConstants[1].Type = 10;
     GOutputConstants[2].Type = 10;
@@ -139,7 +146,9 @@ DWORD initialise()
     GOutputConstants[7].Type = 10;
     GOutputConstants[8].Type = 10;
     GOutputConstants[9].Type = 10;
-       
+    
+    // -> Naming of output pins //
+           
    	char outName0[17] = "Contours X";
    	char outName1[17] = "Contours Y";
    	char outName2[17] = "Contours BinSize";
@@ -207,16 +216,17 @@ unsigned int getOutputType(DWORD index)
 
 plugClass::plugClass()
 {
-    FStorage = cvCreateMemStorage(0);
-    FContours = 0;  
+    // -> allocating output buffers //  
     
-    for (int i=0; i<NUM_OUTPUTS; i++)
+    for (register int i=0; i<NUM_OUTPUTS; i++)
         {
          FOutputs[i].SliceCount = 0;
-         //initialize spreads
          FOutputs[i].Spread = (float*) calloc(1, 0);
         }
-         
+        
+    FStorage = cvCreateMemStorage(0);
+    FContours = 0;    
+    
     Objlist_old = (Obj*) malloc(1 * sizeof(Obj));
     Objlist_new = (Obj*) malloc(1 * sizeof(Obj));
     
@@ -233,11 +243,11 @@ plugClass::plugClass()
 
 plugClass::~plugClass()
 {
-    cvReleaseImage(&FGrayImage);
+    // -> deallocating image and output value buffers  //
+    cvReleaseImage(&GGrayImage);
     cvReleaseImage(&tmp);
     cvReleaseMemStorage(&FStorage);
     
-    // -> deallocate output spreads //
     for (int i=0; i<NUM_OUTPUTS; i++) free(FOutputs[i].Spread);
     
     free(Objlist_old);    
@@ -263,8 +273,13 @@ void plugClass::init()
     FImageSize.width  = FVideoInfo.frameWidth;
     FImageSize.height = FVideoInfo.frameHeight;
 
-    FCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
-    FGrayImage = cvCreateImage(FImageSize, IPL_DEPTH_8U, 1);
+    // -> setting defaults for input values //  
+    
+    for (int in=0; in<NUM_PARAMS; in++) FParams[in].Value=GParamConstants[in].Default;
+ 
+    // -> allocating image buffers  //
+    CCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
+    GGrayImage = cvCreateImage(FImageSize, IPL_DEPTH_8U, 1);
     tmp = cvCreateImage(FImageSize, IPL_DEPTH_8U, 1);
     
     IDs_old       = (int*) malloc(sizeof(int));
@@ -280,16 +295,14 @@ void plugClass::init()
 char* plugClass::getParameterDisplay(DWORD index)
 {
 	// fill the array with spaces first
-	for (int n=0; n<16; n++) {
-		FParams[index].DisplayValue[n] = ' ';
-	}
+	for (int n=0; n<16; n++) 	FParams[index].DisplayValue[n] = ' ';
+	
 	sprintf(FParams[index].DisplayValue, "%f",FParams[index].Value);
 	return FParams[index].DisplayValue;
 }
 
 DWORD plugClass::setParameter(SetParameterStruct* pParam)
 {
-    //if (pParam->index=5) B_firstRound=1;
     //only set value if really changed..should better be checked in host!!
     if (pParam->value == FParams[pParam->index].Value) 
         return FF_SUCCESS;
@@ -334,36 +347,35 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 {
     EnterCriticalSection(&CriticalSection);
     
-    FCurrentImage->origin = 1;
-    FCurrentImage->imageData = (char*)pFrame;
-    int size = FCurrentImage->height * FCurrentImage->width;
-    float h = FCurrentImage->height;
-    float w = FCurrentImage->width; 
+    CCurrentImage->origin = 1;
+    CCurrentImage->imageData = (char*)pFrame;
+    int size = CCurrentImage->height * CCurrentImage->width;
+    float h = CCurrentImage->height;
+    float w = CCurrentImage->width; 
     
     //////////////////////////////////////////////////////////////////////
-    // PART I : image preprocessing and call of 'FindContours' function // 
+    // STEP I : image preprocessing and call of 'FindContours' function // 
     
-    cvCvtColor(FCurrentImage, FGrayImage, CV_BGR2GRAY);
+    cvCvtColor(CCurrentImage, GGrayImage, CV_BGR2GRAY);
     // -> threshold the image //
-    cvThreshold(FGrayImage, FGrayImage, FParams[0].Value * 255, 255, CV_THRESH_BINARY); 
+    cvThreshold(GGrayImage, GGrayImage, FParams[0].Value * 255, 255, CV_THRESH_BINARY); 
     // -> invert image if requested //
     if (FParams[1].Value>0)
-       {for (int i=0; i< (FGrayImage->height*FGrayImage->width); i++) FGrayImage->imageData[i] = (FGrayImage->imageData[i])? 0 : 255;}
+       {for (int i=0; i< (GGrayImage->height*GGrayImage->width); i++) GGrayImage->imageData[i] = (GGrayImage->imageData[i])? 0 : 255;}
     // -> perform Median filtering (cleansing) of input image if requested //
     if (FParams[2].Value > 0) 
        {
-        cvSmooth( FGrayImage, tmp, CV_MEDIAN, 9,  9, 0 );
-        cvCopy (tmp, FGrayImage, NULL);
+        cvSmooth( GGrayImage, tmp, CV_MEDIAN, 9,  9, 0 );
+        cvCopy (tmp, GGrayImage, NULL);
        }        
-    cvCvtColor(FGrayImage, FCurrentImage, CV_GRAY2BGR);
+    cvCvtColor(GGrayImage, CCurrentImage, CV_GRAY2BGR);
     // -> clear memory from last round //
     cvClearMemStorage(FStorage);
   
     // -> find the contours //
     FContoursCount_old  = FContoursCount;
-    FContoursCount_temp = cvFindContours(FGrayImage, FStorage, &FContours, sizeof(CvContour), CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
-    //FContoursCount_temp = cvFindContours(FGrayImage, FStorage, &FContours, sizeof(CvContour), CV_RETR_LIST, CV_CHAIN_CODE);
-    
+    FContoursCount_temp = cvFindContours(GGrayImage, FStorage, &FContours, sizeof(CvContour), CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
+     
     if (FContoursCount_temp>100) FContoursCount_temp=100;
     FPointCount = 0;
     if (FBinSizes) free(FBinSizes);
@@ -375,7 +387,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     FContours_temp = FContours;    
     
     ///////////////////////////////////////////////////////////////////
-    // PART II : calculation of contour moments & contour validation // 
+    // STEP II : calculation of contour moments & contour validation // 
        
     FPointCount    = 0;
     FContoursCount = 0;
@@ -383,7 +395,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     for(int i=0; i<FContoursCount_temp; i++)
     {       
        // -> calculate orientation of contour //
-       if (FParams[5].Value) cvMoments_mod(FContours, &FMoments[i], (float)w, (float)h );
+       if (FParams[5].Value) cvMoments_mod(FContours, &FMoments[i], (float)w, (float)h, 0 );
        else                       cvMoments(FContours, &FMoments[i] );
         if (FMoments[i].m00!=0.0)
            {
@@ -398,7 +410,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     if (B_firstRound) FContoursCount_old =  FContoursCount;
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // PART III : set slicecounts and reallocate fresh memory for output and angle-calculation variables  //
+    // STEP III : set slicecounts and reallocate fresh memory for output and angle-calculation variables  //
     
     for (int i=0; i<2; i++)
         {
@@ -416,7 +428,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     angleoffset_temp = (float*) realloc(angleoffset_temp, sizeof(float) * FContoursCount);    
     
     ////////////////////////////////////////////////////////////////////
-    // PART IV : reallocate fresh memory for IDs and prepare ID lists //
+    // STEP IV : reallocate fresh memory for IDs and prepare ID lists //
     
     IDs_old     = (int*) realloc(IDs_old, sizeof(int) * FContoursCount_old);  
     Objlist_old = (Obj*) realloc(Objlist_old, sizeof(Obj) * FContoursCount_old); 
@@ -438,14 +450,14 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     // -> define and init variables needed to calculate output values //
     int binsize; 
     int j=0, p=0;
-    float theta, theta_mod, inv_m00, cs, sn, rotate_a, rotate_c, width, height;
+    float theta, theta_mod, inv_m00, cs, sn, rotate_a, rotate_c, width, length;
     float a, b, c, xc, yc, square;
     CvPoint* PointArray;
     float ImageSize = w*h; 
     float ratio     = w/h;
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // PART IV : go through all contours, check them (area!=0), calculate and set output values if valid //
+    // STEP IV : go through all contours, check them (area!=0), calculate and set output values if valid //
 
     // -> loop over all found contours (variable i) and valid contours (j) //
     for(int i=0; i<FContoursCount_temp; i++)
@@ -454,7 +466,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
            {        
             // -> draw contour if requested //
             if (FParams[3].Value > 0)
-               cvDrawContours(FCurrentImage, FContours, CV_RGB(255,0,0), CV_RGB(0,255,0), /*(int)(FParams[1].Value * 255)*/ 0, (int)(FParams[4].Value * 255), CV_AA);
+               cvDrawContours(CCurrentImage, FContours, CV_RGB(255,0,0), CV_RGB(0,255,0), /*(int)(FParams[1].Value * 255)*/ 0, (int)(FParams[4].Value * 255), CV_AA);
             
             binsize = FContours->total; 
             // -> allocate memory for temp point array & copy points to the array //
@@ -482,28 +494,28 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
             b = FMoments[i].mu11 * inv_m00;
             c = FMoments[i].mu02 * inv_m00; 
             square = sqrt( 4 * b * b + (a - c) * (a - c) );
-            theta    = atan2( 2 * b , a - c + square );
+            theta    = atan2( (2 * b), (a - c + square));
             cs       = cos( theta ); sn = sin( theta );              
             rotate_a = cs * cs * FMoments[i].mu20 + 2.0 * cs * sn * FMoments[i].mu11 + sn * sn * FMoments[i].mu02;
             rotate_c = sn * sn * FMoments[i].mu20 - 2.0 * cs * sn * FMoments[i].mu11 + cs * cs * FMoments[i].mu02;
             
-            // TODO : why is there a linear abberation in object width and height? 
-            //       (as a temp fix it is compensated by multiplicators 0.8663 and 0.882 calculated by linear regression)
-            width    = sqrt( rotate_a * inv_m00 ) * 4.0 * 0.8663;  
-            height   = sqrt( rotate_c * inv_m00 ) * 4.0 * 0.882;
-            if( width < height )
+            // TODO : why is there a linear abberation in object lenght? 
+            //       (as a temp fix it is compensated by multiplicator 0.882 calculated by linear regression)
+            width    = sqrt( rotate_c * inv_m00 ) * 4.0;  
+            length   = sqrt( rotate_a * inv_m00 ) * 4.0;
+            if( length  < width )
             {
                 double t;  
-                CV_SWAP(height , width, t );
+                CV_SWAP( length , width, t );
                 CV_SWAP( cs, sn, t );
                 theta = CV_PI*0.5 - theta;
             }
             FOutputs[5].Spread[j] = (FParams[5].Value)? width           : (width /w)*ratio;  
-            FOutputs[6].Spread[j] = (FParams[5].Value)? height          : (height/h);  
+            FOutputs[6].Spread[j] = (FParams[5].Value)? length          : (length/h);  
             FOutputs[8].Spread[j] = (FParams[5].Value)? FMoments[i].m00 : FMoments[i].m00/(w*h) ;
             
             // -> save angle to temp array for further processing (PART V) // 
-            lastangle_temp[j] = theta / (2*CV_PI);   
+            lastangle_temp[j] = (theta / (2*CV_PI));    
             
             free(PointArray);    
             j++;
@@ -512,7 +524,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     }      
       
     /////////////////////////////////////////////////////////////////////////////////
-    // PART V : sorting the object list, calculating damped angle for each object  //
+    // STEP V : sorting the object list, calculating damped angle for each object  //
       
     if (!B_firstRound) 
        {
@@ -536,7 +548,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
                  angleoffset_temp[j]=0;
                 
              angledamp[j] = lastangle_temp[j] + angleoffset_temp[j];            
-             FOutputs[7].Spread[j] = angledamp[j];  
+             FOutputs[7].Spread[j] = angledamp[j]-0.25; // -> angle to y-axis //  
             }
        }
     else
@@ -545,7 +557,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
             {
              angleoffset_temp[j]   = 0;
              angledamp[j]          = lastangle_temp[j];
-             FOutputs[7].Spread[j] = angledamp[j]; 
+             FOutputs[7].Spread[j] = angledamp[j]-0.25; // -> angle to y-axis //
             }
        }     
     lastangle    = (float*) realloc(lastangle,   sizeof(float) * FContoursCount);
@@ -567,7 +579,6 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 DWORD plugClass::processFrame32Bit(LPVOID pFrame)
 {
@@ -619,11 +630,10 @@ DWORD getPluginCaps(DWORD index)
 	}
 }
 
-
 PlugInfoStruct* getInfo() 
 {
 	GPlugInfo.APIMajorVersion = 2;		// number before decimal point in version nums
-	GPlugInfo.APIMinorVersion = 000;		// this is the number after the decimal point
+	GPlugInfo.APIMinorVersion = 200;		// this is the number after the decimal point
 										// so version 0.511 has major num 0, minor num 501
 	char ID[5] = "MOCT";		 // this *must* be unique to your plugin 
 								 // see www.freeframe.org for a list of ID's already taken
