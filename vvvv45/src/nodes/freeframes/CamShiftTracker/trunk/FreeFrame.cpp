@@ -39,7 +39,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 //
 
 #include "FreeFrame.h"
-#include "CamShiftTracker.h"  // replace this with your plugins header
+#include "CamShiftTracker.h"  
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////

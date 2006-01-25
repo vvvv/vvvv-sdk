@@ -163,17 +163,17 @@ cvMeanShift_mod( const void* imgProb, CvRect windowIn,
 //F*/
 /*CV_IMPL */ int
 cvCamShift_mod( const void* imgProb, CvRect windowIn,
-            CvTermCriteria criteria,
-            CvConnectedComp* _comp,
-            CvBox2D* box,
-            int iwidth,
-            int iheight,
-            int * first_round,
-            float* angledamp, 
-            float* lastangle, 
-            float* angleoffset,
-            float* IsTracked)
-            //float ratio )
+                CvTermCriteria criteria,
+                CvConnectedComp* _comp,
+                CvBox2D* box,
+                int iwidth,
+                int iheight,
+                int * first_round,
+                float* angledamp, 
+                float* lastangle, 
+                float* angleoffset,
+                float* area,
+                float is_scaled )
 {
     const int TOLERANCE = 10;
     CvMoments moments;
@@ -188,7 +188,7 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
     CvMat  cur_win, stub, *mat = (CvMat*)imgProb;
     
     /* <- MOD */
-    double ratio = (float) iwidth / (float) iheight;
+    double inratio = (float) iheight / (float) iwidth;
     double theta_mod = 0;
     /* MOD -> */
     
@@ -222,8 +222,8 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
     CV_CALL( cvGetSubRect( mat, &cur_win, windowIn ));
 
     /* Calculating moments in new center mass */
-    CV_CALL( cvMoments( &cur_win, &moments ));
-
+    cvMoments( &cur_win, &moments );
+    
     m00 = moments.m00;
     m10 = moments.m10;
     m01 = moments.m01;
@@ -248,21 +248,18 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
     theta = atan2( 2 * b, a - c + square );
     
     /* <- MOD */
-    theta_mod = atan2( 2 * b * ratio, a - c + square );
+    if (is_scaled) theta_mod = atan2( (2 * b)/ inratio, a - c + square );
+    else theta_mod=theta;
     /* MOD -> */
     
     /* Calculating width & length of figure */
-    //cs = cos( theta );
-    //sn = sin( theta );
-    /* <- MOD */
-    cs = cos( theta_mod );
-    sn = sin( theta_mod );
-    /* MOD -> */
+    cs = cos( theta );
+    sn = sin( theta );
 
     rotate_a = cs * cs * mu20 + 2 * cs * sn * mu11 + sn * sn * mu02;
     rotate_c = sn * sn * mu20 - 2 * cs * sn * mu11 + cs * cs * mu02;
-    length = sqrt( rotate_a * inv_m00 ) * 4 ;
-    width = sqrt( rotate_c * inv_m00 ) * 4;
+    width    = sqrt( rotate_c * inv_m00 ) * 4;
+    length   = sqrt( rotate_a * inv_m00 ) * 4;
 
     /* In case, when tetta is 0 or 1.57... the Length & Width may be exchanged */
     if( length < width )
@@ -271,7 +268,6 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
         
         CV_SWAP( length, width, t );
         CV_SWAP( cs, sn, t );
-        //theta = CV_PI*0.5 - theta;
         /* <- MOD */
         theta_mod = CV_PI*0.5 - theta_mod;
         /*  MOD ->*/
@@ -281,7 +277,7 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
     if( _comp || box )
     {
         int t0, t1;
-        int _xc = cvRound( xc );
+        int _xc = cvRound( xc ); 
         int _yc = cvRound( yc );
 
         t0 = cvRound( fabs( length * cs ));
@@ -313,18 +309,28 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
     {
         /* <- MOD */
         
-        /* Mapping of object proportions and position */
+        // -> scaling of object proportions with image proportions //
+        box->size.width   = (width/(float)iwidth)/inratio ;  
+        box->size.height  = (length/(float)iheight);
         
-        box->size.height = ( (float)length - ((float)length * cos (theta)      *0.25 ) )  / (float) iheight ;
-        box->size.width =  ( (float)width  - ((float)width  * fabs(sin (theta) *0.25)) )  / (float) iwidth  ;     
-        
-        box->center = cvPoint2D32f( (comp.rect.x + comp.rect.width*0.5f - iwidth*0.5f)  / iwidth ,
-                                    (comp.rect.y + comp.rect.height*0.5f- iheight*0.5f) / iheight  );
-                                    
+        // -> if scaled option is set, compensation of factor Ratio(image)/Ratio(vvvv) //
+        if (is_scaled)
+           {
+            box->size.width  += box->size.width*(inratio-1.0)*fabs(sin(theta_mod));//*sin(theta_mod);  
+            box->size.height += box->size.height*(inratio-1.0)*fabs(cos(theta_mod));//*cos(theta_mod); 
+            box->center = cvPoint2D32f( ((comp.rect.x +  (comp.rect.width - iwidth)*0.5f) / iwidth) ,
+                                            (comp.rect.y + (comp.rect.height- iheight)*0.5f) / iheight  );        
+           }
+         
+        else
+           {
+            box->center = cvPoint2D32f( ((comp.rect.x +  (comp.rect.width - iwidth)*0.5f) / iwidth)/inratio ,
+                                         (comp.rect.y + (comp.rect.height- iheight)*0.5f) / iheight  );    
+           }                         
         box->angle = (float) theta_mod;
         
-        /* Second part of mapping the rotation angle */
-        /* + damping */ 
+        // -> Second part of mapping the rotation angle //
+        // -> + damping  // 
         
         box->angle /= 2*CV_PI;   
         if (*first_round) 
@@ -339,17 +345,8 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
             else { if (box->angle-*lastangle > 0.4) *angleoffset-= 0.5; } 
            }
         *angledamp = box->angle + *angleoffset;
-        *lastangle = box->angle; // Update History  
-        
-        /* Note that TrackThresh has been chosen empiricaly */
-        float TrackThresh=8.0;
-        
-        if ( m00/(windowIn.width*windowIn.height)>TrackThresh &&  windowIn.width>5 && windowIn.height>5) 
-              *IsTracked=1.0;
-        else  *IsTracked=0.0;
-        
-        //  *IsTracked=m00 / (windowIn.width*windowIn.height);
-                                    
+        *lastangle = box->angle; // Update History           
+        *area = m00/ ( (float)iwidth*(float)iheight );                            
         /* MOD ->*/
     }
 

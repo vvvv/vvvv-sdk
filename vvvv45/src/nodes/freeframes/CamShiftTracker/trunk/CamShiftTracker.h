@@ -38,7 +38,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include "highgui.h"
 
 //pin constants
-#define NUM_PARAMS 11
+#define NUM_PARAMS 12
 #define NUM_INPUTS 1
 #define NUM_OUTPUTS 6
 
@@ -115,18 +115,33 @@ public:
 	
 	ParamStruct FParams[NUM_PARAMS];
 	OutputStruct FOutputs[NUM_OUTPUTS];
-
+    
 	VideoInfoStruct FVideoInfo;
 	int FVideoMode;
+	
+ // marc's color conversion function  //
+	CvScalar hsv2rgb( float hue );
 
     
 private:
     CRITICAL_SECTION CriticalSection;  
-    CvSize FImageSize;
+    
     IplImage* CCurrentImage;
-    IplImage *Chsv, *Ghue, *Gmask, *Gbackproject;
+    IplImage* Chsv, *Ghue, *Gbackproject;
+    IplImage* Gmask;
+              
+    CvSize FImageSize;   
     CvHistogram *hist;
-    float Pos[7];
+   
+    CvRect selectall;
+    CvRect track_window;
+    CvRect selection;
+    CvBox2D track_box;
+    CvConnectedComp track_comp;
+    
+    int first_round, scaled_before;
+    float angledamp, lastangle, angleoffset, is_tracked, area;
+    
 };
 
 // Function prototypes - Global Plugin Functions that lie outside the instance object
