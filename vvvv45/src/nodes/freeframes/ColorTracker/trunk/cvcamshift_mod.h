@@ -1,10 +1,10 @@
+// cvcamshift_mod.h
 #include "cv.h"
 
 
 int cvMeanShift_mod( const void* imgProb, 
                      CvRect windowIn,
-                     CvTermCriteria criteria, CvConnectedComp* comp );
-             
+                     CvTermCriteria criteria, CvConnectedComp* comp );          
              
 int cvCamShift_mod( const void* imgProb, 
                     CvRect windowIn,
@@ -17,6 +17,6 @@ int cvCamShift_mod( const void* imgProb,
                     float* angledamp, 
                     float* lastangle, 
                     float* angleoffset,
-                    float trackingthresh,
-                    float* IsTracked );
+                    float* area,
+                    float is_scaled );
                     

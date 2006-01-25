@@ -41,7 +41,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #define NUM_PARAMS 11
 #define NUM_INPUTS 1
 #define NUM_OUTPUTS 6
-#define NOBS 4
 
 
 // implementation specific definitions
@@ -114,38 +113,40 @@ public:
 	DWORD processFrameCopy24Bit(ProcessFrameCopyStruct* pFrameData);
 	DWORD processFrameCopy32Bit(ProcessFrameCopyStruct* pFrameData);
 	
-	CvScalar hsv2rgb( float hue );
-	CvScalar rgb2hsv(CvScalar rgb);
-	
 	ParamStruct FParams[NUM_PARAMS];
 	OutputStruct FOutputs[NUM_OUTPUTS];
 
 	VideoInfoStruct FVideoInfo;
 	int FVideoMode;
 
+ // marc's color conversion functions //
+	CvScalar hsv2rgb( float hue );
+	CvScalar rgb2hsv(CvScalar rgb);
     
 private:
     CRITICAL_SECTION CriticalSection;  
+     
+    IplImage* CCurrentImage;
+    IplImage* Chsv, *Ghue, *Gbackproject;
+    IplImage* Gmask, *Gmasktemp;
+    
     CvSize FImageSize;
-    IplImage *CCurrentImage;
-    IplImage *Chsv, *Ghue, *Gbackproject;
-    IplImage *Gmask, *Gmasktemp;
     CvHistogram *hist;
     
-    int first_round;
-    int scaled_before;
     CvRect selectall;
-    CvRect track_window ;
+    CvRect track_window;
     CvBox2D track_box;
     CvConnectedComp track_comp ;
+    
     int lowerbound, upperbound ;
     int smin , smax ;
     int vmin , vmax ;
     int hmin , hmax ;
     
     CvScalar hsv ;
-        
-    float angledamp , lastangle , angleoffset , is_tracked ;
+     
+    int first_round, scaled_before;    
+    float angledamp , lastangle , angleoffset, is_tracked, area ;
     
     int click;
     
