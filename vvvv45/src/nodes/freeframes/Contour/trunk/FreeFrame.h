@@ -7,20 +7,20 @@ extern "C" {
 // FreeFrame.h
 //
 // FreeFrame Open Video Plugin Prototype
-// C Version
+// ANSI C Version
 
 // www.freeframe.org
 // marcus@freeframe.org
 
 /*
-
 Copyright (c) 2002, Marcus Clements www.freeframe.org
 All rights reserved.
 
 FreeFrame 1.0 upgrade by Pete Warden
 www.petewarden.com
 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+Redistribution and use in source and binary forms, with or without modification, 
+are permitted provided that the following conditions are met:
 
    * Redistributions of source code must retain the above copyright
      notice, this list of conditions and the following disclaimer.
@@ -32,9 +32,33 @@ Redistribution and use in source and binary forms, with or without modification,
      contributors may be used to endorse or promote products derived
      from this software without specific prior written permission.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE 
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED 
+AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
+
+/*
+non standard additions to support output by joreg@gmx.at
+
+the following functions have been introduced:
+setThreadLock:        function code = 19
+getNumOutputs:        function code = 20
+getOutputName:        function code = 21
+getOutputType:        function code = 22
+getOutputSliceCount:  function code = 23
+getOutput:            function code = 24 
+
+setInput:             function code = 30
+*/
+
 
 #ifndef __FREEFRAME_H__
 #define __FREEFRAME_H__
@@ -90,11 +114,13 @@ typedef char BYTE;
 #define FF_PROCESSFRAMECOPY		14
 #define FF_GETPARAMETERTYPE		15
 
+#define FF_SETTHREADLOCK		19
 #define FF_GETNUMOUTPUTS		20
 #define FF_GETOUTPUTNAME   		21
 #define FF_GETOUTPUTTYPE   		22
 #define FF_GETOUTPUTSLICECOUNT 	23
 #define FF_GETOUTPUT        	24
+#define FF_SETINPUT           	30
 
 #define FF_CAP_16BITVIDEO		0
 #define FF_CAP_24BITVIDEO		1

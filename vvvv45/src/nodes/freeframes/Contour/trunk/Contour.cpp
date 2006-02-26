@@ -1,37 +1,27 @@
-///////////////////////////////////////////////////////////////////////////////////
-// FreeFrameSample.cpp
-//
-// FreeFrame Open Video Plugin 
-// C Version
-//
-// Implementation of the Free Frame sample plugin
-//
-// www.freeframe.org
-// marcus@freeframe.org
+//////project name
+//Contour
 
-/*
+//////description
+//freeframe plugin.
+//outputs points(x/y) along contours found in the thresholded input.
 
-Copyright (c) 2002, Marcus Clements www.freeframe.org
-All rights reserved.
+//////licence
+//GNU Lesser General Public License (LGPL)
+//english: http://www.gnu.org/licenses/lgpl.html
+//german: http://www.gnu.de/lgpl-ger.html
 
-FreeFrame 1.0 upgrade by Russell Blakeborough
-email: boblists@brightonart.org
+//////language/ide
+//dev-c++ 5
 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+//////dependencies
+//opencv beta5 libraries:
+//http://sourceforge.net/projects/opencvlibrary
 
-   * Redistributions of source code must retain the above copyright
-     notice, this list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright
-     notice, this list of conditions and the following disclaimer in
-     the documentation and/or other materials provided with the
-     distribution.
-   * Neither the name of FreeFrame nor the names of its
-     contributors may be used to endorse or promote products derived
-     from this software without specific prior written permission.
+//////initial author
+//joreg -> joreg@gmx.at
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-*/
+//////edited by
+//Marc Sandner -> ms@saphmar.net
 
 //includes
 #include "Contour.h"
@@ -322,6 +312,15 @@ DWORD plugClass::getOutputSliceCount(DWORD index)
 {
 	return FOutputs[index].SliceCount;
 }
+
+DWORD plugClass::setThreadLock(DWORD Enter)
+{
+	if (*(bool*) Enter)
+	  EnterCriticalSection(&CriticalSection);
+    else
+      LeaveCriticalSection(&CriticalSection);
+}
+
 
 float* plugClass::getOutput(DWORD index)
 {
@@ -635,7 +634,7 @@ PlugInfoStruct* getInfo()
 	GPlugInfo.APIMajorVersion = 2;		// number before decimal point in version nums
 	GPlugInfo.APIMinorVersion = 200;		// this is the number after the decimal point
 										// so version 0.511 has major num 0, minor num 501
-	char ID[5] = "MOCT";		 // this *must* be unique to your plugin 
+	char ID[5] = "JFCT";		 // this *must* be unique to your plugin 
 								 // see www.freeframe.org for a list of ID's already taken
 	char name[17] = "Contour";
 	
