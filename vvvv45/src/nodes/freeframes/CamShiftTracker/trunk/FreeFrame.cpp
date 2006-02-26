@@ -33,13 +33,17 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 */
 
+/*
+non standard additions to support output by joreg@gmx.at
+*/
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 //
 // includes 
 //
 
 #include "FreeFrame.h"
-#include "CamShiftTracker.h"  
+#include "CamShiftTracker.h"  // replace this with your plugins header
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -159,7 +163,10 @@ extern "C" {
 	case FF_GETOUTPUT:		
 		retval.svalue = (char*)pPlugObj->getOutput((DWORD) pParam);
 		break;
-
+		
+	case FF_SETTHREADLOCK:
+         retval.ivalue = pPlugObj->setThreadLock((DWORD) pParam);
+         break;
 
 // ....................................
 
