@@ -26,9 +26,7 @@
 
 //includes 
 #include "Trautner.h"
-#include <string.h>
-#include <string>
-using namespace std;
+
 #include <stdio.h>
 
 // Plugin Globals
@@ -90,38 +88,26 @@ DWORD initialise()
     // populate the parameters constants structs
     GParamConstants[0].Type = 0;
 	GParamConstants[1].Type = 0;
-	GParamConstants[2].Type = 0;
-	GParamConstants[3].Type = 10;
-	GParamConstants[4].Type = 10;
-	GParamConstants[5].Type = 10;
-	GParamConstants[6].Type = 100;
+	GParamConstants[2].Type = 10;
+	GParamConstants[3].Type = 100;
     
 	GParamConstants[0].Default = 0.0f;
 	GParamConstants[1].Default = 1.0f;
-	GParamConstants[2].Default = 0.0f;
-	GParamConstants[3].Default = 0.2f;
-	GParamConstants[4].Default = 0.6f;
-	GParamConstants[5].Default = 0.1f;
+	GParamConstants[2].Default = 0.1f;
 
 	int i = (int)&filemask[0];
     float* fp = (float*)&i;
- 	GParamConstants[6].Default = *fp;
+ 	GParamConstants[3].Default = *fp;
   	
 	char tempName0[17] = "Hold Background";
-	char tempName1[17] = "Diff Mode";
-	char tempName2[17] = "Show Mask";
-	char tempName3[17] = "Edge Threshold1";
-	char tempName4[17] = "Edge Threshold2";
-	char tempName5[17] = "Diff Threshold";
-	char tempName6[17] = "Mask Image";
+	char tempName1[17] = "Show Mask";
+	char tempName2[17] = "Threshold";
+	char tempName3[17] = "Mask Image";
 	
 	memcpy(GParamConstants[0].Name, tempName0, 16);
 	memcpy(GParamConstants[1].Name, tempName1, 16);
 	memcpy(GParamConstants[2].Name, tempName2, 16);
 	memcpy(GParamConstants[3].Name, tempName3, 16);
-	memcpy(GParamConstants[4].Name, tempName4, 16);
-	memcpy(GParamConstants[5].Name, tempName5, 16);
-	memcpy(GParamConstants[6].Name, tempName6, 16);
 
     // populate the output structs
     GOutputConstants[0].Type = 10;
@@ -182,6 +168,8 @@ plugClass::plugClass()
     FOutputs[1].SliceCount = 256;
     FOutputs[1].Spread = (float*) calloc(FOutputs[1].SliceCount, sizeof(float));
     
+    newMask = true;
+    
     InitializeCriticalSection(&CriticalSection);    
 }
 
@@ -189,13 +177,17 @@ void plugClass::init()
 {
     FImageSize.width = FVideoInfo.frameWidth;
     FImageSize.height = FVideoInfo.frameHeight;
+    
+    // -> setting defaults for input values //  
+    for (int in=0; in<NUM_PARAMS; in++) FParams[in].Value=GParamConstants[in].Default;
 
+    // -> allocating image buffers  //
     FCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
     FGrayImage = cvCreateImage(FImageSize, IPL_DEPTH_8U, 1);
     FLastImage = cvCreateImage(FImageSize, IPL_DEPTH_8U, 1);
     FMask = cvCreateImage(FImageSize, IPL_DEPTH_8U, 1);
-    
-    /*char buffer[100];
+   
+  /*  char buffer[100];
     sprintf(buffer, "%i x %i", FImageSize.width, FImageSize.height);
     OutputDebugString(buffer);*/
 }
@@ -206,8 +198,7 @@ plugClass::~plugClass()
     cvReleaseImage(&FLastImage);
     cvReleaseImage(&FMask);
 
-    free(FOutputs[0].Spread);
-    free(FOutputs[1].Spread);
+    for (int i=0; i<NUM_OUTPUTS; i++) free(FOutputs[i].Spread);
     
     DeleteCriticalSection(&CriticalSection);
 }
@@ -227,27 +218,33 @@ DWORD plugClass::setParameter(SetParameterStruct* pParam)
 {
 	FParams[pParam->index].Value = pParam->value;
 	
-	if (pParam->index == 6) 	
-	{ 	
-	    EnterCriticalSection(&CriticalSection); 
-        
+	if (pParam->index == 3) 	
+	{ 	     
         float f = pParam->value; 
 	    int* ip = (int*)&f;
 	    char* cp = (char*)*ip;
-          
-        IplImage* tmp;  
-        tmp = cvLoadImage(cp, 0);
-        
-        if (tmp != 0)
-        {
-            cvFlip(tmp, tmp, 1);
-            cvResize(tmp, FMask, CV_INTER_LINEAR);
-            cvReleaseImage(&tmp);
-        }    
 
-	    LeaveCriticalSection(&CriticalSection); 
+        memcpy(&Filename[0], cp, strlen(cp));
+
+        newMask = true;
 	}    
 	return FF_SUCCESS;
+}
+
+void plugClass::loadMask()
+{
+    IplImage* tmp;  
+
+    tmp = cvLoadImage(&Filename[0], 0);
+    
+    if (tmp != 0)
+    {
+        cvFlip(tmp, tmp, 1);
+        cvResize(tmp, FMask, CV_INTER_NN);
+        cvReleaseImage(&tmp);
+    }    
+    
+    newMask = false;
 }
 
 float plugClass::getParameter(DWORD index)
@@ -260,15 +257,21 @@ DWORD plugClass::getOutputSliceCount(DWORD index)
 	return FOutputs[index].SliceCount;
 }
 
+DWORD plugClass::setThreadLock(DWORD Enter)
+{
+	if (*(bool*) Enter)
+	  EnterCriticalSection(&CriticalSection);
+    else
+      LeaveCriticalSection(&CriticalSection);
+}
+
 float* plugClass::getOutput(DWORD index)
 { 
-    EnterCriticalSection(&CriticalSection); 
     switch(index) 
     {
         case 0: memcpy(FOutputs[0].Spread, FPixelCount, 256 * sizeof(float));
         case 1: memcpy(FOutputs[1].Spread, FChangedPixels, 256 * sizeof(float));
     }    
-    LeaveCriticalSection(&CriticalSection);	
     return FOutputs[index].Spread;
 }
 
@@ -286,19 +289,17 @@ DWORD plugClass::processFrame(LPVOID pFrame)
 
 DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 {
-    EnterCriticalSection(&CriticalSection);
+   EnterCriticalSection(&CriticalSection);
 
-    
-  
+   if (newMask)
+     loadMask();
+     
         FCurrentImage->origin = 1;
         FCurrentImage->imageData = (char*)pFrame;
         
         cvCvtColor(FCurrentImage, FGrayImage, CV_BGR2GRAY);
     
-        if (FParams[1].Value == 0)
-          cvCanny(FGrayImage, FGrayImage, FParams[3].Value * 255, FParams[4].Value * 255, 3);
-        
-        if (FParams[0].Value == 0)
+         if (FParams[0].Value == 0)
         {
             IplImage* tmp = cvCloneImage(FGrayImage);
             
@@ -307,7 +308,6 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
             FLastImage = cvCloneImage(tmp);
         
             cvReleaseImage(&tmp);
-            
         }
         else
         {
@@ -320,7 +320,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
           FChangedPixels[i] = 0;
         }
         
-        int h = FGrayImage->height;
+       int h = FGrayImage->height;
         int w = FGrayImage->width * 1; //FGrayImage->nChannels;
         int step= FGrayImage->widthStep; // because of alignment
         
@@ -333,19 +333,19 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
           for (int j=0; j<w; j += 1) 
           {
             FPixelCount[mask[j]]++;
-            if (gray[j] > FParams[5].Value * 255) 
+            if (gray[j] > FParams[2].Value * 255) 
               FChangedPixels[mask[j]]++;
           }
           mask += step;  // next line
           gray += step;
         }
 
-        if (FParams[2].Value > 0)
+        if (FParams[1].Value > 0)
           cvAdd(FGrayImage, FMask, FGrayImage);
           
-        cvCvtColor(FGrayImage, FCurrentImage, CV_GRAY2BGR);
+         cvCvtColor(FGrayImage, FCurrentImage, CV_GRAY2BGR);
 
-    
+  
     LeaveCriticalSection(&CriticalSection);
 
 	return FF_SUCCESS;

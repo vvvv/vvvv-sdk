@@ -49,11 +49,14 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 non standard additions to support output by joreg@gmx.at
 
 the following functions have been introduced:
+setThreadLock:        function code = 19
 getNumOutputs:        function code = 20
 getOutputName:        function code = 21
 getOutputType:        function code = 22
 getOutputSliceCount:  function code = 23
 getOutput:            function code = 24 
+
+setInput:             function code = 30
 */
 
 
@@ -111,11 +114,13 @@ typedef char BYTE;
 #define FF_PROCESSFRAMECOPY		14
 #define FF_GETPARAMETERTYPE		15
 
+#define FF_SETTHREADLOCK		19
 #define FF_GETNUMOUTPUTS		20
 #define FF_GETOUTPUTNAME   		21
 #define FF_GETOUTPUTTYPE   		22
 #define FF_GETOUTPUTSLICECOUNT 	23
 #define FF_GETOUTPUT        	24
+#define FF_SETINPUT           	30
 
 #define FF_CAP_16BITVIDEO		0
 #define FF_CAP_24BITVIDEO		1

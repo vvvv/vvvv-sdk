@@ -163,7 +163,10 @@ extern "C" {
 	case FF_GETOUTPUT:		
 		retval.svalue = (char*)pPlugObj->getOutput((DWORD) pParam);
 		break;
-
+		
+	case FF_SETTHREADLOCK:
+         retval.ivalue = pPlugObj->setThreadLock((DWORD) pParam);
+         break;
 
 // ....................................
 

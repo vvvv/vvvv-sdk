@@ -30,9 +30,12 @@
 //opencv includes
 #include <cv.h>
 #include <highgui.h>
+#include <string.h>
+#include <string>
+using namespace std;
 
 //pin constants
-#define NUM_PARAMS 7
+#define NUM_PARAMS 4
 #define NUM_INPUTS 1
 #define NUM_OUTPUTS 2
 
@@ -90,12 +93,13 @@ public:
     ~plugClass();
 	
 	void init();
-
+        
 	char* getParameterDisplay(DWORD index);			
 	DWORD setParameter(SetParameterStruct* pParam);		
 	float getParameter(DWORD index);
 	
 	//joregs
+	DWORD setThreadLock(DWORD Enter);
     DWORD getOutputSliceCount(DWORD index);					
     float* getOutput(DWORD index);
     //
@@ -114,8 +118,13 @@ public:
 	int FVideoMode;
 
 private:
+    void loadMask();
+    
     CRITICAL_SECTION CriticalSection;  
     CvSize FImageSize;
+    string Filename;
+    bool newMask;
+    
     IplImage* FCurrentImage;
     IplImage* FGrayImage;
     IplImage* FLastImage;
