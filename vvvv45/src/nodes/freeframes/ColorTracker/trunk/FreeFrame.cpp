@@ -167,6 +167,11 @@ extern "C" {
 	case FF_SETTHREADLOCK:
          retval.ivalue = pPlugObj->setThreadLock((DWORD) pParam);
          break;
+         
+//spreaded inputs
+ case FF_SETINPUT:
+	retval.ivalue =  pPlugObj->setInput( (InputStruct*) pParam );
+	break;
 
 // ....................................
 
@@ -182,3 +187,5 @@ extern "C" {
 #endif
 
 // }
+
+

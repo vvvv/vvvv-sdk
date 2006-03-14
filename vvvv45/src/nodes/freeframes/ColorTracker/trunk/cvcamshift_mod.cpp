@@ -220,9 +220,19 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
         windowIn.height = mat->height - windowIn.y;
 
     CV_CALL( cvGetSubRect( mat, &cur_win, windowIn ));
-
+    
+    //IplImage* cur_win_temp, *cur_win_temp2;
+    //cur_win_temp = cvCreateImage( cvSize( cur_win.width, cur_win.height), 8,1) ;
+    // cvSize( cur_win->width, cur_win->height);
+    //cur_win_temp2 = cvCloneImage(cur_win_temp);
+    //cur_win_temp->imageData = (char*)cur_win.data.ptr;
+    //cvSmooth( &cur_win_temp, &cur_win_temp2, CV_MEDIAN,3, 3, 0 );
+    
     /* Calculating moments in new center mass */
     cvMoments( &cur_win, &moments );
+    
+    //cvReleaseImage(&cur_win_temp);
+    //cvReleaseImage(&cur_win_temp2);
     
     m00 = moments.m00;
     m10 = moments.m10;
@@ -337,7 +347,7 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
            {       
             *angleoffset = 0;
             *lastangle = box->angle;
-            *first_round=0;
+            //*first_round=0;
            }
         else
            {
@@ -349,6 +359,7 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
         *area = m00/ ( (float)iwidth*(float)iheight );                            
         /* MOD ->*/
     }
+
 
     return itersUsed;
 }

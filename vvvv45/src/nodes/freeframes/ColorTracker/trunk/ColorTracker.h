@@ -1,38 +1,44 @@
-//////project name
-//ColorTracker
+///////////////////////////////////////////////////////////////////////////////////
+// FreeFrame.h
+//
+// FreeFrame Open Video Plugin Prototype
+// ANSI C Version
 
-//////description
-//freeframe plugin.
-//outputs location(x/y) width/height and rotation angle of 
-//tracked object from image thresholded with parameters extracted from input color.
+// www.freeframe.org
+// marcus@freeframe.org
 
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
+/*
 
-//////language/ide
-//dev-c++ 5
+Copyright (c) 2002, Marcus Clements www.freeframe.org
+All rights reserved.
 
-//////dependencies
-//opencv beta5 libraries:
-//http://sourceforge.net/projects/opencvlibrary
+FreeFrame 1.0 upgrade by Russell Blakeborough
+email: boblists@brightonart.org
 
-//////initial author
-//Marc Sandner -> ms@saphmar.net
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
-//////edited by
-//your name here
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the
+     distribution.
+   * Neither the name of FreeFrame nor the names of its
+     contributors may be used to endorse or promote products derived
+     from this software without specific prior written permission.
 
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*/
 //freeframe includes
 #include "FreeFrame.h"
 
 //opencv includes
-#include <cv.h>
-#include <highgui.h>
+#include "cv.h"
+//#include "highgui.h"
 
 //pin constants
-#define NUM_PARAMS 11
+#define NUM_PARAMS 12
 #define NUM_INPUTS 1
 #define NUM_OUTPUTS 6
 
@@ -59,6 +65,12 @@ typedef struct OutputStructTag {
 	DWORD SliceCount;
     float* Spread;
 } OutputStruct;
+
+typedef struct InputStructTag {
+	DWORD Index;
+	DWORD SliceCount;
+	double* Spread;
+} InputStruct;
 
 typedef struct VideoPixel24bitTag {
 	BYTE red;
@@ -96,9 +108,10 @@ public:
 	float getParameter(DWORD index);
 	
 	//joregs
-	DWORD setThreadLock(DWORD Enter);
     DWORD getOutputSliceCount(DWORD index);					
     float* getOutput(DWORD index);
+    DWORD setInput(InputStruct* pParam);
+    DWORD setThreadLock(DWORD Enter);
     //
     
 	DWORD processFrame(LPVOID pFrame);
@@ -114,38 +127,50 @@ public:
 	VideoInfoStruct FVideoInfo;
 	int FVideoMode;
 
- // marc's color conversion functions //
-	CvScalar hsv2rgb( float hue );
+    // -> spreadhandling functions //
+	int maxNumObs();
+    int ReallocBuffers();
+    // -> colortracker functions //
+    void SetImageROI(IplImage* image, int ROIX, int ROIY, int ROIwidth, int ROIheight);
+    CvScalar hsv2rgb( float hue );
 	CvScalar rgb2hsv(CvScalar rgb);
+	///////////////////////////
     
 private:
     CRITICAL_SECTION CriticalSection;  
      
     IplImage* CCurrentImage;
-    IplImage* Chsv, *Ghue, *Gbackproject;
-    IplImage* Gmask, *Gmasktemp;
+    IplImage* Chsv, *Ghue;
+    IplImage* Gmask, *Cmask, *Gmasktemp;
     
     CvSize FImageSize;
     CvHistogram *hist;
     
     CvRect selectall;
-    CvRect track_window;
-    CvBox2D track_box;
-    CvConnectedComp track_comp ;
+    CvRect* track_window;
+    CvBox2D* track_box;
+    CvConnectedComp* track_comp ;
+    CvScalar hsv;
     
+    // -> tracking constants //
+    int    hdims;
+    float  hranges_arr[2];
+    float* hranges;
+    
+    float *angledamp , *lastangle , *angleoffset, *area, *is_tracked;
+    float* colvals[3], *tolvals[3], *filtersize, *areathresh;
+    
+    int sc_tolvals, sc_colvals, sc_filtersize, sc_areathresh, NumObs, NumObs_old;  
     int lowerbound, upperbound ;
     int smin , smax ;
     int vmin , vmax ;
     int hmin , hmax ;
-    
-    CvScalar hsv ;
-     
     int first_round, scaled_before;    
-    float angledamp , lastangle , angleoffset, is_tracked, area ;
+    int testval;
     
-    int click;
-    
-    float Pos[7];
+    BOOL dorealloc;
+    int SIcall, P24call, RBcall, Mnobscall;
+
 };
 
 // Function prototypes - Global Plugin Functions that lie outside the instance object
