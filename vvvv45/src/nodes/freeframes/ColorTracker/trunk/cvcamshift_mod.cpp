@@ -38,7 +38,7 @@
 // the use of this software, even if advised of the possibility of such damage.
 //
 //M*/
-#include "cv.h"
+#include "_cv.h"
 
 
 /*F///////////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +57,7 @@
 //      The function itself returns the area found
 //    Notes:
 //F*/
-/* CV_IMPL */ int
+/*CV_IMPL*/  int
 cvMeanShift_mod( const void* imgProb, CvRect windowIn,
              CvTermCriteria criteria, CvConnectedComp* comp )
 {
@@ -161,7 +161,7 @@ cvMeanShift_mod( const void* imgProb, CvRect windowIn,
 //      The function itself returns the area found
 //    Notes:
 //F*/
-/*CV_IMPL */ int
+/*CV_IMPL*/ int
 cvCamShift_mod( const void* imgProb, CvRect windowIn,
                 CvTermCriteria criteria,
                 CvConnectedComp* _comp,
@@ -192,7 +192,7 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
     double theta_mod = 0;
     /* MOD -> */
     
-    CV_FUNCNAME( "cvCamShift" );
+    CV_FUNCNAME( "cvCamShift_mod" );
 
     comp.rect = windowIn;
 
@@ -202,7 +202,6 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
 
     CV_CALL( itersUsed = cvMeanShift( mat, windowIn, criteria, &comp ));
     windowIn = comp.rect;
-
     windowIn.x -= TOLERANCE;
     if( windowIn.x < 0 )
         windowIn.x = 0;
@@ -343,6 +342,7 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
         // -> + damping  // 
         
         box->angle /= 2*CV_PI;   
+       
         if (*first_round) 
            {       
             *angleoffset = 0;
@@ -356,8 +356,9 @@ cvCamShift_mod( const void* imgProb, CvRect windowIn,
            }
         *angledamp = box->angle + *angleoffset;
         *lastangle = box->angle; // Update History           
-        *area = m00/ ( (float)iwidth*(float)iheight );                            
+        *area = m00/ ( (float)iwidth*(float)iheight );                           
         /* MOD ->*/
+        
     }
 
 

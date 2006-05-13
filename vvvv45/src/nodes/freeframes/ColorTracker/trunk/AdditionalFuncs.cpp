@@ -5,6 +5,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "ColorTracker.h"
+#include <string.h>
+#include <stdio.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -13,7 +15,7 @@ int plugClass::maxNumObs()
 {   
     int mNO=0;
     
-    if (sc_colvals==0 || sc_tolvals==0 || sc_areathresh==0 || sc_filtersize==0) return 0;
+    if (sc_reinit==0 || sc_colvals==0 || sc_tolvals==0 || sc_areathresh==0 || sc_filtersize==0) return 0;
     
     // -> when all spreadsizes are >0, determine maximum spreadcount
     mNO = (sc_colvals>mNO)? sc_colvals:mNO; 
@@ -28,7 +30,7 @@ int plugClass::maxNumObs()
 
 // -> Buffers realloc function (called when different Spreadsizes occur or Spreadsizes are altered) //
 int plugClass::ReallocBuffers()
-{   
+{       
     register int sl, obj, cval, tval; // slice no., obj no., color parameter no., col. tolerance parameter no.
     //NumObs=maxNumObs();  
     if (NumObs==0) return 0;
@@ -36,6 +38,21 @@ int plugClass::ReallocBuffers()
     float* temp = (float*) calloc(NumObs, sizeof(float)*NumObs);
     // -> if size of Color or ColorTolerance arrays differs from max spread count,
     //    loop individual tracking color parameter spreads to max spread count //
+    
+    // -> realloc reinit choice buffer if necessary       
+    if (sc_reinit!=NumObs)
+       {
+        sl=0;
+        for (obj=0; obj<NumObs; obj++)
+            {// -> if end of spread is reached, loop //
+             if (sl==sc_reinit) sl=0;       
+             temp[obj]=reinit[sl];
+             sl++;
+            }
+        reinit = (float*) realloc(reinit, sizeof(float)*NumObs);
+        for (obj=0; obj<NumObs; obj++) reinit[obj]= temp[obj];  
+       }
+    
     
     // -> realloc colvals buffer if necessary
     if (sc_colvals!=NumObs)
@@ -113,7 +130,7 @@ int plugClass::ReallocBuffers()
     
     NumObs_old=NumObs;
     dorealloc=0;
-    
+
     free(temp);
     return 1;
 }

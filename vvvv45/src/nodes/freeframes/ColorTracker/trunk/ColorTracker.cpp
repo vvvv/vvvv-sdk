@@ -1,37 +1,30 @@
-///////////////////////////////////////////////////////////////////////////////////
-// FreeFrameSample.cpp
-//
-// FreeFrame Open Video Plugin 
-// C Version
-//
-// Implementation of the Free Frame sample plugin
-//
-// www.freeframe.org
-// marcus@freeframe.org
+//////project name
+//ColorTracker
 
-/*
+//////description
+//freeframe plugin.
+//outputs location(x/y) width/height and rotation angle 
+//of tracked object from image thresholded with 
+//user-defined color parameters
 
-Copyright (c) 2002, Marcus Clements www.freeframe.org
-All rights reserved.
+//////licence
+//GNU Lesser General Public License (LGPL)
+//english: http://www.gnu.org/licenses/lgpl.html
+//german: http://www.gnu.de/lgpl-ger.html
 
-FreeFrame 1.0 upgrade by Russell Blakeborough
-email: boblists@brightonart.org
+//////language/ide
+//dev-c++ 5
 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+//////dependencies
+//opencv beta5 libraries:
+//http://sourceforge.net/projects/opencvlibrary
 
-   * Redistributions of source code must retain the above copyright
-     notice, this list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright
-     notice, this list of conditions and the following disclaimer in
-     the documentation and/or other materials provided with the
-     distribution.
-   * Neither the name of FreeFrame nor the names of its
-     contributors may be used to endorse or promote products derived
-     from this software without specific prior written permission.
+//////initial author
+//Marc Sandner -> ms@saphmar.net
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//////edited by
+//your name here
 
-*/
 
 
 //includes 
@@ -52,9 +45,8 @@ OutputConstsStruct GOutputConstants[NUM_OUTPUTS];
 #define CV_ErrModeParent  1
 #define CV_ErrModeSilent  2
 
-
 LPVOID instantiate(VideoInfoStruct* pVideoInfo)
-{
+{      
 	// Create local pointer to plugObject
 	plugClass *pPlugObj;
 	// create new instance of plugClass
@@ -74,7 +66,7 @@ LPVOID instantiate(VideoInfoStruct* pVideoInfo)
 	pPlugObj->init();
 
 	// Russell - return pointer to the plugin instance object we have created
-
+    
 	// return pointer to object cast as LPVOID 
 	return (LPVOID) pPlugObj;
 }
@@ -88,7 +80,7 @@ DWORD deInstantiate(LPVOID instanceID)
 	pPlugObj = (plugClass*) instanceID;
 
 	delete pPlugObj; // todo: ? success / fail?
-	
+
 	return FF_SUCCESS;
 }
 
@@ -103,7 +95,7 @@ DWORD initialise()
     
     GParamConstants[0].Type   = 10;   	   
     GParamConstants[1].Type   = 10;
-    GParamConstants[2].Type   =  0;
+    GParamConstants[2].Type   = 20;
     GParamConstants[3].Type   = 21;   	   
     GParamConstants[4].Type   = 21;
     GParamConstants[5].Type   = 20;
@@ -135,7 +127,7 @@ DWORD initialise()
     char tempName3[17]  = "Track Color"; 
     char tempName4[17]  = "TC Tolerances";
     char tempName5[17]  = "Area Threshold";
-    char tempName6[17]  = "Cleanse";
+    char tempName6[17]  = "Noise Reduction";
     char tempName7[17]  = "ROI X";
     char tempName8[17]  = "ROI Y";
     char tempName9[17]  = "ROI Width";    
@@ -181,12 +173,13 @@ DWORD initialise()
    	memcpy(GOutputConstants[3].Name, outName3, 16);
    	memcpy(GOutputConstants[4].Name, outName4, 16);
    	memcpy(GOutputConstants[5].Name, outName5, 16);
-	 
+	
 	return FF_SUCCESS;
 }
 
 DWORD deInitialise()
 {
+      
 	return FF_SUCCESS;
 }
 
@@ -229,11 +222,12 @@ plugClass::plugClass()
 {   
     // -> intial allocation of output buffers // 
     for (register int op=0; op<NUM_OUTPUTS; op++)
-        {FOutputs[op].SliceCount = 0;  
-         FOutputs[op].Spread = (float*) calloc(1, 0);
+        {FOutputs[op].SliceCount = 1;  
+         FOutputs[op].Spread = (float*) calloc(1, sizeof(float));
         }
     
     // -> initial allocation of spreadsize-dependent buffers //
+    reinit       = (float*) calloc(1, sizeof(float));
     filtersize   = (float*) calloc(1, sizeof(float));
     areathresh   = (float*) calloc(1, sizeof(float));
     
@@ -249,12 +243,7 @@ plugClass::plugClass()
     
     for (int cval=0; cval<3; cval++) colvals[cval] = (float*) calloc(1, sizeof(float));
     for (int tval=0; tval<3; tval++) tolvals[tval] = (float*) calloc(1, sizeof(float));
-    
-    // -> setting tracking constants
-    hdims=180;
-    hranges_arr[0] = 0; hranges_arr[1] = 180;  
-    hranges = hranges_arr;
-    
+      
     // -> setting some values to defaults //
     first_round   =1;
     scaled_before =1; 
@@ -269,19 +258,20 @@ plugClass::plugClass()
 }
 
 plugClass::~plugClass()
-{
+{    
     // -> deallocating image and output value buffers  //
     cvReleaseImage(&Chsv);
-    cvReleaseImage(&Ghue);
     cvReleaseImage(&Gmask);
     cvReleaseImage(&Cmask);
-    cvReleaseHist(&hist);
+    cvReleaseImage(&Ctmp);
+    cvReleaseImage(&Ctmp2);
+    cvReleaseImage(&Gmasktemp);  
     
     // -> deallocating output value buffers  // 
     for (register int no=0; no<NUM_OUTPUTS; no++) free(FOutputs[no].Spread);
    
      // -> deallocating spreadsize-dependent buffers //
-    free(filtersize); free(areathresh);
+    free(reinit); free(filtersize); free(areathresh);
     
     free(track_window); free(track_box);   free(track_comp);
     free(angledamp);    free(angleoffset); free(lastangle);
@@ -294,7 +284,7 @@ plugClass::~plugClass()
 }
 
 void plugClass::init()
-{
+{    
     FImageSize.width  = FVideoInfo.frameWidth;
     FImageSize.height = FVideoInfo.frameHeight;
         
@@ -302,18 +292,15 @@ void plugClass::init()
     selectall.width=FVideoInfo.frameWidth-1;  selectall.height=FVideoInfo.frameHeight-1;  
      
     // -> (re)allocating image buffers  //   
-    if (CCurrentImage) cvReleaseImage(&CCurrentImage);  CCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
-    if (Chsv)          cvReleaseImage(&Chsv);           Chsv          = cvCreateImage( FImageSize, 8, 3 );
-    if (Ghue)          cvReleaseImage(&Ghue);           Ghue          = cvCreateImage( FImageSize, 8, 1 );
-    if (Gmask)         cvReleaseImage(&Gmask);          Gmask         = cvCreateImage( FImageSize, 8, 1 );
-    if (Cmask)         cvReleaseImage(&Cmask);          Cmask         = cvCreateImage( FImageSize, 8, 3 );
-    if (hist)          cvReleaseHist(&hist);            hist          = cvCreateHist( 1, &hdims, CV_HIST_ARRAY, &hranges, 1 );   
-         
-    char buffer[100];
-    
+    if (CCurrentImage) cvReleaseImageHeader(&CCurrentImage);CCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
+    if (Chsv)          cvReleaseImage(&Chsv);               Chsv          = cvCreateImage( FImageSize, 8, 3 );
+    if (Gmask)         cvReleaseImage(&Gmask);              Gmask         = cvCreateImage( FImageSize, 8, 1 );
+    if (Cmask)         cvReleaseImage(&Cmask);              Cmask         = cvCreateImage( FImageSize, 8, 3 );
+    if (Ctmp)          cvReleaseImage(&Ctmp);               Ctmp          = cvCreateImage( FImageSize, 8, 3 );
+    if (Ctmp2)         cvReleaseImage(&Ctmp2);              Ctmp2         = cvCreateImage( FImageSize, 8, 3 );
+    if (Gmasktemp)     cvReleaseImage(&Gmasktemp);          Gmasktemp     = cvCreateImage( FImageSize, 8, 1);
+       
     dorealloc=1;
-    sprintf(buffer, "%i x %i", FImageSize.width, FImageSize.height);
-    OutputDebugString(buffer);
     
 }
 
@@ -328,24 +315,36 @@ char* plugClass::getParameterDisplay(DWORD index)
 
 // -> Function is called when scalar input values (types 0-6, 10 or 100) are modified //
 DWORD plugClass::setParameter(SetParameterStruct* pParam)
-{
+{    
 	FParams[pParam->index].Value = pParam->value;
+
 	return FF_SUCCESS;
 }
 
 // -> Function is called when spread input values (types 20, 21 or 22) are modified //
 DWORD plugClass::setInput(InputStruct* pParam)
-{    
+{        
     int index = pParam->Index - 3;
     int Slicecount = pParam->SliceCount; 
     
+    // -> if reinit choice buffer is set  
+            
+    if(index==-1)
+       {// -> realloc reinit choice buffer if necessary//   
+        if (Slicecount!=sc_reinit) reinit=(float*) realloc(reinit, sizeof(float)*Slicecount);
+        // -> set reinit slicecounts //
+        sc_reinit = Slicecount;
+        // -> set reinit to input values //          
+        for (int u=0; u<sc_reinit; u++) reinit[u]=pParam->Spread[u];
+       }  
+    
     // -> if colorvalues are being set 
      
-    if (index==0)
-       {// -> set colvals slicecounts //
+    else if (index==0)
+       {// -> realloc colvals buffer if necessary//   
+        if (Slicecount!=sc_colvals) for (int cval=0; cval<3; cval++) colvals[cval]=(float*) realloc(colvals[cval], sizeof(float)*Slicecount);
+        // -> set colvals slicecounts //
         sc_colvals = Slicecount;
-        // -> realloc colvals buffer //   
-        for (int cval=0; cval<3; cval++) colvals[cval]  = (float*) realloc(colvals[cval], sizeof(float)*sc_colvals);
         // -> set colvals to input values //         
         int c=0;       
         for (int n=0; n<sc_colvals; n++)
@@ -359,10 +358,10 @@ DWORD plugClass::setInput(InputStruct* pParam)
     // -> if tolerance values are being set  
      
     else if (index==1)
-       {// -> set tolvals slicecounts //
+       {// -> realloc tolvals buffer if necessary//   
+        if (Slicecount!=sc_tolvals) for (int tval=0; tval<3; tval++) tolvals[tval]=(float*) realloc(tolvals[tval], sizeof(float)*Slicecount);
+        // -> set tolvals slicecounts //
         sc_tolvals = Slicecount;
-        // -> realloc tolvals buffer //   
-        for (int tval=0; tval<3; tval++) tolvals[tval]  = (float*) realloc(tolvals[tval], sizeof(float)*sc_tolvals);
         // -> set tolvals to input values //         
         int c=0;       
         for (int n=0; n<sc_tolvals; n++)
@@ -376,23 +375,23 @@ DWORD plugClass::setInput(InputStruct* pParam)
     // -> if area thresholds are set  
             
     else if(index==2)
-       {// -> set areathresh slicecounts //
+       {// -> realloc areathresh buffer if necessary//   
+        if (Slicecount!=sc_areathresh) areathresh=(float*) realloc(areathresh, sizeof(float)*Slicecount);
+        // -> set areathresh slicecounts //
         sc_areathresh = Slicecount;
-        // -> realloc areathresh buffer //   
-        areathresh = (float*) realloc(areathresh, sizeof(float)*sc_areathresh);
         // -> set areathresh to input values //          
         for (int u=0; u<sc_areathresh; u++) areathresh[u]=pParam->Spread[u];
-        }  
+       }  
  
     // -> if medianfilter sizes are set  
              
     else if(index==3)   
        {// -> check if these input values have a different slicecount //
         if (Slicecount!=NumObs) dorealloc=1;
+        // -> realloc filtersize buffer if necessary//           
+        if (Slicecount!=sc_filtersize) filtersize=(float*) realloc(filtersize, sizeof(float)*Slicecount);
         // -> set filtersize slicecounts //
-        sc_filtersize = Slicecount;
-        // -> realloc filtersize buffer //           
-        filtersize = (float*) realloc(filtersize, sizeof(float)*sc_filtersize);
+        sc_filtersize = Slicecount;   
         // -> set filtersize to input values // 
         for (int u=0; u<sc_filtersize; u++) filtersize[u]=pParam->Spread[u];
         }  
@@ -401,7 +400,7 @@ DWORD plugClass::setInput(InputStruct* pParam)
     // -> Reallocate only if input values have different slicecounts //
     if (Slicecount!=NumObs) 
         dorealloc=1;
-  
+
 	return FF_SUCCESS;
 }
 
@@ -416,11 +415,15 @@ DWORD plugClass::getOutputSliceCount(DWORD index)
 }
 
 DWORD plugClass::setThreadLock(DWORD Enter)
-{
+{       
 	if (*(bool*) Enter)
+	 {
 	  EnterCriticalSection(&CriticalSection);
+              }
     else
-      LeaveCriticalSection(&CriticalSection);
+      {
+       LeaveCriticalSection(&CriticalSection);
+      }
 }
 
 float* plugClass::getOutput(DWORD index)
@@ -444,6 +447,8 @@ DWORD plugClass::processFrame(LPVOID pFrame)
    
 DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 {
+    // -> Leave if setting function is still active //
+    
     EnterCriticalSection(&CriticalSection);  
     
     // -> If no tracking parameters are set, quit //
@@ -460,10 +465,9 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     CCurrentImage->origin = 1;
     CCurrentImage->imageData = (char*)pFrame;
     
-    IplImage *Ctmp  = cvCloneImage (CCurrentImage); 
-    IplImage *Ctmp2 = cvCreateImage(cvGetSize(Ctmp),IPL_DEPTH_8U,3);
+    cvCopy(CCurrentImage, Ctmp, 0); 
     cvSetZero(Ctmp2);
-    Gmasktemp  = cvCreateImage(cvGetSize(Ctmp),IPL_DEPTH_8U,1);
+    //Gmasktemp  = cvCreateImage(cvGetSize(Ctmp),IPL_DEPTH_8U,1);
          
     int h    = Ctmp->height;
     int w    = Ctmp->width ;     
@@ -477,16 +481,16 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     
     // -> convert input image and track color into hsv space //
     cvCvtColor( Ctmp, Chsv, CV_BGR2HSV );
-    cvSplit( Chsv, Ghue, 0, 0, 0 );
-    
+
     ////MAIN OBJECT LOOP////////////////////////////////////////////////////////////////////////////////    
     
     for (obj=0; obj<NumObs; obj++)
         {
-         hsv = rgb2hsv( cvScalar(colvals[0][obj], colvals[1][obj], colvals[2][obj], 0) );
+         hsv     = rgb2hsv( cvScalar(colvals[0][obj], colvals[1][obj], colvals[2][obj], 0) );
+         hsv_tol = rgb2hsv( cvScalar(tolvals[0][obj], tolvals[1][obj], tolvals[2][obj], 0) );
             
          // -> reset search if requested //
-         if(FParams[2].Value) first_round=1;    
+         if(reinit[obj]) first_round=1;    
          
          if(first_round)  
             // -> at initialisation, search everywhere //  
@@ -497,7 +501,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
              
          // -> calculate hue, saturation and value bounds according to tolerances //  
          // -> hue bounds  
-         tol = (tolvals[0][obj]>0)? (int) ( tolvals[0][obj]*90.0 ) : (int) ( -tolvals[0][obj]*90.0 ); 
+         tol = (hsv_tol.val[0]>0)? (int) ( hsv_tol.val[0]) : (int) ( -hsv_tol.val[0]); 
          
          hmin = (int) ( (hsv.val[0]) - tol ); 
          hmax = (int) ( (hsv.val[0]) + tol );
@@ -514,7 +518,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
             }
           
          // -> saturation bounds          
-         tol = (tolvals[1][obj]>0)? (int) ( tolvals[1][obj]*255.0 ) : (int) ( -tolvals[1][obj]*255.0 ); 
+         tol = (hsv_tol.val[1]>0)? (int) ( hsv_tol.val[1]) : (int) ( -hsv_tol.val[1] ); 
  
          smin =(int) hsv.val[1]-tol;
          if (smin<0) smin = 0;  if (smin>255) smin = 256;
@@ -523,7 +527,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
          if (smax<0) smax = 0;  if (smax>255) smax = 256;
          
          // -> value bounds
-         tol = (tolvals[2][obj]>0)? (int) ( tolvals[2][obj]*255.0 ) : (int) ( -tolvals[2][obj]*255.0 ); 
+         tol = (hsv_tol.val[2]>0)? (int) ( hsv_tol.val[2] ) : (int) ( -hsv_tol.val[2] ); 
            
          vmin =(int) hsv.val[2]-tol;
          if (vmin<0) vmin = 0;  if (vmin>255) vmin = 256;
@@ -532,7 +536,6 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
          if (vmax<0) vmax = 0;  if (vmax>255) vmax = 256;
      
          cvSetZero(Cmask); 
-         //Gmask_temp=cvCreateImage( cvGetSize(Gmask), IPL_DEPTH_8U,1);  
        
          ///////////////////////////////////////////////////////////////////////////////////   
          // STEP II : Mask pixels that fit in given saturation and grayscale level bounds //     
@@ -564,10 +567,11 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
              cvCopy(Gmask, Gmasktemp, NULL);
              cvSmooth( Gmasktemp, Gmask, CV_MEDIAN, ((int)filtersize[obj]*2)-1, ((int)filtersize[obj]*2)-1, 0 );
             }
+             
          cvCamShift_mod( Gmask, track_window[obj], cvTermCriteria( CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 10, 1 ),
                          &track_comp[obj], &track_box[obj], w, h , &first_round, &angledamp[obj], &lastangle[obj], &angleoffset[obj], 
                          &area[obj], FParams[11].Value);
-         
+
          // -> TT is trackingthresh (Area Threshold) to the power of 4                              //
          //    This is to fit the range of 0 (no thresholding) to 1 (object has size of full image) //
          //    with a wide numerical range for small objects                                        //
@@ -582,10 +586,15 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
              track_window[obj] = track_comp[obj].rect;
              
          // -> reinit search ROI if requested  //
-         if (is_tracked[obj]==0) track_window[obj] = selectall;    
+         if (is_tracked[obj]==0) 
+            {track_window[obj].height = selectall.height;
+             track_window[obj].width = selectall.width;  
+             track_window[obj].x = selectall.x;
+             track_window[obj].y = selectall.y;
+            }  
               
          // -> show thresholded image if requested  //  
-         if( (int)FParams[1].Value == (obj+1) ) 
+         if( (int)FParams[1].Value == (obj) ) 
            {
             cvCvtColor( Gmask, Cmask, CV_GRAY2BGR );
             cvNot(Cmask, Cmask);
@@ -595,14 +604,14 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     ////END OF MAIN OBJECT LOOP/////////////////////////////////////////////////////////////////////////    
 
     // -> show searchboxes if requested // 
-    if (FParams[0].Value)
+    if ((FParams[0].Value>-2) && (FParams[0].Value<NumObs))
        {for (obj=0; obj<NumObs; obj++)
             {hsv = rgb2hsv( cvScalar(colvals[0][obj], colvals[1][obj], colvals[2][obj], 0) );
  
              // -> for ROI display color
              rgb = hsv2rgb(hsv.val[0]); 
            
-             if (FParams[0].Value == (obj+1) || FParams[0].Value==-1)
+             if (FParams[0].Value == (obj) || FParams[0].Value==-1)
                {   
                 cvRectangle( Ctmp, cvPoint (track_window[obj].x,track_window[obj].y), 
                                    cvPoint (track_window[obj].x+(track_window[obj].width),track_window[obj].y+(track_window[obj].height)),
@@ -610,21 +619,19 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
                 }
             }
        }
-    cvCopy(Ctmp, CCurrentImage, 0);  
-                 
-    cvReleaseImage(&Ctmp);
-    cvReleaseImage(&Ctmp2);
+    cvCopy(Ctmp, CCurrentImage, 0);           
     first_round=0;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // STEP IV : Set  Outputs                                                                         //
    
    // -> set output value slicecount and realloc value arrays //    
-    for (register int op=0; op<NUM_OUTPUTS; op++)
-        {
-         FOutputs[op].SliceCount= NumObs;
-         FOutputs[op].Spread = (float*) realloc (FOutputs[op].Spread, sizeof(float)* NumObs);
-        }
+    if (FOutputs[0].SliceCount!=NumObs) 
+        for (register int op=0; op<NUM_OUTPUTS; op++)
+            {
+             FOutputs[op].SliceCount= NumObs;
+             FOutputs[op].Spread = (float*) realloc (FOutputs[op].Spread, sizeof(float)* NumObs);
+            }
         
     // -> set output values //  
     for (register int obj=0; obj<NumObs; obj++)
@@ -636,13 +643,12 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
              FOutputs[2].Spread[obj] = track_box[obj].size.width; 
              FOutputs[3].Spread[obj] = track_box[obj].size.height;  
              FOutputs[4].Spread[obj] = angledamp[obj]-0.25; // -> angle to y-axis // 
-             FOutputs[5].Spread[obj] = is_tracked[obj];//dorealloc;
             }
+             FOutputs[5].Spread[obj] = is_tracked[obj];
         }
-    if (Gmasktemp) cvReleaseImage(&Gmasktemp); 
-    
-    LeaveCriticalSection(&CriticalSection);
 
+    LeaveCriticalSection(&CriticalSection);
+    
 	return FF_SUCCESS;
 }
 
