@@ -25,15 +25,15 @@
 //////edited by
 //your name here
 
+
 //freeframe includes
 #include "FreeFrame.h"
 
 //opencv includes
-#include <cv.h>
-#include <highgui.h>
+#include "cv.h"
 
 //pin constants
-#define NUM_PARAMS 12
+#define NUM_PARAMS 14
 #define NUM_INPUTS 1
 #define NUM_OUTPUTS 6
 
@@ -60,6 +60,12 @@ typedef struct OutputStructTag {
 	DWORD SliceCount;
     float* Spread;
 } OutputStruct;
+
+typedef struct InputStructTag {
+	DWORD Index;
+	DWORD SliceCount;
+	double* Spread;
+} InputStruct;
 
 typedef struct VideoPixel24bitTag {
 	BYTE red;
@@ -97,9 +103,10 @@ public:
 	float getParameter(DWORD index);
 	
 	//joregs
-	DWORD setThreadLock(DWORD Enter);
     DWORD getOutputSliceCount(DWORD index);					
     float* getOutput(DWORD index);
+    DWORD setInput(InputStruct* pParam);
+    DWORD setThreadLock(DWORD Enter);
     //
     
 	DWORD processFrame(LPVOID pFrame);
@@ -111,33 +118,53 @@ public:
 	
 	ParamStruct FParams[NUM_PARAMS];
 	OutputStruct FOutputs[NUM_OUTPUTS];
-    
+
 	VideoInfoStruct FVideoInfo;
 	int FVideoMode;
-	
- // marc's color conversion function  //
-	CvScalar hsv2rgb( float hue );
 
+    // -> spreadhandling functions //
+	int maxNumObs();
+    int ReallocBuffers();
+    // -> colortracker functions //
+    void SetImageROI(IplImage* image, int ROIX, int ROIY, int ROIwidth, int ROIheight);
+    CvScalar hsv2rgb( float hue );
+	CvScalar rgb2hsv(CvScalar rgb);
+	///////////////////////////
     
 private:
     CRITICAL_SECTION CriticalSection;  
-    
+     
     IplImage* CCurrentImage;
-    IplImage* Chsv, *Ghue, *Gbackproject;
-    IplImage* Gmask;
-              
-    CvSize FImageSize;   
-    CvHistogram *hist;
-   
-    CvRect selectall;
-    CvRect track_window;
-    CvRect selection;
-    CvBox2D track_box;
-    CvConnectedComp track_comp;
+    IplImage* Chsv, *Ghue;
+    IplImage* Gbackproject, *Gmask, *Cmask, *Gmasktemp, *Ctmp, *Ctmp2;
     
-    int first_round, scaled_before;
-    float angledamp, lastangle, angleoffset, is_tracked, area;
+    CvSize FImageSize;
     
+    CvHistogram **hist;
+    int sc_hist;
+    
+    int    hdims;
+    float  hranges_arr[2];
+    float* hranges;
+    
+    CvRect selection, selectall ;
+    CvRect* track_window;
+    CvBox2D* track_box;
+    CvConnectedComp* track_comp ;
+    CvScalar hsv, hsv_tol;
+    
+    float *filtersize, *areathresh, *reinit;
+    float *ROIp[4],   *tols[4];
+    int sc_ROIp[4], sc_tols[4];
+    int sc_filtersize, sc_areathresh, sc_reinit, NumObs, NumObs_old;  
+    int method;
+    
+    float *angledamp , *lastangle , *angleoffset, *area, *is_tracked;
+    int first_round, scaled_before;    
+    int test;
+    
+    BOOL dorealloc;
+
 };
 
 // Function prototypes - Global Plugin Functions that lie outside the instance object

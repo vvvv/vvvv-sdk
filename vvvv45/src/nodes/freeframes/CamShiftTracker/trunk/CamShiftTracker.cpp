@@ -25,6 +25,8 @@
 //////edited by
 //your name here
 
+
+
 //includes 
 #include "CamShiftTracker.h"
 #include "cvcamshift_mod.h"
@@ -39,20 +41,12 @@ PlugExtendedInfoStruct GPlugExtInfo;
 ParamConstsStruct GParamConstants[NUM_PARAMS];
 OutputConstsStruct GOutputConstants[NUM_OUTPUTS];
 
-// -> tracking constants //
-int    hdims = 16;
-float  hranges_arr[] = {0,180};
-float* hranges = hranges_arr;
-
-
 #define CV_ErrModeLeaf    0
 #define CV_ErrModeParent  1
 #define CV_ErrModeSilent  2
 
-
 LPVOID instantiate(VideoInfoStruct* pVideoInfo)
-{
-
+{      
 	// Create local pointer to plugObject
 	plugClass *pPlugObj;
 	// create new instance of plugClass
@@ -72,7 +66,7 @@ LPVOID instantiate(VideoInfoStruct* pVideoInfo)
 	pPlugObj->init();
 
 	// Russell - return pointer to the plugin instance object we have created
-
+    
 	// return pointer to object cast as LPVOID 
 	return (LPVOID) pPlugObj;
 }
@@ -86,60 +80,66 @@ DWORD deInstantiate(LPVOID instanceID)
 	pPlugObj = (plugClass*) instanceID;
 
 	delete pPlugObj; // todo: ? success / fail?
-	
+
 	return FF_SUCCESS;
 }
 
 string filemask = "Bitmap (*.bmp)|*.bmp";
 DWORD initialise()
 {
-    // -> Input pins /////////////////
+    // -> Input pins ///////////////// 
   
     cvSetErrMode(CV_ErrModeSilent);
     
     // -> Types & default values for input pins //
     
-    GParamConstants[0].Type  = 0;   	   
-    GParamConstants[1].Type  = 0;
-    GParamConstants[2].Type  = 0;
-    GParamConstants[3].Type  = 10;   	   
-    GParamConstants[4].Type  = 10;
-    GParamConstants[5].Type  = 10;   	   
-    GParamConstants[6].Type  = 10;
-    GParamConstants[7].Type  = 10;
-    GParamConstants[8].Type  = 10;   	   
-    GParamConstants[9].Type  = 10;
-    GParamConstants[10].Type = 10;
-    GParamConstants[11].Type =  0;
+    GParamConstants[0].Type   = 10;   	   
+    GParamConstants[1].Type   = 10;
+    GParamConstants[2].Type   = 20;
+    GParamConstants[3].Type   = 20;   	   
+    GParamConstants[4].Type   = 20;
+    GParamConstants[5].Type   = 20;   	   
+    GParamConstants[6].Type   = 20;
+    GParamConstants[7].Type   = 20;
+    GParamConstants[8].Type   = 20;
+    GParamConstants[9].Type   = 20;
+    GParamConstants[10].Type  = 20;
+    GParamConstants[11].Type  = 20;
+    GParamConstants[12].Type  = 20;
+    GParamConstants[13].Type  = 10;
   	
     GParamConstants[0].Default  = 1.0f;  
     GParamConstants[1].Default  = 1.0f;  
     GParamConstants[2].Default  = 0.0f;
-    GParamConstants[3].Default  = 0.0f;   
-    GParamConstants[4].Default  = 0.0f;
-    GParamConstants[5].Default  = 0.25f;   
-    GParamConstants[6].Default  = 0.25f;
-    GParamConstants[7].Default  = 0.16f;
-    GParamConstants[8].Default  = 0.04f;   
-    GParamConstants[9].Default  = 1.0f;
+    GParamConstants[3].Default  = 0.16f;   
+    GParamConstants[4].Default  = 0.9f;
+    GParamConstants[5].Default  = 0.04f;
+    GParamConstants[6].Default  = 1.0f;
+    GParamConstants[7].Default  = 0.0f;
+    GParamConstants[8].Default  = 0.0f;
+    GParamConstants[9].Default  = 0.0f;
     GParamConstants[10].Default = 0.0f;
-    GParamConstants[11].Default = 1.0f;	  	
+    GParamConstants[11].Default = 0.25f;
+    GParamConstants[12].Default = 0.25f;
+    GParamConstants[13].Default = 1.0f;
+	  	
+   	// -> Naming of input pins // 
   	
-    // -> Naming of input pins // 
-  	
-    char tempName0[17]  = "Show ROI"; 
-    char tempName1[17]  = "Show Backproject"; 
+    char tempName0[17]  = "Show SearchPos"; 
+    char tempName1[17]  = "Show ThreshImage"; 
     char tempName2[17]  = "Init Tracker";
-    char tempName3[17]  = "ROI X"; 
-    char tempName4[17]  = "ROI Y";
-    char tempName5[17]  = "ROI Width"; 
-    char tempName6[17]  = "ROI Height";
-    char tempName7[17]  = "Saturation Min";
-    char tempName8[17]  = "Value Min"; 
-    char tempName9[17]  = "Value Max";
-    char tempName10[17] = "Area Threshold";
-    char tempName11[17] = "Scaled Values";
-	
+    char tempName3[17]  = "Saturation min"; 
+    char tempName4[17]  = "Saturation max";
+    char tempName5[17]  = "Value min";
+    char tempName6[17]  = "Value max";
+    char tempName7[17]  = "Area Threshold";
+    char tempName8[17]  = "Noise Reduction";
+    char tempName9[17]  = "X";
+    char tempName10[17] = "Y";
+    char tempName11[17] = "Width";    
+    char tempName12[17] = "Height";
+    char tempName13[17] = "Scaled Values";
+    
     memcpy(GParamConstants[0].Name,  tempName0,  16);	 
     memcpy(GParamConstants[1].Name,  tempName1,  16);
     memcpy(GParamConstants[2].Name,  tempName2,  16);	 
@@ -150,13 +150,15 @@ DWORD initialise()
     memcpy(GParamConstants[7].Name,  tempName7,  16);	 
     memcpy(GParamConstants[8].Name,  tempName8,  16);
     memcpy(GParamConstants[9].Name,  tempName9,  16);
-    memcpy(GParamConstants[10].Name, tempName10, 16);
-    memcpy(GParamConstants[11].Name, tempName11, 16);
-
-    // -> Output pins // 
-  
-    // -> Types for output pins //
+    memcpy(GParamConstants[10].Name, tempName10, 16);    
+    memcpy(GParamConstants[11].Name, tempName11, 16);   
+    memcpy(GParamConstants[12].Name, tempName12, 16);    
+    memcpy(GParamConstants[13].Name, tempName13, 16);    
     
+    // -> Output pins // 
+   
+    // -> Types for output pins //
+     
     GOutputConstants[0].Type = 10;
     GOutputConstants[1].Type = 10;
     GOutputConstants[2].Type = 10;
@@ -164,27 +166,28 @@ DWORD initialise()
     GOutputConstants[4].Type = 10;
     GOutputConstants[5].Type = 10;
         
-    // -> Naming of output pins // 
+    // -> Naming of output pins //
     
     char outName0[17] = "X";
-    char outName1[17] = "Y";
-    char outName2[17] = "Width";
-    char outName3[17] = "Height";
-    char outName4[17] = "Angle";
-    char outName5[17] = "IsTracked";
-	
+   	char outName1[17] = "Y";
+   	char outName2[17] = "Width";
+   	char outName3[17] = "Height";
+   	char outName4[17] = "Angle";
+   	char outName5[17] = "IsTracked";
+  	
     memcpy(GOutputConstants[0].Name, outName0, 16);
-    memcpy(GOutputConstants[1].Name, outName1, 16);
-    memcpy(GOutputConstants[2].Name, outName2, 16);
-    memcpy(GOutputConstants[3].Name, outName3, 16);
-    memcpy(GOutputConstants[4].Name, outName4, 16);
-    memcpy(GOutputConstants[5].Name, outName5, 16);
-    
- return FF_SUCCESS;
+   	memcpy(GOutputConstants[1].Name, outName1, 16);
+   	memcpy(GOutputConstants[2].Name, outName2, 16);
+   	memcpy(GOutputConstants[3].Name, outName3, 16);
+   	memcpy(GOutputConstants[4].Name, outName4, 16);
+   	memcpy(GOutputConstants[5].Name, outName5, 16);
+	
+	return FF_SUCCESS;
 }
 
 DWORD deInitialise()
 {
+      
 	return FF_SUCCESS;
 }
 
@@ -224,61 +227,110 @@ char* getOutputName(DWORD index)
 }
 
 plugClass::plugClass()
-{
-    // -> allocating output buffers //
-    
+{   
+    // -> intial allocation of output buffers // 
     for (register int op=0; op<NUM_OUTPUTS; op++)
-        { 
-          FOutputs[op].SliceCount = 1;  
-          FOutputs[op].Spread = (float*) calloc(1, sizeof(float));
+        {FOutputs[op].SliceCount = 1;  
+         FOutputs[op].Spread = (float*) calloc(1, sizeof(float));
         }
- 
+    
+    char buffer[100];
+    sprintf(buffer, "plugClass");
+    OutputDebugString(buffer);
+    
+    // setting histogram ranges
+    hdims = 16;
+    hranges_arr[0] = 0; hranges_arr[1] = 180;
+    hranges = hranges_arr;
+    hist=NULL; // at class construction, set pointer to histogram buffer field to NULL 
+    sc_hist=0;
+    
+    // -> initial allocation of spreadsize-dependent buffers //
+    reinit       = (float*) calloc(1, sizeof(float));
+    filtersize   = (float*) calloc(1, sizeof(float));
+    areathresh   = (float*) calloc(1, sizeof(float));
+    
+    track_window = (CvRect*) calloc(1, sizeof(CvRect));
+    track_box    = (CvBox2D*) calloc(1, sizeof(CvBox2D));
+    track_comp   = (CvConnectedComp*) calloc(1, sizeof(CvConnectedComp));   
+  
+    angledamp   = (float*) calloc(1, sizeof(float));
+    lastangle   = (float*) calloc(1, sizeof(float)); 
+    angleoffset = (float*) calloc(1, sizeof(float));  
+    area        = (float*) calloc(1, sizeof(float)); 
+    is_tracked  = (float*) calloc(1, sizeof(float));
+    for (int r=0; r<4; r++) 
+        ROIp[r] = (float*) calloc(1, sizeof(float));
+      
+    // -> setting some values to defaults //
+    first_round   =1;
+    scaled_before =1; 
+    angledamp[0]  =0; 
+    lastangle[0]  =0; 
+    angleoffset[0]=0; 
+    is_tracked[0] =0;
+    NumObs_old    =0;
+    NumObs        =0;
+    
     InitializeCriticalSection(&CriticalSection);    
 }
 
 plugClass::~plugClass()
-{
+{    
     // -> deallocating image and output value buffers  //
     cvReleaseImage(&Chsv);
     cvReleaseImage(&Ghue);
     cvReleaseImage(&Gmask);
     cvReleaseImage(&Gbackproject);
+    cvReleaseImage(&Cmask);
+    cvReleaseImage(&Ctmp);
+    cvReleaseImage(&Ctmp2);
+    cvReleaseImage(&Gmasktemp); 
+    if (hist) {for (int sh=0; sh<sc_hist; sh++) {cvReleaseHist(&hist[sh]);}
+               free(hist);
+               sc_hist=0;
+              }
     
+    // -> deallocating output value buffers  // 
     for (register int no=0; no<NUM_OUTPUTS; no++) free(FOutputs[no].Spread);
+   
+     // -> deallocating spreadsize-dependent buffers //
+    free(reinit); free(filtersize); free(areathresh);
+    
+    free(track_window); free(track_box);   free(track_comp);
+    free(angledamp);    free(angleoffset); free(lastangle);
+    free(area);         free(is_tracked); 
+    for (int r=0; r<4; r++) free(ROIp[r]);
     
     DeleteCriticalSection(&CriticalSection);
 }
 
 void plugClass::init()
-{
+{    
     FImageSize.width  = FVideoInfo.frameWidth;
     FImageSize.height = FVideoInfo.frameHeight;
-     
-    // -> setting defaults for input values and some tracking parameters //  
-    
-    for (int in=0; in<NUM_PARAMS; in++) FParams[in].Value=GParamConstants[in].Default;
-       
-    first_round=1;
-    scaled_before=1; 
-    angledamp=0; 
-    lastangle=0; 
-    angleoffset=0; 
-    is_tracked=0;
-    
-    // -> allocating image buffers  //
-    CCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
-    Chsv = cvCreateImage( FImageSize, 8, 3 );
-    Ghue = cvCreateImage( FImageSize, 8, 1 );
-    Gmask = cvCreateImage( FImageSize, 8, 1 );
-    Gbackproject = cvCreateImage( FImageSize, 8, 1 );
-    
+        
     selectall.x=0;  selectall.y=0;  
-    selectall.width=FVideoInfo.frameWidth-1;  selectall.height=FVideoInfo.frameHeight-1;    
-      
-    char buffer[100];
-    sprintf(buffer, "%i x %i", FImageSize.width, FImageSize.height);
-    OutputDebugString(buffer);
-    
+    selectall.width=FVideoInfo.frameWidth-1;  selectall.height=FVideoInfo.frameHeight-1;  
+     
+    // -> (re)allocating image and histogram buffers  //   
+    if (CCurrentImage) cvReleaseImageHeader(&CCurrentImage);CCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
+    if (Chsv)          cvReleaseImage(&Chsv);               Chsv          = cvCreateImage( FImageSize, 8, 3 );
+    if (Ghue)          cvReleaseImage(&Ghue);               Ghue          = cvCreateImage( FImageSize, 8, 1 );
+    if (Gbackproject)  cvReleaseImage(&Gbackproject);       Gbackproject  = cvCreateImage( FImageSize, 8, 1 );
+    if (Gmask)         cvReleaseImage(&Gmask);              Gmask         = cvCreateImage( FImageSize, 8, 1 );
+    if (Cmask)         cvReleaseImage(&Cmask);              Cmask         = cvCreateImage( FImageSize, 8, 3 );
+    if (Ctmp)          cvReleaseImage(&Ctmp);               Ctmp          = cvCreateImage( FImageSize, 8, 3 );
+    if (Ctmp2)         cvReleaseImage(&Ctmp2);              Ctmp2         = cvCreateImage( FImageSize, 8, 3 );
+    if (Gmasktemp)     cvReleaseImage(&Gmasktemp);          Gmasktemp     = cvCreateImage( FImageSize, 8, 1);
+   
+     if (hist) {for (int sh=0; sh<sc_hist; sh++) {cvReleaseHist(&hist[sh]);} 
+                free(hist);}
+     hist    = (CvHistogram**) calloc(1, sizeof(CvHistogram*));
+     hist[0] = cvCreateHist( 1, &hdims, CV_HIST_ARRAY, &hranges, 1 ); 
+     sc_hist=1;
+     
+    dorealloc=1;
 }
 
 char* plugClass::getParameterDisplay(DWORD index)
@@ -290,10 +342,82 @@ char* plugClass::getParameterDisplay(DWORD index)
 	return FParams[index].DisplayValue;
 }
 
+// -> Function is called when scalar input values (types 0-6, 10 or 100) are modified //
 DWORD plugClass::setParameter(SetParameterStruct* pParam)
-{
+{    
 	FParams[pParam->index].Value = pParam->value;
-	
+
+	return FF_SUCCESS;
+}
+
+// -> Function is called when spread input values (types 20, 21 or 22) are modified //
+DWORD plugClass::setInput(InputStruct* pParam)
+{        
+    int index = pParam->Index;
+    int Slicecount = pParam->SliceCount; 
+
+    // -> if reinit buffer is set
+ 
+    if(index==2)
+       {// -> realloc areathresh buffer if necessary//   
+        if (Slicecount!=sc_reinit) reinit=(float*) realloc(reinit, sizeof(float)*Slicecount);
+        // -> set areathresh slicecounts //
+        sc_reinit = Slicecount;
+        // -> set areathresh to input values //          
+        for (int u=0; u<sc_reinit; u++) reinit[u]=pParam->Spread[u];
+       }  
+       
+    // -> if tolerances are set  
+     
+    else if(index>2 && index<7)   
+       {// -> realloc filtersize buffer if necessary//           
+        if (Slicecount!=sc_tols[index-3]) tols[index-3]=(float*) realloc(tols[index-3], sizeof(float)*Slicecount);
+        // -> set filtersize slicecounts //
+        sc_tols[index-3] = Slicecount;   
+        // -> set filtersize to input values // 
+        for (int u=0; u<sc_tols[index-3]; u++) tols[index-3][u]=pParam->Spread[u];
+        }  
+        
+    // -> if area thresholds are set  
+            
+    else if(index==7)
+       {// -> realloc areathresh buffer if necessary//   
+        if (Slicecount!=sc_areathresh) areathresh=(float*) realloc(areathresh, sizeof(float)*Slicecount);
+        // -> set areathresh slicecounts //
+        sc_areathresh = Slicecount;
+        // -> set areathresh to input values //          
+        for (int u=0; u<sc_areathresh; u++) areathresh[u]=pParam->Spread[u];
+       }  
+ 
+    // -> if medianfilter sizes are set  
+             
+    else if(index==8)   
+       {// -> realloc filtersize buffer if necessary//           
+        if (Slicecount!=sc_filtersize) filtersize=(float*) realloc(filtersize, sizeof(float)*Slicecount);
+        // -> set filtersize slicecounts //
+        sc_filtersize = Slicecount;   
+        // -> set filtersize to input values // 
+        for (int u=0; u<sc_filtersize; u++) filtersize[u]=pParam->Spread[u];
+        }  
+    
+     // -> if Roi positions are set  
+     
+    else if(index>8 && index<13)   
+       {// -> check if these input values have a different slicecount //
+        if (Slicecount!=NumObs) dorealloc=1;
+        // -> realloc filtersize buffer if necessary//           
+        if (Slicecount!=sc_ROIp[index-9]) ROIp[index-9]=(float*) realloc(ROIp[index-9], sizeof(float)*Slicecount);
+        // -> set filtersize slicecounts //
+        sc_ROIp[index-9] = Slicecount;   
+        // -> set filtersize to input values // 
+        for (int u=0; u<sc_ROIp[index-9]; u++) ROIp[index-9][u]=pParam->Spread[u];
+        }  
+    
+    NumObs=maxNumObs(); 
+    // -> Reallocate only if input values have different slicecounts //
+    if (Slicecount!=NumObs) 
+        dorealloc=1;
+
 	return FF_SUCCESS;
 }
 
@@ -308,24 +432,20 @@ DWORD plugClass::getOutputSliceCount(DWORD index)
 }
 
 DWORD plugClass::setThreadLock(DWORD Enter)
-{
+{       
 	if (*(bool*) Enter)
+	 {
 	  EnterCriticalSection(&CriticalSection);
+              }
     else
-      LeaveCriticalSection(&CriticalSection);
+      {
+       LeaveCriticalSection(&CriticalSection);
+      }
 }
 
 float* plugClass::getOutput(DWORD index)
-{ 
-    // -> set output values //
-    FOutputs[0].Spread[0] = track_box.center.x;    
-    FOutputs[1].Spread[0] = track_box.center.y;    
-    FOutputs[2].Spread[0] = track_box.size.width; 
-    FOutputs[3].Spread[0] = track_box.size.height;  
-    FOutputs[4].Spread[0] = angledamp-0.25; // -> angle to y-axis // 
-    FOutputs[5].Spread[0] = is_tracked; 
-
-    return FOutputs[index].Spread;
+{
+   	return FOutputs[index].Spread;
 }
 
 DWORD plugClass::processFrame(LPVOID pFrame)
@@ -339,191 +459,223 @@ DWORD plugClass::processFrame(LPVOID pFrame)
 			return FF_FAIL;
 	}
 }
-
-// Color Conversion Function  /////////////////////////////////////////////////////////////////////
-
-CvScalar plugClass::hsv2rgb( float hue )
-{
-    int rgb[3], p, sector;
-    static const int sector_data[][3]=
-        {{0,2,1}, {1,2,0}, {1,0,2}, {2,0,1}, {2,1,0}, {0,1,2}};
-    hue *= 0.033333333333333333333333333333333f;
-    sector = cvFloor(hue);
-    p = cvRound(255*(hue - sector));
-    p ^= sector & 1 ? 255 : 0;
-
-    rgb[sector_data[sector][0]] = 255;
-    rgb[sector_data[sector][1]] = 0;
-    rgb[sector_data[sector][2]] = p;
-
-    return cvScalar(rgb[2], rgb[1], rgb[0],0);
-}
-
-
-// Frame processing takes place here: /////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// -> Frame processing takes place here: //
    
 DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 {
-    EnterCriticalSection(&CriticalSection);    
-  
-    // -> Putting frame into IplImage format //
+    // -> Leave if setting function is still active //
+    //if(issetting){LeaveCriticalSection(&CriticalSection); return FF_SUCCESS;} 
     
+    EnterCriticalSection(&CriticalSection);  
+    
+    // -> If no tracking parameters are set, quit //
+    NumObs=maxNumObs();
+   
+    if (NumObs == 0 ) 
+       {for (int os=0; os<NUM_OUTPUTS; os++) 
+             {FOutputs[os].SliceCount=0; FOutputs[os].Spread = (float*) realloc (FOutputs[os].Spread, 0);}
+        LeaveCriticalSection(&CriticalSection); return FF_SUCCESS;} 
+    
+    // -> Reallocate input value buffers if necessary (if slicecounts are different)
+    if (dorealloc) ReallocBuffers();   
+
+    //NumObs=1;
+    char buffer[100];
+    sprintf(buffer, "NumObs: %i", &NumObs);
+    OutputDebugString(buffer);
+    
+    // -> putting frame into IplImage format //
     CCurrentImage->origin = 1;
     CCurrentImage->imageData = (char*)pFrame;
-    IplImage *Ctmp = cvCloneImage (CCurrentImage); 
-    int h     = Ctmp->height;
-    int w     = Ctmp->width ;  
-    float ratio = (float)w/(float)h;    
     
-    ////////////////////////////////////////////////////////////////////
-    // STEP I : Preparing tracking parameters and initial search rect //
-    
-    int smin  = (int) (FParams[7].Value*180.0);//30;    
-    int _vmin = (int) (FParams[8].Value*255.0);//10, 
-    int _vmax = (int) (FParams[9].Value*255.0);// 256, 
-                    
-    int S_x = (int)((FParams[3].Value *(float)w)+(float)w/2), S_y = (int)((FParams[4].Value *(float)h)+(float)h/2);
-    int S_w = (int)(FParams[5].Value *(float)w), S_h = (int)(FParams[6].Value *(float)h); 
-    
-    hist = cvCreateHist( 1, &hdims, CV_HIST_ARRAY, &hranges, 1 );
-    
-    // -> Checking if initial search rect lies within image & setting the search rect //
-
-    if ( S_x-S_w/2<0 || S_x+S_w/2>w || S_y-S_h/2<0 || S_y+S_h/2>h) 
-       // bad rect 
-       { selection.x=(w*3)/8;  selection.y=(h*3)/8;  selection.width=w/4;  selection.height=h/4;}
-    else    
-       // good rect 
-       { selection.x=S_x-S_w/2; selection.y=S_y-S_h/2; selection.width=S_w; selection.height=S_h; } 
-    
-    ////////////////////////////////////////////////////////////////// 
-    // STEP II : Calc backprojection image with tracking parameters //
-    
+    cvCopy(CCurrentImage, Ctmp, 0); 
+    cvSetZero(Ctmp2);
+         
+    int h    = Ctmp->height;
+    int w    = Ctmp->width ;     
+    int tol, obj;
+    int S_x, S_y, S_w, S_h;
+    int smin, smax, vmin, vmax;
+    float ratio = (float)w/(float)h;  
+    float TT; 
+      
+    // -> convert input image and track color into hsv space //
     cvCvtColor( Ctmp, Chsv, CV_BGR2HSV );
     cvSplit( Chsv, Ghue, 0, 0, 0 );
-    
-    // -> Mask pixels that fit in given saturation and grayscale level bounds //       
-    cvInRangeS( Chsv, cvScalar(0,smin,MIN(_vmin,_vmax),0),
-                      cvScalar(180,256,MAX(_vmin,_vmax),0), Gmask );
-    
-    // -> Reset Search if requested //
-    if(FParams[2].Value) first_round=1;
-    
-    if(first_round)
-      {
-       float max_val = 0.f;
-       cvSetImageROI( Ghue, selection );
-       cvSetImageROI( Gmask, selection );
-       cvCalcHist( &Ghue, hist, 0, Gmask );
-       cvGetMinMaxHistValue( hist, 0, &max_val, 0, 0 );
-       cvConvertScale( hist->bins, hist->bins, max_val ? 255. / max_val : 0., 0 );
-       cvResetImageROI( Ghue );
-       cvResetImageROI( Gmask );
-       track_window = selection;
-      }
-       
-    cvCalcBackProject( &Ghue, Gbackproject, hist );
-    cvAnd( Gbackproject, Gmask, Gbackproject, 0 );
-    
-    ////////////////////////////////////////////////////////////////////////////////////// 
-    // STEP III : Call cvCamShift_mod with backprojection image to track color objects  //   
-    // -> calling CamShift_mod with option 'scaled values' (Farams[11].Value)        //
-    cvCamShift_mod( Gbackproject, track_window, cvTermCriteria( CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 10, 1 ),
-                    &track_comp, &track_box, w, h , &first_round, &angledamp, &lastangle, &angleoffset, 
-                    &area, FParams[11].Value);
-                    
-    scaled_before=1;
-    
-    // -> TT is trackingthresh (Area Threshold) to the power of 4                              //
-    //    This is to fit the range of 0 (no thresholding) to 1 (object has size of full image) //
-    //    with a wide numerical range for small objects                                        //
-    float TT=FParams[10].Value*FParams[10].Value;
-    TT *= TT;        
-    if ( area/255.0 > TT ) is_tracked=1.0;
-    else                   is_tracked=0.0;  
-       
-    // -> next time we'll start just where we left //              
-    track_window = track_comp.rect;
 
-    // -> reinit search ROI if object was not found  //
-    if (is_tracked==0.0) track_window = selectall; 
+    ////MAIN OBJECT LOOP////////////////////////////////////////////////////////////////////////////////    
+    
+    for (obj=0; obj<NumObs; obj++)
+        { 
+          char buffer[100];
+          sprintf(buffer, "1");
+          OutputDebugString(buffer);                  
+            
+         ////////////////////////////////////////////////////////////////////
+         // STEP I : Preparing tracking parameters and initial search rect //
+         // -> calculate search areas 
+         S_x = (int)((ROIp[0][obj] *(float)w)+(float)w/2); 
+         S_y = (int)((ROIp[1][obj] *(float)h)+(float)h/2);
+         S_w = (int) (ROIp[2][obj] *(float)w); 
+         S_h = (int) (ROIp[3][obj] *(float)h); 
+         
+         sprintf(buffer, "ROIX:%f , ROIY: %f, width: %f, height: %f", ROIp[0][0], ROIp[1][0], ROIp[2][0], ROIp[3][0]);
+         OutputDebugString(buffer);   
+     
+         // -> checking if initial search rect lies within image & setting the search rect //
+         if ( S_x-S_w/2<0 || S_x+S_w/2>w || S_y-S_h/2<0 || S_y+S_h/2>h) 
+         // bad rect 
+            { selection.x=(w*3)/8;  selection.y=(h*3)/8;  selection.width=w/4;  selection.height=h/4;}
+         else    
+         // good rect 
+            {
+             selection.x=S_x-S_w/2; selection.y=S_y-S_h/2; selection.width=S_w; selection.height=S_h; 
+            }        
+         // -> Mask pixels that fit in given saturation and grayscale level bounds //
+         smin = (int) (tols[0][obj]*255.0);  
+         smax = (int) (tols[1][obj]*255.0);  
+         vmin = (int) (tols[2][obj]*255.0); 
+         vmax = (int) (tols[3][obj]*255.0);
+        
+         cvInRangeS( Chsv, cvScalar(0,  MIN(smin,smax),MIN(vmin,vmax),0),
+                           cvScalar(180,MAX(smin,smax),MAX(vmin,vmax),0), Gmask );
+         
+         /////////////////////////////////////////////////////////////////// 
+         // STEP II : Calc backprojection image with tracking parameters  //
+         // -> Reset Search if requested //
+         if(reinit[obj]) first_round=1;
+        
+         if(first_round)
+           {
+            float max_val = 0.f;
+            cvSetImageROI( Ghue, selection );
+            cvSetImageROI( Gmask, selection );
+            cvCalcHist( &Ghue, hist[obj], 0, Gmask );
+            cvGetMinMaxHistValue( hist[obj], 0, &max_val, 0, 0 );
+            cvConvertScale( hist[obj]->bins, hist[obj]->bins, max_val ? 255. / max_val : 0., 0 );
+            cvResetImageROI( Ghue );
+            cvResetImageROI( Gmask );
+            track_window[obj] = selection;         
+           }
+                
+           cvCalcBackProject( &Ghue, Gbackproject, hist[obj] );
+           cvAnd( Gbackproject, Gmask, Gbackproject, 0 );
 
-    ///////////////////////////////////// 
-    // STEP IV : Prepare output image  //
+         /////////////////////////////////////////////////////////////////////////////////////////////////////
+         // STEP III : Call cvCamShift_mod (with image thresholded with tolerances) to track color objects  //
+         // -> calling CamShift_mod with option 'scaled values' (Farams[11].Value)        // 
+      
+         if (((int)filtersize[obj]>0) && ((int)filtersize[obj]<15)) 
+            {
+             cvCopy(Gbackproject, Gmasktemp, NULL);
+             cvSmooth( Gmasktemp, Gbackproject, CV_MEDIAN, ((int)filtersize[obj]*2)-1, ((int)filtersize[obj]*2)-1, 0 );
+            }
+   
+         cvCamShift_mod( Gbackproject, track_window[obj], cvTermCriteria( CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 10, 1 ),
+                         &track_comp[obj], &track_box[obj], w, h , &first_round, &angledamp[obj], &lastangle[obj], &angleoffset[obj], 
+                         &area[obj], FParams[13].Value);
+
+         // -> TT is trackingthresh (Area Threshold) to the power of 4                              //
+         //    This is to fit the range of 0 (no thresholding) to 1 (object has size of full image) //
+         //    with a wide numerical range for small objects                                        //
+         TT = areathresh[obj] * areathresh[obj] * areathresh[obj] * areathresh[obj];
     
-    // -> Show Histogram backprojection if requested //  
-    if( FParams[1].Value )
-      {
-      cvCvtColor( Gbackproject, Ctmp, CV_GRAY2BGR );
-      }
-      
-    // -> Show initial Searchbox if requested //          
-    if (FParams[0].Value)
-      {
-       cvRectangle( Ctmp, cvPoint (selection.x,selection.y), 
-                          cvPoint (selection.x+(selection.width),selection.y+(selection.height)),
-                          cvScalar(0, 106, 255,0),1, 8, 0 );
-      }
-      
-    if (FParams[0].Value || FParams[1].Value) cvCopy(Ctmp, CCurrentImage, 0);  
-      
-    cvReleaseImage(&Ctmp);
-    cvReleaseHist(&hist);
-    
+         if ( area[obj]/255.0 > TT ) 
+            {is_tracked[obj]=1.0;        
+             }
+         else  is_tracked[obj]=0.0;  
+     
+         // -> next time we'll start just where we left //              
+             track_window[obj] = track_comp[obj].rect;
+             
+         // -> reinit search ROI if requested  //
+         if (is_tracked[obj]==0) 
+            {track_window[obj].height = selectall.height;
+             track_window[obj].width = selectall.width;  
+             track_window[obj].x = selectall.x;
+             track_window[obj].y = selectall.y;
+            }  
+          
+          sprintf(buffer, "5");
+          OutputDebugString(buffer);      
+         // -> show thresholded image if requested  //  
+          if( (int)FParams[1].Value==obj ) //if( (int)FParams[1].Value == obj ) 
+           {
+            cvCvtColor( Gbackproject, Cmask, CV_GRAY2BGR );
+            cvNot(Cmask, Cmask);
+            cvSub(Ctmp, Cmask, Ctmp, 0);  
+           }
+           
+         // -> show search boxes if requested  //  
+         if( (int)FParams[0].Value==obj || FParams[0].Value==-1 ) 
+           {cvRectangle( Ctmp2, cvPoint (selection.x,selection.y), 
+                                cvPoint (selection.x+(selection.width),selection.y+(selection.height)),
+                                cvScalar (255, 106, 0,0), 1, 8, 0 );  
+            
+            cvRectangle( Ctmp2, cvPoint (track_window[obj].x,track_window[obj].y), 
+                                cvPoint (track_window[obj].x+(track_window[obj].width),track_window[obj].y+(track_window[obj].height)),
+                                cvScalar (0, 106, 255,0), 1, 8, 0 );   
+           }
+                 
+       } 
+    ////END OF MAIN OBJECT LOOP/////////////////////////////////////////////////////////////////////////    
+
+    cvAdd(Ctmp, Ctmp2, Ctmp, 0); 
+    cvCopy(Ctmp, CCurrentImage, 0);           
+
+    first_round=0;
+           
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    // STEP IV : Set  Outputs                                                                         //
+  
+    // -> set output value slicecount and realloc value arrays //    
+    if (FOutputs[0].SliceCount!=NumObs) 
+        for (register int op=0; op<NUM_OUTPUTS; op++)
+            {
+             FOutputs[op].SliceCount= NumObs;
+             FOutputs[op].Spread = (float*) realloc (FOutputs[op].Spread, sizeof(float)* NumObs);
+            }
+           
+    // -> set output values //  
+    for (register int obj=0; obj<NumObs; obj++)
+        {
+         if (is_tracked[obj])
+            {
+             FOutputs[0].Spread[obj] =  track_box[obj].center.x;    
+             FOutputs[1].Spread[obj] =  track_box[obj].center.y;    
+             FOutputs[2].Spread[obj] =  track_box[obj].size.width; 
+             FOutputs[3].Spread[obj] =  track_box[obj].size.height;  
+             FOutputs[4].Spread[obj] = angledamp[obj]-0.25; // -> angle to y-axis // 
+            }
+             FOutputs[5].Spread[obj] = is_tracked[obj];
+        }
+         
     LeaveCriticalSection(&CriticalSection);
-
+    
 	return FF_SUCCESS;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-DWORD plugClass::processFrame32Bit(LPVOID pFrame)
-{
-	return FF_FAIL;
-}
-
-DWORD plugClass::processFrameCopy(ProcessFrameCopyStruct* pFrameData)
-{
-    return FF_FAIL;
-}
-
-DWORD plugClass::processFrameCopy24Bit(ProcessFrameCopyStruct* pFrameData)
-{
-	return FF_FAIL;
-}
-
-DWORD plugClass::processFrameCopy32Bit(ProcessFrameCopyStruct* pFrameData)
-{
-	return FF_FAIL;
-}
+DWORD plugClass::processFrame32Bit(LPVOID pFrame){	return FF_FAIL; }
+DWORD plugClass::processFrameCopy(ProcessFrameCopyStruct* pFrameData){ return FF_FAIL;}
+DWORD plugClass::processFrameCopy24Bit(ProcessFrameCopyStruct* pFrameData){	return FF_FAIL;}
+DWORD plugClass::processFrameCopy32Bit(ProcessFrameCopyStruct* pFrameData){	return FF_FAIL;}
 
 DWORD getPluginCaps(DWORD index)
-{
-	switch (index) {
+{	
+ switch (index) 
+ {
 
-	case FF_CAP_16BITVIDEO:
-		return FF_FALSE;
-
-	case FF_CAP_24BITVIDEO:
-		return FF_TRUE;
-
-	case FF_CAP_32BITVIDEO:
-		return FF_FALSE;
-
-	case FF_CAP_PROCESSFRAMECOPY:
-		return FF_FALSE;
-
-	case FF_CAP_MINIMUMINPUTFRAMES:
-		return NUM_INPUTS;
-
-	case FF_CAP_MAXIMUMINPUTFRAMES:
-		return NUM_INPUTS;
-
-	case FF_CAP_COPYORINPLACE:
-		return FF_FALSE;
-
-	default:
-		return FF_FALSE;
+	case FF_CAP_16BITVIDEO:         return FF_FALSE;
+	case FF_CAP_24BITVIDEO:	        return FF_TRUE;
+	case FF_CAP_32BITVIDEO:	        return FF_FALSE;
+	case FF_CAP_PROCESSFRAMECOPY:	  return FF_FALSE;
+	case FF_CAP_MINIMUMINPUTFRAMES:	return NUM_INPUTS;
+	case FF_CAP_MAXIMUMINPUTFRAMES:	return NUM_INPUTS;
+	case FF_CAP_COPYORINPLACE:	     return FF_FALSE;
+	default:	                       return FF_FALSE;
 	}
 }
 
@@ -532,7 +684,7 @@ PlugInfoStruct* getInfo()
 	GPlugInfo.APIMajorVersion = 2;		// number before decimal point in version nums
 	GPlugInfo.APIMinorVersion = 200;		// this is the number after the decimal point
 										// so version 0.511 has major num 0, minor num 501
-	char ID[5] = "CMTR";		 // this *must* be unique to your plugin 
+	char ID[5] = "CSTr";		 // this *must* be unique to your plugin 
 								 // see www.freeframe.org for a list of ID's already taken
 	char name[17] = "CamShiftTracker";
 	
@@ -561,3 +713,7 @@ LPVOID getExtendedInfo()
 
 	return (LPVOID) &GPlugExtInfo;
 }
+
+
+
+
