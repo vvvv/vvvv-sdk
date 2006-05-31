@@ -18,7 +18,7 @@
 //opencv beta5 libraries:
 //http://sourceforge.net/projects/opencvlibrary
 
-//////initiative stressing to do it
+//////initiative stressing to do it + editing
 //benedikt -> benedikt@looksgood.de
 
 //////initial author
@@ -91,9 +91,10 @@ DWORD initialise()
 	GParamConstants[2].Type = 10;
 	GParamConstants[3].Type = 10;
 	GParamConstants[4].Type = 10;
+	GParamConstants[5].Type = 0;
     
 	GParamConstants[0].Default = 1.0f;	
-
+	
 	int i = (int)&filemask[0];
     float* fp = (float*)&i;
  	GParamConstants[1].Default = *fp;
@@ -101,18 +102,21 @@ DWORD initialise()
  	GParamConstants[2].Default = 2.0f;
  	GParamConstants[3].Default = 0.2f;
  	GParamConstants[4].Default = 40.0f;
+ 	GParamConstants[5].Default = 0.0f;
   	
 	char tempName0[17] = "Show Rectangle";
 	char tempName1[17] = "Training File";
 	char tempName2[17] = "Min Neighbors";
 	char tempName3[17] = "Scale Cascade";
 	char tempName4[17] = "Min Face Size";
+	char tempName5[17] = "kill overlaping";
 	
 	memcpy(GParamConstants[0].Name, tempName0, 16);
 	memcpy(GParamConstants[1].Name, tempName1, 16);
 	memcpy(GParamConstants[2].Name, tempName2, 16);
 	memcpy(GParamConstants[3].Name, tempName3, 16);
 	memcpy(GParamConstants[4].Name, tempName4, 16);
+	memcpy(GParamConstants[5].Name, tempName5, 16);
 
     // populate the output structs
     GOutputConstants[0].Type = 10;
@@ -181,6 +185,8 @@ plugClass::plugClass()
     FOutputs[1].Spread = (float*) calloc(FOutputs[1].SliceCount, sizeof(float));
     FOutputs[2].Spread = (float*) calloc(FOutputs[2].SliceCount, sizeof(float));
     FOutputs[3].Spread = (float*) calloc(FOutputs[3].SliceCount, sizeof(float));
+    
+    Objlist = (Obj*) malloc(1 * sizeof(Obj));
  
     newCascade = true;
     
@@ -210,6 +216,8 @@ plugClass::~plugClass()
     cvReleaseImage(&FCurrentImage);
     cvReleaseImage(&FCopy);
     cvReleaseMemStorage(&FStorage);
+    
+    free(Objlist);
 
     for (int i=0; i<NUM_OUTPUTS; i++) free(FOutputs[i].Spread);
     
@@ -313,61 +321,119 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     {
         int scale = 1;
         CvPoint pt1, pt2;
-        int i;       
+        
+        int i,j,refacecountfound = 0;
+        float distance = 0.0;       
         
         //if scale_factor = 1 -> crash ... so we do not allow this
         float scale_factor = 1.0f + FParams[3].Value;
         if (FParams[3].Value < 0.01f)                       
-            {
-              scale_factor = 1.01f;  
-            }      
+        {
+           scale_factor = 1.01f;  
+        }      
         
         //for some reason the image has to be flipped for haardetect
         cvFlip( FCurrentImage, FCopy, 0 );
         
         cvClearMemStorage(FStorage);
         //http://www.cs.bham.ac.uk/resources/courses/robotics/doc/opencvdocs/ref/OpenCVRef_Experimental.htm#decl_cvHaarDetectObjects
-        CvSeq* faces = cvHaarDetectObjects(FCopy, FCascade, FStorage,
-                                    //1.1, 2, CV_HAAR_DO_CANNY_PRUNING,
-                                    //cvSize(40, 40) );
-                                    scale_factor, int(FParams[2].Value), CV_HAAR_DO_CANNY_PRUNING, 
-                                    cvSize(int(FParams[4].Value), int(FParams[4].Value)) );
+        CvSeq* faces = cvHaarDetectObjects(FCopy, FCascade, FStorage,                                    
+                                           scale_factor, int(FParams[2].Value), CV_HAAR_DO_CANNY_PRUNING, 
+                                           cvSize(int(FParams[4].Value), int(FParams[4].Value)) );
                  
-        int facecount = faces->total;
-        int spreadsize = facecount * sizeof(float);
+        int facecount = faces->total;                
         
-        FOutputs[0].SliceCount = facecount;
-        FOutputs[1].SliceCount = facecount;
-        FOutputs[2].SliceCount = facecount;
-        FOutputs[3].SliceCount = facecount;
+        //create dyn. array with lenght facecount
+        Objlist = (Obj*) realloc(Objlist, sizeof(Obj) * facecount);
+        
+        //fill Objlist with data from cvHaarDetectObjects
+        for( i = 0; i < (faces ? faces->total : 0); i++ )
+        {
+            CvRect* r = (CvRect*)cvGetSeqElem( faces, i );
+            
+            Objlist[i].x = ((float) (r->x + (float) r->width / 2) / FImageSize.width) - 0.5;
+            Objlist[i].y = 1 - ((float) (r->y + (float) r->height / 2) / FImageSize.height) - 0.5;
+            Objlist[i].width = (float) r->width / FImageSize.width;
+            Objlist[i].height = (float) r->height / FImageSize.height;
+            Objlist[i].found = 0;
+        }        
+        
+        //filtering overlaping point only if pin is high
+        if (FParams[5].Value > 0)                       
+        {       
+            for( i = 0; i < facecount; i++ )
+            {        
+                //if point is already marked -> skip this loop
+                if (Objlist[i].found == 0) {
+                                     
+                    for( j = 0; j < facecount; j++ )
+                    {                     
+                         //no comparision beetween the point itself, only for the rest of points
+                         if (j != i ) {
+                             //calculate distance between every point
+                             distance = sqrtf( (Objlist[i].x - Objlist[j].x) * (Objlist[i].x - Objlist[j].x) + 
+                                          (Objlist[i].y - Objlist[j].y) * (Objlist[i].y - Objlist[j].y) );                     
+                             
+                             //mark point
+                             if((distance < Objlist[i].width/2) && (distance < Objlist[i].height/2))                
+                             {
+                                 Objlist[j].found = 1;                                                                                          
+                             }
+                         }
+                    }
+                }  
+            }
+        }
+        
+        //count how many point we wanna get rid of
+        for( i = 0; i < facecount; i++ )
+        {
+          if (Objlist[i].found == 1) refacecountfound++;   
+        }   
+        
+        //final spreadsize = detected points from cvHaarDetectObjects - refacecountfound
+        int spreadsize = (facecount-refacecountfound);
+        
+        FOutputs[0].SliceCount = spreadsize;
+        FOutputs[1].SliceCount = spreadsize;
+        FOutputs[2].SliceCount = spreadsize;
+        FOutputs[3].SliceCount = spreadsize;
         FOutputs[0].Spread = (float*) realloc(FOutputs[0].Spread, spreadsize);
         FOutputs[1].Spread = (float*) realloc(FOutputs[1].Spread, spreadsize);
         FOutputs[2].Spread = (float*) realloc(FOutputs[2].Spread, spreadsize);
-        FOutputs[3].Spread = (float*) realloc(FOutputs[3].Spread, spreadsize);
-        
-        
+        FOutputs[3].Spread = (float*) realloc(FOutputs[3].Spread, spreadsize);       
        
+        /*
+        //debug output -> syslogs
+        char buffer[100];
+        //sprintf(buffer, "facecount %i - refacecountfound %i", facecount, refacecountfound);
+        sprintf(buffer, "spreadsize %i", spreadsize);
+        OutputDebugString(buffer);
+        */
         
-        // draw rect
-        for( i = 0; i < (faces ? faces->total : 0); i++ )
+              
+        
+        for( i = 0; i < spreadsize; i++ )
         {
-            CvRect* r = (CvRect*)cvGetSeqElem( faces, i );            
-                        
-            FOutputs[0].Spread[i] = ((float) (r->x + (float) r->width / 2) / FImageSize.width) - 0.5;
-            FOutputs[1].Spread[i] = 1 - ((float) (r->y + (float) r->height / 2) / FImageSize.height) - 0.5;
-            FOutputs[2].Spread[i] = (float) r->width / FImageSize.width;
-            FOutputs[3].Spread[i] = (float) r->height / FImageSize.height;
-             
+            if (Objlist[i].found == 0) {            
+            //output to vvvv                                 
+            FOutputs[0].Spread[i] = Objlist[i].x;
+            FOutputs[1].Spread[i] = Objlist[i].y;
+            FOutputs[2].Spread[i] = Objlist[i].width;
+            FOutputs[3].Spread[i] = Objlist[i].height;
             
-            
-            if (FParams[0].Value > 0)                       
-            {
-                pt1.x = r->x;
-                pt2.x = (r->x+r->width);
-                pt1.y = FImageSize.height-r->y;
-                pt2.y = FImageSize.height-(r->y+r->height);
-                cvRectangle(FCurrentImage, pt1, pt2, CV_RGB(255,0,0), 3, 8, 0);
-            }
+                //show rectangle if enabled -> draw rect
+                if (FParams[0].Value > 0)                       
+                {
+                    //convert from coordinaten system (-0.5 to +0.5) to cv like coordinaten system (0 to ImageSize)
+                    pt1.x = int(float(FImageSize.width)*(Objlist[i].x - (Objlist[i].width/2) + 0.5));
+                    pt2.x = int(float(FImageSize.width)*(Objlist[i].x + (Objlist[i].width/2) + 0.5));
+                    pt1.y = FImageSize.height - int(float(FImageSize.height)*(1-(Objlist[i].y + Objlist[i].height/2 + 0.5)));
+                    pt2.y = FImageSize.height - int(float(FImageSize.height)*( 1-(Objlist[i].y - Objlist[i].height/2 + 0.5)) );                
+                    
+                    cvRectangle(FCurrentImage, pt1, pt2, CV_RGB(255,0,0), 3, 8, 0);                
+                }      
+            }            
         }
     }
     

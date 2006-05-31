@@ -18,7 +18,7 @@
 //opencv beta5 libraries:
 //http://sourceforge.net/projects/opencvlibrary
 
-//////initiative stressing to do it
+//////initiative stressing to do it + editing
 //benedikt -> benedikt@looksgood.de
 
 //////initial author
@@ -35,7 +35,7 @@
 using namespace std;
 
 //pin constants
-#define NUM_PARAMS 5
+#define NUM_PARAMS 6
 #define NUM_INPUTS 1
 #define NUM_OUTPUTS 4
 
@@ -81,6 +81,16 @@ typedef struct VideoPixel32bitTag {
 	BYTE alpha;
 } VideoPixel32bit;
 
+//bene
+typedef struct Obj {
+     float x;
+     float y;
+     float width;
+     float height;
+     bool found;
+} Obj;
+
+
 
 // PluginInstance Object - these calls relate to instances of plugObj
 // created by FF_INSTANTIATE
@@ -124,6 +134,8 @@ private:
     CvSize FImageSize;
     string Filename;
     bool newCascade;
+    
+    Obj* Objlist;
     
     IplImage* FCurrentImage;
     IplImage* FCopy;
