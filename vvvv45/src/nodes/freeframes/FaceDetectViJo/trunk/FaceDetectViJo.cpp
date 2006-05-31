@@ -1,10 +1,10 @@
 //////project name
-//face detection in Paul Viola and Michael Jones Style
-//http://scholar.google.com/scholar?q=face%20detection%20viola%20jones&hl=de&lr=&oi=scholart
+//HaarDetectObjects
 
 //////description
-//freeframe plugin for face detection in vvvv
-//vvvv.meso.net
+//freeframe plugin.
+//implemenation of openCVs cvHaarDetectObjects function
+//for patter/object (e.g. face detection)
 
 //////licence
 //GNU Lesser General Public License (LGPL)
@@ -109,7 +109,7 @@ DWORD initialise()
 	char tempName2[17] = "Min Neighbors";
 	char tempName3[17] = "Scale Cascade";
 	char tempName4[17] = "Min Face Size";
-	char tempName5[17] = "kill overlaping";
+	char tempName5[17] = "Kill Overlaping";
 	
 	memcpy(GParamConstants[0].Name, tempName0, 16);
 	memcpy(GParamConstants[1].Name, tempName1, 16);

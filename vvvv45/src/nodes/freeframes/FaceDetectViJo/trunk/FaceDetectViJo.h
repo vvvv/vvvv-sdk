@@ -1,10 +1,10 @@
 //////project name
-//face detection in Paul Viola and Michael Jones Style
-//http://scholar.google.com/scholar?q=face%20detection%20viola%20jones&hl=de&lr=&oi=scholart
+//HaarDetectObjects
 
 //////description
-//freeframe plugin for face detection in vvvv
-//vvvv.meso.net
+//freeframe plugin.
+//implemenation of openCVs cvHaarDetectObjects function
+//for patter/object (e.g. face detection)
 
 //////licence
 //GNU Lesser General Public License (LGPL)
