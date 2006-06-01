@@ -270,7 +270,7 @@ void plugClass::loadCascade()
     
     if(!FCascade)
     {
-     char buffer[100];
+     char buffer[999];
      sprintf(buffer, "ERROR: Could not load classifier cascade\n%s", &Filename[0]);
      OutputDebugString(buffer);
     }
@@ -320,9 +320,9 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     if (newCascade)
         loadCascade();
     
+ 
     FCurrentImage->origin = 1;
     FCurrentImage->imageData = (char*)pFrame;
-
     if(FCascade)
     {
         int scale = 1;
@@ -353,7 +353,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
         
         //create dyn. array with length facecount
          Objlist = (Obj*) realloc(Objlist, sizeof(Obj) * facecount);
-        
+       
        //fill Objlist with data from cvHaarDetectObjects
         for( i = 0; i < facecount; i++ )
         {
