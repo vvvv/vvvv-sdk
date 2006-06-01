@@ -187,9 +187,11 @@ plugClass::plugClass()
     FOutputs[3].Spread = (float*) calloc(FOutputs[3].SliceCount, sizeof(float));
     
     Objlist = (Obj*) malloc(1 * sizeof(Obj));
- 
-    newCascade = true;
+    FStorage = 0;
+    FCascade = 0;
     
+    newCascade = true;
+   
     InitializeCriticalSection(&CriticalSection);    
 }
 
@@ -203,9 +205,9 @@ void plugClass::init()
 
     // -> allocating image buffers  //
     FCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
-    
     FCopy = cvCreateImage(FImageSize, IPL_DEPTH_8U, 3);
 
+    
   /*  char buffer[100];
     sprintf(buffer, "%i x %i", FImageSize.width, FImageSize.height);
     OutputDebugString(buffer);*/
@@ -213,10 +215,13 @@ void plugClass::init()
 
 plugClass::~plugClass()
 {
-    cvReleaseImage(&FCurrentImage);
     cvReleaseImage(&FCopy);
-    cvReleaseMemStorage(&FStorage);
     
+    if (FStorage)  
+      cvReleaseMemStorage(&FStorage);
+    if (FCascade)
+      cvReleaseHaarClassifierCascade(&FCascade);
+
     free(Objlist);
 
     for (int i=0; i<NUM_OUTPUTS; i++) free(FOutputs[i].Spread);
@@ -252,14 +257,15 @@ DWORD plugClass::setParameter(SetParameterStruct* pParam)
 	return FF_SUCCESS;
 }
 
-
-
-
 void plugClass::loadCascade()
 {
-    cvReleaseMemStorage(&FStorage);
-    FStorage = cvCreateMemStorage(0);
-     
+    if (FStorage)  
+      cvReleaseMemStorage(&FStorage);
+    FStorage = cvCreateMemStorage(0); 
+    
+    if (FCascade)
+      cvReleaseHaarClassifierCascade(&FCascade);
+      
     FCascade = (CvHaarClassifierCascade*)cvLoad(&Filename[0], 0, 0, 0 );
     
     if(!FCascade)
@@ -340,14 +346,16 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
         CvSeq* faces = cvHaarDetectObjects(FCopy, FCascade, FStorage,                                    
                                            scale_factor, int(FParams[2].Value), CV_HAAR_DO_CANNY_PRUNING, 
                                            cvSize(int(FParams[4].Value), int(FParams[4].Value)) );
-                 
-        int facecount = faces->total;                
         
-        //create dyn. array with lenght facecount
-        Objlist = (Obj*) realloc(Objlist, sizeof(Obj) * facecount);
+        int facecount = 0;
+        if (faces)
+          facecount = faces->total;                
         
-        //fill Objlist with data from cvHaarDetectObjects
-        for( i = 0; i < (faces ? faces->total : 0); i++ )
+        //create dyn. array with length facecount
+         Objlist = (Obj*) realloc(Objlist, sizeof(Obj) * facecount);
+        
+       //fill Objlist with data from cvHaarDetectObjects
+        for( i = 0; i < facecount; i++ )
         {
             CvRect* r = (CvRect*)cvGetSeqElem( faces, i );
             
@@ -398,10 +406,10 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
         FOutputs[1].SliceCount = spreadsize;
         FOutputs[2].SliceCount = spreadsize;
         FOutputs[3].SliceCount = spreadsize;
-        FOutputs[0].Spread = (float*) realloc(FOutputs[0].Spread, spreadsize);
-        FOutputs[1].Spread = (float*) realloc(FOutputs[1].Spread, spreadsize);
-        FOutputs[2].Spread = (float*) realloc(FOutputs[2].Spread, spreadsize);
-        FOutputs[3].Spread = (float*) realloc(FOutputs[3].Spread, spreadsize);       
+        FOutputs[0].Spread = (float*) realloc(FOutputs[0].Spread, spreadsize * sizeof(float));
+        FOutputs[1].Spread = (float*) realloc(FOutputs[1].Spread, spreadsize * sizeof(float));
+        FOutputs[2].Spread = (float*) realloc(FOutputs[2].Spread, spreadsize * sizeof(float));
+        FOutputs[3].Spread = (float*) realloc(FOutputs[3].Spread, spreadsize * sizeof(float));       
        
         /*
         //debug output -> syslogs
@@ -409,18 +417,19 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
         //sprintf(buffer, "facecount %i - refacecountfound %i", facecount, refacecountfound);
         sprintf(buffer, "spreadsize %i", spreadsize);
         OutputDebugString(buffer);
-        */
+       */
         
               
         
         for( i = 0; i < spreadsize; i++ )
         {
-            if (Objlist[i].found == 0) {            
-            //output to vvvv                                 
-            FOutputs[0].Spread[i] = Objlist[i].x;
-            FOutputs[1].Spread[i] = Objlist[i].y;
-            FOutputs[2].Spread[i] = Objlist[i].width;
-            FOutputs[3].Spread[i] = Objlist[i].height;
+            if (Objlist[i].found == 0) 
+            {            
+                //output to vvvv                                 
+                FOutputs[0].Spread[i] = Objlist[i].x;
+                FOutputs[1].Spread[i] = Objlist[i].y;
+                FOutputs[2].Spread[i] = Objlist[i].width;
+                FOutputs[3].Spread[i] = Objlist[i].height;
             
                 //show rectangle if enabled -> draw rect
                 if (FParams[0].Value > 0)                       
@@ -435,7 +444,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
                 }      
             }            
         }
-    }
+    } 
     
     LeaveCriticalSection(&CriticalSection);
     
