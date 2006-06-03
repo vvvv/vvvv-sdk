@@ -25,7 +25,7 @@
 //joreg -> joreg@gmx.at
 
 //includes 
-#include "FaceDetectViJo.h"
+#include "HaarDetect.h"
 
 #include <stdio.h>
 
@@ -510,7 +510,7 @@ PlugInfoStruct* getInfo()
 										// so version 0.511 has major num 0, minor num 501
 	char ID[5] = "JFFD";		 // this *must* be unique to your plugin 
 								 // see www.freeframe.org for a list of ID's already taken
-	char name[17] = "FaceDetectViJo";
+	char name[17] = "HaarDetect";
 	
 	memcpy(GPlugInfo.uniqueID, ID, 4);
 	memcpy(GPlugInfo.pluginName, name, 16);

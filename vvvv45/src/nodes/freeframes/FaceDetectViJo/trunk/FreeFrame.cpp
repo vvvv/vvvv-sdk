@@ -43,7 +43,7 @@ non standard additions to support output by joreg@gmx.at
 //
 
 #include "FreeFrame.h"
-#include "FaceDetectViJo.h"  // replace this with your plugins header
+#include "HaarDetect.h"  // replace this with your plugins header
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////
