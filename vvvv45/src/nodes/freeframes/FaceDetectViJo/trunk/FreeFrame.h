@@ -143,6 +143,9 @@ typedef char BYTE;
 #define FF_TYPE_XPOS				5
 #define FF_TYPE_YPOS				6
 #define FF_TYPE_STANDARD			10
+#define FF_TYPE_VALUESPREAD			20
+#define FF_TYPE_COLORSPREAD			21
+#define FF_TYPE_STRINGESPREAD		22
 #define FF_TYPE_TEXT				100
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -240,3 +243,7 @@ typedef void* (*FF_Main_FuncPtr)(DWORD,void*,DWORD);
 #ifdef LINUX
 }
 #endif
+
+
+
+
