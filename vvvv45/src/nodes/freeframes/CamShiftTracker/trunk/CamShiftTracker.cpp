@@ -234,10 +234,6 @@ plugClass::plugClass()
          FOutputs[op].Spread = (float*) calloc(1, sizeof(float));
         }
     
-    char buffer[100];
-    sprintf(buffer, "plugClass");
-    OutputDebugString(buffer);
-    
     // setting histogram ranges
     hdims = 16;
     hranges_arr[0] = 0; hranges_arr[1] = 180;
@@ -261,6 +257,8 @@ plugClass::plugClass()
     is_tracked  = (float*) calloc(1, sizeof(float));
     for (int r=0; r<4; r++) 
         ROIp[r] = (float*) calloc(1, sizeof(float));
+    for (int r=0; r<4; r++)  
+        tols[r] = (float*) calloc(1, sizeof(float));
       
     // -> setting some values to defaults //
     first_round   =1;
@@ -271,7 +269,7 @@ plugClass::plugClass()
     is_tracked[0] =0;
     NumObs_old    =0;
     NumObs        =0;
-    
+
     InitializeCriticalSection(&CriticalSection);    
 }
 
@@ -286,7 +284,7 @@ plugClass::~plugClass()
     cvReleaseImage(&Ctmp);
     cvReleaseImage(&Ctmp2);
     cvReleaseImage(&Gmasktemp); 
-    if (hist) {for (int sh=0; sh<sc_hist; sh++) {cvReleaseHist(&hist[sh]);}
+    if (hist) {for (DWORD sh=0; sh<sc_hist; sh++) {cvReleaseHist(&hist[sh]);}
                free(hist);
                sc_hist=0;
               }
@@ -313,22 +311,22 @@ void plugClass::init()
     selectall.x=0;  selectall.y=0;  
     selectall.width=FVideoInfo.frameWidth-1;  selectall.height=FVideoInfo.frameHeight-1;  
      
-    // -> (re)allocating image and histogram buffers  //   
-    if (CCurrentImage) cvReleaseImageHeader(&CCurrentImage);CCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
-    if (Chsv)          cvReleaseImage(&Chsv);               Chsv          = cvCreateImage( FImageSize, 8, 3 );
-    if (Ghue)          cvReleaseImage(&Ghue);               Ghue          = cvCreateImage( FImageSize, 8, 1 );
-    if (Gbackproject)  cvReleaseImage(&Gbackproject);       Gbackproject  = cvCreateImage( FImageSize, 8, 1 );
-    if (Gmask)         cvReleaseImage(&Gmask);              Gmask         = cvCreateImage( FImageSize, 8, 1 );
-    if (Cmask)         cvReleaseImage(&Cmask);              Cmask         = cvCreateImage( FImageSize, 8, 3 );
-    if (Ctmp)          cvReleaseImage(&Ctmp);               Ctmp          = cvCreateImage( FImageSize, 8, 3 );
-    if (Ctmp2)         cvReleaseImage(&Ctmp2);              Ctmp2         = cvCreateImage( FImageSize, 8, 3 );
-    if (Gmasktemp)     cvReleaseImage(&Gmasktemp);          Gmasktemp     = cvCreateImage( FImageSize, 8, 1);
-   
-     if (hist) {for (int sh=0; sh<sc_hist; sh++) {cvReleaseHist(&hist[sh]);} 
-                free(hist);}
-     hist    = (CvHistogram**) calloc(1, sizeof(CvHistogram*));
-     hist[0] = cvCreateHist( 1, &hdims, CV_HIST_ARRAY, &hranges, 1 ); 
-     sc_hist=1;
+    //allocating image and histogram buffers  //   
+    CCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
+    Chsv          = cvCreateImage(FImageSize, 8, 3);
+    Ghue          = cvCreateImage(FImageSize, 8, 1);
+    Gbackproject  = cvCreateImage(FImageSize, 8, 1);
+    Gmask         = cvCreateImage(FImageSize, 8, 1);
+    Cmask         = cvCreateImage(FImageSize, 8, 3);
+    Ctmp          = cvCreateImage(FImageSize, 8, 3);
+    Ctmp2         = cvCreateImage(FImageSize, 8, 3);
+    Gmasktemp     = cvCreateImage(FImageSize, 8, 1);
+     
+    hist    = (CvHistogram**) calloc(1, sizeof(CvHistogram*));
+    hist[0] = cvCreateHist(1, &hdims, CV_HIST_ARRAY, &hranges, 1); 
+    sc_hist=1;
+     
+    
      
     dorealloc=1;
 }
@@ -354,54 +352,51 @@ DWORD plugClass::setParameter(SetParameterStruct* pParam)
 DWORD plugClass::setInput(InputStruct* pParam)
 {        
     int index = pParam->Index;
-    int Slicecount = pParam->SliceCount; 
+    DWORD Slicecount = pParam->SliceCount; 
 
     // -> if reinit buffer is set
- 
     if(index==2)
        {// -> realloc areathresh buffer if necessary//   
         if (Slicecount!=sc_reinit) reinit=(float*) realloc(reinit, sizeof(float)*Slicecount);
         // -> set areathresh slicecounts //
         sc_reinit = Slicecount;
         // -> set areathresh to input values //          
-        for (int u=0; u<sc_reinit; u++) reinit[u]=pParam->Spread[u];
+        for (DWORD u=0; u<sc_reinit; u++) reinit[u]=pParam->Spread[u];
        }  
        
     // -> if tolerances are set  
-     
     else if(index>2 && index<7)   
-       {// -> realloc filtersize buffer if necessary//           
-        if (Slicecount!=sc_tols[index-3]) tols[index-3]=(float*) realloc(tols[index-3], sizeof(float)*Slicecount);
+       {// -> realloc filtersize buffer if necessary// 
+        if (Slicecount != sc_tols[index-3]) 
+           tols[index-3] = (float*) realloc(tols[index-3], sizeof(float)*Slicecount);
         // -> set filtersize slicecounts //
         sc_tols[index-3] = Slicecount;   
         // -> set filtersize to input values // 
-        for (int u=0; u<sc_tols[index-3]; u++) tols[index-3][u]=pParam->Spread[u];
+        for (DWORD u=0; u<sc_tols[index-3]; u++) 
+          tols[index-3][u] = pParam->Spread[u];
         }  
         
     // -> if area thresholds are set  
-            
     else if(index==7)
        {// -> realloc areathresh buffer if necessary//   
         if (Slicecount!=sc_areathresh) areathresh=(float*) realloc(areathresh, sizeof(float)*Slicecount);
         // -> set areathresh slicecounts //
         sc_areathresh = Slicecount;
         // -> set areathresh to input values //          
-        for (int u=0; u<sc_areathresh; u++) areathresh[u]=pParam->Spread[u];
+        for (DWORD u=0; u<sc_areathresh; u++) areathresh[u]=pParam->Spread[u];
        }  
  
     // -> if medianfilter sizes are set  
-             
     else if(index==8)   
        {// -> realloc filtersize buffer if necessary//           
         if (Slicecount!=sc_filtersize) filtersize=(float*) realloc(filtersize, sizeof(float)*Slicecount);
         // -> set filtersize slicecounts //
         sc_filtersize = Slicecount;   
         // -> set filtersize to input values // 
-        for (int u=0; u<sc_filtersize; u++) filtersize[u]=pParam->Spread[u];
+        for (DWORD u=0; u<sc_filtersize; u++) filtersize[u]=pParam->Spread[u];
         }  
     
      // -> if Roi positions are set  
-     
     else if(index>8 && index<13)   
        {// -> check if these input values have a different slicecount //
         if (Slicecount!=NumObs) dorealloc=1;
@@ -410,7 +405,7 @@ DWORD plugClass::setInput(InputStruct* pParam)
         // -> set filtersize slicecounts //
         sc_ROIp[index-9] = Slicecount;   
         // -> set filtersize to input values // 
-        for (int u=0; u<sc_ROIp[index-9]; u++) ROIp[index-9][u]=pParam->Spread[u];
+        for (DWORD u=0; u<sc_ROIp[index-9]; u++) ROIp[index-9][u]=pParam->Spread[u];
         }  
     
     NumObs=maxNumObs(); 
@@ -432,15 +427,11 @@ DWORD plugClass::getOutputSliceCount(DWORD index)
 }
 
 DWORD plugClass::setThreadLock(DWORD Enter)
-{       
+{
 	if (*(bool*) Enter)
-	 {
 	  EnterCriticalSection(&CriticalSection);
-              }
     else
-      {
-       LeaveCriticalSection(&CriticalSection);
-      }
+      LeaveCriticalSection(&CriticalSection);
 }
 
 float* plugClass::getOutput(DWORD index)
@@ -480,11 +471,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     // -> Reallocate input value buffers if necessary (if slicecounts are different)
     if (dorealloc) ReallocBuffers();   
 
-    //NumObs=1;
-    char buffer[100];
-    sprintf(buffer, "NumObs: %i", &NumObs);
-    OutputDebugString(buffer);
-    
+
     // -> putting frame into IplImage format //
     CCurrentImage->origin = 1;
     CCurrentImage->imageData = (char*)pFrame;
@@ -506,11 +493,12 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 
     ////MAIN OBJECT LOOP////////////////////////////////////////////////////////////////////////////////    
     
-    for (obj=0; obj<NumObs; obj++)
+    char buffer[100];
+    for (DWORD obj=0; obj<NumObs; obj++)
         { 
-          char buffer[100];
-          sprintf(buffer, "1");
-          OutputDebugString(buffer);                  
+          
+        // sprintf(buffer, "1");
+        //  OutputDebugString(buffer);                  
             
          ////////////////////////////////////////////////////////////////////
          // STEP I : Preparing tracking parameters and initial search rect //
@@ -520,8 +508,8 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
          S_w = (int) (ROIp[2][obj] *(float)w); 
          S_h = (int) (ROIp[3][obj] *(float)h); 
          
-         sprintf(buffer, "ROIX:%f , ROIY: %f, width: %f, height: %f", ROIp[0][0], ROIp[1][0], ROIp[2][0], ROIp[3][0]);
-         OutputDebugString(buffer);   
+         //sprintf(buffer, "ROIX:%f , ROIY: %f, width: %f, height: %f", ROIp[0][0], ROIp[1][0], ROIp[2][0], ROIp[3][0]);
+         //OutputDebugString(buffer);   
      
          // -> checking if initial search rect lies within image & setting the search rect //
          if ( S_x-S_w/2<0 || S_x+S_w/2>w || S_y-S_h/2<0 || S_y+S_h/2>h) 
@@ -597,10 +585,11 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
              track_window[obj].y = selectall.y;
             }  
           
-          sprintf(buffer, "5");
-          OutputDebugString(buffer);      
+          //sprintf(buffer, "5");
+          //OutputDebugString(buffer);      
+          
          // -> show thresholded image if requested  //  
-          if( (int)FParams[1].Value==obj ) //if( (int)FParams[1].Value == obj ) 
+          if( (DWORD)FParams[1].Value==obj ) //if( (int)FParams[1].Value == obj ) 
            {
             cvCvtColor( Gbackproject, Cmask, CV_GRAY2BGR );
             cvNot(Cmask, Cmask);
@@ -608,7 +597,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
            }
            
          // -> show search boxes if requested  //  
-         if( (int)FParams[0].Value==obj || FParams[0].Value==-1 ) 
+         if( (DWORD)FParams[0].Value==obj || FParams[0].Value==-1 ) 
            {cvRectangle( Ctmp2, cvPoint (selection.x,selection.y), 
                                 cvPoint (selection.x+(selection.width),selection.y+(selection.height)),
                                 cvScalar (255, 106, 0,0), 1, 8, 0 );  
@@ -631,14 +620,14 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
   
     // -> set output value slicecount and realloc value arrays //    
     if (FOutputs[0].SliceCount!=NumObs) 
-        for (register int op=0; op<NUM_OUTPUTS; op++)
+        for (register DWORD op=0; op<NUM_OUTPUTS; op++)
             {
              FOutputs[op].SliceCount= NumObs;
              FOutputs[op].Spread = (float*) realloc (FOutputs[op].Spread, sizeof(float)* NumObs);
             }
            
     // -> set output values //  
-    for (register int obj=0; obj<NumObs; obj++)
+    for (register DWORD obj=0; obj<NumObs; obj++)
         {
          if (is_tracked[obj])
             {

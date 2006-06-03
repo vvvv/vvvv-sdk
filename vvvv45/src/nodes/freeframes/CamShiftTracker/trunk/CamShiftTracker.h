@@ -141,7 +141,7 @@ private:
     CvSize FImageSize;
     
     CvHistogram **hist;
-    int sc_hist;
+    DWORD sc_hist;
     
     int    hdims;
     float  hranges_arr[2];
@@ -155,8 +155,9 @@ private:
     
     float *filtersize, *areathresh, *reinit;
     float *ROIp[4],   *tols[4];
-    int sc_ROIp[4], sc_tols[4];
-    int sc_filtersize, sc_areathresh, sc_reinit, NumObs, NumObs_old;  
+    DWORD sc_ROIp[4], sc_tols[4];
+    DWORD sc_filtersize, sc_areathresh;  
+    DWORD NumObs, NumObs_old, sc_reinit;
     int method;
     
     float *angledamp , *lastangle , *angleoffset, *area, *is_tracked;
