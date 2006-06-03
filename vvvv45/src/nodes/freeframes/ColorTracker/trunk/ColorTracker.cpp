@@ -292,13 +292,13 @@ void plugClass::init()
     selectall.width=FVideoInfo.frameWidth-1;  selectall.height=FVideoInfo.frameHeight-1;  
      
     // -> (re)allocating image buffers  //   
-    if (CCurrentImage) cvReleaseImageHeader(&CCurrentImage);CCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
-    if (Chsv)          cvReleaseImage(&Chsv);               Chsv          = cvCreateImage( FImageSize, 8, 3 );
-    if (Gmask)         cvReleaseImage(&Gmask);              Gmask         = cvCreateImage( FImageSize, 8, 1 );
-    if (Cmask)         cvReleaseImage(&Cmask);              Cmask         = cvCreateImage( FImageSize, 8, 3 );
-    if (Ctmp)          cvReleaseImage(&Ctmp);               Ctmp          = cvCreateImage( FImageSize, 8, 3 );
-    if (Ctmp2)         cvReleaseImage(&Ctmp2);              Ctmp2         = cvCreateImage( FImageSize, 8, 3 );
-    if (Gmasktemp)     cvReleaseImage(&Gmasktemp);          Gmasktemp     = cvCreateImage( FImageSize, 8, 1);
+    CCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
+    Chsv          = cvCreateImage(FImageSize, 8, 3);
+    Gmask         = cvCreateImage(FImageSize, 8, 1);
+    Cmask         = cvCreateImage(FImageSize, 8, 3);
+    Ctmp          = cvCreateImage(FImageSize, 8, 3);
+    Ctmp2         = cvCreateImage(FImageSize, 8, 3);
+    Gmasktemp     = cvCreateImage(FImageSize, 8, 1);
        
     dorealloc=1;
     
@@ -325,7 +325,7 @@ DWORD plugClass::setParameter(SetParameterStruct* pParam)
 DWORD plugClass::setInput(InputStruct* pParam)
 {        
     int index = pParam->Index - 3;
-    int Slicecount = pParam->SliceCount; 
+    DWORD Slicecount = pParam->SliceCount; 
     
     // -> if reinit choice buffer is set  
             
@@ -335,7 +335,7 @@ DWORD plugClass::setInput(InputStruct* pParam)
         // -> set reinit slicecounts //
         sc_reinit = Slicecount;
         // -> set reinit to input values //          
-        for (int u=0; u<sc_reinit; u++) reinit[u]=pParam->Spread[u];
+        for (DWORD u=0; u<sc_reinit; u++) reinit[u]=pParam->Spread[u];
        }  
     
     // -> if colorvalues are being set 
@@ -347,7 +347,7 @@ DWORD plugClass::setInput(InputStruct* pParam)
         sc_colvals = Slicecount;
         // -> set colvals to input values //         
         int c=0;       
-        for (int n=0; n<sc_colvals; n++)
+        for (DWORD n=0; n<sc_colvals; n++)
             {colvals[0][n] = pParam->Spread[c];
              colvals[1][n] = pParam->Spread[c+1];
              colvals[2][n] = pParam->Spread[c+2];
@@ -364,7 +364,7 @@ DWORD plugClass::setInput(InputStruct* pParam)
         sc_tolvals = Slicecount;
         // -> set tolvals to input values //         
         int c=0;       
-        for (int n=0; n<sc_tolvals; n++)
+        for (DWORD n=0; n<sc_tolvals; n++)
             {tolvals[0][n] = pParam->Spread[c];
              tolvals[1][n] = pParam->Spread[c+1];
              tolvals[2][n] = pParam->Spread[c+2];
@@ -380,7 +380,7 @@ DWORD plugClass::setInput(InputStruct* pParam)
         // -> set areathresh slicecounts //
         sc_areathresh = Slicecount;
         // -> set areathresh to input values //          
-        for (int u=0; u<sc_areathresh; u++) areathresh[u]=pParam->Spread[u];
+        for (DWORD u=0; u<sc_areathresh; u++) areathresh[u]=pParam->Spread[u];
        }  
  
     // -> if medianfilter sizes are set  
@@ -393,7 +393,7 @@ DWORD plugClass::setInput(InputStruct* pParam)
         // -> set filtersize slicecounts //
         sc_filtersize = Slicecount;   
         // -> set filtersize to input values // 
-        for (int u=0; u<sc_filtersize; u++) filtersize[u]=pParam->Spread[u];
+        for (DWORD u=0; u<sc_filtersize; u++) filtersize[u]=pParam->Spread[u];
         }  
     
     NumObs=maxNumObs(); 
@@ -415,15 +415,11 @@ DWORD plugClass::getOutputSliceCount(DWORD index)
 }
 
 DWORD plugClass::setThreadLock(DWORD Enter)
-{       
+{
 	if (*(bool*) Enter)
-	 {
 	  EnterCriticalSection(&CriticalSection);
-              }
     else
-      {
-       LeaveCriticalSection(&CriticalSection);
-      }
+      LeaveCriticalSection(&CriticalSection);
 }
 
 float* plugClass::getOutput(DWORD index)
@@ -484,7 +480,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 
     ////MAIN OBJECT LOOP////////////////////////////////////////////////////////////////////////////////    
     
-    for (obj=0; obj<NumObs; obj++)
+    for (DWORD obj=0; obj<NumObs; obj++)
         {
          hsv     = rgb2hsv( cvScalar(colvals[0][obj], colvals[1][obj], colvals[2][obj], 0) );
          hsv_tol = rgb2hsv( cvScalar(tolvals[0][obj], tolvals[1][obj], tolvals[2][obj], 0) );
@@ -594,7 +590,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
             }  
               
          // -> show thresholded image if requested  //  
-         if( (int)FParams[1].Value == (obj) ) 
+         if( (DWORD)FParams[1].Value == (obj) ) 
            {
             cvCvtColor( Gmask, Cmask, CV_GRAY2BGR );
             cvNot(Cmask, Cmask);
@@ -605,7 +601,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 
     // -> show searchboxes if requested // 
     if ((FParams[0].Value>-2) && (FParams[0].Value<NumObs))
-       {for (obj=0; obj<NumObs; obj++)
+       {for (DWORD obj=0; obj<NumObs; obj++)
             {hsv = rgb2hsv( cvScalar(colvals[0][obj], colvals[1][obj], colvals[2][obj], 0) );
  
              // -> for ROI display color
@@ -634,7 +630,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
             }
         
     // -> set output values //  
-    for (register int obj=0; obj<NumObs; obj++)
+    for (register DWORD obj=0; obj<NumObs; obj++)
         {
          if (is_tracked[obj])
             {

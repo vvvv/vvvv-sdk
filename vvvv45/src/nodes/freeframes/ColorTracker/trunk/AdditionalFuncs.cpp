@@ -13,7 +13,7 @@
 // -> maxNumObs function, gives back maximum spreadcount or 0 //
 int plugClass::maxNumObs()
 {   
-    int mNO=0;
+    DWORD mNO=0;
     
     if (sc_reinit==0 || sc_colvals==0 || sc_tolvals==0 || sc_areathresh==0 || sc_filtersize==0) return 0;
     
@@ -31,7 +31,7 @@ int plugClass::maxNumObs()
 // -> Buffers realloc function (called when different Spreadsizes occur or Spreadsizes are altered) //
 int plugClass::ReallocBuffers()
 {       
-    register int sl, obj, cval, tval; // slice no., obj no., color parameter no., col. tolerance parameter no.
+    register DWORD sl, obj, cval, tval; // slice no., obj no., color parameter no., col. tolerance parameter no.
     //NumObs=maxNumObs();  
     if (NumObs==0) return 0;
     
@@ -43,14 +43,14 @@ int plugClass::ReallocBuffers()
     if (sc_reinit!=NumObs)
        {
         sl=0;
-        for (obj=0; obj<NumObs; obj++)
+        for (DWORD obj=0; obj<NumObs; obj++)
             {// -> if end of spread is reached, loop //
              if (sl==sc_reinit) sl=0;       
              temp[obj]=reinit[sl];
              sl++;
             }
         reinit = (float*) realloc(reinit, sizeof(float)*NumObs);
-        for (obj=0; obj<NumObs; obj++) reinit[obj]= temp[obj];  
+        for (DWORD obj=0; obj<NumObs; obj++) reinit[obj]= temp[obj];  
        }
     
     

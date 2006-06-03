@@ -148,7 +148,7 @@ private:
     float *reinit, *colvals[3], *tolvals[3], *filtersize, *areathresh;
     float *angledamp , *lastangle , *angleoffset, *area, *is_tracked;
     
-    int sc_reinit, sc_tolvals, sc_colvals, sc_filtersize, sc_areathresh, NumObs, NumObs_old;  
+    DWORD sc_reinit, sc_tolvals, sc_colvals, sc_filtersize, sc_areathresh, NumObs, NumObs_old;  
     int lowerbound, upperbound ;
     int smin , smax ;
     int vmin , vmax ;
