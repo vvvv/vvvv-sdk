@@ -63,6 +63,12 @@ typedef struct OutputStructTag {
     float* Spread;
 } OutputStruct;
 
+typedef struct InputStructTag {
+	DWORD Index;
+	DWORD SliceCount;
+	double* Spread;
+} InputStruct;
+
 typedef struct VideoPixel24bitTag {
 	BYTE red;
 	BYTE green;
@@ -109,9 +115,10 @@ public:
 	float getParameter(DWORD index);
 	
 	//joregs
-	DWORD setThreadLock(DWORD Enter);
     DWORD getOutputSliceCount(DWORD index);					
     float* getOutput(DWORD index);
+    DWORD setInput(InputStruct* pParam);
+    DWORD setThreadLock(DWORD Enter);
     //
     
 	DWORD processFrame(LPVOID pFrame);

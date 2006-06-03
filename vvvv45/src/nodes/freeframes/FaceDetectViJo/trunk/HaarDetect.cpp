@@ -278,6 +278,13 @@ void plugClass::loadCascade()
     newCascade = false;
 }
 
+// -> Function is called when spread input values (types 20, 21 or 22) are modified //
+DWORD plugClass::setInput(InputStruct* pParam)
+{        
+ 	return FF_SUCCESS;
+}
+
+
 float plugClass::getParameter(DWORD index)
 {
 	return FParams[index].Value;
