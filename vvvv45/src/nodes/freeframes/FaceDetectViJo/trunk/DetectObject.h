@@ -1,5 +1,5 @@
 //////project name
-//HaarDetectObjects
+//DetectObject
 
 //////description
 //freeframe plugin.
@@ -35,7 +35,7 @@
 using namespace std;
 
 //pin constants
-#define NUM_PARAMS 6
+#define NUM_PARAMS 7
 #define NUM_INPUTS 1
 #define NUM_OUTPUTS 4
 

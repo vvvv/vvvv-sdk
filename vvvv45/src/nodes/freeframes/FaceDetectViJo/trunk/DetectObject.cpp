@@ -1,5 +1,5 @@
-//////project name
-//HaarDetectObjects
+//////project name 
+//DetectObject
 
 //////description
 //freeframe plugin.
@@ -25,7 +25,7 @@
 //joreg -> joreg@gmx.at
 
 //includes 
-#include "HaarDetect.h"
+#include "DetectObject.h"
 
 #include <stdio.h>
 
@@ -92,6 +92,7 @@ DWORD initialise()
 	GParamConstants[3].Type = 10;
 	GParamConstants[4].Type = 10;
 	GParamConstants[5].Type = 0;
+	GParamConstants[6].Type = 0;
     
 	GParamConstants[0].Default = 1.0f;	
 	
@@ -102,7 +103,8 @@ DWORD initialise()
  	GParamConstants[2].Default = 2.0f;
  	GParamConstants[3].Default = 0.2f;
  	GParamConstants[4].Default = 40.0f;
- 	GParamConstants[5].Default = 0.0f;
+ 	GParamConstants[5].Default = 1.0f;
+ 	GParamConstants[6].Default = 1.0f;
   	
 	char tempName0[17] = "Show Rectangle";
 	char tempName1[17] = "Training File";
@@ -110,6 +112,7 @@ DWORD initialise()
 	char tempName3[17] = "Scale Cascade";
 	char tempName4[17] = "Min Face Size";
 	char tempName5[17] = "Kill Overlaping";
+	char tempName6[17] = "Canny Pruning";
 	
 	memcpy(GParamConstants[0].Name, tempName0, 16);
 	memcpy(GParamConstants[1].Name, tempName1, 16);
@@ -117,6 +120,7 @@ DWORD initialise()
 	memcpy(GParamConstants[3].Name, tempName3, 16);
 	memcpy(GParamConstants[4].Name, tempName4, 16);
 	memcpy(GParamConstants[5].Name, tempName5, 16);
+	memcpy(GParamConstants[6].Name, tempName6, 16);
 
     // populate the output structs
     GOutputConstants[0].Type = 10;
@@ -336,7 +340,11 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
         CvPoint pt1, pt2;
         
         int i,j,refacecountfound = 0;
-        float distance = 0.0;       
+        bool cannyflag = false;
+        float distance = 0.0;
+        
+        //CV_HAAR_DO_CANNY_PRUNING flag
+        cannyflag = (FParams[6].Value < 0.00f);       
         
         //if scale_factor = 1 -> crash ... so we do not allow this
         float scale_factor = 1.0f + FParams[3].Value;
@@ -351,7 +359,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
         cvClearMemStorage(FStorage);
         //http://www.cs.bham.ac.uk/resources/courses/robotics/doc/opencvdocs/ref/OpenCVRef_Experimental.htm#decl_cvHaarDetectObjects
         CvSeq* faces = cvHaarDetectObjects(FCopy, FCascade, FStorage,                                    
-                                           scale_factor, int(FParams[2].Value), CV_HAAR_DO_CANNY_PRUNING, 
+                                           scale_factor, int(FParams[2].Value), cannyflag, 
                                            cvSize(int(FParams[4].Value), int(FParams[4].Value)) );
         
         int facecount = 0;
@@ -421,8 +429,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
         /*
         //debug output -> syslogs
         char buffer[100];
-        //sprintf(buffer, "facecount %i - refacecountfound %i", facecount, refacecountfound);
-        sprintf(buffer, "spreadsize %i", spreadsize);
+        sprintf(buffer, "facecount %i - refacecountfound %i", facecount, refacecountfound);        
         OutputDebugString(buffer);
        */
         
@@ -517,7 +524,7 @@ PlugInfoStruct* getInfo()
 										// so version 0.511 has major num 0, minor num 501
 	char ID[5] = "JFFD";		 // this *must* be unique to your plugin 
 								 // see www.freeframe.org for a list of ID's already taken
-	char name[17] = "HaarDetect";
+	char name[17] = "DetectObject";
 	
 	memcpy(GPlugInfo.uniqueID, ID, 4);
 	memcpy(GPlugInfo.pluginName, name, 16);

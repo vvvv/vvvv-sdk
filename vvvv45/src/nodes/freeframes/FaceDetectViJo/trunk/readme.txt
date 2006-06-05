@@ -1,5 +1,5 @@
 //////project name
-//HaarDetectObjects
+//DetectObject
 
 //////description
 //freeframe plugin.
@@ -27,6 +27,6 @@
 
 ___________________________________
 people that have been interested in
-HaarDetect
+DetectObject
 have also been interested in
 http://vvvv.meso.net
