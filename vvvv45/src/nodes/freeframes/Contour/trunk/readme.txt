@@ -3,8 +3,9 @@
 
 //////description
 //freeframe plugin.
-//outputs points(x/y) along contours found in the thresholded input,
-//plus contour position, size and rotation angle.
+//returns points(x/y) along contours found in the thresholded input 
+//image. additionally returns the individual contours positions, sizes 
+//and rotation angles
 
 //////licence
 //GNU Lesser General Public License (LGPL)
