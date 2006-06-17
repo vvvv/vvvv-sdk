@@ -3,9 +3,10 @@
 
 //////description
 //freeframe plugin.
-//outputs location(x/y) width/height and rotation angle 
-//of tracked object from image thresholded with parameters
-//extracted from image region.
+//color adaptive mean shift tracker. implementation of OpenCVs cvCamShift 
+//function. returns position(x/y), width, height and rotation angle 
+//of tracked objects. can track multiple objects of different colors 
+//at the same time.
 
 //////licence
 //GNU Lesser General Public License (LGPL)
