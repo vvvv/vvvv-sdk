@@ -3,8 +3,10 @@
 
 //////description
 //freeframe plugin.
-//outputs location(x/y) width/height and rotation angle of 
-//tracked object from image thresholded with parameters extracted from input color.
+//returns position(x/y), width, height and rotation angle of tracked objects. 
+//for tracking image is thresholded by given colors and tolerances for hue, 
+//saturation and brightness. can track multiple objects of different colors 
+//at the same time. 
 
 //////licence
 //GNU Lesser General Public License (LGPL)
