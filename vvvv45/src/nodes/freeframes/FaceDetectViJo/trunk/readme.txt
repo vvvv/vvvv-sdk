@@ -3,8 +3,8 @@
 
 //////description
 //freeframe plugin.
-//implemenation of openCVs cvHaarDetectObjects function
-//for patter/object (e.g. face detection)
+//implemenation of OpenCVs cvHaarDetectObjects function
+//for pattern/object (e.g. face) detection
 
 //////licence
 //GNU Lesser General Public License (LGPL)
