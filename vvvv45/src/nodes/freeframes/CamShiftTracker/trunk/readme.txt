@@ -31,4 +31,4 @@ ___________________________________
 people that have been interested in
 Contour
 have also been interested in
-http://vvvv.meso.net
+http://vvvv.org
