@@ -27,6 +27,6 @@
 
 ___________________________________
 people that have been interested in
-Trautner
+Contour
 have also been interested in
-http://vvvv.meso.net
+http://vvvv.org
