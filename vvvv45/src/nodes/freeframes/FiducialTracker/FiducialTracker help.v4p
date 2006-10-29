@@ -1,0 +1,137 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33beta11.2.dtd" >
+   <PATCH nodename="Y:\freeframe\FiducialTracker\FiducialTracker help.v4p">
+   <BOUNDS type="Window" left="7500" top="3825" width="9000" height="6000">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="8" nodename="FiducialTracker.dll">
+   <BOUNDS height="270" left="870" top="2385" type="Node" width="4470">
+   </BOUNDS>
+   <PIN pinname="Video Input" visible="1">
+   </PIN>
+   <PIN pinname="Video Output" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Rectangle">
+   </PIN>
+   <PIN pinname="ID" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Orientation" visible="1">
+   </PIN>
+   <PIN pinname="Threshold" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Thresholded" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="VideoIn (DShow9)">
+   <BOUNDS height="0" left="870" top="1605" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Actual StreamFormat" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="VideoOut (DShow9)">
+   <BOUNDS height="0" left="885" top="3210" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Video Input" srcnodeid="7" srcpinname="Video">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Video" srcnodeid="8" srcpinname="Video Output">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1905" top="2880" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="26040" top="17055" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1815" left="1905" top="2880" type="Box" width="735">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="8" srcpinname="ID">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2805" top="2880" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="26340" top="17355" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1815" left="2805" top="2880" type="Box" width="735">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3705" top="2880" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="27240" top="17355" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1815" left="3705" top="2880" type="Box" width="735">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4605" top="2880" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="28140" top="17355" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1815" left="4605" top="2880" type="Box" width="735">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="8" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="8" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Y Input Value" srcnodeid="8" srcpinname="Orientation">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="1">
+   <BOUNDS type="Node" left="2535" top="1575" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="23115" top="15465" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2535" top="1575" width="480" height="405">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Show Thresholded">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="0">
+   <BOUNDS type="Node" left="3510" top="1080" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="24420" top="15270" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3510" top="1080" width="795" height="240">
+   </BOUNDS>
+   </NODE>
+   </PATCH>
