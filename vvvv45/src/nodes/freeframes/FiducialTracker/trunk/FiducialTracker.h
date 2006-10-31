@@ -26,6 +26,8 @@
 
 //freeframe includes
 #include "FreeFrame.h"
+#include <vector>
+#include "FiducialObject.h"
 
 //libfidtrack
 #include "tiled_bernsen_threshold.h"
@@ -146,6 +148,8 @@ private:
     FloatPoint* FDmap;
     
     DWORD FFiducialCount;
+  	std::vector<FiducialObject> fiducialList;
+	std::vector<FiducialObject>::iterator fiducial;
 		
 	FiducialX FFiducials[MAX_FIDUCIAL_COUNT];
 	TreeIdMap FTreeidmap;

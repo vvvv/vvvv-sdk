@@ -1,10 +1,10 @@
 //////project name
-//DetectObject
+//FiducialTracker
 
 //////description
 //freeframe plugin.
-//implemenation of OpenCVs cvHaarDetectObjects function
-//for pattern/object (e.g. face) detection
+//implemenation of Ross Bencina's fidtrack library 
+//for tracking of fiducial markers
 
 //////licence
 //GNU Lesser General Public License (LGPL)
@@ -15,8 +15,8 @@
 //dev-c++ 5
 
 //////dependencies
-//opencv beta5 libraries:
-//http://sourceforge.net/projects/opencvlibrary
+//libFidTrack as provided by:
+//http://www.iua.upf.es/mtg/reactable/?software
 
 //////initiative stressing to do it + editing
 //benedikt -> benedikt@looksgood.de
@@ -27,6 +27,6 @@
 
 ___________________________________
 people that have been interested in
-DetectObject
+FiducialTracker
 have also been interested in
-http://vvvv.meso.net
+http://vvvv.org

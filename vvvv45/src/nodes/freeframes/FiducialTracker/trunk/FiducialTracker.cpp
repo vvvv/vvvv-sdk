@@ -26,14 +26,17 @@
 
 //includes
 #include "FiducialTracker.h"
+#include "FiducialObject.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <list>
 
 //libfidtrack
 #include "tiled_bernsen_threshold.h"
 #include "segment.h"
 #include "fidtrackX.h"
+
 
 // Plugin Globals
 PlugInfoStruct GPlugInfo;
@@ -158,17 +161,14 @@ char* getOutputName(DWORD index)
 plugClass::plugClass()
 {
     for (register int i=0; i<NUM_OUTPUTS; i++)
-        {
-         FOutputs[i].SliceCount = 0;
-         FOutputs[i].Spread = (float*) calloc(1, 0);
-        }
-        
-     char *tree_config = "none";
-	//char *grid_config = "none";
+    {
+     FOutputs[i].SliceCount = 0;
+     FOutputs[i].Spread = (float*) calloc(1, 0);
+    }
 
     FWidth = FVideoInfo.frameWidth;
     FHeight = FVideoInfo.frameHeight;
-    // FOutputs[0].Spread = (float*) calloc(FOutputs[0].SliceCount, sizeof(float));
+
     FThreshedImage = (unsigned char*) calloc(FWidth*FHeight, sizeof(unsigned char));
     FImage = (unsigned char*) calloc(FWidth*FHeight, sizeof(unsigned char));
 
@@ -177,12 +177,7 @@ plugClass::plugClass()
 	initialize_tiled_bernsen_thresholder(FThresholder, FWidth, FHeight, 16);
 	
 	//initialize the tracker
-//	FDmap = (FloatPoint*) calloc(FWidth*FHeight, sizeof(FloatPoint));
-	
-/*	if (strcmp(tree_config,"none")!=0) 
-    {	initialize_treeidmap_from_file(&FTreeidmap, tree_config);}
-    else */
-        initialize_treeidmap(&FTreeidmap);
+    initialize_treeidmap(&FTreeidmap);
 	
 	initialize_segmenter(&FSegmenter, FWidth, FHeight, FTreeidmap.max_adjacencies); 
 	initialize_fidtrackerX(&FFidtrackerx, &FTreeidmap, 0);   
@@ -262,30 +257,6 @@ DWORD plugClass::setThreadLock(DWORD Enter)
 
 float* plugClass::getOutput(DWORD index)
 {
-  /* switch (index) 
-   {
-     case 0: 
-     { 
-          for (int i=0; i<FFiducialCount; i++)
-            FOutputs[index].Spread[i] = FFiducials[i].id;
-     }
-     case 1: 
-     { 
-          for (int i=0; i<FFiducialCount; i++)
-            FOutputs[index].Spread[i] = FFiducials[i].x;
-     }
-     case 2: 
-     { 
-          for (int i=0; i<FFiducialCount; i++)
-            FOutputs[index].Spread[i] = FFiducials[i].y;
-     }
-     case 3: 
-     { 
-          for (int i=0; i<FFiducialCount; i++)
-            FOutputs[index].Spread[i] = FFiducials[i].angle;
-     }
-   }  */ 
-  
    return FOutputs[index].Spread;
 }
 
@@ -300,6 +271,8 @@ DWORD plugClass::processFrame(LPVOID pFrame)
 			return FF_FAIL;
 	}
 }
+
+//using namespace std;
 
 DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 {
@@ -332,6 +305,93 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     //fiducial recognition
     FFiducialCount = find_fiducialsX(FFiducials, MAX_FIDUCIAL_COUNT, &FFidtrackerx, &FSegmenter, FWidth, FHeight); 
 
+    std::list<FiducialObject> new_fiducials;
+
+	// process symbols
+	for(DWORD i=0; i<FFiducialCount; i++) 
+    {
+		FiducialObject *existing_fiducial = NULL;
+
+		// update objects we had in the last frame
+		// also check if we have an ID/position conflict
+		// or correct an INVALID_FIDUCIAL_ID if we had an ID in the last frame
+		for (fiducial = fiducialList.begin(); fiducial!=fiducialList.end(); fiducial++) 
+        {
+			float distance = fiducial->distance(FFiducials[i].x, FFiducials[i].y);
+
+			if (FFiducials[i].id == fiducial->fiducial_id)  
+            {
+				// find and match a fiducial we had last frame already ...
+				if(existing_fiducial) 
+                {
+					if (distance<existing_fiducial->distance(FFiducials[i].x, FFiducials[i].y))
+						existing_fiducial = &(*fiducial);
+				} 
+                else 
+                {
+					existing_fiducial = &(*fiducial);
+					for (DWORD j=0; j<FFiducialCount; j++) 
+                    {
+						if ((i!=j) && (fiducial->distance(FFiducials[j].x, FFiducials[j].y)<distance)) 
+                        {
+							existing_fiducial = NULL;
+							break;
+						}
+					}	
+				}
+			} 
+            else if (distance<5.0f) 
+            {
+				// do we have a different ID at the same place?
+
+				// this should correct wrong or invalid fiducial IDs
+				// assuming that between two frames
+				// there can't be a rapid exchange of two symbols
+				// at the same place
+
+				/*
+				if (fiducials[i].id==INVALID_FIDUCIAL_ID) printf("corrected invalid ID to %d at %f %f\n",fiducials[i].id,fiducials[i].x/width,fiducials[i].y/height);
+				else if (fiducials[i].id!=pos->classId) printf("corrected wrong ID from %d to %d at %f %f\n",fiducials[i].id,fiducial->fiducial_id,fiducials[i].x/fiducials[i].y,ypos/height);
+				*/
+
+				FFiducials[i].id = fiducial->fiducial_id;
+				existing_fiducial = &(*fiducial);
+				break;
+			}
+		}
+	
+		if  (existing_fiducial != NULL) 
+        {
+			// just update the fiducial from last frame ...
+			existing_fiducial->update(FFiducials[i].x, FFiducials[i].y, FFiducials[i].angle);
+		} 
+        else if (FFiducials[i].id != INVALID_FIDUCIAL_ID) 
+        {
+			// add the newly found object
+			//FiducialObject addFiducial(session_id, fiducials[i].id, width, height);
+			FiducialObject *addFiducial = new FiducialObject(0, FFiducials[i].id, 0, 0);
+			
+			addFiducial->update(FFiducials[i].x, FFiducials[i].y, FFiducials[i].angle);
+            /*if(msg_listener) {
+				char add_message[16];
+				sprintf(add_message,"add obj %d %ld", fiducials[i].id,session_id);
+				msg_listener->setMessage(std::string(add_message));
+			}*/
+			new_fiducials.push_back(*addFiducial);
+			//session_id++;
+		}
+
+		//if(FFiducials[i].id!=INVALID_FIDUCIAL_ID && msg_listener)
+		//	 msg_listener->setObject(FFiducials[i].id, (int)(FFiducials[i].x), (int)(FFiducials[i].y), FFiducials[i].angle );
+	}
+
+	// finally add all newly found objects
+	for (std::list<FiducialObject>::iterator iter = new_fiducials.begin(); iter!=new_fiducials.end(); iter++) 
+    {
+		fiducialList.push_back(*iter);
+	}
+
+
     //make the outputs fit
     for (int i=0; i<NUM_OUTPUTS; i++)
     {
@@ -348,7 +408,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
           FOutputs[0].Spread[i] = (int) FFiducials[i].id;    
           FOutputs[1].Spread[i] = FFiducials[i].x / FWidth - 0.5;
           FOutputs[2].Spread[i] = FFiducials[i].y / FHeight - 0.5;
-          FOutputs[3].Spread[i] = FFiducials[i].angle;
+          FOutputs[3].Spread[i] = 1 - FFiducials[i].angle / DOUBLEPI;
     }
 
     LeaveCriticalSection(&CriticalSection);
