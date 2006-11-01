@@ -15,11 +15,8 @@
 //dev-c++ 5
 
 //////dependencies
-//libFidTrack as provided by:
+//libFidTrack as provided with the reacTVision source:
 //http://www.iua.upf.es/mtg/reactable/?software
-
-//////initiative stressing to do it + editing
-//benedikt -> benedikt@looksgood.de
 
 //////initial author
 //joreg -> joreg@gmx.at
@@ -91,7 +88,7 @@ DWORD initialise()
     GParamConstants[1].Type = 10;
 
 	GParamConstants[0].Default = 1.0f;
-	GParamConstants[1].Default = 40.0f;
+	GParamConstants[1].Default = 0.5f;
 
 	char tempName0[17] = "Show Thresholded";
 	char tempName1[17] = "Threshold";
@@ -187,15 +184,8 @@ plugClass::plugClass()
 
 void plugClass::init()
 {
-
     // -> setting defaults for input values //
     for (int in=0; in<NUM_PARAMS; in++) FParams[in].Value=GParamConstants[in].Default;
-
-  /*  char buffer[100];
-    sprintf(buffer, "%i x %i", FImageSize.width, FImageSize.height);
-    OutputDebugString(buffer);*/
-
-    
 }
 
 
@@ -272,15 +262,13 @@ DWORD plugClass::processFrame(LPVOID pFrame)
 	}
 }
 
-//using namespace std;
-
 DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 {
     EnterCriticalSection(&CriticalSection);
     int srcBytes = 3;
 
     //thresholding
-    tiled_bernsen_threshold(FThresholder, FThreshedImage, (unsigned char*) pFrame, srcBytes, FWidth,  FHeight, 16, (int) FParams[1].Value);
+    tiled_bernsen_threshold(FThresholder, FThreshedImage, (unsigned char*) pFrame, srcBytes, FWidth,  FHeight, 16, (int) (FParams[1].Value * 127));
     
     //copy thresholded image back to output
     if ((bool) FParams[0].Value == true)
@@ -307,7 +295,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 
     std::list<FiducialObject> new_fiducials;
 
-	// process symbols
+	//process newly found symbols
 	for(DWORD i=0; i<FFiducialCount; i++) 
     {
 		FiducialObject *existing_fiducial = NULL;
@@ -318,7 +306,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 		for (fiducial = fiducialList.begin(); fiducial!=fiducialList.end(); fiducial++) 
         {
 			float distance = fiducial->distance(FFiducials[i].x, FFiducials[i].y);
-
+			
 			if (FFiducials[i].id == fiducial->fiducial_id)  
             {
 				// find and match a fiducial we had last frame already ...
@@ -348,8 +336,8 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 				// assuming that between two frames
 				// there can't be a rapid exchange of two symbols
 				// at the same place
-
-				/*
+                 
+                /*
 				if (fiducials[i].id==INVALID_FIDUCIAL_ID) printf("corrected invalid ID to %d at %f %f\n",fiducials[i].id,fiducials[i].x/width,fiducials[i].y/height);
 				else if (fiducials[i].id!=pos->classId) printf("corrected wrong ID from %d to %d at %f %f\n",fiducials[i].id,fiducial->fiducial_id,fiducials[i].x/fiducials[i].y,ypos/height);
 				*/
@@ -364,19 +352,19 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
         {
 			// just update the fiducial from last frame ...
 			existing_fiducial->update(FFiducials[i].x, FFiducials[i].y, FFiducials[i].angle);
-		} 
+        }
         else if (FFiducials[i].id != INVALID_FIDUCIAL_ID) 
         {
-			// add the newly found object
+			//add the newly found object
 			//FiducialObject addFiducial(session_id, fiducials[i].id, width, height);
 			FiducialObject *addFiducial = new FiducialObject(0, FFiducials[i].id, 0, 0);
 			
 			addFiducial->update(FFiducials[i].x, FFiducials[i].y, FFiducials[i].angle);
-            /*if(msg_listener) {
-				char add_message[16];
-				sprintf(add_message,"add obj %d %ld", fiducials[i].id,session_id);
-				msg_listener->setMessage(std::string(add_message));
-			}*/
+            //if(msg_listener) {
+			//	char add_message[16];
+			//	sprintf(add_message,"add obj %d %ld", fiducials[i].id,session_id);
+			//	msg_listener->setMessage(std::string(add_message));
+			//}
 			new_fiducials.push_back(*addFiducial);
 			//session_id++;
 		}
@@ -385,31 +373,47 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 		//	 msg_listener->setObject(FFiducials[i].id, (int)(FFiducials[i].x), (int)(FFiducials[i].y), FFiducials[i].angle );
 	}
 
-	// finally add all newly found objects
+	//finally add all newly found objects
 	for (std::list<FiducialObject>::iterator iter = new_fiducials.begin(); iter!=new_fiducials.end(); iter++) 
     {
 		fiducialList.push_back(*iter);
+	}	
+	
+	//see if we can remove any old objects from our list
+	for(fiducial = fiducialList.begin(); fiducial!=fiducialList.end();) 
+    {
+		if (fiducial->checkRemoved()) 
+        {
+			fiducial = fiducialList.erase(fiducial);
+		} 
+        else 
+        {
+			fiducial++;
+		} 
 	}
 
-
+    DWORD fidcount = fiducialList.size();
+    
     //make the outputs fit
     for (int i=0; i<NUM_OUTPUTS; i++)
     {
-        if (FOutputs[i].SliceCount != FFiducialCount)
+        if (FOutputs[i].SliceCount != fidcount)
         {
-          FOutputs[i].SliceCount = FFiducialCount;
-          FOutputs[i].Spread     = (float*) realloc(FOutputs[i].Spread, sizeof(float) * FFiducialCount);
+          FOutputs[i].SliceCount = fidcount;
+          FOutputs[i].Spread     = (float*) realloc(FOutputs[i].Spread, sizeof(float) * fidcount);
         }
     }
-        
+    
     //fill the outputs
-    for (DWORD i=0; i<FFiducialCount; i++)
+    int i=0;
+    for (fiducial = fiducialList.begin(); fiducial!=fiducialList.end(); fiducial++) 
     {
-          FOutputs[0].Spread[i] = (int) FFiducials[i].id;    
-          FOutputs[1].Spread[i] = FFiducials[i].x / FWidth - 0.5;
-          FOutputs[2].Spread[i] = FFiducials[i].y / FHeight - 0.5;
-          FOutputs[3].Spread[i] = 1 - FFiducials[i].angle / DOUBLEPI;
-    }
+        FOutputs[0].Spread[i] = (int) fiducial->fiducial_id;    
+        FOutputs[1].Spread[i] = fiducial->current.xpos / FWidth - 0.5;
+        FOutputs[2].Spread[i] = fiducial->current.ypos / FHeight - 0.5;
+        FOutputs[3].Spread[i] = fiducial->current.angle / DOUBLEPI;
+        i++;
+    }   
 
     LeaveCriticalSection(&CriticalSection);
 
