@@ -18,9 +18,6 @@
 //libFidTrack as provided by:
 //http://www.iua.upf.es/mtg/reactable/?software
 
-//////initiative stressing to do it + editing
-//benedikt -> benedikt@looksgood.de
-
 //////initial author
 //joreg -> joreg@gmx.at
 
