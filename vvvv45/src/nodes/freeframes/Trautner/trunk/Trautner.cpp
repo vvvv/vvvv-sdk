@@ -3,7 +3,7 @@
 
 //////description
 //freeframe plugin.
-//simple movement detection in regions defined via a grayscale bitmap. 
+//simple movement detection in regions defined via a grayscale bitmap.
 //based on an idea by mr. trautner -> http://www.brainsalt.net
 
 //////licence
@@ -24,7 +24,7 @@
 //////edited by
 //your name here
 
-//includes 
+//includes
 #include "Trautner.h"
 
 #include <stdio.h>
@@ -62,7 +62,7 @@ LPVOID instantiate(VideoInfoStruct* pVideoInfo)
 
 	// Russell - return pointer to the plugin instance object we have created
 
-	// return pointer to object cast as LPVOID 
+	// return pointer to object cast as LPVOID
 	return (LPVOID) pPlugObj;
 }
 
@@ -76,7 +76,7 @@ DWORD deInstantiate(LPVOID instanceID)
 	pPlugObj = (plugClass*) instanceID;
 
 	delete pPlugObj; // todo: ? success / fail?
-	
+
 	return FF_SUCCESS;
 }
 
@@ -84,13 +84,13 @@ string filemask = "Bitmap (*.bmp)|*.bmp";
 DWORD initialise()
 {
     cvSetErrMode(CV_ErrModeSilent);
-    
+
     // populate the parameters constants structs
     GParamConstants[0].Type = 0;
 	GParamConstants[1].Type = 0;
 	GParamConstants[2].Type = 10;
 	GParamConstants[3].Type = 100;
-    
+
 	GParamConstants[0].Default = 0.0f;
 	GParamConstants[1].Default = 1.0f;
 	GParamConstants[2].Default = 0.1f;
@@ -98,12 +98,12 @@ DWORD initialise()
 	int i = (int)&filemask[0];
     float* fp = (float*)&i;
  	GParamConstants[3].Default = *fp;
-  	
+
 	char tempName0[17] = "Hold Background";
 	char tempName1[17] = "Show Mask";
 	char tempName2[17] = "Threshold";
 	char tempName3[17] = "Mask Image";
-	
+
 	memcpy(GParamConstants[0].Name, tempName0, 16);
 	memcpy(GParamConstants[1].Name, tempName1, 16);
 	memcpy(GParamConstants[2].Name, tempName2, 16);
@@ -112,12 +112,12 @@ DWORD initialise()
     // populate the output structs
     GOutputConstants[0].Type = 10;
     GOutputConstants[1].Type = 10;
-    
+
 	char outName0[17] = "PixelCount";
 	char outName1[17] = "Changed Pixels";
 	memcpy(GOutputConstants[0].Name, outName0, 16);
 	memcpy(GOutputConstants[1].Name, outName1, 16);
-	
+
 	return FF_SUCCESS;
 }
 
@@ -128,12 +128,12 @@ DWORD deInitialise()
 
 DWORD getNumParameters()
 {
-	return NUM_PARAMS;  
+	return NUM_PARAMS;
 }
 
 DWORD getNumOutputs()
 {
-	return NUM_OUTPUTS;  
+	return NUM_OUTPUTS;
 }
 
 char* getParameterName(DWORD index)
@@ -167,18 +167,18 @@ plugClass::plugClass()
     FOutputs[0].Spread = (float*) calloc(FOutputs[0].SliceCount, sizeof(float));
     FOutputs[1].SliceCount = 256;
     FOutputs[1].Spread = (float*) calloc(FOutputs[1].SliceCount, sizeof(float));
-    
+
     newMask = true;
-    
-    InitializeCriticalSection(&CriticalSection);    
+
+    InitializeCriticalSection(&CriticalSection);
 }
 
 void plugClass::init()
 {
     FImageSize.width = FVideoInfo.frameWidth;
     FImageSize.height = FVideoInfo.frameHeight;
-    
-    // -> setting defaults for input values //  
+
+    // -> setting defaults for input values //
     for (int in=0; in<NUM_PARAMS; in++) FParams[in].Value=GParamConstants[in].Default;
 
     // -> allocating image buffers  //
@@ -186,7 +186,7 @@ void plugClass::init()
     FGrayImage = cvCreateImage(FImageSize, IPL_DEPTH_8U, 1);
     FLastImage = cvCreateImage(FImageSize, IPL_DEPTH_8U, 1);
     FMask = cvCreateImage(FImageSize, IPL_DEPTH_8U, 1);
-   
+
   /*  char buffer[100];
     sprintf(buffer, "%i x %i", FImageSize.width, FImageSize.height);
     OutputDebugString(buffer);*/
@@ -199,14 +199,14 @@ plugClass::~plugClass()
     cvReleaseImage(&FMask);
 
     for (int i=0; i<NUM_OUTPUTS; i++) free(FOutputs[i].Spread);
-    
+
     DeleteCriticalSection(&CriticalSection);
 }
 
 char* plugClass::getParameterDisplay(DWORD index)
 {
 	// fill the array with spaces first
-	for (int n=0; n<16; n++) 
+	for (int n=0; n<16; n++)
     {
 		FParams[index].DisplayValue[n] = ' ';
 	}
@@ -217,39 +217,39 @@ char* plugClass::getParameterDisplay(DWORD index)
 DWORD plugClass::setParameter(SetParameterStruct* pParam)
 {
 	FParams[pParam->index].Value = pParam->value;
-	
-	if (pParam->index == 3) 	
-	{ 	     
-        float f = pParam->value; 
+
+	if (pParam->index == 3)
+	{
+        float f = pParam->value;
 	    int* ip = (int*)&f;
 	    char* cp = (char*)*ip;
 
         memcpy(&Filename[0], cp, strlen(cp));
 
         newMask = true;
-	}    
+	}
 	return FF_SUCCESS;
 }
 
 void plugClass::loadMask()
 {
-    IplImage* tmp;  
+    IplImage* tmp;
 
     tmp = cvLoadImage(&Filename[0], 0);
-    
+
     if (tmp != 0)
     {
         cvFlip(tmp, tmp, 1);
         cvResize(tmp, FMask, CV_INTER_NN);
         cvReleaseImage(&tmp);
-    }    
-    
+    }
+
     newMask = false;
 }
 
 // -> Function is called when spread input values (types 20, 21 or 22) are modified //
 DWORD plugClass::setInput(InputStruct* pParam)
-{        
+{
  	return FF_SUCCESS;
 }
 
@@ -269,15 +269,17 @@ DWORD plugClass::setThreadLock(DWORD Enter)
 	  EnterCriticalSection(&CriticalSection);
     else
       LeaveCriticalSection(&CriticalSection);
+
+    return FF_SUCCESS;
 }
 
 float* plugClass::getOutput(DWORD index)
-{ 
-    switch(index) 
+{
+    switch(index)
     {
         case 0: memcpy(FOutputs[0].Spread, FPixelCount, 256 * sizeof(float));
         case 1: memcpy(FOutputs[1].Spread, FChangedPixels, 256 * sizeof(float));
-    }    
+    }
     return FOutputs[index].Spread;
 }
 
@@ -299,47 +301,47 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 
    if (newMask)
      loadMask();
-     
+
         FCurrentImage->origin = 1;
         FCurrentImage->imageData = (char*)pFrame;
-        
+
         cvCvtColor(FCurrentImage, FGrayImage, CV_BGR2GRAY);
-    
+
          if (FParams[0].Value == 0)
         {
             IplImage* tmp = cvCloneImage(FGrayImage);
-            
+
             cvSub(FGrayImage, FLastImage, FGrayImage);
             cvReleaseImage(&FLastImage);
             FLastImage = cvCloneImage(tmp);
-        
+
             cvReleaseImage(&tmp);
         }
         else
         {
-            cvSub(FGrayImage, FLastImage, FGrayImage); 
-        }    
+            cvSub(FGrayImage, FLastImage, FGrayImage);
+        }
 
         for (int i=0;i<256;i++)
         {
           FPixelCount[i] = 0;
           FChangedPixels[i] = 0;
         }
-        
+
        int h = FGrayImage->height;
         int w = FGrayImage->width * 1; //FGrayImage->nChannels;
         int step= FGrayImage->widthStep; // because of alignment
-        
+
         // because imageData is a signed char*
         unsigned char *mask = reinterpret_cast<unsigned char *>(FMask->imageData);
         unsigned char *gray = reinterpret_cast<unsigned char *>(FGrayImage->imageData);
 
-        for (int i=0; i<h; i++) 
+        for (int i=0; i<h; i++)
         {
-          for (int j=0; j<w; j += 1) 
+          for (int j=0; j<w; j += 1)
           {
             FPixelCount[mask[j]]++;
-            if (gray[j] > FParams[2].Value * 255) 
+            if (gray[j] > FParams[2].Value * 255)
               FChangedPixels[mask[j]]++;
           }
           mask += step;  // next line
@@ -348,10 +350,10 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 
         if (FParams[1].Value > 0)
           cvAdd(FGrayImage, FMask, FGrayImage);
-          
+
          cvCvtColor(FGrayImage, FCurrentImage, CV_GRAY2BGR);
 
-  
+
     LeaveCriticalSection(&CriticalSection);
 
 	return FF_SUCCESS;
@@ -407,15 +409,15 @@ DWORD getPluginCaps(DWORD index)
 	}
 }
 
-PlugInfoStruct* getInfo() 
+PlugInfoStruct* getInfo()
 {
 	GPlugInfo.APIMajorVersion = 2;		// number before decimal point in version nums
 	GPlugInfo.APIMinorVersion = 000;		// this is the number after the decimal point
 										// so version 0.511 has major num 0, minor num 501
-	char ID[5] = "JFTN";		 // this *must* be unique to your plugin 
+	char ID[5] = "JFTN";		 // this *must* be unique to your plugin
 								 // see www.freeframe.org for a list of ID's already taken
 	char name[17] = "Trautner";
-	
+
 	memcpy(GPlugInfo.uniqueID, ID, 4);
 	memcpy(GPlugInfo.pluginName, name, 16);
 	GPlugInfo.pluginType = FF_EFFECT;
