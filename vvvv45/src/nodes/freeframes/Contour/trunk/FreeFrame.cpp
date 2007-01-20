@@ -39,7 +39,7 @@ non standard additions to support output by joreg@gmx.at
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 //
-// includes 
+// includes
 //
 
 #include "FreeFrame.h"
@@ -52,8 +52,8 @@ non standard additions to support output by joreg@gmx.at
 // notes: we may want to capture hModule as the instance of the host...
 
 //#ifdef WIN32
-BOOL APIENTRY DllMain( HANDLE hModule, 
-                       DWORD  ul_reason_for_call, 
+BOOL APIENTRY DllMain( HANDLE hModule,
+                       DWORD  ul_reason_for_call,
                        LPVOID lpReserved
 					 )
 {
@@ -63,7 +63,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // plugMain - The one and only exposed function
-// parameters: 
+// parameters:
 //	functionCode - tells the plugin which function is being called
 //  pParam - 32-bit parameter or 32-bit pointer to parameter structure
 //
@@ -71,8 +71,8 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 //
 // All parameters are cast as 32-bit untyped pointers and cast to appropriate
 // types here
-// 
-// All return values are cast to 32-bit untyped pointers here before return to 
+//
+// All return values are cast to 32-bit untyped pointers here before return to
 // the host
 //
 
@@ -81,7 +81,7 @@ extern "C"  __declspec(dllexport) __stdcall plugMainUnion plugMain(DWORD functio
 #elif LINUX
 extern "C" {
    plugMainUnion plugMain( DWORD functionCode, LPVOID pParam, LPVOID instanceID)
-#endif	
+#endif
 {
 	plugMainUnion retval;
 
@@ -113,7 +113,7 @@ extern "C" {
 		break;
 	case FF_GETPARAMETERDISPLAY:
 		retval.svalue =  pPlugObj->getParameterDisplay( (DWORD) pParam );
-		break;	
+		break;
 	// parameters are passed in here as a packed struct of two DWORDS:
 	// index and value
 	case FF_SETPARAMETER:
@@ -137,36 +137,36 @@ extern "C" {
 	case FF_DEINSTANTIATE:
 		retval.ivalue = deInstantiate(pPlugObj);
 		break;
-	case FF_GETEXTENDEDINFO: 
+	case FF_GETEXTENDEDINFO:
 		retval.ivalue = (DWORD) getExtendedInfo();
 		break;
 	case FF_PROCESSFRAMECOPY:
 		retval.ivalue = pPlugObj->processFrameCopy((ProcessFrameCopyStruct*)pParam);
 		break;
-	case FF_GETPARAMETERTYPE:		
+	case FF_GETPARAMETERTYPE:
 		retval.ivalue = getParameterType( (DWORD) pParam );
 		break;
-		
+
 // outputs
-	case FF_GETNUMOUTPUTS:		
+	case FF_GETNUMOUTPUTS:
 		retval.ivalue = getNumOutputs();
 		break;
 	case FF_GETOUTPUTNAME:
 		retval.svalue = getOutputName((DWORD) pParam);
 		break;
-	case FF_GETOUTPUTTYPE:		
+	case FF_GETOUTPUTTYPE:
 		retval.ivalue = getOutputType((DWORD) pParam);
-		break;	
-	case FF_GETOUTPUTSLICECOUNT:		
+		break;
+	case FF_GETOUTPUTSLICECOUNT:
 		retval.ivalue = pPlugObj->getOutputSliceCount((DWORD) pParam);
 		break;
-	case FF_GETOUTPUT:		
+	case FF_GETOUTPUT:
 		retval.svalue = (char*)pPlugObj->getOutput((DWORD) pParam);
-		break;	
+		break;
 	case FF_SETTHREADLOCK:
          retval.ivalue = pPlugObj->setThreadLock((DWORD) pParam);
          break;
-         
+
 //spreaded inputs
  case FF_SETINPUT:
 	retval.ivalue =  pPlugObj->setInput( (InputStruct*) pParam );
@@ -180,7 +180,7 @@ extern "C" {
 	}
 	return retval;
 }
-#ifdef linux	
+#ifdef linux
 
 } /* extern "C" */
 #endif
