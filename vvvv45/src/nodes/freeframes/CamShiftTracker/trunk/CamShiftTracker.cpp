@@ -3,7 +3,7 @@
 
 //////description
 //freeframe plugin.
-//outputs location(x/y) width/height and rotation angle 
+//outputs location(x/y) width/height and rotation angle
 //of tracked object from image thresholded with parameters
 //extracted from image region.
 
@@ -27,7 +27,7 @@
 
 
 
-//includes 
+//includes
 #include "CamShiftTracker.h"
 #include "cvcamshift_mod.h"
 #include <string.h>
@@ -46,7 +46,7 @@ OutputConstsStruct GOutputConstants[NUM_OUTPUTS];
 #define CV_ErrModeSilent  2
 
 LPVOID instantiate(VideoInfoStruct* pVideoInfo)
-{      
+{
 	// Create local pointer to plugObject
 	plugClass *pPlugObj;
 	// create new instance of plugClass
@@ -66,8 +66,8 @@ LPVOID instantiate(VideoInfoStruct* pVideoInfo)
 	pPlugObj->init();
 
 	// Russell - return pointer to the plugin instance object we have created
-    
-	// return pointer to object cast as LPVOID 
+
+	// return pointer to object cast as LPVOID
 	return (LPVOID) pPlugObj;
 }
 
@@ -87,18 +87,18 @@ DWORD deInstantiate(LPVOID instanceID)
 string filemask = "Bitmap (*.bmp)|*.bmp";
 DWORD initialise()
 {
-    // -> Input pins ///////////////// 
-  
+    // -> Input pins /////////////////
+
     cvSetErrMode(CV_ErrModeSilent);
-    
+
     // -> Types & default values for input pins //
-    
-    GParamConstants[0].Type   = 10;   	   
+
+    GParamConstants[0].Type   = 10;
     GParamConstants[1].Type   = 10;
     GParamConstants[2].Type   = 20;
-    GParamConstants[3].Type   = 20;   	   
+    GParamConstants[3].Type   = 20;
     GParamConstants[4].Type   = 20;
-    GParamConstants[5].Type   = 20;   	   
+    GParamConstants[5].Type   = 20;
     GParamConstants[6].Type   = 20;
     GParamConstants[7].Type   = 20;
     GParamConstants[8].Type   = 20;
@@ -107,11 +107,11 @@ DWORD initialise()
     GParamConstants[11].Type  = 20;
     GParamConstants[12].Type  = 20;
     GParamConstants[13].Type  = 10;
-  	
-    GParamConstants[0].Default  = 1.0f;  
-    GParamConstants[1].Default  = 1.0f;  
+
+    GParamConstants[0].Default  = 1.0f;
+    GParamConstants[1].Default  = 1.0f;
     GParamConstants[2].Default  = 0.0f;
-    GParamConstants[3].Default  = 0.16f;   
+    GParamConstants[3].Default  = 0.16f;
     GParamConstants[4].Default  = 0.9f;
     GParamConstants[5].Default  = 0.04f;
     GParamConstants[6].Default  = 1.0f;
@@ -122,13 +122,13 @@ DWORD initialise()
     GParamConstants[11].Default = 0.25f;
     GParamConstants[12].Default = 0.25f;
     GParamConstants[13].Default = 1.0f;
-	  	
-   	// -> Naming of input pins // 
-  	
-    char tempName0[17]  = "Show SearchPos"; 
-    char tempName1[17]  = "Show ThreshImage"; 
+
+   	// -> Naming of input pins //
+
+    char tempName0[17]  = "Show SearchPos";
+    char tempName1[17]  = "Show ThreshImage";
     char tempName2[17]  = "Init Tracker";
-    char tempName3[17]  = "Saturation min"; 
+    char tempName3[17]  = "Saturation min";
     char tempName4[17]  = "Saturation max";
     char tempName5[17]  = "Value min";
     char tempName6[17]  = "Value max";
@@ -136,69 +136,69 @@ DWORD initialise()
     char tempName8[17]  = "Noise Reduction";
     char tempName9[17]  = "X";
     char tempName10[17] = "Y";
-    char tempName11[17] = "Width";    
+    char tempName11[17] = "Width";
     char tempName12[17] = "Height";
     char tempName13[17] = "Scaled Values";
-    
-    memcpy(GParamConstants[0].Name,  tempName0,  16);	 
+
+    memcpy(GParamConstants[0].Name,  tempName0,  16);
     memcpy(GParamConstants[1].Name,  tempName1,  16);
-    memcpy(GParamConstants[2].Name,  tempName2,  16);	 
+    memcpy(GParamConstants[2].Name,  tempName2,  16);
     memcpy(GParamConstants[3].Name,  tempName3,  16);
-    memcpy(GParamConstants[4].Name,  tempName4,  16);	 
+    memcpy(GParamConstants[4].Name,  tempName4,  16);
     memcpy(GParamConstants[5].Name,  tempName5,  16);
     memcpy(GParamConstants[6].Name,  tempName6,  16);
-    memcpy(GParamConstants[7].Name,  tempName7,  16);	 
+    memcpy(GParamConstants[7].Name,  tempName7,  16);
     memcpy(GParamConstants[8].Name,  tempName8,  16);
     memcpy(GParamConstants[9].Name,  tempName9,  16);
-    memcpy(GParamConstants[10].Name, tempName10, 16);    
-    memcpy(GParamConstants[11].Name, tempName11, 16);   
-    memcpy(GParamConstants[12].Name, tempName12, 16);    
-    memcpy(GParamConstants[13].Name, tempName13, 16);    
-    
-    // -> Output pins // 
-   
+    memcpy(GParamConstants[10].Name, tempName10, 16);
+    memcpy(GParamConstants[11].Name, tempName11, 16);
+    memcpy(GParamConstants[12].Name, tempName12, 16);
+    memcpy(GParamConstants[13].Name, tempName13, 16);
+
+    // -> Output pins //
+
     // -> Types for output pins //
-     
+
     GOutputConstants[0].Type = 10;
     GOutputConstants[1].Type = 10;
     GOutputConstants[2].Type = 10;
     GOutputConstants[3].Type = 10;
     GOutputConstants[4].Type = 10;
     GOutputConstants[5].Type = 10;
-        
+
     // -> Naming of output pins //
-    
+
     char outName0[17] = "X";
    	char outName1[17] = "Y";
    	char outName2[17] = "Width";
    	char outName3[17] = "Height";
    	char outName4[17] = "Angle";
    	char outName5[17] = "IsTracked";
-  	
+
     memcpy(GOutputConstants[0].Name, outName0, 16);
    	memcpy(GOutputConstants[1].Name, outName1, 16);
    	memcpy(GOutputConstants[2].Name, outName2, 16);
    	memcpy(GOutputConstants[3].Name, outName3, 16);
    	memcpy(GOutputConstants[4].Name, outName4, 16);
    	memcpy(GOutputConstants[5].Name, outName5, 16);
-	
+
 	return FF_SUCCESS;
 }
 
 DWORD deInitialise()
 {
-      
+
 	return FF_SUCCESS;
 }
 
 DWORD getNumParameters()
 {
-	return NUM_PARAMS;  
+	return NUM_PARAMS;
 }
 
 DWORD getNumOutputs()
 {
-	return NUM_OUTPUTS;  
+	return NUM_OUTPUTS;
 }
 
 char* getParameterName(DWORD index)
@@ -227,54 +227,54 @@ char* getOutputName(DWORD index)
 }
 
 plugClass::plugClass()
-{   
-    // -> intial allocation of output buffers // 
+{
+    // -> intial allocation of output buffers //
     for (register int op=0; op<NUM_OUTPUTS; op++)
-        {FOutputs[op].SliceCount = 1;  
+        {FOutputs[op].SliceCount = 1;
          FOutputs[op].Spread = (float*) calloc(1, sizeof(float));
         }
-    
+
     // setting histogram ranges
     hdims = 16;
     hranges_arr[0] = 0; hranges_arr[1] = 180;
     hranges = hranges_arr;
-    hist=NULL; // at class construction, set pointer to histogram buffer field to NULL 
+    hist=NULL; // at class construction, set pointer to histogram buffer field to NULL
     sc_hist=0;
-    
+
     // -> initial allocation of spreadsize-dependent buffers //
     reinit       = (float*) calloc(1, sizeof(float));
     filtersize   = (float*) calloc(1, sizeof(float));
     areathresh   = (float*) calloc(1, sizeof(float));
-    
+
     track_window = (CvRect*) calloc(1, sizeof(CvRect));
     track_box    = (CvBox2D*) calloc(1, sizeof(CvBox2D));
-    track_comp   = (CvConnectedComp*) calloc(1, sizeof(CvConnectedComp));   
-  
+    track_comp   = (CvConnectedComp*) calloc(1, sizeof(CvConnectedComp));
+
     angledamp   = (float*) calloc(1, sizeof(float));
-    lastangle   = (float*) calloc(1, sizeof(float)); 
-    angleoffset = (float*) calloc(1, sizeof(float));  
-    area        = (float*) calloc(1, sizeof(float)); 
+    lastangle   = (float*) calloc(1, sizeof(float));
+    angleoffset = (float*) calloc(1, sizeof(float));
+    area        = (float*) calloc(1, sizeof(float));
     is_tracked  = (float*) calloc(1, sizeof(float));
-    for (int r=0; r<4; r++) 
+    for (int r=0; r<4; r++)
         ROIp[r] = (float*) calloc(1, sizeof(float));
-    for (int r=0; r<4; r++)  
+    for (int r=0; r<4; r++)
         tols[r] = (float*) calloc(1, sizeof(float));
-      
+
     // -> setting some values to defaults //
     first_round   =1;
-    scaled_before =1; 
-    angledamp[0]  =0; 
-    lastangle[0]  =0; 
-    angleoffset[0]=0; 
+    scaled_before =1;
+    angledamp[0]  =0;
+    lastangle[0]  =0;
+    angleoffset[0]=0;
     is_tracked[0] =0;
     NumObs_old    =0;
     NumObs        =0;
 
-    InitializeCriticalSection(&CriticalSection);    
+    InitializeCriticalSection(&CriticalSection);
 }
 
 plugClass::~plugClass()
-{    
+{
     // -> deallocating image and output value buffers  //
     cvReleaseImage(&Chsv);
     cvReleaseImage(&Ghue);
@@ -283,35 +283,35 @@ plugClass::~plugClass()
     cvReleaseImage(&Cmask);
     cvReleaseImage(&Ctmp);
     cvReleaseImage(&Ctmp2);
-    cvReleaseImage(&Gmasktemp); 
+    cvReleaseImage(&Gmasktemp);
     if (hist) {for (DWORD sh=0; sh<sc_hist; sh++) {cvReleaseHist(&hist[sh]);}
                free(hist);
                sc_hist=0;
               }
-    
-    // -> deallocating output value buffers  // 
+
+    // -> deallocating output value buffers  //
     for (register int no=0; no<NUM_OUTPUTS; no++) free(FOutputs[no].Spread);
-   
+
      // -> deallocating spreadsize-dependent buffers //
     free(reinit); free(filtersize); free(areathresh);
-    
+
     free(track_window); free(track_box);   free(track_comp);
     free(angledamp);    free(angleoffset); free(lastangle);
-    free(area);         free(is_tracked); 
+    free(area);         free(is_tracked);
     for (int r=0; r<4; r++) free(ROIp[r]);
-    
+
     DeleteCriticalSection(&CriticalSection);
 }
 
 void plugClass::init()
-{    
+{
     FImageSize.width  = FVideoInfo.frameWidth;
     FImageSize.height = FVideoInfo.frameHeight;
-        
-    selectall.x=0;  selectall.y=0;  
-    selectall.width=FVideoInfo.frameWidth-1;  selectall.height=FVideoInfo.frameHeight-1;  
-     
-    //allocating image and histogram buffers  //   
+
+    selectall.x=0;  selectall.y=0;
+    selectall.width=FVideoInfo.frameWidth-1;  selectall.height=FVideoInfo.frameHeight-1;
+
+    //allocating image and histogram buffers  //
     CCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
     Chsv          = cvCreateImage(FImageSize, 8, 3);
     Ghue          = cvCreateImage(FImageSize, 8, 1);
@@ -321,13 +321,13 @@ void plugClass::init()
     Ctmp          = cvCreateImage(FImageSize, 8, 3);
     Ctmp2         = cvCreateImage(FImageSize, 8, 3);
     Gmasktemp     = cvCreateImage(FImageSize, 8, 1);
-     
+
     hist    = (CvHistogram**) calloc(1, sizeof(CvHistogram*));
-    hist[0] = cvCreateHist(1, &hdims, CV_HIST_ARRAY, &hranges, 1); 
+    hist[0] = cvCreateHist(1, &hdims, CV_HIST_ARRAY, &hranges, 1);
     sc_hist=1;
-     
-    
-     
+
+
+
     dorealloc=1;
 }
 
@@ -342,7 +342,7 @@ char* plugClass::getParameterDisplay(DWORD index)
 
 // -> Function is called when scalar input values (types 0-6, 10 or 100) are modified //
 DWORD plugClass::setParameter(SetParameterStruct* pParam)
-{    
+{
 	FParams[pParam->index].Value = pParam->value;
 
 	return FF_SUCCESS;
@@ -350,67 +350,67 @@ DWORD plugClass::setParameter(SetParameterStruct* pParam)
 
 // -> Function is called when spread input values (types 20, 21 or 22) are modified //
 DWORD plugClass::setInput(InputStruct* pParam)
-{        
+{
     int index = pParam->Index;
-    DWORD Slicecount = pParam->SliceCount; 
+    DWORD Slicecount = pParam->SliceCount;
 
     // -> if reinit buffer is set
     if(index==2)
-       {// -> realloc areathresh buffer if necessary//   
+       {// -> realloc areathresh buffer if necessary//
         if (Slicecount!=sc_reinit) reinit=(float*) realloc(reinit, sizeof(float)*Slicecount);
         // -> set areathresh slicecounts //
         sc_reinit = Slicecount;
-        // -> set areathresh to input values //          
+        // -> set areathresh to input values //
         for (DWORD u=0; u<sc_reinit; u++) reinit[u]=pParam->Spread[u];
-       }  
-       
-    // -> if tolerances are set  
-    else if(index>2 && index<7)   
-       {// -> realloc filtersize buffer if necessary// 
-        if (Slicecount != sc_tols[index-3]) 
+       }
+
+    // -> if tolerances are set
+    else if(index>2 && index<7)
+       {// -> realloc filtersize buffer if necessary//
+        if (Slicecount != sc_tols[index-3])
            tols[index-3] = (float*) realloc(tols[index-3], sizeof(float)*Slicecount);
         // -> set filtersize slicecounts //
-        sc_tols[index-3] = Slicecount;   
-        // -> set filtersize to input values // 
-        for (DWORD u=0; u<sc_tols[index-3]; u++) 
+        sc_tols[index-3] = Slicecount;
+        // -> set filtersize to input values //
+        for (DWORD u=0; u<sc_tols[index-3]; u++)
           tols[index-3][u] = pParam->Spread[u];
-        }  
-        
-    // -> if area thresholds are set  
+        }
+
+    // -> if area thresholds are set
     else if(index==7)
-       {// -> realloc areathresh buffer if necessary//   
+       {// -> realloc areathresh buffer if necessary//
         if (Slicecount!=sc_areathresh) areathresh=(float*) realloc(areathresh, sizeof(float)*Slicecount);
         // -> set areathresh slicecounts //
         sc_areathresh = Slicecount;
-        // -> set areathresh to input values //          
+        // -> set areathresh to input values //
         for (DWORD u=0; u<sc_areathresh; u++) areathresh[u]=pParam->Spread[u];
-       }  
- 
-    // -> if medianfilter sizes are set  
-    else if(index==8)   
-       {// -> realloc filtersize buffer if necessary//           
+       }
+
+    // -> if medianfilter sizes are set
+    else if(index==8)
+       {// -> realloc filtersize buffer if necessary//
         if (Slicecount!=sc_filtersize) filtersize=(float*) realloc(filtersize, sizeof(float)*Slicecount);
         // -> set filtersize slicecounts //
-        sc_filtersize = Slicecount;   
-        // -> set filtersize to input values // 
+        sc_filtersize = Slicecount;
+        // -> set filtersize to input values //
         for (DWORD u=0; u<sc_filtersize; u++) filtersize[u]=pParam->Spread[u];
-        }  
-    
-     // -> if Roi positions are set  
-    else if(index>8 && index<13)   
+        }
+
+     // -> if Roi positions are set
+    else if(index>8 && index<13)
        {// -> check if these input values have a different slicecount //
         if (Slicecount!=NumObs) dorealloc=1;
-        // -> realloc filtersize buffer if necessary//           
+        // -> realloc filtersize buffer if necessary//
         if (Slicecount!=sc_ROIp[index-9]) ROIp[index-9]=(float*) realloc(ROIp[index-9], sizeof(float)*Slicecount);
         // -> set filtersize slicecounts //
-        sc_ROIp[index-9] = Slicecount;   
-        // -> set filtersize to input values // 
+        sc_ROIp[index-9] = Slicecount;
+        // -> set filtersize to input values //
         for (DWORD u=0; u<sc_ROIp[index-9]; u++) ROIp[index-9][u]=pParam->Spread[u];
-        }  
-    
-    NumObs=maxNumObs(); 
+        }
+
+    NumObs=maxNumObs();
     // -> Reallocate only if input values have different slicecounts //
-    if (Slicecount!=NumObs) 
+    if (Slicecount!=NumObs)
         dorealloc=1;
 
 	return FF_SUCCESS;
@@ -432,6 +432,8 @@ DWORD plugClass::setThreadLock(DWORD Enter)
 	  EnterCriticalSection(&CriticalSection);
     else
       LeaveCriticalSection(&CriticalSection);
+
+    return FF_SUCCESS;
 }
 
 float* plugClass::getOutput(DWORD index)
@@ -452,88 +454,81 @@ DWORD plugClass::processFrame(LPVOID pFrame)
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // -> Frame processing takes place here: //
-   
+
 DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 {
     // -> Leave if setting function is still active //
-    //if(issetting){LeaveCriticalSection(&CriticalSection); return FF_SUCCESS;} 
-    
-    EnterCriticalSection(&CriticalSection);  
-    
+    //if(issetting){LeaveCriticalSection(&CriticalSection); return FF_SUCCESS;}
+
+    EnterCriticalSection(&CriticalSection);
+
     // -> If no tracking parameters are set, quit //
     NumObs=maxNumObs();
-   
-    if (NumObs == 0 ) 
-       {for (int os=0; os<NUM_OUTPUTS; os++) 
+
+    if (NumObs == 0 )
+       {for (int os=0; os<NUM_OUTPUTS; os++)
              {FOutputs[os].SliceCount=0; FOutputs[os].Spread = (float*) realloc (FOutputs[os].Spread, 0);}
-        LeaveCriticalSection(&CriticalSection); return FF_SUCCESS;} 
-    
+        LeaveCriticalSection(&CriticalSection); return FF_SUCCESS;}
+
     // -> Reallocate input value buffers if necessary (if slicecounts are different)
-    if (dorealloc) ReallocBuffers();   
+    if (dorealloc) ReallocBuffers();
 
 
     // -> putting frame into IplImage format //
     CCurrentImage->origin = 1;
     CCurrentImage->imageData = (char*)pFrame;
-    
-    cvCopy(CCurrentImage, Ctmp, 0); 
+
+    cvCopy(CCurrentImage, Ctmp, 0);
     cvSetZero(Ctmp2);
-         
+
     int h    = Ctmp->height;
-    int w    = Ctmp->width ;     
-    int tol, obj;
+    int w    = Ctmp->width ;
     int S_x, S_y, S_w, S_h;
     int smin, smax, vmin, vmax;
-    float ratio = (float)w/(float)h;  
-    float TT; 
-      
+    float TT;
+
     // -> convert input image and track color into hsv space //
     cvCvtColor( Ctmp, Chsv, CV_BGR2HSV );
     cvSplit( Chsv, Ghue, 0, 0, 0 );
 
-    ////MAIN OBJECT LOOP////////////////////////////////////////////////////////////////////////////////    
-    
-    char buffer[100];
+    ////MAIN OBJECT LOOP////////////////////////////////////////////////////////////////////////////////
+
     for (DWORD obj=0; obj<NumObs; obj++)
-        { 
-          
-        // sprintf(buffer, "1");
-        //  OutputDebugString(buffer);                  
-            
+        {
          ////////////////////////////////////////////////////////////////////
          // STEP I : Preparing tracking parameters and initial search rect //
-         // -> calculate search areas 
-         S_x = (int)((ROIp[0][obj] *(float)w)+(float)w/2); 
+         // -> calculate search areas
+         S_x = (int)((ROIp[0][obj] *(float)w)+(float)w/2);
          S_y = (int)((ROIp[1][obj] *(float)h)+(float)h/2);
-         S_w = (int) (ROIp[2][obj] *(float)w); 
-         S_h = (int) (ROIp[3][obj] *(float)h); 
-         
+         S_w = (int) (ROIp[2][obj] *(float)w);
+         S_h = (int) (ROIp[3][obj] *(float)h);
+
          //sprintf(buffer, "ROIX:%f , ROIY: %f, width: %f, height: %f", ROIp[0][0], ROIp[1][0], ROIp[2][0], ROIp[3][0]);
-         //OutputDebugString(buffer);   
-     
+         //OutputDebugString(buffer);
+
          // -> checking if initial search rect lies within image & setting the search rect //
-         if ( S_x-S_w/2<0 || S_x+S_w/2>w || S_y-S_h/2<0 || S_y+S_h/2>h) 
-         // bad rect 
+         if ( S_x-S_w/2<0 || S_x+S_w/2>w || S_y-S_h/2<0 || S_y+S_h/2>h)
+         // bad rect
             { selection.x=(w*3)/8;  selection.y=(h*3)/8;  selection.width=w/4;  selection.height=h/4;}
-         else    
-         // good rect 
+         else
+         // good rect
             {
-             selection.x=S_x-S_w/2; selection.y=S_y-S_h/2; selection.width=S_w; selection.height=S_h; 
-            }        
+             selection.x=S_x-S_w/2; selection.y=S_y-S_h/2; selection.width=S_w; selection.height=S_h;
+            }
          // -> Mask pixels that fit in given saturation and grayscale level bounds //
-         smin = (int) (tols[0][obj]*255.0);  
-         smax = (int) (tols[1][obj]*255.0);  
-         vmin = (int) (tols[2][obj]*255.0); 
+         smin = (int) (tols[0][obj]*255.0);
+         smax = (int) (tols[1][obj]*255.0);
+         vmin = (int) (tols[2][obj]*255.0);
          vmax = (int) (tols[3][obj]*255.0);
-        
+
          cvInRangeS( Chsv, cvScalar(0,  MIN(smin,smax),MIN(vmin,vmax),0),
                            cvScalar(180,MAX(smin,smax),MAX(vmin,vmax),0), Gmask );
-         
-         /////////////////////////////////////////////////////////////////// 
+
+         ///////////////////////////////////////////////////////////////////
          // STEP II : Calc backprojection image with tracking parameters  //
          // -> Reset Search if requested //
          if(reinit[obj]) first_round=1;
-        
+
          if(first_round)
            {
             float max_val = 0.f;
@@ -544,104 +539,104 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
             cvConvertScale( hist[obj]->bins, hist[obj]->bins, max_val ? 255. / max_val : 0., 0 );
             cvResetImageROI( Ghue );
             cvResetImageROI( Gmask );
-            track_window[obj] = selection;         
+            track_window[obj] = selection;
            }
-                
+
            cvCalcBackProject( &Ghue, Gbackproject, hist[obj] );
            cvAnd( Gbackproject, Gmask, Gbackproject, 0 );
 
          /////////////////////////////////////////////////////////////////////////////////////////////////////
          // STEP III : Call cvCamShift_mod (with image thresholded with tolerances) to track color objects  //
-         // -> calling CamShift_mod with option 'scaled values' (Farams[11].Value)        // 
-      
-         if (((int)filtersize[obj]>0) && ((int)filtersize[obj]<15)) 
+         // -> calling CamShift_mod with option 'scaled values' (Farams[11].Value)        //
+
+         if (((int)filtersize[obj]>0) && ((int)filtersize[obj]<15))
             {
              cvCopy(Gbackproject, Gmasktemp, NULL);
              cvSmooth( Gmasktemp, Gbackproject, CV_MEDIAN, ((int)filtersize[obj]*2)-1, ((int)filtersize[obj]*2)-1, 0 );
             }
-   
+
          cvCamShift_mod( Gbackproject, track_window[obj], cvTermCriteria( CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 10, 1 ),
-                         &track_comp[obj], &track_box[obj], w, h , &first_round, &angledamp[obj], &lastangle[obj], &angleoffset[obj], 
+                         &track_comp[obj], &track_box[obj], w, h , &first_round, &angledamp[obj], &lastangle[obj], &angleoffset[obj],
                          &area[obj], FParams[13].Value);
 
          // -> TT is trackingthresh (Area Threshold) to the power of 4                              //
          //    This is to fit the range of 0 (no thresholding) to 1 (object has size of full image) //
          //    with a wide numerical range for small objects                                        //
          TT = areathresh[obj] * areathresh[obj] * areathresh[obj] * areathresh[obj];
-    
-         if ( area[obj]/255.0 > TT ) 
-            {is_tracked[obj]=1.0;        
+
+         if ( area[obj]/255.0 > TT )
+            {is_tracked[obj]=1.0;
              }
-         else  is_tracked[obj]=0.0;  
-     
-         // -> next time we'll start just where we left //              
+         else  is_tracked[obj]=0.0;
+
+         // -> next time we'll start just where we left //
              track_window[obj] = track_comp[obj].rect;
-             
+
          // -> reinit search ROI if requested  //
-         if (is_tracked[obj]==0) 
+         if (is_tracked[obj]==0)
             {track_window[obj].height = selectall.height;
-             track_window[obj].width = selectall.width;  
+             track_window[obj].width = selectall.width;
              track_window[obj].x = selectall.x;
              track_window[obj].y = selectall.y;
-            }  
-          
+            }
+
           //sprintf(buffer, "5");
-          //OutputDebugString(buffer);      
-          
-         // -> show thresholded image if requested  //  
-          if( (DWORD)FParams[1].Value==obj ) //if( (int)FParams[1].Value == obj ) 
+          //OutputDebugString(buffer);
+
+         // -> show thresholded image if requested  //
+          if( (DWORD)FParams[1].Value==obj ) //if( (int)FParams[1].Value == obj )
            {
             cvCvtColor( Gbackproject, Cmask, CV_GRAY2BGR );
             cvNot(Cmask, Cmask);
-            cvSub(Ctmp, Cmask, Ctmp, 0);  
+            cvSub(Ctmp, Cmask, Ctmp, 0);
            }
-           
-         // -> show search boxes if requested  //  
-         if( (DWORD)FParams[0].Value==obj || FParams[0].Value==-1 ) 
-           {cvRectangle( Ctmp2, cvPoint (selection.x,selection.y), 
-                                cvPoint (selection.x+(selection.width),selection.y+(selection.height)),
-                                cvScalar (255, 106, 0,0), 1, 8, 0 );  
-            
-            cvRectangle( Ctmp2, cvPoint (track_window[obj].x,track_window[obj].y), 
-                                cvPoint (track_window[obj].x+(track_window[obj].width),track_window[obj].y+(track_window[obj].height)),
-                                cvScalar (0, 106, 255,0), 1, 8, 0 );   
-           }
-                 
-       } 
-    ////END OF MAIN OBJECT LOOP/////////////////////////////////////////////////////////////////////////    
 
-    cvAdd(Ctmp, Ctmp2, Ctmp, 0); 
-    cvCopy(Ctmp, CCurrentImage, 0);           
+         // -> show search boxes if requested  //
+         if( (DWORD)FParams[0].Value==obj || FParams[0].Value==-1 )
+           {cvRectangle( Ctmp2, cvPoint (selection.x,selection.y),
+                                cvPoint (selection.x+(selection.width),selection.y+(selection.height)),
+                                cvScalar (255, 106, 0,0), 1, 8, 0 );
+
+            cvRectangle( Ctmp2, cvPoint (track_window[obj].x,track_window[obj].y),
+                                cvPoint (track_window[obj].x+(track_window[obj].width),track_window[obj].y+(track_window[obj].height)),
+                                cvScalar (0, 106, 255,0), 1, 8, 0 );
+           }
+
+       }
+    ////END OF MAIN OBJECT LOOP/////////////////////////////////////////////////////////////////////////
+
+    cvAdd(Ctmp, Ctmp2, Ctmp, 0);
+    cvCopy(Ctmp, CCurrentImage, 0);
 
     first_round=0;
-           
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // STEP IV : Set  Outputs                                                                         //
-  
-    // -> set output value slicecount and realloc value arrays //    
-    if (FOutputs[0].SliceCount!=NumObs) 
+
+    // -> set output value slicecount and realloc value arrays //
+    if (FOutputs[0].SliceCount!=NumObs)
         for (register DWORD op=0; op<NUM_OUTPUTS; op++)
             {
              FOutputs[op].SliceCount= NumObs;
              FOutputs[op].Spread = (float*) realloc (FOutputs[op].Spread, sizeof(float)* NumObs);
             }
-           
-    // -> set output values //  
+
+    // -> set output values //
     for (register DWORD obj=0; obj<NumObs; obj++)
         {
          if (is_tracked[obj])
             {
-             FOutputs[0].Spread[obj] =  track_box[obj].center.x;    
-             FOutputs[1].Spread[obj] =  track_box[obj].center.y;    
-             FOutputs[2].Spread[obj] =  track_box[obj].size.width; 
-             FOutputs[3].Spread[obj] =  track_box[obj].size.height;  
-             FOutputs[4].Spread[obj] = angledamp[obj]-0.25; // -> angle to y-axis // 
+             FOutputs[0].Spread[obj] =  track_box[obj].center.x;
+             FOutputs[1].Spread[obj] =  track_box[obj].center.y;
+             FOutputs[2].Spread[obj] =  track_box[obj].size.width;
+             FOutputs[3].Spread[obj] =  track_box[obj].size.height;
+             FOutputs[4].Spread[obj] = angledamp[obj]-0.25; // -> angle to y-axis //
             }
              FOutputs[5].Spread[obj] = is_tracked[obj];
         }
-         
+
     LeaveCriticalSection(&CriticalSection);
-    
+
 	return FF_SUCCESS;
 }
 
@@ -653,8 +648,8 @@ DWORD plugClass::processFrameCopy24Bit(ProcessFrameCopyStruct* pFrameData){	retu
 DWORD plugClass::processFrameCopy32Bit(ProcessFrameCopyStruct* pFrameData){	return FF_FAIL;}
 
 DWORD getPluginCaps(DWORD index)
-{	
- switch (index) 
+{
+ switch (index)
  {
 
 	case FF_CAP_16BITVIDEO:         return FF_FALSE;
@@ -668,15 +663,15 @@ DWORD getPluginCaps(DWORD index)
 	}
 }
 
-PlugInfoStruct* getInfo() 
+PlugInfoStruct* getInfo()
 {
 	GPlugInfo.APIMajorVersion = 2;		// number before decimal point in version nums
 	GPlugInfo.APIMinorVersion = 200;		// this is the number after the decimal point
 										// so version 0.511 has major num 0, minor num 501
-	char ID[5] = "CSTr";		 // this *must* be unique to your plugin 
+	char ID[5] = "CSTr";		 // this *must* be unique to your plugin
 								 // see www.freeframe.org for a list of ID's already taken
 	char name[17] = "CamShiftTracker";
-	
+
 	memcpy(GPlugInfo.uniqueID, ID, 4);
 	memcpy(GPlugInfo.pluginName, name, 16);
 	GPlugInfo.pluginType = FF_EFFECT;
