@@ -93,8 +93,7 @@ DWORD initialise()
 	GParamConstants[4].Type = 10;
 	GParamConstants[5].Type = 0;
 	GParamConstants[6].Type = 0;
-	GParamConstants[7].Type = 0;
-	GParamConstants[8].Type = 10;
+	GParamConstants[7].Type = 10;
 
 	GParamConstants[0].Default = 1.0f;
 
@@ -107,8 +106,7 @@ DWORD initialise()
  	GParamConstants[4].Default = 40.0f;
  	GParamConstants[5].Default = 1.0f;
  	GParamConstants[6].Default = 1.0f;
- 	GParamConstants[7].Default = 1.0f;
- 	GParamConstants[8].Default = 5.0f;
+ 	GParamConstants[7].Default = 10.0f;
 
 
 	char tempName0[17] = "Show Rectangle";
@@ -116,10 +114,9 @@ DWORD initialise()
 	char tempName2[17] = "Min Neighbors";
 	char tempName3[17] = "Scale Cascade";
 	char tempName4[17] = "Min Face Size";
-	char tempName5[17] = "Kill Overlaping";
-	char tempName6[17] = "Canny Pruning";
-	char tempName7[17] = "Unique ID";
-	char tempName8[17] = "Lifetime";
+	char tempName5[17] = "Canny Pruning";
+	char tempName6[17] = "Unique ID";
+	char tempName7[17] = "Lifetime";
 
 	memcpy(GParamConstants[0].Name, tempName0, 16);
 	memcpy(GParamConstants[1].Name, tempName1, 16);
@@ -129,7 +126,6 @@ DWORD initialise()
 	memcpy(GParamConstants[5].Name, tempName5, 16);
 	memcpy(GParamConstants[6].Name, tempName6, 16);
 	memcpy(GParamConstants[7].Name, tempName7, 16);
-	memcpy(GParamConstants[8].Name, tempName8, 16);
 
     // populate the output structs
     GOutputConstants[0].Type = 10;
@@ -194,24 +190,24 @@ char* getOutputName(DWORD index)
 
 plugClass::plugClass()
 {
-    FOutputs[0].SliceCount = 1;
-    FOutputs[1].SliceCount = 1;
-    FOutputs[2].SliceCount = 1;
-    FOutputs[3].SliceCount = 1;
+    FOutputs[0].SliceCount = 0;
+    FOutputs[1].SliceCount = 0;
+    FOutputs[2].SliceCount = 0;
+    FOutputs[3].SliceCount = 0;
+    FOutputs[4].SliceCount = 0;
     FOutputs[0].Spread = (float*) calloc(FOutputs[0].SliceCount, sizeof(float));
     FOutputs[1].Spread = (float*) calloc(FOutputs[1].SliceCount, sizeof(float));
     FOutputs[2].Spread = (float*) calloc(FOutputs[2].SliceCount, sizeof(float));
     FOutputs[3].Spread = (float*) calloc(FOutputs[3].SliceCount, sizeof(float));
+    FOutputs[4].Spread = (float*) calloc(FOutputs[3].SliceCount, sizeof(float));
 
     FStorage = 0;
     FCascade = 0;
 
     newCascade = true;
 
-    FFaces_new_clean_lifetime = (Obj*) malloc(1 * sizeof(Obj));
-    FFaces_new_clean = (Obj*) malloc(1 * sizeof(Obj));
-    FObjlist_old = (Obj*) malloc(1 * sizeof(Obj));
-    FObjlist_new = (Obj*) malloc(1 * sizeof(Obj));
+    FFaces_new = (Obj*) malloc(1 * sizeof(Obj));
+    FFaces_old = (Obj*) malloc(1 * sizeof(Obj));
     FSortlist = (int*) calloc(1, sizeof(int));
 
     InitializeCriticalSection(&CriticalSection);
@@ -229,8 +225,8 @@ void plugClass::init()
     FCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
     FCopy = cvCreateImage(FImageSize, IPL_DEPTH_8U, 3);
 
-    FIDs_old       = (int*) malloc(sizeof(int));
-    FIDs_new       = (int*) malloc(sizeof(int));
+    FIDs_old = (int*) malloc(sizeof(int));
+    FIDs_new = (int*) malloc(sizeof(int));
 
     FFirstRound  = true;
     FMaxID = 0;
@@ -249,12 +245,14 @@ plugClass::~plugClass()
     if (FCascade)
       cvReleaseHaarClassifierCascade(&FCascade);
 
-    free(FFaces_new_clean_lifetime);
-    free(FFaces_new_clean);
-    free(FObjlist_new);
-    free(FObjlist_old);
-
     for (int i=0; i<NUM_OUTPUTS; i++) free(FOutputs[i].Spread);
+
+    free(FFaces_new);
+    free(FFaces_old);
+
+    free (FSortlist);
+    free (FIDs_old);
+    free (FIDs_new);
 
     DeleteCriticalSection(&CriticalSection);
 }
@@ -392,163 +390,160 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
         //handle faces ids, duplicates and lifetime
         if (faces)
         {
-            FFaceCount_old = FCleanFaceCount;
-            FFaceCount = faces->total;
+            FFaceCount_old = FFaceCount_new;
+            FFaceCount_new = faces->total;
 
-            FSortlist = (int*) realloc(FSortlist, sizeof(int) * FFaceCount);
             FIDs_old = (int*) realloc(FIDs_old, sizeof(int) * FFaceCount_old);
-            FObjlist_old = (Obj*) realloc(FObjlist_old, sizeof(Obj) * FFaceCount_old);
+            FFaces_old = (Obj*) realloc(FFaces_old, sizeof(Obj) * FFaceCount_old);
 
             if (FFirstRound)
             {
-                FIDs_new = (int*) realloc(FIDs_new, sizeof(int) * FFaceCount);
-                for (int i=0; i<FFaceCount; i++)
+                FIDs_new = (int*) realloc(FIDs_new, sizeof(int) * FFaceCount_new);
+                for (int i=0; i<FFaceCount_new; i++)
                     FIDs_new[i] = i;
-                FObjlist_new = (Obj*) realloc(FObjlist_new, sizeof(Obj) * FFaceCount);
             }
+
            //move last frames faces to _old list
             for (int i=0; i<FFaceCount_old; i++)
             {
-                FObjlist_old[i] = FFaces_new_clean_lifetime[i];
+                FFaces_old[i] = FFaces_new[i];
                 FIDs_old[i] = FIDs_new[i];
             }
 
-            FObjlist_new = (Obj*) realloc(FObjlist_new, sizeof(Obj) * FFaceCount);
-            FIDs_new = (int*) realloc(FIDs_new, sizeof(int) * FFaceCount);
-
             //fill Objlist_new with data from cvHaarDetectObjects
-            for(int i = 0; i < FFaceCount; i++ )
+            FNewFaceList.clear();
+            Obj tmp;
+            CvRect *r;
+            for(int i = 0; i < FFaceCount_new; i++ )
             {
-                CvRect* r = (CvRect*)cvGetSeqElem(faces, i);
+                r = (CvRect*)cvGetSeqElem(faces, i);
 
-                FObjlist_new[i].x = ((float) (r->x + (float) r->width / 2) / FImageSize.width) - 0.5;
-                FObjlist_new[i].y = 1 - ((float) (r->y + (float) r->height / 2) / FImageSize.height) - 0.5;
-                FObjlist_new[i].width = (float) r->width / FImageSize.width;
-                FObjlist_new[i].height = (float) r->height / FImageSize.height;
-                FObjlist_new[i].lostframes = 0;
-                FObjlist_new[i].found = false;
+                tmp.x = ((float) (r->x + (float) r->width / 2) / FImageSize.width) - 0.5;
+                tmp.x = ((float) (r->x + (float) r->width / 2) / FImageSize.width) - 0.5;
+                tmp.y = 1 - ((float) (r->y + (float) r->height / 2) / FImageSize.height) - 0.5;
+                tmp.width = (float) r->width / FImageSize.width;
+                tmp.height = (float) r->height / FImageSize.height;
+                tmp.lostframes = 0;
+                tmp.found = false;
+
+                FNewFaceList.push_back(tmp);
             }
 
             //go through all newly found and remove doubles (faces that are too close together)
-            if (FParams[5].Value > 0)
+            int next = 0;
+            for(FFaceIter=FNewFaceList.begin(); FFaceIter!=FNewFaceList.end(); ++FFaceIter)
+            //for(int i=0; i<FNewFaceList.size(); i++)
             {
-                for(int i=0; i<FFaceCount; i++)
+                next++;
+                //if point is already marked -> skip this loop
+                if (!FFaceIter->found)
                 {
-                    //if point is already marked -> skip this loop
-                    if (!FObjlist_new[i].found)
+                    //for(FFaceIter2=FNewFaceList.begin(); FFaceIter2!=FNewFaceList.end(); ++FFaceIter2)
+                    for(int i=next; i<FNewFaceList.size(); i++)
                     {
-                        for(int j=0; j<FFaceCount; j++)
-                        {
-                             //no comparision beetween the point itself, only for the rest of points
-                             if (j != i)
-                             {
-                                 //calculate distance between every point
-                                 distance = sqrtf((FObjlist_new[i].x - FObjlist_new[j].x) * (FObjlist_new[i].x - FObjlist_new[j].x) +
-                                              (FObjlist_new[i].y - FObjlist_new[j].y) * (FObjlist_new[i].y - FObjlist_new[j].y));
 
-                                 //mark point
-                                 if ((distance < FObjlist_new[i].width/2)
-                                 && (distance < FObjlist_new[i].height/2))
-                                 {
-                                     FObjlist_new[j].found = true;
-                                 }
-                             }
+                        //calculate distance between every point
+                        distance = sqrtf(pow(FFaceIter->x - FNewFaceList.at(i).x, 2) + pow(FFaceIter->y - FNewFaceList.at(i).y, 2));
+
+                        //mark point
+                        if ((distance < FFaceIter->width/2)
+                        && (distance < FFaceIter->height/2))
+                        {
+                            FNewFaceList.at(i).found = true;
                         }
                     }
                 }
             }
 
-            FNewFaceList.clear();
-            //move all new to the list
-            for (int i=0; i<FFaceCount; i++)
+            //remove all doubles from the list
+            for(FFaceIter = FNewFaceList.begin(); FFaceIter!=FNewFaceList.end();)
             {
-                if (!FObjlist_new[i].found)
-                    FNewFaceList.push_back(FObjlist_new[i]);
+                if (FFaceIter->found)
+                    FFaceIter = FNewFaceList.erase(FFaceIter);
+                else
+                    FFaceIter++;
             }
 
-            //for each old face go through all the newly found and see if we find a close one, if not increase lostframecount
+           //for each old face go through all the newly found and see if we find a close one, if not increase lostframecount
             for (int i=0; i<FFaceCount_old; i++)
             {
-                FObjlist_old[i].lostframes++;
-                for(FFace=FNewFaceList.begin(); FFace!=FNewFaceList.end(); ++FFace)
+                FFaces_old[i].lostframes++;
+                for(FFaceIter=FNewFaceList.begin(); FFaceIter!=FNewFaceList.end(); ++FFaceIter)
                 {
-                    distance = sqrtf(pow(FObjlist_old[i].x - FFace->x, 2) + pow(FObjlist_old[i].y - FFace->y, 2));
-                    if (distance < FObjlist_old[i].width / 2)
+                    distance = sqrtf(pow(FFaces_old[i].x - FFaceIter->x, 2) + pow(FFaces_old[i].y - FFaceIter->y, 2));
+                    if (distance < FFaces_old[i].width / 2)
                     {
-                        FObjlist_old[i].lostframes = 0;
+                        FFaces_old[i].lostframes = 0;
                         break;
                     }
                 }
 
                 //old face that does not exceed old framelost_threshold is added to newlist
-                if ((FObjlist_old[i].lostframes > 0)
-                && (FObjlist_old[i].lostframes < (int) FParams[8].Value))
+                if ((FFaces_old[i].lostframes > 0)
+                && (FFaces_old[i].lostframes < (int) FParams[7].Value))
                 {
                     //add it to the newly found
-
-                char buffer[100];
-                sprintf(buffer, "lostframes: %i, x: %f, y: %f", FObjlist_old[i].lostframes, FObjlist_old[i].x, FObjlist_old[i].y);
-                OutputDebugString(buffer);
-
-                    FNewFaceList.push_back(FObjlist_old[i]);
+                    FNewFaceList.push_back(FFaces_old[i]);
                 }
             }
 
-            FCleanFaceCount = FNewFaceList.size();
-            //int newcount = FCleanFaceCount + oldnew;
-            FFaces_new_clean_lifetime = (Obj*) realloc(FFaces_new_clean_lifetime, sizeof(Obj) * FCleanFaceCount);
-            FIDs_new = (int*) realloc(FIDs_new, sizeof(int) * FCleanFaceCount);
+            FFaceCount_new = FNewFaceList.size();
+            FFaces_new = (Obj*) realloc(FFaces_new, sizeof(Obj) * FFaceCount_new);
+            FIDs_new = (int*) realloc(FIDs_new, sizeof(int) * FFaceCount_new);
+            FSortlist = (int*) realloc(FSortlist, sizeof(int) * FFaceCount_new);
 
-            //for(FFace=FNewFaceList.begin(); FFace!=FNewFaceList.end(); ++FFace)
-            for(int i=0; i<FCleanFaceCount; i++)
+            //put list elements into array for further processing
+            for(int i=0; i<FNewFaceList.size(); i++)
             {
-                Obj face = FNewFaceList.front();
-                FFaces_new_clean_lifetime[i] = face;
-                FNewFaceList.pop_front();
+                FFaces_new[i] = FNewFaceList.at(i);
             }
 
             //do adapt ids
             if (!FFirstRound)
             {   //sort face ids
-               //adaptindex(FObjlist_old, FFaces_new_clean_lifetime, FFaceCount_old, FCleanFaceCount, FIDs_old, FIDs_new, FSortlist, &FMaxID, (int)FParams[7].Value);
+                if (FParams[6].Value < 0.5)
+                    FMaxID = 0;
+
+                adaptindex(FFaces_old, FFaces_new, FFaceCount_old, FFaceCount_new, FIDs_old, FIDs_new, FSortlist, &FMaxID, FParams[6].Value >= 0.5);
             }
 
             FFirstRound=false;
 
-            FOutputs[0].SliceCount = FCleanFaceCount;
-            FOutputs[1].SliceCount = FCleanFaceCount;
-            FOutputs[2].SliceCount = FCleanFaceCount;
-            FOutputs[3].SliceCount = FCleanFaceCount;
-            FOutputs[4].SliceCount = FCleanFaceCount;
-            FOutputs[0].Spread = (float*) realloc(FOutputs[0].Spread, FCleanFaceCount * sizeof(float));
-            FOutputs[1].Spread = (float*) realloc(FOutputs[1].Spread, FCleanFaceCount * sizeof(float));
-            FOutputs[2].Spread = (float*) realloc(FOutputs[2].Spread, FCleanFaceCount * sizeof(float));
-            FOutputs[3].Spread = (float*) realloc(FOutputs[3].Spread, FCleanFaceCount * sizeof(float));
-            FOutputs[4].Spread = (float*) realloc(FOutputs[4].Spread, FCleanFaceCount * sizeof(float));
-
-            for(int i = 0; i < FCleanFaceCount; i++ )
+            if (FFaceCount_new != FFaceCount_old)
             {
+                FOutputs[0].SliceCount = FFaceCount_new;
+                FOutputs[1].SliceCount = FFaceCount_new;
+                FOutputs[2].SliceCount = FFaceCount_new;
+                FOutputs[3].SliceCount = FFaceCount_new;
+                FOutputs[4].SliceCount = FFaceCount_new;
+                FOutputs[0].Spread = (float*) realloc(FOutputs[0].Spread, FFaceCount_new * sizeof(float));
+                FOutputs[1].Spread = (float*) realloc(FOutputs[1].Spread, FFaceCount_new * sizeof(float));
+                FOutputs[2].Spread = (float*) realloc(FOutputs[2].Spread, FFaceCount_new * sizeof(float));
+                FOutputs[3].Spread = (float*) realloc(FOutputs[3].Spread, FFaceCount_new * sizeof(float));
+                FOutputs[4].Spread = (float*) realloc(FOutputs[4].Spread, FFaceCount_new * sizeof(float));
+            }
+
+            for(int i = 0; i < FFaceCount_new; i++ )
+            {
+                //output to vvvv
+                FOutputs[0].Spread[i] = FFaces_new[i].x;
+                FOutputs[1].Spread[i] = FFaces_new[i].y;
+                FOutputs[2].Spread[i] = FFaces_new[i].width;
+                FOutputs[3].Spread[i] = FFaces_new[i].height;
+                FOutputs[4].Spread[i] = FIDs_new[i];
+
+                //show rectangle if enabled -> draw rect
+                if (FParams[0].Value > 0)
                 {
-                    //output to vvvv
-                    FOutputs[0].Spread[i] = FFaces_new_clean_lifetime[i].x;
-                    FOutputs[1].Spread[i] = FFaces_new_clean_lifetime[i].y;
-                    FOutputs[2].Spread[i] = FFaces_new_clean_lifetime[i].width;
-                    FOutputs[3].Spread[i] = FFaces_new_clean_lifetime[i].height;
-                    FOutputs[4].Spread[i] = FIDs_new[i];
+                    //convert from coordinaten system (-0.5 to +0.5) to cv like coordinaten system (0 to ImageSize)
+                    pt1.x = int(float(FImageSize.width)*(FFaces_new[i].x - (FFaces_new[i].width/2) + 0.5));
+                    pt2.x = int(float(FImageSize.width)*(FFaces_new[i].x + (FFaces_new[i].width/2) + 0.5));
+                    pt1.y = FImageSize.height - int(float(FImageSize.height)*(1-(FFaces_new[i].y + FFaces_new[i].height/2 + 0.5)));
+                    pt2.y = FImageSize.height - int(float(FImageSize.height)*( 1-(FFaces_new[i].y - FFaces_new[i].height/2 + 0.5)) );
 
-                    //show rectangle if enabled -> draw rect
-                    if (FParams[0].Value > 0)
-                    {
-                        //convert from coordinaten system (-0.5 to +0.5) to cv like coordinaten system (0 to ImageSize)
-                        pt1.x = int(float(FImageSize.width)*(FFaces_new_clean_lifetime[i].x - (FFaces_new_clean_lifetime[i].width/2) + 0.5));
-                        pt2.x = int(float(FImageSize.width)*(FFaces_new_clean_lifetime[i].x + (FFaces_new_clean_lifetime[i].width/2) + 0.5));
-                        pt1.y = FImageSize.height - int(float(FImageSize.height)*(1-(FFaces_new_clean_lifetime[i].y + FFaces_new_clean_lifetime[i].height/2 + 0.5)));
-                        pt2.y = FImageSize.height - int(float(FImageSize.height)*( 1-(FFaces_new_clean_lifetime[i].y - FFaces_new_clean_lifetime[i].height/2 + 0.5)) );
-
-                        cvRectangle(FCurrentImage, pt1, pt2, CV_RGB(255,0,0), 3, 8, 0);
-                    }
+                    cvRectangle(FCurrentImage, pt1, pt2, CV_RGB(255,0,0), 3, 8, 0);
                 }
-            } /**/
+            }/**/
         }
     }
 
