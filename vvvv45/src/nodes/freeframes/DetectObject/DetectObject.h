@@ -27,7 +27,7 @@
 //freeframe includes
 #include "FreeFrame.h"
 
-#include <list>
+#include <vector>
 
 //opencv includes
 #include <cv.h>
@@ -40,7 +40,7 @@ using namespace std;
 #include "Indexsort.h"
 
 //pin constants
-#define NUM_PARAMS 9
+#define NUM_PARAMS 8
 #define NUM_INPUTS 1
 #define NUM_OUTPUTS 5
 
@@ -136,18 +136,14 @@ private:
     string Filename;
     bool newCascade;
 
-    Obj* FFaces_new_clean_lifetime;
-    Obj* FFaces_new_clean;
-    Obj* FObjlist_old;
-    Obj* FObjlist_new;
+    Obj* FFaces_new;
+    Obj* FFaces_old;
 
-    std::list<Obj> FFaceList;
-    std::list<Obj> FNewFaceList;
-   // std::vector<Obj> FFaceList;
-	std::list<Obj>::iterator FFace;
+    std::vector<Obj> FNewFaceList;
+	std::vector<Obj>::iterator FFaceIter;
 
     int *FIDs_old, *FIDs_new, *FSortlist;
-    int FFaceCount, FFaceCount_old, FCleanFaceCount;
+    int FFaceCount_new, FFaceCount_old;
     bool FFirstRound;
     int FMaxID;
 
