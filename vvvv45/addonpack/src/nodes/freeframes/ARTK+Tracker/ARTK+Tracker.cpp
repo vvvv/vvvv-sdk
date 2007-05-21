@@ -3,13 +3,13 @@
 
 //////description
 //freeframe plugin.
-//implemenation of the ARToolkitPlus library
-//for tracking of AR markers
+//implemenation of the ARToolkitPlus library for tracking of AR markers.
+//returns transformation of multiple markers in space.
 
 //////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
+//GNU General Public License (GPL)
+//english: http://www.gnu.org/licenses/gpl.html
+//german: http://www.gnu.de/documents/gpl.de.html
 
 //////language/ide
 //c++/codeblocks
@@ -258,7 +258,7 @@ DWORD plugClass::setParameter(SetParameterStruct* pParam)
         float f = pParam->value;
 	    int* ip = (int*)&f;
 	    char* cp = (char*)*ip;
-        int length = strlen(cp);
+        int length = strlen(cp) + 1;
         memcpy(&FCameraFile[0], cp, length);
 
         //for some reaseon ARTK+ init() needs / instead of \ in the path
@@ -269,6 +269,8 @@ DWORD plugClass::setParameter(SetParameterStruct* pParam)
         }
 
         FNewCameraFile = true;
+        sprintf(FDebugBuffer, "new camerafile: %s", &FCameraFile[0]);
+        OutputDebugString(FDebugBuffer);
 	}
 
 	return FF_SUCCESS;

@@ -3,13 +3,13 @@
 
 //////description
 //freeframe plugin.
-//implemenation of the ARToolkitPlus library
-//for tracking of AR markers
+//implemenation of the ARToolkitPlus library for tracking of AR markers.
+//returns transformation of multiple markers in space.
 
 //////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
+//GNU General Public License (GPL)
+//english: http://www.gnu.org/licenses/gpl.html
+//german: http://www.gnu.de/documents/gpl.de.html
 
 //////language/ide
 //c++/codeblocks
