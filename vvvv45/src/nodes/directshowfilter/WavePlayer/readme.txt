@@ -28,4 +28,4 @@ ___________________________________
 people that have been interested in
 WavePlayer
 have also been interested in
-http://vvvv.meso.net
+http://vvvv.org
