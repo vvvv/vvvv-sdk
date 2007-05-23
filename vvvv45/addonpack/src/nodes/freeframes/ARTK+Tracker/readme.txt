@@ -21,6 +21,9 @@
 //////initial author
 //joreg -> joreg@gmx.at
 
+//////additional coding
+//norbert.riedelsheimer@hfg-gmuend.de
+
 
 ___________________________________
 people that have been interested in

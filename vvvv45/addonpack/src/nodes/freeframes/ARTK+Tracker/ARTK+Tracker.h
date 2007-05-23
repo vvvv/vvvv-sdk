@@ -21,6 +21,9 @@
 //////initial author
 //joreg -> joreg@gmx.at
 
+//////additional coding
+//norbert.riedelsheimer@hfg-gmuend.de
+
 #ifndef __ARTKPTRACKER_HEADERFILE__
 #define __ARTKPTRACKER_HEADERFILE__
 
@@ -31,7 +34,7 @@
 //pin constants
 #define NUM_PARAMS 5
 #define NUM_INPUTS 1
-#define NUM_OUTPUTS 3
+#define NUM_OUTPUTS 4
 
 
 // implementation specific definitions

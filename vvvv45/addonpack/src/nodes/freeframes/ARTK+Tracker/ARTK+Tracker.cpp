@@ -21,12 +21,14 @@
 //////initial author
 //joreg -> joreg@gmx.at
 
+//////additional coding
+//norbert.riedelsheimer@hfg-gmuend.de
+
 //includes
 #include "ARTK+Tracker.h"
 
 //ARToolkits
 #include "ARToolKitPlus/TrackerSingleMarkerImpl.h"
-
 
 
 #include <string>
@@ -120,14 +122,17 @@ DWORD initialise()
     GOutputConstants[0].Type = 0;
     GOutputConstants[1].Type = 10;
     GOutputConstants[2].Type = 10;
+    GOutputConstants[3].Type = 10;
 
 	char outName0[17] = "ID";
 	char outName1[17] = "ModelView";
 	char outName2[17] = "Projection";
+	char outName3[17] = "Quaternion";
 
 	memcpy(GOutputConstants[0].Name, outName0, 16);
 	memcpy(GOutputConstants[1].Name, outName1, 16);
 	memcpy(GOutputConstants[2].Name, outName2, 16);
+	memcpy(GOutputConstants[3].Name, outName3, 16);
 
 
 	return FF_SUCCESS;
@@ -172,6 +177,39 @@ char* getOutputName(DWORD index)
 {
 	return GOutputConstants[index].Name;
 }
+
+
+ARFloat* matrixToQuaternion(const ARFloat matrix[4][4], ARFloat* qResult)
+{
+    double tr, s;
+    int i, j, k;
+    int nxt[3] = {1, 2, 0};
+    tr = matrix[0][0] + matrix[1][1] + matrix[2][2];
+    // check the diagonal
+    if (tr > 0.0) {
+        s = sqrt (tr + 1.0);
+        qResult[3] =(ARFloat)( s / 2.0 );
+        s = 0.5 / s;
+        qResult[0] = (ARFloat)((matrix[2][1] - matrix[1][2]) * s);
+        qResult[1] = (ARFloat)((matrix[0][2] - matrix[2][0]) * s);
+        qResult[2] = (ARFloat)((matrix[1][0] - matrix[0][1]) * s);
+    } else {
+        // diagonal is negative
+        i = 0;
+        if (matrix[1][1] > matrix[0][0]) i = 1;
+        if (matrix[2][2] > matrix[i][i]) i = 2;
+        j = nxt[i];
+        k = nxt[j];
+        s = sqrt((matrix[i][i] - (matrix[j][j] + matrix[k][k])) + 1.0);
+        qResult[i] = (ARFloat)( s * 0.5 );
+        if (s != 0.0) s = 0.5 / s;
+        qResult[3] =(ARFloat)( (matrix[k][j] - matrix[j][k]) * s );
+        qResult[j] =(ARFloat)( (matrix[j][i] + matrix[i][j]) * s );
+        qResult[k] =(ARFloat)( (matrix[k][i] + matrix[i][k]) * s );
+    }
+    return qResult;
+}
+
 
 plugClass::plugClass()
 {
@@ -336,6 +374,7 @@ DWORD plugClass::processFrame(LPVOID pFrame)
 	}
 }
 
+
 #define hibyte(x) (unsigned char)((x)>>8)
 DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 {
@@ -388,20 +427,26 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
         FOutputs[0].SliceCount = markercount;
         FOutputs[0].Spread = (float*) realloc(FOutputs[0].Spread, sizeof(float) * markercount);
     }
-    if (FOutputs[2].SliceCount != markercount)//projection
-    {
-        FOutputs[2].SliceCount = markercount;
-        FOutputs[2].Spread = (float*) realloc(FOutputs[2].Spread, sizeof(float) * markercount);
-    }
     if (FOutputs[1].SliceCount != markercount*16)//modelviews
     {
         FOutputs[1].SliceCount = markercount*16;
         FOutputs[1].Spread     = (float*) realloc(FOutputs[1].Spread, sizeof(float) * markercount*16);
     }
+    if (FOutputs[2].SliceCount != markercount)//projection
+    {
+        FOutputs[2].SliceCount = markercount;
+        FOutputs[2].Spread = (float*) realloc(FOutputs[2].Spread, sizeof(float) * markercount);
+    }
+    if (FOutputs[3].SliceCount != markercount*4)//Quaternion
+    {
+        FOutputs[3].SliceCount = markercount*4;
+        FOutputs[3].Spread     = (float*) realloc(FOutputs[3].Spread, sizeof(float) * markercount*4);
+    }
 
     ARFloat center[2] = {0.0, 0.0};
     ARFloat width = FParams[2].Value * 100;
     ARFloat conv[3][4];
+    ARFloat quaternion[4];
 
     //get modelview matrices for detected markers and put them into the outputs
     for (int i=0; i<markercount; i++)
@@ -425,8 +470,15 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
         FOutputs[1].Spread[i*16 + 0*4+3] = FOutputs[1].Spread[i*16 + 1*4+3] = FOutputs[1].Spread[i*16 + 2*4+3] = 0.0;
         FOutputs[1].Spread[i*16 + 3*4+3] = 1.0;
 
+        matrixToQuaternion (conv, quaternion);
+
+        for(int j=0; j<4; j++){
+            FOutputs[3].Spread[i*4 + j] = quaternion[j];
+        }
         mi++;
     }
+
+
 
     //get projection matrix
     FOutputs[2].SliceCount = 16;
@@ -436,7 +488,6 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 
     //flip back Y (see above: image was flipped to be trackable)
     FOutputs[2].Spread[5] *= -1;
-
 
     LeaveCriticalSection(&CriticalSection);
 
