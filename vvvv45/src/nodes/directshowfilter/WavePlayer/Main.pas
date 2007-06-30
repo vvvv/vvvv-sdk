@@ -148,6 +148,8 @@ type
 
 implementation
 
+uses Variants;
+
 function wrap(val: Double) : Double;
 begin
   if val >= 1. then result := val - floor(val)
