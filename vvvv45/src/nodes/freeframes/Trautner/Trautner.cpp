@@ -88,26 +88,30 @@ DWORD initialise()
     // populate the parameters constants structs
     GParamConstants[0].Type = 0;
 	GParamConstants[1].Type = 0;
-	GParamConstants[2].Type = 10;
-	GParamConstants[3].Type = 100;
+	GParamConstants[2].Type = 0;
+	GParamConstants[3].Type = 10;
+	GParamConstants[4].Type = 100;
 
 	GParamConstants[0].Default = 0.0f;
-	GParamConstants[1].Default = 1.0f;
-	GParamConstants[2].Default = 0.1f;
+	GParamConstants[1].Default = 0.0f;
+	GParamConstants[2].Default = 1.0f;
+	GParamConstants[3].Default = 0.1f;
 
 	int i = (int)&filemask[0];
     float* fp = (float*)&i;
- 	GParamConstants[3].Default = *fp;
+ 	GParamConstants[4].Default = *fp;
 
 	char tempName0[17] = "Hold Background";
-	char tempName1[17] = "Show Mask";
-	char tempName2[17] = "Threshold";
-	char tempName3[17] = "Mask Image";
+	char tempName1[17] = "Dark Background";
+	char tempName2[17] = "Show Mask";
+	char tempName3[17] = "Threshold";
+	char tempName4[17] = "Mask Image";
 
 	memcpy(GParamConstants[0].Name, tempName0, 16);
 	memcpy(GParamConstants[1].Name, tempName1, 16);
 	memcpy(GParamConstants[2].Name, tempName2, 16);
 	memcpy(GParamConstants[3].Name, tempName3, 16);
+	memcpy(GParamConstants[4].Name, tempName4, 16);
 
     // populate the output structs
     GOutputConstants[0].Type = 10;
@@ -218,7 +222,7 @@ DWORD plugClass::setParameter(SetParameterStruct* pParam)
 {
 	FParams[pParam->index].Value = pParam->value;
 
-	if (pParam->index == 3)
+	if (pParam->index == 4)
 	{
 	    float f = pParam->value;
 	    int* ip = (int*)&f;
@@ -302,62 +306,69 @@ DWORD plugClass::processFrame(LPVOID pFrame)
 
 DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 {
-   EnterCriticalSection(&CriticalSection);
+    EnterCriticalSection(&CriticalSection);
 
-   if (newMask)
-     loadMask();
+    if (newMask)
+        loadMask();
 
-        FCurrentImage->origin = 1;
-        FCurrentImage->imageData = (char*)pFrame;
+    FCurrentImage->origin = 1;
+    FCurrentImage->imageData = (char*)pFrame;
 
-        cvCvtColor(FCurrentImage, FGrayImage, CV_BGR2GRAY);
+    cvCvtColor(FCurrentImage, FGrayImage, CV_BGR2GRAY);
 
-         if (FParams[0].Value == 0)
+    if (FParams[0].Value == 0) //substract two consecutive images
+    {
+        IplImage* tmp = cvCloneImage(FGrayImage);
+
+        cvSub(FGrayImage, FLastImage, FGrayImage);
+        cvReleaseImage(&FLastImage);
+        FLastImage = cvCloneImage(tmp);
+
+        cvReleaseImage(&tmp);
+    }
+    else //hold background
+    {
+        if (FParams[1].Value == 0)  //bright background
         {
-            IplImage* tmp = cvCloneImage(FGrayImage);
-
+            cvSub(FLastImage, FGrayImage, FGrayImage);
+        }
+        else    //dark background
+        {
             cvSub(FGrayImage, FLastImage, FGrayImage);
-            cvReleaseImage(&FLastImage);
-            FLastImage = cvCloneImage(tmp);
-
-            cvReleaseImage(&tmp);
         }
-        else
+    }
+
+    for (int i=0;i<256;i++)
+    {
+        FPixelCount[i] = 0;
+        FChangedPixels[i] = 0;
+    }
+
+    int h = FGrayImage->height;
+    int w = FGrayImage->width * 1; //FGrayImage->nChannels;
+    int step= FGrayImage->widthStep; // because of alignment
+
+    // because imageData is a signed char*
+    unsigned char *mask = reinterpret_cast<unsigned char *>(FMask->imageData);
+    unsigned char *gray = reinterpret_cast<unsigned char *>(FGrayImage->imageData);
+
+    for (int i=0; i<h; i++)
+    {
+        for (int j=0; j<w; j += 1)
         {
-            cvSub(FGrayImage, FLastImage, FGrayImage);
-        }
-
-        for (int i=0;i<256;i++)
-        {
-          FPixelCount[i] = 0;
-          FChangedPixels[i] = 0;
-        }
-
-       int h = FGrayImage->height;
-        int w = FGrayImage->width * 1; //FGrayImage->nChannels;
-        int step= FGrayImage->widthStep; // because of alignment
-
-        // because imageData is a signed char*
-        unsigned char *mask = reinterpret_cast<unsigned char *>(FMask->imageData);
-        unsigned char *gray = reinterpret_cast<unsigned char *>(FGrayImage->imageData);
-
-        for (int i=0; i<h; i++)
-        {
-          for (int j=0; j<w; j += 1)
-          {
             FPixelCount[mask[j]]++;
-            if (gray[j] > FParams[2].Value * 255)
-              FChangedPixels[mask[j]]++;
-          }
-          mask += step;  // next line
-          gray += step;
+            if (gray[j] > FParams[3].Value * 255)
+                FChangedPixels[mask[j]]++;
         }
 
-        if (FParams[1].Value > 0)
-          cvAdd(FGrayImage, FMask, FGrayImage);
+        mask += step;  // next line
+        gray += step;
+    }
 
-         cvCvtColor(FGrayImage, FCurrentImage, CV_GRAY2BGR);
+    if (FParams[2].Value > 0)   //show mask
+        cvAdd(FGrayImage, FMask, FGrayImage);
 
+    cvCvtColor(FGrayImage, FCurrentImage, CV_GRAY2BGR);
 
     LeaveCriticalSection(&CriticalSection);
 
