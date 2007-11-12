@@ -47,7 +47,7 @@ const
     clsMinorType: @MEDIASUBTYPE_PCM
   );
 
-  sudOutputPinBitmap: array[0..0] of TRegFilterPins =
+  sudOutputPin: array[0..0] of TRegFilterPins =
   (
     (
     strName: 'Output'; // Pins string name
@@ -61,7 +61,7 @@ const
     lpMediaType: @sudPinTypes // Pin information
     )
   );
-    
+
 type
 
   IWavePlayer = interface(IUnknown)
@@ -378,10 +378,15 @@ begin
 
   FFilter.StateLock.Lock;
   try
+
     Properties.cbBuffer := WaveBufferSize; //WaveBufferSize; //pvi.bmiHeader.biSizeImage;
     Properties.cBuffers := 1;
+    Properties.cbAlign := 512;
     // Ask the allocator to reserve us the memory
     Result := Allocator.SetProperties(Properties^, Actual);
+
+    //Outputdebugstring(pchar(format('buffer align: %d',[Properties.cbAlign])));
+
     if Failed(Result) then
       ASSERT(FALSE);
     // Is this allocator unsuitable?
@@ -495,8 +500,10 @@ var
       Inc(pSource,Index);
       p1 := PAudioSample(pSource);
 
-      if Index + 2 * wf.nChannels < FSize then Inc(pSource, 2* wf.nChannels)
-      else pSource := FData;
+      if Index + 2 * wf.nChannels < FSize then
+        Inc(pSource, 2* wf.nChannels)
+      else
+        pSource := FData;
       p2 := PAudioSample(pSource);
 
       result := p1^ * (1. - frac) + p2^ * frac;
@@ -589,7 +596,7 @@ begin
       f := (f * (1. - FFading)) + (phase2val(FlyWheel) * FFading);
       FFading := FFading - FadeInc;
     end;
-
+          
     p^ := p^ + f * gain1;
     Inc(p);
     p^ := p^ + f * gain2;
@@ -615,6 +622,7 @@ begin
   //ASSERT(ims <> nil);
 
   size := ims.GetSize div 2;
+  //Outputdebugstring(pchar(format('pins buffersize: %d',[size])));
 
   buf := CoTaskMemAlloc(size * sizeof(double));
   if buf = nil then begin result := E_OUTOFMEMORY; exit; end;
@@ -726,7 +734,7 @@ initialization
   // provide entries in the CFactoryTemplate array
   TBCClassFactory.CreateFilter(TMWavePlayer, FilterName,
     CLSID_WavePlayer, CLSID_LegacyAmFilterCategory,
-    MERIT_DO_NOT_USE, 1, @sudOutputPinBitmap
+    MERIT_DO_NOT_USE, 1, @sudOutputPin
     );
 end.
 
