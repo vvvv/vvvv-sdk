@@ -92,18 +92,13 @@ end;
 
 function TMPin.Receive(pSample: IMediaSample): HRESULT;
 var
-  pbData, pSrc, pDst: PBYTE;
-  pmt: PAMMediaType;
-  vih: PVIDEOINFOHEADER;
-  height, i, pitch: Integer;
-  bytes: WORD;
+  pbData: PBYTE;
 begin
   if (FActualDataLength <> pSample.GetActualDataLength)
   or (FFilename <> FShareName) then
   begin
     FShareName := FFilename;
     FActualDataLength := pSample.GetActualDataLength;
-   // OutputDebugString(PAnsiChar('size: ' + IntToStr(FActualDataLength)));
     CloseMap(FMapHandle, FDataPointer);
 
     OpenMap(FMapHandle, FDataPointer, FShareName, FActualDataLength);
@@ -111,41 +106,13 @@ begin
 
   //write to shared memory
   pSample.GetPointer(pbData);
-
- // if FHeight < 0 then
-    Move(pbData^, FDataPointer^, FActualDataLength);
-{  else
-  begin
-    height := abs(FHeight);
-
-    pSrc := pbData;
-    Inc(pSrc, FPitch * (height-1));
-    pDst := FDataPointer;
-
-    for i := 0 to height - 1 do
-    begin
-      Move(pSrc^, pDst^, FPitch);
-      Dec(pSrc, FPitch);
-      Inc(pDst, FPitch);
-    end;
-  end;      }
+  Move(pbData^, FDataPointer^, FActualDataLength);
 
   result := S_OK;
 end;
 
 function TMPin.CheckMediaType(mt: PAMMediaType): HRESULT;
-var
-  vih: PVIDEOINFOHEADER;
 begin
-  if (mt <> nil)
-  and  (mt.pbFormat <> nil) then
-  begin
-    vih := PVIDEOINFOHEADER(mt.pbFormat);
-
-    FHeight := vih.bmiHeader.biHeight;
-    FPitch := vih.bmiHeader.biWidth * (vih.bmiHeader.biBitCount div 8);
-  end;
-
   result := S_OK;
 end;
 
