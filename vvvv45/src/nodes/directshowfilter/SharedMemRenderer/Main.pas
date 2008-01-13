@@ -112,9 +112,9 @@ begin
   //write to shared memory
   pSample.GetPointer(pbData);
 
-  if FHeight < 0 then
-    Move(pbData^, FDataPointer^, FActualDataLength)
-  else
+ // if FHeight < 0 then
+    Move(pbData^, FDataPointer^, FActualDataLength);
+{  else
   begin
     height := abs(FHeight);
 
@@ -128,7 +128,7 @@ begin
       Dec(pSrc, FPitch);
       Inc(pDst, FPitch);
     end;
-  end;
+  end;      }
 
   result := S_OK;
 end;
