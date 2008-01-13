@@ -43,7 +43,7 @@ const
 Type
   ISharedMemRenderer = interface
   ['{34A9C25E-9427-4963-BB3D-294C4A5947C3}']
-    function SetFileName(FileName: PChar): HRESULT; stdcall;
+    function SetShareName(ShareName: PChar): HRESULT; stdcall;
   end;
 
   TMPin = class(TBCRenderedInputPin)
@@ -73,7 +73,7 @@ Type
     function GetPinCount: integer; override;
 
     //ISharedMemRenderer implementation
-    function SetFileName(Filename: PChar): HRESULT; stdcall;
+    function SetShareName(ShareName: PChar): HRESULT; stdcall;
   end;
 
 implementation
@@ -86,7 +86,7 @@ constructor TMPin.Create(ObjectName: string;pUnk: IUnKnown; Filter: TBCBaseFilte
       Lock: TBCCritSec; out hr: HRESULT; Name: WideString);
 begin
   inherited Create(ObjectName, Filter, Lock, hr, Name);
-  FFilename := 'vvvv';
+  FFilename := '#vvvv';
   FShareName := '';
 end;
 
@@ -138,9 +138,9 @@ begin
   result := FPin;
 end;
 
-function TMSharedMemRenderer.SetFilename(Filename: PChar): HRESULT;
+function TMSharedMemRenderer.SetSharename(Sharename: PChar): HRESULT;
 begin
-  FPin.FFilename := Filename;
+  FPin.FFilename := Sharename;
   Result := S_OK;
 end;
 
