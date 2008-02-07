@@ -14,16 +14,15 @@
 //delphi 5
 
 //////dependencies
-//directshow baseclasses coming with DSPack2.3.4:
-//http://www.progdigy.com/modules.php?name=DSPack
+//directshow baseclasses coming with DSPack:
+//http://sourceforge.net/projects/dspack/
 
 //////initial author
 //jhno -> ear@subminimal.com
 
 //////edited by
 //your name here
-//joreg@meso.net
-//jens@meso.net
+//xsnej@gmx.de
 
 unit Main;
 

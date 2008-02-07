@@ -11,18 +11,18 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//delphi 2006
+//delphi 5
 
 //////dependencies
 //directshow baseclasses coming with DSPack:
-//http://sourceforge.net/projects/dspack
-//compiled with version of 30 06 07
+//http://sourceforge.net/projects/dspack/
 
 //////initial author
 //jhno -> ear@subminimal.com
 
 //////edited by
 //your name here
+//xsnej@gmx.de
 
 
 ___________________________________
