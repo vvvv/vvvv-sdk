@@ -817,12 +817,14 @@ begin
   Result := S_OK;
 
   //Set Gain------------------------------------------------//
-  gain1 := FPan * 2.;
+  gain1 := (1. - FPan) * 2.;
   if gain1 > 1. then gain1 := 1.;
   gain1 := gain1 * FGain;
-  gain2 := (1. - FPan) * 2.;
-  if gain2 > 1. then gain2 := 1.;
+
+  gain2 := FPan * 2.;
+  if gain1 > 1. then gain2 := 1.;
   gain2 := gain2 * FGain;
+
 
   //--------------------------------------------------------//
 
