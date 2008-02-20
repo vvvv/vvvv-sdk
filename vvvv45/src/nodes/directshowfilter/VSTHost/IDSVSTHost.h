@@ -10,10 +10,34 @@ DEFINE_GUID(IID_IDSVSTHost, 0xd23e4eb0, 0xe697, 0x4df9, 0x90, 0x79, 0xcd, 0xbc, 
 
 DECLARE_INTERFACE_(IDSVSTHost, IUnknown)
 {
-  STDMETHOD (interfacetest)
+  STDMETHOD (loadPlugin)
   (
     THIS_
+	char *filename
+  ) PURE; 
 
+  STDMETHOD (getParameterNumber)
+  (
+    THIS_
+    int *number	
+  ) PURE;
+
+  STDMETHOD (getParameterProperties)
+  (
+    THIS_
+	wchar_t paramDisplay[][256], wchar_t paramName[][256], wchar_t paramLabel[][256], double paramValue[]
+  ) PURE;
+
+  STDMETHOD (getParameterValue)
+  (
+    THIS_
+    int index, double *value	
+  ) PURE;
+
+  STDMETHOD (setParameter)
+  (
+    THIS_
+    int index, double value
   ) PURE;
 
   STDMETHOD (setEnabled)
@@ -34,12 +58,47 @@ DECLARE_INTERFACE_(IDSVSTHost, IUnknown)
     unsigned char note, unsigned char velocity
   ) PURE;
 
+  STDMETHOD (sendMidiNotesOff)
+  (
+    THIS_
+
+  ) PURE;
+
+  STDMETHOD (sendPolyphonic)
+  (
+    THIS_
+	unsigned char polyphonicNote, unsigned char polyphonicValue
+  ) PURE;
+
   STDMETHOD (sendMidiController)
   (
     THIS_
 	unsigned char controllerID, unsigned char controllerValue
   ) PURE;
 
+  STDMETHOD (sendProgram)
+  (
+    THIS_
+	unsigned char programID
+  ) PURE;
+
+  STDMETHOD (sendMonophonic)
+  (
+    THIS_
+    unsigned char monophonicValue
+  ) PURE;
+
+  STDMETHOD (sendPitchbend)
+  (
+    THIS_
+	unsigned char pitchbendValue
+  ) PURE;
+
+  STDMETHOD (destroy)
+  (
+    THIS_
+	HMODULE *hinstance
+  ) PURE;
 
 };
 

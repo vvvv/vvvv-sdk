@@ -9,6 +9,15 @@
 #include "VSTHost.h"
 #include "IDSVSTHost.h"
 
+/* 
+   Schnittstelle : Keyboard
+
+
+
+
+
+*/
+
 
 const CLSID CLSID_DSVSTHost = {	0xf4df121a, 0x91d3, 0x4cc1, { 0x83, 0x8f, 0x7b, 0xaa, 0xbb, 0x6a, 0xab, 0xe7 } };
 
@@ -36,7 +45,18 @@ public:
 
     STDMETHODIMP FindPin(LPCWSTR Id, IPin **ppPin);
 
-	STDMETHODIMP interfacetest ();
+    
+	//IDSVSTHost---------------------------------------------//
+
+	STDMETHODIMP loadPlugin( char *filename );
+
+	STDMETHODIMP getParameterNumber (int *number);
+
+    STDMETHODIMP getParameterValue  (int index, double *value );
+
+	STDMETHODIMP getParameterProperties ( wchar_t paramDisplay[][256], wchar_t paramName[][256], wchar_t paramLabel[][256], double paramValue[]);
+    
+	STDMETHODIMP setParameter ( int index, double value );
 
 	STDMETHODIMP setEnabled(unsigned char enabled);
 
@@ -44,7 +64,20 @@ public:
 
 	STDMETHODIMP sendMidiNotes(unsigned char note, unsigned char velocity);
 
+	STDMETHODIMP sendMidiNotesOff();
+
+	STDMETHODIMP sendPolyphonic(unsigned char polyphonicNote, unsigned char polyphonicValue);
+
 	STDMETHODIMP sendMidiController(unsigned char controllerID, unsigned char controllerValue);
+
+	STDMETHODIMP sendProgram(unsigned char programID);
+
+	STDMETHODIMP sendMonophonic(unsigned char monophonicValue);
+
+	STDMETHODIMP sendPitchbend(unsigned char pitchbendValue);
+
+	STDMETHODIMP destroy (HMODULE *hModule);     
+
 
     DSVSTHost(TCHAR *tszName, LPUNKNOWN punk, HRESULT *phr);
 

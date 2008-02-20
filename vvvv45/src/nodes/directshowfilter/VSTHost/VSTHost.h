@@ -3,6 +3,13 @@
 
 #define _CRT_SECURE_NO_DEPRECATE
 
+//#pragma comment(linker,"/NODEFAULTLIB")
+/*
+   UNIQUE-ID verwenden
+
+
+*/
+
 #include <stdio.h>
 #include <windows.h>
 #include <math.h>
@@ -69,21 +76,27 @@ class Host
 		   Loader loader;
 
 		   bool canDo[NUMHOSTCANDOS];
-		   
+
   public : Host ();
 
+		   void process                ( float **in, float **out, int length, int nChannels, int samplesPerSecond );
+           void midiMsg                (unsigned char data0, unsigned char data1, unsigned char data2 );
+
+		   //IDSVSTHost interface
+		   bool destroy                ();
 		   bool loadPlugin             ( char *filename);
 		   bool getParameterNumber     ( int *number);
 		   bool getParameterProperties ( wchar_t paramDisplay[][256], wchar_t paramName[][256], wchar_t paramLabel[][256], double paramValue[] );
 		   bool setParameter           ( int index, float value);
-		   void process                ( float **in, float **out, int length, int nChannels, int samplesPerSecond );
-           bool destroy                ();
 		   bool getParameterValue      (int index, double *value);
-		   void sendMidiMsg            (unsigned char status, unsigned char note, unsigned char velocity);
-		   void sendMidiNotesOff       (unsigned char notesoff);
-		   void canDoMidi              (int *can);
+		   void canDoMidi              (unsigned char *can);
 		   void sendMidiController     (unsigned char controllerID, unsigned int controllerValue );
-		   void getMidiDeviceNames     (int *number, wchar_t name[][256]);
+		   void sendProgram            (unsigned char programID);
+		   void sendMidiNotes          (unsigned char note, unsigned char velocity);
+		   void sendMidiNotesOff       ();
+		   void sendPolyphonic         (unsigned char polyphonicNote, unsigned char polyphonicValue);
+		   void sendMonophonic         (unsigned char monophonicValue);
+		   void sendPitchbend          (unsigned char pitchbendValue);
 
 		   virtual long cbAutomate                     (int index, float value);
 	       virtual long cbVersion                      ();

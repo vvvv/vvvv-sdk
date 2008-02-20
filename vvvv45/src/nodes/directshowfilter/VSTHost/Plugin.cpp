@@ -168,8 +168,8 @@ void Plugin::setParameter(int index, float value)
 
   effect->setParameter(effect, index, value);
 
-  swprintf(buffer,L"SetParameter : %f\n",effect->getParameter(effect,index));
-  out(buffer);
+  //swprintf(buffer,L"SetParameter : %f\n",effect->getParameter(effect,index));
+  //out(buffer);
 
   effect->dispatcher(effect,effEditIdle,0,0,0,0); //!!! Update
  
@@ -231,6 +231,7 @@ double Plugin::getParamValue(int index)
 
 void Plugin::displayProperties()
 {
+   /*
    out(L"\nplugin->DisplayProperties>***********************************\n\n");
 
    outputString("Name        : ", name,        1);
@@ -391,6 +392,7 @@ void Plugin::displayProperties()
 
 
    out(L"\n************************************************************\n");
+   */
 
 }
 
@@ -639,8 +641,6 @@ void Plugin::cbCanDo ()
   if( effect->dispatcher( effect, effCanDo, 0, 0, canDoNamespace[index], 0) )
   strcpy(canDoStr[counter++],canDoNamespace[index]);
   
-
-
 }
 
 void Plugin::cbGetTailSize  ()

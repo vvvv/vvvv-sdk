@@ -174,72 +174,14 @@ Host::Host()
 
   HostCallback( 0, -1, 0, 0, this, 0);
 
-
   plugin = new Plugin();
 
   for(int i=0; i<NUMHOSTCANDOS; i++)
   canDo[i] = false;
 
-
 }
 
-void Host::sendMidiNotesOff(unsigned char notesoff)
-{
-   VstMidiEvent vstMidiEvent;
-
-   vstMidiEvent.type  = kVstMidiType;
-
-   if(notesoff)
-   for(int i=0;i<NUMMIDINOTES;i++)
-   {
-     vstMidiEvent.midiData[0]  =  NOTEOFF;
-
-     vstMidiEvent.midiData[1]  =  unsigned char(i);
-     vstMidiEvent.midiData[2]  =  0;
-
-     vstMidiEvent.deltaFrames  =  0;
-  
-     plugin->midiMsg(vstMidiEvent);
-   }
-
-}
-
-void Host::sendMidiMsg( unsigned char status, unsigned char note, unsigned char velocity)
-{
-   VstMidiEvent vstMidiEvent;
-
-   vstMidiEvent.type  = kVstMidiType;
-
-   if(status)
-    vstMidiEvent.midiData[0] =  NOTEON;
-   else
-    vstMidiEvent.midiData[0] =  NOTEOFF;
-
-   vstMidiEvent.midiData[1]  =  note;
-   vstMidiEvent.midiData[2]  =  velocity;
-
-   vstMidiEvent.deltaFrames  =  0;
-  
-   plugin->midiMsg(vstMidiEvent);
-  
-}
-
-void Host::sendMidiController( unsigned char controllerID, unsigned int controllerValue )
-{
-   VstMidiEvent vstMidiEvent;
-
-   vstMidiEvent.type  = kVstMidiType;
-
-   vstMidiEvent.midiData[0]  =  CONTROLCHANGE;
-   vstMidiEvent.midiData[1]  =  controllerID;
-   vstMidiEvent.midiData[2]  =  controllerValue;
-
-   vstMidiEvent.deltaFrames  =  0;
-  
-   plugin->midiMsg(vstMidiEvent);
-}
-
-void Host::canDoMidi( int *can)
+void Host::canDoMidi(unsigned char *can)
 {
   plugin->cbCanDo();
 
@@ -247,7 +189,6 @@ void Host::canDoMidi( int *can)
 	*can = true;
   else
 	*can = false;
-
 }
 
 bool Host::destroy()
@@ -294,16 +235,6 @@ bool Host::getParameterProperties ( wchar_t paramDisplay[][STRLENGTH], wchar_t p
 
 }
 
-bool Host::setParameter ( int index, float value)
-{
-  if( index < 0 || index >= plugin->getNumParams() ) return false;
-
-  plugin->setParameter( index, value);
-
-  return true;
-
-}
-
 bool Host::getParameterValue(int index,  double *value)
 {
   if( index < 0 || index >= plugin->getNumParams() ) return false;
@@ -311,6 +242,16 @@ bool Host::getParameterValue(int index,  double *value)
   *value = plugin->getParamValue(index);
 
   return true; 
+
+}
+
+bool Host::setParameter ( int index, float value)
+{
+  if( index < 0 || index >= plugin->getNumParams() ) return false;
+
+  plugin->setParameter( index, value);
+
+  return true;
 
 }
 
@@ -344,13 +285,78 @@ void Host::process( float **in, float **out, int length, int nChannels, int samp
 
 }
 
+//Midi-Messages---------------------------------------------------------------------------//
+
+void Host::midiMsg (unsigned char data0, unsigned char data1, unsigned char data2 )
+{
+  VstMidiEvent vstMidiEvent;
+
+  vstMidiEvent.type = kVstMidiType;
+
+  vstMidiEvent.midiData[0] = data0;
+  vstMidiEvent.midiData[1] = data1; //for all channels
+  vstMidiEvent.midiData[2] = data2;
+
+
+  vstMidiEvent.deltaFrames = 0;
+
+  plugin->midiMsg(vstMidiEvent);
+}
+
+void Host::sendMidiNotes(unsigned char note, unsigned char velocity)
+{
+  if(velocity > 0) 
+   midiMsg( NOTEON,  note, velocity);
+  else
+   midiMsg( NOTEOFF, note, velocity);
+  
+}
+
+void Host::sendMidiNotesOff()
+{
+  for(unsigned char i=0; i<NUMMIDINOTES; i++) 
+  midiMsg(NOTEON, i, 0);
+
+  midiMsg( CONTROLCHANGE , 0x78, 0);
+
+  midiMsg( CONTROLCHANGE , 0x7B, 0);
+
+}
+
+void Host::sendMidiController( unsigned char controllerID, unsigned int controllerValue )
+{
+  midiMsg(CONTROLCHANGE,controllerID,controllerValue);
+}
+
+void Host::sendProgram(unsigned char programID)
+{
+  midiMsg(PROGRAMCHANGE, programID, programID);
+}
+
+void Host::sendPolyphonic (unsigned char polyphonicNote, unsigned char polyphonicValue)
+{
+  midiMsg(POLYTOUCH, polyphonicNote, polyphonicValue);
+}
+
+void Host::sendMonophonic (unsigned char monophonicValue)
+{
+  midiMsg(MONOTOUCH, monophonicValue, 0);
+}
+
+void Host::sendPitchbend (unsigned char pitchbendValue)
+{
+  midiMsg(PITCHBEND, pitchbendValue, pitchbendValue);
+}
+
+//---------------------------------------------------------------------------------------//
+
 long Host::cbAutomate (int index, float value) 
 { 
   if(index > plugin->getNumParams() -1) return 0;
 
   char buffer[STRLENGTH];
 
-  sprintf(buffer,"%f",value);
+  //sprintf(buffer,"%f",value);
 
   outputString(plugin->param[index].name,buffer,1);
 

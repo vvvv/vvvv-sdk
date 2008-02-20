@@ -45,7 +45,7 @@
 #define CONTROLCHANGE  0xB0
 #define PROGRAMCHANGE  0xC0
 #define MONOTOUCH      0xD0
-#define PITCH          0xE0
+#define PITCHBEND      0xE0
 
 
 #define NUMPLUGINCANDOS  8

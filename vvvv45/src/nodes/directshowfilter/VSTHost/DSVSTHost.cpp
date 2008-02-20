@@ -20,41 +20,142 @@ DSVSTHost::~DSVSTHost()
  
 }
 
-STDMETHODIMP DSVSTHost::interfacetest()
+STDMETHODIMP DSVSTHost::loadPlugin( char *filename )
 {
-  OutputDebugString(L"TEST**************************************************************************\n");
+  if((host == NULL) || (filename == NULL)) return ERROR;
+  
+  if(!host->loadPlugin( filename )) 
+  {
+	host = NULL;
+
+	return ERROR;
+  }
+  
+  return NOERROR;
+}
+
+STDMETHODIMP DSVSTHost::getParameterNumber (int *number)
+{
+  if(host == NULL) return ERROR;
+
+  if(!host->getParameterNumber(number)) return ERROR;
+
+  return S_OK;
+}
+
+STDMETHODIMP DSVSTHost::getParameterProperties ( wchar_t paramDisplay[][256], wchar_t paramName[][256], wchar_t paramLabel[][256], double paramValue[])
+{ 
+  if(host == NULL) return ERROR;
+
+  if( !host->getParameterProperties( paramDisplay, paramName, paramLabel, paramValue ) ) return ERROR;
+
+  return S_OK;
+}
+
+STDMETHODIMP DSVSTHost::getParameterValue (int index, double *value)
+{
+  if(host == NULL) return ERROR;
+
+  host->getParameterValue( index, value);   
+
+  return S_OK;
+}
+
+STDMETHODIMP DSVSTHost::setParameter(int index, double value)
+{
+  if(host == NULL) return ERROR;
+
+  if( !host->setParameter( index, (float)value) ) return ERROR;
 
   return S_OK;
 }
 
 STDMETHODIMP DSVSTHost::setEnabled(unsigned char enabled)
 {
-  this->enabled = enabled; 
+  if(host==NULL) return ERROR;
 
-  OutputDebugString(L"DSVSTHost::setEnabled\n");
+  this->enabled = enabled; 
 
   return S_OK;
 }
 
 STDMETHODIMP DSVSTHost::canDoMidi(unsigned char *can)
 {
-  *can = true;
+  if(host==NULL) return ERROR;
 
-  OutputDebugString(L"DSVSTHost::canDoMidi()\n");
+  host->canDoMidi(can);
+  
+  return S_OK;
+}
+
+STDMETHODIMP DSVSTHost::sendMidiNotes(unsigned char note, unsigned char velocity )
+{
+  if(host==NULL) return ERROR;
+
+  host->sendMidiNotes (note, velocity); 
 
   return S_OK;
 }
 
-STDMETHODIMP DSVSTHost::sendMidiNotes(unsigned char note, unsigned char )
+STDMETHODIMP DSVSTHost::sendMidiNotesOff()
 {
-  OutputDebugString(L"DSVSTHost::sendMidiEvents()\n");
+  if(host == NULL) return ERROR;
+
+  host->sendMidiNotesOff ();
 
   return S_OK;
 }
 
 STDMETHODIMP DSVSTHost::sendMidiController(unsigned char controllerID, unsigned char controllerValue)
 {
-  OutputDebugString(L"DSVSTHost::sendMidiController()\n");
+  if(host==NULL) return ERROR;
+
+  host->sendMidiController(controllerID, controllerValue);  
+
+  return S_OK;
+}
+
+STDMETHODIMP DSVSTHost::sendProgram(unsigned char programID)
+{
+  if(host == NULL) return ERROR;
+
+  host->sendProgram(programID);
+
+  return S_OK;
+}
+
+STDMETHODIMP DSVSTHost::sendPolyphonic(unsigned char polyphonicNote, unsigned char polyphonicValue)
+{
+  if(host==NULL) return ERROR;
+
+  host->sendPolyphonic( polyphonicNote, polyphonicValue);
+
+  return S_OK;
+}
+
+STDMETHODIMP DSVSTHost::sendMonophonic(unsigned char monophonicValue)
+{
+  if(host == NULL) return ERROR;
+
+  host->sendMonophonic( monophonicValue);
+
+  return S_OK;
+}
+
+STDMETHODIMP DSVSTHost::sendPitchbend(unsigned char pitchbendValue)
+{
+  if(host==NULL) return ERROR;
+
+  host->sendPitchbend( pitchbendValue);
+
+  return S_OK;
+}
+
+STDMETHODIMP DSVSTHost::destroy(HMODULE *hModule)
+{
+  if(host == NULL) return ERROR;
+
+  host->destroy();
 
   return S_OK;
 }
@@ -160,7 +261,7 @@ HRESULT DSVSTHost::CheckInputType(const CMediaType *pmt)
 
 	if (pmt->majortype != MEDIATYPE_Audio)
 	{
-		printf("error MEDIATYPE_Audio\n");
+		//printf("error MEDIATYPE_Audio\n");
         return VFW_E_TYPE_NOT_ACCEPTED;
     }
 
