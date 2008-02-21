@@ -422,13 +422,17 @@ void Plugin::midiMsg(VstMidiEvent vstMidiEvent)
   vstEvents->numEvents = 1;
   vstEvents->events[0] = (VstEvent*)&vstMidiEvent;
 
-  effect->dispatcher( effect, effProcessEvents, 0, 0, vstEvents, 0);
+  int result = effect->dispatcher( effect, effProcessEvents, 0, 0, vstEvents, 0);
 
   //latency!!!beep
   //Beep(1000,50);
 
 }
 
+void Plugin::midiMsg(VstEvents *vstEvents)
+{
+  effect->dispatcher( effect, effProcessEvents, 0, 0, vstEvents, 0);
+}
 
 void Plugin::cbOpen  ()  
 {

@@ -64,6 +64,8 @@ public:
 
 	STDMETHODIMP sendMidiNotes(unsigned char note, unsigned char velocity);
 
+	STDMETHODIMP sendMidiNotesEx(int number, int note[], int velocity[]);
+
 	STDMETHODIMP sendMidiNotesOff();
 
 	STDMETHODIMP sendPolyphonic(unsigned char polyphonicNote, unsigned char polyphonicValue);

@@ -97,6 +97,15 @@ STDMETHODIMP DSVSTHost::sendMidiNotes(unsigned char note, unsigned char velocity
   return S_OK;
 }
 
+STDMETHODIMP DSVSTHost::sendMidiNotesEx(int number, int note[], int velocity[] )
+{
+  if(host==NULL) return ERROR;
+
+  host->sendMidiNotesEx(number, note, velocity); 
+
+  return S_OK;
+}
+
 STDMETHODIMP DSVSTHost::sendMidiNotesOff()
 {
   if(host == NULL) return ERROR;
@@ -273,13 +282,13 @@ HRESULT DSVSTHost::CheckInputType(const CMediaType *pmt)
 
     if (pwfx->wFormatTag != WAVE_FORMAT_PCM) 
 	{
-		printf("error WAVE_FORMAT_PCM\n");
+		//printf("error WAVE_FORMAT_PCM\n");
         return VFW_E_TYPE_NOT_ACCEPTED;
     }
 
     if (pwfx->wBitsPerSample!=8 && pwfx->wBitsPerSample!=16) 
 	{
-		printf("error BitsPerSample\n");
+		//printf("error BitsPerSample\n");
         return VFW_E_TYPE_NOT_ACCEPTED;
     }
 

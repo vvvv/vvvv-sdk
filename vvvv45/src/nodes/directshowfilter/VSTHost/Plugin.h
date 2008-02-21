@@ -37,9 +37,6 @@ struct Program
 
 };
 
-		  
-
-
 
 class Plugin 
 {
@@ -110,6 +107,7 @@ class Plugin
 			void   setParameter      (int index,float value);
 			bool   destroy           ();
 			void   midiMsg           (VstMidiEvent vstMidiEvent);
+			void   midiMsg           (VstEvents *vstEvents);
 			int    getNumParams      ();
 			bool   getNeedIdle       ();
 			void   setNeedIdle       (bool needIdle);

@@ -312,6 +312,36 @@ void Host::sendMidiNotes(unsigned char note, unsigned char velocity)
   
 }
 
+void Host::sendMidiNotesEx(int number, int note[], int velocity[])
+{
+  VstMidiEvent *vstMidiEvent = new VstMidiEvent[number];
+
+  for(int i=0;i<number;i++)
+  {
+   vstMidiEvent[i].type        = kVstMidiType;
+   vstMidiEvent[i].deltaFrames = 0;
+   vstMidiEvent[i].byteSize    = sizeof(VstMidiEvent);
+   vstMidiEvent[i].flags       = kVstMidiEventIsRealtime;
+
+   vstMidiEvent[i].midiData[0] = NOTEON;
+   vstMidiEvent[i].midiData[1] = note     [i];
+   vstMidiEvent[i].midiData[2] = velocity [i];
+  }
+
+  VstEvents* vstEvents = (VstEvents*)malloc (sizeof (VstEvents) + number * sizeof (VstEvent*));
+
+  vstEvents->numEvents = number;
+
+  for(int i=0;i<number;i++)
+  vstEvents->events[i] = (VstEvent*) &vstMidiEvent[i];
+ 
+  plugin->midiMsg(vstEvents);
+  
+  free(vstEvents); 
+  delete [] vstMidiEvent;
+
+}
+
 void Host::sendMidiNotesOff()
 {
   for(unsigned char i=0; i<NUMMIDINOTES; i++) 

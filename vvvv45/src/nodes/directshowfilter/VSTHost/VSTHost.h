@@ -93,6 +93,7 @@ class Host
 		   void sendMidiController     (unsigned char controllerID, unsigned int controllerValue );
 		   void sendProgram            (unsigned char programID);
 		   void sendMidiNotes          (unsigned char note, unsigned char velocity);
+		   void sendMidiNotesEx        (int number, int note[], int velocity[]);
 		   void sendMidiNotesOff       ();
 		   void sendPolyphonic         (unsigned char polyphonicNote, unsigned char polyphonicValue);
 		   void sendMonophonic         (unsigned char monophonicValue);

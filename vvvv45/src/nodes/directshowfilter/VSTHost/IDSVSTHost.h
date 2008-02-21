@@ -58,6 +58,12 @@ DECLARE_INTERFACE_(IDSVSTHost, IUnknown)
     unsigned char note, unsigned char velocity
   ) PURE;
 
+  STDMETHOD (sendMidiNotesEx)
+  (
+    THIS_
+	int number, int note[], int velocity[]
+  ) PURE;
+
   STDMETHOD (sendMidiNotesOff)
   (
     THIS_
