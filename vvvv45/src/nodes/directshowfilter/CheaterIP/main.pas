@@ -60,7 +60,6 @@ type
     FFirstFieldFirst: Boolean;
     FSampleStartTime: TReferenceTime;
     FStreamTime: TReferenceTime;
-    FCritSec: TBCCritSec;
   public
     function CheckInputType(mtIn: PAMMediaType): HRESULT; override;
     constructor Create(ObjName: string; unk: IUnKnown; out hr: HRESULT);
@@ -92,7 +91,6 @@ constructor TMCheaterInPlace.Create(ObjName: string; unk: IUnKnown;
   out hr: HRESULT);
 begin
   inherited Create(ObjName, unk, CLSID_CheaterInPlace, hr);
-  FCritSec := TBCCritSec.Create;
 end;
 
 constructor TMCheaterInPlace.CreateFromFactory(Factory: TBCClassFactory;
@@ -104,7 +102,6 @@ end;
 
 destructor TMCheaterInPlace.Destroy;
 begin
-  FCritSec.Free;
   inherited;
 end;
 
