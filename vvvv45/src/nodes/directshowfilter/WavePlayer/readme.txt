@@ -21,7 +21,6 @@
 //jhno -> ear@subminimal.com
 
 //////edited by
-//your name here
 //xsnej@gmx.de
 
 
