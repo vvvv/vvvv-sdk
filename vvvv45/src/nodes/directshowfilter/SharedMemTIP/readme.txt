@@ -18,7 +18,7 @@
 //http://sourceforge.net/projects/dspack/
 
 //////initial author
-//joreg -> joreg@gmx.at
+//joreg -> joreg@vvvv.org
 
 //////edited by
 //your name here
