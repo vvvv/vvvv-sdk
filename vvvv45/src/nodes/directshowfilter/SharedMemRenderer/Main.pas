@@ -31,7 +31,7 @@ uses
 
 const
   CLSID_SharedMemRenderer: TGUID = '{0453D075-0992-4D17-8E08-9C9B72E29D47}';
-  IID_ISharedMemRenderer: TGUID = '{34A9C25E-9427-4963-BB3D-294C4A5947C3}';
+  IID_ISharedMemParameters: TGUID = '{34A9C25E-9427-4963-BB3D-294C4A5947C3}';
 
   MyPinType: TRegPinTypes =
     (clsMajorType: @MEDIATYPE_NULL;
@@ -41,7 +41,7 @@ const
     ((strName: 'Input'; bRendered: FALSE; bOutput: FALSE; bZero: FALSE; bMany: FALSE; oFilter: nil; strConnectsToPin: nil; nMediaTypes: 1; lpMediaType: @MyPinType));
 
 Type
-  ISharedMemRenderer = interface
+  ISharedMemParameters = interface
   ['{34A9C25E-9427-4963-BB3D-294C4A5947C3}']
     function SetShareName(ShareName: PChar): HRESULT; stdcall;
   end;
@@ -52,17 +52,16 @@ Type
     FDataPointer: PByte;
     FMapHandle: THandle;
     FFilename: String;
-    FHeight: Integer;
-    FPitch: Integer;
     FShareName: string;
   public
     constructor Create(ObjectName: string; pUnk: IUnKnown; Filter: TBCBaseFilter;
       Lock: TBCCritSec; out hr: HRESULT;  Name: WideString);
+    destructor Destroy;
     function CheckMediaType(mt: PAMMediaType): HRESULT; override;
     function Receive(pSample: IMediaSample): HRESULT; override; stdcall;
   end;
 
-  TMSharedMemRenderer = class(TBCBaseFilter, ISharedMemRenderer)
+  TMSharedMemRenderer = class(TBCBaseFilter, ISharedMemParameters)
   private
     xxx: integer;
     FPin: TMPin;
@@ -70,9 +69,10 @@ Type
   public
     function GetPin(n: Integer): TBCBasePin; override;
     constructor Create(Name: string; Unk : IUnKnown; Lock: TBCCritSec; const clsid: TGUID);
+
     function GetPinCount: integer; override;
 
-    //ISharedMemRenderer implementation
+    //ISharedMemParameters implementation
     function SetShareName(ShareName: PChar): HRESULT; stdcall;
   end;
 
@@ -88,6 +88,12 @@ begin
   inherited Create(ObjectName, Filter, Lock, hr, Name);
   FFilename := '#vvvv';
   FShareName := '';
+end;
+
+destructor TMPin.Destroy;
+begin
+  CloseMap(FMapHandle, FDataPointer);
+  inherited;
 end;
 
 function TMPin.Receive(pSample: IMediaSample): HRESULT;
@@ -143,6 +149,9 @@ begin
   FPin.FFilename := Sharename;
   Result := S_OK;
 end;
+
+
+
 
 
 initialization

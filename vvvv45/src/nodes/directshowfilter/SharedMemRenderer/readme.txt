@@ -14,8 +14,8 @@
 //delphi 5
 
 //////dependencies
-//directshow baseclasses coming with DSPack2.3.4:
-//http://www.progdigy.com/modules.php?name=DSPack
+//directshow baseclasses coming with DSPack:
+//http://sourceforge.net/projects/dspack/
 
 //////initial author
 //joreg -> joreg@gmx.at
@@ -26,6 +26,6 @@
 
 ___________________________________
 people that have been interested in
-DumpSample 
+SharedMemRenderer
 have also been interested in
 http://vvvv.org
