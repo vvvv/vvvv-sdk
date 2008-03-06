@@ -34,18 +34,19 @@ uses
   Classes, SysUtils, ActiveX, MMSystem, Math, Windows,
   BaseClass, DirectShow9, DSUtil, DirectSound;
 
+
 const
   CLSID_SourceBuffer : TGUID = '{6F7AAC61-8E33-4cf4-A349-7976C08D7CCD}';
   FilterName: String = 'SourceBuffer';
 
   WAVEBUFFERSIZE =   256;
-  //NCHANNELS    =     3;
   NCHANNELS      =     2;
   SAMPLERATE     = 44100;
   BITSPERSAMPLE  =    16;
   BITSPERBYTE    =     8;
   HALFWAVE       = 32767;
   NANOSHIFT      = 1.0 / 1000000000;
+  MAXCHANNELS    =    18;
 
   sudPinTypes: TRegPinTypes =
   (
@@ -70,9 +71,10 @@ const
 
 type
 
- TDynamicDouble = Array of Double;
+  TDynamicDouble  = Array of Double;
+  TChannelArray   = Array [0..17] of TDynamicDouble;
 
- ISourceBuffer = interface(IUnknown)
+  ISourceBuffer = interface(IUnknown)
     ['{6F7AAC61-8E33-4cf4-A349-7976C08D7CCD}']
     function Voices(voicecount: integer): HResult; stdcall;
     function Play(index: integer; state : integer): HResult; stdcall;
@@ -84,10 +86,10 @@ type
     function EndPosition(index:integer; val:integer):HResult; stdcall;
     function SeekPosition(index:integer; val:integer):HResult; stdcall;
     function GetActualFrame(index:integer; out val:Integer):HResult; stdcall;
-    function setBufferLeft(index : Integer; length : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
-    function setBufferRight(index : Integer; length : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
-    function setBufferCenter(index : Integer; length : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
-    function setChannels(number : Integer) : HRESULT; stdcall;
+    function setChannels(numActiveChannels : Integer; ChannelCode : Integer) : HRESULT; stdcall;
+    function setBufferLength( length : Integer) : HRESULT; stdcall;
+    function setBuffer(index : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
+    function setBufferChanged : HRESULT; stdcall;
   end;
 
   PAudioSample = ^AudioSample;
@@ -109,19 +111,14 @@ type
     FFramePosition : Integer;
     FLoop : Boolean;
     FFading : Double;
-    FBuffer : TDynamicDouble;
-    FBufferTmp : TDynamicDouble;
-    FBufferSize : Integer;
-    FBufferSizeTmp : Integer;
     FChange : Boolean;
     FFraction : Double;
 
-    FBufferLeft      : TDynamicDouble;
-    FBufferRight     : TDynamicDouble;
-    FBufferCenter    : TDynamicDouble;
-    FBufferLeftTmp   : TDynamicDouble;
-    FBufferRightTmp  : TDynamicDouble;
-    FBufferCenterTmp : TDynamicDouble;
+    FNumChannels   : Integer;
+    FBuffer        : TChannelArray;
+    FBufferTmp     : TChannelArray;
+    FBufferSize    : Integer;
+    FBufferSizeTmp : Integer;
 
   public
     destructor Destroy; override;
@@ -149,6 +146,7 @@ type
   TMSourceBuffer = class(TBCSource, ISourceBuffer)
   private
     FPin: TMSourceBufferPin;
+    FNumChannels : Integer;
   public
     constructor Create(ObjName: string; Unk: IUnKnown; out hr: HRESULT);
     constructor CreateFromFactory(Factory: TBCClassFactory; const Controller: IUnknown); override;
@@ -165,16 +163,16 @@ type
     function EndPosition(index:integer; val:integer):HResult; stdcall;
     function SeekPosition(index:integer; val:integer):HResult; stdcall;
     function GetActualFrame(index:integer; out val:Integer):HResult; stdcall;
-    function setBufferLeft(index : Integer; length : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
-    function setBufferRight(index : Integer; length : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
-    function setBufferCenter(index : Integer; length : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
-    function setChannels(number : Integer) : HRESULT; stdcall;
+    function setChannels(numActiveChannels : Integer; ChannelCode : Integer) : HRESULT; stdcall;
+    function setBufferLength( length : Integer) : HRESULT; stdcall;
+    function setBuffer(index : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
+    function setBufferChanged : HRESULT; stdcall;
  end;
 
 var
 
- GlobalNumChannels : Integer = NCHANNELS;
-
+ GlobalNumActiveChannels : Integer = 0;
+ GlobalChannelCode       : Integer = 0;
 
 implementation
 
@@ -225,26 +223,17 @@ begin
   FSeekPosition   :=  0;
   FFramePosition  :=  0;
   FFading         :=  0;
+  FPhase          :=  0;
   FBufferSize     :=  0;
   FBufferSizeTmp  :=  0;
-  FPhase          :=  0;
-
-  SetLength(FBuffer,0);
-  SetLength(FBufferTmp,0);
-
-  SetLength(FBufferLeft,0);
-  SetLength(FBufferRight,0);
-  SetLength(FBufferCenter,0);
-  SetLength(FBufferLeftTmp,0);
-  SetLength(FBufferRightTmp,0);
-  SetLength(FBufferCenterTmp,0);
-
+  FChange         :=  false;
+  FNumChannels    :=  GlobalNumActiveChannels;
 
 end;
 
 destructor TMVoice.Destroy;
 begin
-  SetLength(FBuffer,0);
+
 
   inherited;
 end;
@@ -387,82 +376,63 @@ begin
   Result := S_OK;
 end;
 
-function TMSourceBuffer.setBufferLeft(index : Integer; length : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
+function TMSourceBuffer.setBufferLength(length : Integer) : HRESULT; stdcall;
 var
-  v: PBCVoice;
-  i: Integer;
+  v   : PBCVoice;
+  i,k : Integer;
 begin
-  v := FPin.VoiceCheck(index);
+  v := FPin.VoiceCheck(0);
 
   if v = nil then exit;
 
   v.FBufferSizeTmp := length;
 
+  for i := 0 to MAXCHANNELS - 1 do
+  begin
+   SetLength(v.FBufferTmp[i],length);
 
-  SetLength(v.FBufferLeftTmp,length);
-
-  for i:= 0 to length - 1 do
-  if (buffer[i] <= 1) and (buffer[i] >= -1) then
-   v.FBufferLeftTmp[i] := buffer[i]
-  else
-   v.FBufferLeftTmp[i] := 0;
-
-  //v.FChange := true;
+   for k := 0 to length - 1 do
+   v.FBufferTmp[i][k] := 0;
+  end;
 
 end;
 
-function TMSourceBuffer.setBufferRight(index : Integer; length : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
+function TMSourceBuffer.setBuffer(index : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
 var
   v: PBCVoice;
   i: Integer;
 begin
-  v := FPin.VoiceCheck(index);
+  v := FPin.VoiceCheck(0);
 
   if v = nil then exit;
 
-  v.FBufferSizeTmp := length;
+  if index >= FNumChannels then Exit;
 
-
-  SetLength(v.FBufferRightTmp,length);
-
-  for i:= 0 to length - 1 do
-  if (buffer[i] <= 1) and (buffer[i] >= -1) then
-   v.FBufferRightTmp[i] := buffer[i]
-  else
-   v.FBufferRightTmp[i] := 0;
-
-  //v.FChange := true;
+  for i := 0 to v.FBufferSizeTmp - 1 do
+  v.FBufferTmp[index][i] := buffer[i];
 
 end;
 
-function TMSourceBuffer.setBufferCenter(index : Integer; length : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
+
+function TMSourceBuffer.setBufferChanged : HRESULT; stdcall;
 var
   v: PBCVoice;
-  i: Integer;
 begin
-  v := FPin.VoiceCheck(index);
+  v := FPin.VoiceCheck(0);
 
   if v = nil then exit;
 
-  v.FBufferSizeTmp := length;
-
-  SetLength(v.FBufferCenterTmp,length);
-
-  for i:= 0 to length - 1 do
-  if (buffer[i] <= 1) and (buffer[i] >= -1) then
-   v.FBufferCenterTmp[i] := buffer[i]
-  else
-   v.FBufferCenterTmp[i] := 0;
-  
   v.FChange := true;
 
 end;
 
-function TMSourceBuffer.setChannels(number : Integer) : HRESULT; stdcall;
+function TMSourceBuffer.setChannels(numActiveChannels : Integer; ChannelCode : Integer) : HRESULT; stdcall;
+var
+ i : Integer;
 begin
 
-  if (number = 1) or (number = 2) or (number = 3) then
-  GlobalNumChannels := number;
+ GlobalNumActiveChannels := NumActiveChannels;
+ GLobalChannelCode       := ChannelCode;
 
 end;
 
@@ -487,7 +457,7 @@ begin
 
   pwf.format.cbSize          := sizeof(TWAVEFORMATEXTENSIBLE) + sizeof(TWAVEFORMATEX);
   pwf.Format.wFormatTag      := WAVE_FORMAT_EXTENSIBLE;
-  pwf.format.nChannels       := GlobalNumChannels;
+  pwf.format.nChannels       := GlobalNumActiveChannels;
   pwf.format.nSamplesPerSec  := SAMPLERATE;
   pwf.format.wBitsPerSample  := BITSPERSAMPLE;
   pwf.format.nBlockAlign     := (pwf.format.wBitsPerSample * pwf.format.nChannels) div BITSPERBYTE;
@@ -497,15 +467,7 @@ begin
   pwf.Samples.wSamplesPerBlock    := 0;
   pwf.Samples.wReserved           := 0;
   pwf.SubFormat                   := KSDATAFORMAT_SUBTYPE_PCM;
-
-   if (GlobalNumChannels = 1) then
-  pwf.dwChannelMask := SPEAKER_FRONT_LEFT;
-
-  if (GlobalNumChannels = 2) then
-  pwf.dwChannelMask := SPEAKER_FRONT_LEFT or SPEAKER_FRONT_RIGHT;
-
-  if (GlobalNumChannels = 3) then
-  pwf.dwChannelMask := SPEAKER_FRONT_LEFT or SPEAKER_FRONT_RIGHT or SPEAKER_FRONT_CENTER;
+  pwf.dwChannelMask               := GlobalChannelCode;
 
   Result := S_OK;
 end;
@@ -519,9 +481,9 @@ begin
   ASSERT(Allocator <> nil);
   ASSERT(Properties <> nil);
 
-  Properties.cbBuffer := 100 * 2 * GlobalNumChannels;
+  Properties.cbBuffer := 100 * 2 * GlobalNumActiveChannels;
   Properties.cBuffers := 1;
-  Properties.cbAlign  := 100 * 2 * GlobalNumChannels;
+  Properties.cbAlign  := 100 * 2 * GlobalNumActiveChannels;
   Properties.cbPrefix := 0;
 
   // Ask the allocator to reserve us the memory
@@ -553,81 +515,49 @@ var
 
   procedure ChangeBuffer();
   var
-   i : Integer;
+   i,k : Integer;
   begin
    FBufferSize := FBufferSizeTmp;
 
-   SetLength( FBufferLeft,   FBufferSize);
-   SetLength( FBufferRight,  FBufferSize);
-   SetLength( FBufferCenter, FBufferSize);
-
-   for i := 0 to FBufferSize - 1 do
+   for i := 0 to MAXCHANNELS - 1 do
    begin
-     FBufferLeft  [i] := FBufferLeftTmp  [i];
-     FBufferRight [i] := FBufferRightTmp [i];
-     FBufferCenter[i] := FBufferCenterTmp[i];
+    SetLength(FBuffer[i],FBufferSize);
+
+    for k := 0 to FBufferSize - 1 do
+    FBuffer [i][k] := FBufferTmp  [i][k];
+
    end;
 
    FChange   := false;
    FFraction := 1.0 / FBufferSize;
-
   end;
 
-  procedure SetFrame( i : Integer );
+  procedure SetFrame (i : Integer; position : Integer);
+  var
+   channel : Integer;
+   sample  : PDouble;
+   shift   : Integer;
   begin
-    sampleLeft    := mediaBuffer;
-    Inc(sampleLeft, numChannels * i);
-    sampleLeft^   := 0;
 
-   if numChannels > 1 then
+   for channel := 0 to numChannels - 1 do
    begin
-    sampleRight   := mediaBuffer;
-    Inc(sampleRight,(numChannels * i) + 1);
-    sampleRight^  := 0;
-   end;
+    sample := mediaBuffer;
+    Inc(sample,(i*numChannels) + channel);
 
-   if numChannels > 2 then
-   begin
-    sampleCenter  := mediaBuffer;
-    Inc(sampleCenter,(numChannels * i) + 2);
-    sampleCenter^ := 0;
-   end;
-
-  end;
-
-  procedure FillFrame;
-  begin
-   if (position >= FBufferSize) or (position < 0) then
-   Exit;
-
-    sampleLeft^   := FBufferLeft   [position] * gain;
-
-    if sampleLeft^ < -1 * HALFWAVE then
-     sampleLeft^ := -1 * HALFWAVE
+    if (position < 0) or (position >= FBufferSize) then
+     sample^ := 0
     else
-    if sampleLeft^ > HALFWAVE then
-     sampleLeft^ := HALFWAVE;
+    begin
+     sample^:= FBuffer[channel][position] * gain;
 
-   if numChannels > 1 then
-   begin
-    sampleRight^  := FBufferRight  [position] * gain;
+     if sample^ > HALFWAVE then
+      sample^ := HALFWAVE;
 
-    if sampleRight^ < -1 * HALFWAVE then
-     sampleRight^ := -1 * HALFWAVE
-    else
-    if sampleRight^ > HALFWAVE then
-     sampleRight^ := HALFWAVE;
-   end;
+     if sample^ < HALFWAVE * -1 then
+      sample^ := HALFWAVE * -1;
 
-   if numChannels > 2 then
-   begin
-    sampleCenter^ := FBufferCenter [position] * gain;
+    end;
 
-    if sampleCenter^ < -1 * HALFWAVE then
-     sampleCenter^ := -1 * HALFWAVE
-    else
-    if sampleCenter^ > HALFWAVE then
-     sampleCenter^ := HALFWAVE;
    end;
 
   end;
@@ -654,7 +584,7 @@ var
 
   procedure SetVariables;
   begin
-   numChannels := GlobalNumChannels;
+   numChannels := FNumChannels;
    numFrames   := trunc(size / numChannels);
    loop        := FLoop;
    phaseStart  := PositionToPhase(FStartPosition);
@@ -733,16 +663,17 @@ var
 
   end;
 
-  function PhaseToPositionLoop : Boolean;
+  function PhaseToPositionLoop : Integer;
   var
-   i     : Integer;
-   value : Double;
+   i        : Integer;
+   value    : Double;
+   position : Integer;
 
   begin
 
    if interval <= 0 then
    begin
-    Result := false;
+    Result   := -1;
     Exit;
    end;
 
@@ -759,6 +690,12 @@ var
 
    FPhase := FPhase + (FFraction * Pitch);
 
+   if FPhase >= 1.0 - NANOSHIFT  then
+   FPhase := 0.0;
+
+   Result := position;
+
+   {  !!!!!!!!!!!!!!!!!!!!!!!!Achtung knackt!
    if pitch > 0 then
    begin
     if FPhase <= PhaseStart - NANOSHIFT then
@@ -777,10 +714,10 @@ var
      FPhase := PhaseEnd - (PhaseStart - FPhase);
    end;
 
-   Result := true;
+   Result := position;
+   }
 
   end;
-
 
 //----------------------------------------------------------------------------//
 
@@ -792,23 +729,18 @@ begin
 
   if FDoSeek then SetPosition();
 
-
   for i := 0 to numFrames - 1 do
   begin
-   SetFrame(i);
 
-   if FBufferSize <= 0 then Continue;
-
+   if FBufferSize = 0 then Continue;
+ 
    if loop then
-   if PhaseToPositionLoop then
-    FillFrame;
+   SetFrame(i,PhaseToPositionLoop);
 
-   if not loop then
-   if PhaseToPosition then
-    FillFrame;
+   //if not loop then
+   //SetFrame(i,PhaseToPosition);
 
   end;
-
 
   FFramePosition := position;
 
@@ -889,6 +821,8 @@ constructor TMSourceBuffer.Create(ObjName: string; Unk: IUnKnown;
   out hr: HRESULT);
 begin
   inherited Create(ObjName, Unk, CLSID_SourceBuffer);
+
+  FNumChannels := GlobalNumActiveChannels;
 
   // The pin magically adds itself to our pin array.
   FPin := TMSourceBufferPin.Create(hr, Self);
