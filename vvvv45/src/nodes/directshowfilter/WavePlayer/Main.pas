@@ -36,14 +36,15 @@ const
   CLSID_WavePlayer : TGUID = '{79A98DE0-BC00-11ce-AC2E-444553540001}';
   FilterName: String = 'WavePlayer';
 
-  //WaveBufferSize: Integer = 4*512;
-
-  WaveBufferSize : Integer = 256;
-
-  outChans = 2;
-  outSR = 44100;
-  outBits = 16;
-  BITS_PER_BYTE = 8;
+  HALFWAVE       =  32767;
+  MAXWAVENEGATIV = -32767;
+  MAXWAVEPOSITIV =  32767;
+  BYTESPERSAMPLE =  2;
+  WAVEBUFFERSIZE =  256;
+  NUMCHANNELS    =  2;
+  SAMPLERATE     =  44100;
+  BITSPERSAMPLE  =  16;
+  BITSPERBYTE    =  8;
 
   sudPinTypes: TRegPinTypes =
   (
@@ -86,6 +87,8 @@ type
     function GetDuration(index:integer; out val:double):HResult; stdcall;
     function GetActualPosition(index:integer; out val:double):HResult; stdcall;
     function Fading(index: integer; val:double) : HResult; stdcall;
+    function setBlockSize( size : Integer) : HRESULT; stdcall;
+    function getBlockSize(out size : Integer) : HRESULT; stdcall;
   end;
 
   PAudioSample = ^AudioSample;
@@ -114,20 +117,20 @@ type
     FDuration : double;
     FActualPosition : double;
     FLoop : Boolean;
-    FSourceFrames : Double;
     FFading : Double;
     FFrameFraction : Double;
-    FPrevPhase : Double;
     FReload : Boolean;
-
-    FTest : Boolean;
+    FSourceFrames : Integer;
+    FPhaseShift : Double;
+    FPhaseShiftPrev : Double;
+    FBytesPerSample : Integer;
 
     wf: TWAVEFORMATEX;
   public
     destructor Destroy; override;
     constructor Create;
     function ReadTheFile(AFileName: PChar): Boolean;
-    function FillBuffer(buf: PDouble; size: integer): HResult;
+    function FillBuffer(mediaSample: PDouble; size: integer): HResult;
   end;
 
   TMWavePlayerPin = class(TBCSourceStream)
@@ -135,9 +138,6 @@ type
     voicelist: TList;
     voicecount: Integer;
   public
-
-    FSampleStartTime : REFERENCE_TIME;
-    FSampleEndTime   : REFERENCE_TIME;
 
     function VoiceCheck(index: Integer): PBCVoice;
     procedure VoiceFree(index: Integer);
@@ -175,11 +175,19 @@ type
     function GetDuration(index:integer; out val:double):HResult; stdcall;
     function GetActualPosition(index:integer; out val:double):HResult; stdcall;
     function Fading(index: integer; val:double) : HResult; stdcall;
+    function setBlockSize( size : Integer) : HRESULT; stdcall;
+    function getBlockSize(out size : Integer) : HRESULT; stdcall;
   end;
 
 implementation
 
 uses Variants;
+
+var
+
+ GlobalNumActiveChannels : Integer = 2;
+ GlobalChannelCode       : Integer = 0;
+ GlobalBlockSize         : Integer = 128;
 
 function wrap(val: Double) : Double;
 begin
@@ -232,10 +240,9 @@ begin
   FSize           :=  0;
   FData           :=  nil;
   FWheel          :=  0;
-  FFrameFraction  :=  1;
-  FPrevPhase      :=  0;
-
-  FTest := false; //TEST
+  //FFrameFraction  :=  1;
+  FPhaseShift     :=  0;
+  FPhaseShiftPrev :=  0;
 
 end;
 
@@ -279,7 +286,13 @@ var
   i: Integer;
 begin
   v := FPin.VoiceCheck(index);
-  if v = nil then exit;
+
+  if v = nil then
+  begin
+   Result := ERROR;
+   exit;
+  end;
+
   Result := S_OK;
   if FileName = v.FFileName then exit;
   i := FPin.VoiceList.Count - 1;
@@ -315,7 +328,10 @@ begin
       v.FFrameFraction  :=  vv.FFrameFraction;
       v.wf              :=  vv.wf;
       v.FReload         :=  vv.FReload;
-      v.FPrevPhase      :=  vv.FPrevPhase;
+      v.FPhaseShift     :=  vv.FPhaseShift;
+      v.FPhaseShiftPrev :=  vv.FPhaseShiftPrev;
+      v.FBytesPerSample :=  vv.FBytesPerSample;
+
 
       //outputdebugstring(pchar(format('link %d %d %d %p',[index,i,v.FSize,v.FData])));
       exit;
@@ -331,34 +347,17 @@ end;
 function TMWavePlayer.Play(index: integer; state: integer) : HResult; stdcall;
 var
   v: PBCVoice;
-  basefilter : IBaseFilter;
 
 begin
   v := FPin.VoiceCheck(index);
-  if v = nil then exit;
+
+  if v = nil then
+  begin
+   Result := ERROR;
+   exit;
+  end;
 
   v.FPlay := Boolean(state);
-
-  {
-  //windows.Beep(1000,10);
-
-  v.FTest := true;
-  v.FPlay := true;
-
-  self.QueryInterface(IID_IBaseFilter,basefilter);
-
-  {
-  if Boolean(state)  then
-  begin
-   OutputDebugString('STOPSTOPSTOP');
-   basefilter.Stop;
-  end
-  else
-  begin
-   OutputDebugString('RUNRUNRUN');
-   basefilter.Run(FPin.FSampleEndTime);
-  end;
-  }
 
   Result  := S_OK
 end;
@@ -368,8 +367,19 @@ var
   v: PBCVoice;
 begin
   v := FPin.VoiceCheck(index);
-  if v = nil then exit;
-  v.FSync := Boolean(state);
+
+  if v = nil then
+  begin
+   Result := ERROR;
+   exit;
+  end;
+
+  if state = 0 then
+   v.FSync := false;
+
+  if state = 1 then
+   v.FSync := true;
+
   Result := S_OK
 end;
 
@@ -378,9 +388,13 @@ var
   v: PBCVoice;
 begin
   v := FPin.VoiceCheck(index);
-  if v = nil then exit;
 
-  if (val>=0) and (val<=1) then
+  if v = nil then
+  begin
+   Result := ERROR;
+   exit;
+  end;
+
   v.FGain := val;
 
   Result := S_OK
@@ -391,7 +405,12 @@ var
   v: PBCVoice;
 begin
   v := FPin.VoiceCheck(index);
-  if v = nil then exit;
+
+  if v = nil then
+  begin
+   Result := ERROR;
+   exit;
+  end;
 
   if (val>=0) and (val<=1) then
   v.FPan := val;
@@ -404,10 +423,14 @@ var
   v: PBCVoice;
 begin
   v := FPin.VoiceCheck(index);
-  if v = nil then exit;
 
-  if (val>=0) and (val<=1) then
-  v.FPhase := val;
+  if v = nil then
+  begin
+   Result := ERROR;
+   exit;
+  end;
+
+  v.FPhaseShift := val;
 
   Result := S_OK
 end;
@@ -417,9 +440,13 @@ var
   v: PBCVoice;
 begin
   v := FPin.VoiceCheck(index);
-  if v = nil then exit;
 
-  if (val >= 0) then
+  if v = nil then
+  begin
+   Result := ERROR;
+   exit;
+  end;
+
   v.FPitch := val;
 
   Result := S_OK
@@ -431,7 +458,11 @@ var
 begin
   v := FPin.VoiceCheck(index);
 
-  if v = nil then exit;
+  if v = nil then
+  begin
+   Result := ERROR;
+   exit;
+  end;
 
   v.FLoop := Boolean(state);
 
@@ -444,30 +475,13 @@ var
 begin
   v := FPin.VoiceCheck(index);
 
-  if v = nil then exit;
-
-  v.FDoSeek := Boolean(state);
-
-  if v.FDoSeek then
+  if v = nil then
   begin
-   v.FDoSeek := false;
-
-   v.FStartTime := v.FFStartTime;
-   v.FEndTime   := v.FFEndTime;
-
-   if v.FSeekPosition < v.FStartTime then
-   v.FWheel := 0;
-
-   if v.FSeekPosition > v.FEndTime then
-   v.FWheel := (v.FEndTime - v.FStartTime) / v.FDuration;
-
-   if (v.FSeekPosition >= v.FStartTime) and
-      (v.FSeekPosition <= v.FEndTime) then
-   v.FWheel := (v.FSeekPosition - v.FStartTime) / v.FDuration;
-
-   v.FActualPosition := v.FStartTime + (v.FWheel * v.FDuration);
-
+   Result := ERROR;
+   exit;
   end;
+
+  v.FDoSeek := true;
 
   Result := S_OK;
 end;
@@ -477,18 +491,13 @@ var
   v: PBCVoice;
 begin
   v := FPin.VoiceCheck(index);
-  if v = nil then exit;
 
-  //if val < v.FFStartTime then
-  //v.FSeekPosition := v.FStartTime;
+  if v = nil then
+  begin
+   Result := ERROR;
+   exit;
+  end;
 
-  if val < v.FFStartTime then
-  v.FSeekPosition := val;
-
-  if val > v.FFEndTime then
-  v.FSeekPosition := v.FEndTime;
-
-  if (val >= v.FFStartTime) and (val <= v.FFEndTime) then
   v.FSeekPosition := val;
 
   Result := S_OK;
@@ -500,15 +509,12 @@ var
 begin
   v := FPin.VoiceCheck(index);
 
-  if v = nil then exit;
+  if v = nil then
+  begin
+   Result := ERROR;
+   exit;
+  end;
 
-  if val < 0 then
-  v.FFStartTime := 0;
-
-  if val > v.FFEndTime then
-  v.FFStartTime := v.FFEndTime;
-
-  if (val >= 0) and (val <= v.FFEndTime) then
   v.FFStartTime := val;
 
   Result := S_OK;
@@ -520,15 +526,12 @@ var
 begin
   v := FPin.VoiceCheck(index);
 
-  if v = nil then exit;
+  if v = nil then
+  begin
+   Result := ERROR;
+   exit;
+  end;
 
-  if val < 0 then
-  v.FFEndTime := 0;
-
-  if val > v.FDuration then
-  v.FFEndTime := v.FDuration;
-
-  if (val >= v.FFStartTime) and (val <= v.FDuration) then
   v.FFEndTime := val;
 
   Result := S_OK;
@@ -540,7 +543,11 @@ var
 begin
   v := FPin.VoiceCheck(index);
 
-  if v = nil then exit;
+  if v = nil then
+  begin
+   Result := ERROR;
+   exit;
+  end;
 
   val := v.FDuration;
 
@@ -553,7 +560,11 @@ var
 begin
   v := FPin.VoiceCheck(index);
 
-  if v = nil then exit;
+  if v = nil then
+  begin
+   Result := ERROR;
+   exit;
+  end;
 
   val := v.FActualPosition;
 
@@ -566,19 +577,35 @@ var
 begin
   v := FPin.VoiceCheck(index);
 
-  if v = nil then exit;
+  if v = nil then
+  begin
+   Result := ERROR;
+   exit;
+  end;
 
-  if(val < 0)then
-  v.FFading := 0;
-
-  if(val > 1)then
-  v.FFading := 1;
-
-  if(val >= 0) and (val <= 1) then
+  if (val >= 0) and (val <= 1) then
   v.FFading := val;
 
   Result := S_OK;
 end;
+
+function TMWavePlayer.setBlockSize( size : Integer) : HRESULT; stdcall;
+begin           
+ GlobalBlockSize := size;
+
+ Result := S_OK;
+
+end;
+
+
+function TMWavePlayer.getBlockSize(out size : Integer) : HRESULT; stdcall;
+begin           
+ size := GlobalBlockSize;
+
+ Result := S_OK;
+ 
+end;
+
 
 function TMWavePlayerPin.GetMediaType(pmt: PAMMediaType): HResult;
 var
@@ -589,22 +616,22 @@ begin
   pwf := CoTaskMemAlloc(size);
   if pwf = nil then begin result := E_OUTOFMEMORY; exit; end;
 
-  pmt.pbFormat := pwf;
-  pmt.cbFormat := size;
-  pmt.majortype := MEDIATYPE_Audio;
-  pmt.subtype := MEDIASUBTYPE_PCM; //MEDIASUBTYPE_IEEE_FLOAT;
-  pmt.formattype := FORMAT_WaveFormatEx;
+  pmt.pbFormat             := pwf;
+  pmt.cbFormat             := size;
+  pmt.majortype            := MEDIATYPE_Audio;
+  pmt.subtype              := MEDIASUBTYPE_PCM; //MEDIASUBTYPE_IEEE_FLOAT;
+  pmt.formattype           := FORMAT_WaveFormatEx;
   pmt.bFixedSizeSamples    := TRUE;
   pmt.bTemporalCompression := FALSE;
   pmt.lSampleSize          := 4; //pwfx.nBlockAlign;
   pmt.pUnk                 := nil;
 
-  pwf.cbSize := 0;
-  pwf.wFormatTag := WAVE_FORMAT_PCM;
-  pwf.nChannels := outChans;
-  pwf.nSamplesPerSec := outSR;
-  pwf.wBitsPerSample := outBits;
-  pwf.nBlockAlign := (pwf.wBitsPerSample * pwf.nChannels) div BITS_PER_BYTE;
+  pwf.cbSize          := 0;
+  pwf.wFormatTag      := WAVE_FORMAT_PCM;
+  pwf.nChannels       := NUMCHANNELS;
+  pwf.nSamplesPerSec  := SAMPLERATE;
+  pwf.wBitsPerSample  := BITSPERSAMPLE;
+  pwf.nBlockAlign     := (pwf.wBitsPerSample * pwf.nChannels) div BITSPERBYTE;
   pwf.nAvgBytesPerSec := pwf.nBlockAlign * pwf.nSamplesPerSec;
 
   Result := S_OK;
@@ -618,32 +645,20 @@ begin
   ASSERT(Allocator <> nil);
   ASSERT(Properties <> nil);
 
-  FFilter.StateLock.Lock;
-  try
+  Properties.cbBuffer := GlobalBlockSize * 2 * GlobalNumActiveChannels;
+  Properties.cBuffers := 1;
+  Properties.cbAlign  := GlobalBlockSize * 2 * GlobalNumActiveChannels;
+  Properties.cbPrefix := 0;
 
-  
-    Properties.cbBuffer := 256; // 256/2(bytespersample)/2(channels) = 64 frames -> ~1.5 milliseconds
-    Properties.cBuffers := 1;
-    Properties.cbAlign  := 256;
-    Properties.cbPrefix := 0;
+  // Ask the allocator to reserve us the memory
+  Result := Allocator.SetProperties(Properties^, Actual);
 
-    // Ask the allocator to reserve us the memory
-    Result := Allocator.SetProperties(Properties^, Actual);
-
-    //Outputdebugstring(pchar(format('buffer align: %d',[Properties.cbAlign])));
-
-    if Failed(Result) then
-      ASSERT(FALSE);
-    // Is this allocator unsuitable?
-    if (Actual.cbBuffer < Properties.cbBuffer) then
-      ASSERT(FALSE)
-    else
-      Result := S_OK;
-  finally
-    FFilter.StateLock.UnLock;
+  if Result <> S_OK then
+  begin
+   GlobalBlockSize := 128;
+   DecideBufferSize(Allocator,Properties);
   end;
-  ASSERT(Actual.cbBuffer > 0);
-  ASSERT(Actual.cBuffers > 0);
+  
 end;
 
 function TMVoice.ReadTheFile(AFileName: PChar): Boolean;
@@ -716,27 +731,15 @@ begin
   //initialize
   FData           := _Mem;
   FSize           := mmiSub.cksize;
-  FSourceFrames   := FSize / 2 / wf.nChannels;
-  FDuration       := FSourceFrames / 44100;
+  FSourceFrames   := trunc(FSize / BYTESPERSAMPLE / wf.nChannels);
+  FDuration       := FSourceFrames / wf.nSamplesPerSec;
   FFrameFraction  := 1.0 / FSourceFrames;
+  FBytesPerSample := trunc(wf.wBitsPerSample / BITSPERBYTE);
 
-  if FFEndTime > FDuration then
-  FFEndTime := FDuration;
+  {???????????????????????????????????}
+  if wf.nChannels = 1 then
+  FFrameFraction  := FFrameFraction / 2;
 
-  if FEndTime > FDuration then
-  FEndTime := FDuration;
-
-  if FFStartTime > FFEndTime then
-  FFStartTime := FFEndTime;
-
-  if FStartTime > FFEndTime then
-  FStartTime := FFEndTime;
-
-  if FSeekPosition > FFEndTime then
-  FSeekPosition := FFendTime;
-
-  if FWheel > (FFEndTime / FDuration) then
-  FWheel := (FFEndTime / FDuration);
 
   FReload := false;
   
@@ -746,170 +749,315 @@ begin
 
 end;
 
-function TMVoice.FillBuffer(buf: PDouble; size: integer): HResult;
+function TMVoice.FillBuffer(mediaSample: PDouble; size: Integer) : HRESULT;
 var
-  p: PDouble;
-  p1,p2: PAudioSample;
-  i : Longint;
-  gain1, gain2: Double;
-  wheelinc: Double;
-  startTime,endTime : Double;
-  phaseshift : Double;
-  interval : Double;
-  minInterval : Double;
-  sampleLeft, sampleRight : Double;
-  f : Double;
-  fading, wheel, position : Double;
-  loop : Boolean;
-  numFrames : Integer;
+  nFrames     : Integer;
+  wheel       : Double;
+  sourceLeft  : Double;
+  sourceRight : Double;
+  sinkLeft    : PDouble;
+  sinkRight   : PDouble;
+  loop        : Boolean;
+  phaseStart  : Double;
+  phaseEnd    : Double;
+  phaseSeek   : Double;
+  interval    : Double;
+  gainLeft    : Double;
+  gainRight   : Double;
+  pitch       : Double;
+  nChannels   : Integer;
+  fadingGain  : Double;
+  frameIndex  : Integer;
 
-  //----------------------------------------------------------------//
+  {****************************************************************************}
 
-  procedure phase2val(phase: Double; left : PDouble; right : PDouble);
-  var
-   pSource: PByte;
-   frac: Double;
-   Index: Longint;
+  function TimeToPhase(value : Double) : Double;
   begin
-   pSource := FData;
-   frac := phase * FSourceFrames;
-   Index := trunc(frac);
-   Index := Index * 2 * wf.nChannels;
-   Inc(pSource,Index);
+   Result := value / FDuration ;
 
-   p1 := PAudioSample(pSource);
-   p2 := p1;    //if there is only one channel
+  end;
+ 
+  {****************************************************************************}
 
-   if wf.nChannels = 2 then
-   if Index + 2 * wf.nChannels < FSize then
+  procedure SetInterval (refreshTime : Boolean);
+  begin
+
+   if (not FSync) or refreshTime then
    begin
-    Inc(pSource, wf.nChannels);
-
-    p2 := PAudioSample(pSource);
+    FStartTime := FFStartTime;
+    FEndTime   := FFEndTime;
    end;
 
-   left^  := p1^;
-   right^ := p2^;
+   //????
+   if FSync then
+   if (FPhase >= phaseEnd)   or
+      (FPhase <= phaseStart) or
+      (FPhase <= 0 )         or
+      (FPhase >= 1) then
+   begin
+    FStartTime := FFStartTime;
+    FEndTime   := FFEndTime;
+   end;
+
+   phaseStart := TimeToPhase(FStartTime);
+   phaseEnd   := TimeToPhase(FEndTime);
+
+   if (phaseStart < 0) or (phaseStart > 1) then phaseStart := 0;
+   if (phaseEnd   > 1) or (phaseEnd   < 0) then phaseEnd   := 1;
+
+   interval := phaseEnd - phaseStart;
+
+   if not loop then interval := 1;
 
   end;
 
-  //----------------------------------------------------------------//
+  {****************************************************************************}
 
-  procedure setSyncTime();
+  procedure SetVariables;
   begin
-   FStartTime  := FFStartTime;             //update to the time the user set
-   FEndTime    := FFEndTime;
-   startTime   := FStartTime / FDuration;  //from time to 0..1
-   endTime     := FEndTime   / FDuration;
-   interval    := endTime - startTime;
+   loop       := FLoop;
+   nChannels  := wf.nChannels;
+   nFrames    := trunc(size / nChannels);
+   gainLeft   := FGain * FPan;
+   gainRight  := FGain * (1.0 - FPan);
+   pitch      := FPitch;
+   fadingGain := 1;
 
-   if interval < minInterval then interval := minInterval;
+   if (nChannels = 1) then gainLeft := FGain;
 
-   fading      := FFading * 0.5 * interval;
+   SetInterval(false);
+
   end;
 
-  //----------------------------------------------------------------//
+  {****************************************************************************}
+
+  procedure Seek;
+  begin
+   phaseSeek := TimeToPhase(FSeekPosition);
+
+   if loop then
+   begin
+    if phaseSeek < phaseStart then phaseSeek := phaseStart;
+    if phaseSeek > phaseEnd   then phaseSeek := phaseEnd;
+   end;
+
+   if phaseSeek < 0 then phaseSeek := 0;
+   if phaseSeek > 1 then phaseSeek := 1;
+
+   FPhase    := phaseSeek;
+
+   FDoSeek   := false;
+
+  end;
+
+  {****************************************************************************}
+
+  procedure ShiftPhase;
+  var
+   difference : Double;
+
+  begin
+
+   difference := FPhaseShift - FPhaseShiftPrev;
+
+   FPhase := FPhase + (difference * interval);
+
+   while FPhase > phaseEnd do
+   FPhase := FPhase - interval;
+
+   while FPhase < phaseStart do
+   FPhase := FPhase + interval;
+
+   FPhaseShiftPrev := FPhaseShift;
+
+  end;
+
+  {****************************************************************************}
+
+  function SetWheel : Boolean;
+  begin
+
+   if not loop then
+   if ((pitch >= 0) and (FPhase >= 1)) or
+      ((pitch <  0) and (FPhase <  0)) then
+   begin
+    Result := false;
+    Exit;
+   end;
+
+   if loop then
+   begin
+
+    if FSync then
+    if (FPhase >= phaseEnd) or (FPhase <= phaseStart) or
+       (FPhase <= 0 ) or (FPhase >= 1) then
+    SetInterval(true);
+
+    while FPhase > phaseEnd do
+    FPhase := FPhase - interval;
+
+    while FPhase < phaseStart do
+    FPhase := FPhase + interval;
+
+   end;
+
+   if FPhase >= 1 then FPhase := 0;
+
+   wheel  := FPhase * FSourceFrames;
+
+   FPhase := FPhase + (FFrameFraction * pitch);
+
+   Result := true;
+
+  end;
+
+  {****************************************************************************}
+
+  procedure SetSource;
+  var
+   buffer           : PAudioSample;
+   byteIndex        : Integer;
+   source           : PByte;
+   sourceFrameIndex : Integer;
+
+  begin
+
+   source           := FData;
+   sourceFrameIndex := round(wheel);
+
+   if sourceFrameIndex >= FSourceFrames then  //security
+   sourceFrameIndex := FSourceFrames - 1;
+
+   if sourceFrameIndex < 0 then
+   sourceFrameIndex := 0;
+
+   byteIndex := sourceFrameIndex * (FBytesPerSample * nChannels);
+
+   Inc(source,byteIndex);
+
+   buffer := PAudioSample(source);
+
+   sourceLeft  := buffer^;
+
+   if(nChannels > 1)then
+   begin
+    Inc(buffer);
+
+    sourceRight := buffer^;
+   end;
+
+  end;
+
+  {****************************************************************************}
+
+  procedure SetSink;
+  var
+   shift : Integer;
+
+  begin
+  
+   sinkLeft  := mediaSample;
+   sinkRight := mediaSample;
+
+   shift := frameIndex * nChannels;
+
+   Inc(sinkLeft,shift);
+
+   if (nChannels > 1) then
+   Inc(sinkRight,shift + 1);
+
+  end;
+
+  {****************************************************************************}
+
+  procedure SetGain;
+  var
+   fraction : Double;
+   fading   : Double;
+
+  begin
+
+   fadingGain := 1;
+
+   if (FFading <= 0) or (FFading > 1) then Exit;
+
+   fading     := FFading / 2;
+
+   fraction   := (FPhase - phaseStart) / interval;
+
+
+   if fraction < fading then
+   fadingGain := fraction / fading;
+
+   if fraction > 1 - fading then
+   fadingGain := (1 - fraction) / fading;
+
+  end;
+
+  {****************************************************************************}
+
+  procedure FillSink;
+  begin
+   sourceLeft := (sourceLeft  * gainLeft  * fadingGain);
+
+   if sourceLeft > MAXWAVEPOSITIV then sourceLeft := MAXWAVEPOSITIV;
+   if sourceLeft < MAXWAVENEGATIV then sourceLeft := MAXWAVENEGATIV;
+
+   sinkLeft^  := sinkLeft^ + sourceLeft;
+
+   if (nChannels > 1) then
+   begin
+   sourceRight := (sourceRight * gainRight * fadingGain);
+
+   if sourceRight > MAXWAVEPOSITIV then sourceRight := MAXWAVEPOSITIV;
+   if sourceRight < MAXWAVENEGATIV then sourceRight := MAXWAVENEGATIV;
+
+   sinkRight^ := sinkRight^ + sourceRight;
+   end;
+   
+  end;
+
+  {****************************************************************************}
 
 begin
 
-  Result := -1;
-  if (FData = nil) or (FSize <= 0) or (FDuration <= 0)then exit;
+  Result := ERROR;
+  if (FData = nil) or (FSize <= 0) or FReload then exit;
+
+  SetVariables;
+
+  if interval <= 0 then Exit;
+  
+  for frameIndex := 0 to nFrames - 1 do
+  begin
+
+   if FDoSeek then
+   Seek;
+
+   if (FPhaseShift <> FPhaseShiftPrev) and loop then
+   ShiftPhase;
+
+   if not SetWheel then
+   Continue;
+
+   if loop then
+   SetGain;
+
+   SetSink;
+
+   SetSource;
+
+   FillSink;
+
+  end; {end for frameIndex}
+
+
+  FActualPosition := FDuration * FPhase;
+
   Result := S_OK;
 
-  //Set Gain------------------------------------------------//
-  gain1 := (1. - FPan) * 2.;
-  if gain1 > 1. then gain1 := 1.;
-  gain1 := gain1 * FGain;
-
-  gain2 := FPan * 2.;
-  if gain1 > 1. then gain2 := 1.;
-  gain2 := gain2 * FGain;
-
-
-  //--------------------------------------------------------//
-
-  if FSync = false then
-  begin
-    FStartTime := FFStartTime;
-    FEndTime   := FFEndTime;
-  end;
-
-  //--------------------------------------------------------//
-
-  p           := buf;
-  numFrames   := size div 2;
-  wheelinc    := FPitch     / FSourceFrames;
-  startTime   := FStartTime / FDuration;        //from seconds to 0..1
-  endTime     := FEndTime   / FDuration;
-
-  if (not FLoop) and (FEndTime = 0) then
-  endTime     := 1.0;
-
-  interval    := endTime - startTime;
-  minInterval := FFrameFraction * numFrames; //fraction of a imediasample-block
-  phaseshift  := 0;
-  position    := 0;
-
-  if interval < minInterval then interval := minInterval;
-
-  if FPhase <> FPrevPhase then
-  begin
-   phaseshift := (FPhase - FPrevPhase) * interval;
-
-   FPrevPhase := FPhase;
-  end;
-
-  fading      := FFading * 0.5 * interval;
-  loop        := FLoop;
-  wheel       := FWheel;
-
-  //--------------------------------------------------------//
-  for i:= 0 to numFrames - 1 do
-  begin
-    sampleLeft  := 0;
-    sampleRight := 0;
-
-    f := 1.0;
-
-    if loop or (wheel + wheelinc <= interval) then//--------//
-    begin
-     wheel := wheel + wheelinc + phaseshift;
-
-     phaseshift := 0;
-
-     while wheel > interval do
-     begin
-      wheel := wheel - interval;
-
-      if FSync then setSyncTime();
-     end;
-
-     position := startTime + wheel;
-
-     if wheel < fading then
-      f := wheel / fading
-     else
-     if wheel > (interval - fading) then
-      f := (interval - wheel) / fading;
-
-     if(position < 1) and (not FReload) then
-      phase2val(position, @sampleLeft, @sampleRight );
-
-    end else position := endtime;//------------------------//
-
-    p^ := p^ + sampleLeft  * gain1 * f;
-    Inc(p);
-    p^ := p^ + sampleRight * gain2 * f;
-    Inc(p);
-
-  end;
-  //-------------------------------------------------------//
-
-  FWheel          := wheel;
-  FPosition       := position;
-  FActualPosition := FPosition * FDuration;
-
 end;
+
 
 function TMWavePlayerPin.FillBuffer(ims: IMediaSample): HResult;
 var
@@ -920,14 +1068,12 @@ var
   vcr: double;
   count: integer;
   v: PBCVoice;
-  hr : HResult;
 
 begin
   result := -1;
   if ims = nil then exit;
   //ASSERT(ims <> nil);
 
-  hr := ims.GetTime(FSampleStartTime, FSampleEndTime );
 
   size := ims.GetSize div 2;
   //Outputdebugstring(pchar(format('pins buffersize: %d',[size])));
