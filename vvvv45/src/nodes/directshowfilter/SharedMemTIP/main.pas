@@ -35,7 +35,7 @@ const
 
   MyPinTypes: TRegPinTypes =
     (clsMajorType: @MEDIATYPE_Video;
-     clsMinorType: @MEDIASUBTYPE_RGB24);
+     clsMinorType: @MEDIASUBTYPE_NULL);
 
   MyPins : array[0..1] of TRegFilterPins =
     ((strName: 'Input'; bRendered: FALSE; bOutput: FALSE; bZero: FALSE; bMany: FALSE; oFilter: nil; strConnectsToPin: nil; nMediaTypes: 1; lpMediaType: @MyPinTypes),
@@ -101,7 +101,11 @@ end;
 function TMSharedMemTIP.CheckInputType(mtIn: PAMMediaType): HRESULT;
 begin
   if IsEqualGUID(mtIn.majortype, MEDIATYPE_Video)
-  and IsEqualGUID(mtIn.subtype, MEDIASUBTYPE_RGB24) then
+  and (IsEqualGUID(mtIn.subtype, MEDIASUBTYPE_RGB8)
+    or IsEqualGUID(mtIn.subtype, MEDIASUBTYPE_RGB555)
+    or IsEqualGUID(mtIn.subtype, MEDIASUBTYPE_RGB565)
+    or IsEqualGUID(mtIn.subtype, MEDIASUBTYPE_RGB24)
+    or IsEqualGUID(mtIn.subtype, MEDIASUBTYPE_RGB8)) then
     Result := S_OK
   else
     Result := E_FAIL;
