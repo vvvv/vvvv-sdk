@@ -788,7 +788,6 @@ var
     FEndTime   := FFEndTime;
    end;
 
-   //????
    if FSync then
    if (FPhase >= phaseEnd)   or
       (FPhase <= phaseStart) or
@@ -822,8 +821,6 @@ var
    gainRight  := FGain * (1.0 - FPan);
    pitch      := FPitch;
    fadingGain := 1;
-
-   if (nChannels = 1) then gainLeft := FGain;
 
    SetInterval(false);
 
