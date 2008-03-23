@@ -112,15 +112,9 @@ private:
 
     CRITICAL_SECTION CriticalSection;
     CvSize FImageSize;
-    string Filename;
-    bool newMask;
 
     IplImage* FCurrentImage;
     IplImage* FGrayImage;
-    IplImage* FLastImage;
-    IplImage* FMask;
-    float FPixelCount[256];
-    float FChangedPixels[256];
 };
 
 // Function prototypes - Global Plugin Functions that lie outside the instance object
