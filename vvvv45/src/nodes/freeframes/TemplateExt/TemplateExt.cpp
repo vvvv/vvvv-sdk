@@ -32,12 +32,12 @@ OutputConstsStruct GOutputConstants[NUM_OUTPUTS];
 
 PlugInfoStruct* getInfo()
 {
-	GPlugInfo.APIMajorVersion = 2;		// number before decimal point in version nums
-	GPlugInfo.APIMinorVersion = 000;		// this is the number after the decimal point
+	GPlugInfo.APIMajorVersion = 1;		// number before decimal point in version nums
+	GPlugInfo.APIMinorVersion = 1;		// this is the number after the decimal point
 										// so version 0.511 has major num 0, minor num 501
-	char ID[5] = "JFTN";		 // this *must* be unique to your plugin
+	char ID[5] = "FFTE";		 // this *must* be unique to your plugin
 								 // see www.freeframe.org for a list of ID's already taken
-	char name[17] = "Trautner";
+	char name[17] = "TemplateExt";
 
 	memcpy(GPlugInfo.uniqueID, ID, 4);
 	memcpy(GPlugInfo.pluginName, name, 16);
@@ -95,6 +95,31 @@ DWORD getPluginCaps(DWORD index)
 	}
 }
 
+DWORD initialise()
+{
+    // populate the parameters constants structs
+    GParamConstants[0].Type = 20;
+
+	GParamConstants[0].Default = 0.0f;
+
+	char tempName0[17] = "Dummy Spread";
+
+	memcpy(GParamConstants[0].Name, tempName0, 16);
+
+    // populate the output structs
+    GOutputConstants[0].Type = 20;
+
+	char outName0[17] = "Dummy Out";
+	memcpy(GOutputConstants[0].Name, outName0, 16);
+
+	return FF_SUCCESS;
+}
+
+DWORD deInitialise()
+{
+	return FF_SUCCESS;
+}
+
 LPVOID instantiate(VideoInfoStruct* pVideoInfo)
 {
 
@@ -135,45 +160,6 @@ DWORD deInstantiate(LPVOID instanceID)
 	return FF_SUCCESS;
 }
 
-DWORD initialise()
-{
-    // populate the parameters constants structs
-    GParamConstants[0].Type = 0;
-	GParamConstants[1].Type = 0;
-	GParamConstants[2].Type = 0;
-	GParamConstants[3].Type = 10;
-
-	GParamConstants[0].Default = 0.0f;
-	GParamConstants[1].Default = 0.0f;
-	GParamConstants[2].Default = 1.0f;
-	GParamConstants[3].Default = 0.1f;
-
-	char tempName0[17] = "Hold Background";
-	char tempName1[17] = "Dark Background";
-	char tempName2[17] = "Show Mask";
-	char tempName3[17] = "Threshold";
-
-	memcpy(GParamConstants[0].Name, tempName0, 16);
-	memcpy(GParamConstants[1].Name, tempName1, 16);
-	memcpy(GParamConstants[2].Name, tempName2, 16);
-	memcpy(GParamConstants[3].Name, tempName3, 16);
-
-    // populate the output structs
-    GOutputConstants[0].Type = 10;
-    GOutputConstants[1].Type = 10;
-
-	char outName0[17] = "PixelCount";
-	char outName1[17] = "Changed Pixels";
-	memcpy(GOutputConstants[0].Name, outName0, 16);
-	memcpy(GOutputConstants[1].Name, outName1, 16);
-
-	return FF_SUCCESS;
-}
-
-DWORD deInitialise()
-{
-	return FF_SUCCESS;
-}
 
 DWORD getNumParameters()
 {
@@ -210,38 +196,27 @@ char* getOutputName(DWORD index)
 	return GOutputConstants[index].Name;
 }
 
+/////////////////////////////////////////////////////////////////////////////////
+
 plugClass::plugClass()
 {
     FOutputs[0].SliceCount = 256;
     FOutputs[0].Spread = (float*) calloc(FOutputs[0].SliceCount, sizeof(float));
-    FOutputs[1].SliceCount = 256;
-    FOutputs[1].Spread = (float*) calloc(FOutputs[1].SliceCount, sizeof(float));
 
     InitializeCriticalSection(&CriticalSection);
 }
 
 void plugClass::init()
 {
- /*   FImageSize.width = FVideoInfo.frameWidth;
-    FImageSize.height = FVideoInfo.frameHeight;
-
     // -> setting defaults for input values //
-    for (int in=0; in<NUM_PARAMS; in++) FParams[in].Value=GParamConstants[in].Default;
-
-    // -> allocating image buffers  //
-    FCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
-    FGrayImage = cvCreateImage(FImageSize, IPL_DEPTH_8U, 1);
-    FLastImage = cvCreateImage(FImageSize, IPL_DEPTH_8U, 1);
-    FMask = cvCreateImage(FImageSize, IPL_DEPTH_8U, 1);
-
-    char buffer[100];
-    sprintf(buffer, "%i x %i", FImageSize.width, FImageSize.height);
-    OutputDebugString(buffer);*/
+    for (int in=0; in<NUM_PARAMS; in++)
+      FParams[in].Value=GParamConstants[in].Default;
 }
 
 plugClass::~plugClass()
 {
-    for (int i=0; i<NUM_OUTPUTS; i++) free(FOutputs[i].Spread);
+    for (int i=0; i<NUM_OUTPUTS; i++)
+      free(FOutputs[i].Spread);
 
     DeleteCriticalSection(&CriticalSection);
 }
@@ -292,11 +267,10 @@ DWORD plugClass::setThreadLock(DWORD Enter)
 
 float* plugClass::getOutput(DWORD index)
 {
- /*   switch(index)
+    switch(index)
     {
-        case 0: memcpy(FOutputs[0].Spread, FPixelCount, 256 * sizeof(float));
-        case 1: memcpy(FOutputs[1].Spread, FChangedPixels, 256 * sizeof(float));
-    }*/
+        //case 0: memcpy(FOutputs[0].Spread, FPixelCount, 256 * sizeof(float));
+    }
     return FOutputs[index].Spread;
 }
 
@@ -304,66 +278,9 @@ DWORD plugClass::processFrame(LPVOID pFrame)
 {
     EnterCriticalSection(&CriticalSection);
 
-/*
-    FCurrentImage->origin = 1;
-    FCurrentImage->imageData = (char*)pFrame;
+    //do something to the image
+    //extract some data
 
-    cvCvtColor(FCurrentImage, FGrayImage, CV_BGR2GRAY);
-
-    if (FParams[0].Value == 0) //substract two consecutive images
-    {
-        IplImage* tmp = cvCloneImage(FGrayImage);
-
-        cvSub(FGrayImage, FLastImage, FGrayImage);
-        cvReleaseImage(&FLastImage);
-        FLastImage = cvCloneImage(tmp);
-
-        cvReleaseImage(&tmp);
-    }
-    else //hold background
-    {
-        if (FParams[1].Value == 0)  //bright background
-        {
-            cvSub(FLastImage, FGrayImage, FGrayImage);
-        }
-        else    //dark background
-        {
-            cvSub(FGrayImage, FLastImage, FGrayImage);
-        }
-    }
-
-    for (int i=0;i<256;i++)
-    {
-        FPixelCount[i] = 0;
-        FChangedPixels[i] = 0;
-    }
-
-    int h = FGrayImage->height;
-    int w = FGrayImage->width * 1; //FGrayImage->nChannels;
-    int step= FGrayImage->widthStep; // because of alignment
-
-    // because imageData is a signed char*
-    unsigned char *mask = reinterpret_cast<unsigned char *>(FMask->imageData);
-    unsigned char *gray = reinterpret_cast<unsigned char *>(FGrayImage->imageData);
-
-    for (int i=0; i<h; i++)
-    {
-        for (int j=0; j<w; j += 1)
-        {
-            FPixelCount[mask[j]]++;
-            if (gray[j] > FParams[3].Value * 255)
-                FChangedPixels[mask[j]]++;
-        }
-
-        mask += step;  // next line
-        gray += step;
-    }
-
-    if (FParams[2].Value > 0)   //show mask
-        cvAdd(FGrayImage, FMask, FGrayImage);
-
-    cvCvtColor(FGrayImage, FCurrentImage, CV_GRAY2BGR);
-*/
     LeaveCriticalSection(&CriticalSection);
 
 	return FF_SUCCESS;
