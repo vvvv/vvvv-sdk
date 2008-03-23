@@ -1,10 +1,11 @@
 //////project name
-//Trautner
+//TemplateExt
 
 //////description
 //freeframe plugin.
-//simple movement detection in regions defined via a grayscale bitmap.
-//based on an idea by mr. trautner -> http://www.brainsalt.net
+//simple template using freeframe 1.0 extended functionality
+//for spreaded in- and outputs
+//see: http://vvvv.org/tiki-index.php?page=FreeFrameExtendedSpecification
 
 //////licence
 //GNU Lesser General Public License (LGPL)
@@ -12,11 +13,7 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//dev-c++ 5
-
-//////dependencies
-//opencv beta5 libraries:
-//http://sourceforge.net/projects/opencvlibrary
+//c++/Code::Blocks
 
 //////initial author
 //joreg -> joreg@gmx.at
@@ -73,19 +70,6 @@ typedef struct VideoPixel24bitTag {
 	BYTE blue;
 } VideoPixel24bit;
 
-typedef struct VideoPixel16bitTag {
-	BYTE fb;
-	BYTE sb;
-} VideoPixel16bit;
-
-typedef struct VideoPixel32bitTag {
-	BYTE blue;
-	BYTE green;
-	BYTE red;
-	BYTE alpha;
-} VideoPixel32bit;
-
-
 // PluginInstance Object - these calls relate to instances of plugObj
 // created by FF_INSTANTIATE
 
@@ -102,12 +86,12 @@ public:
 	DWORD setParameter(SetParameterStruct* pParam);
 	float getParameter(DWORD index);
 
-	//joregs
+	//freeframe 1.0 extended. see: http://vvvv.org/tiki-index.php?page=FreeFrameExtendedSpecification
     DWORD getOutputSliceCount(DWORD index);
     float* getOutput(DWORD index);
     DWORD setInput(InputStruct* pParam);
     DWORD setThreadLock(DWORD Enter);
-    //
+    //-end freeframe 1.0 extended
 
 	DWORD processFrame(LPVOID pFrame);
 	DWORD processFrameCopy(ProcessFrameCopyStruct* pFrameData);
