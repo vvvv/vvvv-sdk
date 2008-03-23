@@ -170,9 +170,9 @@ extern "C" {
          break;
 
 //spreaded inputs
- case FF_SETINPUT:
-	retval.ivalue =  pPlugObj->setInput( (InputStruct*) pParam );
-	break;
+    case FF_SETINPUT:
+        retval.ivalue =  pPlugObj->setInput( (InputStruct*) pParam );
+        break;
 
 // ....................................
 

@@ -32,7 +32,7 @@
 #define NUM_INPUTS 1  //number of video inputs
 
 #define NUM_PARAMS 3  //number of input pins
-#define NUM_OUTPUTS 2 //number of output pins
+#define NUM_OUTPUTS 1 //number of output pins
 
 
 // implementation specific definitions
