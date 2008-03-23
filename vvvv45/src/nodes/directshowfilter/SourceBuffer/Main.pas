@@ -26,6 +26,9 @@
 //jens@meso.net
 
 
+
+// TO do : SetChannelVolume / Reset / ChannelPins? / Crack! / Testen
+
 unit Main;
 
 interface
@@ -70,9 +73,15 @@ const
   );
 
 type
+  TMValue = Double;
+  PMValue = ^TMValue;
 
   TDynamicDouble  = Array of Double;
   TChannelArray   = Array [0..17] of TDynamicDouble;
+
+  TSourcePtrArray = Array of PMValue;
+  TSourceIntArray = Array of Integer;
+  TChannelVolume  = Array [0..17] of Double;
 
   ISourceBuffer = interface(IUnknown)
     ['{6F7AAC61-8E33-4cf4-A349-7976C08D7CCD}']
@@ -87,9 +96,10 @@ type
     function SeekPosition(index:integer; val:integer):HResult; stdcall;
     function GetActualFrame(index:integer; out val:Integer):HResult; stdcall;
     function setChannels(numActiveChannels : Integer; ChannelCode : Integer) : HRESULT; stdcall;
-    function setBufferLength( length : Integer) : HRESULT; stdcall;
-    function setBuffer(index : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
-    function setBufferChanged : HRESULT; stdcall;
+    function writeBuffer(bufferSize : Integer; indexCount : Integer; indexPtr : PMValue; channelNumber : Integer; channelCount : TSourceIntArray; channelPtr : TSourcePtrArray) : HRESULT; stdcall;    function setBlockSize( size : Integer) : HRESULT; stdcall;
+    function getBlockSize(out size : Integer) : HRESULT; stdcall;
+    function setChannelVolume(val : TChannelVolume) : HRESULT; stdcall;
+    function Reset : HRESULT; stdcall;
   end;
 
   PAudioSample = ^AudioSample;
@@ -113,7 +123,7 @@ type
     FFading : Double;
     FChange : Boolean;
     FFraction : Double;
-
+    FChannelVolume : TChannelVolume;
     FNumChannels   : Integer;
     FBuffer        : TChannelArray;
     FBufferTmp     : TChannelArray;
@@ -141,6 +151,7 @@ type
     function DecideBufferSize(Allocator: IMemAllocator; Properties: PAllocatorProperties): HRESULT; override;
     function Notify(Filter: IBaseFilter; q: TQuality): HRESULT; override; stdcall;
     function FillBuffer(ims: IMediaSample): HResult; override;
+
   end;
 
   TMSourceBuffer = class(TBCSource, ISourceBuffer)
@@ -164,15 +175,17 @@ type
     function SeekPosition(index:integer; val:integer):HResult; stdcall;
     function GetActualFrame(index:integer; out val:Integer):HResult; stdcall;
     function setChannels(numActiveChannels : Integer; ChannelCode : Integer) : HRESULT; stdcall;
-    function setBufferLength( length : Integer) : HRESULT; stdcall;
-    function setBuffer(index : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
-    function setBufferChanged : HRESULT; stdcall;
+    function writeBuffer(bufferSize : Integer; indexCount : Integer; indexPtr : PMValue; channelNumber : Integer; channelCount : TSourceIntArray; channelPtr : TSourcePtrArray) : HRESULT; stdcall;    function setBlockSize( size : Integer) : HRESULT; stdcall;
+    function getBlockSize(out size : Integer) : HRESULT; stdcall;
+    function setChannelVolume(val : TChannelVolume) : HRESULT; stdcall;
+    function Reset : HRESULT; stdcall;
  end;
 
 var
 
  GlobalNumActiveChannels : Integer = 0;
  GlobalChannelCode       : Integer = 0;
+ GlobalBlockSize         : Integer = 100;
 
 implementation
 
@@ -229,6 +242,9 @@ begin
   FChange         :=  false;
   FNumChannels    :=  GlobalNumActiveChannels;
 
+  for i := 0 to MAXCHANNELS - 1 do
+  FChannelVolume [i] := 1;
+
 end;
 
 destructor TMVoice.Destroy;
@@ -279,7 +295,8 @@ function TMSourceBuffer.Volume(index: integer; val: double) : HResult; stdcall;
 var
   v: PBCVoice;
 begin
-  v := FPin.VoiceCheck(index);
+  v := FPin.VoiceCheck(0);
+
   if v = nil then exit;
 
   v.FGain := val;
@@ -376,53 +393,45 @@ begin
   Result := S_OK;
 end;
 
-function TMSourceBuffer.setBufferLength(length : Integer) : HRESULT; stdcall;
+function TMSourceBuffer.writeBuffer(bufferSize : Integer; indexCount : Integer; indexPtr : PMValue; channelNumber : Integer; channelCount : TSourceIntArray; channelPtr : TSourcePtrArray) : HRESULT; stdcall;
 var
-  v   : PBCVoice;
-  i,k : Integer;
+  v      : PBCVoice;
+  i,k    : Integer;
+  index  : Integer;
 begin
+
   v := FPin.VoiceCheck(0);
 
   if v = nil then exit;
 
-  v.FBufferSizeTmp := length;
-
-  for i := 0 to MAXCHANNELS - 1 do
+  if bufferSize <> v.FBufferSize then
   begin
-   SetLength(v.FBufferTmp[i],length);
+    v.FChange     := true;
+    v.FBufferSize := bufferSize;
+    v.FFraction   := 1 / bufferSize;
 
-   for k := 0 to length - 1 do
-   v.FBufferTmp[i][k] := 0;
+    for k := 0 to channelNumber - 1 do
+    SetLength(v.FBuffer[k],bufferSize);
+
   end;
 
-end;
+  for i := 0 to indexCount - 1 do
+  begin
 
-function TMSourceBuffer.setBuffer(index : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
-var
-  v: PBCVoice;
-  i: Integer;
-begin
-  v := FPin.VoiceCheck(0);
+    index := trunc(indexPtr^);
 
-  if v = nil then exit;
+    for k := 0 to channelNumber - 1 do
+    begin
+      v.FBuffer[k][index mod channelCount[k]] := channelPtr[k]^;
 
-  if index >= FNumChannels then Exit;
+      Inc(channelPtr[k]);
+    end;
 
-  for i := 0 to v.FBufferSizeTmp - 1 do
-  v.FBufferTmp[index][i] := buffer[i];
+    Inc(indexPtr);
 
-end;
+  end;
 
-
-function TMSourceBuffer.setBufferChanged : HRESULT; stdcall;
-var
-  v: PBCVoice;
-begin
-  v := FPin.VoiceCheck(0);
-
-  if v = nil then exit;
-
-  v.FChange := true;
+  v.FChange := false;
 
 end;
 
@@ -434,8 +443,55 @@ begin
  GlobalNumActiveChannels := NumActiveChannels;
  GLobalChannelCode       := ChannelCode;
 
+ Result := S_OK;
+
 end;
 
+function TMSourceBuffer.setBlockSize( size : Integer) : HRESULT; stdcall;
+begin
+ GlobalBlockSize := size;
+
+ Result := S_OK;
+
+end;
+
+
+function TMSourceBuffer.getBlockSize(out size : Integer) : HRESULT; stdcall;
+begin
+ size := GlobalBlockSize;
+
+ Result := S_OK;
+
+end;
+
+function TMSourceBuffer.setChannelVolume(val : TChannelVolume) : HRESULT; stdcall;
+var
+  v : PBCVoice;
+  i : Integer;
+begin
+  v := FPin.VoiceCheck(0);
+
+  if v = nil then exit;
+
+  for i := 0 to v.FNumChannels - 1 do
+  v.FChannelVolume [i] := val [i];
+
+end;
+
+function TMSourceBuffer.Reset : HRESULT; stdcall;
+var
+  v   : PBCVoice;
+  i,k : Integer;
+begin
+  v := FPin.VoiceCheck(0);
+
+  if v = nil then exit;
+
+  for k := 0 to v.FNumChannels - 1 do
+  for i := 0 to v.FBufferSize - 1 do
+  v.FBuffer[k][i] := 0;
+
+end;
 
 function TMSourceBufferPin.GetMediaType(pmt: PAMMediaType): HResult;
 var
@@ -481,14 +537,20 @@ begin
   ASSERT(Allocator <> nil);
   ASSERT(Properties <> nil);
 
-  Properties.cbBuffer := 100 * 2 * GlobalNumActiveChannels;
+  Properties.cbBuffer := GlobalBlockSize * 2 * GlobalNumActiveChannels;
   Properties.cBuffers := 1;
-  Properties.cbAlign  := 100 * 2 * GlobalNumActiveChannels;
+  Properties.cbAlign  := GlobalBlockSize * 2 * GlobalNumActiveChannels;
   Properties.cbPrefix := 0;
 
   // Ask the allocator to reserve us the memory
   Result := Allocator.SetProperties(Properties^, Actual);
 
+  if Result <> S_OK then
+  begin
+   GlobalBlockSize := 100;
+   DecideBufferSize(Allocator,Properties);
+  end;
+  
 end;
 
 function TMVoice.ReadTheFile(AFileName: PChar): Boolean;
@@ -512,25 +574,7 @@ var
   interval      : Double;
   pitch         : Double;
   gain          : Double;
-
-  procedure ChangeBuffer();
-  var
-   i,k : Integer;
-  begin
-   FBufferSize := FBufferSizeTmp;
-
-   for i := 0 to MAXCHANNELS - 1 do
-   begin
-    SetLength(FBuffer[i],FBufferSize);
-
-    for k := 0 to FBufferSize - 1 do
-    FBuffer [i][k] := FBufferTmp  [i][k];
-
-   end;
-
-   FChange   := false;
-   FFraction := 1.0 / FBufferSize;
-  end;
+  channelVolume : TChannelVolume;
 
   procedure SetFrame (i : Integer; position : Integer);
   var
@@ -548,7 +592,7 @@ var
      sample^ := 0
     else
     begin
-     sample^:= FBuffer[channel][position] * gain;
+     sample^:= FBuffer[channel][position] * gain * channelVolume[channel];
 
      if sample^ > HALFWAVE then
       sample^ := HALFWAVE;
@@ -583,6 +627,8 @@ var
   end;
 
   procedure SetVariables;
+  var
+   i : Integer;
   begin
    numChannels := FNumChannels;
    numFrames   := trunc(size / numChannels);
@@ -593,6 +639,9 @@ var
    position    := FFramePosition;
    pitch       := FPitch;
    gain        := FGain * HALFWAVE;
+
+   for i := 0 to FNumChannels - 1 do
+   channelVolume [i] := FChannelVolume [i];
 
   end;
 
@@ -630,7 +679,7 @@ var
 
   end;
 
-  function PhaseToPosition : Boolean;
+  function PhaseToPosition : Integer;
   var
    value : Double;
    next  : Integer;
@@ -647,6 +696,7 @@ var
    else
     valid := true;
 
+
    FPhase := FPhase + (FFraction * pitch);
 
    if FPhase <= 0.0 + NANOSHIFT then
@@ -655,11 +705,14 @@ var
    if FPhase >= 1.0 - NANOSHIFT then
    FPhase := 1.0;
 
-
    if valid then
    position := round(value);
 
-   Result := valid;
+
+   if valid then
+    Result := position
+   else
+    Result := -1;
 
   end;
 
@@ -667,7 +720,6 @@ var
   var
    i        : Integer;
    value    : Double;
-   position : Integer;
 
   begin
 
@@ -695,27 +747,20 @@ var
 
    Result := position;
 
-   {  !!!!!!!!!!!!!!!!!!!!!!!!Achtung knackt!
+
    if pitch > 0 then
-   begin
-    if FPhase <= PhaseStart - NANOSHIFT then
-     FPhase := PhaseStart
-    else
-    if FPhase >= PhaseEnd - NANOSHIFT then
-     FPhase := PhaseStart + (FPhase - PhaseEnd);
-   end;
+   if FPhase <= PhaseStart - NANOSHIFT then
+   FPhase := PhaseStart
+   else
+   if FPhase >= PhaseEnd - NANOSHIFT then
+   FPhase := PhaseStart;
 
    if pitch < 0 then
-   begin
-    if FPhase >= PhaseEnd - NANOSHIFT then
-     FPhase := PhaseEnd
-    else
-    if FPhase <= PhaseStart + NANOSHIFT then
-     FPhase := PhaseEnd - (PhaseStart - FPhase);
-   end;
-
-   Result := position;
-   }
+   if FPhase <= PhaseStart then
+   FPhase := PhaseEnd
+   else
+   if FPhase >= PhaseEnd - NANOSHIFT then
+   FPhase := PhaseEnd;
 
   end;
 
@@ -723,22 +768,21 @@ var
 
 begin
 
-  if FChange then ChangeBuffer();
-
   SetVariables;
 
-  if FDoSeek then SetPosition();
+  if FDoSeek then
+   SetPosition();
 
   for i := 0 to numFrames - 1 do
   begin
 
-   if FBufferSize = 0 then Continue;
- 
+   if (FBufferSize = 0) or (FChange = true) then Continue;
+
    if loop then
    SetFrame(i,PhaseToPositionLoop);
 
-   //if not loop then
-   //SetFrame(i,PhaseToPosition);
+   if not loop then
+   SetFrame(i,PhaseToPosition);
 
   end;
 
