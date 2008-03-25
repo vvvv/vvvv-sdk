@@ -398,6 +398,7 @@ var
   v      : PBCVoice;
   i,k    : Integer;
   index  : Integer;
+  ptr    : PMValue;
 begin
 
   v := FPin.VoiceCheck(0);
@@ -422,9 +423,12 @@ begin
 
     for k := 0 to channelNumber - 1 do
     begin
-      v.FBuffer[k][index mod channelCount[k]] := channelPtr[k]^;
+      ptr := channelPtr[k];
 
-      Inc(channelPtr[k]);
+      Inc(ptr,i mod channelCount[k]);
+
+      v.FBuffer[k][index] := ptr^;
+
     end;
 
     Inc(indexPtr);
