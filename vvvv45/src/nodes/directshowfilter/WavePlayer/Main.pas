@@ -817,8 +817,8 @@ var
    loop       := FLoop;
    nChannels  := wf.nChannels;
    nFrames    := trunc(size / nChannels);
-   gainLeft   := FGain * FPan;
-   gainRight  := FGain * (1.0 - FPan);
+   gainRight  := FGain * FPan;
+   gainLeft   := FGain * (1.0 - FPan);
    pitch      := FPitch;
    fadingGain := 1;
 
