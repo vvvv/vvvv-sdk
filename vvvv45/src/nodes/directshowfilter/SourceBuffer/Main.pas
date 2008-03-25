@@ -26,9 +26,6 @@
 //jens@meso.net
 
 
-
-// TO do : SetChannelVolume / Reset / ChannelPins? / Crack! / Testen
-
 unit Main;
 
 interface
