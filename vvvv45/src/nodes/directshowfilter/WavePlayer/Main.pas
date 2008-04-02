@@ -790,7 +790,7 @@ var
   procedure SetInterval;
   begin
 
-   if (not FSync) or ((FPhase >= phaseEnd) or (FPhase <= phaseStart)) then
+   if (not FSync) then
    begin
     FStartTime := FFStartTime;
     FEndTime   := FFEndTime;
@@ -806,7 +806,7 @@ var
 
    if (interval < 0) then interval := 0;
 
-   if (interval > 1) then interval := 1;   
+   if (interval > 1) then interval := 1;
 
    if not loop then interval := 1;
 
@@ -846,6 +846,11 @@ var
    FPhase    := phaseSeek;
 
    FDoSeek   := false;
+
+   FStartTime := FFStartTime; 
+   FEndTime   := FFEndTime;
+
+   Outputdebugstring(pchar(format('FENDTIME: %f',[FEndTime])));
 
   end;
 
@@ -887,10 +892,6 @@ var
    if loop then
    begin
 
-    if FSync then
-    if (FPhase >= phaseEnd) or (FPhase <= phaseStart) then
-    SetInterval;
-
     if interval > 0 then
     begin
      while FPhase > phaseEnd do
@@ -910,6 +911,13 @@ var
    wheel  := FPhase * FSourceFrames;
 
    FPhase := FPhase + (FFrameFraction * pitch);
+
+   if FSync then
+   if (FPhase <= phaseStart) or (FPhase >= phaseEnd) then
+   begin
+    FStartTime := FFStartTime;
+    FEndTime   := FFEndTime;
+   end;
 
    Result := true;
 
