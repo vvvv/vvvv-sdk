@@ -655,10 +655,18 @@ begin
 
   if Result <> S_OK then
   begin
-   GlobalBlockSize := 128;
-   DecideBufferSize(Allocator,Properties);
+   GlobalBlockSize     := 2048;
+   Properties.cbBuffer := 2048;
+   Properties.cBuffers := 1;
+   Properties.cbAlign  := 512;
+   Properties.cbPrefix := 0;
+
+   // Ask the allocator to reserve us the memory
+   Result := Allocator.SetProperties(Properties^, Actual);
   end;
-  
+
+
+
 end;
 
 function TMVoice.ReadTheFile(AFileName: PChar): Boolean;
@@ -779,20 +787,10 @@ var
  
   {****************************************************************************}
 
-  procedure SetInterval (refreshTime : Boolean);
+  procedure SetInterval;
   begin
 
-   if (not FSync) or refreshTime then
-   begin
-    FStartTime := FFStartTime;
-    FEndTime   := FFEndTime;
-   end;
-
-   if FSync then
-   if (FPhase >= phaseEnd)   or
-      (FPhase <= phaseStart) or
-      (FPhase <= 0 )         or
-      (FPhase >= 1) then
+   if (not FSync) or ((FPhase >= phaseEnd) or (FPhase <= phaseStart)) then
    begin
     FStartTime := FFStartTime;
     FEndTime   := FFEndTime;
@@ -802,9 +800,13 @@ var
    phaseEnd   := TimeToPhase(FEndTime);
 
    if (phaseStart < 0) or (phaseStart > 1) then phaseStart := 0;
-   if (phaseEnd   > 1) or (phaseEnd   < 0) then phaseEnd   := 1;
+   if (phaseEnd   < 0) or (phaseEnd   > 1) then phaseEnd   := 1;
 
    interval := phaseEnd - phaseStart;
+
+   if (interval < 0) then interval := 0;
+
+   if (interval > 1) then interval := 1;   
 
    if not loop then interval := 1;
 
@@ -822,7 +824,7 @@ var
    pitch      := FPitch;
    fadingGain := 1;
 
-   SetInterval(false);
+   SetInterval;
 
   end;
 
@@ -886,15 +888,20 @@ var
    begin
 
     if FSync then
-    if (FPhase >= phaseEnd) or (FPhase <= phaseStart) or
-       (FPhase <= 0 ) or (FPhase >= 1) then
-    SetInterval(true);
+    if (FPhase >= phaseEnd) or (FPhase <= phaseStart) then
+    SetInterval;
 
-    while FPhase > phaseEnd do
-    FPhase := FPhase - interval;
+    if interval > 0 then
+    begin
+     while FPhase > phaseEnd do
+     FPhase := FPhase - interval;
 
-    while FPhase < phaseStart do
-    FPhase := FPhase + interval;
+     while FPhase < phaseStart do
+     FPhase := FPhase + interval;
+    end;
+
+    if interval = 0 then
+    FPhase := phaseStart;
 
    end;
 
@@ -1023,8 +1030,6 @@ begin
 
   SetVariables;
 
-  if interval <= 0 then Exit;
-  
   for frameIndex := 0 to nFrames - 1 do
   begin
 
@@ -1188,5 +1193,6 @@ initialization
     MERIT_DO_NOT_USE, 1, @sudOutputPin
     );
 end.
+
 
 
