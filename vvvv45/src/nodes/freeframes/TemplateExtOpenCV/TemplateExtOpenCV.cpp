@@ -229,7 +229,7 @@ void plugClass::init()
     // -> allocating image buffers  //
     FCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
     FGrayImage = cvCreateImage(FImageSize, IPL_DEPTH_8U, 1);
-
+*/
    /*
     char buffer[100];
     sprintf(buffer, "%i x %i", FImageSize.width, FImageSize.height);
