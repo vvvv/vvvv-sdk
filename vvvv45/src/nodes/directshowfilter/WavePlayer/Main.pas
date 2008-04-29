@@ -22,53 +22,107 @@
 
 //////edited by
 //your name here
-//xsnej@gmx.de
+//[meanimal] xsnej@gmx.de
+
+//****************************************************************************//
+//****************************************************************************//
+//****************************************************************************//
+
+
 
 unit Main;
 
 interface
 
 uses
-  Classes, SysUtils, ActiveX, MMSystem, Math, Windows,
-  BaseClass, DirectShow9, DSUtil, DirectSound;
+ Classes, SysUtils, ActiveX, MMSystem, Math, Windows,
+ BaseClass, DirectShow9, DSUtil, DirectSound;
+
+//****************************************************************************//
 
 const
+
+  //Filter-Properties------------------------------------------------//
   CLSID_WavePlayer : TGUID = '{79A98DE0-BC00-11ce-AC2E-444553540001}';
   FilterName: String = 'WavePlayer';
 
-  HALFWAVE       =  32767;
-  MAXWAVENEGATIV = -32767;
-  MAXWAVEPOSITIV =  32767;
-  BYTESPERSAMPLE =  2;
-  WAVEBUFFERSIZE =  256;
-  NUMCHANNELS    =  2;
-  SAMPLERATE     =  44100;
-  BITSPERSAMPLE  =  16;
-  BITSPERBYTE    =  8;
-
-  sudPinTypes: TRegPinTypes =
+  sudPinTypes : TRegPinTypes =
   (
-    clsMajorType: @MEDIATYPE_Audio;
-    clsMinorType: @MEDIASUBTYPE_PCM
+    clsMajorType : @MEDIATYPE_Audio;
+    clsMinorType : @MEDIASUBTYPE_PCM;
   );
 
-  sudOutputPin: array[0..0] of TRegFilterPins =
+  sudOutputPin : array[0..0] of TRegFilterPins =
   (
     (
-    strName: 'Output'; // Pins string name
-    bRendered: FALSE; // Is it rendered
-    bOutput: TRUE; // Is it an output
-    bZero: FALSE; // Are we allowed none
-    bMany: FALSE; // And allowed many
-    oFilter: nil; // Connects to filter
-    strConnectsToPin: nil; //'Input'; // Connects to pin
-    nMediaTypes: 1; // Number of types
-    lpMediaType: @sudPinTypes // Pin information
+     strName: 'Output'; // Pins string name
+     bRendered: FALSE; // Is it rendered
+     bOutput: TRUE; // Is it an output
+     bZero: FALSE; // Are we allowed none
+     bMany: FALSE; // And allowed many
+     oFilter: nil; // Connects to filter
+     strConnectsToPin: nil; //'Input'; // Connects to pin
+     nMediaTypes: 1; // Number of types
+     lpMediaType: @sudPinTypes // Pin information
     )
   );
 
+
+  //Standard-Values-------------------------------------------------//
+  MAXWAVENEGATIV = -32767;
+  MAXWAVEPOSITIV =  32767;
+  BYTESPERSAMPLE =  2;
+  NUMCHANNELS    =  1;
+  SAMPLERATE     =  44100;
+  BITSPERSAMPLE  =  16;
+  BITSPERBYTE    =  8;
+  MAXCHANNELS    =  18;
+  BLOCKSIZESMALL =  256;
+  BLOCKSIZE      =  2048;
+  BLOCKALIGN     =  256;
+  CHANNELMASK    =  SPEAKER_FRONT_LEFT;
+
+  CHANNELCODE : Array [0..MAXCHANNELS-1] of Integer = ( SPEAKER_FRONT_LEFT
+                                                      , SPEAKER_FRONT_RIGHT
+                                                      , SPEAKER_FRONT_CENTER
+                                                      , SPEAKER_LOW_FREQUENCY
+                                                      , SPEAKER_BACK_LEFT
+                                                      , SPEAKER_BACK_RIGHT
+                                                      , SPEAKER_FRONT_LEFT_OF_CENTER
+                                                      , SPEAKER_FRONT_RIGHT_OF_CENTER
+                                                      , SPEAKER_BACK_CENTER
+                                                      , SPEAKER_SIDE_LEFT
+                                                      , SPEAKER_SIDE_RIGHT
+                                                      , SPEAKER_TOP_CENTER
+                                                      , SPEAKER_TOP_FRONT_LEFT
+                                                      , SPEAKER_TOP_FRONT_CENTER
+                                                      , SPEAKER_TOP_FRONT_RIGHT
+                                                      , SPEAKER_TOP_BACK_LEFT
+                                                      , SPEAKER_TOP_BACK_CENTER
+                                                      , SPEAKER_TOP_BACK_RIGHT );
+
+//****************************************************************************//
+
 type
 
+  //Class-Declarations---------------------------------------------//
+  TMWavePlayer      = class;
+  TMWavePlayerPin   = class;
+  TMWavePlayerRoute = class;
+  TMVoice           = class;
+  
+  //---------------------------------------------------------------//
+  PBCVoice = ^TMVoice;
+
+  AudioSample  =  SmallInt; //-32768..32767 Int16
+  PAudioSample = ^AudioSample;
+
+  TSampleArray  = Array of Double;
+  TChannelArray = Array of TSampleArray;
+  TSourceFrame  = Array [0..MAXCHANNELS-1] of Double;
+  TRoutingArray = Array of Integer;
+
+  //Interface-Definition-------------------------------------------//
   IWavePlayer = interface(IUnknown)
     ['{79A98DE0-BC00-11ce-AC2E-444553540001}']
     function Voices(voicecount: integer): HResult; stdcall;
@@ -87,204 +141,217 @@ type
     function GetDuration(index:integer; out val:double):HResult; stdcall;
     function GetActualPosition(index:integer; out val:double):HResult; stdcall;
     function Fading(index: integer; val:double) : HResult; stdcall;
-    function setBlockSize( size : Integer) : HRESULT; stdcall;
-    function getBlockSize(out size : Integer) : HRESULT; stdcall;
+    function SetBlockSize(val: Integer) : HRESULT; stdcall;
+    function GetBlockSize(out val : Integer) : HRESULT; stdcall;
+    function SetRouting(count: Integer; val: TRoutingArray) : HRESULT;  stdcall;
   end;
 
-  PAudioSample = ^AudioSample;
-  AudioSample = -32767..32767;       // for 16-bit audio
-  PAudioSample8 = ^AudioSample8;
-  AudioSample8 = -16383..16384;       // for 16-bit audio
-
-  PBCVoice = ^TMVoice;
-  TMVoice = class(TObject)
-  private
-    FFileName: String;
-    FSize: LONGLONG;
-    FData: PByte;
-    FWheel: Double;
-    FPlay: Boolean;
-    FSync: Boolean;
-    FGain: double;
-    FPan: double;
-    FPosition: double;
-    FPhase: double;
-    FPitch: double;
-    FStartTime,FFStartTime : double;
-    FEndTime,FFEndTime : double;
-    FSeekPosition : double;
-    FDoSeek : Boolean;
-    FDuration : double;
-    FActualPosition : double;
-    FLoop : Boolean;
-    FFading : Double;
-    FFrameFraction : Double;
-    FReload : Boolean;
-    FSourceFrames : Integer;
-    FPhaseShift : Double;
-    FPhaseShiftPrev : Double;
-    FBytesPerSample : Integer;
-
-    wf: TWAVEFORMATEX;
-  public
-    destructor Destroy; override;
-    constructor Create;
-    function ReadTheFile(AFileName: PChar): Boolean;
-    function FillBuffer(mediaSample: PDouble; size: integer): HResult;
-  end;
-
-  TMWavePlayerPin = class(TBCSourceStream)
-  private
-    voicelist: TList;
-    voicecount: Integer;
-  public
-
-    function VoiceCheck(index: Integer): PBCVoice;
-    procedure VoiceFree(index: Integer);
-
-    constructor Create(out hr: HResult; Filter: TBCSource);
-    destructor Destroy; override;
-    function GetMediaType(pmt: PAMMediaType): HResult; override;
-    function DecideBufferSize(Allocator: IMemAllocator; Properties: PAllocatorProperties): HRESULT; override;
-    function Notify(Filter: IBaseFilter; q: TQuality): HRESULT; override; stdcall;
-    function FillBuffer(ims: IMediaSample): HResult; override;
-  end;
-
+  //---------------------------------------------------------------//
   TMWavePlayer = class(TBCSource, IWavePlayer)
   private
-    FPin: TMWavePlayerPin;
+   FPin    : TMWavePlayerPin;
   public
-    constructor Create(ObjName: string; Unk: IUnKnown; out hr: HRESULT);
-    constructor CreateFromFactory(Factory: TBCClassFactory; const Controller: IUnknown); override;
-    destructor Destroy; override;
-
-    function NonDelegatingQueryInterface(const IID: TGUID; out Obj): HResult; override;
-    function Voices(voicecount: integer): HResult; stdcall;
-    function Read(index: integer; FileName : String): HResult; stdcall;
-    function Play(index: integer; state: integer): HResult; stdcall;
-    function Volume(index: integer; val: double): HResult; stdcall;
-    function Pan(index: integer; val: double): HResult; stdcall;
-    function Phase(index: integer; val: double): HResult; stdcall;
-    function Pitch(index: integer; val: double): HResult; stdcall;
-    function Sync(index: integer; state: integer): HResult; stdcall;
-    function Loop(index: integer; state:integer):HResult; stdcall;
-    function DoSeek(index: integer; state:integer):HResult; stdcall;
-    function StartTime(index: integer; val:double):HResult; stdcall;
-    function EndTime(index:integer; val:double):HResult; stdcall;
-    function SeekPosition(index:integer; val:double):HResult; stdcall;
-    function GetDuration(index:integer; out val:double):HResult; stdcall;
-    function GetActualPosition(index:integer; out val:double):HResult; stdcall;
-    function Fading(index: integer; val:double) : HResult; stdcall;
-    function setBlockSize( size : Integer) : HRESULT; stdcall;
-    function getBlockSize(out size : Integer) : HRESULT; stdcall;
+   constructor Create (ObjName: string; Unk: IUnknown; out hr: HRESULT);
+   destructor  Destroy; override;
+   constructor CreateFromFactory (Factory: TBCClassFactory; const  Controller : IUnknown); override;
+   function NonDelegatingQueryInterface (const IID: TGUID; out Obj) : HRESULT; override;
+   //IWavePlayer
+   function Voices(voicecount: integer): HResult; stdcall;
+   function Read(index: integer; FileName : String): HResult; stdcall;
+   function Play(index: integer; state : integer): HResult; stdcall;
+   function Volume(index: integer; val : double): HResult; stdcall;
+   function Pan(index: integer; val : double): HResult; stdcall;
+   function Phase(index: integer; val : double): HResult; stdcall;
+   function Pitch(index: integer; val : double): HResult; stdcall;
+   function Sync(index: integer; state: integer): HResult; stdcall;
+   function Loop(index: integer; state:integer):HResult; stdcall;
+   function DoSeek(index: integer; state:integer):HResult; stdcall;
+   function StartTime(index: integer; val:double):HResult; stdcall;
+   function EndTime(index:integer; val:double):HResult; stdcall;
+   function SeekPosition(index:integer; val:double):HResult; stdcall;
+   function GetDuration(index:integer; out val:double):HResult; stdcall;
+   function GetActualPosition(index:integer; out val:double):HResult; stdcall;
+   function Fading(index: integer; val:double) : HResult; stdcall;
+   function SetBlockSize(val: Integer) : HRESULT; stdcall;
+   function GetBlockSize(out val : Integer) : HRESULT; stdcall;
+   function SetRouting(count: Integer; val: TRoutingArray) : HRESULT;  stdcall;
   end;
+
+  //---------------------------------------------------------------//
+  TMWavePlayerRoute = class(TObject)
+  public
+   FChannelMask     : Integer;
+   FChannelCount    : Integer;
+   FChannelFactor   : TRoutingArray;
+   FChannelId       : TRoutingArray;
+   FChannelIdCount  : Integer;
+   FRouting         : TRoutingArray;
+   FRoutingCount    : Integer;
+   FBlockSize       : Integer;
+   FUseFileMapping  : Boolean;
+   FReload          : Boolean;
+   //tmp
+   FFChannelCount   : Integer;
+   FFChannelFactor  : TRoutingArray;
+   FFRoutingCount   : Integer;
+   FFRouting        : TRoutingArray;
+   FFUseFileMapping : Boolean;
+
+   Constructor Create;
+   Destructor Destroy; override;
+   procedure SetRouting(count : Integer; val : TRoutingArray);
+   procedure SetFileMapping(channelMask : Integer; channelCount : Integer; map : Array of integer);
+   procedure Update;
+   property BlockSize : Integer read FBlockSize write FBlockSize;
+   property ChannelCount : Integer read FChannelCount write FChannelCount;
+   property ChannelMask : Integer read FChannelMask write FChannelMask;
+   property Routing : TRoutingArray read FRouting write FRouting;
+   property RoutingCount : Integer read FRoutingCount write FRoutingCount;
+   property UseFileMapping : Boolean read FUseFileMapping;
+
+  end;
+
+  //---------------------------------------------------------------//
+  TMWavePlayerPin = class(TBCSourceStream)
+  private
+   voicelist  : TList;
+   voicecount : Integer;
+   FRoute     : TMWavePlayerRoute;
+  public
+   constructor Create(out hr: HRESULT; Filter: TBCSource);
+   destructor Destroy; override;
+   function GetMediaType(pmt : PAMMediaType) : HRESULT; override;
+   function DecideBufferSize(Allocator: IMemAllocator; Properties: PAllocatorProperties) : HRESULT; override;
+   function Notify(Filter: IBaseFilter; q: TQuality) : HRESULT; override; stdcall;
+   function FillBuffer(ims : IMediaSample) : HRESULT; override;
+   function VoiceCheck(index: Integer): PBCVoice;
+   procedure SetFileMapping;
+   procedure SetRouting(count : Integer; val : TRoutingArray);
+   procedure VoiceFree(index: Integer);
+   property Route : TMWavePlayerRoute read FRoute;
+  end;
+
+  //---------------------------------------------------------------//
+  TMVoice  = class(TObject)
+  private
+   FFilename       : String;
+   FSize           : LONGLONG;
+   FData           : PByte;
+   FWaveFormat     : TWAVEFORMATEXTENSIBLE;
+   FSourceFrames   : LONGLONG;
+   FPlay           : Boolean;
+   FSync           : Boolean;
+   FGain           : Double;
+   FPan            : Double;
+   FPosition       : Double;
+   FPhase          : Double;
+   FPitch          : Double;
+   FStartTime      : Double;
+   FFStartTime     : Double;
+   FEndTime        : Double;
+   FFEndTime       : Double;
+   FSeekPosition   : Double;
+   FDoSeek         : Boolean;
+   FDuration       : Double;
+   FFading         : Double;
+   FLoop           : Boolean;
+   FFrameFraction  : Double;
+   FReload         : Boolean;
+   FPhaseShift     : Double;
+   FPhaseShiftPrev : Double;
+   FChannelCount   : Integer;
+   FChannel        : TChannelArray;
+   FChannelSize    : Integer;
+   FChannelMap     : Array [0..MAXCHANNELS-1] of Integer;
+   FInitialized    : Boolean;
+   //tmp---------------------
+   FFData          : PByte;
+   FFSize          : LONGLONG;
+   FFWaveFormat    : TWAVEFORMATEXTENSIBLE;
+   FFSourceFrames  : LONGLONG;
+   FFFrameFraction : Double;
+   FFChannelCount  : Integer;
+   FFChannelMap    : Array [0..MAXCHANNELS-1] of integer;
+   FFDuration      : Double;     
+
+  public
+   destructor Destroy; override;
+   constructor Create;
+   function ReadTheFile(AFileName: PChar) : Boolean;
+   procedure Update;
+   procedure Reset;
+   procedure Clone(other : PBCVoice);
+   function FillBuffer(size: integer) : HRESULT;
+  end;
+
+//****************************************************************************//
 
 implementation
 
 uses Variants;
 
+//TMWavePlayer----------------------------------------------------------------//
+constructor TMWavePlayer.Create (ObjName: string; Unk: IUnknown; out hr: HRESULT);
+begin
+ inherited Create(ObjName, Unk, CLSID_WavePlayer);
+
+ FPin    := TMWavePlayerPin.Create(hr, Self);
+
+ if (hr <> S_OK) then
+  if (FPin = nil) then
+  hr := E_OUTOFMEMORY;
+
+end;
+
+destructor  TMWavePlayer.Destroy;
+begin
+
+ FreeAndNil(FPin);
+ inherited;
+
+end;
+
+//Called first
+constructor TMWavePlayer.CreateFromFactory (Factory: TBCClassFactory; const  Controller : IUnknown);
 var
-
- GlobalNumActiveChannels : Integer = 2;
- GlobalChannelCode       : Integer = 0;
- GlobalBlockSize         : Integer = 128;
-
-function wrap(val: Double) : Double;
+ hr : HRESULT;
 begin
-  if val >= 1. then result := val - floor(val)
-  else if val < 0. then result := val - floor(val)
-  else result := val;
-end;
-
-constructor TMWavePlayerPin.Create(out hr: HResult; Filter: TBCSource);
-begin
-  inherited Create(FilterName, hr, Filter, 'Out');
-  VoiceList := TList.Create;
-  VoiceList.Clear;
-end;
-
-destructor TMWavePlayerPin.Destroy;
-var
-  i: Integer;
-begin
-  for i := 0 to VoiceList.Count - 1 do
-  begin
-    if assigned(VoiceList.Items[i]) then VoiceFree(i);
-  end;
-  VoiceList.Free;
-  inherited;
-end;
-
-constructor TMVoice.Create;
-begin
-  FPlay           :=  false;
-  FSync           :=  false;
-  FDoSeek         :=  false;
-  FLoop           :=  false;
-  FReload         :=  false;
-  FGain           :=  1;
-  FPan            :=  0.5;
-  FPosition       :=  0;
-  FPhase          :=  0;
-  FPitch          :=  1;
-  FStartTime      :=  0;
-  FFStartTime     :=  0;
-  FEndTime        :=  0;
-  FFEndTime       :=  0;
-  FSeekPosition   :=  0;
-  FDuration       :=  0;
-  FActualPosition :=  0;
-  FSourceFrames   :=  0;
-  FFading         :=  0;
-  FFileName       :=  '';
-  FSize           :=  0;
-  FData           :=  nil;
-  FWheel          :=  0;
-  //FFrameFraction  :=  1;
-  FPhaseShift     :=  0;
-  FPhaseShiftPrev :=  0;
+ Create(Factory.Name, Controller, hr);
 
 end;
 
-destructor TMVoice.Destroy;
+//Called after filtercreation
+function TMWavePlayer.NonDelegatingQueryInterface (const IID: TGUID; out Obj) : HRESULT;
 begin
-  if Assigned(FData) then
-  begin
-    CoTaskMemFree(FData);
-    FData := nil;
-    FSize := 0;
-  end;
-  inherited;
-end;
 
-function TMWavePlayerPin.Notify(Filter: IBaseFilter; q: TQuality): HRESULT;
-begin
-  Result := E_FAIL;
-end;
-
-function TMWavePlayer.NonDelegatingQueryInterface(const IID: TGUID;
-  out Obj): HResult;
-begin
-  if IsEqualGUID(IID, CLSID_WavePlayer) then
-    if GetInterface(CLSID_WavePlayer, Obj) then
-      Result := S_OK
-    else
-      Result := E_FAIL
+ if IsEqualGUID(IID, CLSID_WavePlayer) then
+  if GetInterface(CLSID_WavePlayer, Obj) then
+   Result := S_OK
   else
-    Result := Inherited NonDelegatingQueryInterface(IID, Obj);
+   Result := E_FAIL
+ else
+  Result := inherited NonDelegatingQueryInterface(IID, Obj);
+
+ Result := Result;
+
 end;
+
+//IWavePlayer-Definitions----//
 
 function TMWavePlayer.Voices(voicecount: integer): HResult; stdcall;
 begin
-  Result := s_ok;
-  FPin.voicecount := voicecount;
+ FPin.voicecount := voicecount;
+
+ Result := S_OK;
 end;
 
-function TMWavePlayer.Read(index: integer; FileName : String) : HResult; stdcall;
+
+function TMWavePlayer.Read(index: integer; FileName : String): HResult; stdcall;
 var
-  v,vv: PBCVoice;
-  i: Integer;
+  v,vv : PBCVoice;
+  i : integer;
 begin
+
   v := FPin.VoiceCheck(index);
 
   if v = nil then
@@ -294,60 +361,39 @@ begin
   end;
 
   Result := S_OK;
-  if FileName = v.FFileName then exit;
-  i := FPin.VoiceList.Count - 1;
-  while i >= 0 do
+
+  if FileName = v.FFileName then
+  exit;
+
+
+  for i := 0 to FPin.voicelist.Count - 1 do
   begin
-    vv := FPin.VoiceList.Items[i];     //Achtung!!!
-    if vv.FFileName = FileName then
-    begin
-      FPin.VoiceFree(index);
+   vv := FPin.voicelist.Items[i];
 
-      v.FFileName       :=  vv.FFileName;
-      v.FSize           :=  vv.FSize;
-      v.FData           :=  vv.FData;
-      v.FWheel          :=  vv.FWheel;
-      v.FPlay           :=  vv.FPlay;
-      v.FSync           :=  vv.FSync;
-      v.FGain           :=  vv.FGain;
-      v.FPan            :=  vv.FGain;
-      v.FPosition       :=  vv.FPosition;
-      v.FPhase          :=  vv.FPhase;
-      v.FPitch          :=  vv.FPitch;
-      v.FStartTime      :=  vv.FStartTime;
-      v.FFStartTime     :=  vv.FFStartTime;
-      v.FEndTime        :=  vv.FEndTime;
-      v.FFEndTime       :=  vv.FFEndTime;
-      v.FSeekPosition   :=  vv.FSeekPosition;
-      v.FDoSeek         :=  vv.FDoSeek;
-      v.FDuration       :=  vv.FDuration;
-      v.FActualPosition :=  vv.FActualPosition;
-      v.FLoop           :=  vv.FLoop;
-      v.FSourceFrames   :=  vv.FSourceFrames;
-      v.FFading         :=  vv.FFading;
-      v.FFrameFraction  :=  vv.FFrameFraction;
-      v.wf              :=  vv.wf;
-      v.FReload         :=  vv.FReload;
-      v.FPhaseShift     :=  vv.FPhaseShift;
-      v.FPhaseShiftPrev :=  vv.FPhaseShiftPrev;
-      v.FBytesPerSample :=  vv.FBytesPerSample;
+   if vv.FFilename = Filename then
+   begin
+    v.Clone(vv);
+    Exit;
+   end;
+
+  end;//end for i------------------------//
 
 
-      //outputdebugstring(pchar(format('link %d %d %d %p',[index,i,v.FSize,v.FData])));
-      exit;
-    end;
-    Dec(i);
-  end;
   FPin.VoiceFree(index);
-  v.FFileName := FileName;
-  //outputdebugstring(pchar(format('read %d: %s',[index,filename])));
+
+  v.FFilename := FileName;
+ 
   v.ReadTheFile(pchar(FileName));
+
+  FPin.SetFileMapping;//Error afterwards?
+
 end;
 
-function TMWavePlayer.Play(index: integer; state: integer) : HResult; stdcall;
+
+
+function TMWavePlayer.Play(index: integer; state : integer): HResult; stdcall;
 var
   v: PBCVoice;
-
 begin
   v := FPin.VoiceCheck(index);
 
@@ -359,31 +405,10 @@ begin
 
   v.FPlay := Boolean(state);
 
-  Result  := S_OK
+  Result := S_OK;
 end;
 
-function TMWavePlayer.Sync(index: integer; state: integer) : HResult; stdcall;
-var
-  v: PBCVoice;
-begin
-  v := FPin.VoiceCheck(index);
-
-  if v = nil then
-  begin
-   Result := ERROR;
-   exit;
-  end;
-
-  if state = 0 then
-   v.FSync := false;
-
-  if state = 1 then
-   v.FSync := true;
-
-  Result := S_OK
-end;
-
-function TMWavePlayer.Volume(index: integer; val: double) : HResult; stdcall;
+function TMWavePlayer.Volume(index: integer; val : double): HResult; stdcall;
 var
   v: PBCVoice;
 begin
@@ -397,10 +422,10 @@ begin
 
   v.FGain := val;
 
-  Result := S_OK
+  Result := S_OK;
 end;
 
-function TMWavePlayer.Pan(index: integer; val: double) : HResult; stdcall;
+function TMWavePlayer.Pan(index: integer; val : double): HResult; stdcall;
 var
   v: PBCVoice;
 begin
@@ -415,10 +440,10 @@ begin
   if (val>=0) and (val<=1) then
   v.FPan := val;
 
-  Result := S_OK
+  Result := S_OK;
 end;
 
-function TMWavePlayer.Phase(index: integer; val: double) : HResult; stdcall;
+function TMWavePlayer.Phase(index: integer; val : double): HResult; stdcall;
 var
   v: PBCVoice;
 begin
@@ -432,10 +457,10 @@ begin
 
   v.FPhaseShift := val;
 
-  Result := S_OK
+  Result := S_OK;
 end;
 
-function TMWavePlayer.Pitch(index: integer; val: double) : HResult; stdcall;
+function TMWavePlayer.Pitch(index: integer; val : double): HResult; stdcall;
 var
   v: PBCVoice;
 begin
@@ -449,10 +474,27 @@ begin
 
   v.FPitch := val;
 
-  Result := S_OK
+  Result := S_OK;
 end;
 
-function TMWavePlayer.Loop(index:integer; state:integer) : HResult; stdcall;
+function TMWavePlayer.Sync(index: integer; state: integer): HResult; stdcall;
+var
+  v: PBCVoice;
+begin
+  v := FPin.VoiceCheck(index);
+
+  if v = nil then
+  begin
+   Result := ERROR;
+   exit;
+  end;
+
+  v.FSync := Boolean(state);
+
+  Result := S_OK;
+end;
+
+function TMWavePlayer.Loop(index: integer; state:integer):HResult; stdcall;
 var
   v: PBCVoice;
 begin
@@ -481,24 +523,7 @@ begin
    exit;
   end;
 
-  v.FDoSeek := true;
-
-  Result := S_OK;
-end;
-
-function TMWavePlayer.SeekPosition(index:integer; val:double):HResult; stdcall;
-var
-  v: PBCVoice;
-begin
-  v := FPin.VoiceCheck(index);
-
-  if v = nil then
-  begin
-   Result := ERROR;
-   exit;
-  end;
-
-  v.FSeekPosition := val;
+  v.FDoSeek := Boolean(state);
 
   Result := S_OK;
 end;
@@ -537,6 +562,23 @@ begin
   Result := S_OK;
 end;
 
+function TMWavePlayer.SeekPosition(index:integer; val:double):HResult; stdcall;
+var
+  v: PBCVoice;
+begin
+  v := FPin.VoiceCheck(index);
+
+  if v = nil then
+  begin
+   Result := ERROR;
+   exit;
+  end;
+
+  v.FSeekPosition := val;
+
+  Result := S_OK;
+end;
+
 function TMWavePlayer.GetDuration(index:integer; out val:double):HResult; stdcall;
 var
   v: PBCVoice;
@@ -566,7 +608,7 @@ begin
    exit;
   end;
 
-  val := v.FActualPosition;
+  val := v.FPosition;
 
   Result := S_OK;
 end;
@@ -589,52 +631,264 @@ begin
   Result := S_OK;
 end;
 
-function TMWavePlayer.setBlockSize( size : Integer) : HRESULT; stdcall;
-begin           
- GlobalBlockSize := size;
-
- Result := S_OK;
-
-end;
-
-
-function TMWavePlayer.getBlockSize(out size : Integer) : HRESULT; stdcall;
-begin           
- size := GlobalBlockSize;
-
- Result := S_OK;
- 
-end;
-
-
-function TMWavePlayerPin.GetMediaType(pmt: PAMMediaType): HResult;
-var
-  pwf : PWAVEFORMATEX;
-  size : longint;
+function TMWavePlayer.SetBlockSize(val: Integer) : HRESULT; stdcall;
 begin
-  size := sizeof(TWAVEFORMATEX);
-  pwf := CoTaskMemAlloc(size);
-  if pwf = nil then begin result := E_OUTOFMEMORY; exit; end;
-
-  pmt.pbFormat             := pwf;
-  pmt.cbFormat             := size;
-  pmt.majortype            := MEDIATYPE_Audio;
-  pmt.subtype              := MEDIASUBTYPE_PCM; //MEDIASUBTYPE_IEEE_FLOAT;
-  pmt.formattype           := FORMAT_WaveFormatEx;
-  pmt.bFixedSizeSamples    := TRUE;
-  pmt.bTemporalCompression := FALSE;
-  pmt.lSampleSize          := 4; //pwfx.nBlockAlign;
-  pmt.pUnk                 := nil;
-
-  pwf.cbSize          := 0;
-  pwf.wFormatTag      := WAVE_FORMAT_PCM;
-  pwf.nChannels       := NUMCHANNELS;
-  pwf.nSamplesPerSec  := SAMPLERATE;
-  pwf.wBitsPerSample  := BITSPERSAMPLE;
-  pwf.nBlockAlign     := (pwf.wBitsPerSample * pwf.nChannels) div BITSPERBYTE;
-  pwf.nAvgBytesPerSec := pwf.nBlockAlign * pwf.nSamplesPerSec;
+  FPin.Route.BlockSize := val;
 
   Result := S_OK;
+end;
+
+function TMWavePlayer.GetBlockSize(out val : Integer) : HRESULT; stdcall;
+begin
+  val := FPin.Route.BlockSize;
+
+  Result := S_OK;
+end;
+
+function TMWavePlayer.setRouting( count : Integer; val : TRoutingArray ) : HRESULT; stdcall;
+var
+  i,n : integer;
+begin
+
+  n := 0;
+
+  for i := 0 to count - 1 do
+  if val[i] = -1 then inc(n);
+
+  if n = count then
+   FPin.SetFileMapping
+  else
+   FPin.SetRouting(count,val);
+
+  Result := S_OK;
+end;
+
+//TMWavePlayerRoute-----------------------------------------------------------//
+Constructor TMWavePlayerRoute.Create;
+var
+ i : integer;
+begin
+ inherited;
+
+ FChannelMask     := CHANNELMASK;
+ FBlockSize       := BLOCKSIZESMALL;
+ FChannelIdCount  := 0;
+ FReload          := false;
+
+ FFChannelCount   := NUMCHANNELS;
+ FFRoutingCount   := NUMCHANNELS;
+ FFUseFileMapping := true;
+
+ SetLength(FChannelId,      MAXCHANNELS);
+ SetLength(FFChannelFactor, MAXCHANNELS);
+ SetLength(FFRouting,       MAXCHANNELS);
+ SetLength(FChannelFactor,  MAXCHANNELS);
+
+ for i := 0 to MAXCHANNELS - 1 do
+ begin
+  FFRouting      [i] := 0;
+  FFChannelFactor[i] := 1;
+ end;
+
+ Update;
+
+end;
+
+Destructor TMWavePlayerRoute.Destroy;
+begin
+ inherited;
+end;
+
+//Update the real values with the temporary ones
+procedure TMWavePlayerRoute.Update;
+var
+  i: Integer;
+begin
+
+  FChannelCount   := FFChannelCount;
+  FRoutingCount   := FFRoutingCount;
+  FUseFileMapping := FFUseFileMapping;
+
+  //-------------------------------------//
+
+  if FChannelCount > 0 then
+  begin
+   for i := 0 to FChannelCount - 1 do
+   FChannelFactor[i] := FFChannelFactor[i];
+  end;
+
+  if FChannelCount < 1 then
+  begin
+   FChannelCount := 1;
+
+   FChannelFactor[0] := 1;
+  end;
+
+  //-------------------------------------//
+
+  if FRoutingCount > 0 then
+  begin
+   SetLength(FRouting, FRoutingCount);
+
+   for i := 0 to FRoutingCount - 1 do
+   FRouting[i] := FFRouting[i];
+  end;
+
+  //-------------------------------------//
+
+  if FRoutingCount < 1 then
+  begin
+   FRoutingCount := 1;
+
+   SetLength(FRouting, MAXCHANNELS);
+
+   for i := 0 to MAXCHANNELS - 1 do
+   FRouting[i] := 0;
+  end;
+
+  FReload := false; //set toggle
+
+end;
+
+
+procedure TMWavePlayerRoute.SetRouting(count: Integer; val: TRoutingArray);
+var
+ i,k     : Integer;
+ routing : TRoutingArray;
+ factor  : Array [0..MAXCHANNELS-1] of Integer;
+begin
+
+ FFUseFileMapping := false;
+ FFRoutingCount   := 0;
+ FFChannelCount   := 0;
+ FChannelMask     := 0;
+ FChannelIdCount  := 0;
+
+ SetLength(FFRouting,count);
+ SetLength(routing,count);
+
+ for i := 0 to MAXCHANNELS - 1 do
+ begin
+  factor[i]          := 0;
+  FFChannelFactor[i] := 0;
+ end;
+
+ for i := 0 to count - 1 do
+ if (val[i] >= 0) and (val[i] < MAXCHANNELS) then //all valid routing values [0..17]
+ begin
+  routing[FFRoutingCount] := val[i];
+  Inc(FFRoutingCount);
+ end;
+
+ for i := 0 to FFRoutingCount - 1 do //how often is a channel contained in the routing-array
+ Inc(factor[routing[i]]);
+
+ for i := 0 to MAXCHANNELS - 1 do
+ if factor[i] > 0 then
+ begin
+  Inc(FFChannelCount);
+  FChannelMask := FChannelMask or CHANNELCODE[i];
+  FChannelId[FChannelIdCount] := i; //map the channels to an array i0=c3 i1=c1 i2=c2...
+  Inc(FChannelIdCount);
+ end;
+
+ for i := 0 to FFRoutingCount - 1 do //map the routing-array to the sequence in channelId
+ for k := 0 to FFChannelCount - 1 do
+ if FChannelId[k] = routing[i] then
+ FFRouting[i] := k;
+
+ for i := 0 to FFRoutingCount - 1 do //how often is a channel contained in the mapped routing-array
+ Inc(FFChannelFactor[FFRouting[i]]);
+
+ FReload := true; //set toggle
+
+end;
+
+procedure TMWavePlayerRoute.SetFileMapping(channelMask : Integer; channelCount : Integer; map : Array of integer);
+var
+ i : Integer;
+begin
+
+ FFUseFileMapping := true;
+ FFChannelCount   := channelCount;
+ FChannelMask     := channelMask;
+
+ if FChannelMask = 0 then
+ FChannelMask := CHANNELMASK;
+
+ for i := 0 to FFChannelCount - 1 do
+ FFChannelFactor[i] := map[i];
+
+ FReload := true; //set toggle
+
+end;
+
+
+//TMWavePlayerPin-------------------------------------------------------------//
+constructor TMWavePlayerPin.Create(out hr: HRESULT; Filter: TBCSource);
+begin
+ inherited Create(FilterName, hr, Filter, 'Out');
+
+ VoiceList := TList.Create;
+ VoiceList.Clear;
+
+ FRoute  := TMWavePlayerRoute.Create;
+
+end;
+
+destructor TMWavePlayerPin.Destroy;
+var
+ i : Integer;
+begin
+
+ for i := 0 to voiceList.Count - 1 do
+ if Assigned(VoiceList.Items[i]) then VoiceFree(i);
+
+ VoiceList.Free;
+ FreeAndNil(FRoute);
+
+ inherited;
+
+end;
+
+function TMWavePlayerPin.GetMediaType(pmt : PAMMediaType) : HRESULT;
+var
+ size : longint;
+ pwf  : PWAVEFORMATEXTENSIBLE;
+
+begin
+
+ size := sizeof(TWAVEFORMATEXTENSIBLE);
+ pwf  := CoTaskMemAlloc(size);
+
+ if pwf = nil then begin result := E_OUTOFMEMORY; exit; end;
+
+ pmt.pbFormat             := @pwf.format;
+ pmt.cbFormat             := sizeof(TWAVEFORMATEXTENSIBLE);
+ pmt.majortype            := MEDIATYPE_Audio;
+ pmt.subtype              := MEDIASUBTYPE_PCM;
+ pmt.formattype           := FORMAT_WaveFormatEx;
+ pmt.bFixedSizeSamples    := TRUE;
+ pmt.bTemporalCompression := FALSE;
+ pmt.lSampleSize          := (BITSPERSAMPLE div BITSPERBYTE) * Route.FFChannelCount;
+ pmt.pUnk                 := nil;
+
+ pwf.Format.cbSize          := 22;
+ pwf.Format.wFormatTag      := WAVE_FORMAT_EXTENSIBLE;
+ pwf.Format.nChannels       := Route.FFChannelCount;
+ pwf.Format.nSamplesPerSec  := SAMPLERATE;
+ pwf.Format.wBitsPerSample  := BITSPERSAMPLE;
+ pwf.Format.nBlockAlign     := Route.FFChannelCount * (BITSPERSAMPLE div BITSPERBYTE);
+ pwf.Format.nAvgBytesPerSec := pwf.Format.nBlockAlign * SAMPLERATE;
+
+ pwf.Samples.wValidBitsPerSample := BITSPERSAMPLE;
+ pwf.Samples.wSamplesPerBlock    := 0;
+ pwf.Samples.wReserved           := 0;
+ pwf.SubFormat                   := KSDATAFORMAT_SUBTYPE_PCM;
+ pwf.dwChannelMask               := Route.FChannelMask;
+
+
+ Result := S_OK;
 end;
 
 function TMWavePlayerPin.DecideBufferSize(Allocator: IMemAllocator;
@@ -645,9 +899,9 @@ begin
   ASSERT(Allocator <> nil);
   ASSERT(Properties <> nil);
 
-  Properties.cbBuffer := GlobalBlockSize * 2 * GlobalNumActiveChannels;
+  Properties.cbBuffer := Route.BlockSize * Route.FFChannelCount * BYTESPERSAMPLE;
   Properties.cBuffers := 1;
-  Properties.cbAlign  := GlobalBlockSize * 2 * GlobalNumActiveChannels;
+  Properties.cbAlign  := Route.BlockSize * Route.FFChannelCount * BYTESPERSAMPLE;
   Properties.cbPrefix := 0;
 
   // Ask the allocator to reserve us the memory
@@ -655,18 +909,396 @@ begin
 
   if Result <> S_OK then
   begin
-   GlobalBlockSize     := 2048;
-   Properties.cbBuffer := 2048;
+   Route.BlockSize := BLOCKSIZE;
+
+   Properties.cbBuffer := BLOCKSIZE;
    Properties.cBuffers := 1;
-   Properties.cbAlign  := 512;
+   Properties.cbAlign  := BLOCKALIGN;
    Properties.cbPrefix := 0;
 
    // Ask the allocator to reserve us the memory
    Result := Allocator.SetProperties(Properties^, Actual);
   end;
 
+end;
 
+function TMWavePlayerPin.Notify(Filter: IBaseFilter; q: TQuality) : HRESULT;
+begin
+ Result := E_FAIL;
 
+end;
+
+procedure TMWavePlayerPin.SetRouting(count : Integer; val : TRoutingArray);
+begin
+ FRoute.SetRouting(count,val);
+
+end;
+
+procedure TMWavePlayerPin.SetFileMapping;
+var
+ i,k : Integer;
+ voice : PBCVoice;
+ map : Array [0..MAXCHANNELS-1] of integer;
+ channelMask, channelCount : Integer;
+begin
+
+   channelMask  := 0;
+   channelCount := 0;
+
+   for i := 0 to MAXCHANNELS - 1 do
+   map[i] := 0;
+
+   for i := 0 to voiceCount - 1 do//--------------------------------//
+   begin
+    voice := VoiceCheck(i);
+
+    if voice = nil then Continue;
+
+    if not voice.FReload then
+    for k := 0 to voice.FFChannelCount - 1 do
+    begin
+     channelMask := channelMask or CHANNELCODE[voice.FChannelMap[k]];
+     inc(map[voice.FChannelMap[k]]);
+    end;
+
+    if voice.FReload then
+    for k := 0 to voice.FFChannelCount - 1 do
+    begin
+     channelMask := channelMask or CHANNELCODE[voice.FFChannelMap[k]];
+     inc(map[voice.FFChannelMap[k]]);
+    end;
+
+   end;//end for i--------------------------------------------------//
+
+   for i := 0 to MAXCHANNELS - 1 do
+   if map[i] > 0 then
+   inc(channelCount);
+
+   Route.SetFileMapping(channelMask, channelCount, map);
+
+end;
+
+function TMWavePlayerPin.FillBuffer(ims: IMediaSample) : HRESULT;
+var
+ voice      : PBCVoice;
+ nSamples   : Integer;
+ nFrames    : Integer;
+ nChannels  : Integer;
+ nVoices    : Integer;
+ sinkSample : PAudioSample;
+ channel    : TChannelArray;
+ buffer     : Array of Double;
+
+//----------------------------------------------------------------------------//
+
+procedure SetSilent;
+var
+ sinkByte : PByte;
+ i : Integer;
+begin
+ ims.GetPointer(sinkByte);
+ sinkSample := PAudioSample(sinkByte);
+
+ for i := 0 to ims.GetSize - 1 do
+ begin
+  sinkByte^ := 0;
+  Inc(sinkByte);
+ end;
+
+end;
+
+procedure SetVariables;
+var
+ sinkByte : PByte;
+ k,i      : Integer;
+
+begin
+ ims.GetPointer(sinkByte);
+ sinkSample := PAudioSample(sinkByte);
+
+ nChannels  := Route.ChannelCount;
+ nSamples   := ims.GetSize div BYTESPERSAMPLE;
+ nVoices    := VoiceList.Count;
+ nFrames    := nSamples div nChannels;
+
+ SetLength(buffer,nSamples);
+
+ for i := 0 to nSamples - 1 do
+ buffer[i] := 0;
+
+ SetLength(channel,MAXCHANNELS);
+
+ for k := 0 to MAXCHANNELS - 1 do
+ begin
+  SetLength(channel[k],nFrames);
+
+  for i := 0 to nFrames - 1 do
+  channel[k][i] := 0;
+ end;
+
+end;
+
+//----------------------------------------------------------------------------//
+
+procedure UpdateVoices;
+var
+ i : integer;
+begin
+
+ for i := 0 to VoiceList.Count - 1 do
+ begin
+  voice := VoiceList.Items[i];
+
+  if voice <> nil then
+  if voice.FReload then
+  voice.Update;
+
+ end;
+
+end;
+
+//----------------------------------------------------------------------------//
+
+procedure GetVoices;
+var
+ v : Integer;
+begin
+
+ for v := 0 to nVoices - 1 do
+ begin
+  voice := VoiceList.Items[v];
+
+  if voice <> nil then
+  voice.FillBuffer(nFrames);
+
+ end;
+
+end;
+
+//----------------------------------------------------------------------------//
+
+  procedure FillChannelFileMapping;
+  var
+   v,k,f : Integer;
+   map : Integer;
+  begin
+
+   for v := 0 to nVoices - 1 do
+   begin
+
+    voice := voiceList.Items[v];
+
+    if (voice.FInitialized) then
+    for k := 0 to voice.FChannelCount - 1 do
+    begin
+
+      map := voice.FChannelMap[k];
+
+      for f := 0 to nFrames - 1 do
+      if voice.FPlay then
+      channel[map][f] := channel[map][f] + (voice.FChannel[k][f] / Route.FChannelFactor[map]);
+
+    end;
+
+   end;//end for v
+
+  end;
+
+//----------------------------------------------------------------------------//
+
+  procedure FillChannelRouting;
+  var
+   v,k,f   : Integer;
+   routeTo : Integer;
+   count   : Integer;
+  begin
+
+   count := 0;
+
+   for v := 0 to voiceList.Count - 1 do
+   begin
+
+    voice := voiceList.Items[v];
+
+    if (voice.FInitialized) then
+    for k := 0 to voice.FChannelCount - 1 do
+    begin
+
+     routeTo := Route.Routing[count];
+
+     for f := 0 to nFrames - 1 do
+     if voice.FPlay then
+     channel[routeTo][f] := channel[routeTo][f] + (voice.FChannel[k][f] / Route.FChannelFactor[routeTo]);
+
+     count := (count + 1) mod Route.RoutingCount;
+
+    end;
+
+   end;//end for v
+
+  end;
+
+//----------------------------------------------------------------------------//
+
+  procedure FillBuffer;
+  var
+   f,k   : Integer;
+   shift : Integer;
+  begin
+
+   for f := 0 to nFrames - 1 do
+   begin
+    shift := f * nChannels;
+
+    for k := 0 to nChannels - 1 do
+    buffer[shift + k] := channel[k][f]; //channelFactor???
+   end;
+
+  end;
+
+//----------------------------------------------------------------------------//
+
+  procedure FillSink;
+  var
+   i : Integer;
+  begin
+
+   for i := 0 to nSamples - 1 do
+   begin
+    sinkSample^ := round(buffer[i]);
+
+    Inc(sinkSample);
+   end;
+
+  end;
+
+//----------------------------------------------------------------------------//
+
+begin
+
+ Result := -1;
+
+ if (ims = nil) then exit;
+
+  SetSilent;
+
+ if Route.FReload then
+  Route.Update;
+
+  UpdateVoices;
+
+  SetVariables;
+
+  GetVoices;
+
+  if Route.UseFileMapping then
+   FillChannelFileMapping
+  else
+   FillChannelRouting;
+
+  FillBuffer;
+
+  FillSink;
+
+ Result := S_OK;
+
+end;
+
+function TMWavePlayerPin.VoiceCheck(index: Integer): PBCVoice;
+var
+ v: PBCVoice;
+begin
+ if index >= VoiceList.Count then
+  VoiceList.Count := index + 1;
+
+ if VoiceList.Items[index] = nil then
+ begin
+  v := CoTaskMemAlloc(sizeof(TMVoice));
+  if v <> nil then v^ := TMVoice.Create;
+  VoiceList.Items[index] := v;
+ end;
+
+ if VoiceList.Items[index] = nil then outputdebugstring(pchar(format('vc %d nil!',[index])));
+
+ result := VoiceList.Items[index];
+
+end;
+
+procedure TMWavePlayerPin.VoiceFree(index: Integer);
+var
+  v, vv: PBCVoice;
+  i: Integer;
+begin
+  v := VoiceList.Items[index];
+
+  for i := 0 to VoiceList.Count - 1 do
+  if i <> index then
+  begin
+    if assigned(VoiceList.Items[i]) then
+    begin
+      vv := VoiceList.Items[i];
+      if vv.FFileName = v.FFileName then exit;
+    end;
+  end;
+
+  v.Reset; //
+
+end;
+
+//TMVoice---------------------------------------------------------------------//
+constructor TMVoice.Create;
+var
+   i : integer;
+begin
+   FFilename       := '';
+   FSize           := 0;
+   FData           := nil;
+   FSourceFrames   := 0;
+   FPlay           := false;
+   FSync           := false;
+   FGain           := 1;
+   FPan            := 0.5;
+   FPosition       := 0;
+   FPhase          := 0;
+   FPitch          := 1;
+   FStartTime      := 0;
+   FFStartTime     := 0;
+   FEndTime        := 0;
+   FFEndTime       := 0;
+   FSeekPosition   := 0;
+   FDoSeek         := false;
+   FDuration       := 0;
+   FFading         := 0;
+   FLoop           := false;
+   FFrameFraction  := 1;
+   FReload         := false;
+   FPhaseShift     := 0;
+   FPhaseShiftPrev := 0;
+   FChannelSize    := 0;
+   FInitialized    := false;
+
+   FFData          := nil;
+   FFSize          := 0;
+   FFSourceFrames  := 0;
+   FFFrameFraction := 1;
+   FFChannelCount  := NUMCHANNELS;
+   FFDuration      := 1;
+
+   for i := 0 to MAXCHANNELS - 1 do
+   FFChannelMap [i] := 0;
+
+end;
+
+destructor TMVoice.Destroy;
+begin
+ if Assigned(FData) then
+ begin
+  CoTaskMemFree(FData);
+  FData := nil;
+  FSize := 0;
+ end;
+
+ inherited;
 end;
 
 function TMVoice.ReadTheFile(AFileName: PChar): Boolean;
@@ -678,10 +1310,9 @@ var
   mmres : MMRESULT;
   ires, i : longint;
   fcc : FOURCC;
+  count : Integer;
 begin
   Result  := FALSE;
-
-  FReload := true;
 
   // Open the file for reading with buffered I/O. Let windows use its default internal buffer
   hmm := mmioOpen(AFileName, nil, MMIO_READ + MMIO_ALLOCBUF);
@@ -700,8 +1331,9 @@ begin
   if mmres <> MMSYSERR_NOERROR then begin OutputDebugString('waveplayer error 4'); Exit; end;
   if mmiSub.cksize < sizeof(PCMWAVEFORMAT) then  begin OutputDebugString('waveplayer error 5'); Exit; end;
 
-  mmioRead(hmm, @wf, sizeof(PCMWAVEFORMAT));
-  if wf.wFormatTag <> WAVE_FORMAT_PCM then begin OutputDebugString('waveplayer error 7'); Exit; end;
+  mmioRead(hmm, @FFWaveFormat, sizeof(PCMWAVEFORMAT));
+  if (FFWaveFormat.Format.wFormatTag <> WAVE_FORMAT_PCM) and (FFWaveFormat.Format.wFormatTag <> WAVE_FORMAT_EXTENSIBLE) then
+  begin OutputDebugString('waveplayer error 7'); Exit; end;
 
   mmres := mmioAscend(hmm, @mmiSub, 0);
   if mmres <> MMSYSERR_NOERROR then begin OutputDebugString('waveplayer error 8'); Exit; end;
@@ -712,13 +1344,6 @@ begin
   mmiSub.ckid := MAKEFOURCC('d', 'a', 't', 'a');
   mmres := mmioDescend(hmm, @mmiSub, @mmiParent, MMIO_FINDCHUNK);
   if mmres <> MMSYSERR_NOERROR then    begin OutputDebugString('error 10'); Exit; end;
-
-  {if Assigned(FData) then
-  begin
-    CoTaskMemFree(FData);
-    FData := nil;
-    FSize := 0;
-  end; }
 
   _Mem := CoTaskMemAlloc(mmiSub.ckSize);
   if (_Mem = nil) then
@@ -737,55 +1362,184 @@ begin
   end;
 
   //initialize
-  FData           := _Mem;
-  FSize           := mmiSub.cksize;
-  FSourceFrames   := trunc(FSize / BYTESPERSAMPLE / wf.nChannels);
-  FDuration       := FSourceFrames / wf.nSamplesPerSec;
-  FFrameFraction  := 1.0 / FSourceFrames;
-  FBytesPerSample := trunc(wf.wBitsPerSample / BITSPERBYTE);
+  FFData           := _Mem;
+  FFSize           := mmiSub.cksize;
+  FFSourceFrames   := trunc(FFSize / (FFWaveFormat.Format.wBitsPerSample div BITSPERBYTE) / FFWaveFormat.Format.nChannels);
+  FFDuration       := FFSourceFrames / FFWaveFormat.Format.nSamplesPerSec;
+  FFFrameFraction  := 1.0 / FFSourceFrames;
+  FFChannelCount   := FFWaveFormat.Format.nChannels;
 
-  {???????????????????????????????????}
-  if wf.nChannels = 1 then
-  FFrameFraction  := FFrameFraction / 2;
+  if FFWaveFormat.Format.wFormatTag = WAVE_FORMAT_PCM then
+  begin
 
+   if FFChannelCount = 1 then
+    FFChannelMap[0] := 0;
 
-  FReload := false;
-  
-  // Close the file
+   if FFChannelCount = 2 then
+   begin
+    FFChannelMap[0] := 0;
+    FFChannelMap[1] := 1;
+   end;
+
+  end;
+
+  if FFWaveFormat.Format.wFormatTag = WAVE_FORMAT_EXTENSIBLE then
+  begin
+   count := 0;
+
+   for i := 0 to MAXCHANNELS - 1 do
+   begin
+
+    if (FFWaveFormat.dwChannelMask and CHANNELCODE[i] = 1) then
+    begin
+     FFChannelMap[count] := i;
+     Inc(count);
+    end;
+
+   end;
+
+  end;
+
+  //Close the file----
   MMIOClose(hmm,0);
-  Result := True;
+
+  Result       := true;
+  FInitialized := true;
+  FReload      := true;
 
 end;
 
-function TMVoice.FillBuffer(mediaSample: PDouble; size: Integer) : HRESULT;
+procedure TMVoice.Clone(other: PBCVoice);
+var
+ k : integer;
+begin
+
+     FFilename        := other.FFilename;
+     FFSize           := other.FSize;
+     FFData           := other.FData;
+     FFSourceFrames   := other.FSourceFrames;
+     FPlay            := other.FPlay;
+     FSync            := other.FSync;
+     FGain            := other.FGain;
+     FPan             := other.FPan;
+     FPosition        := other.FPosition;
+     FPhase           := other.FPhase;
+     FPitch           := other.FPitch;
+     FStartTime       := other.FStartTime;
+     FFStartTime      := other.FFStartTime;
+     FEndTime         := other.FEndTime;
+     FFEndTime        := other.FFEndTime;
+     FSeekPosition    := other.FSeekPosition;
+     FDoSeek          := other.FDoSeek;
+     FFDuration       := other.FDuration;
+     FFading          := other.FFading;
+     FLoop            := other.FLoop;
+     FFFrameFraction  := other.FFrameFraction;
+     FPhaseShift      := other.FPhaseShift;
+     FPhaseShiftPrev  := other.FPhaseShiftPrev;
+     FFChannelCount   := other.FChannelCount;
+     FChannelSize     := other.FChannelSize;
+
+     for k := 0 to MAXCHANNELS - 1 do
+     FFChannelMap[k] := other.FChannelMap[k];
+
+     FFWaveFormat.Samples                := other.FWaveFormat.Samples;
+     FFWaveFormat.dwChannelMask          := other.FWaveFormat.dwChannelMask;
+     FFWaveFormat.Format.wFormatTag      := other.FWaveFormat.Format.wFormatTag;
+     FFWaveFormat.Format.nChannels       := other.FWaveFormat.Format.wFormatTag;
+     FFWaveFormat.Format.nSamplesPerSec  := other.FWaveFormat.Format.wFormatTag;
+     FFWaveFormat.Format.nAvgBytesPerSec := other.FWaveFormat.Format.wFormatTag;
+     FFWaveFormat.Format.nBlockAlign     := other.FWaveFormat.Format.wFormatTag;
+     FFWaveFormat.Format.wBitsPerSample  := other.FWaveFormat.Format.wFormatTag;
+     FFWaveFormat.Format.cbSize          := other.FWaveFormat.Format.wFormatTag;
+
+     FReload      := true;
+     FInitialized := true;
+
+end;
+
+procedure TMVoice.Reset;
+begin
+
+  if assigned(FData) then
+   CoTaskMemFree(FData);
+
+  if assigned(FFData) then
+   CoTaskMemFree(FFData);
+
+  FData        := nil;
+  FFData       := nil;
+  FInitialized := false;
+  FReload      := false;
+  FFileName    := '';
+
+end;
+
+procedure TMVoice.Update;
+var
+   i : integer;
+begin
+
+   FSize          := FFSize;
+   FData          := FFData;
+   FSourceFrames  := FFSourceFrames;
+   FChannelCount  := FFChannelCount;
+   FFrameFraction := FFFrameFraction;
+   FDuration      := FFDuration;
+
+   FWaveFormat.Samples                := FFWaveFormat.Samples;
+   FWaveFormat.dwChannelMask          := FFWaveFormat.dwChannelMask;
+   FWaveFormat.Format.wFormatTag      := FFWaveFormat.Format.wFormatTag;
+   FWaveFormat.Format.nChannels       := FFWaveFormat.Format.wFormatTag;
+   FWaveFormat.Format.nSamplesPerSec  := FFWaveFormat.Format.wFormatTag;
+   FWaveFormat.Format.nAvgBytesPerSec := FFWaveFormat.Format.wFormatTag;
+   FWaveFormat.Format.nBlockAlign     := FFWaveFormat.Format.wFormatTag;
+   FWaveFormat.Format.wBitsPerSample  := FFWaveFormat.Format.wFormatTag;
+   FWaveFormat.Format.cbSize          := FFWaveFormat.Format.wFormatTag;
+
+   if FChannelCount > 0 then
+   begin
+    FChannelCount := FFChannelCount;
+
+    SetLength(FChannel,FChannelCount);
+   end;
+
+   if FChannelCount < 1 then
+   begin
+    FChannelCount := NUMCHANNELS;
+
+    SetLength(FChannel, NUMCHANNELS);
+   end;
+
+   For i := 0 to MAXCHANNELS - 1 do
+   FChannelMap[i] := FFChannelMap[i];
+
+   FReload := false;
+
+end;
+
+function TMVoice.FillBuffer(size: integer) : HRESULT;
 var
   nFrames     : Integer;
   wheel       : Double;
-  sourceLeft  : Double;
-  sourceRight : Double;
-  sinkLeft    : PDouble;
-  sinkRight   : PDouble;
   loop        : Boolean;
   phaseStart  : Double;
   phaseEnd    : Double;
   phaseSeek   : Double;
   interval    : Double;
-  gainLeft    : Double;
-  gainRight   : Double;
+  gain        : Double;
   pitch       : Double;
   nChannels   : Integer;
   fadingGain  : Double;
   frameIndex  : Integer;
+  sourceFrame : TSourceFrame;
 
-  {****************************************************************************}
 
   function TimeToPhase(value : Double) : Double;
   begin
    Result := value / FDuration ;
 
-  end;
- 
-  {****************************************************************************}
+  end;           
 
   procedure SetInterval;
   begin
@@ -812,23 +1566,38 @@ var
 
   end;
 
-  {****************************************************************************}
-
   procedure SetVariables;
+  var
+   i,k : Integer;
+
   begin
    loop       := FLoop;
-   nChannels  := wf.nChannels;
-   nFrames    := trunc(size / nChannels);
-   gainRight  := FGain * FPan;
-   gainLeft   := FGain * (1.0 - FPan);
+   nChannels  := FChannelCount;
+   nFrames    := size;
+   gain       := FGain; //Vorerst
    pitch      := FPitch;
    fadingGain := 1;
 
    SetInterval;
 
-  end;
+   for i := 0 to MAXCHANNELS - 1 do
+   sourceFrame[i] := 0;
 
-  {****************************************************************************}
+   if nFrames <> FChannelSize then
+   begin
+    FChannelSize := nFrames;
+
+    for k := 0 to nChannels - 1 do
+    begin
+     SetLength(FChannel[k],FChannelSize);
+
+     for i := 0 to FChannelSize - 1 do
+     FChannel[k][i] := 0;
+    end;
+
+   end;
+
+  end;
 
   procedure Seek;
   begin
@@ -843,18 +1612,15 @@ var
    if phaseSeek < 0 then phaseSeek := 0;
    if phaseSeek > 1 then phaseSeek := 1;
 
-   FPhase    := phaseSeek;
-
-   FDoSeek   := false;
+   FPhase  := phaseSeek;
+   FDoSeek := false;
 
    FStartTime := FFStartTime; 
    FEndTime   := FFEndTime;
 
-   Outputdebugstring(pchar(format('FENDTIME: %f',[FEndTime])));
+   //Outputdebugstring(pchar(format('FENDTIME: %f',[FEndTime])));
 
   end;
-
-  {****************************************************************************}
 
   procedure ShiftPhase;
   var
@@ -876,7 +1642,6 @@ var
 
   end;
 
-  {****************************************************************************}
 
   function SetWheel : Boolean;
   begin
@@ -923,15 +1688,12 @@ var
 
   end;
 
-  {****************************************************************************}
-
   procedure SetSource;
   var
-   buffer           : PAudioSample;
    byteIndex        : Integer;
    source           : PByte;
    sourceFrameIndex : Integer;
-
+   k                : Integer;
   begin
 
    source           := FData;
@@ -943,44 +1705,18 @@ var
    if sourceFrameIndex < 0 then
    sourceFrameIndex := 0;
 
-   byteIndex := sourceFrameIndex * (FBytesPerSample * nChannels);
+   byteIndex := sourceFrameIndex * (BYTESPERSAMPLE * nChannels);
 
    Inc(source,byteIndex);
 
-   buffer := PAudioSample(source);
-
-   sourceLeft  := buffer^;
-
-   if(nChannels > 1)then
+   for k := 0 to nChannels - 1 do
    begin
-    Inc(buffer);
+    sourceFrame[k] := PAudioSample(source)^;
 
-    sourceRight := buffer^;
+    Inc(source,BYTESPERSAMPLE);
    end;
 
   end;
-
-  {****************************************************************************}
-
-  procedure SetSink;
-  var
-   shift : Integer;
-
-  begin
-  
-   sinkLeft  := mediaSample;
-   sinkRight := mediaSample;
-
-   shift := frameIndex * nChannels;
-
-   Inc(sinkLeft,shift);
-
-   if (nChannels > 1) then
-   Inc(sinkRight,shift + 1);
-
-  end;
-
-  {****************************************************************************}
 
   procedure SetGain;
   var
@@ -1006,39 +1742,36 @@ var
 
   end;
 
-  {****************************************************************************}
-
-  procedure FillSink;
+  procedure FillChannel;
+  var
+   k : Integer;
   begin
-   sourceLeft := (sourceLeft  * gainLeft  * fadingGain);
 
-   if sourceLeft > MAXWAVEPOSITIV then sourceLeft := MAXWAVEPOSITIV;
-   if sourceLeft < MAXWAVENEGATIV then sourceLeft := MAXWAVENEGATIV;
-
-   sinkLeft^  := sinkLeft^ + sourceLeft;
-
-   if (nChannels > 1) then
+   for k := 0 to nChannels - 1 do
    begin
-   sourceRight := (sourceRight * gainRight * fadingGain);
+    sourceFrame[k] := sourceFrame[k] * (gain * fadingGain);
 
-   if sourceRight > MAXWAVEPOSITIV then sourceRight := MAXWAVEPOSITIV;
-   if sourceRight < MAXWAVENEGATIV then sourceRight := MAXWAVENEGATIV;
-
-   sinkRight^ := sinkRight^ + sourceRight;
+    FChannel[k][frameIndex] := sourceFrame[k]; 
    end;
-   
+
   end;
 
-  {****************************************************************************}
+  procedure SetPosition;
+  begin
+    FPosition := FDuration * FPhase;
+
+  end;
 
 begin
 
   Result := ERROR;
-  if (FData = nil) or (FSize <= 0) or FReload then exit;
 
-  SetVariables;
+  if not FInitialized then exit;
 
-  for frameIndex := 0 to nFrames - 1 do
+   SetVariables;
+
+  if FPlay then
+  for frameIndex := 0 to nFrames - 1 do//-----------//
   begin
 
    if FDoSeek then
@@ -1053,154 +1786,34 @@ begin
    if loop then
    SetGain;
 
-   SetSink;
-
    SetSource;
 
-   FillSink;
+   SetPosition;
 
-  end; {end for frameIndex}
+   FillChannel;
+   
+  end;//end for frameIndex-------------------------//
 
-
-  FActualPosition := FDuration * FPhase;
 
   Result := S_OK;
 
 end;
 
-
-function TMWavePlayerPin.FillBuffer(ims: IMediaSample): HResult;
-var
-  size, i: longint;
-  p: PByte;
-  pp: PAudioSample;
-  pf, buf: PDouble;
-  vcr: double;
-  count: integer;
-  v: PBCVoice;
-
-begin
-  result := -1;
-  if ims = nil then exit;
-  //ASSERT(ims <> nil);
-
-
-  size := ims.GetSize div 2;
-  //Outputdebugstring(pchar(format('pins buffersize: %d',[size])));
-
-  buf := CoTaskMemAlloc(size * sizeof(double));
-  if buf = nil then begin result := E_OUTOFMEMORY; exit; end;
-
-  pf := buf;
-  for i := 1 to size do
-  begin
-    pf^ := 0;
-    Inc(pf);
-  end;
-
-  count := 0;
-  i := VoiceList.Count;
-  if voicecount < i then i := voicecount;
-  while i > 0 do
-  begin
-    Dec(i);
-    v := VoiceList.Items[i];
-    if v <> nil then
-    begin
-      Inc(count);
-      if v.FPlay then
-      begin
-        v.FillBuffer(buf, size);
-      end;
-    end;
-  end;
-
-  ims.GetPointer(p);
-  pp := PAudioSample(p);
-  vcr := 1./count;
-  pf := buf;
-
-  for i := 1 to size do
-  begin
-    pp^ := round(pf^ * vcr);
-    Inc(pp);
-    Inc(pf);
-  end;
-  cotaskmemfree(buf);
-  result := S_OK;
-end;
-
-// --- TBCWavePlayer ------------
-
-constructor TMWavePlayer.Create(ObjName: string; Unk: IUnKnown;
-  out hr: HRESULT);
-begin
-  inherited Create(ObjName, Unk, CLSID_WavePlayer);
-
-  // The pin magically adds itself to our pin array.
-  FPin := TMWavePlayerPin.Create(hr, Self);
-
-  if (hr <> S_OK) then
-    if (FPin = nil) then
-      hr := E_OUTOFMEMORY;
-end;
-
-constructor TMWavePlayer.CreateFromFactory(Factory: TBCClassFactory;
-  const Controller: IUnknown);
-var
-  hr: HRESULT;
-begin
-  Create(Factory.Name, Controller, hr);
-end;
-
-destructor TMWavePlayer.Destroy;
-begin
-  FreeAndNil(FPin);
-  inherited;
-end;
-
-function TMWavePlayerPin.VoiceCheck(index: Integer): PBCVoice;
-var
-  v: PBCVoice;
-begin
-  if index >= VoiceList.Count then VoiceList.Count := index + 1;
-  if VoiceList.Items[index] = nil then
-  begin
-    v := CoTaskMemAlloc(sizeof(TMVoice));
-    if v <> nil then v^ := TMVoice.Create;
-    VoiceList.Items[index] := v;
-  end;
-  if VoiceList.Items[index] = nil then outputdebugstring(pchar(format('vc %d nil!',[index])));
-  result := VoiceList.Items[index];
-end;
-
-procedure TMWavePlayerPin.VoiceFree(index: Integer);
-var
-  v, vv: PBCVoice;
-  i: Integer;
-begin
-  v := VoiceList.Items[index];
-  for i := 0 to VoiceList.Count - 1 do if i <> index then
-  begin
-    if assigned(VoiceList.Items[i]) then
-    begin
-      vv := VoiceList.Items[i];
-      if vv.FFileName = v.FFileName then exit;
-    end;
-  end;
-  if assigned(v.FData) then
-    CoTaskMemFree(v.FData);
-  v.FData := nil;
-  v.FFileName := '';
-end;
+//****************************************************************************//
 
 initialization
-  // provide entries in the CFactoryTemplate array
-  TBCClassFactory.CreateFilter(TMWavePlayer, FilterName,
-    CLSID_WavePlayer, CLSID_LegacyAmFilterCategory,
-    MERIT_DO_NOT_USE, 1, @sudOutputPin
-    );
+
+ TBCClassFactory.CreateFilter( TMWavePlayer,
+                               FilterName,
+                               CLSID_WavePlayer,
+                               CLSID_LegacyAmFilterCategory,
+                               MERIT_DO_NOT_USE,
+                               1,
+                               @sudOutputPin );
+
 end.
+
+
 
 
 
