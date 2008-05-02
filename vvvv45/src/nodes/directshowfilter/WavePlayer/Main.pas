@@ -87,8 +87,8 @@ const
                         SPEAKER_LOW_FREQUENCY or
                         SPEAKER_BACK_LEFT     or
                         SPEAKER_BACK_RIGHT;
-  CHANNELMASK7POINT1 =  CHANNELMASK5POINT1 or
-                        SPEAKER_SIDE_LEFT  or
+  CHANNELMASK7POINT1 =  CHANNELMASK5POINT1    or
+                        SPEAKER_SIDE_LEFT     or
                         SPEAKER_SIDE_RIGHT;
 
   CHANNELCODE : Array [0..MAXCHANNELS-1] of Integer = ( SPEAKER_FRONT_LEFT
@@ -396,7 +396,6 @@ begin
 
   SetLength(val,nChannels);
 
-
   for i := 0 to FPin.FVoiceCount - 1 do//-------------------------------------//
   begin
    voice := FPin.VoiceCheck(i);
@@ -409,8 +408,8 @@ begin
        routeTo := FPin.Route.Routing[n];
 
        str := ExtractFileName(voice.FFilename);
-
-       if str <> '' then       
+              
+       if str <> '' then
        if not FPin.Route.FUseFileMapping then
         str := str + '  ' + FPin.Route.FChannelName[routeTo mod FPin.Route.FRoutingCount]
        else
@@ -430,7 +429,6 @@ begin
 
   end;//end for i-------------------------------------------------------------//
 
-  
   Result := S_OK;
 
 end;
@@ -1555,7 +1553,7 @@ begin
   FReload      := true;
 
 end;
-
+{
 procedure TMVoice.Clone(other: PBCVoice);
 var
  k : integer;
@@ -1606,6 +1604,59 @@ begin
      FInitialized := true;
 
 end;
+}
+
+procedure TMVoice.Clone(other: PBCVoice);
+var
+ k : integer;
+begin
+
+     FFilename        := other.FFilename;
+     FFSize           := other.FFSize;
+     FFData           := other.FFData;
+     FFSourceFrames   := other.FFSourceFrames;
+     FPlay            := other.FPlay;
+     FSync            := other.FSync;
+     FGain            := other.FGain;
+     FPan             := other.FPan;
+     FPosition        := other.FPosition;
+     FPhase           := other.FPhase;
+     FPitch           := other.FPitch;
+     FStartTime       := other.FStartTime;
+     FFStartTime      := other.FFStartTime;
+     FEndTime         := other.FEndTime;
+     FFEndTime        := other.FFEndTime;
+     FSeekPosition    := other.FSeekPosition;
+     FDoSeek          := other.FDoSeek;
+     FFDuration       := other.FDuration;
+     FFading          := other.FFading;
+     FLoop            := other.FLoop;
+     FFFrameFraction  := other.FFFrameFraction;
+     FPhaseShift      := other.FPhaseShift;
+     FPhaseShiftPrev  := other.FPhaseShiftPrev;
+     FFChannelCount   := other.FFChannelCount;
+     FChannelSize     := other.FChannelSize;
+
+     for k := 0 to MAXCHANNELS - 1 do
+     FFChannelMap[k] := other.FChannelMap[k];
+
+     FFWaveFormat.Samples                := other.FFWaveFormat.Samples;
+     FFWaveFormat.dwChannelMask          := other.FFWaveFormat.dwChannelMask;
+     FFWaveFormat.Format.wFormatTag      := other.FFWaveFormat.Format.wFormatTag;
+     FFWaveFormat.Format.nChannels       := other.FFWaveFormat.Format.wFormatTag;
+     FFWaveFormat.Format.nSamplesPerSec  := other.FFWaveFormat.Format.wFormatTag;
+     FFWaveFormat.Format.nAvgBytesPerSec := other.FFWaveFormat.Format.wFormatTag;
+     FFWaveFormat.Format.nBlockAlign     := other.FFWaveFormat.Format.wFormatTag;
+     FFWaveFormat.Format.wBitsPerSample  := other.FFWaveFormat.Format.wFormatTag;
+     FFWaveFormat.Format.cbSize          := other.FFWaveFormat.Format.wFormatTag;
+
+     FReload      := true;
+
+     if FFData <> nil then
+     FInitialized := true;
+
+end;
+
 
 procedure TMVoice.Reset;
 begin
@@ -1639,12 +1690,12 @@ begin
    FWaveFormat.Samples                := FFWaveFormat.Samples;
    FWaveFormat.dwChannelMask          := FFWaveFormat.dwChannelMask;
    FWaveFormat.Format.wFormatTag      := FFWaveFormat.Format.wFormatTag;
-   FWaveFormat.Format.nChannels       := FFWaveFormat.Format.wFormatTag;
-   FWaveFormat.Format.nSamplesPerSec  := FFWaveFormat.Format.wFormatTag;
-   FWaveFormat.Format.nAvgBytesPerSec := FFWaveFormat.Format.wFormatTag;
-   FWaveFormat.Format.nBlockAlign     := FFWaveFormat.Format.wFormatTag;
-   FWaveFormat.Format.wBitsPerSample  := FFWaveFormat.Format.wFormatTag;
-   FWaveFormat.Format.cbSize          := FFWaveFormat.Format.wFormatTag;
+   FWaveFormat.Format.nChannels       := FFWaveFormat.Format.nChannels;
+   FWaveFormat.Format.nSamplesPerSec  := FFWaveFormat.Format.nSamplesPerSec;
+   FWaveFormat.Format.nAvgBytesPerSec := FFWaveFormat.Format.nAvgBytesPerSec;
+   FWaveFormat.Format.nBlockAlign     := FFWaveFormat.Format.nBlockAlign;
+   FWaveFormat.Format.wBitsPerSample  := FFWaveFormat.Format.wBitsPerSample;
+   FWaveFormat.Format.cbSize          := FFWaveFormat.Format.cbSize;
 
    if FChannelCount > 0 then
    begin
@@ -1959,6 +2010,7 @@ initialization
                                @sudOutputPin );
 
 end.
+
 
 
 
