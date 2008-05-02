@@ -69,18 +69,27 @@ const
 
 
   //Standard-Values-------------------------------------------------//
-  MAXWAVENEGATIV = -32767;
-  MAXWAVEPOSITIV =  32767;
-  BYTESPERSAMPLE =  2;
-  NUMCHANNELS    =  1;
-  SAMPLERATE     =  44100;
-  BITSPERSAMPLE  =  16;
-  BITSPERBYTE    =  8;
-  MAXCHANNELS    =  18;
-  BLOCKSIZESMALL =  256;
-  BLOCKSIZE      =  2048;
-  BLOCKALIGN     =  256;
-  CHANNELMASK    =  SPEAKER_FRONT_LEFT;
+  MAXWAVENEGATIV     = -32767;
+  MAXWAVEPOSITIV     =  32767;
+  BYTESPERSAMPLE     =  2;
+  NUMCHANNELS        =  1;
+  SAMPLERATE         =  44100;
+  BITSPERSAMPLE      =  16;
+  BITSPERBYTE        =  8;
+  MAXCHANNELS        =  18;
+  BLOCKSIZESMALL     =  256;
+  BLOCKSIZE          =  2048;
+  BLOCKALIGN         =  256;
+  CHANNELMASK        =  SPEAKER_FRONT_LEFT;
+  CHANNELMASK5POINT1 =  SPEAKER_FRONT_LEFT    or
+                        SPEAKER_FRONT_RIGHT   or
+                        SPEAKER_FRONT_CENTER  or
+                        SPEAKER_LOW_FREQUENCY or
+                        SPEAKER_BACK_LEFT     or
+                        SPEAKER_BACK_RIGHT;
+  CHANNELMASK7POINT1 =  CHANNELMASK5POINT1 or
+                        SPEAKER_SIDE_LEFT  or
+                        SPEAKER_SIDE_RIGHT;
 
   CHANNELCODE : Array [0..MAXCHANNELS-1] of Integer = ( SPEAKER_FRONT_LEFT
                                                       , SPEAKER_FRONT_RIGHT
@@ -101,6 +110,26 @@ const
                                                       , SPEAKER_TOP_BACK_CENTER
                                                       , SPEAKER_TOP_BACK_RIGHT );
 
+  CHANNELNAME : Array [0..MAXCHANNELS-1] of String = (  'SPEAKER_FRONT_LEFT'
+                                                      , 'SPEAKER_FRONT_RIGHT'
+                                                      , 'SPEAKER_FRONT_CENTER'
+                                                      , 'SPEAKER_LOW_FREQUENCY'
+                                                      , 'SPEAKER_BACK_LEFT'
+                                                      , 'SPEAKER_BACK_RIGHT'
+                                                      , 'SPEAKER_FRONT_LEFT_OF_CENTER'
+                                                      , 'SPEAKER_FRONT_RIGHT_OF_CENTER'
+                                                      , 'SPEAKER_BACK_CENTER'
+                                                      , 'SPEAKER_SIDE_LEFT'
+                                                      , 'SPEAKER_SIDE_RIGHT'
+                                                      , 'SPEAKER_TOP_CENTER'
+                                                      , 'SPEAKER_TOP_FRONT_LEFT'
+                                                      , 'SPEAKER_TOP_FRONT_CENTER'
+                                                      , 'SPEAKER_TOP_FRONT_RIGHT'
+                                                      , 'SPEAKER_TOP_BACK_LEFT'
+                                                      , 'SPEAKER_TOP_BACK_CENTER'
+                                                      , 'SPEAKER_TOP_BACK_RIGHT' );
+
+
 //****************************************************************************//
 
 type
@@ -110,13 +139,14 @@ type
   TMWavePlayerPin   = class;
   TMWavePlayerRoute = class;
   TMVoice           = class;
-  
+
   //---------------------------------------------------------------//
   PBCVoice = ^TMVoice;
 
   AudioSample  =  SmallInt; //-32768..32767 Int16
   PAudioSample = ^AudioSample;
 
+  TInfoArray    = Array of String;
   TSampleArray  = Array of Double;
   TChannelArray = Array of TSampleArray;
   TSourceFrame  = Array [0..MAXCHANNELS-1] of Double;
@@ -144,6 +174,7 @@ type
     function SetBlockSize(val: Integer) : HRESULT; stdcall;
     function GetBlockSize(out val : Integer) : HRESULT; stdcall;
     function SetRouting(count: Integer; val: TRoutingArray) : HRESULT;  stdcall;
+    function GetInfo(out count : integer; out val : TInfoArray) : HRESULT; stdcall;
   end;
 
   //---------------------------------------------------------------//
@@ -175,6 +206,7 @@ type
    function SetBlockSize(val: Integer) : HRESULT; stdcall;
    function GetBlockSize(out val : Integer) : HRESULT; stdcall;
    function SetRouting(count: Integer; val: TRoutingArray) : HRESULT;  stdcall;
+   function GetInfo(out count : integer; out val : TInfoArray) : HRESULT; stdcall;
   end;
 
   //---------------------------------------------------------------//
@@ -185,6 +217,7 @@ type
    FChannelFactor   : TRoutingArray;
    FChannelId       : TRoutingArray;
    FChannelIdCount  : Integer;
+   FChannelName     : TInfoArray;
    FRouting         : TRoutingArray;
    FRoutingCount    : Integer;
    FBlockSize       : Integer;
@@ -214,9 +247,9 @@ type
   //---------------------------------------------------------------//
   TMWavePlayerPin = class(TBCSourceStream)
   private
-   voicelist  : TList;
-   voicecount : Integer;
-   FRoute     : TMWavePlayerRoute;
+   voicelist     : TList;
+   FVoiceCount   : Integer;
+   FRoute        : TMWavePlayerRoute;
   public
    constructor Create(out hr: HRESULT; Filter: TBCSource);
    destructor Destroy; override;
@@ -277,7 +310,7 @@ type
   public
    destructor Destroy; override;
    constructor Create;
-   function ReadTheFile(AFileName: PChar) : Boolean;
+   function ReadTheFile(AFileName : String) : Boolean;
    procedure Update;
    procedure Reset;
    procedure Clone(other : PBCVoice);
@@ -338,9 +371,77 @@ end;
 
 //IWavePlayer-Definitions----//
 
+function TMWavePlayer.GetInfo(out count : integer; out val : TInfoArray) : HRESULT; stdcall;
+var
+  voice : PBCVoice;
+  i,k : integer;
+  routeTo : integer;
+  n : integer;
+  str : String;
+  nChannels : integer;
+begin
+
+  n         := 0;
+  count     := 0;
+  nChannels := 0;
+
+  for i := 0 to FPin.FVoiceCount - 1 do
+  begin
+   voice := FPin.VoiceCheck(i);
+
+   if voice.FInitialized then
+   nChannels := nChannels + voice.FChannelCount;
+
+  end;
+
+  SetLength(val,nChannels);
+
+
+  for i := 0 to FPin.FVoiceCount - 1 do//-------------------------------------//
+  begin
+   voice := FPin.VoiceCheck(i);
+
+   if voice.FInitialized then
+   begin
+
+     for k := 0 to voice.FChannelCount - 1 do
+     begin
+       routeTo := FPin.Route.Routing[n];
+
+       str := ExtractFileName(voice.FFilename);
+
+       if str <> '' then       
+       if not FPin.Route.FUseFileMapping then
+        str := str + '  ' + FPin.Route.FChannelName[routeTo mod FPin.Route.FRoutingCount]
+       else
+        str := str + '  ' + CHANNELNAME[voice.FChannelMap[k] mod MAXCHANNELS];
+
+       //val[count] := StringReplace(str,'.wav','',[rfReplaceAll,rfIgnoreCase]);
+
+       val[count] := str;
+
+       inc(count);
+
+       n := (n + 1) mod FPin.Route.FRoutingCount;
+     end;
+
+   end;
+
+
+  end;//end for i-------------------------------------------------------------//
+
+  
+  Result := S_OK;
+
+end;
+
 function TMWavePlayer.Voices(voicecount: integer): HResult; stdcall;
 begin
- FPin.voicecount := voicecount;
+
+ if FPin.voicelist.Count < voicecount then
+  FPin.FVoiceCount := FPin.voicelist.Count
+ else
+  FPin.FVoiceCount := voiceCount;
 
  Result := S_OK;
 end;
@@ -381,11 +482,10 @@ begin
 
   FPin.VoiceFree(index);
 
-  v.FFilename := FileName;
- 
   v.ReadTheFile(pchar(FileName));
 
   FPin.SetFileMapping;//Error afterwards?
+
 
 end;
 
@@ -683,9 +783,11 @@ begin
  SetLength(FFChannelFactor, MAXCHANNELS);
  SetLength(FFRouting,       MAXCHANNELS);
  SetLength(FChannelFactor,  MAXCHANNELS);
+ SetLength(FChannelName,    MAXCHANNELS);
 
  for i := 0 to MAXCHANNELS - 1 do
  begin
+  FChannelName   [i] := '';
   FFRouting      [i] := 0;
   FFChannelFactor[i] := 1;
  end;
@@ -774,9 +876,14 @@ begin
  end;
 
  for i := 0 to count - 1 do
- if (val[i] >= 0) and (val[i] < MAXCHANNELS) then //all valid routing values [0..17]
+ if (val[i] >= -1) and (val[i] < MAXCHANNELS) then //all valid routing values [0..17]
  begin
-  routing[FFRoutingCount] := val[i];
+
+  if val[i] = -1 then
+   routing[FFRoutingCount] := 0
+  else
+   routing[FFRoutingCount] := val[i];
+
   Inc(FFRoutingCount);
  end;
 
@@ -787,8 +894,12 @@ begin
  if factor[i] > 0 then
  begin
   Inc(FFChannelCount);
+
   FChannelMask := FChannelMask or CHANNELCODE[i];
-  FChannelId[FChannelIdCount] := i; //map the channels to an array i0=c3 i1=c1 i2=c2...
+
+  FChannelName [FChannelIdCount] := CHANNELNAME[i];
+  FChannelId   [FChannelIdCount] := i; //map the channels to an array i0=c3 i1=c1 i2=c2...
+
   Inc(FChannelIdCount);
  end;
 
@@ -832,7 +943,8 @@ begin
  VoiceList := TList.Create;
  VoiceList.Clear;
 
- FRoute  := TMWavePlayerRoute.Create;
+ FRoute        := TMWavePlayerRoute.Create;
+ FVoiceCount   := 0;
 
 end;
 
@@ -948,7 +1060,7 @@ begin
    for i := 0 to MAXCHANNELS - 1 do
    map[i] := 0;
 
-   for i := 0 to voiceCount - 1 do//--------------------------------//
+   for i := 0 to VoiceList.Count - 1 do//----------------------------//
    begin
     voice := VoiceCheck(i);
 
@@ -1018,7 +1130,7 @@ begin
 
  nChannels  := Route.ChannelCount;
  nSamples   := ims.GetSize div BYTESPERSAMPLE;
- nVoices    := VoiceList.Count;
+ nVoices    := FVoiceCount;                        //???
  nFrames    := nSamples div nChannels;
 
  SetLength(buffer,nSamples);
@@ -1047,13 +1159,13 @@ begin
 
  for i := 0 to VoiceList.Count - 1 do
  begin
-  voice := VoiceList.Items[i];
+  voice := VoiceList.Items[i];        
 
   if voice <> nil then
   if voice.FReload then
-  voice.Update;
+   voice.Update;
 
- end;
+ end;//end for i
 
 end;
 
@@ -1088,7 +1200,7 @@ end;
 
     voice := voiceList.Items[v];
 
-    if (voice.FInitialized) then
+    if voice.FInitialized then
     for k := 0 to voice.FChannelCount - 1 do
     begin
 
@@ -1115,12 +1227,12 @@ end;
 
    count := 0;
 
-   for v := 0 to voiceList.Count - 1 do
+   for v := 0 to nVoices - 1 do
    begin
 
     voice := voiceList.Items[v];
 
-    if (voice.FInitialized) then
+    if voice.FInitialized then
     for k := 0 to voice.FChannelCount - 1 do
     begin
 
@@ -1241,6 +1353,7 @@ begin
     end;
   end;
 
+  if v <> nil then  
   v.Reset; //
 
 end;
@@ -1301,7 +1414,7 @@ begin
  inherited;
 end;
 
-function TMVoice.ReadTheFile(AFileName: PChar): Boolean;
+function TMVoice.ReadTheFile(AFileName: String): Boolean;
 var
   _Mem: PByte;
   hmm : HMMIO;
@@ -1315,7 +1428,7 @@ begin
   Result  := FALSE;
 
   // Open the file for reading with buffered I/O. Let windows use its default internal buffer
-  hmm := mmioOpen(AFileName, nil, MMIO_READ + MMIO_ALLOCBUF);
+  hmm := mmioOpen(pchar(AFileName), nil, MMIO_READ + MMIO_ALLOCBUF);
   if (hmm = NULL) then begin OutputDebugString('waveplayer open error'); Exit; end;
 
   // Locate a "RIFF" chunk with a "WAVE" form type to make sure the file is a waveform-audio file.
@@ -1362,12 +1475,17 @@ begin
   end;
 
   //initialize
+  FFilename        := AFileName;
   FFData           := _Mem;
   FFSize           := mmiSub.cksize;
   FFSourceFrames   := trunc(FFSize / (FFWaveFormat.Format.wBitsPerSample div BITSPERBYTE) / FFWaveFormat.Format.nChannels);
   FFDuration       := FFSourceFrames / FFWaveFormat.Format.nSamplesPerSec;
   FFFrameFraction  := 1.0 / FFSourceFrames;
   FFChannelCount   := FFWaveFormat.Format.nChannels;
+
+
+  for i := 0 to MAXCHANNELS - 1 do
+  FFChannelMap[i] := 0;
 
   if FFWaveFormat.Format.wFormatTag = WAVE_FORMAT_PCM then
   begin
@@ -1387,6 +1505,7 @@ begin
   begin
    count := 0;
 
+   if FFWaveFormat.dwChannelMask <> 0 then
    for i := 0 to MAXCHANNELS - 1 do
    begin
 
@@ -1395,6 +1514,34 @@ begin
      FFChannelMap[count] := i;
      Inc(count);
     end;
+
+   end;
+
+   if (FFWaveFormat.dwChannelMask = 0) and (FFWaveFormat.Format.nChannels = 6) then
+   begin
+    FFWaveFormat.dwChannelMask := CHANNELMASK5POINT1;
+
+    FFChannelMap[0] := 0;
+    FFChannelMap[1] := 1;
+    FFChannelMap[2] := 2;
+    FFChannelMap[3] := 3;
+    FFChannelMap[4] := 4;
+    FFChannelMap[5] := 5;
+
+   end;
+
+   if (FFWaveFormat.dwChannelMask = 0) and (FFWaveFormat.Format.nChannels = 8) then
+   begin
+    FFWaveFormat.dwChannelMask := CHANNELMASK7POINT1;
+
+    FFChannelMap[0] := 0;
+    FFChannelMap[1] := 1;
+    FFChannelMap[2] := 2;
+    FFChannelMap[3] := 3;
+    FFChannelMap[4] := 4;
+    FFChannelMap[5] := 5;
+    FFChannelMap[6] := 9;
+    FFChannelMap[7] :=10;
 
    end;
 
@@ -1454,6 +1601,8 @@ begin
      FFWaveFormat.Format.cbSize          := other.FWaveFormat.Format.wFormatTag;
 
      FReload      := true;
+
+     if FData <> nil then
      FInitialized := true;
 
 end;
@@ -1583,18 +1732,16 @@ var
    for i := 0 to MAXCHANNELS - 1 do
    sourceFrame[i] := 0;
 
-   if nFrames <> FChannelSize then
+   SetLength(FChannel,nChannels);
+
+   FChannelSize := nFrames;
+
+   for k := 0 to nChannels - 1 do
    begin
-    FChannelSize := nFrames;
+    SetLength(FChannel[k],FChannelSize);
 
-    for k := 0 to nChannels - 1 do
-    begin
-     SetLength(FChannel[k],FChannelSize);
-
-     for i := 0 to FChannelSize - 1 do
-     FChannel[k][i] := 0;
-    end;
-
+    for i := 0 to FChannelSize - 1 do
+    FChannel[k][i] := 0;
    end;
 
   end;
