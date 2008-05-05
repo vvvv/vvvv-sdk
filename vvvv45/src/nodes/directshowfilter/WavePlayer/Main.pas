@@ -1553,58 +1553,6 @@ begin
   FReload      := true;
 
 end;
-{
-procedure TMVoice.Clone(other: PBCVoice);
-var
- k : integer;
-begin
-
-     FFilename        := other.FFilename;
-     FFSize           := other.FSize;
-     FFData           := other.FData;
-     FFSourceFrames   := other.FSourceFrames;
-     FPlay            := other.FPlay;
-     FSync            := other.FSync;
-     FGain            := other.FGain;
-     FPan             := other.FPan;
-     FPosition        := other.FPosition;
-     FPhase           := other.FPhase;
-     FPitch           := other.FPitch;
-     FStartTime       := other.FStartTime;
-     FFStartTime      := other.FFStartTime;
-     FEndTime         := other.FEndTime;
-     FFEndTime        := other.FFEndTime;
-     FSeekPosition    := other.FSeekPosition;
-     FDoSeek          := other.FDoSeek;
-     FFDuration       := other.FDuration;
-     FFading          := other.FFading;
-     FLoop            := other.FLoop;
-     FFFrameFraction  := other.FFrameFraction;
-     FPhaseShift      := other.FPhaseShift;
-     FPhaseShiftPrev  := other.FPhaseShiftPrev;
-     FFChannelCount   := other.FChannelCount;
-     FChannelSize     := other.FChannelSize;
-
-     for k := 0 to MAXCHANNELS - 1 do
-     FFChannelMap[k] := other.FChannelMap[k];
-
-     FFWaveFormat.Samples                := other.FWaveFormat.Samples;
-     FFWaveFormat.dwChannelMask          := other.FWaveFormat.dwChannelMask;
-     FFWaveFormat.Format.wFormatTag      := other.FWaveFormat.Format.wFormatTag;
-     FFWaveFormat.Format.nChannels       := other.FWaveFormat.Format.wFormatTag;
-     FFWaveFormat.Format.nSamplesPerSec  := other.FWaveFormat.Format.wFormatTag;
-     FFWaveFormat.Format.nAvgBytesPerSec := other.FWaveFormat.Format.wFormatTag;
-     FFWaveFormat.Format.nBlockAlign     := other.FWaveFormat.Format.wFormatTag;
-     FFWaveFormat.Format.wBitsPerSample  := other.FWaveFormat.Format.wFormatTag;
-     FFWaveFormat.Format.cbSize          := other.FWaveFormat.Format.wFormatTag;
-
-     FReload      := true;
-
-     if FData <> nil then
-     FInitialized := true;
-
-end;
-}
 
 procedure TMVoice.Clone(other: PBCVoice);
 var
@@ -1628,7 +1576,7 @@ begin
      FFEndTime        := other.FFEndTime;
      FSeekPosition    := other.FSeekPosition;
      FDoSeek          := other.FDoSeek;
-     FFDuration       := other.FDuration;
+     FFDuration       := other.FFDuration;
      FFading          := other.FFading;
      FLoop            := other.FLoop;
      FFFrameFraction  := other.FFFrameFraction;
@@ -1986,12 +1934,11 @@ begin
 
    SetSource;
 
-   SetPosition;
-
    FillChannel;
-   
+
   end;//end for frameIndex-------------------------//
 
+  SetPosition;
 
   Result := S_OK;
 
