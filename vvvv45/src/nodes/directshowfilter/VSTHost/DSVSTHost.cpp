@@ -270,25 +270,33 @@ HRESULT DSVSTHost::CheckInputType(const CMediaType *pmt)
 
 	if (pmt->majortype != MEDIATYPE_Audio)
 	{
-		//printf("error MEDIATYPE_Audio\n");
+		OutputDebugString(L"error MEDIATYPE_Audio\n");
         return VFW_E_TYPE_NOT_ACCEPTED;
     }
 
     if (pmt->formattype != FORMAT_WaveFormatEx)
 	{
-		//printf("error FORMAT_WaveFormatEx\n");
+		OutputDebugString(L"error FORMAT_WaveFormatEx\n");
         return VFW_E_TYPE_NOT_ACCEPTED;
 	}
 
+	/*
     if (pwfx->wFormatTag != WAVE_FORMAT_PCM) 
 	{
-		//printf("error WAVE_FORMAT_PCM\n");
+		OutputDebugString(L"error WAVE_FORMAT_PCM\n");
+        return VFW_E_TYPE_NOT_ACCEPTED;
+    }
+	*/
+
+    if((pwfx->wFormatTag != WAVE_FORMAT_PCM) && (pwfx->wFormatTag != WAVE_FORMAT_EXTENSIBLE))
+	{
+		OutputDebugString(L"error WAVE_FORMAT_PCM\n");
         return VFW_E_TYPE_NOT_ACCEPTED;
     }
 
     if (pwfx->wBitsPerSample!=8 && pwfx->wBitsPerSample!=16) 
 	{
-		//printf("error BitsPerSample\n");
+		OutputDebugString(L"error BitsPerSample\n");
         return VFW_E_TYPE_NOT_ACCEPTED;
     }
 
