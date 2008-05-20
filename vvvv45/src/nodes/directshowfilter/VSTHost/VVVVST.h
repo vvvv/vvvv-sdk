@@ -41,7 +41,7 @@ public : //Derived-Methods------------------------------------------------//
 
 public : //Interface-Definitions-------------------------------------------//
 
-   STDMETHODIMP load                   (char *filename);
+   STDMETHODIMP load                   (char *filename,unsigned char *val);
    STDMETHODIMP setEnable              (unsigned char value);
    STDMETHODIMP getParameterCount      (int *count);
    STDMETHODIMP getParameterProperties (wchar_t paramDisplay[][256], wchar_t paramName[][256], wchar_t paramLabel[][256], double paramValue[]);

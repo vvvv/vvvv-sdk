@@ -17,9 +17,15 @@ VVVVST::~VVVVST()
 
 //Interface--------------------------------------------------------------------------------------------------------------------------------------//
 
-STDMETHODIMP VVVVST::load (char *filename)
+STDMETHODIMP VVVVST::load (char *filename,unsigned char *val)
 {
-  if(host.load(filename)) return S_OK;
+  if(host.load(filename))
+  {
+	*val = true;
+	return S_OK;
+  }
+
+  *val = false;
 
   return ERROR;
 }

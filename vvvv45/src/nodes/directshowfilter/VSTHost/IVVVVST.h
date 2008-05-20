@@ -13,7 +13,7 @@ DECLARE_INTERFACE_(IVVVVST, IUnknown)
   STDMETHOD (load)
   (
     THIS_
-	char *filename 
+	char *filename, unsigned char *val 
   ) PURE;
 
   STDMETHOD (setEnable)
