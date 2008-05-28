@@ -55,6 +55,9 @@ public : //Interface-Definitions-------------------------------------------//
    STDMETHODIMP sendProgram            (unsigned char programID);
    STDMETHODIMP sendMonophonic         (unsigned char monophonicValue);
    STDMETHODIMP sendPitchbend          (unsigned char pitchbendValue);
+   STDMETHODIMP getInputsCount         (int *count);
+   STDMETHODIMP getOutputsCount        (int *count);
+   STDMETHODIMP destroy                ();
 
 
 private : //Attributes----------------------------------------------------//

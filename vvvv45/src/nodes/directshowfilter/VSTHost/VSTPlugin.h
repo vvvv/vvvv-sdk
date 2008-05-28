@@ -66,6 +66,9 @@ class VSTPlugin
 		   int plugCategory;
 		   int tailSize;
 
+		   int blockSize;
+		   int sampleRate;
+
 		   long vendorVersion;
 		   long vstVersion;
 
@@ -76,6 +79,8 @@ class VSTPlugin
 
 		   char **canDoStr;	
 
+		   HWND hwnd;
+
    		   HANDLE wndThreadHandle;
 		   DWORD  wndID;
 
@@ -83,6 +88,7 @@ class VSTPlugin
 		   VstPinProperties *outputProperties;
 
 		   VSTPlugin       ();
+		  ~VSTPlugin       ();
 		   void initialize (AEffect *effect);
 
 		    //------------------------------------------------------//
@@ -90,6 +96,10 @@ class VSTPlugin
 		    double getParameter     (int index);
 			void   setParameter     (int index,double value);
 			void   sendMidiNotes    (int count,int note[],int velocity[]);
+			void   midiMsg          (unsigned char d0, unsigned char d1, unsigned char d2);
+			void   resume           ();
+			void   suspend          ();
+			void   destroy          ();
 					    
 		    //encapsulated Callback-Functions-----------------------//
 		   

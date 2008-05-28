@@ -30,6 +30,7 @@ static VstIntPtr VSTCALLBACK HostCallback ( AEffect *effect,
 class VSTHost
 {
   public  : VSTHost      ();
+		   ~VSTHost      ();
 		   	bool process (float **in, float **out,int length);
 		 
 			//IVVVVST-Interface-Definitions
@@ -46,6 +47,16 @@ class VSTHost
             bool sendProgram            (unsigned char programID);
             bool sendMonophonic         (unsigned char monophonicValue);
             bool sendPitchbend          (unsigned char pitchbendValue);
+			bool getInputsCount         (int *count);
+			bool getOutputsCount        (int *count);
+			bool destroy                ();
+
+  public  : int blockSize;
+			int sampleRate;
+			int nInputs;
+			int nOutputs;
+
+			VstTimeInfo timeInfo;
 
   private : VSTPlugin plugin; //one vstplugin per host
 

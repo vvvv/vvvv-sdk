@@ -96,7 +96,23 @@ DECLARE_INTERFACE_(IVVVVST, IUnknown)
 	unsigned char pitchbendValue
   ) PURE;
 
+  STDMETHOD (getInputsCount)
+  (
+    THIS_
+	int *count
+  ) PURE;
 
+  STDMETHOD (getOutputsCount)
+  (
+    THIS_
+	int *count
+  ) PURE;
+  
+  STDMETHOD (destroy)
+  (
+    THIS_
+  ) PURE;
+  
 };
 
 #ifdef __cplusplus

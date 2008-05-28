@@ -87,15 +87,57 @@ VSTHost::VSTHost()
   canDo[i] = false;
 
   GetCurrentDirectoryA( MAX_PATH, directoryPath);
+
+  blockSize  = BLOCKSIZE;
+  sampleRate = SAMPLERATE; 
+  nInputs    = STEREO;
+  nOutputs   = STEREO;
+
+  timeInfo.barStartPos        = 0;
+  timeInfo.cycleEndPos        = 0;
+  timeInfo.cycleStartPos      = 0;
+  timeInfo.flags              = 0;
+  timeInfo.nanoSeconds        = 0;
+  timeInfo.ppqPos             = 0;
+  timeInfo.samplePos          = 0;
+  timeInfo.samplesToNextClock = 0;
+  timeInfo.smpteFrameRate     = 0;
+  timeInfo.smpteOffset        = 0;
+  timeInfo.tempo              = 0;
+  timeInfo.timeSigDenominator = 0;
+  timeInfo.timeSigNumerator   = 0;
+
 }
 
-bool VSTHost::process (float **in, float **out,int length)
+VSTHost::~VSTHost()
 {
-  if(!plugin.effect) return false;
+  if(plugin.effect) 
+   plugin.effect->dispatcher(plugin.effect, effClose, 0, 0, 0, 0);
 
-  //idle???
-	
-  plugin.effect->processReplacing(plugin.effect, in, out, length);
+}
+
+bool VSTHost::process (float **in, float **out,int length) //length = number of frames
+{
+  if(!plugin.effect) 
+	return false;
+
+  if((plugin.effect->numInputs != nInputs) || (plugin.effect->numOutputs != nOutputs)) 
+  {
+	nInputs  = plugin.effect->numInputs;
+	nOutputs = plugin.effect->numOutputs;
+	return false;
+  }
+
+  if(length > blockSize) 
+  {
+    blockSize = length;
+    plugin.cbSetBlockSize(length);
+  }
+
+  if(plugin.canReplacing) //?needIdle
+   plugin.effect->processReplacing(plugin.effect, in, out, length);
+
+  return true;
 }
 
 //Interface-Definitions----------------------------------------------------------------------------------------------------//
@@ -110,7 +152,6 @@ bool VSTHost::load(char *filename)
   module = LoadLibraryA(filename);
 
   if(module == NULL) return false;
-
 
   pluginMain = (PluginMain) GetProcAddress((HMODULE) module,"VSTPluginMain");
 
@@ -127,6 +168,10 @@ bool VSTHost::load(char *filename)
   if(effect->magic != kEffectMagic)	return false;
 
   plugin.initialize(effect);
+
+  nInputs  = plugin.effect->numInputs;
+  nOutputs = plugin.effect->numOutputs;
+
 
   return true;
 
@@ -220,23 +265,6 @@ bool VSTHost::sendMidiNotes(int count,int note[],int velocity[])
 }
 
 
-//bool VSTHost::sendMidiNotesOff()
-//{
-//  if(!plugin.effect) return false;
-//
-//  int note     [MIDINOTESCOUNT];
-//  int velocity [MIDINOTESCOUNT];
-//
-//  for(int i=0;i<MIDINOTESCOUNT;i++)
-//  {
-//   note    [i] = i;
-//   velocity[i] = 0;
-//  }
-//
-//  plugin.sendMidiNotes(MIDINOTESCOUNT,note,velocity);
-//
-//  return true;
-//}
 
 bool VSTHost::sendMidiNotesOff()
 {
@@ -248,7 +276,7 @@ bool VSTHost::sendMidiNotesOff()
 
     vstMidiEvent.type = kVstMidiType;
 
-    vstMidiEvent.midiData[0] = NOTEON;
+    vstMidiEvent.midiData[0] = (char)NOTEON;
     vstMidiEvent.midiData[1] = i; 
     vstMidiEvent.midiData[2] = 0;
 
@@ -272,12 +300,17 @@ bool VSTHost::sendPolyphonic (unsigned char polyphonicNote, unsigned char polyph
 {
   if(!plugin.effect) return false;
 
+  plugin.midiMsg(POLYTOUCH, polyphonicNote, polyphonicValue);
+
   return true;
 }
+
 
 bool VSTHost::sendController (unsigned char controllerID, unsigned char controllerValue)
 {
   if(!plugin.effect) return false;
+
+  plugin.midiMsg(CONTROLCHANGE, controllerID, controllerValue);
 
   return true;
 }
@@ -286,6 +319,7 @@ bool VSTHost::sendProgram (unsigned char programID)
 {
   if(!plugin.effect) return false;
 
+  plugin.midiMsg(PROGRAMCHANGE, programID, programID);
 
   return true;
 }
@@ -294,6 +328,7 @@ bool VSTHost::sendMonophonic (unsigned char monophonicValue)
 {
   if(!plugin.effect) return false;
 
+  plugin.midiMsg(MONOTOUCH, monophonicValue, 0);  
 
   return true;
 }
@@ -302,7 +337,35 @@ bool VSTHost::sendPitchbend (unsigned char pitchbendValue)
 {
   if(!plugin.effect) return false;
 
+  plugin.midiMsg(PITCHBEND, pitchbendValue, pitchbendValue);
 
+  return true;
+}
+
+bool VSTHost::getInputsCount(int *count)
+{
+  if(!plugin.effect) return false;
+
+  *count = nInputs;
+
+  return true;
+}
+
+bool VSTHost::getOutputsCount(int *count)
+{
+  if(!plugin.effect) return false;
+
+  *count = nOutputs;
+
+  return true;
+}
+
+bool VSTHost::destroy()
+{
+  if(!plugin.effect) return false;
+
+  plugin.destroy();
+ 
   return true;
 }
 
@@ -315,7 +378,7 @@ long VSTHost::cbAutomate                     (int index, float value)
 
 long VSTHost::cbVersion                      ()
 {
- return 1000;
+ return kVstVersion;
 }
 
 long VSTHost::cbCurrentId                    ()
@@ -325,6 +388,9 @@ long VSTHost::cbCurrentId                    ()
 
 long VSTHost::cbIdle                         ()
 {
+ //???
+ plugin.needIdle = true;
+
  return 0;
 }
 
@@ -335,7 +401,7 @@ long VSTHost::cbPinConnected                 ()
 
 long VSTHost::cbGetTime                      ()
 {
- return 0;
+ return (long)&timeInfo;
 }
 
 long VSTHost::cbProcessEvents                ()
@@ -355,12 +421,12 @@ long VSTHost::cbSizeWindow                   ()
 
 long VSTHost::cbGetSampleRate                ()
 {
- return 0;
+ return sampleRate;
 }
 
 long VSTHost::cbGetBlockSize                 ()
 {
- return 0;
+ return blockSize;
 }
 
 long VSTHost::cbGetInputLatency              ()
@@ -466,7 +532,6 @@ long VSTHost::cbGetLanguage                  ()
 long VSTHost::cbGetDirectory                 (char *str)
 {
  return (long)directoryPath;
- 
 }
 
 long VSTHost::cbUpdateDisplay                ()
@@ -476,11 +541,15 @@ long VSTHost::cbUpdateDisplay                ()
 
 long VSTHost::cbBeginEdit                    ()
 {
+ plugin.needIdle = true;
+
  return 0;
 }
 
 long VSTHost::cbEndEdit                      ()
 {
+ plugin.needIdle = false;
+
  return 0;
 }
 
@@ -515,13 +584,15 @@ long VSTHost::cbGetNumAutomatableParameters  ()
  return 0;
 }
 
-long VSTHost::cbGetParameterQuantization     ()
-{
+long VSTHost::cbGetParameterQuantization     (){
  return 0;
 }
 
 long VSTHost::cbNeedIdle                     ()
 {
+ ///???
+// plugin.needIdle = true;
+
  return 0;
 }
 

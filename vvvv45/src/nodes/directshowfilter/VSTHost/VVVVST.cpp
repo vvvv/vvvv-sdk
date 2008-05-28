@@ -19,11 +19,13 @@ VVVVST::~VVVVST()
 
 STDMETHODIMP VVVVST::load (char *filename,unsigned char *val)
 {
+ 
   if(host.load(filename))
   {
 	*val = true;
 	return S_OK;
   }
+  
 
   *val = false;
 
@@ -125,28 +127,60 @@ STDMETHODIMP VVVVST::sendPitchbend (unsigned char pitchbendValue)
   return ERROR;
 }
 
+STDMETHODIMP VVVVST::getInputsCount(int *count)
+{
+  if(host.getInputsCount(count)) return S_OK;
+
+  return ERROR;
+}
+
+STDMETHODIMP VVVVST::getOutputsCount(int *count)
+{
+  if(host.getOutputsCount(count)) return S_OK;
+
+  return ERROR;
+}
+
+STDMETHODIMP VVVVST::destroy()
+{
+  if(host.destroy()) return S_OK;
+
+  return ERROR;
+}
+
 //Derived methods from CTransInPlaceFilter------------------------------------------------------------------------------------------------------//
 
 HRESULT VVVVST::Transform(IMediaSample *pMediaSample)
 {
+  
   if(pMediaSample == NULL || !initialized) 
   return ERROR;
 
   if(!enable) 
   return S_OK;
 
+  int nInputs  = host.nInputs;
+  int nOutputs = host.nOutputs; 
+
   //setup two inputs for the vst-plugin-------------------------------------------------------------//
   long nSamples = pMediaSample->GetActualDataLength() / bytesPerSample;
   long nFrames  = nSamples / nChannels;
 
-  float **in  = new float*[STEREO];
-  float **out = new float*[STEREO];
+  if(nInputs >  0) 
+   nFrames = nSamples / nInputs;
+  else
+  if(nOutputs > 0)
+   nFrames = nSamples / nOutputs;
 
-  in  [0]  = new float[nFrames];
-  in  [1]  = new float[nFrames];
-  out [0]  = new float[nFrames];
-  out [1]  = new float[nFrames]; 
+  float **in  = new float*[nInputs ];
+  float **out = new float*[nOutputs];
 
+  for(int i=0;i<nInputs;i++)
+  in [i] = new float[nFrames];
+  
+  for(int i=0;i<nOutputs;i++)
+  out[i] = new float[nFrames];
+  
 
   //read in the audiodata in imediasample-----------------------------------------------------------//
   byte *ptrByte;
@@ -165,64 +199,29 @@ HRESULT VVVVST::Transform(IMediaSample *pMediaSample)
 	ptrByte += bytesPerSample;
   } 
 
-  //Distribute the samples to the two input channels of the filter----------------------------------//
-  if(nChannels == STEREO)
-  {
-    for(int i=0;i<nFrames;i++)
-	{
-	  int shift = i * STEREO;
+  //Distribute the samples to the input channels of the plugin-------------------------------------//
 
-	  in [0][i] = ((float)samples[shift    ] / WAVESIZE);
-	  in [1][i] = ((float)samples[shift + 1] / WAVESIZE);
-	  out[0][i] = 0;
-	  out[1][i] = 0;
-	}
+  int frameCount = 0;
 
-  }//end if nChannels
+  for(int i=0;i<nFrames;i++)
+  for(int c=0;c<nInputs;c++)
+  in[c][i] = (float)samples[frameCount++] / WAVESIZE;
 
-  if(nChannels!=STEREO) 
-  {
-    short int* frames = new short int[nFrames];
-
-    for(int f=0; f<nFrames; f++)
-    for(int c=0; c<nChannels; c++)
-    frames[f] = samples[f*nChannels+c] / nChannels; //build a mono channel
-
-    for(int i=0; i<nFrames; i++)
-    {
-     in [0][i] = in [1][i] = ((float)frames[i] / WAVESIZE); //the two inputs are getting the same data
-     out[0][i] = out[1][i] = 0;
-    }
-
-	delete frames;
-  
-  }//end if nChannels
-
+  for(int i=0;i<nFrames;i++)
+  for(int c=0; c<nOutputs; c++)
+  out[c][i] = 0;
 
   //send the data to the vst-plugin-----------------------------------------------------------------//
   if(host.process( in, out, nFrames))
   {
-    //write the data back to the output
-    if(nChannels==STEREO)
-    {
-     for(int k=0; k<STEREO; k++) 
-     for(int i=0; i<nFrames; i++)
-     samples[ i*STEREO + k ] = (short) (out[k][i] * WAVESIZE);
-    }
+    for(int i=0;i<nSamples;i++)
+	samples[i] = 0;
 
-    if(nChannels!=STEREO)
-    {
-	 float *frames = new float[nFrames];
+	frameCount = 0;
 
-	 for(int f=0;f<nFrames;f++)
-	 frames[f] = ((out[0][f] + out[1][f]) / STEREO) * WAVESIZE;
-
-     for(int f=0;f<nFrames;f++)
-	 for(int c=0;c<nChannels;c++)
-     samples[f*nChannels+c] = frames[f];
-
-	 delete frames;
-    }
+    for(int f=0;f<nFrames;f++)
+	for(int c=0;c < nOutputs && frameCount < nSamples;c++)
+    samples[frameCount++] = (short)(out[c][f] * WAVESIZE);
 
     unsigned char *ucPtr = (unsigned char *) samples;
 
@@ -235,11 +234,12 @@ HRESULT VVVVST::Transform(IMediaSample *pMediaSample)
 
 
   //free the memory------------------------------------------------------------------------------//
-  delete in[0];
-  delete in[1];
 
-  delete out[0];
-  delete out[1];
+  for(int c=0; c<nInputs; c++)
+  delete in[c];
+
+  for(int c=0; c<nOutputs; c++)
+  delete out[c];
 
   delete in;
   delete out;
@@ -256,25 +256,25 @@ HRESULT VVVVST::CheckInputType(const CMediaType *pmt)
 
 	if (pmt->majortype != MEDIATYPE_Audio)
 	{
-	    OutputDebugString(L"ERROR : MEDIATYPE_Audio\n");
+	    //OutputDebugString(L"ERROR : MEDIATYPE_Audio\n");
         return VFW_E_TYPE_NOT_ACCEPTED;
     }
 
     if (pmt->formattype != FORMAT_WaveFormatEx)
 	{
-		OutputDebugString(L"ERROR : FORMAT_WaveFormatEx\n");
+		//OutputDebugString(L"ERROR : FORMAT_WaveFormatEx\n");
         return VFW_E_TYPE_NOT_ACCEPTED;
 	}
 
     if((pwfx->wFormatTag != WAVE_FORMAT_PCM) && (pwfx->wFormatTag != WAVE_FORMAT_EXTENSIBLE))
 	{
-		OutputDebugString(L"ERROR : WAVE_FORMAT_PCM\n");
+		//OutputDebugString(L"ERROR : WAVE_FORMAT_PCM\n");
         return VFW_E_TYPE_NOT_ACCEPTED;
     }
 
     if (pwfx->wBitsPerSample!=8 && pwfx->wBitsPerSample!=16 && pwfx->wBitsPerSample != 24) 
 	{
-		OutputDebugString(L"ERROR : BitsPerSample\n");
+		//OutputDebugString(L"ERROR : BitsPerSample\n");
         return VFW_E_TYPE_NOT_ACCEPTED;
     }
 
@@ -339,8 +339,7 @@ HRESULT VVVVST::SetMediaType(PIN_DIRECTION direction,const CMediaType *pmt)
 	  bytesPerSample = ptrFormat->wBitsPerSample / BITSPERBYTE;
       
 	  //set conditions
-	  if( (nChannels > 0) &&
-	      (samplerate == 44100 || samplerate == 48000) &&
+	  if( (samplerate == 44100 || samplerate == 48000) &&
 	      (bytesPerSample == 1 || bytesPerSample == 2)) // || bytesPerSample == 3) ) 24-bit?
 	  initialized = true;
 	  
