@@ -11,7 +11,7 @@
 #define BYTESPERSAMPLE   2
 #define NCHANNELS        2
 #define STRLENGTH      256
-#define BLOCKSIZE    11025 
+#define BLOCKSIZE     2048 //11025 
 #define SAMPLERATE   44100
 #define WAVESIZE     32768
 #define DEBUG            0
