@@ -141,6 +141,27 @@ STDMETHODIMP VVVVST::getOutputsCount(int *count)
   return ERROR;
 }
 
+STDMETHODIMP VVVVST::getProgramNames(int *count, wchar_t names[][256])
+{
+  if(host.getProgramNames(count,names)) return S_OK;
+
+  return ERROR;
+}
+
+STDMETHODIMP VVVVST::setActualProgram(int count)
+{
+  if(host.setActualProgram(count)) return S_OK;
+
+  return ERROR;
+}
+
+STDMETHODIMP VVVVST::getActualProgram(int *count)
+{
+  if(host.getActualProgram(count)) return S_OK;
+
+  return ERROR;
+}
+
 STDMETHODIMP VVVVST::destroy()
 {
   if(host.destroy()) return S_OK;
@@ -150,9 +171,9 @@ STDMETHODIMP VVVVST::destroy()
 
 //Derived methods from CTransInPlaceFilter------------------------------------------------------------------------------------------------------//
 
+//the number of inputs and outputs is fixed to 
 HRESULT VVVVST::Transform(IMediaSample *pMediaSample)
-{
-  
+{  
   if(pMediaSample == NULL || !initialized) 
   return ERROR;
 

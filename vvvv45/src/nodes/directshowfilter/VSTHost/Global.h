@@ -37,10 +37,10 @@
 #define audioMasterGetChunkFile                  48  
 #define audioMasterGetInputSpeakerArrangement    49  
 
-#define PLUGINCANDOCOUNT     8
+//Plugin + Host CanDos
+#define NPLUGINCANDO         8
 #define HOSTCANDOCOUNT      14
 
-//Plugin + Host CanDos
 #define SENDVSTEVENTS        0
 #define SENDVSTMIDIEVENT     1
 #define RECEIVEVSTEVENTS     2
@@ -58,7 +58,10 @@
 
 
 
-void out (wchar_t *str);
+void out           (wchar_t *str);
+void out           (char *str);
+void outputString  (char str[],bool endline);
+void outputString  (char label[],char str[],bool endline);
 
 #endif
 

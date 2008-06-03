@@ -31,9 +31,9 @@ VSTPlugin::VSTPlugin()
   nCanDo   = 0;
   needIdle = false;
 
-  sampleRate = SAMPLERATE;
-  blockSize  = BLOCKSIZE;
-
+  sampleRate      = SAMPLERATE;
+  blockSize       = BLOCKSIZE;
+  actualProgram   = 0;
   wndThreadHandle = 0;
 
 }
@@ -47,11 +47,12 @@ void VSTPlugin::destroy()
 {
   DWORD exitCode = 0;
 
+  effect->dispatcher(effect,effClose,0,0,NULL,0);
+
   if(wndThreadHandle)
    TerminateThread(wndThreadHandle, exitCode);
 
   effect = NULL;
-
 }
 
 //after setting the effect-pointer the values and parameters of the plugin 
@@ -127,6 +128,7 @@ void VSTPlugin::initialize(AEffect *effect)
 	param[i].value = effect->getParameter(effect,i);	
   }
 
+
   //Can Do--------------------------------------------------------------------------//
 
   char *canDoNamespace [NPLUGINCANDO]  = { "sendVstEvents",
@@ -161,22 +163,24 @@ void VSTPlugin::initialize(AEffect *effect)
   //--------------------------------------------------------------------------------//
 
   cbOpen          ();
+  suspend         ();
   cbSetSampleRate (SAMPLERATE);
   cbSetBlockSize  (BLOCKSIZE);
-  resume          ();
+  setProgram      (0);
 
   //--------------------------------------------------------------------------------//
 
   //open a winapi window
  
-
   if(hasEditor)
   {
 	 wndID = 1000;
 
-	 wndThreadHandle = CreateThread( NULL, 0, windowThread, (LPVOID)effect, 0, &wndID );
+     wndThreadHandle = CreateThread( NULL, 0, windowThread, (LPVOID)effect, 0, &wndID );
   }
 
+  displayProperties ();
+  resume            ();
 
 }//end initialize
 
@@ -203,8 +207,6 @@ void VSTPlugin::suspend()
 void VSTPlugin::cbSetSampleRate (int sampleRate)
 {
   effect->dispatcher( effect, effSetSampleRate, 0, 0, 0, (float)sampleRate );
-
-
 }
 
 void VSTPlugin::cbSetBlockSize (int blockSize)
@@ -219,6 +221,18 @@ double VSTPlugin::getParameter(int index)
   return (double)param[index].value;
 }
 
+void VSTPlugin::setProgram(int index)
+{
+  effect->dispatcher(effect, effSetProgram, 0, index, NULL, 0);
+
+  actualProgram = effect->dispatcher(effect, effGetProgram, 0, actualProgram, NULL, 0);
+}
+
+void VSTPlugin::getProgramName(char *name)
+{
+  effect->dispatcher(effect, effGetProgram, 0, 0, name, 0);
+}
+
 void VSTPlugin::setParameter(int index,double value)
 {
   effect->setParameter(effect,index,(float)value);
@@ -230,67 +244,243 @@ void VSTPlugin::midiMsg(unsigned char d0, unsigned char d1, unsigned char d2)
 {
   VstMidiEvent vstMidiEvent;
 
-  vstMidiEvent.type = kVstMidiType;
+  vstMidiEvent.type            = kVstMidiType;
+  vstMidiEvent.deltaFrames     = 0;
+  vstMidiEvent.flags           = kVstMidiEventIsRealtime;
+  vstMidiEvent.byteSize        = sizeof(VstMidiEvent);
+  vstMidiEvent.noteLength      = 0;
+  vstMidiEvent.noteOffset      = 0;
+  vstMidiEvent.noteOffVelocity = 0;
+  vstMidiEvent.detune          = 0;
+  vstMidiEvent.reserved1       = 0;
+  vstMidiEvent.reserved2       = 0;
 
   vstMidiEvent.midiData[0] = d0;
   vstMidiEvent.midiData[1] = d1;
   vstMidiEvent.midiData[2] = d2;
+  vstMidiEvent.midiData[3] = 0;
 
-  vstMidiEvent.deltaFrames = 0;
+  VstEvents vstEvents;
 
+  vstEvents.numEvents = 1;
+  vstEvents.reserved  = 0L;
+  vstEvents.events[0] = (VstEvent*)&vstMidiEvent;
 
-  VstEvents *vstEvents = new VstEvents();
-
-  vstEvents->numEvents = 1;
-  vstEvents->events[0] = (VstEvent*)&vstMidiEvent;
-
-  effect->dispatcher( effect, effProcessEvents, 0, 0, vstEvents, 0);
+  effect->dispatcher( effect, effProcessEvents, 0, 0, &vstEvents, 0);
 
 }
 
 void VSTPlugin::sendMidiNotes(int count,int note[],int velocity[])
 {
-  VstMidiEvent *midiEvent = new VstMidiEvent[count];
+  VstMidiEvent *vstMidiEvent = new VstMidiEvent[count];
 
   for(int i;i<count;i++)
   {
-    midiEvent[i].type        = kVstMidiType;   //SysEx???
-    midiEvent[i].deltaFrames = 0;
-    midiEvent[i].byteSize    = sizeof(VstMidiEvent);
-    midiEvent[i].flags       = kVstMidiEventIsRealtime;
+    vstMidiEvent[i].type            = kVstMidiType;
+    vstMidiEvent[i].deltaFrames     = 0;
+    vstMidiEvent[i].flags           = kVstMidiEventIsRealtime;
+    vstMidiEvent[i].byteSize        = sizeof(VstMidiEvent);
+    vstMidiEvent[i].noteLength      = 0;
+    vstMidiEvent[i].noteOffset      = 0;
+    vstMidiEvent[i].noteOffVelocity = 0;
+    vstMidiEvent[i].detune          = 0;
+    vstMidiEvent[i].reserved1       = 0;
+    vstMidiEvent[i].reserved2       = 0;
 
-    midiEvent[i].midiData[0] = NOTEON;
-    midiEvent[i].midiData[1] = note     [i];
-    midiEvent[i].midiData[2] = velocity [i];
-
-	midiEvent[i].deltaFrames = 0;
+    vstMidiEvent[i].midiData[0] = NOTEON;
+    vstMidiEvent[i].midiData[1] = note     [i];
+    vstMidiEvent[i].midiData[2] = velocity [i];
+	vstMidiEvent[i].midiData[3] = 0;
   }
   
   VstEvents* vstEvents = (VstEvents*)malloc(sizeof(VstEvents) + count * sizeof(VstEvent*));
 
   vstEvents->numEvents = count;
+  vstEvents->reserved  = 0L;
   
   for(int i=0;i<count;i++)
-  vstEvents->events[i] = (VstEvent*) &midiEvent[i];
+  vstEvents->events[i] = (VstEvent*) &vstMidiEvent[i];
 
   
   effect->dispatcher( effect, effProcessEvents, 0, 0, vstEvents, 0);
 
 
-  /*
-  for(int i=0; i<count; i++)
-  {  
-	VstEvents  vstEvents;
-
-    vstEvents.numEvents = 1;
-    vstEvents.events[0] = (VstEvent*)&midiEvent[i];
-    
-	
-	effect->dispatcher( effect, effProcessEvents, 0, 0, &vstEvents, 0);
-  }
-  */
-
   free(vstEvents);
-  delete [] midiEvent;
+  delete [] vstMidiEvent;
 
 }
+
+void VSTPlugin::displayProperties()
+{
+   if(!DEBUG) return;
+  
+
+   char buffer[512];
+
+   out(L"\nplugin->DisplayProperties>***********************************\n\n");
+
+   outputString("Name        : ", name,        1);
+   outputString("Vendor      : ", vendor,      1);
+   outputString("Product     : ", product,     1);
+   outputString("ProgramName : ", programName, 1);
+
+   out(L"\n");
+
+   scanf(buffer,"VendorVersion : %d\nVstVersion    : %0.1f\n\n",vendorVersion,vstVersion / 1000.0);
+   out(buffer);
+
+  
+   scanf(buffer,"NumParams  : %d\nNumInputs  : %d\nNumOutputs : %d\n",numParams,numInputs,numOutputs);
+   out(buffer);
+
+   
+   out(L"\n");
+
+   for(int paramIndex = 0; paramIndex < numParams; paramIndex++)
+   {
+	 outputString("Name: ",0);
+	 outputString(param[paramIndex].name,0);
+    
+	 outputString(" Label: ",0);
+	 outputString(param[paramIndex].label,0);
+
+	 outputString(" Display: ",0);
+	 outputString(param[paramIndex].display,1);
+
+     if(param[paramIndex].properties != NULL)
+	 if(param[paramIndex].properties->category != 0) 
+	 {
+	   outputString(" Label          : ",param[paramIndex].properties->label,1);
+	   outputString(" Category-Label : ",param[paramIndex].properties->categoryLabel,1);
+	   outputString(" ShortLabel     : ",param[paramIndex].properties->shortLabel,1);
+       
+	   scanf(buffer,"Properties: category %d\n displayIndex %d\n stepFloat %f\n smallStepFloat %f\n largeStepFloat %f\n minInteger %d\n maxInteger %d\n stepInteger %d\n largeStepInteger %d\n displayIndex %d\n numParamsInCategory %d\n",
+		        param[paramIndex].properties->category,
+	   	        param[paramIndex].properties->displayIndex,
+				param[paramIndex].properties->stepFloat,
+			    param[paramIndex].properties->smallStepFloat,
+				param[paramIndex].properties->largeStepFloat,
+				param[paramIndex].properties->minInteger,
+				param[paramIndex].properties->maxInteger,
+				param[paramIndex].properties->stepInteger,
+				param[paramIndex].properties->largeStepInteger,
+				param[paramIndex].properties->displayIndex,
+				param[paramIndex].properties->numParametersInCategory );
+
+       out(buffer);
+	 
+	 }
+	 else out(L"No properties\n");
+
+   }
+
+   out("\n");
+
+   for(int programIndex = 0; programIndex < numPrograms; programIndex++)
+   outputString("Program : ",program[programIndex].name,1);
+
+   out(L"\n");
+
+   for(int i=0; i<numInputs; i++)
+   {
+	 if(strlen(inputProperties[i].label)) outputString("InputProperties.Label  : ",inputProperties[i].label,1);
+
+	 scanf(buffer,"InputProperties.Flags  : %d\n",inputProperties[i].flags);
+
+	 out(buffer);
+ 
+	 //if(strlen(inputProperties[i].shortLabel)) outputString("InputProperties.ShortLabel : ",inputProperties[i].shortLabel,1);
+	 
+	 //swprintf(buffer,L"InputProperties.ArangementType : %d\n",inputProperties[i].arrangementType);
+	
+	 //OutputDebugString(buffer);
+   }
+
+   out(L"\n");
+
+   for(int i=0; i<numOutputs; i++)
+   {
+	 if(strlen(outputProperties[i].label)) outputString("OutputProperties.Label : ",outputProperties[i].label,1);
+
+	 scanf(buffer,"OutputProperties.Flags : %d\n",outputProperties[i].flags);
+
+	 out(buffer);
+
+	 if(outputProperties[i].flags & kVstPinIsActive)
+	   OutputDebugString(L"Output is active");
+ 
+	 //if(strlen(outputProperties[i].shortLabel)) outputString("OutputProperties.ShortLabel : ",outputProperties[i].shortLabel,1);
+	 
+	 //swprintf(buffer,L"OutputProperties.ArangementType : %d\n",outputProperties[i].arrangementType);
+	
+	 //OutputDebugString(buffer);
+   }
+
+  
+   out(L"\n");
+
+   if(hasEditor) out(L"has an Editor\n");
+    else out(L"has no Editor\n");
+
+   if(canReplacing) out(L"can replacing\n");
+    else out(L"cannot do replacing\n");
+
+   if(noSoundInStop) out(L"no sound in stop\n");
+    else out(L"plays sound in stop\n");
+
+   if(programChunks) out(L"program chunks\n");
+    else out(L"no program chunks\n");
+
+   if(isSynth) out(L"is synth\n");
+    else out(L"is no synth\n");
+
+   out(L"\n");
+
+   out(L"Category : ");
+
+   switch( plugCategory )
+   {
+	  case kPlugCategUnknown        : out(L"Unknown\n");                               break;
+	  case kPlugCategEffect         : out(L"Simple Effect\n");                         break;
+	  case kPlugCategSynth          : out(L"VST Instrument (Synths,Samplers,...)\n");  break;
+	  case kPlugCategAnalysis       : out(L"Scope,Tuner...\n");                        break;
+	  case kPlugCategMastering      : out(L"Dynamics,...\n");                          break;
+	  case kPlugCategSpacializer    : out(L"Panners,...\n");                           break;
+	  case kPlugCategRoomFx         : out(L"Delays and Reverbs\n");                    break;
+	  case kPlugSurroundFx          : out(L"Dedicated surround processor\n");          break;
+	  case kPlugCategRestoration    : out(L"Denoiser,...\n");                          break;
+	  case kPlugCategOfflineProcess : out(L"Offline Process\n");                       break;
+	  case kPlugCategShell          : out(L"Plug-in is container of other plugins\n"); break;
+	  case kPlugCategGenerator      : out(L"ToneGenerator,...\n");                     break;
+   }
+
+   out(L"\n");
+
+   for(int i=0; i<nCanDo; i++)
+   outputString("CanDo : ",canDoStr[i],1);
+
+   out(L"\n");
+
+   if( tailSize == 0) out(L"TailSize : Unknown Tailsize\n");
+
+   if( tailSize == 1) out(L"TailSize : No Tail\n");
+
+   if( tailSize >  1) 
+   {
+   	 scanf(buffer,"TailSize : %d\n",tailSize);
+
+	 out(buffer);
+   }
+
+   out(L"\n");
+
+   scanf(buffer,"UniqueID : %d\n",uniqueID);
+
+   out(buffer);
+
+
+   out(L"\n************************************************************\n");
+
+
+}
+

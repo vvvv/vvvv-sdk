@@ -50,6 +50,9 @@ class VSTHost
 			bool getInputsCount         (int *count);
 			bool getOutputsCount        (int *count);
 			bool destroy                ();
+            bool getProgramNames        (int *count, wchar_t names[][256]);
+			bool getActualProgram       (int *count);
+            bool setActualProgram       (int count);
 
   public  : int blockSize;
 			int sampleRate;
@@ -59,6 +62,7 @@ class VSTHost
 			VstTimeInfo timeInfo;
 
   private : VSTPlugin plugin; //one vstplugin per host
+			HMODULE   module;
 
 			bool canDo[HOSTCANDOCOUNT];
 			char directoryPath[MAX_PATH];
@@ -70,7 +74,7 @@ class VSTHost
 	       virtual long cbCurrentId                    ();
 	       virtual long cbIdle                         ();
            virtual long cbPinConnected                 ();
-	       virtual long cbGetTime                      ();
+	       virtual long cbGetTime                      (VstIntPtr value);
 	       virtual long cbProcessEvents                ();
            virtual long cbIOChanged                    ();
 	       virtual long cbSizeWindow                   ();

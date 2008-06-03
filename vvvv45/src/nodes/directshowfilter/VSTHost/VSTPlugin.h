@@ -3,16 +3,19 @@
 
 #define _CRT_SECURE_NO_DEPRECATE
 
+
 #include <stdio.h>
+#include <iostream>
 #include <windows.h>
 #include <math.h>
 #include "pluginterfaces/vst2.x/aeffectx.h"
 #include "Global.h"
 #include "GUI.h"
 
-#define NPLUGINCANDO 8
 
 /*************************************************************************/
+
+int __cdecl scanf(__in_z __format_string const char * _Format, ...);
 
 struct Param
 {
@@ -52,10 +55,10 @@ class VSTPlugin
 		   bool noSoundInStop;
 		   bool canDoubleReplacing;
 
- 		   int numPrograms;
-		   int numParams;
-		   int numInputs;
-		   int numOutputs;
+ 		   int  numPrograms;
+		   int  numParams;
+		   int  numInputs;
+		   int  numOutputs;
 
 		   char name        [STRLENGTH];
 		   char vendor      [STRLENGTH];
@@ -65,21 +68,18 @@ class VSTPlugin
 		   int uniqueID;
 		   int plugCategory;
 		   int tailSize;
-
 		   int blockSize;
 		   int sampleRate;
+		   int nCanDo;
+		   int actualProgram;
 
 		   long vendorVersion;
 		   long vstVersion;
 
-		   int  nCanDo;
 		   bool needIdle;
-
 		   bool canDo[8];
 
 		   char **canDoStr;	
-
-		   HWND hwnd;
 
    		   HANDLE wndThreadHandle;
 		   DWORD  wndID;
@@ -87,19 +87,19 @@ class VSTPlugin
 		   VstPinProperties *inputProperties;
 		   VstPinProperties *outputProperties;
 
-		   VSTPlugin       ();
-		  ~VSTPlugin       ();
-		   void initialize (AEffect *effect);
-
-		    //------------------------------------------------------//
-
-		    double getParameter     (int index);
-			void   setParameter     (int index,double value);
-			void   sendMidiNotes    (int count,int note[],int velocity[]);
-			void   midiMsg          (unsigned char d0, unsigned char d1, unsigned char d2);
-			void   resume           ();
-			void   suspend          ();
-			void   destroy          ();
+public :           VSTPlugin         ();
+		          ~VSTPlugin         ();
+		    void   initialize        (AEffect *effect);
+		    double getParameter      (int index);
+			void   setParameter      (int index,double value);
+			void   sendMidiNotes     (int count,int note[],int velocity[]);
+			void   midiMsg           (unsigned char d0, unsigned char d1, unsigned char d2);
+			void   resume            ();
+			void   suspend           ();
+			void   destroy           ();
+			void   displayProperties ();
+			void   setProgram        (int index);
+			void   getProgramName    (char *name);
 					    
 		    //encapsulated Callback-Functions-----------------------//
 		   

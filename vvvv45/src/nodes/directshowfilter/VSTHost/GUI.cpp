@@ -3,12 +3,14 @@
 
 LRESULT CALLBACK WndProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-  static AEffect* effect = (AEffect*) lParam;
+  //static AEffect* effect = (AEffect*) lParam;
 
   switch(msg)
   {
     case WM_INITDIALOG  : { SetWindowText(hwnd,L"VST");
-							SetTimer(hwnd,1,20,0);
+							//SetTimer(hwnd,1,20,0);
+
+							AEffect* effect = (AEffect*) lParam;
 
 							if(effect) 
 							{
@@ -31,12 +33,12 @@ LRESULT CALLBACK WndProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 								RECT wRect;
 
-								SetRect(&wRect, 0, height, width, 0);
+								SetRect(&wRect, 0, 0, width, height);
 
 								AdjustWindowRectEx(&wRect, GetWindowLong(hwnd,GWL_STYLE),FALSE,GetWindowLong(hwnd,GWL_EXSTYLE));
 
-								width  = wRect.right - wRect.left;
-								height = wRect.top   - wRect.bottom;
+								width  = wRect.right  - wRect.left;
+								height = wRect.bottom - wRect.top;
 
 								SetWindowPos (hwnd, HWND_TOP,0,0,width,height,SWP_NOMOVE);
 							  }
@@ -49,8 +51,8 @@ LRESULT CALLBACK WndProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 						 
 	case WM_PAINT       : break;
 
-	case WM_TIMER       : if(effect) 
-							effect->dispatcher(effect, effEditIdle, 0, 0, 0, 0);
+	case WM_TIMER       : //if(effect) 
+						  //	effect->dispatcher(effect, effEditIdle, 0, 0, 0, 0);
 
 	                      break;
 
@@ -60,13 +62,13 @@ LRESULT CALLBACK WndProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 	case WM_COMMAND     : break;
 
-	case WM_CLOSE       : { KillTimer(hwnd,1);
+	case WM_CLOSE       : /*{ KillTimer(hwnd,1);
 
 	                        if(effect) 
 							 effect->dispatcher(effect, effEditClose, 0, 0, 0, 0);
 
 							EndDialog(hwnd,IDOK); 
-						  }
+						  }*/
 
 						  break;
 
@@ -85,7 +87,7 @@ LRESULT CALLBACK WndProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 }
 
 
-
+EDITORWINDOW wnd;
 
 DWORD WINAPI windowThread (LPVOID data)
 {
@@ -95,9 +97,18 @@ DWORD WINAPI windowThread (LPVOID data)
 
   wnd.style = WS_POPUPWINDOW | WS_DLGFRAME | DS_MODALFRAME | DS_CENTER;
 
-  DialogBoxIndirectParam ( (HINSTANCE)hwnd, &wnd, 0,
- 						   (DLGPROC) WndProc,
+
+  __try
+  {
+    DialogBoxIndirectParam ( (HINSTANCE)hwnd, &wnd, 0,
+ 	 					   (DLGPROC) WndProc,
 						   (LPARAM) data);
+  }
+  __except(GetExceptionCode() == EXCEPTION_ACCESS_VIOLATION)
+  {
+    OutputDebugString(L"EXCEPTION_ACCESS_VIOLATION");
+  }
+
 
   return (DWORD)hwnd;
 

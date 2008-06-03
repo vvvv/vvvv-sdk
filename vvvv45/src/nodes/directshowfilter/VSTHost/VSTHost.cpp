@@ -19,7 +19,7 @@ VstIntPtr VSTCALLBACK HostCallback (AEffect *effect,
 	case audioMasterCurrentId                    : out(L"AudioMasteCurrentId\n");                    return host->cbCurrentId                 ();
 	case audioMasterIdle                         : out(L"AudioMasterIdle\n");                        return host->cbIdle                      ();
 	case audioMasterPinConnected                 : out(L"AudioMasterPinConnected\n");                return host->cbPinConnected              ();
-	case audioMasterGetTime                      : out(L"audioMasterGetTime\n");                     return host->cbGetTime                   ();
+	case audioMasterGetTime                      : /*out(L"audioMasterGetTime\n"); */                    return host->cbGetTime                   (value);
 	case audioMasterProcessEvents                : out(L"audioMasterProcessEvents\n");               return host->cbProcessEvents             ();
     case audioMasterIOChanged                    : out(L"AudioMasterIOChanged\n");                   return host->cbIOChanged                 ();
 	case audioMasterSizeWindow                   : out(L"AudioMasterSizeWindow\n");                  return host->cbSizeWindow                ();
@@ -68,7 +68,7 @@ VstIntPtr VSTCALLBACK HostCallback (AEffect *effect,
 
   }
 
-  out(L"HOSTCALLBACK : UNDEFINED OPCODE\n");
+  if(opcode!=-1) out(L"HOSTCALLBACK : UNDEFINED OPCODE\n");
 
   return 0;//1??
 
@@ -92,6 +92,7 @@ VSTHost::VSTHost()
   sampleRate = SAMPLERATE; 
   nInputs    = STEREO;
   nOutputs   = STEREO;
+  module     = NULL;
 
   timeInfo.barStartPos        = 0;
   timeInfo.cycleEndPos        = 0;
@@ -100,19 +101,18 @@ VSTHost::VSTHost()
   timeInfo.nanoSeconds        = 0;
   timeInfo.ppqPos             = 0;
   timeInfo.samplePos          = 0;
+  timeInfo.sampleRate         = SAMPLERATE;
   timeInfo.samplesToNextClock = 0;
-  timeInfo.smpteFrameRate     = 0;
+  timeInfo.smpteFrameRate     = 1;
   timeInfo.smpteOffset        = 0;
-  timeInfo.tempo              = 0;
-  timeInfo.timeSigDenominator = 0;
-  timeInfo.timeSigNumerator   = 0;
+  timeInfo.tempo              = 120;
+  timeInfo.timeSigDenominator = 4;
+  timeInfo.timeSigNumerator   = 4;
 
 }
 
 VSTHost::~VSTHost()
 {
-  if(plugin.effect) 
-   plugin.effect->dispatcher(plugin.effect, effClose, 0, 0, 0, 0);
 
 }
 
@@ -134,8 +134,29 @@ bool VSTHost::process (float **in, float **out,int length) //length = number of 
     plugin.cbSetBlockSize(length);
   }
 
-  if(plugin.canReplacing) //?needIdle
-   plugin.effect->processReplacing(plugin.effect, in, out, length);
+  //---------------------------------------------------------//
+
+  timeInfo.nanoSeconds = (double)timeGetTime() * 1000000.0;
+
+  double pos = timeInfo.samplePos / timeInfo.sampleRate;
+
+  double offsetInSeconds = pos - int(pos);
+
+  timeInfo.smpteOffset = (long)(offsetInSeconds * 25.0 * 80.0);
+
+  //---------------------------------------------------------//
+
+  __try
+  {
+    if(plugin.canReplacing) 
+     plugin.effect->processReplacing(plugin.effect, in, out, length);
+  }
+  __except(GetExceptionCode() == EXCEPTION_INT_DIVIDE_BY_ZERO ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH)
+  {
+
+  }
+ 
+  timeInfo.samplePos  += (float)length;
 
   return true;
 }
@@ -144,11 +165,9 @@ bool VSTHost::process (float **in, float **out,int length) //length = number of 
 
 bool VSTHost::load(char *filename)
 {
-  HMODULE     module;
   PluginMain  pluginMain;
   AEffect    *effect;
-  
- 
+   
   module = LoadLibraryA(filename);
 
   if(module == NULL) return false;
@@ -175,6 +194,44 @@ bool VSTHost::load(char *filename)
 
   return true;
 
+}
+
+bool VSTHost::getProgramNames (int *count, wchar_t names[][256])
+{
+  if(!plugin.effect) return false;
+
+  *count = plugin.numPrograms;
+  
+  for(int i=0;i<plugin.numPrograms;i++)
+  {
+	for(int k=0;k<STRLENGTH;k++)
+	{
+	  names[i][k] =  plugin.program[i].name[k];  //plugin.param[h].display[k];
+	  if(plugin.program[i].name[k] == '\0') break;
+	}
+  }
+
+  return true;
+}
+
+bool VSTHost::getActualProgram(int *count)
+{
+  if(!plugin.effect) return false;
+
+  *count = plugin.actualProgram;
+
+  return true;
+}
+
+bool VSTHost::setActualProgram(int count)
+{
+  if(!plugin.effect) return false;
+
+  if(count < 0 || count >= plugin.numPrograms) return false;
+
+  plugin.setProgram(count);
+
+  return true;
 }
 
 bool VSTHost::getParameterCount(int *count)
@@ -227,7 +284,6 @@ bool VSTHost::getParameter(int index, double *value)
   if(!plugin.effect)  return false;
 
   if(index < 0 || index >= plugin.numParams) return false;
-
   
   *value = plugin.getParameter(index);
 
@@ -239,7 +295,6 @@ bool VSTHost::setParameter(int index, double  value)
   if(!plugin.effect)  return false;
 
   if(index < 0 || index >= plugin.numParams) return false;
-
 
   plugin.setParameter(index,value);
 
@@ -264,33 +319,12 @@ bool VSTHost::sendMidiNotes(int count,int note[],int velocity[])
   return true;
 }
 
-
-
 bool VSTHost::sendMidiNotesOff()
 {
   if(!plugin.effect) return false;
 
   for(int i=0;i<MIDINOTESCOUNT;i++)
-  {
-    VstMidiEvent vstMidiEvent;
-
-    vstMidiEvent.type = kVstMidiType;
-
-    vstMidiEvent.midiData[0] = (char)NOTEON;
-    vstMidiEvent.midiData[1] = i; 
-    vstMidiEvent.midiData[2] = 0;
-
-
-    vstMidiEvent.deltaFrames = 0;
-
-    VstEvents  vstEvents;
-
-    vstEvents.numEvents = 1;
-    vstEvents.events[0] = (VstEvent*)&vstMidiEvent;
-    
-	
-	plugin.effect->dispatcher( plugin.effect, effProcessEvents, 0, 0, &vstEvents, 0);
-  }
+  plugin.midiMsg((char)NOTEON,i,0);
 
   return true;
 
@@ -365,6 +399,8 @@ bool VSTHost::destroy()
   if(!plugin.effect) return false;
 
   plugin.destroy();
+
+  if(module != NULL) FreeLibrary(module);
  
   return true;
 }
@@ -399,7 +435,7 @@ long VSTHost::cbPinConnected                 ()
  return 0;
 }
 
-long VSTHost::cbGetTime                      ()
+long VSTHost::cbGetTime                      (VstIntPtr value)
 {
  return (long)&timeInfo;
 }
@@ -566,6 +602,8 @@ long VSTHost::cbCloseFileSelector            ()
 //deprecated
 long VSTHost::cbWantMidi                     ()
 {
+ plugin.isSynth = true;
+
  return 0;
 }
 

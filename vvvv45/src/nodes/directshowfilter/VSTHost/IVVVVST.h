@@ -107,7 +107,26 @@ DECLARE_INTERFACE_(IVVVVST, IUnknown)
     THIS_
 	int *count
   ) PURE;
+
+  STDMETHOD (getProgramNames)
+  (
+    THIS_
+	int *count,
+	wchar_t names[][256]
+  ) PURE;
+
+  STDMETHOD (getActualProgram)
+  (
+    THIS_
+    int *count
+  ) PURE;
   
+  STDMETHOD (setActualProgram)
+  (
+    THIS_
+    int count
+  ) PURE;
+
   STDMETHOD (destroy)
   (
     THIS_

@@ -58,6 +58,9 @@ public : //Interface-Definitions-------------------------------------------//
    STDMETHODIMP getInputsCount         (int *count);
    STDMETHODIMP getOutputsCount        (int *count);
    STDMETHODIMP destroy                ();
+   STDMETHODIMP getProgramNames        (int *count, wchar_t names[][256]);
+   STDMETHODIMP getActualProgram       (int *count);
+   STDMETHODIMP setActualProgram       (int count);
 
 
 private : //Attributes----------------------------------------------------//
