@@ -127,6 +127,12 @@ DECLARE_INTERFACE_(IVVVVST, IUnknown)
     int count
   ) PURE;
 
+  STDMETHOD (setBpm)
+  (
+    THIS_
+    int val
+  ) PURE;
+
   STDMETHOD (destroy)
   (
     THIS_

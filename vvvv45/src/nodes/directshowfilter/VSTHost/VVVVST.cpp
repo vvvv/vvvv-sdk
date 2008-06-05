@@ -162,12 +162,18 @@ STDMETHODIMP VVVVST::getActualProgram(int *count)
   return ERROR;
 }
 
+STDMETHODIMP VVVVST::setBpm(int val)
+{
+
+  return ERROR;
+}
+
 STDMETHODIMP VVVVST::destroy()
 {
   if(host.destroy()) return S_OK;
 
   return ERROR;
-}
+} 
 
 //Derived methods from CTransInPlaceFilter------------------------------------------------------------------------------------------------------//
 

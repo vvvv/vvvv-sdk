@@ -8,11 +8,33 @@
 
 
 #define _CRT_SECURE_NO_DEPRECATE
-#define WNDWIDTH  320
-#define WNDHEIGHT 130
+#define WNDWIDTH       320
+#define WNDHEIGHT      130
+#define MAXEDITORCOUNT 2
 
 
 LRESULT CALLBACK WndProc( HWND, UINT, WPARAM, LPARAM);
+
+struct Editor
+{
+  AEffect* effect;
+  HWND     hwnd;
+
+  Editor() { effect = NULL;
+             hwnd   = 0; }
+};
+
+class EditorList
+{
+  public : EditorList();
+
+		   void     init      (AEffect* newEffect,HWND wndID);
+		   AEffect* retrieve  (HWND wndID);
+		   void     discharge (HWND wndID);
+
+		   Editor editor[MAXEDITORCOUNT];
+           int count;
+};
 
 struct EDITORWINDOW : DLGTEMPLATE
 {

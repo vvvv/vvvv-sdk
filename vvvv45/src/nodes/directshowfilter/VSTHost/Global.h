@@ -17,6 +17,9 @@
 #define DEBUG            0
 #define STEREO           2
 #define MIDINOTESCOUNT 128
+#define NEWHOST       4747
+#define DISCHARGEHOST 4848
+#define MAXHOSTCOUNT   256
 
 //deprecated opcodes 
 #define audioMasterWantMidi                       6

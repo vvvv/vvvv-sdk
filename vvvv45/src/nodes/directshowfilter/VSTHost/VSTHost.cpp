@@ -1,6 +1,59 @@
 #include "VSTHost.h"
 
 
+HostList::HostList()
+{
+  for(int i=0;i<MAXHOSTCOUNT;i++)
+  host[i] = NULL;
+
+  count = 0;
+}
+
+void HostList::init(VSTHost *newHost)
+{
+  if(!newHost) return;
+
+  for(int i=0;i<MAXHOSTCOUNT;i++)
+  if(host[i]==NULL)
+  {
+   host[i] = newHost;
+   count++;
+   return;
+  }
+
+}
+
+VSTHost* HostList::retrieve(AEffect *effect)
+{
+  if(effect == NULL) return NULL;
+
+  for(int i=0;i<MAXHOSTCOUNT;i++)
+  if(host[i]!=NULL)
+  if(host[i]->plugin.effect == effect)
+  return host[i];
+  
+  return NULL;
+}
+
+void HostList::discharge(VSTHost* oldHost)
+{
+  for(int i=0;i<MAXHOSTCOUNT;i++)
+  if(host[i]!=NULL)
+  if(host[i] == oldHost)
+  {
+   host[i] = NULL;
+   count--;
+   return;
+  }
+
+}
+
+/*****************************************************************************************************************************/
+/*****************************************************************************************************************************/
+/*****************************************************************************************************************************/
+
+//!!!Achtung mehrere Hosts müssen vorhanden sein!!!
+
 //with the hostcallback the plugin is able to send data or requests to the host
 VstIntPtr VSTCALLBACK HostCallback (AEffect *effect,
 						  		    VstInt32 opcode,
@@ -9,7 +62,28 @@ VstIntPtr VSTCALLBACK HostCallback (AEffect *effect,
 								    void *ptr,
 								    float opt)
 {
-  static VSTHost *host = (VSTHost*)ptr; //at the first call of this method, this variable is initialized
+  static HostList hostList;
+
+  VSTHost *host = NULL;
+
+  if(opcode == NEWHOST && value == NEWHOST)
+  {
+   hostList.init((VSTHost*)ptr);
+   return 0;
+  }
+
+  if(opcode == DISCHARGEHOST && value == DISCHARGEHOST)
+  {
+   hostList.discharge((VSTHost*)ptr);
+   return 0;
+  }  
+
+  if(opcode == audioMasterVersion) //is called first by a new effect
+   return kVstVersion;
+
+  host = hostList.retrieve((AEffect*)effect);
+
+  //----------------------------------------------------------------------------------------------------//
 
   if(host!=NULL)
   switch(opcode)
@@ -19,7 +93,7 @@ VstIntPtr VSTCALLBACK HostCallback (AEffect *effect,
 	case audioMasterCurrentId                    : out(L"AudioMasteCurrentId\n");                    return host->cbCurrentId                 ();
 	case audioMasterIdle                         : out(L"AudioMasterIdle\n");                        return host->cbIdle                      ();
 	case audioMasterPinConnected                 : out(L"AudioMasterPinConnected\n");                return host->cbPinConnected              ();
-	case audioMasterGetTime                      : /*out(L"audioMasterGetTime\n"); */                    return host->cbGetTime                   (value);
+	case audioMasterGetTime                      : out(L"audioMasterGetTime\n");                     return host->cbGetTime                   (value);
 	case audioMasterProcessEvents                : out(L"audioMasterProcessEvents\n");               return host->cbProcessEvents             ();
     case audioMasterIOChanged                    : out(L"AudioMasterIOChanged\n");                   return host->cbIOChanged                 ();
 	case audioMasterSizeWindow                   : out(L"AudioMasterSizeWindow\n");                  return host->cbSizeWindow                ();
@@ -68,9 +142,9 @@ VstIntPtr VSTCALLBACK HostCallback (AEffect *effect,
 
   }
 
-  if(opcode!=-1) out(L"HOSTCALLBACK : UNDEFINED OPCODE\n");
-
-  return 0;//1??
+  out(L"HOST OR OPCODE UNDEFINED\n");
+  
+  return 0;
 
 }
 
@@ -80,8 +154,8 @@ VstIntPtr VSTCALLBACK HostCallback (AEffect *effect,
 
 VSTHost::VSTHost()
 {
-  //set the host pointer
-  HostCallback( 0, -1, 0, 0, this, 0);
+  //Subscribe the host in the host-list
+  HostCallback( 0, NEWHOST, 0, NEWHOST, this, 0);
 
   for(int i=0;i<HOSTCANDOCOUNT;i++)
   canDo[i] = false;
@@ -113,6 +187,7 @@ VSTHost::VSTHost()
 
 VSTHost::~VSTHost()
 {
+  HostCallback( 0, DISCHARGEHOST, 0, DISCHARGEHOST, this, 0);
 
 }
 
@@ -139,6 +214,8 @@ bool VSTHost::process (float **in, float **out,int length) //length = number of 
   timeInfo.nanoSeconds = (double)timeGetTime() * 1000000.0;
 
   double pos = timeInfo.samplePos / timeInfo.sampleRate;
+
+  timeInfo.ppqPos = pos * timeInfo.tempo / 60.0;
 
   double offsetInSeconds = pos - int(pos);
 
@@ -179,8 +256,16 @@ bool VSTHost::load(char *filename)
 
   if(pluginMain == NULL) return false;
 
-  
-  effect = pluginMain(HostCallback);
+  try
+  {
+    effect = pluginMain(HostCallback);
+  }
+  catch(...)
+  {
+
+
+  }
+
 
   if(effect == NULL) return false;
 
@@ -394,13 +479,24 @@ bool VSTHost::getOutputsCount(int *count)
   return true;
 }
 
+bool VSTHost::setBpm(int value)
+{
+  if(!plugin.effect) return true;
+
+  if(value > 0)
+  timeInfo.tempo = value;
+
+  return true;
+}
+
 bool VSTHost::destroy()
 {
   if(!plugin.effect) return false;
 
   plugin.destroy();
 
-  if(module != NULL) FreeLibrary(module);
+  if(module != NULL) 
+   FreeLibrary(module);
  
   return true;
 }

@@ -47,8 +47,6 @@ void VSTPlugin::destroy()
 {
   DWORD exitCode = 0;
 
-  effect->dispatcher(effect,effClose,0,0,NULL,0);
-
   if(wndThreadHandle)
    TerminateThread(wndThreadHandle, exitCode);
 
@@ -64,7 +62,7 @@ void VSTPlugin::initialize(AEffect *effect)
   this->effect = effect;
 
   uniqueID = effect->uniqueID;
-
+  
   //Flags-------------------------------------------------------------------------//
 
   hasEditor      = effect->flags && effFlagsHasEditor;
@@ -171,7 +169,7 @@ void VSTPlugin::initialize(AEffect *effect)
   //--------------------------------------------------------------------------------//
 
   //open a winapi window
- 
+  
   if(hasEditor)
   {
 	 wndID = 1000;
@@ -274,7 +272,7 @@ void VSTPlugin::sendMidiNotes(int count,int note[],int velocity[])
 {
   VstMidiEvent *vstMidiEvent = new VstMidiEvent[count];
 
-  for(int i;i<count;i++)
+  for(int i=0;i<count;i++)
   {
     vstMidiEvent[i].type            = kVstMidiType;
     vstMidiEvent[i].deltaFrames     = 0;

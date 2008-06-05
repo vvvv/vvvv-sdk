@@ -31,6 +31,7 @@ class VSTHost
 {
   public  : VSTHost      ();
 		   ~VSTHost      ();
+
 		   	bool process (float **in, float **out,int length);
 		 
 			//IVVVVST-Interface-Definitions
@@ -53,6 +54,7 @@ class VSTHost
             bool getProgramNames        (int *count, wchar_t names[][256]);
 			bool getActualProgram       (int *count);
             bool setActualProgram       (int count);
+			bool setBpm                 (int value);
 
   public  : int blockSize;
 			int sampleRate;
@@ -61,7 +63,7 @@ class VSTHost
 
 			VstTimeInfo timeInfo;
 
-  private : VSTPlugin plugin; //one vstplugin per host
+            VSTPlugin plugin; //one vstplugin per host
 			HMODULE   module;
 
 			bool canDo[HOSTCANDOCOUNT];
@@ -121,6 +123,20 @@ class VSTHost
 		   virtual long cbGetChunkFile                 ();
 		   virtual long cbGetInputSpeakerArrangement   ();
 		   
+
+};
+
+/*************************************************************************/
+
+class HostList
+{
+  public : VSTHost *host[MAXHOSTCOUNT];
+		   int count;
+
+		   HostList ();
+		   VSTHost*  retrieve  (AEffect *effect);
+		   void      init      (VSTHost *newHost);
+		   void      discharge (VSTHost *oldHost);
 
 };
 

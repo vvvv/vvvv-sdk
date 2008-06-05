@@ -47,6 +47,8 @@ class VSTPlugin
            Param   *param;
 		   Program *program;
 
+		   Editor editor;
+
 		   //Flags
 		   bool hasEditor;
 		   bool canReplacing;
