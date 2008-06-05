@@ -263,9 +263,7 @@ bool VSTHost::load(char *filename)
   catch(...)
   {
 
-
   }
-
 
   if(effect == NULL) return false;
 
@@ -275,7 +273,6 @@ bool VSTHost::load(char *filename)
 
   nInputs  = plugin.effect->numInputs;
   nOutputs = plugin.effect->numOutputs;
-
 
   return true;
 
@@ -485,6 +482,41 @@ bool VSTHost::setBpm(int value)
 
   if(value > 0)
   timeInfo.tempo = value;
+
+  return true;
+}
+
+bool VSTHost::hasEditor()
+{
+  if(!plugin.effect) return false;
+
+  if(plugin.hasEditor) return true;
+
+  return false;  
+}
+
+bool VSTHost::setWindowHandle(HWND hwnd)
+{
+  if(!plugin.effect) return false;
+
+  plugin.setWindowHandle(hwnd);
+
+  return true;
+}
+
+bool VSTHost::getWindowSize(int *width,int *height)
+{
+  *width  = plugin.width;
+  *height = plugin.height;
+
+  return true;
+}
+
+bool VSTHost::idle()
+{
+  if(!plugin.effect) return false;
+
+  plugin.effect->dispatcher(plugin.effect,effEditIdle,0,0,0,0);
 
   return true;
 }

@@ -47,8 +47,6 @@ class VSTPlugin
            Param   *param;
 		   Program *program;
 
-		   Editor editor;
-
 		   //Flags
 		   bool hasEditor;
 		   bool canReplacing;
@@ -83,8 +81,10 @@ class VSTPlugin
 
 		   char **canDoStr;	
 
-   		   HANDLE wndThreadHandle;
 		   DWORD  wndID;
+		   HWND   hwnd;
+		   int    height;
+		   int    width;
 
 		   VstPinProperties *inputProperties;
 		   VstPinProperties *outputProperties;
@@ -102,6 +102,7 @@ public :           VSTPlugin         ();
 			void   displayProperties ();
 			void   setProgram        (int index);
 			void   getProgramName    (char *name);
+			void   setWindowHandle   (HWND hwnd);
 					    
 		    //encapsulated Callback-Functions-----------------------//
 		   

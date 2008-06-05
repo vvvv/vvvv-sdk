@@ -133,6 +133,29 @@ DECLARE_INTERFACE_(IVVVVST, IUnknown)
     int val
   ) PURE;
 
+  STDMETHOD (hasEditor)
+  (
+    THIS_	
+  ) PURE;
+
+  STDMETHOD (setWindowHandle)
+  (
+    THIS_
+	HWND hwnd
+  ) PURE;
+
+  STDMETHOD (getWindowSize)
+  (
+    THIS_
+	int *width,
+	int *height
+  ) PURE;
+
+  STDMETHOD (idle)
+  (
+    THIS_
+  ) PURE;
+
   STDMETHOD (destroy)
   (
     THIS_

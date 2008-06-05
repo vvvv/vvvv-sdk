@@ -62,6 +62,11 @@ public : //Interface-Definitions-------------------------------------------//
    STDMETHODIMP getActualProgram       (int *count);
    STDMETHODIMP setActualProgram       (int count);
    STDMETHODIMP setBpm                 (int val);
+   STDMETHODIMP hasEditor              ();
+   STDMETHODIMP setWindowHandle        (HWND hwnd);
+   STDMETHODIMP getWindowSize          (int *width,int *height);
+   STDMETHODIMP idle                   ();
+
 
 
 private : //Attributes----------------------------------------------------//

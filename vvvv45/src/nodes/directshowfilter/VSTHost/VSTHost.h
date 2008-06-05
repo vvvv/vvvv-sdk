@@ -55,6 +55,11 @@ class VSTHost
 			bool getActualProgram       (int *count);
             bool setActualProgram       (int count);
 			bool setBpm                 (int value);
+			bool hasEditor              ();
+			bool setWindowHandle        (HWND hwnd);
+			bool getWindowSize          (int *width,int *height);
+			bool idle                   ();
+
 
   public  : int blockSize;
 			int sampleRate;

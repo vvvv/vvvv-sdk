@@ -22,19 +22,19 @@ Param::~Param ()
 
 VSTPlugin::VSTPlugin()
 {
-  effect = NULL;
+  effect        = NULL;
+  canDoStr      = NULL;
+  nCanDo        = 0;
+  needIdle      = false;
+  sampleRate    = SAMPLERATE;
+  blockSize     = BLOCKSIZE;
+  actualProgram = 0;
+  hwnd          = 0;
+  width         = 100;
+  height        = 100;
 
   for(int i=0;i<NPLUGINCANDO;i++)
   canDo[i] = false;
-
-  canDoStr = NULL;
-  nCanDo   = 0;
-  needIdle = false;
-
-  sampleRate      = SAMPLERATE;
-  blockSize       = BLOCKSIZE;
-  actualProgram   = 0;
-  wndThreadHandle = 0;
 
 }
 
@@ -45,16 +45,10 @@ VSTPlugin::~VSTPlugin()
 
 void VSTPlugin::destroy()
 {
-  DWORD exitCode = 0;
 
-  if(wndThreadHandle)
-   TerminateThread(wndThreadHandle, exitCode);
-
-  effect = NULL;
 }
 
-//after setting the effect-pointer the values and parameters of the plugin 
-//are read in
+//after setting the effect-pointer the values and parameters of the plugin are read in
 void VSTPlugin::initialize(AEffect *effect)
 {
   if(!effect) return;
@@ -160,27 +154,64 @@ void VSTPlugin::initialize(AEffect *effect)
 
   //--------------------------------------------------------------------------------//
 
-  cbOpen          ();
-  suspend         ();
-  cbSetSampleRate (SAMPLERATE);
-  cbSetBlockSize  (BLOCKSIZE);
-  setProgram      (0);
-
-  //--------------------------------------------------------------------------------//
-
-  //open a winapi window
-  
-  if(hasEditor)
-  {
-	 wndID = 1000;
-
-     wndThreadHandle = CreateThread( NULL, 0, windowThread, (LPVOID)effect, 0, &wndID );
-  }
-
+  cbOpen            ();
+  suspend           ();
+  cbSetSampleRate   (SAMPLERATE);
+  cbSetBlockSize    (BLOCKSIZE);
+  setProgram        (0);
   displayProperties ();
   resume            ();
 
+  if(hasEditor)
+  {
+    ERect* eRect;
+
+    effect->dispatcher(effect,effEditGetRect,0,0,&eRect,0);
+
+    if(eRect)
+    {
+ 	 width  = eRect->right  - eRect->left;
+	 height = eRect->bottom - eRect->top;
+    }
+  }
+
+
 }//end initialize
+
+void VSTPlugin::setWindowHandle(HWND hwnd)
+{
+  ERect* eRect;
+
+  effect->dispatcher( effect, effEditOpen, 0, 0, hwnd, 0); 
+
+  effect->dispatcher(effect,effEditGetRect,0,0,&eRect,0);
+
+  if(eRect)
+  {
+ 	width  = eRect->right  - eRect->left;
+	height = eRect->bottom - eRect->top;
+
+	if(width < 100) 
+	width = 100;
+
+	if(height < 100)
+	height = 100;
+
+	RECT wRect;
+
+	SetRect(&wRect, 0, 0, width, height);
+
+	AdjustWindowRectEx(&wRect, GetWindowLong(hwnd,GWL_STYLE),FALSE,GetWindowLong(hwnd,GWL_EXSTYLE));
+
+	width  = wRect.right  - wRect.left;
+	height = wRect.bottom - wRect.top;
+
+	SetWindowPos (hwnd, HWND_TOP,0,0,width,height,SWP_NOMOVE);
+
+  }//if ERect
+
+}
+
 
 void VSTPlugin::cbOpen  ()  
 {

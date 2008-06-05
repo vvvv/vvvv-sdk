@@ -164,8 +164,37 @@ STDMETHODIMP VVVVST::getActualProgram(int *count)
 
 STDMETHODIMP VVVVST::setBpm(int val)
 {
+  if(host.setBpm(val)) return S_OK;
 
   return ERROR;
+}
+
+STDMETHODIMP VVVVST::hasEditor()
+{
+  if(host.hasEditor()) return S_OK;
+
+  return ERROR;
+}
+
+STDMETHODIMP VVVVST::setWindowHandle(HWND hwnd)
+{
+  host.setWindowHandle(hwnd);
+
+  return ERROR;
+}
+
+STDMETHODIMP VVVVST::getWindowSize(int *width,int *height)
+{
+  host.getWindowSize(width,height);
+
+  return S_OK;
+}
+
+STDMETHODIMP VVVVST::idle()
+{
+  host.idle();
+
+  return S_OK;
 }
 
 STDMETHODIMP VVVVST::destroy()

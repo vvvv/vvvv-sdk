@@ -1,49 +1,5 @@
 #include "GUI.h"
 
-EditorList::EditorList()
-{
-  count = 0;
-}
-
-void EditorList::init(AEffect *newEffect,HWND wndID)
-{
-  if(!newEffect) return;
-
-  for(int i=0;i<MAXEDITORCOUNT;i++)
-  if(editor[i].effect == NULL)
-  {
-    editor[i].effect = newEffect;
-	editor[i].hwnd   = wndID;
-	count++;
-	return;
-  }
-
-}
-
-AEffect* EditorList::retrieve(HWND wndID)
-{
-  for(int i=0;i<MAXEDITORCOUNT;i++)
-  if(editor[i].effect != NULL)
-  if(editor[i].hwnd   == wndID)
-  return editor[i].effect;
-  
-  return NULL;
-
-}
-
-void EditorList::discharge(HWND wndID)
-{
-  for(int i=0;i<MAXEDITORCOUNT;i++)
-  if(editor[i].effect != NULL)
-  if(editor[i].hwnd   == wndID)
-  {
-	editor[i].effect = NULL;
-	editor[i].hwnd   = 0;
-    
-    count--;
-  }
-
-}
 
 void openWnd(AEffect* effect,HWND hwnd)
 {
@@ -86,18 +42,19 @@ void openWnd(AEffect* effect,HWND hwnd)
 
 LRESULT CALLBACK WndProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 { 
-  static EditorList editorList; 
+  static AEffect* effect = ((VSTPlugin*)lParam)->effect;
 
-  
   switch(msg)
   {
-    case WM_INITDIALOG  : openWnd((AEffect*)lParam,hwnd); 
+    case WM_INITDIALOG  : /*((VSTPlugin*)lParam)->openWindow(hwnd);*/
 						  
                           break; 
 						 
 	case WM_PAINT       : break;
 
-	case WM_TIMER       : break;
+	case WM_TIMER       : effect->dispatcher(effect, effEditIdle, 0, 0, 0, 0);
+	   
+	                      break;
 
 	case WM_LBUTTONDOWN : break;
 
