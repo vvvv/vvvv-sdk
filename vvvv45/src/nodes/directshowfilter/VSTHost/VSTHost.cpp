@@ -383,7 +383,7 @@ bool VSTHost::setParameter(int index, double  value)
   return true;
 }
 
-bool VSTHost::isInstrument()
+bool VSTHost::getMidiIsInstrument()
 {
   if(!plugin.effect) return false;
 
@@ -392,7 +392,7 @@ bool VSTHost::isInstrument()
   return true;
 }
 
-bool VSTHost::sendMidiNotes(int count,int note[],int velocity[])
+bool VSTHost::sendMidiNote(int count,int note[],int velocity[])
 {
   if(!plugin.effect) return false;
 
@@ -401,7 +401,7 @@ bool VSTHost::sendMidiNotes(int count,int note[],int velocity[])
   return true;
 }
 
-bool VSTHost::sendMidiNotesOff()
+bool VSTHost::sendMidiNoteAllOff()
 {
   if(!plugin.effect) return false;
 
@@ -412,7 +412,7 @@ bool VSTHost::sendMidiNotesOff()
 
 }
 
-bool VSTHost::sendPolyphonic (unsigned char polyphonicNote, unsigned char polyphonicValue)
+bool VSTHost::sendMidiPolyphonic (unsigned char polyphonicNote, unsigned char polyphonicValue)
 {
   if(!plugin.effect) return false;
 
@@ -422,7 +422,7 @@ bool VSTHost::sendPolyphonic (unsigned char polyphonicNote, unsigned char polyph
 }
 
 
-bool VSTHost::sendController (unsigned char controllerID, unsigned char controllerValue)
+bool VSTHost::sendMidiController (unsigned char controllerID, unsigned char controllerValue)
 {
   if(!plugin.effect) return false;
 
@@ -431,7 +431,7 @@ bool VSTHost::sendController (unsigned char controllerID, unsigned char controll
   return true;
 }
 
-bool VSTHost::sendProgram (unsigned char programID)
+bool VSTHost::sendMidiProgram (unsigned char programID)
 {
   if(!plugin.effect) return false;
 
@@ -440,7 +440,7 @@ bool VSTHost::sendProgram (unsigned char programID)
   return true;
 }
 
-bool VSTHost::sendMonophonic (unsigned char monophonicValue)
+bool VSTHost::sendMidiMonophonic (unsigned char monophonicValue)
 {
   if(!plugin.effect) return false;
 
@@ -449,7 +449,7 @@ bool VSTHost::sendMonophonic (unsigned char monophonicValue)
   return true;
 }
 
-bool VSTHost::sendPitchbend (unsigned char pitchbendValue)
+bool VSTHost::sendMidiPitchbend (unsigned char pitchbendValue)
 {
   if(!plugin.effect) return false;
 
@@ -458,7 +458,7 @@ bool VSTHost::sendPitchbend (unsigned char pitchbendValue)
   return true;
 }
 
-bool VSTHost::getInputsCount(int *count)
+bool VSTHost::getInputCount(int *count)
 {
   if(!plugin.effect) return false;
 
@@ -467,7 +467,7 @@ bool VSTHost::getInputsCount(int *count)
   return true;
 }
 
-bool VSTHost::getOutputsCount(int *count)
+bool VSTHost::getOutputCount(int *count)
 {
   if(!plugin.effect) return false;
 
@@ -486,7 +486,7 @@ bool VSTHost::setBpm(int value)
   return true;
 }
 
-bool VSTHost::hasEditor()
+bool VSTHost::getHasWindow()
 {
   if(!plugin.effect) return false;
 
@@ -512,7 +512,7 @@ bool VSTHost::getWindowSize(int *width,int *height)
   return true;
 }
 
-bool VSTHost::idle()
+bool VSTHost::setWindowIdle()
 {
   if(!plugin.effect) return false;
 

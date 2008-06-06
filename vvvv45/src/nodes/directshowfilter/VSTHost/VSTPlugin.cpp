@@ -162,20 +162,6 @@ void VSTPlugin::initialize(AEffect *effect)
   displayProperties ();
   resume            ();
 
-  if(hasEditor)
-  {
-    ERect* eRect;
-
-    effect->dispatcher(effect,effEditGetRect,0,0,&eRect,0);
-
-    if(eRect)
-    {
- 	 width  = eRect->right  - eRect->left;
-	 height = eRect->bottom - eRect->top;
-    }
-  }
-
-
 }//end initialize
 
 void VSTPlugin::setWindowHandle(HWND hwnd)
@@ -203,8 +189,8 @@ void VSTPlugin::setWindowHandle(HWND hwnd)
 
 	AdjustWindowRectEx(&wRect, GetWindowLong(hwnd,GWL_STYLE),FALSE,GetWindowLong(hwnd,GWL_EXSTYLE));
 
-	width  = wRect.right  - wRect.left;
-	height = wRect.bottom - wRect.top;
+	//width  = wRect.right  - wRect.left;
+	//height = wRect.bottom - wRect.top;
 
 	SetWindowPos (hwnd, HWND_TOP,0,0,width,height,SWP_NOMOVE);
 

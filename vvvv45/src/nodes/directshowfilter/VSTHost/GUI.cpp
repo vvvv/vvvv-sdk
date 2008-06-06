@@ -34,7 +34,7 @@ void openWnd(AEffect* effect,HWND hwnd)
 	SetWindowPos (hwnd, HWND_TOP,0,0,width,height,SWP_NOMOVE);
   }
 
-  SetWindowText(hwnd,L"vvvvst");
+  SetWindowText(hwnd,L"DSVSTWrapper");
   SetTimer(hwnd,1,20,0);
 
 }

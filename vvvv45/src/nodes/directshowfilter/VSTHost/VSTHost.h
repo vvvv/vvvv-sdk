@@ -34,32 +34,34 @@ class VSTHost
 
 		   	bool process (float **in, float **out,int length);
 		 
-			//IVVVVST-Interface-Definitions
+			//IDSVSTWrapper-Interface-Definitions
 			bool load                   (char * filename);	
+			
 			bool getParameterCount      (int *count);
 			bool getParameterProperties ( wchar_t paramDisplay[][256], wchar_t paramName[][256], wchar_t paramLabel[][256], double paramValue[] );
 			bool getParameter           (int index, double *value);
 			bool setParameter           (int index, double  value);
-			bool isInstrument           ();
-			bool sendMidiNotes          (int count,int note[],int velocity[]);
-			bool sendMidiNotesOff       ();
-			bool sendPolyphonic         (unsigned char polyphonicNote, unsigned char polyphonicValue);
-            bool sendController         (unsigned char controllerID, unsigned char controllerValue);
-            bool sendProgram            (unsigned char programID);
-            bool sendMonophonic         (unsigned char monophonicValue);
-            bool sendPitchbend          (unsigned char pitchbendValue);
-			bool getInputsCount         (int *count);
-			bool getOutputsCount        (int *count);
-			bool destroy                ();
+			
+			bool getMidiIsInstrument    ();
+			bool sendMidiNote           (int count,int note[],int velocity[]);
+			bool sendMidiNoteAllOff     ();
+			bool sendMidiPolyphonic     (unsigned char polyphonicNote, unsigned char polyphonicValue);
+            bool sendMidiController     (unsigned char controllerID, unsigned char controllerValue);
+            bool sendMidiProgram        (unsigned char programID);
+            bool sendMidiMonophonic     (unsigned char monophonicValue);
+            bool sendMidiPitchbend      (unsigned char pitchbendValue);
+			
+			bool getInputCount          (int *count);
+			bool getOutputCount         (int *count);
             bool getProgramNames        (int *count, wchar_t names[][256]);
 			bool getActualProgram       (int *count);
             bool setActualProgram       (int count);
 			bool setBpm                 (int value);
-			bool hasEditor              ();
+			bool getHasWindow           ();
 			bool setWindowHandle        (HWND hwnd);
 			bool getWindowSize          (int *width,int *height);
-			bool idle                   ();
-
+			bool setWindowIdle          ();
+            bool destroy                ();
 
   public  : int blockSize;
 			int sampleRate;
