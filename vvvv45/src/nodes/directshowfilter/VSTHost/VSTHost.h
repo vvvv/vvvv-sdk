@@ -8,6 +8,7 @@
 #include <math.h>
 #include "pluginterfaces/vst2.x/aeffectx.h"
 #include "VSTPlugin.h"
+#include "shlobj.h"
 
 
 /*************************************************************************/
@@ -108,8 +109,8 @@ class VSTHost
 	       virtual long cbUpdateDisplay                ();
 	       virtual long cbBeginEdit                    ();
 	       virtual long cbEndEdit                      ();
-	       virtual long cbOpenFileSelector             ();
-	       virtual long cbCloseFileSelector            ();
+	       virtual long cbOpenFileSelector             (VstFileSelect * fileSelect);
+	       virtual long cbCloseFileSelector            (VstFileSelect * fileSelect);
 
 		   //deprecated
 		   virtual long cbWantMidi                     ();

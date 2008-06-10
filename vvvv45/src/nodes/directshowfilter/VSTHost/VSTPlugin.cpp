@@ -177,11 +177,11 @@ void VSTPlugin::setWindowHandle(HWND hwnd)
  	width  = eRect->right  - eRect->left;
 	height = eRect->bottom - eRect->top;
 
-	if(width < 100) 
-	width = 100;
+	if(width < 0) 
+	width = 0;
 
-	if(height < 100)
-	height = 100;
+	if(height < 0)
+	height = 0;
 
 	RECT wRect;
 

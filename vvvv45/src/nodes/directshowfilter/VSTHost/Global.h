@@ -49,6 +49,8 @@
 #define RECEIVEVSTEVENTS     2
 #define RECEIVEVSTMIDIEVENT  3
 #define RECEIVEVSTTIMEINFO   4
+#define OPENFILESELECTOR     5
+#define CLOSEFILESELECTOR    6
 
 //Midi-Messages
 #define NOTEOFF           0x80

@@ -118,8 +118,8 @@ VstIntPtr VSTCALLBACK HostCallback (AEffect *effect,
 	case audioMasterUpdateDisplay                : out(L"AudioMasterUpdateDisplay\n");               return host->cbUpdateDisplay             ();
 	case audioMasterBeginEdit                    : out(L"AudioMasterBeginEdit\n");                   return host->cbBeginEdit                 ();
 	case audioMasterEndEdit                      : out(L"AudioMasterEndEdit\n");                     return host->cbEndEdit                   ();
-	case audioMasterOpenFileSelector             : out(L"AudioMasterOpenFileSelector\n");            return host->cbOpenFileSelector          ();
-	case audioMasterCloseFileSelector            : out(L"AudioMasterCloseFileSelector\n");           return host->cbCloseFileSelector         ();
+	case audioMasterOpenFileSelector             : out(L"AudioMasterOpenFileSelector\n");            return host->cbOpenFileSelector          ((VstFileSelect*)ptr);
+	case audioMasterCloseFileSelector            : out(L"AudioMasterCloseFileSelector\n");           return host->cbCloseFileSelector         ((VstFileSelect*)ptr);
    	
 	//deprecated---------------------------------------------------------------------------------------------------------------------------------//
 	case audioMasterWantMidi                     : out(L"AudioMasterWantsMidi\n");                   return host->cbWantMidi                     ();
@@ -661,28 +661,40 @@ long VSTHost::cbVendorSpecific               ()
 //it seems like nobody wants to know what the host can do
 long VSTHost::cbCanDo(char *str)
 {
-  if(strcmp(str, "sendVstEvents"))
+  if(!strcmp(str, "sendVstEvents"))
   {
     canDo[SENDVSTEVENTS] = true;
     return true;
   }
 
-  if(strcmp(str,"sendVstMidiEvent"))  
+  if(!strcmp(str,"sendVstMidiEvent"))  
   {
     canDo[SENDVSTMIDIEVENT] = true;
     return true;
   }
 
-  if(strcmp(str,"receiveVstEvents"))  
+  if(!strcmp(str,"receiveVstEvents"))  
   {
     canDo[RECEIVEVSTEVENTS] = true;
     return true;
   }
 
-  if(strcmp(str,"receiveVstMidiEvent"))  
+  if(!strcmp(str,"receiveVstMidiEvent"))  
   {
     canDo[RECEIVEVSTMIDIEVENT] = true;
     return true;
+  }
+
+  if(!strcmp(str,"openFileSelector"))
+  {
+    canDo[OPENFILESELECTOR] = true;
+	return true;
+  }
+
+  if(!strcmp(str,"closeFileSelector"))
+  {
+    canDo[CLOSEFILESELECTOR] = true;
+	return true;
   }
 
   return 0;
@@ -717,13 +729,205 @@ long VSTHost::cbEndEdit                      ()
  return 0;
 }
 
-long VSTHost::cbOpenFileSelector             ()
+long VSTHost::cbOpenFileSelector  (VstFileSelect *fileSelect)
 {
- return 0;
+  int result = 0;
+
+  if(fileSelect == NULL)
+   return 0;
+
+  if(fileSelect->command == kVstMultipleFilesLoad) 
+   return 0;
+
+
+  if(fileSelect->command == kVstFileLoad || fileSelect->command == kVstFileSave)
+  {
+	//title--------------------------------------------//
+
+ 	wchar_t title [STRLENGTH];
+
+	for(int i=0;i<64;i++)
+	{
+      title[i] = (wchar_t)fileSelect->title[i];
+	  
+	  if(fileSelect->title[i] == '\0')
+		break;
+	}
+
+	title[STRLENGTH-1] = '\0';
+
+	//filterstring--------------------------------------//
+
+	char str[STRLENGTH];
+
+	int strlength = 0;
+
+	strcpy(str,fileSelect->fileTypes->name);
+
+	if(fileSelect->nbFileTypes>0)
+	{
+	  int count = strlen(fileSelect->fileTypes->name);
+
+	  str[count++] = ' ';
+	  str[count++] = '(';
+
+      for(int i=0;i<fileSelect->nbFileTypes;i++)
+	  {
+  	    str[count++] = '*';
+	    str[count++] = '.';
+
+	    for(int k=0;k<strlen(fileSelect->fileTypes[i].dosType);k++)
+	    str[count++] = fileSelect->fileTypes[i].dosType[k];
+
+		if(i<fileSelect->nbFileTypes-1)
+		{
+		 str[count++] = ' ';
+		 str[count++] = '|';
+		 str[count++] = ' ';
+		}
+	  }
+
+	  str[count++] = ')';
+
+	  str[count++] = '\0';
+
+      for(int i=0;i<fileSelect->nbFileTypes;i++)
+	  {
+	   str[count++] = '*';
+
+  	   for(int k=0;k<strlen(fileSelect->fileTypes[i].dosType);k++)
+	   str[count++] = fileSelect->fileTypes[i].dosType[k];
+
+	   if(i==fileSelect->nbFileTypes-1)
+	   {
+		 str[count++] = '\0';
+		 str[count++] = '\0';
+	   }
+
+	   str[count++] = ';';	
+	  }
+	 
+
+  	  strlength += count;
+	
+	}//end if nbfileTypes
+
+
+	wchar_t wideFilter[STRLENGTH];
+
+	for(int i=0;i<strlength;i++)
+	  wideFilter[i] = str[i];
+	
+	wideFilter[STRLENGTH-1] = '\0';
+
+	//--------------------------------------------------//
+	
+	static TCHAR filename [MAX_PATH] = TEXT("\0");
+    static TCHAR path     [MAX_PATH] = TEXT("."); 
+	
+	OPENFILENAME openFilename = { sizeof(OPENFILENAME),
+	                              plugin.hwnd,
+	  							  NULL,
+								  wideFilter,
+								  NULL,
+								  0,
+								  1,
+								  filename,
+								  MAX_PATH,
+								  NULL,
+								  0,
+								  path,
+								  title,
+								  OFN_FILEMUSTEXIST | OFN_HIDEREADONLY,
+								  0,
+								  0,
+								  TEXT(""),
+								  0,
+								  NULL,
+								  NULL };
+
+
+	if(fileSelect->command == kVstFileLoad)
+	 result = GetOpenFileName(&openFilename);
+
+	if(fileSelect->command == kVstFileSave)
+     result = GetSaveFileName(&openFilename);
+
+	//result--------------------------------------------//
+
+	if(!fileSelect->returnPath)
+	{
+	  fileSelect->reserved = 1;
+
+  	  fileSelect->returnPath = new char[lstrlen(filename)];
+	}
+
+	for(int i=0;i<lstrlen(filename);i++)
+	fileSelect->returnPath[i] = (char)filename[i];
+
+	fileSelect->returnPath[lstrlen(filename)] = '\0';
+
+	//fileSelect->returnPath[MAX_PATH-1] = '\0';
+	
+	fileSelect->sizeReturnPath = lstrlen(filename);
+
+	fileSelect->nbReturnPath = 1;
+
+	fileSelect->returnMultiplePaths = NULL;
+    
+
+	//switch(result)
+	//{
+	// case CDERR_DIALOGFAILURE   :  OutputDebugString(L"CDERR_DIALOGFAILURE");   break;
+	// case CDERR_INITIALIZATION  :  OutputDebugString(L"CDERR_INITIALIZATION");  break;
+	// case CDERR_LOADRESFAILURE  :  OutputDebugString(L"CDERR_LOADRESFAILURE");  break;
+	// case CDERR_LOADSTRFAILURE  :  OutputDebugString(L"CDERR_LOADSTRFAILURE");  break;	
+	// case CDERR_LOCKRESFAILURE  :  OutputDebugString(L"CDERR_LOCKRESFAILURE");  break;
+	// case CDERR_MEMALLOCFAILURE :  OutputDebugString(L"CDERR_MEMALLOCFAILURE"); break;	
+	// case CDERR_MEMLOCKFAILURE  :  OutputDebugString(L"CDERR_MEMLOCKFAILURE");  break;	
+	// case CDERR_NOHINSTANCE     :  OutputDebugString(L"CDERR_NOHINSTANCE");     break;	
+	// case CDERR_NOHOOK          :  OutputDebugString(L"CDERR_NOHOOK");          break;	
+	// case CDERR_NOTEMPLATE      :  OutputDebugString(L"CDERR_NOTEMPLATE");      break;	
+	// case CDERR_STRUCTSIZE      :  OutputDebugString(L"CDERR_STRUCTSIZE");      break;	
+	// case FNERR_BUFFERTOOSMALL  :  OutputDebugString(L"FNERR_BUFFERTOOSMALL");  break;	
+	// case FNERR_INVALIDFILENAME :  OutputDebugString(L"FNERR_INVALIDFILENAME"); break;
+	// case FNERR_SUBCLASSFAILURE :  OutputDebugString(L"FNERR_SUBCLASSFAILURE"); break;
+	//}
+
+
+  }//end if kVstFileSave
+
+  return result;
+
+
+  //if(fileSelect->command == kVstDirectorySelect)
+  //{
+  //BROWSEINFO info = {0};
+  //info.hwndOwner      = plugin.hwnd;
+  //info.pidlRoot       = 0;
+  //info.pszDisplayName = L"BrowseInfo";
+  //info.lpszTitle      = (LPCWSTR)fileSelect->title;
+  //info.ulFlags        = BIF_RETURNONLYFSDIRS;
+  //info.lpfn           = NULL;
+  //info.lParam         = (LPARAM)fileSelect->initialPath;
+  //info.iImage         = 0;
+  //}
+  
 }
 
-long VSTHost::cbCloseFileSelector            ()
+long VSTHost::cbCloseFileSelector            (VstFileSelect * fileSelect)
 {
+  if(fileSelect == NULL)
+  return 0;
+
+ if(fileSelect->reserved == 1)
+ {
+   delete [] fileSelect->returnPath;
+
+   fileSelect->returnPath = 0;
+   fileSelect->reserved   = 0;
+ }
+
  return 0;
 }
 
