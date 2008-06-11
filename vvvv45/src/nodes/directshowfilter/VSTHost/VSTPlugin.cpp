@@ -168,6 +168,8 @@ void VSTPlugin::setWindowHandle(HWND hwnd)
 {
   ERect* eRect;
 
+  effect->dispatcher( effect, effEditOpen, 0, 0, NULL, 0);//DMU Fehler
+  
   effect->dispatcher( effect, effEditOpen, 0, 0, hwnd, 0); 
 
   effect->dispatcher(effect,effEditGetRect,0,0,&eRect,0);

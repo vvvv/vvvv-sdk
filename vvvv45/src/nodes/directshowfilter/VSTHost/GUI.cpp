@@ -5,11 +5,14 @@ void openWnd(AEffect* effect,HWND hwnd)
 {
   if(effect == NULL) return;
 
-  ERect* eRect = 0;
+  ERect tmpRect;
+
+  ERect* eRect = &tmpRect;
 
   effect->dispatcher( effect, effEditOpen, 0, 0, hwnd, 0); 
 
   effect->dispatcher(effect,effEditGetRect,0,0,&eRect,0);
+
 
   if(eRect)
   {
@@ -36,7 +39,7 @@ void openWnd(AEffect* effect,HWND hwnd)
 
   SetWindowText(hwnd,L"DSVSTWrapper");
   SetTimer(hwnd,1,20,0);
-
+  
 }
 
 

@@ -85,6 +85,29 @@ VstIntPtr VSTCALLBACK HostCallback (AEffect *effect,
 
   //----------------------------------------------------------------------------------------------------//
 
+  VstTimeInfo info;
+
+  info.barStartPos        = 0;
+  info.cycleEndPos        = 0;
+  info.cycleStartPos      = 0;
+  info.flags              = 0;
+  info.nanoSeconds        = 0;
+  info.ppqPos             = 0;
+  info.samplePos          = 0;
+  info.sampleRate         = SAMPLERATE;
+  info.samplesToNextClock = 0;
+  info.smpteFrameRate     = 1;
+  info.smpteOffset        = 0;
+  info.tempo              = 120;
+  info.timeSigDenominator = 4;
+  info.timeSigNumerator   = 4;
+
+  //if(opcode == audioMasterGetTime) 
+  //	return (long)&info;
+
+
+  //----------------------------------------------------------------------------------------------------//
+
   if(host!=NULL)
   switch(opcode)
   {
@@ -222,13 +245,12 @@ bool VSTHost::process (float **in, float **out,int length) //length = number of 
   timeInfo.smpteOffset = (long)(offsetInSeconds * 25.0 * 80.0);
 
   //---------------------------------------------------------//
-
   __try
   {
     if(plugin.canReplacing) 
      plugin.effect->processReplacing(plugin.effect, in, out, length);
   }
-  __except(GetExceptionCode() == EXCEPTION_INT_DIVIDE_BY_ZERO ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH)
+  __except(GetExceptionCode() == EXCEPTION_INT_DIVIDE_BY_ZERO | EXCEPTION_ACCESS_VIOLATION ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH)
   {
 
   }
@@ -385,9 +407,14 @@ bool VSTHost::setParameter(int index, double  value)
 
 bool VSTHost::getMidiIsInstrument()
 {
-  if(!plugin.effect) return false;
+  if(!plugin.effect) 
+	return false;
 
-  if(!plugin.canDo[RECEIVEVSTMIDIEVENT]) return false;
+  if(!plugin.canDo[RECEIVEVSTEVENTS]) 
+	return false;  //???
+
+  if(!plugin.canDo[RECEIVEVSTMIDIEVENT]) 
+	return false;
 
   return true;
 }
@@ -875,44 +902,11 @@ long VSTHost::cbOpenFileSelector  (VstFileSelect *fileSelect)
 
 	fileSelect->returnMultiplePaths = NULL;
     
-
-	//switch(result)
-	//{
-	// case CDERR_DIALOGFAILURE   :  OutputDebugString(L"CDERR_DIALOGFAILURE");   break;
-	// case CDERR_INITIALIZATION  :  OutputDebugString(L"CDERR_INITIALIZATION");  break;
-	// case CDERR_LOADRESFAILURE  :  OutputDebugString(L"CDERR_LOADRESFAILURE");  break;
-	// case CDERR_LOADSTRFAILURE  :  OutputDebugString(L"CDERR_LOADSTRFAILURE");  break;	
-	// case CDERR_LOCKRESFAILURE  :  OutputDebugString(L"CDERR_LOCKRESFAILURE");  break;
-	// case CDERR_MEMALLOCFAILURE :  OutputDebugString(L"CDERR_MEMALLOCFAILURE"); break;	
-	// case CDERR_MEMLOCKFAILURE  :  OutputDebugString(L"CDERR_MEMLOCKFAILURE");  break;	
-	// case CDERR_NOHINSTANCE     :  OutputDebugString(L"CDERR_NOHINSTANCE");     break;	
-	// case CDERR_NOHOOK          :  OutputDebugString(L"CDERR_NOHOOK");          break;	
-	// case CDERR_NOTEMPLATE      :  OutputDebugString(L"CDERR_NOTEMPLATE");      break;	
-	// case CDERR_STRUCTSIZE      :  OutputDebugString(L"CDERR_STRUCTSIZE");      break;	
-	// case FNERR_BUFFERTOOSMALL  :  OutputDebugString(L"FNERR_BUFFERTOOSMALL");  break;	
-	// case FNERR_INVALIDFILENAME :  OutputDebugString(L"FNERR_INVALIDFILENAME"); break;
-	// case FNERR_SUBCLASSFAILURE :  OutputDebugString(L"FNERR_SUBCLASSFAILURE"); break;
-	//}
-
-
   }//end if kVstFileSave
+
 
   return result;
 
-
-  //if(fileSelect->command == kVstDirectorySelect)
-  //{
-  //BROWSEINFO info = {0};
-  //info.hwndOwner      = plugin.hwnd;
-  //info.pidlRoot       = 0;
-  //info.pszDisplayName = L"BrowseInfo";
-  //info.lpszTitle      = (LPCWSTR)fileSelect->title;
-  //info.ulFlags        = BIF_RETURNONLYFSDIRS;
-  //info.lpfn           = NULL;
-  //info.lParam         = (LPARAM)fileSelect->initialPath;
-  //info.iImage         = 0;
-  //}
-  
 }
 
 long VSTHost::cbCloseFileSelector            (VstFileSelect * fileSelect)
