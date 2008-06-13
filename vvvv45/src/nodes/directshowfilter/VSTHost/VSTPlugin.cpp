@@ -36,11 +36,14 @@ VSTPlugin::VSTPlugin()
   for(int i=0;i<NPLUGINCANDO;i++)
   canDo[i] = false;
 
+  vstEvents = (VstEvents*)malloc(sizeof(VstEvents) + MIDICOUNT * sizeof(VstEvent*));
+
 }
 
 VSTPlugin::~VSTPlugin()
 {
-
+  if(vstEvents != NULL)
+	free(vstEvents);
 }
 
 void VSTPlugin::destroy()
@@ -259,7 +262,7 @@ void VSTPlugin::setParameter(int index,double value)
 
 void VSTPlugin::midiMsg(unsigned char d0, unsigned char d1, unsigned char d2)
 {
-  VstMidiEvent vstMidiEvent;
+  static VstMidiEvent vstMidiEvent;
 
   vstMidiEvent.type            = kVstMidiType;
   vstMidiEvent.deltaFrames     = 0;
@@ -277,24 +280,22 @@ void VSTPlugin::midiMsg(unsigned char d0, unsigned char d1, unsigned char d2)
   vstMidiEvent.midiData[2] = d2;
   vstMidiEvent.midiData[3] = 0;
 
-  VstEvents vstEvents;
+  static VstEvents vstEvents;
 
   vstEvents.numEvents = 1;
   vstEvents.reserved  = 0L;
   vstEvents.events[0] = (VstEvent*)&vstMidiEvent;
 
   effect->dispatcher( effect, effProcessEvents, 0, 0, &vstEvents, 0);
-
+  
 }
 
-void VSTPlugin::sendMidiNotes(int count,int note[],int velocity[])
+void VSTPlugin::sendMidiNotes(int count,int note[],int velocity[],int deltaFrames[])
 {
-  VstMidiEvent *vstMidiEvent = new VstMidiEvent[count];
-
-  for(int i=0;i<count;i++)
+  for(int i=0;(i<count) && (i<MIDICOUNT);i++)
   {
     vstMidiEvent[i].type            = kVstMidiType;
-    vstMidiEvent[i].deltaFrames     = 0;
+    vstMidiEvent[i].deltaFrames     = deltaFrames[i];
     vstMidiEvent[i].flags           = kVstMidiEventIsRealtime;
     vstMidiEvent[i].byteSize        = sizeof(VstMidiEvent);
     vstMidiEvent[i].noteLength      = 0;
@@ -310,21 +311,18 @@ void VSTPlugin::sendMidiNotes(int count,int note[],int velocity[])
 	vstMidiEvent[i].midiData[3] = 0;
   }
   
-  VstEvents* vstEvents = (VstEvents*)malloc(sizeof(VstEvents) + count * sizeof(VstEvent*));
-
-  vstEvents->numEvents = count;
+  if(count<MIDICOUNT)
+   vstEvents->numEvents = count;
+  else
+   vstEvents->numEvents = MIDICOUNT;
+  
   vstEvents->reserved  = 0L;
   
-  for(int i=0;i<count;i++)
+  for(int i=0;(i<count) && (i<MIDICOUNT);i++)
   vstEvents->events[i] = (VstEvent*) &vstMidiEvent[i];
 
-  
   effect->dispatcher( effect, effProcessEvents, 0, 0, vstEvents, 0);
-
-
-  free(vstEvents);
-  delete [] vstMidiEvent;
-
+  
 }
 
 void VSTPlugin::displayProperties()

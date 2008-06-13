@@ -20,6 +20,7 @@
 #define NEWHOST       4747
 #define DISCHARGEHOST 4848
 #define MAXHOSTCOUNT   256
+#define MIDICOUNT      128
 
 //deprecated opcodes 
 #define audioMasterWantMidi                       6

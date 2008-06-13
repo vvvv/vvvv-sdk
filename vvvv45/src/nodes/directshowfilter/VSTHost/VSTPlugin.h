@@ -89,12 +89,18 @@ class VSTPlugin
 		   VstPinProperties *inputProperties;
 		   VstPinProperties *outputProperties;
 
+		   VstEvents *vstEvents;
+		   VstMidiEvent vstMidiEvent[MIDICOUNT];
+
+
+
 public :           VSTPlugin         ();
 		          ~VSTPlugin         ();
 		    void   initialize        (AEffect *effect);
 		    double getParameter      (int index);
 			void   setParameter      (int index,double value);
-			void   sendMidiNotes     (int count,int note[],int velocity[]);
+			void   sendMidiNotes     (int count,int note[],int velocity[],int deltaFrames[]);
+			void   cleanupMidi       ();
 			void   midiMsg           (unsigned char d0, unsigned char d1, unsigned char d2);
 			void   resume            ();
 			void   suspend           ();

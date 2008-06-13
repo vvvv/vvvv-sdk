@@ -28,6 +28,27 @@ static VstIntPtr VSTCALLBACK HostCallback ( AEffect *effect,
 
 /*************************************************************************/
 
+struct MidiNote
+{
+ int    note;
+ int    velocity;
+ long   time;
+};
+
+struct MidiNoteBuffer
+{
+  MidiNote midiNotes[MIDINOTESCOUNT];
+
+  int count;
+
+  MidiNoteBuffer();
+
+  void fill(int note,int velocity);
+
+  void reset();  
+};
+
+
 class VSTHost
 {
   public  : VSTHost      ();
@@ -64,10 +85,19 @@ class VSTHost
 			bool setWindowIdle          ();
             bool destroy                ();
 
+			void updateTime             ();
+			void sendMidiBuffer         (int length);
+			void updateTimeSamplePos    (int length);
+
+			
   public  : int blockSize;
 			int sampleRate;
 			int nInputs;
 			int nOutputs;
+
+			bool midi;
+
+			MidiNoteBuffer midiNoteBuffer;
 
 			VstTimeInfo timeInfo;
 
@@ -77,6 +107,7 @@ class VSTHost
 			bool canDo[HOSTCANDOCOUNT];
 			char directoryPath[MAX_PATH];
 			bool pluginIsInstrument;
+
 
   //implementations of the callback-functions
   public : virtual long cbAutomate                     (int index, float value);

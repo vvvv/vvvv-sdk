@@ -19,9 +19,10 @@ DSVSTWrapper::~DSVSTWrapper()
 
 STDMETHODIMP DSVSTWrapper::load (char *filename)
 {
-  if(host.load(filename)) return S_OK;
+  if(host.load(filename)) 
+	return S_OK;
  
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::setEnable(unsigned char value)
@@ -35,140 +36,141 @@ STDMETHODIMP DSVSTWrapper::getParameterCount (int *count)
 {
   if(host.getParameterCount(count)) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getParameterProperties (wchar_t paramDisplay[][256], wchar_t paramName[][256], wchar_t paramLabel[][256], double paramValue[])
 {
   if(host.getParameterProperties(paramDisplay, paramName, paramLabel, paramValue)) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getParameter(int index,double *value)
 {
   if(host.getParameter(index, value)) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::setParameter(int index,double  value)
 {
   if(host.setParameter(index, value)) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getMidiIsInstrument ()
 {
-  if(host.getMidiIsInstrument()) return S_OK;
+  if(host.getMidiIsInstrument()) 
+	return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::sendMidiNoteAllOff()
 {
   if(host.sendMidiNoteAllOff()) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::sendMidiNote(int count, int note[],int velocity[])
 {
   if(host.sendMidiNote(count,note,velocity)) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::sendMidiPolyphonic (unsigned char polyphonicNote, unsigned char polyphonicValue)
 {
   if(host.sendMidiPolyphonic(polyphonicNote,polyphonicValue)) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::sendMidiController (unsigned char controllerID, unsigned char controllerValue)
 {
   if(host.sendMidiController(controllerID,controllerValue)) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::sendMidiProgram (unsigned char programID)
 {
   if(host.sendMidiProgram(programID)) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::sendMidiMonophonic (unsigned char monophonicValue)
 {
   if(host.sendMidiMonophonic(monophonicValue)) return S_OK;
 
-  return ERROR; 
+  return S_FALSE; 
 }
 
 STDMETHODIMP DSVSTWrapper::sendMidiPitchbend (unsigned char pitchbendValue)
 {
   if(host.sendMidiPitchbend(pitchbendValue)) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getInputCount(int *count)
 {
   if(host.getInputCount(count)) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getOutputCount(int *count)
 {
   if(host.getOutputCount(count)) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getProgramNames(int *count, wchar_t names[][256])
 {
   if(host.getProgramNames(count,names)) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::setActualProgram(int count)
 {
   if(host.setActualProgram(count)) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getActualProgram(int *count)
 {
   if(host.getActualProgram(count)) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::setBpm(int val)
 {
   if(host.setBpm(val)) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getHasWindow()
 {
   if(host.getHasWindow()) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::setWindowHandle(HWND hwnd)
 {
   host.setWindowHandle(hwnd);
 
-  return ERROR;
+  return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getWindowSize(int *width,int *height)
@@ -189,7 +191,7 @@ STDMETHODIMP DSVSTWrapper::destroy()
 {
   if(host.destroy()) return S_OK;
 
-  return ERROR;
+  return S_FALSE;
 } 
 
 //Derived methods from CTransInPlaceFilter------------------------------------------------------------------------------------------------------//
@@ -198,7 +200,7 @@ STDMETHODIMP DSVSTWrapper::destroy()
 HRESULT DSVSTWrapper::Transform(IMediaSample *pMediaSample)
 {  
   if(pMediaSample == NULL || !initialized) 
-  return ERROR;
+  return S_FALSE;
 
   if(!enable) 
   return S_OK;
@@ -278,6 +280,8 @@ HRESULT DSVSTWrapper::Transform(IMediaSample *pMediaSample)
 
 
   //free the memory------------------------------------------------------------------------------//
+
+  delete samples;
 
   for(int c=0; c<nInputs; c++)
   delete in[c];
@@ -387,7 +391,7 @@ HRESULT DSVSTWrapper::SetMediaType(PIN_DIRECTION direction,const CMediaType *pmt
 	      (bytesPerSample == 1 || bytesPerSample == 2)) // || bytesPerSample == 3) ) 24-bit?
 	  initialized = true;
 	  
-	  return S_OK;
+	  return NOERROR;
     }
 
   }

@@ -52,6 +52,31 @@ void HostList::discharge(VSTHost* oldHost)
 /*****************************************************************************************************************************/
 /*****************************************************************************************************************************/
 
+MidiNoteBuffer::MidiNoteBuffer()
+{
+  count = 0;
+}
+
+void MidiNoteBuffer::fill(int note, int velocity)
+{
+  if(count>=MIDINOTESCOUNT) return;
+
+  midiNotes[count].note     = note;
+  midiNotes[count].velocity = velocity;
+  midiNotes[count].time     = (long)timeGetTime();
+
+  count++;
+}
+
+void MidiNoteBuffer::reset()
+{
+  count = 0;
+}
+
+/*****************************************************************************************************************************/
+/*****************************************************************************************************************************/
+/*****************************************************************************************************************************/
+
 //!!!Achtung mehrere Hosts müssen vorhanden sein!!!
 
 //with the hostcallback the plugin is able to send data or requests to the host
@@ -190,6 +215,7 @@ VSTHost::VSTHost()
   nInputs    = STEREO;
   nOutputs   = STEREO;
   module     = NULL;
+  midi       = false;
 
   timeInfo.barStartPos        = 0;
   timeInfo.cycleEndPos        = 0;
@@ -232,8 +258,72 @@ bool VSTHost::process (float **in, float **out,int length) //length = number of 
     plugin.cbSetBlockSize(length);
   }
 
-  //---------------------------------------------------------//
+  updateTime ();
 
+  if(midi) sendMidiBuffer(length);
+
+  __try
+  {
+    if(plugin.canReplacing) 
+     plugin.effect->processReplacing(plugin.effect, in, out, length);
+  }
+  __except(GetExceptionCode() == EXCEPTION_INT_DIVIDE_BY_ZERO | EXCEPTION_ACCESS_VIOLATION ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH)
+  {
+
+  }
+
+  updateTimeSamplePos(length);  
+
+  return true;
+
+}
+
+void VSTHost::sendMidiBuffer(int length)
+{
+  static long time = (long)timeGetTime();
+
+  if(midiNoteBuffer.count > 0)
+  {
+    double millisPerFrame = 1000.0 / (double)sampleRate;
+
+	int note        [MIDINOTESCOUNT];
+	int velocity    [MIDINOTESCOUNT];
+	int deltaFrames [MIDINOTESCOUNT];
+
+	for(int i=0;i<midiNoteBuffer.count;i++)
+	{
+	  note        [i] = midiNoteBuffer.midiNotes[i].note;
+	  velocity    [i] = midiNoteBuffer.midiNotes[i].velocity;
+  	  deltaFrames [i] = 0;
+
+	  //int millisDiff = int(midiNoteBuffer.midiNotes[i].time - time);
+
+	  //deltaFrames[i] = (int)(millisDiff / millisPerFrame);	
+
+	  //if(deltaFrames[i] < 0) 
+	  //deltaFrames[i] = 0;
+
+	  //if(deltaFrames[i] > length) //???discard notes which are too old
+	  //{
+      //  note        [i] = 0;
+	  //  velocity    [i] = 0;
+      //  deltaFrames [i] = 0;
+	  //}
+
+	}//end for
+
+	plugin.sendMidiNotes(midiNoteBuffer.count, note, velocity, deltaFrames);
+
+	midiNoteBuffer.reset();
+  
+  }//end if 
+
+  time = (long)timeGetTime();
+
+}
+
+void VSTHost::updateTime()
+{
   timeInfo.nanoSeconds = (double)timeGetTime() * 1000000.0;
 
   double pos = timeInfo.samplePos / timeInfo.sampleRate;
@@ -244,20 +334,11 @@ bool VSTHost::process (float **in, float **out,int length) //length = number of 
 
   timeInfo.smpteOffset = (long)(offsetInSeconds * 25.0 * 80.0);
 
-  //---------------------------------------------------------//
-  __try
-  {
-    if(plugin.canReplacing) 
-     plugin.effect->processReplacing(plugin.effect, in, out, length);
-  }
-  __except(GetExceptionCode() == EXCEPTION_INT_DIVIDE_BY_ZERO | EXCEPTION_ACCESS_VIOLATION ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH)
-  {
+}
 
-  }
- 
+void VSTHost::updateTimeSamplePos (int length)
+{
   timeInfo.samplePos  += (float)length;
-
-  return true;
 }
 
 //Interface-Definitions----------------------------------------------------------------------------------------------------//
@@ -295,6 +376,9 @@ bool VSTHost::load(char *filename)
 
   nInputs  = plugin.effect->numInputs;
   nOutputs = plugin.effect->numOutputs;
+
+  if(plugin.canDo[RECEIVEVSTMIDIEVENT]) 
+	midi = true;
 
   return true;
 
@@ -410,10 +494,7 @@ bool VSTHost::getMidiIsInstrument()
   if(!plugin.effect) 
 	return false;
 
-  if(!plugin.canDo[RECEIVEVSTEVENTS]) 
-	return false;  //???
-
-  if(!plugin.canDo[RECEIVEVSTMIDIEVENT]) 
+  if(!midi) 
 	return false;
 
   return true;
@@ -423,8 +504,9 @@ bool VSTHost::sendMidiNote(int count,int note[],int velocity[])
 {
   if(!plugin.effect) return false;
 
-  plugin.sendMidiNotes( count, note, velocity);
-
+  for(int i=0;i<count;i++)
+  midiNoteBuffer.fill(note[i],velocity[i]);
+  
   return true;
 }
 
