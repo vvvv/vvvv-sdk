@@ -1,3 +1,4 @@
+
 #ifndef _IDSVSTWRAPPER_H
 #define _IDSVSTWRAPPER_H
 
@@ -162,12 +163,6 @@ DECLARE_INTERFACE_(IDSVSTWrapper, IUnknown)
     THIS_
     int val
   ) PURE;
-
-  STDMETHOD (destroy)
-  (
-    THIS_
-  ) PURE;
-
   
 };
 

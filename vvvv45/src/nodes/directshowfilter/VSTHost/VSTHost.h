@@ -1,24 +1,21 @@
+
 #ifndef _VSTHOST_H
 #define _VSTHOST_H
 
 #define _CRT_SECURE_NO_DEPRECATE
 
-#include <stdio.h>
 #include <windows.h>
-#include <math.h>
-#include "pluginterfaces/vst2.x/aeffectx.h"
+#include <iostream>
+#include <stdio.h>
+#include <string.h>
+#include "aeffectx.h"
+#include "Global.h"
 #include "VSTPlugin.h"
-#include "shlobj.h"
+#include "Midi.h"
 
+class VSTPlugin;
 
-/*************************************************************************/
-
-//a pointer to the main-function of the vst-plugin
-//is used for initialization
-typedef AEffect* (*PluginMain) (audioMasterCallback audioMaster);
-
-//with the hostcallback the plugin is able to send data 
-//or requests to the host
+//plugin to host communication
 static VstIntPtr VSTCALLBACK HostCallback ( AEffect *effect,
 										    VstInt32 opcode,
 											VstInt32 index,
@@ -26,41 +23,39 @@ static VstIntPtr VSTCALLBACK HostCallback ( AEffect *effect,
 											void *ptr,
 											float opt );
 
-/*************************************************************************/
-
-struct MidiNote
-{
- int    note;
- int    velocity;
- long   time;
-};
-
-struct MidiNoteBuffer
-{
-  MidiNote midiNotes[MIDINOTESCOUNT];
-
-  int count;
-
-  MidiNoteBuffer();
-
-  void fill(int note,int velocity);
-
-  void reset();  
-};
+//entry-point to the plugin
+typedef AEffect* (*PluginMain) (audioMasterCallback);
 
 
 class VSTHost
 {
-  public  : VSTHost      ();
-		   ~VSTHost      ();
+  private : VSTPlugin   plugin;
+            Midi        midi;
+			VstEvents  *vstEvents;
+            HMODULE     module;
+			VstTimeInfo timeInfo;
 
-		   	bool process (float **in, float **out,int length);
-		 
-			//IDSVSTWrapper-Interface-Definitions
+			int blockSize;
+			int sampleRate;
+
+			void sendMidi    ();
+			void updateTime1 ();
+			void updateTime2 (int nFrames);
+
+   public :	VSTHost ();
+		   ~VSTHost ();
+
+			bool process(float **in,float **out,int length);
+
+			AEffect* getEffect ();
+			int  getNumInputs  ();
+			int  getNumOutputs ();
+			
+			//IDSVSTWrapper...
 			bool load                   (char * filename);	
 			
 			bool getParameterCount      (int *count);
-			bool getParameterProperties ( wchar_t paramDisplay[][256], wchar_t paramName[][256], wchar_t paramLabel[][256], double paramValue[] );
+			bool getParameterProperties (wchar_t paramDisplay[][256], wchar_t paramName[][256], wchar_t paramLabel[][256], double paramValue[] );
 			bool getParameter           (int index, double *value);
 			bool setParameter           (int index, double  value);
 			
@@ -83,102 +78,43 @@ class VSTHost
 			bool setWindowHandle        (HWND hwnd);
 			bool getWindowSize          (int *width,int *height);
 			bool setWindowIdle          ();
-            bool destroy                ();
-
-			void updateTime             ();
-			void sendMidiBuffer         (int length);
-			void updateTimeSamplePos    (int length);
-
+            
+			//AudioMaster...
+			long version                ();
+			long getTime                ();
+			long processEvents          ();
+			long getVendorString        (char *str);
+			long getVendorVersion       ();
+			long getProductString       (char *str);
+			long getVendorSpecific      ();
+			long getSampleRate          ();
+			long getBlockSize           ();
+			long canDo                  (char *str);
+	        long getDirectory           ();
+			long openFileSelector       (VstFileSelect * fileSelect);
+	        long closeFileSelector      (VstFileSelect * fileSelect);
+			long needIdle               ();   
+			long wantMidi               ();
 			
-  public  : int blockSize;
-			int sampleRate;
-			int nInputs;
-			int nOutputs;
-
-			bool midi;
-
-			MidiNoteBuffer midiNoteBuffer;
-
-			VstTimeInfo timeInfo;
-
-            VSTPlugin plugin; //one vstplugin per host
-			HMODULE   module;
-
-			bool canDo[HOSTCANDOCOUNT];
-			char directoryPath[MAX_PATH];
-			bool pluginIsInstrument;
-
-
-  //implementations of the callback-functions
-  public : virtual long cbAutomate                     (int index, float value);
-	       virtual long cbVersion                      ();
-	       virtual long cbCurrentId                    ();
-	       virtual long cbIdle                         ();
-           virtual long cbPinConnected                 ();
-	       virtual long cbGetTime                      (VstIntPtr value);
-	       virtual long cbProcessEvents                ();
-           virtual long cbIOChanged                    ();
-	       virtual long cbSizeWindow                   ();
-	       virtual long cbGetSampleRate                ();
-	       virtual long cbGetBlockSize                 ();
-	       virtual long cbGetInputLatency              ();
-	       virtual long cbGetOutputLatency             ();
-	       virtual long cbGetCurrentProcessLevel       ();
-	       virtual long cbGetAutomationState           ();
-	       virtual long cbOfflineStart                 ();  
-	       virtual long cbOfflineRead                  ();  
-	       virtual long cbOfflineWrite                 ();  
-	       virtual long cbOfflineGetCurrentPass        (); 
-	       virtual long cbOfflineGetCurrentMetaPass    ();  
-	       virtual long cbGetVendorString              (char *str); 
-		   virtual long cbGetProductString             (char *str);
-		   virtual long cbGetVendorVersion             ();
-		   virtual long cbVendorSpecific               ();
-	       virtual long cbCanDo                        (char *str);
-	       virtual long cbGetLanguage                  ();
-	       virtual long cbGetDirectory                 (char *str);
-	       virtual long cbUpdateDisplay                ();
-	       virtual long cbBeginEdit                    ();
-	       virtual long cbEndEdit                      ();
-	       virtual long cbOpenFileSelector             (VstFileSelect * fileSelect);
-	       virtual long cbCloseFileSelector            (VstFileSelect * fileSelect);
-
-		   //deprecated
-		   virtual long cbWantMidi                     ();
-		   virtual long cbSetTime                      ();
-		   virtual long cbTempoAt                      ();
-		   virtual long cbGetNumAutomatableParameters  ();
-		   virtual long cbGetParameterQuantization     ();
-		   virtual long cbNeedIdle                     ();
-		   virtual long cbGetPreviousPlug              ();
-		   virtual long cbGetNextPlug                  ();
-		   virtual long cbWillReplaceOrAccumulate      ();
-		   virtual long cbSetOutputSampleRate          ();
-		   virtual long cbGetOutputSpeakerArrangement  ();
-		   virtual long cbSetIcon                      ();
-		   virtual long cbOpenWindow                   ();
-		   virtual long cbCloseWindow                  ();
-		   virtual long cbEditFile                     ();
-		   virtual long cbGetChunkFile                 ();
-		   virtual long cbGetInputSpeakerArrangement   ();
-		   
-
 };
 
-/*************************************************************************/
 
+//Class to manage all of the active hosts 
+//One plugin belongs to one host, so in the HostCallback-Function it has 
+//to be differentiated to which host the msg is send
 class HostList
 {
-  public : VSTHost *host[MAXHOSTCOUNT];
-		   int count;
+  public  : HostList ();
 
-		   HostList ();
-		   VSTHost*  retrieve  (AEffect *effect);
-		   void      init      (VSTHost *newHost);
-		   void      discharge (VSTHost *oldHost);
+		    VSTHost* retrieve  (AEffect *effect);
+		    void     init      (VSTHost *newHost);
+		    void     discharge (VSTHost *oldHost);
+
+
+  private : VSTHost *vstHost[MAXHOSTCOUNT];
+		    int count;
 
 };
 
-/*************************************************************************/
 
 #endif

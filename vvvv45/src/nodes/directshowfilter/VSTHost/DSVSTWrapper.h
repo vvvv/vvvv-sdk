@@ -1,23 +1,19 @@
-#ifndef _DSVSTWRAPPER_H
-#define _DSVSTWRAPPER_H
+
+#ifndef _DSVSTWrapper_H
+#define _DSVSTWrapper_H
 
 #include "stdafx.h"
 #include <streams.h>
 #include <math.h>
 #include <olectl.h>
-#include "Global.h"
 #include "IDSVSTWrapper.h"
+#include "Global.h"
 #include "VSTHost.h"
-
-
-/*************************************************************************/
-/*************************************************************************/
-/*************************************************************************/
 
 class DSVSTWrapper : public CTransInPlaceFilter,IDSVSTWrapper
 {
 
-public : //derived from CTransInPlaceFilter
+public : 
 
    DECLARE_IUNKNOWN;
 
@@ -32,14 +28,14 @@ public : //derived from CTransInPlaceFilter
 
    STDMETHODIMP FindPin(LPCWSTR Id, IPin **ppPin);
 
-   static CUnknown * WINAPI CreateInstance(LPUNKNOWN punk, HRESULT *phr);
-
    HRESULT Transform (IMediaSample *pSample);
 
    virtual HRESULT SetMediaType(PIN_DIRECTION direction, const CMediaType *pmt);
 
+   static CUnknown * WINAPI CreateInstance(LPUNKNOWN punk, HRESULT *phr);
 
-public : //IDSVSTWrapper Interface-Definitions
+
+   //IDSVSTWrapper Interface-Definitions
 
    STDMETHODIMP load                   (char *filename);
    STDMETHODIMP setEnable              (unsigned char value);
@@ -69,11 +65,10 @@ public : //IDSVSTWrapper Interface-Definitions
    STDMETHODIMP getActualProgram       (int *count);
    STDMETHODIMP setActualProgram       (int count);
    STDMETHODIMP setBpm                 (int val);
-   STDMETHODIMP destroy                ();
+   
+private : 
 
-private : //Attributes
-
-   VSTHost host;
+   VSTHost vstHost;
 
    int nChannels;
    int bytesPerSample;
@@ -82,7 +77,9 @@ private : //Attributes
 
    bool enable;
 
-}; // class DSVSTWrapper
+
+}; 
+
 
 
 /*************************************************************************/
@@ -93,7 +90,6 @@ private : //Attributes
 const CLSID CLSID_DSVSTWrapper = { 0xf4df121a, 0x91d3, 0x4cc1, { 0x83, 0x8f, 0x7b, 0xaa, 0xbb, 0x6a, 0xab, 0xe7 } };
 
 const CLSID IID_IDSVSTWrapper  = { 0xd23e4eb0, 0xe697, 0x4df9, { 0x90, 0x79, 0xcd, 0xbc, 0xb,  0x24, 0xed, 0xbe } };
-
 
 const AMOVIESETUP_MEDIATYPE
 sudPinTypes =   { &MEDIATYPE_Audio        // clsMajorType
@@ -142,5 +138,6 @@ int g_cTemplates = sizeof(g_Templates)/sizeof(g_Templates[0]);
 /*************************************************************************/
 /*************************************************************************/
 /*************************************************************************/
+
 
 #endif

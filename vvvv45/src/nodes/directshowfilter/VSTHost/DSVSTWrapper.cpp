@@ -1,3 +1,4 @@
+
 #include "DSVSTWrapper.h" 
 
 
@@ -9,17 +10,19 @@ DSVSTWrapper::DSVSTWrapper(TCHAR *tszName, LPUNKNOWN punk, HRESULT *phr)
   samplerate     = 0;
   bytesPerSample = 0;
   enable         = true;
-
+  
 }
 
 DSVSTWrapper::~DSVSTWrapper()
-{}
+{
+  vstHost.~VSTHost();
+}
 
-//Interface--------------------------------------------------------------------------------------------------------------------------------------//
+//IDSVSTWrapper Interface-Definitions----------------------------------------------------------------------------------------------------------//
 
 STDMETHODIMP DSVSTWrapper::load (char *filename)
 {
-  if(host.load(filename)) 
+  if(vstHost.load(filename)) 
 	return S_OK;
  
   return S_FALSE;
@@ -27,42 +30,46 @@ STDMETHODIMP DSVSTWrapper::load (char *filename)
 
 STDMETHODIMP DSVSTWrapper::setEnable(unsigned char value)
 {
-  enable = value;
+  enable = (bool)value;
 
   return S_OK;
 }
 
 STDMETHODIMP DSVSTWrapper::getParameterCount (int *count)
 {
-  if(host.getParameterCount(count)) return S_OK;
+  if(vstHost.getParameterCount(count)) 
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getParameterProperties (wchar_t paramDisplay[][256], wchar_t paramName[][256], wchar_t paramLabel[][256], double paramValue[])
 {
-  if(host.getParameterProperties(paramDisplay, paramName, paramLabel, paramValue)) return S_OK;
+  if(vstHost.getParameterProperties(paramDisplay, paramName, paramLabel, paramValue))
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getParameter(int index,double *value)
 {
-  if(host.getParameter(index, value)) return S_OK;
+  if(vstHost.getParameter(index, value))
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::setParameter(int index,double  value)
 {
-  if(host.setParameter(index, value)) return S_OK;
+  if(vstHost.setParameter(index, value)) 
+	return S_OK;
 
   return S_FALSE;
 }
-
+//is the vst-plugin a synth?
 STDMETHODIMP DSVSTWrapper::getMidiIsInstrument ()
 {
-  if(host.getMidiIsInstrument()) 
+  if(vstHost.getMidiIsInstrument()) 
 	return S_OK;
 
   return S_FALSE;
@@ -70,145 +77,154 @@ STDMETHODIMP DSVSTWrapper::getMidiIsInstrument ()
 
 STDMETHODIMP DSVSTWrapper::sendMidiNoteAllOff()
 {
-  if(host.sendMidiNoteAllOff()) return S_OK;
+  if(vstHost.sendMidiNoteAllOff()) 
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::sendMidiNote(int count, int note[],int velocity[])
 {
-  if(host.sendMidiNote(count,note,velocity)) return S_OK;
+  if(vstHost.sendMidiNote(count,note,velocity)) 
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::sendMidiPolyphonic (unsigned char polyphonicNote, unsigned char polyphonicValue)
 {
-  if(host.sendMidiPolyphonic(polyphonicNote,polyphonicValue)) return S_OK;
+  if(vstHost.sendMidiPolyphonic(polyphonicNote,polyphonicValue)) 
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::sendMidiController (unsigned char controllerID, unsigned char controllerValue)
 {
-  if(host.sendMidiController(controllerID,controllerValue)) return S_OK;
+  if(vstHost.sendMidiController(controllerID,controllerValue)) 
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::sendMidiProgram (unsigned char programID)
 {
-  if(host.sendMidiProgram(programID)) return S_OK;
+  if(vstHost.sendMidiProgram(programID)) 
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::sendMidiMonophonic (unsigned char monophonicValue)
 {
-  if(host.sendMidiMonophonic(monophonicValue)) return S_OK;
+  if(vstHost.sendMidiMonophonic(monophonicValue)) 
+	return S_OK;
 
   return S_FALSE; 
 }
 
 STDMETHODIMP DSVSTWrapper::sendMidiPitchbend (unsigned char pitchbendValue)
 {
-  if(host.sendMidiPitchbend(pitchbendValue)) return S_OK;
+  if(vstHost.sendMidiPitchbend(pitchbendValue)) 
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getInputCount(int *count)
 {
-  if(host.getInputCount(count)) return S_OK;
+  if(vstHost.getInputCount(count)) 
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getOutputCount(int *count)
 {
-  if(host.getOutputCount(count)) return S_OK;
+  if(vstHost.getOutputCount(count)) 
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getProgramNames(int *count, wchar_t names[][256])
 {
-  if(host.getProgramNames(count,names)) return S_OK;
+  if(vstHost.getProgramNames(count,names)) 
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::setActualProgram(int count)
 {
-  if(host.setActualProgram(count)) return S_OK;
+  if(vstHost.setActualProgram(count)) 
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getActualProgram(int *count)
 {
-  if(host.getActualProgram(count)) return S_OK;
+  if(vstHost.getActualProgram(count)) 
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::setBpm(int val)
 {
-  if(host.setBpm(val)) return S_OK;
+  if(vstHost.setBpm(val)) 
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getHasWindow()
 {
-  if(host.getHasWindow()) return S_OK;
+  if(vstHost.getHasWindow()) 
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::setWindowHandle(HWND hwnd)
 {
-  host.setWindowHandle(hwnd);
+  if(vstHost.setWindowHandle(hwnd)) 
+	return S_OK;
 
   return S_FALSE;
 }
 
 STDMETHODIMP DSVSTWrapper::getWindowSize(int *width,int *height)
 {
-  host.getWindowSize(width,height);
+  if(vstHost.getWindowSize(width,height)) 
+	return S_OK;
 
   return S_OK;
 }
 
 STDMETHODIMP DSVSTWrapper::setWindowIdle()
 {
-  host.setWindowIdle();
+  if(vstHost.setWindowIdle())
+	return S_OK;
 
   return S_OK;
 }
 
-STDMETHODIMP DSVSTWrapper::destroy()
-{
-  if(host.destroy()) return S_OK;
+//---------------------------------------------------------------------------------------------------------------------------------------------//
 
-  return S_FALSE;
-} 
-
-//Derived methods from CTransInPlaceFilter------------------------------------------------------------------------------------------------------//
-
-//the number of inputs and outputs is fixed to 
 HRESULT DSVSTWrapper::Transform(IMediaSample *pMediaSample)
 {  
-  if(pMediaSample == NULL || !initialized) 
-  return S_FALSE;
+  if(pMediaSample == NULL || !vstHost.getEffect()) 
+   return S_FALSE;
 
   if(!enable) 
-  return S_OK;
+   return S_OK;
 
-  int nInputs  = host.nInputs;
-  int nOutputs = host.nOutputs; 
+  int nInputs  = vstHost.getNumInputs  ();
+  int nOutputs = vstHost.getNumOutputs (); 
 
-  //setup two inputs for the vst-plugin-------------------------------------------------------------//
+  //setup of the in- and outputs--------------------------------------------------------------------//
   long nSamples = pMediaSample->GetActualDataLength() / bytesPerSample;
   long nFrames  = nSamples / nChannels;
 
@@ -245,7 +261,7 @@ HRESULT DSVSTWrapper::Transform(IMediaSample *pMediaSample)
 	ptrByte += bytesPerSample;
   } 
 
-  //Distribute the samples to the input channels of the plugin-------------------------------------//
+  //Distribute the samples to the input channels of the plugin--------------------------------------//
 
   int frameCount = 0;
 
@@ -255,10 +271,10 @@ HRESULT DSVSTWrapper::Transform(IMediaSample *pMediaSample)
 
   for(int i=0;i<nFrames;i++)
   for(int c=0; c<nOutputs; c++)
-  out[c][i] = 0;
+  out[c][i] = 0; 
 
   //send the data to the vst-plugin-----------------------------------------------------------------//
-  if(host.process( in, out, nFrames))
+  if(vstHost.process(in,out,nFrames))
   {
     for(int i=0;i<nSamples;i++)
 	samples[i] = 0;
@@ -268,7 +284,7 @@ HRESULT DSVSTWrapper::Transform(IMediaSample *pMediaSample)
     for(int f=0;f<nFrames;f++)
 	for(int c=0;c < nOutputs && frameCount < nSamples;c++)
     samples[frameCount++] = (short)(out[c][f] * WAVESIZE);
-
+	
     unsigned char *ucPtr = (unsigned char *) samples;
 
     pMediaSample->GetPointer(&ptrByte);
@@ -320,6 +336,7 @@ HRESULT DSVSTWrapper::CheckInputType(const CMediaType *pmt)
         return VFW_E_TYPE_NOT_ACCEPTED;
     }
 
+	//not tested for 24-bit samples
     if (pwfx->wBitsPerSample!=8 && pwfx->wBitsPerSample!=16 && pwfx->wBitsPerSample != 24) 
 	{
 		//OutputDebugString(L"ERROR : BitsPerSample\n");
@@ -343,9 +360,9 @@ STDMETHODIMP DSVSTWrapper::FindPin(LPCWSTR Id, IPin **ppPin)
    int cmp = -1;
 
     
-   if(lstrcmp(Id,L"in0" )==0) cmp = 0; //looking for the input pin (psudPins AMOVIESETUP_PIN)
+   if(lstrcmp(Id,L"in0" )==0) cmp = 0; 
 
-   if(lstrcmp(Id,L"out0")==0) cmp = 1; //looking for the output pin 
+   if(lstrcmp(Id,L"out0")==0) cmp = 1; 
 
    if(cmp==-1) return VFW_E_NOT_FOUND;
  
@@ -369,35 +386,32 @@ STDMETHODIMP DSVSTWrapper::FindPin(LPCWSTR Id, IPin **ppPin)
 
 HRESULT DSVSTWrapper::SetMediaType(PIN_DIRECTION direction,const CMediaType *pmt)
 {
-  initialized = false; //the filter only does transforming if the correct audioformat is set
+  initialized = false;
 
   if(pmt == NULL) return E_POINTER;
 
   if((pmt->majortype == MEDIATYPE_Audio) && (pmt->subtype == MEDIASUBTYPE_PCM))
   {
-
 	if(pmt->formattype == FORMAT_WaveFormatEx)
 	if(pmt->cbFormat   >= sizeof(WAVEFORMATEX))
     if(pmt->pbFormat   != NULL)
     {
-	  WAVEFORMATEX *ptrFormat = (WAVEFORMATEX *) pmt->Format();
+      HRESULT hr = CTransInPlaceFilter::SetMediaType(direction, pmt);
+
+  	  WAVEFORMATEX *ptrFormat = (WAVEFORMATEX *) pmt->Format();
 
 	  nChannels      = ptrFormat->nChannels;
 	  samplerate     = ptrFormat->nSamplesPerSec;
 	  bytesPerSample = ptrFormat->wBitsPerSample / BITSPERBYTE;
-      
-	  //set conditions
-	  if( (samplerate == 44100 || samplerate == 48000) &&
-	      (bytesPerSample == 1 || bytesPerSample == 2)) // || bytesPerSample == 3) ) 24-bit?
+ 
 	  initialized = true;
-	  
+
 	  return NOERROR;
     }
 
   }
     
   return VFW_E_INVALIDMEDIATYPE;
-
 }  
 
 //Get the IDSVSTWrapper, IBaseFilter... interfaces
@@ -405,13 +419,13 @@ STDMETHODIMP DSVSTWrapper::NonDelegatingQueryInterface(REFIID riid, void **ppv)
 {
     CheckPointer(ppv,E_POINTER);
 
-	if(riid == IID_IDSVSTWrapper)
-	return GetInterface( (IDSVSTWrapper*)this, ppv);
+    if(riid == IID_IDSVSTWrapper)
+	  return GetInterface( (IDSVSTWrapper*)this, ppv);
 
-	return CTransInPlaceFilter::NonDelegatingQueryInterface(riid, ppv);
+
+    return CTransInPlaceFilter::NonDelegatingQueryInterface(riid, ppv);
 
 } // NonDelegatingQueryInterface
-
 
 //Called first
 CUnknown * WINAPI DSVSTWrapper::CreateInstance(LPUNKNOWN punk,HRESULT *phr)
@@ -430,18 +444,19 @@ CUnknown * WINAPI DSVSTWrapper::CreateInstance(LPUNKNOWN punk,HRESULT *phr)
 
 }
 
+
 /*************************************************************************/
 /*************************************************************************/
 /*DLL-Moduldefinitions****************************************************/
 
 STDAPI DllRegisterServer()
 {
-  return AMovieDllRegisterServer2( TRUE );
+  return AMovieDllRegisterServer2( TRUE ); //register the filter in the registry
 }
 
 STDAPI DllUnregisterServer()
 {
-  return AMovieDllRegisterServer2( FALSE );
+  return AMovieDllRegisterServer2( FALSE ); 
 }
 
 extern "C" BOOL WINAPI DllEntryPoint(HINSTANCE, ULONG, LPVOID);
@@ -458,9 +473,4 @@ BOOL APIENTRY DllMain(HMODULE hModule,
   return DllEntryPoint((HINSTANCE)(hModule), dwReason, lpReserved);
 
 }
-
-
-
-
-
 

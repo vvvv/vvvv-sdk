@@ -1,103 +1,78 @@
-#include "VSTHost.h"
 
+#include "VSTHost.h"
 
 HostList::HostList()
 {
   for(int i=0;i<MAXHOSTCOUNT;i++)
-  host[i] = NULL;
+   vstHost[i] = NULL;
 
   count = 0;
 }
 
+//Every new host has to be subscribed to the list
 void HostList::init(VSTHost *newHost)
 {
   if(!newHost) return;
 
   for(int i=0;i<MAXHOSTCOUNT;i++)
-  if(host[i]==NULL)
+  if(vstHost[i]==NULL)
   {
-   host[i] = newHost;
+   vstHost[i] = newHost;
    count++;
    return;
   }
 
 }
 
+//Retrieve the host the msg has been send to
 VSTHost* HostList::retrieve(AEffect *effect)
 {
   if(effect == NULL) return NULL;
 
   for(int i=0;i<MAXHOSTCOUNT;i++)
-  if(host[i]!=NULL)
-  if(host[i]->plugin.effect == effect)
-  return host[i];
+  if(vstHost[i]!=NULL)
+  if(vstHost[i]->getEffect() == effect) //the effect-address as an id
+    return vstHost[i];
   
   return NULL;
 }
 
+//Unsubscribe a host
 void HostList::discharge(VSTHost* oldHost)
 {
   for(int i=0;i<MAXHOSTCOUNT;i++)
-  if(host[i]!=NULL)
-  if(host[i] == oldHost)
+  if(vstHost[i]!=NULL)
+  if(vstHost[i] == oldHost)
   {
-   host[i] = NULL;
+   vstHost[i] = NULL;
    count--;
    return;
   }
 
 }
 
-/*****************************************************************************************************************************/
-/*****************************************************************************************************************************/
-/*****************************************************************************************************************************/
+//*********************************************************************************************************************//
+//*********************************************************************************************************************//
+//*********************************************************************************************************************//
 
-MidiNoteBuffer::MidiNoteBuffer()
-{
-  count = 0;
-}
-
-void MidiNoteBuffer::fill(int note, int velocity)
-{
-  if(count>=MIDINOTESCOUNT) return;
-
-  midiNotes[count].note     = note;
-  midiNotes[count].velocity = velocity;
-  midiNotes[count].time     = (long)timeGetTime();
-
-  count++;
-}
-
-void MidiNoteBuffer::reset()
-{
-  count = 0;
-}
-
-/*****************************************************************************************************************************/
-/*****************************************************************************************************************************/
-/*****************************************************************************************************************************/
-
-//!!!Achtung mehrere Hosts müssen vorhanden sein!!!
-
-//with the hostcallback the plugin is able to send data or requests to the host
-VstIntPtr VSTCALLBACK HostCallback (AEffect *effect,
-						  		    VstInt32 opcode,
-								    VstInt32 index,
-								    VstIntPtr value,
-								    void *ptr,
-								    float opt)
+VstIntPtr VSTCALLBACK HostCallback ( AEffect *effect,
+  							         VstInt32 opcode,
+									 VstInt32 index,
+									 VstIntPtr value,
+									 void *ptr,
+									 float opt )
 {
   static HostList hostList;
 
-  VSTHost *host = NULL;
+  VSTHost *vstHost = NULL;
 
-  if(opcode == NEWHOST && value == NEWHOST)
-  {
+  if(opcode == NEWHOST && value == NEWHOST) //the first call of this function is done by the new host 
+  {                                         //to put itself into the list
    hostList.init((VSTHost*)ptr);
    return 0;
   }
 
-  if(opcode == DISCHARGEHOST && value == DISCHARGEHOST)
+  if(opcode == DISCHARGEHOST && value == DISCHARGEHOST) //this happens when the plugin is deleted in the vvvv-patch
   {
    hostList.discharge((VSTHost*)ptr);
    return 0;
@@ -106,116 +81,96 @@ VstIntPtr VSTCALLBACK HostCallback (AEffect *effect,
   if(opcode == audioMasterVersion) //is called first by a new effect
    return kVstVersion;
 
-  host = hostList.retrieve((AEffect*)effect);
+  vstHost = hostList.retrieve((AEffect*)effect); //which host belongs to the plugin?
 
-  //----------------------------------------------------------------------------------------------------//
+  //-------------------------------------------------------------------------------------------------------------//
 
-  VstTimeInfo info;
-
-  info.barStartPos        = 0;
-  info.cycleEndPos        = 0;
-  info.cycleStartPos      = 0;
-  info.flags              = 0;
-  info.nanoSeconds        = 0;
-  info.ppqPos             = 0;
-  info.samplePos          = 0;
-  info.sampleRate         = SAMPLERATE;
-  info.samplesToNextClock = 0;
-  info.smpteFrameRate     = 1;
-  info.smpteOffset        = 0;
-  info.tempo              = 120;
-  info.timeSigDenominator = 4;
-  info.timeSigNumerator   = 4;
-
-  //if(opcode == audioMasterGetTime) 
-  //	return (long)&info;
-
-
-  //----------------------------------------------------------------------------------------------------//
-
-  if(host!=NULL)
+  if(vstHost)
   switch(opcode)
   {
-    case audioMasterAutomate                     : out(L"audioMasterAutomate\n");                    return host->cbAutomate                  (index,opt);
-	case audioMasterVersion                      : out(L"audioMasterVersion\n");                     return host->cbVersion                   ();
-	case audioMasterCurrentId                    : out(L"AudioMasteCurrentId\n");                    return host->cbCurrentId                 ();
-	case audioMasterIdle                         : out(L"AudioMasterIdle\n");                        return host->cbIdle                      ();
-	case audioMasterPinConnected                 : out(L"AudioMasterPinConnected\n");                return host->cbPinConnected              ();
-	case audioMasterGetTime                      : out(L"audioMasterGetTime\n");                     return host->cbGetTime                   (value);
-	case audioMasterProcessEvents                : out(L"audioMasterProcessEvents\n");               return host->cbProcessEvents             ();
-    case audioMasterIOChanged                    : out(L"AudioMasterIOChanged\n");                   return host->cbIOChanged                 ();
-	case audioMasterSizeWindow                   : out(L"AudioMasterSizeWindow\n");                  return host->cbSizeWindow                ();
-	case audioMasterGetSampleRate                : out(L"AudioMasterGetSampleRate\n");               return host->cbGetSampleRate             ();
-	case audioMasterGetBlockSize                 : out(L"AudioMasterGetBlockSize\n");                return host->cbGetBlockSize              ();
-	case audioMasterGetInputLatency              : out(L"AudioMasterGetInputLatency\n");             return host->cbGetInputLatency           ();
-	case audioMasterGetOutputLatency             : out(L"AudioMasterGetOutputLatency\n");            return host->cbGetOutputLatency          ();
-	case audioMasterGetCurrentProcessLevel       : out(L"AudioMasterGetCurrentProcessLevel\n");      return host->cbGetCurrentProcessLevel    ();
-	case audioMasterGetAutomationState           : out(L"AudioMasterGetAutomationState\n");          return host->cbGetAutomationState        ();
-	case audioMasterOfflineStart                 : out(L"AudioMasterOfflineStart\n");                return host->cbOfflineStart              ();
-	case audioMasterOfflineRead                  : out(L"AudioMasterOfflineRead\n");                 return host->cbOfflineRead               ();
-	case audioMasterOfflineWrite                 : out(L"AudioMasterOfflineWrite\n");                return host->cbOfflineWrite              ();
-	case audioMasterOfflineGetCurrentPass        : out(L"AudioMasterGetCurrentPass\n");              return host->cbOfflineGetCurrentPass     ();
-	case audioMasterOfflineGetCurrentMetaPass    : out(L"AudioMasterOfflineGetCurrentMetaPass\n");   return host->cbOfflineGetCurrentMetaPass ();
-	case audioMasterGetVendorString              : out(L"AudioMasterGetVendorString\n");             return host->cbGetVendorString           ( (char*) ptr );
-	case audioMasterGetProductString             : out(L"AudioMasterGetProductString\n");            return host->cbGetProductString          ( (char*) ptr );
-	case audioMasterGetVendorVersion             : out(L"AudioMasterGetVendorVersion\n");            return host->cbGetVendorVersion          ();
-	case audioMasterVendorSpecific               : out(L"AudioMasterVendorSpecific\n");              return host->cbVendorSpecific            ();
-	case audioMasterCanDo                        : out(L"AudioMasterCanDo\n");                       return host->cbCanDo                     ( (char*) ptr );
-	case audioMasterGetLanguage                  : out(L"AudioMasterGetLanguage\n");                 return host->cbGetLanguage               ();
-	case audioMasterGetDirectory                 : out(L"AudioMasterGetDirectory\n");                return host->cbGetDirectory              ( (char*) ptr);
-	case audioMasterUpdateDisplay                : out(L"AudioMasterUpdateDisplay\n");               return host->cbUpdateDisplay             ();
-	case audioMasterBeginEdit                    : out(L"AudioMasterBeginEdit\n");                   return host->cbBeginEdit                 ();
-	case audioMasterEndEdit                      : out(L"AudioMasterEndEdit\n");                     return host->cbEndEdit                   ();
-	case audioMasterOpenFileSelector             : out(L"AudioMasterOpenFileSelector\n");            return host->cbOpenFileSelector          ((VstFileSelect*)ptr);
-	case audioMasterCloseFileSelector            : out(L"AudioMasterCloseFileSelector\n");           return host->cbCloseFileSelector         ((VstFileSelect*)ptr);
-   	
-	//deprecated---------------------------------------------------------------------------------------------------------------------------------//
-	case audioMasterWantMidi                     : out(L"AudioMasterWantsMidi\n");                   return host->cbWantMidi                     ();
-    case audioMasterSetTime                      : out(L"AudioMasterSetTime\n");                     return host->cbSetTime                      ();
-    case audioMasterTempoAt                      : out(L"AudioMasterTempoAt\n");                     return host->cbTempoAt                      ();
-    case audioMasterGetNumAutomatableParameters  : out(L"AudioMasterGetNumAutomatableParameters\n"); return host->cbGetNumAutomatableParameters  ();
-	case audioMasterGetParameterQuantization     : out(L"AudioMasterGetParameterQuantization\n");    return host->cbGetParameterQuantization     ();
-    case audioMasterNeedIdle                     : out(L"AudioMasterNeedIdle\n");                    return host->cbNeedIdle                     ();
-    case audioMasterGetPreviousPlug              : out(L"AudioMasterGetPreviousPlug\n");             return host->cbGetPreviousPlug              ();
-    case audioMasterGetNextPlug                  : out(L"AudioMasterGetNextPlug\n");                 return host->cbGetNextPlug                  ();
-    case audioMasterWillReplaceOrAccumulate      : out(L"AudioMasterWillReplaceOrAccumulate\n");     return host->cbWillReplaceOrAccumulate      ();
-    case audioMasterSetOutputSampleRate          : out(L"AudioMasterSetOutputSampleRate\n");         return host->cbSetOutputSampleRate          ();
-    case audioMasterGetOutputSpeakerArrangement  : out(L"AudioMasterGetOutputSpeakerArrangement\n"); return host->cbGetOutputSpeakerArrangement  ();
-    case audioMasterSetIcon                      : out(L"AudioMasterSetIcon\n");                     return host->cbSetIcon                      ();
-    case audioMasterOpenWindow                   : out(L"AudioMasterOpenWindow\n");                  return host->cbOpenWindow                   ();
-    case audioMasterCloseWindow                  : out(L"AudioMasterCloseWindow\n");                 return host->cbCloseWindow                  ();
-    case audioMasterEditFile                     : out(L"AudioMasterEditFile\n");                    return host->cbEditFile                     ();
-    case audioMasterGetChunkFile                 : out(L"AudioMasterGetChunkFile\n");                return host->cbGetChunkFile                 ();
-    case audioMasterGetInputSpeakerArrangement   : out(L"AudioMasterGetInputSpeakerArrangement\n");  return host->cbGetInputSpeakerArrangement   ();
+    case audioMasterAutomate                     : OutputDebugString(L"audioMasterAutomate\n");                    break;
+	
+	case audioMasterVersion                      : return vstHost->version(); 
+	
+	case audioMasterCurrentId                    : OutputDebugString(L"AudioMasteCurrentId\n");                    break;
+	case audioMasterIdle                         : OutputDebugString(L"AudioMasterIdle\n");                        break;
+	case audioMasterPinConnected                 : OutputDebugString(L"AudioMasterPinConnected\n");                break;
+	
+	case audioMasterGetTime                      : return vstHost->getTime();
+	
+	case audioMasterProcessEvents                : return vstHost->processEvents();
+
+    case audioMasterIOChanged                    : OutputDebugString(L"AudioMasterIOChanged\n");                   break;
+	case audioMasterSizeWindow                   : OutputDebugString(L"AudioMasterSizeWindow\n");                  break;
+	
+	case audioMasterGetSampleRate                : return vstHost->getSampleRate ();
+
+	case audioMasterGetBlockSize                 : return vstHost->getBlockSize  ();
+
+	case audioMasterGetInputLatency              : OutputDebugString(L"AudioMasterGetInputLatency\n");             break;
+	case audioMasterGetOutputLatency             : OutputDebugString(L"AudioMasterGetOutputLatency\n");            break;
+	case audioMasterGetCurrentProcessLevel       : OutputDebugString(L"AudioMasterGetCurrentProcessLevel\n");      break;
+	case audioMasterGetAutomationState           : OutputDebugString(L"AudioMasterGetAutomationState\n");          break;
+	case audioMasterOfflineStart                 : OutputDebugString(L"AudioMasterOfflineStart\n");                break;
+	case audioMasterOfflineRead                  : OutputDebugString(L"AudioMasterOfflineRead\n");                 break;
+	case audioMasterOfflineWrite                 : OutputDebugString(L"AudioMasterOfflineWrite\n");                break;
+	case audioMasterOfflineGetCurrentPass        : OutputDebugString(L"AudioMasterGetCurrentPass\n");              break;
+	case audioMasterOfflineGetCurrentMetaPass    : OutputDebugString(L"AudioMasterOfflineGetCurrentMetaPass\n");   break;
+	
+	case audioMasterGetVendorString              : return vstHost->getVendorString((char*)ptr);
+	case audioMasterGetProductString             : return vstHost->getProductString((char*)ptr);
+	case audioMasterGetVendorVersion             : return vstHost->getVendorVersion();
+	case audioMasterVendorSpecific               : return vstHost->getVendorSpecific();
+	
+	case audioMasterCanDo                        : return vstHost->canDo((char*)ptr);
+	
+	case audioMasterGetLanguage                  : OutputDebugString(L"AudioMasterGetLanguage\n");                 break;
+	
+	case audioMasterGetDirectory                 : return vstHost->getDirectory();
+
+	case audioMasterUpdateDisplay                : OutputDebugString(L"AudioMasterUpdateDisplay\n");               break;
+	case audioMasterBeginEdit                    : OutputDebugString(L"AudioMasterBeginEdit\n");                   break;
+	case audioMasterEndEdit                      : OutputDebugString(L"AudioMasterEndEdit\n");                     break;
+
+	case audioMasterOpenFileSelector             : return vstHost->openFileSelector  ((VstFileSelect*)ptr);
+
+	case audioMasterCloseFileSelector            : return vstHost->closeFileSelector ((VstFileSelect*)ptr);
+
+	//deprecated opcodes  
+   	case audioMasterWantMidi                     : return vstHost->wantMidi();
+
+    case audioMasterSetTime                      : OutputDebugString(L"AudioMasterSetTime\n");                     break;
+    case audioMasterTempoAt                      : OutputDebugString(L"AudioMasterTempoAt\n");                     break;
+    case audioMasterGetNumAutomatableParameters  : OutputDebugString(L"AudioMasterGetNumAutomatableParameters\n"); break;
+	case audioMasterGetParameterQuantization     : OutputDebugString(L"AudioMasterGetParameterQuantization\n");    break;
+    
+	case audioMasterNeedIdle                     : return vstHost->needIdle();
+    
+	case audioMasterGetPreviousPlug              : OutputDebugString(L"AudioMasterGetPreviousPlug\n");             break;
+    case audioMasterGetNextPlug                  : OutputDebugString(L"AudioMasterGetNextPlug\n");                 break;
+    case audioMasterWillReplaceOrAccumulate      : OutputDebugString(L"AudioMasterWillReplaceOrAccumulate\n");     break;
+    case audioMasterSetOutputSampleRate          : OutputDebugString(L"AudioMasterSetOutputSampleRate\n");         break;
+    case audioMasterGetOutputSpeakerArrangement  : OutputDebugString(L"AudioMasterGetOutputSpeakerArrangement\n"); break;
+    case audioMasterSetIcon                      : OutputDebugString(L"AudioMasterSetIcon\n");                     break;
+    case audioMasterOpenWindow                   : OutputDebugString(L"AudioMasterOpenWindow\n");                  break;
+    case audioMasterCloseWindow                  : OutputDebugString(L"AudioMasterCloseWindow\n");                 break;
+    case audioMasterEditFile                     : OutputDebugString(L"AudioMasterEditFile\n");                    break;
+    case audioMasterGetChunkFile                 : OutputDebugString(L"AudioMasterGetChunkFile\n");                break;
+    case audioMasterGetInputSpeakerArrangement   : OutputDebugString(L"AudioMasterGetInputSpeakerArrangement\n");  break;  
 
   }
 
-  out(L"HOST OR OPCODE UNDEFINED\n");
-  
   return 0;
-
 }
 
-/*****************************************************************************************************************************/
-/*****************************************************************************************************************************/
-/*****************************************************************************************************************************/
+//*********************************************************************************************************************//
+//*********************************************************************************************************************//
+//*********************************************************************************************************************//
 
 VSTHost::VSTHost()
 {
   //Subscribe the host in the host-list
   HostCallback( 0, NEWHOST, 0, NEWHOST, this, 0);
-
-  for(int i=0;i<HOSTCANDOCOUNT;i++)
-  canDo[i] = false;
-
-  GetCurrentDirectoryA( MAX_PATH, directoryPath);
-
-  blockSize  = BLOCKSIZE;
-  sampleRate = SAMPLERATE; 
-  nInputs    = STEREO;
-  nOutputs   = STEREO;
-  module     = NULL;
-  midi       = false;
 
   timeInfo.barStartPos        = 0;
   timeInfo.cycleEndPos        = 0;
@@ -232,132 +187,173 @@ VSTHost::VSTHost()
   timeInfo.timeSigDenominator = 4;
   timeInfo.timeSigNumerator   = 4;
 
+  blockSize  = BLOCKSIZE;
+  sampleRate = SAMPLERATE;
+
+  module = NULL;
+
 }
+
 
 VSTHost::~VSTHost()
 {
+  //Unsubscribe the host in the list
   HostCallback( 0, DISCHARGEHOST, 0, DISCHARGEHOST, this, 0);
+
+  plugin.~VSTPlugin();
+
+  if(vstEvents)
+  {
+   free(vstEvents);
+
+   vstEvents = NULL;
+  }
+
+  //Unload the dll
+  if(module)
+  {
+	FreeLibrary(module);
+    module = NULL;
+  }
 
 }
 
-bool VSTHost::process (float **in, float **out,int length) //length = number of frames
+AEffect* VSTHost::getEffect()
 {
-  if(!plugin.effect) 
+  return plugin.effect;
+}
+
+int VSTHost::getNumInputs()
+{
+  return plugin.numInputs;
+}
+
+int VSTHost::getNumOutputs()
+{
+  return plugin.numOutputs;
+}
+
+//send the audiodata to the plugin
+bool VSTHost::process(float **in, float **out,int nFrames) 
+{
+  if(!plugin.effect)
 	return false;
 
-  if((plugin.effect->numInputs != nInputs) || (plugin.effect->numOutputs != nOutputs)) 
+  if(nFrames > blockSize)
   {
-	nInputs  = plugin.effect->numInputs;
-	nOutputs = plugin.effect->numOutputs;
-	return false;
+    blockSize = nFrames;
+	plugin.setBlocksize(blockSize);
   }
+  
+  updateTime1();
 
-  if(length > blockSize) 
-  {
-    blockSize = length;
-    plugin.cbSetBlockSize(length);
-  }
-
-  updateTime ();
-
-  if(midi) sendMidiBuffer(length);
+  //if the plugin can receive midi-data the msgs are collected and send right before processReplacing()
+  if(midi.count) 
+	sendMidi();
 
   __try
   {
-    if(plugin.canReplacing) 
-     plugin.effect->processReplacing(plugin.effect, in, out, length);
+    plugin.effect->processReplacing(plugin.effect,in,out,nFrames);
   }
   __except(GetExceptionCode() == EXCEPTION_INT_DIVIDE_BY_ZERO | EXCEPTION_ACCESS_VIOLATION ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH)
   {
 
   }
 
-  updateTimeSamplePos(length);  
+  updateTime2(nFrames);
 
   return true;
-
 }
 
-void VSTHost::sendMidiBuffer(int length)
+void VSTHost::sendMidi()
 {
-  static long time = (long)timeGetTime();
+    static VstMidiEvent midiEvents[NMSG];
 
-  if(midiNoteBuffer.count > 0)
-  {
-    double millisPerFrame = 1000.0 / (double)sampleRate;
-
-	int note        [MIDINOTESCOUNT];
-	int velocity    [MIDINOTESCOUNT];
-	int deltaFrames [MIDINOTESCOUNT];
-
-	for(int i=0;i<midiNoteBuffer.count;i++)
+	int count = midi.count;
+ 
+	for(int i= 0; i<count; i++)
 	{
-	  note        [i] = midiNoteBuffer.midiNotes[i].note;
-	  velocity    [i] = midiNoteBuffer.midiNotes[i].velocity;
-  	  deltaFrames [i] = 0;
+	  midiEvents[i].type        = kVstMidiType;
+	  midiEvents[i].byteSize    = sizeof(VstMidiEvent);
+	  midiEvents[i].deltaFrames = 0; //maybe that should be changed because of jitter, but only short frames are used
+	  midiEvents[i].flags       = 0L;
+	  midiEvents[i].noteLength  = 0L;
+	  midiEvents[i].noteOffset  = 0L;
 
-	  //int millisDiff = int(midiNoteBuffer.midiNotes[i].time - time);
+	  midiEvents[i].midiData[0] = midi.msgBuffer[i].data[0];
+	  midiEvents[i].midiData[1] = midi.msgBuffer[i].data[1];
+	  midiEvents[i].midiData[2] = midi.msgBuffer[i].data[2];
+	  midiEvents[i].midiData[3] = 0;   
 
-	  //deltaFrames[i] = (int)(millisDiff / millisPerFrame);	
+	  midiEvents[i].detune          = 0;
+	  midiEvents[i].noteOffVelocity = 0;
+	  midiEvents[i].reserved1       = 0;
+	  midiEvents[i].reserved2       = 0;
+	
+	}
+	
+	//allocate enough space for the msgs
+	vstEvents = (VstEvents*)malloc(sizeof(VstEvents) +  count * sizeof(VstEvent*));
 
-	  //if(deltaFrames[i] < 0) 
-	  //deltaFrames[i] = 0;
+	for(int i=0;i<count;i++)
+	vstEvents->events[i] = (VstEvent*) &midiEvents[i];
 
-	  //if(deltaFrames[i] > length) //???discard notes which are too old
-	  //{
-      //  note        [i] = 0;
-	  //  velocity    [i] = 0;
-      //  deltaFrames [i] = 0;
-	  //}
+	vstEvents->numEvents = count;
+	vstEvents->reserved  = 0;
 
-	}//end for
+	__try
+    {
+     plugin.effect->dispatcher(plugin.effect,effProcessEvents,0,0,vstEvents,0);
+    }
+    __except(GetExceptionCode() == EXCEPTION_INT_DIVIDE_BY_ZERO | EXCEPTION_ACCESS_VIOLATION ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH)
+    {
 
-	plugin.sendMidiNotes(midiNoteBuffer.count, note, velocity, deltaFrames);
+    }
 
-	midiNoteBuffer.reset();
-  
-  }//end if 
-
-  time = (long)timeGetTime();
-
+	midi.count = 0;
+    
 }
 
-void VSTHost::updateTime()
+void VSTHost::updateTime1()
 {
-  timeInfo.nanoSeconds = (double)timeGetTime() * 1000000.0;
+  timeInfo.nanoSeconds   = (double)timeGetTime() * TIMEUNIT;
 
-  double pos = timeInfo.samplePos / timeInfo.sampleRate;
+  double position        = timeInfo.samplePos / timeInfo.sampleRate;
 
-  timeInfo.ppqPos = pos * timeInfo.tempo / 60.0;
+  timeInfo.ppqPos        = position * timeInfo.tempo / 60.0;
 
-  double offsetInSeconds = pos - int(pos);
+  double offsetInSeconds = position - int(position);
 
-  timeInfo.smpteOffset = (long)(offsetInSeconds * 25.0 * 80.0);
+  timeInfo.smpteOffset   = (long)(offsetInSeconds * 25.0 * 80.0);
 
 }
 
-void VSTHost::updateTimeSamplePos (int length)
+void VSTHost::updateTime2(int nFrames)
 {
-  timeInfo.samplePos  += (float)length;
+  timeInfo.samplePos    += (float)nFrames;
 }
 
-//Interface-Definitions----------------------------------------------------------------------------------------------------//
+//IDSVSTWrapper-Definitions********************************************************************************************//
 
 bool VSTHost::load(char *filename)
 {
-  PluginMain  pluginMain;
-  AEffect    *effect;
-   
+  AEffect *effect = NULL;
+
+  vstEvents = NULL;
+
+  PluginMain pluginMain;
+
+
   module = LoadLibraryA(filename);
 
-  if(module == NULL) return false;
+  if(!module)
+	return false;
 
+  //Two possible names of the entrypoint
   pluginMain = (PluginMain) GetProcAddress((HMODULE) module,"VSTPluginMain");
 
-  if(pluginMain == NULL)
-  pluginMain = (PluginMain) GetProcAddress((HMODULE) module,"main");
-
-  if(pluginMain == NULL) return false;
+  if(!pluginMain)
+	pluginMain = (PluginMain) GetProcAddress((HMODULE) module,"main");
 
   try
   {
@@ -368,58 +364,18 @@ bool VSTHost::load(char *filename)
 
   }
 
-  if(effect == NULL) return false;
+  if(!effect) 
+	return false;
 
-  if(effect->magic != kEffectMagic)	return false;
+  //is it really a vst-plugin?
+  if(effect->magic != kEffectMagic)	
+	return false;
 
-  plugin.initialize(effect);
-
-  nInputs  = plugin.effect->numInputs;
-  nOutputs = plugin.effect->numOutputs;
-
-  if(plugin.canDo[RECEIVEVSTMIDIEVENT]) 
-	midi = true;
+  //read-in the properties an initialize
+  plugin.init(effect);
 
   return true;
 
-}
-
-bool VSTHost::getProgramNames (int *count, wchar_t names[][256])
-{
-  if(!plugin.effect) return false;
-
-  *count = plugin.numPrograms;
-  
-  for(int i=0;i<plugin.numPrograms;i++)
-  {
-	for(int k=0;k<STRLENGTH;k++)
-	{
-	  names[i][k] =  plugin.program[i].name[k];  //plugin.param[h].display[k];
-	  if(plugin.program[i].name[k] == '\0') break;
-	}
-  }
-
-  return true;
-}
-
-bool VSTHost::getActualProgram(int *count)
-{
-  if(!plugin.effect) return false;
-
-  *count = plugin.actualProgram;
-
-  return true;
-}
-
-bool VSTHost::setActualProgram(int count)
-{
-  if(!plugin.effect) return false;
-
-  if(count < 0 || count >= plugin.numPrograms) return false;
-
-  plugin.setProgram(count);
-
-  return true;
 }
 
 bool VSTHost::getParameterCount(int *count)
@@ -436,10 +392,11 @@ bool VSTHost::getParameterCount(int *count)
   return true;  
 }
 
+//some plugins might have a lot (>750) parameters
 bool VSTHost::getParameterProperties( wchar_t paramDisplay[][256], wchar_t paramName[][256], wchar_t paramLabel[][256], double paramValue[])
 {
-  if(!plugin.effect) return false;
-
+  if(!plugin.effect) 
+	return false;
 
   for(int h=0; h<plugin.numParams; h++)
   {
@@ -465,6 +422,7 @@ bool VSTHost::getParameterProperties( wchar_t paramDisplay[][256], wchar_t param
   }
 
   return true;
+
 }
 
 bool VSTHost::getParameter(int index, double *value)
@@ -489,33 +447,84 @@ bool VSTHost::setParameter(int index, double  value)
   return true;
 }
 
-bool VSTHost::getMidiIsInstrument()
+
+bool VSTHost::getProgramNames (int *count, wchar_t names[][256])
 {
   if(!plugin.effect) 
 	return false;
 
-  if(!midi) 
-	return false;
+  if(plugin.numPrograms >= MAXPROGRAM)
+	*count = 0;
+  else
+  {
+    *count = plugin.numPrograms;
+  
+    for(int i=0;i<plugin.numPrograms;i++)
+    {
+  	  for(int k=0;k<STRLENGTH;k++)
+	  {
+	   names[i][k] =  plugin.program[i].name[k];  //plugin.param[h].display[k];
+	   if(plugin.program[i].name[k] == '\0') break;
+	  }
+    }
+
+   }//end if numPrograms
 
   return true;
 }
 
-bool VSTHost::sendMidiNote(int count,int note[],int velocity[])
+bool VSTHost::getActualProgram(int *count)
 {
   if(!plugin.effect) return false;
 
-  for(int i=0;i<count;i++)
-  midiNoteBuffer.fill(note[i],velocity[i]);
-  
+  *count = plugin.actualProgram;
+
   return true;
+}
+
+bool VSTHost::setActualProgram(int count)
+{
+  if(!plugin.effect) return false;
+
+  if(count < 0 || count >= plugin.numPrograms) return false;
+
+  plugin.setProgram(count);
+
+  return true;
+}
+
+bool VSTHost::getMidiIsInstrument()
+{
+ if(!plugin.effect) 
+   return false;
+
+ if(plugin.isSynth)
+   return true;
+
+ return false; 
+
+}
+
+//the msgs are collected and send right before processReplacing()
+bool VSTHost::sendMidiNote(int count,int note[],int velocity[])
+{
+  if(!plugin.effect) 
+	return false;
+
+  for(int i=0;i<count;i++)
+	midi.setMsg(NOTEON,note[i],velocity[i]); 
+ 
+  return true;
+
 }
 
 bool VSTHost::sendMidiNoteAllOff()
 {
-  if(!plugin.effect) return false;
+  if(!plugin.effect) 
+	return false;
 
-  for(int i=0;i<MIDINOTESCOUNT;i++)
-  plugin.midiMsg((char)NOTEON,i,0);
+  for(int i=0;i<NMIDINOTES;i++)
+    midi.setMsg((char)NOTEON,i,0);
 
   return true;
 
@@ -523,55 +532,64 @@ bool VSTHost::sendMidiNoteAllOff()
 
 bool VSTHost::sendMidiPolyphonic (unsigned char polyphonicNote, unsigned char polyphonicValue)
 {
-  if(!plugin.effect) return false;
+  if(!plugin.effect) 
+	return false;
 
-  plugin.midiMsg(POLYTOUCH, polyphonicNote, polyphonicValue);
+  midi.setMsg(POLYTOUCH, polyphonicNote, polyphonicValue);
 
   return true;
-}
 
+}
 
 bool VSTHost::sendMidiController (unsigned char controllerID, unsigned char controllerValue)
 {
-  if(!plugin.effect) return false;
+  if(!plugin.effect) 
+	return false;
 
-  plugin.midiMsg(CONTROLCHANGE, controllerID, controllerValue);
+  midi.setMsg(CONTROLCHANGE, controllerID, controllerValue);
 
   return true;
+
 }
 
 bool VSTHost::sendMidiProgram (unsigned char programID)
 {
-  if(!plugin.effect) return false;
+  if(!plugin.effect) 
+	return false;
 
-  plugin.midiMsg(PROGRAMCHANGE, programID, programID);
+  midi.setMsg(PROGRAMCHANGE, programID, programID);
 
   return true;
+
 }
 
 bool VSTHost::sendMidiMonophonic (unsigned char monophonicValue)
 {
-  if(!plugin.effect) return false;
+  if(!plugin.effect) 
+	return false;
 
-  plugin.midiMsg(MONOTOUCH, monophonicValue, 0);  
+  midi.setMsg(MONOTOUCH, monophonicValue, 0);  
 
   return true;
+
 }
 
 bool VSTHost::sendMidiPitchbend (unsigned char pitchbendValue)
 {
-  if(!plugin.effect) return false;
+  if(!plugin.effect) 
+	return false;
 
-  plugin.midiMsg(PITCHBEND, pitchbendValue, pitchbendValue);
+  midi.setMsg(PITCHBEND, pitchbendValue, pitchbendValue);
 
   return true;
+
 }
 
 bool VSTHost::getInputCount(int *count)
 {
   if(!plugin.effect) return false;
 
-  *count = nInputs;
+  *count = plugin.numInputs;
 
   return true;
 }
@@ -580,274 +598,172 @@ bool VSTHost::getOutputCount(int *count)
 {
   if(!plugin.effect) return false;
 
-  *count = nOutputs;
+  *count = plugin.numOutputs;
 
   return true;
 }
 
 bool VSTHost::setBpm(int value)
 {
-  if(!plugin.effect) return true;
+  if(!plugin.effect) 
+	return true;
 
   if(value > 0)
-  timeInfo.tempo = value;
+    timeInfo.tempo = value;
 
   return true;
+
 }
 
 bool VSTHost::getHasWindow()
 {
-  if(!plugin.effect) return false;
+  if(!plugin.effect) 
+	return false;
 
-  if(plugin.hasEditor) return true;
+  if(plugin.hasEditor) 
+	return true;
 
   return false;  
 }
 
+//open the editor-window of the plugin
 bool VSTHost::setWindowHandle(HWND hwnd)
 {
-  if(!plugin.effect) return false;
+  if(!plugin.effect) 
+	return false;
+
+  if(!plugin.hasEditor) 
+	return false;
 
   plugin.setWindowHandle(hwnd);
 
   return true;
+
 }
 
 bool VSTHost::getWindowSize(int *width,int *height)
 {
+  if(!plugin.effect) 
+	return false;
+
   *width  = plugin.width;
   *height = plugin.height;
 
+  if(*width  < 0) *width  = 0;
+  if(*height < 0) *height = 0; 
+
+  if(!plugin.hasEditor) 
+	return false;
+
   return true;
+
 }
 
+//called regularly in the evaluate-procedure of the vvvv-node
+//to give the editor-window of the plugin some time
+//to update itself
 bool VSTHost::setWindowIdle()
 {
-  if(!plugin.effect) return false;
+  if(!plugin.effect) 
+	return false;
+
+  if(!plugin.hasEditor) 
+	return false;
 
   plugin.effect->dispatcher(plugin.effect,effEditIdle,0,0,0,0);
 
   return true;
+
 }
 
-bool VSTHost::destroy()
+//AudioMaster-Callbacks************************************************************************************************//
+
+long VSTHost::version()
 {
-  if(!plugin.effect) return false;
+  OutputDebugString(L"audioMasterVersion\n");
 
-  plugin.destroy();
-
-  if(module != NULL) 
-   FreeLibrary(module);
- 
-  return true;
+  return kVstVersion;
 }
 
-//Callback-Functions---------------------------------------------------------------------------------------------------------//
-
-long VSTHost::cbAutomate                     (int index, float value)
+//???
+long VSTHost::processEvents() 
 {
- return 0;
-}
+  OutputDebugString(L"audioMasterProcessEvents\n");
 
-long VSTHost::cbVersion                      ()
-{
- return kVstVersion;
+  return false;
 }
 
-long VSTHost::cbCurrentId                    ()
+long VSTHost::getSampleRate()
 {
- return 0;
+  OutputDebugString(L"audioMasterGetSampleRate\n");
+
+  return sampleRate;
 }
 
-long VSTHost::cbIdle                         ()
+long VSTHost::getBlockSize()
 {
- //???
- plugin.needIdle = true;
+  OutputDebugString(L"audioMasterGetBlockSize\n");
 
- return 0;
-}
-
-long VSTHost::cbPinConnected                 ()
-{
- return 0;
+  return blockSize;
 }
 
-long VSTHost::cbGetTime                      (VstIntPtr value)
+long VSTHost::getTime()
 {
- return (long)&timeInfo;
+  //OutputDebugString(L"audioMasterGetTime\n");
+
+  return (long)&timeInfo;
 }
 
-long VSTHost::cbProcessEvents                ()
+long VSTHost::canDo(char *str)
 {
- return 0;
-}
+  OutputDebugString(L"audioMasterCanDo\n");
 
-long VSTHost::cbIOChanged                    ()
-{
- return 0;
-}
-
-long VSTHost::cbSizeWindow                   ()
-{
- return 0;
-}
-
-long VSTHost::cbGetSampleRate                ()
-{
- return sampleRate;
-}
-
-long VSTHost::cbGetBlockSize                 ()
-{
- return blockSize;
-}
-
-long VSTHost::cbGetInputLatency              ()
-{
- return 0;
-}
-
-long VSTHost::cbGetOutputLatency             ()
-{
- return 0;
-}
-
-long VSTHost::cbGetCurrentProcessLevel       ()
-{
- return 0;
-}
-
-long VSTHost::cbGetAutomationState           ()
-{
- return 0;
-}
-
-long VSTHost::cbOfflineStart                 ()
-{
- return 0;
-}
-  
-long VSTHost::cbOfflineRead                  ()
-{
- return 0;
-}
-  
-long VSTHost::cbOfflineWrite                 ()
-{
- return 0;
-}
-  
-long VSTHost::cbOfflineGetCurrentPass        ()
-{
- return 0;
-}
- 
-long VSTHost::cbOfflineGetCurrentMetaPass    ()
-{
- return 0;
-}
-
-long VSTHost::cbGetVendorString              (char *str)
-{
- return 0;
-}
- 
-long VSTHost::cbGetProductString             (char *str)
-{
- return 0;
-}
-
-long VSTHost::cbGetVendorVersion             ()
-{
- return 0;
-}
-
-long VSTHost::cbVendorSpecific               ()
-{
- return 0;
-}
-
-//it seems like nobody wants to know what the host can do
-long VSTHost::cbCanDo(char *str)
-{
   if(!strcmp(str, "sendVstEvents"))
-  {
-    canDo[SENDVSTEVENTS] = true;
     return true;
-  }
 
   if(!strcmp(str,"sendVstMidiEvent"))  
-  {
-    canDo[SENDVSTMIDIEVENT] = true;
     return true;
-  }
 
   if(!strcmp(str,"receiveVstEvents"))  
-  {
-    canDo[RECEIVEVSTEVENTS] = true;
     return true;
-  }
 
   if(!strcmp(str,"receiveVstMidiEvent"))  
-  {
-    canDo[RECEIVEVSTMIDIEVENT] = true;
     return true;
-  }
 
   if(!strcmp(str,"openFileSelector"))
-  {
-    canDo[OPENFILESELECTOR] = true;
 	return true;
-  }
 
   if(!strcmp(str,"closeFileSelector"))
-  {
-    canDo[CLOSEFILESELECTOR] = true;
 	return true;
-  }
 
-  return 0;
+  return false;
+
 }
 
-long VSTHost::cbGetLanguage                  ()
+long VSTHost::getDirectory()
 {
- return 0;
+  OutputDebugString(L"audioMasterGetDirectory\n");
+
+  char path[MAX_PATH];
+
+  GetCurrentDirectoryA( MAX_PATH, path);
+
+  return (long)path;
 }
 
-long VSTHost::cbGetDirectory                 (char *str)
-{
- return (long)directoryPath;
-}
-
-long VSTHost::cbUpdateDisplay                ()
-{
- return 0;
-}
-
-long VSTHost::cbBeginEdit                    ()
-{
- plugin.needIdle = true;
-
- return 0;
-}
-
-long VSTHost::cbEndEdit                      ()
-{
- plugin.needIdle = false;
-
- return 0;
-}
-
-long VSTHost::cbOpenFileSelector  (VstFileSelect *fileSelect)
+//used to open/store banks,patches and files
+long VSTHost::openFileSelector  (VstFileSelect * fileSelect)
 {
   int result = 0;
 
   if(fileSelect == NULL)
    return 0;
 
-  if(fileSelect->command == kVstMultipleFilesLoad) 
+  if(!plugin.hwnd)
    return 0;
 
+  if(fileSelect->command == kVstMultipleFilesLoad) //only one file per call
+   return 0;
 
   if(fileSelect->command == kVstFileLoad || fileSelect->command == kVstFileSave)
   {
@@ -871,8 +787,9 @@ long VSTHost::cbOpenFileSelector  (VstFileSelect *fileSelect)
 
 	int strlength = 0;
 
-	strcpy(str,fileSelect->fileTypes->name);
+	strcpy(str,fileSelect->fileTypes->name); //description
 
+    //the possible filetypes are shown to the user and 
 	if(fileSelect->nbFileTypes>0)
 	{
 	  int count = strlen(fileSelect->fileTypes->name);
@@ -898,6 +815,8 @@ long VSTHost::cbOpenFileSelector  (VstFileSelect *fileSelect)
 
 	  str[count++] = ')';
 
+	  //this section is not visible and is used to show only the files
+	  //with the right filetype to the user
 	  str[count++] = '\0';
 
       for(int i=0;i<fileSelect->nbFileTypes;i++)
@@ -921,7 +840,7 @@ long VSTHost::cbOpenFileSelector  (VstFileSelect *fileSelect)
 	
 	}//end if nbfileTypes
 
-
+    //copy the chars into the wide-charstring
 	wchar_t wideFilter[STRLENGTH];
 
 	for(int i=0;i<strlength;i++)
@@ -932,10 +851,10 @@ long VSTHost::cbOpenFileSelector  (VstFileSelect *fileSelect)
 	//--------------------------------------------------//
 	
 	static TCHAR filename [MAX_PATH] = TEXT("\0");
-    static TCHAR path     [MAX_PATH] = TEXT("."); 
+    static TCHAR path     [MAX_PATH] = TEXT("."); //begin in the actual folder
 	
 	OPENFILENAME openFilename = { sizeof(OPENFILENAME),
-	                              plugin.hwnd,
+	                              plugin.hwnd,       
 	  							  NULL,
 								  wideFilter,
 								  NULL,
@@ -957,13 +876,14 @@ long VSTHost::cbOpenFileSelector  (VstFileSelect *fileSelect)
 
 
 	if(fileSelect->command == kVstFileLoad)
-	 result = GetOpenFileName(&openFilename);
+	   result = GetOpenFileName(&openFilename);
 
 	if(fileSelect->command == kVstFileSave)
-     result = GetSaveFileName(&openFilename);
+       result = GetSaveFileName(&openFilename);
 
 	//result--------------------------------------------//
 
+	//sometimes the returnPath has to be initialized here
 	if(!fileSelect->returnPath)
 	{
 	  fileSelect->reserved = 1;
@@ -976,8 +896,6 @@ long VSTHost::cbOpenFileSelector  (VstFileSelect *fileSelect)
 
 	fileSelect->returnPath[lstrlen(filename)] = '\0';
 
-	//fileSelect->returnPath[MAX_PATH-1] = '\0';
-	
 	fileSelect->sizeReturnPath = lstrlen(filename);
 
 	fileSelect->nbReturnPath = 1;
@@ -991,11 +909,12 @@ long VSTHost::cbOpenFileSelector  (VstFileSelect *fileSelect)
 
 }
 
-long VSTHost::cbCloseFileSelector            (VstFileSelect * fileSelect)
+long VSTHost::closeFileSelector (VstFileSelect * fileSelect)
 {
-  if(fileSelect == NULL)
+ if(fileSelect == NULL)
   return 0;
 
+ //only if we allocated the space we should also unallocate it
  if(fileSelect->reserved == 1)
  {
    delete [] fileSelect->returnPath;
@@ -1007,96 +926,48 @@ long VSTHost::cbCloseFileSelector            (VstFileSelect * fileSelect)
  return 0;
 }
 
-//deprecated
-long VSTHost::cbWantMidi                     ()
+long VSTHost::needIdle()
 {
- plugin.isSynth = true;
-
- return 0;
+  if(plugin.effect)
+    plugin.effect->dispatcher(plugin.effect,effIdle,0,0,0,0);
+  
+  return true;
 }
 
-long VSTHost::cbSetTime                      ()
+long VSTHost::getVendorString(char *str)
 {
- return 0;
+  static char vendorString[] = "vvvv meanimal";
+
+  str = vendorString;
+
+  return true;
 }
 
-long VSTHost::cbTempoAt                      ()
+long VSTHost::getVendorVersion()
 {
- return 0;
+  return 1;
 }
 
-long VSTHost::cbGetNumAutomatableParameters  ()
+long VSTHost::getProductString (char *str)
 {
- return 0;
+  static char productString [] = "DSVSTWrapper 0.1";
+
+  str = productString;
+
+  return true;
 }
 
-long VSTHost::cbGetParameterQuantization     (){
- return 0;
-}
-
-long VSTHost::cbNeedIdle                     ()
+long VSTHost::getVendorSpecific()
 {
- ///???
-// plugin.needIdle = true;
-
- return 0;
+  return 1;
 }
 
-long VSTHost::cbGetPreviousPlug              ()
+long VSTHost::wantMidi()
 {
- return 0;
+  OutputDebugString(L"audioMasterWantMidi\n");
+
+  plugin.isSynth = true;
+
+  return true;
 }
-
-long VSTHost::cbGetNextPlug                  ()
-{
- return 0;
-}
-
-long VSTHost::cbWillReplaceOrAccumulate      ()
-{
- return 0;
-}
-
-long VSTHost::cbSetOutputSampleRate          ()
-{
- return 0;
-}
-
-long VSTHost::cbGetOutputSpeakerArrangement  ()
-{
- return 0;
-}
-
-long VSTHost::cbSetIcon                      ()
-{
- return 0;
-}
-
-long VSTHost::cbOpenWindow                   ()
-{
- return 0;
-}
-
-long VSTHost::cbCloseWindow                  ()
-{
- return 0;
-}
-
-long VSTHost::cbEditFile                     ()
-{
- return 0;
-}
-
-long VSTHost::cbGetChunkFile                 ()
-{
- return 0;
-}
-
-long VSTHost::cbGetInputSpeakerArrangement   ()
-{
- return 0;
-}
-
-
-
 
