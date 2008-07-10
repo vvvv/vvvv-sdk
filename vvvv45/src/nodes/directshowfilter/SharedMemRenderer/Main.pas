@@ -49,7 +49,7 @@ Type
   TMPin = class(TBCRenderedInputPin)
   private
     FActualDataLength: DWord;
-    FDataPointer: PByte;
+    FDataPointer: Pointer;
     FMapHandle: THandle;
     FFilename: String;
     FShareName: string;
@@ -111,8 +111,17 @@ begin
   end;
 
   //write to shared memory
-  pSample.GetPointer(pbData);
-  Move(pbData^, FDataPointer^, FActualDataLength);
+  try
+    LockMap(FShareName);
+    pSample.GetPointer(pbData);
+    try
+      Move(pbData^, FDataPointer^, FActualDataLength);
+    except on EAccessViolation do
+      ///just not quit
+    end;
+  finally
+    UnLockMap;
+  end;
 
   result := S_OK;
 end;
