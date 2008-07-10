@@ -50,7 +50,7 @@ type
   TMSharedMemTIP = class(TBCTransInPlaceFilter, ISharedMemParameters)
   private
     FActualDataLength: DWord;
-    FDataPointer: PByte;
+    FDataPointer: Pointer;
     FMapHandle: THandle;
     FFilename: String;
     FShareName: String;
@@ -126,8 +126,13 @@ begin
   end;
 
   //write to shared memory
-  Sample.GetPointer(pbData);
-  Move(pbData^, FDataPointer^, FActualDataLength);
+  try
+    LockMap(FShareName);
+    Sample.GetPointer(pbData);
+    Move(pbData^, FDataPointer^, FActualDataLength);
+  finally
+    UnlockMap;
+  end;
 
   result := S_OK;
 end;

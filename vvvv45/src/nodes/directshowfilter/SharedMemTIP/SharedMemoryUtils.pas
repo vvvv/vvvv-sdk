@@ -3,55 +3,27 @@ unit SharedMemoryUtils;
 interface
 
 uses
-    classes, windows;
+  classes, windows;
 
+procedure OpenMap(out HMap: THandle; out PData: Pointer; Name: String;
+    ByteCount: Integer);
 procedure CloseMap(HMap: THandle; PData: Pointer);
 
 procedure GetSharedMem(PData: Pointer; lpszBuf: LPTSTR; cchSize: DWORD);
-
-procedure OpenMap(out HMap: THandle; out PData: PByte; Name: String;
-    ByteCount: Integer);
-
 procedure SetSharedMem(Destination, Source: LPTSTR; SourceLength: DWord);
 
+function LockMap(Name: String):Boolean;
+procedure UnlockMap;
+
 implementation
- {
- var
-   HMapMutex: THandle;
 
- const
-   REQUEST_TIMEOUT = 1000;
+var
+  HMapMutex: THandle;
 
- function LockMap:Boolean;
- begin
-   Result := true;
-   HMapMutex := CreateMutex(nil, false,
-                  pchar('MY MUTEX NAME GOES HERE'));
-   if HMixMutex = 0 then
-   begin
-     ShowMessage('Can''t create map mutex');
-     Result := false;
-   end
-   else
-   begin
-     if WaitForSingleObject(HMapMutex,REQUEST_TIMEOUT)
- 	     = WAIT_FAILED then
- 	begin
-       // timeout
-       ShowMessage('Can''t lock memory mapped file');
-       Result := false;
-     end
-   end
- end;
- 
- procedure UnlockMap;
- begin
-   ReleaseMutex(HMixMutex);
-   CloseHandle(HMixMutex);
- end;
-         }
+const
+  REQUEST_TIMEOUT = 1000;
 
-procedure OpenMap(out HMap: THandle; out PData: PByte; Name: String;
+procedure OpenMap(out HMap: THandle; out PData: Pointer; Name: String;
     ByteCount: Integer);
 var
    llInit: Boolean;
@@ -65,6 +37,7 @@ begin
 
   if (HMap = 0) then
   begin
+    //.LogWarning('Can''t Create Memory Map');
     exit;
   end;
 
@@ -72,6 +45,7 @@ begin
   if PData = nil then
   begin
     CloseHandle(HMap);
+    //.LogWarning('Can''t View Memory Map');
     exit;
   end;
 
@@ -89,11 +63,6 @@ begin
     CloseHandle(HMap);
 end;
 
-procedure SetSharedMem(Destination, Source: LPTSTR; SourceLength: DWord);
-begin
-  Move(Source^, Destination^, SourceLength);
-end;
-
 procedure GetSharedMem(PData: Pointer; lpszBuf: LPTSTR; cchSize: DWORD);
 var
    lpszTmp:LPTSTR;
@@ -109,6 +78,37 @@ begin
   end;
 
   lpszBuf[i] := chr(0);
+end;
+
+procedure SetSharedMem(Destination, Source: LPTSTR; SourceLength: DWord);
+begin
+  Move(Source^, Destination^, SourceLength);
+end;
+
+function LockMap(Name: String):Boolean;
+begin
+  Result := true;
+
+  HMapMutex := CreateMutex(nil, false, pchar('m'+Name));
+
+  if HMapMutex = 0 then
+  begin
+    Result := false;
+  end
+  else
+  begin
+    if WaitForSingleObject(HMapMutex,REQUEST_TIMEOUT) = WAIT_FAILED then
+    begin
+      // timeout
+      Result := false;
+    end
+  end
+end;
+
+procedure UnlockMap;
+begin
+  ReleaseMutex(HMapMutex);
+  CloseHandle(HMapMutex);
 end;
 
 end.
