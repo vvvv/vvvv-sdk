@@ -267,6 +267,11 @@ namespace VVVV.PluginInterfaces.V1
         
         void DeletePin(IPluginIO Pin);
         void GetCurrentTime(out double CurrentTime);
+        
+        void LogMessage(string Message);
+        void LogWarning(string Message);
+        void LogError(string Message);
+        void LogDebug(string Message);
     }
     
     //plugin
