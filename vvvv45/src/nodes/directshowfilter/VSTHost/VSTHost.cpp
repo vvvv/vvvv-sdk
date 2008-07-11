@@ -212,7 +212,7 @@ VSTHost::~VSTHost()
   //Unload the dll
   if(module)
   {
-	FreeLibrary(module);
+    FreeLibrary(module);
     module = NULL;
   }
 

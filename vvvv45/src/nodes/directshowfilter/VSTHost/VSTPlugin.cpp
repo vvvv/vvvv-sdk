@@ -48,7 +48,6 @@ void VSTPlugin::init(AEffect *effect)
 {
   this->effect = effect;
 
-
   //get the plugins properties
   numParams    = effect->numParams;
   numInputs    = effect->numInputs;
@@ -130,7 +129,7 @@ VSTPlugin::~VSTPlugin()
   }
 
   suspend ();
-  //close   (); //causes an error, why?
+  close   (); //causes an error, why?
 
   effect = NULL;
 
@@ -223,6 +222,9 @@ void VSTPlugin::open()
 
 void VSTPlugin::close()
 {
+  if(hwnd) 
+	effect->dispatcher(effect,effEditClose, 0, 0, 0, 0);
+
   effect->dispatcher( effect, effClose, 0, 0, 0, 0);
 }
 
