@@ -20,8 +20,8 @@ namespace VVVV.PluginInterfaces.V1
 	public enum TSliceMode {Single, Dynamic};
 	public enum TComponentMode {Hidden, InABox, InAWindow};	
 	public enum TPinVisibility {False, OnlyInspector, Hidden, True};
-	public enum TPinDirection {Configuration, Input, Output}
-	
+	public enum TPinDirection {Configuration, Input, Output};
+	public enum TLogType {Debug, Message, Warning, Error};	
 	
 	#region basic pins
 	
@@ -268,10 +268,7 @@ namespace VVVV.PluginInterfaces.V1
         void DeletePin(IPluginIO Pin);
         void GetCurrentTime(out double CurrentTime);
         
-        void LogMessage(string Message);
-        void LogWarning(string Message);
-        void LogError(string Message);
-        void LogDebug(string Message);
+        void Log(TLogType Type, string Message);
     }
     
     //plugin
