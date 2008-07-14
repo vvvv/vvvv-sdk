@@ -32,6 +32,7 @@ namespace VVVV.PluginInterfaces.V1
 	{
 		string Name{get; set;}
 		int Order{get; set;}
+		bool IsConnected{get;}
 	}	
 	
 	//basic config pin
