@@ -29,6 +29,7 @@
 //****************************************************************************//
 
 
+
 unit Main;
 
 interface
@@ -80,21 +81,16 @@ const
   BLOCKSIZE          =  2048;
   BLOCKALIGN         =  256;
   CHANNELMASK        =  SPEAKER_FRONT_LEFT;
-  
-  //5.1 Surround
-  CHANNELMASK5POINT1 =  SPEAKER_FRONT_LEFT    or 
+  CHANNELMASK5POINT1 =  SPEAKER_FRONT_LEFT    or
                         SPEAKER_FRONT_RIGHT   or
                         SPEAKER_FRONT_CENTER  or
                         SPEAKER_LOW_FREQUENCY or
                         SPEAKER_BACK_LEFT     or
                         SPEAKER_BACK_RIGHT;
-  
-  //7.1 Surround
   CHANNELMASK7POINT1 =  CHANNELMASK5POINT1    or
                         SPEAKER_SIDE_LEFT     or
                         SPEAKER_SIDE_RIGHT;
 
-  //18 possible outputs on the soundcard					
   CHANNELCODE : Array [0..MAXCHANNELS-1] of Integer = ( SPEAKER_FRONT_LEFT
                                                       , SPEAKER_FRONT_RIGHT
                                                       , SPEAKER_FRONT_CENTER
@@ -147,7 +143,7 @@ type
   //---------------------------------------------------------------//
   PBCVoice = ^TMVoice;
 
-  AudioSample  =  SmallInt; //-32768..32767 Int16 
+  AudioSample  =  SmallInt; //-32768..32767 Int16
   PAudioSample = ^AudioSample;
 
   TInfoArray    = Array of String;
@@ -178,11 +174,10 @@ type
     function SetBlockSize(val: Integer) : HRESULT; stdcall;
     function GetBlockSize(out val : Integer) : HRESULT; stdcall;
     function SetRouting(count: Integer; val: TRoutingArray) : HRESULT;  stdcall;
-    function GetInfo(out count : integer; out val : TInfoArray) : HRESULT; stdcall;
+    function GetInfo(out count : integer; val : TInfoArray) : HRESULT; stdcall;
   end;
 
   //---------------------------------------------------------------//
-  //Initializes the directshow filter (FPin) and communicates over the IWavePlayer-interface with the main-program
   TMWavePlayer = class(TBCSource, IWavePlayer)
   private
    FPin    : TMWavePlayerPin;
@@ -211,11 +206,10 @@ type
    function SetBlockSize(val: Integer) : HRESULT; stdcall;
    function GetBlockSize(out val : Integer) : HRESULT; stdcall;
    function SetRouting(count: Integer; val: TRoutingArray) : HRESULT;  stdcall;
-   function GetInfo(out count : integer; out val : TInfoArray) : HRESULT; stdcall;
+   function GetInfo(out count : integer; val : TInfoArray) : HRESULT; stdcall;
   end;
 
   //---------------------------------------------------------------//
-  //Manages the multichannel-routing-values
   TMWavePlayerRoute = class(TObject)
   public
    FChannelMask     : Integer;
@@ -251,11 +245,9 @@ type
   end;
 
   //---------------------------------------------------------------//
-  //This is the directshow-filter which joins the filtergraph, it holds a 'Voice' for each separat audiostream, the management of the multichannel-routing 
-  //is done by FRoute
   TMWavePlayerPin = class(TBCSourceStream)
   private
-   voicelist     : TList; //holds the voices
+   voicelist     : TList;
    FVoiceCount   : Integer;
    FRoute        : TMWavePlayerRoute;
   public
@@ -273,8 +265,6 @@ type
   end;
 
   //---------------------------------------------------------------//
-  //A voice operates on one wavefile, it can have multiple channels
-  //often different voices use the same audiodata but have different states (play,phase,volume...);
   TMVoice  = class(TObject)
   private
    FFilename       : String;
@@ -354,12 +344,12 @@ begin
 
 end;
 
-//Called first 
+//Called first
 constructor TMWavePlayer.CreateFromFactory (Factory: TBCClassFactory; const  Controller : IUnknown);
 var
  hr : HRESULT;
 begin
- Create(Factory.Name, Controller, hr);// calls the constructor of TMWavePlayer
+ Create(Factory.Name, Controller, hr);
 
 end;
 
@@ -373,14 +363,15 @@ begin
   else
    Result := E_FAIL
  else
-  Result := inherited NonDelegatingQueryInterface(IID, Obj); //if looking for IBaseFilter for example
+  Result := inherited NonDelegatingQueryInterface(IID, Obj);
 
  Result := Result;
 
 end;
 
-//IWavePlayer-Definitions. Used to communicate with the main-program and let it control the processing
-function TMWavePlayer.GetInfo(out count : integer; out val : TInfoArray) : HRESULT; stdcall;
+//IWavePlayer-Definitions----//
+
+function TMWavePlayer.GetInfo(out count : integer; val : TInfoArray) : HRESULT; stdcall;
 var
   voice : PBCVoice;
   i,k : integer;
@@ -394,7 +385,6 @@ begin
   count     := 0;
   nChannels := 0;
 
-  //number of the channels of all the active voices
   for i := 0 to FPin.FVoiceCount - 1 do
   begin
    voice := FPin.VoiceCheck(i);
@@ -404,35 +394,33 @@ begin
 
   end;
 
-  SetLength(val,nChannels);
+  //SetLength(val,nChannels);
 
-  //for every voice 
   for i := 0 to FPin.FVoiceCount - 1 do//-------------------------------------//
   begin
    voice := FPin.VoiceCheck(i);
 
-   if voice.FInitialized then 
+   if voice.FInitialized then
    begin
 
-     //for every channel of the voice
      for k := 0 to voice.FChannelCount - 1 do
      begin
        routeTo := FPin.Route.Routing[n];
 
        str := ExtractFileName(voice.FFilename);
               
-	   //see where it is routed
        if str <> '' then
        if not FPin.Route.FUseFileMapping then
         str := str + '  ' + FPin.Route.FChannelName[routeTo mod FPin.Route.FRoutingCount]
        else
         str := str + '  ' + CHANNELNAME[voice.FChannelMap[k] mod MAXCHANNELS];
 
-       //val[count] := StringReplace(str,'.wav','',[rfReplaceAll,rfIgnoreCase]);  //strangely a source of errors
+       //val[count] := StringReplace(str,'.wav','',[rfReplaceAll,rfIgnoreCase]);
 
        val[count] := str;
 
-       inc(count);
+       if count < 255 then
+        inc(count);
 
        n := (n + 1) mod FPin.Route.FRoutingCount;
      end;
@@ -446,8 +434,6 @@ begin
 
 end;
 
-//Called everytime in the evaluate-method in the vvvv-waveplayer. The number of voices is the same as the highest 
-//SliceCount of the input-pins of the node, with exception of the RoutingPin
 function TMWavePlayer.Voices(voicecount: integer): HResult; stdcall;
 begin
 
@@ -459,8 +445,7 @@ begin
  Result := S_OK;
 end;
 
-//At the first call of the evaluate-method in the node Read is called, after that all the time 
-//something in the pin changed 
+
 function TMWavePlayer.Read(index: integer; FileName : String): HResult; stdcall;
 var
   v,vv : PBCVoice;
@@ -480,7 +465,7 @@ begin
   if FileName = v.FFileName then
   exit;
 
-  //often voices operate on the same audiofile, than an existent voice is cloned
+
   for i := 0 to FPin.voicelist.Count - 1 do
   begin
    vv := FPin.voicelist.Items[i];
@@ -492,15 +477,13 @@ begin
    end;
 
   end;//end for i------------------------//
-  
-  //if no cloning...  
+
 
   FPin.VoiceFree(index);
 
-  //if the voice is not cloned,  the data must be loaded
   v.ReadTheFile(pchar(FileName));
 
-  FPin.SetFileMapping;
+  FPin.SetFileMapping;//Error afterwards?
 
 
 end;
@@ -541,7 +524,6 @@ begin
   Result := S_OK;
 end;
 
-// panning left|right
 function TMWavePlayer.Pan(index: integer; val : double): HResult; stdcall;
 var
   v: PBCVoice;
@@ -560,7 +542,6 @@ begin
   Result := S_OK;
 end;
 
-//controls the phaseshift
 function TMWavePlayer.Phase(index: integer; val : double): HResult; stdcall;
 var
   v: PBCVoice;
@@ -578,7 +559,6 @@ begin
   Result := S_OK;
 end;
 
-//speed of the audiostream
 function TMWavePlayer.Pitch(index: integer; val : double): HResult; stdcall;
 var
   v: PBCVoice;
@@ -659,7 +639,7 @@ begin
    exit;
   end;
 
-  v.FFStartTime := val;//at first set the temporary variable
+  v.FFStartTime := val;
 
   Result := S_OK;
 end;
@@ -676,7 +656,7 @@ begin
    exit;
   end;
 
-  v.FFEndTime := val;//at first set the temporary variable
+  v.FFEndTime := val;
 
   Result := S_OK;
 end;
@@ -764,7 +744,6 @@ begin
   Result := S_OK;
 end;
 
-//set where the channels (audiostream) are pit out
 function TMWavePlayer.setRouting( count : Integer; val : TRoutingArray ) : HRESULT; stdcall;
 var
   i,n : integer;
@@ -776,9 +755,9 @@ begin
   if val[i] = -1 then inc(n);
 
   if n = count then
-   FPin.SetFileMapping  //if all values are set to -1 than original mapping of the files is used
+   FPin.SetFileMapping
   else
-   FPin.SetRouting(count,val); //else the values are used to set the routing-table
+   FPin.SetRouting(count,val);
 
   Result := S_OK;
 end;
@@ -983,8 +962,6 @@ begin
 
 end;
 
-//this method is called, when the filtergraph-connection is closed or reclosed after the routing-pin or blocksize
-//hase changed
 function TMWavePlayerPin.GetMediaType(pmt : PAMMediaType) : HRESULT;
 var
  size : longint;
@@ -992,8 +969,8 @@ var
 
 begin
 
- size := sizeof(TWAVEFORMATEXTENSIBLE);//the extended version of the format can hold information about multichannel-routing
- pwf  := CoTaskMemAlloc(size);         
+ size := sizeof(TWAVEFORMATEXTENSIBLE);
+ pwf  := CoTaskMemAlloc(size);
 
  if pwf = nil then begin result := E_OUTOFMEMORY; exit; end;
 
@@ -1004,7 +981,7 @@ begin
  pmt.formattype           := FORMAT_WaveFormatEx;
  pmt.bFixedSizeSamples    := TRUE;
  pmt.bTemporalCompression := FALSE;
- pmt.lSampleSize          := (BITSPERSAMPLE div BITSPERBYTE) * Route.FFChannelCount; //one frame
+ pmt.lSampleSize          := (BITSPERSAMPLE div BITSPERBYTE) * Route.FFChannelCount;
  pmt.pUnk                 := nil;
 
  pwf.Format.cbSize          := 22;
@@ -1019,7 +996,7 @@ begin
  pwf.Samples.wSamplesPerBlock    := 0;
  pwf.Samples.wReserved           := 0;
  pwf.SubFormat                   := KSDATAFORMAT_SUBTYPE_PCM;
- pwf.dwChannelMask               := Route.FChannelMask; //information which output be active
+ pwf.dwChannelMask               := Route.FChannelMask;
 
 
  Result := S_OK;
@@ -1041,7 +1018,6 @@ begin
   // Ask the allocator to reserve us the memory
   Result := Allocator.SetProperties(Properties^, Actual);
 
-  //if the proposed buffer-size is not working, try this standard values
   if Result <> S_OK then
   begin
    Route.BlockSize := BLOCKSIZE;
@@ -1069,8 +1045,6 @@ begin
 
 end;
 
-//the file-mapping value is assigned to every audiofile, for example left/right for 
-//a stereo-file
 procedure TMWavePlayerPin.SetFileMapping;
 var
  i,k : Integer;
@@ -1091,7 +1065,6 @@ begin
 
     if voice = nil then Continue;
 
-	//the file-mapping of each individual file is used to find out which channelmask should be applied (channelmask)
     if not voice.FReload then
     for k := 0 to voice.FFChannelCount - 1 do
     begin
@@ -1116,8 +1089,6 @@ begin
 
 end;
 
-//this method is called everytime in the filtergraph when a mediasample is to be filled and delivered 
-//downstream to the audioout-node.
 function TMWavePlayerPin.FillBuffer(ims: IMediaSample) : HRESULT;
 var
  voice      : PBCVoice;
@@ -1131,7 +1102,6 @@ var
 
 //----------------------------------------------------------------------------//
 
-//set the whole buffer to zero
 procedure SetSilent;
 var
  sinkByte : PByte;
@@ -1158,26 +1128,22 @@ begin
  sinkSample := PAudioSample(sinkByte);
 
  nChannels  := Route.ChannelCount;
- nSamples   := ims.GetSize div BYTESPERSAMPLE; //the size of the buffer in bytes devided through bytespersample
- nVoices    := FVoiceCount;                    
- nFrames    := nSamples div nChannels; //  f0 [c0 c1 c2 c3] f1[c0 c1 c2 c3] f2[c0 c1 c2 c3] f3[c0 c1 c2 c3]... frames
+ nSamples   := ims.GetSize div BYTESPERSAMPLE;
+ nVoices    := FVoiceCount;                        //???
+ nFrames    := nSamples div nChannels;
 
  SetLength(buffer,nSamples);
 
- //buffer is there to hold all the samples as an array and to copy it 
- //to the imediasample which is delivered by the directshow-graph
  for i := 0 to nSamples - 1 do
  buffer[i] := 0;
 
- //for every of the 18 possible channels there is a buffer which 
- //with one element per frame
  SetLength(channel,MAXCHANNELS);
 
  for k := 0 to MAXCHANNELS - 1 do
  begin
   SetLength(channel[k],nFrames);
 
-  for i := 0 to nFrames - 1 do //set to zero
+  for i := 0 to nFrames - 1 do
   channel[k][i] := 0;
  end;
 
@@ -1185,11 +1151,6 @@ end;
 
 //----------------------------------------------------------------------------//
 
-//the vvvv-graph and the directshow-graph are not synchronized
-//this can be a source of errors. For example if the audiodata of the 
-//voice has changed. This is why we update to our new state/data 
-//which is held in the FF... temporary variables of the voice till here,
-//so it is not done inbetween.
 procedure UpdateVoices;
 var
  i : integer;
@@ -1209,7 +1170,6 @@ end;
 
 //----------------------------------------------------------------------------//
 
-//every voice is called to write the actual audiodata in its buffer
 procedure GetVoices;
 var
  v : Integer;
@@ -1228,8 +1188,6 @@ end;
 
 //----------------------------------------------------------------------------//
 
-  //if the original mapping of the files (for example SPEAKER_FRONT_LEFT for a mono-file)
-  //is used
   procedure FillChannelFileMapping;
   var
    v,k,f : Integer;
@@ -1241,15 +1199,15 @@ end;
 
     voice := voiceList.Items[v];
 
-	if voice.FInitialized then
+    if voice.FInitialized then
     for k := 0 to voice.FChannelCount - 1 do
     begin
 
-      map := voice.FChannelMap[k]; //to which channel
+      map := voice.FChannelMap[k];
 
       for f := 0 to nFrames - 1 do
       if voice.FPlay then
-      channel[map][f] := channel[map][f] + (voice.FChannel[k][f] / Route.FChannelFactor[map]); //add the data and devide through the number of audiostreams which write into it
+      channel[map][f] := channel[map][f] + (voice.FChannel[k][f] / Route.FChannelFactor[map]);
 
     end;
 
@@ -1259,7 +1217,6 @@ end;
 
 //----------------------------------------------------------------------------//
 
-  //use the data from the RoutingPin to map the audiostreams to the userdefined outputs
   procedure FillChannelRouting;
   var
    v,k,f   : Integer;
@@ -1278,11 +1235,11 @@ end;
     for k := 0 to voice.FChannelCount - 1 do
     begin
 
-     routeTo := Route.Routing[count]; //route to which channel
+     routeTo := Route.Routing[count];
 
      for f := 0 to nFrames - 1 do
      if voice.FPlay then
-     channel[routeTo][f] := channel[routeTo][f] + (voice.FChannel[k][f] / Route.FChannelFactor[routeTo]);//add the data and devide through the number of audiostreams which write into it
+     channel[routeTo][f] := channel[routeTo][f] + (voice.FChannel[k][f] / Route.FChannelFactor[routeTo]);
 
      count := (count + 1) mod Route.RoutingCount;
 
@@ -1300,21 +1257,18 @@ end;
    shift : Integer;
   begin
 
-   //per frame
    for f := 0 to nFrames - 1 do
    begin
     shift := f * nChannels;
 
-	//all active channels make up one frame
     for k := 0 to nChannels - 1 do
-    buffer[shift + k] := channel[k][f]; 
+    buffer[shift + k] := channel[k][f]; //channelFactor???
    end;
 
   end;
 
 //----------------------------------------------------------------------------//
 
-  //copy the data from the buffer into the imediasample-buffer
   procedure FillSink;
   var
    i : Integer;
@@ -1361,8 +1315,6 @@ begin
 
 end;
 
-
-//if a voice is initialized at the given index return it, otherwise initialze a new one
 function TMWavePlayerPin.VoiceCheck(index: Integer): PBCVoice;
 var
  v: PBCVoice;
@@ -1383,7 +1335,6 @@ begin
 
 end;
 
-//
 procedure TMWavePlayerPin.VoiceFree(index: Integer);
 var
   v, vv: PBCVoice;
@@ -1402,7 +1353,7 @@ begin
   end;
 
   if v <> nil then  
-  v.Reset; //reset the voice
+  v.Reset; //
 
 end;
 
@@ -1462,7 +1413,6 @@ begin
  inherited;
 end;
 
-//open a wavefile and read in the data
 function TMVoice.ReadTheFile(AFileName: String): Boolean;
 var
   _Mem: PByte;
@@ -1523,7 +1473,7 @@ begin
     i := i - ires;
   end;
 
-  //initialize the temporary FF.. variables they will not update the real ones until the fillebuffer-method of tmwaveplayerpin 
+  //initialize
   FFilename        := AFileName;
   FFData           := _Mem;
   FFSize           := mmiSub.cksize;
@@ -1536,9 +1486,6 @@ begin
   for i := 0 to MAXCHANNELS - 1 do
   FFChannelMap[i] := 0;
 
-  //if the file is a standard mono/stereo file than no channelmask is defined for it.
-  //so a standard routing is assigned SPEAKER_FRONT_LEFT for a monofile and 
-  //SPEAKER_FRONT_LEFT and SPEAKER_FRONT_RIGHT for a stereofile
   if FFWaveFormat.Format.wFormatTag = WAVE_FORMAT_PCM then
   begin
 
@@ -1557,7 +1504,6 @@ begin
   begin
    count := 0;
 
-   //if the channelmask of the file is set, use it for the mapping
    if FFWaveFormat.dwChannelMask <> 0 then
    for i := 0 to MAXCHANNELS - 1 do
    begin
@@ -1570,7 +1516,6 @@ begin
 
    end;
 
-   //set to the 5.1 specification
    if (FFWaveFormat.dwChannelMask = 0) and (FFWaveFormat.Format.nChannels = 6) then
    begin
     FFWaveFormat.dwChannelMask := CHANNELMASK5POINT1;
@@ -1584,7 +1529,6 @@ begin
 
    end;
 
-   //set to the 7.1 specification
    if (FFWaveFormat.dwChannelMask = 0) and (FFWaveFormat.Format.nChannels = 8) then
    begin
     FFWaveFormat.dwChannelMask := CHANNELMASK7POINT1;
@@ -1606,12 +1550,11 @@ begin
   MMIOClose(hmm,0);
 
   Result       := true;
-  FInitialized := true; //after the data is loaded it can be used
+  FInitialized := true;
   FReload      := true;
 
 end;
 
-//clone the values of another voice, but first only the temporary FF.. variables 
 procedure TMVoice.Clone(other: PBCVoice);
 var
  k : integer;
@@ -1663,6 +1606,7 @@ begin
 
 end;
 
+
 procedure TMVoice.Reset;
 begin
 
@@ -1680,7 +1624,6 @@ begin
 
 end;
 
-//if the voice is reloaded it is updated in the fillbuffer-method of the pin 
 procedure TMVoice.Update;
 var
    i : integer;
@@ -1724,7 +1667,6 @@ begin
 
 end;
 
-//called by tmwaveplayerpin.fillbuffer
 function TMVoice.FillBuffer(size: integer) : HRESULT;
 var
   nFrames     : Integer;
@@ -1741,15 +1683,13 @@ var
   frameIndex  : Integer;
   sourceFrame : TSourceFrame;
 
-  //the phase goes from 0..to 1 
+
   function TimeToPhase(value : Double) : Double;
   begin
    Result := value / FDuration ;
 
   end;           
 
-  //the whole interval is always 0..1, FStartTime and FEndTime are 
-  //mapped to a value between 0 and 1
   procedure SetInterval;
   begin
 
@@ -1796,9 +1736,6 @@ var
 
    FChannelSize := nFrames;
 
-   //              f0   f1  f2  f3  f4  f5  f6...
-   //channel0   0   1    2   3   4   5    6
-   //channel1   0   1    2   3   4   5    6...FChannelSize
    for k := 0 to nChannels - 1 do
    begin
     SetLength(FChannel[k],FChannelSize);
@@ -1811,21 +1748,19 @@ var
 
   procedure Seek;
   begin
-   phaseSeek := TimeToPhase(FSeekPosition); //the node delivers the time and it is mapped to a phase-value
+   phaseSeek := TimeToPhase(FSeekPosition);
 
-   //the seeked position must be between phaseStart and phaseEnd
    if loop then
    begin
     if phaseSeek < phaseStart then phaseSeek := phaseStart;
     if phaseSeek > phaseEnd   then phaseSeek := phaseEnd;
    end;
 
-   //phaseSeek must be between 0 and 1
    if phaseSeek < 0 then phaseSeek := 0;
    if phaseSeek > 1 then phaseSeek := 1;
 
    FPhase  := phaseSeek;
-   FDoSeek := false;     //seek only once
+   FDoSeek := false;
 
    FStartTime := FFStartTime; 
    FEndTime   := FFEndTime;
@@ -1834,7 +1769,6 @@ var
 
   end;
 
-  //shift FPhase cyclic over the interval between phaseStart and phaseEnd
   procedure ShiftPhase;
   var
    difference : Double;
@@ -1845,23 +1779,20 @@ var
 
    FPhase := FPhase + (difference * interval);
 
-   //FPhase must be in the interval
    while FPhase > phaseEnd do
    FPhase := FPhase - interval;
 
    while FPhase < phaseStart do
    FPhase := FPhase + interval;
 
-   FPhaseShiftPrev := FPhaseShift; //FPhaseShiftPrev must be used to shift always only the difference not the whole value of FPhaseShift
+   FPhaseShiftPrev := FPhaseShift;
 
   end;
 
-  //everytime fillbuffer is called, FPhase has to move on depending on the 
-  //loop-interval and the pitch(which also can be negative(
+
   function SetWheel : Boolean;
   begin
 
-   //if looping is not activated, than stop if 0 or 1 is reached
    if not loop then
    if ((pitch >= 0) and (FPhase >= 1)) or
       ((pitch <  0) and (FPhase <  0)) then
@@ -1875,7 +1806,7 @@ var
 
     if interval > 0 then
     begin
-     while FPhase > phaseEnd do   //subtract interval till FPhase lies between the phaseEnd and phaseStart
+     while FPhase > phaseEnd do
      FPhase := FPhase - interval;
 
      while FPhase < phaseStart do
@@ -1889,11 +1820,9 @@ var
 
    if FPhase >= 1 then FPhase := 0;
 
-   wheel  := FPhase * FSourceFrames; //the value 0..1 times the number of sourceframes is the frameindex (note : not the sampleindex)
+   wheel  := FPhase * FSourceFrames;
 
-   FPhase := FPhase + (FFrameFraction * pitch); //the loop in processes frame-by-frame, so for every 
-                                                //time one framefraction (1 / sourceframes) can be added
-												//pitch = 2 would mean doubled speed
+   FPhase := FPhase + (FFrameFraction * pitch);
 
    if FSync then
    if (FPhase <= phaseStart) or (FPhase >= phaseEnd) then
@@ -1906,7 +1835,6 @@ var
 
   end;
 
-  //get the audiosamples in the file
   procedure SetSource;
   var
    byteIndex        : Integer;
@@ -1915,21 +1843,19 @@ var
    k                : Integer;
   begin
 
-   //set the pointer to the source
    source           := FData;
-   sourceFrameIndex := round(wheel); 
+   sourceFrameIndex := round(wheel);
 
-   if sourceFrameIndex >= FSourceFrames then  //for security reasons
+   if sourceFrameIndex >= FSourceFrames then  //security
    sourceFrameIndex := FSourceFrames - 1;
 
-   if sourceFrameIndex < 0 then               //for security reasons
+   if sourceFrameIndex < 0 then
    sourceFrameIndex := 0;
 
-   byteIndex := sourceFrameIndex * (BYTESPERSAMPLE * nChannels); 
+   byteIndex := sourceFrameIndex * (BYTESPERSAMPLE * nChannels);
 
-   Inc(source,byteIndex);//set the pointer to the byteindex
+   Inc(source,byteIndex);
 
-   //fill the frame
    for k := 0 to nChannels - 1 do
    begin
     sourceFrame[k] := PAudioSample(source)^;
@@ -1939,8 +1865,6 @@ var
 
   end;
 
-  //fading can be applied to get rid of audible cracks
-  //when the it is jumping from one to the other position in the audiostream
   procedure SetGain;
   var
    fraction : Double;
@@ -1965,8 +1889,6 @@ var
 
   end;
 
-  //the actual source-frame is copied one per pass to the
-  //channel-data in FChannel
   procedure FillChannel;
   var
    k : Integer;
@@ -1981,14 +1903,12 @@ var
 
   end;
 
-  //actual playingposition in time 
   procedure SetPosition;
   begin
     FPosition := FDuration * FPhase;
 
   end;
 
-//-------------------------------------------------------------------------------------------------------------------------------------//
 begin
 
   Result := ERROR;
@@ -2029,7 +1949,6 @@ end;
 
 initialization
 
- //COM-Stuff 
  TBCClassFactory.CreateFilter( TMWavePlayer,
                                FilterName,
                                CLSID_WavePlayer,
