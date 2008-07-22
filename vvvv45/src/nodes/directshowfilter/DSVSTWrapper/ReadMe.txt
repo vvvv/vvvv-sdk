@@ -2,7 +2,7 @@
 //DSVSTWrapper
 
 //////description
-//Simple Vst-Host which is wrapped in a directshow-filter to work with vvvv
+//Vst-Host wrapped in a directshow-filter
 
 //////licence
 //GNU Lesser General Public License (LGPL)
@@ -19,4 +19,7 @@
 //meanimal xsnej@gmx.de
 
 ___________________________________
-please have a look at http://vvvv.org
+people that have been interested in
+DSVSTWrapper
+have also been interested in
+http://vvvv.org
