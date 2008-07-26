@@ -1,0 +1,173 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta16.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\SRTReader\trunk\SRTReader (String) help.v4p">
+   <BOUNDS type="Window" left="7110" top="3825" width="9765" height="8070">
+   </BOUNDS>
+   <NODE nodename=":PLUGINS:\SRTReader.dll|vvvv.Nodes.SRTReaderNode" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="3285" top="1020" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7365" top="5760" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3285" top="1020" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Position" visible="1">
+   </PIN>
+   <PIN pinname="Delay" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Lines Count" visible="1">
+   </PIN>
+   <PIN pinname="Elapsed" visible="1">
+   </PIN>
+   <PIN pinname="Remaining" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="FileStream (DShow9)" id="1">
+   <BOUNDS type="Node" left="2160" top="495" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Position" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="Renderer (EX9)" componentmode="InABox" id="2">
+   <BOUNDS type="Node" left="405" top="3870" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="3705" top="12465" width="6120" height="4860">
+   </BOUNDS>
+   <BOUNDS type="Box" left="405" top="3870" width="4455" height="3660">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="Quad (DX9)" id="3">
+   <BOUNDS type="Node" left="975" top="2505" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="VideoTexture (EX9.Texture VMR9)" id="4">
+   <BOUNDS type="Node" left="1230" top="1755" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Video" dstnodeid="4" dstpinname="Video">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Texture Out" dstnodeid="3" dstpinname="Texture">
+   </LINK>
+   <NODE nodename="Group (EX9)" id="5">
+   <BOUNDS type="Node" left="1515" top="3285" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Layer" dstnodeid="2" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Position" dstnodeid="0" dstpinname="Position">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6">
+   <BOUNDS type="Node" left="3735" top="405" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="8475" top="5970" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3735" top="405" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Delay">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Delay">
+   </LINK>
+   <NODE nodename="Text (EX9.Geometry)" id="8">
+   <BOUNDS type="Node" left="3210" top="2400" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Text" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename=":EFFECTS:\GouraudDirectional.fx" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="2805" top="2850" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6585" top="9360" width="12000" height="12000">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2805" top="2850" width="6000" height="6000">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Layer" dstnodeid="5" dstpinname="Layer 1">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="8" dstpinname="Text">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Mesh" dstnodeid="9" dstpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Layer" dstnodeid="5" dstpinname="Layer 2">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10">
+   <BOUNDS type="Node" left="3480" top="1725" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="12495" top="6465" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3480" top="1725" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Line Count|">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11">
+   <BOUNDS type="Node" left="4605" top="1740" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="13140" top="6945" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4605" top="1740" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Time elapsed|">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12">
+   <BOUNDS type="Node" left="5775" top="1740" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="13245" top="8400" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5775" top="1740" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Time remaining|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Lines Count" dstnodeid="10" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Elapsed" dstnodeid="11" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Remaining" dstnodeid="12" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15">
+   <BOUNDS type="Node" left="5055" top="2355" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="13155" top="7620" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5055" top="2355" width="4515" height="5025">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="-1" pintype="Input" slicecount="1" values="|SRT Reader&cr;&lf;Reads a subtitle file and outputs the Text when needed. Text is returned as a spread (One spread per line).&cr;&lf;&cr;&lf;Only SRT files are supported for far.&cr;&lf;&cr;&lf;You can use the  &quot;Delay&quot; input pin to adjust the timeline if your subtitle is not synchronized with the videostream.&cr;&lf;&cr;&lf;The three other outputs are:&cr;&lf;-Line count: Number of lines the current subtitle has.&cr;&lf;-Time Elasped: Time elasped since the current subtitle had started displaying.&cr;&lf;-Time Remaining: Time until the subtitle will disappear.&cr;&lf;&cr;&lf;If you have any problem with a file, open the Inspektor and check the &quot;Status&quot; pin (should display &quot;OK&quot;).&cr;&lf;&cr;&lf;In case a file doesn&apos;t work, please send it to me at: &cr;&lf;julien@mrvux.com&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="-1" pintype="Output">
+   </PIN>
+   </NODE>
+   </PATCH>
