@@ -41,6 +41,7 @@ namespace vvvv.Nodes
         private IValueIn FPinInChannels;
         private IValueIn FPinInVolumeOutput;
         private IValueIn FPinInActive;
+        private IStringOut FPinErrorCode;
 
         private ASIOPROC myAsioProc;
         private int FDeviceIndex = -1;
@@ -49,9 +50,13 @@ namespace vvvv.Nodes
         #region Set Plugin Host
         public void SetPluginHost(IPluginHost Host)
         {
-            BassAsioUtils.LoadPlugins();
+            
+            
 
             this.FHost = Host;
+            this.FHost.Log(TLogType.Message, "Audio Out, Set plugin Host Start");
+
+            BassAsioUtils.LoadPlugins();
 
             this.FHost.CreateStringInput("Device", TSliceMode.Single, TPinVisibility.True, out this.FPinInDevice);
             this.FPinInDevice.SetSubType("", false);
@@ -65,7 +70,10 @@ namespace vvvv.Nodes
             this.FHost.CreateValueInput("Channels",1,null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInChannels);
             this.FPinInChannels.SetSubType(double.MinValue, double.MaxValue, 1, -1, false, false, true);
 
+            this.FHost.CreateStringOutput("Status", TSliceMode.Single, TPinVisibility.True, out this.FPinErrorCode);
+
             this.myAsioProc = new ASIOPROC(AsioCallback);
+            this.FHost.Log(TLogType.Message, "Audio Out, Set plugin Host End");
 
         }
         #endregion
@@ -90,6 +98,7 @@ namespace vvvv.Nodes
             #region Channel and device
             if (this.FPinInChannels.PinIsChanged || this.FPinInDevice.PinIsChanged)
             {
+                this.FHost.Log(TLogType.Message, "Evaluate Start");
                 string device;
                 this.FPinInDevice.GetString(0, out device);
 
@@ -113,6 +122,7 @@ namespace vvvv.Nodes
 
                 this.FOutputHandled.Clear();
                 BassAsio.BASS_ASIO_Stop();
+
                 BassAsio.BASS_ASIO_ChannelReset(false, -1, BASSASIOReset.BASS_ASIO_RESET_PAUSE | BASSASIOReset.BASS_ASIO_RESET_JOIN);
 
                 if (this.FDeviceIndex != -1 && this.FPinInChannels.IsConnected)
@@ -173,16 +183,19 @@ namespace vvvv.Nodes
                     bool start = BassAsio.BASS_ASIO_Start(0);
                     if (!start)
                     {
+                        this.FPinErrorCode.SetString(0, BassAsio.BASS_ASIO_ErrorGetCode().ToString());
                         this.FHost.Log(TLogType.Error, "Error: Start failed");
                         this.FHost.Log(TLogType.Error, BassAsio.BASS_ASIO_ErrorGetCode().ToString());
                     }
                     else
                     {
-                        this.FHost.Log(TLogType.Debug, "Debug: Start successful");
+                        this.FHost.Log(TLogType.Message, "DEBUG: Start Success");
+                        this.FPinErrorCode.SetString(0, "OK");
                     }
                     
                     UpdateChannels();
                 }
+                this.FHost.Log(TLogType.Message, "Evaluate End");
             }
             #endregion
 

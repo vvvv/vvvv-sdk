@@ -203,7 +203,6 @@ namespace BassSound.Streams
         }
         #endregion
 
-
         #region Auto Evaluate
         public bool AutoEvaluate
         {
