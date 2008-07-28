@@ -60,10 +60,10 @@ namespace vvvv.Nodes
             this.FPinInActive.SetSubType(0.0, 1.0, 1, 0, false, true, true);
 
             this.FHost.CreateValueInput("Volume", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInVolumeOutput);
-            this.FPinInVolumeOutput.SetSubType(0, 1, 0, 1, false, false, false);
+            this.FPinInVolumeOutput.SetSubType(0, 1, 0.01, 1, false, false, false);
 
             this.FHost.CreateValueInput("Channels",1,null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInChannels);
-            this.FPinInChannels.SetSubType(double.MinValue, double.MaxValue, 0, -1, false, false, true);
+            this.FPinInChannels.SetSubType(double.MinValue, double.MaxValue, 1, -1, false, false, true);
 
             this.myAsioProc = new ASIOPROC(AsioCallback);
 
@@ -96,8 +96,19 @@ namespace vvvv.Nodes
                 this.FDeviceIndex = BassAsioUtils.GetDeviceIndex(device);
                 if (this.FDeviceIndex != -1)
                 {
-                    BassAsio.BASS_ASIO_Init(this.FDeviceIndex);
+                    bool result = BassAsio.BASS_ASIO_Init(this.FDeviceIndex);
+                    if (result)
+                    {
+                        this.FHost.Log(TLogType.Message, "Msg: Device " + device + " initialized");
+                    }
+                    else
+                    {
+                        this.FHost.Log(TLogType.Error, "Error: Device " + device + " initialization failed");
+                        this.FHost.Log(TLogType.Error, BassAsio.BASS_ASIO_ErrorGetCode().ToString());
+                    }
+
                     BassAsio.BASS_ASIO_SetDevice(this.FDeviceIndex);
+
                 }
 
                 this.FOutputHandled.Clear();
@@ -114,42 +125,62 @@ namespace vvvv.Nodes
                         this.FPinInChannels.GetValue(i, out dhandle);
                         int handle = Convert.ToInt32(dhandle);
 
-                        //Check if the channel has its own handler
-                        if (!BassAsioUtils.InputChannels.ContainsKey(handle))
+                        if (handle != 0 && handle != -1)
                         {
-                            BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(handle);
 
-                            BassAsio.BASS_ASIO_ChannelEnable(false, asiooutindex, myAsioProc, new IntPtr(handle));
-                            if (info.chans == 1)
+                            //Check if the channel has its own handler
+                            if (!BassAsioUtils.InputChannels.ContainsKey(handle))
                             {
-                                //No need to join on mono channels
-                                asiooutindex++;
+                                BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(handle);
+
+                                BassAsio.BASS_ASIO_ChannelEnable(false, asiooutindex, myAsioProc, new IntPtr(handle));
+                                if (info.chans == 1)
+                                {
+                                    //No need to join on mono channels
+                                    asiooutindex++;
+                                }
+                                else
+                                {
+                                    for (int chan = 1; chan < info.chans; chan++)
+                                    {
+                                        bool join = BassAsio.BASS_ASIO_ChannelJoin(false, asiooutindex + 1, asiooutindex);
+                                        if (!join)
+                                        {
+                                            this.FHost.Log(TLogType.Error, "Error: join failed");
+                                            this.FHost.Log(TLogType.Error, BassAsio.BASS_ASIO_ErrorGetCode().ToString());
+                                        }
+                                    }
+
+                                    BassAsio.BASS_ASIO_ChannelSetFormat(false, asiooutindex, BASSASIOFormat.BASS_ASIO_FORMAT_FLOAT);
+                                    BassAsio.BASS_ASIO_ChannelSetRate(false, asiooutindex, (double)info.freq);
+                                    BassAsio.BASS_ASIO_SetRate((double)info.freq);
+
+                                    asiooutindex += info.chans;
+                                }
                             }
                             else
                             {
-                                for (int chan = 1; chan < info.chans; chan++)
-                                {
-                                    BassAsio.BASS_ASIO_ChannelJoin(false, asiooutindex + 1, asiooutindex);
-                                }
+                                BassAsioHandler handler = BassAsioUtils.InputChannels[handle];
+                                handler.SetMirror(asiooutindex);
+                                asiooutindex += 2;
 
-                                BassAsio.BASS_ASIO_ChannelSetFormat(false, asiooutindex, BASSASIOFormat.BASS_ASIO_FORMAT_FLOAT);
-                                BassAsio.BASS_ASIO_ChannelSetRate(false, asiooutindex, (double)info.freq);
-                                BassAsio.BASS_ASIO_SetRate((double)info.freq);
-
-                                asiooutindex += info.chans;
+                                this.FOutputHandled.Add(asiooutindex);
+                                this.FOutputHandled.Add(asiooutindex + 1);
                             }
                         }
-                        else
-                        {
-                            BassAsioHandler handler = BassAsioUtils.InputChannels[handle];
-                            handler.SetMirror(asiooutindex);
-                            asiooutindex += 2;
-
-                            this.FOutputHandled.Add(asiooutindex);
-                            this.FOutputHandled.Add(asiooutindex + 1);
-                        }
                     }
-                    BassAsio.BASS_ASIO_Start(0);
+
+                    bool start = BassAsio.BASS_ASIO_Start(0);
+                    if (!start)
+                    {
+                        this.FHost.Log(TLogType.Error, "Error: Start failed");
+                        this.FHost.Log(TLogType.Error, BassAsio.BASS_ASIO_ErrorGetCode().ToString());
+                    }
+                    else
+                    {
+                        this.FHost.Log(TLogType.Debug, "Debug: Start successful");
+                    }
+                    
                     UpdateChannels();
                 }
             }
@@ -226,11 +257,13 @@ namespace vvvv.Nodes
         }
         #endregion
 
+        #region Dispose
         public void Dispose()
         {
             BassAsio.BASS_ASIO_Stop();
             BassAsio.BASS_ASIO_ChannelReset(false, -1, BASSASIOReset.BASS_ASIO_RESET_PAUSE | BASSASIOReset.BASS_ASIO_RESET_JOIN);
         }
+        #endregion
 
         #region Update Channels
         private void UpdateChannels()

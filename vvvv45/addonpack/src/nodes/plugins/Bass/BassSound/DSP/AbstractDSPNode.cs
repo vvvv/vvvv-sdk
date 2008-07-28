@@ -11,13 +11,19 @@ namespace vvvv.Nodes
     /// All the effects are applied in the setDSP node, this will just return the right structure.
     /// </summary>
     /// <typeparam name="T">Effect Structure to send to bass.</typeparam>
-    internal abstract class AbstractDSPNode<T>
+    public abstract class AbstractDSPNode<T>
     {
+        private IPluginHost FHost;
+
+        private IValueIn FPinInPriority;
 
         #region SetPluginHost
         public void SetPluginHost(IPluginHost Host)
         {
+            this.FHost = Host;
 
+            this.FHost.CreateValueInput("Priority", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPriority);
+            this.FPinInPriority.SetSubType(double.MinValue, double.MaxValue, 0, 0, false, false, true);
         }
         #endregion
 

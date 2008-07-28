@@ -67,31 +67,31 @@ namespace vvvv.Nodes
             Bass.BASS_Init(0, 48000, 0, IntPtr.Zero, null);
 
             this.FHost.CreateValueInput("Do Seek", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDoSeek);
-            this.FPinInDoSeek.SetSubType(0, 1, 0, 0, true, false, true);
+            this.FPinInDoSeek.SetSubType(0, 1, 1, 0, true, false, true);
 
             this.FHost.CreateValueInput("Seek Position", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPosition);
-            this.FPinInPosition.SetSubType(0, double.MaxValue, 0, 0.0, false, false, false);
+            this.FPinInPosition.SetSubType(0, double.MaxValue, 0.01, 0.0, false, false, false);
 
             this.FHost.CreateValueInput("Mono", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInMono);
-            this.FPinInMono.SetSubType(0, 1, 0, 0, false, true, true);
+            this.FPinInMono.SetSubType(0, 1, 1, 0, false, true, true);
 
             this.FHost.CreateValueInput("Pitch", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPitch);
-            this.FPinInPitch.SetSubType(-60, 60, 0, 0, false, false, false);
+            this.FPinInPitch.SetSubType(-60, 60, 0.01, 0, false, false, false);
 
             this.FHost.CreateValueInput("Tempo", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInTempo);
-            this.FPinInTempo.SetSubType(-95, 5000, 0, 0, false, false, false);
+            this.FPinInTempo.SetSubType(-95, 5000, 0.01, 0, false, false, false);
 
             this.FHost.CreateStringInput("Filename", TSliceMode.Single, TPinVisibility.True, out this.FPinInFilename);
             this.FPinInFilename.SetSubType("", true);
 
             this.FHost.CreateValueOutput("Handle", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutHandle);
-            this.FPinOutHandle.SetSubType(double.MinValue, double.MaxValue, 0, 0, false, false, true);
+            this.FPinOutHandle.SetSubType(double.MinValue, double.MaxValue, 1, 0, false, false, true);
 
             this.FHost.CreateValueOutput("CurrentPosition", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutCurrentPosition);
-            this.FPinOutCurrentPosition.SetSubType(0, double.MaxValue, 0, 0.0, false, false, false);
+            this.FPinOutCurrentPosition.SetSubType(0, double.MaxValue, 0.01, 0.0, false, false, false);
 
             this.FHost.CreateValueOutput("Length", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutLength);
-            this.FPinOutLength.SetSubType(0, double.MaxValue, 0, 0.0, false, false, false);
+            this.FPinOutLength.SetSubType(0, double.MaxValue, 0.01, 0.0, false, false, false);
         }
         #endregion
 

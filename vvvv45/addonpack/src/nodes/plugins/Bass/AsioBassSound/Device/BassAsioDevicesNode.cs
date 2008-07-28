@@ -49,7 +49,7 @@ namespace vvvv.Nodes
 
             //Input
             this.FHost.CreateValueInput("Refresh", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInRefresh);
-            this.FPinInRefresh.SetSubType(0, 1, 0, 0, true, false, true);
+            this.FPinInRefresh.SetSubType(0, 1, 1, 0, true, false, true);
 
             //Output
             this.FHost.CreateStringOutput("Devices", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutDevices);

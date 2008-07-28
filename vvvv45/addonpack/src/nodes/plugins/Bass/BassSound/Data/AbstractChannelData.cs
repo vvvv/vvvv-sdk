@@ -31,7 +31,7 @@ namespace vvvv.Nodes
         protected abstract int DataType { get; }
         protected abstract int DataLength { get; }
         protected abstract string ErrorMsg { get; }
-
+        
         #region Plugin Information
         public static IPluginInfo PluginInfo
         {
@@ -63,7 +63,6 @@ namespace vvvv.Nodes
             this.FHost = Host;
 
             IntPtr ptr = IntPtr.Zero;
-            Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_SPEAKERS, ptr, null);
 
             //Input Pins
             this.FHost.CreateValueInput("HandleIn", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInHandle);
@@ -158,6 +157,7 @@ namespace vvvv.Nodes
         public virtual void Dispose()
         {
             bufferStream.Stop();
+            bufferStream.Dispose();
             //Bass.BASS_ChannelStop(this.FHandle);
         }
 

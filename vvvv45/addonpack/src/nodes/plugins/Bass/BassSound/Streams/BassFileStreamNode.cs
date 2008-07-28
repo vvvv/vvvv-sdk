@@ -7,8 +7,7 @@ using Un4seen.Bass.AddOn.Fx;
 
 namespace BassSound.Streams
 {
-    [Obsolete("Will undergo change on standard File streams")]
-    internal class BassFileStreamNode : IDisposable
+    public class BassFileStreamNode : IPlugin, IDisposable
     {
         #region Plugin Information
         public static IPluginInfo PluginInfo
@@ -38,7 +37,6 @@ namespace BassSound.Streams
         private IPluginHost FHost;
 
         private IStringIn FPinInFilename;
-        private IValueIn FPinInPaused;
         private IValueIn FPinInDoSeek;
         private IValueIn FPinInPosition;
         private IValueIn FPinInPitch;
@@ -61,9 +59,6 @@ namespace BassSound.Streams
             //Input Pins
             this.FHost.CreateStringInput("Filename", TSliceMode.Single, TPinVisibility.True, out this.FPinInFilename);
             this.FPinInFilename.SetSubType("", true);
-
-            this.FHost.CreateValueInput("Pause", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPaused);
-            this.FPinInPaused.SetSubType(0.0, 1.0, 1, 0, false, true, true);
 
             this.FHost.CreateValueInput("Do Seek", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDoSeek);
             this.FPinInDoSeek.SetSubType(0, 1, 0, 0, true, false, true);
@@ -113,24 +108,6 @@ namespace BassSound.Streams
                 this.FPinOutHandle.SetValue(0, this.FHandle);
                 long len = Bass.BASS_ChannelGetLength(this.FHandle);
                 this.FPinOutLength.SetValue(0, Bass.BASS_ChannelBytes2Seconds(this.FHandle, len));
-
-                Bass.BASS_ChannelPlay(this.FHandle, true);
-            }
-            #endregion
-
-            #region Pause
-            if (this.FPinInPaused.PinIsChanged)
-            {
-                double dpause;
-                this.FPinInPaused.GetValue(0, out dpause);
-                if (dpause == 1)
-                {
-                    Bass.BASS_ChannelPause(this.FHandle);
-                }
-                else
-                {
-                    Bass.BASS_ChannelPlay(this.FHandle, false);
-                }
             }
             #endregion
 
@@ -171,7 +148,7 @@ namespace BassSound.Streams
         #region Auto Evaluate
         public bool AutoEvaluate
         {
-            get { return true; }
+            get { return false; }
         }
         #endregion
 

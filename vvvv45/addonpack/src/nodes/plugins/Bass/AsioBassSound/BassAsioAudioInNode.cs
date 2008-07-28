@@ -26,7 +26,7 @@ namespace vvvv.Nodes
                 Info.Help = "Input node for bass asio";
                 Info.Bugs = "";
                 Info.Credits = "";
-                Info.Warnings = "Few hard coded vars until I decide how to handle this";
+                Info.Warnings = "";
 
                 //leave below as is
                 System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
@@ -64,9 +64,13 @@ namespace vvvv.Nodes
             this.FHost.CreateStringInput("Device", TSliceMode.Single, TPinVisibility.True, out this.FPinInDevice);
             this.FPinInDevice.SetSubType("", false);
 
-            this.FHost.CreateValueOutput("Handle", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutHandle);
-            this.FPinOutHandle.SetSubType(double.MinValue, double.MaxValue, 0, 0, false, false, true);
+            this.FHost.CreateValueInput("Channels Count", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinChannelCount);
+            this.FPinChannelCount.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
 
+            this.FHost.CreateValueOutput("Handle", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutHandle);
+            this.FPinOutHandle.SetSubType(double.MinValue, double.MaxValue,0, 0, false, false, true);
+
+            this.FHost.CreateStringOutput("Status", TSliceMode.Single, TPinVisibility.True, out this.FPinOutStatus);
         }
         #endregion
 
@@ -97,15 +101,20 @@ namespace vvvv.Nodes
 
                 if (this.FDeviceIndex != -1)
                 {
+                    double chancount;
+                    this.FPinChannelCount.GetValue(0,out chancount);
+
                     BassAsio.BASS_ASIO_Init(this.FDeviceIndex);
                     BassAsio.BASS_ASIO_SetDevice(this.FDeviceIndex);
 
-                    this.FMyHandler = new BassAsioHandler(true,this.FDeviceIndex,0,2,BASSASIOFormat.BASS_ASIO_FORMAT_FLOAT,48000);
+                    this.FMyHandler = new BassAsioHandler(true,this.FDeviceIndex,0,Convert.ToInt32(chancount),BASSASIOFormat.BASS_ASIO_FORMAT_FLOAT,48000);
                     BassAsio.BASS_ASIO_Start(0);
 
                     BassAsioUtils.InputChannels.Add(this.FMyHandler.InputChannel,this.FMyHandler);
                     
                     this.FPinOutHandle.SetValue(0, this.FMyHandler.InputChannel);
+
+                    this.FPinOutStatus.SetString(0, "OK");
                 }
             }
             #endregion

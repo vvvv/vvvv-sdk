@@ -52,9 +52,10 @@ namespace vvvv.Nodes
 
             //Input Pins
             this.FHost.CreateValueInput("Handle In", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInHandle);
-            this.FPinInHandle.SetSubType(double.MinValue, double.MaxValue, 0, 0, false, false, true);
+            this.FPinInHandle.SetSubType(double.MinValue, double.MaxValue,1, 0, false, false, true);
 
             this.FHost.CreateValueOutput("Handle Out", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutHandle);
+            this.FPinOutHandle.SetSubType(double.MinValue, double.MaxValue, 1, 0, false, false, true);
 
         }
         #endregion

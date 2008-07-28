@@ -50,7 +50,7 @@ namespace vvvv.Nodes
 
             //Input Pins
             this.FHost.CreateValueInput("HandleIn", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInHandle);
-            this.FPinInHandle.SetSubType(double.MinValue, double.MaxValue, 0, 0, false, false, true);
+            this.FPinInHandle.SetSubType(double.MinValue, double.MaxValue, 1, 0, false, false, true);
 
             this.FHost.CreateValueOutput("RMS", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutRMS);
             this.FHost.CreateValueOutput("Average", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutAverage);
