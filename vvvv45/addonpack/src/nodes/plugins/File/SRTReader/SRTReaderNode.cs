@@ -16,7 +16,7 @@ namespace vvvv.Nodes
             {
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "SRTReader";
-                Info.Category = "String";
+                Info.Category = "File";
                 Info.Version = "";
                 Info.Help = "Read subtitles from an SRT file";
                 Info.Bugs = "";
@@ -61,27 +61,27 @@ namespace vvvv.Nodes
         {
             this.FHost = Host;
 
-            this.FHost.CreateStringInput("Path", TSliceMode.Single, TPinVisibility.True, out this.FPinInFilename);
+            this.FHost.CreateStringInput("Filename", TSliceMode.Single, TPinVisibility.True, out this.FPinInFilename);
             this.FPinInFilename.SetSubType("", true);
 
             this.FHost.CreateValueInput("Position", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPosition);
-            this.FPinInPosition.SetSubType(0, double.MaxValue, 0, 0, false, false, false);
+            this.FPinInPosition.SetSubType(0, double.MaxValue, 0.01, 0, false, false, false);
 
             this.FHost.CreateValueInput("Delay", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDelay);
-            this.FPinInDelay.SetSubType(double.MinValue, double.MaxValue, 0, 0, false, false, false);
+            this.FPinInDelay.SetSubType(double.MinValue, double.MaxValue,0.01, 0, false, false, false);
 
             this.FHost.CreateStringOutput("Status", TSliceMode.Single, TPinVisibility.OnlyInspector, out this.FPinOutStatus);
 
             this.FHost.CreateStringOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutput);
 
-            this.FHost.CreateValueOutput("Lines Count", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutNbLines);
-            this.FPinOutNbLines.SetSubType(0, double.MaxValue, 0, 0, false, false, true);
+            this.FHost.CreateValueOutput("Line Count", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutNbLines);
+            this.FPinOutNbLines.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
             
             this.FHost.CreateValueOutput("Elapsed", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutElapsed);
-            this.FPinOutElapsed.SetSubType(0, double.MaxValue, 0, 0, false, false, false);
+            this.FPinOutElapsed.SetSubType(0, double.MaxValue, 0.01, 0, false, false, false);
 
             this.FHost.CreateValueOutput("Remaining",1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutRemaining);
-            this.FPinOutRemaining.SetSubType(0, double.MaxValue, 0, 0, false, false, false);
+            this.FPinOutRemaining.SetSubType(0, double.MaxValue, 0.01, 0, false, false, false);
 
         }
         #endregion
