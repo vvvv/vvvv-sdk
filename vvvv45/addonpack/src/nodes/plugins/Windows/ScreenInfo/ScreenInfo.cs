@@ -129,7 +129,7 @@ namespace VVVV.Nodes
 	    	FHost.CreateValueOutput("Working Area Offset", 2, null, TSliceMode.Dynamic, TPinVisibility.True, out FWorkAreaOffsetOutput);
 	    	FWorkAreaOffsetOutput.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0, 0, false, false, true);
 	    	
-	    	FHost.CreateValueOutput("BitsPerPixel", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBitsPerPixel);
+	    	FHost.CreateValueOutput("Bits Per Pixel", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBitsPerPixel);
 	    	FBitsPerPixel.SetSubType(0.0, 1.1, 0.01, 0, false, false, true);
 	    	
 	    	FHost.CreateValueOutput("Is Primary", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FIsPrimary);
