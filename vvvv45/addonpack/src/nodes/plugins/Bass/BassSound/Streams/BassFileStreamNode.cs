@@ -18,7 +18,7 @@ namespace BassSound.Streams
                 Info.Name = "FileStream";
                 Info.Category = "Bass";
                 Info.Version = "";
-                Info.Help = "Bass API File Stream Node";
+                Info.Help = "Bass API WDM File Stream Node";
                 Info.Bugs = "";
                 Info.Credits = "";
                 Info.Warnings = "";
@@ -36,7 +36,9 @@ namespace BassSound.Streams
 
         private IPluginHost FHost;
 
+        private IValueIn FPinInPlay;
         private IStringIn FPinInFilename;
+        private IValueIn FPInInLoop;
         private IValueIn FPinInDoSeek;
         private IValueIn FPinInPosition;
         private IValueIn FPinInPitch;
@@ -57,8 +59,11 @@ namespace BassSound.Streams
             Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_SPEAKERS, ptr, null);
 
             //Input Pins
-            this.FHost.CreateStringInput("Filename", TSliceMode.Single, TPinVisibility.True, out this.FPinInFilename);
-            this.FPinInFilename.SetSubType("", true);
+            this.FHost.CreateValueInput("Play", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPlay);
+            this.FPinInPlay.SetSubType(0, 1, 1, 0, false, true, true);
+
+            this.FHost.CreateValueInput("Loop", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPInInLoop);
+            this.FPInInLoop.SetSubType(0, 1, 1, 0, false, true, true);
 
             this.FHost.CreateValueInput("Do Seek", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDoSeek);
             this.FPinInDoSeek.SetSubType(0, 1, 0, 0, true, false, true);
@@ -71,6 +76,9 @@ namespace BassSound.Streams
 
             this.FHost.CreateValueInput("Tempo", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInTempo);
             this.FPinInTempo.SetSubType(-95, 5000, 0, 0, false, false, false);
+
+            this.FHost.CreateStringInput("Filename", TSliceMode.Single, TPinVisibility.True, out this.FPinInFilename);
+            this.FPinInFilename.SetSubType("", true);
 
             //Output Pins
             this.FHost.CreateValueOutput("Handle", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutHandle);
@@ -94,6 +102,9 @@ namespace BassSound.Streams
         #region Evaluate
         public void Evaluate(int SpreadMax)
         {
+            bool updateplay = false;
+            bool updateloop = false;
+
             #region File Change
             if (this.FPinInFilename.PinIsChanged)
             {
@@ -105,18 +116,28 @@ namespace BassSound.Streams
 
                 //Creates a tempo channel
                 this.FHandle = BassFx.BASS_FX_TempoCreate(this.FHandle, BASSFlag.BASS_FX_FREESOURCE | BASSFlag.BASS_SAMPLE_FLOAT);
+             
                 this.FPinOutHandle.SetValue(0, this.FHandle);
                 long len = Bass.BASS_ChannelGetLength(this.FHandle);
                 this.FPinOutLength.SetValue(0, Bass.BASS_ChannelBytes2Seconds(this.FHandle, len));
+
+                updateplay = true;
+                updateloop = true;
             }
             #endregion
 
             #region Position
-            if (this.FPinInPosition.PinIsChanged)
+            if (this.FPinInDoSeek.PinIsChanged)
             {
-                double position;
-                this.FPinInPosition.GetValue(0, out position);
-                Bass.BASS_ChannelSetPosition(this.FHandle, (float)position);
+                double doseek;
+                this.FPinInDoSeek.GetValue(0, out doseek);
+
+                if (doseek == 1)
+                {
+                    double position;
+                    this.FPinInPosition.GetValue(0, out position);
+                    Bass.BASS_ChannelSetPosition(this.FHandle, (float)position);
+                }
             }
 
             if (Bass.BASS_ChannelIsActive(this.FHandle) > 0)
@@ -142,8 +163,46 @@ namespace BassSound.Streams
             }
             #endregion
 
+            #region Update Play/Pause
+            if (updateplay || this.FPinInPlay.PinIsChanged)
+            {
+                if (this.FHandle != 0)
+                {
+                    double doplay;
+                    this.FPinInPlay.GetValue(0, out doplay);
+                    if (doplay == 1)
+                    {
+                        Bass.BASS_ChannelPlay(this.FHandle, false);
+                    }
+                    else
+                    {
+                        Bass.BASS_ChannelPause(this.FHandle);
+                    }
+                }
+            }
+            #endregion
+
+            #region Update Looping
+            if (updateloop || this.FPInInLoop.PinIsChanged)
+            {
+                if (this.FHandle != 0)
+                {
+                    double doloop;
+                    this.FPInInLoop.GetValue(0, out doloop);
+                    if (doloop == 1)
+                    {
+                        Bass.BASS_ChannelFlags(this.FHandle, BASSFlag.BASS_SAMPLE_LOOP, BASSFlag.BASS_SAMPLE_LOOP);
+                    }
+                    else
+                    {
+                        Bass.BASS_ChannelFlags(this.FHandle, BASSFlag.BASS_SAMPLE_LOOP, BASSFlag.BASS_SAMPLE_LOOP);              
+                    }
+                }
+            }
+            #endregion
         }
         #endregion
+
 
         #region Auto Evaluate
         public bool AutoEvaluate

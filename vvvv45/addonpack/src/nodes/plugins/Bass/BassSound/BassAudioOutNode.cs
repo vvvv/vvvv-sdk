@@ -6,14 +6,38 @@ using Un4seen.Bass;
 
 namespace BassSound
 {
-    public class BassAudioOutNode
+    public class BassAudioOutNode : IPlugin
     {
+        #region Plugin Information
+        public static IPluginInfo PluginInfo
+        {
+            get
+            {
+                IPluginInfo Info = new PluginInfo();
+                Info.Name = "AudioOut";
+                Info.Category = "Bass";
+                Info.Version = "";
+                Info.Help = "Audio out only for WDM handles";
+                Info.Bugs = "";
+                Info.Credits = "";
+                Info.Warnings = "";
+
+                //leave below as is
+                System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
+                System.Diagnostics.StackFrame sf = st.GetFrame(0);
+                System.Reflection.MethodBase method = sf.GetMethod();
+                Info.Namespace = method.DeclaringType.Namespace;
+                Info.Class = method.DeclaringType.Name;
+                return Info;
+            }
+        }
+        #endregion
+
         protected IPluginHost FHost;
         private List<int> FChannels = new List<int>();
 
         private IValueIn FPinInHandle;
 
-        private IValueIn FPinInPaused;
         private IValueIn FPInInPan;
         private IValueIn FPinInVolume;
 
@@ -22,16 +46,13 @@ namespace BassSound
             this.FHost = Host;
 
             this.FHost.CreateValueInput("HandleIn", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInHandle);
-            this.FPinInHandle.SetSubType(double.MinValue, double.MaxValue, 0, 0, false, false, true);
+            this.FPinInHandle.SetSubType(double.MinValue, double.MaxValue,1, 0, false, false, true);
 
-            this.FHost.CreateValueInput("Pause", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPaused);
-            this.FPinInPaused.SetSubType(0.0, 1.0, 1, 0, false, true, true);
+            //this.FHost.CreateValueInput("Pan", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPInInPan);
+            //this.FPInInPan.SetSubType(-1, 1, 0.01, 0, false, false, false);
 
-            this.FHost.CreateValueInput("Pan", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPInInPan);
-            this.FPInInPan.SetSubType(-1, 1, 0, 0, false, false, false);
-
-            this.FHost.CreateValueInput("Volume", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInVolume);
-            this.FPinInVolume.SetSubType(0, 1, 0, 0, false, false, false);
+            //this.FHost.CreateValueInput("Volume", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInVolume);
+            //this.FPinInVolume.SetSubType(0, 1, 0.01, 0, false, false, false);
 
         }
 
@@ -42,6 +63,8 @@ namespace BassSound
 
         public void Evaluate(int SpreadMax)
         {
+            //Do nothing for the moment, can still use as a feed for file stream
+            /*
             if (this.FPinInHandle.IsConnected && this.FPinInHandle.PinIsChanged)
             {
                 StopChannels();
@@ -59,16 +82,9 @@ namespace BassSound
             else
             {
                 StopChannels();
-            }
+            }*/
         }
 
-        private void StopChannels()
-        {
-            foreach (int handle in this.FChannels)
-            {
-                Bass.BASS_ChannelStop(handle);
-            }
-        }
 
         public bool AutoEvaluate
         {
