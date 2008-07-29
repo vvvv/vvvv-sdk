@@ -49,7 +49,7 @@ namespace vvvv.Nodes
         public void SetPluginHost(IPluginHost Host)
         {
             //We play this channel trough Asio output, so we choose the device NOSOUND
-            Bass.BASS_Init(0, 48000, 0, IntPtr.Zero, null);
+            Bass.BASS_Init(0, 44100, 0, IntPtr.Zero, null);
 
             this.FHost = Host;
 
