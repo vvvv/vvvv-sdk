@@ -8,6 +8,7 @@ using vvvv.Utils;
 using System.Runtime.InteropServices;
 using Un4seen.BassAsio;
 using Un4seen.Bass.AddOn.Fx;
+using Un4seen.Bass.AddOn.Mix;
 
 namespace vvvv.Nodes
 {
@@ -41,7 +42,8 @@ namespace vvvv.Nodes
         private IPluginHost FHost;
 
         private IStringIn FPinInFilename;
-        private IValueIn FPinInPaused;
+        private IValueIn FPInInLoop;
+        private IValueIn FPinInPlay;
         private IValueIn FPinInDoSeek;
         private IValueIn FPinInPosition;
         private IValueIn FPinInMono;
@@ -49,14 +51,11 @@ namespace vvvv.Nodes
         private IValueIn FPinInTempo;
 
         private IValueOut FPinOutHandle;
+        private IValueOut FPinOutChanCount;
         private IValueOut FPinOutCurrentPosition;
         private IValueOut FPinOutLength;
 
-
         private int FMainHandle = -1;
-        private List<int> FHandles = new List<int>();
-
-
 
         #region Set Plugin Host
         public void SetPluginHost(IPluginHost Host)
@@ -65,6 +64,12 @@ namespace vvvv.Nodes
 
             //We play this channel trough Asio output, so we choose the device NOSOUND
             Bass.BASS_Init(0, 48000, 0, IntPtr.Zero, null);
+
+            this.FHost.CreateValueInput("Play", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPlay);
+            this.FPinInPlay.SetSubType(0, 1, 1, 0, false, true, true);
+
+            this.FHost.CreateValueInput("Loop", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPInInLoop);
+            this.FPInInLoop.SetSubType(0, 1, 1, 0, false, true, true);
 
             this.FHost.CreateValueInput("Do Seek", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDoSeek);
             this.FPinInDoSeek.SetSubType(0, 1, 1, 0, true, false, true);
@@ -86,6 +91,9 @@ namespace vvvv.Nodes
 
             this.FHost.CreateValueOutput("Handle", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutHandle);
             this.FPinOutHandle.SetSubType(double.MinValue, double.MaxValue, 1, 0, false, false, true);
+
+            this.FHost.CreateValueOutput("Channel Count", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutChanCount);
+            this.FPinOutChanCount.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
 
             this.FHost.CreateValueOutput("CurrentPosition", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutCurrentPosition);
             this.FPinOutCurrentPosition.SetSubType(0, double.MaxValue, 0.01, 0.0, false, false, false);
@@ -112,6 +120,7 @@ namespace vvvv.Nodes
         #region IDisposable Members
         public void Dispose()
         {
+            BassAsioUtils.DecodingChannels.Remove(this.FMainHandle);
             BassAsioUtils.FreeChannel(this.FMainHandle);
         }
         #endregion
@@ -119,10 +128,12 @@ namespace vvvv.Nodes
         #region Evaluate
         public void Evaluate(int SpreadMax)
         {
+            bool updateloop = false;
+            bool updateplay = false;
+
             #region File Change
-            if (this.FPinInFilename.PinIsChanged)
+            if (this.FPinInFilename.PinIsChanged || this.FPinInMono.PinIsChanged)
             {
-                BassAsioUtils.FreeChannels(this.FHandles.ToArray());
                 BassAsioUtils.FreeChannel(this.FMainHandle);
 
                 string file;
@@ -130,7 +141,6 @@ namespace vvvv.Nodes
 
                 if (File.Exists(file))
                 {
-
                     double mono;
                     this.FPinInMono.GetValue(0, out mono);
 
@@ -154,20 +164,24 @@ namespace vvvv.Nodes
                     long total = Bass.BASS_ChannelGetLength(this.FMainHandle);
                     this.FPinOutLength.SetValue(0, Bass.BASS_ChannelBytes2Seconds(this.FMainHandle, total));
 
+                    this.FPinOutChanCount.SliceCount = 1;
+                    this.FPinOutChanCount.SetValue(0, info.chans);
+
                     this.FPinOutHandle.SliceCount = 1;
                     this.FPinOutHandle.SetValue(0, this.FMainHandle);
+
+                    updateloop = true;
                 }
                 else
                 {
                     this.FPinOutHandle.SliceCount = 0;
                     this.FPinOutLength.SetValue(0, 0);
+                    this.FPinOutChanCount.SliceCount = 0;
                     this.FMainHandle = -1;
                 }
 
             }
             #endregion
-
-
 
             #region Position
             if (this.FPinInDoSeek.PinIsChanged)
@@ -191,6 +205,7 @@ namespace vvvv.Nodes
             }
             #endregion
 
+            #region Pitch Tempo
             if (this.FPinInPitch.PinIsChanged || this.FPinInTempo.PinIsChanged)
             {
                 if (this.FMainHandle != -1)
@@ -203,6 +218,39 @@ namespace vvvv.Nodes
                     Bass.BASS_ChannelSetAttribute(this.FMainHandle, BASSAttribute.BASS_ATTRIB_TEMPO_PITCH, (float)pitch);
                 }
             }
+            #endregion
+
+            #region Update Looping
+            if (updateloop || this.FPInInLoop.PinIsChanged)
+            {
+                if (this.FMainHandle != 0)
+                {
+                    double doloop;
+                    this.FPInInLoop.GetValue(0, out doloop);
+                    if (doloop == 1)
+                    {
+                        Bass.BASS_ChannelFlags(this.FMainHandle, BASSFlag.BASS_SAMPLE_LOOP, BASSFlag.BASS_SAMPLE_LOOP);
+                    }
+                    else
+                    {
+                        Bass.BASS_ChannelFlags(this.FMainHandle, BASSFlag.BASS_SAMPLE_LOOP, BASSFlag.BASS_SAMPLE_LOOP);
+                    }
+                }
+            }
+            #endregion
+
+            #region Update Play/Pause
+            if (updateplay || this.FPinInPlay.PinIsChanged)
+            {
+                if (this.FMainHandle != 0)
+                {
+                    double doplay;
+                    this.FPinInPlay.GetValue(0, out doplay);
+                    //Check if decoding channel attached to a mixer
+                    BassAsioUtils.DecodingChannels[this.FMainHandle] = (doplay == 1);
+                }
+            }
+            #endregion
 
         }
         #endregion

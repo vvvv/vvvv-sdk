@@ -1,0 +1,91 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
+   <PATCH nodename="D:\My Documents\mixer.v4p">
+   <BOUNDS height="4605" left="7395" top="2760" type="Window" width="6225">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="5" nodename=":PLUGINS:\AsioBassSound.dll|vvvv.Nodes.BassAsioDevicesNode">
+   <BOUNDS height="0" left="1860" top="600" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="10125" top="5160" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1860" top="600" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Devices" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="4" nodename=":PLUGINS:\AsioBassSound.dll|vvvv.Nodes.BassAsioOutputNode">
+   <BOUNDS height="0" left="2040" top="3180" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="10215" top="6540" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2040" top="3180" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   <PIN pinname="Channels" visible="1">
+   </PIN>
+   <PIN pinname="Is Active" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Device" srcnodeid="5" srcpinname="Devices">
+   </LINK>
+   <NODE componentmode="Hidden" id="3" nodename=":PLUGINS:\AsioBassSound.dll|vvvv.Nodes.BassAsioFileStreamNode">
+   <BOUNDS height="0" left="3090" top="1065" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="10935" top="4290" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="3090" top="1065" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   <PIN pinname="Play" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="2" nodename=":PLUGINS:\AsioBassSound.dll|vvvv.Nodes.BassAsioMixerNode">
+   <BOUNDS height="0" left="3225" top="2625" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="10290" top="4665" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="3225" top="2625" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Channel Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Handles" visible="1">
+   </PIN>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Channels" srcnodeid="2" srcpinname="Handle">
+   </LINK>
+   <NODE componentmode="Hidden" id="1" nodename=":PLUGINS:\AsioBassSound.dll|vvvv.Nodes.BassAsioFileStreamNode">
+   <BOUNDS height="0" left="4545" top="1065" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="11685" top="4605" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="4545" top="1065" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   <PIN pinname="Play" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="Cons (Spreads)">
+   <BOUNDS height="0" left="3825" top="2130" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Input 2" srcnodeid="1" srcpinname="Handle">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Input 1" srcnodeid="3" srcpinname="Handle">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Handles" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   </PATCH>

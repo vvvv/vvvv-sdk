@@ -97,7 +97,6 @@ namespace vvvv.Nodes
                 #region Channel and device
                 if (this.FPinInChannels.PinIsChanged || this.FPinInDevice.PinIsChanged)
                 {
-                    this.FHost.Log(TLogType.Message, "Evaluate Start");
                     string device;
                     this.FPinInDevice.GetString(0, out device);
 
@@ -105,17 +104,7 @@ namespace vvvv.Nodes
                     
                     if (this.FDeviceIndex != -1)
                     {
-                        bool result = BassAsio.BASS_ASIO_Init(this.FDeviceIndex);
-                        if (result)
-                        {
-                            this.FHost.Log(TLogType.Message, "Msg: Device " + device + " initialized");
-                        }
-                        else
-                        {
-                            this.FHost.Log(TLogType.Error, "Error: Device " + device + " initialization failed");
-                            this.FHost.Log(TLogType.Error, BassAsio.BASS_ASIO_ErrorGetCode().ToString());
-                        }
-
+                        BassAsio.BASS_ASIO_Init(this.FDeviceIndex);
                         BassAsio.BASS_ASIO_SetDevice(this.FDeviceIndex);
 
                     }
@@ -189,13 +178,11 @@ namespace vvvv.Nodes
                         }
                         else
                         {
-                            this.FHost.Log(TLogType.Message, "DEBUG: Start Success");
                             this.FPinErrorCode.SetString(0, "OK");
                         }
 
                         UpdateChannels();
                     }
-                    this.FHost.Log(TLogType.Message, "Evaluate End");
                 }
                 #endregion
 
@@ -244,11 +231,11 @@ namespace vvvv.Nodes
         #region Asio Cal back
         private int AsioCallback(bool input, int channel, IntPtr buffer, int length, IntPtr user)
         {
-            try
+            //We deal only with outputs here
+            //And if the channel has it's own handler, we ignore it
+            if (!this.FOutputHandled.Contains(channel) && !input)
             {
-                //We deal only with outputs here
-                //And if the channel has it's own handler, we ignore it
-                if (!this.FOutputHandled.Contains(channel) && !input)
+                if (BassAsioUtils.IsChannelPlay(user.ToInt32()))
                 {
                     int _decLength;
 
@@ -275,9 +262,8 @@ namespace vvvv.Nodes
                     return 0;
                 }
             }
-            catch (Exception ex)
+            else
             {
-                this.FHost.Log(TLogType.Error, ex.Message);
                 return 0;
             }
         }

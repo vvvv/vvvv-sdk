@@ -56,5 +56,19 @@ namespace vvvv.Utils
         #endregion
 
         public static Dictionary<int, BassAsioHandler> InputChannels = new Dictionary<int, BassAsioHandler>();
+
+        public static Dictionary<int, bool> DecodingChannels = new Dictionary<int, bool>();
+
+        public static bool IsChannelPlay(int handle)
+        {
+            if (BassAsioUtils.DecodingChannels.ContainsKey(handle))
+            {
+                return BassAsioUtils.DecodingChannels[handle];
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
