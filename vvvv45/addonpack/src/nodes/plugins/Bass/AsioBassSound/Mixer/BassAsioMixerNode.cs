@@ -49,7 +49,7 @@ namespace vvvv.Nodes
         public void SetPluginHost(IPluginHost Host)
         {
             //We play this channel trough Asio output, so we choose the device NOSOUND
-            Bass.BASS_Init(0, 44100, 0, IntPtr.Zero, null);
+            Bass.BASS_Init(0, 48000, 0, IntPtr.Zero, null);
 
             this.FHost = Host;
 
@@ -96,7 +96,7 @@ namespace vvvv.Nodes
 
                 double numchans;
                 this.FPinInChanCount.GetValue(0,out numchans);
-                this.FHandle = BassMix.BASS_Mixer_StreamCreate(48000, Convert.ToInt32(numchans), BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT);
+                this.FHandle = BassMix.BASS_Mixer_StreamCreate(44100, Convert.ToInt32(numchans), BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT);
 
                 if (this.FHandle != 0)
                 {
