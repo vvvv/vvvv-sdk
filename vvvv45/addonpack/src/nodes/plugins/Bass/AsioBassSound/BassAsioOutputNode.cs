@@ -142,7 +142,7 @@ namespace vvvv.Nodes
                                     {
                                         for (int chan = 1; chan < info.chans; chan++)
                                         {
-                                            bool join = BassAsio.BASS_ASIO_ChannelJoin(false, asiooutindex + 1, asiooutindex);
+                                            bool join = BassAsio.BASS_ASIO_ChannelJoin(false, asiooutindex + chan, asiooutindex);
                                             if (!join)
                                             {
                                                 this.FHost.Log(TLogType.Error, "Error: join failed");
