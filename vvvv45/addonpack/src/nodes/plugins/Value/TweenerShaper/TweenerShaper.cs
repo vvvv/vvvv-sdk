@@ -1,7 +1,7 @@
 #region licence/info
 
 //////project name
-//vvvv plugin template
+//vvvv tweener shaper
 
 //////description
 //basic vvvv node plugin template.
@@ -21,7 +21,7 @@
 //VVVV.Utils.VMath;
 
 //////initial author
-//vvvv group
+//Westbam
 
 #endregion licence/info
 
