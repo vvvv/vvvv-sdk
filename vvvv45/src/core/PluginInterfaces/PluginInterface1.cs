@@ -268,6 +268,7 @@ namespace VVVV.PluginInterfaces.V1
         
         void DeletePin(IPluginIO Pin);
         void GetCurrentTime(out double CurrentTime);
+        void GetPatchPath(out string Path);
         
         void Log(TLogType Type, string Message);
     }
