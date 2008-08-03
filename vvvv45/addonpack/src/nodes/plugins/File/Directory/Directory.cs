@@ -172,12 +172,12 @@ namespace VVVV.Nodes
         		//loop for all slices
         		for (int i=0; i<=SpreadMax; i++)
         		{		
-        			FDir.GetString(i%FDir.SliceCount, out currentDir);
-        			FCustomRoot.GetString(i%FCustomRoot.SliceCount, out curCustomRoot);
-        			FCreate.GetValue(i%FCreate.SliceCount, out currentCreate);
-        			FDelete.GetValue(i%FDelete.SliceCount, out currentDelete);
-        			FNewDir.GetString(i%FNewDir.SliceCount, out curNewDir);
-        			FRename.GetValue(i%FRename.SliceCount, out currentRename);
+        			FDir.GetString(i, out currentDir);
+        			FCustomRoot.GetString(i, out curCustomRoot);
+        			FCreate.GetValue(i, out currentCreate);
+        			FDelete.GetValue(i, out currentDelete);
+        			FNewDir.GetString(i, out curNewDir);
+        			FRename.GetValue(i, out currentRename);
         			
         			
         			Assembly self = Assembly.GetExecutingAssembly();
