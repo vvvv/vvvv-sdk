@@ -250,17 +250,8 @@ namespace VVVV.Nodes
         }
         
         #endregion mainloop
-        
-        Vector2D tranf(Vector2D TexCd, Vector2D Trans, Vector2D Scale, Vector2D Resolution)
-        {
-        	return (TexCd * Scale + Trans) / Resolution;
-        }
 
-        Vector2D tranf_inv(Vector2D TexCd, Vector2D Trans, Vector2D Scale, Vector2D Resolution)
-        {
-        	return (TexCd * Resolution - Trans) / Scale;
-        }
-
+        //distortion function
         Vector2D distort(Vector2D p, double k1, double k2, double p1, double p2)
         {
 
@@ -276,16 +267,14 @@ namespace VVVV.Nodes
         	return q;
         }
 
-        Vector2D Undistort(Vector2D TexCd, Vector2D FocalLength, Vector2D PrincipalPoint, Vector4D Distortion, Vector2D Resolution)
+        //coordinate undistortion
+        Vector2D Undistort(Vector2D Pos, Vector2D FocalLength, Vector2D PrincipalPoint, Vector4D Distortion, Vector2D Resolution)
         {
-        	Vector2D scale = FocalLength;
-        	Vector2D trans = PrincipalPoint;
-        	
-        	Vector2D t = tranf_inv(TexCd, trans, scale, Resolution);
-        	t = distort(t, Distortion.x, Distortion.y, Distortion.z, Distortion.w);
-        	t = tranf(t, trans, scale, Resolution);
+        	Pos = (Pos * FocalLength + PrincipalPoint) / Resolution;
+        	Pos = distort(Pos, Distortion.x, Distortion.y, Distortion.z, Distortion.w);
+        	Pos = (Pos * Resolution - PrincipalPoint) / FocalLength;
 
-        	return t;
+        	return Pos;
         }
 
 	}
