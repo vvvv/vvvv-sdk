@@ -54,27 +54,19 @@ namespace VVVV.Nodes.Timeliner
 		private void InitializeComponent()
 		{
 			this.label1 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
 			this.RemoveButton = new System.Windows.Forms.Button();
+			this.tlioBoxValue1 = new VVVV.Nodes.Timeliner.TLIOBoxValue();
+			this.label2 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// label1
 			// 
 			this.label1.ForeColor = System.Drawing.Color.White;
-			this.label1.Location = new System.Drawing.Point(60, 4);
+			this.label1.Location = new System.Drawing.Point(3, 4);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(70, 14);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "label1";
-			// 
-			// label2
-			// 
-			this.label2.ForeColor = System.Drawing.Color.White;
-			this.label2.Location = new System.Drawing.Point(21, 4);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(33, 16);
-			this.label2.TabIndex = 1;
-			this.label2.Text = "Time:";
 			// 
 			// RemoveButton
 			// 
@@ -88,18 +80,41 @@ namespace VVVV.Nodes.Timeliner
 			this.RemoveButton.UseVisualStyleBackColor = true;
 			this.RemoveButton.Click += new System.EventHandler(this.Button1Click);
 			// 
+			// tlioBoxValue1
+			// 
+			this.tlioBoxValue1.BackColor = System.Drawing.Color.Silver;
+			this.tlioBoxValue1.Cyclic = false;
+			this.tlioBoxValue1.IsInteger = true;
+			this.tlioBoxValue1.Location = new System.Drawing.Point(108, 3);
+			this.tlioBoxValue1.Maximum = 0;
+			this.tlioBoxValue1.Minimum = 0;
+			this.tlioBoxValue1.Name = "tlioBoxValue1";
+			this.tlioBoxValue1.Size = new System.Drawing.Size(30, 15);
+			this.tlioBoxValue1.TabIndex = 3;
+			this.tlioBoxValue1.Value = 120;
+			// 
+			// label2
+			// 
+			this.label2.Location = new System.Drawing.Point(78, 4);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(32, 15);
+			this.label2.TabIndex = 4;
+			this.label2.Text = "BPM";
+			// 
 			// TLRulerPin
 			// 
 			this.BackColor = System.Drawing.Color.Gray;
-			this.Controls.Add(this.RemoveButton);
+			this.Controls.Add(this.tlioBoxValue1);
 			this.Controls.Add(this.label2);
+			this.Controls.Add(this.RemoveButton);
 			this.Controls.Add(this.label1);
 			this.Name = "TLRulerPin";
 			this.Size = new System.Drawing.Size(150, 20);
 			this.ResumeLayout(false);
 		} 
-		private System.Windows.Forms.Button RemoveButton;
 		private System.Windows.Forms.Label label2;
+		private VVVV.Nodes.Timeliner.TLIOBoxValue tlioBoxValue1;
+		private System.Windows.Forms.Button RemoveButton;
 		private System.Windows.Forms.Label label1;
 		
 		public override void DrawSlices(Graphics g, double From, double To)
