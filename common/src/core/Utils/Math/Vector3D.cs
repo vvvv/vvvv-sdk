@@ -166,9 +166,9 @@ namespace VVVV.Utils.VMath
 		}
 		
 		//vector *
-		public static double operator *(Vector3D v1, Vector3D v2)
+		public static Vector3D operator *(Vector3D v1, Vector3D v2)
 		{
-			return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+			return new Vector3D(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z);
 		}
 		
 		public static Vector3D operator *(Vector3D v1, double a)
@@ -220,10 +220,10 @@ namespace VVVV.Utils.VMath
 			return new Vector3D(v1.y*v2.z - v1.z*v2.y, v1.z*v2.x - v1.x*v2.y, v1.x*v2.y - v1.y*v2.x);
 		}
 		
-		//vector | (component wise product)
-		public static Vector3D operator |(Vector3D v1, Vector3D v2)
+		//vector | (dot product)
+		public static double operator |(Vector3D v1, Vector3D v2)
 		{
-			return new Vector3D(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z);
+			return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 		}
 		
 		#endregion binary operators

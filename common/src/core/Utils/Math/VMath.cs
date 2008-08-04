@@ -219,7 +219,7 @@ namespace VVVV.Utils.VMath
 		{
 			double w1, w2;
 
-			double cosTheta = a * b;
+			double cosTheta = a | b;
 			double theta    = Math.Acos(cosTheta);
 			double sinTheta = Math.Sin(theta);
 

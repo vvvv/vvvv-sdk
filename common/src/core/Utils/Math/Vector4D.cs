@@ -182,9 +182,9 @@ namespace VVVV.Utils.VMath
 		}
 		
 		//vector *
-		public static double operator *(Vector4D v1, Vector4D v2)
+		public static Vector4D operator *(Vector4D v1, Vector4D v2)
 		{
-			return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
+			return new Vector4D(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z, v1.w * v2.w);
 		}
 		
 		public static Vector4D operator *(Vector4D v1, double a)
@@ -258,10 +258,10 @@ namespace VVVV.Utils.VMath
 		}
 		
 		
-		//vector | (component wise product)
-		public static Vector4D operator |(Vector4D v1, Vector4D v2)
+		//vector | (dot product)
+		public static double operator |(Vector4D v1, Vector4D v2)
 		{
-			return new Vector4D(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z, v1.w * v2.w);
+			return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
 		}
 		
 		#endregion binary operators		

@@ -413,7 +413,7 @@ namespace VVVV.Utils.VMath
 			                     A.m14 * B.m41 + A.m24 * B.m42 + A.m34 * B.m43 + A.m44 * B.m44);
 		}
 		
-		//vector * vector
+		//matrix * vector
 		public static Vector4D operator *(Matrix4x4 A, Vector4D b)
 		{
 			return new Vector4D(A.m11 * b.x + A.m21 * b.y + A.m31 * b.z + A.m41 * b.w,
