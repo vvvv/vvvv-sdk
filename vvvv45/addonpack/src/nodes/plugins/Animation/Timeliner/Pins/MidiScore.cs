@@ -8,12 +8,25 @@ using Sanford.Multimedia.Midi;
 
 using VVVV.Nodes.Timeliner;
 
-namespace VVVV.Utils.MidiScore
+
+
+namespace VVVV.Utils.VMidiScore
 {
 	public delegate void NotesParsedHandler();
+	
+
+	public struct TTimeSignature
+	{
+		public byte Numerator;
+		public byte Denominator;
+		public byte MetronomePulse;
+		public byte NumberOf32nds;
+	}
 
 	public class TMidiScore
 	{
+		public static readonly Color[] KeyColor = new Color[] {Color.White, Color.Black, Color.White, Color.Black, Color.White, Color.White, Color.Black, Color.White, Color.Black, Color.White, Color.Black, Color.White};
+		
 		private Sanford.Multimedia.Midi.Sequence FSequence = new Sequence();
 		public event NotesParsedHandler OnNotesParsed;
 		private bool FLoading = false;
@@ -38,15 +51,78 @@ namespace VVVV.Utils.MidiScore
 			get{return FDivision;}
 		}
 		
+		private int FBPM;
+		public int BPM
+		{
+			get{return FBPM;}
+			set
+			{
+				FBPM = value;
+				UpdateTimeScaling();
+			}
+		}
+		
 		public int Length
 		{
 			get{return FSequence.GetLength();}
 		}
 		
+		private float FSecondsPerMidiUnit;
+		public float SecondsPerMidiUnit
+		{
+			get{return FSecondsPerMidiUnit;}
+		}
+		
+		private float FSecondsPerBeat;
+		public float SecondsPerBeat
+		{
+			get{return FSecondsPerBeat;}
+		}
+		
+		private float FSecondsPerBar;
+		public float SecondsPerBar
+		{
+			get{return FSecondsPerBar;}
+		}
+		
+		private int FBarCount;
+		public int BarCount
+		{
+			get{return FBarCount;}
+		}
+		
+		private int FBeatCount;
+		public int BeatCount
+		{
+			get{return FBeatCount;}
+		}
+		private void UpdateTimeScaling()
+		{
+			int MUpWholeNote = FDivision * 4;
+			int MUpBeat = MUpWholeNote / FTimeSignature.Denominator;
+			int MUpBar = FTimeSignature.Numerator * MUpBeat;
+			FBarCount = Length / MUpBar;
+			FBeatCount = FBarCount * FTimeSignature.Numerator;
+			float duration = FBeatCount / FBPM * 60;
+			FSecondsPerBar = duration / FBarCount;
+			FSecondsPerBeat = FSecondsPerBar / (float) FTimeSignature.Numerator;
+			FSecondsPerMidiUnit = FSecondsPerBeat / (float) FDivision;
+		}
+		
+		private TTimeSignature FTimeSignature;
+		public TTimeSignature TimeSignature
+		{
+			get{return FTimeSignature;}
+			set
+			{
+				FTimeSignature = value;
+				UpdateTimeScaling();
+			}
+		}
 		
 		private string[] FTrackNames;
 
-		private int FRhythmChangedAtBar = 0;
+/*		private int FRhythmChangedAtBar = 0;
 		private int FRhythmChangedOffset = 0;
 		private float FRhythmChangedOffsetInPixel = 0;
 		private int FWindowFromNote;
@@ -54,21 +130,15 @@ namespace VVVV.Utils.MidiScore
 		private int FWindowMaxNotes;
 		private int FWindowToNote;
 		
-		private int FZähler = 3;
-		private int FNenner = 4;
-		private int FMinNote = 1;
-		private int FMaxNote = 127;
-		private int FBpm = 120;
 		private int FBarFrom;
 		private int FBarTo;
-		private int FLength = 0;
 		private int FPosition = 0;
 		private int FExternalBar = 0;
-		private bool[] Keys = new bool[] {true, false, true, false, true, true, false, true, false, true, false, true};
+		
 		private int FBarLength = 0;
 		private float FMUpT;
 		private float Fppmu;
-		private float FOffset;
+		private float FOffset;*/
 		
 		public TMidiScore()
 		{
@@ -81,7 +151,11 @@ namespace VVVV.Utils.MidiScore
 			{
 				if ((!FLoading) && (System.IO.File.Exists(Filename)) && (System.IO.Path.GetExtension(Filename) == ".mid"))
 				{
-					FSequence.LoadAsync(Filename);
+					FSequence.Load(Filename);
+					
+					ParseSequence();
+					OnNotesParsed();
+					
 					FLoading = true;
 				}
 			}
@@ -110,7 +184,7 @@ namespace VVVV.Utils.MidiScore
 			
 			FLoading = false;
 		}
-		
+	/*	
 		public int Position
 		{
 			get{return FPosition;}
@@ -128,30 +202,12 @@ namespace VVVV.Utils.MidiScore
 			get{return FMUpT;}
 			set{FMUpT = value;}
 		}
-		
-		public int MinNote
-		{
-			get{return FMinNote;}
-			set{FMinNote = value;}
-		}
-		
-		public int Bpm
-		{
-			get{return FBpm;}
-			set{FBpm = value;}
-		}
-		
-		public int MaxNote
-		{
-			get{return FMaxNote;}
-			set{FMaxNote = value;}
-		}
-		
+
 		public int ExternalBar
 		{
 			set
 			{
-				/*		if (value == 0)
+						if (value == 0)
 				{
 					FRhythmChangedAtBar = 0;
 					FRhythmChangedOffset = 0;
@@ -186,29 +242,9 @@ namespace VVVV.Utils.MidiScore
 					
 					//clamp at max index
 					FWindowToNote = Math.Min(FWindowToNote, FMidiNotes.Count);
-				}*/
+				}
 				
 				//System.Diagnostics.Debug.WriteLine("external bar: from: " + FWindowFromNote.ToString() + " to: " + FWindowToNote.ToString());
-			}
-		}
-		
-		public int Zähler
-		{
-			get{return FZähler;}
-			set
-			{
-				FZähler = value;
-				//	ComputeBarLength();
-			}
-		}
-		
-		public int Nenner
-		{
-			get{return FNenner;}
-			set
-			{
-				FNenner = value;
-				//	ComputeBarLength();
 			}
 		}
 		
@@ -254,14 +290,13 @@ namespace VVVV.Utils.MidiScore
 						FNotesOfBar.Add(mn);
 				}
 			}
-		}
+		}*/
 		
 		private void ParseSequence()
 		{
 			FOpenMidiNotes.Clear();
 			FMidiNotes.Clear();
-			FLength = 0;
-			
+
 			FTrackNames = new string[FSequence.Count];
 			
 			FDivision = FSequence.Division;
@@ -269,19 +304,39 @@ namespace VVVV.Utils.MidiScore
 			int trackID = 0;
 			foreach (Track tTrack in FSequence)
 			{
-				FLength = Math.Max(FLength, tTrack.Length);
-				
 				foreach(MidiEvent meEvent in tTrack.Iterator())
 				{
 					if (meEvent.MidiMessage is MetaMessage)
 					{
 						MetaMessage mmMessage = meEvent.MidiMessage as MetaMessage;
-						byte[] text;// = new byte[mmMessage.Length];
+						byte[] data;// = new byte[mmMessage.Length];
 						
-						if (mmMessage.MetaType == MetaType.TrackName)
+						data = mmMessage.GetBytes();
+						
+						switch (mmMessage.MetaType)
 						{
-							text = mmMessage.GetBytes();
-							FTrackNames[trackID] = System.Text.Encoding.UTF8.GetString(text);
+							case MetaType.TrackName:
+								{
+									FTrackNames[trackID] = System.Text.Encoding.UTF8.GetString(data);
+									break;
+								}
+							case MetaType.TimeSignature:
+								{
+									FTimeSignature = new TTimeSignature();
+									FTimeSignature.Numerator = data[0];
+									FTimeSignature.Denominator = (byte) Math.Pow(2, data[1]);
+									FTimeSignature.MetronomePulse = data[2];
+									FTimeSignature.NumberOf32nds = data[3];
+									break;
+								}
+							case MetaType.Tempo:
+								{
+									int ms_per_min = 60000000;
+									int ms_per_quarternote = (int) ((data[0]<<16) + (data[1]<<8) + data[2]);
+									FBPM = ms_per_min / ms_per_quarternote; 
+									//MPQN = MICROSECONDS_PER_MINUTE / BPM
+									break;
+								}
 						}
 					}
 					else if (meEvent.MidiMessage is ChannelMessage)
@@ -331,8 +386,8 @@ namespace VVVV.Utils.MidiScore
 			}
 			
 			FMidiNotes.Sort(delegate(TMidiNote mn1, TMidiNote mn2) {return mn1.Start.CompareTo(mn2.Start);});
-			
-			UpdateNotesOfBar();
+			UpdateTimeScaling();
+			//UpdateNotesOfBar();
 		}
 		
 		public void ClearCurrentNotes()
@@ -340,7 +395,7 @@ namespace VVVV.Utils.MidiScore
 			FCurrentMidiNotes.Clear();
 		}
 		
-		public void ComputeBarLength()
+	/*	public void ComputeBarLength()
 		{
 			if (FExternalBar != 0)
 			{
@@ -382,8 +437,8 @@ namespace VVVV.Utils.MidiScore
 			for (int i=0; i<FNotesOfWindow.Count; i++)
 			{
 				System.Diagnostics.Debug.WriteLine("note in window: " + FNotesOfWindow[i].Note.ToString());
-			}/*	*/
-		}
+			}	
+		}*/
 		
 		public void ShowNote(int Note, int Velocity)
 		{
@@ -407,7 +462,7 @@ namespace VVVV.Utils.MidiScore
 				}
 			}
 		}
-		
+	/*	
 		public void AdjustWindowBorders(int shiftright)
 		{
 			FWindowToNote += shiftright;
@@ -447,7 +502,7 @@ namespace VVVV.Utils.MidiScore
 			}
 			
 			return rect;
-		}
+		}*/
 		
 		public void MidiScorePaint(Graphics g, Rectangle r)
 		{

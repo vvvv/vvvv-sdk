@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Xml;
 
-using VVVV.Utils.MidiScore;
+using VVVV.Utils.VMidiScore;
 
 
 using VVVV.PluginInterfaces.V1;
@@ -19,7 +19,12 @@ namespace VVVV.Nodes.Timeliner
 
 		private bool FUpdateOutputs = false;
 		private string FFilename = "E:\\bwv1087.mid";
-
+		private TMidiScore FMidiScore;
+		public TMidiScore MidiScore
+		{
+			get{return FMidiScore;}
+		}
+		
 		private OpenFileDialog FOpenDialog;
 		
 		// PINS
@@ -28,21 +33,17 @@ namespace VVVV.Nodes.Timeliner
 		private IValueOut FValueOut;
 		//private IStringIO FFilename;
 	/*	private IValueIO FTrackedNoteID;
-		private IValueIO FVOut;
-		private IValueIO FRhythm;
-		private IValueIO FBpm;
 		private IValueIO FChannelOut;
 		private IValueIO FNoteOut;
 		private IValueIO FVelocityOut;
 		private IValueIO FStartOut;
 		private IValueIO FEndOut;
-		private IValueIO FNoteRange;
 		private IValueIO FBar;
 		*/
 		// CONTROLS
 		///////////////////////
 
-		private TMidiScore FMidiScore;
+		
 		
 		public TLMidiPin(IPluginHost Host, TLTransformer Transformer, int Order, XmlNode PinSettings):base(Host, Transformer, Order, PinSettings, true, true)
 		{
@@ -58,9 +59,7 @@ namespace VVVV.Nodes.Timeliner
 				FFilename = attr.Value;
         	}
         	catch
-        	{
-        		FFilename = "E:\\988-aria.mid";
-        	}
+        	{}
         	
         	try
         	{
@@ -68,9 +67,7 @@ namespace VVVV.Nodes.Timeliner
 				MinNote.Value = double.Parse(attr.Value, TimelinerPlugin.GNumberFormat);
         	}
         	catch
-        	{
-        		MinNote.Value = 30;
-        	}
+        	{}
         	
         	try
         	{
@@ -78,14 +75,9 @@ namespace VVVV.Nodes.Timeliner
 				MaxNote.Value = double.Parse(attr.Value, TimelinerPlugin.GNumberFormat);
         	}
         	catch
-        	{
-        		MaxNote.Value = 97;
-        	}
-        	
-        	//bpm
-        	
-		 	UpdateSliceSpecificSettings();
+        	{}
 
+		 	UpdateSliceSpecificSettings();
 		}
 
 		public override void UpdateSliceSpecificSettings()
@@ -103,35 +95,17 @@ namespace VVVV.Nodes.Timeliner
 	    	FValueOut.SliceCount = 128;
 	    	FValueOut.Order = Order;
 			FValueOut.SetSubType(0, 1, 1/127, 0, false, false, false);
-			
-			
 						
 		/*	FHost.CreateStringPin("Filename", TMPinDirection.cmpdInput, TMSliceMode.cmsmSingle, TMPinVisibility.pivTrue, out FFilename);
         	FFilename.Order=Order;
 			FFilename._SetSubType("default", true);
 			
-			FHost.CreateValuePin("Rhythm", true, 2, null, TMPinDirection.cmpdInput, TMSliceMode.cmsmManual, TMPinVisibility.pivTrue, out FRhythm);
-	    	FRhythm.SliceCount=1;
-	    	FRhythm.Order=Order;
-			FRhythm._SetSubType(1, 64, 1, 4, false, false, true);
-			
-			FHost.CreateValuePin("BPM", true, 1, null, TMPinDirection.cmpdInput, TMSliceMode.cmsmManual, TMPinVisibility.pivTrue, out FBpm);
-	    	FBpm.SliceCount=1;
-	    	FBpm.Order=Order;
-			FBpm._SetSubType(20, 999, 1, 120, false, false, true);
-			
-			FHost.CreateValuePin("Note Range", true, 2, null, TMPinDirection.cmpdInput, TMSliceMode.cmsmManual, TMPinVisibility.pivTrue, out FNoteRange);
-	    	FNoteRange.SliceCount=1;
-	    	FNoteRange.Order=Order;
-			FNoteRange._SetSubType(0, 127, 1, 0, false, false, true);
-			
 			FHost.CreateValuePin("Bar", true, 2, null, TMPinDirection.cmpdInput, TMSliceMode.cmsmManual, TMPinVisibility.pivTrue, out FBar);
 	    	FBar.SliceCount=1;
 	    	FBar.Order=Order;
 			FBar._SetSubType(0, Int32.MaxValue, 1, 0, false, false, true);
-			
-			
-			
+
+
 			FHost.CreateValuePin(Name + " Channel", false, 1, null, TMPinDirection.cmpdOutput, TMSliceMode.cmsmManual, TMPinVisibility.pivTrue, out FChannelOut);
 	    	FChannelOut.SliceCount=1;
 	    	FChannelOut.Order=Order;
@@ -210,18 +184,16 @@ namespace VVVV.Nodes.Timeliner
 			attr.Value = FFilename;
     		pin.Attributes.Append(attr);
     		
-    		//bpm
-    		/*
-    		attr = FSettings.CreateAttribute("Minimum");
-    		string tmp = String.Format("{0:F4}", FMinIO.Value);
+    		attr = FSettings.CreateAttribute("MinNote");
+    		string tmp = String.Format("{0:F0}", MinNote.Value);
 			attr.Value = tmp.Replace(',', '.');
     		pin.Attributes.Append(attr);
     		
-    		attr = FSettings.CreateAttribute("Maximum");
-			tmp = String.Format("{0:F4}", FMaxIO.Value);
+    		attr = FSettings.CreateAttribute("MaxNote");
+			tmp = String.Format("{0:F0}", MaxNote.Value);
 			attr.Value = tmp.Replace(',', '.');
     		pin.Attributes.Append(attr);
-    		*/
+
     		return pin;				
 		}
 		
@@ -312,27 +284,7 @@ namespace VVVV.Nodes.Timeliner
 			
 			bool needsrepaint = false;
 			
-			if (FRhythm.PinIsChanged)
-			{
-				double z, n;
-				FRhythm.GetValue2D(0, out z, out n);
-				FMidiScore.Nenner = (int) n;
-				FMidiScore.Zähler = (int) z;
-				
-				FMidiScore.ComputeBarLength();
-				
-				needsrepaint = true;
-			}
-			
-			if (FBpm.PinIsChanged)
-			{
-				double b;
-				FBpm.GetValue(0, out b);
-				FMidiScore.Bpm = (int) b;
-				
-				needsrepaint = true;
-			}
-			
+	
 			if (FNoteRange.PinIsChanged)
 			{
 				double min, max;
@@ -422,13 +374,14 @@ namespace VVVV.Nodes.Timeliner
 					AddSlice(FOutputSlices.Count);
 					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).InitializeNotes(FMidiScore.GetNotesOfChannel(i));
 					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).TrackName = FMidiScore.GetTrackName(i);
-					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).BPM = 120;
-					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).Division = FMidiScore.Division;
-					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).MinNote = 60;
-					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).MaxNote = 100;
-					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).TrackLength = FMidiScore.Length;
+					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).MinNote = (int) MinNote.Value;
+					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).MaxNote = (int) MaxNote.Value;
 				}				
 			}
+			
+			Numerator.Value = FMidiScore.TimeSignature.Numerator;
+			Denominator.Value = FMidiScore.TimeSignature.Denominator;
+			BPM.Value = FMidiScore.BPM;
 			
 			FUpdateOutputs = true;
 			
@@ -455,15 +408,17 @@ namespace VVVV.Nodes.Timeliner
 				i++;
 			}*/
 		}
-
 		
-		void RhythmOnValueChange(double Value)
+		void TimeSignatureChange(double Value)
 		{
-			foreach (TLMidiSlice ms in FOutputSlices)
-			{
-				ms.Enumerator = (int) Enumerator.Value;
-				ms.Denominator = (int) Denominator.Value;
-			}	
+			TTimeSignature ts = new TTimeSignature();
+			ts.Numerator = (byte) Numerator.Value;
+			ts.Denominator = (byte) Denominator.Value;
+			FMidiScore.TimeSignature = ts;
+			
+			FMidiScore.BPM = (int) BPM.Value;
+			
+			this.Refresh();
 		}
 	}
 }
