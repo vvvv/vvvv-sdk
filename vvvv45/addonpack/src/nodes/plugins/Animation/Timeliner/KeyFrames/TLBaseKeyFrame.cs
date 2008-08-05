@@ -14,7 +14,7 @@ namespace VVVV.Nodes.Timeliner
 		private bool FSelected;
 		protected float FSliceTop;
 		protected float FSliceHeight;
-		private TLTransformer FTransformer;
+		protected TLTransformer FTransformer;
 		
 		public double Time
 		{
@@ -84,7 +84,7 @@ namespace VVVV.Nodes.Timeliner
 			return FSelected = HitByRect(R);
 		}
 
-		public void MoveTime(double DeltaTime, double Minimum, double Maximum)
+		public virtual void MoveTime(double DeltaTime, double Minimum, double Maximum)
 		{
 			FTime = Math.Min(Math.Max(FTime + DeltaTime / FTransformer.GTimeScale, Minimum), Maximum);
 		}
