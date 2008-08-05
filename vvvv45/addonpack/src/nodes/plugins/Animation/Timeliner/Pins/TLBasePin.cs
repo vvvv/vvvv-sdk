@@ -9,7 +9,7 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.Nodes.Timeliner
 {
-	public enum TLPinType {Automata, Ruler, Value, String, Color, Midi};
+	public enum TLPinType {Automata, Ruler, Value, String, Color, Midi, Wave};
 	
 	//common base to TLPin and TLRulerPin
 	public class TLBasePin : UserControl
