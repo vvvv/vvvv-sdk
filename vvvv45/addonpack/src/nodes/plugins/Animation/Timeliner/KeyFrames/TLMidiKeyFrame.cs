@@ -97,8 +97,9 @@ namespace VVVV.Nodes.Timeliner
 			float size = 10;
 			float x = GetTimeAsX() - size/2;
 			float y = FSliceTop + (float) GetValueAsY() - size/2;
-		
-			Region flag = new Region(new RectangleF(x, y-15, 50, 45));
+			float width = Math.Max(GetDurationAsX() + size, 50);
+			
+			Region flag = new Region(new RectangleF(x, y-15, width, 45));
 			return flag;
 		}
 		
