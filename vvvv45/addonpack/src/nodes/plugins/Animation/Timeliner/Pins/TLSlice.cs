@@ -93,8 +93,11 @@ namespace VVVV.Nodes.Timeliner
 		
 		protected abstract void SliceOrPinOrderChanged();
 
-		public abstract TLBaseKeyFrame AddKeyFrame(Point P);
-		public abstract void SaveKeyFrames();
+		public virtual TLBaseKeyFrame AddKeyFrame(Point P)
+		{return null;}
+		
+		public virtual void SaveKeyFrames()
+		{}
 		
 		
 		
