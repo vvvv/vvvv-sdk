@@ -292,49 +292,27 @@ namespace VVVV.Nodes
                     else if (CurrentTransType == 1 && CurrentTransMode == 0)
                     {
                         CurrentStringSlice = "Quadratic Easing In";
-                        X = X * X;
+                        X = Tweener.QuadEaseIn(X);
                     }
 
                     // Nr. 1 Out
                     else if (CurrentTransType == 1 && CurrentTransMode == 1)
                     {
                         CurrentStringSlice = "Quadratic Easing Out";
-                        X = -(X * (X - 2));
+                        X = Tweener.QuadEaseOut(X);
                     }
 
                     // Nr. 1 In/Out
                     else if (CurrentTransType == 1 && CurrentTransMode == 2)
                     {
                         CurrentStringSlice = "Quadratic Easing in/Out";
-                        if (X <= 0.5)
-                        {
-                            X = X * 2;
-                            X = (X * X);
-                            X = X / 2;
-                        }
-                        else if (X > 0.5)
-                        {
-                            X = (X - 0.5) * 2;
-                            X = -(X * (X - 2));
-                            X = (X / 2) + 0.5;
-                        }
+                        X = Tweener.QuadEaseInOut(X);
                     }
                     // Nr. 1 Out/in
                     else if (CurrentTransType == 1 && CurrentTransMode == 3)
                     {
                         CurrentStringSlice = "Quadratic Easing Out/In";
-                        if (X <= 0.5)
-                        {
-                            X = X * 2;
-                            X = -(X * (X - 2));
-                            X = X / 2;
-                        }
-                        else if (X > 0.5)
-                        {
-                            X = (X - 0.5) * 2;
-                            X = X * X;
-                            X = (X / 2) + 0.5;
-                        }
+                        X = Tweener.QuadEaseOutIn(X);
 
                     }
 
