@@ -9,11 +9,14 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.Nodes.Timeliner
 {
-	public abstract partial class TLPin: TLBasePin
+	public partial class TLPin: TLBasePin
 	{
 		protected IPluginHost FHost;
 		
 		private bool FAllInOne = false;
+		
+		//default constructor for designer in inherited classes to work
+		public TLPin():base(){InitializeComponent();}
 
 		public TLPin(IPluginHost Host, TLTransformer Transformer, int Order, XmlNode PinSettings, bool ShowRemoveButton, bool ShowPinName):base(Transformer, Order, PinSettings)
 		{
