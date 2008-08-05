@@ -13,6 +13,7 @@ namespace VVVV.Nodes.Timeliner
 		private Point FMousePoint;
 		private Point FMouseDownPoint;
 		private bool FCyclic = false;
+		private bool FIsInteger = false;
 		
 		public double Value
 		{
@@ -48,6 +49,12 @@ namespace VVVV.Nodes.Timeliner
 		{
 			get {return FCyclic;}
 			set {FCyclic = value;}
+		}
+		
+		public bool IsInteger
+		{
+			get {return FIsInteger;}
+			set {FIsInteger = value;}
 		}
 		
 		public TLIOBoxValue()
@@ -101,7 +108,12 @@ namespace VVVV.Nodes.Timeliner
 				cY = Cursor.Position.Y;
 				
 				double delta = (cY - mpY) / -100.0;
-				double faktor = 1;
+				double faktor;
+				if (FIsInteger)
+					faktor = 100;
+				else 
+					faktor = 1;
+				
 				if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
 					faktor /= 10;
 				if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
@@ -135,7 +147,10 @@ namespace VVVV.Nodes.Timeliner
 		
 		public void ShowValueBox()
 		{
-			ValueBox.Text = FValue.ToString("f4", TimelinerPlugin.GNumberFormat);
+			if (FIsInteger)
+				ValueBox.Text = FValue.ToString("f0", TimelinerPlugin.GNumberFormat);
+			else
+				ValueBox.Text = FValue.ToString("f4", TimelinerPlugin.GNumberFormat);
 			ValueBox.SelectAll();
 			ValueBox.Show();
 			ValueBox.Focus();
@@ -145,7 +160,11 @@ namespace VVVV.Nodes.Timeliner
 		{
 			Graphics g = e.Graphics;
 			
-			string text = FValue.ToString("f4", TimelinerPlugin.GNumberFormat);
+			string text;
+			if (FIsInteger)
+				text = FValue.ToString("f0", TimelinerPlugin.GNumberFormat);
+			else
+				text = FValue.ToString("f4", TimelinerPlugin.GNumberFormat);
 			Font f = new Font("Lucida Sans Unicode", 7);
 			SizeF s = g.MeasureString(text, f);
 			g.DrawString(text, f, new SolidBrush(Color.Black), Width - s.Width-4, 1);
