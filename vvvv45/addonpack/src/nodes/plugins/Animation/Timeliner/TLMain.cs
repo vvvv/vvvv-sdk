@@ -42,7 +42,8 @@ namespace VVVV.Nodes
 		// OUTPUT PINS
 		///////////////////////
 		private IValueOut FTimeOut;
-		//private IValueOut FSeekOut;
+		private IValueOut FPlayingOut;
+		private IValueOut FSeekingOut;
 
 		// VAIRABLES
 		///////////////////////
@@ -68,6 +69,7 @@ namespace VVVV.Nodes
 		private void InitializeComponent()
 		{
 			this.MainMenu = new System.Windows.Forms.Panel();
+			this.WavButton = new System.Windows.Forms.Button();
 			this.AutomataCheckBox = new System.Windows.Forms.CheckBox();
 			this.ColorButton = new System.Windows.Forms.Button();
 			this.RulerButton = new System.Windows.Forms.Button();
@@ -81,6 +83,7 @@ namespace VVVV.Nodes
 			this.SplitContainer = new System.Windows.Forms.SplitContainer();
 			this.PinHeaderPanel0 = new System.Windows.Forms.Panel();
 			this.PinHeaderPanel1 = new System.Windows.Forms.Panel();
+			this.MidiButton = new System.Windows.Forms.Button();
 			this.MainMenu.SuspendLayout();
 			this.PinPanel.SuspendLayout();
 			this.SplitContainer.Panel1.SuspendLayout();
@@ -91,6 +94,8 @@ namespace VVVV.Nodes
 			// MainMenu
 			// 
 			this.MainMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+			this.MainMenu.Controls.Add(this.MidiButton);
+			this.MainMenu.Controls.Add(this.WavButton);
 			this.MainMenu.Controls.Add(this.AutomataCheckBox);
 			this.MainMenu.Controls.Add(this.ColorButton);
 			this.MainMenu.Controls.Add(this.RulerButton);
@@ -103,6 +108,17 @@ namespace VVVV.Nodes
 			this.MainMenu.Name = "MainMenu";
 			this.MainMenu.Size = new System.Drawing.Size(688, 25);
 			this.MainMenu.TabIndex = 0;
+			// 
+			// WavButton
+			// 
+			this.WavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.WavButton.Location = new System.Drawing.Point(482, 0);
+			this.WavButton.Name = "WavButton";
+			this.WavButton.Size = new System.Drawing.Size(34, 23);
+			this.WavButton.TabIndex = 9;
+			this.WavButton.Text = "+W";
+			this.WavButton.UseVisualStyleBackColor = true;
+			this.WavButton.Click += new System.EventHandler(this.PinButtonClick);
 			// 
 			// AutomataCheckBox
 			// 
@@ -196,7 +212,7 @@ namespace VVVV.Nodes
 			// InsertPreview
 			// 
 			this.InsertPreview.BackColor = System.Drawing.Color.Lime;
-			this.InsertPreview.Location = new System.Drawing.Point(206, 111);
+			this.InsertPreview.Location = new System.Drawing.Point(183, 46);
 			this.InsertPreview.Name = "InsertPreview";
 			this.InsertPreview.Size = new System.Drawing.Size(150, 2);
 			this.InsertPreview.TabIndex = 4;
@@ -268,6 +284,17 @@ namespace VVVV.Nodes
 			this.PinHeaderPanel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragDrop);
 			this.PinHeaderPanel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragEnter);
 			// 
+			// MidiButton
+			// 
+			this.MidiButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.MidiButton.Location = new System.Drawing.Point(442, 0);
+			this.MidiButton.Name = "MidiButton";
+			this.MidiButton.Size = new System.Drawing.Size(34, 23);
+			this.MidiButton.TabIndex = 10;
+			this.MidiButton.Text = "+M";
+			this.MidiButton.UseVisualStyleBackColor = true;
+			this.MidiButton.Click += new System.EventHandler(this.PinButtonClick);
+			// 
 			// TimelinerPlugin
 			// 
 			this.Controls.Add(this.PinPanel);
@@ -281,6 +308,8 @@ namespace VVVV.Nodes
 			this.SplitContainer.ResumeLayout(false);
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.Button MidiButton;
+		private System.Windows.Forms.Button WavButton;
 		private System.Windows.Forms.Panel InsertPreview;
 		private System.Windows.Forms.Panel PinHeaderPanel0;
 		private System.Windows.Forms.Panel PinHeaderPanel1;
@@ -353,8 +382,11 @@ namespace VVVV.Nodes
         			FHost.DeletePin(FTimeOut);
         			FTimeOut = null;
         			
-        			//FHost.DeletePin(FSeekOut);
-        			//FSeekOut = null;
+        			FHost.DeletePin(FSeekingOut);
+        			FSeekingOut = null;
+        			
+        			FHost.DeletePin(FPlayingOut);
+        			FPlayingOut = null;
         			
         			FHost.DeletePin(FPinSettings);
         			FPinSettings = null;
@@ -459,7 +491,7 @@ namespace VVVV.Nodes
 			////////////////////////////
 			/// 
 			FHost.CreateStringConfig("GUI Settings", TSliceMode.Dynamic, TPinVisibility.Hidden, out FGUISettings);
-			FGUISettings.SliceCount = 0;
+			//FGUISettings.SliceCount = 0;
 			FGUISettings.SetSubType("", false);
 			
 			FHost.CreateStringConfig("Pin Settings", TSliceMode.Dynamic, TPinVisibility.Hidden, out FPinSettings);
@@ -474,8 +506,10 @@ namespace VVVV.Nodes
 			FHost.CreateValueOutput("Time", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FTimeOut);
 			FTimeOut.SetSubType(double.MinValue, double.MaxValue, 1, 0, false, false, false);
 			
-			//FHost.CreateValueOutput("Seek", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSeekOut);
-			//FSeekOut.SetSubType(0, 1, 1, 0, true, false, true);
+			FHost.CreateValueOutput("Playing", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPlayingOut);
+			FPlayingOut.SetSubType(0, 1, 1, 0, true, false, true);
+			FHost.CreateValueOutput("Seeking", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FSeekingOut);
+			FSeekingOut.SetSubType(0, 1, 1, 0, true, false, true);
 		}
 		
 		#endregion pin creation
@@ -596,15 +630,17 @@ namespace VVVV.Nodes
 			}
 			
 			//update time
+			FSeekingOut.SetValue(0, System.Convert.ToDouble(GTimer.IsSeeking));
 			GTimer.Evaluate();
 			FTimeOut.SetValue(0, GTimer.CurrentTime);
+			
+			
+			FPlayingOut.SetValue(0, System.Convert.ToDouble(GTimer.IsRunning));
 			
 			SliceArea.Evaluate();
 			
 			//statetimes, statenames, stateexp
-			
-			//set outputs
-			//FSeekOut.SetValue(0,0);
+
 			
 			for (int i = 0; i<FOutputPins.Count;i++)
 			{
@@ -623,6 +659,9 @@ namespace VVVV.Nodes
 
 		private void GUISettingsChanged()
 		{
+			if (FGUISettings.SliceCount == 0)
+				return;
+			
 			string settings;
 			XmlNode guiSettings;
 			XmlAttribute attr;
@@ -729,10 +768,14 @@ namespace VVVV.Nodes
 							}
 						case TLPinType.Midi:
 							{
-								//newPin = new TLMidiPin(FHost, GTransformer, FOutputPins.Count, pinSettings);
+								newPin = new TLMidiPin(FHost, GTransformer, FOutputPins.Count, pinSettings);
 								break;
 							}
-							
+						case TLPinType.Wave:
+							{
+								newPin = new TLWavPin(FHost, GTransformer, FOutputPins.Count, pinSettings);
+								break;
+							}							
 					}
 					
 					
@@ -1040,8 +1083,10 @@ namespace VVVV.Nodes
 				AddPin(TLPinType.String);
 			else if (sender == this.ColorButton)
 				AddPin(TLPinType.Color);
-			//	else if (sender == this.MidiButton)
-			//		AddPin(TLPinType.Midi);
+				else if (sender == this.MidiButton)
+				AddPin(TLPinType.Midi);
+			else if (sender == this.WavButton)
+				AddPin(TLPinType.Wave);
 		}
 		
 		void AutomataCheckBoxCheckedChanged(object sender, EventArgs e)

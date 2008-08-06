@@ -48,6 +48,11 @@ namespace VVVV.Nodes.Timeliner
    			}
 		}
 		
+		public bool IsSeeking
+		{
+			get{return FForceCurrentTime;}
+		}
+		
 		public void Evaluate()
 		{
 			//execute user/gui-forced time
