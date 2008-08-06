@@ -158,6 +158,14 @@ namespace VVVV.Nodes.Timeliner
 			
 		}
 		
+		protected override void PinNameChanged()
+		{
+			base.PinNameChanged();
+			
+			FChannelOut.Name = Name + "-Channel";
+			FVelocityOut.Name = Name + "-Velocity";
+		}
+		
 		private void MinMaxIOChangedCB(double NewValue)
 		{
 			UpdateMinMax();

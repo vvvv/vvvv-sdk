@@ -187,6 +187,13 @@ namespace VVVV.Nodes.Timeliner
 			base.DestroyPins();
 		}
 		
+		protected override void PinNameChanged()
+		{
+			base.PinNameChanged();
+			
+			FValueOut.Name = Name;
+		}
+		
 		protected override void LoadSlices(int SavedSliceCount)
 		{
 			for(int i=0; i<SavedSliceCount; i++)
