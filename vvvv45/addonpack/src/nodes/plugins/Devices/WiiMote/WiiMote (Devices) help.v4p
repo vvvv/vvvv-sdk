@@ -1,0 +1,2479 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta16.dtd" >
+   <PATCH nodename="c:\dev\vvvv\plugins\WiiMote\WiiMote (Devices) help.v4p">
+   <BOUNDS height="16035" left="1125" top="1125" type="Window" width="19665">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="107" nodename="IOBox (String)">
+   <BOUNDS height="270" left="336" top="168" type="Node" width="3660">
+   </BOUNDS>
+   <BOUNDS height="732" left="336" top="168" type="Box" width="3744">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|WiiMote Plugin|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="24">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="106" nodename="bin\PluginWiiMote.dll">
+   <BOUNDS height="264" left="3084" top="5040" type="Node" width="8772">
+   </BOUNDS>
+   <BOUNDS left="3084" top="5040" type="Box">
+   </BOUNDS>
+   <PIN pinname="LED" visible="1">
+   </PIN>
+   <PIN pinname="Enable" visible="1">
+   </PIN>
+   <PIN pinname="Rumble" visible="1">
+   </PIN>
+   <PIN pinname="LEDXYZW" visible="1">
+   </PIN>
+   <PIN pinname="CalibrationXYZ" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="AccellerationXYZ" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   <PIN pinname="ExtensionFound" visible="1">
+   </PIN>
+   <PIN pinname="Working" visible="1">
+   </PIN>
+   <PIN pinname="CursorXYZW" visible="1">
+   </PIN>
+   <PIN pinname="ButtonsXYZW" visible="1">
+   </PIN>
+   <PIN pinname="SystemXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Battery" visible="1">
+   </PIN>
+   <PIN pinname="InfraredXYZ" visible="1">
+   </PIN>
+   <PIN pinname="InfraredMode" visible="1">
+   </PIN>
+   <PIN pinname="CalibrationZeroGXYZ" pintype="Input" slicecount="1" visible="-1" values="126">
+   </PIN>
+   <PIN pinname="CalibrationOneGXYZ" pintype="Input" slicecount="1" visible="-1" values="151">
+   </PIN>
+   <PIN pinname="CalibrateNow!" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="WiimoteID" pintype="Input" slicecount="1" visible="-1" values="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Available Wiimotes" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="InfraredXYZW" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="105" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5280" top="2616" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11436" top="5280" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1788" left="5280" top="2616" type="Box" width="780">
+   </BOUNDS>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Connections" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="4" values="1,1,1,0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" values="1,1,1,0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="LED">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="104" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="8184" top="2616" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12228" top="5904" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1788" left="8184" top="2616" type="Box" width="780">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Rumble">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="106" dstpinname="Rumble" srcnodeid="104" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="103" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2424" top="3972" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12468" top="6144" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="804" left="2424" top="3972" type="Box" width="732">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enable">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="106" dstpinname="Enable" srcnodeid="103" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="106" dstpinname="LEDXYZW" srcnodeid="105" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="102" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6696" top="9612" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11424" top="7380" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1380" left="6696" top="9612" type="Box" width="2268">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Raw Force|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="101" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="9564" top="7680" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11664" top="7620" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1404" left="9564" top="7680" type="Box" width="1200">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Tilt">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="100" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3408" top="6852" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8316" top="7140" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="492" left="3408" top="6852" type="Box" width="828">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Extension Detected|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="100" dstpinname="Input String" srcnodeid="106" srcpinname="ExtensionFound">
+   </LINK>
+   <NODE componentmode="InABox" id="99" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1188" top="6144" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8556" top="7380" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1248" left="1188" top="6144" type="Box" width="1956">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Status">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="99" dstpinname="Input String" linkstyle="VHV" srcnodeid="106" srcpinname="Working">
+   <LINKPOINT x="3108" y="5724">
+   </LINKPOINT>
+   <LINKPOINT x="3108" y="5724">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="98" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5268" top="6348" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12468" top="6144" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="648" left="5268" top="6348" type="Box" width="1140">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="4" values="0,0,0,0">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Pages" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Cursor">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="97" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6372" top="7668" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12708" top="6384" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="648" left="6372" top="7668" type="Box" width="1140">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="4" values="0,0,0,0">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Pages" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="ControlButtons">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="97" dstpinname="Y Input Value" srcnodeid="106" srcpinname="ButtonsXYZW">
+   </LINK>
+   <NODE componentmode="InABox" id="96" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7860" top="5988" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="14292" top="6336" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1068" left="7860" top="5988" type="Box" width="720">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="3" values="0,0,0">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Pages" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="SystemButtons">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="96" dstpinname="Y Input Value" srcnodeid="106" srcpinname="SystemXYZ">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="95" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4968" top="8292" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5160" top="8940" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1248" left="4968" top="8292" type="Box" width="360">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Battery">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="95" dstpinname="Y Input Value" hiddenwhenlocked="1" linkstyle="VHV" srcnodeid="106" srcpinname="Battery">
+   <LINKPOINT x="5292" y="6792">
+   </LINKPOINT>
+   <LINKPOINT x="5292" y="6792">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="94" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="13020" top="8208" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11664" top="8580" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="3840" left="13020" top="8208" type="Box" width="1440">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1023">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Slider Constraints" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="BlobPosition">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="93" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="14568" top="8184" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11928" top="6912" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="3876" left="14568" top="8184" type="Box" width="576">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="16">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Show Background" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Connections" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="41">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="BlobSize">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="92" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="11064" top="2616" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11052" top="4692" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1788" left="11064" top="2616" type="Box" width="780">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|IR Mode|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="106" dstpinname="InfraredMode" srcnodeid="92" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="91" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5808" top="18936" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12804" top="4080" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1068" left="5808" top="18936" type="Box" width="360">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="127,127,126">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="255">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Background" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Connections" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="90" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6720" top="18936" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13044" top="4320" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1068" left="6720" top="18936" type="Box" width="360">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="153,152,156">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="255">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Background" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Connections" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="89" nodename="IOBox (String)">
+   <BOUNDS height="240" left="4680" top="20964" type="Node" width="924">
+   </BOUNDS>
+   <BOUNDS height="240" left="4680" top="20964" type="Box" width="924">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Zero Gravity|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="88" nodename="IOBox (String)">
+   <BOUNDS height="240" left="6624" top="20844" type="Node" width="924">
+   </BOUNDS>
+   <BOUNDS height="240" left="6624" top="20844" type="Box" width="924">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|One Gravity|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="87" nodename="IOBox (String)">
+   <BOUNDS height="600" left="8220" top="19032" type="Node" width="4404">
+   </BOUNDS>
+   <BOUNDS height="2508" left="8220" top="19032" type="Box" width="2340">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Handle With Care!!!&cr;&lf;&cr;&lf;You might permanantly override your factory settings by using the three hidden options.&cr;&lf;&cr;&lf;Use them to manually callibrate your wii only when you know what you are doing.&cr;&lf;&cr;&lf;http://www.wiili.org/forum/wiimote-precision-and-calibration-t1858.html|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="8">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="86" nodename="IOBox (String)">
+   <BOUNDS height="1140" left="11904" top="2664" type="Node" width="2820">
+   </BOUNDS>
+   <BOUNDS height="1428" left="11904" top="2664" type="Box" width="3360">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|IR Modes:&cr;&lf;&cr;&lf;0: Off&cr;&lf;1: Basic -&gt; Up to 2 Blobs are detected&cr;&lf;2: Extended -&gt; Up to 4 Blobs are detected&cr;&lf;3: Full (not working, yet unknown)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="85" nodename="IOBox (String)">
+   <BOUNDS height="270" left="132" top="3048" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="876" left="132" top="3048" type="Box" width="4176">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|WiiMote is giving you complete control over your wiimote.&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="98" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="106" srcpinname="CursorXYZW">
+   <LINKPOINT x="6372" y="5820">
+   </LINKPOINT>
+   <LINKPOINT x="6372" y="5820">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="102" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="106" srcpinname="AccellerationXYZ">
+   <LINKPOINT x="9648" y="7452">
+   </LINKPOINT>
+   <LINKPOINT x="8928" y="7452">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="101" dstpinname="Y Input Value" srcnodeid="106" srcpinname="PositionXY">
+   </LINK>
+   <NODE componentmode="InABox" id="84" nodename="IOBox (String)">
+   <BOUNDS height="240" left="1188" top="7644" type="Node" width="2856">
+   </BOUNDS>
+   <BOUNDS height="480" left="1188" top="7644" type="Box" width="1812">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|shows important connection informations|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="83" nodename="IOBox (String)">
+   <BOUNDS height="240" left="3348" top="7584" type="Node" width="2784">
+   </BOUNDS>
+   <BOUNDS height="444" left="3348" top="7584" type="Box" width="1668">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|shows the currently connected extension|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="82" nodename="IOBox (String)">
+   <BOUNDS height="240" left="4668" top="9780" type="Node" width="2544">
+   </BOUNDS>
+   <BOUNDS height="492" left="4668" top="9780" type="Box" width="1500">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|shows the current state of the battery|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="81" nodename="IOBox (String)">
+   <BOUNDS height="420" left="6096" top="7224" type="Node" width="1488">
+   </BOUNDS>
+   <BOUNDS height="312" left="6096" top="7224" type="Box" width="2676">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|all 11 digital buttons of the wiimote|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="80" nodename="IOBox (String)">
+   <BOUNDS height="420" left="6684" top="11184" type="Node" width="5232">
+   </BOUNDS>
+   <BOUNDS height="912" left="6684" top="11184" type="Box" width="3348">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|depending on the acceleration, movement of the wii in all three axis is detected.&cr;&lf;heavy movement results in values exceeding -1 or 1|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="79" nodename="IOBox (String)">
+   <BOUNDS height="240" left="9528" top="9264" type="Node" width="3660">
+   </BOUNDS>
+   <BOUNDS height="1716" left="9528" top="9264" type="Box" width="2304">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|out of gravitational pull pitch and roll are being calculated&cr;&lf;&cr;&lf;values are -1 for -90° and 1 for 90°&cr;&lf;&cr;&lf;if wiimote is turned upside down, it will mirror these values|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="78" nodename="IOBox (String)">
+   <BOUNDS height="960" left="12660" top="4944" type="Node" width="5040">
+   </BOUNDS>
+   <BOUNDS height="2220" left="12660" top="4944" type="Box" width="2904">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|dpending on the IR Mode up to four IR Blobs are detected.&cr;&lf;&cr;&lf;the first value is the ID of the blob given by the wiimote, the next two values of the vector are the position in camera pixels (1024x768), the fourth is a relative size.&cr;&lf;&cr;&lf;all detection is done within the wiimote, so hardly any adjustment is possible|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="77" nodename="IOBox (String)">
+   <BOUNDS height="780" left="4476" top="168" type="Node" width="5928">
+   </BOUNDS>
+   <BOUNDS height="888" left="4476" top="168" type="Box" width="6456">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Wiimote only works when output pins are connected.&cr;&lf;&cr;&lf;If multiple Wiimote Plugins are used with the same physical Wiimote, all mirror the output. &cr;&lf;the input is updated only when the input really changes|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="76" nodename="IOBox (String)">
+   <BOUNDS height="240" left="132" top="2604" type="Node" width="984">
+   </BOUNDS>
+   <BOUNDS height="444" left="132" top="2604" type="Box" width="2076">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Standard Use|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="75" nodename="IOBox (String)">
+   <BOUNDS height="240" left="384" top="18276" type="Node" width="168">
+   </BOUNDS>
+   <BOUNDS height="192" left="384" top="18276" type="Box" width="14940">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="||">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="74" nodename="bin\PluginWiiMote.dll">
+   <BOUNDS height="264" left="5184" top="21276" type="Node" width="2796">
+   </BOUNDS>
+   <BOUNDS left="5184" top="21276" type="Box">
+   </BOUNDS>
+   <PIN pinname="LED" visible="1">
+   </PIN>
+   <PIN pinname="Enable" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Rumble" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="LEDXYZW" pintype="Input" slicecount="4" visible="-1" values="0,0,0,0">
+   </PIN>
+   <PIN pinname="CalibrationXYZ" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="AccellerationXYZ" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   <PIN pinname="ExtensionFound" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Working" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="CursorXYZW" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ButtonsXYZW" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="SystemXYZ" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Battery" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="InfraredXYZ" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="InfraredMode" pintype="Input" slicecount="1" visible="-1" values="2">
+   </PIN>
+   <PIN pinname="CalibrationZeroGXYZ" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="CalibrationOneGXYZ" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="CalibrateNow!" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="WiimoteID" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Available Wiimotes" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="InfraredXYZW" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="74" dstpinname="CalibrationZeroGXYZ" srcnodeid="91" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="74" dstpinname="CalibrationOneGXYZ" srcnodeid="90" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="73" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7296" top="18936" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8400" top="7248" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="720" left="7296" top="18936" type="Box" width="684">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Calibrate">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="74" dstpinname="CalibrateNow!" srcnodeid="73" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="72" nodename="IOBox (String)">
+   <BOUNDS height="270" left="336" top="19104" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="876" left="336" top="19104" type="Box" width="4176">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|WiiMote allows you to Calibrate your Wiimotes permanently|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="71" nodename="IOBox (String)">
+   <BOUNDS height="240" left="336" top="18660" type="Node" width="984">
+   </BOUNDS>
+   <BOUNDS height="432" left="336" top="18660" type="Box" width="2652">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Calibration Use|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="70" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6768" top="21768" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11904" top="7860" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1404" left="6768" top="21768" type="Box" width="1200">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Tilt">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="70" dstpinname="Y Input Value" srcnodeid="74" srcpinname="PositionXY">
+   </LINK>
+   <NODE componentmode="InABox" id="69" nodename="IOBox (String)">
+   <BOUNDS height="780" left="336" top="19980" type="Node" width="2196">
+   </BOUNDS>
+   <BOUNDS height="948" left="336" top="19980" type="Box" width="2460">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|a calibrated wiimote has a tilt of &cr;&lf; 0 when placed on a table &cr;&lf;-1 if laying on left side/top&cr;&lf; 1 if laying on right side/bottom|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="68" nodename="IOBox (String)">
+   <BOUNDS height="240" left="396" top="2220" type="Node" width="168">
+   </BOUNDS>
+   <BOUNDS height="192" left="396" top="2220" type="Box" width="14940">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="||">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="67" nodename="IOBox (String)">
+   <BOUNDS height="240" left="384" top="23568" type="Node" width="168">
+   </BOUNDS>
+   <BOUNDS height="192" left="384" top="23568" type="Box" width="14940">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="||">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="66" nodename="IOBox (String)">
+   <BOUNDS height="270" left="432" top="24540" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="876" left="432" top="24540" type="Box" width="4176">
+   </BOUNDS>
+   <BOUNDS height="160" left="480" top="480" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|WiiMote allows you to use a wiimote with a connected nunchuk|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="65" nodename="IOBox (String)">
+   <BOUNDS height="240" left="432" top="24096" type="Node" width="984">
+   </BOUNDS>
+   <BOUNDS height="432" left="432" top="24096" type="Box" width="2652">
+   </BOUNDS>
+   <BOUNDS height="160" left="480" top="480" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Nunchuk Use|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="64" nodename="bin\PluginWiiMote.dll">
+   <BOUNDS height="264" left="5640" top="24456" type="Node" width="9600">
+   </BOUNDS>
+   <BOUNDS left="5640" top="24456" type="Box">
+   </BOUNDS>
+   <PIN pinname="LED" visible="1">
+   </PIN>
+   <PIN pinname="Enable" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Rumble" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="LEDXYZW" pintype="Input" slicecount="4" visible="-1" values="0,0,0,0">
+   </PIN>
+   <PIN pinname="CalibrationXYZ" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="AccellerationXYZ" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="PositionXY" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ExtensionFound" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Working" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="CursorXYZW" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ButtonsXYZW" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="SystemXYZ" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Battery" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="InfraredXYZ" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="InfraredMode" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   <PIN pinname="CalibrationZeroGXYZ" pintype="Input" slicecount="3" visible="-1" values="126,126,131">
+   </PIN>
+   <PIN pinname="CalibrationOneGXYZ" pintype="Input" slicecount="3" visible="-1" values="151,151,151">
+   </PIN>
+   <PIN pinname="CalibrateNow!" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="WiimoteID" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Available Wiimotes" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Extension" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="NunchukTiltXY" visible="1">
+   </PIN>
+   <PIN pinname="NunchukAccellerationXYZ" visible="1">
+   </PIN>
+   <PIN pinname="NunchukButtonsXY" visible="1">
+   </PIN>
+   <PIN pinname="NunchukJoystickXY" visible="1">
+   </PIN>
+   <PIN pinname="InfraredXYZW" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="63" nodename="IOBox (String)">
+   <BOUNDS height="780" left="420" top="25200" type="Node" width="2196">
+   </BOUNDS>
+   <BOUNDS height="2244" left="420" top="25200" type="Box" width="2664">
+   </BOUNDS>
+   <BOUNDS height="160" left="-480" top="4944" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|To use the nunchuk, use the Inspektor and set the Extension Configuration Pin to 1&cr;&lf;&cr;&lf;Connect the Nunchuk and check, if it is recognized.&cr;&lf;&cr;&lf;Bug: Only use IRMode 1 to get valid data when using the Nunchuck|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="62" nodename="IOBox (String)">
+   <BOUNDS height="0" left="4872" top="24996" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8556" top="7380" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="492" left="4872" top="24996" type="Box" width="828">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Extension Detected|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="62" dstpinname="Input String" srcnodeid="64" srcpinname="ExtensionFound">
+   </LINK>
+   <NODE componentmode="InABox" id="61" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="8208" top="25920" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="14076" top="23760" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1380" left="8208" top="25920" type="Box" width="2268">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Raw Force|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="60" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="11664" top="25920" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="14316" top="24000" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1404" left="11664" top="25920" type="Box" width="1200">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Tilt">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="59" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6960" top="24996" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="15360" top="22764" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="648" left="6960" top="24996" type="Box" width="1140">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Pages" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="ControlButtons">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="58" nodename="IOBox (String)">
+   <BOUNDS height="240" left="8124" top="27684" type="Node" width="3660">
+   </BOUNDS>
+   <BOUNDS height="552" left="8124" top="27684" type="Box" width="4728">
+   </BOUNDS>
+   <BOUNDS height="160" left="2652" top="16380" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The Force and Tilt values are semanically identical to the standard wiimote usage|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="60" dstpinname="Y Input Value" srcnodeid="64" srcpinname="NunchukTiltXY">
+   </LINK>
+   <LINK dstnodeid="61" dstpinname="Y Input Value" srcnodeid="64" srcpinname="NunchukAccellerationXYZ">
+   </LINK>
+   <LINK dstnodeid="59" dstpinname="Y Input Value" srcnodeid="64" srcpinname="NunchukButtonsXY">
+   </LINK>
+   <NODE componentmode="InABox" id="57" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="13548" top="25920" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11904" top="8820" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1644" left="13548" top="25920" type="Box" width="1704">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Slider Constraints" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Joystick">
+   </PIN>
+   </NODE>
+   <NODE id="56" nodename="Vector (2d Split)">
+   <BOUNDS height="276" left="14376" top="25176" type="Node" width="864">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="56" dstpinname="XY" linkstyle="VHV" srcnodeid="64" srcpinname="NunchukJoystickXY">
+   <LINKPOINT x="15204" y="24948">
+   </LINKPOINT>
+   <LINKPOINT x="14400" y="24948">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="57" dstpinname="X Input Value" srcnodeid="56" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="57" dstpinname="Y Input Value" srcnodeid="56" srcpinname="Y">
+   </LINK>
+   <NODE componentmode="InABox" id="55" nodename="IOBox (String)">
+   <BOUNDS height="240" left="13548" top="27780" type="Node" width="3936">
+   </BOUNDS>
+   <BOUNDS height="828" left="13548" top="27780" type="Box" width="1920">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|analog joystick with values ranging from -1 to 1 in two axis|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="54" nodename="IOBox (String)">
+   <BOUNDS height="240" left="480" top="28488" type="Node" width="168">
+   </BOUNDS>
+   <BOUNDS height="192" left="480" top="28488" type="Box" width="14940">
+   </BOUNDS>
+   <BOUNDS height="160" left="480" top="480" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="||">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="53" nodename="bin\PluginWiiMote.dll">
+   <BOUNDS height="264" left="5400" top="29244" type="Node" width="9600">
+   </BOUNDS>
+   <BOUNDS left="5400" top="29244" type="Box">
+   </BOUNDS>
+   <PIN pinname="LED" visible="1">
+   </PIN>
+   <PIN pinname="Enable" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Rumble" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="LEDXYZW" pintype="Input" slicecount="4" visible="-1" values="0,0,0,0">
+   </PIN>
+   <PIN pinname="CalibrationXYZ" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="AccellerationXYZ" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="PositionXY" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ExtensionFound" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Working" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="CursorXYZW" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ButtonsXYZW" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="SystemXYZ" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Battery" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="InfraredXYZ" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="InfraredMode" pintype="Input" slicecount="1" visible="-1" values="2">
+   </PIN>
+   <PIN pinname="CalibrationZeroGXYZ" pintype="Input" slicecount="3" visible="-1" values="126,126,131">
+   </PIN>
+   <PIN pinname="CalibrationOneGXYZ" pintype="Input" slicecount="3" visible="-1" values="151,151,151">
+   </PIN>
+   <PIN pinname="CalibrateNow!" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="WiimoteID" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Available Wiimotes" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Extension" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="NunchukTiltXY" visible="1">
+   </PIN>
+   <PIN pinname="NunchukAccellerationXYZ" visible="1">
+   </PIN>
+   <PIN pinname="NunchukButtonsXY" visible="1">
+   </PIN>
+   <PIN pinname="NunchukJoystickXY" visible="1">
+   </PIN>
+   <PIN pinname="ClassicCursorXYZW" visible="1">
+   </PIN>
+   <PIN pinname="ClassicButtonsXYZW" visible="1">
+   </PIN>
+   <PIN pinname="ClassicSystemXYZ" visible="1">
+   </PIN>
+   <PIN pinname="ClassicBackControlXYZW" visible="1">
+   </PIN>
+   <PIN pinname="ClassicJoystickLeftXY" visible="1">
+   </PIN>
+   <PIN pinname="ClassicJoystickRightXY" visible="1">
+   </PIN>
+   <PIN pinname="InfraredXYZW" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="52" nodename="IOBox (String)">
+   <BOUNDS height="270" left="504" top="29400" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="876" left="504" top="29400" type="Box" width="4176">
+   </BOUNDS>
+   <BOUNDS height="160" left="720" top="720" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|WiiMote allows you to use a wiimote with a connected classic controller|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="51" nodename="IOBox (String)">
+   <BOUNDS height="240" left="504" top="28956" type="Node" width="984">
+   </BOUNDS>
+   <BOUNDS height="432" left="504" top="28956" type="Box" width="3312">
+   </BOUNDS>
+   <BOUNDS height="160" left="720" top="720" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Classic Controller Use|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="50" nodename="IOBox (String)">
+   <BOUNDS height="780" left="492" top="30060" type="Node" width="2196">
+   </BOUNDS>
+   <BOUNDS height="1404" left="492" top="30060" type="Box" width="2592">
+   </BOUNDS>
+   <BOUNDS height="160" left="-240" top="5184" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|To use the nunchuk, use the Inspektor and set the Extension Configuration Pin to 2&cr;&lf;&cr;&lf;Connect the Classic Controller and check, if it is recognized.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="49" nodename="IOBox (String)">
+   <BOUNDS height="0" left="4632" top="29892" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8796" top="7620" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="492" left="4632" top="29892" type="Box" width="828">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Extension Detected|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="49" dstpinname="Input String" srcnodeid="53" srcpinname="ExtensionFound">
+   </LINK>
+   <NODE componentmode="InABox" id="48" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5916" top="30900" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="14148" top="26184" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1116" left="5916" top="30900" type="Box" width="1128">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="4" values="0,0,0,0">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Pages" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Cursor">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="47" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7512" top="30900" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="14388" top="26424" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1116" left="7512" top="30900" type="Box" width="1128">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="4" values="0,0,0,0">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Pages" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="ControlButtons">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="46" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="9504" top="30900" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="15972" top="26376" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1068" left="9504" top="30900" type="Box" width="720">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="3" values="0,0,0">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Pages" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="SystemButtons">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="48" dstpinname="Y Input Value" srcnodeid="53" srcpinname="ClassicCursorXYZW">
+   </LINK>
+   <LINK dstnodeid="47" dstpinname="Y Input Value" srcnodeid="53" srcpinname="ClassicButtonsXYZW">
+   </LINK>
+   <LINK dstnodeid="46" dstpinname="Y Input Value" srcnodeid="53" srcpinname="ClassicSystemXYZ">
+   </LINK>
+   <NODE componentmode="InABox" id="45" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="13860" top="30900" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="14628" top="26664" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="996" left="13860" top="30900" type="Box" width="1128">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="4" values="0,0,0,0">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Pages" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="ControlButtons2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="45" dstpinname="Y Input Value" srcnodeid="53" srcpinname="ClassicBackControlXYZW">
+   </LINK>
+   <NODE componentmode="InABox" id="44" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="10680" top="30900" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12144" top="9060" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1044" left="10680" top="30900" type="Box" width="1104">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Slider Constraints" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Joystick Left|">
+   </PIN>
+   </NODE>
+   <NODE id="43" nodename="Vector (2d Split)">
+   <BOUNDS height="276" left="11196" top="30264" type="Node" width="588">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="44" dstpinname="X Input Value" srcnodeid="43" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="44" dstpinname="Y Input Value" srcnodeid="43" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="43" dstpinname="XY" linkstyle="VHV" srcnodeid="53" srcpinname="ClassicJoystickLeftXY">
+   <LINKPOINT x="11784" y="29880">
+   </LINKPOINT>
+   <LINKPOINT x="11220" y="29880">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="42" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="12360" top="30900" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12384" top="9300" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1044" left="12360" top="30900" type="Box" width="1104">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Slider Constraints" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Joystick Right|">
+   </PIN>
+   </NODE>
+   <NODE id="41" nodename="Vector (2d Split)">
+   <BOUNDS height="276" left="12876" top="30264" type="Node" width="588">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="42" dstpinname="X Input Value" srcnodeid="41" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="42" dstpinname="Y Input Value" srcnodeid="41" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="41" dstpinname="XY" linkstyle="VHV" srcnodeid="53" srcpinname="ClassicJoystickRightXY">
+   <LINKPOINT x="13380" y="29880">
+   </LINKPOINT>
+   <LINKPOINT x="12900" y="29880">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="40" nodename="IOBox (String)">
+   <BOUNDS height="240" left="5880" top="32256" type="Node" width="1548">
+   </BOUNDS>
+   <BOUNDS height="456" left="5880" top="32256" type="Box" width="1080">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the digital cursor field|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="39" nodename="IOBox (String)">
+   <BOUNDS height="240" left="7512" top="32256" type="Node" width="1548">
+   </BOUNDS>
+   <BOUNDS height="456" left="7512" top="32256" type="Box" width="1080">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|A B X Y|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="38" nodename="IOBox (String)">
+   <BOUNDS height="240" left="9444" top="32256" type="Node" width="1548">
+   </BOUNDS>
+   <BOUNDS height="456" left="9444" top="32256" type="Box" width="1080">
+   </BOUNDS>
+   <BOUNDS height="160" left="480" top="480" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|+ - Home|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="37" nodename="IOBox (String)">
+   <BOUNDS height="240" left="13812" top="32256" type="Node" width="1548">
+   </BOUNDS>
+   <BOUNDS height="372" left="13812" top="32256" type="Box" width="1296">
+   </BOUNDS>
+   <BOUNDS height="160" left="720" top="720" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Shoulder buttons|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="36" nodename="IOBox (String)">
+   <BOUNDS height="240" left="10860" top="32256" type="Node" width="3936">
+   </BOUNDS>
+   <BOUNDS height="600" left="10860" top="32256" type="Box" width="2484">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|two analog joysticks with values ranging from -1 to 1 in two axis|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="35" nodename="IOBox (String)">
+   <BOUNDS height="240" left="480" top="33192" type="Node" width="168">
+   </BOUNDS>
+   <BOUNDS height="192" left="480" top="33192" type="Box" width="14940">
+   </BOUNDS>
+   <BOUNDS height="160" left="720" top="720" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="||">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="34" nodename="IOBox (String)">
+   <BOUNDS height="270" left="504" top="34080" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="372" left="504" top="34080" type="Box" width="1668">
+   </BOUNDS>
+   <BOUNDS height="160" left="960" top="960" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="WiimoteLib">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="33" nodename="IOBox (String)">
+   <BOUNDS height="240" left="504" top="33516" type="Node" width="984">
+   </BOUNDS>
+   <BOUNDS height="432" left="504" top="33516" type="Box" width="3312">
+   </BOUNDS>
+   <BOUNDS height="160" left="960" top="960" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Credits">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="32" nodename="IOBox (String)">
+   <BOUNDS height="420" left="504" top="34452" type="Node" width="5520">
+   </BOUNDS>
+   <BOUNDS height="528" left="504" top="34452" type="Box" width="6300">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Brian Peek (http://www.brianpeek.com/)&cr;&lf;http://msdn.microsoft.com/coding4fun/hardware/article.aspx?articleid=1879033|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="31" nodename="IOBox (String)">
+   <BOUNDS height="240" left="504" top="35064" type="Node" width="3228">
+   </BOUNDS>
+   <BOUNDS height="528" left="504" top="35064" type="Box" width="3228">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Licenced under Microsoft Public License (Ms-PL)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="30" nodename="IOBox (String)">
+   <BOUNDS height="270" left="7464" top="34080" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="372" left="7464" top="34080" type="Box" width="1668">
+   </BOUNDS>
+   <BOUNDS height="160" left="1200" top="1200" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="PluginWiiMote">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="29" nodename="IOBox (String)">
+   <BOUNDS height="420" left="7464" top="34452" type="Node" width="5520">
+   </BOUNDS>
+   <BOUNDS height="528" left="7464" top="34452" type="Box" width="6300">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Marko Ritter (velcrome)&cr;&lf;http://vvvv.svn.sourceforge.net/viewvc/vvvv/plugins/c#/WiiMote/|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="28" nodename="IOBox (String)">
+   <BOUNDS height="240" left="7464" top="35064" type="Node" width="3228">
+   </BOUNDS>
+   <BOUNDS height="3492" left="7464" top="35064" type="Box" width="8148">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Licenced under a slightly modified vvvv fair use licence:&cr;&lf;&cr;&lf;The author grants you a non-exclusive license to use the Software if you follow all restrictions in all sections of this agreement.&cr;&lf;&cr;&lf;You may not:&cr;&lf;    * use the plugin for purposes which are intended for or directed toward commercial advantage or private                   monetary compensation without obtaining a commercial license for each computer the plugin is running on.&cr;&lf;    * use the Software in any form of illegal or damaging activity.&cr;&lf;    * modify and/or remove any copyright notices or labels on the software. &cr;&lf;&cr;&lf;Title, ownership rights, and intellectual property rights in the Software shall remain with the author. The Software is protected by copyright laws and treaties. Title and related rights in the content accessed through the Software is the property of the applicable content owner and may be protected by applicable law. This License gives you no rights to such content.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="27" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4656" top="20004" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12708" top="6384" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="420" left="4656" top="20004" type="Box" width="600">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enable">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="74" dstpinname="Enable" srcnodeid="27" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5100" top="23952" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12948" top="6624" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="420" left="5100" top="23952" type="Box" width="600">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enable">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="64" dstpinname="Enable" srcnodeid="26" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="25" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4860" top="28752" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13296" top="10656" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="420" left="4860" top="28752" type="Box" width="600">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enable">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="53" dstpinname="Enable" srcnodeid="25" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="24" nodename="Vector (4d Split)">
+   <BOUNDS height="276" left="13716" top="7356" type="Node" width="1428">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="XYZW" visible="1">
+   </PIN>
+   <PIN pinname="W" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="XYZW" srcnodeid="106" srcpinname="InfraredXYZW">
+   </LINK>
+   <LINK dstnodeid="94" dstpinname="X Input Value" srcnodeid="24" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="94" dstpinname="Y Input Value" srcnodeid="24" srcpinname="Z">
+   </LINK>
+   <LINK dstnodeid="93" dstpinname="Y Input Value" srcnodeid="24" srcpinname="W">
+   </LINK>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="12288" top="8220" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12168" top="7152" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="3876" left="12288" top="8220" type="Box" width="576">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="16">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Show Background" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Connections" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="37">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="BlobID">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="22" nodename="bin\PluginWiiMote.dll">
+   <BOUNDS height="264" left="6768" top="16032" type="Node" width="1200">
+   </BOUNDS>
+   <BOUNDS left="6768" top="16032" type="Box">
+   </BOUNDS>
+   <PIN pinname="LED" visible="1">
+   </PIN>
+   <PIN pinname="Enable" visible="1">
+   </PIN>
+   <PIN pinname="Rumble" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="LEDXYZW" visible="1">
+   </PIN>
+   <PIN pinname="CalibrationXYZ" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="AccellerationXYZ" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   <PIN pinname="ExtensionFound" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Working" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="CursorXYZW" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ButtonsXYZW" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="SystemXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Battery" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="InfraredXYZ" visible="1">
+   </PIN>
+   <PIN pinname="InfraredMode" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="CalibrationZeroGXYZ" pintype="Input" slicecount="1" visible="-1" values="126">
+   </PIN>
+   <PIN pinname="CalibrationOneGXYZ" pintype="Input" slicecount="1" visible="-1" values="151">
+   </PIN>
+   <PIN pinname="CalibrateNow!" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="WiimoteID" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Available Wiimotes" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="InfraredXYZW" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5496" top="14220" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12948" top="6624" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1632" left="5496" top="14220" type="Box" width="1332">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="16">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="ID">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="52">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="WiimoteID" srcnodeid="21" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5568" top="16632" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2064" top="5724" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="696" left="5568" top="16632" type="Box" width="1260">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Available Wiimote IDs|">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Y Input Value" srcnodeid="22" srcpinname="Available Wiimotes">
+   </LINK>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)">
+   <BOUNDS height="240" left="420" top="16428" type="Node" width="4740">
+   </BOUNDS>
+   <BOUNDS height="1308" left="420" top="16428" type="Box" width="4392">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Attention!&cr;&lf;&cr;&lf;Wiimotes, that are recognized by your bluetooth stack, but are not connected tend to mess up the Plugin. Use ID of -1 to at least connect to one.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
+   <BOUNDS height="240" left="108" top="12576" type="Node" width="168">
+   </BOUNDS>
+   <BOUNDS height="192" left="108" top="12576" type="Box" width="14940">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="||">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
+   <BOUNDS height="270" left="348" top="13728" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="876" left="348" top="13728" type="Box" width="4176">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|WiiMote is giving you complete control over multiple wiimotes.&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <BOUNDS height="240" left="348" top="13284" type="Node" width="984">
+   </BOUNDS>
+   <BOUNDS height="444" left="348" top="13284" type="Box" width="2076">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="MultiUse">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
+   <BOUNDS height="780" left="4476" top="1284" type="Node" width="5928">
+   </BOUNDS>
+   <BOUNDS height="888" left="4476" top="1284" type="Box" width="6456">
+   </BOUNDS>
+   <BOUNDS height="160" left="240" top="240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|If you have problems connecting the Wiimote, try Bluesoleil. &cr;&lf;&cr;&lf;Also do some google on which Bluetooth Adapter work best. Good Luck anyway.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7632" top="14208" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11676" top="5520" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1128" left="7632" top="14208" type="Box" width="564">
+   </BOUNDS>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Connections" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="4" values="0,0,1,1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="LED">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="LEDXYZW" srcnodeid="14" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6864" top="14208" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12708" top="6384" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="804" left="6864" top="14208" type="Box" width="732">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enable">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Enable" srcnodeid="13" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="0" left="7128" top="16596" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8796" top="7620" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1248" left="7128" top="16596" type="Box" width="1956">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Status">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Input String" srcnodeid="22" srcpinname="Working">
+   </LINK>
+   <NODE componentmode="InAWindow" id="11" nodename="bin\PluginWiiMote.dll">
+   <BOUNDS height="264" left="10884" top="16044" type="Node" width="1200">
+   </BOUNDS>
+   <BOUNDS left="10884" top="16044" type="Box">
+   </BOUNDS>
+   <PIN pinname="LED" visible="1">
+   </PIN>
+   <PIN pinname="Enable" visible="1">
+   </PIN>
+   <PIN pinname="Rumble" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="LEDXYZW" visible="1">
+   </PIN>
+   <PIN pinname="CalibrationXYZ" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="AccellerationXYZ" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   <PIN pinname="ExtensionFound" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Working" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="CursorXYZW" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ButtonsXYZW" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="SystemXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Battery" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="InfraredXYZ" visible="1">
+   </PIN>
+   <PIN pinname="InfraredMode" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="CalibrationZeroGXYZ" pintype="Input" slicecount="1" visible="-1" values="126">
+   </PIN>
+   <PIN pinname="CalibrationOneGXYZ" pintype="Input" slicecount="1" visible="-1" values="151">
+   </PIN>
+   <PIN pinname="CalibrateNow!" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="WiimoteID" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Available Wiimotes" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="InfraredXYZW" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="9612" top="14232" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13188" top="6864" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1632" left="9612" top="14232" type="Box" width="1332">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="16">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="ID">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="52">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="WiimoteID" srcnodeid="10" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="9684" top="16644" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2304" top="5964" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="696" left="9684" top="16644" type="Box" width="1260">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Available Wiimote IDs|">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Y Input Value" srcnodeid="11" srcpinname="Available Wiimotes">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="11748" top="14220" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11916" top="5760" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1128" left="11748" top="14220" type="Box" width="564">
+   </BOUNDS>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Connections" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="4" values="1,1,0,0">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="LED">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="LEDXYZW" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="10980" top="14220" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12948" top="6624" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="804" left="10980" top="14220" type="Box" width="732">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enable">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Enable" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="11244" top="16608" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9036" top="7860" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1248" left="11244" top="16608" type="Box" width="1956">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Status">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input String" srcnodeid="11" srcpinname="Working">
+   </LINK>
+   <NODE id="5" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="9828" top="12816" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Radix (Value)">
+   <BOUNDS height="276" left="12252" top="13200" type="Node" width="588">
+   </BOUNDS>
+   <PIN pinname="Input Base" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Output Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 2" visible="1">
+   </PIN>
+   <PIN pinname="Output 3" visible="1">
+   </PIN>
+   <PIN pinname="Output 4" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input 1" linkstyle="VHV" srcnodeid="5" srcpinname="Cycles">
+   </LINK>
+   <NODE id="3" nodename="Vector (4d Join)">
+   <BOUNDS height="0" left="12252" top="13596" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="W" visible="1">
+   </PIN>
+   <PIN pinname="XYZW" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="X" srcnodeid="4" srcpinname="Output 1">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Y" srcnodeid="4" srcpinname="Output 2">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Z" srcnodeid="4" srcpinname="Output 3">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="W" srcnodeid="4" srcpinname="Output 4">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="3" srcpinname="XYZW">
+   </LINK>
+   <NODE id="2" nodename="Hysteresis (Animation)">
+   <BOUNDS height="0" left="8136" top="13596" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input" linkstyle="PolyLine" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="240" left="420" top="14772" type="Node" width="4740">
+   </BOUNDS>
+   <BOUNDS height="1308" left="420" top="14772" type="Box" width="4392">
+   </BOUNDS>
+   <BOUNDS height="160" left="480" top="480" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|In the Inspector:&cr;&lf;&cr;&lf;To enable multiple Wiimotes, set the ID to 0 or above.&cr;&lf;&cr;&lf;Once you enable, a list of all available wiimotes and their IDs will be produced. Pick any one of them as your working ID.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="Frac (Value)">
+   <BOUNDS height="0" left="12816" top="7764" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Whole Part" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Input" linkstyle="VHV" srcnodeid="24" srcpinname="X">
+   <LINKPOINT x="13740" y="7692">
+   </LINKPOINT>
+   <LINKPOINT x="12840" y="7692">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Y Input Value" srcnodeid="0" srcpinname="Whole Part">
+   </LINK>
+   </PATCH>
