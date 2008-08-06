@@ -30,7 +30,9 @@ namespace VVVV.Nodes.Timeliner
 		// PINS
 		///////////////////////
 		/// 
-		private IValueOut FValueOut;
+		private IValueOut FChannelOut;
+		private IValueOut FVelocityOut;
+		
 		//private IStringIO FFilename;
 	/*	private IValueIO FTrackedNoteID;
 		private IValueIO FChannelOut;
@@ -91,10 +93,15 @@ namespace VVVV.Nodes.Timeliner
 		{
 			base.CreatePins();
 		
-			FHost.CreateValueOutput(Name, 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueOut);
-	    	FValueOut.SliceCount = 128;
-	    	FValueOut.Order = Order;
-			FValueOut.SetSubType(0, 1, 1/127, 0, false, false, false);
+			FHost.CreateValueOutput(Name + "-Channel", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FChannelOut);
+	    	FChannelOut.SliceCount = 128;
+	    	FChannelOut.Order = Order;
+			FChannelOut.SetSubType(0, 15, 1, 0, false, false, true);
+			
+			FHost.CreateValueOutput(Name + "-Velocity", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FVelocityOut);
+	    	FVelocityOut.SliceCount = 128;
+	    	FVelocityOut.Order = Order;
+			FVelocityOut.SetSubType(0, 1, 1/128, 0, false, false, false);
 						
 		/*	FHost.CreateStringPin("Filename", TMPinDirection.cmpdInput, TMSliceMode.cmsmSingle, TMPinVisibility.pivTrue, out FFilename);
         	FFilename.Order=Order;
@@ -204,8 +211,11 @@ namespace VVVV.Nodes.Timeliner
 			///////////////////////
 			/// 
 			
-			FHost.DeletePin(FValueOut);
-			FValueOut = null;
+			FHost.DeletePin(FChannelOut);
+			FChannelOut = null;
+			
+			FHost.DeletePin(FVelocityOut);
+			FVelocityOut = null;
 			
 		/*	FHost.DeletePin(FFilename);
 			FFilename = null;
@@ -253,14 +263,11 @@ namespace VVVV.Nodes.Timeliner
 		{
 			for(int i=0; i<SavedSliceCount; i++)
 				AddSlice(FOutputSlices.Count);
-			
-			FValueOut.SliceCount = SavedSliceCount;
 		}
 		
 		public override void RemoveSlice(TLSlice Slice)
 		{
 			base.RemoveSlice(Slice);
-			FValueOut.SliceCount = FOutputSlices.Count;
 		}
 		
 		public override void AddSlice(int At)
@@ -268,14 +275,34 @@ namespace VVVV.Nodes.Timeliner
 			TLMidiSlice sm = new TLMidiSlice(FHost, this, FOutputSlices.Count, FOrder);
 		
 			AddSlice(At, sm);
-			
-			FValueOut.SliceCount = FOutputSlices.Count;
 		}
 
 		
 		public override void Evaluate(double CurrentTime)
 		{
 			base.Evaluate(CurrentTime);
+			
+			if (FMidiScore == null)
+				return;
+			
+			List <TLBaseKeyFrame> activeNotes = new List<TLBaseKeyFrame>();
+			foreach (TLMidiSlice ms in FOutputSlices)
+				activeNotes.AddRange(ms.KeyFrames.FindAll(delegate (TLBaseKeyFrame mk) {return mk.Time <= CurrentTime && CurrentTime < (mk as TLMidiKeyFrame).End;}));
+			
+			for (int i = 0; i<128; i++)
+			{
+				TLMidiKeyFrame m = activeNotes.Find(delegate (TLBaseKeyFrame mk) {return (mk as TLMidiKeyFrame).Note == i;}) as TLMidiKeyFrame;
+				if (m == null)
+				{
+					FChannelOut.SetValue(i, 0);
+					FVelocityOut.SetValue(i, 0);					
+				}
+				else
+				{
+					FChannelOut.SetValue(i, m.Channel);
+					FVelocityOut.SetValue(i, m.Velocity);
+				}
+			}
 		
 		/*
 			for (int i=0; i<FOutputSlices.Count; i++)
