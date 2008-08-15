@@ -1083,7 +1083,7 @@ namespace VVVV.Nodes
 				AddPin(TLPinType.String);
 			else if (sender == this.ColorButton)
 				AddPin(TLPinType.Color);
-				else if (sender == this.MidiButton)
+			else if (sender == this.MidiButton)
 				AddPin(TLPinType.Midi);
 			else if (sender == this.WavButton)
 				AddPin(TLPinType.Wave);
