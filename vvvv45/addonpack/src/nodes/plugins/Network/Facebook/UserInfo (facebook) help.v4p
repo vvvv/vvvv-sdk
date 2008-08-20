@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
-   <PATCH nodename="C:\Documents and Settings\Administrator\Desktop\facebook.v4p" componentmode="InAWindow">
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Network\Facebook\trunk\UserInfo (facebook) help.v4p" componentmode="InAWindow">
    <BOUNDS height="12165" left="3255" top="450" type="Window" width="10800">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="29" nodename="Renderer (EX9)" stayontop="1">
@@ -301,15 +301,15 @@
    <LINK dstnodeid="10" dstpinname="Transform In" srcnodeid="9" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="Hidden" id="8" nodename=":PLUGINS:\FaceBookAPI.dll|vvvv.Nodes.FaceBookProfileNode">
-   <BOUNDS height="0" left="1680" top="360" type="Node" width="0">
+   <BOUNDS height="0" left="1665" top="1275" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="5055" top="1590" type="Window" width="0">
    </BOUNDS>
-   <BOUNDS height="0" left="1680" top="360" type="Box" width="0">
+   <BOUNDS height="0" left="1665" top="1275" type="Box" width="0">
    </BOUNDS>
-   <PIN pinname="Application Key" slicecount="1" values="ef92f1821547fdc945bc7d7217b968a6">
+   <PIN pinname="Application Key" visible="1">
    </PIN>
-   <PIN pinname="Secret Key" slicecount="1" values="11dfdf7c97645fd7ecc013ff6f04e9da">
+   <PIN pinname="Secret Key" visible="1">
    </PIN>
    <PIN pinname="Friends" visible="1">
    </PIN>
@@ -466,6 +466,34 @@
    </LINK>
    <LINK dstnodeid="28" dstpinname="Transform In" srcnodeid="1" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="7" srcpinname="First Name" dstnodeid="28" dstpinname="Input">
+   <LINK dstnodeid="28" dstpinname="Input" srcnodeid="7" srcpinname="First Name">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="30">
+   <BOUNDS type="Node" left="1455" top="180" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4500" top="2025" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1455" top="180" width="3000" height="240">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Application Key|">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="31">
+   <BOUNDS type="Node" left="2790" top="660" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="5865" top="2145" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2790" top="660" width="2490" height="270">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Secret Key|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Output String" dstnodeid="8" dstpinname="Secret Key">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="Output String" dstnodeid="8" dstpinname="Application Key">
    </LINK>
    </PATCH>
