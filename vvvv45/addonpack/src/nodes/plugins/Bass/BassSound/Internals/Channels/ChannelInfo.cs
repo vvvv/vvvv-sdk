@@ -1,0 +1,134 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Un4seen.Bass;
+
+namespace BassSound.Internals
+{
+    public abstract class ChannelInfo
+    {
+        #region Internal fields
+        private int internalhandle;
+        private int? basshandle = null;
+        #endregion
+
+        #region Fields
+        private bool mono;
+        private bool loop;
+        private bool play;
+        private double currentposition;
+        private bool isdecoding;
+        private double length;
+        #endregion
+
+        #region Internal Properties
+        public int InternalHandle
+        {
+            get { return internalhandle; }
+            set { internalhandle = value; }
+        }
+
+        public int? BassHandle
+        {
+            get { return basshandle; }
+            set 
+            { 
+                basshandle = value;
+                OnCreate();
+            }
+        }
+        #endregion
+
+        #region Play Properties
+        public bool Mono
+        {
+            get { return mono; }
+            set { mono = value; }
+        }
+
+        public bool Loop
+        {
+            get { return loop; }
+            set 
+            { 
+                loop = value;
+                this.OnLoopUpdated();
+            }
+        }
+
+        public bool Play
+        {
+            get { return play; }
+            set 
+            {   
+                play = value;
+                this.OnPlayUpdated();
+            }
+
+        }
+
+        public double CurrentPosition
+        {
+            get { return currentposition; }
+            set { currentposition = value; }
+        }
+
+        public bool IsDecoding
+        {
+            get { return isdecoding; }
+            set { isdecoding = value; }
+        }
+
+        public double Length
+        {
+            get { return length; }
+            set { length = value; }
+        }
+        #endregion
+
+        #region Abstract Methods
+        public abstract void Initialize(int deviceid);
+        #endregion
+
+        #region Protected methods
+        protected void OnPlayUpdated()
+        {
+            if (this.BassHandle.HasValue)
+            {
+                if (this.play)
+                {
+                    Bass.BASS_ChannelPlay(this.basshandle.Value, false);
+                }
+                else
+                {
+                    Bass.BASS_ChannelPause(this.basshandle.Value);
+                }
+            }
+
+        }
+
+        protected void OnLoopUpdated()
+        {
+            if (this.BassHandle.HasValue)
+            {
+                if (this.loop)
+                {
+                    Bass.BASS_ChannelFlags(this.basshandle.Value, BASSFlag.BASS_SAMPLE_LOOP, BASSFlag.BASS_SAMPLE_LOOP);
+                }
+                else
+                {
+                    Bass.BASS_ChannelFlags(this.basshandle.Value, BASSFlag.BASS_DEFAULT, BASSFlag.BASS_SAMPLE_LOOP);
+                }
+            }
+        }
+
+        protected virtual void OnCreate()
+        {
+            this.OnPlayUpdated();
+            this.OnLoopUpdated();
+        }
+
+
+        #endregion
+    }
+}

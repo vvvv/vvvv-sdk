@@ -4,6 +4,8 @@ using System.Text;
 using VVVV.PluginInterfaces.V1;
 using Un4seen.Bass;
 using Un4seen.Bass.AddOn.Fx;
+using BassSound.Internals;
+using System.IO;
 
 namespace BassSound.Streams
 {
@@ -36,11 +38,14 @@ namespace BassSound.Streams
 
         private IPluginHost FHost;
 
+        private IValueIn FPinCfgIsDecoding;
+
         private IValueIn FPinInPlay;
         private IStringIn FPinInFilename;
         private IValueIn FPInInLoop;
         private IValueIn FPinInDoSeek;
         private IValueIn FPinInPosition;
+        private IValueIn FPinInMono;
         private IValueIn FPinInPitch;
         private IValueIn FPinInTempo;
 
@@ -48,15 +53,18 @@ namespace BassSound.Streams
         private IValueOut FPinOutCurrentPosition;
         private IValueOut FPinOutLength;
 
-        private int FHandle;
+        private bool FConnected = false;
+
+        private int FHandle = 0;
 
         #region Set Plugin Host
         public void SetPluginHost(IPluginHost Host)
         {
             this.FHost = Host;
 
-            IntPtr ptr = IntPtr.Zero;
-            Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_SPEAKERS, ptr, null);
+            //Config Pins
+            this.FHost.CreateValueInput("Is Decoding", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out this.FPinCfgIsDecoding);
+            this.FPinCfgIsDecoding.SetSubType(0, 1, 1, 0, false, true, true);
 
             //Input Pins
             this.FHost.CreateValueInput("Play", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPlay);
@@ -70,6 +78,9 @@ namespace BassSound.Streams
 
             this.FHost.CreateValueInput("Seek Position", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPosition);
             this.FPinInPosition.SetSubType(0, double.MaxValue, 0, 0.0, false, false, false);
+
+            this.FHost.CreateValueInput("Mono", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInMono);
+            this.FPinInMono.SetSubType(0, 1, 1, 0, false, true, true);
 
             this.FHost.CreateValueInput("Pitch", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPitch);
             this.FPinInPitch.SetSubType(-60, 60, 0, 0, false, false, false);
@@ -105,60 +116,34 @@ namespace BassSound.Streams
             bool updateplay = false;
             bool updateloop = false;
 
-            #region File Change
-            if (this.FPinInFilename.PinIsChanged)
+            if (this.FConnected != this.FPinOutHandle.IsConnected)
+            {
+                updateplay = true;
+                this.FConnected = this.FPinOutHandle.IsConnected;
+            }
+
+            #region Reset pins
+            if (this.FPinInFilename.PinIsChanged || this.FPinCfgIsDecoding.PinIsChanged || this.FPinInMono.PinIsChanged)
             {
                 string file;
                 this.FPinInFilename.GetString(0, out file);
 
-                Bass.BASS_StreamFree(this.FHandle);
-                this.FHandle = Bass.BASS_StreamCreateFile(file, 0, 0, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_PRESCAN);
-
-                //Creates a tempo channel
-                this.FHandle = BassFx.BASS_FX_TempoCreate(this.FHandle, BASSFlag.BASS_FX_FREESOURCE | BASSFlag.BASS_SAMPLE_FLOAT);
-             
-                this.FPinOutHandle.SetValue(0, this.FHandle);
-                long len = Bass.BASS_ChannelGetLength(this.FHandle);
-                this.FPinOutLength.SetValue(0, Bass.BASS_ChannelBytes2Seconds(this.FHandle, len));
-
-                updateplay = true;
-                updateloop = true;
-            }
-            #endregion
-
-            #region Position
-            if (this.FPinInDoSeek.PinIsChanged)
-            {
-                double doseek;
-                this.FPinInDoSeek.GetValue(0, out doseek);
-
-                if (doseek == 1)
+                if (File.Exists(file))
                 {
-                    double position;
-                    this.FPinInPosition.GetValue(0, out position);
-                    Bass.BASS_ChannelSetPosition(this.FHandle, (float)position);
-                }
-            }
+                    FileChannelInfo info = new FileChannelInfo();
+                    info.FileName = file;
 
-            if (Bass.BASS_ChannelIsActive(this.FHandle) > 0)
-            {
-                long pos = Bass.BASS_ChannelGetPosition(this.FHandle);
-                double seconds = Bass.BASS_ChannelBytes2Seconds(this.FHandle, pos);
-                this.FPinOutCurrentPosition.SetValue(0, seconds);
-            }
-            #endregion
+                    double isdecoding;
+                    this.FPinCfgIsDecoding.GetValue(0, out isdecoding);
+                    info.IsDecoding = isdecoding ==1;
 
-            #region Tempo and Pitch
-            if (this.FPinInPitch.PinIsChanged || this.FPinInTempo.PinIsChanged)
-            {
-                if (this.FHandle != 1)
-                {
-                    double pitch, tempo;
-                    this.FPinInPitch.GetValue(0, out pitch);
-                    this.FPinInTempo.GetValue(0, out tempo);
+                    ChannelsManager.CreateChannel(info);
+                    this.FHandle = info.InternalHandle;
 
-                    Bass.BASS_ChannelSetAttribute(this.FHandle, BASSAttribute.BASS_ATTRIB_TEMPO, (float)tempo);
-                    Bass.BASS_ChannelSetAttribute(this.FHandle, BASSAttribute.BASS_ATTRIB_TEMPO_PITCH, (float)pitch);
+                    this.FPinOutHandle.SetValue(0, this.FHandle);
+
+                    updateplay = true;
+                    updateloop = true;
                 }
             }
             #endregion
@@ -170,13 +155,13 @@ namespace BassSound.Streams
                 {
                     double doplay;
                     this.FPinInPlay.GetValue(0, out doplay);
-                    if (doplay == 1)
+                    if (doplay == 1 && this.FPinOutHandle.IsConnected)
                     {
-                        Bass.BASS_ChannelPlay(this.FHandle, false);
+                        ChannelsManager.GetChannel(this.FHandle).Play = true;
                     }
                     else
                     {
-                        Bass.BASS_ChannelPause(this.FHandle);
+                        ChannelsManager.GetChannel(this.FHandle).Play = false;
                     }
                 }
             }
@@ -191,15 +176,107 @@ namespace BassSound.Streams
                     this.FPInInLoop.GetValue(0, out doloop);
                     if (doloop == 1)
                     {
-                        Bass.BASS_ChannelFlags(this.FHandle, BASSFlag.BASS_SAMPLE_LOOP, BASSFlag.BASS_SAMPLE_LOOP);
+                        ChannelsManager.GetChannel(this.FHandle).Loop = true;
                     }
                     else
                     {
-                        Bass.BASS_ChannelFlags(this.FHandle, BASSFlag.BASS_SAMPLE_LOOP, BASSFlag.BASS_SAMPLE_LOOP);              
+                        ChannelsManager.GetChannel(this.FHandle).Loop = false;
                     }
                 }
             }
             #endregion
+
+            #region Update Seek position
+            if (this.FPinInDoSeek.PinIsChanged && this.FHandle != 0)
+            {
+                double doseek;
+                this.FPinInDoSeek.GetValue(0, out doseek);
+                if (doseek == 1)
+                {
+                    ChannelInfo info = ChannelsManager.GetChannel(this.FHandle);
+                    if (info.BassHandle.HasValue)
+                    {
+                        double position;
+                        this.FPinInPosition.GetValue(0, out position);
+                        Bass.BASS_ChannelSetPosition(info.BassHandle.Value, (float)position);
+                    }
+                }
+            }
+            #endregion
+
+            #region Update Current Position/Length
+            if (this.FHandle != 0)
+            {
+                ChannelInfo info = ChannelsManager.GetChannel(this.FHandle);
+                if (info.BassHandle.HasValue)
+                {
+                    long pos = Bass.BASS_ChannelGetPosition(info.BassHandle.Value);
+                    double seconds = Bass.BASS_ChannelBytes2Seconds(info.BassHandle.Value, pos);
+                    this.FPinOutCurrentPosition.SetValue(0, seconds);
+                    this.FPinOutLength.SetValue(0, info.Length);
+                }
+            }
+            #endregion
+
+            #region Tempo and Pitch
+            if (this.FPinInPitch.PinIsChanged || this.FPinInTempo.PinIsChanged)
+            {
+                if (this.FHandle != 0)
+                {
+                    double pitch, tempo;
+                    this.FPinInPitch.GetValue(0, out pitch);
+                    this.FPinInTempo.GetValue(0, out tempo);
+                    
+                    FileChannelInfo info = (FileChannelInfo)ChannelsManager.GetChannel(this.FHandle);
+                    info.Pitch = pitch;
+                    info.Tempo = tempo;
+                }
+            }
+            #endregion
+
+            /*
+            #region File Change
+            if (this.FPinInFilename.PinIsChanged || this.FPinCfgIsDecoding.PinIsChanged || this.FPinInMono.PinIsChanged)
+            {
+                Bass.BASS_SetDevice(0);
+                string file;
+                this.FPinInFilename.GetString(0, out file);
+
+                Bass.BASS_StreamFree(this.FHandle);
+                this.FHandle = Bass.BASS_StreamCreateFile(file, 0, 0, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_PRESCAN);
+
+                //Creates a tempo channel
+                BASSFlag flags = BASSFlag.BASS_FX_FREESOURCE | BASSFlag.BASS_SAMPLE_FLOAT;
+                
+                
+                //Decoding channel?
+                double isdecoding;
+                this.FPinCfgIsDecoding.GetValue(0, out isdecoding);
+                if (isdecoding == 1)
+                {
+                    flags = flags | BASSFlag.BASS_STREAM_DECODE;
+                }
+
+                //Mono Channel?
+                double mono;
+                this.FPinInMono.GetValue(0, out mono);
+                if (mono == 1)
+                {
+                    flags = flags | BASSFlag.BASS_SAMPLE_MONO;
+                }
+                
+                this.FHandle = BassFx.BASS_FX_TempoCreate(this.FHandle, flags);
+             
+                this.FPinOutHandle.SetValue(0, this.FHandle);
+                long len = Bass.BASS_ChannelGetLength(this.FHandle);
+                this.FPinOutLength.SetValue(0, Bass.BASS_ChannelBytes2Seconds(this.FHandle, len));
+
+                updateplay = true;
+                updateloop = true;
+            }
+            #endregion
+
+             */
         }
         #endregion
 
