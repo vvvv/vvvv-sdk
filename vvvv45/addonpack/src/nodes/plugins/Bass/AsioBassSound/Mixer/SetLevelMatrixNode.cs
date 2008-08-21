@@ -110,6 +110,7 @@ namespace AsioBassSound.Mixer
 
         private void UpdateMatrix()
         {
+            
             float[,] matrix = new float[this.FMixerInfo.chans, this.FChannelInfo.chans];
             //BassMix.BASS_Mixer_ChannelGetMatrix(this.FHandle, matrix);
             int idx = 0;
@@ -130,6 +131,9 @@ namespace AsioBassSound.Mixer
                     }
                 }
             }
+
+            
+
 
             BassMix.BASS_Mixer_ChannelSetMatrix(this.FHandle, matrix);
         }

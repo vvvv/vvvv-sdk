@@ -5,6 +5,8 @@ using VVVV.PluginInterfaces.V1;
 using Un4seen.Bass;
 using vvvv.Utils;
 using Un4seen.BassAsio;
+using System.IO;
+using BassSound.Internals;
 
 namespace vvvv.Nodes
 {
@@ -37,7 +39,7 @@ namespace vvvv.Nodes
 
         private IPluginHost FHost;
 
-        private IStringIn FPinInDevice;
+        private IValueIn FPinInDevice;
         private IValueIn FPinInChannels;
         private IValueIn FPinInVolumeOutput;
         private IValueIn FPinInActive;
@@ -51,12 +53,14 @@ namespace vvvv.Nodes
         public void SetPluginHost(IPluginHost Host)
         {
             this.FHost = Host;
-            this.FHost.Log(TLogType.Message, "Audio Out, Set plugin Host Start");
+
+            //We play this channel trough Asio output, so we choose the device NOSOUND
+            Bass.BASS_Init(0, 48000, 0, IntPtr.Zero, null);
 
             BassAsioUtils.LoadPlugins();
 
-            this.FHost.CreateStringInput("Device", TSliceMode.Single, TPinVisibility.True, out this.FPinInDevice);
-            this.FPinInDevice.SetSubType("", false);
+            this.FHost.CreateValueInput("Device",1,null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDevice);
+            this.FPinInDevice.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
 
             this.FHost.CreateValueInput("Is Active", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInActive);
             this.FPinInActive.SetSubType(0.0, 1.0, 1, 0, false, true, true);
@@ -70,8 +74,6 @@ namespace vvvv.Nodes
             this.FHost.CreateStringOutput("Status", TSliceMode.Single, TPinVisibility.True, out this.FPinErrorCode);
 
             this.myAsioProc = new ASIOPROC(AsioCallback);
-            this.FHost.Log(TLogType.Message, "Audio Out, Set plugin Host End");
-
         }
         #endregion
 
@@ -97,16 +99,15 @@ namespace vvvv.Nodes
                 #region Channel and device
                 if (this.FPinInChannels.PinIsChanged || this.FPinInDevice.PinIsChanged)
                 {
-                    string device;
-                    this.FPinInDevice.GetString(0, out device);
+               
+                    double dbldevice;
+                    this.FPinInDevice.GetValue(0, out dbldevice);
 
-                    this.FDeviceIndex = BassAsioUtils.GetDeviceIndex(device);
-                    
+                    this.FDeviceIndex = Convert.ToInt32(dbldevice);              
                     if (this.FDeviceIndex != -1)
                     {
                         BassAsio.BASS_ASIO_Init(this.FDeviceIndex);
                         BassAsio.BASS_ASIO_SetDevice(this.FDeviceIndex);
-
                     }
 
                     this.FOutputHandled.Clear();
@@ -126,11 +127,18 @@ namespace vvvv.Nodes
 
                             if (handle != 0 && handle != -1)
                             {
+                                ChannelInfo channel = ChannelsManager.GetChannel(handle);
+
+                                if (channel.BassHandle == null)
+                                {
+                                    //Initialize channel (in nosound)
+                                    channel.Initialize(0);
+                                }
 
                                 //Check if the channel has its own handler
                                 if (!BassAsioUtils.InputChannels.ContainsKey(handle))
                                 {
-                                    BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(handle);
+                                    BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(channel.BassHandle.Value);
 
                                     BassAsio.BASS_ASIO_ChannelEnable(false, asiooutindex, myAsioProc, new IntPtr(handle));
                                     if (info.chans == 1)
@@ -162,7 +170,6 @@ namespace vvvv.Nodes
                                     BassAsioHandler handler = BassAsioUtils.InputChannels[handle];
                                     handler.SetMirror(asiooutindex);
                                     asiooutindex += 2;
-
                                     this.FOutputHandled.Add(asiooutindex);
                                     this.FOutputHandled.Add(asiooutindex + 1);
                                 }
@@ -235,11 +242,12 @@ namespace vvvv.Nodes
             //And if the channel has it's own handler, we ignore it
             if (!this.FOutputHandled.Contains(channel) && !input)
             {
-                if (BassAsioUtils.IsChannelPlay(user.ToInt32()))
+                ChannelInfo channelinfo = ChannelsManager.GetChannel(user.ToInt32());
+                if (channelinfo.Play)
                 {
                     int _decLength;
 
-                    BASSASIOActive _status = BassAsio.BASS_ASIO_ChannelIsActive(false, channel);
+                    BASSASIOActive _status = BassAsio.BASS_ASIO_ChannelIsActive(false,channel);
                     //BASSActive _status = Bass.BASS_ChannelIsActive(user.ToInt32());
                     // now we evaluate the status...
                     if (_status != BASSASIOActive.BASS_ASIO_ACTIVE_ENABLED)
@@ -250,7 +258,7 @@ namespace vvvv.Nodes
                     else
                     {
                         //BassAsio.BASS_ASIO_ChannelReset(false, channel, BASSASIOReset.BASS_ASIO_RESET_PAUSE);
-                        _decLength = Bass.BASS_ChannelGetData(user.ToInt32(), buffer, length);
+                        _decLength = Bass.BASS_ChannelGetData(channelinfo.BassHandle.Value, buffer, length);
 
                         if (_decLength < 0)
                             _decLength = 0;

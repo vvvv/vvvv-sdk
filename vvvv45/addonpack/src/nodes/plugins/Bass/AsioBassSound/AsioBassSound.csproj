@@ -47,12 +47,13 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="_PluginInterfaces, Version=1.0.3147.29536, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\_PluginInterfaces\trunk\bin\_PluginInterfaces.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BassAsioAudioInNode.cs" />
-    <Compile Include="Device\BassAsioChannelNode.cs" />
-    <Compile Include="Device\BassAsioDevicesNode.cs" />
-    <Compile Include="BassAsioFileStreamNode.cs" />
     <Compile Include="BassAsioOutputNode.cs" />
     <Compile Include="Lib\BassAsioUtils.cs" />
     <Compile Include="Mixer\BassAsioMixerNode.cs" />
@@ -60,13 +61,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\_PluginInterfaces\trunk\PluginInterfaces.csproj">
-      <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
-      <Name>PluginInterfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\_Utils\trunk\Utils.csproj">
       <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
       <Name>Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BassSound\BassSound.csproj">
+      <Project>{8CC39D35-7F34-4B53-99CC-35BB088182AB}</Project>
+      <Name>BassSound</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
