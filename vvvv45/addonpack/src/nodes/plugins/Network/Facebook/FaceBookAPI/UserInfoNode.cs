@@ -10,7 +10,7 @@ using System.IO;
 
 namespace vvvv.Nodes
 {
-    public class UserInfoNode : IPlugin, IDisposable
+    public class UserInfoNode : IPlugin
     {
         #region Plugin Info
         public static IPluginInfo PluginInfo
@@ -154,13 +154,5 @@ namespace vvvv.Nodes
         }
         #endregion
 
-        #region IDisposable Members
-
-        public void Dispose()
-        {
-            this.ClearAPI();
-        }
-
-        #endregion
     }
 }

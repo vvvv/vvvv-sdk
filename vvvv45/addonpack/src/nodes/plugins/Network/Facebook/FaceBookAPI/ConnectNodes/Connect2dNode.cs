@@ -5,6 +5,7 @@ using VVVV.PluginInterfaces.V1;
 using Facebook.API;
 using vvvv.Nodes.Internal;
 using FaceBookAPI.Internal;
+using System.Xml;
 
 namespace vvvv.Nodes
 {
@@ -108,22 +109,56 @@ namespace vvvv.Nodes
                     {
                         string user;
                         this.FPinInUsers.GetString(i, out user);
-                        for (int j = 0; j < this.FUsers.Count; j++)
-                        {
-                            //Need to update the query, otherwise, sends a Max request limit
-                            if (api.AreFriends(user, this.FUsers[j]))
-                            {
-                                UserLink link = new UserLink();
-                                link.User1 = user;
-                                link.User2 = this.FUsers[j];
-                                link.Index1 = i;
-                                link.Index2 = j;
-
-                                this.FLinks.Add(link);
-                            }
-                        }
                         this.FUsers.Add(user);
                     }
+
+                    #region Execute FQl and parse result
+                    string fql = this.GetFQL(this.FUsers);
+                    string result = api.DirectFQLQuery(fql);
+                    
+                    XmlDocument doc = new XmlDocument();
+                    doc.LoadXml(result);
+                    XmlElement element = doc.DocumentElement;
+                    foreach (XmlNode noderoot in doc.ChildNodes)
+                    {
+                        if (noderoot.Name == "fql_query_response")
+                        {
+                            foreach (XmlNode node in noderoot.ChildNodes)
+                            {
+                                if (node.Name == "friend_info")
+                                {
+                                    string uid1 = "";
+                                    string uid2 = "";
+                                    
+                                    foreach (XmlNode nodeuid in node.ChildNodes)
+                                    {
+
+                                        if (nodeuid.Name == "uid1")
+                                        {
+                                            uid1 = nodeuid.InnerText;
+                                        }
+
+                                        if (nodeuid.Name == "uid2")
+                                        {
+                                            uid2 = nodeuid.InnerText;
+                                        }
+                                    }
+                                    
+                                    if (uid1 != "" && uid2 != "")
+                                    {
+                                        UserLink link = new UserLink();
+                                        link.User1 = uid1;
+                                        link.User2 = uid2;
+                                        link.Index1 = this.FUsers.IndexOf(uid1);
+                                        link.Index2 = this.FUsers.IndexOf(uid2);
+                                        this.FLinks.Add(link);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    #endregion
+
                 }
                 catch (Exception ex)
                 {
@@ -187,6 +222,31 @@ namespace vvvv.Nodes
         public bool AutoEvaluate
         {
             get { return false; }
+        }
+        #endregion
+
+        #region Get FQL
+        private string GetFQL(List<string> lstid)
+        {
+            string fql = "select uid1,uid2 from friend where ";
+            
+            string uids = "";
+            bool first = true;
+            foreach(string uid in lstid) 
+            {
+                if (first) 
+                {
+                    first = false;
+                } 
+                else 
+                {
+                     uids += ",";
+                }
+                uids += "'" + uid + "'";
+            }
+            fql += "uid1 IN (" + uids + ")";
+            fql += " AND uid2 IN (" + uids + ")";
+            return fql;
         }
         #endregion
     }
