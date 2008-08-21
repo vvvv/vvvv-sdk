@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Un4seen.Bass;
+using Un4seen.Bass.AddOn.Mix;
 
 namespace BassSound.Internals
 {
@@ -95,13 +96,32 @@ namespace BassSound.Internals
         {
             if (this.BassHandle.HasValue)
             {
-                if (this.play)
+                //Check if channel is within a mixer or not
+                int mixerhandle = BassMix.BASS_Mixer_ChannelGetMixer(this.BassHandle.Value);
+
+                if (mixerhandle != -1)
                 {
-                    Bass.BASS_ChannelPlay(this.basshandle.Value, false);
+                    //In a mixer, updated the proper status
+                    if (this.play)
+                    {
+                        BassMix.BASS_Mixer_ChannelPlay(this.basshandle.Value);
+                    }
+                    else
+                    {
+                        BassMix.BASS_Mixer_ChannelPlay(this.basshandle.Value);
+                    }
                 }
                 else
                 {
-                    Bass.BASS_ChannelPause(this.basshandle.Value);
+                    //Not in a mixer, just updated standard status
+                    if (this.play)
+                    {
+                        Bass.BASS_ChannelPlay(this.basshandle.Value, false);
+                    }
+                    else
+                    {
+                        Bass.BASS_ChannelPause(this.basshandle.Value);
+                    }
                 }
             }
 

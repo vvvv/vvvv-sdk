@@ -42,7 +42,6 @@ namespace vvvv.Nodes
         private IPluginHost FHost;
 
         private IStringIn FPinInDevice;
-        private IValueIn FPinInChannel;
         private IValueIn FPinChannelCount;
 
         private IValueOut FPinOutHandle;
