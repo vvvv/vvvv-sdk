@@ -99,7 +99,7 @@ namespace BassSound.Internals
                 //Check if channel is within a mixer or not
                 int mixerhandle = BassMix.BASS_Mixer_ChannelGetMixer(this.BassHandle.Value);
 
-                if (mixerhandle != -1)
+                if (mixerhandle != 0)
                 {
                     //In a mixer, updated the proper status
                     if (this.play)

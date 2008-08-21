@@ -4,6 +4,7 @@ using System.Text;
 using VVVV.PluginInterfaces.V1;
 using Un4seen.Bass;
 using Un4seen.Bass.Misc;
+using BassSound.Internals;
 
 namespace vvvv.Nodes
 {
@@ -13,6 +14,7 @@ namespace vvvv.Nodes
     public abstract class AbstractChannelData : IDisposable
     {
         protected IPluginHost FHost;
+        private int FInternalHandle = 0;
         protected int FHandle;
 
         private IValueIn FPinInHandle;
@@ -93,19 +95,47 @@ namespace vvvv.Nodes
         #region Evaluate
         public void Evaluate(int SpreadMax)
         {
-            if (this.FPinInHandle.PinIsChanged)
+            if (this.FPinInHandle.PinIsChanged || this.FHandle == 0)
             {
                 //Just Update the Handle
                 double dhandle;
                 this.FPinInHandle.GetValue(0, out dhandle);
-                this.FHandle = Convert.ToInt32(Math.Round(dhandle));
+                this.FInternalHandle = Convert.ToInt32(Math.Round(dhandle));
 
-                // create a buffer of the source stream
-                //We can't get it from the main stream otherwise it would interfere with the asio buffering
-                bufferStream = new DSP_BufferStream();
-                bufferStream.ChannelHandle = this.FHandle; // the stream to copy
-                bufferStream.DSPPriority = -4000;
-                bufferStream.Start();
+                if (ChannelsManager.Exists(this.FInternalHandle))
+                {
+                    ChannelInfo info = ChannelsManager.GetChannel(this.FInternalHandle);
+                    if (info.BassHandle.HasValue)
+                    {
+                        this.FHandle = info.BassHandle.Value;
+                        if (info.IsDecoding)
+                        {
+                            // create a buffer of the source stream
+                            //We can't get it from the main stream otherwise it would interfere with the asio buffering
+                            bufferStream = new DSP_BufferStream();
+                            bufferStream.ChannelHandle = info.BassHandle.Value; // the stream to copy
+                            bufferStream.DSPPriority = -4000;
+                            bufferStream.Start();
+                            this.FHandle = bufferStream.BufferStream;
+                        }
+                        else
+                        {
+                            //If it's not decoding, no problem :)
+                            this.FHandle = info.BassHandle.Value;
+                        }
+                    }
+                    else
+                    {
+                        this.FHandle = 0;
+                        this.FInternalHandle = 0;
+                    }
+                }
+                else
+                {
+                    this.FInternalHandle = 0;
+                }
+
+
 
             }
 
@@ -117,7 +147,7 @@ namespace vvvv.Nodes
             {
                 //We get float, so length is divided by 4
                 float[] samples = new float[len];
-                int val = Bass.BASS_ChannelGetData(bufferStream.BufferStream, samples,this.DataType);
+                int val = Bass.BASS_ChannelGetData(this.FHandle, samples,this.DataType);
 
                 this.FPinOutLeft.SliceCount = len / 2;
                 this.FPinOutRight.SliceCount = len / 2;

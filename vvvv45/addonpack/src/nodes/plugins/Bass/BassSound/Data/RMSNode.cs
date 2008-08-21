@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VVVV.PluginInterfaces.V1;
 using Un4seen.Bass.Misc;
+using BassSound.Internals;
 
 namespace vvvv.Nodes
 {
@@ -75,12 +76,21 @@ namespace vvvv.Nodes
                 this.FPinInHandle.GetValue(0, out dhandle);
                 this.FHandle = Convert.ToInt32(Math.Round(dhandle));
 
-                // create a buffer of the source stream
-                //We can't get it from the main stream otherwise it would interfere with the asio buffering
-                this.FLevelMeter = new DSP_PeakLevelMeter(this.FHandle, 1);
-                this.FLevelMeter.UpdateTime = 0.05f;
-                this.FLevelMeter.CalcRMS = true;
-                this.FLevelMeter.Start();
+                if (ChannelsManager.Exists(this.FHandle))
+                {
+                    ChannelInfo info = ChannelsManager.GetChannel(this.FHandle);
+                    if (info.BassHandle.HasValue)
+                    {
+                        // create a buffer of the source stream
+                        //We can't get it from the main stream otherwise it would interfere with the asio buffering
+                        this.FLevelMeter = new DSP_PeakLevelMeter(info.BassHandle.Value, 1);
+                        this.FLevelMeter.UpdateTime = 0.05f;
+                        this.FLevelMeter.CalcRMS = true;
+                        this.FLevelMeter.Start();
+                    }
+                }
+
+
 
             }
 
