@@ -76,9 +76,9 @@ namespace vvvv.Nodes
                 this.FPinInHandle.GetValue(0, out dhandle);
                 this.FHandle = Convert.ToInt32(Math.Round(dhandle));
 
-                if (ChannelsManager.Exists(this.FHandle))
+                if (this.manager.Exists(this.FHandle))
                 {
-                    ChannelInfo info = ChannelsManager.GetChannel(this.FHandle);
+                    ChannelInfo info = this.manager.GetChannel(this.FHandle);
                     if (info.BassHandle.HasValue)
                     {
                         // create a buffer of the source stream

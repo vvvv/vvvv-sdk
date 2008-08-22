@@ -151,4 +151,23 @@ namespace BassSound.Internals
 
         #endregion
     }
+
+
+    #region Channel List
+    public class ChannelList : List<ChannelInfo>
+    {
+        public ChannelInfo GetByID(int id)
+        {
+            foreach (ChannelInfo chan in this)
+            {
+                if (id == chan.InternalHandle)
+                {
+                    return chan;
+                }
+            }
+
+            return null;
+        }
+    }
+    #endregion
 }

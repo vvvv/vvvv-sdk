@@ -38,6 +38,7 @@ namespace vvvv.Nodes
         #endregion
 
         private IPluginHost FHost;
+        private ChannelsManager manager;
 
         private IValueIn FPinInDevice;
         private IValueIn FPinInChannels;
@@ -53,6 +54,7 @@ namespace vvvv.Nodes
         public void SetPluginHost(IPluginHost Host)
         {
             this.FHost = Host;
+            this.manager = ChannelsManager.GetInstance();
 
             //We play this channel trough Asio output, so we choose the device NOSOUND
             Bass.BASS_Init(0, 48000, 0, IntPtr.Zero, null);
@@ -127,7 +129,7 @@ namespace vvvv.Nodes
 
                             if (handle != 0 && handle != -1)
                             {
-                                ChannelInfo channel = ChannelsManager.GetChannel(handle);
+                                ChannelInfo channel = this.manager.GetChannel(handle);
 
                                 if (channel.BassHandle == null)
                                 {
@@ -242,7 +244,7 @@ namespace vvvv.Nodes
             //And if the channel has it's own handler, we ignore it
             if (!this.FOutputHandled.Contains(channel) && !input)
             {
-                ChannelInfo channelinfo = ChannelsManager.GetChannel(user.ToInt32());
+                ChannelInfo channelinfo = this.manager.GetChannel(user.ToInt32());
                 if (channelinfo.Play)
                 {
                     int _decLength;

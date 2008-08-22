@@ -35,6 +35,7 @@ namespace BassSound
         #endregion
 
         protected IPluginHost FHost;
+        private ChannelsManager manager;
         private List<int> FChannels = new List<int>();
 
         private IValueIn FPinInDevice;
@@ -46,6 +47,7 @@ namespace BassSound
         public void SetPluginHost(IPluginHost Host)
         {
             this.FHost = Host;
+            this.manager = ChannelsManager.GetInstance();
 
             this.FHost.CreateValueInput("Device", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDevice);
             this.FPinInDevice.SetSubType(-1, double.MaxValue, 1, -1, false, false, true);
@@ -75,7 +77,7 @@ namespace BassSound
                 }
 
                 IntPtr ptr = IntPtr.Zero;
-                Bass.BASS_Init(devid, 44100, BASSInit.BASS_DEVICE_SPEAKERS, ptr, null);
+                Bass.BASS_Init(devid, 44100, BASSInit.BASS_DEVICE_DEFAULT, ptr, null);
                 this.FDevice = devid;
             }
 
@@ -94,7 +96,7 @@ namespace BassSound
                     int hid = Convert.ToInt32(dblhandle);
 
                     //Get the channel in the list
-                    ChannelInfo channel = ChannelsManager.GetChannel(hid);
+                    ChannelInfo channel = this.manager.GetChannel(hid);
                     
                     
                     if (channel.BassHandle == null)
@@ -150,7 +152,7 @@ namespace BassSound
         {
             foreach (int handle in this.FHandles)
             {
-                Bass.BASS_ChannelPause(ChannelsManager.GetChannel(handle).BassHandle.Value);
+                Bass.BASS_ChannelPause(this.manager.GetChannel(handle).BassHandle.Value);
             }
         }
         #endregion

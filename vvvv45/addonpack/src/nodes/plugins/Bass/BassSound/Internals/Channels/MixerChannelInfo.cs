@@ -9,7 +9,7 @@ namespace BassSound.Internals
     public class MixerChannelInfo : ChannelInfo
     {
         private int numchans;
-        private List<int> streams = new List<int>();
+        private ChannelList streams = new ChannelList();
 
         public int NumChans
         {
@@ -17,12 +17,12 @@ namespace BassSound.Internals
             set { numchans = value; }
         }
 
-        public List<int> Streams
+        public ChannelList Streams
         {
             get { return streams; }
             set 
             {
-                BeforChannelUpdate(value);
+                //BeforeChannelUpdate(value);
                 streams = value; 
             }
         }
@@ -32,7 +32,7 @@ namespace BassSound.Internals
         {
             Bass.BASS_SetDevice(deviceid);
 
-            BASSFlag flag = BASSFlag.BASS_SAMPLE_FLOAT;
+            BASSFlag flag = BASSFlag.BASS_DEFAULT;
 
             if (this.IsDecoding)
             {
@@ -43,45 +43,41 @@ namespace BassSound.Internals
 
             this.BassHandle = handle;
 
-            foreach (int channel in this.Streams)
+            //Add the channel list in bass now
+            foreach (ChannelInfo info in this.Streams)
             {
-                BassMix.BASS_Mixer_StreamAddChannel(this.BassHandle.Value, channel, BASSFlag.BASS_MIXER_MATRIX);
+                BassMix.BASS_Mixer_StreamAddChannel(this.BassHandle.Value, info.BassHandle.Value, BASSFlag.BASS_MIXER_MATRIX);
             }
 
             Bass.BASS_ChannelPlay(this.BassHandle.Value, false);
         }
         #endregion
 
-        #region Before Channel Update
-        public void BeforChannelUpdate(List<int> newchans)
+        #region Detach Channel
+        public void DetachChannel(ChannelInfo info)
         {
+            if (info.BassHandle.HasValue)
+            {
+                Bass.BASS_ChannelPause(info.BassHandle.Value);
+                BassMix.BASS_Mixer_ChannelRemove(info.BassHandle.Value);
+            }
+            this.Streams.Remove(info);
+        }
+        #endregion
+
+        #region Attach Channel
+        public void AttachChannel(ChannelInfo info)
+        {
+            if (!info.BassHandle.HasValue)
+            {
+                info.Initialize(0);
+            }
+
+            this.streams.Add(info);
+
             if (this.BassHandle.HasValue)
             {
-                //Remove channels not in the list anymore
-                foreach (int oldchan in this.streams)
-                {
-                    ChannelInfo info = ChannelsManager.GetChannel(oldchan);
-                    if (!newchans.Contains(oldchan) && info.BassHandle.HasValue)
-                    {
-                        BassMix.BASS_Mixer_ChannelRemove(info.BassHandle.Value);
-                    }
-                }
-
-                //Add new channels
-                foreach (int newchan in newchans)
-                {
-                    ChannelInfo info = ChannelsManager.GetChannel(newchan);
-                    //Need to be decoding channel, so can put it in nosound
-                    if (!info.BassHandle.HasValue)
-                    {
-                        info.Initialize(0);
-                    }
-
-                    if (!this.streams.Contains(newchan))
-                    {
-                        BassMix.BASS_Mixer_StreamAddChannel(this.BassHandle.Value,info.BassHandle.Value, BASSFlag.BASS_MIXER_MATRIX);
-                    }
-                }
+                BassMix.BASS_Mixer_StreamAddChannel(this.BassHandle.Value, info.BassHandle.Value, BASSFlag.BASS_MIXER_MATRIX);
             }
         }
         #endregion

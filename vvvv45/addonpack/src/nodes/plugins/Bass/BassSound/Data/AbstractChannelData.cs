@@ -14,6 +14,8 @@ namespace vvvv.Nodes
     public abstract class AbstractChannelData : IDisposable
     {
         protected IPluginHost FHost;
+
+        private ChannelsManager manager;
         private int FInternalHandle = 0;
         protected int FHandle;
 
@@ -63,6 +65,7 @@ namespace vvvv.Nodes
         public void SetPluginHost(IPluginHost Host)
         {
             this.FHost = Host;
+            this.manager = ChannelsManager.GetInstance();
 
             IntPtr ptr = IntPtr.Zero;
 
@@ -102,9 +105,9 @@ namespace vvvv.Nodes
                 this.FPinInHandle.GetValue(0, out dhandle);
                 this.FInternalHandle = Convert.ToInt32(Math.Round(dhandle));
 
-                if (ChannelsManager.Exists(this.FInternalHandle))
+                if (this.manager.Exists(this.FInternalHandle))
                 {
-                    ChannelInfo info = ChannelsManager.GetChannel(this.FInternalHandle);
+                    ChannelInfo info = this.manager.GetChannel(this.FInternalHandle);
                     if (info.BassHandle.HasValue)
                     {
                         this.FHandle = info.BassHandle.Value;

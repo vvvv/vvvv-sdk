@@ -37,6 +37,7 @@ namespace BassSound.Streams
         #endregion
 
         private IPluginHost FHost;
+        private ChannelsManager manager;
 
         private IValueIn FPinCfgIsDecoding;
 
@@ -54,13 +55,13 @@ namespace BassSound.Streams
         private IValueOut FPinOutLength;
 
         private bool FConnected = false;
-
-        private int FHandle = 0;
+        private FileChannelInfo FChannelInfo = new FileChannelInfo();
 
         #region Set Plugin Host
         public void SetPluginHost(IPluginHost Host)
         {
             this.FHost = Host;
+            this.manager = ChannelsManager.GetInstance();
 
             //Config Pins
             this.FHost.CreateValueInput("Is Decoding", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out this.FPinCfgIsDecoding);
@@ -130,6 +131,12 @@ namespace BassSound.Streams
 
                 if (File.Exists(file))
                 {
+                    //Remove the old one
+                    if (this.FChannelInfo.InternalHandle != 0)
+                    {
+                        this.manager.Delete(this.FChannelInfo.InternalHandle);
+                    }
+
                     FileChannelInfo info = new FileChannelInfo();
                     info.FileName = file;
 
@@ -137,10 +144,10 @@ namespace BassSound.Streams
                     this.FPinCfgIsDecoding.GetValue(0, out isdecoding);
                     info.IsDecoding = isdecoding ==1;
 
-                    ChannelsManager.CreateChannel(info);
-                    this.FHandle = info.InternalHandle;
+                    this.manager.CreateChannel(info);
+                    this.FChannelInfo = info;
 
-                    this.FPinOutHandle.SetValue(0, this.FHandle);
+                    this.FPinOutHandle.SetValue(0, this.FChannelInfo.InternalHandle);
 
                     updateplay = true;
                     updateloop = true;
@@ -151,17 +158,17 @@ namespace BassSound.Streams
             #region Update Play/Pause
             if (updateplay || this.FPinInPlay.PinIsChanged)
             {
-                if (this.FHandle != 0)
+                if (this.FChannelInfo.InternalHandle != 0)
                 {
                     double doplay;
                     this.FPinInPlay.GetValue(0, out doplay);
                     if (doplay == 1 && this.FPinOutHandle.IsConnected)
                     {
-                        ChannelsManager.GetChannel(this.FHandle).Play = true;
+                        this.manager.GetChannel(this.FChannelInfo.InternalHandle).Play = true;
                     }
                     else
                     {
-                        ChannelsManager.GetChannel(this.FHandle).Play = false;
+                        this.manager.GetChannel(this.FChannelInfo.InternalHandle).Play = false;
                     }
                 }
             }
@@ -170,30 +177,30 @@ namespace BassSound.Streams
             #region Update Looping
             if (updateloop || this.FPInInLoop.PinIsChanged)
             {
-                if (this.FHandle != 0)
+                if (this.FChannelInfo.InternalHandle != 0)
                 {
                     double doloop;
                     this.FPInInLoop.GetValue(0, out doloop);
                     if (doloop == 1)
                     {
-                        ChannelsManager.GetChannel(this.FHandle).Loop = true;
+                        this.manager.GetChannel(this.FChannelInfo.InternalHandle).Loop = true;
                     }
                     else
                     {
-                        ChannelsManager.GetChannel(this.FHandle).Loop = false;
+                        this.manager.GetChannel(this.FChannelInfo.InternalHandle).Loop = false;
                     }
                 }
             }
             #endregion
 
             #region Update Seek position
-            if (this.FPinInDoSeek.PinIsChanged && this.FHandle != 0)
+            if (this.FPinInDoSeek.PinIsChanged && this.FChannelInfo.InternalHandle != 0)
             {
                 double doseek;
                 this.FPinInDoSeek.GetValue(0, out doseek);
                 if (doseek == 1)
                 {
-                    ChannelInfo info = ChannelsManager.GetChannel(this.FHandle);
+                    ChannelInfo info = this.manager.GetChannel(this.FChannelInfo.InternalHandle);
                     if (info.BassHandle.HasValue)
                     {
                         double position;
@@ -205,9 +212,9 @@ namespace BassSound.Streams
             #endregion
 
             #region Update Current Position/Length
-            if (this.FHandle != 0)
+            if (this.FChannelInfo.InternalHandle != 0)
             {
-                ChannelInfo info = ChannelsManager.GetChannel(this.FHandle);
+                ChannelInfo info = this.manager.GetChannel(this.FChannelInfo.InternalHandle);
                 if (info.BassHandle.HasValue)
                 {
                     long pos = Bass.BASS_ChannelGetPosition(info.BassHandle.Value);
@@ -221,62 +228,19 @@ namespace BassSound.Streams
             #region Tempo and Pitch
             if (this.FPinInPitch.PinIsChanged || this.FPinInTempo.PinIsChanged)
             {
-                if (this.FHandle != 0)
+                if (this.FChannelInfo.InternalHandle != 0)
                 {
                     double pitch, tempo;
                     this.FPinInPitch.GetValue(0, out pitch);
                     this.FPinInTempo.GetValue(0, out tempo);
-                    
-                    FileChannelInfo info = (FileChannelInfo)ChannelsManager.GetChannel(this.FHandle);
+
+                    FileChannelInfo info = (FileChannelInfo)this.manager.GetChannel(this.FChannelInfo.InternalHandle);
                     info.Pitch = pitch;
                     info.Tempo = tempo;
                 }
             }
             #endregion
 
-            /*
-            #region File Change
-            if (this.FPinInFilename.PinIsChanged || this.FPinCfgIsDecoding.PinIsChanged || this.FPinInMono.PinIsChanged)
-            {
-                Bass.BASS_SetDevice(0);
-                string file;
-                this.FPinInFilename.GetString(0, out file);
-
-                Bass.BASS_StreamFree(this.FHandle);
-                this.FHandle = Bass.BASS_StreamCreateFile(file, 0, 0, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_PRESCAN);
-
-                //Creates a tempo channel
-                BASSFlag flags = BASSFlag.BASS_FX_FREESOURCE | BASSFlag.BASS_SAMPLE_FLOAT;
-                
-                
-                //Decoding channel?
-                double isdecoding;
-                this.FPinCfgIsDecoding.GetValue(0, out isdecoding);
-                if (isdecoding == 1)
-                {
-                    flags = flags | BASSFlag.BASS_STREAM_DECODE;
-                }
-
-                //Mono Channel?
-                double mono;
-                this.FPinInMono.GetValue(0, out mono);
-                if (mono == 1)
-                {
-                    flags = flags | BASSFlag.BASS_SAMPLE_MONO;
-                }
-                
-                this.FHandle = BassFx.BASS_FX_TempoCreate(this.FHandle, flags);
-             
-                this.FPinOutHandle.SetValue(0, this.FHandle);
-                long len = Bass.BASS_ChannelGetLength(this.FHandle);
-                this.FPinOutLength.SetValue(0, Bass.BASS_ChannelBytes2Seconds(this.FHandle, len));
-
-                updateplay = true;
-                updateloop = true;
-            }
-            #endregion
-
-             */
         }
         #endregion
 
@@ -290,9 +254,17 @@ namespace BassSound.Streams
         #region IDisposable Members
         public void Dispose()
         {
-            Bass.BASS_ChannelStop(this.FHandle);
-            Bass.BASS_StreamFree(this.FHandle);
+            if (this.FChannelInfo.InternalHandle != 0)
+            {
+                if (this.FChannelInfo.BassHandle.HasValue)
+                {
+                    Bass.BASS_ChannelStop(this.FChannelInfo.BassHandle.Value);
+                    Bass.BASS_StreamFree(this.FChannelInfo.BassHandle.Value);
+                }
+                this.manager.Delete(this.FChannelInfo.InternalHandle);
+            }
         }
+
         #endregion
     }
 }
