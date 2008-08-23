@@ -127,7 +127,7 @@ type
     FChannelVolume: TChannelVolume;
 
 
-    FNumChannels  : Integer;
+    FChannelCount: Integer;
     FBuffer       : TChannelArray;
     FBufferTmp    : TChannelArray;
     FBufferSize   : Integer;
@@ -135,15 +135,18 @@ type
 
   public
     destructor Destroy; override;
-    constructor Create;
+    constructor Create(ChannelCount: Integer);
     function ReadTheFile(AFileName: PChar): Boolean;
     function FillBuffer( mediaBuffer: PDouble; size: integer): HResult;
   end;
 
   TMSourceBufferPin = class(TBCSourceStream)
   private
-    voicelist: TList;
-    voicecount: Integer;
+    FActiveChannelCount: Integer;
+    FBlockSize: Integer;
+    FChannelCode: Integer;
+    FVoiceList: TList;
+    FVoiceCount: Integer;
   public
     pwf: PWAVEFORMATEXTENSIBLE;
 
@@ -155,16 +158,19 @@ type
     function DecideBufferSize(Allocator: IMemAllocator; Properties: PAllocatorProperties): HRESULT; override;
     function Notify(Filter: IBaseFilter; q: TQuality): HRESULT; override; stdcall;
     function FillBuffer(ims: IMediaSample): HResult; override;
+    property ActiveChannelCount: Integer write FActiveChannelCount;
+    property BlockSize: Integer read FBlockSize write FBlockSize;
+    property ChannelCode: Integer write FChannelCode;
   end;
 
   TMSourceBuffer = class(TBCSource, ISourceBuffer)
   private
     FPin: TMSourceBufferPin;
-    FNumChannels: Integer;
+    FChannelCount: Integer;
 
     FBuffer   : Array of SmallInt;
     FData     : TDoubleData;
-    //FWaveFile : CWaveFile;
+ //   FWaveFile : CWaveFile;
 
   public
     constructor Create(ObjName: string; Unk: IUnKnown; out hr: HRESULT);
@@ -197,11 +203,6 @@ type
     function GetActualBlockSize(out ActualBlockSize: Integer): HRESULT; stdcall;
  end;
 
-var
- GlobalNumActiveChannels: Integer = 0;
- GlobalChannelCode      : Integer = 0;
- GlobalBlockSize        : Integer = 100;
-
 implementation
 
 uses Variants;
@@ -220,8 +221,8 @@ constructor TMSourceBufferPin.Create(out hr: HResult; Filter: TBCSource);
 begin
   inherited Create(FilterName, hr, Filter, 'Out');
 
-  VoiceList := TList.Create;
-  VoiceList.Clear;
+  FVoiceList := TList.Create;
+  FVoiceList.Clear;
 end;
 
 destructor TMSourceBufferPin.Destroy;
@@ -229,36 +230,36 @@ var
   i: Integer;
 begin
   {
-  for i := 0 to VoiceList.Count - 1 do
+  for i := 0 to FVoiceList.Count - 1 do
   begin
-    if assigned(VoiceList.Items[i]) then VoiceFree(i);
+    if assigned(FVoiceList.Items[i]) then VoiceFree(i);
   end;
-  VoiceList.Free;
+  FVoiceList.Free;
   }
 
   inherited;
 end;
 
-constructor TMVoice.Create;
+constructor TMVoice.Create(ChannelCount: Integer);
 var
   i: Integer;
 begin
-  FPlay           :=  false;
-  FDoSeek         :=  false;
-  FLoop           :=  false;
-  FGain           :=  1;
-  FPhase          :=  0;
-  FPitch          :=  1;
-  FStartPosition  :=  0;
-  FEndPosition    :=  0;
-  FSeekPosition   :=  0;
-  FFramePosition  :=  0;
-  FFading         :=  0;
-  FPhase          :=  0;
-  FBufferSize     :=  0;
-  FBufferSizeTmp  :=  0;
-  FChange         :=  false;
-  FNumChannels    :=  GlobalNumActiveChannels;
+  FPlay := false;
+  FDoSeek := false;
+  FLoop := false;
+  FGain := 1;
+  FPhase := 0;
+  FPitch := 1;
+  FStartPosition := 0;
+  FEndPosition := 0;
+  FSeekPosition := 0;
+  FFramePosition := 0;
+  FFading := 0;
+  FPhase := 0;
+  FBufferSize := 0;
+  FBufferSizeTmp := 0;
+  FChange := false;
+  FChannelCount := ChannelCount;
 
   for i := 0 to MAXCHANNELS - 1 do
     FChannelVolume [i] := 1;
@@ -289,7 +290,7 @@ end;
 
 function TMSourceBuffer.SetVoiceCount(VoiceCount: integer): HResult; stdcall;
 begin
-  FPin.voicecount := voicecount;
+  FPin.FVoicecount := VoiceCount;
   Result := S_OK;
 end;
 
@@ -418,7 +419,7 @@ begin
   Result := S_OK;
 end;
 
-function TMSourceBuffer.setBufferLength(length: Integer): HRESULT; stdcall;
+function TMSourceBuffer.SetBufferLength(Length: Integer): HRESULT; stdcall;
 var
   v  : PBCVoice;
   i,k: Integer;
@@ -441,7 +442,7 @@ begin
   Result := S_OK;
 end;
 
-function TMSourceBuffer.setBuffer(index: Integer; buffer: TDynamicDouble): HRESULT; stdcall;
+function TMSourceBuffer.SetBuffer(Index: Integer; Buffer: TDynamicDouble): HRESULT; stdcall;
 var
   v: PBCVoice;
   i: Integer;
@@ -451,17 +452,17 @@ begin
   if v = nil then
     exit;
 
-  if index >= FNumChannels then
+  if index >= FChannelCount then
     Exit;
 
   for i := 0 to v.FBufferSizeTmp - 1 do
-    v.FBufferTmp[index][i] := buffer[i];
+    v.FBufferTmp[index][i] := Buffer[i];
 
   Result := S_OK;
 end;
 
 
-function TMSourceBuffer.setBufferChanged: HRESULT; stdcall;
+function TMSourceBuffer.SetBufferChanged: HRESULT; stdcall;
 var
   v: PBCVoice;
 begin
@@ -479,15 +480,16 @@ function TMSourceBuffer.SetChannelConfiguration(ActiveChannelCount: Integer; Cha
 var
   i: Integer;
 begin
- GlobalNumActiveChannels := ActiveChannelCount;
- GLobalChannelCode := ChannelCode;
+  FChannelCount := ActiveChannelCount;
+  FPin.ActiveChannelCount := ActiveChannelCount;
+  FPin.ChannelCode := ChannelCode;
 
- Result := S_OK;
+  Result := S_OK;
 end;
 
 function TMSourceBuffer.SetBlockSize(BlockSize: Integer): HRESULT; stdcall;
 begin
-  GlobalBlockSize := BlockSize;
+  FPin.BlockSize := BlockSize;
 
   Result := S_OK;
 end;
@@ -495,12 +497,12 @@ end;
 
 function TMSourceBuffer.GetActualBlockSize(out ActualBlockSize: Integer): HRESULT; stdcall;
 begin           
- ActualBlockSize := GlobalBlockSize;
+ ActualBlockSize := FPin.BlockSize;
 
  Result := S_OK;
 end;
 
-function TMSourceBuffer.WriteBuffer(bufferSize: Integer; indexCount: Integer; indexPtr: PMValue; channelNumber: Integer; channelCount: TSourceIntArray; channelPtr: TSourcePtrArray): HRESULT; stdcall;
+function TMSourceBuffer.WriteBuffer(BufferSize: Integer; IndexCount: Integer; IndexPtr: PMValue; ChannelNumber: Integer; ChannelCount: TSourceIntArray; ChannelPtr: TSourcePtrArray): HRESULT; stdcall;
 var
   v     : PBCVoice;
   i,k   : Integer;
@@ -563,14 +565,14 @@ begin
   if FPin.pwf = nil then
     exit;
 
-  length := v.FBufferSize * v.FNumChannels;
+  length := v.FBufferSize * v.FChannelCount;
   count := 0;
 
   SetLength(FData, length);
   SetLength(FBuffer, length);
 
   for i := 0 to v.FBufferSize - 1 do
-    for k := 0 to v.FNumChannels - 1 do
+    for k := 0 to v.FChannelCount - 1 do
     begin
       FData[count] := v.FBuffer[k][i];
 
@@ -596,26 +598,27 @@ begin
   else
     StringToWideChar('SourceBuffer_Dump.wav', pFilename, STRLENGTH);
 
-  if(Succeeded(FWaveFile.Open(pFilename, @FPin.pwf.Format, WAVEFILE_WRITE))) then
-    FWaveFile.Write(length, FBuffer, bytesWrote);
+ // if(Succeeded(FWaveFile.Open(pFilename, @FPin.pwf.Format, WAVEFILE_WRITE))) then
+ //   FWaveFile.Write(length, FBuffer, bytesWrote);
 
-  FWaveFile.Close();
+  //FWaveFile.Close();
 
   Result := S_OK;
 end;
 
 
-function TMSourceBuffer.setChannelVolume(val: TChannelVolume): HRESULT; stdcall;
+function TMSourceBuffer.SetChannelVolume(ChannelVolume: TChannelVolume): HRESULT; stdcall;
 var
   v: PBCVoice;
   i: Integer;
 begin
   v := FPin.VoiceCheck(0);
 
-  if v = nil then exit;
+  if v = nil then
+    exit;
 
-  for i := 0 to v.FNumChannels - 1 do
-  v.FChannelVolume [i] := val [i];
+  for i := 0 to v.FChannelCount - 1 do
+    v.FChannelVolume[i] := ChannelVolume[i];
 
   Result := S_OK;
 end;
@@ -642,7 +645,7 @@ begin
   pwf.format.cbSize          := sizeof(TWAVEFORMATEXTENSIBLE) + sizeof(TWAVEFORMATEX);
   pwf.Format.wFormatTag      := WAVE_FORMAT_EXTENSIBLE;
   //pwf.Format.wFormatTag    := WAVE_FORMAT_PCM; //for the VSTHost
-  pwf.format.nChannels       := GlobalNumActiveChannels;
+  pwf.format.nChannels       := FActiveChannelCount;
   pwf.format.nSamplesPerSec  := SAMPLERATE;
   pwf.format.wBitsPerSample  := BITSPERSAMPLE;
   pwf.format.nBlockAlign     := (pwf.format.wBitsPerSample * pwf.format.nChannels) div BITSPERBYTE;
@@ -652,7 +655,7 @@ begin
   pwf.Samples.wSamplesPerBlock    := 0;
   pwf.Samples.wReserved           := 0;
   pwf.SubFormat                   := KSDATAFORMAT_SUBTYPE_PCM;
-  pwf.dwChannelMask               := GlobalChannelCode;
+  pwf.dwChannelMask               := FChannelCode;
 
   Result := S_OK;
 end;
@@ -666,9 +669,9 @@ begin
   ASSERT(Allocator <> nil);
   ASSERT(Properties <> nil);
 
-  Properties.cbBuffer := GlobalBlockSize * 2 * GlobalNumActiveChannels;
+  Properties.cbBuffer := FBlockSize * 2 * FActiveChannelCount;
   Properties.cBuffers := 1;
-  Properties.cbAlign  := GlobalBlockSize * 2 * GlobalNumActiveChannels;
+  Properties.cbAlign  := FBlockSize * 2 * FActiveChannelCount;
   Properties.cbPrefix := 0;
 
   // Ask the allocator to reserve us the memory
@@ -676,8 +679,8 @@ begin
 
   if Result <> S_OK then
   begin
-   GlobalBlockSize := 100;
-   DecideBufferSize(Allocator,Properties);
+    FBlockSize := 100;
+    DecideBufferSize(Allocator,Properties);
   end;
 
   Result := S_OK;
@@ -688,7 +691,7 @@ begin
   Result := true;
 end;
 
-function TMVoice.FillBuffer(mediaBuffer: PDouble; size: integer): HRESULT;
+function TMVoice.FillBuffer(MediaBuffer: PDouble; Size: Integer): HRESULT;
 var
   i            : Integer;
   numFrames    : Integer;
@@ -713,13 +716,13 @@ var
 
     for i := 0 to MAXCHANNELS - 1 do
     begin
-      SetLength(FBuffer[i],FBufferSize);
+      SetLength(FBuffer[i], FBufferSize);
 
       for k := 0 to FBufferSize - 1 do
-        FBuffer [i][k] := FBufferTmp  [i][k];
+        FBuffer[i][k] := FBufferTmp[i][k];
     end;
 
-    FChange   := false;
+    FChange := false;
     FFraction := 1.0 / FBufferSize;
   end;
 
@@ -738,7 +741,7 @@ var
         sample^ := 0
       else
       begin
-        sample^:= FBuffer[channel][position] * gain * channelVolume[channel];;
+        sample^:= FBuffer[channel][position] * gain * channelVolume[channel];
 
         if sample^ > HALFWAVE then
           sample^ := HALFWAVE;
@@ -770,18 +773,18 @@ var
   var
     i: integer;
   begin
-    numChannels := FNumChannels;
-    numFrames   := trunc(size / numChannels);
-    loop        := FLoop;
-    phaseStart  := PositionToPhase(FStartPosition);
-    phaseEnd    := PositionToPhase(FEndPosition);
-    interval    := phaseEnd - phaseStart;
-    position    := FFramePosition;
-    pitch       := FPitch;
-    gain        := FGain * HALFWAVE;
+    numChannels := FChannelCount;
+    numFrames := trunc(size / numChannels);
+    loop := FLoop;
+    phaseStart := PositionToPhase(FStartPosition);
+    phaseEnd := PositionToPhase(FEndPosition);
+    interval := phaseEnd - phaseStart;
+    position := FFramePosition;
+    pitch := FPitch;
+    gain := FGain * HALFWAVE;
 
-    for i := 0 to FNumChannels - 1 do
-      channelVolume [i] := FChannelVolume [i];
+    for i := 0 to FChannelCount - 1 do
+      channelVolume[i] := FChannelVolume[i];
   end;
 
   procedure SetPosition();
@@ -902,10 +905,9 @@ begin
     if FBufferSize = 0 then Continue;
 
     if loop then
-      SetFrame(i,PhaseToPositionLoop);
-
-    if not loop then
-      SetFrame(i,PhaseToPosition);
+      SetFrame(i, PhaseToPositionLoop)
+    else
+      SetFrame(i, PhaseToPosition);
   end;
 
   FFramePosition := position;
@@ -931,7 +933,7 @@ begin
   //ASSERT(ims <> nil);
 
   size := ims.GetSize div 2;
-  //Outputdebugstring(pchar(format('pins buffersize: %d',[size])));
+  Outputdebugstring(pchar(format('pins buffersize: %d',[size])));
 
   buf := CoTaskMemAlloc(size * sizeof(double));
   if buf = nil then
@@ -948,13 +950,15 @@ begin
   end;
 
   count := 0;
-  i := VoiceList.Count;
+  i := FVoiceList.Count;
 
-  if voicecount < i then i := voicecount;
+  if FVoiceCount < i then
+    i := FVoiceCount;
+
   while i > 0 do
   begin
     Dec(i);
-    v := VoiceList.Items[i];
+    v := FVoiceList.Items[i];
     if v <> nil then
     begin
       Inc(count);
@@ -993,9 +997,9 @@ begin
 
   FBuffer      := nil;
   FData        := nil;
-  FWaveFile    := CWaveFile.Create;
+  //FWaveFile    := CWaveFile.Create;
 
-  FNumChannels := GlobalNumActiveChannels;
+  //FChannelCount := 0;
 
   // The pin magically adds itself to our pin array.
   FPin := TMSourceBufferPin.Create(hr, Self);
@@ -1019,25 +1023,25 @@ begin
   inherited;
 end;
 
-function TMSourceBufferPin.VoiceCheck(index: Integer): PBCVoice;
+function TMSourceBufferPin.VoiceCheck(Index: Integer): PBCVoice;
 var
   v: PBCVoice;
 begin
-  if index >= VoiceList.Count then
-    VoiceList.Count := index + 1;
+  if index >= FVoiceList.Count then
+    FVoiceList.Count := index + 1;
 
-  if VoiceList.Items[index] = nil then
+  if FVoiceList.Items[index] = nil then
   begin
     v := CoTaskMemAlloc(sizeof(TMVoice));
     if v <> nil then
-      v^ := TMVoice.Create;
-    VoiceList.Items[index] := v;
+      v^ := TMVoice.Create(FActiveChannelCount);
+    FVoiceList.Items[index] := v;
   end;
 
-  if VoiceList.Items[index] = nil then
+  if FVoiceList.Items[index] = nil then
     outputdebugstring(pchar(format('vc %d nil!',[index])));
 
-  Result := VoiceList.Items[index];
+  Result := FVoiceList.Items[index];
 end;
 
 procedure TMSourceBufferPin.VoiceFree(index: Integer);
@@ -1046,12 +1050,12 @@ var
   i: Integer;
 begin
   {
-  v := VoiceList.Items[index];
-  for i := 0 to VoiceList.Count - 1 do if i <> index then
+  v := FVoiceList.Items[index];
+  for i := 0 to FVoiceList.Count - 1 do if i <> index then
   begin
-    if assigned(VoiceList.Items[i]) then
+    if assigned(FVoiceList.Items[i]) then
     begin
-      vv := VoiceList.Items[i];
+      vv := FVoiceList.Items[i];
       if vv.FFileName = v.FFileName then exit;
     end;
   end;
