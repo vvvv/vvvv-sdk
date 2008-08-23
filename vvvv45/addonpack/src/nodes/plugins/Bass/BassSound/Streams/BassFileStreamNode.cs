@@ -53,7 +53,9 @@ namespace BassSound.Streams
         private IValueOut FPinOutHandle;
         private IValueOut FPinOutCurrentPosition;
         private IValueOut FPinOutLength;
+        private IValueOut FPinOutEnd;
 
+        private bool FEnd = false;
         private bool FConnected = false;
         private FileChannelInfo FChannelInfo = new FileChannelInfo();
 
@@ -101,6 +103,9 @@ namespace BassSound.Streams
 
             this.FHost.CreateValueOutput("Length", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutLength);
             this.FPinOutLength.SetSubType(0, double.MaxValue, 0, 0.0, false, false, false);
+
+            this.FHost.CreateValueOutput("File End", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutEnd);
+            this.FPinOutEnd.SetSubType(0, 1, 1, 0, true, false, true);
         }
         #endregion
 
@@ -134,11 +139,17 @@ namespace BassSound.Streams
                     //Remove the old one
                     if (this.FChannelInfo.InternalHandle != 0)
                     {
+                        if (this.FChannelInfo.BassHandle.HasValue)
+                        {
+                            Bass.BASS_ChannelStop(this.FChannelInfo.BassHandle.Value);
+                            Bass.BASS_StreamFree(this.FChannelInfo.BassHandle.Value);
+                        }
                         this.manager.Delete(this.FChannelInfo.InternalHandle);
                     }
 
                     FileChannelInfo info = new FileChannelInfo();
                     info.FileName = file;
+                    info.OnStreamEnd += new EventHandler(info_OnStreamEnd);
 
                     double isdecoding;
                     this.FPinCfgIsDecoding.GetValue(0, out isdecoding);
@@ -241,6 +252,21 @@ namespace BassSound.Streams
             }
             #endregion
 
+            if (this.FEnd)
+            {
+                this.FPinOutEnd.SetValue(0, 1);
+                this.FEnd = false;
+            }
+            else
+            {
+                this.FPinOutEnd.SetValue(0, 0);
+            }
+
+        }
+
+        private void info_OnStreamEnd(object sender, EventArgs e)
+        {
+            this.FEnd = true;
         }
         #endregion
 

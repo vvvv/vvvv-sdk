@@ -11,6 +11,9 @@ namespace BassSound.Internals
         private string filename;
         private double pitch;
         private double tempo;
+        private SYNCPROC _syncProc = null;
+
+        public event EventHandler OnStreamEnd;
 
         public string FileName
         {
@@ -21,8 +24,8 @@ namespace BassSound.Internals
         public double Pitch
         {
             get { return pitch; }
-            set 
-            { 
+            set
+            {
                 pitch = value;
                 this.OnPitchUpdated();
             }
@@ -31,8 +34,8 @@ namespace BassSound.Internals
         public double Tempo
         {
             get { return tempo; }
-            set 
-            { 
+            set
+            {
                 tempo = value;
                 this.OnTempoUpdated();
             }
@@ -44,15 +47,15 @@ namespace BassSound.Internals
             Bass.BASS_SetDevice(deviceid);
 
             int handle = Bass.BASS_StreamCreateFile(this.filename, 0, 0, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT);
-            
+
             BASSFlag flag = BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_FX_FREESOURCE;
 
-            if (this.IsDecoding) 
+            if (this.IsDecoding)
             {
                 flag = flag | BASSFlag.BASS_STREAM_DECODE;
             }
 
-            if (this.Mono) 
+            if (this.Mono)
             {
                 flag = flag | BASSFlag.BASS_SAMPLE_MONO;
             }
@@ -64,6 +67,12 @@ namespace BassSound.Internals
 
             this.BassHandle = handle;
 
+            _syncProc = new SYNCPROC(TrackSync);
+
+            // setup a new sync
+            Bass.BASS_ChannelSetSync(handle,BASSSync.BASS_SYNC_END,0,_syncProc,IntPtr.Zero);
+            
+            this.OnInitialize();
         }
         #endregion
 
@@ -91,5 +100,14 @@ namespace BassSound.Internals
             this.OnTempoUpdated();
         }
         #endregion
+
+        private void TrackSync(int syncHandle, int channel, int data, IntPtr user)
+        {
+            if (OnStreamEnd != null)
+            {
+                OnStreamEnd(this, new EventArgs());
+            }
+        }
     }
+
 }

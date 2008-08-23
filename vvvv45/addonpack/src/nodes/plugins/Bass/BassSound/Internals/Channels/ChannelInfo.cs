@@ -8,6 +8,8 @@ namespace BassSound.Internals
 {
     public abstract class ChannelInfo
     {
+        public event EventHandler OnInit;
+
         #region Internal fields
         private int internalhandle;
         private int? basshandle = null;
@@ -92,6 +94,14 @@ namespace BassSound.Internals
         #endregion
 
         #region Protected methods
+        protected void OnInitialize()
+        {
+            if (OnInit != null)
+            {
+                OnInit(this, new EventArgs());
+            }
+        }
+
         protected void OnPlayUpdated()
         {
             if (this.BassHandle.HasValue)
@@ -108,7 +118,7 @@ namespace BassSound.Internals
                     }
                     else
                     {
-                        BassMix.BASS_Mixer_ChannelPlay(this.basshandle.Value);
+                        BassMix.BASS_Mixer_ChannelPause(this.basshandle.Value);
                     }
                 }
                 else

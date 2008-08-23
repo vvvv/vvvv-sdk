@@ -4,6 +4,7 @@ using System.Text;
 using VVVV.PluginInterfaces.V1;
 using Un4seen.Bass;
 using BassSound.Internals;
+using vvvv.Utils;
 
 namespace BassSound
 {
@@ -48,6 +49,8 @@ namespace BassSound
         {
             this.FHost = Host;
             this.manager = ChannelsManager.GetInstance();
+
+            BassUtils.LoadPlugins();
 
             this.FHost.CreateValueInput("Device", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDevice);
             this.FPinInDevice.SetSubType(-1, double.MaxValue, 1, -1, false, false, true);

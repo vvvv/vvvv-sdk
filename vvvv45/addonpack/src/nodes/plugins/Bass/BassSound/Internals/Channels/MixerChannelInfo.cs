@@ -32,7 +32,7 @@ namespace BassSound.Internals
         {
             Bass.BASS_SetDevice(deviceid);
 
-            BASSFlag flag = BASSFlag.BASS_DEFAULT;
+            BASSFlag flag = BASSFlag.BASS_DEFAULT | BASSFlag.BASS_SAMPLE_FLOAT;
 
             if (this.IsDecoding)
             {
@@ -46,10 +46,23 @@ namespace BassSound.Internals
             //Add the channel list in bass now
             foreach (ChannelInfo info in this.Streams)
             {
-                BassMix.BASS_Mixer_StreamAddChannel(this.BassHandle.Value, info.BassHandle.Value, BASSFlag.BASS_MIXER_MATRIX);
+                if (!info.BassHandle.HasValue)
+                {
+                    info.Initialize(deviceid);
+                }
+                else
+                {
+                    if (info.BassHandle.Value == 0)
+                    {
+                        info.Initialize(deviceid);
+                    }
+                }
+                BassMix.BASS_Mixer_StreamAddChannel(this.BassHandle.Value, info.BassHandle.Value, BASSFlag.BASS_MIXER_MATRIX | BASSFlag.BASS_MIXER_BUFFER);
+                info.Play = info.Play;
             }
 
             Bass.BASS_ChannelPlay(this.BassHandle.Value, false);
+            this.OnInitialize();
         }
         #endregion
 
@@ -70,15 +83,17 @@ namespace BassSound.Internals
         {
             if (!info.BassHandle.HasValue)
             {
+                //Initialize to no sound as it's decoding anyway
                 info.Initialize(0);
             }
-
             this.streams.Add(info);
 
             if (this.BassHandle.HasValue)
             {
-                BassMix.BASS_Mixer_StreamAddChannel(this.BassHandle.Value, info.BassHandle.Value, BASSFlag.BASS_MIXER_MATRIX);
+                BassMix.BASS_Mixer_StreamAddChannel(this.BassHandle.Value, info.BassHandle.Value, BASSFlag.BASS_MIXER_MATRIX | BASSFlag.BASS_MIXER_BUFFER);
             }
+            //Simple trick to refresh play status now it's attached
+            info.Play = info.Play;
         }
         #endregion
     }

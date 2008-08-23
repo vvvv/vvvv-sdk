@@ -53,6 +53,7 @@ namespace BassSound.Internals
         #region Delete
         public void Delete(int id)
         {
+
             if (OnChannelDeleted != null)
             {
                 OnChannelDeleted(id);

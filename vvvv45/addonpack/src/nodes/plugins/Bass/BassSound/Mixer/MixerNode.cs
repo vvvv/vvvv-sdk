@@ -16,7 +16,7 @@ namespace vvvv.Nodes
             get
             {
                 IPluginInfo Info = new PluginInfo();
-                Info.Name = "BassMixer";
+                Info.Name = "Mixer";
                 Info.Category = "Bass";
                 Info.Version = "";
                 Info.Help = "Mixer for Bass";
@@ -138,11 +138,11 @@ namespace vvvv.Nodes
         public void Evaluate(int SpreadMax)
         {
             #region Reset the mixer
-            if (this.FPinInChanCount.PinIsChanged)
+            if (this.FPinInChanCount.PinIsChanged || this.FPinInIsDecoding.PinIsChanged)
             {
-                foreach (ChannelInfo channelinfo in this.FMixerInfo.Streams)
+                while (this.FMixerInfo.Streams.Count >0) 
                 {
-                    this.FMixerInfo.DetachChannel(channelinfo);
+                    this.FMixerInfo.DetachChannel(this.FMixerInfo.Streams[0]);
                 }
 
                 if (this.FMixerInfo.InternalHandle != 0)
@@ -151,6 +151,7 @@ namespace vvvv.Nodes
                     {
                         bool free = Bass.BASS_StreamFree(this.FMixerInfo.BassHandle.Value);
                     }
+                    this.manager.Delete(this.FMixerInfo.InternalHandle);
                 }
 
                 ChannelList channels = this.ListChannels();
@@ -172,8 +173,6 @@ namespace vvvv.Nodes
                 foreach (ChannelInfo info in this.ListChannels())
                 {
                     this.FMixerInfo.AttachChannel(info);
-                    //Simple trick to refresh play status now it's attached
-                    info.Play = info.Play;
                 }
               
                 this.FPinOutHandle.SetValue(0, this.FMixerInfo.InternalHandle);

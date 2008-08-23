@@ -14,7 +14,7 @@ namespace vvvv.Nodes
             get
             {
                 IPluginInfo Info = new PluginInfo();
-                Info.Name = "Channel";
+                Info.Name = "ChannelData";
                 Info.Category = "Bass";
                 Info.Version = "";
                 Info.Help = "Get Float data samples from the channel";
@@ -50,7 +50,7 @@ namespace vvvv.Nodes
                 double ms;
                 this.FPinInAttribute.GetValue(0, out ms);
 
-                long len = Bass.BASS_ChannelSeconds2Bytes(this.FHandle, ms / 1000.0);
+                long len = Bass.BASS_ChannelSeconds2Bytes(this.FMyBassHandle, ms / 1000.0);
                 return Convert.ToInt32(len / 4);
             }
         }

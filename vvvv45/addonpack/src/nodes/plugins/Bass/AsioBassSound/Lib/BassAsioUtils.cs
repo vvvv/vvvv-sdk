@@ -8,18 +8,6 @@ namespace vvvv.Utils
 {
     public class BassAsioUtils
     {
-        #region Plugins Loaded
-        private static bool FPluginsLoaded = false;
-
-        public static void LoadPlugins()
-        {
-            if (!FPluginsLoaded)
-            {
-                Bass.BASS_PluginLoadDirectory(AppDomain.CurrentDomain.BaseDirectory + "\\bin\\");
-                FPluginsLoaded = true;
-            }
-        }
-        #endregion
 
         #region Device Index
         public static int GetDeviceIndex(string name) 

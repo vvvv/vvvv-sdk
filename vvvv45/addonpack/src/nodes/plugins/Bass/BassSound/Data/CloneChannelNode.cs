@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VVVV.PluginInterfaces.V1;
 using Un4seen.Bass.Misc;
+using BassSound.Internals;
 
 namespace vvvv.Nodes
 {
@@ -38,7 +39,9 @@ namespace vvvv.Nodes
         #endregion
 
         private IPluginHost FHost;
-        private int FHandle;
+        private ChannelsManager FManager;
+        private CloneChannelInfo FChannel = new CloneChannelInfo();
+        //private int FHandle;
 
         private IValueIn FPinInHandle;
         private IValueOut FPinOutHandle;
@@ -49,6 +52,7 @@ namespace vvvv.Nodes
         public void SetPluginHost(IPluginHost Host)
         {
             this.FHost = Host;
+            this.FManager = ChannelsManager.GetInstance();
 
             //Input Pins
             this.FHost.CreateValueInput("Handle In", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInHandle);
@@ -72,25 +76,48 @@ namespace vvvv.Nodes
         {
             if (this.FPinInHandle.PinIsChanged)
             {
-                if (bufferStream != null)
+                this.ClearUp();
+
+                if (this.FChannel.InternalHandle != 0)
                 {
-                    bufferStream.Stop();
+                    this.FManager.Delete(this.FChannel.InternalHandle);
                 }
 
                 //Just Update the Handle
                 double dhandle;
                 this.FPinInHandle.GetValue(0, out dhandle);
-                this.FHandle = Convert.ToInt32(Math.Round(dhandle));
+                int ihandle = Convert.ToInt32(Math.Round(dhandle));
 
-                // create a buffer of the source stream (note: if the source stops playing, the clone stops as well)
-                bufferStream = new DSP_BufferStream();
-                bufferStream.ChannelHandle = this.FHandle; // the stream to copy
-                bufferStream.DSPPriority = -4000;
-                bufferStream.Start();
+                if (this.FManager.Exists(ihandle))
+                {
+                    this.FManager.CreateChannel(this.FChannel);
+                    this.FChannel.Parent = this.FManager.GetChannel(ihandle);
+                    this.FChannel.Parent.OnInit += new EventHandler(FChannel_OnInit);
 
-                this.FPinOutHandle.SetValue(0, bufferStream.BufferStream);
+                    if (this.FChannel.Parent.BassHandle.HasValue)
+                    {
+                        this.AddDSP();
+                    }
+                    else
+                    {
+                        this.FChannel.Parent = null;
+                    }
+                }
+                else
+                {
+                    this.FChannel.Parent = null;
+                }
 
+                if (this.FChannel.Parent != null)
+                {
+                    this.FPinOutHandle.SetValue(0, this.FChannel.InternalHandle);
+                }
             }
+        }
+
+        void FChannel_OnInit(object sender, EventArgs e)
+        {
+            this.AddDSP();
         }
         #endregion
 
@@ -106,10 +133,37 @@ namespace vvvv.Nodes
 
         public virtual void Dispose()
         {
-            this.bufferStream.Stop();
-            this.bufferStream.Dispose();
+            this.ClearUp();
         }
 
+        #endregion
+
+        #region Add the DSP
+        private void AddDSP()
+        {
+            // create a buffer of the source stream
+            //We can't get it from the main stream otherwise it would interfere with the asio buffering
+            bufferStream = new DSP_BufferStream();
+            bufferStream.ChannelHandle = this.FChannel.Parent.BassHandle.Value; // the stream to copy
+            bufferStream.DSPPriority = -4000;
+            bufferStream.Start();
+            this.FChannel.BassHandle = bufferStream.BufferStream;
+        }
+        #endregion
+
+        #region Clear Up
+        private void ClearUp()
+        {
+            try
+            {
+                this.bufferStream.Stop();
+                this.bufferStream.Dispose();
+            }
+            catch
+            {
+
+            }
+        }
         #endregion
     }
 }

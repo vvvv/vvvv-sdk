@@ -35,7 +35,9 @@ namespace vvvv.Nodes
         #endregion
 
         private IPluginHost FHost;
-        private int FHandle;
+        private ChannelInfo FCHannel;
+        private ChannelsManager FManager;
+        //private int FHandle;
 
         private IValueIn FPinInHandle;
 
@@ -48,6 +50,7 @@ namespace vvvv.Nodes
         public void SetPluginHost(IPluginHost Host)
         {
             this.FHost = Host;
+            this.FManager = ChannelsManager.GetInstance();
 
             //Input Pins
             this.FHost.CreateValueInput("HandleIn", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInHandle);
@@ -71,34 +74,42 @@ namespace vvvv.Nodes
         {
             if (this.FPinInHandle.PinIsChanged)
             {
+                this.ClearUp();
                 //Just Update the Handle
                 double dhandle;
                 this.FPinInHandle.GetValue(0, out dhandle);
-                this.FHandle = Convert.ToInt32(Math.Round(dhandle));
+                int ihandle = Convert.ToInt32(Math.Round(dhandle));
 
-                if (this.manager.Exists(this.FHandle))
+                if (this.FManager.Exists(ihandle))
                 {
-                    ChannelInfo info = this.manager.GetChannel(this.FHandle);
-                    if (info.BassHandle.HasValue)
+                    this.FCHannel = this.FManager.GetChannel(ihandle);
+                    this.FCHannel.OnInit += new EventHandler(FCHannel_OnInit);
+                    if (this.FCHannel.BassHandle.HasValue)
                     {
-                        // create a buffer of the source stream
-                        //We can't get it from the main stream otherwise it would interfere with the asio buffering
-                        this.FLevelMeter = new DSP_PeakLevelMeter(info.BassHandle.Value, 1);
-                        this.FLevelMeter.UpdateTime = 0.05f;
-                        this.FLevelMeter.CalcRMS = true;
-                        this.FLevelMeter.Start();
+                        this.AddDSP();
+                    }
+                    else
+                    {
+                        this.FCHannel = null;
                     }
                 }
-
-
-
+                else
+                {
+                    this.FCHannel = null;
+                }
             }
 
-            if (this.FHandle != -1 && this.FPinInHandle.IsConnected)
+            if (this.FCHannel != null && this.FPinInHandle.IsConnected)
             {
                 this.FPinOutRMS.SetValue(0, this.FLevelMeter.RMS_dBV);
                 this.FPinOutAverage.SetValue(0, this.FLevelMeter.AVG_dBV);
             }
+        }
+
+        private void FCHannel_OnInit(object sender, EventArgs e)
+        {
+            this.ClearUp();
+            this.AddDSP();
         }
         #endregion
 
@@ -109,15 +120,47 @@ namespace vvvv.Nodes
         }
         #endregion
 
-
         #region IDisposable Members
-
         public virtual void Dispose()
         {
-            this.FLevelMeter.Stop();
-            this.FLevelMeter.Dispose();
+            try
+            {
+                this.FLevelMeter.Stop();
+                this.FLevelMeter.Dispose();
+            }
+            catch
+            {
+
+            }
         }
 
+        #endregion
+
+        #region Add the DSP
+        private void AddDSP()
+        {
+            // create a buffer of the source stream
+            //We can't get it from the main stream otherwise it would interfere with the asio buffering
+            this.FLevelMeter = new DSP_PeakLevelMeter(this.FCHannel.BassHandle.Value, 1);
+            this.FLevelMeter.UpdateTime = 0.05f;
+            this.FLevelMeter.CalcRMS = true;
+            this.FLevelMeter.Start();
+        }
+        #endregion
+
+        #region Clear Up
+        private void ClearUp()
+        {
+            try
+            {
+                this.FLevelMeter.Stop();
+                this.FLevelMeter.Dispose();
+            }
+            catch
+            {
+
+            }
+        }
         #endregion
     }
 }

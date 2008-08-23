@@ -56,7 +56,7 @@ namespace vvvv.Nodes
             //We play this channel trough Asio output, so we choose the device NOSOUND
             Bass.BASS_Init(0, 48000, 0, IntPtr.Zero, null);
 
-            BassAsioUtils.LoadPlugins();
+            BassUtils.LoadPlugins();
 
             this.FHost = Host;
 

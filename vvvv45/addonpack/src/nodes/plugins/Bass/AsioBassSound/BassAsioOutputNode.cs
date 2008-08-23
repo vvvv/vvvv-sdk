@@ -59,7 +59,7 @@ namespace vvvv.Nodes
             //We play this channel trough Asio output, so we choose the device NOSOUND
             Bass.BASS_Init(0, 48000, 0, IntPtr.Zero, null);
 
-            BassAsioUtils.LoadPlugins();
+            BassUtils.LoadPlugins();
 
             this.FHost.CreateValueInput("Device",1,null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDevice);
             this.FPinInDevice.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
@@ -100,8 +100,7 @@ namespace vvvv.Nodes
             {
                 #region Channel and device
                 if (this.FPinInChannels.PinIsChanged || this.FPinInDevice.PinIsChanged)
-                {
-               
+                {    
                     double dbldevice;
                     this.FPinInDevice.GetValue(0, out dbldevice);
 
@@ -244,8 +243,10 @@ namespace vvvv.Nodes
             //And if the channel has it's own handler, we ignore it
             if (!this.FOutputHandled.Contains(channel) && !input)
             {
+                if (this.manager.Exists(user.ToInt32()) )
+                {
                 ChannelInfo channelinfo = this.manager.GetChannel(user.ToInt32());
-                if (channelinfo.Play)
+                if (channelinfo.Play && channelinfo.IsDecoding)
                 {
                     int _decLength;
 
@@ -269,6 +270,9 @@ namespace vvvv.Nodes
                 }
                 else
                 {
+                    return 0;
+                }
+                } else {
                     return 0;
                 }
             }
