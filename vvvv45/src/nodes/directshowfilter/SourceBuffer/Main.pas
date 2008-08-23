@@ -32,7 +32,8 @@ interface
 
 uses
   Classes, SysUtils, ActiveX, MMSystem, Math, Windows,
-  BaseClass, DirectShow9, DSUtil, DirectSound,DXUTsound;
+  BaseClass, DirectShow9, DSUtil, DirectSound, DXUTsound;
+
 
 const
   CLSID_SourceBuffer : TGUID = '{6F7AAC61-8E33-4cf4-A349-7976C08D7CCD}';
@@ -42,7 +43,6 @@ const
   NCHANNELS      =     2;
   SAMPLERATE     = 44100;
   BITSPERSAMPLE  =    16;
-  BYTESPERSAMPLE =     2;
   BITSPERBYTE    =     8;
   HALFWAVE       = 32767;
   NANOSHIFT      = 1.0 / 1000000000;
@@ -72,29 +72,16 @@ const
 
 type
 
-  TMValue = Double;
-  PMValue = ^TMValue;
-
-  TDoubleData     = Array of Double;
   TDynamicDouble  = Array of Double;
   TChannelArray   = Array [0..17] of TDynamicDouble;
-
+  TChannelVolume  = Array [0..17] of Double;
+  TMValue         = Double;
+  PMValue         = ^TMValue;
+  TDoubleData     = Array of Double;
   TSourcePtrArray = Array of PMValue;
   TSourceIntArray = Array of Integer;
-  TChannelVolume  = Array [0..17] of Double;
+  TRoutingArray   = Array of Integer;
 
-  PAudioSample = ^AudioSample;
-  AudioSample = -32767..32767;       // for 16-bit audio
-  PAudioSample8 = ^AudioSample8;
-  AudioSample8 = -16383..16384;       // for 16-bit audio
-
-  TMSourceBuffer    = class;
-  TMSourceBufferPin = class;
-  TMVoice           = class;
-
-  PBCVoice = ^TMVoice;
-
-  //com-interface to vvvv------------------------------------------------------/
   ISourceBuffer = interface(IUnknown)
     ['{6F7AAC61-8E33-4cf4-A349-7976C08D7CCD}']
     function Voices(voicecount: integer): HResult; stdcall;
@@ -108,53 +95,61 @@ type
     function SeekPosition(index:integer; val:integer):HResult; stdcall;
     function GetActualFrame(index:integer; out val:Integer):HResult; stdcall;
     function setChannels(numActiveChannels : Integer; ChannelCode : Integer) : HRESULT; stdcall;
-    function WriteBuffer(bufferSize : Integer; indexCount : Integer; indexPtr : PMValue; channelNumber : Integer; channelCount : TSourceIntArray; channelPtr : TSourcePtrArray) : HRESULT; stdcall;    function setBlockSize( size : Integer) : HRESULT; stdcall;
-    function DumpBuffer(str : String) : HRESULT; stdcall;
+    function setBufferLength( length : Integer) : HRESULT; stdcall;
+    function setBuffer(index : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
+    function setBufferChanged : HRESULT; stdcall;
     function getBlockSize(out size : Integer) : HRESULT; stdcall;
     function setChannelVolume(val : TChannelVolume) : HRESULT; stdcall;
-    function Reset : HRESULT; stdcall;
+    function writeBuffer(bufferSize : Integer; indexCount : Integer; indexPtr : PMValue; channelNumber : Integer; channelCount : TSourceIntArray; channelPtr : TSourcePtrArray) : HRESULT; stdcall;
+    function setBlockSize( size : Integer) : HRESULT; stdcall;
+    function DumpBuffer(str : String) : HRESULT; stdcall;
   end;
 
-  //the main-class-------------------------------------------------------------/
-  TMSourceBuffer = class(TBCSource, ISourceBuffer)
+
+  PAudioSample  = ^AudioSample;
+  AudioSample   = -32767..32767;       // for 16-bit audio
+  PAudioSample8 = ^AudioSample8;
+  AudioSample8  = -16383..16384;       // for 16-bit audio
+
+  PBCVoice = ^TMVoice;
+  TMVoice = class(TObject)
   private
-    FPin         : TMSourceBufferPin;
-    FNumChannels : Integer;
-    FBuffer      : Array of SmallInt;
-    FData        : TDoubleData;
-    FWaveFile    : CWaveFile;
+    FPlay: Boolean;
+    FGain: double;
+    FPhase: double;
+    FPitch: double;
+    FStartPosition : Integer;
+    FEndPosition : Integer;
+    FSeekPosition : Integer;
+    FDoSeek : Boolean;
+    FFramePosition : Integer;
+    FLoop : Boolean;
+    FFading : Double;
+    FChange : Boolean;
+    FFraction : Double;
+    FChannelGain : Array [0..MAXCHANNELS-1] of Double;
+    FChannelVolume : TChannelVolume;
+
+
+    FNumChannels   : Integer;
+    FBuffer        : TChannelArray;
+    FBufferTmp     : TChannelArray;
+    FBufferSize    : Integer;
+    FBufferSizeTmp : Integer;
 
   public
-    constructor CreateFromFactory(Factory: TBCClassFactory; const Controller: IUnknown); override;
-    function NonDelegatingQueryInterface(const IID: TGUID; out Obj): HResult; override;
-    constructor Create(ObjName: string; Unk: IUnKnown; out hr: HRESULT);
     destructor Destroy; override;
-
-    function Voices(voicecount: integer): HResult; stdcall;
-    function Play(index: integer; state : integer): HResult; stdcall;
-    function Volume(index: integer; val : double): HResult; stdcall;
-    function Pitch(index: integer; val : double): HResult; stdcall;
-    function Loop(index: integer; state:integer):HResult; stdcall;
-    function DoSeek(index: integer; state:integer):HResult; stdcall;
-    function StartPosition(index: integer; val:integer):HResult; stdcall;
-    function EndPosition(index:integer; val:integer):HResult; stdcall;
-    function SeekPosition(index:integer; val:integer):HResult; stdcall;
-    function GetActualFrame(index:integer; out val:Integer):HResult; stdcall;
-    function setChannels(numActiveChannels : Integer; ChannelCode : Integer) : HRESULT; stdcall;
-    function writeBuffer(bufferSize : Integer; indexCount : Integer; indexPtr : PMValue; channelNumber : Integer; channelCount : TSourceIntArray; channelPtr : TSourcePtrArray) : HRESULT; stdcall;    function setBlockSize( size : Integer) : HRESULT; stdcall;
-    function DumpBuffer(str : String) : HRESULT; stdcall;
-    function getBlockSize(out size : Integer) : HRESULT; stdcall;
-    function setChannelVolume(val : TChannelVolume) : HRESULT; stdcall;
-    function Reset : HRESULT; stdcall;
+    constructor Create;
+    function ReadTheFile(AFileName: PChar): Boolean;
+    function FillBuffer( mediaBuffer : PDouble; size: integer): HResult;
   end;
 
-  //the output-pin of the source-filter----------------------------------------/
   TMSourceBufferPin = class(TBCSourceStream)
   private
-    voicelist  : TList;
-    voicecount : Integer;
+    voicelist: TList;
+    voicecount: Integer;
   public
-    pwf        : PWAVEFORMATEXTENSIBLE;
+    pwf : PWAVEFORMATEXTENSIBLE;
 
     function VoiceCheck(index: Integer): PBCVoice;
     procedure VoiceFree(index: Integer);
@@ -166,36 +161,42 @@ type
     function FillBuffer(ims: IMediaSample): HResult; override;
   end;
 
-  //The sourcebuffer knowns only one voice unlike the waveplayer---------------/
-  TMVoice = class(TObject)
+  TMSourceBuffer = class(TBCSource, ISourceBuffer)
   private
-    FPlay          : Boolean;
-    FGain          : double;
-    FPhase         : double;
-    FPitch         : double;
-    FStartPosition : Integer;
-    FEndPosition   : Integer;
-    FSeekPosition  : Integer;
-    FDoSeek        : Boolean;
-    FFramePosition : Integer;
-    FLoop          : Boolean;
-    FFading        : Double;
-    FChange        : Boolean;
-    FFraction      : Double;
-    FChannelVolume : TChannelVolume;
-    FNumChannels   : Integer;
-    FBuffer        : TChannelArray;
-    FBufferSize    : Integer;
-    FFBuffer       : TChannelArray;
-    FFBufferSize   : Integer;
-    FFFraction     : Double;
+    FPin: TMSourceBufferPin;
+    FNumChannels : Integer;
+
+    FBuffer    : Array of SmallInt;
+    FData      : TDoubleData;
+    FWaveFile  : CWaveFile;
 
   public
+    constructor Create(ObjName: string; Unk: IUnKnown; out hr: HRESULT);
+    constructor CreateFromFactory(Factory: TBCClassFactory; const Controller: IUnknown); override;
     destructor Destroy; override;
-    constructor Create;
-    function ReadTheFile(AFileName: PChar): Boolean;
-    function FillBuffer( mediaBuffer : PDouble; size: integer): HResult;
-  end;
+
+    function NonDelegatingQueryInterface(const IID: TGUID; out Obj): HResult; override;
+    function Voices(voicecount: integer): HResult; stdcall;
+    function Play(index: integer; state : integer): HResult; stdcall;
+    function Volume(index: integer; val : double): HResult; stdcall;
+    function Pitch(index: integer; val : double): HResult; stdcall;
+    function Loop(index: integer; state:integer):HResult; stdcall;
+    function DoSeek(index: integer; state:integer):HResult; stdcall;
+    function StartPosition(index: integer; val:integer):HResult; stdcall;
+    function EndPosition(index:integer; val:integer):HResult; stdcall;
+    function SeekPosition(index:integer; val:integer):HResult; stdcall;
+    function GetActualFrame(index:integer; out val:Integer):HResult; stdcall;
+    function setChannels(numActiveChannels : Integer; ChannelCode : Integer) : HRESULT; stdcall;
+    function setBufferLength( length : Integer) : HRESULT; stdcall;
+    function setBuffer(index : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
+    function setBufferChanged : HRESULT; stdcall;
+    function setChannelVolume(val : TChannelVolume) : HRESULT; stdcall;
+    function getBlockSize(out size : Integer) : HRESULT; stdcall;
+    function writeBuffer(bufferSize : Integer; indexCount : Integer; indexPtr : PMValue; channelNumber : Integer; channelCount : TSourceIntArray; channelPtr : TSourcePtrArray) : HRESULT; stdcall;
+    function setBlockSize( size : Integer) : HRESULT; stdcall;
+    function DumpBuffer(str : String) : HRESULT; stdcall;
+
+ end;
 
 var
 
@@ -203,19 +204,76 @@ var
  GlobalChannelCode       : Integer = 0;
  GlobalBlockSize         : Integer = 100;
 
-//*****************************************************************************/
-
 implementation
 
 uses Variants;
 
-//Baseclass-Definitions-----------------
-constructor TMSourceBuffer.CreateFromFactory(Factory: TBCClassFactory;
-  const Controller: IUnknown);
-var
-  hr: HRESULT;
+function wrap(val: Double) : Double;
 begin
-  Create(Factory.Name, Controller, hr);
+  if val >= 1. then result := val - floor(val)
+  else if val < 0. then result := val - floor(val)
+  else result := val;
+end;
+
+constructor TMSourceBufferPin.Create(out hr: HResult; Filter: TBCSource);
+begin
+  inherited Create(FilterName, hr, Filter, 'Out');
+
+  VoiceList := TList.Create;
+  VoiceList.Clear;
+end;
+
+destructor TMSourceBufferPin.Destroy;
+var
+  i: Integer;
+begin
+  {
+  for i := 0 to VoiceList.Count - 1 do
+  begin
+    if assigned(VoiceList.Items[i]) then VoiceFree(i);
+  end;
+  VoiceList.Free;
+  }
+
+  inherited;
+end;
+
+constructor TMVoice.Create;
+var
+  i : Integer;
+begin
+  FPlay           :=  false;
+  FDoSeek         :=  false;
+  FLoop           :=  false;
+  FGain           :=  1;
+  FPhase          :=  0;
+  FPitch          :=  1;
+  FStartPosition  :=  0;
+  FEndPosition    :=  0;
+  FSeekPosition   :=  0;
+  FFramePosition  :=  0;
+  FFading         :=  0;
+  FPhase          :=  0;
+  FBufferSize     :=  0;
+  FBufferSizeTmp  :=  0;
+  FChange         :=  false;
+  FNumChannels    :=  GlobalNumActiveChannels;
+
+  for i := 0 to MAXCHANNELS - 1 do
+  FChannelVolume [i] := 1;
+
+end;
+
+destructor TMVoice.Destroy;
+begin
+
+
+  inherited;
+end;
+
+function TMSourceBufferPin.Notify(Filter: IBaseFilter; q: TQuality): HRESULT;
+begin
+  Result := E_FAIL;
 end;
 
 function TMSourceBuffer.NonDelegatingQueryInterface(const IID: TGUID;
@@ -229,32 +287,6 @@ begin
   else
     Result := Inherited NonDelegatingQueryInterface(IID, Obj);
 end;
-
-constructor TMSourceBuffer.Create(ObjName: string; Unk: IUnKnown;
-  out hr: HRESULT);
-begin
-  inherited Create(ObjName, Unk, CLSID_SourceBuffer);
-
-  FNumChannels := GlobalNumActiveChannels;
-  FBuffer      := nil;
-  FData        := nil;
-  FWaveFile    := CWaveFile.Create;
-
-  // The pin magically adds itself to our pin array.
-  FPin := TMSourceBufferPin.Create(hr, Self);
-
-  if (hr <> S_OK) then
-    if (FPin = nil) then
-      hr := E_OUTOFMEMORY;
-end;
-
-destructor TMSourceBuffer.Destroy;
-begin
-  FreeAndNil(FPin);
-  inherited;
-end;
-
-//ISourceFilter-interface-definitions---------
 
 function TMSourceBuffer.Voices(voicecount: integer): HResult; stdcall;
 begin
@@ -279,14 +311,15 @@ end;
 function TMSourceBuffer.Volume(index: integer; val: double) : HResult; stdcall;
 var
   v: PBCVoice;
+  i: Integer;
 begin
-  v := FPin.VoiceCheck(0);
-
+  v := FPin.VoiceCheck(index);
   if v = nil then exit;
 
   v.FGain := val;
 
-  Result := S_OK
+  Result  := S_OK
+
 end;
 
 function TMSourceBuffer.Pitch(index: integer; val: double) : HResult; stdcall;
@@ -378,6 +411,83 @@ begin
   Result := S_OK;
 end;
 
+function TMSourceBuffer.setBufferLength(length : Integer) : HRESULT; stdcall;
+var
+  v   : PBCVoice;
+  i,k : Integer;
+begin
+  v := FPin.VoiceCheck(0);
+
+  if v = nil then exit;
+
+  v.FBufferSizeTmp := length;
+
+  for i := 0 to MAXCHANNELS - 1 do
+  begin
+   SetLength(v.FBufferTmp[i],length);
+
+   for k := 0 to length - 1 do
+   v.FBufferTmp[i][k] := 0;
+  end;
+
+end;
+
+function TMSourceBuffer.setBuffer(index : Integer; buffer : TDynamicDouble) : HRESULT; stdcall;
+var
+  v: PBCVoice;
+  i: Integer;
+begin
+  v := FPin.VoiceCheck(0);
+
+  if v = nil then exit;
+
+  if index >= FNumChannels then Exit;
+
+  for i := 0 to v.FBufferSizeTmp - 1 do
+  v.FBufferTmp[index][i] := buffer[i];
+
+end;
+
+
+function TMSourceBuffer.setBufferChanged : HRESULT; stdcall;
+var
+  v: PBCVoice;
+begin
+  v := FPin.VoiceCheck(0);
+
+  if v = nil then exit;
+
+  v.FChange := true;
+
+end;
+
+function TMSourceBuffer.setChannels(numActiveChannels : Integer; ChannelCode : Integer) : HRESULT; stdcall;
+var
+ i : Integer;
+begin
+
+ GlobalNumActiveChannels := NumActiveChannels;
+ GLobalChannelCode       := ChannelCode;
+
+end;
+
+function TMSourceBuffer.setBlockSize( size : Integer) : HRESULT; stdcall;
+begin           
+ GlobalBlockSize := size;
+
+ Result := S_OK;
+
+end;
+
+
+function TMSourceBuffer.getBlockSize(out size : Integer) : HRESULT; stdcall;
+begin           
+ size := GlobalBlockSize;
+
+ Result := S_OK;
+ 
+end;
+
 function TMSourceBuffer.WriteBuffer(bufferSize : Integer; indexCount : Integer; indexPtr : PMValue; channelNumber : Integer; channelCount : TSourceIntArray; channelPtr : TSourcePtrArray) : HRESULT; stdcall;
 var
   v      : PBCVoice;
@@ -414,7 +524,6 @@ begin
       Inc(ptr,i mod channelCount[k]);
 
       v.FBuffer[k][index] := ptr^;
-
     end;
 
     Inc(indexPtr);
@@ -489,34 +598,6 @@ begin
 
 end;
 
-function TMSourceBuffer.setChannels(numActiveChannels : Integer; ChannelCode : Integer) : HRESULT; stdcall;
-var
- i : Integer;
-begin
-
- GlobalNumActiveChannels := NumActiveChannels;
- GLobalChannelCode       := ChannelCode;
-
- Result := S_OK;
-
-end;
-
-function TMSourceBuffer.setBlockSize( size : Integer) : HRESULT; stdcall;
-begin
- GlobalBlockSize := size;
-
- Result := S_OK;
-
-end;
-
-
-function TMSourceBuffer.getBlockSize(out size : Integer) : HRESULT; stdcall;
-begin
- size := GlobalBlockSize;
-
- Result := S_OK;
-
-end;
 
 function TMSourceBuffer.setChannelVolume(val : TChannelVolume) : HRESULT; stdcall;
 var
@@ -530,39 +611,6 @@ begin
   for i := 0 to v.FNumChannels - 1 do
   v.FChannelVolume [i] := val [i];
 
-end;
-
-function TMSourceBuffer.Reset : HRESULT; stdcall;
-var
-  v   : PBCVoice;
-  i,k : Integer;
-begin
-  v := FPin.VoiceCheck(0);
-
-  if v = nil then exit;
-
-  for k := 0 to v.FNumChannels - 1 do
-  for i := 0 to v.FBufferSize - 1 do
-  v.FBuffer[k][i] := 0;
-
-end;
-
-//TMSourceBuffer-Pin-----------------------------------------------------------/
-
-constructor TMSourceBufferPin.Create(out hr: HResult; Filter: TBCSource);
-begin
-  inherited Create(FilterName, hr, Filter, 'Out');
-  VoiceList := TList.Create;
-  VoiceList.Clear;
-  pwf := nil;
-end;
-
-destructor TMSourceBufferPin.Destroy;
-var
-  i: Integer;
-begin
-
-  inherited;
 end;
 
 function TMSourceBufferPin.GetMediaType(pmt: PAMMediaType): HResult;
@@ -582,6 +630,7 @@ begin
 
   pwf.format.cbSize          := sizeof(TWAVEFORMATEXTENSIBLE) + sizeof(TWAVEFORMATEX);
   pwf.Format.wFormatTag      := WAVE_FORMAT_EXTENSIBLE;
+  //pwf.Format.wFormatTag    := WAVE_FORMAT_PCM; //for the VSTHost
   pwf.format.nChannels       := GlobalNumActiveChannels;
   pwf.format.nSamplesPerSec  := SAMPLERATE;
   pwf.format.wBitsPerSample  := BITSPERSAMPLE;
@@ -596,6 +645,7 @@ begin
 
   Result := S_OK;
 end;
+
 
 function TMSourceBufferPin.DecideBufferSize(Allocator: IMemAllocator;
   Properties: PAllocatorProperties): HRESULT;
@@ -621,134 +671,6 @@ begin
   
 end;
 
-function TMSourceBufferPin.VoiceCheck(index: Integer): PBCVoice;
-var
-  v: PBCVoice;
-begin
-  if index >= VoiceList.Count then VoiceList.Count := index + 1;
-  if VoiceList.Items[index] = nil then
-  begin
-    v := CoTaskMemAlloc(sizeof(TMVoice));
-    if v <> nil then v^ := TMVoice.Create;
-    VoiceList.Items[index] := v;
-  end;
-  if VoiceList.Items[index] = nil then outputdebugstring(pchar(format('vc %d nil!',[index])));
-  result := VoiceList.Items[index];
-end;
-
-function TMSourceBufferPin.Notify(Filter: IBaseFilter; q: TQuality): HRESULT;
-begin
-  Result := E_FAIL;
-end;
-
-procedure TMSourceBufferPin.VoiceFree(index: Integer);
-var
-  v, vv: PBCVoice;
-  i: Integer;
-begin
-
-end;
-
-function TMSourceBufferPin.FillBuffer(ims: IMediaSample): HResult;
-var
-  size, i: longint;
-  p: PByte;
-  pp: PAudioSample;
-  pf, buf: PDouble;
-  vcr: double;
-  count: integer;
-  v: PBCVoice;
-  hr : HResult;
-
-begin
-
-  result := -1;
-  if ims = nil then exit;
-  //ASSERT(ims <> nil);
-
-  size := ims.GetSize div 2;
-  //Outputdebugstring(pchar(format('pins buffersize: %d',[size])));
-
-  buf := CoTaskMemAlloc(size * sizeof(double));
-  if buf = nil then begin result := E_OUTOFMEMORY; exit; end;
-
-  pf := buf;
-  for i := 1 to size do
-  begin
-    pf^ := 0;
-    Inc(pf);
-  end;
-
-  count := 0;
-  i := VoiceList.Count;
-
-  if voicecount < i then i := voicecount;
-  while i > 0 do
-  begin
-    Dec(i);
-    v := VoiceList.Items[i];
-    if v <> nil then
-    begin
-      Inc(count);
-      if v.FPlay then
-      begin
-        v.FillBuffer(buf, size);
-      end;
-    end;
-  end;
-
-  ims.GetPointer(p);
-  pp := PAudioSample(p);
-
-  vcr := 1.;
-  //vcr := 1./count;  //???
-
-  pf := buf;
-
-  for i := 1 to size do
-  begin
-    pp^ := round(pf^ * vcr);
-    Inc(pp);
-    Inc(pf);
-  end;
-  cotaskmemfree(buf);
-  result := S_OK;
-end;
-
-//TMVoice----------------------------------------------------------------------/
-
-constructor TMVoice.Create;
-var
-  i : Integer;
-begin
-  FPlay           :=  false;
-  FDoSeek         :=  false;
-  FLoop           :=  false;
-  FGain           :=  1;
-  FPhase          :=  0;
-  FPitch          :=  1;
-  FStartPosition  :=  0;
-  FEndPosition    :=  0;
-  FSeekPosition   :=  0;
-  FFramePosition  :=  0;
-  FFading         :=  0;
-  FPhase          :=  0;
-  FBufferSize     :=  0;
-  FFBufferSize    :=  0;
-  FChange         :=  false;
-  FNumChannels    :=  GlobalNumActiveChannels;
-
-  for i := 0 to MAXCHANNELS - 1 do
-  FChannelVolume [i] := 1;
-
-end;
-
-destructor TMVoice.Destroy;
-begin
-
-  inherited;
-end;
-
 function TMVoice.ReadTheFile(AFileName: PChar): Boolean;
 begin
   Result := true;
@@ -772,7 +694,24 @@ var
   gain          : Double;
   channelVolume : TChannelVolume;
 
-  toggle : Boolean;
+  procedure ChangeBuffer();
+  var
+   i,k : Integer;
+  begin
+   FBufferSize := FBufferSizeTmp;
+
+   for i := 0 to MAXCHANNELS - 1 do
+   begin
+    SetLength(FBuffer[i],FBufferSize);
+
+    for k := 0 to FBufferSize - 1 do
+    FBuffer [i][k] := FBufferTmp  [i][k];
+
+   end;
+
+   FChange   := false;
+   FFraction := 1.0 / FBufferSize;
+  end;
 
   procedure SetFrame (i : Integer; position : Integer);
   var
@@ -790,7 +729,7 @@ var
      sample^ := 0
     else
     begin
-     sample^:= FBuffer[channel][position] * gain * channelVolume[channel];
+     sample^:= FBuffer[channel][position] * gain * channelVolume[channel];;
 
      if sample^ > HALFWAVE then
       sample^ := HALFWAVE;
@@ -826,7 +765,7 @@ var
 
   procedure SetVariables;
   var
-   i : Integer;
+   i : integer;
   begin
    numChannels := FNumChannels;
    numFrames   := trunc(size / numChannels);
@@ -966,7 +905,10 @@ var
 
 begin
 
-  SetVariables;
+  if FChange then
+   ChangeBuffer();
+
+   SetVariables;
 
   if FDoSeek then
    SetPosition();
@@ -974,11 +916,7 @@ begin
   for i := 0 to numFrames - 1 do
   begin
 
-   if (FBufferSize = 0) or (FChange = true) then
-    Continue;
-
-   while FChange do
-    Sleep(1);
+   if FBufferSize = 0 then Continue;
 
    if loop then
    SetFrame(i,PhaseToPositionLoop);
@@ -986,24 +924,160 @@ begin
    if not loop then
    SetFrame(i,PhaseToPosition);
 
-  end; //end for i
+  end;
 
   FFramePosition := position;
 
 end;
 
-//*****************************************************************************/
+//----------------------------------------------------------------------------//
+
+
+function TMSourceBufferPin.FillBuffer(ims: IMediaSample): HResult;
+var
+  size, i: longint;
+  p: PByte;
+  pp: PAudioSample;
+  pf, buf: PDouble;
+  vcr: double;
+  count: integer;
+  v: PBCVoice;
+  hr : HResult;
+
+begin
+
+  result := -1;
+  if ims = nil then exit;
+  //ASSERT(ims <> nil);
+
+  size := ims.GetSize div 2;
+  //Outputdebugstring(pchar(format('pins buffersize: %d',[size])));
+
+  buf := CoTaskMemAlloc(size * sizeof(double));
+  if buf = nil then begin result := E_OUTOFMEMORY; exit; end;
+
+  pf := buf;
+  for i := 1 to size do
+  begin
+    pf^ := 0;
+    Inc(pf);
+  end;
+
+  count := 0;
+  i := VoiceList.Count;
+
+  if voicecount < i then i := voicecount;
+  while i > 0 do
+  begin
+    Dec(i);
+    v := VoiceList.Items[i];
+    if v <> nil then
+    begin
+      Inc(count);
+      if v.FPlay then
+      begin
+        v.FillBuffer(buf, size);
+      end;
+    end;
+  end;
+
+  ims.GetPointer(p);
+  pp := PAudioSample(p);
+
+  vcr := 1.;
+  //vcr := 1./count;  //???
+
+  pf := buf;
+
+  for i := 1 to size do
+  begin
+    pp^ := round(pf^ * vcr);
+    Inc(pp);
+    Inc(pf);
+  end;
+  cotaskmemfree(buf);
+  result := S_OK;
+end;
+
+// --- TBCWavePlayer ------------
+
+constructor TMSourceBuffer.Create(ObjName: string; Unk: IUnKnown;
+  out hr: HRESULT);
+begin
+  inherited Create(ObjName, Unk, CLSID_SourceBuffer);
+
+  FBuffer      := nil;
+  FData        := nil;
+  FWaveFile    := CWaveFile.Create;
+
+  FNumChannels := GlobalNumActiveChannels;
+
+  // The pin magically adds itself to our pin array.
+  FPin := TMSourceBufferPin.Create(hr, Self);
+
+  if (hr <> S_OK) then
+    if (FPin = nil) then
+      hr := E_OUTOFMEMORY;
+end;
+
+constructor TMSourceBuffer.CreateFromFactory(Factory: TBCClassFactory;
+  const Controller: IUnknown);
+var
+  hr: HRESULT;
+begin
+  Create(Factory.Name, Controller, hr);
+end;
+
+destructor TMSourceBuffer.Destroy;
+begin
+  FreeAndNil(FPin);
+  inherited;
+end;
+
+function TMSourceBufferPin.VoiceCheck(index: Integer): PBCVoice;
+var
+  v: PBCVoice;
+begin
+  if index >= VoiceList.Count then VoiceList.Count := index + 1;
+  if VoiceList.Items[index] = nil then
+  begin
+    v := CoTaskMemAlloc(sizeof(TMVoice));
+    if v <> nil then v^ := TMVoice.Create;
+    VoiceList.Items[index] := v;
+  end;
+  if VoiceList.Items[index] = nil then outputdebugstring(pchar(format('vc %d nil!',[index])));
+  result := VoiceList.Items[index];
+end;
+
+procedure TMSourceBufferPin.VoiceFree(index: Integer);
+var
+  v, vv: PBCVoice;
+  i: Integer;
+begin
+  {
+  v := VoiceList.Items[index];
+  for i := 0 to VoiceList.Count - 1 do if i <> index then
+  begin
+    if assigned(VoiceList.Items[i]) then
+    begin
+      vv := VoiceList.Items[i];
+      if vv.FFileName = v.FFileName then exit;
+    end;
+  end;
+  if assigned(v.FData) then
+    CoTaskMemFree(v.FData);
+  v.FData := nil;
+  v.FFileName := '';
+  }
+
+end;
 
 initialization
-
   // provide entries in the CFactoryTemplate array
-  TBCClassFactory.CreateFilter( TMSourceBuffer,
-                                FilterName,
-                                CLSID_SourceBuffer,
-                                CLSID_LegacyAmFilterCategory,
-                                MERIT_DO_NOT_USE,
-                                1,
-                                @sudOutputPin );
+  TBCClassFactory.CreateFilter(TMSourceBuffer, FilterName,
+    CLSID_SourceBuffer, CLSID_LegacyAmFilterCategory,
+    MERIT_DO_NOT_USE, 1, @sudOutputPin
+    );
 end.
 
 
