@@ -203,7 +203,6 @@ type
 
 implementation
 
-uses Variants;
 
 function wrap(val: Double): Double;
 begin
