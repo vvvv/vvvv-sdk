@@ -27,7 +27,7 @@ interface
 
 uses
   Classes, SysUtils, ActiveX, MMSystem, Math, Windows,
-  BaseClass, DirectShow9, DSUtil, DirectSound;
+  BaseClass, DirectShow9, DSUtil, DirectSound, DXUTSound;
 
 
 const
@@ -89,7 +89,6 @@ type
     function WriteBuffer(BufferSize: Integer; IndexCount: Integer; IndexPtr: PMValue; ChannelNumber: Integer; ChannelCount: TSourceIntArray; ChannelPtr: TSourcePtrArray): HRESULT; stdcall;
     function DumpBuffer(Filename: String): HRESULT; stdcall;
 
-    function SetVoiceCount(VoiceCount: Integer): HResult; stdcall;
     function SetChannelConfiguration(ActiveChannelCount: Integer; ChannelCode: Integer): HRESULT; stdcall;
     function SetChannelVolume(ChannelVolume: TChannelVolume): HRESULT; stdcall;
     function SetBufferLength(Length: Integer): HRESULT; stdcall;
@@ -170,7 +169,7 @@ type
 
     FBuffer   : Array of SmallInt;
     FData     : TDoubleData;
- //   FWaveFile : CWaveFile;
+    FWaveFile : CWaveFile;
 
   public
     constructor Create(ObjName: string; Unk: IUnKnown; out hr: HRESULT);
@@ -190,7 +189,6 @@ type
     function WriteBuffer(BufferSize: Integer; IndexCount: Integer; IndexPtr: PMValue; ChannelNumber: Integer; ChannelCount: TSourceIntArray; ChannelPtr: TSourcePtrArray): HRESULT; stdcall;
     function DumpBuffer(Filename: String): HRESULT; stdcall;
 
-    function SetVoiceCount(VoiceCount: Integer): HResult; stdcall;
     function SetChannelConfiguration(ActiveChannelCount: Integer; ChannelCode: Integer): HRESULT; stdcall;
     function SetChannelVolume(ChannelVolume: TChannelVolume): HRESULT; stdcall;
     function SetBufferLength(Length: Integer): HRESULT; stdcall;
@@ -223,6 +221,8 @@ begin
 
   FVoiceList := TList.Create;
   FVoiceList.Clear;
+
+  FVoiceCount := 1;
 end;
 
 destructor TMSourceBufferPin.Destroy;
@@ -288,11 +288,6 @@ begin
     Result := Inherited NonDelegatingQueryInterface(IID, Obj);
 end;
 
-function TMSourceBuffer.SetVoiceCount(VoiceCount: integer): HResult; stdcall;
-begin
-  FPin.FVoicecount := VoiceCount;
-  Result := S_OK;
-end;
 
 function TMSourceBuffer.Play(index: integer; state: integer): HResult; stdcall;
 var
@@ -598,10 +593,10 @@ begin
   else
     StringToWideChar('SourceBuffer_Dump.wav', pFilename, STRLENGTH);
 
- // if(Succeeded(FWaveFile.Open(pFilename, @FPin.pwf.Format, WAVEFILE_WRITE))) then
- //   FWaveFile.Write(length, FBuffer, bytesWrote);
+  if(Succeeded(FWaveFile.Open(pFilename, @FPin.pwf.Format, WAVEFILE_WRITE))) then
+    FWaveFile.Write(length, FBuffer, bytesWrote);
 
-  //FWaveFile.Close();
+  FWaveFile.Close();
 
   Result := S_OK;
 end;
@@ -933,7 +928,7 @@ begin
   //ASSERT(ims <> nil);
 
   size := ims.GetSize div 2;
-  Outputdebugstring(pchar(format('pins buffersize: %d',[size])));
+  //Outputdebugstring(pchar(format('pins buffersize: %d',[size])));
 
   buf := CoTaskMemAlloc(size * sizeof(double));
   if buf = nil then
@@ -995,11 +990,10 @@ constructor TMSourceBuffer.Create(ObjName: string; Unk: IUnKnown;
 begin
   inherited Create(ObjName, Unk, CLSID_SourceBuffer);
 
-  FBuffer      := nil;
-  FData        := nil;
-  //FWaveFile    := CWaveFile.Create;
-
-  //FChannelCount := 0;
+  FBuffer          := nil;
+  FData            := nil;
+  FWaveFile        := CWaveFile.Create;
+  FChannelCount    := 0;
 
   // The pin magically adds itself to our pin array.
   FPin := TMSourceBufferPin.Create(hr, Self);
