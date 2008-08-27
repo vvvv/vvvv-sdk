@@ -40,8 +40,12 @@ namespace BassSound.Streams
 
         private IValueIn FPinCfgIsDecoding;
         private IValueIn FPinInPlay;
-        private IValueIn FPinInData;
+        private IValueIn FPinInBuffer;
         private IValueIn FPinInReset;
+
+        private IValueIn FPinInIndices;
+        private IValueIn FPinInDoWrite;
+        private IValueIn FPinInData;
 
         private bool FInit = false;
 
@@ -61,8 +65,19 @@ namespace BassSound.Streams
             this.FHost.CreateValueInput("Play", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPlay);
             this.FPinInPlay.SetSubType(0, 1, 1, 0, false, true, true);
 
+            this.FHost.CreateValueInput("Buffer", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInBuffer);
+            this.FPinInBuffer.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
+
+
             this.FHost.CreateValueInput("Data", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInData);
             this.FPinInData.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
+
+            this.FHost.CreateValueInput("Indices", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInIndices);
+            this.FPinInIndices.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
+
+            this.FHost.CreateValueInput("Do Write", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDoWrite);
+            this.FPinInDoWrite.SetSubType(0, 1, 1, 0, true, false, true);
+
 
             this.FHost.CreateValueInput("Reset", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInReset);
             this.FPinInReset.SetSubType(0, 1, 1, 0, true, false, true);
@@ -97,6 +112,7 @@ namespace BassSound.Streams
                 }
             }
 
+            #region Reset the channel
             if (reset)
             {
                 DynamicChannelInfo info = new DynamicChannelInfo();
@@ -108,17 +124,42 @@ namespace BassSound.Streams
                 this.manager.CreateChannel(info);
                 this.FChannelInfo = info;
 
-                this.FChannelInfo.Buffer = new float[this.FPinInData.SliceCount];
-                for (int i = 0; i < this.FPinInData.SliceCount; i++)
+                this.FChannelInfo.Buffer = new float[this.FPinInBuffer.SliceCount];
+                for (int i = 0; i < this.FPinInBuffer.SliceCount; i++)
                 {
                     double d;
-                    this.FPinInData.GetValue(i, out d);
+                    this.FPinInBuffer.GetValue(i, out d);
                     this.FChannelInfo.Buffer[i] = (float)d;
                 }
 
                 this.FPinOutHandle.SetValue(0, this.FChannelInfo.InternalHandle);
                 updateplay = true;
             }
+            #endregion
+
+            #region Write Data
+            if (this.FPinInDoWrite.PinIsChanged)
+            {
+                int len = this.FPinInData.SliceCount;
+                if (this.FPinInIndices.SliceCount < len)
+                {
+                    len = this.FPinInIndices.SliceCount;
+                }
+
+                for (int i = 0; i < len; i++)
+                {
+                    double dblindices, dbldata;
+                    this.FPinInIndices.GetValue(i, out dblindices);
+                    this.FPinInData.GetValue(i, out dbldata);
+
+                    int idx = Convert.ToInt32(dblindices);
+                    if (idx < this.FChannelInfo.Buffer.Length)
+                    {
+                        this.FChannelInfo.Buffer[idx] = (float)dbldata;
+                    }
+                }
+            }
+            #endregion
 
             #region Update Play/Pause
             if (this.FPinInPlay.PinIsChanged || updateplay)
