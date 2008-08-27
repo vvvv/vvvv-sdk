@@ -1,0 +1,79 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Bass\trunk\Samples\DynamicStream (Bass) help.v4p">
+   <BOUNDS height="6855" left="6300" top="3750" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="3" nodename=":MODULES:\vux\ToneGenerator (Value).v4p" path="C:\vvvv_40beta17\modules\vux\">
+   <BOUNDS height="0" left="2175" top="435" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="7515" top="5010" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="2175" top="435" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Length" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Frequency" slicecount="1" values="880">
+   </PIN>
+   <PIN pinname="Amplitude" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="2" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassDynamicStreamNode">
+   <BOUNDS height="0" left="2250" top="3750" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="7455" top="5910" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2250" top="3750" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Data" visible="1">
+   </PIN>
+   <PIN pinname="Is Decoding" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   <PIN pinname="Play" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Reset" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Data" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="1" nodename=":PLUGINS:\AsioBassSound.dll|vvvv.Nodes.BassAsioOutputNode">
+   <BOUNDS height="0" left="1260" top="4575" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="7605" top="9195" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1260" top="4575" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Channels" visible="1">
+   </PIN>
+   <PIN pinname="Is Active" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Channels" srcnodeid="2" srcpinname="Handle">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5235" top="1155" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9375" top="6720" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="5235" top="1155" type="Box" width="930">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Reset">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Reset" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   </PATCH>

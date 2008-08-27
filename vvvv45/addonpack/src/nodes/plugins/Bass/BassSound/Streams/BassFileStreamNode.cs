@@ -252,6 +252,7 @@ namespace BassSound.Streams
             }
             #endregion
 
+            #region End
             if (this.FEnd)
             {
                 this.FPinOutEnd.SetValue(0, 1);
@@ -261,9 +262,12 @@ namespace BassSound.Streams
             {
                 this.FPinOutEnd.SetValue(0, 0);
             }
+            #endregion
 
         }
+        #endregion
 
+        #region On stream End
         private void info_OnStreamEnd(object sender, EventArgs e)
         {
             this.FEnd = true;
