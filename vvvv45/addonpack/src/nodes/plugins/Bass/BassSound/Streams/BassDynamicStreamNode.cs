@@ -37,6 +37,7 @@ namespace BassSound.Streams
         private IPluginHost FHost;
         private ChannelsManager manager;
         private DynamicChannelInfo FChannelInfo = new DynamicChannelInfo();
+        private Dictionary<int, float> FOriginalIndices = new Dictionary<int, float>();
 
         private IValueIn FPinCfgIsDecoding;
         private IValueIn FPinInPlay;
@@ -46,8 +47,7 @@ namespace BassSound.Streams
         private IValueIn FPinInIndices;
         private IValueIn FPinInDoWrite;
         private IValueIn FPinInData;
-
-        private bool FInit = false;
+        private IValueIn FPinInRestore;
 
         private IValueOut FPinOutHandle;
 
@@ -78,6 +78,8 @@ namespace BassSound.Streams
             this.FHost.CreateValueInput("Do Write", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDoWrite);
             this.FPinInDoWrite.SetSubType(0, 1, 1, 0, true, false, true);
 
+            this.FHost.CreateValueInput("Restore", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInRestore);
+            this.FPinInRestore.SetSubType(0, 1, 1, 0, true, false, true);
 
             this.FHost.CreateValueInput("Reset", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInReset);
             this.FPinInReset.SetSubType(0, 1, 1, 0, true, false, true);
@@ -132,6 +134,7 @@ namespace BassSound.Streams
                     this.FChannelInfo.Buffer[i] = (float)d;
                 }
 
+                this.FOriginalIndices.Clear();
                 this.FPinOutHandle.SetValue(0, this.FChannelInfo.InternalHandle);
                 updateplay = true;
             }
@@ -140,26 +143,56 @@ namespace BassSound.Streams
             #region Write Data
             if (this.FPinInDoWrite.PinIsChanged)
             {
-                int len = this.FPinInData.SliceCount;
-                if (this.FPinInIndices.SliceCount < len)
-                {
-                    len = this.FPinInIndices.SliceCount;
-                }
+                double dbldowrite;
+                this.FPinInDoWrite.GetValue(0, out dbldowrite);
 
-                for (int i = 0; i < len; i++)
+                if (dbldowrite == 1)
                 {
-                    double dblindices, dbldata;
-                    this.FPinInIndices.GetValue(i, out dblindices);
-                    this.FPinInData.GetValue(i, out dbldata);
 
-                    int idx = Convert.ToInt32(dblindices);
-                    if (idx < this.FChannelInfo.Buffer.Length)
+                    int len = this.FPinInData.SliceCount;
+                    if (this.FPinInIndices.SliceCount < len)
                     {
-                        this.FChannelInfo.Buffer[idx] = (float)dbldata;
+                        len = this.FPinInIndices.SliceCount;
+                    }
+
+                    for (int i = 0; i < len; i++)
+                    {
+                        double dblindices, dbldata;
+                        this.FPinInIndices.GetValue(i, out dblindices);
+                        this.FPinInData.GetValue(i, out dbldata);
+
+                        int idx = Convert.ToInt32(dblindices);
+                        if (idx < this.FChannelInfo.Buffer.Length)
+                        {
+                            if (!this.FOriginalIndices.ContainsKey(idx))
+                            {
+                                this.FOriginalIndices.Add(idx, this.FChannelInfo.Buffer[idx]);
+                            }
+                            this.FChannelInfo.Buffer[idx] = (float)dbldata;
+                        }
                     }
                 }
             }
             #endregion
+
+            #region Restore 
+            if (this.FPinInRestore.PinIsChanged)
+            {
+                double dblrestore;
+                this.FPinInRestore.GetValue(0, out dblrestore);
+
+                if (dblrestore == 1)
+                {
+                    //Restore the buffer with orginal values
+                    foreach (int i in this.FOriginalIndices.Keys)
+                    {
+                        this.FChannelInfo.Buffer[i] = this.FOriginalIndices[i];
+                    }
+                    this.FOriginalIndices.Clear();
+                }
+            }
+            #endregion
+
 
             #region Update Play/Pause
             if (this.FPinInPlay.PinIsChanged || updateplay)

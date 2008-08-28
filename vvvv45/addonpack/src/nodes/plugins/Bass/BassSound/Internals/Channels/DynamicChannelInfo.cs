@@ -53,17 +53,28 @@ namespace BassSound.Internals
         private int MyFileProc(int handle, IntPtr buffer, int length, IntPtr user)
         {
             int flength = length / 4;
-            float[] data;
+            int remaining = flength;
+            int index = 0;
 
-            data = new float[flength];
+            float[] data = new float[flength];
 
-            for (int i = 0; i < flength; i++)
+            //Improvement for the file copy
+            while (remaining > 0)
             {
-                data[i] = this.Buffer[this.bufferposition];
-                this.bufferposition++;
-                if (this.bufferposition == this.Buffer.Length)
+                int tocopy = this.Buffer.Length - this.bufferposition;
+                if (tocopy < remaining)
                 {
+                    Array.Copy(this.Buffer,this.bufferposition,data,index,tocopy);
+                    
+                    remaining = remaining - tocopy;
+                    index += tocopy;
                     this.bufferposition = 0;
+                }
+                else
+                {
+                    Array.Copy(this.Buffer, this.bufferposition, data, index, remaining);
+                    this.bufferposition = this.bufferposition + remaining;
+                    remaining = 0;
                 }
             }
 
