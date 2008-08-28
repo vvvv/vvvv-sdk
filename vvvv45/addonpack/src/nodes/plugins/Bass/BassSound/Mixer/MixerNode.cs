@@ -62,10 +62,10 @@ namespace vvvv.Nodes
             this.FPinInIsDecoding.SetSubType(0, 1, 1, 0, false, true, true);
 
             this.FHost.CreateValueInput("Channel Count", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInChanCount);
-            this.FPinInChanCount.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
+            this.FPinInChanCount.SetSubType(0, double.MaxValue, 1, 2, false, false, true);
 
             this.FHost.CreateValueConfig("Inputs Count", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInNumInputs);
-            this.FPinInNumInputs.SetSubType(0, double.MaxValue, 1, 1, false, false, true);
+            this.FPinInNumInputs.SetSubType(0, double.MaxValue, 1,0, false, false, true);
 
             this.FHost.CreateValueOutput("Handle", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutHandle);
             this.FPinOutHandle.SetSubType(double.MinValue, double.MaxValue, 1, 0, false, false, true);

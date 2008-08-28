@@ -88,10 +88,6 @@ namespace vvvv.Nodes
                     {
                         this.AddDSP();
                     }
-                    else
-                    {
-                        this.FCHannel = null;
-                    }
                 }
                 else
                 {
@@ -101,8 +97,11 @@ namespace vvvv.Nodes
 
             if (this.FCHannel != null && this.FPinInHandle.IsConnected)
             {
-                this.FPinOutRMS.SetValue(0, this.FLevelMeter.RMS_dBV);
-                this.FPinOutAverage.SetValue(0, this.FLevelMeter.AVG_dBV);
+                if (this.FCHannel.BassHandle.HasValue)
+                {
+                    this.FPinOutRMS.SetValue(0, this.FLevelMeter.RMS_dBV);
+                    this.FPinOutAverage.SetValue(0, this.FLevelMeter.AVG_dBV);
+                }
             }
         }
 
@@ -139,12 +138,15 @@ namespace vvvv.Nodes
         #region Add the DSP
         private void AddDSP()
         {
-            // create a buffer of the source stream
-            //We can't get it from the main stream otherwise it would interfere with the asio buffering
-            this.FLevelMeter = new DSP_PeakLevelMeter(this.FCHannel.BassHandle.Value, 1);
-            this.FLevelMeter.UpdateTime = 0.05f;
-            this.FLevelMeter.CalcRMS = true;
-            this.FLevelMeter.Start();
+            if (this.FCHannel != null)
+            {
+                // create a buffer of the source stream
+                //We can't get it from the main stream otherwise it would interfere with the asio buffering
+                this.FLevelMeter = new DSP_PeakLevelMeter(this.FCHannel.BassHandle.Value, 1);
+                this.FLevelMeter.UpdateTime = 0.05f;
+                this.FLevelMeter.CalcRMS = true;
+                this.FLevelMeter.Start();
+            }
         }
         #endregion
 

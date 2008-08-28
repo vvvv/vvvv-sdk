@@ -37,13 +37,14 @@ namespace BassSound
 
         protected IPluginHost FHost;
         private ChannelsManager manager;
-        private List<int> FChannels = new List<int>();
 
         private IValueIn FPinInDevice;
         private IValueIn FPinInHandle;
 
         private int FDevice = -1000;
-        private List<int> FHandles = new List<int>();
+        private ChannelList FChannels = new ChannelList();
+
+        private bool FHandleConnected = false;
 
         public void SetPluginHost(IPluginHost Host)
         {
@@ -67,6 +68,8 @@ namespace BassSound
         #region Evaluate
         public void Evaluate(int SpreadMax)
         {
+
+            #region Pin Device Changed
             if (this.FPinInDevice.PinIsChanged)
             {
                 double dbldevice;
@@ -82,7 +85,21 @@ namespace BassSound
                 IntPtr ptr = IntPtr.Zero;
                 Bass.BASS_Init(devid, 44100, BASSInit.BASS_DEVICE_DEFAULT, ptr, null);
                 this.FDevice = devid;
+
+                foreach (ChannelInfo channel in this.FChannels)
+                {
+                    if (channel.BassHandle.HasValue)
+                    {
+                        //Update all channels in the device
+                        int chandevid = Bass.BASS_ChannelGetDevice(channel.BassHandle.Value);
+                        if (this.FDevice != chandevid)
+                        {
+                            Bass.BASS_ChannelSetDevice(channel.BassHandle.Value, chandevid);
+                        }
+                    }
+                }
             }
+            #endregion
 
             #region Handle Pin Changed
             if (this.FPinInHandle.PinIsChanged)
@@ -90,7 +107,10 @@ namespace BassSound
                 //Make sure we use the proper device
                 Bass.BASS_SetDevice(this.FDevice);
 
-                this.FHandles.Clear();
+                ChannelList oldchannels = new ChannelList();
+                oldchannels.AddRange(this.FChannels);
+
+                this.FChannels.Clear();
 
                 for (int i = 0; i < this.FPinInHandle.SliceCount; i++)
                 {
@@ -98,50 +118,61 @@ namespace BassSound
                     this.FPinInHandle.GetValue(0, out dblhandle);
                     int hid = Convert.ToInt32(dblhandle);
 
-                    //Get the channel in the list
-                    ChannelInfo channel = this.manager.GetChannel(hid);
-                    
-                    
-                    if (channel.BassHandle == null)
+                    if (this.manager.Exists(hid))
                     {
-                        //Initialize channel
-                        channel.Initialize(this.FDevice);
-                    }
-                    else
-                    {
-                        //Check if wrong device, if yes, update it
-                        int chandevid = Bass.BASS_ChannelGetDevice(channel.BassHandle.Value);
-                        if (this.FDevice != chandevid)
+                        //Get the channel in the list
+                        ChannelInfo channel = this.manager.GetChannel(hid);
+
+                        if (channel.BassHandle == null)
                         {
-                            Bass.BASS_ChannelSetDevice(channel.BassHandle.Value, chandevid);
+                            //Initialize channel
+                            channel.Initialize(this.FDevice);
+                        }
+                        else
+                        {
+                            //Check if wrong device, if yes, update it
+                            int chandevid = Bass.BASS_ChannelGetDevice(channel.BassHandle.Value);
+                            if (this.FDevice != chandevid)
+                            {
+                                Bass.BASS_ChannelSetDevice(channel.BassHandle.Value, chandevid);
+                            }
+                        }
+                        this.FChannels.Add(channel);
+                        //Little trick to refresh
+                        channel.Play = channel.Play;
+                    }
+                }
+
+
+                //Pause the old channels not in it anymore
+                foreach (ChannelInfo info in oldchannels)
+                {
+                    if (this.FChannels.GetByID(info.InternalHandle) == null)
+                    {
+                        if (info.BassHandle.HasValue)
+                        {
+                            Bass.BASS_ChannelPause(info.BassHandle.Value);
                         }
                     }
-
-                    this.FHandles.Add(channel.InternalHandle);
                 }
             }
             #endregion
 
-            //Do nothing for the moment, can still use as a feed for file stream
-            /*
-            if (this.FPinInHandle.IsConnected && this.FPinInHandle.PinIsChanged)
+            #region Updated if pin connected
+            if (this.FHandleConnected != this.FPinInHandle.IsConnected)
             {
-                StopChannels();
-                this.FChannels.Clear();
-                //Browse channel list
-                for (int i = 0; i < this.FPinInHandle.SliceCount; i++)
+                if (this.FPinInHandle.IsConnected)
                 {
-                    double dhandle;
-                    this.FPinInHandle.GetValue(0,out dhandle);
-                    int handle = Convert.ToInt32(dhandle);
-                    this.FChannels.Add(handle);
-                    Bass.BASS_ChannelPlay(handle, false);
+                    this.FChannels.RefreshPlay();
                 }
+                else
+                {
+                    this.FChannels.PauseAll();
+                }
+                this.FHandleConnected = this.FPinInHandle.IsConnected;
             }
-            else
-            {
-                StopChannels();
-            }*/
+            #endregion
+
         }
         #endregion
 
@@ -153,10 +184,7 @@ namespace BassSound
         #region Dispose
         public void Dispose()
         {
-            foreach (int handle in this.FHandles)
-            {
-                Bass.BASS_ChannelPause(this.manager.GetChannel(handle).BassHandle.Value);
-            }
+            this.FChannels.PauseAll();
         }
         #endregion
     }

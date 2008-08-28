@@ -109,19 +109,19 @@ namespace vvvv.Nodes
 
                 if (this.FManager.Exists(ihandle))
                 {
-                    ChannelInfo info = this.FManager.GetChannel(ihandle);
-                    if (info.BassHandle.HasValue)
+                    this.FChannel = this.FManager.GetChannel(ihandle);
+                    if (this.FChannel.BassHandle.HasValue)
                     {
-                        if (info.IsDecoding)
+                        if (this.FChannel.IsDecoding)
                         {
-                            int mixhandle = BassMix.BASS_Mixer_ChannelGetMixer(info.BassHandle.Value);
+                            int mixhandle = BassMix.BASS_Mixer_ChannelGetMixer(this.FChannel.BassHandle.Value);
 
                             if (mixhandle == 0)
                             {
                                 // create a buffer of the source stream
                                 //We can't get it from the main stream otherwise it would interfere with the asio buffering
                                 bufferStream = new DSP_BufferStream();
-                                bufferStream.ChannelHandle = info.BassHandle.Value; // the stream to copy
+                                bufferStream.ChannelHandle = this.FChannel.BassHandle.Value; // the stream to copy
                                 bufferStream.DSPPriority = -4000;
                                 bufferStream.Start();
                                 this.FMyBassHandle = bufferStream.BufferStream;
@@ -130,14 +130,14 @@ namespace vvvv.Nodes
                             else
                             {
                                 //We have a mixer, much better :)
-                                this.FMyBassHandle = info.BassHandle.Value;
+                                this.FMyBassHandle = this.FChannel.BassHandle.Value;
                                 this.FMixer = true;
                             }
                         }
                         else
                         {
                             //If it's not decoding, no problem :)
-                            this.FMyBassHandle = info.BassHandle.Value;
+                            this.FMyBassHandle = this.FChannel.BassHandle.Value;
                             this.FMixer = false;
                         }
                     }
@@ -166,6 +166,7 @@ namespace vvvv.Nodes
                 //We get float, so length is divided by 4
                 float[] samples = new float[len];
                 int val;
+
 
                 if (this.FMixer)
                 {

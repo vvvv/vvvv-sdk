@@ -178,6 +178,25 @@ namespace BassSound.Internals
 
             return null;
         }
+
+        public void RefreshPlay()
+        {
+            foreach (ChannelInfo info in this)
+            {
+                info.Play = info.Play;
+            }
+        }
+
+        public void PauseAll()
+        {
+            foreach (ChannelInfo info in this)
+            {
+                if (info.BassHandle.HasValue)
+                {
+                    Bass.BASS_ChannelPause(info.BassHandle.Value);
+                }
+            }
+        }
     }
     #endregion
 }

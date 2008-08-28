@@ -1,0 +1,209 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Bass\trunk\Samples\Bass\SimplePlay (Bass).v4p">
+   <BOUNDS height="6855" left="6300" top="3750" type="Window" width="9000">
+   </BOUNDS>
+   <NODE nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassFileStreamNode" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="1725" top="3615" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7230" top="5220" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1725" top="3615" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Play" visible="1">
+   </PIN>
+   <PIN pinname="Mono" visible="1">
+   </PIN>
+   <PIN pinname="Pitch" visible="1">
+   </PIN>
+   <PIN pinname="Tempo" visible="1">
+   </PIN>
+   <PIN pinname="File End" visible="1">
+   </PIN>
+   <PIN pinname="CurrentPosition" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename=":PLUGINS:\BassSound.dll|BassSound.BassAudioOutNode" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="750" top="4740" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7530" top="7035" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="750" top="4740" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="HandleIn" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Handle" dstnodeid="1" dstpinname="HandleIn">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="2">
+   <BOUNDS type="Node" left="4155" top="2880" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="9480" top="5625" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4155" top="2880" width="2985" height="240">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|C:\Documents and Settings\Administrator\My Documents\09 Do Not Break.mp3|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|File Name|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Output String" dstnodeid="0" dstpinname="Filename">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="3">
+   <BOUNDS type="Node" left="270" top="420" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7095" top="5835" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="270" top="420" width="690" height="465">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Play">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Play">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="4">
+   <BOUNDS type="Node" left="1575" top="405" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="8550" top="6285" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1575" top="405" width="690" height="465">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Mono">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Mono">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="5">
+   <BOUNDS type="Node" left="2475" top="390" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="9525" top="6840" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2475" top="390" width="840" height="1875">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Pitch">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-6">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Pitch">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7">
+   <BOUNDS type="Node" left="3630" top="1410" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10440" top="6885" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3630" top="1410" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Tempo">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Tempo">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="8">
+   <BOUNDS type="Node" left="4590" top="1410" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="11220" top="6135" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4590" top="1410" width="2430" height="525">
+   </BOUNDS>
+   <PIN pinname="SliceOffset" visible="-1" pintype="Input" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Input String" visible="-1" pintype="Input" slicecount="1" values="|&lt;-- Tempo must be between -95 and 5000|">
+   </PIN>
+   <PIN pinname="Output String" visible="-1" pintype="Output">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9">
+   <BOUNDS type="Node" left="3240" top="5595" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="9390" top="9690" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3240" top="5595" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|End of file|">
+   </PIN>
+   </NODE>
+   <NODE nodename="S+H (Animation)" id="10">
+   <BOUNDS type="Node" left="3840" top="4470" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="File End" dstnodeid="10" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="9" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="File End" dstnodeid="10" dstpinname="Set">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11">
+   <BOUNDS type="Node" left="1815" top="5535" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7965" top="9630" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1815" top="5535" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Position">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="CurrentPosition" dstnodeid="11" dstpinname="Y Input Value">
+   </LINK>
+   </PATCH>
