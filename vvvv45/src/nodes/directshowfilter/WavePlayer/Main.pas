@@ -207,6 +207,7 @@ type
    function GetBlockSize(out val : Integer) : HRESULT; stdcall;
    function SetRouting(count: Integer; val: TRoutingArray) : HRESULT;  stdcall;
    function GetInfo(out count : integer; val : TInfoArray) : HRESULT; stdcall;
+
   end;
 
   //---------------------------------------------------------------//
@@ -373,65 +374,77 @@ end;
 
 function TMWavePlayer.GetInfo(out count : integer; val : TInfoArray) : HRESULT; stdcall;
 var
-  voice : PBCVoice;
-  i,k : integer;
-  routeTo : integer;
-  n : integer;
-  str : String;
-  nChannels : integer;
+ i,k,n   : integer;
+ routeTo : integer;
+ voice   : PBCVoice;
+ str     : String;
+ name    : String;
 begin
 
-  n         := 0;
-  count     := 0;
-  nChannels := 0;
+  n     := 0;
+  count := 0;
 
   for i := 0 to FPin.FVoiceCount - 1 do
   begin
-   voice := FPin.VoiceCheck(i);
 
-   if voice.FInitialized then
-   nChannels := nChannels + voice.FChannelCount;
+    voice := FPin.VoiceCheck(i);
 
-  end;
+    if voice <> nil then
+    if voice.FInitialized then
+    for k := 0 to voice.FChannelCount - 1 do
+    begin
 
-  //SetLength(val,nChannels);
-
-  for i := 0 to FPin.FVoiceCount - 1 do//-------------------------------------//
-  begin
-   voice := FPin.VoiceCheck(i);
-
-   if voice.FInitialized then
-   begin
-
-     for k := 0 to voice.FChannelCount - 1 do
-     begin
        routeTo := FPin.Route.Routing[n];
 
-       str := ExtractFileName(voice.FFilename);
-              
-       if str <> '' then
+       n := (n + 1) mod FPin.Route.FRoutingCount;
+
+
+       name := '';
+
        if not FPin.Route.FUseFileMapping then
-        str := str + '  ' + FPin.Route.FChannelName[routeTo mod FPin.Route.FRoutingCount]
-       else
-        str := str + '  ' + CHANNELNAME[voice.FChannelMap[k] mod MAXCHANNELS];
+       begin
+        name := 'default';
 
-       //val[count] := StringReplace(str,'.wav','',[rfReplaceAll,rfIgnoreCase]);
+        if (routeTo >= 0) and (routeTo < MAXCHANNELS) then
+         name := FPin.Route.FChannelName[routeTo];
 
-       val[count] := str;
+       end;
+
+       if FPin.Route.FUseFileMapping then
+       case voice.FChannelMap[k] of
+          0 : name := 'SPEAKER_FRONT_LEFT';
+          1 : name := 'SPEAKER_FRONT_RIGHT';
+          2 : name := 'SPEAKER_FRONT_CENTER';
+          3 : name := 'SPEAKER_LOW_FREQUENCY';
+          4 : name := 'SPEAKER_BACK_LEFT';
+          5 : name := 'SPEAKER_BACK_RIGHT';
+          6 : name := 'SPEAKER_FRONT_LEFT_OF_CENTER';
+          7 : name := 'SPEAKER_FRONT_RIGHT_OF_CENTER';
+          8 : name := 'SPEAKER_BACK_CENTER';
+          9 : name := 'SPEAKER_SIDE_LEFT';
+          10: name := 'SPEAKER_SIDE_RIGHT';
+          11: name := 'SPEAKER_TOP_CENTER';
+          12: name := 'SPEAKER_TOP_FRONT_LEFT';
+          13: name := 'SPEAKER_TOP_FRONT_CENTER';
+          14: name := 'SPEAKER_TOP_FRONT_RIGHT';
+          15: name := 'SPEAKER_TOP_BACK_LEFT';
+          16: name := 'SPEAKER_TOP_BACK_CENTER';
+          17: name := 'SPEAKER_TOP_BACK_RIGHT';
+       end;
+
+
+       str := ExtractFileName(voice.FFilename);
+
+       val[count] := str +' '+ name;
 
        if count < 255 then
-        inc(count);
+         inc(count);
+         
+    end;
 
-       n := (n + 1) mod FPin.Route.FRoutingCount;
-     end;
-
-   end;
-
-
-  end;//end for i-------------------------------------------------------------//
+  end;//end for i
 
   Result := S_OK;
-
 end;
 
 function TMWavePlayer.Voices(voicecount: integer): HResult; stdcall;
@@ -1040,6 +1053,8 @@ begin
 end;
 
 procedure TMWavePlayerPin.SetRouting(count : Integer; val : TRoutingArray);
+var
+ voice : PBCVoice;
 begin
  FRoute.SetRouting(count,val);
 
@@ -1158,7 +1173,7 @@ begin
 
  for i := 0 to VoiceList.Count - 1 do
  begin
-  voice := VoiceList.Items[i];        
+  voice := VoiceList.Items[i];
 
   if voice <> nil then
   if voice.FReload then
@@ -1219,12 +1234,18 @@ end;
 
   procedure FillChannelRouting;
   var
-   v,k,f   : Integer;
-   routeTo : Integer;
-   count   : Integer;
+   v,k,f,i       : Integer;
+   routeTo       : Integer;
+   count         : Integer;
+   channelFactor : Array [0..17] of Double;
   begin
 
    count := 0;
+
+   //Set Channel-Factor---------------------------------//
+
+   for i := 0 to MAXCHANNELS - 1 do
+    channelFactor[i] := 0;
 
    for v := 0 to nVoices - 1 do
    begin
@@ -1237,9 +1258,34 @@ end;
 
      routeTo := Route.Routing[count];
 
+     channelFactor[routeTo] := channelFactor[routeTo] + 1;
+
+     count := (count + 1) mod Route.RoutingCount;
+
+    end;
+
+   end;
+
+   count := 0;
+
+   //---------------------------------------------------//
+
+   for v := 0 to nVoices - 1 do
+   begin
+
+    voice := voiceList.Items[v];
+
+    if voice.FInitialized then
+    for k := 0 to voice.FChannelCount - 1 do
+    begin
+
+     routeTo := Route.Routing[count];
+
+     channelFactor[routeTo] := channelFactor[routeTo] + 1;
+
      for f := 0 to nFrames - 1 do
      if voice.FPlay then
-     channel[routeTo][f] := channel[routeTo][f] + (voice.FChannel[k][f] / Route.FChannelFactor[routeTo]);
+     channel[routeTo][f] := channel[routeTo][f] + voice.FChannel[k][f] / channelFactor[routeTo];
 
      count := (count + 1) mod Route.RoutingCount;
 
@@ -1262,7 +1308,8 @@ end;
     shift := f * nChannels;
 
     for k := 0 to nChannels - 1 do
-    buffer[shift + k] := channel[k][f]; //channelFactor???
+    buffer[shift + k] := channel[k][f];
+
    end;
 
   end;
