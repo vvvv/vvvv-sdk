@@ -44,6 +44,8 @@ namespace BassSound.Streams
         private IValueIn FPinInPlay;
         private IStringIn FPinInFilename;
         private IValueIn FPInInLoop;
+        private IValueIn FPinInStartTime;
+        private IValueIn FPinInEndTime;
         private IValueIn FPinInDoSeek;
         private IValueIn FPinInPosition;
         private IValueIn FPinInMono;
@@ -76,8 +78,14 @@ namespace BassSound.Streams
             this.FHost.CreateValueInput("Loop", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPInInLoop);
             this.FPInInLoop.SetSubType(0, 1, 1, 0, false, true, true);
 
+            this.FHost.CreateValueInput("Start Time", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInStartTime);
+            this.FPinInStartTime.SetSubType(0, double.MaxValue, 0.01, 0, false, false, false);
+            
+            this.FHost.CreateValueInput("End Time", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInEndTime);
+            this.FPinInEndTime.SetSubType(0, double.MaxValue, 0.01, 0, false, false, false);
+            
             this.FHost.CreateValueInput("Do Seek", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDoSeek);
-            this.FPinInDoSeek.SetSubType(0, 1, 0, 0, true, false, true);
+            this.FPinInDoSeek.SetSubType(0, 1, 1, 0, true, false, true);
 
             this.FHost.CreateValueInput("Seek Position", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPosition);
             this.FPinInPosition.SetSubType(0, double.MaxValue, 0, 0.0, false, false, false);
@@ -186,6 +194,22 @@ namespace BassSound.Streams
             #endregion
 
             #region Update Looping
+            if (this.FPinInStartTime.PinIsChanged)
+            {
+            	double start;
+                this.FPinInStartTime.GetValue(0, out start);
+                ChannelInfo info = this.manager.GetChannel(this.FChannelInfo.InternalHandle);
+                info.LoopStart = Bass.BASS_ChannelSeconds2Bytes(info.BassHandle.Value, start);
+            }
+            
+            if (this.FPinInEndTime.PinIsChanged)
+            {
+            	double end;
+                this.FPinInEndTime.GetValue(0, out end);
+                ChannelInfo info = this.manager.GetChannel(this.FChannelInfo.InternalHandle);
+                info.LoopEnd = Bass.BASS_ChannelSeconds2Bytes(info.BassHandle.Value, end);
+            }
+            
             if (updateloop || this.FPInInLoop.PinIsChanged)
             {
                 if (this.FChannelInfo.InternalHandle != 0)
