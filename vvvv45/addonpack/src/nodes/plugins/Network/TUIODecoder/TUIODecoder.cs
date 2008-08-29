@@ -5,6 +5,7 @@ using System.Text;
 using VVVV.PluginInterfaces.V1;
 using TUIO;
 using System.Collections;
+using TUIO.NET;
 
 namespace TUIODecoder
 {

@@ -21,7 +21,7 @@
 
 using System;
 
-namespace TUIO
+namespace TUIO.NET
 {
 
 public class TuioPoint {

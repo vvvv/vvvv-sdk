@@ -22,7 +22,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TUIO
+namespace TUIO.NET
 {
 	public class TuioObject:TuioContainer {
 	

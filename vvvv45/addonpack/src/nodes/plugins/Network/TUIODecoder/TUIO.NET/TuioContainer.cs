@@ -23,7 +23,7 @@ using System;
 using System.Collections.Generic;
 
 
-namespace TUIO
+namespace TUIO.NET
 {
 
 public abstract class TuioContainer:TuioPoint {

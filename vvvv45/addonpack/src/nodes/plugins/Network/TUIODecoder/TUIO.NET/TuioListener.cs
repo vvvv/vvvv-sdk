@@ -1,8 +1,8 @@
 /*
-    TUIO C# Library - part of the reacTIVision project
-    http://reactivision.sourceforge.net/
- 
-    Copyright (c) 2005-2008 Martin Kaltenbrunner <mkalten@iua.upf.edu>
+	TUIO C# Library - part of the reacTIVision project
+	http://reactivision.sourceforge.net/
+
+	Copyright (c) 2005-2008 Martin Kaltenbrunner <mkalten@iua.upf.edu>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,36 +19,22 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+
 using System;
-using System.Collections.Generic;
 
-
-namespace TUIO
+namespace TUIO.NET
 {
 
-public class TuioCursor:TuioContainer {
+	public interface TuioListener
+	{
+		void addTuioObject(TuioObject tuioObject);
+		void updateTuioObject(TuioObject tuioObject);
+		void removeTuioObject(TuioObject tuioObject);
 
-	protected int finger_id;
+		void addTuioCursor(TuioCursor tuioCursor);
+		void updateTuioCursor(TuioCursor tuioCursor);
+		void removeTuioCursor(TuioCursor tuioCursor);
 
-			
-	public TuioCursor (long s_id, int f_id, float xpos, float ypos):base(s_id,xpos,ypos) {
-		this.finger_id = f_id;
+		void refresh(long timestamp);
 	}
-
-
-
-	
-	public TuioCursor (TuioCursor c):base(c) {
-		this.finger_id = c.getFingerID();
-	}
-	public void update (TuioCursor c) {
-			base.update(c);
-	}
-		
-	public int getFingerID() {
-		return finger_id;
-	}
-		
-
-    }
 }

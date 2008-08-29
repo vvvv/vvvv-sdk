@@ -24,7 +24,7 @@ using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace TUIO
+namespace TUIO.NET
 {
 	public class TuioClient 
 	{
