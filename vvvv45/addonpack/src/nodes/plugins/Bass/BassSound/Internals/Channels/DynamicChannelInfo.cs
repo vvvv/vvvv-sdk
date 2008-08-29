@@ -18,6 +18,11 @@ namespace BassSound.Internals
         private int bufferstart;
         private int bufferend;
 
+        public DynamicChannelInfo()
+        {
+            Console.WriteLine();
+        }
+
         #region Additional Properties
         public float[] Buffer
         {
@@ -91,7 +96,7 @@ namespace BassSound.Internals
                 end = this.bufferend;
             }
 
-            if (this.bufferposition > this.BufferEnd)
+            if (this.bufferposition > end)
             {
                 this.bufferposition = this.bufferstart;
             }

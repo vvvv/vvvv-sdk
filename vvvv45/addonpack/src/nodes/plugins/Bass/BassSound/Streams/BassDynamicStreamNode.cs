@@ -134,6 +134,11 @@ namespace BassSound.Streams
                 }
             }
 
+            if (this.FPinInLoopStartPos.PinIsChanged || this.FPinInLoopEndPos.PinIsChanged)
+            {
+                this.ProcessStartEnd();
+            }
+
             #region Reset the channel
             if (reset)
             {
@@ -145,6 +150,7 @@ namespace BassSound.Streams
                 
                 this.manager.CreateChannel(info);
                 this.FChannelInfo = info;
+                this.ProcessStartEnd();
 
                 this.FChannelInfo.Buffer = new float[this.FPinInBuffer.SliceCount];
                 for (int i = 0; i < this.FPinInBuffer.SliceCount; i++)
@@ -213,22 +219,7 @@ namespace BassSound.Streams
             }
             #endregion
 
-            #region Update Play/Pause
-            
-            if (this.FPinInLoopStartPos.PinIsChanged)
-            {
-            	double start;
-                this.FPinInLoopStartPos.GetValue(0, out start);
-                this.FChannelInfo.BufferStart = Convert.ToInt32(start);
-            }
-            
-            if (this.FPinInLoopEndPos.PinIsChanged)
-            {
-            	double end;
-                this.FPinInLoopEndPos.GetValue(0, out end);
-                this.FChannelInfo.BufferEnd = Convert.ToInt32(end);
-            }
-            
+            #region Update Play/Pause       
             if (this.FPinInPlay.PinIsChanged || updateplay)
             {
                 if (this.FChannelInfo.InternalHandle != 0)
@@ -285,6 +276,17 @@ namespace BassSound.Streams
             #endregion
         }
         #endregion
+
+        private void ProcessStartEnd()
+        {
+            double start,end;
+            this.FPinInLoopStartPos.GetValue(0, out start);
+            this.FChannelInfo.BufferStart = Convert.ToInt32(start);
+
+            this.FPinInLoopEndPos.GetValue(0, out end);
+            this.FChannelInfo.BufferEnd = Convert.ToInt32(end);
+
+        }
 
 
 

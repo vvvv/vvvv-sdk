@@ -19,8 +19,6 @@ namespace BassSound.Internals
         private bool mono;
         private bool loop;
         private bool play;
-        //private long loopstart, loopend;
-        private double currentposition;
         private bool isdecoding;
         private double length;
 
