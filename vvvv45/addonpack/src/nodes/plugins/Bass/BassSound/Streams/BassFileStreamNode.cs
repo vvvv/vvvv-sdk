@@ -99,14 +99,14 @@ namespace BassSound.Streams
             this.FHost.CreateValueInput("Tempo", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInTempo);
             this.FPinInTempo.SetSubType(-95, 5000, 0, 0, false, false, false);
 
-            this.FHost.CreateStringInput("Filename", TSliceMode.Single, TPinVisibility.True, out this.FPinInFilename);
+            this.FHost.CreateStringInput("File Name", TSliceMode.Single, TPinVisibility.True, out this.FPinInFilename);
             this.FPinInFilename.SetSubType("", true);
 
             //Output Pins
-            this.FHost.CreateValueOutput("Handle", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutHandle);
+            this.FHost.CreateValueOutput("Handle Out", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutHandle);
             this.FPinOutHandle.SetSubType(double.MinValue, double.MaxValue, 0, 0, false, false, true);
 
-            this.FHost.CreateValueOutput("CurrentPosition", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutCurrentPosition);
+            this.FHost.CreateValueOutput("Current Position", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutCurrentPosition);
             this.FPinOutCurrentPosition.SetSubType(0, double.MaxValue, 0, 0.0, false, false, false);
 
             this.FHost.CreateValueOutput("Length", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutLength);
@@ -198,16 +198,14 @@ namespace BassSound.Streams
             {
             	double start;
                 this.FPinInStartTime.GetValue(0, out start);
-                ChannelInfo info = this.manager.GetChannel(this.FChannelInfo.InternalHandle);
-                info.LoopStart = Bass.BASS_ChannelSeconds2Bytes(info.BassHandle.Value, start);
+                this.FChannelInfo.LoopStart = start;
             }
             
             if (this.FPinInEndTime.PinIsChanged)
             {
             	double end;
                 this.FPinInEndTime.GetValue(0, out end);
-                ChannelInfo info = this.manager.GetChannel(this.FChannelInfo.InternalHandle);
-                info.LoopEnd = Bass.BASS_ChannelSeconds2Bytes(info.BassHandle.Value, end);
+                this.FChannelInfo.LoopEnd = end;
             }
             
             if (updateloop || this.FPInInLoop.PinIsChanged)
@@ -269,9 +267,8 @@ namespace BassSound.Streams
                     this.FPinInPitch.GetValue(0, out pitch);
                     this.FPinInTempo.GetValue(0, out tempo);
 
-                    FileChannelInfo info = (FileChannelInfo)this.manager.GetChannel(this.FChannelInfo.InternalHandle);
-                    info.Pitch = pitch;
-                    info.Tempo = tempo;
+                    this.FChannelInfo.Pitch = pitch;
+                    this.FChannelInfo.Tempo = tempo;
                 }
             }
             #endregion

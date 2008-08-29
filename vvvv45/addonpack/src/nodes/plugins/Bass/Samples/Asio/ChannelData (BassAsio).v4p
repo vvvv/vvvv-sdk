@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
-   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Bass\trunk\Samples\Asio\Copy of ChannelData (BassAsio).v4p">
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Bass\trunk\Samples\Asio\ChannelData (BassAsio).v4p">
    <BOUNDS height="8775" left="4950" top="1575" type="Window" width="10215">
    </BOUNDS>
    <NODE componentmode="Hidden" id="15" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassFileStreamNode">
@@ -27,6 +27,10 @@
    </PIN>
    <PIN pinname="Is Decoding" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Handle Out" visible="1">
+   </PIN>
+   <PIN pinname="File Name" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
    <BOUNDS height="0" left="4365" top="450" type="Node" width="0">
@@ -42,8 +46,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|File Name|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="15" dstpinname="Filename" srcnodeid="14" srcpinname="Output String">
-   </LINK>
    <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="1665" top="285" type="Node" width="0">
    </BOUNDS>
@@ -217,9 +219,9 @@
    </PIN>
    <PIN pinname="Left" visible="1">
    </PIN>
+   <PIN pinname="Handle In" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="HandleIn" srcnodeid="15" srcpinname="Handle">
-   </LINK>
    <NODE id="2" nodename="Count (Value)">
    <BOUNDS height="0" left="2355" top="3195" type="Node" width="0">
    </BOUNDS>
@@ -267,7 +269,13 @@
    </PIN>
    <PIN pinname="Is Active" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Handles In" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="0" dstpinname="Channels" srcnodeid="15" srcpinname="Handle">
+   <LINK srcnodeid="15" srcpinname="Handle Out" dstnodeid="3" dstpinname="Handle In">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output String" dstnodeid="15" dstpinname="File Name">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Handle Out" dstnodeid="0" dstpinname="Handles In">
    </LINK>
    </PATCH>

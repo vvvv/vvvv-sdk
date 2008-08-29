@@ -101,12 +101,12 @@ namespace vvvv.Nodes
                     int index = FPinHandles.Count + 1;
 
                     //Add new Handle pin
-                    this.FHost.CreateValueInput("Handle " + index, 1, null, TSliceMode.Single, TPinVisibility.True, out pin);
+                    this.FHost.CreateValueInput("Handle In " + index, 1, null, TSliceMode.Single, TPinVisibility.True, out pin);
                     pin.SetSubType(double.MinValue, double.MaxValue, 1, 0, false, false, true);
                     this.FPinHandles.Add(pin);
 
                     //Add associated level pin
-                    this.FHost.CreateValueInput("Levels " + index, 1, null, TSliceMode.Dynamic, TPinVisibility.True, out pin);
+                    this.FHost.CreateValueInput("Volume " + index, 1, null, TSliceMode.Dynamic, TPinVisibility.True, out pin);
                     pin.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
                     this.FPinLevels.Add(pin);       
                 }

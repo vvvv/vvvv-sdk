@@ -96,5 +96,10 @@ namespace BassSound.Internals
             info.Play = info.Play;
         }
         #endregion
+
+        protected override void OnLoopEndUpdated()
+        {
+            
+        }
     }
 }

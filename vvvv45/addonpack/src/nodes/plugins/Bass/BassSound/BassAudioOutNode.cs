@@ -56,7 +56,7 @@ namespace BassSound
             this.FHost.CreateValueInput("Device", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDevice);
             this.FPinInDevice.SetSubType(-1, double.MaxValue, 1, -1, false, false, true);
 
-            this.FHost.CreateValueInput("HandleIn", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInHandle);
+            this.FHost.CreateValueInput("Handles In", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInHandle);
             this.FPinInHandle.SetSubType(double.MinValue, double.MaxValue,1, 0, false, false, true);
         }
 

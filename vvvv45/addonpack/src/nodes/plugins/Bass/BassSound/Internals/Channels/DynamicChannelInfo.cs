@@ -4,16 +4,21 @@ using System.Text;
 using Un4seen.Bass;
 using System.Runtime.InteropServices;
 using System.IO;
+using Un4seen.Bass.AddOn.Fx;
 
 namespace BassSound.Internals
 {
-    public class DynamicChannelInfo : ChannelInfo
+    public class DynamicChannelInfo : TempoChannelInfo
     {
         private STREAMPROC _myStreamCreate;
         
         private float[] fbuffer = null;
         private int bufferposition = 0;
 
+        private int bufferstart;
+        private int bufferend;
+
+        #region Additional Properties
         public float[] Buffer
         {
             get { return fbuffer; }
@@ -27,6 +32,19 @@ namespace BassSound.Internals
             }
         }
 
+        public int BufferStart
+        {
+            get { return this.bufferstart; }
+            set { this.bufferstart = value; }
+        }
+
+        public int BufferEnd
+        {
+            get { return this.bufferend; }
+            set { this.bufferend = value; }
+        }
+        #endregion
+
         #region Initialize
         public override void Initialize(int deviceid)
         {
@@ -34,14 +52,21 @@ namespace BassSound.Internals
 
             _myStreamCreate = new STREAMPROC(MyFileProc);
 
-            BASSFlag flag = BASSFlag.BASS_SAMPLE_FLOAT;
+            int handle = Bass.BASS_StreamCreate(44100, 1,BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT, _myStreamCreate, IntPtr.Zero);
+
+            BASSFlag flag = BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_FX_FREESOURCE;
+
             if (this.IsDecoding)
             {
                 flag = flag | BASSFlag.BASS_STREAM_DECODE;
             }
 
-            int handle = Bass.BASS_StreamCreate(44100, 1,flag, _myStreamCreate, IntPtr.Zero);
+            if (this.Mono)
+            {
+                flag = flag | BASSFlag.BASS_SAMPLE_MONO;
+            }
 
+            handle = BassFx.BASS_FX_TempoCreate(handle, flag);
 
             this.BassHandle = handle;
 
@@ -58,17 +83,31 @@ namespace BassSound.Internals
 
             float[] data = new float[flength];
 
+            int end = this.Buffer.Length;
+
+            //We decide where is the end to copy
+            if (this.BufferEnd < this.Buffer.Length && this.BufferEnd > 0)
+            {
+                end = this.bufferend;
+            }
+
+            //If position changed, need to update
+            if (this.bufferposition < this.BufferStart)
+            {
+                this.bufferposition = this.BufferStart;
+            }
+
             //Improvement for the file copy
             while (remaining > 0)
             {
-                int tocopy = this.Buffer.Length - this.bufferposition;
+                int tocopy = end - this.bufferposition;
                 if (tocopy < remaining)
                 {
                     Array.Copy(this.Buffer,this.bufferposition,data,index,tocopy);
                     
                     remaining = remaining - tocopy;
                     index += tocopy;
-                    this.bufferposition = 0;
+                    this.bufferposition = this.BufferStart;
                 }
                 else
                 {
@@ -91,5 +130,10 @@ namespace BassSound.Internals
             return length;
         }
         #endregion
+
+        protected override void OnLoopEndUpdated()
+        {
+            
+        }
     }
 }

@@ -27,6 +27,10 @@
    </PIN>
    <PIN pinname="Is Decoding" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Handle Out" visible="1">
+   </PIN>
+   <PIN pinname="File Name" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
    <BOUNDS height="0" left="4365" top="450" type="Node" width="0">
@@ -42,8 +46,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|File Name|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="18" dstpinname="Filename" srcnodeid="17" srcpinname="Output String">
-   </LINK>
    <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="1665" top="285" type="Node" width="0">
    </BOUNDS>
@@ -65,9 +67,9 @@
    </PIN>
    <PIN pinname="Show Slider" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="18" dstpinname="Play" srcnodeid="16" srcpinname="Y Output Value">
@@ -112,6 +114,8 @@
    <PIN pinname="RMS" visible="1">
    </PIN>
    <PIN pinname="Average" visible="1">
+   </PIN>
+   <PIN pinname="Handle In" visible="1">
    </PIN>
    </NODE>
    <NODE id="13" nodename="Queue (Spreads)">
@@ -317,9 +321,13 @@
    </PIN>
    <PIN pinname="Is Active" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Handles In" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="0" dstpinname="Channels" srcnodeid="18" srcpinname="Handle">
+   <LINK srcnodeid="18" srcpinname="Handle Out" dstnodeid="14" dstpinname="Handle In">
    </LINK>
-   <LINK dstnodeid="14" dstpinname="HandleIn" srcnodeid="18" srcpinname="Handle">
+   <LINK srcnodeid="18" srcpinname="Handle Out" dstnodeid="0" dstpinname="Handles In">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Output String" dstnodeid="18" dstpinname="File Name">
    </LINK>
    </PATCH>

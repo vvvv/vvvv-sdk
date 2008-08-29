@@ -2,7 +2,7 @@
    <PATCH nodename="D:\repositories\vvvv\plugins\c#\Bass\trunk\Samples\Bass\ChannelData (Bass).v4p">
    <BOUNDS height="8775" left="4950" top="1575" type="Window" width="10215">
    </BOUNDS>
-   <NODE componentmode="Hidden" id="18" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassFileStreamNode">
+   <NODE componentmode="Hidden" id="15" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassFileStreamNode">
    <BOUNDS height="0" left="2940" top="1410" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="7230" top="5220" type="Window" width="0">
@@ -25,8 +25,12 @@
    </PIN>
    <PIN pinname="CurrentPosition" visible="1">
    </PIN>
+   <PIN pinname="Handle Out" visible="1">
+   </PIN>
+   <PIN pinname="File Name" visible="1">
+   </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="17" nodename=":PLUGINS:\BassSound.dll|BassSound.BassAudioOutNode">
+   <NODE componentmode="Hidden" id="14" nodename=":PLUGINS:\BassSound.dll|BassSound.BassAudioOutNode">
    <BOUNDS height="0" left="4545" top="3105" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="7530" top="7035" type="Window" width="0">
@@ -35,10 +39,10 @@
    </BOUNDS>
    <PIN pinname="HandleIn" visible="1">
    </PIN>
+   <PIN pinname="Handles In" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="17" dstpinname="HandleIn" srcnodeid="18" srcpinname="Handle">
-   </LINK>
-   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
    <BOUNDS height="0" left="4365" top="450" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="9480" top="5625" type="Window" width="215">
@@ -52,9 +56,7 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|File Name|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="18" dstpinname="Filename" srcnodeid="16" srcpinname="Output String">
-   </LINK>
-   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="1665" top="285" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7095" top="5835" type="Window" width="215">
@@ -75,14 +77,14 @@
    </PIN>
    <PIN pinname="Show Slider" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="18" dstpinname="Play" srcnodeid="15" srcpinname="Y Output Value">
+   <LINK dstnodeid="15" dstpinname="Play" srcnodeid="12" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="2970" top="270" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="8550" top="6285" type="Window" width="215">
@@ -108,9 +110,9 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="18" dstpinname="Mono" srcnodeid="14" srcpinname="Y Output Value">
+   <LINK dstnodeid="15" dstpinname="Mono" srcnodeid="11" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="8" nodename="Renderer (GDI)">
+   <NODE componentmode="InABox" id="10" nodename="Renderer (GDI)">
    <BOUNDS height="0" left="2085" top="5745" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4860" left="7995" top="9540" type="Window" width="6120">
@@ -122,7 +124,7 @@
    <PIN pinname="Background Color" visible="1">
    </PIN>
    </NODE>
-   <NODE id="7" nodename="Point (GDI)">
+   <NODE id="9" nodename="Point (GDI)">
    <BOUNDS height="0" left="735" top="4845" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Y" visible="1">
@@ -136,7 +138,7 @@
    <PIN pinname="Color" visible="1">
    </PIN>
    </NODE>
-   <NODE id="6" nodename="Point (GDI)">
+   <NODE id="8" nodename="Point (GDI)">
    <BOUNDS height="0" left="2205" top="4770" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Y" visible="1">
@@ -150,7 +152,7 @@
    <PIN pinname="Color" visible="1">
    </PIN>
    </NODE>
-   <NODE id="5" nodename="LinearSpread (Spreads)">
+   <NODE id="7" nodename="LinearSpread (Spreads)">
    <BOUNDS height="0" left="3225" top="3780" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Spread Count" visible="1">
@@ -160,7 +162,7 @@
    <PIN pinname="Width" slicecount="1" values="2">
    </PIN>
    </NODE>
-   <NODE id="3" nodename="Group (GDI)">
+   <NODE id="6" nodename="Group (GDI)">
    <BOUNDS height="0" left="1665" top="5280" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Layer 1" visible="1">
@@ -170,13 +172,13 @@
    <PIN pinname="Layer 2" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="Layer 1" srcnodeid="7" srcpinname="Layer">
+   <LINK dstnodeid="6" dstpinname="Layer 1" srcnodeid="9" srcpinname="Layer">
    </LINK>
-   <LINK dstnodeid="8" dstpinname="Layers" srcnodeid="3" srcpinname="Layer">
+   <LINK dstnodeid="10" dstpinname="Layers" srcnodeid="6" srcpinname="Layer">
    </LINK>
-   <LINK dstnodeid="3" dstpinname="Layer 2" srcnodeid="6" srcpinname="Layer">
+   <LINK dstnodeid="6" dstpinname="Layer 2" srcnodeid="8" srcpinname="Layer">
    </LINK>
-   <NODE id="2" nodename="RGB (Color Join)">
+   <NODE id="5" nodename="RGB (Color Join)">
    <BOUNDS height="0" left="3030" top="4380" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -188,9 +190,9 @@
    <PIN pinname="Blue" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="6" dstpinname="Color" srcnodeid="2" srcpinname="Output">
+   <LINK dstnodeid="8" dstpinname="Color" srcnodeid="5" srcpinname="Output">
    </LINK>
-   <NODE id="1" nodename="RGB (Color Join)">
+   <NODE id="4" nodename="RGB (Color Join)">
    <BOUNDS height="0" left="3645" top="5220" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -198,7 +200,7 @@
    <PIN pinname="Blue" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <NODE id="0" nodename="RGB (Color Join)">
+   <NODE id="3" nodename="RGB (Color Join)">
    <BOUNDS height="0" left="1560" top="4485" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -210,16 +212,16 @@
    <PIN pinname="Blue" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="7" dstpinname="Color" srcnodeid="0" srcpinname="Output">
+   <LINK dstnodeid="9" dstpinname="Color" srcnodeid="3" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="8" dstpinname="Background Color" srcnodeid="1" srcpinname="Output">
+   <LINK dstnodeid="10" dstpinname="Background Color" srcnodeid="4" srcpinname="Output">
    </LINK>
-   <NODE nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.FloatChannelDataNode" componentmode="Hidden" id="19">
-   <BOUNDS type="Node" left="1440" top="2490" width="0" height="0">
+   <NODE componentmode="Hidden" id="2" nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.FloatChannelDataNode">
+   <BOUNDS height="0" left="1440" top="2490" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="5655" top="4395" width="0" height="0">
+   <BOUNDS height="0" left="5655" top="4395" type="Window" width="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="1440" top="2490" width="0" height="0">
+   <BOUNDS height="0" left="1440" top="2490" type="Box" width="0">
    </BOUNDS>
    <PIN pinname="HandleIn" visible="1">
    </PIN>
@@ -227,35 +229,35 @@
    </PIN>
    <PIN pinname="Left" visible="1">
    </PIN>
+   <PIN pinname="Handle In" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="18" srcpinname="Handle" dstnodeid="19" dstpinname="HandleIn">
-   </LINK>
-   <NODE nodename="Count (Value)" id="20">
-   <BOUNDS type="Node" left="2355" top="3195" width="0" height="0">
+   <NODE id="1" nodename="Count (Value)">
+   <BOUNDS height="0" left="2355" top="3195" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="Count" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="19" srcpinname="Left" dstnodeid="20" dstpinname="Input">
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="2" srcpinname="Left">
    </LINK>
-   <LINK srcnodeid="20" srcpinname="Count" dstnodeid="5" dstpinname="Spread Count">
+   <LINK dstnodeid="7" dstpinname="Spread Count" srcnodeid="1" srcpinname="Count">
    </LINK>
-   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="6" dstpinname="X">
+   <LINK dstnodeid="8" dstpinname="X" srcnodeid="7" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="7" dstpinname="X">
+   <LINK dstnodeid="9" dstpinname="X" srcnodeid="7" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="19" srcpinname="Left" dstnodeid="7" dstpinname="Y">
+   <LINK dstnodeid="9" dstpinname="Y" srcnodeid="2" srcpinname="Left">
    </LINK>
-   <LINK srcnodeid="19" srcpinname="Left" dstnodeid="6" dstpinname="Y">
+   <LINK dstnodeid="8" dstpinname="Y" srcnodeid="2" srcpinname="Left">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="21">
-   <BOUNDS type="Node" left="2580" top="2040" width="0" height="0">
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2580" top="2040" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="7980" top="4860" width="215" height="160">
+   <BOUNDS height="160" left="7980" top="4860" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS type="Box" left="2580" top="2040" width="795" height="240">
+   <BOUNDS height="240" left="2580" top="2040" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Delay (ms)|">
    </PIN>
@@ -264,6 +266,12 @@
    <PIN pinname="Y Input Value" slicecount="1" values="10">
    </PIN>
    </NODE>
-   <LINK srcnodeid="21" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Delay">
+   <LINK dstnodeid="2" dstpinname="Delay" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Handle Out" dstnodeid="2" dstpinname="Handle In">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Handle Out" dstnodeid="14" dstpinname="Handles In">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Output String" dstnodeid="15" dstpinname="File Name">
    </LINK>
    </PATCH>

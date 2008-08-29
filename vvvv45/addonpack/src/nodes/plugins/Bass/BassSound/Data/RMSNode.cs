@@ -53,7 +53,7 @@ namespace vvvv.Nodes
             this.FManager = ChannelsManager.GetInstance();
 
             //Input Pins
-            this.FHost.CreateValueInput("HandleIn", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInHandle);
+            this.FHost.CreateValueInput("Handle In", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInHandle);
             this.FPinInHandle.SetSubType(double.MinValue, double.MaxValue, 1, 0, false, false, true);
 
             this.FHost.CreateValueOutput("RMS", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutRMS);

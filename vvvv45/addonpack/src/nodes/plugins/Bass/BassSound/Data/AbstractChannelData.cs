@@ -72,7 +72,7 @@ namespace vvvv.Nodes
             IntPtr ptr = IntPtr.Zero;
 
             //Input Pins
-            this.FHost.CreateValueInput("HandleIn", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInHandle);
+            this.FHost.CreateValueInput("Handle In", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInHandle);
             this.FPinInHandle.SetSubType(double.MinValue, double.MaxValue, 0, 0, false, false, true);
 
             this.FHost.CreateValueInput(this.FAttributeIn, 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInAttribute);
@@ -166,7 +166,6 @@ namespace vvvv.Nodes
                 //We get float, so length is divided by 4
                 float[] samples = new float[len];
                 int val;
-
 
                 if (this.FMixer)
                 {

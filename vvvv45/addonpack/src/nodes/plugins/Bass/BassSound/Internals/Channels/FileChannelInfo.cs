@@ -6,12 +6,12 @@ using Un4seen.Bass.AddOn.Fx;
 
 namespace BassSound.Internals
 {
-    class FileChannelInfo : ChannelInfo
+    public class FileChannelInfo : TempoChannelInfo
     {
         private string filename;
-        private double pitch;
-        private double tempo;
         private SYNCPROC _syncProc = null;
+        private int loopSyncHandle;
+        private double loopstart, loopend;
 
         public event EventHandler OnStreamEnd;
 
@@ -21,23 +21,21 @@ namespace BassSound.Internals
             set { filename = value; }
         }
 
-        public double Pitch
+
+
+        public double LoopStart
         {
-            get { return pitch; }
-            set
-            {
-                pitch = value;
-                this.OnPitchUpdated();
-            }
+            get { return loopstart; }
+            set { loopstart = value; }
         }
 
-        public double Tempo
+        public double LoopEnd
         {
-            get { return tempo; }
+            get { return loopend; }
             set
             {
-                tempo = value;
-                this.OnTempoUpdated();
+                this.loopend = value;
+                this.OnLoopEndUpdated();
             }
         }
 
@@ -77,22 +75,6 @@ namespace BassSound.Internals
         #endregion
 
         #region Events
-        protected void OnPitchUpdated()
-        {
-            if (this.BassHandle.HasValue)
-            {
-                Bass.BASS_ChannelSetAttribute(this.BassHandle.Value, BASSAttribute.BASS_ATTRIB_TEMPO_PITCH, (float)this.pitch);
-            }
-        }
-
-        protected void OnTempoUpdated()
-        {
-            if (this.BassHandle.HasValue)
-            {
-                Bass.BASS_ChannelSetAttribute(this.BassHandle.Value, BASSAttribute.BASS_ATTRIB_TEMPO, (float)this.tempo);
-            }
-        }
-
         protected override void OnCreate()
         {
             base.OnCreate();
@@ -106,6 +88,45 @@ namespace BassSound.Internals
             if (OnStreamEnd != null)
             {
                 OnStreamEnd(this, new EventArgs());
+            }
+        }
+
+        private SYNCPROC _mySyncProc;
+        private void LoopEndReached(int handle, int channel, int data, IntPtr user)
+        {
+            if (this.Loop)
+            {
+                Bass.BASS_ChannelSetPosition(this.BassHandle.Value, this.LoopStart);
+            }
+            else
+            {
+                Bass.BASS_ChannelPause(this.BassHandle.Value);
+            }
+        }
+
+        protected override void OnLoopEndUpdated()
+        {
+            if (this.BassHandle.HasValue)
+            {
+                if (loopSyncHandle > 0)
+                {
+                    Bass.BASS_ChannelRemoveSync(this.BassHandle.Value, loopSyncHandle);
+                    _mySyncProc = null;
+                }
+
+                _mySyncProc = new SYNCPROC(LoopEndReached);
+
+                long end;
+                if (this.LoopEnd == 0)
+                {
+                    end = Bass.BASS_ChannelSeconds2Bytes(this.BassHandle.Value, this.Length);
+                }
+                else
+                {
+                    end = Bass.BASS_ChannelSeconds2Bytes(this.BassHandle.Value, this.LoopEnd);
+                }
+                loopSyncHandle = Bass.BASS_ChannelSetSync(this.BassHandle.Value, BASSSync.BASS_SYNC_POS | BASSSync.BASS_SYNC_MIXTIME, end, _mySyncProc, IntPtr.Zero);
+
             }
         }
     }

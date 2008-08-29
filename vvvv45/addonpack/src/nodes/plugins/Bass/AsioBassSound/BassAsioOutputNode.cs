@@ -70,7 +70,7 @@ namespace vvvv.Nodes
             this.FHost.CreateValueInput("Volume", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInVolumeOutput);
             this.FPinInVolumeOutput.SetSubType(0, 1, 0.01, 1, false, false, false);
 
-            this.FHost.CreateValueInput("Channels",1,null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInChannels);
+            this.FHost.CreateValueInput("Handles In",1,null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInChannels);
             this.FPinInChannels.SetSubType(double.MinValue, double.MaxValue, 1, -1, false, false, true);
 
             this.FHost.CreateStringOutput("Status", TSliceMode.Single, TPinVisibility.True, out this.FPinErrorCode);

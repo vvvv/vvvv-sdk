@@ -51,6 +51,8 @@ namespace BassSound.Streams
         private IValueIn FPinInDoWrite;
         private IValueIn FPinInData;
         private IValueIn FPinInRestore;
+        private IValueIn FPinInPitch;
+        private IValueIn FPinInTempo;
 
         private IValueOut FPinOutHandle;
         private IValueOut FPinOutCurrentPosition;
@@ -69,14 +71,17 @@ namespace BassSound.Streams
             this.FHost.CreateValueInput("Play", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPlay);
             this.FPinInPlay.SetSubType(0, 1, 1, 0, false, true, true);
 
-            this.FHost.CreateValueInput("Loop Start Position", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInLoopStartPos);
-            this.FPinInLoopStartPos.SetSubType(0, double.MaxValue, 0.01, 0, false, false, false);
-            
-            this.FHost.CreateValueInput("Loop End Position", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInLoopEndPos);
-            this.FPinInLoopEndPos.SetSubType(0, double.MaxValue, 0.01, 0, false, false, false);
-            
-         //   this.FHost.CreateValueInput("Tempo", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInTempo);
-         //   this.FPinInSpeed.SetSubType(-95, 5000, 0, 0, false, false, false);
+            this.FHost.CreateValueInput("Buffer Start Position", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInLoopStartPos);
+            this.FPinInLoopStartPos.SetSubType(0, double.MaxValue, 1, 0, false, false,true);
+
+            this.FHost.CreateValueInput("Buffer End Position", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInLoopEndPos);
+            this.FPinInLoopEndPos.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
+
+            this.FHost.CreateValueInput("Pitch", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPitch);
+            this.FPinInPitch.SetSubType(-60, 60, 0, 0, false, false, false);
+
+            this.FHost.CreateValueInput("Tempo", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInTempo);
+            this.FPinInTempo.SetSubType(-95, 5000, 0, 0, false, false, false);
             
             this.FHost.CreateValueInput("Buffer", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInBuffer);
             this.FPinInBuffer.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
@@ -97,7 +102,7 @@ namespace BassSound.Streams
             this.FPinInReset.SetSubType(0, 1, 1, 0, true, false, true);
 
             //Output
-            this.FHost.CreateValueOutput("Handle", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutHandle);
+            this.FHost.CreateValueOutput("Handle Out", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutHandle);
             this.FPinOutHandle.SetSubType(double.MinValue, double.MaxValue, 0, 0, false, false, true);
             
             this.FHost.CreateValueOutput("CurrentPosition", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutCurrentPosition);
@@ -208,21 +213,20 @@ namespace BassSound.Streams
             }
             #endregion
 
-
             #region Update Play/Pause
             
             if (this.FPinInLoopStartPos.PinIsChanged)
             {
             	double start;
                 this.FPinInLoopStartPos.GetValue(0, out start);
-                this.manager.GetChannel(this.FChannelInfo.InternalHandle).LoopStart = Convert.ToInt32(start);
+                this.FChannelInfo.BufferStart = Convert.ToInt32(start);
             }
             
             if (this.FPinInLoopEndPos.PinIsChanged)
             {
             	double end;
                 this.FPinInLoopEndPos.GetValue(0, out end);
-                this.manager.GetChannel(this.FChannelInfo.InternalHandle).LoopEnd = Convert.ToInt32(end);
+                this.FChannelInfo.BufferStart = Convert.ToInt32(end);
             }
             
             if (this.FPinInPlay.PinIsChanged || updateplay)
@@ -246,24 +250,43 @@ namespace BassSound.Streams
             #region Update Current Position/Length
             if (this.FChannelInfo.InternalHandle != 0)
             {
-                ChannelInfo info = this.manager.GetChannel(this.FChannelInfo.InternalHandle);
-                if (info.BassHandle.HasValue)
+                if (this.FChannelInfo.BassHandle.HasValue)
                 {
-                	int mixerhandle = BassMix.BASS_Mixer_ChannelGetMixer(info.BassHandle.Value);
+                    int mixerhandle = BassMix.BASS_Mixer_ChannelGetMixer(this.FChannelInfo.BassHandle.Value);
                 	long pos;
-                	//if (mixerhandle > 0)
-                    	pos = BassMix.BASS_Mixer_ChannelGetPosition(mixerhandle);
-                //	else
-                	//	pos = Bass.BASS_ChannelGetPosition(info.BassHandle.Value);
-                	
-                   // double seconds = Bass.BASS_ChannelBytes2Seconds(info.BassHandle.Value, pos);
-                    this.FPinOutCurrentPosition.SetValue(0, mixerhandle);
+                    if (mixerhandle != 0)
+                    {
+                        pos = BassMix.BASS_Mixer_ChannelGetPosition(this.FChannelInfo.BassHandle.Value);
+                    }
+                    else
+                    {
+                        pos = Bass.BASS_ChannelGetPosition(this.FChannelInfo.BassHandle.Value);
+                    }
+                    double seconds = Bass.BASS_ChannelBytes2Seconds(this.FChannelInfo.BassHandle.Value, pos);
+                    this.FPinOutCurrentPosition.SetValue(0, seconds);
                     //this.FPinOutLength.SetValue(0, info.Length);
+                }
+            }
+            #endregion
+
+            #region Tempo and Pitch
+            if (this.FPinInPitch.PinIsChanged || this.FPinInTempo.PinIsChanged)
+            {
+                if (this.FChannelInfo.InternalHandle != 0)
+                {
+                    double pitch, tempo;
+                    this.FPinInPitch.GetValue(0, out pitch);
+                    this.FPinInTempo.GetValue(0, out tempo);
+
+                    this.FChannelInfo.Pitch = pitch;
+                    this.FChannelInfo.Tempo = tempo;
                 }
             }
             #endregion
         }
         #endregion
+
+
 
         #region Auto Evaluate
         public bool AutoEvaluate

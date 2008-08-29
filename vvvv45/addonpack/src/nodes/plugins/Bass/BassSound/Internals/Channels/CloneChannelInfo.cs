@@ -18,5 +18,10 @@ namespace BassSound.Internals
         {
             //No nothing on this one
         }
+
+        protected override void OnLoopEndUpdated()
+        {
+            
+        }
     }
 }

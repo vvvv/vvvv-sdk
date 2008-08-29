@@ -27,6 +27,10 @@
    </PIN>
    <PIN pinname="Is Decoding" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Handle Out" visible="1">
+   </PIN>
+   <PIN pinname="File Name" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
    <BOUNDS height="0" left="3345" top="720" type="Node" width="0">
@@ -42,8 +46,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|File Name|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="13" dstpinname="Filename" srcnodeid="12" srcpinname="Output String">
-   </LINK>
    <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="1305" top="825" type="Node" width="0">
    </BOUNDS>
@@ -95,9 +97,15 @@
    </PIN>
    <PIN pinname="Is Decoding" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Handle In 1" visible="1">
+   </PIN>
+   <PIN pinname="Handle In 2" visible="1">
+   </PIN>
+   <PIN pinname="Volume 2" visible="1">
+   </PIN>
+   <PIN pinname="Volume 1" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="10" dstpinname="Handle 1" srcnodeid="13" srcpinname="Handle">
-   </LINK>
    <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="4170" top="2550" type="Node" width="0">
    </BOUNDS>
@@ -130,8 +138,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="10" dstpinname="Levels 1" srcnodeid="9" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
    <BOUNDS height="0" left="8460" top="780" type="Node" width="0">
    </BOUNDS>
@@ -197,12 +203,12 @@
    </PIN>
    <PIN pinname="Is Decoding" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Handle Out" visible="1">
+   </PIN>
+   <PIN pinname="File Name" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="6" dstpinname="Play" srcnodeid="7" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="Filename" srcnodeid="8" srcpinname="Output String">
-   </LINK>
-   <LINK dstnodeid="10" dstpinname="Handle 2" srcnodeid="6" srcpinname="Handle">
    </LINK>
    <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="7875" top="2265" type="Node" width="0">
@@ -211,7 +217,7 @@
    </BOUNDS>
    <BOUNDS height="1395" left="7875" top="2265" type="Box" width="1980">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Volume 1|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Volume 2|">
    </PIN>
    <PIN pinname="Columns" slicecount="1" values="2">
    </PIN>
@@ -236,8 +242,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="10" dstpinname="Levels 2" srcnodeid="5" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
    <BOUNDS height="0" left="3585" top="1755" type="Node" width="0">
    </BOUNDS>
@@ -331,12 +335,12 @@
    </PIN>
    <PIN pinname="Channels" visible="1">
    </PIN>
+   <PIN pinname="Handles In" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="1" dstpinname="Is Active" srcnodeid="3" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="1" dstpinname="Volume" srcnodeid="2" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="1" dstpinname="Channels" srcnodeid="10" srcpinname="Handle">
    </LINK>
    <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
    <BOUNDS height="0" left="7425" top="5580" type="Node" width="0">
@@ -352,4 +356,18 @@
    <PIN pinname="Output String" pintype="Output" visible="-1">
    </PIN>
    </NODE>
+   <LINK srcnodeid="13" srcpinname="Handle Out" dstnodeid="10" dstpinname="Handle In 1">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Handle" dstnodeid="1" dstpinname="Handles In">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Handle Out" dstnodeid="10" dstpinname="Handle In 2">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Volume 2">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Volume 1">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Output String" dstnodeid="13" dstpinname="File Name">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Output String" dstnodeid="6" dstpinname="File Name">
+   </LINK>
    </PATCH>

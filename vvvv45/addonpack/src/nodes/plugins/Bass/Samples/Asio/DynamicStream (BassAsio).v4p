@@ -27,6 +27,8 @@
    </PIN>
    <PIN pinname="Restore" visible="1">
    </PIN>
+   <PIN pinname="Handle Out" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="7200" top="1275" type="Node" width="0">
@@ -203,6 +205,8 @@
    </PIN>
    <PIN pinname="Channels" visible="1">
    </PIN>
+   <PIN pinname="Handles In" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="1" nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.MixerNode">
    <BOUNDS height="0" left="1845" top="5265" type="Node" width="0">
@@ -221,11 +225,11 @@
    </PIN>
    <PIN pinname="Is Decoding" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Handle In 1" visible="1">
+   </PIN>
+   <PIN pinname="Volume 1" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="1" dstpinname="Handle 1" srcnodeid="11" srcpinname="Handle">
-   </LINK>
-   <LINK dstnodeid="2" dstpinname="Channels" srcnodeid="1" srcpinname="Handle">
-   </LINK>
    <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="2610" top="4305" type="Node" width="0">
    </BOUNDS>
@@ -254,6 +258,10 @@
    <PIN pinname="Y Input Value" slicecount="2" values="0.393939393939394,0.424242424242424">
    </PIN>
    </NODE>
-   <LINK dstnodeid="1" dstpinname="Levels 1" srcnodeid="0" srcpinname="Y Output Value">
+   <LINK srcnodeid="11" srcpinname="Handle Out" dstnodeid="1" dstpinname="Handle In 1">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Volume 1">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Handle" dstnodeid="2" dstpinname="Handles In">
    </LINK>
    </PATCH>
