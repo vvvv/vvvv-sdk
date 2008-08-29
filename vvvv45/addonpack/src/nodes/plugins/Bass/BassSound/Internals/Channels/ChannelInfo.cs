@@ -19,9 +19,12 @@ namespace BassSound.Internals
         private bool mono;
         private bool loop;
         private bool play;
+        private long loopstart, loopend;
         private double currentposition;
         private bool isdecoding;
         private double length;
+        
+        private int loopSyncHandle;
         #endregion
 
         #region Internal Properties
@@ -67,13 +70,32 @@ namespace BassSound.Internals
                 play = value;
                 this.OnPlayUpdated();
             }
-
+        }
+        
+        public long LoopStart
+        {
+            get { return loopstart; }
+            set { loopstart = value; }
         }
 
-        public double CurrentPosition
+        public long LoopEnd
         {
-            get { return currentposition; }
-            set { currentposition = value; }
+            get { return loopend; }
+            set 
+            { 
+            	if (loopSyncHandle > 0)
+            	{
+            		Bass.BASS_ChannelRemoveSync(this.BassHandle.Value, loopSyncHandle);
+            		_mySyncProc = null;
+            	}
+            	
+            	_mySyncProc = new SYNCPROC(LoopEndReached);
+            	if (value == 0)
+            		loopend = Bass.BASS_ChannelSeconds2Bytes(this.BassHandle.Value, length);
+            	else
+            		loopend = value;
+            	loopSyncHandle = Bass.BASS_ChannelSetSync(this.BassHandle.Value, BASSSync.BASS_SYNC_POS | BASSSync.BASS_SYNC_MIXTIME, loopend, _mySyncProc, IntPtr.Zero);
+            }
         }
 
         public bool IsDecoding
@@ -92,7 +114,7 @@ namespace BassSound.Internals
         #region Abstract Methods
         public abstract void Initialize(int deviceid);
         #endregion
-
+    
         #region Protected methods
         protected void OnInitialize()
         {
@@ -100,6 +122,12 @@ namespace BassSound.Internals
             {
                 OnInit(this, new EventArgs());
             }
+        }
+        
+        private SYNCPROC _mySyncProc;
+        private void LoopEndReached(int handle, int channel, int data, IntPtr user)
+        {
+        	Bass.BASS_ChannelSetPosition(this.BassHandle.Value, loopstart);
         }
 
         protected void OnPlayUpdated()
@@ -134,7 +162,6 @@ namespace BassSound.Internals
                     }
                 }
             }
-
         }
 
         protected void OnLoopUpdated()
@@ -161,7 +188,6 @@ namespace BassSound.Internals
 
         #endregion
     }
-
 
     #region Channel List
     public class ChannelList : List<ChannelInfo>
