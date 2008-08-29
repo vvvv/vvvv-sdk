@@ -91,7 +91,13 @@ namespace BassSound.Internals
                 end = this.bufferend;
             }
 
-            //If position changed, need to update
+            if (this.bufferposition > this.BufferEnd)
+            {
+                this.bufferposition = this.bufferstart;
+            }
+            
+
+            //If buffer changed, need to update
             if (this.bufferposition < this.BufferStart)
             {
                 this.bufferposition = this.BufferStart;
@@ -100,11 +106,11 @@ namespace BassSound.Internals
             //Improvement for the file copy
             while (remaining > 0)
             {
+
                 int tocopy = end - this.bufferposition;
                 if (tocopy < remaining)
                 {
-                    Array.Copy(this.Buffer,this.bufferposition,data,index,tocopy);
-                    
+                    Array.Copy(this.Buffer,this.bufferposition,data,index,tocopy);   
                     remaining = remaining - tocopy;
                     index += tocopy;
                     this.bufferposition = this.BufferStart;

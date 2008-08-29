@@ -226,7 +226,7 @@ namespace BassSound.Streams
             {
             	double end;
                 this.FPinInLoopEndPos.GetValue(0, out end);
-                this.FChannelInfo.BufferStart = Convert.ToInt32(end);
+                this.FChannelInfo.BufferEnd = Convert.ToInt32(end);
             }
             
             if (this.FPinInPlay.PinIsChanged || updateplay)
