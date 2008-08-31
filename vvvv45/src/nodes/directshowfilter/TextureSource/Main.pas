@@ -84,9 +84,9 @@ type
     // The time stamp for each sample
     FSampleTime: TRefTime;
     // Pointer to the bitmap header
-    FBmi: PBitmapInfo;
+    FBitmapInfo: PBitmapInfo;
     // Size of the bitmap header
-    FBitmapInfo: DWord;
+    FBitmapInfoSize: DWord;
     // Points to beginning of file buffer
     FFileBuffer: PByte;
     // Points to pixel bits
@@ -107,7 +107,7 @@ type
     function GetMediaType(MediaType: PAMMediaType): HResult; override;
     function DecideBufferSize(Allocator: IMemAllocator; Properties: PAllocatorProperties): HRESULT; override;
     function FillBuffer(Sample: IMediaSample): HResult; override;
-    procedure ParseBuf (buf: PByte; size: longint);
+    procedure ParseBuf(Bitmap: PByte; Size: longint);
     function Notify(Filter: IBaseFilter; q: TQuality): HRESULT; override; stdcall;
   end;
 
@@ -132,8 +132,8 @@ begin
 
   FFramesWritten := 0;
   FZeroMemory := False;
-  FBmi := nil;
-  FBitmapInfo := 0;
+  FBitmapInfo := nil;
+  FBitmapInfoSize := 0;
   FFileBuffer := nil;
   FImage := nil;
   FFrameNumber := 0;
@@ -142,32 +142,32 @@ begin
   FFrameLength := DefaultFrameLength;
 end;
 
-procedure TMTextureSourcePushPin.ParseBuf (buf: PByte; size: longint);
+procedure TMTextureSourcePushPin.ParseBuf(Bitmap: PByte; Size: longint);
 var
-  FileHeaderSize: Integer;
-  BmpFileHeader: PBITMAPFILEHEADER;
+  bmpFileHeaderSize: Integer;
+  bmpFileHeader: PBitmapFileHeader;
   pb: PByte;
 begin
-  if FFileBuffer = nil then FFileBuffer := CoTaskMemAlloc(size);
-  if (FFileBuffer = nil) then Exit;
+  if FFileBuffer = nil then
+    FFileBuffer := CoTaskMemAlloc(Size);
+  if (FFileBuffer = nil) then
+    Exit;
 
-  CopyMemory(FFileBuffer, buf, size);
-  FileHeaderSize := SizeOf(BITMAPFILEHEADER);
+  CopyMemory(FFileBuffer, Bitmap, Size);
+  bmpFileHeaderSize := SizeOf(TBitmapFileHeader);
+  bmpFileHeader := PBitmapFileHeader(FFileBuffer);
 
-  // Store the size of the BITMAPINFO
-  BmpFileHeader := PBITMAPFILEHEADER(FFileBuffer);
-  FBitmapInfo := Integer(BmpFileHeader.bfOffBits) - FileHeaderSize;
+  //Store the Size of the BITMAPINFO
+  FBitmapInfoSize := bmpFileHeader.bfOffBits - bmpFileHeaderSize;
 
-  // Store a pointer to the BITMAPINFO
+  //Store a pointer to the BITMAPINFO
   pb := PByte(FFileBuffer);
-  Inc(pb, FileHeaderSize);
-  FBmi := PBITMAPINFO(pb);
+  Inc(pb, bmpFileHeaderSize);
+  FBitmapInfo := PBitmapInfo(pb);
 
-  // Store a pointer to the starting address of the pixel bits
-  Inc(pb, FBitmapInfo);
+  //Store a pointer to the starting address of the pixel bits
+  Inc(pb, FBitmapInfoSize);
   FImage := pb;
-
-  //Inc(FFrameNumber);
 end;
 
 destructor TMTextureSourcePushPin.Destroy;
@@ -183,8 +183,7 @@ end;
 
 function TMTextureSourcePushPin.GetMediaType(MediaType: PAMMediaType): HResult;
 var
-  pvi: PVIDEOINFOHEADER;
-
+  pvi: PVideoInfoHeader;
 begin
   FFilter.StateLock.Lock;
   try
@@ -199,8 +198,8 @@ begin
       Result := E_FAIL;
       Exit;
     end;
-    // Allocate enough room for the VIDEOINFOHEADER and the color tables
-    MediaType.cbFormat := SIZE_PREHEADER + FBitmapInfo;
+    //Allocate enough room for the VIDEOINFOHEADER and the color tables
+    MediaType.cbFormat := SIZE_PREHEADER + FBitmapInfoSize;
     pvi := CoTaskMemAlloc(MediaType.cbFormat);
     if (pvi = nil) then
     begin
@@ -211,23 +210,23 @@ begin
     ZeroMemory(pvi, MediaType.cbFormat);
     pvi.AvgTimePerFrame := FFrameLength;
 
-    // Copy the header info
-    CopyMemory(@pvi.bmiHeader, FBmi, FBitmapInfo);
+    //Copy the header info
+    CopyMemory(@pvi.bmiHeader, FBitmapInfo, FBitmapInfoSize);
 
-    // Set image size for use in FillBuffer
+    //Set image size for use in FillBuffer
     pvi.bmiHeader.biSizeImage := GetBitmapSize(@pvi.bmiHeader);
 
-    // Clear source and target rectangles
-    // we want the whole image area rendered
+    //Clear source and target rectangles
+    //we want the whole image area rendered
     SetRectEmpty(pvi.rcSource);
-    // no particular destination rectangle
+    //no particular destination rectangle
     SetRectEmpty(pvi.rcTarget);
 
     MediaType.majortype := MEDIATYPE_Video;
     MediaType.formattype := FORMAT_VideoInfo;
     // Work out the GUID for the subtype from the header info.
     MediaType.subtype := GetBitmapSubtype(@pvi.bmiHeader);
-    //OutputDebugString(pchar(GuidToString(MediaType.subtype)));
+
     MediaType.bTemporalCompression := False;
     MediaType.bFixedSizeSamples := True;
     MediaType.pbFormat := pvi;
