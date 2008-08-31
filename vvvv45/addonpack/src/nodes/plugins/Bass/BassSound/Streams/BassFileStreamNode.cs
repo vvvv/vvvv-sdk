@@ -94,10 +94,10 @@ namespace BassSound.Streams
             this.FPinInMono.SetSubType(0, 1, 1, 0, false, true, true);
 
             this.FHost.CreateValueInput("Pitch", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPitch);
-            this.FPinInPitch.SetSubType(-60, 60, 0, 0, false, false, false);
+            this.FPinInPitch.SetSubType(-60, 60, 1, 0, false, false, false);
 
             this.FHost.CreateValueInput("Tempo", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInTempo);
-            this.FPinInTempo.SetSubType(-95, 5000, 0, 0, false, false, false);
+            this.FPinInTempo.SetSubType(-95, 5000, 1, 0, false, false, false);
 
             this.FHost.CreateStringInput("File Name", TSliceMode.Single, TPinVisibility.True, out this.FPinInFilename);
             this.FPinInFilename.SetSubType("", true);
