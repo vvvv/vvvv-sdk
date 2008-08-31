@@ -1,8 +1,8 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha17.1.dtd" >
-   <PATCH nodename="Y:\sourceforge\plugins\Bass\Samples\DynamicStream (Bass Mixer) help.v4p">
+   <PATCH nodename="Y:\sourceforge\plugins\Bass\Samples\Multichannel DynamicStream Tester.v4p">
    <BOUNDS height="9015" left="8325" top="2355" type="Window" width="9000">
    </BOUNDS>
-   <NODE componentmode="Hidden" id="19" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassDynamicStreamNode">
+   <NODE componentmode="Hidden" id="21" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassDynamicStreamNode">
    <BOUNDS height="0" left="1155" top="4260" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="7455" top="5910" type="Window" width="0">
@@ -40,7 +40,7 @@
    <PIN pinname="Buffer Start Position" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="18" nodename=":PLUGINS:\AsioBassSound.dll|vvvv.Nodes.BassAsioOutputNode">
+   <NODE componentmode="Hidden" id="20" nodename=":PLUGINS:\AsioBassSound.dll|vvvv.Nodes.BassAsioOutputNode">
    <BOUNDS height="0" left="1800" top="7530" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="7605" top="9195" type="Window" width="0">
@@ -51,12 +51,18 @@
    </PIN>
    <PIN pinname="Is Active" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Volume" slicecount="1" values="0.0999999999999994">
+   <PIN pinname="Volume" slicecount="1" values="0.919999999999999">
    </PIN>
-   <PIN pinname="Device" slicecount="1" values="0">
+   <PIN pinname="Device" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Handles In" visible="1">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   <PIN pinname="Control Panel" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="6750" top="2385" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="9375" top="6720" type="Window" width="215">
@@ -78,9 +84,9 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="19" dstpinname="Reset" srcnodeid="17" srcpinname="Y Output Value">
+   <LINK dstnodeid="21" dstpinname="Reset" srcnodeid="19" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="18" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="5490" top="2385" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="8070" top="7095" type="Window" width="215">
@@ -102,9 +108,9 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="19" dstpinname="Do Write" srcnodeid="16" srcpinname="Y Output Value">
+   <LINK dstnodeid="21" dstpinname="Do Write" srcnodeid="18" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="Hidden" id="15" nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.MixerNode">
+   <NODE componentmode="Hidden" id="17" nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.MixerNode">
    <BOUNDS height="0" left="2550" top="7110" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="8820" top="9225" type="Window" width="0">
@@ -144,7 +150,7 @@
    <PIN pinname="Volume 3" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="4500" top="5190" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7065" top="10860" type="Window" width="215">
@@ -176,7 +182,7 @@
    <PIN pinname="X Input Value" slicecount="3" values="1,1,0.0330291177748805">
    </PIN>
    </NODE>
-   <NODE id="13" nodename="I (Spreads)">
+   <NODE id="15" nodename="I (Spreads)">
    <BOUNDS height="0" left="7185" top="4035" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -184,9 +190,9 @@
    <PIN pinname=".. To [" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="19" dstpinname="Indices" srcnodeid="13" srcpinname="Output">
+   <LINK dstnodeid="21" dstpinname="Indices" srcnodeid="15" srcpinname="Output">
    </LINK>
-   <NODE id="12" nodename="CircularSpread (Spreads)">
+   <NODE id="14" nodename="CircularSpread (Spreads)">
    <BOUNDS height="0" left="1260" top="1770" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output X" visible="1">
@@ -196,9 +202,9 @@
    <PIN pinname="Factor" slicecount="1" values="1000">
    </PIN>
    </NODE>
-   <LINK dstnodeid="19" dstpinname="Data" srcnodeid="12" srcpinname="Output X">
+   <LINK dstnodeid="21" dstpinname="Data" srcnodeid="14" srcpinname="Output X">
    </LINK>
-   <NODE id="11" nodename="Resample (Spreads)">
+   <NODE id="13" nodename="Resample (Spreads)">
    <BOUNDS height="0" left="15" top="4035" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -206,9 +212,9 @@
    <PIN pinname="Spread Count" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="19" dstpinname="Buffer" srcnodeid="11" srcpinname="Output">
+   <LINK dstnodeid="21" dstpinname="Buffer" srcnodeid="13" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="5865" top="840" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="12315" top="4500" type="Window" width="215">
@@ -224,13 +230,13 @@
    <PIN pinname="Minimum" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="12" dstpinname="Spread Count" srcnodeid="10" srcpinname="Y Output Value">
+   <LINK dstnodeid="14" dstpinname="Spread Count" srcnodeid="12" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="13" dstpinname=".. To [" srcnodeid="10" srcpinname="Y Output Value">
+   <LINK dstnodeid="15" dstpinname=".. To [" srcnodeid="12" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="11" dstpinname="Spread Count" srcnodeid="10" srcpinname="Y Output Value">
+   <LINK dstnodeid="13" dstpinname="Spread Count" srcnodeid="12" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="4500" top="6180" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7365" top="11160" type="Window" width="215">
@@ -262,7 +268,7 @@
    <PIN pinname="X Input Value" slicecount="3" values="0.395822352908541,1,0.699695784441547">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="4500" top="7170" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7365" top="12150" type="Window" width="215">
@@ -294,7 +300,7 @@
    <PIN pinname="X Input Value" slicecount="3" values="0.191489361702127,0.826513911620295,0.936170212765958">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="7" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassDynamicStreamNode">
+   <NODE componentmode="Hidden" id="9" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassDynamicStreamNode">
    <BOUNDS height="0" left="3375" top="4260" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="7755" top="6210" type="Window" width="0">
@@ -326,11 +332,11 @@
    <PIN pinname="Buffer Start Position" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="7" dstpinname="Indices" srcnodeid="13" srcpinname="Output">
+   <LINK dstnodeid="9" dstpinname="Indices" srcnodeid="15" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="7" dstpinname="Buffer" srcnodeid="11" srcpinname="Output">
+   <LINK dstnodeid="9" dstpinname="Buffer" srcnodeid="13" srcpinname="Output">
    </LINK>
-   <NODE id="6" nodename="RandomSpread (Spreads)">
+   <NODE id="8" nodename="RandomSpread (Spreads)">
    <BOUNDS height="0" left="3060" top="1785" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -338,15 +344,15 @@
    <PIN pinname="Spread Count" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="7" dstpinname="Data" srcnodeid="6" srcpinname="Output">
+   <LINK dstnodeid="9" dstpinname="Data" srcnodeid="8" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="6" dstpinname="Spread Count" srcnodeid="10" srcpinname="Y Output Value">
+   <LINK dstnodeid="8" dstpinname="Spread Count" srcnodeid="12" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="7" dstpinname="Do Write" srcnodeid="16" srcpinname="Y Output Value">
+   <LINK dstnodeid="9" dstpinname="Do Write" srcnodeid="18" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="7" dstpinname="Reset" srcnodeid="17" srcpinname="Y Output Value">
+   <LINK dstnodeid="9" dstpinname="Reset" srcnodeid="19" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="Hidden" id="5" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassDynamicStreamNode">
+   <NODE componentmode="Hidden" id="7" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassDynamicStreamNode">
    <BOUNDS height="0" left="5250" top="4260" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="8055" top="6510" type="Window" width="0">
@@ -376,15 +382,15 @@
    <PIN pinname="Buffer Start Position" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="5" dstpinname="Reset" srcnodeid="17" srcpinname="Y Output Value">
+   <LINK dstnodeid="7" dstpinname="Reset" srcnodeid="19" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="5" dstpinname="Do Write" srcnodeid="16" srcpinname="Y Output Value">
+   <LINK dstnodeid="7" dstpinname="Do Write" srcnodeid="18" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="5" dstpinname="Buffer" srcnodeid="11" srcpinname="Output">
+   <LINK dstnodeid="7" dstpinname="Buffer" srcnodeid="13" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="5" dstpinname="Indices" srcnodeid="13" srcpinname="Output">
+   <LINK dstnodeid="7" dstpinname="Indices" srcnodeid="15" srcpinname="Output">
    </LINK>
-   <NODE id="4" nodename="LinearSpread (Spreads)">
+   <NODE id="6" nodename="LinearSpread (Spreads)">
    <BOUNDS height="0" left="5205" top="1860" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Spread Count" visible="1">
@@ -392,11 +398,11 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Spread Count" srcnodeid="10" srcpinname="Y Output Value">
+   <LINK dstnodeid="6" dstpinname="Spread Count" srcnodeid="12" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="5" dstpinname="Data" srcnodeid="4" srcpinname="Output">
+   <LINK dstnodeid="7" dstpinname="Data" srcnodeid="6" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="7995" top="3765" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="8955" top="9465" type="Window" width="215">
@@ -422,25 +428,23 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Play">
    </PIN>
    </NODE>
-   <LINK dstnodeid="19" dstpinname="Play" srcnodeid="3" srcpinname="Y Output Value">
+   <LINK dstnodeid="21" dstpinname="Play" srcnodeid="5" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="7" dstpinname="Play" srcnodeid="3" srcpinname="Y Output Value">
+   <LINK dstnodeid="9" dstpinname="Play" srcnodeid="5" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="5" dstpinname="Play" srcnodeid="3" srcpinname="Y Output Value">
+   <LINK dstnodeid="7" dstpinname="Play" srcnodeid="5" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="Hidden" id="2" nodename=":PLUGINS:\BassSound.dll|BassSound.BassAudioOutNode">
-   <BOUNDS height="0" left="1800" top="8040" type="Node" width="0">
+   <NODE componentmode="Hidden" id="4" nodename=":PLUGINS:\BassSound.dll|BassSound.BassAudioOutNode">
+   <BOUNDS height="0" left="3555" top="8100" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="9255" top="12780" type="Window" width="0">
    </BOUNDS>
-   <BOUNDS height="0" left="1800" top="8040" type="Box" width="0">
+   <BOUNDS height="0" left="3555" top="8100" type="Box" width="0">
    </BOUNDS>
    <PIN pinname="HandleIn" slicecount="1" visible="1" values="-9999977">
    </PIN>
    </NODE>
-   <LINK dstnodeid="18" dstpinname="Channels" srcnodeid="15" srcpinname="Handle">
-   </LINK>
-   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="2595" top="2430" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="8325" top="6510" type="Window" width="215">
@@ -456,7 +460,7 @@
    <PIN pinname="Maximum" slicecount="1" values="999999">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="885" top="4875" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7470" top="9600" type="Window" width="215">
@@ -466,38 +470,52 @@
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="0" dstpinname="Y Input Value" srcnodeid="19" srcpinname="CurrentPosition">
+   <LINK dstnodeid="2" dstpinname="Y Input Value" srcnodeid="21" srcpinname="CurrentPosition">
    </LINK>
-   <LINK dstnodeid="15" dstpinname="Handle In 1" srcnodeid="19" srcpinname="Handle Out">
+   <LINK dstnodeid="17" dstpinname="Handle In 1" srcnodeid="21" srcpinname="Handle Out">
    </LINK>
-   <LINK dstnodeid="15" dstpinname="Handle In 2" srcnodeid="7" srcpinname="Handle Out">
+   <LINK dstnodeid="17" dstpinname="Handle In 2" srcnodeid="9" srcpinname="Handle Out">
    </LINK>
-   <LINK dstnodeid="15" dstpinname="Handle In 3" srcnodeid="5" srcpinname="Handle Out">
+   <LINK dstnodeid="17" dstpinname="Handle In 3" srcnodeid="7" srcpinname="Handle Out">
    </LINK>
-   <LINK dstnodeid="15" dstpinname="Volume 1" srcnodeid="14" srcpinname="Y Output Value">
+   <LINK dstnodeid="17" dstpinname="Volume 1" srcnodeid="16" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="15" dstpinname="Volume 2" srcnodeid="9" srcpinname="Y Output Value">
+   <LINK dstnodeid="17" dstpinname="Volume 2" srcnodeid="11" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="15" dstpinname="Volume 3" srcnodeid="8" srcpinname="Y Output Value">
+   <LINK dstnodeid="17" dstpinname="Volume 3" srcnodeid="10" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Buffer End Position">
+   <LINK dstnodeid="21" dstpinname="Buffer End Position" srcnodeid="3" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Buffer End Position">
+   <LINK dstnodeid="9" dstpinname="Buffer End Position" srcnodeid="3" srcpinname="Y Output Value">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="20">
-   <BOUNDS type="Node" left="1620" top="2415" width="0" height="0">
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1620" top="2415" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="10305" top="5130" width="215" height="160">
+   <BOUNDS height="160" left="10305" top="5130" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS type="Box" left="1620" top="2415" width="795" height="240">
+   <BOUNDS height="240" left="1620" top="2415" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Buffer Start Position">
+   <LINK dstnodeid="21" dstpinname="Buffer Start Position" srcnodeid="1" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Buffer Start Position">
+   <LINK dstnodeid="9" dstpinname="Buffer Start Position" srcnodeid="1" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Buffer Start Position">
+   <LINK dstnodeid="7" dstpinname="Buffer Start Position" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Handles In" srcnodeid="17" srcpinname="Handle">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="0" left="780" top="8010" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10230" top="12510" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="780" top="8010" type="Box" width="1800">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Input String" srcnodeid="20" srcpinname="Status">
    </LINK>
    </PATCH>
