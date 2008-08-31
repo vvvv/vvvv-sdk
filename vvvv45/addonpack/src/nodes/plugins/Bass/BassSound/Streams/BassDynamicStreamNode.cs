@@ -44,12 +44,12 @@ namespace BassSound.Streams
         private IValueIn FPinInPlay;
         private IValueIn FPinInLoopStartPos;
         private IValueIn FPinInLoopEndPos;
-        private IValueIn FPinInBuffer;
+        private IValueFastIn FPinInBuffer;
         private IValueIn FPinInReset;
 
-        private IValueIn FPinInIndices;
+        private IValueFastIn FPinInIndices;
         private IValueIn FPinInDoWrite;
-        private IValueIn FPinInData;
+        private IValueFastIn FPinInData;
         private IValueIn FPinInRestore;
         private IValueIn FPinInPitch;
         private IValueIn FPinInTempo;
@@ -83,23 +83,25 @@ namespace BassSound.Streams
             this.FHost.CreateValueInput("Tempo", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInTempo);
             this.FPinInTempo.SetSubType(-95, 5000, 1, 0, false, false, false);
             
-            this.FHost.CreateValueInput("Buffer", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInBuffer);
+            this.FHost.CreateValueFastInput("Buffer", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInBuffer);
             this.FPinInBuffer.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
 
-            this.FHost.CreateValueInput("Data", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInData);
+            this.FHost.CreateValueInput("Write Buffer", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInReset);
+            this.FPinInReset.SetSubType(0, 1, 1, 0, true, false, true);
+
+            this.FHost.CreateValueFastInput("Data", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInData);
             this.FPinInData.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
 
-            this.FHost.CreateValueInput("Indices", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInIndices);
+            this.FHost.CreateValueFastInput("Index", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInIndices);
             this.FPinInIndices.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
 
-            this.FHost.CreateValueInput("Do Write", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDoWrite);
+            this.FHost.CreateValueInput("Write Data", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDoWrite);
             this.FPinInDoWrite.SetSubType(0, 1, 1, 0, true, false, true);
 
             this.FHost.CreateValueInput("Restore", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInRestore);
             this.FPinInRestore.SetSubType(0, 1, 1, 0, true, false, true);
 
-            this.FHost.CreateValueInput("Reset", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInReset);
-            this.FPinInReset.SetSubType(0, 1, 1, 0, true, false, true);
+
 
             //Output
             this.FHost.CreateValueOutput("Handle Out", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutHandle);
@@ -126,12 +128,9 @@ namespace BassSound.Streams
             reset = this.FPinCfgIsDecoding.PinIsChanged;
             if (!reset)
             {
-                if (this.FPinInReset.PinIsChanged)
-                {
-                    double dblreset;
-                    this.FPinInReset.GetValue(0, out dblreset);
-                    reset = dblreset == 1;
-                }
+                double dblreset;
+                this.FPinInReset.GetValue(0, out dblreset);
+                reset = dblreset >= 0.5;
             }
 
             if (this.FPinInLoopStartPos.PinIsChanged || this.FPinInLoopEndPos.PinIsChanged)
@@ -147,10 +146,19 @@ namespace BassSound.Streams
                 double dbldec;
                 this.FPinCfgIsDecoding.GetValue(0, out dbldec);
                 info.IsDecoding = dbldec == 1;
-                
+
                 this.manager.CreateChannel(info);
                 this.FChannelInfo = info;
                 this.ProcessStartEnd();
+
+                /*
+                unsafe
+                {
+                    int slicecnt;
+                    double* ptr;
+                    this.FPinInBuffer.GetValuePointer(out slicecnt, out ptr);
+                    Console.WriteLine(slicecnt);
+                }*/
 
                 this.FChannelInfo.Buffer = new float[this.FPinInBuffer.SliceCount];
                 for (int i = 0; i < this.FPinInBuffer.SliceCount; i++)
@@ -169,52 +177,49 @@ namespace BassSound.Streams
             #region Write Data
             double doWrite;
             this.FPinInDoWrite.GetValue(0, out doWrite);
-            if (doWrite > 0.5)
+            if (doWrite >= 0.5)
             {
-            	int len = this.FPinInData.SliceCount;
-            	if (this.FPinInIndices.SliceCount < len)
-            	{
-            		len = this.FPinInIndices.SliceCount;
-            	}
-
-            	for (int i = 0; i < len; i++)
-            	{
-            		double dblindices, dbldata;
-            		this.FPinInIndices.GetValue(i, out dblindices);
-            		this.FPinInData.GetValue(i, out dbldata);
-
-            		int idx = Convert.ToInt32(dblindices);
-            		if (idx < this.FChannelInfo.Buffer.Length)
-            		{
-            			if (!this.FOriginalIndices.ContainsKey(idx))
-            			{
-            				this.FOriginalIndices.Add(idx, this.FChannelInfo.Buffer[idx]);
-            			}
-            			this.FChannelInfo.Buffer[idx] = (float)dbldata;
-            		}
-            	}
-            }
-            #endregion
-
-            #region Restore 
-            if (this.FPinInRestore.PinIsChanged)
-            {
-                double dblrestore;
-                this.FPinInRestore.GetValue(0, out dblrestore);
-
-                if (dblrestore == 1)
+                int len = this.FPinInData.SliceCount;
+                if (this.FPinInIndices.SliceCount < len)
                 {
-                    //Restore the buffer with orginal values
-                    foreach (int i in this.FOriginalIndices.Keys)
+                    len = this.FPinInIndices.SliceCount;
+                }
+
+                for (int i = 0; i < len; i++)
+                {
+                    double dblindices, dbldata;
+                    this.FPinInIndices.GetValue(i, out dblindices);
+                    this.FPinInData.GetValue(i, out dbldata);
+
+                    int idx = Convert.ToInt32(dblindices);
+                    if (idx < this.FChannelInfo.Buffer.Length)
                     {
-                        this.FChannelInfo.Buffer[i] = this.FOriginalIndices[i];
+                        if (!this.FOriginalIndices.ContainsKey(idx))
+                        {
+                            this.FOriginalIndices.Add(idx, this.FChannelInfo.Buffer[idx]);
+                        }
+                        this.FChannelInfo.Buffer[idx] = (float)dbldata;
                     }
-                    this.FOriginalIndices.Clear();
                 }
             }
             #endregion
 
-            #region Update Play/Pause       
+            #region Restore
+            double dblrestore;
+            this.FPinInRestore.GetValue(0, out dblrestore);
+
+            if (dblrestore >= 0.5)
+            {
+                //Restore the buffer with orginal values
+                foreach (int i in this.FOriginalIndices.Keys)
+                {
+                    this.FChannelInfo.Buffer[i] = this.FOriginalIndices[i];
+                }
+                this.FOriginalIndices.Clear();
+            }
+            #endregion
+
+            #region Update Play/Pause
             if (this.FPinInPlay.PinIsChanged || updateplay)
             {
                 if (this.FChannelInfo.InternalHandle != 0)
@@ -232,14 +237,14 @@ namespace BassSound.Streams
                 }
             }
             #endregion
-            
+
             #region Update Current Position/Length
             if (this.FChannelInfo.InternalHandle != 0)
             {
                 if (this.FChannelInfo.BassHandle.HasValue)
                 {
                     int mixerhandle = BassMix.BASS_Mixer_ChannelGetMixer(this.FChannelInfo.BassHandle.Value);
-                	long pos;
+                    long pos;
                     if (mixerhandle != 0)
                     {
                         pos = BassMix.BASS_Mixer_ChannelGetPosition(this.FChannelInfo.BassHandle.Value);
@@ -282,8 +287,6 @@ namespace BassSound.Streams
             this.FChannelInfo.BufferEnd = Convert.ToInt32(end);
 
         }
-
-
 
         #region Auto Evaluate
         public bool AutoEvaluate
