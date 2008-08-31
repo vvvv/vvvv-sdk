@@ -41,6 +41,7 @@ namespace vvvv.Nodes
         private ChannelsManager manager;
 
         private IValueIn FPinInDevice;
+        private IValueIn FControlPanel;
         private IValueIn FPinInChannels;
         private IValueIn FPinInVolumeOutput;
         private IValueIn FPinInActive;
@@ -63,6 +64,9 @@ namespace vvvv.Nodes
 
             this.FHost.CreateValueInput("Device",1,null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDevice);
             this.FPinInDevice.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
+            
+            this.FHost.CreateValueInput("Control Panel",1,null, TSliceMode.Single, TPinVisibility.True, out this.FControlPanel);
+            this.FControlPanel.SetSubType(0, 1, 1, 0, true, false, false);
 
             this.FHost.CreateValueInput("Is Active", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInActive);
             this.FPinInActive.SetSubType(0.0, 1.0, 1, 0, false, true, true);
@@ -191,6 +195,14 @@ namespace vvvv.Nodes
 
                         UpdateChannels();
                     }
+                }
+                
+                if (FControlPanel.PinIsChanged)
+                {
+                	double v;
+                	FControlPanel.GetValue(0, out v);
+                	if (v > 0.5)
+                		BassAsio.BASS_ASIO_ControlPanel();
                 }
                 #endregion
 
