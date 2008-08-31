@@ -168,7 +168,7 @@ namespace vvvv.Nodes
                                 }
                                 else
                                 {
-                                    BassAsioHandler handler = BassAsioUtils.InputChannels[handle];
+                                    BassAsioHandler handler = BassAsioUtils.InputChannels[handle].Handler;
                                     handler.SetMirror(asiooutindex);
                                     asiooutindex += 2;
                                     this.FOutputHandled.Add(asiooutindex);

@@ -81,18 +81,30 @@ namespace BassSound.Internals
         #region Attach Channel
         public void AttachChannel(ChannelInfo info)
         {
-            if (!info.BassHandle.HasValue)
+            if (info is InputChannelInfo)
             {
-                //Initialize to no sound as it's decoding anyway
-                info.Initialize(0);
+                InputChannelInfo iinfo = (InputChannelInfo)info;
+                if (this.BassHandle.HasValue)
+                {
+                    BassMix.BASS_Mixer_StreamAddChannel(this.BassHandle.Value, iinfo.Handler.OutputChannel, BASSFlag.BASS_MIXER_MATRIX | BASSFlag.BASS_MIXER_BUFFER);
+                }
             }
-            this.streams.Add(info);
+            else
+            {
+                if (!info.BassHandle.HasValue)
+                {
+                    //Initialize to no sound as it's decoding anyway
+                    info.Initialize(0);
+                }
+                this.streams.Add(info);
 
-            if (this.BassHandle.HasValue)
-            {
-                BassMix.BASS_Mixer_StreamAddChannel(this.BassHandle.Value, info.BassHandle.Value, BASSFlag.BASS_MIXER_MATRIX | BASSFlag.BASS_MIXER_BUFFER);
+                if (this.BassHandle.HasValue)
+                {
+                    BassMix.BASS_Mixer_StreamAddChannel(this.BassHandle.Value, info.BassHandle.Value, BASSFlag.BASS_MIXER_MATRIX | BASSFlag.BASS_MIXER_BUFFER);
+                }
+                //Simple trick to refresh play status now it's attached
+                
             }
-            //Simple trick to refresh play status now it's attached
             info.Play = info.Play;
         }
         #endregion

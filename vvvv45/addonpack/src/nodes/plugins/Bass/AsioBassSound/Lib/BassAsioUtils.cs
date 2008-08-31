@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Un4seen.BassAsio;
 using Un4seen.Bass;
+using BassSound.Internals;
 
 namespace vvvv.Utils
 {
@@ -43,20 +44,8 @@ namespace vvvv.Utils
         }
         #endregion
 
-        public static Dictionary<int, BassAsioHandler> InputChannels = new Dictionary<int, BassAsioHandler>();
+        public static Dictionary<int, InputChannelInfo> InputChannels = new Dictionary<int, InputChannelInfo>();
 
-        public static Dictionary<int, bool> DecodingChannels = new Dictionary<int, bool>();
 
-        public static bool IsChannelPlay(int handle)
-        {
-            if (BassAsioUtils.DecodingChannels.ContainsKey(handle))
-            {
-                return BassAsioUtils.DecodingChannels[handle];
-            }
-            else
-            {
-                return false;
-            }
-        }
     }
 }

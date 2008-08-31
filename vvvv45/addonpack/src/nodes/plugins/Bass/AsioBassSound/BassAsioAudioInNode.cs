@@ -7,6 +7,7 @@ using vvvv.Utils;
 using Un4seen.Bass;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
+using BassSound.Internals;
 
 namespace vvvv.Nodes
 {
@@ -41,27 +42,29 @@ namespace vvvv.Nodes
 
         private IPluginHost FHost;
 
-        private IStringIn FPinInDevice;
+        private IValueIn FPinInDevice;
         private IValueIn FPinChannelCount;
 
         private IValueOut FPinOutHandle;
         private IStringOut FPinOutStatus;
 
         private int FDeviceIndex = -1;
-        private BassAsioHandler FMyHandler;
+        private ChannelsManager manager;
+        private InputChannelInfo FChannelInfo = new InputChannelInfo();
 
         #region Set Plugin Host
         public void SetPluginHost(IPluginHost Host)
         {
             //We play this channel trough Asio output, so we choose the device NOSOUND
             Bass.BASS_Init(0, 48000, 0, IntPtr.Zero, null);
+            this.manager = ChannelsManager.GetInstance();
 
             BassUtils.LoadPlugins();
 
             this.FHost = Host;
 
-            this.FHost.CreateStringInput("Device", TSliceMode.Single, TPinVisibility.True, out this.FPinInDevice);
-            this.FPinInDevice.SetSubType("", false);
+            this.FHost.CreateValueInput("Device",1,null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDevice);
+            this.FPinInDevice.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
 
             this.FHost.CreateValueInput("Channels Count", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinChannelCount);
             this.FPinChannelCount.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
@@ -93,25 +96,30 @@ namespace vvvv.Nodes
             #region Channel and device
             if (this.FPinInDevice.PinIsChanged)
             {
-                string device;
-                this.FPinInDevice.GetString(0, out device);
+                double ddevice;
+                this.FPinInDevice.GetValue(0, out ddevice);
+                int device = Convert.ToInt32(ddevice);
 
-                this.FDeviceIndex = BassAsioUtils.GetDeviceIndex(device);
-
-                if (this.FDeviceIndex != -1)
+                if (device != -1)
                 {
+                    if (this.FChannelInfo.BassHandle.HasValue)
+                    {
+                        Bass.BASS_ChannelStop(this.FChannelInfo.BassHandle.Value);
+                        Bass.BASS_StreamFree(this.FChannelInfo.BassHandle.Value);
+                    }
+                    this.manager.Delete(this.FChannelInfo.InternalHandle);
+
                     double chancount;
                     this.FPinChannelCount.GetValue(0,out chancount);
 
-                    BassAsio.BASS_ASIO_Init(this.FDeviceIndex);
-                    BassAsio.BASS_ASIO_SetDevice(this.FDeviceIndex);
+                    BassAsio.BASS_ASIO_Init(device);
+                    BassAsio.BASS_ASIO_SetDevice(device);
 
-                    this.FMyHandler = new BassAsioHandler(true,this.FDeviceIndex,0,Convert.ToInt32(chancount),BASSASIOFormat.BASS_ASIO_FORMAT_FLOAT,48000);
-                    BassAsio.BASS_ASIO_Start(0);
-
-                    BassAsioUtils.InputChannels.Add(this.FMyHandler.InputChannel,this.FMyHandler);
-                    
-                    this.FPinOutHandle.SetValue(0, this.FMyHandler.InputChannel);
+                    this.FChannelInfo = new InputChannelInfo();
+                    this.manager.CreateChannel(this.FChannelInfo);
+                    this.FChannelInfo.Initialize(device);
+                                       
+                    this.FPinOutHandle.SetValue(0, this.FChannelInfo.InternalHandle);
 
                     this.FPinOutStatus.SetString(0, "OK");
                 }
@@ -122,8 +130,6 @@ namespace vvvv.Nodes
 
         public void Dispose()
         {
-            this.FMyHandler.Dispose();
-            BassAsioUtils.InputChannels.Remove(this.FMyHandler.InputChannel);
             BassAsio.BASS_ASIO_ChannelReset(true, 0, BASSASIOReset.BASS_ASIO_RESET_PAUSE | BASSASIOReset.BASS_ASIO_RESET_JOIN);
         }
     }
