@@ -78,10 +78,10 @@ namespace BassSound.Streams
             this.FPinInLoopEndPos.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
 
             this.FHost.CreateValueInput("Pitch", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPitch);
-            this.FPinInPitch.SetSubType(-60, 60, 0, 0, false, false, false);
+            this.FPinInPitch.SetSubType(-60, 60, 1, 0, false, false, false);
 
             this.FHost.CreateValueInput("Tempo", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInTempo);
-            this.FPinInTempo.SetSubType(-95, 5000, 0, 0, false, false, false);
+            this.FPinInTempo.SetSubType(-95, 5000, 1, 0, false, false, false);
             
             this.FHost.CreateValueInput("Buffer", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInBuffer);
             this.FPinInBuffer.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
@@ -167,37 +167,32 @@ namespace BassSound.Streams
             #endregion
 
             #region Write Data
-            if (this.FPinInDoWrite.PinIsChanged)
+            double doWrite;
+            this.FPinInDoWrite.GetValue(0, out doWrite);
+            if (doWrite > 0.5)
             {
-                double dbldowrite;
-                this.FPinInDoWrite.GetValue(0, out dbldowrite);
+            	int len = this.FPinInData.SliceCount;
+            	if (this.FPinInIndices.SliceCount < len)
+            	{
+            		len = this.FPinInIndices.SliceCount;
+            	}
 
-                if (dbldowrite == 1)
-                {
+            	for (int i = 0; i < len; i++)
+            	{
+            		double dblindices, dbldata;
+            		this.FPinInIndices.GetValue(i, out dblindices);
+            		this.FPinInData.GetValue(i, out dbldata);
 
-                    int len = this.FPinInData.SliceCount;
-                    if (this.FPinInIndices.SliceCount < len)
-                    {
-                        len = this.FPinInIndices.SliceCount;
-                    }
-
-                    for (int i = 0; i < len; i++)
-                    {
-                        double dblindices, dbldata;
-                        this.FPinInIndices.GetValue(i, out dblindices);
-                        this.FPinInData.GetValue(i, out dbldata);
-
-                        int idx = Convert.ToInt32(dblindices);
-                        if (idx < this.FChannelInfo.Buffer.Length)
-                        {
-                            if (!this.FOriginalIndices.ContainsKey(idx))
-                            {
-                                this.FOriginalIndices.Add(idx, this.FChannelInfo.Buffer[idx]);
-                            }
-                            this.FChannelInfo.Buffer[idx] = (float)dbldata;
-                        }
-                    }
-                }
+            		int idx = Convert.ToInt32(dblindices);
+            		if (idx < this.FChannelInfo.Buffer.Length)
+            		{
+            			if (!this.FOriginalIndices.ContainsKey(idx))
+            			{
+            				this.FOriginalIndices.Add(idx, this.FChannelInfo.Buffer[idx]);
+            			}
+            			this.FChannelInfo.Buffer[idx] = (float)dbldata;
+            		}
+            	}
             }
             #endregion
 
