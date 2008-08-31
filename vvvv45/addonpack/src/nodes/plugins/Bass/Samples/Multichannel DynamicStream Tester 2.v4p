@@ -149,6 +149,8 @@
    </PIN>
    <PIN pinname="Volume 3" visible="1">
    </PIN>
+   <PIN pinname="Play" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="4500" top="5190" type="Node" width="0">
@@ -305,6 +307,8 @@
    </PIN>
    <PIN pinname="Buffer Start Position" visible="1">
    </PIN>
+   <PIN pinname="CurrentPosition" visible="1">
+   </PIN>
    </NODE>
    <NODE id="7" nodename="RandomSpread (Spreads)">
    <BOUNDS height="0" left="3060" top="1785" type="Node" width="0">
@@ -349,6 +353,8 @@
    </PIN>
    <PIN pinname="Buffer Start Position" visible="1">
    </PIN>
+   <PIN pinname="CurrentPosition" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="6" dstpinname="Reset" srcnodeid="16" srcpinname="Y Output Value">
    </LINK>
@@ -365,15 +371,15 @@
    <LINK dstnodeid="5" dstpinname="Spread Count" srcnodeid="11" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="7995" top="3765" type="Node" width="0">
+   <BOUNDS height="0" left="7920" top="2970" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="8955" top="9465" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="555" left="7995" top="3765" type="Box" width="675">
+   <BOUNDS height="555" left="7920" top="2970" type="Box" width="675">
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
    </PIN>
@@ -381,7 +387,7 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
+   <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Show Value" slicecount="1" values="0">
    </PIN>
@@ -475,5 +481,57 @@
    <LINK dstnodeid="18" dstpinname="Buffer" srcnodeid="12" srcpinname="Output X">
    </LINK>
    <LINK dstnodeid="6" dstpinname="Buffer" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1050" top="6210" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="1545" top="12165" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="555" left="1050" top="6210" type="Box" width="675">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Play">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Play">
+   </LINK>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2910" top="4995" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9870" top="10080" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2910" top="4995" type="Box" width="1470">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="CurrentPosition" dstnodeid="20" dstpinname="Y Input Value">
+   </LINK>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5595" top="4785" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12435" top="9615" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5595" top="4785" type="Box" width="1470">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="CurrentPosition" dstnodeid="21" dstpinname="Y Input Value">
    </LINK>
    </PATCH>

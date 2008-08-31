@@ -41,6 +41,8 @@ namespace vvvv.Nodes
         private int FInputCount = 0;
         private MixerChannelInfo FMixerInfo = new MixerChannelInfo();
 
+        private IValueIn FPinInPlay;
+
         private IValueIn FPinInIsDecoding;
         private IValueIn FPinInChanCount;
         private IValueConfig FPinInNumInputs;
@@ -57,6 +59,9 @@ namespace vvvv.Nodes
             this.FHost = Host;
             this.manager = ChannelsManager.GetInstance();
             this.manager.OnChannelDeleted += new GenericEventHandler<int>(manager_OnChannelDeleted);
+
+            this.FHost.CreateValueInput("Play", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPlay);
+            this.FPinInPlay.SetSubType(0, 1, 1, 0, false, true, true);
 
             this.FHost.CreateValueInput("Is Decoding", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out this.FPinInIsDecoding);
             this.FPinInIsDecoding.SetSubType(0, 1, 1, 0, false, true, true);
@@ -162,10 +167,13 @@ namespace vvvv.Nodes
                 double decoding;
                 this.FPinInIsDecoding.GetValue(0, out decoding);
 
+                double isplay;
+                this.FPinInPlay.GetValue(0, out isplay);
+
                 MixerChannelInfo newmixerinfo = new MixerChannelInfo();
                 newmixerinfo.IsDecoding = decoding == 1;
                 newmixerinfo.NumChans = Convert.ToInt32(numchans);
-                newmixerinfo.Play = true;
+                newmixerinfo.Play = isplay == 1;
                 this.manager.CreateChannel(newmixerinfo);
 
                 this.FMixerInfo = newmixerinfo;
@@ -230,6 +238,13 @@ namespace vvvv.Nodes
                 }
             }
             #endregion
+
+            if (this.FPinInPlay.PinIsChanged)
+            {
+                double isplay;
+                this.FPinInPlay.GetValue(0, out isplay);
+                this.FMixerInfo.Play = isplay == 1;
+            }
         }
         #endregion
 

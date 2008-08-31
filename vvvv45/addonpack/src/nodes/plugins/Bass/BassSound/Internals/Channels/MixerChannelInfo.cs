@@ -61,7 +61,9 @@ namespace BassSound.Internals
                 info.Play = info.Play;
             }
 
-            Bass.BASS_ChannelPlay(this.BassHandle.Value, false);
+            this.Play = this.Play;
+
+            //Bass.BASS_ChannelPlay(this.BassHandle.Value, false);
             this.OnInitialize();
         }
         #endregion
