@@ -48,7 +48,6 @@ namespace vvvv.Nodes
         private IValueOut FPinOutHandle;
         private IStringOut FPinOutStatus;
 
-        private int FDeviceIndex = -1;
         private ChannelsManager manager;
         private InputChannelInfo FChannelInfo = new InputChannelInfo();
 
