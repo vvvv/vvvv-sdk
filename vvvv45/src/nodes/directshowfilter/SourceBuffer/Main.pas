@@ -586,16 +586,13 @@ begin
 
   if Filename <> '' then
   begin
-    Filename := Filename + '.wav';
     StringToWideChar(Filename, pFilename, STRLENGTH);
-  end
-  else
-    StringToWideChar('SourceBuffer_Dump.wav', pFilename, STRLENGTH);
 
-  if(Succeeded(FWaveFile.Open(pFilename, @FPin.pwf.Format, WAVEFILE_WRITE))) then
-    FWaveFile.Write(length, FBuffer, bytesWrote);
+    if(Succeeded(FWaveFile.Open(pFilename, @FPin.pwf.Format, WAVEFILE_WRITE))) then
+      FWaveFile.Write(length, FBuffer, bytesWrote);
 
-  FWaveFile.Close();
+    FWaveFile.Close();
+  end;
 
   Result := S_OK;
 end;
