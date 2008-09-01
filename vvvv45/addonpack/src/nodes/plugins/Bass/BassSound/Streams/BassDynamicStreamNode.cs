@@ -17,7 +17,7 @@ namespace BassSound.Streams
             {
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "DynamicStream";
-                Info.Category = "Bass";
+                Info.Category = "Bass Advanced";
                 Info.Version = "";
                 Info.Help = "Dynamic Stream for Bass, set the buffer";
                 Info.Bugs = "";
