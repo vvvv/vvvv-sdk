@@ -105,6 +105,8 @@
    </PIN>
    <PIN pinname="Volume 1" visible="1">
    </PIN>
+   <PIN pinname="Play" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="4170" top="2550" type="Node" width="0">
@@ -243,11 +245,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
-   <BOUNDS height="0" left="3585" top="1755" type="Node" width="0">
+   <BOUNDS height="0" left="3750" top="1770" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="10185" top="6570" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="525" left="3585" top="1755" type="Box" width="3675">
+   <BOUNDS height="525" left="3750" top="1770" type="Box" width="3675">
    </BOUNDS>
    <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
@@ -291,11 +293,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="2100" top="4785" type="Node" width="0">
+   <BOUNDS height="0" left="1290" top="4710" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="9810" top="12015" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="540" left="2100" top="4785" type="Box" width="1830">
+   <BOUNDS height="540" left="1290" top="4710" type="Box" width="1830">
    </BOUNDS>
    <PIN pinname="Rows" slicecount="1" values="1">
    </PIN>
@@ -319,7 +321,7 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="2" values="0,0">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="2" values="0.6,0.657142857142857">
+   <PIN pinname="Y Input Value" slicecount="2" values="0.4125,0.500892857142857">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="1" nodename=":PLUGINS:\AsioBassSound.dll|vvvv.Nodes.BassAsioOutputNode">
@@ -356,18 +358,46 @@
    <PIN pinname="Output String" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="13" srcpinname="Handle Out" dstnodeid="10" dstpinname="Handle In 1">
+   <LINK dstnodeid="10" dstpinname="Handle In 1" srcnodeid="13" srcpinname="Handle Out">
    </LINK>
-   <LINK srcnodeid="10" srcpinname="Handle" dstnodeid="1" dstpinname="Handles In">
+   <LINK dstnodeid="1" dstpinname="Handles In" srcnodeid="10" srcpinname="Handle">
    </LINK>
-   <LINK srcnodeid="6" srcpinname="Handle Out" dstnodeid="10" dstpinname="Handle In 2">
+   <LINK dstnodeid="10" dstpinname="Handle In 2" srcnodeid="6" srcpinname="Handle Out">
    </LINK>
-   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Volume 2">
+   <LINK dstnodeid="10" dstpinname="Volume 2" srcnodeid="5" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Volume 1">
+   <LINK dstnodeid="10" dstpinname="Volume 1" srcnodeid="9" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="12" srcpinname="Output String" dstnodeid="13" dstpinname="File Name">
+   <LINK dstnodeid="13" dstpinname="File Name" srcnodeid="12" srcpinname="Output String">
    </LINK>
-   <LINK srcnodeid="8" srcpinname="Output String" dstnodeid="6" dstpinname="File Name">
+   <LINK dstnodeid="6" dstpinname="File Name" srcnodeid="8" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3300" top="4260" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9090" top="9270" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="3300" top="4260" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Play">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Play">
    </LINK>
    </PATCH>

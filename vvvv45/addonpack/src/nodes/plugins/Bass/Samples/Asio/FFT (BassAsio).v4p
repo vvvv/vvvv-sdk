@@ -67,9 +67,9 @@
    </PIN>
    <PIN pinname="Show Slider" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
+   <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="18" dstpinname="Play" srcnodeid="16" srcpinname="Y Output Value">
@@ -273,6 +273,8 @@
    </PIN>
    <PIN pinname="Volume 1" visible="1">
    </PIN>
+   <PIN pinname="Play" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="2" nodename=":PLUGINS:\AsioBassSound.dll|vvvv.Nodes.BassAsioOutputNode">
    <BOUNDS height="0" left="5865" top="3570" type="Node" width="0">
@@ -325,5 +327,33 @@
    <LINK dstnodeid="3" dstpinname="Handle In 1" srcnodeid="18" srcpinname="Handle Out">
    </LINK>
    <LINK dstnodeid="14" dstpinname="Handle In" srcnodeid="18" srcpinname="Handle Out">
+   </LINK>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5655" top="2520" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9645" top="8400" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="5655" top="2520" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Play">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Play">
    </LINK>
    </PATCH>

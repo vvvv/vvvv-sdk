@@ -3,11 +3,11 @@
    <BOUNDS height="8775" left="4950" top="1575" type="Window" width="10215">
    </BOUNDS>
    <NODE componentmode="Hidden" id="16" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassFileStreamNode">
-   <BOUNDS height="0" left="2940" top="1410" type="Node" width="0">
+   <BOUNDS height="0" left="3870" top="1305" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="7230" top="5220" type="Window" width="0">
    </BOUNDS>
-   <BOUNDS height="0" left="2940" top="1410" type="Box" width="0">
+   <BOUNDS height="0" left="3870" top="1305" type="Box" width="0">
    </BOUNDS>
    <PIN pinname="Handle" visible="1">
    </PIN>
@@ -259,11 +259,11 @@
    <LINK dstnodeid="4" dstpinname="Delay" srcnodeid="2" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="Hidden" id="1" nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.MixerNode">
-   <BOUNDS height="0" left="4260" top="2205" type="Node" width="0">
+   <BOUNDS height="0" left="4545" top="2730" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="9345" top="4275" type="Window" width="0">
    </BOUNDS>
-   <BOUNDS height="0" left="4260" top="2205" type="Box" width="0">
+   <BOUNDS height="0" left="4545" top="2730" type="Box" width="0">
    </BOUNDS>
    <PIN pinname="Channel Count" slicecount="1" visible="1" values="2">
    </PIN>
@@ -278,6 +278,8 @@
    <PIN pinname="Handle" visible="1">
    </PIN>
    <PIN pinname="Handle In 1" visible="1">
+   </PIN>
+   <PIN pinname="Play" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="0" nodename=":PLUGINS:\AsioBassSound.dll|vvvv.Nodes.BassAsioOutputNode">
@@ -296,10 +298,42 @@
    </NODE>
    <LINK dstnodeid="4" dstpinname="Handle In" srcnodeid="16" srcpinname="Handle Out">
    </LINK>
-   <LINK dstnodeid="1" dstpinname="Handle In 1" srcnodeid="16" srcpinname="Handle Out">
-   </LINK>
    <LINK dstnodeid="0" dstpinname="Handles In" srcnodeid="1" srcpinname="Handle">
    </LINK>
    <LINK dstnodeid="16" dstpinname="File Name" srcnodeid="15" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3510" top="2115" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9390" top="8205" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="3510" top="2115" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Play">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Play">
+   <LINKPOINT x="4515" y="2670">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Handle Out" dstnodeid="1" dstpinname="Handle In 1">
+   <LINKPOINT x="5325" y="2190">
+   </LINKPOINT>
    </LINK>
    </PATCH>
