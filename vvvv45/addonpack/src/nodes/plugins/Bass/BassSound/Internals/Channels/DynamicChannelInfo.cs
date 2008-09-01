@@ -48,6 +48,11 @@ namespace BassSound.Internals
             get { return this.bufferend; }
             set { this.bufferend = value; }
         }
+
+        public int BufferPosition
+        {
+            get { return this.bufferposition; }
+        }
         #endregion
 
         #region Initialize

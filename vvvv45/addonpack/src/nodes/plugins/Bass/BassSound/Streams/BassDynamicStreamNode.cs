@@ -17,7 +17,7 @@ namespace BassSound.Streams
             {
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "DynamicStream";
-                Info.Category = "Bass Advanced";
+                Info.Category = "Bass";
                 Info.Version = "";
                 Info.Help = "Dynamic Stream for Bass, set the buffer";
                 Info.Bugs = "";
@@ -56,6 +56,7 @@ namespace BassSound.Streams
 
         private IValueOut FPinOutHandle;
         private IValueOut FPinOutCurrentPosition;
+        private IValueOut FPinOutBufferPosition;
 
         #region Set Plugin Host
         public void SetPluginHost(IPluginHost Host)
@@ -109,6 +110,9 @@ namespace BassSound.Streams
             
             this.FHost.CreateValueOutput("CurrentPosition", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutCurrentPosition);
             this.FPinOutCurrentPosition.SetSubType(0, double.MaxValue, 0, 0.0, false, false, false);
+
+            this.FHost.CreateValueOutput("Buffer Position", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutBufferPosition);
+            this.FPinOutBufferPosition.SetSubType(0, double.MaxValue, 0, 0.0, false, false, true);
         }
         #endregion
 
@@ -150,15 +154,6 @@ namespace BassSound.Streams
                 this.manager.CreateChannel(info);
                 this.FChannelInfo = info;
                 this.ProcessStartEnd();
-
-                /*
-                unsafe
-                {
-                    int slicecnt;
-                    double* ptr;
-                    this.FPinInBuffer.GetValuePointer(out slicecnt, out ptr);
-                    Console.WriteLine(slicecnt);
-                }*/
 
                 this.FChannelInfo.Buffer = new float[this.FPinInBuffer.SliceCount];
                 for (int i = 0; i < this.FPinInBuffer.SliceCount; i++)
@@ -255,7 +250,8 @@ namespace BassSound.Streams
                     }
                     double seconds = Bass.BASS_ChannelBytes2Seconds(this.FChannelInfo.BassHandle.Value, pos);
                     this.FPinOutCurrentPosition.SetValue(0, seconds);
-                    //this.FPinOutLength.SetValue(0, info.Length);
+
+                    this.FPinOutBufferPosition.SetValue(0, this.FChannelInfo.BufferPosition);
                 }
             }
             #endregion
