@@ -270,9 +270,9 @@ namespace VVVV.Nodes
         //coordinate undistortion
         Vector2D Undistort(Vector2D Pos, Vector2D FocalLength, Vector2D PrincipalPoint, Vector4D Distortion, Vector2D Resolution)
         {
-        	Pos = (Pos * FocalLength + PrincipalPoint) / Resolution;
-        	Pos = distort(Pos, Distortion.x, Distortion.y, Distortion.z, Distortion.w);
         	Pos = (Pos * Resolution - PrincipalPoint) / FocalLength;
+        	Pos = distort(Pos, Distortion.x, Distortion.y, Distortion.z, Distortion.w);
+        	Pos = (Pos * FocalLength + PrincipalPoint) / Resolution;
 
         	return Pos;
         }
