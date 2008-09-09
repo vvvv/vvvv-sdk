@@ -80,7 +80,7 @@ const
   BLOCKSIZESMALL     =  256;
   BLOCKSIZE          =  2048;
   BLOCKALIGN         =  256;
-  CHANNELMASK        =  SPEAKER_FRONT_LEFT;
+  DEFAULTCHANNELMASK =  SPEAKER_FRONT_LEFT;
   CHANNELMASK5POINT1 =  SPEAKER_FRONT_LEFT    or
                         SPEAKER_FRONT_RIGHT   or
                         SPEAKER_FRONT_CENTER  or
@@ -147,8 +147,8 @@ type
   PAudioSample = ^AudioSample;
 
   TInfoArray    = Array of String;
-  TSampleArray  = Array of Double;
-  TChannelArray = Array of TSampleArray;
+  TSampleArray  = Array [0..BLOCKSIZE-1] of Double;
+  TChannelArray = Array [0..MAXCHANNELS-1] of TSampleArray;
   TSourceFrame  = Array [0..MAXCHANNELS-1] of Double;
   TRoutingArray = Array of Integer;
 
@@ -431,15 +431,17 @@ begin
           16: name := 'SPEAKER_TOP_BACK_CENTER';
           17: name := 'SPEAKER_TOP_BACK_RIGHT';
        end;
+       
+       if name <> '' then
+       begin
+         str := ExtractFileName(voice.FFilename);
 
+         val[count] := str +' '+ name;
 
-       str := ExtractFileName(voice.FFilename);
+         if count < 255 then
+          inc(count);
+       end;
 
-       val[count] := str +' '+ name;
-
-       if count < 255 then
-         inc(count);
-         
     end;
 
   end;//end for i
@@ -745,7 +747,8 @@ end;
 
 function TMWavePlayer.SetBlockSize(val: Integer) : HRESULT; stdcall;
 begin
-  FPin.Route.BlockSize := val;
+  if val < BLOCKSIZE then   
+    FPin.Route.BlockSize := val;
 
   Result := S_OK;
 end;
@@ -782,7 +785,7 @@ var
 begin
  inherited;
 
- FChannelMask     := CHANNELMASK;
+ FChannelMask     := DEFAULTCHANNELMASK;
  FBlockSize       := BLOCKSIZESMALL;
  FChannelIdCount  := 0;
  FReload          := false;
@@ -1078,7 +1081,8 @@ begin
    begin
     voice := VoiceCheck(i);
 
-    if voice = nil then Continue;
+    if voice = nil then
+      Continue;
 
     if not voice.FReload then
     for k := 0 to voice.FFChannelCount - 1 do
@@ -1113,7 +1117,7 @@ var
  nVoices    : Integer;
  sinkSample : PAudioSample;
  channel    : TChannelArray;
- buffer     : Array of Double;
+ buffer     : Array [0..MAXCHANNELS*BLOCKSIZE] of Double;
 
 //----------------------------------------------------------------------------//
 
@@ -1144,23 +1148,15 @@ begin
 
  nChannels  := Route.ChannelCount;
  nSamples   := ims.GetSize div BYTESPERSAMPLE;
- nVoices    := FVoiceCount;                        //???
- nFrames    := nSamples div nChannels;
-
- SetLength(buffer,nSamples);
+ nVoices    := FVoiceCount;             //???
+ nFrames    := nSamples div nChannels;  
 
  for i := 0 to nSamples - 1 do
  buffer[i] := 0;
 
- SetLength(channel,MAXCHANNELS);
-
  for k := 0 to MAXCHANNELS - 1 do
- begin
-  SetLength(channel[k],nFrames);
-
-  for i := 0 to nFrames - 1 do
+ for i := 0 to nFrames - 1 do
   channel[k][i] := 0;
- end;
 
 end;
 
@@ -1237,7 +1233,7 @@ end;
    v,k,f,i       : Integer;
    routeTo       : Integer;
    count         : Integer;
-   channelFactor : Array [0..17] of Double;
+   channelFactor : Array [0..MAXCHANNELS-1] of Double;
   begin
 
    count := 0;
@@ -1280,8 +1276,6 @@ end;
     begin
 
      routeTo := Route.Routing[count];
-
-     channelFactor[routeTo] := channelFactor[routeTo] + 1;
 
      for f := 0 to nFrames - 1 do
      if voice.FPlay then
@@ -1361,6 +1355,7 @@ begin
  Result := S_OK;
 
 end;
+
 
 function TMWavePlayerPin.VoiceCheck(index: Integer): PBCVoice;
 var
@@ -1470,6 +1465,9 @@ var
   ires, i : longint;
   fcc : FOURCC;
   count : Integer;
+  tmpMask : Cardinal;
+  tmpCode : Array [0..17] of integer;
+  upCount : integer;
 begin
   Result  := FALSE;
 
@@ -1488,11 +1486,39 @@ begin
   mmres := mmioDescend(hmm, @mmiSub, @mmiParent, MMIO_FINDCHUNK);
 
   if mmres <> MMSYSERR_NOERROR then begin OutputDebugString('waveplayer error 4'); Exit; end;
-  if mmiSub.cksize < sizeof(PCMWAVEFORMAT) then  begin OutputDebugString('waveplayer error 5'); Exit; end;
 
-  mmioRead(hmm, @FFWaveFormat, sizeof(PCMWAVEFORMAT));
-  if (FFWaveFormat.Format.wFormatTag <> WAVE_FORMAT_PCM) and (FFWaveFormat.Format.wFormatTag <> WAVE_FORMAT_EXTENSIBLE) then
-  begin OutputDebugString('waveplayer error 7'); Exit; end;
+
+  if mmiSub.cksize < sizeof(PCMWAVEFORMAT) then
+  begin
+   OutputDebugString('waveplayer error 5');
+   Exit;
+  end;
+
+  if mmiSub.cksize = sizeof(PCMWAVEFORMAT) then
+  begin
+
+   mmioRead(hmm, @FFWaveFormat, sizeof(PCMWAVEFORMAT));
+
+   if FFWaveFormat.Format.wFormatTag <> WAVE_FORMAT_PCM then
+   begin
+     OutputDebugString('WavePlayer: unknown format');
+     Exit;
+   end;
+
+  end;
+
+  if mmiSub.cksize > sizeof(PCMWAVEFORMAT) then
+  begin
+
+   mmioRead(hmm, @FFWaveFormat, sizeof(WAVEFORMATEXTENSIBLE));
+
+   if FFWaveFormat.Format.wFormatTag <> WAVE_FORMAT_EXTENSIBLE then
+   begin
+     OutputDebugString('WavePlayer: unknown format');
+     Exit;
+   end;
+   
+  end;
 
   mmres := mmioAscend(hmm, @mmiSub, 0);
   if mmres <> MMSYSERR_NOERROR then begin OutputDebugString('waveplayer error 8'); Exit; end;
@@ -1551,15 +1577,36 @@ begin
   begin
    count := 0;
 
+   tmpMask := FFWaveFormat.dwChannelMask;
+
+   for i:= 0 to 17 do
+   begin
+    FFChannelMap[i] := 0;
+    tmpCode     [i] := 0;
+   end;
+
    if FFWaveFormat.dwChannelMask <> 0 then
-   for i := 0 to MAXCHANNELS - 1 do
    begin
 
-    if (FFWaveFormat.dwChannelMask and CHANNELCODE[i] = 1) then
-    begin
-     FFChannelMap[count] := i;
-     Inc(count);
-    end;
+     for i := MAXCHANNELS - 1 downto 0 do
+     begin
+
+       if tmpMask >= CHANNELCODE[i] then
+       begin
+        tmpCode[count] := i;
+        tmpMask := tmpMask - CHANNELCODE[i];
+        Inc(count);
+       end;
+
+     end;
+
+     upCount := 0;
+
+     for i := count-1 downto 0 do
+     begin
+       FFChannelMap[upCount] := tmpCode[i];
+       Inc(upCount);
+     end;
 
    end;
 
@@ -1694,21 +1741,13 @@ begin
    FWaveFormat.Format.cbSize          := FFWaveFormat.Format.cbSize;
 
    if FChannelCount > 0 then
-   begin
     FChannelCount := FFChannelCount;
 
-    SetLength(FChannel,FChannelCount);
-   end;
-
    if FChannelCount < 1 then
-   begin
     FChannelCount := NUMCHANNELS;
 
-    SetLength(FChannel, NUMCHANNELS);
-   end;
-
    For i := 0 to MAXCHANNELS - 1 do
-   FChannelMap[i] := FFChannelMap[i];
+     FChannelMap[i] := FFChannelMap[i];
 
    FReload := false;
 
@@ -1779,17 +1818,11 @@ var
    for i := 0 to MAXCHANNELS - 1 do
    sourceFrame[i] := 0;
 
-   SetLength(FChannel,nChannels);
-
    FChannelSize := nFrames;
 
    for k := 0 to nChannels - 1 do
-   begin
-    SetLength(FChannel[k],FChannelSize);
-
-    for i := 0 to FChannelSize - 1 do
-    FChannel[k][i] := 0;
-   end;
+   for i := 0 to FChannelSize - 1 do
+     FChannel[k][i] := 0;
 
   end;
 
