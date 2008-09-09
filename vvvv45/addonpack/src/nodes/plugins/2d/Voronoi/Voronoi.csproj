@@ -29,7 +29,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'vvvv_debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>C:\vvvv_40beta17\plugins\</OutputPath>
+    <OutputPath>C:\vvvv_40beta18\plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -42,13 +42,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Comparers\DefaultComparer.cs" />
     <Compile Include="Lib\FortuneVoronoi.cs" />
     <Compile Include="Lib\HashSet.cs" />
-    <Compile Include="Lib\PriorityQueue.cs" />
     <Compile Include="Lib\ToolBox.cs" />
+    <Compile Include="Lib\VCircleEvent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\VDataEvent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\VDataNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Lib\Vector.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Lib\VEdgeNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\VEvent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\VNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\VoronoiEdge.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lib\VoronoiGraph.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PriorityQueues\DoublePriorityQueue.cs" />
+    <Compile Include="PriorityQueues\PriorityObject.cs" />
+    <Compile Include="PriorityQueues\SinglePriorityQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VoronoiNode.cs" />
   </ItemGroup>
