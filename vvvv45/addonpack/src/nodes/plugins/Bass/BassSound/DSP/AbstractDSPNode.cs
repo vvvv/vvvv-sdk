@@ -22,6 +22,7 @@ namespace vvvv.Nodes
 
         private IValueIn FPinInHandle;
         private IValueIn FPinInPriority;
+        private IValueIn FPinInEnabled;
 
         private IValueOut FPinOutFxHandle;
 
@@ -50,6 +51,10 @@ namespace vvvv.Nodes
             this.FHost.CreateValueOutput("FX Handle", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutFxHandle);
 
             this.OnPluginHostSet();
+
+            //We put the enabled node at the end
+            this.FHost.CreateValueInput("Enabled", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInEnabled);
+            this.FPinInHandle.SetSubType(0, 1, 1, 0, false,true, true);
         }
         #endregion
 
@@ -64,6 +69,8 @@ namespace vvvv.Nodes
         public void Evaluate(int SpreadMax)
         {
             bool reset = false;
+
+            #region Reset is handle or fconnected change
             if (FConnected != this.FPinInHandle.IsConnected)
             {
                 if (this.FPinInHandle.IsConnected)
@@ -76,8 +83,10 @@ namespace vvvv.Nodes
                 }
                 this.FConnected = this.FPinInHandle.IsConnected;
             }
+            #endregion
 
-            if (this.FPinInHandle.PinIsChanged || reset)
+            #region Reset
+            if (this.FPinInHandle.PinIsChanged || reset || this.FPinInEnabled.PinIsChanged)
             {
                 this.ClearUp();
 
@@ -105,6 +114,7 @@ namespace vvvv.Nodes
                     }
                 }
             }
+            #endregion
 
             this.OnEvaluate();
         }
@@ -150,7 +160,10 @@ namespace vvvv.Nodes
                 double dpriority;
                 this.FPinInPriority.GetValue(0, out dpriority);
 
-                if (this.FChannel.BassHandle.HasValue)
+                double denabled;
+                this.FPinInEnabled.GetValue(0, out denabled);
+
+                if (this.FChannel.BassHandle.HasValue && denabled >=0.5)
                 {
                     this.FDSPHandle = Bass.BASS_ChannelSetFX(this.FChannel.BassHandle.Value, this.EffectType, Convert.ToInt32(dpriority));
                     this.FPinOutFxHandle.SliceCount = 1;
