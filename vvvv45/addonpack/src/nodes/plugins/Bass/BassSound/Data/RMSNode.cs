@@ -99,8 +99,16 @@ namespace vvvv.Nodes
             {
                 if (this.FCHannel.BassHandle.HasValue)
                 {
-                    this.FPinOutRMS.SetValue(0, this.FLevelMeter.RMS_dBV);
-                    this.FPinOutAverage.SetValue(0, this.FLevelMeter.AVG_dBV);
+                    double rms, avg;
+
+                    //Convert decibel to normalized.
+                    rms = Math.Pow(10.0, (this.FLevelMeter.RMS_dBV / 20.0));
+                    avg = Math.Pow(10.0, (this.FLevelMeter.AVG_dBV / 20.0));
+
+                    
+
+                    this.FPinOutRMS.SetValue(0, rms);
+                    this.FPinOutAverage.SetValue(0, avg);
                 }
             }
         }

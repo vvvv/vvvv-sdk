@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta18.dtd" >
    <PATCH nodename="D:\repositories\vvvv\plugins\c#\Bass\trunk\Samples\Asio\RMS (BassAsio).v4p">
    <BOUNDS height="8775" left="4950" top="1575" type="Window" width="10215">
    </BOUNDS>
@@ -137,9 +137,9 @@
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
-   <PIN pinname="Source Minimum" slicecount="1" values="-50">
+   <PIN pinname="Source Minimum" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Source Maximum" slicecount="1" values="0">
+   <PIN pinname="Source Maximum" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Destination Minimum" slicecount="1" values="-1">
    </PIN>
@@ -153,9 +153,9 @@
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
-   <PIN pinname="Source Minimum" slicecount="1" values="-50">
+   <PIN pinname="Source Minimum" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Source Maximum" slicecount="1" values="0">
+   <PIN pinname="Source Maximum" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Destination Minimum" slicecount="1" values="-1">
    </PIN>
@@ -190,7 +190,7 @@
    <PIN pinname="Background Color" visible="1">
    </PIN>
    </NODE>
-   <NODE id="8" nodename="Point (GDI)">
+   <NODE id="8" nodename="POINT (GDI)">
    <BOUNDS height="0" left="735" top="4845" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Y" visible="1">
@@ -201,10 +201,10 @@
    </PIN>
    <PIN pinname="Type" slicecount="1" values="Pixel">
    </PIN>
-   <PIN pinname="Color" visible="1">
+   <PIN pinname="Pen Color" visible="1">
    </PIN>
    </NODE>
-   <NODE id="7" nodename="Point (GDI)">
+   <NODE id="7" nodename="POINT (GDI)">
    <BOUNDS height="0" left="2205" top="4770" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Y" visible="1">
@@ -215,7 +215,7 @@
    </PIN>
    <PIN pinname="X" visible="1">
    </PIN>
-   <PIN pinname="Color" visible="1">
+   <PIN pinname="Pen Color" visible="1">
    </PIN>
    </NODE>
    <NODE id="6" nodename="LinearSpread (Spreads)">
@@ -284,7 +284,7 @@
    <PIN pinname="Blue" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="7" dstpinname="Color" srcnodeid="3" srcpinname="Output">
+   <LINK dstnodeid="7" dstpinname="Pen Color" srcnodeid="3" srcpinname="Output">
    </LINK>
    <NODE id="2" nodename="RGB (Color Join)">
    <BOUNDS height="0" left="3645" top="5220" type="Node" width="0">
@@ -306,7 +306,7 @@
    <PIN pinname="Blue" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="8" dstpinname="Color" srcnodeid="1" srcpinname="Output">
+   <LINK dstnodeid="8" dstpinname="Pen Color" srcnodeid="1" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="9" dstpinname="Background Color" srcnodeid="2" srcpinname="Output">
    </LINK>
@@ -324,10 +324,10 @@
    <PIN pinname="Handles In" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="18" srcpinname="Handle Out" dstnodeid="14" dstpinname="Handle In">
+   <LINK dstnodeid="14" dstpinname="Handle In" srcnodeid="18" srcpinname="Handle Out">
    </LINK>
-   <LINK srcnodeid="18" srcpinname="Handle Out" dstnodeid="0" dstpinname="Handles In">
+   <LINK dstnodeid="0" dstpinname="Handles In" srcnodeid="18" srcpinname="Handle Out">
    </LINK>
-   <LINK srcnodeid="17" srcpinname="Output String" dstnodeid="18" dstpinname="File Name">
+   <LINK dstnodeid="18" dstpinname="File Name" srcnodeid="17" srcpinname="Output String">
    </LINK>
    </PATCH>
