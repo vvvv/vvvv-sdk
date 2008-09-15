@@ -69,6 +69,7 @@ namespace VVVV.Nodes
 		private void InitializeComponent()
 		{
 			this.MainMenu = new System.Windows.Forms.Panel();
+			this.MidiButton = new System.Windows.Forms.Button();
 			this.WavButton = new System.Windows.Forms.Button();
 			this.AutomataCheckBox = new System.Windows.Forms.CheckBox();
 			this.ColorButton = new System.Windows.Forms.Button();
@@ -83,7 +84,6 @@ namespace VVVV.Nodes
 			this.SplitContainer = new System.Windows.Forms.SplitContainer();
 			this.PinHeaderPanel0 = new System.Windows.Forms.Panel();
 			this.PinHeaderPanel1 = new System.Windows.Forms.Panel();
-			this.MidiButton = new System.Windows.Forms.Button();
 			this.MainMenu.SuspendLayout();
 			this.PinPanel.SuspendLayout();
 			this.SplitContainer.Panel1.SuspendLayout();
@@ -109,8 +109,22 @@ namespace VVVV.Nodes
 			this.MainMenu.Size = new System.Drawing.Size(688, 25);
 			this.MainMenu.TabIndex = 0;
 			// 
+			// MidiButton
+			// 
+			this.MidiButton.Enabled = false;
+			this.MidiButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.MidiButton.Location = new System.Drawing.Point(442, 0);
+			this.MidiButton.Name = "MidiButton";
+			this.MidiButton.Size = new System.Drawing.Size(34, 23);
+			this.MidiButton.TabIndex = 10;
+			this.MidiButton.Text = "+M";
+			this.MidiButton.UseVisualStyleBackColor = true;
+			this.MidiButton.Visible = false;
+			this.MidiButton.Click += new System.EventHandler(this.PinButtonClick);
+			// 
 			// WavButton
 			// 
+			this.WavButton.Enabled = false;
 			this.WavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.WavButton.Location = new System.Drawing.Point(482, 0);
 			this.WavButton.Name = "WavButton";
@@ -118,6 +132,7 @@ namespace VVVV.Nodes
 			this.WavButton.TabIndex = 9;
 			this.WavButton.Text = "+W";
 			this.WavButton.UseVisualStyleBackColor = true;
+			this.WavButton.Visible = false;
 			this.WavButton.Click += new System.EventHandler(this.PinButtonClick);
 			// 
 			// AutomataCheckBox
@@ -283,17 +298,6 @@ namespace VVVV.Nodes
 			this.PinHeaderPanel1.DragOver += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragOver);
 			this.PinHeaderPanel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragDrop);
 			this.PinHeaderPanel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragEnter);
-			// 
-			// MidiButton
-			// 
-			this.MidiButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.MidiButton.Location = new System.Drawing.Point(442, 0);
-			this.MidiButton.Name = "MidiButton";
-			this.MidiButton.Size = new System.Drawing.Size(34, 23);
-			this.MidiButton.TabIndex = 10;
-			this.MidiButton.Text = "+M";
-			this.MidiButton.UseVisualStyleBackColor = true;
-			this.MidiButton.Click += new System.EventHandler(this.PinButtonClick);
 			// 
 			// TimelinerPlugin
 			// 
