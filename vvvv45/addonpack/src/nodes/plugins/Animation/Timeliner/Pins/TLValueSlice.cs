@@ -96,7 +96,7 @@ namespace VVVV.Nodes.Timeliner
 			TLBaseKeyFrame kf = FKeyFrames.FindLast(delegate(TLBaseKeyFrame k) {return k.Time <= CurrentTime;});
 			TLBaseKeyFrame kf1 = FKeyFrames.Find(delegate(TLBaseKeyFrame k) {return k.Time >= CurrentTime;});
 
-			if (kf == null)
+			if (kf == null || kf1 == null)
 				FOutput = 0;
 			else
 			{
