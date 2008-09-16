@@ -30,7 +30,7 @@ using System;
 using System.Collections;
 using System.Text;
 
-namespace VVVV.Utils.VOSC
+namespace VVVV.Utils.OSC
 {
 	/// <summary>
 	/// OSCMessage

@@ -30,52 +30,49 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 
-namespace VVVV.Utils.VOSC
+namespace VVVV.Utils.OSC
 {
 	/// <summary>
-	/// OSCTransmitter
+	/// OSCReceiver
 	/// </summary>
-	public class OSCTransmitter
+	public class OSCReceiver
 	{
 		protected UdpClient udpClient;
-		protected string remoteHost;
-		protected int remotePort;
+		protected int localPort;
 
-		public OSCTransmitter(string remoteHost, int remotePort)
+		public OSCReceiver(int localPort)
 		{
-			this.remoteHost = remoteHost;
-			this.remotePort = remotePort;
+			this.localPort = localPort;
 			Connect();
 		}
 
 		public void Connect()
 		{
 			if(this.udpClient != null) Close();
-			this.udpClient = new UdpClient(this.remoteHost, this.remotePort);
+			this.udpClient = new UdpClient(this.localPort);
 		}
 
 		public void Close()
 		{
-			this.udpClient.Close();
+			if (this.udpClient!=null) this.udpClient.Close();
 			this.udpClient = null;
 		}
 
-		public int Send(OSCPacket packet)
+		public OSCPacket Receive()
 		{
-			int byteNum = 0;
-			byte[] data = packet.BinaryData;
-			try 
-			{
-				byteNum = this.udpClient.Send(data, data.Length);
-			}
-			catch (Exception e)
-			{
-				Console.Error.WriteLine(e.Message);
-				Console.Error.WriteLine(e.StackTrace);
-			}
+            try
+            {
+                IPEndPoint ip = null;
+                byte[] bytes = this.udpClient.Receive(ref ip);
+                if (bytes != null && bytes.Length > 0)
+                    return OSCPacket.Unpack(bytes);
 
-			return byteNum;
+            } catch (Exception e) { 
+                Console.WriteLine(e.Message);
+                return null;
+            }
+
+			return null;
 		}
-
 	}
 }

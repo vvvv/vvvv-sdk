@@ -22,7 +22,7 @@ using System;
 using System.Security;
 using System.Runtime.InteropServices;
 
-namespace VVVV.Utils.VSharedMemory
+namespace VVVV.Utils.SharedMemory
 {
 	/// <summary>
 	/// Summary description for Win32Native.

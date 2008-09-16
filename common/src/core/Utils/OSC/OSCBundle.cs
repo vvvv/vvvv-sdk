@@ -29,7 +29,7 @@
 using System;
 using System.Collections;
 
-namespace VVVV.Utils.VOSC
+namespace VVVV.Utils.OSC
 {
 	/// <summary>
 	/// OSCBundle
