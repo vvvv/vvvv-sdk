@@ -79,10 +79,10 @@ namespace VVVV.Nodes
 			this.PlayButton = new System.Windows.Forms.Button();
 			this.StopButton = new System.Windows.Forms.Button();
 			this.PinPanel = new System.Windows.Forms.Panel();
-			this.InsertPreview = new System.Windows.Forms.Panel();
 			this.SliceArea = new VVVV.Nodes.Timeliner.TLSliceArea();
 			this.SplitContainer = new System.Windows.Forms.SplitContainer();
 			this.PinHeaderPanel0 = new System.Windows.Forms.Panel();
+			this.InsertPreview = new System.Windows.Forms.Panel();
 			this.PinHeaderPanel1 = new System.Windows.Forms.Panel();
 			this.MainMenu.SuspendLayout();
 			this.PinPanel.SuspendLayout();
@@ -224,15 +224,6 @@ namespace VVVV.Nodes
 			this.PinPanel.Size = new System.Drawing.Size(688, 330);
 			this.PinPanel.TabIndex = 1;
 			// 
-			// InsertPreview
-			// 
-			this.InsertPreview.BackColor = System.Drawing.Color.Lime;
-			this.InsertPreview.Location = new System.Drawing.Point(183, 46);
-			this.InsertPreview.Name = "InsertPreview";
-			this.InsertPreview.Size = new System.Drawing.Size(150, 2);
-			this.InsertPreview.TabIndex = 4;
-			this.InsertPreview.Visible = false;
-			// 
 			// SliceArea
 			// 
 			this.SliceArea.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
@@ -283,6 +274,15 @@ namespace VVVV.Nodes
 			this.PinHeaderPanel0.DragOver += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragOver);
 			this.PinHeaderPanel0.DragDrop += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragDrop);
 			this.PinHeaderPanel0.DragEnter += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragEnter);
+			// 
+			// InsertPreview
+			// 
+			this.InsertPreview.BackColor = System.Drawing.Color.Lime;
+			this.InsertPreview.Location = new System.Drawing.Point(156, 25);
+			this.InsertPreview.Name = "InsertPreview";
+			this.InsertPreview.Size = new System.Drawing.Size(150, 2);
+			this.InsertPreview.TabIndex = 4;
+			this.InsertPreview.Visible = false;
 			// 
 			// PinHeaderPanel1
 			// 
@@ -466,41 +466,37 @@ namespace VVVV.Nodes
 
 		private void createInputPins()
 		{
-			// TIME IN
-			///////////////////////
-			FHost.CreateValueFastInput("Time In", 1, null, TSliceMode.Single, TPinVisibility.True, out FTimeInput);
-			FTimeInput.SetSubType(Double.MinValue, Double.MaxValue, 0.01D, 0, false, false, false);
-			
-			// PLAY IN
-			///////////////////////
 			FHost.CreateValueInput("Play", 1, null, TSliceMode.Single, TPinVisibility.True, out FPlayInput);
 			FPlayInput.SetSubType(0, 1, 1, 0, false, true, true);
+			FPlayInput.Order = -99999;
 			
-			// LOOK AT IN
-			///////////////////////
-			FHost.CreateValueConfig("Translate", 1, null, TSliceMode.Single, TPinVisibility.True, out FTranslateInput);
-			FTranslateInput.SetSubType(Double.MinValue, Double.MaxValue, 0.1, 0, false, false, false);
+			FHost.CreateValueFastInput("Time In", 1, null, TSliceMode.Single, TPinVisibility.True, out FTimeInput);
+			FTimeInput.SetSubType(Double.MinValue, Double.MaxValue, 0.01D, 0, false, false, false);
+			FTimeInput.Order = -99998;
 			
-			// SPAN IN
-			///////////////////////
-			FHost.CreateValueConfig("Scale", 1, null, TSliceMode.Single, TPinVisibility.True, out FScaleInput);
-			FScaleInput.SetSubType(0.1, 1000, 0.1, 50, false, false, false);
-			
-			// SET TIME IN
-			///////////////////////
 			FHost.CreateValueInput("Set Time", 1, null, TSliceMode.Single, TPinVisibility.True, out FSetTime);
 			FSetTime.SetSubType(0, 1, 1, 0, false, false, true);
-
+			FSetTime.Order = -99997;
+			
+			FHost.CreateValueConfig("Translate", 1, null, TSliceMode.Single, TPinVisibility.True, out FTranslateInput);
+			FTranslateInput.SetSubType(Double.MinValue, Double.MaxValue, 0.1, 0, false, false, false);
+			FTranslateInput.Order = -99996;
+			
+			FHost.CreateValueConfig("Scale", 1, null, TSliceMode.Single, TPinVisibility.True, out FScaleInput);
+			FScaleInput.SetSubType(0.1, 1000, 0.1, 50, false, false, false);
+			FScaleInput.Order = -99995;
+			
+			
 			// ONLY VISIBLE IN INSPECTOR
-			////////////////////////////
-			/// 
 			FHost.CreateStringConfig("GUI Settings", TSliceMode.Dynamic, TPinVisibility.Hidden, out FGUISettings);
 			//FGUISettings.SliceCount = 0;
 			FGUISettings.SetSubType("", false);
+			FGUISettings.Order = -99994;
 			
 			FHost.CreateStringConfig("Pin Settings", TSliceMode.Dynamic, TPinVisibility.Hidden, out FPinSettings);
 			FPinSettings.SliceCount = 0;
 			FPinSettings.SetSubType("", false);
+			FPinSettings.Order = -99993;
 		}
 
 		private void createOutputPins()
@@ -509,11 +505,15 @@ namespace VVVV.Nodes
 			///////////////////////
 			FHost.CreateValueOutput("Time", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FTimeOut);
 			FTimeOut.SetSubType(double.MinValue, double.MaxValue, 1, 0, false, false, false);
+			FTimeOut.Order = -99999;
 			
 			FHost.CreateValueOutput("Playing", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPlayingOut);
 			FPlayingOut.SetSubType(0, 1, 1, 0, true, false, true);
+			FPlayingOut.Order = -99998;
+			
 			FHost.CreateValueOutput("Seeking", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FSeekingOut);
 			FSeekingOut.SetSubType(0, 1, 1, 0, true, false, true);
+			FSeekingOut.Order = -99997;
 		}
 		
 		#endregion pin creation
@@ -912,10 +912,10 @@ namespace VVVV.Nodes
 				FPinSettings.SetString(i, (string) lPinSettings[i]);
 			FBlockConfigurate = false;
 			
+			Configurate(FPinSettings);
+			
 			for (int i=0; i<FOutputPins.Count; i++)
 				FOutputPins[i].Order = i;
-			
-			Configurate(FPinSettings);
 		}
 		
 		private void PinChangedCB(TLBasePin Pin)
@@ -1100,10 +1100,17 @@ namespace VVVV.Nodes
 				FAutomataCreatedViaGUI = true;
 				
 				if (FAutomata == null)
+				{
 					AddPin(TLPinType.Automata);
+					if (SplitContainer.SplitterDistance < FAutomata.Top + FAutomata.Height)
+						SplitContainer.SplitterDistance += FAutomata.Height;
+				}
 			}
 			else
 			{
+				if (SplitContainer.SplitterDistance >= FAutomata.Top + FAutomata.Height)
+					SplitContainer.SplitterDistance -= FAutomata.Height;
+				
 				GTimer.Automata = null;
 				RemovePinCB(FAutomata);
 				FAutomata = null;
