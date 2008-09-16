@@ -2,14 +2,14 @@
    <PATCH nodename="D:\vvvv\sourceforge\plugins\wrk\ReverseSpreadsAdvanced\Reverse (Spreads Advanced) help.v4p" locked="0">
    <BOUNDS height="8820" left="1125" top="1125" type="Window" width="6900">
    </BOUNDS>
-   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
    <BOUNDS height="270" left="270" top="210" type="Node" width="3660">
    </BOUNDS>
-   <BOUNDS height="420" left="270" top="210" type="Box" width="3705">
+   <BOUNDS height="405" left="270" top="210" type="Box" width="4185">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|VVVV Plugin Template|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Reverse (Spreads Advanced)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -18,21 +18,21 @@
    <PIN pinname="Size" slicecount="1" values="14">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
-   <BOUNDS height="270" left="210" top="720" type="Node" width="3015">
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="270" left="330" top="720" type="Node" width="3015">
    </BOUNDS>
-   <BOUNDS height="300" left="210" top="720" type="Box" width="3255">
+   <BOUNDS height="300" left="330" top="720" type="Box" width="3255">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|simply demonstrates the use of 4 pintypes|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Reverse with more options|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="1095" top="4230" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7883" top="6468" type="Window" width="215">
@@ -50,7 +50,7 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="4" nodename="bin\ReverseSpreadsAdv.dll">
+   <NODE componentmode="InAWindow" id="6" nodename="bin\ReverseSpreadsAdv.dll">
    <BOUNDS height="100" left="3315" top="3315" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Bin Size" visible="1">
@@ -59,25 +59,25 @@
    </PIN>
    <PIN pinname="Value Output" visible="1">
    </PIN>
-   <PIN pinname="Vector Size" slicecount="1" visible="1" pintype="Input" values="3">
+   <PIN pinname="Vector Size" pintype="Input" slicecount="1" visible="1" values="3">
    </PIN>
-   <BOUNDS type="Box" left="3315" top="3315">
+   <BOUNDS left="3315" top="3315" type="Box">
    </BOUNDS>
-   <PIN pinname="Do reverse" visible="1" pintype="Input">
+   <PIN pinname="Do reverse" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE id="3" nodename="I (Spreads)">
-   <BOUNDS height="0" left="1830" top="1485" type="Node" width="0">
+   <NODE id="5" nodename="I (Spreads)">
+   <BOUNDS height="0" left="3045" top="1425" type="Node" width="0">
    </BOUNDS>
    <PIN pinname=".. To [" slicecount="1" values="10">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Value Output">
-   </LINK>
-   <NODE id="2" nodename="Add (Value)">
-   <BOUNDS height="0" left="2115" top="1785" type="Node" width="0">
+   <NODE id="4" nodename="Add (Value)">
+   <BOUNDS height="0" left="3330" top="1725" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -86,10 +86,10 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="2" dstpinname="Input 1" srcnodeid="3" srcpinname="Output">
+   <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="5" srcpinname="Output">
    </LINK>
-   <NODE id="8" nodename="Add (Value)">
-   <BOUNDS height="0" left="2415" top="2085" type="Node" width="0">
+   <NODE id="3" nodename="Add (Value)">
+   <BOUNDS height="0" left="3630" top="2025" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -98,10 +98,10 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="2" srcpinname="Output" dstnodeid="8" dstpinname="Input 1">
+   <LINK dstnodeid="3" dstpinname="Input 1" srcnodeid="4" srcpinname="Output">
    </LINK>
-   <NODE id="9" nodename="Vector (3d Join)">
-   <BOUNDS height="0" left="1830" top="2370" type="Node" width="0">
+   <NODE id="2" nodename="Vector (3d Join)">
+   <BOUNDS height="0" left="3045" top="2310" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Y" visible="1">
    </PIN>
@@ -114,34 +114,34 @@
    <PIN pinname="XYZ" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="9" dstpinname="Y" srcnodeid="2" srcpinname="Output">
+   <LINK dstnodeid="2" dstpinname="Y" srcnodeid="4" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="9" dstpinname="X" srcnodeid="3" srcpinname="Output">
+   <LINK dstnodeid="2" dstpinname="X" srcnodeid="5" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="8" srcpinname="Output" dstnodeid="9" dstpinname="Z">
+   <LINK dstnodeid="2" dstpinname="Z" srcnodeid="3" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="9" srcpinname="XYZ" dstnodeid="4" dstpinname="Input">
+   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="2" srcpinname="XYZ">
    </LINK>
-   <NODE id="10" nodename="Vector (3d Join)">
-   <BOUNDS height="0" left="3795" top="2340" type="Node" width="0">
+   <NODE id="1" nodename="Vector (3d Join)">
+   <BOUNDS height="0" left="3810" top="2760" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Y" visible="1" slicecount="1" values="2">
+   <PIN pinname="Y" slicecount="1" visible="1" values="2">
    </PIN>
-   <PIN pinname="X" visible="1" slicecount="1" values="5">
+   <PIN pinname="X" slicecount="1" visible="1" values="5">
    </PIN>
    <PIN pinname="XY" visible="1">
    </PIN>
-   <PIN pinname="Z" visible="1" slicecount="1" values="3">
+   <PIN pinname="Z" slicecount="1" visible="1" values="3">
    </PIN>
    <PIN pinname="XYZ" visible="1">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11">
-   <BOUNDS type="Node" left="4950" top="2100" width="0" height="0">
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4950" top="2100" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="6585" top="4065" width="215" height="160">
+   <BOUNDS height="160" left="6585" top="4065" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS type="Box" left="4950" top="2100" width="705" height="1275">
+   <BOUNDS height="1275" left="4950" top="2100" type="Box" width="705">
    </BOUNDS>
    <PIN pinname="Minimum" slicecount="1" values="0">
    </PIN>
@@ -164,8 +164,24 @@
    <PIN pinname="Y Input Value" slicecount="3" values="1,0,1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Do reverse">
+   <LINK dstnodeid="6" dstpinname="Do reverse" srcnodeid="0" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="10" srcpinname="XYZ" dstnodeid="4" dstpinname="Bin Size">
+   <LINK dstnodeid="6" dstpinname="Bin Size" srcnodeid="1" srcpinname="XYZ">
    </LINK>
+   <LINK srcnodeid="6" srcpinname="Output" dstnodeid="7" dstpinname="Y Input Value">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="270" left="330" top="2115" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="1530" left="330" top="2115" type="Box" width="2475">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|vector size keeps the integrity of vector components&cr;&lf;&cr;&lf;bin size reverses each bin separately&cr;&lf;&cr;&lf;do reverse or not|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
    </PATCH>
