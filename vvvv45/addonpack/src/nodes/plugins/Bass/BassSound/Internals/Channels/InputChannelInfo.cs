@@ -8,6 +8,8 @@ namespace BassSound.Internals
 {
     public class InputChannelInfo : ChannelInfo
     {
+        private int index;
+        private int count;
         private BassAsioHandler FMyHandler;
 
         public BassAsioHandler Handler
@@ -15,10 +17,22 @@ namespace BassSound.Internals
             get { return this.FMyHandler; }
         }
 
+        public int Index
+        {
+            get { return index; }
+            set { index = value; }
+        }
+
+        public int Count
+        {
+            get { return count; }
+            set { count = value; }
+        }
+
         public override void Initialize(int deviceid)
         {
             //BassAsio.BASS_ASIO_ChannelEnable(true,
-            this.FMyHandler = new BassAsioHandler(true, deviceid, 0, 2, BASSASIOFormat.BASS_ASIO_FORMAT_FLOAT, 48000);
+            this.FMyHandler = new BassAsioHandler(true, deviceid, this.index, this.count, BASSASIOFormat.BASS_ASIO_FORMAT_FLOAT, 48000);
             if (!BassAsio.BASS_ASIO_IsStarted()) {
                 BassAsio.BASS_ASIO_Start(0);
             }
