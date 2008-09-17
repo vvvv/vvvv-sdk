@@ -135,7 +135,7 @@ namespace VVVV.Nodes.Timeliner
 		public override void DrawSlice(Graphics g, double From, double To, bool AllInOne)
 		{
 			base.DrawSlice(g, From, To, AllInOne);
-			
+			Region SliceClip = g.Clip;
 			foreach (TLStringKeyFrame k in FInvalidKeyFrames)
 			{
 				//transform the keyframes time by the current transformation
@@ -145,7 +145,10 @@ namespace VVVV.Nodes.Timeliner
 				if (k.Selected)
 				{
 					g.FillRectangle(new SolidBrush(Color.Silver), x, y, k.Width-1, 14);
+					//don't clip so infos are always visible
+					g.Clip = new Region();
 					g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat)+"s", FFont, new SolidBrush(Color.Black), x+2, y-14);
+					g.Clip = SliceClip;
 				}
 				else
 				{
