@@ -284,6 +284,8 @@ namespace VVVV.Nodes.Timeliner
 			}
 			
 			//draw infos
+			//don't clip so infos are always visible
+			g.Clip = new Region();
 			SolidBrush silver = new SolidBrush(Color.Silver);
 			SolidBrush white = new SolidBrush(Color.White);
 			SolidBrush black = new SolidBrush(Color.Black);
