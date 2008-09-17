@@ -60,6 +60,7 @@
 			this.SaveButton.TabIndex = 5;
 			this.SaveButton.Text = "S";
 			this.SaveButton.UseVisualStyleBackColor = true;
+			this.SaveButton.Click += new System.EventHandler(this.SaveButtonClick);
 			// 
 			// label2
 			// 
