@@ -41,7 +41,7 @@ namespace VVVV.Nodes.Timeliner
 		
 		public override void MoveY(double Delta)
 		{
-			FFlagY = (float) VMath.Map(FFlagY*FSliceHeight + Delta, 0, FSliceHeight, 0, 1, TMapMode.Clamp);//Math.Max(0, Math.Min(FFlagY*FSliceHeight - Delta, FSliceHeight)) / FSliceHeight;
+			FFlagY = (float) VMath.Map(FFlagY*FSliceHeight + Delta, 0, FSliceHeight, 0, 1, TMapMode.Clamp);
 		}
 		
 		public TLStringKeyFrame(TLTransformer Transformer, double Time, float Flag, string Value, float SliceTop, float SliceHeight): base(Transformer, Time, SliceTop, SliceHeight)
