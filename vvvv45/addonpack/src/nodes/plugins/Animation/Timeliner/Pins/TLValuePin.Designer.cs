@@ -57,12 +57,12 @@
 			// 
 			this.MinIO.BackColor = System.Drawing.Color.Silver;
 			this.MinIO.Cyclic = false;
-			this.MinIO.IsInteger = true;
+			this.MinIO.IsInteger = false;
 			this.MinIO.Location = new System.Drawing.Point(61, 61);
-			this.MinIO.Maximum = 127;
-			this.MinIO.Minimum = 0;
+			this.MinIO.Maximum = 1;
+			this.MinIO.Minimum = -1;
 			this.MinIO.Name = "MinIO";
-			this.MinIO.Size = new System.Drawing.Size(30, 15);
+			this.MinIO.Size = new System.Drawing.Size(48, 15);
 			this.MinIO.TabIndex = 8;
 			this.MinIO.Value = -1;
 			this.MinIO.OnValueChange += new VVVV.Nodes.Timeliner.ValueChangeHandler(this.MinMaxIOChangedCB);
@@ -71,12 +71,12 @@
 			// 
 			this.MaxIO.BackColor = System.Drawing.Color.Silver;
 			this.MaxIO.Cyclic = false;
-			this.MaxIO.IsInteger = true;
+			this.MaxIO.IsInteger = false;
 			this.MaxIO.Location = new System.Drawing.Point(61, 41);
-			this.MaxIO.Maximum = 127;
-			this.MaxIO.Minimum = 0;
+			this.MaxIO.Maximum = 1;
+			this.MaxIO.Minimum = -1;
 			this.MaxIO.Name = "MaxIO";
-			this.MaxIO.Size = new System.Drawing.Size(30, 15);
+			this.MaxIO.Size = new System.Drawing.Size(48, 15);
 			this.MaxIO.TabIndex = 9;
 			this.MaxIO.Value = 1;
 			this.MaxIO.OnValueChange += new VVVV.Nodes.Timeliner.ValueChangeHandler(this.MinMaxIOChangedCB);
