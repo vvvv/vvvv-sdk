@@ -693,25 +693,53 @@ namespace VVVV.Nodes.Timeliner
 		
 		protected override void OnMouseMove(MouseEventArgs e)
 		{
+			Point pt = e.Location;
+			int ptDelta = e.Y - FLastMousePoint.Y;
+			if (Cursor.Position.Y == Screen.FromPoint(pt).Bounds.Height - 1)
+			{
+				Cursor.Position = new Point(Cursor.Position.X, 0);
+				pt = this.PointToClient(Cursor.Position);
+				FLastMousePoint = new Point(FLastMousePoint.X, pt.Y - ptDelta);
+			}
+			else if (Cursor.Position.Y == 0)
+			{
+				Cursor.Position = new Point(Cursor.Position.X, Screen.FromPoint(pt).Bounds.Height-1);
+				pt = this.PointToClient(Cursor.Position);
+				FLastMousePoint = new Point(FLastMousePoint.X, pt.Y - ptDelta);
+			}
+			ptDelta = e.X - FLastMousePoint.X;
+			if (Cursor.Position.X == Screen.FromPoint(pt).Bounds.Width - 1)
+			{
+				Cursor.Position = new Point(0, Cursor.Position.Y);
+				pt = this.PointToClient(Cursor.Position);
+				FLastMousePoint = new Point(pt.X - ptDelta, FLastMousePoint.Y);
+			}
+			else if (Cursor.Position.X == 0)
+			{
+				Cursor.Position = new Point(Screen.FromPoint(pt).Bounds.Width-1, Cursor.Position.Y);
+				pt = this.PointToClient(Cursor.Position);
+				FLastMousePoint = new Point(pt.X - ptDelta, FLastMousePoint.Y);
+			}
+			
 			switch(FMouseState)
 			{
 				case TLMouseState.msIdle:
 					{
-						UpdateSliceMenu(e.Location);
+						UpdateSliceMenu(pt);
 						
 						TLBaseKeyFrame kf = null;
-						TLBasePin pin = PosToPin(e.Location);
+						TLBasePin pin = PosToPin(pt);
 						if (pin != null)
 						{
 							foreach (TLSlice s in pin.OutputSlices)
 							{
-								kf = s.KeyFrames.Find(delegate(TLBaseKeyFrame k) {return k.HitByPoint(e.Location);});
+								kf = s.KeyFrames.Find(delegate(TLBaseKeyFrame k) {return k.HitByPoint(pt);});
 								if (kf != null)
 									break; //out of foreach
 							}
 						}
 						
-						if (kf == null && FTimeBar.IsVisible(e.Location))
+						if (kf == null && FTimeBar.IsVisible(pt))
 							this.Cursor = Cursors.VSplit;
 						else
 							this.Cursor = null;
@@ -726,7 +754,7 @@ namespace VVVV.Nodes.Timeliner
 						this.Invalidate(sr);
 						
 						//now set new selection area
-						FSelectionArea.Size = new Size(e.X - FSelectionArea.X, e.Y - FSelectionArea.Y);
+						FSelectionArea.Size = new Size(pt.X - FSelectionArea.X, pt.Y - FSelectionArea.Y);
 						sr = StraightenRectangle(FSelectionArea);
 						
 						//check if any of the keyframes is within the SelectionArea
@@ -764,13 +792,14 @@ namespace VVVV.Nodes.Timeliner
 							foreach (TLBaseKeyFrame k in s.KeyFrames)
 							if (k.Selected)
 						{
-							double delta = e.Y - FLastMousePoint.Y;
+							double delta = pt.Y - FLastMousePoint.Y;
 							
 							if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
 								delta /= 10;
 							
 							if (k is TLColorKeyFrame)
 							{
+								delta/=10;
 								TLColorKeyFrame kfc = k as TLColorKeyFrame;
 								if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
 									kfc.MoveAlpha(delta);
@@ -778,7 +807,7 @@ namespace VVVV.Nodes.Timeliner
 									kfc.MoveSaturation(delta);
 								else
 								{
-									kfc.MoveHue(e.X - FLastMousePoint.X);
+									kfc.MoveHue((pt.X - FLastMousePoint.X) / 1000.0);
 									kfc.MoveValue(delta);
 								}
 							}
@@ -812,7 +841,7 @@ namespace VVVV.Nodes.Timeliner
 						{
 							update.Union(k.RedrawArea);
 							
-							double delta = e.Y - FLastMousePoint.Y;
+							double delta = pt.Y - FLastMousePoint.Y;
 							delta *= -1;
 							if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
 								delta /= 10;
@@ -840,8 +869,8 @@ namespace VVVV.Nodes.Timeliner
 						{
 							update.Union(k.RedrawArea);
 							
-							double deltaX = e.X - FLastMousePoint.X;
-							double deltaY = e.Y - FLastMousePoint.Y;
+							double deltaX = pt.X - FLastMousePoint.X;
+							double deltaY = pt.Y - FLastMousePoint.Y;
 							
 							if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
 							{
@@ -853,10 +882,7 @@ namespace VVVV.Nodes.Timeliner
 								deltaX /= 10;
 								deltaY /= 10;
 							}
-							
-							if (k is TLColorKeyFrame)
-								deltaX /= 10;
-							
+														
 							//may use a linked list of keyframes for faster access to neighbours?
 							//TLBaseKeyFrame next = s.KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return kf.Time > k.Time;});
 							//TLBaseKeyFrame last = s.KeyFrames.FindLast(delegate(TLBaseKeyFrame kf) {return kf.Time < k.Time;});
@@ -873,28 +899,28 @@ namespace VVVV.Nodes.Timeliner
 					}
 				case TLMouseState.msDraggingTimeBar:
 					{
-						FTimer.CurrentTime = FTransformer.XPosToTime(e.X);
+						FTimer.CurrentTime = FTransformer.XPosToTime(pt.X);
 						break;
 					}
 					
 				case TLMouseState.msPanning:
 					{
-						FTransformer.TranslateTime(e.X - FLastMousePoint.X);
+						FTransformer.TranslateTime(pt.X - FLastMousePoint.X);
 						
 						double scale = 1;
-						if(e.Y - FLastMousePoint.Y > 1)
+						if(pt.Y - FLastMousePoint.Y > 1)
 							scale = 1.1f;
-						else if (e.Y - FLastMousePoint.Y < -1)
+						else if (pt.Y - FLastMousePoint.Y < -1)
 							scale = 0.9f;
 						
-						FTransformer.ScaleTime(scale, e.X + TimelinerPlugin.FHeaderWidth);
+						FTransformer.ScaleTime(scale, pt.X + TimelinerPlugin.FHeaderWidth);
 						
 						Invalidate();
 						break;
 					}
 			}
 			
-			FLastMousePoint = e.Location;
+			FLastMousePoint = pt;
 		}
 
 		protected override void OnMouseUp(MouseEventArgs e)
