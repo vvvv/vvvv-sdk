@@ -26,11 +26,11 @@ namespace VVVV.Nodes.Timeliner
 		
 		protected override void CreatePins()
 		{
-			FHost.CreateValueConfig(FPin.Name + "-Time" + FSliceIndex.ToString(), 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyTime);        	
+			FHost.CreateValueConfig(FPin.Name + "-Time" + FSliceIndex.ToString(), 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyTime);
 			FKeyTime.SliceCount=0;
 			FKeyTime.SetSubType(Double.MinValue, Double.MaxValue,0.001D,0,false, false,false);
 			
-			FHost.CreateColorConfig(FPin.Name + "-Color" + FSliceIndex.ToString(), TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyColor);        	
+			FHost.CreateColorConfig(FPin.Name + "-Color" + FSliceIndex.ToString(), TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyColor);
 			FKeyColor.SliceCount=0;
 			FKeyColor.SetSubType(VColor.Black, true);
 		}
@@ -53,7 +53,7 @@ namespace VVVV.Nodes.Timeliner
 			FKeyTime.Order = FPin.Order;
 			FKeyColor.Order = FPin.Order;
 		}
-	
+		
 		public override void Evaluate(double CurrentTime)
 		{
 			if (FKeyFrames.Count == 0)
@@ -96,7 +96,7 @@ namespace VVVV.Nodes.Timeliner
 				r = (int) Math.Round(r2 * f + r1 * (1-f));
 				g = (int) Math.Round(g2 * f + g1 * (1-f));
 				b = (int) Math.Round(b2 * f + b1 * (1-f));
-				*/
+				 */
 				
 				double tSpan, f, tCurrent;
 				tSpan = to.Time - from.Time;
@@ -126,14 +126,14 @@ namespace VVVV.Nodes.Timeliner
 				RGBAColor c;
 				double time;
 				
-				for (int i = 0; i<FKeyColor.SliceCount;i++)	
+				for (int i = 0; i<FKeyColor.SliceCount;i++)
 				{
-					FKeyTime.GetValue(i, out time); 
+					FKeyTime.GetValue(i, out time);
 					FKeyColor.GetColor(i, out c);
 					AddKeyFrame(time, c);
 				}
 				
-				FKeyFrames.Sort(delegate(TLBaseKeyFrame k0, TLBaseKeyFrame k1) { return k0.Time.CompareTo(k1.Time); });	
+				FKeyFrames.Sort(delegate(TLBaseKeyFrame k0, TLBaseKeyFrame k1) { return k0.Time.CompareTo(k1.Time); });
 			}
 			
 			base.Configurate(Input, FirstFrame);
@@ -181,7 +181,7 @@ namespace VVVV.Nodes.Timeliner
 			float left, width;
 			Color c1, c2;
 			RectangleF r;
-			Brush b;
+			
 			float sliceHeight = FPin.Height / FPin.SliceCount;
 			width = g.ClipBounds.Width;
 			
@@ -196,11 +196,12 @@ namespace VVVV.Nodes.Timeliner
 				c1 = kfc.RGBAColor.Color;
 				c2 = (FInvalidKeyFrames[i+1] as TLColorKeyFrame).RGBAColor.Color;
 				width = FInvalidKeyFrames[i+1].GetTimeAsX() - left;
-
 				r = new RectangleF(left, 0, width, sliceHeight);
-				b = new LinearGradientBrush(r, c1, c2, LinearGradientMode.Horizontal);
-
-				g.FillRectangle(b, r);
+				
+				using (Brush b = new LinearGradientBrush(r, c1, c2, LinearGradientMode.Horizontal))
+				{
+					g.FillRectangle(b, r);
+				}
 			}
 			
 			if (FInvalidKeyFrames.Count > 0)
@@ -213,9 +214,11 @@ namespace VVVV.Nodes.Timeliner
 					width = FKeyFrames[0].GetTimeAsX();
 					c1 = (FKeyFrames[0] as TLColorKeyFrame).RGBAColor.Color;
 					r = new RectangleF(left, 0, width, sliceHeight);
-					b = new SolidBrush(c1);
 					
-					g.FillRectangle(b, r);
+					using (Brush b = new SolidBrush(c1))
+					{
+						g.FillRectangle(b, r);
+					}
 				}
 				
 				//draw right of last keyframe
@@ -226,43 +229,54 @@ namespace VVVV.Nodes.Timeliner
 					
 					c1 = (FKeyFrames[FKeyFrames.Count-1] as TLColorKeyFrame).RGBAColor.Color;
 					r = new RectangleF(left, 0, width, sliceHeight);
-					b = new SolidBrush(c1);
 					
-					g.FillRectangle(b, r);	
-				}				
+					using (Brush b = new SolidBrush(c1))
+					{
+						g.FillRectangle(b, r);
+					}
+				}
 			}
 
-			//draw infos to visible 
+			//draw infos to visible
 			foreach (TLColorKeyFrame k in FInvalidKeyFrames)
 			{
 				float x = k.GetTimeAsX();
-				Color inv = VColor.Offset(k.RGBAColor, 0.5).Color; 
-					
+				Color inv = VColor.Offset(k.RGBAColor, 0.5).Color;
+				
 				if (k.Selected)
 				{
-					g.DrawRectangle(new Pen(inv), x-20, 0, 40, sliceHeight);
+					using (Pen p = new Pen(inv))
+						g.DrawRectangle(p, x-20, 0, 40, sliceHeight);
+					
 					//draw color values hsva
 					string s = "H: " + (k.Hue).ToString("f2", TimelinerPlugin.GNumberFormat);
-					g.DrawString(s, FFont, new SolidBrush(inv), x-20, 0);
-					s = "S: " + k.Saturation.ToString("f2", TimelinerPlugin.GNumberFormat);
-					g.DrawString(s, FFont, new SolidBrush(inv), x-20, 10);
-					s = "V: " + k.Value.ToString("f2", TimelinerPlugin.GNumberFormat);
-					g.DrawString(s, FFont, new SolidBrush(inv), x-20, 20);
-					s = "A: " + (k.Alpha).ToString("f2", TimelinerPlugin.GNumberFormat);
-					g.DrawString(s, FFont, new SolidBrush(inv), x-20, 30);
+					using (Brush b = new SolidBrush(inv))
+					{
+						g.DrawString(s, FFont, b, x-20, 0);
+						s = "S: " + k.Saturation.ToString("f2", TimelinerPlugin.GNumberFormat);
+						g.DrawString(s, FFont, b, x-20, 10);
+						s = "V: " + k.Value.ToString("f2", TimelinerPlugin.GNumberFormat);
+						g.DrawString(s, FFont, b, x-20, 20);
+						s = "A: " + (k.Alpha).ToString("f2", TimelinerPlugin.GNumberFormat);
+						g.DrawString(s, FFont, b, x-20, 30);
+					}
 					
-					g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat) + "s", FFont, new SolidBrush(Color.White), x-20, 45);
+					using (Brush b = new SolidBrush(Color.White))
+						g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat) + "s", FFont, b, x-20, 45);
 				}
 				else
-					g.DrawRectangle(new Pen(Color.Silver), x-20, 0, 40, sliceHeight);
+					using (Pen p = new Pen(Color.Silver))
+						g.DrawRectangle(p, x-20, 0, 40, sliceHeight);
 
 				SizeF sz = g.MeasureString(FOutputAsString, FFont);
 				inv = inv = VColor.Offset(FOutput, 0.5).Color;
 				
-				g.FillRectangle(new SolidBrush(FOutput.Color), new RectangleF(g.ClipBounds.Width-sz.Width, sliceHeight-sz.Height, sz.Width, sz.Height));
-				g.DrawString(FOutputAsString, FFont, new SolidBrush(inv), g.ClipBounds.Width-sz.Width-2, sliceHeight-sz.Height);				
+				using (Brush b = new SolidBrush(FOutput.Color))
+					g.FillRectangle(b, new RectangleF(g.ClipBounds.Width-sz.Width, sliceHeight-sz.Height, sz.Width, sz.Height));
+				using (Brush b = new SolidBrush(inv))
+					g.DrawString(FOutputAsString, FFont, b, g.ClipBounds.Width-sz.Width-2, sliceHeight-sz.Height);
 			}
 		}
-	}			
+	}
 }
 
