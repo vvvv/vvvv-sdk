@@ -80,7 +80,7 @@ namespace VVVV.Nodes.Timeliner
    			set 
    			{ 
    				FOrder = value;
-   				UpdateOrder();
+   				PinOrderChanged();
    			}
 		}
 		
@@ -243,7 +243,7 @@ namespace VVVV.Nodes.Timeliner
 		public virtual void UpdateKeyFrameAreas()
 		{}
 		
-		public virtual void UpdateOrder()
+		public virtual void PinOrderChanged()
 		{}
 		
 		public virtual void DestroyPins()
