@@ -19,27 +19,27 @@ namespace VVVV.Nodes.Timeliner
 		private TLInterpolationType FCurrentInType = TLInterpolationType.Cubic;
 		private TLInterpolationType FCurrentOutType = TLInterpolationType.Cubic;
 		
-		public double MinValue 
+		public double MinValue
 		{
-   			get { return FMinValue;}
-   			set 
-   			{ 
-   				FMinValue = value;
-   				foreach (TLValueKeyFrame k in FKeyFrames)
-   					k.MinValue = FMinValue;
-   			}
+			get { return FMinValue;}
+			set
+			{
+				FMinValue = value;
+				foreach (TLValueKeyFrame k in FKeyFrames)
+					k.MinValue = FMinValue;
+			}
 		}
 		
-		public double MaxValue 
+		public double MaxValue
 		{
-   			get { return FMaxValue;}
-   			set 
-   			{ 
-   				FMaxValue = value;
-   				foreach (TLValueKeyFrame k in FKeyFrames)
-   					k.MaxValue = FMaxValue;
-   			}
-		}		
+			get { return FMaxValue;}
+			set
+			{
+				FMaxValue = value;
+				foreach (TLValueKeyFrame k in FKeyFrames)
+					k.MaxValue = FMaxValue;
+			}
+		}
 		
 		public double Output
 		{
@@ -51,19 +51,19 @@ namespace VVVV.Nodes.Timeliner
 		
 		protected override void CreatePins()
 		{
-			FHost.CreateValueConfig(FPin.Name + "-Time" + FSliceIndex.ToString(), 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyTime);        	
+			FHost.CreateValueConfig(FPin.Name + "-Time" + FSliceIndex.ToString(), 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyTime);
 			FKeyTime.SliceCount=0;
 			FKeyTime.SetSubType(double.MinValue, double.MaxValue, 0.001D, 0, false, false, false);
 			
-			FHost.CreateValueConfig(FPin.Name + "-Value" + FSliceIndex.ToString(), 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyValue);        	
+			FHost.CreateValueConfig(FPin.Name + "-Value" + FSliceIndex.ToString(), 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyValue);
 			FKeyValue.SliceCount=0;
 			FKeyValue.SetSubType(double.MinValue, double.MaxValue, 0.001D, 0, false, false, false);
 			
-			FHost.CreateValueConfig(FPin.Name + "-InType" + FSliceIndex.ToString(), 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyInType);        	
+			FHost.CreateValueConfig(FPin.Name + "-InType" + FSliceIndex.ToString(), 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyInType);
 			FKeyInType.SliceCount=0;
 			FKeyInType.SetSubType(0, 5, 1, 0, false, false, true);
 			
-			FHost.CreateValueConfig(FPin.Name + "-OutType" + FSliceIndex.ToString(), 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyOutType);        	
+			FHost.CreateValueConfig(FPin.Name + "-OutType" + FSliceIndex.ToString(), 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyOutType);
 			FKeyOutType.SliceCount=0;
 			FKeyOutType.SetSubType(0, 5, 1, 0, false, false, true);
 		}
@@ -86,8 +86,13 @@ namespace VVVV.Nodes.Timeliner
 		{
 			FKeyTime.Name = FPin.Name + "-Time" + FSliceIndex.ToString();
 			FKeyValue.Name = FPin.Name + "-Value" + FSliceIndex.ToString();
-			FKeyInType.Name = FPin.Name + "-InType" + FSliceIndex.ToString();			
-			FKeyOutType.Name = FPin.Name + "-OutType" + FSliceIndex.ToString();			
+			FKeyInType.Name = FPin.Name + "-InType" + FSliceIndex.ToString();
+			FKeyOutType.Name = FPin.Name + "-OutType" + FSliceIndex.ToString();
+			
+			FKeyTime.Order = FPin.Order;
+			FKeyValue.Order = FPin.Order;
+			FKeyInType.Order = FPin.Order;
+			FKeyOutType.Order = FPin.Order;
 		}
 		
 		public override void Evaluate(double CurrentTime)
@@ -95,20 +100,24 @@ namespace VVVV.Nodes.Timeliner
 			double t;
 			TLBaseKeyFrame kf = FKeyFrames.FindLast(delegate(TLBaseKeyFrame k) {return k.Time <= CurrentTime;});
 			TLBaseKeyFrame kf1 = FKeyFrames.Find(delegate(TLBaseKeyFrame k) {return k.Time >= CurrentTime;});
-
-			if (kf == null || kf1 == null)
+			
+			if (kf == null && kf1 == null)
 				FOutput = 0;
+			else if (kf == null)
+				FOutput = (kf1 as TLValueKeyFrame).Value;
+			else if (kf1 == null)
+				FOutput = (kf as TLValueKeyFrame).Value;
 			else
 			{
 				if((kf as TLValueKeyFrame).OutType == TLInterpolationType.Step)
 					FOutput = (kf as TLValueKeyFrame).Value;
-				else if((kf as TLValueKeyFrame).OutType == TLInterpolationType.Linear && kf1 != null)
+				else if((kf as TLValueKeyFrame).OutType == TLInterpolationType.Linear)
 				{
 					// LINEAR INTERPOLATION
 					t = VMath.Map(CurrentTime, kf.Time, kf1.Time, 0, 1, TMapMode.Float);
 					FOutput = VMath.Lerp((kf as TLValueKeyFrame).Value, (kf1 as TLValueKeyFrame).Value, t);
 				}
-				else if((kf as TLValueKeyFrame).OutType == TLInterpolationType.Cubic && kf1 != null)
+				else if((kf as TLValueKeyFrame).OutType == TLInterpolationType.Cubic)
 				{
 					// CUBIC INTERPOLATION
 					t = VMath.Map(CurrentTime, kf.Time, kf1.Time, 0, 1, TMapMode.Float);
@@ -128,7 +137,7 @@ namespace VVVV.Nodes.Timeliner
 				FKeyFrames.Clear();
 				//System.Windows.Forms.MessageBox.Show("FKeyOutType: " + FKeyOutType.SliceCount.ToString());
 				double time, val, intype, outtype;
-				for (int i = 0; i<FKeyOutType.SliceCount;i++)	
+				for (int i = 0; i<FKeyOutType.SliceCount;i++)
 				{
 					FKeyTime.GetValue(i, out time);
 					FKeyValue.GetValue(i, out val);
@@ -137,7 +146,7 @@ namespace VVVV.Nodes.Timeliner
 					AddKeyFrame(time, val, (TLInterpolationType) intype, (TLInterpolationType) outtype);
 				}
 				
-				FKeyFrames.Sort(delegate(TLBaseKeyFrame k0, TLBaseKeyFrame k1) { return k0.Time.CompareTo(k1.Time); });	
+				FKeyFrames.Sort(delegate(TLBaseKeyFrame k0, TLBaseKeyFrame k1) { return k0.Time.CompareTo(k1.Time); });
 			}
 			
 			base.Configurate(Input, FirstFrame);
@@ -164,7 +173,7 @@ namespace VVVV.Nodes.Timeliner
 		public override void SaveKeyFrames()
 		{
 			FKeyTime.SliceCount = FKeyFrames.Count;
-			FKeyValue.SliceCount = FKeyFrames.Count;			
+			FKeyValue.SliceCount = FKeyFrames.Count;
 			FKeyInType.SliceCount = FKeyFrames.Count;
 			FKeyOutType.SliceCount = FKeyFrames.Count;
 			
@@ -173,7 +182,7 @@ namespace VVVV.Nodes.Timeliner
 			for (int i = 0; i<FKeyFrames.Count; i++)
 			{
 				FKeyTime.SetValue(i, FKeyFrames[i].Time);
-				FKeyValue.SetValue(i, (FKeyFrames[i] as TLValueKeyFrame).Value);				
+				FKeyValue.SetValue(i, (FKeyFrames[i] as TLValueKeyFrame).Value);
 				FKeyInType.SetValue(i, (int) (FKeyFrames[i] as TLValueKeyFrame).InType);
 				FKeyOutType.SetValue(i, (int) (FKeyFrames[i] as TLValueKeyFrame).OutType);
 			}
@@ -189,7 +198,7 @@ namespace VVVV.Nodes.Timeliner
 				if (k.Selected)
 				{
 					k.InType = InType;
-					k.OutType = OutType;					
+					k.OutType = OutType;
 				}
 			}
 		}
@@ -200,55 +209,86 @@ namespace VVVV.Nodes.Timeliner
 				return;
 			
 			base.DrawSlice(g, From, To, AllInOne);
-						
+			
 			float sliceHeight = FPin.Height / FPin.SliceCount;
 			
 			//draw 0 line
 			float y_;
-			if (AllInOne)
+			using (Pen p = new Pen(Color.Snow))
 			{
-				if  (FSliceIndex == 0)
+				if (AllInOne)
 				{
-					y_ = (float) VMath.Map(0, FMinValue, FMaxValue, FPin.Height, 0, TMapMode.Float);
-					g.DrawLine(new Pen(Color.Snow), 0, y_, g.ClipBounds.Width, y_);
+					if  (FSliceIndex == 0)
+					{
+						y_ = (float) VMath.Map(0, FMinValue, FMaxValue, FPin.Height, 0, TMapMode.Float);
+						g.DrawLine(p, 0, y_, g.ClipBounds.Width, y_);
+					}
 				}
-			}				
-			else
-			{
-				y_ = (float) VMath.Map(0, FMinValue, FMaxValue, sliceHeight, 0, TMapMode.Float);
-				g.DrawLine(new Pen(Color.Snow), 0, y_, g.ClipBounds.Width, y_);
-			}
-				
-			//draw lines
-			for (int i=0; i < FInvalidKeyFrames.Count-1; i++)
-			{
-				float x0 = (FInvalidKeyFrames[i] as TLValueKeyFrame).GetTimeAsX();
-				float y0 = (float) (FInvalidKeyFrames[i] as TLValueKeyFrame).GetValueAsY();
-				
-				float x1 = (FInvalidKeyFrames[i+1] as TLValueKeyFrame).GetTimeAsX();
-				float y1 = (float) (FInvalidKeyFrames[i+1] as TLValueKeyFrame).GetValueAsY();
-				
-				Pen p = new Pen(Color.Gray, 2);
-				
-				if ((FInvalidKeyFrames[i] as TLValueKeyFrame).OutType == TLInterpolationType.Step)
+				else
 				{
-					//STEP Interpolation
-					g.DrawLine(p, x0, y0, x1, y0);
-					g.DrawLine(p, x1, y0, x1, y1);
-				}
-				else if ((FInvalidKeyFrames[i] as TLValueKeyFrame).OutType == TLInterpolationType.Linear)
-				{
-					//LINEAR Interpolation
-					g.DrawLine(p, x0, y0, x1, y1);
-				}
-				else if ((FInvalidKeyFrames[i] as TLValueKeyFrame).OutType == TLInterpolationType.Cubic)
-				{
-					//CUBIC Interpolation
-					g.DrawBezier(p,x0,y0, x0+((x1-x0)/2), y0, x1-((x1-x0)/2), y1, x1, y1);
+					y_ = (float) VMath.Map(0, FMinValue, FMaxValue, sliceHeight, 0, TMapMode.Float);
+					g.DrawLine(p, 0, y_, g.ClipBounds.Width, y_);
 				}
 			}
 			
-			//draw handler
+			//draw lines
+			using (Pen p = new Pen(Color.Gray, 2))
+			{
+				for (int i=0; i < FInvalidKeyFrames.Count-1; i++)
+				{
+					float x0 = (FInvalidKeyFrames[i] as TLValueKeyFrame).GetTimeAsX();
+					float y0 = (float) (FInvalidKeyFrames[i] as TLValueKeyFrame).GetValueAsY();
+					
+					float x1 = (FInvalidKeyFrames[i+1] as TLValueKeyFrame).GetTimeAsX();
+					float y1 = (float) (FInvalidKeyFrames[i+1] as TLValueKeyFrame).GetValueAsY();
+					
+					if ((FInvalidKeyFrames[i] as TLValueKeyFrame).OutType == TLInterpolationType.Step)
+					{
+						//STEP Interpolation
+						g.DrawLine(p, x0, y0, x1, y0);
+						g.DrawLine(p, x1, y0, x1, y1);
+					}
+					else if ((FInvalidKeyFrames[i] as TLValueKeyFrame).OutType == TLInterpolationType.Linear)
+					{
+						//LINEAR Interpolation
+						g.DrawLine(p, x0, y0, x1, y1);
+					}
+					else if ((FInvalidKeyFrames[i] as TLValueKeyFrame).OutType == TLInterpolationType.Cubic)
+					{
+						//CUBIC Interpolation
+						g.DrawBezier(p, x0, y0, x0+((x1-x0)/2), y0, x1-((x1-x0)/2), y1, x1, y1);
+					}
+				}
+			}
+			
+			using (Pen p = new Pen(Color.Silver, 2))
+			{
+				if (FInvalidKeyFrames.Count > 0)
+				{
+					//draw left of first keyframe
+					if (FInvalidKeyFrames[0] == FKeyFrames[0])
+					{
+						float y = (float) (FInvalidKeyFrames[0] as TLValueKeyFrame).GetValueAsY();
+						float width = FKeyFrames[0].GetTimeAsX();
+						g.DrawLine(p, 0, y, width, y);
+					}
+					
+					//draw right of last keyframe
+					if (FInvalidKeyFrames[FInvalidKeyFrames.Count-1] == FKeyFrames[FKeyFrames.Count-1])
+					{
+						float y = (float) (FInvalidKeyFrames[FInvalidKeyFrames.Count-1] as TLValueKeyFrame).GetValueAsY();
+						float width = FInvalidKeyFrames[FInvalidKeyFrames.Count-1].GetTimeAsX();
+						g.DrawLine(p, width, y, g.ClipBounds.Width, y);
+					}
+				}
+			}
+			
+			//draw infos
+			SolidBrush silver = new SolidBrush(Color.Silver);
+			SolidBrush white = new SolidBrush(Color.White);
+			SolidBrush black = new SolidBrush(Color.Black);
+			SolidBrush gray = new SolidBrush(Color.Gray);
+			
 			foreach (TLValueKeyFrame k in FInvalidKeyFrames)
 			{
 				//transform the keyframes time by the current transformation
@@ -258,22 +298,23 @@ namespace VVVV.Nodes.Timeliner
 				
 				if (k.Selected)
 				{
-					g.FillRectangle(new SolidBrush(Color.Silver), x, y, size, size);
-					g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat)+"s", FFont, new SolidBrush(Color.Black), x, y-14);
-					g.DrawString(k.Value.ToString("f4", TimelinerPlugin.GNumberFormat), FFont, new SolidBrush(Color.Black), x, y+7);
+					g.FillRectangle(silver, x, y, size, size);
+					g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat)+"s", FFont, black, x, y-14);
+					g.DrawString(k.Value.ToString("f4", TimelinerPlugin.GNumberFormat), FFont, black, x, y+7);
 				}
 				else
 				{
-					g.FillRectangle(new SolidBrush(Color.White), x, y, size, size);
+					g.FillRectangle(white, x, y, size, size);
 				}
 				
 				float sWidth = g.MeasureString(FOutputAsString, FFont).Width + 2;
-				g.DrawString(FOutputAsString, FFont, new SolidBrush(Color.Gray), g.ClipBounds.Width-sWidth, sliceHeight-16);
-				
-				/*Random r = new Random();
-				Color c = Color.FromArgb(255, 255, 255, r.Next(255));
-				g.FillRegion(new SolidBrush(c), g.Clip);*/
+				g.DrawString(FOutputAsString, FFont, gray, g.ClipBounds.Width-sWidth, sliceHeight-16);
 			}
+			
+			silver.Dispose();
+			white.Dispose();
+			black.Dispose();
+			gray.Dispose();	
 		}
 	}
 }
