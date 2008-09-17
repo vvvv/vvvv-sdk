@@ -128,6 +128,8 @@ namespace VVVV.Utils.VMath
 						break;
 						
 					case TMapMode.Wrap:
+						if (normalized < 0)
+							normalized = 1 + normalized;
 						output = OutMin + (normalized % 1) * (OutMax - OutMin);
 						break;
 						
