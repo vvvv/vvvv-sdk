@@ -81,7 +81,7 @@ namespace VVVV.Nodes.Timeliner
     		return pin;				
 		}
 
-		public override void UpdateOrder()
+		public override void PinOrderChanged()
 		{
 			foreach (TLSlice s in FOutputSlices)
    				s.PinsOrder = FOrder;
@@ -266,12 +266,7 @@ namespace VVVV.Nodes.Timeliner
 				PinNameChanged();
 			}
 		}
-		
-		void PinNameEditMouseLeave(object sender, EventArgs e)
-		{
-			PinNameChanged();
-		}
-		
+
 		void CollapseButtonClick(object sender, EventArgs e)
 		{
 			FCollapsed = !FCollapsed;
@@ -313,21 +308,21 @@ namespace VVVV.Nodes.Timeliner
 			AllInOne.Checked = FAllInOne;
 			UpdateKeyFrameAreas();
 		}
-		
-		void TopPanelMouseDown(object sender, MouseEventArgs e)
-		{
-			DoDragDrop(new DataObject(DataFormats.Serializable, this), DragDropEffects.All);
-		}
-		
-		void PinNameEditMouseDown(object sender, MouseEventArgs e)
-		{
-			DoDragDrop(new DataObject(DataFormats.Serializable, this), DragDropEffects.All);
-		}
-		
+
 		protected override void OnMouseDown(MouseEventArgs e)
 		{
-			base.OnMouseDown(e);
-			
+			base.OnMouseDown(e);			
+		}
+		
+		void PinNameEditLeave(object sender, EventArgs e)
+		{
+			PinNameChanged();
+		}
+		
+		void TopPanelMouseMove(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Left)
+				DoDragDrop(new DataObject(DataFormats.Serializable, this), DragDropEffects.All);
 		}
 	}
 }

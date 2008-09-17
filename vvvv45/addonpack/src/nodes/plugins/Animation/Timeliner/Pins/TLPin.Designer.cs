@@ -58,7 +58,7 @@
 			this.TopPanel.Name = "TopPanel";
 			this.TopPanel.Size = new System.Drawing.Size(150, 20);
 			this.TopPanel.TabIndex = 2;
-			this.TopPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TopPanelMouseDown);
+			this.TopPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TopPanelMouseMove);
 			// 
 			// CollapseButton
 			// 
@@ -81,8 +81,8 @@
 			this.PinNameEdit.Name = "PinNameEdit";
 			this.PinNameEdit.Size = new System.Drawing.Size(101, 13);
 			this.PinNameEdit.TabIndex = 2;
-			this.PinNameEdit.MouseLeave += new System.EventHandler(this.PinNameEditMouseLeave);
-			this.PinNameEdit.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PinNameEditMouseDown);
+			this.PinNameEdit.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TopPanelMouseMove);
+			this.PinNameEdit.Leave += new System.EventHandler(this.PinNameEditLeave);
 			this.PinNameEdit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PinNameEditKeyPress);
 			// 
 			// RemoveButton
