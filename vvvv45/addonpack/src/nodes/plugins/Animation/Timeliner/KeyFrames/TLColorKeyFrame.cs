@@ -51,7 +51,7 @@ namespace VVVV.Nodes.Timeliner
 		
 		public void MoveHue(double Delta)
 		{
-			FHue = Math.Max(0, Math.Min(FHue * FSliceHeight + Delta, FSliceHeight)) / FSliceHeight;
+			FHue = VMath.Map(FHue + Delta, 0, 1, 0, 1, TMapMode.Wrap);
 		}
 		
 		public void MoveSaturation(double Delta)
