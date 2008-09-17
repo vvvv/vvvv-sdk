@@ -97,6 +97,10 @@ namespace VVVV.Nodes.Timeliner
 			FStateTime.Name = FPin.Name + "-Time" + FSliceIndex.ToString();
 			FStateName.Name = FPin.Name + "-Name" + FSliceIndex.ToString();
 			FStateEvents.Name = FPin.Name + "-Events" + FSliceIndex.ToString();
+			
+			FStateTime.Order = FPin.Order;
+			FStateName.Order = FPin.Order;
+			FStateEvents.Order = FPin.Order;
 		}
 	
 		private TLBaseKeyFrame AddKeyFrame(string Name, double EndTime, string Events)

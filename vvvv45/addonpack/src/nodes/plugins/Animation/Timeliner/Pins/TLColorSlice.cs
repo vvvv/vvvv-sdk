@@ -49,6 +49,9 @@ namespace VVVV.Nodes.Timeliner
 		{
 			FKeyTime.Name = FPin.Name + "-Time" + FSliceIndex.ToString();
 			FKeyColor.Name = FPin.Name + "-Color" + FSliceIndex.ToString();
+			
+			FKeyTime.Order = FPin.Order;
+			FKeyColor.Order = FPin.Order;
 		}
 	
 		public override void Evaluate(double CurrentTime)

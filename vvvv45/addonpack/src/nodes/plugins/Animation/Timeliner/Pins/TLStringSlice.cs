@@ -58,6 +58,10 @@ namespace VVVV.Nodes.Timeliner
 			FKeyTime.Name = FPin.Name + "-Time" + FSliceIndex.ToString();
 			FKeyFlagY.Name = FPin.Name + "-FlagY" + FSliceIndex.ToString();
 			FKeyValue.Name = FPin.Name + "-Value" + FSliceIndex.ToString();
+			
+			FKeyTime.Order = FPin.Order;
+			FKeyFlagY.Order = FPin.Order;
+			FKeyValue.Order = FPin.Order;
 		}
 	
 		public override void Evaluate(double CurrentTime)
