@@ -51,8 +51,13 @@ namespace VVVV.Nodes.Timeliner
 		protected override void PinNameChanged()
 		{
 			base.PinNameChanged();
-			
 			FStringOut.Name = Name;
+		}
+		
+		public override void PinOrderChanged()
+		{
+			base.PinOrderChanged();
+			FStringOut.Order = FOrder;
 		}
 		
 		public override void RemoveSlice(TLSlice Slice)

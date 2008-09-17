@@ -54,8 +54,13 @@ namespace VVVV.Nodes.Timeliner
 		protected override void PinNameChanged()
 		{
 			base.PinNameChanged();
-
 			FColorOut.Name = Name;
+		}
+		
+		public override void PinOrderChanged()
+		{
+			base.PinOrderChanged();
+			FColorOut.Order = FOrder;
 		}
 		
 		public override void RemoveSlice(TLSlice Slice)

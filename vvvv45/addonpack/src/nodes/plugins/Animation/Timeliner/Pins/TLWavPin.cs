@@ -90,6 +90,12 @@ namespace VVVV.Nodes.Timeliner
 			FValueOut.Name = Name;
 		}
 		
+		public override void PinOrderChanged()
+		{
+			base.PinOrderChanged();
+			FValueOut.Order = FOrder;
+		}
+		
 		public override void RemoveSlice(TLSlice Slice)
 		{
 			base.RemoveSlice(Slice);

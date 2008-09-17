@@ -120,8 +120,13 @@ namespace VVVV.Nodes.Timeliner
 		protected override void PinNameChanged()
 		{
 			base.PinNameChanged();
-			
 			FValueOut.Name = Name;
+		}
+		
+		public override void PinOrderChanged()
+		{
+			base.PinOrderChanged();
+			FValueOut.Order = FOrder;
 		}
 		
 		protected override void LoadSlices(int SavedSliceCount)
