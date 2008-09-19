@@ -92,6 +92,14 @@ namespace VVVV.Nodes.Timeliner
 			AddSlice(At, ss);
 		}
 		
+		protected override void InitializeHeight()
+		{
+			if (FUncollapsedHeight == 0)
+				FUncollapsedHeight = 40;
+			
+			base.InitializeHeight();
+		}
+		
 		public void InitializeWithLoop()
 		{
 			(FOutputSlices[0] as TLAutomataSlice).InitializeWithLoop();
