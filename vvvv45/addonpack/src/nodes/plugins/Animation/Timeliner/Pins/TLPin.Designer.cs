@@ -81,7 +81,7 @@
 			this.PinNameEdit.Name = "PinNameEdit";
 			this.PinNameEdit.Size = new System.Drawing.Size(101, 13);
 			this.PinNameEdit.TabIndex = 2;
-			this.PinNameEdit.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TopPanelMouseMove);
+			//this.PinNameEdit.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TopPanelMouseMove);
 			this.PinNameEdit.Leave += new System.EventHandler(this.PinNameEditLeave);
 			this.PinNameEdit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PinNameEditKeyPress);
 			// 
