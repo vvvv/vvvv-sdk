@@ -1102,6 +1102,9 @@ namespace VVVV.Nodes
 				if (FAutomata == null)
 				{
 					AddPin(TLPinType.Automata);
+					//pinsettings are added as lastslice
+					//calling a movepin now to move the pinsettings of automatapin to its default position=1;
+					MovePin(FOutputPins.Count-1, PinHeaderPanel0.Controls.Count-1);
 					if (SplitContainer.SplitterDistance < FAutomata.Top + FAutomata.Height)
 						SplitContainer.SplitterDistance += FAutomata.Height;
 				}
@@ -1157,7 +1160,7 @@ namespace VVVV.Nodes
 				
 				if (droppedPin.Parent == PinHeaderPanel1)
 				{
-					PinHeaderPanel1.Controls.Remove(droppedPin);
+					//PinHeaderPanel1.Controls.Remove(droppedPin);
 					PinHeaderPanel0.Controls.Add(droppedPin);
 				}
 				else //move in same panel
@@ -1207,7 +1210,7 @@ namespace VVVV.Nodes
 				
 				if (droppedPin.Parent == PinHeaderPanel0)
 				{
-					PinHeaderPanel0.Controls.Remove(droppedPin);
+					//PinHeaderPanel0.Controls.Remove(droppedPin);
 					PinHeaderPanel1.Controls.Add(droppedPin);
 				}
 				else //move in same panel
