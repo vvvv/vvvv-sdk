@@ -285,6 +285,7 @@ namespace VVVV.Nodes.Timeliner
 			
 			//draw infos
 			//don't clip so infos are always visible
+			float sliceWidth = g.ClipBounds.Width;
 			g.Clip = new Region();
 			SolidBrush silver = new SolidBrush(Color.Silver);
 			SolidBrush white = new SolidBrush(Color.White);
@@ -310,7 +311,7 @@ namespace VVVV.Nodes.Timeliner
 				}
 				
 				float sWidth = g.MeasureString(FOutputAsString, FFont).Width + 2;
-				g.DrawString(FOutputAsString, FFont, gray, g.ClipBounds.Width-sWidth, sliceHeight-16);
+				g.DrawString(FOutputAsString, FFont, gray, sliceWidth-sWidth, sliceHeight-16);
 			}
 			
 			silver.Dispose();
