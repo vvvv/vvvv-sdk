@@ -23,9 +23,6 @@ Param::~Param ()
 
 VSTPlugin::VSTPlugin()
 {
-  for(int i=0;i<100;i++)
-  OutputDebugString(L"Konstruktor\n");
-
   effect = NULL;
 
   hasEditor    = false;
