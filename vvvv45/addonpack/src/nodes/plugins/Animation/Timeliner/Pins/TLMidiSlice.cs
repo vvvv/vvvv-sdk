@@ -15,12 +15,12 @@ namespace VVVV.Nodes.Timeliner
 	public class TLMidiSlice :  TLSlice
 	{
 		private Font FFont = new Font("Verdana", 7);
-		/*		
+		/*
 		private IValueIO FNoteIn;
 		private IValueIO FBarIn;
 		private IValueIO FReset;
 		private IValueIO FMaxWindowNotes;
-		*/		
+		 */
 		
 		private string FOutput;
 
@@ -38,6 +38,7 @@ namespace VVVV.Nodes.Timeliner
 		public string TrackName
 		{
 			set{FTrackName = value;}
+			get{return FTrackName;}
 		}
 		
 		private int FMinNote;
@@ -191,16 +192,42 @@ namespace VVVV.Nodes.Timeliner
 			float noteHeight = Math.Max(2, sliceHeight / (FMaxNote - FMinNote));
 
 			//draw piano
+			SolidBrush black = new SolidBrush(Color.Black);
+			SolidBrush white = new SolidBrush(Color.White);
 			for (int i=0; i<FMaxNote - FMinNote; i++)
 			{
-				g.FillRectangle(new SolidBrush(TMidiScore.KeyColor[(FMinNote + i) % 12]), 0, i*noteHeight, 10, noteHeight);
+				if (TMidiScore.KeyColor[(FMinNote + i) % 12] == Color.Black)
+					g.FillRectangle(black, 0, i*noteHeight, 10, noteHeight);
+				else
+					g.FillRectangle(white, 0, i*noteHeight, 10, noteHeight);
 			}
+			white.Dispose();
 			
 			//draw notelines
-			Pen p = new Pen(Color.Silver);			               
-			for (int i=0; i<FMaxNote - FMinNote; i++)
+			using (Pen p = new Pen(Color.Silver))
 			{
-				g.DrawLine(p, 0, i*noteHeight, g.ClipBounds.Width, i*noteHeight);
+				for (int i=0; i<FMaxNote - FMinNote; i++)
+				{
+					g.DrawLine(p, 0, i*noteHeight, g.ClipBounds.Width, i*noteHeight);
+				}
+			}
+
+			//draw bars
+			SolidBrush gray = new SolidBrush(Color.Gray);
+			using (Pen p = new Pen(Color.Silver))
+			{
+				for (int i = 0; i < MidiScore.BeatCount; i++)
+				{
+					x = FPin.Transformer.TransformPoint(new PointF((float) MidiScore.SecondsPerBeat * i, 0)).X;
+					if (i % MidiScore.TimeSignature.Numerator == 0)
+						p.Width = 2;
+					else
+						p.Width = 1;
+					
+					g.DrawLine(p, x, 0, x, sliceHeight);
+					if (SliceIndex == 0)
+						g.DrawString((i+1).ToString(), FFont, gray, new PointF(x, 0));
+				}
 			}
 			
 			//MU..midi units
@@ -209,9 +236,12 @@ namespace VVVV.Nodes.Timeliner
 			int MUpBar = MidiScore.TimeSignature.Numerator * MUpBeat;
 			int barCount = MidiScore.Length / MUpBar;
 			int beatCount = barCount * MidiScore.TimeSignature.Numerator;
-
+			
 			float x, y;
 			//draw notes
+			Region clip = g.Clip;
+			SolidBrush silver = new SolidBrush(Color.Silver);
+			Pen blackPen = new Pen(Color.Black);
 			foreach (TLMidiKeyFrame k in FInvalidKeyFrames)
 			{
 				//transform the keyframes time by the current transformation
@@ -221,9 +251,11 @@ namespace VVVV.Nodes.Timeliner
 				
 				if (k.Selected)
 				{
-					g.FillRectangle(new SolidBrush(Color.Silver), x, y, length, noteHeight);
-					g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat)+"s", FFont, new SolidBrush(Color.Black), x, y-14);
-					g.DrawString(k.Note.ToString("f0", TimelinerPlugin.GNumberFormat), FFont, new SolidBrush(Color.Black), x, y+7);
+					g.FillRectangle(silver, x, y, length, noteHeight);
+					g.Clip = new Region();
+					g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat)+"s", FFont, black, x, y-14);
+					g.DrawString(k.Note.ToString("f0", TimelinerPlugin.GNumberFormat), FFont, black, x, y+7);
+					g.Clip = clip;
 				}
 				else
 				{
@@ -236,27 +268,20 @@ namespace VVVV.Nodes.Timeliner
 					else
 						vel = Color.FromArgb(k.Note*2, 255, 255, 255);
 					
-					g.FillRectangle(new SolidBrush(vel), x, y, length, noteHeight);
-					g.DrawRectangle(new Pen(Color.Black), x, y, length, noteHeight);
+					using (SolidBrush b = new SolidBrush(vel))
+						g.FillRectangle(b, x, y, length, noteHeight);
+					g.DrawRectangle(blackPen, x, y, length, noteHeight);
 				}
 			}
+			black.Dispose();
+			silver.Dispose();
+			blackPen.Dispose();
 			
-        	//draw bars
-        	for (int i = 0; i < MidiScore.BeatCount; i++)
-        	{
-        		x = FPin.Transformer.TransformPoint(new PointF((float) MidiScore.SecondsPerBeat * i, 0)).X; 
-        		if (i % MidiScore.TimeSignature.Numerator == 0)
-	        		p.Width = 2;
-        		else
-        			p.Width = 1;
-        		
-        		g.DrawLine(p, x, 0, x, sliceHeight);
-        		if (SliceIndex == 0)
-	        		g.DrawString((i+1).ToString(), FFont, new SolidBrush(Color.Gray), new PointF(x, 0));
-        	}
+			
 			
 			float sWidth = g.MeasureString(FOutputAsString, FFont).Width + 2;
-			g.DrawString(FOutputAsString, FFont, new SolidBrush(Color.Gray), g.ClipBounds.Width-sWidth, sliceHeight-16);
+			g.DrawString(FOutputAsString, FFont, gray, g.ClipBounds.Width-sWidth, sliceHeight-16);
+			gray.Dispose();
 		}
 	}
 }

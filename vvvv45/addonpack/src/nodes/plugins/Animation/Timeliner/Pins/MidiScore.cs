@@ -28,9 +28,15 @@ namespace VVVV.Utils.VMidiScore
 		public static readonly Color[] KeyColor = new Color[] {Color.White, Color.Black, Color.White, Color.Black, Color.White, Color.White, Color.Black, Color.White, Color.Black, Color.White, Color.Black, Color.White};
 		
 		private Sanford.Multimedia.Midi.Sequence FSequence = new Sequence();
+		public Sanford.Multimedia.Midi.Sequence Sequence
+		{
+			get { return FSequence; }
+		}
+		
 		public event NotesParsedHandler OnNotesParsed;
 		private bool FLoading = false;
 		
+		private string FFilename;
 		
 		public List<TMidiNote> FMidiNotes = new List<TMidiNote>();
 		
@@ -122,7 +128,7 @@ namespace VVVV.Utils.VMidiScore
 		
 		private string[] FTrackNames;
 
-/*		private int FRhythmChangedAtBar = 0;
+		/*		private int FRhythmChangedAtBar = 0;
 		private int FRhythmChangedOffset = 0;
 		private float FRhythmChangedOffsetInPixel = 0;
 		private int FWindowFromNote;
@@ -152,6 +158,7 @@ namespace VVVV.Utils.VMidiScore
 				if ((!FLoading) && (System.IO.File.Exists(Filename)) && (System.IO.Path.GetExtension(Filename) == ".mid"))
 				{
 					FSequence.Load(Filename);
+					FFilename = Filename;
 					
 					ParseSequence();
 					OnNotesParsed();
@@ -163,6 +170,11 @@ namespace VVVV.Utils.VMidiScore
 			{
 				MessageBox.Show(e.ToString());
 			};
+		}
+		
+		public void SaveFile()
+		{
+			FSequence.Save(FFilename);
 		}
 		
 		public List<TMidiNote> GetNotesOfChannel(int Channel)
@@ -184,7 +196,7 @@ namespace VVVV.Utils.VMidiScore
 			
 			FLoading = false;
 		}
-	/*	
+		/*
 		public int Position
 		{
 			get{return FPosition;}
@@ -292,6 +304,66 @@ namespace VVVV.Utils.VMidiScore
 			}
 		}*/
 		
+		public void Clear()
+		{
+			FSequence.Clear();
+		}
+		
+		public void AddMetaData()
+		{
+			//create metadata track
+			Track t = new Track();
+			
+			byte[] tempo = new byte[3];
+			int ms_per_min = 60000000;
+			int ms_per_quarternote = ms_per_min / FBPM;
+			tempo[0] = (byte) ((ms_per_quarternote >> 16) & byte.MaxValue);
+			tempo[1] = (byte) ((ms_per_quarternote >> 8) & byte.MaxValue);
+			tempo[2] = (byte) (ms_per_quarternote & byte.MaxValue);
+			TempoChangeBuilder tcBuilder = new TempoChangeBuilder(new MetaMessage(MetaType.Tempo, tempo));
+			tcBuilder.Build();
+			t.Insert(1, tcBuilder.Result);
+			
+			byte[] timesignature = new byte[4];
+			timesignature[0] = FTimeSignature.Numerator;
+			timesignature[1] = (byte) Math.Log(FTimeSignature.Denominator, 2);
+			timesignature[2] = FTimeSignature.MetronomePulse;
+			timesignature[3] = FTimeSignature.NumberOf32nds;
+			TimeSignatureBuilder tsBuilder = new TimeSignatureBuilder(new MetaMessage(MetaType.TimeSignature, timesignature));
+			tsBuilder.Build();
+			t.Insert(2, tsBuilder.Result);
+			
+			FSequence.Add(t);
+		}
+		
+		public void AddTrack(string TrackName, List<TLBaseKeyFrame> KeyFrames)
+		{
+			Track t = new Track();
+			
+			MetaTextBuilder mtBuilder = new MetaTextBuilder(MetaType.TrackName, TrackName);
+			mtBuilder.Build();
+			t.Insert(0, mtBuilder.Result);
+
+			foreach (TLMidiKeyFrame mk in KeyFrames)
+			{
+				ChannelMessageBuilder cmBuilder = new ChannelMessageBuilder();
+				cmBuilder.Command = ChannelCommand.NoteOn;
+				cmBuilder.MidiChannel = mk.Channel;
+				cmBuilder.Data1 = mk.Note;
+				cmBuilder.Data2 = mk.Velocity;
+				cmBuilder.Build();
+				t.Insert((int) (mk.Time / SecondsPerMidiUnit), cmBuilder.Result);
+				
+				cmBuilder.Command = ChannelCommand.NoteOff;
+				cmBuilder.Data1 = mk.Note;
+				cmBuilder.Data2 = 0;
+				cmBuilder.Build();
+				t.Insert((int) (mk.End / SecondsPerMidiUnit), cmBuilder.Result);
+			}
+			
+			FSequence.Add(t);
+		}
+		
 		private void ParseSequence()
 		{
 			FOpenMidiNotes.Clear();
@@ -333,7 +405,7 @@ namespace VVVV.Utils.VMidiScore
 								{
 									int ms_per_min = 60000000;
 									int ms_per_quarternote = (int) ((data[0]<<16) + (data[1]<<8) + data[2]);
-									FBPM = ms_per_min / ms_per_quarternote; 
+									FBPM = ms_per_min / ms_per_quarternote;
 									//MPQN = MICROSECONDS_PER_MINUTE / BPM
 									break;
 								}
@@ -395,7 +467,7 @@ namespace VVVV.Utils.VMidiScore
 			FCurrentMidiNotes.Clear();
 		}
 		
-	/*	public void ComputeBarLength()
+		/*	public void ComputeBarLength()
 		{
 			if (FExternalBar != 0)
 			{
@@ -437,7 +509,7 @@ namespace VVVV.Utils.VMidiScore
 			for (int i=0; i<FNotesOfWindow.Count; i++)
 			{
 				System.Diagnostics.Debug.WriteLine("note in window: " + FNotesOfWindow[i].Note.ToString());
-			}	
+			}
 		}*/
 		
 		public void ShowNote(int Note, int Velocity)
@@ -462,7 +534,7 @@ namespace VVVV.Utils.VMidiScore
 				}
 			}
 		}
-	/*	
+		/*
 		public void AdjustWindowBorders(int shiftright)
 		{
 			FWindowToNote += shiftright;

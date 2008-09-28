@@ -178,7 +178,6 @@
 			this.Controls.Add(this.SaveButton);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.FilenameLabel);
-			this.Name = "TLMidiPin";
 			this.Controls.SetChildIndex(this.FilenameLabel, 0);
 			this.Controls.SetChildIndex(this.label3, 0);
 			this.Controls.SetChildIndex(this.SaveButton, 0);

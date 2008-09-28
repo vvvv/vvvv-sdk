@@ -31,7 +31,7 @@ namespace VVVV.Nodes.Timeliner
 		private IValueOut FChannelOut;
 		private IValueOut FVelocityOut;
 		
-		private IStringIn FFilenameIn;
+		private IStringConfig FFilenameIn;
 		// CONTROLS
 		///////////////////////
 
@@ -43,54 +43,52 @@ namespace VVVV.Nodes.Timeliner
 			
 			//only load slices after all super constructors have been executed:
 			XmlAttribute attr = PinSettings.Attributes.GetNamedItem("SliceCount") as XmlAttribute;
-        	LoadSlices(int.Parse(attr.Value));
-        	
-        	try
-        	{
-        		attr = PinSettings.Attributes.GetNamedItem("MinNote") as XmlAttribute;
+			LoadSlices(int.Parse(attr.Value));
+			
+			try
+			{
+				attr = PinSettings.Attributes.GetNamedItem("MinNote") as XmlAttribute;
 				MinNote.Value = double.Parse(attr.Value, TimelinerPlugin.GNumberFormat);
-        	}
-        	catch
-        	{}
-        	
-        	try
-        	{
-        		attr = PinSettings.Attributes.GetNamedItem("MaxNote") as XmlAttribute;
+			}
+			catch
+			{}
+			
+			try
+			{
+				attr = PinSettings.Attributes.GetNamedItem("MaxNote") as XmlAttribute;
 				MaxNote.Value = double.Parse(attr.Value, TimelinerPlugin.GNumberFormat);
-        	}
-        	catch
-        	{}
+			}
+			catch
+			{}
 
-		 	UpdateSliceSpecificSettings();
+			UpdateSliceSpecificSettings();
 		}
 
 		public override void UpdateSliceSpecificSettings()
 		{
 			base.UpdateSliceSpecificSettings();
-			//UpdateMinMax();	
-        	//UpdateInterpolationInState();
+			//UpdateMinMax();
+			//UpdateInterpolationInState();
 		}
 		
 		protected override void CreatePins()
 		{
 			base.CreatePins();
 			
-			FHost.CreateStringInput(Name + "Filename", TSliceMode.Single, TPinVisibility.True, out FFilenameIn);
-        	FFilenameIn.Order=Order;
+			FHost.CreateStringConfig(Name + "-Filename", TSliceMode.Single, TPinVisibility.True, out FFilenameIn);
+			FFilenameIn.Order=Order;
 			FFilenameIn.SetSubType("*.mid", true);
-		
+			
 			FHost.CreateValueOutput(Name + "-Channel", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FChannelOut);
-	    	FChannelOut.SliceCount = 128;
-	    	FChannelOut.Order = Order;
+			FChannelOut.SliceCount = 128;
+			FChannelOut.Order = Order;
 			FChannelOut.SetSubType(0, 15, 1, 0, false, false, true);
 			
 			FHost.CreateValueOutput(Name + "-Velocity", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FVelocityOut);
-	    	FVelocityOut.SliceCount = 128;
-	    	FVelocityOut.Order = Order;
+			FVelocityOut.SliceCount = 128;
+			FVelocityOut.Order = Order;
 			FVelocityOut.SetSubType(0, 1, 1/128, 0, false, false, false);
 		}
-		
-		
 		
 		protected override void PinNameChanged()
 		{
@@ -113,7 +111,7 @@ namespace VVVV.Nodes.Timeliner
 			{
 				vs.MinNote = (int) MinNote.Value;
 				vs.MaxNote = (int) MaxNote.Value;
-			}			
+			}
 		}
 		
 		protected override void InitializeHeight()
@@ -131,21 +129,21 @@ namespace VVVV.Nodes.Timeliner
 			XmlNode pin = base.GetSettings();
 
 			XmlAttribute attr = FSettings.CreateAttribute("MinNote");
-    		string tmp = String.Format("{0:F0}", MinNote.Value);
+			string tmp = String.Format("{0:F0}", MinNote.Value);
 			attr.Value = tmp.Replace(',', '.');
-    		pin.Attributes.Append(attr);
-    		
-    		attr = FSettings.CreateAttribute("MaxNote");
+			pin.Attributes.Append(attr);
+			
+			attr = FSettings.CreateAttribute("MaxNote");
 			tmp = String.Format("{0:F0}", MaxNote.Value);
 			attr.Value = tmp.Replace(',', '.');
-    		pin.Attributes.Append(attr);
+			pin.Attributes.Append(attr);
 
-    		return pin;				
+			return pin;
 		}
 		
 		public override void DestroyPins()
 		{
-	
+			
 			// DELETE ALL PINS
 			///////////////////////
 			/// 
@@ -179,7 +177,7 @@ namespace VVVV.Nodes.Timeliner
 		public override void AddSlice(int At)
 		{
 			TLMidiSlice sm = new TLMidiSlice(FHost, this, FOutputSlices.Count, FOrder);
-		
+			
 			AddSlice(At, sm);
 		}
 		
@@ -187,7 +185,7 @@ namespace VVVV.Nodes.Timeliner
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
 			ofd.ShowDialog();
-			SetMidiFile(ofd.FileName);
+			FFilenameIn.SetString(0, ofd.FileName);
 		}
 		
 		void SetMidiFile(string Filename)
@@ -195,20 +193,23 @@ namespace VVVV.Nodes.Timeliner
 			FMidiScore = new TMidiScore();
 			FMidiScore.OnNotesParsed += NotesParsed;
 			FMidiScore.SetFilename(Filename);
-			FilenameLabel.Text = System.IO.Path.GetFileName(Filename);			
+			FilenameLabel.Text = System.IO.Path.GetFileName(Filename);
 		}
 		
-		public override void Evaluate(double CurrentTime)
+		public override void Configurate(IPluginConfig Input, bool FirstFrame)
 		{
-			base.Evaluate(CurrentTime);
-			
-			if (FFilenameIn.PinIsChanged)
+			if (Input == FFilenameIn)
 			{
 				string fn;
 				FFilenameIn.GetString(0, out fn);
 				SetMidiFile(fn);
 			}
-			
+		}
+		
+		public override void Evaluate(double CurrentTime)
+		{
+			base.Evaluate(CurrentTime);
+				
 			if (FMidiScore == null)
 				return;
 			
@@ -222,7 +223,7 @@ namespace VVVV.Nodes.Timeliner
 				if (m == null)
 				{
 					FChannelOut.SetValue(i, 0);
-					FVelocityOut.SetValue(i, 0);					
+					FVelocityOut.SetValue(i, 0);
 				}
 				else
 				{
@@ -246,7 +247,7 @@ namespace VVVV.Nodes.Timeliner
 					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).TrackName = FMidiScore.GetTrackName(i);
 					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).MinNote = (int) MinNote.Value;
 					(FOutputSlices[FOutputSlices.Count-1] as TLMidiSlice).MaxNote = (int) MaxNote.Value;
-				}				
+				}
 			}
 			
 			Numerator.Value = FMidiScore.TimeSignature.Numerator;
@@ -270,17 +271,17 @@ namespace VVVV.Nodes.Timeliner
 		
 		void SaveButtonClick(object sender, EventArgs e)
 		{
-			//save the midifile
-			//move all data from keyframes back to miditracks;
+			//clear current score	
+			FMidiScore.Clear();
 			
-		/*	FMidiScore.Sequence[0].Clear();
-			Track t = new Tra
+			//add metadata
+			FMidiScore.AddMetaData();
+			
+			//move all data from keyframes back to miditracks;
 			foreach (TLMidiSlice ms in FOutputSlices)
-			{
-				t. .Insert(
-				FMidiScore.Sequence.Add(t);
-			}
-			FMidiScore.SaveFile;*/
+				FMidiScore.AddTrack(ms.TrackName, ms.KeyFrames);
+
+			FMidiScore.SaveFile();
 		}
 	}
 }
