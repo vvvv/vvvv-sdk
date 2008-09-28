@@ -79,10 +79,10 @@ namespace VVVV.Nodes
 			this.PlayButton = new System.Windows.Forms.Button();
 			this.StopButton = new System.Windows.Forms.Button();
 			this.PinPanel = new System.Windows.Forms.Panel();
+			this.InsertPreview = new System.Windows.Forms.Panel();
 			this.SliceArea = new VVVV.Nodes.Timeliner.TLSliceArea();
 			this.SplitContainer = new System.Windows.Forms.SplitContainer();
 			this.PinHeaderPanel0 = new System.Windows.Forms.Panel();
-			this.InsertPreview = new System.Windows.Forms.Panel();
 			this.PinHeaderPanel1 = new System.Windows.Forms.Panel();
 			this.MainMenu.SuspendLayout();
 			this.PinPanel.SuspendLayout();
@@ -111,7 +111,6 @@ namespace VVVV.Nodes
 			// 
 			// MidiButton
 			// 
-			this.MidiButton.Enabled = false;
 			this.MidiButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.MidiButton.Location = new System.Drawing.Point(442, 0);
 			this.MidiButton.Name = "MidiButton";
@@ -119,7 +118,6 @@ namespace VVVV.Nodes
 			this.MidiButton.TabIndex = 10;
 			this.MidiButton.Text = "+M";
 			this.MidiButton.UseVisualStyleBackColor = true;
-			this.MidiButton.Visible = false;
 			this.MidiButton.Click += new System.EventHandler(this.PinButtonClick);
 			// 
 			// WavButton
@@ -224,6 +222,15 @@ namespace VVVV.Nodes
 			this.PinPanel.Size = new System.Drawing.Size(688, 330);
 			this.PinPanel.TabIndex = 1;
 			// 
+			// InsertPreview
+			// 
+			this.InsertPreview.BackColor = System.Drawing.Color.Lime;
+			this.InsertPreview.Location = new System.Drawing.Point(156, 25);
+			this.InsertPreview.Name = "InsertPreview";
+			this.InsertPreview.Size = new System.Drawing.Size(150, 2);
+			this.InsertPreview.TabIndex = 4;
+			this.InsertPreview.Visible = false;
+			// 
 			// SliceArea
 			// 
 			this.SliceArea.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
@@ -274,15 +281,6 @@ namespace VVVV.Nodes
 			this.PinHeaderPanel0.DragOver += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragOver);
 			this.PinHeaderPanel0.DragDrop += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragDrop);
 			this.PinHeaderPanel0.DragEnter += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragEnter);
-			// 
-			// InsertPreview
-			// 
-			this.InsertPreview.BackColor = System.Drawing.Color.Lime;
-			this.InsertPreview.Location = new System.Drawing.Point(156, 25);
-			this.InsertPreview.Name = "InsertPreview";
-			this.InsertPreview.Size = new System.Drawing.Size(150, 2);
-			this.InsertPreview.TabIndex = 4;
-			this.InsertPreview.Visible = false;
 			// 
 			// PinHeaderPanel1
 			// 
