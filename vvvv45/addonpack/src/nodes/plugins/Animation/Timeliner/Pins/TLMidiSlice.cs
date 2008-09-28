@@ -213,6 +213,7 @@ namespace VVVV.Nodes.Timeliner
 			}
 
 			//draw bars
+			float x;
 			SolidBrush gray = new SolidBrush(Color.Gray);
 			using (Pen p = new Pen(Color.Silver))
 			{
@@ -237,7 +238,7 @@ namespace VVVV.Nodes.Timeliner
 			int barCount = MidiScore.Length / MUpBar;
 			int beatCount = barCount * MidiScore.TimeSignature.Numerator;
 			
-			float x, y;
+			float y;
 			//draw notes
 			Region clip = g.Clip;
 			SolidBrush silver = new SolidBrush(Color.Silver);
