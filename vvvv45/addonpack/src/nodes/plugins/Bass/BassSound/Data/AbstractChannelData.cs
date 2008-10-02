@@ -25,10 +25,10 @@ namespace vvvv.Nodes
 
         protected IValueIn FPinInAttribute;
 
-        private IValueOut FPinOutLeft;
-        private IValueOut FPinOutRight;
-        private IStringOut FPinOutMsg;
-        private IValueOut FPinOutSize;
+        protected IValueOut FPinOutLeft;
+        protected IValueOut FPinOutRight;
+        protected IStringOut FPinOutMsg;
+        protected IValueOut FPinOutSize;
 
         private DSP_BufferStream bufferStream;
 
@@ -37,6 +37,7 @@ namespace vvvv.Nodes
         protected abstract int DataType { get; }
         protected abstract int DataLength { get; }
         protected abstract string ErrorMsg { get; }
+        protected abstract void SetData(float[] samples);
         
         #region Plugin Information
         public static IPluginInfo PluginInfo
@@ -75,6 +76,8 @@ namespace vvvv.Nodes
             this.FHost.CreateValueInput("Handle In", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInHandle);
             this.FPinInHandle.SetSubType(double.MinValue, double.MaxValue, 0, 0, false, false, true);
 
+            this.OnPluginHostSet();
+
             this.FHost.CreateValueInput(this.FAttributeIn, 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInAttribute);
 
             //Output Pins
@@ -86,7 +89,7 @@ namespace vvvv.Nodes
 
             this.FHost.CreateValueOutput("Size",1,null, TSliceMode.Single, TPinVisibility.OnlyInspector, out this.FPinOutSize);
 
-            this.OnPluginHostSet();
+            
         }
         #endregion
 
@@ -163,6 +166,8 @@ namespace vvvv.Nodes
 
             if (len != -1)
             {
+                BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(this.FChannel.BassHandle.Value);
+
                 //We get float, so length is divided by 4
                 float[] samples = new float[len];
                 int val;
@@ -175,23 +180,7 @@ namespace vvvv.Nodes
                 {
                     val = Bass.BASS_ChannelGetData(this.FMyBassHandle, samples, this.DataType);
                 }
-                
-                this.FPinOutLeft.SliceCount = len / 2;
-                this.FPinOutRight.SliceCount = len / 2;
-
-
-                //Note: Change that to make sure it Goes with any channel soundtrack.
-                for (int i = 0; i < len; i++)
-                {
-                    if (i % 2 == 0)
-                    {
-                        this.FPinOutLeft.SetValue(i / 2, (double)samples[i]);
-                    }
-                    else
-                    {
-                        this.FPinOutRight.SetValue(i / 2, (double)samples[i]);
-                    }
-                }
+                this.SetData(samples);
                 this.FPinOutMsg.SetString(0,"OK");
             }
             else

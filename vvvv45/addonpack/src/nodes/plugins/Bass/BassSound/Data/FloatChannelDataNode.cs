@@ -65,5 +65,33 @@ namespace vvvv.Nodes
             get { return "Length must be greater than 0"; }
         }
 
+        protected override void SetData(float[] samples)
+        {
+            BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(this.FChannel.BassHandle.Value);
+            int len = samples.Length;
+            if (info.chans > 1)
+            {
+                //Note: Change that to make sure it Goes with any channel soundtrack.
+                for (int i = 0; i < len; i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        this.FPinOutLeft.SetValue(i / 2, (double)samples[i]);
+                    }
+                    else
+                    {
+                        this.FPinOutRight.SetValue(i / 2, (double)samples[i]);
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < len / 2; i++)
+                {
+                    this.FPinOutLeft.SetValue(i, (double)samples[i]);
+                    this.FPinOutRight.SetValue(i, (double)samples[i]);
+                }
+            }
+        }
     }
 }

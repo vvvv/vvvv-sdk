@@ -36,10 +36,20 @@ namespace vvvv.Nodes
         }
         #endregion
 
+        private IValueIn FPinInInvidivual;
+        private IValueIn FPinInHanning;
 
         protected override void OnPluginHostSet()
         {
             
+            this.FHost.CreateValueInput("Individual", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInInvidivual);
+            this.FPinInInvidivual.SetSubType(0, 1, 1, 1, false, true, true);
+
+            
+            this.FHost.CreateValueInput("Windowed", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInHanning);
+            this.FPinInHanning.SetSubType(0, 1, 1, 1, false, true, true);
+        
+        
         }
 
         protected override string FAttributeIn
@@ -53,10 +63,16 @@ namespace vvvv.Nodes
             {
                 if (this.DataType != -1)
                 {
+                    BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(this.FChannel.BassHandle.Value);
                     double fft;
                     this.FPinInAttribute.GetValue(0, out fft);
                     int ifft = Convert.ToInt32(Math.Round(fft));
-                    return ifft * 2;
+
+                    if (!Individual || info.chans == 1)
+                    {
+                        ifft = ifft / 2;
+                    }
+                    return ifft;
                 }
                 else
                 {
@@ -65,34 +81,66 @@ namespace vvvv.Nodes
             }
         }
 
+        private bool Individual
+        {
+            get
+            {
+                double individual;
+                this.FPinInInvidivual.GetValue(0, out individual);
+                return individual >= 0.5;
+            }
+        }
+
         #region Get Data Type
         protected override int DataType
         {
             get 
             {
-                double fft;
+                double fft, hanning;
                 this.FPinInAttribute.GetValue(0, out fft);
 
                 int ifft = Convert.ToInt32(Math.Round(fft));
 
+                BASSData flag;
+
                 switch (ifft)
                 {
                     case 256:
-                        return (int)BASSData.BASS_DATA_FFT256 | (int)BASSData.BASS_DATA_FFT_INDIVIDUAL;
+                        flag = BASSData.BASS_DATA_FFT256;
+                        break;
                     case 512:
-                        return (int)BASSData.BASS_DATA_FFT512 | (int)BASSData.BASS_DATA_FFT_INDIVIDUAL;
+                        flag = BASSData.BASS_DATA_FFT512;
+                        break;
                     case 1024:
-                        return (int)BASSData.BASS_DATA_FFT1024 | (int)BASSData.BASS_DATA_FFT_INDIVIDUAL;
+                        flag = BASSData.BASS_DATA_FFT1024;
+                        break;
                     case 2048:
-                        return (int)BASSData.BASS_DATA_FFT2048 | (int)BASSData.BASS_DATA_FFT_INDIVIDUAL;
+                        flag = BASSData.BASS_DATA_FFT2048;
+                        break;
                     case 4096:
-                        return (int)BASSData.BASS_DATA_FFT4096 | (int)BASSData.BASS_DATA_FFT_INDIVIDUAL;
+                        flag = BASSData.BASS_DATA_FFT4096;
+                        break;
                     case 8192:
-                        return (int)BASSData.BASS_DATA_FFT8192 | (int)BASSData.BASS_DATA_FFT_INDIVIDUAL;
+                        flag = BASSData.BASS_DATA_FFT8192;
+                        break;
                     default:
                         //Only allowed values for fft
                         return -1;
                 }
+
+                if (this.Individual)
+                {
+                    flag = flag | BASSData.BASS_DATA_FFT_INDIVIDUAL;
+                }
+
+                this.FPinInHanning.GetValue(0, out hanning);
+
+                if (hanning < 0.5)
+                {
+                    flag = flag | BASSData.BASS_DATA_FFT_NOWINDOW;
+                }
+
+                return (int)flag;
             }
         }
         #endregion
@@ -103,5 +151,44 @@ namespace vvvv.Nodes
             get { return "Length must be: 256,512,1024,2048,4096,8192"; }
         }
         #endregion
+
+
+        protected override void SetData(float[] samples)
+        {
+            int len = this.DataLength;
+
+            BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(this.FChannel.BassHandle.Value);
+            if (info.chans == 1 || !this.Individual)
+            {
+                this.FPinOutLeft.SliceCount = len;
+                this.FPinOutRight.SliceCount = len;
+                for (int i = 0; i < len; i++)
+                {
+                    this.FPinOutLeft.SetValue(i, (double)samples[i]);
+                    //this.FPinOutLeft.SetValue(i, (double)samples[i]);
+                    this.FPinOutRight.SetValue(i, (double)samples[i]);
+                }
+            }
+            else
+            {
+                this.FPinOutLeft.SliceCount = len / 2;
+                this.FPinOutRight.SliceCount = len / 2;
+                for (int i = 0; i < len; i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        this.FPinOutLeft.SetValue(i / 2, (double)samples[i]);
+                    }
+                    else
+                    {
+                        this.FPinOutRight.SetValue(i / 2, (double)samples[i]);
+                    }
+                }
+            }
+
+
+
+
+        }
     }
 }
