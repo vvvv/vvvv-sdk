@@ -69,6 +69,13 @@ namespace VVVV.Utils.VMath
 		 	return Min(Max(x, minTemp), maxTemp);
 		}
 		
+		public static int Clamp(int x, int min, int max)
+		{
+			int minTemp = Math.Min(min, max);
+		 	int maxTemp = Math.Max(min, max);
+		 	return Math.Min(Math.Max(x, minTemp), maxTemp);
+		}
+		
 		//abs
 		public static Vector2D Abs(Vector2D a)
 		{
