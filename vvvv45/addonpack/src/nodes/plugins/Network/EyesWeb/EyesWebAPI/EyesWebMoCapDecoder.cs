@@ -16,7 +16,7 @@ namespace vvvv.Nodes
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "MoCapDecoder";
                 Info.Category = "Network";
-                Info.Version = "";
+                Info.Version = "EyesWeb";
                 Info.Help = "Read MoCap values from Eyesweb (TCP)";
                 Info.Bugs = "";
                 Info.Credits = "";

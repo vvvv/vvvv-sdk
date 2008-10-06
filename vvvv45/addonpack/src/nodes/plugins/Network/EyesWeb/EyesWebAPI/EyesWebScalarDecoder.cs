@@ -16,7 +16,7 @@ namespace vvvv.Nodes
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "ScalarDecoder";
                 Info.Category = "Network";
-                Info.Version = "";
+                Info.Version = "EyesWeb";
                 Info.Help = "Read scalar values from Eyesweb";
                 Info.Bugs = "";
                 Info.Credits = "";
