@@ -91,20 +91,30 @@ Ctrl::Ctrl()
 
 void Ctrl::reset()
 {
-  resetSignal = true; 
-  phase       =-1;
-  counter     = 0;
-  currentBeat = false;
-  period      = 0;
-  bpm         = 0;
-  beat        = false;
+  resetSignal     = true; 
+  phase           =-1;
+  count         = 0;
+  currentBeat     = false;
+  period          = 0;
+  bpm             = 0;
+  secondsPerFrame = SECPERFRAME;
+  beatswitch      = false;
+  delayInSeconds  = 0;
 
   for(int i=0;i<NSAMPLES;i++)
   {
 	probability [i] = 0;
 	silence     [i] = 0;
+	beat        [i] = 0;
   }
 
+}
+
+void Ctrl::setSecondsPerFrame(int frameSize)
+{
+  secondsPerFrame = 1. / (SAMPLERATE / frameSize); 
+
+  delayInSeconds  = delay * secondsPerFrame;
 }
 
 void Ctrl::setSignal (int value)
@@ -119,7 +129,7 @@ void Ctrl::setAdjust (int value)
 
 void Ctrl::setDelaySlider (float value)
 {
-  int proposedValue = (int)(value * 100);
+  int proposedValue = (int)(value * 200);
 
   setDelay(proposedValue);
 }
@@ -158,32 +168,51 @@ void Ctrl::setTargetBpm (int value)
 
 }
 
-void Ctrl::update(int counter,int beat,int topInterval,double probability,double silence)
+void Ctrl::update(int count,int beat,int topInterval,double probability,double silence)
 {
   if(topInterval <= 0)
 	bpm = 0;
   else
     bpm = (int)((1. / (topInterval * SECPERFRAME)) * 60.0);
   
-  this->counter = counter;
+  this->count = count;
 
-  //this->beat = beat;
+  currentBeat = beat;
 
-  if(beat)
-	this->beat = true;
+  this->probability [count] = probability;
+  this->silence     [count] = silence;
+  this->beat        [count] = beat;
 
-  this->probability [counter] = probability;
-  this->silence     [counter] = silence;
+  if(count % PERIOD == 0)
+  	period = true;
+  else
+	period = false;
 
-  period = (int)(!((bool)(counter % FPSINT)));
+  static long beatCount = -1;
 
+  if(!adjust)
   if(beat)
   {
-    interval = topInterval;
-	phase    = 0;
+	beatCount = count;
+    interval  = topInterval;
   }
 
-  if(!beat)
+  if(adjust)
+  if(period)
+    beatCount = count;
+
+  if(beatCount!=-1)
+  if((beatCount + delay) % NSAMPLES == count)
+  {
+    if(adjust)
+	  Beep(1200,10);
+
+    beatswitch = true;
+	beatCount  = -1;
+	phase      =  0;
+  }
+
+  if(!beatswitch)
   {
 	if(interval > 0)
 	 phase += (1. / interval);
@@ -193,7 +222,28 @@ void Ctrl::update(int counter,int beat,int topInterval,double probability,double
 	if(phase >= 1)
 	  phase = 0;
   }
+  
+}
 
+int Ctrl::getBeatswitch()
+{
+  static int c=0;
+
+  const int CATCHDELAY = 3; //don' know why vvvv has to get it more than once to put it out
+
+  if(beatswitch)
+  {
+	beatswitch = false;
+	c = 0;
+  }
+
+  if(c < CATCHDELAY)
+  {
+	c++;
+    return true;
+  }
+
+  return false;
 }
 
 float Ctrl::getDelayInSec()
@@ -202,23 +252,8 @@ float Ctrl::getDelayInSec()
 }
 
 int Ctrl::getBeat()
-{
-  static int count = 100;
-
-  if(beat)
-  {
-    beat  = false;
-    count = 0;
-  }
-
-  if(count < 2)
-  {
-    ++count;
-	return true;
-  }
-
-  return false;
-
+{ 
+  return beat[((count - delay) + NSAMPLES) % NSAMPLES];
 }
 
 double Ctrl::getPhase()
@@ -233,12 +268,12 @@ int Ctrl::getBpm()
 
 double Ctrl::getProbability()
 {
-  return probability[((counter - delay) + NSAMPLES) % NSAMPLES];
+  return probability[((count - delay) + NSAMPLES) % NSAMPLES];
 }
 
 double Ctrl::getSilence()
 {
-  return silence[((counter - delay) + NSAMPLES) % NSAMPLES];
+  return silence[((count - delay) + NSAMPLES) % NSAMPLES];
 }
 
 double Ctrl::getBand0()
@@ -362,43 +397,13 @@ void Signal::reset()
 
 void Signal::process()
 {
-  
   static int counterAtBeat = -1;
 
   if(ctrl)
   {
-    bool delayedBeat  = false;
-
-	ctrl->currentBeat = false;
-
-
-	if(!ctrl->adjust)
-	if(beat)
-	{
-     counterAtBeat     = count;
-	 ctrl->currentBeat = true;
-	}
-
-	if(ctrl->adjust)
-	if(ctrl->period)
-	{
-     counterAtBeat     = count;  
-	 ctrl->currentBeat = true;
-	}
-
-    if((counterAtBeat!=-1) && (count == (counterAtBeat + ctrl->delay) % NSAMPLES))	
-    {
-     if(ctrl->adjust)
-	 if(ctrl->signal)
-	   Beep(800,10);
-
-	 counterAtBeat =-1;
-     delayedBeat   = true; 
-    }
-
     calcSilence();
 
-    ctrl->update(count,delayedBeat,topInterval,probability,silence);
+    ctrl->update(count,beat,topInterval,probability,silence);
 
 	if(((ctrl->targetInterval >= MININTERVAL) && (ctrl->targetInterval < MAXINTERVAL)) || ctrl->targetInterval == 0) 
 	  targetInterval = ctrl->targetInterval;
@@ -409,7 +414,7 @@ void Signal::process()
 	  ctrl->resetSignal = false;
 	}
   }
-  
+
   inc();
   
 }

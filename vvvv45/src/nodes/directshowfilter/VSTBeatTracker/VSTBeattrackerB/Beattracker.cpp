@@ -38,53 +38,72 @@ Beattracker::~Beattracker ()
 
 void Beattracker::processReplacing  (float **in,float **out,VstInt32 length) 
 {
-  static double audiosignal[NSAMPLES];
+  static long count = 0;
 
   for(int i=0;i<length;i++)
   {
-    out[0][i] = in[0][i];
-	out[1][i] = in[1][i];
+    out[0][i] = in[0][i]; 
+    out[1][i] = in[1][i];
   }
 
-  if(length != NSAMPLES || !ctrl || !tracker)
+  if(!ctrl || !tracker)
   	return;
 
-  for(int i=0;i<NSAMPLES;i++)
-   audiosignal[i] = (in[0][i] + in[1][i]) / 2.;
+  int frameSize = 0;
+  int nFrames   = 0;
 
-  //do the processing------------------//
-  tracker->process(audiosignal);
-
-  double rad = (2*PI) / 32.;
-
-  if(!ctrl->adjust)
+  for(int i=1;i<length;i++)
+  if(length / i <= NSAMPLES && fmod((double) length / (double)i,1.0) == 0.0)
   {
+	frameSize = length / i;
+	nFrames   = length / frameSize;
+	break;
+  }
+
+  ctrl->setSecondsPerFrame(frameSize);
+
+  double data[NSAMPLES];
+
+  double rad = (2*PI) / 32.; 
+
+  for(int i=0;i<nFrames;i++)
+  {
+	for(int k=0;k<frameSize;k++)
+      data[k] = (in[0][i * frameSize + k] + in[1][i * frameSize + k]) / 2.;
+     
+    tracker->process(data,frameSize);
+
 	if(ctrl->signal)
-	for(int i=0;i<length;i++)
-	{
-	  out[0][i] = in[0][i];
-	  out[1][i] = 0;
-  	
-	  if(ctrl->currentBeat)
-		out[1][i] = (float)sin(rad*i);
-	}
+    for(int k=0;k<frameSize;k++)
+	if(ctrl->currentBeat)
+	  out[1][i * frameSize + k] = (float)sin(rad*k);
+	else
+	  out[1][i * frameSize + k] = 0;
 
-  }//end if !adjust
-
-  if(ctrl->adjust)
-  {
-	for(int i=0;i<length;i++)
+	if(ctrl->adjust)
 	{
-	  out[0][i] = 0; 
-	  out[1][i] = 0;
-  	
 	  if(ctrl->period)
-		out[1][i] = (float)sin(rad*i);
-	}
+	  for(int k=0;k<frameSize;k++)
+ 	  {
+  	    out[0][i * frameSize + k] = (float)sin(rad*k);
+	    out[1][i * frameSize + k] = (float)sin(rad*k);
+	  }
+	  else
+	  for(int k=0;k<frameSize;k++)
+	  {
+        out[0][i * frameSize + k] = 0;
+  	    out[1][i * frameSize + k] = 0;
+	  }
+	
+	}//end if adjust
 
-  }//end if adjust
 
-}//processReplacing()
+  }//end for i
+
+  ++count;
+
+
+}//end process()
 
 int Beattracker::canDo(char *text)
 {
@@ -164,6 +183,8 @@ float Beattracker::getParameter(VstInt32 index)
   {
     case PARAM_BEAT        : value = (float)ctrl->getBeat();         break;
 
+	case PARAM_BEATSWITCH  : value = (float)ctrl->getBeatswitch();   break;
+
    	case PARAM_PHASE       : value = (float)ctrl->getPhase();        break;
 
 	case PARAM_BPM         : value = (float)ctrl->getBpm();          break;
@@ -202,7 +223,8 @@ void Beattracker::getParameterLabel(VstInt32 index,char *label)
   switch(index)
   {
     case PARAM_BEAT        : strcpy(label,"Beat");             break;
-	case PARAM_PHASE       : strcpy(label,"Phase");            break;
+	case PARAM_BEATSWITCH  : strcpy(label,"Beatswitch");       break;
+    case PARAM_PHASE       : strcpy(label,"Phase");            break;
 	case PARAM_BPM         : strcpy(label,"Bpm");              break;
 	case PARAM_PROBABILITY : strcpy(label,"Probability");      break;
 	case PARAM_SILENCE     : strcpy(label,"Silence");          break;
@@ -227,6 +249,7 @@ void Beattracker::getParameterDisplay(VstInt32 index,char *text)
 
   switch(index)
   {
+    case PARAM_BEATSWITCH  : int2string(ctrl->getBeatswitch(),text,kVstMaxParamStrLen);           break;
     case PARAM_BEAT        : int2string(ctrl->getBeat(),text,kVstMaxParamStrLen);                 break;
 	case PARAM_PHASE       : float2string((float)ctrl->getPhase(),text,kVstMaxParamStrLen);       break;
 	case PARAM_BPM         : int2string(ctrl->getBpm(),text,kVstMaxParamStrLen);                  break;
@@ -249,6 +272,7 @@ void Beattracker::getParameterName(VstInt32 index,char *text)
 {
   switch(index)
   {
+    case PARAM_BEATSWITCH  : strcpy(text,"Beatswitch");       break;
     case PARAM_BEAT        : strcpy(text,"Beat");             break;
 	case PARAM_PHASE       : strcpy(text,"Phase");            break;
 	case PARAM_BPM         : strcpy(text,"Bpm");              break;

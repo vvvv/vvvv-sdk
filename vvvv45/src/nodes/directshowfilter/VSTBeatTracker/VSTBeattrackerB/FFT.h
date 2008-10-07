@@ -14,7 +14,11 @@ class FFT
   public  : FFT();
            ~FFT();
 
-		    void process(double wave[],double freq[]);
+		    void process (double wave[],double freq[],int length);
+            void adjust  ();
+
+
+			int length;
 			
 };
 

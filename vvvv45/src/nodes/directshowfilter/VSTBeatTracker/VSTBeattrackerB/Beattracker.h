@@ -9,7 +9,6 @@
 #include "Tracker.h"
 #include "GUI.h"
 
-
 //Implements the interface to the vst-host---------------------------------------------------//
 class Beattracker : public AudioEffectX
 {
@@ -38,6 +37,8 @@ class Beattracker : public AudioEffectX
 			virtual int   getVendorVersion();
 
 			virtual VstPlugCategory getPlugCategory ();
+
+			void process(float **in,float **out,int length);
 
    private : Tracker *tracker;
 			 Ctrl    *ctrl;

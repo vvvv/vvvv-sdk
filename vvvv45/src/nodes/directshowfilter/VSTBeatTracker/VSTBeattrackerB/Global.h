@@ -25,25 +25,28 @@
 #define SECPERFRAME 0.02321995
 #define MINBPM              44
 #define MAXBPM             144
+#define PERIOD              32
 
 #define VENDORVERSION        1
 #define NUMPROGRAMS          1
-#define NUMPARAMS           14
+#define NUMPARAMS           15
 
 #define PARAM_BEAT           0
-#define PARAM_PHASE          1
-#define PARAM_BPM            2
-#define PARAM_PROBABILITY    3
-#define PARAM_SILENCE        4
-#define PARAM_SIGNAL         5
-#define PARAM_DELAY          6
-#define PARAM_ADJUST         7
-#define PARAM_TARGETBPM      8
-#define PARAM_RESET          9
-#define PARAM_BAND0         10
-#define PARAM_BAND1         11
-#define PARAM_BAND2         12
-#define PARAM_BAND3         13
+#define PARAM_BEATSWITCH     1
+#define PARAM_PHASE          2
+#define PARAM_BPM            3
+#define PARAM_PROBABILITY    4
+#define PARAM_SILENCE        5
+#define PARAM_SIGNAL         6
+#define PARAM_DELAY          7
+#define PARAM_ADJUST         8
+#define PARAM_TARGETBPM      9
+#define PARAM_RESET         10
+#define PARAM_BAND0         11
+#define PARAM_BAND1         12
+#define PARAM_BAND2         13
+#define PARAM_BAND3         14
+
 
 const bool bandSwitch[] = { true,
                             true,

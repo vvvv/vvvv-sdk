@@ -29,7 +29,7 @@ class Tracker
 		   Ctrl   *ctrl;
 
 		   Tracker      (AudioEffect *effect);
-           void process (double in[NSAMPLES]);
+           void process (double in[],int length);
 		   void reset   ();
 
 };

@@ -37,7 +37,7 @@ struct Ctrl
   Ctrl();
 
   void   reset              ();
-  void   update             (int counter,int beat,int topInterval,double probability,double silence);
+  void   update             (int count,int beat,int topInterval,double probability,double silence);
   
   void   setSignal          (int value);
   void   setAdjust          (int value);
@@ -45,9 +45,11 @@ struct Ctrl
   void   setDelaySlider     (float value);
   void   setTargetBpm       (int value);
   void   setTargetBpmSlider (float value);
+  void   setSecondsPerFrame (int frameSize);
   
   float  getDelayInSec  ();
   int    getBeat        ();
+  int    getBeatswitch  ();
   double getPhase       ();
   int    getBpm         ();
   double getProbability ();
@@ -64,17 +66,19 @@ struct Ctrl
   int    targetBpm;
   int    targetInterval;
   int    interval;
-  int    counter;
+  int    count;
   int    currentBeat;
   int    period;
-  int    beat;
-  int    beep;
   int    resetSignal;
   int    bpm;
+  int    beatswitch;
   double phase;
+  double secondsPerFrame;
+  double delayInSeconds;
 
   double silence     [NSAMPLES];
   double probability [NSAMPLES];
+  double beat        [NSAMPLES];
 
   double **band;
   double **resonance;

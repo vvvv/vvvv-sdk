@@ -6,10 +6,10 @@
 #include "Global.h"
 #include "Signal.h"
 
-#define GUIHEIGHT 230
+#define GUIHEIGHT 190
 #define GUIWIDTH  600
 
-#define OFFSETY        27
+#define OFFSETY        16
 #define OFFSETXBUTTON 482
 #define SLIDERLENGTH  148
 #define SLIDERWIDTH    18
@@ -33,6 +33,7 @@ class GUI : public AEffGUIEditor, public CControlListener
 
 			CBitmap *bmpSlider;
             CBitmap *bmpSliderBackground;
+			CBitmap *bmpSliderDelayBackground;
 
 			COnOffButton *buttonSignal;
 			COnOffButton *buttonAdjust;

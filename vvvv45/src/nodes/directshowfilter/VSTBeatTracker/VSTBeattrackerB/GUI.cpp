@@ -18,7 +18,9 @@ GUI::GUI(AudioEffect *effect,Ctrl *ctrl) : AEffGUIEditor(effect)
   bmpAdjust = new CBitmap(306);
   bmpReset  = new CBitmap(307);
   bmpSlider = new CBitmap(308);
-  bmpSliderBackground = new CBitmap(309);
+
+  bmpSliderBackground      = new CBitmap(309);
+  bmpSliderDelayBackground = new CBitmap(309);
 
   bmpResonance = new CBitmap(310);
 
@@ -62,7 +64,7 @@ bool GUI::open(void *ptr)
   frame->addView(buttonSignal);
 
 
-  size(OFFSETXBUTTON,50,OFFSETXBUTTON+bmpAdjust->getWidth(),50+bmpAdjust->getHeight()/2);
+  size(OFFSETXBUTTON,OFFSETY+23,OFFSETXBUTTON+bmpAdjust->getWidth(),OFFSETY+23+bmpAdjust->getHeight()/2);
 
   buttonAdjust = new COnOffButton(size,this,PARAM_ADJUST,bmpAdjust);
 
@@ -71,7 +73,7 @@ bool GUI::open(void *ptr)
   frame->addView(buttonAdjust);
 
 
-  size(OFFSETXBUTTON,73,OFFSETXBUTTON+bmpReset->getWidth(),73+bmpReset->getHeight()/2);
+  size(OFFSETXBUTTON,OFFSETY+46,OFFSETXBUTTON+bmpReset->getWidth(),OFFSETY+46+bmpReset->getHeight()/2);
 
   buttonReset = new COnOffButton(size,this,PARAM_RESET,bmpReset);
 
@@ -83,11 +85,11 @@ bool GUI::open(void *ptr)
 
   CPoint point(0,0);
 
-  size(0,0,bmpSliderBackground->getWidth(),bmpSliderBackground->getHeight());
+  size(0,0,bmpSliderDelayBackground->getWidth(),bmpSliderDelayBackground->getHeight());
 
   size.offset(14,OFFSETY);
 
-  sliderDelay = new CVerticalSlider(size,this,PARAM_DELAY,size.top + 1,size.top + bmpSliderBackground->getHeight() - bmpSlider->getHeight(),bmpSlider,bmpSliderBackground,point,kBottom);
+  sliderDelay = new CVerticalSlider(size,this,PARAM_DELAY,size.top + 1,size.top + bmpSliderDelayBackground->getHeight() - bmpSlider->getHeight(),bmpSlider,bmpSliderDelayBackground,point,kBottom);
 
   point(1,0);
 
@@ -214,24 +216,21 @@ void GUI::drawDelayTargetBpm()
 {
   char str[STRLENGTH];
 
-  
-  float time = (float)(ctrl->delay * SECPERFRAME);
+  sprintf(str,"%2.2fs",ctrl->delayInSeconds);
 
-  sprintf(str,"%2.2fs",time);
+  drawString(context,str,8,166,40,20);
 
-  drawString(context,str,8,177,40,20);
+  //sprintf(str,"%d frm",ctrl->delay);
 
-  sprintf(str,"%d frames",ctrl->delay);
-
-  drawString(context,str,8,200,60,20);
+  //drawString(context,str,8,186,40,20);
 
 
   if(ctrl->targetBpm > 0)
-    sprintf(str,"%d bpm",ctrl->targetBpm);
+    sprintf(str,"%d",ctrl->targetBpm);
   else
     sprintf(str,"auto");
 
-  drawString(context,str,40,177,55,20);
+  drawString(context,str,48,166,25,20);
 
 }
 
@@ -273,7 +272,7 @@ void GUI::drawProbabilitySilence ()
 
    sprintf(str,"%1.2f",1-ctrl->getSilence());
 
-   drawString(oc,str,35,150,25,20);
+   drawString(oc,str,38,150,25,20);
   }
 
   endOC(oc,bmpProbabilitySilence,111,OFFSETY);
@@ -360,13 +359,13 @@ void GUI::drawButtonsBpm()
 
   char str[STRLENGTH];
 
-  sprintf(str,"BPM %3d",ctrl->bpm);
+  sprintf(str,"%3d",ctrl->bpm);
 
   CRect rect;
 
-  rect.left   = 470;
-  rect.top    = 158;
-  rect.setWidth (100);
+  rect.left   = 525;
+  rect.top    = 146;
+  rect.setWidth (40);
   rect.setHeight(20);
 
   context->setFillColor(colorBackground);
