@@ -775,7 +775,7 @@ namespace VVVV.Nodes
 							}
 						case TLPinType.Wave:
 							{
-								newPin = new TLWavPin(FHost, GTransformer, FOutputPins.Count, pinSettings);
+							//	newPin = new TLWavPin(FHost, GTransformer, FOutputPins.Count, pinSettings);
 								break;
 							}							
 					}
