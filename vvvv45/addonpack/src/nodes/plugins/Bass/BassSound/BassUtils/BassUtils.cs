@@ -15,7 +15,7 @@ namespace vvvv.Utils
         {
             if (!FPluginsLoaded)
             {
-                Bass.BASS_PluginLoadDirectory(AppDomain.CurrentDomain.BaseDirectory + "\\bin\\");
+                Bass.BASS_PluginLoadDirectory(AppDomain.CurrentDomain.BaseDirectory + "\\plugins\\");
                 FPluginsLoaded = true;
             }
         }
