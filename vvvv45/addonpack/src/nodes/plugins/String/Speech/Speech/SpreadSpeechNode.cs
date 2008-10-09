@@ -14,7 +14,7 @@ namespace vvvv.Nodes
             {
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "Speech";
-                Info.Category = "Spreads";
+                Info.Category = "String";
                 Info.Version = "";
                 Info.Help = "Output words as it is recognized by speech recognition, Dictionary provided by a string Spread";
                 Info.Bugs = "";
