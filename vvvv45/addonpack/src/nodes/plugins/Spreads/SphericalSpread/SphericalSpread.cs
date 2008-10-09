@@ -1,7 +1,7 @@
 #region licence/info
 
 //////project name
-//vvvv plugin SphericalSpreads
+//SphericalSpread
 
 //////description
 //creates a spread of points distributed evenyl on a sphere
@@ -45,7 +45,7 @@ namespace VVVV.Nodes
 {
 	
 	//class definition
-	public class SphericalSpreads: IPlugin
+	public class SphericalSpread: IPlugin
     {	          	
     	#region field declaration
     	
@@ -53,25 +53,25 @@ namespace VVVV.Nodes
     	private IPluginHost FHost; 
     	
     	//input pin declaration
-    	private IValueIn FMyInput;
-    	private IValueIn FMyRadius;
-    	private IValueIn FMyFactor;
-    	private IValueIn FMySpreadCount;
+    	private IValueIn FInput;
+    	private IValueIn FRadius;
+    	private IValueIn FFactor;
+    	private IValueIn FSpreadCount;
     	   	
     	//output pin declaration
-    	private IValueOut FMyOutput;
+    	private IValueOut FOutput;
     	
     	#endregion field declaration
        
     	#region constructor/destructor
     	
-        public SphericalSpreads()
+        public SphericalSpread()
         {
 			//the nodes constructor
 			//nothing to declare for this node
 		}
         
-        ~SphericalSpreads()
+        ~SphericalSpread()
 	    {
 	    	//the nodes destructor
         	//nothing to destruct
@@ -88,10 +88,10 @@ namespace VVVV.Nodes
 	        {
 	        	//fill out nodes info
 	        	IPluginInfo Info = new PluginInfo();
-	        	Info.Name = "SphericalSpreads";
+	        	Info.Name = "SphericalSpread";
 	        	Info.Category = "Spreads";
 	        	Info.Version = "";
-	        	Info.Help = "Evenly distributes Points on a Sphere";
+	        	Info.Help = "Evenly distributes points on a sphere";
 	        	Info.Bugs = "";
 	        	Info.Credits = "";
 	        	Info.Warnings = "";
@@ -124,21 +124,21 @@ namespace VVVV.Nodes
 	    	FHost = Host;
 
 	    	//create inputs
-	    	FHost.CreateValueInput("Input", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyInput);
-	    	FMyInput.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0, 0, 0, false, false, false);
+	    	FHost.CreateValueInput("Input", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out FInput);
+	    	FInput.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0, 0, 0, false, false, false);
 	    		    	
-  			FHost.CreateValueInput("Radius", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyRadius);
-	    	FMyRadius.SetSubType(double.MinValue, double.MaxValue, 0.01, 1, false, false, false);
+  			FHost.CreateValueInput("Radius", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FRadius);
+	    	FRadius.SetSubType(double.MinValue, double.MaxValue, 0.01, 1, false, false, false);
 	    	
-	    	FHost.CreateValueInput("Factor", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyFactor);
-	    	FMyFactor.SetSubType(0, 1, 0.01, 1, false, false, false);
+	    	FHost.CreateValueInput("Factor", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FFactor);
+	    	FFactor.SetSubType(0, 1, 0.01, 1, false, false, false);
 	    		    	
-	    	FHost.CreateValueInput("Spread Count", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMySpreadCount);
-	    	FMySpreadCount.SetSubType(0, int.MaxValue, 1, 1, false, false, true);
+	    	FHost.CreateValueInput("Spread Count", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSpreadCount);
+	    	FSpreadCount.SetSubType(0, int.MaxValue, 1, 1, false, false, true);
 	    		    	
 	    	//create outputs	    	
-	    	FHost.CreateValueOutput("Output", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyOutput);
-	    	FMyOutput.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0, 0, 0, false, false, false);
+	    	FHost.CreateValueOutput("Output", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out FOutput);
+	    	FOutput.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0, 0, 0, false, false, false);
         }
 
         #endregion pin creation
@@ -158,10 +158,10 @@ namespace VVVV.Nodes
         	//if any of the inputs has changed
         	//recompute the outputs
         	if (
-        		FMyInput.PinIsChanged ||
-        		FMyRadius.PinIsChanged ||
-        		FMyFactor.PinIsChanged ||
-        		FMySpreadCount.PinIsChanged
+        		FInput.PinIsChanged ||
+        		FRadius.PinIsChanged ||
+        		FFactor.PinIsChanged ||
+        		FSpreadCount.PinIsChanged
         		)
         	{		
         		double currentXSlice, currentYSlice, currentZSlice, xPos, yPos, zPos;
@@ -173,15 +173,15 @@ namespace VVVV.Nodes
         		dlong = Math.PI*(3-Math.Sqrt(5.0)); //part of the formula
         		l = 0.0;							//part of the formula
         		
-        		FMyOutput.SliceCount=0;
+        		FOutput.SliceCount=0;
 
         		//loop for maximal spread count
         		for (int i=0; i<SpreadMax; i++)
         		{
-        			FMyInput.GetValue3D(i, out currentXSlice, out currentYSlice, out currentZSlice);
-        			FMyRadius.GetValue(i, out currentRadius);
-        			FMyFactor.GetValue(i, out currentFactor);
-        			FMySpreadCount.GetValue(i, out tmpSize);
+        			FInput.GetValue3D(i, out currentXSlice, out currentYSlice, out currentZSlice);
+        			FRadius.GetValue(i, out currentRadius);
+        			FFactor.GetValue(i, out currentFactor);
+        			FSpreadCount.GetValue(i, out tmpSize);
         			
         			currentBinSize = (int)Math.Round(tmpSize);	//use spreadcount as an integer
         			
@@ -200,8 +200,8 @@ namespace VVVV.Nodes
         				l = l + dlong;							
 						
         				//set output
-        				FMyOutput.SliceCount= j + myIncrement + 1;
-        				FMyOutput.SetValue3D(j+myIncrement, (xPos+currentXSlice), (yPos+currentYSlice), (zPos+currentZSlice));
+        				FOutput.SliceCount= j + myIncrement + 1;
+        				FOutput.SetValue3D(j+myIncrement, (xPos+currentXSlice), (yPos+currentYSlice), (zPos+currentZSlice));
         			}
         			myIncrement += currentBinSize;
         		}

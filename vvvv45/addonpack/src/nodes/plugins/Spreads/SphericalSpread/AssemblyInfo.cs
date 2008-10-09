@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 // change them to the information which is associated with the assembly
 // you compile.
 
-[assembly: AssemblyTitle("SphericalSpreads")]
-[assembly: AssemblyDescription("VVVV Plugin - SphericalSpreads")]
+[assembly: AssemblyTitle("SphericalSpread")]
+[assembly: AssemblyDescription("creates a spread of points distributed evenyl on a sphere")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("woei")]
-[assembly: AssemblyProduct("SphericalSpreads")]
+[assembly: AssemblyProduct("SphericalSpread")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
