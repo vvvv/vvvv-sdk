@@ -1,11 +1,11 @@
 #region licence/info
 
 //////project name
-//vvvv plugin template with gui
+//uEyeCam
 
 //////description
-//basic vvvv plugin template with gui.
-//Copy this an rename it, to write your own plugin node.
+//Native interface to uEye cameras by IDS-Imaging
+//Writes images to shared memory
 
 //////licence
 //GNU Lesser General Public License (LGPL)
@@ -17,6 +17,7 @@
 
 //////dependencies
 //VVVV.PluginInterfaces.V1;
+//VVVV.Utils;
 
 //////initial author
 //vvvv group
@@ -169,9 +170,9 @@ namespace VVVV.Nodes
 				Info.Name = "uEyeCam";							//use CamelCaps and no spaces
 				Info.Category = "Devices";						//try to use an existing one
 				Info.Version = "";							//versions are optional. leave blank if not needed
-				Info.Help = "Native interface to uEye cameras by IDS-Imaging";
-				Info.Bugs = "only for USB cameras";
-				Info.Credits = "";								//give credits to thirdparty code used
+				Info.Help = "Native interface to uEye cameras by http://ids-imaging.de/";
+				Info.Bugs = "";
+				Info.Credits = "based on Interfaceclass for uEye Camera family provided by IDS-Imaging"; //give credits to thirdparty code used
 				Info.Warnings = "";
 				Info.InitialBoxSize = new Size(200, 100);		//defines initial size of node in box-mode
 				Info.InitialWindowSize = new Size(400, 300);	//defines initial size of node in window-mode
