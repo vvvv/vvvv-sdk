@@ -1,3 +1,28 @@
+#region licence/info
+
+//////project name
+//Lindenmayer
+
+//////description
+//Returns spreads for 3 dimensional L-Systems.
+
+//////licence
+//GNU Lesser General Public License (LGPL)
+//english: http://www.gnu.org/licenses/lgpl.html
+//german: http://www.gnu.de/lgpl-ger.html
+
+//////language/ide
+//C# sharpdevelop
+
+//////dependencies
+//VVVV.PluginInterfaces.V1;
+//VVVV.Utils;
+
+//////initial author
+//vvvv group
+
+#endregion licence/info
+
 using System;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
@@ -61,7 +86,7 @@ namespace VVVV.Nodes
 				Info.Name = "Lindenmayer";
 				Info.Category = "Spreads";
 				Info.Version = "";
-				Info.Help = "Returns spreads for 3 dimensional L-Systems. F draws a stick; + rotates +Z; - rotates -Z; / rotates +Y; \\ rotates -Y; [ opens a branch; ] closes a branch;";
+				Info.Help = "Returns spreads for 3 dimensional L-Systems. F draws a stick; + rotates +Z; - rotates -Z; / rotates +Y; \\ rotates -Y; [ opens a branch; ] closes a branch";
 				Info.Bugs = "";
 				Info.Credits = "based on findings by Aristid Lindenmayer";
 				Info.Warnings = "";
@@ -150,8 +175,11 @@ namespace VVVV.Nodes
 			double val;
 			bool revaluate = false;
 			
+			//FHost.Log(TLogType.Debug, SpreadMax.ToString());
+			
 			if (FOldSpreadMax != SpreadMax)
 			{
+				FHost.Log(TLogType.Debug, "spreadcount changed: " + SpreadMax.ToString());
 				FLindenmayers.Clear();
 				
 				for (int i=0; i<SpreadMax; i++)
@@ -176,34 +204,38 @@ namespace VVVV.Nodes
 			{
 				for (int i=0; i<SpreadMax; i++)
 				{
+					FLindenmayers[i].ProductionsF.Clear();
 					FProductionsF.GetString(i, out s);
-					FLindenmayers[i].ProductionsF.Clear(); 
 					
-					char[] split = {','};
-					//s = s.Trim(split);
-					//s = s.Trim(); //whitespaces
-					string[] sa = s.Split(split);
-					for (int j=0; j<sa.Length; j++)
-						FLindenmayers[i].ProductionsF.Add(sa[j]);
+					if (!string.IsNullOrEmpty(s))
+						s = s.Trim(); //whitespaces
+					
+					if (!string.IsNullOrEmpty(s))
+					{
+						char[] split = {','};
+						string[] sa = s.Split(split);
+						
+						for (int j=0; j<sa.Length; j++)
+							FLindenmayers[i].ProductionsF.Add(sa[j]);
+					}
 				}
 				
 				revaluate = true;
 			}
-		
+			
 			if (FProductionsG.PinIsChanged || revaluate)
 			{
 				for (int i=0; i<SpreadMax; i++)
 				{
+					FLindenmayers[i].ProductionsG.Clear();
 					FProductionsG.GetString(i, out s);
-					FLindenmayers[i].ProductionsG.Clear(); 
+
+					if (!string.IsNullOrEmpty(s))
+						s = s.Trim(); //whitespaces
 					
-					System.Diagnostics.Debug.WriteLine("s: " + s);
-					char[] split = {','};
-					//s = s.Trim(split);
-					//s = s.Trim(); //whitespaces
-					if (s != " ")
+					if (!string.IsNullOrEmpty(s))
 					{
-						System.Diagnostics.Debug.WriteLine("sss: " + s);
+						char[] split = {','};
 						string[] sa = s.Split(split);
 						
 						for (int j=0; j<sa.Length; j++)
@@ -304,7 +336,6 @@ namespace VVVV.Nodes
 				for (int i=0; i<SpreadMax; i++)
 				{
 					FBinSizes.SetValue(i, FLindenmayers[i].BranchCount);
-
 					for (int j=0; j<FLindenmayers[i].BranchCount; j++)
 					{
 						FTransform.SetMatrix(sliceF, (Matrix4x4) FLindenmayers[i].Transforms[j]);
