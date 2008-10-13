@@ -1,3 +1,30 @@
+#region licence/info
+
+//////project name
+//Timeliner
+
+//////description
+//a gui to arrange keyframes of different types (value, color, string..)
+//in time
+
+//////licence
+//GNU Lesser General Public License (LGPL)
+//english: http://www.gnu.org/licenses/lgpl.html
+//german: http://www.gnu.de/lgpl-ger.html
+
+//////language/ide
+//C# sharpdevelop 
+
+//////dependencies
+//VVVV.PluginInterfaces.V1;
+//VVVV.Utils.VColor;
+//VVVV.Utils.VMath;
+
+//////initial author
+//vvvv group
+
+#endregion licence/info
+
 using System;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
@@ -549,6 +576,8 @@ namespace VVVV.Nodes
 			if ((doublesettings) || (FPinSettings.SliceCount == 0))
 				return;
 			//hack end.-
+			
+			System.Diagnostics.Debug.WriteLine("Configurate: " +Input.Name + " - FirstFrame: " + FFirstFrame);
 			
 			if (Input == FGUISettings)
 				GUISettingsChanged();
