@@ -23,7 +23,7 @@ namespace BassSound.UI
                 //see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "WaveForm";							//use CamelCaps and no spaces
-                Info.Category = "Bass GUI";						//try to use an existing one
+                Info.Category = "Bass";						//try to use an existing one
                 Info.Version = "";							//versions are optional. leave blank if not needed
                 Info.Help = "Render a waveform trough bass";
                 Info.Bugs = "";

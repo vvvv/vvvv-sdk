@@ -16,7 +16,7 @@ namespace vvvv.Nodes
             {
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "Compressor";
-                Info.Category = "Bass DSP";
+                Info.Category = "Bass";
                 Info.Version = "";
                 Info.Help = "Compressor DSP for a stream";
                 Info.Bugs = "";

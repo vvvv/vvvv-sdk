@@ -16,7 +16,7 @@ namespace vvvv.Nodes
             {
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "APF";
-                Info.Category = "Bass DSP";
+                Info.Category = "Bass";
                 Info.Version = "";
                 Info.Help = "All Pass Filter DSP for a stream";
                 Info.Bugs = "";

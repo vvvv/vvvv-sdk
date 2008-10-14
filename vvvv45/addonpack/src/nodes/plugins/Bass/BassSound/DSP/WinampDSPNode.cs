@@ -18,7 +18,7 @@ namespace BassSound.DSP
             {
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "Winamp";
-                Info.Category = "Bass DSP";
+                Info.Category = "Bass";
                 Info.Version = "";
                 Info.Help = "Loads a winamp DSP";
                 Info.Bugs = "";

@@ -57,7 +57,7 @@ namespace BassSound.Encoding
             EncoderOGG ogg = new EncoderOGG(handle);
             ogg.InputFile = null;
             ogg.OutputFile = this.FFilename;
-            ogg.EncoderDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\bin";
+            ogg.EncoderDirectory = AppDomain.CurrentDomain.BaseDirectory + "\\plugins";
             ogg.OGG_Bitrate = Convert.ToInt32(bitrate);
             ogg.OGG_MinBitrate = Convert.ToInt32(minrate);
             ogg.OGG_MaxBitrate = Convert.ToInt32(maxrate);
