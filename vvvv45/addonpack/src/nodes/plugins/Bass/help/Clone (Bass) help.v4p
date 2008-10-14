@@ -1,0 +1,147 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta18.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Bass\trunk\help\Clone (Bass).v4p">
+   <BOUNDS height="6855" left="6300" top="3750" type="Window" width="10230">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="10" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassFileStreamNode">
+   <BOUNDS height="0" left="1725" top="2565" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="7230" top="5220" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1725" top="2565" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Play" visible="1">
+   </PIN>
+   <PIN pinname="Mono" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Pitch" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Tempo" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="File End" visible="1">
+   </PIN>
+   <PIN pinname="CurrentPosition" visible="1">
+   </PIN>
+   <PIN pinname="Handle Out" visible="1">
+   </PIN>
+   <PIN pinname="File Name" visible="1">
+   </PIN>
+   <PIN pinname="Current Position" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="270" top="420" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7095" top="5835" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="270" top="420" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Play">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Play" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <NODE nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.CloneChannelNode" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="2670" top="3300" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10725" top="4530" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2670" top="3300" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Handle In" visible="1">
+   </PIN>
+   <PIN pinname="Handle Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="8" componentmode="InABox" nodename="IOBox (String)">
+   <BOUNDS type="Node" height="0" left="3135" top="1455" width="0">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="9480" top="5625" width="215">
+   </BOUNDS>
+   <BOUNDS type="Box" height="240" left="3135" top="1455" width="2985">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\..\..\..\..\Music\Prefuse 73\Piano overlord\06 track 06.mp3|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|File Name|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Output String" dstnodeid="10" dstpinname="File Name">
+   </LINK>
+   <NODE nodename=":PLUGINS:\BassSound.dll|BassSound.BassAudioOutNode" componentmode="Hidden" id="13">
+   <BOUNDS type="Node" left="915" top="4425" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7200" top="8505" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="915" top="4425" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Handles In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Handle Out" dstnodeid="13" dstpinname="Handles In">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Handle Out" dstnodeid="11" dstpinname="Handle In">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="14">
+   <BOUNDS type="Node" left="2610" top="3930" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="8805" top="8385" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2610" top="3930" width="1170" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Cloned Handle|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Handle Out" dstnodeid="14" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15">
+   <BOUNDS type="Node" left="375" top="3540" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="9075" top="8520" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="375" top="3540" width="1170" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Main Handle|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Handle Out" dstnodeid="15" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16">
+   <BOUNDS type="Node" left="6795" top="300" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="12825" top="4875" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6795" top="300" width="3000" height="3645">
+   </BOUNDS>
+   <PIN pinname="SliceOffset" visible="-1" pintype="Input" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Input String" visible="-1" pintype="Input" slicecount="1" values="|Clone allows you to duplicate a channel (please note that it is a buffer from the original one, so if you stop the main channel, the clone will stop as well).&cr;&lf;&cr;&lf;You can route the cloned channel to another output device.|">
+   </PIN>
+   <PIN pinname="Output String" visible="-1" pintype="Output">
+   </PIN>
+   </NODE>
+   </PATCH>

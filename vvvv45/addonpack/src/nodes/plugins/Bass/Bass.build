@@ -7,7 +7,7 @@
 
   <property name="root.dir" value="../../" />
   <include buildfile="${root.dir}/nant-plugins.xml" />
-  <property name="lib.name" value="BassAPI.dll" />
+  <property name="lib.name" value="BassSound.dll" />
 
   <assemblyfileset id="project.references">
     <include name="${root.bin}/_Utils.dll" />
@@ -22,5 +22,15 @@
       </fileset>
     </copy>
   </target>
+
+  <target name="copy-help-custom">
+    <copy todir="${plugin.path}">
+      <fileset basedir="help">
+        <include name="*.v4p" />
+      </fileset>
+    </copy>
+  </target>
+
   
+
 </project>

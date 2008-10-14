@@ -1,0 +1,343 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta18.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Bass\trunk\help\Chorus (Bass) help.v4p">
+   <BOUNDS height="7785" left="5235" top="1275" type="Window" width="10680">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1635" top="165" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7095" top="5835" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="1635" top="165" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Play">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="15" componentmode="Hidden" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassFileStreamNode">
+   <PIN pinname="Handle Out" visible="1">
+   </PIN>
+   <PIN pinname="Current Position" visible="1">
+   </PIN>
+   <PIN pinname="File Name" visible="1">
+   </PIN>
+   <PIN pinname="Play" visible="1">
+   </PIN>
+   <PIN pinname="Mono" visible="1" slicecount="1" values="0">
+   </PIN>
+   <BOUNDS type="Node" left="2760" top="1455" height="0" width="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2760" top="1455" height="0" width="0">
+   </BOUNDS>
+   <BOUNDS type="Window" height="0" left="7230" top="5220" width="0">
+   </BOUNDS>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Pitch" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Tempo" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="File End" visible="1">
+   </PIN>
+   <PIN pinname="CurrentPosition" visible="1">
+   </PIN>
+   <PIN pinname="Is Decoding" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Loop" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Handle Out" dstnodeid="1" dstpinname="Handle In">
+   </LINK>
+   <NODE id="1" componentmode="InAWindow" nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.ChorusDspNode">
+   <PIN pinname="Handle In" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Priority" visible="1">
+   </PIN>
+   <PIN pinname="Dry Mix" visible="1">
+   </PIN>
+   <PIN pinname="Feedback" visible="1">
+   </PIN>
+   <PIN pinname="Max Sweep" visible="1">
+   </PIN>
+   <PIN pinname="Rate" visible="1">
+   </PIN>
+   <PIN pinname="Wet Mix" visible="1">
+   </PIN>
+   <PIN pinname="Min Sweep" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="2835" top="6180" height="270" width="6975">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2835" top="6180" height="0" width="0">
+   </BOUNDS>
+   <PIN pinname="Speed" visible="1">
+   </PIN>
+   <PIN pinname="Wet Dry Ratio" visible="1">
+   </PIN>
+   <BOUNDS type="Window" height="0" left="10395" top="6960" width="0">
+   </BOUNDS>
+   <PIN pinname="FX Handle" visible="1">
+   </PIN>
+   <PIN pinname="Delay" visible="1">
+   </PIN>
+   <PIN pinname="Level" visible="1">
+   </PIN>
+   <PIN pinname="Freq" visible="1">
+   </PIN>
+   <PIN pinname="Range" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Current Position" dstnodeid="11" dstpinname="Y Input Value">
+   <LINKPOINT x="5025" y="2115">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="11" componentmode="InABox" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="5625" top="2805" height="0" width="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5625" top="2805" height="240" width="1095">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="7965" top="9630" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Position">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Output String" dstnodeid="15" dstpinname="File Name">
+   </LINK>
+   <NODE id="14" componentmode="InABox" nodename="IOBox (String)">
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="5190" top="720" height="0" width="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5190" top="720" height="240" width="2985">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="9480" top="5625" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\..\..\..\..\Music\Tipper\Tip hop\01 - tepid bile.mp3|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|File Name|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Play">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Enabled">
+   </LINK>
+   <NODE id="8" componentmode="InABox" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="9090" top="4080" height="0" width="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9090" top="4080" height="465" width="690">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="9105" top="10710" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Priority">
+   </LINK>
+   <NODE id="7" componentmode="InABox" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="2835" top="3810" height="0" width="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2835" top="3810" height="240" width="795">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="11430" top="8910" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Priority">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Dry Mix">
+   </LINK>
+   <NODE id="6" componentmode="InABox" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="3750" top="3420" height="0" width="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3750" top="3420" height="945" width="765">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="12615" top="9210" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Dry Mix|">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-2">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.428813559322025">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.392156862745099">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Feedback">
+   </LINK>
+   <NODE id="5" componentmode="InABox" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="4620" top="3420" height="0" width="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4620" top="3420" height="945" width="765">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="13845" top="10395" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Feedback">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="-0.215254237288138">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.470588235294118">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Max Sweep">
+   </LINK>
+   <NODE id="4" componentmode="InABox" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="5520" top="3900" height="0" width="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5520" top="3900" height="240" width="795">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="14730" top="9870" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Max Sweep|">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="6000">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Rate">
+   </LINK>
+   <NODE id="3" componentmode="InABox" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="7350" top="3975" height="0" width="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7350" top="3975" height="240" width="795">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="15930" top="10890" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Rate">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1000">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Wet Mix">
+   </LINK>
+   <NODE id="2" componentmode="InABox" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="8220" top="3240" height="0" width="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8220" top="3240" height="945" width="765">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="15300" top="10590" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Wet Mix|">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-2">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1.10677966101695">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.15686274509804">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Min Sweep">
+   </LINK>
+   <NODE id="0" componentmode="InABox" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="6435" top="3870" height="0" width="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6435" top="3870" height="240" width="795">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="15690" top="10920" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Min Sweep|">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="6000">
+   </PIN>
+   </NODE>
+   <NODE nodename=":PLUGINS:\BassSound.dll|BassSound.BassAudioOutNode" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="1020" top="3615" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6240" top="5205" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1020" top="3615" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Handles In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Handle Out" dstnodeid="16" dstpinname="Handles In">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="17">
+   <BOUNDS type="Node" left="6930" top="120" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="15150" top="2430" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6930" top="120" width="2715" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|Chorus DSP Effect|">
+   </PIN>
+   </NODE>
+   </PATCH>

@@ -1,0 +1,59 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta18.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Bass\trunk\help\IceCast (Bass) help.v4p">
+   <BOUNDS height="5340" left="3315" top="1725" type="Window" width="8985">
+   </BOUNDS>
+   <NODE nodename=":PLUGINS:\BassSound.dll|BassSound.BroadCast.IceCastServerNode" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="1530" top="3135" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="45" top="13260" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1530" top="3135" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="10">
+   <BOUNDS type="Node" left="720" top="4320" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4230" top="5385" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="720" top="4320" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Status">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Status" dstnodeid="10" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11">
+   <BOUNDS type="Node" left="480" top="1605" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4035" top="3675" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="480" top="1605" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Bass Handle|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Handle">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="12">
+   <BOUNDS type="Node" left="4470" top="255" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7665" top="2880" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4470" top="255" width="3900" height="3345">
+   </BOUNDS>
+   <PIN pinname="SliceOffset" visible="-1" pintype="Input" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Input String" visible="-1" pintype="Input" slicecount="1" values="|IceCast&cr;&lf;&cr;&lf;This node allows you to broadcast your output to an icecast server, so you can make it available on a netwrok/internet.&cr;&lf;&cr;&lf;Please read:&cr;&lf;http://vvvv.org/tiki-index.php?page=vux-doc-icecast&cr;&lf;&cr;&lf;for a detailed explanation on how to setup icecast server.|">
+   </PIN>
+   <PIN pinname="Output String" visible="-1" pintype="Output">
+   </PIN>
+   </NODE>
+   </PATCH>
