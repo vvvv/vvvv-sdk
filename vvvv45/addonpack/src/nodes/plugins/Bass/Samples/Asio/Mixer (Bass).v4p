@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta18.dtd" >
    <PATCH nodename="D:\repositories\vvvv\plugins\c#\Bass\trunk\Samples\Asio\Mixer (Bass).v4p">
    <BOUNDS height="9585" left="4830" top="2265" type="Window" width="12675">
    </BOUNDS>
@@ -41,7 +41,7 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="|C:\Documents and Settings\Administrator\My Documents\09 Do Not Break.mp3|">
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\..\..\..\..\..\Music\Hexstatic\when robots go bad\01-hexstatic-red_laser_beam.mp3|">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|File Name|">
    </PIN>
@@ -135,7 +135,7 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="4" values="0.0151515151515151,0,0,0.166666666666667">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="4" values="1,0,0,0">
+   <PIN pinname="Y Input Value" slicecount="4" values="1,0,0,0.909090909090909">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
@@ -321,29 +321,9 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="2" values="0,0">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="2" values="0.4125,0.500892857142857">
+   <PIN pinname="Y Input Value" slicecount="2" values="0.7875,0.657142857142857">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="2" nodename=":PLUGINS:\AsioBassSound.dll|vvvv.Nodes.BassAsioOutputNode">
-   <BOUNDS height="0" left="3675" top="7560" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="0" left="8145" top="9750" type="Window" width="0">
-   </BOUNDS>
-   <BOUNDS height="0" left="3675" top="7560" type="Box" width="0">
-   </BOUNDS>
-   <PIN pinname="Is Active" visible="1">
-   </PIN>
-   <PIN pinname="Volume" visible="1">
-   </PIN>
-   <PIN pinname="Channels" visible="1">
-   </PIN>
-   <PIN pinname="Handles In" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="2" dstpinname="Is Active" srcnodeid="4" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="2" dstpinname="Volume" srcnodeid="3" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
    <BOUNDS height="0" left="7425" top="5580" type="Node" width="0">
    </BOUNDS>
@@ -359,8 +339,6 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="11" dstpinname="Handle In 1" srcnodeid="14" srcpinname="Handle Out">
-   </LINK>
-   <LINK dstnodeid="2" dstpinname="Handles In" srcnodeid="11" srcpinname="Handle">
    </LINK>
    <LINK dstnodeid="11" dstpinname="Handle In 2" srcnodeid="7" srcpinname="Handle Out">
    </LINK>
@@ -399,5 +377,25 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="11" dstpinname="Play" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <NODE nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.BassAsioOutputNode" componentmode="Hidden" id="15">
+   <BOUNDS type="Node" left="3120" top="7500" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7590" top="10005" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3120" top="7500" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Is Active" visible="1">
+   </PIN>
+   <PIN pinname="Volume" visible="1">
+   </PIN>
+   <PIN pinname="Handles In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Is Active">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Volume">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Handle" dstnodeid="15" dstpinname="Handles In">
    </LINK>
    </PATCH>
