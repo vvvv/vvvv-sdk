@@ -76,9 +76,8 @@ namespace vvvv.Nodes
             this.FHost.CreateValueInput("Handle In", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInHandle);
             this.FPinInHandle.SetSubType(double.MinValue, double.MaxValue, 0, 0, false, false, true);
 
-            this.OnPluginHostSet();
-
             this.FHost.CreateValueInput(this.FAttributeIn, 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInAttribute);
+            this.OnPluginHostSet();
 
             //Output Pins
             this.FHost.CreateValueOutput("Left", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutLeft);

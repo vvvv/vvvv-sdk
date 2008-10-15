@@ -40,15 +40,12 @@ namespace vvvv.Nodes
         private IValueIn FPinInHanning;
 
         protected override void OnPluginHostSet()
-        {
-            
+        {     
             this.FHost.CreateValueInput("Individual", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInInvidivual);
             this.FPinInInvidivual.SetSubType(0, 1, 1, 1, false, true, true);
-
-            
+         
             this.FHost.CreateValueInput("Windowed", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInHanning);
             this.FPinInHanning.SetSubType(0, 1, 1, 1, false, true, true);
-        
         
         }
 

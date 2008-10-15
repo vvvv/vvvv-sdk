@@ -51,7 +51,7 @@ namespace vvvv.Nodes
                 this.FPinInAttribute.GetValue(0, out ms);
 
                 long len = Bass.BASS_ChannelSeconds2Bytes(this.FMyBassHandle, ms / 1000.0);
-                return Convert.ToInt32(len / 4);
+                return Convert.ToInt32(len / 4) ;
             }
         }
 
@@ -69,6 +69,8 @@ namespace vvvv.Nodes
         {
             BASS_CHANNELINFO info = Bass.BASS_ChannelGetInfo(this.FChannel.BassHandle.Value);
             int len = samples.Length;
+            this.FPinOutLeft.SliceCount = len /2;
+            this.FPinOutRight.SliceCount = len/2;
             if (info.chans > 1)
             {
                 //Note: Change that to make sure it Goes with any channel soundtrack.
@@ -86,7 +88,9 @@ namespace vvvv.Nodes
             }
             else
             {
-                for (int i = 0; i < len / 2; i++)
+                this.FPinOutLeft.SliceCount = len;
+                this.FPinOutRight.SliceCount = len;
+                for (int i = 0; i < len; i++)
                 {
                     this.FPinOutLeft.SetValue(i, (double)samples[i]);
                     this.FPinOutRight.SetValue(i, (double)samples[i]);
