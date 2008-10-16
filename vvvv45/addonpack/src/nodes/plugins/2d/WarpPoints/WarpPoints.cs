@@ -145,7 +145,7 @@ namespace VVVV.Nodes
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "WarpPoints";
                 Info.Category = "2D";
-                Info.Version = "Plugin";
+                Info.Version = "";
                 Info.Help = "Transforms one gridspace to another";
                 Info.Bugs = "";
                 Info.Credits = "gnox & u7angel";
