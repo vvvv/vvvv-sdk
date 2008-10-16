@@ -1,3 +1,33 @@
+#region licence/info
+
+//////project name
+//Warp Points
+
+//////description
+//warp Points from one 2D space to another 2D space
+//useful for manual calibration as known from most touch devices
+
+//////licence
+//GNU Lesser General Public License (LGPL)
+//english: http://www.gnu.org/licenses/lgpl.html
+//german: http://www.gnu.de/lgpl-ger.html
+
+//////language/ide
+//C# sharpdevelop 
+
+//////dependencies
+//VVVV.PluginInterfaces.V1;
+//VVVV.Utils.VColor;
+//VVVV.Utils.VMath;
+
+//////initial author
+//wirmachenbunt - Heinrich Löwe, Chris Engler 
+
+#endregion licence/info
+
+
+
+
 // http://openbook.galileocomputing.de/csharp/
 
 using System;

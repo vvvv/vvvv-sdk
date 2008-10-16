@@ -1,0 +1,99 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta18.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\angel\Desktop\gridtransform\screen_coordinates.v4p">
+   <BOUNDS type="Window" left="11265" top="6540" width="9000" height="6000">
+   </BOUNDS>
+   <NODE id="3" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="270" left="5010" top="2085" type="Node" width="1020">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="-0.0200000000000001">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1.86">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="Cross (2d)">
+   <BOUNDS height="0" left="5010" top="2835" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X In" visible="1">
+   </PIN>
+   <PIN pinname="Y In" visible="1">
+   </PIN>
+   <PIN pinname="X Out" visible="1">
+   </PIN>
+   <PIN pinname="Y Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="X In" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE id="1" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="270" left="6135" top="2040" type="Node" width="1185">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1.77">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Y In" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE id="0" nodename="Vector (2d Join)">
+   <BOUNDS height="0" left="4995" top="3255" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="X" srcnodeid="2" srcpinname="X Out">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Y" srcnodeid="2" srcpinname="Y Out">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="4">
+   <BOUNDS type="Node" left="5220" top="1095" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="15495" top="7815" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5220" top="1095" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="width">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="5">
+   <BOUNDS type="Node" left="6510" top="1110" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="18345" top="7845" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6510" top="1110" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="height">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Spread Count">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Spread Count">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6">
+   <BOUNDS type="Node" left="4260" top="3945" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="16335" top="10860" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4260" top="3945" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="vector2D">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="XY" dstnodeid="6" dstpinname="Y Input Value">
+   </LINK>
+   </PATCH>

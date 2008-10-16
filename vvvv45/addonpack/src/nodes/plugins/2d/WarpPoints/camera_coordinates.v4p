@@ -1,0 +1,161 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta18.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\angel\Desktop\gridtransform\camera_coordinates.v4p">
+   <BOUNDS type="Window" left="9270" top="3255" width="9000" height="6000">
+   </BOUNDS>
+   <NODE hiddenwhenlocked="0" id="5" managers="" nodename="Vector (2d Join)">
+   <PIN pinname="X" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Y" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="270" left="2565" top="2130" type="Node" width="765">
+   </BOUNDS>
+   <PIN pinname="XY" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="4" managers="" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="270" left="3705" top="915" type="Node" width="1185">
+   </BOUNDS>
+   <PIN pinname="Output" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input" pintype="Input" slicecount="1" visible="1" values="-0.02">
+   </PIN>
+   <PIN pinname="Width" pintype="Input" slicecount="1" visible="1" values="1.03">
+   </PIN>
+   <PIN pinname="Alignment" pintype="Input" slicecount="1" visible="1" values="Centered">
+   </PIN>
+   <PIN pinname="Phase" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="3" managers="" nodename="Cross (2d)">
+   <PIN pinname="Y In" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="X In" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="2580" top="1710" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X Out" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Y Out" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Include Upper" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Include Lower" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Include Equal" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="2" managers="" nodename="LinearSpread (Spreads)">
+   <PIN pinname="Spread Count" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="270" left="2580" top="960" type="Node" width="1020">
+   </BOUNDS>
+   <PIN pinname="Output" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" pintype="Input" slicecount="1" visible="1" values="-0.0399999999999998">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Width" pintype="Input" slicecount="1" visible="1" values="1.32">
+   </PIN>
+   <PIN pinname="Alignment" pintype="Input" slicecount="1" visible="1" values="Centered">
+   </PIN>
+   <PIN pinname="Phase" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="X In" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Y" srcnodeid="3" srcpinname="Y Out">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="X" srcnodeid="3" srcpinname="X Out">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Y In" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE id="1" nodename="Attractor (Value)">
+   <BOUNDS height="0" left="2580" top="2670" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Attractor Power" slicecount="1" values="0.569999999999999">
+   </PIN>
+   <PIN pinname="Attractor" visible="1">
+   </PIN>
+   <PIN pinname="Attractor Radius" slicecount="1" values="1.15">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="5" srcpinname="XY">
+   </LINK>
+   <NODE id="0" nodename="Vector (2d Join)">
+   <BOUNDS height="0" left="3555" top="2130" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="4.5102810375397E-017">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="-0.00999999999999982">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Attractor" srcnodeid="0" srcpinname="XY">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7">
+   <BOUNDS type="Node" left="2895" top="90" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="15810" top="9105" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2895" top="90" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="width">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6">
+   <BOUNDS type="Node" left="4185" top="105" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="18660" top="9135" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4185" top="105" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="height">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Spread Count">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Spread Count">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="8">
+   <BOUNDS type="Node" left="1845" top="3240" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="17055" top="11085" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1845" top="3240" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="vector2D">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Output" dstnodeid="8" dstpinname="Y Input Value">
+   </LINK>
+   </PATCH>
