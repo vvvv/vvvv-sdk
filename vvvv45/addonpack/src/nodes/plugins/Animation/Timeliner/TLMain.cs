@@ -433,34 +433,55 @@ namespace VVVV.Nodes
 		#endregion constructor/destructor
 		
 		#region node name and infos
-		
+		private static IPluginInfo FPluginInfo;
 		public static IPluginInfo PluginInfo
 		{
 			get
 			{
-				IPluginInfo Info = new PluginInfo();
-				
-				// PLUGIN INFORMATIONS
-				///////////////////////
-				Info.Name = "Timeliner";
-				Info.Category = "Animation";
-				Info.Version = "";
-				Info.Help = "";
-				Info.Bugs = "";
-				Info.Credits = "";
-				Info.Warnings = "";
-				Info.InitialBoxSize = new Size(400, 200);
-				Info.InitialWindowSize = new Size(600, 300);
-				Info.InitialComponentMode = TComponentMode.InAWindow;
-				
-				// STACK TRACES
-				/////////////// 
-				System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
-				System.Diagnostics.StackFrame sf = st.GetFrame(0);
-				System.Reflection.MethodBase method = sf.GetMethod();
-				Info.Namespace = method.DeclaringType.Namespace;
-				Info.Class = method.DeclaringType.Name;
-				return Info;
+				if (FPluginInfo == null)
+				{
+					//fill out nodes info
+					//see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
+					FPluginInfo = new PluginInfo();
+					
+					//the nodes main name: use CamelCaps and no spaces
+					FPluginInfo.Name = "Timeliner";
+					//the nodes category: try to use an existing one
+					FPluginInfo.Category = "Animation";
+					//the nodes version: optional. leave blank if not
+					//needed to distinguish two nodes of the same name and category
+					FPluginInfo.Version = "";
+					
+					//the nodes author: your sign
+					FPluginInfo.Author = "vvvv group";
+					//describe the nodes function
+					FPluginInfo.Help = "A gui to arrange keyframes of different types (value, color, string..)";
+					//specify a comma separated list of tags that describe the node
+					FPluginInfo.Tags = "Keyframe, Score";
+					
+					//give credits to thirdparty code used
+					FPluginInfo.Credits = "";
+					//any known problems?
+					FPluginInfo.Bugs = "";
+					//any kown usage of the node that may cause troubles?
+					FPluginInfo.Warnings = "";
+					
+					//define the nodes initial size in box-mode
+					FPluginInfo.InitialBoxSize = new Size(400, 200);
+					//define the nodes initial size in window-mode
+					FPluginInfo.InitialWindowSize = new Size(600, 300);
+					//define the nodes initial component mode
+					FPluginInfo.InitialComponentMode = TComponentMode.InAWindow;
+					
+					//leave below as is
+					System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
+					System.Diagnostics.StackFrame sf = st.GetFrame(0);
+					System.Reflection.MethodBase method = sf.GetMethod();
+					FPluginInfo.Namespace = method.DeclaringType.Namespace;
+					FPluginInfo.Class = method.DeclaringType.Name;
+					//leave above as is
+				}
+				return FPluginInfo;
 			}
 		}
 		
