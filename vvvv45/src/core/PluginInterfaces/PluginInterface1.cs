@@ -297,8 +297,10 @@ namespace VVVV.PluginInterfaces.V1
 		string Category {get; set;}
 		string Version {get; set;}
 		string Help {get; set;}
-		string Bugs {get; set;}
+		string Tags {get; set;}
+		string Author {get; set;}
 		string Credits {get; set;}
+		string Bugs {get; set;}
 		string Warnings {get; set;}
 		string Namespace {get; set;}
 		string Class {get; set;}
@@ -314,7 +316,9 @@ namespace VVVV.PluginInterfaces.V1
 		private string FName = "";
 		private string FCategory = "";
 		private string FVersion = "";
+		private string FAuthor = "";
 		private string FHelp = "";
+		private string FTags = "";
 		private string FBugs = "";
 		private string FCredits = "";
 		private string FWarnings = "";
@@ -339,10 +343,20 @@ namespace VVVV.PluginInterfaces.V1
 	        get {return FVersion;}
 	        set {FVersion = value;}
 		}
+	    public string Author
+	    {
+	        get {return FAuthor;}
+	        set {FAuthor = value;}
+		}
 	    public string Help
 	    {
 	        get {return FHelp;}
 	        set {FHelp = value;}
+		}
+	    public string Tags
+	    {
+	        get {return FTags;}
+	        set {FTags = value;}
 		}
 	    public string Bugs
 	    {
