@@ -145,7 +145,7 @@ namespace VVVV.Nodes
 					FPluginInfo.Credits = "";
 					//any known problems?
 					FPluginInfo.Bugs = "";
-					//any usage of the node that may cause troubles?
+					//any known usage of the node that may cause troubles?
 					FPluginInfo.Warnings = "";
 					
 					//define the nodes initial size in box-mode
