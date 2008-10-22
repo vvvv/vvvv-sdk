@@ -125,32 +125,50 @@ namespace VVVV.Nodes
         
         #region node name and infos
        
-        //provide node infos 
+        //provide node infos
+        private static IPluginInfo FPluginInfo;
         public static IPluginInfo PluginInfo
-	    {
-	        get 
-	        {
-	        	//fill out nodes info
-	        	//see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
-	        	IPluginInfo Info = new PluginInfo();
-	        	Info.Name = "Template";							//use CamelCaps and no spaces
-	        	Info.Category = "Template Threaded";			//try to use an existing one
-	        	Info.Version = "Simple";						//versions are optional. leave blank if not needed
-	        	Info.Help = "Offers a basic code layout to start from when writing a vvvv plugin with threading";
-	        	Info.Bugs = "";
-	        	Info.Credits = "";								//give credits to thirdparty code used
-	        	Info.Warnings = "";
-	        	
-	        	//leave below as is
-	        	System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
-   				System.Diagnostics.StackFrame sf = st.GetFrame(0);
-   				System.Reflection.MethodBase method = sf.GetMethod();
-   				Info.Namespace = method.DeclaringType.Namespace;
-   				Info.Class = method.DeclaringType.Name;
-   				return Info;
-   				//leave above as is
+        {
+        	get
+        	{
+        		if (FPluginInfo == null)
+        		{
+        			//fill out nodes info
+        			//see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
+        			FPluginInfo = new PluginInfo();
+        			
+        			//the nodes main name: use CamelCaps and no spaces
+        			FPluginInfo.Name = "Template";
+        			//the nodes category: try to use an existing one
+        			FPluginInfo.Category = "Template";
+        			//the nodes version: optional. leave blank if not
+        			//needed to distinguish two nodes of the same name and category
+        			FPluginInfo.Version = "Threaded";
+        			
+        			//the nodes author: your sign
+        			FPluginInfo.Author = "vvvv group";
+        			//describe the nodes function
+        			FPluginInfo.Help = "Offers a basic code layout to start from when writing a vvvv plugin with multiple threads";
+        			//specify a comma separated list of tags that describe the node
+        			FPluginInfo.Tags = "template, multithreading, sample";
+        			//give credits to thirdparty code used
+        			FPluginInfo.Credits = "";
+        			//any known problems?
+        			FPluginInfo.Bugs = "";
+        			//any known usage of the node that may cause troubles?
+        			FPluginInfo.Warnings = "";
+        			
+        			//leave below as is
+        			System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
+        			System.Diagnostics.StackFrame sf = st.GetFrame(0);
+        			System.Reflection.MethodBase method = sf.GetMethod();
+        			FPluginInfo.Namespace = method.DeclaringType.Namespace;
+        			FPluginInfo.Class = method.DeclaringType.Name;
+        		}
+        		return FPluginInfo;
+	        	//leave above as is
 	        }
-		}
+        }
 
         public bool AutoEvaluate
         {
@@ -160,11 +178,11 @@ namespace VVVV.Nodes
         
         #endregion node name and infos
         
-      	#region pin creation
+        #region pin creation
         
         //this method is called by vvvv when the node is created
         public void SetPluginHost(IPluginHost Host)
-	    {
+        {
         	//assign host
 	    	FHost = Host;
 
