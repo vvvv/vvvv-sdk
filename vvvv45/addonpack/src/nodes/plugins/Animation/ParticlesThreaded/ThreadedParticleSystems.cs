@@ -1,9 +1,28 @@
+#region licence/info
 
-//
-// Welcome, this is a basic vvvv node plugin template.
-// Copy this an rename it, to write your own plugin node.
-//
-//
+//////project name
+//particle system vvvv plugin
+
+//////description
+//basic vvvv node plugin template.
+//Copy this an rename it, to write your own plugin node.
+
+//////licence
+//GNU Lesser General Public License (LGPL)
+//english: http://www.gnu.org/licenses/lgpl.html
+//german: http://www.gnu.de/lgpl-ger.html
+
+//////language/ide
+//C# sharpdevelop 
+
+//////dependencies
+//VVVV.PluginInterfaces.V1;
+//VVVV.Utils.VMath;
+
+//////initial author
+//vvvv group
+
+#endregion licence/info
 
 //use what you need
 using System;
@@ -68,10 +87,12 @@ namespace VVVV.Nodes
 				IPluginInfo Info = new PluginInfo();
 				Info.Name = "Particles";
 				Info.Category = "Spreads";
-				Info.Version = "Threaded";
-				Info.Help = "Multiple particle systems example from processing for dual core cpus";
+				Info.Version = "";
+				Info.Help = "A spread of particle systems for dual core cpus";
+				Info.Tags = "particles, animation";
+				Info.Author = "tonfilm";
 				Info.Bugs = "";
-				Info.Credits = "";
+				Info.Credits = "base code ported from a processing example";
 				Info.Warnings = "";
 				
 				//leave below as is
