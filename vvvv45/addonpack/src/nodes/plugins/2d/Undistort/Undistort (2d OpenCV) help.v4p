@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta18.dtd" >
-   <PATCH nodename="Y:\sourceforge\_completeplugins\2d\Undistort\trunk\Undistort (2d) help.v4p">
-   <BOUNDS height="7035" left="150" top="5385" type="Window" width="7770">
+   <PATCH nodename="C:\_vvvv\public sources\c# plugins\2d\undistort\Undistort (2d) help.v4p">
+   <BOUNDS height="7575" left="6450" top="585" type="Window" width="7770">
    </BOUNDS>
    <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
    <BOUNDS height="270" left="270" top="210" type="Node" width="3660">
@@ -30,28 +30,6 @@
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InAWindow" id="15" nodename="bin\Undistort.dll">
-   <BOUNDS height="270" left="1470" top="3195" type="Node" width="2160">
-   </BOUNDS>
-   <BOUNDS left="1470" top="3195" type="Box">
-   </BOUNDS>
-   <PIN pinname="ResolutionXY" visible="1">
-   </PIN>
-   <PIN pinname="PrincipalPointXY" visible="1">
-   </PIN>
-   <PIN pinname="FocalLengthXY" visible="1">
-   </PIN>
-   <PIN pinname="DistortionXYZW" visible="1">
-   </PIN>
-   <PIN pinname="OutputXY" visible="1">
-   </PIN>
-   <PIN pinname="InputXY" visible="1">
-   </PIN>
-   <PIN pinname="Focal LengthXY" visible="1">
-   </PIN>
-   <PIN pinname="Principal PointXY" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)">
@@ -90,12 +68,10 @@
    <PIN pinname="X Input Value" slicecount="2" values="0.5,0.5">
    </PIN>
    </NODE>
-   <LINK dstnodeid="15" dstpinname="DistortionXYZW" srcnodeid="14" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InAWindow" id="12" nodename="Renderer (EX9)">
    <BOUNDS height="0" left="1470" top="5820" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="4860" left="150" top="510" type="Window" width="6120">
+   <BOUNDS height="4860" left="270" top="915" type="Window" width="6120">
    </BOUNDS>
    <BOUNDS height="1800" left="1470" top="5820" type="Box" width="2400">
    </BOUNDS>
@@ -143,8 +119,6 @@
    <LINK dstnodeid="9" dstpinname="X" srcnodeid="11" srcpinname="X Out">
    </LINK>
    <LINK dstnodeid="9" dstpinname="Y" srcnodeid="11" srcpinname="Y Out">
-   </LINK>
-   <LINK dstnodeid="15" dstpinname="InputXY" srcnodeid="9" srcpinname="XY">
    </LINK>
    <NODE id="8" nodename="Transform (Transform 2d)">
    <BOUNDS height="0" left="1635" top="4665" type="Node" width="0">
@@ -202,8 +176,6 @@
    </LINK>
    <LINK dstnodeid="8" dstpinname="ScaleY" srcnodeid="5" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="15" dstpinname="Principal PointXY" srcnodeid="13" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
    <PIN pinname="Y Input Value" slicecount="2" values="320,320">
    </PIN>
@@ -222,8 +194,6 @@
    <PIN pinname="X Input Value" slicecount="2" values="0.5,0.5">
    </PIN>
    </NODE>
-   <LINK dstnodeid="15" dstpinname="Focal LengthXY" srcnodeid="4" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="5490" top="2085" type="Node" width="0">
    </BOUNDS>
@@ -242,8 +212,6 @@
    <PIN pinname="X Input Value" slicecount="2" values="0.5,0.5">
    </PIN>
    </NODE>
-   <LINK dstnodeid="15" dstpinname="ResolutionXY" srcnodeid="3" srcpinname="Y Output Value">
-   </LINK>
    <NODE id="2" nodename="Undistort (DShow9 OpenCV)">
    <BOUNDS height="0" left="4995" top="4860" type="Node" width="0">
    </BOUNDS>
@@ -270,6 +238,38 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="6" dstpinname="XY" srcnodeid="15" srcpinname="OutputXY">
+   <NODE componentmode="InAWindow" id="18" nodename=":PLUGINS:\Undistort.dll|VVVV.Nodes.UndistortNode">
+   <BOUNDS height="270" left="1470" top="3195" type="Node" width="2160">
+   </BOUNDS>
+   <BOUNDS left="1470" top="3195" type="Box">
+   </BOUNDS>
+   <PIN pinname="ResolutionXY" visible="1">
+   </PIN>
+   <PIN pinname="PrincipalPointXY" visible="1">
+   </PIN>
+   <PIN pinname="FocalLengthXY" visible="1">
+   </PIN>
+   <PIN pinname="DistortionXYZW" visible="1">
+   </PIN>
+   <PIN pinname="OutputXY" visible="1">
+   </PIN>
+   <PIN pinname="InputXY" visible="1">
+   </PIN>
+   <PIN pinname="Focal LengthXY" visible="1">
+   </PIN>
+   <PIN pinname="Principal PointXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="DistortionXYZW" srcnodeid="14" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="InputXY" srcnodeid="9" srcpinname="XY">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Principal PointXY" srcnodeid="13" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Focal LengthXY" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="ResolutionXY" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="XY" srcnodeid="18" srcpinname="OutputXY">
    </LINK>
    </PATCH>

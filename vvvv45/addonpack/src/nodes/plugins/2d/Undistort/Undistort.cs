@@ -1,11 +1,10 @@
 #region licence/info
 
 //////project name
-//vvvv plugin template
+//Undistort (like in OpenCV)
 
 //////description
-//basic vvvv node plugin template.
-//Copy this an rename it, to write your own plugin node.
+//Undistort (like in OpenCV), but this time for positions within the source pic
 
 //////licence
 //GNU Lesser General Public License (LGPL)
@@ -148,6 +147,8 @@ namespace VVVV.Nodes
 	        	Info.Bugs = "";
 	        	Info.Credits = "";								//give credits to thirdparty code used
 	        	Info.Warnings = "";
+	        	Info.Tags = "opencv, purely functional, deterministic, map, distort";
+	        	Info.Author = "vvvv group";
 	        	
 	        	//leave below as is
 	        	System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
