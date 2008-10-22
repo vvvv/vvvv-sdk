@@ -4,8 +4,7 @@
 //Cut 3 Spheres
 
 //////description
-//basic vvvv node plugin template.
-//Copy this an rename it, to write your own plugin node.
+//ouputs the intersection points of 3 overlapping spheres
 
 //////licence
 //GNU Lesser General Public License (LGPL)
@@ -21,7 +20,7 @@
 //VVVV.Utils.VMath;
 
 //////initial author
-//Sebastian Gregor, vvvv group
+//vvvv group
 
 #endregion licence/info
 
@@ -92,6 +91,8 @@ namespace VVVV.Nodes
 	        	Info.Bugs = "";
 	        	Info.Credits = "";								//give credits to thirdparty code used
 	        	Info.Warnings = "";
+	        	Info.Tags = "intersect, intersection, cut, points, purely functional, deterministic, overlap";
+	        	Info.Author = "vvvv group";
 	        	
 	        	//leave below as is
 	        	System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
