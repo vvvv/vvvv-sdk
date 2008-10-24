@@ -160,32 +160,55 @@ namespace VVVV.Nodes
 		#region node name and infos
 		
 		//provide node infos
+		private static IPluginInfo FPluginInfo;
 		public static IPluginInfo PluginInfo
 		{
 			get
 			{
-				//fill out nodes info
-				//see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
-				IPluginInfo Info = new PluginInfo();
-				Info.Name = "uEyeCam";							//use CamelCaps and no spaces
-				Info.Category = "Devices";						//try to use an existing one
-				Info.Version = "";							//versions are optional. leave blank if not needed
-				Info.Help = "Native interface to uEye cameras by http://ids-imaging.de/";
-				Info.Bugs = "";
-				Info.Credits = "based on Interfaceclass for uEye Camera family provided by IDS-Imaging"; //give credits to thirdparty code used
-				Info.Warnings = "";
-				Info.InitialBoxSize = new Size(200, 100);		//defines initial size of node in box-mode
-				Info.InitialWindowSize = new Size(400, 300);	//defines initial size of node in window-mode
-				Info.InitialComponentMode = TComponentMode.InAWindow;	//defines initial component mode
-				
-				//leave below as is
-				System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
-				System.Diagnostics.StackFrame sf = st.GetFrame(0);
-				System.Reflection.MethodBase method = sf.GetMethod();
-				Info.Namespace = method.DeclaringType.Namespace;
-				Info.Class = method.DeclaringType.Name;
-				return Info;
-				//leave above as is
+				if (FPluginInfo == null)
+				{
+					//fill out nodes info
+					//see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
+					FPluginInfo = new PluginInfo();
+					
+					//the nodes main name: use CamelCaps and no spaces
+					FPluginInfo.Name = "uEyeCam";
+					//the nodes category: try to use an existing one
+					FPluginInfo.Category = "Devices";
+					//the nodes version: optional. leave blank if not
+					//needed to distinguish two nodes of the same name and category
+					FPluginInfo.Version = "";
+					
+					//the nodes author: your sign
+					FPluginInfo.Author = "vvvv group";
+					//describe the nodes function
+					FPluginInfo.Help = "Native interface to uEye cameras by http://ids-imaging.de/";
+					//specify a comma separated list of tags that describe the node
+					FPluginInfo.Tags = "";
+					
+					//give credits to thirdparty code used
+					FPluginInfo.Credits = "Based on Interfaceclass for uEye Camera family provided by http://ids-imaging.de";
+					//any known problems?
+					FPluginInfo.Bugs = "";
+					//any known usage of the node that may cause troubles?
+					FPluginInfo.Warnings = "";
+					
+					//define the nodes initial size in box-mode
+					FPluginInfo.InitialBoxSize = new Size(200, 100);
+					//define the nodes initial size in window-mode
+					FPluginInfo.InitialWindowSize = new Size(400, 300);
+					//define the nodes initial component mode
+					FPluginInfo.InitialComponentMode = TComponentMode.InAWindow;
+					
+					//leave below as is
+					System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
+					System.Diagnostics.StackFrame sf = st.GetFrame(0);
+					System.Reflection.MethodBase method = sf.GetMethod();
+					FPluginInfo.Namespace = method.DeclaringType.Namespace;
+					FPluginInfo.Class = method.DeclaringType.Name;
+					//leave above as is
+				}
+				return FPluginInfo;
 			}
 		}
 		
