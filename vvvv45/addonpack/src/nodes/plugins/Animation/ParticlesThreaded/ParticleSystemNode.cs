@@ -92,7 +92,7 @@ namespace VVVV.Nodes
 				Info.Tags = "particles, animation";
 				Info.Author = "tonfilm";
 				Info.Bugs = "";
-				Info.Credits = "base code ported from a processing example";
+				Info.Credits = "Base code ported from a processing example by Daniel Shiffman: http://processing.org/learning/examples/multipleparticlesystems.html";
 				Info.Warnings = "";
 				
 				//leave below as is

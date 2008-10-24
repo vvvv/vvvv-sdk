@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 // change them to the information which is associated with the assembly
 // you compile.
 
-[assembly: AssemblyTitle("Particles Threaded Plugin")]
+[assembly: AssemblyTitle("Particles Plugin")]
 [assembly: AssemblyDescription("A Threaded Particle System")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("VVVV group")]
-[assembly: AssemblyProduct("Threaded Particles Plugin")]
+[assembly: AssemblyProduct("Particles Plugin")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
