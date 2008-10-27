@@ -77,7 +77,8 @@ const
   BITSPERSAMPLE      =  16;
   BITSPERBYTE        =  8;
   MAXCHANNELS        =  18;
-  BLOCKSIZESMALL     =  256;
+  //BLOCKSIZESMALL   =  256;
+  BLOCKSIZESMALL     =  512;
   BLOCKSIZE          =  2048;
   BLOCKALIGN         =  256;
   DEFAULTCHANNELMASK =  SPEAKER_FRONT_LEFT;
@@ -251,6 +252,8 @@ type
    voicelist     : TList;
    FVoiceCount   : Integer;
    FRoute        : TMWavePlayerRoute;
+
+   waveformat    : TWAVEFORMATEX;
   public
    constructor Create(out hr: HRESULT; Filter: TBCSource);
    destructor Destroy; override;
@@ -1017,6 +1020,7 @@ begin
 
  Result := S_OK;
 end;
+
 
 function TMWavePlayerPin.DecideBufferSize(Allocator: IMemAllocator;
   Properties: PAllocatorProperties): HRESULT;
