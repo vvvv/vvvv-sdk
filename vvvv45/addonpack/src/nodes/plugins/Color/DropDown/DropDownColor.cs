@@ -38,7 +38,7 @@ namespace VVVV.Nodes
 {
 	
 	//class definition, inheriting from UserControl for the GUI stuff
-	public class GUITemplateWrk: UserControl, IPlugin
+	public class DropDownColor: UserControl, IPlugin, IDisposable
     {
     	#region field declaration
     	
@@ -70,7 +70,7 @@ namespace VVVV.Nodes
     	#endregion field declaration
         
     	#region constructor/destructor
-        public GUITemplateWrk()
+        public DropDownColor()
         {
         	// The InitializeComponent() call is required for Windows Forms designer support.
 			InitializeComponent();
@@ -98,7 +98,7 @@ namespace VVVV.Nodes
         		// Release unmanaged resources. If disposing is false,
         		// only the following code is executed.
 	        	
-        		FHost.Log(TLogType.Debug, "PluginGUITemplate is being deleted");
+        		FHost.Log(TLogType.Debug, "DropDown (Color) is being deleted");
         		
         		// Note that this is not thread safe.
         		// Another thread could start disposing the object
@@ -423,7 +423,6 @@ namespace VVVV.Nodes
 		
 		protected override void OnDrawItem(DrawItemEventArgs ea)
 		{
-			//ea.DrawBackground();
 			Color myColor;
 			Rectangle bounds = ea.Bounds;
 			

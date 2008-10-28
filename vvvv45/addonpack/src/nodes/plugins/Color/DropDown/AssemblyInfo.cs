@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 // change them to the information which is associated with the assembly
 // you compile.
 
-[assembly: AssemblyTitle("DropDown (Color)")]
+[assembly: AssemblyTitle("DropDownColor")]
 [assembly: AssemblyDescription("DropDown Menu for colors")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("woei")]
