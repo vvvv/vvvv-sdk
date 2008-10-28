@@ -37,7 +37,8 @@
 //use what you need
 using System;
 using System.Drawing;
-
+using System.Collections.Generic;
+using VVVV.Utils.VMath;
 using VVVV.PluginInterfaces.V1;
 
 //the vvvv node namespace
@@ -45,12 +46,14 @@ namespace VVVV.Nodes
 {
 	
 	//class definition
-	public class SphericalSpread: IPlugin
+	public class SphericalSpread: IPlugin, IDisposable
     {	          	
     	#region field declaration
     	
 		//the host (mandatory)
-    	private IPluginHost FHost; 
+    	private IPluginHost FHost;
+    	// Track whether Dispose has been called.
+   		private bool FDisposed = false;
     	
     	//input pin declaration
     	private IValueIn FInput;
@@ -71,11 +74,61 @@ namespace VVVV.Nodes
 			//nothing to declare for this node
 		}
         
+        // Implementing IDisposable's Dispose method.
+        // Do not make this method virtual.
+        // A derived class should not be able to override this method.
+        public void Dispose()
+        {
+        	Dispose(true);
+        	// Take yourself off the Finalization queue
+        	// to prevent finalization code for this object
+        	// from executing a second time.
+        	GC.SuppressFinalize(this);
+        }
+        
+        // Dispose(bool disposing) executes in two distinct scenarios.
+        // If disposing equals true, the method has been called directly
+        // or indirectly by a user's code. Managed and unmanaged resources
+        // can be disposed.
+        // If disposing equals false, the method has been called by the
+        // runtime from inside the finalizer and you should not reference
+        // other objects. Only unmanaged resources can be disposed.
+        protected virtual void Dispose(bool disposing)
+        {
+        	// Check to see if Dispose has already been called.
+        	if(!FDisposed)
+        	{
+        		if(disposing)
+        		{
+        			// Dispose managed resources.
+        		}
+        		// Release unmanaged resources. If disposing is false,
+        		// only the following code is executed.
+	        	
+        		FHost.Log(TLogType.Debug, "SphericalSpread is being deleted");
+        		
+        		// Note that this is not thread safe.
+        		// Another thread could start disposing the object
+        		// after the managed resources are disposed,
+        		// but before the disposed flag is set to true.
+        		// If thread safety is necessary, it must be
+        		// implemented by the client.
+        	}
+        	FDisposed = true;
+        }
+
+        // Use C# destructor syntax for finalization code.
+        // This destructor will run only if the Dispose method
+        // does not get called.
+        // It gives your base class the opportunity to finalize.
+        // Do not provide destructors in types derived from this class.
         ~SphericalSpread()
-	    {
-	    	//the nodes destructor
-        	//nothing to destruct
-	    }
+        {
+        	// Do not re-create Dispose clean-up code here.
+        	// Calling Dispose(false) is optimal in terms of
+        	// readability and maintainability.
+        	Dispose(false);
+        }
 
         #endregion constructor/destructor
         
@@ -93,7 +146,7 @@ namespace VVVV.Nodes
 	        	Info.Version = "";
 	        	Info.Help = "Evenly distributes points on a sphere";
 	        	Info.Bugs = "";
-	        	Info.Credits = "";
+	        	Info.Credits = "http://cgafaq.info/wiki/Evenly_distributed_points_on_sphere";
 	        	Info.Warnings = "";
 	        	
 	        	//leave below as is
@@ -163,8 +216,9 @@ namespace VVVV.Nodes
         		FFactor.PinIsChanged ||
         		FSpreadCount.PinIsChanged
         		)
-        	{		
-        		double currentXSlice, currentYSlice, currentZSlice, xPos, yPos, zPos;
+        	{	
+        		List<Vector3D> outVec = new List<Vector3D>();
+        		double curXSlice, curYSlice, curZSlice, xPos, yPos, zPos;
         		double tmpSize, currentRadius, currentFactor;
         		int currentBinSize = 0, myIncrement = 0;
         		
@@ -178,7 +232,7 @@ namespace VVVV.Nodes
         		//loop for maximal spread count
         		for (int i=0; i<SpreadMax; i++)
         		{
-        			FInput.GetValue3D(i, out currentXSlice, out currentYSlice, out currentZSlice);
+        			FInput.GetValue3D(i, out curXSlice, out curYSlice, out curZSlice);
         			FRadius.GetValue(i, out currentRadius);
         			FFactor.GetValue(i, out currentFactor);
         			FSpreadCount.GetValue(i, out tmpSize);
@@ -200,10 +254,14 @@ namespace VVVV.Nodes
         				l = l + dlong;							
 						
         				//set output
-        				FOutput.SliceCount= j + myIncrement + 1;
-        				FOutput.SetValue3D(j+myIncrement, (xPos+currentXSlice), (yPos+currentYSlice), (zPos+currentZSlice));
+        				outVec.Add(new Vector3D(xPos+curXSlice, yPos+curYSlice, zPos+curZSlice));
         			}
         			myIncrement += currentBinSize;
+        		}
+        		FOutput.SliceCount  = outVec.Count;
+        		for (int i = 0; i<outVec.Count; i++)
+        		{
+        			FOutput.SetValue3D(i, outVec[i].x, outVec[i].y, outVec[i].z);
         		}
         	}
         }
