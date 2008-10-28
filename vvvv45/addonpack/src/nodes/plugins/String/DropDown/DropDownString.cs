@@ -36,7 +36,7 @@ namespace VVVV.Nodes
 {
 	
 	//class definition, inheriting from UserControl for the GUI stuff
-	public class DropDownString: UserControl, IPlugin
+	public class DropDownString: UserControl, IPlugin, IDisposable
     {
     	#region field declaration
     	
