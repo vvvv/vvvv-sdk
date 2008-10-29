@@ -21,6 +21,8 @@ namespace BassSound.BroadCast
                 Info.Bugs = "";
                 Info.Credits = "";
                 Info.Warnings = "";
+                Info.Author = "vux";
+                Info.Tags = "Audio,Sound,Broadcast";
 
                 //leave below as is
                 System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);

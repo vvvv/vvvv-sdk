@@ -20,10 +20,12 @@ namespace BassSound.Streams
                 Info.Name = "FileStream";
                 Info.Category = "Bass";
                 Info.Version = "";
-                Info.Help = "Bass API WDM File Stream Node";
+                Info.Help = "Bass API File Stream Node";
                 Info.Bugs = "";
                 Info.Credits = "";
                 Info.Warnings = "";
+                Info.Author = "vux";
+                Info.Tags = "Audio,Sound";
 
                 //leave below as is
                 System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
