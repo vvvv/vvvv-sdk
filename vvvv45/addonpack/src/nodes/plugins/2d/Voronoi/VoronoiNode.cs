@@ -21,7 +21,8 @@ namespace vvvv.Nodes
                 Info.Bugs = "";
                 Info.Credits = "BenDi http://www.codeproject.com/KB/recipes/fortunevoronoi.aspx";
                 Info.Warnings = "";
-
+                Info.Author = "vux";
+                Info.Tags = "Space,Subdivision";
                 //leave below as is
                 System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
                 System.Diagnostics.StackFrame sf = st.GetFrame(0);
