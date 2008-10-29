@@ -20,6 +20,8 @@ namespace vvvv.Nodes
                 Info.Bugs = "";
                 Info.Credits = "";
                 Info.Warnings = "";
+                Info.Author = "vux";
+                Info.Tags = "recognition,sapi";
 
                 //leave below as is
                 System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
