@@ -21,6 +21,8 @@ namespace vvvv.Nodes
                 Info.Bugs = "";
                 Info.Credits = "John E. Lloyd : http://www.cs.ubc.ca/~lloyd/index.html";
                 Info.Warnings = "";
+                Info.Author = "vux";
+                Info.Tags = "Geometry,Triangle";
 
                 //leave below as is
                 System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
