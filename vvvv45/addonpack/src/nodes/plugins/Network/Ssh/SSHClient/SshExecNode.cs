@@ -21,6 +21,8 @@ namespace SSHClient
                 Info.Bugs = "";
                 Info.Credits = "SharpSSH: http://www.tamirgal.com/home/dev.aspx?Item=SharpSsh";
                 Info.Warnings = "";
+                Info.Author = "vux";
+                Info.Tags = "Shell,Execution,Remote";
 
                 //leave below as is
                 System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
