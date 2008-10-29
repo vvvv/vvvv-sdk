@@ -129,32 +129,51 @@ namespace VVVV.Nodes
         #region node name and infos
        
         //provide node infos 
+        private static IPluginInfo FPluginInfo;
         public static IPluginInfo PluginInfo
 	    {
 	        get 
 	        {
-	        	//fill out nodes info
-	        	//see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
-	        	IPluginInfo Info = new PluginInfo();
-	        	Info.Name = "Reader";							//use CamelCaps and no spaces
-	        	Info.Category = "File";						//try to use an existing one
-	        	Info.Version = "Advanced";						//versions are optional. leave blank if not needed
-	        	Info.Help = "Returns specified parts of the content of files";
-	        	Info.Bugs = "";
-	        	Info.Credits = "";								//give credits to thirdparty code used
-	        	Info.Warnings = "";
-	        	
-	        	//leave below as is
-	        	System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
-   				System.Diagnostics.StackFrame sf = st.GetFrame(0);
-   				System.Reflection.MethodBase method = sf.GetMethod();
-   				Info.Namespace = method.DeclaringType.Namespace;
-   				Info.Class = method.DeclaringType.Name;
-   				return Info;
-   				//leave above as is
+	        	if (FPluginInfo == null)
+				{
+					//fill out nodes info
+					//see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
+					FPluginInfo = new PluginInfo();
+					
+					//the nodes main name: use CamelCaps and no spaces
+					FPluginInfo.Name = "Reader";
+					//the nodes category: try to use an existing one
+					FPluginInfo.Category = "File";
+					//the nodes version: optional. leave blank if not
+					//needed to distinguish two nodes of the same name and category
+					FPluginInfo.Version = "Advanced";
+					
+					//the nodes author: your sign
+					FPluginInfo.Author = "woei";
+					//describe the nodes function
+					FPluginInfo.Help = "Returns specified parts of a file";
+					//specify a comma separated list of tags that describe the node
+					FPluginInfo.Tags = "";
+					
+					//give credits to thirdparty code used
+					FPluginInfo.Credits = "";
+					//any known problems?
+					FPluginInfo.Bugs = "";
+					//any known usage of the node that may cause troubles?
+					FPluginInfo.Warnings = "";
+					
+					//leave below as is
+					System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
+					System.Diagnostics.StackFrame sf = st.GetFrame(0);
+					System.Reflection.MethodBase method = sf.GetMethod();
+					FPluginInfo.Namespace = method.DeclaringType.Namespace;
+					FPluginInfo.Class = method.DeclaringType.Name;
+					//leave above as is
+				}
+				return FPluginInfo;
 	        }
 		}
-
+        
         public bool AutoEvaluate
         {
         	//return true if this node needs to calculate every frame even if nobody asks for its output
