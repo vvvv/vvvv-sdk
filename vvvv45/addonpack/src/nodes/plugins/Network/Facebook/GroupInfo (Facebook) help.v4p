@@ -1,0 +1,115 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Network\Facebook\trunk\GroupInfo (Facebook).v4p" componentmode="InAWindow">
+   <BOUNDS height="6270" left="3075" top="450" type="Window" width="8925">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="7" nodename=":PLUGINS:\FaceBookAPI.dll|vvvv.Nodes.FaceBookProfileNode">
+   <BOUNDS height="0" left="1770" top="1110" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="5055" top="1590" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1770" top="1110" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Application Key" visible="1">
+   </PIN>
+   <PIN pinname="Secret Key" visible="1">
+   </PIN>
+   <PIN pinname="Friends" visible="1">
+   </PIN>
+   <PIN pinname="Groups" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="6" nodename="Renderer (GDI)">
+   <BOUNDS height="0" left="915" top="4860" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="8475" top="1425" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="915" top="4860" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Text (GDI)">
+   <BOUNDS height="0" left="975" top="4245" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Text" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="16" visible="1" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Layers" srcnodeid="5" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="4" nodename=":PLUGINS:\FaceBookAPI.dll|vvvv.Nodes.GroupInfoNode">
+   <BOUNDS height="0" left="2835" top="1725" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="5925" top="5355" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2835" top="1725" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Groups" visible="1">
+   </PIN>
+   <PIN pinname="Names" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Groups" srcnodeid="7" srcpinname="Groups">
+   </LINK>
+   <NODE id="3" nodename="Count (String)">
+   <BOUNDS height="0" left="1605" top="2685" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="4" srcpinname="Names">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Text" srcnodeid="4" srcpinname="Names">
+   <LINKPOINT x="3105" y="3315">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="2" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="525" top="3315" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Spread Count" srcnodeid="3" srcpinname="Count">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Y" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3465" top="285" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4155" top="1965" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="270" left="3465" top="285" type="Box" width="2490">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Secret Key|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="0" left="285" top="330" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8070" top="3150" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="285" top="330" type="Box" width="3000">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Application Key|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output String" dstnodeid="7" dstpinname="Application Key">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output String" dstnodeid="7" dstpinname="Secret Key">
+   </LINK>
+   </PATCH>
