@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
-   <PATCH nodename="X:\sf plugins\Value\TweenerShaper\Tweener (Value) help.v4p">
-   <BOUNDS height="12615" left="-27945" top="465" type="Window" width="12375">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta19.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\.Build\Tweener (Value) help.v4p">
+   <BOUNDS height="12615" left="2460" top="120" type="Window" width="12375">
    </BOUNDS>
    <NODE hiddenwhenlocked="1" id="26" nodename="LinearSpread (Spreads)">
    <BOUNDS height="0" left="2025" top="2055" type="Node" width="0">
@@ -21,11 +21,11 @@
    <NODE hiddenwhenlocked="1" id="25" nodename="Add (Value)">
    <BOUNDS height="0" left="2595" top="5640" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input 1" slicecount="1" visible="1" values="-0.5">
+   <PIN pinname="Input 1" visible="1">
    </PIN>
    </NODE>
    <NODE hiddenwhenlocked="1" id="24" nodename="Add (Value)">
@@ -91,7 +91,7 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="10">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="8">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Transition Type|">
    </PIN>
@@ -348,15 +348,13 @@
    </NODE>
    <LINK dstnodeid="13" dstpinname="Input 2" srcnodeid="12" srcpinname="Output">
    </LINK>
-   <NODE nodename="bin\TweenerShaper.dll" componentmode="InAWindow" id="27">
-   <BOUNDS type="Node" left="3540" top="4425" width="3105" height="270">
+   <NODE nodename=":PLUGINS:\TweenerShaper.dll|VVVV.Nodes.TweenerShaper" componentmode="Hidden" id="27">
+   <BOUNDS type="Node" left="4770" top="4380" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="3540" top="4425">
+   <BOUNDS type="Window" left="7215" top="4830" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Value Input" visible="1">
-   </PIN>
-   <PIN pinname="Value Output" visible="1">
-   </PIN>
+   <BOUNDS type="Box" left="4770" top="4380" width="0" height="0">
+   </BOUNDS>
    <PIN pinname="Transition Type" visible="1">
    </PIN>
    <PIN pinname="Transition Mode" visible="1">
@@ -365,11 +363,11 @@
    </PIN>
    <PIN pinname="Used Transition TYPE" visible="1">
    </PIN>
+   <PIN pinname="Value Output" visible="1">
+   </PIN>
+   <PIN pinname="Value Input" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="13" srcpinname="Output" dstnodeid="27" dstpinname="Value Input">
-   </LINK>
-   <LINK srcnodeid="27" srcpinname="Value Output" dstnodeid="25" dstpinname="Input 2">
-   </LINK>
    <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="27" dstpinname="Transition Type">
    </LINK>
    <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="27" dstpinname="Transition Mode">
@@ -377,5 +375,9 @@
    <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="27" dstpinname="Inverse">
    </LINK>
    <LINK srcnodeid="27" srcpinname="Used Transition TYPE" dstnodeid="15" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="Value Output" dstnodeid="25" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Output" dstnodeid="27" dstpinname="Value Input">
    </LINK>
    </PATCH>
