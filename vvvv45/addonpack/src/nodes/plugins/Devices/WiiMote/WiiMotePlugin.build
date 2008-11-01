@@ -9,4 +9,9 @@
   <include buildfile="${root.dir}/nant-plugins.xml" />
   <property name="lib.name" value="WiiMotePlugin.dll" />
 
+  <fileset id="project.sources" failonempty="true">
+    <include name="**/*.cs" />
+    <exclude name="WiimoteLib/Properties/AssemblyInfo.cs" />
+  </fileset>
+
 </project>
