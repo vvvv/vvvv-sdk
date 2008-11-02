@@ -14,6 +14,9 @@ namespace VVVV.Nodes.Timeliner
 	//common base to TLPin and TLRulerPin
 	public class TLBasePin : UserControl
 	{
+		// Track whether Dispose has been called.
+   		private bool FDisposed = false;
+		
 		private bool FMouseDown = false;
 		protected int FMinimalHeight = 40;
 		protected XmlDocument FSettings;
@@ -61,6 +64,24 @@ namespace VVVV.Nodes.Timeliner
         	}
         	InitializeHeight();
 		}
+		
+		protected override void Dispose(bool disposing)
+        {
+        	// Check to see if Dispose has already been called.
+        	if(!FDisposed)
+        	{
+        		if(disposing)
+        		{
+        			// Dispose managed resources.
+        			FSettings = null;
+
+        		}
+        		// Release unmanaged resources. If disposing is false,
+        		// only the following code is executed.
+				//..
+        	}
+        	FDisposed = true;
+        }
 		
 		protected virtual void InitializeHeight()
 		{
