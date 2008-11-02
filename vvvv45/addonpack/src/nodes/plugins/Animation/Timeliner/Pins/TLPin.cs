@@ -199,6 +199,9 @@ namespace VVVV.Nodes.Timeliner
 		
 		public override void UpdateKeyFrameAreas()
 		{
+			if (FOutputSlices == null)//needed for mono 1.91 (as OnLocationChanged is still called after pin is deleted?!)  
+				return;
+			
 			if (FOutputSlices.Count == 0) 
 				return;
 			
