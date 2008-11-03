@@ -60,13 +60,13 @@ namespace VVVV.Nodes
        
     	#region constructor/destructor
     	
-        public PluginTemplate()
+        public CutSpheresPlugin()
         {
 			//the nodes constructor
 			//nothing to declare for this node
 		}
         
-        ~PluginTemplate()
+        ~CutSpheresPlugin()
 	    {
 	    	//the nodes destructor
         	//nothing to destruct
