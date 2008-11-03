@@ -214,7 +214,8 @@ namespace VVVV.Nodes
             FHost.CreateValueOutput("Buttons", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputButtons);
             FPinOutputButtons.SetSubType(0, 1, 1, 0, false, true, true);
 
-            Connect();
+            if (Tablet != null)
+	            Connect();
             Configurate(FPinConfigDebug);
         }
 
@@ -301,14 +302,13 @@ namespace VVVV.Nodes
             try
             {
                 Tablet = new Tablet();
+                Tablet.PacketArrival += new Tablet.PacketArrivalEventHandler(Tablet_PacketArrival);
+	            Tablet.ProximityChange += new Tablet.ProximityChangeEventHandler(Tablet_ProximityChange);
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                FHost.Log(TLogType.Error, e.Message);
             }
-            Tablet.PacketArrival += new Tablet.PacketArrivalEventHandler(Tablet_PacketArrival);
-
-            Tablet.ProximityChange += new Tablet.ProximityChangeEventHandler(Tablet_ProximityChange);
         }
 
         void Tablet_ProximityChange(ref bool InContext, ref bool IsPhysical, ref IntPtr ContextHandle, ref string ContextName)
@@ -363,6 +363,9 @@ namespace VVVV.Nodes
         //all data handling should be in here
         public void Evaluate(int SpreadMax)
         {
+        	if (Tablet == null)
+        		return;
+        	
             double pinInputEnable, pinInputDigitizing;
             FPinInputEnable.GetValue(0, out pinInputEnable);
             FPinInputDigitizing.GetValue(0, out pinInputDigitizing);
