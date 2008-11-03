@@ -166,7 +166,7 @@ namespace VVVV.Nodes
 		{
 			FHost = Host;
 
-			FHost.CreateValueInput("WiimoteID", 1, null, TSliceMode.Dynamic,TPinVisibility.OnlyInspector,  out FPinInputID);
+			FHost.CreateValueInput("Wiimote ID", 1, null, TSliceMode.Dynamic,TPinVisibility.OnlyInspector,  out FPinInputID);
 			FPinInputID.SetSubType(-1, int.MaxValue, 1, -1, false, false, true);
 
 			FHost.CreateValueInput("Enable", 1, null, TSliceMode.Single,TPinVisibility.True,  out FPinInputEnable);
@@ -178,16 +178,16 @@ namespace VVVV.Nodes
 			FHost.CreateValueInput("Rumble", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinInputRumble);
 			FPinInputRumble.SetSubType(0, 1, 1, 0, false, true, false);
 
-			FHost.CreateValueInput("InfraredMode", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinInputMode);
+			FHost.CreateValueInput("Infrared Mode", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinInputMode);
 			FPinInputMode.SetSubType(0, 3, 1, FIRMode, false, false, true);
 
-			FHost.CreateValueFastInput("CalibrationZeroG", 3, new string[3]{"X", "Y", "Z"}, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FPinInputCalibrationZeroG);
+			FHost.CreateValueFastInput("Calibration ZeroG", 3, new string[3]{"X", "Y", "Z"}, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FPinInputCalibrationZeroG);
 			FPinInputCalibrationZeroG.SetSubType3D(0, 0xFF, 1, 126, 126, 131, false, false, true);
 
-			FHost.CreateValueFastInput("CalibrationOneG", 3, new string[3]{"X", "Y", "Z"}, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FPinInputCalibrationOneG);
+			FHost.CreateValueFastInput("Calibration OneG", 3, new string[3]{"X", "Y", "Z"}, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FPinInputCalibrationOneG);
 			FPinInputCalibrationOneG.SetSubType3D(0, 0xFF, 1, 151, 151, 151, false, false, true);
 
-			FHost.CreateValueInput("CalibrateNow!", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPinInputCalibrate);
+			FHost.CreateValueInput("Calibrate", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPinInputCalibrate);
 			FPinInputCalibrate.SetSubType(0, 1, 1, 0, true, false, false);
 			
 //			Enumeration would be better:
@@ -204,7 +204,7 @@ namespace VVVV.Nodes
 			FHost.CreateStringOutput("Working", TSliceMode.Single, TPinVisibility.True, out FPinOutputWorking);
 			FPinOutputWorking.SetSubType("Initializing", false);
 
-			FHost.CreateStringOutput("ExtensionFound", TSliceMode.Single, TPinVisibility.True, out FPinOutputExtensionFound);
+			FHost.CreateStringOutput("Extension Found", TSliceMode.Single, TPinVisibility.True, out FPinOutputExtensionFound);
 			FPinOutputExtensionFound.SetSubType("none", false);
 
 			FHost.CreateValueOutput("Battery", 1, null, TSliceMode.Single, TPinVisibility.True, out FPinOutputBattery);
