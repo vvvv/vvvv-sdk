@@ -110,7 +110,7 @@ namespace BassSound.Streams
             this.FHost.CreateValueOutput("Handle Out", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutHandle);
             this.FPinOutHandle.SetSubType(double.MinValue, double.MaxValue, 0, 0, false, false, true);
             
-            this.FHost.CreateValueOutput("CurrentPosition", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutCurrentPosition);
+            this.FHost.CreateValueOutput("Current Position", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutCurrentPosition);
             this.FPinOutCurrentPosition.SetSubType(0, double.MaxValue, 0, 0.0, false, false, false);
 
             this.FHost.CreateValueOutput("Buffer Position", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutBufferPosition);

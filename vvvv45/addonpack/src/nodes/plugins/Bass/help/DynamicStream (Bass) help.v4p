@@ -15,7 +15,7 @@
    </PIN>
    <PIN pinname="Handle" visible="1">
    </PIN>
-   <PIN pinname="Play" slicecount="1" values="1">
+   <PIN pinname="Play" visible="1">
    </PIN>
    <PIN pinname="Reset" visible="1">
    </PIN>
@@ -36,6 +36,8 @@
    <PIN pinname="Restore" visible="1">
    </PIN>
    <PIN pinname="Buffer End Position" slicecount="1" values="200">
+   </PIN>
+   <PIN pinname="Pitch" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
@@ -185,5 +187,33 @@
    <LINK dstnodeid="7" dstpinname="Restore" srcnodeid="0" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="7" dstpinname="Buffer" srcnodeid="2" srcpinname="Output Y">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="720" top="2760" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5895" top="10980" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="720" top="2760" type="Box" width="930">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Play">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Play">
    </LINK>
    </PATCH>

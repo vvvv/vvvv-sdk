@@ -44,7 +44,7 @@ namespace BassSound.BroadCast
             this.FHost.CreateValueInput("Handle", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInHandle);
             this.FPinInHandle.SetSubType(double.MinValue, double.MaxValue, 1, 0, false, false, true);
 
-            this.FHost.CreateStringInput("Server or IP", TSliceMode.Single, TPinVisibility.True, out this.FPinInServer);
+            this.FHost.CreateStringInput("Host", TSliceMode.Single, TPinVisibility.True, out this.FPinInServer);
             this.FPinInServer.SetSubType("localhost", false);
 
             this.FHost.CreateValueFastInput("Port", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPort);
