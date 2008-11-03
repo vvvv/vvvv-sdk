@@ -219,7 +219,7 @@ namespace VVVV.Nodes
 			FHost.CreateValueOutput("System", 3, new string[3]{"Plus", "Minus", "Home"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputControls);
 			FPinOutputControls.SetSubType3D(0, 1, 1, 0, 0, 0, false, true, false);
 			
-			FHost.CreateValueOutput("Accelleration", 3, new string[3]{"X", "Y", "Z"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputAccelleration);
+			FHost.CreateValueOutput("Acceleration", 3, new string[3]{"X", "Y", "Z"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputAccelleration);
 			FPinOutputAccelleration.SetSubType3D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, false, false, false);
 			
 			FHost.CreateValueOutput("Angle", 2, new string[2]{"Pitch", "Roll"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputTilt);
