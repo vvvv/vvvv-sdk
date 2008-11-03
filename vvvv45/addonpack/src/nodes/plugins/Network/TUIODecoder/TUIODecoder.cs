@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using VVVV.PluginInterfaces.V1;
-using TUIO;
 using System.Collections;
+
+using VVVV.PluginInterfaces.V1;
+
 using TUIO.NET;
 
 namespace TUIODecoder
