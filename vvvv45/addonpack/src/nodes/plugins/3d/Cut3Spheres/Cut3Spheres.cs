@@ -36,7 +36,7 @@ namespace VVVV.Nodes
 {
 	
 	//class definition
-	public class PluginTemplate: IPlugin
+	public class CutSpheresPlugin: IPlugin
     {	          	
     	#region field declaration
     	
