@@ -222,8 +222,8 @@ namespace VVVV.Nodes
 			FHost.CreateValueOutput("Accelleration", 3, new string[3]{"X", "Y", "Z"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputAccelleration);
 			FPinOutputAccelleration.SetSubType3D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, false, false, false);
 			
-			FHost.CreateValueOutput("Position", 2, new string[2]{"Pitch", "Roll"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputTilt);
-			FPinOutputTilt.SetSubType3D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, false, false, false);
+			FHost.CreateValueOutput("Angle", 2, new string[2]{"Pitch", "Roll"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputTilt);
+			FPinOutputTilt.SetSubType2D(double.MinValue, double.MaxValue, 0.0001, 0, 0, false, false, false);
 
 			FHost.CreateValueOutput("Infrared", 4, new string[4]{"ID", "X", "Y", "Size"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputInfraredBlobs);
 			FPinOutputInfraredBlobs.SetSubType4D(0, 1023, 1, 0, 0, 0, 0, false, false, true);
@@ -343,7 +343,7 @@ namespace VVVV.Nodes
 				FInvalidate = true;
 			}
 			
-			if (FPinInputMode.PinIsChanged || FPinInputEnable.PinIsChanged) {
+			if (FWorking && (FPinInputMode.PinIsChanged || FPinInputEnable.PinIsChanged)) {
 				double mode;
 				FPinInputMode.GetValue(0, out mode);
 				FIRMode  = (int)Math.Ceiling(mode);
@@ -615,8 +615,16 @@ namespace VVVV.Nodes
 				FWorking = false;
 				FMessage = "Disabled";
 				
-				FRemote.SetRumble(false);
-				FRemote.Disconnect();
+				try
+				{
+					FRemote.SetRumble(false);
+					FRemote.Disconnect();
+				}
+				catch (Exception x)
+				{
+					FMessage = x.Message;
+					FWorking = false;
+				}
 			}
 			
 			
