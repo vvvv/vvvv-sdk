@@ -154,45 +154,45 @@ namespace TUIODecoder
             FHost = Host;
 
             //create inputs
-            FHost.CreateStringInput("TUIO packet string input (can also be a string with concatenated TUIO packets)", TSliceMode.Single, TPinVisibility.True, out FTUIOPacketInput);
+            FHost.CreateStringInput("TUIO Packet String", TSliceMode.Single, TPinVisibility.True, out FTUIOPacketInput);
             FTUIOPacketInput.SetSubType("", false);
 
             //create outputs	    	
-            FHost.CreateValueOutput("SessionID", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSessionIDOut);
+            FHost.CreateValueOutput("Session ID", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSessionIDOut);
             FSessionIDOut.SetSubType(0, int.MaxValue, 1, 0, false, false, true);
 
-            FHost.CreateValueOutput("ClassID", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FClassIDOut);
+            FHost.CreateValueOutput("Class ID", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FClassIDOut);
             FClassIDOut.SetSubType(0, int.MaxValue, 1, 0, false, false, true);
 
-            FHost.CreateValueOutput("UniqueID", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FUniqueIDOut);
+            FHost.CreateValueOutput("Unique ID", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FUniqueIDOut);
             FUniqueIDOut.SetSubType(0, int.MaxValue, 1, 0, false, false, true);
             
 
-            FHost.CreateValueOutput("PosX", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPosXOut);
+            FHost.CreateValueOutput("Position X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPosXOut);
             FPosXOut.SetSubType(0, 1, 0.0001, 0, false, false, false);
 
-            FHost.CreateValueOutput("PosY", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPosYOut);
+            FHost.CreateValueOutput("Position Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPosYOut);
             FPosYOut.SetSubType(0, 1, 0.0001, 0, false, false, false);
 
             FHost.CreateValueOutput("Angle", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FAngleOut);
             FAngleOut.SetSubType(0, Math.PI*2, 0.0001, 0, false, false, false);
 
-            FHost.CreateValueOutput("MovementX", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMovementXOut);
+            FHost.CreateValueOutput("Movement X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMovementXOut);
             FMovementXOut.SetSubType(float.MinValue, float.MaxValue, 0.0001, 0, false, false, false);
 
-            FHost.CreateValueOutput("MovementY", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMovementYOut);
+            FHost.CreateValueOutput("Movement Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMovementYOut);
             FMovementYOut.SetSubType(float.MinValue, float.MaxValue, 0.0001, 0, false, false, false);
 
-            FHost.CreateValueOutput("MotionAcceleration", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMotionAccelerationOut);
+            FHost.CreateValueOutput("Motion Acceleration", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMotionAccelerationOut);
             FMotionAccelerationOut.SetSubType(float.MinValue, float.MaxValue, 0.0001, 0, false, false, false);
 
-            FHost.CreateValueOutput("RotationAcceleration", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FRotationAccelerationOut);
+            FHost.CreateValueOutput("Rotation Acceleration", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FRotationAccelerationOut);
             FRotationAccelerationOut.SetSubType(float.MinValue, float.MaxValue, 0.0001, 0, false, false, false);
 
-            FHost.CreateValueOutput("MotionSpeed", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMotionSpeedOut);
+            FHost.CreateValueOutput("Motion Speed", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMotionSpeedOut);
             FMotionSpeedOut.SetSubType(float.MinValue, float.MaxValue, 0.0001, 0, false, false, false);
 
-            FHost.CreateValueOutput("RotationSpeed", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FRotationSpeedOut);
+            FHost.CreateValueOutput("Rotation Speed", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FRotationSpeedOut);
             FRotationSpeedOut.SetSubType(float.MinValue, float.MaxValue, 0.0001, 0, false, false, false);
 
         }
