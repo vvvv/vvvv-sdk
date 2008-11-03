@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta19.dtd" >
    <PATCH nodename="D:\repositories\vvvv\plugins\c#\Network\Ssh\trunk\Ssh (Network) help.v4p">
    <BOUNDS height="9855" left="1980" top="1020" type="Window" width="12435">
    </BOUNDS>
@@ -24,6 +24,8 @@
    <PIN pinname="Result" visible="1">
    </PIN>
    <PIN pinname="Keep Conntection" visible="1">
+   </PIN>
+   <PIN pinname="Host" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
@@ -61,11 +63,9 @@
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|IP or Machine name|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Host">
    </PIN>
    </NODE>
-   <LINK dstnodeid="8" dstpinname="Machine (IP or name)" srcnodeid="6" srcpinname="Output String">
-   </LINK>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
    <BOUNDS height="0" left="1905" top="1935" type="Node" width="0">
    </BOUNDS>
@@ -162,12 +162,12 @@
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="8" dstpinname="Keep Conntection" srcnodeid="0" srcpinname="Y Output Value">
-   </LINK>
-   <LINK srcnodeid="3" srcpinname="Output String" dstnodeid="8" dstpinname="Command">
+   <LINK dstnodeid="8" dstpinname="Command" srcnodeid="3" srcpinname="Output String">
    <LINKPOINT x="4185" y="1680">
    </LINKPOINT>
    <LINKPOINT x="4185" y="2430">
    </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Output String" dstnodeid="8" dstpinname="Host">
    </LINK>
    </PATCH>

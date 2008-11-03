@@ -56,13 +56,13 @@ namespace SSHClient
         {
             this.FHost = Host;
 
-            this.FHost.CreateStringInput("Machine (IP or name)", TSliceMode.Single, TPinVisibility.True, out this.FPinInHost);
+            this.FHost.CreateStringInput("Host", TSliceMode.Single, TPinVisibility.True, out this.FPinInHost);
 
             this.FHost.CreateStringInput("User Name", TSliceMode.Single, TPinVisibility.True, out this.FPinInUsername);
             this.FHost.CreateStringInput("Password", TSliceMode.Single, TPinVisibility.True, out this.FPinInPassword);
             this.FHost.CreateStringInput("Command", TSliceMode.Single, TPinVisibility.True, out this.FPinInCommand);
 
-            this.FHost.CreateValueInput("Keep Conntection", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInKeepConnected);
+            this.FHost.CreateValueInput("Keep Connection", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInKeepConnected);
             this.FPinInKeepConnected.SetSubType(0, 1, 1, 0, false, true, true);
 
             this.FHost.CreateValueInput("Do Execute", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDoExecute);
