@@ -46,7 +46,7 @@ namespace VVVV.Nodes
 {
 
     //class definition
-    public class TabletNode : /*UserControl,*/ IPlugin, IDisposable
+    public class TabletNode :  IPlugin, IDisposable
     {
         #region field declaration
 
@@ -168,15 +168,12 @@ namespace VVVV.Nodes
                 //see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "Tablet";							//use CamelCaps and no spaces
-                Info.Category = "Devices Wintab";						//try to use an existing one
-                Info.Version = "";						//versions are optional. leave blank if not needed
+                Info.Category = "Devices";						//try to use an existing one
+                Info.Version = "Wintab";						//versions are optional. leave blank if not needed
                 Info.Help = "Grabs input from a tablet via the Wintab API";
                 Info.Bugs = "";
                 Info.Credits = "Based on VBTablet.NET alpha";								//give credits to thirdparty code used
                 Info.Warnings = "";
-                Info.InitialBoxSize = new Size(200, 100);		//defines initial size of node in box-mode
-                Info.InitialWindowSize = new Size(400, 300);	//defines initial size of node in window-mode
-                Info.InitialComponentMode = TComponentMode.Hidden;	//defines initial component mode
 
                 //leave below as is
                 System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
@@ -380,7 +377,6 @@ namespace VVVV.Nodes
 
         void Connect()
         {
-
             if (Tablet.Connected && (Tablet.GetCtxHandleByName(ref ctxName) != IntPtr.Zero))
                 return;
             //Tablet.hWnd = Handle;
