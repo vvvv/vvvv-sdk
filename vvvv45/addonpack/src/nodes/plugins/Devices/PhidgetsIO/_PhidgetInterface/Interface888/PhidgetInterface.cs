@@ -107,8 +107,7 @@ namespace VVVV.Nodes
         		// Release unmanaged resources. If disposing is false,
         		// only the following code is executed.
 	        	
-        		FHost.Log(TLogType.Debug, "PluginTemplate is being deleted");
-                m_IKitData.Dispose();
+        		FHost.Log(TLogType.Debug, "IO Phidget InterfaceKit 888 is being deleted");
                 m_IKitData = null;
          		
         		// Note that this is not thread safe.
@@ -138,31 +137,50 @@ namespace VVVV.Nodes
         #region node name and infos
        
         //provide node infos 
+        private static IPluginInfo FPluginInfo;
         public static IPluginInfo PluginInfo
-	    {
-	        get 
-	        {
-	        	//fill out nodes info
-	        	//see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
-	        	IPluginInfo Info = new PluginInfo();
-	        	Info.Name = "IO";							//use CamelCaps and no spaces
-	        	Info.Category = "Phidgets";						//try to use an existing one
-	        	Info.Version = "InterfaceKit";						//versions are optional. leave blank if not needed
-	        	Info.Help = "";
-	        	Info.Bugs = "";
-                Info.Credits = "http://www.phidgets.com/";								//give credits to thirdparty code used
-	        	Info.Warnings = "";
-	        	
-	        	//leave below as is
-	        	System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
-   				System.Diagnostics.StackFrame sf = st.GetFrame(0);
-   				System.Reflection.MethodBase method = sf.GetMethod();
-   				Info.Namespace = method.DeclaringType.Namespace;
-   				Info.Class = method.DeclaringType.Name;
-   				return Info;
-   				//leave above as is
-	        }
-		}
+        {
+            get
+            {
+                if (FPluginInfo == null)
+                {
+                    //fill out nodes info
+                    //see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
+                    FPluginInfo = new PluginInfo();
+
+                    //the nodes main name: use CamelCaps and no spaces
+                    FPluginInfo.Name = "IO";
+                    //the nodes category: try to use an existing one
+                    FPluginInfo.Category = "Devices";
+                    //the nodes version: optional. leave blank if not
+                    //needed to distinguish two nodes of the same name and category
+                    FPluginInfo.Version = "Phidget InterfaceKit 888";
+
+                    //the nodes author: your sign
+                    FPluginInfo.Author = "phlegma";
+                    //describe the nodes function
+                    FPluginInfo.Help = "Offers a connection to the Phidget InterfaceKit 8/8/8";
+                    //specify a comma separated list of tags that describe the node
+                    FPluginInfo.Tags = "Phidget, USB-Interface, Hardware, Sensors, A/D";
+
+                    //give credits to thirdparty code used
+                    FPluginInfo.Credits = "http://www.phidget.com";
+                    //any known problems?
+                    FPluginInfo.Bugs = "";
+                    //any known usage of the node that may cause troubles?
+                    FPluginInfo.Warnings = "";
+
+                    //leave below as is
+                    System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
+                    System.Diagnostics.StackFrame sf = st.GetFrame(0);
+                    System.Reflection.MethodBase method = sf.GetMethod();
+                    FPluginInfo.Namespace = method.DeclaringType.Namespace;
+                    FPluginInfo.Class = method.DeclaringType.Name;
+                    //leave above as is
+                }
+                return FPluginInfo;
+            }
+        }
 
         public bool AutoEvaluate
         {
