@@ -46,12 +46,14 @@ namespace VVVV.Nodes
 {
 
     //class definition
-    public class TabletNode : /*UserControl,*/ IPlugin
+    public class TabletNode : /*UserControl,*/ IPlugin, IDisposable
     {
         #region field declaration
 
         //the host (mandatory)
         private IPluginHost FHost;
+        // Track whether Dispose has been called.
+   		private bool FDisposed = false;
 
         //input pin declaration
         private IValueIn FPinInputEnable;
@@ -107,10 +109,50 @@ namespace VVVV.Nodes
 
         }
 
+        // Use C# destructor syntax for finalization code.
+        // This destructor will run only if the Dispose method
+        // does not get called.
+        // It gives your base class the opportunity to finalize.
+        // Do not provide destructors in types derived from this class.
         ~TabletNode()
         {
-            //the nodes destructor
-            Disconnect();
+        	// Do not re-create Dispose clean-up code here.
+        	// Calling Dispose(false) is optimal in terms of
+        	// readability and maintainability.
+        	Dispose(false);
+        }
+        
+        // Implementing IDisposable's Dispose method.
+        // Do not make this method virtual.
+        // A derived class should not be able to override this method.
+        public void Dispose()
+        {
+        	Dispose(true);
+        	// Take yourself off the Finalization queue
+        	// to prevent finalization code for this object
+        	// from executing a second time.
+        	GC.SuppressFinalize(this);
+        }
+        
+        protected virtual void Dispose(bool disposing)
+        {
+        	// Check to see if Dispose has already been called.
+        	if(!FDisposed)
+        	{
+        		if(disposing)
+        		{
+        			// Dispose managed resources.
+        			if (Tablet != null)
+        			{
+			     		Disconnect();
+			     		Tablet = null;
+        			}
+        		}
+        		// Release unmanaged resources. If disposing is false,
+        		// only the following code is executed.
+				//..
+        	}
+        	FDisposed = true;
         }
 
         #endregion constructor/destructor
@@ -307,7 +349,8 @@ namespace VVVV.Nodes
             }
             catch (Exception e)
             {
-                FHost.Log(TLogType.Error, e.Message);
+            	Tablet = null;
+            	MessageBox.Show(e.Message);
             }
         }
 
