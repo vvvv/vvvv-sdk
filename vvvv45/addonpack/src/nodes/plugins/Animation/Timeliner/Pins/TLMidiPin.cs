@@ -190,10 +190,15 @@ namespace VVVV.Nodes.Timeliner
 		
 		void SetMidiFile(string Filename)
 		{
-			FMidiScore = new TMidiScore();
-			FMidiScore.OnNotesParsed += NotesParsed;
-			FMidiScore.SetFilename(Filename);
-			FilenameLabel.Text = System.IO.Path.GetFileName(Filename);
+			if (System.IO.File.Exists(Filename))
+			{
+				FMidiScore = new TMidiScore();
+				FMidiScore.OnNotesParsed += NotesParsed;
+				FMidiScore.SetFilename(Filename);
+				FilenameLabel.Text = System.IO.Path.GetFileName(Filename);
+			}
+			else
+				FHost.Log(TLogType.Warning, " \"" + Filename + "\" does not exist!");
 		}
 		
 		public override void Configurate(IPluginConfig Input, bool FirstFrame)
@@ -209,7 +214,7 @@ namespace VVVV.Nodes.Timeliner
 		public override void Evaluate(double CurrentTime)
 		{
 			base.Evaluate(CurrentTime);
-				
+			
 			if (FMidiScore == null)
 				return;
 			
@@ -259,19 +264,22 @@ namespace VVVV.Nodes.Timeliner
 		
 		void TimeSignatureChange(double Value)
 		{
-			TTimeSignature ts = new TTimeSignature();
-			ts.Numerator = (byte) Numerator.Value;
-			ts.Denominator = (byte) Denominator.Value;
-			FMidiScore.TimeSignature = ts;
-			
-			FMidiScore.BPM = (int) BPM.Value;
-			
-			this.Refresh();
+			if (FMidiScore != null)
+			{
+				TTimeSignature ts = new TTimeSignature();
+				ts.Numerator = (byte) Numerator.Value;
+				ts.Denominator = (byte) Denominator.Value;
+				FMidiScore.TimeSignature = ts;
+				
+				FMidiScore.BPM = (int) BPM.Value;
+				
+				this.Refresh();
+			}
 		}
 		
 		void SaveButtonClick(object sender, EventArgs e)
 		{
-			//clear current score	
+			//clear current score
 			FMidiScore.Clear();
 			
 			//add metadata
