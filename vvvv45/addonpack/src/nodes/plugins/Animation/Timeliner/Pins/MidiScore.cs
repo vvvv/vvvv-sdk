@@ -57,7 +57,7 @@ namespace VVVV.Utils.VMidiScore
 			get{return FDivision;}
 		}
 		
-		private int FBPM;
+		private int FBPM = 120;
 		public int BPM
 		{
 			get{return FBPM;}
@@ -102,18 +102,6 @@ namespace VVVV.Utils.VMidiScore
 		{
 			get{return FBeatCount;}
 		}
-		private void UpdateTimeScaling()
-		{
-			int MUpWholeNote = FDivision * 4;
-			int MUpBeat = MUpWholeNote / FTimeSignature.Denominator;
-			int MUpBar = FTimeSignature.Numerator * MUpBeat;
-			FBarCount = Length / MUpBar;
-			FBeatCount = FBarCount * FTimeSignature.Numerator;
-			float duration = FBeatCount / FBPM * 60;
-			FSecondsPerBar = duration / FBarCount;
-			FSecondsPerBeat = FSecondsPerBar / (float) FTimeSignature.Numerator;
-			FSecondsPerMidiUnit = FSecondsPerBeat / (float) FDivision;
-		}
 		
 		private TTimeSignature FTimeSignature;
 		public TTimeSignature TimeSignature
@@ -149,6 +137,25 @@ namespace VVVV.Utils.VMidiScore
 		public TMidiScore()
 		{
 			FSequence.LoadCompleted += HandleLoadCompleted;
+			
+			FTimeSignature = new TTimeSignature();
+			FTimeSignature.Denominator = 4;
+			FTimeSignature.Numerator = 4;
+			FTimeSignature.MetronomePulse = 24;
+			FTimeSignature.NumberOf32nds = 8;
+		}
+		
+		private void UpdateTimeScaling()
+		{
+			int MUpWholeNote = FDivision * 4;
+			int MUpBeat = MUpWholeNote / FTimeSignature.Denominator;
+			int MUpBar = FTimeSignature.Numerator * MUpBeat;
+			FBarCount = Length / MUpBar;
+			FBeatCount = FBarCount * FTimeSignature.Numerator;
+			float duration = FBeatCount / (float)(FBPM) * 60;
+			FSecondsPerBar = duration / FBarCount;
+			FSecondsPerBeat = FSecondsPerBar / (float) FTimeSignature.Numerator;
+			FSecondsPerMidiUnit = FSecondsPerBeat / (float) FDivision;
 		}
 		
 		public void SetFilename(string Filename)
@@ -394,7 +401,6 @@ namespace VVVV.Utils.VMidiScore
 								}
 							case MetaType.TimeSignature:
 								{
-									FTimeSignature = new TTimeSignature();
 									FTimeSignature.Numerator = data[0];
 									FTimeSignature.Denominator = (byte) Math.Pow(2, data[1]);
 									FTimeSignature.MetronomePulse = data[2];
