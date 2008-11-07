@@ -1,33 +1,33 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
-   <PATCH nodename="D:\repositories\vvvv_old\c#\EyesWeb\trunk\EyesWebScalarNode (Network Server) help.v4p">
-   <BOUNDS height="4695" left="10080" top="2265" type="Window" width="6405">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta19.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Network\EyesWeb\trunk\ScalarDecoder (Network EyesWeb) help.v4p">
+   <BOUNDS height="5640" left="3090" top="570" type="Window" width="9285">
    </BOUNDS>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
-   <BOUNDS height="0" left="2505" top="195" type="Node" width="0">
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2520" top="1290" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="9540" top="5670" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="3570" left="2505" top="195" type="Box" width="3375">
+   <BOUNDS height="3570" left="2520" top="1290" type="Box" width="3375">
    </BOUNDS>
    <PIN pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="|EyesWeb Scalar&cr;&lf;&cr;&lf;This node retrieve data from Eyesweb using &cr;&lf;their built-in network protocol.&cr;&lf;&cr;&lf;This one deals with scalar (Single values) data type.&cr;&lf;&cr;&lf;To start viewing the data just run the:&cr;&lf;scalar-sample.eyw patch on eyesweb.&cr;&lf;&cr;&lf;Any comment, question, please send me a message on the tiki (user name: vux) or at this email address:&cr;&lf;julien@mrvux.com|">
    </PIN>
    <PIN pinname="Output String" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <NODE nodename="TCP (Network Server)" id="3">
-   <BOUNDS type="Node" left="495" top="465" width="0" height="0">
+   <NODE id="3" nodename="TCP (Network Server)">
+   <BOUNDS height="0" left="510" top="1560" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Local Port" slicecount="1" values="6100">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE nodename=":PLUGINS:\EyesWebAPI.dll|vvvv.Nodes.EyesWebScalarDecoderNode" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="735" top="1260" width="0" height="0">
+   <NODE componentmode="Hidden" id="2" nodename=":PLUGINS:\EyesWebAPI.dll|vvvv.Nodes.EyesWebScalarDecoderNode">
+   <BOUNDS height="0" left="750" top="2355" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="7170" top="5505" width="0" height="0">
+   <BOUNDS height="0" left="7170" top="5505" type="Window" width="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="735" top="1260" width="0" height="0">
+   <BOUNDS height="0" left="750" top="2355" type="Box" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -38,10 +38,10 @@
    <PIN pinname="Bang" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="3" srcpinname="Output" dstnodeid="4" dstpinname="Input">
+   <LINK dstnodeid="2" dstpinname="Input" srcnodeid="3" srcpinname="Output">
    </LINK>
-   <NODE nodename="S+H (Animation)" id="5">
-   <BOUNDS type="Node" left="870" top="1950" width="0" height="0">
+   <NODE id="1" nodename="S+H (Animation)">
+   <BOUNDS height="0" left="885" top="3045" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -50,20 +50,50 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="5" dstpinname="Input">
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="2" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="4" srcpinname="Bang" dstnodeid="5" dstpinname="Set">
+   <LINK dstnodeid="1" dstpinname="Set" srcnodeid="2" srcpinname="Bang">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6">
-   <BOUNDS type="Node" left="720" top="2565" width="0" height="0">
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="735" top="3660" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="7290" top="7560" width="215" height="160">
+   <BOUNDS height="160" left="7290" top="7560" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS type="Box" left="720" top="2565" width="795" height="240">
+   <BOUNDS height="240" left="735" top="3660" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="6" dstpinname="Y Input Value">
+   <LINK dstnodeid="0" dstpinname="Y Input Value" srcnodeid="1" srcpinname="Output">
    </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="120" top="705" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="300" left="120" top="705" type="Box" width="5985">
+   </BOUNDS>
+   <BOUNDS height="160" left="2805" top="11430" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Decodes Eyeweb network scalar structures|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="120" top="195" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="405" left="120" top="195" type="Box" width="5865">
+   </BOUNDS>
+   <BOUNDS height="160" left="2805" top="11430" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|ScalarDecoder (Network EyesWeb)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
    </PATCH>
