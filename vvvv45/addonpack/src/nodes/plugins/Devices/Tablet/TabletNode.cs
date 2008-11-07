@@ -104,7 +104,7 @@ namespace VVVV.Nodes
             Random r = new Random();
             ctxName = getMd5Hash("VVVV" + r.Next().ToString() + r.Next().ToString());
             //the nodes constructor
-            CreateTablet();
+            //CreateTablet();
             //            Connect();
 
         }
@@ -160,28 +160,33 @@ namespace VVVV.Nodes
         #region node name and infos
 
         //provide node infos 
+        private static IPluginInfo FPluginInfo;
         public static IPluginInfo PluginInfo
         {
             get
             {
                 //fill out nodes info
                 //see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
-                IPluginInfo Info = new PluginInfo();
-                Info.Name = "Tablet";							//use CamelCaps and no spaces
-                Info.Category = "Devices";						//try to use an existing one
-                Info.Version = "Wintab";						//versions are optional. leave blank if not needed
-                Info.Help = "Grabs input from a tablet via the Wintab API";
-                Info.Bugs = "";
-                Info.Credits = "Based on VBTablet.NET alpha";								//give credits to thirdparty code used
-                Info.Warnings = "";
+                if (FPluginInfo == null)
+                {
+                    FPluginInfo = new PluginInfo();
+                    FPluginInfo.Name = "Tablet";							//use CamelCaps and no spaces
+                    FPluginInfo.Category = "Devices";						//try to use an existing one
+                    FPluginInfo.Version = "Wintab";						//versions are optional. leave blank if not needed
+                    FPluginInfo.Help = "Grabs input from a tablet via the Wintab API";
+                    FPluginInfo.Tags = "";
+                    FPluginInfo.Bugs = "";
+                    FPluginInfo.Credits = "Based on VBTablet.NET alpha";								//give credits to thirdparty code used
+                    FPluginInfo.Warnings = "";
 
-                //leave below as is
-                System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
-                System.Diagnostics.StackFrame sf = st.GetFrame(0);
-                System.Reflection.MethodBase method = sf.GetMethod();
-                Info.Namespace = method.DeclaringType.Namespace;
-                Info.Class = method.DeclaringType.Name;
-                return Info;
+                    //leave below as is
+                    System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
+                    System.Diagnostics.StackFrame sf = st.GetFrame(0);
+                    System.Reflection.MethodBase method = sf.GetMethod();
+                    FPluginInfo.Namespace = method.DeclaringType.Namespace;
+                    FPluginInfo.Class = method.DeclaringType.Name;
+                }
+                return FPluginInfo;
                 //leave above as is
             }
         }
@@ -291,18 +296,24 @@ namespace VVVV.Nodes
 
         void Enable()
         {
-            if (!Tablet.Connected)
-                Connect();
-            CreateContext(ref ctxName);
-            Tablet.SelectContext(ref ctxName);
-            Tablet.Context.Enabled = true;
+            if (CreateTablet())
+            {
+                if (!Tablet.Connected)
+                    Connect();
+                CreateContext(ref ctxName);
+                Tablet.SelectContext(ref ctxName);
+                Tablet.Context.Enabled = true;
+            }
         }
 
 
         void Disable()
         {
-            Tablet.SelectContext(ref ctxName);
-            Tablet.Context.Enabled = false;
+            if (Tablet != null)
+            {
+                Tablet.SelectContext(ref ctxName);
+                Tablet.Context.Enabled = false;
+            }
         }
 
         double X, Y, NormalPressure, Tilt, Azimuth;
@@ -336,19 +347,24 @@ namespace VVVV.Nodes
         [DllImport("user32.dll")]
         static extern IntPtr GetActiveWindow();
 
-        void CreateTablet()
+        bool CreateTablet()
         {
-            try
+            if (Tablet == null)
             {
-                Tablet = new Tablet();
-                Tablet.PacketArrival += new Tablet.PacketArrivalEventHandler(Tablet_PacketArrival);
-	            Tablet.ProximityChange += new Tablet.ProximityChangeEventHandler(Tablet_ProximityChange);
+                try
+                {
+                    Tablet = new Tablet();
+                    Tablet.PacketArrival += new Tablet.PacketArrivalEventHandler(Tablet_PacketArrival);
+                    Tablet.ProximityChange += new Tablet.ProximityChangeEventHandler(Tablet_ProximityChange);
+                }
+                catch (Exception e)
+                {
+                    Tablet = null;
+                    MessageBox.Show(e.Message);
+                    return false;
+                }
             }
-            catch (Exception e)
-            {
-            	Tablet = null;
-            	MessageBox.Show(e.Message);
-            }
+            return true;
         }
 
         void Tablet_ProximityChange(ref bool InContext, ref bool IsPhysical, ref IntPtr ContextHandle, ref string ContextName)
@@ -402,8 +418,6 @@ namespace VVVV.Nodes
         //all data handling should be in here
         public void Evaluate(int SpreadMax)
         {
-        	if (Tablet == null)
-        		return;
         	
             double pinInputEnable, pinInputDigitizing;
             FPinInputEnable.GetValue(0, out pinInputEnable);
@@ -415,6 +429,8 @@ namespace VVVV.Nodes
                 else
                     Disable();
             }
+            if (Tablet == null)
+                return;
             if (FPinInputDigitizing.PinIsChanged)
             {
                 digitizing = (pinInputDigitizing == 1d);
@@ -459,3 +475,4 @@ namespace VVVV.Nodes
 
 }
 
+    
