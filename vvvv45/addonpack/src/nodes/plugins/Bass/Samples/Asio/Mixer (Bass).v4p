@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta18.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta19.dtd" >
    <PATCH nodename="D:\repositories\vvvv\plugins\c#\Bass\trunk\Samples\Asio\Mixer (Bass).v4p">
    <BOUNDS height="9585" left="4830" top="2265" type="Window" width="12675">
    </BOUNDS>
@@ -324,7 +324,7 @@
    <PIN pinname="Y Input Value" slicecount="2" values="0.7875,0.657142857142857">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
    <BOUNDS height="0" left="7425" top="5580" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1170" left="7425" top="5580" type="Box" width="4545">
@@ -350,7 +350,7 @@
    </LINK>
    <LINK dstnodeid="7" dstpinname="File Name" srcnodeid="9" srcpinname="Output String">
    </LINK>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="3300" top="4260" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="9090" top="9270" type="Window" width="215">
@@ -376,14 +376,14 @@
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="11" dstpinname="Play" srcnodeid="0" srcpinname="Y Output Value">
+   <LINK dstnodeid="11" dstpinname="Play" srcnodeid="1" srcpinname="Y Output Value">
    </LINK>
-   <NODE nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.BassAsioOutputNode" componentmode="Hidden" id="15">
-   <BOUNDS type="Node" left="3120" top="7500" width="0" height="0">
+   <NODE componentmode="Hidden" id="0" nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.BassAsioOutputNode">
+   <BOUNDS height="0" left="3120" top="7500" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="7590" top="10005" width="0" height="0">
+   <BOUNDS height="0" left="7590" top="10005" type="Window" width="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="3120" top="7500" width="0" height="0">
+   <BOUNDS height="0" left="3120" top="7500" type="Box" width="0">
    </BOUNDS>
    <PIN pinname="Is Active" visible="1">
    </PIN>
@@ -392,10 +392,10 @@
    <PIN pinname="Handles In" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Is Active">
+   <LINK dstnodeid="0" dstpinname="Is Active" srcnodeid="4" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Volume">
+   <LINK dstnodeid="0" dstpinname="Volume" srcnodeid="3" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="11" srcpinname="Handle" dstnodeid="15" dstpinname="Handles In">
+   <LINK dstnodeid="0" dstpinname="Handles In" srcnodeid="11" srcpinname="Handle">
    </LINK>
    </PATCH>
