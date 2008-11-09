@@ -52,7 +52,7 @@ type
     function GetTimes(out Time1, Time2: int64): HResult; stdcall;
   end;
 
-  TMCheater = class(TBCTransformFilter, ICheaterParameters)
+  TMCheater = class(TBCTransformFilter, ICheaterParameters, IPersist)
   private
     FCritSec: TBCCritSec;
     FClearSampleTimes: Boolean;
