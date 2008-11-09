@@ -53,7 +53,7 @@ type
     function GetTimes(out Time1, Time2: int64): HResult; stdcall;
   end;
 
-  TMCheaterInPlace = class(TBCTransInPlaceFilter, ICheaterParameters)
+  TMCheaterInPlace = class(TBCTransInPlaceFilter, ICheaterParameters, IPersist)
   private
     FClearSampleTimes: Boolean;
     FDrop: Boolean;
