@@ -61,7 +61,8 @@ namespace VVVV.Nodes
 
         // output pins
         private IValueOut FOutputPoints;
-
+		private IValueOut FOutputHit;
+		
         // data
         private int FWidth = 0, FHeight = 0;
         private int FBufSize;
@@ -196,6 +197,9 @@ namespace VVVV.Nodes
 
             FHost.CreateValueOutput("Vector2D Out", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FOutputPoints);
             FOutputPoints.SetSubType(0, double.MaxValue, 0.001, 0, false, false, false); 
+            
+            FHost.CreateValueOutput("Hit Tester", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FOutputHit);
+            FOutputHit.SetSubType(0, double.MaxValue, 0.001, 0, false, false, false); 
         }
 
         #endregion pin creation
@@ -272,21 +276,39 @@ namespace VVVV.Nodes
             int sliceCount = FInputPoints.SliceCount;
             Point2D pIn, pOut;
             List<Point2D> pList = new List<Point2D>();
+            int[] hitter;
+			hitter = new int[sliceCount / 2];
+			int number = (sliceCount / 2);
 
             // loop throug input points and calc Transformation
             for (int i = 0; i < sliceCount / 2; ++i)
             {
                 FInputPoints.GetValue2D(i, out pIn.x, out pIn.y);
-                if (FTrafo.Transform(pIn, out pOut))    // inside ?
-                    pList.Add(pOut);
+                if (FTrafo.Transform(pIn, out pOut))   // inside ?
+                {pList.Add(pOut);
+                	hitter[i] = 1;
+                } else
+                {
+                	hitter[i] = 0;
+                }
+                   
             }
 
             // set final slicecount
             FOutputPoints.SliceCount = pList.Count * 2;
+            FOutputHit.SliceCount = number;
             // set output
-            for (int i=0; i<pList.Count; ++i)
+            for (int i=0; i<pList.Count; ++i){
                 FOutputPoints.SetValue2D(i, pList[i].x, pList[i].y);
+           	    FOutputHit.SetValue(i, hitter[i]);
+            }
+            for (int i=0; i<number; ++i){
+               
+           	    FOutputHit.SetValue(i, hitter[i]);
+            }
+            
         }
+      
 
         #endregion mainloop
     }
