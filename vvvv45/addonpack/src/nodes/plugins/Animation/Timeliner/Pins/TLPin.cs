@@ -327,5 +327,24 @@ namespace VVVV.Nodes.Timeliner
 			if (e.Button == MouseButtons.Left)
 				DoDragDrop(new DataObject(DataFormats.Serializable, this), DragDropEffects.All);
 		}
+
+		protected override bool ProcessKeyPreview(ref Message m)
+		{
+			const int WM_KEYDOWN = 0x100;
+    
+    		bool handled = false;
+    		
+			if (m.Msg == WM_KEYDOWN)
+			{
+				KeyEventArgs ke = new KeyEventArgs((Keys)m.WParam.ToInt32() | ModifierKeys);
+				
+				if (ke.KeyCode == Keys.Space)
+					handled = true;
+				if (ke.KeyCode == Keys.Back)
+					handled = true;
+			}
+				
+			return handled;
+		}
 	}
 }
