@@ -145,7 +145,8 @@ namespace VVVV.Nodes.Timeliner
 
 		protected void UpdateView()
 		{
-			OnRedraw(this);
+			if (OnRedraw != null)
+				OnRedraw(this);
 		}
 		
 		public virtual void AddSlice(int InsertAt)
