@@ -130,7 +130,7 @@
 			this.Controls.Add(this.MinIO);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label3);
-			this.Size = new System.Drawing.Size(150, 143);
+			//this.Size = new System.Drawing.Size(150, 143);
 			this.Controls.SetChildIndex(this.label3, 0);
 			this.Controls.SetChildIndex(this.label2, 0);
 			this.Controls.SetChildIndex(this.MinIO, 0);
