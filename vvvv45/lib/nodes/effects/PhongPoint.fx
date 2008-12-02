@@ -13,16 +13,7 @@ float4x4 tWV: WORLDVIEW;
 float4x4 tWVP: WORLDVIEWPROJECTION;
 float4x4 tP: PROJECTION;   //projection matrix as set via Renderer (DX9)
 
-//light properties
-float3 lPos <string uiname="Light Position";> = {0, 5, -2};       //light position in world space
-float lAtt0 <String uiname="Light Attenuation 0"; float uimin=0.0;> = 0;
-float lAtt1 <String uiname="Light Attenuation 1"; float uimin=0.0;> = 0.3;
-float lAtt2 <String uiname="Light Attenuation 2"; float uimin=0.0;> = 0;
-float4 lAmb  : COLOR <String uiname="Ambient Color";>  = {0.15, 0.15, 0.15, 1};
-float4 lDiff : COLOR <String uiname="Diffuse Color";>  = {0.85, 0.85, 0.85, 1};
-float4 lSpec : COLOR <String uiname="Specular Color";> = {0.35, 0.35, 0.35, 1};
-float lPower <String uiname="Power"; float uimin=0.0;> = 25.0;     //shininess of specular highlight
-float lRange <String uiname="Light Range"; float uimin=0.0;> = 10.0;
+#include "PhongPoint.fxh"
 
 //texture
 texture Tex <string uiname="Texture";>;
@@ -79,39 +70,17 @@ vs2ps VS(
 // PIXELSHADERS:
 // --------------------------------------------------------------------------------------------------
 
+float Alpha = 1;
+
 float4 PS(vs2ps In): COLOR
 {
     //In.TexCd = In.TexCd / In.TexCd.w; // for perpective texture projections (e.g. shadow maps) ps_2_0
-
-    float d = distance(In.PosW, lPos);
-    float atten = 0;
-
-    //compute attenuation only if vertex within lightrange
-    if (d<lRange)
-    {
-       atten = 1/(saturate(lAtt0) + saturate(lAtt1) * d + saturate(lAtt2) * pow(d, 2));
-    }
-    float4 amb = lAmb * atten;
-    amb.a = 1;
-
-    //halfvector
-    float3 H = normalize(In.ViewDirV + In.LightDirV);
-
-    //compute blinn lighting
-    float4 shades = lit(dot(In.NormV, In.LightDirV), dot(In.NormV, H), lPower);
-
-    float4 diff = lDiff * shades.y * atten;
-    diff.a = 1;
-    //reflection vector (view space)
-    float3 R = normalize(2 * dot(In.NormV, In.LightDirV) * In.NormV - In.LightDirV);
-    //normalized view direction (view space)
-    float3 V = normalize(In.ViewDirV);
-
-    //calculate specular light
-    float4 spec = pow(max(dot(R, V),0), lPower*.2) * lSpec;
     
     float4 col = tex2D(Samp, In.TexCd);
-    col.rgb *= (amb + diff) + spec;
+
+    col.rgb *= PhongPoint(In.PosW, In.NormV, In.ViewDirV, In.LightDirV);
+    col.a *= Alpha;
+
     return mul(col, tColor);
 }
 
