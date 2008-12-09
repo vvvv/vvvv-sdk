@@ -136,7 +136,7 @@ namespace VVVV.Nodes
 	        	if (FPluginInfo == null)
 				{
 					//fill out nodes info
-					//see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
+					//see: http://www.vvvv.org/tiki-index.php?page=Conventions.NodeAndPinNaming
 					FPluginInfo = new PluginInfo();
 					
 					//the nodes main name: use CamelCaps and no spaces
