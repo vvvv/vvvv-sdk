@@ -252,7 +252,7 @@ namespace VVVV.Nodes
 			// InsertPreview
 			// 
 			this.InsertPreview.BackColor = System.Drawing.Color.Lime;
-			this.InsertPreview.Location = new System.Drawing.Point(156, 25);
+			this.InsertPreview.Location = new System.Drawing.Point(156, 17);
 			this.InsertPreview.Name = "InsertPreview";
 			this.InsertPreview.Size = new System.Drawing.Size(150, 2);
 			this.InsertPreview.TabIndex = 4;
@@ -288,7 +288,6 @@ namespace VVVV.Nodes
 			this.SplitContainer.Panel2.AutoScroll = true;
 			this.SplitContainer.Panel2.Controls.Add(this.PinHeaderPanel1);
 			this.SplitContainer.Size = new System.Drawing.Size(150, 330);
-			this.SplitContainer.SplitterDistance = 20;
 			this.SplitContainer.SplitterWidth = 5;
 			this.SplitContainer.TabIndex = 2;
 			this.SplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainerSplitterMoved);
@@ -302,7 +301,7 @@ namespace VVVV.Nodes
 			this.PinHeaderPanel0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
 			this.PinHeaderPanel0.Location = new System.Drawing.Point(0, 0);
 			this.PinHeaderPanel0.Name = "PinHeaderPanel0";
-			this.PinHeaderPanel0.Size = new System.Drawing.Size(150, 20);
+			this.PinHeaderPanel0.Size = new System.Drawing.Size(150, 50);
 			this.PinHeaderPanel0.TabIndex = 0;
 			this.PinHeaderPanel0.Tag = "0";
 			this.PinHeaderPanel0.DragOver += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragOver);
@@ -317,7 +316,7 @@ namespace VVVV.Nodes
 			this.PinHeaderPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.PinHeaderPanel1.Location = new System.Drawing.Point(0, 0);
 			this.PinHeaderPanel1.Name = "PinHeaderPanel1";
-			this.PinHeaderPanel1.Size = new System.Drawing.Size(150, 305);
+			this.PinHeaderPanel1.Size = new System.Drawing.Size(150, 275);
 			this.PinHeaderPanel1.TabIndex = 1;
 			this.PinHeaderPanel1.Tag = "1";
 			this.PinHeaderPanel1.DragOver += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragOver);
@@ -337,13 +336,13 @@ namespace VVVV.Nodes
 			this.SplitContainer.ResumeLayout(false);
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.SplitContainer SplitContainer;
 		private System.Windows.Forms.Button MidiButton;
 		private System.Windows.Forms.Button WavButton;
 		private System.Windows.Forms.Panel InsertPreview;
 		private System.Windows.Forms.Panel PinHeaderPanel0;
 		private System.Windows.Forms.Panel PinHeaderPanel1;
 		private VVVV.Nodes.Timeliner.TLSliceArea SliceArea;
-		private System.Windows.Forms.SplitContainer SplitContainer;
 		private System.Windows.Forms.CheckBox AutomataCheckBox;
 		
 		private System.Windows.Forms.Button RulerButton;
@@ -460,7 +459,7 @@ namespace VVVV.Nodes
 					FPluginInfo.Tags = "Keyframe, Score";
 					
 					//give credits to thirdparty code used
-					FPluginInfo.Credits = "";
+					FPluginInfo.Credits = "MidiPin uses MIDIToolkit by Leslie Sanford: http://www.codeproject.com/KB/audio-video/MIDIToolkit.aspx";
 					//any known problems?
 					FPluginInfo.Bugs = "";
 					//any kown usage of the node that may cause troubles?
@@ -1021,10 +1020,22 @@ namespace VVVV.Nodes
 		//http://msdn2.microsoft.com/en-us/library/system.windows.forms.control.processcmdkey.aspx
 		//This method is only called when the control is hosted in a Windows Forms application or as an ActiveX control.
 		//seems to work in standalone and docked to a vvvv-window though.
+		protected override bool ProcessCmdKey(ref Message m, Keys keyData)
+		{
+			const int WM_KEYDOWN = 0x100;
+			//FHost.Log(TLogType.Debug, "cmd keydown");
+			
+			return base.ProcessCmdKey(ref m, keyData);
+		}
+		
 		protected override bool ProcessKeyPreview(ref Message m)
 		{
-			if (m.Msg == 0x0101)
+			const int WM_KEYDOWN = 0x100;
+    		const int WM_KEYUP = 0x101;
+    
+			if (m.Msg == WM_KEYDOWN)
 			{
+				//FHost.Log(TLogType.Debug, "keydown");
 				KeyEventArgs ke = new KeyEventArgs((Keys)m.WParam.ToInt32() | ModifierKeys);
 				
 				if (ke.KeyCode == Keys.Space)
@@ -1094,6 +1105,16 @@ namespace VVVV.Nodes
 				//copy/paste/undo/selectall
 			}
 			
+			bool r = base.ProcessKeyPreview(ref m);
+			
+			//FHost.Log(TLogType.Debug, r.ToString());
+			
+			return r;
+		}
+		
+		protected override bool ProcessDialogKey(Keys keyData)
+		{
+			//FHost.Log(TLogType.Debug, "dialogkey");
 			return false;
 		}
 		
