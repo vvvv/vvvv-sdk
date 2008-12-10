@@ -380,6 +380,8 @@ namespace VVVV.Utils.VMidiScore
 			
 			FDivision = FSequence.Division;
 			
+			bool tempoSet = false;
+			
 			int trackID = 0;
 			foreach (Track tTrack in FSequence)
 			{
@@ -409,10 +411,14 @@ namespace VVVV.Utils.VMidiScore
 								}
 							case MetaType.Tempo:
 								{
-									int ms_per_min = 60000000;
-									int ms_per_quarternote = (int) ((data[0]<<16) + (data[1]<<8) + data[2]);
-									FBPM = ms_per_min / ms_per_quarternote;
-									//MPQN = MICROSECONDS_PER_MINUTE / BPM
+									if (!tempoSet)
+									{
+										int ms_per_min = 60000000;
+										int ms_per_quarternote = (int) ((data[0]<<16) + (data[1]<<8) + data[2]);
+										FBPM = ms_per_min / ms_per_quarternote;
+										//MPQN = MICROSECONDS_PER_MINUTE / BPM
+										tempoSet = true;
+									}
 									break;
 								}
 						}
