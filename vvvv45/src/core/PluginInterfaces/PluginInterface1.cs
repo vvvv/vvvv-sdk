@@ -997,27 +997,32 @@ namespace VVVV.PluginInterfaces.V1
         /// <param name="Visibility">The Pins initial Visibility.</param>
         /// <param name="Pin">Pointer to the created ITransformOut interface.</param>
         void CreateTransformOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out ITransformOut Pin);
-        
         /// <summary>
         /// Deletes the given Pin from the plugin
         /// </summary>
         /// <param name="Pin">The Pin to be deleted</param>
         void DeletePin(IPluginIO Pin);
         /// <summary>
-        /// Returns the current time which the plugin should use if it does timebased calculations
+        /// Returns the current time which the plugin should use if it does timebased calculations.
         /// </summary>
-        /// <param name="CurrentTime"></param>
+        /// <param name="CurrentTime">The hosts current time.</param>
         void GetCurrentTime(out double CurrentTime);
         /// <summary>
-        /// Returns the absolut file path to the plugins host
+        /// Returns the absolut file path to the plugins host.
         /// </summary>
-        /// <param name="Path">Absolut file path to the plugins host (i.e path to the patch the plugin is placed in, in vvvv)</param>
+        /// <param name="Path">Absolut file path to the plugins host (i.e path to the patch the plugin is placed in, in vvvv).</param>
         void GetHostPath(out string Path);
         /// <summary>
-        /// Allows a plugin to write messages to a console on the host (ie. Renderer (TTY) in vvvv) 
+        /// Returns a slash-separated path of Node IDs that uniquely identifies this node in the vvvv graph.
         /// </summary>
-        /// <param name="Type">The type of message. Depending on the setting of this parameter the PluginHost can handle messages differently</param>
-        /// <param name="Message">The message to be logged</param>
+        /// <param name="UseDescriptiveNames">If TRUE descriptive Node names are used where available instead of the node ID.</param>
+        /// <param name="Path">Slash-separated path of Node IDs that uniquely identifies this node in the vvvv graph.</param>
+        void GetNodePath(bool UseDescriptiveNames, out string Path);
+        /// <summary>
+        /// Allows a plugin to write messages to a console on the host (ie. Renderer (TTY) in vvvv). 
+        /// </summary>
+        /// <param name="Type">The type of message. Depending on the setting of this parameter the PluginHost can handle messages differently.</param>
+        /// <param name="Message">The message to be logged.</param>
         void Log(TLogType Type, string Message);
     }
     
