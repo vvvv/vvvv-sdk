@@ -850,6 +850,29 @@ namespace VVVV.PluginInterfaces.V1
 	#endregion color pins
 	
 	#region node pins
+	[Guid("AB312E34-8025-40F2-8241-1958793F3D39"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface INodeIOBase
+	{
+		//void GetFriendlyName(out string FriendlyName);
+	}
+	
+	[Guid("FE6FEBC6-8581-4EB5-9AC8-E428CB9D1A03"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface INodeIn: IPluginIn
+	{
+		void GetUpsreamSlice(int Slice, out int UpstreamSlice);
+		void GetUpstreamInterface(Guid UpstreamTypeGUID, out INodeIOBase UpstreamInterface);
+		void SetSubType(Guid[] Guids, string FriendlyName);
+	}
+	
+	[Guid("5D4F7524-CC1B-44FA-881F-A88D343D7A21"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface INodeOut: IPluginOut
+	{
+		void SetInterface(INodeIOBase TheInterface);
+		void SetSubType(Guid[] Guids, string FriendlyName);
+	}	
 	
 	/// <summary>
 	/// Interface to an InputPin of type Transform.
@@ -1024,6 +1047,9 @@ namespace VVVV.PluginInterfaces.V1
         /// <param name="Type">The type of message. Depending on the setting of this parameter the PluginHost can handle messages differently.</param>
         /// <param name="Message">The message to be logged.</param>
         void Log(TLogType Type, string Message);
+        
+        void CreateNodeInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out INodeIn Pin);
+        void CreateNodeOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out INodeOut Pin);
     }
     
     /// <summary>
