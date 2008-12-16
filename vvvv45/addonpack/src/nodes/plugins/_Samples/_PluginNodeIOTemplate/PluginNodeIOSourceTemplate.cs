@@ -197,12 +197,7 @@ namespace VVVV.Nodes
 
         #endregion pin creation
         
-        #region IMyNodePinType
-        public void GetFriendlyName(out string FriendlyName)
-        {
-        	FriendlyName = "Simple Plugin NodeType";
-        }
-
+        #region IMyNodeIO
 		public void GetSlice(int Index, out int Value)
 		{
 			double v;
