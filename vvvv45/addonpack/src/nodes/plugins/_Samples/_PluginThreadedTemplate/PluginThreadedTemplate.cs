@@ -38,7 +38,7 @@ namespace VVVV.Nodes
 {
 	
 	//class definition
-	public class PluginTemplateThreaded: IPlugin, IDisposable
+	public class PluginThreadedTemplate: IPlugin, IDisposable
     {	          	
     	#region field declaration
     	
@@ -60,7 +60,7 @@ namespace VVVV.Nodes
        
     	#region constructor/destructor
     	
-        public PluginTemplateThreaded()
+        public PluginThreadedTemplate()
         {
 			//the nodes constructor
 			//nothing to declare for this node
@@ -114,7 +114,7 @@ namespace VVVV.Nodes
         // does not get called.
         // It gives your base class the opportunity to finalize.
         // Do not provide destructors in types derived from this class.
-        ~PluginTemplateThreaded()
+        ~PluginThreadedTemplate()
         {
         	// Do not re-create Dispose clean-up code here.
         	// Calling Dispose(false) is optimal in terms of
