@@ -20,7 +20,7 @@ namespace VVVV.Nodes
 		{
 			get
 			{
-				if (FGuid == null)
+				if (FGuid == Guid.Empty)
 					FGuid = new Guid("8869A551-6F32-4F0D-9003-27AC990D53D6");
 				return FGuid;
 			}
