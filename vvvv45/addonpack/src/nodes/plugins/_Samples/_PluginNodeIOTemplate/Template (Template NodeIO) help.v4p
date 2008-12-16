@@ -1,0 +1,107 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta19.1.dtd" >
+   <PATCH nodename="Y:\sourceforge\plugins\_Samples\_PluginNodeIOTemplate\Template (Template NodeIO) help.v4p">
+   <BOUNDS height="7035" left="2415" top="1920" type="Window" width="9150">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2190" top="4500" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12585" top="11310" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1575" left="2190" top="4500" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="7">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1725" top="480" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12195" top="7410" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="885" left="1725" top="480" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" values="8.66,2.75">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Node)">
+   <BOUNDS height="0" left="4470" top="2250" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="17220" top="11385" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4470" top="2250" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="5850" top="4425" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="GetSlice (Node)">
+   <BOUNDS height="0" left="4515" top="3075" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Index" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="6675" top="3615" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="9">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="TranslateX" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InAWindow" id="2" nodename="Renderer (TTY)">
+   <BOUNDS height="0" left="4035" top="5400" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="2955" left="2235" top="9135" type="Window" width="10965">
+   </BOUNDS>
+   <BOUNDS height="1800" left="4035" top="5400" type="Box" width="2400">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InAWindow" id="1" nodename="bin\PluginNodeIOTemplate.dll">
+   <BOUNDS height="100" left="3765" top="3705" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="3765" top="3705" type="Box">
+   </BOUNDS>
+   <PIN pinname="Value Output" visible="1">
+   </PIN>
+   <PIN pinname="NodePin In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Y Input Value" srcnodeid="1" srcpinname="Value Output">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Input Node" srcnodeid="6" srcpinname="Output Node">
+   </LINK>
+   <NODE componentmode="Hidden" id="0" nodename=":PLUGINS:\PluginNodeIOTemplate.dll|VVVV.Nodes.PluginNodeIOSourceTemplate">
+   <BOUNDS height="0" left="3765" top="1860" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="11940" top="5595" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="3765" top="1860" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="NodePin Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Value Input" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="NodePin In" srcnodeid="0" srcpinname="NodePin Out">
+   </LINK>
+   </PATCH>
