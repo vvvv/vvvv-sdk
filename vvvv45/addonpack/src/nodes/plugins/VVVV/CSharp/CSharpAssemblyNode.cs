@@ -81,9 +81,14 @@ namespace VVVV.Nodes
     	
         public PluginTemplate()
         {
-			//the nodes constructor
-			//nothing to declare for this node
+			AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(MyResolveEventHandler);
 		}
+        
+        private Assembly MyResolveEventHandler(object sender, ResolveEventArgs args) 
+        {
+      		return typeof(PluginInfo).Assembly;
+        }
+
         
         // Implementing IDisposable's Dispose method.
         // Do not make this method virtual.
@@ -272,6 +277,7 @@ namespace VVVV.Nodes
 		      			
 		      			FDynamicNode = null;
 		      			FDynamicNode = FAss.CreateInstance(GetType().Namespace + ".DynamicNode");
+		      			
 		      			Type type = FDynamicNode.GetType();
 				
 		      			//Type type = FAss.GetType(GetType().Namespace + ".DynamicNode");
@@ -301,7 +307,7 @@ namespace VVVV.Nodes
 		      					}
 		      					catch (Exception e)
 		      					{
-		      						FHost.Log(TLogType.Debug, e.Message + " " + e.Source + " " + e.HelpLink + " " + e.StackTrace);
+		      						FHost.Log(TLogType.Debug, "DynamicNode.Evaluate: " + e.Message + " " + e.Source + " " + e.HelpLink + " " + e.StackTrace);
 		      					}
 		      					//type.GetMethod("SetPluginHost").Invoke(FDynamicNode, null); //new System.Object[1]{FHost});
 		      					FErrorOutput.SetString(0, "we called set plugin host");
@@ -354,7 +360,10 @@ namespace VVVV.Nodes
 			foreach (string reference in references)
 			{
 				compilerparams.ReferencedAssemblies.Add(reference + ".dll");				
+				FHost.Log(TLogType.Debug, reference + ".dll");
 			}
+			
+			
 				
 			//compilerparams.ReferencedAssemblies.Add("System.dll");
 			//compilerparams.ReferencedAssemblies.Add("System.Windows.Forms.dll");
