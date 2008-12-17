@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta19.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha19.2.dtd" >
    <PATCH nodename="Y:\sourceforge\plugins\_Samples\_PluginNodeIOTemplate\Template (Template NodeIO) help.v4p">
    <BOUNDS height="7035" left="2415" top="1920" type="Window" width="9150">
    </BOUNDS>
@@ -7,7 +7,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="12585" top="11310" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="1575" left="2190" top="4500" type="Box" width="825">
+   <BOUNDS height="1575" left="2190" top="4500" type="Box" width="975">
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
@@ -23,7 +23,7 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="2" values="8.66,2.75">
+   <PIN pinname="Y Input Value" slicecount="2" values="8.99,2.75">
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
@@ -99,9 +99,21 @@
    </BOUNDS>
    <PIN pinname="NodePin Out" visible="1">
    </PIN>
+   <PIN pinname="Value Input" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="0" dstpinname="Value Input" srcnodeid="7" srcpinname="Y Output Value">
-   </LINK>
    <LINK dstnodeid="1" dstpinname="NodePin In" srcnodeid="0" srcpinname="NodePin Out">
+   </LINK>
+   <NODE nodename="LinearSpread (Spreads)" id="9">
+   <BOUNDS type="Node" left="3900" top="795" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="11.2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Output" dstnodeid="0" dstpinname="Value Input">
    </LINK>
    </PATCH>
