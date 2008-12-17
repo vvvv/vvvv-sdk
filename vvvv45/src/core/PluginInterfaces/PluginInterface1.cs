@@ -298,7 +298,7 @@ namespace VVVV.PluginInterfaces.V1
 		void GetValuePointer(out int SliceCount, out double* Value);
 
 		/// <summary>
-		/// Used to set the SubType of a Value Pin, which is a set of limitations to the Pins value range used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a Value Pin, which is a set of limitations to the Pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
 		/// </summary>
@@ -311,7 +311,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
 		void SetSubType  (double Min, double Max, double StepSize, double Default, bool IsBang, bool IsToggle, bool IsInteger);
 		/// <summary>
-		/// Used to set the SubType of a 2D Vector Pin, which is a set of limitations to the Pins value range used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a 2D Vector Pin, which is a set of limitations to the Pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
 		/// </summary>
@@ -325,7 +325,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
 		void SetSubType2D(double Min, double Max, double StepSize, double Default1, double Default2, bool IsBang, bool IsToggle, bool IsInteger);
 		/// <summary>
-		/// Used to set the SubType of a 3D Vector Pin, which is a set of limitations to the Pins value range used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a 3D Vector Pin, which is a set of limitations to the Pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
 		/// </summary>
@@ -340,7 +340,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
 		void SetSubType3D(double Min, double Max, double StepSize, double Default1, double Default2, double Default3, bool IsBang, bool IsToggle, bool IsInteger);
 		/// <summary>
-		/// Used to set the SubType of a 4D Vector Pin, which is a set of limitations to the Pins value range used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a 4D Vector Pin, which is a set of limitations to the Pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>. 
 		/// </summary>
@@ -409,7 +409,7 @@ namespace VVVV.PluginInterfaces.V1
 		void GetValuePointer(out int SliceCount, out double* Value);
 		
 		/// <summary>
-		/// Used to set the SubType of a Value Pin, which is a set of limitations to the Pins value range used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a Value Pin, which is a set of limitations to the Pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
 		/// </summary>
@@ -422,7 +422,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
 		void SetSubType  (double Min, double Max, double StepSize, double Default, bool IsBang, bool IsToggle, bool IsInteger);
 		/// <summary>
-		/// Used to set the SubType of a 2D Vector Pin, which is a set of limitations to the Pins value range used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a 2D Vector Pin, which is a set of limitations to the Pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
 		/// </summary>
@@ -436,7 +436,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
 		void SetSubType2D(double Min, double Max, double StepSize, double Default1, double Default2, bool IsBang, bool IsToggle, bool IsInteger);
 		/// <summary>
-		/// Used to set the SubType of a 3D Vector Pin, which is a set of limitations to the Pins value range used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a 3D Vector Pin, which is a set of limitations to the Pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
 		/// </summary>
@@ -451,7 +451,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
 		void SetSubType3D(double Min, double Max, double StepSize, double Default1, double Default2, double Default3, bool IsBang, bool IsToggle, bool IsInteger);
 		/// <summary>
-		/// Used to set the SubType of a 4D Vector Pin, which is a set of limitations to the Pins value range used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a 4D Vector Pin, which is a set of limitations to the Pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>. 
 		/// </summary>
@@ -520,7 +520,7 @@ namespace VVVV.PluginInterfaces.V1
 		void GetValuePointer(out int SliceCount, out double* Value);
 		
 		/// <summary>
-		/// Used to set the SubType of a Value Pin, which is a set of limitations to the Pins value range used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a Value Pin, which is a set of limitations to the Pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
 		/// </summary>
@@ -533,7 +533,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
 		void SetSubType  (double Min, double Max, double StepSize, double Default, bool IsBang, bool IsToggle, bool IsInteger);
 		/// <summary>
-		/// Used to set the SubType of a 2D Vector Pin, which is a set of limitations to the Pins value range used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a 2D Vector Pin, which is a set of limitations to the Pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
 		/// </summary>
@@ -547,7 +547,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
 		void SetSubType2D(double Min, double Max, double StepSize, double Default1, double Default2, bool IsBang, bool IsToggle, bool IsInteger);
 		/// <summary>
-		/// Used to set the SubType of a 3D Vector Pin, which is a set of limitations to the Pins value range used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a 3D Vector Pin, which is a set of limitations to the Pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
 		/// </summary>
@@ -562,7 +562,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
 		void SetSubType3D(double Min, double Max, double StepSize, double Default1, double Default2, double Default3, bool IsBang, bool IsToggle, bool IsInteger);
 		/// <summary>
-		/// Used to set the SubType of a 4D Vector Pin, which is a set of limitations to the Pins value range used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a 4D Vector Pin, which is a set of limitations to the Pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>. 
 		/// </summary>
@@ -630,7 +630,7 @@ namespace VVVV.PluginInterfaces.V1
 		void GetValuePointer(out double* Value);
 
 		/// <summary>
-		/// Used to set the SubType of a Value Pin, which is a set of limitations to the Pins value range used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a Value Pin, which is a set of limitations to the Pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
 		/// </summary>
@@ -643,7 +643,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
 		void SetSubType  (double Min, double Max, double StepSize, double Default, bool IsBang, bool IsToggle, bool IsInteger);
 		/// <summary>
-		/// Used to set the SubType of a 2D Vector Pin, which is a set of limitations to the Pins value range used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a 2D Vector Pin, which is a set of limitations to the Pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
 		/// </summary>
@@ -657,7 +657,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
 		void SetSubType2D(double Min, double Max, double StepSize, double Default1, double Default2, bool IsBang, bool IsToggle, bool IsInteger);
 		/// <summary>
-		/// Used to set the SubType of a 3D Vector Pin, which is a set of limitations to the Pins value range used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a 3D Vector Pin, which is a set of limitations to the Pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
 		/// </summary>
@@ -672,7 +672,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="IsInteger">Hint to the GUI that this is an integer Value.</param>
 		void SetSubType3D(double Min, double Max, double StepSize, double Default1, double Default2, double Default3, bool IsBang, bool IsToggle, bool IsInteger);
 		/// <summary>
-		/// Used to set the SubType of a 4D Vector Pin, which is a set of limitations to the Pins value range used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a 4D Vector Pin, which is a set of limitations to the Pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>. 
 		/// </summary>
@@ -713,7 +713,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Value">The retrieved String.</param>
 		void GetString(int Index, out string Value);
 		/// <summary>
-		/// Used to set the SubType of a String Pin, which is a more detailed specification of the String used by the GUI to guide the user to insert correct Strings.
+		/// Used to set the SubType of a String Pin, which is a more detailed specification of the String, used by the GUI to guide the user to insert correct Strings.
 		/// Note though that this does not prevent a user from setting "wrong" Strings on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>. 
 		/// </summary>
@@ -736,7 +736,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Value">The retrieved String.</param>
 		void GetString(int Index, out string Value);
 		/// <summary>
-		/// Used to set the SubType of a String Pin, which is a more detailed specification of the String used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a String Pin, which is a more detailed specification of the String, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" Strings on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>. 
 		/// </summary>
@@ -759,7 +759,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Value">The String to write.</param>
 		void SetString(int Index, string Value);
 		/// <summary>
-		/// Used to set the SubType of a String Pin, which is a more detailed specification of the String used by the GUI to guide the user to insert correct values.
+		/// Used to set the SubType of a String Pin, which is a more detailed specification of the String, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" Strings on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>. 
 		/// </summary>
@@ -792,7 +792,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Color">The retrieved Color.</param>
 		void GetColor(int Index, out RGBAColor Color);
 		/// <summary>
-		/// Used to set the SubType of a Color Pin, which is a more detailed specification of the Color used by the GUI to guide the user to insert correct Colors.
+		/// Used to set the SubType of a Color Pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
 		/// Note though that this does not prevent a user from setting "wrong" Colors on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>. 
 		/// </summary>
@@ -815,7 +815,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Color">The retrieved Color.</param>
 		void GetColor(int Index, out RGBAColor Color);
 		/// <summary>
-		/// Used to set the SubType of a Color Pin, which is a more detailed specification of the Color used by the GUI to guide the user to insert correct Colors.
+		/// Used to set the SubType of a Color Pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
 		/// Note though that this does not prevent a user from setting "wrong" Colors on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>. 
 		/// </summary>
@@ -838,7 +838,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Color">The Color to write.</param>
 		void SetColor(int Index, RGBAColor Color);
 		/// <summary>
-		/// Used to set the SubType of a Color Pin, which is a more detailed specification of the Color used by the GUI to guide the user to insert correct Colors.
+		/// Used to set the SubType of a Color Pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
 		/// Note though that this does not prevent a user from setting "wrong" Colors on a Pin. Ultimately each Node is responsible for dealing with all possible inputs correctly.
 		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>. 
 		/// </summary>
@@ -850,27 +850,63 @@ namespace VVVV.PluginInterfaces.V1
 	#endregion color pins
 	
 	#region node pins
+	/// <summary>
+	/// Base Interface for NodePin connections
+	/// </summary>
 	[Guid("AB312E34-8025-40F2-8241-1958793F3D39"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface INodeIOBase
-	{
-		//void GetFriendlyName(out string FriendlyName);
-	}
+	{}
 	
+	/// <summary>
+	/// Interface to an InputPin of the generic Node type
+	/// </summary>
 	[Guid("FE6FEBC6-8581-4EB5-9AC8-E428CB9D1A03"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface INodeIn: IPluginIn
 	{
+		/// <summary>
+		/// Used to retrieve the actual Slice index this Pin has to access on the upstream Node. Note that the actual Slice
+		/// index maybe convoluted by an upstream Node like GetSlice (Node).
+		/// </summary>
+		/// <param name="Slice">The Slice index as seen by this Pin.</param>
+		/// <param name="UpstreamSlice">The actual Slice index as probably convoluted via upstream GetSlice (Node).</param>
 		void GetUpsreamSlice(int Slice, out int UpstreamSlice);
-		void GetUpstreamInterface(Guid UpstreamTypeGUID, out INodeIOBase UpstreamInterface);
+		/// <summary>
+		/// Used to retrieve a reference of an interface offered by the upstream connected Node.
+		/// </summary>
+		/// <param name="UpstreamGuid">The Guid of the upstream interface of interest.</param>
+		/// <param name="UpstreamInterface">The retrieved interface.</param>
+		void GetUpstreamInterface(Guid UpstreamGuid, out INodeIOBase UpstreamInterface);
+		/// <summary>
+		/// Used to set the SubType of a Node Pin, which is a more detailed specification of the Node type via a set of Guids that identifiy the interfaces accepted on this Pin.
+		/// The SubType is used by the GUI to guide the user to make only links between Pins that understand the same interfaces. 
+		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>. 
+		/// </summary>
+		/// <param name="Guids">An array of Guids (typically only one) that specifies the interfaces that this Input accepts.</param>
+		/// <param name="FriendlyName">A user readable name specifying the type of the Node connection.</param>
 		void SetSubType(Guid[] Guids, string FriendlyName);
 	}
 	
+	/// <summary>
+	/// Interface to an OutputPin of the generic Node type
+	/// </summary>
 	[Guid("5D4F7524-CC1B-44FA-881F-A88D343D7A21"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface INodeOut: IPluginOut
 	{
+		/// <summary>
+		/// Used to set the interface this 
+		/// </summary>
+		/// <param name="TheInterface"></param>
 		void SetInterface(INodeIOBase TheInterface);
+		/// <summary>
+		/// Used to set the SubType of a Node Pin, which is a more detailed specification of the Node type via a set of Guids that identifiy the interfaces offered on this Pin.
+		/// The SubType is used by the GUI to guide the user to make only links between Pins that understand the same interfaces. 
+		/// Should only be called once immediately after the Pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>. 
+		/// </summary>
+		/// <param name="Guids">An array of Guids (typically only one) that specifies the interfaces that this Output accepts.</param>
+		/// <param name="FriendlyName">A user readable name specifying the type of the Node connection.</param>
 		void SetSubType(Guid[] Guids, string FriendlyName);
 	}	
 	
@@ -1021,6 +1057,22 @@ namespace VVVV.PluginInterfaces.V1
         /// <param name="Pin">Pointer to the created ITransformOut interface.</param>
         void CreateTransformOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out ITransformOut Pin);
         /// <summary>
+        /// Creates an InputPin of the generic Node type.
+        /// </summary>
+        /// <param name="Name">The Pins name.</param>
+        /// <param name="SliceMode">The Pins SliceMode.</param>
+        /// <param name="Visibility">The Pins initial Visibility.</param>
+        /// <param name="Pin">Pointer to the created INodeIn interface.</param>
+        void CreateNodeInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out INodeIn Pin);
+        /// <summary>
+        /// Creates an OutputPin of the generic Node type.
+        /// </summary>
+        /// <param name="Name">The Pins name.</param>
+        /// <param name="SliceMode">The Pins SliceMode.</param>
+        /// <param name="Visibility">The Pins initial Visibility.</param>
+        /// <param name="Pin">Pointer to the created INodeIn interface.</param>
+        void CreateNodeOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out INodeOut Pin);
+        /// <summary>
         /// Deletes the given Pin from the plugin
         /// </summary>
         /// <param name="Pin">The Pin to be deleted</param>
@@ -1047,9 +1099,6 @@ namespace VVVV.PluginInterfaces.V1
         /// <param name="Type">The type of message. Depending on the setting of this parameter the PluginHost can handle messages differently.</param>
         /// <param name="Message">The message to be logged.</param>
         void Log(TLogType Type, string Message);
-        
-        void CreateNodeInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out INodeIn Pin);
-        void CreateNodeOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out INodeOut Pin);
     }
     
     /// <summary>
