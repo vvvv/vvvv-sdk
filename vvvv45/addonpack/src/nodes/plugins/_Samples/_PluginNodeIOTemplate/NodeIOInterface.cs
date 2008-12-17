@@ -9,7 +9,6 @@ namespace VVVV.Nodes
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IMyNodeIO: INodeIOBase
 	{
-		void SetSlice(int Slice, int Value);
 		void GetSlice(int Slice, out int Value);
 	}
 	
