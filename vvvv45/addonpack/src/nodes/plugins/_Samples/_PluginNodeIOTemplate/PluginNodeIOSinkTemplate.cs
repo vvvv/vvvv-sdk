@@ -37,7 +37,7 @@ using VVVV.Utils.VMath;
 namespace VVVV.Nodes
 {
 	//class definition
-	public class PluginNodeIOSinkTemplate: IPlugin, IDisposable
+	public class PluginNodeIOSinkTemplate: IPlugin, IPluginConnections, IDisposable
     {	          	
     	#region field declaration
     	
@@ -51,6 +51,8 @@ namespace VVVV.Nodes
     	
     	//output pin declaration
     	private IValueOut FMyValueOutput;
+    	
+    	private IMyNodeIO FUpstreamInterface;
     	
     	#endregion field declaration
        
@@ -202,39 +204,51 @@ namespace VVVV.Nodes
         	//only used in conjunction with inputs of type cmpdConfigurate
         }
         
+        public void ConnectPin(IPluginIO Pin)
+        {
+        	//cache a reference to the upstream interface when the NodeInput pin is being connected
+        	if (Pin == FMyNodeInput)
+        	{
+        		INodeIOBase usI;
+        		FMyNodeInput.GetUpstreamInterface(MyNodeIO.GUID, out usI);
+        		FUpstreamInterface = usI as IMyNodeIO;
+        	}
+        }
+        
+        public void DisconnectPin(IPluginIO Pin)
+        {
+        	//reset the cached reference to the upstream interface when the NodeInput is being disconnected
+        	if (Pin == FMyNodeInput)
+        	{
+        		FUpstreamInterface = null;
+        	}
+        }
+        
         //here we go, thats the method called by vvvv each frame
         //all data handling should be in here
         public void Evaluate(int SpreadMax)
         {     	
-        	//if any of the inputs has changed
-        	//recompute the outputs
-        	//if (FMyValueInput.PinIsChanged)
-        	{	
-	        	//first set slicecounts for all outputs
-	        	//the incoming int SpreadMax is the maximum slicecount of all input pins, which is a good default
-	        	FMyValueOutput.SliceCount = SpreadMax;
-
-	        	//the variables to fill with the input data
-	        	double currentValueSlice;
+	    	//first set slicecounts for all outputs
+	        //the incoming int SpreadMax is the maximum slicecount of all input pins, which is a good default
+	        FMyValueOutput.SliceCount = SpreadMax;
 	        	
+	        int v = 0;
+        	int usS;
+	        //see if we have a reference to the upstream interface
+	        if (FUpstreamInterface != null)
+        	{
         		//loop for all slices
         		for (int i=0; i<SpreadMax; i++)
         		{		
+        			//get upstream slice index
+        			FMyNodeInput.GetUpsreamSlice(i, out usS);
         			//get value of upstream nodepin
-        			int v = 0;
-        			int usS;
-        			if (FMyNodeInput.IsConnected)
-        			{
-        				INodeIOBase upstreamInterface;
-        				FMyNodeInput.GetUpstreamInterface(MyNodeIO.GUID, out upstreamInterface);
-        				FMyNodeInput.GetUpsreamSlice(i, out usS);
-        				(upstreamInterface as IMyNodeIO).GetSlice(usS, out v);
-        			}
+        			FUpstreamInterface.GetSlice(usS, out v);
         			
-        			//write data to value output
-        			FMyValueOutput.SetValue(i, v);
+        			//write value to output
+        			FMyValueOutput.SetValue(i, v);        			
         		}
-        	}      	
+        	}
         }
              
         #endregion mainloop  
