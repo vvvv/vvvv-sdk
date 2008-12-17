@@ -29,6 +29,9 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Drawing;
+using System.Collections.Generic;
+using System.Collections;
+
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
@@ -52,8 +55,8 @@ namespace VVVV.Nodes
     	//output pin declaration
     	private INodeOut FMyNodeOutput;
     	
-    	Guid FNodeIOGuid = new Guid("8869A551-6F32-4F0D-9003-27AC990D53D6");
-
+    	private int[] FData;
+    	
     	#endregion field declaration
        
     	#region constructor/destructor
@@ -200,14 +203,8 @@ namespace VVVV.Nodes
         #region IMyNodeIO
 		public void GetSlice(int Index, out int Value)
 		{
-			double v;
-			FMyValueInput.GetValue(Index, out v);
-			Value = (int) v;
-		}
-		
-		public void SetSlice(int Index, int Value)
-		{
-			//FMyValueOutput.SetValue(Index, Value);
+			//return data from the internal buffer
+			Value = FData[Index];
 		}
 		
         #endregion
@@ -231,7 +228,10 @@ namespace VVVV.Nodes
 	        	//first set slicecounts for all outputs
 	        	//the incoming int SpreadMax is the maximum slicecount of all input pins, which is a good default
 	        	FMyNodeOutput.SliceCount = SpreadMax;
-
+				
+	        	//internal data buffer
+	        	FData = new int[SpreadMax];
+	        	
 	        	//the variables to fill with the input data
 	        	double currentValueSlice;
 	        	
@@ -241,8 +241,8 @@ namespace VVVV.Nodes
         			//read data from value input
         			FMyValueInput.GetValue(i, out currentValueSlice);
         			
-        			//write data to node output
-        			SetSlice(i, (int) currentValueSlice);
+        			//do something with the input and save it
+        			FData[i] = (int) currentValueSlice * 1000;
         		}
         	}      	
         }
