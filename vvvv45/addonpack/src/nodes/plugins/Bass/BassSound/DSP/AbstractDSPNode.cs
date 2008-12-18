@@ -59,7 +59,7 @@ namespace vvvv.Nodes
         #endregion
 
         #region Configurate
-        public void Configurate(IPluginConfig Input)
+        public virtual void Configurate(IPluginConfig Input)
         {
 
         }
@@ -174,7 +174,7 @@ namespace vvvv.Nodes
         #endregion
 
         #region Update DSP
-        protected void UpdateDSP()
+        protected virtual void UpdateDSP()
         {
             if (this.FChannel != null)
             {
