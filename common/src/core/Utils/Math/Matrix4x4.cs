@@ -11,18 +11,87 @@ using System.Runtime.InteropServices;
 namespace VVVV.Utils.VMath
 {
 
-	//4x4 matrix
+	/// <summary>
+	/// 4x4 transform matrix struct, much faster then matrix classes
+	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Matrix4x4
 	{
 		//data fields
-		public double m11, m12, m13, m14,
-					  m21, m22, m23, m24,
-					  m31, m32, m33, m34,
-					  m41, m42, m43, m44;
+		/// <summary>
+		/// The 1. data element of 1. row
+		/// </summary>
+		public double m11;
+		/// <summary>
+		/// The 2. data element of 1. row
+		/// </summary>
+		public double m12;
+		/// <summary>
+		/// The 3. data element of 1. row
+		/// </summary>
+		public double m13;
+		/// <summary>
+		/// The 4. data element of 1. row
+		/// </summary>
+		public double m14;
+		
+		/// <summary>
+		/// The 1. data element of 2. row
+		/// </summary>
+		public double m21;
+		/// <summary>
+		/// The 2. data element of 2. row
+		/// </summary>
+		public double m22;
+		/// <summary>
+		/// The 3. data element of 2. row
+		/// </summary>
+		public double m23;
+		/// <summary>
+		/// The 4. data element of 2. row
+		/// </summary>
+		public double m24;
+		
+		/// <summary>
+		/// The 1. data element of 3. row
+		/// </summary>
+		public double m31;
+		/// <summary>
+		/// The 2. data element of 3. row
+		/// </summary>
+		public double m32;
+		/// <summary>
+		/// The 3. data element of 3. row
+		/// </summary>
+		public double m33;
+		/// <summary>
+		/// The 4. data element of 3. row
+		/// </summary>
+		public double m34;
+		
+		/// <summary>
+		/// The 1. data element of 4. row
+		/// </summary>
+		public double m41;
+		/// <summary>
+		/// The 2. data element of 4. row
+		/// </summary>
+		public double m42;
+		/// <summary>
+		/// The 3. data element of 4. row
+		/// </summary>
+		public double m43;
+		/// <summary>
+		/// The 4. data element of 4. row
+		/// </summary>
+		public double m44;
 						  
 		#region constructors
 		
+		/// <summary>
+		/// Copy constructor for the 4x4 matrix struct
+		/// </summary>
+		/// <param name="A">Matrix to be copied</param>
 		public Matrix4x4 (Matrix4x4 A)
 		{
 			m11 = A.m11; m12 = A.m12; m13 = A.m13; m14 = A.m14;			
@@ -31,6 +100,13 @@ namespace VVVV.Utils.VMath
 			m41 = A.m41; m42 = A.m42; m43 = A.m43; m44 = A.m44;
 		}
 		
+		/// <summary>
+		/// Contructor for a 4x4 matrix from four 4d-vectors, the vectors are treated as rows
+		/// </summary>
+		/// <param name="v1">1. row</param>
+		/// <param name="v2">2. row</param>
+		/// <param name="v3">3. row</param>
+		/// <param name="v4">4. row</param>
 		public Matrix4x4 (Vector4D v1, Vector4D v2, Vector4D v3, Vector4D v4)
 		{
 			m11 = v1.x; m12 = v1.y; m13 = v1.z; m14 = v1.w;		
@@ -40,6 +116,14 @@ namespace VVVV.Utils.VMath
 			
 		}
 		
+		/// <summary>
+		/// Contructor for a 4x4 matrix from four 4d-vectors, the vectors are treated as rows or columns depending on the boolean parameter
+		/// </summary>
+		/// <param name="v1"></param>
+		/// <param name="v2"></param>
+		/// <param name="v3"></param>
+		/// <param name="v4"></param>
+		/// <param name="columns">if true, the vectors are treated as columns, else as rows</param>
 		public Matrix4x4 (Vector4D v1, Vector4D v2, Vector4D v3, Vector4D v4, bool columns)
 		{
 			if (columns)
@@ -58,6 +142,25 @@ namespace VVVV.Utils.VMath
 			}
 		}
 		
+		/// <summary>
+		/// Contructor for a 4x4 matrix from 16 float values, order is row major
+		/// </summary>
+		/// <param name="m11"></param>
+		/// <param name="m12"></param>
+		/// <param name="m13"></param>
+		/// <param name="m14"></param>
+		/// <param name="m21"></param>
+		/// <param name="m22"></param>
+		/// <param name="m23"></param>
+		/// <param name="m24"></param>
+		/// <param name="m31"></param>
+		/// <param name="m32"></param>
+		/// <param name="m33"></param>
+		/// <param name="m34"></param>
+		/// <param name="m41"></param>
+		/// <param name="m42"></param>
+		/// <param name="m43"></param>
+		/// <param name="m44"></param>
 		public Matrix4x4 (double m11, double m12, double m13, double m14,
 		                  double m21, double m22, double m23, double m24,
 		                  double m31, double m32, double m33, double m34,
@@ -74,6 +177,9 @@ namespace VVVV.Utils.VMath
 		#region properties/indexer
 		
 		//rows
+		/// <summary>
+		/// Get/Set the 1. row as 4d-vector
+		/// </summary>
 		public Vector4D row1
 		{
 			get
@@ -89,6 +195,9 @@ namespace VVVV.Utils.VMath
 			}
 		}
 		
+		/// <summary>
+		/// Get/Set the 2. row as 4d-vector
+		/// </summary>
 		public Vector4D row2
 		{
 			get
@@ -104,6 +213,9 @@ namespace VVVV.Utils.VMath
 			}
 		}
 		
+		/// <summary>
+		/// Get/Set the 3. row as 4d-vector
+		/// </summary>
 		public Vector4D row3
 		{
 			get
@@ -119,6 +231,9 @@ namespace VVVV.Utils.VMath
 			}
 		}
 		
+		/// <summary>
+		/// Get/Set the 4. row as 4d-vector
+		/// </summary>
 		public Vector4D row4
 		{
 			get
@@ -135,6 +250,9 @@ namespace VVVV.Utils.VMath
 		}
 		
 		//columns
+		/// <summary>
+		/// Get/Set the 1. column as 4d-vector
+		/// </summary>
 		public Vector4D col1
 		{
 			get
@@ -150,6 +268,9 @@ namespace VVVV.Utils.VMath
 			}
 		}
 		
+		/// <summary>
+		/// Get/Set the 2. column as 4d-vector
+		/// </summary>
 		public Vector4D col2
 		{
 			get
@@ -165,6 +286,9 @@ namespace VVVV.Utils.VMath
 			}
 		}
 		
+		/// <summary>
+		/// Get/Set the 3. column as 4d-vector
+		/// </summary>
 		public Vector4D col3
 		{
 			get
@@ -180,6 +304,9 @@ namespace VVVV.Utils.VMath
 			}
 		}
 		
+		/// <summary>
+		/// Get/Set the 4. column as 4d-vector
+		/// </summary>
 		public Vector4D col4
 		{
 			get
@@ -196,6 +323,9 @@ namespace VVVV.Utils.VMath
 		}
 		
 		//indexer
+		/// <summary>
+		/// Unsafe but very fast indexer for 4x4 matrix, [0..15]
+		/// </summary>
 		unsafe public double this[int i]
 		{
 			get
@@ -214,6 +344,9 @@ namespace VVVV.Utils.VMath
 			}
 		}
 		
+		/// <summary>
+		/// Unsafe but very fast 2-d indexer for 4x4 matrix, [0..3, 0..3]
+		/// </summary>
 		unsafe public double this[int i, int j]
 		{
 			get
@@ -237,13 +370,21 @@ namespace VVVV.Utils.VMath
 		
 		#region unary operators
 		
-		//+ matrix
+		/// <summary>
+		/// + matrix, makes no changes to a matrix
+		/// </summary>
+		/// <param name="A"></param>
+		/// <returns>Input matrix unchanged</returns>
 		public static Matrix4x4 operator +(Matrix4x4 A)
 		{
 			return A;
 		}
 		
-		//- matrix
+		/// <summary>
+		/// - matrix, flips the sign off all matrix components
+		/// </summary>
+		/// <param name="A"></param>
+		/// <returns>New matrix with all components negatived</returns>
 		public static Matrix4x4 operator -(Matrix4x4 A)
 		{
 			return new Matrix4x4(-A.m11, -A.m12, -A.m13, -A.m14,
@@ -252,13 +393,18 @@ namespace VVVV.Utils.VMath
 			                     -A.m41, -A.m42, -A.m43, -A.m44);
 		}
 		
-		//! matrix, returns the inverse of the matrix
+		/// <summary>
+		/// ! matrix, calculates the inverse of the matrix
+		/// 
+		/// optimized 4x4 matrix inversion using cramer's rule, found in the game engine http://www.ogre3d.org
+		///	takes about 1,8ns to execute on intel core2 duo 2Ghz, the intel reference
+		///	implementation (not assembly optimized) was about 2,2ns.
+		///	http://www.intel.com/design/pentiumiii/sml/24504301.pdf
+		/// </summary>
+		/// <param name="A"></param>
+		/// <returns>Inverse matrix</returns>
 		public static Matrix4x4 operator !(Matrix4x4 A)
 		{
-			// optimized 4x4 matrix inversion using cramer's rule, found in the game engine http://www.ogre3d.org
-			// takes about 1,8ns to execute on intel core2 duo 2Ghz, the intel reference
-			// implementation (not assembly optimized) was about 2,2ns.
-			// http://www.intel.com/design/pentiumiii/sml/24504301.pdf
 			
 			double a11 = A.m11, a12 = A.m12, a13 = A.m13, a14 = A.m14;
 			double a21 = A.m21, a22 = A.m22, a23 = A.m23, a24 = A.m24;
@@ -319,7 +465,12 @@ namespace VVVV.Utils.VMath
 								 ret41, ret42, ret43, ret44);
 		}
 		
-		//~ matrix, returns the determinant of the matrix
+		
+		/// <summary>
+		/// ~ matrix, calculates the determinant of the matrix
+		/// </summary>
+		/// <param name="A"></param>
+		/// <returns>Determinat of the matrix</returns>
 		public static double operator ~(Matrix4x4 A)
 		{
 			double m00 = A.m11, m01 = A.m12, m02 = A.m13, m03 = A.m14;
@@ -339,7 +490,13 @@ namespace VVVV.Utils.VMath
 		
 		#region binary operators
 		
-		//matrix + matrix
+		
+		/// <summary>
+		/// matrix + matrix, adds the values of two matrices component wise
+		/// </summary>
+		/// <param name="A"></param>
+		/// <param name="B"></param>
+		/// <returns>New matrix with the pair wise sum of the components</returns>
 		public static Matrix4x4 operator +(Matrix4x4 A, Matrix4x4 B)
 		{
 			return new Matrix4x4(A.m11 + B.m11, A.m12 + B.m12, A.m13 + B.m13, A.m14 + B.m14,
@@ -348,6 +505,12 @@ namespace VVVV.Utils.VMath
 			                     A.m41 + B.m41, A.m42 + B.m42, A.m43 + B.m43, A.m44 + B.m44);
 		}
 		
+		/// <summary>
+		/// matrx + value, adds a value to all matrix components
+		/// </summary>
+		/// <param name="A"></param>
+		/// <param name="b"></param>
+		/// <returns>New matrix with b added to all components of A</returns>
 		public static Matrix4x4 operator +(Matrix4x4 A, double b)
 		{
 			return new Matrix4x4(A.m11 + b, A.m12 + b, A.m13 + b, A.m14 + b,
@@ -356,6 +519,12 @@ namespace VVVV.Utils.VMath
 			                     A.m41 + b, A.m42 + b, A.m43 + b, A.m44 + b);
 		}
 		
+		/// <summary>
+		/// value + matrix, adds a value to all matrix components
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="B"></param>
+		/// <returns>New matrix with b added to all components of A</returns>
 		public static Matrix4x4 operator +(double a, Matrix4x4 B)
 		{
 			return new Matrix4x4(a + B.m11, a + B.m12, a + B.m13, a + B.m14,
@@ -364,7 +533,13 @@ namespace VVVV.Utils.VMath
 			                     a + B.m41, a + B.m42, a + B.m43, a + B.m44);
 		}
 		
-		//matrix - matrix
+		
+		/// <summary>
+		/// matrix - matrix, subtracts the components of B from the components of A
+		/// </summary>
+		/// <param name="A"></param>
+		/// <param name="B"></param>
+		/// <returns>New matrix with the pair wise difference of the components</returns>
 		public static Matrix4x4 operator -(Matrix4x4 A, Matrix4x4 B)
 		{
 			return new Matrix4x4(A.m11 - B.m11, A.m12 - B.m12, A.m13 - B.m13, A.m14 - B.m14,
@@ -373,6 +548,12 @@ namespace VVVV.Utils.VMath
 			                     A.m41 - B.m41, A.m42 - B.m42, A.m43 - B.m43, A.m44 - B.m44);
 		}
 		
+		/// <summary>
+		/// matrix - value, subtracts a value from all matrix components
+		/// </summary>
+		/// <param name="A"></param>
+		/// <param name="b"></param>
+		/// <returns>New matrix with b subtracted from all components of A</returns>
 		public static Matrix4x4 operator -(Matrix4x4 A, double b)
 		{
 			return new Matrix4x4(A.m11 - b, A.m12 - b, A.m13 - b, A.m14 - b,
@@ -381,6 +562,12 @@ namespace VVVV.Utils.VMath
 			                     A.m41 - b, A.m42 - b, A.m43 - b, A.m44 - b);
 		}
 		
+		/// <summary>
+		/// value - matrix, subtracts a value from all matrix components
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="B"></param>
+		/// <returns>New matrix with b subtracted from all components of A</returns>
 		public static Matrix4x4 operator -(double a, Matrix4x4 B)
 		{
 			return new Matrix4x4(a - B.m11, a - B.m12, a - B.m13, a - B.m14,
@@ -389,7 +576,12 @@ namespace VVVV.Utils.VMath
 			                     a - B.m41, a - B.m42, a - B.m43, a - B.m44);
 		}
 		
-		//matrix * matrix
+		/// <summary>
+		/// matrix * matrix, performs a matrix multiplication
+		/// </summary>
+		/// <param name="A"></param>
+		/// <param name="B"></param>
+		/// <returns>Matrix product of A and B</returns>
 		public static Matrix4x4 operator *(Matrix4x4 A, Matrix4x4 B)
 		{
 			return new Matrix4x4(A.m11 * B.m11 + A.m21 * B.m12 + A.m31 * B.m13 + A.m41 * B.m14,
@@ -413,7 +605,13 @@ namespace VVVV.Utils.VMath
 			                     A.m14 * B.m41 + A.m24 * B.m42 + A.m34 * B.m43 + A.m44 * B.m44);
 		}
 		
-		//matrix * vector
+		
+		/// <summary>
+		/// matrix * 4d vector, applies a matrix transform to a 4-d vector
+		/// </summary>
+		/// <param name="A"></param>
+		/// <param name="b"></param>
+		/// <returns>Vector b transformed by matrix A</returns>
 		public static Vector4D operator *(Matrix4x4 A, Vector4D b)
 		{
 			return new Vector4D(A.m11 * b.x + A.m21 * b.y + A.m31 * b.z + A.m41 * b.w,
@@ -422,7 +620,13 @@ namespace VVVV.Utils.VMath
 			                    A.m14 * b.x + A.m24 * b.y + A.m34 * b.z + A.m44 * b.w);	
 		}
 		
-		//matrix * 3d vector (x, y, z, 1)
+		
+		/// <summary>
+		/// matrix * 3d vector, applies a matrix transform to a 3-d vector, (x, y, z, 1)
+		/// </summary>
+		/// <param name="A"></param>
+		/// <param name="b"></param>
+		/// <returns>Vector b transformed by matrix A</returns>
 		public static Vector3D operator *(Matrix4x4 A, Vector3D b)
 		{
 			double wFactor = 1/(A.m14 * b.x + A.m24 * b.y + A.m34 * b.z + A.m44);
@@ -432,7 +636,12 @@ namespace VVVV.Utils.VMath
 			                    (A.m13 * b.x + A.m23 * b.y + A.m33 * b.z + A.m43) * wFactor);
 		}
 		
-		//matrix * 2d vector (x, y, 0, 1)
+		/// <summary>
+		/// matrix * 2d vector, applies a matrix transform to a 2-d vector, (x, y, 0, 1)
+		/// </summary>
+		/// <param name="A"></param>
+		/// <param name="b"></param>
+		/// <returns>Vector b transformed by matrix A</returns>
 		public static Vector3D operator *(Matrix4x4 A, Vector2D b)
 		{
 			double wFactor = 1/(A.m14 * b.x + A.m24 * b.y + A.m44);
@@ -442,7 +651,12 @@ namespace VVVV.Utils.VMath
 			                    (A.m13 * b.x + A.m23 * b.y + A.m43) * wFactor);
 		}
 		
-		//matrix * number
+		/// <summary>
+		/// matrix * value, multiplies all matrix components with a value
+		/// </summary>
+		/// <param name="A"></param>
+		/// <param name="b"></param>
+		/// <returns>New matrix with all components of A multiplied by b</returns>
 		public static Matrix4x4 operator *(Matrix4x4 A, double b)
 		{
 			return new Matrix4x4(A.m11 * b, A.m12 * b, A.m13 * b, A.m14 * b,
@@ -451,7 +665,12 @@ namespace VVVV.Utils.VMath
 			                     A.m41 * b, A.m42 * b, A.m43 * b, A.m44 * b);
 		}
 		
-		//number * matrix
+		/// <summary>
+		/// value * matrix, multiplies all matrix components with a value
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="B"></param>
+		/// <returns>New matrix with all components of B multiplied by a</returns>
 		public static Matrix4x4 operator *(double a, Matrix4x4 B)
 		{
 			return new Matrix4x4(a * B.m11, a * B.m12, a * B.m13, a * B.m14,
@@ -460,7 +679,12 @@ namespace VVVV.Utils.VMath
 			                     a * B.m41, a * B.m42, a * B.m43, a * B.m44);
 		}
 		
-		//matrix / number
+		/// <summary>
+		/// matrix / value, divides all matrix components with a value
+		/// </summary>
+		/// <param name="A"></param>
+		/// <param name="b"></param>
+		/// <returns>New matrix with all components of A divided by b</returns>
 		public static Matrix4x4 operator /(Matrix4x4 A, double b)
 		{
 			double rez = 1/b;
@@ -470,7 +694,12 @@ namespace VVVV.Utils.VMath
 			                     A.m41 * rez, A.m42 * rez, A.m43 * rez, A.m44 * rez);
 		}
 		
-		//number / matrix
+		/// <summary>
+		/// value / matrix, divides a value by all matrix components
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="B"></param>
+		/// <returns>New matrix with a divided by all components of B</returns>
 		public static Matrix4x4 operator /(double a, Matrix4x4 B)
 		{
 			return new Matrix4x4(a / B.m11, a / B.m12, a / B.m13, a / B.m14,
