@@ -12,71 +12,43 @@ using System.Drawing;
 
 namespace VVVV.Utils.VColor
 {
-	//TRGBA
-	[StructLayout(LayoutKind.Sequential)]
-	public struct RGBAColor
-	{
-		//data fields
-		public double R, G, B, A;
-		
-		public RGBAColor(double Red, double Green, double Blue, double Alpha)
-		{
-			R = Red;
-			G = Green;
-			B = Blue;
-			A = Alpha;
-		}
-
-		public Color Color
-		{
-			get {return Color.FromArgb((int)(A*255), (int)(R*255), (int)(G*255), (int)(B*255));}
-			set {A = value.A / 255.0; R = value.R / 255.0; G = value.G / 255.0; B = value.B / 255.0;}
-		}
-		
-		public override string ToString()
-		{
-			return Color.Name;		
-		}
-		
-		#region binary operators
-		
-		public static RGBAColor operator +(RGBAColor C1, RGBAColor C2)
-		{
-			return new RGBAColor(C1.R + C2.R, C1.G + C2.G, C1.B + C2.B, C1.A + C2.A);
-		}
-		
-		public static RGBAColor operator -(RGBAColor C1, RGBAColor C2)
-		{
-			return new RGBAColor(C1.R - C2.R, C1.G - C2.G, C1.B - C2.B, C1.A - C2.A);
-		}
-		
-		public static RGBAColor operator *(RGBAColor C, double factor)
-		{
-			return new RGBAColor(C.R * factor, C.G * factor, C.B * factor, C.A * factor);
-		}
-		
-		public static RGBAColor operator *(double factor, RGBAColor C)
-		{
-			return new RGBAColor(C.R * factor, C.G * factor, C.B * factor, C.A * factor);
-		}
-		
-		#endregion binary operators
-	}
-	
+	/// <summary>
+	/// the vvvv c# color routines library
+	/// </summary>
 	public sealed class VColor
 	{
 		#region constants
 
+		/// <summary>
+		/// Red as constant, (1,0,0,1)
+		/// </summary>
 		public static readonly RGBAColor Red = new RGBAColor(1, 0, 0, 1);
+		/// <summary>
+		/// Green as constant, (0,1,0,1)
+		/// </summary>
 		public static readonly RGBAColor Green = new RGBAColor(0, 1, 0, 1);
+		/// <summary>
+		/// Blue as constant, (0,0,1,1)
+		/// </summary>
 		public static readonly RGBAColor Blue = new RGBAColor(0, 0, 1, 1);
+		/// <summary>
+		/// White as constant, (1,1,1,1)
+		/// </summary>
 		public static readonly RGBAColor White = new RGBAColor(1, 1, 1, 1);
+		/// <summary>
+		/// Black as constant, (0,0,0,1)
+		/// </summary>
 		public static readonly RGBAColor Black = new RGBAColor(0, 0, 0, 1);
 		
 		#endregion constants
 		
 		#region color modification
 
+		/// <summary>
+		/// Function to calculate the complementary color
+		/// </summary>
+		/// <param name="Col">Input color</param>
+		/// <returns>Complement color of the RGB channels of the input color</returns>
 		public static RGBAColor Complement(RGBAColor Col)
 		{
 			Col.R = 1 - Col.R;
@@ -86,11 +58,17 @@ namespace VVVV.Utils.VColor
 			return Col;
 		}
 		
-		public static RGBAColor Offset(RGBAColor Col, double offset)
+		/// <summary>
+		/// Adds a value to the RGB channels of a color and takes the result modulo 1
+		/// </summary>
+		/// <param name="Col"></param>
+		/// <param name="Offset"></param>
+		/// <returns>(Col.RGB + Offset) modulo 1</returns>
+		public static RGBAColor Offset(RGBAColor Col, double Offset)
 		{
-			Col.R = (Col.R + offset) % 1.0;
-			Col.G = (Col.G + offset) % 1.0;
-			Col.B = (Col.B + offset) % 1.0;
+			Col.R = (Col.R + Offset) % 1.0;
+			Col.G = (Col.G + Offset) % 1.0;
+			Col.B = (Col.B + Offset) % 1.0;
 			
 			return Col;
 		}
@@ -102,7 +80,14 @@ namespace VVVV.Utils.VColor
 			return inv;
 		}
 		
-			public static RGBAColor LerpRGBA(RGBAColor Col1, RGBAColor Col2, double x)
+		/// <summary>
+		/// Linear interpolation (blending) between two colors
+		/// </summary>
+		/// <param name="Col1"></param>
+		/// <param name="Col2"></param>
+		/// <param name="x">Blending factor, 0..1</param>
+		/// <returns>Linear interpolation (blending) between Col1 and Col2 if x int the range )0..1(, Col1 if x = 0, Col2 if x = 1</returns>
+		public static RGBAColor LerpRGBA(RGBAColor Col1, RGBAColor Col2, double x)
 		{
 			return Col1 + x * (Col2 - Col1);
 		}
@@ -111,6 +96,14 @@ namespace VVVV.Utils.VColor
 					
 		#region color conversion
 
+		/// <summary>
+		/// Get a C# color type from hue, saturation, lightness and alpha values
+		/// </summary>
+		/// <param name="H"></param>
+		/// <param name="S"></param>
+		/// <param name="L"></param>
+		/// <param name="A"></param>
+		/// <returns>C# Color in RGB format</returns>
 		public static Color HSLAToColor(double H, double S, double L, double A)
 		{
 			//color conversion code borrowed from Richard Newman:
@@ -167,6 +160,14 @@ namespace VVVV.Utils.VColor
 			return temp2;
 		}
 		
+		/// <summary>
+		/// Get a color from hue, saturation, brightness and alpha values
+		/// </summary>
+		/// <param name="Hue"></param>
+		/// <param name="Saturation"></param>
+		/// <param name="Value"></param>
+		/// <param name="Alpha"></param>
+		/// <returns>Color in RGB format</returns>
 		public static RGBAColor FromHSVA(double Hue, double Saturation, double Value, double Alpha)
 		{
 			double R, G, B;
@@ -175,8 +176,19 @@ namespace VVVV.Utils.VColor
 			return new RGBAColor(R, G, B, Alpha);
 		}
 		
-		//merged from http://www.easyrgb.com/math.php?MATH=M20#text20
-		//and http://www.efg2.com/Lab/Graphics/Colors/HSV.htm
+		/// <summary>
+		/// Function to convert RGB values to HSV values
+		/// 
+		/// merged from http://www.easyrgb.com/math.php?MATH=M20#text20
+		/// and http://www.efg2.com/Lab/Graphics/Colors/HSV.htm
+		/// </summary>
+		/// <param name="R"></param>
+		/// <param name="G"></param>
+		/// <param name="B"></param>
+		/// <param name="Hue">Output parameter, this variable gets filled with the Hue value</param>
+		/// <param name="Sat">Output parameter, this variable gets filled with the Saturation value</param>
+		/// <param name="Value">Output parameter, this variable gets filled with the Brightness value</param>
+		/// <returns>true if conversion was successful</returns>
 		public static bool RGBtoHSV(double R, double G, double B, out double Hue, out double Sat, out double Value)
 		{
 			double min = Math.Min(R, Math.Min(G, B));
@@ -208,8 +220,19 @@ namespace VVVV.Utils.VColor
     		return true;
 		}
 
-		//merged methods from EasyRGB (http://www.easyrgb.com/math.php?MATH=M21#text21) 
-		//and the book GRAPHICS GEMS
+	
+		/// <summary>
+		/// Function to convert HSV values to RGB values
+		/// 
+		/// merged methods from EasyRGB (http://www.easyrgb.com/math.php?MATH=M21#text21) 
+		/// and the book GRAPHICS GEMS
+		/// </summary>
+		/// <param name="H"></param>
+		/// <param name="S"></param>
+		/// <param name="V"></param>
+		/// <param name="Red">Output parameter, this variable gets filled with the red value</param>
+		/// <param name="Green">Output parameter, this variable gets filled with the green value</param>
+		/// <param name="Blue">Output parameter, this variable gets filled with the blue value</param>
 		public static void HSVtoRGB (double H, double S, double V, out double Red, out double Green, out double Blue)
 		{
 			Red = Green = Blue = V;
