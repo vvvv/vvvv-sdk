@@ -210,7 +210,7 @@ namespace VVVV.Nodes
         	if (Pin == FMyNodeInput)
         	{
         		INodeIOBase usI;
-        		FMyNodeInput.GetUpstreamInterface(MyNodeIO.GUID, out usI);
+        		FMyNodeInput.GetUpstreamInterface(out usI);
         		FUpstreamInterface = usI as IMyNodeIO;
         	}
         }
