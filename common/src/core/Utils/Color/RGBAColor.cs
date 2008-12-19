@@ -32,7 +32,7 @@ namespace VVVV.Utils.VColor
 		/// </summary>
 		public double B;
 		/// <summary>
-		/// The Alpha data fiels
+		/// The Alpha data field
 		/// </summary>
 		public double A;
 		

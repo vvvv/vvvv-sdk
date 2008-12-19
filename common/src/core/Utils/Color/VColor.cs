@@ -13,7 +13,7 @@ using System.Drawing;
 namespace VVVV.Utils.VColor
 {
 	/// <summary>
-	/// the vvvv c# color routines library
+	/// The vvvv c# color routines library
 	/// </summary>
 	public sealed class VColor
 	{
@@ -86,7 +86,7 @@ namespace VVVV.Utils.VColor
 		/// <param name="Col1"></param>
 		/// <param name="Col2"></param>
 		/// <param name="x">Blending factor, 0..1</param>
-		/// <returns>Linear interpolation (blending) between Col1 and Col2 if x int the range )0..1(, Col1 if x = 0, Col2 if x = 1</returns>
+		/// <returns>Linear interpolation (blending) between Col1 and Col2 if x in the range ]0..1[, Col1 if x = 0, Col2 if x = 1</returns>
 		public static RGBAColor LerpRGBA(RGBAColor Col1, RGBAColor Col2, double x)
 		{
 			return Col1 + x * (Col2 - Col1);
