@@ -874,9 +874,8 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to retrieve a reference of an interface offered by the upstream connected Node.
 		/// </summary>
-		/// <param name="UpstreamGuid">The Guid of the upstream interface of interest.</param>
 		/// <param name="UpstreamInterface">The retrieved interface.</param>
-		void GetUpstreamInterface(Guid UpstreamGuid, out INodeIOBase UpstreamInterface);
+		void GetUpstreamInterface(out INodeIOBase UpstreamInterface);
 		/// <summary>
 		/// Used to set the SubType of a Node Pin, which is a more detailed specification of the Node type via a set of Guids that identifiy the interfaces accepted on this Pin.
 		/// The SubType is used by the GUI to guide the user to make only links between Pins that understand the same interfaces.
