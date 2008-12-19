@@ -11,7 +11,7 @@ namespace VVVV.Nodes
 	{
 		void GetSlice(int Slice, out int Value);
 	}
-	
+
 	public class MyNodeIO
 	{
 		private static Guid FGuid;
@@ -25,6 +25,6 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		public static string FriendlyName = "Simple Plugin NodeType";
+		public static string FriendlyName = "MyNodeIO";
 	}
 }
