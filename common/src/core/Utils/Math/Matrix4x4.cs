@@ -12,7 +12,7 @@ namespace VVVV.Utils.VMath
 {
 
 	/// <summary>
-	/// 4x4 transform matrix struct, much faster then matrix classes
+	/// 4x4 transform matrix struct with operators, much faster then matrix classes
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Matrix4x4
@@ -374,7 +374,7 @@ namespace VVVV.Utils.VMath
 		/// + matrix, makes no changes to a matrix
 		/// </summary>
 		/// <param name="A"></param>
-		/// <returns>Input matrix unchanged</returns>
+		/// <returns>Input matrix A unchanged</returns>
 		public static Matrix4x4 operator +(Matrix4x4 A)
 		{
 			return A;
@@ -384,7 +384,7 @@ namespace VVVV.Utils.VMath
 		/// - matrix, flips the sign off all matrix components
 		/// </summary>
 		/// <param name="A"></param>
-		/// <returns>New matrix with all components negatived</returns>
+		/// <returns>New matrix with all components of A negatived</returns>
 		public static Matrix4x4 operator -(Matrix4x4 A)
 		{
 			return new Matrix4x4(-A.m11, -A.m12, -A.m13, -A.m14,
@@ -496,7 +496,7 @@ namespace VVVV.Utils.VMath
 		/// </summary>
 		/// <param name="A"></param>
 		/// <param name="B"></param>
-		/// <returns>New matrix with the pair wise sum of the components</returns>
+		/// <returns>New matrix with the pair wise sum of the components of A and B</returns>
 		public static Matrix4x4 operator +(Matrix4x4 A, Matrix4x4 B)
 		{
 			return new Matrix4x4(A.m11 + B.m11, A.m12 + B.m12, A.m13 + B.m13, A.m14 + B.m14,
@@ -539,7 +539,7 @@ namespace VVVV.Utils.VMath
 		/// </summary>
 		/// <param name="A"></param>
 		/// <param name="B"></param>
-		/// <returns>New matrix with the pair wise difference of the components</returns>
+		/// <returns>New matrix with the pair wise difference of the components of A and B</returns>
 		public static Matrix4x4 operator -(Matrix4x4 A, Matrix4x4 B)
 		{
 			return new Matrix4x4(A.m11 - B.m11, A.m12 - B.m12, A.m13 - B.m13, A.m14 - B.m14,
@@ -563,11 +563,11 @@ namespace VVVV.Utils.VMath
 		}
 		
 		/// <summary>
-		/// value - matrix, subtracts a value from all matrix components
+		/// value - matrix, subtracts all matrix components from a value 
 		/// </summary>
 		/// <param name="a"></param>
 		/// <param name="B"></param>
-		/// <returns>New matrix with b subtracted from all components of A</returns>
+		/// <returns>New matrix with all components of A subtracted from b</returns>
 		public static Matrix4x4 operator -(double a, Matrix4x4 B)
 		{
 			return new Matrix4x4(a - B.m11, a - B.m12, a - B.m13, a - B.m14,

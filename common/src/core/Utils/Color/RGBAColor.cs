@@ -18,7 +18,8 @@ namespace VVVV.Utils.VColor
 	[StructLayout(LayoutKind.Sequential)]
 	public struct RGBAColor
 	{
-		//data fields
+		#region data fields
+
 		/// <summary>
 		/// The Red data field
 		/// </summary>
@@ -35,6 +36,10 @@ namespace VVVV.Utils.VColor
 		/// The Alpha data field
 		/// </summary>
 		public double A;
+		
+		#endregion data fields
+		
+		#region constructor, properties
 		
 		/// <summary>
 		/// vvvv color constructor
@@ -68,6 +73,8 @@ namespace VVVV.Utils.VColor
 		{
 			return Color.Name;		
 		}
+		
+		#endregion constructor, properties
 		
 		#region binary operators
 		
