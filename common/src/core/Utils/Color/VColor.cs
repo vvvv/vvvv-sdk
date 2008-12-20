@@ -7,7 +7,6 @@
 
 using System;
 using System.Runtime.InteropServices;
-
 using System.Drawing;
 
 namespace VVVV.Utils.VColor
@@ -73,11 +72,19 @@ namespace VVVV.Utils.VColor
 			return Col;
 		}
 		
+		/// <summary>
+		/// Function to get black or white, which ever has higher contrast to the input color, e.g. for text on colored backgrounds
+		/// </summary>
+		/// <param name="C">Input color</param>
+		/// <returns>Black or white in C# color format</returns>
 		public static Color Invert(Color C)
-		{
-			Color inv = Color.FromArgb(255, (C.R + 64) % 255, (C.G + 64) % 255, (C.B + 64) % 255);
-			inv = HSLAToColor(0, 0, inv.GetBrightness(), 1);
-			return inv;
+		{			
+			RGBAColor col = new RGBAColor(C.R/255.0, C.R/255.0, C.R/255.0, 1);
+			
+			if (Brightness(col) > 0.5)
+				return Color.White;
+			else
+				return Color.Black;
 		}
 		
 		/// <summary>
@@ -95,6 +102,16 @@ namespace VVVV.Utils.VColor
 		#endregion color modification
 					
 		#region color conversion
+		
+		/// <summary>
+		/// Calculates the brighness of a color with the formula 0.222 * R + 0.707 * G + 0.071 * B
+		/// </summary>
+		/// <param name="C"></param>
+		/// <returns>Brightness value of the input color C</returns>
+		public static double Brightness(RGBAColor C)
+		{
+			return 0.222 * C.R + 0.707 * C.G + 0.071 * C.B;
+		}
 
 		/// <summary>
 		/// Get a C# color type from hue, saturation, lightness and alpha values
