@@ -607,7 +607,7 @@ namespace VVVV.Utils.VMath
 		
 		
 		/// <summary>
-		/// matrix * 4d vector, applies a matrix transform to a 4-d vector
+		/// matrix * 4d vector, applies a matrix transform to a 4d-vector
 		/// </summary>
 		/// <param name="A"></param>
 		/// <param name="b"></param>
@@ -622,7 +622,7 @@ namespace VVVV.Utils.VMath
 		
 		
 		/// <summary>
-		/// matrix * 3d vector, applies a matrix transform to a 3-d vector, (x, y, z, 1)
+		/// matrix * 3d vector, applies a matrix transform to a 3d-vector, (x, y, z, 1)
 		/// </summary>
 		/// <param name="A"></param>
 		/// <param name="b"></param>
@@ -637,7 +637,7 @@ namespace VVVV.Utils.VMath
 		}
 		
 		/// <summary>
-		/// matrix * 2d vector, applies a matrix transform to a 2-d vector, (x, y, 0, 1)
+		/// matrix * 2d vector, applies a matrix transform to a 2d-vector, (x, y, 0, 1)
 		/// </summary>
 		/// <param name="A"></param>
 		/// <param name="b"></param>
