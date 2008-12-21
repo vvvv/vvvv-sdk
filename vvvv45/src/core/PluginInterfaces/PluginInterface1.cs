@@ -1126,9 +1126,9 @@ namespace VVVV.PluginInterfaces.V1
 		/// to adjust the SliceCounts of all outputs accordingly.</param>
 		void Evaluate(int SpreadMax);
 		/// <summary>
-		/// Called by the PluginHost only once during initialization to find out if this plugin needs to be evaluated
-		/// every frame even if there is not output connected. Typically this can return FALSE as long as the plugin doesn't have
-		/// a special reason for doing otherwise.
+		/// Called by the PluginHost only once during initialization to find out if this plugin needs to be evaluated 
+        /// every frame even if none of its outputs is connected. Typically this can return FALSE as long as the plugin doesn't have
+        /// a special reason for doing otherwise. One good reason to return TRUE would be if the plugin has no outputs at all. 
 		/// </summary>
 		bool AutoEvaluate {get;}
 	}
