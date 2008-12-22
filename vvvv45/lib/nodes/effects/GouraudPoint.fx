@@ -24,6 +24,8 @@ float4 lSpec : COLOR <String uiname="Specular Color";> = {0.35, 0.35, 0.35, 1};
 float lPower <String uiname="Power"; float uimin=0.0;> = 25.0;     //shininess of specular highlight
 float lRange <String uiname="Light Range"; float uimin=0.0;> = 10.0;
 
+float Alpha <float uimin=0.0; float uimax=1.0;> = 1;
+
 //texture
 texture Tex <string uiname="Texture";>;
 sampler Samp = sampler_state    //sampler for doing the texture-lookup
@@ -111,7 +113,10 @@ float4 PS(vs2ps In): COLOR
 
     float4 col = tex2D(Samp, In.TexCd);
     col.rgb *= In.Diffuse + In.Specular;
-    return mul(col, tColor);
+    col = mul(col, tColor);
+    col.a *= Alpha;
+
+    return col;
 }
 
 
