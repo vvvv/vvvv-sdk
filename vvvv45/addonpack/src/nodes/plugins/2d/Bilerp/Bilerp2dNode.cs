@@ -147,7 +147,7 @@ namespace VVVV.Nodes
 					//describe the nodes function
 					FPluginInfo.Help = "2D linear interpolation";
 					//specify a comma separated list of tags that describe the node
-					FPluginInfo.Tags = "interpolation";
+					FPluginInfo.Tags = "interpolation, InputMorph";
 					
 					//give credits to thirdparty code used
 					FPluginInfo.Credits = "";

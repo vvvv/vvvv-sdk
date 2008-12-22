@@ -147,7 +147,7 @@ namespace VVVV.Nodes
 					//describe the nodes function
 					FPluginInfo.Help = "builds a 4x4 matrix to 2D linear interpolate 2d-vectors in the 4d-form (x, y, x*y, 1)";
 					//specify a comma separated list of tags that describe the node
-					FPluginInfo.Tags = "interpolation, matrix";
+					FPluginInfo.Tags = "interpolation, matrix, InputMorph";
 					
 					//give credits to thirdparty code used
 					FPluginInfo.Credits = "";
