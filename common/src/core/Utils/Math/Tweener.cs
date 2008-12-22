@@ -10,7 +10,9 @@ using System;
 namespace VVVV.Utils.VMath
 {
 	/// <summary>
-	/// Tweener routines, functions for a value in the range [0..1] in various shapes
+	/// Tweener routines, interpolation functions for a value in the range [0..1] in various shapes
+	/// 
+	/// Code by west
 	/// </summary>
 	public sealed class Tweener
 	{	
