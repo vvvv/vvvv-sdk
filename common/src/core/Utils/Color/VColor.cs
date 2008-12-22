@@ -99,6 +99,30 @@ namespace VVVV.Utils.VColor
 			return Col1 + x * (Col2 - Col1);
 		}
 		
+		/// <summary>
+		/// 2d linear interpolation in x and y direction for colors
+		/// </summary>
+		/// <param name="x">The x position where to interpolate, 0..1</param>
+		/// <param name="y">The y position where to interpolate, 0..1</param>
+		/// <param name="P1">Lower left color</param>
+		/// <param name="P2">Lower right color</param>
+		/// <param name="P3">Upper right color</param>
+		/// <param name="P4">Upper left color</param>
+		/// <returns>Interpolated color between the 4 colors in the corners</returns>
+		public static RGBAColor BilerpRGBA(double x, double y, RGBAColor P1, RGBAColor P2, RGBAColor P3, RGBAColor P4)
+		{
+			
+			//interpolate lower colors in x direction
+			P1 = LerpRGBA(P1, P2, x);
+			
+			//interpolate upper colors in x direction
+			P3 = LerpRGBA(P4, P3, x);
+			
+			//interpolate results in y direction
+			return LerpRGBA(P1, P3, y);
+			
+		}
+		
 		#endregion color modification
 					
 		#region color conversion
