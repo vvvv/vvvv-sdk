@@ -104,10 +104,10 @@ namespace VVVV.Utils.VColor
 		/// </summary>
 		/// <param name="x">The x position where to interpolate, 0..1</param>
 		/// <param name="y">The y position where to interpolate, 0..1</param>
-		/// <param name="P1">Lower left color</param>
-		/// <param name="P2">Lower right color</param>
-		/// <param name="P3">Upper right color</param>
-		/// <param name="P4">Upper left color</param>
+		/// <param name="P1">Upper left color</param>
+		/// <param name="P2">Upper right color</param>
+		/// <param name="P3">Lower right color</param>
+		/// <param name="P4">Lower left color</param>
 		/// <returns>Interpolated color between the 4 colors in the corners</returns>
 		public static RGBAColor BilerpRGBA(double x, double y, RGBAColor P1, RGBAColor P2, RGBAColor P3, RGBAColor P4)
 		{
@@ -119,7 +119,7 @@ namespace VVVV.Utils.VColor
 			P3 = LerpRGBA(P4, P3, x);
 			
 			//interpolate results in y direction
-			return LerpRGBA(P1, P3, y);
+			return LerpRGBA(P3, P1, y);
 			
 		}
 		

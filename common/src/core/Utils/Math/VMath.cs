@@ -444,10 +444,10 @@ namespace VVVV.Utils.VMath
 		/// 2d linear interpolation in x and y direction for single values
 		/// </summary>
 		/// <param name="Input">The position where to interpolate, 0..1</param>
-		/// <param name="P1">Lower left value</param>
-		/// <param name="P2">Lower right value</param>
-		/// <param name="P3">Upper right value</param>
-		/// <param name="P4">Upper left value</param>
+		/// <param name="P1">Upper left value</param>
+		/// <param name="P2">Upper right value</param>
+		/// <param name="P3">Lower right value</param>
+		/// <param name="P4">Lower left value</param>
 		/// <returns>Interpolated value between the 4 values in the corners</returns>
 		public static double Bilerp(Vector2D Input, double P1, double P2, double P3, double P4)
 		{
@@ -459,7 +459,7 @@ namespace VVVV.Utils.VMath
 			P3 = Lerp(P4, P3, Input.x);
 			
 			//interpolate results in y direction
-			return Lerp(P1, P3, Input.y);
+			return Lerp(P3, P4, Input.y);
 			
 		}
 		
@@ -467,10 +467,10 @@ namespace VVVV.Utils.VMath
 		/// 2d linear interpolation in x and y direction for 2d-vector input
 		/// </summary>
 		/// <param name="Input">The position where to interpolate, 0..1</param>
-		/// <param name="P1">Lower left point</param>
-		/// <param name="P2">Lower right point</param>
-		/// <param name="P3">Upper right point</param>
-		/// <param name="P4">Upper left point</param>
+		/// <param name="P1">Upper left vector</param>
+		/// <param name="P2">Upper right vector</param>
+		/// <param name="P3">Lower right vector</param>
+		/// <param name="P4">Lower left vector</param>
 		/// <returns>Input position transformed into the destination rectangle</returns>
 		public static Vector2D Bilerp(Vector2D Input, Vector2D P1, Vector2D P2, Vector2D P3, Vector2D P4)
 		{
@@ -478,11 +478,11 @@ namespace VVVV.Utils.VMath
 			//interpolate lower points in x direction
 			P1 = Lerp(P1, P2, Input.x);
 			
-			//interpolate upper pints in x direction
+			//interpolate upper points in x direction
 			P3 = Lerp(P4, P3, Input.x);
 			
 			//interpolate results in y direction
-			return Lerp(P1, P3, Input.y);
+			return Lerp(P3, P1, Input.y);
 			
 		}
 		
@@ -893,18 +893,18 @@ namespace VVVV.Utils.VMath
 		/// 
 		/// Should be used to transform 2d vectors in the form (x, y, x*y, 1) as 4d-vector
 		/// </summary>
-		/// <param name="P1">Lower left point</param>
-		/// <param name="P2">Lower right point</param>
-		/// <param name="P3">Upper right point</param>
-		/// <param name="P4">Upper left point</param>
+		/// <param name="P1">Upper left vector</param>
+		/// <param name="P2">Upper right vector</param>
+		/// <param name="P3">Lower right vector</param>
+		/// <param name="P4">Lower left vector</param>
 		/// <returns>Linear interpolation matrix, transforms 2d vectors in the 4d-form (x, y, x*y, 1)</returns>
 		public static Matrix4x4 Bilerp(Vector2D P1, Vector2D P2, Vector2D P3, Vector2D P4)
 		{
 			
-			return new Matrix4x4(P2.x - P1.x               , P2.y - P1.y               , 0, 0,
-			                     P3.x - P1.x               , P3.y - P1.y               , 0, 0,
-			                     P1.x + P4.x - P2.x - P3.x , P1.y + P4.y - P2.y - P3.y , 0, 0,
-			                     P1.x                      , P1.y                      , 0, 1);
+			return new Matrix4x4(P2.x - P4.x               , P2.y - P4.y               , 0, 0,
+			                     P3.x - P4.x               , P3.y - P4.y               , 0, 0,
+			                     P4.x + P1.x - P2.x - P3.x , P4.y + P1.y - P2.y - P3.y , 0, 0,
+			                     P4.x                      , P4.y                      , 0, 1);
 			
 		}
 			
