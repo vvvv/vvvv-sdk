@@ -465,28 +465,28 @@ namespace VVVV.Nodes
 					else if (CurrentTransType == 7 && CurrentTransMode == 0)
 					{
 						CurrentStringSlice = "Circulair Easing In";
-						X = Tweener.CirculairEaseIn (X);
+						X = Tweener.CircularEaseIn (X);
 					}
 
 					// Nr. 7 Out
 					else if (CurrentTransType == 7 && CurrentTransMode == 1)
 					{
 						CurrentStringSlice = "Circulair Easing Out";
-						X = Tweener.CirculairEaseOut (X);
+						X = Tweener.CircularEaseOut (X);
 					}
 									
 					// Nr. 7 In/Out
 					else if (CurrentTransType == 7 && CurrentTransMode == 2)
 					{
 						CurrentStringSlice = "Circulair Easing In/Out";
-						X = Tweener.CirculairEaseInOut (X);
+						X = Tweener.CircularEaseInOut (X);
 					}
 
 					// Nr. 7 Out/In
 					else if (CurrentTransType == 7 && CurrentTransMode == 3)
 					{
 						CurrentStringSlice = "Circulair Easing Out/In";
-						X = Tweener.CirculairEaseOutIn (X);
+						X = Tweener.CircularEaseOutIn (X);
 					}
 					
 					// -= ELASTIC EASING =-
