@@ -14,6 +14,7 @@ float4x4 tWVP: WORLDVIEWPROJECTION;
 
 //material properties
 float4 cAmb : COLOR <String uiname="Color";>  = {1, 1, 1, 1};
+float Alpha <float uimin=0.0; float uimax=1.0;> = 1;
 
 //texture
 texture Tex <string uiname="Texture";>;
@@ -69,8 +70,8 @@ float4 PS(vs2ps In): COLOR
     //In.TexCd = In.TexCd / In.TexCd.w; // for perpective texture projections (e.g. shadow maps) ps_2_0
 
     float4 col = tex2D(Samp, In.TexCd) * cAmb;
-
     col = mul(col, tCol);
+    col.a *= Alpha;
 
     return col;
 }
