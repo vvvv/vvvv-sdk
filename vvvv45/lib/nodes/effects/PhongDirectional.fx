@@ -66,7 +66,7 @@ vs2ps VS(
 // PIXELSHADERS:
 // --------------------------------------------------------------------------------------------------
 
-float Alpha = 1;
+float Alpha <float uimin=0.0; float uimax=1.0;> = 1;
 
 float4 PS(vs2ps In): COLOR
 {
