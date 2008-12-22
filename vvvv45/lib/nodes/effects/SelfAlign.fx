@@ -15,6 +15,9 @@ float4x4 tP: PROJECTION;   //projection matrix as set via Renderer (EX9)
 
 float4x4 tA <string uiname="Second Transform";>;
 
+//alpha
+float Alpha <float uimin=0.0; float uimax=1.0;> = 1;
+
 //texture
 texture Tex <string uiname="Texture";>;
 sampler Samp = sampler_state    //sampler for doing the texture-lookup
@@ -69,6 +72,7 @@ float4 PS(vs2ps In): COLOR
 {
 
     float4 col = tex2D(Samp, In.TexCd);
+    col.a *= Alpha;
     return mul(col*colore, tColor);
 }
 
