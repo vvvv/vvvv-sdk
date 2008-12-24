@@ -1,10 +1,10 @@
 #region licence/info
 
 //////project name
-//Bilerp
+//Trilerp
 
 //////description
-//2 dimensional linear interpolation
+//3 dimensional linear interpolation
 
 //////licence
 //GNU Lesser General Public License (LGPL)
