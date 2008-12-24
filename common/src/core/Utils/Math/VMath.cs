@@ -475,7 +475,7 @@ namespace VVVV.Utils.VMath
 		public static Vector2D Bilerp(Vector2D Input, Vector2D P1, Vector2D P2, Vector2D P3, Vector2D P4)
 		{
 			
-			//interpolate lupper points in x direction
+			//interpolate upper points in x direction
 			P1 = Lerp(P1, P2, Input.x);
 			
 			//interpolate lower points in x direction
@@ -901,10 +901,10 @@ namespace VVVV.Utils.VMath
 		public static Matrix4x4 Bilerp(Vector2D P1, Vector2D P2, Vector2D P3, Vector2D P4)
 		{
 			
-			return new Matrix4x4(P2.x - P4.x               , P2.y - P4.y               , 0, 0,
-			                     P3.x - P4.x               , P3.y - P4.y               , 0, 0,
-			                     P4.x + P1.x - P2.x - P3.x , P4.y + P1.y - P2.y - P3.y , 0, 0,
-			                     P4.x                      , P4.y                      , 0, 1);
+			return new Matrix4x4(P4.x - P3.x               , P4.y - P3.y               , 0, 0,
+			                     P1.x - P3.x               , P1.y - P3.y               , 0, 0,
+			                     P3.x + P2.x - P4.x - P1.x , P3.y + P2.y - P4.y - P1.y , 0, 0,
+			                     P3.x                      , P3.y                      , 0, 1);
 			
 		}
 			
