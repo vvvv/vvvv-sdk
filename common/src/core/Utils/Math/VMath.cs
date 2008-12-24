@@ -13,6 +13,9 @@ using System;
 
 namespace VVVV.Utils.VMath
 {
+	
+	#region enums
+	
 	/// <summary>
 	/// vvvv like modi for the Map function
 	/// </summary>
@@ -29,6 +32,10 @@ namespace VVVV.Utils.VMath
 		/// Maps the value, but repeats it into the min/max range, like a modulo function
 		/// </summary>
 		Wrap};
+	
+	#endregion enums
+	
+	#region VMath class
 	
 	/// <summary>
 	/// The vvvv c# math routines library
@@ -378,6 +385,8 @@ namespace VVVV.Utils.VMath
 			
 		#region interpolation
 
+		//Lerp---------------------------------------------------------------------------------------------
+		
 		/// <summary>
 		/// Linear interpolation (blending) between two values
 		/// </summary>
@@ -385,7 +394,8 @@ namespace VVVV.Utils.VMath
 		/// <param name="b"></param>
 		/// <param name="x"></param>
 		/// <returns>Linear interpolation between a and b if x in the range ]0..1[ or a if x = 0 or b if x = 1</returns>
-		public static double Lerp(double a, double b, double x)
+		public static double Lerp(double a, double b, double x) 
+
 		{
 			return a + x * (b - a);
 		}
@@ -426,19 +436,8 @@ namespace VVVV.Utils.VMath
 			return a + x * (b - a);
 		}
 		
-		/// <summary>
-		/// Cubic interpolation curve used in the vvvv timeline
-		/// </summary>
-		/// <param name="CurrenTime"></param>
-		/// <param name="Handle0"></param>
-		/// <param name="Handle1"></param>
-		/// <param name="Handle2"></param>
-		/// <param name="Handle3"></param>
-		/// <returns></returns>
-		public static double SolveCubic(double CurrenTime, double Handle0, double Handle1, double Handle2, double Handle3)
-		{
-			return (Handle0 *( System.Math.Pow(( 1 - CurrenTime ), 3)) + ( 3 * Handle1) * (CurrenTime * System.Math.Pow(( 1 - CurrenTime ), 2)) + (3 * Handle2) *( System.Math.Pow(CurrenTime, 2)* ( 1 - CurrenTime )) + Handle3 * System.Math.Pow(CurrenTime, 3));	               
-		}
+		
+		//Bilerp------------------------------------------------------------------------------------------
 		
 		/// <summary>
 		/// 2d linear interpolation in x and y direction for single values
@@ -448,7 +447,7 @@ namespace VVVV.Utils.VMath
 		/// <param name="P2">Upper right value</param>
 		/// <param name="P3">Lower right value</param>
 		/// <param name="P4">Lower left value</param>
-		/// <returns>Interpolated value between the 4 values in the corners</returns>
+		/// <returns>Interpolated value between the 4 values of the corners of a unit square</returns>
 		public static double Bilerp(Vector2D Input, double P1, double P2, double P3, double P4)
 		{
 			
@@ -464,14 +463,14 @@ namespace VVVV.Utils.VMath
 		}
 		
 		/// <summary>
-		/// 2d linear interpolation in x and y direction for 2d-vector input
+		/// 2d linear interpolation in x and y direction for 2d-vectors
 		/// </summary>
 		/// <param name="Input">The position where to interpolate, 0..1</param>
 		/// <param name="P1">Upper left vector</param>
 		/// <param name="P2">Upper right vector</param>
 		/// <param name="P3">Lower right vector</param>
 		/// <param name="P4">Lower left vector</param>
-		/// <returns>Input position transformed into the destination rectangle</returns>
+		/// <returns>Interpolated vector between the 4 vectors of the corners of a unit square</returns>
 		public static Vector2D Bilerp(Vector2D Input, Vector2D P1, Vector2D P2, Vector2D P3, Vector2D P4)
 		{
 			
@@ -485,6 +484,181 @@ namespace VVVV.Utils.VMath
 			return Lerp(P3, P1, Input.y);
 			
 		}
+		
+		/// <summary>
+		/// 2d linear interpolation in x and y direction for 3d-vectors
+		/// </summary>
+		/// <param name="Input">The position where to interpolate, 0..1</param>
+		/// <param name="P1">Upper left vector</param>
+		/// <param name="P2">Upper right vector</param>
+		/// <param name="P3">Lower right vector</param>
+		/// <param name="P4">Lower left vector</param>
+		/// <returns>Interpolated vector between the 4 vectors of the corners of a unit square</returns>
+		public static Vector3D Bilerp(Vector2D Input, Vector3D P1, Vector3D P2, Vector3D P3, Vector3D P4)
+		{
+			
+			//interpolate upper points in x direction
+			P1 = Lerp(P1, P2, Input.x);
+			
+			//interpolate lower points in x direction
+			P3 = Lerp(P4, P3, Input.x);
+			
+			//interpolate results in y direction
+			return Lerp(P3, P1, Input.y);
+			
+		}
+		
+		/// <summary>
+		/// 2d linear interpolation in x and y direction for 4d-vectors
+		/// </summary>
+		/// <param name="Input">The position where to interpolate, 0..1</param>
+		/// <param name="P1">Upper left vector</param>
+		/// <param name="P2">Upper right vector</param>
+		/// <param name="P3">Lower right vector</param>
+		/// <param name="P4">Lower left vector</param>
+		/// <returns>Interpolated vector between the 4 vectors of the corners of a unit square</returns>
+		public static Vector4D Bilerp(Vector2D Input, Vector4D P1, Vector4D P2, Vector4D P3, Vector4D P4)
+		{
+			
+			//interpolate upper points in x direction
+			P1 = Lerp(P1, P2, Input.x);
+			
+			//interpolate lower points in x direction
+			P3 = Lerp(P4, P3, Input.x);
+			
+			//interpolate results in y direction
+			return Lerp(P3, P1, Input.y);
+			
+		}
+		
+		
+		//Trilerp-------------------------------------------------------------------------------
+		
+		/// <summary>
+		/// 3d linear interpolation in x, y and z direction for single values
+		/// </summary>
+		/// <param name="Input">The Interpolation factor, 3d-position inside the unit cube</param>
+		/// <param name="V010">Front upper left</param>
+		/// <param name="V110">Front upper right</param>
+		/// <param name="V100">Front lower right</param>
+		/// <param name="V000">Front lower left</param>
+		/// <param name="V011">Back upper left</param>
+		/// <param name="V111">Back upper right</param>
+		/// <param name="V101">Back lower right</param>
+		/// <param name="V001">Back lower left</param>
+		/// <returns>Interpolated value between the 8 values of the corners of a unit cube</returns>
+		public static double Trilerp(Vector3D Input, 
+		                             double V010, double V110, double V100, double V000,
+		                             double V011, double V111, double V101, double V001)
+		{
+			//interpolate the front side
+			V000 = Bilerp(Input.xy, V010, V110, V100, V000);
+			
+			//interpolate the back side
+			V111 = Bilerp(Input.xy, V011, V111, V101, V001);
+			
+			//interpolate in z direction
+			return Lerp(V000, V111, Input.z);
+		}
+		
+		/// <summary>
+		/// 3d linear interpolation in x, y and z direction for 2d-vectors
+		/// </summary>
+		/// <param name="Input">The Interpolation factor, 3d-position inside the unit cube</param>
+		/// <param name="V010">Front upper left</param>
+		/// <param name="V110">Front upper right</param>
+		/// <param name="V100">Front lower right</param>
+		/// <param name="V000">Front lower left</param>
+		/// <param name="V011">Back upper left</param>
+		/// <param name="V111">Back upper right</param>
+		/// <param name="V101">Back lower right</param>
+		/// <param name="V001">Back lower left</param>
+		/// <returns>Interpolated vector between the 8 vectors of the corners of a unit cube</returns>
+		public static Vector2D Trilerp(Vector3D Input, 
+		                             Vector2D V010, Vector2D V110, Vector2D V100, Vector2D V000,
+		                             Vector2D V011, Vector2D V111, Vector2D V101, Vector2D V001)
+		{
+			//interpolate the front side
+			V000 = Bilerp(Input.xy, V010, V110, V100, V000);
+			
+			//interpolate the back side
+			V111 = Bilerp(Input.xy, V011, V111, V101, V001);
+			
+			//interpolate in z direction
+			return Lerp(V000, V111, Input.z);
+		}
+		
+		/// <summary>
+		/// 3d linear interpolation in x, y and z direction for 3d-vectors
+		/// </summary>
+		/// <param name="Input">The Interpolation factor, 3d-position inside the unit cube</param>
+		/// <param name="V010">Front upper left</param>
+		/// <param name="V110">Front upper right</param>
+		/// <param name="V100">Front lower right</param>
+		/// <param name="V000">Front lower left</param>
+		/// <param name="V011">Back upper left</param>
+		/// <param name="V111">Back upper right</param>
+		/// <param name="V101">Back lower right</param>
+		/// <param name="V001">Back lower left</param>
+		/// <returns>Interpolated vector between the 8 vectors of the corners of a unit cube</returns>
+		public static Vector3D Trilerp(Vector3D Input, 
+		                             Vector3D V010, Vector3D V110, Vector3D V100, Vector3D V000,
+		                             Vector3D V011, Vector3D V111, Vector3D V101, Vector3D V001)
+		{
+			//interpolate the front side
+			V000 = Bilerp(Input.xy, V010, V110, V100, V000);
+			
+			//interpolate the back side
+			V111 = Bilerp(Input.xy, V011, V111, V101, V001);
+			
+			//interpolate in z direction
+			return Lerp(V000, V111, Input.z);
+		}
+		
+		/// <summary>
+		/// 3d linear interpolation in x, y and z direction for 4d-vectors
+		/// </summary>
+		/// <param name="Input">The Interpolation factor, 3d-position inside the unit cube</param>
+		/// <param name="V010">Front upper left</param>
+		/// <param name="V110">Front upper right</param>
+		/// <param name="V100">Front lower right</param>
+		/// <param name="V000">Front lower left</param>
+		/// <param name="V011">Back upper left</param>
+		/// <param name="V111">Back upper right</param>
+		/// <param name="V101">Back lower right</param>
+		/// <param name="V001">Back lower left</param>
+		/// <returns>Interpolated vector between the 8 vectors of the corners of a unit cube</returns>
+		public static Vector4D Trilerp(Vector3D Input, 
+		                             Vector4D V010, Vector4D V110, Vector4D V100, Vector4D V000,
+		                             Vector4D V011, Vector4D V111, Vector4D V101, Vector4D V001)
+		{
+			//interpolate the front side
+			V000 = Bilerp(Input.xy, V010, V110, V100, V000);
+			
+			//interpolate the back side
+			V111 = Bilerp(Input.xy, V011, V111, V101, V001);
+			
+			//interpolate in z direction
+			return Lerp(V000, V111, Input.z);
+		}
+		
+		//cubic---------------------------------------------------------------------------------------------
+		
+		/// <summary>
+		/// Cubic interpolation curve used in the vvvv timeline
+		/// </summary>
+		/// <param name="CurrenTime"></param>
+		/// <param name="Handle0"></param>
+		/// <param name="Handle1"></param>
+		/// <param name="Handle2"></param>
+		/// <param name="Handle3"></param>
+		/// <returns></returns>
+		public static double SolveCubic(double CurrenTime, double Handle0, double Handle1, double Handle2, double Handle3)
+		{
+			return (Handle0 *( System.Math.Pow(( 1 - CurrenTime ), 3)) + ( 3 * Handle1) * (CurrenTime * System.Math.Pow(( 1 - CurrenTime ), 2)) + (3 * Handle2) *( System.Math.Pow(CurrenTime, 2)* ( 1 - CurrenTime )) + Handle3 * System.Math.Pow(CurrenTime, 3));	               
+		}
+		
+		//spherical-----------------------------------------------------------------------------------------
 		
 		/// <summary>
 		/// Spherical interpolation between two quaternions (4d-vectors)
@@ -911,6 +1085,8 @@ namespace VVVV.Utils.VMath
 		#endregion transforms
 		
 	}
+	
+	#endregion VMath class
 
 }
 
