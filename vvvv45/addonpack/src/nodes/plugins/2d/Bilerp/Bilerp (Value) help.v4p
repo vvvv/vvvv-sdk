@@ -1,0 +1,327 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha19.2.dtd" >
+   <PATCH nodename="X:\sf plugins\2d\Bilerp\Bilerp (Value) help.v4p">
+   <BOUNDS height="10110" left="615" top="915" type="Window" width="7920">
+   </BOUNDS>
+   <NODE id="49" nodename="Cross (2d)">
+   <BOUNDS height="0" left="1365" top="3270" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X Out" visible="1">
+   </PIN>
+   <PIN pinname="Y Out" visible="1">
+   </PIN>
+   <PIN pinname="X In" visible="1">
+   </PIN>
+   <PIN pinname="Y In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="48" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="1365" top="1785" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1" values="Block">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="49" dstpinname="X In" srcnodeid="48" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="33" nodename="Vector (2d Join)">
+   <BOUNDS height="0" left="1500" top="4050" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="27" nodename="Homography (Transform 2d)">
+   <BOUNDS height="0" left="210" top="8700" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (String)">
+   <BOUNDS height="270" left="210" top="8070" type="Node" width="750">
+   </BOUNDS>
+   <BOUNDS height="570" left="210" top="8070" type="Box" width="1965">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also for a &cr;&lf;2d perspective distortion:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)">
+   <BOUNDS height="270" left="1320" top="4485" type="Node" width="3735">
+   </BOUNDS>
+   <BOUNDS height="645" left="1320" top="4485" type="Box" width="1935">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|input points in range [0..1] for x an y|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
+   <BOUNDS height="270" left="90" top="90" type="Node" width="1650">
+   </BOUNDS>
+   <BOUNDS height="465" left="90" top="90" type="Box" width="3165">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Bilinear Interpolation|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
+   <BOUNDS height="270" left="120" top="540" type="Node" width="2565">
+   </BOUNDS>
+   <BOUNDS height="330" left="120" top="540" type="Box" width="3255">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|2 dimensional linear interpolation of values|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="14" nodename=":PLUGINS:\Bilerp.dll|VVVV.Nodes.Bilerp1d">
+   <BOUNDS height="270" left="6570" top="5475" type="Node" width="750">
+   </BOUNDS>
+   <BOUNDS height="0" left="6570" top="5475" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="11700" top="7290" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Input XY" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Upper Left Value " visible="1">
+   </PIN>
+   <PIN pinname="Upper Right Value " visible="1">
+   </PIN>
+   <PIN pinname="Lower Right Value " visible="1">
+   </PIN>
+   <PIN pinname="Lower Left Value " visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3810" top="1335" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="2445" left="3810" top="1335" type="Box" width="2970">
+   </BOUNDS>
+   <BOUNDS height="160" left="11670" top="3780" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="4" values="0.242424242424242,0.757575757575756,0,0.98989898989899">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" values="0.0759493670886072,0.0632911392405058,0.253164556962025,0.835443037974685">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input XY" srcnodeid="33" srcpinname="XY">
+   </LINK>
+   <NODE componentmode="Hidden" id="11" nodename="Vector (4d Split)">
+   <BOUNDS height="0" left="6720" top="4905" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZW" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="W" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="XYZW" srcnodeid="13" srcpinname="Y Output Value">
+   </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="60">
+   <BOUNDS type="Node" left="3270" top="6435" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3270" top="6435" width="3360" height="2820">
+   </BOUNDS>
+   <BOUNDS type="Window" left="13380" top="9585" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="HSL (Color Join)" componentmode="Hidden" id="61">
+   <BOUNDS type="Node" left="6570" top="5925" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Hue" visible="1">
+   </PIN>
+   <PIN pinname="Saturation" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Lightness" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="61" srcpinname="Output" dstnodeid="60" dstpinname="Color Input">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="61" dstpinname="Hue">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="X" dstnodeid="14" dstpinname="Upper Left Value ">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Y" dstnodeid="14" dstpinname="Upper Right Value ">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Z" dstnodeid="14" dstpinname="Lower Left Value ">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="W" dstnodeid="14" dstpinname="Lower Right Value ">
+   </LINK>
+   <NODE componentmode="InABox" id="62" nodename="IOBox (String)">
+   <BOUNDS height="270" left="210" top="6450" type="Node" width="750">
+   </BOUNDS>
+   <BOUNDS height="330" left="210" top="6450" type="Box" width="930">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename=":PLUGINS:\Bilerp.dll|VVVV.Nodes.Bilerp2d" componentmode="Hidden" id="63">
+   <BOUNDS type="Node" left="210" top="6975" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="210" top="6975" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="1875" top="9600" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename=":PLUGINS:\Bilerp.dll|VVVV.Nodes.Bilerp2dTransform" componentmode="Hidden" id="64">
+   <BOUNDS type="Node" left="210" top="7485" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="210" top="7485" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="2625" top="9765" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="65">
+   <BOUNDS type="Node" left="1170" top="6945" width="1800" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1170" top="6945" width="1800" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|interpolates 2d vectors|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="66">
+   <BOUNDS type="Node" left="1140" top="7365" width="3810" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1140" top="7365" width="1920" height="540">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|makes a transform matrix to interpolate 2d vectors|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="49" srcpinname="X Out" dstnodeid="33" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="Y Out" dstnodeid="33" dstpinname="Y">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="68">
+   <BOUNDS type="Node" left="3825" top="5595" width="2460" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3825" top="5595" width="2460" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|interpolate between 4 hue values|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="67" nodename="LinearSpread (Spreads)" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="1545" top="2190" height="0" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" pintype="Input" visible="1" values="0.5">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1" pintype="Input" visible="1" values="Block">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" pintype="Input" visible="1" values="20">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" pintype="Input" visible="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Phase" pintype="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="67" srcpinname="Output" dstnodeid="49" dstpinname="Y In">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="70">
+   <BOUNDS type="Node" left="1650" top="2595" width="2805" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1650" top="2595" width="1965" height="465">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|(reverse y order because if IObox color slice order)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>
