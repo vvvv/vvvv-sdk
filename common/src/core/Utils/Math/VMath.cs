@@ -889,22 +889,21 @@ namespace VVVV.Utils.VMath
 		}
 		
 		/// <summary>
-		/// Builds a matrix that transforms 2d-vectors like a 2d linear interpolation in x and y direction
+		/// Builds a matrix that interpolates 4d-vectors like a 2d bilinear interpolation in x and y direction
 		/// 
-		/// Should be used to transform 2d vectors in the form (x, y, x*y, 1) as 4d-vector
+		/// Should be used to transform 4d vectors with interpolation foacors in the 4d-form (x, y, x*y, 1) 
 		/// </summary>
 		/// <param name="P1">Upper left vector</param>
 		/// <param name="P2">Upper right vector</param>
 		/// <param name="P3">Lower right vector</param>
 		/// <param name="P4">Lower left vector</param>
-		/// <returns>Linear interpolation matrix, transforms 2d vectors in the 4d-form (x, y, x*y, 1)</returns>
-		public static Matrix4x4 Bilerp(Vector2D P1, Vector2D P2, Vector2D P3, Vector2D P4)
+		/// <returns>Linear interpolation matrix, can be used to interpolate 4d vectors with interpolation factors in the 4d-form (x, y, x*y, 1)</returns>
+		public static Matrix4x4 BilerpMatrix(Vector4D P1, Vector4D P2, Vector4D P3, Vector4D P4)
 		{
-			
-			return new Matrix4x4(P4.x - P3.x               , P4.y - P3.y               , 0, 0,
-			                     P1.x - P3.x               , P1.y - P3.y               , 0, 0,
-			                     P3.x + P2.x - P4.x - P1.x , P3.y + P2.y - P4.y - P1.y , 0, 0,
-			                     P3.x                      , P3.y                      , 0, 1);
+			return new Matrix4x4(P4.x - P3.x               , P4.y - P3.y               , P4.z - P3.z               , P4.w - P3.w               ,
+			                     P1.x - P3.x               , P1.y - P3.y               , P1.z - P3.z               , P1.w - P3.w               ,
+			                     P3.x + P2.x - P4.x - P1.x , P3.y + P2.y - P4.y - P1.y , P3.z + P2.z - P4.z - P1.z , P3.w + P2.w - P4.w - P1.w ,
+			                     P3.x                      , P3.y                      , P3.z                      , P3.w);
 			
 		}
 			
