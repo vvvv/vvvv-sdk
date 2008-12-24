@@ -7,8 +7,8 @@
 
 using System;
 using System.Runtime.InteropServices;
-
 using System.Drawing;
+using VVVV.Utils.VMath;
 
 namespace VVVV.Utils.VColor
 {
@@ -38,6 +38,30 @@ namespace VVVV.Utils.VColor
 		public double A;
 		
 		#endregion data fields
+		
+		#region casting operators
+		
+		/// <summary>
+		/// Casts a color to a 4d-vector
+		/// </summary>
+		/// <param name="a">color to cast</param>
+		/// <returns>4d-vector with same values than input the color</returns>
+		public static implicit operator Vector4D(RGBAColor a)
+        {
+			return new Vector4D(a.R, a.G, a.B, a.A);
+        }
+		
+		/// <summary>
+		/// Casts a 4d-vector to a color
+		/// </summary>
+		/// <param name="a">4d-vector to cast</param>
+		/// <returns>color with same values like than input 4d-vector</returns>
+		public static implicit operator RGBAColor(Vector4D a)
+        {
+			return new RGBAColor(a.x, a.y, a.z, a.w);
+        }
+		
+		#endregion casting operators
 		
 		#region constructor, properties
 		
