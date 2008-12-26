@@ -395,7 +395,6 @@ namespace VVVV.Utils.VMath
 		/// <param name="x"></param>
 		/// <returns>Linear interpolation between a and b if x in the range ]0..1[ or a if x = 0 or b if x = 1</returns>
 		public static double Lerp(double a, double b, double x) 
-
 		{
 			return a + x * (b - a);
 		}
@@ -968,7 +967,9 @@ namespace VVVV.Utils.VMath
 
 		/// <summary>
 		/// Optimized 4x4 matrix inversion using cramer's rule, found in the game engine http://www.ogre3d.org
-		/// takes about 1,8ns to execute on intel core2 duo 2Ghz, the intel reference
+		/// Note that the unary ! operator of Matrix4x4 does the same
+		/// 
+		/// Code takes about 1,8ns to execute on intel core2 duo 2Ghz, the intel reference
 		/// implementation (not assembly optimized) was about 2,2ns.
 		/// http://www.intel.com/design/pentiumiii/sml/24504301.pdf
 		/// </summary>
@@ -1037,6 +1038,7 @@ namespace VVVV.Utils.VMath
 
 		/// <summary>
 		/// Calculates the determinat of a 4x4 matrix
+		/// Note that the unary ~ operator of Matrix4x4 does the same
 		/// </summary>
 		/// <param name="A"></param>
 		/// <returns>Determinat of input matrix A</returns>

@@ -44,6 +44,7 @@ namespace VVVV.Utils.VColor
 
 		/// <summary>
 		/// Function to calculate the complementary color
+		/// Note that the ! operator of RGBAColor does the same
 		/// </summary>
 		/// <param name="Col">Input color</param>
 		/// <returns>Complement color of the RGB channels of the input color</returns>
@@ -146,58 +147,14 @@ namespace VVVV.Utils.VColor
 		/// <returns>C# Color in RGB format</returns>
 		public static Color HSLAToColor(double H, double S, double L, double A)
 		{
-			//color conversion code borrowed from Richard Newman:
-			//http://richnewman.wordpress.com/hslcolor-class/
-		
-			double r = 0, g = 0, b = 0;
-		   	if (L != 0)
-		 	{
-		 		if (S == 0)
-		        	r = g = b = L;
-		     	else
-		     	{
-		        	double temp2 = GetTemp2(L, S);
-		        	double temp1 = 2.0 * L - temp2;
-		
-		        	r = GetColorComponent(temp1, temp2, H + 1.0 / 3.0);
-		        	g = GetColorComponent(temp1, temp2, H);
-		        	b = GetColorComponent(temp1, temp2, H - 1.0 / 3.0);
-		     	}
-		 	}
-		 	return Color.FromArgb((int) (255 * A), (int)(255 * r), (int)(255 * g), (int)(255 * b));
-		}
-				
-		private static double GetColorComponent(double temp1, double temp2, double temp3)
-		{
-			temp3 = MoveIntoRange(temp3);
-		    if (temp3 < 1.0 / 6.0)
-		        return temp1 + (temp2 - temp1) * 6.0 * temp3;
-		    else if (temp3 < 0.5)
-		        return temp2;
-		    else if (temp3 < 2.0 / 3.0)
-		        return temp1 + ((temp2 - temp1) * ((2.0 / 3.0) - temp3) * 6.0);
-		    else
-		        return temp1;
-		}
-				
-		private static double MoveIntoRange(double temp3)
-		{
-			if (temp3 < 0.0)
-				temp3 += 1.0;
-			else if (temp3 > 1.0)
-			    temp3 -= 1.0;
-			return temp3;
-		}
-				
-		private static double GetTemp2(double L, double S)
-		{
-			double temp2;
-			if (L < 0.5)  
-				temp2 = L * (1.0 + S);
-			else
-				temp2 = L + S - (L * S);
 			
-			return temp2;
+			double r, g, b;
+			
+			//get rgb values
+			HSLtoRGB(H, S, L, out r, out g, out b);
+			
+			return Color.FromArgb((int) (255 * A), (int)(255 * r), (int)(255 * g), (int)(255 * b));
+			
 		}
 		
 		/// <summary>
@@ -217,6 +174,46 @@ namespace VVVV.Utils.VColor
 		}
 		
 		/// <summary>
+		/// Function to convert HSV values to RGB values
+		/// 
+		/// merged methods from EasyRGB (http://www.easyrgb.com/math.php?MATH=M21#text21) 
+		/// and the book GRAPHICS GEMS
+		/// </summary>
+		/// <param name="H"></param>
+		/// <param name="S"></param>
+		/// <param name="V"></param>
+		/// <param name="Red">Output parameter, this variable gets filled with the red value</param>
+		/// <param name="Green">Output parameter, this variable gets filled with the green value</param>
+		/// <param name="Blue">Output parameter, this variable gets filled with the blue value</param>
+		public static void HSVtoRGB (double H, double S, double V, out double Red, out double Green, out double Blue)
+		{
+			Red = Green = Blue = V;
+			
+			if (S != 0)
+			{
+				H = H - Math.Truncate(H);
+				double min = V * (1 - S);
+			
+			    H = 6 * H;
+			    int sextant = (int) Math.Truncate(H);
+			    double fract = H - sextant;
+			    double vsf = V * S * fract;
+			    double mid1 = min + vsf;
+			    double mid2 = V - vsf;
+			    
+			    switch (sextant)
+			    {
+			    	case 0: {Red = V; Green = mid1; Blue = min; break;}
+			    	case 1: {Red = mid2; Green = V; Blue = min; break;}
+			    	case 2: {Red = min; Green = V; Blue = mid1; break;}
+			    	case 3: {Red = min; Green = mid2; Blue = V; break;}
+			    	case 4: {Red = mid1; Green = min; Blue = V; break;}
+			    	case 5: {Red = V; Green = min; Blue = mid2; break;}
+			    }
+			}
+		}		
+		
+		/// <summary>
 		/// Function to convert RGB values to HSV values
 		/// 
 		/// merged from http://www.easyrgb.com/math.php?MATH=M20#text20
@@ -228,7 +225,7 @@ namespace VVVV.Utils.VColor
 		/// <param name="Hue">Output parameter, this variable gets filled with the Hue value</param>
 		/// <param name="Sat">Output parameter, this variable gets filled with the Saturation value</param>
 		/// <param name="Value">Output parameter, this variable gets filled with the Brightness value</param>
-		/// <returns>true if conversion was successful</returns>
+		/// <returns>false, if color is gray, hue has no defined value in that case</returns>
 		public static bool RGBtoHSV(double R, double G, double B, out double Hue, out double Sat, out double Value)
 		{
 			double min = Math.Min(R, Math.Min(G, B));
@@ -261,43 +258,152 @@ namespace VVVV.Utils.VColor
 		}
 
 	
+
+
 		/// <summary>
-		/// Function to convert HSV values to RGB values
-		/// 
-		/// merged methods from EasyRGB (http://www.easyrgb.com/math.php?MATH=M21#text21) 
-		/// and the book GRAPHICS GEMS
+		/// Computes RGB values from HSL values, found on:
+		/// http://www.geekymonkey.com/Programming/CSharp/RGB2HSL_HSL2RGB.htm
 		/// </summary>
-		/// <param name="H"></param>
-		/// <param name="S"></param>
-		/// <param name="V"></param>
-		/// <param name="Red">Output parameter, this variable gets filled with the red value</param>
-		/// <param name="Green">Output parameter, this variable gets filled with the green value</param>
-		/// <param name="Blue">Output parameter, this variable gets filled with the blue value</param>
-		public static void HSVtoRGB (double H, double S, double V, out double Red, out double Green, out double Blue)
+		/// <param name="H">Hue</param>
+		/// <param name="S">Saturation</param>
+		/// <param name="L">Lightness</param>
+		/// <param name="Red">Output parameter, gets filled with the red value</param>
+		/// <param name="Green">Output parameter, gets filled with the green value</param>
+		/// <param name="Blue">Output parameter, gets filled with the blue value</param>
+		public static void HSLtoRGB(double H, double S, double L, out double Red, out double Green, out double Blue)
 		{
-			Red = Green = Blue = V;
 			
-			if (S != 0)
+			Red = Green = Blue = L;   // default to gray
+			
+			double v;
+			v = (L <= 0.5) ? (L * (1.0 + S)) : (L + S - L * S);
+
+			if (v > 0)
 			{
-				H = H - Math.Truncate(H);
-				double min = V * (1 - S);
-			
-			    H = 6 * H;
-			    int sextant = (int) Math.Truncate(H);
-			    double fract = H - sextant;
-			    double vsf = V * S * fract;
-			    double mid1 = min + vsf;
-			    double mid2 = V - vsf;
-			    switch (sextant)
-			    {
-			    	case 0: {Red = V; Green = mid1; Blue = min; break;}
-			    	case 1: {Red = mid2; Green = V; Blue = min; break;}
-			    	case 2: {Red = min; Green = V; Blue = mid1; break;}
-			    	case 3: {Red = min; Green = mid2; Blue = V; break;}
-			    	case 4: {Red = mid1; Green = min; Blue = V; break;}
-			    	case 5: {Red = V; Green = min; Blue = mid2; break;}
-			    }
+				
+				double m;
+				double sv;
+				int sextant;
+				double fract, vsf, mid1, mid2;
+
+				m = L + L - v;
+				sv = (v - m ) / v;
+				H *= 6.0;
+				sextant = (int)H;
+				fract = H - sextant;
+				vsf = v * sv * fract;
+				mid1 = m + vsf;
+				mid2 = v - vsf;
+				
+				switch (sextant)
+				{
+					case 0:
+						Red = v;
+						Green = mid1;
+						Blue = m;
+						break;
+						
+					case 1:
+						Red = mid2;
+						Green = v;
+						Blue = m;
+						break;
+						
+					case 2:
+						Red = m;
+						Green = v;
+						Blue = mid1;
+						break;
+						
+					case 3:
+						Red = m;
+						Green = mid2;
+						Blue = v;
+						break;
+						
+					case 4:
+						Red = mid1;
+						Green = m;
+						Blue = v;
+						break;
+						
+					case 5:
+						Red = v;
+						Green = m;
+						Blue = mid2;
+						break;
+				}
 			}
+		}
+
+		
+		/// <summary>
+		/// Computes HSL values from RGB values, found on:
+		/// http://www.geekymonkey.com/Programming/CSharp/RGB2HSL_HSL2RGB.htm
+		/// </summary>
+		/// <param name="r">Red</param>
+		/// <param name="g">Green</param>
+		/// <param name="b">Blue</param>
+		/// <param name="h">Output parameter, gets filled with the hue value</param>
+		/// <param name="s">Output parameter, gets filled with the saturation value</param>
+		/// <param name="l">Output parameter, gets filled with the lightness value</param>
+		/// <returns>false, if color is gray, in that case hue is not defined</returns>
+		public static bool RGBtoHSL (double r, double g, double b, out double h, out double s, out double l)
+		{
+
+			double v;
+			double m;
+			double vm;
+			double r2, g2, b2;
+			
+			h = 0; // default to black
+			s = 0;
+			l = 0;
+
+			v = Math.Max(r,g);
+			v = Math.Max(v,b);
+			m = Math.Min(r,g);
+			m = Math.Min(m,b);
+
+			l = (m + v) * 0.5;
+			
+			if (l <= 0.0)
+			{
+				return false;
+			}
+			
+			vm = v - m;
+			s = vm;
+			
+			if (s > 0.0)
+			{
+				s /= (l <= 0.5) ? (v + m ) : (2.0 - v - m) ;
+			}
+			else
+			{
+				return false;
+			}
+			
+			r2 = (v - r) / vm;
+			g2 = (v - g) / vm;
+			b2 = (v - b) / vm;
+			
+			if (r == v)
+			{
+				h = (g == m ? 5.0 + b2 : 1.0 - g2);
+			}
+			else if (g == v)
+			{
+				h = (b == m ? 1.0 + r2 : 3.0 - b2);
+			}
+			else
+			{
+				h = (r == m ? 3.0 + g2 : 5.0 - r2);
+			}
+			
+			h /= 6.0;
+			
+			return true;
 		}
 		
 		#endregion color conversion

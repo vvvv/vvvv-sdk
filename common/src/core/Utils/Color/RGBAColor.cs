@@ -13,7 +13,9 @@ using VVVV.Utils.VMath;
 namespace VVVV.Utils.VColor
 {
 	/// <summary>
-	/// 256-bit color struct, compatible with vvvv colors
+	/// 256-bit color struct, compatible with vvvv colors.
+	/// There is an implicit cast to the C# Color type and an explictit cast from C# color to RGBAColor.
+	/// Aswell as implicit casts from and to Vector4D.
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
 	public struct RGBAColor
@@ -39,30 +41,6 @@ namespace VVVV.Utils.VColor
 		
 		#endregion data fields
 		
-		#region casting operators
-		
-		/// <summary>
-		/// Casts a color to a 4d-vector
-		/// </summary>
-		/// <param name="a">color to cast</param>
-		/// <returns>4d-vector with same values than input the color</returns>
-		public static implicit operator Vector4D(RGBAColor a)
-        {
-			return new Vector4D(a.R, a.G, a.B, a.A);
-        }
-		
-		/// <summary>
-		/// Casts a 4d-vector to a color
-		/// </summary>
-		/// <param name="a">4d-vector to cast</param>
-		/// <returns>color with same values like than input 4d-vector</returns>
-		public static implicit operator RGBAColor(Vector4D a)
-        {
-			return new RGBAColor(a.x, a.y, a.z, a.w);
-        }
-		
-		#endregion casting operators
-		
 		#region constructor, properties
 		
 		/// <summary>
@@ -82,6 +60,7 @@ namespace VVVV.Utils.VColor
 	
 		/// <summary>
 		/// C# color type property, can be used for conversion
+		/// Note, that there is also implicit casting to C# color, and explicit casting from C# color
 		/// </summary>
 		public Color Color
 		{
@@ -99,6 +78,96 @@ namespace VVVV.Utils.VColor
 		}
 		
 		#endregion constructor, properties
+		
+		#region casting operators
+		
+		//4d-vector
+		
+		/// <summary>
+		/// Casts a color to a 4d-vector
+		/// </summary>
+		/// <param name="a">color to cast</param>
+		/// <returns>4d-vector with same values than the input color</returns>
+		public static implicit operator Vector4D(RGBAColor a)
+        {
+			return new Vector4D(a.R, a.G, a.B, a.A);
+        }
+		
+		/// <summary>
+		/// Casts a 4d-vector to a color
+		/// </summary>
+		/// <param name="a">4d-vector to cast</param>
+		/// <returns>color with same values like than input 4d-vector</returns>
+		public static implicit operator RGBAColor(Vector4D a)
+        {
+			return new RGBAColor(a.x, a.y, a.z, a.w);
+        }
+		
+		/// <summary>
+		/// Casts a C# color to a color
+		/// </summary>
+		/// <param name="C">C# color to cast</param>
+		/// <returns>Same Color than the input C# color</returns>
+		public static implicit operator RGBAColor(Color C)
+        {
+			return new RGBAColor(C.R / 255.0, C.G / 255.0, C.B / 255.0, C.A / 255.0);
+        }
+		
+		/// <summary>
+		/// Explicit cast from color to C# color
+		/// </summary>
+		/// <param name="C">color to cast</param>
+		/// <returns>C# color with closest values to the input the color</returns>
+		public static explicit operator Color(RGBAColor C)
+        {
+			return Color.FromArgb((int)(C.A*255), (int)(C.R*255), (int)(C.G*255), (int)(C.B*255));
+        }
+		
+		#endregion casting operators
+		
+		#region unary operators
+			
+		/// <summary>
+		/// + color, makes no changes to a color
+		/// </summary>
+		/// <param name="C"></param>
+		/// <returns>Input color C unchanged</returns>
+		public static RGBAColor operator +(RGBAColor C)
+		{
+			return C;
+		}
+		
+		/// <summary>
+		/// - color, flips the sign off all color components
+		/// </summary>
+		/// <param name="C"></param>
+		/// <returns>New color with all components of C negatived</returns>
+		public static RGBAColor operator -(RGBAColor C)
+		{
+			return new RGBAColor( -C.R, -C.G, -C.B, -C.A);
+		}
+		
+		/// <summary>
+		/// ! color, calculates the complementary color
+		/// </summary>
+		/// <param name="C"></param>
+		/// <returns>Complementary color to the input color C</returns>
+		public static RGBAColor operator !(RGBAColor C)
+		{
+			return new RGBAColor( 1-C.R, 1-C.G, 1-C.B, 1);
+		}
+		
+		/// <summary>
+		/// ~ color, calculates the brighness of a color with the formula 0.222 * R + 0.707 * G + 0.071 * B
+		/// </summary>
+		/// <param name="C"></param>
+		/// <returns>Brightness value of the input color C</returns>
+		public static double operator ~(RGBAColor C)
+		{
+			return 0.222 * C.R + 0.707 * C.G + 0.071 * C.B;
+		}	
+		
+		#endregion unary operators
 		
 		#region binary operators
 		

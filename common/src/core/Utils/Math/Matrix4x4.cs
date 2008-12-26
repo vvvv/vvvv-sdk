@@ -17,7 +17,8 @@ namespace VVVV.Utils.VMath
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Matrix4x4
 	{
-		//data fields
+		#region data fields
+
 		/// <summary>
 		/// The 1. data element of 1. row
 		/// </summary>
@@ -85,6 +86,8 @@ namespace VVVV.Utils.VMath
 		/// The 4. data element of 4. row
 		/// </summary>
 		public double m44;
+		
+		#endregion data fields
 						  
 		#region constructors
 		
