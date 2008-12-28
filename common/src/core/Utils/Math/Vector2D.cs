@@ -65,6 +65,32 @@ namespace VVVV.Utils.VMath
 		
 		#endregion constructors
 		
+		#region indexer
+		
+		//indexer
+		/// <summary>
+		/// Unsafe but very fast indexer for 2d-vector, [0..1]
+		/// </summary>
+		unsafe public double this[int i]
+		{
+			get
+			{	
+				fixed (Vector2D* p = &this)
+				{
+					return ((double*)p)[i];
+				}	
+			}
+			set
+			{
+				fixed (Vector2D* p = &this)
+				{
+					((double*)p)[i] = value;
+				}
+			}
+		}
+		
+		#endregion indexer
+		
 		#region unary operators
 		
 		/// <summary>

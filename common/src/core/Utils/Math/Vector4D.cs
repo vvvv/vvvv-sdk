@@ -145,7 +145,7 @@ namespace VVVV.Utils.VMath
 		
 		#endregion constructors
 		
-		#region properties
+		#region properties, indexer
 		
 		/// <summary>
 		/// Get/set x and y components as 2d-vector
@@ -180,7 +180,29 @@ namespace VVVV.Utils.VMath
 			}
 		}
 		
-		#endregion properties
+		//indexer
+		/// <summary>
+		/// Unsafe but very fast indexer for 4d-vector, [0..3]
+		/// </summary>
+		unsafe public double this[int i]
+		{
+			get
+			{	
+				fixed (Vector4D* p = &this)
+				{
+					return ((double*)p)[i];
+				}	
+			}
+			set
+			{
+				fixed (Vector4D* p = &this)
+				{
+					((double*)p)[i] = value;
+				}
+			}
+		}
+		
+		#endregion properties, indexer
 
 		#region unary operators
 		
