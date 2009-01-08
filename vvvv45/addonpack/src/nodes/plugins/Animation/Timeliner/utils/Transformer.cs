@@ -17,8 +17,6 @@ namespace VVVV.Nodes.Timeliner
 		public void TranslateTime(double DeltaTime)
 		{	
 			GTimeTranslate += (DeltaTime / GTimeScale);
-			
-			ApplyTransformation();
 		}
 		
 		public void ScaleTime(double X, double ScaleAtTime)
@@ -27,8 +25,6 @@ namespace VVVV.Nodes.Timeliner
 			
 			GTimeScaleAt = ScaleAtTime - TimelinerPlugin.FHeaderWidth;
 			GTimeScaleAtUT = UnScalePoint(new PointF((float) GTimeScaleAt, 0)).X;
-			
-			ApplyTransformation();
 		}
 		
 		public double XPosToTime(int X)
@@ -49,13 +45,15 @@ namespace VVVV.Nodes.Timeliner
 			GTransformation.Translate((float) -GTimeScaleAtUT, 0);
 			GTransformation.Translate((float) GTimeTranslate, 0);
 			
+			
 			GScale.Reset();
 			GScale.Translate((float) GTimeScaleAt, 0);
 			GScale.Scale((float) GTimeScale, 1);
 			GScale.Translate((float) -GTimeScaleAtUT, 0);
 			
-			OnTransformationChanged(GTimeTranslate, GTimeScale);
+			OnTransformationChanged(-UnTransformPoint(new PointF(0,0)).X, GTimeScale);
 		}
+		
 		
 		public PointF UnTransformPoint(PointF In)
 		{
