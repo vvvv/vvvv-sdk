@@ -171,7 +171,14 @@ namespace VVVV.Nodes.Timeliner
 				g.Clip = new Region(new RectangleF(0, y, Width, height));
 				
 				//draw pins slices
-				bp.DrawSlices(g, from, to);
+				try
+				{
+					bp.DrawSlices(g, from, to);
+				}
+				catch
+				{
+					//just continue with next pin if drawing fails for one pin
+				}
 			}
 			
 			//reset clipping and transformation
@@ -914,6 +921,8 @@ namespace VVVV.Nodes.Timeliner
 							scale = 0.9f;
 						
 						FTransformer.ScaleTime(scale, pt.X + TimelinerPlugin.FHeaderWidth);
+						
+						FTransformer.ApplyTransformation();
 						
 						Invalidate();
 						break;
