@@ -612,12 +612,9 @@ namespace VVVV.Nodes
 		
 		public void Evaluate(int SpreadMax)
 		{
-
-			
 			//check inputs
 			double dval;
-
-			
+	
 			//data in
 			/*	if (FDataInput.PinIsChanged)
         	{
@@ -647,6 +644,7 @@ namespace VVVV.Nodes
 			}
 			
 			//lookat
+			//this is only for loading saved data in the first frame
 			if (FTransformationChanged)
 			{
 				FTranslateInput.GetValue(0, out dval);
@@ -824,7 +822,7 @@ namespace VVVV.Nodes
 							}
 						case TLPinType.Wave:
 							{
-							//	newPin = new TLWavPin(FHost, GTransformer, FOutputPins.Count, pinSettings);
+								newPin = new TLWavPin(FHost, GTransformer, FOutputPins.Count, pinSettings);
 								break;
 							}							
 					}
@@ -1122,7 +1120,6 @@ namespace VVVV.Nodes
 		{
 			FTranslateInput.SetValue(0, Translation);
 			FScaleInput.SetValue(0, Scaling);
-			FTransformationChanged = true;
 		}
 
 		void StopButtonClick(object sender, EventArgs e)
