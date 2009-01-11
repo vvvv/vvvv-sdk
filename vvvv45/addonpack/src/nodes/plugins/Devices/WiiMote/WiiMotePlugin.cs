@@ -623,6 +623,8 @@ namespace VVVV.Nodes
 						FPinOutputAvailable.SetValue(i, i);
 					}
 
+					if (id < 0) id=0; // to keep compatibility with the older nodes.
+
 					try {
 						FRemote = wc[(int)id];
 					}
