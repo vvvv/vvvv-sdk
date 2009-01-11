@@ -4,6 +4,7 @@
 //	Written by Brian Peek (http://www.brianpeek.com/)
 //	for MSDN's Coding4Fun (http://msdn.microsoft.com/coding4fun/)
 //	Visit http://blogs.msdn.com/coding4fun/archive/2007/03/14/1879033.aspx
+//  and http://www.codeplex.com/WiimoteLib
 //	for more information
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -11,20 +12,6 @@ using System;
 
 namespace WiimoteLib
 {
-	/// <summary>
-	/// Event to handle a state change on the Wiimote
-	/// </summary>
-	/// <param name="sender">Object sending the event</param>
-	/// <param name="args">Current Wiimote state</param>
-	public delegate void WiimoteChangedEventHandler(object sender, WiimoteChangedEventArgs args);
-
-	/// <summary>
-	/// Event to handle insertion/removal of an extension (Nunchuk/Classic Controller)
-	/// </summary>
-	/// <param name="sender">Object sending the event</param>
-	/// <param name="args">Current extension status</param>
-	public delegate void WiimoteExtensionChangedEventHandler(object sender, WiimoteExtensionChangedEventArgs args);
-
 	/// <summary>
 	/// Argument sent through the WiimoteExtensionChangedEvent
 	/// </summary>

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{37A555DF-7012-4B99-8A47-1C922A361E52}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -12,14 +12,6 @@
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -128,6 +120,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTypes.cs" />
@@ -135,8 +129,10 @@
     <Compile Include="HIDImports.cs" />
     <Compile Include="Wiimote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WiimoteCollection.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="docs\APIHelp\AdditionalContent\changes.topic" />
     <Content Include="docs\copyright.txt" />
     <Content Include="docs\license.txt" />
     <Content Include="docs\readme.txt" />

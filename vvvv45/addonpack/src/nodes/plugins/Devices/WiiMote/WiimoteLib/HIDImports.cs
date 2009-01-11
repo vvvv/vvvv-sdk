@@ -4,6 +4,7 @@
 //	Written by Brian Peek (http://www.brianpeek.com/)
 //	for MSDN's Coding4Fun (http://msdn.microsoft.com/coding4fun/)
 //	Visit http://blogs.msdn.com/coding4fun/archive/2007/03/14/1879033.aspx
+//  and http://www.codeplex.com/WiimoteLib
 //	for more information
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -17,7 +18,7 @@ namespace WiimoteLib
 	/// <summary>
 	/// Win32 import information for use with the Wiimote library
 	/// </summary>
-	class HIDImports
+	internal class HIDImports
 	{
 		//
 		// Flags controlling what is included in the device information set built

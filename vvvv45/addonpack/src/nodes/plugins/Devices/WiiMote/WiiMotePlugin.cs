@@ -222,8 +222,8 @@ namespace VVVV.Nodes
 			FHost.CreateValueOutput("Acceleration", 3, new string[3]{"X", "Y", "Z"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputAccelleration);
 			FPinOutputAccelleration.SetSubType3D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, false, false, false);
 			
-			FHost.CreateValueOutput("Angle", 2, new string[2]{"Pitch", "Roll"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputTilt);
-			FPinOutputTilt.SetSubType2D(double.MinValue, double.MaxValue, 0.0001, 0, 0, false, false, false);
+			FHost.CreateValueOutput("Angle", 3, new string[3]{"Pitch", "Roll", "Yaw"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputTilt);
+			FPinOutputTilt.SetSubType3D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, false, false, false);
 
 			FHost.CreateValueOutput("Infrared", 4, new string[4]{"ID", "X", "Y", "Size"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputInfraredBlobs);
 			FPinOutputInfraredBlobs.SetSubType4D(0, 1023, 1, 0, 0, 0, 0, false, false, true);
@@ -251,58 +251,79 @@ namespace VVVV.Nodes
 				if (FPinOutputExtJoystickLeft != null)FHost.DeletePin(FPinOutputExtJoystickLeft);
 				if (FPinOutputExtJoystickRight!= null)FHost.DeletePin(FPinOutputExtJoystickRight);
 				if (FPinOutputExtControls2!= null)FHost.DeletePin(FPinOutputExtControls2);
-				
 			}
 			
 			FExtension = newExt;
 			
 			switch (FExtension) {
-				case 1: //Nunchuck
-					FHost.CreateValueOutput("NunchukButtons", 2, new string[2]{"C", "Z"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtButtons);
+				case 1: //Nunchuk
+					FHost.Log(TLogType.Debug, "Nunchuk");
+
+					FHost.CreateValueOutput("NunchukButtonz", 2, new string[2]{"C", "Z"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtButtons);
 					FPinOutputExtButtons.SetSubType2D(0, 1, 1, 0, 0, false, true, false);
 					
 					FHost.CreateValueOutput("NunchukAccelleration", 3, new string[3]{"X", "Y", "Z"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtAccelleration);
 					FPinOutputExtAccelleration.SetSubType3D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, false, false, false);
 					
-					FHost.CreateValueOutput("NunchukTilt", 2, new string[2]{"Pitch", "Roll"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtTilt);
+					FHost.CreateValueOutput("NunchukTilt", 3, new string[3]{"Pitch", "Roll", "Yaw"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtTilt);
 					FPinOutputExtTilt.SetSubType3D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, false, false, false);
 					
 					FHost.CreateValueOutput("NunchukJoystick", 2, new string[2]{"Horizontal", "Vertical"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtJoystickLeft);
 					FPinOutputExtJoystickLeft.SetSubType2D(-1, 1, 0.0001, 0, 0, false, false, false);
-
-					
 					break;
 				case 2: // Classic
-					FHost.CreateValueOutput("ClassicCursor", 4, new string[4]{"Up", "Down", "Left", "Right"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtCursor);
+					FHost.Log(TLogType.Debug, "Classic");
+
+					FHost.CreateValueOutput("ClassicCursor", 4, new string[4]{"Up", "Down", "Left", "Right"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtCursor);
 					FPinOutputExtCursor.SetSubType4D(0, 1, 1, 0, 0, 0, 0, false, true, false);
 
-					FHost.CreateValueOutput("ClassicButtons", 4, new string[4]{"A", "B", "X", "Y"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtButtons);
+					FHost.CreateValueOutput("ClassicButtons", 4, new string[4]{"A", "B", "X", "Y"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtButtons);
 					FPinOutputExtButtons.SetSubType4D(0, 1, 1, 0, 0, 0, 0, false, true, false);
 
-					FHost.CreateValueOutput("ClassicSystem", 3, new string[3]{"Plus", "Minus", "Home"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtControls);
+					FHost.CreateValueOutput("ClassicSystem", 3, new string[3]{"Plus", "Minus", "Home"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtControls);
 					FPinOutputExtControls.SetSubType3D(0, 1, 1, 0, 0, 0, false, true, false);
 					
-					FHost.CreateValueOutput("ClassicJoystickLeft", 2, new string[2]{"Horizontal", "Vertical"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtJoystickLeft);
+					FHost.CreateValueOutput("ClassicJoystickLeft", 2, new string[2]{"Horizontal", "Vertical"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtJoystickLeft);
 					FPinOutputExtJoystickLeft.SetSubType2D(-1, 1, 0.0001, 0, 0, false, false, false);
 					
-					FHost.CreateValueOutput("ClassicJoystickRight", 2, new string[2]{"Horizontal", "Vertical"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtJoystickRight);
+					FHost.CreateValueOutput("ClassicJoystickRight", 2, new string[2]{"Horizontal", "Vertical"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtJoystickRight);
 					FPinOutputExtJoystickRight.SetSubType2D(-1, 1, 0.0001, 0, 0, false, false, false);
 
-					FHost.CreateValueOutput("ClassicBackControl", 4, new string[4]{"Left", "Right", "Left", "Right"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtControls2);
+					FHost.CreateValueOutput("ClassicBackControl", 4, new string[4]{"Left", "Right", "Left", "Right"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtControls2);
 					FPinOutputExtControls2.SetSubType4D(0, 1, 1, 0, 0, 0, 0, false, true, false);
-
-					/*
-					FHost.CreateValueOutput("ClassicAccelleration", 3, new string[3]{"X", "Y", "Z"}, TSliceMode.Dynamic, TPinVisibility.True, out FExtAccelleration);
-					FExtAccelleration.SetSubType3D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, false, false, false);
-					
-					FHost.CreateValueOutput("ClassicTilt", 2, new string[2]{"Roll", "Yaw"}, TSliceMode.Dynamic, TPinVisibility.True, out FExtTilt);
-					FExtTilt.SetSubType3D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, false, false, false);
-
-					 */
 					
 					break;
-				default: // None
+				case 3: //BalanceBoard
+					FHost.Log(TLogType.Debug, "BalanceBoard");
+
+					FHost.CreateValueOutput("BalanceBoardWeight", 1, new string[1]{"in kg"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtButtons);
+					FPinOutputExtButtons.SetSubType(0, double.MaxValue, 1, 0, false, false, false);
 					
+					FHost.CreateValueOutput("BalanceBoard_Corners", 4, new string[4]{"TL", "TR", "BL", "BR"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtAccelleration);
+					FPinOutputExtAccelleration.SetSubType4D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, 0, false, false, false);
+					
+					FHost.CreateValueOutput("BalanceBoardCenterOfGravity", 2, new string[2]{"Horizontal", "Vertical"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtJoystickLeft);
+					FPinOutputExtJoystickLeft.SetSubType2D(-1, 1, 0.0001, 0, 0, false, false, false);
+					break;					
+				case 4: // Guitar
+					FHost.Log(TLogType.Debug, "Guitar");
+					
+					FHost.CreateValueOutput("GuitarButtons", 4, new string[4]{"Plus", "Minus", "StrumUp", "StrumDow"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtButtons);
+					FPinOutputExtButtons.SetSubType4D(0, 1, 1, 0, 0, 0, 0, false, true, false);
+
+					FHost.CreateValueOutput("GuitarBars", 1, new string[1]{"ColorBars"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtControls);
+					FPinOutputExtControls.SetSubType(0, 1, 1, 0, false, true, false);
+					
+					FHost.CreateValueOutput("GuitarWhammybar", 1, new string[1]{"Whammy"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtJoystickLeft);
+					FPinOutputExtJoystickLeft.SetSubType2D(0, 1, 0.0001, 0, 0, false, false, false);
+					
+					FHost.CreateValueOutput("GuitarJoystick", 2, new string[2]{"Horizontal", "Vertical"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtJoystickRight);
+					FPinOutputExtJoystickRight.SetSubType2D(-1, 1, 0.0001, 0, 0, false, false, false);
+
+					break;
+				default: // None
+					FHost.Log(TLogType.Debug, "No Extension");
+
 					break;
 			}
 			
@@ -317,13 +338,19 @@ namespace VVVV.Nodes
 		
 		void OnChangeReportType(object Sender, WiimoteExtensionChangedEventArgs Args) {
 			if (Args.ExtensionType == ExtensionType.ClassicController) {
-				FRemote.SetReportType(Wiimote.InputReport.IRExtensionAccel, true);
+				FRemote.SetReportType(InputReport.IRExtensionAccel, true);
+			}
+			if (Args.ExtensionType == ExtensionType.BalanceBoard) {
+				FRemote.SetReportType(InputReport.IRExtensionAccel, true);
+			}
+			if (Args.ExtensionType == ExtensionType.Guitar) {
+				FRemote.SetReportType(InputReport.IRExtensionAccel, true);
 			}
 			if (Args.ExtensionType == ExtensionType.Nunchuk) {
-				FRemote.SetReportType(Wiimote.InputReport.IRExtensionAccel, true);
+				FRemote.SetReportType(InputReport.IRExtensionAccel, true);
 			}
 			if (Args.ExtensionType == ExtensionType.None) {
-				FRemote.SetReportType(Wiimote.InputReport.IRAccel, true);
+				FRemote.SetReportType(InputReport.IRAccel, true);
 			}
 			
 			FRemote.GetStatus();
@@ -432,12 +459,12 @@ namespace VVVV.Nodes
 				FPinOutputButtons.SetValue(3, FRemote.WiimoteState.ButtonState.Two?1d:0d);
 				
 				FPinOutputTilt.SliceCount = 1;
-				FPinOutputTilt.SetValue2D(0, FRemote.WiimoteState.AccelState.X, FRemote.WiimoteState.AccelState.Y);
+				FPinOutputTilt.SetValue3D(0, FRemote.WiimoteState.AccelState.Values.X, FRemote.WiimoteState.AccelState.Values.Y, FRemote.WiimoteState.AccelState.Values.Z);
 
 				double[] normalizedA = new double[3];
-				normalizedA[0] = (double)((FRemote.WiimoteState.AccelState.RawX - 128))/128d;
-				normalizedA[1] = (double)((FRemote.WiimoteState.AccelState.RawY- 128))/128d;
-				normalizedA[2] = (double)((FRemote.WiimoteState.AccelState.RawZ- 128))/128d;
+				normalizedA[0] = (double)((FRemote.WiimoteState.AccelState.RawValues.X - 128))/128d;
+				normalizedA[1] = (double)((FRemote.WiimoteState.AccelState.RawValues.Y- 128))/128d;
+				normalizedA[2] = (double)((FRemote.WiimoteState.AccelState.RawValues.Z- 128))/128d;
 				FPinOutputAccelleration.SliceCount = 1;
 				FPinOutputAccelleration.SetValue3D(0, normalizedA[0], normalizedA[1], normalizedA[2]);
 				
@@ -446,30 +473,14 @@ namespace VVVV.Nodes
 
 //			InfraRed
 				
-				int irCount = 0;
-				if (FRemote.WiimoteState.IRState.Found1) irCount++;
-				if (FRemote.WiimoteState.IRState.Found2) irCount++;
-				if (FRemote.WiimoteState.IRState.Found3 && FIRMode == 2) irCount++;
-				if (FRemote.WiimoteState.IRState.Found4 && FIRMode == 2) irCount++;
+				int irCount = FRemote.WiimoteState.IRState.IRSensors.Length;
+				if (irCount >2 && FIRMode <= 2) irCount = 2;
 
 				FPinOutputInfraredBlobs.SliceCount = irCount;
 
 				irCount = 0;
-				if (FRemote.WiimoteState.IRState.Found1) {
-					FPinOutputInfraredBlobs.SetValue4D(irCount, 0d, FRemote.WiimoteState.IRState.RawX1, FRemote.WiimoteState.IRState.RawY1, (FRemote.WiimoteState.IRState.Size1));
-					irCount++;
-				}
-				if (FRemote.WiimoteState.IRState.Found2) {
-					FPinOutputInfraredBlobs.SetValue4D(irCount, 1d, FRemote.WiimoteState.IRState.RawX2, FRemote.WiimoteState.IRState.RawY2, (FRemote.WiimoteState.IRState.Size2));
-					irCount++;
-				}
-				if (FRemote.WiimoteState.IRState.Found3 && FIRMode == 2) {
-					FPinOutputInfraredBlobs.SetValue4D(irCount, 2d, FRemote.WiimoteState.IRState.RawX3, FRemote.WiimoteState.IRState.RawY3, (FRemote.WiimoteState.IRState.Size3));
-					irCount++;
-				}
-				if (FRemote.WiimoteState.IRState.Found4 && FIRMode == 2) {
-					FPinOutputInfraredBlobs.SetValue4D(irCount, 3d, FRemote.WiimoteState.IRState.RawX4, FRemote.WiimoteState.IRState.RawY4, (FRemote.WiimoteState.IRState.Size4));
-					irCount++;
+				for (int i = 0;i<irCount;i++) {
+					FPinOutputInfraredBlobs.SetValue4D(i, i, FRemote.WiimoteState.IRState.IRSensors[i].RawPosition.X, FRemote.WiimoteState.IRState.IRSensors[i].RawPosition.Y, FRemote.WiimoteState.IRState.IRSensors[i].Size);
 				}
 
 				FInvalidate = false;
@@ -486,6 +497,15 @@ namespace VVVV.Nodes
 					enabledExt = " enabled";
 				}
 
+				if (ext == ExtensionType.BalanceBoard && FExtension == 3) {
+					BalanceBoard();
+					enabledExt = " enabled";
+				}				
+
+				if (ext == ExtensionType.Guitar && FExtension == 4) {
+					Guitar();
+					enabledExt = " enabled";
+				}
 				FPinOutputExtensionFound.SetString(0, ext.ToString()+enabledExt);
 				
 				
@@ -517,12 +537,12 @@ namespace VVVV.Nodes
 			FPinOutputExtButtons.SetValue(3, FRemote.WiimoteState.ClassicControllerState.ButtonState.Y?1d:0d);
 			
 			FPinOutputExtJoystickLeft.SliceCount = 1;
-			FPinOutputExtJoystickLeft.SetValue(0, FRemote.WiimoteState.ClassicControllerState.XL*2);
-			FPinOutputExtJoystickLeft.SetValue(1, FRemote.WiimoteState.ClassicControllerState.YL*2);
+			FPinOutputExtJoystickLeft.SetValue(0, FRemote.WiimoteState.ClassicControllerState.RawJoystickL.X*2);
+			FPinOutputExtJoystickLeft.SetValue(1, FRemote.WiimoteState.ClassicControllerState.RawJoystickL.Y*2);
 			
 			FPinOutputExtJoystickRight.SliceCount = 1;
-			FPinOutputExtJoystickRight.SetValue(0, FRemote.WiimoteState.ClassicControllerState.XR*2);
-			FPinOutputExtJoystickRight.SetValue(1, FRemote.WiimoteState.ClassicControllerState.YR*2);
+			FPinOutputExtJoystickRight.SetValue(0, FRemote.WiimoteState.ClassicControllerState.RawJoystickR.X*2);
+			FPinOutputExtJoystickRight.SetValue(1, FRemote.WiimoteState.ClassicControllerState.RawJoystickR.Y*2);
 		}
 		
 		private void Nunchuk() {
@@ -531,18 +551,47 @@ namespace VVVV.Nodes
 			FPinOutputExtButtons.SetValue(1, FRemote.WiimoteState.NunchukState.Z?1d:0d);
 
 			FPinOutputExtTilt.SliceCount = 1;
-			FPinOutputExtTilt.SetValue2D(0, FRemote.WiimoteState.NunchukState.AccelState.X, FRemote.WiimoteState.NunchukState.AccelState.Y);
+			FPinOutputExtTilt.SetValue3D(0, FRemote.WiimoteState.NunchukState.AccelState.Values.X, FRemote.WiimoteState.NunchukState.AccelState.Values.Y, FRemote.WiimoteState.NunchukState.AccelState.Values.Z);
 
 			double[] normalizedA = new double[3];
-			normalizedA[0] = (double)((FRemote.WiimoteState.NunchukState.AccelState.RawX - 128))/128d;
-			normalizedA[1] = (double)((FRemote.WiimoteState.NunchukState.AccelState.RawY- 128))/128d;
-			normalizedA[2] = (double)((FRemote.WiimoteState.NunchukState.AccelState.RawZ- 128))/128d;
+			normalizedA[0] = (double)((FRemote.WiimoteState.NunchukState.AccelState.RawValues.X - 128))/128d;
+			normalizedA[1] = (double)((FRemote.WiimoteState.NunchukState.AccelState.RawValues.Y - 128))/128d;
+			normalizedA[2] = (double)((FRemote.WiimoteState.NunchukState.AccelState.RawValues.Z- 128))/128d;
 			FPinOutputExtAccelleration.SliceCount = 1;
 			FPinOutputExtAccelleration.SetValue3D(0, normalizedA[0], normalizedA[1], normalizedA[2]);
 			
 			FPinOutputExtJoystickLeft.SliceCount = 1;
-			FPinOutputExtJoystickLeft.SetValue(0, FRemote.WiimoteState.NunchukState.X*2);
-			FPinOutputExtJoystickLeft.SetValue(1, FRemote.WiimoteState.NunchukState.Y*2);
+			FPinOutputExtJoystickLeft.SetValue(0, FRemote.WiimoteState.NunchukState.Joystick.X*2);
+			FPinOutputExtJoystickLeft.SetValue(1, FRemote.WiimoteState.NunchukState.Joystick.Y*2);
+		}
+		
+		private void BalanceBoard () {
+			FPinOutputExtButtons.SliceCount = 1;
+			FPinOutputExtButtons.SetValue(0, FRemote.WiimoteState.BalanceBoardState.WeightKg);
+
+			FPinOutputExtAccelleration.SliceCount = 1;
+			FPinOutputExtAccelleration.SetValue4D(0, FRemote.WiimoteState.BalanceBoardState.SensorValuesKg.TopLeft, FRemote.WiimoteState.BalanceBoardState.SensorValuesKg.TopRight, FRemote.WiimoteState.BalanceBoardState.SensorValuesKg.BottomLeft, FRemote.WiimoteState.BalanceBoardState.SensorValuesKg.BottomRight);
+			
+			FPinOutputExtJoystickLeft.SliceCount = 1;
+			FPinOutputExtJoystickLeft.SetValue2D(0, FRemote.WiimoteState.BalanceBoardState.CenterOfGravity.X*2, FRemote.WiimoteState.BalanceBoardState.CenterOfGravity.Y*2);
+		}	
+		
+		private void Guitar () {
+			FPinOutputExtButtons.SliceCount = 1;
+			FPinOutputExtButtons.SetValue4D(0, FRemote.WiimoteState.GuitarState.ButtonState.Plus?1d:0d, FRemote.WiimoteState.GuitarState.ButtonState.Minus?1d:0d, FRemote.WiimoteState.GuitarState.ButtonState.StrumUp?1d:0d, FRemote.WiimoteState.GuitarState.ButtonState.StrumDown?1d:0d);
+			
+			FPinOutputExtControls.SliceCount = 5;
+			FPinOutputExtAccelleration.SetValue(0, FRemote.WiimoteState.GuitarState.ButtonState.Green?1d:0d);
+			FPinOutputExtAccelleration.SetValue(1, FRemote.WiimoteState.GuitarState.ButtonState.Red?1d:0d);
+			FPinOutputExtAccelleration.SetValue(2, FRemote.WiimoteState.GuitarState.ButtonState.Yellow?1d:0d);
+			FPinOutputExtAccelleration.SetValue(3, FRemote.WiimoteState.GuitarState.ButtonState.Blue?1d:0d);
+			FPinOutputExtAccelleration.SetValue(4, FRemote.WiimoteState.GuitarState.ButtonState.Orange?1d:0d);
+			
+			FPinOutputExtJoystickLeft.SliceCount = 1;
+			FPinOutputExtJoystickLeft.SetValue(0, FRemote.WiimoteState.GuitarState.WhammyBar);
+
+			FPinOutputExtJoystickRight.SliceCount = 1;
+			FPinOutputExtJoystickLeft.SetValue2D(0, FRemote.WiimoteState.GuitarState.Joystick.X*2, FRemote.WiimoteState.GuitarState.Joystick.Y*2);
 		}
 		
 		private void Enable() {
@@ -561,53 +610,53 @@ namespace VVVV.Nodes
 				{
 					// if connected, disconnect first);
 					if (FWorking && FWiimoteID!= (int)id) {
-						FRemote.WiimoteChanged -= new WiimoteChangedEventHandler(OnInvalidatePlugin);
-						FRemote.WiimoteExtensionChanged -= new WiimoteExtensionChangedEventHandler(OnChangeReportType);
+						FRemote.WiimoteChanged -= OnInvalidatePlugin;
+						FRemote.WiimoteExtensionChanged -= OnChangeReportType;
 						FRemote.Disconnect();
 					}
 					
-					if (id < 0) {
-						try {
-							FRemote = new Wiimote();
-							FRemote.Connect();
-						} catch (Exception e) {
-							FWorking = false;
-							throw new Exception("No Wiimote detected. " + e.ToString());
-						}
-					} else {
-//						Connect to all Wiimotes
-						List<Wiimote> list = Wiimote.GetConnectedWiimotes();
-						
-						FPinOutputAvailable.SliceCount = list.Count;
-						for (int i=0;i<list.Count;i++) {
-							FPinOutputAvailable.SetValue(i, i);
-						}
+					WiimoteCollection wc = new WiimoteCollection();
+					wc.FindAllWiimotes();
+				
+					FPinOutputAvailable.SliceCount = wc.Count;
+					for (int i=0;i<wc.Count;i++) {
+						FPinOutputAvailable.SetValue(i, i);
+					}
 
-						try {
-							FRemote = list[(int)id];
-						}
-						catch (Exception e) {
-							FWorking = false;
-							throw new Exception("No Wiimote with that ID detected. " + e.ToString());
-						}
+					try {
+						FRemote = wc[(int)id];
+					}
+					catch (Exception e) {
+						FWorking = false;
+						throw new Exception("No Wiimote with that ID detected. " + e.ToString());
 					}
 
 					if (FRemote.WiimoteState.Extension == true) {
-						FRemote.SetReportType(Wiimote.InputReport.IRExtensionAccel, true);
+						FRemote.SetReportType(InputReport.IRExtensionAccel, true);
 					} else {
-						FRemote.SetReportType(Wiimote.InputReport.IRAccel, true);
+						FRemote.SetReportType(InputReport.IRAccel, true);
 					}
-					FRemote.GetStatus();
-
+					FRemote.Connect();
+					
 					FRemote.SetLEDs(false, false, false, true); // light number vvvvour
-					FRemote.WiimoteChanged += new WiimoteChangedEventHandler(OnInvalidatePlugin);
-					FRemote.WiimoteExtensionChanged += new WiimoteExtensionChangedEventHandler(OnChangeReportType);
+					FRemote.WiimoteChanged += OnInvalidatePlugin;
+					FRemote.WiimoteExtensionChanged += OnChangeReportType;
 					FWorking = true;
 					FMessage = "OK";
 				}
-				catch (Exception x)
+				catch(WiimoteNotFoundException ex)
 				{
-					FMessage = x.Message;
+					FMessage = "Wiimote not found error";
+					FWorking = false;
+				}
+				catch(WiimoteException ex)
+				{
+					FMessage = "Wiimote error";
+					FWorking = false;
+				}
+				catch (Exception ex)
+				{
+					FMessage = ex.Message;
 					FWorking = false;
 				}
 			}
