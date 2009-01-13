@@ -179,7 +179,7 @@ type
   end;
 
   //---------------------------------------------------------------//
-  TMWavePlayer = class(TBCSource, IWavePlayer)
+  TMWavePlayer = class(TBCSource, IWavePlayer, IPersist)
   private
    FPin    : TMWavePlayerPin;
   public
