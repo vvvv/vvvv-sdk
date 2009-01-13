@@ -384,8 +384,16 @@ begin
   FPin := TMSharedMemSourcePushPin.Create(hr, Self);
 
   if (hr <> S_OK) then
+  begin
     if (FPin = nil) then
       hr := E_OUTOFMEMORY;
+  end
+  else
+  begin
+    //set some defaults
+    FPin.SetImageFormat(320, 240, 3);
+    FPin.SetShareName('#vvvv');
+  end;                               
 end;
 
 constructor TMSharedMemSourcePushFilter.CreateFromFactory(Factory: TBCClassFactory;
