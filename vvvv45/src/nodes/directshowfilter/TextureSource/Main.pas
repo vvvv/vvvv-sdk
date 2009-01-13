@@ -111,7 +111,7 @@ type
     function Notify(Filter: IBaseFilter; q: TQuality): HRESULT; override; stdcall;
   end;
 
-  TMTextureSourcePushFilter = class(TBCSource, ITextureSource)
+  TMTextureSourcePushFilter = class(TBCSource, ITextureSource, IPersist)
   private
     FPin: TMTextureSourcePushPin;
 
