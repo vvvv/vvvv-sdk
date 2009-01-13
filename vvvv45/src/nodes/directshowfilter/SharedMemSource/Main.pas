@@ -117,7 +117,7 @@ type
     procedure SetUseSync(UseSync: Boolean); stdcall;
   end;
 
-  TMSharedMemSourcePushFilter = class(TBCSource, ISharedMemSource)
+  TMSharedMemSourcePushFilter = class(TBCSource, ISharedMemSource, IPersist)
   private
     FPin: TMSharedMemSourcePushPin;
   public
