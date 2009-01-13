@@ -162,7 +162,7 @@ type
     property ChannelCode: Integer write FChannelCode;
   end;
 
-  TMSourceBuffer = class(TBCSource, ISourceBuffer)
+  TMSourceBuffer = class(TBCSource, ISourceBuffer, IPersist)
   private
     FPin: TMSourceBufferPin;
     FChannelCount: Integer;
