@@ -61,7 +61,7 @@ Type
     function Receive(pSample: IMediaSample): HRESULT; override; stdcall;
   end;
 
-  TMSharedMemRenderer = class(TBCBaseFilter, ISharedMemParameters)
+  TMSharedMemRenderer = class(TBCBaseFilter, ISharedMemParameters, IPersist)
   private
     xxx: integer;
     FPin: TMPin;
