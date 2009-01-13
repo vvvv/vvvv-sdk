@@ -31,17 +31,11 @@ namespace VVVV.Nodes
 {
 
     //a slider
-	public class Slider
+    public class Slider : BasicController
 	{
 		//fields
-		public Matrix4x4 Transform;
-		public Matrix4x4 InvTransform;
 		public Matrix4x4 SliderTransform;
 		public double Value;
-		public bool Hit;
-		public bool MouseOver;
-		public bool Active;
-		public RGBAColor Color;
 		public RGBAColor ColorSlider;
 		
 		public Slider()
@@ -52,27 +46,24 @@ namespace VVVV.Nodes
 			Value = 0;
 			Hit = false;
 			MouseOver = false;
-			Color = new RGBAColor(0.2, 0.2, 0.2, 1);
+			CurrentCol = new RGBAColor(0.2, 0.2, 0.2, 1);
 			ColorSlider = new RGBAColor(1, 1, 1, 1);
 		}
 	}
 
 	//the slider group
-	public class SliderGroup
+	public class SliderGroup : BasicGui2dGroup
 	{
 		//fields
-		public int SelectedSlice = 0;
-		public Slider[] Sliders;
-		private RGBAColor Color, ColOver, ColActive, ColSlider;
+		private RGBAColor ColSlider;
 		private Vector2D FLastMouse;
-		private bool FMouseHit;
 		private Matrix4x4 FSliderSize;
 		
 		//constructor
 		public SliderGroup()
 		{
-			Sliders = new Slider[1];
-			Sliders[0] = new Slider();
+			FControllers = new Slider[1];
+			FControllers[0] = new Slider();
 		}
 		
 		//update data
@@ -88,7 +79,7 @@ namespace VVVV.Nodes
 		                            RGBAColor Slider)
 		{
 			//copy colors
-			Color = Col;
+			ColNorm = Col;
 			ColOver = Over;
 			ColActive = Active;
 			ColSlider = Slider;
@@ -106,12 +97,12 @@ namespace VVVV.Nodes
 			
 			
 			//create sliders?
-			if (countTotal != Sliders.Length)
+			if (countTotal != FControllers.Length)
 			{
-				Sliders = new Slider[countTotal];
+				FControllers = new Slider[countTotal];
 				for (int i = 0; i < countTotal; i++) 
 				{
-					Sliders[i] = new Slider();
+					FControllers[i] = new Slider();
 				}
 					
 			}
@@ -122,7 +113,7 @@ namespace VVVV.Nodes
 				for(int j = 0; j < countX; j++)
 				{
 					//get current slider
-					Slider s = Sliders[slice];
+					Slider s = (Slider)FControllers[slice];
 					
 					//calc position in slider space
 					double posX = ( (j + 0.5) / countX ) - 0.5;
@@ -139,51 +130,26 @@ namespace VVVV.Nodes
 		}
 		
 		//update mouse
-		public void UpdateMouse(Vector2D Mouse, 
-		                        bool MouseLeftDown,
-		                        bool MouseLeftPressed)
+		public override void UpdateMouse(Vector2D Mouse, 
+		                          		 bool MouseLeftDownEdge,
+		                        		 bool MouseLeftPressed)
 		{
 			
-			//update state
-			bool anythingHit = false;
-			
-			for (int i = 0; i < Sliders.Length && !FMouseHit; i++)
-			{
-				//get current slider
-				Slider s = Sliders[i];
-				
-				//put the mouse into the inverse slider space
-				Vector2D invMouse = (s.InvTransform * Mouse).xy;
-				
-				//check mouse over and value
-	            s.MouseOver = invMouse > -0.5 && invMouse < 0.5;
-				s.Hit = s.MouseOver && MouseLeftDown;
-				
-				//set selected slice number
-				if (s.Hit) 
-				{
-					SelectedSlice = i;
-					anythingHit = true;
-				} 		
-				
-			}
-			
-			FMouseHit = anythingHit ? true : FMouseHit;
-			FMouseHit = FMouseHit && MouseLeftPressed;
-			
-			
+			base.UpdateMouse(Mouse, MouseLeftDownEdge, MouseLeftPressed);
+					
 			//update colors
-			for (int i = 0; i < Sliders.Length; i++)
+			for (int i = 0; i < FControllers.Length; i++)
 			{
 				//get current slider
-				Slider s = Sliders[i];
+				Slider s = (Slider)FControllers[i];
 				
 				
-				//set selected slice number an color
+				//set selected slice number and color
 				if (i == SelectedSlice)
 				{
 					s.Active = true;
-					s.Color = ColActive;
+					s.Hit = FMouseHit;
+					s.CurrentCol = s.MouseOver ? ColOver : ColActive;
 					
 					//update Value
 					if (FMouseHit)
@@ -201,7 +167,8 @@ namespace VVVV.Nodes
 				else
 				{
 					s.Active = false;
-					s.Color = s.MouseOver ? ColOver : Color;
+					s.Hit = false;
+					s.CurrentCol = s.MouseOver ? ColOver : ColNorm;
 				}
 				
 				s.ColorSlider = ColSlider;

@@ -1,6 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <OutputType>Library</OutputType>
+    <RootNamespace>VVVV.Nodes</RootNamespace>
     <AssemblyName>Gui2d</AssemblyName>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -16,41 +17,33 @@
     <FileAlignment>4096</FileAlignment>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <RootNamespace>VVVV.Nodes</RootNamespace>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <OutputPath>C:\vvvv\vvvv_40beta20\plugins\</OutputPath>
-    <TargetFrameworkVersion>CF 2.0</TargetFrameworkVersion>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <SourceAnalysisOverrideSettingsFile>C:\Dokumente und Einstellungen\TF\Anwendungsdaten\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <Optimize>False</Optimize>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>Full</DebugType>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <StartAction>Project</StartAction>
-    <Optimize>False</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <Optimize>True</Optimize>
     <DefineConstants>TRACE</DefineConstants>
-    <DebugSymbols>false</DebugSymbols>
+    <DebugSymbols>False</DebugSymbols>
     <DebugType>None</DebugType>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-    <Optimize>True</Optimize>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'vvvv_debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>C:\vvvv\vvvv_40beta20\plugins\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
-    <DebugType>Full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="src\BasicGui2dGroup.cs" />
+    <Compile Include="src\BasicGui2dNode.cs" />
     <Compile Include="src\RadioButtonGroup.cs" />
     <Compile Include="src\RadioButtonNode.cs" />
     <Compile Include="src\SliderGroup.cs" />
@@ -65,6 +58,7 @@
       <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
       <Name>Utils</Name>
     </ProjectReference>
+    <Folder Include="src" />
   </ItemGroup>
-  <Import Project="$(SharpDevelopBinPath)\SharpDevelop.Build.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

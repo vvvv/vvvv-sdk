@@ -29,41 +29,19 @@ using VVVV.Utils.VColor;
 
 namespace VVVV.Nodes
 {
-	//a button
-	public class RadioButton
-	{
-		public Matrix4x4 Transform;
-		public bool Hit;
-		public bool MouseOver;
-		public bool Active;
-		public RGBAColor Color;
-		
-		public RadioButton()
-		{
-			Transform = VMath.IdentityMatrix;
-			Hit = false;
-			MouseOver = false;
-			Color = new RGBAColor(0.2, 0.2, 0.2, 1);
-		}
-	}
 	
-	//the button group
-	public class RadioButtonGroup
+	//the radio button group, uses basic controller
+	public class RadioButtonGroup : BasicGui2dGroup
 	{
-		//fields
-		public int SelectedSlice = 0;
-		public RadioButton[] Buttons;
-		private RGBAColor Color, ColOver, ColActive;
-		private static bool FMouseHit;
-		
+	
 		//constructor
 		public RadioButtonGroup()
 		{
-			Buttons = new RadioButton[1];
-			Buttons[0] = new RadioButton();
+			FControllers = new BasicController[1];
+			FControllers[0] = new BasicController();
 		}
 		
-		//update data
+		//update transform
 		public void UpdateTransform(Matrix4x4 Transform,
 		                            Vector2D Position,
 		                            Vector2D Scale,
@@ -74,7 +52,7 @@ namespace VVVV.Nodes
 		                            RGBAColor Active)
 		{
 			//copy colors
-			Color = Col;
+			ColNorm = Col;
 			ColOver = Over;
 			ColActive = Active;
 			
@@ -90,12 +68,12 @@ namespace VVVV.Nodes
 			
 			
 			//create buttons?
-			if (countTotal != Buttons.Length)
+			if (countTotal != FControllers.Length)
 			{
-				Buttons = new RadioButton[countTotal];
+				FControllers = new BasicController[countTotal];
 				for (int i = 0; i < countTotal; i++) 
 				{
-					Buttons[i] = new RadioButton();
+					FControllers[i] = new BasicController();
 				}
 					
 			}
@@ -106,7 +84,7 @@ namespace VVVV.Nodes
 				for(int j = 0; j < countX; j++)
 				{
 					//get current button
-					RadioButton b = Buttons[slice];
+					BasicController b = FControllers[slice];
 					
 					//calc position in button space
 					double posX = ( (j + 0.5) / countX ) - 0.5;
@@ -114,6 +92,7 @@ namespace VVVV.Nodes
 					
 					//build particular button space
 					b.Transform = buttonSpace * VMath.Translate(posX, posY, 0) * size;
+					b.InvTransform = !b.Transform;
 						
 					slice++;
 				}
@@ -123,69 +102,47 @@ namespace VVVV.Nodes
 		}
 		
 		//update mouse
-		public void UpdateMouse(Vector2D Mouse, 
-		                        bool MouseLeftDown,
+		public override void UpdateMouse(Vector2D Mouse, 
+		                        bool MouseLeftDownEdge,
 		                        bool MouseLeftPressed)
 		{
 			
-			//update state
-			bool anythingHit = false;
-			for (int i = 0; i < Buttons.Length && !FMouseHit; i++)
-			{
-				//get current button
-				RadioButton b = Buttons[i];
-				
-				//put the mouse into the inverse button space
-				Vector2D invMouse = (!b.Transform * Mouse).xy;
-				
-				//check mouse over and hit
-                b.MouseOver = invMouse > -0.5 && invMouse < 0.5;
-				b.Hit = b.MouseOver && MouseLeftDown;
-				
-				//set selected slice number
-				if (b.Hit) 
-				{
-					SelectedSlice = i;
-					anythingHit = true;
-				} 		
-				
-			}
-			
-			FMouseHit = anythingHit ? true : FMouseHit;
-			FMouseHit = FMouseHit && MouseLeftPressed;
+			base.UpdateMouse(Mouse, MouseLeftDownEdge, MouseLeftPressed);
 			
 			//update colors
-			for (int i = 0; i < Buttons.Length; i++)
+			for (int i = 0; i < FControllers.Length; i++)
 			{
 				//get current button
-				RadioButton b = Buttons[i];
+				BasicController b = FControllers[i];
 				
-				
-				//set selected slice number an color
-				if (i == SelectedSlice) 
+				//set selected slice number and color
+				if (i == SelectedSlice)
 				{
 					b.Active = true;
-					b.Color = ColActive;
-				} 
+					b.Hit = FMouseHit;
+					b.CurrentCol = b.MouseOver ? ColOver : ColActive;
+					
+				}
 				else
 				{
 					b.Active = false;
-					b.Color = b.MouseOver ? ColOver : Color;
+					b.Hit = false;
+					b.CurrentCol = b.MouseOver ? ColOver : ColNorm;
 				}
-					
+				
 				
 			}
-			
-			
+				
 		}
 		
 		public void UpdateValue(int val)
 		{
 			
-			Buttons[SelectedSlice].Active = false;
-			SelectedSlice = val % Buttons.Length;
-			Buttons[SelectedSlice].Active = true;
-			Buttons[SelectedSlice].Hit = true;
+			FControllers[SelectedSlice].Active = false;
+			FControllers[SelectedSlice].CurrentCol = ColNorm;
+			SelectedSlice = val % FControllers.Length;
+			FControllers[SelectedSlice].Active = true;
+			FControllers[SelectedSlice].CurrentCol = ColActive;
 		}
 	}
 	
