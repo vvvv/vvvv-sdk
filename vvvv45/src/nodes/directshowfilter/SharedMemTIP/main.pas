@@ -47,7 +47,7 @@ type
     function SetShareName(ShareName: PChar): HRESULT; stdcall;
   end;
 
-  TMSharedMemTIP = class(TBCTransInPlaceFilter, ISharedMemParameters)
+  TMSharedMemTIP = class(TBCTransInPlaceFilter, ISharedMemParameters, IPersist)
   private
     FActualDataLength: DWord;
     FDataPointer: Pointer;
