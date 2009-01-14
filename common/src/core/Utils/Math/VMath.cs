@@ -147,6 +147,41 @@ namespace VVVV.Utils.VMath
 		 	return Math.Min(Math.Max(x, minTemp), maxTemp);
 		}
 		
+		/// <summary>
+		/// Clamp function, clamps a 2d-vector into the range [min..max]
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="min"></param>
+		/// <param name="max"></param>
+		/// <returns></returns>
+		public static Vector2D Clamp(Vector2D v, double min, double max)
+		{
+			return new Vector2D(Clamp(v.x, min, max), Clamp(v.y, min, max));
+		}
+		
+		/// <summary>
+		/// Clamp function, clamps a 2d-vector into the range [min..max]
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="min"></param>
+		/// <param name="max"></param>
+		/// <returns></returns>
+		public static Vector3D Clamp(Vector3D v, double min, double max)
+		{
+			return new Vector3D(Clamp(v.x, min, max), Clamp(v.y, min, max), Clamp(v.z, min, max));
+		}
+		
+		/// <summary>
+		/// Clamp function, clamps a 2d-vector into the range [min..max]
+		/// </summary>
+		/// <param name="x"></param>
+		/// <param name="min"></param>
+		/// <param name="max"></param>
+		/// <returns></returns>
+		public static Vector4D Clamp(Vector4D v, double min, double max)
+		{
+			return new Vector4D(Clamp(v.x, min, max), Clamp(v.y, min, max), Clamp(v.z, min, max), Clamp(v.w, min, max));
+		}
 		
 		/// <summary>
 		/// Abs function for 2d-vectors
