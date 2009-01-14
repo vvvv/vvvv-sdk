@@ -35,23 +35,20 @@ using VVVV.Utils.VColor;
 
 namespace VVVV.Nodes
 {
-	public class SliderNode: BasicGui2dNode, IPlugin
+	public class RotarySliderNode: BasicGui2dNode, IPlugin
 	{
 		#region field declaration
-
-		//additional slider size pin
-		private IValueIn FIsXSliderIn;
-		private IValueIn FSizeSliderIn;
-		private IValueIn FSliderSpeedIn;
 		
 		//additional slider color pin
 		private IColorIn FSliderColorIn;
+		
+		private IValueIn FSliderSpeedIn;
 		
 		#endregion field declaration
 		
 		#region constructor/destructor
     	
-        public SliderNode()
+        public RotarySliderNode()
         {
 			//the nodes constructor
 			//nothing to declare for this node
@@ -68,10 +65,10 @@ namespace VVVV.Nodes
 			{
 				//fill out nodes info
 				IPluginInfo Info = new PluginInfo();
-				Info.Name = "Slider";
+				Info.Name = "RotarySlider";
 				Info.Category = "2d GUI";
 				Info.Version = "";
-				Info.Help = "A spread of slider groups";
+				Info.Help = "A spread of rotary knob groups";
 				Info.Tags = "EX9, DX9, transform, interaction, mouse";
 				Info.Author = "tonfilm";
 				Info.Bugs = "";
@@ -106,18 +103,12 @@ namespace VVVV.Nodes
 			FValueIn.SetSubType(0, 1, 0.01, 0, false, false, false);
 			FValueConfig.SetSubType(0, 1, 0.01, 0, false, false, false);
 			
-			FHost.CreateValueInput("Is X Slider", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FIsXSliderIn);
-			FIsXSliderIn.SetSubType(0, 1, 1, 0, false, true, false);
-			
-			FHost.CreateValueInput("Size Slider", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSizeSliderIn);
-			FSizeSliderIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.02, false, false, false);
-			
 			//color
 			FHost.CreateColorInput("Slider Color", TSliceMode.Dynamic, TPinVisibility.True, out FSliderColorIn);
 			FSliderColorIn.SetSubType(new RGBAColor(1, 1, 1, 1), true);
 			
 			FHost.CreateValueInput("Slider Speed", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSliderSpeedIn);
-			FSliderSpeedIn.SetSubType(0, double.MaxValue, 0.01, 1, false, false, false);
+			FSliderSpeedIn.SetSubType(0, double.MaxValue, 0.01, 0.25, false, false, false);
 			
 			
 		}
@@ -138,7 +129,7 @@ namespace VVVV.Nodes
 			{
 				for (int i=0; i<diff; i++)
 				{
-					FControllerGroups.Add(new SliderGroup());
+					FControllerGroups.Add(new RotarySliderGroup());
 				}
 			}
 			else if (diff < 0)
@@ -159,8 +150,6 @@ namespace VVVV.Nodes
 			    || FCountYIn.PinIsChanged
 			    || FSizeXIn.PinIsChanged
 			    || FSizeYIn.PinIsChanged
-			    || FIsXSliderIn.PinIsChanged
-			    || FSizeSliderIn.PinIsChanged
 			    || FTransformIn.PinIsChanged
 			    || FColorIn.PinIsChanged
 			    || FOverColorIn.PinIsChanged
@@ -171,12 +160,12 @@ namespace VVVV.Nodes
 				
 				for (slice = 0; slice < inputSpreadCount; slice++)
 				{
-					SliderGroup group = (SliderGroup) FControllerGroups[slice];
+					RotarySliderGroup group = (RotarySliderGroup) FControllerGroups[slice];
 					
 					Matrix4x4 trans;
 					Vector2D pos, scale, count, size;
-					double sizeSlider, sliderSpeed, isX;
 					RGBAColor col, over, active, slider;
+					double sliderSpeed;
 					
 					FTransformIn.GetMatrix(slice, out trans);
 					FPosXIn.GetValue(slice, out pos.x);
@@ -187,15 +176,13 @@ namespace VVVV.Nodes
 					FCountYIn.GetValue(slice, out count.y);
 					FSizeXIn.GetValue(slice, out size.x);
 					FSizeYIn.GetValue(slice, out size.y);
-					FSizeSliderIn.GetValue(slice, out sizeSlider);
 					FColorIn.GetColor(slice, out col);
 					FOverColorIn.GetColor(slice, out over);
 					FActiveColorIn.GetColor(slice, out active);
 					FSliderColorIn.GetColor(slice, out slider);
 					FSliderSpeedIn.GetValue(slice, out sliderSpeed);
-					FIsXSliderIn.GetValue(slice, out isX);
 
-					group.UpdateTransform(trans, pos, scale, count, size, sizeSlider, col, over, active, slider, sliderSpeed, isX >= 0.5);
+					group.UpdateTransform(trans, pos, scale, count, size, col, over, active, slider, sliderSpeed);
 					
 				}
 			}
@@ -206,7 +193,7 @@ namespace VVVV.Nodes
 			
 			for (slice = 0; slice < inputSpreadCount; slice++)
 			{
-				SliderGroup group = (SliderGroup) FControllerGroups[slice];
+				RotarySliderGroup group = (RotarySliderGroup) FControllerGroups[slice];
 				
 				outcount += group.FControllers.Length;
 				FSpreadCountsOut.SetValue(slice, group.FControllers.Length);
@@ -240,7 +227,7 @@ namespace VVVV.Nodes
 				for (slice = 0; slice < inputSpreadCount; slice++)
 				{
 					
-					SliderGroup group = (SliderGroup) FControllerGroups[slice];
+					RotarySliderGroup group = (RotarySliderGroup) FControllerGroups[slice];
 					valueSet |= group.UpdateMouse(mouse, mousDownEdge, mouseDown);
 						
 				}
@@ -256,7 +243,7 @@ namespace VVVV.Nodes
 				
 				for (int i = 0; i < inputSpreadCount; i++)
 				{
-					SliderGroup group = (SliderGroup) FControllerGroups[i];
+					RotarySliderGroup group = (RotarySliderGroup) FControllerGroups[i];
 					int pcount = group.FControllers.Length;
 					
 					for (int j = 0; j < pcount; j++)
@@ -270,7 +257,7 @@ namespace VVVV.Nodes
 						{
 							//update value
 							FValueIn.GetValue(slice, out val);
-							group.UpdateValue((Slider)group.FControllers[j], val);
+							group.UpdateValue((RotarySlider)group.FControllers[j], val);
 							
 							valueSet = true;
 						}
@@ -278,7 +265,7 @@ namespace VVVV.Nodes
 						{
 							//load from config pin on first frame
 							FValueConfig.GetValue(slice, out val);
-							group.UpdateValue((Slider)group.FControllers[j], val);
+							group.UpdateValue((RotarySlider)group.FControllers[j], val);
 							
 						}
 						
@@ -300,15 +287,15 @@ namespace VVVV.Nodes
 			slice = 0;
 			for (int i = 0; i < inputSpreadCount; i++)
 			{
-				SliderGroup group = (SliderGroup) FControllerGroups[i];
+				RotarySliderGroup group = (RotarySliderGroup) FControllerGroups[i];
 				int pcount = group.FControllers.Length;
 				
 				for (int j = 0; j < pcount; j++)
 				{
-					Slider s = (Slider) group.FControllers[j];
+					RotarySlider s = (RotarySlider) group.FControllers[j];
 					
 					FTransformOut.SetMatrix(slice * 2, s.Transform);
-					FTransformOut.SetMatrix(slice * 2 + 1, s.SliderTransform);
+					FTransformOut.SetMatrix(slice * 2 + 1, s.Transform);
 					FColorOut.SetColor(slice * 2, s.CurrentCol);
 					FColorOut.SetColor(slice * 2 + 1, s.ColorSlider);
 					FValueOut.SetValue(slice, s.Value);
@@ -322,7 +309,7 @@ namespace VVVV.Nodes
 						double val;
 						FValueConfig.GetValue(slice, out val);
 						
-						if (Math.Abs(s.Value - val) > 0.00000001)
+						if (Math.Abs(s.Value - val) > 0.000000001)
 							FValueConfig.SetValue(slice, s.Value);
 					}
 					
@@ -352,9 +339,7 @@ namespace VVVV.Nodes
 			max = Math.Max(max, FSizeXIn.SliceCount);
 			max = Math.Max(max, FSizeYIn.SliceCount);
 			
-			max = Math.Max(max, FSizeSliderIn.SliceCount);
 			max = Math.Max(max, FSliderSpeedIn.SliceCount);
-			max = Math.Max(max, FIsXSliderIn.SliceCount);
 			
 			max = Math.Max(max, FTransformIn.SliceCount);
 			max = Math.Max(max, FColorIn.SliceCount);

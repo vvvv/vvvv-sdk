@@ -40,20 +40,7 @@ namespace VVVV.Nodes
 			//the nodes constructor
 			//nothing to declare for this node
 		}
-		
 
-		// Use C# destructor syntax for finalization code.
-		// This destructor will run only if the Dispose method
-		// does not get called.
-		// It gives your base class the opportunity to finalize.
-		// Do not provide destructors in types derived from this class.
-		~RadioButtonNode()
-		{
-			// Do not re-create Dispose clean-up code here.
-			// Calling Dispose(false) is optimal in terms of
-			// readability and maintainability.
-			Dispose(false);
-		}
 		#endregion constructor/destructor
 		
 		#region node name and infos
@@ -157,7 +144,7 @@ namespace VVVV.Nodes
 			
 			
 			//update mouse and colors
-			bool mouseUpEdge = false;
+			bool valueSet = false;
 			if (   FMouseXIn.PinIsChanged
 			    || FMouseYIn.PinIsChanged
 			    || FLeftButtonIn.PinIsChanged
@@ -181,17 +168,15 @@ namespace VVVV.Nodes
 				{
 					
 					RadioButtonGroup group = (RadioButtonGroup) FControllerGroups[slice];
-					group.UpdateMouse(mouse, (mouseLeft >= 0.5) && !FLastMouseLeft, mouseLeft >= 0.5);
+					valueSet = group.UpdateMouse(mouse, (mouseLeft >= 0.5) && !FLastMouseLeft, mouseLeft >= 0.5);
 					
 					
 				}
 				
-				mouseUpEdge = FLastMouseLeft && mouseLeft < 0.5;
+				valueSet = FLastMouseLeft && mouseLeft < 0.5;
 				FLastMouseLeft = mouseLeft >= 0.5;
 			}
 			
-			//set value
-			bool valueSet = false;
 			if (   FValueIn.PinIsChanged
 			    || FSetValueIn.PinIsChanged)
 			{
@@ -238,7 +223,7 @@ namespace VVVV.Nodes
 			
 			//write output to pins
 			FValueOut.SliceCount = inputSpreadCount;
-			if (mouseUpEdge || valueSet) FValueConfig.SliceCount = inputSpreadCount;
+			if (outcount != FValueConfig.SliceCount) FValueConfig.SliceCount = outcount;
 			FTransformOut.SliceCount = outcount;
 			FColorOut.SliceCount = outcount;
 			FHitOut.SliceCount = outcount;
@@ -252,11 +237,11 @@ namespace VVVV.Nodes
 				int pcount = group.FControllers.Length;
 				
 				FValueOut.SetValue(i, group.SelectedSlice);
-				if (mouseUpEdge || valueSet) FValueConfig.SetValue(i, group.SelectedSlice);
+				if (valueSet) FValueConfig.SetValue(i, group.SelectedSlice);
 				
 				for (int j = 0; j < pcount; j++)
 				{
-					BasicController b = group.FControllers[j];
+					RadioButton b = (RadioButton)group.FControllers[j];
 					
 					FTransformOut.SetMatrix(slice, b.Transform);
 					FColorOut.SetColor(slice, b.CurrentCol);

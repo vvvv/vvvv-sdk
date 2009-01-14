@@ -32,8 +32,8 @@ namespace VVVV.Nodes
 
 
 
-	//the slider group
-	public class SliderGroup : BasicGui2dGroup
+	//the xy slider group
+	public class SliderXYGroup : BasicGui2dGroup
 	{
 		//fields
 		private RGBAColor FColSlider;
@@ -42,10 +42,10 @@ namespace VVVV.Nodes
 		private double FSliderSpeed;
 		
 		//constructor
-		public SliderGroup()
+		public SliderXYGroup()
 		{
-			FControllers = new Slider[1];
-			FControllers[0] = new Slider();
+			FControllers = new SliderXY[1];
+			FControllers[0] = new SliderXY();
 		}
 		
 		//update data
@@ -59,30 +59,22 @@ namespace VVVV.Nodes
 		                            RGBAColor Over,
 		                            RGBAColor Active,
 		                            RGBAColor SliderCol,
-		                            double SliderSpeed,
-		                            bool isX)
+		                            double sliderSpeed)
 		{
 			//copy fields
 			FColSlider = SliderCol;
-			FSliderSpeed = SliderSpeed;
-			FSliderSize = VMath.Scale(1.0 , SizeSlider, 1);
+			FSliderSpeed = sliderSpeed;
+			FSliderSize = VMath.Scale(SizeSlider, SizeSlider, 1);
 			
-			base.UpdateTransform<Slider>(Transform, Position, Scale, Count, Size, Col, Over, Active);
+			base.UpdateTransform<SliderXY>(Transform, Position, Scale, Count, Size, Col, Over, Active);
 			
 			//update slider control
 			for (int slice = 0; slice < FControllers.Length; slice++)
 			{
 				
 				//get current slider
-				Slider s = (Slider)FControllers[slice];
-				
-				if (isX) 
-				{
-					s.Transform *= VMath.RotateZ(isX ? 0.25 * VMath.CycToRad : 0);
-					s.InvTransform = !s.Transform;
-				}
-	
-				s.SliderTransform = s.Transform * VMath.Translate(0, s.Value - 0.5, 0) * FSliderSize;
+				SliderXY s = (SliderXY)FControllers[slice];
+				s.SliderTransform = s.Transform * VMath.Translate(s.Value.x - 0.5, s.Value.y - 0.5, 0) * FSliderSize;
 				
 			}
 			
@@ -100,7 +92,7 @@ namespace VVVV.Nodes
 			for (int i = 0; i < FControllers.Length; i++)
 			{
 				//get current slider
-				Slider s = (Slider)FControllers[i];
+				SliderXY s = (SliderXY)FControllers[i];
 				
 				
 				//set selected slice number and color
@@ -110,8 +102,8 @@ namespace VVVV.Nodes
 					Vector2D invMouse = (s.InvTransform * Mouse).xy;
 					Vector2D invLastMouse = (s.InvTransform * FLastMouse).xy;
 					
-					s.Value = VMath.Clamp(s.Value + (invMouse.y - invLastMouse.y) * FSliderSpeed, 0, 1);
-					s.SliderTransform = s.Transform * VMath.Translate(0, s.Value - 0.5, 0) * FSliderSize;
+					s.Value = VMath.Clamp(s.Value + (invMouse - invLastMouse) * FSliderSpeed, 0, 1);
+					s.SliderTransform = s.Transform * VMath.Translate(s.Value.x - 0.5, s.Value.y - 0.5, 0) * FSliderSize;
 
 				}
 
@@ -125,11 +117,12 @@ namespace VVVV.Nodes
 		}
 		
 		//set value
-		public void UpdateValue(Slider s, double val)
+		public void UpdateValue(SliderXY s, Vector2D val)
 		{
 			s.Value = VMath.Clamp(val, 0, 1);
-			s.SliderTransform = s.Transform * VMath.Translate(0, s.Value - 0.5, 0) * FSliderSize;
+			s.SliderTransform = s.Transform * VMath.Translate(s.Value.x - 0.5, s.Value.y - 0.5, 0) * FSliderSize;
 		}
 	}
 }
+
 

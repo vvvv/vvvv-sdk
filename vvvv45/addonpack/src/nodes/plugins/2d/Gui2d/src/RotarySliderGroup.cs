@@ -33,19 +33,18 @@ namespace VVVV.Nodes
 
 
 	//the slider group
-	public class SliderGroup : BasicGui2dGroup
+	public class RotarySliderGroup : BasicGui2dGroup
 	{
 		//fields
-		private RGBAColor FColSlider;
 		private Vector2D FLastMouse;
-		private Matrix4x4 FSliderSize;
+		private RGBAColor ColSlider;
 		private double FSliderSpeed;
 		
 		//constructor
-		public SliderGroup()
+		public RotarySliderGroup()
 		{
-			FControllers = new Slider[1];
-			FControllers[0] = new Slider();
+			FControllers = new RotarySlider[1];
+			FControllers[0] = new RotarySlider();
 		}
 		
 		//update data
@@ -54,37 +53,17 @@ namespace VVVV.Nodes
 		                            Vector2D Scale,
 		                            Vector2D Count,
 		                            Vector2D Size,
-		                            double SizeSlider,
 		                            RGBAColor Col,
 		                            RGBAColor Over,
 		                            RGBAColor Active,
 		                            RGBAColor SliderCol,
-		                            double SliderSpeed,
-		                            bool isX)
+		                            double sliderSpeed)
 		{
-			//copy fields
-			FColSlider = SliderCol;
-			FSliderSpeed = SliderSpeed;
-			FSliderSize = VMath.Scale(1.0 , SizeSlider, 1);
+			//copy to fields
+			ColSlider = SliderCol;
+			FSliderSpeed = sliderSpeed;
 			
-			base.UpdateTransform<Slider>(Transform, Position, Scale, Count, Size, Col, Over, Active);
-			
-			//update slider control
-			for (int slice = 0; slice < FControllers.Length; slice++)
-			{
-				
-				//get current slider
-				Slider s = (Slider)FControllers[slice];
-				
-				if (isX) 
-				{
-					s.Transform *= VMath.RotateZ(isX ? 0.25 * VMath.CycToRad : 0);
-					s.InvTransform = !s.Transform;
-				}
-	
-				s.SliderTransform = s.Transform * VMath.Translate(0, s.Value - 0.5, 0) * FSliderSize;
-				
-			}
+			base.UpdateTransform<RotarySlider>(Transform, Position, Scale, Count, Size, Col, Over, Active);
 			
 		}
 		
@@ -100,7 +79,7 @@ namespace VVVV.Nodes
 			for (int i = 0; i < FControllers.Length; i++)
 			{
 				//get current slider
-				Slider s = (Slider)FControllers[i];
+				RotarySlider s = (RotarySlider)FControllers[i];
 				
 				
 				//set selected slice number and color
@@ -111,11 +90,10 @@ namespace VVVV.Nodes
 					Vector2D invLastMouse = (s.InvTransform * FLastMouse).xy;
 					
 					s.Value = VMath.Clamp(s.Value + (invMouse.y - invLastMouse.y) * FSliderSpeed, 0, 1);
-					s.SliderTransform = s.Transform * VMath.Translate(0, s.Value - 0.5, 0) * FSliderSize;
 
 				}
-
-				s.ColorSlider = FColSlider;
+				
+				s.ColorSlider = ColSlider;
 				
 			}
 			
@@ -125,11 +103,11 @@ namespace VVVV.Nodes
 		}
 		
 		//set value
-		public void UpdateValue(Slider s, double val)
+		public void UpdateValue(RotarySlider s, double val)
 		{
 			s.Value = VMath.Clamp(val, 0, 1);
-			s.SliderTransform = s.Transform * VMath.Translate(0, s.Value - 0.5, 0) * FSliderSize;
 		}
 	}
 }
+
 

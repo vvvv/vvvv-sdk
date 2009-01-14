@@ -35,12 +35,11 @@ using VVVV.Utils.VColor;
 
 namespace VVVV.Nodes
 {
-	public class SliderNode: BasicGui2dNode, IPlugin
+	public class SliderXYNode: BasicGui2dNode, IPlugin
 	{
 		#region field declaration
 
 		//additional slider size pin
-		private IValueIn FIsXSliderIn;
 		private IValueIn FSizeSliderIn;
 		private IValueIn FSliderSpeedIn;
 		
@@ -51,7 +50,7 @@ namespace VVVV.Nodes
 		
 		#region constructor/destructor
     	
-        public SliderNode()
+        public SliderXYNode()
         {
 			//the nodes constructor
 			//nothing to declare for this node
@@ -68,10 +67,10 @@ namespace VVVV.Nodes
 			{
 				//fill out nodes info
 				IPluginInfo Info = new PluginInfo();
-				Info.Name = "Slider";
+				Info.Name = "SliderXY";
 				Info.Category = "2d GUI";
 				Info.Version = "";
-				Info.Help = "A spread of slider groups";
+				Info.Help = "A spread of xy-slider groups";
 				Info.Tags = "EX9, DX9, transform, interaction, mouse";
 				Info.Author = "tonfilm";
 				Info.Bugs = "";
@@ -97,28 +96,105 @@ namespace VVVV.Nodes
 		public override void SetPluginHost(IPluginHost Host)
 		{
 			
-			base.SetPluginHost(Host);
+			//assign host
+			FHost = Host;
 
 			//create inputs:
-
-			//value
-			//correct subtype of value pin
-			FValueIn.SetSubType(0, 1, 0.01, 0, false, false, false);
-			FValueConfig.SetSubType(0, 1, 0.01, 0, false, false, false);
 			
-			FHost.CreateValueInput("Is X Slider", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FIsXSliderIn);
-			FIsXSliderIn.SetSubType(0, 1, 1, 0, false, true, false);
+			//transform
+			FHost.CreateTransformInput("Tarnsform In", TSliceMode.Dynamic, TPinVisibility.True, out FTransformIn);
+			
+			//value
+			FHost.CreateValueInput("Value Input ", 2, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueIn);
+			FValueIn.SetSubType2D(0, 1, 0.01, 0, 0, false, false, false);
+			
+			FHost.CreateValueInput("Set Value", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSetValueIn);
+			FSetValueIn.SetSubType(0, 1, 1, 0, true, false, false);
+			
+			//position
+			FHost.CreateValueInput("Pos X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPosXIn);
+			FPosXIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
+			
+			FHost.CreateValueInput("Pos Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPosYIn);
+			FPosYIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
+			
+			//scaling
+			FHost.CreateValueInput("Scale X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FScaleXIn);
+			FScaleXIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 1, false, false, false);
+			
+			FHost.CreateValueInput("Scale Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FScaleYIn);
+			FScaleYIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 1, false, false, false);
+			
+			//counts
+			FHost.CreateValueInput("Count X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FCountXIn);
+			FCountXIn.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
+			
+			FHost.CreateValueInput("Count Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FCountYIn);
+			FCountYIn.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
+			
+			//size
+			FHost.CreateValueInput("Size X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSizeXIn);
+			FSizeXIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.9, false, false, false);
+			
+			FHost.CreateValueInput("Size Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSizeYIn);
+			FSizeYIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.9, false, false, false);
+			
+			//mouse
+			FHost.CreateValueInput("Mouse X", 1, null, TSliceMode.Single, TPinVisibility.True, out FMouseXIn);
+			FMouseXIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
+			
+			FHost.CreateValueInput("Mouse Y", 1, null, TSliceMode.Single, TPinVisibility.True, out FMouseYIn);
+			FMouseYIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
+			
+			FHost.CreateValueInput("Mouse Left", 1, null, TSliceMode.Single, TPinVisibility.True, out FLeftButtonIn);
+			FLeftButtonIn.SetSubType(0, 1, 1, 0, false, true, false);
+			
+			//color
+			FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorIn);
+			FColorIn.SetSubType(new RGBAColor(0.2, 0.2, 0.2, 1), true);
+			
+			FHost.CreateColorInput("Mouse Over Color", TSliceMode.Dynamic, TPinVisibility.True, out FOverColorIn);
+			FOverColorIn.SetSubType(new RGBAColor(0.5, 0.5, 0.5, 1), true);
+			
+			FHost.CreateColorInput("Activated Color", TSliceMode.Dynamic, TPinVisibility.True, out FActiveColorIn);
+			FActiveColorIn.SetSubType(new RGBAColor(1, 1, 1, 1), true);
 			
 			FHost.CreateValueInput("Size Slider", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSizeSliderIn);
 			FSizeSliderIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.02, false, false, false);
 			
-			//color
 			FHost.CreateColorInput("Slider Color", TSliceMode.Dynamic, TPinVisibility.True, out FSliderColorIn);
 			FSliderColorIn.SetSubType(new RGBAColor(1, 1, 1, 1), true);
 			
 			FHost.CreateValueInput("Slider Speed", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSliderSpeedIn);
 			FSliderSpeedIn.SetSubType(0, double.MaxValue, 0.01, 1, false, false, false);
+
+
+			//create outputs
+			FHost.CreateTransformOutput("Transform Out", TSliceMode.Dynamic, TPinVisibility.True, out FTransformOut);
 			
+			FHost.CreateColorOutput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorOut);
+			FColorOut.SetSubType(new RGBAColor(0.2, 0.2, 0.2, 1), true);
+			
+			FHost.CreateValueOutput("Value Output ", 2, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueOut);
+			FValueOut.SetSubType2D(0, 1, 0.01, 0, 0, false, false, false);
+			
+			FHost.CreateValueOutput("Active", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FActiveOut);
+			FActiveOut.SetSubType(0, 1, 1, 0, false, true, false);
+			
+			FHost.CreateValueOutput("Hit", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FHitOut);
+			FHitOut.SetSubType(0, 1, 1, 0, true, false, false);
+			
+			FHost.CreateValueOutput("Mouse Over", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMouseOverOut);
+			FMouseOverOut.SetSubType(0, 1, 1, 0, false, true, false);
+			
+			FHost.CreateValueOutput("Spread Counts", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSpreadCountsOut);
+			FSpreadCountsOut.SetSubType(0, double.MaxValue, 0.01, 0, false, false, true);
+			
+			//create config pin
+			FHost.CreateValueConfig("Internal Value ", 2, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FValueConfig);
+			FValueConfig.SetSubType2D(0, 1, 0.01, 0, 0, false, false, false);
+			
+			FControllerGroups = new ArrayList();
 			
 		}
 		
@@ -138,7 +214,7 @@ namespace VVVV.Nodes
 			{
 				for (int i=0; i<diff; i++)
 				{
-					FControllerGroups.Add(new SliderGroup());
+					FControllerGroups.Add(new SliderXYGroup());
 				}
 			}
 			else if (diff < 0)
@@ -159,7 +235,6 @@ namespace VVVV.Nodes
 			    || FCountYIn.PinIsChanged
 			    || FSizeXIn.PinIsChanged
 			    || FSizeYIn.PinIsChanged
-			    || FIsXSliderIn.PinIsChanged
 			    || FSizeSliderIn.PinIsChanged
 			    || FTransformIn.PinIsChanged
 			    || FColorIn.PinIsChanged
@@ -171,11 +246,11 @@ namespace VVVV.Nodes
 				
 				for (slice = 0; slice < inputSpreadCount; slice++)
 				{
-					SliderGroup group = (SliderGroup) FControllerGroups[slice];
+					SliderXYGroup group = (SliderXYGroup) FControllerGroups[slice];
 					
 					Matrix4x4 trans;
 					Vector2D pos, scale, count, size;
-					double sizeSlider, sliderSpeed, isX;
+					double sizeSlider, sliderSpeed;
 					RGBAColor col, over, active, slider;
 					
 					FTransformIn.GetMatrix(slice, out trans);
@@ -193,9 +268,8 @@ namespace VVVV.Nodes
 					FActiveColorIn.GetColor(slice, out active);
 					FSliderColorIn.GetColor(slice, out slider);
 					FSliderSpeedIn.GetValue(slice, out sliderSpeed);
-					FIsXSliderIn.GetValue(slice, out isX);
 
-					group.UpdateTransform(trans, pos, scale, count, size, sizeSlider, col, over, active, slider, sliderSpeed, isX >= 0.5);
+					group.UpdateTransform(trans, pos, scale, count, size, sizeSlider, col, over, active, slider, sliderSpeed);
 					
 				}
 			}
@@ -206,7 +280,7 @@ namespace VVVV.Nodes
 			
 			for (slice = 0; slice < inputSpreadCount; slice++)
 			{
-				SliderGroup group = (SliderGroup) FControllerGroups[slice];
+				SliderXYGroup group = (SliderXYGroup) FControllerGroups[slice];
 				
 				outcount += group.FControllers.Length;
 				FSpreadCountsOut.SetValue(slice, group.FControllers.Length);
@@ -240,7 +314,7 @@ namespace VVVV.Nodes
 				for (slice = 0; slice < inputSpreadCount; slice++)
 				{
 					
-					SliderGroup group = (SliderGroup) FControllerGroups[slice];
+					SliderXYGroup group = (SliderXYGroup) FControllerGroups[slice];
 					valueSet |= group.UpdateMouse(mouse, mousDownEdge, mouseDown);
 						
 				}
@@ -256,29 +330,29 @@ namespace VVVV.Nodes
 				
 				for (int i = 0; i < inputSpreadCount; i++)
 				{
-					SliderGroup group = (SliderGroup) FControllerGroups[i];
+					SliderXYGroup group = (SliderXYGroup) FControllerGroups[i];
 					int pcount = group.FControllers.Length;
 					
 					for (int j = 0; j < pcount; j++)
 					{
 						
-						double val;
+						Vector2D val;
 						
-						FSetValueIn.GetValue(slice, out val);
+						FSetValueIn.GetValue(slice, out val.x);
 						
-						if (val >= 0.5)
+						if (val.x >= 0.5)
 						{
 							//update value
-							FValueIn.GetValue(slice, out val);
-							group.UpdateValue((Slider)group.FControllers[j], val);
+							FValueIn.GetValue2D(slice, out val.x, out val.y);
+							group.UpdateValue((SliderXY)group.FControllers[j], val);
 							
 							valueSet = true;
 						}
 						else if (FFirstframe) 
 						{
 							//load from config pin on first frame
-							FValueConfig.GetValue(slice, out val);
-							group.UpdateValue((Slider)group.FControllers[j], val);
+							FValueConfig.GetValue2D(slice, out val.x, out val.y);
+							group.UpdateValue((SliderXY)group.FControllers[j], val);
 							
 						}
 						
@@ -300,18 +374,18 @@ namespace VVVV.Nodes
 			slice = 0;
 			for (int i = 0; i < inputSpreadCount; i++)
 			{
-				SliderGroup group = (SliderGroup) FControllerGroups[i];
+				SliderXYGroup group = (SliderXYGroup) FControllerGroups[i];
 				int pcount = group.FControllers.Length;
 				
 				for (int j = 0; j < pcount; j++)
 				{
-					Slider s = (Slider) group.FControllers[j];
+					SliderXY s = (SliderXY) group.FControllers[j];
 					
 					FTransformOut.SetMatrix(slice * 2, s.Transform);
 					FTransformOut.SetMatrix(slice * 2 + 1, s.SliderTransform);
 					FColorOut.SetColor(slice * 2, s.CurrentCol);
 					FColorOut.SetColor(slice * 2 + 1, s.ColorSlider);
-					FValueOut.SetValue(slice, s.Value);
+					FValueOut.SetValue2D(slice, s.Value.x, s.Value.y);
 					FMouseOverOut.SetValue(slice, s.MouseOver ? 1 : 0);
 					FHitOut.SetValue(slice, s.Hit ? 1 : 0);
 					FActiveOut.SetValue(slice, s.Active ? 1 : 0);
@@ -319,11 +393,11 @@ namespace VVVV.Nodes
 					//update config pin
 					if (valueSet)
 					{
-						double val;
-						FValueConfig.GetValue(slice, out val);
+						Vector2D val;
+						FValueConfig.GetValue2D(slice, out val.x, out val.y);
 						
-						if (Math.Abs(s.Value - val) > 0.00000001)
-							FValueConfig.SetValue(slice, s.Value);
+						if (VMath.Abs(s.Value - val) > 0.00000001)
+							FValueConfig.SetValue2D(slice, s.Value.x, s.Value.y);
 					}
 					
 					slice++;
@@ -354,7 +428,6 @@ namespace VVVV.Nodes
 			
 			max = Math.Max(max, FSizeSliderIn.SliceCount);
 			max = Math.Max(max, FSliderSpeedIn.SliceCount);
-			max = Math.Max(max, FIsXSliderIn.SliceCount);
 			
 			max = Math.Max(max, FTransformIn.SliceCount);
 			max = Math.Max(max, FColorIn.SliceCount);
@@ -373,4 +446,6 @@ namespace VVVV.Nodes
 
 
 }
+
+
 
