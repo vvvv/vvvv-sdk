@@ -39,14 +39,18 @@ namespace VVVV.Nodes
 			
 			public Slider()
 			{
-				Transform = VMath.IdentityMatrix;
-				InvTransform = VMath.IdentityMatrix;
 				SliderTransform = VMath.IdentityMatrix;
 				Value = 0;
-				Hit = false;
-				MouseOver = false;
-				CurrentCol = new RGBAColor(0.2, 0.2, 0.2, 1);
 				ColorSlider = new RGBAColor(1, 1, 1, 1);
+			}
+		
+			public override void CopyFrom(BasicGui2dController Source)
+			{
+				base.CopyFrom(Source);
+				Slider s = (Slider) Source;
+				Value = s.Value;
+				SliderTransform = s.SliderTransform;
+				ColorSlider = s.ColorSlider;
 			}
 		}
 }

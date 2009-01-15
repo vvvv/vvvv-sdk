@@ -57,11 +57,11 @@ namespace VVVV.Nodes
 			{
 				//fill out nodes info
 				IPluginInfo Info = new PluginInfo();
-				Info.Name = "Toggle";
+				Info.Name = "ToggleButton";
 				Info.Category = "2d GUI";
 				Info.Version = "";
 				Info.Help = "A spread of toggle botton groups";
-				Info.Tags = "EX9, DX9, transform, interaction, mouse";
+				Info.Tags = "EX9, DX9, transform, interaction, mouse, button, toggle";
 				Info.Author = "tonfilm";
 				Info.Bugs = "";
 				Info.Credits = "";

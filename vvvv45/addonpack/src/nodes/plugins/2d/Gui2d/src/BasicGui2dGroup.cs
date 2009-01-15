@@ -30,14 +30,21 @@ using VVVV.Utils.VColor;
 namespace VVVV.Nodes
 {
 
+	//super parent class for controller groups
+	//only for the static field, because classes with
+	//different generics don't share static variables
+	public class MouseLockable
+	{
+		//static field for all controller groups
+		//to disable mouse update when something is hit
+		public static bool FStaticMousHit;
+	}
 
 	//parent class for controller groups
-	public class BasicGui2dGroup
+	public class BasicGui2dGroup<T> : MouseLockable where T : BasicGui2dController, new()
 	{
-		//fields:
-		
 		//controllers
-		public BasicGui2dController[] FControllers;
+		public T[] FControllers;
 		
 		//which slice is selected
 		public int SelectedSlice = 0;
@@ -45,27 +52,25 @@ namespace VVVV.Nodes
 		//is mouse pressed and a controller hit
 		protected bool FMouseHit = false;
 		
-		//static field for all controller groups
-		//to disable mouse update when something is hit
-		protected static bool FStaticMousHit;
-		
 		//colors
 		protected RGBAColor ColNorm, ColOver, ColActive;
 		
 		public BasicGui2dGroup()
 		{
+			FControllers = new T[1];
+			FControllers[0] = new T();
 		}
 
 		
 		//update transform
-		public virtual void UpdateTransform<T>(Matrix4x4 Transform,
+		public virtual void UpdateTransform(Matrix4x4 Transform,
 		                                       Vector2D Position,
 		                                       Vector2D Scale,
 		                                       Vector2D Count,
 		                                       Vector2D Size,
 		                                       RGBAColor Col,
 		                                       RGBAColor Over,
-		                                       RGBAColor Active) where T : BasicGui2dController, new()
+		                                       RGBAColor Active)
 
 		{
 			//copy colors
@@ -86,12 +91,19 @@ namespace VVVV.Nodes
 			//create controllers?
 			if (countTotal != FControllers.Length)
 			{
+
+				//store old controllers
+				T[] temp = FControllers;
+
+				//make new array
 				FControllers = new T[countTotal];
-				for (int i = 0; i < countTotal; i++) 
+				for (int i = 0; i < countTotal; i++)
 				{
 					FControllers[i] = new T();
-				}
 					
+					//copy data from old array
+					FControllers[i].CopyFrom(temp[i%temp.Length]);
+				}
 			}
 
 			int slice = 0;

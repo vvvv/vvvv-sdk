@@ -12,7 +12,7 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//C# sharpdevelop 
+//C# sharpdevelop
 
 //////dependencies
 //VVVV.PluginInterfaces.V1;
@@ -31,22 +31,28 @@ namespace VVVV.Nodes
 {
 	//a slider
 	public class RotarySlider : BasicGui2dController
+	{
+		//fields
+		public Matrix4x4 SliderTransform;
+		public double Value;
+		public RGBAColor ColorSlider;
+		
+		public RotarySlider()
 		{
-			//fields
-			public Matrix4x4 SliderTransform;
-			public double Value;
-			public RGBAColor ColorSlider;
-			
-			public RotarySlider()
-			{
-				Transform = VMath.IdentityMatrix;
-				InvTransform = VMath.IdentityMatrix;
-				Value = 0;
-				Hit = false;
-				MouseOver = false;
-				CurrentCol = new RGBAColor(0.2, 0.2, 0.2, 1);
-			}
+			Value = 0;
+			SliderTransform = VMath.IdentityMatrix;
+			ColorSlider = new RGBAColor(1, 1, 1, 1);
 		}
+		
+		public override void CopyFrom(BasicGui2dController Source)
+		{
+			base.CopyFrom(Source);
+			RotarySlider s = (RotarySlider) Source;
+			this.Value = s.Value;
+			SliderTransform = s.SliderTransform;
+			ColorSlider = s.ColorSlider;
+		}
+	}
 }
 
 

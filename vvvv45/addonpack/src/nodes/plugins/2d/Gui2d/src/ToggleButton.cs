@@ -12,7 +12,7 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//C# sharpdevelop 
+//C# sharpdevelop
 
 //////dependencies
 //VVVV.PluginInterfaces.V1;
@@ -31,20 +31,22 @@ namespace VVVV.Nodes
 {
 	//a toggle button
 	public class ToggleButton : BasicGui2dController
+	{
+		//fields
+		public bool Value;
+		
+		public ToggleButton()
 		{
-			//fields
-			public bool Value;
-			
-			public ToggleButton()
-			{
-				Transform = VMath.IdentityMatrix;
-				InvTransform = VMath.IdentityMatrix;
-				Value = false;
-				Hit = false;
-				MouseOver = false;
-				CurrentCol = new RGBAColor(0.2, 0.2, 0.2, 1);
-			}
+			Value = false;
 		}
+		
+		public override void CopyFrom(BasicGui2dController Source)
+		{
+			base.CopyFrom(Source);
+			Value = ((ToggleButton)Source).Value;
+		}
+		
+	}
 }
 
 

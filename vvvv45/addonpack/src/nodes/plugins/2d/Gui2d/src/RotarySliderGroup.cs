@@ -33,7 +33,7 @@ namespace VVVV.Nodes
 
 
 	//the slider group
-	public class RotarySliderGroup : BasicGui2dGroup
+	public class RotarySliderGroup : BasicGui2dGroup<RotarySlider>
 	{
 		//fields
 		private Vector2D FLastMouse;
@@ -43,8 +43,6 @@ namespace VVVV.Nodes
 		//constructor
 		public RotarySliderGroup()
 		{
-			FControllers = new RotarySlider[1];
-			FControllers[0] = new RotarySlider();
 		}
 		
 		//update data
@@ -63,7 +61,7 @@ namespace VVVV.Nodes
 			ColSlider = SliderCol;
 			FSliderSpeed = sliderSpeed;
 			
-			base.UpdateTransform<RotarySlider>(Transform, Position, Scale, Count, Size, Col, Over, Active);
+			base.UpdateTransform(Transform, Position, Scale, Count, Size, Col, Over, Active);
 			
 		}
 		
@@ -79,7 +77,7 @@ namespace VVVV.Nodes
 			for (int i = 0; i < FControllers.Length; i++)
 			{
 				//get current slider
-				RotarySlider s = (RotarySlider)FControllers[i];
+				RotarySlider s = FControllers[i];
 				
 				
 				//set selected slice number and color

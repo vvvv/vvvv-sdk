@@ -33,7 +33,7 @@ namespace VVVV.Nodes
 
 
 	//the slider group
-	public class SliderGroup : BasicGui2dGroup
+	public class SliderGroup : BasicGui2dGroup<Slider>
 	{
 		//fields
 		private RGBAColor FColSlider;
@@ -44,8 +44,6 @@ namespace VVVV.Nodes
 		//constructor
 		public SliderGroup()
 		{
-			FControllers = new Slider[1];
-			FControllers[0] = new Slider();
 		}
 		
 		//update data
@@ -67,14 +65,14 @@ namespace VVVV.Nodes
 			FSliderSpeed = SliderSpeed;
 			FSliderSize = VMath.Scale(1.0 , SizeSlider, 1);
 			
-			base.UpdateTransform<Slider>(Transform, Position, Scale, Count, Size, Col, Over, Active);
+			base.UpdateTransform(Transform, Position, Scale, Count, Size, Col, Over, Active);
 			
 			//update slider control
 			for (int slice = 0; slice < FControllers.Length; slice++)
 			{
 				
 				//get current slider
-				Slider s = (Slider)FControllers[slice];
+				Slider s = FControllers[slice];
 				
 				if (isX) 
 				{
@@ -92,15 +90,14 @@ namespace VVVV.Nodes
 		public override bool UpdateMouse(Vector2D Mouse, 
 		                          		 bool MouseLeftDownEdge,
 		                        		 bool MouseLeftPressed)
-		{
-			
+		{			
 			bool upEdgeHit = base.UpdateMouse(Mouse, MouseLeftDownEdge, MouseLeftPressed);
 					
 			//update slider
 			for (int i = 0; i < FControllers.Length; i++)
 			{
 				//get current slider
-				Slider s = (Slider)FControllers[i];
+				Slider s = FControllers[i];
 				
 				
 				//set selected slice number and color

@@ -41,6 +41,22 @@ namespace VVVV.Nodes
 		
 		public BasicGui2dController()
 		{
+			Transform = VMath.IdentityMatrix;
+			InvTransform = VMath.IdentityMatrix;
+			Active = false;
+			Hit = false;
+			MouseOver = false;
+			CurrentCol = new RGBAColor(0.2, 0.2, 0.2, 1);
+		}
+		
+		public virtual void CopyFrom(BasicGui2dController Source)
+		{
+			Transform = Source.Transform;
+			InvTransform = Source.InvTransform;
+			Active = Source.Active;
+			Hit = Source.Hit;
+			MouseOver = Source.MouseOver;
+			CurrentCol = Source.CurrentCol;
 		}
 		
 	}

@@ -33,7 +33,7 @@ namespace VVVV.Nodes
 
 
 	//the xy slider group
-	public class SliderXYGroup : BasicGui2dGroup
+	public class SliderXYGroup : BasicGui2dGroup<SliderXY>
 	{
 		//fields
 		private RGBAColor FColSlider;
@@ -44,8 +44,6 @@ namespace VVVV.Nodes
 		//constructor
 		public SliderXYGroup()
 		{
-			FControllers = new SliderXY[1];
-			FControllers[0] = new SliderXY();
 		}
 		
 		//update data
@@ -66,14 +64,14 @@ namespace VVVV.Nodes
 			FSliderSpeed = sliderSpeed;
 			FSliderSize = VMath.Scale(SizeSlider, SizeSlider, 1);
 			
-			base.UpdateTransform<SliderXY>(Transform, Position, Scale, Count, Size, Col, Over, Active);
+			base.UpdateTransform(Transform, Position, Scale, Count, Size, Col, Over, Active);
 			
 			//update slider control
 			for (int slice = 0; slice < FControllers.Length; slice++)
 			{
 				
 				//get current slider
-				SliderXY s = (SliderXY)FControllers[slice];
+				SliderXY s = FControllers[slice];
 				s.SliderTransform = s.Transform * VMath.Translate(s.Value.x - 0.5, s.Value.y - 0.5, 0) * FSliderSize;
 				
 			}
@@ -92,7 +90,7 @@ namespace VVVV.Nodes
 			for (int i = 0; i < FControllers.Length; i++)
 			{
 				//get current slider
-				SliderXY s = (SliderXY)FControllers[i];
+				SliderXY s = FControllers[i];
 				
 				
 				//set selected slice number and color

@@ -31,18 +31,16 @@ namespace VVVV.Nodes
 {
 
 	//the slider group
-	public class ToggleButtonGroup : BasicGui2dGroup
+	public class ToggleButtonGroup : BasicGui2dGroup<ToggleButton>
 	{
 		
 		//constructor
 		public ToggleButtonGroup()
 		{
-			FControllers = new ToggleButton[1];
-			FControllers[0] = new ToggleButton();
 		}
 		
 		//update data
-		public void UpdateTransform(Matrix4x4 Transform,
+		public override void UpdateTransform(Matrix4x4 Transform,
 		                            Vector2D Position,
 		                            Vector2D Scale,
 		                            Vector2D Count,
@@ -52,7 +50,7 @@ namespace VVVV.Nodes
 		                            RGBAColor Active)
 		{
 
-			base.UpdateTransform<ToggleButton>(Transform, Position, Scale, Count, Size, Col, Over, Active);
+			base.UpdateTransform(Transform, Position, Scale, Count, Size, Col, Over, Active);
 			
 		}
 		
@@ -67,7 +65,7 @@ namespace VVVV.Nodes
 			for (int slice = 0; slice < FControllers.Length ; slice++)
 			{
 				//get current button
-				ToggleButton s = (ToggleButton)FControllers[slice];
+				ToggleButton s = FControllers[slice];
 				
 				//set selected slice number and color
 				if (MouseLeftDownEdge && FMouseHit && slice == SelectedSlice)

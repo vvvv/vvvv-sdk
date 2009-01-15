@@ -33,18 +33,16 @@ namespace VVVV.Nodes
 
 	
 	//the radio button group, uses basic controller
-	public class RadioButtonGroup : BasicGui2dGroup
+	public class RadioButtonGroup : BasicGui2dGroup<RadioButton>
 	{
 	
 		//constructor
 		public RadioButtonGroup()
 		{
-			FControllers = new RadioButton[1];
-			FControllers[0] = new RadioButton();
 		}
 		
 		//update transform
-		public void UpdateTransform(Matrix4x4 Transform,
+		public override void UpdateTransform(Matrix4x4 Transform,
 		                            Vector2D Position,
 		                            Vector2D Scale,
 		                            Vector2D Count,
@@ -54,7 +52,7 @@ namespace VVVV.Nodes
 		                            RGBAColor Active)
 		{
 
-			base.UpdateTransform<RadioButton>(Transform, Position, Scale, Count, Size, Col, Over, Active);
+			base.UpdateTransform(Transform, Position, Scale, Count, Size, Col, Over, Active);
 			
 		}
 		

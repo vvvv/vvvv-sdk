@@ -12,7 +12,7 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//C# sharpdevelop 
+//C# sharpdevelop
 
 //////dependencies
 //VVVV.PluginInterfaces.V1;
@@ -29,19 +29,13 @@ using VVVV.Utils.VColor;
 
 namespace VVVV.Nodes
 {
-	//parent class for controllers
+	// radio button, just the same as basic controller
 	public class RadioButton : BasicGui2dController
 	{
-		
-		public RadioButton()
+		public override void CopyFrom(BasicGui2dController Source)
 		{
-			Transform = VMath.IdentityMatrix;
-			Hit = false;
-			MouseOver = false;
-			Active = false;
-			CurrentCol = new RGBAColor(0.2, 0.2, 0.2, 1);
+			base.CopyFrom(Source);
 		}
-	
 	}
 }
 
