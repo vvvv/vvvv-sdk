@@ -215,6 +215,17 @@ namespace VVVV.Utils.VColor
 			return new RGBAColor(C.R * factor, C.G * factor, C.B * factor, C.A * factor);
 		}
 		
+		/// <summary>
+		/// Multiplies two colors, RGBA component wise
+		/// </summary>
+		/// <param name="C1"></param>
+		/// <param name="C2"></param>
+		/// <returns>Color C1 multiplied by color C2</returns>
+		public static RGBAColor operator *(RGBAColor C1, RGBAColor C2)
+		{
+			return new RGBAColor(C1.R * C2.R, C1.G * C2.G, C1.B * C2.B, C1.A * C2.A);
+		}
+		
 		#endregion binary operators
 	}
 }
