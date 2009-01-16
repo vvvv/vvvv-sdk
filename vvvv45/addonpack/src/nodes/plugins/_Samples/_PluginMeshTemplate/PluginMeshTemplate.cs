@@ -42,7 +42,7 @@ using SlimDX.Direct3D9;
 namespace VVVV.Nodes
 {
 	//class definition
-	public class PluginMeshTemplate: IPlugin, IDisposable
+	public class PluginMeshTemplate: IPlugin, IDisposable, IPluginDXMesh
     {	          	
     	#region field declaration
     	
@@ -54,6 +54,8 @@ namespace VVVV.Nodes
    		private Device FD3D9Device;
    		//Direct3D9 mesh
    		private Mesh FD3D9Mesh;
+   		
+   		private IDXMeshIO FMyMeshOutput;
     	
     	#endregion field declaration
        
@@ -189,6 +191,9 @@ namespace VVVV.Nodes
 	    {
         	//assign host
 	    	FHost = Host;
+	    	
+	    	//create outputs	    	
+	    	FHost.CreateMeshOutput("Mesh", TSliceMode.Single, TPinVisibility.True, out FMyMeshOutput);
         } 
 
         #endregion pin creation
@@ -205,82 +210,40 @@ namespace VVVV.Nodes
         //all data handling should be in here
         public void Evaluate(int SpreadMax)
         {
-        	//if the graphics device changed, recreate mesh
-        	if (DeviceChanged())
-        	{
-        		Log(TLogType.Message, "D3D9Device changed. Reloading mesh...");
-        		
-        		//the graphics device changed, dispose previously created mesh
-    			if (FD3D9Mesh != null)
-    				FD3D9Mesh.Dispose();
-    			
-    			//get new graphics device
-        		GetDeviceFromHost();
-        		
-        		if (FD3D9Device != null)
-        		{
-        			//create new mesh on graphics device
-        			FD3D9Mesh = Mesh.CreateTeapot(FD3D9Device);
-        		}
-        		else
-        		{
-        			//no graphics device, no mesh
-        			FD3D9Mesh = null;
-        		}
-        	}
+
         }
              
         #endregion mainloop  
         
-        #region collada hack
-        public void GetMesh(out int meshAddress)
-		{
-        	meshAddress = 0;
-			if (FD3D9Mesh != null)
-			{
-				meshAddress = FD3D9Mesh.ComPointer.ToInt32();
-			}
+        #region DXMesh
+        public void CreateResource(int OnDevice)
+        {
+        	//if resource is not yet created for given OnDevice, create it now
+        	if (FD3D9Mesh == null)
+        	{
+        		FHost.Log(TLogType.Debug, "Creating Resource...");
+        		FD3D9Device = Device.FromPointer(new IntPtr(OnDevice));
+        		FD3D9Mesh = Mesh.CreateTeapot(FD3D9Device);
+        	}       	
         }
-        #endregion
         
-        #region helper functions
-        private bool DeviceChanged()
+		public void DestroyResource(int OnDevice)
 		{
-			int deviceAddress;
-			int myDeviceAddress;
-			
-			FHost.GetDevice(out deviceAddress);
-			
-			if (FD3D9Device == null)
-				myDeviceAddress = 0;
-			else
-				myDeviceAddress = FD3D9Device.ComPointer.ToInt32();
-			
-			return myDeviceAddress != deviceAddress;
-		}
-        
-		private void GetDeviceFromHost()
-		{
-			if (DeviceChanged())
-			{
-				int deviceAddress;
-				FHost.GetDevice(out deviceAddress);
-				
-				if (FD3D9Device != null)
-					FD3D9Device.Dispose();
-				
-				try {
-					FD3D9Device = Device.FromPointer(new IntPtr(deviceAddress));
-				} catch (Exception e) {
-					Log(TLogType.Error, e.ToString());
-				}
-			}
+			//dispose resources that were created for given OnDevice
+			FHost.Log(TLogType.Debug, "Destroying Resource...");
+			FD3D9Mesh.Dispose();
+			FD3D9Mesh = null;
 		}
 		
-		private void Log(TLogType logType, string message)
+		public void GetMesh(INodeOut ForPin, int OnDevice, out int Mesh)
 		{
-			FHost.Log(logType, "PluginMeshTemplate: " + message);
-		}
+        	Mesh = 0;
+        	//if (ForPin == FMyMeshOutput)
+				if (FD3D9Mesh != null)
+					Mesh = FD3D9Mesh.ComPointer.ToInt32();
+        }
 		#endregion
+		
+	
 	}
 }
