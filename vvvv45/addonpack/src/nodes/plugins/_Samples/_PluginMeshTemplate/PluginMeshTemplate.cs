@@ -216,7 +216,7 @@ namespace VVVV.Nodes
         #endregion mainloop  
         
         #region DXMesh
-        public void CreateResource(int OnDevice)
+        public void CreateResource(IPluginOut ForPin, int OnDevice)
         {
         	//if resource is not yet created for given OnDevice, create it now
         	if (FD3D9Mesh == null)
@@ -240,7 +240,7 @@ namespace VVVV.Nodes
         	}       	
         }
         
-		public void DestroyResource(int OnDevice, bool OnlyUnManaged)
+		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
 		{
 			//dispose resources that were created for given OnDevice
 			FHost.Log(TLogType.Debug, "Destroying Resource...");
@@ -248,10 +248,10 @@ namespace VVVV.Nodes
 			FD3D9Mesh = null;
 		}
 		
-		public void GetMesh(INodeOut ForPin, int OnDevice, out int Mesh)
+		public void GetMesh(IDXMeshIO ForPin, int OnDevice, out int Mesh)
 		{
         	Mesh = 0;
-        	//if (ForPin == FMyMeshOutput)
+        	if (ForPin == FMyMeshOutput)
 				if (FD3D9Mesh != null)
 					Mesh = FD3D9Mesh.ComPointer.ToInt32();
         }
