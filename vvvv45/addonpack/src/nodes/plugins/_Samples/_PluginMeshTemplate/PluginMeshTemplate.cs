@@ -193,7 +193,7 @@ namespace VVVV.Nodes
 	    	FHost = Host;
 	    	
 	    	//create outputs	    	
-	    	FHost.CreateMeshOutput("Mesh", TSliceMode.Single, TPinVisibility.True, out FMyMeshOutput);
+	    	FHost.CreateMeshOutput("Mesh", TSliceMode.Dynamic, TPinVisibility.True, out FMyMeshOutput);
         } 
 
         #endregion pin creation
@@ -223,11 +223,24 @@ namespace VVVV.Nodes
         	{
         		FHost.Log(TLogType.Debug, "Creating Resource...");
         		FD3D9Device = Device.FromPointer(new IntPtr(OnDevice));
-        		FD3D9Mesh = Mesh.CreateTeapot(FD3D9Device);
+        		//FD3D9Mesh = Mesh.CreateTeapot(FD3D9Device);
+        		
+        		Mesh[] ms = new Mesh[2];
+        		ms[0] = Mesh.CreateTeapot(FD3D9Device);
+        		ms[1] = Mesh.CreateBox(FD3D9Device, 1, 2, 2);
+        		FD3D9Mesh = Mesh.Concatenate(FD3D9Device, ms, 0);
+        		
+        		ms[0].Dispose();
+        		ms[0] = null;
+        		ms[1].Dispose();
+        		ms[1] = null;
+        		ms = null;
+
+        		FMyMeshOutput.SliceCount = 2;
         	}       	
         }
         
-		public void DestroyResource(int OnDevice)
+		public void DestroyResource(int OnDevice, bool OnlyUnManaged)
 		{
 			//dispose resources that were created for given OnDevice
 			FHost.Log(TLogType.Debug, "Destroying Resource...");
