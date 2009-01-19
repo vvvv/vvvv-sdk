@@ -12,7 +12,7 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//C# sharpdevelop 
+//C# sharpdevelop
 
 //////dependencies
 //VVVV.PluginInterfaces.V1;
@@ -41,16 +41,14 @@ namespace VVVV.Nodes
 		
 		//update data
 		public override void UpdateTransform(Matrix4x4 Transform,
-		                            Vector2D Position,
-		                            Vector2D Scale,
-		                            Vector2D Count,
-		                            Vector2D Size,
-		                            RGBAColor Col,
-		                            RGBAColor Over,
-		                            RGBAColor Active)
+		                                     Vector2D Count,
+		                                     Vector2D Size,
+		                                     RGBAColor Col,
+		                                     RGBAColor Over,
+		                                     RGBAColor Active)
 		{
 
-			base.UpdateTransform(Transform, Position, Scale, Count, Size, Col, Over, Active);
+			base.UpdateTransform(Transform, Count, Size, Col, Over, Active);
 			
 		}
 		

@@ -48,8 +48,6 @@ namespace VVVV.Nodes
 		
 		//update data
 		public void UpdateTransform(Matrix4x4 Transform,
-		                            Vector2D Position,
-		                            Vector2D Scale,
 		                            Vector2D Count,
 		                            Vector2D Size,
 		                            double SizeSlider,
@@ -65,7 +63,7 @@ namespace VVVV.Nodes
 			FSliderSpeed = SliderSpeed;
 			FSliderSize = VMath.Scale(1.0 , SizeSlider, 1);
 			
-			base.UpdateTransform(Transform, Position, Scale, Count, Size, Col, Over, Active);
+			base.UpdateTransform(Transform, Count, Size, Col, Over, Active);
 			
 			//update slider control
 			for (int slice = 0; slice < FControllers.Length; slice++)
@@ -76,7 +74,7 @@ namespace VVVV.Nodes
 				
 				if (isX) 
 				{
-					s.Transform *= VMath.RotateZ(isX ? 0.25 * VMath.CycToRad : 0);
+					s.Transform *= VMath.RotateZ(isX ? -0.25 * VMath.CycToRad : 0);
 					s.InvTransform = !s.Transform;
 				}
 	

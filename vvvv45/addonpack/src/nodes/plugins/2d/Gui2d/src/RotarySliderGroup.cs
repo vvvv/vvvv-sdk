@@ -47,8 +47,6 @@ namespace VVVV.Nodes
 		
 		//update data
 		public void UpdateTransform(Matrix4x4 Transform,
-		                            Vector2D Position,
-		                            Vector2D Scale,
 		                            Vector2D Count,
 		                            Vector2D Size,
 		                            RGBAColor Col,
@@ -61,7 +59,7 @@ namespace VVVV.Nodes
 			ColSlider = SliderCol;
 			FSliderSpeed = sliderSpeed;
 			
-			base.UpdateTransform(Transform, Position, Scale, Count, Size, Col, Over, Active);
+			base.UpdateTransform(Transform, Count, Size, Col, Over, Active);
 			
 		}
 		

@@ -111,20 +111,6 @@ namespace VVVV.Nodes
 			FHost.CreateValueInput("Set Value", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSetValueIn);
 			FSetValueIn.SetSubType(0, 1, 1, 0, true, false, false);
 			
-			//position
-			FHost.CreateValueInput("Pos X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPosXIn);
-			FPosXIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
-			
-			FHost.CreateValueInput("Pos Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPosYIn);
-			FPosYIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
-			
-			//scaling
-			FHost.CreateValueInput("Scale X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FScaleXIn);
-			FScaleXIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 1, false, false, false);
-			
-			FHost.CreateValueInput("Scale Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FScaleYIn);
-			FScaleYIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 1, false, false, false);
-			
 			//counts
 			FHost.CreateValueInput("Count X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FCountXIn);
 			FCountXIn.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
@@ -191,8 +177,8 @@ namespace VVVV.Nodes
 			FSpreadCountsOut.SetSubType(0, double.MaxValue, 0.01, 0, false, false, true);
 			
 			//create config pin
-			FHost.CreateValueConfig("Internal Value ", 2, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FValueConfig);
-			FValueConfig.SetSubType2D(0, 1, 0.01, 0, 0, false, false, false);
+			FHost.CreateValueConfig("Internal Value ", 2, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FInternalValueConfig);
+			FInternalValueConfig.SetSubType2D(0, 1, 0.01, 0, 0, false, false, false);
 			
 			FControllerGroups = new ArrayList();
 			
@@ -227,11 +213,7 @@ namespace VVVV.Nodes
 			
 			//update parameters
 			int slice;
-			if (   FPosXIn.PinIsChanged
-			    || FPosYIn.PinIsChanged
-			    || FScaleXIn.PinIsChanged
-			    || FScaleYIn.PinIsChanged
-			    || FCountXIn.PinIsChanged
+			if (   FCountXIn.PinIsChanged
 			    || FCountYIn.PinIsChanged
 			    || FSizeXIn.PinIsChanged
 			    || FSizeYIn.PinIsChanged
@@ -249,15 +231,11 @@ namespace VVVV.Nodes
 					SliderXYGroup group = (SliderXYGroup) FControllerGroups[slice];
 					
 					Matrix4x4 trans;
-					Vector2D pos, scale, count, size;
+					Vector2D count, size;
 					double sizeSlider, sliderSpeed;
 					RGBAColor col, over, active, slider;
 					
 					FTransformIn.GetMatrix(slice, out trans);
-					FPosXIn.GetValue(slice, out pos.x);
-					FPosYIn.GetValue(slice, out pos.y);
-					FScaleXIn.GetValue(slice, out scale.x);
-					FScaleYIn.GetValue(slice, out scale.y);
 					FCountXIn.GetValue(slice, out count.x);
 					FCountYIn.GetValue(slice, out count.y);
 					FSizeXIn.GetValue(slice, out size.x);
@@ -269,7 +247,7 @@ namespace VVVV.Nodes
 					FSliderColorIn.GetColor(slice, out slider);
 					FSliderSpeedIn.GetValue(slice, out sliderSpeed);
 
-					group.UpdateTransform(trans, pos, scale, count, size, sizeSlider, col, over, active, slider, sliderSpeed);
+					group.UpdateTransform(trans, count, size, sizeSlider, col, over, active, slider, sliderSpeed);
 					
 				}
 			}
@@ -351,7 +329,7 @@ namespace VVVV.Nodes
 						else if (FFirstframe) 
 						{
 							//load from config pin on first frame
-							FValueConfig.GetValue2D(slice, out val.x, out val.y);
+							FInternalValueConfig.GetValue2D(slice, out val.x, out val.y);
 							group.UpdateValue((SliderXY)group.FControllers[j], val);
 							
 						}
@@ -364,7 +342,7 @@ namespace VVVV.Nodes
 			
 			//write output to pins
 			FValueOut.SliceCount = outcount;
-			if (outcount != FValueConfig.SliceCount) FValueConfig.SliceCount = outcount;
+			if (outcount != FInternalValueConfig.SliceCount) FInternalValueConfig.SliceCount = outcount;
 			FTransformOut.SliceCount = outcount * 2;
 			FColorOut.SliceCount = outcount * 2;
 			FHitOut.SliceCount = outcount;
@@ -394,10 +372,10 @@ namespace VVVV.Nodes
 					if (valueSet)
 					{
 						Vector2D val;
-						FValueConfig.GetValue2D(slice, out val.x, out val.y);
+						FInternalValueConfig.GetValue2D(slice, out val.x, out val.y);
 						
 						if (VMath.Abs(s.Value - val) > 0.00000001)
-							FValueConfig.SetValue2D(slice, s.Value.x, s.Value.y);
+							FInternalValueConfig.SetValue2D(slice, s.Value.x, s.Value.y);
 					}
 					
 					slice++;
@@ -413,12 +391,6 @@ namespace VVVV.Nodes
 		{
 			
 			int max = 0;
-			
-			max = Math.Max(max, FPosXIn.SliceCount);
-			max = Math.Max(max, FPosYIn.SliceCount);
-			
-			max = Math.Max(max, FScaleXIn.SliceCount);
-			max = Math.Max(max, FScaleYIn.SliceCount);
 			
 			max = Math.Max(max, FCountXIn.SliceCount);
 			max = Math.Max(max, FCountYIn.SliceCount);

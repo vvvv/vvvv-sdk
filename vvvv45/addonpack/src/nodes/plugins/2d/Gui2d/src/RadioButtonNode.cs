@@ -102,11 +102,7 @@ namespace VVVV.Nodes
 			
 			//update parameters
 			int slice;
-			if (   FPosXIn.PinIsChanged
-			    || FPosYIn.PinIsChanged
-			    || FScaleXIn.PinIsChanged
-			    || FScaleYIn.PinIsChanged
-			    || FCountXIn.PinIsChanged
+			if (   FCountXIn.PinIsChanged
 			    || FCountYIn.PinIsChanged
 			    || FSizeXIn.PinIsChanged
 			    || FSizeYIn.PinIsChanged
@@ -121,14 +117,10 @@ namespace VVVV.Nodes
 					RadioButtonGroup group = (RadioButtonGroup) FControllerGroups[slice];
 					
 					Matrix4x4 trans;
-					Vector2D pos, scale, count, size;
+					Vector2D count, size;
 					RGBAColor col, over, active;
 					
 					FTransformIn.GetMatrix(slice, out trans);
-					FPosXIn.GetValue(slice, out pos.x);
-					FPosYIn.GetValue(slice, out pos.y);
-					FScaleXIn.GetValue(slice, out scale.x);
-					FScaleYIn.GetValue(slice, out scale.y);
 					FCountXIn.GetValue(slice, out count.x);
 					FCountYIn.GetValue(slice, out count.y);
 					FSizeXIn.GetValue(slice, out size.x);
@@ -137,7 +129,7 @@ namespace VVVV.Nodes
 					FOverColorIn.GetColor(slice, out over);
 					FActiveColorIn.GetColor(slice, out active);
 
-					group.UpdateTransform(trans, pos, scale, count, size, col, over, active);
+					group.UpdateTransform(trans, count, size, col, over, active);
 					
 				}
 			}
@@ -199,7 +191,7 @@ namespace VVVV.Nodes
 					else if (FFirstframe) 
 					{
 						//load from config pin on first frame
-						FValueConfig.GetValue(slice, out val);
+						FInternalValueConfig.GetValue(slice, out val);
 						group.UpdateValue((int) Math.Round(val));
 					}
 					
@@ -223,7 +215,7 @@ namespace VVVV.Nodes
 			
 			//write output to pins
 			FValueOut.SliceCount = inputSpreadCount;
-			if (outcount != FValueConfig.SliceCount) FValueConfig.SliceCount = outcount;
+			if (outcount != FInternalValueConfig.SliceCount) FInternalValueConfig.SliceCount = outcount;
 			FTransformOut.SliceCount = outcount;
 			FColorOut.SliceCount = outcount;
 			FHitOut.SliceCount = outcount;
@@ -237,7 +229,7 @@ namespace VVVV.Nodes
 				int pcount = group.FControllers.Length;
 				
 				FValueOut.SetValue(i, group.SelectedSlice);
-				if (valueSet) FValueConfig.SetValue(i, group.SelectedSlice);
+				if (valueSet) FInternalValueConfig.SetValue(i, group.SelectedSlice);
 				
 				for (int j = 0; j < pcount; j++)
 				{

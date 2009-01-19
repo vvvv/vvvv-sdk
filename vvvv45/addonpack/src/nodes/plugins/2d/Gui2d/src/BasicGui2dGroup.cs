@@ -37,7 +37,7 @@ namespace VVVV.Nodes
 	{
 		//static field for all controller groups
 		//to disable mouse update when something is hit
-		public static bool FStaticMousHit;
+		protected static bool FStaticMousHit;
 	}
 
 	//parent class for controller groups
@@ -64,13 +64,11 @@ namespace VVVV.Nodes
 		
 		//update transform
 		public virtual void UpdateTransform(Matrix4x4 Transform,
-		                                       Vector2D Position,
-		                                       Vector2D Scale,
-		                                       Vector2D Count,
-		                                       Vector2D Size,
-		                                       RGBAColor Col,
-		                                       RGBAColor Over,
-		                                       RGBAColor Active)
+		                                    Vector2D Count,
+		                                    Vector2D Size,
+		                                    RGBAColor Col,
+		                                    RGBAColor Over,
+		                                    RGBAColor Active)
 
 		{
 			//copy colors
@@ -83,10 +81,9 @@ namespace VVVV.Nodes
 			int countY = VMath.Clamp((int) Math.Round(Count.y), 1, 1000);
 			int countTotal = countX * countY;
 			
-			//calculate button space
-			Matrix4x4 translate = VMath.Translate(Position.x, Position.y, 0);
+			//calculate controller space
 			Matrix4x4 size = VMath.Scale(Size.x / countX, Size.y / countY, 1);
-			Matrix4x4 controllerSpace = Transform * translate * VMath.Scale(Scale.x, Scale.y, 1);
+			Matrix4x4 controllerSpace = Transform;
 			
 			//create controllers?
 			if (countTotal != FControllers.Length)

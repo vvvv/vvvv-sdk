@@ -101,7 +101,7 @@ namespace VVVV.Nodes
 			//value
 			//correct subtype of value pin
 			FValueIn.SetSubType(0, 1, 0.01, 0, false, false, false);
-			FValueConfig.SetSubType(0, 1, 0.01, 0, false, false, false);
+			FInternalValueConfig.SetSubType(0, 1, 0.01, 0, false, false, false);
 			
 			//color
 			FHost.CreateColorInput("Slider Color", TSliceMode.Dynamic, TPinVisibility.True, out FSliderColorIn);
@@ -142,11 +142,7 @@ namespace VVVV.Nodes
 			
 			//update parameters
 			int slice;
-			if (   FPosXIn.PinIsChanged
-			    || FPosYIn.PinIsChanged
-			    || FScaleXIn.PinIsChanged
-			    || FScaleYIn.PinIsChanged
-			    || FCountXIn.PinIsChanged
+			if (   FCountXIn.PinIsChanged
 			    || FCountYIn.PinIsChanged
 			    || FSizeXIn.PinIsChanged
 			    || FSizeYIn.PinIsChanged
@@ -163,15 +159,11 @@ namespace VVVV.Nodes
 					RotarySliderGroup group = (RotarySliderGroup) FControllerGroups[slice];
 					
 					Matrix4x4 trans;
-					Vector2D pos, scale, count, size;
+					Vector2D count, size;
 					RGBAColor col, over, active, slider;
 					double sliderSpeed;
 					
 					FTransformIn.GetMatrix(slice, out trans);
-					FPosXIn.GetValue(slice, out pos.x);
-					FPosYIn.GetValue(slice, out pos.y);
-					FScaleXIn.GetValue(slice, out scale.x);
-					FScaleYIn.GetValue(slice, out scale.y);
 					FCountXIn.GetValue(slice, out count.x);
 					FCountYIn.GetValue(slice, out count.y);
 					FSizeXIn.GetValue(slice, out size.x);
@@ -182,7 +174,7 @@ namespace VVVV.Nodes
 					FSliderColorIn.GetColor(slice, out slider);
 					FSliderSpeedIn.GetValue(slice, out sliderSpeed);
 
-					group.UpdateTransform(trans, pos, scale, count, size, col, over, active, slider, sliderSpeed);
+					group.UpdateTransform(trans, count, size, col, over, active, slider, sliderSpeed);
 					
 				}
 			}
@@ -264,7 +256,7 @@ namespace VVVV.Nodes
 						else if (FFirstframe) 
 						{
 							//load from config pin on first frame
-							FValueConfig.GetValue(slice, out val);
+							FInternalValueConfig.GetValue(slice, out val);
 							group.UpdateValue((RotarySlider)group.FControllers[j], val);
 							
 						}
@@ -277,7 +269,7 @@ namespace VVVV.Nodes
 			
 			//write output to pins
 			FValueOut.SliceCount = outcount;
-			if (outcount != FValueConfig.SliceCount) FValueConfig.SliceCount = outcount;
+			if (outcount != FInternalValueConfig.SliceCount) FInternalValueConfig.SliceCount = outcount;
 			FTransformOut.SliceCount = outcount * 2;
 			FColorOut.SliceCount = outcount * 2;
 			FHitOut.SliceCount = outcount;
@@ -307,10 +299,10 @@ namespace VVVV.Nodes
 					if (valueSet)
 					{
 						double val;
-						FValueConfig.GetValue(slice, out val);
+						FInternalValueConfig.GetValue(slice, out val);
 						
 						if (Math.Abs(s.Value - val) > 0.000000001)
-							FValueConfig.SetValue(slice, s.Value);
+							FInternalValueConfig.SetValue(slice, s.Value);
 					}
 					
 					slice++;
@@ -326,12 +318,6 @@ namespace VVVV.Nodes
 		{
 			
 			int max = 0;
-			
-			max = Math.Max(max, FPosXIn.SliceCount);
-			max = Math.Max(max, FPosYIn.SliceCount);
-			
-			max = Math.Max(max, FScaleXIn.SliceCount);
-			max = Math.Max(max, FScaleYIn.SliceCount);
 			
 			max = Math.Max(max, FCountXIn.SliceCount);
 			max = Math.Max(max, FCountYIn.SliceCount);

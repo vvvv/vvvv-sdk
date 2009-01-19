@@ -30,8 +30,6 @@ using VVVV.Utils.VColor;
 namespace VVVV.Nodes
 {
 	
-
-	
 	//the radio button group, uses basic controller
 	public class RadioButtonGroup : BasicGui2dGroup<RadioButton>
 	{
@@ -43,23 +41,21 @@ namespace VVVV.Nodes
 		
 		//update transform
 		public override void UpdateTransform(Matrix4x4 Transform,
-		                            Vector2D Position,
-		                            Vector2D Scale,
-		                            Vector2D Count,
-		                            Vector2D Size,
-		                            RGBAColor Col,
-		                            RGBAColor Over,
-		                            RGBAColor Active)
+		                                     Vector2D Count,
+		                                     Vector2D Size,
+		                                     RGBAColor Col,
+		                                     RGBAColor Over,
+		                                     RGBAColor Active)
 		{
 
-			base.UpdateTransform(Transform, Position, Scale, Count, Size, Col, Over, Active);
+			base.UpdateTransform(Transform, Count, Size, Col, Over, Active);
 			
 		}
 		
 		//update mouse
-		public override bool UpdateMouse(Vector2D Mouse, 
-		                        bool MouseLeftDownEdge,
-		                        bool MouseLeftPressed)
+		public override bool UpdateMouse(Vector2D Mouse,
+		                                 bool MouseLeftDownEdge,
+		                                 bool MouseLeftPressed)
 		{
 			
 			int lastSelected = SelectedSlice;

@@ -48,10 +48,6 @@ namespace VVVV.Nodes
 		protected ITransformIn FTransformIn;
 		protected IValueIn FValueIn;
 		protected IValueIn FSetValueIn;
-		protected IValueIn FPosXIn;
-		protected IValueIn FPosYIn;
-		protected IValueIn FScaleXIn;
-		protected IValueIn FScaleYIn;
 		protected IValueIn FCountXIn;
 		protected IValueIn FCountYIn;
 		protected IValueIn FSizeXIn;
@@ -64,7 +60,7 @@ namespace VVVV.Nodes
 		protected IColorIn FActiveColorIn;
 		
 		//this is to store the values with the patch
-		protected IValueConfig FValueConfig;
+		protected IValueConfig FInternalValueConfig;
 		
 		//output pin declaration
 		protected ITransformOut FTransformOut;
@@ -198,20 +194,6 @@ namespace VVVV.Nodes
 			FHost.CreateValueInput("Set Value", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSetValueIn);
 			FSetValueIn.SetSubType(0, 1, 1, 0, true, false, false);
 			
-			//position
-			FHost.CreateValueInput("Pos X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPosXIn);
-			FPosXIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
-			
-			FHost.CreateValueInput("Pos Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPosYIn);
-			FPosYIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
-			
-			//scaling
-			FHost.CreateValueInput("Scale X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FScaleXIn);
-			FScaleXIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 1, false, false, false);
-			
-			FHost.CreateValueInput("Scale Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FScaleYIn);
-			FScaleYIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 1, false, false, false);
-			
 			//counts
 			FHost.CreateValueInput("Count X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FCountXIn);
 			FCountXIn.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
@@ -269,8 +251,8 @@ namespace VVVV.Nodes
 			FSpreadCountsOut.SetSubType(0, double.MaxValue, 0.01, 0, false, false, true);
 			
 			//create config pin
-			FHost.CreateValueConfig("Internal Value", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FValueConfig);
-			FValueConfig.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
+			FHost.CreateValueConfig("Internal Value", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FInternalValueConfig);
+			FInternalValueConfig.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
 			
 			FControllerGroups = new ArrayList();
 			
