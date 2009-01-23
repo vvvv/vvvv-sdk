@@ -191,7 +191,7 @@ namespace VVVV.Nodes
 
 	    	//create inputs
 	    	FHost.CreateEnumInput("VVVV Enum", TSliceMode.Single, TPinVisibility.True, out FV4EnumInput);
-	    	FV4EnumInput.SetSubType("All Enums");
+	    	FV4EnumInput.SetSubType("AllEnums");
 	    	
 	    	FHost.UpdateEnum("CustomPluginEnum", "mene", new string[]{"ene", "mene", "muh", "un", "draus", "bis", "du"});
 	    	FHost.CreateEnumInput("Custom Enum", TSliceMode.Single, TPinVisibility.True, out FCustomEnumInput);
