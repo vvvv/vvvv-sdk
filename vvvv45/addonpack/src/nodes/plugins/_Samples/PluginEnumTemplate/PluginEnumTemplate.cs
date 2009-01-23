@@ -140,12 +140,12 @@ namespace VVVV.Nodes
 					FPluginInfo = new PluginInfo();
 					
 					//the nodes main name: use CamelCaps and no spaces
-					FPluginInfo.Name = "TemplateEnum";
+					FPluginInfo.Name = "Template";
 					//the nodes category: try to use an existing one
 					FPluginInfo.Category = "Template";
 					//the nodes version: optional. leave blank if not
 					//needed to distinguish two nodes of the same name and category
-					FPluginInfo.Version = "Simple";
+					FPluginInfo.Version = "Enum";
 					
 					//the nodes author: your sign
 					FPluginInfo.Author = "vvvv group";
