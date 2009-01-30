@@ -150,7 +150,7 @@ namespace VVVV.Utils.VMath
 		/// <summary>
 		/// Clamp function, clamps a 2d-vector into the range [min..max]
 		/// </summary>
-		/// <param name="x"></param>
+		/// <param name="v"></param>
 		/// <param name="min"></param>
 		/// <param name="max"></param>
 		/// <returns></returns>
@@ -162,7 +162,7 @@ namespace VVVV.Utils.VMath
 		/// <summary>
 		/// Clamp function, clamps a 2d-vector into the range [min..max]
 		/// </summary>
-		/// <param name="x"></param>
+		/// <param name="v"></param>
 		/// <param name="min"></param>
 		/// <param name="max"></param>
 		/// <returns></returns>
@@ -174,7 +174,7 @@ namespace VVVV.Utils.VMath
 		/// <summary>
 		/// Clamp function, clamps a 2d-vector into the range [min..max]
 		/// </summary>
-		/// <param name="x"></param>
+		/// <param name="v"></param>
 		/// <param name="min"></param>
 		/// <param name="max"></param>
 		/// <returns></returns>
@@ -186,7 +186,7 @@ namespace VVVV.Utils.VMath
 		/// <summary>
 		/// Clamp function, clamps a 2d-vector into the range [min..max]
 		/// </summary>
-		/// <param name="x"></param>
+		/// <param name="v"></param>
 		/// <param name="min"></param>
 		/// <param name="max"></param>
 		/// <returns></returns>
@@ -198,7 +198,7 @@ namespace VVVV.Utils.VMath
 		/// <summary>
 		/// Clamp function, clamps a 2d-vector into the range [min..max]
 		/// </summary>
-		/// <param name="x"></param>
+		/// <param name="v"></param>
 		/// <param name="min"></param>
 		/// <param name="max"></param>
 		/// <returns></returns>
@@ -210,7 +210,7 @@ namespace VVVV.Utils.VMath
 		/// <summary>
 		/// Clamp function, clamps a 2d-vector into the range [min..max]
 		/// </summary>
-		/// <param name="x"></param>
+		/// <param name="v"></param>
 		/// <param name="min"></param>
 		/// <param name="max"></param>
 		/// <returns></returns>
