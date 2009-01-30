@@ -212,6 +212,10 @@ namespace VVVV.Nodes
 		#region DXMesh
 		public void UpdateResource(IPluginOut ForPin, int OnDevice)
 		{
+			//this is called every frame and is a bit like Evaluate, 
+			//but it is called for every device. so here the plugin should only do things
+			//that are device-specific and do preparing calculations in Evaluate still
+			
 			Mesh m = FDeviceMeshes.Find(delegate(Mesh ms) {return ms.Device.ComPointer == (IntPtr)OnDevice;});
 			
 			//if resource is not yet created on given Device, create it now
@@ -226,7 +230,9 @@ namespace VVVV.Nodes
 		
 		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
 		{
-			//dispose resources that were created on given Device
+			//called when a resource needs to be disposed on a given device
+			//this is also called when the plugin is destroyed, 
+			//so don't dispose dxresources in the plugins destructor/Dispose() 
 			Mesh m = FDeviceMeshes.Find(delegate(Mesh ms) {return ms.Device.ComPointer == (IntPtr)OnDevice;});
 			
 			if (m != null)
@@ -238,14 +244,18 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		public void GetMesh(IDXMeshIO ForPin, int OnDevice, out int Mesh)
+		public void GetMesh(IDXMeshIO ForPin, int OnDevice, out int MeshPointer)
 		{
-			Mesh = 0;
+			//this is called from the plugin host from within directX beginscene/endscene
+			//therefore the plugin shouldn't be doing much here other than handing back the right mesh
+			
+			MeshPointer = 0;
+			//in case the plugin has several mesh outputpins a test for the pin can be made here to get the right mesh.
 			if (ForPin == FMyMeshOutput)
 			{
 				Mesh m = FDeviceMeshes.Find(delegate(Mesh ms) {return ms.Device.ComPointer == (IntPtr)OnDevice;});
 				if (m != null)
-					Mesh = m.ComPointer.ToInt32();
+					MeshPointer = m.ComPointer.ToInt32();
 			}
 		}
 		#endregion
