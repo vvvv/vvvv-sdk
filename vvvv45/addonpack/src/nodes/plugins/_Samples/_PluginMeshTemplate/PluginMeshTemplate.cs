@@ -53,7 +53,7 @@ namespace VVVV.Nodes
 		
 		private IDXMeshIO FMyMeshOutput;
 		
-		private List<Mesh> FDeviceMeshes = new List<Mesh>();
+		private Dictionary<int, Mesh> FDeviceMeshes = new Dictionary<int, Mesh>();
 		
 		#endregion field declaration
 		
@@ -216,7 +216,7 @@ namespace VVVV.Nodes
 			//but it is called for every device. so here the plugin should only do things
 			//that are device-specific and do preparing calculations in Evaluate still
 			
-			Mesh m = FDeviceMeshes.Find(delegate(Mesh ms) {return ms.Device.ComPointer == (IntPtr)OnDevice;});
+			Mesh m = FDeviceMeshes[OnDevice];
 			
 			//if resource is not yet created on given Device, create it now
 			if (m == null)
@@ -224,7 +224,7 @@ namespace VVVV.Nodes
 				FHost.Log(TLogType.Debug, "Creating Resource...");
 				Device dev = Device.FromPointer(new IntPtr(OnDevice));
 				
-				FDeviceMeshes.Add(Mesh.CreateTeapot(dev));
+				FDeviceMeshes.Add(OnDevice, Mesh.CreateTeapot(dev));
 			}
 		}
 		
@@ -233,12 +233,12 @@ namespace VVVV.Nodes
 			//called when a resource needs to be disposed on a given device
 			//this is also called when the plugin is destroyed, 
 			//so don't dispose dxresources in the plugins destructor/Dispose() 
-			Mesh m = FDeviceMeshes.Find(delegate(Mesh ms) {return ms.Device.ComPointer == (IntPtr)OnDevice;});
+			Mesh m = FDeviceMeshes[OnDevice];
 			
 			if (m != null)
 			{
 				FHost.Log(TLogType.Debug, "Destroying Resource...");
-				FDeviceMeshes.Remove(m);
+				FDeviceMeshes.Remove(OnDevice);
 				m.Dispose();
 				m = null;
 			}
@@ -253,7 +253,7 @@ namespace VVVV.Nodes
 			//in case the plugin has several mesh outputpins a test for the pin can be made here to get the right mesh.
 			if (ForPin == FMyMeshOutput)
 			{
-				Mesh m = FDeviceMeshes.Find(delegate(Mesh ms) {return ms.Device.ComPointer == (IntPtr)OnDevice;});
+				Mesh m = FDeviceMeshes[OnDevice];
 				if (m != null)
 					MeshPointer = m.ComPointer.ToInt32();
 			}
