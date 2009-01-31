@@ -475,14 +475,6 @@ namespace VVVV.Nodes
 					// unlock buffers
 					NewMesh.UnlockIndexBuffer();
 					NewMesh.UnlockVertexBuffer();
-					
-					//dispose streams
-					sVx.Dispose();
-					sIx.Dispose();
-					
-					// don't think this is necessary, trying to solve memory leak
-					sVx = null;
-					sIx = null;
 
 					FDeviceMeshes.Add(OnDevice, NewMesh);
 				}
