@@ -65,7 +65,7 @@ namespace VVVV.Nodes
 		
 		private IDXMeshIO FMyMeshOutput;
 		
-		private List<Mesh> FDeviceMeshes = new List<Mesh>();
+		private Dictionary<int, Mesh> FDeviceMeshes = new Dictionary<int, Mesh>();
 		
 		#endregion field declaration
 		
@@ -432,20 +432,24 @@ namespace VVVV.Nodes
 		public void UpdateResource(IPluginOut ForPin, int OnDevice)
 		{
 			
-			Mesh m = FDeviceMeshes.Find(delegate(Mesh ms) 
-			                            {return ms.Device.ComPointer == (IntPtr)OnDevice;});
+			try
+			{
+				Mesh mtry = FDeviceMeshes[OnDevice];
+			}
 			
 			//if resource is not yet created on given Device, create it now
-			if (m == null)
+			catch
 			{
 				FHost.Log(TLogType.Debug, "Creating Resource...");
-				//Device dev = Device.FromPointer(new IntPtr(OnDevice));
+				Device dev = Device.FromPointer(new IntPtr(OnDevice));
 				
-				//FDeviceMeshes.Add(Mesh.CreateTeapot(dev));
+				FDeviceMeshes.Add(OnDevice, Mesh.CreateTeapot(dev));
 				update = true;
+				dev.Dispose();
 				
 				
 			}
+			Mesh m = FDeviceMeshes[OnDevice];
 			if (update)
 			{
 				
@@ -457,8 +461,8 @@ namespace VVVV.Nodes
 				                  VertexFormat.PositionNormal);
 				
 				// lock buffers
-				DataStream sVx = NewMesh.VertexBuffer.Lock(0, 0, LockFlags.Discard);
-				DataStream sIx = NewMesh.IndexBuffer.Lock(0, 0, LockFlags.Discard);
+				DataStream sVx = NewMesh.VertexBuffer.Lock(0, 0, LockFlags.None);
+				DataStream sIx = NewMesh.IndexBuffer.Lock(0, 0, LockFlags.None);
 				
 				// write buffers
 				// this can be done without int offset and int count also
@@ -480,12 +484,13 @@ namespace VVVV.Nodes
 				
 				// remove old mesh, add new mesh and dispose old mesh
 				
-				FDeviceMeshes.Remove(m);
-				FDeviceMeshes.Add(NewMesh);
+				FDeviceMeshes.Remove(OnDevice);
+				FDeviceMeshes.Add(OnDevice, NewMesh);
 								
 				m.Dispose();
 				m = null;
 				
+				dev.Dispose();
 				
 				update = false;
 				
@@ -496,29 +501,36 @@ namespace VVVV.Nodes
 		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
 		{
 			
-			//dispose resources that were created on given Device
-			Mesh m = FDeviceMeshes.Find(delegate(Mesh ms) 
-			                            {return ms.Device.ComPointer == (IntPtr)OnDevice;});
-			
-			if (m != null)
+			//called when a resource needs to be disposed on a given device
+			//this is also called when the plugin is destroyed,
+			//so don't dispose dxresources in the plugins destructor/Dispose()
+			try
 			{
+				Mesh m = FDeviceMeshes[OnDevice];
 				FHost.Log(TLogType.Debug, "Destroying Resource...");
-				FDeviceMeshes.Remove(m);
+				FDeviceMeshes.Remove(OnDevice);
+				
+				//dispose mesh
 				m.Dispose();
-				m = null;
+			}
+			catch
+			{
+				//nothing to do 
 			}
 		}
 		
-		public void GetMesh(IDXMeshIO ForPin, int OnDevice, out int Mesh)
+		public void GetMesh(IDXMeshIO ForPin, int OnDevice, out int MeshPointer)
 		{
-			Mesh = 0;
+			//this is called from the plugin host from within directX beginscene/endscene
+			//therefore the plugin shouldn't be doing much here other than handing back the right mesh
+			
+			MeshPointer = 0;
+			//in case the plugin has several mesh outputpins a test for the pin can be made here to get the right mesh.
 			if (ForPin == FMyMeshOutput)
 			{
-
-				Mesh m = FDeviceMeshes.Find(delegate(Mesh ms) 
-				                            {return ms.Device.ComPointer == (IntPtr)OnDevice;});
+				Mesh m = FDeviceMeshes[OnDevice];
 				if (m != null)
-					Mesh = m.ComPointer.ToInt32();
+					MeshPointer = m.ComPointer.ToInt32();
 			}
 		}
 		
