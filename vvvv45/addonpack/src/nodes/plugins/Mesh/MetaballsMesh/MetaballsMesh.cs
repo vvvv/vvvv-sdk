@@ -464,8 +464,8 @@ namespace VVVV.Nodes
 					                        VertexFormat.PositionNormal);
 
 					// lock buffers
-					DataStream sVx = NewMesh.VertexBuffer.Lock(0, 0, LockFlags.Discard);
-					DataStream sIx = NewMesh.IndexBuffer.Lock(0, 0, LockFlags.Discard);
+					DataStream sVx = NewMesh.LockVertexBuffer(LockFlags.Discard);
+					DataStream sIx = NewMesh.LockIndexBuffer(LockFlags.Discard);
 					
 					// write buffers
 					// this can be done without int offset and int count also
@@ -473,9 +473,9 @@ namespace VVVV.Nodes
 					sIx.WriteRange(IxBuffer, 0, NumIndices);
 					
 					// unlock buffers
-					NewMesh.VertexBuffer.Unlock();
-					NewMesh.IndexBuffer.Unlock();
- 				
+					NewMesh.UnlockIndexBuffer();
+					NewMesh.UnlockVertexBuffer();
+					
 					//dispose streams
 					sVx.Dispose();
 					sIx.Dispose();
