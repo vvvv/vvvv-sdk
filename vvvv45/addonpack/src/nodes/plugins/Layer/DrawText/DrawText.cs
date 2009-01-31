@@ -44,7 +44,6 @@ namespace VVVV.Nodes
 	public struct DeviceFont
 	{
 		public SlimDX.Direct3D9.Font Font;
-		public SlimDX.Direct3D9.Device Device;
 		public SlimDX.Direct3D9.Sprite Sprite;
 	}
 	
@@ -62,7 +61,7 @@ namespace VVVV.Nodes
 		private IValueIn FBoldInput;
 		private IValueIn FTexSizeInput;
 		private IStringIn FTextInput;
-		private IStringIn FFontInput;
+		private IEnumIn FFontInput;
 		private IValueIn FSizeInput;
 		private IColorIn FColorInput;
 		private ITransformIn FTranformIn;
@@ -72,7 +71,7 @@ namespace VVVV.Nodes
 		
 		private int FSpreadMax;
 		
-		private List<DeviceFont> FDeviceFonts = new List<DeviceFont>();
+		private Dictionary<int, DeviceFont> FDeviceFonts = new Dictionary<int, DeviceFont>();
 		
 		#endregion field declaration
 		
@@ -213,8 +212,8 @@ namespace VVVV.Nodes
 			
 			FHost.CreateStringInput("Text", TSliceMode.Dynamic, TPinVisibility.True, out FTextInput);
 			FTextInput.SetSubType("vvvv", false);
-			FHost.CreateStringInput("Font", TSliceMode.Single, TPinVisibility.True, out FFontInput);
-			FFontInput.SetSubType("Verdana", false);
+			FHost.CreateEnumInput("Font", TSliceMode.Single, TPinVisibility.True, out FFontInput);
+			FFontInput.SetSubType("SystemFonts");
 			FHost.CreateValueInput("Size", 1, null, TSliceMode.Single, TPinVisibility.True, out FSizeInput);
 			FSizeInput.SetSubType(0, int.MaxValue, 1, 10, false, false, true);
 			FHost.CreateValueInput("Bold", 1, null, TSliceMode.Single, TPinVisibility.True, out FBoldInput);
@@ -263,28 +262,41 @@ namespace VVVV.Nodes
 		#endregion mainloop
 		
 		#region DXLayer
+		private void RemoveResource(int OnDevice)
+		{
+			DeviceFont df = FDeviceFonts[OnDevice];
+			FHost.Log(TLogType.Debug, "Destroying Resource...");
+			FDeviceFonts.Remove(OnDevice);
+			
+			df.Font.Dispose();
+			df.Sprite.Dispose();
+		}
+		
 		public void UpdateResource(IPluginOut ForPin, int OnDevice)
 		{
-			DeviceFont f = FDeviceFonts.Find(delegate(DeviceFont df) {return df.Device.ComPointer == (IntPtr)OnDevice;});
+			bool needsupdate = false;
 			
-			if ((f.Font != null) && (FFontInput.PinIsChanged || FSizeInput.PinIsChanged || FBoldInput.PinIsChanged || FItalicInput.PinIsChanged))
+			try
 			{
-				FDeviceFonts.Remove(f);
-				f.Font.Dispose();
-				f.Font = null;
-				f.Sprite.Dispose();
-				f.Sprite = null;
+				DeviceFont df = FDeviceFonts[OnDevice];
+				if (FFontInput.PinIsChanged || FSizeInput.PinIsChanged || FBoldInput.PinIsChanged || FItalicInput.PinIsChanged)
+				{
+					RemoveResource(OnDevice);
+					needsupdate = true;
+				}
+			}
+			catch
+			{
+				//if resource is not yet created on given Device, create it now
+				needsupdate = true;
 			}
 			
-			//if resource is not yet created for given OnDevice, create it now
-			if (f.Font == null)
+			if (needsupdate)
 			{
 				FHost.Log(TLogType.Debug, "Creating Resource...");
-				
 				Device dev = Device.FromPointer(new IntPtr(OnDevice));
 				
 				DeviceFont df = new DeviceFont();
-				df.Device = dev;
 				double size;
 				FSizeInput.GetValue(0, out size);
 				string font;
@@ -300,92 +312,87 @@ namespace VVVV.Nodes
 					weight = FontWeight.Light;
 				
 				df.Font = new SlimDX.Direct3D9.Font(dev, (int) size, 0, weight, 0, italic>0.5, CharacterSet.Default, Precision.Default, FontQuality.Default, PitchAndFamily.Default, font);
-				//df.Font = new SlimDX.Direct3D9.Font(dev, new System.Drawing.Font(font, (int) size));
 				df.Sprite = new Sprite(dev);
-				FDeviceFonts.Add(df);
+				FDeviceFonts.Add(OnDevice, df);
+				
+				//dispose device
+				dev.Dispose();
 			}
 		}
 		
 		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
 		{
-			//dispose resources that were created for given OnDevice
-			DeviceFont f = FDeviceFonts.Find(delegate(DeviceFont df) {return df.Device.ComPointer == (IntPtr)OnDevice;});
-			
-			if (f.Font != null)
+			//dispose resources that were created on given OnDevice
+			try
 			{
-				FHost.Log(TLogType.Debug, "Destroying Resource...");
-				FDeviceFonts.Remove(f);
-				f.Font.Dispose();
-				f.Font = null;
-				f.Sprite.Dispose();
-				f.Sprite = null;
+				RemoveResource(OnDevice);
+			}
+			catch
+			{
+				//resource is not available for this device. good. nothing to do then.
 			}
 		}
 		
 		public void Render(IDXLayerIO ForPin, int OnDevice)
 		{
-			DeviceFont f = FDeviceFonts.Find(delegate(DeviceFont df) {return df.Device.ComPointer == (IntPtr)OnDevice;});
+			DeviceFont df = FDeviceFonts[OnDevice];
 			
-			if (f.Font != null)
+			string text;
+			RGBAColor c;
+			double sizeX, sizeY;
+			
+			Matrix4x4 m4x4;
+			
+			FTexSizeInput.GetValue2D(0, out sizeX, out sizeY);
+			if (sizeX == 0)
+				FSizeInput.GetValue(0, out sizeX);
+			if (sizeY == 0)
+				FSizeInput.GetValue(0, out sizeY);
+			//compensate texture size
+			Matrix4x4 preScale = VMath.Scale(1/sizeX, -1/sizeY, 1);
+			
+			SlimDX.Matrix m = new SlimDX.Matrix();
+			df.Sprite.Begin(SpriteFlags.ObjectSpace | SpriteFlags.DoNotAddRefTexture);// | SpriteFlags.DoNotModifyRenderState | SpriteFlags.DoNotSaveState);
+			//f.Device.SetSamplerState(0, SamplerState.MagFilter, TextureFilter.Point);
+			
+			Rectangle textSize;
+			for (int i=0; i<FSpreadMax; i++)
 			{
-				string text;
-				RGBAColor c;
-				double x, y;
-				double sizeX, sizeY;
+				FColorInput.GetColor(i, out c);
+				FTextInput.GetString(i, out text);
 				
-				Matrix4x4 m4x4;
+				FTranformIn.GetMatrix(i, out m4x4);
 				
-				FTexSizeInput.GetValue2D(0, out sizeX, out sizeY);
-				if (sizeX == 0)
-					FSizeInput.GetValue(0, out sizeX);
-				if (sizeY == 0)
-					FSizeInput.GetValue(0, out sizeY);
-				//compensate texture size
-				Matrix4x4 preScale = VMath.Scale(1/sizeX, -1/sizeY, 1);
+				m4x4 = m4x4 * preScale;
+				m.M11 = (float) m4x4.m11;
+				m.M12 = (float) m4x4.m12;
+				m.M13 = (float) m4x4.m13;
+				m.M14 = (float) m4x4.m14;
 				
-				SlimDX.Matrix m = new SlimDX.Matrix();
-				f.Sprite.Begin(SpriteFlags.ObjectSpace | SpriteFlags.DoNotAddRefTexture);// | SpriteFlags.DoNotModifyRenderState | SpriteFlags.DoNotSaveState);
-				//f.Device.SetSamplerState(0, SamplerState.MagFilter, TextureFilter.Point);
+				m.M21 = (float) m4x4.m21;
+				m.M22 = (float) m4x4.m22;
+				m.M23 = (float) m4x4.m23;
+				m.M24 = (float) m4x4.m24;
 				
-				Rectangle textSize;
-				for (int i=0; i<FSpreadMax; i++)
-				{
-					FColorInput.GetColor(i, out c);
-					FTextInput.GetString(i, out text);
-					
-					FTranformIn.GetMatrix(i, out m4x4);
-					
-					m4x4 = m4x4 * preScale;
-					m.M11 = (float) m4x4.m11;
-					m.M12 = (float) m4x4.m12;
-					m.M13 = (float) m4x4.m13;
-					m.M14 = (float) m4x4.m14;
-					
-					m.M21 = (float) m4x4.m21;
-					m.M22 = (float) m4x4.m22;
-					m.M23 = (float) m4x4.m23;
-					m.M24 = (float) m4x4.m24;
-					
-					m.M31 = (float) m4x4.m31;
-					m.M32 = (float) m4x4.m32;
-					m.M33 = (float) m4x4.m33;
-					m.M34 = (float) m4x4.m34;
-					
-					m.M41 = (float) m4x4.m41;
-					m.M42 = (float) m4x4.m42;
-					m.M43 = (float) m4x4.m43;
-					m.M44 = (float) m4x4.m44;
-					
-					f.Sprite.Transform = m;
-					DrawTextFormat dtf = DrawTextFormat.Center | DrawTextFormat.VerticalCenter | DrawTextFormat.NoClip;
-					
-					f.Font.DrawString(f.Sprite, text, new Rectangle(0, 0, 0, 0), dtf, c.Color.ToArgb());
-					
-					textSize = f.Font.MeasureString(f.Sprite, text, dtf);
-					FSizeOutput.SetValue2D(i, textSize.Width, textSize.Height);					
-				}
-				f.Sprite.End();
+				m.M31 = (float) m4x4.m31;
+				m.M32 = (float) m4x4.m32;
+				m.M33 = (float) m4x4.m33;
+				m.M34 = (float) m4x4.m34;
+				
+				m.M41 = (float) m4x4.m41;
+				m.M42 = (float) m4x4.m42;
+				m.M43 = (float) m4x4.m43;
+				m.M44 = (float) m4x4.m44;
+				
+				df.Sprite.Transform = m;
+				DrawTextFormat dtf = DrawTextFormat.Center | DrawTextFormat.VerticalCenter | DrawTextFormat.NoClip;
+				
+				df.Font.DrawString(df.Sprite, text, new Rectangle(0, 0, 0, 0), dtf, c.Color.ToArgb());
+				
+				textSize = df.Font.MeasureString(df.Sprite, text, dtf);
+				FSizeOutput.SetValue2D(i, textSize.Width, textSize.Height);
 			}
+			df.Sprite.End();
 		}
 		#endregion
 	}
