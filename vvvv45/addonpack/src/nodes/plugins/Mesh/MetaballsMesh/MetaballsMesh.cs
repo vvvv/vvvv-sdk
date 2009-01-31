@@ -65,6 +65,8 @@ namespace VVVV.Nodes
 		
 		private IDXMeshIO FMyMeshOutput;
 		
+		DataStream sVx;
+		DataStream sIx;
 		private Dictionary<int, Mesh> FDeviceMeshes = new Dictionary<int, Mesh>();
 		
 		#endregion field declaration
@@ -362,16 +364,16 @@ namespace VVVV.Nodes
 						double* fixVertices = (double*) fixTemp;  // cast Vector3D* to double*
 						for (int j = 0; j < NumVertices * 3; j++) // and collect XYZ in order
 						{
-							*(pVertices+j) = *(fixVertices+j);    // this is fast!
+				 *(pVertices+j) = *(fixVertices+j);    // this is fast!
 						}
-					}	
+					}
 					
 					fixed (Vector3D* fixTemp = &Normals2[0])
 					{
 						double* fixNormals = (double*) fixTemp;
 						for (int j = 0; j < NumVertices * 3; j++)
 						{
-							*(pNormals+j) = *(fixNormals+j);
+				 *(pNormals+j) = *(fixNormals+j);
 						}
 					}
 					
@@ -379,13 +381,13 @@ namespace VVVV.Nodes
 					{
 						for (int j = 0; j < NumIndices; j++)
 						{
-							*(pIndices+j) = (double) *(fixIndices+j);
+				 *(pIndices+j) = (double) *(fixIndices+j);
 						}
 					}
 					
 				}
 				
-				*/
+				 */
 				#endregion unsafe
 				
 				
@@ -418,7 +420,7 @@ namespace VVVV.Nodes
 				
 				FMyMeshOutput.SliceCount = 1;
 				
-							
+				
 				#endregion MeshOutput
 			}
 
@@ -427,7 +429,13 @@ namespace VVVV.Nodes
 		#endregion mainloop
 		
 		#region DXMesh
-		
+		private void RemoveResource(int OnDevice)
+		{
+			Mesh m = FDeviceMeshes[OnDevice];
+			//FHost.Log(TLogType.Debug, "Destroying Resource...");
+			FDeviceMeshes.Remove(OnDevice);
+			m.Dispose();
+		}
 		
 		public void UpdateResource(IPluginOut ForPin, int OnDevice)
 		{
@@ -435,66 +443,54 @@ namespace VVVV.Nodes
 			try
 			{
 				Mesh mtry = FDeviceMeshes[OnDevice];
+				if (update)
+					RemoveResource(OnDevice);
 			}
 			
 			//if resource is not yet created on given Device, create it now
 			catch
 			{
-				FHost.Log(TLogType.Debug, "Creating Resource...");
-				Device dev = Device.FromPointer(new IntPtr(OnDevice));
-				
-				FDeviceMeshes.Add(OnDevice, Mesh.CreateTeapot(dev));
 				update = true;
-				dev.Dispose();
-				
-				
 			}
-			Mesh m = FDeviceMeshes[OnDevice];
+			
 			if (update)
 			{
-				
 				Device dev = Device.FromPointer(new IntPtr(OnDevice));
-							
-				// create new Mesh
-				Mesh NewMesh = new Mesh(dev, NumIndices/3, NumVertices, 
-				                  MeshFlags.Managed,
-				                  VertexFormat.PositionNormal);
-				
-				// lock buffers
-				DataStream sVx = NewMesh.VertexBuffer.Lock(0, 0, LockFlags.None);
-				DataStream sIx = NewMesh.IndexBuffer.Lock(0, 0, LockFlags.None);
-				
-				// write buffers
-				// this can be done without int offset and int count also
-								
-				sVx.WriteRange(VxBuffer, 0, NumVertices);
-				sIx.WriteRange(IxBuffer, 0, NumIndices);
-				
-				// unlock buffers
-				NewMesh.VertexBuffer.Unlock();
-				NewMesh.IndexBuffer.Unlock();
-				
-				//dispose streams
-				sVx.Dispose();
-				sIx.Dispose();
-				
-				// don't think this is necessary, trying to solve memory leak
-				sVx = null;
-				sIx = null;
-				
-				// remove old mesh, add new mesh and dispose old mesh
-				
-				FDeviceMeshes.Remove(OnDevice);
-				FDeviceMeshes.Add(OnDevice, NewMesh);
-								
-				m.Dispose();
-				m = null;
-				
-				dev.Dispose();
-				
-				update = false;
-				
-				
+				try
+				{
+					// create new Mesh
+					Mesh NewMesh = new Mesh(dev, NumIndices/3, NumVertices,
+					                        MeshFlags.Dynamic | MeshFlags.WriteOnly,
+					                        VertexFormat.PositionNormal);
+
+					// lock buffers
+					DataStream sVx = NewMesh.VertexBuffer.Lock(0, 0, LockFlags.Discard);
+					DataStream sIx = NewMesh.IndexBuffer.Lock(0, 0, LockFlags.Discard);
+					
+					// write buffers
+					// this can be done without int offset and int count also
+					sVx.WriteRange(VxBuffer, 0, NumVertices);
+					sIx.WriteRange(IxBuffer, 0, NumIndices);
+					
+					// unlock buffers
+					NewMesh.VertexBuffer.Unlock();
+					NewMesh.IndexBuffer.Unlock();
+ 				
+					//dispose streams
+					sVx.Dispose();
+					sIx.Dispose();
+					
+					// don't think this is necessary, trying to solve memory leak
+					sVx = null;
+					sIx = null;
+
+					FDeviceMeshes.Add(OnDevice, NewMesh);
+				}
+				finally
+				{
+					dev.Dispose();
+					update = false;
+				}
 			}
 		}
 		
@@ -506,16 +502,11 @@ namespace VVVV.Nodes
 			//so don't dispose dxresources in the plugins destructor/Dispose()
 			try
 			{
-				Mesh m = FDeviceMeshes[OnDevice];
-				FHost.Log(TLogType.Debug, "Destroying Resource...");
-				FDeviceMeshes.Remove(OnDevice);
-				
-				//dispose mesh
-				m.Dispose();
+				RemoveResource(OnDevice);
 			}
 			catch
 			{
-				//nothing to do 
+				//nothing to do
 			}
 		}
 		
@@ -533,11 +524,7 @@ namespace VVVV.Nodes
 					MeshPointer = m.ComPointer.ToInt32();
 			}
 		}
-		
 
-		
-		
-		
 		#endregion
 		
 		#region metaballs
@@ -652,7 +639,7 @@ namespace VVVV.Nodes
 				//   n += 2 * mass * vector / distance^4
 				
 				Vector3 xyz = Vertices[Vertex] - m_Ball[i];
-								
+				
 				fSqDist = xyz.LengthSquared();
 				
 
