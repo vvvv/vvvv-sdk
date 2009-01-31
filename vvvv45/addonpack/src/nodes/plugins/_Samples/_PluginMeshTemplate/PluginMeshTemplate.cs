@@ -249,7 +249,7 @@ namespace VVVV.Nodes
 			}
 			catch
 			{
-				//nothing to do 
+				//resource is not available for this device. good. nothing to do then.
 			}
 		}
 		
