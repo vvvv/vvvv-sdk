@@ -1,0 +1,65 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha20.1.dtd" >
+   <PATCH nodename="Y:\sourceforge\plugins\_Samples\_PluginLayerTemplate\Template (Template Layer) help.v4p" componentmode="InAWindow">
+   <BOUNDS height="6360" left="6450" top="585" type="Window" width="5025">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="3" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="1290" top="2595" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1800" left="1290" top="2595" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="2805" left="300" top="570" type="Window" width="6120">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Projection Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.03712,0.24187,0.09723,0.00334|">
+   </PIN>
+   <PIN pinname="Presentation Interval" slicecount="1" values="immediately">
+   </PIN>
+   <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="2" nodename=":PLUGINS:\PluginLayerTemplate.dll|VVVV.Nodes.PluginLayerTemplate">
+   <BOUNDS height="0" left="1290" top="1860" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1290" top="1860" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="15720" top="12915" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Text" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Layers" srcnodeid="2" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="0" left="675" top="450" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="675" top="450" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="8625" top="2625" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="asdf">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Text" srcnodeid="1" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InAWindow" id="0" nodename="Renderer (TTY)">
+   <BOUNDS height="0" left="765" top="4575" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1800" left="765" top="4575" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="3540" left="300" top="3390" type="Window" width="6105">
+   </BOUNDS>
+   </NODE>
+   </PATCH>
