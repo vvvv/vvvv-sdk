@@ -230,8 +230,6 @@ namespace VVVV.Nodes
 
 				//dispose device
 				dev.Dispose();
-				//null device
-				dev = null;
 			}
 		}
 		
@@ -246,12 +244,8 @@ namespace VVVV.Nodes
 				FHost.Log(TLogType.Debug, "Destroying Resource...");
 				FDeviceMeshes.Remove(OnDevice);
 				
-				//dispose meshs device
-				m.Device.Dispose();
 				//dispose mesh
 				m.Dispose();
-				//null mesh
-				m = null;
 			}
 			catch
 			{
