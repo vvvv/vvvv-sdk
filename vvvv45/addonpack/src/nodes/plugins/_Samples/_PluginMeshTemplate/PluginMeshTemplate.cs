@@ -92,10 +92,11 @@ namespace VVVV.Nodes
 				if(disposing)
 				{
 					// Dispose managed resources.
+					
 				}
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.
-				
+
 				FHost.Log(TLogType.Debug, "PluginMeshTemplate is being deleted");
 				
 				// Note that this is not thread safe.
@@ -212,35 +213,49 @@ namespace VVVV.Nodes
 		#region DXMesh
 		public void UpdateResource(IPluginOut ForPin, int OnDevice)
 		{
-			//this is called every frame and is a bit like Evaluate, 
+			//this is called every frame and is a bit like Evaluate,
 			//but it is called for every device. so here the plugin should only do things
 			//that are device-specific and do preparing calculations in Evaluate still
 			
-			Mesh m = FDeviceMeshes[OnDevice];
-			
-			//if resource is not yet created on given Device, create it now
-			if (m == null)
+			try
 			{
+				Mesh m = FDeviceMeshes[OnDevice];
+			}
+			catch
+			{
+				//if resource is not yet created on given Device, create it now
 				FHost.Log(TLogType.Debug, "Creating Resource...");
 				Device dev = Device.FromPointer(new IntPtr(OnDevice));
-				
 				FDeviceMeshes.Add(OnDevice, Mesh.CreateTeapot(dev));
+
+				//dispose device
+				dev.Dispose();
+				//null device
+				dev = null;
 			}
 		}
 		
 		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
 		{
 			//called when a resource needs to be disposed on a given device
-			//this is also called when the plugin is destroyed, 
-			//so don't dispose dxresources in the plugins destructor/Dispose() 
-			Mesh m = FDeviceMeshes[OnDevice];
-			
-			if (m != null)
+			//this is also called when the plugin is destroyed,
+			//so don't dispose dxresources in the plugins destructor/Dispose()
+			try
 			{
+				Mesh m = FDeviceMeshes[OnDevice];
 				FHost.Log(TLogType.Debug, "Destroying Resource...");
 				FDeviceMeshes.Remove(OnDevice);
+				
+				//dispose meshs device
+				m.Device.Dispose();
+				//dispose mesh
 				m.Dispose();
+				//null mesh
 				m = null;
+			}
+			catch
+			{
+				//nothing to do 
 			}
 		}
 		
