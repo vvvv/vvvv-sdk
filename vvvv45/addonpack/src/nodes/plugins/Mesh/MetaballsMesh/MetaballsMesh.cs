@@ -135,7 +135,7 @@ namespace VVVV.Nodes
 		}
 		#endregion constructor/destructor
 		
-		#region node name and infos
+		#region node name and info
 		
 		//provide node infos
 		private static IPluginInfo FPluginInfo;
@@ -189,7 +189,7 @@ namespace VVVV.Nodes
 			get {return false;}
 		}
 		
-		#endregion node name and infos
+		#endregion node name and info
 		
 		#region pin creation
 		
