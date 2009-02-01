@@ -51,8 +51,10 @@ namespace VVVV.Nodes
 		//Track whether Dispose has been called.
 		private bool FDisposed = false;
 		
+		//a mesh output pin
 		private IDXMeshIO FMyMeshOutput;
 		
+		//a list of meshes for each device
 		private Dictionary<int, Mesh> FDeviceMeshes = new Dictionary<int, Mesh>();
 		
 		#endregion field declaration
@@ -123,7 +125,7 @@ namespace VVVV.Nodes
 		}
 		#endregion constructor/destructor
 		
-		#region node name and infos
+		#region node name and info
 		
 		//provide node infos
 		private static IPluginInfo FPluginInfo;
@@ -213,9 +215,8 @@ namespace VVVV.Nodes
 		#region DXMesh
 		public void UpdateResource(IPluginOut ForPin, int OnDevice)
 		{
-			//this is called every frame and is a bit like Evaluate,
-			//but it is called for every device. so here the plugin should only do things
-			//that are device-specific and do preparing calculations in Evaluate still
+			//Called by the PluginHost every frame for every device. Therefore a plugin should only do 
+			//device specific operations here and still keep node specific calculations in the Evaluate call.
 			
 			try
 			{
@@ -235,9 +236,8 @@ namespace VVVV.Nodes
 		
 		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
 		{
-			//called when a resource needs to be disposed on a given device
-			//this is also called when the plugin is destroyed,
-			//so don't dispose dxresources in the plugins destructor/Dispose()
+			//Called by the PluginHost whenever a resource for a specific pin needs to be destroyed on a specific device. 
+			//This is also called when the plugin is destroyed, so don't dispose dxresources in the plugins destructor/Dispose()
 			try
 			{
 				Mesh m = FDeviceMeshes[OnDevice];
@@ -255,8 +255,9 @@ namespace VVVV.Nodes
 		
 		public void GetMesh(IDXMeshIO ForPin, int OnDevice, out int MeshPointer)
 		{
-			//this is called from the plugin host from within directX beginscene/endscene
-			//therefore the plugin shouldn't be doing much here other than handing back the right mesh
+			Called by the PluginHost everytime a mesh is accessed via a pin on the plugin.
+		/// This is called from the PluginHost from within DirectX BeginScene/EndScene,
+		/// therefore the plugin shouldn't be doing much here other than handing back the right mesh
 			
 			MeshPointer = 0;
 			//in case the plugin has several mesh outputpins a test for the pin can be made here to get the right mesh.
