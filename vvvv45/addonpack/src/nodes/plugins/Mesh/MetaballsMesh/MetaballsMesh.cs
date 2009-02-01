@@ -59,9 +59,8 @@ namespace VVVV.Nodes
 		private IValueIn level;
 		
 		//output pin declaration
-		private IValueOut position;
-		private IValueOut normal;
-		private IValueOut indices;
+		
+		//private IValueOut debug;
 		
 		private IDXMeshIO FMyMeshOutput;
 		
@@ -216,15 +215,9 @@ namespace VVVV.Nodes
 			
 			
 			//create outputs
-			FHost.CreateValueOutput("Position ", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out position);
-			position.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0, 0, 0, false, false, false);
 			
-			FHost.CreateValueOutput("Normal ", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out normal);
-			normal.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0, 0, 0, false, false, false);
-			
-			FHost.CreateValueOutput("Indices", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out indices);
-			indices.SetSubType(0, int.MaxValue, 1, 0, false, false, true);
-			
+			//FHost.CreateValueOutput("Debug", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out debug);
+			//debug.SetSubType(int.MinValue, int.MaxValue, 1, 0, false, false, true);
 			
 			FHost.CreateMeshOutput("Mesh", TSliceMode.Dynamic, TPinVisibility.True, out FMyMeshOutput);
 		}
@@ -310,101 +303,11 @@ namespace VVVV.Nodes
 				Render();
 				
 				// Output data
-
-				#region unsafe 2.1.1
-				/*
-				
-				
-				// FALLBACK TO ORIGINAL PLUGIN.
-				// enable use of Position, Normal and Indices output pins
-				// because
-				// in MeshOutput version Vertices and Normals are
-				// SlimDX Vector3 type, not Vector3D type
-				
-				
-				
-				// unsafe is fast
-				
-				position.SliceCount = NumVertices;
-				normal.SliceCount   = NumVertices;
-				indices.SliceCount  = NumIndices;
-				
-				
-				unsafe
-				{
-					double* pVertices, pNormals, pIndices;
-					
-					position.GetValuePointer(out pVertices);
-					normal.GetValuePointer(out pNormals);
-					indices.GetValuePointer(out pIndices);
-					
-
-					Vector3D[] Vertices2 = new Vector3D[NumVertices];
-					Vector3D[] Normals2 = new Vector3D[NumVertices];
-					
-					for (int k = 0; k < NumVertices; k++)
-					{
-						Vertices2[k].x = (double)Vertices[k].X;
-						Vertices2[k].y = (double)Vertices[k].Y;
-						Vertices2[k].z = (double)Vertices[k].Z;
-						
-						Normals2[k].x = (double)Normals[k].X;
-						Normals2[k].y = (double)Normals[k].Y;
-						Normals2[k].z = (double)Normals[k].Z;
-						
-					}
-					
-					
-					
-					// fix all arrays before copying
-									
-					
-					fixed (Vector3D* fixTemp = &Vertices2[0])
-					{
-						double* fixVertices = (double*) fixTemp;  // cast Vector3D* to double*
-						for (int j = 0; j < NumVertices * 3; j++) // and collect XYZ in order
-						{
-				 *(pVertices+j) = *(fixVertices+j);    // this is fast!
-						}
-					}
-					
-					fixed (Vector3D* fixTemp = &Normals2[0])
-					{
-						double* fixNormals = (double*) fixTemp;
-						for (int j = 0; j < NumVertices * 3; j++)
-						{
-				 *(pNormals+j) = *(fixNormals+j);
-						}
-					}
-					
-					fixed (int* fixIndices = &Indices[0])
-					{
-						for (int j = 0; j < NumIndices; j++)
-						{
-				 *(pIndices+j) = (double) *(fixIndices+j);
-						}
-					}
-					
-				}
-				
-				 */
-				#endregion unsafe
 				
 				
 				#region MeshOutput
+
 				
-				
-				// with some more code changes VxBuffer would be
-				// built already, but for now we have to build it from arrays
-				// in every frame
-				
-				VxBuffer = new sVxBuffer[NumVertices];
-				
-				for (int j = 0; j < NumVertices; j++)
-				{
-					VxBuffer[j].Vel = Vertices[j];
-					VxBuffer[j].Nel = Normals[j];
-				}
 				
 				// this is not taken care of in metaballs code yet
 				// cast int indicices to short IxBuffer
@@ -464,18 +367,18 @@ namespace VVVV.Nodes
 					                        VertexFormat.PositionNormal);
 
 					// lock buffers
-					DataStream sVx = NewMesh.LockVertexBuffer(LockFlags.Discard);
-					DataStream sIx = NewMesh.LockIndexBuffer(LockFlags.Discard);
+					sVx = NewMesh.LockVertexBuffer(LockFlags.Discard);
+					sIx = NewMesh.LockIndexBuffer(LockFlags.Discard);
 					
 					// write buffers
-					// this can be done without int offset and int count also
 					sVx.WriteRange(VxBuffer, 0, NumVertices);
 					sIx.WriteRange(IxBuffer, 0, NumIndices);
-					
+
 					// unlock buffers
 					NewMesh.UnlockIndexBuffer();
 					NewMesh.UnlockVertexBuffer();
-
+					
+					
 					FDeviceMeshes.Add(OnDevice, NewMesh);
 				}
 				finally
@@ -542,6 +445,9 @@ namespace VVVV.Nodes
 				y = World2Grid(m_Ball[i].Y);
 				z = World2Grid(m_Ball[i].Z);
 
+				
+				
+				
 				// Work our way out from the center of the ball until the surface is
 				// reached. If the voxel at the surface is already computed then this
 				// ball share surface with a previous ball.
@@ -630,7 +536,7 @@ namespace VVVV.Nodes
 				//
 				//   n += 2 * mass * vector / distance^4
 				
-				Vector3 xyz = Vertices[Vertex] - m_Ball[i];
+				Vector3 xyz = VxBuffer[Vertex].Vel - m_Ball[i];
 				
 				fSqDist = xyz.LengthSquared();
 				
@@ -644,13 +550,13 @@ namespace VVVV.Nodes
 			//normalize vector
 			
 			Normal.Normalize(); // SlimDx!
-			Normals[Vertex] = Normal;
+			VxBuffer[Vertex].Nel = Normal;
 
 			// To compute the sphere-map texture coordinates
 			// normals should be transformed to camera space...
 			
-			//Texture[Vertex].x = Normals[Vertex].x/2 + 0.5f;
-			//Texture[Vertex].y = -Normals[Vertex].y/2 + 0.5f;
+			//VxBuffer[Vertex].Tel = Normal/2 + 0.5f;
+
 		}
 		
 		
@@ -745,13 +651,13 @@ namespace VVVV.Nodes
 
 					float t = (Level - b[nIndex0])/(b[nIndex1] - b[nIndex0]);
 
-					Vertices[NumVertices].X =
+					VxBuffer[NumVertices].Vel.X =
 						MarchingCubes.CubeVertices[nIndex0, 0]*(1-t) +
 						MarchingCubes.CubeVertices[nIndex1, 0]*t;
-					Vertices[NumVertices].Y =
+					VxBuffer[NumVertices].Vel.Y =
 						MarchingCubes.CubeVertices[nIndex0, 1]*(1-t) +
 						MarchingCubes.CubeVertices[nIndex1, 1]*t;
-					Vertices[NumVertices].Z =
+					VxBuffer[NumVertices].Vel.Z =
 						MarchingCubes.CubeVertices[nIndex0, 2]*(1-t) +
 						MarchingCubes.CubeVertices[nIndex1, 2]*t;
 					
@@ -759,12 +665,12 @@ namespace VVVV.Nodes
 					fy = Grid2World(y);
 					fz = Grid2World(z);
 					
-					Vertices[NumVertices].X = fx +
-						Vertices[NumVertices].X * VoxelSize;
-					Vertices[NumVertices].Y = fy +
-						Vertices[NumVertices].Y * VoxelSize;
-					Vertices[NumVertices].Z = fz +
-						Vertices[NumVertices].Z * VoxelSize;
+					VxBuffer[NumVertices].Vel.X = fx +
+						VxBuffer[NumVertices].Vel.X * VoxelSize;
+					VxBuffer[NumVertices].Vel.Y = fy +
+						VxBuffer[NumVertices].Vel.Y * VoxelSize;
+					VxBuffer[NumVertices].Vel.Z = fz +
+						VxBuffer[NumVertices].Vel.Z * VoxelSize;
 
 					// Compute the normal at the vertex
 					ComputeNormal(NumVertices);
@@ -773,25 +679,20 @@ namespace VVVV.Nodes
 					if (NumVertices == MaxVertices)
 					{
 						MaxVertices *= 2;
-						Vector3[] TmpVx = new Vector3[MaxVertices];
-						Vector3[] TmpNx = new Vector3[MaxVertices];
+						sVxBuffer[] TmpVx = new sVxBuffer[MaxVertices];
+						//Vector3[] TmpNx = new Vector3[MaxVertices];
 						//Vector2D[] TmpTx = new Vector2D[MaxVertices];
 						int j = 0;
-						foreach (Vector3 element in Vertices)
+						foreach (sVxBuffer element in VxBuffer)
 						{
 							TmpVx[j] = element;
 							j++;
 						}
 						j = 0;
+
 						
-						foreach (Vector3 element in Normals)
-						{
-							TmpNx[j] = element;
-							j++;
-						}
-						
-						Vertices = TmpVx;
-						Normals = TmpNx;
+						VxBuffer = TmpVx;
+
 						
 						
 					}
@@ -1076,7 +977,7 @@ namespace VVVV.Nodes
 		}
 		
 		
-		protected sVxBuffer[]	VxBuffer;
+		protected sVxBuffer[]	VxBuffer = new sVxBuffer[4000];
 		protected short[]		IxBuffer;
 
 		
