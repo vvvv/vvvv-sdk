@@ -75,7 +75,7 @@ namespace VVVV.Nodes
 		public PluginMeshTemplate()
 		{
 			//the nodes constructor
-			//nothing to declare for this node
+			//nothing to declare for this node 
 		}
 		
 		// Implementing IDisposable's Dispose method.
@@ -370,26 +370,9 @@ namespace VVVV.Nodes
 					sVx = NewMesh.LockVertexBuffer(LockFlags.Discard);
 					sIx = NewMesh.LockIndexBuffer(LockFlags.Discard);
 					
-					// write buffers
-					unsafe
-					{
-						fixed (sVxBuffer* FixTemp = &VxBuffer[0])
-						{
-							int* IntPointer = (int*) FixTemp;
-							IntPtr VxPointer = new IntPtr(IntPointer);
-							sVx.WriteRange(VxPointer, 6 * NumVertices);
-								
-						}
-						fixed (short* FixTemp = &IxBuffer[0])
-						{
-							int* IntPointer = (int*) FixTemp;
-							IntPtr IxPointer = new IntPtr(IntPointer);
-							sVx.WriteRange(IxPointer, NumIndices);
-						}
-					}
-					
-					//sVx.WriteRange(VxBuffer, 0, NumVertices);
-					//sIx.WriteRange(IxBuffer, 0, NumIndices);
+					// write buffers 
+					sVx.WriteRange(VxBuffer, 0, NumVertices);
+					sIx.WriteRange(IxBuffer, 0, NumIndices);
 
 					// unlock buffers
 					NewMesh.UnlockIndexBuffer();
