@@ -160,12 +160,12 @@ namespace VVVV.Nodes
 					//the nodes author: your sign
 					FPluginInfo.Author = "vvvv group";
 					//describe the nodes function
-					FPluginInfo.Help = "MetaBallsMesh debug";
+					FPluginInfo.Help = "MetaBallsMesh";
 					//specify a comma separated list of tags that describe the node
 					FPluginInfo.Tags = "";
 					
 					//give credits to thirdparty code used
-					FPluginInfo.Credits = "";
+					FPluginInfo.Credits = "Base code ported from example by Andreas Jönsson @ www.AngelCode.com";
 					//any known problems?
 					FPluginInfo.Bugs = "";
 					//any known usage of the node that may cause troubles?
@@ -375,15 +375,13 @@ namespace VVVV.Nodes
 					{
 						fixed (sVxBuffer* FixTemp = &VxBuffer[0])
 						{
-							int* IntPointer = (int*) FixTemp;
-							IntPtr VxPointer = new IntPtr(IntPointer);
+							IntPtr VxPointer = new IntPtr(FixTemp);
 							sVx.WriteRange(VxPointer, sizeof(sVxBuffer) * NumVertices);
 								
 						}
 						fixed (short* FixTemp = &IxBuffer[0])
 						{
-							int* IntPointer = (int*) FixTemp;
-							IntPtr IxPointer = new IntPtr(IntPointer);
+							IntPtr IxPointer = new IntPtr(FixTemp);
 							sIx.WriteRange(IxPointer, sizeof(short) * NumIndices);
 						}
 					}
