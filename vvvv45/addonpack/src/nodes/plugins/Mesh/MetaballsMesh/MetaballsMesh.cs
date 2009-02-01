@@ -371,8 +371,25 @@ namespace VVVV.Nodes
 					sIx = NewMesh.LockIndexBuffer(LockFlags.Discard);
 					
 					// write buffers
-					sVx.WriteRange(VxBuffer, 0, NumVertices);
-					sIx.WriteRange(IxBuffer, 0, NumIndices);
+					unsafe
+					{
+						fixed (sVxBuffer* FixTemp = &VxBuffer[0])
+						{
+							int* IntPointer = (int*) FixTemp;
+							IntPtr VxPointer = new IntPtr(IntPointer);
+							sVx.WriteRange(VxPointer, 6 * NumVertices);
+								
+						}
+						fixed (short* FixTemp = &IxBuffer[0])
+						{
+							int* IntPointer = (int*) FixTemp;
+							IntPtr IxPointer = new IntPtr(IntPointer);
+							sVx.WriteRange(IxPointer, NumIndices);
+						}
+					}
+					
+					//sVx.WriteRange(VxBuffer, 0, NumVertices);
+					//sIx.WriteRange(IxBuffer, 0, NumIndices);
 
 					// unlock buffers
 					NewMesh.UnlockIndexBuffer();
