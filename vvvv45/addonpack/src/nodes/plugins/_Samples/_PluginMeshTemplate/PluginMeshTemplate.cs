@@ -54,7 +54,7 @@ namespace VVVV.Nodes
 		//a mesh output pin
 		private IDXMeshIO FMyMeshOutput;
 		
-		//a list of meshes for each device
+		//a list that holds a mesh for every device
 		private Dictionary<int, Mesh> FDeviceMeshes = new Dictionary<int, Mesh>();
 		
 		#endregion field declaration
@@ -179,7 +179,7 @@ namespace VVVV.Nodes
 			get {return false;}
 		}
 		
-		#endregion node name and infos
+		#endregion node name and info
 		
 		#region pin creation
 		
@@ -238,6 +238,7 @@ namespace VVVV.Nodes
 		{
 			//Called by the PluginHost whenever a resource for a specific pin needs to be destroyed on a specific device. 
 			//This is also called when the plugin is destroyed, so don't dispose dxresources in the plugins destructor/Dispose()
+
 			try
 			{
 				Mesh m = FDeviceMeshes[OnDevice];
