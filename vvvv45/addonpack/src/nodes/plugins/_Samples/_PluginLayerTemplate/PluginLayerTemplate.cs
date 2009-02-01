@@ -52,8 +52,11 @@ namespace VVVV.Nodes
 		private bool FDisposed = false;
 		
 		private IStringIn FMyStringInput;
+		
+		//a layer output pin
 		private IDXLayerIO FMyLayerOutput;
 		
+		//a list that holds a font for every device
 		private Dictionary<int, SlimDX.Direct3D9.Font> FDeviceFonts = new Dictionary<int, SlimDX.Direct3D9.Font>();
 		
 		#endregion field declaration
@@ -123,7 +126,7 @@ namespace VVVV.Nodes
 		}
 		#endregion constructor/destructor
 		
-		#region node name and infos
+		#region node name and info
 		
 		//provide node infos
 		private static IPluginInfo FPluginInfo;
@@ -177,7 +180,7 @@ namespace VVVV.Nodes
 			get {return false;}
 		}
 		
-		#endregion node name and infos
+		#endregion node name and info
 		
 		#region pin creation
 		
@@ -215,6 +218,9 @@ namespace VVVV.Nodes
 		#region DXLayer
 		public void UpdateResource(IPluginOut ForPin, int OnDevice)
 		{
+			//Called by the PluginHost every frame for every device. Therefore a plugin should only do 
+			//device specific operations here and still keep node specific calculations in the Evaluate call. 
+
 			bool needsupdate = false;
 			
 			try
@@ -242,6 +248,7 @@ namespace VVVV.Nodes
 				dev.Dispose();
 			}
 		}
+		
 		private void RemoveResource(int OnDevice)
 		{
 			SlimDX.Direct3D9.Font f = FDeviceFonts[OnDevice];
@@ -252,7 +259,9 @@ namespace VVVV.Nodes
 		
 		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
 		{
-			//dispose resources that were created on given OnDevice
+			//Called by the PluginHost whenever a resource for a specific pin needs to be destroyed on a specific device. 
+			//This is also called when the plugin is destroyed, so don't dispose dxresources in the plugins destructor/Dispose()
+			
 			try
 			{
 				RemoveResource(OnDevice);				
@@ -265,6 +274,10 @@ namespace VVVV.Nodes
 		
 		public void Render(IDXLayerIO ForPin, int OnDevice)
 		{
+			//Called by the PluginHost everytime the plugin is supposed to render itself.
+			//This is called from the PluginHost from within DirectX BeginScene/EndScene,
+			//therefore the plugin shouldn't be doing much here other than some drawing calls.
+
 			SlimDX.Direct3D9.Font f = FDeviceFonts[OnDevice];
 			
 			string text;
