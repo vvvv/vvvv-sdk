@@ -75,7 +75,7 @@ namespace VVVV.Nodes
 		public PluginMeshTemplate()
 		{
 			//the nodes constructor
-			//nothing to declare for this node 
+			//nothing to declare for this node
 		}
 		
 		// Implementing IDisposable's Dispose method.
@@ -278,6 +278,9 @@ namespace VVVV.Nodes
 				
 				//initialize all tables
 				
+			
+				
+
 				GridEnergy = new float[(GridSize+1)*(GridSize+1)*(GridSize+1)];
 				GridPointStatus = new bool[(GridSize+1)*(GridSize+1)*(GridSize+1)];
 				GridVoxelStatus = new byte[GridSize*GridSize*GridSize];
@@ -370,14 +373,14 @@ namespace VVVV.Nodes
 					sVx = NewMesh.LockVertexBuffer(LockFlags.Discard);
 					sIx = NewMesh.LockIndexBuffer(LockFlags.Discard);
 					
-					// write buffers 
+					// write buffers
 					unsafe
 					{
 						fixed (sVxBuffer* FixTemp = &VxBuffer[0])
 						{
 							IntPtr VxPointer = new IntPtr(FixTemp);
 							sVx.WriteRange(VxPointer, sizeof(sVxBuffer) * NumVertices);
-								
+							
 						}
 						fixed (short* FixTemp = &IxBuffer[0])
 						{
@@ -567,7 +570,8 @@ namespace VVVV.Nodes
 			// To compute the sphere-map texture coordinates
 			// normals should be transformed to camera space...
 			
-			//VxBuffer[Vertex].Tel = Normal/2 + 0.5f;
+			//VxBuffer[Vertex].Tel.X = Normal.X/2 + 0.5f;
+			//VxBuffer[Vertex].Tel.Y = Normal.Y/2 + 0.5f;
 
 		}
 		
@@ -577,6 +581,7 @@ namespace VVVV.Nodes
 		
 		protected float ComputeGridPointEnergy(int x, int y, int z)
 		{
+
 			int address3D = x + y*(GridSize+1) + z*(GridSize+1)*(GridSize+1);
 			
 			if( IsGridPointComputed(x,y,z) )
@@ -597,11 +602,12 @@ namespace VVVV.Nodes
 			float fy = Grid2World(y);
 			float fz = Grid2World(z);
 
-			GridEnergy[address3D] = ComputeEnergy(fx,fy,fz);
+			float Energy = ComputeEnergy(fx,fy,fz);
+			GridEnergy[address3D] = Energy;
 
 			SetGridPointComputed(x,y,z);
 
-			return GridEnergy[address3D];
+			return Energy;
 		}
 		
 		
@@ -692,8 +698,7 @@ namespace VVVV.Nodes
 					{
 						MaxVertices *= 2;
 						sVxBuffer[] TmpVx = new sVxBuffer[MaxVertices];
-						//Vector3[] TmpNx = new Vector3[MaxVertices];
-						//Vector2D[] TmpTx = new Vector2D[MaxVertices];
+
 						int j = 0;
 						foreach (sVxBuffer element in VxBuffer)
 						{
@@ -704,9 +709,6 @@ namespace VVVV.Nodes
 
 						
 						VxBuffer = TmpVx;
-
-						
-						
 					}
 				}
 
@@ -877,10 +879,9 @@ namespace VVVV.Nodes
 			// on the proper OpenVoxel address.
 			// Neighbor cube is on one of 6 sides:
 			
+			OpenVoxelAdr *= 12; // there are 12 edges
 			
-			OpenVoxelAdr = OpenVoxelAdr * 12; // there are 12 edges
-			
-			if (side == 1) // x+1
+						if (side == 1) // x+1
 			{
 				PreComputed[OpenVoxelAdr + 3] = EdgeIndices[1] + 1;
 				PreComputed[OpenVoxelAdr + 7] = EdgeIndices[5] + 1;
@@ -947,6 +948,8 @@ namespace VVVV.Nodes
 		protected int		GridSize = 32;
 		protected float		VoxelSize;
 
+		
+
 		protected float[]	GridEnergy;
 		protected bool[]	GridPointStatus;
 		protected byte[]	GridVoxelStatus;
@@ -957,9 +960,7 @@ namespace VVVV.Nodes
 		protected int			NumIndices  = 0;
 		protected float[]		m_BallMass;
 		protected Vector3[] 	m_Ball;
-		protected Vector3[]  	Vertices = new Vector3[4000];
-		protected Vector3[]		Normals  = new Vector3[4000];
-//		protected Vector2[]		Texture  = new Vector2[4000];
+
 		protected int[]			Indices  = new int[8000];
 		protected int			MaxVertices = 4000;
 		protected int			MaxIndices  = 8000;
