@@ -52,6 +52,11 @@ namespace StructureSynth {
 				virtual void drawSphere(SyntopiaCore::Math::Vector3f center, float radius,
 								const QString& classID) = 0;
 
+				virtual void drawTriangle(SyntopiaCore::Math::Vector3f p1,
+								SyntopiaCore::Math::Vector3f p2,
+								SyntopiaCore::Math::Vector3f p3,
+								const QString& classID) = 0;
+
 				// Color
 				// RGB in [0;1] intervals.
 				virtual void setColor(SyntopiaCore::Math::Vector3f rgb) = 0;

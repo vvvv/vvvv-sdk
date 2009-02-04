@@ -9,7 +9,7 @@ namespace StructureSynth {
 		/// for drawing boxes, spheres and other simple geometric shapes.
 		class PrimitiveRule : public Rule {
 			public:
-				enum PrimitiveType { Box, Sphere, Dot, Grid, Cylinder, Line, Mesh } ;
+				enum PrimitiveType { Box, Sphere, Dot, Grid, Cylinder, Line, Mesh, Other } ;
 				
 				PrimitiveRule(PrimitiveType type);
 				virtual void apply(Builder* builder) const;
@@ -25,9 +25,28 @@ namespace StructureSynth {
 				/// For instance 'box::metal' will be parsed in to a 'box' primitive with a 'metal' class identifier.
 				void setClass(QString classID) { this->classID = classID; }
 				QString getClass() { return classID; }
+		    protected:
+			    QString classID;
 			private:
 				PrimitiveType type;
-				QString classID;
+				
+		};
+
+		/// Triangle rules are special, since they have explicit coordinate representation.
+		class TriangleRule : public PrimitiveRule {
+			public:
+				
+				TriangleRule(SyntopiaCore::Math::Vector3f p1,
+					          SyntopiaCore::Math::Vector3f p2,
+							   SyntopiaCore::Math::Vector3f p3);
+
+				virtual void apply(Builder* builder) const;
+	
+			private:
+				SyntopiaCore::Math::Vector3f p1;
+				SyntopiaCore::Math::Vector3f p2;
+				SyntopiaCore::Math::Vector3f p3;
+				
 		};
 
 	}

@@ -69,6 +69,14 @@ namespace StructureSynth {
 				this->spheres_radius.append(radius);
 			};
 
+			void ListRenderer::drawTriangle(SyntopiaCore::Math::Vector3f p1,
+								SyntopiaCore::Math::Vector3f p2,
+								SyntopiaCore::Math::Vector3f p3,
+								const QString& classID) 
+			{	
+				this->triangles.append(VTriangle(this->triangles.count(),p1,p2,p3));
+			};
+
 			void ListRenderer::begin() 
 			{
 				this->spheres_color.clear();

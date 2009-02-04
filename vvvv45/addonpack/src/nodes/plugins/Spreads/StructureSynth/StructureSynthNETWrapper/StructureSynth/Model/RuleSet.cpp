@@ -11,9 +11,11 @@
 
 #include "../../SyntopiaCore/Exceptions/Exception.h"
 #include "../../SyntopiaCore/Logging/Logging.h"
+#include "../../SyntopiaCore/Math/Vector3.h"
 
 using namespace SyntopiaCore::Exceptions;
 using namespace SyntopiaCore::Logging;
+using namespace SyntopiaCore::Math;
 
 namespace StructureSynth {
 	namespace Model {	
@@ -127,7 +129,41 @@ namespace StructureSynth {
 							
 							INFO("Created new class for rule: " + name);
 						} else {
-							throw Exception(QString("Unable to resolve rule: %1").arg(name));
+							// The Polygons rules (i.e. Triangle[x,y,z]) are special rules, each created on the fly.
+							QRegExp r("triangle\\[(.*)\\]");
+							if (r.exactMatch(name)) {
+								// Check the arguments.
+								INFO("Found:" + r.cap(1));
+								QVector<Vector3f> v;
+								QStringList l = r.cap(1).split(";");
+								if (l.size() != 3) {
+									throw Exception(QString("Unable to parse Triangle definition - must be triangle(p1;p2;p3) - found : %1").arg(name));
+								}
+
+								for (unsigned int i = 0; i < 3; i++) {
+									QStringList l2 = l[i].split(",");
+									if (l2.size() != 3) {
+											throw Exception(QString("Unable to parse Triangle definition - coordinates must be like '0.1,0.2,0.3' - found : %1").arg(l[i]));
+									}
+									bool ok = false;
+									float f1 = l2[0].toFloat(&ok);
+									if (!ok) throw Exception(QString("Unable to parse Triangle definition - error in first coordinate - found in : %1").arg(name));
+									float f2 = l2[1].toFloat(&ok);
+									if (!ok) throw Exception(QString("Unable to parse Triangle definition - error in second coordinate - found in : %1").arg(name));
+									float f3 = l2[2].toFloat(&ok);
+									if (!ok) throw Exception(QString("Unable to parse Triangle definition - error in third coordinate - found in : %1").arg(name));
+									v.append(Vector3f(f1,f2,f3));
+								}	
+
+								INFO(QString("Created new Triangle-rule: %1 ; %2 ; %3")
+									.arg(v[0].toString())
+									.arg(v[1].toString())
+									.arg(v[2].toString()));
+								map[name] = new TriangleRule(v[0], v[1], v[2]);
+							
+							} else {
+								throw Exception(QString("Unable to resolve rule: %1").arg(name));
+							}
 						}
 					}
 					refs[j]->setRef(map[name]);

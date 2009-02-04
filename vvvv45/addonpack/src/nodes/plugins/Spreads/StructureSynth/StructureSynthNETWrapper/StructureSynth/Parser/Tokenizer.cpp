@@ -2,8 +2,11 @@
 #include "Tokenizer.h"
 
 #include <QStringList>
+
+#include "../../SyntopiaCore/Exceptions/Exception.h"
 #include "../../SyntopiaCore/Logging/Logging.h"
 
+using namespace SyntopiaCore::Exceptions;
 using namespace SyntopiaCore::Logging;
 
 
@@ -38,7 +41,13 @@ namespace StructureSynth {
 					inComment = false;
 				    newlines++;
 			    }
-				
+
+				// Check if we found a preprocessor comment (there must occur at the beginning of a line.
+				if (input.at(i) == '#' && ((i == 0) || (input.at(i-1) == '\r') || (input.at(i-1) == '\n'))) {
+					inComment = true; i++; continue;
+				}
+
+
 				if (i < input.length()-1) {
 					if (input.at(i) == '*' && input.at(i+1) == '/') {
 						inMultiComment = false; i++; continue;

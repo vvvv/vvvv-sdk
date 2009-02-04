@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include <QString>
 #include <QList>
 
 #include "../../SyntopiaCore/Exceptions/Exception.h"
@@ -53,10 +53,10 @@ namespace StructureSynth {
 
 			/// Returns the next symbol
 			Symbol getSymbol();
-			QList<Symbol> symbols;
+
 		private:
 		
-			
+			QList<Symbol> symbols;
 			int currentSymbol;
 		};
 

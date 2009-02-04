@@ -5,7 +5,8 @@
 #include "../../SyntopiaCore/Misc/ColorUtils.h"
 #include "../../SyntopiaCore/Math/Vector3.h"
 
-#include <QColor>
+#include <QProgressDialog>
+#include <QApplication>
 
 using namespace SyntopiaCore::Logging;
 using namespace SyntopiaCore::Math;
@@ -30,11 +31,16 @@ namespace StructureSynth {
 			/// Push first generation state
 			stack.append(RuleState(ruleSet->getStartRule(), State()));
 			int generationCounter = 0;
+			
+			//QProgressDialog progressDialog("Building objects...", "Cancel", 0, 100, 0);
+			//progressDialog.setWindowModality(Qt::WindowModal);
+			//progressDialog.setMinimumDuration(0);
+			//progressDialog.show();
+			//progressDialog.setValue(0);
 
 			int lastValue = 0;
 
 			while (generationCounter < maxGenerations && objects < maxObjects) {
-
 
 				double p = 0;
 				if (maxObjects>0) {
@@ -53,8 +59,20 @@ namespace StructureSynth {
 					progress = (generationCounter%9)/9.0;
 				}
 
+				if (lastValue != (int)(progress*100.0)) {
+					//progressDialog.setValue((int)(progress*100.0));
+					//progressDialog.setLabelText(
+					//	QString("Building objects...\r\n\r\nGeneration: %1\r\nObjects: %2\r\nPending rules: %3")
+					//	.arg(generationCounter).arg(objects).arg(stack.size()));
+					qApp->processEvents();
+				}
+
 				lastValue = (int)(progress*100.0);
-			
+				
+				//if (progressDialog.wasCanceled()) {
+				//	break;
+				//}
+
 				generationCounter++;
 
 				// Now iterate though all RuleState's on stack and create next generation.
@@ -70,6 +88,12 @@ namespace StructureSynth {
 				if (stack.size() == 0) break; // no need to continue...
 			}
 
+			//progressDialog.setValue(100); 
+			//progressDialog.hide();
+
+			//if (progressDialog.wasCanceled()) {
+			//	INFO("User terminated.");
+			//}
 
 			if (objects == maxObjects) {
 				INFO(QString("Terminated because maximum number of objects reached (%1).").arg(maxObjects));

@@ -18,9 +18,11 @@ namespace StructureSynth {
 			this->alpha = rhs.alpha;
 			this->maxDepths = rhs.maxDepths;
 			if (rhs.prevMatrix) {
+				delete(this->prevMatrix);
 				this->prevMatrix = new SyntopiaCore::Math::Matrix4f();
 				*(this->prevMatrix) = *rhs.prevMatrix;
 			} else {
+				delete(this->prevMatrix);
 				this->prevMatrix = 0;
 			}
 			return *this;
@@ -37,10 +39,13 @@ namespace StructureSynth {
 		State::State(const State& rhs) : matrix(rhs.matrix), 
 			hsv(rhs.hsv), 
 			alpha(rhs.alpha), maxDepths(rhs.maxDepths), prevMatrix(0) {
+
 			if (rhs.prevMatrix) {
+				delete(this->prevMatrix);
 				this->prevMatrix = new SyntopiaCore::Math::Matrix4f();
 				*(this->prevMatrix) = *rhs.prevMatrix;
 			} else {
+				delete(this->prevMatrix);
 				this->prevMatrix = 0;
 			}
 		}

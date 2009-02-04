@@ -252,11 +252,11 @@ namespace StructureSynth {
 			
 			if (symbol.type == Symbol::LeftBracket) {
 				Transformation t = transformationList();
-				QString ruleName = symbol.text;
+				QString ruleName = symbol.text.trimmed();
 				if (!accept(Symbol::UserString)) throw (ParseError("Expected a rule name after the transformation list. Found: " + symbol.text, symbol.pos));
 				return Action(t, ruleName);
 			} else if (symbol.type == Symbol::UserString) {
-				QString ruleName = symbol.text;
+				QString ruleName = symbol.text.trimmed();
 				accept(Symbol::UserString);
 				return Action(ruleName);
 			} else if (symbol.type == Symbol::Number) {
@@ -278,7 +278,7 @@ namespace StructureSynth {
 				}
 				
 				// Rule reference
-				QString ruleName = symbol.text;
+				QString ruleName = symbol.text.trimmed();
 				if (!accept(Symbol::UserString)) throw (ParseError("Expected a rule name or a new loop after the transformation list. Found: " + symbol.text, symbol.pos));
 				action.setRule(ruleName);
 

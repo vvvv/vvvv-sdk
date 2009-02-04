@@ -9,6 +9,7 @@
 
 #include "../../../SyntopiaCore/Extras/VLine.h"
 #include "../../../SyntopiaCore/Extras/VBox.h"
+#include "../../../SyntopiaCore/Extras/VTriangle.h"
 #include "../../../SyntopiaCore/Math/Vector3.h"
 #include "../../../SyntopiaCore/Extras/RGBAColor.h"
 
@@ -62,6 +63,11 @@ namespace StructureSynth {
 				virtual void drawDot(SyntopiaCore::Math::Vector3f pos,
 								const QString& classID);
 
+				virtual void drawTriangle(SyntopiaCore::Math::Vector3f p1,
+								SyntopiaCore::Math::Vector3f p2,
+								SyntopiaCore::Math::Vector3f p3,
+								const QString& classID);
+
 				virtual void begin();
 				virtual void end();
 				
@@ -87,6 +93,8 @@ namespace StructureSynth {
 
 				QVector<VLine> lines;
 				QVector<VRGBAColor> lines_color;
+
+				QVector<VTriangle> triangles;
 			private:
 				int counter;
 				SyntopiaCore::Math::Vector3f rgb;
