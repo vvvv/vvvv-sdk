@@ -28,6 +28,9 @@ namespace MyNodes {
 			IValueOut^ vOutLines;
 			IColorOut^ vOutLinesColor;
 
+			IValueOut^ vOutPositions;
+			//IValueOut^ vOutIndices;
+
 			IStringOut^ vOutMessage;
 
 		public:

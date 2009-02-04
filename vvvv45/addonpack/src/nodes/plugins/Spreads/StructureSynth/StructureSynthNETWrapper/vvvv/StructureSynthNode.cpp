@@ -49,7 +49,10 @@ namespace MyNodes
 		this->FHost->CreateColorOutput("Grid Color",TSliceMode::Dynamic,TPinVisibility::True,this->vOutGridColor);
 
 		this->FHost->CreateValueOutput("Lines",3,arr3d,TSliceMode::Dynamic,TPinVisibility::True,this->vOutLines);
-		this->FHost->CreateColorOutput("Lines Color",TSliceMode::Dynamic,TPinVisibility::True,this->vOutLinesColor);		
+		this->FHost->CreateColorOutput("Lines Color",TSliceMode::Dynamic,TPinVisibility::True,this->vOutLinesColor);
+
+		this->FHost->CreateValueOutput("Triangle Positions",3,arr3d,TSliceMode::Dynamic,TPinVisibility::True,this->vOutPositions);
+		//this->FHost->CreateValueOutput("Grid Color",TSliceMode::Dynamic,TPinVisibility::True,this->vOutGridColor);
 
 		this->FHost->CreateStringOutput("Message",TSliceMode::Single,TPinVisibility::True,this->vOutMessage);
 
@@ -61,7 +64,8 @@ namespace MyNodes
 		this->vOutGridColor->Order = 5;
 		this->vOutLines->Order = 6;
 		this->vOutLinesColor->Order = 7;
-		this->vOutMessage->Order = 8;
+		this->vOutPositions->Order = 8;
+		this->vOutMessage->Order = 9;
 	}
 
 	void StructureSynthNode::Configurate(IPluginConfig^ Input) 
@@ -152,6 +156,18 @@ namespace MyNodes
 					this->vOutLines->SetValue3D(i*2+1,line.v2.x(),line.v2.y(),line.v2.z());
 
 					this->vOutLinesColor->SetColor(i,RGBAColor(color.r,color.g,color.b,color.a));
+				}
+
+				int tricount = rendering.triangles.count();
+				this->vOutPositions->SliceCount = tricount * 3;
+				for (int i = 0; i < tricount;i++) 
+				{
+					VTriangle tri = rendering.triangles.at(i);
+					//VRGBAColor color = rendering.lines_color.at(i);
+
+					this->vOutPositions->SetValue3D(i*3,tri.v1.x(),tri.v1.y(),tri.v1.z());
+					this->vOutPositions->SetValue3D(i*3+1,tri.v2.x(),tri.v2.y(),tri.v2.z());
+					this->vOutPositions->SetValue3D(i*3+2,tri.v3.x(),tri.v3.y(),tri.v3.z());
 				}
 
 				this->vOutMessage->SetString(0,"OK");
