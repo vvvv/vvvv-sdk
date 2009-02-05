@@ -452,11 +452,16 @@ namespace VVVV.Nodes
 					//if resource is not yet created on given Device, create it now
 					Log(TLogType.Debug, "Creating Resource...");
 					Device dev = Device.FromPointer(new IntPtr(OnDevice));
-					m = FColladaModel.createUnion3D9Mesh(dev, selectedInstanceMeshes, false);
-					FDeviceMeshes.Add(OnDevice, m);
-					
-					//dispose device
-					dev.Dispose();
+					try
+					{
+						m = FColladaModel.createUnion3D9Mesh(dev, selectedInstanceMeshes, false);
+						FDeviceMeshes.Add(OnDevice, m);
+					}
+					finally
+					{
+						//dispose device
+						dev.Dispose();
+					}
 				}
 			}
 		}
