@@ -441,30 +441,38 @@ namespace VVVV.Nodes
         #region DXMesh
 		public void UpdateResource(IPluginOut ForPin, int OnDevice)
 		{
+			//Called by the PluginHost every frame for every device. Therefore a plugin should only do 
+			//device specific operations here and still keep node specific calculations in the Evaluate call.
+			
 			if (FColladaModel != null)
 			{
 				Mesh m;
 				if (!FDeviceMeshes.TryGetValue(OnDevice, out m))
 				{
+					//if resource is not yet created on given Device, create it now
 					Log(TLogType.Debug, "Creating Resource...");
 					Device dev = Device.FromPointer(new IntPtr(OnDevice));
 					m = FColladaModel.createUnion3D9Mesh(dev, selectedInstanceMeshes, false);
 					FDeviceMeshes.Add(OnDevice, m);
+					
+					//dispose device
+					dev.Dispose();
 				}
 			}
 		}
 		
 		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
 		{
-			//dispose resources that were created on given Device
-			Mesh m = FDeviceMeshes[OnDevice];
+			//Called by the PluginHost whenever a resource for a specific pin needs to be destroyed on a specific device. 
+			//This is also called when the plugin is destroyed, so don't dispose dxresources in the plugins destructor/Dispose()
 			
+			Mesh m = FDeviceMeshes[OnDevice];
 			if (m != null)
 			{
 				Log(TLogType.Debug, "Destroying Resource...");
 				FDeviceMeshes.Remove(OnDevice);
+				//dispose mesh
 				m.Dispose();
-				m = null;
 			}
 		}
 		
