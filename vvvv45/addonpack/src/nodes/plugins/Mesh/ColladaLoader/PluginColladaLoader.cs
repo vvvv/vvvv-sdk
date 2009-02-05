@@ -145,9 +145,9 @@ namespace VVVV.Nodes
 					FPluginInfo = new PluginInfo();
 					
 					//the nodes main name: use CamelCaps and no spaces
-					FPluginInfo.Name = "ColladaLoader";
+					FPluginInfo.Name = "ColladaFile";
 					//the nodes category: try to use an existing one
-					FPluginInfo.Category = "Collada";
+					FPluginInfo.Category = "EX9.Geometry";
 					//the nodes version: optional. leave blank if not
 					//needed to distinguish two nodes of the same name and category
 					FPluginInfo.Version = "";
@@ -155,9 +155,9 @@ namespace VVVV.Nodes
 					//the nodes author: your sign
 					FPluginInfo.Author = "vvvv group";
 					//describe the nodes function
-					FPluginInfo.Help = "Loads a COLLADA *.dae file";
+					FPluginInfo.Help = "Loads a COLLADA *.dae file.";
 					//specify a comma separated list of tags that describe the node
-					FPluginInfo.Tags = "";
+					FPluginInfo.Tags = "Collada,dae,load,read";
 					
 					//give credits to thirdparty code used
 					FPluginInfo.Credits = "https://collada.org/public_forum/viewtopic.php?t=676";

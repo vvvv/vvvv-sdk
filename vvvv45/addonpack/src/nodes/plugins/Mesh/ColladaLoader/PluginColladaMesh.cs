@@ -164,19 +164,19 @@ namespace VVVV.Nodes
 					FPluginInfo = new PluginInfo();
 					
 					//the nodes main name: use CamelCaps and no spaces
-					FPluginInfo.Name = "ColladaMesh";
+					FPluginInfo.Name = "Mesh";
 					//the nodes category: try to use an existing one
-					FPluginInfo.Category = "Collada";
+					FPluginInfo.Category = "EX9.Geometry";
 					//the nodes version: optional. leave blank if not
 					//needed to distinguish two nodes of the same name and category
-					FPluginInfo.Version = "";
+					FPluginInfo.Version = "Collada";
 					
 					//the nodes author: your sign
 					FPluginInfo.Author = "vvvv group";
 					//describe the nodes function
 					FPluginInfo.Help = "Returns a D3D9 mesh consisting of all meshes specified by index.";
 					//specify a comma separated list of tags that describe the node
-					FPluginInfo.Tags = "";
+					FPluginInfo.Tags = "Collada,Mesh";
 					
 					//give credits to thirdparty code used
 					FPluginInfo.Credits = "";
@@ -224,8 +224,6 @@ namespace VVVV.Nodes
 			FBinSize.SetSubType(double.MinValue, double.MaxValue, 1.0, -1.0, false, false, true);
 			FHost.CreateValueInput("Index", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FIndex);
 			FIndex.SetSubType(double.MinValue, double.MaxValue, 1.0, 0.0, false, false, true);
-			//FHost.CreateValueInput("Time", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FTimeInput);
-			//FTimeInput.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.0, false, false, false);
 			
 			//create configuration inputs
 			FHost.CreateValueConfig("Opaque=1?", 1, null, TSliceMode.Single, TPinVisibility.True, out FOpaqueIsOneInput);
@@ -233,6 +231,7 @@ namespace VVVV.Nodes
 			
 			//create outputs
 			FHost.CreateMeshOutput("Mesh", TSliceMode.Dynamic, TPinVisibility.True, out FMyMeshOutput);
+			FMyMeshOutput.Order = int.MinValue;
 			FHost.CreateTransformOutput("Transforms", TSliceMode.Dynamic, TPinVisibility.True, out FTransformOutput);
 			FHost.CreateStringOutput("TextureFileName", TSliceMode.Dynamic, TPinVisibility.True, out FTextureFileNameOutput);
 			FTextureFileNameOutput.SetSubType("", true);
