@@ -737,6 +737,7 @@ namespace VVVV.Utils.VMath
 		{
 			return (Handle0 *( System.Math.Pow(( 1 - CurrenTime ), 3)) + ( 3 * Handle1) * (CurrenTime * System.Math.Pow(( 1 - CurrenTime ), 2)) + (3 * Handle2) *( System.Math.Pow(CurrenTime, 2)* ( 1 - CurrenTime )) + Handle3 * System.Math.Pow(CurrenTime, 3));	               
 		}
+        
 		
 		//spherical-----------------------------------------------------------------------------------------
 		
@@ -770,6 +771,48 @@ namespace VVVV.Utils.VMath
 
 			return a*w1 + b*w2;
 		}
+
+        /// <summary>
+        /// Spherical interpolation between two points (3d-vectors)
+        /// The effect is a rotation with uniform angular velocity around a fixed rotation axis from one state of rotation to another
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="x"></param>
+        /// <returns>Spherical interpolation between a and b if x in the range ]0..1[, or a if x = 0, or b if x = 1</returns>
+        public static Vector3D Slerp(Vector3D a, Vector3D b, double x)
+        {
+            double w1, w2;
+            double theta, sinTheta;
+
+            double cosTheta = a|b;  // | is dot product
+            double len = Math.Sqrt((a|a) * (b|b));   //len = length(A) * length(B)
+
+            if (len > 0.0001)
+            {
+                theta = Math.Acos(cosTheta / len);
+                sinTheta = Math.Sin(theta);
+
+                if (sinTheta > 0.0001)
+                {
+                    sinTheta = 1 / sinTheta;
+                    w1 = Math.Sin((1 - x) * theta) * sinTheta;
+                    w2 = Math.Sin(x * theta) * sinTheta;
+                }
+                else
+                {
+                    w1 = 1 - x;
+                    w2 = x;
+                }
+            }
+            else
+            {
+                w1 = 1 - x;
+                w2 = x;
+            }
+
+            return a * w1 + b * w2;
+        }
 
 		#endregion interpolation
 		
