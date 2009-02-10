@@ -39,8 +39,8 @@ namespace BassSound.Data.BeatScanner
         #region Start
         public void Start()
         {
-            Thread thr = new Thread(this.Scan);
-            thr.Start();
+            this.thread = new Thread(this.Scan);
+            thread.Start();
         }
         #endregion
 

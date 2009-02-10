@@ -54,7 +54,7 @@ namespace vvvv.Nodes
 
             //We put the enabled node at the end
             this.FHost.CreateValueInput("Enabled", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInEnabled);
-            this.FPinInHandle.SetSubType(0, 1, 1, 0, false,true, true);
+            this.FPinInEnabled.SetSubType(0, 1, 1, 0, false,true, false);
         }
         #endregion
 
