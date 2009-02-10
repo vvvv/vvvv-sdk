@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using VVVV.PluginInterfaces.V1;
 using VVVV.DataTypes;
-using Npgsql;
+using System.Data.Odbc;
+using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.Nodes
 {
-    public class PostgreSQLDatabaseNode : AbstractDatabaseNode<PostgreSQLConnectionDataType, NpgsqlConnection>, IPlugin, IDisposable
+    public class OdbcDeleteNode : AbstractDeleteNode<OdbcConnectionDbDataType, OdbcConnection>, IPlugin, IPluginConnections
     {
+        #region Plugin Info
         private static IPluginInfo FPluginInfo;
         public static IPluginInfo PluginInfo
         {
@@ -17,11 +18,11 @@ namespace VVVV.Nodes
                 if (FPluginInfo == null)
                 {
                     FPluginInfo = new PluginInfo();
-                    FPluginInfo.Name = "Database";
-                    FPluginInfo.Category = "PostgreSQL";
+                    FPluginInfo.Name = "Delete";
+                    FPluginInfo.Category = "Odbc";
                     FPluginInfo.Version = "Network";
                     FPluginInfo.Author = "vux";
-                    FPluginInfo.Help = "PostgreSQL connection";
+                    FPluginInfo.Help = "Delete Data via an ODBC connection";
                     FPluginInfo.Tags = "";
                     FPluginInfo.Credits = "";
                     FPluginInfo.Bugs = "";
@@ -38,20 +39,6 @@ namespace VVVV.Nodes
                 return FPluginInfo;
             }
         }
-
-        protected override PostgreSQLConnectionDataType CreateConnectionObject()
-        {
-            PostgreSQLConnectionDataType result = new PostgreSQLConnectionDataType();
-            try
-            {
-                result.Connection = new NpgsqlConnection();
-            }
-            catch (Exception ex)
-            {
-                this.FHost.Log(TLogType.Error, ex.Message);
-                throw;
-            }
-            return result;
-        }
+        #endregion
     }
 }
