@@ -57,7 +57,7 @@ namespace VVVV.Nodes
     	//output pin declaration
     	private IValueOut FAnalogIn;
         private IValueOut FDigitalIn;
-        private IValueOut FConnected;
+        //private IValueOut FConnected;
         private IStringOut FInfo;
         private IValueOut FDigiOutCount;
 
@@ -166,7 +166,7 @@ namespace VVVV.Nodes
                     //give credits to thirdparty code used
                     FPluginInfo.Credits = "http://www.phidget.com";
                     //any known problems?
-                    FPluginInfo.Bugs = "";
+                    FPluginInfo.Bugs = "somthing werong with the connected Pin";
                     //any known usage of the node that may cause troubles?
                     FPluginInfo.Warnings = "";
 
@@ -224,8 +224,8 @@ namespace VVVV.Nodes
             FHost.CreateValueOutput("Number of Digital Outputs", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDigiOutCount);
             FDigiOutCount.SetSubType(0, 1, 1, 0, false, true, true);
             
-            FHost.CreateValueOutput("Connected", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FConnected);
-            FConnected.SetSubType(0, 1, 1, 0, false, true, true);
+            //FHost.CreateValueOutput("Connected", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FConnected);
+            //FConnected.SetSubType(0, 1, 1, 0, false, true, true);
 	    	
             FHost.CreateStringOutput("Info", TSliceMode.Dynamic, TPinVisibility.True, out FInfo);
             FInfo.SetSubType("Disabled", false);
@@ -251,7 +251,7 @@ namespace VVVV.Nodes
             double Serial;
             double Ratiomatric;
 
-            FConnected.SliceCount = 1;
+            //FConnected.SliceCount = 1;
             
             FSerial.GetValue(0, out Serial);
             FEnable.GetValue(0, out Enable);
@@ -289,8 +289,17 @@ namespace VVVV.Nodes
                 }
             }
 
-            FConnected.SetValue(0, m_IKitData.Status);
-            m_IKitData.SetRatiometric(Ratiomatric);
+            if (m_IKitData != null)
+            {
+                //FConnected.SetValue(0, m_IKitData.Status);
+                m_IKitData.SetRatiometric(Ratiomatric);
+            }
+            else
+            {
+                //FConnected.SetValue(0, 0);
+            }
+            
+            
 
             if (Enable == 1)
             {
