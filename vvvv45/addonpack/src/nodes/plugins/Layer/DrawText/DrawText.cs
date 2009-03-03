@@ -352,6 +352,13 @@ namespace VVVV.Nodes
 			Matrix4x4 preScale = VMath.Scale(1/sizeX, -1/sizeY, 1);
 			
 			SlimDX.Matrix m = new SlimDX.Matrix();
+			
+			//from the docu: D3DXSPRITE_OBJECTSPACE -> The world, view, and projection transforms are not modified. 
+			//for view and projection transforms this is exactly what we want: it allows placing the text within the 
+			//same world as all the other objects. however we need to set the world transform to a neutral value: identity
+			Device dev = Device.FromPointer(new IntPtr(OnDevice));
+			dev.SetTransform( TransformState.World, SlimDX.Matrix.Identity );			
+			
 			df.Sprite.Begin(SpriteFlags.ObjectSpace | SpriteFlags.DoNotAddRefTexture);// | SpriteFlags.DoNotModifyRenderState | SpriteFlags.DoNotSaveState);
 			//f.Device.SetSamplerState(0, SamplerState.MagFilter, TextureFilter.Point);
 			
