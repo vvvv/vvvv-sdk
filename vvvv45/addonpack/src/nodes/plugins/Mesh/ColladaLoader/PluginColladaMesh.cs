@@ -66,6 +66,7 @@ namespace VVVV.Nodes
 		private IDXMeshIO FMyMeshOutput;
 		private IStringOut FTextureFileNameOutput;
 		private ITransformOut FTransformOutput;
+		private ITransformOut FSkinningTransformOutput;
 		private IColorOut FEmissiveColorOut;
 		private IColorOut FDiffuseColorOut;
 		private IColorOut FSpecularColorOut;
@@ -233,6 +234,7 @@ namespace VVVV.Nodes
 			FHost.CreateMeshOutput("Mesh", TSliceMode.Dynamic, TPinVisibility.True, out FMyMeshOutput);
 			FMyMeshOutput.Order = int.MinValue;
 			FHost.CreateTransformOutput("Transforms", TSliceMode.Dynamic, TPinVisibility.True, out FTransformOutput);
+			FHost.CreateTransformOutput("Skinning Transforms", TSliceMode.Dynamic, TPinVisibility.True, out FSkinningTransformOutput);
 			FHost.CreateStringOutput("TextureFileName", TSliceMode.Dynamic, TPinVisibility.True, out FTextureFileNameOutput);
 			FTextureFileNameOutput.SetSubType("", true);
 			FHost.CreateColorOutput("Emissive Color", TSliceMode.Dynamic, TPinVisibility.True, out FEmissiveColorOut);
@@ -294,6 +296,7 @@ namespace VVVV.Nodes
         	//recompute the outputs
         	if (FColladaModelIn.PinIsChanged || FIndex.PinIsChanged || FBinSize.PinIsChanged)
 			{
+        		Log(TLogType.Debug, "Evaluating...");
         		selectedInstanceMeshes.Clear();
         		
         		FUpstreamInterface.GetSlice(0, out FColladaModel);
@@ -396,7 +399,7 @@ namespace VVVV.Nodes
         	{
         		int maxCount = Math.Max(FTimeInput.SliceCount, selectedInstanceMeshes.Count);
 				List<Matrix> transforms = new List<Matrix>();
-				for (int i = 0; i < maxCount; i++)
+				for (int i = 0; i < maxCount && selectedInstanceMeshes.Count > 0; i++)
 				{
 					FTimeInput.GetValue(i, out tmp);
 					float time = (float) tmp;
@@ -432,6 +435,50 @@ namespace VVVV.Nodes
 					
 					FTransformOutput.SetMatrix(j, matrix);
 				}
+				
+				// Skinning
+				List<Matrix> skinningTransforms = new List<Matrix>();
+				
+				foreach (Model.InstanceMesh instanceMesh in selectedInstanceMeshes)
+				{
+					if (instanceMesh is Model.SkinnedInstanceMesh) {
+						Model.SkinnedInstanceMesh skinnedInstanceMesh = (Model.SkinnedInstanceMesh) instanceMesh;
+						try
+						{
+							skinningTransforms.AddRange(skinnedInstanceMesh.GetPremultipliedBoneMatrixList());
+						}
+						catch (Exception e)
+						{
+							COLLADAUtil.Log(e);
+						}
+						// TODO: support more than one mesh
+						break;
+					}
+				}
+				
+				FSkinningTransformOutput.SliceCount = skinningTransforms.Count;
+				for (int j = 0; j < skinningTransforms.Count; j++)
+				{
+					Matrix4x4 matrix;
+					matrix.m11 = skinningTransforms[j].M11;
+					matrix.m12 = skinningTransforms[j].M12;
+					matrix.m13 = skinningTransforms[j].M13;
+					matrix.m14 = skinningTransforms[j].M14;
+					matrix.m21 = skinningTransforms[j].M21;
+					matrix.m22 = skinningTransforms[j].M22;
+					matrix.m23 = skinningTransforms[j].M23;
+					matrix.m24 = skinningTransforms[j].M24;
+					matrix.m31 = skinningTransforms[j].M31;
+					matrix.m32 = skinningTransforms[j].M32;
+					matrix.m33 = skinningTransforms[j].M33;
+					matrix.m34 = skinningTransforms[j].M34;
+					matrix.m41 = skinningTransforms[j].M41;
+					matrix.m42 = skinningTransforms[j].M42;
+					matrix.m43 = skinningTransforms[j].M43;
+					matrix.m44 = skinningTransforms[j].M44;
+					
+					FSkinningTransformOutput.SetMatrix(j, matrix);
+				}
         	}
         }
              
@@ -449,17 +496,24 @@ namespace VVVV.Nodes
 				if (!FDeviceMeshes.TryGetValue(OnDevice, out m))
 				{
 					//if resource is not yet created on given Device, create it now
-					Log(TLogType.Debug, "Creating Resource...");
-					Device dev = Device.FromPointer(new IntPtr(OnDevice));
-					try
+					if (selectedInstanceMeshes.Count > 0)
 					{
-						m = FColladaModel.createUnion3D9Mesh(dev, selectedInstanceMeshes, false);
-						FDeviceMeshes.Add(OnDevice, m);
-					}
-					finally
-					{
-						//dispose device
-						dev.Dispose();
+						Log(TLogType.Debug, "Creating Resource...");
+						Device dev = Device.FromPointer(new IntPtr(OnDevice));
+						try
+						{
+							m = FColladaModel.createUnion3D9Mesh(dev, selectedInstanceMeshes, false);
+							FDeviceMeshes.Add(OnDevice, m);
+						}
+						catch (Exception e)
+						{
+							Log(TLogType.Error, e.Message);
+						}
+						finally
+						{
+							//dispose device
+							dev.Dispose();
+						}
 					}
 				}
 			}
@@ -483,7 +537,6 @@ namespace VVVV.Nodes
 		public void GetMesh(IDXMeshIO ForPin, int OnDevice, out int Mesh)
 		{
 			Mesh m = FDeviceMeshes[OnDevice];
-			
 			if (m != null)
 				Mesh = m.ComPointer.ToInt32();
 			else
