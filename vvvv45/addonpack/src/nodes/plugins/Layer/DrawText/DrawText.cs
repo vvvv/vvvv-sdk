@@ -65,6 +65,9 @@ namespace VVVV.Nodes
 		private IValueIn FSizeInput;
 		private IColorIn FColorInput;
 		private ITransformIn FTranformIn;
+		private IEnumIn FHorizontalAlignInput;
+		private IEnumIn FVerticalAlignInput;
+		private IEnumIn FTextRenderingModeInput;
 		
 		private IDXLayerIO FLayerOutput;
 		private IValueOut FSizeOutput;
@@ -214,12 +217,12 @@ namespace VVVV.Nodes
 			FTextInput.SetSubType("vvvv", false);
 			FHost.CreateEnumInput("Font", TSliceMode.Single, TPinVisibility.True, out FFontInput);
 			FFontInput.SetSubType("SystemFonts");
-			FHost.CreateValueInput("Size", 1, null, TSliceMode.Single, TPinVisibility.True, out FSizeInput);
-			FSizeInput.SetSubType(0, int.MaxValue, 1, 10, false, false, true);
-			FHost.CreateValueInput("Bold", 1, null, TSliceMode.Single, TPinVisibility.True, out FBoldInput);
-			FBoldInput.SetSubType(0, 1, 1, 0, false, true, false);
 			FHost.CreateValueInput("Italic", 1, null, TSliceMode.Single, TPinVisibility.True, out FItalicInput);
 			FItalicInput.SetSubType(0, 1, 1, 0, false, true, false);
+			FHost.CreateValueInput("Bold", 1, null, TSliceMode.Single, TPinVisibility.True, out FBoldInput);
+			FBoldInput.SetSubType(0, 1, 1, 0, false, true, false);
+			FHost.CreateValueInput("Size", 1, null, TSliceMode.Single, TPinVisibility.True, out FSizeInput);
+			FSizeInput.SetSubType(0, int.MaxValue, 1, 10, false, false, true);
 			
 			FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorInput);
 			FColorInput.SetSubType(VColor.White, true);
@@ -227,11 +230,14 @@ namespace VVVV.Nodes
 			//rectangle
 			//clip
 			
-			//multiline
-			//wordbreak
+			FHost.CreateEnumInput("Horizontal Align", TSliceMode.Dynamic, TPinVisibility.True, out FHorizontalAlignInput);
+			FHorizontalAlignInput.SetSubType("HorizontalAlign");
+
+			FHost.CreateEnumInput("Vertical Align", TSliceMode.Dynamic, TPinVisibility.True, out FVerticalAlignInput);
+			FVerticalAlignInput.SetSubType("VerticalAlign");
 			
-			//center vertical
-			//center horizontal
+			FHost.CreateEnumInput("Text Rendering Mode", TSliceMode.Dynamic, TPinVisibility.True, out FTextRenderingModeInput);
+			FTextRenderingModeInput.SetSubType("TextRenderingMode");
 			
 			//quality
 			
@@ -295,7 +301,7 @@ namespace VVVV.Nodes
 			{
 				FHost.Log(TLogType.Debug, "Creating Resource...");
 				Device dev = Device.FromPointer(new IntPtr(OnDevice));
-				
+
 				DeviceFont df = new DeviceFont();
 				double size;
 				FSizeInput.GetValue(0, out size);
@@ -392,7 +398,35 @@ namespace VVVV.Nodes
 				m.M44 = (float) m4x4.m44;
 				
 				df.Sprite.Transform = m;
-				DrawTextFormat dtf = DrawTextFormat.Center | DrawTextFormat.VerticalCenter | DrawTextFormat.NoClip;
+				
+				DrawTextFormat dtf = DrawTextFormat.Left;
+				int hAlign;
+				FHorizontalAlignInput.GetOrd(i, out hAlign);
+				switch (hAlign)
+				{
+						case 0: dtf = DrawTextFormat.Left; break;
+						case 1: dtf = DrawTextFormat.Center; break;
+						case 2: dtf = DrawTextFormat.Right; break;
+				}
+				
+				int vAlign;
+				FVerticalAlignInput.GetOrd(i, out vAlign);
+				switch (vAlign)
+				{
+						case 0: dtf |= DrawTextFormat.Top; break;
+						case 1: dtf |= DrawTextFormat.VerticalCenter; break;
+						case 2: dtf |= DrawTextFormat.Bottom; break;
+				}
+				
+				int textMode;
+				FTextRenderingModeInput.GetOrd(i, out textMode);
+				switch (textMode)
+				{
+						case 0: dtf |= DrawTextFormat.SingleLine; break;
+						case 2: dtf |= DrawTextFormat.WordBreak; break;
+				}
+				
+				dtf = dtf | DrawTextFormat.NoClip;
 				
 				df.Font.DrawString(df.Sprite, text, new Rectangle(0, 0, 0, 0), dtf, c.Color.ToArgb());
 				
