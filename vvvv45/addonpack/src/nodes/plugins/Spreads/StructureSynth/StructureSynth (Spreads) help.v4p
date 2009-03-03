@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta19.dtd" >
-   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Spreads\StructureSynth\trunk\StructureSynth (Spreads) help.v4p">
-   <BOUNDS height="12285" left="2340" top="540" type="Window" width="17370">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta20.dtd" >
+   <PATCH nodename="D:\repositories\vvvv_individual\Spreads\StructureSynth\StructureSynth (Spreads) help.v4p">
+   <BOUNDS height="12285" left="2310" top="705" type="Window" width="18525">
    </BOUNDS>
-   <NODE componentmode="Hidden" id="12" nodename=":PLUGINS:\StructureSynthNETWrapper.dll|MyNodes.StructureSynthNode">
+   <NODE componentmode="Hidden" id="14" nodename=":PLUGINS:\StructureSynthNETWrapper.dll|MyNodes.StructureSynthNode">
    <BOUNDS height="270" left="915" top="6360" type="Node" width="8820">
    </BOUNDS>
    <BOUNDS height="0" left="8625" top="5880" type="Window" width="0">
@@ -29,27 +29,15 @@
    </PIN>
    <PIN pinname="Random Seed" slicecount="1" values="2">
    </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
-   <BOUNDS height="0" left="855" top="1050" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="4995" top="2955" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="4605" left="855" top="1050" type="Box" width="6090">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="|set maxdepth 20&cr;&lf;R1&cr;&lf;{ y 4 } R2&cr;&lf;{ y 12 } R4&cr;&lf;{ y 16 } R5&cr;&lf;rule R1 maxdepth 8 {&cr;&lf;  { x 1 rz 0 ry 10 s 1.2 h 20 } R1&cr;&lf;  sphere&cr;&lf;}&cr;&lf;rule R2 maxdepth 8 {&cr;&lf;{ x 1 rz 0 ry 10 s 1.2 h 20 } R2&cr;&lf;box&cr;&lf;}&cr;&lf;rule R4  maxdepth 8  {&cr;&lf;{ x 1 rz 0 ry 10 s 1.2 h 20 } R4&cr;&lf;line&cr;&lf;}&cr;&lf;rule R5  maxdepth 8 {&cr;&lf;{ x 1 rz 0 ry 10 s 1.2 h 20 } R5&cr;&lf;grid&cr;&lf;}|">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
+   <PIN pinname="Triangle PositionsXYZ" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="11" srcpinname="Output String">
-   </LINK>
-   <NODE componentmode="InABox" id="10" nodename="Renderer (EX9)">
-   <BOUNDS height="0" left="10230" top="6270" type="Node" width="0">
+   <NODE componentmode="InABox" id="12" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="11250" top="6270" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4860" left="11235" top="5745" type="Window" width="6120">
    </BOUNDS>
-   <BOUNDS height="5085" left="10230" top="6270" type="Box" width="5790">
+   <BOUNDS height="5085" left="11250" top="6270" type="Box" width="5790">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -58,7 +46,7 @@
    <PIN pinname="Projection Transform" visible="1">
    </PIN>
    </NODE>
-   <NODE id="9" nodename="Group (EX9)">
+   <NODE id="11" nodename="Group (EX9)">
    <BOUNDS height="270" left="2640" top="9510" type="Node" width="4755">
    </BOUNDS>
    <PIN pinname="Layer 1" visible="1">
@@ -67,14 +55,16 @@
    </PIN>
    <PIN pinname="Layer 2" visible="1">
    </PIN>
-   <PIN pinname="Layer Template Count" slicecount="1" values="4">
+   <PIN pinname="Layer Template Count" slicecount="1" values="5">
    </PIN>
    <PIN pinname="Layer 3" visible="1">
    </PIN>
    <PIN pinname="Layer 4" visible="1">
    </PIN>
+   <PIN pinname="Layer 5" visible="1">
+   </PIN>
    </NODE>
-   <NODE id="8" nodename="Sphere (DX9)">
+   <NODE id="10" nodename="Sphere (DX9)">
    <BOUNDS height="0" left="885" top="8205" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform" visible="1">
@@ -88,19 +78,13 @@
    <PIN pinname="Resolution Y" slicecount="1" values="20">
    </PIN>
    </NODE>
-   <LINK dstnodeid="8" dstpinname="Transform" srcnodeid="12" srcpinname="Sphere">
+   <LINK dstnodeid="10" dstpinname="Transform" srcnodeid="14" srcpinname="Sphere">
    </LINK>
-   <LINK dstnodeid="8" dstpinname="Color" srcnodeid="12" srcpinname="Sphere Color">
+   <LINK dstnodeid="10" dstpinname="Color" srcnodeid="14" srcpinname="Sphere Color">
    </LINK>
-   <LINK dstnodeid="9" dstpinname="Layer 1" srcnodeid="8" srcpinname="Layer">
+   <LINK dstnodeid="11" dstpinname="Layer 1" srcnodeid="10" srcpinname="Layer">
    </LINK>
-   <NODE id="7" nodename="Box (EX9.Geometry)">
-   <BOUNDS height="0" left="2655" top="7215" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Mesh" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="6" nodename=":EFFECTS:\Constant_2.0.fx">
+   <NODE componentmode="Hidden" id="8" nodename=":EFFECTS:\Constant_2.0.fx">
    <BOUNDS height="0" left="3060" top="8160" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="12000" left="5820" top="8325" type="Window" width="12000">
@@ -116,21 +100,13 @@
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="6" dstpinname="Mesh" srcnodeid="7" srcpinname="Mesh">
+   <LINK dstnodeid="8" dstpinname="Transform" srcnodeid="14" srcpinname="Box">
    </LINK>
-   <LINK dstnodeid="6" dstpinname="Transform" srcnodeid="12" srcpinname="Box">
+   <LINK dstnodeid="8" dstpinname="Color" srcnodeid="14" srcpinname="Box Color">
    </LINK>
-   <LINK dstnodeid="6" dstpinname="Color" srcnodeid="12" srcpinname="Box Color">
+   <LINK dstnodeid="11" dstpinname="Layer 2" srcnodeid="8" srcpinname="Layer">
    </LINK>
-   <LINK dstnodeid="9" dstpinname="Layer 2" srcnodeid="6" srcpinname="Layer">
-   </LINK>
-   <NODE id="5" nodename="Box (EX9.Geometry)">
-   <BOUNDS height="0" left="4875" top="7005" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Mesh" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="4" nodename=":EFFECTS:\Constant_2.0.fx">
+   <NODE componentmode="Hidden" id="6" nodename=":EFFECTS:\Constant_2.0.fx">
    <BOUNDS height="0" left="5010" top="8145" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="12000" left="8550" top="9405" type="Window" width="12000">
@@ -148,13 +124,11 @@
    <PIN pinname="Render State" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Mesh" srcnodeid="5" srcpinname="Mesh">
+   <LINK dstnodeid="6" dstpinname="Transform" srcnodeid="14" srcpinname="Grid">
    </LINK>
-   <LINK dstnodeid="4" dstpinname="Transform" srcnodeid="12" srcpinname="Grid">
+   <LINK dstnodeid="6" dstpinname="Color" srcnodeid="14" srcpinname="Grid Color">
    </LINK>
-   <LINK dstnodeid="4" dstpinname="Color" srcnodeid="12" srcpinname="Grid Color">
-   </LINK>
-   <NODE id="3" nodename="Fill (EX9.RenderState)">
+   <NODE id="5" nodename="Fill (EX9.RenderState)">
    <BOUNDS height="0" left="4230" top="7440" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Render State Out" visible="1">
@@ -162,12 +136,12 @@
    <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Render State" srcnodeid="3" srcpinname="Render State Out">
+   <LINK dstnodeid="6" dstpinname="Render State" srcnodeid="5" srcpinname="Render State Out">
    </LINK>
-   <LINK dstnodeid="9" dstpinname="Layer 3" srcnodeid="4" srcpinname="Layer">
+   <LINK dstnodeid="11" dstpinname="Layer 3" srcnodeid="6" srcpinname="Layer">
    </LINK>
-   <NODE id="2" nodename="Line (EX9.Geometry)">
-   <BOUNDS height="0" left="7560" top="8085" type="Node" width="0">
+   <NODE id="4" nodename="Line (EX9.Geometry)">
+   <BOUNDS height="0" left="6900" top="8145" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="VerticesXYZ" visible="1">
    </PIN>
@@ -178,21 +152,21 @@
    <PIN pinname="BinSize" slicecount="1" values="2">
    </PIN>
    </NODE>
-   <LINK dstnodeid="2" dstpinname="VerticesXYZ" srcnodeid="12" srcpinname="LinesXYZ">
+   <LINK dstnodeid="4" dstpinname="VerticesXYZ" srcnodeid="14" srcpinname="LinesXYZ">
    </LINK>
-   <LINK dstnodeid="2" dstpinname="Color" srcnodeid="12" srcpinname="Lines Color">
+   <LINK dstnodeid="4" dstpinname="Color" srcnodeid="14" srcpinname="Lines Color">
    </LINK>
-   <LINK dstnodeid="9" dstpinname="Layer 4" srcnodeid="2" srcpinname="Layer">
+   <LINK dstnodeid="11" dstpinname="Layer 4" srcnodeid="4" srcpinname="Layer">
    </LINK>
-   <NODE id="1" nodename="Perspective (Transform)">
+   <NODE id="3" nodename="Perspective (Transform)">
    <BOUNDS height="0" left="15990" top="4425" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="10" dstpinname="Projection Transform" srcnodeid="1" srcpinname="Transform Out">
+   <LINK dstnodeid="12" dstpinname="Projection Transform" srcnodeid="3" srcpinname="Transform Out">
    </LINK>
-   <NODE id="0" nodename="LookAt (Transform Vector)">
+   <NODE id="2" nodename="LookAt (Transform Vector)">
    <BOUNDS height="0" left="13710" top="4410" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
@@ -222,9 +196,9 @@
    <PIN pinname="UpVector XYZ" slicecount="3" values="0,1,0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="10" dstpinname="View Transform" srcnodeid="0" srcpinname="Transform Out">
+   <LINK dstnodeid="12" dstpinname="View Transform" srcnodeid="2" srcpinname="Transform Out">
    </LINK>
-   <LINK dstnodeid="10" dstpinname="Layers" srcnodeid="9" srcpinname="Layer">
+   <LINK dstnodeid="12" dstpinname="Layers" srcnodeid="11" srcpinname="Layer">
    <LINKPOINT x="7125" y="11115">
    </LINKPOINT>
    <LINKPOINT x="9735" y="8580">
@@ -232,21 +206,21 @@
    <LINKPOINT x="9945" y="5505">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
    <BOUNDS height="255" left="390" top="570" type="Node" width="570">
    </BOUNDS>
    <BOUNDS height="270" left="390" top="570" type="Box" width="4335">
    </BOUNDS>
    <BOUNDS height="160" left="14235" top="38985" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Generates transforms from a Strucutre Synth script|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Generates transforms from a Structure Synth script|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
    <BOUNDS height="270" left="390" top="195" type="Node" width="915">
    </BOUNDS>
    <BOUNDS height="375" left="390" top="195" type="Box" width="3765">
@@ -262,4 +236,120 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
+   <NODE nodename="SynthBox (EX9.Geometry).v4p" componentmode="Hidden" id="15" path="D:\repositories\vvvv_individual\Spreads\StructureSynth\">
+   <BOUNDS type="Node" left="2265" top="7110" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="2265" top="7110">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Mesh" dstnodeid="8" dstpinname="Mesh">
+   </LINK>
+   <NODE componentmode="Hidden" id="16" nodename="SynthBox (EX9.Geometry).v4p" path="D:\repositories\vvvv_individual\Spreads\StructureSynth\">
+   <BOUNDS height="100" left="4695" top="7140" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <BOUNDS left="4695" top="7140" type="Box">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Mesh" dstnodeid="6" dstpinname="Mesh">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="17">
+   <BOUNDS type="Node" left="8910" top="510" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8910" top="510" width="4230" height="3585">
+   </BOUNDS>
+   <BOUNDS type="Window" left="12165" top="1350" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|Notes:&cr;&lf;-From this new version, preprocessor directives are supported (see the #define at the beginning of the script)&cr;&lf;-A small Synthbox module is provided, as the standard vvvv box node has different vertices compared to the structuresynth box, which makes the transform look wrong&cr;&lf;-Triangle output is supported as well, see structure synthe website for more information.&cr;&lf;|">
+   </PIN>
+   </NODE>
+   <NODE nodename="Mesh (EX9.Geometry Join)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="8625" top="8385" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   <PIN pinname="Indices" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="VertexBuffer (EX9.Geometry Join)" componentmode="Hidden" id="20">
+   <BOUNDS type="Node" left="8310" top="7410" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Triangle PositionsXYZ" dstnodeid="20" dstpinname="Position XYZ">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Vertex Buffer" dstnodeid="19" dstpinname="Vertex Buffer">
+   </LINK>
+   <NODE nodename="Count (Value)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="9495" top="6945" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Triangle PositionsXYZ" dstnodeid="22" dstpinname="Input">
+   </LINK>
+   <NODE nodename="Divide (Value)" componentmode="Hidden" id="23">
+   <BOUNDS type="Node" left="9435" top="7515" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Count" dstnodeid="23" dstpinname="Input">
+   </LINK>
+   <NODE nodename="I (Spreads)" componentmode="Hidden" id="24">
+   <BOUNDS type="Node" left="9045" top="7875" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname=".. To [" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Output" dstnodeid="24" dstpinname=".. To [">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="Output" dstnodeid="19" dstpinname="Indices">
+   </LINK>
+   <NODE nodename=":EFFECTS:\Constant.fx" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="8175" top="8850" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8175" top="8850" width="6000" height="6000">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10440" top="9855" width="12000" height="12000">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Mesh" dstnodeid="25" dstpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="Layer" dstnodeid="11" dstpinname="Layer 5">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="30">
+   <BOUNDS type="Node" left="570" top="870" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="570" top="870" width="7215" height="5160">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10470" top="4560" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|#define objscale 1.2&cr;&lf;&cr;&lf;set maxdepth 20&cr;&lf;R1&cr;&lf;{ y 4 } R2&cr;&lf;{ y 12 } R4&cr;&lf;{ y 16 } R5&cr;&lf;rule R1 maxdepth 8 {&cr;&lf;  { x 1 rz 0 ry 10 s objscale h 20 } R1&cr;&lf;  sphere&cr;&lf;}&cr;&lf;rule R2 maxdepth 8 {&cr;&lf;{ x 1 rz 0 ry 10 s objscale h 20 } R2&cr;&lf;box&cr;&lf;}&cr;&lf;rule R4  maxdepth 8  {&cr;&lf;{ x 1 rz 0 ry 10 s objscale h 20 } R4&cr;&lf;line&cr;&lf;}&cr;&lf;rule R5  maxdepth 8 {&cr;&lf;{ x 1 rz 0 ry 10 s objscale h 20 } R5&cr;&lf;grid&cr;&lf;}|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="30" srcpinname="Output String" dstnodeid="14" dstpinname="Input">
+   </LINK>
    </PATCH>

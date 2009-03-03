@@ -110,6 +110,7 @@ namespace MyNodes
 				{
 					SyntopiaCore::Math::Vector3f t = rendering.spheres_center.at(i);
 					float s = rendering.spheres_radius.at(i);
+					//VMath::
 
 					Matrix4x4 mat = VMath::Translate(t.x(),t.y(),t.z()) * VMath::Scale(s,s,s);
 
@@ -125,7 +126,10 @@ namespace MyNodes
 				for (int i = 0; i<boxcount;i++) 
 				{
 					SyntopiaCore::Extras::VBox box = rendering.boxes.at(i);
+					//float centerx = (box.dir1.x()/2.0f)+0.5f-box.dir1.x();
+					//float centerz = (box.dir1.z()/2.0f)+0.5f-box.dir3.z();
 					Matrix4x4 mat = Matrix4x4(box.dir1.x(),box.dir1.y(),box.dir1.z(),0.0,box.dir2.x(),box.dir2.y(),box.dir2.z(),0.0,box.dir3.x(),box.dir3.y(),box.dir3.z(),0.0,box.base.x(),box.base.y(),box.base.z(),1.0);
+					//Matrix4x4 mat = Matrix4x4(box.dir1.x(),box.dir2.x(),box.dir3.x(),box.base.x(),box.dir1.y(),box.dir2.y(),box.dir3.y(),box.base.y(),box.dir1.z(),box.dir2.z(),box.dir3.z(),box.base.z(),0.0,0.0,0.0,1.0);
 					this->vOutBoxes->SetMatrix(i,mat);
 					VRGBAColor color = rendering.boxes_color.at(i);
 					this->vOutBoxesColor->SetColor(i,RGBAColor(color.r,color.g,color.b,color.a));
@@ -137,8 +141,10 @@ namespace MyNodes
 				this->vOutGridColor->SliceCount = gridcount;
 				for (int i = 0; i<gridcount;i++) 
 				{
+
 					SyntopiaCore::Extras::VBox box = rendering.grids.at(i);
 					Matrix4x4 mat = Matrix4x4(box.dir1.x(),box.dir1.y(),box.dir1.z(),0.0,box.dir2.x(),box.dir2.y(),box.dir2.z(),0.0,box.dir3.x(),box.dir3.y(),box.dir3.z(),0.0,box.base.x(),box.base.y(),box.base.z(),1.0);
+					//Matrix4x4 mat = Matrix4x4(box.dir1.x(),box.dir2.x(),box.dir3.x(),box.base.x(),box.dir1.y(),box.dir2.y(),box.dir3.y(),box.base.y(),box.dir1.z(),box.dir2.z(),box.dir3.z(),box.base.z(),0.0,0.0,0.0,1.0);
 					this->vOutGrid->SetMatrix(i,mat);
 					VRGBAColor color = rendering.grids_color.at(i);
 					this->vOutGridColor->SetColor(i,RGBAColor(color.r,color.g,color.b,color.a));
