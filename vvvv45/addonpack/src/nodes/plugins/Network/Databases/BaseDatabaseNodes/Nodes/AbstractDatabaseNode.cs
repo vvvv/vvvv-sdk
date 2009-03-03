@@ -7,7 +7,7 @@ using VVVV.DataTypes;
 
 namespace VVVV.Nodes
 {
-    public abstract class AbstractDatabaseNode<T,D> : IPlugin, IDisposable where T : AbstractDbConnection<D> where D : IDbConnection
+    public abstract class AbstractDatabaseNode<T,D> : IDisposable where T : AbstractDbConnection<D> where D : IDbConnection
     {
         protected IPluginHost FHost;
         protected AbstractDbConnection<D> FConnectionObject;

@@ -7,7 +7,7 @@ using System.Data;
 
 namespace VVVV.Nodes
 {
-    public abstract class AbstractInsertNode<T,D> : IPlugin,IPluginConnections where T : AbstractDbConnection<D> where D : IDbConnection
+    public abstract class AbstractInsertNode<T,D> : IPluginConnections where T : AbstractDbConnection<D> where D : IDbConnection
     {
         protected IPluginHost FHost;
         protected AbstractDbConnection<D> FConnectionObject;

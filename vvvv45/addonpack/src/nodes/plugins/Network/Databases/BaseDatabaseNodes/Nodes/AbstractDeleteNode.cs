@@ -7,7 +7,7 @@ using System.Data;
 
 namespace VVVV.Nodes
 {
-    public abstract class AbstractDeleteNode<T, D> : IPlugin, IPluginConnections
+    public abstract class AbstractDeleteNode<T, D> : IPluginConnections
         where T : AbstractDbConnection<D>
         where D : IDbConnection
     {
