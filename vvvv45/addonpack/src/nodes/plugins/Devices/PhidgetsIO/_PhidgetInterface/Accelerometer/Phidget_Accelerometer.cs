@@ -30,6 +30,8 @@
 using System;
 using System.Drawing;
 using VVVV.PluginInterfaces.V1;
+using Phidgets;
+using Phidgets.Events;
 
 //the vvvv node namespace
 namespace VVVV.Nodes
