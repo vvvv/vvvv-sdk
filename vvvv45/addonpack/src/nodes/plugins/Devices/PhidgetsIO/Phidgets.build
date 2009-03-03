@@ -12,5 +12,20 @@
 
   <!-- Set your ddl name here -->
   <property name="lib.name" value="PhidgetInterface.dll" />
+	
+	
+	<assemblyfileset id="project.references">
+		<include name="${root.bin}/_Utils.dll" />
+		<include name="${root.bin}/_PluginInterfaces.dll" />
+		<include name="Dependencies/Phidget21.NET.dll" />
+	</assemblyfileset>
+	
+	<target name="post-build">
+    <copy todir="${plugin.path}">
+      <fileset basedir="Dependencies">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+	</target>
 
 </project>
