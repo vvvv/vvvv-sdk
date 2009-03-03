@@ -292,7 +292,11 @@ namespace VVVV.Nodes
             if (m_IKitData != null)
             {
                 //FConnected.SetValue(0, m_IKitData.Status);
-                m_IKitData.SetRatiometric(Ratiomatric);
+                if(m_IKitData.InfoDevice.ToArray()[0].Name.Contains("8/8/8"))
+                {
+                    m_IKitData.SetRatiometric(Ratiomatric);
+                }
+                
             }
             else
             {
@@ -301,57 +305,65 @@ namespace VVVV.Nodes
             
             
 
-            if (Enable == 1)
+            if (Enable == 1 && m_IKitData.Attached)
             {
                 //
-                int SliceCountAnalogIn = m_IKitData.InfoDevice.ToArray()[0].AnalogOutputs;
-                int SliceCountDigitalIn = m_IKitData.InfoDevice.ToArray()[0].DigitalInputs;
-                int SliceCountDigitalOut = m_IKitData.InfoDevice.ToArray()[0].DigitalOutputs;
-
-                FAnalogIn.SliceCount = SliceCountAnalogIn;
-                FDigitalIn.SliceCount = SliceCountDigitalIn;
-                FDigiOutCount.SliceCount = 1;
-                FDigiOutCount.SetValue(1, SliceCountDigitalOut);
                 
-                //
-                for (int i = 0; i < SliceCountAnalogIn; i++)
+
+
+                if (m_IKitData.InfoDevice.ToArray()[0].AnalogOutputs != 0)
                 {
-                    FAnalogIn.SetValue(i, m_IKitData.AnalogInputs[i]);
-                }
-
-
-                //
-                for (int i = 0; i < SliceCountDigitalIn; i++)
-                {
-                    FDigitalIn.SetValue(i, m_IKitData.DigitalInputs[i]);
-                }
-
-
-                //
-                double[] digiOut = new double[m_IKitData.InfoDevice.ToArray()[0].DigitalInputs];
-
-                for (int i = 0; i < SliceCountDigitalOut; i++)
-                {
-                    FDigitalOut.GetValue(i, out digiOut[i]);
-                }
-                m_IKitData.SetDigitalOutput(digiOut);
-
-                //
-                if (FSensitivity.PinIsChanged)
-                {
-                    double SliceCountSense = FSensitivity.SliceCount;
-                    double[] SenseValue = new double[SliceCountAnalogIn];
+                    int SliceCountAnalogIn = m_IKitData.InfoDevice.ToArray()[0].AnalogOutputs;
+                    FAnalogIn.SliceCount = SliceCountAnalogIn;
                     for (int i = 0; i < SliceCountAnalogIn; i++)
                     {
-                        double sense;
-                        FSensitivity.GetValue(i, out sense);
-                        SenseValue[i] = sense;
-
+                        FAnalogIn.SetValue(i, m_IKitData.AnalogInputs[i]);
                     }
-                    m_IKitData.SetSense(SenseValue);
+
+                    if (FSensitivity.PinIsChanged)
+                    {
+                        double SliceCountSense = FSensitivity.SliceCount;
+                        double[] SenseValue = new double[SliceCountAnalogIn];
+                        for (int i = 0; i < SliceCountAnalogIn; i++)
+                        {
+                            double sense;
+                            FSensitivity.GetValue(i, out sense);
+                            SenseValue[i] = sense;
+
+                        }
+                        m_IKitData.SetSense(SenseValue);
+                    }
                 }
 
-                //
+                if (m_IKitData.InfoDevice.ToArray()[0].DigitalInputs != 0)
+                {
+                    int SliceCountDigitalIn = m_IKitData.InfoDevice.ToArray()[0].DigitalInputs;
+                    FDigitalIn.SliceCount = SliceCountDigitalIn;
+                    for (int i = 0; i < SliceCountDigitalIn; i++)
+                    {
+                        FDigitalIn.SetValue(i, m_IKitData.DigitalInputs[i]);
+                    }
+                }
+
+
+                if (m_IKitData.InfoDevice.ToArray()[0].DigitalOutputs != 0)
+                {
+                    int SliceCountDigitalOut = m_IKitData.InfoDevice.ToArray()[0].DigitalOutputs;
+
+                    FDigiOutCount.SetValue(1, SliceCountDigitalOut);
+                    double[] digiOut = new double[m_IKitData.InfoDevice.ToArray()[0].DigitalInputs];
+
+                    for (int i = 0; i < SliceCountDigitalOut; i++)
+                    {
+                        FDigitalOut.GetValue(i, out digiOut[i]);
+                    }
+                    m_IKitData.SetDigitalOutput(digiOut);
+                }
+
+                
+                
+                
+
                 int SpreadSizeInfo = 3;
                 for (int i = 0; i < SpreadSizeInfo; i++)
                 {

@@ -56,7 +56,7 @@ namespace VVVV.Nodes
         private double[] m_AnalogInputs;
         private double[] m_DigitalInputs;
         private double[] m_DigitalOutput;
-
+        private bool mAttached;
 
         # region Properties
 
@@ -119,6 +119,15 @@ namespace VVVV.Nodes
                 m_DigitalOutput = value;
             }
         }
+
+        public bool Attached
+        {
+            get
+            {
+                return mAttached;
+            }
+        }
+
 
         # endregion Properties
 
@@ -297,9 +306,10 @@ namespace VVVV.Nodes
            
             InterfaceKit attached = (InterfaceKit)sender;
             m_Status = 0;
-
+            mAttached = true;
             if (attached.Attached)
             {
+                m_Devices.Clear();
                 m_Status = 1;
                 DeviceInfo Infos = new DeviceInfo();
                 Infos.Name = e.Device.Name;
@@ -319,10 +329,10 @@ namespace VVVV.Nodes
 
         void m_IKit_Detach(object sender, DetachEventArgs e)
         {
+            mAttached = false;
             m_Status = 0;
             Close();
             m_IKit = null;
-
         }
 
         void m_IKit_Error(object sender, ErrorEventArgs e)
