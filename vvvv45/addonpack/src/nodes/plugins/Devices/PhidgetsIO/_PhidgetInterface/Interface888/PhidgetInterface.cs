@@ -67,6 +67,8 @@ namespace VVVV.Nodes
     	
     	#endregion field declaration
        
+
+
     	#region constructor/destructor
     	
         public PhidgetInterface()
@@ -108,6 +110,7 @@ namespace VVVV.Nodes
         		// only the following code is executed.
 	        	
         		FHost.Log(TLogType.Debug, "IO Phidget InterfaceKit 888 is being deleted");
+                m_IKitData.Close();
                 m_IKitData = null;
          		
         		// Note that this is not thread safe.
@@ -134,6 +137,10 @@ namespace VVVV.Nodes
         }
         #endregion constructor/destructor
         
+
+
+
+
         #region node name and infos
        
         //provide node infos 
@@ -190,6 +197,10 @@ namespace VVVV.Nodes
         
         #endregion node name and infos
         
+
+
+
+
       	#region pin creation
         
         //this method is called by vvvv when the node is created
@@ -234,6 +245,11 @@ namespace VVVV.Nodes
 
         #endregion pin creation
         
+
+
+
+
+
         #region mainloop
         
         public void Configurate(IPluginConfig Input)
@@ -242,12 +258,14 @@ namespace VVVV.Nodes
         	//only used in conjunction with inputs of type cmpdConfigurate
         }
         
+
+
         //here we go, thats the method called by vvvv each frame
         //all data handling should be in here
         public void Evaluate(int SpreadMax)
         {
             
-            double Enable = 0;
+            double Enable;
             double Serial;
             double Ratiomatric;
 
@@ -257,132 +275,217 @@ namespace VVVV.Nodes
             FEnable.GetValue(0, out Enable);
             FRatiomatric.GetValue(0, out Ratiomatric);
 
-            if (FSerial.PinIsChanged || FEnable.PinIsChanged )
+
+
+
+            try
             {
 
-                if (FSerial.PinIsChanged)
+                if (FSerial.PinIsChanged || FEnable.PinIsChanged)
                 {
-                    if (m_IKitData != null)
-                    {
-                        m_IKitData.Close();
-                        m_IKitData = null;
-                    }
-                }
 
-                if (Enable == 1)
-                {
-                    if (m_IKitData == null)
+                    if (FSerial.PinIsChanged)
                     {
-                        m_IKitData = new GetInterfaceData();
-                        m_IKitData.Open(Serial);
+                        if (m_IKitData != null)
+                        {
+                            m_IKitData.Close();
+                            m_IKitData = null;
+                        }
                     }
-                }
-                else
-                {
-                    if (m_IKitData != null)
+
+                    if (Enable > 0.5)
                     {
-                        FInfo.SliceCount = 1;
-                        FInfo.SetString(0, "Disabled");
-                        m_IKitData.Close();
-                        m_IKitData = null;
+                        if (m_IKitData == null)
+                        {
+                            m_IKitData = new GetInterfaceData();
+                            m_IKitData.Open(Serial);
+                        }
+                    }
+                    else
+                    {
+                        if (m_IKitData != null)
+                        {
+                            FInfo.SliceCount = 1;
+                            FInfo.SetString(0, "Disabled");
+                            m_IKitData.Close();
+                            m_IKitData = null;
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                FHost.Log(TLogType.Error, "Error by initialising Phidget");
+                FHost.Log(TLogType.Error, ex.Message.ToString());
+            }
 
-            if (m_IKitData != null)
-            {
-                //FConnected.SetValue(0, m_IKitData.Status);
-                if(m_IKitData.InfoDevice.ToArray()[0].Name.Contains("8/8/8"))
-                {
-                    m_IKitData.SetRatiometric(Ratiomatric);
-                }
-                
-            }
-            else
-            {
-                //FConnected.SetValue(0, 0);
-            }
-            
-            
+
+
+
 
             if (Enable == 1 && m_IKitData.Attached)
             {
                 //
-                
 
-
-                if (m_IKitData.InfoDevice.ToArray()[0].AnalogOutputs != 0)
+                int SliceCountAnalogIn = m_IKitData.InfoDevice.ToArray()[0].AnalogOutputs;
+                try
                 {
-                    int SliceCountAnalogIn = m_IKitData.InfoDevice.ToArray()[0].AnalogOutputs;
-                    FAnalogIn.SliceCount = SliceCountAnalogIn;
-                    for (int i = 0; i < SliceCountAnalogIn; i++)
-                    {
-                        FAnalogIn.SetValue(i, m_IKitData.AnalogInputs[i]);
-                    }
 
-                    if (FSensitivity.PinIsChanged)
+
+                    //Setting Values of analog inputs
+
+                    if (m_IKitData.InfoDevice.ToArray()[0].AnalogOutputs != 0)
                     {
-                        double SliceCountSense = FSensitivity.SliceCount;
-                        double[] SenseValue = new double[SliceCountAnalogIn];
+
+                        FAnalogIn.SliceCount = SliceCountAnalogIn;
                         for (int i = 0; i < SliceCountAnalogIn; i++)
                         {
-                            double sense;
-                            FSensitivity.GetValue(i, out sense);
-                            SenseValue[i] = sense;
+                            FAnalogIn.SetValue(i, m_IKitData.AnalogInputs[i]);
+                        }
+                    }
+
+
+
+
+                    //setting Sensitivity of Analog Inputs
+                    try
+                    {
+                        if (FSensitivity.PinIsChanged)
+                        {
+                            double SliceCountSense = FSensitivity.SliceCount;
+                            double[] SenseValue = new double[SliceCountAnalogIn];
+                            for (int i = 0; i < SliceCountAnalogIn; i++)
+                            {
+                                double sense;
+                                FSensitivity.GetValue(i, out sense);
+                                SenseValue[i] = sense;
+
+                            }
+                            m_IKitData.SetSense(SenseValue);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        FHost.Log(TLogType.Error, "Error in Phidget " + m_IKitData.InfoDevice.ToArray()[0].Name + " setting Analog  Output");
+                        FHost.Log(TLogType.Error, ex.Message.ToString());
+                    }
+
+
+
+
+
+                    //Setting Values Digital Inputs
+                    try
+                    {
+                        if (m_IKitData.InfoDevice.ToArray()[0].DigitalInputs != 0)
+                        {
+                            int SliceCountDigitalIn = m_IKitData.InfoDevice.ToArray()[0].DigitalInputs;
+                            FDigitalIn.SliceCount = SliceCountDigitalIn;
+                            for (int i = 0; i < SliceCountDigitalIn; i++)
+                            {
+                                FDigitalIn.SetValue(i, m_IKitData.DigitalInputs[i]);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        FHost.Log(TLogType.Error, "Error in Phidget " + m_IKitData.InfoDevice.ToArray()[0].Name + " setting Digitial Output");
+                        FHost.Log(TLogType.Error, ex.Message.ToString());
+                    }
+
+
+
+
+
+                    try
+                    {
+                        if (m_IKitData.InfoDevice.ToArray()[0].DigitalOutputs != 0)
+                        {
+                            int SliceCountDigitalOut = m_IKitData.InfoDevice.ToArray()[0].DigitalOutputs;
+
+                            FDigiOutCount.SetValue(1, SliceCountDigitalOut);
+                            double[] digiOut = new double[m_IKitData.InfoDevice.ToArray()[0].DigitalInputs];
+
+                            for (int i = 0; i < SliceCountDigitalOut; i++)
+                            {
+                                FDigitalOut.GetValue(i, out digiOut[i]);
+                            }
+                            m_IKitData.SetDigitalOutput(digiOut);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        FHost.Log(TLogType.Error, "Error in Phidget " + m_IKitData.InfoDevice.ToArray()[0].Name + " getting Digitial Output");
+                        FHost.Log(TLogType.Error, ex.Message.ToString());
+                    }
+
+
+
+
+
+                    //setting Phidget Infos
+                    try
+                    {
+                        int SpreadSizeInfo = 3;
+                        for (int i = 0; i < SpreadSizeInfo; i++)
+                        {
+                            FInfo.SliceCount = 3;
+                            switch (i)
+                            {
+                                case 0:
+                                    FInfo.SetString(i, "Name: " + m_IKitData.InfoDevice.ToArray()[0].Name);
+                                    break;
+                                case 1:
+                                    FInfo.SetString(i, "Serial: " + m_IKitData.InfoDevice.ToArray()[0].SerialNumber.ToString());
+                                    break;
+                                case 2:
+                                    FInfo.SetString(i, "Version: " + m_IKitData.InfoDevice.ToArray()[0].Version.ToString());
+                                    break;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        FHost.Log(TLogType.Error, "Error in Phidget " + m_IKitData.InfoDevice.ToArray()[0].Name + " setting Phidget Infos");
+                        FHost.Log(TLogType.Error, ex.Message.ToString());
+                    }
+
+
+
+
+
+                    // setting Radiometric
+                    try
+                    {
+                        if (m_IKitData != null)
+                        {
+                            //FConnected.SetValue(0, m_IKitData.Status);
+                            if (m_IKitData.InfoDevice.ToArray()[0].Name.Contains("8/8/8"))
+                            {
+                                m_IKitData.SetRatiometric(Ratiomatric);
+                            }
 
                         }
-                        m_IKitData.SetSense(SenseValue);
+                        else
+                        {
+                            //FConnected.SetValue(0, 0);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        FHost.Log(TLogType.Error, "Error in Phidget " + m_IKitData.InfoDevice.ToArray()[0].Name + " setting Radiometric");
+                        FHost.Log(TLogType.Error, ex.Message.ToString());
                     }
                 }
-
-                if (m_IKitData.InfoDevice.ToArray()[0].DigitalInputs != 0)
+                catch (Exception ex)
                 {
-                    int SliceCountDigitalIn = m_IKitData.InfoDevice.ToArray()[0].DigitalInputs;
-                    FDigitalIn.SliceCount = SliceCountDigitalIn;
-                    for (int i = 0; i < SliceCountDigitalIn; i++)
-                    {
-                        FDigitalIn.SetValue(i, m_IKitData.DigitalInputs[i]);
-                    }
+                    FHost.Log(TLogType.Error, "Error in Phidget " + m_IKitData.InfoDevice.ToArray()[0].Name );
+                    FHost.Log(TLogType.Error, ex.Message.ToString());
                 }
-
-
-                if (m_IKitData.InfoDevice.ToArray()[0].DigitalOutputs != 0)
-                {
-                    int SliceCountDigitalOut = m_IKitData.InfoDevice.ToArray()[0].DigitalOutputs;
-
-                    FDigiOutCount.SetValue(1, SliceCountDigitalOut);
-                    double[] digiOut = new double[m_IKitData.InfoDevice.ToArray()[0].DigitalInputs];
-
-                    for (int i = 0; i < SliceCountDigitalOut; i++)
-                    {
-                        FDigitalOut.GetValue(i, out digiOut[i]);
-                    }
-                    m_IKitData.SetDigitalOutput(digiOut);
-                }
-
-                
-                
-                
-
-                int SpreadSizeInfo = 3;
-                for (int i = 0; i < SpreadSizeInfo; i++)
-                {
-                    FInfo.SliceCount = 3;
-                    switch (i)
-                    {
-                        case 0:
-                            FInfo.SetString(i, "Name: " + m_IKitData.InfoDevice.ToArray()[0].Name);
-                            break;
-                        case 1:
-                            FInfo.SetString(i, "Serial: " + m_IKitData.InfoDevice.ToArray()[0].SerialNumber.ToString());
-                            break;
-                        case 2:
-                            FInfo.SetString(i, "Version: " + m_IKitData.InfoDevice.ToArray()[0].Version.ToString());
-                            break;
-                    }
-                } 	
-
             }
+            
+
+
             
         }
              
