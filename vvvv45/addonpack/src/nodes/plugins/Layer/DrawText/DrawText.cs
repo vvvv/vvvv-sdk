@@ -33,9 +33,11 @@ using System.Collections.Generic;
 using System.Collections;
 
 using VVVV.PluginInterfaces.V1;
+using VVVV.Utils;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
+using SlimDX;
 using SlimDX.Direct3D9;
 
 //the vvvv node namespace
@@ -68,6 +70,8 @@ namespace VVVV.Nodes
 		private IEnumIn FHorizontalAlignInput;
 		private IEnumIn FVerticalAlignInput;
 		private IEnumIn FTextRenderingModeInput;
+		private IValueIn FBillboardInput;
+		private IValueIn FEnabledInput;
 		
 		private IDXLayerIO FLayerOutput;
 		private IValueOut FSizeOutput;
@@ -239,7 +243,11 @@ namespace VVVV.Nodes
 			FHost.CreateEnumInput("Text Rendering Mode", TSliceMode.Dynamic, TPinVisibility.True, out FTextRenderingModeInput);
 			FTextRenderingModeInput.SetSubType("TextRenderingMode");
 			
-			//quality
+			FHost.CreateValueInput("Billboard", 1, null, TSliceMode.Single, TPinVisibility.True, out FBillboardInput);
+			FBillboardInput.SetSubType(0, 1, 1, 0, false, true, false);
+			
+			FHost.CreateValueInput("Enabled", 1, null, TSliceMode.Single, TPinVisibility.True, out FEnabledInput);
+			FEnabledInput.SetSubType(0, 1, 1, 1, false, true, false);
 			
 			//create outputs
 			FHost.CreateLayerOutput("Layer", TPinVisibility.True, out FLayerOutput);
@@ -339,65 +347,90 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		public void Render(IDXLayerIO ForPin, int OnDevice)
+		public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
 		{
-			DeviceFont df = FDeviceFonts[OnDevice];
+			double enabled;
+			FEnabledInput.GetValue(0, out enabled);
+			if (enabled < 0.5)
+				return;
+			
+			DeviceFont df = FDeviceFonts[DXDevice.DevicePointer()];
 			
 			string text;
 			RGBAColor c;
 			double sizeX, sizeY;
 			
-			Matrix4x4 m4x4;
+			//from the docs: D3DXSPRITE_OBJECTSPACE -> The world, view, and projection transforms are not modified.
+			//for view and projection transforms this is exactly what we want: it allows placing the text within the
+			//same world as all the other objects. however we need to set the world transform to a neutral value: identity
+			Device dev = Device.FromPointer(new IntPtr(DXDevice.DevicePointer()));
+			dev.SetTransform(TransformState.World, Matrix.Identity);
 			
 			FTexSizeInput.GetValue2D(0, out sizeX, out sizeY);
 			if (sizeX == 0)
 				FSizeInput.GetValue(0, out sizeX);
 			if (sizeY == 0)
 				FSizeInput.GetValue(0, out sizeY);
+			
 			//compensate texture size
-			Matrix4x4 preScale = VMath.Scale(1/sizeX, -1/sizeY, 1);
+			Matrix preScale = Matrix.Scaling((float)(1/sizeX), (float)(-1/sizeY), 1);
+			//Matrix4x4 preScale = VMath.Scale(1/sizeX, -1/sizeY, 1);
+			Matrix m = new Matrix();
+			Matrix4x4 m4x4;
 			
-			SlimDX.Matrix m = new SlimDX.Matrix();
+			SpriteFlags sf = SpriteFlags.DoNotAddRefTexture;
 			
-			//from the docu: D3DXSPRITE_OBJECTSPACE -> The world, view, and projection transforms are not modified. 
-			//for view and projection transforms this is exactly what we want: it allows placing the text within the 
-			//same world as all the other objects. however we need to set the world transform to a neutral value: identity
-			Device dev = Device.FromPointer(new IntPtr(OnDevice));
-			dev.SetTransform( TransformState.World, SlimDX.Matrix.Identity );			
+			double bill;
+			FBillboardInput.GetValue(0, out bill);
+		/*	if (bill >= 0.5)
+			{
+				sf |= SpriteFlags.Billboard;
+
+				
+				FTranformIn.GetMatrix(0, out m4x4);
+				m = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(m4x4);
+				
+				m = Matrix.Multiply(m, preScale);
+				
+				
+				df.Sprite.SetWorldViewLH(m, VSlimDXUtils.Matrix4x4ToSlimDXMatrix(DXDevice.ViewMatrix()));
+			}
+			else*/
+				sf |= SpriteFlags.ObjectSpace;
+		
+			Matrix vp = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(DXDevice.ProjectionMatrix() * DXDevice.ViewMatrix());
+			//Matrix vp = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(DXDevice.ProjectionMatrix());
+			//FHost.Log(TLogType.Debug, vp.ToString());
+			Matrix vpi = Matrix.Invert(vp);
 			
-			df.Sprite.Begin(SpriteFlags.ObjectSpace | SpriteFlags.DoNotAddRefTexture);// | SpriteFlags.DoNotModifyRenderState | SpriteFlags.DoNotSaveState);
-			//f.Device.SetSamplerState(0, SamplerState.MagFilter, TextureFilter.Point);
 			
+			df.Sprite.Begin(sf);
 			Rectangle textSize;
+			
 			for (int i=0; i<FSpreadMax; i++)
 			{
 				FColorInput.GetColor(i, out c);
 				FTextInput.GetString(i, out text);
-				
 				FTranformIn.GetMatrix(i, out m4x4);
+				m = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(m4x4);
+				m = Matrix.Multiply(preScale, m);
 				
-				m4x4 = m4x4 * preScale;
-				m.M11 = (float) m4x4.m11;
-				m.M12 = (float) m4x4.m12;
-				m.M13 = (float) m4x4.m13;
-				m.M14 = (float) m4x4.m14;
-				
-				m.M21 = (float) m4x4.m21;
-				m.M22 = (float) m4x4.m22;
-				m.M23 = (float) m4x4.m23;
-				m.M24 = (float) m4x4.m24;
-				
-				m.M31 = (float) m4x4.m31;
-				m.M32 = (float) m4x4.m32;
-				m.M33 = (float) m4x4.m33;
-				m.M34 = (float) m4x4.m34;
-				
-				m.M41 = (float) m4x4.m41;
-				m.M42 = (float) m4x4.m42;
-				m.M43 = (float) m4x4.m43;
-				m.M44 = (float) m4x4.m44;
-				
-				df.Sprite.Transform = m;
+				if (bill >= 0.5)
+				{
+					Matrix wvp = Matrix.Multiply(m, vp);
+					Vector4 xyzw = Vector3.Transform(new Vector3(0, 0, 0), wvp);
+					xyzw /= xyzw.W;
+					Matrix trans = Matrix.Translation(xyzw.X, xyzw.Y, xyzw.Z);
+					m = Matrix.Multiply(trans, vpi);
+					m = Matrix.Multiply(m, Matrix.Scaling(0.01f, 0.01f, 0.01f));
+					
+					df.Sprite.Transform = m;
+
+					
+					/**/
+				}
+				else
+					df.Sprite.Transform = m;
 				
 				DrawTextFormat dtf = DrawTextFormat.Left;
 				int hAlign;
