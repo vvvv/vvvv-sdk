@@ -29,15 +29,16 @@ using System.Collections.Generic;
 using System.Text;
 using Phidgets;
 using Phidgets.Events;
+using System.Diagnostics;
 
 namespace VVVV.Nodes
 {
-    class GetEncoderData
+    class GetEncoderHSData
     {
 
         private bool FDisposed = false;
 
-        private InterfaceKit m_IKit;
+        private Phidgets.Encoder m_Encoder;
         private int m_Status = 0;
 
         public struct DeviceInfo
@@ -46,17 +47,18 @@ namespace VVVV.Nodes
             public double SerialNumber;
             public double Version;
             public object Device;
-            public int DigitalInputs;
-            public int DigitalOutputs;
-            public int AnalogOutputs;
+            public int EncoderInputs;
+
         }
 
         List<DeviceInfo> m_Devices = new List<DeviceInfo>();
 
-        private double[] m_AnalogInputs;
-        private double[] m_DigitalInputs;
-        private double[] m_DigitalOutput;
+        private double[] m_EncoderInputs;
         private bool mAttached;
+
+
+
+
 
         # region Properties
 
@@ -84,41 +86,18 @@ namespace VVVV.Nodes
             }
         }
 
-        public double[] AnalogInputs
+        public double[] EncoderInputs
         {
             get
             {
-                return m_AnalogInputs;
+                return m_EncoderInputs;
             }
             set
             {
-                m_AnalogInputs = value;
+                m_EncoderInputs = value;
             }
         }
 
-        public double[] DigitalInputs
-        {
-            get
-            {
-                return m_DigitalInputs;
-            }
-            set
-            {
-                m_DigitalInputs = value;
-            }
-        }
-
-        public double[] DigitalOutput
-        {
-            get
-            {
-                return m_DigitalOutput;
-            }
-            set
-            {
-                m_DigitalOutput = value;
-            }
-        }
 
         public bool Attached
         {
@@ -131,9 +110,12 @@ namespace VVVV.Nodes
 
         # endregion Properties
 
+
+
+
         #region constructor
 
-        public GetEncoderData()
+        public GetEncoderHSData()
         {
             m_Devices = new List<DeviceInfo>();
             
@@ -186,7 +168,7 @@ namespace VVVV.Nodes
         // does not get called.
         // It gives your base class the opportunity to finalize.
         // Do not provide destructors in types derived from this class.
-        ~GetEncoderData()
+        ~GetEncoderHSData()
         {
         	// Do not re-create Dispose clean-up code here.
         	// Calling Dispose(false) is optimal in terms of
@@ -199,112 +181,98 @@ namespace VVVV.Nodes
 
         #endregion constructor
 
+
+
+
         #region public Functions
 
         // this Funtkion are called by the VVVV plugin template
 
         public void Enable()
         {
-            m_IKit.Attach += new AttachEventHandler(m_IKit_Attach);
-            m_IKit.Detach += new DetachEventHandler(m_IKit_Detach);
-            m_IKit.Error += new ErrorEventHandler(m_IKit_Error);
-            m_IKit.InputChange += new InputChangeEventHandler(m_IKit_InputChange);
-            m_IKit.OutputChange += new OutputChangeEventHandler(m_IKit_OutputChange);
-            m_IKit.SensorChange += new SensorChangeEventHandler(m_IKit_SensorChange);
+            m_Encoder.Attach += new AttachEventHandler(m_IKit_Attach);
+            m_Encoder.Detach += new DetachEventHandler(m_IKit_Detach);
+            m_Encoder.Error += new ErrorEventHandler(m_IKit_Error);
+
+            m_Encoder.InputChange += new InputChangeEventHandler(m_IKit_InputChange);
+            m_Encoder.PositionChange += new EncoderPositionChangeEventHandler(EncoderPositionChange);
         }
 
         public void Disable()
         {
-            m_IKit.Attach -= new AttachEventHandler(m_IKit_Attach);
-            m_IKit.Detach -= new DetachEventHandler(m_IKit_Detach);
-            m_IKit.Error -= new ErrorEventHandler(m_IKit_Error);
-            m_IKit.InputChange -= new InputChangeEventHandler(m_IKit_InputChange);
-            m_IKit.OutputChange -= new OutputChangeEventHandler(m_IKit_OutputChange);
-            m_IKit.SensorChange -= new SensorChangeEventHandler(m_IKit_SensorChange);
+            m_Encoder.Attach -= new AttachEventHandler(m_IKit_Attach);
+            m_Encoder.Detach -= new DetachEventHandler(m_IKit_Detach);
+            m_Encoder.Error -= new ErrorEventHandler(m_IKit_Error);
+
+            m_Encoder.InputChange -= new InputChangeEventHandler(m_IKit_InputChange);
+            m_Encoder.PositionChange -= new EncoderPositionChangeEventHandler(EncoderPositionChange);
         }
 
         public void Open(double Serial)
         {
-            m_IKit = new InterfaceKit();
+            m_Encoder = new Phidgets.Encoder();
             Enable();
             if (Serial > 0)
             {
-                m_IKit.open(Convert.ToInt32(Serial));
+                m_Encoder.open(Convert.ToInt32(Serial));
             }
             else if (Serial == 0)
             {
-                m_IKit.open();
+                m_Encoder.open();
             }
             else
             {
                 Disable();
-                m_IKit = null;
+                m_Encoder = null;
             }
         }
 
         public void Close()
         //FConnected.SetValue(0, m_IKitData.Status);
 {
-            if (m_IKit != null)
+            if (m_Encoder != null)
             {
                 Disable();
-                m_IKit.close();
-                m_IKit = null;
+                m_Encoder.close();
+                m_Encoder = null;
             }
         }
 
-        public void SetSense(double[] sense)
+        public void SetPosition(double[] pPosition)
         {
-            for (int i = 0; i < AnalogInputs.Length;i++ )
+            for (int i = 0; i < pPosition.Length; i++)
             {
-                sense[i] = sense[i] * 100;
-                m_IKit.sensors[i].Sensitivity = Convert.ToInt32(sense[i]);
+                m_Encoder.encoders[i] = (int)pPosition[i]; 
             }
         }
 
-        public void SetDigitalOutput(double[] digiOut)
-        {
-            for (int i = 0; i < m_DigitalOutput.Length; i++)
-            {
-                m_IKit.outputs[i] = Convert.ToBoolean(digiOut[i]);
-            }
-
-        }
-
-        public void SetRatiometric(double Ratiomatric)
-        {
-            m_IKit.ratiometric = Convert.ToBoolean(Ratiomatric);
-        }
 
 
         #endregion public Functions
 
+
+
+
+
         # region Handler Funktions
 
-        void m_IKit_SensorChange(object sender, SensorChangeEventArgs e)
+        void EncoderPositionChange(object sender, EncoderPositionChangeEventArgs e)
         {
-            double value = e.Value;
-            value = value / 1000;
-            m_AnalogInputs[e.Index] = value;
-
-        }
-
-        void m_IKit_OutputChange(object sender, OutputChangeEventArgs e)
-        {
-            m_DigitalOutput[e.Index] = Convert.ToDouble(e.Value);
-
+            double tRelativChange = e.PositionChange;
+            double tPosition = m_Encoder.encoders[e.Index];
+            m_EncoderInputs[e.Index] = tPosition;
+           
         }
 
         void m_IKit_InputChange(object sender, InputChangeEventArgs e)
         {
-            m_DigitalInputs[e.Index] = Convert.ToDouble(e.Value);
-       
+           
         }
 
         void m_IKit_Attach(object sender, AttachEventArgs e)
         {
            
-            InterfaceKit attached = (InterfaceKit)sender;
+            Phidgets.Encoder attached = (Phidgets.Encoder)sender;
             m_Status = 0;
             mAttached = true;
             if (attached.Attached)
@@ -316,14 +284,11 @@ namespace VVVV.Nodes
                 Infos.SerialNumber = e.Device.SerialNumber;
                 Infos.Version = e.Device.Version;
                 Infos.Device = sender;
-                Infos.DigitalInputs = attached.inputs.Count;
-                Infos.DigitalOutputs = attached.outputs.Count;
-                Infos.AnalogOutputs = attached.sensors.Count;
-                m_Devices.Add(Infos);
+                Infos.EncoderInputs = attached.encoders.Count;
 
-                m_AnalogInputs = new double[attached.sensors.Count];
-                m_DigitalInputs = new double[attached.inputs.Count];
-                m_DigitalOutput = new double[attached.outputs.Count];
+                m_Devices.Add(Infos);
+                m_EncoderInputs = new double[attached.encoders.Count];
+
             }
         }
 
@@ -332,7 +297,7 @@ namespace VVVV.Nodes
             mAttached = false;
             m_Status = 0;
             Close();
-            m_IKit = null;
+            m_Encoder = null;
         }
 
         void m_IKit_Error(object sender, ErrorEventArgs e)

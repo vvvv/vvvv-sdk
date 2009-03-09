@@ -37,7 +37,7 @@ using Phidgets.Events;
 namespace VVVV.Nodes
 {
 	//class definition
-	public class PhidgetEncoderHS: IPlugin, IDisposable
+	public class PhidgetEncoder: IPlugin, IDisposable
     {	          	
     	#region field declaration
     	
@@ -48,22 +48,17 @@ namespace VVVV.Nodes
 
     	//input pin declaration
     	private IValueIn FEnable;
-        private IValueIn FSensitivity;
+        private IValueIn FPositionIn;
         private IValueIn FSerial;
-        private IValueIn FDigitalOut;
-        private IValueIn FRatiomatric;
+        private IValueIn FSetPosition;
 
     	
     	//output pin declaration
-    	private IValueOut FAnalogIn;
-        private IValueOut FDigitalIn;
-        //private IValueOut FConnected;
+    	private IValueOut FPositionOut;
         private IStringOut FInfo;
-        private IValueOut FDigiOutCount;
 
         //GetInterfaceData
-        private GetEncoderData m_IKitData;
-        private Manager Anzahl = new Manager();
+        private GetEncoderHSData m_IKitData;
     	
     	#endregion field declaration
        
@@ -71,7 +66,7 @@ namespace VVVV.Nodes
 
     	#region constructor/destructor
     	
-        public PhidgetEncoderHS()
+        public PhidgetEncoder()
         {
 			//the nodes constructor
 			//nothing to declare for this node
@@ -109,7 +104,7 @@ namespace VVVV.Nodes
         		// Release unmanaged resources. If disposing is false,
         		// only the following code is executed.
 	        	
-        		FHost.Log(TLogType.Debug, "IO Phidget InterfaceKit 888 is being deleted");
+        		FHost.Log(TLogType.Debug, "IO Phidget Encoder HighSpeed is being deleted");
                 m_IKitData.Close();
                 m_IKitData = null;
          		
@@ -128,7 +123,7 @@ namespace VVVV.Nodes
         // does not get called.
         // It gives your base class the opportunity to finalize.
         // Do not provide destructors in types derived from this class.
-        ~PhidgetEncoderHS()
+        ~PhidgetEncoder()
         {
         	// Do not re-create Dispose clean-up code here.
         	// Calling Dispose(false) is optimal in terms of
@@ -161,19 +156,19 @@ namespace VVVV.Nodes
                     FPluginInfo.Category = "Devices";
                     //the nodes version: optional. leave blank if not
                     //needed to distinguish two nodes of the same name and category
-                    FPluginInfo.Version = "Phidget InterfaceKit 888";
+                    FPluginInfo.Version = "Phidget Encoder HighSpeed";
 
                     //the nodes author: your sign
                     FPluginInfo.Author = "phlegma";
                     //describe the nodes function
-                    FPluginInfo.Help = "Offers a connection to the Phidget InterfaceKit 8/8/8";
+                    FPluginInfo.Help = "Offers a connection to the Phidget Encoder HighSpeed";
                     //specify a comma separated list of tags that describe the node
                     FPluginInfo.Tags = "Phidget, USB-Interface, Hardware, Sensors, A/D";
 
                     //give credits to thirdparty code used
                     FPluginInfo.Credits = "http://www.phidget.com";
                     //any known problems?
-                    FPluginInfo.Bugs = "somthing werong with the connected Pin";
+                    FPluginInfo.Bugs = "somthines disconnect";
                     //any known usage of the node that may cause troubles?
                     FPluginInfo.Warnings = "";
 
@@ -213,31 +208,22 @@ namespace VVVV.Nodes
 	    	FHost.CreateValueInput("Enable", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FEnable);
             FEnable.SetSubType(0, 1, 1, 0, false, true, true);
 
-            FHost.CreateValueInput("Digital Out", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDigitalOut);
-            FDigitalOut.SetSubType(0, 1, 1, 0, false, true, true);
+            FHost.CreateValueInput("Position", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPositionIn);
+            FPositionIn.SetSubType(double.MinValue, double.MaxValue, 1, 0, false, false, true);
 
-            FHost.CreateValueInput("Sensitivity", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSensitivity);
-            FSensitivity.SetSubType(0, 1, 0.01, 0.1, false, false, false);
-
-            FHost.CreateValueInput("Ratiometric", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FRatiomatric);
-            FRatiomatric.SetSubType(0, 1, 1, 1, false, true, true);
+            FHost.CreateValueInput("SetPosition", 1, null, TSliceMode.Single, TPinVisibility.True, out FSetPosition);
+            FSetPosition.SetSubType(0, 1, 1, 0, true, false, true);
 
             FHost.CreateValueInput("Serial", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSerial);
             FSerial.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
 
-            //create outputs	    	
-	    	FHost.CreateValueOutput("Analog In", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FAnalogIn);
-            FAnalogIn.SetSubType(double.MinValue, double.MaxValue, 0.0001, 0, false, false, false);
-
-            FHost.CreateValueOutput("Digital In", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDigitalIn);
-            FDigitalIn.SetSubType(0, 1, 1, 0, false, true, true);
-
-            FHost.CreateValueOutput("Number of Digital Outputs", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDigiOutCount);
-            FDigiOutCount.SetSubType(0, 1, 1, 0, false, true, true);
             
-            //FHost.CreateValueOutput("Connected", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FConnected);
-            //FConnected.SetSubType(0, 1, 1, 0, false, true, true);
-	    	
+
+
+            //create outputs	    	
+	    	FHost.CreateValueOutput("Position", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPositionOut);
+            FPositionOut.SetSubType(double.MinValue, double.MaxValue, 0.0001, 0, false, false, false);
+            	    	
             FHost.CreateStringOutput("Info", TSliceMode.Dynamic, TPinVisibility.True, out FInfo);
             FInfo.SetSubType("Disabled", false);
 
@@ -267,16 +253,11 @@ namespace VVVV.Nodes
             
             double Enable;
             double Serial;
-            double Ratiomatric;
 
             //FConnected.SliceCount = 1;
             
             FSerial.GetValue(0, out Serial);
             FEnable.GetValue(0, out Enable);
-            FRatiomatric.GetValue(0, out Ratiomatric);
-
-
-
 
             try
             {
@@ -297,7 +278,7 @@ namespace VVVV.Nodes
                     {
                         if (m_IKitData == null)
                         {
-                            m_IKitData = new GetEncoderData();
+                            m_IKitData = new GetEncoderHSData();
                             m_IKitData.Open(Serial);
                         }
                     }
@@ -327,100 +308,42 @@ namespace VVVV.Nodes
             {
                 //
 
-                int SliceCountAnalogIn = m_IKitData.InfoDevice.ToArray()[0].AnalogOutputs;
+                int SliceCountAnalogIn = m_IKitData.InfoDevice.ToArray()[0].EncoderInputs;
                 try
                 {
 
 
                     //Setting Values of analog inputs
-
-                    if (m_IKitData.InfoDevice.ToArray()[0].AnalogOutputs != 0)
+                    if (m_IKitData.InfoDevice.ToArray()[0].EncoderInputs != 0)
                     {
-
-                        FAnalogIn.SliceCount = SliceCountAnalogIn;
+                        FPositionOut.SliceCount = SliceCountAnalogIn;
                         for (int i = 0; i < SliceCountAnalogIn; i++)
                         {
-                            FAnalogIn.SetValue(i, m_IKitData.AnalogInputs[i]);
+                            FPositionOut.SetValue(i, m_IKitData.EncoderInputs[i]);
                         }
                     }
 
 
-
-
-                    //setting Sensitivity of Analog Inputs
-                    try
+                    // set Position
+                    if (FSetPosition.PinIsChanged)
                     {
-                        if (FSensitivity.PinIsChanged)
+                        double setPosition;
+                        FSetPosition.GetValue(0, out setPosition);
+
+                        if (setPosition > 0.5)
                         {
-                            double SliceCountSense = FSensitivity.SliceCount;
-                            double[] SenseValue = new double[SliceCountAnalogIn];
+                            double SliceCountSense = FPositionIn.SliceCount;
+                            double[] tPosition = new double[SliceCountAnalogIn];
                             for (int i = 0; i < SliceCountAnalogIn; i++)
                             {
                                 double sense;
-                                FSensitivity.GetValue(i, out sense);
-                                SenseValue[i] = sense;
+                                FPositionIn.GetValue(i, out sense);
+                                tPosition[i] = sense;
 
                             }
-                            m_IKitData.SetSense(SenseValue);
+                            m_IKitData.SetPosition(tPosition);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        FHost.Log(TLogType.Error, "Error in Phidget " + m_IKitData.InfoDevice.ToArray()[0].Name + " setting Analog  Output");
-                        FHost.Log(TLogType.Error, ex.Message.ToString());
-                    }
-
-
-
-
-
-                    //Setting Values Digital Inputs
-                    try
-                    {
-                        if (m_IKitData.InfoDevice.ToArray()[0].DigitalInputs != 0)
-                        {
-                            int SliceCountDigitalIn = m_IKitData.InfoDevice.ToArray()[0].DigitalInputs;
-                            FDigitalIn.SliceCount = SliceCountDigitalIn;
-                            for (int i = 0; i < SliceCountDigitalIn; i++)
-                            {
-                                FDigitalIn.SetValue(i, m_IKitData.DigitalInputs[i]);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        FHost.Log(TLogType.Error, "Error in Phidget " + m_IKitData.InfoDevice.ToArray()[0].Name + " setting Digitial Output");
-                        FHost.Log(TLogType.Error, ex.Message.ToString());
-                    }
-
-
-
-
-
-                    try
-                    {
-                        if (m_IKitData.InfoDevice.ToArray()[0].DigitalOutputs != 0)
-                        {
-                            int SliceCountDigitalOut = m_IKitData.InfoDevice.ToArray()[0].DigitalOutputs;
-
-                            FDigiOutCount.SetValue(1, SliceCountDigitalOut);
-                            double[] digiOut = new double[m_IKitData.InfoDevice.ToArray()[0].DigitalInputs];
-
-                            for (int i = 0; i < SliceCountDigitalOut; i++)
-                            {
-                                FDigitalOut.GetValue(i, out digiOut[i]);
-                            }
-                            m_IKitData.SetDigitalOutput(digiOut);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        FHost.Log(TLogType.Error, "Error in Phidget " + m_IKitData.InfoDevice.ToArray()[0].Name + " getting Digitial Output");
-                        FHost.Log(TLogType.Error, ex.Message.ToString());
-                    }
-
-
-
 
 
                     //setting Phidget Infos
@@ -453,29 +376,6 @@ namespace VVVV.Nodes
 
 
 
-
-                    // setting Radiometric
-                    try
-                    {
-                        if (m_IKitData != null)
-                        {
-                            //FConnected.SetValue(0, m_IKitData.Status);
-                            if (m_IKitData.InfoDevice.ToArray()[0].Name.Contains("8/8/8"))
-                            {
-                                m_IKitData.SetRatiometric(Ratiomatric);
-                            }
-
-                        }
-                        else
-                        {
-                            //FConnected.SetValue(0, 0);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        FHost.Log(TLogType.Error, "Error in Phidget " + m_IKitData.InfoDevice.ToArray()[0].Name + " setting Radiometric");
-                        FHost.Log(TLogType.Error, ex.Message.ToString());
-                    }
                 }
                 catch (Exception ex)
                 {
