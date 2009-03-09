@@ -248,7 +248,7 @@ namespace VVVV.Nodes
 				{
 					Document colladaDocument = new Document(filename);
 					Conditioner.ConvexTriangulator(colladaDocument);
-					Conditioner.Reindexor(colladaDocument);
+					//Conditioner.Reindexor(colladaDocument);
 					FColladaModel = new Model(colladaDocument);
 					
 					Log(TLogType.Message, filename + " loaded.");
