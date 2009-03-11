@@ -218,8 +218,6 @@ namespace VVVV.Nodes
             FSerial.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
 
             
-
-
             //create outputs	    	
 	    	FHost.CreateValueOutput("Position", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPositionOut);
             FPositionOut.SetSubType(double.MinValue, double.MaxValue, 0.0001, 0, false, false, false);
@@ -313,36 +311,53 @@ namespace VVVV.Nodes
                 {
 
 
-                    //Setting Values of analog inputs
-                    if (m_IKitData.InfoDevice.ToArray()[0].EncoderInputs != 0)
+
+                    try
                     {
-                        FPositionOut.SliceCount = SliceCountAnalogIn;
-                        for (int i = 0; i < SliceCountAnalogIn; i++)
+                        //getting Encoder Position
+                        if (m_IKitData.InfoDevice.ToArray()[0].EncoderInputs != 0)
                         {
-                            FPositionOut.SetValue(i, m_IKitData.EncoderInputs[i]);
+                            FPositionOut.SliceCount = SliceCountAnalogIn;
+                            for (int i = 0; i < SliceCountAnalogIn; i++)
+                            {
+                                FPositionOut.SetValue(i, m_IKitData.EncoderInputs[i]);
+                            }
                         }
+                    }
+                    catch(Exception ex)
+                    {
+                        FHost.Log(TLogType.Error, "Error in " + m_IKitData.InfoDevice.ToArray()[0].Name + " getting encoder Position");
+                        FHost.Log(TLogType.Error, ex.Message.ToString());
                     }
 
 
-                    // set Position
-                    if (FSetPosition.PinIsChanged)
+                    try
                     {
-                        double setPosition;
-                        FSetPosition.GetValue(0, out setPosition);
-
-                        if (setPosition > 0.5)
+                        // set Position
+                        if (FSetPosition.PinIsChanged)
                         {
-                            double SliceCountSense = FPositionIn.SliceCount;
-                            double[] tPosition = new double[SliceCountAnalogIn];
-                            for (int i = 0; i < SliceCountAnalogIn; i++)
-                            {
-                                double sense;
-                                FPositionIn.GetValue(i, out sense);
-                                tPosition[i] = sense;
+                            double setPosition;
+                            FSetPosition.GetValue(0, out setPosition);
 
+                            if (setPosition > 0.5)
+                            {
+                                double SliceCountSense = FPositionIn.SliceCount;
+                                double[] tPosition = new double[SliceCountAnalogIn];
+                                for (int i = 0; i < SliceCountAnalogIn; i++)
+                                {
+                                    double sense;
+                                    FPositionIn.GetValue(i, out sense);
+                                    tPosition[i] = sense;
+
+                                }
+                                m_IKitData.SetPosition(tPosition);
                             }
-                            m_IKitData.SetPosition(tPosition);
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        FHost.Log(TLogType.Error, "Error in " + m_IKitData.InfoDevice.ToArray()[0].Name + " setting encoder Position");
+                        FHost.Log(TLogType.Error, ex.Message.ToString());
                     }
 
 
