@@ -27,13 +27,10 @@
 
 //use what you need
 using System;
-using System.Runtime.InteropServices;
-using System.Drawing;
 using System.Collections.Generic;
 using System.Collections;
 
 using VVVV.PluginInterfaces.V1;
-using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
 using SlimDX;
@@ -57,15 +54,16 @@ namespace VVVV.Nodes
 		private IValueIn mass;
 		private IValueIn gsize;
 		private IValueIn level;
+		private IValueIn smooth;
 		
 		//output pin declaration
 		
-		//private IValueOut debug;
 		
 		private IDXMeshIO FMyMeshOutput;
 		
 		DataStream sVx;
 		DataStream sIx;
+		
 		private Dictionary<int, Mesh> FDeviceMeshes = new Dictionary<int, Mesh>();
 		
 		#endregion field declaration
@@ -150,7 +148,7 @@ namespace VVVV.Nodes
 					FPluginInfo = new PluginInfo();
 					
 					//the nodes main name: use CamelCaps and no spaces
-					FPluginInfo.Name = "MetaBallsMesh";
+					FPluginInfo.Name = "MetaballsMesh";
 					//the nodes category: try to use an existing one
 					FPluginInfo.Category = "Template";
 					//the nodes version: optional. leave blank if not
@@ -160,7 +158,7 @@ namespace VVVV.Nodes
 					//the nodes author: your sign
 					FPluginInfo.Author = "vvvv group";
 					//describe the nodes function
-					FPluginInfo.Help = "MetaBallsMesh";
+					FPluginInfo.Help = "MetaballsMesh";
 					//specify a comma separated list of tags that describe the node
 					FPluginInfo.Tags = "";
 					
@@ -201,23 +199,24 @@ namespace VVVV.Nodes
 			
 			//create inputs
 			FHost.CreateValueInput("Position ", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out pos);
-			pos.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0, 0, 0, false, false, false);
+			pos.SetSubType3D(-1, 1, 0.01, 0, 0, 0, false, false, false);
 			
 			FHost.CreateValueInput("Mass", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out mass);
-			mass.SetSubType(0, double.MaxValue, 0.01, 1, false, false, false);
+			mass.SetSubType(0, 2, 0.01, 1, false, false, false);
 			
 			FHost.CreateValueInput("Grid Size", 1, null, TSliceMode.Single, TPinVisibility.True, out gsize);
-			gsize.SetSubType(2, 64, 1, 2, false, false, true);
-			// MaxValue is set to 64... dare to go higher
+			gsize.SetSubType(2, 128, 1, 2, false, false, true);
+			// MaxValue is set to 128...
 			
 			FHost.CreateValueInput("Level", 1, null, TSliceMode.Single, TPinVisibility.True, out level);
-			level.SetSubType(double.MinValue, double.MaxValue, 0.01, 100, false, false, false);
+			level.SetSubType(double.MinValue, double.MaxValue, 0.01, 1, false, false, false);
+			
+			FHost.CreateValueInput("Smooth Mesh", 1, null, TSliceMode.Single, TPinVisibility.True, out smooth);
+			smooth.SetSubType(0, 1, 1, 0, false, true, true);
 			
 			
 			//create outputs
 			
-			//FHost.CreateValueOutput("Debug", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out debug);
-			//debug.SetSubType(int.MinValue, int.MaxValue, 1, 0, false, false, true);
 			
 			FHost.CreateMeshOutput("Mesh", TSliceMode.Dynamic, TPinVisibility.True, out FMyMeshOutput);
 		}
@@ -234,30 +233,31 @@ namespace VVVV.Nodes
 		
 		//here we go, thats the method called by vvvv each frame
 		//all data handling should be in here
+		
 		public void Evaluate(int SpreadMax)
 		{
-			//initialize metaball arrays
+			FMyMeshOutput.SliceCount = 1;
 			
-			if (pos.SliceCount != NumBalls)
+			if (pos.SliceCount != NumBalls) //initialize metaball arrays
 			{
 				NumBalls = pos.SliceCount;
-				
-				
 				m_Ball = new Vector3[NumBalls];
 				m_BallMass = new float[NumBalls];
+				double pm;
+				for (int i=0; i<NumBalls; i++)
+				{
+					mass.GetValue(i, out pm);
+					m_BallMass[i] = (float)pm;
+				}
 				update = true;
-				
 			}
 			
-			//initialize grid variables and arrays
-			
-			if (gsize.PinIsChanged)
+			if (gsize.PinIsChanged) //initialize grid
 			{
 				double dSize;
 				gsize.GetValue(1, out dSize);
-				VoxelSize = 2/(float) dSize;
 				GridSize = (int) dSize;
-				
+				VoxelSize = 2 / (float) dSize;
 				update = true;
 			}
 			
@@ -265,71 +265,76 @@ namespace VVVV.Nodes
 			{
 				double dLevel;
 				level.GetValue(1, out dLevel);
-				Level = (float) dLevel;
+				Level = (float) dLevel * 100;
 				update = true;
 			}
 			
-
-			
-			if (mass.PinIsChanged || pos.PinIsChanged || update)
+			if (smooth.PinIsChanged)
 			{
+				smooth.GetValue(1, out Smooth);
 				update = true;
-				
-				
-				//initialize all tables
-				
+			}
 			
-				
-
+			if (mass.PinIsChanged) // initialize metaballs' mass array
+			{
+				double pm;
+				for (int i=0; i<NumBalls; i++)
+				{
+					mass.GetValue(i, out pm);
+					m_BallMass[i] = (float)pm;
+				}
+				update = true;
+			}
+			
+			if (pos.PinIsChanged)
+			{
+				// store all positions as SlimDX Vector3
+				for (int i=0; i<NumBalls; i++)
+				{
+					double px, py, pz;
+					pos.GetValue3D(i, out px, out py, out pz);
+					m_Ball[i] = new Vector3((float)px, (float)py, (float)pz);
+				}
+				update = true;
+			}
+			
+			
+			if (update) //initialize all tables
+			{
 				GridEnergy = new float[(GridSize+1)*(GridSize+1)*(GridSize+1)];
 				GridPointStatus = new bool[(GridSize+1)*(GridSize+1)*(GridSize+1)];
 				GridVoxelStatus = new byte[GridSize*GridSize*GridSize];
 				GridVoxelSeek = new int[GridSize*GridSize*GridSize];
 				
-				
-
-				
-				for (int i=0; i<NumBalls; i++)
-				{
-					double px, py, pz, pm;
-					pos.GetValue3D(i, out px, out py, out pz);
-					mass.GetValue(i, out pm);
-					
-					Vector3 p3 = new Vector3((float)px, (float)py, (float)pz);
-					
-					m_Ball[i] = p3;
-
-					m_BallMass[i] = (float)pm;
-
-				}
-
 				Render();
 				
-				// Output data
-				
-				
 				#region MeshOutput
-
 				
-				
-				// this is not taken care of in metaballs code yet
-				// cast int indicices to short IxBuffer
-				
+				// casting all int type Indices to short type IxBuffer here
+				// seems faster than using short type Indices in program loop (?)
 				
 				IxBuffer = new short[NumIndices];
 				
-				for (int j = 0; j < NumIndices; j++)
+				unsafe
 				{
-					IxBuffer[j] = (short)Indices[j];
+					fixed (short* IxBufferPtr = &IxBuffer[0])
+					{
+						fixed (int* IndicesPtr = &Indices[0])
+						{
+							for (int j = 0; j < NumIndices; j++)
+								*(IxBufferPtr + j) = (short) *(IndicesPtr + j);
+						}
+					}
 				}
 				
+				if (Smooth == 1) SmoothMesh();
 				
-				FMyMeshOutput.SliceCount = 1;
-				
+				// compute normals for all vertices
+				ComputeNormals();
 				
 				#endregion MeshOutput
-			}
-
+				
+			} // endif update
 		}
 		
 		#endregion mainloop
@@ -392,7 +397,6 @@ namespace VVVV.Nodes
 					// unlock buffers
 					NewMesh.UnlockIndexBuffer();
 					NewMesh.UnlockVertexBuffer();
-					
 					
 					FDeviceMeshes.Add(OnDevice, NewMesh);
 				}
@@ -459,9 +463,6 @@ namespace VVVV.Nodes
 				x = World2Grid(m_Ball[i].X);
 				y = World2Grid(m_Ball[i].Y);
 				z = World2Grid(m_Ball[i].Z);
-
-				
-				
 				
 				// Work our way out from the center of the ball until the surface is
 				// reached. If the voxel at the surface is already computed then this
@@ -506,12 +507,8 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		
-
-		
 		protected float ComputeEnergy(float x, float y, float z)
 		{
-			
 			float fEnergy = 0;
 			float fSqDist;
 			
@@ -520,9 +517,7 @@ namespace VVVV.Nodes
 				// The formula for the energy is
 				//   e += mass/distance^2
 				
-				// TODO add some finite fall-off formulas and other primitives
-				
-				
+				// TODO add other finite fall-off formulas and other primitives
 
 				fSqDist = (m_Ball[i].X - x)*(m_Ball[i].X - x) +
 					(m_Ball[i].Y - y)*(m_Ball[i].Y - y) +
@@ -533,46 +528,49 @@ namespace VVVV.Nodes
 
 				fEnergy += m_BallMass[i] / fSqDist;
 			}
-
 			return fEnergy;
 		}
 		
 		
-		#region ComputeNormal
+		#region ComputeNormals
 		
-		protected void  ComputeNormal(int Vertex)
+		protected void  ComputeNormals()
 		{
-			float fSqDist;
-			Vector3 Normal = new Vector3(0);
-			
-			for( int i = 0; i < NumBalls; i++ )
+			for (int j = 0; j < NumVertices; j++)
 			{
-				// To compute the normal we derive the energy formula and get
-				//
-				//   n += 2 * mass * vector / distance^4
+				float f4Dist;
+				Vector3 Normal = new Vector3(0);
 				
-				Vector3 xyz = VxBuffer[Vertex].Vel - m_Ball[i];
-				
-				fSqDist = xyz.LengthSquared();
-				
+				for( int i = 0; i < NumBalls; i++ )
+				{
+					// To compute the normal we derive the energy formula and get
+					//
+					//   n += 2 * mass * vector / distance^4
+					
+					float x = VxBuffer[j].Vel.X - m_Ball[i].X;
+					float y = VxBuffer[j].Vel.Y - m_Ball[i].Y;
+					float z = VxBuffer[j].Vel.Z - m_Ball[i].Z;
+					
+					f4Dist = (x*x + y*y + z*z);
+					f4Dist *= f4Dist;
 
-				Normal.X += 2 * m_BallMass[i] * xyz.X / (fSqDist * fSqDist);
-				Normal.Y += 2 * m_BallMass[i] * xyz.Y / (fSqDist * fSqDist);
-				Normal.Z += 2 * m_BallMass[i] * xyz.Z / (fSqDist * fSqDist);
+					Normal.X += 2 * m_BallMass[i] * x / f4Dist;
+					Normal.Y += 2 * m_BallMass[i] * y / f4Dist;
+					Normal.Z += 2 * m_BallMass[i] * z / f4Dist;
 
+				}
+
+				//normalize vector
+				
+				Normal.Normalize(); // SlimDx!
+				VxBuffer[j].Nel = Normal;
+
+				// To compute the sphere-map texture coordinates
+				// normals should be transformed to camera space...
+				
+				//VxBuffer[Vertex].Tel.X = Normal.X/2 + 0.5f;
+				//VxBuffer[Vertex].Tel.Y = -Normal.Y/2 + 0.5f;
 			}
-
-			//normalize vector
-			
-			Normal.Normalize(); // SlimDx!
-			VxBuffer[Vertex].Nel = Normal;
-
-			// To compute the sphere-map texture coordinates
-			// normals should be transformed to camera space...
-			
-			//VxBuffer[Vertex].Tel.X = Normal.X/2 + 0.5f;
-			//VxBuffer[Vertex].Tel.Y = Normal.Y/2 + 0.5f;
-
 		}
 		
 		
@@ -650,8 +648,12 @@ namespace VVVV.Nodes
 				EdgeIndices[ei] = PreComputed[NumOpenVoxels * 12 + ei] - 1;
 				PreComputed[NumOpenVoxels * 12 + ei] = 0;
 			}
-
-
+			
+			// find other PreComputed vertices
+			
+			SetGridVoxelComputed(x + y * GridSize + z * GridSize * GridSize);
+			GetPreComputed(c, x + y * GridSize + z * GridSize * GridSize);
+			
 			while(true)
 			{
 				int nEdge =	MarchingCubes.CubeTriangles[c, i];
@@ -690,13 +692,11 @@ namespace VVVV.Nodes
 					VxBuffer[NumVertices].Vel.Z = fz +
 						VxBuffer[NumVertices].Vel.Z * VoxelSize;
 
-					// Compute the normal at the vertex
-					ComputeNormal(NumVertices);
 
 					NumVertices++;
 					if (NumVertices == MaxVertices)
 					{
-						MaxVertices *= 2;
+						MaxVertices += 4096;
 						sVxBuffer[] TmpVx = new sVxBuffer[MaxVertices];
 
 						int j = 0;
@@ -707,7 +707,6 @@ namespace VVVV.Nodes
 						}
 						j = 0;
 
-						
 						VxBuffer = TmpVx;
 					}
 				}
@@ -719,7 +718,7 @@ namespace VVVV.Nodes
 				NumIndices++;
 				if (NumIndices == MaxIndices)
 				{
-					MaxIndices *= 2;
+					MaxIndices += 8192;
 					int[] TmpIx = new int[MaxIndices];
 					int j = 0;
 					foreach (int element in Indices)
@@ -733,13 +732,10 @@ namespace VVVV.Nodes
 				i++;
 			}
 
-			SetGridVoxelComputed(x,y,z);
-			
-			
 			return c;
 		}
 
-		protected bool  IsGridPointComputed(int x, int y, int z)
+		protected bool IsGridPointComputed(int x, int y, int z)
 		{
 			if( GridPointStatus[x +
 			                    y*(GridSize+1) +
@@ -749,7 +745,7 @@ namespace VVVV.Nodes
 				return false;
 		}
 		
-		protected bool  IsGridVoxelComputed(int x, int y, int z)
+		protected bool IsGridVoxelComputed(int x, int y, int z)
 		{
 			if( GridVoxelStatus[x +
 			                    y*GridSize +
@@ -759,7 +755,7 @@ namespace VVVV.Nodes
 				return false;
 		}
 		
-		protected bool  IsGridVoxelInList(int x, int y, int z)
+		protected bool IsGridVoxelInList(int x, int y, int z)
 		{
 			if( GridVoxelStatus[x +
 			                    y*GridSize +
@@ -769,25 +765,24 @@ namespace VVVV.Nodes
 				return false;
 		}
 		
-		protected void  SetGridPointComputed(int x, int y, int z)
+		protected void SetGridPointComputed(int x, int y, int z)
 		{
 			GridPointStatus[x +
 			                y*(GridSize+1) +
 			                z*(GridSize+1)*(GridSize+1)] = true;
 		}
 		
-		protected void  SetGridVoxelComputed(int x, int y, int z)
+		protected void SetGridVoxelComputed(int address)
 		{
-			GridVoxelStatus[x +
-			                y*GridSize +
-			                z*GridSize*GridSize] = 1;
+			GridVoxelStatus[address] = 1;
+			GridVoxelSeek[address] = 0;
 		}
 		
-		protected void  SetGridVoxelInList(int address)
+		protected void SetGridVoxelInList(int address)
 		{
 			
 			GridVoxelStatus[address] = 2;
-			GridVoxelSeek[address] = NumOpenVoxels;
+			GridVoxelSeek[address] = NumOpenVoxels + 1;
 		}
 
 		protected float Grid2World(int x)
@@ -795,31 +790,32 @@ namespace VVVV.Nodes
 			return (float)x*VoxelSize - 1.0f;
 		}
 		
-		protected int   World2Grid(double x)
+		protected int World2Grid(float x)
 		{
 			return (int)((x + 1.0f)/VoxelSize + 0.5f);
 		}
 		
-		protected void  AddNeighborsToList(int nCase, int x, int y, int z)
+		protected void AddNeighborsToList(int nCase, int x, int y, int z)
 		{
 			if( (MarchingCubes.CubeNeighbors[nCase] & 1) != 0 )
-				AddNeighbor(x+1, y, z, 1);
+				AddNeighbor(x+1, y, z, 0);
 
 			if( (MarchingCubes.CubeNeighbors[nCase] & 2) != 0 )
-				AddNeighbor(x-1, y, z, 2);
+				AddNeighbor(x-1, y, z, 1);
 
 			if( (MarchingCubes.CubeNeighbors[nCase] & 4) != 0 )
-				AddNeighbor(x, y+1, z, 4);
+				AddNeighbor(x, y+1, z, 2);
 
 			if( (MarchingCubes.CubeNeighbors[nCase] & 8) != 0 )
-				AddNeighbor(x, y-1, z, 8);
+				AddNeighbor(x, y-1, z, 3);
 
 			if( (MarchingCubes.CubeNeighbors[nCase] & 16) != 0 )
-				AddNeighbor(x, y, z+1, 16);
+				AddNeighbor(x, y, z+1, 4);
 
 			if( (MarchingCubes.CubeNeighbors[nCase] & 32) != 0 )
-				AddNeighbor(x, y, z-1, 32);
+				AddNeighbor(x, y, z-1, 5);
 		}
+		
 		protected void  AddNeighbor(int x, int y, int z, int side)
 		{
 			int address = x + y*GridSize + z*GridSize*GridSize;
@@ -832,7 +828,7 @@ namespace VVVV.Nodes
 			// and copy computed vertices
 			if ( IsGridVoxelInList(x,y,z) )
 			{
-				PreComputeEdge(GridVoxelSeek[address], side);
+				PreComputeEdge(GridVoxelSeek[address] - 1, side);
 				return;
 			}
 
@@ -869,7 +865,7 @@ namespace VVVV.Nodes
 			
 			SetGridVoxelInList(address);
 			PreComputeEdge(NumOpenVoxels, side);
-
+			
 			NumOpenVoxels++;
 		}
 		
@@ -881,60 +877,208 @@ namespace VVVV.Nodes
 			
 			OpenVoxelAdr *= 12; // there are 12 edges
 			
-						if (side == 1) // x+1
+			if (side == 0) // x+1
 			{
-				PreComputed[OpenVoxelAdr + 3] = EdgeIndices[1] + 1;
-				PreComputed[OpenVoxelAdr + 7] = EdgeIndices[5] + 1;
-				PreComputed[OpenVoxelAdr + 8] = EdgeIndices[9] + 1;
-				PreComputed[OpenVoxelAdr + 10] = EdgeIndices[11] + 1;
+				PushVertex(OpenVoxelAdr + 3, 1);
+				PushVertex(OpenVoxelAdr + 7, 5);
+				PushVertex(OpenVoxelAdr + 8, 9);
+				PushVertex(OpenVoxelAdr + 10, 11);
 			}
 			
-			if (side == 2) // x-1
+			if (side == 1) // x-1
 			{
-				PreComputed[OpenVoxelAdr + 1] = EdgeIndices[3] + 1;
-				PreComputed[OpenVoxelAdr + 5] = EdgeIndices[7] + 1;
-				PreComputed[OpenVoxelAdr + 9] = EdgeIndices[8] + 1;
-				PreComputed[OpenVoxelAdr + 11] = EdgeIndices[10] + 1;
+				PushVertex(OpenVoxelAdr + 1, 3);
+				PushVertex(OpenVoxelAdr + 5, 7);
+				PushVertex(OpenVoxelAdr + 9, 8);
+				PushVertex(OpenVoxelAdr + 11, 10);
 			}
 			
-			if (side == 4) // y+1
+			if (side == 2) // y+1
 			{
-				PreComputed[OpenVoxelAdr + 0] = EdgeIndices[4] + 1;
-				PreComputed[OpenVoxelAdr + 1] = EdgeIndices[5] + 1;
-				PreComputed[OpenVoxelAdr + 2] = EdgeIndices[6] + 1;
-				PreComputed[OpenVoxelAdr + 3] = EdgeIndices[7] + 1;
+				PushVertex(OpenVoxelAdr + 0, 4);
+				PushVertex(OpenVoxelAdr + 1, 5);
+				PushVertex(OpenVoxelAdr + 2, 6);
+				PushVertex(OpenVoxelAdr + 3, 7);
 			}
 			
-			if (side == 8) // y-1
+			if (side == 3) // y-1
 			{
-				PreComputed[OpenVoxelAdr + 4] = EdgeIndices[0] + 1;
-				PreComputed[OpenVoxelAdr + 5] = EdgeIndices[1] + 1;
-				PreComputed[OpenVoxelAdr + 6] = EdgeIndices[2] + 1;
-				PreComputed[OpenVoxelAdr + 7] = EdgeIndices[3] + 1;
+				PushVertex(OpenVoxelAdr + 4, 0);
+				PushVertex(OpenVoxelAdr + 5, 1);
+				PushVertex(OpenVoxelAdr + 6, 2);
+				PushVertex(OpenVoxelAdr + 7, 3);
 			}
 			
-			if (side == 16) // z+1
+			if (side == 4) // z+1
 			{
-				PreComputed[OpenVoxelAdr + 0] = EdgeIndices[2] + 1;
-				PreComputed[OpenVoxelAdr + 4] = EdgeIndices[6] + 1;
-				PreComputed[OpenVoxelAdr + 8] = EdgeIndices[10] + 1;
-				PreComputed[OpenVoxelAdr + 9] = EdgeIndices[11] + 1;
+				PushVertex(OpenVoxelAdr + 0, 2);
+				PushVertex(OpenVoxelAdr + 4, 6);
+				PushVertex(OpenVoxelAdr + 8, 10);
+				PushVertex(OpenVoxelAdr + 9, 11);
 			}
 			
-			if (side == 32) // z-1
+			if (side == 5) // z-1
 			{
-				PreComputed[OpenVoxelAdr + 2] = EdgeIndices[0] + 1;
-				PreComputed[OpenVoxelAdr + 6] = EdgeIndices[4] + 1;
-				PreComputed[OpenVoxelAdr + 10] = EdgeIndices[8] + 1;
-				PreComputed[OpenVoxelAdr + 11] = EdgeIndices[9] + 1;
+				PushVertex(OpenVoxelAdr + 2, 0);
+				PushVertex(OpenVoxelAdr + 6, 4);
+				PushVertex(OpenVoxelAdr + 10, 8);
+				PushVertex(OpenVoxelAdr + 11, 9);
 			}
-			
-			
-			
 		}
+		
+		protected void PushVertex(int PCi, int EIi)
+		{
+			if (PreComputed[PCi] == 0 && EdgeIndices[EIi] != -1)
+			{
+				PreComputed[PCi] = EdgeIndices[EIi] + 1;
+			}
+		}
+		protected void PullVertex(int EIi, int PCi)
+		{
+			if (EdgeIndices[EIi] == -1 && PreComputed[PCi] != 0)
+			{
+				EdgeIndices[EIi] = PreComputed[PCi] - 1;
+			}
+		}
+		
+		protected void  GetPreComputed(int nCase, int address)
+		{
+			if( (MarchingCubes.CubeNeighbors[nCase] & 1) != 0
+			   && GridVoxelSeek[address + 1] != 0)
+			{
+				int loc = 12 * (GridVoxelSeek[address + 1] - 1);
+				PullVertex(1, loc + 3);
+				PullVertex(5, loc + 7);
+				PullVertex(9, loc + 8);
+				PullVertex(11, loc + 10);
+			}
 
+			if( (MarchingCubes.CubeNeighbors[nCase] & 2) != 0
+			   && GridVoxelSeek[address - 1] != 0)
+			{
+				int loc = 12 * (GridVoxelSeek[address - 1] - 1);
+				PullVertex(3, loc + 1);
+				PullVertex(7, loc + 5);
+				PullVertex(8, loc + 9);
+				PullVertex(10, loc + 11);
+			}
+
+			if( (MarchingCubes.CubeNeighbors[nCase] & 4) != 0
+			   && GridVoxelSeek[address + GridSize] != 0)
+			{
+				int loc = 12 * (GridVoxelSeek[address + GridSize] - 1);
+				PullVertex(4, loc + 0);
+				PullVertex(5, loc + 1);
+				PullVertex(6, loc + 2);
+				PullVertex(7, loc + 3);
+			}
+			
+			if( (MarchingCubes.CubeNeighbors[nCase] & 8) != 0
+			   && GridVoxelSeek[address - GridSize] != 0)
+			{
+				int loc = 12 * (GridVoxelSeek[address - GridSize] - 1);
+				PullVertex(0, loc + 4);
+				PullVertex(1, loc + 5);
+				PullVertex(2, loc + 6);
+				PullVertex(3, loc + 7);
+			}
+
+			if( (MarchingCubes.CubeNeighbors[nCase] & 16) != 0
+			   && GridVoxelSeek[address + GridSize * GridSize] != 0)
+			{
+				int loc = 12 * (GridVoxelSeek[address + GridSize * GridSize] - 1);
+				PullVertex(2, loc + 0);
+				PullVertex(6, loc + 4);
+				PullVertex(10, loc + 8);
+				PullVertex(11, loc + 9);
+			}
+
+			if( (MarchingCubes.CubeNeighbors[nCase] & 32) != 0
+			   && GridVoxelSeek[address - GridSize * GridSize] != 0)
+			{
+				int loc = 12 * (GridVoxelSeek[address - GridSize * GridSize] - 1);
+				PullVertex(0, loc + 2);
+				PullVertex(4, loc + 6);
+				PullVertex(8, loc + 10);
+				PullVertex(9, loc + 11);
+			}
+		}
+		
+		#endregion
+
+		protected void SmoothMesh()
+		{
+			// create sum vector for all triangles
+			
+			Vector3[] SumVec = new Vector3[NumIndices / 3];
+			for (int i = 0; i < NumIndices / 3; i++)
+			{
+				SumVec[i] = VxBuffer[Indices[i * 3]].Vel +
+					VxBuffer[Indices[i * 3 + 1]].Vel +
+					VxBuffer[Indices[i * 3 + 2]].Vel;
+			}
+			
+			
+			unsafe
+			{
+				int* IndexPtr = stackalloc int[NumIndices];
+				for (int i = 0; i < NumIndices / 3; i++)
+				{
+					*(IndexPtr + i * 3) = i;
+					*(IndexPtr + i * 3 + 1) = i;
+					*(IndexPtr + i * 3 + 2) = i;
+				}
+				fixed (int* IndicesPtr = &Indices[0])
+					QuickSort(IndicesPtr, IndexPtr, 0, NumIndices-1);
+				
+				Vector3 TempVertex = new Vector3(0);
+				int count = 0;
+				for (int i = 0; i < NumIndices; i++)
+				{
+					count++;
+					TempVertex += SumVec[*(IndexPtr + i)];
+					if (i == NumIndices - 1 || Indices[i] != Indices[i + 1])
+					{
+						VxBuffer[Indices[i]].Vel = TempVertex / (count * 3);
+						count = 0;
+						TempVertex *= 0;
+					}
+				}
+				
+			}
+
+		}
+		
+		unsafe protected void QuickSort(int* value, int* index, int L, int R)
+		{
+			int I, J, P, T;
+
+			do	{
+				I = L;
+				J = R;
+				P = *(value + ((L + R)>>1));
+				do {
+					while (*(value + I) < P) I++;
+					while (*(value + J) > P) J--;
+					if (I <= J)
+					{
+						T = *(value + I);
+						*(value + I) = *(value + J);
+						*(value + J) = T;
+						T = *(index + I);
+						*(index + I) = *(index + J);
+						*(index + J) = T;
+						I++;
+						J--;
+					}
+				} while (I <= J);
+				if (L < J) QuickSort(value, index, L, J);
+				L = I;
+			} while (I < R);
+		}
 		
 		
+		protected double	Smooth = 0;
 		protected bool		update = false;
 		protected float		Level = 100.0f;
 
@@ -961,13 +1105,15 @@ namespace VVVV.Nodes
 		protected float[]		m_BallMass;
 		protected Vector3[] 	m_Ball;
 
-		protected int[]			Indices  = new int[8000];
-		protected int			MaxVertices = 4000;
-		protected int			MaxIndices  = 8000;
+		protected int[]			Indices  = new int[8192];
+		protected int			MaxVertices = 4096;
+		protected int			MaxIndices  = 8192;
 		
 
 		
-		#endregion
+
+		
+		
 		
 		public struct sVxBuffer
 		{
@@ -990,10 +1136,9 @@ namespace VVVV.Nodes
 		}
 		
 		
-		protected sVxBuffer[]	VxBuffer = new sVxBuffer[4000];
+		protected sVxBuffer[]	VxBuffer = new sVxBuffer[4096];
 		protected short[]		IxBuffer;
 
-		
 		
 	}
 }
