@@ -9,10 +9,10 @@ namespace VVVV.Nodes.Timeliner
 {
 	public partial class TLSliceArea : UserControl
 	{
-		protected Point FLastMousePoint = new Point();
-		protected Rectangle FSelectionArea = new Rectangle();
+		private Point FLastMousePoint = new Point();
+		private Rectangle FSelectionArea = new Rectangle();
+		private bool FExpandToRight;
 		private Region FTimeBar;
-		private float FTimeAsX;
 		private List<TLBasePin> FPinsWithSelectedKeyframes = new List<TLBasePin>();
 		
 		private List<TLBasePin> FOutputPins;
@@ -42,7 +42,6 @@ namespace VVVV.Nodes.Timeliner
 			set {FSplitterPosition = value;}
 		}
 		
-		private bool FValuesChanged = false;
 		Region FCurrentValueRegions = new Region(new Rectangle(0, 0, 1, 1));
 		
 		public TLSliceArea()
@@ -61,59 +60,57 @@ namespace VVVV.Nodes.Timeliner
 			this.UpdateStyles();
 		}
 		
-		
-		private double FTime;
-		
 		public void Evaluate()
 		{
-			//update Timebar
-			FTime = FTimer.CurrentTime;
-			float timeasx = FTransformer.TransformPoint(new PointF((float) FTime, 0)).X;
-			bool timechanged = timeasx != FTimeAsX;
+			Graphics g = this.CreateGraphics();
+			int index = 0;
+			Region newTimeRegion = new Region(new Rectangle(0, 0, 1, 1));
+			Region newValueRegion = new Region(new Rectangle(0, 0, 1, 1));
+			bool anyTimeChanged = false;
+			bool anyOutpuChanged = false;
+			float timeasx;
 			
-			//update current-value regions if any value changed
-			if (FValuesChanged || timechanged)
+			foreach(TLBasePin bp in FOutputPins)
 			{
-				//update last frames value regions
-				this.Invalidate(FCurrentValueRegions);
-				//clear it
-				FCurrentValueRegions = new Region(new Rectangle(0, 0, 1, 1));
-				
-				//invalidate areas on each slice to show their outputs
-				Graphics g = this.CreateGraphics();
-				foreach(TLBasePin bp in FOutputPins)
+				if (bp.OutputSlices.Count > 0)
 				{
-					if (bp.OutputSlices.Count > 0)
+					float sHeight = bp.Height / bp.OutputSlices.Count;
+					
+					//invalidate areas on each slice to show their outputs
+					foreach(TLSlice s in bp.OutputSlices)
 					{
-						float sHeight = bp.Height / bp.OutputSlices.Count;
-						
-						foreach(TLSlice s in bp.OutputSlices)
+						if (s.OutputChanged)
 						{
+							anyOutpuChanged = true;
 							float sTop = bp.Top + sHeight * s.SliceIndex;
 							SizeF sz = g.MeasureString(s.OutputAsString, new Font("Lucida Sans Unicode", 7));
-							FCurrentValueRegions.Union(new Region(new RectangleF(Width-sz.Width-6, sTop + sHeight-sz.Height-1, sz.Width+6, sz.Height+1)));
+							newValueRegion.Union(new Region(new RectangleF(Width-sz.Width-6, sTop + sHeight-sz.Height-1, sz.Width+6, sz.Height+1)));
 						}
 					}
+					
+					//invalidate timebar areas
+					if (FTimer.Changed(index))
+					{
+						anyTimeChanged = true;
+						timeasx = FTransformer.TransformPoint(new PointF((float) FTimer.GetTime(index), 0)).X;
+						newTimeRegion.Union(new Region(new RectangleF(timeasx-6, bp.Top, 10, bp.Height)));
+					}
 				}
-				g.Dispose();
-				
-				this.Invalidate(FCurrentValueRegions);
-				FValuesChanged = false;
+				index++;
 			}
 			
-			if (timeasx != FTimeAsX)
+			if (anyTimeChanged)
 			{
-				//update current-value regions if time changed
+				this.Invalidate(FTimeBar);
+				FTimeBar = newTimeRegion;
+				this.Invalidate(FTimeBar);
+			}
+			
+			if (anyOutpuChanged)
+			{
 				this.Invalidate(FCurrentValueRegions);
-				
-				//invalidate last time
-				this.Invalidate(FTimeBar);
-				
-				FTimeAsX = timeasx;
-				FTimeBar = new Region(new RectangleF(FTimeAsX-6, 0, 10, Height));
-				
-				//invalidate new time
-				this.Invalidate(FTimeBar);
+				FCurrentValueRegions = newValueRegion;
+				this.Invalidate(FCurrentValueRegions);
 			}
 		}
 		
@@ -150,6 +147,8 @@ namespace VVVV.Nodes.Timeliner
 			double to = FTransformer.XPosToTime(g.ClipBounds.X + g.ClipBounds.Width);
 			
 			//draw all pins and their slices
+			int index = 0;
+			float time;
 			foreach(TLBasePin bp in FOutputPins)
 			{
 				g.Transform = new Matrix();
@@ -174,6 +173,14 @@ namespace VVVV.Nodes.Timeliner
 				try
 				{
 					bp.DrawSlices(g, from, to);
+					
+					//draw timebar
+					if (!(bp is TLRulerPin))
+					{
+						time = FTransformer.TransformPoint(new PointF((float) FTimer.GetTime(index), 0)).X;
+						g.DrawLine(new Pen(Color.Black), time, 0, time, bp.Height);
+						index++;
+					}
 				}
 				catch
 				{
@@ -187,15 +194,6 @@ namespace VVVV.Nodes.Timeliner
 			
 			//draw splitter
 			g.DrawLine(new Pen(Color.DarkGray, 5), 0, FSplitterPosition+3, Width, FSplitterPosition+3);
-			
-			//draw timebar
-			float time = FTransformer.TransformPoint(new PointF((float) FTime, 0)).X;
-			g.DrawLine(new Pen(Color.Black), time, 0, time, Height);
-			PointF[] tri = new PointF[3];
-			tri[0] = new PointF(time, 7);
-			tri[1] = new PointF(time-4, 0);
-			tri[2] = new PointF(time+4, 0);
-			g.FillPolygon(new SolidBrush(Color.Black), tri);
 			
 			//draw selection rectangle
 			Pen pn = new Pen(Color.Silver, 1);
@@ -602,7 +600,7 @@ namespace VVVV.Nodes.Timeliner
 						
 						if (e.Button == MouseButtons.Left && pin is TLRulerPin)
 						{
-							FTimer.CurrentTime = FTransformer.XPosToTime(e.X);
+							FTimer.SetTime(0, FTransformer.XPosToTime(e.X));
 							FMouseState = TLMouseState.msDraggingTimeBar;
 							break;
 						}
@@ -647,10 +645,14 @@ namespace VVVV.Nodes.Timeliner
 							}
 							else if (e.Button == MouseButtons.Right)	//mouse is hovering a keyframe -> go drag Y only
 							{
+								if ((Control.ModifierKeys & Keys.Alt) == Keys.Alt)
+									FExpandToRight = CheckExpansionToRight(e.Location);
 								FMouseState = TLMouseState.msDraggingYOnly;
 							}
 							else if (e.Button == MouseButtons.Middle)	//mouse is hovering a keyframe -> go drag Y only
 							{
+								if ((Control.ModifierKeys & Keys.Alt) == Keys.Alt)
+									FExpandToRight = CheckExpansionToRight(e.Location);
 								FMouseState = TLMouseState.msDraggingXOnly;
 							}
 							
@@ -672,6 +674,22 @@ namespace VVVV.Nodes.Timeliner
 						break;
 					}
 			}
+		}
+		
+		private bool CheckExpansionToRight(Point MousePoint)
+		{
+			TLBasePin pinUnderMouse = PosToPin(MousePoint);
+			TLSlice sliceUnderMouse = PosPinToSlice(MousePoint, pinUnderMouse);
+			
+			TLBaseKeyFrame first, last;
+			//check if cursor is nearer to first or last selected keyframe of the slice the mouse is over
+			first = sliceUnderMouse.KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return kf.Selected;});
+			last = sliceUnderMouse.KeyFrames.FindLast(delegate(TLBaseKeyFrame kf) {return kf.Selected;});
+			double xTime = FTransformer.XPosToTime(MousePoint.X);
+			if (Math.Abs(xTime - first.Time) < Math.Abs(xTime - last.Time))
+				return true;
+			else
+				return false;
 		}
 		
 		private double GetNextTime(List<TLBaseKeyFrame> KeyFrames, TLBaseKeyFrame Current)
@@ -793,75 +811,112 @@ namespace VVVV.Nodes.Timeliner
 				case TLMouseState.msDraggingYOnly:
 					{
 						Region update = new Region(new Rectangle(0, 0, 1, 1));
+						double span = 0;
+						TLBaseKeyFrame first, last, target;
 						
 						foreach (TLBasePin p in FOutputPins)
 							foreach (TLSlice s in p.OutputSlices)
-							foreach (TLBaseKeyFrame k in s.KeyFrames)
-							if (k.Selected)
 						{
-							double delta = pt.Y - FLastMousePoint.Y;
-							
-							if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
-								delta /= 10;
-							
-							if (k is TLColorKeyFrame)
-							{
-								delta/=10;
-								TLColorKeyFrame kfc = k as TLColorKeyFrame;
-								if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
-									kfc.MoveAlpha(delta);
-								else if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
-									kfc.MoveSaturation(delta);
-								else
-								{
-									kfc.MoveHue((pt.X - FLastMousePoint.X) / 1000.0);
-									kfc.MoveValue(delta);
-								}
-							}
+							first = s.KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return kf.Selected;});
+							last = s.KeyFrames.FindLast(delegate(TLBaseKeyFrame kf) {return kf.Selected;});
+							if (FExpandToRight)
+								target = last;
 							else
+								target = first;
+
+							if ((first != null) && (last != null))
+								span = last.PositionY - first.PositionY;
+							
+							foreach (TLBaseKeyFrame k in s.KeyFrames)
+								if (k.Selected)
 							{
-								if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+								double delta = pt.Y - FLastMousePoint.Y;
+								
+								if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
 									delta /= 10;
 								
-								update.Union(k.RedrawArea);
-								k.MoveY(delta);
-								update.Union(k.RedrawArea);
+								if (k is TLColorKeyFrame)
+								{
+									delta/=10;
+									TLColorKeyFrame kfc = k as TLColorKeyFrame;
+									if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+										kfc.MoveAlpha(delta);
+									else if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+										kfc.MoveSaturation(delta);
+									else
+									{
+										kfc.MoveHue((pt.X - FLastMousePoint.X) / 1000.0);
+										kfc.MoveValue(delta);
+									}
+								}
+								else
+								{
+									update.Union(k.RedrawArea);
+
+									if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+										delta /= 10;
+									if (FExpandToRight)
+										delta *= -1;
+									
+									if (((Control.ModifierKeys & Keys.Alt) == Keys.Alt) && (Math.Abs(span) > 0))
+										k.MoveY(delta * (k.PositionY-target.PositionY)/span);
+									else
+										k.MoveY(delta);
+									update.Union(k.RedrawArea);
+								}
+								
+								//invalidate an area comprising of the previous and the next keyframe
+								update.Union(GetUpdateRegion(p, s, k));
 							}
-							
-							//invalidate an area comprising of the previous and the next keyframe
-							update.Union(GetUpdateRegion(p, s, k));
 						}
 						
 						this.Invalidate(update);
-						FValuesChanged = true;
 						break;
 					}
 					
 				case TLMouseState.msDraggingXOnly:
 					{
 						Region update = new Region(new Rectangle(0, 0, 1, 1));
+						double span = 0;
+						TLBaseKeyFrame first, last, target;
 						
 						foreach (TLBasePin p in FOutputPins)
 							foreach (TLSlice s in p.OutputSlices)
-							foreach (TLBaseKeyFrame k in s.KeyFrames)
-							if (k.Selected)
 						{
-							update.Union(k.RedrawArea);
+							first = s.KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return kf.Selected;});
+							last = s.KeyFrames.FindLast(delegate(TLBaseKeyFrame kf) {return kf.Selected;});
+							if (FExpandToRight)
+								target = last;
+							else
+								target = first;
+
+							if ((first != null) && (last != null))
+								span = last.Time-first.Time;
 							
-							double delta = pt.Y - FLastMousePoint.Y;
-							delta *= -1;
-							if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
-								delta /= 10;
-							if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
-								delta /= 10;
-							
-							k.MoveTime(delta, GetPrevTime(s.KeyFrames, k), GetNextTime(s.KeyFrames, k));
-							
-							update.Union(GetUpdateRegion(p, s, k));
+							foreach (TLBaseKeyFrame k in s.KeyFrames)
+								if (k.Selected)
+							{
+								update.Union(k.RedrawArea);
+								
+								double delta = pt.X - FLastMousePoint.X;
+								
+								if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+									delta /= 10;
+								if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+									delta /= 10;
+								if (FExpandToRight)
+									delta *= -1;
+								
+								if (((Control.ModifierKeys & Keys.Alt) == Keys.Alt) && (span > 0))
+									k.MoveTime(delta * (k.Time-target.Time)/span, GetPrevTime(s.KeyFrames, k), GetNextTime(s.KeyFrames, k));
+								else
+									k.MoveTime(delta, GetPrevTime(s.KeyFrames, k), GetNextTime(s.KeyFrames, k));
+								
+								update.Union(GetUpdateRegion(p, s, k));
+							}
 						}
 						
 						this.Invalidate(update);
-						FValuesChanged = true;
 						break;
 					}
 					
@@ -889,7 +944,7 @@ namespace VVVV.Nodes.Timeliner
 								deltaX /= 10;
 								deltaY /= 10;
 							}
-														
+							
 							//may use a linked list of keyframes for faster access to neighbours?
 							//TLBaseKeyFrame next = s.KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return kf.Time > k.Time;});
 							//TLBaseKeyFrame last = s.KeyFrames.FindLast(delegate(TLBaseKeyFrame kf) {return kf.Time < k.Time;});
@@ -901,12 +956,11 @@ namespace VVVV.Nodes.Timeliner
 						}
 
 						this.Invalidate(update);
-						FValuesChanged = true;
 						break;
 					}
 				case TLMouseState.msDraggingTimeBar:
 					{
-						FTimer.CurrentTime = FTransformer.XPosToTime(pt.X);
+						FTimer.SetTime(0, FTransformer.XPosToTime(pt.X));
 						break;
 					}
 					
