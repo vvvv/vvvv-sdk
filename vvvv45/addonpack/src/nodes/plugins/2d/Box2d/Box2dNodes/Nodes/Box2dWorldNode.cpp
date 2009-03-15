@@ -158,10 +158,13 @@ namespace VVVV
 					this->internalworld->Step(Convert::ToSingle(ts),Convert::ToInt32(it));
 				}
 
-				this->vOutBodies->SliceCount = this->mWorld->GetWorld()->GetBodyCount();
+				this->vOutBodies->SliceCount = this->mWorld->GetWorld()->GetBodyCount() -1;
 				for (b2Body* b = this->mWorld->GetWorld()->GetBodyList(); b; b = b->GetNext())
 				{
-					this->mBodies->Add(b);
+					if (b != this->mWorld->GetWorld()->GetGroundBody()) 
+					{
+						this->mBodies->Add(b);
+					}
 				}
 			} 
 			else 

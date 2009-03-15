@@ -49,12 +49,12 @@ namespace VVVV
 				
 				this->m_shapes->Reset();
 
-				int cnt = this->vInBodies->SliceCount - 1;
+				int cnt = this->vInBodies->SliceCount;
 				this->vOutPosition->SliceCount = cnt;
 				this->vOutRotation->SliceCount = cnt;
 				this->vOutIsDynamic->SliceCount = cnt;
 
-				for (int i = 1; i < this->vInBodies->SliceCount; i++) 
+				for (int i = 0; i < this->vInBodies->SliceCount; i++) 
 				{
 					b2Body* body = this->m_bodies->GetSlice(i);
 
