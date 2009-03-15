@@ -29,6 +29,12 @@ namespace VVVV.Nodes.Timeliner
 			get{return FEnd - FStart;}
 		}
 		
+		private TLTime FTimer;
+		public TLTime Timer
+		{
+			set {FTimer = value;}
+		}
+		
 		public TLRulerPin():base(){InitializeComponent();}
 		
 		public TLRulerPin(TLTransformer Transformer, int Order, XmlNode PinSettings, bool ShowRemoveButton):base(Transformer, Order, PinSettings)
@@ -116,7 +122,7 @@ namespace VVVV.Nodes.Timeliner
 			Pen pen = new Pen(Color.Gray);
 			float s;
 			int m, ss;
-			string t;
+			string tt;
 
 			int pixPerBar = 60;
 			double visibleTime = r.Width / FTransformer.GTimeScale;
@@ -127,29 +133,42 @@ namespace VVVV.Nodes.Timeliner
 			Font f = new Font("Verdana", 7);
 			SolidBrush sb = new SolidBrush(Color.Gray);
 			
-			int i=0;
+			int t=0;
 			do
 			{
-				x = (float) (startOffset + i*secPerBar*FTransformer.GTimeScale);
+				x = (float) (startOffset + t*secPerBar*FTransformer.GTimeScale);
 				g.DrawLine(pen, x, 0, x, r.Height);
 				
-				s = -firstSecond + i * secPerBar;
+				s = -firstSecond + t * secPerBar;
 				m = (int) s / 60;
 				ss = (int) (s % 60);
-				t = m.ToString() + ":" + ss.ToString("d2");
-				g.DrawString(t, f, sb, x, 5);
-				i++;
+				tt = m.ToString() + ":" + ss.ToString("d2");
+				g.DrawString(tt, f, sb, x, 5);
+				t++;
 			}
 			while (x < r.Width);
 			
-			i=0;
+			t=0;
 			do
 			{
-				x = (float) (startOffset + i*secPerBar/10.0*FTransformer.GTimeScale);
+				x = (float) (startOffset + t*secPerBar/10.0*FTransformer.GTimeScale);
 				g.DrawLine(pen, x, r.Height, x, r.Height - r.Height/6);
-				i++;
+				t++;
 			}
 			while (x < r.Width);
+			
+			//draw time triangles
+			float time;
+			for (int i=0; i<FTimer.TimeCount; i++)
+			{
+				time = FTransformer.TransformPoint(new PointF((float) FTimer.GetTime(i), 0)).X;
+				g.DrawLine(new Pen(Color.Black), time, 0, time, Height);
+				PointF[] tri = new PointF[3];
+				tri[0] = new PointF(time, 7);
+				tri[1] = new PointF(time-4, 0);
+				tri[2] = new PointF(time+4, 0);
+				g.FillPolygon(new SolidBrush(Color.Black), tri);
+			}
 		}
 		
 		public override void Evaluate(double CurrentTime)
