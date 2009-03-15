@@ -46,6 +46,7 @@ namespace VVVV.Nodes.Timeliner
 		public override void MoveY(double Delta)
 		{
 			FValue = VMath.Map(FValue - Delta/FSliceHeight * (FMaxValue-FMinValue), FMinValue, FMaxValue, FMinValue, FMaxValue, TMapMode.Clamp);
+			FPositionY = (float) FValue;
 		}
 		
 		public TLValueKeyFrame(TLTransformer Transformer, double Time, double Value, double Minimum, double Maximum, TLInterpolationType InType, TLInterpolationType OutType, float SliceTop, float SliceHeight): base(Transformer, Time, SliceTop, SliceHeight)

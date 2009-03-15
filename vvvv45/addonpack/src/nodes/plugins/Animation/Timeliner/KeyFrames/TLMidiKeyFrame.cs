@@ -12,7 +12,11 @@ namespace VVVV.Nodes.Timeliner
 		public int Note
 		{
 			get {return FNote;}
-			set {FNote = value;}
+			set 
+			{
+				FNote = value;
+				FPositionY = FNote;
+			}
 		}
 		
 		private int FVelocity;
@@ -61,13 +65,14 @@ namespace VVVV.Nodes.Timeliner
 		{
 			FNote -= (int) (Delta / FSliceHeight * (FMaxNote - FMinNote));
 			FNote = (int) VMath.Clamp(FNote, 0, 127);
+			FPositionY = FNote;
 		}
 		
 		public TLMidiKeyFrame(TLTransformer Transformer, int Track, int Channel, int Note, int Velocity, double Start, double End, int MinNote, int MaxNote, float SliceTop, float SliceHeight): base(Transformer, Start, SliceTop, SliceHeight)
 		{
 			FTrack = Track;
 			FChannel = Channel;
-			FNote = Note;
+			this.Note = Note;
 			FVelocity = Velocity;
 			
 			FMinNote = MinNote;
@@ -77,7 +82,7 @@ namespace VVVV.Nodes.Timeliner
 		
 		public override void MoveTime(double DeltaTime, double Minimum, double Maximum)
 		{
-			double duration = FEnd- FTime;
+			double duration = FEnd - FTime;
 			base.MoveTime(DeltaTime, Minimum, Maximum);
 			FEnd = FTime + duration;
 		}

@@ -10,16 +10,23 @@ namespace VVVV.Nodes.Timeliner
 	{
 		protected Font FFont = new Font("Verdana", 7);
 		
-		protected double FTime;
 		private bool FSelected;
 		protected float FSliceTop;
 		protected float FSliceHeight;
 		protected TLTransformer FTransformer;
 		
+		protected double FTime;
 		public double Time
 		{
 			get {return FTime;}
 			set {FTime = value;}
+		}
+		
+		protected float FPositionY;
+		public float PositionY
+		{
+			get {return FPositionY;}
+			set {FPositionY = value;}
 		}
 		
 		public float SliceTop

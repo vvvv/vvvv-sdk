@@ -8,10 +8,8 @@ namespace VVVV.Nodes.Timeliner
 {
 	public class TLStringKeyFrame: TLBaseKeyFrame
 	{
-		private string FValue;
 		private int FWidth;
-		private float FFlagY;
-		
+		private string FValue;
 		public string Value
 		{
 			get {return FValue;}
@@ -34,25 +32,20 @@ namespace VVVV.Nodes.Timeliner
 			get {return FWidth;}
 		}
 		
-		public float FlagY
-		{
-			get {return FFlagY;}
-		}
-		
 		public override void MoveY(double Delta)
 		{
-			FFlagY = (float) VMath.Map(FFlagY*FSliceHeight + Delta, 0, FSliceHeight, 0, 1, TMapMode.Clamp);
+			FPositionY = (float) VMath.Map(FPositionY*FSliceHeight + Delta, 0, FSliceHeight, 0, 1, TMapMode.Clamp);
 		}
 		
 		public TLStringKeyFrame(TLTransformer Transformer, double Time, float Flag, string Value, float SliceTop, float SliceHeight): base(Transformer, Time, SliceTop, SliceHeight)
 		{
 			this.Value = Value;
-			FFlagY = Flag;
+			FPositionY = Flag;
 		}
 		
 		public float GetFlagPosAsY()
 		{
-			return FFlagY * FSliceHeight;
+			return FPositionY * FSliceHeight;
 		}
 		
 		protected override Region GetRedrawArea()
