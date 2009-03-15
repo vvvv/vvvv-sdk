@@ -75,7 +75,6 @@ namespace VVVV.Nodes
 		// VAIRABLES
 		///////////////////////
 		private bool FDoSetTime;
-		private double FInputTime;
 		private bool FFirstFrame = true;
 		private bool FTransformationChanged = true;
 		private bool FBlockConfigurate = false;
@@ -515,7 +514,7 @@ namespace VVVV.Nodes
 			FPlayInput.SetSubType(0, 1, 1, 0, false, true, true);
 			FPlayInput.Order = -99999;
 			
-			FHost.CreateValueFastInput("Time In", 1, null, TSliceMode.Single, TPinVisibility.True, out FTimeInput);
+			FHost.CreateValueFastInput("Time In", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FTimeInput);
 			FTimeInput.SetSubType(Double.MinValue, Double.MaxValue, 0.01D, 0, false, false, false);
 			FTimeInput.Order = -99998;
 			
@@ -667,13 +666,17 @@ namespace VVVV.Nodes
 			
 			if (FDoSetTime)
 			{
-				FTimeInput.GetValue(0, out dval);
-				FInputTime = dval;
-				GTimer.CurrentTime = FInputTime;
+				GTimer.TimeCount = Math.Min(FOutputPins.Count, FTimeInput.SliceCount);
+				for (int i=0; i<FTimeInput.SliceCount; i++)
+				{
+					FTimeInput.GetValue(i, out dval);
+					GTimer.SetTime(i, dval);
+				}
 			}
 			else
 			{
 				double hosttime;
+				GTimer.TimeCount = 1;
 				FHost.GetCurrentTime(out hosttime);
 				GTimer.HostTime = hosttime;
 			}
@@ -681,20 +684,29 @@ namespace VVVV.Nodes
 			//update time
 			FSeekingOut.SetValue(0, System.Convert.ToDouble(GTimer.IsSeeking));
 			GTimer.Evaluate();
-			FTimeOut.SetValue(0, GTimer.CurrentTime);
-			
+			FTimeOut.SliceCount = GTimer.TimeCount;
+			for (int i=0; i<GTimer.TimeCount; i++)
+			{
+				FTimeOut.SetValue(0, GTimer.GetTime(i));
+			}
 			
 			FPlayingOut.SetValue(0, System.Convert.ToDouble(GTimer.IsRunning));
 			
-			SliceArea.Evaluate();
-			
-			//statetimes, statenames, stateexp
-
-			
-			for (int i = 0; i<FOutputPins.Count;i++)
+			int index = 0;
+			foreach (TLBasePin p in FOutputPins)
 			{
-				FOutputPins[i].Evaluate(GTimer.CurrentTime);
+				if (p is TLRulerPin)
+					p.Evaluate(GTimer.GetTime(0));
+				else
+					p.Evaluate(GTimer.GetTime(index++));
 			}
+		/*	for (int i = 0; i<FOutputPins.Count;i++)
+			{
+				FOutputPins[i].Evaluate(GTimer.GetTime(i));
+			}*/
+
+			SliceArea.Evaluate();
+
 			
 			if (FFirstFrame)
 			{
@@ -798,6 +810,8 @@ namespace VVVV.Nodes
 								newPin = new TLRulerPin(GTransformer, FOutputPins.Count, pinSettings, GTopRuler != null);
 								if (GTopRuler == null)
 									GTopRuler = (TLRulerPin) newPin;
+								
+								(newPin as TLRulerPin).Timer = GTimer;
 								break;
 							}
 						case TLPinType.Value:
@@ -822,7 +836,7 @@ namespace VVVV.Nodes
 							}
 						case TLPinType.Wave:
 							{
-								newPin = new TLWavPin(FHost, GTransformer, FOutputPins.Count, pinSettings);
+								//newPin = new TLWavPin(FHost, GTransformer, FOutputPins.Count, pinSettings);
 								break;
 							}							
 					}
@@ -1045,33 +1059,33 @@ namespace VVVV.Nodes
 				else if (ke.KeyCode == Keys.Back)
 				{
 					GTimer.IsRunning = false;
-					GTimer.CurrentTime = 0;
+					GTimer.SetTime(0, 0);
 					return true;
 				}
 				else if (ke.KeyCode == Keys.Home)
 				{
 					if (FAutomata != null)
-						GTimer.CurrentTime = FAutomata.OutputSlices[0].KeyFrames[0].Time;
+						GTimer.SetTime(0, FAutomata.OutputSlices[0].KeyFrames[0].Time);
 					else
-						GTimer.CurrentTime = 0;
+						GTimer.SetTime(0, 0);
 					return true;
 				}
 				else if (ke.KeyCode == Keys.End)
 				{
 					if (FAutomata != null)
-						GTimer.CurrentTime = FAutomata.OutputSlices[0].KeyFrames[FAutomata.OutputSlices[0].KeyFrames.Count-2].Time;
+						GTimer.SetTime(0, FAutomata.OutputSlices[0].KeyFrames[FAutomata.OutputSlices[0].KeyFrames.Count-2].Time);
 					return true;
 				}
 				else if (ke.KeyCode == Keys.PageUp)
 				{
 					if (FAutomata != null)
-						GTimer.CurrentTime = FAutomata.NextState.Time-0.0001;
+						GTimer.SetTime(0, FAutomata.NextState.Time-0.0001);
 					return true;
 				}
 				else if (ke.KeyCode == Keys.PageDown)
 				{
 					if (FAutomata != null)
-						GTimer.CurrentTime = FAutomata.PreviousState.Time-0.0001;
+						GTimer.SetTime(0, FAutomata.PreviousState.Time-0.0001);
 					return true;
 				}
 				else if (ke.KeyCode == Keys.Delete)
@@ -1125,7 +1139,7 @@ namespace VVVV.Nodes
 		void StopButtonClick(object sender, EventArgs e)
 		{
 			GTimer.IsRunning = false;
-			GTimer.CurrentTime = 0.0f;
+			GTimer.SetTime(0, 0);
 			UpdatePlayButton();
 		}
 		

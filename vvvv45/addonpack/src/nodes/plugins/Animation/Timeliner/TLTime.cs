@@ -4,7 +4,8 @@ namespace VVVV.Nodes.Timeliner
 {
 	public sealed class TLTime
 	{
-		private double FCurrentTime;
+		private double[] FCurrentTimes = new double[0];
+		private bool[] FTimeChanged = new bool[0];
 		private double FStartTime;
 		private double FHostTime;
 		private double FOffset;
@@ -19,33 +20,68 @@ namespace VVVV.Nodes.Timeliner
 		}
 		
 		public TLTime()
-		{}
-		
-		
-		public double CurrentTime
 		{
-   			get { return FCurrentTime;}
-   			set 
-   			{ 
-   				FCurrentTime = value;
-   				FForceCurrentTime = true;
-   			}
+			TimeCount = 1;
 		}
+		
+		private int FTimeCount;
+		public int TimeCount
+		{
+			get {return FTimeCount;}
+			set
+			{
+				if (FCurrentTimes.Length != value)
+				{
+					FTimeCount = value;
+					FCurrentTimes = new double[FTimeCount];
+					FTimeChanged = new bool[FTimeCount];
+					for (int i=0; i<FTimeCount; i++)
+						FTimeChanged[i] = false;
+				}
+			}
+		}
+		
+		public double GetTime(int Index)
+		{
+			return FCurrentTimes[Index % FCurrentTimes.Length];
+		}
+		
+		public void SetTime(int Index, double Time)
+		{
+			if (FCurrentTimes[Index] != Time)
+			{
+				FCurrentTimes[Index] = Time;
+				FTimeChanged[Index] = true;
+			}
+			FForceCurrentTime = true;
+		}
+		
+		public bool Changed(int Index)
+		{
+			return FTimeChanged[Index % FTimeChanged.Length];
+		}
+		
+		public void InvalidateTimes()
+		{
+			for (int i=0; i<FTimeChanged.Length; i++)
+				FTimeChanged[i] = false;
+		}
+		
 		
 		public double HostTime
 		{
-   			get { return FHostTime;}
-   			set { FHostTime = value;}
+			get { return FHostTime;}
+			set { FHostTime = value;}
 		}
 		
 		public bool IsRunning
 		{
-   			get { return FIsRunning;}
-   			set 
-   			{ 
-   				FForceCurrentTime = true;
-   				FIsRunning = value;
-   			}
+			get { return FIsRunning;}
+			set
+			{
+				FForceCurrentTime = true;
+				FIsRunning = value;
+			}
 		}
 		
 		public bool IsSeeking
@@ -58,28 +94,28 @@ namespace VVVV.Nodes.Timeliner
 			//execute user/gui-forced time
 			if (FForceCurrentTime)
 			{
-				FOffset = FCurrentTime;
+				FOffset = FCurrentTimes[0];
 				FStartTime = FHostTime;
 			}
 			
 			if (FIsRunning)
-				FCurrentTime = FHostTime - FStartTime + FOffset;
-				
+				FCurrentTimes[0] = FHostTime - FStartTime + FOffset;
+			
 			if (FAutomata != null)
 			{
 				if (FForceCurrentTime)
-					FAutomata.ForceStateFromCurrentTime(FCurrentTime);
+					FAutomata.ForceStateFromCurrentTime(FCurrentTimes[0]);
 				
 				EvaluateAutomata();
-			}			
+			}
 
 			FForceCurrentTime = false;
 		}
-			
+		
 		
 		private void EvaluateAutomata()
 		{
-			FAutomata.Evaluate(FCurrentTime);
+			FAutomata.Evaluate(FCurrentTimes[0]);
 
 			//now check the automatas command to see what to do:
 			switch (FAutomata.Command)
@@ -89,7 +125,7 @@ namespace VVVV.Nodes.Timeliner
 						//nothing to do
 						if (!FIsRunning)
 						{
-							FOffset = FCurrentTime;
+							FOffset = FCurrentTimes[0];
 							FStartTime = FHostTime;
 						}
 						break;
@@ -101,14 +137,14 @@ namespace VVVV.Nodes.Timeliner
 					}
 				case TLAutomataCommand.Pause:
 					{
-						FCurrentTime = FAutomata.PauseTime;
+						FCurrentTimes[0] = FAutomata.PauseTime;
 						FForceCurrentTime = true;
 						IsRunning = false;
 						break;
 					}
 				case TLAutomataCommand.Jump:
 					{
-						FCurrentTime = FAutomata.TimeToJumpTo;
+						FCurrentTimes[0] = FAutomata.TimeToJumpTo;
 						FForceCurrentTime = true;
 						break;
 					}
@@ -117,11 +153,11 @@ namespace VVVV.Nodes.Timeliner
 			//execute automata-forced time
 			if (FForceCurrentTime)
 			{
-				FOffset = FCurrentTime;
+				FOffset = FCurrentTimes[0];
 				FStartTime = FHostTime;
 				FForceCurrentTime = false;
 			}
 		}
-	}	
+	}
 }
 
