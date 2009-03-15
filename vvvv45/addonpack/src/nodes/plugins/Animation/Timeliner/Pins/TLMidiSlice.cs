@@ -85,7 +85,9 @@ namespace VVVV.Nodes.Timeliner
 		
 		public override void Evaluate(double CurrentTime)
 		{
-			FOutputAsString = FTrackName;
+			base.Evaluate(CurrentTime);
+			
+			OutputAsString = FTrackName;
 			
 			/*	FMidiScore.SaveLastWindowStart();
 			
@@ -280,8 +282,8 @@ namespace VVVV.Nodes.Timeliner
 			
 			
 			
-			float sWidth = g.MeasureString(FOutputAsString, FFont).Width + 2;
-			g.DrawString(FOutputAsString, FFont, gray, g.ClipBounds.Width-sWidth, sliceHeight-16);
+			float sWidth = g.MeasureString(OutputAsString, FFont).Width + 2;
+			g.DrawString(OutputAsString, FFont, gray, g.ClipBounds.Width-sWidth, sliceHeight-16);
 			gray.Dispose();
 		}
 	}

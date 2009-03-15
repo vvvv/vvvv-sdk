@@ -56,6 +56,8 @@ namespace VVVV.Nodes.Timeliner
 		
 		public override void Evaluate(double CurrentTime)
 		{
+			base.Evaluate(CurrentTime);
+			
 			if (FKeyFrames.Count == 0)
 				FOutput = VColor.Black;
 			else
@@ -113,7 +115,7 @@ namespace VVVV.Nodes.Timeliner
 			VColor.RGBtoHSV(FOutput.R, FOutput.G, FOutput.B, out h, out s, out v);
 			a = FOutput.A;
 			
-			FOutputAsString = "H: " + h.ToString("f2") + " S: " + s.ToString("f2") + " V: " + v.ToString("f2") + " A: " + a.ToString("f2");
+			OutputAsString = "H: " + h.ToString("f2") + " S: " + s.ToString("f2") + " V: " + v.ToString("f2") + " A: " + a.ToString("f2");
 		}
 		
 		public override void Configurate(IPluginConfig Input, bool FirstFrame)
@@ -268,13 +270,13 @@ namespace VVVV.Nodes.Timeliner
 					using (Pen p = new Pen(Color.Silver))
 						g.DrawRectangle(p, x-20, 0, 40, sliceHeight);
 
-				SizeF sz = g.MeasureString(FOutputAsString, FFont);
+				SizeF sz = g.MeasureString(OutputAsString, FFont);
 				inv = inv = VColor.Offset(FOutput, 0.5).Color;
 				
 				using (Brush b = new SolidBrush(FOutput.Color))
 					g.FillRectangle(b, new RectangleF(g.ClipBounds.Width-sz.Width, sliceHeight-sz.Height, sz.Width, sz.Height));
 				using (Brush b = new SolidBrush(inv))
-					g.DrawString(FOutputAsString, FFont, b, g.ClipBounds.Width-sz.Width-2, sliceHeight-sz.Height);
+					g.DrawString(OutputAsString, FFont, b, g.ClipBounds.Width-sz.Width-2, sliceHeight-sz.Height);
 			}
 		}
 	}

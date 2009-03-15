@@ -66,13 +66,15 @@ namespace VVVV.Nodes.Timeliner
 	
 		public override void Evaluate(double CurrentTime)
 		{
+			base.Evaluate(CurrentTime);
+			
 			TLBaseKeyFrame kf = FKeyFrames.FindLast(delegate(TLBaseKeyFrame k) {return k.Time <= CurrentTime;});
 			if (kf == null)
 				FOutput = "";
 			else
 				FOutput = (kf as TLStringKeyFrame).Value;
 			
-			FOutputAsString = FOutput;
+			OutputAsString = FOutput;
 		}
 		
 		public override void Configurate(IPluginConfig Input, bool FirstFrame)
@@ -127,7 +129,7 @@ namespace VVVV.Nodes.Timeliner
 			for (int i = 0; i<FKeyFrames.Count; i++)
 			{
 				FKeyTime.SetValue(i, FKeyFrames[i].Time);
-				FKeyFlagY.SetValue(i, (FKeyFrames[i] as TLStringKeyFrame).FlagY);
+				FKeyFlagY.SetValue(i, (FKeyFrames[i] as TLStringKeyFrame).PositionY);
 				FKeyValue.SetString(i, (FKeyFrames[i] as TLStringKeyFrame).Value);
 			}
 		}
@@ -159,8 +161,8 @@ namespace VVVV.Nodes.Timeliner
 			}
 			
 			float sliceheight = FPin.Height / FPin.SliceCount;
-			float sWidth = g.MeasureString(FOutputAsString, FFont).Width + 2;
-			g.DrawString(FOutputAsString, FFont, new SolidBrush(Color.Gray), g.ClipBounds.Width-sWidth, sliceheight-16);
+			float sWidth = g.MeasureString(OutputAsString, FFont).Width + 2;
+			g.DrawString(OutputAsString, FFont, new SolidBrush(Color.Gray), g.ClipBounds.Width-sWidth, sliceheight-16);
 		}
 	}		
 }

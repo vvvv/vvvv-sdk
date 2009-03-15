@@ -97,6 +97,7 @@ namespace VVVV.Nodes.Timeliner
 		
 		public override void Evaluate(double CurrentTime)
 		{
+			base.Evaluate(CurrentTime);
 			double t;
 			TLBaseKeyFrame kf = FKeyFrames.FindLast(delegate(TLBaseKeyFrame k) {return k.Time <= CurrentTime;});
 			TLBaseKeyFrame kf1 = FKeyFrames.Find(delegate(TLBaseKeyFrame k) {return k.Time >= CurrentTime;});
@@ -126,7 +127,7 @@ namespace VVVV.Nodes.Timeliner
 				//spline here
 			}
 			
-			FOutputAsString = FOutput.ToString("f4", TimelinerPlugin.GNumberFormat);
+			OutputAsString = FOutput.ToString("f4", TimelinerPlugin.GNumberFormat);
 		}
 		
 		public override void Configurate(IPluginConfig Input, bool FirstFrame)
@@ -310,8 +311,8 @@ namespace VVVV.Nodes.Timeliner
 					g.FillRectangle(white, x, y, size, size);
 				}
 				
-				float sWidth = g.MeasureString(FOutputAsString, FFont).Width + 2;
-				g.DrawString(FOutputAsString, FFont, gray, sliceWidth-sWidth, sliceHeight-16);
+				float sWidth = g.MeasureString(OutputAsString, FFont).Width + 2;
+				g.DrawString(OutputAsString, FFont, gray, sliceWidth-sWidth, sliceHeight-16);
 			}
 			
 			silver.Dispose();

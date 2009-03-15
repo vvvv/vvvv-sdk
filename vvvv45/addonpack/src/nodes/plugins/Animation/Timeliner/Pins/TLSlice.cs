@@ -19,7 +19,6 @@ namespace VVVV.Nodes.Timeliner
 
 		protected int FPinsOrder;
 		protected int FSliceIndex;
-		protected string FOutputAsString;
 		
 		public int PinsOrder
 		{
@@ -29,10 +28,25 @@ namespace VVVV.Nodes.Timeliner
 				SliceOrPinOrderChanged();
 			}
 		}
+
+		private bool FOutputChanged;
+		public bool OutputChanged
+		{
+			get{return FOutputChanged;}
+		}
 		
+		private string FOutputAsString;
 		public string OutputAsString
 		{
 			get {return FOutputAsString;}
+			set
+			{
+				if (FOutputAsString != value)
+				{
+					FOutputAsString = value;
+					FOutputChanged = true;						
+				}
+			}
 		}
 		
 		public int SliceIndex
@@ -99,8 +113,9 @@ namespace VVVV.Nodes.Timeliner
 		public virtual void SaveKeyFrames()
 		{}
 		
-		
-		
-		public abstract void Evaluate(double CurrentTime);
+		public virtual void Evaluate(double CurrentTime)
+		{
+			FOutputChanged = false;
+		}
 	}
 }

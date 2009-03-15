@@ -251,6 +251,7 @@ namespace VVVV.Nodes.Timeliner
 		
 		public override void Evaluate(double CurrentTime)
 		{
+			base.Evaluate(CurrentTime);
 			FCommand = TLAutomataCommand.NoChange;
 			
 			if (FCurrentState != null)
@@ -280,7 +281,7 @@ namespace VVVV.Nodes.Timeliner
 					}
 				}
 				
-				FOutputAsString = FCurrentState.Name;
+				OutputAsString = FCurrentState.Name;
 			}
 		}
 		
@@ -357,8 +358,8 @@ namespace VVVV.Nodes.Timeliner
 			
 			float sliceheight = FPin.Height / FPin.SliceCount;
 			
-			float sWidth = g.MeasureString(FOutputAsString, FFont).Width + 2;
-			g.DrawString(FOutputAsString, FFont, new SolidBrush(Color.Gray), g.ClipBounds.Width-sWidth, sliceheight-16);
+			float sWidth = g.MeasureString(OutputAsString, FFont).Width + 2;
+			g.DrawString(OutputAsString, FFont, new SolidBrush(Color.Gray), g.ClipBounds.Width-sWidth, sliceheight-16);
 		}
 	}		
 }
