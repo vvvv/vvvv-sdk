@@ -52,16 +52,19 @@ namespace VVVV
 					if (shape->GetType() == e_polygonShape) 
 					{
 						b2PolygonShape* poly = (b2PolygonShape*)shape;
-
-						vcount.push_back(poly->GetVertexCount());
-						centers.push_back(poly->GetBody()->GetWorldPoint(poly->GetCentroid()));
-
-						const b2Vec2* verts = poly->GetVertices();
-						for (int j=0; j < poly->GetVertexCount();j++) 
+						if (poly->GetVertexCount() > 0) 
 						{
-							vertices.push_back(poly->GetBody()->GetWorldPoint(verts[j]));
+							vcount.push_back(poly->GetVertexCount()+1);
+							centers.push_back(poly->GetBody()->GetWorldPoint(poly->GetCentroid()));
+
+							const b2Vec2* verts = poly->GetVertices();
+							for (int j=0; j < poly->GetVertexCount();j++) 
+							{
+								vertices.push_back(poly->GetBody()->GetWorldPoint(verts[j]));
+							}
+							vertices.push_back(poly->GetBody()->GetWorldPoint(verts[0]));
+							cnt++;
 						}
-						cnt++;
 					}
 				}
 
