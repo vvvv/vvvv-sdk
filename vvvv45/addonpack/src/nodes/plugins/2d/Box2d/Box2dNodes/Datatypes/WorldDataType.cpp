@@ -11,6 +11,8 @@ namespace VVVV
 			this->enabled = false;
 			this->mWorld = nullptr;
 			this->Reset = false;
+			this->bodycounter = 0;
+			this->shapecounter = 0;
 		}
 
 		bool WorldDataType::GetIsValid() 
@@ -37,9 +39,23 @@ namespace VVVV
 			return this->mWorld;
 		}
 
+		int WorldDataType::GetNewBodyId() 
+		{
+			this->bodycounter++;
+			return this->bodycounter;
+		}
+		int WorldDataType::GetNewShapeId()
+		{
+			this->shapecounter++;
+			return this->shapecounter;
+		}
+
+
 		void WorldDataType::SetWorld(b2World* world) 
 		{
 			this->mWorld = world;
+			this->bodycounter = 0;
+			this->shapecounter = 0;
 		}		
 	}
 }

@@ -24,16 +24,21 @@ namespace VVVV
 				bool isvalid;
 				b2World* mWorld;
 				bool worldchanged;
-				
+				int bodycounter;
+				int shapecounter;
 
 			public:
 				WorldDataType(void);
+				
 				virtual bool GetIsValid();
 				virtual void SetIsValid(bool value);
 				virtual bool GetIsEnabled();
 				virtual void SetIsEnabled(bool value);
 				virtual b2World* GetWorld();		
 				virtual void SetWorld(b2World* world);
+
+				int GetNewBodyId();
+				int GetNewShapeId();
 
 				bool Reset;
 				vector<b2ContactPoint*>* Contacts;
