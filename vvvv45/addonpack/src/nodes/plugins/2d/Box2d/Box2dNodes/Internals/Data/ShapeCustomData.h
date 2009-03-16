@@ -5,7 +5,7 @@ public class ShapeCustomData
 public:
 	ShapeCustomData(void);
 	~ShapeCustomData(void);
-	int ID;
+	int Id;
 	std::string UserData;
 
 };

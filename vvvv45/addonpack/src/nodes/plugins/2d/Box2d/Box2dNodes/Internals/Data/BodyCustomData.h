@@ -2,8 +2,10 @@
 
 class BodyCustomData
 {
+private:
+
 public:
 	BodyCustomData(void);
-public:
 	~BodyCustomData(void);
+	int Id;
 };
