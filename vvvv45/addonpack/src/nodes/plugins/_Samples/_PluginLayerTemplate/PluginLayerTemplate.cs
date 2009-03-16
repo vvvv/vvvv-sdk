@@ -36,11 +36,18 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
+using SlimDX;
 using SlimDX.Direct3D9;
 
 //the vvvv node namespace
 namespace VVVV.Nodes
 {
+	public struct DeviceFont
+	{
+		public SlimDX.Direct3D9.Font Font;
+		public SlimDX.Direct3D9.Sprite Sprite;
+	}
+	
 	//class definition
 	public class PluginLayerTemplate: IPlugin, IDisposable, IPluginDXLayer
 	{
@@ -51,13 +58,17 @@ namespace VVVV.Nodes
 		//Track whether Dispose has been called.
 		private bool FDisposed = false;
 		
+		private int FSpreadCount;
 		private IStringIn FMyStringInput;
+		
+		private ITransformIn FWorldTransform;
+		private IEnumIn FTransformSpace;
 		
 		//a layer output pin
 		private IDXLayerIO FMyLayerOutput;
 		
 		//a list that holds a font for every device
-		private Dictionary<int, SlimDX.Direct3D9.Font> FDeviceFonts = new Dictionary<int, SlimDX.Direct3D9.Font>();
+		private Dictionary<int, DeviceFont> FDeviceFonts = new Dictionary<int, DeviceFont>();
 		
 		#endregion field declaration
 		
@@ -193,6 +204,11 @@ namespace VVVV.Nodes
 			//create inputs
 			FHost.CreateStringInput("Text", TSliceMode.Dynamic, TPinVisibility.True, out FMyStringInput);
 			
+			FHost.CreateTransformInput("Transform Input", TSliceMode.Dynamic, TPinVisibility.True, out FMyTransformInput);
+			
+			FHost.CreateEnumInput("Space", TSliceMode.Single, TPinVisibility.OnlyInspector, out FTransformSpace);
+			FTransformSpace.SetSubType("Spaces");			
+			
 			//create outputs
 			FHost.CreateLayerOutput("Layer", TPinVisibility.True, out FMyLayerOutput);
 		}
@@ -211,21 +227,29 @@ namespace VVVV.Nodes
 		//all data handling should be in here
 		public void Evaluate(int SpreadMax)
 		{
+			FSpreadCount = SpreadMax;
 		}
 		
 		#endregion mainloop
 		
 		#region DXLayer
+		private void RemoveResource(int OnDevice)
+		{
+			DeviceFont df = FDeviceFonts[OnDevice];
+			FHost.Log(TLogType.Debug, "Destroying Resource...");
+			FDeviceFonts.Remove(OnDevice);
+			
+			df.Font.Dispose();
+			df.Sprite.Dispose();
+		}
+		
 		public void UpdateResource(IPluginOut ForPin, int OnDevice)
 		{
-			//Called by the PluginHost every frame for every device. Therefore a plugin should only do 
-			//device specific operations here and still keep node specific calculations in the Evaluate call. 
-
 			bool needsupdate = false;
 			
 			try
 			{
-				SlimDX.Direct3D9.Font f = FDeviceFonts[OnDevice];
+				DeviceFont df = FDeviceFonts[OnDevice];
 				if (FMyStringInput.PinIsChanged)
 				{
 					RemoveResource(OnDevice);
@@ -249,14 +273,6 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		private void RemoveResource(int OnDevice)
-		{
-			SlimDX.Direct3D9.Font f = FDeviceFonts[OnDevice];
-			FHost.Log(TLogType.Debug, "Destroying Resource...");
-			FDeviceFonts.Remove(OnDevice);
-			f.Dispose();
-		}
-		
 		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
 		{
 			//Called by the PluginHost whenever a resource for a specific pin needs to be destroyed on a specific device. 
@@ -272,18 +288,28 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		public void Render(IDXLayerIO ForPin, int OnDevice)
+		public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
 		{
 			//Called by the PluginHost everytime the plugin is supposed to render itself.
 			//This is called from the PluginHost from within DirectX BeginScene/EndScene,
 			//therefore the plugin shouldn't be doing much here other than some drawing calls.
 
-			SlimDX.Direct3D9.Font f = FDeviceFonts[OnDevice];
+			SlimDX.Direct3D9.Font f = FDeviceFonts[DXDevice.DevicePointer];
+			
+			DXDevice.SetSpace(FTransformSpace);
+			
+			Matrix4x4 world;
+			
+			SpriteFlags sf = SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace;
 			
 			string text;
-			for (int i=0; i<FMyStringInput.SliceCount; i++)
+			for (int i=0; i<FSpreadCount; i++)
 			{
 				FMyStringInput.GetString(i, out text);
+				
+				FWorldTransform.GetMatrix(i, out world)
+				DXDevice.SetWorldTransform(world);
+				
 				f.DrawString(null, text, 0, i*10, new SlimDX.Color4(1, 1, 1, 1));
 			}
 		}
