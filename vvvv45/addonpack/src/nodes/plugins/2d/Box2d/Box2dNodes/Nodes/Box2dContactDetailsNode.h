@@ -58,13 +58,11 @@ namespace VVVV
 			INodeIn^ vInWorld;
 			WorldDataType^ m_world;
 
-			IValueOut^ vOutPositionX;
-			IValueOut^ vOutPositionY;
+			IValueOut^ vOutPosition;
 
-			INodeOut^ vOutShapes1;
-			INodeOut^ vOutShapes2;
-			ShapeDataType^ m_shapes1;
-			ShapeDataType^ m_shapes2;
+			IValueOut^ vOutShapes1;
+			IValueOut^ vOutShapes2;
+
 		};
 	}
 }

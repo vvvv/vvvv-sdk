@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "GetBodyDetailsNode.h"
+#include "../../Internals/Data/BodyCustomData.h"
 
 namespace VVVV 
 {
@@ -31,6 +32,9 @@ namespace VVVV
 			this->vOutShapes->SetSubType(ArrayUtils::SingleGuidArray(ShapeDataType::GUID),ShapeDataType::FriendlyName);
 			this->vOutShapes->SetInterface(this->m_shapes);
 
+			this->FHost->CreateValueOutput("Body Id",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutId);
+			this->vOutId->SetSubType(Double::MinValue,Double::MaxValue,1,0.0,false,false,true);
+
 			//this->FHost->CreateValueOutput("Velocity",2,ArrayUtils::Array2D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutVelocity);
 			//this->vOutVelocity->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,0.0,0.0,false,false,false);
 		}
@@ -53,15 +57,21 @@ namespace VVVV
 				this->vOutPosition->SliceCount = cnt;
 				this->vOutRotation->SliceCount = cnt;
 				this->vOutIsDynamic->SliceCount = cnt;
+				this->vOutId->SliceCount = cnt;
 
 				for (int i = 0; i < this->vInBodies->SliceCount; i++) 
 				{
-					b2Body* body = this->m_bodies->GetSlice(i);
+					int realslice;
+					this->vInBodies->GetUpsreamSlice(i,realslice);
+					b2Body* body = this->m_bodies->GetSlice(realslice);
 
 					b2Vec2 pos = body->GetPosition();
 					this->vOutPosition->SetValue2D(i, pos.x,pos.y);
 					this->vOutRotation->SetValue(i,body->GetAngle() / (Math::PI * 2.0));
 					this->vOutIsDynamic->SetValue(i,Convert::ToInt32(body->IsDynamic()));
+
+					BodyCustomData* bdata = (BodyCustomData*)body->GetUserData();
+					this->vOutId->SetValue(i, bdata->Id);
 
 					for (b2Shape* s = body->GetShapeList(); s; s = s->GetNext())
 					{

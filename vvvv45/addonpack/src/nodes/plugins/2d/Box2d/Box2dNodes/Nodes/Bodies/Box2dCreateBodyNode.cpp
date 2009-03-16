@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "Box2dCreateBodyNode.h"
-
+#include "../../Internals/Data/BodyCustomData.h"
+#include "../../Internals/Data/ShapeCustomData.h"
 
 namespace VVVV 
 {
@@ -60,13 +61,25 @@ namespace VVVV
 						
 						b2BodyDef bodydef;
 						bodydef.position.Set(x,y);
-						b2Body* body = this->mWorld->GetWorld()->CreateBody(&bodydef);
+						
+						BodyCustomData* bdata = new BodyCustomData();
+						bdata->Id = this->mWorld->GetNewBodyId();
 
+						b2Body* body = this->mWorld->GetWorld()->CreateBody(&bodydef);
 						body->SetLinearVelocity(b2Vec2(vx,vy));
 						body->SetAngularVelocity(va);
+						body->SetUserData(bdata);
 
-						b2ShapeDef* shapedef = this->mShapes->GetSlice(i);
+						int realslice;
+						this->vInShapes->GetUpsreamSlice(i,realslice);
+						
+						b2ShapeDef* shapedef = this->mShapes->GetSlice(realslice);
+						
 						b2Shape* shape = body->CreateShape(shapedef);
+						
+						ShapeCustomData* sdata = new ShapeCustomData();
+						sdata->Id = this->mWorld->GetNewShapeId();
+						shape->SetUserData(sdata);
 
 						if (shapedef->density != 0.0) 
 						{

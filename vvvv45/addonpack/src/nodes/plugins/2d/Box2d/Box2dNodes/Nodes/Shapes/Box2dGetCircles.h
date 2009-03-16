@@ -59,6 +59,7 @@ namespace VVVV
 
 			IValueOut^ vOutPosition;
 			IValueOut^ vOutRadius;
+			IValueOut^ vOutId;
 		};
 	}
 }

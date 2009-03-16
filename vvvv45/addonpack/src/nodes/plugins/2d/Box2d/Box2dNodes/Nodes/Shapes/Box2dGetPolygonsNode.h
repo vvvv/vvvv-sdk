@@ -60,6 +60,7 @@ namespace VVVV
 			IValueOut^ vOutCenters;
 			IValueOut^ vOutVertices;
 			IValueOut^ vOutVerticesCount;
+			IValueOut^ vOutId;
 		};
 	}
 }

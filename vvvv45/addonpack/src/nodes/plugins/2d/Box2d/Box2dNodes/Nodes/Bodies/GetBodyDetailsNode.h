@@ -61,9 +61,9 @@ namespace VVVV
 			IValueOut^ vOutPosition;
 			IValueOut^ vOutRotation;
 			IValueOut^ vOutIsDynamic;
-
-
 			INodeOut^ vOutShapes;
+
+			IValueOut^ vOutId;
 			ShapeDataType^ m_shapes;
 
 		};
