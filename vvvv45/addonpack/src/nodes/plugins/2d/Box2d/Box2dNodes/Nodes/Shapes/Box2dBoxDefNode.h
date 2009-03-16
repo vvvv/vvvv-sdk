@@ -19,7 +19,7 @@ namespace VVVV
 						Info->Name = "Box";
 						Info->Category = "Box2d";
 						Info->Version = "";
-						Info->Help = "Box2d Circle Shape definition";
+						Info->Help = "Box2d Box Shape definition";
 						Info->Bugs = "";
 						Info->Credits = "Box2d";
 						Info->Warnings = "";
