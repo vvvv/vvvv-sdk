@@ -713,5 +713,15 @@ namespace VVVV.Utils.VMath
 		
 		#endregion binary operators
 		
+		public override string ToString()
+		{
+			string row1 = m11.ToString("f4") + " " + m12.ToString("f4") + " " + m13.ToString("f4") + " " + m14.ToString("f4");
+			string row2 = m21.ToString("f4") + " " + m22.ToString("f4") + " " + m23.ToString("f4") + " " + m24.ToString("f4");
+			string row3 = m31.ToString("f4") + " " + m32.ToString("f4") + " " + m33.ToString("f4") + " " + m34.ToString("f4");
+			string row4 = m41.ToString("f4") + " " + m42.ToString("f4") + " " + m43.ToString("f4") + " " + m44.ToString("f4");
+			
+			return "\n" + row1 + "\n" + row2 + "\n" + row3 + "\n" + row4;
+		}
+		
 	}
 }
