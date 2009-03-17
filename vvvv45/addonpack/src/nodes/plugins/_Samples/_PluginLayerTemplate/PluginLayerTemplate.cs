@@ -313,6 +313,7 @@ namespace VVVV.Nodes
 				FMyStringInput.GetString(i, out text);
 				
 				FWorldTransform.GetMatrix(i, out world);
+				FHost.Log(TLogType.Debug, world.ToString());
 				DXDevice.SetWorldTransform(world);
 				
 				df.Font.DrawString(df.Sprite, text, 0, i*10, new SlimDX.Color4(1, 1, 1, 1));
