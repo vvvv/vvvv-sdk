@@ -204,7 +204,7 @@ namespace VVVV.Nodes
 			//create inputs
 			FHost.CreateStringInput("Text", TSliceMode.Dynamic, TPinVisibility.True, out FMyStringInput);
 			
-			FHost.CreateTransformInput("Transform Input", TSliceMode.Dynamic, TPinVisibility.True, out FMyTransformInput);
+			FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FWorldTransform);
 			
 			FHost.CreateEnumInput("Space", TSliceMode.Single, TPinVisibility.OnlyInspector, out FTransformSpace);
 			FTransformSpace.SetSubType("Spaces");			
@@ -266,7 +266,11 @@ namespace VVVV.Nodes
 			{
 				FHost.Log(TLogType.Debug, "Creating Resource...");
 				Device dev = Device.FromPointer(new IntPtr(OnDevice));
-				FDeviceFonts.Add(OnDevice, new SlimDX.Direct3D9.Font(dev, new System.Drawing.Font("Verdana", 10)));
+				
+				DeviceFont df = new DeviceFont();
+				df.Font = new SlimDX.Direct3D9.Font(dev, new System.Drawing.Font("Verdana", 10));
+				df.Sprite = new Sprite(dev);
+				FDeviceFonts.Add(OnDevice, df);
 
 				//dispose device
 				dev.Dispose();
@@ -294,24 +298,26 @@ namespace VVVV.Nodes
 			//This is called from the PluginHost from within DirectX BeginScene/EndScene,
 			//therefore the plugin shouldn't be doing much here other than some drawing calls.
 
-			SlimDX.Direct3D9.Font f = FDeviceFonts[DXDevice.DevicePointer];
+			DeviceFont df = FDeviceFonts[DXDevice.DevicePointer()];
 			
 			DXDevice.SetSpace(FTransformSpace);
 			
 			Matrix4x4 world;
 			
-			SpriteFlags sf = SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace;
+			SpriteFlags sf = SpriteFlags.DoNotAddRefTexture;// | SpriteFlags.ObjectSpace;
 			
 			string text;
+			df.Sprite.Begin(sf);
 			for (int i=0; i<FSpreadCount; i++)
 			{
 				FMyStringInput.GetString(i, out text);
 				
-				FWorldTransform.GetMatrix(i, out world)
+				FWorldTransform.GetMatrix(i, out world);
 				DXDevice.SetWorldTransform(world);
 				
-				f.DrawString(null, text, 0, i*10, new SlimDX.Color4(1, 1, 1, 1));
+				df.Font.DrawString(df.Sprite, text, 0, i*10, new SlimDX.Color4(1, 1, 1, 1));
 			}
+			df.Sprite.End();
 		}
 		#endregion
 	}
