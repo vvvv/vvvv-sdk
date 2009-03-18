@@ -1,7 +1,7 @@
 using VVVV.Utils.VMath;
 using SlimDX;
 
-namespace VVVV.Utils
+namespace VVVV.Utils.DX
 {
 	public sealed class VSlimDXUtils
 	{
