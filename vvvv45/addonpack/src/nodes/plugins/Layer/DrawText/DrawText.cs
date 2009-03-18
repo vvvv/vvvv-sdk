@@ -36,6 +36,7 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.Utils;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
+using VVVV.Utils.DX;
 
 using SlimDX;
 using SlimDX.Direct3D9;
@@ -355,6 +356,7 @@ namespace VVVV.Nodes
 			
 			DeviceFont df = FDeviceFonts[DXDevice.DevicePointer()];						
 			DXDevice.SetSpace(FTransformSpace);
+			df.Sprite.Begin(SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace);
 			
 			double size;
 			FSizeInput.GetValue(0, out size);
@@ -379,8 +381,8 @@ namespace VVVV.Nodes
 				FTextInput.GetString(i, out text);
 				
 				FTranformIn.GetMatrix(i, out world);
-				DXDevice.SetWorldTransform(preScale * world);
-			df.Sprite.Begin(SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace);
+				DXDevice.GetSpacedWorldTransform(preScale * world, out world);
+				df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(world);
 								
 				DrawTextFormat dtf = DrawTextFormat.NoClip;
 				
@@ -414,8 +416,9 @@ namespace VVVV.Nodes
 				
 				textSize = df.Font.MeasureString(df.Sprite, text, dtf);
 				FSizeOutput.SetValue2D(i, textSize.Width, textSize.Height);
-				df.Sprite.End();
-		}
+			}
+			
+			df.Sprite.End();
 		}
 		#endregion
 	}
