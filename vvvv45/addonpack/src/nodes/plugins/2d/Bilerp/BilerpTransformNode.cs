@@ -246,7 +246,7 @@ namespace VVVV.Nodes
         			FP4Input.GetValue4D(i, out p4Slice.x, out p4Slice.y, out p4Slice.z, out p4Slice.w);
 
         			//function per slice
-        			matrixSlice *= VMath.BilerpMatrix(p1Slice, p2Slice, p4Slice, p3Slice);
+        			matrixSlice = VMath.BilerpMatrix(p1Slice, p2Slice, p4Slice, p3Slice) * matrixSlice;
         			
         			//write data to outputs
         			FTransformOutput.SetMatrix(i, matrixSlice);
