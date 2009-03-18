@@ -585,27 +585,27 @@ namespace VVVV.Utils.VMath
 		/// <param name="A"></param>
 		/// <param name="B"></param>
 		/// <returns>Matrix product of A and B</returns>
-		public static Matrix4x4 operator *(Matrix4x4 A, Matrix4x4 B)
+		public static Matrix4x4 operator *(Matrix4x4 B, Matrix4x4 A)
 		{
-			return new Matrix4x4(A.m11 * B.m11 + A.m21 * B.m12 + A.m31 * B.m13 + A.m41 * B.m14,
-			                     A.m12 * B.m11 + A.m22 * B.m12 + A.m32 * B.m13 + A.m42 * B.m14,
-			                     A.m13 * B.m11 + A.m23 * B.m12 + A.m33 * B.m13 + A.m43 * B.m14,
-			                     A.m14 * B.m11 + A.m24 * B.m12 + A.m34 * B.m13 + A.m44 * B.m14,
+			return new Matrix4x4(B.m11 * A.m11 + B.m21 * A.m12 + B.m31 * A.m13 + B.m41 * A.m14,
+			                     B.m12 * A.m11 + B.m22 * A.m12 + B.m32 * A.m13 + B.m42 * A.m14,
+			                     B.m13 * A.m11 + B.m23 * A.m12 + B.m33 * A.m13 + B.m43 * A.m14,
+			                     B.m14 * A.m11 + B.m24 * A.m12 + B.m34 * A.m13 + B.m44 * A.m14,
 			                     
-			                     A.m11 * B.m21 + A.m21 * B.m22 + A.m31 * B.m23 + A.m41 * B.m24,
-			                     A.m12 * B.m21 + A.m22 * B.m22 + A.m32 * B.m23 + A.m42 * B.m24,
-			                     A.m13 * B.m21 + A.m23 * B.m22 + A.m33 * B.m23 + A.m43 * B.m24,
-			                     A.m14 * B.m21 + A.m24 * B.m22 + A.m34 * B.m23 + A.m44 * B.m24,
+			                     B.m11 * A.m21 + B.m21 * A.m22 + B.m31 * A.m23 + B.m41 * A.m24,
+			                     B.m12 * A.m21 + B.m22 * A.m22 + B.m32 * A.m23 + B.m42 * A.m24,
+			                     B.m13 * A.m21 + B.m23 * A.m22 + B.m33 * A.m23 + B.m43 * A.m24,
+			                     B.m14 * A.m21 + B.m24 * A.m22 + B.m34 * A.m23 + B.m44 * A.m24,
 			                     
-			                     A.m11 * B.m31 + A.m21 * B.m32 + A.m31 * B.m33 + A.m41 * B.m34,
-			                     A.m12 * B.m31 + A.m22 * B.m32 + A.m32 * B.m33 + A.m42 * B.m34,
-			                     A.m13 * B.m31 + A.m23 * B.m32 + A.m33 * B.m33 + A.m43 * B.m34,
-			                     A.m14 * B.m31 + A.m24 * B.m32 + A.m34 * B.m33 + A.m44 * B.m34,
+			                     B.m11 * A.m31 + B.m21 * A.m32 + B.m31 * A.m33 + B.m41 * A.m34,
+			                     B.m12 * A.m31 + B.m22 * A.m32 + B.m32 * A.m33 + B.m42 * A.m34,
+			                     B.m13 * A.m31 + B.m23 * A.m32 + B.m33 * A.m33 + B.m43 * A.m34,
+			                     B.m14 * A.m31 + B.m24 * A.m32 + B.m34 * A.m33 + B.m44 * A.m34,
 			                     
-			                     A.m11 * B.m41 + A.m21 * B.m42 + A.m31 * B.m43 + A.m41 * B.m44,
-			                     A.m12 * B.m41 + A.m22 * B.m42 + A.m32 * B.m43 + A.m42 * B.m44,
-			                     A.m13 * B.m41 + A.m23 * B.m42 + A.m33 * B.m43 + A.m43 * B.m44,
-			                     A.m14 * B.m41 + A.m24 * B.m42 + A.m34 * B.m43 + A.m44 * B.m44);
+			                     B.m11 * A.m41 + B.m21 * A.m42 + B.m31 * A.m43 + B.m41 * A.m44,
+			                     B.m12 * A.m41 + B.m22 * A.m42 + B.m32 * A.m43 + B.m42 * A.m44,
+			                     B.m13 * A.m41 + B.m23 * A.m42 + B.m33 * A.m43 + B.m43 * A.m44,
+			                     B.m14 * A.m41 + B.m24 * A.m42 + B.m34 * A.m43 + B.m44 * A.m44);
 		}
 		
 		
