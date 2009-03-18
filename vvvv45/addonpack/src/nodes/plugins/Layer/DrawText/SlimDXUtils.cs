@@ -31,5 +31,32 @@ namespace VVVV.Utils
 			
 			return Result;
 		}
+		
+		public static Matrix4x4 SlimDXMatrixToMatrix4x4(SlimDX.Matrix Input)
+		{
+			Matrix4x4 Result;
+			
+			Result.m11 = (double) Input.M11;
+			Result.m12 = (double) Input.M12;
+			Result.m13 = (double) Input.M13;
+			Result.m14 = (double) Input.M14;			
+			
+			Result.m21 = (double) Input.M21;
+			Result.m22 = (double) Input.M22;
+			Result.m23 = (double) Input.M23;
+			Result.m24 = (double) Input.M24;			
+			
+			Result.m31 = (double) Input.M31;
+			Result.m32 = (double) Input.M32;
+			Result.m33 = (double) Input.M33;
+			Result.m34 = (double) Input.M34;			
+			
+			Result.m41 = (double) Input.M41;
+			Result.m42 = (double) Input.M42;
+			Result.m43 = (double) Input.M43;
+			Result.m44 = (double) Input.M44;			
+						
+			return Result;
+		}
 	}
 }

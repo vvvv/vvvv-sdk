@@ -61,16 +61,16 @@ namespace VVVV.Nodes
 		
 		private IValueIn FItalicInput;
 		private IValueIn FBoldInput;
-		private IValueIn FTexSizeInput;
 		private IStringIn FTextInput;
 		private IEnumIn FFontInput;
 		private IValueIn FSizeInput;
+		private IValueIn FNormalizeInput;
 		private IColorIn FColorInput;
 		private ITransformIn FTranformIn;
 		private IEnumIn FHorizontalAlignInput;
 		private IEnumIn FVerticalAlignInput;
 		private IEnumIn FTextRenderingModeInput;
-		private IValueIn FBillboardInput;
+		private IEnumIn FTransformSpace;
 		private IValueIn FEnabledInput;
 		
 		private IDXLayerIO FLayerOutput;
@@ -172,7 +172,7 @@ namespace VVVV.Nodes
 					//the nodes author: your sign
 					FPluginInfo.Author = "vvvv group";
 					//describe the nodes function
-					FPluginInfo.Help = "Draws Text as a Texture on a Sprite in 3D";
+					FPluginInfo.Help = "Draws flat Text";
 					//specify a comma separated list of tags that describe the node
 					FPluginInfo.Tags = "";
 					
@@ -211,10 +211,7 @@ namespace VVVV.Nodes
 			//assign host
 			FHost = Host;
 			
-			//create inputs
-			FHost.CreateValueInput("Texture Size", 2, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FTexSizeInput);
-			FTexSizeInput.SetSubType2D(0, 8192, 1, 0, 0, false, false, true);
-			
+			//create inputs			
 			FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTranformIn);
 			
 			FHost.CreateStringInput("Text", TSliceMode.Dynamic, TPinVisibility.True, out FTextInput);
@@ -226,7 +223,9 @@ namespace VVVV.Nodes
 			FHost.CreateValueInput("Bold", 1, null, TSliceMode.Single, TPinVisibility.True, out FBoldInput);
 			FBoldInput.SetSubType(0, 1, 1, 0, false, true, false);
 			FHost.CreateValueInput("Size", 1, null, TSliceMode.Single, TPinVisibility.True, out FSizeInput);
-			FSizeInput.SetSubType(0, int.MaxValue, 1, 10, false, false, true);
+			FSizeInput.SetSubType(0, int.MaxValue, 1, 100, false, false, true);
+			FHost.CreateValueInput("Normalize", 1, null, TSliceMode.Single, TPinVisibility.True, out FNormalizeInput);
+			FNormalizeInput.SetSubType(0, 1, 1, 1, false, true, false);
 			
 			FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorInput);
 			FColorInput.SetSubType(VColor.White, true);
@@ -242,10 +241,10 @@ namespace VVVV.Nodes
 			
 			FHost.CreateEnumInput("Text Rendering Mode", TSliceMode.Dynamic, TPinVisibility.True, out FTextRenderingModeInput);
 			FTextRenderingModeInput.SetSubType("TextRenderingMode");
-			
-			FHost.CreateValueInput("Billboard", 1, null, TSliceMode.Single, TPinVisibility.True, out FBillboardInput);
-			FBillboardInput.SetSubType(0, 1, 1, 0, false, true, false);
-			
+						
+			FHost.CreateEnumInput("Space", TSliceMode.Single, TPinVisibility.OnlyInspector, out FTransformSpace);
+			FTransformSpace.SetSubType("Spaces");			
+
 			FHost.CreateValueInput("Enabled", 1, null, TSliceMode.Single, TPinVisibility.True, out FEnabledInput);
 			FEnabledInput.SetSubType(0, 1, 1, 1, false, true, false);
 			
@@ -348,98 +347,50 @@ namespace VVVV.Nodes
 		}
 		
 		public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
-		{
+		{			
 			double enabled;
 			FEnabledInput.GetValue(0, out enabled);
 			if (enabled < 0.5)
 				return;
 			
-			DeviceFont df = FDeviceFonts[DXDevice.DevicePointer()];
+			DeviceFont df = FDeviceFonts[DXDevice.DevicePointer()];						
+			DXDevice.SetSpace(FTransformSpace);
+			df.Sprite.Begin(SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace);
 			
+			double size;
+			FSizeInput.GetValue(0, out size);
+						
+			double normalize;
+			FNormalizeInput.GetValue(0, out normalize);
+
+			Matrix4x4 preScale = VMath.Scale(1/size, -1/size, 1);
+			if (normalize > 0.5)
+			    preScale = VMath.Scale(1/size, -1/size, 1);
+			else
+			    preScale = VMath.Scale(0.01, -0.01, 1);
+			    
+			Matrix4x4 world;
 			string text;
 			RGBAColor c;
-			double sizeX, sizeY;
-			
-			//from the docs: D3DXSPRITE_OBJECTSPACE -> The world, view, and projection transforms are not modified.
-			//for view and projection transforms this is exactly what we want: it allows placing the text within the
-			//same world as all the other objects. however we need to set the world transform to a neutral value: identity
-			Device dev = Device.FromPointer(new IntPtr(DXDevice.DevicePointer()));
-			dev.SetTransform(TransformState.World, Matrix.Identity);
-			
-			FTexSizeInput.GetValue2D(0, out sizeX, out sizeY);
-			if (sizeX == 0)
-				FSizeInput.GetValue(0, out sizeX);
-			if (sizeY == 0)
-				FSizeInput.GetValue(0, out sizeY);
-			
-			//compensate texture size
-			Matrix preScale = Matrix.Scaling((float)(1/sizeX), (float)(-1/sizeY), 1);
-			//Matrix4x4 preScale = VMath.Scale(1/sizeX, -1/sizeY, 1);
-			Matrix m = new Matrix();
-			Matrix4x4 m4x4;
-			
-			SpriteFlags sf = SpriteFlags.DoNotAddRefTexture;
-			
-			double bill;
-			FBillboardInput.GetValue(0, out bill);
-		/*	if (bill >= 0.5)
-			{
-				sf |= SpriteFlags.Billboard;
-
-				
-				FTranformIn.GetMatrix(0, out m4x4);
-				m = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(m4x4);
-				
-				m = Matrix.Multiply(m, preScale);
-				
-				
-				df.Sprite.SetWorldViewLH(m, VSlimDXUtils.Matrix4x4ToSlimDXMatrix(DXDevice.ViewMatrix()));
-			}
-			else*/
-				sf |= SpriteFlags.ObjectSpace;
-		
-			Matrix vp = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(DXDevice.ProjectionMatrix() * DXDevice.ViewMatrix());
-			//Matrix vp = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(DXDevice.ProjectionMatrix());
-			//FHost.Log(TLogType.Debug, vp.ToString());
-			Matrix vpi = Matrix.Invert(vp);
-			
-			
-			df.Sprite.Begin(sf);
 			Rectangle textSize;
 			
 			for (int i=0; i<FSpreadMax; i++)
 			{
 				FColorInput.GetColor(i, out c);
 				FTextInput.GetString(i, out text);
-				FTranformIn.GetMatrix(i, out m4x4);
-				m = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(m4x4);
-				m = Matrix.Multiply(preScale, m);
 				
-				if (bill >= 0.5)
-				{
-					Matrix wvp = Matrix.Multiply(m, vp);
-					Vector4 xyzw = Vector3.Transform(new Vector3(0, 0, 0), wvp);
-					xyzw /= xyzw.W;
-					Matrix trans = Matrix.Translation(xyzw.X, xyzw.Y, xyzw.Z);
-					m = Matrix.Multiply(trans, vpi);
-					m = Matrix.Multiply(m, Matrix.Scaling(0.01f, 0.01f, 0.01f));
-					
-					df.Sprite.Transform = m;
-
-					
-					/**/
-				}
-				else
-					df.Sprite.Transform = m;
+				FTranformIn.GetMatrix(i, out world);
+				DXDevice.SetWorldTransform(preScale * world);
+								
+				DrawTextFormat dtf = DrawTextFormat.NoClip;
 				
-				DrawTextFormat dtf = DrawTextFormat.Left;
 				int hAlign;
 				FHorizontalAlignInput.GetOrd(i, out hAlign);
 				switch (hAlign)
 				{
-						case 0: dtf = DrawTextFormat.Left; break;
-						case 1: dtf = DrawTextFormat.Center; break;
-						case 2: dtf = DrawTextFormat.Right; break;
+						case 0: dtf |= DrawTextFormat.Left; break;
+						case 1: dtf |= DrawTextFormat.Center; break;
+						case 2: dtf |= DrawTextFormat.Right; break;
 				}
 				
 				int vAlign;
@@ -457,9 +408,7 @@ namespace VVVV.Nodes
 				{
 						case 0: dtf |= DrawTextFormat.SingleLine; break;
 						case 2: dtf |= DrawTextFormat.WordBreak; break;
-				}
-				
-				dtf = dtf | DrawTextFormat.NoClip;
+				}				
 				
 				df.Font.DrawString(df.Sprite, text, new Rectangle(0, 0, 0, 0), dtf, c.Color.ToArgb());
 				
