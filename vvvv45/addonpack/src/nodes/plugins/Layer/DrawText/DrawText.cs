@@ -355,7 +355,6 @@ namespace VVVV.Nodes
 			
 			DeviceFont df = FDeviceFonts[DXDevice.DevicePointer()];						
 			DXDevice.SetSpace(FTransformSpace);
-			df.Sprite.Begin(SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace);
 			
 			double size;
 			FSizeInput.GetValue(0, out size);
@@ -381,6 +380,7 @@ namespace VVVV.Nodes
 				
 				FTranformIn.GetMatrix(i, out world);
 				DXDevice.SetWorldTransform(preScale * world);
+			df.Sprite.Begin(SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace);
 								
 				DrawTextFormat dtf = DrawTextFormat.NoClip;
 				
@@ -414,8 +414,8 @@ namespace VVVV.Nodes
 				
 				textSize = df.Font.MeasureString(df.Sprite, text, dtf);
 				FSizeOutput.SetValue2D(i, textSize.Width, textSize.Height);
-			}
-			df.Sprite.End();
+				df.Sprite.End();
+		}
 		}
 		#endregion
 	}
