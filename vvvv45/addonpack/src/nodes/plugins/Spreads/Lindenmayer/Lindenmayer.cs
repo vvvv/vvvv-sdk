@@ -181,8 +181,8 @@ namespace VVVV.Nodes.Lindenmayer
 								FCurrentY += ps * len;
 								FCurrentZ -= yc * pc * len;
 								
-								FTransforms.Add(VMath.Translate(FCurrentY, FCurrentX, FCurrentZ) * VMath.Rotate(-(yaw+Math.PI*0.5), 0, -pitch)
-								                   * VMath.Translate(0, -len/2, 0) * VMath.Scale(0.1, len, 0.1));
+								FTransforms.Add(VMath.Scale(0.1, len, 0.1) * VMath.Translate(0, -len/2, 0) * 
+								                VMath.Rotate(-(yaw+Math.PI*0.5), 0, -pitch) * VMath.Translate(FCurrentY, FCurrentX, FCurrentZ));
 								FLevels.Add(FCurrentBranchCount);
 							}
 							break;
@@ -208,7 +208,7 @@ namespace VVVV.Nodes.Lindenmayer
 								
 								double yaw = 0; //FRotY + FRotY;
 								double pitch = FRotZ;// + FRotZ;
-								FTransformsG.Add(VMath.Translate(FCurrentY, FCurrentX, FCurrentZ) * VMath.Rotate(-yaw, 0, -pitch+r));
+								FTransformsG.Add(VMath.Rotate(-yaw, 0, -pitch+r) * VMath.Translate(FCurrentY, FCurrentX, FCurrentZ));
 								FGAtFSlice.Add(FTransforms.Count);
 							}
 							
