@@ -74,11 +74,11 @@ namespace VVVV.Nodes
 				
 				if (isX) 
 				{
-					s.Transform *= VMath.RotateZ(isX ? -0.25 * VMath.CycToRad : 0);
+					s.Transform = VMath.RotateZ(isX ? -0.25 * VMath.CycToRad : 0) * s.Transform;
 					s.InvTransform = !s.Transform;
 				}
 	
-				s.SliderTransform = s.Transform * VMath.Translate(0, s.Value - 0.5, 0) * FSliderSize;
+				s.SliderTransform = FSliderSize * VMath.Translate(0, s.Value - 0.5, 0) * s.Transform;
 				
 			}
 			
@@ -106,7 +106,7 @@ namespace VVVV.Nodes
 					Vector2D invLastMouse = (s.InvTransform * FLastMouse).xy;
 					
 					s.Value = VMath.Clamp(s.Value + (invMouse.y - invLastMouse.y) * FSliderSpeed, 0, 1);
-					s.SliderTransform = s.Transform * VMath.Translate(0, s.Value - 0.5, 0) * FSliderSize;
+					s.SliderTransform = FSliderSize * VMath.Translate(0, s.Value - 0.5, 0) * s.Transform;
 
 				}
 
@@ -123,7 +123,7 @@ namespace VVVV.Nodes
 		public void UpdateValue(Slider s, double val)
 		{
 			s.Value = VMath.Clamp(val, 0, 1);
-			s.SliderTransform = s.Transform * VMath.Translate(0, s.Value - 0.5, 0) * FSliderSize;
+			s.SliderTransform = FSliderSize * VMath.Translate(0, s.Value - 0.5, 0) * s.Transform;
 		}
 	}
 }

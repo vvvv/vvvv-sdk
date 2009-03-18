@@ -116,12 +116,12 @@ namespace VVVV.Nodes
 					double posY = 0.5 - ( (i + 0.5) / countY );	
 					
 					//build particular controller space
-					b.Transform = controllerSpace * VMath.Translate(posX, posY, 0) * size;
+					b.Transform = size * VMath.Translate(posX, posY, 0) * controllerSpace;
 					b.InvTransform = !b.Transform;
 					
 					if (b is RotarySlider) 
 					{
-						b.Transform *= VMath.RotateZ(0.25 * VMath.CycToRad) * VMath.Scale(-1, 1, 1);
+						b.Transform = VMath.Scale(-1, 1, 1) * VMath.RotateZ(0.25 * VMath.CycToRad) * b.Transform;
 					}
 					
 					slice++;

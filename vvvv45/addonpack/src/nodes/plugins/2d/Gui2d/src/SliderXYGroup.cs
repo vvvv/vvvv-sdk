@@ -70,7 +70,7 @@ namespace VVVV.Nodes
 				
 				//get current slider
 				SliderXY s = FControllers[slice];
-				s.SliderTransform = s.Transform * VMath.Translate(s.Value.x - 0.5, s.Value.y - 0.5, 0) * FSliderSize;
+				s.SliderTransform = FSliderSize * VMath.Translate(s.Value.x - 0.5, s.Value.y - 0.5, 0) * s.Transform;
 				
 			}
 			
@@ -99,7 +99,7 @@ namespace VVVV.Nodes
 					Vector2D invLastMouse = (s.InvTransform * FLastMouse).xy;
 					
 					s.Value = VMath.Clamp(s.Value + (invMouse - invLastMouse) * FSliderSpeed, 0, 1);
-					s.SliderTransform = s.Transform * VMath.Translate(s.Value.x - 0.5, s.Value.y - 0.5, 0) * FSliderSize;
+					s.SliderTransform = FSliderSize * VMath.Translate(s.Value.x - 0.5, s.Value.y - 0.5, 0) * s.Transform;
 
 				}
 
@@ -116,7 +116,7 @@ namespace VVVV.Nodes
 		public void UpdateValue(SliderXY s, Vector2D val)
 		{
 			s.Value = VMath.Clamp(val, 0, 1);
-			s.SliderTransform = s.Transform * VMath.Translate(s.Value.x - 0.5, s.Value.y - 0.5, 0) * FSliderSize;
+			s.SliderTransform = FSliderSize * VMath.Translate(s.Value.x - 0.5, s.Value.y - 0.5, 0) * s.Transform;
 		}
 	}
 }
