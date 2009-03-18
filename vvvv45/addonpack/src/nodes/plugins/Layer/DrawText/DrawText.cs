@@ -354,7 +354,14 @@ namespace VVVV.Nodes
 			if (enabled < 0.5)
 				return;
 			
-			DeviceFont df = FDeviceFonts[DXDevice.DevicePointer()];						
+			//from the docs: D3DXSPRITE_OBJECTSPACE -> The world, view, and projection transforms are not modified.
+			//for view and projection transforms this is exactly what we want: it allows placing the text within the
+			//same world as all the other objects. however we don't want to work in object space but in world space
+			//that's why we need to to set the world transform to a neutral value: identity
+			Device dev = Device.FromPointer(new IntPtr(DXDevice.DevicePointer()));
+			dev.SetTransform(TransformState.World, Matrix.Identity);
+
+			DeviceFont df = FDeviceFonts[DXDevice.DevicePointer()];
 			DXDevice.SetSpace(FTransformSpace);
 			df.Sprite.Begin(SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace);
 			
@@ -368,7 +375,7 @@ namespace VVVV.Nodes
 			if (normalize > 0.5)
 			    preScale = VMath.Scale(1/size, -1/size, 1);
 			else
-			    preScale = VMath.Scale(0.01, -0.01, 1);
+			    preScale = VMath.Scale(0.01, -0.01, 1); // the size of one pixel in vvvv's pixel spaces
 			    
 			Matrix4x4 world;
 			string text;
