@@ -243,7 +243,7 @@ namespace VVVV.Nodes
 			FHost.CreateEnumInput("Text Rendering Mode", TSliceMode.Dynamic, TPinVisibility.True, out FTextRenderingModeInput);
 			FTextRenderingModeInput.SetSubType("TextRenderingMode");
 						
-			FHost.CreateEnumInput("Space", TSliceMode.Single, TPinVisibility.OnlyInspector, out FTransformSpace);
+			FHost.CreateEnumInput("Space", TSliceMode.Single, TPinVisibility.Hidden, out FTransformSpace);
 			FTransformSpace.SetSubType("Spaces");			
 
 			FHost.CreateValueInput("Enabled", 1, null, TSliceMode.Single, TPinVisibility.True, out FEnabledInput);
