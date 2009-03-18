@@ -585,7 +585,7 @@ namespace VVVV.Utils.VMath
 		/// <param name="A"></param>
 		/// <param name="B"></param>
 		/// <returns>Matrix product of A and B</returns>
-		public static Matrix4x4 operator *(Matrix4x4 B, Matrix4x4 A)
+		public static Matrix4x4 operator *(Matrix4x4 A, Matrix4x4 B)
 		{
 			return new Matrix4x4(B.m11 * A.m11 + B.m21 * A.m12 + B.m31 * A.m13 + B.m41 * A.m14,
 			                     B.m12 * A.m11 + B.m22 * A.m12 + B.m32 * A.m13 + B.m42 * A.m14,
