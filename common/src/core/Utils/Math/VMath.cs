@@ -753,7 +753,7 @@ namespace VVVV.Utils.VMath
 		{
 			double w1, w2;
 
-			double cosTheta = a | b;
+			double cosTheta = a|b; // | is dot product
 			double theta    = Math.Acos(cosTheta);
 			double sinTheta = Math.Sin(theta);
 
@@ -1060,7 +1060,7 @@ namespace VVVV.Utils.VMath
 		                                  double scaleX, double scaleY, double scaleZ,
 		                                  double   rotX, double   rotY, double   rotZ)
 		{
-			return  Translate(transX, transY, transZ) * Scale(scaleX, scaleY, scaleZ) * Rotate(rotX, rotY, rotZ); 
+			return Rotate(rotX, rotY, rotZ) * Scale(scaleX, scaleY, scaleZ) * Translate(transX, transY, transZ);
 		}
 		
 		/// <summary>
@@ -1073,7 +1073,7 @@ namespace VVVV.Utils.VMath
 		/// <returns>Transform matrix</returns>
 		public static Matrix4x4 Transform(Vector3D trans, Vector3D scale, Vector3D rot)
 		{
-			return  Translate(trans.x, trans.y, trans.z) * Scale(scale.x, scale.y, scale.z) * Rotate(rot.x, rot.y, rot.z); 
+			return Rotate(rot.x, rot.y, rot.z) * Scale(scale.x, scale.y, scale.z) * Translate(trans.x, trans.y, trans.z);
 		}
 		
 		/// <summary>
