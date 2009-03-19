@@ -48,6 +48,7 @@ namespace VVVV.Nodes
 	{
 		public SlimDX.Direct3D9.Font Font;
 		public SlimDX.Direct3D9.Sprite Sprite;
+		public SlimDX.Direct3D9.Texture Texture;
 	}
 	
 	//class definition
@@ -73,6 +74,9 @@ namespace VVVV.Nodes
 		private IEnumIn FTextRenderingModeInput;
 		private IEnumIn FTransformSpace;
 		private IValueIn FEnabledInput;
+		
+		private IValueIn FShowBrush;
+		private IColorIn FBrushColor;
 		
 		private IDXLayerIO FLayerOutput;
 		private IValueOut FSizeOutput;
@@ -234,6 +238,12 @@ namespace VVVV.Nodes
 			//rectangle
 			//clip
 			
+			FHost.CreateColorInput("Brush Color", TSliceMode.Dynamic, TPinVisibility.True, out FBrushColor);
+			FBrushColor.SetSubType(VColor.Black, true);
+			
+			FHost.CreateValueInput("Show Brush", 1, null, TSliceMode.Single, TPinVisibility.True, out FShowBrush);
+			FShowBrush.SetSubType(0, 1, 1, 0, false, true, false);
+			
 			FHost.CreateEnumInput("Horizontal Align", TSliceMode.Dynamic, TPinVisibility.True, out FHorizontalAlignInput);
 			FHorizontalAlignInput.SetSubType("HorizontalAlign");
 
@@ -284,6 +294,7 @@ namespace VVVV.Nodes
 			
 			df.Font.Dispose();
 			df.Sprite.Dispose();
+			df.Texture.Dispose();
 		}
 		
 		public void UpdateResource(IPluginOut ForPin, int OnDevice)
@@ -327,6 +338,8 @@ namespace VVVV.Nodes
 				
 				df.Font = new SlimDX.Direct3D9.Font(dev, (int) size, 0, weight, 0, italic>0.5, CharacterSet.Default, Precision.Default, FontQuality.Default, PitchAndFamily.Default, font);
 				df.Sprite = new Sprite(dev);
+				df.Texture = new Texture(dev, 1, 1, 1, Usage.None, Format.L8, Pool.Default);// Format.A8R8G8B8, Pool.Default);
+				
 				FDeviceFonts.Add(OnDevice, df);
 				
 				//dispose device
@@ -363,7 +376,7 @@ namespace VVVV.Nodes
 
 			DeviceFont df = FDeviceFonts[DXDevice.DevicePointer()];
 			DXDevice.SetSpace(FTransformSpace);
-			df.Sprite.Begin(SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace);
+			df.Sprite.Begin(SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace | SpriteFlags.AlphaBlend);
 			
 			double size;
 			FSizeInput.GetValue(0, out size);
@@ -379,12 +392,15 @@ namespace VVVV.Nodes
 			    
 			Matrix4x4 world;
 			string text;
-			RGBAColor c;
+			RGBAColor textColor, brushColor;
 			Rectangle textSize;
+			
+			int hAlign, vAlign, textMode;
+			double showBrush;
 			
 			for (int i=0; i<FSpreadMax; i++)
 			{
-				FColorInput.GetColor(i, out c);
+				FColorInput.GetColor(i, out textColor);
 				FTextInput.GetString(i, out text);
 				
 				FTranformIn.GetMatrix(i, out world);
@@ -393,7 +409,6 @@ namespace VVVV.Nodes
 								
 				DrawTextFormat dtf = DrawTextFormat.NoClip;
 				
-				int hAlign;
 				FHorizontalAlignInput.GetOrd(i, out hAlign);
 				switch (hAlign)
 				{
@@ -402,7 +417,6 @@ namespace VVVV.Nodes
 						case 2: dtf |= DrawTextFormat.Right; break;
 				}
 				
-				int vAlign;
 				FVerticalAlignInput.GetOrd(i, out vAlign);
 				switch (vAlign)
 				{
@@ -411,7 +425,6 @@ namespace VVVV.Nodes
 						case 2: dtf |= DrawTextFormat.Bottom; break;
 				}
 				
-				int textMode;
 				FTextRenderingModeInput.GetOrd(i, out textMode);
 				switch (textMode)
 				{
@@ -419,10 +432,16 @@ namespace VVVV.Nodes
 						case 2: dtf |= DrawTextFormat.WordBreak; break;
 				}				
 				
-				df.Font.DrawString(df.Sprite, text, new Rectangle(0, 0, 0, 0), dtf, c.Color.ToArgb());
-				
 				textSize = df.Font.MeasureString(df.Sprite, text, dtf);
 				FSizeOutput.SetValue2D(i, textSize.Width, textSize.Height);
+				
+				FShowBrush.GetValue(i, out showBrush);
+				if (showBrush >= 0.5)
+				{
+					FBrushColor.GetColor(i, out brushColor);
+					df.Sprite.Draw(df.Texture, new Rectangle(0, 0, textSize.Width, textSize.Height), new Vector3(textSize.Width/2, textSize.Height/2, -0.001f), new Vector3(0,0,0), new Color4(brushColor.Color));
+				}
+				df.Font.DrawString(df.Sprite, text, new Rectangle(0, 0, 0, 0), dtf, textColor.Color.ToArgb());
 			}
 			
 			df.Sprite.End();
