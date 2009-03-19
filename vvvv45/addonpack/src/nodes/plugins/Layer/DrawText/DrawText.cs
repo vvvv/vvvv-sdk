@@ -241,7 +241,7 @@ namespace VVVV.Nodes
 			FHost.CreateColorInput("Brush Color", TSliceMode.Dynamic, TPinVisibility.True, out FBrushColor);
 			FBrushColor.SetSubType(VColor.Black, true);
 			
-			FHost.CreateValueInput("Show Brush", 1, null, TSliceMode.Single, TPinVisibility.True, out FShowBrush);
+			FHost.CreateValueInput("Show Brush", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FShowBrush);
 			FShowBrush.SetSubType(0, 1, 1, 0, false, true, false);
 			
 			FHost.CreateEnumInput("Horizontal Align", TSliceMode.Dynamic, TPinVisibility.True, out FHorizontalAlignInput);
