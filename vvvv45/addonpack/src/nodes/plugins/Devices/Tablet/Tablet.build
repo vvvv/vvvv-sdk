@@ -13,4 +13,20 @@
   <!-- Set your ddl name here -->
   <property name="lib.name" value="Tablet.dll" />
 
+  <!-- References -->
+  <assemblyfileset id="project.references">
+    <include name="${root.bin}/_Utils.dll" />
+    <include name="${root.bin}/_PluginInterfaces.dll" />
+    <!-- this one is custom built, so we go get it there -->
+    <include name="${root.bin}/VBTablet.Net.dll" />
+  </assemblyfileset>
+
+  <target name="pre-build">
+    <nant target="build-vb">
+      <buildfiles>
+        <include name="VBTablet.Net/VBTablet.Net.build" />
+      </buildfiles>
+    </nant>
+  </target>
+
 </project>

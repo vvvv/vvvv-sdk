@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding='iso-8859-1' ?>
+<project
+	name="VVVV.Plugin"
+	default="build"
+	xmlns="http://nant.sf.net/release/0.85/nant.xsd"
+>
+  <!-- Root dir must point to vvvv c# repository-->
+  <property name="root.dir" value="../../../../" />
+
+  <property name="plugin.ignore" value="true" />
+
+  <!-- Leave as it is -->
+  <include buildfile="${root.dir}/nant-plugins.xml" />
+
+  <!-- Required for VB -->
+  <property name="vb.rootnamespace" value="VBTablet" />
+
+  <!-- Set your dll name here -->
+  <property name="lib.name" value="VBTablet.Net.dll" />
+
+  <!-- Required annoyance for VB, list of imports, added a small default list here -->
+  <namespaceimports id="system.imports">
+    <import namespace="System" />
+    <import namespace="System.Data" />
+    <import namespace="System.Collections" />
+    <import namespace="System.Diagnostics" />
+  </namespaceimports>
+
+  <!-- Default source, build all -->
+  <fileset id="sources.vb">
+    <include name="/**/*.vb" />
+  </fileset>
+
+  <!-- The build Target -->
+  <target name="build-vb">
+    <mkdir dir="${plugin.path}" />
+    <vbc target="library" output="${plugin.path}/${lib.name}" debug="${debug}" failonerror="true" rootnamespace="${vb.rootnamespace}" >
+      <imports refid="system.imports" />
+      <sources refid="sources.vb" />
+    </vbc>
+  </target>
+
+</project>
