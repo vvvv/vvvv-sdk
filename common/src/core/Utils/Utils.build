@@ -10,7 +10,16 @@
   <property name="lib.name" value="_Utils.dll" />
 
   <assemblyfileset id="project.references">
+    <include name="Dependencies/SlimDX.dll" />
   </assemblyfileset>
-  
+
+  <target name="post-build">
+    <copy todir="${root.bin}">
+      <fileset basedir="Dependencies">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+  </target>
+
 
 </project>
