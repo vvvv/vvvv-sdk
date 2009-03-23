@@ -31,5 +31,35 @@
       </fileset>
     </copy>
   </target>
+
+  <target name="copy-help-custom">
+    <copy todir="${plugin.path}">
+      <fileset basedir="OleDbNodes/help">
+        <include name="*.v4p" />
+        <include name="*.mdb" />
+      </fileset>
+    </copy>
+    <copy todir="${plugin.path}">
+      <fileset basedir="SQLServerNode/help">
+        <include name="*.v4p" />
+      </fileset>
+    </copy>
+    <copy todir="${plugin.path}">
+      <fileset basedir="SQLServerNode/help">
+        <include name="*.v4p" />
+      </fileset>
+    </copy>
+    <copy todir="${plugin.path}">
+      <fileset basedir="PostgreSQLNodes/help">
+        <include name="*.v4p" />
+      </fileset>
+    </copy>
+    <copy todir="${plugin.path}">
+      <fileset basedir="OdbcNodes/help">
+        <include name="*.v4p" />
+      </fileset>
+    </copy>
+    
+  </target>
   
 </project>
