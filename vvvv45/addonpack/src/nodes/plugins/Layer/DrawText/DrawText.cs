@@ -367,6 +367,9 @@ namespace VVVV.Nodes
 			if (enabled < 0.5)
 				return;
 			
+			string space;
+			FTransformSpace.GetString(0, out space);
+			
 			//from the docs: D3DXSPRITE_OBJECTSPACE -> The world, view, and projection transforms are not modified.
 			//for view and projection transforms this is exactly what we want: it allows placing the text within the
 			//same world as all the other objects. however we don't want to work in object space but in world space
@@ -389,7 +392,9 @@ namespace VVVV.Nodes
 			    preScale = VMath.Scale(1/size, -1/size, 1);
 			else
 			    preScale = VMath.Scale(0.01, -0.01, 1); // the size of one pixel in vvvv's pixel spaces
-			    
+			
+			Matrix4x4 postsubpix = VMath.Translate(0.005, 0.005, 0);
+			
 			Matrix4x4 world;
 			string text;
 			RGBAColor textColor, brushColor;
@@ -404,7 +409,10 @@ namespace VVVV.Nodes
 				FTextInput.GetString(i, out text);
 				
 				FTranformIn.GetMatrix(i, out world);
-				DXDevice.GetSpacedWorldTransform(preScale * world, out world);
+				if (space == "WinPixels")
+					DXDevice.GetSpacedWorldTransform(preScale * world * postsubpix, out world);
+				else
+					DXDevice.GetSpacedWorldTransform(preScale * world, out world);
 				df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(world);
 								
 				DrawTextFormat dtf = DrawTextFormat.NoClip;
