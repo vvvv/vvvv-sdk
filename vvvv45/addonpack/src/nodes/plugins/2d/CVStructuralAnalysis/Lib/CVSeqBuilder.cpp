@@ -9,11 +9,19 @@ CVSeqBuilder::CVSeqBuilder(void)
 
 CVSeqBuilder::~CVSeqBuilder(void)
 {
+	cvClearSeq(this->points);
+	cvClearMemStorage(storage);
+}
+
+
+void CVSeqBuilder::Destroy() 
+{
+	cvClearSeq(this->points);
+	cvClearMemStorage(storage);
 }
 
 void CVSeqBuilder::Clear() 
 {
-	cvClearMemStorage(storage);
 	this->storage = cvCreateMemStorage(0);
 	this->points = cvCreateSeq(CV_SEQ_KIND_GENERIC|CV_32FC2, sizeof(CvContour),sizeof(CvPoint2D32f), storage );
 }

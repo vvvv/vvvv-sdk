@@ -14,7 +14,10 @@ namespace VVVV
 	{
 	
 		
-		MinimumAreaRectNode::MinimumAreaRectNode(void) {}
+		MinimumAreaRectNode::MinimumAreaRectNode(void) 
+		{
+			this->seqbuilder = new CVSeqBuilder();
+		}
 
 		void MinimumAreaRectNode::SetPluginHost(IPluginHost ^ Host) 
 		{
@@ -55,7 +58,7 @@ namespace VVVV
 				this->FHost->Log(TLogType::Debug,"Begin");
 
 				double x,y;
-				CVSeqBuilder seqbuilder;
+				
 
 				this->FHost->Log(TLogType::Debug,"Bin Start");
 
@@ -74,20 +77,22 @@ namespace VVVV
 				{
 					int size = bins[bin];
 					//Build the sequence here
-					seqbuilder.Clear();
+					seqbuilder->Clear();
 
 					for (int i = 0; i < size; i++) 
 					{
 						this->vInPoints->GetValue2D(counter,x,y);
-						seqbuilder.AddPoint(Convert::ToSingle(x),Convert::ToSingle(y));
+						seqbuilder->AddPoint(Convert::ToSingle(x),Convert::ToSingle(y));
 						counter++;
 					}
 
-					CvBox2D box = cvMinAreaRect2(seqbuilder.points,0);
+					CvBox2D box = cvMinAreaRect2(seqbuilder->points,0);
 
 					this->vOutCenter->SetValue2D(bin,box.center.x,box.center.y);
 					this->vOutSize->SetValue2D(bin,box.size.width,box.size.height);
 					this->vOutAngle->SetValue(bin,(90.0-box.angle)/360.0);
+
+					seqbuilder->Destroy();
 
 				}
 

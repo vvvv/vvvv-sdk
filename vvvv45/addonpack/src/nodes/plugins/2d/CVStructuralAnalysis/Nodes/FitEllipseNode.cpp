@@ -14,7 +14,10 @@ namespace VVVV
 	{
 	
 		
-		FitEllipseNode::FitEllipseNode(void) {}
+		FitEllipseNode::FitEllipseNode(void) 
+		{
+			this->seqbuilder = new CVSeqBuilder();
+		}
 
 		void FitEllipseNode::SetPluginHost(IPluginHost ^ Host) 
 		{
@@ -54,7 +57,6 @@ namespace VVVV
 			if (this->vInPoints->PinIsChanged || this->vInBinSizes->PinIsChanged)
 			{
 				double x,y;
-				CVSeqBuilder seqbuilder;
 
 				List<int>^ bins = BinSizeUtils::CalculateBins(this->FHost ,this->vInBinSizes,this->vInPoints->SliceCount);
 
@@ -72,20 +74,22 @@ namespace VVVV
 					if (size >= 6) 
 					{
 						//Build the sequence here
-						seqbuilder.Clear();
+						seqbuilder->Clear();
 
 						for (int i = 0; i < size; i++) 
 						{
 							this->vInPoints->GetValue2D(counter,x,y);
-							seqbuilder.AddPoint(Convert::ToSingle(x),Convert::ToSingle(y));
+							seqbuilder->AddPoint(Convert::ToSingle(x),Convert::ToSingle(y));
 							counter++;
 						}
 
-						CvBox2D box = cvFitEllipse2(seqbuilder.points);
+						CvBox2D box = cvFitEllipse2(seqbuilder->points);
 
 						this->vOutCenter->SetValue2D(bin,box.center.x,box.center.y);
 						this->vOutSize->SetValue2D(bin,box.size.width,box.size.height);
 						this->vOutAngle->SetValue(bin,box.angle / 360.0);
+
+						seqbuilder->Destroy();
 					} 
 					else 
 					{

@@ -9,6 +9,7 @@ public:
 	~CVSeqBuilder(void);
 	void AddPoint(float x, float y);
 	void Clear();
+	void Destroy();
 	CvSeq* points;
 protected:
 	CvMemStorage* storage;

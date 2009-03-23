@@ -54,6 +54,8 @@ namespace VVVV {
 		IValueOut^ vOutSize;
 		IValueOut^ vOutAngle;
 
+		CVSeqBuilder* seqbuilder;
+
 	};
 
 	}
