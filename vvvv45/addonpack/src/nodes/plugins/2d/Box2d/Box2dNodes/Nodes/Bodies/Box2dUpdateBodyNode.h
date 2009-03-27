@@ -1,5 +1,5 @@
 #pragma once
-#include "../../DataTypes/Shapes/ShapeDataType.h"
+#include "../../DataTypes/BodyDataType.h"
 
 using namespace VVVV::DataTypes;
 
@@ -7,21 +7,21 @@ namespace VVVV
 {
 	namespace Nodes 
 	{
-		public ref class Box2dGetPolygonsNode: IPlugin,IPluginConnections
+		public ref class Box2dUpdateBodyNode : IPlugin,IPluginConnections
 		{
 		public:
-			Box2dGetPolygonsNode(void);
+			Box2dUpdateBodyNode(void);
 
-			static property IPluginInfo^ PluginInfo 
+				static property IPluginInfo^ PluginInfo 
 				{
 					IPluginInfo^ get() 
 					{
 						//IPluginInfo^ Info;
 						IPluginInfo^ Info = gcnew VVVV::PluginInterfaces::V1::PluginInfo();
-						Info->Name = "GetPolygons";
+						Info->Name = "UpdateBody";
 						Info->Category = "Box2d";
 						Info->Version = "";
-						Info->Help = "Box2d Polygon Shape";
+						Info->Help = "Update box2d body";
 						Info->Bugs = "";
 						Info->Credits = "Box2d";
 						Info->Warnings = "";
@@ -37,7 +37,6 @@ namespace VVVV
 						return Info;
 					}
 				}
-	
 
 			virtual void SetPluginHost(IPluginHost^ Host);
 			virtual void Configurate(IPluginConfig^ Input);
@@ -47,21 +46,26 @@ namespace VVVV
 			
 			virtual property bool AutoEvaluate 
 			{
-				bool get() { return false; }
+				bool get() { return true; }
 			}
-		protected:
 
 		private:
 			IPluginHost^ FHost;
 
-			INodeIn^ vInShapes;
-			ShapeDataType^ m_polygons;
+			INodeIn^ vInBodies;
+			BodyDataType^ m_bodies;
 
-			IValueOut^ vOutCenters;
-			IValueOut^ vOutVertices;
-			IValueOut^ vOutVerticesCount;
-			IValueOut^ vOutId;
+			IValueIn^ vInPosition;
+			IValueIn^ vInSetPosition;
+
+			IValueIn^ vInVelocity;
+			IValueIn^ vInSetVelocity;
+
+			IValueIn^ vInAngularVelocity;
+			IValueIn^ vInSetAngularVelocity;
+
+
+
 		};
 	}
 }
-

@@ -18,7 +18,7 @@ namespace VVVV
 					{
 						//IPluginInfo^ Info;
 						IPluginInfo^ Info = gcnew VVVV::PluginInterfaces::V1::PluginInfo();
-						Info->Name = "GetCircleShape";
+						Info->Name = "GetCircles";
 						Info->Category = "Box2d";
 						Info->Version = "";
 						Info->Help = "Box2d Circle Shape";

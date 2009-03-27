@@ -158,6 +158,7 @@ namespace VVVV
 					this->internalworld->Step(Convert::ToSingle(ts),Convert::ToInt32(it));
 				}
 
+				this->vOutBodies->MarkPinAsChanged();
 				this->vOutBodies->SliceCount = this->mWorld->GetWorld()->GetBodyCount() -1;
 				for (b2Body* b = this->mWorld->GetWorld()->GetBodyList(); b; b = b->GetNext())
 				{

@@ -9,6 +9,7 @@ namespace VVVV
 	{
 		Box2dCreateBodyNode::Box2dCreateBodyNode(void)
 		{
+
 		}
 
 		void Box2dCreateBodyNode::SetPluginHost(IPluginHost^ Host) 
