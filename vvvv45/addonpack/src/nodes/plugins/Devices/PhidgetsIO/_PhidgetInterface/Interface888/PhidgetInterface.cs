@@ -37,7 +37,7 @@ using Phidgets.Events;
 namespace VVVV.Nodes
 {
 	//class definition
-	public class PhidgetEncoderHS: IPlugin, IDisposable
+	public class PhidgetInterface: IPlugin, IDisposable
     {	          	
     	#region field declaration
     	
@@ -62,7 +62,7 @@ namespace VVVV.Nodes
         private IValueOut FDigiOutCount;
 
         //GetInterfaceData
-        private GetEncoderData m_IKitData;
+        private GetInterfaceData m_IKitData;
         private Manager Anzahl = new Manager();
     	
     	#endregion field declaration
@@ -71,7 +71,7 @@ namespace VVVV.Nodes
 
     	#region constructor/destructor
     	
-        public PhidgetEncoderHS()
+        public PhidgetInterface()
         {
 			//the nodes constructor
 			//nothing to declare for this node
@@ -128,7 +128,7 @@ namespace VVVV.Nodes
         // does not get called.
         // It gives your base class the opportunity to finalize.
         // Do not provide destructors in types derived from this class.
-        ~PhidgetEncoderHS()
+        ~PhidgetInterface()
         {
         	// Do not re-create Dispose clean-up code here.
         	// Calling Dispose(false) is optimal in terms of
@@ -297,7 +297,7 @@ namespace VVVV.Nodes
                     {
                         if (m_IKitData == null)
                         {
-                            m_IKitData = new GetEncoderData();
+                            m_IKitData = new GetInterfaceData();
                             m_IKitData.Open(Serial);
                         }
                     }

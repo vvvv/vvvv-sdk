@@ -32,7 +32,7 @@ using Phidgets.Events;
 
 namespace VVVV.Nodes
 {
-    class GetEncoderData
+    class GetInterfaceData
     {
 
         private bool FDisposed = false;
@@ -133,7 +133,7 @@ namespace VVVV.Nodes
 
         #region constructor
 
-        public GetEncoderData()
+        public GetInterfaceData()
         {
             m_Devices = new List<DeviceInfo>();
             
@@ -186,7 +186,7 @@ namespace VVVV.Nodes
         // does not get called.
         // It gives your base class the opportunity to finalize.
         // Do not provide destructors in types derived from this class.
-        ~GetEncoderData()
+        ~GetInterfaceData()
         {
         	// Do not re-create Dispose clean-up code here.
         	// Calling Dispose(false) is optimal in terms of
@@ -243,8 +243,7 @@ namespace VVVV.Nodes
         }
 
         public void Close()
-        //FConnected.SetValue(0, m_IKitData.Status);
-{
+        {
             if (m_IKit != null)
             {
                 Disable();
