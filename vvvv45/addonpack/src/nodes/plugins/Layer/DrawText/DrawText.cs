@@ -61,6 +61,7 @@ namespace VVVV.Nodes
 		//Track whether Dispose has been called.
 		private bool FDisposed = false;
 		
+		private IValueIn FRectInput;
 		private IValueIn FItalicInput;
 		private IValueIn FBoldInput;
 		private IStringIn FTextInput;
@@ -216,9 +217,10 @@ namespace VVVV.Nodes
 			//assign host
 			FHost = Host;
 			
-			//create inputs			
+			//create inputs
 			FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTranformIn);
-			
+			FHost.CreateValueInput("Rectangle", 2, null, TSliceMode.Dynamic, TPinVisibility.True, out FRectInput);
+			FRectInput.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0, 0, false, false, false);
 			FHost.CreateStringInput("Text", TSliceMode.Dynamic, TPinVisibility.True, out FTextInput);
 			FTextInput.SetSubType("vvvv", false);
 			FHost.CreateEnumInput("Font", TSliceMode.Single, TPinVisibility.True, out FFontInput);
@@ -252,9 +254,9 @@ namespace VVVV.Nodes
 			
 			FHost.CreateEnumInput("Text Rendering Mode", TSliceMode.Dynamic, TPinVisibility.True, out FTextRenderingModeInput);
 			FTextRenderingModeInput.SetSubType("TextRenderingMode");
-						
+			
 			FHost.CreateEnumInput("Space", TSliceMode.Single, TPinVisibility.Hidden, out FTransformSpace);
-			FTransformSpace.SetSubType("Spaces");			
+			FTransformSpace.SetSubType("Spaces");
 
 			FHost.CreateValueInput("Enabled", 1, null, TSliceMode.Single, TPinVisibility.True, out FEnabledInput);
 			FEnabledInput.SetSubType(0, 1, 1, 1, false, true, false);
@@ -361,7 +363,11 @@ namespace VVVV.Nodes
 		}
 		
 		public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
-		{			
+		{
+			//concerning the cut characters in some fonts, especially when rendered itallic see:
+			//http://www.gamedev.net/community/forums/topic.asp?topic_id=441338
+			//seems to be an official bug and we'd need to write our very own font rendering to fix that
+			
 			double enabled;
 			FEnabledInput.GetValue(0, out enabled);
 			if (enabled < 0.5)
@@ -383,15 +389,15 @@ namespace VVVV.Nodes
 			
 			double size;
 			FSizeInput.GetValue(0, out size);
-						
+			
 			double normalize;
 			FNormalizeInput.GetValue(0, out normalize);
 
 			Matrix4x4 preScale = VMath.Scale(1/size, -1/size, 1);
 			if (normalize > 0.5)
-			    preScale = VMath.Scale(1/size, -1/size, 1);
+				preScale = VMath.Scale(1/size, -1/size, 1);
 			else
-			    preScale = VMath.Scale(0.01, -0.01, 1); // the size of one pixel in vvvv's pixel spaces
+				preScale = VMath.Scale(0.01, -0.01, 1); // the size of one pixel in vvvv's pixel spaces
 			
 			Matrix4x4 postsubpix = VMath.Translate(0.005, 0.005, 0);
 			
@@ -400,13 +406,18 @@ namespace VVVV.Nodes
 			RGBAColor textColor, brushColor;
 			Rectangle textSize;
 			
-			int hAlign, vAlign, textMode;
-			double showBrush;
+			int hAlign, vAlign, textMode, wi, hi;
+			double showBrush, w, h;
 			
 			for (int i=0; i<FSpreadMax; i++)
 			{
-				FColorInput.GetColor(i, out textColor);
+				text = "";
 				FTextInput.GetString(i, out text);
+				
+				if (string.IsNullOrEmpty(text))
+					continue;
+				
+				FColorInput.GetColor(i, out textColor);
 				
 				FTranformIn.GetMatrix(i, out world);
 				if (space == "WinPixels")
@@ -414,8 +425,8 @@ namespace VVVV.Nodes
 				else
 					DXDevice.GetSpacedWorldTransform(preScale * world, out world);
 				df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(world);
-								
-				DrawTextFormat dtf = DrawTextFormat.NoClip;
+				
+				DrawTextFormat dtf = DrawTextFormat.NoClip | DrawTextFormat.ExpandTabs;
 				
 				FHorizontalAlignInput.GetOrd(i, out hAlign);
 				switch (hAlign)
@@ -438,7 +449,7 @@ namespace VVVV.Nodes
 				{
 						case 0: dtf |= DrawTextFormat.SingleLine; break;
 						case 2: dtf |= DrawTextFormat.WordBreak; break;
-				}				
+				}
 				
 				textSize = df.Font.MeasureString(df.Sprite, text, dtf);
 				FSizeOutput.SetValue2D(i, textSize.Width, textSize.Height);
@@ -449,7 +460,11 @@ namespace VVVV.Nodes
 					FBrushColor.GetColor(i, out brushColor);
 					df.Sprite.Draw(df.Texture, new Rectangle(0, 0, textSize.Width, textSize.Height), new Vector3(textSize.Width/2, textSize.Height/2, -0.001f), new Vector3(0,0,0), new Color4(brushColor.Color));
 				}
-				df.Font.DrawString(df.Sprite, text, new Rectangle(0, 0, 0, 0), dtf, textColor.Color.ToArgb());
+				
+				FRectInput.GetValue2D(i, out w, out h);
+				wi = (int)(w*size*10);
+				hi = (int)(h*size*10);
+				df.Font.DrawString(df.Sprite, text, new Rectangle(-wi/2, -hi/2, wi, hi), dtf, textColor.Color.ToArgb());
 			}
 			
 			df.Sprite.End();
