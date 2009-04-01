@@ -384,7 +384,8 @@ namespace VVVV.Nodes
 			dev.SetTransform(TransformState.World, Matrix.Identity);
 
 			DeviceFont df = FDeviceFonts[DXDevice.DevicePointer()];
-			DXDevice.SetSpace(FTransformSpace);
+			//DXDevice.SetSpace(FTranformIn, FTransformSpace);
+			FTranformIn.SetRenderSpace();
 			df.Sprite.Begin(SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace | SpriteFlags.AlphaBlend);
 			
 			double size;
@@ -420,12 +421,15 @@ namespace VVVV.Nodes
 				
 				FColorInput.GetColor(i, out textColor);
 				
-				FTranformIn.GetMatrix(i, out world);
-				if (space == "WinPixels")
-					DXDevice.GetSpacedWorldTransform(preScale * world * postsubpix, out world);
-				else
-					DXDevice.GetSpacedWorldTransform(preScale * world, out world);
-				df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(world);
+//				FTranformIn.GetMatrix(i, out world);
+//				if (space == "WinPixels")
+//					DXDevice.GetSpacedWorldTransform(preScale * world * postsubpix, out world);
+//				else
+//					DXDevice.GetSpacedWorldTransform(preScale * world, out world);
+				
+				FTranformIn.GetRenderWorldMatrix(i, out world);
+					
+				df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(preScale * world);
 				
 				DrawTextFormat dtf = DrawTextFormat.NoClip | DrawTextFormat.ExpandTabs;
 				
