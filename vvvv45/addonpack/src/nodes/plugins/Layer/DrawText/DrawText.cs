@@ -404,10 +404,11 @@ namespace VVVV.Nodes
 			Matrix4x4 world;
 			string text;
 			RGBAColor textColor, brushColor;
-			Rectangle textSize;
+			Rectangle tmpRect = new Rectangle(0, 0, 0, 0);
 			
 			int hAlign, vAlign, textMode, wi, hi;
 			double showBrush, w, h;
+			float x, y;
 			
 			for (int i=0; i<FSpreadMax; i++)
 			{
@@ -450,20 +451,29 @@ namespace VVVV.Nodes
 						case 0: dtf |= DrawTextFormat.SingleLine; break;
 						case 2: dtf |= DrawTextFormat.WordBreak; break;
 				}
-				
-				textSize = df.Font.MeasureString(df.Sprite, text, dtf);
-				FSizeOutput.SetValue2D(i, textSize.Width, textSize.Height);
+
+				FRectInput.GetValue2D(i, out w, out h);
+				wi = (int)(w*size*10);
+				hi = (int)(h*size*10);
+				tmpRect.Width = wi;
+				tmpRect.Height = hi;
+				df.Font.MeasureString(df.Sprite, text, dtf, ref tmpRect);
+				FSizeOutput.SetValue2D(i, tmpRect.Width, tmpRect.Height);
 				
 				FShowBrush.GetValue(i, out showBrush);
 				if (showBrush >= 0.5)
 				{
 					FBrushColor.GetColor(i, out brushColor);
-					df.Sprite.Draw(df.Texture, new Rectangle(0, 0, textSize.Width, textSize.Height), new Vector3(textSize.Width/2, textSize.Height/2, -0.001f), new Vector3(0,0,0), new Color4(brushColor.Color));
+					x = tmpRect.Width/2;
+					y = tmpRect.Height/2;
+					if (hAlign == 0)
+						x -= x;
+					else if (hAlign == 2)
+						x += x;
+						
+					df.Sprite.Draw(df.Texture, new Rectangle(0, 0, tmpRect.Width, tmpRect.Height), new Vector3(x, y, -0.001f), new Vector3(0,0,0), new Color4(brushColor.Color));
 				}
 				
-				FRectInput.GetValue2D(i, out w, out h);
-				wi = (int)(w*size*10);
-				hi = (int)(h*size*10);
 				df.Font.DrawString(df.Sprite, text, new Rectangle(-wi/2, -hi/2, wi, hi), dtf, textColor.Color.ToArgb());
 			}
 			
