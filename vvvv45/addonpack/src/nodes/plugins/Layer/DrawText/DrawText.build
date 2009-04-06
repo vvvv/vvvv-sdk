@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding='iso-8859-1' ?>
+<project
+	name="VVVV.Plugin"
+	default="build"
+	xmlns="http://nant.sf.net/release/0.85/nant.xsd"
+>
+
+  <property name="root.dir" value="../../../" />
+  <include buildfile="${root.dir}/nant-plugins.xml" />
+  <property name="lib.name" value="DrawText.dll" />
+
+  <assemblyfileset id="project.references">
+    <include name="${root.bin}/_Utils.dll" />
+    <include name="${root.bin}/_PluginInterfaces.dll" />
+    <include name="${root.bin}/SlimDX.dll" />
+  </assemblyfileset>
+
+
+  
+
+</project>
