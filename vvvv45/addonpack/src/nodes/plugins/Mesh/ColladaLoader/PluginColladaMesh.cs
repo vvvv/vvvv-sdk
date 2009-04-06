@@ -35,6 +35,7 @@ using System.Collections;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
+using VVVV.Utils.DX;
 
 using VVVV.Collada;
 using VVVV.Collada.ColladaModel;
@@ -64,7 +65,7 @@ namespace VVVV.Nodes
 		private IValueConfig FOpaqueIsOneInput;
 		
 		//output pin declaration
-		private IDXMeshIO FMyMeshOutput;
+		private IDXMeshOut FMyMeshOutput;
 		private IStringOut FTextureFileNameOutput;
 		private ITransformOut FTransformOutput;
 		private ITransformOut FSkinningTransformOutput;
@@ -73,12 +74,8 @@ namespace VVVV.Nodes
 		private IColorOut FSpecularColorOut;
 		private IValueOut FShininessOut;
 		private IValueOut FOpaqueOut;
-		private IValueOut FSkeletonOut;
-		private IValueOut FVertexOut;
-		private IValueOut FVertexIndexOut;
-		private IValueOut FVCountOut;
-		private IValueOut FBlendWeightIndexOut;
-		private IValueOut FBlendWeightOut;
+		
+		//private IValueOut FSkeletonOut;
 		
 		private IColladaModelNodeIO FUpstreamInterface;
 		
@@ -241,7 +238,9 @@ namespace VVVV.Nodes
 			FHost.CreateMeshOutput("Mesh", TSliceMode.Dynamic, TPinVisibility.True, out FMyMeshOutput);
 			FMyMeshOutput.Order = int.MinValue;
 			FHost.CreateTransformOutput("Transforms", TSliceMode.Dynamic, TPinVisibility.True, out FTransformOutput);
+			FTransformOutput.Order = int.MinValue + 1;
 			FHost.CreateTransformOutput("Skinning Transforms", TSliceMode.Dynamic, TPinVisibility.True, out FSkinningTransformOutput);
+			FSkinningTransformOutput.Order = int.MinValue + 2;
 			FHost.CreateStringOutput("TextureFileName", TSliceMode.Dynamic, TPinVisibility.True, out FTextureFileNameOutput);
 			FTextureFileNameOutput.SetSubType("", true);
 			FHost.CreateColorOutput("Emissive Color", TSliceMode.Dynamic, TPinVisibility.True, out FEmissiveColorOut);
@@ -254,21 +253,10 @@ namespace VVVV.Nodes
 			FShininessOut.SetSubType(0.0, float.MaxValue, 0.1, 25.0, false, false, false);
 			FHost.CreateValueOutput("Opaque", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FOpaqueOut);
 			FOpaqueOut.SetSubType(0.0, 1.0, 0.01, 1.0, false, false, false);
+			
+			/*
 			FHost.CreateValueOutput("Skeleton", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSkeletonOut);
 			FSkeletonOut.SetSubType(0.0, float.MaxValue, 0.1, 25.0, false, false, false);
-			
-			// Debug shit
-			/*
-			FHost.CreateValueOutput("Vertex Index", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FVertexIndexOut);
-			FVertexIndexOut.SetSubType(0.0, float.MaxValue, 0.1, 0.0, false, false, false);
-			FHost.CreateValueOutput("Vertex", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FVertexOut);
-			FVertexOut.SetSubType(0.0, float.MaxValue, 0.1, 0.0, false, false, false);
-			FHost.CreateValueOutput("VCount", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FVCountOut);
-			FVCountOut.SetSubType(0.0, float.MaxValue, 0.1, 0.0, false, false, false);
-			FHost.CreateValueOutput("Blend Weight Index", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBlendWeightIndexOut);
-			FBlendWeightIndexOut.SetSubType(0.0, float.MaxValue, 0.1, 0.0, false, false, false);
-			FHost.CreateValueOutput("Blend Weight", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBlendWeightOut);
-			FBlendWeightOut.SetSubType(0.0, float.MaxValue, 0.1, 0.0, false, false, false);
 			*/
 			
 			COLLADAUtil.Logger = new LoggerWrapper(FHost);
@@ -319,7 +307,6 @@ namespace VVVV.Nodes
         	//recompute the outputs
         	if (FColladaModelIn.PinIsChanged || FIndex.PinIsChanged || FBinSize.PinIsChanged)
 			{
-        		Log(TLogType.Debug, "Evaluating...");
         		selectedInstanceMeshes.Clear();
         		
         		FUpstreamInterface.GetSlice(0, out FColladaModel);
@@ -372,69 +359,6 @@ namespace VVVV.Nodes
 									materialList.Add(FNoMaterial);
 								}
 							}
-							
-							// Debug shit
-							/*
-							List<float> vertexList = new List<float>();
-							List<int> vertexIndexList = new List<int>();
-							List<int> vCountList = new List<int>();
-							List<int> blendWeightIndexList = new List<int>();
-							List<float> blendWeightList = new List<float>();
-							if (instanceMesh is Model.SkinnedInstanceMesh)
-							{
-								Model.SkinnedInstanceMesh skinnedInstanceMesh = (Model.SkinnedInstanceMesh) instanceMesh;
-								Model.CSkinnedMesh skinnedMesh = (Model.CSkinnedMesh)skinnedInstanceMesh.Mesh;
-								Document.Skin skin = skinnedMesh.Skin;
-								
-								foreach (Document.Primitive primitive in skinnedMesh.Geo.mesh.primitives)
-								{
-									// foreach indexed vertex
-									for (int k = 0; k < primitive.p.Length / primitive.stride; k+=primitive.stride)
-									{
-										vertexIndexList.Add(primitive.p[k]);
-									}
-								}
-								
-								Document.Input positionInput = COLLADAUtil.GetPositionInput(skinnedMesh.Geo.mesh);
-								Document.Source positionSource = (Document.Source) positionInput.source;
-								Document.Array<float> positions = (Document.Array<float>) positionSource.array;
-								for (int k = 0; k < positions.Count; k++)
-									vertexList.Add(positions[k]);
-								
-								for (int k = 0; k < skin.vertexWeights.vcount.Length; k++)
-									vCountList.Add((int)skin.vertexWeights.vcount[k]);
-								
-								for (int k = 1; k < skin.vertexWeights.v.Length; k += 2)
-									blendWeightIndexList.Add(skin.vertexWeights.v[k]);
-								
-								foreach (Document.Input input in skin.vertexWeights.inputs)
-								{
-									if (input.semantic == "WEIGHT")
-									{
-										Document.Source weightSource = (Document.Source) input.source;
-										Document.Array<float> weights = (Document.Array<float>) weightSource.array;
-										for (int k = 0; k < weights.Count; k++)
-											blendWeightList.Add(weights[k]);
-									}
-								}
-							}
-							
-							FVertexIndexOut.SliceCount = vertexIndexList.Count;
-							for (int k = 0; k < vertexIndexList.Count; k++)
-								FVertexIndexOut.SetValue(k, vertexIndexList[k]);
-							FVertexOut.SliceCount = vertexList.Count;
-							for (int k = 0; k < vertexList.Count; k++)
-								FVertexOut.SetValue(k, vertexList[k]);
-							FVCountOut.SliceCount = vCountList.Count;
-							for (int k = 0; k < vCountList.Count; k++)
-								FVCountOut.SetValue(k, vCountList[k]);
-							FBlendWeightIndexOut.SliceCount = blendWeightIndexList.Count;
-							for (int k = 0; k < blendWeightIndexList.Count; k++)
-								FBlendWeightIndexOut.SetValue(k, blendWeightIndexList[k]);
-							FBlendWeightOut.SliceCount = blendWeightList.Count;
-							for (int k = 0; k < blendWeightList.Count; k++)
-								FBlendWeightOut.SetValue(k, blendWeightList[k]);
-								*/
 						}
 					}
 					
@@ -489,52 +413,53 @@ namespace VVVV.Nodes
         	{
         		int maxCount = Math.Max(FTimeInput.SliceCount, selectedInstanceMeshes.Count);
 				List<Matrix> transforms = new List<Matrix>();
-				for (int i = 0; i < maxCount && selectedInstanceMeshes.Count > 0; i++)
-				{
-					FTimeInput.GetValue(i, out tmp);
-					float time = (float) tmp;
-					int meshIndex = i % selectedInstanceMeshes.Count;
-					FColladaModel.applyAnimations(time);
-					
-					//transforms.AddRange(FColladaModel.getTransformsOfUnionMesh(selectedInstanceMeshes));
-					Matrix m = FColladaModel.GetAbsoluteTransformMatrix(selectedInstanceMeshes[meshIndex], time);
-					for (int j = 0; j < selectedInstanceMeshes[meshIndex].Mesh.Primitives.Count; j++)
-						transforms.Add(m);
-				}
-				
-				FTransformOutput.SliceCount = transforms.Count;
-				for (int j = 0; j < transforms.Count; j++)
-					FTransformOutput.SetMatrix(j, SlimDXToVVVVMatrix(transforms[j]));
-				
-				// Skinning
 				List<Matrix> skinningTransforms = new List<Matrix>();
 				List<Vector3> skeletonVertices = new List<Vector3>();
-				
-				foreach (Model.InstanceMesh instanceMesh in selectedInstanceMeshes)
+				for (int i = 0; i < maxCount && selectedInstanceMeshes.Count > 0; i++)
 				{
+					int meshIndex = i % selectedInstanceMeshes.Count;
+					Model.InstanceMesh instanceMesh = selectedInstanceMeshes[meshIndex];
+					
+					FTimeInput.GetValue(i, out tmp);
+					float time = (float) tmp;
+					
+					Matrix m = FColladaModel.GetAbsoluteTransformMatrix(instanceMesh, time);
+					
+					for (int j = 0; j < instanceMesh.Mesh.Primitives.Count; j++) {
+						transforms.Add(m);
+					}
+					
+					// Skinning
 					if (instanceMesh is Model.SkinnedInstanceMesh) {
 						Model.SkinnedInstanceMesh skinnedInstanceMesh = (Model.SkinnedInstanceMesh) instanceMesh;
-						try
-						{
-							skinningTransforms.AddRange(skinnedInstanceMesh.GetSkinningMatrices());
-							skeletonVertices.AddRange(skinnedInstanceMesh.GetSkeletonVertices());
-						}
-						catch (Exception e)
-						{
-							COLLADAUtil.Log(e);
+						
+						skinnedInstanceMesh.ApplyAnimations(time);
+						
+						List<Matrix> tmpM = skinnedInstanceMesh.GetSkinningMatrices();
+						//List<Vector3> tmpV = skinnedInstanceMesh.GetSkeletonVertices();
+						
+						for (int j = 0; j < instanceMesh.Mesh.Primitives.Count; j++) {
+							skinningTransforms.AddRange(tmpM);
+							//skeletonVertices.AddRange(tmpV);
 						}
 					}
 				}
 				
+				FTransformOutput.SliceCount = transforms.Count;
+				for (int j = 0; j < transforms.Count; j++)
+					FTransformOutput.SetMatrix(j, VSlimDXUtils.SlimDXMatrixToMatrix4x4(transforms[j]));
+				
 				FSkinningTransformOutput.SliceCount = skinningTransforms.Count;
 				for (int j = 0; j < skinningTransforms.Count; j++)
-					FSkinningTransformOutput.SetMatrix(j, SlimDXToVVVVMatrix(skinningTransforms[j]));
+					FSkinningTransformOutput.SetMatrix(j, VSlimDXUtils.SlimDXMatrixToMatrix4x4(skinningTransforms[j]));
 				
+				/*
 				FSkeletonOut.SliceCount = skeletonVertices.Count * 3;
 				for (int j = 0; j < skeletonVertices.Count; j++)
 				{
 					FSkeletonOut.SetValue3D(j, skeletonVertices[j].X, skeletonVertices[j].Y, skeletonVertices[j].Z);
 				}
+				*/
         	}
         }
              
@@ -558,7 +483,7 @@ namespace VVVV.Nodes
 						Device dev = Device.FromPointer(new IntPtr(OnDevice));
 						try
 						{
-							m = FColladaModel.createUnion3D9Mesh(dev, selectedInstanceMeshes, false);
+							m = FColladaModel.CreateUnion3D9Mesh(dev, selectedInstanceMeshes, false);
 							FDeviceMeshes.Add(OnDevice, m);
 						}
 						catch (Exception e)
@@ -590,7 +515,7 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		public void GetMesh(IDXMeshIO ForPin, int OnDevice, out int Mesh)
+		public void GetMesh(IDXMeshOut ForPin, int OnDevice, out int Mesh)
 		{
 			Mesh m = FDeviceMeshes[OnDevice];
 			if (m != null)
@@ -609,27 +534,6 @@ namespace VVVV.Nodes
 		private void Log(string message)
 		{
 			FHost.Log(TLogType.Debug, message);
-		}
-		
-		private Matrix4x4 SlimDXToVVVVMatrix(Matrix sourceSlimDXMatrix)
-		{
-			return new Matrix4x4(
-				sourceSlimDXMatrix.M11,
-				sourceSlimDXMatrix.M12,
-				sourceSlimDXMatrix.M13,
-				sourceSlimDXMatrix.M14,
-				sourceSlimDXMatrix.M21,
-				sourceSlimDXMatrix.M22,
-				sourceSlimDXMatrix.M23,
-				sourceSlimDXMatrix.M24,
-				sourceSlimDXMatrix.M31,
-				sourceSlimDXMatrix.M32,
-				sourceSlimDXMatrix.M33,
-				sourceSlimDXMatrix.M34,
-				sourceSlimDXMatrix.M41,
-				sourceSlimDXMatrix.M42,
-				sourceSlimDXMatrix.M43,
-				sourceSlimDXMatrix.M44);
 		}
 		#endregion
 	}
