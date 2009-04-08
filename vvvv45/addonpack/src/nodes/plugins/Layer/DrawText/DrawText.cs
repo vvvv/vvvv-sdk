@@ -398,9 +398,9 @@ namespace VVVV.Nodes
 			if (normalize > 0.5)
 				preScale = VMath.Scale(1/size, -1/size, 1);
 			else
-				preScale = VMath.Scale(0.01, -0.01, 1); // the size of one pixel in vvvv's pixel spaces
+				preScale = VMath.Scale(1, -1, 1);
 			
-			Matrix4x4 postsubpix = VMath.Translate(0.005, 0.005, 0);
+			//Matrix4x4 postsubpix = VMath.Translate(0.5, 0.5, 0);
 			
 			Matrix4x4 world;
 			string text;
@@ -420,12 +420,6 @@ namespace VVVV.Nodes
 					continue;
 				
 				FColorInput.GetColor(i, out textColor);
-				
-//				FTranformIn.GetMatrix(i, out world);
-//				if (space == "WinPixels")
-//					DXDevice.GetSpacedWorldTransform(preScale * world * postsubpix, out world);
-//				else
-//					DXDevice.GetSpacedWorldTransform(preScale * world, out world);
 				
 				FTranformIn.GetRenderWorldMatrix(i, out world);
 					
