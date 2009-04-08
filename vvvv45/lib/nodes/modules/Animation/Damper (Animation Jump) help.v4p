@@ -1,0 +1,195 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha20.5.dtd" >
+   <PATCH nodename="Y:\vvvv33_trunk\girlpower\DampAndJump.v4p">
+   <BOUNDS type="Window" left="6690" top="1215" width="7590" height="10290">
+   </BOUNDS>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="2">
+   <BOUNDS type="Node" left="1230" top="3720" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1230" top="3720" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Window" left="13950" top="9120" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="Random (Value)" componentmode="Hidden" id="3">
+   <BOUNDS type="Node" left="1650" top="4605" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="Map (Value)" componentmode="Hidden" id="5">
+   <BOUNDS type="Node" left="1650" top="5055" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Output" dstnodeid="5" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Enabled">
+   </LINK>
+   <NODE nodename="Renderer (EX9)" componentmode="InAWindow" id="6">
+   <BOUNDS type="Node" left="1305" top="9000" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1305" top="9000" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="330" top="4200" width="6120" height="4860">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="Quad (DX9)" componentmode="Hidden" id="7">
+   <BOUNDS type="Node" left="1290" top="8370" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Layer" dstnodeid="6" dstpinname="Layers">
+   </LINK>
+   <NODE nodename="Transform (Transform 2d)" componentmode="Hidden" id="8">
+   <BOUNDS type="Node" left="1440" top="7935" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="ScaleY" visible="1">
+   </PIN>
+   <PIN pinname="ScaleX" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Transform Out" dstnodeid="7" dstpinname="Transform">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9">
+   <BOUNDS type="Node" left="1815" top="7365" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1815" top="7365" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="12825" top="9615" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.16">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="8" dstpinname="ScaleY">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="8" dstpinname="ScaleX">
+   </LINK>
+   <NODE nodename="LFO (Animation)" componentmode="Hidden" id="10">
+   <BOUNDS type="Node" left="945" top="2625" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE nodename="Change (Animation)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="1635" top="3120" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="OnChange" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Cycles" dstnodeid="11" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="OnChange" dstnodeid="2" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="18">
+   <BOUNDS type="Node" left="3150" top="6195" width="4455" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3150" top="6195" width="2580" height="900">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|damps a quad to a random new position, but on mouse click jumps to new position without damping.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename=":MODULES:\vvvv group\Animation\Damper (Animation Jump).v4p" componentmode="Hidden" id="37" path="E:\vvvv_svn\vvvv33_trunk\modules\vvvv group\Animation\">
+   <BOUNDS type="Node" left="1650" top="6300" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1650" top="6300" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="3465" top="1755" width="9000" height="6000">
+   </BOUNDS>
+   <PIN pinname="Jump" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Jump To Position" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="37" dstpinname="Go To Position">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Position Out" dstnodeid="8" dstpinname="TranslateX">
+   </LINK>
+   <NODE componentmode="InABox" id="39" nodename="IOBox (String)">
+   <BOUNDS height="255" left="255" top="540" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="465" left="255" top="540" type="Box" width="4305">
+   </BOUNDS>
+   <BOUNDS height="160" left="6960" top="13185" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Just like the lovely Damper (Animation) but additionally allows you to jump to values directly.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="38" nodename="IOBox (String)">
+   <BOUNDS height="270" left="255" top="180" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="180" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6960" top="13185" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Damper - Animation Jump|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="Mouse (System Window)" componentmode="Hidden" id="41">
+   <BOUNDS type="Node" left="3555" top="4245" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="41" srcpinname="X" dstnodeid="37" dstpinname="Jump To Position">
+   </LINK>
+   <LINK srcnodeid="41" srcpinname="Left Button" dstnodeid="37" dstpinname="Jump">
+   </LINK>
+   </PATCH>
