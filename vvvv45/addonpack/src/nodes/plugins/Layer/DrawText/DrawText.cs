@@ -67,13 +67,13 @@ namespace VVVV.Nodes
 		private IStringIn FTextInput;
 		private IEnumIn FFontInput;
 		private IValueIn FSizeInput;
-		private IValueIn FNormalizeInput;
+		private IEnumIn FNormalizeInput;
 		private IColorIn FColorInput;
 		private ITransformIn FTranformIn;
 		private IEnumIn FHorizontalAlignInput;
 		private IEnumIn FVerticalAlignInput;
 		private IEnumIn FTextRenderingModeInput;
-		private IEnumIn FTransformSpace;
+		//private IEnumIn FTransformSpace;
 		private IValueIn FEnabledInput;
 		
 		private IValueIn FShowBrush;
@@ -230,9 +230,7 @@ namespace VVVV.Nodes
 			FHost.CreateValueInput("Bold", 1, null, TSliceMode.Single, TPinVisibility.True, out FBoldInput);
 			FBoldInput.SetSubType(0, 1, 1, 0, false, true, false);
 			FHost.CreateValueInput("Size", 1, null, TSliceMode.Single, TPinVisibility.True, out FSizeInput);
-			FSizeInput.SetSubType(0, int.MaxValue, 1, 100, false, false, true);
-			FHost.CreateValueInput("Normalize", 1, null, TSliceMode.Single, TPinVisibility.True, out FNormalizeInput);
-			FNormalizeInput.SetSubType(0, 1, 1, 1, false, true, false);
+			FSizeInput.SetSubType(0, int.MaxValue, 1, 150, false, false, true);
 			
 			FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorInput);
 			FColorInput.SetSubType(VColor.White, true);
@@ -255,8 +253,8 @@ namespace VVVV.Nodes
 			FHost.CreateEnumInput("Text Rendering Mode", TSliceMode.Dynamic, TPinVisibility.True, out FTextRenderingModeInput);
 			FTextRenderingModeInput.SetSubType("TextRenderingMode");
 			
-			FHost.CreateEnumInput("Space", TSliceMode.Single, TPinVisibility.Hidden, out FTransformSpace);
-			FTransformSpace.SetSubType("Spaces");
+			FHost.CreateEnumInput("Normalize", TSliceMode.Single, TPinVisibility.True, out FNormalizeInput);
+			FNormalizeInput.SetSubType("Normalize");
 
 			FHost.CreateValueInput("Enabled", 1, null, TSliceMode.Single, TPinVisibility.True, out FEnabledInput);
 			FEnabledInput.SetSubType(0, 1, 1, 1, false, true, false);
@@ -373,8 +371,8 @@ namespace VVVV.Nodes
 			if (enabled < 0.5)
 				return;
 			
-			string space;
-			FTransformSpace.GetString(0, out space);
+			//string space;
+			//FTransformSpace.GetString(0, out space);
 			
 			//from the docs: D3DXSPRITE_OBJECTSPACE -> The world, view, and projection transforms are not modified.
 			//for view and projection transforms this is exactly what we want: it allows placing the text within the
@@ -391,17 +389,17 @@ namespace VVVV.Nodes
 			double size;
 			FSizeInput.GetValue(0, out size);
 			
-			double normalize;
-			FNormalizeInput.GetValue(0, out normalize);
-
-			Matrix4x4 preScale = VMath.Scale(1/size, -1/size, 1);
-			if (normalize > 0.5)
-				preScale = VMath.Scale(1/size, -1/size, 1);
-			else
-				preScale = VMath.Scale(1, -1, 1);
+			int normalize;
+			FNormalizeInput.GetOrd(0, out normalize); 
 			
-			//Matrix4x4 postsubpix = VMath.Translate(0.5, 0.5, 0);
-			
+			Matrix4x4 preScale = VMath.Scale(1, -1, 1);
+			switch (normalize)
+			{
+				case 0: preScale = VMath.Scale(1, -1, 1); break;  
+				//"off" means that text will be in pixels
+				
+			}
+									
 			Matrix4x4 world;
 			string text;
 			RGBAColor textColor, brushColor;
@@ -420,11 +418,7 @@ namespace VVVV.Nodes
 					continue;
 				
 				FColorInput.GetColor(i, out textColor);
-				
-				FTranformIn.GetRenderWorldMatrix(i, out world);
-					
-				df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(preScale * world);
-				
+								
 				DrawTextFormat dtf = DrawTextFormat.NoClip | DrawTextFormat.ExpandTabs;
 				
 				FHorizontalAlignInput.GetOrd(i, out hAlign);
@@ -455,9 +449,25 @@ namespace VVVV.Nodes
 				hi = (int)(h*size*10);
 				tmpRect.Width = wi;
 				tmpRect.Height = hi;
+								
 				df.Font.MeasureString(df.Sprite, text, dtf, ref tmpRect);
 				FSizeOutput.SetValue2D(i, tmpRect.Width, tmpRect.Height);
 				
+				FTranformIn.GetRenderWorldMatrix(i, out world);
+					
+				switch (normalize)
+				{
+						case 1: preScale = VMath.Scale(1f/tmpRect.Width, -1f/tmpRect.Width, 1); break;
+						//"width" means that the texture width will have no influence on the width of the sprite. Width will be always 1.
+						
+						case 2: preScale = VMath.Scale(1f/tmpRect.Height, -1f/tmpRect.Height, 1); break;
+						//"height" means that the texture height will have no influence on the height of the sprite. Height will be always 1.
+						
+						case 3: preScale = VMath.Scale(1f/tmpRect.Width, -1f/tmpRect.Height, 1); break;
+						//"on" means that the particle will always be a unit quad. independant of texture size
+				}
+				df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(preScale * world);
+
 				FShowBrush.GetValue(i, out showBrush);
 				if (showBrush >= 0.5)
 				{
