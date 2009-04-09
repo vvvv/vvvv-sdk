@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta20.1.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\modules\vvvv group\Animation\Damper (Animation Jump).v4p">
-   <BOUNDS height="6000" left="15030" top="1920" type="Window" width="9000">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta19.1.dtd" >
+   <PATCH nodename="D:\work\LUFTHANSA\vvvv\modules\vvvv group\Animation\Damper (Animation Jump).v4p">
+   <BOUNDS height="7125" left="3015" top="6405" type="Window" width="9015">
    </BOUNDS>
    <NODE componentmode="Hidden" id="13" nodename="Oscillator (Animation Advanced)">
    <BOUNDS height="270" left="1965" top="4155" type="Node" width="3945">
@@ -25,9 +25,11 @@
    </PIN>
    <PIN pinname="Acceleration Out" visible="1">
    </PIN>
+   <PIN pinname="Velocity In" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="12" nodename="NOT (Boolean)">
-   <BOUNDS height="0" left="4155" top="2265" type="Node" width="0">
+   <BOUNDS height="0" left="3945" top="2175" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -83,7 +85,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
    </PIN>
    </NODE>
    <LINK dstnodeid="13" dstpinname="FilterTime" srcnodeid="8" srcpinname="Y Output Value">
@@ -161,9 +163,9 @@
    <LINK dstnodeid="13" dstpinname="Position In" srcnodeid="6" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="2025" top="4935" type="Node" width="0">
+   <BOUNDS height="0" left="1875" top="5790" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="240" left="2025" top="4935" type="Box" width="795">
+   <BOUNDS height="240" left="1875" top="5790" type="Box" width="795">
    </BOUNDS>
    <BOUNDS height="160" left="13155" top="8295" type="Window" width="215">
    </BOUNDS>
@@ -172,12 +174,10 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Position Out|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="13" srcpinname="Position Out">
-   </LINK>
    <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="3885" top="4935" type="Node" width="0">
+   <BOUNDS height="0" left="3735" top="5790" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="240" left="3885" top="4935" type="Box" width="795">
+   <BOUNDS height="240" left="3735" top="5790" type="Box" width="795">
    </BOUNDS>
    <BOUNDS height="160" left="12720" top="8190" type="Window" width="215">
    </BOUNDS>
@@ -189,9 +189,9 @@
    <LINK dstnodeid="2" dstpinname="Y Input Value" srcnodeid="13" srcpinname="Velocity Out">
    </LINK>
    <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="5130" top="4935" type="Node" width="0">
+   <BOUNDS height="0" left="4980" top="5790" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="240" left="5130" top="4935" type="Box" width="795">
+   <BOUNDS height="240" left="4980" top="5790" type="Box" width="795">
    </BOUNDS>
    <BOUNDS height="160" left="14130" top="8340" type="Window" width="215">
    </BOUNDS>
@@ -230,6 +230,24 @@
    </LINK>
    <LINK dstnodeid="9" dstpinname="Switch" srcnodeid="0" srcpinname="Y Output Value">
    </LINK>
-   <INFO author="vvvv group" description="Just like the lovely Damper (Animation) but additionally allows you to jump to values directly." tags="break, discontinuous">
-   </INFO>
+   <NODE nodename="Switch (Value Input)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="1695" top="5025" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Position Out" dstnodeid="14" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Switch">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="3" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Input 2">
+   </LINK>
    </PATCH>
