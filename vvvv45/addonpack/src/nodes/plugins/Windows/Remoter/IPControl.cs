@@ -14,7 +14,7 @@ namespace VVVV.Nodes
 	public partial class IPControl: UserControl
 	{
 		[DllImport("iphlpapi.dll")]
-		public static extern int SendARP(int DestIP, int SrcIP, [Out] byte[] pMacAddr, ref int PhyAddrLen);
+		public static extern int SendARP(UInt32 DestIP, UInt32 SrcIP, [Out] byte[] pMacAddr, ref uint PhyAddrLen);
 		
 		public event ButtonHandler OnVNCButton;
 		public event ButtonHandler OnEXPButton;
@@ -248,11 +248,14 @@ namespace VVVV.Nodes
 				//http://social.msdn.microsoft.com/forums/en-US/netfxnetcom/thread/2b125a0e-f67d-476f-b8a0-a21c99279d5b/
 				
 				//so now using SendARP via dllimport
-				IPAddress addr = IPAddress.Parse(IP);
+				IPAddress addr = IPAddress.Parse(FIP);
 				byte[] mac = new byte[6];
-				int length = mac.Length;
-				SendARP((int)addr.Address, 0, mac, ref length);
-				FMacAddress = BitConverter.ToString(mac, 0, length);
+				uint length = (uint) mac.Length;
+				
+				//http://social.microsoft.com/Forums/en-US/vblanguage/thread/d4967e05-9914-49c4-9c9b-53fe8d52fee0/
+				SendARP((UInt32)addr.Address, 0, mac, ref length);
+				
+				FMacAddress = BitConverter.ToString(mac, 0, (int) length);
 				
 				if (FMacAddress == "")
 					MacLabel.Text = "MAC Address";
