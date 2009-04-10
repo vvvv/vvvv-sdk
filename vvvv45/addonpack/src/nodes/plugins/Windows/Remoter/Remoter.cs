@@ -1,11 +1,10 @@
 #region licence/info
 
 //////project name
-//vvvv plugin template with gui
+//Remoter
 
 //////description
-//basic vvvv plugin template with gui.
-//Copy this an rename it, to write your own plugin node.
+//a gui to remote PCs
 
 //////licence
 //GNU Lesser General Public License (LGPL)
@@ -41,6 +40,8 @@ using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
 /*todos
+ * expect ping (for watchdog)
+ * remoting of RemoterSA
  * log to disk
  * consistent log-messages
  * email notification of failures
@@ -58,8 +59,6 @@ namespace VVVV.Nodes
 	//class definition, inheriting from UserControl for the GUI stuff
 	public class Remoter: UserControl, IPlugin
 	{
-		
-
 		public enum TPsToolCommand {Execute, Kill, Watch, WatchExecute, Reboot, Shutdown};
 		public enum TWatchMode {Off, Restart, Reboot};
 		
@@ -104,11 +103,6 @@ namespace VVVV.Nodes
 			InitializeComponent();
 			
 			FSettings = new XmlDocument();
-			
-		/*	FTCPClient = new System.Net.Sockets.TcpClient();
-			FTCPClient.Connect("192.168.0.43", 41043);
-			
-			FTCPStream = FTCPClient.GetStream();*/
 		}
 		
 		// Dispose(bool disposing) executes in two distinct scenarios.
@@ -266,14 +260,16 @@ namespace VVVV.Nodes
 			this.PsToolsUsername = new System.Windows.Forms.TextBox();
 			this.PsToolsPassword = new System.Windows.Forms.TextBox();
 			this.SimulatorPage = new System.Windows.Forms.TabPage();
-			this.MCListBox = new System.Windows.Forms.ListBox();
+			this.SimulatorListBox = new System.Windows.Forms.ListBox();
 			this.panel7 = new System.Windows.Forms.Panel();
-			this.MCStringEdit = new System.Windows.Forms.TextBox();
-			this.AddMCString = new System.Windows.Forms.Button();
+			this.SimulatorStringEdit = new System.Windows.Forms.TextBox();
+			this.AddSimulatorStringButton = new System.Windows.Forms.Button();
 			this.panel6 = new System.Windows.Forms.Panel();
-			this.MCPortUpDown = new System.Windows.Forms.NumericUpDown();
-			this.MCTCPCheckBox = new System.Windows.Forms.RadioButton();
-			this.MCUDPCheckBox = new System.Windows.Forms.RadioButton();
+			this.SimulatorIPEdit = new System.Windows.Forms.TextBox();
+			this.SimulatorPortUpDown = new System.Windows.Forms.NumericUpDown();
+			this.SimulatorConnectButton = new System.Windows.Forms.Button();
+			this.SimulatorTCPCheckBox = new System.Windows.Forms.RadioButton();
+			this.SimulatorUDPCheckBox = new System.Windows.Forms.RadioButton();
 			this.OnlineTimer = new System.Windows.Forms.Timer(this.components);
 			this.LeftPanel = new System.Windows.Forms.Panel();
 			this.IPListPanel = new System.Windows.Forms.Panel();
@@ -299,7 +295,7 @@ namespace VVVV.Nodes
 			this.SimulatorPage.SuspendLayout();
 			this.panel7.SuspendLayout();
 			this.panel6.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.MCPortUpDown)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.SimulatorPortUpDown)).BeginInit();
 			this.LeftPanel.SuspendLayout();
 			this.LeftBottomPanel.SuspendLayout();
 			this.LeftTopPanel.SuspendLayout();
@@ -872,7 +868,7 @@ namespace VVVV.Nodes
 			// 
 			// SimulatorPage
 			// 
-			this.SimulatorPage.Controls.Add(this.MCListBox);
+			this.SimulatorPage.Controls.Add(this.SimulatorListBox);
 			this.SimulatorPage.Controls.Add(this.panel7);
 			this.SimulatorPage.Controls.Add(this.panel6);
 			this.SimulatorPage.Location = new System.Drawing.Point(4, 25);
@@ -883,111 +879,121 @@ namespace VVVV.Nodes
 			this.SimulatorPage.Text = "Simulator";
 			this.SimulatorPage.UseVisualStyleBackColor = true;
 			// 
-			// MCListBox
+			// SimulatorListBox
 			// 
-			this.MCListBox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.MCListBox.FormattingEnabled = true;
-			this.MCListBox.Items.AddRange(new object[] {
-									"STANDBY",
-									"SHUTDOWN",
-									"DE",
-									"EN",
-									"AKT2b",
-									"ENDE2b",
-									"AKT4",
-									"FALL1",
-									"FALL2",
-									"FALL3",
-									"ANTWORT1",
-									"ANTWORT2",
-									"ANTWORT3"});
-			this.MCListBox.Location = new System.Drawing.Point(3, 47);
-			this.MCListBox.Name = "MCListBox";
-			this.MCListBox.Size = new System.Drawing.Size(297, 290);
-			this.MCListBox.TabIndex = 3;
-			this.MCListBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MCListBoxMouseUp);
-			this.MCListBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ListBox1MouseClick);
+			this.SimulatorListBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.SimulatorListBox.FormattingEnabled = true;
+			this.SimulatorListBox.Location = new System.Drawing.Point(3, 47);
+			this.SimulatorListBox.Name = "SimulatorListBox";
+			this.SimulatorListBox.Size = new System.Drawing.Size(297, 290);
+			this.SimulatorListBox.TabIndex = 3;
+			this.SimulatorListBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.SimulatorListBoxMouseUp);
 			// 
 			// panel7
 			// 
-			this.panel7.Controls.Add(this.MCStringEdit);
-			this.panel7.Controls.Add(this.AddMCString);
+			this.panel7.Controls.Add(this.SimulatorStringEdit);
+			this.panel7.Controls.Add(this.AddSimulatorStringButton);
 			this.panel7.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel7.Location = new System.Drawing.Point(3, 25);
 			this.panel7.Name = "panel7";
 			this.panel7.Size = new System.Drawing.Size(297, 22);
 			this.panel7.TabIndex = 5;
 			// 
-			// MCStringEdit
+			// SimulatorStringEdit
 			// 
-			this.MCStringEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.MCStringEdit.Location = new System.Drawing.Point(0, 0);
-			this.MCStringEdit.Name = "MCStringEdit";
-			this.MCStringEdit.Size = new System.Drawing.Size(277, 20);
-			this.MCStringEdit.TabIndex = 0;
+			this.SimulatorStringEdit.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.SimulatorStringEdit.Location = new System.Drawing.Point(0, 0);
+			this.SimulatorStringEdit.Name = "SimulatorStringEdit";
+			this.SimulatorStringEdit.Size = new System.Drawing.Size(277, 20);
+			this.SimulatorStringEdit.TabIndex = 0;
+			this.SimulatorStringEdit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SimulatorStringEditKeyPress);
 			// 
-			// AddMCString
+			// AddSimulatorStringButton
 			// 
-			this.AddMCString.Dock = System.Windows.Forms.DockStyle.Right;
-			this.AddMCString.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.AddMCString.Location = new System.Drawing.Point(277, 0);
-			this.AddMCString.Name = "AddMCString";
-			this.AddMCString.Size = new System.Drawing.Size(20, 22);
-			this.AddMCString.TabIndex = 1;
-			this.AddMCString.Text = "+";
-			this.AddMCString.UseVisualStyleBackColor = true;
-			this.AddMCString.MouseClick += new System.Windows.Forms.MouseEventHandler(this.AddMCStringMouseClick);
+			this.AddSimulatorStringButton.Dock = System.Windows.Forms.DockStyle.Right;
+			this.AddSimulatorStringButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.AddSimulatorStringButton.Location = new System.Drawing.Point(277, 0);
+			this.AddSimulatorStringButton.Name = "AddSimulatorStringButton";
+			this.AddSimulatorStringButton.Size = new System.Drawing.Size(20, 22);
+			this.AddSimulatorStringButton.TabIndex = 1;
+			this.AddSimulatorStringButton.Text = "+";
+			this.AddSimulatorStringButton.UseVisualStyleBackColor = true;
+			this.AddSimulatorStringButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.AddSimulatorStringButtonClick);
 			// 
 			// panel6
 			// 
-			this.panel6.Controls.Add(this.MCPortUpDown);
-			this.panel6.Controls.Add(this.MCTCPCheckBox);
-			this.panel6.Controls.Add(this.MCUDPCheckBox);
+			this.panel6.Controls.Add(this.SimulatorIPEdit);
+			this.panel6.Controls.Add(this.SimulatorPortUpDown);
+			this.panel6.Controls.Add(this.SimulatorConnectButton);
+			this.panel6.Controls.Add(this.SimulatorTCPCheckBox);
+			this.panel6.Controls.Add(this.SimulatorUDPCheckBox);
 			this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel6.Location = new System.Drawing.Point(3, 3);
 			this.panel6.Name = "panel6";
 			this.panel6.Size = new System.Drawing.Size(297, 22);
 			this.panel6.TabIndex = 4;
 			// 
-			// MCPortUpDown
+			// SimulatorIPEdit
 			// 
-			this.MCPortUpDown.Dock = System.Windows.Forms.DockStyle.Right;
-			this.MCPortUpDown.Location = new System.Drawing.Point(240, 0);
-			this.MCPortUpDown.Maximum = new decimal(new int[] {
+			this.SimulatorIPEdit.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.SimulatorIPEdit.Location = new System.Drawing.Point(99, 0);
+			this.SimulatorIPEdit.Name = "SimulatorIPEdit";
+			this.SimulatorIPEdit.Size = new System.Drawing.Size(85, 20);
+			this.SimulatorIPEdit.TabIndex = 4;
+			this.SimulatorIPEdit.TextChanged += new System.EventHandler(this.SimulatorIPEditTextChanged);
+			// 
+			// SimulatorPortUpDown
+			// 
+			this.SimulatorPortUpDown.Dock = System.Windows.Forms.DockStyle.Right;
+			this.SimulatorPortUpDown.Location = new System.Drawing.Point(184, 0);
+			this.SimulatorPortUpDown.Maximum = new decimal(new int[] {
 									65535,
 									0,
 									0,
 									0});
-			this.MCPortUpDown.Name = "MCPortUpDown";
-			this.MCPortUpDown.Size = new System.Drawing.Size(57, 20);
-			this.MCPortUpDown.TabIndex = 3;
-			this.MCPortUpDown.Value = new decimal(new int[] {
-									41043,
+			this.SimulatorPortUpDown.Name = "SimulatorPortUpDown";
+			this.SimulatorPortUpDown.Size = new System.Drawing.Size(56, 20);
+			this.SimulatorPortUpDown.TabIndex = 3;
+			this.SimulatorPortUpDown.Value = new decimal(new int[] {
+									44444,
 									0,
 									0,
 									0});
+			this.SimulatorPortUpDown.ValueChanged += new System.EventHandler(this.SimulatorPortUpDownValueChanged);
 			// 
-			// MCTCPCheckBox
+			// SimulatorConnectButton
 			// 
-			this.MCTCPCheckBox.Checked = true;
-			this.MCTCPCheckBox.Dock = System.Windows.Forms.DockStyle.Left;
-			this.MCTCPCheckBox.Location = new System.Drawing.Point(57, 0);
-			this.MCTCPCheckBox.Name = "MCTCPCheckBox";
-			this.MCTCPCheckBox.Size = new System.Drawing.Size(60, 22);
-			this.MCTCPCheckBox.TabIndex = 1;
-			this.MCTCPCheckBox.TabStop = true;
-			this.MCTCPCheckBox.Text = "TCP";
-			this.MCTCPCheckBox.UseVisualStyleBackColor = true;
+			this.SimulatorConnectButton.Dock = System.Windows.Forms.DockStyle.Right;
+			this.SimulatorConnectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.SimulatorConnectButton.Location = new System.Drawing.Point(240, 0);
+			this.SimulatorConnectButton.Name = "SimulatorConnectButton";
+			this.SimulatorConnectButton.Size = new System.Drawing.Size(57, 22);
+			this.SimulatorConnectButton.TabIndex = 5;
+			this.SimulatorConnectButton.Text = "Connect";
+			this.SimulatorConnectButton.UseVisualStyleBackColor = true;
+			this.SimulatorConnectButton.Click += new System.EventHandler(this.SimulatorConnectButtonClick);
 			// 
-			// MCUDPCheckBox
+			// SimulatorTCPCheckBox
 			// 
-			this.MCUDPCheckBox.Dock = System.Windows.Forms.DockStyle.Left;
-			this.MCUDPCheckBox.Location = new System.Drawing.Point(0, 0);
-			this.MCUDPCheckBox.Name = "MCUDPCheckBox";
-			this.MCUDPCheckBox.Size = new System.Drawing.Size(57, 22);
-			this.MCUDPCheckBox.TabIndex = 0;
-			this.MCUDPCheckBox.Text = "UDP";
-			this.MCUDPCheckBox.UseVisualStyleBackColor = true;
+			this.SimulatorTCPCheckBox.Checked = true;
+			this.SimulatorTCPCheckBox.Dock = System.Windows.Forms.DockStyle.Left;
+			this.SimulatorTCPCheckBox.Location = new System.Drawing.Point(51, 0);
+			this.SimulatorTCPCheckBox.Name = "SimulatorTCPCheckBox";
+			this.SimulatorTCPCheckBox.Size = new System.Drawing.Size(48, 22);
+			this.SimulatorTCPCheckBox.TabIndex = 1;
+			this.SimulatorTCPCheckBox.TabStop = true;
+			this.SimulatorTCPCheckBox.Text = "TCP";
+			this.SimulatorTCPCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// SimulatorUDPCheckBox
+			// 
+			this.SimulatorUDPCheckBox.Dock = System.Windows.Forms.DockStyle.Left;
+			this.SimulatorUDPCheckBox.Location = new System.Drawing.Point(0, 0);
+			this.SimulatorUDPCheckBox.Name = "SimulatorUDPCheckBox";
+			this.SimulatorUDPCheckBox.Size = new System.Drawing.Size(51, 22);
+			this.SimulatorUDPCheckBox.TabIndex = 0;
+			this.SimulatorUDPCheckBox.Text = "UDP";
+			this.SimulatorUDPCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// OnlineTimer
 			// 
@@ -1122,19 +1128,22 @@ namespace VVVV.Nodes
 			this.panel7.ResumeLayout(false);
 			this.panel7.PerformLayout();
 			this.panel6.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.MCPortUpDown)).EndInit();
+			this.panel6.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.SimulatorPortUpDown)).EndInit();
 			this.LeftPanel.ResumeLayout(false);
 			this.LeftBottomPanel.ResumeLayout(false);
 			this.LeftTopPanel.ResumeLayout(false);
 			this.LeftTopPanel.PerformLayout();
 			this.ResumeLayout(false);
 		}
-		private System.Windows.Forms.ListBox MCListBox;
-		private System.Windows.Forms.NumericUpDown MCPortUpDown;
-		private System.Windows.Forms.TextBox MCStringEdit;
-		private System.Windows.Forms.Button AddMCString;
-		private System.Windows.Forms.RadioButton MCTCPCheckBox;
-		private System.Windows.Forms.RadioButton MCUDPCheckBox;
+		private System.Windows.Forms.Button AddSimulatorStringButton;
+		private System.Windows.Forms.Button SimulatorConnectButton;
+		private System.Windows.Forms.RadioButton SimulatorUDPCheckBox;
+		private System.Windows.Forms.RadioButton SimulatorTCPCheckBox;
+		private System.Windows.Forms.TextBox SimulatorStringEdit;
+		private System.Windows.Forms.NumericUpDown SimulatorPortUpDown;
+		private System.Windows.Forms.ListBox SimulatorListBox;
+		private System.Windows.Forms.TextBox SimulatorIPEdit;
 		private System.Windows.Forms.Panel panel6;
 		private System.Windows.Forms.Panel panel7;
 		private System.Windows.Forms.TabControl Simulator;
@@ -1385,6 +1394,22 @@ namespace VVVV.Nodes
 				
 				attr = tool.Attributes.GetNamedItem("WatchProcessPath") as XmlAttribute;
 				WatchProcessPath.Text = attr.Value;
+				
+				//simulator
+				FSettings.LoadXml(Settings); //not sure why need to load here again
+				//mirror
+				tool = FSettings.SelectSingleNode(@"REMOTER/SIMULATOR");
+				attr = tool.Attributes.GetNamedItem("TargetIP") as XmlAttribute;
+				SimulatorIPEdit.Text = attr.Value;
+			
+				attr = tool.Attributes.GetNamedItem("TargetPort") as XmlAttribute;
+				SimulatorPortUpDown.Value = Convert.ToDecimal(attr.Value);
+			
+				attr = tool.Attributes.GetNamedItem("Commands") as XmlAttribute;
+				char[] s = new char[1];
+				s[0] = ';';
+				string[] commands = attr.Value.Split(s);
+				SimulatorListBox.Items.AddRange(commands);
 			}
 			catch
 			{
@@ -1462,7 +1487,29 @@ namespace VVVV.Nodes
 			attr = FSettings.CreateAttribute("WatchProcessPath");
 			attr.Value = WatchProcessPath.Text;
 			tool.Attributes.Append(attr);
-
+			
+			//simulator
+			tool = FSettings.CreateElement("SIMULATOR");
+			main.AppendChild(tool);
+			attr = FSettings.CreateAttribute("TargetIP");
+			attr.Value = SimulatorIPEdit.Text;
+			tool.Attributes.Append(attr);
+			
+			attr = FSettings.CreateAttribute("TargetPort");
+			attr.Value = SimulatorPortUpDown.Value.ToString();
+			tool.Attributes.Append(attr);
+			
+			attr = FSettings.CreateAttribute("Commands");
+			string commands = "";
+			for (int i=0; i<SimulatorListBox.Items.Count; i++)
+				commands += SimulatorListBox.Items[i] + ";";
+				
+			char[] s = new char[1];
+			s[0] = ';';
+			commands = commands.TrimEnd(s);
+			attr.Value = commands;
+			tool.Attributes.Append(attr);
+			
 			//write to settingspin
 			FSettingsInput.SetString(0, main.OuterXml);
 		}
@@ -1874,31 +1921,81 @@ namespace VVVV.Nodes
 		}
 		
 		//simulator
-		void ListBox1MouseClick(object sender, MouseEventArgs e)
-		{
-			
-		}
-		
-		void AddMCStringMouseClick(object sender, MouseEventArgs e)
-		{
-			MCListBox.Items.Add(MCStringEdit.Text);
-		}
-		
-		void MCListBoxMouseUp(object sender, MouseEventArgs e)
+		void SimulatorListBoxMouseUp(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
-				string msg = MCListBox.Items[MCListBox.SelectedIndex].ToString();
-				
-				char[] chars = msg.ToCharArray();
-				byte[] bytes = new byte[chars.Length];
-				for (int i=0; i<bytes.Length; i++)
-					bytes[i] = Convert.ToByte(chars[i]);
-				
-				FTCPStream.Write(bytes, 0, bytes.Length);
+				if (FTCPStream != null)
+				{
+					string msg = SimulatorListBox.Items[SimulatorListBox.SelectedIndex].ToString();
+					
+					char[] chars = msg.ToCharArray();
+					byte[] bytes = new byte[chars.Length];
+					for (int i=0; i<bytes.Length; i++)
+						bytes[i] = Convert.ToByte(chars[i]);
+					
+					FTCPStream.Write(bytes, 0, bytes.Length);
+				}
 			}
 			else if (e.Button == MouseButtons.Right)
-				MCListBox.Items.RemoveAt(MCListBox.SelectedIndex);
+				if (SimulatorListBox.SelectedIndex > -1)
+					SimulatorListBox.Items.RemoveAt(SimulatorListBox.SelectedIndex);
+		}
+		
+		private void UpdateSimulatorConnection()
+		{
+			IPAddress target;
+			IPAddress.TryParse(SimulatorIPEdit.Text, out target);
+			
+			if (target != null)
+			{
+				if (SimulatorTCPCheckBox.Checked)
+				{
+					if (FTCPClient != null)
+					{
+						FTCPStream.Close();
+						FTCPStream = null;
+						FTCPClient.Close();
+						FTCPClient = null;
+					}
+					
+					FTCPClient = new System.Net.Sockets.TcpClient();
+					FTCPClient.Connect(SimulatorIPEdit.Text, (int) SimulatorPortUpDown.Value);
+					FTCPStream = FTCPClient.GetStream();
+				}
+			}
+		}
+		
+		void AddSimulatorStringButtonClick(object sender, EventArgs e)
+		{
+			AddSimulatorString();
+		}
+		
+		private void AddSimulatorString()
+		{
+			SimulatorListBox.Items.Add(SimulatorStringEdit.Text);
+			SaveSettings();
+		}
+		
+		void SimulatorConnectButtonClick(object sender, EventArgs e)
+		{
+			UpdateSimulatorConnection();
+		}
+		
+		void SimulatorPortUpDownValueChanged(object sender, EventArgs e)
+		{
+			SaveSettings();
+		}
+		
+		void SimulatorIPEditTextChanged(object sender, EventArgs e)
+		{
+			SaveSettings();
+		}
+		
+		void SimulatorStringEditKeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (e.KeyChar == (char) 13)
+			    AddSimulatorString();
 		}
 	}
 }
