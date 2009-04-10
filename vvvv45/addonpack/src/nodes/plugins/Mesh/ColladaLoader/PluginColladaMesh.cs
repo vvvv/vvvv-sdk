@@ -35,7 +35,7 @@ using System.Collections;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using VVVV.Utils.DX;
+using VVVV.Shared.VSlimDX;
 
 using VVVV.Collada;
 using VVVV.Collada.ColladaModel;
