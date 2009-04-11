@@ -1,0 +1,233 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta20.1.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\modules\vvvv group\EX9\Sprite (DX9).v4p">
+   <BOUNDS height="6540" left="13200" top="4935" type="Window" width="11220">
+   </BOUNDS>
+   <NODE id="17" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="5355" top="4020" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Fast Draw" visible="1">
+   </PIN>
+   <PIN pinname="Render Pass" visible="1">
+   </PIN>
+   <PIN pinname="Priority" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="16" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="4425" top="1605" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="TranslateY" visible="1">
+   </PIN>
+   <PIN pinname="ScaleX" visible="1">
+   </PIN>
+   <PIN pinname="ScaleY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Node)">
+   <BOUNDS height="0" left="1605" top="540" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7652" top="6150" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1605" top="540" type="Box" width="1260">
+   </BOUNDS>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Transform">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (Node)">
+   <BOUNDS height="0" left="255" top="540" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7541" top="6144" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="255" top="540" type="Box" width="1230">
+   </BOUNDS>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Render State|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Node)">
+   <BOUNDS height="0" left="7065" top="540" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7772" top="6206" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="7065" top="540" type="Box" width="900">
+   </BOUNDS>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Texture">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Texture" srcnodeid="13" srcpinname="Output Node">
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="8220" top="540" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7820" top="6222" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="450" left="8220" top="540" type="Box" width="1200">
+   </BOUNDS>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Color Input" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Color">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Color" srcnodeid="12" srcpinname="Color Output">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="9570" top="540" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8067" top="6137" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="9570" top="540" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Enabled" srcnodeid="11" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3315" top="540" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5400" top="6613" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3315" top="540" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="X">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4275" top="540" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5421" top="6600" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4275" top="540" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Y">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5145" top="540" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5471" top="6603" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5145" top="540" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Width">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1.4">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6090" top="540" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5505" top="6599" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="6090" top="540" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Height">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.7">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="TranslateX" srcnodeid="10" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="TranslateY" srcnodeid="9" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="ScaleX" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="ScaleY" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Render State" srcnodeid="14" srcpinname="Output Node">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Node)">
+   <BOUNDS height="0" left="5355" top="4515" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9585" top="7380" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5355" top="4515" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Layer">
+   </PIN>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input Node" srcnodeid="17" srcpinname="Layer">
+   </LINK>
+   <INFO author="vvvv group" description="A Sprite is a flat render object which can be positioned in 2d and can be textured easily. Only helpful for 2d rendering." tags="easy, plug&amp;play, 3d, rectangle, quad, simple">
+   </INFO>
+   <LINK dstnodeid="16" dstpinname="Transform In" srcnodeid="15" srcpinname="Output Node">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="9345" top="1965" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="9345" top="1965" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="15585" top="13950" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Normalize">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="Height">
+   </PIN>
+   </NODE>
+   <NODE nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\modules\vvvv group\Transform\TextureScale (Transform).v4p" componentmode="Hidden" id="25" path="">
+   <BOUNDS type="Node" left="4770" top="2505" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4770" top="2505" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="13515" top="1530" width="9000" height="6000">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Normalize" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Output Node" dstnodeid="25" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Transform Out" dstnodeid="25" dstpinname="Transform In">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="Transform Out" dstnodeid="17" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Output Enum" dstnodeid="25" dstpinname="Normalize">
+   </LINK>
+   </PATCH>

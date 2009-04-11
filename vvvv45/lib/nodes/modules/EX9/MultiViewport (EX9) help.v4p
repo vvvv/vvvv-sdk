@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta20.1.dtd" >
    <PATCH nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\modules\vvvv group\EX9\MultiViewport (EX9) help.v4p">
-   <BOUNDS height="8475" left="1290" top="3900" type="Window" width="13890">
+   <BOUNDS height="12255" left="1290" top="3900" type="Window" width="13890">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="24" nodename="Renderer (EX9)">
    <BOUNDS height="0" left="1515" top="7440" type="Node" width="0">
@@ -127,9 +127,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
-   <BOUNDS height="270" left="6855" top="1845" type="Node" width="4155">
+   <BOUNDS height="270" left="7170" top="1995" type="Node" width="4155">
    </BOUNDS>
-   <BOUNDS height="5700" left="6855" top="1845" type="Box" width="6390">
+   <BOUNDS height="5700" left="7170" top="1995" type="Box" width="6390">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -416,4 +416,36 @@
    </LINK>
    <LINK dstnodeid="24" dstpinname="Transformations Index" srcnodeid="0" srcpinname="Output">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="25">
+   <BOUNDS type="Node" left="585" top="8220" width="7695" height="1110">
+   </BOUNDS>
+   <BOUNDS type="Box" left="585" top="8220" width="12300" height="1875">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|new:&cr;&lf;Create a screen matrix with the MultiScreen module. It distributes the content onto n*m logical screens and does the softedge, calibration... &cr;&lf;The second step would be to create a device orientated projection matrix. For that you might need to specify viewports within different renderers which are created by the MultiViewport module. Especially for span mode or when using signal splitters this needs to be done.&cr;&lf;The third step would be to map the logical screens to the hardware viewports. Choose the logical screen with Transformation Index.&cr;&lf;&cr;&lf;that way you can easily distribute your content to many different renderers on devices with different spanmode settings...|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="9">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="26">
+   <BOUNDS type="Node" left="840" top="10170" width="1440" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="840" top="10170" width="11805" height="1560">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|note the new renderer pins:&cr;&lf;&cr;&lf;Aspect Ratio Transform (specify 4:3 when rendering to a 4:3 screen, not 3:4 like before!!)&cr;&lf;Crop Transform gets its infos from the multiscreen module&cr;&lf;Transformation Index chooses which cropped parts of the whole projection should be be rendered in the viewports of this renderer|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="9">
+   </PIN>
+   </NODE>
    </PATCH>

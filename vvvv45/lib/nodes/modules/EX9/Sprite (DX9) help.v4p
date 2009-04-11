@@ -1,0 +1,155 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta20.1.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\modules\vvvv group\EX9\Sprite (DX9) help.v4p">
+   <BOUNDS height="4845" left="615" top="5490" type="Window" width="6150">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="945" left="255" top="525" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|A Sprite is a flat render object which can be positioned in 2d and can be textured easily. |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sprite - DX9|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="9" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="2100" top="3585" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="6750" top="5490" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="2100" top="3585" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Projection Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="4005" top="1695" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" slicecount="1" values="|..\..\..\girlpower\images\ring thin.bmp|">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Reload" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Scale (Transform)">
+   <BOUNDS height="0" left="3405" top="3105" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0.75">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Projection Transform" srcnodeid="7" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="6" managers="" nodename="Sprite (DX9).v4p" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\modules\vvvv group\EX9\">
+   <PIN pinname="Texture" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="2085" top="2385" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3600" left="2085" top="2385" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="6540" left="13200" top="4935" type="Window" width="11220">
+   </BOUNDS>
+   <PIN pinname="Rotate" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="X" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Width" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Height" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Layer" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Render State" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="CenterX" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="CenterY" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="ShowRegpoint" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Color" pintype="Input" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Patch" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Normalize" slicecount="1" values="Both">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Texture" srcnodeid="8" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Layers" srcnodeid="6" srcpinname="Layer">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12">
+   <BOUNDS type="Node" left="2970" top="1500" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2970" top="1500" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="2835" top="7440" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.27">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Height">
+   </LINK>
+   <NODE nodename="LinearSpread (Spreads)" componentmode="Hidden" id="13">
+   <BOUNDS type="Node" left="1800" top="1785" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Output" dstnodeid="6" dstpinname="X">
+   </LINK>
+   <NODE nodename="Blend (EX9.RenderState)" componentmode="Hidden" id="15">
+   <BOUNDS type="Node" left="1110" top="2010" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Draw Mode" slicecount="1" values="Add">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Render State Out" dstnodeid="6" dstpinname="Render State">
+   </LINK>
+   </PATCH>
