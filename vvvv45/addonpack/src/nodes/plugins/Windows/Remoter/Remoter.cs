@@ -1409,6 +1409,7 @@ namespace VVVV.Nodes
 				char[] s = new char[1];
 				s[0] = ';';
 				string[] commands = attr.Value.Split(s);
+				SimulatorListBox.Items.Clear();
 				SimulatorListBox.Items.AddRange(commands);
 			}
 			catch
@@ -1925,9 +1926,12 @@ namespace VVVV.Nodes
 		{
 			if (e.Button == MouseButtons.Left)
 			{
+				string msg = SimulatorListBox.Items[SimulatorListBox.SelectedIndex].ToString();
+				SimulatorStringEdit.Text = msg;
+				
 				if (FTCPStream != null)
 				{
-					string msg = SimulatorListBox.Items[SimulatorListBox.SelectedIndex].ToString();
+					
 					
 					char[] chars = msg.ToCharArray();
 					byte[] bytes = new byte[chars.Length];
@@ -1974,6 +1978,7 @@ namespace VVVV.Nodes
 		private void AddSimulatorString()
 		{
 			SimulatorListBox.Items.Add(SimulatorStringEdit.Text);
+			SimulatorStringEdit.Text = "";
 			SaveSettings();
 		}
 		
