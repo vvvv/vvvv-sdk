@@ -36,7 +36,7 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.Utils;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using VVVV.Utils.DX;
+using VVVV.Shared.VSlimDX;
 
 using SlimDX;
 using SlimDX.Direct3D9;
