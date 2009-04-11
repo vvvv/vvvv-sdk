@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 // change them to the information which is associated with the assembly
 // you compile.
 
-[assembly: AssemblyTitle("PluginInterfaces")]
+[assembly: AssemblyTitle("VVVV PluginInterfaces")]
 [assembly: AssemblyDescription("Plugin Interfaces for VVVV Plugins")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("VVVV group")]
-[assembly: AssemblyProduct("PluginInterfaces")]
+[assembly: AssemblyProduct("VVVV PluginInterfaces")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
