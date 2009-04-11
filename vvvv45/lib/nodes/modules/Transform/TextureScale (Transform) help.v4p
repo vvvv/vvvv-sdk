@@ -1,0 +1,441 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta20.1.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\modules\vvvv group\Transform\TextureScale (Transform) help.v4p">
+   <BOUNDS type="Window" left="2220" top="4995" width="12390" height="9330">
+   </BOUNDS>
+   <NODE nodename="Renderer (EX9)" componentmode="InAWindow" id="1">
+   <BOUNDS type="Node" left="8520" top="7755" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8520" top="7755" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="8385" top="135" width="6120" height="4860">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="Quad (DX9)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="8130" top="6870" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Layer" dstnodeid="1" dstpinname="Layers">
+   </LINK>
+   <NODE nodename="DynamicTexture (EX9.Texture Color)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="6450" top="2760" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="5">
+   <BOUNDS type="Node" left="5250" top="1545" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5250" top="1545" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="16890" top="8040" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="66">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="width">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Width">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6">
+   <BOUNDS type="Node" left="6120" top="1545" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6120" top="1545" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="17595" top="7845" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="40">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="height">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Height">
+   </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="7">
+   <BOUNDS type="Node" left="7605" top="2190" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7605" top="2190" width="2250" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="19230" top="9525" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="35">
+   </PIN>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Texture Out" dstnodeid="2" dstpinname="Texture" linkstyle="Bezier" hiddenwhenlocked="0">
+   <LINKPOINT x="6480" y="4950">
+   </LINKPOINT>
+   <LINKPOINT x="8490" y="4950">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Color Output" dstnodeid="4" dstpinname="Color">
+   </LINK>
+   <NODE nodename="RandomSpread (Spreads)" componentmode="Hidden" id="8">
+   <BOUNDS type="Node" left="8775" top="1170" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="4.02">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="HSL (Color Join)" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="8415" top="1635" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Lightness" visible="1">
+   </PIN>
+   <PIN pinname="Saturation" slicecount="1" values="-8.04911692853238E-016">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Output" dstnodeid="9" dstpinname="Lightness">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Output" dstnodeid="7" dstpinname="Color Input">
+   </LINK>
+   <NODE nodename="Billboard (Transform)" componentmode="Hidden" id="10">
+   <BOUNDS type="Node" left="7635" top="5400" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Object Space" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11">
+   <BOUNDS type="Node" left="9165" top="570" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9165" top="570" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="12225" top="7230" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="17">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Spread Count">
+   </LINK>
+   <NODE id="0" componentmode="Hidden" nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\modules\vvvv group\Transform\TextureScale (Transform).v4p" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\modules\vvvv group\Transform\" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Texture" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Transform In" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Normalize" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="8205" top="6090" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8205" top="6090" width="4800" height="3600">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1" pintype="Output">
+   </PIN>
+   <BOUNDS type="Window" left="2505" top="3585" width="9000" height="6000">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Patch" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Transform Out" dstnodeid="0" dstpinname="Transform In">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Texture Out" dstnodeid="0" dstpinname="Texture" linkstyle="Bezier" hiddenwhenlocked="0">
+   <LINKPOINT x="6480" y="4560">
+   </LINKPOINT>
+   <LINKPOINT x="8805" y="4560">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Transform Out" dstnodeid="2" dstpinname="Transform">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="13">
+   <BOUNDS type="Node" left="9720" top="5775" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9720" top="5775" width="1065" height="345">
+   </BOUNDS>
+   <BOUNDS type="Window" left="9975" top="10785" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="13">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Output Enum" dstnodeid="0" dstpinname="Normalize">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16">
+   <BOUNDS type="Node" left="9480" top="4275" width="705" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9480" top="4275" width="2775" height="1275">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|None :&cr;&lf;width = texture width&cr;&lf;height = texture height&cr;&lf;&cr;&lf;useful for pixelbased rendering|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="18">
+   <BOUNDS type="Node" left="8340" top="4920" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8340" top="4920" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="13725" top="12780" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="Pixel">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Output Enum" dstnodeid="10" dstpinname="Object Space">
+   </LINK>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="990" left="255" top="525" type="Box" width="5205">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Outputs a transformation that reflects texture dimensions.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="25" nodename="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="255" top="165" type="Box" width="4695">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|TextureScale - Transform|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="41" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="1020" top="7755" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1800" left="1020" top="7755" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="4860" left="2250" top="135" type="Window" width="6120">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Ratio Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="40" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="630" top="6870" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Sampler State" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="41" dstpinname="Layers" srcnodeid="40" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="31" managers="" nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\modules\vvvv group\Transform\TextureScale (Transform).v4p" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\modules\vvvv group\Transform\">
+   <PIN pinname="Texture" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Normalize" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="705" top="6090" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3600" left="705" top="6090" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Transform Out" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="6000" left="14220" top="10950" type="Window" width="9000">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Patch" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="40" dstpinname="Transform" srcnodeid="31" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="30" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="1845" top="4530" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="345" left="1845" top="4530" type="Box" width="1065">
+   </BOUNDS>
+   <BOUNDS height="160" left="10275" top="11085" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="13">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="31" dstpinname="Normalize" srcnodeid="30" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="28" nodename="IOBox (String)">
+   <BOUNDS height="270" left="3090" top="4215" type="Node" width="705">
+   </BOUNDS>
+   <BOUNDS height="2610" left="3090" top="4215" type="Box" width="3195">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Width :&cr;&lf;width is normalized (=1.0)&cr;&lf;height depends on aspect ratio of texture&cr;&lf;&cr;&lf;Height:&cr;&lf;height is normalized (=1.0)&cr;&lf;width depends on aspect ratio of texture&cr;&lf;&cr;&lf;Both:&cr;&lf;width &amp; height are normalized (= 1.0)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="LFO (Animation)" componentmode="Hidden" id="42">
+   <BOUNDS type="Node" left="2445" top="2265" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <NODE nodename="Mod (Value)" componentmode="Hidden" id="43">
+   <BOUNDS type="Node" left="2655" top="2715" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="42" srcpinname="Cycles" dstnodeid="43" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="44">
+   <BOUNDS type="Node" left="2850" top="3690" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Ord Value" visible="1">
+   </PIN>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="44" srcpinname="Enum" dstnodeid="30" dstpinname="Input Enum">
+   </LINK>
+   <NODE nodename="Add (Value)" componentmode="Hidden" id="45">
+   <BOUNDS type="Node" left="2850" top="3165" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="43" srcpinname="Output" dstnodeid="45" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Output" dstnodeid="44" dstpinname="Ord Value">
+   </LINK>
+   <NODE nodename="AspectRatio (Transform)" componentmode="Hidden" id="46">
+   <BOUNDS type="Node" left="2145" top="7230" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Aspect Height" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="46" srcpinname="Transform Out" dstnodeid="41" dstpinname="Aspect Ratio Transform">
+   </LINK>
+   <NODE nodename="Filter (EX9.SamplerState)" componentmode="Hidden" id="48">
+   <BOUNDS type="Node" left="1350" top="6495" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Sampler State Out" visible="1">
+   </PIN>
+   <PIN pinname="Magnification Filter" slicecount="1" values="Point">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="48" srcpinname="Sampler State Out" dstnodeid="40" dstpinname="Sampler State">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Texture Out" dstnodeid="31" dstpinname="Texture" linkstyle="Bezier" hiddenwhenlocked="0">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Texture Out" dstnodeid="40" dstpinname="Texture" linkstyle="Bezier" hiddenwhenlocked="0">
+   </LINK>
+   <NODE nodename=":PLUGINS:\DrawText.dll|VVVV.Nodes.DrawText" componentmode="Hidden" id="49">
+   <BOUNDS type="Node" left="4440" top="8055" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4440" top="8055" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6150" top="14145" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="50">
+   <BOUNDS type="Node" left="4500" top="7725" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4500" top="7725" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|also see:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="51">
+   <BOUNDS type="Node" left="4440" top="8400" width="2310" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4440" top="8400" width="2310" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|which also has a normalize pin|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>
