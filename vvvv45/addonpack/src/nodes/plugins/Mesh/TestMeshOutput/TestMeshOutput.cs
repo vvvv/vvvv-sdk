@@ -52,7 +52,7 @@ namespace VVVV.Nodes
 		//Track whether Dispose has been called.
 		private bool FDisposed = false;
 		
-		private IDXMeshIO FMyMeshOutput;
+		private IDXMeshOut FMyMeshOutput;
 		
 		private List<Mesh> FDeviceMeshes = new List<Mesh>();
 		
@@ -219,6 +219,8 @@ namespace VVVV.Nodes
 				Ix[0] = 0;
 				Ix[1] = 1;
 				Ix[2] = 2;
+				
+				FMyMeshOutput.MarkPinAsChanged();
 		}
 		
 		#endregion mainloop
@@ -312,7 +314,7 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		public void GetMesh(IDXMeshIO ForPin, int OnDevice, out int Mesh)
+		public void GetMesh(IDXMeshOut ForPin, int OnDevice, out int Mesh)
 		{
 			Mesh = 0;
 			if (ForPin == FMyMeshOutput)
