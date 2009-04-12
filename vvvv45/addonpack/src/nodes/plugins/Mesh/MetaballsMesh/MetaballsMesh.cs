@@ -59,7 +59,7 @@ namespace VVVV.Nodes
 		//output pin declaration
 		
 		
-		private IDXMeshIO FMyMeshOutput;
+		private IDXMeshOut FMyMeshOutput;
 		
 		DataStream sVx;
 		DataStream sIx;
@@ -424,7 +424,7 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		public void GetMesh(IDXMeshIO ForPin, int OnDevice, out int MeshPointer)
+		public void GetMesh(IDXMeshOut ForPin, int OnDevice, out int MeshPointer)
 		{
 			//this is called from the plugin host from within directX beginscene/endscene
 			//therefore the plugin shouldn't be doing much here other than handing back the right mesh
