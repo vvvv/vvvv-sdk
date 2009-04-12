@@ -52,7 +52,7 @@ namespace VVVV.Nodes
 		private bool FDisposed = false;
 		
 		//a mesh output pin
-		private IDXMeshIO FMyMeshOutput;
+		private IDXMeshOut FMyMeshOutput;
 		
 		//a list that holds a mesh for every device
 		private Dictionary<int, Mesh> FDeviceMeshes = new Dictionary<int, Mesh>();
@@ -254,11 +254,11 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		public void GetMesh(IDXMeshIO ForPin, int OnDevice, out int MeshPointer)
+		public void GetMesh(IDXMeshOut ForPin, int OnDevice, out int MeshPointer)
 		{
-			Called by the PluginHost everytime a mesh is accessed via a pin on the plugin.
-		/// This is called from the PluginHost from within DirectX BeginScene/EndScene,
-		/// therefore the plugin shouldn't be doing much here other than handing back the right mesh
+			// Called by the PluginHost everytime a mesh is accessed via a pin on the plugin.
+			// This is called from the PluginHost from within DirectX BeginScene/EndScene,
+			// therefore the plugin shouldn't be doing much here other than handing back the right mesh
 			
 			MeshPointer = 0;
 			//in case the plugin has several mesh outputpins a test for the pin can be made here to get the right mesh.
