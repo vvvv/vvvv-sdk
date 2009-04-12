@@ -371,9 +371,6 @@ namespace VVVV.Nodes
 			if (enabled < 0.5)
 				return;
 			
-			//string space;
-			//FTransformSpace.GetString(0, out space);
-			
 			//from the docs: D3DXSPRITE_OBJECTSPACE -> The world, view, and projection transforms are not modified.
 			//for view and projection transforms this is exactly what we want: it allows placing the text within the
 			//same world as all the other objects. however we don't want to work in object space but in world space
@@ -382,7 +379,6 @@ namespace VVVV.Nodes
 			dev.SetTransform(TransformState.World, Matrix.Identity);
 
 			DeviceFont df = FDeviceFonts[DXDevice.DevicePointer()];
-			//DXDevice.SetSpace(FTranformIn, FTransformSpace);
 			FTranformIn.SetRenderSpace();
 			df.Sprite.Begin(SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace | SpriteFlags.AlphaBlend);
 			
