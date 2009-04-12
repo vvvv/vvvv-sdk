@@ -235,9 +235,10 @@ namespace VVVV.Nodes
 	        int v = 0;
         	int usS;
 	        //see if we have a reference to the upstream interface
-	        if (FUpstreamInterface != null)
+	        if ((FUpstreamInterface != null) && (FMyNodeInput.PinIsChanged))
         	{
         		//loop for all slices
+        		
         		for (int i=0; i<SpreadMax; i++)
         		{		
         			//get upstream slice index

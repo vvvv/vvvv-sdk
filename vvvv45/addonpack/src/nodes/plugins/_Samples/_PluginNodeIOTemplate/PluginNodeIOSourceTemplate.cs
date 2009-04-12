@@ -244,6 +244,8 @@ namespace VVVV.Nodes
         			//do something with the input and save it
         			FData[i] = (int) currentValueSlice * 1000;
         		}
+        		
+        		FMyNodeOutput.MarkPinAsChanged();
         	}      	
         }
              
