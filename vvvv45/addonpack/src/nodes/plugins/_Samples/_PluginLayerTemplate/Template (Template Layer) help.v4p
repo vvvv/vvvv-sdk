@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha20.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha20.9.dtd" >
    <PATCH nodename="Y:\sourceforge\plugins\_Samples\_PluginLayerTemplate\Template (Template Layer) help.v4p" componentmode="InAWindow">
    <BOUNDS height="6360" left="6450" top="585" type="Window" width="5025">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="4" nodename="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="5" nodename="Renderer (EX9)">
    <BOUNDS height="0" left="1290" top="2595" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1800" left="1290" top="2595" type="Box" width="2400">
@@ -26,7 +26,7 @@
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="3" nodename=":PLUGINS:\PluginLayerTemplate.dll|VVVV.Nodes.PluginLayerTemplate">
+   <NODE componentmode="Hidden" id="4" nodename=":PLUGINS:\PluginLayerTemplate.dll|VVVV.Nodes.PluginLayerTemplate">
    <BOUNDS height="0" left="1290" top="1860" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="1290" top="1860" type="Box" width="0">
@@ -39,12 +39,12 @@
    </PIN>
    <PIN pinname="Space" pintype="Input" visible="1">
    </PIN>
-   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   <PIN pinname="Transform" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Layers" srcnodeid="3" srcpinname="Layer">
+   <LINK dstnodeid="5" dstpinname="Layers" srcnodeid="4" srcpinname="Layer">
    </LINK>
-   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
    <BOUNDS height="0" left="675" top="450" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="675" top="450" type="Box" width="795">
@@ -56,9 +56,9 @@
    <PIN pinname="Input String" slicecount="1" values="asdf">
    </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="Text" srcnodeid="2" srcpinname="Output String">
+   <LINK dstnodeid="4" dstpinname="Text" srcnodeid="3" srcpinname="Output String">
    </LINK>
-   <NODE componentmode="InAWindow" id="1" nodename="Renderer (TTY)">
+   <NODE componentmode="InAWindow" id="2" nodename="Renderer (TTY)">
    <BOUNDS height="0" left="765" top="4575" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1800" left="765" top="4575" type="Box" width="2400">
@@ -66,7 +66,7 @@
    <BOUNDS height="3540" left="300" top="3390" type="Window" width="6105">
    </BOUNDS>
    </NODE>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (Enumerations)">
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Enumerations)">
    <BOUNDS height="0" left="2025" top="1020" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="2025" top="1020" type="Box" width="1980">
@@ -78,6 +78,18 @@
    <PIN pinname="Input Enum" slicecount="1" values="World">
    </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="Space" srcnodeid="0" srcpinname="Output Enum">
+   <LINK dstnodeid="4" dstpinname="Space" srcnodeid="1" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="Hidden" id="0" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="1665" top="1485" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Transform" srcnodeid="0" srcpinname="Transform Out">
    </LINK>
    </PATCH>

@@ -35,6 +35,7 @@ using System.Collections;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
+using VVVV.Shared.VSlimDX;
 
 using SlimDX;
 using SlimDX.Direct3D9;
@@ -298,23 +299,22 @@ namespace VVVV.Nodes
 			//This is called from the PluginHost from within DirectX BeginScene/EndScene,
 			//therefore the plugin shouldn't be doing much here other than some drawing calls.
 
+			Device dev = Device.FromPointer(new IntPtr(DXDevice.DevicePointer()));
+			dev.SetTransform(TransformState.World, Matrix.Identity);
+
 			DeviceFont df = FDeviceFonts[DXDevice.DevicePointer()];
 			
-			DXDevice.SetSpace(FTransformSpace);
-			
+			SpriteFlags sf = SpriteFlags.DoNotAddRefTexture;// | SpriteFlags.ObjectSpace;
+			string text;
 			Matrix4x4 world;
 			
-			SpriteFlags sf = SpriteFlags.DoNotAddRefTexture;// | SpriteFlags.ObjectSpace;
-			
-			string text;
 			df.Sprite.Begin(sf);
 			for (int i=0; i<FSpreadCount; i++)
 			{
 				FMyStringInput.GetString(i, out text);
 				
-				FWorldTransform.GetMatrix(i, out world);
-				FHost.Log(TLogType.Debug, world.ToString());
-				DXDevice.SetWorldTransform(world);
+				FWorldTransform.GetRenderWorldMatrix(i, out world);
+				df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(world);
 				
 				df.Font.DrawString(df.Sprite, text, 0, i*10, new SlimDX.Color4(1, 1, 1, 1));
 			}
