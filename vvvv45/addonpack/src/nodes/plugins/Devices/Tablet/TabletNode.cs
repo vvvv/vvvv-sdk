@@ -360,7 +360,7 @@ namespace VVVV.Nodes
                 catch (Exception e)
                 {
                     Tablet = null;
-                    MessageBox.Show(e.Message);
+                    FHost.Log(TLogType.Error, e.Message);
                     return false;
                 }
             }
