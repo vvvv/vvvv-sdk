@@ -72,7 +72,18 @@ namespace VVVV.Nodes.Timeliner
 			
 			foreach(TLBasePin bp in FOutputPins)
 			{
-				if (bp.OutputSlices.Count > 0)
+				if (bp is TLRulerPin)
+				{
+					//invalidate timebar areas
+					for (int i=0; i<FTimer.TimeCount; i++)
+						if ((FTimer.IsRunning) || (FTimer.Changed(i)))
+					{
+						anyTimeChanged = true;
+						timeasx = FTransformer.TransformPoint(new PointF((float) FTimer.GetTime(i), 0)).X;
+						newTimeRegion.Union(new Region(new RectangleF(timeasx-5, bp.Top, 10, bp.Height)));
+					}
+				}
+				else if (bp.OutputSlices.Count > 0)
 				{
 					float sHeight = bp.Height / bp.OutputSlices.Count;
 					
@@ -89,14 +100,14 @@ namespace VVVV.Nodes.Timeliner
 					}
 					
 					//invalidate timebar areas
-					if (FTimer.Changed(index))
+					if ((FTimer.IsRunning) || (FTimer.Changed(index)))
 					{
 						anyTimeChanged = true;
 						timeasx = FTransformer.TransformPoint(new PointF((float) FTimer.GetTime(index), 0)).X;
-						newTimeRegion.Union(new Region(new RectangleF(timeasx-6, bp.Top, 10, bp.Height)));
+						newTimeRegion.Union(new Region(new RectangleF(timeasx-2, bp.Top, 4, bp.Height)));
 					}
+					index++;
 				}
-				index++;
 			}
 			
 			if (anyTimeChanged)
@@ -136,10 +147,10 @@ namespace VVVV.Nodes.Timeliner
 			//g.TextRenderingHint =
 			
 			//debug cliprect
-			//Random r = new Random();
-			//Color c = Color.FromArgb(255, r.Next(255), r.Next(255), r.Next(255));
-			//g.FillRectangle(new SolidBrush(c), g.ClipBounds);
-			
+			/*Random r = new Random();
+			Color c = Color.FromArgb(255, r.Next(255), r.Next(255), r.Next(255));
+			g.FillRectangle(new SolidBrush(c), g.ClipBounds);
+			 */
 			if (FTransformer == null)
 				return;
 			

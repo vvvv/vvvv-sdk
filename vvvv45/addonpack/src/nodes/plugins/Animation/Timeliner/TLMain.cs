@@ -707,7 +707,7 @@ namespace VVVV.Nodes
 
 			SliceArea.Evaluate();
 
-			
+			GTimer.InvalidateTimes();
 			if (FFirstFrame)
 			{
 				//draw whole slicearea after all keyframes have been loaded
