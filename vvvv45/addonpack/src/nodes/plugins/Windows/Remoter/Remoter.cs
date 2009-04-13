@@ -1518,6 +1518,13 @@ namespace VVVV.Nodes
 		
 		private string ExecutePsToolCommand(TPsToolCommand Command, string Host)
 		{
+			if (PsToolsUsername.Text == "")
+				return "Username for remote PC is not specified. See Settings!";
+			if (PsToolsPassword.Text == "")
+				return "Password for remote PC is not specified. See Settings!";
+			if (FPsToolsPath == "")
+				return "Path to PsTools is not specified. See Settings!";
+			 
 			string filename = FPsToolsPath + "\\";
 			string workingdir = "";
 			string arguments = "\\\\" + Host + " -u " + PsToolsUsername.Text + " -p " + PsToolsPassword.Text;
@@ -1662,7 +1669,7 @@ namespace VVVV.Nodes
 				ManagementScope theScope = new ManagementScope("\\\\" + ipc.IP + "\\root\\cimv2", theConnection);
 				ManagementClass theClass = new ManagementClass(theScope, new ManagementPath("Win32_Process"), new ObjectGetOptions());
 				theClass.InvokeMethod("Create", theProcessToRun);*/
-				ExecutePsToolCommand(TPsToolCommand.Execute, ipc.IP);
+				FHost.Log(TLogType.Message, ExecutePsToolCommand(TPsToolCommand.Execute, ipc.IP));
 			}
 		}
 		
@@ -1931,8 +1938,6 @@ namespace VVVV.Nodes
 				
 				if (FTCPStream != null)
 				{
-					
-					
 					char[] chars = msg.ToCharArray();
 					byte[] bytes = new byte[chars.Length];
 					for (int i=0; i<bytes.Length; i++)
