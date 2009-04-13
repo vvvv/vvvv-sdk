@@ -37,9 +37,15 @@ namespace VVVV
 			this->vOutShapes->SetSubType(ArrayUtils::SingleGuidArray(ShapeDataType::GUID),ShapeDataType::FriendlyName);
 			this->vOutShapes->SetInterface(this->mShapes);
 
+			this->FHost->CreateValueOutput("Shape Ids",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutShapeId);
+			this->vOutShapeId->SetSubType(0,Double::MaxValue,1,0,false,false,true);
+
 			this->FHost->CreateNodeOutput("Bodies",TSliceMode::Dynamic,TPinVisibility::True,this->vOutBodies);
 			this->vOutBodies->SetSubType(ArrayUtils::SingleGuidArray(BodyDataType::GUID),BodyDataType::FriendlyName);
 			this->vOutBodies->SetInterface(this->mBodies);
+
+			this->FHost->CreateValueOutput("Body Ids",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutBodyId);
+			this->vOutBodyId->SetSubType(0,Double::MaxValue,1,0,false,false,true);
 		}
 
 
@@ -61,6 +67,8 @@ namespace VVVV
 					std::vector<b2Shape*> shapes;
 					std::vector<b2Body*> bodies;
 					std::vector<int> queryindex;
+					std::vector<int> shapeids;
+					std::vector<int> bodyids;
 
 					if (dblquery >= 0.5) 
 					{
@@ -83,6 +91,12 @@ namespace VVVV
 								shapes.push_back(buffer[j]);		
 								bodies.push_back(buffer[j]->GetBody());	
 								queryindex.push_back(i);
+
+								ShapeCustomData* sdata  = (ShapeCustomData*)buffer[j]->GetUserData();
+								shapeids.push_back(sdata->Id);
+
+								BodyCustomData* bdata = (BodyCustomData*)buffer[j]->GetBody()->GetUserData();
+								bodyids.push_back(bdata->Id);
 							}
 						}
 					}
@@ -90,12 +104,16 @@ namespace VVVV
 					this->vOutShapes->SliceCount = queryindex.size();
 					this->vOutQueryIndex->SliceCount = queryindex.size();
 					this->vOutBodies->SliceCount = queryindex.size();
+					this->vOutBodyId->SliceCount = queryindex.size();
+					this->vOutShapeId->SliceCount = queryindex.size();
 					
 					for (int i = 0; i < queryindex.size();i++) 
 					{
 						this->vOutQueryIndex->SetValue(i,queryindex.at(i));
 						this->mShapes->Add(shapes.at(i));
 						this->mBodies->Add(bodies.at(i));
+						this->vOutBodyId->SetValue(i,bodyids.at(i));
+						this->vOutShapeId->SetValue(i,shapeids.at(i));
 					}
 				}
 				else 
@@ -103,6 +121,8 @@ namespace VVVV
 					this->vOutQueryIndex->SliceCount = 0;
 					this->vOutShapes->SliceCount = 0;
 					this->vOutBodies->SliceCount = 0;
+					this->vOutBodyId->SliceCount = 0;
+					this->vOutShapeId->SliceCount = 0;
 				}
 			} 
 			else 
@@ -110,9 +130,11 @@ namespace VVVV
 				this->vOutQueryIndex->SliceCount = 0;
 				this->vOutShapes->SliceCount = 0;
 				this->vOutBodies->SliceCount = 0;
+				this->vOutBodyId->SliceCount = 0;
+				this->vOutShapeId->SliceCount = 0;
 			}
 
-			//this->vOutShapes->MarkPinAsChanged();
+			this->vOutShapes->MarkPinAsChanged();
 			this->vOutBodies->MarkPinAsChanged();
 		
 		}

@@ -67,9 +67,11 @@ namespace VVVV
 
 			INodeOut^ vOutShapes;
 			ShapeDataType^ mShapes;
+			IValueOut^ vOutShapeId;
 			
 			INodeOut^ vOutBodies;
 			BodyDataType^ mBodies;
+			IValueOut^ vOutBodyId;
 			
 		};
 	}

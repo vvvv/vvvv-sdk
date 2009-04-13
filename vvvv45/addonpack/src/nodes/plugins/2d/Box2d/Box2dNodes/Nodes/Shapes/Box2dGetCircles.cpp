@@ -60,6 +60,7 @@ namespace VVVV
 						pos.Add(vec);
 
 						radius->Add(circle->GetRadius());
+						
 
 						ShapeCustomData* sdata = (ShapeCustomData*)shape->GetUserData();
 						ids->Add(sdata->Id);

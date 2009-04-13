@@ -52,7 +52,7 @@ namespace VVVV
 				for (int i = 0; i < this->vInBodies->SliceCount; i++) 
 				{
 					int realslice;
-					this->vInBodies->GetUpsreamSlice(i,realslice);
+					this->vInBodies->GetUpsreamSlice(i % this->vInBodies->SliceCount,realslice);
 					b2Body* body = this->m_bodies->GetSlice(realslice);
 					BodyCustomData* bdata = (BodyCustomData*)body->GetUserData();
 

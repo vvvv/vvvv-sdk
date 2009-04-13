@@ -72,7 +72,7 @@ namespace VVVV
 						body->SetUserData(bdata);
 
 						int realslice;
-						this->vInShapes->GetUpsreamSlice(i,realslice);
+						this->vInShapes->GetUpsreamSlice(i % this->vInShapes->SliceCount,realslice);
 						
 						b2ShapeDef* shapedef = this->mShapes->GetSlice(realslice);
 						
