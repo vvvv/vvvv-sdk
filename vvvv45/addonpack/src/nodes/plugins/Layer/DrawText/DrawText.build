@@ -12,10 +12,16 @@
   <assemblyfileset id="project.references">
     <include name="${root.bin}/_Utils.dll" />
     <include name="${root.bin}/_PluginInterfaces.dll" />
-    <include name="${root.bin}/SlimDX.dll" />
+    <include name="${slimdx.dll}" />
   </assemblyfileset>
 
-
+  <fileset id="project.sources" failonempty="true">
+    <include name="**/*.cs" />
+    <include name="${shared.src}/SlimDX/SlimDXUtils.cs" />
+  </fileset>
   
+
+
+
 
 </project>
