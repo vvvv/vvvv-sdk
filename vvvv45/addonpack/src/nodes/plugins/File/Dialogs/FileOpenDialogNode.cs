@@ -81,7 +81,7 @@ namespace VVVV.Nodes
             this.FPinInOpen.SetSubType(0, 1, 1, 0, true, false, false);
 
             //Output 
-            this.FHost.CreateStringOutput("FPinOutPath", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPath);
+            this.FHost.CreateStringOutput("Path", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPath);
             this.FPinOutPath.SetSubType("", true);
             
         }
