@@ -50,7 +50,8 @@ namespace VVVV.Nodes
    		private bool FDisposed = false;
 
     	//input pin declaration
-    	private IValueIn FMyValueInput;
+    	//private IValueIn FMyValueInput;
+    	private IStringIn FFileNameInput;
     	
     	//output pin declaration
     	private INodeOut FMyNodeOutput;
@@ -189,8 +190,12 @@ namespace VVVV.Nodes
 	    	FHost = Host;
 
 	    	//create inputs
+	    	/*
 	    	FHost.CreateValueInput("Value Input", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueInput);
 	    	FMyValueInput.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.5, false, false, false);
+	    	*/
+	    	FHost.CreateStringInput("Filename", TSliceMode.Single, TPinVisibility.True, out FFileNameInput);
+			FFileNameInput.SetSubType("", true);
 	    	
 	    	//create outputs	    	
 	    	FHost.CreateNodeOutput("NodePin Out", TSliceMode.Dynamic, TPinVisibility.True, out FMyNodeOutput);
@@ -223,12 +228,13 @@ namespace VVVV.Nodes
         {     	
         	//if any of the inputs has changed
         	//recompute the outputs
-        	if (FMyValueInput.PinIsChanged)
+        	if (FFileNameInput.PinIsChanged)
         	{	
 	        	//first set slicecounts for all outputs
 	        	//the incoming int SpreadMax is the maximum slicecount of all input pins, which is a good default
 	        	FMyNodeOutput.SliceCount = SpreadMax;
 				
+	        	/*
 	        	//internal data buffer
 	        	FData = new int[SpreadMax];
 	        	
@@ -246,6 +252,7 @@ namespace VVVV.Nodes
         		}
         		
         		FMyNodeOutput.MarkPinAsChanged();
+        		*/
         	}      	
         }
              
