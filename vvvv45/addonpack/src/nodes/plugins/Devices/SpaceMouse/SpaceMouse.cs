@@ -71,8 +71,6 @@ namespace VVVV.Nodes
 		private TDx.TDxInput.Sensor FSensor;
 		private TDx.TDxInput.Keyboard FKeyboard;
 		private TDx.TDxInput.Device FDevice;
-		private System.DateTime FLastUpdate;
-		private bool FIsRunning;
 		
 		//a list that holds the state for every button
 		private Dictionary<int, double> FButtonStates = new Dictionary<int, double>();
@@ -89,8 +87,6 @@ namespace VVVV.Nodes
 				FDevice = new TDx.TDxInput.Device();
 				FSensor = FDevice.Sensor;
 				FKeyboard = FDevice.Keyboard;
-				
-				FLastUpdate = System.DateTime.Now;
 
 				// Add the event handlers
 				FDevice.DeviceChange += new TDx.TDxInput._ISimpleDeviceEvents_DeviceChangeEventHandler(DeviceChange);
@@ -131,6 +127,8 @@ namespace VVVV.Nodes
 				if(disposing)
 				{
 					// Dispose managed resources.
+					FSensor = null;
+					FKeyboard = null;
 					FDevice.Disconnect();
 				}
 				// Release unmanaged resources. If disposing is false,
