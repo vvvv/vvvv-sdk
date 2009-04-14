@@ -8,6 +8,12 @@
   <property name="root.dir" value="../../../" />
   <include buildfile="${root.dir}/nant-plugins.xml" />
   <property name="lib.name" value="SpaceMouse.dll" />
+  
+  <assemblyfileset id="project.references">
+    <include name="${root.bin}/_Utils.dll" />
+    <include name="${root.bin}/_PluginInterfaces.dll" />
+    <include name="Dependencies/TDx.TDxInput.dll" />
+  </assemblyfileset>
 
   <fileset id="project.sources" failonempty="true">
     <include name="**/*.cs" />
