@@ -81,7 +81,6 @@ namespace VVVV.Nodes
 		
 		public SpaceMousePlugin()
 		{
-			FIsRunning = false;
 			try
 			{
 				FDevice = new TDx.TDxInput.Device();
