@@ -9,7 +9,7 @@ namespace VVVV
 	{
 		Box2dCreateBodyNode::Box2dCreateBodyNode(void)
 		{
-
+			this->mBodies = gcnew BodyDataType();
 		}
 
 		void Box2dCreateBodyNode::SetPluginHost(IPluginHost^ Host) 
@@ -34,7 +34,15 @@ namespace VVVV
 			this->vInAngularVelocity->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
 
 			this->FHost->CreateValueInput("Do Create",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInDoCreate);
-			this->vInDoCreate->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);	
+			this->vInDoCreate->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);
+
+			//this->FHost->CreateValueOutput("Can Create",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutCanCreate);
+			//this->vOutCanCreate->SetSubType(0,1,1,0,true,false,false);
+
+
+			this->FHost->CreateNodeOutput("Body",TSliceMode::Dynamic,TPinVisibility::True,this->vOutBodies);
+			this->vOutBodies->SetSubType(ArrayUtils::SingleGuidArray(BodyDataType::GUID),BodyDataType::FriendlyName);
+			this->vOutBodies->SetInterface(this->mBodies);
 
 			
 		}
@@ -49,11 +57,15 @@ namespace VVVV
 			double dblcreate;
 			this->vInDoCreate->GetValue(0,dblcreate);
 
+			this->mBodies->Reset();
+
 			if (dblcreate >= 0.5 && this->vInWorld->IsConnected && this->vInShapes->IsConnected) 
 			{
 				if (this->mWorld->GetIsValid()) 
 				{
 					double x,y,vx,vy,va;
+					
+
 					for (int i = 0; i < SpreadMax; i++) 
 					{
 						this->vInPosition->GetValue2D(i,x,y);
@@ -64,6 +76,7 @@ namespace VVVV
 						bodydef.position.Set(x,y);
 						
 						BodyCustomData* bdata = new BodyCustomData();
+						
 						bdata->Id = this->mWorld->GetNewBodyId();
 
 						b2Body* body = this->mWorld->GetWorld()->CreateBody(&bodydef);
@@ -87,9 +100,18 @@ namespace VVVV
 							body->SetMassFromShapes();
 						}
 
+						//this->createdbodies->push_back(body);
+						this->mBodies->Add(body);
+
 					}
 				}
-			}
+
+				
+			} 
+
+			this->vOutBodies->SliceCount = this->mBodies->Size();
+			this->vOutBodies->MarkPinAsChanged();
+
 		}
 
 		void Box2dCreateBodyNode::ConnectPin(IPluginIO^ Pin)

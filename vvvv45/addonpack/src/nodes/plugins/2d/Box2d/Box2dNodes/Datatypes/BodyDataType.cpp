@@ -15,6 +15,11 @@ namespace VVVV
 			return this->m_bodies->at(index % this->m_bodies->size());
 		}
 
+		int BodyDataType::Size() 
+		{
+			return this->m_bodies->size();
+		}
+
 		void BodyDataType::Reset() 
 		{
 			this->m_bodies->clear();

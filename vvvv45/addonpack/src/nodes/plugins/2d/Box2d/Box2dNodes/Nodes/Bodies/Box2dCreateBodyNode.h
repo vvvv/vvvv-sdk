@@ -1,6 +1,7 @@
 #pragma once
 #include "../../DataTypes/WorldDataType.h"
 #include "../../DataTypes/Shapes/ShapeDefDataType.h"
+#include "../../DataTypes/BodyDataType.h"
 
 using namespace VVVV::DataTypes;
 
@@ -66,7 +67,11 @@ namespace VVVV
 			WorldDataType^ mWorld;
 			ShapeDefDataType^ mShapes;
 
+			BodyDataType^ mBodies;
+			//std::vector<b2Body*>* createdbodies;
+
 			IValueOut^ vOutCanCreate;
+			INodeOut^ vOutBodies;
 
 		};
 	}

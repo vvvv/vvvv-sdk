@@ -23,6 +23,7 @@ namespace VVVV
 				virtual b2Body* GetSlice(int index);
 				void Reset();
 				void Add(b2Body* body);
+				int Size();
 
 				static String^ FriendlyName = "Box2d Body";
 				static property Guid^ GUID 
