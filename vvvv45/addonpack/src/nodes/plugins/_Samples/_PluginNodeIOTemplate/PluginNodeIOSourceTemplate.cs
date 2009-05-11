@@ -92,6 +92,14 @@ namespace VVVV.Nodes
         		if(disposing)
         		{
         			// Dispose managed resources.
+        			int c;
+        			do
+        			{
+        				c = Marshal.ReleaseComObject(FFileNameInput);        			
+        			}
+        			while (c > 0);
+        			
+        			FHost.Log(TLogType.Debug, "refcount: " + c.ToString());
         		}
         		// Release unmanaged resources. If disposing is false,
         		// only the following code is executed.
