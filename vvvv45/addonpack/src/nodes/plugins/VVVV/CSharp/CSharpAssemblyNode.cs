@@ -248,103 +248,106 @@ namespace VVVV.Nodes
         	//recompute the outputs
         	//if (FCodeInput.PinIsChanged) or (FRefernces.PinIsChanged)
         	//{	
-        	 			
-        	double compile;
-        	FCompileInput.GetValue(0, out compile);
-        	if (compile == 1.0)
-        	{
-        		string code, reference;
-        		FCodeInput.GetString(0, out code);
-        		
-        		ArrayList refs = new ArrayList();
-        		int refcount = FReferencesInput.SliceCount;
-        		for (int i=0; i<refcount; i++)
-        		{
-        		 	FReferencesInput.GetString(i, out reference); 
-        		 	refs.Add(reference);
-        		}        		
-        		
-        		string errs;
-	      		Assembly FAss = BuildAssembly(code, refs, out errs);
-	      		
-	      		FErrorOutput.SetString(0, errs);
-	      		if (errs == "")
-	      		{
-	      			FErrorOutput.SetString(0, "no errors");
-	      			if (FAss != null)
-	      			{
-		      			FErrorOutput.SetString(0, "we have an ass");	      				
-		      			
-		      			FDynamicNode = null;
-		      			FDynamicNode = FAss.CreateInstance(GetType().Namespace + ".DynamicNode");
-		      			
-		      			Type type = FDynamicNode.GetType();
-				
-		      			//Type type = FAss.GetType(GetType().Namespace + ".DynamicNode");
-	      				//ConstructorInfo _DynamicNode = type.GetConstructor(Type.EmptyTypes);
-	      				//FErrorOutput.SetString(0, "we have a constructor");	      				
-		      			//FDynamicNode = _DynamicNode.Invoke(null);
-		      			
-		      			if (FDynamicNode == null)
-		      					      				
+        	try {
+	        	double compile;
+	        	FCompileInput.GetValue(0, out compile);
+	        	if (compile == 1.0)
+	        	{
+	        		string code, reference;
+	        		FCodeInput.GetString(0, out code);
+	        		
+	        		ArrayList refs = new ArrayList();
+	        		int refcount = FReferencesInput.SliceCount;
+	        		for (int i=0; i<refcount; i++)
+	        		{
+	        		 	FReferencesInput.GetString(i, out reference); 
+	        		 	refs.Add(reference);
+	        		}        		
+	        		
+	        		string errs;
+		      		FAss = BuildAssembly(code, refs, out errs);
+		      		
+		      		FErrorOutput.SetString(0, errs);
+		      		if (errs == "")
+		      		{
+		      			FErrorOutput.SetString(0, "no errors");
+		      			if (FAss != null)
 		      			{
-		      				FErrorOutput.SetString(0, "we have no node");
-		      			}
-		      			else
-		      			{		      		
-	      					FErrorOutput.SetString(0, "we have a node");	
-	      					
-	      					MethodInfo _SetPluginHost = type.GetMethod("SetPluginHost");
-	      					//FErrorOutput.SetString(0,_SetPluginHost.GetMethodBody().ToString());
-	      					
-	      					if (_SetPluginHost != null)
-	      					{
-		      					FErrorOutput.SetString(0, "we have a pointer to method SetPluginHost");	
-		      					try
-		      					{
-		      					_SetPluginHost.Invoke(FDynamicNode, new System.Object[]{FHost});
-		      					//_SetPluginHost.Invoke(;
-		      					}
-		      					catch (Exception e)
-		      					{
-		      						FHost.Log(TLogType.Debug, "DynamicNode.Evaluate: " + e.Message + " " + e.Source + " " + e.HelpLink + " " + e.StackTrace);
-		      					}
-		      					//type.GetMethod("SetPluginHost").Invoke(FDynamicNode, null); //new System.Object[1]{FHost});
-		      					FErrorOutput.SetString(0, "we called set plugin host");
+			      			FErrorOutput.SetString(0, "we have an ass");	      				
+			      			
+			      			FDynamicNode = null;
+			      			FDynamicNode = FAss.CreateInstance(GetType().Namespace + ".DynamicNode");
+			      			
+			      			Type type = FDynamicNode.GetType();
+					
+			      			//Type type = FAss.GetType(GetType().Namespace + ".DynamicNode");
+		      				//ConstructorInfo _DynamicNode = type.GetConstructor(Type.EmptyTypes);
+		      				//FErrorOutput.SetString(0, "we have a constructor");	      				
+			      			//FDynamicNode = _DynamicNode.Invoke(null);
+			      			
+			      			if (FDynamicNode == null)
+			      					      				
+			      			{
+			      				FErrorOutput.SetString(0, "we have no node");
+			      			}
+			      			else
+			      			{		      		
+		      					FErrorOutput.SetString(0, "we have a node");	
 		      					
-		      					FEvaluate = type.GetMethod("Evaluate");
-		      					FErrorOutput.SetString(0, "we retrieved evaluate");
-	      					}
-		      			}		      			
-	      			}
-	      		}
-       		}   
-        	
-        	if (FEvaluate != null)
-        	{
-        	 	FEvaluate.Invoke(FDynamicNode, new Object[1]{SpreadMax});
+		      					MethodInfo _SetPluginHost = type.GetMethod("SetPluginHost");
+		      					//FErrorOutput.SetString(0,_SetPluginHost.GetMethodBody().ToString());
+		      					
+		      					if (_SetPluginHost != null)
+		      					{
+			      					FErrorOutput.SetString(0, "we have a pointer to method SetPluginHost");	
+			      					try
+			      					{
+			      					_SetPluginHost.Invoke(FDynamicNode, new System.Object[]{FHost});
+			      					//_SetPluginHost.Invoke(;
+			      					}
+			      					catch (Exception e)
+			      					{
+			      						FHost.Log(TLogType.Debug, "DynamicNode.Evaluate: " + e.Message + " " + e.Source + " " + e.HelpLink + " " + e.StackTrace);
+			      					}
+			      					//type.GetMethod("SetPluginHost").Invoke(FDynamicNode, null); //new System.Object[1]{FHost});
+			      					FErrorOutput.SetString(0, "we called set plugin host");
+			      					
+			      					FEvaluate = type.GetMethod("Evaluate");
+			      					FErrorOutput.SetString(0, "we retrieved evaluate");
+		      					}
+			      			}		      			
+		      			}
+		      		}
+	       		}   
+	        	
+	        	if (FEvaluate != null)
+	        	{
+	        	 	FEvaluate.Invoke(FDynamicNode, new Object[1]{SpreadMax});
+	        	}
+	        	 
+				//the variables to fill with the input data
+	   	        //string currentStringSlice;
+	
+	   	        //read data from inputs
+	        	//FMyStringInput.GetString(0, out currentStringSlice);
+	        		
+	        	//first set slicecounts for all outputs
+	        	//the incoming int SpreadMax is the maximum slicecount of all input pins, which is a good default
+	        	        	
+	        	//FMyStringOutput.SliceCount = SpreadMax;
+	        	//FMyValueOutput.SliceCount = 1;
+	        	//FMyValueOutput.SetValue(0, FCodeCompiler.CalculateDouble(currentStringSlice));
+	        	
+	        	//loop for all slices
+	        	//for (int i=0; i<SpreadMax; i++)
+	        	//{
+	        	
+	        	//write data to outputs
+	        	//	FMyStringOutput.SetString(i, currentStringSlice);
+	        	//}   
+        	} catch (Exception e) {
+        		FHost.Log(TLogType.Debug, e.Message + "\n" + e.StackTrace);
         	}
-        	 
-			//the variables to fill with the input data
-   	        //string currentStringSlice;
-
-   	        //read data from inputs
-        	//FMyStringInput.GetString(0, out currentStringSlice);
-        		
-        	//first set slicecounts for all outputs
-        	//the incoming int SpreadMax is the maximum slicecount of all input pins, which is a good default
-        	        	
-        	//FMyStringOutput.SliceCount = SpreadMax;
-        	//FMyValueOutput.SliceCount = 1;
-        	//FMyValueOutput.SetValue(0, FCodeCompiler.CalculateDouble(currentStringSlice));
-        	
-        	//loop for all slices
-        	//for (int i=0; i<SpreadMax; i++)
-        	//{
-        	
-        	//write data to outputs
-        	//	FMyStringOutput.SetString(i, currentStringSlice);
-        	//}       	 
         }
              
         #endregion mainloop  
@@ -356,15 +359,14 @@ namespace VVVV.Nodes
 			CompilerParameters compilerparams = new CompilerParameters();
 			compilerparams.GenerateExecutable = false;
 			compilerparams.GenerateInMemory = true;
+			compilerparams.CompilerOptions = "/lib:C:\\Users\\Elias\\vvvv_trunk\\plugins";
 			
 			foreach (string reference in references)
 			{
-				compilerparams.ReferencedAssemblies.Add(reference + ".dll");				
+				compilerparams.ReferencedAssemblies.Add(reference + ".dll");
 				FHost.Log(TLogType.Debug, reference + ".dll");
 			}
 			
-			
-				
 			//compilerparams.ReferencedAssemblies.Add("System.dll");
 			//compilerparams.ReferencedAssemblies.Add("System.Windows.Forms.dll");
 			CompilerResults results = compiler.CompileAssemblyFromSource(compilerparams, code);

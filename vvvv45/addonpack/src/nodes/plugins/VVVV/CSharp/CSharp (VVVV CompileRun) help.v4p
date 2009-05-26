@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta19.1.dtd" >
-   <PATCH nodename="C:\_vvvv\public sources\sourceforge\c# plugins\VVVV\CSharpAssembly\runner2.v4p">
-   <BOUNDS height="12315" left="-180" top="270" type="Window" width="21060">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta20.1.dtd" >
+   <PATCH nodename="C:\Users\Elias\vvvv_plugins_trunk\plugins\VVVV\CSharp\CSharp (VVVV CompileRun) help.v4p">
+   <BOUNDS height="12315" left="4095" top="2220" type="Window" width="21060">
    </BOUNDS>
    <NODE componentmode="Hidden" id="28" nodename=":PLUGINS:\CSharpAssembly.dll|VVVV.Nodes.PluginTemplate">
    <BOUNDS height="270" left="8595" top="8235" type="Node" width="11175">
@@ -15,21 +15,25 @@
    </PIN>
    <PIN pinname="Code" visible="1">
    </PIN>
-   <PIN pinname="References" visible="1">
+   <PIN pinname="References" visible="1" slicecount="4" values="System,System.Windows.Forms,_PluginInterfaces,_Utils">
+   </PIN>
+   <PIN pinname="A" slicecount="1" values="2.3">
+   </PIN>
+   <PIN pinname="B" slicecount="1" values="1.5">
    </PIN>
    </NODE>
    <NODE id="27" nodename="Reader (File)">
-   <BOUNDS height="0" left="8595" top="945" type="Node" width="0">
+   <BOUNDS height="0" left="9255" top="990" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Filename" slicecount="1" values="class.txt">
+   <PIN pinname="Filename" slicecount="1" values="class.cs">
    </PIN>
-   <PIN pinname="Do Read" slicecount="1" visible="1" values="0">
+   <PIN pinname="Do Read" visible="1">
    </PIN>
    <PIN pinname="Content" visible="1">
    </PIN>
    </NODE>
    <NODE id="26" nodename="OnOpen (VVVV)">
-   <BOUNDS height="0" left="9465" top="240" type="Node" width="0">
+   <BOUNDS height="0" left="9870" top="345" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Bang" visible="1">
    </PIN>
@@ -74,120 +78,6 @@
    </NODE>
    <LINK dstnodeid="24" dstpinname="Input String" srcnodeid="28" srcpinname="Errors">
    </LINK>
-   <NODE id="23" nodename="Substitute (String)">
-   <BOUNDS height="0" left="8610" top="1575" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="From" slicecount="1" values="####summary####">
-   </PIN>
-   <PIN pinname="To" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="23" dstpinname="Input" srcnodeid="27" srcpinname="Content">
-   </LINK>
-   <NODE componentmode="InABox" id="22" nodename="IOBox (String)">
-   <BOUNDS height="0" left="10920" top="270" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="11535" top="3210" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="300" left="10920" top="270" type="Box" width="1815">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="|my first node!!|">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="8">
-   </PIN>
-   <PIN pinname="Font" slicecount="1" values="|Lucida Console|">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="23" dstpinname="To" srcnodeid="22" srcpinname="Output String">
-   </LINK>
-   <NODE id="21" nodename="Substitute (String)">
-   <BOUNDS height="0" left="8595" top="2805" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="From" slicecount="1" values="####InputPins####">
-   </PIN>
-   <PIN pinname="To" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="21" dstpinname="Input" srcnodeid="23" srcpinname="Output">
-   </LINK>
-   <NODE componentmode="InABox" id="20" nodename="IOBox (String)">
-   <BOUNDS height="0" left="10695" top="1260" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="13425" top="5265" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="945" left="10695" top="1260" type="Box" width="5685">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="3" values="|private IValueIn FInput1;|,|private IValueIn FInput2;|,">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="8">
-   </PIN>
-   <PIN pinname="Font" slicecount="1" values="|Lucida Console|">
-   </PIN>
-   </NODE>
-   <NODE id="19" nodename="Substitute (String)">
-   <BOUNDS height="0" left="8610" top="4050" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="From" slicecount="1" values="####OutputPins####">
-   </PIN>
-   <PIN pinname="To" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="19" dstpinname="Input" srcnodeid="21" srcpinname="Output">
-   </LINK>
-   <NODE id="18" nodename="Substitute (String)">
-   <BOUNDS height="0" left="8595" top="5640" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="From" slicecount="1" values="####CreatePins####">
-   </PIN>
-   <PIN pinname="To" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="17" nodename="Substitute (String)">
-   <BOUNDS height="0" left="8580" top="7380" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="From" slicecount="1" values="####Evaluate####">
-   </PIN>
-   <PIN pinname="To" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="18" dstpinname="Input" srcnodeid="19" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="17" dstpinname="Input" srcnodeid="18" srcpinname="Output">
-   </LINK>
    <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="19020" top="6960" type="Node" width="0">
    </BOUNDS>
@@ -216,246 +106,48 @@
    </NODE>
    <LINK dstnodeid="28" dstpinname="Compile" srcnodeid="16" srcpinname="Y Output Value">
    </LINK>
-   <NODE id="15" nodename="Add (String Spectral)">
-   <BOUNDS height="0" left="9795" top="2580" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="21" dstpinname="To" srcnodeid="15" srcpinname="Output">
-   </LINK>
-   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
-   <BOUNDS height="0" left="10695" top="2400" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="13725" top="5565" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="945" left="10695" top="2400" type="Box" width="5685">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="2" values="|private IValueOut FOutput;|,">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="8">
-   </PIN>
-   <PIN pinname="Font" slicecount="1" values="|Lucida Console|">
-   </PIN>
-   </NODE>
-   <NODE id="13" nodename="Add (String Spectral)">
-   <BOUNDS height="0" left="9795" top="3825" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="19" dstpinname="To" srcnodeid="13" srcpinname="Output">
-   </LINK>
-   <NODE id="12" nodename="Add (String Spectral)">
-   <BOUNDS height="0" left="9795" top="5430" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="18" dstpinname="To" srcnodeid="12" srcpinname="Output">
-   </LINK>
-   <NODE id="11" nodename="Add (String)">
-   <BOUNDS height="0" left="9630" top="5040" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input 1" slicecount="1" values="|          |">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="11" srcpinname="Output">
-   </LINK>
-   <NODE id="10" nodename="Add (String)">
-   <BOUNDS height="0" left="9795" top="2160" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input 1" slicecount="1" values="|      |">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="10" dstpinname="Input 2" srcnodeid="20" srcpinname="Output String">
-   </LINK>
-   <LINK dstnodeid="15" dstpinname="Input" srcnodeid="10" srcpinname="Output">
-   </LINK>
-   <NODE id="9" nodename="Add (String)">
-   <BOUNDS height="0" left="9795" top="3420" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input 1" slicecount="1" values="|      |">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="9" dstpinname="Input 2" srcnodeid="14" srcpinname="Output String">
-   </LINK>
-   <LINK dstnodeid="13" dstpinname="Input" srcnodeid="9" srcpinname="Output">
-   </LINK>
-   <NODE id="8" nodename="Add (String Spectral)">
-   <BOUNDS height="0" left="9795" top="7080" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="7" nodename="Add (String)">
-   <BOUNDS height="0" left="9630" top="6690" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input 1" slicecount="1" values="|          |">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="7" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="17" dstpinname="To" srcnodeid="8" srcpinname="Output">
-   </LINK>
-   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
-   <BOUNDS height="0" left="10785" top="6120" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="13725" top="5565" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="1335" left="10785" top="6120" type="Box" width="8100">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="10" values="|FOutput.SliceCount = SpreadMax;|,,,,,,,,,">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="10">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="8">
-   </PIN>
-   <PIN pinname="Font" slicecount="1" values="|Lucida Console|">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="7" dstpinname="Input 2" srcnodeid="6" srcpinname="Output String">
-   </LINK>
-   <NODE id="5" nodename="Separate (String)">
-   <BOUNDS height="0" left="8445" top="8985" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Intersperse" slicecount="1" values="NewLineAutoDetection">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Ignore between" slicecount="1" values="None">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
-   <BOUNDS height="0" left="10800" top="3480" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="19425" top="2325" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="2145" left="10800" top="3480" type="Box" width="8220">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="11" values="|FHost.CreateValueInput(&quot;A&quot;, 1, null, TSliceMode.Dynamic, |,|    TPinVisibility.True, out FInput1);|,|FInput1.SetSubType(-10, 10, 0.1, 0, false, false, false);|,,|FHost.CreateValueInput(&quot;B&quot;, 1, null, TSliceMode.Dynamic, |,|    TPinVisibility.True, out FInput2);|,|FInput2.SetSubType(-10, 10, 0.1, 0, false, false, false);|,,|FHost.CreateValueOutput(&quot;C&quot;, 1, null, TSliceMode.Dynamic, |,|    TPinVisibility.True, out FOutput);|,|FOutput.SetSubType(-10, 10, 0.1, 0, false, false, false);|">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="11">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Font" slicecount="1" values="|Lucida Console|">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="8">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
-   <BOUNDS height="0" left="15225" top="195" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="13725" top="5565" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="3195" left="15225" top="195" type="Box" width="5535">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="4" values="System,System.Windows.Forms,|C:\_vvvv\public sources\_TRUNK vvvv\plugins\_PluginInterfaces|,|C:\_vvvv\public sources\_TRUNK vvvv\plugins\_Utils|">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="8">
-   </PIN>
-   <PIN pinname="Font" slicecount="1" values="|Lucida Console|">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="28" dstpinname="References" srcnodeid="3" srcpinname="Output String">
-   </LINK>
-   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="17" srcpinname="Output">
-   </LINK>
-   <NODE id="2" nodename="Add (String Spectral)">
-   <BOUNDS height="0" left="8865" top="7800" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="2" dstpinname="Input" srcnodeid="25" srcpinname="Output String">
-   </LINK>
    <NODE componentmode="InAWindow" id="1" nodename="Renderer (TTY)">
    <BOUNDS height="0" left="19575" top="6150" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="4125" left="405" top="8715" type="Window" width="21780">
+   <BOUNDS height="4125" left="270" top="12585" type="Window" width="21780">
    </BOUNDS>
    <BOUNDS height="1800" left="19575" top="6150" type="Box" width="2400">
    </BOUNDS>
    </NODE>
-   <LINK dstnodeid="11" dstpinname="Input 2" srcnodeid="4" srcpinname="Output String">
-   </LINK>
-   <NODE id="0" nodename="Cons (String)">
-   <BOUNDS height="0" left="8295" top="9540" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
+   <NODE id="5" nodename="Separate (String)">
    <PIN pinname="Output" visible="1">
    </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS type="Node" height="0" left="9270" top="1635" width="0">
+   </BOUNDS>
+   <PIN pinname="Intersperse" slicecount="1" values="NewLineAutoDetection">
+   </PIN>
+   <PIN pinname="Ignore between" slicecount="1" values="None">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="0" dstpinname="Input 2" srcnodeid="5" srcpinname="Output">
+   <NODE nodename="Writer (File)" componentmode="Hidden" id="29" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="8400" top="10275" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Filename" pintype="Input" visible="1" slicecount="1" values="class.cs">
+   </PIN>
+   <PIN pinname="doWrite" pintype="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Append" pintype="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Content" pintype="Input" visible="1" slicecount="1" values="|/*&cr;&lf; * Erstellt mit SharpDevelop.&cr;&lf; * Benutzer: gregsn&cr;&lf; * Datum: 28.11.2008&cr;&lf; * Zeit: 22:14&cr;&lf; */&cr;&lf;&cr;&lf;using System;&cr;&lf;using VVVV.PluginInterfaces.V1;&cr;&lf;using VVVV.Utils.VColor;&cr;&lf;using VVVV.Utils.VMath;&cr;&lf;&cr;&lf;namespace VVVV.Nodes&cr;&lf;{&cr;&lf;  /// &lt;summary&gt;&cr;&lf;  /// my first node!!&cr;&lf;  /// &lt;/summary&gt;&cr;&lf;&cr;&lf;  public class DynamicNode //: IPlugin, IDisposable&cr;&lf;  {&cr;&lf;      #region field declaration&cr;&lf;     &tab;&cr;&lf;      //the host (mandatory)&cr;&lf;      private IPluginHost FHost; &cr;&lf;    &tab;&cr;&lf;      //input pin declaration&cr;&lf;      private IValueIn FInput1;&cr;&lf;      private IValueIn FInput2;&cr;&lf;      &cr;&lf;    &tab;&cr;&lf;      //output pin declaration&cr;&lf;      private IValueOut FOutput;&cr;&lf;      &cr;&lf;    &tab;&cr;&lf;      #endregion field declaration&cr;&lf;&cr;&lf;      public DynamicNode()&cr;&lf;      {&cr;&lf;          //System.Windows.Forms.MessageBox.Show(&quot;hello&quot;);&cr;&lf;      }&cr;&lf;&tab;&tab;&cr;&lf;      public void SetPluginHost(IPluginHost Host)&cr;&lf;      {&cr;&lf;          //assign host&cr;&lf;          FHost = Host;&cr;&lf;&tab;    &tab;&cr;&lf;          FHost.CreateValueInput(&quot;A&quot;, 1, null, TSliceMode.Dynamic, &cr;&lf;              TPinVisibility.True, out FInput1);&cr;&lf;          FInput1.SetSubType(-10, 10, 0.1, 0, false, false, false);&cr;&lf;          &cr;&lf;          FHost.CreateValueInput(&quot;B&quot;, 1, null, TSliceMode.Dynamic, &cr;&lf;              TPinVisibility.True, out FInput2);&cr;&lf;          FInput2.SetSubType(-10, 10, 0.1, 0, false, false, false);&cr;&lf;          &cr;&lf;          FHost.CreateValueOutput(&quot;C&quot;, 1, null, TSliceMode.Dynamic, &cr;&lf;              TPinVisibility.True, out FOutput);&cr;&lf;          FOutput.SetSubType(-10, 10, 0.1, 0, false, false, false);&tab;&cr;&lf;      }&cr;&lf;&tab;&tab;&cr;&lf;      public void Evaluate(int SpreadMax)&cr;&lf;      {     &tab;&cr;&lf;          FOutput.SliceCount = 1;&cr;&lf;          &cr;&lf;          double a, b;&cr;&lf;          &cr;&lf;          FInput1.GetValue(0, out a); FInput2.GetValue(0, out b);&cr;&lf;          FOutput.SetValue(0, a+b );&cr;&lf;          &cr;&lf;          &cr;&lf;          &cr;&lf;          &tab;&cr;&lf;      }&tab;&tab;&cr;&lf;  }&cr;&lf;}&cr;&lf;|">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="27" srcpinname="Content" dstnodeid="5" dstpinname="Input">
    </LINK>
-   <LINK dstnodeid="25" dstpinname="Input String" srcnodeid="0" srcpinname="Output">
+   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="25" dstpinname="Input String">
    </LINK>
-   <LINK dstnodeid="28" dstpinname="Code" srcnodeid="17" srcpinname="Output">
+   <LINK srcnodeid="26" srcpinname="Bang" dstnodeid="27" dstpinname="Do Read">
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="Content" dstnodeid="28" dstpinname="Code">
    </LINK>
    </PATCH>
