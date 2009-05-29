@@ -64,7 +64,7 @@ namespace VVVV.Utils.VColor
 		/// </summary>
 		public Color Color
 		{
-			get {return Color.FromArgb((int)(A*255), (int)(R*255), (int)(G*255), (int)(B*255));}
+			get {return Color.FromArgb((byte)(A*255), (byte)(R*255), (byte)(G*255), (byte)(B*255));}
 			set {A = value.A / 255.0; R = value.R / 255.0; G = value.G / 255.0; B = value.B / 255.0;}
 		}
 		
