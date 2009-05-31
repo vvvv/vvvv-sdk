@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "Box2dWorldNode.h"
 
+#include "../Internals/Data/BodyCustomData.h"
+
 namespace VVVV 
 {
 	namespace Nodes 
@@ -148,7 +150,20 @@ namespace VVVV
 			this->contacts->clear();
 
 			if (this->mWorld->GetIsValid()) 
-			{	
+			{
+				//Delete bodies marked as such
+				for (b2Body* b = this->mWorld->GetWorld()->GetBodyList(); b; b = b->GetNext())
+				{
+					if (b != this->mWorld->GetWorld()->GetGroundBody()) 
+					{
+						BodyCustomData* bdata = (BodyCustomData*)b->GetUserData();
+						if (bdata->MarkedForDeletion) 
+						{
+							this->mWorld->GetWorld()->DestroyBody(b);
+						}
+					}
+				}
+
 				if (this->mWorld->GetIsEnabled()) 
 				{
 					double ts,it;

@@ -8,4 +8,5 @@ public:
 	BodyCustomData(void);
 	~BodyCustomData(void);
 	int Id;
+	bool MarkedForDeletion;
 };

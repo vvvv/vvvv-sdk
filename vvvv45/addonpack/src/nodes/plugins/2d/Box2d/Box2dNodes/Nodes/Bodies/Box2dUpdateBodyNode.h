@@ -12,7 +12,7 @@ namespace VVVV
 		public:
 			Box2dUpdateBodyNode(void);
 
-				static property IPluginInfo^ PluginInfo 
+			static property IPluginInfo^ PluginInfo 
 				{
 					IPluginInfo^ get() 
 					{

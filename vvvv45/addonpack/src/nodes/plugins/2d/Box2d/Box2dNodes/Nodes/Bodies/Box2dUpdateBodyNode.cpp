@@ -86,6 +86,9 @@ namespace VVVV
 		}
 
 
+
+
+		
 		void Box2dUpdateBodyNode::ConnectPin(IPluginIO^ Pin)
 		{
 			if (Pin == this->vInBodies) 
@@ -95,6 +98,7 @@ namespace VVVV
 				this->m_bodies = (BodyDataType^)usI;
 			}
 		}
+
 
 		void Box2dUpdateBodyNode::DisconnectPin(IPluginIO^ Pin)
 		{

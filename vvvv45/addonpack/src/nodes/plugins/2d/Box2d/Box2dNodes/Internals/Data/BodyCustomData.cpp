@@ -3,6 +3,7 @@
 
 BodyCustomData::BodyCustomData(void)
 {
+	this->MarkedForDeletion = false;
 }
 
 BodyCustomData::~BodyCustomData(void)

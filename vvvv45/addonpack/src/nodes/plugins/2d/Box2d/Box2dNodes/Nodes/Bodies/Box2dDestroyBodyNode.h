@@ -1,6 +1,4 @@
 #pragma once
-#include "../../DataTypes/WorldDataType.h"
-#include "../../DataTypes/Shapes/ShapeDefDataType.h"
 #include "../../DataTypes/BodyDataType.h"
 
 using namespace VVVV::DataTypes;
@@ -9,21 +7,19 @@ namespace VVVV
 {
 	namespace Nodes 
 	{
-		ref class Box2dCreateBodyNode : IPlugin,IPluginConnections
+		public ref class Box2dDestroyBodyNode : IPlugin,IPluginConnections
 		{
 		public:
-			Box2dCreateBodyNode(void);
-
 			static property IPluginInfo^ PluginInfo 
 				{
 					IPluginInfo^ get() 
 					{
 						//IPluginInfo^ Info;
 						IPluginInfo^ Info = gcnew VVVV::PluginInterfaces::V1::PluginInfo();
-						Info->Name = "CreateBody";
+						Info->Name = "DestroyBody";
 						Info->Category = "Box2d";
 						Info->Version = "";
-						Info->Help = "Creates box2d body";
+						Info->Help = "Destroys box2d body";
 						Info->Bugs = "";
 						Info->Credits = "Box2d";
 						Info->Warnings = "";
@@ -40,7 +36,6 @@ namespace VVVV
 					}
 				}
 
-
 			virtual void SetPluginHost(IPluginHost^ Host);
 			virtual void Configurate(IPluginConfig^ Input);
 			virtual void Evaluate(int SpreadMax);
@@ -55,25 +50,12 @@ namespace VVVV
 		private:
 			IPluginHost^ FHost;
 
-			INodeIn^ vInWorld;
-			INodeIn^ vInShapes;
+			INodeIn^ vInBodies;
+			BodyDataType^ m_bodies;
 
-			IValueIn^ vInPosition;
-			IValueIn^ vInVelocity;
-			IValueIn^ vInAngularVelocity;
-			IValueIn^ vInIsBullet;
-			//IValueIn^ vInStatic;
-			IValueIn^ vInDoCreate;
-
-			WorldDataType^ mWorld;
-			ShapeDefDataType^ mShapes;
-
-			BodyDataType^ mBodies;
-			//std::vector<b2Body*>* createdbodies;
-
-			IValueOut^ vOutCanCreate;
-			INodeOut^ vOutBodies;
+			IValueIn^ vInDoDestroy;
 
 		};
 	}
 }
+

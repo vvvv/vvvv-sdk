@@ -33,6 +33,9 @@ namespace VVVV
 			this->FHost->CreateValueInput("Angular Velocity",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInAngularVelocity);
 			this->vInAngularVelocity->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
 
+			this->FHost->CreateValueInput("Is Bullet",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInIsBullet);
+			this->vInIsBullet->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,true,false);
+
 			this->FHost->CreateValueInput("Do Create",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInDoCreate);
 			this->vInDoCreate->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);
 
@@ -63,7 +66,7 @@ namespace VVVV
 			{
 				if (this->mWorld->GetIsValid()) 
 				{
-					double x,y,vx,vy,va;
+					double x,y,vx,vy,va,bull;
 					
 
 					for (int i = 0; i < SpreadMax; i++) 
@@ -71,9 +74,11 @@ namespace VVVV
 						this->vInPosition->GetValue2D(i,x,y);
 						this->vInVelocity->GetValue2D(i,vx,vy);
 						this->vInAngularVelocity->GetValue(i,va);
+						this->vInIsBullet->GetValue(i,bull);
 						
 						b2BodyDef bodydef;
 						bodydef.position.Set(x,y);
+						bodydef.isBullet = (bull >= 0.5);
 						
 						BodyCustomData* bdata = new BodyCustomData();
 						
@@ -83,6 +88,7 @@ namespace VVVV
 						body->SetLinearVelocity(b2Vec2(vx,vy));
 						body->SetAngularVelocity(va);
 						body->SetUserData(bdata);
+						
 
 						int realslice;
 						this->vInShapes->GetUpsreamSlice(i % this->vInShapes->SliceCount,realslice);
