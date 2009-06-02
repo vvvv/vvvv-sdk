@@ -31,6 +31,14 @@
       </fileset>
     </copy>
   </target>
+  
+    <target name="post-build">
+    <copy todir="${plugin.path}">
+      <fileset basedir="Dependencies">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+  </target>
 
   
 

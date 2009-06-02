@@ -304,6 +304,7 @@ namespace VVVV.Webinterface.HttpServer {
         {
             try
             {
+                Thread.Sleep(100);
                 int intAvailableThreads, intAvailableIoAsynThreds;
                 ThreadPool.GetAvailableThreads(out intAvailableThreads, out intAvailableIoAsynThreds);
                 string strMessage = String.Format(@"In OnClientConnect Is Thread Pool: {0}, Thread Id: {1}, Free Threads {2}", Thread.CurrentThread.IsThreadPoolThread.ToString(), Thread.CurrentThread.GetHashCode(), intAvailableThreads.ToString());

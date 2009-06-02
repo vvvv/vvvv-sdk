@@ -17,17 +17,18 @@ namespace VVVV.Nodes.HttpGUI
         #region field declaration
 
 
-        private IValueIn FPosition;
-        private IStringIn FLabel;
+        private IValueConfig FPosition;
         private List<DatenGuiSlider> mSliderDaten = new List<DatenGuiSlider>();
         private string mNodeId;
-        private IEnumIn FOrientation;
+        private IEnumConfig FOrientation;
 
         private IValueOut FResponse;
         private NodeObserver mObserver;
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
         private bool FDisposed = false;
 
+
+        private string currentOrientation;
         #endregion field declaration
 
 
@@ -171,9 +172,6 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-
-
-
         #region pin creation 
 
         protected override void OnPluginHostSet()
@@ -182,12 +180,12 @@ namespace VVVV.Nodes.HttpGUI
             //FLabel.SetSubType("", false);
 
             FHost.UpdateEnum("SliderOrientation", "x", new string[] { "x", "y" });
-            FHost.CreateEnumInput("Orientation", TSliceMode.Single, TPinVisibility.True, out FOrientation);
+            FHost.CreateEnumConfig("Orientation", TSliceMode.Single, TPinVisibility.True, out FOrientation);
             FOrientation.SetSubType("SliderOrientation");
 
-            this.FHost.CreateValueInput("Position", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPosition);
+            this.FHost.CreateValueConfig("StartPosition", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPosition);
             FPosition.SetSubType(0, 1, 0.01, 0, false, false, false);
-
+            
             this.FHost.CreateValueOutput("Response",1,null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
             FResponse.SetSubType(0, 1, 0.01, 0, false, false, false);
 
@@ -227,14 +225,25 @@ namespace VVVV.Nodes.HttpGUI
 
         protected override void OnConfigurate(IPluginConfig Input)
         {
-            //
+            if (Input == FOrientation)
+            {
+                
+                FOrientation.GetString(0, out currentOrientation);
+            }
+
+            //else if (Input == FPosition)
+            //{
+            //    JavaScript tSetPosition = new JavaScript();
+            //    tSetPosition.Insert("$('." + tSliderDatenObjekt.Class + "', parent.document).slider('option', 'value'," + currentPositionSlice + ");");
+            //    mWebinterfaceSingelton.NotifyServer(tSetPosition.Text);
+            //}
         }
 
 
         protected override void OnEvaluate(int SpreadMax)
         {
 
-            if (FPosition.PinIsChanged || FOrientation.PinIsChanged|| FTransformIn.PinIsChanged || mChangedStyle)
+            if (FTransformIn.PinIsChanged || mChangedStyle)
             {
                 mSliderDaten.Clear();
                 FHttpGuiOut.SliceCount = SpreadMax;
@@ -247,7 +256,6 @@ namespace VVVV.Nodes.HttpGUI
                     SortedList<string, string> tCssProperties = new SortedList<string, string>();
 
                     double currentPositionSlice;
-                    string currentLableSlice;
                     tSliderDatenObjekt.Class = tSliceId.Replace("/","");
 
 
@@ -257,29 +265,15 @@ namespace VVVV.Nodes.HttpGUI
 
 
                     //Position Pin
-                    if (FPosition.PinIsChanged)
-                    {
-                        JavaScript tSetPosition = new JavaScript();
-                        tSetPosition.Insert("$('." + tSliderDatenObjekt.Class + "', parent.document).slider('option', 'value'," + currentPositionSlice + ");");
-                        mWebinterfaceSingelton.NotifyServer(tSetPosition.Text);
-                    }
-
-
-                    //Label Pin
-                    //FLabel.GetString(i, out currentLableSlice);
-                    //if (currentLableSlice != null)
+                    //if (FPosition.PinIsChanged)
                     //{
-                    //    tSliderDatenObjekt.Label = currentLableSlice;
-                    //}
-                    //else
-                    //{
-                    //    tSliderDatenObjekt.Label = "No Label";
+                    //    JavaScript tSetPosition = new JavaScript();
+                    //    tSetPosition.Insert("$('." + tSliderDatenObjekt.Class + "', parent.document).slider('option', 'value'," + currentPositionSlice + ");");
+                    //    mWebinterfaceSingelton.NotifyServer(tSetPosition.Text);
                     //}
 
                     
                     //Orientation
-                    string currentOrientation;
-                    FOrientation.GetString(0, out currentOrientation);
                     if (currentOrientation == "x")
                     {
                         tSliderDatenObjekt.Orientation = "";

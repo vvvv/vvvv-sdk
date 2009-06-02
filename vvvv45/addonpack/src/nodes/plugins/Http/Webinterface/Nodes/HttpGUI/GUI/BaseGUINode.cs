@@ -104,16 +104,7 @@ namespace VVVV.Nodes.HttpGUI
 
             this.OnPluginHostSet();
 
-            
-            
-            
-
-            
-
-            
-
-            
-
+             
             //Input Pins 
             FHost.CreateNodeInput("Input", TSliceMode.Dynamic, TPinVisibility.True, out FHttpStyleIn);
             FHttpStyleIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
@@ -318,8 +309,8 @@ namespace VVVV.Nodes.HttpGUI
             double tTop = HTMLToolkit.MapTransform(pMatrix.m42, 1, -1, 0, 100, tHeight);
             double tLeft = HTMLToolkit.MapTransform(pMatrix.m41, -1, 1, 0, 100, tWidth);
 
-            tStyles.Add("top", ReplaceComma(string.Format("{0:0.0}", tTop) + "%"));
-            tStyles.Add("left", ReplaceComma(string.Format("{0:0.0}", tLeft) + "%"));
+            tStyles.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tTop,1)) + "%"));
+            tStyles.Add("left", ReplaceComma(string.Format("{0:0.0}",Math.Round(tLeft,1)) + "%"));
 
 
             tStyles.Add("z-index", Convert.ToString(Math.Round(pMatrix.m43)));

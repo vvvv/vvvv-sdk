@@ -24,7 +24,7 @@ namespace VVVV.Nodes.HTTP
             buildHead();
             AddStyleRule();
             AddJsFunction();
-            mPage.Body.Insert(BuildBodySpecials());
+            //mPage.Body.Insert(BuildBodySpecials());
         }
 
 
