@@ -1,0 +1,179 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\vvvv_trunk\modules\vvvv group\EX9\Normals (EX9).v4p">
+   <BOUNDS height="6000" left="3600" top="5940" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Node)">
+   <BOUNDS height="0" left="2340" top="840" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6120" top="10395" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2340" top="840" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Mesh">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="3270" top="3600" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="19110" top="10095" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="255" left="3270" top="3600" type="Box" width="2280">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.99062,1.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Line (EX9.Geometry)">
+   <BOUNDS height="0" left="2400" top="4035" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="VerticesXYZ" visible="1">
+   </PIN>
+   <PIN pinname="reset to standart settings" visible="1">
+   </PIN>
+   <PIN pinname="Antialias" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="PatternScale" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Priority" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="OpenGl-Style" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="BinSize" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Color" srcnodeid="8" srcpinname="Color Output">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Node)">
+   <BOUNDS height="0" left="3450" top="840" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10425" top="9420" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3450" top="840" type="Box" width="975">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Transform">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Node)">
+   <BOUNDS height="0" left="2400" top="4575" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="17280" top="16680" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2400" top="4575" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Layer">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input Node" srcnodeid="7" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4965" top="840" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="20205" top="9885" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4965" top="840" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Length">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="ParallelEpiped (Transform Vector)">
+   <BOUNDS height="0" left="2295" top="3225" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="ZAxis XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Transform" srcnodeid="2" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="1" nodename="Select (Value)">
+   <BOUNDS height="0" left="4485" top="1845" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="SETSLICE (SPREADS LEGACY)">
+   <BOUNDS height="0" left="4905" top="2550" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread" visible="1">
+   </PIN>
+   <PIN pinname="Index" slicecount="1" visible="1" values="5">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Spread" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Input" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="VerticesXYZ" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Transform In" srcnodeid="6" srcpinname="Output Node">
+   </LINK>
+   <INFO author="vvvv group" description="Render helpers showing the normals of a mesh." tags="helper, scene, 3d, modelling">
+   </INFO>
+   <NODE nodename=":MODULES:\vvvv group\Spreads\AvoidNIL (Spreads).v4p" componentmode="Hidden" id="11" path="C:\Users\joreg\dev\vvvv_trunk\modules\vvvv group\Spreads\">
+   <BOUNDS type="Node" left="3330" top="2775" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3330" top="2775" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7410" top="9555" width="9000" height="6000">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="2" dstpinname="ZAxis XYZ">
+   </LINK>
+   <NODE id="15" nodename="Mesh (EX9.Geometry Split)">
+   <BOUNDS height="0" left="2310" top="1560" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="16" nodename="VertexBuffer (EX9.Geometry Split)">
+   <BOUNDS height="0" left="2325" top="2295" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Position XYZ" srcnodeid="16" srcpinname="Position XYZ">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Normal XYZ" dstnodeid="11" dstpinname="Input">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Vertex Buffer" srcnodeid="15" srcpinname="Vertex Buffer">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Output Node" dstnodeid="15" dstpinname="Mesh">
+   </LINK>
+   </PATCH>
