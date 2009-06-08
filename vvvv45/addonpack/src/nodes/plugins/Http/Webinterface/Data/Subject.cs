@@ -78,7 +78,7 @@ namespace VVVV.Webinterface.Data
         /// attach an Server instance to the ArrayList mServerhandlingObserver
         /// </summary>
         /// <param name="pServer">Server instance</param>
-        public void AttachServerhandling(Server pServer)
+        public void AttachServerhandling(Server1 pServer)
         {
             mServerhandlingObserver.Add(pServer);
             Debug.WriteLine("Serverhandling Observer: " + pServer.Name + " is attached / Anzahl Serverhandling Observer: " + mServerhandlingObserver.Count.ToString()); 
@@ -88,7 +88,7 @@ namespace VVVV.Webinterface.Data
         /// detach an Server instance from the ArrayList mServerhandlingObserver
         /// </summary>
         /// <param name="pServer"></param>
-        public void DetachServhandling(Server pServer)
+        public void DetachServhandling(Server1 pServer)
         {
             mServerhandlingObserver.Remove(pServer);
             Debug.WriteLine("Serverhandling Observer: " + pServer.Name + " is detached / Anzahl Serverhandling Observer: " + mServerhandlingObserver.Count.ToString()); 

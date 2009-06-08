@@ -37,6 +37,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Threading;
 
 using VVVV.Webinterface;
 using VVVV.Webinterface.Utilities;
@@ -108,7 +109,7 @@ namespace VVVV.Nodes.HTTP
         private IHttpGUIStyleIO FUpstreamStyleIn;
         
         //Server
-        private Server mServer;
+        private Server1 mServer;
         private string mServerFolder;
 
 
@@ -426,10 +427,13 @@ namespace VVVV.Nodes.HTTP
                 FSartServer.GetValue(0,out pState);
                 if(pState >= 1)
                 {
-                    mServer = new Server(80, 50, mWebinterfaceSingelton.Subject, "ServerOne",mServerFolder);
+                    mServer = new Server1(80, 50, mWebinterfaceSingelton.Subject, "ServerOne",mServerFolder);
                     mWebinterfaceSingelton.AddServhandling(mServer);
                     mServer.ServeFolder(mServerFolder);
 
+                    Thread StartListing = new Thread(mServer.StartListining);
+                    StartListing.IsBackground = true;
+                    StartListing.Start();
 
                 }
                 else

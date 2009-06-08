@@ -33,7 +33,7 @@ namespace VVVV.Webinterface.HttpServer {
 
         #region filed declaration
 
-        const int mMaxCLients = 10;
+       
 
         private Socket mMainSocket;
         private Socket[] mWorkerSocket = new Socket[100];
@@ -179,9 +179,6 @@ namespace VVVV.Webinterface.HttpServer {
                
                 mMainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                                     
-                    
-                    
-
                 Debug.WriteLine(mMainSocket.LingerState.ToString());
                 //LingerOption tLinger = new LingerOption(false, 0);
                 //mMainSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Linger, tLinger);

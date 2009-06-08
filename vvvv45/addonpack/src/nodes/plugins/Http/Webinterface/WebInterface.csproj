@@ -29,6 +29,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>Full</DebugType>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <Optimize>True</Optimize>
@@ -41,7 +43,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'vvvv' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>C:\Programme\VVVV\vvvv_40beta21\plugins\</OutputPath>
+    <OutputPath>C:\Program Files\VVVV\vvvv_40beta21\plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
@@ -85,7 +87,10 @@
     <Compile Include="Nodes\Http\BaseGUIBuilder.cs" />
     <Compile Include="Nodes\Http\JQueryBuilder.cs" />
     <Compile Include="Nodes\Http\RendererHTTP.cs" />
+    <Compile Include="Server\Copy of Server.cs" />
+    <Compile Include="Server\FolderToServ.cs" />
     <Compile Include="Server\ItemsToServ.cs" />
+    <Compile Include="Server\Request.cs" />
     <Compile Include="Server\Response\Response.cs" />
     <Compile Include="Server\Response\ResponseHeader.cs" />
     <Compile Include="Server\Response\HttpStatusCode.cs" />
@@ -93,6 +98,7 @@
     <Compile Include="Server\Response\ResponseText.cs" />
     <Compile Include="Server\Response\ResponseTextDummy.cs" />
     <Compile Include="Server\Response\ResponseUpdate.cs" />
+    <Compile Include="Server\SocketInformation.cs" />
     <Compile Include="WebinterfaceSingelton.cs" />
     <Compile Include="Data\NodeObserver.cs" />
     <Compile Include="Data\XMLHandling.cs" />
@@ -105,12 +111,12 @@
     <Compile Include="Utilities\ServerToolkit.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\_PluginInterfaces\PluginInterfaces.csproj">
+    <ProjectReference Include="..\..\..\_PluginInterfaces\PluginInterfaces.csproj">
       <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
       <Name>PluginInterfaces</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\_Utils\Utils.csproj">
+    <ProjectReference Include="..\..\..\_Utils\Utils.csproj">
       <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
       <Name>Utils</Name>
       <Private>False</Private>
