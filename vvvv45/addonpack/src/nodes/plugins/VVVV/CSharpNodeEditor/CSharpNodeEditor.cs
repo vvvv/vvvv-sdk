@@ -46,7 +46,7 @@ namespace VVVV.Nodes
 {
 	
 	//class definition, inheriting from UserControl for the GUI stuff
-	public class CSharpNodeEditor: UserControl, IPlugin
+	public class CSharpNodeEditor: ManagedVCL.TopControl, IPlugin
 	{
 		#region field declaration
 		
@@ -83,6 +83,7 @@ namespace VVVV.Nodes
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			InitializeComponent();
 			
+			FTextEditorControl.SetHighlighting("C#");
 			HostCallbackImplementation.Register(this);
 			CodeCompletionKeyHandler.Attach(this, FTextEditorControl);
 			ToolTipProvider.Attach(this, FTextEditorControl);
@@ -93,8 +94,8 @@ namespace VVVV.Nodes
 			// future starts are faster.
 			// It also caches XML documentation files in an on-disk hash table, thus
 			// reducing memory usage.
-			FPcRegistry.ActivatePersistence(Path.Combine(Path.GetTempPath(),
-			                                            "CSharpCodeCompletion"));
+			/*FPcRegistry.ActivatePersistence(Path.Combine(Path.GetTempPath(),
+			                                            "CSharpCodeCompletion"));*/
 			
 			FMyProjectContent = new Dom.DefaultProjectContent();
 			FMyProjectContent.Language = CurrentLanguageProperties;
@@ -210,16 +211,16 @@ namespace VVVV.Nodes
 			// 
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 									this.FParserThreadLabel});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 147);
+			this.statusStrip1.Location = new System.Drawing.Point(0, 93);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(310, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(294, 22);
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
 			// FParserThreadLabel
 			// 
 			this.FParserThreadLabel.Name = "FParserThreadLabel";
-			this.FParserThreadLabel.Size = new System.Drawing.Size(118, 17);
+			this.FParserThreadLabel.Size = new System.Drawing.Size(109, 17);
 			this.FParserThreadLabel.Text = "toolStripStatusLabel1";
 			// 
 			// FTextEditorControl
@@ -228,9 +229,11 @@ namespace VVVV.Nodes
 			this.FTextEditorControl.IsReadOnly = false;
 			this.FTextEditorControl.Location = new System.Drawing.Point(0, 0);
 			this.FTextEditorControl.Name = "FTextEditorControl";
-			this.FTextEditorControl.Size = new System.Drawing.Size(310, 147);
-			this.FTextEditorControl.TabIndex = 1;
-			this.FTextEditorControl.Text = "textEditorControl1";
+			this.FTextEditorControl.ShowEOLMarkers = true;
+			this.FTextEditorControl.ShowSpaces = true;
+			this.FTextEditorControl.ShowTabs = true;
+			this.FTextEditorControl.Size = new System.Drawing.Size(294, 93);
+			this.FTextEditorControl.TabIndex = 0;
 			// 
 			// imageList1
 			// 
@@ -245,7 +248,7 @@ namespace VVVV.Nodes
 			this.Controls.Add(this.statusStrip1);
 			this.DoubleBuffered = true;
 			this.Name = "CSharpNodeEditor";
-			this.Size = new System.Drawing.Size(310, 169);
+			this.Size = new System.Drawing.Size(294, 115);
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
 			this.ResumeLayout(false);
@@ -268,7 +271,6 @@ namespace VVVV.Nodes
 			//create inputs
 			FHost.CreateStringInput("String Input", TSliceMode.Dynamic, TPinVisibility.True, out FFilenameInput);
 			FFilenameInput.SetSubType("node.cs", true);
-
 			//create outputs
 		}
 
