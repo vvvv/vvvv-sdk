@@ -75,24 +75,22 @@ namespace VVVV.Nodes.HTTP
         private IStringIn FPath;
         private IValueIn FSavePage;
         private IValueIn FOpenBrowser;
-        private IValueIn FPlattform;
         private IValueIn FPageWidth;
         private IValueIn FPageHeight;
+        private IStringIn FDirectories;
+        private IValueIn FEnableServer;
 
         //private IEnumIn FPlattform; 
 
         //output pin declaration
         private IStringOut FWholeHTML;
-        private IStringOut FUrlOut;
         private IStringOut FFileName;
         private IStringOut FFileList;
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
 
         ///<summery>Config Pin</summery>
-        private IValueConfig FSartServer;
-        private IValueConfig FPort;
-        private IValueConfig FReloadServerFolder;
-        private IStringConfig FServerFolder;
+        private IValueIn FPort;
+
 
         //HttpGuiInterface
         private INodeIn FHttpGuiIn;
@@ -109,7 +107,7 @@ namespace VVVV.Nodes.HTTP
         private IHttpGUIStyleIO FUpstreamStyleIn;
         
         //Server
-        private Server1 mServer;
+        private VVVV.Webinterface.HttpServer.Server mServer;
         private string mServerFolder;
 
 
@@ -239,7 +237,7 @@ namespace VVVV.Nodes.HTTP
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "Renderer";							//use CamelCaps and no spaces
                 Info.Category = "HTTP";						    //try to use an existing one
-                Info.Version = "";						        //versions are optional. leave blank if not needed
+                Info.Version = "Server";						//versions are optional. leave blank if not needed
                 Info.Help = "";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
@@ -306,7 +304,7 @@ namespace VVVV.Nodes.HTTP
             FHost.CreateValueInput("Browser Height",1, null, TSliceMode.Single, TPinVisibility.True, out FPageHeight);
             FPageHeight.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
 			
-            FHost.CreateNodeInput("Style Properties",  TSliceMode.Single, TPinVisibility.True, out FCssPropertiesIn);
+            FHost.CreateNodeInput("CSS",  TSliceMode.Single, TPinVisibility.True, out FCssPropertiesIn);
             FCssPropertiesIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
             
             FHost.CreateValueInput("Reload Browser", 1, null, TSliceMode.Single, TPinVisibility.True, out FReload);
@@ -327,14 +325,17 @@ namespace VVVV.Nodes.HTTP
             FHost.CreateValueInput("Save", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FSavePage);
             FSavePage.SetSubType(0, 1, 1, 0, true, false, true);
 
-            //FHost.CreateValueInput("Switch Builder", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FPlattform);
-            //FPlattform.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
+            FHost.CreateStringInput("Directories", TSliceMode.Dynamic, TPinVisibility.True, out FDirectories);
+            FDirectories.SetSubType(mServerFolder, false);
 
-            //FHost.CreateValueInput("Reload Interval", 1, null, TSliceMode.Single, TPinVisibility.True, out FReloadInterval);
-            //FReloadInterval.SetSubType(0, double.MaxValue, 1, 1000, true, false, true);
+            //FHost.CreateValueInput("Reload Server Folder", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FReloadServerFolder);
+            //FReloadServerFolder.SetSubType(0, 1, 1, 0, true, false, true);
 
-            //FHost.CreateStringInput("CSS", TSliceMode.Single, TPinVisibility.True, out FWebAttribute);
-            //FWebAttribute.SetSubType("", false);
+            FHost.CreateValueInput("Enable", 1, null, TSliceMode.Single, TPinVisibility.Hidden, out FEnableServer);
+            FEnableServer.SetSubType(0, 1, 1, 1, false, true, true);
+
+            
+
 
             
             //create outputs	    	   
@@ -348,19 +349,9 @@ namespace VVVV.Nodes.HTTP
             FWholeHTML.SetSubType("", false);
 
             
-
             //create Config Pin
-            FHost.CreateValueConfig("Enable Server", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FSartServer);
-            FSartServer.SetSubType(0, 1, 1, 0, false, true, true);
-
-            FHost.CreateValueConfig("Port", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPort);
+            FHost.CreateValueInput("Port", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPort);
             FPort.SetSubType(1, 65535, 1, 80, false, false, true);
-
-            FHost.CreateStringConfig("ServerFolder", TSliceMode.Single, TPinVisibility.OnlyInspector, out FServerFolder);
-            FServerFolder.SetSubType(mServerFolder, true);
-
-            FHost.CreateValueConfig("Reload Server Folder", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FReloadServerFolder);
-            FReloadServerFolder.SetSubType(0, 1, 1, 0, true, false, true);
 
             
         }
@@ -421,33 +412,6 @@ namespace VVVV.Nodes.HTTP
         /// <param name="Input"></param>
         public void Configurate(IPluginConfig Input)
         {
-            if (Input == FSartServer)
-            {
-                double pState;
-                FSartServer.GetValue(0,out pState);
-                if(pState >= 1)
-                {
-                    mServer = new Server1(80, 50, mWebinterfaceSingelton.Subject, "ServerOne",mServerFolder);
-                    mWebinterfaceSingelton.AddServhandling(mServer);
-                    mServer.ServeFolder(mServerFolder);
-
-                    Thread StartListing = new Thread(mServer.StartListining);
-                    StartListing.IsBackground = true;
-                    StartListing.Start();
-
-                }
-                else
-                {
-                    if (mServer != null)
-                    {
-                        mWebinterfaceSingelton.DeleteServhandling(mServer);
-                        mServer.Dispose();
-                    }
-                    
-                }
-
-            }
-
             if (Input == FPort)
             {
                 if (mServer != null)
@@ -459,21 +423,6 @@ namespace VVVV.Nodes.HTTP
                 else{return;}
             }
 
-            if (Input == FReloadServerFolder)
-            {
-                double tValue;
-                FReloadServerFolder.GetValue(0, out tValue);
-                if (tValue >= 1)
-                {
-                    mServer.ServeFolder(mServerFolder);
-                }
-            }
-            if (Input == FServerFolder)
-            {
-                string tFolder;
-                FServerFolder.GetString(0,out tFolder);
-                mServerFolder = tFolder;
-            }
         }
 
 
@@ -524,6 +473,79 @@ namespace VVVV.Nodes.HTTP
 
             #endregion Upstream
 
+
+
+
+
+            #region Enable Server
+
+            double pState;
+            FEnableServer.GetValue(0, out pState);
+
+
+
+            if (FEnableServer.PinIsChanged)
+            {
+                if (pState > 0.5)
+                {
+                    mServer = new VVVV.Webinterface.HttpServer.Server(80, 50, mWebinterfaceSingelton.Subject, "ServerOne", mServerFolder);
+                    mWebinterfaceSingelton.AddServhandling(mServer);
+                    mServer.ServeFolder(mServerFolder);
+
+                    Thread StartListing = new Thread(mServer.StartListining);
+                    StartListing.IsBackground = true;
+                    StartListing.Start();
+
+                }
+                else
+                {
+                    if (mServer != null)
+                    {
+                        mWebinterfaceSingelton.DeleteServhandling(mServer);
+                        mServer.ShuttingDown = true;
+                        mServer.Dispose();
+                        mServer = null;
+                    }
+
+                }
+            }
+
+
+
+
+
+
+            #endregion Enable Server
+
+
+
+
+
+            #region Directories
+            if (FDirectories.PinIsChanged)
+            {
+                List<string> tDirectories = new List<string>();
+
+                for(int i = 0; i < FDirectories.SliceCount; i++)
+                {
+                    string tCurrentDirectories;
+                    FDirectories.GetString(i, out tCurrentDirectories);
+                    tDirectories.Add(tCurrentDirectories);
+                }
+
+                mServer.FoldersToServ = tDirectories;
+            }
+
+
+
+            #endregion Directories
+
+
+
+
+
+            #region Reload Page
+
             if (FReload.PinIsChanged)
             {
                 double currentReloadSlice;
@@ -533,6 +555,10 @@ namespace VVVV.Nodes.HTTP
                     mWebinterfaceSingelton.Reload();
                 }
             }
+
+            #endregion Reload Page
+
+
 
 
 
@@ -606,6 +632,7 @@ namespace VVVV.Nodes.HTTP
 
 
             
+
             #region Build Page
 
             Page tPage;
@@ -656,8 +683,8 @@ namespace VVVV.Nodes.HTTP
 
                 if (mServer != null)
                 {
-                    mServer.VVVVCssFile = mCssFile;
-                    mServer.VVVVJsFile = mJsFile;
+                    //mServer.VVVVCssFile = mCssFile;
+                    //mServer.VVVVJsFile = mJsFile;
                 }
                 
 
@@ -672,8 +699,8 @@ namespace VVVV.Nodes.HTTP
             #endregion Build Page
 
 
-            
 
+         
 
             #region Save Page
 
@@ -725,6 +752,8 @@ namespace VVVV.Nodes.HTTP
 
 
 
+
+
             #region Open Browser
 
             if (FOpenBrowser.PinIsChanged)
@@ -739,6 +768,8 @@ namespace VVVV.Nodes.HTTP
             }
 
             #endregion Open Browser
+
+
 
 
 

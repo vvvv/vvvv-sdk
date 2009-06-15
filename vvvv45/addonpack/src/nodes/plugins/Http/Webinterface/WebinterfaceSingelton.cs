@@ -374,7 +374,7 @@ namespace VVVV.Webinterface
         /// attches an server instance to the server observer list int the subject instance
         /// </summary>
         /// <param name="pServhandling">the server instance to add</param>
-        public void AddServhandling(Server1 pServhandling)
+        public void AddServhandling(Server pServhandling)
         {
             mSubject.AttachServerhandling(pServhandling);
         }
@@ -385,7 +385,7 @@ namespace VVVV.Webinterface
         /// deletes a server instance form the server observer list
         /// </summary>
         /// <param name="pServer">the server instance to delete</param>
-        public void DeleteServhandling(Server1 pServer)
+        public void DeleteServhandling(Server pServer)
         {
             mSubject.DetachServhandling(pServer);
         }
