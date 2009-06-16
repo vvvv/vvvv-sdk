@@ -75,7 +75,7 @@ namespace VVVV.Nodes
 		private IValueOut FShininessOut;
 		private IValueOut FOpaqueOut;
 		
-		//private IValueOut FSkeletonOut;
+		private IValueOut FSkeletonOut;
 		
 		private IColladaModelNodeIO FUpstreamInterface;
 		
@@ -254,10 +254,10 @@ namespace VVVV.Nodes
 			FHost.CreateValueOutput("Opaque", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FOpaqueOut);
 			FOpaqueOut.SetSubType(0.0, 1.0, 0.01, 1.0, false, false, false);
 			
-			/*
+			
 			FHost.CreateValueOutput("Skeleton", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSkeletonOut);
 			FSkeletonOut.SetSubType(0.0, float.MaxValue, 0.1, 25.0, false, false, false);
-			*/
+			
 			
 			COLLADAUtil.Logger = new LoggerWrapper(FHost);
         } 
@@ -302,164 +302,172 @@ namespace VVVV.Nodes
         //all data handling should be in here
         public void Evaluate(int SpreadMax)
         {     	
-        	double tmp;
-        	//if any of the inputs has changed
-        	//recompute the outputs
-        	if (FColladaModelIn.PinIsChanged || FIndex.PinIsChanged || FBinSize.PinIsChanged)
-			{
-        		selectedInstanceMeshes.Clear();
-        		
-        		FUpstreamInterface.GetSlice(0, out FColladaModel);
-        		if (FColladaModel == null)
-        		{
-        			FMyMeshOutput.SliceCount = 0;
-        			FTextureFileNameOutput.SliceCount = 0;
-					FEmissiveColorOut.SliceCount = 0;
-					FDiffuseColorOut.SliceCount = 0;
-					FSpecularColorOut.SliceCount = 0;
-					FShininessOut.SliceCount = 0;
-					FOpaqueOut.SliceCount = 0;
-        		}
-        		else
-        		{
-	        		//make negative bin sizes ok
-	        		int binSize;
-	        		FBinSize.GetValue(0, out tmp);
-	        		binSize = (int) tmp;
-	        		if (binSize < 0)
-	        			binSize = FColladaModel.InstanceMeshes.Count / Math.Abs(binSize);
+        	try
+        	{
+	        	double tmp;
+	        	//if any of the inputs has changed
+	        	//recompute the outputs
+	        	if (FColladaModelIn.PinIsChanged || FIndex.PinIsChanged || FBinSize.PinIsChanged)
+				{
+	        		selectedInstanceMeshes.Clear();
 	        		
-					List<Model.BasicMaterial> materialList = new List<Model.BasicMaterial>();
-					for (int i = 0; i < FIndex.SliceCount; i++)
-					{
-						int index;
-						FIndex.GetValue(i, out tmp);
-						index = ((int) tmp) * binSize;
-						index = ((index % FColladaModel.InstanceMeshes.Count) + FColladaModel.InstanceMeshes.Count) % FColladaModel.InstanceMeshes.Count;
-						
-						for (int j = index; j < index + binSize; j++)
+	        		FUpstreamInterface.GetSlice(0, out FColladaModel);
+	        		if (FColladaModel == null)
+	        		{
+	        			FMyMeshOutput.SliceCount = 0;
+	        			FTextureFileNameOutput.SliceCount = 0;
+						FEmissiveColorOut.SliceCount = 0;
+						FDiffuseColorOut.SliceCount = 0;
+						FSpecularColorOut.SliceCount = 0;
+						FShininessOut.SliceCount = 0;
+						FOpaqueOut.SliceCount = 0;
+	        		}
+	        		else
+	        		{
+		        		//make negative bin sizes ok
+		        		int binSize;
+		        		FBinSize.GetValue(0, out tmp);
+		        		binSize = (int) tmp;
+		        		if (binSize < 0)
+		        			binSize = FColladaModel.InstanceMeshes.Count / Math.Abs(binSize);
+		        		
+						List<Model.BasicMaterial> materialList = new List<Model.BasicMaterial>();
+						for (int i = 0; i < FIndex.SliceCount; i++)
 						{
-							Model.InstanceMesh instanceMesh = FColladaModel.InstanceMeshes[j % FColladaModel.InstanceMeshes.Count];
-							selectedInstanceMeshes.Add(instanceMesh);
+							int index;
+							FIndex.GetValue(i, out tmp);
+							index = ((int) tmp) * binSize;
+							index = ((index % FColladaModel.InstanceMeshes.Count) + FColladaModel.InstanceMeshes.Count) % FColladaModel.InstanceMeshes.Count;
 							
-							Log(TLogType.Debug, "Instance of mesh '" + instanceMesh + "' loaded.");
-							
-							foreach (Document.Primitive primitive in instanceMesh.Mesh.Primitives)
+							for (int j = index; j < index + binSize; j++)
 							{
-								Model.BasicMaterial material;
-								string bindedMaterialId;
-								if (!instanceMesh.MaterialBinding.TryGetValue(primitive.material, out bindedMaterialId)) {
-									bindedMaterialId = primitive.material;
-								}
+								Model.InstanceMesh instanceMesh = FColladaModel.InstanceMeshes[j % FColladaModel.InstanceMeshes.Count];
+								selectedInstanceMeshes.Add(instanceMesh);
 								
-								if (FColladaModel.BasicMaterialsBinding.TryGetValue(bindedMaterialId, out material))
-									materialList.Add(material);
-								else
+								Log(TLogType.Debug, "Instance of mesh '" + instanceMesh + "' loaded.");
+								
+								foreach (Document.Primitive primitive in instanceMesh.Mesh.Primitives)
 								{
-									materialList.Add(FNoMaterial);
+									Model.BasicMaterial material;
+									string bindedMaterialId;
+									if (!instanceMesh.MaterialBinding.TryGetValue(primitive.material, out bindedMaterialId)) {
+										bindedMaterialId = primitive.material;
+									}
+									
+									if (FColladaModel.BasicMaterialsBinding.TryGetValue(bindedMaterialId, out material))
+										materialList.Add(material);
+									else
+									{
+										materialList.Add(FNoMaterial);
+									}
 								}
+							}
+						}
+						
+						FTextureFileNameOutput.SliceCount = materialList.Count;
+						FEmissiveColorOut.SliceCount = materialList.Count;
+						FDiffuseColorOut.SliceCount = materialList.Count;
+						FSpecularColorOut.SliceCount = materialList.Count;
+						FShininessOut.SliceCount = materialList.Count;
+						FOpaqueOut.SliceCount = materialList.Count;
+						for (int j = 0; j < materialList.Count; j++)
+						{
+							Model.BasicMaterial material = materialList[j];
+							FTextureFileNameOutput.SetString(j, material.Texture);
+							if (material.EmissiveColor.HasValue)
+								FEmissiveColorOut.SetColor(j, new RGBAColor(material.EmissiveColor.Value.X, material.EmissiveColor.Value.Y, material.EmissiveColor.Value.Z, 1.0));
+							else
+								FEmissiveColorOut.SetColor(j, VColor.Black);
+							if (material.DiffuseColor.HasValue)
+								FDiffuseColorOut.SetColor(j, new RGBAColor(material.DiffuseColor.Value.X, material.DiffuseColor.Value.Y, material.DiffuseColor.Value.Z, 1.0));
+							else
+								FDiffuseColorOut.SetColor(j, VColor.White);
+							if (material.SpecularColor.HasValue)
+								FSpecularColorOut.SetColor(j, new RGBAColor(material.SpecularColor.Value.X, material.SpecularColor.Value.Y, material.SpecularColor.Value.Z, 1.0));
+							else
+								FSpecularColorOut.SetColor(j, VColor.Black);
+							if (material.SpecularPower.HasValue)
+								FShininessOut.SetValue(j, material.SpecularPower.Value);
+							else
+								FShininessOut.SetValue(j, 25.0);
+							// as of FCollada 3.03 opaque = 1.0, before opaque = 0.0
+							double alpha = 1.0;
+							if (material.Alpha.HasValue)
+								alpha = material.Alpha.Value;
+							if (!FOpaqueIsOne)
+								FOpaqueOut.SetValue(j, 1 - alpha);
+							else
+								FOpaqueOut.SetValue(j, alpha);
+						}
+						
+						FMyMeshOutput.SliceCount = materialList.Count;
+						
+						foreach (Mesh m in FDeviceMeshes.Values)
+						{
+							Log(TLogType.Debug, "Destroying Resource...");
+							m.Dispose();
+						}
+						FDeviceMeshes.Clear();
+	        		}
+				}     
+	        	
+	        	if (FColladaModelIn.PinIsChanged || FIndex.PinIsChanged || FBinSize.PinIsChanged || FTimeInput.PinIsChanged)
+	        	{
+	        		int maxCount = Math.Max(FTimeInput.SliceCount, selectedInstanceMeshes.Count);
+					List<Matrix> transforms = new List<Matrix>();
+					List<Matrix> skinningTransforms = new List<Matrix>();
+					List<Vector3> skeletonVertices = new List<Vector3>();
+					for (int i = 0; i < maxCount && selectedInstanceMeshes.Count > 0; i++)
+					{
+						int meshIndex = i % selectedInstanceMeshes.Count;
+						Model.InstanceMesh instanceMesh = selectedInstanceMeshes[meshIndex];
+						
+						FTimeInput.GetValue(i, out tmp);
+						float time = (float) tmp;
+						
+						Matrix m = FColladaModel.GetAbsoluteTransformMatrix(instanceMesh, time);
+						
+						for (int j = 0; j < instanceMesh.Mesh.Primitives.Count; j++) {
+							transforms.Add(m);
+						}
+						
+						// Skinning
+						if (instanceMesh is Model.SkinnedInstanceMesh) {
+							Model.SkinnedInstanceMesh skinnedInstanceMesh = (Model.SkinnedInstanceMesh) instanceMesh;
+							
+							skinnedInstanceMesh.ApplyAnimations(time);
+							
+							List<Matrix> tmpM = skinnedInstanceMesh.GetSkinningMatrices();
+							List<Vector3> tmpV = skinnedInstanceMesh.GetSkeletonVertices();
+							
+							for (int j = 0; j < instanceMesh.Mesh.Primitives.Count; j++) {
+								skinningTransforms.AddRange(tmpM);
+								skeletonVertices.AddRange(tmpV);
 							}
 						}
 					}
 					
-					FTextureFileNameOutput.SliceCount = materialList.Count;
-					FEmissiveColorOut.SliceCount = materialList.Count;
-					FDiffuseColorOut.SliceCount = materialList.Count;
-					FSpecularColorOut.SliceCount = materialList.Count;
-					FShininessOut.SliceCount = materialList.Count;
-					FOpaqueOut.SliceCount = materialList.Count;
-					for (int j = 0; j < materialList.Count; j++)
+					FTransformOutput.SliceCount = transforms.Count;
+					for (int j = 0; j < transforms.Count; j++)
+						FTransformOutput.SetMatrix(j, VSlimDXUtils.SlimDXMatrixToMatrix4x4(transforms[j]));
+					
+					FSkinningTransformOutput.SliceCount = skinningTransforms.Count;
+					for (int j = 0; j < skinningTransforms.Count; j++)
+						FSkinningTransformOutput.SetMatrix(j, VSlimDXUtils.SlimDXMatrixToMatrix4x4(skinningTransforms[j]));
+					
+					
+					FSkeletonOut.SliceCount = skeletonVertices.Count * 3;
+					for (int j = 0; j < skeletonVertices.Count; j++)
 					{
-						Model.BasicMaterial material = materialList[j];
-						FTextureFileNameOutput.SetString(j, material.Texture);
-						if (material.EmissiveColor.HasValue)
-							FEmissiveColorOut.SetColor(j, new RGBAColor(material.EmissiveColor.Value.X, material.EmissiveColor.Value.Y, material.EmissiveColor.Value.Z, 1.0));
-						else
-							FEmissiveColorOut.SetColor(j, VColor.Black);
-						if (material.DiffuseColor.HasValue)
-							FDiffuseColorOut.SetColor(j, new RGBAColor(material.DiffuseColor.Value.X, material.DiffuseColor.Value.Y, material.DiffuseColor.Value.Z, 1.0));
-						else
-							FDiffuseColorOut.SetColor(j, VColor.White);
-						if (material.SpecularColor.HasValue)
-							FSpecularColorOut.SetColor(j, new RGBAColor(material.SpecularColor.Value.X, material.SpecularColor.Value.Y, material.SpecularColor.Value.Z, 1.0));
-						else
-							FSpecularColorOut.SetColor(j, VColor.Black);
-						if (material.SpecularPower.HasValue)
-							FShininessOut.SetValue(j, material.SpecularPower.Value);
-						else
-							FShininessOut.SetValue(j, 25.0);
-						// as of FCollada 3.03 opaque = 1.0, before opaque = 0.0
-						double alpha = 1.0;
-						if (material.Alpha.HasValue)
-							alpha = material.Alpha.Value;
-						if (!FOpaqueIsOne)
-							FOpaqueOut.SetValue(j, 1 - alpha);
-						else
-							FOpaqueOut.SetValue(j, alpha);
+						FSkeletonOut.SetValue3D(j, skeletonVertices[j].X, skeletonVertices[j].Y, skeletonVertices[j].Z);
 					}
 					
-					FMyMeshOutput.SliceCount = materialList.Count;
-					
-					foreach (Mesh m in FDeviceMeshes.Values)
-					{
-						Log(TLogType.Debug, "Destroying Resource...");
-						m.Dispose();
-					}
-					FDeviceMeshes.Clear();
-        		}
-			}     
-        	
-        	if (FColladaModelIn.PinIsChanged || FIndex.PinIsChanged || FBinSize.PinIsChanged || FTimeInput.PinIsChanged)
+	        	}
+        	}
+        	catch (Exception e)
         	{
-        		int maxCount = Math.Max(FTimeInput.SliceCount, selectedInstanceMeshes.Count);
-				List<Matrix> transforms = new List<Matrix>();
-				List<Matrix> skinningTransforms = new List<Matrix>();
-				List<Vector3> skeletonVertices = new List<Vector3>();
-				for (int i = 0; i < maxCount && selectedInstanceMeshes.Count > 0; i++)
-				{
-					int meshIndex = i % selectedInstanceMeshes.Count;
-					Model.InstanceMesh instanceMesh = selectedInstanceMeshes[meshIndex];
-					
-					FTimeInput.GetValue(i, out tmp);
-					float time = (float) tmp;
-					
-					Matrix m = FColladaModel.GetAbsoluteTransformMatrix(instanceMesh, time);
-					
-					for (int j = 0; j < instanceMesh.Mesh.Primitives.Count; j++) {
-						transforms.Add(m);
-					}
-					
-					// Skinning
-					if (instanceMesh is Model.SkinnedInstanceMesh) {
-						Model.SkinnedInstanceMesh skinnedInstanceMesh = (Model.SkinnedInstanceMesh) instanceMesh;
-						
-						skinnedInstanceMesh.ApplyAnimations(time);
-						
-						List<Matrix> tmpM = skinnedInstanceMesh.GetSkinningMatrices();
-						//List<Vector3> tmpV = skinnedInstanceMesh.GetSkeletonVertices();
-						
-						for (int j = 0; j < instanceMesh.Mesh.Primitives.Count; j++) {
-							skinningTransforms.AddRange(tmpM);
-							//skeletonVertices.AddRange(tmpV);
-						}
-					}
-				}
-				
-				FTransformOutput.SliceCount = transforms.Count;
-				for (int j = 0; j < transforms.Count; j++)
-					FTransformOutput.SetMatrix(j, VSlimDXUtils.SlimDXMatrixToMatrix4x4(transforms[j]));
-				
-				FSkinningTransformOutput.SliceCount = skinningTransforms.Count;
-				for (int j = 0; j < skinningTransforms.Count; j++)
-					FSkinningTransformOutput.SetMatrix(j, VSlimDXUtils.SlimDXMatrixToMatrix4x4(skinningTransforms[j]));
-				
-				/*
-				FSkeletonOut.SliceCount = skeletonVertices.Count * 3;
-				for (int j = 0; j < skeletonVertices.Count; j++)
-				{
-					FSkeletonOut.SetValue3D(j, skeletonVertices[j].X, skeletonVertices[j].Y, skeletonVertices[j].Z);
-				}
-				*/
+        		Log(TLogType.Error, e.Message);
+        		Log(TLogType.Error, e.StackTrace);
         	}
         }
              
