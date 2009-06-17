@@ -19,7 +19,6 @@ namespace VVVV.Nodes.HttpGUI
         #region field declaration
 
         private IStringIn FValue;
-        private IStringIn FLabel;
         private IStringOut FResponse;
 
         private List<DatenGuiTextfield> mTextfieldGuiDaten = new List<DatenGuiTextfield>();

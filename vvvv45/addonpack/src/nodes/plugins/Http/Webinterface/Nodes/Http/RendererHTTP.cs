@@ -490,20 +490,15 @@ namespace VVVV.Nodes.HTTP
                 {
                     mServer = new VVVV.Webinterface.HttpServer.Server(80, 50, mWebinterfaceSingelton.Subject, "ServerOne", mServerFolder);
                     mWebinterfaceSingelton.AddServhandling(mServer);
-                    mServer.ServeFolder(mServerFolder);
-
-                    Thread StartListing = new Thread(mServer.StartListining);
-                    StartListing.IsBackground = true;
-                    StartListing.Start();
-
+                    //mServer.ServeFolder(mServerFolder);
+                    mServer.Start();
                 }
                 else
                 {
                     if (mServer != null)
                     {
                         mWebinterfaceSingelton.DeleteServhandling(mServer);
-                        mServer.ShuttingDown = true;
-                        mServer.Dispose();
+                        mServer.Stop();
                         mServer = null;
                     }
 
@@ -777,22 +772,22 @@ namespace VVVV.Nodes.HTTP
             #region files to serve
             if (mServer != null)
             {
-                List<string> tFileList = mServer.FileList;
-                List<string> tFileName = mServer.FileNames;
+                //List<string> tFileList = mServer.FileList;
+                //List<string> tFileName = mServer.FileNames;
 
-                FFileList.SliceCount = tFileList.Count;
-                FFileName.SliceCount = tFileName.Count;
+                //FFileList.SliceCount = tFileList.Count;
+                //FFileName.SliceCount = tFileName.Count;
 
-                for (int i = 0; i < tFileList.Count; i++)
-                {
-                    FFileList.SetString(i, tFileList[i]);
+                //for (int i = 0; i < tFileList.Count; i++)
+                //{
+                //    FFileList.SetString(i, tFileList[i]);
 
-                }
+                //}
 
-                for (int i = 0; i < tFileName.Count; i++)
-                {
-                    FFileName.SetString(i, tFileName[i]);
-                }
+                //for (int i = 0; i < tFileName.Count; i++)
+                //{
+                //    FFileName.SetString(i, tFileName[i]);
+                //}
             }
 
             #endregion files to serve

@@ -22,7 +22,6 @@ namespace VVVV.Nodes.HttpGUI
         private bool FDisposed = false;
 
         private IValueIn FState;
-        private IStringIn FLabel;
         private IEnumConfig FButtonMode;
         private List<DatenGuiButton> mButtonDaten = new List<DatenGuiButton>();
         private List<BaseDatenObjekt> mGuiInDaten = new List<BaseDatenObjekt>();
