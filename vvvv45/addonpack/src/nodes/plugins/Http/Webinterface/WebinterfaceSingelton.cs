@@ -71,7 +71,6 @@ namespace VVVV.Webinterface
 
         private static volatile WebinterfaceSingelton instance = null;
         private static object m_lock = new Object();
-        private int mMainId = 0;
         private ConcreteSubject mSubject;
         private SortedList<string, string> mDaten = new SortedList<string, string>();
         private SortedList<string, SortedList<string, string>> mNodeDaten = new SortedList<string, SortedList<string, string>>();
