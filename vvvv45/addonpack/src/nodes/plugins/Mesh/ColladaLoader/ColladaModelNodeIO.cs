@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 using VVVV.PluginInterfaces.V1;
 
-using VVVV.Collada.ColladaModel;
+using ColladaSlimDX.ColladaModel;
 
 namespace VVVV.Nodes
 {

@@ -36,11 +36,12 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
-using VVVV.Collada;
-using VVVV.Collada.ColladaDocument;
-using VVVV.Collada.ColladaPipeline;
-using VVVV.Collada.ColladaModel;
+using ColladaSlimDX.ColladaDocument;
+using ColladaSlimDX.ColladaPipeline;
+using ColladaSlimDX.ColladaModel;
+using ColladaSlimDX.Utils;
 
+using SlimDX;
 using SlimDX.Direct3D9;
 
 //the vvvv node namespace
@@ -59,10 +60,32 @@ namespace VVVV.Nodes
     	//input pin declaration
     	private IStringIn FFileNameInput;
     	
+    	//config pin declaration
+    	private IEnumConfig FCsSourceTypeConfig;
+    	private IEnumConfig FCsTargetTypeConfig;
+    	private IEnumConfig FUpAxisSourceConfig;
+    	private IEnumConfig FUpAxisTargetConfig;
+    	private IEnumConfig FRightAxisSourceConfig;
+    	private IEnumConfig FRightAxisTargetConfig;
+    	private IValueConfig FMeterSourceConfig;
+    	private IValueConfig FMeterTargetConfig;
+    	
     	//output pin declaration
     	private INodeOut FColladaModelOutput;
+    	private IStringOut FInfoOutput;
     	
+    	private Document FColladaDocument;
     	private Model FColladaModel;
+    	private List<string> FInfo;
+    	private bool FInfoNeedsUpdate = false;
+    	private int FCsTypeSource = 0;
+    	private int FCsTypeTarget = 0;
+    	private int FUpAxisSource = 0;
+    	private int FUpAxisTarget = 0;
+    	private int FRightAxisSource = 0;
+    	private int FRightAxisTarget = 0;
+    	private double FDistanceUnitSource = 0;
+    	private double FDistanceUnitTarget = 0;
     	
     	#endregion field declaration
        
@@ -71,6 +94,7 @@ namespace VVVV.Nodes
         public PluginColladaLoader()
         {
 			//the nodes constructor
+			FInfo = new List<string>();
 		}
         
         // Implementing IDisposable's Dispose method.
@@ -100,6 +124,9 @@ namespace VVVV.Nodes
         		if(disposing)
         		{
         			// Dispose managed resources.
+        			FColladaDocument = null;
+        			FColladaModel = null;
+        			FInfo = null;
         		}
         		// Release unmanaged resources. If disposing is false,
         		// only the following code is executed.
@@ -197,11 +224,34 @@ namespace VVVV.Nodes
 	    	//create inputs
 	    	FHost.CreateStringInput("Filename", TSliceMode.Single, TPinVisibility.True, out FFileNameInput);
 			FFileNameInput.SetSubType("", true);
+			
+			//create configuration inputs
+			FHost.CreateEnumConfig("Coordinate system of source", TSliceMode.Single, TPinVisibility.True, out FCsSourceTypeConfig);
+			FCsSourceTypeConfig.SetSubType("CoordType");
+			FHost.UpdateEnum("CoordType", "Default", new string[] { "Default", "LeftHanded", "RightHanded" });
+			FHost.CreateEnumConfig("Source up axis", TSliceMode.Single, TPinVisibility.True, out FUpAxisSourceConfig);
+			FUpAxisSourceConfig.SetSubType("Axis");
+			FHost.CreateEnumConfig("Source right axis", TSliceMode.Single, TPinVisibility.True, out FRightAxisSourceConfig);
+			FRightAxisSourceConfig.SetSubType("Axis");
+			FHost.CreateValueConfig("Source distance unit in meter", 1, null, TSliceMode.Single, TPinVisibility.True, out FMeterSourceConfig);
+			FMeterSourceConfig.SetSubType(0, double.MaxValue, 0.1, FDistanceUnitSource, false, false, false);
+			
+			FHost.CreateEnumConfig("Coordinate system of target", TSliceMode.Single, TPinVisibility.True, out FCsTargetTypeConfig);
+			FCsTargetTypeConfig.SetSubType("CoordType");
+			FHost.CreateEnumConfig("Target up axis", TSliceMode.Single, TPinVisibility.True, out FUpAxisTargetConfig);
+			FUpAxisTargetConfig.SetSubType("Axis");
+			FHost.UpdateEnum("Axis", "Default", new string[] { "Default", "X", "Y", "Z", "-X", "-Y", "-Z" });
+			FHost.CreateEnumConfig("Target right axis", TSliceMode.Single, TPinVisibility.True, out FRightAxisTargetConfig);
+			FRightAxisTargetConfig.SetSubType("Axis");
+			FHost.CreateValueConfig("Target distance unit in meter", 1, null, TSliceMode.Single, TPinVisibility.True, out FMeterTargetConfig);
+			FMeterTargetConfig.SetSubType(0, double.MaxValue, 0.1, FDistanceUnitTarget, false, false, false);
 	    	
 	    	//create outputs	    	
 	    	FHost.CreateNodeOutput("COLLADA Model", TSliceMode.Dynamic, TPinVisibility.True, out FColladaModelOutput);
 	    	FColladaModelOutput.SetSubType(new Guid[1]{ColladaModelNodeIO.GUID}, ColladaModelNodeIO.FriendlyName);
 	    	FColladaModelOutput.SetInterface(this);
+	    	
+	    	FHost.CreateStringOutput("Info", TSliceMode.Dynamic, TPinVisibility.True, out FInfoOutput);
 	    	
 	    	COLLADAUtil.Logger = new LoggerWrapper(FHost);
         } 
@@ -220,8 +270,108 @@ namespace VVVV.Nodes
         
         public void Configurate(IPluginConfig Input)
         {
-        	//nothing to configure in this plugin
-        	//only used in conjunction with inputs of type cmpdConfigurate
+    		if (Input == FCsSourceTypeConfig)
+				FCsSourceTypeConfig.GetOrd(0, out FCsTypeSource);
+    		else if (Input == FCsTargetTypeConfig)
+				FCsTargetTypeConfig.GetOrd(0, out FCsTypeTarget);
+    		else if(Input == FMeterSourceConfig)
+				FMeterSourceConfig.GetValue(0, out FDistanceUnitSource);
+    		else if(Input == FMeterTargetConfig)
+				FMeterTargetConfig.GetValue(0, out FDistanceUnitTarget);
+    		else if (Input == FUpAxisSourceConfig)
+    			FUpAxisSourceConfig.GetOrd(0, out FUpAxisSource);
+    		else if (Input == FUpAxisTargetConfig)
+    			FUpAxisTargetConfig.GetOrd(0, out FUpAxisTarget);
+    		else if (Input == FRightAxisSourceConfig)
+    			FRightAxisSourceConfig.GetOrd(0, out FRightAxisSource);
+    		else if (Input == FRightAxisTargetConfig)
+    			FRightAxisTargetConfig.GetOrd(0, out FRightAxisTarget);
+    		
+    		ConfigurateModel();
+        }
+        
+        private void ConfigurateModel()
+        {
+        	if (FColladaDocument == null) return;
+        	if (FColladaModel == null) return;
+        	
+        	CoordinateSystem csSource = new CoordinateSystem(FColladaDocument.CoordinateSystem);
+        	CoordinateSystem csTarget = new CoordinateSystem(CoordinateSystemType.LeftHanded);
+        	
+        	if (FCsTypeSource == 1)
+        		csSource.Type = CoordinateSystemType.LeftHanded;
+        	else if (FCsTypeSource == 2)
+        		csSource.Type = CoordinateSystemType.RightHanded;
+        	
+        	if (FCsTypeTarget == 1)
+        		csTarget.Type = CoordinateSystemType.LeftHanded;
+        	else if (FCsTypeTarget == 2)
+        		csTarget.Type = CoordinateSystemType.RightHanded;
+        	
+        	if (FUpAxisSource > 0)
+        		csSource.Up = GetVectorForAxis(FUpAxisSource);
+        	if (FUpAxisTarget > 0)
+        		csTarget.Up = GetVectorForAxis(FUpAxisTarget);
+        	if (FRightAxisSource > 0)
+        		csSource.Right = GetVectorForAxis(FRightAxisSource);
+        	if (FRightAxisTarget > 0)
+        		csTarget.Right = GetVectorForAxis(FRightAxisTarget);
+        	
+        	if (FDistanceUnitSource > 0)
+        		csSource.Meter = (float) FDistanceUnitSource;
+        	if (FDistanceUnitTarget > 0)
+        		csTarget.Meter = (float) FDistanceUnitTarget;
+        	
+        	FColladaModel.CoordinateSystemSource = csSource;
+        	FColladaModel.CoordinateSystemTarget = csTarget;
+        	
+        	GenerateInfoStrings();
+        }
+        
+        private Vector3 GetVectorForAxis(int axis)
+        {
+    		if (axis == 1)
+    			return new Vector3(1f, 0f, 0f);
+    		else if (axis == 2)
+    			return new Vector3(0f, 1f, 0f);
+    		else if (axis == 3)
+    			return new Vector3(0f, 0f, 1f);
+    		else if (axis == 4)
+    			return new Vector3(-1f, 0f, 0f);
+    		else if (axis == 5)
+    			return new Vector3(0f, -1f, 0f);
+    		else
+    			return new Vector3(0f, 0f, -1f);
+        }
+        
+        private string VectorToString(Vector3 v)
+        {
+        	if (v.X == 1) return "X";
+        	if (v.Y == 1) return "Y";
+        	if (v.Z == 1) return "Z";
+        	if (v.X == -1) return "-X";
+        	if (v.Y == -1) return "-Y";
+        	return "-Z";
+        }
+        
+        private void GenerateInfoStrings()
+        {
+        	FInfoNeedsUpdate = true;
+        	FInfo.Clear();
+        	
+        	if (FColladaModel == null)
+        	{
+        		return;
+        	}
+        	
+			FInfo.Add("Source up axis: " + VectorToString(FColladaModel.CoordinateSystemSource.Up));
+			FInfo.Add("Source right axis: " + VectorToString(FColladaModel.CoordinateSystemSource.Right));
+			FInfo.Add("Source in axis: " + VectorToString(FColladaModel.CoordinateSystemSource.Inward));
+			FInfo.Add("Source distance unit in meter: " + FColladaModel.CoordinateSystemSource.Meter);
+			FInfo.Add("Target up axis: " + VectorToString(FColladaModel.CoordinateSystemTarget.Up));
+			FInfo.Add("Target right axis: " + VectorToString(FColladaModel.CoordinateSystemTarget.Right));
+			FInfo.Add("Target in axis: " + VectorToString(FColladaModel.CoordinateSystemTarget.Inward));
+			FInfo.Add("Target distance unit in meter: " + FColladaModel.CoordinateSystemTarget.Meter);
         }
         
         //here we go, thats the method called by vvvv each frame
@@ -232,8 +382,10 @@ namespace VVVV.Nodes
         	//recompute the outputs
         	if (FFileNameInput.PinIsChanged)
 			{
+        		FColladaDocument = null;
         		FColladaModel = null;
         		FColladaModelOutput.SliceCount = 0;
+        		FInfoOutput.SliceCount = 0;
         		
         		string filename;
     			FFileNameInput.GetString(0, out filename);
@@ -246,11 +398,12 @@ namespace VVVV.Nodes
     			Log(TLogType.Message, "Loading " + filename);
     			try
 				{
-					Document colladaDocument = new Document(filename);
-					Conditioner.ConvexTriangulator(colladaDocument);
+					FColladaDocument = new Document(filename);
+					Conditioner.ConvexTriangulator(FColladaDocument);
 					// not necessary anymore
 					//Conditioner.Reindexor(colladaDocument);
-					FColladaModel = new Model(colladaDocument);
+					FColladaModel = new Model(FColladaDocument);
+					ConfigurateModel();
 					
 					Log(TLogType.Message, filename + " loaded.");
 				}
@@ -261,7 +414,16 @@ namespace VVVV.Nodes
 				}
 				
 				FColladaModelOutput.SliceCount = 1;
-			}     	
+			}    
+        	
+        	if (FInfoNeedsUpdate)
+        	{
+        		FInfoNeedsUpdate = false;
+        		FInfoOutput.SliceCount = FInfo.Count;
+					for (int i = 0; i< FInfo.Count; i++)
+						FInfoOutput.SetString(i, FInfo[i]);
+        	}
+        		
         }
              
         #endregion mainloop  

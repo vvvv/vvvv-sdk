@@ -37,9 +37,9 @@ using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Shared.VSlimDX;
 
-using VVVV.Collada;
-using VVVV.Collada.ColladaModel;
-using VVVV.Collada.ColladaDocument;
+using ColladaSlimDX.ColladaModel;
+using ColladaSlimDX.ColladaDocument;
+using ColladaSlimDX.Utils;
 
 using SlimDX;
 using SlimDX.Direct3D9;
@@ -491,7 +491,7 @@ namespace VVVV.Nodes
 						Device dev = Device.FromPointer(new IntPtr(OnDevice));
 						try
 						{
-							m = FColladaModel.CreateUnion3D9Mesh(dev, selectedInstanceMeshes, false);
+							m = CreateUnion3D9Mesh(dev, selectedInstanceMeshes);
 							FDeviceMeshes.Add(OnDevice, m);
 						}
 						catch (Exception e)
@@ -534,6 +534,30 @@ namespace VVVV.Nodes
 		#endregion
         
         #region helper functions
+        private Mesh CreateUnion3D9Mesh(Device graphicsDevice, List<Model.InstanceMesh> instanceMeshes)
+       	{
+    		List<Mesh> meshes = new List<Mesh>();
+    		
+			int attribId = 0;
+			foreach (Model.InstanceMesh instanceMesh in instanceMeshes)
+    		{
+				if (instanceMesh.Mesh.Primitives.Count > 0)
+				{
+					meshes.Add(instanceMesh.Mesh.Create3D9Mesh(graphicsDevice, ref attribId));
+					attribId++;
+				}
+    		}
+        	
+			Mesh mesh = Mesh.Concatenate(graphicsDevice, meshes.ToArray(), MeshFlags.Use32Bit | MeshFlags.Managed);
+			
+			foreach (Mesh m in meshes)
+				m.Dispose();
+			
+        	mesh.OptimizeInPlace(MeshOptimizeFlags.AttributeSort);
+
+        	return mesh;
+        }
+        
 		private void Log(TLogType logType, string message)
 		{
 			FHost.Log(logType, "ColladaMesh: " + message);

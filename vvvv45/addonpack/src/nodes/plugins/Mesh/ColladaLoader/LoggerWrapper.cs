@@ -1,6 +1,6 @@
 ﻿using System;
 using VVVV.PluginInterfaces.V1;
-using VVVV.Collada;
+using ColladaSlimDX.Utils;
 
 namespace VVVV.Nodes
 {
