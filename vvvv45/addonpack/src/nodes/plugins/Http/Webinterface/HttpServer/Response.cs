@@ -55,10 +55,11 @@ namespace VVVV.Webinterface.HttpServer
             {
                 mHeader = new ResponseHeader(tLoadSelectContent.StatusCode);
 
+                mHeader.SetAttribute("content-type", GetContentType(tLoadSelectContent.FileExtension));
                 mHeader.SetAttribute("accept-ranges", "bytes");
                 mHeader.SetAttribute("content-length", tLoadSelectContent.ContentAsBaytes.Length.ToString());
-                mHeader.SetAttribute("connection", "keep-alive");
-                mHeader.SetAttribute("content-type", GetContentType(tLoadSelectContent.FileExtension));
+                //mHeader.SetAttribute("connection", "keep-alive");
+                
 
                 mHeaderasBytes = Encoding.ASCII.GetBytes(mHeader.Text);
                 mResponseAsBytes = Combine(mHeaderasBytes, tLoadSelectContent.ContentAsBaytes);
@@ -75,6 +76,7 @@ namespace VVVV.Webinterface.HttpServer
         private string GetContentType(string pFilePath)
         {
             string mimeType = "application/unknown";
+
             string ext = System.IO.Path.GetExtension(pFilePath).ToLower();
 
             Microsoft.Win32.RegistryKey regKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey(ext);
@@ -86,7 +88,7 @@ namespace VVVV.Webinterface.HttpServer
             else if (ext == ".js")
             {
                 mimeType = "application/x-javascript";
-            }              
+            }
 
             return mimeType;
         }

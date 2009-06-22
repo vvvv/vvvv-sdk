@@ -27,6 +27,7 @@ namespace VVVV.Webinterface.HttpServer
         {
             get
             {
+                Debug.WriteLine("StatusCode: " + mStatus);
                 return mStatus;
             }
         }
@@ -94,6 +95,8 @@ namespace VVVV.Webinterface.HttpServer
             if (FoundFileFlag == false)
             {
                 mContent = "File " + "'" + pFilename + "'" + " Not Found";
+                mContentAsByte = Encoding.ASCII.GetBytes(mContent);
+                mFileExtension = (pFilename.Split('.'))[1];
                 mStatus = new HTTPStatusCode("").Code404;
             }
             else

@@ -597,6 +597,7 @@ namespace VVVV.Webinterface.HttpServer {
                     if ((Content.Length > 0) && ((Content[0] != '<') ||
                         ((Content[0] == '<') && (Content.IndexOf("</message>") > -1))))
                     {
+
                         SendData(tSocketInformation);
                         tSocketInformation.TimeStamp = DateTime.Now;
                     }
@@ -634,12 +635,13 @@ namespace VVVV.Webinterface.HttpServer {
          
             byte[] byteData;
 
-            lock (thisLock)
-            {
-                Request tRequest = new Request(pSocketInformations.Request.ToString());
+            //lock (thisLock)
+            //{
+
+            Request tRequest = new Request(pSocketInformations.Request.ToString(), mFoldersToServ);
                 Response tResponse = new Response(tRequest, mFoldersToServ);
                 byteData = tResponse.TextInBytes;
-            }
+            //}
 
             pSocketInformations.ClientSocket.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendDataCallback), pSocketInformations);
             
