@@ -62,7 +62,10 @@ namespace VVVV.Nodes
     	private IValueIn FTimeInput;
     	private IValueIn FBinSize;
     	private IValueIn FIndex;
+    	
+    	//config pin declaration
 		private IValueConfig FOpaqueIsOneInput;
+		private IValueConfig FSkeletonOutputEnabledConfig;
 		
 		//output pin declaration
 		private IDXMeshOut FMyMeshOutput;
@@ -85,6 +88,7 @@ namespace VVVV.Nodes
     	private static Model.BasicMaterial FNoMaterial = new Model.BasicMaterial();
 		//how transparency tag is treated
 		private bool FOpaqueIsOne = true;
+		private bool FSkeletonOutputEnabled = false;
     	
     	#endregion field declaration
        
@@ -233,6 +237,8 @@ namespace VVVV.Nodes
 			//create configuration inputs
 			FHost.CreateValueConfig("Opaque=1?", 1, null, TSliceMode.Single, TPinVisibility.True, out FOpaqueIsOneInput);
 			FOpaqueIsOneInput.SetSubType(0.0, 1.0, 1.0, 1.0, false, true, false);
+			FHost.CreateValueConfig("Skeleton pin enabled", 1, null, TSliceMode.Single, TPinVisibility.True, out FSkeletonOutputEnabledConfig);
+			FSkeletonOutputEnabledConfig.SetSubType(0.0, 1.0, 1.0, 0.0, false, true, false);
 			
 			//create outputs
 			FHost.CreateMeshOutput("Mesh", TSliceMode.Dynamic, TPinVisibility.True, out FMyMeshOutput);
@@ -254,10 +260,9 @@ namespace VVVV.Nodes
 			FHost.CreateValueOutput("Opaque", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FOpaqueOut);
 			FOpaqueOut.SetSubType(0.0, 1.0, 0.01, 1.0, false, false, false);
 			
-			
 			FHost.CreateValueOutput("Skeleton", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSkeletonOut);
-			FSkeletonOut.SetSubType(0.0, float.MaxValue, 0.1, 25.0, false, false, false);
-			
+			FSkeletonOut.SetSubType(0.0, float.MaxValue, 0.1, 0.0, false, false, false);
+			FSkeletonOut.Order = int.MaxValue;
 			
 			COLLADAUtil.Logger = new LoggerWrapper(FHost);
         } 
@@ -269,15 +274,30 @@ namespace VVVV.Nodes
         public void Configurate(IPluginConfig Input)
         {
         	double value;
-			FOpaqueIsOneInput.GetValue(0, out value);
-			if (value == 0 && FOpaqueIsOne) 
-			{
-				FOpaqueIsOne = false;
-			}
-			else if (value == 1 && !FOpaqueIsOne)
-			{
-				FOpaqueIsOne = true;
-			}
+        	if (Input == FOpaqueIsOneInput)
+        	{
+				FOpaqueIsOneInput.GetValue(0, out value);
+				if (value == 0 && FOpaqueIsOne) 
+				{
+					FOpaqueIsOne = false;
+				}
+				else if (value == 1 && !FOpaqueIsOne)
+				{
+					FOpaqueIsOne = true;
+				}
+        	}
+        	else if (Input == FSkeletonOutputEnabledConfig)
+        	{
+        		FSkeletonOutputEnabledConfig.GetValue(0, out value);
+        		if (value == 1)
+        		{
+        			FSkeletonOutputEnabled = true;
+        		}
+        		else
+        		{
+        			FSkeletonOutputEnabled = false;
+        		}
+        	}
         }
         
         public void ConnectPin(IPluginIO Pin)
@@ -438,11 +458,14 @@ namespace VVVV.Nodes
 							skinnedInstanceMesh.ApplyAnimations(time);
 							
 							List<Matrix> tmpM = skinnedInstanceMesh.GetSkinningMatrices();
-							List<Vector3> tmpV = skinnedInstanceMesh.GetSkeletonVertices();
+							List<Vector3> tmpV = null;
+							if (FSkeletonOutputEnabled)
+								tmpV = skinnedInstanceMesh.GetSkeletonVertices();
 							
 							for (int j = 0; j < instanceMesh.Mesh.Primitives.Count; j++) {
 								skinningTransforms.AddRange(tmpM);
-								skeletonVertices.AddRange(tmpV);
+								if (FSkeletonOutputEnabled)
+									skeletonVertices.AddRange(tmpV);
 							}
 						}
 					}
@@ -455,13 +478,18 @@ namespace VVVV.Nodes
 					for (int j = 0; j < skinningTransforms.Count; j++)
 						FSkinningTransformOutput.SetMatrix(j, VSlimDXUtils.SlimDXMatrixToMatrix4x4(skinningTransforms[j]));
 					
-					
-					FSkeletonOut.SliceCount = skeletonVertices.Count * 3;
-					for (int j = 0; j < skeletonVertices.Count; j++)
+					if (FSkeletonOutputEnabled)
 					{
-						FSkeletonOut.SetValue3D(j, skeletonVertices[j].X, skeletonVertices[j].Y, skeletonVertices[j].Z);
+						FSkeletonOut.SliceCount = skeletonVertices.Count * 3;
+						for (int j = 0; j < skeletonVertices.Count; j++)
+						{
+							FSkeletonOut.SetValue3D(j, skeletonVertices[j].X, skeletonVertices[j].Y, skeletonVertices[j].Z);
+						}
 					}
-					
+					else
+					{
+						FSkeletonOut.SliceCount = 0;
+					}
 	        	}
         	}
         	catch (Exception e)
