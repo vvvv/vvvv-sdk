@@ -82,66 +82,62 @@ namespace VVVV.Webinterface.HttpServer
         /// <see cref="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html"/>
         /// </summary>
         /// <param name="pStatusCodeText">Sets the StatusCode 606</param>
-        public HTTPStatusCode(string pStatusCodeText)
+        public HTTPStatusCode(string pOwnStatusCode)
         {
-
             this.Code100 = "100 Continue";
-            this.Code101 = "101 Switching Protocols" ;
+            this.Code101 = "101 Switching Protocols";
 
             //Successful 2XX
-            this.Code200 =  "200 OK" ;
-            this.Code201 =  "201Created" ;
-            this.Code202 =  "202 Accepted" ;
-            this.Code203 =  "203 Non-Authoritative Information" ;
-            this.Code204 =  "204 No Content" ;
-            this.Code205 =  "205 Resent Content" ;
-            this.Code206=  "206 Partial Content" ;
+            this.Code200 = "200 OK";
+            this.Code201 = "201Created";
+            this.Code202 = "202 Accepted";
+            this.Code203 = "203 Non-Authoritative Information";
+            this.Code204 = "204 No Content";
+            this.Code205 = "205 Resent Content";
+            this.Code206 = "206 Partial Content";
 
             //Redirection 3xx
-            this.Code300=  "300 Mulitple Choices" ;
-            this.Code301=  "301 Moved Permanently" ;
-            this.Code302=  "302 Found" ;
-            this.Code303=  "303 See Other" ;
-            this.Code304 =  "304 Not Modified" ;
-            this.Code305 =  "305 See Other" ;
-            this.Code306 =  "306 Unused" ;
-            this.Code307 =  "307 Temporary Redirect" ;
+            this.Code300 = "300 Mulitple Choices";
+            this.Code301 = "301 Moved Permanently";
+            this.Code302 = "302 Found";
+            this.Code303 = "303 See Other";
+            this.Code304 = "304 Not Modified";
+            this.Code305 = "305 See Other";
+            this.Code306 = "306 Unused";
+            this.Code307 = "307 Temporary Redirect";
 
             //Client Error 4xx
-            this.Code400=  "400 Bad Request" ;
-            this.Code401=  "401 Unauthorized" ;
-            this.Code402=  "402 Payment Required" ;
-            this.Code403=  "403 Forbidden" ;
-            this.Code404=  "404 Not Found" ;
-            this.Code405=  "405 Method Not Allowed" ;
-            this.Code406=  "406 Not Acceptable" ;
-            this.Code407=  "407 Proxy Authentication Required" ;
-            this.Code408=  "408 Request Timeout" ;
-            this.Code409=  "409 Confilct" ;
-            this.Code410=  "410 Gone" ;
-            this.Code411=  "411 Length Required" ;
-            this.Code412=  "412 Precondition Failed" ;
-            this.Code413=  "413 Request Entity Too Large" ;
-            this.Code414=  "414 Request URI Too Long" ;
-            this.Code415=  "415 Unsupported Media Type" ;
-            this.Code416=  "416 Requested Range Not Satisfiable" ;
-            this.Code417=  "417 Expextion Faild" ;
-            
+            this.Code400 = "400 Bad Request";
+            this.Code401 = "401 Unauthorized";
+            this.Code402 = "402 Payment Required";
+            this.Code403 = "403 Forbidden";
+            this.Code404 = "404 Not Found";
+            this.Code405 = "405 Method Not Allowed";
+            this.Code406 = "406 Not Acceptable";
+            this.Code407 = "407 Proxy Authentication Required";
+            this.Code408 = "408 Request Timeout";
+            this.Code409 = "409 Confilct";
+            this.Code410 = "410 Gone";
+            this.Code411 = "411 Length Required";
+            this.Code412 = "412 Precondition Failed";
+            this.Code413 = "413 Request Entity Too Large";
+            this.Code414 = "414 Request URI Too Long";
+            this.Code415 = "415 Unsupported Media Type";
+            this.Code416 = "416 Requested Range Not Satisfiable";
+            this.Code417 = "417 Expextion Faild";
+
 
             //Server Error 5xx
-            this.Code500=  "500 Inernal Server Error" ;
-            this.Code501=  "501 Not Implemented" ;
-            this.Code502=  "502 Bad Gateway" ;
-            this.Code503=  "503 Service Unavailable" ;
-            this.Code504=  "504 Gateway Timeout" ;
-            this.Code505=  "505 HTTP Version Nnot Supported" ;
-             
+            this.Code500 = "500 Inernal Server Error";
+            this.Code501 = "501 Not Implemented";
+            this.Code502 = "502 Bad Gateway";
+            this.Code503 = "503 Service Unavailable";
+            this.Code504 = "504 Gateway Timeout";
+            this.Code505 = "505 HTTP Version Nnot Supported";
+
             //Own Error Codes 6xx
-            this.Code600=  "600 Error occured in VVVV" ;
-            this.Code606 = "606 " + pStatusCodeText;
+            this.Code600 = "600 Error occured in VVVV";
+            this.Code606 = "606 " + pOwnStatusCode;
         }
-
-       
-
     }
 }

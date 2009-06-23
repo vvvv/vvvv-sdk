@@ -171,7 +171,7 @@ namespace VVVV.Webinterface.HttpServer
                 while ((read = reader.Read(bytes, 0, bytes.Length)) != 0)
                 {
                     // Read from the file and write the data to the network
-                    sResponse = sResponse + Encoding.ASCII.GetString(bytes, 0, read);
+                    sResponse = sResponse + Encoding.UTF8.GetString(bytes, 0, read);
 
                     iTotBytes = iTotBytes + read;
 
@@ -233,7 +233,7 @@ namespace VVVV.Webinterface.HttpServer
             else
             {
                 Debug.WriteLine("File not found in FilList Server in call Items to Serve");
-                byte[] tPicContent = Encoding.ASCII.GetBytes("File Not found"); 
+                byte[] tPicContent = Encoding.UTF8.GetBytes("File Not found"); 
                 return tPicContent;
 
             }

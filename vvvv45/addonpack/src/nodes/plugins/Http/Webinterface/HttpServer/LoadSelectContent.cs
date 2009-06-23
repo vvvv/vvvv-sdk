@@ -12,7 +12,6 @@ namespace VVVV.Webinterface.HttpServer
 
         private string mContent;
         private byte[] mContentAsByte;
-        private string mStatus = new HTTPStatusCode("").Code200;
         private string mFileExtension;
 
         public string Content
@@ -23,14 +22,6 @@ namespace VVVV.Webinterface.HttpServer
             }
         }
 
-        public string StatusCode
-        {
-            get
-            {
-                Debug.WriteLine("StatusCode: " + mStatus);
-                return mStatus;
-            }
-        }
 
         public string FileExtension
         {
@@ -41,7 +32,7 @@ namespace VVVV.Webinterface.HttpServer
 
         }
 
-        public byte[] ContentAsBaytes
+        public byte[] ContentAsBytes
         {
             get
             {
@@ -52,7 +43,6 @@ namespace VVVV.Webinterface.HttpServer
         public LoadSelectContent( string pFilename, List<string> pPaths)
         {
             bool ListFlag;
-            mStatus = new HTTPStatusCode("").Code200;
 
             ListFlag = CheckFileNameInVVVVLists(pFilename);
             if(ListFlag == false)
@@ -61,13 +51,11 @@ namespace VVVV.Webinterface.HttpServer
             }
         }
 
-
         private bool CheckFileNameInVVVVLists(string pFilename)
         {
             //check Lists from vvvv for filename
             return false;
         }
-
 
 
         private void LoadFromDisc(string pFilename, List<string> pPaths)
@@ -95,13 +83,8 @@ namespace VVVV.Webinterface.HttpServer
             if (FoundFileFlag == false)
             {
                 mContent = "File " + "'" + pFilename + "'" + " Not Found";
-                mContentAsByte = Encoding.ASCII.GetBytes(mContent);
+                mContentAsByte = Encoding.UTF8.GetBytes(mContent);
                 mFileExtension = (pFilename.Split('.'))[1];
-                mStatus = new HTTPStatusCode("").Code404;
-            }
-            else
-            {
-                mStatus = new HTTPStatusCode("").Code200;
             }
         }
 
@@ -120,7 +103,7 @@ namespace VVVV.Webinterface.HttpServer
                 while ((read = reader.Read(bytes, 0, bytes.Length)) != 0)
                 {
                     // Read from the file and write the data to the network
-                    mContent = mContent + Encoding.ASCII.GetString(bytes, 0, read);
+                    mContent = mContent + Encoding.UTF8.GetString(bytes, 0, read);
                 }
 
                 mContentAsByte = bytes;
@@ -133,13 +116,11 @@ namespace VVVV.Webinterface.HttpServer
             {
                 Debug.WriteLine("LoadSelectContent: " + ex.Message.ToString());
                 mContent = "ex.Message.ToString()";
-                mStatus = new HTTPStatusCode().Code500;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine("LoadSelectContent: " + ex.Message.ToString());
                 mContent = "ex.Message.ToString()";
-                mStatus = new HTTPStatusCode().Code500;
             }
         }
     }

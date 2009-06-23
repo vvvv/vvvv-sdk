@@ -16,14 +16,12 @@ namespace VVVV.Webinterface.HttpServer
         private string mHttpVersion;
         private string mFilename;
         private string mFileLocation;
-        private string mReqeustedFileExtension;
-        private string mRequestedFiletype;
         private SortedDictionary<string, string> mRequestHeadParameterList = new SortedDictionary<string, string>();
         private SortedDictionary<string, string> mRequestBodyParameterList = new SortedDictionary<string, string>();
         private string mMessageHead = "";
         private string mMessageBody = "";
         private Dictionary<string,string> mArguments = new Dictionary<string,string>();
-
+        private Response mResponse;
 
 
 
@@ -86,6 +84,14 @@ namespace VVVV.Webinterface.HttpServer
             }
         }
 
+        public Response Response
+        {
+            get
+            {
+                return mResponse;
+            }
+        }
+
         # endregion public properties
 
 
@@ -96,7 +102,6 @@ namespace VVVV.Webinterface.HttpServer
 
 
         # region constructor
-
         public Request(string pRequest, List<string> pFolderToServ)
         {
             mMessageHead = pRequest.Substring(0,pRequest.LastIndexOf(Environment.NewLine));
@@ -104,7 +109,22 @@ namespace VVVV.Webinterface.HttpServer
             string[] tHeadLines = mMessageHead.Split('\n');
             SplitHeadParameter(tHeadLines);
             SplitFirstLine(tHeadLines[0]);
-            
+
+            if (mRequestType == "GET")
+            {
+                LoadSelectContent tLoadSelectContent = new LoadSelectContent(mFilename, pFolderToServ);
+                mResponse = new Response(mFilename,tLoadSelectContent.ContentAsBytes,  new HTTPStatusCode("").Code200);
+            }
+            else if (mRequestType == "POST")
+            {
+                string tContentType = String.Empty;
+                mRequestHeadParameterList.TryGetValue("Content-Type",out tContentType);
+                mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("Received POST Request"), new HTTPStatusCode("").Code200);
+            }
+            else
+            {
+                mResponse = new Response(mFilename, Encoding.UTF8.GetBytes("Error in Request Handling"), new HTTPStatusCode("").Code500);
+            }    
         }
 
         #endregion constructor
@@ -204,7 +224,7 @@ namespace VVVV.Webinterface.HttpServer
                 else
                 {
                     tReqeustedFileExtension = DetectedFileExtension(ContentType);
-                    if( tReqeustedFileExtension == "unkown" && ContentType.Contains("javascript"))
+                    if( tReqeustedFileExtension == "unknown" && ContentType.Contains("javascript"))
                     {
                         tReqeustedFileExtension = ".js";
                     }
@@ -215,7 +235,6 @@ namespace VVVV.Webinterface.HttpServer
                 Debug.WriteLine("Unknown Requesttype");
             }
          }
-
 
         private string DetectedFileExtension(string pContenType)
         {

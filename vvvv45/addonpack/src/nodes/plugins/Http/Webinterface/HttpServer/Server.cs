@@ -585,7 +585,7 @@ namespace VVVV.Webinterface.HttpServer {
                 {
                     //Adding the received data to the SocketInformation Object 
                     Monitor.Enter(tSocketInformation);
-                    tSocketInformation.Request.Append(Encoding.ASCII.GetString(tSocketInformation.Buffer, 0, bytesRead));
+                    tSocketInformation.Request.Append(Encoding.UTF8.GetString(tSocketInformation.Buffer, 0, bytesRead));
                     Monitor.Exit(tSocketInformation);
 
 
@@ -598,8 +598,22 @@ namespace VVVV.Webinterface.HttpServer {
                         ((Content[0] == '<') && (Content.IndexOf("</message>") > -1))))
                     {
 
-                        SendData(tSocketInformation);
                         tSocketInformation.TimeStamp = DateTime.Now;
+
+                        try
+                        {
+                            Request tRequest = new Request(tSocketInformation.Request.ToString(), mFoldersToServ);
+                            tSocketInformation.ResponseAsBytes = tRequest.Response.TextInBytes;
+
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine(String.Format("Error in RequestHandling: {0}", ex.Message));
+                            tSocketInformation.ResponseAsBytes = Encoding.UTF8.GetBytes(new ResponseHeader(new HTTPStatusCode("").Code200).Text);
+                        }
+                
+                        //SendData(tSocketInformation);
+                        tSocketInformation.ClientSocket.BeginSend(tSocketInformation.ResponseAsBytes, 0, tSocketInformation.ResponseAsBytes.Length, 0, new AsyncCallback(SendDataCallback), tSocketInformation);
                     }
                     else
                     {
@@ -629,21 +643,8 @@ namespace VVVV.Webinterface.HttpServer {
 
         }
 
-        
         private void SendData(SocketInformation pSocketInformations)
         {
-         
-            byte[] byteData;
-
-            //lock (thisLock)
-            //{
-
-            Request tRequest = new Request(pSocketInformations.Request.ToString(), mFoldersToServ);
-                Response tResponse = new Response(tRequest, mFoldersToServ);
-                byteData = tResponse.TextInBytes;
-            //}
-
-            pSocketInformations.ClientSocket.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendDataCallback), pSocketInformations);
             
         }
 

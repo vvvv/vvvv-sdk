@@ -14,8 +14,6 @@ namespace VVVV.Webinterface.HttpServer
         #region field declaration
 
         private string mBody = "";
-
-        private Request mRequest;
         private ResponseHeader mHeader;
         private byte[] mHeaderasBytes;
         private byte[] mResponseAsBytes;
@@ -44,32 +42,31 @@ namespace VVVV.Webinterface.HttpServer
 
 
 
-        public Response(Request pRequest, List<string> pFolderToServ)
+        public Response(string pFilename,byte[] pContent, string pStausCode)
         {
-            this.mRequest = pRequest;
 
-            LoadSelectContent tLoadSelectContent = new LoadSelectContent(pRequest.FileName, pFolderToServ);
-            mBody = tLoadSelectContent.Content;
+            mHeader = new ResponseHeader(pStausCode);
 
-            try
-            {
-                mHeader = new ResponseHeader(tLoadSelectContent.StatusCode);
+            mHeader.SetAttribute("content-type", GetContentType(pFilename.Split('.')[1]));
+            mHeader.SetAttribute("accept-ranges", "bytes");
+            mHeader.SetAttribute("content-length", pContent.Length.ToString());
+            mHeader.SetAttribute("connection", "close");
+           
+            mResponseAsBytes = Combine(Encoding.UTF8.GetBytes(mHeader.Text), pContent);
+        }
 
-                mHeader.SetAttribute("content-type", GetContentType(tLoadSelectContent.FileExtension));
-                mHeader.SetAttribute("accept-ranges", "bytes");
-                mHeader.SetAttribute("content-length", tLoadSelectContent.ContentAsBaytes.Length.ToString());
-                //mHeader.SetAttribute("connection", "keep-alive");
-                
 
-                mHeaderasBytes = Encoding.ASCII.GetBytes(mHeader.Text);
-                mResponseAsBytes = Combine(mHeaderasBytes, tLoadSelectContent.ContentAsBaytes);
-                Debug.WriteLine(mHeader.Text);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Header exeption:" + ex.Message.ToString());
-            }
-       
+        public Response(string pFilename, string pContentType, byte[] pContent, string pStausCode)
+        {
+
+            mHeader = new ResponseHeader(pStausCode);
+
+            mHeader.SetAttribute("content-type", pContentType);
+            mHeader.SetAttribute("accept-ranges", "bytes");
+            mHeader.SetAttribute("content-length", pContent.Length.ToString());
+            mHeader.SetAttribute("connection", "close");
+
+            mResponseAsBytes = Combine(Encoding.UTF8.GetBytes(mHeader.Text), pContent);
         }
 
 
@@ -77,9 +74,9 @@ namespace VVVV.Webinterface.HttpServer
         {
             string mimeType = "application/unknown";
 
-            string ext = System.IO.Path.GetExtension(pFilePath).ToLower();
+            string ext = pFilePath.ToLower();
 
-            Microsoft.Win32.RegistryKey regKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey(ext);
+            Microsoft.Win32.RegistryKey regKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey("." + ext);
 
             if (regKey != null && regKey.GetValue("Content Type") != null)
             {

@@ -51,24 +51,16 @@ namespace VVVV.Webinterface.HttpServer
 
         public ResponseHeader(string pStatusCode)
         {
-            //Status Code
-            //mAttributeNames.Add(0, "HTTP Status Code");
-           // mAttributeValues.Add(0,"HTTP/1.1 " + pStatusCode);
             mStatusCode = pStatusCode;
+
             //Date
             //Culture Info setzen für die Ländereinstellung
             CultureInfo ci = new CultureInfo("en-US");
-
-            //Neues DateTime Objekt für den 04.07.2006
-
             DateTime pNow = DateTime.Now;
             DateTime pTime = DateTime.Now;
             //Als Label im Format 07/04/2006 (englisch) speichern
             string currentDate = pNow.ToString("d", ci);
             string currentTime = pTime.ToLongTimeString();
-
-
-            //string currentTime = usdate.ToShortDateString();
 
             mAttributeNames.Add(0, "Date");
             mAttributeValues.Add(0, currentDate + " " + currentTime); 
@@ -77,13 +69,6 @@ namespace VVVV.Webinterface.HttpServer
             mAttributeNames.Add(1, "Server");
             mAttributeValues.Add(1, "VVVV Webinterface Server 1beta1");
 
-            ////Cache Controle
-            //mAttributeNames.Add(3, "Cache-Control");
-            //mAttributeValues.Add(3, "no-cache,must-revalidate");
-
-            ////Content-Type
-            //mAttributeNames.Add(4, "Content-Type");
-            //mAttributeValues.Add(4, "text/html; charset=utf-8");
         }
 
         public ResponseHeader(string pStatusCode, string pFilename)
@@ -94,17 +79,12 @@ namespace VVVV.Webinterface.HttpServer
             //Date
             //Culture Info setzen für die Ländereinstellung
             CultureInfo ci = new CultureInfo("en-US");
-
-            //Neues DateTime Objekt für den 04.07.2006
             
             DateTime pNow = DateTime.Now;
             DateTime pTime = DateTime.Now;
-            //Als Label im Format 07/04/2006 (englisch) speichern
+
             string currentDate = pNow.ToString("d", ci);
             string currentTime = pTime.ToLongTimeString();
-
-            
-            //string currentTime = usdate.ToShortDateString();
 
             mAttributeNames.Add(0, "Date");
             mAttributeValues.Add(0, currentDate + " " + currentTime); 
@@ -116,19 +96,6 @@ namespace VVVV.Webinterface.HttpServer
             //location
             mAttributeNames.Add(2,"location");
             mAttributeValues.Add(2, pFilename);
-
-            ////conenction
-            //mAttributeNames.Add(3,"Connection");
-            //mAttributeValues.Add(3, "keep-alive");
-
-
-            ////Content-Type
-            //mAttributeNames.Add(4,"Content-Type");
-            //mAttributeValues.Add(4, "text/html; charset=utf-8");
-
-            ////Cache Controle
-            //mAttributeNames.Add(5, "Cache-Control");
-            //mAttributeValues.Add(5, "no-cache,must-revalidate");
             
         }
 
@@ -142,22 +109,19 @@ namespace VVVV.Webinterface.HttpServer
 
                 mAttributeValues.Remove(tIndex);
                 mAttributeValues.Add(tIndex, pValue);
-                Debug.WriteLine("Attribute: " + pName + " already exist and value replaced by:" + pValue);
-                
+                Debug.WriteLine(String.Format("Attribute {0} already exist and value replaced by {1}:",pName,pValue));
             }
             else
             {
-
                 int tIndex = mAttributeNames.Count;
                 mAttributeNames.Add(tIndex, pName);
                 mAttributeValues.Add(tIndex, pValue);
-                Debug.WriteLine("Attribute: " + pName + " doesn't exist and add at index:" + tIndex);
+                Debug.WriteLine(String.Format("Attribute {0} add at Index {1} with Value {2}:",pName, tIndex, pValue));
             }
         }
 
         public string GetAttribute(string pName)
-        {
-                        
+        {     
             if (mAttributeNames.ContainsValue(pName) == true)
             {
                 int tIndex;
@@ -169,14 +133,9 @@ namespace VVVV.Webinterface.HttpServer
             }
             else
             {
-                Debug.WriteLine("Attribute: " + pName + " doesn't exist in Request Header class");
+                Debug.WriteLine( String.Format("Attribute: {0}  doesn't exist in Request Header class", pName ));
                 return "Attribute: " + pName +  " doesn't exist in Request Header class";
             }
-        }
-
-        public void DeletAttribute(string pName)
-        {
-
         }
     }
 }
