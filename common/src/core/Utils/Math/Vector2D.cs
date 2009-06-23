@@ -130,7 +130,12 @@ namespace VVVV.Utils.VMath
 		/// <returns>Vector with same direction than v but length 1</returns>
 		public static Vector2D operator ~(Vector2D v)
 		{
-			return v * (1 / Math.Sqrt(v.x*v.x + v.y*v.y));
+			double length = Math.Sqrt(v.x*v.x + v.y*v.y);
+			
+			if (length != 0) 
+				return v * (1 / length);	
+			else 
+				return new Vector2D(0);
 		}
 		
 		#endregion unary operators

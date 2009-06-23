@@ -209,7 +209,12 @@ namespace VVVV.Utils.VMath
 		/// <returns>Vector with same direction than v but length 1</returns>
 		public static Vector3D operator ~(Vector3D v)
 		{
-			return v * (1 / Math.Sqrt(v.x*v.x + v.y*v.y + v.z*v.z));	
+			double length = Math.Sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
+			
+			if (length != 0) 
+				return v * (1 / length);	
+			else 
+				return new Vector3D(0);
 		}
 
 		#endregion unary operators

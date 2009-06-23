@@ -244,7 +244,12 @@ namespace VVVV.Utils.VMath
 		/// <returns>Vector with same direction than v but length 1</returns>
 		public static Vector4D operator ~(Vector4D v)
 		{
-			return v * (1 / Math.Sqrt(v.x*v.x + v.y*v.y + v.z*v.z + v.w*v.w));
+			double length = Math.Sqrt(v.x*v.x + v.y*v.y + v.z*v.z + v.w*v.w);
+			
+			if (length != 0) 
+				return v * (1 / length);	
+			else 
+				return new Vector4D(0);
 		}	
 		
 		#endregion unary operators
