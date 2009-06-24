@@ -18,14 +18,14 @@ namespace VVVV.Nodes.HTTP
         #region field declaration
 
         protected SortedList<int, BaseDatenObjekt> mGuiDatenObjekte;
-        protected Page mPage = new Page(true);
+        protected Renderer mPage = new Renderer(true);
 
 
         public SortedList<string, string> mCssFile = new SortedList<string, string>();
         public SortedList<string, string> mJsFile = new SortedList<string, string>();
         public SortedList<string, string> mDocumentReady = new SortedList<string, string>();
 
-        public Page Page
+        public Renderer Page
         {
             get
             {

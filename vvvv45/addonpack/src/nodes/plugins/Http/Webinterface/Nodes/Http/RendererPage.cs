@@ -2,11 +2,9 @@
 #region licence/info
 
 //////project name
-//vvvv plugin template
+
 
 //////description
-//basic vvvv node plugin template.
-//Copy this an rename it, to write your own plugin node.
 
 //////licence
 //GNU Lesser General Public License (LGPL)
@@ -22,27 +20,26 @@
 //VVVV.Utils.VMath;
 
 //////initial author
-//vvvv group
+//phlegma
 
 #endregion licence/info
+
+
+
 
 //use what you need
 using System;
 using System.Drawing;
 using VVVV.PluginInterfaces.V1;
-//using VVVV.Utils.VColor;
-//using VVVV.Utils.VMath;
 using System.IO;
 using System.Collections.Generic;
 using System.Collections;
 using System.Windows.Forms;
 using System.Diagnostics;
-using System.Threading;
 
 using VVVV.Webinterface;
 using VVVV.Webinterface.Utilities;
 using VVVV.Webinterface.Data;
-using VVVV.Webinterface.HttpServer;
 using VVVV.Nodes.HTTP;
 using VVVV.Nodes.HttpGUI;
 using VVVV.Nodes.HttpGUI.Datenobjekte;
@@ -55,7 +52,7 @@ namespace VVVV.Nodes.HTTP
     /// <summary>
     /// node to put all html nodes to one html page
     /// </summary>
-    public class Renderer : IPlugin, IDisposable, IPluginConnections
+    public class Page : IPlugin, IDisposable, IPluginConnections
     {
 
 
@@ -77,20 +74,12 @@ namespace VVVV.Nodes.HTTP
         private IValueIn FOpenBrowser;
         private IValueIn FPageWidth;
         private IValueIn FPageHeight;
-        private IStringIn FDirectories;
-        private IValueIn FEnableServer;
 
         //private IEnumIn FPlattform; 
 
         //output pin declaration
         private IStringOut FWholeHTML;
-        private IStringOut FFileName;
-        private IStringOut FFileList;
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
-
-        ///<summery>Config Pin</summery>
-        private IValueIn FPort;
-
 
         //HttpGuiInterface
         private INodeIn FHttpGuiIn;
@@ -99,13 +88,13 @@ namespace VVVV.Nodes.HTTP
         private SortedList<int, string> mGuiTypes;
         private SortedList<int, SortedList<string, string>> mHtmlAttributs;
         private SortedList<int, SortedList<string, string>> mCssStyles;
-        private SortedList<string, string> mCssBodyPropertiesIn = new SortedList<string,string>();
+        private SortedList<string, string> mCssBodyPropertiesIn = new SortedList<string, string>();
         private string[] mHtmlText;
         private SortedList<int, BaseDatenObjekt> mGuiDatenListe;
-        
+
         private INodeIn FCssPropertiesIn;
         private IHttpGUIStyleIO FUpstreamStyleIn;
-        
+
         //Server
         private VVVV.Webinterface.HttpServer.Server mServer;
         private string mServerFolder;
@@ -116,10 +105,6 @@ namespace VVVV.Nodes.HTTP
         private string mPageBody;
         private string mCssFile = "";
         private string mJsFile = "";
-
-
-        //Builder 
-        //private IPhoneBuilder mIPhone;
 
 
 
@@ -133,17 +118,14 @@ namespace VVVV.Nodes.HTTP
 
         #region constructor/destructor
 
-
         /// <summary>
         /// Transformer constructer 
         /// nothing to declar in there
         /// </summary>
-        public Renderer()
+        public Page()
         {
-            mServerFolder = mWebinterfaceSingelton.FolderToServ;
+           
         }
-
-        
 
         /// <summary>
         /// Implementing IDisposable's Dispose method.
@@ -177,15 +159,13 @@ namespace VVVV.Nodes.HTTP
             {
                 if (disposing)
                 {
-                    
-                    
                     // Dispose managed resources.
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
 
                 mServer.Dispose();
-                FHost.Log(TLogType.Debug, "Renderer (HTML) Node is being deleted");
+                FHost.Log(TLogType.Debug, "Page (HTTP) Node is being deleted");
 
                 // Note that this is not thread safe.
                 // Another thread could start disposing the object
@@ -197,7 +177,7 @@ namespace VVVV.Nodes.HTTP
             FDisposed = true;
         }
 
-        
+
         /// <summary>
         /// Use C# destructor syntax for finalization code.
         /// This destructor will run only if the Dispose method
@@ -205,7 +185,7 @@ namespace VVVV.Nodes.HTTP
         /// It gives your base class the opportunity to finalize.
         /// Do not provide destructors in types derived from this class.
         /// </summary>
-        ~Renderer()
+        ~Page()
         {
             // Do not re-create Dispose clean-up code here.
             // Calling Dispose(false) is optimal in terms of
@@ -235,9 +215,9 @@ namespace VVVV.Nodes.HTTP
                 //fill out nodes info
                 //see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
                 IPluginInfo Info = new PluginInfo();
-                Info.Name = "Renderer";							//use CamelCaps and no spaces
+                Info.Name = "Page";							//use CamelCaps and no spaces
                 Info.Category = "HTTP";						    //try to use an existing one
-                Info.Version = "Server";						//versions are optional. leave blank if not needed
+                Info.Version = "";						//versions are optional. leave blank if not needed
                 Info.Help = "";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
@@ -284,11 +264,8 @@ namespace VVVV.Nodes.HTTP
             //assign host
             FHost = Host;
 
-            //create inputs
 
-            //FHost.Log(TLogType.Message, "my ID is: " + m_ID.ToString());
-            //FHost.Log(TLogType.Message, "in the Webpage Render Array are: " + m_DataWareHouse.WebpageRendererNodeCount.ToString() + " Elements");
-
+            //Input
             FHost.CreateNodeInput("Input", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiIn);
             FHttpGuiIn.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
 
@@ -298,15 +275,15 @@ namespace VVVV.Nodes.HTTP
             FHost.CreateStringInput("Url", TSliceMode.Single, TPinVisibility.True, out FUrl);
             FUrl.SetSubType("index.html", false);
 
-            FHost.CreateValueInput("Browser Width",1, null, TSliceMode.Single, TPinVisibility.True, out FPageWidth);
+            FHost.CreateValueInput("Browser Width", 1, null, TSliceMode.Single, TPinVisibility.True, out FPageWidth);
             FPageWidth.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
 
-            FHost.CreateValueInput("Browser Height",1, null, TSliceMode.Single, TPinVisibility.True, out FPageHeight);
+            FHost.CreateValueInput("Browser Height", 1, null, TSliceMode.Single, TPinVisibility.True, out FPageHeight);
             FPageHeight.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
-			
-            FHost.CreateNodeInput("CSS",  TSliceMode.Single, TPinVisibility.True, out FCssPropertiesIn);
+
+            FHost.CreateNodeInput("CSS", TSliceMode.Single, TPinVisibility.True, out FCssPropertiesIn);
             FCssPropertiesIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
-            
+
             FHost.CreateValueInput("Reload Browser", 1, null, TSliceMode.Single, TPinVisibility.True, out FReload);
             FReload.SetSubType(0, 1, 1, 0, true, false, true);
 
@@ -334,10 +311,10 @@ namespace VVVV.Nodes.HTTP
             FHost.CreateValueInput("Enable", 1, null, TSliceMode.Single, TPinVisibility.Hidden, out FEnableServer);
             FEnableServer.SetSubType(0, 1, 1, 1, false, true, true);
 
-            
 
 
-            
+
+
             //create outputs	    	   
             FHost.CreateStringOutput("Files", TSliceMode.Dynamic, TPinVisibility.True, out FFileName);
             FFileName.SetSubType("", true);
@@ -348,12 +325,12 @@ namespace VVVV.Nodes.HTTP
             FHost.CreateStringOutput("Output", TSliceMode.Dynamic, TPinVisibility.Hidden, out FWholeHTML);
             FWholeHTML.SetSubType("", false);
 
-            
+
             //create Config Pin
             FHost.CreateValueInput("Port", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPort);
             FPort.SetSubType(1, 65535, 1, 80, false, false, true);
 
-            
+
         }
 
         #endregion pin creation
@@ -373,9 +350,10 @@ namespace VVVV.Nodes.HTTP
                 INodeIOBase usI;
                 FHttpGuiIn.GetUpstreamInterface(out usI);
                 FUpstreamInterface = usI as IHttpGUIIO;
-            }else if( Pin == FCssPropertiesIn)
+            }
+            else if (Pin == FCssPropertiesIn)
             {
-            	INodeIOBase usI;
+                INodeIOBase usI;
                 FCssPropertiesIn.GetUpstreamInterface(out usI);
                 FUpstreamStyleIn = usI as IHttpGUIStyleIO;
             }
@@ -392,7 +370,7 @@ namespace VVVV.Nodes.HTTP
             }
             else if (Pin == FCssPropertiesIn)
             {
-            	FUpstreamStyleIn = null;
+                FUpstreamStyleIn = null;
             }
         }
         #endregion NodeIO
@@ -417,10 +395,10 @@ namespace VVVV.Nodes.HTTP
                 if (mServer != null)
                 {
                     double tPort;
-                    FPort.GetValue(0,out tPort);
+                    FPort.GetValue(0, out tPort);
                     mServer.Port = Convert.ToInt32(tPort);
                 }
-                else{return;}
+                else { return; }
             }
 
         }
@@ -435,7 +413,7 @@ namespace VVVV.Nodes.HTTP
         public void Evaluate(int SpreadMax)
         {
 
-            
+
             #region Upstream
 
 
@@ -468,7 +446,7 @@ namespace VVVV.Nodes.HTTP
                     }
                 }
             }
-            
+
 
 
             #endregion Upstream
@@ -521,7 +499,7 @@ namespace VVVV.Nodes.HTTP
             {
                 List<string> tDirectories = new List<string>();
 
-                for(int i = 0; i < FDirectories.SliceCount; i++)
+                for (int i = 0; i < FDirectories.SliceCount; i++)
                 {
                     string tCurrentDirectories;
                     FDirectories.GetString(i, out tCurrentDirectories);
@@ -559,16 +537,16 @@ namespace VVVV.Nodes.HTTP
 
             #region Get HTML Body and Head String
 
-            if ( FHtmlHead.PinIsChanged || FHtmlBody.PinIsChanged)
+            if (FHtmlHead.PinIsChanged || FHtmlBody.PinIsChanged)
             {
-             
+
                 string tContentBody = "";
                 string tContentHead = "";
                 double tReload;
 
 
                 FReload.GetValue(0, out tReload);
-                
+
                 // Get HTML Body string
                 for (int i = 0; i < FHtmlBody.SliceCount; i++)
                 {
@@ -580,7 +558,7 @@ namespace VVVV.Nodes.HTTP
                 }
 
                 mPageBody = tContentBody;
-                
+
                 // Get Html Head String
                 for (int i = 0; i < FHtmlHead.SliceCount; i++)
                 {
@@ -626,7 +604,7 @@ namespace VVVV.Nodes.HTTP
 
 
 
-            
+
 
             #region Build Page
 
@@ -637,57 +615,57 @@ namespace VVVV.Nodes.HTTP
             //if (currentBuildBang > 0.5)
             //{
 
-                //string HtmlHead = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
+            //string HtmlHead = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
             string HtmlHead = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
-                SortedList<string, string> tServerDaten = new SortedList<string, string>();
+            SortedList<string, string> tServerDaten = new SortedList<string, string>();
 
 
-                string currentSliceUrl = "";
-                FUrl.GetString(0, out currentSliceUrl);
+            string currentSliceUrl = "";
+            FUrl.GetString(0, out currentSliceUrl);
 
-                //double currentPlattform;
-                //FPlattform.GetValue(0, out currentPlattform);
-
-                
-
-                double currentWidthSlice;
-                double currentHeightSlice;
-                FPageWidth.GetValue(0, out currentWidthSlice);
-                FPageHeight.GetValue(0, out currentHeightSlice);
-
-
-                string tBrowserWidth = "" + Math.Round(currentWidthSlice);
-                string tBrowserHeight = "" + Math.Round(currentHeightSlice);
-
-
-                JQueryBuilder tJQuery = new JQueryBuilder(mGuiDatenListe, tBrowserWidth, tBrowserHeight, mCssBodyPropertiesIn);
-                mJsFile = tJQuery.JsFile;
-                mCssFile = tJQuery.CssMainFile;
-                tPage = tJQuery.Page;
+            //double currentPlattform;
+            //FPlattform.GetValue(0, out currentPlattform);
 
 
 
-                tPage.Body.Insert(mPageBody);
-                tPage.Head.Insert(mPageHead);
+            double currentWidthSlice;
+            double currentHeightSlice;
+            FPageWidth.GetValue(0, out currentWidthSlice);
+            FPageHeight.GetValue(0, out currentHeightSlice);
 
 
-                string currentSliceTitel = "";
-                FTitel.GetString(0, out currentSliceTitel);
-                tPage.Head.Insert(new Title(currentSliceTitel));
-           
+            string tBrowserWidth = "" + Math.Round(currentWidthSlice);
+            string tBrowserHeight = "" + Math.Round(currentHeightSlice);
 
-                if (mServer != null)
-                {
-                    //mServer.VVVVCssFile = mCssFile;
-                    //mServer.VVVVJsFile = mJsFile;
-                }
-                
 
-                tServerDaten.Add(currentSliceUrl, HtmlHead + tPage.Text);
-                mWebinterfaceSingelton.ServerDaten = tServerDaten;
-                FWholeHTML.SetString(0, HtmlHead + tPage.Text);
+            JQueryBuilder tJQuery = new JQueryBuilder(mGuiDatenListe, tBrowserWidth, tBrowserHeight, mCssBodyPropertiesIn);
+            mJsFile = tJQuery.JsFile;
+            mCssFile = tJQuery.CssMainFile;
+            tPage = tJQuery.Page;
 
-                
+
+
+            tPage.Body.Insert(mPageBody);
+            tPage.Head.Insert(mPageHead);
+
+
+            string currentSliceTitel = "";
+            FTitel.GetString(0, out currentSliceTitel);
+            tPage.Head.Insert(new Title(currentSliceTitel));
+
+
+            if (mServer != null)
+            {
+                //mServer.VVVVCssFile = mCssFile;
+                //mServer.VVVVJsFile = mJsFile;
+            }
+
+
+            tServerDaten.Add(currentSliceUrl, HtmlHead + tPage.Text);
+            mWebinterfaceSingelton.ServerDaten = tServerDaten;
+            FWholeHTML.SetString(0, HtmlHead + tPage.Text);
+
+
 
 
 
@@ -695,52 +673,52 @@ namespace VVVV.Nodes.HTTP
 
 
 
-         
+
 
             #region Save Page
 
-                string tPath;
-                double tSave;
-                string tUrl;
-                
-                FPath.GetString(0, out tPath);
-                FSavePage.GetValue(0, out tSave);
-                FUrl.GetString(0, out tUrl);
+            string tPath;
+            double tSave;
+            string tUrl;
 
-                SortedList<string,string> tFiles =  new SortedList<string,string>();
-                tFiles.Add(tPath + "\\" + tUrl, tPage.Text);
-                tFiles.Add(tPath + "\\" + "VVVV.css", mCssFile);
-                tFiles.Add(tPath + "\\" + "VVVV.js", mJsFile);
-                
+            FPath.GetString(0, out tPath);
+            FSavePage.GetValue(0, out tSave);
+            FUrl.GetString(0, out tUrl);
 
-                if (FSavePage.PinIsChanged)
+            SortedList<string, string> tFiles = new SortedList<string, string>();
+            tFiles.Add(tPath + "\\" + tUrl, tPage.Text);
+            tFiles.Add(tPath + "\\" + "VVVV.css", mCssFile);
+            tFiles.Add(tPath + "\\" + "VVVV.js", mJsFile);
+
+
+            if (FSavePage.PinIsChanged)
+            {
+                if (tSave > 0.5)
                 {
-                    if (tSave > 0.5)
-                    {
-                        
-                        foreach(KeyValuePair<string,string> pFile in tFiles)
-                        {
-                            try
-                            {
 
-                                if (File.Exists(pFile.Key))
-                                {
-                                    File.Delete(pFile.Key);
-                                    HTMLToolkit.SavePage(pFile.Key, pFile.Value);
-                                    FHost.Log(TLogType.Message, "File: " + tPage + " has been deleted an resaved");
-                                }                     
-                                else
-                                {
-                                    HTMLToolkit.SavePage(pFile.Key, pFile.Value);
-                                }
-                            }   
-                            catch
+                    foreach (KeyValuePair<string, string> pFile in tFiles)
+                    {
+                        try
+                        {
+
+                            if (File.Exists(pFile.Key))
                             {
-                                throw new Exception("somthing wrong in here Renderer");
+                                File.Delete(pFile.Key);
+                                HTMLToolkit.SavePage(pFile.Key, pFile.Value);
+                                FHost.Log(TLogType.Message, "File: " + tPage + " has been deleted an resaved");
                             }
+                            else
+                            {
+                                HTMLToolkit.SavePage(pFile.Key, pFile.Value);
+                            }
+                        }
+                        catch
+                        {
+                            throw new Exception("somthing wrong in here Renderer");
                         }
                     }
                 }
+            }
 
             #endregion Save Page
 
@@ -758,7 +736,7 @@ namespace VVVV.Nodes.HTTP
 
                 if (currentValue == 1)
                 {
-                    System.Diagnostics.Process.Start("http://localhost/index.html"); 
+                    System.Diagnostics.Process.Start("http://localhost/index.html");
                 }
             }
 
@@ -792,7 +770,7 @@ namespace VVVV.Nodes.HTTP
 
             #endregion files to serve
         }
-        
+
 
         #endregion mainloop
     }

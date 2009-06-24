@@ -11,9 +11,6 @@ namespace VVVV.Nodes.HTTP
     {
 
 
-        
-
-
         public JQueryBuilder(SortedList<int, BaseDatenObjekt> pDatenObjekt, string pBrowserWidth, string pBrowserHeigth, SortedList<string,string> pBodyProperties)
         {
             
