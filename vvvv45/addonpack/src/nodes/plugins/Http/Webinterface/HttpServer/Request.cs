@@ -102,7 +102,8 @@ namespace VVVV.Webinterface.HttpServer
 
 
         # region constructor
-        public Request(string pRequest, List<string> pFolderToServ)
+
+        public Request(string pRequest, List<string> pFolderToServ, SortedList<string, byte[]> pHtmlPages)
         {
             mMessageHead = pRequest.Substring(0,pRequest.LastIndexOf(Environment.NewLine));
             mMessageBody = pRequest.Substring(pRequest.LastIndexOf(Environment.NewLine));
@@ -110,10 +111,23 @@ namespace VVVV.Webinterface.HttpServer
             SplitHeadParameter(tHeadLines);
             SplitFirstLine(tHeadLines[0]);
 
+            
+
             if (mRequestType == "GET")
             {
-                LoadSelectContent tLoadSelectContent = new LoadSelectContent(mFilename, pFolderToServ);
-                mResponse = new Response(mFilename,tLoadSelectContent.ContentAsBytes,  new HTTPStatusCode("").Code200);
+                byte[] tPageToSend;
+                
+                if(pHtmlPages.ContainsKey(mFilename))
+                {
+                    pHtmlPages.TryGetValue(mFilename, out tPageToSend);
+
+                }else
+                {
+                    LoadSelectContent tLoadSelectContent = new LoadSelectContent(mFilename, pFolderToServ);
+                    tPageToSend = tLoadSelectContent.ContentAsBytes;
+                }
+                
+                mResponse = new Response(mFilename,tPageToSend, new HTTPStatusCode("").Code200);
             }
             else if (mRequestType == "POST")
             {

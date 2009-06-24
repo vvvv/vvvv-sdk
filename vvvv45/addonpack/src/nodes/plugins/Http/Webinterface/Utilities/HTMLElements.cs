@@ -46,7 +46,7 @@ namespace VVVV.Webinterface.Utilities
         }
     }
 
-	class Page : Tag
+	public class Page : Tag
     {
         public Head Head;
         public Body Body;
@@ -60,6 +60,7 @@ namespace VVVV.Webinterface.Utilities
         {
             if (bodyOrNot == true)
             {
+                HTMLHeader = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
                 Name = "html";
                 Head = new Head();
                 Body = new Body();
@@ -74,7 +75,6 @@ namespace VVVV.Webinterface.Utilities
             }
         }
 
-
         public void Save(string pURL)
         {
             System.IO.FileStream tFile = new System.IO.FileStream(pURL, System.IO.FileMode.OpenOrCreate, System.IO.FileAccess.Write);
@@ -86,7 +86,7 @@ namespace VVVV.Webinterface.Utilities
         }
     }
 
-    class Head : Tag
+    public class Head : Tag
     {
         public Head()
         {
@@ -94,7 +94,7 @@ namespace VVVV.Webinterface.Utilities
         }
     }
 
-    class Body : Tag
+    public class Body : Tag
     {
         public Body()
         {

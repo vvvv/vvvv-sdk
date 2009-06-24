@@ -88,6 +88,7 @@ namespace VVVV.Webinterface.Utilities
         private string m_OpenBegin = "";
         private string m_CloseBegin = "";
         private string m_End = "";
+        private string mHtmlHeader = "";
 
         private List<Attribute> m_Attributes = new List<Attribute>();
         private List<string> m_AttributesAsStrings = new List<string>();
@@ -116,6 +117,15 @@ namespace VVVV.Webinterface.Utilities
             }
         }
 
+        public string HTMLHeader
+        {
+            set
+            {
+                mHtmlHeader =  value;
+
+            }
+        }
+
         /// <summary>
         /// generates a whole Tag out of the added attributes and the tag name
         /// </summary>
@@ -123,7 +133,15 @@ namespace VVVV.Webinterface.Utilities
         { 
             get 
             {
-                return CreateText();
+                if (mHtmlHeader != "")
+                {
+                    return mHtmlHeader + Environment.NewLine + CreateText();
+                }
+                else
+                {
+                    return CreateText();
+                }
+                
             }
             set
             {

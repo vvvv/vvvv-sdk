@@ -46,10 +46,6 @@ namespace VVVV.Nodes.HttpGUI
         public INodeIn FFunktionOpen;
         public INodeIn FFunkttionClose;
 
-
-        public IHttpGUIFunktionIO FUpstreamFunktionOpen;
-        public IHttpGUIFunktionIO FUpstreamFunktionClose;
-
         public ITransformIn FTransformIn;
 
         // Daten Liste und Objecte
@@ -104,18 +100,12 @@ namespace VVVV.Nodes.HttpGUI
 
             this.OnPluginHostSet();
 
-             
             //Input Pins 
             FHost.CreateNodeInput("Input", TSliceMode.Dynamic, TPinVisibility.True, out FHttpStyleIn);
             FHttpStyleIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
             
             //create outputs	    	
-            
-
-           
-
-
-            
+             
         }
 
 

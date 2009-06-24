@@ -15,7 +15,6 @@ namespace VVVV.Webinterface.HttpServer
 
         private string mBody = "";
         private ResponseHeader mHeader;
-        private byte[] mHeaderasBytes;
         private byte[] mResponseAsBytes;
         
 

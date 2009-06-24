@@ -51,7 +51,7 @@ namespace VVVV.Webinterface.HttpServer {
         IPEndPoint mIpLocal;
         private int mBacklog;
         private bool mShuttingDown = false;
-        private int convID;
+        //private int convID;
         private Timer mLostTimer;
         private const int timerTimeout = 300000;
         private const int timeoutMinutes = 3;
@@ -70,7 +70,7 @@ namespace VVVV.Webinterface.HttpServer {
 
 
         //Files
-        private SortedList<string, string> mHtmlPages = new SortedList<string, string>();
+        private SortedList<string, byte[]> mHtmlPages = new SortedList<string, byte[]>();
         private SortedList<string,string> mCssFiles;
         private SortedList<string, string> mJsFiles;
         private List<string> mFoldersToServ;
@@ -102,6 +102,7 @@ namespace VVVV.Webinterface.HttpServer {
   
 
         #endregion field Declaration
+
 
 
 
@@ -143,7 +144,7 @@ namespace VVVV.Webinterface.HttpServer {
             }
         }
 
-        public SortedList<string, string> HtmlPages
+        public SortedList<string, byte[]> HtmlPages
         {
             set
             {
@@ -295,23 +296,6 @@ namespace VVVV.Webinterface.HttpServer {
 
 
 
-
-        #region ServeData
-
-        public void ServeFolder(string pPath)
-        {
-             mLogger.log(mLogger.LogType.Info, "serve Folder: " + pPath);
-             Debug.WriteLine("serve Folder: " + pPath);
-             mItemsToServ.ReadServerFolder(pPath);
-
-             mFileList = mItemsToServ.FileListVVVV;
-             mFileNames = mItemsToServ.FileListNameVVVV;
-        }
-
-        #endregion ServeData
-
-
-
         #region Socket Connection
 
 
@@ -331,6 +315,41 @@ namespace VVVV.Webinterface.HttpServer {
             TimerCallback timerDelegate = new TimerCallback(this.CheckSockets);
             //Create a timer that waits one minute, then invokes every 5 minutes.
             mLostTimer = new Timer(timerDelegate, null, Server.timerTimeout, Server.timerTimeout);
+        }
+
+
+
+        public void StartListening()
+        {
+            try
+            {
+                mIpLocal = new IPEndPoint(IPAddress.Any, portNumber);
+                mMainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+                mMainSocket.Bind(mIpLocal);
+                // Start listening...<
+                mMainSocket.Listen(100);
+                // Create the call back for any client connections...
+                while (mShuttingDown == false)
+                {
+                    allDone.Reset();
+                    mMainSocket.BeginAccept(new AsyncCallback(OnClientConnectCallback), mMainSocket);
+                    allDone.WaitOne();
+                }
+
+                Debug.WriteLine("-------------- Stop Listing to Socket --------------");
+                mMainSocket.Shutdown(SocketShutdown.Both);
+                mMainSocket.Close();
+            }
+            catch (SocketException se)
+            {
+                Debug.WriteLine(se.Message.ToString());
+            }
+            catch (Exception ex)
+            {
+                threadEnd[0].Set();
+                Debug.WriteLine("Server Constructor: \n" + ex.ToString());
+            }
         }
 
 
@@ -467,43 +486,6 @@ namespace VVVV.Webinterface.HttpServer {
 
 
 
-
-        public void StartListening()
-        {
-            try
-            {
-                mIpLocal = new IPEndPoint(IPAddress.Any, portNumber);
-                mMainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-                mMainSocket.Bind(mIpLocal);
-                // Start listening...<
-                mMainSocket.Listen(100);
-                // Create the call back for any client connections...
-                while (mShuttingDown == false)
-                {
-                    allDone.Reset();
-                    mMainSocket.BeginAccept(new AsyncCallback(OnClientConnectCallback), mMainSocket);
-                    allDone.WaitOne();
-                }
-
-                Debug.WriteLine("-------------- Stop Listing to Socket --------------");
-                mMainSocket.Shutdown(SocketShutdown.Both);
-                mMainSocket.Close();
-            }
-            catch (SocketException se)
-            {
-                Debug.WriteLine(se.Message.ToString());
-            }
-            catch (Exception ex)
-            {
-                threadEnd[0].Set();
-                Debug.WriteLine("Server Constructor: \n" + ex.ToString());
-            }
-        }
-
-
-
-
         #region request handle
 
         /// <summary>
@@ -524,6 +506,7 @@ namespace VVVV.Webinterface.HttpServer {
                 
                 //Adding Time and Socket to the SocketInformation Object 
                 SocketInformation tSocketInformations = new SocketInformation(tClientSocket, "Id");
+                tSocketInformations.HtmlPages = mHtmlPages;
                 
 
                 //Shows if the Socket is stille connected and begins to receive data in calling the ReceiveSocketDataCallback function
@@ -602,7 +585,7 @@ namespace VVVV.Webinterface.HttpServer {
 
                         try
                         {
-                            Request tRequest = new Request(tSocketInformation.Request.ToString(), mFoldersToServ);
+                            Request tRequest = new Request(tSocketInformation.Request.ToString(), mFoldersToServ, tSocketInformation.HtmlPages);
                             tSocketInformation.ResponseAsBytes = tRequest.Response.TextInBytes;
 
                         }
@@ -670,6 +653,22 @@ namespace VVVV.Webinterface.HttpServer {
         #endregion request Handle
 
 
+
+
+
+        #region ServeData
+
+        public void ServeFolder(string pPath)
+        {
+            mLogger.log(mLogger.LogType.Info, "serve Folder: " + pPath);
+            Debug.WriteLine("serve Folder: " + pPath);
+            mItemsToServ.ReadServerFolder(pPath);
+
+            mFileList = mItemsToServ.FileListVVVV;
+            mFileNames = mItemsToServ.FileListNameVVVV;
+        }
+
+        #endregion ServeData
 
 
 

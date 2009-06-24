@@ -38,6 +38,7 @@ using System.Collections;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
+using System.Text;
 
 using VVVV.Webinterface;
 using VVVV.Webinterface.Utilities;
@@ -59,6 +60,9 @@ namespace VVVV.Nodes.HTTP
     {
 
 
+
+
+
         #region field declaration
 
         //the host (mandatory)
@@ -66,62 +70,34 @@ namespace VVVV.Nodes.HTTP
         // Track whether Dispose has been called.
         private bool FDisposed = false;
 
-        //input pin declaration
-        private IStringIn FHtmlBody;
-        private IStringIn FHtmlHead;
-        private IStringIn FTitel;
-        private IStringIn FUrl;
-        private IValueIn FReload;
-        private IStringIn FPath;
-        private IValueIn FSavePage;
+
+
+        //input pin 
+        private IStringIn FDirectories;
+        private IValueIn FEnableServer;
         private IValueIn FOpenBrowser;
         private IValueIn FPageWidth;
         private IValueIn FPageHeight;
-        private IStringIn FDirectories;
-        private IValueIn FEnableServer;
 
-        //private IEnumIn FPlattform; 
+        private INodeIn FHttpPageIn;
+        private IHttpPageIO FUpstreamInterface;
 
-        //output pin declaration
-        private IStringOut FWholeHTML;
-        private IStringOut FFileName;
-        private IStringOut FFileList;
-        private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
 
-        ///<summery>Config Pin</summery>
+        //output pin 
+        //private IStringOut FFileName;
+        //private IStringOut FFileList;
+        
+
+        //Config Pin
         private IValueIn FPort;
 
 
-        //HttpGuiInterface
-        private INodeIn FHttpGuiIn;
-        private IHttpGUIIO FUpstreamInterface;
-
-        private SortedList<int, string> mGuiTypes;
-        private SortedList<int, SortedList<string, string>> mHtmlAttributs;
-        private SortedList<int, SortedList<string, string>> mCssStyles;
-        private SortedList<string, string> mCssBodyPropertiesIn = new SortedList<string,string>();
-        private string[] mHtmlText;
-        private SortedList<int, BaseDatenObjekt> mGuiDatenListe;
-        
-        private INodeIn FCssPropertiesIn;
-        private IHttpGUIStyleIO FUpstreamStyleIn;
-        
         //Server
         private VVVV.Webinterface.HttpServer.Server mServer;
         private string mServerFolder;
-
-
-        //HTML Page
-        private string mPageHead;
-        private string mPageBody;
-        private string mCssFile = "";
-        private string mJsFile = "";
-
-
-        //Builder 
-        //private IPhoneBuilder mIPhone;
-
-
+        private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
+        private SortedList<string, byte[]> mHtmlPageList = new SortedList<string, byte[]>();
+        private List<string> PageNames = new List<string>();
 
         #endregion field declaration
 
@@ -143,7 +119,7 @@ namespace VVVV.Nodes.HTTP
             mServerFolder = mWebinterfaceSingelton.FolderToServ;
         }
 
-        
+
 
         /// <summary>
         /// Implementing IDisposable's Dispose method.
@@ -177,8 +153,8 @@ namespace VVVV.Nodes.HTTP
             {
                 if (disposing)
                 {
-                    
-                    
+
+
                     // Dispose managed resources.
                 }
                 // Release unmanaged resources. If disposing is false,
@@ -197,7 +173,7 @@ namespace VVVV.Nodes.HTTP
             FDisposed = true;
         }
 
-        
+
         /// <summary>
         /// Use C# destructor syntax for finalization code.
         /// This destructor will run only if the Dispose method
@@ -215,9 +191,6 @@ namespace VVVV.Nodes.HTTP
 
 
         #endregion constructor/destructor
-
-
-
 
 
 
@@ -270,8 +243,6 @@ namespace VVVV.Nodes.HTTP
 
 
 
-
-
         #region pin creation
 
 
@@ -289,76 +260,39 @@ namespace VVVV.Nodes.HTTP
             //FHost.Log(TLogType.Message, "my ID is: " + m_ID.ToString());
             //FHost.Log(TLogType.Message, "in the Webpage Render Array are: " + m_DataWareHouse.WebpageRendererNodeCount.ToString() + " Elements");
 
-            FHost.CreateNodeInput("Input", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiIn);
-            FHttpGuiIn.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
-
-            FHost.CreateStringInput("Titel", TSliceMode.Single, TPinVisibility.True, out FTitel);
-            FTitel.SetSubType("VVVV Webinterface", false);
-
-            FHost.CreateStringInput("Url", TSliceMode.Single, TPinVisibility.True, out FUrl);
-            FUrl.SetSubType("index.html", false);
-
-            FHost.CreateValueInput("Browser Width",1, null, TSliceMode.Single, TPinVisibility.True, out FPageWidth);
-            FPageWidth.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
-
-            FHost.CreateValueInput("Browser Height",1, null, TSliceMode.Single, TPinVisibility.True, out FPageHeight);
-            FPageHeight.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
-			
-            FHost.CreateNodeInput("CSS",  TSliceMode.Single, TPinVisibility.True, out FCssPropertiesIn);
-            FCssPropertiesIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
-            
-            FHost.CreateValueInput("Reload Browser", 1, null, TSliceMode.Single, TPinVisibility.True, out FReload);
-            FReload.SetSubType(0, 1, 1, 0, true, false, true);
-
-            FHost.CreateStringInput("HTML Head", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FHtmlHead);
-            FHtmlHead.SetSubType("", false);
-
-            FHost.CreateStringInput("HTML Body", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FHtmlBody);
-            FHtmlBody.SetSubType("", false);
-
-            FHost.CreateValueInput("Open Browser", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FOpenBrowser);
-            FOpenBrowser.SetSubType(0, 1, 1, 0, true, false, true);
-
-            FHost.CreateStringInput("File Path", TSliceMode.Single, TPinVisibility.OnlyInspector, out FPath);
-            FPath.SetSubType(Application.StartupPath + "\\plugins\\webinterface", true);
-
-            FHost.CreateValueInput("Save", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FSavePage);
-            FSavePage.SetSubType(0, 1, 1, 0, true, false, true);
+            FHost.CreateNodeInput("Input", TSliceMode.Dynamic, TPinVisibility.True, out FHttpPageIn);
+            FHttpPageIn.SetSubType(new Guid[1] { HttpPageIO.GUID }, HttpPageIO.FriendlyName);
 
             FHost.CreateStringInput("Directories", TSliceMode.Dynamic, TPinVisibility.True, out FDirectories);
             FDirectories.SetSubType(mServerFolder, false);
 
-            //FHost.CreateValueInput("Reload Server Folder", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FReloadServerFolder);
-            //FReloadServerFolder.SetSubType(0, 1, 1, 0, true, false, true);
+            FHost.CreateValueInput("Browser Width", 1, null, TSliceMode.Single, TPinVisibility.True, out FPageWidth);
+            FPageWidth.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
+
+            FHost.CreateValueInput("Browser Height", 1, null, TSliceMode.Single, TPinVisibility.True, out FPageHeight);
+            FPageHeight.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
+
+            FHost.CreateValueInput("Open Browser", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FOpenBrowser);
+            FOpenBrowser.SetSubType(0, 1, 1, 0, true, false, true);
 
             FHost.CreateValueInput("Enable", 1, null, TSliceMode.Single, TPinVisibility.Hidden, out FEnableServer);
             FEnableServer.SetSubType(0, 1, 1, 1, false, true, true);
 
-            
-
-
-            
             //create outputs	    	   
-            FHost.CreateStringOutput("Files", TSliceMode.Dynamic, TPinVisibility.True, out FFileName);
-            FFileName.SetSubType("", true);
+            //FHost.CreateStringOutput("Files", TSliceMode.Dynamic, TPinVisibility.True, out FFileName);
+            //FFileName.SetSubType("", true);
 
-            FHost.CreateStringOutput("Server File List", TSliceMode.Dynamic, TPinVisibility.Hidden, out FFileList);
-            FFileList.SetSubType("", true);
+            //FHost.CreateStringOutput("Server File List", TSliceMode.Dynamic, TPinVisibility.Hidden, out FFileList);
+            //FFileList.SetSubType("", true);
 
-            FHost.CreateStringOutput("Output", TSliceMode.Dynamic, TPinVisibility.Hidden, out FWholeHTML);
-            FWholeHTML.SetSubType("", false);
-
-            
             //create Config Pin
             FHost.CreateValueInput("Port", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPort);
             FPort.SetSubType(1, 65535, 1, 80, false, false, true);
 
-            
+
         }
 
         #endregion pin creation
-
-
 
 
 
@@ -368,16 +302,11 @@ namespace VVVV.Nodes.HTTP
         public void ConnectPin(IPluginIO Pin)
         {
             //cache a reference to the upstream interface when the NodeInput pin is being connected
-            if (Pin == FHttpGuiIn)
+            if (Pin == FHttpPageIn)
             {
                 INodeIOBase usI;
-                FHttpGuiIn.GetUpstreamInterface(out usI);
-                FUpstreamInterface = usI as IHttpGUIIO;
-            }else if( Pin == FCssPropertiesIn)
-            {
-            	INodeIOBase usI;
-                FCssPropertiesIn.GetUpstreamInterface(out usI);
-                FUpstreamStyleIn = usI as IHttpGUIStyleIO;
+                FHttpPageIn.GetUpstreamInterface(out usI);
+                FUpstreamInterface = usI as IHttpPageIO;
             }
         }
 
@@ -386,17 +315,12 @@ namespace VVVV.Nodes.HTTP
         public void DisconnectPin(IPluginIO Pin)
         {
             //reset the cached reference to the upstream interface when the NodeInput is being disconnected
-            if (Pin == FHttpGuiIn)
+            if (Pin == FHttpPageIn)
             {
                 FUpstreamInterface = null;
             }
-            else if (Pin == FCssPropertiesIn)
-            {
-            	FUpstreamStyleIn = null;
-            }
         }
         #endregion NodeIO
-
 
 
 
@@ -417,10 +341,10 @@ namespace VVVV.Nodes.HTTP
                 if (mServer != null)
                 {
                     double tPort;
-                    FPort.GetValue(0,out tPort);
+                    FPort.GetValue(0, out tPort);
                     mServer.Port = Convert.ToInt32(tPort);
                 }
-                else{return;}
+                else { return; }
             }
 
         }
@@ -435,16 +359,10 @@ namespace VVVV.Nodes.HTTP
         public void Evaluate(int SpreadMax)
         {
 
-            
+
             #region Upstream
 
 
-            mGuiTypes = new SortedList<int, string>();
-            mHtmlAttributs = new SortedList<int, SortedList<string, string>>();
-            mCssStyles = new SortedList<int, SortedList<string, string>>();
-            mHtmlText = new string[SpreadMax];
-
-            mGuiDatenListe = new SortedList<int, BaseDatenObjekt>();
             int usS;
 
             //Saves the incoming Html Slices
@@ -452,27 +370,57 @@ namespace VVVV.Nodes.HTTP
             {
                 //loop for all slices0
 
-                for (int i = 0; i < FHttpGuiIn.SliceCount; i++)
+                for (int i = 0; i < FHttpPageIn.SliceCount; i++)
                 {
                     //get upstream slice index
 
-                    FHttpGuiIn.GetUpsreamSlice(i, out usS);
+                    FHttpPageIn.GetUpsreamSlice(i, out usS);
 
-                    BaseDatenObjekt tGuiDaten;
-                    FUpstreamInterface.GetDatenObjekt(usS, out tGuiDaten);
+                    string PageName;
+                    Page tPage;
+                    string tJsFile;
+                    string tCssFile;
+                    string tUrl;
+                    FUpstreamInterface.GetPage( out tPage, out tCssFile, out tJsFile, out PageName);
+                    FUpstreamInterface.GetUrl( out tUrl);
 
-                    if (tGuiDaten != null)
+                   
+
+                    if (PageNames.Contains(PageName))
                     {
-                        //Debug.WriteLine("Objekt Type in Group: " + tGuiDaten.Type);
-                        mGuiDatenListe.Add(i, tGuiDaten);
+                        PageNames.Remove(PageName);
+                        PageNames.Add(PageName);
+
+                        mHtmlPageList.Remove(tUrl);
+                        mHtmlPageList.Add(tUrl, Encoding.UTF8.GetBytes(tPage.Text));
+
+                        mHtmlPageList.Remove("VVVV.css");
+                        mHtmlPageList.Add("VVVV.css", Encoding.UTF8.GetBytes(tCssFile));
+
+                        mHtmlPageList.Remove("VVVV.js");
+                        mHtmlPageList.Add("VVVV.js", Encoding.UTF8.GetBytes(tJsFile));
+
+                    }
+                    else
+                    {
+                        PageNames.Add(PageName);
+                        mHtmlPageList.Add(tUrl, Encoding.UTF8.GetBytes(tPage.Text));
+                        mHtmlPageList.Add("VVVV.css", Encoding.UTF8.GetBytes(tCssFile));
+                        mHtmlPageList.Add("VVVV.js", Encoding.UTF8.GetBytes(tJsFile));
+
+                    }
+
+
+                    if (mServer != null)
+                    {
+                        mServer.HtmlPages = mHtmlPageList;
                     }
                 }
             }
-            
+
 
 
             #endregion Upstream
-
 
 
 
@@ -506,245 +454,24 @@ namespace VVVV.Nodes.HTTP
             }
 
 
-
-
-
-
             #endregion Enable Server
 
 
 
 
+            #region Browser Window
 
-            #region Directories
-            if (FDirectories.PinIsChanged)
             {
-                List<string> tDirectories = new List<string>();
-
-                for(int i = 0; i < FDirectories.SliceCount; i++)
-                {
-                    string tCurrentDirectories;
-                    FDirectories.GetString(i, out tCurrentDirectories);
-                    tDirectories.Add(tCurrentDirectories);
-                }
-
-                mServer.FoldersToServ = tDirectories;
-            }
-
-
-
-            #endregion Directories
-
-
-
-
-
-            #region Reload Page
-
-            if (FReload.PinIsChanged)
-            {
-                double currentReloadSlice;
-                FReload.GetValue(0, out currentReloadSlice);
-                if (currentReloadSlice > 0.5)
-                {
-                    mWebinterfaceSingelton.Reload();
-                }
-            }
-
-            #endregion Reload Page
-
-
-
-
-
-            #region Get HTML Body and Head String
-
-            if ( FHtmlHead.PinIsChanged || FHtmlBody.PinIsChanged)
-            {
-             
-                string tContentBody = "";
-                string tContentHead = "";
-                double tReload;
-
-
-                FReload.GetValue(0, out tReload);
-                
-                // Get HTML Body string
-                for (int i = 0; i < FHtmlBody.SliceCount; i++)
-                {
-
-                    string currentHtmlBodySlice = "";
-                    FHtmlBody.GetString(i, out currentHtmlBodySlice);
-                    tContentBody += currentHtmlBodySlice + Environment.NewLine;
-
-                }
-
-                mPageBody = tContentBody;
-                
-                // Get Html Head String
-                for (int i = 0; i < FHtmlHead.SliceCount; i++)
-                {
-                    string currentHtmlHeadSlice = "";
-                    FHtmlHead.GetString(i, out currentHtmlHeadSlice);
-                    tContentHead += currentHtmlHeadSlice + Environment.NewLine;
-                }
-
-                mPageHead = tContentHead;
-
-
-            }
-
-            //Upstream Css Properties
-            int uSSSytle;
-            if (FUpstreamStyleIn != null)
-            {
-                mCssBodyPropertiesIn.Clear();
-
-                FCssPropertiesIn.GetUpsreamSlice(0, out uSSSytle);
-                SortedList<string, string> tStylePropertie = new SortedList<string, string>();
-                FUpstreamStyleIn.GetCssProperties(0, out tStylePropertie);
-
-                if (tStylePropertie != null)
-                {
-                    mCssBodyPropertiesIn = tStylePropertie;
-                }
-                else
-                {
-                    tStylePropertie.Add("background-color", "#E0E0E0");
-                    mCssBodyPropertiesIn = tStylePropertie;
-                }
-
-            }
-            else
-            {
-                SortedList<string, string> tStylePropertie = new SortedList<string, string>();
-                tStylePropertie.Add("background-color", "#E0E0E0");
-                mCssBodyPropertiesIn = tStylePropertie;
-            }
-
-            #endregion Get HTML Body and Head String
-
-
-
-            
-
-            #region Build Page
-
-            Renderer tPage;
-            //double currentBuildBang;
-            //FBuild.GetValue(0, out currentBuildBang);
-
-            //if (currentBuildBang > 0.5)
-            //{
-
-                //string HtmlHead = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
-            string HtmlHead = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
-                SortedList<string, string> tServerDaten = new SortedList<string, string>();
-
-
-                string currentSliceUrl = "";
-                FUrl.GetString(0, out currentSliceUrl);
-
-                //double currentPlattform;
-                //FPlattform.GetValue(0, out currentPlattform);
-
-                
-
                 double currentWidthSlice;
                 double currentHeightSlice;
                 FPageWidth.GetValue(0, out currentWidthSlice);
                 FPageHeight.GetValue(0, out currentHeightSlice);
 
-
                 string tBrowserWidth = "" + Math.Round(currentWidthSlice);
                 string tBrowserHeight = "" + Math.Round(currentHeightSlice);
+            }
 
-
-                JQueryBuilder tJQuery = new JQueryBuilder(mGuiDatenListe, tBrowserWidth, tBrowserHeight, mCssBodyPropertiesIn);
-                mJsFile = tJQuery.JsFile;
-                mCssFile = tJQuery.CssMainFile;
-                tPage = tJQuery.Page;
-
-
-
-                tPage.Body.Insert(mPageBody);
-                tPage.Head.Insert(mPageHead);
-
-
-                string currentSliceTitel = "";
-                FTitel.GetString(0, out currentSliceTitel);
-                tPage.Head.Insert(new Title(currentSliceTitel));
-           
-
-                if (mServer != null)
-                {
-                    //mServer.VVVVCssFile = mCssFile;
-                    //mServer.VVVVJsFile = mJsFile;
-                }
-                
-
-                tServerDaten.Add(currentSliceUrl, HtmlHead + tPage.Text);
-                mWebinterfaceSingelton.ServerDaten = tServerDaten;
-                FWholeHTML.SetString(0, HtmlHead + tPage.Text);
-
-                
-
-
-
-            #endregion Build Page
-
-
-
-         
-
-            #region Save Page
-
-                string tPath;
-                double tSave;
-                string tUrl;
-                
-                FPath.GetString(0, out tPath);
-                FSavePage.GetValue(0, out tSave);
-                FUrl.GetString(0, out tUrl);
-
-                SortedList<string,string> tFiles =  new SortedList<string,string>();
-                tFiles.Add(tPath + "\\" + tUrl, tPage.Text);
-                tFiles.Add(tPath + "\\" + "VVVV.css", mCssFile);
-                tFiles.Add(tPath + "\\" + "VVVV.js", mJsFile);
-                
-
-                if (FSavePage.PinIsChanged)
-                {
-                    if (tSave > 0.5)
-                    {
-                        
-                        foreach(KeyValuePair<string,string> pFile in tFiles)
-                        {
-                            try
-                            {
-
-                                if (File.Exists(pFile.Key))
-                                {
-                                    File.Delete(pFile.Key);
-                                    HTMLToolkit.SavePage(pFile.Key, pFile.Value);
-                                    FHost.Log(TLogType.Message, "File: " + tPage + " has been deleted an resaved");
-                                }                     
-                                else
-                                {
-                                    HTMLToolkit.SavePage(pFile.Key, pFile.Value);
-                                }
-                            }   
-                            catch
-                            {
-                                throw new Exception("somthing wrong in here Renderer");
-                            }
-                        }
-                    }
-                }
-
-            #endregion Save Page
-
-
+            #endregion Browser Window
 
 
 
@@ -758,7 +485,7 @@ namespace VVVV.Nodes.HTTP
 
                 if (currentValue == 1)
                 {
-                    System.Diagnostics.Process.Start("http://localhost/index.html"); 
+                    System.Diagnostics.Process.Start("http://localhost/index.html");
                 }
             }
 
@@ -767,9 +494,29 @@ namespace VVVV.Nodes.HTTP
 
 
 
+            #region Directories
+
+            if (FDirectories.PinIsChanged)
+            {
+                List<string> tDirectories = new List<string>();
+
+                for (int i = 0; i < FDirectories.SliceCount; i++)
+                {
+                    string tCurrentDirectories;
+                    FDirectories.GetString(i, out tCurrentDirectories);
+                    tDirectories.Add(tCurrentDirectories);
+                }
+
+                mServer.FoldersToServ = tDirectories;
+            }
+
+            #endregion Directories
+
+
 
 
             #region files to serve
+
             if (mServer != null)
             {
                 //List<string> tFileList = mServer.FileList;
@@ -791,8 +538,8 @@ namespace VVVV.Nodes.HTTP
             }
 
             #endregion files to serve
+
         }
-        
 
         #endregion mainloop
     }

@@ -17,6 +17,7 @@ namespace VVVV.Webinterface.HttpServer
         private string mResponse;
         private DateTime mTimeStamp;
         private byte[] mResponseAsBytes;
+        private SortedList<string, byte[]> mHtmlPages;
 
         public byte[] Buffer
         {
@@ -91,6 +92,18 @@ namespace VVVV.Webinterface.HttpServer
             set
             {
                 mTimeStamp = value;
+            }
+        }
+
+        public SortedList<string, byte[]> HtmlPages
+        {
+            get
+            {
+                return mHtmlPages;
+            }
+            set
+            {
+                mHtmlPages = value;
             }
         }
     
