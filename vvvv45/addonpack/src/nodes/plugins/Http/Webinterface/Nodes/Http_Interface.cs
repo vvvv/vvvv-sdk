@@ -74,9 +74,7 @@ namespace VVVV.Nodes.HttpGUI
     [Guid("219B6AA6-ECFC-4a01-AF9C-889F23801FB1"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IHttpPageIO : INodeIOBase
     {
-        void GetPage(out Page HtmlPage, out string CssFile, out string JsFile, out string PageName);
-
-        void GetUrl(out string Url);
+        void GetPage(out Page HtmlPage, out string CssFile, out string JsFile, out string PageName, out string FileName);
 
     }
 

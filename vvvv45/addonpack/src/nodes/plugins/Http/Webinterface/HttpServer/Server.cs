@@ -311,6 +311,12 @@ namespace VVVV.Webinterface.HttpServer {
             serverThread[0].IsBackground = true;
             serverThread[0].Start();
 
+            
+            int tMaxWorkerThreads;
+            int tMaxAsynThreads;
+            ThreadPool.GetMaxThreads(out tMaxWorkerThreads, out tMaxAsynThreads);
+            ThreadPool.SetMaxThreads(tMaxWorkerThreads, tMaxWorkerThreads);
+            Debug.WriteLine(String.Format("{0}  Threads  /  {1} Asynthreads in threadspool", tMaxWorkerThreads, tMaxAsynThreads));
             // Create the delegate that invokes methods for the timer.
             TimerCallback timerDelegate = new TimerCallback(this.CheckSockets);
             //Create a timer that waits one minute, then invokes every 5 minutes.
@@ -494,7 +500,7 @@ namespace VVVV.Webinterface.HttpServer {
         /// <param name="asynConnect"> Contains the SocketInformationObjekt</param>
         public void OnClientConnectCallback(IAsyncResult asynConnect)
         {
-                Debug.WriteLine("-------------onClientConnect----------------" + Environment.NewLine);
+                //Debug.WriteLine("-------------onClientConnect----------------" + Environment.NewLine);
 
                 allDone.Set();
 
@@ -555,7 +561,7 @@ namespace VVVV.Webinterface.HttpServer {
 
             try
             {
-                Debug.WriteLine("-------------ReceiveSocketData----------------" + Environment.NewLine);
+                //Debug.WriteLine("-------------ReceiveSocketData----------------" + Environment.NewLine);
                 
                 //gets the SocketInformatinObject form the IAsyncResult Object
                 

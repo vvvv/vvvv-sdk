@@ -74,22 +74,26 @@ namespace VVVV.Nodes.HTTP
 
         //input pin 
         private IStringIn FDirectories;
+
         private IValueIn FEnableServer;
         private IValueIn FOpenBrowser;
         private IValueIn FPageWidth;
         private IValueIn FPageHeight;
 
+        private IValueConfig FPageCount;
+
         private INodeIn FHttpPageIn;
-        private IHttpPageIO FUpstreamInterface;
-
-
+        private IEnumIn FCommunication;
         //output pin 
         //private IStringOut FFileName;
         //private IStringOut FFileList;
         
 
         //Config Pin
-        private IValueIn FPort;
+        //private IValueIn FPort;
+        private List<INodeIn> FInputPinList = new List<INodeIn>();
+        private List<INodeIOBase> FUpstreamInterfaceList = new List<INodeIOBase>();
+        private SortedList<string, IHttpPageIO> FNodeUpstream = new SortedList<string,IHttpPageIO>();
 
 
         //Server
@@ -255,14 +259,8 @@ namespace VVVV.Nodes.HTTP
             //assign host
             FHost = Host;
 
-            //create inputs
-
-            //FHost.Log(TLogType.Message, "my ID is: " + m_ID.ToString());
-            //FHost.Log(TLogType.Message, "in the Webpage Render Array are: " + m_DataWareHouse.WebpageRendererNodeCount.ToString() + " Elements");
-
-            FHost.CreateNodeInput("Input", TSliceMode.Dynamic, TPinVisibility.True, out FHttpPageIn);
-            FHttpPageIn.SetSubType(new Guid[1] { HttpPageIO.GUID }, HttpPageIO.FriendlyName);
-
+            //inputs
+           
             FHost.CreateStringInput("Directories", TSliceMode.Dynamic, TPinVisibility.True, out FDirectories);
             FDirectories.SetSubType(mServerFolder, false);
 
@@ -272,22 +270,33 @@ namespace VVVV.Nodes.HTTP
             FHost.CreateValueInput("Browser Height", 1, null, TSliceMode.Single, TPinVisibility.True, out FPageHeight);
             FPageHeight.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
 
+            FHost.UpdateEnum("Communication", "Manual", new string[] { "manual", "polling", "comet" });
+            FHost.CreateEnumInput("Communication", TSliceMode.Single, TPinVisibility.True, out FCommunication);
+            FCommunication.SetSubType("Communication");
+           
             FHost.CreateValueInput("Open Browser", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FOpenBrowser);
             FOpenBrowser.SetSubType(0, 1, 1, 0, true, false, true);
 
             FHost.CreateValueInput("Enable", 1, null, TSliceMode.Single, TPinVisibility.Hidden, out FEnableServer);
             FEnableServer.SetSubType(0, 1, 1, 1, false, true, true);
 
-            //create outputs	    	   
+            FHost.CreateNodeInput("Input1", TSliceMode.Dynamic, TPinVisibility.True, out FHttpPageIn);
+            FHttpPageIn.SetSubType(new Guid[1] { HttpPageIO.GUID }, HttpPageIO.FriendlyName);
+
+            FInputPinList.Add(FHttpPageIn);
+            //outputs	    	   
             //FHost.CreateStringOutput("Files", TSliceMode.Dynamic, TPinVisibility.True, out FFileName);
             //FFileName.SetSubType("", true);
 
             //FHost.CreateStringOutput("Server File List", TSliceMode.Dynamic, TPinVisibility.Hidden, out FFileList);
             //FFileList.SetSubType("", true);
 
-            //create Config Pin
-            FHost.CreateValueInput("Port", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPort);
-            FPort.SetSubType(1, 65535, 1, 80, false, false, true);
+            //Config Pin
+            FHost.CreateValueConfig("PageCount", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPageCount);
+            FPageCount.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
+
+            //FHost.CreateValueInput("Port", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPort);
+            //FPort.SetSubType(1, 65535, 1, 80, false, false, true);
 
 
         }
@@ -299,15 +308,29 @@ namespace VVVV.Nodes.HTTP
 
 
         #region NodeIO
+
         public void ConnectPin(IPluginIO Pin)
         {
             //cache a reference to the upstream interface when the NodeInput pin is being connected
-            if (Pin == FHttpPageIn)
+            foreach (INodeIn pNodeIn in FInputPinList)
             {
-                INodeIOBase usI;
-                FHttpPageIn.GetUpstreamInterface(out usI);
-                FUpstreamInterface = usI as IHttpPageIO;
+                if (Pin == pNodeIn)
+                {
+                    INodeIOBase usI;
+                    IHttpPageIO FUpstreamInterface;
+
+
+                    pNodeIn.GetUpstreamInterface(out usI);
+                    FUpstreamInterface = usI as IHttpPageIO;
+                    FUpstreamInterfaceList.Add(usI);
+
+                    string tNodeName = Pin.Name;
+                    int tNumber = Convert.ToInt16(tNodeName.Replace("Input", "")) - 1;
+
+                    FNodeUpstream.Add(Pin.Name, FUpstreamInterface);
+                }
             }
+
         }
 
 
@@ -315,10 +338,16 @@ namespace VVVV.Nodes.HTTP
         public void DisconnectPin(IPluginIO Pin)
         {
             //reset the cached reference to the upstream interface when the NodeInput is being disconnected
-            if (Pin == FHttpPageIn)
+            foreach (INodeIn pNodeIn in FInputPinList)
             {
-                FUpstreamInterface = null;
+                if (Pin == pNodeIn)
+                {
+                    string tNodeName = Pin.Name;
+                    ReadUpstream();
+                    FNodeUpstream.Remove(Pin.Name);
+                }
             }
+            
         }
         #endregion NodeIO
 
@@ -329,23 +358,64 @@ namespace VVVV.Nodes.HTTP
         #region mainloop
 
 
-        /// <summary>
-        /// nothing to configure in this plugin
-        /// only used in conjunction with inputs of type cmpdConfigurate
-        /// </summary>
-        /// <param name="Input"></param>
+
+
+
         public void Configurate(IPluginConfig Input)
         {
-            if (Input == FPort)
+
+            if (Input == FPageCount)
             {
-                if (mServer != null)
+                double count;
+                FPageCount.GetValue(0, out count);
+
+                int diff = FInputPinList.Count - (int)Math.Round(count);
+
+                if (diff > 0) //delete pins
                 {
-                    double tPort;
-                    FPort.GetValue(0, out tPort);
-                    mServer.Port = Convert.ToInt32(tPort);
+                    for (int i = 0; i < diff; i++)
+                    {
+                        INodeIn pinToDelete = FInputPinList[FInputPinList.Count - 1];
+                        FInputPinList.Remove(pinToDelete);
+                        FNodeUpstream.Remove(pinToDelete.Name);
+
+                        FHost.DeletePin(pinToDelete);
+                        pinToDelete = null;
+                    }
+
                 }
-                else { return; }
+                else if (diff < 0) //create pins
+                {
+                    for (int i = 0; i > diff; i--)
+                    {
+                        INodeIn newPin;
+
+                        FHost.CreateNodeInput("Input" + (FInputPinList.Count + 1), TSliceMode.Dynamic, TPinVisibility.True, out newPin);
+                        newPin.SetSubType(new Guid[1] { HttpPageIO.GUID }, HttpPageIO.FriendlyName);
+                        FInputPinList.Add(newPin);
+
+                    }
+                }
             }
+
+
+
+
+
+
+
+
+
+            //if (Input == FPort)
+            //{
+            //    if (mServer != null)
+            //    {
+            //        double tPort;
+            //        FPort.GetValue(0, out tPort);
+            //        mServer.Port = Convert.ToInt32(tPort);
+            //    }
+            //    else { return; }
+            //}
 
         }
 
@@ -363,61 +433,8 @@ namespace VVVV.Nodes.HTTP
             #region Upstream
 
 
-            int usS;
 
-            //Saves the incoming Html Slices
-            if (FUpstreamInterface != null)
-            {
-                //loop for all slices0
-
-                for (int i = 0; i < FHttpPageIn.SliceCount; i++)
-                {
-                    //get upstream slice index
-
-                    FHttpPageIn.GetUpsreamSlice(i, out usS);
-
-                    string PageName;
-                    Page tPage;
-                    string tJsFile;
-                    string tCssFile;
-                    string tUrl;
-                    FUpstreamInterface.GetPage( out tPage, out tCssFile, out tJsFile, out PageName);
-                    FUpstreamInterface.GetUrl( out tUrl);
-
-                   
-
-                    if (PageNames.Contains(PageName))
-                    {
-                        PageNames.Remove(PageName);
-                        PageNames.Add(PageName);
-
-                        mHtmlPageList.Remove(tUrl);
-                        mHtmlPageList.Add(tUrl, Encoding.UTF8.GetBytes(tPage.Text));
-
-                        mHtmlPageList.Remove("VVVV.css");
-                        mHtmlPageList.Add("VVVV.css", Encoding.UTF8.GetBytes(tCssFile));
-
-                        mHtmlPageList.Remove("VVVV.js");
-                        mHtmlPageList.Add("VVVV.js", Encoding.UTF8.GetBytes(tJsFile));
-
-                    }
-                    else
-                    {
-                        PageNames.Add(PageName);
-                        mHtmlPageList.Add(tUrl, Encoding.UTF8.GetBytes(tPage.Text));
-                        mHtmlPageList.Add("VVVV.css", Encoding.UTF8.GetBytes(tCssFile));
-                        mHtmlPageList.Add("VVVV.js", Encoding.UTF8.GetBytes(tJsFile));
-
-                    }
-
-
-                    if (mServer != null)
-                    {
-                        mServer.HtmlPages = mHtmlPageList;
-                    }
-                }
-            }
-
+            ReadUpstream();
 
 
             #endregion Upstream
@@ -542,5 +559,81 @@ namespace VVVV.Nodes.HTTP
         }
 
         #endregion mainloop
+
+
+
+
+
+        #region HandleUpstream
+
+        private void ReadUpstream()
+        {
+                        //Saves the incoming Html Slices
+            foreach (INodeIn pNodeIn in FInputPinList)
+            {
+                string tNodeName = pNodeIn.Name;
+                int tNumber = Convert.ToInt16(tNodeName.Replace("Input", "")) - 1;
+
+                IHttpPageIO FUpstream;
+                FNodeUpstream.TryGetValue(pNodeIn.Name, out FUpstream);
+
+                if (FUpstream != null)
+                {
+                    for (int i = 0; i < FHttpPageIn.SliceCount; i++)
+                    {
+                        //get upstream slice index
+                        int usS;
+                        pNodeIn.GetUpsreamSlice(i, out usS);
+
+                        string tPageName;
+                        Page tPage;
+                        string tJsFile;
+                        string tCssFile;
+                        string tFileName;
+                        FUpstream.GetPage(out tPage, out tCssFile, out tJsFile, out tPageName, out tFileName);
+
+                        HandlePageList(tPageName, tPage, tCssFile, tJsFile, tFileName);
+
+                        if (mServer != null)
+                        {
+                            mServer.HtmlPages = mHtmlPageList;
+                        }
+                    }
+                }
+             
+            }
+        }
+
+
+        private void HandlePageList(string pPageName, Page pPage, string pCssFile, string pJsFile, string pUrl)
+        {
+
+            if (PageNames.Contains(pPageName))
+            {
+                PageNames.Remove(pPageName);
+                PageNames.Add(pPageName);
+
+                mHtmlPageList.Remove(pUrl);
+                mHtmlPageList.Add(pUrl, Encoding.UTF8.GetBytes(pPage.Text));
+
+                mHtmlPageList.Remove("VVVV.css");
+                mHtmlPageList.Add("VVVV.css", Encoding.UTF8.GetBytes(pCssFile));
+
+                mHtmlPageList.Remove("VVVV.js");
+                mHtmlPageList.Add("VVVV.js", Encoding.UTF8.GetBytes(pJsFile));
+
+            }
+            else
+            {
+                PageNames.Add(pPageName);
+                mHtmlPageList.Add(pUrl, Encoding.UTF8.GetBytes(pPage.Text));
+                mHtmlPageList.Add("VVVV.css", Encoding.UTF8.GetBytes(pCssFile));
+                mHtmlPageList.Add("VVVV.js", Encoding.UTF8.GetBytes(pJsFile));
+
+            }
+        }
+
+
+        #endregion HandleUpstream
     }
 }

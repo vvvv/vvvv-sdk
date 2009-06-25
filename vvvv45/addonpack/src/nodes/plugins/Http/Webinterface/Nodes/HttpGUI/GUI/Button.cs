@@ -221,7 +221,7 @@ namespace VVVV.Nodes.HttpGUI
 
         public override void GetDatenObjekt(int Index, out BaseDatenObjekt GuiDaten)
         {
-                //Debug.WriteLine("Enter GetdatenObjekt" + mNodeId);
+                ////Debug.WriteLine("Enter GetdatenObjekt" + mNodeId);
                 GuiDaten = mButtonDaten[Index];
         }
         public override void GetFunktionObjekt(int Index, out JsFunktion FunktionsDaten)
@@ -264,7 +264,7 @@ namespace VVVV.Nodes.HttpGUI
 
         protected override void OnEvaluate(int SpreadMax)
         {
-            //Debug.WriteLine("Enter OnEvaluate");
+            ////Debug.WriteLine("Enter OnEvaluate");
 
             int[] tSliceCount = {FTransformIn.SliceCount};
 

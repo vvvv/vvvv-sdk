@@ -92,16 +92,16 @@ namespace VVVV.Webinterface.Data
 			if(System.IO.Directory.Exists(mStartupFolder) == false)
 			{
 				System.IO.Directory.CreateDirectory(mStartupFolder);
-                Debug.WriteLine("create Path: " + mStartupFolder);
+                //Debug.WriteLine("create Path: " + mStartupFolder);
                 foreach (string pValue in mStartupPathSubFoldersNames)
                 {
                     System.IO.Directory.CreateDirectory(Path.Combine(mStartupFolder,pValue));
-                    Debug.WriteLine("create Path: " + pValue);
+                    //Debug.WriteLine("create Path: " + pValue);
                 }
 			}
 			else
 			{
-                Debug.WriteLine("StartupPath:" + mStartupPath + "does exist");
+                //Debug.WriteLine("StartupPath:" + mStartupPath + "does exist");
                 foreach (string pSubfolder in mStartupPathSubFolders)
                 {
                     if (System.IO.Directory.Exists(pSubfolder) == false)
@@ -110,7 +110,7 @@ namespace VVVV.Webinterface.Data
                     }
                     else
                     {
-                        Debug.WriteLine("Path: " + pSubfolder + " existes");
+                        //Debug.WriteLine("Path: " + pSubfolder + " existes");
                     }
                 }
 			}
@@ -135,12 +135,12 @@ namespace VVVV.Webinterface.Data
 		{
 			if(System.IO.File.Exists(pFilename))
 			{
-			   	Debug.WriteLine("Xml File in " + pFilename + " exist");
+			   	//Debug.WriteLine("Xml File in " + pFilename + " exist");
 			   	return true;
 			}
 			else
 			{
-				Debug.WriteLine("Xml does not exist");
+				//Debug.WriteLine("Xml does not exist");
 				return false;
 			}
 		}

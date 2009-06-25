@@ -158,7 +158,7 @@ namespace VVVV.Webinterface.HttpServer
                 if (line.Contains(":"))
                 {
                     mRequestHeadParameterList.Add(line.Substring(0, line.IndexOf(":")), line.Substring(line.LastIndexOf(":") + 1));
-                    Debug.WriteLine(line.Substring(0, line.IndexOf(":")) + ":" + line.Substring(line.LastIndexOf(":") + 1));
+                    //Debug.WriteLine(line.Substring(0, line.IndexOf(":")) + ":" + line.Substring(line.LastIndexOf(":") + 1));
                 }
             }
         }
@@ -170,10 +170,10 @@ namespace VVVV.Webinterface.HttpServer
 
 
             mRequestType = words[0];
-            Debug.WriteLine("RequestType: " + mRequestType);
+            //Debug.WriteLine("RequestType: " + mRequestType);
 
             mHttpVersion = words[2].Substring(words[2].LastIndexOf('/') + 1);
-            Debug.WriteLine("HttpVersion: " + mHttpVersion);
+            //Debug.WriteLine("HttpVersion: " + mHttpVersion);
 
             if (words[1] == "/" && words[0] == "GET")
             {
@@ -188,8 +188,8 @@ namespace VVVV.Webinterface.HttpServer
                 mFilename = mFileLocation.Substring(mFileLocation.LastIndexOf('/') + 1);
             }
 
-            Debug.WriteLine("mFilename: " +  mFilename);
-            Debug.WriteLine("mFileLocation: " + mFileLocation);
+            //Debug.WriteLine("mFilename: " +  mFilename);
+            //Debug.WriteLine("mFileLocation: " + mFileLocation);
 
             //GetProperties
             if(mRequestType =="GET" && mRequestType == "OPTIONS")
@@ -246,7 +246,7 @@ namespace VVVV.Webinterface.HttpServer
             }
             else
             {
-                Debug.WriteLine("Unknown Requesttype");
+                //Debug.WriteLine("Unknown Requesttype");
             }
          }
 

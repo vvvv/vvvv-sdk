@@ -107,7 +107,7 @@ namespace VVVV.Webinterface.Data
         /// </summary>
         public override void Updated()
         {
-            Debug.WriteLine("Updated " + mName + "; mSubject.ToNode =  " + mSubject.ToNode);
+            //Debug.WriteLine("Updated " + mName + "; mSubject.ToNode =  " + mSubject.ToNode);
             mObserverState = mSubject.SubjectState;
             mToNode = mSubject.ToNode;
         }
@@ -117,7 +117,7 @@ namespace VVVV.Webinterface.Data
         /// </summary>
         public override void Reload()
         {
-            Debug.WriteLine("Reload NodeObserver");
+            //Debug.WriteLine("Reload NodeObserver");
         }
 
         public override void UpdatedBrowser(string pData)

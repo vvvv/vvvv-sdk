@@ -216,7 +216,7 @@ namespace VVVV.Webinterface.HttpServer
             }
             else
             {
-                Debug.WriteLine("File not found in FileList Server in ItemstoServe");
+                //Debug.WriteLine("File not found in FileList Server in ItemstoServe");
                 return "File Not found";
             }
         }
@@ -232,7 +232,7 @@ namespace VVVV.Webinterface.HttpServer
             }
             else
             {
-                Debug.WriteLine("File not found in FilList Server in call Items to Serve");
+                //Debug.WriteLine("File not found in FilList Server in call Items to Serve");
                 byte[] tPicContent = Encoding.UTF8.GetBytes("File Not found"); 
                 return tPicContent;
 

@@ -311,20 +311,18 @@ namespace VVVV.Nodes.HTTP
 
 
 
+
+
         #region NodeIO
 
 
-        public void GetPage(out Page Page, out string CssFile, out string JsFile, out string PageName)
+        public void GetPage(out Page Page, out string CssFile, out string JsFile, out string PageName, out string FileName)
         {
             Page = mPage;
             CssFile = mCssFile;
             JsFile = mJsFile;
             PageName = mPageName;
-        }
-
-        public void GetUrl(out string Url)
-        {
-            Url = mUrl;
+            FileName = mUrl;
         }
 
 
@@ -361,9 +359,6 @@ namespace VVVV.Nodes.HTTP
         }
 
         #endregion NodeIO
-
-
-
 
 
 
@@ -418,7 +413,7 @@ namespace VVVV.Nodes.HTTP
 
                     if (tGuiDaten != null)
                     {
-                        //Debug.WriteLine("Objekt Type in Group: " + tGuiDaten.Type);
+                        ////Debug.WriteLine("Objekt Type in Group: " + tGuiDaten.Type);
                         mGuiDatenListe.Add(i, tGuiDaten);
                     }
                 }

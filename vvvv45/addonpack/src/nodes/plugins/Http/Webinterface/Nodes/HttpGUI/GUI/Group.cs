@@ -68,7 +68,6 @@ namespace VVVV.Nodes.HttpGUI
 
         private List<INodeIn> FInputPinList;
         private List<INodeIOBase> FUpstreamInterfaceList;
-        private List<IHttpGUIIO> FUpstremaListSort;
         private SortedList<string, IHttpGUIIO> FNodeUpstream;
         //private List<IHttpGUIIO> FUpstreamList;
 
@@ -93,7 +92,6 @@ namespace VVVV.Nodes.HttpGUI
             
             FInputPinList = new List<INodeIn>();
             FInputPinList.Capacity = 2;
-            FUpstremaListSort = new List<IHttpGUIIO>();
             FUpstreamInterfaceList = new List<INodeIOBase>();
             FUpstreamInterfaceList.Capacity = 2;
 
@@ -322,6 +320,9 @@ namespace VVVV.Nodes.HttpGUI
             GuiDaten = tGuiDaten;
         }
 
+
+
+
         public void ConnectPin(IPluginIO Pin)
         {
             mInputCount = FInputPinList.Count;
@@ -329,8 +330,6 @@ namespace VVVV.Nodes.HttpGUI
 
              foreach (INodeIn pNodeIn in FInputPinList)
              {
-                 
-                 
                  if (Pin == pNodeIn)
                     {
                         INodeIOBase usI;
@@ -349,6 +348,8 @@ namespace VVVV.Nodes.HttpGUI
                     }
                }
         }
+
+
 
         public void DisconnectPin(IPluginIO Pin)
         {
@@ -407,6 +408,8 @@ namespace VVVV.Nodes.HttpGUI
                 }
             }
         }
+
+
 
         //here we go, thats the method called by vvvv each frame
         //all data handling should be in here
@@ -469,7 +472,7 @@ namespace VVVV.Nodes.HttpGUI
 
                         BaseDatenObjekt tGuiDaten;
                         FUpstream.GetDatenObjekt(i, out tGuiDaten);
-                         //Debug.WriteLine("Objekt Type in Group: " + tGuiDaten.Type);
+                         ////Debug.WriteLine("Objekt Type in Group: " + tGuiDaten.Type);
 
                         mGuiDatenListe.Add(tSliceCounter, tGuiDaten); 
 
