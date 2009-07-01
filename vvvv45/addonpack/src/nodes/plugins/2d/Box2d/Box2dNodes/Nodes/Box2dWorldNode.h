@@ -1,6 +1,7 @@
 #pragma once
 #include "../DataTypes/WorldDataType.h"
 #include "../DataTypes/BodyDataType.h"
+#include "../DataTypes/GroundDataType.h"
 //#include "../DataTypes/ContactDataType.h"
 #include "../Internals/Contact/ContactListener.h"
 
@@ -21,16 +22,19 @@ namespace VVVV
 				IValueIn^ vInAllowSleep;
 				IValueIn^ vInEnabled;
 				IValueFastIn^ vInTimeStep;
-				IValueFastIn^ vInIterations;
+				IValueFastIn^ vInPosIterations;
+				IValueFastIn^ vInVelIterations;
 				IValueIn^ vInReset;
 
 				IValueOut^ vOutWorldValid;
 				INodeOut^ vOutWorldNode;
 				INodeOut^ vOutBodies;
+				INodeOut^ vOutGround;
 				//INodeOut^ vOutContacts;
 
 				WorldDataType^ mWorld;
 				BodyDataType^ mBodies;
+				GroundDataType^ mGround;
 				//ContactDataType^ mContacts;
 				b2World* internalworld;
 				

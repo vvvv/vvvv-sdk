@@ -11,6 +11,7 @@ namespace VVVV
 		{
 			this->mWorld = gcnew WorldDataType();
 			this->mBodies = gcnew BodyDataType();
+			this->mGround = gcnew GroundDataType();
 			this->contacts = new vector<b2ContactPoint*>();
 			this->MyListener = new ContactListener(this->contacts);
 			this->mWorld->Contacts = this->contacts;
@@ -42,8 +43,11 @@ namespace VVVV
 			this->FHost->CreateValueFastInput("Time Step",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vInTimeStep);
 			this->vInTimeStep->SetSubType(0,Double::MaxValue,0.01,0.01,false,false,false);
 
-			this->FHost->CreateValueFastInput("Iterations",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vInIterations);
-			this->vInIterations->SetSubType(1,Double::MaxValue,1,10,false,false,true);
+			this->FHost->CreateValueFastInput("Position Iterations",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vInPosIterations);
+			this->vInPosIterations->SetSubType(1,Double::MaxValue,1,8,false,false,true);
+
+			this->FHost->CreateValueFastInput("Velocity Iterations",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vInVelIterations);
+			this->vInVelIterations->SetSubType(1,Double::MaxValue,1,10,false,false,true);
 
 			//Is World Enabled
 			this->FHost->CreateValueInput("Enabled",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vInEnabled);
@@ -63,6 +67,10 @@ namespace VVVV
 
 			this->FHost->CreateValueOutput("World Valid",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vOutWorldValid);
 			this->vOutWorldValid->SetSubType(0,1,1,0,false,true,false);
+
+			this->FHost->CreateNodeOutput("Ground",TSliceMode::Single,TPinVisibility::True,this->vOutGround);
+			this->vOutGround->SetSubType(ArrayUtils::SingleGuidArray(GroundDataType::GUID),GroundDataType::FriendlyName);
+			this->vOutGround->SetInterface(this->mGround);
 
 			this->FHost->CreateNodeOutput("Bodies",TSliceMode::Dynamic,TPinVisibility::True,this->vOutBodies);
 			this->vOutBodies->SetSubType(ArrayUtils::SingleGuidArray(BodyDataType::GUID),BodyDataType::FriendlyName);
@@ -114,11 +122,16 @@ namespace VVVV
 					this->mWorld->SetWorld(this->internalworld);
 					
 					this->internalworld->SetContactListener(this->MyListener);
+					this->mGround->SetGround(this->internalworld->GetGroundBody());
+					this->mGround->SetIsValid(true);
+					
 				} 
 				else 
 				{
 					this->internalworld = nullptr;
 					this->mWorld->SetWorld(this->internalworld);
+					this->mGround->SetIsValid(false);
+					this->mGround->SetGround(nullptr);
 				}
 
 				this->mWorld->Reset = true;
@@ -149,28 +162,33 @@ namespace VVVV
 			this->mBodies->Reset();
 			this->contacts->clear();
 
+			//Delete bodies marked as such
 			if (this->mWorld->GetIsValid()) 
 			{
-				//Delete bodies marked as such
-				for (b2Body* b = this->mWorld->GetWorld()->GetBodyList(); b; b = b->GetNext())
+				b2Body* node = this->mWorld->GetWorld()->GetBodyList();
+				while (node)
 				{
+					b2Body* b = node;
+					node = node->GetNext();
 					if (b != this->mWorld->GetWorld()->GetGroundBody()) 
 					{
 						BodyCustomData* bdata = (BodyCustomData*)b->GetUserData();
 						if (bdata->MarkedForDeletion) 
 						{
+
 							this->mWorld->GetWorld()->DestroyBody(b);
 						}
-					}
+					}    
 				}
 
 				if (this->mWorld->GetIsEnabled()) 
 				{
-					double ts,it;
+					double ts,pit,vit;
 
-					this->vInIterations->GetValue(0,it);
+					this->vInPosIterations->GetValue(0,pit);
+					this->vInVelIterations->GetValue(0,vit);
 					this->vInTimeStep->GetValue(0,ts);
-					this->internalworld->Step(Convert::ToSingle(ts),Convert::ToInt32(it));
+					this->internalworld->Step(Convert::ToSingle(ts),Convert::ToInt32(vit),Convert::ToInt32(pit));
 				}
 
 				this->vOutBodies->MarkPinAsChanged();
