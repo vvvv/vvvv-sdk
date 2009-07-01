@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string.h>
+
 class BodyCustomData
 {
 private:
@@ -9,4 +11,5 @@ public:
 	~BodyCustomData(void);
 	int Id;
 	bool MarkedForDeletion;
+	char* Custom;
 };
