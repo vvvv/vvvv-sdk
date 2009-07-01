@@ -59,10 +59,14 @@ namespace VVVV
 			INodeIn^ vInShapes;
 
 			IValueIn^ vInPosition;
+			IValueIn^ vInAngle;
 			IValueIn^ vInVelocity;
 			IValueIn^ vInAngularVelocity;
+			IValueIn^ vInLinearDamping;
+			IValueIn^ vInAngularDamping;
 			IValueIn^ vInIsBullet;
-			//IValueIn^ vInStatic;
+			IValueIn^ vInFixedRotation;
+			IStringIn^ vInCustom;
 			IValueIn^ vInDoCreate;
 
 			WorldDataType^ mWorld;

@@ -32,20 +32,22 @@ namespace VVVV
 			if (this->vInBodies->IsConnected) 
 			{
 				double dbldelete;
-				this->vInDoDestroy->GetValue(0, dbldelete);
+				
 
-				if (dbldelete >= 0.5)
-				{
 					double dblsp,dblsv,dblsav;
 					for (int i = 0; i < this->vInBodies->SliceCount; i++) 
 					{
-						int realslice;
-						this->vInBodies->GetUpsreamSlice(i % this->vInBodies->SliceCount,realslice);
-						b2Body* body = this->m_bodies->GetSlice(realslice);
-						BodyCustomData* bdata = (BodyCustomData*)body->GetUserData();
-						bdata->MarkedForDeletion = true;
+						this->vInDoDestroy->GetValue(i, dbldelete);
+						if (dbldelete >= 0.5)
+						{
+							int realslice;
+							this->vInBodies->GetUpsreamSlice(i % this->vInBodies->SliceCount,realslice);
+							b2Body* body = this->m_bodies->GetSlice(realslice);
+							BodyCustomData* bdata = (BodyCustomData*)body->GetUserData();
+							bdata->MarkedForDeletion = true;
+						}
 					}
-				}
+				
 			}
 		}
 

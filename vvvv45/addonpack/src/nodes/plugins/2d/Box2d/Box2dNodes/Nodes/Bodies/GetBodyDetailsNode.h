@@ -60,7 +60,11 @@ namespace VVVV
 
 			IValueOut^ vOutPosition;
 			IValueOut^ vOutRotation;
+			IValueOut^ vOutVelocity;
 			IValueOut^ vOutIsDynamic;
+			IValueOut^ vOutMass;
+			IValueOut^ vOutInertia;
+			IStringOut^ vOutCustom;
 			INodeOut^ vOutShapes;
 
 			IValueOut^ vOutId;

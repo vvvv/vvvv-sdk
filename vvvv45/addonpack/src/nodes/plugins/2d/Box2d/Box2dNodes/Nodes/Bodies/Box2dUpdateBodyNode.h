@@ -64,6 +64,9 @@ namespace VVVV
 			IValueIn^ vInAngularVelocity;
 			IValueIn^ vInSetAngularVelocity;
 
+			IStringIn^ vInCustom;
+			IValueIn^ vInSetCustom;
+
 
 
 		};

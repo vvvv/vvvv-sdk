@@ -34,7 +34,13 @@ namespace VVVV
 			this->vInAngularVelocity->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
 
 			this->FHost->CreateValueInput("Set Angular Velocity",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInSetAngularVelocity);
-			this->vInSetAngularVelocity->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);	
+			this->vInSetAngularVelocity->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);
+
+			this->FHost->CreateStringInput("Custom",TSliceMode::Dynamic,TPinVisibility::True,this->vInCustom);
+			this->vInCustom->SetSubType("",false);
+
+			this->FHost->CreateValueInput("Set Custom",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInSetCustom);
+			this->vInSetCustom->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);
 		}
 
 		void Box2dUpdateBodyNode::Configurate(IPluginConfig^ Input)
@@ -48,7 +54,7 @@ namespace VVVV
 			this->vInBodies->PinIsChanged;
 			if (this->vInBodies->IsConnected) 
 			{
-				double dblsp,dblsv,dblsav;
+				double dblsp,dblsv,dblsav,dblsc;
 				for (int i = 0; i < this->vInBodies->SliceCount; i++) 
 				{
 					int realslice;
@@ -80,6 +86,15 @@ namespace VVVV
 						double a;
 						this->vInAngularVelocity->GetValue(i,a);
 						body->SetAngularVelocity(a);
+					}
+
+					this->vInSetCustom->GetValue(i,dblsc);
+					if (dblsc >= 0.5)
+					{
+						String^ cust;
+						this->vInCustom->GetString(i,cust);
+						BodyCustomData* bdata = (BodyCustomData*)body->GetUserData();
+						bdata->Custom = (char*)(void*)Marshal::StringToHGlobalAnsi(cust);
 					}
 				}
 			}

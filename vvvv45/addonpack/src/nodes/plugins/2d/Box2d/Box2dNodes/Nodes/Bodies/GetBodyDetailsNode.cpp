@@ -25,8 +25,20 @@ namespace VVVV
 			this->FHost->CreateValueOutput("Rotation",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutRotation);
 			this->vOutRotation->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
 
+			this->FHost->CreateValueOutput("Velocity",2,ArrayUtils::Array2D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutVelocity);
+			this->vOutVelocity->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,0.0,0.0,false,false,false);
+
 			this->FHost->CreateValueOutput("Is Dynamic",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutIsDynamic);
 			this->vOutIsDynamic->SetSubType(Double::MinValue,Double::MaxValue,1,0.0,false,true,false);
+
+			this->FHost->CreateValueOutput("Mass",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutMass);
+			this->vOutMass->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
+
+			this->FHost->CreateValueOutput("Inertia",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutInertia);
+			this->vOutInertia->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
+
+			this->FHost->CreateStringOutput("Custom",TSliceMode::Dynamic,TPinVisibility::True,this->vOutCustom);
+			this->vOutCustom->SetSubType("",false);
 
 			this->FHost->CreateNodeOutput("Shapes",TSliceMode::Dynamic,TPinVisibility::True,this->vOutShapes);
 			this->vOutShapes->SetSubType(ArrayUtils::SingleGuidArray(ShapeDataType::GUID),ShapeDataType::FriendlyName);
@@ -55,9 +67,13 @@ namespace VVVV
 
 				int cnt = this->vInBodies->SliceCount;
 				this->vOutPosition->SliceCount = cnt;
+				this->vOutVelocity->SliceCount = cnt;
 				this->vOutRotation->SliceCount = cnt;
 				this->vOutIsDynamic->SliceCount = cnt;
 				this->vOutId->SliceCount = cnt;
+				this->vOutCustom->SliceCount = cnt;
+				this->vOutMass->SliceCount = cnt;
+				this->vOutInertia->SliceCount = cnt;
 
 				for (int i = 0; i < this->vInBodies->SliceCount; i++) 
 				{
@@ -66,16 +82,23 @@ namespace VVVV
 					b2Body* body = this->m_bodies->GetSlice(realslice);
 
 					b2Vec2 pos = body->GetPosition();
+					b2Vec2 vel = body->GetLinearVelocity();
 					this->vOutPosition->SetValue2D(i, pos.x,pos.y);
+					this->vOutVelocity->SetValue2D(i, vel.x,vel.y);
 					this->vOutRotation->SetValue(i,body->GetAngle() / (Math::PI * 2.0));
 					this->vOutIsDynamic->SetValue(i,Convert::ToInt32(body->IsDynamic()));
+					this->vOutMass->SetValue(i,body->GetMass());
+					this->vOutInertia->SetValue(i,body->GetInertia());
 
 					BodyCustomData* bdata = (BodyCustomData*)body->GetUserData();
 					this->vOutId->SetValue(i, bdata->Id);
+					String^ str = gcnew String(bdata->Custom);
+					this->vOutCustom->SetString(i,str);
+
 
 					for (b2Shape* s = body->GetShapeList(); s; s = s->GetNext())
 					{
-						if (s->GetType() == e_circleShape || s->GetType() == e_polygonShape) 
+						if (s->GetType() == e_circleShape || s->GetType() == e_polygonShape || s->GetType() == e_edgeShape) 
 						{
 							this->m_shapes->Add(s);
 						}

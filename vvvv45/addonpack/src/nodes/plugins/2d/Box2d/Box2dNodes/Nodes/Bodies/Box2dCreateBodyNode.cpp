@@ -27,14 +27,29 @@ namespace VVVV
 			this->FHost->CreateValueInput("Position",2,ArrayUtils::Array2D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInPosition);
 			this->vInPosition->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,0.0,0.0,false,false,false);
 
+			this->FHost->CreateValueInput("Angle",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInAngle);
+			this->vInAngle->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
+
 			this->FHost->CreateValueInput("Velocity",2,ArrayUtils::Array2D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInVelocity);
 			this->vInVelocity->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,0.0,0.0,false,false,false);
 
 			this->FHost->CreateValueInput("Angular Velocity",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInAngularVelocity);
 			this->vInAngularVelocity->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
 
+			this->FHost->CreateValueInput("Linear Damping",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInLinearDamping);
+			this->vInLinearDamping->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
+
+			this->FHost->CreateValueInput("Angular Damping",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInAngularDamping);
+			this->vInAngularDamping->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
+
+			this->FHost->CreateValueInput("Fixed Rotation",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInFixedRotation);
+			this->vInFixedRotation->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,true,false);
+
 			this->FHost->CreateValueInput("Is Bullet",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInIsBullet);
 			this->vInIsBullet->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,true,false);
+
+			this->FHost->CreateStringInput("Custom",TSliceMode::Dynamic,TPinVisibility::True,this->vInCustom);
+			this->vInCustom->SetSubType("",false);
 
 			this->FHost->CreateValueInput("Do Create",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInDoCreate);
 			this->vInDoCreate->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);
@@ -66,23 +81,35 @@ namespace VVVV
 			{
 				if (this->mWorld->GetIsValid()) 
 				{
-					double x,y,vx,vy,va,bull;
+					double x,y,a,vx,vy,va,bull,fr,ld,ad;
+					String^ cust;
 					
 
 					for (int i = 0; i < SpreadMax; i++) 
 					{
 						this->vInPosition->GetValue2D(i,x,y);
 						this->vInVelocity->GetValue2D(i,vx,vy);
+						this->vInLinearDamping->GetValue(i,ld);
+						this->vInAngularDamping->GetValue(i,ad);
 						this->vInAngularVelocity->GetValue(i,va);
 						this->vInIsBullet->GetValue(i,bull);
+						this->vInFixedRotation->GetValue(i,fr);
+						this->vInCustom->GetString(i,cust);
+						this->vInAngle->GetValue(i,a);
 						
 						b2BodyDef bodydef;
 						bodydef.position.Set(x,y);
 						bodydef.isBullet = (bull >= 0.5);
+						bodydef.fixedRotation = (fr >= 0.5);
+						bodydef.angle = a * (Math::PI / 2.0);
+						bodydef.linearDamping = ld;
+						bodydef.angularDamping = ad;
+
 						
 						BodyCustomData* bdata = new BodyCustomData();
 						
 						bdata->Id = this->mWorld->GetNewBodyId();
+						bdata->Custom = (char*)(void*)Marshal::StringToHGlobalAnsi(cust);
 
 						b2Body* body = this->mWorld->GetWorld()->CreateBody(&bodydef);
 						body->SetLinearVelocity(b2Vec2(vx,vy));
@@ -119,6 +146,7 @@ namespace VVVV
 			this->vOutBodies->MarkPinAsChanged();
 
 		}
+
 
 		void Box2dCreateBodyNode::ConnectPin(IPluginIO^ Pin)
 		{
