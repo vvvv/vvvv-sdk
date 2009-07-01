@@ -7,7 +7,7 @@ namespace VVVV
 {
 	namespace Nodes 
 	{
-		ref class Box2dBaseShapeDefNode
+		public ref class Box2dBaseShapeDefNode
 		{
 		public:
 			Box2dBaseShapeDefNode(void);
@@ -28,6 +28,7 @@ namespace VVVV
 			IValueIn^ vInDensity;
 			IValueIn^ vInFriction;
 			IValueIn^ vInRestitution;
+			IValueIn^ vInIsSensor;
 
 			INodeOut^ vOutShapes;
 

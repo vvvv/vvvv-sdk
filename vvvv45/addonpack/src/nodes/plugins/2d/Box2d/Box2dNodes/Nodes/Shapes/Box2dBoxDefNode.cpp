@@ -17,10 +17,11 @@ namespace VVVV
 				|| this->vInAngle->PinIsChanged
 				|| this->vInFriction->PinIsChanged
 				|| this->vInDensity->PinIsChanged
-				|| this->vInRestitution->PinIsChanged) 
+				|| this->vInRestitution->PinIsChanged
+				|| this->vInIsSensor->PinIsChanged) 
 			{
 
-				double x,y,r,sx,sy,a,friction,restitution,density;
+				double x,y,r,sx,sy,a,friction,restitution,density,issensor;
 
 				this->vOutShapes->SliceCount = SpreadMax;
 
@@ -34,6 +35,7 @@ namespace VVVV
 					this->vInFriction->GetValue(i,friction);
 					this->vInDensity->GetValue(i,density);
 					this->vInRestitution->GetValue(i,restitution);
+					this->vInIsSensor->GetValue(i,issensor);
 
 					b2PolygonDef* shapeDef = this->m_shapes->AddPolygon();
 					b2Vec2 center(x,y);
@@ -41,9 +43,12 @@ namespace VVVV
 					shapeDef->density = density;
 					shapeDef->friction = friction;
 					shapeDef->restitution = restitution;
+					shapeDef->isSensor = issensor >= 0.5;
 
 					
 				}
+
+				this->vOutShapes->MarkPinAsChanged();
 			}
 
 		}

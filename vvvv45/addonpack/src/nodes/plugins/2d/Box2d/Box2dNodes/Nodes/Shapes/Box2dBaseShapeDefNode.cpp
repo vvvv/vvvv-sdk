@@ -28,6 +28,9 @@ namespace VVVV
 			this->FHost->CreateValueInput("Restitution",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInRestitution);
 			this->vInRestitution->SetSubType(0,Double::MaxValue,0.01,1.0,false,false,false);
 
+			this->FHost->CreateValueInput("Is Sensor",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInIsSensor);
+			this->vInIsSensor->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,true,false);
+
 			this->FHost->CreateNodeOutput("Output",TSliceMode::Dynamic,TPinVisibility::True,this->vOutShapes);
 			this->vOutShapes->SetSubType(ArrayUtils::SingleGuidArray(ShapeDefDataType::GUID),ShapeDefDataType::FriendlyName);
 			this->vOutShapes->SetInterface(this->m_shapes);
