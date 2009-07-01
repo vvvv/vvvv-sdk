@@ -24,6 +24,7 @@ namespace VVVV
 				void Reset();
 				b2CircleDef* AddCircle();
 				b2PolygonDef* AddPolygon();
+				b2EdgeChainDef* AddEdgeChain();
 
 				static String^ FriendlyName = "Box2d Shape Definition";
 				static property Guid^ GUID 

@@ -34,5 +34,11 @@ namespace VVVV
 			return shapedef;
 		}
 
+		b2EdgeChainDef* ShapeDefDataType::AddEdgeChain() 
+		{
+			b2EdgeChainDef* shapedef = new b2EdgeChainDef;
+			this->m_shapes->push_back(shapedef);
+			return shapedef;
+		}
 	}
 }
