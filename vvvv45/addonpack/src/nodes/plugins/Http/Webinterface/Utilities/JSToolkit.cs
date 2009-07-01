@@ -15,16 +15,21 @@ namespace VVVV.Webinterface.Utilities
         }
         #endregion constructor
 
+
         public static string ReloadPageFuntkionContent()
         {
             return "window.location.reload ();" + Environment.NewLine;
         }
+
+
 
         public static string ReloadPageVar()
         {
             return  "var aktiv = window.setInterval(\"reload_window()\", 600);" + Environment.NewLine;
                             
         }
+
+
 
         public static string XmlHttpRequest()
         {
@@ -59,6 +64,8 @@ namespace VVVV.Webinterface.Utilities
             return temp;
         }
 
+
+
         public static string Alert()
         {
             string temp = "function HandleResponse() {" + Environment.NewLine +
@@ -79,6 +86,8 @@ namespace VVVV.Webinterface.Utilities
             return temp;
         }
 
+
+
         public static string MouseMove()
         {
             return "window.captureEvents(Event.MOUSEMOVE);" + Environment.NewLine + 
@@ -89,6 +98,8 @@ namespace VVVV.Webinterface.Utilities
                    "}" + Environment.NewLine +
                    "window.onMouseMove = nsmouse;" + Environment.NewLine; 
         }
+
+
 
         public static string ButtonToggle()
         {
@@ -122,16 +133,8 @@ namespace VVVV.Webinterface.Utilities
                 ";
 
         }
-        public static string TestFunktion()
-        {
-            return
-            @" 
-            var myClass = pClass;
-            $("".buttonInlay"").hide();
-            "
-            
-            ;
-        }
+
+
 
         public static string ButtonBang()
         {
@@ -157,6 +160,8 @@ namespace VVVV.Webinterface.Utilities
                     buttonInlay.removeAttribute('style'); 
                 ";
         }
+
+
 
         public static string MakeRequest()
         {
@@ -193,6 +198,8 @@ namespace VVVV.Webinterface.Utilities
                     ";
         }
 
+
+
         public static string TextfieldSendData()
         {
             return
@@ -200,6 +207,67 @@ namespace VVVV.Webinterface.Utilities
             var getvalue = document.getElementById(pId).value
             makeRequest(pId, getvalue);
             ";
+        }
+
+
+
+        public static string Comet()
+        {
+            IFrame tIFrame = new IFrame();
+            return tIFrame.Text;
+        }
+
+
+
+        public static string Polling(string IntervalTime, string ValuesToSent)
+        {
+            string temp = @"
+<script>
+    $(document).ready(function(){{
+        $(document).everyTime({0},function(i) {{
+            processChunk(i);    
+        }}, 0);
+    }});
+
+    function processChunk(i){{ 
+        $.ajax({{
+            data: {1},
+        }});
+    }};   
+</script>" + Environment.NewLine;
+
+            return String.Format(temp, IntervalTime, ValuesToSent);
+        }
+
+
+
+        public static string ErrorMessage(string pFilename)
+        {
+
+            return
+            String.Format(@"
+            <!DOCTYPE HTML PUBLIC ""-//IETF//DTD HTML 2.0//EN"">
+            <html><head>
+            <title>404 Not Found</title>
+            </head><body>
+            <h1>Not Found</h1>
+            <p>The requested File /{0} was not found on this server.</p>
+            <hr>
+            </body></html>
+            ", pFilename);
+        }
+
+
+
+        public static string ResizeBrowser(string pWidth, string pHeight)
+        {
+            string tCode = @"
+<script>
+$(document).ready(function(){{  
+    window.resizeTo({0},{1}); 
+}}); 
+</script>" + Environment.NewLine;
+            return String.Format(tCode, pWidth, pHeight); ;
         }
     }
 }

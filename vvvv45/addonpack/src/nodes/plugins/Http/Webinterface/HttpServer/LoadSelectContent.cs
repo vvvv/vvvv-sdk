@@ -40,21 +40,19 @@ namespace VVVV.Webinterface.HttpServer
             }
         }
 
-        public LoadSelectContent( string pFilename, List<string> pPaths)
+        public LoadSelectContent( string pFilename, List<string> pPaths, SortedList<string,byte[]> pHtmlPages)
         {
-            bool ListFlag;
-
-            ListFlag = CheckFileNameInVVVVLists(pFilename);
-            if(ListFlag == false)
+            if (pFilename == "dummy.html")
+            {
+                string tPageToSend = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
+                mContentAsByte = Encoding.UTF8.GetBytes(tPageToSend);
+            }else if(pHtmlPages.ContainsKey(pFilename))
+            {
+                pHtmlPages.TryGetValue(pFilename, out mContentAsByte);
+            }else
             {
                 LoadFromDisc(pFilename, pPaths);
             }
-        }
-
-        private bool CheckFileNameInVVVVLists(string pFilename)
-        {
-            //check Lists from vvvv for filename
-            return false;
         }
 
 
@@ -84,7 +82,10 @@ namespace VVVV.Webinterface.HttpServer
             {
                 mContent = "File " + "'" + pFilename + "'" + " Not Found";
                 mContentAsByte = Encoding.UTF8.GetBytes(mContent);
-                mFileExtension = (pFilename.Split('.'))[1];
+                if (pFilename.Contains("."))
+                {
+                    mFileExtension = (pFilename.Split('.'))[1];
+                }
             }
         }
 

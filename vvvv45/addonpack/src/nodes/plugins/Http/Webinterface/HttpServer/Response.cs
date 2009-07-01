@@ -46,7 +46,7 @@ namespace VVVV.Webinterface.HttpServer
 
             mHeader = new ResponseHeader(pStausCode);
 
-            mHeader.SetAttribute("content-type", GetContentType(pFilename.Split('.')[1]));
+            mHeader.SetAttribute("content-type", GetContentType(pFilename));
             mHeader.SetAttribute("accept-ranges", "bytes");
             mHeader.SetAttribute("content-length", pContent.Length.ToString());
             mHeader.SetAttribute("connection", "close");
@@ -63,30 +63,45 @@ namespace VVVV.Webinterface.HttpServer
             mHeader.SetAttribute("content-type", pContentType);
             mHeader.SetAttribute("accept-ranges", "bytes");
             mHeader.SetAttribute("content-length", pContent.Length.ToString());
-            mHeader.SetAttribute("connection", "close");
+            if (pFilename == "dummy.html")
+            {
+                mHeader.SetAttribute("connection", "keep-alive");
+            }
+            else
+            {
+                mHeader.SetAttribute("connection", "close");
+            }
+            
 
             mResponseAsBytes = Combine(Encoding.UTF8.GetBytes(mHeader.Text), pContent);
         }
 
 
-        private string GetContentType(string pFilePath)
+        private string GetContentType(string pFileName)
         {
             string mimeType = "application/unknown";
 
-            string ext = pFilePath.ToLower();
+            if(pFileName.Contains("."))
+                {
+                string ext = pFileName.Split('.')[1].ToLower();
 
-            Microsoft.Win32.RegistryKey regKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey("." + ext);
+                Microsoft.Win32.RegistryKey regKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey("." + ext);
 
-            if (regKey != null && regKey.GetValue("Content Type") != null)
+                if (regKey != null && regKey.GetValue("Content Type") != null)
+                {
+                    mimeType = regKey.GetValue("Content Type").ToString();
+                }
+                else if (ext == ".js")
+                {
+                    mimeType = "application/x-javascript";
+                }
+
+                return mimeType;
+            }else
             {
-                mimeType = regKey.GetValue("Content Type").ToString();
-            }
-            else if (ext == ".js")
-            {
-                mimeType = "application/x-javascript";
+                return mimeType;
             }
 
-            return mimeType;
         }
 
 

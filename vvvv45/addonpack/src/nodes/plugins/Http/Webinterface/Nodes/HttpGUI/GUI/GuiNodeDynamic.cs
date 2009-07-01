@@ -14,52 +14,43 @@ using System.Globalization;
 
 namespace VVVV.Nodes.HttpGUI
 {
-    public abstract class BaseGUINode : IHttpGUIIO, IPluginConnections, IHttpGUIFunktionIO
+    public abstract class GuiNodeDynamic : IHttpGUIIO, IPluginConnections
     {
 
 
 
         #region field Definition
-        
+
 
         //Host
         protected IPluginHost FHost;
 
-       
-        // Standart Pins
+        // Input Pins
         public INodeOut FHttpGuiOut;
-
 
         public INodeIn FHttpGuiIn;
         public IHttpGUIIO FUpstreamInterface;
-
 
         public INodeIn FHttpStyleIn;
         public IHttpGUIStyleIO FUpstreamStyle;
 
 
-        public INodeIn FFixedPain;
-        public IHttpGUIIO FUpstreamInterfaceFixedPain;
-
-
-        public INodeOut FFunktionOut;
-        public INodeIn FFunktionOpen;
-        public INodeIn FFunkttionClose;
-
         public ITransformIn FTransformIn;
 
-        // Daten Liste und Objecte
+
+
+        //Required Members
         public SortedList<int, SortedList<string, string>> mValues;
-        public SortedList<int, SortedList<string, string>> mStyles = new SortedList<int,SortedList<string,string>>();
+        public SortedList<int, SortedList<string, string>> mStyles = new SortedList<int, SortedList<string, string>>();
 
         public bool mChangedStyle = false;
 
         public SortedList<string, string> mCssProperties;
-        
+
 
 
         #endregion field Definition
-      
+
 
 
 
@@ -68,18 +59,17 @@ namespace VVVV.Nodes.HttpGUI
 
         #region abstract Methods
 
-
-
+        
+        protected abstract void OnSetPluginHost();
         protected abstract void OnConfigurate(IPluginConfig Input);
         protected abstract void OnEvaluate(int SpreadMax);
-        protected abstract void OnPluginHostSet();
-        abstract public void GetDatenObjekt(int Index, out BaseDatenObjekt GuiDaten);
-        abstract public void GetFunktionObjekt(int Index, out JsFunktion FunktionsDaten);
-       
-
+        
+        
         #endregion abstract Methods
 
-        
+
+
+
 
 
 
@@ -92,20 +82,20 @@ namespace VVVV.Nodes.HttpGUI
             //assign host
             FHost = Host;
 
-            this.FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTransformIn);
+            this.FHost.CreateNodeInput("Input GUI", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiIn);
+            FHttpGuiIn.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
+
+            FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTransformIn);
 
             FHost.CreateNodeOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiOut);
             FHttpGuiOut.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
             FHttpGuiOut.SetInterface(this);
 
-            this.OnPluginHostSet();
-
             //Input Pins 
-            FHost.CreateNodeInput("Input", TSliceMode.Dynamic, TPinVisibility.True, out FHttpStyleIn);
+            FHost.CreateNodeInput("Input CSS", TSliceMode.Dynamic, TPinVisibility.True, out FHttpStyleIn);
             FHttpStyleIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
-            
-            //create outputs	    	
-             
+
+            this.OnSetPluginHost();	    	
         }
 
 
@@ -124,7 +114,10 @@ namespace VVVV.Nodes.HttpGUI
 
         #region IMyNodeIO
 
-
+        public void GetDatenObjekt(int Index, out BaseDatenObjekt GuiDaten)
+        {
+            GuiDaten = new DatenGuiButton("", "", 3);
+        }
 
 
         public void ConnectPin(IPluginIO Pin)
@@ -138,21 +131,9 @@ namespace VVVV.Nodes.HttpGUI
                     FHttpGuiIn.GetUpstreamInterface(out usI);
                     FUpstreamInterface = usI as IHttpGUIIO;
                 }
-                
+
             }
-            //else if (Pin == FFunktionOpen)
-            //{
-            //    INodeIOBase usIJsFunktionOpen;
-            //    FFunktionOpen.GetUpstreamInterface(out usIJsFunktionOpen);
-            //    FUpstreamFunktionOpen = usIJsFunktionOpen as IHttpGUIFunktionIO;
-            //}
-            //else if (Pin == FFunkttionClose)
-            //{
-            //    INodeIOBase usIJsFunktionClose;
-            //    FFunkttionClose.GetUpstreamInterface(out usIJsFunktionClose);
-            //    FUpstreamFunktionClose = usIJsFunktionClose as IHttpGUIFunktionIO;
-            //}
-            else if( Pin == FHttpStyleIn)
+            else if (Pin == FHttpStyleIn)
             {
                 INodeIOBase usIHttpStyle;
                 FHttpStyleIn.GetUpstreamInterface(out usIHttpStyle);
@@ -170,18 +151,6 @@ namespace VVVV.Nodes.HttpGUI
             {
                 FUpstreamInterface = null;
             }
-            else if (Pin == FFixedPain)
-            {
-                FUpstreamInterfaceFixedPain = null;
-            }
-            if (Pin == FFunktionOpen)
-            {
-                FUpstreamInterface = null;
-            }
-            else if (Pin == FFunkttionClose)
-            {
-                FUpstreamInterfaceFixedPain = null;
-            }
             else if (Pin == FHttpStyleIn)
             {
                 FUpstreamStyle = null;
@@ -191,9 +160,9 @@ namespace VVVV.Nodes.HttpGUI
         }
 
         #endregion NodeIO
-        
 
-        
+
+
 
 
 
@@ -214,68 +183,88 @@ namespace VVVV.Nodes.HttpGUI
         #region Evaluate
         public void Evaluate(int SpreadMax)
         {
-
-            //read Transform 
-
-
-            //GET Style Properties
             int usS;
+         
+
+
             if (FUpstreamStyle != null)
             {
 
-                mStyles.Clear();
-                int tNillCounter = 0;
+                bool tChangedValue;
+                FUpstreamStyle.GetInputChanged(out tChangedValue);
 
-                for (int i = 0; i < SpreadMax; i++)
+                if (tChangedValue)
                 {
-                    //get upstream slice index
+                    mStyles.Clear();
+                    int tNillCounter = 0;
 
-                    FHttpStyleIn.GetUpsreamSlice(i, out usS);
+                    for (int i = 0; i < SpreadMax; i++)
+                    {
+                        //get upstream slice index
 
-                    SortedList<string,string> tStylePropertie = new SortedList<string,string>();
-                    FUpstreamStyle.GetCssProperties(usS, out tStylePropertie);
-                    if (tStylePropertie != null)
-                    {
-                        mStyles.Add(i, tStylePropertie);
-                    }
-                    else
-                    {
-                        SortedList<string, string> tDummyCssProperty;
-                        mStyles.TryGetValue(tNillCounter, out tDummyCssProperty);
-                        mStyles.Add(i, tDummyCssProperty);
-                        if (tNillCounter  < mStyles.Count)
+                        FHttpStyleIn.GetUpsreamSlice(i, out usS);
+
+                        SortedList<string, string> tStylePropertie = new SortedList<string, string>();
+                        FUpstreamStyle.GetCssProperties(usS, out tStylePropertie);
+                        if (tStylePropertie != null)
                         {
-                            tNillCounter++;
+                            mStyles.Add(i, tStylePropertie);
                         }
                         else
                         {
-                            tNillCounter = 0;
+                            SortedList<string, string> tDummyCssProperty;
+                            mStyles.TryGetValue(tNillCounter, out tDummyCssProperty);
+                            mStyles.Add(i, tDummyCssProperty);
+                            if (tNillCounter < mStyles.Count)
+                            {
+                                tNillCounter++;
+                            }
+                            else
+                            {
+                                tNillCounter = 0;
+                            }
                         }
                     }
-                    
+                }
+            }
 
-                    bool tChangedValue;
-                    FUpstreamStyle.GetInputChanged( out tChangedValue);
-                    if (tChangedValue == true)
-                    {
-                        mChangedStyle = tChangedValue;
-                    }
-                    else
-                    {
-                        mChangedStyle = tChangedValue;
-                    }
+
+            //read Transform pin
+            if (FTransformIn.PinIsChanged)
+            {
+                for (int i = 0; i < SpreadMax; i++)
+                {
+                    Matrix4x4 tMatrix;
+
+                    FTransformIn.GetMatrix(0, out tMatrix);
+
+                    SortedList<string, string> tTransformToCss = new SortedList<string, string>();
+                    tTransformToCss.Add("position", "absolute");
+
+                    double tWidth = HTMLToolkit.MapScale(tMatrix.m11, 0, 2, 0, 100);
+                    double tHeight = HTMLToolkit.MapScale(tMatrix.m22, 0, 2, 0, 100);
+
+                    tTransformToCss.Add("width", ReplaceComma(string.Format("{0:0.0}", Math.Round(tWidth, 1)) + "%"));
+                    tTransformToCss.Add("height", ReplaceComma(string.Format("{0:0.0}", Math.Round(tHeight, 1)) + "%"));
+
+                    double tTop = HTMLToolkit.MapTransform(tMatrix.m42, 1, -1, 0, 100, tHeight);
+                    double tLeft = HTMLToolkit.MapTransform(tMatrix.m41, -1, 1, 0, 100, tWidth);
+
+                    tTransformToCss.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tTop, 1)) + "%"));
+                    tTransformToCss.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tLeft, 1)) + "%"));
+
+
+                    tTransformToCss.Add("z-index", Convert.ToString(Math.Round(tMatrix.m43)));
                     
                 }
             }
 
 
-            if (FTransformIn.PinIsChanged)
-            {
-
-            }
-
             this.OnEvaluate(SpreadMax);
-         }
+
+
+            //Check if new data is availabe on the server
+        }
 
         #endregion Evaluate
 
@@ -284,7 +273,7 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-        #region Node Information 
+        #region Node Information
 
         public string GetNodeID()
         {
@@ -293,8 +282,10 @@ namespace VVVV.Nodes.HttpGUI
             return tPath;
         }
 
-        public void GetTransformation(Matrix4x4 pMatrix,out SortedList<string,string> pTransform)
+        public void GetTransformation(Matrix4x4 pMatrix, out SortedList<string, string> pTransform)
         {
+
+
             SortedList<string, string> tStyles = new SortedList<string, string>();
             tStyles.Add("position", "absolute");
 
@@ -307,8 +298,8 @@ namespace VVVV.Nodes.HttpGUI
             double tTop = HTMLToolkit.MapTransform(pMatrix.m42, 1, -1, 0, 100, tHeight);
             double tLeft = HTMLToolkit.MapTransform(pMatrix.m41, -1, 1, 0, 100, tWidth);
 
-            tStyles.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tTop,1)) + "%"));
-            tStyles.Add("left", ReplaceComma(string.Format("{0:0.0}",Math.Round(tLeft,1)) + "%"));
+            tStyles.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tTop, 1)) + "%"));
+            tStyles.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tLeft, 1)) + "%"));
 
 
             tStyles.Add("z-index", Convert.ToString(Math.Round(pMatrix.m43)));
@@ -345,7 +336,7 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-        
-      
+
+
     }
 }

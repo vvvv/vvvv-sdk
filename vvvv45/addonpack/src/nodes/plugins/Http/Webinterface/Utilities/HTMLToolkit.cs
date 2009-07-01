@@ -59,6 +59,25 @@ namespace VVVV.Webinterface.Utilities
             return output;
         }
 
+        public static string CreatePageID(string pNodePath)
+        {
+            string[] tPatchIDs = pNodePath.Split('/');
+            string tNewNodePath = String.Empty;
+
+            foreach (string tID in tPatchIDs)
+            {
+                if (tID != "")
+                {
+                    int temp = Convert.ToInt16(tID);
+                    tNewNodePath +=  String.Format("{0:00000}", temp);
+                }
+                else
+                {
+                    
+                }
+            }
+            return tNewNodePath;
+        }
 
         #endregion conversion
 

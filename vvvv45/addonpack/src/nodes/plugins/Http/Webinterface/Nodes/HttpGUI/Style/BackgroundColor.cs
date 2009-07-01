@@ -283,12 +283,12 @@ namespace VVVV.Nodes.HttpGUI.CSS
         {
 
 
-			if (FColorInput.PinIsChanged || mChangedInputIn)
+			if (FColorInput.PinIsChanged)
             {
 				// set slices count
 				RGBAColor currentColorSlice;
                 mCssPropertiesOwn.Clear();
-                mChangedInputOut = true;
+                mChangedInput = true;
 	
                 for (int i = 0; i < SpreadMax; i++)
                 {

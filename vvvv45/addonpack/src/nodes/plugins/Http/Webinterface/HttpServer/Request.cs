@@ -22,7 +22,7 @@ namespace VVVV.Webinterface.HttpServer
         private string mMessageBody = "";
         private Dictionary<string,string> mArguments = new Dictionary<string,string>();
         private Response mResponse;
-
+        private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
 
 
         # region public properties
@@ -107,6 +107,7 @@ namespace VVVV.Webinterface.HttpServer
         {
             mMessageHead = pRequest.Substring(0,pRequest.LastIndexOf(Environment.NewLine));
             mMessageBody = pRequest.Substring(pRequest.LastIndexOf(Environment.NewLine));
+            mMessageBody = mMessageBody.TrimStart(new Char[] { '\n', '\r', '?' });
             string[] tHeadLines = mMessageHead.Split('\n');
             SplitHeadParameter(tHeadLines);
             SplitFirstLine(tHeadLines[0]);
@@ -114,20 +115,8 @@ namespace VVVV.Webinterface.HttpServer
             
 
             if (mRequestType == "GET")
-            {
-                byte[] tPageToSend;
-                
-                if(pHtmlPages.ContainsKey(mFilename))
-                {
-                    pHtmlPages.TryGetValue(mFilename, out tPageToSend);
-
-                }else
-                {
-                    LoadSelectContent tLoadSelectContent = new LoadSelectContent(mFilename, pFolderToServ);
-                    tPageToSend = tLoadSelectContent.ContentAsBytes;
-                }
-                
-                mResponse = new Response(mFilename,tPageToSend, new HTTPStatusCode("").Code200);
+            {               
+                mResponse = new Response(mFilename,new LoadSelectContent(mFilename, pFolderToServ, pHtmlPages).ContentAsBytes, new HTTPStatusCode("").Code200);
             }
             else if (mRequestType == "POST")
             {
@@ -230,9 +219,16 @@ namespace VVVV.Webinterface.HttpServer
                 }
 
                 //XmlHttpRequest
-                if (ContentType == "application/x-www-form-urlencoded")
+                if (mFilename == "ToVVVV.xml")
                 {
-
+                    
+                       string[] tVVVVParameter =  mMessageBody.Split('&');
+                       foreach (string tValuePair in tVVVVParameter)
+                       {
+                           string[] tValue = tValuePair.Split('=');
+                           mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
+                       }
+                    
                 }
                 //Any Files are send
                 else

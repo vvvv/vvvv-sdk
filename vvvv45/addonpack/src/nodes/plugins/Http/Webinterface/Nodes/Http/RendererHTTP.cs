@@ -44,13 +44,13 @@ using VVVV.Webinterface;
 using VVVV.Webinterface.Utilities;
 using VVVV.Webinterface.Data;
 using VVVV.Webinterface.HttpServer;
-using VVVV.Nodes.HTTP;
+using VVVV.Nodes.Http;
 using VVVV.Nodes.HttpGUI;
 using VVVV.Nodes.HttpGUI.Datenobjekte;
 
 
 //the vvvv node namespace
-namespace VVVV.Nodes.HTTP
+namespace VVVV.Nodes.Http
 {
 
     /// <summary>
@@ -77,13 +77,12 @@ namespace VVVV.Nodes.HTTP
 
         private IValueIn FEnableServer;
         private IValueIn FOpenBrowser;
-        private IValueIn FPageWidth;
-        private IValueIn FPageHeight;
+
 
         private IValueConfig FPageCount;
 
         private INodeIn FHttpPageIn;
-        private IEnumIn FCommunication;
+
         //output pin 
         //private IStringOut FFileName;
         //private IStringOut FFileList;
@@ -264,16 +263,6 @@ namespace VVVV.Nodes.HTTP
             FHost.CreateStringInput("Directories", TSliceMode.Dynamic, TPinVisibility.True, out FDirectories);
             FDirectories.SetSubType(mServerFolder, false);
 
-            FHost.CreateValueInput("Browser Width", 1, null, TSliceMode.Single, TPinVisibility.True, out FPageWidth);
-            FPageWidth.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
-
-            FHost.CreateValueInput("Browser Height", 1, null, TSliceMode.Single, TPinVisibility.True, out FPageHeight);
-            FPageHeight.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
-
-            FHost.UpdateEnum("Communication", "Manual", new string[] { "manual", "polling", "comet" });
-            FHost.CreateEnumInput("Communication", TSliceMode.Single, TPinVisibility.True, out FCommunication);
-            FCommunication.SetSubType("Communication");
-           
             FHost.CreateValueInput("Open Browser", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FOpenBrowser);
             FOpenBrowser.SetSubType(0, 1, 1, 0, true, false, true);
 
@@ -343,7 +332,7 @@ namespace VVVV.Nodes.HTTP
                 if (Pin == pNodeIn)
                 {
                     string tNodeName = Pin.Name;
-                    ReadUpstream();
+                    ReadUpstream(true);
                     FNodeUpstream.Remove(Pin.Name);
                 }
             }
@@ -398,14 +387,6 @@ namespace VVVV.Nodes.HTTP
                 }
             }
 
-
-
-
-
-
-
-
-
             //if (Input == FPort)
             //{
             //    if (mServer != null)
@@ -434,7 +415,7 @@ namespace VVVV.Nodes.HTTP
 
 
 
-            ReadUpstream();
+            ReadUpstream(false);
 
 
             #endregion Upstream
@@ -458,7 +439,7 @@ namespace VVVV.Nodes.HTTP
                     //mServer.ServeFolder(mServerFolder);
                     mServer.Start();
                 }
-                else
+                else if(pState < 0.5)
                 {
                     if (mServer != null)
                     {
@@ -472,23 +453,6 @@ namespace VVVV.Nodes.HTTP
 
 
             #endregion Enable Server
-
-
-
-
-            #region Browser Window
-
-            {
-                double currentWidthSlice;
-                double currentHeightSlice;
-                FPageWidth.GetValue(0, out currentWidthSlice);
-                FPageHeight.GetValue(0, out currentHeightSlice);
-
-                string tBrowserWidth = "" + Math.Round(currentWidthSlice);
-                string tBrowserHeight = "" + Math.Round(currentHeightSlice);
-            }
-
-            #endregion Browser Window
 
 
 
@@ -566,7 +530,7 @@ namespace VVVV.Nodes.HTTP
 
         #region HandleUpstream
 
-        private void ReadUpstream()
+        private void ReadUpstream(bool pDisconnected)
         {
                         //Saves the incoming Html Slices
             foreach (INodeIn pNodeIn in FInputPinList)
@@ -592,7 +556,15 @@ namespace VVVV.Nodes.HTTP
                         string tFileName;
                         FUpstream.GetPage(out tPage, out tCssFile, out tJsFile, out tPageName, out tFileName);
 
-                        HandlePageList(tPageName, tPage, tCssFile, tJsFile, tFileName);
+                        if (pDisconnected)
+                        {
+                            RemovePageFormList(tPageName, tPage, tCssFile, tJsFile, tFileName);
+                        }
+                        else
+                        {
+                            HandlePageList(tPageName, tPage, tCssFile, tJsFile, tFileName);
+                        }
+                        
 
                         if (mServer != null)
                         {
@@ -616,22 +588,37 @@ namespace VVVV.Nodes.HTTP
                 mHtmlPageList.Remove(pUrl);
                 mHtmlPageList.Add(pUrl, Encoding.UTF8.GetBytes(pPage.Text));
 
-                mHtmlPageList.Remove("VVVV.css");
-                mHtmlPageList.Add("VVVV.css", Encoding.UTF8.GetBytes(pCssFile));
+                mHtmlPageList.Remove(pPageName + ".css");
+                mHtmlPageList.Add(pPageName + ".css", Encoding.UTF8.GetBytes(pCssFile));
 
-                mHtmlPageList.Remove("VVVV.js");
-                mHtmlPageList.Add("VVVV.js", Encoding.UTF8.GetBytes(pJsFile));
+                mHtmlPageList.Remove(pPageName + ".js");
+                mHtmlPageList.Add(pPageName + ".js", Encoding.UTF8.GetBytes(pJsFile));
 
             }
             else
             {
                 PageNames.Add(pPageName);
                 mHtmlPageList.Add(pUrl, Encoding.UTF8.GetBytes(pPage.Text));
-                mHtmlPageList.Add("VVVV.css", Encoding.UTF8.GetBytes(pCssFile));
-                mHtmlPageList.Add("VVVV.js", Encoding.UTF8.GetBytes(pJsFile));
+                mHtmlPageList.Add(pPageName + ".css", Encoding.UTF8.GetBytes(pCssFile));
+                mHtmlPageList.Add(pPageName + ".js", Encoding.UTF8.GetBytes(pJsFile));
 
             }
         }
+
+        private void RemovePageFormList(string pPageName, Page pPage, string pCssFile, string pJsFile, string pUrl)
+        {
+
+            if (PageNames.Contains(pPageName))
+            {
+                PageNames.Remove(pPageName);
+                mHtmlPageList.Remove(pUrl);
+                mHtmlPageList.Remove(pPageName + ".css");
+                mHtmlPageList.Remove(pPageName + ".js");
+
+            }
+        }
+
+
 
 
         #endregion HandleUpstream

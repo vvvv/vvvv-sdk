@@ -483,27 +483,34 @@ namespace VVVV.Webinterface
         /// sets the new Browser data
         /// </summary>
         /// <param name="pContent">content string with value pairs separated by and / variable and value separated by =</param>
-        public void setNewBrowserDaten(string pContent)
+        public void setNewBrowserDaten(string pNodeID, string pValue)
         {
 
-            char[] t =  { '&' };
-            string[] tContent = pContent.Split(t);
-
-
-            foreach (string pStrings in tContent)
+            if (mDaten.ContainsKey(pNodeID))
             {
-                char[] tt =  { '=' };
-                string[] tNameValue = pStrings.Split(tt);
-                SaveNewBrowserData(tNameValue);
+                    string tValue;
+                    mDaten.TryGetValue(pNodeID, out tValue);
+                    mDaten.Remove(pNodeID);
+                    mDaten.Add(pNodeID, pValue);
+                    // here mDaten entLoggen 
+                    setSubjectStateToServer(pNodeID);
             }
-        }
+            else
+            {
+                mDaten.Add(pNodeID, pValue);
+                setSubjectStateToServer(pNodeID);
+                //Debug.WriteLine("no SliceId found in SaveNewBrowserData");
+                //mlogger.log(mlogger.LogType.Debug, "Replaced SliceKey: " + pNewData[1].ToString() + " with Value: " + pNewData[2].ToString());
+            }
+          }
+        
 
 
         /// <summary>
         /// set data from browser to the data list
         /// </summary>
         /// <param name="pNewData">new value pair</param>
-        private void SaveNewBrowserData(string[] pNewData)
+        private void setNewBrowserDaten(string[] pNewData)
         {
 
             mlogger.log(mlogger.LogType.Debug, "New Browser Daten set to mDaten List");
@@ -518,8 +525,6 @@ namespace VVVV.Webinterface
             
             if (mDaten.ContainsKey(tName))
             {
-
-
                     string tValue;
                     mDaten.TryGetValue(tName, out tValue);
                     mDaten.Remove(tName);
@@ -534,9 +539,7 @@ namespace VVVV.Webinterface
                     //Debug.WriteLine("no SliceId found in SaveNewBrowserData");
                     //mlogger.log(mlogger.LogType.Debug, "Replaced SliceKey: " + pNewData[1].ToString() + " with Value: " + pNewData[2].ToString());
                 }
-
-            //mXmlHandling.buildXml(mDaten);
-        }
+            }
 
         
 

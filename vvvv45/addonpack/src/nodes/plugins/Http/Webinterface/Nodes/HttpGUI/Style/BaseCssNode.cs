@@ -31,8 +31,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
         public INodeIn FCssPropertiesIn;
         public IHttpGUIStyleIO FUpstreamStyleIn;
 
-        public bool mChangedInputOut = false;
-        public bool mChangedInputIn = false;
+        public bool mChangedInput = true;
 
         // Daten Liste und Objecte
         public SortedList<int,SortedList<string,string>> mCssPropertiesOwn  = new SortedList<int,SortedList<string,string>>();
@@ -110,11 +109,12 @@ namespace VVVV.Nodes.HttpGUI.CSS
             SortedList<string, string> tCssProperty = new SortedList<string, string>();
             mCssPropertiesOwn.TryGetValue(Index, out tCssProperty);
             GuiDaten = tCssProperty;
+            mChangedInput = false;
         }
 
         public void GetInputChanged(out bool ChangedInput)
         {
-            ChangedInput = mChangedInputOut;
+            ChangedInput = mChangedInput;
         }
 
          
@@ -127,7 +127,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
                 INodeIOBase usI;
                 FCssPropertiesIn.GetUpstreamInterface(out usI);
                 FUpstreamStyleIn = usI as IHttpGUIStyleIO;
-                mChangedInputOut = true;
+                mChangedInput = true;
             }
         }
 
@@ -171,62 +171,52 @@ namespace VVVV.Nodes.HttpGUI.CSS
         {
             
             FCssPropertieOut.SliceCount = SpreadMax;
-            mChangedInputOut = false;
+            
             int usS;
 
             if (FUpstreamStyleIn != null)
             {
-                mCssPropertiesIn.Clear();
-                int tNillCounter = 0;
 
-                for (int i = 0; i < SpreadMax; i++)
+                bool tChangedValue;
+                FUpstreamStyleIn.GetInputChanged(out tChangedValue);
+
+                if (tChangedValue)
                 {
-                    //get upstream slice index
+                    mChangedInput = true;
+                    mCssPropertiesIn.Clear();
+                    int tNillCounter = 0;
 
-                    FCssPropertiesIn.GetUpsreamSlice(i, out usS);
-
-                    SortedList<string, string> tStylePropertie = new SortedList<string, string>();
-                    FUpstreamStyleIn.GetCssProperties(usS, out tStylePropertie);
-
-                    if (tStylePropertie != null)
+                    for (int i = 0; i < SpreadMax; i++)
                     {
-                        mCssPropertiesIn.Add(i, tStylePropertie);
-                    }
-                    else
-                    {
-                        SortedList<string, string> tDummyCssProperty;
-                        mCssPropertiesIn.TryGetValue(tNillCounter, out tDummyCssProperty);
-                        mCssPropertiesIn.Add(i, tDummyCssProperty);
-                        if (tNillCounter < mCssPropertiesIn.Count)
+                        //get upstream slice index
+
+                        FCssPropertiesIn.GetUpsreamSlice(i, out usS);
+
+                        SortedList<string, string> tStylePropertie = new SortedList<string, string>();
+                        FUpstreamStyleIn.GetCssProperties(usS, out tStylePropertie);
+
+                        if (tStylePropertie != null)
                         {
-                            tNillCounter++;
+                            mCssPropertiesIn.Add(i, tStylePropertie);
                         }
                         else
                         {
-                            tNillCounter = 0;
+                            SortedList<string, string> tDummyCssProperty;
+                            mCssPropertiesIn.TryGetValue(tNillCounter, out tDummyCssProperty);
+                            mCssPropertiesIn.Add(i, tDummyCssProperty);
+                            if (tNillCounter < mCssPropertiesIn.Count)
+                            {
+                                tNillCounter++;
+                            }
+                            else
+                            {
+                                tNillCounter = 0;
+                            }
                         }
-                    }
-
-
-                    bool tChangedValue;
-                    FUpstreamStyleIn.GetInputChanged(out tChangedValue);
-                    mChangedInputIn = tChangedValue;
-                    if (mChangedInputIn == true)
-                    {
-                        mChangedInputOut = true;
-                    }
-                    else
-                    {
-                        mChangedInputOut = false;
                     }
                 }
             }
-            else
-            {
-                mChangedInputIn = false;
-            }
 
-            
             this.OnEvaluate(SpreadMax);
             
         }

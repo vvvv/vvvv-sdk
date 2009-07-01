@@ -269,7 +269,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
 			if (FPaddingXIn.PinIsChanged || FPaddingYIn.PinIsChanged )
             {
 
-                mChangedInputOut = true;
+                mChangedInput = true;
                 mCssPropertiesOwn.Clear();	
 
                 for (int i = 0; i < SpreadMax; i++)

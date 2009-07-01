@@ -53,8 +53,9 @@ namespace VVVV.Webinterface.HttpServer {
         private bool mShuttingDown = false;
         //private int convID;
         private Timer mLostTimer;
-        private const int timerTimeout = 300000;
-        private const int timeoutMinutes = 3;
+        private const int mTimerTimeout = 300000;
+        //private const int mTimerTimeout = 3000;
+        private const int mTimeoutMinutes = 3;
         private const int numThreads = 1;
         protected Hashtable connectedHT = new Hashtable();
         protected ArrayList connectedSocks;
@@ -258,26 +259,8 @@ namespace VVVV.Webinterface.HttpServer {
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
                 //mSocket.Close();
-                foreach (KeyValuePair<string, Socket> pKey in mDummySocketList)
-                {
-                    Socket pSocket = pKey.Value;
-                    pSocket.Shutdown(SocketShutdown.Both);
-                    pSocket.Close();
-                }
-
-                
-                mMainSocket.Shutdown(SocketShutdown.Both);
-                mMainSocket.Close();
-
-                mIndexSocketList.Clear();
-                mIndexSocketList = null;
-                mDummySocketList.Clear();
-                mDummySocketList = null;
 
                 Debug.WriteLine("Server is being deleted");
-                mLogger.log(mLogger.LogType.Info, "Server Class is beeing deleted");
-
-                
                 // Note that this is not thread safe.
                 // Another thread could start disposing the object
                 // after the managed resources are disposed,
@@ -292,6 +275,7 @@ namespace VVVV.Webinterface.HttpServer {
 
 
         #endregion constructor /deconstructor
+
 
 
 
@@ -320,7 +304,7 @@ namespace VVVV.Webinterface.HttpServer {
             // Create the delegate that invokes methods for the timer.
             TimerCallback timerDelegate = new TimerCallback(this.CheckSockets);
             //Create a timer that waits one minute, then invokes every 5 minutes.
-            mLostTimer = new Timer(timerDelegate, null, Server.timerTimeout, Server.timerTimeout);
+            mLostTimer = new Timer(timerDelegate, null, Server.mTimerTimeout, Server.mTimerTimeout);
         }
 
 
@@ -342,10 +326,10 @@ namespace VVVV.Webinterface.HttpServer {
                     mMainSocket.BeginAccept(new AsyncCallback(OnClientConnectCallback), mMainSocket);
                     allDone.WaitOne();
                 }
+                
+
 
                 Debug.WriteLine("-------------- Stop Listing to Socket --------------");
-                mMainSocket.Shutdown(SocketShutdown.Both);
-                mMainSocket.Close();
             }
             catch (SocketException se)
             {
@@ -372,6 +356,13 @@ namespace VVVV.Webinterface.HttpServer {
                     threadEnd[lcv].Set();    // Set event if thread is already dead
             }
             ShuttingDown = true;
+
+            if (connectedSocks.Count != 0)
+            {
+
+            }
+            
+
             // Create a connection to the port to unblock the listener thread
             Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPEndPoint endPoint = new IPEndPoint(IPAddress.Loopback, this.portNumber);
@@ -390,36 +381,41 @@ namespace VVVV.Webinterface.HttpServer {
         {
             mLostTimer.Change(System.Threading.Timeout.Infinite,
                 System.Threading.Timeout.Infinite);
-            try
+            
+            
+
+            if ( connectedSocks.Count != 0)
             {
+                Monitor.Enter(connectedSocks);
                 foreach (SocketInformation state in connectedSocks)
                 {
                     if (state.ClientSocket == null)
                     {    // Remove invalid state object
-                        Monitor.Enter(connectedSocks);
                         if (connectedSocks.Contains(state))
                         {
                             connectedSocks.Remove(state);
                             Interlocked.Decrement(ref sockCount);
                         }
-                        Monitor.Exit(connectedSocks);
                     }
                     else
                     {
-                        if (DateTime.Now.AddTicks(-state.TimeStamp.Ticks).Minute > timeoutMinutes)
+                        if (DateTime.Now.AddTicks(-state.TimeStamp.Ticks).Minute > mTimeoutMinutes && state.RequestObject.FileName != "dummy.html")
                         {
                             RemoveSocket(state);
+                            Interlocked.Decrement(ref sockCount);
+                        }
+                        else if(state.RequestObject.FileName == "dummy.html" && state.ClientSocket.Connected == false)
+                        {
+                            RemoveSocket(state);
+                            Interlocked.Decrement(ref sockCount);
                         }
                     }
                 }
+                Monitor.Exit(connectedSocks);
             }
-            catch (Exception)
-            {
-            }
-            finally
-            {
-                mLostTimer.Change(Server.timerTimeout, Server.timerTimeout);
-            }
+
+            mLostTimer.Change(Server.mTimerTimeout, Server.mTimerTimeout);
+            
         }
 
 
@@ -475,13 +471,14 @@ namespace VVVV.Webinterface.HttpServer {
 
             if (sock != null)
             {
-                //if (sock.Connected)
-                //    sock.Shutdown(SocketShutdown.Both);
+                if (sock.Connected)
+                {
+                    sock.Shutdown(SocketShutdown.Both);
+                }
                 sock.Close();
                 sock = null;
                 state.ClientSocket = null;
                 state = null;
-
             }
         }
 
@@ -520,16 +517,17 @@ namespace VVVV.Webinterface.HttpServer {
                 {
                     Interlocked.Increment(ref sockCount);
                     Monitor.Enter(connectedSocks);
-                    connectedSocks.Add(tClientSocket);
+                    connectedSocks.Add(tSocketInformations);
                     Monitor.Exit(connectedSocks);
 
                     tClientSocket.BeginReceive(tSocketInformations.Buffer, 0, tSocketInformations.BufferSize, 0, new AsyncCallback(ReceiveSocketDataCallback), tSocketInformations);
 
+
                     if (sockCount > this.maxSockets)
                     {
                         RemoveSocket(tSocketInformations);
-                        //handler.Shutdown(SocketShutdown.Both);
-                        //handler.Close();
+                        tClientSocket.Shutdown(SocketShutdown.Both);
+                        tClientSocket.Close();
                         tClientSocket = null;
                         tSocketInformations = null;
                     }
@@ -588,10 +586,11 @@ namespace VVVV.Webinterface.HttpServer {
                     {
 
                         tSocketInformation.TimeStamp = DateTime.Now;
-
+                        
                         try
                         {
                             Request tRequest = new Request(tSocketInformation.Request.ToString(), mFoldersToServ, tSocketInformation.HtmlPages);
+                            tSocketInformation.RequestObject = tRequest;
                             tSocketInformation.ResponseAsBytes = tRequest.Response.TextInBytes;
 
                         }
@@ -646,7 +645,18 @@ namespace VVVV.Webinterface.HttpServer {
             try
             {
                 int bytesSent = tSocketIformations.ClientSocket.EndSend(asynSendData);
-                RemoveSocket(tSocketIformations);
+                if (tSocketIformations.RequestObject != null)
+                {
+                    if (tSocketIformations.RequestObject.FileName == "dummy.html")
+                    {
+
+                    }
+                    else
+                    {
+                        RemoveSocket(tSocketIformations);
+                    }
+                }
+
                 Debug.WriteLine(String.Format("Sent {0} bytes to client.",  bytesSent));
            }
             catch ( Exception e )

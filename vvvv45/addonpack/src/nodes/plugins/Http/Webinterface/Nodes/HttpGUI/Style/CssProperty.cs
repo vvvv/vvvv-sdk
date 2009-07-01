@@ -311,7 +311,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
             {
                 if (pNodeIn.PinIsChanged)
                 {
-                    mChangedInputOut = true;
+                    mChangedInput = true;
                 }
             }
 
@@ -319,14 +319,14 @@ namespace VVVV.Nodes.HttpGUI.CSS
             {
                 if (pNodeIn.PinIsChanged)
                 {
-                    mChangedInputOut = true;
+                    mChangedInput = true;
                 }
             }
 
                 // set slices count
             
 
-            if (mChangedInputOut || mChangedInputIn)
+            if (mChangedInput)
             {
                 mCssPropertiesOwn.Clear();
 

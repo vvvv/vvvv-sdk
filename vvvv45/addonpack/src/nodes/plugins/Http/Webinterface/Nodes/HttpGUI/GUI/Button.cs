@@ -159,6 +159,8 @@ namespace VVVV.Nodes.HttpGUI
                     //any known usage of the node that may cause troubles?
                     FPluginInfo.Warnings = "";
 
+
+
                     //leave below as is
                     System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
                     System.Diagnostics.StackFrame sf = st.GetFrame(0);

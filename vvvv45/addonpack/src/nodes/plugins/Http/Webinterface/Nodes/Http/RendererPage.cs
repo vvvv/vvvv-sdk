@@ -40,13 +40,13 @@ using System.Diagnostics;
 using VVVV.Webinterface;
 using VVVV.Webinterface.Utilities;
 using VVVV.Webinterface.Data;
-using VVVV.Nodes.HTTP;
+using VVVV.Nodes.Http;
 using VVVV.Nodes.HttpGUI;
 using VVVV.Nodes.HttpGUI.Datenobjekte;
 
 
 //the vvvv node namespace
-namespace VVVV.Nodes.HTTP
+namespace VVVV.Nodes.Http
 {
 
     /// <summary>
@@ -72,6 +72,9 @@ namespace VVVV.Nodes.HTTP
         private IValueIn FReload;
         private IStringIn FPath;
         private IValueIn FSavePage;
+        private IEnumIn FCommunication;
+        private IValueIn FPageWidth;
+        private IValueIn FPageHeight;
 
         private INodeIn FHttpGuiIn;
         private IHttpGUIIO FUpstreamInterface;
@@ -274,8 +277,18 @@ namespace VVVV.Nodes.HTTP
             FHost.CreateNodeInput("CSS", TSliceMode.Single, TPinVisibility.True, out FCssPropertiesIn);
             FCssPropertiesIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
 
+            FHost.CreateValueInput("Browser Width", 1, null, TSliceMode.Single, TPinVisibility.True, out FPageWidth);
+            FPageWidth.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
+
+            FHost.CreateValueInput("Browser Height", 1, null, TSliceMode.Single, TPinVisibility.True, out FPageHeight);
+            FPageHeight.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
+
             FHost.CreateValueInput("Reload Browser", 1, null, TSliceMode.Single, TPinVisibility.True, out FReload);
             FReload.SetSubType(0, 1, 1, 0, true, false, true);
+
+            FHost.UpdateEnum("Communication", "Manual", new string[] { "Manual", "Polling", "Comet" });
+            FHost.CreateEnumInput("Communication", TSliceMode.Single, TPinVisibility.True, out FCommunication);
+            FCommunication.SetSubType("Communication");
 
             FHost.CreateStringInput("HTML Head", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FHtmlHead);
             FHtmlHead.SetSubType("", false);
@@ -302,7 +315,7 @@ namespace VVVV.Nodes.HTTP
 
             string PatchPath = String.Empty;
             FHost.GetNodePath(true, out PatchPath);
-            mPageName = "Page" + PatchPath;
+            mPageName = "Page" + HTMLToolkit.CreatePageID(PatchPath);
             
         }
 
@@ -426,6 +439,11 @@ namespace VVVV.Nodes.HTTP
 
 
 
+            #region Read Url
+
+            FUrl.GetString(0, out mUrl);
+
+            #endregion Read Url
 
 
 
@@ -441,8 +459,6 @@ namespace VVVV.Nodes.HTTP
                 }
             }
             #endregion Reload Page
-
-
 
 
 
@@ -483,6 +499,14 @@ namespace VVVV.Nodes.HTTP
 
             }
 
+
+            #endregion Get HTML Body and Head String
+
+
+
+            #region Body CSS Properties
+
+
             //Upstream Css Properties
             int uSSSytle;
             if (FUpstreamStyleIn != null)
@@ -510,18 +534,7 @@ namespace VVVV.Nodes.HTTP
                 mCssBodyPropertiesIn = tStylePropertie;
             }
 
-            #endregion Get HTML Body and Head String
-
-
-
-
-            #region Read Url
-
-            FUrl.GetString(0, out mUrl);
-
-            #endregion Read Url
-
-           
+            #endregion Body CSS Properties
 
 
 
@@ -529,8 +542,10 @@ namespace VVVV.Nodes.HTTP
 
             Page tPage;
 
+            PageBuilder tPageBuilder = new PageBuilder(mGuiDatenListe);
             //New Builer only ObjectList Input input
-            JQueryBuilder tJQuery = new JQueryBuilder(mGuiDatenListe, "-1", "-1", mCssBodyPropertiesIn);
+            
+            JQueryBuilder tJQuery = new JQueryBuilder(mGuiDatenListe, "-1", "-1", mCssBodyPropertiesIn, mPageName);
             mJsFile = tJQuery.JsFile;
             mCssFile = tJQuery.CssMainFile;
             tPage = tJQuery.Page;
@@ -547,10 +562,47 @@ namespace VVVV.Nodes.HTTP
 
             mPage = tPage;
 
+            //Communication Type
+            string tCommunicationType;
+            FCommunication.GetString(0, out tCommunicationType);
+            if (tCommunicationType == "Polling")
+            {
+                mPage.Head.Insert(JSToolkit.Polling("100","'balblub'"));
+
+            }else if(tCommunicationType == "Comet")
+            {
+                mPage.Body.Insert(JSToolkit.Comet());
+            
+            }
+            
+
 
             #endregion Build Page
 
 
+
+            #region Browser Window
+
+
+            if(FPageWidth.PinIsChanged || FPageHeight.PinIsChanged)
+            {
+                double currentWidthSlice;
+                double currentHeightSlice;
+                FPageWidth.GetValue(0, out currentWidthSlice);
+                FPageHeight.GetValue(0, out currentHeightSlice);
+
+                string tBrowserWidth = "" + Math.Round(currentWidthSlice);
+                string tBrowserHeight = "" + Math.Round(currentHeightSlice);
+
+
+                if (currentWidthSlice != -1 || currentHeightSlice != -1)
+                {
+                    mPage.Head.Insert(JSToolkit.ResizeBrowser(currentWidthSlice.ToString(),currentHeightSlice.ToString()));
+                    
+                }
+            }
+
+            #endregion Browser Window
 
 
 

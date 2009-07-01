@@ -5,20 +5,20 @@ using System.Diagnostics;
 using VVVV.Webinterface.Utilities;
 using VVVV.Nodes.HttpGUI.Datenobjekte;
 
-namespace VVVV.Nodes.HTTP
+namespace VVVV.Nodes.Http
 {
     class JQueryBuilder:BaseGUIBuilder
     {
 
 
-        public JQueryBuilder(SortedList<int, BaseDatenObjekt> pDatenObjekt, string pBrowserWidth, string pBrowserHeigth, SortedList<string,string> pBodyProperties)
+        public JQueryBuilder(SortedList<int, BaseDatenObjekt> pDatenObjekt, string pBrowserWidth, string pBrowserHeigth, SortedList<string,string> pBodyProperties, string pPageName)
         {
             
             this.mGuiDatenObjekte = pDatenObjekt;
             buildBody();
             BuildBrowserFunction(pBrowserWidth, pBrowserHeigth, pBodyProperties);
             BuildHeadSpecialEnd();
-            buildHead();
+            buildHead(pPageName);
             AddStyleRule();
             AddJsFunction();
             //mPage.Body.Insert(BuildBodySpecials());
@@ -30,8 +30,7 @@ namespace VVVV.Nodes.HTTP
 
         protected override string BuildBodySpecials()
         {
-            IFrame tIFrame = new IFrame();
-            return tIFrame.Text;
+            return "";
         }
 
 

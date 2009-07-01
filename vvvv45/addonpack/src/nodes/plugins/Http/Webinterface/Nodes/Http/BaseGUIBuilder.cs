@@ -9,7 +9,7 @@ using VVVV.Nodes.HttpGUI.Datenobjekte;
 
 
 
-namespace VVVV.Nodes.HTTP
+namespace VVVV.Nodes.Http
 {
     abstract class BaseGUIBuilder
     {
@@ -591,24 +591,24 @@ namespace VVVV.Nodes.HTTP
             }
         }
 
-        
 
 
-        public void buildHead()
+
+        public void buildHead(string pPageName)
         {
 
-           
+
             mPage.Head.Insert(BuildHeadSpecials());
             //mPage.Head.Insert(BuildHeadSpecialEnd());
             //mPage.Head.Insert(new Link("reset.css", "stylesheet", "text/css", "screen").Text);
-            mPage.Head.Insert(new Link("VVVV.css", "stylesheet", "text/css", "screen").Text);
+            mPage.Head.Insert(new Link(pPageName + ".css", "stylesheet", "text/css", "screen").Text);
 
             //mPage.Head.Insert(new JavaScript("jquery_rule.js").Text);
 
             //mPage.Head.Insert(new JavaScript("jquery-1.3.1.js").Text);
             mPage.Head.Insert(new JavaScript("jquery-1.3.2.min.js").Text);
             mPage.Head.Insert(new JavaScript("jquery-ui-1.7.custom.min.js").Text);
-
+            mPage.Head.Insert(new JavaScript("jquery.timers-1.1.2.js").Text);
             mPage.Head.Insert(new Link("jquery-ui-1.7.custom.css", "stylesheet", "text/css", "screen").Text);
 
 
@@ -619,7 +619,7 @@ namespace VVVV.Nodes.HTTP
             //mPage.Head.Insert(new JavaScript("ui.slider.js").Text);
 
 
-            mPage.Head.Insert(new JavaScript("VVVV.js").Text);
+            mPage.Head.Insert(new JavaScript(pPageName + ".js").Text);
 
             JavaScript tReloadFuntion = new JavaScript("Reload", "window.location.reload() ;");
             mPage.Head.Insert(tReloadFuntion.Text);
@@ -684,15 +684,7 @@ namespace VVVV.Nodes.HTTP
 
 
         public void BuildBrowserFunction(string pWidth, string pHeight, SortedList<string,string> pBodyCss)
-        {
-
-            if (pWidth != "-1" || pHeight != "-1")
-            {
-                JavaFunction tBrowserResize = new JavaFunction("windowResize", "window.resizeTo(" + pWidth + "," + pHeight + ")");
-                mJsFile.Add("resize", tBrowserResize.Text);
-                mDocumentReady.Add("resize", "windowResize();");
-            }
-            
+        {           
 
             Rule tBody = new Rule("body");
 

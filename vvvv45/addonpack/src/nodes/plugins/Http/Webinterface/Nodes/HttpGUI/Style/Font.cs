@@ -308,10 +308,10 @@ namespace VVVV.Nodes.HttpGUI.CSS
         protected override void OnEvaluate(int SpreadMax)
         {
 
-			if (FFontSizeIn.PinIsChanged || FColorInput.PinIsChanged || FFontFamiliyIn.PinIsChanged || FFontStyleIn .PinIsChanged || FFontWeigthIn.PinIsChanged || FTextDecortationIn.PinIsChanged || FWordSpacingIn.PinIsChanged ||FLetterSpacingIn.PinIsChanged ||mChangedInputIn)
+			if (FFontSizeIn.PinIsChanged || FColorInput.PinIsChanged || FFontFamiliyIn.PinIsChanged || FFontStyleIn .PinIsChanged || FFontWeigthIn.PinIsChanged || FTextDecortationIn.PinIsChanged || FWordSpacingIn.PinIsChanged ||FLetterSpacingIn.PinIsChanged ||mChangedInput)
             {
 				// set slices count
-                mChangedInputOut = true;
+                mChangedInput = true;
                 mCssPropertiesOwn.Clear();	
 									
                 for (int i = 0; i < SpreadMax; i++)
