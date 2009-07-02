@@ -30,6 +30,7 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
@@ -282,13 +283,14 @@ namespace VVVV.Nodes.HttpGUI.CSS
         protected override void OnEvaluate(int SpreadMax)
         {
 
+            Debug.WriteLine("Enter OnEvaluate Background");
 
 			if (FColorInput.PinIsChanged)
             {
 				// set slices count
 				RGBAColor currentColorSlice;
                 mCssPropertiesOwn.Clear();
-                mChangedInput = true;
+
 	
                 for (int i = 0; i < SpreadMax; i++)
                 {

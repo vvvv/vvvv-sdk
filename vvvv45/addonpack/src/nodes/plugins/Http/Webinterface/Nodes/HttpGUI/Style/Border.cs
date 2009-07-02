@@ -30,6 +30,7 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
@@ -284,14 +285,15 @@ namespace VVVV.Nodes.HttpGUI.CSS
         protected override void OnEvaluate(int SpreadMax)
         {
 
+            Debug.WriteLine("Enter OnEvaluate Border");
+
+
 			if (FBorderWidthIn.PinIsChanged || FColorInput.PinIsChanged || FBorderStyleIn.PinIsChanged)
             {
 				// set slices count
-                mChangedInput = true;
                 mCssPropertiesOwn.Clear();	
-
-
-                		
+                
+	
                 for (int i = 0; i < SpreadMax; i++)
                 {
 
@@ -309,31 +311,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
                     tCssProperty.Add("border-color", "rgb(" + Math.Round(currentColorSlice.R * 100) + "%," + Math.Round(currentColorSlice.G * 100) + "%," + Math.Round(currentColorSlice.B * 100) + "%)");
                     tCssProperty.Add("border-style", currentBorderStyle);
 
-
-
-                    //check incoming Properties
-                    SortedList<string,string> tCssPropertiesIn = new SortedList<string,string>();
-                    mCssPropertiesIn.TryGetValue(i,out tCssPropertiesIn);
-
-                    if (tCssPropertiesIn != null)
-                    {
-
-                        foreach (KeyValuePair<string, string> pKey in tCssPropertiesIn)
-                        {
-                            if (tCssProperty.ContainsKey(pKey.Key))
-                            {
-                                tCssProperty.Remove(pKey.Key);
-                                tCssProperty.Add(pKey.Key, pKey.Value);
-                            }
-                            else
-                            {
-                                tCssProperty.Add(pKey.Key, pKey.Value);
-                            }
-                        }
-                    }
-
                     mCssPropertiesOwn.Add(i, tCssProperty);
-
                 }
             }
         }

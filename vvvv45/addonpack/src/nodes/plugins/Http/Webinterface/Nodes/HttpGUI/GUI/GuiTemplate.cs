@@ -9,8 +9,8 @@ namespace VVVV.Nodes.HttpGUI
     {
 
         private bool FDisposed = false;
-
-
+        private IValueOut FResponse;
+        
 
 
         #region constructor/destructor
@@ -160,8 +160,9 @@ namespace VVVV.Nodes.HttpGUI
 
         protected override void OnSetPluginHost()
         {
-            
-            //throw new Exception("The method or operation is not implemented.");
+            // create required pins
+            FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
+            FResponse.SetSubType(0, 1, 1, 0, false, false, true);
         }
 
         #endregion pin creation
@@ -171,7 +172,7 @@ namespace VVVV.Nodes.HttpGUI
 
         protected override void OnConfigurate(VVVV.PluginInterfaces.V1.IPluginConfig Input)
         {
-            throw new Exception("The method or operation is not implemented.");
+            //throw new Exception("The method or operation is not implemented.");
         }
 
         protected override void OnEvaluate(int SpreadMax)

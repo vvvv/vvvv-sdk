@@ -31,13 +31,10 @@ namespace VVVV.Nodes.HttpGUI.CSS
         public INodeIn FCssPropertiesIn;
         public IHttpGUIStyleIO FUpstreamStyleIn;
 
-        public bool mChangedInput = true;
-
         // Daten Liste und Objecte
         public SortedList<int,SortedList<string,string>> mCssPropertiesOwn  = new SortedList<int,SortedList<string,string>>();
         public SortedList<int, SortedList<string, string>> mCssPropertiesIn = new SortedList<int, SortedList<string, string>>();
-
-
+        public SortedList<int, SortedList<string, string>> mCssList = new SortedList<int, SortedList<string, string>>();
 
 
 
@@ -104,20 +101,27 @@ namespace VVVV.Nodes.HttpGUI.CSS
         #region NodeIO
 
 
-        public void GetCssProperties(int Index, out SortedList<string, string> GuiDaten)
+        public void GetCssProperties(int Index, int SpreadMax, out SortedList<string, string> CssList)
         {
-            SortedList<string, string> tCssProperty = new SortedList<string, string>();
-            mCssPropertiesOwn.TryGetValue(Index, out tCssProperty);
-            GuiDaten = tCssProperty;
-            mChangedInput = false;
-        }
+                string NodePath;
+                FHost.GetNodePath(false, out NodePath);
+                Debug.WriteLine(String.Format("NOde {0}", NodePath));
+                Debug.WriteLine(String.Format("Index: {0} / mCssPropertie.Count: {1}", Index, mCssPropertiesOwn.Count));
 
-        public void GetInputChanged(out bool ChangedInput)
-        {
-            ChangedInput = mChangedInput;
-        }
+                if (Index < mCssPropertiesOwn.Count)
+                {
+                    SortedList<string, string> tCssList;
+                    mCssPropertiesOwn.TryGetValue(mCssPropertiesOwn.Count - (SpreadMax % Index), out tCssList);
+                    CssList = tCssList;
+                }
+                else
+                {
+                    SortedList<string, string> tCssList;
+                    mCssPropertiesOwn.TryGetValue(Index, out tCssList);
+                    CssList = tCssList;
+                }
 
-         
+        }
 
 
         public void ConnectPin(IPluginIO Pin)
@@ -127,7 +131,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
                 INodeIOBase usI;
                 FCssPropertiesIn.GetUpstreamInterface(out usI);
                 FUpstreamStyleIn = usI as IHttpGUIStyleIO;
-                mChangedInput = true;
+                
             }
         }
 
@@ -142,6 +146,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
         }
 
         #endregion NodeIO
+
 
 
 
@@ -169,63 +174,59 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
         public void Evaluate(int SpreadMax)
         {
-            
+
+            mCssList.Capacity = SpreadMax;
+
+            this.OnEvaluate(SpreadMax);
+
             FCssPropertieOut.SliceCount = SpreadMax;
-            
+
             int usS;
 
             if (FUpstreamStyleIn != null)
             {
+                Debug.WriteLine("Enter Upstream");
+                int tOwnCssLength = mCssPropertiesOwn.Count;
 
-                bool tChangedValue;
-                FUpstreamStyleIn.GetInputChanged(out tChangedValue);
-
-                if (tChangedValue)
+                for (int i = 0; i < SpreadMax; i++)
                 {
-                    mChangedInput = true;
-                    mCssPropertiesIn.Clear();
-                    int tNillCounter = 0;
+                    //get upstream slice index
 
-                    for (int i = 0; i < SpreadMax; i++)
+                    FCssPropertiesIn.GetUpsreamSlice(i, out usS);
+
+                    SortedList<string, string> tStylePropertyIn = new SortedList<string, string>();
+                    FUpstreamStyleIn.GetCssProperties(usS,SpreadMax, out tStylePropertyIn);
+
+
+                    SortedList<string, string> tCssStyleSliceOwn = new SortedList<string, string>();
+                    mCssPropertiesOwn.TryGetValue(i, out tCssStyleSliceOwn);
+
+
+                    if (tCssStyleSliceOwn != null)
                     {
-                        //get upstream slice index
-
-                        FCssPropertiesIn.GetUpsreamSlice(i, out usS);
-
-                        SortedList<string, string> tStylePropertie = new SortedList<string, string>();
-                        FUpstreamStyleIn.GetCssProperties(usS, out tStylePropertie);
-
-                        if (tStylePropertie != null)
+                        foreach (KeyValuePair<string, string> pKey in tStylePropertyIn)
                         {
-                            mCssPropertiesIn.Add(i, tStylePropertie);
-                        }
-                        else
-                        {
-                            SortedList<string, string> tDummyCssProperty;
-                            mCssPropertiesIn.TryGetValue(tNillCounter, out tDummyCssProperty);
-                            mCssPropertiesIn.Add(i, tDummyCssProperty);
-                            if (tNillCounter < mCssPropertiesIn.Count)
+                            if (tCssStyleSliceOwn.ContainsKey(pKey.Key) == false)
                             {
-                                tNillCounter++;
-                            }
-                            else
-                            {
-                                tNillCounter = 0;
+                                tCssStyleSliceOwn.Add(pKey.Key, pKey.Value);
                             }
                         }
+
+                        mCssPropertiesOwn.Remove(i);
+                        mCssPropertiesOwn.Add(i, tCssStyleSliceOwn);
                     }
+                    else
+                    {
+
+                        ////???????????
+                    }
+
                 }
             }
-
-            this.OnEvaluate(SpreadMax);
-            
         }
+
         #endregion Evaluate
 
 
-
-
-
-     
     }
 }

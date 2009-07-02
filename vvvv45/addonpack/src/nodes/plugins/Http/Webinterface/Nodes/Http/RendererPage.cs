@@ -421,14 +421,14 @@ namespace VVVV.Nodes.Http
 
                     FHttpGuiIn.GetUpsreamSlice(i, out usS);
 
-                    BaseDatenObjekt tGuiDaten;
+                    GuiDataObject tGuiDaten;
                     FUpstreamInterface.GetDatenObjekt(usS, out tGuiDaten);
 
-                    if (tGuiDaten != null)
-                    {
-                        ////Debug.WriteLine("Objekt Type in Group: " + tGuiDaten.Type);
-                        mGuiDatenListe.Add(i, tGuiDaten);
-                    }
+                    //if (tGuiDaten != null)
+                    //{
+                    //    ////Debug.WriteLine("Objekt Type in Group: " + tGuiDaten.Type);
+                    //    mGuiDatenListe.Add(i, tGuiDaten);
+                    //}
                 }
             }
 
@@ -515,7 +515,7 @@ namespace VVVV.Nodes.Http
 
                 FCssPropertiesIn.GetUpsreamSlice(0, out uSSSytle);
                 SortedList<string, string> tStylePropertie = new SortedList<string, string>();
-                FUpstreamStyleIn.GetCssProperties(0, out tStylePropertie);
+                FUpstreamStyleIn.GetCssProperties(0,SpreadMax, out tStylePropertie);
 
                 if (tStylePropertie != null)
                 {

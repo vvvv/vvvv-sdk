@@ -269,7 +269,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
 			if (FPaddingXIn.PinIsChanged || FPaddingYIn.PinIsChanged )
             {
 
-                mChangedInput = true;
+                
                 mCssPropertiesOwn.Clear();	
 
                 for (int i = 0; i < SpreadMax; i++)
@@ -285,29 +285,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
 					// add css webattributes
                     tCssProperty.Add("padding-top", (((double)Math.Round(HTMLToolkit.MapScale(currentPaddingYSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
                     tCssProperty.Add("padding-left", (((double)Math.Round(HTMLToolkit.MapScale(currentPaddingXSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
-
-
-                    SortedList<string, string> tCssPropertiesIn = new SortedList<string, string>();
-                    mCssPropertiesIn.TryGetValue(i, out tCssPropertiesIn);
-
-                    if (tCssPropertiesIn != null)
-                    {
-
-                        foreach (KeyValuePair<string, string> pKey in tCssPropertiesIn)
-                        {
-                            if (tCssProperty.ContainsKey(pKey.Key))
-                            {
-                                tCssProperty.Remove(pKey.Key);
-                                tCssProperty.Add(pKey.Key, pKey.Value);
-                            }
-                            else
-                            {
-                                tCssProperty.Add(pKey.Key, pKey.Value);
-                            }
-                        }
-                    }
-
-
+                    
                     mCssPropertiesOwn.Add(i, tCssProperty);
                 }
             }

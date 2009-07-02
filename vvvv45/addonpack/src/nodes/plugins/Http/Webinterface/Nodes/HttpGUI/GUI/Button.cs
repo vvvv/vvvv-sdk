@@ -331,9 +331,7 @@ namespace VVVV.Nodes.HttpGUI
                     tButtonDatenObjekt.Class =  tSliceId.Replace("/", "");
                     tButtonDatenObjekt.SliceNumber = i;
 
-                    
-                    
-                    
+
                     mFunktionDaten.Clear();
                   
                     //State Pin
@@ -361,32 +359,6 @@ namespace VVVV.Nodes.HttpGUI
                     }
 
 
-                    //Get Button Mode
-
-
-                    //if (FFunktionOut.IsConnected == true)
-                    //{
-                    //     //Funktions Out
-                         
-                    //     tButtonDatenObjekt.CreateJsFuntkion = false;
-                    //     tButtonDatenObjekt.JsFunktion.Name = tSliceId.Replace("/", "");
-                    //     tButtonDatenObjekt.JsFunktion.Parameter = tSliceId;
-                    //     if (tButtonselection == "Bang")
-                    //     {
-                    //         tButtonDatenObjekt.Mode = "Bang";
-                    //         tButtonDatenObjekt.JsFunktion.Content = JSToolkit.ButtonBang();
-                    //     }
-                    //     else
-                    //     {
-                    //         tButtonDatenObjekt.Mode = "Toggle";
-                    //         tButtonDatenObjekt.JsFunktion.Content = JSToolkit.ButtonToggle();
-                    //     }
-
-                    //     FFunktionOut.SliceCount = tSliceCount[ArrayLength];
-                    //     mFunktionDaten.Add(tButtonDatenObjekt.JsFunktion);
-                    //}
-                    //else
-                    //{
                         tButtonDatenObjekt.CreateJsFuntkion = true;
                         if (mButtonMode == "Bang")
                         {
@@ -398,7 +370,7 @@ namespace VVVV.Nodes.HttpGUI
                             tButtonDatenObjekt.Mode = "Toggle";
                             tButtonDatenObjekt.JsFunktion.Content = JSToolkit.ButtonToggle();
                         }
-                    //}
+ 
 
                     //FFunktionOut.SliceCount = tSliceCount[ArrayLength];
                     mFunktionDaten.Add(tButtonDatenObjekt.JsFunktion);

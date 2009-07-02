@@ -308,10 +308,9 @@ namespace VVVV.Nodes.HttpGUI.CSS
         protected override void OnEvaluate(int SpreadMax)
         {
 
-			if (FFontSizeIn.PinIsChanged || FColorInput.PinIsChanged || FFontFamiliyIn.PinIsChanged || FFontStyleIn .PinIsChanged || FFontWeigthIn.PinIsChanged || FTextDecortationIn.PinIsChanged || FWordSpacingIn.PinIsChanged ||FLetterSpacingIn.PinIsChanged ||mChangedInput)
+			if (FFontSizeIn.PinIsChanged || FColorInput.PinIsChanged || FFontFamiliyIn.PinIsChanged || FFontStyleIn .PinIsChanged || FFontWeigthIn.PinIsChanged || FTextDecortationIn.PinIsChanged || FWordSpacingIn.PinIsChanged ||FLetterSpacingIn.PinIsChanged)
             {
 				// set slices count
-                mChangedInput = true;
                 mCssPropertiesOwn.Clear();	
 									
                 for (int i = 0; i < SpreadMax; i++)
@@ -344,7 +343,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
 
                     tCssProperty.Add("font-size",(double)Math.Round(currentFontSizeSlice * 100,1)+ "%");
-                    tCssProperty.Add("color", "rgb(" + Math.Round(currentColorSlice.R * 100) + "%," + Math.Round(currentColorSlice.G * 100) + "%," + Math.Round(currentColorSlice.B * 100) + "%)");
+                    tCssProperty.Add("font-color", "rgb(" + Math.Round(currentColorSlice.R * 100) + "%," + Math.Round(currentColorSlice.G * 100) + "%," + Math.Round(currentColorSlice.B * 100) + "%)");
                     tCssProperty.Add("font-family", currentFontFamily);
                     tCssProperty.Add("font-weight", currentFontWeight.ToString());
                     tCssProperty.Add("font-style", currentFontStyle);
@@ -352,28 +351,6 @@ namespace VVVV.Nodes.HttpGUI.CSS
                     tCssProperty.Add("word-spacing", Convert.ToString(currentWordSpacing ));
                     tCssProperty.Add("letter-spacing", Convert.ToString(currentLetterSpacing));
                     tCssProperty.Add("font-stretch", currentFontStretch);
-
-
-                    //check incoming Properties
-                    SortedList<string, string> tCssPropertiesIn = new SortedList<string, string>();
-                    mCssPropertiesIn.TryGetValue(i, out tCssPropertiesIn);
-
-                    if (tCssPropertiesIn != null)
-                    {
-
-                        foreach (KeyValuePair<string, string> pKey in tCssPropertiesIn)
-                        {
-                            if (tCssProperty.ContainsKey(pKey.Key))
-                            {
-                                tCssProperty.Remove(pKey.Key);
-                                tCssProperty.Add(pKey.Key, pKey.Value);
-                            }
-                            else
-                            {
-                                tCssProperty.Add(pKey.Key, pKey.Value);
-                            }
-                        }
-                    }
 
                     mCssPropertiesOwn.Add(i, tCssProperty);           
 			        

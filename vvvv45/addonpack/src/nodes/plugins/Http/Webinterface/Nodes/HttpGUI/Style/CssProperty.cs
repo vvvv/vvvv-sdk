@@ -307,84 +307,69 @@ namespace VVVV.Nodes.HttpGUI.CSS
         protected override void OnEvaluate(int SpreadMax)
         {
 
-            foreach (IStringIn pNodeIn in FInputNameList)
-            {
-                if (pNodeIn.PinIsChanged)
-                {
-                    mChangedInput = true;
-                }
-            }
 
-            foreach (IStringIn pNodeIn in FInputValueList)
-            {
-                if (pNodeIn.PinIsChanged)
-                {
-                    mChangedInput = true;
-                }
-            }
 
                 // set slices count
             
 
-            if (mChangedInput)
-            {
-                mCssPropertiesOwn.Clear();
+          
+            mCssPropertiesOwn.Clear();
 
-                for (int i = 0; i < SpreadMax; i++)
+            for (int i = 0; i < SpreadMax; i++)
+            {
+
+                SortedList<string, string> tCssProperty = new SortedList<string, string>();
+
+                for (int j = 0; j < FInputNameList.Count; j++)
+                {
+                    IStringIn currentInputName = FInputNameList[j];
+                    IStringIn currentInputValue = FInputValueList[j];
+
+
+                    string currentNameSlice;
+                    string currentValueSlice;
+
+                    currentInputName.GetString(i, out currentNameSlice);
+                    currentInputValue.GetString(i, out currentValueSlice);
+
+                    if (currentNameSlice == null || currentValueSlice == null)
+                    {
+
+                    }
+                    else
+                    {
+                        if (tCssProperty.ContainsKey(currentNameSlice) == false)
+                        {
+                            tCssProperty.Add(currentNameSlice, currentValueSlice);
+                        }
+
+                    }
+
+                }
+
+                SortedList<string, string> tCssPropertiesIn = new SortedList<string, string>();
+                mCssPropertiesIn.TryGetValue(i, out tCssPropertiesIn);
+
+                if (tCssPropertiesIn != null)
                 {
 
-                    SortedList<string, string> tCssProperty = new SortedList<string, string>();
-
-                    for (int j = 0; j < FInputNameList.Count; j++)
+                    foreach (KeyValuePair<string, string> pKey in tCssPropertiesIn)
                     {
-                        IStringIn currentInputName = FInputNameList[j];
-                        IStringIn currentInputValue = FInputValueList[j];
-
-
-                        string currentNameSlice;
-                        string currentValueSlice;
-
-                        currentInputName.GetString(i, out currentNameSlice);
-                        currentInputValue.GetString(i, out currentValueSlice);
-
-                        if (currentNameSlice == null || currentValueSlice == null)
+                        if (tCssProperty.ContainsKey(pKey.Key))
                         {
-
+                            tCssProperty.Remove(pKey.Key);
+                            tCssProperty.Add(pKey.Key, pKey.Value);
                         }
                         else
                         {
-                            if (tCssProperty.ContainsKey(currentNameSlice) == false)
-                            {
-                                tCssProperty.Add(currentNameSlice, currentValueSlice);
-                            }
-
-                        }
-
-                    }
-
-                    SortedList<string, string> tCssPropertiesIn = new SortedList<string, string>();
-                    mCssPropertiesIn.TryGetValue(i, out tCssPropertiesIn);
-
-                    if (tCssPropertiesIn != null)
-                    {
-
-                        foreach (KeyValuePair<string, string> pKey in tCssPropertiesIn)
-                        {
-                            if (tCssProperty.ContainsKey(pKey.Key))
-                            {
-                                tCssProperty.Remove(pKey.Key);
-                                tCssProperty.Add(pKey.Key, pKey.Value);
-                            }
-                            else
-                            {
-                                tCssProperty.Add(pKey.Key, pKey.Value);
-                            }
+                            tCssProperty.Add(pKey.Key, pKey.Value);
                         }
                     }
-
-                    mCssPropertiesOwn.Add(i, tCssProperty);
                 }
+
+                mCssPropertiesOwn.Add(i, tCssProperty);
             }
+            
 
         }
 

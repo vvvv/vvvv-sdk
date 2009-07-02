@@ -29,25 +29,20 @@ namespace VVVV.Nodes.HttpGUI
         public INodeOut FHttpGuiOut;
 
         public INodeIn FHttpGuiIn;
-        public IHttpGUIIO FUpstreamInterface;
+        public IHttpGUIIO FUpstreamHttpGuiIn;
 
         public INodeIn FHttpStyleIn;
         public IHttpGUIStyleIO FUpstreamStyle;
 
-
         public ITransformIn FTransformIn;
 
 
-
         //Required Members
-        public SortedList<int, SortedList<string, string>> mValues;
-        public SortedList<int, SortedList<string, string>> mStyles = new SortedList<int, SortedList<string, string>>();
+
 
         public bool mChangedStyle = false;
 
-        public SortedList<string, string> mCssProperties;
-
-
+   
 
         #endregion field Definition
 
@@ -114,9 +109,9 @@ namespace VVVV.Nodes.HttpGUI
 
         #region IMyNodeIO
 
-        public void GetDatenObjekt(int Index, out BaseDatenObjekt GuiDaten)
+        public void GetDatenObjekt(int Index, out GuiDataObject GuiDaten)
         {
-            GuiDaten = new DatenGuiButton("", "", 3);
+            GuiDaten = new GuiDataObject();
         }
 
 
@@ -129,7 +124,7 @@ namespace VVVV.Nodes.HttpGUI
                 {
                     INodeIOBase usI;
                     FHttpGuiIn.GetUpstreamInterface(out usI);
-                    FUpstreamInterface = usI as IHttpGUIIO;
+                    FUpstreamHttpGuiIn = usI as IHttpGUIIO;
                 }
 
             }
@@ -149,7 +144,7 @@ namespace VVVV.Nodes.HttpGUI
             //reset the cached reference to the upstream interface when the NodeInput is being disconnected
             if (Pin == FHttpGuiIn)
             {
-                FUpstreamInterface = null;
+                FUpstreamHttpGuiIn = null;
             }
             else if (Pin == FHttpStyleIn)
             {
@@ -181,50 +176,48 @@ namespace VVVV.Nodes.HttpGUI
 
 
         #region Evaluate
+
         public void Evaluate(int SpreadMax)
         {
-            int usS;
-         
+            
+            
+            //Get
 
 
+            int usSGuiIn;
+            if (FUpstreamHttpGuiIn != null)
+            {
+                
+                for (int i = 0; i < SpreadMax; i++)
+                {
+                    //get upstream slice index
+
+                    FHttpGuiIn.GetUpsreamSlice(i, out usSGuiIn);
+
+                    GuiDataObject tGuiDaten;
+                    FUpstreamHttpGuiIn.GetDatenObjekt(usSGuiIn, out tGuiDaten);
+                }
+            }
+
+
+
+            //Get Style Node Properties
+            int usSStyle;
             if (FUpstreamStyle != null)
             {
-
-                bool tChangedValue;
-                FUpstreamStyle.GetInputChanged(out tChangedValue);
-
-                if (tChangedValue)
+                SortedList<int, SortedList<string, string>> tStyles = new SortedList<int, SortedList<string, string>>();
+               
+                for (int i = 0; i < SpreadMax; i++)
                 {
-                    mStyles.Clear();
-                    int tNillCounter = 0;
+                    //get upstream slice index
 
-                    for (int i = 0; i < SpreadMax; i++)
-                    {
-                        //get upstream slice index
+                    FHttpStyleIn.GetUpsreamSlice(i, out usSStyle);
 
-                        FHttpStyleIn.GetUpsreamSlice(i, out usS);
+                    SortedList<string, string> tStylePropertie = new SortedList<string, string>();
+                    FUpstreamStyle.GetCssProperties(usSStyle,SpreadMax, out tStylePropertie);
 
-                        SortedList<string, string> tStylePropertie = new SortedList<string, string>();
-                        FUpstreamStyle.GetCssProperties(usS, out tStylePropertie);
-                        if (tStylePropertie != null)
-                        {
-                            mStyles.Add(i, tStylePropertie);
-                        }
-                        else
-                        {
-                            SortedList<string, string> tDummyCssProperty;
-                            mStyles.TryGetValue(tNillCounter, out tDummyCssProperty);
-                            mStyles.Add(i, tDummyCssProperty);
-                            if (tNillCounter < mStyles.Count)
-                            {
-                                tNillCounter++;
-                            }
-                            else
-                            {
-                                tNillCounter = 0;
-                            }
-                        }
-                    }
+                    tStyles.Add(i, tStylePropertie);
+                    
                 }
             }
 
@@ -236,7 +229,7 @@ namespace VVVV.Nodes.HttpGUI
                 {
                     Matrix4x4 tMatrix;
 
-                    FTransformIn.GetMatrix(0, out tMatrix);
+                    FTransformIn.GetMatrix(i, out tMatrix);
 
                     SortedList<string, string> tTransformToCss = new SortedList<string, string>();
                     tTransformToCss.Add("position", "absolute");
