@@ -90,7 +90,7 @@ namespace VVVV.Nodes.Http
         private SortedList<int, string> mGuiTypes;
         private SortedList<int, SortedList<string, string>> mHtmlAttributs;
         private SortedList<int, SortedList<string, string>> mCssStyles;
-        private SortedList<string, string> mCssBodyPropertiesIn = new SortedList<string, string>();
+        private SortedList<int,SortedList<string, string>> mCssPropertiesSpread = new SortedList<int,SortedList<string,string>>();
         private string[] mHtmlText;
         private SortedList<int, BaseDatenObjekt> mGuiDatenListe;
 
@@ -274,7 +274,7 @@ namespace VVVV.Nodes.Http
             FHost.CreateStringInput("Url", TSliceMode.Single, TPinVisibility.True, out FUrl);
             FUrl.SetSubType("index.html", false);
 
-            FHost.CreateNodeInput("CSS", TSliceMode.Single, TPinVisibility.True, out FCssPropertiesIn);
+            FHost.CreateNodeInput("CSS", TSliceMode.Dynamic, TPinVisibility.True, out FCssPropertiesIn);
             FCssPropertiesIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
 
             FHost.CreateValueInput("Browser Width", 1, null, TSliceMode.Single, TPinVisibility.True, out FPageWidth);
@@ -304,12 +304,12 @@ namespace VVVV.Nodes.Http
 
 
             //create outputs
-            FHost.CreateNodeOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FHttpPageOut);
+            FHost.CreateNodeOutput("Output GuiElements", TSliceMode.Dynamic, TPinVisibility.True, out FHttpPageOut);
             FHttpPageOut.SetSubType(new Guid[1] { HttpPageIO.GUID }, HttpPageIO.FriendlyName);
             FHttpPageOut.SetInterface(this);
 
 
-            FHost.CreateStringOutput("Output", TSliceMode.Dynamic, TPinVisibility.Hidden, out FWholeHTML);
+            FHost.CreateStringOutput("Output Page", TSliceMode.Dynamic, TPinVisibility.Hidden, out FWholeHTML);
             FWholeHTML.SetSubType("", false);
 
 
@@ -401,7 +401,6 @@ namespace VVVV.Nodes.Http
 
             #region Upstream
 
-
             mGuiTypes = new SortedList<int, string>();
             mHtmlAttributs = new SortedList<int, SortedList<string, string>>();
             mCssStyles = new SortedList<int, SortedList<string, string>>();
@@ -421,7 +420,7 @@ namespace VVVV.Nodes.Http
 
                     FHttpGuiIn.GetUpsreamSlice(i, out usS);
 
-                    GuiDataObject tGuiDaten;
+                    List<GuiDataObject> tGuiDaten;
                     FUpstreamInterface.GetDatenObjekt(usS, out tGuiDaten);
 
                     //if (tGuiDaten != null)
@@ -447,6 +446,7 @@ namespace VVVV.Nodes.Http
 
 
 
+
             #region Reload Page
 
             if (FReload.PinIsChanged)
@@ -459,6 +459,7 @@ namespace VVVV.Nodes.Http
                 }
             }
             #endregion Reload Page
+
 
 
 
@@ -504,6 +505,7 @@ namespace VVVV.Nodes.Http
 
 
 
+
             #region Body CSS Properties
 
 
@@ -511,27 +513,23 @@ namespace VVVV.Nodes.Http
             int uSSSytle;
             if (FUpstreamStyleIn != null)
             {
-                mCssBodyPropertiesIn.Clear();
+                mCssPropertiesSpread.Clear();
 
-                FCssPropertiesIn.GetUpsreamSlice(0, out uSSSytle);
-                SortedList<string, string> tStylePropertie = new SortedList<string, string>();
-                FUpstreamStyleIn.GetCssProperties(0,SpreadMax, out tStylePropertie);
+                for (int i = 0; i < FCssPropertiesIn.SliceCount; i++)
+                {
+                    FCssPropertiesIn.GetUpsreamSlice(i, out uSSSytle);
+                    SortedList<string, string> tStylePropertie = new SortedList<string, string>();
+                    FUpstreamStyleIn.GetCssProperties(uSSSytle, out tStylePropertie);
 
-                if (tStylePropertie != null)
-                {
-                    mCssBodyPropertiesIn = tStylePropertie;
-                }
-                else
-                {
-                    tStylePropertie.Add("background-color", "#E0E0E0");
-                    mCssBodyPropertiesIn = tStylePropertie;
+                    mCssPropertiesSpread.Add(i, tStylePropertie);
                 }
             }
             else
             {
+                mCssPropertiesSpread.Clear();
                 SortedList<string, string> tStylePropertie = new SortedList<string, string>();
                 tStylePropertie.Add("background-color", "#E0E0E0");
-                mCssBodyPropertiesIn = tStylePropertie;
+                mCssPropertiesSpread.Add(0,tStylePropertie);
             }
 
             #endregion Body CSS Properties
@@ -540,15 +538,16 @@ namespace VVVV.Nodes.Http
 
             #region Build Page
 
-            Page tPage;
+            Page tPage = new Page(true);
 
             PageBuilder tPageBuilder = new PageBuilder(mGuiDatenListe);
+
+
             //New Builer only ObjectList Input input
-            
-            JQueryBuilder tJQuery = new JQueryBuilder(mGuiDatenListe, "-1", "-1", mCssBodyPropertiesIn, mPageName);
-            mJsFile = tJQuery.JsFile;
-            mCssFile = tJQuery.CssMainFile;
-            tPage = tJQuery.Page;
+            //JQueryBuilder tJQuery = new JQueryBuilder(mGuiDatenListe, "-1", "-1", mCssPropertiesSpread, mPageName);
+            //mJsFile = tJQuery.JsFile;
+            //mCssFile = tJQuery.CssMainFile;
+            //tPage = tJQuery.Page;
 
             tPage.Body.Insert(mPageBody);
             tPage.Head.Insert(mPageHead);
@@ -567,7 +566,7 @@ namespace VVVV.Nodes.Http
             FCommunication.GetString(0, out tCommunicationType);
             if (tCommunicationType == "Polling")
             {
-                mPage.Head.Insert(JSToolkit.Polling("100","'balblub'"));
+                mPage.Head.Insert(JSToolkit.Polling("100","'HIer sollte ein XML stehen :-)'"));
 
             }else if(tCommunicationType == "Comet")
             {

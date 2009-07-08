@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
-
+using System.Threading;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VMath;
 
@@ -32,11 +32,12 @@ namespace VVVV.Nodes.HttpGUI.CSS
         public IHttpGUIStyleIO FUpstreamStyleIn;
 
         // Daten Liste und Objecte
-        public SortedList<int,SortedList<string,string>> mCssPropertiesOwn  = new SortedList<int,SortedList<string,string>>();
-        public SortedList<int, SortedList<string, string>> mCssPropertiesIn = new SortedList<int, SortedList<string, string>>();
-        public SortedList<int, SortedList<string, string>> mCssList = new SortedList<int, SortedList<string, string>>();
+        public Dictionary<int,SortedList<string,string>> mCssPropertiesOwn  = new Dictionary<int,SortedList<string,string>>();
+        public Dictionary<int, SortedList<string, string>> mCssPropertiesIn = new Dictionary<int, SortedList<string, string>>();
+        public Dictionary<int, SortedList<string, string>> mCssPropertiesCombined = new Dictionary<int, SortedList<string, string>>();
 
-
+        public string mPluginName = "";
+        
 
         #endregion field Definition
 
@@ -48,15 +49,13 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
         #region abstract Methods
 
-
+        
         protected abstract void OnConfigurate(IPluginConfig Input);
         protected abstract void OnEvaluate(int SpreadMax);
         protected abstract void OnPluginHostSet();
-        //abstract public void GetCssProperties(int Index, out SortedList<string,string> GuiDaten);
-        //abstract public void GetInputChanged(out bool ChangedInput);
+
 
         #endregion abstract Methods
-
 
 
 
@@ -72,7 +71,6 @@ namespace VVVV.Nodes.HttpGUI.CSS
             //assign host
             FHost = Host;
 
-           
             //Create Inputs
             FHost.CreateNodeInput("Input", TSliceMode.Dynamic, TPinVisibility.True, out FCssPropertiesIn);
             FCssPropertiesIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
@@ -97,30 +95,38 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
 
 
-
         #region NodeIO
 
 
-        public void GetCssProperties(int Index, int SpreadMax, out SortedList<string, string> CssList)
+        public void GetCssProperties(int Index, out SortedList<string, string> CssList)
         {
-                string NodePath;
-                FHost.GetNodePath(false, out NodePath);
-                Debug.WriteLine(String.Format("NOde {0}", NodePath));
-                Debug.WriteLine(String.Format("Index: {0} / mCssPropertie.Count: {1}", Index, mCssPropertiesOwn.Count));
-
-                if (Index < mCssPropertiesOwn.Count)
+                //string NodePath;
+                //FHost.GetNodePath(false, out NodePath);
+                //Debug.WriteLine(String.Format("NOde {0}", NodePath));
+                //Debug.WriteLine(String.Format("Index: {0} / mCssPropertie.Count: {1}", Index, mCssPropertiesOwn.Count));
+            if (FCssPropertiesIn.IsConnected)
+            {
+                if (Index >= mCssPropertiesCombined.Count)
                 {
-                    SortedList<string, string> tCssList;
-                    mCssPropertiesOwn.TryGetValue(mCssPropertiesOwn.Count - (SpreadMax % Index), out tCssList);
-                    CssList = tCssList;
+                    mCssPropertiesCombined.TryGetValue(Index % mCssPropertiesCombined.Count, out CssList);
                 }
                 else
                 {
-                    SortedList<string, string> tCssList;
-                    mCssPropertiesOwn.TryGetValue(Index, out tCssList);
-                    CssList = tCssList;
+                    mCssPropertiesCombined.TryGetValue(Index, out CssList);
                 }
-
+            }
+            else
+            {
+                if (Index >= mCssPropertiesOwn.Count)
+                {
+                    mCssPropertiesOwn.TryGetValue(Index % mCssPropertiesOwn.Count, out CssList);
+                }
+                else
+                {
+                    mCssPropertiesOwn.TryGetValue(Index, out CssList);
+                }
+            }
+                
         }
 
 
@@ -151,10 +157,6 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
 
 
-
-
-
-
         #region Configurate
         public void Configurate(IPluginConfig Input)
         {
@@ -166,67 +168,123 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
 
 
-
-
-
-
         #region Evaluate
 
         public void Evaluate(int SpreadMax)
         {
 
-            mCssList.Capacity = SpreadMax;
 
-            this.OnEvaluate(SpreadMax);
-
-            FCssPropertieOut.SliceCount = SpreadMax;
-
-            int usS;
-
-            if (FUpstreamStyleIn != null)
+            try
             {
-                Debug.WriteLine("Enter Upstream");
-                int tOwnCssLength = mCssPropertiesOwn.Count;
+                this.OnEvaluate(SpreadMax);
 
-                for (int i = 0; i < SpreadMax; i++)
+                int usS;
+
+                if (FUpstreamStyleIn != null)
                 {
-                    //get upstream slice index
+                    string NodePath;
+                    FHost.GetNodePath(false, out NodePath);
+                    mCssPropertiesCombined.Clear();
+                    Debug.WriteLine("Enter Upstream: " + NodePath);
 
-                    FCssPropertiesIn.GetUpsreamSlice(i, out usS);
+                    int SliceOffsetCounter = 0;
 
-                    SortedList<string, string> tStylePropertyIn = new SortedList<string, string>();
-                    FUpstreamStyleIn.GetCssProperties(usS,SpreadMax, out tStylePropertyIn);
-
-
-                    SortedList<string, string> tCssStyleSliceOwn = new SortedList<string, string>();
-                    mCssPropertiesOwn.TryGetValue(i, out tCssStyleSliceOwn);
-
-
-                    if (tCssStyleSliceOwn != null)
+                    for (int i = 0; i < SpreadMax; i++)
                     {
-                        foreach (KeyValuePair<string, string> pKey in tStylePropertyIn)
+                        //get upstream slice index
+
+                        FCssPropertiesIn.GetUpsreamSlice(i, out usS);
+
+
+                        SortedList<string, string> tStylePropertyIn = new SortedList<string, string>();
+                        FUpstreamStyleIn.GetCssProperties(i, out tStylePropertyIn);
+
+
+                        SortedList<string, string> tCssSliceList = new SortedList<string, string>();
+                        mCssPropertiesOwn.TryGetValue(i, out tCssSliceList);
+
+
+
+                        if (tCssSliceList == null)
                         {
-                            if (tCssStyleSliceOwn.ContainsKey(pKey.Key) == false)
+
+                            mCssPropertiesOwn.TryGetValue(SliceOffsetCounter, out tCssSliceList);
+                            SortedList<string, string> tWorkerList = new SortedList<string, string>(tCssSliceList);
+                            SliceOffsetCounter++;
+                            if (SliceOffsetCounter >= mCssPropertiesOwn.Count)
                             {
-                                tCssStyleSliceOwn.Add(pKey.Key, pKey.Value);
+                                SliceOffsetCounter = 0;
                             }
+
+                            foreach (KeyValuePair<string, string> pKey in tStylePropertyIn)
+                            {
+                                if (tWorkerList.ContainsKey(pKey.Key))
+                                {
+                                    tWorkerList.Remove(pKey.Key);
+                                    tWorkerList.Add(pKey.Key, pKey.Value);
+                                }
+                                else
+                                {
+                                    tWorkerList.Add(pKey.Key, pKey.Value);
+                                }
+                            }
+
+                            if (mCssPropertiesCombined.ContainsKey(i))
+                            {
+                                mCssPropertiesCombined.Remove(i);
+                                mCssPropertiesCombined.Add(i, new SortedList<string, string>(tWorkerList));
+                            }
+                            else
+                            {
+                                mCssPropertiesCombined.Add(i, new SortedList<string, string>(tWorkerList));
+                            }
+
                         }
+                        else if (tStylePropertyIn != null)
+                        {
 
-                        mCssPropertiesOwn.Remove(i);
-                        mCssPropertiesOwn.Add(i, tCssStyleSliceOwn);
+                            SortedList<string, string> tWorkerList = new SortedList<string, string>(tCssSliceList);
+                            foreach (KeyValuePair<string, string> pKey in tStylePropertyIn)
+                            {
+                                if (tWorkerList.ContainsKey(pKey.Key) == false)
+                                {
+                                    tWorkerList.Add(pKey.Key, pKey.Value);
+                                }
+                            }
+
+                            mCssPropertiesCombined.Remove(i);
+                            mCssPropertiesCombined.Add(i, new SortedList<string, string>(tWorkerList));
+                        }
                     }
-                    else
-                    {
-
-                        ////???????????
-                    }
-
                 }
+
+
+                FCssPropertieOut.SliceCount = SpreadMax;
+            }
+            catch (Exception ex)
+            {
+                FHost.Log(TLogType.Error, ex.Message);
             }
         }
 
         #endregion Evaluate
 
+
+
+
+        public int GetSliceCount(IPluginIn[] pInputs)
+        {
+           
+            List<int> tSliceCount = new List<int>(); 
+            for (int i = 0; i < pInputs.Length; i++)
+            {
+                tSliceCount.Add(pInputs[i].SliceCount);
+            }
+
+            tSliceCount.Sort();
+
+            return tSliceCount[tSliceCount.Count -1];
+        }
 
     }
 }

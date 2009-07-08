@@ -160,7 +160,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
         #region node name and infos
 
-       
+
         private static IPluginInfo FPluginInfo;
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
                     FPluginInfo.Bugs = "";
                     // any known usage of the node that may cause troubles?
                     FPluginInfo.Warnings = "";
-					
+
                     // leave below as is
                     System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
                     System.Diagnostics.StackFrame sf = st.GetFrame(0);
@@ -269,10 +269,12 @@ namespace VVVV.Nodes.HttpGUI.CSS
 			if (FPaddingXIn.PinIsChanged || FPaddingYIn.PinIsChanged )
             {
 
+                IPluginIn[] tInputs = { FPaddingXIn, FPaddingYIn};
+                int tSliceCount = GetSliceCount(tInputs);
                 
-                mCssPropertiesOwn.Clear();	
+                mCssPropertiesOwn.Clear();
 
-                for (int i = 0; i < SpreadMax; i++)
+                for (int i = 0; i < tSliceCount; i++)
                 {
 
                     double currentPaddingXSlice;

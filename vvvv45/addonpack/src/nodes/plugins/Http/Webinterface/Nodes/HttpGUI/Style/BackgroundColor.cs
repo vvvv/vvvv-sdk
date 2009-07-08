@@ -53,7 +53,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
     /// css node class definition. 
     /// generates css code for the backgroundcolor for a html element
     /// </summary>
-    public class BackgroundColor : BaseCssNode,IPlugin,IDisposable
+    public class BackgroundColor : BaseCssNode,IDisposable, IPlugin
     {
 
 
@@ -163,11 +163,9 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
         #region node name and infos
 
+
         private static IPluginInfo FPluginInfo;
 
-        /// <summary>
-        /// provide node infos 
-        /// </summary>
         public static IPluginInfo PluginInfo
         {
             get
@@ -178,8 +176,9 @@ namespace VVVV.Nodes.HttpGUI.CSS
                     // see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
                     FPluginInfo = new PluginInfo();
 
+                    FPluginInfo.Name = "BackgroundColor";
                     // the nodes main name: use CamelCaps and no spaces
-                    FPluginInfo.Name = "Background";
+
                     // the nodes category: try to use an existing one
                     FPluginInfo.Category = "HTTP";
                     // the nodes version: optional. leave blank if not
@@ -189,9 +188,9 @@ namespace VVVV.Nodes.HttpGUI.CSS
                     // the nodes author: your sign
                     FPluginInfo.Author = "phlegma";
                     // describe the nodes function
-                    FPluginInfo.Help = "node to add css properties to a http Gui Node";
+                    FPluginInfo.Help = "node for html page creation";
                     // specify a comma separated list of tags that describe the node
-                    FPluginInfo.Tags = "";
+                    FPluginInfo.Tags = "Css";
 
                     // give credits to thirdparty code used
                     FPluginInfo.Credits = "";
@@ -199,7 +198,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
                     FPluginInfo.Bugs = "";
                     // any known usage of the node that may cause troubles?
                     FPluginInfo.Warnings = "";
-					
+
                     // leave below as is
                     System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
                     System.Diagnostics.StackFrame sf = st.GetFrame(0);
@@ -207,11 +206,15 @@ namespace VVVV.Nodes.HttpGUI.CSS
                     FPluginInfo.Namespace = method.DeclaringType.Namespace;
                     FPluginInfo.Class = method.DeclaringType.Name;
                     // leave above as is
+
                 }
 
                 return FPluginInfo;
             }
         }
+
+
+
 
 
         #endregion node name and infos
@@ -229,35 +232,13 @@ namespace VVVV.Nodes.HttpGUI.CSS
         /// <param name="Host">vvvv instance</param>
         protected override void OnPluginHostSet()
         {
-            // assign host
-
-            // create inputs
+            //Inputs
 			FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorInput);
 			FColorInput.SetSubType(VColor.Black, false);
         }
 
         #endregion pin creation
 
-
-
-
-
-        #region NodeIO
-
-
-        //public override void GetCssProperties(int Index, out SortedList<string, string> GuiDaten)
-        //{
-        //    SortedList<string, string> tCssPropertie = new SortedList<string, string>();
-        //    mCssProperties.TryGetValue(Index, out tCssPropertie);
-        //    GuiDaten = tCssPropertie;
-        //}
-
-        //public override void GetInputChanged(out bool ChangedInput)
-        //{
-        //    ChangedInput = mChangedInput;
-        //}
-
-        #endregion NodeIO
 
 
 
@@ -282,49 +263,36 @@ namespace VVVV.Nodes.HttpGUI.CSS
         /// <param name="SpreadMax">number of Slices</param>
         protected override void OnEvaluate(int SpreadMax)
         {
-
-            Debug.WriteLine("Enter OnEvaluate Background");
-
-			if (FColorInput.PinIsChanged)
+            try
             {
-				// set slices count
-				RGBAColor currentColorSlice;
-                mCssPropertiesOwn.Clear();
-
-	
-                for (int i = 0; i < SpreadMax; i++)
+                if (FColorInput.PinIsChanged)
                 {
-                    SortedList<string, string> tCssProperty = new SortedList<string, string>();
-                    // get current values
-					FColorInput.GetColor(i, out currentColorSlice);
-	
-					// add css webattributes
-                    tCssProperty.Add("background-color", "rgb(" + Math.Round(currentColorSlice.R * 100) + "%," + Math.Round(currentColorSlice.G * 100) + "%," + Math.Round(currentColorSlice.B * 100) + "%)");
+                    // set slices count
+
+                    IPluginIn[] tInputs = { FColorInput };
+                    int tSliceCount = GetSliceCount(tInputs);
 
 
-                    SortedList<string, string> tCssPropertiesIn = new SortedList<string, string>();
-                    mCssPropertiesIn.TryGetValue(i, out tCssPropertiesIn);
+                    RGBAColor currentColorSlice;
+                    mCssPropertiesOwn.Clear();
 
-                    if (tCssPropertiesIn != null)
+                    for (int i = 0; i < tSliceCount; i++)
                     {
+                        SortedList<string, string> tCssProperty = new SortedList<string, string>();
+                        // get current values
+                        FColorInput.GetColor(i, out currentColorSlice);
 
-                        foreach (KeyValuePair<string, string> pKey in tCssPropertiesIn)
-                        {
-                            if (tCssProperty.ContainsKey(pKey.Key))
-                            {
-                                tCssProperty.Remove(pKey.Key);
-                                tCssProperty.Add(pKey.Key, pKey.Value);
-                            }
-                            else
-                            {
-                                tCssProperty.Add(pKey.Key, pKey.Value);
-                            }
-                        }
+                        // add css webattributes
+                        tCssProperty.Add("background-color", "rgb(" + Math.Round(currentColorSlice.R * 100) + "%," + Math.Round(currentColorSlice.G * 100) + "%," + Math.Round(currentColorSlice.B * 100) + "%)");
+                        mCssPropertiesOwn.Add(i, tCssProperty);
                     }
-
-                    mCssPropertiesOwn.Add(i, tCssProperty);
                 }
             }
+            catch (Exception ex)
+            {
+                FHost.Log(TLogType.Error, ex.Message);
+            }
+
         }
 
         #endregion mainloop

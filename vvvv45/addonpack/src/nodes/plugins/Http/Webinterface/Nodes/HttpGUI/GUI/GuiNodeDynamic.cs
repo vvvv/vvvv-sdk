@@ -38,11 +38,10 @@ namespace VVVV.Nodes.HttpGUI
 
 
         //Required Members
+        SortedList<int, SortedList<string, string>> mCssPropertiesSpread = new SortedList<int, SortedList<string, string>>();
+        SortedList<int, SortedList<string, string>> mCssTransformSpread = new SortedList<int, SortedList<string, string>>();
+        List<GuiDataObject> mGuiDataList = new List<GuiDataObject>();
 
-
-        public bool mChangedStyle = false;
-
-   
 
         #endregion field Definition
 
@@ -51,18 +50,14 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-
         #region abstract Methods
 
-        
         protected abstract void OnSetPluginHost();
         protected abstract void OnConfigurate(IPluginConfig Input);
         protected abstract void OnEvaluate(int SpreadMax);
         
         
         #endregion abstract Methods
-
-
 
 
 
@@ -109,9 +104,9 @@ namespace VVVV.Nodes.HttpGUI
 
         #region IMyNodeIO
 
-        public void GetDatenObjekt(int Index, out GuiDataObject GuiDaten)
+        public void GetDatenObjekt(int Index, out List<GuiDataObject> GuiDaten)
         {
-            GuiDaten = new GuiDataObject();
+            GuiDaten = mGuiDataList;
         }
 
 
@@ -133,7 +128,6 @@ namespace VVVV.Nodes.HttpGUI
                 INodeIOBase usIHttpStyle;
                 FHttpStyleIn.GetUpstreamInterface(out usIHttpStyle);
                 FUpstreamStyle = usIHttpStyle as IHttpGUIStyleIO;
-                mChangedStyle = true;
             }
         }
 
@@ -149,7 +143,6 @@ namespace VVVV.Nodes.HttpGUI
             else if (Pin == FHttpStyleIn)
             {
                 FUpstreamStyle = null;
-                mChangedStyle = true;
             }
 
         }
@@ -179,50 +172,82 @@ namespace VVVV.Nodes.HttpGUI
 
         public void Evaluate(int SpreadMax)
         {
-            
-            
-            //Get
 
+            #region Check Gui List
+            if (mGuiDataList.Count > SpreadMax)
+            {
+                mGuiDataList.RemoveRange(SpreadMax, mGuiDataList.Count - SpreadMax);
+                mGuiDataList.Capacity = SpreadMax;
+            }
+            else
+            {
+
+                for (int i = 0; i < SpreadMax; i++)
+                {
+                    if (mGuiDataList.Count == i)
+                    {
+                        mGuiDataList.Insert(i,new GuiDataObject());
+                    }
+                }
+            }
+
+            mGuiDataList.TrimExcess();
+
+
+            #endregion Check Gui List
+
+
+
+            #region Upstream Gui Elements
 
             int usSGuiIn;
             if (FUpstreamHttpGuiIn != null)
             {
-                
                 for (int i = 0; i < SpreadMax; i++)
                 {
                     //get upstream slice index
-
                     FHttpGuiIn.GetUpsreamSlice(i, out usSGuiIn);
 
-                    GuiDataObject tGuiDaten;
-                    FUpstreamHttpGuiIn.GetDatenObjekt(usSGuiIn, out tGuiDaten);
+                    List<GuiDataObject> tGuiList;
+                    FUpstreamHttpGuiIn.GetDatenObjekt(usSGuiIn, out tGuiList);
+                    mGuiDataList[i].GuiUpstreamList = tGuiList;
                 }
             }
 
+            #endregion Upstream Gui Elements
 
 
-            //Get Style Node Properties
+
+            # region Upstream Css Properties
+
             int usSStyle;
             if (FUpstreamStyle != null)
             {
-                SortedList<int, SortedList<string, string>> tStyles = new SortedList<int, SortedList<string, string>>();
-               
+                string NodePath;
+                FHost.GetNodePath(false, out NodePath);
+                Debug.WriteLine("Enter Css Upstream Gui Node: " + NodePath);
+
+                mCssPropertiesSpread.Clear();
                 for (int i = 0; i < SpreadMax; i++)
                 {
                     //get upstream slice index
 
                     FHttpStyleIn.GetUpsreamSlice(i, out usSStyle);
 
-                    SortedList<string, string> tStylePropertie = new SortedList<string, string>();
-                    FUpstreamStyle.GetCssProperties(usSStyle,SpreadMax, out tStylePropertie);
+                    SortedList<string, string> tSliceCssPropertie;
+                    FUpstreamStyle.GetCssProperties(usSStyle, out tSliceCssPropertie);
 
-                    tStyles.Add(i, tStylePropertie);
+                    mGuiDataList[i].CssProperties = tSliceCssPropertie;
                     
                 }
             }
 
+            #endregion Upstream Css Propeties
 
-            //read Transform pin
+
+
+            #region Transform Pin
+
             if (FTransformIn.PinIsChanged)
             {
                 for (int i = 0; i < SpreadMax; i++)
@@ -231,32 +256,34 @@ namespace VVVV.Nodes.HttpGUI
 
                     FTransformIn.GetMatrix(i, out tMatrix);
 
-                    SortedList<string, string> tTransformToCss = new SortedList<string, string>();
-                    tTransformToCss.Add("position", "absolute");
+                    SortedList<string, string> tTransformSlice = new SortedList<string, string>();
+                    tTransformSlice.Add("position", "absolute");
 
                     double tWidth = HTMLToolkit.MapScale(tMatrix.m11, 0, 2, 0, 100);
                     double tHeight = HTMLToolkit.MapScale(tMatrix.m22, 0, 2, 0, 100);
 
-                    tTransformToCss.Add("width", ReplaceComma(string.Format("{0:0.0}", Math.Round(tWidth, 1)) + "%"));
-                    tTransformToCss.Add("height", ReplaceComma(string.Format("{0:0.0}", Math.Round(tHeight, 1)) + "%"));
+                    tTransformSlice.Add("width", ReplaceComma(string.Format("{0:0.0}", Math.Round(tWidth, 1)) + "%"));
+                    tTransformSlice.Add("height", ReplaceComma(string.Format("{0:0.0}", Math.Round(tHeight, 1)) + "%"));
 
                     double tTop = HTMLToolkit.MapTransform(tMatrix.m42, 1, -1, 0, 100, tHeight);
                     double tLeft = HTMLToolkit.MapTransform(tMatrix.m41, -1, 1, 0, 100, tWidth);
 
-                    tTransformToCss.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tTop, 1)) + "%"));
-                    tTransformToCss.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tLeft, 1)) + "%"));
+                    tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tTop, 1)) + "%"));
+                    tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tLeft, 1)) + "%"));
 
 
-                    tTransformToCss.Add("z-index", Convert.ToString(Math.Round(tMatrix.m43)));
-                    
+                    tTransformSlice.Add("z-index", Convert.ToString(Math.Round(tMatrix.m43)));
+
+                    mGuiDataList[i].Transform = tTransformSlice;
                 }
             }
+
+            #endregion Transform Pin
+
 
 
             this.OnEvaluate(SpreadMax);
 
-
-            //Check if new data is availabe on the server
         }
 
         #endregion Evaluate

@@ -173,6 +173,8 @@ namespace VVVV.Nodes.HttpGUI
         protected override void OnConfigurate(VVVV.PluginInterfaces.V1.IPluginConfig Input)
         {
             //throw new Exception("The method or operation is not implemented.");
+
+
         }
 
         protected override void OnEvaluate(int SpreadMax)

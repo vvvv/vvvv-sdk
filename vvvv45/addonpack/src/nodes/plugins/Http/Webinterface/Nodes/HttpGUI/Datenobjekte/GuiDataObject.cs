@@ -9,37 +9,45 @@ namespace VVVV.Nodes.HttpGUI.Datenobjekte
     {
 
 
-        private int mSliceCount;
-        
+        private SortedList<string, string> mCssProperties = new SortedList<string, string>();
+        private List<GuiDataObject> mGuiUpstreamList = new List<GuiDataObject>();
+        private SortedList<string,string> mTransform = new SortedList<string,string>();
 
-        public int SliceCount
+        public SortedList<string, string> CssProperties
         {
             get
             {
-                return mSliceCount;
+                return mCssProperties;
             }
             set
             {
-                mSliceCount = value;
+                mCssProperties = value;
             }
         }
 
-        public GuiDataObject()
+        public List<GuiDataObject> GuiUpstreamList
         {
-
+            get
+            {
+                return mGuiUpstreamList;
+            }
+            set
+            {
+                mGuiUpstreamList = value;
+            }
         }
 
-        public void AddTag(Tag pTag)
+        public SortedList<string, string> Transform
         {
-
+            get
+            {
+                return mTransform;
+            }
+            set
+            {
+                mTransform = value;
+            }
         }
-
-        public void AddCssPropertie(string pName, string pValue)
-        {
-
-        }
-
-
     }
 
 }

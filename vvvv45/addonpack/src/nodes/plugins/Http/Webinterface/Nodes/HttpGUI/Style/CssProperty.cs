@@ -309,10 +309,9 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
 
 
-                // set slices count
-            
+            // set slices count
 
-          
+            
             mCssPropertiesOwn.Clear();
 
             for (int i = 0; i < SpreadMax; i++)
@@ -345,26 +344,6 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
                     }
 
-                }
-
-                SortedList<string, string> tCssPropertiesIn = new SortedList<string, string>();
-                mCssPropertiesIn.TryGetValue(i, out tCssPropertiesIn);
-
-                if (tCssPropertiesIn != null)
-                {
-
-                    foreach (KeyValuePair<string, string> pKey in tCssPropertiesIn)
-                    {
-                        if (tCssProperty.ContainsKey(pKey.Key))
-                        {
-                            tCssProperty.Remove(pKey.Key);
-                            tCssProperty.Add(pKey.Key, pKey.Value);
-                        }
-                        else
-                        {
-                            tCssProperty.Add(pKey.Key, pKey.Value);
-                        }
-                    }
                 }
 
                 mCssPropertiesOwn.Add(i, tCssProperty);

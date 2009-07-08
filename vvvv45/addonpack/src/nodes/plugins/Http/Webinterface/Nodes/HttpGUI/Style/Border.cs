@@ -52,7 +52,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
     /// <summary>
     /// CSS Node to generates css code
     /// </summary>
-    public class Border: BaseCssNode,IPlugin,IDisposable
+    public class Border: BaseCssNode,IDisposable,IPlugin
     {
 
 
@@ -88,7 +88,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
         /// </summary>
         public Border()
         {
-
+           //FPluginInfo.Name = "Border";
         }
 
 
@@ -168,8 +168,9 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
 
 
-
+       
         #region node name and infos
+
 
 
         private static IPluginInfo FPluginInfo;
@@ -186,8 +187,10 @@ namespace VVVV.Nodes.HttpGUI.CSS
                     // see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
                     FPluginInfo = new PluginInfo();
 
-                    // the nodes main name: use CamelCaps and no spaces
+
                     FPluginInfo.Name = "Border";
+                    // the nodes main name: use CamelCaps and no spaces
+
                     // the nodes category: try to use an existing one
                     FPluginInfo.Category = "HTTP";
                     // the nodes version: optional. leave blank if not
@@ -207,7 +210,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
                     FPluginInfo.Bugs = "";
                     // any known usage of the node that may cause troubles?
                     FPluginInfo.Warnings = "";
-					
+
                     // leave below as is
                     System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
                     System.Diagnostics.StackFrame sf = st.GetFrame(0);
@@ -215,6 +218,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
                     FPluginInfo.Namespace = method.DeclaringType.Namespace;
                     FPluginInfo.Class = method.DeclaringType.Name;
                     // leave above as is
+
                 }
 
                 return FPluginInfo;
@@ -230,6 +234,9 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
 
 
+        
+
+
 
         #region pin creation
 
@@ -243,16 +250,16 @@ namespace VVVV.Nodes.HttpGUI.CSS
             // assign host
 
             // create inputs
-			FHost.CreateValueInput("Border Width", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBorderWidthIn);
-			FBorderWidthIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.01, false, false, false);
+             
+                FHost.CreateValueInput("Border Width", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBorderWidthIn);
+                FBorderWidthIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.01, false, false, false);
 
-			FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorInput);
-			FColorInput.SetSubType(VColor.Black, false);
+                FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorInput);
+                FColorInput.SetSubType(VColor.Black, false);
 
-            FHost.UpdateEnum("BorderOutlineStyle", "solid", new string[] { "none", "hidden", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset" });
-            FHost.CreateEnumInput("Style", TSliceMode.Single, TPinVisibility.True, out FBorderStyleIn);
-            FBorderStyleIn.SetSubType("BorderOutlineStyle");
-
+                FHost.UpdateEnum("BorderOutlineStyle", "solid", new string[] { "none", "hidden", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset" });
+                FHost.CreateEnumInput("Style", TSliceMode.Single, TPinVisibility.True, out FBorderStyleIn);
+                FBorderStyleIn.SetSubType("BorderOutlineStyle");
 
         }
 
@@ -285,35 +292,43 @@ namespace VVVV.Nodes.HttpGUI.CSS
         protected override void OnEvaluate(int SpreadMax)
         {
 
-            Debug.WriteLine("Enter OnEvaluate Border");
-
-
-			if (FBorderWidthIn.PinIsChanged || FColorInput.PinIsChanged || FBorderStyleIn.PinIsChanged)
+            //Debug.WriteLine("Enter OnEvaluate Border");
+            try
             {
-				// set slices count
-                mCssPropertiesOwn.Clear();	
-                
-	
-                for (int i = 0; i < SpreadMax; i++)
+                if (FBorderWidthIn.PinIsChanged || FColorInput.PinIsChanged || FBorderStyleIn.PinIsChanged)
                 {
 
-                    double currentBorderWidthSlice;
-                    RGBAColor currentColorSlice;
-                    string currentBorderStyle;
-                    SortedList<string, string> tCssProperty = new SortedList<string,string>();
+                    IPluginIn[] tInputs = { FBorderWidthIn, FColorInput, FBorderStyleIn };
+                    int tSliceCount = GetSliceCount(tInputs);
 
-                    // get current values
-					FBorderWidthIn.GetValue(i, out currentBorderWidthSlice);
-					FColorInput.GetColor(i, out currentColorSlice);
-                    FBorderStyleIn.GetString(i,out currentBorderStyle);
+                    mCssPropertiesOwn.Clear();
 
-                    tCssProperty.Add("border-width", ((Math.Round(currentBorderWidthSlice * 100,1).ToString() + "px").Replace(",",".")));
-                    tCssProperty.Add("border-color", "rgb(" + Math.Round(currentColorSlice.R * 100) + "%," + Math.Round(currentColorSlice.G * 100) + "%," + Math.Round(currentColorSlice.B * 100) + "%)");
-                    tCssProperty.Add("border-style", currentBorderStyle);
+                    for (int i = 0; i < tSliceCount; i++)
+                    {
 
-                    mCssPropertiesOwn.Add(i, tCssProperty);
+                        double currentBorderWidthSlice;
+                        RGBAColor currentColorSlice;
+                        string currentBorderStyle;
+                        SortedList<string, string> tCssProperty = new SortedList<string, string>();
+
+                        // get current values
+                        FBorderWidthIn.GetValue(i, out currentBorderWidthSlice);
+                        FColorInput.GetColor(i, out currentColorSlice);
+                        FBorderStyleIn.GetString(i, out currentBorderStyle);
+
+                        tCssProperty.Add("border-width", ((Math.Round(currentBorderWidthSlice * 100, 1).ToString() + "px").Replace(",", ".")));
+                        tCssProperty.Add("border-color", "rgb(" + Math.Round(currentColorSlice.R * 100) + "%," + Math.Round(currentColorSlice.G * 100) + "%," + Math.Round(currentColorSlice.B * 100) + "%)");
+                        tCssProperty.Add("border-style", currentBorderStyle);
+
+                        mCssPropertiesOwn.Add(i, tCssProperty);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                FHost.Log(TLogType.Error, ex.Message);
+            }
+
         }
 				
        #endregion mainloop

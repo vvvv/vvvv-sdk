@@ -247,7 +247,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
         {
             // create inputs
             FHost.CreateValueInput("Font Size", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FFontSizeIn);
-            FFontSizeIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 1, false, false, false);
+            FFontSizeIn.SetSubType(0, double.MaxValue, 0.01, 1, false, false, false);
 
 			FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorInput);
             FColorInput.SetSubType(VColor.Black, false);
@@ -308,12 +308,15 @@ namespace VVVV.Nodes.HttpGUI.CSS
         protected override void OnEvaluate(int SpreadMax)
         {
 
-			if (FFontSizeIn.PinIsChanged || FColorInput.PinIsChanged || FFontFamiliyIn.PinIsChanged || FFontStyleIn .PinIsChanged || FFontWeigthIn.PinIsChanged || FTextDecortationIn.PinIsChanged || FWordSpacingIn.PinIsChanged ||FLetterSpacingIn.PinIsChanged)
+			if (FFontSizeIn.PinIsChanged || FColorInput.PinIsChanged || FFontFamiliyIn.PinIsChanged || FFontStyleIn.PinIsChanged || FFontWeigthIn.PinIsChanged || FTextDecortationIn.PinIsChanged || FWordSpacingIn.PinIsChanged ||FLetterSpacingIn.PinIsChanged || FFontStretchIn.PinIsChanged)
             {
 				// set slices count
-                mCssPropertiesOwn.Clear();	
-									
-                for (int i = 0; i < SpreadMax; i++)
+                IPluginIn[] tInputs = { FFontSizeIn, FColorInput, FFontFamiliyIn, FFontStyleIn, FFontWeigthIn, FTextDecortationIn, FWordSpacingIn, FLetterSpacingIn, FFontStretchIn};
+                int tSliceCount = GetSliceCount(tInputs);
+
+                mCssPropertiesOwn.Clear();
+
+                for (int i = 0; i < tSliceCount; i++)
                 {
 
                     double currentFontSizeSlice;
@@ -339,8 +342,6 @@ namespace VVVV.Nodes.HttpGUI.CSS
                     FFontStretchIn.GetString(i,out currentFontStretch);
 
 					// add css webattributes
-
-
 
                     tCssProperty.Add("font-size",(double)Math.Round(currentFontSizeSlice * 100,1)+ "%");
                     tCssProperty.Add("font-color", "rgb(" + Math.Round(currentColorSlice.R * 100) + "%," + Math.Round(currentColorSlice.G * 100) + "%," + Math.Round(currentColorSlice.B * 100) + "%)");

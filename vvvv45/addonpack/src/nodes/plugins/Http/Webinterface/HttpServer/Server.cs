@@ -42,10 +42,7 @@ namespace VVVV.Webinterface.HttpServer {
         private bool FDisposed = false;
         private ConcreteSubject mSubject;
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
-        private Logger mLogger;
-
-        
-
+     
         // Socket
         private Socket mMainSocket;
         IPEndPoint mIpLocal;
@@ -171,7 +168,6 @@ namespace VVVV.Webinterface.HttpServer {
             set 
             {
                 mIpLocal.Port = value;
-                mLogger.log(mLogger.LogType.Info, "set Server to Port: " + value.ToString());
                 Debug.WriteLine("set Server to Port: " + value.ToString());
             } 
         }
@@ -676,7 +672,7 @@ namespace VVVV.Webinterface.HttpServer {
 
         public void ServeFolder(string pPath)
         {
-            mLogger.log(mLogger.LogType.Info, "serve Folder: " + pPath);
+            
             Debug.WriteLine("serve Folder: " + pPath);
             mItemsToServ.ReadServerFolder(pPath);
 
@@ -698,7 +694,7 @@ namespace VVVV.Webinterface.HttpServer {
         public override void Updated()
         {
             Debug.WriteLine("Updated Server");
-            mLogger.log(mLogger.LogType.Info, "Server updated because of Value Change in VVVV");
+           
             SortedList<string, string> tNewServerhandlingDaten = mSubject.NewServerDaten;
 
             foreach (KeyValuePair<string, string> tSlice in tNewServerhandlingDaten)
@@ -728,7 +724,7 @@ namespace VVVV.Webinterface.HttpServer {
                 else
                 {
                     Debug.WriteLine(" send: " + tSlice.Value + " from VVVV to Browser Element: " + tSlice.Key);
-                    mLogger.log(mLogger.LogType.Info, " send: " + tSlice.Value + " from VVVV to Server / Target Element: " + tSlice.Key);
+                  
                     JavaScript tJava = new JavaScript();
                     tJava.Insert("parent.window.setNewDaten('" + tSlice.Key + "','" + tSlice.Value + "');");
 

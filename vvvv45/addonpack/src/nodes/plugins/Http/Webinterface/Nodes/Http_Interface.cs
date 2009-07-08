@@ -12,7 +12,7 @@ namespace VVVV.Nodes.HttpGUI
 	[Guid("8869A551-6F32-4F0D-9003-27AC990D53D6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IHttpGUIIO: INodeIOBase
 	{
-        void GetDatenObjekt(int Index, out GuiDataObject GuiDaten);
+        void GetDatenObjekt(int Index, out List<GuiDataObject> GuiDaten);
 
 	}
 
@@ -34,7 +34,7 @@ namespace VVVV.Nodes.HttpGUI
 		}
 
 	
-		public static string FriendlyName = "HTTP GUI Element";
+		public static string FriendlyName = "HTTP GUI";
 	}
 
 
@@ -43,7 +43,7 @@ namespace VVVV.Nodes.HttpGUI
     [Guid("55B727DD-0CD6-427b-98AB-4D147B982AD5"),  InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IHttpGUIStyleIO : INodeIOBase
     {
-        void GetCssProperties(int Index,int SpreadMax, out SortedList<string,string> CssProperties);
+        void GetCssProperties(int Index, out SortedList<string,string> CssProperties);
     }
 
     public class HttpGUIStyleIO
@@ -63,7 +63,7 @@ namespace VVVV.Nodes.HttpGUI
 
         }
 
-        public static string FriendlyName = "HTTP GUI CSS";
+        public static string FriendlyName = "HTTP CSS";
     }
 
 
