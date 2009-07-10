@@ -311,6 +311,13 @@ namespace VVVV.Webinterface.Utilities
     /// </summary>
 	class Rule
 	{
+        public enum SelectorType
+        {
+            None = 0,
+            Id = 1,
+            Class = 2,
+        }
+
 		private string m_Selector = "";
 		private string m_ClassName = "";
 		private List<Property> m_Properties = new List<Property>();
@@ -359,6 +366,23 @@ namespace VVVV.Webinterface.Utilities
 			m_Selector = pSelector;
 			m_ClassName = "." + pClassName;
 		}
+
+        public Rule(string pSelectorName, SelectorType pSelectorType)
+        {
+            if (SelectorType.None == pSelectorType)
+            {
+                m_Selector = pSelectorName;
+            }
+            else if (SelectorType.Id == pSelectorType)
+            {
+                m_Selector = "#" + pSelectorName;
+            }
+            else
+            {
+                m_Selector = "." + pSelectorName;
+            }
+        }
+ 
 
         /// <summary>
         /// adds an property.

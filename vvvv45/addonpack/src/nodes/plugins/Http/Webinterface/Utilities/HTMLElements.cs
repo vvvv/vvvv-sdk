@@ -474,7 +474,7 @@ namespace VVVV.Webinterface.Utilities
         }
     }
 
-    class JavaScript : Tag
+    public class JavaScript : Tag
     {
 
         public JavaScript()
@@ -504,7 +504,7 @@ namespace VVVV.Webinterface.Utilities
         }
     }
 
-    class JavaFunction : Tag
+    public class JavaFunction : Tag
     {
         public JavaFunction(string pFunctionName, string pFunction)
         {
@@ -545,20 +545,20 @@ namespace VVVV.Webinterface.Utilities
         }
     }
 
-    class HTMLDiv : Tag
+    class HtmlDiv : Tag
     {
-        public HTMLDiv()
+        public HtmlDiv()
         {
             Name = "div";
         }
 
-        public HTMLDiv(string pId)
+        public HtmlDiv(string pId)
         {
             Name = "div";
             AddAttribute(new HTMLAttribute("id", pId).Text);
         }
 
-        public HTMLDiv(string pId, string pClass)
+        public HtmlDiv(string pId, string pClass)
         {
             Name = "div";
             AddAttribute(new HTMLAttribute("id", pId).Text);
@@ -571,7 +571,6 @@ namespace VVVV.Webinterface.Utilities
         public Slider()
         {
             Name = "div";
-
         }
 
         public Slider(string pId, string pClass)

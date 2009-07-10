@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Runtime.InteropServices;
-using VVVV.Nodes.HttpGUI.Datenobjekte;
+using VVVV.Nodes.HttpGUI;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Webinterface.Utilities;
 
@@ -102,7 +102,7 @@ namespace VVVV.Nodes.HttpGUI
     [Guid("FDFEC9C0-8049-4fb6-A5C8-FE04F26F4CA6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IHttpGUIFunktionIO : INodeIOBase
     {
-        void GetFunktionObjekt(int Index, out JsFunktion GuiDaten);
+        void GetFunktionObjekt(int Index);
 
     }
 

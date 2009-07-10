@@ -42,8 +42,6 @@ using VVVV.Webinterface.Utilities;
 using VVVV.Webinterface.Data;
 using VVVV.Nodes.Http;
 using VVVV.Nodes.HttpGUI;
-using VVVV.Nodes.HttpGUI.Datenobjekte;
-
 
 //the vvvv node namespace
 namespace VVVV.Nodes.Http
@@ -92,7 +90,7 @@ namespace VVVV.Nodes.Http
         private SortedList<int, SortedList<string, string>> mCssStyles;
         private SortedList<int,SortedList<string, string>> mCssPropertiesSpread = new SortedList<int,SortedList<string,string>>();
         private string[] mHtmlText;
-        private SortedList<int, BaseDatenObjekt> mGuiDatenListe;
+        private List<GuiDataObject> mGuiDatenListe = new List<GuiDataObject>();
 
         private INodeIn FCssPropertiesIn;
         private IHttpGUIStyleIO FUpstreamStyleIn;
@@ -101,11 +99,11 @@ namespace VVVV.Nodes.Http
         private Page mPage;
         private string mPageName;
         private string mUrl = String.Empty;
-        private string mPageHead = String.Empty;
-        private string mPageBody = String.Empty;
+        private string mPageHeadString = String.Empty;
+        private string mPageBodyString = String.Empty;
         private string mCssFile = String.Empty;
         private string mJsFile = String.Empty;
-
+        PageBuilder mPageBuilder = new PageBuilder();
 
 
         #endregion field declaration
@@ -375,6 +373,8 @@ namespace VVVV.Nodes.Http
 
 
 
+
+
         #region mainloop
 
 
@@ -406,29 +406,16 @@ namespace VVVV.Nodes.Http
             mCssStyles = new SortedList<int, SortedList<string, string>>();
             mHtmlText = new string[SpreadMax];
 
-            mGuiDatenListe = new SortedList<int, BaseDatenObjekt>();
-            int usS;
+            
 
             //Saves the incoming Html Slices
             if (FUpstreamInterface != null)
             {
-                //loop for all slices0
+                mGuiDatenListe.Clear();
 
-                for (int i = 0; i < FHttpGuiIn.SliceCount; i++)
-                {
-                    //get upstream slice index
-
-                    FHttpGuiIn.GetUpsreamSlice(i, out usS);
-
-                    List<GuiDataObject> tGuiDaten;
-                    FUpstreamInterface.GetDatenObjekt(usS, out tGuiDaten);
-
-                    //if (tGuiDaten != null)
-                    //{
-                    //    ////Debug.WriteLine("Objekt Type in Group: " + tGuiDaten.Type);
-                    //    mGuiDatenListe.Add(i, tGuiDaten);
-                    //}
-                }
+                List<GuiDataObject> tGuiDaten;
+                FUpstreamInterface.GetDatenObjekt(0, out tGuiDaten);
+                mGuiDatenListe = tGuiDaten;
             }
 
 
@@ -440,7 +427,10 @@ namespace VVVV.Nodes.Http
 
             #region Read Url
 
-            FUrl.GetString(0, out mUrl);
+            if (FUrl.PinIsChanged)
+            {
+                FUrl.GetString(0, out mUrl);
+            }
 
             #endregion Read Url
 
@@ -485,7 +475,7 @@ namespace VVVV.Nodes.Http
 
                 }
 
-                mPageBody = tContentBody;
+                mPageBodyString = tContentBody;
 
                 // Get Html Head String
                 for (int i = 0; i < FHtmlHead.SliceCount; i++)
@@ -495,14 +485,13 @@ namespace VVVV.Nodes.Http
                     tContentHead += currentHtmlHeadSlice + Environment.NewLine;
                 }
 
-                mPageHead = tContentHead;
+                mPageHeadString = tContentHead;
 
 
             }
 
 
             #endregion Get HTML Body and Head String
-
 
 
 
@@ -536,47 +525,50 @@ namespace VVVV.Nodes.Http
 
 
 
+
             #region Build Page
 
-            Page tPage = new Page(true);
 
-            PageBuilder tPageBuilder = new PageBuilder(mGuiDatenListe);
+                    Page tPage = new Page(true);
+
+                    mPageBuilder.UpdateGuiList(mGuiDatenListe);
 
 
-            //New Builer only ObjectList Input input
-            //JQueryBuilder tJQuery = new JQueryBuilder(mGuiDatenListe, "-1", "-1", mCssPropertiesSpread, mPageName);
-            //mJsFile = tJQuery.JsFile;
-            //mCssFile = tJQuery.CssMainFile;
-            //tPage = tJQuery.Page;
+                    //New Builer only ObjectList Input input
+                    //JQueryBuilder tJQuery = new JQueryBuilder(mGuiDatenListe, "-1", "-1", mCssPropertiesSpread, mPageName);
+                    //mJsFile = tJQuery.JsFile;
+                    mCssFile = mPageBuilder.CssMainFile.ToString();
+                    tPage = mPageBuilder.Page;
 
-            tPage.Body.Insert(mPageBody);
-            tPage.Head.Insert(mPageHead);
+                    tPage.Body.Insert(mPageBodyString);
+                    tPage.Head.Insert(mPageHeadString);
 
-            string currentSliceTitel = "";
-            FTitel.GetString(0, out currentSliceTitel);
-            tPage.Head.Insert(new Title(currentSliceTitel));
+                    string currentSliceTitel = "";
+                    FTitel.GetString(0, out currentSliceTitel);
+                    tPage.Head.Insert(new Title(currentSliceTitel));
 
-            string t = tPage.Text;
-            FWholeHTML.SetString(0, tPage.Text);
+                    string t = tPage.Text;
+                    FWholeHTML.SetString(0, tPage.Text);
 
-            mPage = tPage;
+                    mPage = tPage;
 
-            //Communication Type
-            string tCommunicationType;
-            FCommunication.GetString(0, out tCommunicationType);
-            if (tCommunicationType == "Polling")
-            {
-                mPage.Head.Insert(JSToolkit.Polling("100","'HIer sollte ein XML stehen :-)'"));
+                    //Communication Type
+                    string tCommunicationType;
+                    FCommunication.GetString(0, out tCommunicationType);
+                    if (tCommunicationType == "Polling")
+                    {
+                        mPage.Head.Insert(JSToolkit.Polling("100", "'HIer sollte ein XML stehen :-)'"));
 
-            }else if(tCommunicationType == "Comet")
-            {
-                mPage.Body.Insert(JSToolkit.Comet());
+                    }
+                    else if (tCommunicationType == "Comet")
+                    {
+                        mPage.Body.Insert(JSToolkit.Comet());
+                    }
+                
+                    
             
-            }
-            
-
-
             #endregion Build Page
+
 
 
 
@@ -605,6 +597,7 @@ namespace VVVV.Nodes.Http
 
 
 
+
             #region Save Page
 
             string tPath;
@@ -615,16 +608,18 @@ namespace VVVV.Nodes.Http
             FSavePage.GetValue(0, out tSave);
             FUrl.GetString(0, out tUrl);
 
-            SortedList<string, string> tFiles = new SortedList<string, string>();
-            tFiles.Add(tPath + "\\" + tUrl, tPage.Text);
-            tFiles.Add(tPath + "\\" + "VVVV.css", mCssFile);
-            tFiles.Add(tPath + "\\" + "VVVV.js", mJsFile);
+
 
 
             if (FSavePage.PinIsChanged)
             {
                 if (tSave > 0.5)
                 {
+
+                    SortedList<string, string> tFiles = new SortedList<string, string>();
+                    tFiles.Add(tPath + "\\" + tUrl, mPage.Text);
+                    tFiles.Add(tPath + "\\" + "VVVV.css", mCssFile);
+                    tFiles.Add(tPath + "\\" + "VVVV.js", mJsFile);
 
                     foreach (KeyValuePair<string, string> pFile in tFiles)
                     {
@@ -635,7 +630,7 @@ namespace VVVV.Nodes.Http
                             {
                                 File.Delete(pFile.Key);
                                 HTMLToolkit.SavePage(pFile.Key, pFile.Value);
-                                FHost.Log(TLogType.Message, "File: " + tPage + " has been deleted an resaved");
+                                FHost.Log(TLogType.Message, "File: " + mPage + " has been deleted an resaved");
                             }
                             else
                             {
@@ -651,8 +646,6 @@ namespace VVVV.Nodes.Http
             }
 
             #endregion Save Page
-
-
 
         }
 

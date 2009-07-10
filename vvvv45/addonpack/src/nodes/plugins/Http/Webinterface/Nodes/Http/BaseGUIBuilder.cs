@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Reflection;
 
 using VVVV.Webinterface.Utilities;
-using VVVV.Nodes.HttpGUI.Datenobjekte;
+using VVVV.Nodes.HttpGUI;
 
 
 
@@ -17,13 +17,15 @@ namespace VVVV.Nodes.Http
 
         #region field declaration
 
-        protected SortedList<int, BaseDatenObjekt> mGuiDatenObjekte;
+        
         protected Page mPage = new Page(true);
 
 
         public SortedList<string, string> mCssFile = new SortedList<string, string>();
         public SortedList<string, string> mJsFile = new SortedList<string, string>();
         public SortedList<string, string> mDocumentReady = new SortedList<string, string>();
+
+        public SortedList<int, BaseDatenObjekt> mGuiDatenObjekte = new SortedList<int, BaseDatenObjekt>();
 
         public Page Page
         {
@@ -117,17 +119,14 @@ namespace VVVV.Nodes.Http
                 if (pKey.Value != null)
                 {
                     BaseDatenObjekt tDatenObjekt = pKey.Value;
-                    Tag tList = BuildGuiElement(Page.Body, tDatenObjekt);
+                    Tag tList = BuildGuiElement(Page.Body);
                     mPage.Body.Insert(tList);
                 }
             }
-
-            
-          
         }
 
 
-        private Tag BuildGuiElement(Tag pTagToInsertIn, BaseDatenObjekt pDatenObjekt)
+        private Tag BuildGuiElement(Tag pTagToInsertIn)
         {
 
 
@@ -140,7 +139,7 @@ namespace VVVV.Nodes.Http
             {
                 DatenGuiText tTextDaten = (DatenGuiText)pDatenObjekt;
                 Text tText = new Text(tTextDaten.ID,tTextDaten.Label,false);
-                HTMLDiv tDiv = new HTMLDiv();
+                HtmlDiv tDiv = new HtmlDiv();
                 tDiv.AddAttribute(new HTMLAttribute("class" , tTextDaten.Class));
                 tDiv.AddAttribute(new HTMLAttribute("overflow", "scroll"));
                 tDiv.Insert(tText);
@@ -223,9 +222,9 @@ namespace VVVV.Nodes.Http
             else if (pDatenObjekt.Type == "Button")
             {
                 DatenGuiButton tButtonDaten = (DatenGuiButton)pDatenObjekt;
-                Tag tTag = new HTMLDiv();
+                Tag tTag = new HtmlDiv();
 
-                HTMLDiv tButtonInlay = new HTMLDiv("ButtonInlay", "ButtonInlay");
+                HtmlDiv tButtonInlay = new HtmlDiv("ButtonInlay", "ButtonInlay");
                 //if(tButtonDaten.Mode == "1")
                 //{
                 //    tButtonInlay.AddAttribute(new HTMLAttribute("style", new Property("background-color", "#808080").Text));
@@ -239,7 +238,7 @@ namespace VVVV.Nodes.Http
                 tTag.AddAttribute(new HTMLAttribute("text-align", "center"));
                 
 
-                HTMLDiv tLabel = new HTMLDiv();
+                HtmlDiv tLabel = new HtmlDiv();
                 tLabel.AddAttribute(new HTMLAttribute("class", tButtonDaten.Class));
                 tLabel.AddAttribute(new HTMLAttribute("style", new Property("background-color","transparent").Text + new Property("text-algin","center").Text));
 
@@ -411,7 +410,7 @@ namespace VVVV.Nodes.Http
             {
                 
                 DatenGuiContainer tContainerDaten = (DatenGuiContainer) pDatenObjekt;
-                HTMLDiv tContainer = new HTMLDiv(tContainerDaten.ID, tContainerDaten.Class);
+                HtmlDiv tContainer = new HtmlDiv(tContainerDaten.ID, tContainerDaten.Class);
 
 
                 if (mCssFile.ContainsKey(tContainerDaten.Class) == false)
@@ -447,11 +446,11 @@ namespace VVVV.Nodes.Http
             else if (pDatenObjekt.Type == "TwoPane")
             {
                 DatenGuiTwoPane tTwoPaneDaten = (DatenGuiTwoPane)pDatenObjekt;
-                HTMLDiv tFixedPane = new HTMLDiv("fixed_area");
-                HTMLDiv tMainArea = new HTMLDiv("main_area");
+                HtmlDiv tFixedPane = new HtmlDiv("fixed_area");
+                HtmlDiv tMainArea = new HtmlDiv("main_area");
                 
 
-                HTMLDiv tMainDiv = new HTMLDiv("main_container");
+                HtmlDiv tMainDiv = new HtmlDiv("main_container");
 
                 if (tTwoPaneDaten.GuiDepth > 0)
                 {
@@ -492,7 +491,7 @@ namespace VVVV.Nodes.Http
             else if (pDatenObjekt.Type == "PopUp")
             {
                 DatenGuiPopUp tPopupDaten = (DatenGuiPopUp)pDatenObjekt;
-                Tag tTag = new HTMLDiv();
+                Tag tTag = new HtmlDiv();
 
                 tTag.AddAttribute(new HTMLAttribute("id", tPopupDaten.ID).Text);
                 tTag.AddAttribute(new HTMLAttribute("class", tPopupDaten.Class).Text);

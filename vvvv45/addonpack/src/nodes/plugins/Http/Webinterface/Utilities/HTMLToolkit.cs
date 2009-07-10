@@ -79,6 +79,26 @@ namespace VVVV.Webinterface.Utilities
             return tNewNodePath;
         }
 
+        public static string CreatePageID(string pNodePath, int pSliceId)
+        {
+            string[] tPatchIDs = pNodePath.Split('/');
+            string tNewNodePath = String.Empty;
+
+            foreach (string tID in tPatchIDs)
+            {
+                if (tID != "")
+                {
+                    int temp = Convert.ToInt16(tID);
+                    tNewNodePath += String.Format("{0:00000}", temp);
+                }
+                else
+                {
+
+                }
+            }
+            return tNewNodePath + String.Format("{0:00000}", pSliceId); ;
+        }
+
         #endregion conversion
 
     }

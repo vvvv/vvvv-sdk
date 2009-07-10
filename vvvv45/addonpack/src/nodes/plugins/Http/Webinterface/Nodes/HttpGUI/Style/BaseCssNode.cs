@@ -9,7 +9,6 @@ using VVVV.Utils.VMath;
 
 using VVVV.Webinterface;
 using VVVV.Webinterface.Utilities;
-using VVVV.Nodes.HttpGUI.Datenobjekte;
 
 
 
@@ -62,7 +61,6 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
 
 
-
         #region pin creation
 
         //this method is called by vvvv when the node is created
@@ -90,6 +88,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
         }
 
         #endregion pin creation
+
 
 
 
@@ -157,12 +156,14 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
 
 
+
         #region Configurate
         public void Configurate(IPluginConfig Input)
         {
             this.OnConfigurate(Input);
         }
         #endregion
+
 
 
 
@@ -196,11 +197,11 @@ namespace VVVV.Nodes.HttpGUI.CSS
                         FCssPropertiesIn.GetUpsreamSlice(i, out usS);
 
 
-                        SortedList<string, string> tStylePropertyIn = new SortedList<string, string>();
+                        SortedList<string, string> tStylePropertyIn;
                         FUpstreamStyleIn.GetCssProperties(i, out tStylePropertyIn);
 
 
-                        SortedList<string, string> tCssSliceList = new SortedList<string, string>();
+                        SortedList<string, string> tCssSliceList;
                         mCssPropertiesOwn.TryGetValue(i, out tCssSliceList);
 
 

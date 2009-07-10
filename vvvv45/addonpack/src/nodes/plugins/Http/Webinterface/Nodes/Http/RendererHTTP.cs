@@ -46,7 +46,6 @@ using VVVV.Webinterface.Data;
 using VVVV.Webinterface.HttpServer;
 using VVVV.Nodes.Http;
 using VVVV.Nodes.HttpGUI;
-using VVVV.Nodes.HttpGUI.Datenobjekte;
 
 
 //the vvvv node namespace
@@ -560,9 +559,13 @@ namespace VVVV.Nodes.Http
                         {
                             RemovePageFormList(tPageName, tPage, tCssFile, tJsFile, tFileName);
                         }
-                        else
+                        else if (tPage != null)
                         {
                             HandlePageList(tPageName, tPage, tCssFile, tJsFile, tFileName);
+                        }
+                        else
+                        {
+
                         }
                         
 
