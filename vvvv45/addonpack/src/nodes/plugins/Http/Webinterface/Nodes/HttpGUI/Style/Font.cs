@@ -343,7 +343,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
 					// add css webattributes
 
-                    tCssProperty.Add("font-size",(double)Math.Round(currentFontSizeSlice * 100,1)+ "%");
+                    tCssProperty.Add("font-size",(double)Math.Round(currentFontSizeSlice * 100)+ "%");
                     tCssProperty.Add("font-color", "rgb(" + Math.Round(currentColorSlice.R * 100) + "%," + Math.Round(currentColorSlice.G * 100) + "%," + Math.Round(currentColorSlice.B * 100) + "%)");
                     tCssProperty.Add("font-family", currentFontFamily);
                     tCssProperty.Add("font-weight", currentFontWeight.ToString());

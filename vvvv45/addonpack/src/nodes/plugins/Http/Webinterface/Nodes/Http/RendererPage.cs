@@ -537,8 +537,13 @@ namespace VVVV.Nodes.Http
                     //New Builer only ObjectList Input input
                     //JQueryBuilder tJQuery = new JQueryBuilder(mGuiDatenListe, "-1", "-1", mCssPropertiesSpread, mPageName);
                     //mJsFile = tJQuery.JsFile;
+
                     mCssFile = mPageBuilder.CssMainFile.ToString();
                     tPage = mPageBuilder.Page;
+
+
+                    tPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
+
 
                     tPage.Body.Insert(mPageBodyString);
                     tPage.Head.Insert(mPageHeadString);
@@ -549,6 +554,7 @@ namespace VVVV.Nodes.Http
 
                     string t = tPage.Text;
                     FWholeHTML.SetString(0, tPage.Text);
+
 
                     mPage = tPage;
 
@@ -618,8 +624,8 @@ namespace VVVV.Nodes.Http
 
                     SortedList<string, string> tFiles = new SortedList<string, string>();
                     tFiles.Add(tPath + "\\" + tUrl, mPage.Text);
-                    tFiles.Add(tPath + "\\" + "VVVV.css", mCssFile);
-                    tFiles.Add(tPath + "\\" + "VVVV.js", mJsFile);
+                    tFiles.Add(tPath + "\\" + mPage +  ".css", mCssFile);
+                    tFiles.Add(tPath + "\\" + mPage + ".js", mJsFile);
 
                     foreach (KeyValuePair<string, string> pFile in tFiles)
                     {

@@ -76,10 +76,10 @@ namespace VVVV.Webinterface.Utilities
                     
                 }
             }
-            return tNewNodePath;
+            return "a" + tNewNodePath;
         }
 
-        public static string CreatePageID(string pNodePath, int pSliceId)
+        public static string CreateSliceID(string pNodePath, int pSliceId)
         {
             string[] tPatchIDs = pNodePath.Split('/');
             string tNewNodePath = String.Empty;
@@ -96,7 +96,7 @@ namespace VVVV.Webinterface.Utilities
 
                 }
             }
-            return tNewNodePath + String.Format("{0:00000}", pSliceId); ;
+            return "a" + tNewNodePath + String.Format("{0:00000}", pSliceId); ;
         }
 
         #endregion conversion

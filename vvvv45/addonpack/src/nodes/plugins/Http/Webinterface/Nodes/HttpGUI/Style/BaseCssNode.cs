@@ -259,7 +259,6 @@ namespace VVVV.Nodes.HttpGUI.CSS
                     }
                 }
 
-
                 FCssPropertieOut.SliceCount = SpreadMax;
             }
             catch (Exception ex)
