@@ -105,17 +105,20 @@ namespace VVVV.Nodes.Http
         public void Build(List<GuiDataObject> pGuiElemente)
         {
 
-            bool LastSliceFlag = false;
-            int LastSliceCounter = 0;
-
             foreach (GuiDataObject pElement in pGuiElemente)
             {
-                LastSliceCounter++;
+
+                if (pElement.GuiUpstreamList != null)
+                {
+                    Build(pElement.GuiUpstreamList);
+                }
+                                
+                
                 mPage.Head.Insert(pElement.Head);
                 mPage.Body.Insert(pElement.Body);
 
-                SortedList<string, string> tTransform = pElement.Transform;
-                SortedList<string, string> tCssProperties = pElement.CssProperties;
+                SortedList<string, string> tTransform = new SortedList<string,string>(pElement.Transform);
+                SortedList<string, string> tCssProperties = new SortedList<string,string>(pElement.CssProperties);
 
                 foreach (KeyValuePair<string, string> KeyPair in tTransform)
                 {
@@ -123,30 +126,12 @@ namespace VVVV.Nodes.Http
 
                 }
 
-
-                if (LastSliceCounter == pGuiElemente.Count)
-                {
-                    LastSliceFlag = true;
-                }
-
-                CreateCssRule(tCssProperties,pElement.NodeId, pElement.SliceId, LastSliceFlag);
-
-
-
-                //if (pElement.GuiUpstreamList == null)
-                //{
-                //    Type myObject = pElement.GetType();
-                //    MethodInfo[] myMethodInfo = myObject.GetMethods();
-                //}
-                //else
-                //{
-                //    Build(pElement.GuiUpstreamList);
-                //}
+                CreateCssRule(tCssProperties,pElement.NodeId, pElement.SliceId);
             }
         }
 
 
-        private void CreateCssRule(SortedList<string,string> pProperties, string pNodeId,string pSliceID, bool LastSliceFlag)
+        private void CreateCssRule(SortedList<string,string> pProperties, string pNodeId,string pSliceID)
         {
 
             if (pNodeId != mActuallNodeId)

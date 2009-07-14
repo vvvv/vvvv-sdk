@@ -32,6 +32,7 @@ using System;
 using System.Drawing;
 using VVVV.PluginInterfaces.V1;
 using System.IO;
+using System.Text;
 using System.Collections.Generic;
 using System.Collections;
 using System.Windows.Forms;
@@ -104,6 +105,7 @@ namespace VVVV.Nodes.Http
         private string mCssFile = String.Empty;
         private string mJsFile = String.Empty;
         PageBuilder mPageBuilder = new PageBuilder();
+        private Rule mBodyRule;
 
 
         #endregion field declaration
@@ -502,23 +504,24 @@ namespace VVVV.Nodes.Http
             int uSSSytle;
             if (FUpstreamStyleIn != null)
             {
-                mCssPropertiesSpread.Clear();
-
+                mBodyRule = new Rule("body");
+                
                 for (int i = 0; i < FCssPropertiesIn.SliceCount; i++)
                 {
                     FCssPropertiesIn.GetUpsreamSlice(i, out uSSSytle);
-                    SortedList<string, string> tStylePropertie = new SortedList<string, string>();
+                    SortedList<string, string> tStylePropertie;
                     FUpstreamStyleIn.GetCssProperties(uSSSytle, out tStylePropertie);
 
-                    mCssPropertiesSpread.Add(i, tStylePropertie);
+                    foreach(KeyValuePair<string,string> KeyPair in tStylePropertie)
+                    {
+                        mBodyRule.AddProperty(new Property(KeyPair.Key, KeyPair.Value));
+                    }
                 }
             }
             else
             {
-                mCssPropertiesSpread.Clear();
-                SortedList<string, string> tStylePropertie = new SortedList<string, string>();
-                tStylePropertie.Add("background-color", "#E0E0E0");
-                mCssPropertiesSpread.Add(0,tStylePropertie);
+                mBodyRule = new Rule("body");
+                mBodyRule.AddProperty(new Property("background-color", "#E0E0E0"));
             }
 
             #endregion Body CSS Properties
@@ -538,11 +541,15 @@ namespace VVVV.Nodes.Http
                     //JQueryBuilder tJQuery = new JQueryBuilder(mGuiDatenListe, "-1", "-1", mCssPropertiesSpread, mPageName);
                     //mJsFile = tJQuery.JsFile;
 
-                    mCssFile = mPageBuilder.CssMainFile.ToString();
+                    StringBuilder tCssFile = mPageBuilder.CssMainFile;
+                    tCssFile.Append(mBodyRule.Text);
+
+
+
                     tPage = mPageBuilder.Page;
-
-
                     tPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
+                
+
 
 
                     tPage.Body.Insert(mPageBodyString);
@@ -556,7 +563,9 @@ namespace VVVV.Nodes.Http
                     FWholeHTML.SetString(0, tPage.Text);
 
 
+                    mCssFile = tCssFile.ToString();
                     mPage = tPage;
+                
 
                     //Communication Type
                     string tCommunicationType;

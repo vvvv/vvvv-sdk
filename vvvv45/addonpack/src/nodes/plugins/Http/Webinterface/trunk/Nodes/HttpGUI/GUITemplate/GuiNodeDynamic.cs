@@ -18,6 +18,7 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
+
         #region field Definition
 
 
@@ -25,6 +26,8 @@ namespace VVVV.Nodes.HttpGUI
         protected IPluginHost FHost;
 
         // Input Pins
+        private IEnumIn FPositionType;
+        private IEnumIn FBasingPoint;
         public INodeOut FHttpGuiOut;
 
         public INodeIn FHttpGuiIn;
@@ -49,6 +52,8 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
+
+
         #region abstract Methods
 
         protected abstract void OnSetPluginHost();
@@ -63,6 +68,7 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
+
         #region pin creation
 
         //this method is called by vvvv when the node is created
@@ -70,23 +76,29 @@ namespace VVVV.Nodes.HttpGUI
         {
             //assign host
             FHost = Host;
+            FHost.GetNodePath(false, out mNodePath);
 
-            FHost.GetNodePath(false, out mNodePath); 
 
+            //Input Pins 
             this.FHost.CreateNodeInput("Input GUI", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiIn);
             FHttpGuiIn.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
 
             FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTransformIn);
 
-            FHost.CreateNodeOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiOut);
-            FHttpGuiOut.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
-            FHttpGuiOut.SetInterface(this);
+            FHost.UpdateEnum("PositionType", "absolute", new string[] { "absolute", "fixed ", "relative ", "static " });
+            FHost.CreateEnumInput("Positiontype", TSliceMode.Single, TPinVisibility.True, out FPositionType);
+            FPositionType.SetSubType("PositionType");
 
-            //Input Pins 
+            FHost.UpdateEnum("BasingPoint", "Center", new string[] {"Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight"});
+            FHost.CreateEnumInput("Basing Point", TSliceMode.Single, TPinVisibility.True, out FBasingPoint);
+            FBasingPoint.SetSubType("BasingPoint");
+
             FHost.CreateNodeInput("Input CSS", TSliceMode.Dynamic, TPinVisibility.True, out FHttpStyleIn);
             FHttpStyleIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
 
-           
+            FHost.CreateNodeOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiOut);
+            FHttpGuiOut.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
+            FHttpGuiOut.SetInterface(this);
 
             this.OnSetPluginHost();	    	
         }
@@ -98,6 +110,7 @@ namespace VVVV.Nodes.HttpGUI
         }
 
         #endregion pin creation
+
 
 
 
@@ -142,16 +155,29 @@ namespace VVVV.Nodes.HttpGUI
             //reset the cached reference to the upstream interface when the NodeInput is being disconnected
             if (Pin == FHttpGuiIn)
             {
+
+                for (int i = 0; i < mGuiDataList.Count; i++)
+                {
+                    mGuiDataList[i].GuiUpstreamList = null;
+                }
                 FUpstreamHttpGuiIn = null;
+
+
             }
             else if (Pin == FHttpStyleIn)
             {
+                for (int i = 0; i < mGuiDataList.Count; i++)
+                {
+                    mGuiDataList[i].Transform = null;
+                }
+
                 FUpstreamStyle = null;
             }
 
         }
 
         #endregion NodeIO
+
 
 
 
@@ -166,6 +192,8 @@ namespace VVVV.Nodes.HttpGUI
         }
 
         #endregion
+
+
 
 
 
@@ -211,29 +239,73 @@ namespace VVVV.Nodes.HttpGUI
 
             #region Transform Pin
 
-            if (FTransformIn.PinIsChanged || mChangedSpreadSize)
+            if (FTransformIn.PinIsChanged || FBasingPoint.PinIsChanged ||FPositionType.PinIsChanged || mChangedSpreadSize)
             {
+                string tBasingPoint;
+                FBasingPoint.GetString(0,out tBasingPoint);
+
+                string tPositionType;
+                FPositionType.GetString(0,out tPositionType);
+
                 for (int i = 0; i < SpreadMax; i++)
                 {
                     Matrix4x4 tMatrix;
 
                     FTransformIn.GetMatrix(i, out tMatrix);
 
-                    SortedList<string, string> tTransformSlice = new SortedList<string, string>();
-                    tTransformSlice.Add("position", "absolute");
 
+                    // Position Type
+                    SortedList<string, string> tTransformSlice = new SortedList<string, string>();
+                    tTransformSlice.Add("position", tPositionType);
+
+
+                    //Scale
                     double tWidth = HTMLToolkit.MapScale(tMatrix.m11, 0, 2, 0, 100);
                     double tHeight = HTMLToolkit.MapScale(tMatrix.m22, 0, 2, 0, 100);
 
                     tTransformSlice.Add("width", ReplaceComma(string.Format("{0:0.0}", Math.Round(tWidth, 1)) + "%"));
                     tTransformSlice.Add("height", ReplaceComma(string.Format("{0:0.0}", Math.Round(tHeight, 1)) + "%"));
 
-                    double tTop = HTMLToolkit.MapTransform(tMatrix.m42, 1, -1, 0, 100, tHeight);
-                    double tLeft = HTMLToolkit.MapTransform(tMatrix.m41, -1, 1, 0, 100, tWidth);
+                    //X / Y Position
+                    double tX;
+                    double tY;
 
-                    tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tTop, 1)) + "%"));
-                    tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tLeft, 1)) + "%"));
+                    if (tBasingPoint == "Center")
+                    {
+                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 1, -1, 0, 100, tHeight);
+                        tY = HTMLToolkit.MapTransform(tMatrix.m41, -1, 1, 0, 100, tWidth);
+                    }
+                    else
+                    {
+                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, 2, 0, 100, tHeight);
+                        tY = HTMLToolkit.MapTransform(tMatrix.m41, 2, 0, 0, 100, tWidth);
+                    }
 
+                    if (tBasingPoint == "TopLeft")
+                    {
+                        tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                        tTransformSlice.Add("right", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                    }
+                    else if (tBasingPoint == "TopRight")
+                    {
+                        tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                        tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                    }
+                    else if (tBasingPoint == "BottomLeft")
+                    {
+                        tTransformSlice.Add("bottom", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                        tTransformSlice.Add("right", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                    }
+                    else if (tBasingPoint == "BottomRight")
+                    {
+                        tTransformSlice.Add("bottom", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                        tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                    }
+                    else
+                    {
+                        tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                        tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                    }
 
                     tTransformSlice.Add("z-index", Convert.ToString(Math.Round(tMatrix.m43)));
 
@@ -311,6 +383,8 @@ namespace VVVV.Nodes.HttpGUI
 
 
         #endregion Evaluate
+
+
 
 
 
