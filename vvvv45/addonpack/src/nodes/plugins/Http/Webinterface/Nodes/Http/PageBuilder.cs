@@ -125,17 +125,13 @@ namespace VVVV.Nodes.Http
             mCssBuilder.AddCssSliceList(pGuiObject.SliceId, tCssProperties);
             mCssBuilder.AddNodeId(pGuiObject.NodeId);
 
-            if(pGuiObject.GuiUpstreamList != null)
+            if (pGuiObject.GuiUpstreamList.Count > 0)
             {
-                
 
-                foreach(GuiDataObject pObjekt in pGuiObject.GuiUpstreamList)
+                foreach (GuiDataObject pObjekt in pGuiObject.GuiUpstreamList)
                 {
-                    Tag tTag = BuildHtmlFrame(pObjekt);
-                    pGuiObject.Tag.Insert(tTag);
+                    pGuiObject.Tag.Insert(pObjekt.Tag);
                 }
-
-                
             }
 
             return pGuiObject.Tag;
