@@ -23,6 +23,20 @@ namespace VVVV.Nodes.HttpGUI
         private string mSliceId = "";
         private StringBuilder mHead;
         private StringBuilder mBody;
+        private Tag mTag;
+
+
+        public Tag Tag
+        {
+            get
+            {
+                return mTag;
+            }
+            set
+            {
+                mTag = value;
+            }
+        }
 
 
 
@@ -39,7 +53,6 @@ namespace VVVV.Nodes.HttpGUI
                     return ""; 
                 }
             }
-
         }
 
 
@@ -119,21 +132,25 @@ namespace VVVV.Nodes.HttpGUI
         }
 
 
-        public void AddTag(string pContent, Position pPosition)
+
+        public void AddString(string pContent, Position pPosition, bool Reset)
         {
-            if (pPosition == Position.Head)
+            if (Reset)
             {
                 mHead = new StringBuilder();
+                mBody = new StringBuilder();
+            }
+
+            if (pPosition == Position.Head)
+            {
                 mHead.Append(pContent);
             }
             else
             {
-                mBody = new StringBuilder();
                 mBody.Append(pContent);
             }
         }
 
-       
     }
 
 }

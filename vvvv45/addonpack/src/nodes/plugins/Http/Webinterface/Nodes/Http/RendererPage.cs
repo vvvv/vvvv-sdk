@@ -535,38 +535,28 @@ namespace VVVV.Nodes.Http
                     Page tPage = new Page(true);
 
                     mPageBuilder.UpdateGuiList(mGuiDatenListe);
-
+                    tPage = mPageBuilder.Page;
 
                     //New Builer only ObjectList Input input
                     //JQueryBuilder tJQuery = new JQueryBuilder(mGuiDatenListe, "-1", "-1", mCssPropertiesSpread, mPageName);
                     //mJsFile = tJQuery.JsFile;
 
-                    StringBuilder tCssFile = mPageBuilder.CssMainFile;
-                    tCssFile.Append(mBodyRule.Text);
-
-
-
-                    tPage = mPageBuilder.Page;
-                    tPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
-                
-
-
-
-                    tPage.Body.Insert(mPageBodyString);
-                    tPage.Head.Insert(mPageHeadString);
-
+                    // titel
                     string currentSliceTitel = "";
                     FTitel.GetString(0, out currentSliceTitel);
                     tPage.Head.Insert(new Title(currentSliceTitel));
 
-                    string t = tPage.Text;
-                    FWholeHTML.SetString(0, tPage.Text);
-
-
-                    mCssFile = tCssFile.ToString();
-                    mPage = tPage;
+                    // Css File
+                    StringBuilder tCssFile = mPageBuilder.CssMainFile;
+                    tCssFile.Append(mBodyRule.Text);
+                    tPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
                 
 
+                    //Insert Input Strings
+                    tPage.Body.Insert(mPageBodyString);
+                    tPage.Head.Insert(mPageHeadString);
+
+                    
                     //Communication Type
                     string tCommunicationType;
                     FCommunication.GetString(0, out tCommunicationType);
@@ -579,6 +569,14 @@ namespace VVVV.Nodes.Http
                     {
                         mPage.Body.Insert(JSToolkit.Comet());
                     }
+
+                    //Output whole Page
+                    FWholeHTML.SetString(0, tPage.Text);
+                    
+
+                    //set Field Properties
+                    mCssFile = tCssFile.ToString();
+                    mPage = tPage;
                 
                     
             

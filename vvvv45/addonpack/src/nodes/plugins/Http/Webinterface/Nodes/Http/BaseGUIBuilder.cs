@@ -130,9 +130,6 @@ namespace VVVV.Nodes.Http
         {
 
 
-
-
-
             #region Text
 
             if (pDatenObjekt.Type == "Text")

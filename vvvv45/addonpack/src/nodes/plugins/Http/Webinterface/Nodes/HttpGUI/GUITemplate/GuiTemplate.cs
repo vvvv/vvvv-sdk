@@ -189,10 +189,12 @@ namespace VVVV.Nodes.HttpGUI
             {
                 HtmlDiv tDiv = new HtmlDiv("xy", mGuiDataList[i].SliceId +" " + mGuiDataList[i].NodeId);
 
-                tDiv.Insert("balbla");
+                tDiv.Insert("  ");
 
-                SetBody(i, tDiv.Text);
-                
+                SetBodyContent(i, tDiv.Text);
+
+                SetTag(i, tDiv);
+
             }
         }
 

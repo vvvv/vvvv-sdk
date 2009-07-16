@@ -106,9 +106,6 @@ namespace VVVV.Nodes.Http
 
 
 
-
-
-
         #region constructor/destructor
 
 
@@ -197,7 +194,6 @@ namespace VVVV.Nodes.Http
 
 
 
-
         #region node name and infos
 
         /// <summary>
@@ -212,7 +208,7 @@ namespace VVVV.Nodes.Http
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "Renderer";							//use CamelCaps and no spaces
                 Info.Category = "HTTP";						    //try to use an existing one
-                Info.Version = "Server";						//versions are optional. leave blank if not needed
+                Info.Version = "";						//versions are optional. leave blank if not needed
                 Info.Help = "";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
@@ -240,7 +236,6 @@ namespace VVVV.Nodes.Http
         }
 
         #endregion node name and infos
-
 
 
 
@@ -294,7 +289,6 @@ namespace VVVV.Nodes.Http
 
 
 
-
         #region NodeIO
 
         public void ConnectPin(IPluginIO Pin)
@@ -338,7 +332,6 @@ namespace VVVV.Nodes.Http
             
         }
         #endregion NodeIO
-
 
 
 
@@ -522,7 +515,6 @@ namespace VVVV.Nodes.Http
         }
 
         #endregion mainloop
-
 
 
 

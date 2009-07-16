@@ -237,6 +237,7 @@ namespace VVVV.Nodes.HttpGUI
             #endregion Check Gui List
 
 
+
             #region Transform Pin
 
             if (FTransformIn.PinIsChanged || FBasingPoint.PinIsChanged ||FPositionType.PinIsChanged || mChangedSpreadSize)
@@ -270,39 +271,43 @@ namespace VVVV.Nodes.HttpGUI
                     double tX;
                     double tY;
 
-                    if (tBasingPoint == "Center")
-                    {
-                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 1, -1, 0, 100, tHeight);
-                        tY = HTMLToolkit.MapTransform(tMatrix.m41, -1, 1, 0, 100, tWidth);
-                    }
-                    else
+                    if (tBasingPoint == "BottomRight")
                     {
                         tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, 2, 0, 100, tHeight);
-                        tY = HTMLToolkit.MapTransform(tMatrix.m41, 2, 0, 0, 100, tWidth);
-                    }
+                        tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, -2, 0, 100, tWidth);
 
-                    if (tBasingPoint == "TopLeft")
-                    {
-                        tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                        tTransformSlice.Add("bottom", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
                         tTransformSlice.Add("right", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
                     }
                     else if (tBasingPoint == "TopRight")
                     {
+                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, -2, 0, 100, tHeight);
+                        tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, -2, 0, 100, tWidth);
+
                         tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
-                        tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                        tTransformSlice.Add("right", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
                     }
                     else if (tBasingPoint == "BottomLeft")
                     {
+                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, 2, 0, 100, tHeight);
+                        tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, 2, 0, 100, tWidth);
+
                         tTransformSlice.Add("bottom", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
-                        tTransformSlice.Add("right", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                        tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
                     }
-                    else if (tBasingPoint == "BottomRight")
+                    else if (tBasingPoint == "TopLeft")
                     {
-                        tTransformSlice.Add("bottom", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, -2, 0, 100, tHeight);
+                        tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, 2, 0, 100, tWidth);
+
+                        tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
                         tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
                     }
                     else
                     {
+                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 1, -1, 0, 100, tHeight);
+                        tY = HTMLToolkit.MapTransform(tMatrix.m41, -1, 1, 0, 100, tWidth);
+
                         tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
                         tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
                     }
@@ -393,12 +398,6 @@ namespace VVVV.Nodes.HttpGUI
         #region Node Information
 
 
-        public void SetBody(int pSliceIndex, string pContent)
-        {
-            mGuiDataList[pSliceIndex].AddTag(pContent, GuiDataObject.Position.Body);
-        }
-
-
         public string ReplaceComma(string tParameter)
         {
             return tParameter.Replace(",", ".");
@@ -425,7 +424,29 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
+        #region Add to GuiDataObject
 
+
+
+        public void SetBodyContent(int pSliceIndex, string pContent)
+        {
+            mGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.Body, true);
+        }
+
+
+
+        public void SetHeadContent(int pSliceIndex, string pContent)
+        {
+            mGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.Head, true);
+        }
+
+
+        public void SetTag(int pSliceIndex, Tag pTag)
+        {
+            mGuiDataList[pSliceIndex].Tag = pTag;
+        }
+
+        #endregion Add to GuiDataObject
 
 
     }

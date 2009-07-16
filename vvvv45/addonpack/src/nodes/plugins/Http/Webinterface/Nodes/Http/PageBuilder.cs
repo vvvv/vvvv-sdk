@@ -14,16 +14,8 @@ namespace VVVV.Nodes.Http
 
 
         private Page mPage;
-
-
-        public List<string> mCssRules = new List<string>();
-        public SortedList<string,string> mFirstSlice = new SortedList<string,string>();
-        public string mFirstSliceName = "";
-        SortedList<string, string> mNodeCss = new SortedList<string, string>();
         public SortedList<string, string> mJsFile = new SortedList<string, string>();
-        
-       
-        private string mActuallNodeId;
+        private CssBuilder mCssBuilder = new CssBuilder();
 
         public Page Page
         {
@@ -53,15 +45,16 @@ namespace VVVV.Nodes.Http
         {
             get
             {
-                mCssRules.Add(BuildFirstSlice());
-                StringBuilder tCssFile = new StringBuilder();
-                mCssRules.Add(BuildNodeRule());
+                //mCssRules.Add(BuildFirstSlice());
+                //StringBuilder tCssFile = new StringBuilder();
+                //mCssRules.Add(BuildNodeRule());
 
-                foreach (string pPair in mCssRules)
-                {
-                    tCssFile.Append(pPair + Environment.NewLine);
-                }
-                return tCssFile;
+                //foreach (string pPair in mCssRules)
+                //{
+                //    tCssFile.Append(pPair + Environment.NewLine);
+                //}
+
+                return mCssBuilder.CssFile;
             }
         }
 
@@ -93,11 +86,13 @@ namespace VVVV.Nodes.Http
 
         public void UpdateGuiList(List<GuiDataObject> pGuiElemente)
         {
+
+            // Reset everything
             mPage = new Page(true);
-            mActuallNodeId = "";
-            mNodeCss.Clear();
-            mCssRules.Clear();
             mJsFile.Clear();
+            mCssBuilder.Reset();
+
+            //Build
             Build(pGuiElemente);
         }
 
@@ -107,128 +102,47 @@ namespace VVVV.Nodes.Http
 
             foreach (GuiDataObject pElement in pGuiElemente)
             {
+                Tag tBody = BuildHtmlFrame(pElement);
+                mPage.Body.Insert(tBody);
+                //CreateCssRule(tCssProperties,pElement.NodeId, pElement.SliceId);
+            }
 
-                if (pElement.GuiUpstreamList != null)
-                {
-                    Build(pElement.GuiUpstreamList);
-                }
-                                
+
+        }
+
+
+        public Tag BuildHtmlFrame(GuiDataObject pGuiObject)
+        {
+
+            SortedList<string, string> tTransform = new SortedList<string, string>(pGuiObject.Transform);
+            SortedList<string, string> tCssProperties = new SortedList<string, string>(pGuiObject.CssProperties);
+
+            foreach (KeyValuePair<string, string> KeyPair in tTransform)
+            {
+                tCssProperties.Add(KeyPair.Key, KeyPair.Value);
+            }
+
+            mCssBuilder.AddCssSliceList(pGuiObject.SliceId, tCssProperties);
+            mCssBuilder.AddNodeId(pGuiObject.NodeId);
+
+            if(pGuiObject.GuiUpstreamList != null)
+            {
                 
-                mPage.Head.Insert(pElement.Head);
-                mPage.Body.Insert(pElement.Body);
 
-                SortedList<string, string> tTransform = new SortedList<string,string>(pElement.Transform);
-                SortedList<string, string> tCssProperties = new SortedList<string,string>(pElement.CssProperties);
-
-                foreach (KeyValuePair<string, string> KeyPair in tTransform)
+                foreach(GuiDataObject pObjekt in pGuiObject.GuiUpstreamList)
                 {
-                    tCssProperties.Add(KeyPair.Key, KeyPair.Value);
-
+                    Tag tTag = BuildHtmlFrame(pObjekt);
+                    pGuiObject.Tag.Insert(tTag);
                 }
 
-                CreateCssRule(tCssProperties,pElement.NodeId, pElement.SliceId);
+                
             }
+
+            return pGuiObject.Tag;
         }
 
 
-        private void CreateCssRule(SortedList<string,string> pProperties, string pNodeId,string pSliceID)
-        {
-
-            if (pNodeId != mActuallNodeId)
-            {
-                if (mNodeCss.Count == 0)
-                {
-                    mActuallNodeId = pNodeId;
-                    mFirstSlice = pProperties;
-                    mFirstSliceName = pSliceID;
-                    return;
-                }
-            }
-            else
-            {
-                SortedList<string, string> tCleanList;
-
-                if (mNodeCss.Count == 0)
-                {
-                    tCleanList = compareLists(pProperties, mFirstSlice);
-                }
-                else
-                {
-                    tCleanList = compareLists(pProperties, mNodeCss);
-                }
-
-
-                Rule tSliceCss = new Rule(pSliceID + "." + pNodeId, Rule.SelectorType.Class);
-
-                foreach (KeyValuePair<string, string> pPair in tCleanList)
-                {
-                    tSliceCss.AddProperty(new Property(pPair.Key, pPair.Value));
-                }
-
-                mCssRules.Add(tSliceCss.Text);
-            }
-
-
-
-            
-        }
-
-
-        private SortedList<string,string> compareLists(SortedList<string,string> pListToClean, SortedList<string,string> pReferenzList)
-        {
-            SortedList<string, string> tCleanList = new SortedList<string, string>(pListToClean);
-
-            foreach (KeyValuePair<string, string> pPair in pListToClean)
-            {
-                if (pReferenzList.ContainsKey(pPair.Key))
-                {
-                    if (pReferenzList[pPair.Key] == pPair.Value)
-                    {
-                        if(mNodeCss.ContainsKey(pPair.Key) == false)
-                        {
-                           mNodeCss.Add(pPair.Key, pPair.Value);
-                        }
-
-                        tCleanList.Remove(pPair.Key);
-                    }
-                }
-                else
-                {
-                    
-                }
-            }
-            return tCleanList;
-        }
-
-
-        private string BuildNodeRule()
-        {
-            Rule tNodeRule = new Rule(mActuallNodeId, Rule.SelectorType.Class);
-
-            foreach (KeyValuePair<string, string> pPair in mNodeCss)
-            {
-                tNodeRule.AddProperty(new Property(pPair.Key, pPair.Value));
-
-            }
-
-            return tNodeRule.Text;
-        }
-
-
-        private string BuildFirstSlice()
-        {
-             Rule tFirstSlice = new Rule(mFirstSliceName + "." + mActuallNodeId, Rule.SelectorType.Class);
-
-            SortedList<string, string> tCleanList = compareLists(mFirstSlice, mNodeCss);
-
-            foreach (KeyValuePair<string, string> pPair in tCleanList)
-            {
-                tFirstSlice.AddProperty(new Property(pPair.Key, pPair.Value));
-
-            }
-
-            return tFirstSlice.Text;
-        }
+  
 
     }
 }
