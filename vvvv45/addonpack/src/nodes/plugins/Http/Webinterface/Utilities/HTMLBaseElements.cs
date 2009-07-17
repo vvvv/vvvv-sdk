@@ -163,6 +163,15 @@ namespace VVVV.Webinterface.Utilities
         }
 
 
+        public List<Tag> TagsInside
+        {
+            get
+            {
+                return m_Tags;
+            }
+        }
+
+
 
 		public Tag()
 		{
