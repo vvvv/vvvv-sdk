@@ -11,7 +11,7 @@ namespace VVVV.Nodes.Http
     {
 
 
-        private StringBuilder mCssFile;
+        private StringBuilder mCssFile = new StringBuilder();
         private SortedList<string, SortedList<string,string>> mCssSliceLists = new SortedList<string,SortedList<string,string>>();
 
 
@@ -20,7 +20,7 @@ namespace VVVV.Nodes.Http
         public SortedList<string, string> mFirstSlice = new SortedList<string, string>();
         public string mFirstSliceName = "";
         SortedList<string, string> mNodeCss = new SortedList<string, string>();
-        
+        private bool mStartFlag = true;
 
 
         private string mActuallNodeId;
@@ -29,17 +29,13 @@ namespace VVVV.Nodes.Http
         {
             get
             {
-                Build();
-
-
-
                 return mCssFile;
             }
         }
 
         public void Reset()
         {
-            mCssFile = new StringBuilder();
+            mCssFile.Remove(0, mCssFile.Length);
             mCssSliceLists.Clear();
             mNodeIds.Clear();
             mCssRules.Clear();
@@ -47,6 +43,7 @@ namespace VVVV.Nodes.Http
             mFirstSliceName = "";
             mNodeCss.Clear();
             mNodeIds.Clear();
+            mStartFlag = true;
         }
 
 
@@ -68,7 +65,7 @@ namespace VVVV.Nodes.Http
 
         }
 
-        private void Build()
+        public void Build()
         {
             foreach (KeyValuePair<string, SortedList<string, string>> pKeyPair in mCssSliceLists)
             {
@@ -95,8 +92,9 @@ namespace VVVV.Nodes.Http
 
             if (pNodeId != mActuallNodeId)
             {
-                if (mNodeCss.Count == 0)
+                if (mStartFlag)
                 {
+                    mStartFlag = false;
                     mActuallNodeId = pNodeId;
                     mFirstSlice = pProperties;
                     mFirstSliceName = pSliceID;
@@ -173,12 +171,15 @@ namespace VVVV.Nodes.Http
         {
             Rule tNodeRule = new Rule(mActuallNodeId, Rule.SelectorType.Class);
 
-            foreach (KeyValuePair<string, string> pPair in mNodeCss)
+
+            if (mNodeCss.Count > 0)
             {
-                tNodeRule.AddProperty(new Property(pPair.Key, pPair.Value));
+                foreach (KeyValuePair<string, string> pPair in mNodeCss)
+                {
+                    tNodeRule.AddProperty(new Property(pPair.Key, pPair.Value));
 
+                }
             }
-
             return tNodeRule.Text;
         }
 

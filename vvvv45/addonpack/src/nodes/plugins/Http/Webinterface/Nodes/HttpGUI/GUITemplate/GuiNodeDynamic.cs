@@ -231,7 +231,7 @@ namespace VVVV.Nodes.HttpGUI
                 mSpreadMax = SpreadMax;
             }
 
-            mGuiDataList.TrimExcess();
+            
 
 
             #endregion Check Gui List
@@ -376,7 +376,7 @@ namespace VVVV.Nodes.HttpGUI
 
             this.OnEvaluate(SpreadMax);
 
-            FHttpGuiOut.SliceCount = SpreadMax;
+            //FHttpGuiOut.SliceCount = SpreadMax;
 
             if (mSpreadMax == SpreadMax)
             {

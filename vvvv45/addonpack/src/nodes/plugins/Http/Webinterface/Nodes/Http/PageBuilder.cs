@@ -16,6 +16,8 @@ namespace VVVV.Nodes.Http
         private Page mPage;
         public SortedList<string, string> mJsFile = new SortedList<string, string>();
         private CssBuilder mCssBuilder = new CssBuilder();
+        private List<string> TestList = new List<string>();
+        private Body mBody = new Body();
 
         public Page Page
         {
@@ -45,15 +47,6 @@ namespace VVVV.Nodes.Http
         {
             get
             {
-                //mCssRules.Add(BuildFirstSlice());
-                //StringBuilder tCssFile = new StringBuilder();
-                //mCssRules.Add(BuildNodeRule());
-
-                //foreach (string pPair in mCssRules)
-                //{
-                //    tCssFile.Append(pPair + Environment.NewLine);
-                //}
-
                 return mCssBuilder.CssFile;
             }
         }
@@ -88,53 +81,80 @@ namespace VVVV.Nodes.Http
         {
 
             // Reset everything
-            mPage = new Page(true);
+            mPage = null;
+            mBody = null;
+            mPage = new Page(false);
+            mBody = new Body();
+
             mJsFile.Clear();
             mCssBuilder.Reset();
+            TestList.Clear();
 
             //Build
-            Build(pGuiElemente);
+            mPage.Insert((Body) BuildHtmlFrame(pGuiElemente, mBody));
+            mCssBuilder.Build();
         }
 
 
         public void Build(List<GuiDataObject> pGuiElemente)
         {
 
-            foreach (GuiDataObject pElement in pGuiElemente)
-            {
-                Tag tBody = BuildHtmlFrame(pElement);
-                mPage.Body.Insert(tBody);
-                //CreateCssRule(tCssProperties,pElement.NodeId, pElement.SliceId);
-            }
+
+            
+            //foreach (GuiDataObject pElement in pGuiElemente)
+            //{
+            //    mPage.Body.Insert(BuildHtmlFrame(pElement));
+            //    //CreateCssRule(tCssProperties,pElement.NodeId, pElement.SliceId);
+            //}
 
 
         }
 
 
-        public Tag BuildHtmlFrame(GuiDataObject pGuiObject)
+        public Tag BuildHtmlFrame(List<GuiDataObject> pGuiObjectIn, Tag tTag)
         {
 
-            SortedList<string, string> tTransform = new SortedList<string, string>(pGuiObject.Transform);
-            SortedList<string, string> tCssProperties = new SortedList<string, string>(pGuiObject.CssProperties);
+            foreach (GuiDataObject pElement in pGuiObjectIn)
+            {
+                AddCssPropertiesToBuilder(pElement);
+                tTag.Insert(pElement.Tag);
+
+                if (pElement.GuiUpstreamList != null)
+                {
+                    BuildHtmlFrame(pElement.GuiUpstreamList, pElement.Tag);
+                }
+
+
+
+            }
+
+            return tTag;
+    
+        }
+
+        private void AddCssPropertiesToBuilder(GuiDataObject pObject)
+        {
+            SortedList<string, string> tTransform = new SortedList<string, string>();
+
+            if (pObject.Transform != null)
+            {
+                tTransform = new SortedList<string, string>(pObject.Transform);
+            }
+
+            SortedList<string, string> tCssProperties = new SortedList<string, string>();
+            if (pObject.CssProperties != null)
+            {
+                tCssProperties = new SortedList<string, string>(pObject.CssProperties);
+            }
 
             foreach (KeyValuePair<string, string> KeyPair in tTransform)
             {
                 tCssProperties.Add(KeyPair.Key, KeyPair.Value);
             }
 
-            mCssBuilder.AddCssSliceList(pGuiObject.SliceId, tCssProperties);
-            mCssBuilder.AddNodeId(pGuiObject.NodeId);
-
-            if (pGuiObject.GuiUpstreamList.Count > 0)
-            {
-
-                foreach (GuiDataObject pObjekt in pGuiObject.GuiUpstreamList)
-                {
-                    pGuiObject.Tag.Insert(pObjekt.Tag);
-                }
-            }
-
-            return pGuiObject.Tag;
+            mCssBuilder.AddCssSliceList(pObject.SliceId, tCssProperties);
+            TestList.Add(pObject.SliceId);
+            mCssBuilder.AddNodeId(pObject.NodeId);
         }
 
 

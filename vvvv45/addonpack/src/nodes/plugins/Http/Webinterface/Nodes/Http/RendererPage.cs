@@ -547,8 +547,7 @@ namespace VVVV.Nodes.Http
                     tPage.Head.Insert(new Title(currentSliceTitel));
 
                     // Css File
-                    StringBuilder tCssFile = mPageBuilder.CssMainFile;
-                    tCssFile.Append(mBodyRule.Text);
+                    //mPageBuilder.CssMainFile.Append(mBodyRule.Text);
                     tPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
                 
 
@@ -575,7 +574,7 @@ namespace VVVV.Nodes.Http
                     
 
                     //set Field Properties
-                    mCssFile = tCssFile.ToString();
+                    mCssFile = mPageBuilder.CssMainFile.ToString() + Environment.NewLine + mBodyRule.Text;
                     mPage = tPage;
                 
                     

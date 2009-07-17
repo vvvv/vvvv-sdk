@@ -17,7 +17,7 @@ namespace VVVV.Nodes.HttpGUI
 
 
         private SortedList<string, string> mCssProperties = new SortedList<string, string>();
-        private List<GuiDataObject> mGuiUpstreamList = new List<GuiDataObject>();
+        private List<GuiDataObject> mGuiUpstreamList;
         private SortedList<string,string> mTransform = new SortedList<string,string>();
         private string mNodeId = "";
         private string mSliceId = "";
