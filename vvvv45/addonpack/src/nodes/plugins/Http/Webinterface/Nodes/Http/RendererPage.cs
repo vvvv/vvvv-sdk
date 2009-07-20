@@ -74,6 +74,7 @@ namespace VVVV.Nodes.Http
         private IEnumIn FCommunication;
         private IValueIn FPageWidth;
         private IValueIn FPageHeight;
+        private IValueIn FBuild;
 
         private INodeIn FHttpGuiIn;
         private IHttpGUIIO FUpstreamInterface;
@@ -106,6 +107,7 @@ namespace VVVV.Nodes.Http
         private string mJsFile = String.Empty;
         PageBuilder mPageBuilder = new PageBuilder();
         private Rule mBodyRule;
+        private bool mChangedList = true; 
 
 
         #endregion field declaration
@@ -277,6 +279,10 @@ namespace VVVV.Nodes.Http
             FHost.CreateNodeInput("CSS", TSliceMode.Dynamic, TPinVisibility.True, out FCssPropertiesIn);
             FCssPropertiesIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
 
+            FHost.CreateValueInput("Build",1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBuild);
+            FBuild.SetSubType(0, 1, 1, 0, true, false, true);
+            
+
             FHost.CreateValueInput("Browser Width", 1, null, TSliceMode.Single, TPinVisibility.True, out FPageWidth);
             FPageWidth.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
 
@@ -285,6 +291,7 @@ namespace VVVV.Nodes.Http
 
             FHost.CreateValueInput("Reload Browser", 1, null, TSliceMode.Single, TPinVisibility.True, out FReload);
             FReload.SetSubType(0, 1, 1, 0, true, false, true);
+
 
             FHost.UpdateEnum("Communication", "Manual", new string[] { "Manual", "Polling", "Comet" });
             FHost.CreateEnumInput("Communication", TSliceMode.Single, TPinVisibility.True, out FCommunication);
@@ -413,11 +420,13 @@ namespace VVVV.Nodes.Http
             //Saves the incoming Html Slices
             if (FUpstreamInterface != null)
             {
-                mGuiDatenListe.Clear();
+                
 
                 List<GuiDataObject> tGuiDaten;
                 FUpstreamInterface.GetDatenObjekt(0, out tGuiDaten);
+                mGuiDatenListe.Clear();
                 mGuiDatenListe = tGuiDaten;
+                
             }
 
 
@@ -531,7 +540,13 @@ namespace VVVV.Nodes.Http
 
             #region Build Page
 
+            if (FBuild.PinIsChanged)
+            {
+                double bang;
+                FBuild.GetValue(0, out bang);
 
+                if (bang > 0.5)
+                {
                     Page tPage = new Page(true);
 
                     mPageBuilder.UpdateGuiList(mGuiDatenListe);
@@ -549,33 +564,35 @@ namespace VVVV.Nodes.Http
                     // Css File
                     //mPageBuilder.CssMainFile.Append(mBodyRule.Text);
                     tPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
-                
+
 
                     //Insert Input Strings
                     tPage.Body.Insert(mPageBodyString);
                     tPage.Head.Insert(mPageHeadString);
 
-                    
+
                     //Communication Type
                     string tCommunicationType;
                     FCommunication.GetString(0, out tCommunicationType);
                     if (tCommunicationType == "Polling")
                     {
-                        mPage.Head.Insert(JSToolkit.Polling("100", "'HIer sollte ein XML stehen :-)'"));
+                        tPage.Head.Insert(JSToolkit.Polling("100", "'HIer sollte ein XML stehen :-)'"));
 
                     }
                     else if (tCommunicationType == "Comet")
                     {
-                        mPage.Body.Insert(JSToolkit.Comet());
+                        tPage.Body.Insert(JSToolkit.Comet());
                     }
 
                     //Output whole Page
                     FWholeHTML.SetString(0, tPage.Text);
-                    
+
 
                     //set Field Properties
                     mCssFile = mPageBuilder.CssMainFile.ToString() + Environment.NewLine + mBodyRule.Text;
                     mPage = tPage;
+                }
+            }
                 
                     
             

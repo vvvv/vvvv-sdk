@@ -187,7 +187,7 @@ namespace VVVV.Nodes.HttpGUI
 
             for (int i = 0; i < SpreadMax; i++)
             {
-                HtmlDiv tDiv = new HtmlDiv("xy", mGuiDataList[i].SliceId +" " + mGuiDataList[i].NodeId);
+                HtmlDiv tDiv = new HtmlDiv(mGuiDataList[i].SliceId, mGuiDataList[i].SliceId + " " + mGuiDataList[i].NodeId);
 
                 tDiv.Insert("  ");
 

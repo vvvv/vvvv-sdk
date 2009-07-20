@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+using System.Diagnostics;
 using VVVV.Nodes.HttpGUI;
 using VVVV.Webinterface.Utilities;
 
@@ -18,6 +19,7 @@ namespace VVVV.Nodes.Http
         private CssBuilder mCssBuilder = new CssBuilder();
         private List<string> TestList = new List<string>();
         private Body mBody = new Body();
+        private SortedList<string, Tag> mTags = new SortedList<string, Tag>();
 
         public Page Page
         {
@@ -81,17 +83,18 @@ namespace VVVV.Nodes.Http
         {
 
             // Reset everything
+            //mPage.Body = null;
+            //mPage.Head = null;
             mPage = null;
-            mBody = null;
-            mPage = new Page(false);
-            mBody = new Body();
+            mPage = new Page(true);
 
             mJsFile.Clear();
             mCssBuilder.Reset();
             TestList.Clear();
+            mTags.Clear();
 
             //Build
-            mPage.Insert((Body) BuildHtmlFrame(pGuiElemente, mBody));
+            mPage.Body  = (Body) BuildHtmlFrame(pGuiElemente, mPage.Body);
             mCssBuilder.Build();
         }
 
@@ -114,22 +117,43 @@ namespace VVVV.Nodes.Http
         public Tag BuildHtmlFrame(List<GuiDataObject> pGuiObjectIn, Tag tTag)
         {
 
+            Debug.WriteLine("------------ Enter BuildHtmlFrame -------------");
+            Debug.WriteLine("pGuiObjectIn.Count: " + pGuiObjectIn.Count.ToString());
+            
+
             foreach (GuiDataObject pElement in pGuiObjectIn)
             {
-                AddCssPropertiesToBuilder(pElement);
-                tTag.Insert(pElement.Tag);
+                Debug.WriteLine("---------------- Enter foreachSchleife-----------------");
+                Debug.WriteLine("SliceId: " + pElement.SliceId);
+                Debug.WriteLine("tTag.Level: " + tTag.Level);
+                Debug.WriteLine("tTag.Name: " + tTag.Name);
 
-                if (pElement.GuiUpstreamList != null)
+                
+                if (mTags.ContainsKey(pElement.SliceId) == false)
                 {
-                    BuildHtmlFrame(pElement.GuiUpstreamList, pElement.Tag);
+                    mTags.Add(pElement.SliceId, pElement.Tag);
+                    AddCssPropertiesToBuilder(pElement);
+
+                    if (pElement.GuiUpstreamList != null)
+                    {
+                        AddCssPropertiesToBuilder(pElement);
+                        tTag.Insert(BuildHtmlFrame(pElement.GuiUpstreamList, pElement.Tag));
+                    }
+                    else
+                    {
+                        tTag.Insert(pElement.Tag);
+                    }
                 }
-
-
-
+                else
+                {
+                    Tag tDummyTag;
+                    mTags.TryGetValue(pElement.SliceId, out tDummyTag);
+                    tTag.Insert(tDummyTag);
+                }
             }
 
+            Debug.WriteLine("tTag: " + tTag.Text + Environment.NewLine);
             return tTag;
-    
         }
 
         private void AddCssPropertiesToBuilder(GuiDataObject pObject)
