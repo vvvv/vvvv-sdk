@@ -93,9 +93,6 @@ namespace VVVV.Nodes.HttpGUI.Datenobjekte
 
 
 
-
-
-
     class DatenGuiContainer : BaseDatenObjekt
     {
         public DatenGuiContainer(string pId, string pType, int pSliceNumber)

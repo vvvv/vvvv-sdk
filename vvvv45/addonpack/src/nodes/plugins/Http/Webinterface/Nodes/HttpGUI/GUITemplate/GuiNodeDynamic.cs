@@ -42,7 +42,7 @@ namespace VVVV.Nodes.HttpGUI
         //Required Members
         public List<GuiDataObject> mGuiDataList = new List<GuiDataObject>();
         public int mSpreadMax = 0;
-        private bool mChangedSpreadSize = true; 
+        public bool mChangedSpreadSize = true; 
         private string mNodePath;
 
         #endregion field Definition
@@ -327,14 +327,17 @@ namespace VVVV.Nodes.HttpGUI
             int usSGuiIn;
             if (FUpstreamHttpGuiIn != null)
             {
-                for (int i = 0; i < SpreadMax; i++)
+                if (mChangedSpreadSize)
                 {
-                    //get upstream slice index
-                    FHttpGuiIn.GetUpsreamSlice(i, out usSGuiIn);
+                    for (int i = 0; i < SpreadMax; i++)
+                    {
+                        //get upstream slice index
+                        FHttpGuiIn.GetUpsreamSlice(i, out usSGuiIn);
 
-                    List<GuiDataObject> tGuiList;
-                    FUpstreamHttpGuiIn.GetDatenObjekt(0, out tGuiList);
-                    mGuiDataList[i].GuiUpstreamList = tGuiList;
+                        List<GuiDataObject> tGuiList;
+                        FUpstreamHttpGuiIn.GetDatenObjekt(0, out tGuiList);
+                        mGuiDataList[i].GuiUpstreamList = tGuiList;
+                    }
                 }
             }
 
@@ -371,12 +374,9 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-
-
-
             this.OnEvaluate(SpreadMax);
 
-            //FHttpGuiOut.SliceCount = SpreadMax;
+            FHttpGuiOut.SliceCount = SpreadMax;
 
             if (mSpreadMax == SpreadMax)
             {
@@ -424,6 +424,10 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
+
+
+
+
         #region Add to GuiDataObject
 
 
@@ -444,6 +448,12 @@ namespace VVVV.Nodes.HttpGUI
         public void SetTag(int pSliceIndex, Tag pTag)
         {
             mGuiDataList[pSliceIndex].Tag = pTag;
+        }
+
+
+        public void SetJavaScript(int pSliceIndex, string pContent)
+        {
+            mGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.JavaScript, true);
         }
 
         #endregion Add to GuiDataObject

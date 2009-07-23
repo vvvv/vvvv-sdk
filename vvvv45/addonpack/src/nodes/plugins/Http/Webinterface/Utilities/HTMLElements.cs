@@ -498,9 +498,17 @@ namespace VVVV.Webinterface.Utilities
 			Insert(new JavaFunction(pFunctionName, pFunction));
         }
 
+        public JavaScript(JqueryFunction tJquery)
+        {
+            Name = "script";
+            Insert(tJquery.Text);
+
+        }
+
         public void AddVar(string pName, string pValue)
         {
             Insert("var " + pName + " = " + pValue + ";");
+
         }
     }
 
@@ -516,6 +524,37 @@ namespace VVVV.Webinterface.Utilities
             Text = "function " + pFunctionName + "(" + pParameter + ") {" + Environment.NewLine + pFunction + Environment.NewLine + "}";
         }
     }
+
+
+    public class JqueryFunction : Tag
+    {
+        public JqueryFunction(bool pOnDocumentReady, string pSelector,string pEventType, string pFunctionContent)
+        {
+            if(pOnDocumentReady)
+            {
+
+                string tText = @" $(document).ready(function(){{
+                   $('{0}').{1}(function(event){{
+                     {2}
+                   }});
+                 }});";
+
+                Text = String.Format(tText, pSelector, pEventType, pFunctionContent);
+            }
+            else
+            {
+                string tText =@"$('{0}').{1}(function(event){{
+                                {{2}}
+                              }});";
+
+                Text = String.Format(tText, pSelector, pEventType, pFunctionContent);
+            }
+            
+            
+        }
+    }
+
+
 
     class Paragraph : Tag
     {

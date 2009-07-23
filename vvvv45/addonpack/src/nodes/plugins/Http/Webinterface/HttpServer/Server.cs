@@ -400,11 +400,11 @@ namespace VVVV.Webinterface.HttpServer {
                             RemoveSocket(state);
                             Interlocked.Decrement(ref sockCount);
                         }
-                        else if(state.RequestObject.FileName == "dummy.html" && state.ClientSocket.Connected == false)
-                        {
-                            RemoveSocket(state);
-                            Interlocked.Decrement(ref sockCount);
-                        }
+                        //else if(state.RequestObject.FileName == "dummy.html" && state.ClientSocket.Connected == false)
+                        //{
+                        //    RemoveSocket(state);
+                        //    Interlocked.Decrement(ref sockCount);
+                        //}
                     }
                 }
                 Monitor.Exit(connectedSocks);

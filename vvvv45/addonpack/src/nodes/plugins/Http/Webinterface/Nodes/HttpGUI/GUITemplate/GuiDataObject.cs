@@ -11,7 +11,8 @@ namespace VVVV.Nodes.HttpGUI
         public enum Position
         {
             Head = 0,
-            Body = 0,
+            Body = 1,
+            JavaScript = 2,
         }
 
 
@@ -24,6 +25,8 @@ namespace VVVV.Nodes.HttpGUI
         private StringBuilder mHead;
         private StringBuilder mBody;
         private Tag mTag;
+        private StringBuilder mJavaScript;
+
 
 
         public Tag Tag
@@ -52,6 +55,14 @@ namespace VVVV.Nodes.HttpGUI
                 {
                     return ""; 
                 }
+            }
+        }
+
+        public StringBuilder JavaScript
+        {
+            get
+            {
+                return mJavaScript;
             }
         }
 
@@ -139,15 +150,19 @@ namespace VVVV.Nodes.HttpGUI
             {
                 mHead = new StringBuilder();
                 mBody = new StringBuilder();
+                mJavaScript = new StringBuilder();
             }
 
             if (pPosition == Position.Head)
             {
                 mHead.Append(pContent);
             }
-            else
+            else if(pPosition == Position.Body)
             {
                 mBody.Append(pContent);
+            }else if(pPosition == Position.JavaScript)
+            {
+                mJavaScript.Append(pContent);
             }
         }
 

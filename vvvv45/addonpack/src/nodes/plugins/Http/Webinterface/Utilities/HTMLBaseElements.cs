@@ -35,7 +35,7 @@ namespace VVVV.Webinterface.Utilities
 
 				string tValueText = "";
 
-				foreach (string tValue in Values)
+           		foreach (string tValue in Values)
 					tValueText += tValue;
 
 				return tText.Replace("value", tValueText);

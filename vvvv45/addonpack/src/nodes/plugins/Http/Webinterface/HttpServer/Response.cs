@@ -91,7 +91,7 @@ namespace VVVV.Webinterface.HttpServer
                 {
                     mimeType = regKey.GetValue("Content Type").ToString();
                 }
-                else if (ext == ".js")
+                else if (ext == "js")
                 {
                     mimeType = "application/x-javascript";
                 }

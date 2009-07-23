@@ -548,22 +548,20 @@ namespace VVVV.Nodes.Http
                 if (bang > 0.5)
                 {
                     Page tPage = new Page(true);
-
-                    mPageBuilder.UpdateGuiList(mGuiDatenListe);
-                    tPage = mPageBuilder.Page;
-
-                    //New Builer only ObjectList Input input
-                    //JQueryBuilder tJQuery = new JQueryBuilder(mGuiDatenListe, "-1", "-1", mCssPropertiesSpread, mPageName);
-                    //mJsFile = tJQuery.JsFile;
-
                     // titel
                     string currentSliceTitel = "";
                     FTitel.GetString(0, out currentSliceTitel);
                     tPage.Head.Insert(new Title(currentSliceTitel));
 
                     // Css File
-                    //mPageBuilder.CssMainFile.Append(mBodyRule.Text);
+                    
+                    
+
                     tPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
+                    tPage.Head.Insert(new JavaScript("jquery.js"));
+                    tPage.Head.Insert(new JavaScript(mPageName + ".js"));
+
+                    mPageBuilder.UpdateGuiList(mGuiDatenListe, tPage);
 
 
                     //Insert Input Strings
@@ -590,6 +588,7 @@ namespace VVVV.Nodes.Http
 
                     //set Field Properties
                     mCssFile = mPageBuilder.CssMainFile.ToString() + Environment.NewLine + mBodyRule.Text;
+                    mJsFile = mPageBuilder.JsFile.ToString();
                     mPage = tPage;
                 }
             }
@@ -615,7 +614,7 @@ namespace VVVV.Nodes.Http
                 string tBrowserHeight = "" + Math.Round(currentHeightSlice);
 
 
-                if (currentWidthSlice != -1 || currentHeightSlice != -1)
+                if ((currentWidthSlice != -1 || currentHeightSlice != -1) && mPage != null)
                 {
                     mPage.Head.Insert(JSToolkit.ResizeBrowser(currentWidthSlice.ToString(),currentHeightSlice.ToString()));
                     

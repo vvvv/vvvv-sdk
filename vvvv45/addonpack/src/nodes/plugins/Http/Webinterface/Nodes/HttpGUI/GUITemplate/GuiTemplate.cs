@@ -101,6 +101,7 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
+
         #region Pugin Information
 
         public static IPluginInfo FPluginInfo;
@@ -158,6 +159,7 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
+
         #region pin creation
 
         protected override void OnSetPluginHost()
@@ -172,6 +174,7 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
+
         #region Config
 
         // override the public void Configurate(IPluginConfig Input) Plugin Method with the new attribute if needed in this Node
@@ -180,20 +183,28 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
+
         #region Main Loop
+
+
 
         protected override void OnEvaluate(int SpreadMax)
         {
-
-            for (int i = 0; i < SpreadMax; i++)
+            if (mChangedSpreadSize)
             {
-                HtmlDiv tDiv = new HtmlDiv(mGuiDataList[i].SliceId, mGuiDataList[i].SliceId + " " + mGuiDataList[i].NodeId);
+                for (int i = 0; i < SpreadMax; i++)
+                {
+                    HtmlDiv tDiv = new HtmlDiv(mGuiDataList[i].SliceId, mGuiDataList[i].SliceId + " " + mGuiDataList[i].NodeId);
 
-                tDiv.Insert("  ");
+                    tDiv.Insert("  ");
 
-                SetBodyContent(i, tDiv.Text);
+                    SetBodyContent(i, tDiv.Text);
 
-                SetTag(i, tDiv);
+                    SetTag(i, tDiv);
+                }
+
+                string tContent = "$(this).css('border','3px solid red');";
+               SetJavaScript(0, new JqueryFunction(true, "." + mGuiDataList[0].NodeId, "click", tContent).Text);
 
             }
         }

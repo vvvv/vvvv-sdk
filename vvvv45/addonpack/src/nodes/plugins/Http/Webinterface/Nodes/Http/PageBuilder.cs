@@ -15,7 +15,8 @@ namespace VVVV.Nodes.Http
 
 
         private Page mPage;
-        public SortedList<string, string> mJsFile = new SortedList<string, string>();
+        //public SortedList<string, string> mJsFile = new SortedList<string, string>();
+        List<string> mJsFile = new List<string>();
         private CssBuilder mCssBuilder = new CssBuilder();
         private List<string> TestList = new List<string>();
         private Body mBody = new Body();
@@ -58,9 +59,9 @@ namespace VVVV.Nodes.Http
             get
             {
                 StringBuilder tJsFile = new StringBuilder();
-                foreach (KeyValuePair<string, string> pPair in mJsFile)
+                foreach (string pScript in mJsFile)
                 {
-                    tJsFile.Append(pPair.Value + Environment.NewLine);
+                    tJsFile.Append(pScript + Environment.NewLine);
                 }
                 return tJsFile;
             }
@@ -79,15 +80,14 @@ namespace VVVV.Nodes.Http
         }
 
 
-        public void UpdateGuiList(List<GuiDataObject> pGuiElemente)
+        public void UpdateGuiList(List<GuiDataObject> pGuiElemente, Page pPage)
         {
 
             // Reset everything
             //mPage.Body = null;
             //mPage.Head = null;
             mPage = null;
-            mPage = new Page(true);
-
+            mPage = pPage;
             mJsFile.Clear();
             mCssBuilder.Reset();
             TestList.Clear();
@@ -96,21 +96,6 @@ namespace VVVV.Nodes.Http
             //Build
             mPage.Body  = (Body) BuildHtmlFrame(pGuiElemente, mPage.Body);
             mCssBuilder.Build();
-        }
-
-
-        public void Build(List<GuiDataObject> pGuiElemente)
-        {
-
-
-            
-            //foreach (GuiDataObject pElement in pGuiElemente)
-            //{
-            //    mPage.Body.Insert(BuildHtmlFrame(pElement));
-            //    //CreateCssRule(tCssProperties,pElement.NodeId, pElement.SliceId);
-            //}
-
-
         }
 
 
@@ -128,27 +113,36 @@ namespace VVVV.Nodes.Http
                 Debug.WriteLine("tTag.Level: " + tTag.Level);
                 Debug.WriteLine("tTag.Name: " + tTag.Name);
 
+                if (pElement.JavaScript != null)
+                {
+                    if (pElement.JavaScript.ToString() != "")
+                    {
+                        AddJavaScript(pElement.JavaScript.ToString());
+                    }
+                }
                 
                 if (mTags.ContainsKey(pElement.SliceId) == false)
                 {
                     mTags.Add(pElement.SliceId, pElement.Tag);
-                    AddCssPropertiesToBuilder(pElement);
+                    AddCssProperties(pElement);
 
                     if (pElement.GuiUpstreamList != null)
                     {
-                        AddCssPropertiesToBuilder(pElement);
+                        AddCssProperties(pElement);
                         tTag.Insert(BuildHtmlFrame(pElement.GuiUpstreamList, pElement.Tag));
                     }
                     else
                     {
-                        tTag.Insert(pElement.Tag);
+                            tTag.Insert(pElement.Tag);
                     }
                 }
                 else
                 {
                     Tag tDummyTag;
                     mTags.TryGetValue(pElement.SliceId, out tDummyTag);
-                    tTag.Insert(tDummyTag);
+
+                        tTag.Insert(tDummyTag);
+                    
                 }
             }
 
@@ -156,7 +150,17 @@ namespace VVVV.Nodes.Http
             return tTag;
         }
 
-        private void AddCssPropertiesToBuilder(GuiDataObject pObject)
+        private void AddJavaScript( string pScript)
+        {
+            if(mJsFile.Contains(pScript) == false)
+            {
+                mJsFile.Add(pScript);
+            }
+        }
+
+
+
+        private void AddCssProperties(GuiDataObject pObject)
         {
             SortedList<string, string> tTransform = new SortedList<string, string>();
 
