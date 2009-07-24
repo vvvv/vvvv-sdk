@@ -192,7 +192,7 @@ namespace VVVV.Nodes.HttpGUI.Datenobjekte
             {
                 SortedList<string, string> tHtmlAttrEmpty  = new SortedList<string,string>();
                 pHtmlAttr = tHtmlAttrEmpty;
-                //Debug.WriteLine( String.Format("Index {0} not found Method GetHTMLAttribute Class BAseDatenObjket",pIndex.ToString()));
+                ////Debug.WriteLine( String.Format("Index {0} not found Method GetHTMLAttribute Class BAseDatenObjket",pIndex.ToString()));
             }
         }
 

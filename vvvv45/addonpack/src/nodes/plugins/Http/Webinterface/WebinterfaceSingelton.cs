@@ -158,17 +158,17 @@ namespace VVVV.Webinterface
                 {
                     mSubject.SubjectState = value;
                     //mTellNodes.NotifyNode();
-                    //Debug.WriteLine("SubjectState: " + value);
+                    ////Debug.WriteLine("SubjectState: " + value);
                 }
                 else if (value == "Server")
                 {
                     mSubject.SubjectState = value;
-                    //Debug.WriteLine("SubjectState: " + value);
+                    ////Debug.WriteLine("SubjectState: " + value);
                     //mTellNodes.NotifyNode();
                 }
                 else
                 {
-                    //Debug.WriteLine("SubjectState not set no State found");
+                    ////Debug.WriteLine("SubjectState not set no State found");
                 }
             }
         }
@@ -252,7 +252,7 @@ namespace VVVV.Webinterface
             Debug.Listeners.Add(tr2);
 
             mSubject = new ConcreteSubject();
-            //Debug.WriteLine(mSubject, " Subject");
+            ////Debug.WriteLine(mSubject, " Subject");
 
             mServerDaten.Add("", "");
         }
@@ -296,7 +296,7 @@ namespace VVVV.Webinterface
             mSubject.SubjectState = "VVVV";
             mSubject.NotifyNode();
             mlogger.log(mlogger.LogType.Info, "Subject State set to VVVV");
-            //Debug.WriteLine("mTellNodes.SubjectState = VVVV");
+            ////Debug.WriteLine("mTellNodes.SubjectState = VVVV");
         }
 
 
@@ -307,7 +307,7 @@ namespace VVVV.Webinterface
         public void setSubjectStateToServer(string pToNode)
         {
             mSubject.SubjectState = "Server";
-            //Debug.WriteLine("mTellNodes.SubjectState = Server");
+            ////Debug.WriteLine("mTellNodes.SubjectState = Server");
             mlogger.log(mlogger.LogType.Info, "Subject State set to Server");
             mSubject.ToNode = pToNode;
             mSubject.NotifyNode();
@@ -324,7 +324,7 @@ namespace VVVV.Webinterface
             mlogger.log(mlogger.LogType.Info, "Subject State set to VVVVChangedValue");
             mSubject.ToHtmlForm = pNodeId;
             //mSubject.NotifyServer();
-            //Debug.WriteLine("mTellNodes.SubjectState = VVVVChangedValue");
+            ////Debug.WriteLine("mTellNodes.SubjectState = VVVVChangedValue");
         }
 
 
@@ -349,7 +349,7 @@ namespace VVVV.Webinterface
             NodeObserver tObserver = new NodeObserver(mSubject, pNodeId);
             mSubject.AttachNode(tObserver);
 
-            //Debug.WriteLine("Observer erzeug: " + tObserver.ID);
+            ////Debug.WriteLine("Observer erzeug: " + tObserver.ID);
             mlogger.log(mlogger.LogType.Info, "Add Textfield Node to Subject Oserver List");
 
             return tObserver;
@@ -499,7 +499,7 @@ namespace VVVV.Webinterface
             {
                 mDaten.Add(pNodeID, pValue);
                 setSubjectStateToServer(pNodeID);
-                //Debug.WriteLine("no SliceId found in SaveNewBrowserData");
+                ////Debug.WriteLine("no SliceId found in SaveNewBrowserData");
                 //mlogger.log(mlogger.LogType.Debug, "Replaced SliceKey: " + pNewData[1].ToString() + " with Value: " + pNewData[2].ToString());
             }
           }
@@ -517,7 +517,7 @@ namespace VVVV.Webinterface
             int tLength = pNewData.Length;
             int tWordLength = pNewData[0].Length;
             string tName = pNewData[0].Replace("?", "");
-            //Debug.WriteLine("New Browser Content in DataWarehouse: " + pNewData);
+            ////Debug.WriteLine("New Browser Content in DataWarehouse: " + pNewData);
             
 
             // here mDaten Loggen 
@@ -536,7 +536,7 @@ namespace VVVV.Webinterface
                 {
                     mDaten.Add(tName, pNewData[1]);
                     setSubjectStateToServer(tName);
-                    //Debug.WriteLine("no SliceId found in SaveNewBrowserData");
+                    ////Debug.WriteLine("no SliceId found in SaveNewBrowserData");
                     //mlogger.log(mlogger.LogType.Debug, "Replaced SliceKey: " + pNewData[1].ToString() + " with Value: " + pNewData[2].ToString());
                 }
             }

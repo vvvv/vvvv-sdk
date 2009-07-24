@@ -122,7 +122,7 @@ namespace VVVV.Nodes.HttpGUI
 
         public void GetDatenObjekt(int Index, out List<GuiDataObject> GuiDaten)
         {
-            Debug.WriteLine("Enter Get daten Object");
+            //Debug.WriteLine("Enter Get daten Object");
             GuiDaten = new List<GuiDataObject>(mGuiDataList);
         }
 
@@ -137,6 +137,7 @@ namespace VVVV.Nodes.HttpGUI
                     INodeIOBase usI;
                     FHttpGuiIn.GetUpstreamInterface(out usI);
                     FUpstreamHttpGuiIn = usI as IHttpGUIIO;
+                    mChangedSpreadSize = true;
                 }
 
             }
@@ -224,11 +225,18 @@ namespace VVVV.Nodes.HttpGUI
                     {
                         GuiDataObject tObject = new GuiDataObject();
                         mGuiDataList.Insert(i, tObject);
-                        mGuiDataList[i].NodeId =  HTMLToolkit.CreatePageID(mNodePath);
+                        mGuiDataList[i].NodeId = HTMLToolkit.CreatePageID(mNodePath);
                         mGuiDataList[i].SliceId = HTMLToolkit.CreateSliceID(mNodePath, i);
                     }
                 }
                 mSpreadMax = SpreadMax;
+            }
+            else
+            {
+                for (int i = 0; i < SpreadMax; i++)
+                {
+                    
+                }
             }
 
             
@@ -325,17 +333,15 @@ namespace VVVV.Nodes.HttpGUI
             #region Upstream Gui Elements
 
             int usSGuiIn;
-            if (FUpstreamHttpGuiIn != null)
+            if (FUpstreamHttpGuiIn != null )
             {
                 if (mChangedSpreadSize)
                 {
+                    List<GuiDataObject> tGuiList;
+                    FUpstreamHttpGuiIn.GetDatenObjekt(0, out tGuiList);
+
                     for (int i = 0; i < SpreadMax; i++)
                     {
-                        //get upstream slice index
-                        FHttpGuiIn.GetUpsreamSlice(i, out usSGuiIn);
-
-                        List<GuiDataObject> tGuiList;
-                        FUpstreamHttpGuiIn.GetDatenObjekt(0, out tGuiList);
                         mGuiDataList[i].GuiUpstreamList = tGuiList;
                     }
                 }
@@ -353,7 +359,7 @@ namespace VVVV.Nodes.HttpGUI
             {
                 string NodePath;
                 FHost.GetNodePath(false, out NodePath);
-                Debug.WriteLine("Enter Css Upstream Gui Node: " + NodePath);
+                //Debug.WriteLine("Enter Css Upstream Gui Node: " + NodePath);
 
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -382,7 +388,7 @@ namespace VVVV.Nodes.HttpGUI
             {
                 mChangedSpreadSize = false;
             }
-            Debug.WriteLine("Leave Evaluate GUiNodeDynamic");
+            //Debug.WriteLine("Leave Evaluate GUiNodeDynamic");
         }
 
 

@@ -425,7 +425,7 @@ namespace VVVV.Nodes.Http
                 List<GuiDataObject> tGuiDaten;
                 FUpstreamInterface.GetDatenObjekt(0, out tGuiDaten);
                 mGuiDatenListe.Clear();
-                mGuiDatenListe = tGuiDaten;
+                mGuiDatenListe = new List<GuiDataObject>(tGuiDaten);
                 
             }
 
@@ -547,26 +547,24 @@ namespace VVVV.Nodes.Http
 
                 if (bang > 0.5)
                 {
-                    Page tPage = new Page(true);
+                    mPage = null;
+                    mPage = new Page(true);
                     // titel
                     string currentSliceTitel = "";
                     FTitel.GetString(0, out currentSliceTitel);
-                    tPage.Head.Insert(new Title(currentSliceTitel));
+                    mPage.Head.Insert(new Title(currentSliceTitel));
 
                     // Css File
-                    
-                    
+                    mPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
+                    mPage.Head.Insert(new JavaScript("jquery.js"));
+                    mPage.Head.Insert(new JavaScript(mPageName + ".js"));
 
-                    tPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
-                    tPage.Head.Insert(new JavaScript("jquery.js"));
-                    tPage.Head.Insert(new JavaScript(mPageName + ".js"));
-
-                    mPageBuilder.UpdateGuiList(mGuiDatenListe, tPage);
+                    mPageBuilder.UpdateGuiList(mGuiDatenListe, mPage);
 
 
                     //Insert Input Strings
-                    tPage.Body.Insert(mPageBodyString);
-                    tPage.Head.Insert(mPageHeadString);
+                    mPage.Body.Insert(mPageBodyString);
+                    mPage.Head.Insert(mPageHeadString);
 
 
                     //Communication Type
@@ -574,22 +572,22 @@ namespace VVVV.Nodes.Http
                     FCommunication.GetString(0, out tCommunicationType);
                     if (tCommunicationType == "Polling")
                     {
-                        tPage.Head.Insert(JSToolkit.Polling("100", "'HIer sollte ein XML stehen :-)'"));
+                        mPage.Head.Insert(JSToolkit.Polling("100", "'HIer sollte ein XML stehen :-)'"));
 
                     }
                     else if (tCommunicationType == "Comet")
                     {
-                        tPage.Body.Insert(JSToolkit.Comet());
+                        mPage.Body.Insert(JSToolkit.Comet());
                     }
 
                     //Output whole Page
-                    FWholeHTML.SetString(0, tPage.Text);
+                    FWholeHTML.SetString(0, mPage.Text);
 
 
                     //set Field Properties
                     mCssFile = mPageBuilder.CssMainFile.ToString() + Environment.NewLine + mBodyRule.Text;
                     mJsFile = mPageBuilder.JsFile.ToString();
-                    mPage = tPage;
+                    
                 }
             }
                 

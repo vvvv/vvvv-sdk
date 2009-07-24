@@ -190,8 +190,8 @@ namespace VVVV.Nodes.HttpGUI
 
         protected override void OnEvaluate(int SpreadMax)
         {
-            if (mChangedSpreadSize)
-            {
+            //if (mChangedSpreadSize)
+            //{
                 for (int i = 0; i < SpreadMax; i++)
                 {
                     HtmlDiv tDiv = new HtmlDiv(mGuiDataList[i].SliceId, mGuiDataList[i].SliceId + " " + mGuiDataList[i].NodeId);
@@ -206,7 +206,7 @@ namespace VVVV.Nodes.HttpGUI
                 string tContent = "$(this).css('border','3px solid red');";
                SetJavaScript(0, new JqueryFunction(true, "." + mGuiDataList[0].NodeId, "click", tContent).Text);
 
-            }
+            //}
         }
 
 

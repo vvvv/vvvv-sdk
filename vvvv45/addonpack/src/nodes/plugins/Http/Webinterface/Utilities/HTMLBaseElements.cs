@@ -80,6 +80,8 @@ namespace VVVV.Webinterface.Utilities
     /// </summary>
     public abstract class Tag
     {
+        private bool FDisposed = false;
+
         private int m_Level = 0;
         private string m_Text = "";
         private bool OverrideText = false;
@@ -97,6 +99,10 @@ namespace VVVV.Webinterface.Utilities
         private List<string> m_Strings = new List<string>();
 
         public int Level { get { return m_Level; } set { m_Level = value; } }
+
+
+
+
 
         /// <summary>
         /// name of the Tag

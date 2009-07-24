@@ -109,14 +109,14 @@ namespace VVVV.Webinterface.HttpServer
 
                 mAttributeValues.Remove(tIndex);
                 mAttributeValues.Add(tIndex, pValue);
-                //Debug.WriteLine(String.Format("Attribute {0} already exist and value replaced by {1}:",pName,pValue));
+                ////Debug.WriteLine(String.Format("Attribute {0} already exist and value replaced by {1}:",pName,pValue));
             }
             else
             {
                 int tIndex = mAttributeNames.Count;
                 mAttributeNames.Add(tIndex, pName);
                 mAttributeValues.Add(tIndex, pValue);
-                //Debug.WriteLine(String.Format("Attribute {0} add at Index {1} with Value {2}:",pName, tIndex, pValue));
+                ////Debug.WriteLine(String.Format("Attribute {0} add at Index {1} with Value {2}:",pName, tIndex, pValue));
             }
         }
 
@@ -133,7 +133,7 @@ namespace VVVV.Webinterface.HttpServer
             }
             else
             {
-                //Debug.WriteLine( String.Format("Attribute: {0}  doesn't exist in Request Header class", pName ));
+                ////Debug.WriteLine( String.Format("Attribute: {0}  doesn't exist in Request Header class", pName ));
                 return "Attribute: " + pName +  " doesn't exist in Request Header class";
             }
         }

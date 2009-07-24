@@ -168,7 +168,7 @@ namespace VVVV.Webinterface.HttpServer {
             set 
             {
                 mIpLocal.Port = value;
-                Debug.WriteLine("set Server to Port: " + value.ToString());
+                //Debug.WriteLine("set Server to Port: " + value.ToString());
             } 
         }
 
@@ -256,7 +256,7 @@ namespace VVVV.Webinterface.HttpServer {
                 // only the following code is executed.
                 //mSocket.Close();
 
-                Debug.WriteLine("Server is being deleted");
+                //Debug.WriteLine("Server is being deleted");
                 // Note that this is not thread safe.
                 // Another thread could start disposing the object
                 // after the managed resources are disposed,
@@ -296,7 +296,7 @@ namespace VVVV.Webinterface.HttpServer {
             int tMaxAsynThreads;
             ThreadPool.GetMaxThreads(out tMaxWorkerThreads, out tMaxAsynThreads);
             ThreadPool.SetMaxThreads(tMaxWorkerThreads, tMaxWorkerThreads);
-            Debug.WriteLine(String.Format("{0}  Threads  /  {1} Asynthreads in threadspool", tMaxWorkerThreads, tMaxAsynThreads));
+            //Debug.WriteLine(String.Format("{0}  Threads  /  {1} Asynthreads in threadspool", tMaxWorkerThreads, tMaxAsynThreads));
             // Create the delegate that invokes methods for the timer.
             TimerCallback timerDelegate = new TimerCallback(this.CheckSockets);
             //Create a timer that waits one minute, then invokes every 5 minutes.
@@ -325,16 +325,16 @@ namespace VVVV.Webinterface.HttpServer {
                 
 
 
-                Debug.WriteLine("-------------- Stop Listing to Socket --------------");
+                //Debug.WriteLine("-------------- Stop Listing to Socket --------------");
             }
             catch (SocketException se)
             {
-                Debug.WriteLine(se.Message.ToString());
+                //Debug.WriteLine(se.Message.ToString());
             }
             catch (Exception ex)
             {
                 threadEnd[0].Set();
-                Debug.WriteLine("Server Constructor: \n" + ex.ToString());
+                //Debug.WriteLine("Server Constructor: \n" + ex.ToString());
             }
         }
 
@@ -493,7 +493,7 @@ namespace VVVV.Webinterface.HttpServer {
         /// <param name="asynConnect"> Contains the SocketInformationObjekt</param>
         public void OnClientConnectCallback(IAsyncResult asynConnect)
         {
-                //Debug.WriteLine("-------------onClientConnect----------------" + Environment.NewLine);
+                ////Debug.WriteLine("-------------onClientConnect----------------" + Environment.NewLine);
 
                 allDone.Set();
 
@@ -533,12 +533,12 @@ namespace VVVV.Webinterface.HttpServer {
                 catch (SocketException es)
                 {
                     RemoveSocket(tSocketInformations);
-                    Debug.WriteLine("Socket Error " + es.Message.ToString());
+                    //Debug.WriteLine("Socket Error " + es.Message.ToString());
                 }
                 catch (Exception e)
                 {
                     RemoveSocket(tSocketInformations);
-                    Debug.WriteLine("Any Error " + e.Message.ToString());
+                    //Debug.WriteLine("Any Error " + e.Message.ToString());
                 }
 
         }
@@ -555,7 +555,7 @@ namespace VVVV.Webinterface.HttpServer {
 
             try
             {
-                //Debug.WriteLine("-------------ReceiveSocketData----------------" + Environment.NewLine);
+                ////Debug.WriteLine("-------------ReceiveSocketData----------------" + Environment.NewLine);
                 
                 //gets the SocketInformatinObject form the IAsyncResult Object
                 
@@ -592,7 +592,7 @@ namespace VVVV.Webinterface.HttpServer {
                         }
                         catch (Exception ex)
                         {
-                            Debug.WriteLine(String.Format("Error in RequestHandling: {0}", ex.Message));
+                            //Debug.WriteLine(String.Format("Error in RequestHandling: {0}", ex.Message));
                             tSocketInformation.ResponseAsBytes = Encoding.UTF8.GetBytes(new ResponseHeader(new HTTPStatusCode("").Code200).Text);
                         }
                 
@@ -612,7 +612,7 @@ namespace VVVV.Webinterface.HttpServer {
                 RemoveSocket(tSocketInformation);
                 if (es.ErrorCode != 64)
                 {
-                    Debug.WriteLine(string.Format("ReadCallback Socket Exception: {0}, {1}.", es.ErrorCode, es.ToString()));
+                    //Debug.WriteLine(string.Format("ReadCallback Socket Exception: {0}, {1}.", es.ErrorCode, es.ToString()));
                 }
 
             }
@@ -653,11 +653,11 @@ namespace VVVV.Webinterface.HttpServer {
                     }
                 }
 
-                Debug.WriteLine(String.Format("Sent {0} bytes to client.",  bytesSent));
+                //Debug.WriteLine(String.Format("Sent {0} bytes to client.",  bytesSent));
            }
             catch ( Exception e )
             {
-                Debug.WriteLine( e.ToString() );
+                //Debug.WriteLine( e.ToString() );
             }
         }
 
@@ -673,7 +673,7 @@ namespace VVVV.Webinterface.HttpServer {
         public void ServeFolder(string pPath)
         {
             
-            Debug.WriteLine("serve Folder: " + pPath);
+            //Debug.WriteLine("serve Folder: " + pPath);
             mItemsToServ.ReadServerFolder(pPath);
 
             mFileList = mItemsToServ.FileListVVVV;
@@ -693,7 +693,7 @@ namespace VVVV.Webinterface.HttpServer {
         /// </summary>
         public override void Updated()
         {
-            Debug.WriteLine("Updated Server");
+            //Debug.WriteLine("Updated Server");
            
             SortedList<string, string> tNewServerhandlingDaten = mSubject.NewServerDaten;
 
@@ -702,7 +702,7 @@ namespace VVVV.Webinterface.HttpServer {
 
                 if (tSlice.Key.Contains("Checkbox"))
                 {
-                    Debug.WriteLine("Checkbox Update");
+                    //Debug.WriteLine("Checkbox Update");
                     JavaScript tJava = new JavaScript();
                     tJava.Insert("parent.window.setCheckbox('" + tSlice.Key + "','" + tSlice.Value + "');");
                     JavaScript tJava2 = new JavaScript();
@@ -723,7 +723,7 @@ namespace VVVV.Webinterface.HttpServer {
                 }
                 else
                 {
-                    Debug.WriteLine(" send: " + tSlice.Value + " from VVVV to Browser Element: " + tSlice.Key);
+                    //Debug.WriteLine(" send: " + tSlice.Value + " from VVVV to Browser Element: " + tSlice.Key);
                   
                     JavaScript tJava = new JavaScript();
                     tJava.Insert("parent.window.setNewDaten('" + tSlice.Key + "','" + tSlice.Value + "');");
@@ -790,7 +790,7 @@ namespace VVVV.Webinterface.HttpServer {
                     //pSocket.Send(Encoding.UTF8.GetBytes(pText + Environment.NewLine));
                 }
                 //sendText(tJava.Text);
-                Debug.WriteLine("Reload Server");
+                //Debug.WriteLine("Reload Server");
 
             }
 

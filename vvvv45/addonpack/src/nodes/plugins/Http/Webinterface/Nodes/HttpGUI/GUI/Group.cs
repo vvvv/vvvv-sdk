@@ -69,16 +69,11 @@ namespace VVVV.Nodes.HttpGUI
         private List<INodeIn> FInputPinList;
         private List<INodeIOBase> FUpstreamInterfaceList;
         private SortedList<string, IHttpGUIIO> FNodeUpstream;
-        //private List<IHttpGUIIO> FUpstreamList;
 
 
-        private SortedList<int, SortedList<string,string>> mValues;
-        private SortedList<int, SortedList<string,string>> mStyles;
-        
+
+        List<GuiDataObject> mGuiDataList = new List<GuiDataObject>();
         private int mInputCount;
-        private string[] FName;
-        private string[] mHtmlText;
-        private SortedList<int, BaseDatenObjekt> mGuiDatenListe = new SortedList<int,BaseDatenObjekt>();
 
         #endregion field declaration
 
@@ -257,67 +252,9 @@ namespace VVVV.Nodes.HttpGUI
         #region IMyNodeIO
 
 
-        public void GetTypeName(int Index, out string Name)
+        public void GetDatenObjekt(int Index, out List<GuiDataObject> GuiDaten)
         {
-            Name = FName[Index];
-        }
-
-        public void GetHtmlText(int Index, out string HtmlText)
-        {
-
-
-            try
-             {
-                HtmlText = mHtmlText[Index];
-            }
-            catch(Exception ex)
-            {
-                HtmlText = "No Input found at Index " + Index.ToString() + " in HTTP (GUI) Group";
-                FHost.Log(TLogType.Error, ex.ToString());
-            } 
-
-        }
-
-
-        public void GetSliceHtmlAttribute(int Index, out SortedList<string,string> Values)
-        {
-            try
-            {
-                SortedList<string, string> tValues;
-                mValues.TryGetValue(Index, out tValues);
-                Values = tValues;
-            }
-            catch (Exception ex)
-            {
-                SortedList<string, string> tValues = new SortedList<string, string>();
-                tValues.Add(Index.ToString(), "Slice Not found in GetSliceValues");
-                Values = tValues;
-                FHost.Log(TLogType.Error, ex.ToString());
-            }
-        }
-
-        public void GetSliceCssStyle(int Index, out SortedList<string,string> Styles)
-        {
-            try
-            {
-                SortedList<string, string> tStyles;
-                mStyles.TryGetValue(Index, out tStyles);
-                Styles = tStyles;
-            }
-            catch (Exception ex)
-            {
-                SortedList<string, string> tStyles = new SortedList<string, string>();
-                tStyles.Add(Index.ToString(), "Slice Not found in GetSliceStyle");
-                Styles = tStyles;
-                FHost.Log(TLogType.Error, ex.ToString());
-            }
-        }
-
-        public void GetDatenObjekt(int Index, out BaseDatenObjekt GuiDaten)
-        {
-            BaseDatenObjekt tGuiDaten;
-            mGuiDatenListe.TryGetValue(Index, out tGuiDaten);
-            GuiDaten = tGuiDaten;
+            GuiDaten = mGuiDataList;
         }
 
 
@@ -425,12 +362,9 @@ namespace VVVV.Nodes.HttpGUI
             }
 
             FMyNodeOutput.SliceCount = TSliceMax;
-            FName = new string[TSliceMax];
-            mHtmlText = new string[TSliceMax];
 
-            mValues = new SortedList<int, SortedList<string, string>>();
-            mStyles = new SortedList<int, SortedList<string, string>>();
-            mGuiDatenListe.Clear();
+
+            mGuiDataList.Clear();
 
 
             foreach (INodeIn pNodeIn in FInputPinList)
@@ -443,41 +377,11 @@ namespace VVVV.Nodes.HttpGUI
 
                 if (FUpstream != null)
                 {
-                    for (int i = 0; i < pNodeIn.SliceCount; i++)
-                    {
-                        int usS;
-                        pNodeIn.GetUpsreamSlice(i, out usS);
 
-
-                        #region Outdated
-
-                        //string Value;
-                        //FUpstream.GetTypeName(i, out Value);
-                        //FName.SetValue(Value, tSliceCounter);
-
-                        //SortedList<string, string> tValue = new SortedList<string, string>();
-                        //FUpstream.GetSliceHtmlAttribute(i, out tValue);
-                        //mValues.Add(tSliceCounter, tValue);
-
-                        //SortedList<string, string> tStyles = new SortedList<string, string>();
-                        //FUpstream.GetSliceCssStyle(i, out tStyles);
-                        //mStyles.Add(tSliceCounter, tStyles);
-
-                        //string tHtmlText;
-                        //FUpstream.GetHtmlText(i, out tHtmlText);
-                        //mHtmlText.SetValue(tHtmlText, tSliceCounter);
-
-                        #endregion Outdated 
-
-
-                        BaseDatenObjekt tGuiDaten;
-                        FUpstream.GetDatenObjekt(i, out tGuiDaten);
-                         ////Debug.WriteLine("Objekt Type in Group: " + tGuiDaten.Type);
-
-                        mGuiDatenListe.Add(tSliceCounter, tGuiDaten); 
-
-                        tSliceCounter++;
-                    }
+                    List<GuiDataObject> tGuiDaten;
+                    FUpstream.GetDatenObjekt(0, out tGuiDaten);
+                    mGuiDataList.AddRange(tGuiDaten); 
+                    
                 }
             }
         }

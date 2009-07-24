@@ -101,8 +101,8 @@ namespace VVVV.Nodes.HttpGUI.CSS
         {
                 //string NodePath;
                 //FHost.GetNodePath(false, out NodePath);
-                //Debug.WriteLine(String.Format("NOde {0}", NodePath));
-                //Debug.WriteLine(String.Format("Index: {0} / mCssPropertie.Count: {1}", Index, mCssPropertiesOwn.Count));
+                ////Debug.WriteLine(String.Format("NOde {0}", NodePath));
+                ////Debug.WriteLine(String.Format("Index: {0} / mCssPropertie.Count: {1}", Index, mCssPropertiesOwn.Count));
             if (FCssPropertiesIn.IsConnected)
             {
                 if (Index >= mCssPropertiesCombined.Count)
@@ -186,7 +186,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
                     string NodePath;
                     FHost.GetNodePath(false, out NodePath);
                     mCssPropertiesCombined.Clear();
-                    Debug.WriteLine("Enter Upstream: " + NodePath);
+                    //Debug.WriteLine("Enter Upstream: " + NodePath);
 
                     int SliceOffsetCounter = 0;
 

@@ -18,7 +18,6 @@ namespace VVVV.Nodes.Http
         //public SortedList<string, string> mJsFile = new SortedList<string, string>();
         List<string> mJsFile = new List<string>();
         private CssBuilder mCssBuilder = new CssBuilder();
-        private List<string> TestList = new List<string>();
         private Body mBody = new Body();
         private SortedList<string, Tag> mTags = new SortedList<string, Tag>();
 
@@ -86,15 +85,15 @@ namespace VVVV.Nodes.Http
             // Reset everything
             //mPage.Body = null;
             //mPage.Head = null;
-            mPage = null;
             mPage = pPage;
             mJsFile.Clear();
             mCssBuilder.Reset();
-            TestList.Clear();
             mTags.Clear();
 
             //Build
-            mPage.Body  = (Body) BuildHtmlFrame(pGuiElemente, mPage.Body);
+            List<GuiDataObject> tGuiElemente = new List<GuiDataObject>(pGuiElemente);
+
+            mPage.Body  = (Body) BuildHtmlFrame(tGuiElemente, mPage.Body);
             mCssBuilder.Build();
         }
 
@@ -102,16 +101,17 @@ namespace VVVV.Nodes.Http
         public Tag BuildHtmlFrame(List<GuiDataObject> pGuiObjectIn, Tag tTag)
         {
 
-            Debug.WriteLine("------------ Enter BuildHtmlFrame -------------");
-            Debug.WriteLine("pGuiObjectIn.Count: " + pGuiObjectIn.Count.ToString());
+            //Debug.WriteLine("------------ Enter BuildHtmlFrame -------------");
+            //Debug.WriteLine("pGuiObjectIn.Count: " + pGuiObjectIn.Count.ToString());
             
 
             foreach (GuiDataObject pElement in pGuiObjectIn)
             {
                 Debug.WriteLine("---------------- Enter foreachSchleife-----------------");
                 Debug.WriteLine("SliceId: " + pElement.SliceId);
-                Debug.WriteLine("tTag.Level: " + tTag.Level);
-                Debug.WriteLine("tTag.Name: " + tTag.Name);
+                Debug.WriteLine("tTag: " + tTag.Text + Environment.NewLine);
+                //Debug.WriteLine("tTag.Level: " + tTag.Level);
+                //Debug.WriteLine("tTag.Name: " + tTag.Name);
 
                 if (pElement.JavaScript != null)
                 {
@@ -120,7 +120,9 @@ namespace VVVV.Nodes.Http
                         AddJavaScript(pElement.JavaScript.ToString());
                     }
                 }
-                
+
+                Tag mtTag = pElement.Tag;
+
                 if (mTags.ContainsKey(pElement.SliceId) == false)
                 {
                     mTags.Add(pElement.SliceId, pElement.Tag);
@@ -129,6 +131,7 @@ namespace VVVV.Nodes.Http
                     if (pElement.GuiUpstreamList != null)
                     {
                         AddCssProperties(pElement);
+                       
                         tTag.Insert(BuildHtmlFrame(pElement.GuiUpstreamList, pElement.Tag));
                     }
                     else
@@ -146,6 +149,7 @@ namespace VVVV.Nodes.Http
                 }
             }
 
+            Debug.WriteLine("---------------- Exit foreachSchleife-----------------");
             Debug.WriteLine("tTag: " + tTag.Text + Environment.NewLine);
             return tTag;
         }
@@ -181,7 +185,6 @@ namespace VVVV.Nodes.Http
             }
 
             mCssBuilder.AddCssSliceList(pObject.SliceId, tCssProperties);
-            TestList.Add(pObject.SliceId);
             mCssBuilder.AddNodeId(pObject.NodeId);
         }
 
