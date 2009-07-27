@@ -201,10 +201,39 @@ namespace VVVV.Nodes.HttpGUI
                     SetBodyContent(i, tDiv.Text);
 
                     SetTag(i, tDiv);
+
+
+                    FResponse.SliceCount = SpreadMax;
+
+
+                    string tResponse;
+                    GetNewDataFromServer(mGuiDataList[i].SliceId, out tResponse);
+
+
+                    if (tResponse != "")
+                    {
+                        FResponse.SetValue(i, Convert.ToInt32(tResponse));
+                    }
+                    else
+                    {
+                        FResponse.SetValue(i, 0);
+                    }
+                    
                 }
 
-                string tContent = "$(this).css('border','3px solid red');";
-               SetJavaScript(0, new JqueryFunction(true, "." + mGuiDataList[0].NodeId, "click", tContent).Text);
+
+                string tContent = @"var id = $(this).attr('id');
+                $.post('ToVVVV.xml', id + '= 1', null);
+                $(this).fadeOut(20,function()
+                {
+                    $(this).fadeIn(20);
+                });
+
+                
+                ";
+                SetJavaScript(0, new JqueryFunction(true, "." + mGuiDataList[0].NodeId, "click", tContent).Text);
+
+
 
             //}
         }

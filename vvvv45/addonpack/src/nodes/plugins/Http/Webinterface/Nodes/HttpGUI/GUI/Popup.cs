@@ -121,7 +121,7 @@ namespace VVVV.Nodes.HttpGUI
 
         public override void GetDatenObjekt(int Index, out BaseDatenObjekt GuiDaten)
         {
-            ////Debug.WriteLine("Enter GetdatenObjekt" + mNodeId);
+            //////Debug.WriteLine("Enter GetdatenObjekt" + mNodeId);
             GuiDaten = mPopUpDaten[Index];
         }
 
@@ -146,7 +146,7 @@ namespace VVVV.Nodes.HttpGUI
 
         protected override void OnEvaluate(int SpreadMax)
         {
-            ////Debug.WriteLine("Enter OnEvaluate");
+            //////Debug.WriteLine("Enter OnEvaluate");
 
             int[] tSliceCount = { FBackgroundColor.SliceCount, FTransformIn.SliceCount};
             Array.Sort(tSliceCount);

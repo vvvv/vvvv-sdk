@@ -101,17 +101,17 @@ namespace VVVV.Nodes.Http
         public Tag BuildHtmlFrame(List<GuiDataObject> pGuiObjectIn, Tag tTag)
         {
 
-            //Debug.WriteLine("------------ Enter BuildHtmlFrame -------------");
-            //Debug.WriteLine("pGuiObjectIn.Count: " + pGuiObjectIn.Count.ToString());
+            ////Debug.WriteLine("------------ Enter BuildHtmlFrame -------------");
+            ////Debug.WriteLine("pGuiObjectIn.Count: " + pGuiObjectIn.Count.ToString());
             
 
             foreach (GuiDataObject pElement in pGuiObjectIn)
             {
-                Debug.WriteLine("---------------- Enter foreachSchleife-----------------");
-                Debug.WriteLine("SliceId: " + pElement.SliceId);
-                Debug.WriteLine("tTag: " + tTag.Text + Environment.NewLine);
-                //Debug.WriteLine("tTag.Level: " + tTag.Level);
-                //Debug.WriteLine("tTag.Name: " + tTag.Name);
+                //Debug.WriteLine("---------------- Enter foreachSchleife-----------------");
+                //Debug.WriteLine("SliceId: " + pElement.SliceId);
+                //Debug.WriteLine("tTag: " + tTag.Text + Environment.NewLine);
+                ////Debug.WriteLine("tTag.Level: " + tTag.Level);
+                ////Debug.WriteLine("tTag.Name: " + tTag.Name);
 
                 if (pElement.JavaScript != null)
                 {
@@ -149,8 +149,8 @@ namespace VVVV.Nodes.Http
                 }
             }
 
-            Debug.WriteLine("---------------- Exit foreachSchleife-----------------");
-            Debug.WriteLine("tTag: " + tTag.Text + Environment.NewLine);
+            //Debug.WriteLine("---------------- Exit foreachSchleife-----------------");
+            //Debug.WriteLine("tTag: " + tTag.Text + Environment.NewLine);
             return tTag;
         }
 

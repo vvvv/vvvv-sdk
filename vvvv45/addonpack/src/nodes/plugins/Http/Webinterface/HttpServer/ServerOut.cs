@@ -118,7 +118,7 @@ namespace VVVV.Webinterface.HttpServer {
             {
                 mIpLocal.Port = value;
                 mLogger.log(mLogger.LogType.Info, "set Server to Port: " + value.ToString());
-                ////Debug.WriteLine("set Server to Port: " + value.ToString());
+                //////Debug.WriteLine("set Server to Port: " + value.ToString());
             } 
         }
 
@@ -161,7 +161,7 @@ namespace VVVV.Webinterface.HttpServer {
         public ServerOut(int Port, int Backlog, ConcreteSubject pSubject, string pName, string pFolderToServ)
         {
 			
-            ////Debug.WriteLine("create server");
+            //////Debug.WriteLine("create server");
             mLogger =  mWebinterfaceSingelton.Logger;
             mLogger.log(mLogger.LogType.Info,"Created Server Class");
 
@@ -179,7 +179,7 @@ namespace VVVV.Webinterface.HttpServer {
                
                 mMainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                                     
-                ////Debug.WriteLine(mMainSocket.LingerState.ToString());
+                //////Debug.WriteLine(mMainSocket.LingerState.ToString());
                 //LingerOption tLinger = new LingerOption(false, 0);
                 //mMainSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Linger, tLinger);
                 //mMainSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, false);
@@ -248,7 +248,7 @@ namespace VVVV.Webinterface.HttpServer {
                 mDummySocketList.Clear();
                 mDummySocketList = null;
 
-                ////Debug.WriteLine("Server is being deleted");
+                //////Debug.WriteLine("Server is being deleted");
                 mLogger.log(mLogger.LogType.Info, "Server Class is beeing deleted");
 
                 
@@ -276,7 +276,7 @@ namespace VVVV.Webinterface.HttpServer {
         {
              mFolderToServ = pPath;
              mLogger.log(mLogger.LogType.Info, "serve Folder: " + pPath);
-             ////Debug.WriteLine("serve Folder: " + pPath);
+             //////Debug.WriteLine("serve Folder: " + pPath);
              mItemsToServ.ReadServerFolder(pPath);
 
              mFileList = mItemsToServ.FileListVVVV;
@@ -305,7 +305,7 @@ namespace VVVV.Webinterface.HttpServer {
                 int intAvailableThreads, intAvailableIoAsynThreds;
                 ThreadPool.GetAvailableThreads(out intAvailableThreads, out intAvailableIoAsynThreds);
                 string strMessage = String.Format(@"In OnClientConnect Is Thread Pool: {0}, Thread Id: {1}, Free Threads {2}", Thread.CurrentThread.IsThreadPoolThread.ToString(), Thread.CurrentThread.GetHashCode(), intAvailableThreads.ToString());
-                ////Debug.WriteLine(strMessage);
+                //////Debug.WriteLine(strMessage);
 
                 //Socket tMainSocket = tListener.EndAcceptSocket(asyn);
                 Socket tMainSocket = mMainSocket.EndAccept(asyn);
@@ -313,11 +313,11 @@ namespace VVVV.Webinterface.HttpServer {
                 string tIpAdresse = ((IPEndPoint)tMainSocket.RemoteEndPoint).Address.ToString();
                 string tPort = ((IPEndPoint)tMainSocket.RemoteEndPoint).Port.ToString();
 
-                ////Debug.WriteLine("TRemoteEndPoint: " + ((IPEndPoint)tMainSocket.RemoteEndPoint).ToString() + " / IP Adressse: " + tIpAdresse.ToString() + " / Port: " + tPort);
+                //////Debug.WriteLine("TRemoteEndPoint: " + ((IPEndPoint)tMainSocket.RemoteEndPoint).ToString() + " / IP Adressse: " + tIpAdresse.ToString() + " / Port: " + tPort);
 
                 String str = String.Format("Client # {0} connected", mClientCount);
                 mLogger.log(mLogger.LogType.Info,str  + "with IP: " + tIpAdresse + " on Port: " +  tPort);
-                ////Debug.WriteLine(str);
+                //////Debug.WriteLine(str);
 
 
                 string tRequest = getContent(tMainSocket);
@@ -327,11 +327,11 @@ namespace VVVV.Webinterface.HttpServer {
                 mLogger.log(mLogger.LogType.Info, tRequest);
                 
                 
-                ////Debug.WriteLine("");
-                ////Debug.WriteLine("-----------------------------");
-                ////Debug.WriteLine(tRequest);
-                ////Debug.WriteLine("-----------------------------");
-                ////Debug.WriteLine("");
+                //////Debug.WriteLine("");
+                //////Debug.WriteLine("-----------------------------");
+                //////Debug.WriteLine(tRequest);
+                //////Debug.WriteLine("-----------------------------");
+                //////Debug.WriteLine("");
 
                 String[] lines = tRequest.Split(Environment.NewLine.ToCharArray());
                 String[] words = lines[0].Split(" ".ToCharArray());
@@ -404,7 +404,7 @@ namespace VVVV.Webinterface.HttpServer {
 
                             Thread tGetHandlingThread = new Thread(new ThreadStart(tResponse.Run));
                             tGetHandlingThread.Start();
-                            ////Debug.WriteLine("dummy.html");
+                            //////Debug.WriteLine("dummy.html");
            
                         } 
                         else
@@ -435,8 +435,8 @@ namespace VVVV.Webinterface.HttpServer {
                                 }
 
                                 //tHeader.SetAttribute("Pragma", "no-cache");
-                                ////Debug.WriteLine("Response Header: ");
-                                ////Debug.WriteLine(tHeader.HeaderText);
+                                //////Debug.WriteLine("Response Header: ");
+                                //////Debug.WriteLine(tHeader.HeaderText);
 
 
                                 ResponsePic tResponse = new ResponsePic(tHeader.HeaderText, tMainSocket, filename, tPic);
@@ -505,14 +505,14 @@ namespace VVVV.Webinterface.HttpServer {
                                 //Page tErrorPage = new Page(true);
                                 //tErrorPage.Head.Insert("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
                                 //tErrorPage.Body.Insert("404 NOT FOUND");
-                                ////Debug.WriteLine("unknown Filename");
+                                //////Debug.WriteLine("unknown Filename");
                                 mLogger.log(mLogger.LogType.Error, "Unnkown Filename by GET Request");
                             }                                                     
                         }
                     }
                     else if (words[0] == "POST")
                     {
-                        ////Debug.WriteLine("POST Request");
+                        //////Debug.WriteLine("POST Request");
                         int tAnzahlLinien = lines.Length;
                         int pos = words[1].LastIndexOf("/");
                         String filename = words[1].Substring(pos + 1);
@@ -548,7 +548,7 @@ namespace VVVV.Webinterface.HttpServer {
                     }
                     else
                     {
-                        ////Debug.WriteLine("Unknown Request");
+                        //////Debug.WriteLine("Unknown Request");
                         mLogger.log(mLogger.LogType.Error, "Unnkown Request Type");
                     }
 
@@ -594,7 +594,7 @@ namespace VVVV.Webinterface.HttpServer {
             int intAvailableThreads, intAvailableIoAsynThreds;
             ThreadPool.GetAvailableThreads(out intAvailableThreads, out intAvailableIoAsynThreds);
             string strMessage = String.Format(@"In CloseSocket Is Thread Pool: {0}, Thread Id: {1}, Free Threads {2}", Thread.CurrentThread.IsThreadPoolThread.ToString(), Thread.CurrentThread.GetHashCode(), intAvailableThreads.ToString());
-            ////Debug.WriteLine(strMessage);
+            //////Debug.WriteLine(strMessage);
         }
 
 
@@ -605,7 +605,7 @@ namespace VVVV.Webinterface.HttpServer {
         /// </summary>
         public override void Updated()
         {
-            ////Debug.WriteLine("Updated Server");
+            //////Debug.WriteLine("Updated Server");
             mLogger.log(mLogger.LogType.Info, "Server updated because of Value Change in VVVV");
             SortedList<string, string> tNewServerhandlingDaten = mSubject.NewServerDaten;
 
@@ -614,7 +614,7 @@ namespace VVVV.Webinterface.HttpServer {
 
                 if (tSlice.Key.Contains("Checkbox"))
                 {
-                    ////Debug.WriteLine("Checkbox Update");
+                    //////Debug.WriteLine("Checkbox Update");
                     JavaScript tJava = new JavaScript();
                     tJava.Insert("parent.window.setCheckbox('" + tSlice.Key + "','" + tSlice.Value + "');");
                     JavaScript tJava2 = new JavaScript();
@@ -635,7 +635,7 @@ namespace VVVV.Webinterface.HttpServer {
                 }
                 else
                 {
-                    ////Debug.WriteLine(" send: " + tSlice.Value + " from VVVV to Browser Element: " + tSlice.Key);
+                    //////Debug.WriteLine(" send: " + tSlice.Value + " from VVVV to Browser Element: " + tSlice.Key);
                     mLogger.log(mLogger.LogType.Info, " send: " + tSlice.Value + " from VVVV to Server / Target Element: " + tSlice.Key);
                     JavaScript tJava = new JavaScript();
                     tJava.Insert("parent.window.setNewDaten('" + tSlice.Key + "','" + tSlice.Value + "');");
@@ -702,7 +702,7 @@ namespace VVVV.Webinterface.HttpServer {
                     //pSocket.Send(Encoding.UTF8.GetBytes(pText + Environment.NewLine));
                 }
                 //sendText(tJava.Text);
-                ////Debug.WriteLine("Reload Server");
+                //////Debug.WriteLine("Reload Server");
 
             }
 

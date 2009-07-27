@@ -45,6 +45,10 @@ namespace VVVV.Nodes.HttpGUI
         public bool mChangedSpreadSize = true; 
         private string mNodePath;
 
+        private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
+
+        
+
         #endregion field Definition
 
 
@@ -122,7 +126,7 @@ namespace VVVV.Nodes.HttpGUI
 
         public void GetDatenObjekt(int Index, out List<GuiDataObject> GuiDaten)
         {
-            //Debug.WriteLine("Enter Get daten Object");
+            ////Debug.WriteLine("Enter Get daten Object");
             GuiDaten = new List<GuiDataObject>(mGuiDataList);
         }
 
@@ -359,7 +363,7 @@ namespace VVVV.Nodes.HttpGUI
             {
                 string NodePath;
                 FHost.GetNodePath(false, out NodePath);
-                //Debug.WriteLine("Enter Css Upstream Gui Node: " + NodePath);
+                ////Debug.WriteLine("Enter Css Upstream Gui Node: " + NodePath);
 
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -388,7 +392,7 @@ namespace VVVV.Nodes.HttpGUI
             {
                 mChangedSpreadSize = false;
             }
-            //Debug.WriteLine("Leave Evaluate GUiNodeDynamic");
+            ////Debug.WriteLine("Leave Evaluate GUiNodeDynamic");
         }
 
 
@@ -436,8 +440,6 @@ namespace VVVV.Nodes.HttpGUI
 
         #region Add to GuiDataObject
 
-
-
         public void SetBodyContent(int pSliceIndex, string pContent)
         {
             mGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.Body, true);
@@ -463,6 +465,26 @@ namespace VVVV.Nodes.HttpGUI
         }
 
         #endregion Add to GuiDataObject
+
+
+
+
+
+        #region Get data from WebinterfaceSingelton
+
+
+        public void GetNewDataFromServer(string SlideId, out string pContent)
+        {
+            mWebinterfaceSingelton.getNewBrowserData(SlideId, out pContent);
+        }
+
+
+
+
+
+        #endregion Get data from WebinterfaceSingelton
+
+
 
 
     }

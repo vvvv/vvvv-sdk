@@ -540,8 +540,8 @@ namespace VVVV.Nodes.Http
 
             #region Build Page
 
-            if (FBuild.PinIsChanged)
-            {
+            //if (FBuild.PinIsChanged)
+            //{
                 double bang;
                 FBuild.GetValue(0, out bang);
 
@@ -589,7 +589,7 @@ namespace VVVV.Nodes.Http
                     mJsFile = mPageBuilder.JsFile.ToString();
                     
                 }
-            }
+            //}
                 
                     
             

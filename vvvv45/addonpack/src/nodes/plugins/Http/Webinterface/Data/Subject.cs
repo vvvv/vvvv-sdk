@@ -47,7 +47,7 @@ namespace VVVV.Webinterface.Data
         public void AttachNode(NodeObserver pObserver)
         {
             mNodeObservers.Add(pObserver);
-            ////Debug.WriteLine("Node Observer: " + pObserver.ID + " is attached / Anzahl Node Observer: " + mNodeObservers.Count.ToString() ); 
+            //////Debug.WriteLine("Node Observer: " + pObserver.ID + " is attached / Anzahl Node Observer: " + mNodeObservers.Count.ToString() ); 
         }
 
 
@@ -58,7 +58,7 @@ namespace VVVV.Webinterface.Data
         public void DetachNode(NodeObserver pObserver)
         {
             mNodeObservers.Remove(pObserver);
-            ////Debug.WriteLine("Node Observer: " + pObserver.ID + " is detached / Anzahl Node Observer: " + mNodeObservers.Count.ToString()); 
+            //////Debug.WriteLine("Node Observer: " + pObserver.ID + " is detached / Anzahl Node Observer: " + mNodeObservers.Count.ToString()); 
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace VVVV.Webinterface.Data
         public void AttachServerhandling(Server pServer)
         {
             mServerhandlingObserver.Add(pServer);
-            ////Debug.WriteLine("Serverhandling Observer: " + pServer.Name + " is attached / Anzahl Serverhandling Observer: " + mServerhandlingObserver.Count.ToString()); 
+            //////Debug.WriteLine("Serverhandling Observer: " + pServer.Name + " is attached / Anzahl Serverhandling Observer: " + mServerhandlingObserver.Count.ToString()); 
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace VVVV.Webinterface.Data
         public void DetachServhandling(Server pServer)
         {
             mServerhandlingObserver.Remove(pServer);
-            ////Debug.WriteLine("Serverhandling Observer: " + pServer.Name + " is detached / Anzahl Serverhandling Observer: " + mServerhandlingObserver.Count.ToString()); 
+            //////Debug.WriteLine("Serverhandling Observer: " + pServer.Name + " is detached / Anzahl Serverhandling Observer: " + mServerhandlingObserver.Count.ToString()); 
         }
 
         /// <summary>

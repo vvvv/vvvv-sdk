@@ -115,12 +115,12 @@ namespace VVVV.Webinterface.HttpServer
 
             catch (FileLoadException ex)
             {
-                ////Debug.WriteLine("LoadSelectContent: " + ex.Message.ToString());
+                //////Debug.WriteLine("LoadSelectContent: " + ex.Message.ToString());
                 mContent = ex.Message.ToString();
             }
             catch (Exception ex)
             {
-                ////Debug.WriteLine("LoadSelectContent: " + ex.Message.ToString());
+                //////Debug.WriteLine("LoadSelectContent: " + ex.Message.ToString());
                 mContent = ex.Message.ToString();
             }
         }

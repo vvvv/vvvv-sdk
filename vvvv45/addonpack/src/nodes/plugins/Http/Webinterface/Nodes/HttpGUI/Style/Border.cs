@@ -292,7 +292,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
         protected override void OnEvaluate(int SpreadMax)
         {
 
-            ////Debug.WriteLine("Enter OnEvaluate Border");
+            //////Debug.WriteLine("Enter OnEvaluate Border");
             try
             {
                 if (FBorderWidthIn.PinIsChanged || FColorInput.PinIsChanged || FBorderStyleIn.PinIsChanged)

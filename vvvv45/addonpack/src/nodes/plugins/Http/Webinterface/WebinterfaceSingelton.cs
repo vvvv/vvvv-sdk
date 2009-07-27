@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Text;
+using System.Threading;
 using System.IO;
 using System.Diagnostics;
 using System.Xml;
@@ -158,17 +159,17 @@ namespace VVVV.Webinterface
                 {
                     mSubject.SubjectState = value;
                     //mTellNodes.NotifyNode();
-                    ////Debug.WriteLine("SubjectState: " + value);
+                    //////Debug.WriteLine("SubjectState: " + value);
                 }
                 else if (value == "Server")
                 {
                     mSubject.SubjectState = value;
-                    ////Debug.WriteLine("SubjectState: " + value);
+                    //////Debug.WriteLine("SubjectState: " + value);
                     //mTellNodes.NotifyNode();
                 }
                 else
                 {
-                    ////Debug.WriteLine("SubjectState not set no State found");
+                    //////Debug.WriteLine("SubjectState not set no State found");
                 }
             }
         }
@@ -252,7 +253,7 @@ namespace VVVV.Webinterface
             Debug.Listeners.Add(tr2);
 
             mSubject = new ConcreteSubject();
-            ////Debug.WriteLine(mSubject, " Subject");
+            //////Debug.WriteLine(mSubject, " Subject");
 
             mServerDaten.Add("", "");
         }
@@ -296,7 +297,7 @@ namespace VVVV.Webinterface
             mSubject.SubjectState = "VVVV";
             mSubject.NotifyNode();
             mlogger.log(mlogger.LogType.Info, "Subject State set to VVVV");
-            ////Debug.WriteLine("mTellNodes.SubjectState = VVVV");
+            //////Debug.WriteLine("mTellNodes.SubjectState = VVVV");
         }
 
 
@@ -307,7 +308,7 @@ namespace VVVV.Webinterface
         public void setSubjectStateToServer(string pToNode)
         {
             mSubject.SubjectState = "Server";
-            ////Debug.WriteLine("mTellNodes.SubjectState = Server");
+            //////Debug.WriteLine("mTellNodes.SubjectState = Server");
             mlogger.log(mlogger.LogType.Info, "Subject State set to Server");
             mSubject.ToNode = pToNode;
             mSubject.NotifyNode();
@@ -324,7 +325,7 @@ namespace VVVV.Webinterface
             mlogger.log(mlogger.LogType.Info, "Subject State set to VVVVChangedValue");
             mSubject.ToHtmlForm = pNodeId;
             //mSubject.NotifyServer();
-            ////Debug.WriteLine("mTellNodes.SubjectState = VVVVChangedValue");
+            //////Debug.WriteLine("mTellNodes.SubjectState = VVVVChangedValue");
         }
 
 
@@ -349,7 +350,7 @@ namespace VVVV.Webinterface
             NodeObserver tObserver = new NodeObserver(mSubject, pNodeId);
             mSubject.AttachNode(tObserver);
 
-            ////Debug.WriteLine("Observer erzeug: " + tObserver.ID);
+            //////Debug.WriteLine("Observer erzeug: " + tObserver.ID);
             mlogger.log(mlogger.LogType.Info, "Add Textfield Node to Subject Oserver List");
 
             return tObserver;
@@ -479,30 +480,7 @@ namespace VVVV.Webinterface
         }
 
 
-        /// <summary>
-        /// sets the new Browser data
-        /// </summary>
-        /// <param name="pContent">content string with value pairs separated by and / variable and value separated by =</param>
-        public void setNewBrowserDaten(string pNodeID, string pValue)
-        {
 
-            if (mDaten.ContainsKey(pNodeID))
-            {
-                    string tValue;
-                    mDaten.TryGetValue(pNodeID, out tValue);
-                    mDaten.Remove(pNodeID);
-                    mDaten.Add(pNodeID, pValue);
-                    // here mDaten entLoggen 
-                    setSubjectStateToServer(pNodeID);
-            }
-            else
-            {
-                mDaten.Add(pNodeID, pValue);
-                setSubjectStateToServer(pNodeID);
-                ////Debug.WriteLine("no SliceId found in SaveNewBrowserData");
-                //mlogger.log(mlogger.LogType.Debug, "Replaced SliceKey: " + pNewData[1].ToString() + " with Value: " + pNewData[2].ToString());
-            }
-          }
         
 
 
@@ -517,29 +495,85 @@ namespace VVVV.Webinterface
             int tLength = pNewData.Length;
             int tWordLength = pNewData[0].Length;
             string tName = pNewData[0].Replace("?", "");
-            ////Debug.WriteLine("New Browser Content in DataWarehouse: " + pNewData);
-            
+            //////Debug.WriteLine("New Browser Content in DataWarehouse: " + pNewData);
+
 
             // here mDaten Loggen 
-            
-            
+
+
             if (mDaten.ContainsKey(tName))
             {
-                    string tValue;
-                    mDaten.TryGetValue(tName, out tValue);
-                    mDaten.Remove(tName);
-                    mDaten.Add(tName, pNewData[1]);
-                    // here mDaten entLoggen 
-                    setSubjectStateToServer(tName);
-                }
-                else
+                string tValue;
+                mDaten.TryGetValue(tName, out tValue);
+                mDaten.Remove(tName);
+                mDaten.Add(tName, pNewData[1]);
+                // here mDaten entLoggen 
+                setSubjectStateToServer(tName);
+            }
+            else
+            {
+                mDaten.Add(tName, pNewData[1]);
+                setSubjectStateToServer(tName);
+                //////Debug.WriteLine("no SliceId found in SaveNewBrowserData");
+                //mlogger.log(mlogger.LogType.Debug, "Replaced SliceKey: " + pNewData[1].ToString() + " with Value: " + pNewData[2].ToString());
+            }
+        }
+
+
+
+        /// <summary>
+        /// sets the new Browser data
+        /// </summary>
+        /// <param name="pContent">content string with value pairs separated by and / variable and value separated by =</param>
+        public void setNewBrowserDaten(string pSliceID, string pValue)
+        {
+
+            Monitor.Enter(mDaten);
+            
+            if (mDaten.ContainsKey(pSliceID))
+            {
+                mDaten.Remove(pSliceID);
+                mDaten.Add(pSliceID, pValue);
+            }
+            else
+            {
+                mDaten.Add(pSliceID, pValue);
+            }
+
+            Monitor.Exit(mDaten);
+        }
+
+
+        public void getNewBrowserData(string pSliceId, out string Response)
+        {
+
+            if (Monitor.TryEnter(mDaten))
+            {
+                try
                 {
-                    mDaten.Add(tName, pNewData[1]);
-                    setSubjectStateToServer(tName);
-                    ////Debug.WriteLine("no SliceId found in SaveNewBrowserData");
-                    //mlogger.log(mlogger.LogType.Debug, "Replaced SliceKey: " + pNewData[1].ToString() + " with Value: " + pNewData[2].ToString());
+                    if (mDaten.ContainsKey(pSliceId))
+                    {
+                        mDaten.TryGetValue(pSliceId, out Response);
+                        mDaten.Remove(pSliceId);
+                    }
+                    else
+                    {
+                        Response = "";
+                    }
+                }
+                finally
+                {
+                    //Debug.WriteLine("Locked");
+                    Monitor.Exit(mDaten);
                 }
             }
+            else
+            {
+                Response = "";
+            }
+        }
+
+         
 
         
 
