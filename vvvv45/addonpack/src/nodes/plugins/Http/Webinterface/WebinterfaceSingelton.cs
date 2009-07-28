@@ -70,16 +70,22 @@ namespace VVVV.Webinterface
 
         #region field declaration
 
-        private static volatile WebinterfaceSingelton instance = null;
+        
         private static object m_lock = new Object();
         private ConcreteSubject mSubject;
-        private SortedList<string, string> mDaten = new SortedList<string, string>();
+        
         private SortedList<string, SortedList<string, string>> mNodeDaten = new SortedList<string, SortedList<string, string>>();
         private SortedList<string, string> mServerDaten = new SortedList<string, string>();
+
         private Logger mlogger;
         private XMLHandling mXmlHandling;
         private StartupCheck mStartupCheck;
 
+        //New 
+        private static volatile WebinterfaceSingelton instance = null;
+        private SortedList<string, string> mNodeData = new SortedList<string, string>();
+        private List<string> mGetMessages = new List<string>();
+        private List<string> mPostMessages = new List<string>();
 
 
         #endregion field declaration
@@ -97,12 +103,12 @@ namespace VVVV.Webinterface
         {
             get
             {
-                return mDaten;
+                return mNodeData;
             }
 
             set
             {
-                mDaten = value;
+                mNodeData = value;
             }
         }
 
@@ -463,14 +469,14 @@ namespace VVVV.Webinterface
 
             mlogger.log(mlogger.LogType.Debug, "Add new Node Daten to mDaten List ");
 
-            if (mDaten.ContainsKey(pKey))
+            if (mNodeData.ContainsKey(pKey))
             {
-                mDaten.Remove(pKey);
-                mDaten.Add(pKey, pNewNodeDaten);
+                mNodeData.Remove(pKey);
+                mNodeData.Add(pKey, pNewNodeDaten);
             }
             else
             {
-                mDaten.Add(pKey, pNewNodeDaten);
+                mNodeData.Add(pKey, pNewNodeDaten);
             }
 
 
@@ -501,18 +507,18 @@ namespace VVVV.Webinterface
             // here mDaten Loggen 
 
 
-            if (mDaten.ContainsKey(tName))
+            if (mNodeData.ContainsKey(tName))
             {
                 string tValue;
-                mDaten.TryGetValue(tName, out tValue);
-                mDaten.Remove(tName);
-                mDaten.Add(tName, pNewData[1]);
+                mNodeData.TryGetValue(tName, out tValue);
+                mNodeData.Remove(tName);
+                mNodeData.Add(tName, pNewData[1]);
                 // here mDaten entLoggen 
                 setSubjectStateToServer(tName);
             }
             else
             {
-                mDaten.Add(tName, pNewData[1]);
+                mNodeData.Add(tName, pNewData[1]);
                 setSubjectStateToServer(tName);
                 //////Debug.WriteLine("no SliceId found in SaveNewBrowserData");
                 //mlogger.log(mlogger.LogType.Debug, "Replaced SliceKey: " + pNewData[1].ToString() + " with Value: " + pNewData[2].ToString());
@@ -528,33 +534,33 @@ namespace VVVV.Webinterface
         public void setNewBrowserDaten(string pSliceID, string pValue)
         {
 
-            Monitor.Enter(mDaten);
+            Monitor.Enter(mNodeData);
             
-            if (mDaten.ContainsKey(pSliceID))
+            if (mNodeData.ContainsKey(pSliceID))
             {
-                mDaten.Remove(pSliceID);
-                mDaten.Add(pSliceID, pValue);
+                mNodeData.Remove(pSliceID);
+                mNodeData.Add(pSliceID, pValue);
             }
             else
             {
-                mDaten.Add(pSliceID, pValue);
+                mNodeData.Add(pSliceID, pValue);
             }
 
-            Monitor.Exit(mDaten);
+            Monitor.Exit(mNodeData);
         }
 
 
         public void getNewBrowserData(string pSliceId, out string Response)
         {
 
-            if (Monitor.TryEnter(mDaten))
+            if (Monitor.TryEnter(mNodeData))
             {
                 try
                 {
-                    if (mDaten.ContainsKey(pSliceId))
+                    if (mNodeData.ContainsKey(pSliceId))
                     {
-                        mDaten.TryGetValue(pSliceId, out Response);
-                        mDaten.Remove(pSliceId);
+                        mNodeData.TryGetValue(pSliceId, out Response);
+                        mNodeData.Remove(pSliceId);
                     }
                     else
                     {
@@ -564,7 +570,7 @@ namespace VVVV.Webinterface
                 finally
                 {
                     //Debug.WriteLine("Locked");
-                    Monitor.Exit(mDaten);
+                    Monitor.Exit(mNodeData);
                 }
             }
             else
@@ -573,7 +579,51 @@ namespace VVVV.Webinterface
             }
         }
 
+
+        public void setResponseMessage(string pContent, string pType)
+        {
+            if (pType == "GET")
+            {
+                Monitor.Enter(mGetMessages);
+                mGetMessages.Add(pContent);
+                Monitor.Exit(mGetMessages);
+            }
+            else if (pType == "POST")
+            {
+                Monitor.Enter(mPostMessages);
+                mPostMessages.Add(pContent);
+                Monitor.Exit(mPostMessages);
+            }
+        }
+
+
+        public void getRequestMessage(out List<string> GetMessages, out List<string> PostMessages)
+        {
+            if (Monitor.TryEnter(mGetMessages) && Monitor.TryEnter(mPostMessages))
+            {
+                try
+                {
+                    GetMessages = new List<string>(mGetMessages);
+                    mGetMessages.Clear();
+                    PostMessages = new List<string>(mPostMessages);
+                    mPostMessages.Clear();
+                }
+                finally
+                {
+                    //Debug.WriteLine("Locked");
+                    Monitor.Exit(mGetMessages);
+                    Monitor.Exit(mPostMessages);
+                }
+            }
+            else
+            {
+                GetMessages = null;
+                PostMessages = null;
+            }
+        }
          
+
+        
 
         
 

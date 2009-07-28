@@ -107,7 +107,6 @@ namespace VVVV.Nodes.Http
         private string mJsFile = String.Empty;
         PageBuilder mPageBuilder = new PageBuilder();
         private Rule mBodyRule;
-        private bool mChangedList = true; 
 
 
         #endregion field declaration

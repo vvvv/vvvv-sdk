@@ -80,7 +80,6 @@ namespace VVVV.Webinterface.Utilities
     /// </summary>
     public abstract class Tag
     {
-        private bool FDisposed = false;
 
         private int m_Level = 0;
         private string m_Text = "";

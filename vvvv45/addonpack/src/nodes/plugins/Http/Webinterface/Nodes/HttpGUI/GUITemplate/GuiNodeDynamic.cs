@@ -336,7 +336,6 @@ namespace VVVV.Nodes.HttpGUI
 
             #region Upstream Gui Elements
 
-            int usSGuiIn;
             if (FUpstreamHttpGuiIn != null )
             {
                 if (mChangedSpreadSize)

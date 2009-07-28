@@ -118,11 +118,15 @@ namespace VVVV.Webinterface.HttpServer
             
 
             if (mRequestType == "GET")
-            {               
+            {
+
+                mWebinterfaceSingelton.setResponseMessage(mMessageBody, mRequestType);
                 mResponse = new Response(mFilename,new LoadSelectContent(mFilename, pFolderToServ, pHtmlPages).ContentAsBytes, new HTTPStatusCode("").Code200);
             }
             else if (mRequestType == "POST")
             {
+
+                mWebinterfaceSingelton.setResponseMessage(mMessageBody, mRequestType);
                 string tContentType = String.Empty;
                 mRequestHeadParameterList.TryGetValue("Content-Type",out tContentType);
                 mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("Received POST Request"), new HTTPStatusCode("").Code200);
@@ -184,19 +188,23 @@ namespace VVVV.Webinterface.HttpServer
             //////Debug.WriteLine("mFileLocation: " + mFileLocation);
 
             //GetProperties
-            if(mRequestType =="GET" && mRequestType == "OPTIONS")
+            if(mRequestType =="GET" || mRequestType == "OPTIONS")
             {
                 if (words[1].Contains("?"))
                 {
                     string p02 = @"[\w\W]+[?]";
                     string getProperties = Regex.Replace(words[1], p02, "");
+                    mMessageBody = getProperties;
 
                     string[] ParamterPairs = getProperties.Split('&');
 
                     foreach (string pPair in ParamterPairs)
                     {
                         string[] pGetPostParameters = pPair.Split('=');
-                        mRequestBodyParameterList.Add(pGetPostParameters[0], pGetPostParameters[1]);
+                        if (pGetPostParameters.Length > 1)
+                        {
+                            mRequestBodyParameterList.Add(pGetPostParameters[0], pGetPostParameters[1]);
+                        }
                     }
                 }
                 else

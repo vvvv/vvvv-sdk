@@ -73,14 +73,12 @@ namespace VVVV.Nodes.Http
 
         //input pin 
         private IStringIn FDirectories;
-
         private IValueIn FEnableServer;
-        private IValueIn FOpenBrowser;
-
-
         private IValueConfig FPageCount;
-
         private INodeIn FHttpPageIn;
+        private IStringOut FGetMessages;
+        private IStringOut FPostMessages;
+        private IValueIn FOpenBrowser;
 
         //output pin 
         //private IStringOut FFileName;
@@ -252,8 +250,16 @@ namespace VVVV.Nodes.Http
             //assign host
             FHost = Host;
 
+
+            //conig
+            FHost.CreateValueConfig("PageCount", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPageCount);
+            FPageCount.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
+
+            //FHost.CreateValueInput("Port", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPort);
+            //FPort.SetSubType(1, 65535, 1, 80, false, false, true);
+
+
             //inputs
-           
             FHost.CreateStringInput("Directories", TSliceMode.Dynamic, TPinVisibility.True, out FDirectories);
             FDirectories.SetSubType(mServerFolder, false);
 
@@ -265,21 +271,25 @@ namespace VVVV.Nodes.Http
 
             FHost.CreateNodeInput("Input1", TSliceMode.Dynamic, TPinVisibility.True, out FHttpPageIn);
             FHttpPageIn.SetSubType(new Guid[1] { HttpPageIO.GUID }, HttpPageIO.FriendlyName);
-
             FInputPinList.Add(FHttpPageIn);
-            //outputs	    	   
+
+
+            //outputs	  
+            FHost.CreateStringOutput("GET", TSliceMode.Dynamic, TPinVisibility.Hidden, out FGetMessages);
+            FGetMessages.SetSubType("", false);
+
+            FHost.CreateStringOutput("POST", TSliceMode.Dynamic, TPinVisibility.Hidden, out FPostMessages);
+            FPostMessages.SetSubType("", false);
+
+  
+
+
+
             //FHost.CreateStringOutput("Files", TSliceMode.Dynamic, TPinVisibility.True, out FFileName);
             //FFileName.SetSubType("", true);
 
             //FHost.CreateStringOutput("Server File List", TSliceMode.Dynamic, TPinVisibility.Hidden, out FFileList);
             //FFileList.SetSubType("", true);
-
-            //Config Pin
-            FHost.CreateValueConfig("PageCount", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPageCount);
-            FPageCount.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
-
-            //FHost.CreateValueInput("Port", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPort);
-            //FPort.SetSubType(1, 65535, 1, 80, false, false, true);
 
 
         }
@@ -511,6 +521,51 @@ namespace VVVV.Nodes.Http
             }
 
             #endregion files to serve
+
+
+
+            #region Get Post Messages
+
+            if (mServer != null)
+            {
+                List<string> tGetMessages;
+                List<string> tPostMessages;
+                mWebinterfaceSingelton.getRequestMessage(out tGetMessages, out tPostMessages);
+
+
+                if (tGetMessages != null && tGetMessages.Count > 0)
+                {
+                    FGetMessages.SliceCount = tGetMessages.Count;
+                    for (int i = 0; i < tGetMessages.Count; i++)
+                    {
+                        FGetMessages.SetString(i, tGetMessages[i]);
+                    }
+                }
+                else
+                {
+                    FGetMessages.SliceCount = 1;
+                    FGetMessages.SetString(0, "");
+                }
+
+                if (tPostMessages != null && tPostMessages.Count > 0)
+                {
+                    FPostMessages.SliceCount = tPostMessages.Count;
+                    for (int i = 0; i < tPostMessages.Count; i++)
+                    {
+                        FPostMessages.SetString(i, tPostMessages[i]);
+                    }
+                }
+                else
+                {
+                    FPostMessages.SliceCount = 1;
+                    FPostMessages.SetString(0, "");
+                }
+                
+            }
+
+
+
+            #endregion Get Post Messages
 
         }
 

@@ -353,7 +353,6 @@ namespace VVVV.Nodes.HttpGUI
         public void Evaluate(int SpreadMax)
         {
 
-            int tSliceCounter = 0;
             int TSliceMax = 0;
 
             for (int i = 0; i < FInputPinList.Count; i++)
