@@ -39,12 +39,5 @@ namespace VVVV.Webinterface.Utilities
 
             return mIpList;
         }
-
-        public static IPAddress[] GetIpAdresseDNS()
-        {
-            IPAddress[] tAddressList = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
-            return tAddressList;
-        }
-
     }
 }

@@ -125,9 +125,10 @@ namespace VVVV.Webinterface.HttpServer
             }
             else if (mRequestType == "POST")
             {
-
                 mWebinterfaceSingelton.setResponseMessage(mMessageBody, mRequestType);
                 string tContentType = String.Empty;
+
+
                 mRequestHeadParameterList.TryGetValue("Content-Type",out tContentType);
                 mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("Received POST Request"), new HTTPStatusCode("").Code200);
             }

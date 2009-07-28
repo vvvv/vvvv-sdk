@@ -39,6 +39,8 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
 using System.Text;
+using System.Management;
+using System.Net;
 
 using VVVV.Webinterface;
 using VVVV.Webinterface.Utilities;
@@ -74,19 +76,20 @@ namespace VVVV.Nodes.Http
         //input pin 
         private IStringIn FDirectories;
         private IValueIn FEnableServer;
-        private IValueConfig FPageCount;
         private INodeIn FHttpPageIn;
-        private IStringOut FGetMessages;
-        private IStringOut FPostMessages;
         private IValueIn FOpenBrowser;
+        //private IValueIn FPort;
 
         //output pin 
-        //private IStringOut FFileName;
-        //private IStringOut FFileList;
+        private IStringOut FGetMessages;
+        private IStringOut FPostMessages;
+        private IStringOut FFileName;
+        //private IStringOut FIpAdresses;
         
-
         //Config Pin
-        //private IValueIn FPort;
+        private IValueConfig FPageCount;
+
+
         private List<INodeIn> FInputPinList = new List<INodeIn>();
         private List<INodeIOBase> FUpstreamInterfaceList = new List<INodeIOBase>();
         private SortedList<string, IHttpPageIO> FNodeUpstream = new SortedList<string,IHttpPageIO>();
@@ -97,6 +100,8 @@ namespace VVVV.Nodes.Http
         private string mServerFolder;
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
         private SortedList<string, byte[]> mHtmlPageList = new SortedList<string, byte[]>();
+
+
         private List<string> PageNames = new List<string>();
 
         #endregion field declaration
@@ -261,7 +266,7 @@ namespace VVVV.Nodes.Http
 
             //inputs
             FHost.CreateStringInput("Directories", TSliceMode.Dynamic, TPinVisibility.True, out FDirectories);
-            FDirectories.SetSubType(mServerFolder, false);
+            FDirectories.SetSubType("", false);
 
             FHost.CreateValueInput("Open Browser", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FOpenBrowser);
             FOpenBrowser.SetSubType(0, 1, 1, 0, true, false, true);
@@ -274,23 +279,21 @@ namespace VVVV.Nodes.Http
             FInputPinList.Add(FHttpPageIn);
 
 
-            //outputs	  
+            //outputs	 
+            FHost.CreateStringOutput("Files", TSliceMode.Dynamic, TPinVisibility.True, out FFileName);
+            FFileName.SetSubType("", true);
+
+            //FHost.CreateStringOutput("IpAdressen", TSliceMode.Dynamic, TPinVisibility.True, out FIpAdresses);
+            //FIpAdresses.SetSubType("", true);
+
             FHost.CreateStringOutput("GET", TSliceMode.Dynamic, TPinVisibility.Hidden, out FGetMessages);
             FGetMessages.SetSubType("", false);
 
             FHost.CreateStringOutput("POST", TSliceMode.Dynamic, TPinVisibility.Hidden, out FPostMessages);
             FPostMessages.SetSubType("", false);
 
-  
 
-
-
-            //FHost.CreateStringOutput("Files", TSliceMode.Dynamic, TPinVisibility.True, out FFileName);
-            //FFileName.SetSubType("", true);
-
-            //FHost.CreateStringOutput("Server File List", TSliceMode.Dynamic, TPinVisibility.Hidden, out FFileList);
-            //FFileList.SetSubType("", true);
-
+           
 
         }
 
@@ -439,7 +442,7 @@ namespace VVVV.Nodes.Http
                     mServer = new VVVV.Webinterface.HttpServer.Server(80, 50, mWebinterfaceSingelton.Subject, "ServerOne", mServerFolder);
                     mWebinterfaceSingelton.AddServhandling(mServer);
                     //mServer.ServeFolder(mServerFolder);
-                    mServer.Start();
+                    mServer.Start();             
                 }
                 else if(pState < 0.5)
                 {
@@ -447,6 +450,7 @@ namespace VVVV.Nodes.Http
                     {
                         mWebinterfaceSingelton.DeleteServhandling(mServer);
                         mServer.Stop();
+                        mServer.Dispose();
                         mServer = null;
                     }
 
@@ -482,46 +486,48 @@ namespace VVVV.Nodes.Http
             if (FDirectories.PinIsChanged)
             {
                 List<string> tDirectories = new List<string>();
+                List<string> tFiles = new List<string>();
 
                 for (int i = 0; i < FDirectories.SliceCount; i++)
                 {
                     string tCurrentDirectories;
                     FDirectories.GetString(i, out tCurrentDirectories);
-                    tDirectories.Add(tCurrentDirectories);
+                    if (tCurrentDirectories != null && tCurrentDirectories != "")
+                    {
+                        tDirectories.Add(tCurrentDirectories);
+
+                        DirectoryInfo tInfo = new DirectoryInfo(tCurrentDirectories);
+                        FileInfo[] tFileInfos = tInfo.GetFiles();
+
+                        for (int j = 0; j < tFileInfos.Length; j++)
+                        {
+                            tFiles.Add(tFileInfos[j].Name);
+                        }
+                    }
                 }
 
                 mServer.FoldersToServ = tDirectories;
+
+                if (tFiles.Count > 0)
+                {
+                    FFileName.SliceCount = tFiles.Count;
+                    for (int i = 0; i < tFiles.Count; i++)
+                    {
+                        FFileName.SetString(i, tFiles[i]);
+                    }
+                }
+                else
+                {
+                    FFileName.SliceCount = 1;
+                    FFileName.SetString(0, "");
+                }
+
             }
+
+
+            
 
             #endregion Directories
-
-
-
-
-            #region files to serve
-
-            if (mServer != null)
-            {
-                //List<string> tFileList = mServer.FileList;
-                //List<string> tFileName = mServer.FileNames;
-
-                //FFileList.SliceCount = tFileList.Count;
-                //FFileName.SliceCount = tFileName.Count;
-
-                //for (int i = 0; i < tFileList.Count; i++)
-                //{
-                //    FFileList.SetString(i, tFileList[i]);
-
-                //}
-
-                //for (int i = 0; i < tFileName.Count; i++)
-                //{
-                //    FFileName.SetString(i, tFileName[i]);
-                //}
-            }
-
-            #endregion files to serve
-
 
 
             #region Get Post Messages
@@ -570,6 +576,24 @@ namespace VVVV.Nodes.Http
         }
 
         #endregion mainloop
+
+
+
+        public static string LongToIP(long ipAddress)
+        {
+            System.Net.IPAddress tmpIp;
+            if (System.Net.IPAddress.TryParse(ipAddress.ToString(), out tmpIp))
+            {
+                try
+                {
+                    Byte[] bytes = tmpIp.GetAddressBytes();
+                    long addr = (long)BitConverter.ToInt32(bytes, 0);
+                    return new System.Net.IPAddress(addr).ToString();
+                }
+                catch (Exception e) { return e.Message; }
+            }
+            else return String.Empty;
+        }
 
 
 

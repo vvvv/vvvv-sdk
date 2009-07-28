@@ -329,6 +329,7 @@ namespace VVVV.Webinterface.HttpServer {
             }
             catch (SocketException se)
             {
+                threadEnd[0].Set();
                 ////Debug.WriteLine(se.Message.ToString());
             }
             catch (Exception ex)
@@ -342,6 +343,7 @@ namespace VVVV.Webinterface.HttpServer {
 
         public void Stop()
         {
+            ShuttingDown = true;
             int lcv;
             mLostTimer.Dispose();
             mLostTimer = null;
@@ -351,13 +353,7 @@ namespace VVVV.Webinterface.HttpServer {
                 if (!serverThread[lcv].IsAlive)
                     threadEnd[lcv].Set();    // Set event if thread is already dead
             }
-            ShuttingDown = true;
-
-            if (connectedSocks.Count != 0)
-            {
-
-            }
-            
+                      
 
             // Create a connection to the port to unblock the listener thread
             Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -459,7 +455,7 @@ namespace VVVV.Webinterface.HttpServer {
                     }
                     else
                     {
-                        Console.WriteLine(string.Format("Socket is not in the {0}  connected hash table!", this.Name));
+                        Debug.WriteLine(string.Format("Socket is not in the {0}  connected hash table!", this.Name));
                     }
                 }
             }
