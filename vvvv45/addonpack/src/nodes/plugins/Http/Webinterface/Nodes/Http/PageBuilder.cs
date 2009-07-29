@@ -15,8 +15,7 @@ namespace VVVV.Nodes.Http
 
 
         private Page mPage;
-        //public SortedList<string, string> mJsFile = new SortedList<string, string>();
-        List<string> mJsFile = new List<string>();
+        List<string> mJsFileList = new List<string>();
         private CssBuilder mCssBuilder = new CssBuilder();
         private Body mBody = new Body();
         private SortedList<string, Tag> mTags = new SortedList<string, Tag>();
@@ -58,7 +57,7 @@ namespace VVVV.Nodes.Http
             get
             {
                 StringBuilder tJsFile = new StringBuilder();
-                foreach (string pScript in mJsFile)
+                foreach (string pScript in mJsFileList)
                 {
                     tJsFile.Append(pScript + Environment.NewLine);
                 }
@@ -68,9 +67,6 @@ namespace VVVV.Nodes.Http
 
  
         #endregion field declaration
-
-
-
 
 
         public PageBuilder()
@@ -85,8 +81,9 @@ namespace VVVV.Nodes.Http
             // Reset everything
             //mPage.Body = null;
             //mPage.Head = null;
+           
             mPage = pPage;
-            mJsFile.Clear();
+            mJsFileList.Clear();
             mCssBuilder.Reset();
             mTags.Clear();
 
@@ -98,7 +95,8 @@ namespace VVVV.Nodes.Http
         }
 
 
-        public Tag BuildHtmlFrame(List<GuiDataObject> pGuiObjectIn, Tag tTag)
+
+        private Tag BuildHtmlFrame(List<GuiDataObject> pGuiObjectIn, Tag tTag)
         {
 
             ////Debug.WriteLine("------------ Enter BuildHtmlFrame -------------");
@@ -154,11 +152,11 @@ namespace VVVV.Nodes.Http
             return tTag;
         }
 
-        private void AddJavaScript( string pScript)
+        public void AddJavaScript(string pScript)
         {
-            if(mJsFile.Contains(pScript) == false)
+            if(mJsFileList.Contains(pScript) == false)
             {
-                mJsFile.Add(pScript);
+                mJsFileList.Add(pScript);
             }
         }
 
@@ -187,6 +185,8 @@ namespace VVVV.Nodes.Http
             mCssBuilder.AddCssSliceList(pObject.SliceId, tCssProperties);
             mCssBuilder.AddNodeId(pObject.NodeId);
         }
+
+
 
 
   

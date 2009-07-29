@@ -86,6 +86,9 @@ namespace VVVV.Webinterface
         private SortedList<string, string> mNodeData = new SortedList<string, string>();
         private List<string> mGetMessages = new List<string>();
         private List<string> mPostMessages = new List<string>();
+        private SortedList<string,string> mBrowserPolling = new SortedList<string,string>();
+        private SortedList<string,string> mNodePolling = new SortedList<string,string>();
+
 
 
         #endregion field declaration
@@ -620,6 +623,114 @@ namespace VVVV.Webinterface
                 GetMessages = null;
                 PostMessages = null;
             }
+        }
+
+
+        public void getPollingMessage(out XmlDocument pContent)
+        {
+            if (Monitor.TryEnter(mNodePolling) && Monitor.TryEnter(mBrowserPolling))
+            {
+                try
+                {
+                    if (mBrowserPolling.Count > 0 || mNodePolling.Count > 0)
+                    {
+                        XmlDocument tXml = CreatePollingXml();
+                        pContent = tXml;
+                        mBrowserPolling.Clear();
+                        mNodePolling.Clear();
+                    }
+                    else
+                    {
+
+                        pContent = null;
+                    }
+                }
+                finally
+                {
+                    //Debug.WriteLine("Locked");
+                    Monitor.Exit(mNodePolling);
+                    Monitor.Exit(mBrowserPolling);
+                }
+            }
+            else
+            {
+                pContent = null;
+            }
+        }
+
+
+        public void setPollingMessage(string SliceId, string pContent)
+        {
+            Monitor.Enter(mNodePolling);
+            
+            if (mNodePolling.ContainsKey(SliceId) == false)
+            {
+                mNodePolling.Add(SliceId, pContent);
+            }
+            else
+            {
+                mNodePolling.Remove(SliceId);
+                mNodePolling.Add(SliceId, pContent);
+            }
+
+            Monitor.Exit(mNodePolling);
+        }
+
+        public void setPollingMessage(string pCommand, string pContent, bool CommandAsTagName)
+        {
+            Monitor.Enter(mBrowserPolling);
+            if (CommandAsTagName)
+            {
+                if (mBrowserPolling.ContainsKey(pCommand) == false)
+                {
+                    mBrowserPolling.Add(pCommand, pContent);
+                }
+                else
+                {
+                    mBrowserPolling.Remove(pCommand);
+                    mBrowserPolling.Add(pCommand, pContent);
+                }
+            }
+
+            Monitor.Exit(mBrowserPolling);
+        }
+
+
+        public XmlDocument CreatePollingXml()
+        {
+
+            System.Xml.XmlDocument tXml = new XmlDocument();
+
+            tXml.AppendChild(tXml.CreateElement("", "polling", ""));
+            XmlElement tRoot = tXml.DocumentElement;
+            XmlElement tBrowser = tXml.CreateElement("", "browser", "");
+            XmlElement tNodes = tXml.CreateElement("", "nodes", "");
+           
+            if(mBrowserPolling.Count > 0)
+            {
+                foreach (KeyValuePair<string, string> tPair in mBrowserPolling)
+                {
+                    XmlElement tCommand;
+                    tCommand = tXml.CreateElement("", tPair.Key, "");
+                    tCommand.InnerText =  tPair.Value;
+                    tBrowser.AppendChild(tCommand);
+                }
+            }
+
+            if(mNodePolling.Count > 0)
+            {
+                foreach(KeyValuePair<string,string> tPair in mNodePolling)
+                {
+                    XmlElement tNodeSlice;
+                    tNodeSlice = tXml.CreateElement("", "node", "");
+                    tNodeSlice.SetAttribute("SliceId",tPair.Key);
+                    tNodes.AppendChild(tNodeSlice);
+                }
+            }
+
+            tRoot.AppendChild(tBrowser);
+            tRoot.AppendChild(tNodes);
+            return tXml;
         }
          
 

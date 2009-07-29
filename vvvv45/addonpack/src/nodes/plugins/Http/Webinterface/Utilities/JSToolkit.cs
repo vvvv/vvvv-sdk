@@ -222,7 +222,8 @@ namespace VVVV.Webinterface.Utilities
         public static string Polling(string IntervalTime, string ValuesToSent)
         {
             string temp = @"
-<script>
+//Polling Technik requires jquery timer 
+
     $(document).ready(function(){{
         $(document).everyTime({0},function(i) {{
             processChunk(i);    
@@ -231,10 +232,20 @@ namespace VVVV.Webinterface.Utilities
 
     function processChunk(i){{ 
         $.ajax({{
+            type: ""POST"",
+            url: ""polling.xml"",
             data: {1},
+            success: function(xml)
+            {{
+                
+                if($(xml).find('Reload'))
+                {{
+                    location.reload(true);
+                }}
+
+            }}
         }});
-    }};   
-</script>" + Environment.NewLine;
+    }};   " + Environment.NewLine;
 
             return String.Format(temp, IntervalTime, ValuesToSent);
         }

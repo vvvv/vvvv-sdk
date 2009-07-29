@@ -391,7 +391,7 @@ namespace VVVV.Webinterface.HttpServer {
                     }
                     else
                     {
-                        if (DateTime.Now.AddTicks(-state.TimeStamp.Ticks).Minute > mTimeoutMinutes && state.RequestObject.FileName != "dummy.html")
+                        if (DateTime.Now.AddTicks(-state.TimeStamp.Ticks).Minute > mTimeoutMinutes)
                         {
                             RemoveSocket(state);
                             Interlocked.Decrement(ref sockCount);

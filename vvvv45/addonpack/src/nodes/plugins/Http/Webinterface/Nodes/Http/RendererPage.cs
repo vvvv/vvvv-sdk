@@ -75,15 +75,16 @@ namespace VVVV.Nodes.Http
         private IValueIn FPageWidth;
         private IValueIn FPageHeight;
         private IValueIn FBuild;
-
+       
+        //Node Pins
         private INodeIn FHttpGuiIn;
         private IHttpGUIIO FUpstreamInterface;
-
         private INodeOut FHttpPageOut;
 
-
         //output pin
-        private IStringOut FWholeHTML;
+        private IStringOut FHtmlFile;
+        private IStringOut FCssFile;
+        private IStringOut FJsFile;
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
 
         //HttpGuiInterface  
@@ -315,8 +316,14 @@ namespace VVVV.Nodes.Http
             FHttpPageOut.SetInterface(this);
 
 
-            FHost.CreateStringOutput("Output Page", TSliceMode.Dynamic, TPinVisibility.Hidden, out FWholeHTML);
-            FWholeHTML.SetSubType("", false);
+            FHost.CreateStringOutput("Output Page", TSliceMode.Dynamic, TPinVisibility.Hidden, out FHtmlFile);
+            FHtmlFile.SetSubType("", false);
+
+            FHost.CreateStringOutput("CSS File", TSliceMode.Dynamic, TPinVisibility.Hidden, out FCssFile);
+            FCssFile.SetSubType("", false);
+
+            FHost.CreateStringOutput("JS File", TSliceMode.Dynamic, TPinVisibility.Hidden, out FJsFile);
+            FJsFile.SetSubType("", false);
 
 
             string PatchPath = String.Empty;
@@ -455,7 +462,7 @@ namespace VVVV.Nodes.Http
                 FReload.GetValue(0, out currentReloadSlice);
                 if (currentReloadSlice > 0.5)
                 {
-                    mWebinterfaceSingelton.Reload();
+                    mWebinterfaceSingelton.setPollingMessage("Reload","Lade mich neu",true);
                 }
             }
             #endregion Reload Page
@@ -556,36 +563,37 @@ namespace VVVV.Nodes.Http
                     // Css File
                     mPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
                     mPage.Head.Insert(new JavaScript("jquery.js"));
+                    mPage.Head.Insert(new JavaScript("jquerytimer.js"));
                     mPage.Head.Insert(new JavaScript(mPageName + ".js"));
 
-                    mPageBuilder.UpdateGuiList(mGuiDatenListe, mPage);
 
+                    mPageBuilder.UpdateGuiList(mGuiDatenListe, mPage);
+                    //Communication Type
+                    string tCommunicationType;
+                    FCommunication.GetString(0, out tCommunicationType);
+                    if (tCommunicationType == "Polling")
+                    {
+                        mPageBuilder.AddJavaScript(JSToolkit.Polling("1000", "'Gib mit neue Daten'"));
+
+                    }
+                    else if (tCommunicationType == "Comet")
+                    {
+                        mPageBuilder.AddJavaScript(JSToolkit.Comet());
+                    }
 
                     //Insert Input Strings
                     mPage.Body.Insert(mPageBodyString);
                     mPage.Head.Insert(mPageHeadString);
 
 
-                    //Communication Type
-                    string tCommunicationType;
-                    FCommunication.GetString(0, out tCommunicationType);
-                    if (tCommunicationType == "Polling")
-                    {
-                        mPage.Head.Insert(JSToolkit.Polling("100", "'HIer sollte ein XML stehen :-)'"));
-
-                    }
-                    else if (tCommunicationType == "Comet")
-                    {
-                        mPage.Body.Insert(JSToolkit.Comet());
-                    }
-
-                    //Output whole Page
-                    FWholeHTML.SetString(0, mPage.Text);
-
-
                     //set Field Properties
                     mCssFile = mPageBuilder.CssMainFile.ToString() + Environment.NewLine + mBodyRule.Text;
                     mJsFile = mPageBuilder.JsFile.ToString();
+
+                    //Output Files
+                    FHtmlFile.SetString(0, mPage.Text);
+                    FCssFile.SetString(0, mCssFile);
+                    FJsFile.SetString(0, mJsFile);
                     
                 }
             //}

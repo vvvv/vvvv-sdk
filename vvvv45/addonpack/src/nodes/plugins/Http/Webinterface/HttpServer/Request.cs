@@ -4,6 +4,9 @@ using System.Collections;
 using System.Text;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Xml;
+using System.IO;
+
 
 
 namespace VVVV.Webinterface.HttpServer
@@ -18,12 +21,15 @@ namespace VVVV.Webinterface.HttpServer
         private string mFileLocation;
         private SortedDictionary<string, string> mRequestHeadParameterList = new SortedDictionary<string, string>();
         private SortedDictionary<string, string> mRequestBodyParameterList = new SortedDictionary<string, string>();
+        
         private string mMessageHead = "";
         private string mMessageBody = "";
         private Dictionary<string,string> mArguments = new Dictionary<string,string>();
         private Response mResponse;
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
 
+        private SortedList<string, byte[]> mHtmlPages;
+        List<string> mFolderToServ;
 
         # region public properties
 
@@ -105,6 +111,9 @@ namespace VVVV.Webinterface.HttpServer
 
         public Request(string pRequest, List<string> pFolderToServ, SortedList<string, byte[]> pHtmlPages)
         {
+
+            this.mFolderToServ = pFolderToServ;
+            this.mHtmlPages = pHtmlPages;
             mMessageHead = pRequest.Substring(0,pRequest.LastIndexOf(Environment.NewLine));
             mMessageBody = pRequest.Substring(pRequest.LastIndexOf(Environment.NewLine));
             mMessageBody = mMessageBody.TrimStart(new Char[] { '\n', '\r', '?' });
@@ -115,22 +124,17 @@ namespace VVVV.Webinterface.HttpServer
             SplitHeadParameter(tHeadLines);
             SplitFirstLine(tHeadLines[0]);
 
-            
 
-            if (mRequestType == "GET")
+
+            if (mRequestType == "GET" || mRequestType == "OPTIONS")
             {
-
-                mWebinterfaceSingelton.setResponseMessage(mMessageBody, mRequestType);
-                mResponse = new Response(mFilename,new LoadSelectContent(mFilename, pFolderToServ, pHtmlPages).ContentAsBytes, new HTTPStatusCode("").Code200);
+                GetRequest();
             }
+               
             else if (mRequestType == "POST")
             {
-                mWebinterfaceSingelton.setResponseMessage(mMessageBody, mRequestType);
-                string tContentType = String.Empty;
 
-
-                mRequestHeadParameterList.TryGetValue("Content-Type",out tContentType);
-                mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("Received POST Request"), new HTTPStatusCode("").Code200);
+                PostRequest();
             }
             else
             {
@@ -213,51 +217,6 @@ namespace VVVV.Webinterface.HttpServer
                     return;
                 }
             }
-            else if (mRequestType == "POST")
-            {
-                string tContentTypeHeader;
-                mRequestHeadParameterList.TryGetValue("Content-Type", out tContentTypeHeader);
-
-                string[] tValues = tContentTypeHeader.Split(';');
-
-                string ContentType = tValues[0];
-                ContentType = ContentType.Trim();
-
-                string tReqeustedFileExtension = String.Empty;
-
-                if (tValues.Length > 1 )
-                {
-                    string tEncoding = tValues[1];
-                }
-
-                //XmlHttpRequest
-                if (mFilename == "ToVVVV.xml")
-                {
-                    
-                       string[] tVVVVParameter =  mMessageBody.Split('&');
-                       foreach (string tValuePair in tVVVVParameter)
-                       {
-                           string[] tValue = tValuePair.Split('=');
-                           mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
-                       }
-
-                        
-                    
-                }
-                //Any Files are send
-                else
-                {
-                    tReqeustedFileExtension = DetectedFileExtension(ContentType);
-                    if( tReqeustedFileExtension == "unknown" && ContentType.Contains("javascript"))
-                    {
-                        tReqeustedFileExtension = ".js";
-                    }
-                }
-            }
-            else
-            {
-                //////Debug.WriteLine("Unknown Requesttype");
-            }
          }
 
         private string DetectedFileExtension(string pContenType)
@@ -291,6 +250,96 @@ namespace VVVV.Webinterface.HttpServer
 
 
 
+
+
+        #region GET Request
+
+
+        private void GetRequest()
+        {
+             mWebinterfaceSingelton.setResponseMessage(mMessageBody, mRequestType);
+             mResponse = new Response(mFilename,new LoadSelectContent(mFilename, mFolderToServ, mHtmlPages).ContentAsBytes, new HTTPStatusCode("").Code200);
+            
+        }
+
+
+        #endregion GET Request
+
+
+
+        #region POST Request
+
+
+        private void PostRequest()
+        {
+            string tContentTypeHeader;
+            mRequestHeadParameterList.TryGetValue("Content-Type", out tContentTypeHeader);
+
+            string[] tValues = tContentTypeHeader.Split(';');
+
+            string ContentType = tValues[0];
+            ContentType = ContentType.Trim();
+
+            string tReqeustedFileExtension = String.Empty;
+
+
+            mWebinterfaceSingelton.setResponseMessage(mMessageBody, mRequestType);
+            string tContentType = String.Empty;
+
+
+            mRequestHeadParameterList.TryGetValue("Content-Type", out tContentType);
+            mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("Received POST Request"), new HTTPStatusCode("").Code200);
+
+            if (mFilename == "ToVVVV.xml")
+            {
+
+                string[] tVVVVParameter = mMessageBody.Split('&');
+                foreach (string tValuePair in tVVVVParameter)
+                {
+                    string[] tValue = tValuePair.Split('=');
+                    mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
+                }
+                mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("Received POST Request"), new HTTPStatusCode("").Code200);
+            }
+            else if (mFilename == "polling.xml")
+            {
+                XmlDocument tMessage;
+                mWebinterfaceSingelton.getPollingMessage(out tMessage);
+
+                
+
+                if (tMessage != null)
+                {
+                    StringWriter sw = new StringWriter();
+                    XmlTextWriter xw = new XmlTextWriter(sw);
+                                            
+                    // Save Xml Document to Text Writter.
+                    tMessage.WriteTo(xw);
+                    System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+                                            
+                    // Convert Xml Document To Byte Array.
+                    byte[] docAsBytes = encoding.GetBytes(sw.ToString());
+
+                    mResponse = new Response(mFilename, "text/xml", docAsBytes, new HTTPStatusCode("").Code200);
+                }
+                else
+                {
+                    mResponse = new Response(mFilename, "text/xml", Encoding.UTF8.GetBytes("NoNewData"), new HTTPStatusCode("").Code200);
+                }
+
+               
+            }
+            else
+            {
+                tReqeustedFileExtension = DetectedFileExtension(ContentType);
+                if (tReqeustedFileExtension == "unknown" && ContentType.Contains("javascript"))
+                {
+                    tReqeustedFileExtension = ".js";
+                }
+            }
+        }
+
+        #endregion POST Request
 
 
         private void SetReceivedData(string pContent)
