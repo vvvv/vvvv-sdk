@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Allows you to build a Webinterface with an for VVVV")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("VVVV group")]
-[assembly: AssemblyProduct("WebInterface")]
+[assembly: AssemblyProduct("")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

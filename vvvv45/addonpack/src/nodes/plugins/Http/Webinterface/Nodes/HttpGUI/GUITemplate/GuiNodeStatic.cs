@@ -13,7 +13,7 @@ using System.Globalization;
 
 namespace VVVV.Nodes.HttpGUI
 {
-    public abstract class GuiNodeDynamic : IHttpGUIIO, IPluginConnections
+    public abstract class GuiNodeStatic : IHttpGUIIO, IPluginConnections
     {
 
 
@@ -30,9 +30,6 @@ namespace VVVV.Nodes.HttpGUI
         private IEnumIn FBasingPoint;
         public INodeOut FHttpGuiOut;
 
-        public INodeIn FHttpGuiIn;
-        public IHttpGUIIO FUpstreamHttpGuiIn;
-
         public INodeIn FHttpStyleIn;
         public IHttpGUIStyleIO FUpstreamStyle;
 
@@ -42,12 +39,9 @@ namespace VVVV.Nodes.HttpGUI
         //Required Members
         public List<GuiDataObject> mGuiDataList = new List<GuiDataObject>();
         public int mSpreadMax = 0;
-        public bool mChangedSpreadSize = true;
+        public bool mChangedSpreadSize = true; 
         private string mNodePath;
-
-        private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
-
-
+        
 
         #endregion field Definition
 
@@ -63,8 +57,8 @@ namespace VVVV.Nodes.HttpGUI
         protected abstract void OnSetPluginHost();
         //protected abstract void OnConfigurate(IPluginConfig Input);
         protected abstract void OnEvaluate(int SpreadMax);
-
-
+        
+        
         #endregion abstract Methods
 
 
@@ -83,19 +77,14 @@ namespace VVVV.Nodes.HttpGUI
             FHost.GetNodePath(false, out mNodePath);
 
 
-            this.OnSetPluginHost();
-
             //Input Pins 
-            this.FHost.CreateNodeInput("Input GUI", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiIn);
-            FHttpGuiIn.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
-
             FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTransformIn);
 
             FHost.UpdateEnum("PositionType", "absolute", new string[] { "absolute", "fixed ", "relative ", "static " });
             FHost.CreateEnumInput("Positiontype", TSliceMode.Single, TPinVisibility.True, out FPositionType);
             FPositionType.SetSubType("PositionType");
 
-            FHost.UpdateEnum("BasingPoint", "Center", new string[] { "Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight" });
+            FHost.UpdateEnum("BasingPoint", "Center", new string[] {"Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight"});
             FHost.CreateEnumInput("Basing Point", TSliceMode.Single, TPinVisibility.True, out FBasingPoint);
             FBasingPoint.SetSubType("BasingPoint");
 
@@ -106,7 +95,7 @@ namespace VVVV.Nodes.HttpGUI
             FHttpGuiOut.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
             FHttpGuiOut.SetInterface(this);
 
-            
+            this.OnSetPluginHost();	    	
         }
 
 
@@ -136,18 +125,8 @@ namespace VVVV.Nodes.HttpGUI
         public void ConnectPin(IPluginIO Pin)
         {
             //cache a reference to the upstream interface when the NodeInput pin is being connected
-            if (Pin == FHttpGuiIn)
-            {
-                if (FHttpGuiIn != null)
-                {
-                    INodeIOBase usI;
-                    FHttpGuiIn.GetUpstreamInterface(out usI);
-                    FUpstreamHttpGuiIn = usI as IHttpGUIIO;
-                    mChangedSpreadSize = true;
-                }
 
-            }
-            else if (Pin == FHttpStyleIn)
+            if (Pin == FHttpStyleIn)
             {
                 INodeIOBase usIHttpStyle;
                 FHttpStyleIn.GetUpstreamInterface(out usIHttpStyle);
@@ -160,18 +139,7 @@ namespace VVVV.Nodes.HttpGUI
         public void DisconnectPin(IPluginIO Pin)
         {
             //reset the cached reference to the upstream interface when the NodeInput is being disconnected
-            if (Pin == FHttpGuiIn)
-            {
-
-                for (int i = 0; i < mGuiDataList.Count; i++)
-                {
-                    mGuiDataList[i].GuiUpstreamList = null;
-                }
-                FUpstreamHttpGuiIn = null;
-
-
-            }
-            else if (Pin == FHttpStyleIn)
+            if (Pin == FHttpStyleIn)
             {
                 for (int i = 0; i < mGuiDataList.Count; i++)
                 {
@@ -195,7 +163,7 @@ namespace VVVV.Nodes.HttpGUI
 
         public void Configurate(IPluginConfig Input)
         {
-
+            
         }
 
         #endregion
@@ -213,7 +181,7 @@ namespace VVVV.Nodes.HttpGUI
         public void Evaluate(int SpreadMax)
         {
 
-
+            
 
             #region Check Gui List
 
@@ -241,11 +209,11 @@ namespace VVVV.Nodes.HttpGUI
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
-
+                    
                 }
             }
 
-
+            
 
 
             #endregion Check Gui List
@@ -254,13 +222,13 @@ namespace VVVV.Nodes.HttpGUI
 
             #region Transform Pin
 
-            if (FTransformIn.PinIsChanged || FBasingPoint.PinIsChanged || FPositionType.PinIsChanged || mChangedSpreadSize)
+            if (FTransformIn.PinIsChanged || FBasingPoint.PinIsChanged ||FPositionType.PinIsChanged || mChangedSpreadSize)
             {
                 string tBasingPoint;
-                FBasingPoint.GetString(0, out tBasingPoint);
+                FBasingPoint.GetString(0,out tBasingPoint);
 
                 string tPositionType;
-                FPositionType.GetString(0, out tPositionType);
+                FPositionType.GetString(0,out tPositionType);
 
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -328,32 +296,11 @@ namespace VVVV.Nodes.HttpGUI
 
                     tTransformSlice.Add("z-index", Convert.ToString(Math.Round(tMatrix.m43)));
 
-                    mGuiDataList[i].Transform = new SortedList<string, string>(tTransformSlice);
+                    mGuiDataList[i].Transform = new SortedList<string,string>(tTransformSlice);
                 }
             }
 
             #endregion Transform Pin
-
-
-
-            #region Upstream Gui Elements
-
-            if (FUpstreamHttpGuiIn != null)
-            {
-                if (mChangedSpreadSize)
-                {
-                    List<GuiDataObject> tGuiList;
-                    FUpstreamHttpGuiIn.GetDatenObjekt(0, out tGuiList);
-
-                    for (int i = 0; i < SpreadMax; i++)
-                    {
-                        mGuiDataList[i].GuiUpstreamList = tGuiList;
-                    }
-                }
-            }
-
-            #endregion Upstream Gui Elements
-
 
 
 
@@ -374,9 +321,9 @@ namespace VVVV.Nodes.HttpGUI
 
                     SortedList<string, string> tSliceCssPropertie;
                     FUpstreamStyle.GetCssProperties(i, out tSliceCssPropertie);
-
-                    mGuiDataList[i].CssProperties = new SortedList<string, string>(tSliceCssPropertie);
-
+                    
+                    mGuiDataList[i].CssProperties = new SortedList<string,string>(tSliceCssPropertie);
+                    
                 }
             }
 
@@ -466,25 +413,6 @@ namespace VVVV.Nodes.HttpGUI
         }
 
         #endregion Add to GuiDataObject
-
-
-
-
-
-        #region Get data from WebinterfaceSingelton
-
-
-        public void GetNewDataFromServer(string SlideId, out string pContent)
-        {
-            mWebinterfaceSingelton.getNewBrowserData(SlideId, out pContent);
-        }
-
-
-
-
-
-        #endregion Get data from WebinterfaceSingelton
-
 
 
 

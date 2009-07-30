@@ -314,15 +314,20 @@ namespace VVVV.Nodes.Http
                     INodeIOBase usI;
                     IHttpPageIO FUpstreamInterface;
 
-
                     pNodeIn.GetUpstreamInterface(out usI);
                     FUpstreamInterface = usI as IHttpPageIO;
                     FUpstreamInterfaceList.Add(usI);
 
-                    string tNodeName = Pin.Name;
-                    int tNumber = Convert.ToInt16(tNodeName.Replace("Input", "")) - 1;
-
                     FNodeUpstream.Add(Pin.Name, FUpstreamInterface);
+
+                    string tPageName;
+                    string tUrl;
+                    ReadPageName(Pin.Name, out tUrl, out tPageName);
+
+                    if (tPageName != null)
+                    {
+                        mWebinterfaceSingelton.AddConnectedPage(tPageName);
+                    }
                 }
             }
 
@@ -338,8 +343,18 @@ namespace VVVV.Nodes.Http
                 if (Pin == pNodeIn)
                 {
                     string tNodeName = Pin.Name;
-                    ReadUpstream(true);
+
+                    string tPageName;
+                    string tUrl;
+                    ReadPageName(Pin.Name, out tUrl, out tPageName);
+
+                    if (tPageName != null)
+                    {
+                        mWebinterfaceSingelton.RemoveDisconnectedPage(tPageName, tUrl);
+                    }
+                    
                     FNodeUpstream.Remove(Pin.Name);
+
                 }
             }
             
@@ -416,18 +431,6 @@ namespace VVVV.Nodes.Http
         {
 
 
-            #region Upstream
-
-
-
-            ReadUpstream(false);
-
-
-            #endregion Upstream
-
-
-
-
             #region Enable Server
 
             double pState;
@@ -453,14 +456,11 @@ namespace VVVV.Nodes.Http
                         mServer.Dispose();
                         mServer = null;
                     }
-
                 }
             }
 
 
             #endregion Enable Server
-
-
 
 
             #region Open Browser
@@ -477,8 +477,6 @@ namespace VVVV.Nodes.Http
             }
 
             #endregion Open Browser
-
-
 
 
             #region Directories
@@ -579,118 +577,36 @@ namespace VVVV.Nodes.Http
 
 
 
-        public static string LongToIP(long ipAddress)
-        {
-            System.Net.IPAddress tmpIp;
-            if (System.Net.IPAddress.TryParse(ipAddress.ToString(), out tmpIp))
-            {
-                try
-                {
-                    Byte[] bytes = tmpIp.GetAddressBytes();
-                    long addr = (long)BitConverter.ToInt32(bytes, 0);
-                    return new System.Net.IPAddress(addr).ToString();
-                }
-                catch (Exception e) { return e.Message; }
-            }
-            else return String.Empty;
-        }
-
-
-
-
+        
         #region HandleUpstream
 
-        private void ReadUpstream(bool pDisconnected)
+
+
+        private void ReadPageName(string pNodeName, out string pUrl, out string PageName)
         {
-                        //Saves the incoming Html Slices
-            foreach (INodeIn pNodeIn in FInputPinList)
+            IHttpPageIO FUpstream;
+            FNodeUpstream.TryGetValue(pNodeName, out FUpstream);
+            string tPageName = "";
+            string tFileName;
+
+            if (FUpstream != null)
             {
-                string tNodeName = pNodeIn.Name;
-                int tNumber = Convert.ToInt16(tNodeName.Replace("Input", "")) - 1;
-
-                IHttpPageIO FUpstream;
-                FNodeUpstream.TryGetValue(pNodeIn.Name, out FUpstream);
-
-                if (FUpstream != null)
-                {
-                    for (int i = 0; i < FHttpPageIn.SliceCount; i++)
-                    {
-                        //get upstream slice index
-                        int usS;
-                        pNodeIn.GetUpsreamSlice(i, out usS);
-
-                        string tPageName;
-                        Page tPage;
-                        string tJsFile;
-                        string tCssFile;
-                        string tFileName;
-                        FUpstream.GetPage(out tPage, out tCssFile, out tJsFile, out tPageName, out tFileName);
-
-                        if (pDisconnected)
-                        {
-                            RemovePageFormList(tPageName, tPage, tCssFile, tJsFile, tFileName);
-                        }
-                        else if (tPage != null)
-                        {
-                            HandlePageList(tPageName, tPage, tCssFile, tJsFile, tFileName);
-                        }
-                        else
-                        {
-
-                        }
-                        
-
-                        if (mServer != null)
-                        {
-                            mServer.HtmlPages = mHtmlPageList;
-                        }
-                    }
-                }
-             
-            }
-        }
-
-
-        private void HandlePageList(string pPageName, Page pPage, string pCssFile, string pJsFile, string pUrl)
-        {
-
-            if (PageNames.Contains(pPageName))
-            {
-                PageNames.Remove(pPageName);
-                PageNames.Add(pPageName);
-
-                mHtmlPageList.Remove(pUrl);
-                mHtmlPageList.Add(pUrl, Encoding.UTF8.GetBytes(pPage.Text));
-
-                mHtmlPageList.Remove(pPageName + ".css");
-                mHtmlPageList.Add(pPageName + ".css", Encoding.UTF8.GetBytes(pCssFile));
-
-                mHtmlPageList.Remove(pPageName + ".js");
-                mHtmlPageList.Add(pPageName + ".js", Encoding.UTF8.GetBytes(pJsFile));
-
+                FUpstream.GetPage( out tPageName, out tFileName);
+                PageName = tPageName;
+                pUrl = tFileName;
             }
             else
             {
-                PageNames.Add(pPageName);
-                mHtmlPageList.Add(pUrl, Encoding.UTF8.GetBytes(pPage.Text));
-                mHtmlPageList.Add(pPageName + ".css", Encoding.UTF8.GetBytes(pCssFile));
-                mHtmlPageList.Add(pPageName + ".js", Encoding.UTF8.GetBytes(pJsFile));
-
+                PageName = null;
+                pUrl = null;
             }
+
+            
         }
 
-        private void RemovePageFormList(string pPageName, Page pPage, string pCssFile, string pJsFile, string pUrl)
-        {
 
-            if (PageNames.Contains(pPageName))
-            {
-                PageNames.Remove(pPageName);
-                mHtmlPageList.Remove(pUrl);
-                mHtmlPageList.Remove(pPageName + ".css");
-                mHtmlPageList.Remove(pPageName + ".js");
 
-            }
-        }
+
 
 
 

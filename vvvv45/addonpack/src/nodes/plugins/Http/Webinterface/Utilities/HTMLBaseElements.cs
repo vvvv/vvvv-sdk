@@ -289,11 +289,11 @@ namespace VVVV.Webinterface.Utilities
 
             tText += m_CloseBegin + Environment.NewLine;
 
-            foreach (string tString in m_Strings)
-                tText += tTabs + tString + Environment.NewLine;
-
             foreach (Tag tTag in m_Tags)
                 tText += tTabs + tTag.Text;
+
+            foreach (string tString in m_Strings)
+                tText += tTabs + tString + Environment.NewLine;
 
             tText += tTabs + m_End + Environment.NewLine;
 

@@ -483,11 +483,19 @@ namespace VVVV.Webinterface.Utilities
             AddAttribute(new HTMLAttribute("type", "text/javascript"));
         }
         
-        public JavaScript(string pFilePath)
+        public JavaScript(string pContent, bool IsFileName)
         {
+
             Name = "script";
-            AddAttribute(new HTMLAttribute("type", "text/javascript"));
-            AddAttribute(new HTMLAttribute("src", pFilePath));
+            if (IsFileName)
+            {
+                AddAttribute(new HTMLAttribute("type", "text/javascript"));
+                AddAttribute(new HTMLAttribute("src", pContent));
+            }
+            else
+            {
+                Insert(pContent);
+            }
         }
 
         public JavaScript(string pFunctionName, string pFunction)

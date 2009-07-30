@@ -13,6 +13,8 @@ namespace VVVV.Webinterface.HttpServer
         private string mContent;
         private byte[] mContentAsByte;
         private string mFileExtension;
+        private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
+        
 
         public string Content
         {
@@ -46,9 +48,24 @@ namespace VVVV.Webinterface.HttpServer
             {
                 string tPageToSend = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
                 mContentAsByte = Encoding.UTF8.GetBytes(tPageToSend);
-            }else if(pHtmlPages.ContainsKey(pFilename))
+            }else if(mWebinterfaceSingelton.ServerFilesUrl.Contains(pFilename))
             {
-                pHtmlPages.TryGetValue(pFilename, out mContentAsByte);
+
+                SortedList<string, string> tServerFiles;
+                if (mWebinterfaceSingelton.GuiLists.ContainsKey(pFilename))
+                {
+                    mWebinterfaceSingelton.BuildPages(pFilename);
+                    tServerFiles = mWebinterfaceSingelton.ServerFiles;
+                }
+                else
+                {
+                    tServerFiles = mWebinterfaceSingelton.ServerFiles;
+                }
+
+
+                string RequestedFile;
+                tServerFiles.TryGetValue(pFilename, out RequestedFile);
+                mContentAsByte = Encoding.UTF8.GetBytes(RequestedFile);
             }else
             {
                 LoadFromDisc(pFilename, pPaths);

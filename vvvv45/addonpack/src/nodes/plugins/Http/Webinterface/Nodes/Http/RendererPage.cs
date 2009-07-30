@@ -74,7 +74,6 @@ namespace VVVV.Nodes.Http
         private IEnumIn FCommunication;
         private IValueIn FPageWidth;
         private IValueIn FPageHeight;
-        private IValueIn FBuild;
        
         //Node Pins
         private INodeIn FHttpGuiIn;
@@ -82,9 +81,9 @@ namespace VVVV.Nodes.Http
         private INodeOut FHttpPageOut;
 
         //output pin
-        private IStringOut FHtmlFile;
-        private IStringOut FCssFile;
-        private IStringOut FJsFile;
+        //private IStringOut FHtmlFile;
+        //private IStringOut FCssFile;
+        //private IStringOut FJsFile;
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
 
         //HttpGuiInterface  
@@ -104,8 +103,8 @@ namespace VVVV.Nodes.Http
         private string mUrl = String.Empty;
         private string mPageHeadString = String.Empty;
         private string mPageBodyString = String.Empty;
-        private string mCssFile = String.Empty;
-        private string mJsFile = String.Empty;
+        //private string mCssFile = String.Empty;
+        //private string mJsFile = String.Empty;
         PageBuilder mPageBuilder = new PageBuilder();
         private Rule mBodyRule;
 
@@ -279,10 +278,6 @@ namespace VVVV.Nodes.Http
             FHost.CreateNodeInput("CSS", TSliceMode.Dynamic, TPinVisibility.True, out FCssPropertiesIn);
             FCssPropertiesIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
 
-            FHost.CreateValueInput("Build",1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBuild);
-            FBuild.SetSubType(0, 1, 1, 0, true, false, true);
-            
-
             FHost.CreateValueInput("Browser Width", 1, null, TSliceMode.Single, TPinVisibility.True, out FPageWidth);
             FPageWidth.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
 
@@ -291,7 +286,6 @@ namespace VVVV.Nodes.Http
 
             FHost.CreateValueInput("Reload Browser", 1, null, TSliceMode.Single, TPinVisibility.True, out FReload);
             FReload.SetSubType(0, 1, 1, 0, true, false, true);
-
 
             FHost.UpdateEnum("Communication", "Manual", new string[] { "Manual", "Polling", "Comet" });
             FHost.CreateEnumInput("Communication", TSliceMode.Single, TPinVisibility.True, out FCommunication);
@@ -311,19 +305,19 @@ namespace VVVV.Nodes.Http
 
 
             //create outputs
-            FHost.CreateNodeOutput("Output GuiElements", TSliceMode.Dynamic, TPinVisibility.True, out FHttpPageOut);
+            FHost.CreateNodeOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FHttpPageOut);
             FHttpPageOut.SetSubType(new Guid[1] { HttpPageIO.GUID }, HttpPageIO.FriendlyName);
             FHttpPageOut.SetInterface(this);
 
 
-            FHost.CreateStringOutput("Output Page", TSliceMode.Dynamic, TPinVisibility.Hidden, out FHtmlFile);
-            FHtmlFile.SetSubType("", false);
+            //FHost.CreateStringOutput("HTML File", TSliceMode.Dynamic, TPinVisibility.Hidden, out FHtmlFile);
+            //FHtmlFile.SetSubType("", false);
 
-            FHost.CreateStringOutput("CSS File", TSliceMode.Dynamic, TPinVisibility.Hidden, out FCssFile);
-            FCssFile.SetSubType("", false);
+            //FHost.CreateStringOutput("CSS File", TSliceMode.Dynamic, TPinVisibility.Hidden, out FCssFile);
+            //FCssFile.SetSubType("", false);
 
-            FHost.CreateStringOutput("JS File", TSliceMode.Dynamic, TPinVisibility.Hidden, out FJsFile);
-            FJsFile.SetSubType("", false);
+            //FHost.CreateStringOutput("JS File", TSliceMode.Dynamic, TPinVisibility.Hidden, out FJsFile);
+            //FJsFile.SetSubType("", false);
 
 
             string PatchPath = String.Empty;
@@ -338,15 +332,11 @@ namespace VVVV.Nodes.Http
 
 
 
-
         #region NodeIO
 
 
-        public void GetPage(out Page Page, out string CssFile, out string JsFile, out string PageName, out string FileName)
+        public void GetPage(out string PageName, out string FileName)
         {
-            Page = mPage;
-            CssFile = mCssFile;
-            JsFile = mJsFile;
             PageName = mPageName;
             FileName = mUrl;
         }
@@ -426,8 +416,6 @@ namespace VVVV.Nodes.Http
             //Saves the incoming Html Slices
             if (FUpstreamInterface != null)
             {
-                
-
                 List<GuiDataObject> tGuiDaten;
                 FUpstreamInterface.GetDatenObjekt(0, out tGuiDaten);
                 mGuiDatenListe.Clear();
@@ -546,70 +534,43 @@ namespace VVVV.Nodes.Http
 
             #region Build Page
 
-            //if (FBuild.PinIsChanged)
-            //{
-                double bang;
-                FBuild.GetValue(0, out bang);
 
-                if (bang > 0.5)
-                {
-                    mPage = null;
-                    mPage = new Page(true);
-                    // titel
-                    string currentSliceTitel = "";
-                    FTitel.GetString(0, out currentSliceTitel);
-                    mPage.Head.Insert(new Title(currentSliceTitel));
+            mPage = null;
+            mPage = new Page(true);
+            // titel
+            string currentSliceTitel = "";
+            FTitel.GetString(0, out currentSliceTitel);
+            mPage.Head.Insert(new Title(currentSliceTitel));
 
-                    // Css File
-                    mPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
-                    mPage.Head.Insert(new JavaScript("jquery.js"));
-                    mPage.Head.Insert(new JavaScript("jquerytimer.js"));
-                    mPage.Head.Insert(new JavaScript(mPageName + ".js"));
+            // Css File
+            mPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
+            mPage.Head.Insert(new JavaScript("jquery.js", true));
+            mPage.Head.Insert(new JavaScript("jquerytimer.js", true));
+            mPage.Head.Insert(new JavaScript(mPageName + ".js", true));
 
 
-                    mPageBuilder.UpdateGuiList(mGuiDatenListe, mPage);
-                    //Communication Type
-                    string tCommunicationType;
-                    FCommunication.GetString(0, out tCommunicationType);
-                    if (tCommunicationType == "Polling")
-                    {
-                        mPageBuilder.AddJavaScript(JSToolkit.Polling("1000", "'Gib mit neue Daten'"));
-
-                    }
-                    else if (tCommunicationType == "Comet")
-                    {
-                        mPageBuilder.AddJavaScript(JSToolkit.Comet());
-                    }
-
-                    //Insert Input Strings
-                    mPage.Body.Insert(mPageBodyString);
-                    mPage.Head.Insert(mPageHeadString);
-
-
-                    //set Field Properties
-                    mCssFile = mPageBuilder.CssMainFile.ToString() + Environment.NewLine + mBodyRule.Text;
-                    mJsFile = mPageBuilder.JsFile.ToString();
-
-                    //Output Files
-                    FHtmlFile.SetString(0, mPage.Text);
-                    FCssFile.SetString(0, mCssFile);
-                    FJsFile.SetString(0, mJsFile);
-                    
-                }
-            //}
-                
-                    
-            
-            #endregion Build Page
+            //mPageBuilder.UpdateGuiList(mGuiDatenListe, mPage);
+            //Communication Type
 
 
 
 
-            #region Browser Window
 
-
-            if(FPageWidth.PinIsChanged || FPageHeight.PinIsChanged)
+            string tCommunicationType;
+            FCommunication.GetString(0, out tCommunicationType);
+            if (tCommunicationType == "Polling")
             {
+                mPage.Head.Insert((new JavaScript(JSToolkit.Polling("1000", "'Gib mit neue Daten'"), false)));
+
+            }
+            else if (tCommunicationType == "Comet")
+            {
+               mPage.Head.Insert(new JavaScript(JSToolkit.Comet(), false));
+            }
+
+
+            //Browser Window
+
                 double currentWidthSlice;
                 double currentHeightSlice;
                 FPageWidth.GetValue(0, out currentWidthSlice);
@@ -619,14 +580,34 @@ namespace VVVV.Nodes.Http
                 string tBrowserHeight = "" + Math.Round(currentHeightSlice);
 
 
-                if ((currentWidthSlice != -1 || currentHeightSlice != -1) && mPage != null)
+                if ((currentWidthSlice != -1 || currentHeightSlice != -1))
                 {
-                    mPage.Head.Insert(JSToolkit.ResizeBrowser(currentWidthSlice.ToString(),currentHeightSlice.ToString()));
-                    
-                }
-            }
+                    mPage.Head.Insert(JSToolkit.ResizeBrowser(currentWidthSlice.ToString(), currentHeightSlice.ToString()));
 
-            #endregion Browser Window
+                }
+            
+
+            //Insert Input Strings
+            mPage.Body.Insert(mPageBodyString);
+            mPage.Head.Insert(mPageHeadString);
+
+
+            mWebinterfaceSingelton.setHtmlPageData(mPageName, mUrl, mPage, mGuiDatenListe);
+
+            //set Field Properties
+            //mCssFile = mPageBuilder.CssMainFile.ToString() + Environment.NewLine + mBodyRule.Text;
+            //mJsFile = mPageBuilder.JsFile.ToString();
+
+            //Output Files
+            //FHtmlFile.SetString(0, mPage.Text);
+            //FCssFile.SetString(0, mCssFile);
+            //FJsFile.SetString(0, mJsFile);
+            
+
+                
+                    
+            
+            #endregion Build Page
 
 
 
@@ -651,8 +632,8 @@ namespace VVVV.Nodes.Http
 
                     SortedList<string, string> tFiles = new SortedList<string, string>();
                     tFiles.Add(tPath + "\\" + tUrl, mPage.Text);
-                    tFiles.Add(tPath + "\\" + mPage +  ".css", mCssFile);
-                    tFiles.Add(tPath + "\\" + mPage + ".js", mJsFile);
+                    //tFiles.Add(tPath + "\\" + mPage +  ".css", mCssFile);
+                    //tFiles.Add(tPath + "\\" + mPage + ".js", mJsFile);
 
                     foreach (KeyValuePair<string, string> pFile in tFiles)
                     {

@@ -35,7 +35,10 @@ using System.Diagnostics;
 using System.Xml;
 
 
+
 using VVVV.Webinterface.Data;
+using VVVV.Nodes.HttpGUI;
+using VVVV.Nodes.Http;
 using VVVV.Webinterface.HttpServer;
 using VVVV.Webinterface.Utilities;
 
@@ -64,9 +67,13 @@ namespace VVVV.Webinterface
     sealed class WebinterfaceSingelton
     {
 
-
-
-
+        public struct PageValues
+        {
+            public string PageName;
+            public Page Page;
+            public List<GuiDataObject> GuiList;
+            public string Url;
+        }
 
         #region field declaration
 
@@ -78,8 +85,8 @@ namespace VVVV.Webinterface
         private SortedList<string, string> mServerDaten = new SortedList<string, string>();
 
         private Logger mlogger;
-        private XMLHandling mXmlHandling;
         private StartupCheck mStartupCheck;
+
 
         //New 
         private static volatile WebinterfaceSingelton instance = null;
@@ -88,7 +95,10 @@ namespace VVVV.Webinterface
         private List<string> mPostMessages = new List<string>();
         private SortedList<string,string> mBrowserPolling = new SortedList<string,string>();
         private SortedList<string,string> mNodePolling = new SortedList<string,string>();
-
+        private SortedList<string, PageValues> mGuiLists = new SortedList<string,PageValues>();
+        private List<string> mConnectedPages = new List<string>();
+        private SortedList<string, string> mServerFiles = new SortedList<string,string>();
+        private List<string> mUrls = new List<string>();
 
 
         #endregion field declaration
@@ -100,38 +110,6 @@ namespace VVVV.Webinterface
         #region Properties
 
         /// <summary>
-        /// node and slice list
-        /// </summary>
-        public SortedList<string,  string> Daten
-        {
-            get
-            {
-                return mNodeData;
-            }
-
-            set
-            {
-                mNodeData = value;
-            }
-        }
-
-        /// <summary>
-        /// new data from the browser
-        /// </summary>
-        public SortedList<string, string> ServerDaten
-        {
-            get
-            {
-
-                return mServerDaten;
-            }
-            set
-            {
-                mServerDaten = value;
-            }
-        }
-
-        /// <summary>
         /// the ConcretSubject instance
         /// </summary>
         public ConcreteSubject Subject
@@ -141,48 +119,6 @@ namespace VVVV.Webinterface
                 return mSubject;
             }
         }
-
-        /// <summary>
-        /// the Logger instance
-        /// </summary>
-        public Logger Logger
-        {
-            get
-            {
-                return mlogger;
-            }
-        }
-
-        /// <summary>
-        /// the subject state
-        /// </summary>
-        public string SubjectState
-        {
-            get
-            {
-                return mSubject.SubjectState;
-            }
-            set
-            {
-                if (value == "VVVV")
-                {
-                    mSubject.SubjectState = value;
-                    //mTellNodes.NotifyNode();
-                    //////Debug.WriteLine("SubjectState: " + value);
-                }
-                else if (value == "Server")
-                {
-                    mSubject.SubjectState = value;
-                    //////Debug.WriteLine("SubjectState: " + value);
-                    //mTellNodes.NotifyNode();
-                }
-                else
-                {
-                    //////Debug.WriteLine("SubjectState not set no State found");
-                }
-            }
-        }
-
 
 
         /// <summary>
@@ -217,6 +153,34 @@ namespace VVVV.Webinterface
                 return mStartupCheck.SartupFolder;
             }
         }
+
+        public List<string> ServerFilesUrl
+        {
+            get
+            {
+                return mUrls;
+            }
+        }
+
+
+        public SortedList<string,PageValues> GuiLists
+        {
+            get
+            {
+                return mGuiLists;
+            }
+        }
+
+
+        public SortedList<string, string> ServerFiles
+        {
+            get
+            {
+                return mServerFiles;
+            }
+        }
+
+        
 
 
 
@@ -256,7 +220,6 @@ namespace VVVV.Webinterface
             
             mlogger.log(mlogger.LogType.Info, "VVVV Webinterface Singelton erstellt");
 
-            mXmlHandling = new XMLHandling(mlogger, mStartupCheck.SartupFolder);
 
             TextWriterTraceListener tr2 = new TextWriterTraceListener(System.IO.File.CreateText("Debug.txt"));
             Debug.Listeners.Add(tr2);
@@ -291,54 +254,6 @@ namespace VVVV.Webinterface
 
         #endregion constructor
 
-
-
-
-
-        # region Change State
-
-
-        /// <summary>
-        /// Changes the global subject state to "VVVV"
-        /// </summary>
-        public void setSubbjectStateToVVVV()
-        {
-            mSubject.SubjectState = "VVVV";
-            mSubject.NotifyNode();
-            mlogger.log(mlogger.LogType.Info, "Subject State set to VVVV");
-            //////Debug.WriteLine("mTellNodes.SubjectState = VVVV");
-        }
-
-
-        /// <summary>
-        /// Changes the global subject state to "Server"
-        /// </summary>
-        /// <param name="pToNode">Node Id which changes value</param>
-        public void setSubjectStateToServer(string pToNode)
-        {
-            mSubject.SubjectState = "Server";
-            //////Debug.WriteLine("mTellNodes.SubjectState = Server");
-            mlogger.log(mlogger.LogType.Info, "Subject State set to Server");
-            mSubject.ToNode = pToNode;
-            mSubject.NotifyNode();
-        }
-
-
-        /// <summary>
-        /// Changes the global subject state to "VVVVChangedValue"
-        /// </summary>
-        /// <param name="pNodeId">NodID which changes value</param>
-        public void setUserInteraktionNode(string pNodeId)
-        {
-            mSubject.SubjectState = "VVVVChangedValue";
-            mlogger.log(mlogger.LogType.Info, "Subject State set to VVVVChangedValue");
-            mSubject.ToHtmlForm = pNodeId;
-            //mSubject.NotifyServer();
-            //////Debug.WriteLine("mTellNodes.SubjectState = VVVVChangedValue");
-        }
-
-
-        #endregion Change State
 
 
 
@@ -415,120 +330,147 @@ namespace VVVV.Webinterface
 
 
 
+
+
+
+        #region Build HtmlPages
+
+
+        public void AddConnectedPage(string pPageName)
+        {
+            if (mConnectedPages.Contains(pPageName) == false)
+            {
+                mConnectedPages.Add(pPageName);
+            }
+        }
+
+
+        public void RemoveDisconnectedPage(string pPageName, string pUrl)
+        {
+            if (mConnectedPages.Contains(pPageName))
+            {
+                mConnectedPages.Remove(pPageName);
+                mUrls.Remove(pUrl);
+            }
+        }
+
+
+
+
+        public void setHtmlPageData(string pPageName, string pUrl,Page pPage, List<GuiDataObject> pGuiList)
+        {
+            if (Monitor.TryEnter(mGuiLists))
+            {
+                try
+                {
+                    if (mConnectedPages.Contains(pPageName))
+                    {
+                        PageValues tPagesValues = new PageValues();
+                        tPagesValues.PageName = pPageName;
+                        tPagesValues.Page = pPage;
+                        tPagesValues.Url = pUrl;
+                        tPagesValues.GuiList = pGuiList;
+                        if (mGuiLists.ContainsKey(pUrl))
+                        {
+                            mGuiLists.Remove(pUrl);
+                            mGuiLists.Add(pUrl, tPagesValues);
+                        }
+                        else
+                        {
+                            mUrls.Add(pUrl);
+                            mUrls.Add(pPageName + ".css");
+                            mUrls.Add(pPageName + ".js");
+                            mGuiLists.Add(pUrl, tPagesValues);
+                        }
+                    }
+                }
+                finally
+                {
+                    //Debug.WriteLine("Locked");
+                    Monitor.Exit(mGuiLists);
+                }
+            }
+        }
+
+
+        public void BuildPages(string pUrl)
+        {
+            if (mGuiLists.ContainsKey(pUrl))
+            {
+
+                PageValues tPageValues;
+                Monitor.Enter(mGuiLists);
+                mGuiLists.TryGetValue(pUrl, out tPageValues);
+                Monitor.Exit(mGuiLists);
+
+                PageBuilder tPageBuilder = new PageBuilder();
+                tPageBuilder.UpdateGuiList(tPageValues.GuiList, tPageValues.Page);
+                tPageBuilder.Build();
+
+                Monitor.Enter(mServerFiles);
+                mServerFiles.Remove(pUrl);
+                mServerFiles.Remove(tPageValues.PageName + ".css");
+                mServerFiles.Remove(tPageValues.PageName + ".js");
+                mServerFiles.Add(pUrl, tPageBuilder.HtmlFile);
+                mServerFiles.Add(tPageValues.PageName + ".css", tPageBuilder.CssFile.ToString());
+                mServerFiles.Add(tPageValues.PageName + ".js", tPageBuilder.JsFile.ToString());
+
+                Monitor.Exit(mServerFiles);
+            }
+        }
+
+        private void GetPageList()
+        {
+
+        }
+
+
+        //private void HandlePageList(string pPageName, Page pPage, string pCssFile, string pJsFile, string pUrl)
+        //{
+
+        //    if (PageNames.Contains(pPageName))
+        //    {
+        //        PageNames.Remove(pPageName);
+        //        PageNames.Add(pPageName);
+
+        //        mHtmlPageList.Remove(pUrl);
+        //        mHtmlPageList.Add(pUrl, Encoding.UTF8.GetBytes(pPage.Text));
+
+        //        mHtmlPageList.Remove(pPageName + ".css");
+        //        mHtmlPageList.Add(pPageName + ".css", Encoding.UTF8.GetBytes(pCssFile));
+
+        //        mHtmlPageList.Remove(pPageName + ".js");
+        //        mHtmlPageList.Add(pPageName + ".js", Encoding.UTF8.GetBytes(pJsFile));
+
+        //    }
+        //    else
+        //    {
+        //        PageNames.Add(pPageName);
+        //        mHtmlPageList.Add(pUrl, Encoding.UTF8.GetBytes(pPage.Text));
+        //        mHtmlPageList.Add(pPageName + ".css", Encoding.UTF8.GetBytes(pCssFile));
+        //        mHtmlPageList.Add(pPageName + ".js", Encoding.UTF8.GetBytes(pJsFile));
+
+        //    }
+        //}
+
+        //private void RemovePageFormList(string pPageName, Page pPage, string pCssFile, string pJsFile, string pUrl)
+        //{
+
+        //    if (PageNames.Contains(pPageName))
+        //    {
+        //        PageNames.Remove(pPageName);
+        //        mHtmlPageList.Remove(pUrl);
+        //        mHtmlPageList.Remove(pPageName + ".css");
+        //        mHtmlPageList.Remove(pPageName + ".js");
+
+        //    }
+        //}
+
+        #endregion Build HtmlPages
+
+
+
         #region Daten Handling
-
-
-
-        /// <summary>
-        /// Calles the subject.Reload() function
-        /// </summary>
-        public void Reload()
-        {
-            mSubject.Reload();
-        }
-
-
-        /// <summary>
-        /// saves the the XML tree to disc
-        /// </summary>
-        //public void saveXML()
-        //{
-        //    mXmlHandling.SaveXml();
-        //}
-
-
-        /// <summary>
-        /// creates the Xml Tree
-        /// </summary>
-        //public void buildXML()
-        //{
-        //    mXmlHandling.buildXml(mDaten);
-
-        //}
-
-
-        /// <summary>
-        /// gets new data form node an set them to the subject
-        /// </summary>
-        /// <param name="pNodeId">node ID the new data contains to</param>
-        /// <param name="pNewNodeDaten">new node slice data</param>
-        public void setNodeDaten(string pSliceId, string pValue)
-        {
-            SortedList<string, string> tValuePair = new SortedList<string, string>();
-            mSubject.NewServerDaten = tValuePair;
-
-            mSubject.ToHtmlForm = pSliceId;
-            saveNewNodeDaten(pSliceId, pValue);
-        }
-
-
-        /// <summary>
-        /// saves the new data node data to the data list
-        /// </summary>
-        /// <param name="pKey">Node ID</param>
-        /// <param name="pNewNodeDaten">whole node slice list</param>
-        public void saveNewNodeDaten(string pKey, string pNewNodeDaten)
-        {
-
-            mlogger.log(mlogger.LogType.Debug, "Add new Node Daten to mDaten List ");
-
-            if (mNodeData.ContainsKey(pKey))
-            {
-                mNodeData.Remove(pKey);
-                mNodeData.Add(pKey, pNewNodeDaten);
-            }
-            else
-            {
-                mNodeData.Add(pKey, pNewNodeDaten);
-            }
-
-
-            // Hier mDaten Locken 
-            //mXmlHandling.buildXml(mDaten);
-            // Hier mDaten entlockenLocken 
-        }
-
-
-
-        
-
-
-        /// <summary>
-        /// set data from browser to the data list
-        /// </summary>
-        /// <param name="pNewData">new value pair</param>
-        private void setNewBrowserDaten(string[] pNewData)
-        {
-
-            mlogger.log(mlogger.LogType.Debug, "New Browser Daten set to mDaten List");
-            int tLength = pNewData.Length;
-            int tWordLength = pNewData[0].Length;
-            string tName = pNewData[0].Replace("?", "");
-            //////Debug.WriteLine("New Browser Content in DataWarehouse: " + pNewData);
-
-
-            // here mDaten Loggen 
-
-
-            if (mNodeData.ContainsKey(tName))
-            {
-                string tValue;
-                mNodeData.TryGetValue(tName, out tValue);
-                mNodeData.Remove(tName);
-                mNodeData.Add(tName, pNewData[1]);
-                // here mDaten entLoggen 
-                setSubjectStateToServer(tName);
-            }
-            else
-            {
-                mNodeData.Add(tName, pNewData[1]);
-                setSubjectStateToServer(tName);
-                //////Debug.WriteLine("no SliceId found in SaveNewBrowserData");
-                //mlogger.log(mlogger.LogType.Debug, "Replaced SliceKey: " + pNewData[1].ToString() + " with Value: " + pNewData[2].ToString());
-            }
-        }
-
-
 
         /// <summary>
         /// sets the new Browser data
@@ -743,4 +685,6 @@ namespace VVVV.Webinterface
 
 
     }
+
+    
 }

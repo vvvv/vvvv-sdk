@@ -19,6 +19,7 @@ namespace VVVV.Nodes.Http
         private CssBuilder mCssBuilder = new CssBuilder();
         private Body mBody = new Body();
         private SortedList<string, Tag> mTags = new SortedList<string, Tag>();
+        List<GuiDataObject> mGuiElemente;
 
         public Page Page
         {
@@ -44,7 +45,15 @@ namespace VVVV.Nodes.Http
             }
         }
 
-        public StringBuilder CssMainFile
+        public string HtmlFile
+        {
+            get
+            {
+                return mPage.Text;
+            }
+        }
+
+        public StringBuilder CssFile
         {
             get
             {
@@ -88,9 +97,12 @@ namespace VVVV.Nodes.Http
             mTags.Clear();
 
             //Build
-            List<GuiDataObject> tGuiElemente = new List<GuiDataObject>(pGuiElemente);
+            mGuiElemente = new List<GuiDataObject>(pGuiElemente);
+        }
 
-            mPage.Body  = (Body) BuildHtmlFrame(tGuiElemente, mPage.Body);
+        public void Build()
+        {
+            mPage.Body = (Body)BuildHtmlFrame(mGuiElemente, mPage.Body);
             mCssBuilder.Build();
         }
 

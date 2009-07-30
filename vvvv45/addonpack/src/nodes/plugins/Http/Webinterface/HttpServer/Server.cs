@@ -381,27 +381,27 @@ namespace VVVV.Webinterface.HttpServer {
                 Monitor.Enter(connectedSocks);
                 foreach (SocketInformation state in connectedSocks)
                 {
-                    if (state.ClientSocket == null)
-                    {    // Remove invalid state object
-                        if (connectedSocks.Contains(state))
-                        {
-                            connectedSocks.Remove(state);
-                            Interlocked.Decrement(ref sockCount);
-                        }
-                    }
-                    else
-                    {
-                        if (DateTime.Now.AddTicks(-state.TimeStamp.Ticks).Minute > mTimeoutMinutes)
-                        {
-                            RemoveSocket(state);
-                            Interlocked.Decrement(ref sockCount);
-                        }
+                    //if (state.ClientSocket == null)
+                    //{    // Remove invalid state object
+                    //    if (connectedSocks.Contains(state))
+                    //    {
+                    //        connectedSocks.Remove(state);
+                    //        Interlocked.Decrement(ref sockCount);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    if (DateTime.Now.AddTicks(-state.TimeStamp.Ticks).Minute > mTimeoutMinutes)
+                    //    {
+                    //        RemoveSocket(state);
+                    //        Interlocked.Decrement(ref sockCount);
+                        //}
                         //else if(state.RequestObject.FileName == "dummy.html" && state.ClientSocket.Connected == false)
                         //{
                         //    RemoveSocket(state);
                         //    Interlocked.Decrement(ref sockCount);
                         //}
-                    }
+                    //}
                 }
                 Monitor.Exit(connectedSocks);
             }

@@ -127,7 +127,7 @@ namespace VVVV.Nodes.HttpGUI
                     //the nodes author: your sign
                     FPluginInfo.Author = "phlegma";
                     //describe the nodes function
-                    FPluginInfo.Help = "Textfield node for the Renderer (HTTP)";
+                    FPluginInfo.Help = "Template node for the Renderer (HTTP)";
                     //specify a comma separated list of tags that describe the node
                     FPluginInfo.Tags = "";
 
@@ -198,7 +198,7 @@ namespace VVVV.Nodes.HttpGUI
 
                     tDiv.Insert("  ");
 
-                    SetBodyContent(i, tDiv.Text);
+                    //SetBodyContent(i, tDiv.Text);
 
                     SetTag(i, tDiv);
 

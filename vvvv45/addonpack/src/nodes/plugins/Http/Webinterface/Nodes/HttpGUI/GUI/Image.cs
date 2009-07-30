@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VVVV.PluginInterfaces.V1;
-using VVVV.Nodes.HttpGUI.Datenobjekte;
-using VVVV.Utils.VMath;
+using VVVV.Webinterface.Utilities;
 
 namespace VVVV.Nodes.HttpGUI
 {
-    class Image : BaseGUINode, IPlugin, IDisposable
+    class Image : GuiNodeStatic, IPlugin, IDisposable
     {
 
 
@@ -19,7 +18,6 @@ namespace VVVV.Nodes.HttpGUI
         private IStringIn FSource;
         private IStringIn FAlt;
         private string mNodeId;
-        private List<DatenGuiImage> mImageDaten = new List<DatenGuiImage>();
 
 
         private bool FDisposed = false;
@@ -173,15 +171,14 @@ namespace VVVV.Nodes.HttpGUI
 
         #region pin creation
 
-        protected override void OnPluginHostSet()
+        protected override void OnSetPluginHost()
         {
             this.FHost.CreateStringInput("Source", TSliceMode.Dynamic, TPinVisibility.True, out FSource);
             FSource.SetSubType("",false);
+            FSource.Order = 1;
 
             this.FHost.CreateStringInput("Alt", TSliceMode.Dynamic, TPinVisibility.True, out FAlt);
             FAlt.SetSubType("", false);
-
-            mNodeId = "Image" + GetNodeID();
         }
 
         #endregion pin creation
@@ -190,22 +187,6 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-
-        #region Node IO
-
-
-        public override void GetDatenObjekt(int Index, out BaseDatenObjekt GuiDaten)
-        {
-            GuiDaten = mImageDaten[Index] ;
-        }
-
-        public override void GetFunktionObjekt(int Index, out JsFunktion FunktionsDaten)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-
-        #endregion Node IO
 
 
 
@@ -216,105 +197,53 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-        protected override void OnConfigurate(IPluginConfig Input)
-        {
-            //
-        }
-
         protected override void OnEvaluate(int SpreadMax)
         {
 
 
-            if (FSource.PinIsChanged || FAlt.PinIsChanged || FTransformIn.PinIsChanged || mChangedStyle)
+            if (FSource.PinIsChanged || FAlt.PinIsChanged)
             {
 
 
 
-                mImageDaten.Clear();
-
                 for (int i = 0; i < SpreadMax; i++)
                 {
-                    DatenGuiImage tImageDatenObjekt = new DatenGuiImage(GetNodeID() + "/" + i, "Image", i);
-                    FHttpGuiOut.SliceCount = SpreadMax;
-                    string tSliceId = mNodeId + "/" + i;
-                    tImageDatenObjekt.Class = tSliceId.Replace("/", "");
-
-                    SortedList<string, string> tHtmlAttr = new SortedList<string, string>();
+                    
+                    
+                    
                     string currentSourceSlice;
                     string currentAltSlice;
+                    string tSource = String.Empty;
+                    string tAlt = String.Empty;
                     FSource.GetString(i, out currentSourceSlice);
                     FAlt.GetString(i, out currentAltSlice);
 
 
-                    
+
 
                     // Source Pins
-                    if (currentSourceSlice != null)
+                    if (currentSourceSlice != null || currentSourceSlice == "")
                     {
-                        tImageDatenObjekt.Src  = currentSourceSlice;
+                        tSource = currentSourceSlice;
                     }
                     else
                     {
-                        tImageDatenObjekt.Src = "No Source";
+                        tSource = "No Source";
                     }
 
 
                     // Alt Pin Input
                     if (currentAltSlice != null)
                     {
-                        tImageDatenObjekt.Alt = currentAltSlice;
+                        tAlt = currentAltSlice;
                     }
                     else
                     {
-                        tImageDatenObjekt.Alt = "No Alt";
+                        tAlt = "No Alt";
                     }
 
-
-                    // Transform Pin
-                    Matrix4x4 tMatrix = new Matrix4x4();
-                    FTransformIn.GetMatrix(i, out tMatrix);
-
-                    SortedList<string, string> tTransform;
-                    GetTransformation(tMatrix, out tTransform);
-
-                    // get incoming Css
-                    SortedList<string, string> tCssProperties;
-                    tCssProperties = tTransform;
-
-
-                    SortedList<string, string> tCssPropertiesIn;
-                    mStyles.TryGetValue(i, out tCssPropertiesIn);
-
-                    if (tCssPropertiesIn != null)
-                    {
-                        foreach (KeyValuePair<string, string> pValuePair in tCssPropertiesIn)
-                        {
-                            if (tCssProperties.ContainsKey(pValuePair.Key))
-                            {
-                                tCssProperties.Remove(pValuePair.Key);
-                                tCssProperties.Add(pValuePair.Key, pValuePair.Value);
-                            }
-                            else
-                            {
-                                tCssProperties.Add(pValuePair.Key, pValuePair.Value);
-                            }
-
-                        }
-                    }
-
-                    if (tCssProperties.ContainsKey("background-color"))
-                    {
-
-                    }
-                    else
-                    {
-                        tCssProperties.Add("background-color", "#cccccc");
-                    }
-
-
-                    tImageDatenObjekt.CssProperties = tCssProperties;
-
-                    mImageDaten.Add(tImageDatenObjekt);
+                    Img tImage = new Img(tSource, tAlt);
+                    SetTag(i,tImage);
                 }
             }
         }
