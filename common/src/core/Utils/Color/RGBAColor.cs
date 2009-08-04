@@ -64,7 +64,8 @@ namespace VVVV.Utils.VColor
 		/// </summary>
 		public Color Color
 		{
-			get {return Color.FromArgb((byte)(A*255), (byte)(R*255), (byte)(G*255), (byte)(B*255));}
+			//clamping is necessary here else SlimDX functions like DrawText(..Color) fail
+			get {return Color.FromArgb((byte) VMath.VMath.Clamp((A*255), 0, 255), (byte)VMath.VMath.Clamp((R*255), 0, 255), (byte)VMath.VMath.Clamp((G*255), 0, 255), (byte)VMath.VMath.Clamp((B*255), 0, 255));}
 			set {A = value.A / 255.0; R = value.R / 255.0; G = value.G / 255.0; B = value.B / 255.0;}
 		}
 		
@@ -120,7 +121,7 @@ namespace VVVV.Utils.VColor
 		/// <returns>C# color with closest values to the input the color</returns>
 		public static explicit operator Color(RGBAColor C)
         {
-			return Color.FromArgb((int)(C.A*255), (int)(C.R*255), (int)(C.G*255), (int)(C.B*255));
+			return C.Color; 
         }
 		
 		#endregion casting operators
