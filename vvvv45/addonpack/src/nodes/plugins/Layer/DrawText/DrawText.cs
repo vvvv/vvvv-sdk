@@ -478,7 +478,7 @@ namespace VVVV.Nodes
 					df.Sprite.Draw(df.Texture, new Rectangle(0, 0, tmpRect.Width, tmpRect.Height), new Vector3(x, y, -0.001f), new Vector3(0,0,0), new Color4(brushColor.Color));
 				}
 				
-				df.Font.DrawString(df.Sprite, text, new Rectangle(-wi/2, -hi/2, wi, hi), dtf, textColor.Color.ToArgb());
+				df.Font.DrawString(df.Sprite, text, new Rectangle(-wi/2, -hi/2, wi, hi), dtf, (Color) textColor);
 			}
 			
 			df.Sprite.End();
