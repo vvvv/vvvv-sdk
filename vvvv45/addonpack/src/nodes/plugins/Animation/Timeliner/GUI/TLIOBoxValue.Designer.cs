@@ -38,7 +38,6 @@
 			this.ValueBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ValueBox.Location = new System.Drawing.Point(0, 0);
 			this.ValueBox.Name = "ValueBox";
-			this.ValueBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
 			this.ValueBox.Size = new System.Drawing.Size(40, 13);
 			this.ValueBox.TabIndex = 1;
 			this.ValueBox.Visible = false;
