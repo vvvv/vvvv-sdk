@@ -170,6 +170,7 @@ namespace VVVV.Nodes.Timeliner
 				FInterpolationIN = TLInterpolationType.Cubic;
 	
 			UpdateInterpolationInState();
+			SaveKeyFrames();
 			
 			UpdateView();
 			PinChanged();
@@ -182,9 +183,7 @@ namespace VVVV.Nodes.Timeliner
 			CubicRadio.Checked = FInterpolationIN == TLInterpolationType.Cubic;
 			
 			foreach (TLValueSlice s in FOutputSlices)
-			{
 				s.SetKeyFrameTypes(FInterpolationIN, FInterpolationIN);
-			}
 		}
 		
 		private void UpdateMinMax()
