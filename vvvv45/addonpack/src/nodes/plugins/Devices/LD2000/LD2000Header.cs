@@ -3,6 +3,76 @@ using System.Runtime.InteropServices;
 
 namespace LD2000
 {
+	[StructLayout(LayoutKind.Sequential)]
+	public struct Point
+	{
+		public int X; //X coordinate
+		public int Y; //Y coordinate
+		public int Z; //Z (distance) coordinate
+		public int BB; //Beam Brush  (0-100)
+		public int Color; //RGB color, in Windows format: &H00BBGGRR
+		public int X3D; //X coord of 3D projection of this point
+		public int Y3D; //Y coord of 3D projection of this point
+		public int Grp; //group number this point belongs with
+		public int VOtype; //PT_VECTOR or PT_CORNER
+	}
+	
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+	public struct Frame
+	{
+		//True if vector-oriented frame, false if point-oriented
+		public int VectorFlag;
+		//100%=normal speed, 50%=slower than DFreq, 150%=faster
+		public int ScanRate;
+		//True if abstract, false if graphic frame
+		public int AbstractFlag;
+		//Number of points in the frame
+		public int NumPoints;
+		//23 character memo field plus a null
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 24)]
+		public string FrameNote;
+	}
+	
+	[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+	public struct FrameEx
+	{
+		//Indicates that this frame has changed since the last time it was saved. This is read-only. 
+		public Int32 ChangedFlag;
+		//Indicates that this frame is stored internally as 3D data. This is read-only.
+		public Int32 ThreeDFlag;
+		//Indicates that this frame stores beam brush points internally. This is read-only.
+		public Int32 BeamBrushFlag;
+		//Indicates that this frame is to be rendered using the vector renderer. This is read/write.
+		public Int32 VectorFlag;
+		//Indicates that this frame has additional abstract information and that this should be rendered as an abstract.
+		public Int32 AbstractFlag;
+		//Indicates that this frame has DMX data in addition to point and perhaps abstract data.
+		public Int32 DMXFlag;
+		//Indicates that this frame is a raster frame. No special internal handling is done at this time.
+		public Int32 RasterFlag;
+		//Indicates that this frame was rendered by 3D Studio MAX.
+		public Int32 MaxRenderedFlag;
+		//Indicates that this frame is secured.
+		public Int32 SecureFrameFlag;
+		//Reserved for future use
+		public Int32 Reserved3;
+		//Palette that this frame will use unless overridden by Track.
+		public Int32 PreferredPalette;
+		//Projection zone that this frame will be projected onto unless overridden by track.
+		public Int32 PreferredProjectionZone;
+		//Number of frames to the end of the animation. Range is 0 to 65535.
+		public Int32 AnimationCount;
+		//Number, usually bit-encoded, that describes the frame. This is only 16-bits internally.
+		public Int32 ClipartClass;
+		//Scan rate for this frame. If positive, handled as a multiplier. If negative, treated as exact sample rate in 1K increments.
+		public Int32 ScanRate;
+		//Number of data points in this frame.
+		public Int32 NumPoints;
+		//23 character memo field plus a null
+		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 24)]
+		public string FrameNote;
+	}
+		
 	/// <summary>
 	/// Functions provided by LD2000.dll used or may used by the LD2000Node.
 	/// This list is not complete. For a full reference please have a look
@@ -297,62 +367,23 @@ namespace LD2000
 		public const int PT_CORNER = 4096; // corner point
 		public const int PT_TRAVELBLANK = 16384; // ???
 		
-		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-		public struct Point
-		{
-			public int X; //X coordinate
-			public int Y; //Y coordinate
-			public int Z; //Z (distance) coordinate
-			public int BB; //Beam Brush  (0-100)
-			public int Color; //RGB color, in Windows format: &H00BBGGRR
-			public int X3D; //X coord of 3D projection of this point
-			public int Y3D; //Y coord of 3D projection of this point
-			public int Grp; //group number this point belongs with
-			public int VOtype; //PT_VECTOR or PT_CORNER
-		}
-		
-		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-		public struct FrameEx
-		{
-			//Indicates that this frame has changed since the last time it was saved. This is read-only. 
-			public Int32 ChangedFlag;
-			//Indicates that this frame is stored internally as 3D data. This is read-only.
-			public Int32 ThreeDFlag;
-			//Indicates that this frame stores beam brush points internally. This is read-only.
-			public Int32 BeamBrushFlag;
-			//Indicates that this frame is to be rendered using the vector renderer. This is read/write.
-			public Int32 VectorFlag;
-			//Indicates that this frame has additional abstract information and that this should be rendered as an abstract.
-			public Int32 AbstractFlag;
-			//Indicates that this frame has DMX data in addition to point and perhaps abstract data.
-			public Int32 DMXFlag;
-			//Indicates that this frame is a raster frame. No special internal handling is done at this time.
-			public Int32 RasterFlag;
-			//Indicates that this frame was rendered by 3D Studio MAX.
-			public Int32 MaxRenderedFlag;
-			//Indicates that this frame is secured.
-			public Int32 SecureFrameFlag;
-			//Reserved for future use
-			public Int32 Reserved3;
-			//Palette that this frame will use unless overridden by Track.
-			public Int32 PreferredPalette;
-			//Projection zone that this frame will be projected onto unless overridden by track.
-			public Int32 PreferredProjectionZone;
-			//Number of frames to the end of the animation. Range is 0 to 65535.
-			public Int32 AnimationCount;
-			//Number, usually bit-encoded, that describes the frame. This is only 16-bits internally.
-			public Int32 ClipartClass;
-			//Scan rate for this frame. If positive, handled as a multiplier. If negative, treated as exact sample rate in 1K increments.
-			public Int32 ScanRate;
-			//Number of data points in this frame.
-			public Int32 NumPoints;
-			//23 character memo field plus a null
-			[System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 24)]
-			public string FrameNote;
-		}
-		
 		[DllImport("LD2000.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
 		public static extern void WriteFrameFastEx(ref FrameEx SUPPLY_LDFrameEx, ref Point SUPPLY_LDpt_Array);
+		
+		[DllImport("LD2000.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+		public static extern void ReadNumPoints(ref int ptsinframe);
+		
+		[DllImport("LD2000.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+		public static extern void ReadFrameStruct(int frameNumber, ref Frame LDfr);
+		
+		[DllImport("LD2000.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+		public static extern void ReadFrameStructEx(int frameNumber, ref FrameEx LDfr);
+		
+		[DllImport("LD2000.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+		public static extern void ReadFrame(ref Frame LDfr, ref Point LDpt);
+		
+		[DllImport("LD2000.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+		public static extern void ReadFrameEx(ref FrameEx LDfr, ref Point LDpt);
 		
 		#endregion
 	}

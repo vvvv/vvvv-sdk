@@ -13,12 +13,14 @@ namespace LD2000
 	{
     	#region field declaration
     	
-    	//the host (mandatory)
+    	// The host (mandatory)
     	private IPluginHost FHost; 
     	// Track whether Dispose has been called.
    		private bool FDisposed = false;
    		
    		private Dictionary<int, int> pointFlagMap = new Dictionary<int, int>();
+   		private FrameEx workingFrame;
+   		private Point[] pointBuffer;
    		
    		private bool ldRunning = false;
    		private int ldStatus = 0;
@@ -38,7 +40,16 @@ namespace LD2000
    		private IValueFastIn FZoneIn;
    		private IValueFastIn FIsVectorFrameIn;
    		private IValueIn FDoWriteIn;
+   		
    		private IValueConfig FScanRateIn;
+   		
+   		private IValueOut FXOut;
+   		private IValueOut FYOut;
+   		private IColorOut FColorOut;
+   		private IValueOut FCornerOut;
+   		private IValueOut FBinSizeOut;
+   		private IValueOut FZoneOut;
+   		private IValueOut FIsVectorFrameOut;
    		private IStringOut FStatusOut;
    		
    		private const string STATUS_MSG_NOT_RUNNING = "LD2000 not running.";
@@ -52,7 +63,8 @@ namespace LD2000
         public LD2000Node()
         {
 			//the nodes constructor
-
+			workingFrame = new FrameEx();
+			pointBuffer = new Point[ldMaxPoints];
 		}
         
         // Implementing IDisposable's Dispose method.
@@ -205,6 +217,20 @@ namespace LD2000
 			FScanRateIn.SetSubType(25.0, 130000.0, 1.0, 30000.0, false, false, true);
 	    	
 	    	//create outputs	
+	    	FHost.CreateValueOutput("X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FXOut);
+	    	FXOut.SetSubType(-1.0, 1.0, 0.01, 0, false, false, false);
+	    	FHost.CreateValueOutput("Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FYOut);
+	    	FYOut.SetSubType(-1.0, 1.0, 0.01, 0, false, false, false);
+	    	FHost.CreateColorOutput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorOut);
+	    	FColorOut.SetSubType(VColor.White, false);
+	    	FHost.CreateValueOutput("Corner", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FCornerOut);
+	    	FCornerOut.SetSubType(int.MinValue, int.MaxValue, 1.0, 0.0, false, false, true);
+	    	FHost.CreateValueOutput("BinSize", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBinSizeOut);
+	    	FBinSizeOut.SetSubType(int.MinValue, int.MaxValue, 1.0, -1.0, false, false, true);
+	    	FHost.CreateValueOutput("Projection Zone", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FZoneOut);
+	    	FZoneOut.SetSubType(1.0, 30.0, 1.0, 1.0, false, false, true);
+	    	FHost.CreateValueOutput("Is Vector Frame", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FIsVectorFrameOut);
+	    	FIsVectorFrameOut.SetSubType(0.0, 1.0, 1.0, 0.0, false, true, false);
 	    	FHost.CreateStringOutput("Status", TSliceMode.Single, TPinVisibility.True, out FStatusOut);
 	    	
 	    	RunLD();
@@ -237,17 +263,19 @@ namespace LD2000
         //all data handling should be in here
         unsafe public void Evaluate(int SpreadMax)
         {     	
-        	//if any of the inputs has changed
-        	//recompute the outputs
         	if (!ldRunning) 
         	{
         		PrintStatusMessage(STATUS_MSG_NOT_RUNNING);
         		return;
+        	} else {
+        		PrintStatusMessage("");
         	}
         	
         	double tmp;
         	double* px, py;
         	int v, countx, county;
+        	int binOffset = 0;
+        	int pointCount = 0;
         	RGBAColor color;
         	int[] frames = new int[FFrameIn.SliceCount];
         	
@@ -260,7 +288,7 @@ namespace LD2000
         	FDoWriteIn.GetValue(0, out tmp);
         	if (tmp > 0)
         	{
-        		int pointCount = Math.Max(Math.Max(FXIn.SliceCount, FYIn.SliceCount), FColorIn.SliceCount);
+        		pointCount = Math.Max(Math.Max(FXIn.SliceCount, FYIn.SliceCount), FColorIn.SliceCount);
         		
         		// Setup a mapping of point and its special flags.
         		pointFlagMap.Clear();
@@ -284,7 +312,6 @@ namespace LD2000
         				pointFlagMap[pointId] = FLAG_TRAVELBLANK;
         		}
         		
-        		int binOffset = 0;
         		for (int j = 0; j < frames.Length; j++)
         		{
         			LD.SetWorkingFrame(frames[j]);
@@ -296,54 +323,106 @@ namespace LD2000
         			{
         				binSize = pointCount / Math.Abs(binSize);
         			}
+        			if (binSize > pointBuffer.Length)
+        			{
+        				PrintStatusMessage("Too many points. Maximum number of points for each frame is: " + pointBuffer.Length);
+        				binSize = pointBuffer.Length;
+        			}
         			
         			// Create binSize many points
-        			LD.FrameEx frame = new LD.FrameEx();
-	        		frame.NumPoints = binSize;
+        			workingFrame = new FrameEx();
+	        		workingFrame.NumPoints = binSize;
 	        		
-	        		LD.Point[] point = new LD.Point[frame.NumPoints];
 	        		FXIn.GetValuePointer(out countx, out px);
 	        		FYIn.GetValuePointer(out county, out py);
 	        		
 	        		int flag;
-	        		for (int i = 0; i < point.Length; i++)
+	        		for (int i = 0; i < binSize; i++)
 		        	{
 	        			pointId = i + binOffset;
 	        			
-		        		point[i] = new LD.Point();
+		        		pointBuffer[i] = new Point();
 		        		v = (int) (*(px + (pointId % countx)) * 8000);
-		        		point[i].X = v;
+		        		pointBuffer[i].X = v;
 		        		
 		        		v = (int) (*(py + (pointId % county)) * 8000);
-		        		point[i].Y = v;
+		        		pointBuffer[i].Y = v;
 		        		
 		        		FColorIn.GetColor(pointId, out color);
-		        		point[i].Color = color.Color.ToArgb();
+		        		pointBuffer[i].Color = color.Color.ToArgb();
 		        		
 		        		if (pointFlagMap.TryGetValue(pointId, out flag))
 		        		{
 		        			if ((flag & FLAG_CORNER) > 0)
-		        				point[i].VOtype = LD.PT_CORNER;
+		        				pointBuffer[i].VOtype = LD.PT_CORNER;
 		        			if ((flag & FLAG_TRAVELBLANK) > 0)
-		        				point[i].VOtype |= LD.PT_TRAVELBLANK;
+		        				pointBuffer[i].VOtype |= LD.PT_TRAVELBLANK;
 		        		}
 		        	}
 	        		
 	        		// Get projection zone for this frame
 	        		FZoneIn.GetValue(j, out tmp);
-	        		frame.PreferredProjectionZone = VMath.Zmod((int) (tmp -1), 30);
+	        		workingFrame.PreferredProjectionZone = VMath.Zmod((int) (tmp -1), 30);
 	        		
 	        		// Is this a vector orientated frame?
 	        		FIsVectorFrameIn.GetValue(j, out tmp);
-	        		frame.VectorFlag = tmp > 0 ? 1 : 0;
+	        		workingFrame.VectorFlag = tmp > 0 ? 1 : 0;
 	        		
-	        		if (point.Length > 0)
-	        			LD.WriteFrameFastEx(ref frame, ref point[0]);
-	        		else 
+        			LD.WriteFrameFastEx(ref workingFrame, ref pointBuffer[0]);
+	        		
+	        		binOffset += binSize;
+        		}
+        	} else {
+        		List<int> corners = new List<int>();
+        		
+        		for (int j = 0; j < frames.Length; j++)
+        		{
+        			LD.SetWorkingFrame(frames[j]);
+        			
+        			int numPoints = 0;
+        			LD.ReadNumPoints(ref numPoints);
+        			
+        			pointCount += numPoints;
+        		}
+        		
+        		FXOut.SliceCount = pointCount;
+        		FYOut.SliceCount = pointCount;
+        		FColorOut.SliceCount = pointCount;
+        		FBinSizeOut.SliceCount = frames.Length;
+        		FIsVectorFrameOut.SliceCount = frames.Length;
+        		FZoneOut.SliceCount = frames.Length;
+        		
+        		for (int j = 0; j < frames.Length; j++)
+        		{
+        			LD.SetWorkingFrame(frames[j]);
+        			
+        			int binSize = 0;
+        			LD.ReadNumPoints(ref binSize);
+	        		LD.ReadFrameEx(ref workingFrame, ref pointBuffer[0]);
+        			
+	        		for (int i = 0; i < binSize; i++)
 	        		{
-	        			LD.Point blackPoint = new LD.Point();
-	        			LD.WriteFrameFastEx(ref frame, ref blackPoint);
+	        			int slice = i + binOffset;
+	        			FXOut.SetValue(slice, ((double) pointBuffer[i].X) / 8000.0);
+	        			FYOut.SetValue(slice, ((double) pointBuffer[i].Y) / 8000.0);
+	        			RGBAColor c = new RGBAColor();
+	        			c.Color = System.Drawing.Color.FromArgb(pointBuffer[i].Color);
+	        			FColorOut.SetColor(slice, c);
+	        			
+	        			// Handle vector orientated flags
+	        			if ((pointBuffer[i].VOtype & LD.PT_CORNER) > 0)
+	        			{
+	        				corners.Add(slice);
+	        			}
 	        		}
+	        		
+	        		FCornerOut.SliceCount = corners.Count;
+	        		for (int i = 0; i < corners.Count; i++)
+	        			FCornerOut.SetValue(i, corners[i]);
+	        		
+	        		FBinSizeOut.SetValue(j, binSize);
+	        		FIsVectorFrameOut.SetValue(j, workingFrame.VectorFlag != 0 ? 1.0 : 0.0);
+	        		FZoneOut.SetValue(j, workingFrame.PreferredProjectionZone + 1);
 	        		
 	        		binOffset += binSize;
         		}
