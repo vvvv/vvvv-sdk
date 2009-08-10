@@ -13,7 +13,7 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//C# sharpdevelop 
+//C# sharpdevelop
 
 //////dependencies
 //VVVV.PluginInterfaces.V1;
@@ -41,14 +41,14 @@ using VVVV.Nodes.Timeliner;
 
 namespace VVVV.Nodes
 {
-	public class TimelinerPlugin: UserControl, IPlugin
+	public class TimelinerPlugin: ManagedVCL.TopControl, IPlugin
 	{
 		#region field declaration
 		
 		private IPluginHost FHost;
 		// Track whether Dispose has been called.
-   		private bool FDisposed = false;
-   		
+		private bool FDisposed = false;
+		
 		public const int FHeaderWidth = 128;
 		public static System.Globalization.NumberFormatInfo GNumberFormat = new System.Globalization.NumberFormatInfo();
 		private XmlDocument FSettings;
@@ -78,7 +78,7 @@ namespace VVVV.Nodes
 		private bool FFirstFrame = true;
 		private bool FTransformationChanged = true;
 		private bool FBlockConfigurate = false;
-
+		private ArrayList FPinSettingsList = new ArrayList();
 		private bool FAutomataCreatedViaGUI = false;
 		
 		// LISTS
@@ -90,7 +90,7 @@ namespace VVVV.Nodes
 		private TLRulerPin GTopRuler;
 		private TLAutomataPin FAutomata;
 		private TLTransformer GTransformer = new TLTransformer();
-		private TLTime GTimer = new TLTime();
+		private TLTime GTimer = new TLTime();		
 		
 		private void InitializeComponent()
 		{
@@ -379,54 +379,25 @@ namespace VVVV.Nodes
 		}
 		
 		protected override void Dispose(bool disposing)
-        {
-        	// Check to see if Dispose has already been called.
-        	if(!FDisposed)
-        	{
-        		if(disposing)
-        		{
-        			// Dispose managed resources.
-        			FAutomata = null;
-        			GTopRuler = null;
-        			GTimer = null;
-        			GTransformer = null;
-        			
-        			FHost.DeletePin(FTimeInput);
-        			FTimeInput = null;
-        			
-        			FHost.DeletePin(FPlayInput);
-        			FPlayInput = null;
-        			
-        			FHost.DeletePin(FTranslateInput);
-        			FTranslateInput = null;
-        			
-        			FHost.DeletePin(FScaleInput);
-        			FScaleInput = null;
-        			
-        			FHost.DeletePin(FSetTime);
-        			FSetTime = null;
-        			
-        			FHost.DeletePin(FTimeOut);
-        			FTimeOut = null;
-        			
-        			FHost.DeletePin(FSeekingOut);
-        			FSeekingOut = null;
-        			
-        			FHost.DeletePin(FPlayingOut);
-        			FPlayingOut = null;
-        			
-        			FHost.DeletePin(FPinSettings);
-        			FPinSettings = null;
-        			
-        			FHost.DeletePin(FGUISettings);
-        			FGUISettings = null;
-        		}
-        		// Release unmanaged resources. If disposing is false,
-        		// only the following code is executed.
+		{
+			// Check to see if Dispose has already been called.
+			if(!FDisposed)
+			{
+				if(disposing)
+				{
+					// Dispose managed resources.
+					FAutomata = null;
+					GTopRuler = null;
+					GTimer = null;
+					GTransformer = null;
+
+				}
+				// Release unmanaged resources. If disposing is false,
+				// only the following code is executed.
 				//..
-        	}
-        	FDisposed = true;
-        }
+			}
+			FDisposed = true;
+		}
 		
 		#endregion constructor/destructor
 		
@@ -566,29 +537,40 @@ namespace VVVV.Nodes
 		
 		public void Configurate(IPluginConfig Input)
 		{
-			//create pins here according to valuepinnames slice-content
-			System.Diagnostics.Debug.WriteLine("Configurate: " +Input.Name + " - SliceCount: " + Input.SliceCount);
+			//create pins here according to PinSettings content
 			
-			if (FBlockConfigurate) 
-				return; 
+			if (FBlockConfigurate)
+				return;
+			
+			//FHost.Log(TLogType.Debug, "Configurate: " +Input.Name + " - SliceCount: " + Input.SliceCount);
 			
 			//this is a hack
 			//only needed because vvvv calls configcallback after setting of every slice while SettingSpreadAsString onload
 			//should better fill whole spread with saved values and then call configcallback
+			//so here we check that all pinsettings refer to a different PinName
+			//if there are doublepinnames, the current call seems to be triggered before all slices have been 
+			//used to compare whole settings string before (now comparing only pinnames) which failed, 
+			//as settings can include optional attributes..
+
 			string s;
-			List<string> pinsettings = new List<string>();
+			List<string> pinList = new List<string>();
+			XmlNode pinSettings;
+			XmlAttribute attr;
 			bool doublesettings = false;
 			for (int i=0; i<FPinSettings.SliceCount; i++)
 			{
 				FPinSettings.GetString(i, out s);
-				//System.Diagnostics.Debug.WriteLine("pinnames: " + s);
-				if (pinsettings.IndexOf(s) >= 0)
+				FSettings.LoadXml(s);
+				pinSettings = FSettings.SelectSingleNode(@"//PIN");
+				attr = pinSettings.Attributes.GetNamedItem("Name") as XmlAttribute;
+
+				if (pinList.IndexOf(attr.Value) >= 0)
 				{
 					doublesettings = true;
 					break;
 				}
 				else
-					pinsettings.Add(s);
+					pinList.Add(attr.Value);
 			}
 			
 			//only go on if every settings slice is unique: as at least pin name must be unique in all pins!
@@ -596,7 +578,7 @@ namespace VVVV.Nodes
 				return;
 			//hack end.-
 			
-			System.Diagnostics.Debug.WriteLine("Configurate: " +Input.Name + " - FirstFrame: " + FFirstFrame);
+			//FHost.Log(TLogType.Debug, "Configurate: " +Input.Name + " - FirstFrame: " + FFirstFrame);
 			
 			if (Input == FGUISettings)
 				GUISettingsChanged();
@@ -613,7 +595,7 @@ namespace VVVV.Nodes
 		{
 			//check inputs
 			double dval;
-	
+			
 			//data in
 			/*	if (FDataInput.PinIsChanged)
         	{
@@ -700,7 +682,7 @@ namespace VVVV.Nodes
 				else
 					p.Evaluate(GTimer.GetTime(index++));
 			}
-		/*	for (int i = 0; i<FOutputPins.Count;i++)
+			/*	for (int i = 0; i<FOutputPins.Count;i++)
 			{
 				FOutputPins[i].Evaluate(GTimer.GetTime(i));
 			}*/
@@ -713,6 +695,9 @@ namespace VVVV.Nodes
 				//draw whole slicearea after all keyframes have been loaded
 				SliceArea.Refresh();
 				FFirstFrame = false;
+				
+				//for backwards compatibility update pinsettings once after startup:
+				UpdatePinSettingsFromActualPinLayout();
 			}
 		}
 		
@@ -750,6 +735,8 @@ namespace VVVV.Nodes
 			XmlAttribute attr;
 			
 			int i;
+			
+			          
 			for (i=0; i<FPinSettings.SliceCount; i++)
 			{
 				currentID = 0;
@@ -838,52 +825,46 @@ namespace VVVV.Nodes
 							{
 								//newPin = new TLWavPin(FHost, GTransformer, FOutputPins.Count, pinSettings);
 								break;
-							}							
+							}
 					}
-					
 					
 					newPin.OnPinChanged += new PinHandler(PinChangedCB);
 					newPin.OnRedraw += new PinHandler(RedrawCB);
 					newPin.OnRemovePin += new PinHandler(RemovePinCB);
 
-					int parent = -1;
+					int parent;
 					try
 					{
 						attr = pinSettings.Attributes.GetNamedItem("Parent") as XmlAttribute;
 						parent = int.Parse(attr.Value);
-					}
-					catch
-					{}
-					
-					if (parent == -1)
-					{
-						if (newPin is TLRulerPin || newPin is TLAutomataPin)
-						{
-							PinHeaderPanel0.Controls.Add(newPin);
-							FOutputPins.Insert(PinHeaderPanel0.Controls.Count-1, newPin);
-						}
-						else
-						{
-							PinHeaderPanel1.Controls.Add(newPin);
-							FOutputPins.Add(newPin);
-						}
-					}
-					else
-					{
+						
 						switch (parent)
 						{
-								case 0: 
+							case 0:
 								{
 									PinHeaderPanel0.Controls.Add(newPin);
-									FOutputPins.Insert(PinHeaderPanel0.Controls.Count-1, newPin);
+									FOutputPins.Insert(Math.Max(0, PinHeaderPanel0.Controls.Count-1), newPin);
 									break;
 								}
-								case 1: 
+							case 1:
 								{
 									PinHeaderPanel1.Controls.Add(newPin);
 									FOutputPins.Add(newPin);
 									break;
 								}
+						}
+					}
+					catch
+					{
+						if (newPin is TLRulerPin || newPin is TLAutomataPin)
+						{
+							PinHeaderPanel0.Controls.Add(newPin);
+							FOutputPins.Insert(Math.Max(0, PinHeaderPanel0.Controls.Count-1), newPin);
+						}
+						else
+						{
+							PinHeaderPanel1.Controls.Add(newPin);
+							FOutputPins.Add(newPin);
 						}
 					}
 					
@@ -913,8 +894,6 @@ namespace VVVV.Nodes
 		
 		private void AddPin(TLPinType PinType)
 		{
-			FPinSettings.SliceCount++;
-			
 			XmlAttribute attr;
 			XmlNode pin = FSettings.CreateElement("PIN");
 			attr = FSettings.CreateAttribute("Name");
@@ -929,7 +908,14 @@ namespace VVVV.Nodes
 			attr.Value = "1";
 			pin.Attributes.Append(attr);
 			
-			FPinSettings.SetString(FPinSettings.SliceCount-1, pin.OuterXml);
+			UpdatePinSettingsList();
+			
+			if ((FPinSettingsList.Count == 0) || (!(PinType == TLPinType.Ruler) || (PinType == TLPinType.Automata)))
+				FPinSettingsList.Add(pin.OuterXml);
+			else
+				FPinSettingsList.Insert(Math.Max(0, PinHeaderPanel0.Controls.Count-1), pin.OuterXml);
+			
+			UpdatePinSettings();
 		}
 		
 		private void RemovePinCB(TLBasePin Pin)
@@ -945,34 +931,56 @@ namespace VVVV.Nodes
 			MovePin(pinID, -1);
 		}
 		
-		private void MovePin(int OldIdx, int NewIdx)
+		private void UpdatePinSettingsFromActualPinLayout()
 		{
-			//call with NewIdx = -1 to remove the pin
-			
-			ArrayList lPinSettings = new ArrayList();
+			//get an arraylist fresh from the current pinsettings
+			FPinSettingsList.Clear();
+			for (int i=0; i<FOutputPins.Count; i++)
+				FPinSettingsList.Add(FOutputPins[i].Settings.OuterXml);
+		
+			UpdatePinSettings();
+		}
+		
+		private void UpdatePinSettingsList()
+		{
+			//get an arraylist fresh from the current pinsettings
+			FPinSettingsList.Clear();
 			string sliceSettings;
 			for (int i=0; i<FPinSettings.SliceCount; i++)
 			{
 				FPinSettings.GetString(i, out sliceSettings);
 				sliceSettings = sliceSettings.TrimEnd();
-				lPinSettings.Add(sliceSettings);
+				if (sliceSettings != string.Empty)
+					FPinSettingsList.Add(sliceSettings);
 			}
-			
-			string tmpSliceSettings = (string) lPinSettings[OldIdx];
-			lPinSettings.RemoveAt(OldIdx);
-			
-			if (NewIdx >= 0)
-				lPinSettings.Insert(NewIdx, tmpSliceSettings);
-			
-			FPinSettings.SliceCount = lPinSettings.Count;
+		}
+		
+		private void UpdatePinSettings()
+		{
+			//write the arraylist back to the PinSettings pin
+			FPinSettings.SliceCount = FPinSettingsList.Count;
 			
 			FBlockConfigurate = true;
 			for (int i=0; i<FPinSettings.SliceCount; i++)
-				FPinSettings.SetString(i, (string) lPinSettings[i]);
+				FPinSettings.SetString(i, (string) FPinSettingsList[i]);
 			FBlockConfigurate = false;
 			
 			Configurate(FPinSettings);
+		}
+		
+		//call with NewIdx = -1 to remove the pin
+		private void MovePin(int OldIdx, int NewIdx)
+		{
+			UpdatePinSettingsList();
 			
+			string tmpSliceSettings = (string) FPinSettingsList[OldIdx];
+			FPinSettingsList.RemoveAt(OldIdx);
+			
+			if (NewIdx >= 0)
+				FPinSettingsList.Insert(NewIdx, tmpSliceSettings);
+			
+			UpdatePinSettings();
+
 			for (int i=0; i<FOutputPins.Count; i++)
 				FOutputPins[i].Order = i;
 		}
@@ -1043,8 +1051,8 @@ namespace VVVV.Nodes
 		protected override bool ProcessKeyPreview(ref Message m)
 		{
 			const int WM_KEYDOWN = 0x100;
-    		const int WM_KEYUP = 0x101;
-    
+			const int WM_KEYUP = 0x101;
+			
 			if (m.Msg == WM_KEYDOWN)
 			{
 				//FHost.Log(TLogType.Debug, "keydown");
@@ -1213,7 +1221,7 @@ namespace VVVV.Nodes
 			else
 				return PinPanel.Controls.IndexOf(bp);
 		}
-				
+		
 		void PinHeaderPanel0DragEnter(object sender, DragEventArgs e)
 		{
 			InsertPreview.Show();
@@ -1249,19 +1257,19 @@ namespace VVVV.Nodes
 					if (oldID < id)
 						id -= 1;
 				}
-					
+				
 				PinHeaderPanel0.Controls.SetChildIndex(droppedPin, id);
 				
 				//old index of pin in FOutputPins list
 				int oldIdx = FOutputPins.IndexOf(droppedPin);
 				
 				//new index in list
-				int newIdx = PinHeaderPanel0.Controls.Count - id - 1; 
+				int newIdx = PinHeaderPanel0.Controls.Count - id - 1;
 				
 				MovePin(oldIdx, newIdx);
 			}
 			InsertPreview.Hide();
-			this.ResumeLayout(true);	
+			this.ResumeLayout(true);
 		}
 		
 		void PinHeaderPanel1DragEnter(object sender, DragEventArgs e)
@@ -1285,7 +1293,7 @@ namespace VVVV.Nodes
 			this.SuspendLayout();
 			if (e.Data.GetDataPresent(DataFormats.Serializable))
 			{
-				int id = DropToId(PinHeaderPanel1, new Point(e.X, e.Y - MainMenu.Height));				
+				int id = DropToId(PinHeaderPanel1, new Point(e.X, e.Y - MainMenu.Height));
 				TLBasePin droppedPin = (TLBasePin) e.Data.GetData(DataFormats.Serializable);
 				
 				if (droppedPin.Parent == PinHeaderPanel0)
@@ -1300,18 +1308,18 @@ namespace VVVV.Nodes
 						id -= 1;
 				}
 
-				PinHeaderPanel1.Controls.SetChildIndex(droppedPin, id);		
+				PinHeaderPanel1.Controls.SetChildIndex(droppedPin, id);
 				
 				//old index of pin in FOutputPins list
 				int oldIdx = FOutputPins.IndexOf(droppedPin);
 				
 				//new index in list
-				int newIdx = PinHeaderPanel0.Controls.Count + PinHeaderPanel1.Controls.Count - id - 1; 
+				int newIdx = PinHeaderPanel0.Controls.Count + PinHeaderPanel1.Controls.Count - id - 1;
 				
 				MovePin(oldIdx, newIdx);
 			}
 			InsertPreview.Hide();
-			this.ResumeLayout(true);		
+			this.ResumeLayout(true);
 		}
 		
 		void SplitContainerSplitterMoved(object sender, SplitterEventArgs e)
