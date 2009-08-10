@@ -35,8 +35,9 @@ namespace LD2000
    		private IColorIn FColorIn;
    		private IValueFastIn FCornerIn;
    		private IValueFastIn FTravelBlankIn;
-   		private IValueFastIn FBinSizeIn;
+   		private IValueFastIn FFrameSizeIn;
    		private IValueFastIn FFrameIn;
+   		private IValueFastIn FFrameScanRateIn;
    		private IValueFastIn FZoneIn;
    		private IValueFastIn FIsVectorFrameIn;
    		private IValueIn FDoWriteIn;
@@ -47,7 +48,8 @@ namespace LD2000
    		private IValueOut FYOut;
    		private IColorOut FColorOut;
    		private IValueOut FCornerOut;
-   		private IValueOut FBinSizeOut;
+   		private IValueOut FFrameSizeOut;
+   		private IValueOut FFrameScanRateOut;
    		private IValueOut FZoneOut;
    		private IValueOut FIsVectorFrameOut;
    		private IStringOut FStatusOut;
@@ -200,14 +202,16 @@ namespace LD2000
 	    	FCornerIn.SetSubType(int.MinValue, int.MaxValue, 1.0, 0.0, false, false, true);
 	    	FHost.CreateValueFastInput("Travel Blank", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FTravelBlankIn);
 	    	FTravelBlankIn.SetSubType(int.MinValue, int.MaxValue, 1.0, 0.0, false, false, true);
-	    	FHost.CreateValueFastInput("BinSize", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBinSizeIn);
-	    	FBinSizeIn.SetSubType(int.MinValue, int.MaxValue, 1.0, -1.0, false, false, true);
+	    	FHost.CreateValueFastInput("Frame Size", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FFrameSizeIn);
+	    	FFrameSizeIn.SetSubType(int.MinValue, int.MaxValue, 1.0, -1.0, false, false, true);
 	    	FHost.CreateValueFastInput("Frame", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FFrameIn);
 	    	FFrameIn.SetSubType(1.0, int.MaxValue, 1.0, 1.0, false, false, true);
+	    	FHost.CreateValueFastInput("Frame Scan Rate", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FFrameScanRateIn);
+	    	FFrameScanRateIn.SetSubType(-130.0, int.MaxValue, 1.0, 100.0, false, false, true);
 	    	FHost.CreateValueFastInput("Projection Zone", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FZoneIn);
 	    	FZoneIn.SetSubType(1.0, 30.0, 1.0, 1.0, false, false, true);
 	    	FHost.CreateValueFastInput("Is Vector Frame", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FIsVectorFrameIn);
-	    	FIsVectorFrameIn.SetSubType(0.0, 1.0, 1.0, 0.0, false, true, false);
+	    	FIsVectorFrameIn.SetSubType(0.0, 1.0, 1.0, 1.0, false, true, false);
 	    	FHost.CreateValueInput("Do Write", 1, null, TSliceMode.Single, TPinVisibility.True, out FDoWriteIn);
 	    	FDoWriteIn.SetSubType(0.0, 1.0, 1.0, 0.0, false, true, false);
 	    	
@@ -225,8 +229,10 @@ namespace LD2000
 	    	FColorOut.SetSubType(VColor.White, false);
 	    	FHost.CreateValueOutput("Corner", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FCornerOut);
 	    	FCornerOut.SetSubType(int.MinValue, int.MaxValue, 1.0, 0.0, false, false, true);
-	    	FHost.CreateValueOutput("BinSize", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBinSizeOut);
-	    	FBinSizeOut.SetSubType(int.MinValue, int.MaxValue, 1.0, -1.0, false, false, true);
+	    	FHost.CreateValueOutput("Frame Size", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FFrameSizeOut);
+	    	FFrameSizeOut.SetSubType(int.MinValue, int.MaxValue, 1.0, -1.0, false, false, true);
+	    	FHost.CreateValueOutput("Frame Scan Rate", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FFrameScanRateOut);
+	    	FFrameScanRateOut.SetSubTypeSetSubType(-130.0, int.MaxValue, 1.0, 100.0, false, false, true);
 	    	FHost.CreateValueOutput("Projection Zone", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FZoneOut);
 	    	FZoneOut.SetSubType(1.0, 30.0, 1.0, 1.0, false, false, true);
 	    	FHost.CreateValueOutput("Is Vector Frame", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FIsVectorFrameOut);
@@ -273,7 +279,7 @@ namespace LD2000
         	double tmp;
         	double* px, py;
         	int v, countx, county;
-        	int binOffset = 0;
+        	int frameOffset = 0;
         	int pointCount = 0;
         	RGBAColor color;
         	int[] frames = new int[FFrameIn.SliceCount];
@@ -315,30 +321,30 @@ namespace LD2000
         		{
         			LD.SetWorkingFrame(frames[j]);
         			
-        			// Get the bin size for this frame
-        			FBinSizeIn.GetValue(j, out tmp);
-        			int binSize = (int) tmp;
-        			if (binSize < 0)
+        			// Get the frame size for this frame
+        			FFrameSizeIn.GetValue(j, out tmp);
+        			int frameSize = (int) tmp;
+        			if (frameSize < 0)
         			{
-        				binSize = pointCount / Math.Abs(binSize);
+        				frameSize = pointCount / Math.Abs(frameSize);
         			}
-        			if (binSize > pointBuffer.Length)
+        			if (frameSize > pointBuffer.Length)
         			{
         				PrintStatusMessage("Too many points. Maximum number of points for each frame is: " + pointBuffer.Length);
-        				binSize = pointBuffer.Length;
+        				frameSize = pointBuffer.Length;
         			}
         			
         			// Create binSize many points
         			workingFrame = new FrameEx();
-	        		workingFrame.NumPoints = binSize;
+	        		workingFrame.NumPoints = frameSize;
 	        		
 	        		FXIn.GetValuePointer(out countx, out px);
 	        		FYIn.GetValuePointer(out county, out py);
 	        		
 	        		int flag;
-	        		for (int i = 0; i < binSize; i++)
+	        		for (int i = 0; i < frameSize; i++)
 		        	{
-	        			pointId = i + binOffset;
+	        			pointId = i + frameOffset;
 	        			
 		        		pointBuffer[i] = new Point();
 		        		v = (int) (*(px + (pointId % countx)) * 8000);
@@ -355,21 +361,28 @@ namespace LD2000
 		        			if ((flag & FLAG_CORNER) > 0)
 		        				pointBuffer[i].VOtype = LD.PT_CORNER;
 		        			if ((flag & FLAG_TRAVELBLANK) > 0)
+		        			{
 		        				pointBuffer[i].VOtype |= LD.PT_TRAVELBLANK;
+		        				pointBuffer[i].Color = 0;
+		        			}
 		        		}
 		        	}
 	        		
 	        		// Get projection zone for this frame
 	        		FZoneIn.GetValue(j, out tmp);
-	        		workingFrame.PreferredProjectionZone = VMath.Zmod((int) (tmp -1), 30);
+	        		workingFrame.PreferredProjectionZone = VMath.Zmod((int) (tmp - 1), 30);
 	        		
 	        		// Is this a vector orientated frame?
 	        		FIsVectorFrameIn.GetValue(j, out tmp);
 	        		workingFrame.VectorFlag = tmp > 0 ? 1 : 0;
 	        		
+	        		// Scan rate for this frame
+	        		FFrameScanRateIn.GetValue(j, out tmp);
+	        		workingFrame.ScanRate = (int) tmp;
+	        		
         			LD.WriteFrameFastEx(ref workingFrame, ref pointBuffer[0]);
 	        		
-	        		binOffset += binSize;
+	        		frameOffset += frameSize;
         		}
         	} else {
         		List<int> corners = new List<int>();
@@ -387,7 +400,8 @@ namespace LD2000
         		FXOut.SliceCount = pointCount;
         		FYOut.SliceCount = pointCount;
         		FColorOut.SliceCount = pointCount;
-        		FBinSizeOut.SliceCount = frames.Length;
+        		FFrameSizeOut.SliceCount = frames.Length;
+        		FFrameScanRateOut.SliceCount = frames.Length;
         		FIsVectorFrameOut.SliceCount = frames.Length;
         		FZoneOut.SliceCount = frames.Length;
         		
@@ -395,13 +409,13 @@ namespace LD2000
         		{
         			LD.SetWorkingFrame(frames[j]);
         			
-        			int binSize = 0;
-        			LD.ReadNumPoints(ref binSize);
+        			int frameSize = 0;
+        			LD.ReadNumPoints(ref frameSize);
 	        		LD.ReadFrameEx(ref workingFrame, ref pointBuffer[0]);
         			
-	        		for (int i = 0; i < binSize; i++)
+	        		for (int i = 0; i < frameSize; i++)
 	        		{
-	        			int slice = i + binOffset;
+	        			int slice = i + frameOffset;
 	        			FXOut.SetValue(slice, ((double) pointBuffer[i].X) / 8000.0);
 	        			FYOut.SetValue(slice, ((double) pointBuffer[i].Y) / 8000.0);
 	        			RGBAColor c = new RGBAColor();
@@ -419,11 +433,12 @@ namespace LD2000
 	        		for (int i = 0; i < corners.Count; i++)
 	        			FCornerOut.SetValue(i, corners[i]);
 	        		
-	        		FBinSizeOut.SetValue(j, binSize);
+	        		FFrameSizeOut.SetValue(j, frameSize);
+	        		FFrameScanRateOut.SetValue(j, workingFrame.ScanRate);
 	        		FIsVectorFrameOut.SetValue(j, workingFrame.VectorFlag != 0 ? 1.0 : 0.0);
 	        		FZoneOut.SetValue(j, workingFrame.PreferredProjectionZone + 1);
 	        		
-	        		binOffset += binSize;
+	        		frameOffset += frameSize;
         		}
         	}
         	
