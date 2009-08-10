@@ -265,7 +265,6 @@ namespace LD2000
         {     	
         	if (!ldRunning) 
         	{
-        		PrintStatusMessage(STATUS_MSG_NOT_RUNNING);
         		return;
         	} else {
         		PrintStatusMessage("");
@@ -455,6 +454,7 @@ namespace LD2000
         	LD.InitialQMCheck(ref ldStatus);
         	if (ldStatus != LD.LDSTATUS_OK) 
         	{
+        		PrintStatusMessage("QMCheck failed.");
         		return;
         	}
         	
@@ -466,6 +466,7 @@ namespace LD2000
         	                  ref ldStatus);
         	if (ldStatus != LD.LDSTATUS_OK) 
         	{
+        		PrintStatusMessage("BeginSessionEx failed.");
         		return;
         	}
         	
