@@ -11,6 +11,19 @@ namespace LD2000
 	/// </summary>
 	public class LD2000Node : IPlugin, IDisposable
 	{
+		#region structs
+		
+		struct DisplayPin {
+			public IValueIn Pin;
+			public string Name;
+			public int ArgPos;
+			public int Min;
+			public int Max;
+			public int Default;
+		}
+		
+		#endregion
+		
     	#region field declaration
     	
     	// The host (mandatory)
@@ -21,6 +34,8 @@ namespace LD2000
    		private Dictionary<int, int> pointFlagMap = new Dictionary<int, int>();
    		private FrameEx workingFrame;
    		private Point[] pointBuffer;
+   		private DisplayPin[] FVDPins;
+   		private DisplayPin[] FSkewPins;
    		
    		private bool ldRunning = false;
    		private int ldStatus = 0;
@@ -40,6 +55,7 @@ namespace LD2000
    		private IValueFastIn FFrameScanRateIn;
    		private IValueFastIn FZoneIn;
    		private IValueFastIn FIsVectorFrameIn;
+   		private IValueIn FActiveScanner;
    		private IValueIn FDoWriteIn;
    		
    		private IValueConfig FScanRateIn;
@@ -55,6 +71,7 @@ namespace LD2000
    		private IStringOut FStatusOut;
    		
    		private const string STATUS_MSG_NOT_RUNNING = "LD2000 not running.";
+   		
    		private const int FLAG_CORNER = 1;
    		private const int FLAG_TRAVELBLANK = 2;
 
@@ -67,6 +84,53 @@ namespace LD2000
 			//the nodes constructor
 			workingFrame = new FrameEx();
 			pointBuffer = new Point[ldMaxPoints];
+			
+			// vector display pins
+			FVDPins = new DisplayPin[7];
+			int i = 0;
+	    	FVDPins[i].Name = "Line Beginning Blanked Points";
+	    	FVDPins[i].ArgPos = 4;
+	    	FVDPins[i].Min = 1;
+	    	FVDPins[i].Max = 8;
+	    	FVDPins[i++].Default = 3;
+	    	FVDPins[i].Name = "Line Beginning Anchor Points";
+	    	FVDPins[i].ArgPos = 0;
+	    	FVDPins[i].Min = 1;
+	    	FVDPins[i].Max = 8;
+	    	FVDPins[i++].Default = 2;
+	    	FVDPins[i].Name = "Line Corner Anchor Points";
+	    	FVDPins[i].ArgPos = 1;
+	    	FVDPins[i].Min = 2;
+	    	FVDPins[i].Max = 10;
+	    	FVDPins[i++].Default = 3;
+	    	FVDPins[i].Name = "Line Ending Blanked Points";
+	    	FVDPins[i].ArgPos = 5;
+	    	FVDPins[i].Min = 1;
+	    	FVDPins[i].Max = 8;
+	    	FVDPins[i++].Default = 3;
+	    	FVDPins[i].Name = "Line Ending Anchor Points";
+	    	FVDPins[i].ArgPos = 2;
+	    	FVDPins[i].Min = 1;
+	    	FVDPins[i].Max = 8;
+	    	FVDPins[i++].Default = 2;
+	    	FVDPins[i].Name = "Point Spacing Blanked Lines";
+	    	FVDPins[i].ArgPos = 6;
+	    	FVDPins[i].Min = 100;
+	    	FVDPins[i].Max = 4000;
+	    	FVDPins[i++].Default = 500;
+	    	FVDPins[i].Name = "Point Spacing Visible Lines";
+	    	FVDPins[i].ArgPos = 3;
+	    	FVDPins[i].Min = 100;
+	    	FVDPins[i].Max = 4000;
+	    	FVDPins[i++].Default = 250;
+	    	
+	    	FSkewPins = new DisplayPin[1];
+	    	i = 0;
+	    	FSkewPins[i].Name = "Color/Blanking Shift";
+	    	FSkewPins[i].ArgPos = 0;
+	    	FSkewPins[i].Min = 0;
+	    	FSkewPins[i].Max = 20;
+	    	FSkewPins[i++].Default = 0;
 		}
         
         // Implementing IDisposable's Dispose method.
@@ -206,12 +270,16 @@ namespace LD2000
 	    	FFrameSizeIn.SetSubType(int.MinValue, int.MaxValue, 1.0, -1.0, false, false, true);
 	    	FHost.CreateValueFastInput("Frame", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FFrameIn);
 	    	FFrameIn.SetSubType(1.0, int.MaxValue, 1.0, 1.0, false, false, true);
-	    	FHost.CreateValueFastInput("Frame Scan Rate", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FFrameScanRateIn);
+	    	FHost.CreateValueFastInput("Frame Scan Rate", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FFrameScanRateIn);
 	    	FFrameScanRateIn.SetSubType(-130.0, int.MaxValue, 1.0, 100.0, false, false, true);
-	    	FHost.CreateValueFastInput("Projection Zone", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FZoneIn);
+	    	FHost.CreateValueFastInput("Projection Zone", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FZoneIn);
 	    	FZoneIn.SetSubType(1.0, 30.0, 1.0, 1.0, false, false, true);
 	    	FHost.CreateValueFastInput("Is Vector Frame", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FIsVectorFrameIn);
 	    	FIsVectorFrameIn.SetSubType(0.0, 1.0, 1.0, 1.0, false, true, false);
+	    	
+	    	CreatePins(FVDPins);
+	    	CreatePins(FSkewPins);
+	    	
 	    	FHost.CreateValueInput("Do Write", 1, null, TSliceMode.Single, TPinVisibility.True, out FDoWriteIn);
 	    	FDoWriteIn.SetSubType(0.0, 1.0, 1.0, 0.0, false, true, false);
 	    	
@@ -231,9 +299,9 @@ namespace LD2000
 	    	FCornerOut.SetSubType(int.MinValue, int.MaxValue, 1.0, 0.0, false, false, true);
 	    	FHost.CreateValueOutput("Frame Size", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FFrameSizeOut);
 	    	FFrameSizeOut.SetSubType(int.MinValue, int.MaxValue, 1.0, -1.0, false, false, true);
-	    	FHost.CreateValueOutput("Frame Scan Rate", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FFrameScanRateOut);
-	    	FFrameScanRateOut.SetSubTypeSetSubType(-130.0, int.MaxValue, 1.0, 100.0, false, false, true);
-	    	FHost.CreateValueOutput("Projection Zone", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FZoneOut);
+	    	FHost.CreateValueOutput("Frame Scan Rate", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FFrameScanRateOut);
+	    	FFrameScanRateOut.SetSubType(-130.0, int.MaxValue, 1.0, 100.0, false, false, true);
+	    	FHost.CreateValueOutput("Projection Zone", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FZoneOut);
 	    	FZoneOut.SetSubType(1.0, 30.0, 1.0, 1.0, false, false, true);
 	    	FHost.CreateValueOutput("Is Vector Frame", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FIsVectorFrameOut);
 	    	FIsVectorFrameOut.SetSubType(0.0, 1.0, 1.0, 0.0, false, true, false);
@@ -442,9 +510,21 @@ namespace LD2000
         		}
         	}
         	
+        	bool vdChanged = PinsChanged(FVDPins);
+        	bool skewChanged = PinsChanged(FSkewPins);
         	for (int i = 0; i < frames.Length; i++)
         	{
         		LD.DisplayFrame(frames[i]);
+        		if (vdChanged)
+        		{
+        			int[] arg = PinsAsArgumentList(FVDPins, i);
+        			LD.DisplayObjectSettings(arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6]);
+        		}
+        		if (skewChanged)
+        		{
+        			int[] arg = PinsAsArgumentList(FSkewPins, i);
+        			LD.DisplaySkew(4, arg[0], 0);
+        		}
 		    	LD.DisplayUpdate();
         	}
         }
@@ -456,6 +536,40 @@ namespace LD2000
         private void PrintStatusMessage(string msg)
         {
         	FStatusOut.SetString(0, msg);
+        }
+        
+        private void CreatePins(DisplayPin[] pins)
+        {
+        	for (int i = 0; i < pins.Length; i++)
+	    	{
+	    		FHost.CreateValueInput(pins[i].Name, 1, null, TSliceMode.Dynamic, TPinVisibility.True, out pins[i].Pin);
+	    		pins[i].Pin.SetSubType(pins[i].Min, pins[i].Max, 1.0, pins[i].Default, false, false, true);
+	    	}
+        }
+        
+        private bool PinsChanged(DisplayPin[] pins)
+        {
+        	for (int i = 0; i < pins.Length; i++)
+        	{
+        		if (pins[i].Pin.PinIsChanged) return true;
+        	}
+        	return false;
+        }
+        
+        private int[] PinsAsArgumentList(DisplayPin[] pins, int index)
+        {
+        	int[] result = new int[pins.Length];
+        	double tmp;
+        	
+        	for (int i = 0; i < result.Length; i++)
+        	{
+        		pins[i].Pin.GetValue(index, out tmp);
+        		int v = (int) tmp;
+        		v = VMath.Clamp(v, pins[i].Min, pins[i].Max);
+        		result[pins[i].ArgPos] = v;
+        	}
+        	
+        	return result;
         }
         
         #endregion

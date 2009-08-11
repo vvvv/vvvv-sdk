@@ -327,6 +327,9 @@ namespace LD2000
 		public static extern void DisplayObjectSettings(int VOvisiblebegin, int VOvisiblemid, int VOvisibleend, int VOvisibledensity, int VOblankbegin, int VOblankend, int VOblankdensity);
 		
 		[DllImport("LD2000.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+		public static extern void DisplaySkew(int intertrackpts, int blankcolorshift, int beambrushshift);
+		
+		[DllImport("LD2000.dll", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
 		public static extern void DisplayUpdate();
 		
 		#endregion
