@@ -40,7 +40,7 @@ namespace LD2000
    		private bool ldRunning = false;
    		private int ldStatus = 0;
    		private int ldVersion = 0;
-   		private int ldMaxFrames = 6000;
+   		private int ldMaxFrames = 64000;
    		private int ldMaxPoints = 6000;
    		private int ldMaxBuffer = 8192;
    		private int ldUndoFrames = 0;
@@ -54,8 +54,9 @@ namespace LD2000
    		private IValueFastIn FFrameIn;
    		private IValueFastIn FFrameScanRateIn;
    		private IValueFastIn FZoneIn;
+   		private IValueFastIn FAnimationCountIn;
    		private IValueFastIn FIsVectorFrameIn;
-   		private IValueIn FActiveScanner;
+   		private IValueIn FActiveScannerIn;
    		private IValueIn FDoWriteIn;
    		
    		private IValueConfig FScanRateIn;
@@ -67,6 +68,7 @@ namespace LD2000
    		private IValueOut FFrameSizeOut;
    		private IValueOut FFrameScanRateOut;
    		private IValueOut FZoneOut;
+   		private IValueOut FAnimationCountOut;
    		private IValueOut FIsVectorFrameOut;
    		private IStringOut FStatusOut;
    		
@@ -74,6 +76,8 @@ namespace LD2000
    		
    		private const int FLAG_CORNER = 1;
    		private const int FLAG_TRAVELBLANK = 2;
+   		
+   		private const int MAX_SCANNER_CODE = 1073741824; // 2^30
 
     	#endregion field declaration
 		
@@ -270,19 +274,22 @@ namespace LD2000
 	    	FFrameSizeIn.SetSubType(int.MinValue, int.MaxValue, 1.0, -1.0, false, false, true);
 	    	FHost.CreateValueFastInput("Frame", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FFrameIn);
 	    	FFrameIn.SetSubType(1.0, int.MaxValue, 1.0, 1.0, false, false, true);
-	    	FHost.CreateValueFastInput("Frame Scan Rate", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FFrameScanRateIn);
-	    	FFrameScanRateIn.SetSubType(-130.0, int.MaxValue, 1.0, 100.0, false, false, true);
-	    	FHost.CreateValueFastInput("Projection Zone", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FZoneIn);
+	    	FHost.CreateValueFastInput("Projection Zone", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FZoneIn);
 	    	FZoneIn.SetSubType(1.0, 30.0, 1.0, 1.0, false, false, true);
+	    	FHost.CreateValueFastInput("Frame Scan Rate", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FFrameScanRateIn);
+	    	FFrameScanRateIn.SetSubType(-130.0, int.MaxValue, 1.0, 100.0, false, false, true);
+	    	FHost.CreateValueFastInput("Animation Count", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FAnimationCountIn);
+	    	FAnimationCountIn.SetSubType(0.0, int.MaxValue, 1.0, 0.0, false, false, true);
 	    	FHost.CreateValueFastInput("Is Vector Frame", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FIsVectorFrameIn);
 	    	FIsVectorFrameIn.SetSubType(0.0, 1.0, 1.0, 1.0, false, true, false);
 	    	
 	    	CreatePins(FVDPins);
 	    	CreatePins(FSkewPins);
 	    	
+	    	FHost.CreateValueInput("Active Scanner", 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out FActiveScannerIn);
+	    	FActiveScannerIn.SetSubType(-1.0, int.MaxValue, 1.0, -1.0, false, false, true);
 	    	FHost.CreateValueInput("Do Write", 1, null, TSliceMode.Single, TPinVisibility.True, out FDoWriteIn);
 	    	FDoWriteIn.SetSubType(0.0, 1.0, 1.0, 0.0, false, true, false);
-	    	
 			
 			//create configuration inputs
 			FHost.CreateValueConfig("Scan Rate", 1, null, TSliceMode.Single, TPinVisibility.True, out FScanRateIn);
@@ -301,8 +308,10 @@ namespace LD2000
 	    	FFrameSizeOut.SetSubType(int.MinValue, int.MaxValue, 1.0, -1.0, false, false, true);
 	    	FHost.CreateValueOutput("Frame Scan Rate", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FFrameScanRateOut);
 	    	FFrameScanRateOut.SetSubType(-130.0, int.MaxValue, 1.0, 100.0, false, false, true);
-	    	FHost.CreateValueOutput("Projection Zone", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FZoneOut);
+	    	FHost.CreateValueOutput("Projection Zone", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FZoneOut);
 	    	FZoneOut.SetSubType(1.0, 30.0, 1.0, 1.0, false, false, true);
+	    	FHost.CreateValueOutput("Animation Count", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FAnimationCountOut);
+	    	FAnimationCountOut.SetSubType(0.0, int.MaxValue, 1.0, 0.0, false, false, true);
 	    	FHost.CreateValueOutput("Is Vector Frame", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FIsVectorFrameOut);
 	    	FIsVectorFrameOut.SetSubType(0.0, 1.0, 1.0, 0.0, false, true, false);
 	    	FHost.CreateStringOutput("Status", TSliceMode.Single, TPinVisibility.True, out FStatusOut);
@@ -448,6 +457,10 @@ namespace LD2000
 	        		FFrameScanRateIn.GetValue(j, out tmp);
 	        		workingFrame.ScanRate = (int) tmp;
 	        		
+	        		// Set animation count
+	        		FAnimationCountIn.GetValue(j, out tmp);
+	        		workingFrame.AnimationCount = (int) tmp;
+	        		
         			LD.WriteFrameFastEx(ref workingFrame, ref pointBuffer[0]);
 	        		
 	        		frameOffset += frameSize;
@@ -472,6 +485,7 @@ namespace LD2000
         		FFrameScanRateOut.SliceCount = frames.Length;
         		FIsVectorFrameOut.SliceCount = frames.Length;
         		FZoneOut.SliceCount = frames.Length;
+        		FAnimationCountOut.SliceCount = frames.Length;
         		
         		for (int j = 0; j < frames.Length; j++)
         		{
@@ -505,6 +519,7 @@ namespace LD2000
 	        		FFrameScanRateOut.SetValue(j, workingFrame.ScanRate);
 	        		FIsVectorFrameOut.SetValue(j, workingFrame.VectorFlag != 0 ? 1.0 : 0.0);
 	        		FZoneOut.SetValue(j, workingFrame.PreferredProjectionZone + 1);
+	        		FAnimationCountOut.SetValue(j, workingFrame.AnimationCount);
 	        		
 	        		frameOffset += frameSize;
         		}
@@ -512,9 +527,24 @@ namespace LD2000
         	
         	bool vdChanged = PinsChanged(FVDPins);
         	bool skewChanged = PinsChanged(FSkewPins);
-        	for (int i = 0; i < frames.Length; i++)
+        	bool scannerChanged = FActiveScannerIn.PinIsChanged;
+        	if (scannerChanged)
         	{
-        		LD.DisplayFrame(frames[i]);
+        		// Blank out all scanners
+        		LD.SetWorkingScanners(-1);
+        		LD.DisplayFrame(0);
+        	}
+        	
+        	int scannerFrameCount = Math.Max(frames.Length, FActiveScannerIn.SliceCount);
+        	for (int i = 0; i < scannerFrameCount; i++)
+        	{
+        		FActiveScannerIn.GetValue(i, out tmp);
+        		int scannerCode = (int) tmp;
+        		scannerCode = VMath.Clamp(scannerCode, -1, MAX_SCANNER_CODE);
+        		if (scannerCode == 0) scannerCode = 1; // 0 is illegal
+        		LD.SetWorkingScanners(scannerCode);
+	        		
+        		LD.DisplayFrame(frames[i % frames.Length]);
         		if (vdChanged)
         		{
         			int[] arg = PinsAsArgumentList(FVDPins, i);
@@ -525,8 +555,10 @@ namespace LD2000
         			int[] arg = PinsAsArgumentList(FSkewPins, i);
         			LD.DisplaySkew(4, arg[0], 0);
         		}
-		    	LD.DisplayUpdate();
         	}
+        	
+        	LD.SetWorkingScanners(-1);
+        	LD.DisplayUpdate();
         }
              
         #endregion mainloop 
@@ -542,7 +574,7 @@ namespace LD2000
         {
         	for (int i = 0; i < pins.Length; i++)
 	    	{
-	    		FHost.CreateValueInput(pins[i].Name, 1, null, TSliceMode.Dynamic, TPinVisibility.True, out pins[i].Pin);
+	    		FHost.CreateValueInput(pins[i].Name, 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out pins[i].Pin);
 	    		pins[i].Pin.SetSubType(pins[i].Min, pins[i].Max, 1.0, pins[i].Default, false, false, true);
 	    	}
         }
