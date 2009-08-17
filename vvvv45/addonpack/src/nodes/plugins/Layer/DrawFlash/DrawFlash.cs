@@ -54,70 +54,16 @@ namespace VVVV.Nodes
     //class definition
     public class DrawFlash : IPlugin, IDisposable, IPluginDXLayer
     {
-
-        public class HiPerfTimer
-        {
-            [DllImport("Kernel32.dll")]
-            private static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
-
-            [DllImport("Kernel32.dll")]
-            private static extern bool QueryPerformanceFrequency(out long lpFrequency);
-
-            private long startTime, stopTime, freq;
-
-            public double Duration { get { return (double)(stopTime - startTime) / (double)freq; } }
-
-            // Constructor
-            public HiPerfTimer()
-            {
-                startTime = 0;
-                stopTime = 0;
-
-                if (QueryPerformanceFrequency(out freq) == false)
-                    Debug.WriteLine("HiPerfTimer::NotSupported");
-            }
-
-            // Start the timer
-            public long Start()
-            {
-                QueryPerformanceCounter(out startTime);
-
-                return startTime;
-            }
-
-            // Stop the timer
-            public long Stop()
-            {
-                QueryPerformanceCounter(out stopTime);
-
-                return stopTime;
-            }
-
-            // ms
-            public double CurrentTime()
-            {
-                Stop();
-
-                return Duration * 1000.0;
-            }
-        }
-
-
-
         private FNUIMain _FNUIMain;
         private FNUIFlashPlayer _FNUIFlashPlayer;
 
-
         private Texture _Texture1, _Texture2;
         private int _Width = 0, _Height = 0;
-
 
         private float _FrameRate;
         private int _Frames;
 
         private int _BufferMode = 0;
-
-
 
         #region field declaration
 
@@ -128,13 +74,6 @@ namespace VVVV.Nodes
 
         private int FSpreadCount;
 
-
-
-        private HiPerfTimer _Timer = new HiPerfTimer();
-        private System.IO.StreamWriter swVVVV = new System.IO.StreamWriter(@"C:\logVVVV.txt");
-        private System.IO.StreamWriter swFant = new System.IO.StreamWriter(@"C:\logFant.txt");
-        private double _MarkVVVV, _CurrentVVVV, _MarkFant, _CurrentFant;
-
         private ITransformIn FTranformIn;
         private IStringIn FSWFPath;
         private IValueIn FLoadSWF;
@@ -144,7 +83,10 @@ namespace VVVV.Nodes
         private IEnumIn FBufferMode;
         private IValueIn FEnabledInput;
         private IValueIn FResetSiemensSWF;
+        private IValueIn FGoToFrame;
+        private IEnumIn FQuality;
 
+        private bool _DisposeAllowed = true;
 
         //a layer output pin
         private IDXLayerIO FLayerOutput;
@@ -161,12 +103,13 @@ namespace VVVV.Nodes
 
         public DrawFlash()
         {
-            //the nodes constructor
+            //the nodes constructorB
             PresentParameters tPresentParas = new PresentParameters();
             tPresentParas.SwapEffect = SwapEffect.Discard;
             tPresentParas.Windowed = true;
 
             _FNUIMain = new FNUIMain();
+            _FNUIMain.SetLicenseKey(617, "Meso", "2212289617");
             _FNUIMain.CreateUI("");
         }
 
@@ -197,7 +140,15 @@ namespace VVVV.Nodes
                 if (disposing)
                 {
                     // Dispose managed resources.
+                    int tTimer = 0;
 
+                    while (_DisposeAllowed == false && tTimer < 100)
+                    {
+                        System.Threading.Thread.Sleep(15);
+                        tTimer++;
+                    }
+
+                    _FNUIFlashPlayer.DisableFlashRendering(true);
                     _FNUIMain.DeleteFlashPlayer(_FNUIFlashPlayer);
                     _FNUIMain.Dispose();
 
@@ -206,12 +157,6 @@ namespace VVVV.Nodes
 
                     GC.Collect();
                     GC.SuppressFinalize(this);
-
-                    swVVVV.Flush();
-                    swVVVV.Close();
-
-                    swFant.Flush();
-                    swFant.Close();
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
@@ -306,8 +251,6 @@ namespace VVVV.Nodes
         //this method is called by vvvv when the node is created
         public void SetPluginHost(IPluginHost pHost)
         {
-            Debug.WriteLine("SetPluginHost");
-
             //assign host
             FHost = pHost;
 
@@ -324,9 +267,13 @@ namespace VVVV.Nodes
             FHost.CreateValueInput("Mouse Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMouseY);
             FHost.CreateValueInput("Mouse Left Button", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMouseLeftButton);
 
-            FHost.UpdateEnum("Buffer Mode", "Single Buffering", new string[] { "Single Buffering", "Double Buffering" });
+            FHost.UpdateEnum("Buffer Mode", "Single", new string[] { "Single", "Double" });
             FHost.CreateEnumInput("Buffer Mode", TSliceMode.Dynamic, TPinVisibility.True, out FBufferMode);
             FBufferMode.SetSubType("Buffer Mode");
+
+            FHost.UpdateEnum("Quality", "Best", new string[] { "Low", "Medium", "High", "Best" });
+            FHost.CreateEnumInput("Quality", TSliceMode.Dynamic, TPinVisibility.True, out FQuality);
+            FQuality.SetSubType("Quality");
 
 
             FHost.CreateValueInput("Enabled", 1, null, TSliceMode.Single, TPinVisibility.True, out FEnabledInput);
@@ -336,6 +283,8 @@ namespace VVVV.Nodes
             FHost.CreateValueInput("Reset", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResetSiemensSWF);
             FResetSiemensSWF.SetSubType(0, 1, 1, 0, true, false, false);
 
+            FHost.CreateValueInput("GoToFrame", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FGoToFrame);
+            FGoToFrame.SetSubType(0, Int32.MaxValue, 1, 0, false, false, true);
 
 
             //create outputs
@@ -354,6 +303,24 @@ namespace VVVV.Nodes
             //nothing to configure in this plugin
             //only used in conjunction with inputs of type cmpdConfigurate
         }
+
+        private void GoToFrame(int pOnDevice)
+        {
+            double tFrame;
+            FGoToFrame.GetValue(pOnDevice, out tFrame);
+
+            _FNUIFlashPlayer.GotoFrame((int)Math.Floor(tFrame));
+
+        }
+
+        private void SetQuality(int pOnDevice)
+        {
+            string tQuality = "";
+            FQuality.GetString(pOnDevice, out tQuality);
+
+            _FNUIFlashPlayer.SetQualityString(tQuality);
+        }
+
 
         //here we go, thats the method called by vvvv each frame
         //all data handling should be in here
@@ -385,6 +352,15 @@ namespace VVVV.Nodes
                     }
                 }
                 // ********************************************************
+
+
+                if (FGoToFrame.PinIsChanged)
+                    GoToFrame(0);
+
+                if (FQuality.PinIsChanged)
+                    SetQuality(0);
+
+
 
 
 
@@ -424,7 +400,6 @@ namespace VVVV.Nodes
                     else
                         _FNUIFlashPlayer.UpdateMouseButton(0, false);
                 }
-
             }
             catch
             {
@@ -442,7 +417,18 @@ namespace VVVV.Nodes
         private void LoadSWF(int pOnDevice)
         {
             if (_FNUIFlashPlayer != null)
+            {
+                int tTimer = 0;
+
+                while (_DisposeAllowed == false && tTimer < 100)
+                {
+                    System.Threading.Thread.Sleep(15);
+                    tTimer++;
+                }
+
+                _FNUIFlashPlayer.DisableFlashRendering(true);
                 _FNUIMain.DeleteFlashPlayer(_FNUIFlashPlayer);
+            }
 
             _FNUIFlashPlayer = _FNUIMain.CreateFlashPlayer();
             _FNUIFlashPlayer.SetDelegates(ResizeTexture, LockRectangle, UnlockRectangle, AddDirtyRectangle);
@@ -475,11 +461,9 @@ namespace VVVV.Nodes
 
             try
             {
-                _FNUIFlashPlayer.CreateFlashControl(0, _Width, _Height, (IntPtr)0, (IntPtr)_BufferMode, false);
+                _FNUIFlashPlayer.CreateFlashControl(0, _Width, _Height, (IntPtr)0, (IntPtr)_BufferMode, false, false);
                 FHost.Log(TLogType.Debug, "Switch To " + (_BufferMode == 0 ? "Single" : "Double") + " Buffering");
                 _FNUIFlashPlayer.LoadMovie(tPath);
-                
-                Debug.WriteLine(_Timer.Start());
             }
             catch (Exception ex)
             {
@@ -512,6 +496,7 @@ namespace VVVV.Nodes
                 if (FLoadSWF.PinIsChanged)
                 {
                     double tIsOne = 0;
+
                     FLoadSWF.GetValue(OnDevice, out tIsOne);
 
                     if (tIsOne == 1.0)
@@ -529,11 +514,11 @@ namespace VVVV.Nodes
 
                     switch (tBufferMode)
                     {
-                        case "Single Buffering":
+                        case "Single":
                             _BufferMode = 0;
                             break;
 
-                        case "Double Buffering":
+                        case "Double":
                             _BufferMode = 1;
                             break;
                     }
@@ -568,6 +553,8 @@ namespace VVVV.Nodes
 
                 LoadSWF(OnDevice);
 
+                SetQuality(OnDevice);
+
                 _NeedsUpdate = false;
             }
         }
@@ -600,26 +587,18 @@ namespace VVVV.Nodes
                 Device tDevice = Device.FromPointer(new IntPtr(DXDevice.DevicePointer()));
                 tDevice.SetTransform(TransformState.World, Matrix.Identity);
 
-                int pointer = DXDevice.DevicePointer();
-                Sprite tSprite = FSprites[pointer];
+                Sprite tSprite = FSprites[DXDevice.DevicePointer()];
                 FTranformIn.SetRenderSpace();
 
 
                 tSprite.Begin(SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace | SpriteFlags.AlphaBlend);
 
-                Matrix4x4 tTranformMatrix;
+                Matrix4x4 tTransformMatrix;
 
                 for (int i = 0; i < FSpreadCount; i++)
                 {
-                    FTranformIn.GetRenderWorldMatrix(i, out tTranformMatrix);
-                    tSprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(VMath.Scale(1.0 / _Width, -1.0 / _Height, 1) * tTranformMatrix);
-
-
-
-
-                    //_MarkVVVV = _Timer.CurrentTime();
-
-                    
+                    FTranformIn.GetRenderWorldMatrix(i, out tTransformMatrix);
+                    tSprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(VMath.Scale(1.0 / _Width, -1.0 / _Height, 1) * tTransformMatrix);
 
                     int t = _FNUIFlashPlayer.GetTexture().ToInt32();
 
@@ -636,17 +615,6 @@ namespace VVVV.Nodes
 
                     _FNUIFlashPlayer.ReleaseTexture();
 
-
-
-                    //_CurrentVVVV = _Timer.CurrentTime();
-                    //swVVVV.WriteLine(_CurrentVVVV + "\t" + (_CurrentVVVV - _MarkVVVV));
-
-
-
-
-
-                
-                
                 }
 
                 tSprite.End();
@@ -680,11 +648,8 @@ namespace VVVV.Nodes
         /// </summary>
         public IntPtr LockRectangle(IntPtr pTexture)
         {
-            //Debug.WriteLine("Lock");
-                
-            _MarkFant = _Timer.CurrentTime();
-            
-            
+            _DisposeAllowed = false;
+
             DataRectangle tStream;
 
             //lock the texture, and return the surface pointer
@@ -703,17 +668,14 @@ namespace VVVV.Nodes
         /// </summary>
         public void AddDirtyRectangle(IntPtr pTexture, Int32 pX, Int32 pY, Int32 pX1, Int32 pY1)
         {
-            //Debug.WriteLine("Dirty");
-            //Debug.WriteLine(String.Format("{0}, {1}, {2}, {3}", pX, pY, pX1 - pX, pY1 - pY));
-
             System.Drawing.Rectangle tRectangle = new System.Drawing.Rectangle(pX, pY, pX1 - pX, pY1 - pY);
-            //System.Drawing.Rectangle tRectangle = new System.Drawing.Rectangle(0, 200, 550, 100);
 
             //set the rectangle to dirty
             if ((Int32)pTexture == 0)
                 _Texture1.AddDirtyRectangle(tRectangle);
             else
                 _Texture2.AddDirtyRectangle(tRectangle);
+
         }
 
         /// <summary>
@@ -722,22 +684,13 @@ namespace VVVV.Nodes
         /// </summary>
         public Int32 UnlockRectangle(IntPtr pTexture, IntPtr pPointer)
         {
-            //Debug.WriteLine("Unlock");
-            
             //unlock the texture and return
             if ((Int32)pTexture == 0)
                 _Texture1.UnlockRectangle(0);
             else
                 _Texture2.UnlockRectangle(0);
 
-
-
-            _CurrentFant = _Timer.CurrentTime();
-            swFant.WriteLine(_CurrentFant + "\t" + (_CurrentFant - _MarkFant));
-
-
-
-
+            _DisposeAllowed = true;
 
             return 0;
         }
