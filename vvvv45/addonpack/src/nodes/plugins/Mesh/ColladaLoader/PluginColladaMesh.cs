@@ -331,7 +331,11 @@ namespace VVVV.Nodes
 				{
 	        		selectedInstanceMeshes.Clear();
 	        		
-	        		FUpstreamInterface.GetSlice(0, out FColladaModel);
+	        		if (FUpstreamInterface != null)
+	        			FUpstreamInterface.GetSlice(0, out FColladaModel);
+	        		else
+	        			FColladaModel = null;
+	        		
 	        		if (FColladaModel == null)
 	        		{
 	        			FMyMeshOutput.SliceCount = 0;
