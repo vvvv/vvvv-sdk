@@ -228,7 +228,7 @@ namespace VVVV.Nodes
                                 FDataOut.SetString(i, tPort.Read());
                             else
                             {
-                                if (Convert.ToBoolean(currentSliceEnabled) && Convert.ToBoolean(currentSliceKeepLastData))
+                                if (Convert.ToBoolean(currentSliceKeepLastData))
                                     FDataOut.SetString(i, tPort.Data);
                                 else
                                     FDataOut.SetString(i, "");
