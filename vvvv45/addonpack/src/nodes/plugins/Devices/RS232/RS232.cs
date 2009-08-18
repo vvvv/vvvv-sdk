@@ -13,8 +13,11 @@ namespace VVVV.Nodes
     public class RS232 : IDisposable, IPlugin
     {
         // PLUGIN HOST
-        ///////////////////////
         private IPluginHost FHost;
+
+        // Disposed Flag
+        private bool FDisposed = false;
+
 
         //Input Pins
         private IStringIn FDataIn;
@@ -51,13 +54,27 @@ namespace VVVV.Nodes
             _AvailablePorts = tPorts.ToArray();
         }
 
-
-
         public void Dispose()
         {
-            // close ComPorts
-            foreach (Port tPort in _Ports)
-                tPort.Dispose();
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!FDisposed)
+            {
+                if (disposing)
+                {
+                    // close ComPorts
+                    foreach (Port tPort in _Ports)
+                        tPort.Dispose();
+                }
+
+                FHost.Log(TLogType.Debug, "ScreenInfo is being deleted");
+            }
+            FDisposed = true;
         }
 
 
