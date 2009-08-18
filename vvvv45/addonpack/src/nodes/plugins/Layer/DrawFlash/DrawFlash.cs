@@ -109,7 +109,7 @@ namespace VVVV.Nodes
             tPresentParas.Windowed = true;
 
             _FNUIMain = new FNUIMain();
-            _FNUIMain.SetLicenseKey(617, "Meso", "2212289617");
+            _FNUIMain.SetLicenseKey(0, "Meso", "4139876481");
             _FNUIMain.CreateUI("");
         }
 
