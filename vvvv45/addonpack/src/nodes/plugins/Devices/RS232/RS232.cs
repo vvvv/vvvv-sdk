@@ -38,6 +38,20 @@ namespace VVVV.Nodes
 
         private List<Port> _Ports = new List<Port>();
 
+        private string[] _AvailablePorts;
+
+
+
+        public RS232()
+        {
+            List<string> tPorts = new List<string>(SerialPort.GetPortNames());
+
+            tPorts.Sort();
+
+            _AvailablePorts = tPorts.ToArray();
+        }
+
+
 
         public void Dispose()
         {
@@ -125,6 +139,7 @@ namespace VVVV.Nodes
             FConnectedOut.SetSubType(0, 1, 1, 0, false, false, true);
             FHost.CreateValueOutput("Available Ports", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPortsOut);
             FPortsOut.SetSubType(1, 15, 1, 1, false, false, true);
+            FPortsOut.SliceCount = _AvailablePorts.Length;
         }
 
         public void Configurate(IPluginConfig pInput)
@@ -143,12 +158,9 @@ namespace VVVV.Nodes
                 FDataOut.SliceCount = SpreadMax;
                 FOnDataOut.SliceCount = SpreadMax;
                 FConnectedOut.SliceCount = SpreadMax;
-
-                string[] tAvailablePorts = SerialPort.GetPortNames();
-                FPortsOut.SliceCount = tAvailablePorts.Length;
-
-                for (int i = 0; i < tAvailablePorts.Length; i++)
-                    FPortsOut.SetValue(i, Convert.ToDouble(tAvailablePorts[i].Substring(3)));
+                                
+                for (int i = 0; i < _AvailablePorts.Length; i++)
+                    FPortsOut.SetValue(i, Convert.ToDouble(_AvailablePorts[i].Substring(3)));
 
 
 
@@ -298,8 +310,8 @@ namespace VVVV.Nodes
         {
             _Port = new SerialPort("COM" + (pNumber).ToString(), pBaudrate, GetParity(pParity), pDataBits, GetStopbits(pStopBits));
             _Port.Encoding = System.Text.Encoding.Default;
-            _Port.ReadTimeout = 1000;
-            _Port.WriteTimeout = 1000;
+            _Port.ReadTimeout = 500;
+            _Port.WriteTimeout = 500;
 
             _Port.Open();
         }
@@ -314,8 +326,15 @@ namespace VVVV.Nodes
 
         public void Write(string tData)
         {
-            if (_Port.IsOpen)
+            if (!_Port.IsOpen)
+                return;
+
+            try
+            {
                 _Port.Write(tData);
+            }
+            catch (TimeoutException)
+            { }
         }
 
         public string Read()
