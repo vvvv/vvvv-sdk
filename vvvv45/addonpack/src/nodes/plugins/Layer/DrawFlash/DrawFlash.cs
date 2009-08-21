@@ -87,6 +87,7 @@ namespace VVVV.Nodes
         private IEnumIn FQuality;
 
         private bool _DisposeAllowed = true;
+        private bool _AddDirtyAllowed = true;
 
         //a layer output pin
         private IDXLayerIO FLayerOutput;
@@ -139,17 +140,30 @@ namespace VVVV.Nodes
             {
                 if (disposing)
                 {
-                    // Dispose managed resources.
-                    int tTimer = 0;
+                    //Debug.WriteLine("Dispose");
 
-                    while (_DisposeAllowed == false && tTimer < 100)
+                    if (_FNUIFlashPlayer != null)
                     {
-                        System.Threading.Thread.Sleep(15);
-                        tTimer++;
+                        //Debug.WriteLine("Remove Player");
+
+                        int tTimer = 0;
+
+                        while (_DisposeAllowed == false && tTimer < Int32.MaxValue)
+                            tTimer++;
+
+                        //Debug.WriteLine("Timer :: " + tTimer);
+
+
+                        //Debug.WriteLine("Remove Player :: DisableFlashRendering");
+                        _FNUIFlashPlayer.DisableFlashRendering(true);
+
+                        _FNUIFlashPlayer.SetDelegates(null, null, null, null);
+                        _FNUIFlashPlayer.SetEventNotifier(null);
+
+                        //Debug.WriteLine("Remove Player :: DeleteFlashPlayer");
+                        _FNUIMain.DeleteFlashPlayer(_FNUIFlashPlayer);
                     }
 
-                    _FNUIFlashPlayer.DisableFlashRendering(true);
-                    _FNUIMain.DeleteFlashPlayer(_FNUIFlashPlayer);
                     _FNUIMain.Dispose();
 
                     _FNUIFlashPlayer = null;
@@ -306,6 +320,8 @@ namespace VVVV.Nodes
 
         private void GoToFrame(int pOnDevice)
         {
+            //Debug.WriteLine("GoToFrame");
+
             double tFrame;
             FGoToFrame.GetValue(pOnDevice, out tFrame);
 
@@ -315,6 +331,8 @@ namespace VVVV.Nodes
 
         private void SetQuality(int pOnDevice)
         {
+            //Debug.WriteLine("SetQuality");
+
             string tQuality = "";
             FQuality.GetString(pOnDevice, out tQuality);
 
@@ -363,42 +381,44 @@ namespace VVVV.Nodes
 
 
 
+                double tEnabled;
+                FEnabledInput.GetValue(0, out tEnabled);
 
-
-
-
-                Matrix4x4 world;
-
-                if (FMouseX.PinIsChanged || FMouseY.PinIsChanged)
+                if (tEnabled >= 0.5)
                 {
-                    double x, y;
+                    Matrix4x4 world;
 
-                    FMouseX.GetValue(0, out x);
-                    FMouseY.GetValue(0, out y);
+                    if (FMouseX.PinIsChanged || FMouseY.PinIsChanged)
+                    {
+                        double x, y;
 
-                    FTranformIn.GetRenderWorldMatrix(0, out world);
+                        FMouseX.GetValue(0, out x);
+                        FMouseY.GetValue(0, out y);
 
-                    // getting the transformed stage
-                    x = (x - world.m41) / world.m11;
-                    y = (y - world.m42) / world.m22;
+                        FTranformIn.GetRenderWorldMatrix(0, out world);
 
-                    // scale to swf coordinates
-                    x = (x + 0.5) * _Width / 1.0;
-                    y = (-1 * y + 0.5) * _Height / 1.0;
+                        // getting the transformed stage
+                        x = (x - world.m41) / world.m11;
+                        y = (y - world.m42) / world.m22;
 
-                    _FNUIFlashPlayer.UpdateMousePosition((int)x, (int)y);
-                }
+                        // scale to swf coordinates
+                        x = (x + 0.5) * _Width / 1.0;
+                        y = (-1 * y + 0.5) * _Height / 1.0;
 
-                if (FMouseLeftButton.PinIsChanged)
-                {
-                    double tLB;
+                        _FNUIFlashPlayer.UpdateMousePosition((int)x, (int)y);
+                    }
 
-                    FMouseLeftButton.GetValue(0, out tLB);
+                    if (FMouseLeftButton.PinIsChanged)
+                    {
+                        double tLB;
 
-                    if (tLB == 1.0)
-                        _FNUIFlashPlayer.UpdateMouseButton(0, true);
-                    else
-                        _FNUIFlashPlayer.UpdateMouseButton(0, false);
+                        FMouseLeftButton.GetValue(0, out tLB);
+
+                        if (tLB == 1.0)
+                            _FNUIFlashPlayer.UpdateMouseButton(0, true);
+                        else
+                            _FNUIFlashPlayer.UpdateMouseButton(0, false);
+                    }
                 }
             }
             catch
@@ -418,20 +438,34 @@ namespace VVVV.Nodes
         {
             if (_FNUIFlashPlayer != null)
             {
+                //Debug.WriteLine("Remove Player");
+
                 int tTimer = 0;
 
-                while (_DisposeAllowed == false && tTimer < 100)
-                {
-                    System.Threading.Thread.Sleep(15);
+                while (_DisposeAllowed == false && tTimer < Int32.MaxValue)
                     tTimer++;
-                }
 
+                //Debug.WriteLine("Timer :: " + tTimer);
+
+
+                //Debug.WriteLine("Remove Player :: DisableFlashRendering");
                 _FNUIFlashPlayer.DisableFlashRendering(true);
+
+                _FNUIFlashPlayer.SetDelegates(null, null, null, null);
+                _FNUIFlashPlayer.SetEventNotifier(null);
+
+                //Debug.WriteLine("Remove Player :: DeleteFlashPlayer");
                 _FNUIMain.DeleteFlashPlayer(_FNUIFlashPlayer);
             }
 
+            //Debug.WriteLine("Create Player");
+
+            //Debug.WriteLine("Create Player :: CreateFlashPlayer");
             _FNUIFlashPlayer = _FNUIMain.CreateFlashPlayer();
+
+            //Debug.WriteLine("Create Player :: SetDelegates");
             _FNUIFlashPlayer.SetDelegates(ResizeTexture, LockRectangle, UnlockRectangle, AddDirtyRectangle);
+            //Debug.WriteLine("Create Player :: SetEventNotifier");
             _FNUIFlashPlayer.SetEventNotifier(EventNotifier);
 
             string tPath = "";
@@ -439,17 +473,17 @@ namespace VVVV.Nodes
 
             if (System.IO.File.Exists(tPath) == false)
             {
-                System.Windows.Forms.MessageBox.Show("Invalid swf path: " + tPath);
+                //System.Windows.Forms.MessageBox.Show("Invalid swf path: " + tPath);
                 return;
             }
 
+            //Debug.WriteLine("Create Player :: LoadFlashHeader");
             _FNUIMain.LoadFlashHeader(tPath, ref _Width, ref _Height, ref _FrameRate, ref _Frames);
 
-            FHost.Log(TLogType.Debug, "swf Width: " + _Width);
-            FHost.Log(TLogType.Debug, "swf Height: " + _Height);
-            FHost.Log(TLogType.Debug, "swf Framerate: " + _FrameRate);
-            FHost.Log(TLogType.Debug, "swf Frames: " + _Frames);
-
+            //FHost.Log(TLogType.Debug, "swf Width: " + _Width);
+            //FHost.Log(TLogType.Debug, "swf Height: " + _Height);
+            //FHost.Log(TLogType.Debug, "swf Framerate: " + _FrameRate);
+            //FHost.Log(TLogType.Debug, "swf Frames: " + _Frames);
 
             FFrameRateOutput.SetValue(0, (double)_FrameRate);
 
@@ -461,8 +495,12 @@ namespace VVVV.Nodes
 
             try
             {
+                //Debug.WriteLine("Create Player :: CreateFlashControl");
                 _FNUIFlashPlayer.CreateFlashControl(0, _Width, _Height, (IntPtr)0, (IntPtr)_BufferMode, false, false);
-                FHost.Log(TLogType.Debug, "Switch To " + (_BufferMode == 0 ? "Single" : "Double") + " Buffering");
+
+                _FNUIFlashPlayer.DisableFlashRendering(true);
+
+                //Debug.WriteLine("Create Player :: LoadMovie");
                 _FNUIFlashPlayer.LoadMovie(tPath);
             }
             catch (Exception ex)
@@ -476,7 +514,7 @@ namespace VVVV.Nodes
 
         private void RemoveResource(int OnDevice)
         {
-            FHost.Log(TLogType.Debug, "Destroying Resource..." + OnDevice);
+            //Debug.WriteLine("RemoveResource");
 
             if (FSprites.ContainsKey(OnDevice) == false)
                 return;
@@ -501,14 +539,15 @@ namespace VVVV.Nodes
 
                     if (tIsOne == 1.0)
                     {
-                        RemoveResource(OnDevice);
-
+                        //Debug.WriteLine("FLoadSWF.PinIsChanged");
                         _NeedsUpdate = true;
                     }
                 }
 
                 if (FBufferMode.PinIsChanged)
                 {
+                    //Debug.WriteLine("FBufferMode.PinIsChanged");
+
                     string tBufferMode = "";
                     FBufferMode.GetString(OnDevice, out tBufferMode);
 
@@ -522,8 +561,6 @@ namespace VVVV.Nodes
                             _BufferMode = 1;
                             break;
                     }
-
-                    RemoveResource(OnDevice);
 
                     _NeedsUpdate = true;
                 }
@@ -541,7 +578,8 @@ namespace VVVV.Nodes
 
             if (_NeedsUpdate)
             {
-                FHost.Log(TLogType.Debug, "Creating Resource...");
+                RemoveResource(OnDevice);
+
                 Device tDevice = Device.FromPointer(new IntPtr(OnDevice));
 
                 Sprite tSprite = new Sprite(tDevice);
@@ -561,6 +599,7 @@ namespace VVVV.Nodes
 
         public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
         {
+            //Debug.WriteLine("DestroyResource");
             //Called by the PluginHost whenever a resource for a specific pin needs to be destroyed on a specific device. 
             //This is also called when the plugin is destroyed, so don't dispose dxresources in the plugins destructor/Dispose()
 
@@ -575,11 +614,19 @@ namespace VVVV.Nodes
             //This is called from the PluginHost from within DirectX BeginScene/EndScene,
             //therefore the plugin shouldn't be doing much here other than some drawing calls.
 
+            if (_FNUIFlashPlayer == null || FSprites.Count < 1)
+                return;
+
             double tEnabled;
             FEnabledInput.GetValue(0, out tEnabled);
 
-            if (tEnabled < 0.5 || _FNUIFlashPlayer == null || FSprites.Count < 1)
+            if (tEnabled < 0.5)
+            {
+                _FNUIFlashPlayer.DisableFlashRendering(true);
                 return;
+            }
+            else
+                _FNUIFlashPlayer.DisableFlashRendering(false);
 
 
             try
