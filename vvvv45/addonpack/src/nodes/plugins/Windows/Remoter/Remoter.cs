@@ -107,6 +107,8 @@ namespace VVVV.Nodes
 			FSettings = new XmlDocument();
 			
 			GroupFilterDropDown.SelectedIndex = 0;
+			
+			OnlineChecker.RunWorkerAsync();
 		}
 		
 		// Dispose(bool disposing) executes in two distinct scenarios.
@@ -274,7 +276,6 @@ namespace VVVV.Nodes
 			this.SimulatorConnectButton = new System.Windows.Forms.Button();
 			this.SimulatorTCPCheckBox = new System.Windows.Forms.RadioButton();
 			this.SimulatorUDPCheckBox = new System.Windows.Forms.RadioButton();
-			this.OnlineTimer = new System.Windows.Forms.Timer(this.components);
 			this.LeftPanel = new System.Windows.Forms.Panel();
 			this.LeftTabControl = new System.Windows.Forms.TabControl();
 			this.IPPage = new System.Windows.Forms.TabPage();
@@ -296,6 +297,7 @@ namespace VVVV.Nodes
 			this.InvertGroupSelectionButton = new System.Windows.Forms.Button();
 			this.SelectAllGroupsButton = new System.Windows.Forms.Button();
 			this.RemoveAllGroupsButton = new System.Windows.Forms.Button();
+			this.OnlineChecker = new System.ComponentModel.BackgroundWorker();
 			this.panel1.SuspendLayout();
 			this.Simulator.SuspendLayout();
 			this.CommandsPage.SuspendLayout();
@@ -1016,12 +1018,6 @@ namespace VVVV.Nodes
 			this.SimulatorUDPCheckBox.Text = "UDP";
 			this.SimulatorUDPCheckBox.UseVisualStyleBackColor = true;
 			// 
-			// OnlineTimer
-			// 
-			this.OnlineTimer.Enabled = true;
-			this.OnlineTimer.Interval = 500;
-			this.OnlineTimer.Tick += new System.EventHandler(this.OnlineTimerTick);
-			// 
 			// LeftPanel
 			// 
 			this.LeftPanel.AutoScroll = true;
@@ -1261,6 +1257,10 @@ namespace VVVV.Nodes
 			this.RemoveAllGroupsButton.UseVisualStyleBackColor = true;
 			this.RemoveAllGroupsButton.Click += new System.EventHandler(this.RemoveAllGroupsButtonClick);
 			// 
+			// OnlineChecker
+			// 
+			this.OnlineChecker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.OnlineCheckerDoWork);
+			// 
 			// Remoter
 			// 
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
@@ -1303,6 +1303,7 @@ namespace VVVV.Nodes
 			this.panel8.ResumeLayout(false);
 			this.ResumeLayout(false);
 		}
+		private System.ComponentModel.BackgroundWorker OnlineChecker;
 		
 		private System.Windows.Forms.Button InvertGroupSelectionButton;
 		private System.Windows.Forms.Button SelectAllGroupsButton;
@@ -1379,7 +1380,6 @@ namespace VVVV.Nodes
 		private System.Windows.Forms.GroupBox RemotingBox;
 		private System.Windows.Forms.Panel IPListPanel;
 		private System.Windows.Forms.Timer WatchTimer;
-		private System.Windows.Forms.Timer OnlineTimer;
 		private System.Windows.Forms.RadioButton WatchModeReboot;
 		private System.Windows.Forms.RadioButton WatchModeRestart;
 		private System.Windows.Forms.Panel panel2;
@@ -1482,6 +1482,583 @@ namespace VVVV.Nodes
 		}
 		
 		#endregion mainloop
+		
+		#region IPs
+		private void IPSelectButtonHandlerCB(UserControl Control)
+		{
+			NewIPEdit.Text = (Control as IPControl).IP;
+			UpdateIPListInput();
+		}
+		
+		private void IPXButtonHandlerCB(string IP)
+		{
+			for (int i=0; i<IPListPanel.Controls.Count; i++)
+			{
+				if ((IPListPanel.Controls[i] as IPControl).IP == IP)
+				{
+					IPListPanel.Controls.RemoveAt(i);
+					UpdateIPListInput();
+					return;
+				}
+			}
+		}
+		
+		private void VNCButtonHandlerCB(string IP)
+		{
+			string filename = FVNCPath + "\\vncviewer.exe";
+			if (System.IO.File.Exists(filename))
+				Execute(filename, FVNCPath, IP + " /password " + VNCPassword.Text, false);
+		}
+		
+		private void EXPButtonHandlerCB(string IP)
+		{
+			Execute("explorer.exe", "\\\\"+IP + TargetPath.Text, "\\\\"+IP + TargetPath.Text, false);
+		}
+		
+		private void AddIP(string IP, string MAC, bool Selected, string Groups)
+		{
+			IPAddress ipa;
+			if (!IPAddress.TryParse(IP, out ipa))
+			{
+				FHost.Log(TLogType.Error, "Not a valid IP address");
+				return;
+			}
+			
+			for (int i=0; i<IPListPanel.Controls.Count; i++)
+			{
+				if ((IPListPanel.Controls[i] as IPControl).IP == IP)
+					return;
+			}
+			
+			//add ip only if its not only there
+			IPControl ip = new IPControl(IP);
+			ip.MacAddress = MAC;
+			ip.IsSelected = Selected;
+			ip.Parent = IPListPanel;
+			ip.Dock = DockStyle.Top;
+			ip.BringToFront();
+			ip.OnVNCButton += new ButtonHandler(VNCButtonHandlerCB);
+			ip.OnEXPButton += new ButtonHandler(EXPButtonHandlerCB);
+			ip.OnXButton += new ButtonHandler(IPXButtonHandlerCB);
+			ip.OnIPSelectButton += new ButtonUpHandler(IPSelectButtonHandlerCB);
+			
+			ip.AddGroups(Groups);
+			
+			string[] groups;
+			char s = ';';
+			groups = Groups.Split(s);
+			
+			for (int i=0; i<groups.Length; i++)
+				if (groups[i] == "")
+				AddGroup(UNGROUPED, IP);
+			else
+				AddGroup(groups[i], IP);
+		}
+		
+		private void DoAddIP(string NewIP, string Group)
+		{
+			if (NewIP.Contains("-"))
+			{
+				int dotpos = NewIP.LastIndexOf('.');
+				int dashpos = NewIP.LastIndexOf('-');
+				string baseip = NewIP.Substring(0, dotpos+1);
+				string first = NewIP.Substring(dotpos+1, dashpos-dotpos-1);
+				string last = NewIP.Substring(dashpos+1);
+				
+				try
+				{
+					byte from = Convert.ToByte(first);
+					byte to = Convert.ToByte(last);
+					for (int i=from; i<=to; i++)
+					{
+						AddIP(baseip + i.ToString(), "", false, Group);
+					}
+				}
+				catch
+				{
+					FHost.Log(TLogType.Error, "Not a valid IP address");
+				}
+			}
+			else
+				AddIP(NewIP, "", false, Group);
+			
+			UpdateIPListInput();
+		}
+		
+		private void UpdateIPListInput()
+		{
+			FIPListInput.SliceCount = IPListPanel.Controls.Count;
+			int i=0;
+			foreach (IPControl ipc in IPListPanel.Controls)
+			{
+				FIPListInput.SetString(i, ipc.IP + "|" + ipc.MacAddress + "|" + ipc.IsSelected.ToString() + "|" + ipc.Groups);
+				i++;
+			}
+			
+			FOnlineOutput.SliceCount = IPListPanel.Controls.Count;
+			FAppIsOnlineOutput.SliceCount = IPListPanel.Controls.Count;
+		}
+		
+		void AddIPButtonClick(object sender, EventArgs e)
+		{
+			DoAddIP(NewIPEdit.Text.Trim(), "");
+		}
+		
+		void RemoveAllButtonClick(object sender, EventArgs e)
+		{
+			IPListPanel.Controls.Clear();
+			
+			UpdateIPListInput();
+		}
+		
+		void NewIPEditKeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (e.KeyChar == (char)13)
+				DoAddIP(NewIPEdit.Text.Trim(), "");
+		}
+		
+		void SelectAllButtonClick(object sender, EventArgs e)
+		{
+			if (IPListPanel.Controls.Count == 0)
+				return;
+			
+			bool selected = !(IPListPanel.Controls[0] as IPControl).IsSelected;
+			foreach(IPControl ipc in IPListPanel.Controls)
+				ipc.IsSelected = selected;
+			
+			UpdateIPListInput();
+		}
+		
+		void InvertSelectionButtonClick(object sender, EventArgs e)
+		{
+			foreach(IPControl ipc in IPListPanel.Controls)
+				ipc.IsSelected = !ipc.IsSelected;
+			
+			UpdateIPListInput();
+		}
+		#endregion IPs
+		
+		#region IPGroups
+		void AddGroupButtonClick(object sender, EventArgs e)
+		{
+			DoAddGroup();
+		}
+		
+		private void AddGroup(string Group, string IP)
+		{
+			for (int i=0; i<GroupListPanel.Controls.Count; i++)
+			{
+				if ((GroupListPanel.Controls[i] as GroupControl).GroupName == Group)
+				{
+					(GroupListPanel.Controls[i] as GroupControl).AddIP(IP);
+					return;
+				}
+			}
+			
+			//add group only if its not yet there
+			GroupControl gc = new GroupControl(Group);
+			gc.Height = 30;
+			gc.IsSelected = false;
+			gc.Parent = GroupListPanel;
+			gc.Dock = DockStyle.Top;
+			gc.BringToFront();
+			gc.OnXButton += new ButtonHandler(GroupXButtonHandlerCB);
+			gc.OnGroupSelectButton += new ButtonUpHandler(GroupSelectButtonHandlerCB);
+			gc.OnGroupChanged += new GroupChangedHandler(GroupChangedHandlerCB);
+			
+			gc.AddIP(IP);
+			GroupFilterDropDown.Items.Add(Group);
+		}
+		
+		private void DoAddGroup()
+		{
+			string newgroup = NewGroupEdit.Text.Trim();
+			
+			AddGroup(newgroup, "");
+		}
+		
+		void NewGroupEditKeyPress(object sender, KeyPressEventArgs e)
+		{
+			DoAddGroup();
+		}
+		
+		private void GroupSelectButtonHandlerCB(UserControl Control)
+		{
+			UpdateIPSelectionsFromGroups();
+		}
+		
+		private void UpdateIPSelectionsFromGroups()
+		{
+			foreach(IPControl ipc in IPListPanel.Controls)
+			{
+				ipc.IsSelected = false;
+				foreach(GroupControl gc in GroupListPanel.Controls)
+					if (gc.IsSelected)
+					ipc.IsSelected |= ipc.IsPartOfGroup(gc.GroupName);
+			}
+		}
+		
+		private void GroupChangedHandlerCB(GroupControl Group, string OldGroupName)
+		{
+			//the name may have changed
+			//ips may have been added/removed
+			
+			//remove the old groupname of all ips
+			//note: ips may be deleted at this stage, when they are only part of one group
+			foreach(IPControl ipc in IPListPanel.Controls)
+				ipc.RemoveGroup(OldGroupName);
+			
+			//since the groups name may have changed, remove the oldname and add the newname again
+			GroupFilterDropDown.Items.Remove(OldGroupName);
+			GroupFilterDropDown.Items.Add(Group.GroupName);
+			
+			//parse this groupcontrols ips add them
+			foreach(string s in Group.IPs)
+				DoAddIP(s, Group.GroupName);
+		}
+		
+		private void GroupXButtonHandlerCB(string Group)
+		{
+			RemoveGroup(Group);
+		}
+		
+		private void RemoveGroup(string Group)
+		{
+			if (Group == UNGROUPED)
+				return;
+			
+			//go through all ips and remove this group
+			//and delete ip if it was only in this group
+			for (int i=IPListPanel.Controls.Count-1; i>=0; i--)
+				(IPListPanel.Controls[i] as IPControl).RemoveGroup(Group);
+
+			//remove from filter dropdown
+			GroupFilterDropDown.Items.Remove(Group);
+			
+			//remove this groups control
+			for (int i=0; i<GroupListPanel.Controls.Count; i++)
+			{
+				if ((GroupListPanel.Controls[i] as GroupControl).GroupName == Group)
+				{
+					GroupListPanel.Controls.RemoveAt(i);
+					return;
+				}
+			}
+		}
+		
+		void GroupFilterDropDownSelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (GroupFilterDropDown.SelectedIndex == 0)
+				foreach(IPControl ipc in IPListPanel.Controls)
+				ipc.Visible = true;
+			else
+			{
+				foreach(IPControl ipc in IPListPanel.Controls)
+					ipc.Visible = ipc.IsPartOfGroup(GroupFilterDropDown.Items[GroupFilterDropDown.SelectedIndex].ToString());
+			}
+		}
+		
+		void LeftTabControlSelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (LeftTabControl.SelectedIndex == 1) //groups
+				foreach(IPControl ipc in IPListPanel.Controls)
+				ipc.IsSelected = false;
+		}
+		
+		void SelectAllGroupsButtonClick(object sender, EventArgs e)
+		{
+			if (GroupListPanel.Controls.Count == 0)
+				return;
+			
+			bool selected = !(GroupListPanel.Controls[0] as GroupControl).IsSelected;
+			
+			foreach(GroupControl gc in GroupListPanel.Controls)
+				gc.IsSelected = selected;
+			
+			UpdateIPSelectionsFromGroups();
+		}
+		
+		void InvertGroupSelectionButtonClick(object sender, EventArgs e)
+		{
+			foreach(GroupControl gc in GroupListPanel.Controls)
+				gc.IsSelected = !gc.IsSelected;
+			
+			UpdateIPSelectionsFromGroups();
+		}
+		
+		void RemoveAllGroupsButtonClick(object sender, EventArgs e)
+		{
+			for (int i=GroupListPanel.Controls.Count-1; i>=0; i--)
+				RemoveGroup((GroupListPanel.Controls[i] as GroupControl).GroupName);
+		}
+		#endregion IPGroups
+		
+		#region commands
+		private string ExecutePsToolCommand(TPsToolCommand Command, string Host)
+		{
+			if (PsToolsUsername.Text == "")
+				return "Username for remote PC is not specified. See Settings!";
+			if (PsToolsPassword.Text == "")
+				return "Password for remote PC is not specified. See Settings!";
+			if (FPsToolsPath == "")
+				return "Path to PsTools is not specified. See Settings!";
+			
+			string filename = FPsToolsPath + "\\";
+			string workingdir = "";
+			string arguments = "\\\\" + Host + " -u " + PsToolsUsername.Text + " -p " + PsToolsPassword.Text;
+			
+			switch (Command)
+			{
+				case TPsToolCommand.Execute:
+					{
+						filename += "psexec.exe";
+						arguments += " -s -i -d -low " + RemoteProcessPath.Text;
+						workingdir = System.IO.Path.GetDirectoryName(RemoteProcessPath.Text);
+						break;
+					}
+				case TPsToolCommand.Kill:
+					{
+						filename += "pskill.exe";
+						arguments += " " + System.IO.Path.GetFileNameWithoutExtension(RemoteProcessPath.Text);
+						break;
+					}
+				case TPsToolCommand.Watch:
+					{
+						filename += "pslist.exe";
+						arguments += " -m " + System.IO.Path.GetFileNameWithoutExtension(WatchProcessPath.Text);
+						break;
+					}
+				case TPsToolCommand.WatchExecute:
+					{
+						filename += "psexec.exe";
+						arguments += " -s -i -d -low " + WatchProcessPath.Text;
+						workingdir = System.IO.Path.GetDirectoryName(WatchProcessPath.Text);
+						break;
+					}
+				case TPsToolCommand.Reboot:
+					{
+						filename += "psshutdown.exe";
+						arguments += " -f -r -t 0";
+						break;
+					}
+				case TPsToolCommand.Shutdown:
+					{
+						filename += "psshutdown.exe";
+						arguments += " -f -s -t 0";
+						break;
+					}
+			}
+			
+			string result = "PsTool command failed!";
+			if (System.IO.File.Exists(filename))
+				result = Execute(filename, workingdir, arguments, true);
+			
+			return result;
+		}
+		
+		private string Execute(string Filename, string WorkingDir, string Arguments, bool RedirectStandardOutput)
+		{
+			Process proc = new Process();
+			proc.StartInfo.CreateNoWindow = true;
+			proc.StartInfo.RedirectStandardOutput = RedirectStandardOutput;
+			proc.StartInfo.UseShellExecute = false;
+			proc.EnableRaisingEvents = true;
+			proc.StartInfo.FileName = Filename;
+			proc.StartInfo.Arguments = Arguments;
+			proc.StartInfo.WorkingDirectory = WorkingDir;
+			
+			string result ="";
+			try
+			{
+				proc.Start();
+				
+				System.IO.StreamReader sOut;
+				
+				//this would block Remoter while a VNC viewer is running
+				if (RedirectStandardOutput)
+				{
+					sOut = proc.StandardOutput;
+					result = sOut.ReadToEnd();
+					sOut.Close();
+				}
+				
+				/*if (!proc.HasExited)
+				{
+					proc.Kill();
+				}*/
+				
+				proc.Close();
+				
+				FHost.Log(TLogType.Debug, result);
+			}
+			catch (Exception e)
+			{
+				FHost.Log(TLogType.Error, Filename + ": " + e.Message);
+			}
+			
+			return result;
+		}
+		
+		private void StartProcess()
+		{
+			//also tried to start process remotely via WMI
+			//but it turns out processes started like this cannot show their gui
+			//at least not without an additional hack:
+			//http://social.msdn.microsoft.com/Forums/en-US/Vsexpressvb/thread/9a5a7884-eeab-4784-bcba-05348719a55c/
+			//so for now stay with psexec.exe
+			foreach(IPControl ipc in IPListPanel.Controls)
+				if ((ipc.IsSelected) && (ipc.IsOnline))
+			{
+				/*object[] theProcessToRun = {"notepad.exe"};
+				ConnectionOptions theConnection = new ConnectionOptions();
+				theConnection.Username = PsToolsUsername.Text;
+				theConnection.Password = PsToolsPassword.Text;
+				ManagementScope theScope = new ManagementScope("\\\\" + ipc.IP + "\\root\\cimv2", theConnection);
+				ManagementClass theClass = new ManagementClass(theScope, new ManagementPath("Win32_Process"), new ObjectGetOptions());
+				theClass.InvokeMethod("Create", theProcessToRun);*/
+				FHost.Log(TLogType.Message, ExecutePsToolCommand(TPsToolCommand.Execute, ipc.IP));
+			}
+		}
+		
+		private void KillProcess()
+		{
+			foreach(IPControl ipc in IPListPanel.Controls)
+				if ((ipc.IsSelected) && (ipc.IsOnline))
+				ExecutePsToolCommand(TPsToolCommand.Kill, ipc.IP);
+		}
+		
+		void StartButtonClick(object sender, EventArgs e)
+		{
+			StartProcess();
+		}
+		
+		void RestartButtonClick(object sender, EventArgs e)
+		{
+			KillProcess();
+			StartProcess();
+		}
+		
+		void KillButtonClick(object sender, EventArgs e)
+		{
+			KillProcess();
+		}
+		
+		void RebootButtonClick(object sender, EventArgs e)
+		{
+			foreach(IPControl ipc in IPListPanel.Controls)
+				if ((ipc.IsSelected) && (ipc.IsOnline))
+				ExecutePsToolCommand(TPsToolCommand.Reboot, ipc.IP);
+		}
+		
+		void ShutdownButtonClick(object sender, EventArgs e)
+		{
+			foreach(IPControl ipc in IPListPanel.Controls)
+				if ((ipc.IsSelected) && (ipc.IsOnline))
+				ExecutePsToolCommand(TPsToolCommand.Shutdown, ipc.IP);
+		}
+		
+		void WatchTimerTick(object sender, EventArgs e)
+		{
+			if (WatchModeOff.Checked)
+				return;
+			
+			foreach(IPControl ipc in IPListPanel.Controls)
+				if ((ipc.IsSelected) && (ipc.IsOnline))
+			{
+				//if expect ping is on
+				
+				//else
+				//for local processes use: Process.Responding
+				if (ipc.IsLocalHost)
+				{
+					if (!ipc.LocalProcessIsResponding(WatchProcessPath.Text))
+					{
+						if (WatchModeRestart.Checked)
+							ExecutePsToolCommand(TPsToolCommand.WatchExecute, ipc.IP);
+						else if (WatchModeReboot.Checked)
+							ExecutePsToolCommand(TPsToolCommand.Reboot, ipc.IP);
+					}
+				}
+				//for remote processes use:
+				else
+				{
+					//this only detects processes that have vanished, not hanging ones.
+					string result = ExecutePsToolCommand(TPsToolCommand.Watch, ipc.IP);
+					if (result.Contains("process " + System.IO.Path.GetFileNameWithoutExtension(WatchProcessPath.Text) + " was not found"))
+					{
+						ipc.AppIsOnline = false;
+						
+						if (WatchModeRestart.Checked)
+							ExecutePsToolCommand(TPsToolCommand.WatchExecute, ipc.IP);
+						else if (WatchModeReboot.Checked)
+							ExecutePsToolCommand(TPsToolCommand.Reboot, ipc.IP);
+					}
+					else
+						ipc.AppIsOnline = true;
+				}
+			}
+		}
+		
+		void MirrorButtonClick(object sender, EventArgs e)
+		{
+			string arguments, ignorepattern = "";
+			
+			string[] ignores = IgnorePattern.Text.Split(';');
+			for (int i=0; i<ignores.Length; i++)
+				ignorepattern += " -if=" + ignores[i].Trim();
+			
+			foreach(IPControl ipc in IPListPanel.Controls)
+				if ((ipc.IsSelected) && (ipc.IsOnline))
+			{
+				arguments = SourcePath.Text + " \\\\" + ipc.IP + TargetPath.Text + ignorepattern;
+				Execute(FMirrorPath + "\\mirror.exe", FMirrorPath, arguments, true);
+			}
+		}
+		
+		void WakeOnLanButtonClick(object sender, EventArgs e)
+		{
+			foreach(IPControl ipc in IPListPanel.Controls)
+				if (ipc.IsSelected)
+			{
+				ipc.WakeOnLan();
+			}
+		}
+
+		void MACAddressButtonClick(object sender, EventArgs e)
+		{
+			foreach(IPControl ipc in IPListPanel.Controls)
+				ipc.UpdateMACAddress();
+			
+			UpdateIPListInput();
+		}
+		
+		void WatchModeClick(object sender, EventArgs e)
+		{
+			if (sender == WatchModeOff)
+			{
+				FWatchMode = TWatchMode.Off;
+				foreach(IPControl ipc in IPListPanel.Controls)
+					ipc.AppIsOnline = false;
+			}
+			else if (sender == WatchModeRestart)
+				FWatchMode = TWatchMode.Restart;
+			else if (sender == WatchModeReboot)
+				FWatchMode = TWatchMode.Reboot;
+			
+			SaveSettings();
+		}
+		
+		void OnlineCheckerDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+		{
+			while(true)
+			{	if (IPListPanel.Controls.Count > 0)
+				{
+					FOnlineCheckID = (FOnlineCheckID + 1) % IPListPanel.Controls.Count;
+					(IPListPanel.Controls[FOnlineCheckID] as IPControl).UpdateOnlineState();
+				}
+			}
+		}
+		#endregion commands
 		
 		#region settings
 		void PsToolsPathButtonClick(object sender, EventArgs e)
@@ -1587,10 +2164,10 @@ namespace VVVV.Nodes
 				tool = FSettings.SelectSingleNode(@"REMOTER/SIMULATOR");
 				attr = tool.Attributes.GetNamedItem("TargetIP") as XmlAttribute;
 				SimulatorIPEdit.Text = attr.Value;
-			
+				
 				attr = tool.Attributes.GetNamedItem("TargetPort") as XmlAttribute;
 				SimulatorPortUpDown.Value = Convert.ToDecimal(attr.Value);
-			
+				
 				attr = tool.Attributes.GetNamedItem("Commands") as XmlAttribute;
 				char[] s = new char[1];
 				s[0] = ';';
@@ -1690,7 +2267,7 @@ namespace VVVV.Nodes
 			string commands = "";
 			for (int i=0; i<SimulatorListBox.Items.Count; i++)
 				commands += SimulatorListBox.Items[i] + ";";
-				
+			
 			char[] s = new char[1];
 			s[0] = ';';
 			commands = commands.TrimEnd(s);
@@ -1702,425 +2279,7 @@ namespace VVVV.Nodes
 		}
 		#endregion settings
 		
-		private string ExecutePsToolCommand(TPsToolCommand Command, string Host)
-		{
-			if (PsToolsUsername.Text == "")
-				return "Username for remote PC is not specified. See Settings!";
-			if (PsToolsPassword.Text == "")
-				return "Password for remote PC is not specified. See Settings!";
-			if (FPsToolsPath == "")
-				return "Path to PsTools is not specified. See Settings!";
-			 
-			string filename = FPsToolsPath + "\\";
-			string workingdir = "";
-			string arguments = "\\\\" + Host + " -u " + PsToolsUsername.Text + " -p " + PsToolsPassword.Text;
-			
-			switch (Command)
-			{
-				case TPsToolCommand.Execute:
-					{
-						filename += "psexec.exe";
-						arguments += " -s -i -d -low " + RemoteProcessPath.Text;
-						workingdir = System.IO.Path.GetDirectoryName(RemoteProcessPath.Text);
-						break;
-					}
-				case TPsToolCommand.Kill:
-					{
-						filename += "pskill.exe";
-						arguments += " " + System.IO.Path.GetFileNameWithoutExtension(RemoteProcessPath.Text);
-						break;
-					}
-				case TPsToolCommand.Watch:
-					{
-						filename += "pslist.exe";
-						arguments += " -m " + System.IO.Path.GetFileNameWithoutExtension(WatchProcessPath.Text);
-						break;
-					}
-				case TPsToolCommand.WatchExecute:
-					{
-						filename += "psexec.exe";
-						arguments += " -s -i -d -low " + WatchProcessPath.Text;
-						workingdir = System.IO.Path.GetDirectoryName(WatchProcessPath.Text);
-						break;
-					}
-				case TPsToolCommand.Reboot:
-					{
-						filename += "psshutdown.exe";
-						arguments += " -f -r -t 0";
-						break;
-					}
-				case TPsToolCommand.Shutdown:
-					{
-						filename += "psshutdown.exe";
-						arguments += " -f -s -t 0";
-						break;
-					}
-			}
-			
-			string result = "PsTool command failed!";
-			if (System.IO.File.Exists(filename))
-				result = Execute(filename, workingdir, arguments, true);
-			
-			return result;
-		}
-		
-		private string Execute(string Filename, string WorkingDir, string Arguments, bool RedirectStandardOutput)
-		{
-			Process proc = new Process();
-			proc.StartInfo.CreateNoWindow = true;
-			proc.StartInfo.RedirectStandardOutput = RedirectStandardOutput;
-			proc.StartInfo.UseShellExecute = false;
-			proc.EnableRaisingEvents = true;
-			proc.StartInfo.FileName = Filename;
-			proc.StartInfo.Arguments = Arguments;
-			proc.StartInfo.WorkingDirectory = WorkingDir;
-			
-			string result ="";
-			try
-			{
-				proc.Start();
-				
-				System.IO.StreamReader sOut;
-				
-				//this would block Remoter while a VNC viewer is running
-				if (RedirectStandardOutput)
-				{
-					sOut = proc.StandardOutput;
-					result = sOut.ReadToEnd();
-					sOut.Close();
-				}
-				
-				/*if (!proc.HasExited)
-				{
-					proc.Kill();
-				}*/
-				
-				proc.Close();
-				
-				FHost.Log(TLogType.Debug, result);
-			}
-			catch (Exception e)
-			{
-				FHost.Log(TLogType.Error, Filename + ": " + e.Message);
-			}
-			
-			return result;
-		}
-		
-		private void IPSelectButtonHandlerCB(UserControl Control)
-		{
-			NewIPEdit.Text = (Control as IPControl).IP;
-			UpdateIPListInput();
-		}
-		
-		private void IPXButtonHandlerCB(string IP)
-		{
-			for (int i=0; i<IPListPanel.Controls.Count; i++)
-			{
-				if ((IPListPanel.Controls[i] as IPControl).IP == IP)
-				{
-					IPListPanel.Controls.RemoveAt(i);
-					UpdateIPListInput();
-					return;
-				}
-			}
-		}
-		
-		private void VNCButtonHandlerCB(string IP)
-		{
-			string filename = FVNCPath + "\\vncviewer.exe";
-			if (System.IO.File.Exists(filename))
-				Execute(filename, FVNCPath, IP + " /password " + VNCPassword.Text, false);
-		}
-		
-		private void EXPButtonHandlerCB(string IP)
-		{
-			Execute("explorer.exe", "\\\\"+IP + TargetPath.Text, "\\\\"+IP + TargetPath.Text, false);
-		}
-		
-		private void StartProcess()
-		{
-			//also tried to start process remotely via WMI
-			//but it turns out processes started like this cannot show their gui
-			//at least not without an additional hack:
-			//http://social.msdn.microsoft.com/Forums/en-US/Vsexpressvb/thread/9a5a7884-eeab-4784-bcba-05348719a55c/
-			//so for now stay with psexec.exe
-			foreach(IPControl ipc in IPListPanel.Controls)
-				if ((ipc.IsSelected) && (ipc.IsOnline))
-			{
-				/*object[] theProcessToRun = {"notepad.exe"};
-				ConnectionOptions theConnection = new ConnectionOptions();
-				theConnection.Username = PsToolsUsername.Text;
-				theConnection.Password = PsToolsPassword.Text;
-				ManagementScope theScope = new ManagementScope("\\\\" + ipc.IP + "\\root\\cimv2", theConnection);
-				ManagementClass theClass = new ManagementClass(theScope, new ManagementPath("Win32_Process"), new ObjectGetOptions());
-				theClass.InvokeMethod("Create", theProcessToRun);*/
-				FHost.Log(TLogType.Message, ExecutePsToolCommand(TPsToolCommand.Execute, ipc.IP));
-			}
-		}
-		
-		private void KillProcess()
-		{
-			foreach(IPControl ipc in IPListPanel.Controls)
-				if ((ipc.IsSelected) && (ipc.IsOnline))
-				ExecutePsToolCommand(TPsToolCommand.Kill, ipc.IP);
-		}
-
-		private void AddIP(string IP, string MAC, bool Selected, string Groups)
-		{
-			IPAddress ipa;
-			if (!IPAddress.TryParse(IP, out ipa))
-			{
-				FHost.Log(TLogType.Error, "Not a valid IP address");
-				return;
-			}
-			
-			for (int i=0; i<IPListPanel.Controls.Count; i++)
-			{
-				if ((IPListPanel.Controls[i] as IPControl).IP == IP)
-					return;
-			}
-			
-			//add ip only if its not only there
-			IPControl ip = new IPControl(IP);
-			ip.MacAddress = MAC;
-			ip.IsSelected = Selected;
-			ip.Parent = IPListPanel;
-			ip.Dock = DockStyle.Top;
-			ip.BringToFront();
-			ip.OnVNCButton += new ButtonHandler(VNCButtonHandlerCB);
-			ip.OnEXPButton += new ButtonHandler(EXPButtonHandlerCB);
-			ip.OnXButton += new ButtonHandler(IPXButtonHandlerCB);
-			ip.OnIPSelectButton += new ButtonUpHandler(IPSelectButtonHandlerCB);
-			
-			ip.AddGroups(Groups);
-			
-			string[] groups;
-			char s = ';';
-			groups = Groups.Split(s);
-			
-			for (int i=0; i<groups.Length; i++)
-				if (groups[i] == "")
-				AddGroup(UNGROUPED, IP);
-			else
-				AddGroup(groups[i], IP);
-		}
-		
-		private void DoAddIP(string NewIP, string Group)
-		{
-			if (NewIP.Contains("-"))
-			{
-				int dotpos = NewIP.LastIndexOf('.');
-				int dashpos = NewIP.LastIndexOf('-');
-				string baseip = NewIP.Substring(0, dotpos+1);
-				string first = NewIP.Substring(dotpos+1, dashpos-dotpos-1);
-				string last = NewIP.Substring(dashpos+1);
-				
-				try
-				{
-					byte from = Convert.ToByte(first);
-					byte to = Convert.ToByte(last);
-					for (int i=from; i<=to; i++)
-					{
-						AddIP(baseip + i.ToString(), "", false, Group);
-					}
-				}
-				catch
-				{
-					FHost.Log(TLogType.Error, "Not a valid IP address");
-				}
-			}
-			else
-				AddIP(NewIP, "", false, Group);
-			
-			UpdateIPListInput();
-		}
-		
-		private void UpdateIPListInput()
-		{
-			FIPListInput.SliceCount = IPListPanel.Controls.Count;
-			int i=0;
-			foreach (IPControl ipc in IPListPanel.Controls)
-			{
-				FIPListInput.SetString(i, ipc.IP + "|" + ipc.MacAddress + "|" + ipc.IsSelected.ToString() + "|" + ipc.Groups);
-				i++;
-			}
-			
-			FOnlineOutput.SliceCount = IPListPanel.Controls.Count;
-			FAppIsOnlineOutput.SliceCount = IPListPanel.Controls.Count;
-		}
-		
-		//ip list
-		void AddIPButtonClick(object sender, EventArgs e)
-		{
-			DoAddIP(NewIPEdit.Text.Trim(), UNGROUPED);
-		}
-		
-		void RemoveAllButtonClick(object sender, EventArgs e)
-		{
-			IPListPanel.Controls.Clear();
-			
-			UpdateIPListInput();
-		}
-		
-		void NewIPEditKeyPress(object sender, KeyPressEventArgs e)
-		{
-			if (e.KeyChar == (char)13)
-				DoAddIP(NewIPEdit.Text.Trim(), UNGROUPED);
-		}
-		
-		void SelectAllButtonClick(object sender, EventArgs e)
-		{
-			if (IPListPanel.Controls.Count == 0)
-				return;
-			
-			bool selected = !(IPListPanel.Controls[0] as IPControl).IsSelected;
-			foreach(IPControl ipc in IPListPanel.Controls)
-				ipc.IsSelected = selected;
-						
-			UpdateIPListInput();
-		}
-		
-		void InvertSelectionButtonClick(object sender, EventArgs e)
-		{
-			foreach(IPControl ipc in IPListPanel.Controls)
-				ipc.IsSelected = !ipc.IsSelected;
-			
-			UpdateIPListInput();
-		}
-		
-		//commands
-		void StartButtonClick(object sender, EventArgs e)
-		{
-			StartProcess();
-		}
-		
-		void RestartButtonClick(object sender, EventArgs e)
-		{
-			KillProcess();
-			StartProcess();
-		}
-		
-		void KillButtonClick(object sender, EventArgs e)
-		{
-			KillProcess();
-		}
-		
-		void RebootButtonClick(object sender, EventArgs e)
-		{
-			foreach(IPControl ipc in IPListPanel.Controls)
-				if ((ipc.IsSelected) && (ipc.IsOnline))
-				ExecutePsToolCommand(TPsToolCommand.Reboot, ipc.IP);
-		}
-		
-		void ShutdownButtonClick(object sender, EventArgs e)
-		{
-			foreach(IPControl ipc in IPListPanel.Controls)
-				if ((ipc.IsSelected) && (ipc.IsOnline))
-				ExecutePsToolCommand(TPsToolCommand.Shutdown, ipc.IP);
-		}
-		
-		void OnlineTimerTick(object sender, EventArgs e)
-		{
-			if (IPListPanel.Controls.Count > 0)
-			{
-				FOnlineCheckID = (FOnlineCheckID + 1) % IPListPanel.Controls.Count;
-				(IPListPanel.Controls[FOnlineCheckID] as IPControl).UpdateOnlineState();
-			}
-		}
-		
-		void WatchTimerTick(object sender, EventArgs e)
-		{
-			if (WatchModeOff.Checked)
-				return;
-			
-			foreach(IPControl ipc in IPListPanel.Controls)
-				if ((ipc.IsSelected) && (ipc.IsOnline))
-			{
-				//if expect ping is on
-				
-				//else
-				//for local processes use: Process.Responding
-				if (ipc.IsLocalHost)
-				{
-					if (!ipc.LocalProcessIsResponding(WatchProcessPath.Text))
-					{
-						if (WatchModeRestart.Checked)
-							ExecutePsToolCommand(TPsToolCommand.WatchExecute, ipc.IP);
-						else if (WatchModeReboot.Checked)
-							ExecutePsToolCommand(TPsToolCommand.Reboot, ipc.IP);
-					}
-				}
-				//for remote processes use:
-				else
-				{
-					//this only detects processes that have vanished, not hanging ones.
-					string result = ExecutePsToolCommand(TPsToolCommand.Watch, ipc.IP);
-					if (result.Contains("process " + System.IO.Path.GetFileNameWithoutExtension(WatchProcessPath.Text) + " was not found"))
-					{
-						ipc.AppIsOnline = false;
-						
-						if (WatchModeRestart.Checked)
-							ExecutePsToolCommand(TPsToolCommand.WatchExecute, ipc.IP);
-						else if (WatchModeReboot.Checked)
-							ExecutePsToolCommand(TPsToolCommand.Reboot, ipc.IP);
-					}
-					else
-						ipc.AppIsOnline = true;
-				}
-			}
-		}
-		
-		void MirrorButtonClick(object sender, EventArgs e)
-		{
-			string arguments, ignorepattern = "";
-			
-			string[] ignores = IgnorePattern.Text.Split(';');
-			for (int i=0; i<ignores.Length; i++)
-				ignorepattern += " -if=" + ignores[i].Trim();
-			
-			foreach(IPControl ipc in IPListPanel.Controls)
-				if ((ipc.IsSelected) && (ipc.IsOnline))
-			{
-				arguments = SourcePath.Text + " \\\\" + ipc.IP + TargetPath.Text + ignorepattern;
-				Execute(FMirrorPath + "\\mirror.exe", FMirrorPath, arguments, true);
-			}
-		}
-		
-		void WakeOnLanButtonClick(object sender, EventArgs e)
-		{
-			foreach(IPControl ipc in IPListPanel.Controls)
-				if (ipc.IsSelected)
-			{
-				ipc.WakeOnLan();
-			}
-		}
-
-		void MACAddressButtonClick(object sender, EventArgs e)
-		{
-			foreach(IPControl ipc in IPListPanel.Controls)
-				ipc.UpdateMACAddress();
-			
-			UpdateIPListInput();
-		}
-		
-		void WatchModeClick(object sender, EventArgs e)
-		{
-			if (sender == WatchModeOff)
-			{
-				FWatchMode = TWatchMode.Off;
-				foreach(IPControl ipc in IPListPanel.Controls)
-					ipc.AppIsOnline = false;
-			}
-			else if (sender == WatchModeRestart)
-				FWatchMode = TWatchMode.Restart;
-			else if (sender == WatchModeReboot)
-				FWatchMode = TWatchMode.Reboot;
-			
-			SaveSettings();
-		}
-		
-		//simulator
+		#region simulator
 		void SimulatorListBoxMouseUp(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
@@ -2140,7 +2299,7 @@ namespace VVVV.Nodes
 			}
 			else if (e.Button == MouseButtons.Right)
 				if (SimulatorListBox.SelectedIndex > -1)
-					SimulatorListBox.Items.RemoveAt(SimulatorListBox.SelectedIndex);
+				SimulatorListBox.Items.RemoveAt(SimulatorListBox.SelectedIndex);
 		}
 		
 		private void UpdateSimulatorConnection()
@@ -2197,161 +2356,11 @@ namespace VVVV.Nodes
 		void SimulatorStringEditKeyPress(object sender, KeyPressEventArgs e)
 		{
 			if (e.KeyChar == (char) 13)
-			    AddSimulatorString();
+				AddSimulatorString();
 		}
+		#endregion simulator
 		
-		void AddGroupButtonClick(object sender, EventArgs e)
-		{
-			DoAddGroup();
-		}
 		
-		private void AddGroup(string Group, string IP)
-		{
-			for (int i=0; i<GroupListPanel.Controls.Count; i++)
-			{
-				if ((GroupListPanel.Controls[i] as GroupControl).GroupName == Group)
-				{
-					(GroupListPanel.Controls[i] as GroupControl).AddIP(IP);
-					return;
-				}
-			}
-			
-			//add group only if its not yet there
-			GroupControl gc = new GroupControl(Group);
-			gc.Height = 30;
-			gc.IsSelected = false;
-			gc.Parent = GroupListPanel;
-			gc.Dock = DockStyle.Top;
-			gc.BringToFront();
-			gc.OnXButton += new ButtonHandler(GroupXButtonHandlerCB);
-			gc.OnGroupSelectButton += new ButtonUpHandler(GroupSelectButtonHandlerCB);
-			gc.OnGroupChanged += new GroupChangedHandler(GroupChangedHandlerCB);
-			
-			gc.AddIP(IP);
-			GroupFilterDropDown.Items.Add(Group);
-		}
-		
-		private void DoAddGroup()
-		{
-			string newgroup = NewGroupEdit.Text.Trim();
-			
-			AddGroup(newgroup, "");
-		}
-		
-		void NewGroupEditKeyPress(object sender, KeyPressEventArgs e)
-		{
-			DoAddGroup();
-		}
-		
-		private void GroupSelectButtonHandlerCB(UserControl Control)
-		{
-			UpdateIPSelectionsFromGroups();
-		}
-		
-		private void UpdateIPSelectionsFromGroups()
-		{
-			foreach(IPControl ipc in IPListPanel.Controls)
-			{
-				ipc.IsSelected = false;
-				foreach(GroupControl gc in GroupListPanel.Controls)
-					if (gc.IsSelected)
-						ipc.IsSelected |= ipc.IsPartOfGroup(gc.GroupName);
-			}
-		}
-		
-		private void GroupChangedHandlerCB(GroupControl Group, string OldGroupName)
-		{
-			//the name may have changed
-			//ips may have been added/removed
-			
-			//remove the old groupname of all ips
-			//note: ips may be deleted at this stage, when they are only part of one group
-			foreach(IPControl ipc in IPListPanel.Controls)
-				ipc.RemoveGroup(OldGroupName);
-						
-			//since the groups name may have changed, remove the oldname and add the newname again
-			GroupFilterDropDown.Items.Remove(OldGroupName);
-			GroupFilterDropDown.Items.Add(Group.GroupName);			
-			
-			//parse this groupcontrols ips add them
-			foreach(string s in Group.IPs)
-				DoAddIP(s, Group.GroupName);
-		}
-		
-		private void GroupXButtonHandlerCB(string Group)
-		{
-			RemoveGroup(Group);
-		}
-		
-		private void RemoveGroup(string Group)
-		{
-			if (Group == UNGROUPED)
-				return;
-			
-			//go through all ips and remove this group
-			//and delete ip if it was only in this group
-			for (int i=IPListPanel.Controls.Count-1; i>=0; i--)
-				(IPListPanel.Controls[i] as IPControl).RemoveGroup(Group);
-
-			//remove from filter dropdown
-			GroupFilterDropDown.Items.Remove(Group);
-			
-			//remove this groups control
-			for (int i=0; i<GroupListPanel.Controls.Count; i++)
-			{
-				if ((GroupListPanel.Controls[i] as GroupControl).GroupName == Group)
-				{
-					GroupListPanel.Controls.RemoveAt(i);
-					return;
-				}
-			}
-		}
-		
-		void GroupFilterDropDownSelectedIndexChanged(object sender, EventArgs e)
-		{
-			if (GroupFilterDropDown.SelectedIndex == 0)
-				foreach(IPControl ipc in IPListPanel.Controls)
-				ipc.Visible = true;
-			else
-			{
-				foreach(IPControl ipc in IPListPanel.Controls)
-					ipc.Visible = ipc.IsPartOfGroup(GroupFilterDropDown.Items[GroupFilterDropDown.SelectedIndex].ToString());
-			}
-		}
-		
-		void LeftTabControlSelectedIndexChanged(object sender, EventArgs e)
-		{
-			if (LeftTabControl.SelectedIndex == 1) //groups
-				foreach(IPControl ipc in IPListPanel.Controls)
-					ipc.IsSelected = false;
-		}
-		
-		void SelectAllGroupsButtonClick(object sender, EventArgs e)
-		{
-			if (GroupListPanel.Controls.Count == 0)
-				return;
-			
-			bool selected = !(GroupListPanel.Controls[0] as GroupControl).IsSelected;
-			
-			foreach(GroupControl gc in GroupListPanel.Controls)
-				gc.IsSelected = selected;
-			
-			UpdateIPSelectionsFromGroups();
-		}
-		
-		void InvertGroupSelectionButtonClick(object sender, EventArgs e)
-		{
-			foreach(GroupControl gc in GroupListPanel.Controls)
-				gc.IsSelected = !gc.IsSelected;
-			
-			UpdateIPSelectionsFromGroups();
-		}
-		
-		void RemoveAllGroupsButtonClick(object sender, EventArgs e)
-		{
-			for (int i=GroupListPanel.Controls.Count-1; i>=0; i--)
-				RemoveGroup((GroupListPanel.Controls[i] as GroupControl).GroupName);
-		}
 	}
 	
 	public delegate void ButtonHandler(string IP);

@@ -22,6 +22,7 @@ namespace VVVV.Nodes
 		public event ButtonHandler OnXButton;
 		public event ButtonUpHandler OnIPSelectButton;
 		
+		private DateTime FLastPingTime;
 		private byte[] FMACBytes = new byte[6];
 		private string FIP;
 		public string IP
@@ -265,6 +266,12 @@ namespace VVVV.Nodes
 		
 		public void UpdateOnlineState()
 		{
+			DateTime dt = DateTime.UtcNow;
+			if (dt.Subtract(FLastPingTime).Seconds < 5)
+				return;
+			
+			FLastPingTime = dt;
+			
 			Ping pingSender = new Ping();
 			PingOptions options = new PingOptions();
 
