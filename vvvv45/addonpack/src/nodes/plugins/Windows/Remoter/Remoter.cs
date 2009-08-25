@@ -33,6 +33,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Xml;
+using System.ComponentModel;
 
 
 using VVVV.PluginInterfaces.V1;
@@ -41,10 +42,10 @@ using VVVV.Utils.VMath;
 
 /*todos
  * do things in threads
+ * consistent log-messages
  * expect ping (for watchdog)
  * remoting of RemoterSA
  * log to disk
- * consistent log-messages
  * email notification of failures
  * allow processes to be started with processaffinity
  * show local ip(s)
@@ -85,14 +86,14 @@ namespace VVVV.Nodes
 		private string FVNCPath;
 		private string FMirrorPath;
 		private int FOnlineCheckID = 0;
+		private int FWatchCheckID = 0;
 		private bool FLoading = true;
+		private string FWatchLog = "";
 		
 		private System.Net.Sockets.TcpClient FTCPClient;
 		private System.Net.Sockets.NetworkStream FTCPStream;
 		
-		
 		private VVVV.Nodes.Remoter.TWatchMode FWatchMode = TWatchMode.Off;
-		
 		
 		private XmlDocument FSettings;
 		
@@ -108,7 +109,8 @@ namespace VVVV.Nodes
 			
 			GroupFilterDropDown.SelectedIndex = 0;
 			
-			OnlineChecker.RunWorkerAsync();
+			OnlineWorker.RunWorkerAsync();
+			WatchWorker.RunWorkerAsync();
 		}
 		
 		// Dispose(bool disposing) executes in two distinct scenarios.
@@ -212,9 +214,7 @@ namespace VVVV.Nodes
 		#region GUI
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
 			this.FFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-			this.WatchTimer = new System.Windows.Forms.Timer(this.components);
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.Simulator = new System.Windows.Forms.TabControl();
 			this.CommandsPage = new System.Windows.Forms.TabPage();
@@ -223,6 +223,7 @@ namespace VVVV.Nodes
 			this.WatchModeReboot = new System.Windows.Forms.RadioButton();
 			this.WatchModeRestart = new System.Windows.Forms.RadioButton();
 			this.WatchModeOff = new System.Windows.Forms.RadioButton();
+			this.label5 = new System.Windows.Forms.Label();
 			this.panel4 = new System.Windows.Forms.Panel();
 			this.MirrorButton = new System.Windows.Forms.Button();
 			this.panel3 = new System.Windows.Forms.Panel();
@@ -297,7 +298,8 @@ namespace VVVV.Nodes
 			this.InvertGroupSelectionButton = new System.Windows.Forms.Button();
 			this.SelectAllGroupsButton = new System.Windows.Forms.Button();
 			this.RemoveAllGroupsButton = new System.Windows.Forms.Button();
-			this.OnlineChecker = new System.ComponentModel.BackgroundWorker();
+			this.OnlineWorker = new System.ComponentModel.BackgroundWorker();
+			this.WatchWorker = new System.ComponentModel.BackgroundWorker();
 			this.panel1.SuspendLayout();
 			this.Simulator.SuspendLayout();
 			this.CommandsPage.SuspendLayout();
@@ -324,12 +326,6 @@ namespace VVVV.Nodes
 			this.panel8.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// WatchTimer
-			// 
-			this.WatchTimer.Enabled = true;
-			this.WatchTimer.Interval = 5000;
-			this.WatchTimer.Tick += new System.EventHandler(this.WatchTimerTick);
-			// 
 			// panel1
 			// 
 			this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
@@ -337,7 +333,7 @@ namespace VVVV.Nodes
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel1.Location = new System.Drawing.Point(245, 0);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(311, 378);
+			this.panel1.Size = new System.Drawing.Size(322, 378);
 			this.panel1.TabIndex = 20;
 			// 
 			// Simulator
@@ -350,7 +346,7 @@ namespace VVVV.Nodes
 			this.Simulator.Location = new System.Drawing.Point(0, 0);
 			this.Simulator.Name = "Simulator";
 			this.Simulator.SelectedIndex = 0;
-			this.Simulator.Size = new System.Drawing.Size(311, 378);
+			this.Simulator.Size = new System.Drawing.Size(322, 378);
 			this.Simulator.TabIndex = 0;
 			// 
 			// CommandsPage
@@ -374,7 +370,7 @@ namespace VVVV.Nodes
 			this.CommandsPage.Location = new System.Drawing.Point(4, 25);
 			this.CommandsPage.Name = "CommandsPage";
 			this.CommandsPage.Padding = new System.Windows.Forms.Padding(3);
-			this.CommandsPage.Size = new System.Drawing.Size(303, 349);
+			this.CommandsPage.Size = new System.Drawing.Size(314, 349);
 			this.CommandsPage.TabIndex = 1;
 			this.CommandsPage.Text = "Commands";
 			// 
@@ -383,7 +379,7 @@ namespace VVVV.Nodes
 			this.WatchProcessPath.Dock = System.Windows.Forms.DockStyle.Top;
 			this.WatchProcessPath.Location = new System.Drawing.Point(3, 283);
 			this.WatchProcessPath.Name = "WatchProcessPath";
-			this.WatchProcessPath.Size = new System.Drawing.Size(297, 20);
+			this.WatchProcessPath.Size = new System.Drawing.Size(308, 20);
 			this.WatchProcessPath.TabIndex = 33;
 			this.WatchProcessPath.Text = "notepad";
 			this.WatchProcessPath.TextChanged += new System.EventHandler(this.SettingsChanged);
@@ -393,21 +389,22 @@ namespace VVVV.Nodes
 			this.panel2.Controls.Add(this.WatchModeReboot);
 			this.panel2.Controls.Add(this.WatchModeRestart);
 			this.panel2.Controls.Add(this.WatchModeOff);
+			this.panel2.Controls.Add(this.label5);
 			this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel2.Location = new System.Drawing.Point(3, 258);
 			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(297, 25);
+			this.panel2.Size = new System.Drawing.Size(308, 25);
 			this.panel2.TabIndex = 46;
 			// 
 			// WatchModeReboot
 			// 
 			this.WatchModeReboot.Dock = System.Windows.Forms.DockStyle.Left;
 			this.WatchModeReboot.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.WatchModeReboot.Location = new System.Drawing.Point(155, 0);
+			this.WatchModeReboot.Location = new System.Drawing.Point(228, 0);
 			this.WatchModeReboot.Name = "WatchModeReboot";
 			this.WatchModeReboot.Size = new System.Drawing.Size(80, 25);
 			this.WatchModeReboot.TabIndex = 33;
-			this.WatchModeReboot.Text = "Reboot PC";
+			this.WatchModeReboot.Text = "reboot PC";
 			this.WatchModeReboot.UseVisualStyleBackColor = true;
 			this.WatchModeReboot.Click += new System.EventHandler(this.WatchModeClick);
 			// 
@@ -415,11 +412,11 @@ namespace VVVV.Nodes
 			// 
 			this.WatchModeRestart.Dock = System.Windows.Forms.DockStyle.Left;
 			this.WatchModeRestart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.WatchModeRestart.Location = new System.Drawing.Point(51, 0);
+			this.WatchModeRestart.Location = new System.Drawing.Point(168, 0);
 			this.WatchModeRestart.Name = "WatchModeRestart";
-			this.WatchModeRestart.Size = new System.Drawing.Size(104, 25);
+			this.WatchModeRestart.Size = new System.Drawing.Size(60, 25);
 			this.WatchModeRestart.TabIndex = 31;
-			this.WatchModeRestart.Text = "Restart Process";
+			this.WatchModeRestart.Text = "restart";
 			this.WatchModeRestart.UseVisualStyleBackColor = true;
 			this.WatchModeRestart.Click += new System.EventHandler(this.WatchModeClick);
 			// 
@@ -428,14 +425,24 @@ namespace VVVV.Nodes
 			this.WatchModeOff.Checked = true;
 			this.WatchModeOff.Dock = System.Windows.Forms.DockStyle.Left;
 			this.WatchModeOff.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.WatchModeOff.Location = new System.Drawing.Point(0, 0);
+			this.WatchModeOff.Location = new System.Drawing.Point(105, 0);
 			this.WatchModeOff.Name = "WatchModeOff";
-			this.WatchModeOff.Size = new System.Drawing.Size(51, 25);
+			this.WatchModeOff.Size = new System.Drawing.Size(63, 25);
 			this.WatchModeOff.TabIndex = 30;
 			this.WatchModeOff.TabStop = true;
-			this.WatchModeOff.Text = "OFF";
+			this.WatchModeOff.Text = "nothing";
 			this.WatchModeOff.UseVisualStyleBackColor = true;
 			this.WatchModeOff.Click += new System.EventHandler(this.WatchModeClick);
+			// 
+			// label5
+			// 
+			this.label5.Dock = System.Windows.Forms.DockStyle.Left;
+			this.label5.Location = new System.Drawing.Point(0, 0);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(105, 25);
+			this.label5.TabIndex = 41;
+			this.label5.Text = "on lost process do:";
+			this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// panel4
 			// 
@@ -443,7 +450,7 @@ namespace VVVV.Nodes
 			this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel4.Location = new System.Drawing.Point(3, 250);
 			this.panel4.Name = "panel4";
-			this.panel4.Size = new System.Drawing.Size(297, 8);
+			this.panel4.Size = new System.Drawing.Size(308, 8);
 			this.panel4.TabIndex = 48;
 			// 
 			// MirrorButton
@@ -452,7 +459,7 @@ namespace VVVV.Nodes
 			this.MirrorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.MirrorButton.Location = new System.Drawing.Point(3, 223);
 			this.MirrorButton.Name = "MirrorButton";
-			this.MirrorButton.Size = new System.Drawing.Size(297, 27);
+			this.MirrorButton.Size = new System.Drawing.Size(308, 27);
 			this.MirrorButton.TabIndex = 24;
 			this.MirrorButton.Text = "Mirror Now";
 			this.MirrorButton.UseVisualStyleBackColor = true;
@@ -464,7 +471,7 @@ namespace VVVV.Nodes
 			this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel3.Location = new System.Drawing.Point(3, 215);
 			this.panel3.Name = "panel3";
-			this.panel3.Size = new System.Drawing.Size(297, 8);
+			this.panel3.Size = new System.Drawing.Size(308, 8);
 			this.panel3.TabIndex = 47;
 			// 
 			// ShutdownButton
@@ -473,7 +480,7 @@ namespace VVVV.Nodes
 			this.ShutdownButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ShutdownButton.Location = new System.Drawing.Point(3, 188);
 			this.ShutdownButton.Name = "ShutdownButton";
-			this.ShutdownButton.Size = new System.Drawing.Size(297, 27);
+			this.ShutdownButton.Size = new System.Drawing.Size(308, 27);
 			this.ShutdownButton.TabIndex = 23;
 			this.ShutdownButton.Text = "Shutdown";
 			this.ShutdownButton.UseVisualStyleBackColor = true;
@@ -485,7 +492,7 @@ namespace VVVV.Nodes
 			this.RebootButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.RebootButton.Location = new System.Drawing.Point(3, 161);
 			this.RebootButton.Name = "RebootButton";
-			this.RebootButton.Size = new System.Drawing.Size(297, 27);
+			this.RebootButton.Size = new System.Drawing.Size(308, 27);
 			this.RebootButton.TabIndex = 22;
 			this.RebootButton.Text = "Reboot";
 			this.RebootButton.UseVisualStyleBackColor = true;
@@ -497,7 +504,7 @@ namespace VVVV.Nodes
 			this.WakeOnLanButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.WakeOnLanButton.Location = new System.Drawing.Point(3, 134);
 			this.WakeOnLanButton.Name = "WakeOnLanButton";
-			this.WakeOnLanButton.Size = new System.Drawing.Size(297, 27);
+			this.WakeOnLanButton.Size = new System.Drawing.Size(308, 27);
 			this.WakeOnLanButton.TabIndex = 21;
 			this.WakeOnLanButton.Text = "WakeOnLan";
 			this.WakeOnLanButton.UseVisualStyleBackColor = true;
@@ -509,7 +516,7 @@ namespace VVVV.Nodes
 			this.MACAddressButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.MACAddressButton.Location = new System.Drawing.Point(3, 112);
 			this.MACAddressButton.Name = "MACAddressButton";
-			this.MACAddressButton.Size = new System.Drawing.Size(297, 22);
+			this.MACAddressButton.Size = new System.Drawing.Size(308, 22);
 			this.MACAddressButton.TabIndex = 20;
 			this.MACAddressButton.Text = "Get a MAC";
 			this.MACAddressButton.UseVisualStyleBackColor = true;
@@ -531,7 +538,7 @@ namespace VVVV.Nodes
 			this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel5.Location = new System.Drawing.Point(3, 104);
 			this.panel5.Name = "panel5";
-			this.panel5.Size = new System.Drawing.Size(297, 8);
+			this.panel5.Size = new System.Drawing.Size(308, 8);
 			this.panel5.TabIndex = 48;
 			// 
 			// RemoteProcessPath
@@ -539,7 +546,7 @@ namespace VVVV.Nodes
 			this.RemoteProcessPath.Dock = System.Windows.Forms.DockStyle.Top;
 			this.RemoteProcessPath.Location = new System.Drawing.Point(3, 84);
 			this.RemoteProcessPath.Name = "RemoteProcessPath";
-			this.RemoteProcessPath.Size = new System.Drawing.Size(297, 20);
+			this.RemoteProcessPath.Size = new System.Drawing.Size(308, 20);
 			this.RemoteProcessPath.TabIndex = 13;
 			this.RemoteProcessPath.Text = "notepad.exe";
 			this.RemoteProcessPath.WordWrap = false;
@@ -551,7 +558,7 @@ namespace VVVV.Nodes
 			this.KillButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.KillButton.Location = new System.Drawing.Point(3, 57);
 			this.KillButton.Name = "KillButton";
-			this.KillButton.Size = new System.Drawing.Size(297, 27);
+			this.KillButton.Size = new System.Drawing.Size(308, 27);
 			this.KillButton.TabIndex = 12;
 			this.KillButton.Text = "Kill";
 			this.KillButton.UseVisualStyleBackColor = true;
@@ -564,7 +571,7 @@ namespace VVVV.Nodes
 			this.RestartButton.Location = new System.Drawing.Point(3, 30);
 			this.RestartButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
 			this.RestartButton.Name = "RestartButton";
-			this.RestartButton.Size = new System.Drawing.Size(297, 27);
+			this.RestartButton.Size = new System.Drawing.Size(308, 27);
 			this.RestartButton.TabIndex = 11;
 			this.RestartButton.Text = "Restart";
 			this.RestartButton.UseVisualStyleBackColor = true;
@@ -576,7 +583,7 @@ namespace VVVV.Nodes
 			this.StartButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.StartButton.Location = new System.Drawing.Point(3, 3);
 			this.StartButton.Name = "StartButton";
-			this.StartButton.Size = new System.Drawing.Size(297, 27);
+			this.StartButton.Size = new System.Drawing.Size(308, 27);
 			this.StartButton.TabIndex = 10;
 			this.StartButton.Text = "Start";
 			this.StartButton.UseVisualStyleBackColor = true;
@@ -593,7 +600,7 @@ namespace VVVV.Nodes
 			this.SettingsPage.Location = new System.Drawing.Point(4, 25);
 			this.SettingsPage.Name = "SettingsPage";
 			this.SettingsPage.Padding = new System.Windows.Forms.Padding(3);
-			this.SettingsPage.Size = new System.Drawing.Size(303, 349);
+			this.SettingsPage.Size = new System.Drawing.Size(314, 349);
 			this.SettingsPage.TabIndex = 0;
 			this.SettingsPage.Text = "Settings";
 			// 
@@ -605,7 +612,7 @@ namespace VVVV.Nodes
 			this.RemotingBox.Dock = System.Windows.Forms.DockStyle.Top;
 			this.RemotingBox.Location = new System.Drawing.Point(3, 297);
 			this.RemotingBox.Name = "RemotingBox";
-			this.RemotingBox.Size = new System.Drawing.Size(297, 50);
+			this.RemotingBox.Size = new System.Drawing.Size(308, 50);
 			this.RemotingBox.TabIndex = 3;
 			this.RemotingBox.TabStop = false;
 			this.RemotingBox.Text = "Remoting";
@@ -655,7 +662,7 @@ namespace VVVV.Nodes
 			this.MirrorBox.Dock = System.Windows.Forms.DockStyle.Top;
 			this.MirrorBox.Location = new System.Drawing.Point(3, 152);
 			this.MirrorBox.Name = "MirrorBox";
-			this.MirrorBox.Size = new System.Drawing.Size(297, 145);
+			this.MirrorBox.Size = new System.Drawing.Size(308, 145);
 			this.MirrorBox.TabIndex = 2;
 			this.MirrorBox.TabStop = false;
 			this.MirrorBox.Text = "Mirror";
@@ -665,7 +672,7 @@ namespace VVVV.Nodes
 			this.IgnorePattern.Dock = System.Windows.Forms.DockStyle.Top;
 			this.IgnorePattern.Location = new System.Drawing.Point(3, 123);
 			this.IgnorePattern.Name = "IgnorePattern";
-			this.IgnorePattern.Size = new System.Drawing.Size(291, 20);
+			this.IgnorePattern.Size = new System.Drawing.Size(302, 20);
 			this.IgnorePattern.TabIndex = 23;
 			this.IgnorePattern.Text = "*.v4p; *~.xml";
 			this.IgnorePattern.TextChanged += new System.EventHandler(this.SettingsChanged);
@@ -675,7 +682,7 @@ namespace VVVV.Nodes
 			this.label7.Dock = System.Windows.Forms.DockStyle.Top;
 			this.label7.Location = new System.Drawing.Point(3, 108);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(291, 15);
+			this.label7.Size = new System.Drawing.Size(302, 15);
 			this.label7.TabIndex = 54;
 			this.label7.Text = "Ignore Pattern";
 			// 
@@ -684,7 +691,7 @@ namespace VVVV.Nodes
 			this.TargetPath.Dock = System.Windows.Forms.DockStyle.Top;
 			this.TargetPath.Location = new System.Drawing.Point(3, 88);
 			this.TargetPath.Name = "TargetPath";
-			this.TargetPath.Size = new System.Drawing.Size(291, 20);
+			this.TargetPath.Size = new System.Drawing.Size(302, 20);
 			this.TargetPath.TabIndex = 22;
 			this.TargetPath.TextChanged += new System.EventHandler(this.SettingsChanged);
 			// 
@@ -693,7 +700,7 @@ namespace VVVV.Nodes
 			this.label6.Dock = System.Windows.Forms.DockStyle.Top;
 			this.label6.Location = new System.Drawing.Point(3, 73);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(291, 15);
+			this.label6.Size = new System.Drawing.Size(302, 15);
 			this.label6.TabIndex = 52;
 			this.label6.Text = "Target Path";
 			// 
@@ -702,7 +709,7 @@ namespace VVVV.Nodes
 			this.SourcePath.Dock = System.Windows.Forms.DockStyle.Top;
 			this.SourcePath.Location = new System.Drawing.Point(3, 53);
 			this.SourcePath.Name = "SourcePath";
-			this.SourcePath.Size = new System.Drawing.Size(291, 20);
+			this.SourcePath.Size = new System.Drawing.Size(302, 20);
 			this.SourcePath.TabIndex = 21;
 			this.SourcePath.TextChanged += new System.EventHandler(this.SettingsChanged);
 			// 
@@ -711,7 +718,7 @@ namespace VVVV.Nodes
 			this.label4.Dock = System.Windows.Forms.DockStyle.Top;
 			this.label4.Location = new System.Drawing.Point(3, 38);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(291, 15);
+			this.label4.Size = new System.Drawing.Size(302, 15);
 			this.label4.TabIndex = 50;
 			this.label4.Text = "Source Path";
 			// 
@@ -722,7 +729,7 @@ namespace VVVV.Nodes
 			this.MirrorPathPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.MirrorPathPanel.Location = new System.Drawing.Point(3, 16);
 			this.MirrorPathPanel.Name = "MirrorPathPanel";
-			this.MirrorPathPanel.Size = new System.Drawing.Size(291, 22);
+			this.MirrorPathPanel.Size = new System.Drawing.Size(302, 22);
 			this.MirrorPathPanel.TabIndex = 20;
 			// 
 			// MirrorPathLabel
@@ -730,7 +737,7 @@ namespace VVVV.Nodes
 			this.MirrorPathLabel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.MirrorPathLabel.Location = new System.Drawing.Point(43, 0);
 			this.MirrorPathLabel.Name = "MirrorPathLabel";
-			this.MirrorPathLabel.Size = new System.Drawing.Size(248, 22);
+			this.MirrorPathLabel.Size = new System.Drawing.Size(259, 22);
 			this.MirrorPathLabel.TabIndex = 48;
 			this.MirrorPathLabel.Text = "\\Mirror";
 			this.MirrorPathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -755,7 +762,7 @@ namespace VVVV.Nodes
 			this.VNCBox.Dock = System.Windows.Forms.DockStyle.Top;
 			this.VNCBox.Location = new System.Drawing.Point(3, 89);
 			this.VNCBox.Name = "VNCBox";
-			this.VNCBox.Size = new System.Drawing.Size(297, 63);
+			this.VNCBox.Size = new System.Drawing.Size(308, 63);
 			this.VNCBox.TabIndex = 1;
 			this.VNCBox.TabStop = false;
 			this.VNCBox.Text = "VNC";
@@ -767,7 +774,7 @@ namespace VVVV.Nodes
 			this.VNCPathPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.VNCPathPanel.Location = new System.Drawing.Point(3, 16);
 			this.VNCPathPanel.Name = "VNCPathPanel";
-			this.VNCPathPanel.Size = new System.Drawing.Size(291, 22);
+			this.VNCPathPanel.Size = new System.Drawing.Size(302, 22);
 			this.VNCPathPanel.TabIndex = 10;
 			// 
 			// VNCPathLabel
@@ -775,7 +782,7 @@ namespace VVVV.Nodes
 			this.VNCPathLabel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.VNCPathLabel.Location = new System.Drawing.Point(43, 0);
 			this.VNCPathLabel.Name = "VNCPathLabel";
-			this.VNCPathLabel.Size = new System.Drawing.Size(248, 22);
+			this.VNCPathLabel.Size = new System.Drawing.Size(259, 22);
 			this.VNCPathLabel.TabIndex = 48;
 			this.VNCPathLabel.Text = "\\UltraVNC";
 			this.VNCPathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -819,7 +826,7 @@ namespace VVVV.Nodes
 			this.PsToolsBox.Dock = System.Windows.Forms.DockStyle.Top;
 			this.PsToolsBox.Location = new System.Drawing.Point(3, 3);
 			this.PsToolsBox.Name = "PsToolsBox";
-			this.PsToolsBox.Size = new System.Drawing.Size(297, 86);
+			this.PsToolsBox.Size = new System.Drawing.Size(308, 86);
 			this.PsToolsBox.TabIndex = 0;
 			this.PsToolsBox.TabStop = false;
 			this.PsToolsBox.Text = "PsTools";
@@ -831,7 +838,7 @@ namespace VVVV.Nodes
 			this.PsToolsPathPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.PsToolsPathPanel.Location = new System.Drawing.Point(3, 16);
 			this.PsToolsPathPanel.Name = "PsToolsPathPanel";
-			this.PsToolsPathPanel.Size = new System.Drawing.Size(291, 22);
+			this.PsToolsPathPanel.Size = new System.Drawing.Size(302, 22);
 			this.PsToolsPathPanel.TabIndex = 0;
 			// 
 			// PsToolsPathLabel
@@ -839,7 +846,7 @@ namespace VVVV.Nodes
 			this.PsToolsPathLabel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.PsToolsPathLabel.Location = new System.Drawing.Point(43, 0);
 			this.PsToolsPathLabel.Name = "PsToolsPathLabel";
-			this.PsToolsPathLabel.Size = new System.Drawing.Size(248, 22);
+			this.PsToolsPathLabel.Size = new System.Drawing.Size(259, 22);
 			this.PsToolsPathLabel.TabIndex = 48;
 			this.PsToolsPathLabel.Text = "\\PsTools";
 			this.PsToolsPathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -897,7 +904,7 @@ namespace VVVV.Nodes
 			this.SimulatorPage.Location = new System.Drawing.Point(4, 25);
 			this.SimulatorPage.Name = "SimulatorPage";
 			this.SimulatorPage.Padding = new System.Windows.Forms.Padding(3);
-			this.SimulatorPage.Size = new System.Drawing.Size(303, 349);
+			this.SimulatorPage.Size = new System.Drawing.Size(314, 349);
 			this.SimulatorPage.TabIndex = 2;
 			this.SimulatorPage.Text = "Simulator";
 			this.SimulatorPage.UseVisualStyleBackColor = true;
@@ -908,7 +915,7 @@ namespace VVVV.Nodes
 			this.SimulatorListBox.FormattingEnabled = true;
 			this.SimulatorListBox.Location = new System.Drawing.Point(3, 47);
 			this.SimulatorListBox.Name = "SimulatorListBox";
-			this.SimulatorListBox.Size = new System.Drawing.Size(297, 290);
+			this.SimulatorListBox.Size = new System.Drawing.Size(308, 290);
 			this.SimulatorListBox.TabIndex = 3;
 			this.SimulatorListBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.SimulatorListBoxMouseUp);
 			// 
@@ -919,7 +926,7 @@ namespace VVVV.Nodes
 			this.panel7.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel7.Location = new System.Drawing.Point(3, 25);
 			this.panel7.Name = "panel7";
-			this.panel7.Size = new System.Drawing.Size(297, 22);
+			this.panel7.Size = new System.Drawing.Size(308, 22);
 			this.panel7.TabIndex = 5;
 			// 
 			// SimulatorStringEdit
@@ -927,7 +934,7 @@ namespace VVVV.Nodes
 			this.SimulatorStringEdit.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.SimulatorStringEdit.Location = new System.Drawing.Point(0, 0);
 			this.SimulatorStringEdit.Name = "SimulatorStringEdit";
-			this.SimulatorStringEdit.Size = new System.Drawing.Size(277, 20);
+			this.SimulatorStringEdit.Size = new System.Drawing.Size(288, 20);
 			this.SimulatorStringEdit.TabIndex = 0;
 			this.SimulatorStringEdit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SimulatorStringEditKeyPress);
 			// 
@@ -935,7 +942,7 @@ namespace VVVV.Nodes
 			// 
 			this.AddSimulatorStringButton.Dock = System.Windows.Forms.DockStyle.Right;
 			this.AddSimulatorStringButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.AddSimulatorStringButton.Location = new System.Drawing.Point(277, 0);
+			this.AddSimulatorStringButton.Location = new System.Drawing.Point(288, 0);
 			this.AddSimulatorStringButton.Name = "AddSimulatorStringButton";
 			this.AddSimulatorStringButton.Size = new System.Drawing.Size(20, 22);
 			this.AddSimulatorStringButton.TabIndex = 1;
@@ -953,7 +960,7 @@ namespace VVVV.Nodes
 			this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel6.Location = new System.Drawing.Point(3, 3);
 			this.panel6.Name = "panel6";
-			this.panel6.Size = new System.Drawing.Size(297, 22);
+			this.panel6.Size = new System.Drawing.Size(308, 22);
 			this.panel6.TabIndex = 4;
 			// 
 			// SimulatorIPEdit
@@ -961,14 +968,14 @@ namespace VVVV.Nodes
 			this.SimulatorIPEdit.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.SimulatorIPEdit.Location = new System.Drawing.Point(99, 0);
 			this.SimulatorIPEdit.Name = "SimulatorIPEdit";
-			this.SimulatorIPEdit.Size = new System.Drawing.Size(85, 20);
+			this.SimulatorIPEdit.Size = new System.Drawing.Size(96, 20);
 			this.SimulatorIPEdit.TabIndex = 4;
 			this.SimulatorIPEdit.TextChanged += new System.EventHandler(this.SimulatorIPEditTextChanged);
 			// 
 			// SimulatorPortUpDown
 			// 
 			this.SimulatorPortUpDown.Dock = System.Windows.Forms.DockStyle.Right;
-			this.SimulatorPortUpDown.Location = new System.Drawing.Point(184, 0);
+			this.SimulatorPortUpDown.Location = new System.Drawing.Point(195, 0);
 			this.SimulatorPortUpDown.Maximum = new decimal(new int[] {
 									65535,
 									0,
@@ -988,7 +995,7 @@ namespace VVVV.Nodes
 			// 
 			this.SimulatorConnectButton.Dock = System.Windows.Forms.DockStyle.Right;
 			this.SimulatorConnectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.SimulatorConnectButton.Location = new System.Drawing.Point(240, 0);
+			this.SimulatorConnectButton.Location = new System.Drawing.Point(251, 0);
 			this.SimulatorConnectButton.Name = "SimulatorConnectButton";
 			this.SimulatorConnectButton.Size = new System.Drawing.Size(57, 22);
 			this.SimulatorConnectButton.TabIndex = 5;
@@ -1257,9 +1264,15 @@ namespace VVVV.Nodes
 			this.RemoveAllGroupsButton.UseVisualStyleBackColor = true;
 			this.RemoveAllGroupsButton.Click += new System.EventHandler(this.RemoveAllGroupsButtonClick);
 			// 
-			// OnlineChecker
+			// OnlineWorker
 			// 
-			this.OnlineChecker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.OnlineCheckerDoWork);
+			this.OnlineWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.OnlineWorkerDoWork);
+			// 
+			// WatchWorker
+			// 
+			this.WatchWorker.WorkerReportsProgress = true;
+			this.WatchWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.WatchWorkerDoWork);
+			this.WatchWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.WatchLogCB);
 			// 
 			// Remoter
 			// 
@@ -1268,7 +1281,7 @@ namespace VVVV.Nodes
 			this.Controls.Add(this.LeftPanel);
 			this.DoubleBuffered = true;
 			this.Name = "Remoter";
-			this.Size = new System.Drawing.Size(556, 378);
+			this.Size = new System.Drawing.Size(567, 378);
 			this.panel1.ResumeLayout(false);
 			this.Simulator.ResumeLayout(false);
 			this.CommandsPage.ResumeLayout(false);
@@ -1303,7 +1316,9 @@ namespace VVVV.Nodes
 			this.panel8.ResumeLayout(false);
 			this.ResumeLayout(false);
 		}
-		private System.ComponentModel.BackgroundWorker OnlineChecker;
+		private System.ComponentModel.BackgroundWorker OnlineWorker;
+		private System.ComponentModel.BackgroundWorker WatchWorker;
+		private System.Windows.Forms.Label label5;
 		
 		private System.Windows.Forms.Button InvertGroupSelectionButton;
 		private System.Windows.Forms.Button SelectAllGroupsButton;
@@ -1379,7 +1394,6 @@ namespace VVVV.Nodes
 		private System.Windows.Forms.RadioButton radioButton1;
 		private System.Windows.Forms.GroupBox RemotingBox;
 		private System.Windows.Forms.Panel IPListPanel;
-		private System.Windows.Forms.Timer WatchTimer;
 		private System.Windows.Forms.RadioButton WatchModeReboot;
 		private System.Windows.Forms.RadioButton WatchModeRestart;
 		private System.Windows.Forms.Panel panel2;
@@ -1408,6 +1422,7 @@ namespace VVVV.Nodes
 
 			//create config inputs
 			FHost.CreateStringConfig("Settings", TSliceMode.Single, TPinVisibility.True, out FSettingsInput);
+			FSettingsInput.SliceCount = 1;
 			
 			//create inputs
 			FHost.CreateValueInput("Value Input", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueInput);
@@ -1794,6 +1809,11 @@ namespace VVVV.Nodes
 		#endregion IPGroups
 		
 		#region commands
+		private void WatchLogCB(object Sender, ProgressChangedEventArgs e)
+		{
+			FHost.Log(TLogType.Warning, (string) e.UserState);
+		}
+		
 		private string ExecutePsToolCommand(TPsToolCommand Command, string Host)
 		{
 			if (PsToolsUsername.Text == "")
@@ -1849,9 +1869,11 @@ namespace VVVV.Nodes
 					}
 			}
 			
-			string result = "PsTool command failed!";
+			string result = "";
 			if (System.IO.File.Exists(filename))
 				result = Execute(filename, workingdir, arguments, true);
+			else
+				result = "File not found: " + filename;
 			
 			return result;
 		}
@@ -1878,22 +1900,24 @@ namespace VVVV.Nodes
 				if (RedirectStandardOutput)
 				{
 					sOut = proc.StandardOutput;
-					result = sOut.ReadToEnd();
+					do
+					{
+						result += sOut.ReadLine();
+					}
+					while(!proc.HasExited);
 					sOut.Close();
 				}
-				
-				/*if (!proc.HasExited)
+				/*
+				if (!proc.HasExited)
 				{
 					proc.Kill();
 				}*/
 				
 				proc.Close();
-				
-				FHost.Log(TLogType.Debug, result);
 			}
 			catch (Exception e)
 			{
-				FHost.Log(TLogType.Error, Filename + ": " + e.Message);
+				result = "Error executing: " + Filename + ": " + e.Message;
 			}
 			
 			return result;
@@ -1916,7 +1940,9 @@ namespace VVVV.Nodes
 				ManagementScope theScope = new ManagementScope("\\\\" + ipc.IP + "\\root\\cimv2", theConnection);
 				ManagementClass theClass = new ManagementClass(theScope, new ManagementPath("Win32_Process"), new ObjectGetOptions());
 				theClass.InvokeMethod("Create", theProcessToRun);*/
-				FHost.Log(TLogType.Message, ExecutePsToolCommand(TPsToolCommand.Execute, ipc.IP));
+				string result = ExecutePsToolCommand(TPsToolCommand.Execute, ipc.IP);
+				if (result != "")
+					FHost.Log(TLogType.Error, result);
 			}
 		}
 		
@@ -1924,7 +1950,12 @@ namespace VVVV.Nodes
 		{
 			foreach(IPControl ipc in IPListPanel.Controls)
 				if ((ipc.IsSelected) && (ipc.IsOnline))
-				ExecutePsToolCommand(TPsToolCommand.Kill, ipc.IP);
+			{
+				string result = ExecutePsToolCommand(TPsToolCommand.Kill, ipc.IP);
+				
+				if (result != "")
+					FHost.Log(TLogType.Error, result);
+			}
 		}
 		
 		void StartButtonClick(object sender, EventArgs e)
@@ -1955,48 +1986,6 @@ namespace VVVV.Nodes
 			foreach(IPControl ipc in IPListPanel.Controls)
 				if ((ipc.IsSelected) && (ipc.IsOnline))
 				ExecutePsToolCommand(TPsToolCommand.Shutdown, ipc.IP);
-		}
-		
-		void WatchTimerTick(object sender, EventArgs e)
-		{
-			if (WatchModeOff.Checked)
-				return;
-			
-			foreach(IPControl ipc in IPListPanel.Controls)
-				if ((ipc.IsSelected) && (ipc.IsOnline))
-			{
-				//if expect ping is on
-				
-				//else
-				//for local processes use: Process.Responding
-				if (ipc.IsLocalHost)
-				{
-					if (!ipc.LocalProcessIsResponding(WatchProcessPath.Text))
-					{
-						if (WatchModeRestart.Checked)
-							ExecutePsToolCommand(TPsToolCommand.WatchExecute, ipc.IP);
-						else if (WatchModeReboot.Checked)
-							ExecutePsToolCommand(TPsToolCommand.Reboot, ipc.IP);
-					}
-				}
-				//for remote processes use:
-				else
-				{
-					//this only detects processes that have vanished, not hanging ones.
-					string result = ExecutePsToolCommand(TPsToolCommand.Watch, ipc.IP);
-					if (result.Contains("process " + System.IO.Path.GetFileNameWithoutExtension(WatchProcessPath.Text) + " was not found"))
-					{
-						ipc.AppIsOnline = false;
-						
-						if (WatchModeRestart.Checked)
-							ExecutePsToolCommand(TPsToolCommand.WatchExecute, ipc.IP);
-						else if (WatchModeReboot.Checked)
-							ExecutePsToolCommand(TPsToolCommand.Reboot, ipc.IP);
-					}
-					else
-						ipc.AppIsOnline = true;
-				}
-			}
 		}
 		
 		void MirrorButtonClick(object sender, EventArgs e)
@@ -2048,13 +2037,67 @@ namespace VVVV.Nodes
 			SaveSettings();
 		}
 		
-		void OnlineCheckerDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+		void OnlineWorkerDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
 		{
 			while(true)
-			{	if (IPListPanel.Controls.Count > 0)
+			{
+				if (IPListPanel.Controls.Count > 0)
 				{
 					FOnlineCheckID = (FOnlineCheckID + 1) % IPListPanel.Controls.Count;
 					(IPListPanel.Controls[FOnlineCheckID] as IPControl).UpdateOnlineState();
+				}
+			}
+		}
+		
+		void WatchWorkerDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+		{
+			while(true)
+			{
+				if (!WatchModeOff.Checked)
+				{
+					FWatchCheckID = (FWatchCheckID + 1) % IPListPanel.Controls.Count;
+					
+					IPControl ipc = (IPListPanel.Controls[FWatchCheckID] as IPControl);
+					
+					if (ipc.NeedsWatchUpdate() && (ipc.IsSelected) && (ipc.IsOnline))
+					{
+						//if expect ping is on
+						
+						//else
+						//for local processes use: Process.Responding
+						if (ipc.IsLocalHost)
+						{
+							if (!ipc.LocalProcessIsResponding(WatchProcessPath.Text))
+							{
+								if (WatchModeRestart.Checked)
+									ExecutePsToolCommand(TPsToolCommand.WatchExecute, ipc.IP);
+								else if (WatchModeReboot.Checked)
+									ExecutePsToolCommand(TPsToolCommand.Reboot, ipc.IP);
+							}
+						}
+						//for remote processes use:
+						else
+						{
+							//this only detects processes that have vanished, not hanging ones.
+							string result = ExecutePsToolCommand(TPsToolCommand.Watch, ipc.IP);
+							if (result.Contains("process " + System.IO.Path.GetFileNameWithoutExtension(WatchProcessPath.Text) + " was not found"))
+							{
+								ipc.AppIsOnline = false;
+								
+								if (WatchModeRestart.Checked)
+									ExecutePsToolCommand(TPsToolCommand.WatchExecute, ipc.IP);
+								else if (WatchModeReboot.Checked)
+									ExecutePsToolCommand(TPsToolCommand.Reboot, ipc.IP);
+							}
+							else if (result.Contains("Failed"))
+							{
+								ipc.AppIsOnline = false;
+								WatchWorker.ReportProgress(0, "Failed to watch remote process on: " + ipc.IP);
+							}
+							else
+								ipc.AppIsOnline = true;
+						}
+					}
 				}
 			}
 		}
@@ -2359,8 +2402,6 @@ namespace VVVV.Nodes
 				AddSimulatorString();
 		}
 		#endregion simulator
-		
-		
 	}
 	
 	public delegate void ButtonHandler(string IP);

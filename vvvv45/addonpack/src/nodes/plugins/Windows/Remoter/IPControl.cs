@@ -16,6 +16,7 @@ namespace VVVV.Nodes
 	{
 		[DllImport("iphlpapi.dll")]
 		public static extern int SendARP(UInt32 DestIP, UInt32 SrcIP, [Out] byte[] pMacAddr, ref uint PhyAddrLen);
+		private const int UPDATETIMEOUT = 5;
 		
 		public event ButtonHandler OnVNCButton;
 		public event ButtonHandler OnEXPButton;
@@ -23,6 +24,7 @@ namespace VVVV.Nodes
 		public event ButtonUpHandler OnIPSelectButton;
 		
 		private DateTime FLastPingTime;
+		private DateTime FLastWatchTime;
 		private byte[] FMACBytes = new byte[6];
 		private string FIP;
 		public string IP
@@ -264,10 +266,22 @@ namespace VVVV.Nodes
 			client = null;
 		}
 		
+		public bool NeedsWatchUpdate()
+		{
+			DateTime dt = DateTime.UtcNow;
+			if (dt.Subtract(FLastWatchTime).Seconds < UPDATETIMEOUT)
+				return false;
+			else
+			{
+				FLastWatchTime = dt;
+				return true;
+			}		
+		}
+		
 		public void UpdateOnlineState()
 		{
 			DateTime dt = DateTime.UtcNow;
-			if (dt.Subtract(FLastPingTime).Seconds < 5)
+			if (dt.Subtract(FLastPingTime).Seconds < UPDATETIMEOUT)
 				return;
 			
 			FLastPingTime = dt;
