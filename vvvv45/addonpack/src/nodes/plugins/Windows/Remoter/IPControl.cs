@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 namespace VVVV.Nodes
 {
@@ -47,6 +48,23 @@ namespace VVVV.Nodes
 				}
 			}
 		}
+		
+		private List<string> FGroups = new List<string>();
+		public string Groups
+		{
+			get
+			{
+				string groups = "";
+				for (int i=0; i<FGroups.Count; i++)
+				{
+					groups += FGroups[i];
+					if (i < FGroups.Count-1)
+						groups += "; ";
+				}
+				return groups;
+			}
+		}
+		
 		
 		private bool FIsOnline = false;
 		public bool IsOnline
@@ -102,6 +120,40 @@ namespace VVVV.Nodes
 			
 			FIP = IP;
 			IPLabel.Text = FIP;
+		}
+		
+		public void AddGroups(string Groups)
+		{
+			if (Groups != "")
+			{
+				string[] groups;
+				char s = ';';
+				groups = Groups.Split(s);
+				for (int i=0; i< groups.Length; i++)
+					if (!FGroups.Contains(groups[i]))
+					FGroups.Add(groups[i]);
+			}
+			
+			if (FGroups.Count > 0)
+				XButton.Enabled = false;
+		}
+		
+		public void RemoveGroup(string Group)
+		{
+			if (FGroups.Contains(Group))
+			{
+				FGroups.Remove(Group);
+				if (FGroups.Count == 0)
+					OnXButton.Invoke(FIP);
+			}
+		}
+		
+		public bool IsPartOfGroup(string Group)
+		{
+			if (Group == "ungrouped")
+				return FGroups.Count == 0;
+			else
+				return FGroups.Contains(Group);
 		}
 		
 		void VNCButtonClick(object sender, EventArgs e)
@@ -265,6 +317,5 @@ namespace VVVV.Nodes
 		}
 	}
 
-	public delegate void ButtonHandler(string IP);
-	public delegate void ButtonUpHandler(IPControl Control);
+	
 }

@@ -46,11 +46,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="GroupControl.cs" />
+    <Compile Include="GroupControl.Designer.cs">
+      <DependentUpon>GroupControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Remoter.cs" />
     <Compile Include="IPControl.cs" />
     <Compile Include="IPControl.Designer.cs">
       <DependentUpon>IPControl.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="GroupControl.resx">
+      <DependentUpon>GroupControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Remoter.resx">
+      <DependentUpon>Remoter.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\_PluginInterfaces\PluginInterfaces.csproj">
