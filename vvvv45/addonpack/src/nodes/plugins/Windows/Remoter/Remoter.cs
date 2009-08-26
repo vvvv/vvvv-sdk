@@ -88,7 +88,6 @@ namespace VVVV.Nodes
 		private int FOnlineCheckID = 0;
 		private int FWatchCheckID = 0;
 		private bool FLoading = true;
-		private string FWatchLog = "";
 		
 		private System.Net.Sockets.TcpClient FTCPClient;
 		private System.Net.Sockets.NetworkStream FTCPStream;
@@ -1398,7 +1397,6 @@ namespace VVVV.Nodes
 		private System.Windows.Forms.RadioButton WatchModeRestart;
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.Panel panel1;
-		private System.ComponentModel.IContainer components;
 		private System.Windows.Forms.Button ShutdownButton;
 		private System.Windows.Forms.Button RebootButton;
 		private System.Windows.Forms.Label label2;
@@ -1507,15 +1505,26 @@ namespace VVVV.Nodes
 		
 		private void IPXButtonHandlerCB(string IP)
 		{
-			for (int i=0; i<IPListPanel.Controls.Count; i++)
+			foreach(IPControl ipc in IPListPanel.Controls)
 			{
-				if ((IPListPanel.Controls[i] as IPControl).IP == IP)
+				if (ipc.IP == IP)
 				{
-					IPListPanel.Controls.RemoveAt(i);
-					UpdateIPListInput();
-					return;
+					IPListPanel.Controls.Remove(ipc);
+					foreach(GroupControl gc in GroupListPanel.Controls)
+					{
+						if (gc.GroupName == UNGROUPED)
+						{
+							gc.IPControls.Remove(ipc);
+							if (gc.IPControls.Count == 0)
+								GroupListPanel.Controls.Remove(gc);
+							break;
+						}
+					}
+					break;
 				}
 			}
+						
+			UpdateIPListInput();
 		}
 		
 		private void VNCButtonHandlerCB(string IP)
@@ -1565,9 +1574,9 @@ namespace VVVV.Nodes
 			
 			for (int i=0; i<groups.Length; i++)
 				if (groups[i] == "")
-				AddGroup(UNGROUPED, IP);
+				AddGroup(UNGROUPED, ip);
 			else
-				AddGroup(groups[i], IP);
+				AddGroup(groups[i], ip);
 		}
 		
 		private void DoAddIP(string NewIP, string Group)
@@ -1659,7 +1668,7 @@ namespace VVVV.Nodes
 			DoAddGroup();
 		}
 		
-		private void AddGroup(string Group, string IP)
+		private void AddGroup(string Group, IPControl IP)
 		{
 			for (int i=0; i<GroupListPanel.Controls.Count; i++)
 			{
@@ -1689,7 +1698,7 @@ namespace VVVV.Nodes
 		{
 			string newgroup = NewGroupEdit.Text.Trim();
 			
-			AddGroup(newgroup, "");
+			AddGroup(newgroup, null);
 		}
 		
 		void NewGroupEditKeyPress(object sender, KeyPressEventArgs e)
@@ -1713,7 +1722,7 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		private void GroupChangedHandlerCB(GroupControl Group, string OldGroupName)
+		private void GroupChangedHandlerCB(GroupControl Group, string OldGroupName, List<string> IPs)
 		{
 			//the name may have changed
 			//ips may have been added/removed
@@ -1728,7 +1737,7 @@ namespace VVVV.Nodes
 			GroupFilterDropDown.Items.Add(Group.GroupName);
 			
 			//parse this groupcontrols ips add them
-			foreach(string s in Group.IPs)
+			foreach(string s in IPs)
 				DoAddIP(s, Group.GroupName);
 		}
 		
@@ -1776,8 +1785,13 @@ namespace VVVV.Nodes
 		void LeftTabControlSelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (LeftTabControl.SelectedIndex == 1) //groups
+			{
 				foreach(IPControl ipc in IPListPanel.Controls)
-				ipc.IsSelected = false;
+					ipc.IsSelected = false;
+				foreach(GroupControl gc in GroupListPanel.Controls)
+					gc.IsSelected = false;
+			}
+				
 		}
 		
 		void SelectAllGroupsButtonClick(object sender, EventArgs e)
@@ -2046,14 +2060,30 @@ namespace VVVV.Nodes
 					FOnlineCheckID = (FOnlineCheckID + 1) % IPListPanel.Controls.Count;
 					(IPListPanel.Controls[FOnlineCheckID] as IPControl).UpdateOnlineState();
 				}
+				else
+					 System.Threading.Thread.Sleep(1000);
+				
+				UpdateGroupsOnlineState();
 			}
+		}
+		
+		private void UpdateGroupsOnlineState()
+		{
+			foreach(GroupControl gc in GroupListPanel.Controls)
+			{
+				bool online = gc.IPControls.Count > 0;
+				foreach(IPControl ipc in gc.IPControls)
+					online &= ipc.IsOnline;
+				
+				gc.IsOnline = online;					
+			}					
 		}
 		
 		void WatchWorkerDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
 		{
 			while(true)
 			{
-				if (!WatchModeOff.Checked)
+				if ((IPListPanel.Controls.Count > 0) && (!WatchModeOff.Checked))
 				{
 					FWatchCheckID = (FWatchCheckID + 1) % IPListPanel.Controls.Count;
 					
@@ -2099,7 +2129,23 @@ namespace VVVV.Nodes
 						}
 					}
 				}
+				else
+					 System.Threading.Thread.Sleep(1000);
+				
+				UpdateGroupsAppOnlineState();
 			}
+		}
+		
+		private void UpdateGroupsAppOnlineState()
+		{
+			foreach(GroupControl gc in GroupListPanel.Controls)
+			{
+				bool online = gc.IPControls.Count > 0;
+				foreach(IPControl ipc in gc.IPControls)
+					online &= ipc.AppIsOnline;
+				
+				gc.AppIsOnline = online;					
+			}					
 		}
 		#endregion commands
 		
@@ -2406,5 +2452,5 @@ namespace VVVV.Nodes
 	
 	public delegate void ButtonHandler(string IP);
 	public delegate void ButtonUpHandler(UserControl Control);
-	public delegate void GroupChangedHandler(GroupControl Group, string OldGroupName);
+	public delegate void GroupChangedHandler(GroupControl Group, string OldGroupName, List<string> IPs);
 }

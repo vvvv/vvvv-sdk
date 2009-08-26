@@ -17,6 +17,7 @@ namespace VVVV.Nodes
 		[DllImport("iphlpapi.dll")]
 		public static extern int SendARP(UInt32 DestIP, UInt32 SrcIP, [Out] byte[] pMacAddr, ref uint PhyAddrLen);
 		private const int UPDATETIMEOUT = 5;
+		private const string UNGROUPED = "ungrouped";
 		
 		public event ButtonHandler OnVNCButton;
 		public event ButtonHandler OnEXPButton;
@@ -153,7 +154,7 @@ namespace VVVV.Nodes
 		
 		public bool IsPartOfGroup(string Group)
 		{
-			if (Group == "ungrouped")
+			if (Group == UNGROUPED)
 				return FGroups.Count == 0;
 			else
 				return FGroups.Contains(Group);

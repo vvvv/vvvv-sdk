@@ -17,6 +17,7 @@ namespace VVVV.Nodes
 		public event ButtonHandler OnXButton;
 		public event ButtonUpHandler OnGroupSelectButton;
 		public event GroupChangedHandler OnGroupChanged;
+		private const string UNGROUPED = "ungrouped";
 		
 		private bool FEditing = false;
 		
@@ -25,17 +26,25 @@ namespace VVVV.Nodes
 		{
 			get{return FGroupName;}
 		}
-		
-		private List<string> FIPs = new List<string>();
-		public List<string> IPs
+	
+		private List<IPControl> FIPControls = new List<IPControl>();
+		public List<IPControl> IPControls
 		{
-			get{return FIPs;}
+			get{return FIPControls;}
 		}
 		
 		private bool FIsOnline = false;
 		public bool IsOnline
 		{
 			get{return FIsOnline;}
+			set
+			{
+				FIsOnline = value;
+				if (FIsOnline)
+					OnlinePanel.BackColor = Color.DarkGreen;
+				else
+					OnlinePanel.BackColor = Color.DarkRed;
+			}
 		}
 		
 		private bool FAppIsOnline = false;
@@ -75,12 +84,12 @@ namespace VVVV.Nodes
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
-	
+			
 			FGroupName = GroupName;
 			GroupLabel.Text = FGroupName;
 			GroupNameEdit.Text = FGroupName;
 			
-			if (FGroupName == "ungrouped")
+			if (FGroupName == UNGROUPED)
 			{
 				XButton.Enabled = false;
 				GroupNameEdit.Enabled = false;
@@ -88,10 +97,10 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		public void AddIP(string IP)
+		public void AddIP(IPControl IP)
 		{
-			if (!FIPs.Contains(IP))
-				FIPs.Add(IP);
+			if (!FIPControls.Contains(IP) && (IP != null))
+				FIPControls.Add(IP);
 		}
 		
 		void XButtonClick(object sender, EventArgs e)
@@ -127,22 +136,31 @@ namespace VVVV.Nodes
 				this.Height = 30;
 				EditButton.Text = "E";
 				
-				FIPs.Clear();
-				foreach(string s in IPsEdit.Lines)
-					FIPs.Add(s);
-				
-				string oldname = FGroupName;
-				GroupLabel.Text = GroupNameEdit.Text;
-				FGroupName = GroupNameEdit.Text;
-				
-				OnGroupChanged.Invoke(this, oldname);
+				if (FGroupName != UNGROUPED)
+				{
+					
+					FIPControls.Clear();
+					List<string> ips = new List<string>();
+					foreach(string s in IPsEdit.Lines)
+						ips.Add(s);
+					
+					string oldname = FGroupName;
+					GroupLabel.Text = GroupNameEdit.Text;
+					FGroupName = GroupNameEdit.Text;
+					
+					OnGroupChanged.Invoke(this, oldname, ips);
+				}
 			}
 			else
 			{
-				this.Height = 50 + (FIPs.Count + 1) * 20;
-				IPsEdit.Lines = FIPs.ToArray();
+				this.Height = 50 + (FIPControls.Count + 1) * 20;
+				string[] ips = new string[FIPControls.Count];
+				for (int i=0; i<ips.Length; i++)
+					ips[i] = FIPControls[i].IP;
+				IPsEdit.Lines = ips;
 				EditButton.Text = "S";
 			}
+			
 			FEditing = !FEditing;
 		}
 	}
