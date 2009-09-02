@@ -56,7 +56,10 @@ namespace LD2000
    		private IValueFastIn FZoneIn;
    		private IValueFastIn FAnimationCountIn;
    		private IValueFastIn FIsVectorFrameIn;
+   		private IValueIn FWorkingTrackIn;
+   		/*
    		private IValueIn FActiveScannerIn;
+   		*/
    		private IValueIn FDoWriteIn;
    		
    		private IValueConfig FScanRateIn;
@@ -286,8 +289,12 @@ namespace LD2000
 	    	CreatePins(FVDPins);
 	    	CreatePins(FSkewPins);
 	    	
+	    	FHost.CreateValueInput("Working Track", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FWorkingTrackIn);
+	    	FWorkingTrackIn.SetSubType(-1.0, int.MaxValue, 1.0, 1.0, false, false, true);
+	    	/*
 	    	FHost.CreateValueInput("Active Scanner", 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out FActiveScannerIn);
 	    	FActiveScannerIn.SetSubType(-1.0, int.MaxValue, 1.0, -1.0, false, false, true);
+	    	*/
 	    	FHost.CreateValueInput("Do Write", 1, null, TSliceMode.Single, TPinVisibility.True, out FDoWriteIn);
 	    	FDoWriteIn.SetSubType(0.0, 1.0, 1.0, 0.0, false, true, false);
 			
@@ -527,6 +534,7 @@ namespace LD2000
         	
         	bool vdChanged = PinsChanged(FVDPins);
         	bool skewChanged = PinsChanged(FSkewPins);
+        	/*
         	bool scannerChanged = FActiveScannerIn.PinIsChanged;
         	if (scannerChanged)
         	{
@@ -534,15 +542,21 @@ namespace LD2000
         		LD.SetWorkingScanners(-1);
         		LD.DisplayFrame(0);
         	}
-        	
         	int scannerFrameCount = Math.Max(frames.Length, FActiveScannerIn.SliceCount);
+        	*/
+        	int scannerFrameCount = Math.Max(frames.Length, FWorkingTrackIn.SliceCount);
         	for (int i = 0; i < scannerFrameCount; i++)
         	{
+        		/*
         		FActiveScannerIn.GetValue(i, out tmp);
         		int scannerCode = (int) tmp;
         		scannerCode = VMath.Clamp(scannerCode, -1, MAX_SCANNER_CODE);
         		if (scannerCode == 0) scannerCode = 1; // 0 is illegal
         		LD.SetWorkingScanners(scannerCode);
+        		*/
+        		FWorkingTrackIn.GetValue(i, out tmp);
+        		int trackCode = (int) tmp;
+        		LD.SetWorkingTracks(trackCode);
 	        		
         		LD.DisplayFrame(frames[i % frames.Length]);
         		if (vdChanged)
@@ -557,7 +571,9 @@ namespace LD2000
         		}
         	}
         	
+        	/*
         	LD.SetWorkingScanners(-1);
+        	*/
         	LD.DisplayUpdate();
         }
              
