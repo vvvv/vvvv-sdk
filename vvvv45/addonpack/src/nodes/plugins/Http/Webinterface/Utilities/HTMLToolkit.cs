@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 using VVVV.Utils.VMath;
 
@@ -63,40 +64,76 @@ namespace VVVV.Webinterface.Utilities
         {
             string[] tPatchIDs = pNodePath.Split('/');
             string tNewNodePath = String.Empty;
+            bool ContainsDescriptivName = false;
 
             foreach (string tID in tPatchIDs)
             {
                 if (tID != "")
                 {
-                    int temp = Convert.ToInt16(tID);
-                    tNewNodePath +=  String.Format("{0:00000}", temp);
+                    if (Regex.IsMatch(tID, "[a-zA-z]"))
+                    {
+                        tNewNodePath = tID;
+                        ContainsDescriptivName = true;
+                    }
+                    else
+                    {
+                        int temp = Convert.ToInt16(tID);
+                        tNewNodePath += String.Format("{0:00000}", temp);
+                    }
                 }
                 else
                 {
                     
                 }
             }
-            return "a" + tNewNodePath;
+
+            if (ContainsDescriptivName)
+            {
+                return  tNewNodePath;
+            }
+            else
+            {
+                return "NodeId" + tNewNodePath;
+            }
         }
 
         public static string CreateSliceID(string pNodePath, int pSliceId)
         {
             string[] tPatchIDs = pNodePath.Split('/');
             string tNewNodePath = String.Empty;
+            bool ContainsDescriptivName = false;
 
             foreach (string tID in tPatchIDs)
             {
                 if (tID != "")
                 {
-                    int temp = Convert.ToInt16(tID);
-                    tNewNodePath += String.Format("{0:00000}", temp);
+                    if (Regex.IsMatch(tID, "[a-zA-z]"))
+                    {
+                        tNewNodePath = tID;
+                        ContainsDescriptivName = true;
+                    }
+                    else
+                    {
+                        int temp = Convert.ToInt16(tID);
+                        tNewNodePath += String.Format("{0:00000}", temp);
+                    }
                 }
                 else
                 {
 
                 }
             }
-            return "a" + tNewNodePath + String.Format("{0:00000}", pSliceId); ;
+
+            if (ContainsDescriptivName)
+            {
+                return tNewNodePath + String.Format("{0:00000}", pSliceId); ;
+            }
+            else
+            {
+                return "SliceId" + tNewNodePath + String.Format("{0:00000}", pSliceId); ;
+            }
+            
+            
         }
 
         #endregion conversion

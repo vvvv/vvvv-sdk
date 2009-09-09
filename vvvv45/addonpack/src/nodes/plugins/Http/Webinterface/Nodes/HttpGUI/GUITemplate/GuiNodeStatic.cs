@@ -51,7 +51,6 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-
         #region abstract Methods
 
         protected abstract void OnSetPluginHost();
@@ -60,6 +59,7 @@ namespace VVVV.Nodes.HttpGUI
         
         
         #endregion abstract Methods
+
 
 
 
@@ -76,6 +76,8 @@ namespace VVVV.Nodes.HttpGUI
             FHost = Host;
             FHost.GetNodePath(false, out mNodePath);
 
+
+            this.OnSetPluginHost();	
 
             //Input Pins 
             FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTransformIn);
@@ -95,7 +97,7 @@ namespace VVVV.Nodes.HttpGUI
             FHttpGuiOut.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
             FHttpGuiOut.SetInterface(this);
 
-            this.OnSetPluginHost();	    	
+                	
         }
 
 
@@ -105,7 +107,6 @@ namespace VVVV.Nodes.HttpGUI
         }
 
         #endregion pin creation
-
 
 
 
@@ -403,6 +404,8 @@ namespace VVVV.Nodes.HttpGUI
 
         public void SetTag(int pSliceIndex, Tag pTag)
         {
+            pTag.AddAttribute(new HTMLAttribute("id", mGuiDataList[pSliceIndex].SliceId));
+            pTag.AddAttribute(new HTMLAttribute("class", mGuiDataList[pSliceIndex].SliceId + " " + mGuiDataList[pSliceIndex].NodeId)); 
             mGuiDataList[pSliceIndex].Tag = pTag;
         }
 

@@ -544,8 +544,10 @@ namespace VVVV.Nodes.Http
 
             // Css File
             mPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
+            mPage.Head.Insert(new Link("jqueryUI.css", "stylesheet", "text/css"));
             mPage.Head.Insert(new JavaScript("jquery.js", true));
             mPage.Head.Insert(new JavaScript("jquerytimer.js", true));
+            mPage.Head.Insert(new JavaScript("jqueryUI.js", true));
             mPage.Head.Insert(new JavaScript(mPageName + ".js", true));
 
 
@@ -571,21 +573,29 @@ namespace VVVV.Nodes.Http
 
             //Browser Window
 
-                double currentWidthSlice;
-                double currentHeightSlice;
-                FPageWidth.GetValue(0, out currentWidthSlice);
-                FPageHeight.GetValue(0, out currentHeightSlice);
+            double currentWidthSlice;
+            double currentHeightSlice;
+            FPageWidth.GetValue(0, out currentWidthSlice);
+            FPageHeight.GetValue(0, out currentHeightSlice);
 
-                string tBrowserWidth = "" + Math.Round(currentWidthSlice);
-                string tBrowserHeight = "" + Math.Round(currentHeightSlice);
+            string tBrowserWidth = "" + Math.Round(currentWidthSlice);
+            string tBrowserHeight = "" + Math.Round(currentHeightSlice);
 
 
-                if ((currentWidthSlice != -1 || currentHeightSlice != -1))
-                {
-                    mPage.Head.Insert(JSToolkit.ResizeBrowser(currentWidthSlice.ToString(), currentHeightSlice.ToString()));
+            if ((currentWidthSlice != -1 || currentHeightSlice != -1))
+            {
+                mPage.Head.Insert(JSToolkit.ResizeBrowser(currentWidthSlice.ToString(), currentHeightSlice.ToString()));
 
-                }
+            }
             
+            //body Css
+            CSSStyle tCssStyle = new CSSStyle();
+            tCssStyle.Insert(mBodyRule.Text);
+
+
+            mPage.Head.Insert(tCssStyle);
+           
+
 
             //Insert Input Strings
             mPage.Body.Insert(mPageBodyString);

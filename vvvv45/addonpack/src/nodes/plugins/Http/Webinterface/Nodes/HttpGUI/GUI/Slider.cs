@@ -2,37 +2,22 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VVVV.PluginInterfaces.V1;
-using VVVV.Nodes.HttpGUI.Datenobjekte;
-using VVVV.Utils.VMath;
-using VVVV.Webinterface.Data;
-using VVVV.Webinterface;
 using VVVV.Webinterface.Utilities;
 
 namespace VVVV.Nodes.HttpGUI
 {
-    class Slider : BaseGUINode, IPlugin, IDisposable
+    class Slider : GuiNodeDynamic, IPlugin, IDisposable
     {
-
 
         #region field declaration
 
-
-        private IValueConfig FPosition;
-        private List<DatenGuiSlider> mSliderDaten = new List<DatenGuiSlider>();
-        private string mNodeId;
-        private IEnumConfig FOrientation;
-
-        private IValueOut FResponse;
-        private NodeObserver mObserver;
-        private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
         private bool FDisposed = false;
+        private IStringIn FName;
+        private IEnumIn FOrientation;
+        private IValueOut FResponse;
 
 
-        private string currentOrientation;
         #endregion field declaration
-
-
-        
 
 
         #region constructor/destructor
@@ -43,7 +28,6 @@ namespace VVVV.Nodes.HttpGUI
         /// </summary>
         public Slider()
         {
-            
         }
 
         /// <summary>
@@ -51,6 +35,10 @@ namespace VVVV.Nodes.HttpGUI
         /// Do not make this method virtual.
         /// A derived class should not be able to override this method.
         /// </summary>
+        /// 
+
+        #region Dispose
+
         public void Dispose()
         {
             Dispose(true);
@@ -82,9 +70,8 @@ namespace VVVV.Nodes.HttpGUI
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
-
-                mWebinterfaceSingelton.DeleteNode(mObserver);
-                FHost.Log(TLogType.Message, "Slider (Http Gui) Node is being deleted");
+                //mWebinterfaceSingelton.DeleteNode(mObserver);
+                FHost.Log(TLogType.Message, FPluginInfo.Name.ToString() + "Slider (Http Gui) Node is being deleted");
 
                 // Note that this is not thread safe.
                 // Another thread could start disposing the object
@@ -113,16 +100,15 @@ namespace VVVV.Nodes.HttpGUI
             Dispose(false);
         }
 
+        #endregion dispose
+
         #endregion constructor/destructor
 
 
+        #region Pugin Information
 
+        public static IPluginInfo FPluginInfo;
 
-
-
-        #region Plugin Information
-
-        private static IPluginInfo FPluginInfo;
         public static IPluginInfo PluginInfo
         {
             get
@@ -144,7 +130,7 @@ namespace VVVV.Nodes.HttpGUI
                     //the nodes author: your sign
                     FPluginInfo.Author = "phlegma";
                     //describe the nodes function
-                    FPluginInfo.Help = "Textfield node for the Renderer (HTTP)";
+                    FPluginInfo.Help = "Slider node for the Renderer (HTTP)";
                     //specify a comma separated list of tags that describe the node
                     FPluginInfo.Tags = "";
 
@@ -155,6 +141,8 @@ namespace VVVV.Nodes.HttpGUI
                     //any known usage of the node that may cause troubles?
                     FPluginInfo.Warnings = "";
 
+
+
                     //leave below as is
                     System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
                     System.Diagnostics.StackFrame sf = st.GetFrame(0);
@@ -163,169 +151,110 @@ namespace VVVV.Nodes.HttpGUI
                     FPluginInfo.Class = method.DeclaringType.Name;
                     //leave above as is
                 }
+
                 return FPluginInfo;
             }
         }
 
-        #endregion
+
+        #endregion Plugin Information
 
 
+        #region pin creation
 
-
-        #region pin creation 
-
-        protected override void OnPluginHostSet()
+        protected override void OnSetPluginHost()
         {
-            //this.FHost.CreateStringInput("Label", TSliceMode.Dynamic, TPinVisibility.True, out FLabel);
-            //FLabel.SetSubType("", false);
+            // create required pins
+            FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
+            FResponse.SetSubType(0, 1, 1, 0, false, false, true);
 
-            FHost.UpdateEnum("SliderOrientation", "x", new string[] { "x", "y" });
-            FHost.CreateEnumConfig("Orientation", TSliceMode.Single, TPinVisibility.True, out FOrientation);
-            FOrientation.SetSubType("SliderOrientation");
+            FHost.CreateStringInput("Name", TSliceMode.Dynamic, TPinVisibility.True, out FName);
+            FName.SetSubType("", false);
 
-            this.FHost.CreateValueConfig("StartPosition", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPosition);
-            FPosition.SetSubType(0, 1, 0.01, 0, false, false, false);
+            FHost.UpdateEnum("Orientation", "X", new string[] { "X", "Y"});
+            FHost.CreateEnumInput("Orientation", TSliceMode.Single, TPinVisibility.True, out FOrientation);
+            FOrientation.SetSubType("Orientation");
             
-            this.FHost.CreateValueOutput("Response",1,null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
-            FResponse.SetSubType(0, 1, 0.01, 0, false, false, false);
 
-            mNodeId = "Slider" + GetNodeID();
-            mObserver = mWebinterfaceSingelton.AddNode(mNodeId);
+
         }
-
 
         #endregion pin creation
 
 
+        #region Main Loop
 
-
-
-
-        #region Node IO
-
-        public override void GetDatenObjekt(int Index, out BaseDatenObjekt GuiDaten)
-        {
-            GuiDaten = mSliderDaten[Index];
-        }
-
-        public override void GetFunktionObjekt(int Index, out JsFunktion FunktionsDaten)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        #endregion Node IO
-
-
-
-
-
-
-        #region MainLoop
-
-
-        protected override void OnConfigurate(IPluginConfig Input)
-        {
-            if (Input == FOrientation)
-            {
-                
-                FOrientation.GetString(0, out currentOrientation);
-            }
-
-            //else if (Input == FPosition)
-            //{
-            //    JavaScript tSetPosition = new JavaScript();
-            //    tSetPosition.Insert("$('." + tSliderDatenObjekt.Class + "', parent.document).slider('option', 'value'," + currentPositionSlice + ");");
-            //    mWebinterfaceSingelton.NotifyServer(tSetPosition.Text);
-            //}
-        }
 
 
         protected override void OnEvaluate(int SpreadMax)
         {
-
-            if (FTransformIn.PinIsChanged || mChangedStyle)
+            //if (mChangedSpreadSize)
+            //{
+            for (int i = 0; i < SpreadMax; i++)
             {
-                mSliderDaten.Clear();
-                FHttpGuiOut.SliceCount = SpreadMax;
+
+                string currentOrientation = String.Empty;
+                string currentName = String.Empty;
+
+                FName.GetString(i, out currentName);
+                FOrientation.GetString(i, out currentOrientation);
+
+                string SliderId = "SliderID" + i.ToString();
+
+                HtmlDiv tMainContainer = new HtmlDiv();
+                HtmlDiv tSlider = new HtmlDiv(SliderId);
+                HTMLText tText = new HTMLText(currentName, false);
+
+                //string AttributeSliderContent = "position:absolute; right:0; width:80%";
+                //HTMLAttribute tSliderAttribute = new HTMLAttribute("style", AttributeSliderContent);
+                //tSlider.AddAttribute(tSliderAttribute);
+
+
+
+                tMainContainer.Insert(tText);
+                tMainContainer.Insert(tSlider);
+                
+
+                SetTag(i, tMainContainer);
+
+
                 FResponse.SliceCount = SpreadMax;
-                for (int i = 0; i < SpreadMax; i++)
+
+
+                string tResponse;
+                GetNewDataFromServer(mGuiDataList[i].SliceId, out tResponse);
+
+
+                if (tResponse != "")
                 {
-                    string tSliceId = mNodeId + "/" + i;
-                    DatenGuiSlider tSliderDatenObjekt = new DatenGuiSlider(tSliceId, "Slider", i);
-                    SortedList<string, string> tHtmlAttr = new SortedList<string, string>();
-                    SortedList<string, string> tCssProperties = new SortedList<string, string>();
-
-                    double currentPositionSlice;
-                    tSliderDatenObjekt.Class = tSliceId.Replace("/","");
-
-
-                    FPosition.GetValue(i, out currentPositionSlice);
-                    tSliderDatenObjekt.Position = currentPositionSlice.ToString();
-                    mWebinterfaceSingelton.setNodeDaten(tSliceId, currentPositionSlice.ToString());
-
-
-                    //Position Pin
-                    //if (FPosition.PinIsChanged)
-                    //{
-                    //    JavaScript tSetPosition = new JavaScript();
-                    //    tSetPosition.Insert("$('." + tSliderDatenObjekt.Class + "', parent.document).slider('option', 'value'," + currentPositionSlice + ");");
-                    //    mWebinterfaceSingelton.NotifyServer(tSetPosition.Text);
-                    //}
-
-                    
-                    //Orientation
-                    if (currentOrientation == "x")
-                    {
-                        tSliderDatenObjekt.Orientation = "";
-                    }
-                    else
-                    {
-                        tSliderDatenObjekt.Orientation = "orientation: 'vertical'," + Environment.NewLine;
-                    }
-                    
-
-                    //Transform Pin
-                    Matrix4x4 tMatrix = new Matrix4x4();
-                    FTransformIn.GetMatrix(i, out tMatrix);
-
-                    SortedList<string, string> tTransform;
-                    GetTransformation(tMatrix, out tTransform);
-
-                    //Css Properteis
-                    tCssProperties = tTransform;
-                    //tCssProperties.Add("margin", "1%");
-
-                    tSliderDatenObjekt.CssProperties = tCssProperties;
-                    mSliderDaten.Add(tSliderDatenObjekt);
+                    FResponse.SetValue(i, Convert.ToInt32(tResponse));
                 }
-            }
-
-            if (mObserver.ToNode != null)
-            {
-                string SliceId = mObserver.ToNode;
-                string tNodeId = GetNodeIdformSliceId(SliceId);
-
-
-                if ((mObserver.ObserverState == "Server") && (mNodeId == tNodeId))
+                else
                 {
-
-                    SortedList<string, string> tValuePair = mWebinterfaceSingelton.Daten;
-                    string tValue;
-                    tValuePair.TryGetValue(SliceId, out tValue);
-                    int tSliceIndex = Convert.ToInt16(GetSliceFormSliceId(mObserver.ToNode));
-                    
-                    FResponse.SetValue(tSliceIndex, Convert.ToDouble(tValue) / 1000);
-                    mWebinterfaceSingelton.setSubbjectStateToVVVV();
+                    FResponse.SetValue(i, 0);
                 }
-            }
-            else
-            {
 
+//                string tContent = @"var id = $(this).attr('id');
+//                $(this).fadeOut(20,function()
+//                {
+//                    $(this).fadeIn(20);
+//                });
+//
+//                $.post('ToVVVV.xml', id + '= 1', null);
+//                ";
+
+                SetJavaScript(i, new JqueryFunction(true,"#" + SliderId, "slider()").Text);
             }
+
+
+
+
+            
+
+            //}
         }
 
-        #endregion MainLoop
 
-
+        #endregion Main Loop
     }
 }

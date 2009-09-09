@@ -44,6 +44,7 @@ namespace VVVV.Nodes.HttpGUI
         public int mSpreadMax = 0;
         public bool mChangedSpreadSize = true;
         private string mNodePath;
+        private string mActualNodePath;
 
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
 
@@ -80,7 +81,7 @@ namespace VVVV.Nodes.HttpGUI
         {
             //assign host
             FHost = Host;
-            FHost.GetNodePath(false, out mNodePath);
+            
 
 
             this.OnSetPluginHost();
@@ -213,13 +214,24 @@ namespace VVVV.Nodes.HttpGUI
         public void Evaluate(int SpreadMax)
         {
 
-
+            
+            FHost.GetNodePath(true, out mNodePath);
+            
+            bool ChangedID = false;
+            if (mNodePath !=  mActualNodePath)
+            {
+                mActualNodePath = mNodePath;
+                ChangedID = true;
+            }
+            //Debug.WriteLine(mNodePath);
 
             #region Check Gui List
 
-            if (mSpreadMax != SpreadMax)
+
+            if (mSpreadMax != SpreadMax )
             {
                 mChangedSpreadSize = true;
+              
                 if (mGuiDataList.Count > SpreadMax)
                 {
                     mGuiDataList.RemoveRange(SpreadMax, mGuiDataList.Count - SpreadMax);
@@ -237,13 +249,18 @@ namespace VVVV.Nodes.HttpGUI
                 }
                 mSpreadMax = SpreadMax;
             }
-            else
-            {
-                for (int i = 0; i < SpreadMax; i++)
-                {
 
+            if (ChangedID)
+            {
+                for (int i = 0; i < mGuiDataList.Count; i++)
+                {
+                    mGuiDataList[i].NodeId = HTMLToolkit.CreatePageID(mNodePath);
+                    mGuiDataList[i].SliceId = HTMLToolkit.CreateSliceID(mNodePath, i);
                 }
+
+                ChangedID = false;
             }
+
 
 
 
@@ -456,6 +473,8 @@ namespace VVVV.Nodes.HttpGUI
 
         public void SetTag(int pSliceIndex, Tag pTag)
         {
+            pTag.AddAttribute(new HTMLAttribute("id", mGuiDataList[pSliceIndex].SliceId));
+            pTag.AddAttribute(new HTMLAttribute("class", mGuiDataList[pSliceIndex].SliceId + " " + mGuiDataList[pSliceIndex].NodeId)); 
             mGuiDataList[pSliceIndex].Tag = pTag;
         }
 

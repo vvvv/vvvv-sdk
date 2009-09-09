@@ -516,8 +516,7 @@ namespace VVVV.Nodes.Http
                 }
                 else
                 {
-                    FFileName.SliceCount = 1;
-                    FFileName.SetString(0, "");
+                    FFileName.SliceCount = 0; 
                 }
 
             }
@@ -547,8 +546,8 @@ namespace VVVV.Nodes.Http
                 }
                 else
                 {
-                    FGetMessages.SliceCount = 1;
-                    FGetMessages.SetString(0, "");
+                    FGetMessages.SliceCount = 0;
+                    
                 }
 
                 if (tPostMessages != null && tPostMessages.Count > 0)
@@ -561,8 +560,7 @@ namespace VVVV.Nodes.Http
                 }
                 else
                 {
-                    FPostMessages.SliceCount = 1;
-                    FPostMessages.SetString(0, "");
+                    FPostMessages.SliceCount = 0;
                 }
                 
             }

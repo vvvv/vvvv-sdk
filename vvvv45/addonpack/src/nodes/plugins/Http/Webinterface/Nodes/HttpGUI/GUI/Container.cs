@@ -11,13 +11,20 @@ namespace VVVV.Nodes.HttpGUI
 {
 
 
-    class Container:BaseGUINode, IPlugin, IDisposable
+    class Container : GuiNodeDynamic, IPlugin, IDisposable
     {
 
-        private List<DatenGuiContainer> mContainerDaten = new List<DatenGuiContainer>();
-        private List<BaseDatenObjekt> mGuiInDaten = new List<BaseDatenObjekt>();
+        #region field declaration
+
+
+        private IStringIn FSource;
+        private IStringIn FAlt;
         private string mNodeId;
+
+
         private bool FDisposed = false;
+
+        #endregion field declaration
 
 
         #region constructor/destructor
@@ -68,7 +75,7 @@ namespace VVVV.Nodes.HttpGUI
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
 
-                FHost.Log(TLogType.Message, "Container (Http Gui) Node is being deleted");
+                FHost.Log(TLogType.Message, "Image (Http Gui) Node is being deleted");
 
                 // Note that this is not thread safe.
                 // Another thread could start disposing the object
@@ -100,10 +107,18 @@ namespace VVVV.Nodes.HttpGUI
         #endregion constructor/destructor
 
 
+        #region pin creation
 
+        protected override void OnSetPluginHost()
+        {
+
+        }
+
+        #endregion pin creation
 
 
         #region Plugin Information
+
 
         private static IPluginInfo FPluginInfo;
         public static IPluginInfo PluginInfo
@@ -122,7 +137,7 @@ namespace VVVV.Nodes.HttpGUI
                     FPluginInfo.Category = "HTTP";
                     //the nodes version: optional. leave blank if not
                     //needed to distinguish two nodes of the same name and category
-                    FPluginInfo.Version = "GUI";
+                    FPluginInfo.Version = "HTML";
 
                     //the nodes author: your sign
                     FPluginInfo.Author = "phlegma";
@@ -153,149 +168,24 @@ namespace VVVV.Nodes.HttpGUI
         #endregion
 
 
+        #region Main Loop
 
-
-
-        #region Pin creation
-
-        protected override void OnPluginHostSet()
-        {
-
-            this.FHost.CreateNodeInput("Input GUI", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiIn);
-            FHttpGuiIn.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
-
-            mNodeId = "Container" + GetNodeID();
-        }
-
-        #endregion Pin creation
-
-
-
-
-
-        # region NodIO
-
-
-        public override void GetDatenObjekt(int Index, out BaseDatenObjekt GuiDaten)
-        {
-  
-                GuiDaten = mContainerDaten[Index];
-
-            
-        }
-
-        public override void GetFunktionObjekt(int Index, out JsFunktion FunktionsDaten)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-        #endregion NodeIO
-
-
-
-
-
-
-        #region Mainloop
-
-        protected override void OnConfigurate(IPluginConfig Input)
-        {
-
-        }
 
         protected override void OnEvaluate(int SpreadMax)
         {
-
-            int[] tSliceCount = {FTransformIn.SliceCount, FHttpStyleIn.SliceCount };
-            Array.Sort(tSliceCount);
-            int ArrayLength = tSliceCount.Length - 1;
-            FHttpGuiOut.SliceCount = tSliceCount[ArrayLength];
-
-
-            //TextInput
-            if (FTransformIn.PinIsChanged || mChangedStyle)
+            for (int i = 0; i < SpreadMax; i++)
             {
+                HtmlDiv tDiv = new HtmlDiv();
 
-                mContainerDaten.Clear();
+                tDiv.Insert("  ");
 
-                for (int i = 0; i < tSliceCount[ArrayLength]; i++)
-                {
+                SetTag(i, tDiv);
 
-                    string tSliceId = mNodeId + "/" + i;
-                    DatenGuiContainer tContainerDatenObjekt = new DatenGuiContainer(tSliceId, "Container", i);
-                    tContainerDatenObjekt.Class = tSliceId.Replace("/", "");
-                    
-
-
-                    // Transform In Pin
-                    Matrix4x4 tMatrix = new Matrix4x4();
-                    FTransformIn.GetMatrix(i, out tMatrix);
-
-                    SortedList<string, string> tTransform;
-                    GetTransformation(tMatrix, out tTransform);
-
-                    SortedList<string, string> tCssProperties;
-                    tCssProperties = tTransform;
-
- 
-                    SortedList<string, string> tCssPropertiesIn;
-                    mStyles.TryGetValue(i, out tCssPropertiesIn);
-
-                    if (tCssPropertiesIn != null)
-                    {
-                        foreach (KeyValuePair<string, string> pValuePair in tCssPropertiesIn)
-                        {
-                            if(tCssProperties.ContainsKey(pValuePair.Key))
-                            {
-                                tCssProperties.Remove(pValuePair.Key);
-                                tCssProperties.Add(pValuePair.Key, pValuePair.Value); 
-                            }else
-                            {
-                                tCssProperties.Add(pValuePair.Key, pValuePair.Value);
-                            }
-                            
-                        }
-                    }
-
-                    if(tCssProperties.ContainsKey("background-color"))
-                    {
-
-                    }else
-                    {
-                        tCssProperties.Add("background-color", "#cccccc"); 
-                    }
-
-
-                    tContainerDatenObjekt.CssProperties = tCssProperties;
-                    tContainerDatenObjekt.GuiObjektListe = mGuiInDaten;
-                    mContainerDaten.Add(tContainerDatenObjekt);
-                }
             }
-
-
-            int usS;
-            if (FUpstreamInterface != null)
-            {
-                FHttpGuiOut.SliceCount = tSliceCount[ArrayLength];
-                mGuiInDaten.Clear();
-
-                for (int i = 0; i < FHttpGuiIn.SliceCount; i++)
-                {
-                    //get upstream slice index
-
-                    FHttpGuiIn.GetUpsreamSlice(i, out usS);
-                    BaseDatenObjekt tGuiDaten;
-                    FUpstreamInterface.GetDatenObjekt(usS, out tGuiDaten);
-
-                    if (tGuiDaten != null)
-                    {
-                        mGuiInDaten.Add(tGuiDaten);
-                    }
-                }
-            }
-
-
         }
 
-        #endregion Mainloop
+
+        #endregion Main Loop
+
     }
 }

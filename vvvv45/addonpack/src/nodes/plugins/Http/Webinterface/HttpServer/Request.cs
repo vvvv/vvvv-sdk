@@ -19,6 +19,7 @@ namespace VVVV.Webinterface.HttpServer
         private string mHttpVersion;
         private string mFilename;
         private string mFileLocation;
+        private SocketInformation mSocketInformation;
         private SortedDictionary<string, string> mRequestHeadParameterList = new SortedDictionary<string, string>();
         private SortedDictionary<string, string> mRequestBodyParameterList = new SortedDictionary<string, string>();
         
@@ -109,11 +110,14 @@ namespace VVVV.Webinterface.HttpServer
 
         # region constructor
 
-        public Request(string pRequest, List<string> pFolderToServ, SortedList<string, byte[]> pHtmlPages)
+        public Request(string pRequest, List<string> pFolderToServ, SortedList<string, byte[]> pHtmlPages, SocketInformation pSocketInformation)
         {
+
+
 
             this.mFolderToServ = pFolderToServ;
             this.mHtmlPages = pHtmlPages;
+            this.mSocketInformation = pSocketInformation;
             mMessageHead = pRequest.Substring(0,pRequest.LastIndexOf(Environment.NewLine));
             mMessageBody = pRequest.Substring(pRequest.LastIndexOf(Environment.NewLine));
             mMessageBody = mMessageBody.TrimStart(new Char[] { '\n', '\r', '?' });
@@ -293,20 +297,29 @@ namespace VVVV.Webinterface.HttpServer
             if (mFilename == "ToVVVV.xml")
             {
 
-                string[] tVVVVParameter = mMessageBody.Split('&');
-                foreach (string tValuePair in tVVVVParameter)
+                string tRemoteIPAdresse = mSocketInformation.ClientSocket.RemoteEndPoint.ToString();
+                tRemoteIPAdresse = tRemoteIPAdresse.Split(':')[0];
+
+                if (mWebinterfaceSingelton.CheckIfMaster(tRemoteIPAdresse) == "Master")
                 {
-                    string[] tValue = tValuePair.Split('=');
-                    mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
+                    string[] tVVVVParameter = mMessageBody.Split('&');
+                    foreach (string tValuePair in tVVVVParameter)
+                    {
+                        string[] tValue = tValuePair.Split('=');
+                        mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
+                    }
+                    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("Master"), new HTTPStatusCode("").Code200);
                 }
-                mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("Received POST Request"), new HTTPStatusCode("").Code200);
+                else
+                {
+                    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("Slave"), new HTTPStatusCode("").Code200);
+                }
+                
             }
             else if (mFilename == "polling.xml")
             {
                 XmlDocument tMessage;
                 mWebinterfaceSingelton.getPollingMessage(out tMessage);
-
-                
 
                 if (tMessage != null)
                 {

@@ -133,7 +133,7 @@ namespace VVVV.Nodes.HttpGUI
                     FPluginInfo.Category = "HTTP";
                     //the nodes version: optional. leave blank if not
                     //needed to distinguish two nodes of the same name and category
-                    FPluginInfo.Version = "GUI";
+                    FPluginInfo.Version = "HTML";
 
                     //the nodes author: your sign
                     FPluginInfo.Author = "phlegma";
@@ -182,9 +182,6 @@ namespace VVVV.Nodes.HttpGUI
         }
 
         #endregion pin creation
-
-
-
 
 
 

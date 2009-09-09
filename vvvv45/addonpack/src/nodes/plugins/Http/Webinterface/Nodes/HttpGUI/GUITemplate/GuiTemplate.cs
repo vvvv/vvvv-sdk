@@ -9,9 +9,12 @@ namespace VVVV.Nodes.HttpGUI
     class GuiTemplate: GuiNodeDynamic, IPlugin, IDisposable
     {
 
+        #region field declaration 
+
         private bool FDisposed = false;
         private IValueOut FResponse;
-       
+
+        #endregion field declaration
 
 
         #region constructor/destructor
@@ -99,9 +102,6 @@ namespace VVVV.Nodes.HttpGUI
         #endregion constructor/destructor
 
 
-
-
-
         #region Pugin Information
 
         public static IPluginInfo FPluginInfo;
@@ -157,9 +157,6 @@ namespace VVVV.Nodes.HttpGUI
         #endregion Plugin Information
 
 
-
-
-
         #region pin creation
 
         protected override void OnSetPluginHost()
@@ -173,17 +170,6 @@ namespace VVVV.Nodes.HttpGUI
         #endregion pin creation
 
 
-
-
-        #region Config
-
-        // override the public void Configurate(IPluginConfig Input) Plugin Method with the new attribute if needed in this Node
-     
-        #endregion Config
-
-
-
-
         #region Main Loop
 
 
@@ -194,7 +180,7 @@ namespace VVVV.Nodes.HttpGUI
             //{
                 for (int i = 0; i < SpreadMax; i++)
                 {
-                    HtmlDiv tDiv = new HtmlDiv(mGuiDataList[i].SliceId, mGuiDataList[i].SliceId + " " + mGuiDataList[i].NodeId);
+                    HtmlDiv tDiv = new HtmlDiv();
 
                     tDiv.Insert("  ");
 

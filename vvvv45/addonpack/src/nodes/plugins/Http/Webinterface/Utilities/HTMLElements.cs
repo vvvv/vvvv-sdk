@@ -205,7 +205,7 @@ namespace VVVV.Webinterface.Utilities
             Name = "button";
             AddAttribute(new HTMLAttribute("type", "button"));
             AddAttribute(new HTMLAttribute("value", pButtonText));
-            Insert(new Text(pButtonText, false));
+            Insert(new HTMLText (pButtonText, false));
         }
 
         public Button(string pButtonText, string pId)
@@ -213,7 +213,7 @@ namespace VVVV.Webinterface.Utilities
             Name = "button";
             AddAttribute(new HTMLAttribute("type", "button"));
             AddAttribute(new HTMLAttribute("id", pId));
-            Insert(new Text(pButtonText, false));
+            Insert(new HTMLText(pButtonText, false));
         }
         
         
@@ -225,19 +225,19 @@ namespace VVVV.Webinterface.Utilities
 			AddAttribute(new HTMLAttribute("type", "button"));
             AddAttribute(new HTMLAttribute("value", pButtonText));
             AddAttribute(new HTMLAttribute("onclick", pButtonAction));
-			Insert(new Text(pButtonText, false));
+			Insert(new HTMLText(pButtonText, false));
         }
     }
 
-    class Text : Tag
+    class HTMLText : Tag
     {
-        public Text()
+        public HTMLText()
         {
             Name = "p";
         }
         
         
-        public Text(bool pEmbeddingInSpan)
+        public HTMLText(bool pEmbeddingInSpan)
         {
             if (pEmbeddingInSpan == true)
             {
@@ -248,7 +248,7 @@ namespace VVVV.Webinterface.Utilities
         }
         
         
-        public Text(string pText, bool pEmbeddingInSpan)
+        public HTMLText(string pText, bool pEmbeddingInSpan)
         {
             if (pEmbeddingInSpan == true)
             {
@@ -263,7 +263,7 @@ namespace VVVV.Webinterface.Utilities
         
         }
 
-        public Text(string pID ,string pText, bool pEmbeddingInSpan)
+        public HTMLText(string pID ,string pText, bool pEmbeddingInSpan)
         {
             if (pEmbeddingInSpan == true)
             {
@@ -279,7 +279,7 @@ namespace VVVV.Webinterface.Utilities
         
         }
 
-        public Text(string pID,string pClass, string pText, bool pEmbeddingInSpan)
+        public HTMLText(string pID,string pClass, string pText, bool pEmbeddingInSpan)
         {
             if (pEmbeddingInSpan == true)
             {
@@ -382,7 +382,7 @@ namespace VVVV.Webinterface.Utilities
             AddAttribute(new HTMLAttribute("type", "checkbox"));
             AddAttribute(new HTMLAttribute("id", pId));
             AddAttribute(new HTMLAttribute("value", pValue));
-            Insert(new Text(pName, false));
+            Insert(new HTMLText(pName, false));
         }
     }
 
@@ -456,7 +456,7 @@ namespace VVVV.Webinterface.Utilities
                 for (int i = 0; i < tDataRow.ItemArray.Length; i++)
                 {
                     TableData tElement = new TableData();
-					tElement.Insert(new Text(tDataRow[i].ToString(), false));
+					tElement.Insert(new HTMLText(tDataRow[i].ToString(), false));
 					tRow.Insert(tElement);
                 }
 
@@ -559,6 +559,27 @@ namespace VVVV.Webinterface.Utilities
             }
             
             
+        }
+
+        public JqueryFunction(bool pOnDocumentReady, string pSelector, string pCommand)
+        {
+            if (pOnDocumentReady)
+            {
+
+                string tText = @" $(document).ready(function(){{
+                   $('{0}').{1};
+                 }});";
+
+                Text = String.Format(tText, pSelector, pCommand);
+            }
+            else
+            {
+                string tText = @"$('{0}').{1}";
+
+                Text = String.Format(tText, pSelector, pCommand);
+            }
+
+
         }
     }
 

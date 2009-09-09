@@ -10,7 +10,7 @@ namespace VVVV.Webinterface.HttpServer
 
         
         private Socket mClientSocket;
-        private string mSocketId = String.Empty;
+        private string mSocketIP = String.Empty;
         private const int mBufferSize = 1024;
         private byte[] mDataBuffer = new byte[mBufferSize];
         public StringBuilder Request = new StringBuilder();
@@ -19,6 +19,8 @@ namespace VVVV.Webinterface.HttpServer
         private byte[] mResponseAsBytes;
         private SortedList<string, byte[]> mHtmlPages;
         private Request mRequestObject;
+        
+        
 
         public byte[] Buffer
         {
@@ -72,7 +74,7 @@ namespace VVVV.Webinterface.HttpServer
         {
             get
             {
-                return mSocketId;
+                return mSocketIP;
             }
         }
 
@@ -124,7 +126,7 @@ namespace VVVV.Webinterface.HttpServer
         public SocketInformation(Socket pClientSocket, string pSocketId)
         {
             this.mClientSocket = pClientSocket;
-            this.mSocketId = pSocketId;
+            this.mSocketIP = pSocketId;
         }
     }
 }

@@ -676,13 +676,60 @@ namespace VVVV.Webinterface
         }
          
 
-        
-
-        
 
         # endregion Daten Handling
 
 
+
+        #region Client Response Handling
+
+        string mMasterIP = String.Empty;
+        bool mSetNewMaster = true;
+        int mTimeOut = 2000;
+        private object _SyncCheck = new object();
+        //Create a timer that waits one minute, then invokes every 5 minutes.
+        Timer mMasterTimer;
+
+        public string CheckIfMaster(string IPAdress)
+        {
+            lock (_SyncCheck)
+            {
+                if (mMasterTimer == null)
+                {
+                    TimerCallback timerDelegate = new TimerCallback(this.TimerCall);
+                    mMasterTimer = new Timer(timerDelegate, null, mTimeOut, System.Threading.Timeout.Infinite);
+                }
+
+                if (mSetNewMaster == true)
+                {
+                    mMasterIP = IPAdress;
+                    mSetNewMaster = false;
+                    Debug.WriteLine(IPAdress + " is Master");
+                    return "Master";
+                }
+                else if (mSetNewMaster == false && mMasterIP == IPAdress)
+                {
+                    mMasterTimer.Change(mTimeOut, System.Threading.Timeout.Infinite);
+                    Debug.WriteLine(IPAdress + " is Master");
+                    return "Master";
+                }
+                else
+                {
+                    Debug.WriteLine(IPAdress + " is Slave");
+                    return "Slave";
+                }
+            }
+        }
+
+        private void TimerCall(object eventState)
+        {
+            mMasterIP = String.Empty;
+            mSetNewMaster = true;
+        }
+
+
+
+        #endregion Client Response Handling
 
     }
 

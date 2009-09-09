@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 using VVVV.Webinterface.Utilities;
 
@@ -71,7 +72,15 @@ namespace VVVV.Nodes.Http
             {
                 string tSliceId = pKeyPair.Key;
                 SortedList<string, string> tProperties = pKeyPair.Value;
+
+
+                
                 string tNodeId = tSliceId.Substring(0, tSliceId.Length - 5);
+                if (tSliceId.Contains("SliceId"))
+                {
+                    tNodeId = tNodeId.Replace("SliceId", "NodeId");
+                }
+
                 CreateCssRule(tProperties, tNodeId, tSliceId);
             }
 

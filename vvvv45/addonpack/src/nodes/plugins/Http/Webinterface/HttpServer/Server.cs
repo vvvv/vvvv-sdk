@@ -500,7 +500,7 @@ namespace VVVV.Webinterface.HttpServer {
                 mClientSocketList.Add(tClientSocket);
                 
                 //Adding Time and Socket to the SocketInformation Object 
-                SocketInformation tSocketInformations = new SocketInformation(tClientSocket, "Id");
+                SocketInformation tSocketInformations = new SocketInformation(tClientSocket, tClientSocket.RemoteEndPoint.ToString());
                 tSocketInformations.HtmlPages = mHtmlPages;
                 
 
@@ -578,10 +578,11 @@ namespace VVVV.Webinterface.HttpServer {
                     {
 
                         tSocketInformation.TimeStamp = DateTime.Now;
-                        
+                        Stopwatch myStop = new Stopwatch();
+                        myStop.Start();
                         try
                         {
-                            Request tRequest = new Request(tSocketInformation.Request.ToString(), mFoldersToServ, tSocketInformation.HtmlPages);
+                            Request tRequest = new Request(tSocketInformation.Request.ToString(), mFoldersToServ, tSocketInformation.HtmlPages, tSocketInformation);
                             tSocketInformation.RequestObject = tRequest;
                             tSocketInformation.ResponseAsBytes = tRequest.Response.TextInBytes;
 
@@ -591,7 +592,11 @@ namespace VVVV.Webinterface.HttpServer {
                             ////Debug.WriteLine(String.Format("Error in RequestHandling: {0}", ex.Message));
                             tSocketInformation.ResponseAsBytes = Encoding.UTF8.GetBytes(new ResponseHeader(new HTTPStatusCode("").Code200).Text);
                         }
-                
+                        
+                        myStop.Stop();
+                        Debug.WriteLine("Request time in ticks: " + myStop.ElapsedTicks.ToString());
+                        Debug.WriteLine("Request time in milliseconds: " + myStop.ElapsedMilliseconds.ToString());
+                        myStop = null;
                         //SendData(tSocketInformation);
                         tSocketInformation.ClientSocket.BeginSend(tSocketInformation.ResponseAsBytes, 0, tSocketInformation.ResponseAsBytes.Length, 0, new AsyncCallback(SendDataCallback), tSocketInformation);
                     }

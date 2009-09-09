@@ -241,7 +241,7 @@ namespace VVVV.Webinterface.Utilities
             for (int i = 0; i < pNumber; i++)
                 tBreaks += "<br>";
 
-            m_Tags.Add(new Text(tBreaks, false));
+            m_Tags.Add(new HTMLText(tBreaks, false));
         }
 
         /// <summary>

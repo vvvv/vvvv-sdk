@@ -2,37 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VVVV.PluginInterfaces.V1;
-using VVVV.Nodes.HttpGUI.Datenobjekte;
-using VVVV.Utils.VMath;
-using VVVV.Webinterface;
-using VVVV.Webinterface.Data;
 using VVVV.Webinterface.Utilities;
 
 namespace VVVV.Nodes.HttpGUI
 {
-    class Textfield:BaseGUINode,IPlugin, IDisposable
+    class Textfield : GuiNodeDynamic, IPlugin, IDisposable
     {
-
-
-
 
         #region field declaration
 
-        private IStringIn FValue;
+        private bool FDisposed = false;
         private IStringOut FResponse;
 
-        private List<DatenGuiTextfield> mTextfieldGuiDaten = new List<DatenGuiTextfield>();
-        private string mNodeId;
-
-        private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
-        private NodeObserver mObserver;
-        private bool FDisposed = false;
-        private string[] mOldSpreadValues;
-
         #endregion field declaration
-
-
-
 
 
         #region constructor/destructor
@@ -43,7 +25,6 @@ namespace VVVV.Nodes.HttpGUI
         /// </summary>
         public Textfield()
         {
-            
         }
 
         /// <summary>
@@ -51,6 +32,10 @@ namespace VVVV.Nodes.HttpGUI
         /// Do not make this method virtual.
         /// A derived class should not be able to override this method.
         /// </summary>
+        /// 
+
+        #region Dispose
+
         public void Dispose()
         {
             Dispose(true);
@@ -82,9 +67,8 @@ namespace VVVV.Nodes.HttpGUI
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
-
-                mWebinterfaceSingelton.DeleteNode(mObserver);
-                FHost.Log(TLogType.Message, "Textfield (Http Gui) Node is being deleted");
+                //mWebinterfaceSingelton.DeleteNode(mObserver);
+                FHost.Log(TLogType.Message, FPluginInfo.Name.ToString() + "Textfield (Http Gui) Node is being deleted");
 
                 // Note that this is not thread safe.
                 // Another thread could start disposing the object
@@ -113,17 +97,15 @@ namespace VVVV.Nodes.HttpGUI
             Dispose(false);
         }
 
+        #endregion dispose
+
         #endregion constructor/destructor
 
 
+        #region Pugin Information
 
+        public static IPluginInfo FPluginInfo;
 
-
-
-
-        #region Plugin Information
-
-        private static IPluginInfo FPluginInfo;
         public static IPluginInfo PluginInfo
         {
             get
@@ -156,6 +138,8 @@ namespace VVVV.Nodes.HttpGUI
                     //any known usage of the node that may cause troubles?
                     FPluginInfo.Warnings = "";
 
+
+
                     //leave below as is
                     System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
                     System.Diagnostics.StackFrame sf = st.GetFrame(0);
@@ -164,279 +148,79 @@ namespace VVVV.Nodes.HttpGUI
                     FPluginInfo.Class = method.DeclaringType.Name;
                     //leave above as is
                 }
+
                 return FPluginInfo;
             }
         }
 
-        #endregion
 
-
-
+        #endregion Plugin Information
 
 
 
         #region pin creation
 
-        protected override void OnPluginHostSet()
+        protected override void OnSetPluginHost()
         {
-            //this.FHost.CreateStringInput("Label", TSliceMode.Dynamic, TPinVisibility.True, out FLabel);
-            //FLabel.SetSubType("", false);
-            
-            this.FHost.CreateStringInput("Value", TSliceMode.Dynamic, TPinVisibility.True, out FValue);
-            FValue.SetSubType("", false);
-
-            this.FHost.CreateStringOutput("Response", TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
+            // create required pins
+            FHost.CreateStringOutput("Response",TSliceMode.Dynamic,TPinVisibility.True, out FResponse);
             FResponse.SetSubType("", false);
 
-            mNodeId = "Textfield" + GetNodeID();
-            mObserver = mWebinterfaceSingelton.AddNode(mNodeId);
         }
 
         #endregion pin creation
 
 
+        #region Main Loop
 
-
-
-
-
-        #region Node IO
-
-
-
-        public override void GetDatenObjekt(int Index, out BaseDatenObjekt GuiDaten)
-        {
-            GuiDaten = mTextfieldGuiDaten[Index];
-        }
-
-        public override void GetFunktionObjekt(int Index, out JsFunktion FunktionsDaten)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        #endregion Node IO
-
-
-
-
-
-
-
-
-        #region MainLoop
-
-
-
-        protected override void OnConfigurate(IPluginConfig Input)
-        {
-           
-        }
 
 
         protected override void OnEvaluate(int SpreadMax)
         {
-            int[] tSliceCount = { FTransformIn.SliceCount, FValue.SliceCount, FHttpStyleIn.SliceCount };
-            Array.Sort(tSliceCount);
-            int ArrayLength = tSliceCount.Length - 1;
-            FHttpGuiOut.SliceCount = tSliceCount[ArrayLength];
-
-
-
-
-
-            if (FValue.PinIsChanged || FTransformIn.PinIsChanged || mChangedStyle)
+            //if (mChangedSpreadSize)
+            //{
+            for (int i = 0; i < SpreadMax; i++)
             {
-                mTextfieldGuiDaten.Clear();
+                TextField tTextfield = new TextField();
+
+                tTextfield.Insert("  ");
+
+                //SetBodyContent(i, tDiv.Text);
+
+                SetTag(i, tTextfield);
 
 
-                //Look witch slice changed
-                string SpreadAsString = FValue.SpreadAsString;
-                string[] tSpreadValues = SpreadAsString.Split(new char[] { ',' });
-                bool[] tChangedSlice = new bool[tSliceCount[ArrayLength]];
+                FResponse.SliceCount = SpreadMax;
 
 
-                if (mOldSpreadValues != null)
+                string tResponse;
+                GetNewDataFromServer(mGuiDataList[i].SliceId, out tResponse);
+
+
+                if (tResponse != "")
                 {
-                    if (mOldSpreadValues.Length <= tSpreadValues.Length)
-                    {
-                        for (int j = 0; j < mOldSpreadValues.Length; j++)
-                        {
-                            if (mOldSpreadValues[j] == tSpreadValues[j])
-                            {
-                                tChangedSlice[j] = false;
-                            }
-                            else
-                            {
-                                tChangedSlice[j] = true;
-                            }
-                        }
-
-                        for (int i = mOldSpreadValues.Length; i < tSliceCount[ArrayLength]; i++)
-                        {
-                            tChangedSlice[i] = true;
-                        }
-                    }
-                    else
-                    {
-                        for (int j = 0; j < tSpreadValues.Length; j++)
-                        {
-                            if (mOldSpreadValues[j] == tSpreadValues[j])
-                            {
-                                tChangedSlice[j] = false;
-                            }
-                            else
-                            {
-                                tChangedSlice[j] = true;
-                            }
-                        }
-                        for (int i = tSpreadValues.Length; i < tSliceCount[ArrayLength]; i++)
-                        {
-                            tChangedSlice[i] = true;
-                        }
-                    }
+                    FResponse.SetString(i, tResponse);
+                }
+                else
+                {
+                    FResponse.SliceCount = 0;
                 }
 
-
-                mOldSpreadValues = tSpreadValues;
-
-
-
-
-
-
-                for (int i = 0; i < tSliceCount[ArrayLength]; i++)
-                {
-
-                   FHttpGuiOut.SliceCount = SpreadMax;
-                   FResponse.SliceCount = SpreadMax;
-                   string tSliceId = mNodeId + "/" + i;
-                   DatenGuiTextfield tTextfieldGuiDaten = new DatenGuiTextfield(tSliceId, "Textfield", i);
-                   
-                   tTextfieldGuiDaten.Class = tSliceId.Replace("/", "");
-
-
-
-                    //Label
-                    //string currentLabelSlice;
-                    //FLabel.GetString(i, out currentLabelSlice);
-
-
-                    
-                        //if (currentLabelSlice != null)
-                        //{
-                        //    tTextfieldGuiDaten.Label = currentLabelSlice;
-                        //}
-                        //else
-                        //{
-                        //    tTextfieldGuiDaten.Label = "";
-                        //}
-                    
-
-
-                    //Value Pin
-                    
-
-
-
-
-                    if (tChangedSlice[i] == true && FValue.PinIsChanged)
-                    {
-                        string currentValueSlice;
-                        FValue.GetString(i, out currentValueSlice);
-                        FResponse.SetString(i, currentValueSlice);
-
-                        if (currentValueSlice != null)
-                        {
-                            JavaScript tJava = new JavaScript();
-                            tJava.Insert("parent.window.setNewDaten('" + tSliceId + "','" + currentValueSlice + "');");
-                            mWebinterfaceSingelton.NotifyServer(tJava.Text);
-                            tTextfieldGuiDaten.Value = currentValueSlice;
-                            mWebinterfaceSingelton.setNodeDaten(tSliceId, currentValueSlice.ToString());
-                        }
-                        else
-                        {
-                            JavaScript tJava = new JavaScript();
-                            tJava.Insert("parent.window.setNewDaten('" + tSliceId + "','" + currentValueSlice + "');");
-                            mWebinterfaceSingelton.NotifyServer(tJava.Text);
-                            tTextfieldGuiDaten.Value = "";
-                            mWebinterfaceSingelton.setNodeDaten(tSliceId, "");
-                        }
-                    }
-                    
-                   
-
-                    //Function 
-                    tTextfieldGuiDaten.JsFunktion.Name = tSliceId.Replace("/", "");
-                    tTextfieldGuiDaten.JsFunktion.Parameter = tSliceId;
-                    tTextfieldGuiDaten.JsFunktion.Content = JSToolkit.TextfieldSendData();
-
-                    // Tansform Pin
-                    Matrix4x4 tMatrix = new Matrix4x4();
-                    FTransformIn.GetMatrix(i, out tMatrix);
-
-                    SortedList<string, string> tTransform;
-                    GetTransformation(tMatrix, out tTransform);
-
-                    SortedList<string, string> tCssProperties;
-                    tCssProperties = tTransform;
-
-                    SortedList<string, string> tCssPropertiesIn;
-                    mStyles.TryGetValue(i, out tCssPropertiesIn);
-
-                    if (tCssPropertiesIn != null)
-                    {
-                        foreach (KeyValuePair<string, string> pValuePair in tCssPropertiesIn)
-                        {
-                            if (tCssProperties.ContainsKey(pValuePair.Key))
-                            {
-                                tCssProperties.Remove(pValuePair.Key);
-                                tCssProperties.Add(pValuePair.Key, pValuePair.Value);
-                            }
-                            else
-                            {
-                                tCssProperties.Add(pValuePair.Key, pValuePair.Value);
-                            }
-
-                        }
-                    }
-
-                    tTextfieldGuiDaten.CssProperties = tCssProperties;
-                    mTextfieldGuiDaten.Add(tTextfieldGuiDaten);
-                }
             }
 
-            if (mObserver.ToNode != null)
-            {
-                string SliceId = mObserver.ToNode;
-                string tNodeId = GetNodeIdformSliceId(SliceId);
 
-                if ((mObserver.ObserverState == "Server") && (mNodeId == tNodeId))
-                {
-
-                    SortedList<string, string> tValuePair = mWebinterfaceSingelton.Daten;
-                    string tValue;
-                    tValuePair.TryGetValue(SliceId, out tValue);
-                    int tSliceIndex = Convert.ToInt16(GetSliceFormSliceId(mObserver.ToNode));
-
-                    FResponse.SetString(tSliceIndex, tValue);
-                    //mLogger.log(mLogger.LogType.Debug, "Node: " + mNodeId + " changed Value: " + tSliceKeys.Value + " at Index: " + tSliceIndex + " from Server");
+            string tContent = @"var id = $(this).attr('id');
+                var content = $(this).val();
+                $.post('ToVVVV.xml', id + '=' + content, null);              
+                ";
+            SetJavaScript(0, new JqueryFunction(true, "." + mGuiDataList[0].NodeId, "keyup", tContent).Text);
 
 
-                    //FLastStateOut.SetString(0, "Daten vom Server");
-                    //mWebinterfaceSingelton.SubjectState = "VVVV";
 
-                    mWebinterfaceSingelton.setSubbjectStateToVVVV();
-                }
-            }
-            else
-            {
-
-            }
+            //}
         }
 
 
-
-       #endregion Main Loop
-
+        #endregion Main Loop
     }
 }
