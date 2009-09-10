@@ -88,6 +88,8 @@ namespace VVVV.Nodes
 		private int FOnlineCheckID = 0;
 		private int FWatchCheckID = 0;
 		private bool FLoading = true;
+		private int FWatchProcessID = 0;
+		private string FWatchProcessName;
 		
 		private System.Net.Sockets.TcpClient FTCPClient;
 		private System.Net.Sockets.NetworkStream FTCPStream;
@@ -651,7 +653,7 @@ namespace VVVV.Nodes
 			this.RemotingBox.Dock = System.Windows.Forms.DockStyle.Top;
 			this.RemotingBox.Location = new System.Drawing.Point(3, 338);
 			this.RemotingBox.Name = "RemotingBox";
-			this.RemotingBox.Size = new System.Drawing.Size(317, 50);
+			this.RemotingBox.Size = new System.Drawing.Size(316, 50);
 			this.RemotingBox.TabIndex = 3;
 			this.RemotingBox.TabStop = false;
 			this.RemotingBox.Text = "Remoting";
@@ -701,7 +703,7 @@ namespace VVVV.Nodes
 			this.MirrorBox.Dock = System.Windows.Forms.DockStyle.Top;
 			this.MirrorBox.Location = new System.Drawing.Point(3, 193);
 			this.MirrorBox.Name = "MirrorBox";
-			this.MirrorBox.Size = new System.Drawing.Size(317, 145);
+			this.MirrorBox.Size = new System.Drawing.Size(316, 145);
 			this.MirrorBox.TabIndex = 2;
 			this.MirrorBox.TabStop = false;
 			this.MirrorBox.Text = "Mirror";
@@ -711,7 +713,7 @@ namespace VVVV.Nodes
 			this.IgnorePattern.Dock = System.Windows.Forms.DockStyle.Top;
 			this.IgnorePattern.Location = new System.Drawing.Point(3, 123);
 			this.IgnorePattern.Name = "IgnorePattern";
-			this.IgnorePattern.Size = new System.Drawing.Size(311, 20);
+			this.IgnorePattern.Size = new System.Drawing.Size(310, 20);
 			this.IgnorePattern.TabIndex = 23;
 			this.IgnorePattern.Text = "*.v4p; *~.xml";
 			this.IgnorePattern.TextChanged += new System.EventHandler(this.SettingsChanged);
@@ -721,7 +723,7 @@ namespace VVVV.Nodes
 			this.label7.Dock = System.Windows.Forms.DockStyle.Top;
 			this.label7.Location = new System.Drawing.Point(3, 108);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(311, 15);
+			this.label7.Size = new System.Drawing.Size(310, 15);
 			this.label7.TabIndex = 54;
 			this.label7.Text = "Ignore Pattern";
 			// 
@@ -730,7 +732,7 @@ namespace VVVV.Nodes
 			this.TargetPath.Dock = System.Windows.Forms.DockStyle.Top;
 			this.TargetPath.Location = new System.Drawing.Point(3, 88);
 			this.TargetPath.Name = "TargetPath";
-			this.TargetPath.Size = new System.Drawing.Size(311, 20);
+			this.TargetPath.Size = new System.Drawing.Size(310, 20);
 			this.TargetPath.TabIndex = 22;
 			this.TargetPath.TextChanged += new System.EventHandler(this.SettingsChanged);
 			// 
@@ -739,7 +741,7 @@ namespace VVVV.Nodes
 			this.label6.Dock = System.Windows.Forms.DockStyle.Top;
 			this.label6.Location = new System.Drawing.Point(3, 73);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(311, 15);
+			this.label6.Size = new System.Drawing.Size(310, 15);
 			this.label6.TabIndex = 52;
 			this.label6.Text = "Target Path";
 			// 
@@ -748,7 +750,7 @@ namespace VVVV.Nodes
 			this.SourcePath.Dock = System.Windows.Forms.DockStyle.Top;
 			this.SourcePath.Location = new System.Drawing.Point(3, 53);
 			this.SourcePath.Name = "SourcePath";
-			this.SourcePath.Size = new System.Drawing.Size(311, 20);
+			this.SourcePath.Size = new System.Drawing.Size(310, 20);
 			this.SourcePath.TabIndex = 21;
 			this.SourcePath.TextChanged += new System.EventHandler(this.SettingsChanged);
 			// 
@@ -757,7 +759,7 @@ namespace VVVV.Nodes
 			this.label4.Dock = System.Windows.Forms.DockStyle.Top;
 			this.label4.Location = new System.Drawing.Point(3, 38);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(311, 15);
+			this.label4.Size = new System.Drawing.Size(310, 15);
 			this.label4.TabIndex = 50;
 			this.label4.Text = "Source Path";
 			// 
@@ -768,7 +770,7 @@ namespace VVVV.Nodes
 			this.MirrorPathPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.MirrorPathPanel.Location = new System.Drawing.Point(3, 16);
 			this.MirrorPathPanel.Name = "MirrorPathPanel";
-			this.MirrorPathPanel.Size = new System.Drawing.Size(311, 22);
+			this.MirrorPathPanel.Size = new System.Drawing.Size(310, 22);
 			this.MirrorPathPanel.TabIndex = 20;
 			// 
 			// MirrorPathLabel
@@ -776,7 +778,7 @@ namespace VVVV.Nodes
 			this.MirrorPathLabel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.MirrorPathLabel.Location = new System.Drawing.Point(43, 0);
 			this.MirrorPathLabel.Name = "MirrorPathLabel";
-			this.MirrorPathLabel.Size = new System.Drawing.Size(268, 22);
+			this.MirrorPathLabel.Size = new System.Drawing.Size(267, 22);
 			this.MirrorPathLabel.TabIndex = 48;
 			this.MirrorPathLabel.Text = "\\Mirror";
 			this.MirrorPathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -801,7 +803,7 @@ namespace VVVV.Nodes
 			this.VNCBox.Dock = System.Windows.Forms.DockStyle.Top;
 			this.VNCBox.Location = new System.Drawing.Point(3, 130);
 			this.VNCBox.Name = "VNCBox";
-			this.VNCBox.Size = new System.Drawing.Size(317, 63);
+			this.VNCBox.Size = new System.Drawing.Size(316, 63);
 			this.VNCBox.TabIndex = 1;
 			this.VNCBox.TabStop = false;
 			this.VNCBox.Text = "VNC";
@@ -813,7 +815,7 @@ namespace VVVV.Nodes
 			this.VNCPathPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.VNCPathPanel.Location = new System.Drawing.Point(3, 16);
 			this.VNCPathPanel.Name = "VNCPathPanel";
-			this.VNCPathPanel.Size = new System.Drawing.Size(311, 22);
+			this.VNCPathPanel.Size = new System.Drawing.Size(310, 22);
 			this.VNCPathPanel.TabIndex = 10;
 			// 
 			// VNCPathLabel
@@ -821,7 +823,7 @@ namespace VVVV.Nodes
 			this.VNCPathLabel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.VNCPathLabel.Location = new System.Drawing.Point(43, 0);
 			this.VNCPathLabel.Name = "VNCPathLabel";
-			this.VNCPathLabel.Size = new System.Drawing.Size(268, 22);
+			this.VNCPathLabel.Size = new System.Drawing.Size(267, 22);
 			this.VNCPathLabel.TabIndex = 48;
 			this.VNCPathLabel.Text = "\\UltraVNC";
 			this.VNCPathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -867,7 +869,7 @@ namespace VVVV.Nodes
 			this.PsToolsBox.Dock = System.Windows.Forms.DockStyle.Top;
 			this.PsToolsBox.Location = new System.Drawing.Point(3, 3);
 			this.PsToolsBox.Name = "PsToolsBox";
-			this.PsToolsBox.Size = new System.Drawing.Size(317, 127);
+			this.PsToolsBox.Size = new System.Drawing.Size(316, 127);
 			this.PsToolsBox.TabIndex = 0;
 			this.PsToolsBox.TabStop = false;
 			this.PsToolsBox.Text = "PsTools";
@@ -888,7 +890,7 @@ namespace VVVV.Nodes
 			this.PsToolsProcessPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.PsToolsProcessPanel.Location = new System.Drawing.Point(3, 85);
 			this.PsToolsProcessPanel.Name = "PsToolsProcessPanel";
-			this.PsToolsProcessPanel.Size = new System.Drawing.Size(311, 39);
+			this.PsToolsProcessPanel.Size = new System.Drawing.Size(310, 39);
 			this.PsToolsProcessPanel.TabIndex = 42;
 			// 
 			// PsToolsPathPanel
@@ -898,7 +900,7 @@ namespace VVVV.Nodes
 			this.PsToolsPathPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.PsToolsPathPanel.Location = new System.Drawing.Point(3, 16);
 			this.PsToolsPathPanel.Name = "PsToolsPathPanel";
-			this.PsToolsPathPanel.Size = new System.Drawing.Size(311, 22);
+			this.PsToolsPathPanel.Size = new System.Drawing.Size(310, 22);
 			this.PsToolsPathPanel.TabIndex = 0;
 			// 
 			// PsToolsPathLabel
@@ -906,7 +908,7 @@ namespace VVVV.Nodes
 			this.PsToolsPathLabel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.PsToolsPathLabel.Location = new System.Drawing.Point(43, 0);
 			this.PsToolsPathLabel.Name = "PsToolsPathLabel";
-			this.PsToolsPathLabel.Size = new System.Drawing.Size(268, 22);
+			this.PsToolsPathLabel.Size = new System.Drawing.Size(267, 22);
 			this.PsToolsPathLabel.TabIndex = 48;
 			this.PsToolsPathLabel.Text = "\\PsTools";
 			this.PsToolsPathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1912,33 +1914,38 @@ namespace VVVV.Nodes
 			string filename = FPsToolsPath + "\\";
 			string workingdir = "";
 			string arguments = "\\\\" + Host + " -u " + PsToolsUsername.Text + " -p " + PsToolsPassword.Text;
+			ProcessControl pc;
 			
 			switch (Command)
 			{
 				case TPsToolCommand.Execute:
 					{
 						filename += "psexec.exe";
-						arguments += " -s -i -d -low " + RemoteProcessPathComboBox.Text;
-						workingdir = System.IO.Path.GetDirectoryName(RemoteProcessPathComboBox.Text);
+						pc = PsToolsProcessPanel.Controls[RemoteProcessPathComboBox.SelectedIndex] as ProcessControl;
+						arguments += " -i -d \"" + pc.Process + "\" " + pc.Arguments;
+						workingdir = System.IO.Path.GetDirectoryName(pc.Process);
 						break;
 					}
 				case TPsToolCommand.Kill:
 					{
 						filename += "pskill.exe";
-						arguments += " " + System.IO.Path.GetFileNameWithoutExtension(RemoteProcessPathComboBox.Text);
+						pc = PsToolsProcessPanel.Controls[RemoteProcessPathComboBox.SelectedIndex] as ProcessControl;
+						arguments += " " + System.IO.Path.GetFileNameWithoutExtension(pc.Process);
 						break;
 					}
 				case TPsToolCommand.Watch:
 					{
 						filename += "pslist.exe";
-						arguments += " -m " + WatchProcessPathComboBox.Text;
+						pc = PsToolsProcessPanel.Controls[FWatchProcessID] as ProcessControl;
+						arguments += " -m " + System.IO.Path.GetFileNameWithoutExtension(pc.Process);
 						break;
 					}
 				case TPsToolCommand.WatchExecute:
 					{
 						filename += "psexec.exe";
-						arguments += " -s -i -d -low " + WatchProcessPathComboBox.Text;
-						workingdir = System.IO.Path.GetDirectoryName(WatchProcessPathComboBox.Text);
+						pc = PsToolsProcessPanel.Controls[FWatchProcessID] as ProcessControl;
+						arguments += " -i -d \"" + pc.Process + "\" " + pc.Arguments;
+						workingdir = System.IO.Path.GetDirectoryName(pc.Process);
 						break;
 					}
 				case TPsToolCommand.Reboot:
@@ -1988,9 +1995,9 @@ namespace VVVV.Nodes
 					sOut = proc.StandardOutput;
 					do
 					{
-						result += sOut.ReadLine();
+						result += sOut.ReadLine() + "\n";
 					}
-					while(!proc.HasExited);
+					while(!sOut.EndOfStream); //!proc.HasExited);
 					sOut.Close();
 				}
 				/*
@@ -2090,7 +2097,7 @@ namespace VVVV.Nodes
 				if ((ipc.IsSelected) && (ipc.IsOnline))
 			{
 				arguments = "\"" + SourcePath.Text + "\" \"\\\\" + ipc.IP + TargetPath.Text + "\"" + ignorepattern + testonly;
-				Execute(FMirrorPath + "\\mirror.exe", FMirrorPath, arguments, true);
+				FHost.Log(TLogType.Message, Execute(FMirrorPath + "\\mirror.exe", FMirrorPath, arguments, true));
 			}
 		}
 		
@@ -2186,7 +2193,7 @@ namespace VVVV.Nodes
 						{
 							//this only detects processes that have vanished, not hanging ones.
 							string result = ExecutePsToolCommand(TPsToolCommand.Watch, ipc.IP);
-							if (result.Contains("process " + WatchProcessPathComboBox.Text + " was not found"))
+							if (result.Contains("process " + System.IO.Path.GetFileNameWithoutExtension(FWatchProcessName) + " was not found"))
 							{
 								ipc.AppIsOnline = false;
 								
@@ -2335,7 +2342,7 @@ namespace VVVV.Nodes
 				//commands
 				tool = FSettings.SelectSingleNode(@"REMOTER/COMMANDS");
 				attr = tool.Attributes.GetNamedItem("RemoteProcessPath") as XmlAttribute;
-				RemoteProcessPathComboBox.Text = attr.Value;
+				RemoteProcessPathComboBox.SelectedIndex = int.Parse(attr.Value);
 				
 				attr = tool.Attributes.GetNamedItem("WatchMode") as XmlAttribute;
 				FWatchMode = (TWatchMode) Enum.Parse(typeof(TWatchMode), attr.Value);
@@ -2347,7 +2354,10 @@ namespace VVVV.Nodes
 				}
 				
 				attr = tool.Attributes.GetNamedItem("WatchProcessPath") as XmlAttribute;
-				WatchProcessPathComboBox.Text = attr.Value;
+				FWatchProcessID = int.Parse(attr.Value);
+				WatchProcessPathComboBox.SelectedIndex = FWatchProcessID;
+				ProcessControl pc = PsToolsProcessPanel.Controls[FWatchProcessID] as ProcessControl;
+				FWatchProcessName = pc.Process;
 				
 				//simulator
 				FSettings.LoadXml(Settings); //not sure why need to load here again
@@ -2446,11 +2456,10 @@ namespace VVVV.Nodes
 			//remoting
 			
 			//commands
-			//mirror
 			tool = FSettings.CreateElement("COMMANDS");
 			main.AppendChild(tool);
 			attr = FSettings.CreateAttribute("RemoteProcessPath");
-			attr.Value = RemoteProcessPathComboBox.Text;
+			attr.Value = RemoteProcessPathComboBox.SelectedIndex.ToString();
 			tool.Attributes.Append(attr);
 			
 			attr = FSettings.CreateAttribute("WatchMode");
@@ -2458,7 +2467,10 @@ namespace VVVV.Nodes
 			tool.Attributes.Append(attr);
 			
 			attr = FSettings.CreateAttribute("WatchProcessPath");
-			attr.Value = WatchProcessPathComboBox.Text;
+			FWatchProcessID = WatchProcessPathComboBox.SelectedIndex;
+			ProcessControl pcc = PsToolsProcessPanel.Controls[FWatchProcessID] as ProcessControl;
+			FWatchProcessName = pcc.Process;
+			attr.Value = FWatchProcessID.ToString();
 			tool.Attributes.Append(attr);
 			
 			//simulator
@@ -2611,10 +2623,7 @@ namespace VVVV.Nodes
 			RemoteProcessPathComboBox.Items.Clear();
 			foreach(ProcessControl pc in PsToolsProcessPanel.Controls)
 			{
-				process = System.IO.Path.GetFileNameWithoutExtension(pc.Process);
-				if (!WatchProcessPathComboBox.Items.Contains(process))
-					WatchProcessPathComboBox.Items.Add(process);
-				
+				WatchProcessPathComboBox.Items.Add(pc.Process + " " + pc.Arguments);
 				RemoteProcessPathComboBox.Items.Add(pc.Process + " " + pc.Arguments);
 			}
 		}
