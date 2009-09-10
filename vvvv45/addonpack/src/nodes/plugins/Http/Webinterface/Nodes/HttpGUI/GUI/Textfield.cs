@@ -194,7 +194,7 @@ namespace VVVV.Nodes.HttpGUI
 
 
                 string tResponse;
-                GetNewDataFromServer(mGuiDataList[i].SliceId, out tResponse);
+                GetNewDataFromServer(mGuiDataList[i].SliceId,i, out tResponse);
 
 
                 if (tResponse != "")

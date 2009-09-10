@@ -306,7 +306,11 @@ namespace VVVV.Webinterface.HttpServer
                     foreach (string tValuePair in tVVVVParameter)
                     {
                         string[] tValue = tValuePair.Split('=');
-                        mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
+                        
+                        if (tValue.Length > 1)
+                        {
+                            mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
+                        }
                     }
                     mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("Master"), new HTTPStatusCode("").Code200);
                 }

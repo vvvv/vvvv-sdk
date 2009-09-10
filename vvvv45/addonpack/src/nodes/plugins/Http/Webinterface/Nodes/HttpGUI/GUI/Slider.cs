@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Webinterface.Utilities;
+using System.Diagnostics;
 
 namespace VVVV.Nodes.HttpGUI
 {
@@ -72,7 +73,9 @@ namespace VVVV.Nodes.HttpGUI
                 // only the following code is executed.
                 //mWebinterfaceSingelton.DeleteNode(mObserver);
                 FHost.Log(TLogType.Message, FPluginInfo.Name.ToString() + "Slider (Http Gui) Node is being deleted");
-
+                string tId;
+                FHost.GetNodePath(true, out tId);
+                Debug.WriteLine("onDispose:" + tId);
                 // Note that this is not thread safe.
                 // Another thread could start disposing the object
                 // after the managed resources are disposed,
@@ -171,7 +174,7 @@ namespace VVVV.Nodes.HttpGUI
             FHost.CreateStringInput("Name", TSliceMode.Dynamic, TPinVisibility.True, out FName);
             FName.SetSubType("", false);
 
-            FHost.UpdateEnum("Orientation", "X", new string[] { "X", "Y"});
+            FHost.UpdateEnum("Orientation", "horizontal", new string[] { "horizontal", "horizontal" });
             FHost.CreateEnumInput("Orientation", TSliceMode.Single, TPinVisibility.True, out FOrientation);
             FOrientation.SetSubType("Orientation");
             
@@ -192,9 +195,31 @@ namespace VVVV.Nodes.HttpGUI
             //{
             for (int i = 0; i < SpreadMax; i++)
             {
+                //Check if there are new Messages on the Server
+                FResponse.SliceCount = SpreadMax;
 
+                string tResponse;
+                GetNewDataFromServer(mGuiDataList[i].SliceId, i, out tResponse);
+
+
+                if (tResponse != "")
+                {
+                    FResponse.SetValue(i, Convert.ToDouble(tResponse));
+                }
+                else
+                {
+
+                }
+
+
+                //Create Slider Elements and set them to the graph
                 string currentOrientation = String.Empty;
                 string currentName = String.Empty;
+                string currentSavedValue = GetSavedValue(i);
+                if (currentSavedValue == null )
+                {
+                    currentSavedValue = "0";
+                }
 
                 FName.GetString(i, out currentName);
                 FOrientation.GetString(i, out currentOrientation);
@@ -203,47 +228,60 @@ namespace VVVV.Nodes.HttpGUI
 
                 HtmlDiv tMainContainer = new HtmlDiv();
                 HtmlDiv tSlider = new HtmlDiv(SliderId);
-                HTMLText tText = new HTMLText(currentName, false);
+                HTMLText tText = new HTMLText(currentName, true);
+
+                string SliderValueId = SliderId + "Value";
+                TextField tSliderValueText = new TextField(SliderValueId, currentSavedValue);
 
                 //string AttributeSliderContent = "position:absolute; right:0; width:80%";
                 //HTMLAttribute tSliderAttribute = new HTMLAttribute("style", AttributeSliderContent);
                 //tSlider.AddAttribute(tSliderAttribute);
 
 
-
                 tMainContainer.Insert(tText);
+                tMainContainer.Insert(tSliderValueText);
                 tMainContainer.Insert(tSlider);
                 
 
                 SetTag(i, tMainContainer);
 
 
-                FResponse.SliceCount = SpreadMax;
+
+                
+
+                string TextfeldJsContent = @"
+var value = $(this).val();
+var SliderValue = value * 1000;
+$('{0}').slider('option', 'value', SliderValue);
+var content = '{1}' + '=' + value; 
+$.post('ToVVVV.xml',content, null);
+";
+
+                JqueryFunction tTextJS = new JqueryFunction(true, "#" + SliderValueId, "keyup", String.Format(TextfeldJsContent, "#" + SliderId, mGuiDataList[i].SliceId));
+
+                string SliderInitalize =
+@"slider({{
+          animate: true,
+          max: 1000,
+          min: 0,
+          orientation: '{0}',
+          step:1,
+          value: {1},
+          slide: function(event,ui){{
+                  var id = $(this).attr('id');
+                  var value = $('{2}').slider('option', 'value');
+                  var SliderValue = value / 1000;
+                  var content = '{3}' + '=' + SliderValue; 
+                  $.post('ToVVVV.xml',content, null);
+                  $('{4}').val(SliderValue);
+                  }},
+          }})
+          ";
 
 
-                string tResponse;
-                GetNewDataFromServer(mGuiDataList[i].SliceId, out tResponse);
-
-
-                if (tResponse != "")
-                {
-                    FResponse.SetValue(i, Convert.ToInt32(tResponse));
-                }
-                else
-                {
-                    FResponse.SetValue(i, 0);
-                }
-
-//                string tContent = @"var id = $(this).attr('id');
-//                $(this).fadeOut(20,function()
-//                {
-//                    $(this).fadeIn(20);
-//                });
-//
-//                $.post('ToVVVV.xml', id + '= 1', null);
-//                ";
-
-                SetJavaScript(i, new JqueryFunction(true,"#" + SliderId, "slider()").Text);
+                string SliderSelector = "#" + SliderId;
+                double currentSliderValue = Convert.ToDouble(currentSavedValue) * 1000;
+                SetJavaScript(i, new JqueryFunction(true, SliderSelector, String.Format(SliderInitalize, currentOrientation, currentSliderValue.ToString(), SliderSelector, mGuiDataList[i].SliceId, "#" + SliderValueId)).Text + Environment.NewLine + tTextJS.Text);
             }
 
 

@@ -45,7 +45,7 @@ namespace VVVV.Nodes.HttpGUI
         public bool mChangedSpreadSize = true;
         private string mNodePath;
         private string mActualNodePath;
-
+        private SortedList<int,string> SavedResponses = new SortedList<int,string>();
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
 
 
@@ -81,8 +81,10 @@ namespace VVVV.Nodes.HttpGUI
         {
             //assign host
             FHost = Host;
-            
 
+            string tId;
+            FHost.GetNodePath(true, out tId);
+            Debug.WriteLine("onCreate:" + tId);
 
             this.OnSetPluginHost();
 
@@ -493,9 +495,23 @@ namespace VVVV.Nodes.HttpGUI
         #region Get data from WebinterfaceSingelton
 
 
-        public void GetNewDataFromServer(string SlideId, out string pContent)
+        public void GetNewDataFromServer(string SlideId,int SliceNumber, out string pContent)
         {
             mWebinterfaceSingelton.getNewBrowserData(SlideId, out pContent);
+
+
+            if (pContent != "")
+            {
+                if (SavedResponses.ContainsKey(SliceNumber))
+                {
+                    SavedResponses.Remove(SliceNumber);
+                    SavedResponses.Add(SliceNumber, pContent);
+                }
+                else
+                {
+                    SavedResponses.Add(SliceNumber, pContent);
+                }
+            }
         }
 
 
@@ -505,6 +521,18 @@ namespace VVVV.Nodes.HttpGUI
         #endregion Get data from WebinterfaceSingelton
 
 
+        #region Saved Responses
+
+
+        public string GetSavedValue(int SliceNumber)
+        {
+            string tValue;
+            SavedResponses.TryGetValue(SliceNumber, out tValue);
+            return tValue;
+        }
+
+
+        #endregion Saved Responses
 
 
     }
