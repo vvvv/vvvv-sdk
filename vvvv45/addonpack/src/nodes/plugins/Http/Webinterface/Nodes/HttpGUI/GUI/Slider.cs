@@ -73,9 +73,6 @@ namespace VVVV.Nodes.HttpGUI
                 // only the following code is executed.
                 //mWebinterfaceSingelton.DeleteNode(mObserver);
                 FHost.Log(TLogType.Message, FPluginInfo.Name.ToString() + "Slider (Http Gui) Node is being deleted");
-                string tId;
-                FHost.GetNodePath(true, out tId);
-                Debug.WriteLine("onDispose:" + tId);
                 // Note that this is not thread safe.
                 // Another thread could start disposing the object
                 // after the managed resources are disposed,
@@ -191,6 +188,7 @@ namespace VVVV.Nodes.HttpGUI
 
         protected override void OnEvaluate(int SpreadMax)
         {
+            
             //if (mChangedSpreadSize)
             //{
             for (int i = 0; i < SpreadMax; i++)
@@ -199,16 +197,12 @@ namespace VVVV.Nodes.HttpGUI
                 FResponse.SliceCount = SpreadMax;
 
                 string tResponse;
-                GetNewDataFromServer(mGuiDataList[i].SliceId, i, out tResponse);
+                GetNewDataFromServer(mGuiDataList[i].SliceId, i,SpreadMax, out tResponse);
 
 
                 if (tResponse != "")
                 {
                     FResponse.SetValue(i, Convert.ToDouble(tResponse));
-                }
-                else
-                {
-
                 }
 
 
@@ -280,7 +274,12 @@ $.post('ToVVVV.xml',content, null);
 
 
                 string SliderSelector = "#" + SliderId;
-                double currentSliderValue = Convert.ToDouble(currentSavedValue) * 1000;
+                double currentSliderValue = 0;
+                if (currentSavedValue != "")
+                {
+                    currentSliderValue = Convert.ToDouble(currentSavedValue) * 1000;
+                }
+                
                 SetJavaScript(i, new JqueryFunction(true, SliderSelector, String.Format(SliderInitalize, currentOrientation, currentSliderValue.ToString(), SliderSelector, mGuiDataList[i].SliceId, "#" + SliderValueId)).Text + Environment.NewLine + tTextJS.Text);
             }
 
@@ -290,6 +289,7 @@ $.post('ToVVVV.xml',content, null);
             
 
             //}
+           
         }
 
 

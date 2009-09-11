@@ -70,6 +70,8 @@ namespace VVVV.Nodes.HttpGUI
                 //mWebinterfaceSingelton.DeleteNode(mObserver);
                 FHost.Log(TLogType.Message, FPluginInfo.Name.ToString() + "Textfield (Http Gui) Node is being deleted");
 
+                
+
                 // Note that this is not thread safe.
                 // Another thread could start disposing the object
                 // after the managed resources are disposed,
@@ -166,9 +168,11 @@ namespace VVVV.Nodes.HttpGUI
             FHost.CreateStringOutput("Response",TSliceMode.Dynamic,TPinVisibility.True, out FResponse);
             FResponse.SetSubType("", false);
 
+            
         }
 
         #endregion pin creation
+
 
 
         #region Main Loop
@@ -183,7 +187,7 @@ namespace VVVV.Nodes.HttpGUI
             {
                 TextField tTextfield = new TextField();
 
-                tTextfield.Insert("  ");
+                tTextfield.AddAttribute(new HTMLAttribute("Value", GetSavedValue(i)));
 
                 //SetBodyContent(i, tDiv.Text);
 
@@ -194,17 +198,11 @@ namespace VVVV.Nodes.HttpGUI
 
 
                 string tResponse;
-                GetNewDataFromServer(mGuiDataList[i].SliceId,i, out tResponse);
+                GetNewDataFromServer(mGuiDataList[i].SliceId,i,SpreadMax, out tResponse);
 
 
-                if (tResponse != "")
-                {
-                    FResponse.SetString(i, tResponse);
-                }
-                else
-                {
-                    FResponse.SliceCount = 0;
-                }
+
+                FResponse.SetString(i, tResponse);
 
             }
 

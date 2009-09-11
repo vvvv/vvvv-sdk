@@ -33,7 +33,8 @@ using System.Threading;
 using System.IO;
 using System.Diagnostics;
 using System.Xml;
-
+using System.Xml.XPath;
+using System.Windows.Forms;
 
 
 using VVVV.Webinterface.Data;
@@ -75,7 +76,10 @@ namespace VVVV.Webinterface
             public string Url;
         }
 
+
         #region field declaration
+
+
 
         
         private static object m_lock = new Object();
@@ -99,7 +103,8 @@ namespace VVVV.Webinterface
         private List<string> mConnectedPages = new List<string>();
         private SortedList<string, string> mServerFiles = new SortedList<string,string>();
         private List<string> mUrls = new List<string>();
-
+        private SortedList<string,SortedList<int,string>> mValuesToSave = new SortedList<string,SortedList<int,string>>();
+        private string mHostPath;
 
         #endregion field declaration
 
@@ -180,13 +185,19 @@ namespace VVVV.Webinterface
             }
         }
 
-        
 
+        public string HostPath
+        {
+
+            set
+            {
+                mHostPath = value;
+                LoadDataFromFile();
+            }
+        }
 
 
         #endregion  Properties
-
-
 
 
 
@@ -230,6 +241,10 @@ namespace VVVV.Webinterface
             mServerDaten.Add("", "");
         }
 
+
+
+
+
         /// <summary>
         /// Function to get the WebinterfaceSingleton
         /// Only creates the instance once. Checks by every call if the instance is allready created an returns the existing one. 
@@ -253,9 +268,6 @@ namespace VVVV.Webinterface
 
 
         #endregion constructor
-
-
-
 
 
 
@@ -325,11 +337,6 @@ namespace VVVV.Webinterface
         }
 
         #endregion ObserverHandling
-
-
-
-
-
 
 
 
@@ -505,7 +512,6 @@ namespace VVVV.Webinterface
                     if (mNodeData.ContainsKey(pSliceId))
                     {
                         mNodeData.TryGetValue(pSliceId, out Response);
-                        mNodeData.Remove(pSliceId);
                     }
                     else
                     {
@@ -688,7 +694,7 @@ namespace VVVV.Webinterface
         int mTimeOut = 2000;
         private object _SyncCheck = new object();
         //Create a timer that waits one minute, then invokes every 5 minutes.
-        Timer mMasterTimer;
+        System.Threading.Timer mMasterTimer;
 
         public string CheckIfMaster(string IPAdress)
         {
@@ -697,7 +703,7 @@ namespace VVVV.Webinterface
                 if (mMasterTimer == null)
                 {
                     TimerCallback timerDelegate = new TimerCallback(this.TimerCall);
-                    mMasterTimer = new Timer(timerDelegate, null, mTimeOut, System.Threading.Timeout.Infinite);
+                    mMasterTimer = new System.Threading.Timer(timerDelegate, null, mTimeOut, System.Threading.Timeout.Infinite);
                 }
 
                 if (mSetNewMaster == true)
@@ -728,8 +734,103 @@ namespace VVVV.Webinterface
         }
 
 
-
         #endregion Client Response Handling
+
+
+        #region  SaveDataToFile
+
+        public void AddListOnDestroy(string NodeID, SortedList<int,string> SpreadList)
+        {
+            if (mValuesToSave.ContainsKey(NodeID))
+            {
+                mValuesToSave.Remove(NodeID);
+                mValuesToSave.Add(NodeID, SpreadList);
+            }
+            else
+            {
+                mValuesToSave.Add(NodeID, SpreadList);
+            }
+        }
+
+
+        public void SaveDataToFile()
+        {
+            int tSubBegin = mHostPath.LastIndexOf('\\') + 1;
+            string tHostPath = mHostPath.Substring(0, tSubBegin);
+            tHostPath += "webinterface.xml";
+
+            FileStream fs = new FileStream(tHostPath, FileMode.Create);
+            XmlTextWriter w = new XmlTextWriter(fs, Encoding.UTF8);
+            w.Formatting = Formatting.Indented;
+
+            w.WriteStartDocument();
+            w.WriteStartElement("Webinterface");
+
+
+            foreach (KeyValuePair<string, SortedList<int, string>> p in mValuesToSave)
+            {
+                SortedList<int, string> tSliceList;
+                mValuesToSave.TryGetValue(p.Key, out tSliceList);
+                StringBuilder tSpread = new StringBuilder();
+                foreach (KeyValuePair<int, string> tSliceContent in tSliceList)
+                {
+                    tSpread.Append(tSliceContent.Value + ";");
+                }
+
+                w.WriteStartElement("node");
+                w.WriteAttributeString("id", p.Key.ToString());
+                w.WriteElementString("Spread", tSpread.ToString());
+                w.WriteEndElement();
+
+
+            }
+
+            w.WriteEndElement();
+            w.WriteEndDocument();
+            w.Flush();
+            fs.Close();
+        }
+
+
+        public void LoadDataFromFile()
+        {
+            int tSubBegin = mHostPath.LastIndexOf('\\') + 1;
+            string tHostPath = mHostPath.Substring(0, tSubBegin);
+            tHostPath += "webinterface.xml";
+
+            System.Xml.XmlDocument tXml = new XmlDocument();
+
+            FileStream fs = new FileStream(tHostPath, FileMode.Open);
+            XmlTextReader r = new XmlTextReader(fs);
+
+            while (r.Read())
+            {
+                if (r.NodeType == XmlNodeType.Element)
+                {
+                    Debug.WriteLine("<" + r.Name + ">");
+                    if (r.HasAttributes)
+                    {
+                        for (int i = 0; i < r.AttributeCount; i++)
+                        {
+                            Debug.WriteLine("\tATTRIBUTE: " + r.GetAttribute(i));
+                        }
+                    }
+                }
+                else if (r.NodeType == XmlNodeType.Text)
+                {
+                    Debug.WriteLine("\tVALUE: " + r.Value);
+                }
+            }
+
+        }
+
+        #endregion  SaveDataToFile
+
+
+
+
+
+
 
     }
 

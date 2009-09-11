@@ -78,6 +78,7 @@ namespace VVVV.Nodes.Http
         private IValueIn FEnableServer;
         private INodeIn FHttpPageIn;
         private IValueIn FOpenBrowser;
+        private IValueIn FSaveState;
         //private IValueIn FPort;
 
         //output pin 
@@ -255,7 +256,9 @@ namespace VVVV.Nodes.Http
             //assign host
             FHost = Host;
 
-
+            string HostPath;
+            FHost.GetHostPath(out HostPath);
+            mWebinterfaceSingelton.HostPath = HostPath;
             //conig
             FHost.CreateValueConfig("PageCount", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPageCount);
             FPageCount.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
@@ -267,6 +270,9 @@ namespace VVVV.Nodes.Http
             //inputs
             FHost.CreateStringInput("Directories", TSliceMode.Dynamic, TPinVisibility.True, out FDirectories);
             FDirectories.SetSubType("", false);
+
+            FHost.CreateValueInput("Save", 1, null, TSliceMode.Single, TPinVisibility.True, out FSaveState);
+            FSaveState.SetSubType(0, 1, 1, 0, true, false, true);
 
             FHost.CreateValueInput("Open Browser", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FOpenBrowser);
             FOpenBrowser.SetSubType(0, 1, 1, 0, true, false, true);
@@ -477,6 +483,22 @@ namespace VVVV.Nodes.Http
             }
 
             #endregion Open Browser
+
+
+            #region SaveState
+
+            if (FSaveState.PinIsChanged)
+            {
+                double Save;
+                FSaveState.GetValue(0, out Save);
+                if (Save > 0.5)
+                {
+                    mWebinterfaceSingelton.SaveDataToFile();
+                }
+
+            }
+
+            #endregion SaveState
 
 
             #region Directories

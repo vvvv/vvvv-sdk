@@ -495,30 +495,24 @@ namespace VVVV.Nodes.HttpGUI
         #region Get data from WebinterfaceSingelton
 
 
-        public void GetNewDataFromServer(string SlideId,int SliceNumber, out string pContent)
+        public void GetNewDataFromServer(string SlideId,int SliceNumber, int SpreadMax, out string pContent)
         {
             mWebinterfaceSingelton.getNewBrowserData(SlideId, out pContent);
 
-
-            if (pContent != "")
+            if (SavedResponses.ContainsKey(SliceNumber))
             {
-                if (SavedResponses.ContainsKey(SliceNumber))
-                {
-                    SavedResponses.Remove(SliceNumber);
-                    SavedResponses.Add(SliceNumber, pContent);
-                }
-                else
-                {
-                    SavedResponses.Add(SliceNumber, pContent);
-                }
+                SavedResponses.Remove(SliceNumber);
+                SavedResponses.Add(SliceNumber, pContent);
+            }
+            else
+            {
+                SavedResponses.Add(SliceNumber, pContent);
             }
         }
 
-
-
-
-
         #endregion Get data from WebinterfaceSingelton
+
+
 
 
         #region Saved Responses
@@ -528,11 +522,18 @@ namespace VVVV.Nodes.HttpGUI
         {
             string tValue;
             SavedResponses.TryGetValue(SliceNumber, out tValue);
+
+
+            string NodePath;
+            FHost.GetNodePath(true, out NodePath);
+            mWebinterfaceSingelton.AddListOnDestroy(NodePath, SavedResponses);
             return tValue;
         }
 
 
+
         #endregion Saved Responses
+
 
 
     }

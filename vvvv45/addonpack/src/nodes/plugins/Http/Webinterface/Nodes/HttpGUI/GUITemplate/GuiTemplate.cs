@@ -193,7 +193,7 @@ namespace VVVV.Nodes.HttpGUI
 
 
                     string tResponse;
-                    GetNewDataFromServer(mGuiDataList[i].SliceId,i,out tResponse);
+                    GetNewDataFromServer(mGuiDataList[i].SliceId,i,SpreadMax,out tResponse);
 
 
                     if (tResponse != "")
@@ -213,8 +213,9 @@ namespace VVVV.Nodes.HttpGUI
                 $(this).fadeOut(20,function()
                 {
                     $(this).fadeIn(20);
+                    
                 });
-
+                $.post('ToVVVV.xml', id + '= 0', null);
                 
                 ";
                 SetJavaScript(0, new JqueryFunction(true, "." + mGuiDataList[0].NodeId, "click", tContent).Text);
