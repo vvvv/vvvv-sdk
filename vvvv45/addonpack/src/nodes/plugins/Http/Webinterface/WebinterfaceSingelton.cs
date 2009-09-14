@@ -37,6 +37,7 @@ using System.Xml.XPath;
 using System.Windows.Forms;
 
 
+
 using VVVV.Webinterface.Data;
 using VVVV.Nodes.HttpGUI;
 using VVVV.Nodes.Http;
@@ -65,7 +66,7 @@ namespace VVVV.Webinterface
     ///	 <description>creates an cnstance of the ConcretSunject class</description>
     /// </item>
     ///  </list>
-    sealed class WebinterfaceSingelton
+    sealed class WebinterfaceSingelton:IDisposable
     {
 
         public struct PageValues
@@ -93,6 +94,8 @@ namespace VVVV.Webinterface
 
 
         //New 
+        private bool FDisposed = false;
+
         private static volatile WebinterfaceSingelton instance = null;
         private SortedList<string, string> mNodeData = new SortedList<string, string>();
         private List<string> mGetMessages = new List<string>();
@@ -105,6 +108,7 @@ namespace VVVV.Webinterface
         private List<string> mUrls = new List<string>();
         private SortedList<string,SortedList<int,string>> mValuesToSave = new SortedList<string,SortedList<int,string>>();
         private string mHostPath;
+        SortedList<string, SortedList<int, string>> mLoadedValues = new SortedList<string, SortedList<int, string>>();
 
         #endregion field declaration
 
@@ -242,6 +246,74 @@ namespace VVVV.Webinterface
         }
 
 
+        
+        /// <summary>
+        /// Implementing IDisposable's Dispose method.
+        /// Do not make this method virtual.
+        /// A derived class should not be able to override this method.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            // Take yourself off the Finalization queue
+            // to prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+
+        /// <summary>
+        /// Dispose(bool disposing) executes in two distinct scenarios.
+        /// If disposing equals true, the method has been called directly
+        /// or indirectly by a user's code. Managed and unmanaged resources
+        /// can be disposed.
+        /// If disposing equals false, the method has been called by the
+        /// runtime from inside the finalizer and you should not reference
+        /// other objects. Only unmanaged resources can be disposed.
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called.
+            if (!FDisposed)
+            {
+                if (disposing)
+                {
+
+
+                    // Dispose managed resources.
+                }
+                // Release unmanaged resources. If disposing is false,
+                // only the following code is executed.
+
+                mServer.Dispose();
+                FHost.Log(TLogType.Debug, "Renderer (HTML) Node is being deleted");
+
+                // Note that this is not thread safe.
+                // Another thread could start disposing the object
+                // after the managed resources are disposed,
+                // but before the disposed flag is set to true.
+                // If thread safety is necessary, it must be
+                // implemented by the client.
+            }
+            FDisposed = true;
+        }
+
+
+        /// <summary>
+        /// Use C# destructor syntax for finalization code.
+        /// This destructor will run only if the Dispose method
+        /// does not get called.
+        /// It gives your base class the opportunity to finalize.
+        /// Do not provide destructors in types derived from this class.
+        /// </summary>
+        ~WebinterfaceSingelton()
+        {
+            // Do not re-create Dispose clean-up code here.
+            // Calling Dispose(false) is optimal in terms of
+            // readability and maintainability.
+            Dispose(false);
+        }
 
 
 
@@ -502,7 +574,7 @@ namespace VVVV.Webinterface
         }
 
 
-        public void getNewBrowserData(string pSliceId, out string Response)
+        public void getNewBrowserData(string pSliceId,string pHostPath,int Slice,out string Response)
         {
 
             if (Monitor.TryEnter(mNodeData))
@@ -513,7 +585,17 @@ namespace VVVV.Webinterface
                     {
                         mNodeData.TryGetValue(pSliceId, out Response);
                     }
-                    else
+                    else if(mLoadedValues.ContainsKey(pHostPath))
+                    {
+                        string tResponse = "";
+                        SortedList<int, string> tSpreadValues = new SortedList<int, string>();
+                        mLoadedValues.TryGetValue(pHostPath, out tSpreadValues);
+                        if (tSpreadValues.ContainsKey(Slice))
+                        {
+                            tSpreadValues.TryGetValue(Slice, out tResponse);
+                        }
+                        Response = tResponse;
+                    }else
                     {
                         Response = "";
                     }
@@ -737,6 +819,8 @@ namespace VVVV.Webinterface
         #endregion Client Response Handling
 
 
+
+
         #region  SaveDataToFile
 
         public void AddListOnDestroy(string NodeID, SortedList<int,string> SpreadList)
@@ -764,7 +848,7 @@ namespace VVVV.Webinterface
             w.Formatting = Formatting.Indented;
 
             w.WriteStartDocument();
-            w.WriteStartElement("Webinterface");
+            w.WriteStartElement("root");
 
 
             foreach (KeyValuePair<string, SortedList<int, string>> p in mValuesToSave)
@@ -777,7 +861,7 @@ namespace VVVV.Webinterface
                     tSpread.Append(tSliceContent.Value + ";");
                 }
 
-                w.WriteStartElement("node");
+                w.WriteStartElement("Node");
                 w.WriteAttributeString("id", p.Key.ToString());
                 w.WriteElementString("Spread", tSpread.ToString());
                 w.WriteEndElement();
@@ -800,28 +884,50 @@ namespace VVVV.Webinterface
 
             System.Xml.XmlDocument tXml = new XmlDocument();
 
-            FileStream fs = new FileStream(tHostPath, FileMode.Open);
-            XmlTextReader r = new XmlTextReader(fs);
+            
 
-            while (r.Read())
+
+            if (File.Exists(tHostPath))
             {
-                if (r.NodeType == XmlNodeType.Element)
+
+
+                XmlDocument tdoc = new XmlDocument();
+                tdoc.Load(new XmlTextReader(tHostPath));
+
+                XmlNodeList tNodes = tdoc.GetElementsByTagName("Node");
+                
+                for(int i = 0; i < tNodes.Count; i++)
                 {
-                    Debug.WriteLine("<" + r.Name + ">");
-                    if (r.HasAttributes)
+                    XmlNode tNode = tNodes.Item(i);
+                    XmlAttributeCollection tAttributes = tNode.Attributes;
+                    string tNodeID = tAttributes[0].Value;
+
+                    XmlNode tSpread = tNode.FirstChild;
+                    string tSpreadContent = tSpread.InnerText;
+                    string[] tSpreadList = tSpreadContent.Split(';');
+
+                    SortedList<int, string> tSpreadValues = new SortedList<int, string>();
+                    for (int j = 0; j < tSpreadList.Length; j++)
                     {
-                        for (int i = 0; i < r.AttributeCount; i++)
-                        {
-                            Debug.WriteLine("\tATTRIBUTE: " + r.GetAttribute(i));
-                        }
+                        tSpreadValues.Add(j, tSpreadList[j]);
                     }
-                }
-                else if (r.NodeType == XmlNodeType.Text)
-                {
-                    Debug.WriteLine("\tVALUE: " + r.Value);
+
+                    mLoadedValues.Add(tNodeID, tSpreadValues);
                 }
             }
+        }
 
+
+        public SortedList<int, string> GetLoadedValues(string pNodeId)
+        {
+            SortedList<int, string> tSpread = new SortedList<int,string>();
+
+            if(mLoadedValues.ContainsKey(pNodeId))
+            {  
+                mLoadedValues.TryGetValue(pNodeId, out tSpread);
+            }
+
+            return tSpread;
         }
 
         #endregion  SaveDataToFile

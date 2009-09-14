@@ -45,7 +45,7 @@ namespace VVVV.Nodes.HttpGUI
         public bool mChangedSpreadSize = true;
         private string mNodePath;
         private string mActualNodePath;
-        private SortedList<int,string> SavedResponses = new SortedList<int,string>();
+        private SortedList<int,string> mSavedResponses = new SortedList<int,string>();
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
 
 
@@ -82,9 +82,7 @@ namespace VVVV.Nodes.HttpGUI
             //assign host
             FHost = Host;
 
-            string tId;
-            FHost.GetNodePath(true, out tId);
-            Debug.WriteLine("onCreate:" + tId);
+            FHost.GetNodePath(true, out mNodePath);
 
             this.OnSetPluginHost();
 
@@ -109,7 +107,6 @@ namespace VVVV.Nodes.HttpGUI
             FHttpGuiOut.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
             FHttpGuiOut.SetInterface(this);
 
-            
         }
 
 
@@ -495,18 +492,18 @@ namespace VVVV.Nodes.HttpGUI
         #region Get data from WebinterfaceSingelton
 
 
-        public void GetNewDataFromServer(string SlideId,int SliceNumber, int SpreadMax, out string pContent)
+        public void GetNewDataFromServer(int SliceNumber, out string pContent)
         {
-            mWebinterfaceSingelton.getNewBrowserData(SlideId, out pContent);
+            mWebinterfaceSingelton.getNewBrowserData(mGuiDataList[SliceNumber].SliceId,mNodePath,SliceNumber,out pContent);
 
-            if (SavedResponses.ContainsKey(SliceNumber))
+            if (mSavedResponses.ContainsKey(SliceNumber))
             {
-                SavedResponses.Remove(SliceNumber);
-                SavedResponses.Add(SliceNumber, pContent);
+                mSavedResponses.Remove(SliceNumber);
+                mSavedResponses.Add(SliceNumber, pContent);
             }
             else
             {
-                SavedResponses.Add(SliceNumber, pContent);
+                mSavedResponses.Add(SliceNumber, pContent);
             }
         }
 
@@ -521,12 +518,9 @@ namespace VVVV.Nodes.HttpGUI
         public string GetSavedValue(int SliceNumber)
         {
             string tValue;
-            SavedResponses.TryGetValue(SliceNumber, out tValue);
+            mSavedResponses.TryGetValue(SliceNumber, out tValue);
 
-
-            string NodePath;
-            FHost.GetNodePath(true, out NodePath);
-            mWebinterfaceSingelton.AddListOnDestroy(NodePath, SavedResponses);
+            mWebinterfaceSingelton.AddListOnDestroy(mNodePath, mSavedResponses);
             return tValue;
         }
 

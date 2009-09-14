@@ -166,7 +166,7 @@ namespace VVVV.Nodes.HttpGUI
         {
             // create required pins
             FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
-            FResponse.SetSubType(0, 1, 1, 0, false, false, true);
+            FResponse.SetSubType(0, 1, 1, 0, false, false, false);
 
             FHost.CreateStringInput("Name", TSliceMode.Dynamic, TPinVisibility.True, out FName);
             FName.SetSubType("", false);
@@ -197,7 +197,7 @@ namespace VVVV.Nodes.HttpGUI
                 FResponse.SliceCount = SpreadMax;
 
                 string tResponse;
-                GetNewDataFromServer(mGuiDataList[i].SliceId, i,SpreadMax, out tResponse);
+                GetNewDataFromServer( i, out tResponse);
 
 
                 if (tResponse != "")
