@@ -66,7 +66,7 @@ namespace VVVV.Webinterface
     ///	 <description>creates an cnstance of the ConcretSunject class</description>
     /// </item>
     ///  </list>
-    sealed class WebinterfaceSingelton:IDisposable
+    sealed class WebinterfaceSingelton
     {
 
         public struct PageValues
@@ -94,8 +94,6 @@ namespace VVVV.Webinterface
 
 
         //New 
-        private bool FDisposed = false;
-
         private static volatile WebinterfaceSingelton instance = null;
         private SortedList<string, string> mNodeData = new SortedList<string, string>();
         private List<string> mGetMessages = new List<string>();
@@ -244,78 +242,6 @@ namespace VVVV.Webinterface
 
             mServerDaten.Add("", "");
         }
-
-
-        
-        /// <summary>
-        /// Implementing IDisposable's Dispose method.
-        /// Do not make this method virtual.
-        /// A derived class should not be able to override this method.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            // Take yourself off the Finalization queue
-            // to prevent finalization code for this object
-            // from executing a second time.
-            GC.SuppressFinalize(this);
-        }
-
-
-        /// <summary>
-        /// Dispose(bool disposing) executes in two distinct scenarios.
-        /// If disposing equals true, the method has been called directly
-        /// or indirectly by a user's code. Managed and unmanaged resources
-        /// can be disposed.
-        /// If disposing equals false, the method has been called by the
-        /// runtime from inside the finalizer and you should not reference
-        /// other objects. Only unmanaged resources can be disposed.
-        /// </summary>
-        /// <param name="disposing"></param>
-        protected virtual void Dispose(bool disposing)
-        {
-            // Check to see if Dispose has already been called.
-            if (!FDisposed)
-            {
-                if (disposing)
-                {
-
-
-                    // Dispose managed resources.
-                }
-                // Release unmanaged resources. If disposing is false,
-                // only the following code is executed.
-
-                mServer.Dispose();
-                FHost.Log(TLogType.Debug, "Renderer (HTML) Node is being deleted");
-
-                // Note that this is not thread safe.
-                // Another thread could start disposing the object
-                // after the managed resources are disposed,
-                // but before the disposed flag is set to true.
-                // If thread safety is necessary, it must be
-                // implemented by the client.
-            }
-            FDisposed = true;
-        }
-
-
-        /// <summary>
-        /// Use C# destructor syntax for finalization code.
-        /// This destructor will run only if the Dispose method
-        /// does not get called.
-        /// It gives your base class the opportunity to finalize.
-        /// Do not provide destructors in types derived from this class.
-        /// </summary>
-        ~WebinterfaceSingelton()
-        {
-            // Do not re-create Dispose clean-up code here.
-            // Calling Dispose(false) is optimal in terms of
-            // readability and maintainability.
-            Dispose(false);
-        }
-
-
 
         /// <summary>
         /// Function to get the WebinterfaceSingleton
