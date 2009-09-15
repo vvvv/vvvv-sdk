@@ -360,7 +360,7 @@ namespace VVVV.Nodes.HttpGUI
                 TSliceMax += FInputPinList[i].SliceCount;
             }
 
-            FMyNodeOutput.SliceCount = TSliceMax;
+            //FMyNodeOutput.SliceCount = TSliceMax;
 
 
             mGuiDataList.Clear();

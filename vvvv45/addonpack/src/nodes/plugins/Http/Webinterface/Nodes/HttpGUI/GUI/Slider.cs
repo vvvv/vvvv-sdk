@@ -16,6 +16,10 @@ namespace VVVV.Nodes.HttpGUI
         private IStringIn FName;
         private IEnumIn FOrientation;
         private IValueOut FResponse;
+        private IValueIn FMin;
+        private IValueIn FMax;
+        private IValueIn FDefault;
+        private IValueIn FStepSize;
 
 
         #endregion field declaration
@@ -171,12 +175,21 @@ namespace VVVV.Nodes.HttpGUI
             FHost.CreateStringInput("Name", TSliceMode.Dynamic, TPinVisibility.True, out FName);
             FName.SetSubType("", false);
 
-            FHost.UpdateEnum("Orientation", "horizontal", new string[] { "horizontal", "horizontal" });
+            FHost.UpdateEnum("Orientation", "horizontal", new string[] { "horizontal", "vertical" });
             FHost.CreateEnumInput("Orientation", TSliceMode.Single, TPinVisibility.True, out FOrientation);
             FOrientation.SetSubType("Orientation");
-            
 
+            FHost.CreateValueInput("Min", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMin);
+            FMin.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
 
+            FHost.CreateValueInput("Max", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMax);
+            FMax.SetSubType(double.MinValue, double.MaxValue, 0.01,1, false, false, false);
+
+            FHost.CreateValueInput("Default", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDefault);
+            FDefault.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.5, false, false, false);
+
+            FHost.CreateValueInput("StepSize", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FStepSize);
+            FStepSize.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.01, false, false, false);
         }
 
         #endregion pin creation
@@ -188,83 +201,109 @@ namespace VVVV.Nodes.HttpGUI
 
         protected override void OnEvaluate(int SpreadMax)
         {
-            
-            //if (mChangedSpreadSize)
-            //{
-            for (int i = 0; i < SpreadMax; i++)
+
+            bool ReceivedResponse = CheckIfNodeReceivedData();
+
+            if (mChangedSpreadSize || FName.PinIsChanged || FOrientation.PinIsChanged || ReceivedResponse || FMin.PinIsChanged || FMax.PinIsChanged || FDefault.PinIsChanged || FStepSize.PinIsChanged)
             {
-                //Check if there are new Messages on the Server
-                FResponse.SliceCount = SpreadMax;
-
-                string tResponse;
-                GetNewDataFromServer( i, out tResponse);
-
-
-                if (tResponse != "")
+                for (int i = 0; i < SpreadMax; i++)
                 {
+
+                    double currentMinSlice;
+                    double currentMaxSlice;
+                    double currentDefaultSlice;
+                    double currentStepSize;
+
+
+                    FMin.GetValue(i,out currentMinSlice);
+                    FMax.GetValue(i,out currentMaxSlice);
+                    FDefault.GetValue(i,out currentDefaultSlice);
+                    FStepSize.GetValue(i,out currentStepSize);
+
+                    currentStepSize *= 10000;
+                    currentMinSlice *= 10000;
+                    currentMaxSlice *= 10000;
+                    
+
+                    //Check if there are new Messages on the Server
+                    FResponse.SliceCount = SpreadMax;
+
+                    string tResponse;
+                    GetNewDataFromServer(i, out tResponse);
+                    if (tResponse == null)
+                    {
+                        tResponse = currentDefaultSlice.ToString();
+                    }
                     FResponse.SetValue(i, Convert.ToDouble(tResponse));
-                }
 
 
-                //Create Slider Elements and set them to the graph
-                string currentOrientation = String.Empty;
-                string currentName = String.Empty;
-                string currentSavedValue = GetSavedValue(i);
-                if (currentSavedValue == null )
-                {
-                    currentSavedValue = "0";
-                }
+                    //Create Slider Elements and set them to the graph
+                    string currentOrientation = String.Empty;
+                    string currentName = String.Empty;
+                    string currentSavedValue = GetSavedValue(i);
+                    if (currentSavedValue == null)
+                    {
+                        currentSavedValue = currentDefaultSlice.ToString();
+                    }
 
-                FName.GetString(i, out currentName);
-                FOrientation.GetString(i, out currentOrientation);
+                    FName.GetString(i, out currentName);
+                    FOrientation.GetString(i, out currentOrientation);
 
-                string SliderId = "SliderID" + i.ToString();
+                    string SliderId = GetSliceId(i) + i.ToString();
 
-                HtmlDiv tMainContainer = new HtmlDiv();
-                HtmlDiv tSlider = new HtmlDiv(SliderId);
-                HTMLText tText = new HTMLText(currentName, true);
+                    HtmlDiv tMainContainer = new HtmlDiv();
+                    HtmlDiv tSlider = new HtmlDiv(SliderId);
+                    HTMLText tText = new HTMLText(currentName, true);
 
-                string SliderValueId = SliderId + "Value";
-                TextField tSliderValueText = new TextField(SliderValueId, currentSavedValue);
+                    string SliderValueId = SliderId + "Value";
+                    TextField tSliderValueText = new TextField(SliderValueId, currentSavedValue);
 
-                //string AttributeSliderContent = "position:absolute; right:0; width:80%";
-                //HTMLAttribute tSliderAttribute = new HTMLAttribute("style", AttributeSliderContent);
-                //tSlider.AddAttribute(tSliderAttribute);
+                    string AttributeTextValue = "position:absolute; right:0%; top:10%; border: hidden;";
+                    HTMLAttribute tTextAttributeValue = new HTMLAttribute("style", AttributeTextValue);
+                    tSliderValueText.AddAttribute(tTextAttributeValue);
+
+                    string AttributeText = "position:absolute; top:10%; width:80%";
+                    HTMLAttribute tTextAttribute = new HTMLAttribute("style", AttributeText);
+                    tText.AddAttribute(tTextAttribute);
+
+                    string AttributeSlider = "postion:absolute; top:50%";
+                    HTMLAttribute tSliderAttribute = new HTMLAttribute("style", AttributeSlider);
+                    tSlider.AddAttribute(tSliderAttribute);
 
 
-                tMainContainer.Insert(tText);
-                tMainContainer.Insert(tSliderValueText);
-                tMainContainer.Insert(tSlider);
-                
-
-                SetTag(i, tMainContainer);
+                    tMainContainer.Insert(tText);
+                    tMainContainer.Insert(tSliderValueText);
+                    tMainContainer.Insert(tSlider);
 
 
+                    SetTag(i, tMainContainer);
 
-                
 
-                string TextfeldJsContent = @"
+
+
+
+                    string TextfeldJsContent = @"
 var value = $(this).val();
-var SliderValue = value * 1000;
+var SliderValue = value * 10000;
 $('{0}').slider('option', 'value', SliderValue);
 var content = '{1}' + '=' + value; 
 $.post('ToVVVV.xml',content, null);
 ";
 
-                JqueryFunction tTextJS = new JqueryFunction(true, "#" + SliderValueId, "keyup", String.Format(TextfeldJsContent, "#" + SliderId, mGuiDataList[i].SliceId));
+                    JqueryFunction tTextJS = new JqueryFunction(true, "#" + SliderValueId, "keyup", String.Format(TextfeldJsContent, "#" + SliderId, mGuiDataList[i].SliceId, currentStepSize));
 
-                string SliderInitalize =
-@"slider({{
-          animate: true,
-          max: 1000,
-          min: 0,
+                    string SliderInitalize =
+    @"slider({{
+          animate: false,
+          max: {6},
+          min: {5},
           orientation: '{0}',
-          step:1,
+          step:{7},
           value: {1},
           slide: function(event,ui){{
                   var id = $(this).attr('id');
                   var value = $('{2}').slider('option', 'value');
-                  var SliderValue = value / 1000;
+                  var SliderValue = value / 10000;
                   var content = '{3}' + '=' + SliderValue; 
                   $.post('ToVVVV.xml',content, null);
                   $('{4}').val(SliderValue);
@@ -273,23 +312,16 @@ $.post('ToVVVV.xml',content, null);
           ";
 
 
-                string SliderSelector = "#" + SliderId;
-                double currentSliderValue = 0;
-                if (currentSavedValue != "")
-                {
-                    currentSliderValue = Convert.ToDouble(currentSavedValue) * 1000;
+                    string SliderSelector = "#" + SliderId;
+                    double currentSliderValue = 0;
+                    if (currentSavedValue != null)
+                    {
+                        currentSliderValue = Convert.ToDouble(currentSavedValue) * 10000;
+                    }
+
+                    SetJavaScript(i, new JqueryFunction(true, SliderSelector, String.Format(SliderInitalize, currentOrientation, currentSliderValue.ToString(), SliderSelector, mGuiDataList[i].SliceId, "#" + SliderValueId, currentMinSlice, currentMaxSlice, currentStepSize)).Text + Environment.NewLine + tTextJS.Text);
                 }
-                
-                SetJavaScript(i, new JqueryFunction(true, SliderSelector, String.Format(SliderInitalize, currentOrientation, currentSliderValue.ToString(), SliderSelector, mGuiDataList[i].SliceId, "#" + SliderValueId)).Text + Environment.NewLine + tTextJS.Text);
             }
-
-
-
-
-            
-
-            //}
-           
         }
 
 

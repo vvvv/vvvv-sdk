@@ -300,7 +300,7 @@ namespace VVVV.Webinterface.HttpServer {
             // Create the delegate that invokes methods for the timer.
             TimerCallback timerDelegate = new TimerCallback(this.CheckSockets);
             //Create a timer that waits one minute, then invokes every 5 minutes.
-            mLostTimer = new Timer(timerDelegate, null, Server.mTimerTimeout, Server.mTimerTimeout);
+            //mLostTimer = new Timer(timerDelegate, null, Server.mTimerTimeout, Server.mTimerTimeout);
         }
 
 
@@ -502,6 +502,12 @@ namespace VVVV.Webinterface.HttpServer {
                 //Adding Time and Socket to the SocketInformation Object 
                 SocketInformation tSocketInformations = new SocketInformation(tClientSocket, tClientSocket.RemoteEndPoint.ToString());
                 tSocketInformations.HtmlPages = mHtmlPages;
+
+
+                Stopwatch myStop = new Stopwatch();
+                myStop.Start();
+
+                tSocketInformations.StopWatch = myStop;
                 
 
                 //Shows if the Socket is stille connected and begins to receive data in calling the ReceiveSocketDataCallback function
@@ -578,8 +584,6 @@ namespace VVVV.Webinterface.HttpServer {
                     {
 
                         tSocketInformation.TimeStamp = DateTime.Now;
-                        Stopwatch myStop = new Stopwatch();
-                        myStop.Start();
                         try
                         {
                             Request tRequest = new Request(tSocketInformation.Request.ToString(), mFoldersToServ, tSocketInformation.HtmlPages, tSocketInformation);
@@ -593,10 +597,6 @@ namespace VVVV.Webinterface.HttpServer {
                             tSocketInformation.ResponseAsBytes = Encoding.UTF8.GetBytes(new ResponseHeader(new HTTPStatusCode("").Code200).Text);
                         }
                         
-                        myStop.Stop();
-                        Debug.WriteLine("Request time in ticks: " + myStop.ElapsedTicks.ToString());
-                        Debug.WriteLine("Request time in milliseconds: " + myStop.ElapsedMilliseconds.ToString());
-                        myStop = null;
                         //SendData(tSocketInformation);
                         tSocketInformation.ClientSocket.BeginSend(tSocketInformation.ResponseAsBytes, 0, tSocketInformation.ResponseAsBytes.Length, 0, new AsyncCallback(SendDataCallback), tSocketInformation);
                     }
@@ -650,6 +650,11 @@ namespace VVVV.Webinterface.HttpServer {
                     }
                     else
                     {
+                        Stopwatch myStop = new Stopwatch();
+                        myStop = tSocketIformations.StopWatch;
+                        myStop.Stop();
+                        Debug.WriteLine("Request time in ticks: " + myStop.ElapsedTicks.ToString());
+                        Debug.WriteLine("Request time in milliseconds: " + myStop.ElapsedMilliseconds.ToString());
                         RemoveSocket(tSocketIformations);
                     }
                 }

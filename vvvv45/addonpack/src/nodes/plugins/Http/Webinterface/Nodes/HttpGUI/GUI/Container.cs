@@ -142,7 +142,7 @@ namespace VVVV.Nodes.HttpGUI
                     //the nodes author: your sign
                     FPluginInfo.Author = "phlegma";
                     //describe the nodes function
-                    FPluginInfo.Help = "Container node for the Renderer (HTTP)";
+                    FPluginInfo.Help = "Container (Div) node for the Renderer (HTTP)";
                     //specify a comma separated list of tags that describe the node
                     FPluginInfo.Tags = "";
 

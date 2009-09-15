@@ -256,15 +256,15 @@ namespace VVVV.Nodes.HttpGUI.CSS
             FFontFamiliyIn.SetSubType("Verdana", false);
 
             FHost.UpdateEnum("FontStyle", "normal ", new string[] { "normal ", "italic ", "oblique " });
-            FHost.CreateEnumInput("FontStyle", TSliceMode.Single, TPinVisibility.True, out FFontStyleIn);
+            FHost.CreateEnumInput("FontStyle", TSliceMode.Dynamic, TPinVisibility.True, out FFontStyleIn);
             FFontStyleIn.SetSubType("FontStyle");
 
             FHost.UpdateEnum("CssFontWeight", "100", new string[] { "100 ", "200", "300","400", "500", "600", "700", "800", "900" });
-            FHost.CreateEnumInput("FontWeight", TSliceMode.Single, TPinVisibility.True, out FFontWeigthIn);
+            FHost.CreateEnumInput("FontWeight", TSliceMode.Dynamic, TPinVisibility.True, out FFontWeigthIn);
             FFontWeigthIn.SetSubType("CssFontWeight");
 
             FHost.UpdateEnum("FontDecoration", "none ", new string[] { "none  ", "underline ", "overline ", "line-through", "blink " });
-            FHost.CreateEnumInput("FontDecoration", TSliceMode.Single, TPinVisibility.True, out FTextDecortationIn);
+            FHost.CreateEnumInput("FontDecoration", TSliceMode.Dynamic, TPinVisibility.True, out FTextDecortationIn);
             FTextDecortationIn.SetSubType("FontDecoration");
 
             FHost.CreateValueInput("WordSpacing", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FWordSpacingIn);
@@ -334,9 +334,9 @@ namespace VVVV.Nodes.HttpGUI.CSS
                     FFontSizeIn.GetValue(i, out currentFontSizeSlice);
 					FColorInput.GetColor(i, out currentColorSlice);
                     FFontFamiliyIn.GetString(i,out currentFontFamily);
-                    FFontStyleIn.GetString(0,out currentFontStyle);
-                    FFontWeigthIn.GetString(0,out currentFontWeight);
-                    FTextDecortationIn.GetString(0,out currentTextDecoration);
+                    FFontStyleIn.GetString(i,out currentFontStyle);
+                    FFontWeigthIn.GetString(i,out currentFontWeight);
+                    FTextDecortationIn.GetString(i,out currentTextDecoration);
                     FWordSpacingIn.GetValue(i,out currentWordSpacing);
                     FLetterSpacingIn.GetValue(i,out currentLetterSpacing);
                     FFontStretchIn.GetString(i,out currentFontStretch);

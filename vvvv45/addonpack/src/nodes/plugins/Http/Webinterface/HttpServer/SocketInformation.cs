@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Net.Sockets;
+using System.Diagnostics;
 
 namespace VVVV.Webinterface.HttpServer
 {
@@ -19,6 +20,8 @@ namespace VVVV.Webinterface.HttpServer
         private byte[] mResponseAsBytes;
         private SortedList<string, byte[]> mHtmlPages;
         private Request mRequestObject;
+        private Stopwatch mStopwatch;
+        
         
         
 
@@ -119,6 +122,18 @@ namespace VVVV.Webinterface.HttpServer
             set
             {
                 mRequestObject = value;
+            }
+        }
+
+        public Stopwatch StopWatch
+        {
+            get
+            {
+                return mStopwatch;
+            }
+            set
+            {
+                mStopwatch = value;
             }
         }
     

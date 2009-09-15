@@ -214,6 +214,7 @@ namespace VVVV.Nodes.HttpGUI
         {
 
             
+
             FHost.GetNodePath(true, out mNodePath);
             
             bool ChangedID = false;
@@ -230,7 +231,8 @@ namespace VVVV.Nodes.HttpGUI
             if (mSpreadMax != SpreadMax )
             {
                 mChangedSpreadSize = true;
-              
+                
+
                 if (mGuiDataList.Count > SpreadMax)
                 {
                     mGuiDataList.RemoveRange(SpreadMax, mGuiDataList.Count - SpreadMax);
@@ -342,7 +344,7 @@ namespace VVVV.Nodes.HttpGUI
                         tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
                     }
 
-                    tTransformSlice.Add("z-index", Convert.ToString(Math.Round(tMatrix.m43)));
+                    tTransformSlice.Add("z-index", Convert.ToString(Math.Round(tMatrix.m33)));
 
                     mGuiDataList[i].Transform = new SortedList<string, string>(tTransformSlice);
                 }
@@ -403,7 +405,7 @@ namespace VVVV.Nodes.HttpGUI
 
             this.OnEvaluate(SpreadMax);
 
-            FHttpGuiOut.SliceCount = SpreadMax;
+            //FHttpGuiOut.SliceCount = SpreadMax;
 
             if (mSpreadMax == SpreadMax)
             {
@@ -445,6 +447,11 @@ namespace VVVV.Nodes.HttpGUI
             string[] Patches = pSliceId.Split('/');
             int tPatchDepth = Patches.Length;
             return Patches[Patches.Length - 1];
+        }
+
+        public string GetSliceId(int SliceNumber)
+        {
+            return mGuiDataList[SliceNumber].SliceId;
         }
 
         #endregion Node Information
@@ -490,6 +497,18 @@ namespace VVVV.Nodes.HttpGUI
 
 
         #region Get data from WebinterfaceSingelton
+
+        public bool CheckIfNodeReceivedData()
+        {
+            if (mWebinterfaceSingelton.CheckIfNodeIdReceivedValues(mGuiDataList[0].NodeId))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
 
         public void GetNewDataFromServer(int SliceNumber, out string pContent)

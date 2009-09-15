@@ -63,9 +63,10 @@ namespace VVVV.Nodes.HttpGUI.CSS
         private bool FDisposed = false;
 
         //input pin declaration
-        private IValueIn FPaddingYIn;
-        private IValueIn FPaddingXIn;
-
+        private IValueIn FTop;
+        private IValueIn FLeft;
+        private IValueIn FRight;
+        private IValueIn FBottom;
 
         #endregion field declaration
 
@@ -230,11 +231,17 @@ namespace VVVV.Nodes.HttpGUI.CSS
         protected override void OnPluginHostSet()
         {
             // create inputs
-            FHost.CreateValueInput("PaddingX", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPaddingXIn);
-            FPaddingXIn.SetSubType(-1,1, 0.01, 1, false, false, false);
+            FHost.CreateValueInput("Top", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FLeft);
+            FLeft.SetSubType(-1,1, 0.01, 1, false, false, false);
 
-			FHost.CreateValueInput("PaddingY", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPaddingYIn);
-			FPaddingYIn.SetSubType(-1,1, 0.01, 1, false, false, false);
+			FHost.CreateValueInput("Left", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FTop);
+			FTop.SetSubType(-1,1, 0.01, 1, false, false, false);
+
+            FHost.CreateValueInput("Right", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FRight);
+            FTop.SetSubType(-1, 1, 0.01, 1, false, false, false);
+
+            FHost.CreateValueInput("Bottom", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBottom);
+            FTop.SetSubType(-1, 1, 0.01, 1, false, false, false);
            
         }
 
@@ -266,10 +273,10 @@ namespace VVVV.Nodes.HttpGUI.CSS
         protected override void OnEvaluate(int SpreadMax)
         {
 
-			if (FPaddingXIn.PinIsChanged || FPaddingYIn.PinIsChanged )
+			if (FLeft.PinIsChanged || FTop.PinIsChanged || FRight.PinIsChanged || FBottom.PinIsChanged)
             {
 
-                IPluginIn[] tInputs = { FPaddingXIn, FPaddingYIn};
+                IPluginIn[] tInputs = { FLeft, FTop};
                 int tSliceCount = GetSliceCount(tInputs);
                 
                 mCssPropertiesOwn.Clear();
@@ -277,16 +284,23 @@ namespace VVVV.Nodes.HttpGUI.CSS
                 for (int i = 0; i < tSliceCount; i++)
                 {
 
-                    double currentPaddingXSlice;
-                    double currentPaddingYSlice;
+                    double currentLeftSlice;
+                    double currentTopSlice;
+                    double currentRightSlice;
+                    double currentBottomSlice;
+
                     SortedList<string, string> tCssProperty = new SortedList<string, string>();
                     // get current values
-                    FPaddingXIn.GetValue(i, out currentPaddingXSlice);
-                    FPaddingYIn.GetValue(i, out currentPaddingYSlice);
+                    FLeft.GetValue(i, out currentTopSlice);
+                    FTop.GetValue(i, out currentLeftSlice);
+                    FRight.GetValue(i, out currentRightSlice);
+                    FBottom.GetValue(i, out currentBottomSlice);
 
 					// add css webattributes
-                    tCssProperty.Add("padding-top", (((double)Math.Round(HTMLToolkit.MapScale(currentPaddingYSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
-                    tCssProperty.Add("padding-left", (((double)Math.Round(HTMLToolkit.MapScale(currentPaddingXSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
+                    tCssProperty.Add("padding-top", (((double)Math.Round(HTMLToolkit.MapScale(currentTopSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
+                    tCssProperty.Add("padding-left", (((double)Math.Round(HTMLToolkit.MapScale(currentLeftSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
+                    tCssProperty.Add("padding-right", (((double)Math.Round(HTMLToolkit.MapScale(currentRightSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
+                    tCssProperty.Add("padding-bottom", (((double)Math.Round(HTMLToolkit.MapScale(currentBottomSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
                     
                     mCssPropertiesOwn.Add(i, tCssProperty);
                 }

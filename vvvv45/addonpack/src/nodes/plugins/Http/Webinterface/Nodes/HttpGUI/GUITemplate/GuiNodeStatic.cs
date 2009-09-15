@@ -335,7 +335,7 @@ namespace VVVV.Nodes.HttpGUI
 
             this.OnEvaluate(SpreadMax);
 
-            FHttpGuiOut.SliceCount = SpreadMax;
+            //FHttpGuiOut.SliceCount = SpreadMax;
 
             if (mSpreadMax == SpreadMax)
             {

@@ -7,7 +7,7 @@ using VVVV.Webinterface.Utilities;
 
 namespace VVVV.Nodes.HttpGUI
 {
-    class Text : GuiNodeDynamic, IPlugin, IDisposable
+    class Text : GuiNodeStatic, IPlugin, IDisposable
     {
     	
     	#region field declaration 
@@ -18,8 +18,6 @@ namespace VVVV.Nodes.HttpGUI
 
 
         #endregion field declaration
-
-
 
 
         #region constructor/destructor
@@ -184,6 +182,8 @@ namespace VVVV.Nodes.HttpGUI
 
         protected override void OnEvaluate(int SpreadMax)
         {
+            
+
             if (FTextIn.PinIsChanged || FTextTagType.PinIsChanged)
             {
                 for (int i = 0; i < SpreadMax; i++)
@@ -207,7 +207,6 @@ namespace VVVV.Nodes.HttpGUI
                    
                     SetTag(i, tText);
                 }
-
             }
         }
         

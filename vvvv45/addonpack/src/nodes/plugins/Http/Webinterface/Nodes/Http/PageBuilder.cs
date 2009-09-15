@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+using System.Threading;
 using System.Diagnostics;
 using VVVV.Nodes.HttpGUI;
 using VVVV.Webinterface.Utilities;
@@ -19,7 +20,8 @@ namespace VVVV.Nodes.Http
         private CssBuilder mCssBuilder = new CssBuilder();
         private Body mBody = new Body();
         private SortedList<string, Tag> mTags = new SortedList<string, Tag>();
-        List<GuiDataObject> mGuiElemente;
+        List<GuiDataObject> mGuiElemente  =new List<GuiDataObject>();
+        bool mBuildFlag = false;
 
         public Page Page
         {
@@ -87,23 +89,24 @@ namespace VVVV.Nodes.Http
         public void UpdateGuiList(List<GuiDataObject> pGuiElemente, Page pPage)
         {
 
-            // Reset everything
-            //mPage.Body = null;
-            //mPage.Head = null;
-           
-            mPage = pPage;
-            mJsFileList.Clear();
-            mCssBuilder.Reset();
-            mTags.Clear();
+            if (mBuildFlag == false)
+            {
+                mPage = pPage;
+                mJsFileList.Clear();
+                mCssBuilder.Reset();
+                mTags.Clear();
 
-            //Build
-            mGuiElemente = new List<GuiDataObject>(pGuiElemente);
+                //Build
+                mGuiElemente = new List<GuiDataObject>(pGuiElemente);
+            }
         }
 
         public void Build()
         {
+            mBuildFlag = true;
             mPage.Body = (Body)BuildHtmlFrame(mGuiElemente, mPage.Body);
             mCssBuilder.Build();
+            mBuildFlag = false;
         }
 
 

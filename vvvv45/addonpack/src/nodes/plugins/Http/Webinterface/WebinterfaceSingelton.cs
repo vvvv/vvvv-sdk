@@ -84,6 +84,8 @@ namespace VVVV.Webinterface
 
         
         private static object m_lock = new Object();
+        private static object _SetBrowserData = new Object();
+        private static object _BuildLock = new Object();
         private ConcreteSubject mSubject;
         
         private SortedList<string, SortedList<string, string>> mNodeDaten = new SortedList<string, SortedList<string, string>>();
@@ -95,6 +97,7 @@ namespace VVVV.Webinterface
 
         //New 
         private static volatile WebinterfaceSingelton instance = null;
+        private SortedList<string, string> mBrowserData = new SortedList<string, string>();
         private SortedList<string, string> mNodeData = new SortedList<string, string>();
         private List<string> mGetMessages = new List<string>();
         private List<string> mPostMessages = new List<string>();
@@ -107,10 +110,9 @@ namespace VVVV.Webinterface
         private SortedList<string,SortedList<int,string>> mValuesToSave = new SortedList<string,SortedList<int,string>>();
         private string mHostPath;
         SortedList<string, SortedList<int, string>> mLoadedValues = new SortedList<string, SortedList<int, string>>();
+        List<string> mNodeReceivedValues = new List<string>();
 
         #endregion field declaration
-
-
 
 
 
@@ -400,27 +402,30 @@ namespace VVVV.Webinterface
 
         public void BuildPages(string pUrl)
         {
-            if (mGuiLists.ContainsKey(pUrl))
+            lock (_BuildLock)
             {
+                if (mGuiLists.ContainsKey(pUrl))
+                {
 
-                PageValues tPageValues;
-                Monitor.Enter(mGuiLists);
-                mGuiLists.TryGetValue(pUrl, out tPageValues);
-                Monitor.Exit(mGuiLists);
+                    PageValues tPageValues;
+                    Monitor.Enter(mGuiLists);
+                    mGuiLists.TryGetValue(pUrl, out tPageValues);
+                    Monitor.Exit(mGuiLists);
 
-                PageBuilder tPageBuilder = new PageBuilder();
-                tPageBuilder.UpdateGuiList(tPageValues.GuiList, tPageValues.Page);
-                tPageBuilder.Build();
+                    PageBuilder tPageBuilder = new PageBuilder();
+                    tPageBuilder.UpdateGuiList(tPageValues.GuiList, tPageValues.Page);
+                    tPageBuilder.Build();
 
-                Monitor.Enter(mServerFiles);
-                mServerFiles.Remove(pUrl);
-                mServerFiles.Remove(tPageValues.PageName + ".css");
-                mServerFiles.Remove(tPageValues.PageName + ".js");
-                mServerFiles.Add(pUrl, tPageBuilder.HtmlFile);
-                mServerFiles.Add(tPageValues.PageName + ".css", tPageBuilder.CssFile.ToString());
-                mServerFiles.Add(tPageValues.PageName + ".js", tPageBuilder.JsFile.ToString());
+                    Monitor.Enter(mServerFiles);
+                    mServerFiles.Remove(pUrl);
+                    mServerFiles.Remove(tPageValues.PageName + ".css");
+                    mServerFiles.Remove(tPageValues.PageName + ".js");
+                    mServerFiles.Add(pUrl, tPageBuilder.HtmlFile);
+                    mServerFiles.Add(tPageValues.PageName + ".css", tPageBuilder.CssFile.ToString());
+                    mServerFiles.Add(tPageValues.PageName + ".js", tPageBuilder.JsFile.ToString());
 
-                Monitor.Exit(mServerFiles);
+                    Monitor.Exit(mServerFiles);
+                }
             }
         }
 
@@ -484,34 +489,65 @@ namespace VVVV.Webinterface
         public void setNewBrowserDaten(string pSliceID, string pValue)
         {
 
-            Monitor.Enter(mNodeData);
-            
-            if (mNodeData.ContainsKey(pSliceID))
+            lock (_SetBrowserData)
             {
-                mNodeData.Remove(pSliceID);
-                mNodeData.Add(pSliceID, pValue);
+
+                if (mBrowserData.ContainsKey(pSliceID))
+                {
+                    mBrowserData.Remove(pSliceID);
+                    mBrowserData.Add(pSliceID, pValue);
+                }
+                else
+                {
+                    mBrowserData.Add(pSliceID, pValue);
+                }
+
+
+                string NodeId = "";
+                if (pSliceID.Contains("SliceId"))
+                {
+                    NodeId = pSliceID.Replace("SliceId", "NodeId");
+                    NodeId = NodeId.Substring(0, NodeId.Length - 5);
+                }
+                else
+                {
+                    NodeId = pSliceID.Substring(0, pSliceID.Length - 5);
+                }
+
+                if (mNodeReceivedValues.Contains(NodeId) == false)
+                {
+                    mNodeReceivedValues.Add(NodeId);
+                }
+                mNodeData = new SortedList<string, string>(mBrowserData);
+            }
+        }
+
+        public bool CheckIfNodeIdReceivedValues(string NodeId)
+        {
+            if (mNodeReceivedValues.Contains(NodeId))
+            {
+                mNodeReceivedValues.Remove(NodeId);
+                return true;
             }
             else
             {
-                mNodeData.Add(pSliceID, pValue);
+                return false;
             }
-
-            Monitor.Exit(mNodeData);
         }
 
 
         public void getNewBrowserData(string pSliceId,string pHostPath,int Slice,out string Response)
         {
 
-            if (Monitor.TryEnter(mNodeData))
-            {
-                try
-                {
+            //if (Monitor.TryEnter(mNodeData))
+            //{
+                //try
+                //{
                     if (mNodeData.ContainsKey(pSliceId))
                     {
                         mNodeData.TryGetValue(pSliceId, out Response);
                     }
-                    else if(mLoadedValues.ContainsKey(pHostPath))
+                    else if (mLoadedValues.ContainsKey(pHostPath))
                     {
                         string tResponse = "";
                         SortedList<int, string> tSpreadValues = new SortedList<int, string>();
@@ -521,21 +557,23 @@ namespace VVVV.Webinterface
                             tSpreadValues.TryGetValue(Slice, out tResponse);
                         }
                         Response = tResponse;
-                    }else
-                    {
-                        Response = "";
                     }
-                }
-                finally
-                {
-                    //Debug.WriteLine("Locked");
-                    Monitor.Exit(mNodeData);
-                }
-            }
-            else
-            {
-                Response = "";
-            }
+                    else
+                    {
+                        Response = null;
+                    }
+
+                //}
+                //finally
+                //{
+                //    //Debug.WriteLine("Locked");
+                //    Monitor.Exit(mNodeData);
+                //}
+            //}
+            //else
+            //{
+            //    Response = "";
+            //}
         }
 
 
@@ -835,7 +873,14 @@ namespace VVVV.Webinterface
                     SortedList<int, string> tSpreadValues = new SortedList<int, string>();
                     for (int j = 0; j < tSpreadList.Length; j++)
                     {
-                        tSpreadValues.Add(j, tSpreadList[j]);
+                        if (tSpreadList[j] == "")
+                        {
+                            tSpreadValues.Add(j, null);
+                        }
+                        else
+                        {
+                            tSpreadValues.Add(j, tSpreadList[j]);
+                        }
                     }
 
                     mLoadedValues.Add(tNodeID, tSpreadValues);
