@@ -13,6 +13,7 @@ namespace VVVV.Nodes.HttpGUI
 
         private bool FDisposed = false;
         private IValueOut FResponse;
+        private IEnumIn FMode;
 
         #endregion field declaration
 
@@ -165,6 +166,9 @@ namespace VVVV.Nodes.HttpGUI
             FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
             FResponse.SetSubType(0, 1, 1, 0, false, false, true);
 
+            FHost.UpdateEnum("ButtonMode", "Toggle", new string[] { "Toggle", "Bang" });
+            FHost.CreateEnumInput("ButtonMode", TSliceMode.Single, TPinVisibility.True, out FMode);
+            FMode.SetSubType("ButtonMode");
         }
 
         #endregion pin creation
@@ -176,53 +180,91 @@ namespace VVVV.Nodes.HttpGUI
 
         protected override void OnEvaluate(int SpreadMax)
         {
-            //if (mChangedSpreadSize)
-            //{
-            for (int i = 0; i < SpreadMax; i++)
+
+
+            bool checkIfNeDataArreived = CheckIfNodeReceivedData();
+
+            if (mChangedSpreadSize || checkIfNeDataArreived || FMode.PinIsChanged)
             {
-                HtmlDiv tDiv = new HtmlDiv();
 
-                tDiv.Insert("  ");
-
-                //SetBodyContent(i, tDiv.Text);
-
-                SetTag(i, tDiv);
-
-
-                FResponse.SliceCount = SpreadMax;
-
-
-                string tResponse;
-                GetNewDataFromServer(i, out tResponse);
-
-
-                if (tResponse != "")
+                for (int i = 0; i < SpreadMax; i++)
                 {
-                    FResponse.SetValue(i, Convert.ToInt32(tResponse));
-                }
-                else
-                {
-                    FResponse.SetValue(i, 0);
-                }
+                    string Mode;
+                    FMode.GetString(i, out Mode);
 
+                    string tResponse;
+                    GetNewDataFromServer(i, out tResponse);
+                    FResponse.SliceCount = SpreadMax;
+                    FResponse.SetValue(i,Convert.ToInt16(tResponse));
+
+                    if (Mode == "Toggle")
+                    {
+                       
+                        HtmlDiv tDiv = new HtmlDiv();
+                        HtmlDiv tDivInlay = new HtmlDiv();
+                        tDivInlay.Insert("  ");
+
+                        string AttributeContent = "position:relative;background-color:#9C9C9C; width:50%; height:50%;top:25%;left:25%;border-style:solid; border-color:#808080; border-width:thin;";
+                        HTMLAttribute InlayAttribute = new HTMLAttribute("style", AttributeContent);
+                        tDivInlay.AddAttribute(InlayAttribute);
+
+                        tDiv.Insert(tDivInlay);
+
+                        SetTag(i, tDiv);
+
+                        string tContent = @"toggle(
+function () {
+$('div',this).css({'background-color':'#808080'});
+var id = $(this).attr('id');
+$.post('ToVVVV.xml', id + '= 1', null);
+},
+function () {
+$('div',this).css({'background-color':'#9C9C9C'});
+var id = $(this).attr('id');
+$.post('ToVVVV.xml', id + '= 0', null);
+}
+);
+                        
+                        
+                        ";
+
+                        SetJavaScript(0, new JqueryFunction(true, "." + GetNodeID(0), tContent).Text);
+
+                    }
+                    else
+                    {
+                        HtmlDiv tDiv = new HtmlDiv();
+                        HtmlDiv tDivInlay = new HtmlDiv();
+                        tDivInlay.Insert("  ");
+
+                        string AttributeContent = "position:relative;background-color:#9C9C9C; width:50%; height:50%;top:25%;left:25%;border-style:solid; border-color:#808080; border-width:thin;";
+                        HTMLAttribute InlayAttribute = new HTMLAttribute("style", AttributeContent);
+                        tDivInlay.AddAttribute(InlayAttribute);
+
+                        tDiv.Insert(tDivInlay);
+
+                        SetTag(i, tDiv);
+
+
+                        string tContent = @"mousedown(function(){
+$('div',this).css({'background-color':'#808080'});
+var id = $(this).attr('id');
+$.post('ToVVVV.xml', id + '= 1', null);
+}).mouseup(function(){
+$('div',this).css({'background-color':'#9C9C9C'});
+var id = $(this).attr('id');
+$.post('ToVVVV.xml', id + '= 0', null);
+}).mouseleave(function(){
+$('div',this).css({'background-color':'#9C9C9C'});
+var id = $(this).attr('id');
+$.post('ToVVVV.xml', id + '= 0', null);
+});
+";
+
+                        SetJavaScript(0, new JqueryFunction(true, "." + mGuiDataList[0].NodeId, tContent).Text);
+                    }
+                }
             }
-
-
-            string tContent = @"var id = $(this).attr('id');
-                $.post('ToVVVV.xml', id + '= 1', null);
-                $(this).fadeOut(20,function()
-                {
-                    $(this).fadeIn(20);
-                    
-                });
-                $.post('ToVVVV.xml', id + '= 0', null);
-                
-                ";
-            SetJavaScript(0, new JqueryFunction(true, "." + mGuiDataList[0].NodeId, "click", tContent).Text);
-
-
-
-            //}
         }
 
 

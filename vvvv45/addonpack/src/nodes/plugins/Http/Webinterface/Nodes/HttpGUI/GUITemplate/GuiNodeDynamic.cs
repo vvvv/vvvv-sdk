@@ -454,6 +454,12 @@ namespace VVVV.Nodes.HttpGUI
             return mGuiDataList[SliceNumber].SliceId;
         }
 
+
+        public string GetNodeID(int SliceNumber)
+        {
+            return mGuiDataList[SliceNumber].NodeId;
+        }
+
         #endregion Node Information
 
 

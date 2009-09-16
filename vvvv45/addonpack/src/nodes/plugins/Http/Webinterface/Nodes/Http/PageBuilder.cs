@@ -103,10 +103,17 @@ namespace VVVV.Nodes.Http
 
         public void Build()
         {
-            mBuildFlag = true;
-            mPage.Body = (Body)BuildHtmlFrame(mGuiElemente, mPage.Body);
-            mCssBuilder.Build();
-            mBuildFlag = false;
+            try
+            {
+                mBuildFlag = true;
+                mPage.Body = (Body)BuildHtmlFrame(mGuiElemente, mPage.Body);
+                mCssBuilder.Build();
+                mBuildFlag = false;
+            }
+            catch(InvalidOperationException ex)
+            {
+                
+            }
         }
 
 

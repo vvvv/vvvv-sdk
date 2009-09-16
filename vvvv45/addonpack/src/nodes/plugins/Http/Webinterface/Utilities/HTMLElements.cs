@@ -369,6 +369,14 @@ namespace VVVV.Webinterface.Utilities
 
     class CheckBox : Tag
     {
+
+        public CheckBox()
+        {
+            Name = "input";
+            AddAttribute(new HTMLAttribute("type", "checkbox"));
+        }
+
+
         public CheckBox(string pId)
         {
             Name = "input";
@@ -385,6 +393,18 @@ namespace VVVV.Webinterface.Utilities
             Insert(new HTMLText(pName, false));
         }
     }
+
+
+    class RadioButton : Tag
+    {
+
+        public RadioButton()
+        {
+            Name = "input";
+            AddAttribute(new HTMLAttribute("type", "radio"));
+        }
+    }
+
 
     class Form : Tag
     {
