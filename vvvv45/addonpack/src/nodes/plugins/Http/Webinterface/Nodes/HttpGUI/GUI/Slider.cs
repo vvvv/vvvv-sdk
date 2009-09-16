@@ -230,7 +230,7 @@ namespace VVVV.Nodes.HttpGUI
 
                     string tResponse;
                     GetNewDataFromServer(i, out tResponse);
-                    if (tResponse == null)
+                    if (tResponse == null || tResponse == "")
                     {
                         tResponse = currentDefaultSlice.ToString();
                     }

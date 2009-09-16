@@ -514,14 +514,18 @@ namespace VVVV.Nodes.Http
                     FDirectories.GetString(i, out tCurrentDirectories);
                     if (tCurrentDirectories != null && tCurrentDirectories != "")
                     {
-                        tDirectories.Add(tCurrentDirectories);
-
-                        DirectoryInfo tInfo = new DirectoryInfo(tCurrentDirectories);
-                        FileInfo[] tFileInfos = tInfo.GetFiles();
-
-                        for (int j = 0; j < tFileInfos.Length; j++)
+                        if (Directory.Exists(tCurrentDirectories))
                         {
-                            tFiles.Add(tFileInfos[j].Name);
+
+                            tDirectories.Add(tCurrentDirectories);
+
+                            DirectoryInfo tInfo = new DirectoryInfo(tCurrentDirectories);
+                            FileInfo[] tFileInfos = tInfo.GetFiles();
+
+                            for (int j = 0; j < tFileInfos.Length; j++)
+                            {
+                                tFiles.Add(tFileInfos[j].Name);
+                            }
                         }
                     }
                 }
