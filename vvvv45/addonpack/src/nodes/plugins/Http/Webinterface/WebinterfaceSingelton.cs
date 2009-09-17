@@ -86,12 +86,12 @@ namespace VVVV.Webinterface
         private static object m_lock = new Object();
         private static object _SetBrowserData = new Object();
         private static object _BuildLock = new Object();
-        private ConcreteSubject mSubject;
+        //private ConcreteSubject mSubject;
         
         private SortedList<string, SortedList<string, string>> mNodeDaten = new SortedList<string, SortedList<string, string>>();
         private SortedList<string, string> mServerDaten = new SortedList<string, string>();
 
-        private Logger mlogger;
+        //private Logger mlogger;
         private StartupCheck mStartupCheck;
 
 
@@ -121,36 +121,36 @@ namespace VVVV.Webinterface
         /// <summary>
         /// the ConcretSubject instance
         /// </summary>
-        public ConcreteSubject Subject
-        {
-            get
-            {
-                return mSubject;
-            }
-        }
+        //public ConcreteSubject Subject
+        //{
+        //    get
+        //    {
+        //        return mSubject;
+        //    }
+        //}
 
 
         /// <summary>
         /// inforamtion to which node the data should be send
         /// </summary>
-        public string ToNode
-        {
-            set
-            {
-                mSubject.ToNode = value;
-            }
-        }
+        //public string ToNode
+        //{
+        //    set
+        //    {
+        //        mSubject.ToNode = value;
+        //    }
+        //}
 
         /// <summary>
         /// the information to which html form the data should be send
         /// </summary>
-        public string ToHtml
-        {
-            set
-            {
-                mSubject.ToHtmlForm = value;
-            }
-        }
+        //public string ToHtml
+        //{
+        //    set
+        //    {
+        //        mSubject.ToHtmlForm = value;
+        //    }
+        //}
 
         /// <summary>
         /// gets the Folder to Serv;
@@ -214,35 +214,41 @@ namespace VVVV.Webinterface
         private WebinterfaceSingelton()
         {
 
-
-            mStartupCheck = new StartupCheck();
-            mStartupCheck.SartupFolder = "plugins\\webinterface";
-            mStartupCheck.StartupSubFolder = "assets";
-            mStartupCheck.StartupSubFolder = "log";
-            mStartupCheck.StartupSubFolder = "lib";
-            mStartupCheck.CheckifStartupPathExist();
-
-
-            if(Directory.Exists(mStartupCheck.getSubFolderPath("log")))
+            try
             {
-                mlogger = new Logger(Path.Combine(mStartupCheck.getSubFolderPath("log"), System.DateTime.Today.ToShortDateString() + ".log"));
+                mStartupCheck = new StartupCheck();
+                mStartupCheck.SartupFolder = "plugins\\webinterface";
+                //mStartupCheck.StartupSubFolder = "assets";
+                //mStartupCheck.StartupSubFolder = "log";
+                mStartupCheck.StartupSubFolder = "lib";
+                mStartupCheck.CheckifStartupPathExist();
+
+
+                //if(Directory.Exists(mStartupCheck.getSubFolderPath("log")))
+                //{
+                //    mlogger = new Logger(Path.Combine(mStartupCheck.getSubFolderPath("log"), System.DateTime.Today.ToShortDateString() + ".log"));
+                //}
+                //else
+                //{
+                //    mlogger = new Logger(System.DateTime.Today.ToShortDateString() + ".log");
+                //}
+
+
+                //mlogger.log(mlogger.LogType.Info, "VVVV Webinterface Singelton erstellt");
+
+
+                TextWriterTraceListener tr2 = new TextWriterTraceListener(System.IO.File.CreateText("Debug.txt"));
+                Debug.Listeners.Add(tr2);
+                Debug.WriteLine("Hello");
+                //mSubject = new ConcreteSubject();
+                //////Debug.WriteLine(mSubject, " Subject");
+
+                mServerDaten.Add("", "");
             }
-            else
+            catch (Exception ex)
             {
-                mlogger = new Logger(System.DateTime.Today.ToShortDateString() + ".log");
+                
             }
-            
-            
-            mlogger.log(mlogger.LogType.Info, "VVVV Webinterface Singelton erstellt");
-
-
-            TextWriterTraceListener tr2 = new TextWriterTraceListener(System.IO.File.CreateText("Debug.txt"));
-            Debug.Listeners.Add(tr2);
-
-            mSubject = new ConcreteSubject();
-            //////Debug.WriteLine(mSubject, " Subject");
-
-            mServerDaten.Add("", "");
         }
 
         /// <summary>
@@ -280,17 +286,17 @@ namespace VVVV.Webinterface
         /// </summary>
         /// <param name="pTypeName">Node ID</param>
         /// <returns><see cref="VVVV.Webinterface.Data.NodeObserver"/></returns>
-        public NodeObserver AddNode(string pNodeId)
-        {
+        //public NodeObserver AddNode(string pNodeId)
+        //{
 
-            NodeObserver tObserver = new NodeObserver(mSubject, pNodeId);
-            mSubject.AttachNode(tObserver);
+        //    NodeObserver tObserver = new NodeObserver(mSubject, pNodeId);
+        //    mSubject.AttachNode(tObserver);
 
-            //////Debug.WriteLine("Observer erzeug: " + tObserver.ID);
-            mlogger.log(mlogger.LogType.Info, "Add Textfield Node to Subject Oserver List");
+        //    //////Debug.WriteLine("Observer erzeug: " + tObserver.ID);
+        //    //mlogger.log(mlogger.LogType.Info, "Add Textfield Node to Subject Oserver List");
 
-            return tObserver;
-        }
+        //    return tObserver;
+        //}
 
 
 
@@ -299,10 +305,10 @@ namespace VVVV.Webinterface
         /// deletes an observer from the node observer list in the subject instance if a node is deleted
         /// </summary>
         /// <param name="pObserver">the node observer to deleted see(<see cref="VVVV.Webinterface.Data.NodeObserver"/>)</param>
-        public void DeleteNode(NodeObserver pObserver)
-        {
-            mSubject.DetachNode(pObserver);
-        }
+        //public void DeleteNode(NodeObserver pObserver)
+        //{
+        //    mSubject.DetachNode(pObserver);
+        //}
 
 
 
@@ -310,10 +316,10 @@ namespace VVVV.Webinterface
         /// attches an server instance to the server observer list int the subject instance
         /// </summary>
         /// <param name="pServhandling">the server instance to add</param>
-        public void AddServhandling(Server pServhandling)
-        {
-            mSubject.AttachServerhandling(pServhandling);
-        }
+        //public void AddServhandling(Server pServhandling)
+        //{
+        //    mSubject.AttachServerhandling(pServhandling);
+        //}
 
 
 
@@ -321,22 +327,23 @@ namespace VVVV.Webinterface
         /// deletes a server instance form the server observer list
         /// </summary>
         /// <param name="pServer">the server instance to delete</param>
-        public void DeleteServhandling(Server pServer)
-        {
-            mSubject.DetachServhandling(pServer);
-        }
+        //public void DeleteServhandling(Server pServer)
+        //{
+        //    mSubject.DetachServhandling(pServer);
+        //}
 
 
 
         /// <summary>
         /// notify the server that there new data from vvvv
         /// </summary>
-        public void NotifyServer(string pData)
-        {
-            mSubject.NotifyServer(pData);
-        }
+        //public void NotifyServer(string pData)
+        //{
+        //    mSubject.NotifyServer(pData);
+        //}
 
         #endregion ObserverHandling
+
 
 
 
@@ -477,6 +484,7 @@ namespace VVVV.Webinterface
         //}
 
         #endregion Build HtmlPages
+
 
 
 
@@ -733,6 +741,7 @@ namespace VVVV.Webinterface
 
 
 
+
         #region Client Response Handling
 
         string mMasterIP = String.Empty;
@@ -781,6 +790,7 @@ namespace VVVV.Webinterface
 
 
         #endregion Client Response Handling
+
 
 
 

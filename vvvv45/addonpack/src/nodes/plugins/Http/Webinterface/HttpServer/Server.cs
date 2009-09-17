@@ -206,14 +206,14 @@ namespace VVVV.Webinterface.HttpServer {
         /// <param name="Backlog">Backlog </param>
         /// <param name="pSubject">the subject class which cooperates with the server</param>
         /// <param name="pName">name of the server</param>
-        public Server(int pPort, int Backlog, ConcreteSubject pSubject, string pName, string pFolderToServ)
+        public Server(int pPort, int Backlog, string pName, string pFolderToServ)
         {
 
             this.portNumber = pPort;
             this.maxSockets = 10000;
             this.mBacklog = Backlog;
             this.mName = pName;
-            this.mSubject = pSubject;
+            //this.mSubject = pSubject;
 
             connectedSocks = new ArrayList(this.maxSockets);
 

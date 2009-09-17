@@ -448,8 +448,8 @@ namespace VVVV.Nodes.Http
             {
                 if (pState > 0.5)
                 {
-                    mServer = new VVVV.Webinterface.HttpServer.Server(80, 50, mWebinterfaceSingelton.Subject, "ServerOne", mServerFolder);
-                    mWebinterfaceSingelton.AddServhandling(mServer);
+                    mServer = new VVVV.Webinterface.HttpServer.Server(80, 50, "ServerOne", mServerFolder);
+                    //mWebinterfaceSingelton.AddServhandling(mServer);
                     //mServer.ServeFolder(mServerFolder);
                     mServer.Start();             
                 }
@@ -457,7 +457,7 @@ namespace VVVV.Nodes.Http
                 {
                     if (mServer != null)
                     {
-                        mWebinterfaceSingelton.DeleteServhandling(mServer);
+                        //mWebinterfaceSingelton.DeleteServhandling(mServer);
                         mServer.Stop();
                         mServer.Dispose();
                         mServer = null;
