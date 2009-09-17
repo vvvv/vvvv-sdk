@@ -787,7 +787,7 @@ namespace VVVV.Webinterface
 
         #region  SaveDataToFile
 
-        public void AddListOnDestroy(string NodeID, SortedList<int,string> SpreadList)
+        public void AddListToSave(string NodeID, SortedList<int,string> SpreadList)
         {
             if (mValuesToSave.ContainsKey(NodeID))
             {

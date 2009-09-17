@@ -530,6 +530,8 @@ namespace VVVV.Nodes.HttpGUI
             {
                 mSavedResponses.Add(SliceNumber, pContent);
             }
+
+            mWebinterfaceSingelton.AddListToSave(mNodePath, mSavedResponses);
         }
 
         #endregion Get data from WebinterfaceSingelton
@@ -545,7 +547,7 @@ namespace VVVV.Nodes.HttpGUI
             string tValue;
             mSavedResponses.TryGetValue(SliceNumber, out tValue);
 
-            mWebinterfaceSingelton.AddListOnDestroy(mNodePath, mSavedResponses);
+            
             return tValue;
         }
 
