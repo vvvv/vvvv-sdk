@@ -28,7 +28,7 @@ namespace VVVV.Webinterface.HttpServer {
     /// Server listens for all incoming clients on all IP's
     /// </summary>
     /// 
-    class Server : Observer
+    class Server
     {
 
 
@@ -40,7 +40,6 @@ namespace VVVV.Webinterface.HttpServer {
 
         //Classes
         private bool FDisposed = false;
-        private ConcreteSubject mSubject;
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
      
         // Socket
@@ -690,118 +689,6 @@ namespace VVVV.Webinterface.HttpServer {
 
 
 
-
-
-
-        #region Updated Handling
-        /// <summary>
-        /// sends the new data to the browser
-        /// </summary>
-        public override void Updated()
-        {
-            ////Debug.WriteLine("Updated Server");
-           
-            SortedList<string, string> tNewServerhandlingDaten = mSubject.NewServerDaten;
-
-            foreach (KeyValuePair<string, string> tSlice in tNewServerhandlingDaten)
-            {
-
-                if (tSlice.Key.Contains("Checkbox"))
-                {
-                    ////Debug.WriteLine("Checkbox Update");
-                    JavaScript tJava = new JavaScript();
-                    tJava.Insert("parent.window.setCheckbox('" + tSlice.Key + "','" + tSlice.Value + "');");
-                    JavaScript tJava2 = new JavaScript();
-                    tJava2.Insert("parent.window.changeValue('" + tSlice.Key + "');");
-
-                    foreach (KeyValuePair<string, Socket> pKey in mDummySocketList)
-                    {
-
-                        Socket pSocket = pKey.Value;
-                        ResponseHeader tHeader = new ResponseHeader(new HTTPStatusCode("").Code200, "dummy.html");
-                        //ResponseUpdate tResponse = new ResponseUpdate(tHeader.HeaderText, pSocket, "dummy.html", tJava.Text + Environment.NewLine + tJava2.Text);
-                        
-                   }
-
-                }else if(tSlice.Key.Contains("Button"))
-                {
-
-                }
-                else
-                {
-                    ////Debug.WriteLine(" send: " + tSlice.Value + " from VVVV to Browser Element: " + tSlice.Key);
-                  
-                    JavaScript tJava = new JavaScript();
-                    tJava.Insert("parent.window.setNewDaten('" + tSlice.Key + "','" + tSlice.Value + "');");
-
-                    foreach (KeyValuePair<string, Socket> pKey in mDummySocketList)
-                    {
-
-                        Socket pSocket = pKey.Value;
-                        if (pSocket.Connected)
-                        {
-                            pSocket.Send(Encoding.UTF8.GetBytes(tJava.Text + Environment.NewLine));
-                        }
-                        
-                        //ResponseHeader tHeader = new ResponseHeader();
-                        //ResponseUpdate tResponse = new ResponseUpdate(tHeader.HeaderText, pSocket, "dummy.html", tJava.Text);
-
-                    }
-
-
-                }
-            }
-        }
-
-        public override void UpdatedBrowser(string pData)
-        {
-            foreach (KeyValuePair<string, Socket> pKey in mDummySocketList)
-            {
-                Socket pSocket = pKey.Value;
-                ResponseHeader tHeader = new ResponseHeader(new HTTPStatusCode("").Code200, "dummy.html");
-
-                //ResponseTextDummy tResponse = new ResponseTextDummy("", pSocket, "dummy.html", pData);
-
-                //Thread tGetHandlingThread = new Thread(new ThreadStart(tResponse.Run));
-                //tGetHandlingThread.Start();
-            }
-        }
-
-        /// <summary>
-        /// send data to browser to reload the whole HTML page
-        /// </summary>
-        public override void Reload()
-        {
-
-                //foreach (KeyValuePair<string, Socket> pKey in mDummySocketList)
-                //{
-                //    Socket pSocket = pKey.Value;
-                //    pSocket.Close();
-                //}
-
-                JavaScript tJava = new JavaScript();
-                tJava.Insert("parent.window.Reload();");
-
-
-                foreach (KeyValuePair<string, Socket> pKey in mDummySocketList)
-                {
-
-                    Socket pSocket = pKey.Value;
-                    ResponseHeader tHeader = new ResponseHeader(new HTTPStatusCode("").Code200, "dummy.html");
-
-                    //ResponseTextDummy tResponse = new ResponseTextDummy("", pSocket, "dummy.html", tJava.Text);
-
-                    //Thread tGetHandlingThread = new Thread(new ThreadStart(tResponse.Run));
-                    //tGetHandlingThread.Start();
-                    //pSocket.Send(Encoding.UTF8.GetBytes(pText + Environment.NewLine));
-                }
-                //sendText(tJava.Text);
-                ////Debug.WriteLine("Reload Server");
-
-            }
-
-         #endregion Updated Handling
-            
 
 
         
