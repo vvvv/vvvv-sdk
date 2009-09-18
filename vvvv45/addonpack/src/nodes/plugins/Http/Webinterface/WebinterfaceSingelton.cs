@@ -782,17 +782,21 @@ namespace VVVV.Webinterface
         string mMasterIP = String.Empty;
         bool mSetNewMaster = true;
         int mTimeOut;
-        private object _SyncCheck = new object();
+        private object _TimeoutLock = new object();
         //Create a timer that waits one minute, then invokes every 5 minutes.
         System.Threading.Timer mMasterTimer;
+        string mMasterMassage;
 
-        public string CheckIfMaster(string IPAdress)
+        public string CheckIfMaster(string IPAdress, string pMasterMassage)
         {
+            
 
-            if (mTimeOut != 0)
+            lock (_TimeoutLock)
             {
-                lock (_SyncCheck)
+                
+                if (mTimeOut != 0)
                 {
+
                     if (mMasterTimer == null)
                     {
                         TimerCallback timerDelegate = new TimerCallback(this.TimerCall);
@@ -804,25 +808,63 @@ namespace VVVV.Webinterface
                         mMasterIP = IPAdress;
                         mSetNewMaster = false;
                         Debug.WriteLine(IPAdress + " is Master");
+                        mMasterMassage = pMasterMassage;
+
                         return "Master";
                     }
                     else if (mSetNewMaster == false && mMasterIP == IPAdress)
                     {
                         mMasterTimer.Change(mTimeOut, System.Threading.Timeout.Infinite);
                         Debug.WriteLine(IPAdress + " is Master");
+                        mMasterMassage = pMasterMassage;
+
                         return "Master";
                     }
                     else
                     {
                         Debug.WriteLine(IPAdress + " is Slave");
-                        return "Slave";
+                        return mMasterMassage;
                     }
                 }
+
+                else
+                {
+                    mMasterMassage = pMasterMassage;
+                    return "Master: " + mMasterIP;
+                }
+            }
+        }
+
+
+        public string CheckIfSlave(string IpAdress, string pMasterMassage)
+        {
+            if(mMasterIP == "")
+            {
+                return "NoMaster";
+            }
+            else if (IpAdress != mMasterIP)
+            {
+                return mMasterMassage;
             }
             else
             {
-                return "Master";
+                mMasterTimer.Change(mTimeOut, System.Threading.Timeout.Infinite);
+                return "Master: " + mMasterIP;
             }
+        }
+
+
+        public void SetMaster(string IpAdress, string pMasterMassage)
+        {
+            if (mMasterTimer == null)
+            {
+                TimerCallback timerDelegate = new TimerCallback(this.TimerCall);
+                mMasterTimer = new System.Threading.Timer(timerDelegate, null, mTimeOut, System.Threading.Timeout.Infinite);
+            }
+
+            mMasterTimer.Change(mTimeOut, System.Threading.Timeout.Infinite);
+            mMasterIP = IpAdress;
+            mMasterMassage = pMasterMassage;
         }
 
         private void TimerCall(object eventState)

@@ -299,10 +299,14 @@ namespace VVVV.Webinterface.HttpServer
 
                 string tRemoteIPAdresse = mSocketInformation.ClientSocket.RemoteEndPoint.ToString();
                 tRemoteIPAdresse = tRemoteIPAdresse.Split(':')[0];
+                string[] tVVVVParameter = mMessageBody.Split('&');
 
-                if (mWebinterfaceSingelton.CheckIfMaster(tRemoteIPAdresse) == "Master")
+
+                //string tResponse = mWebinterfaceSingelton.CheckIfMaster(tRemoteIPAdresse, tVVVVParameter[0].Split('=')[1]);
+
+                if (true)
                 {
-                    string[] tVVVVParameter = mMessageBody.Split('&');
+                    
                     foreach (string tValuePair in tVVVVParameter)
                     {
                         string[] tValue = tValuePair.Split('=');
@@ -316,8 +320,57 @@ namespace VVVV.Webinterface.HttpServer
                 }
                 else
                 {
-                    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("Slave"), new HTTPStatusCode("").Code200);
+                    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes(tResponse), new HTTPStatusCode("").Code200);
                 }
+
+            }
+            else if (mFilename == "MakeMeMaster.xml")
+            {
+                string tRemoteIPAdresse = mSocketInformation.ClientSocket.RemoteEndPoint.ToString();
+                tRemoteIPAdresse = tRemoteIPAdresse.Split(':')[0];
+                string[] tVVVVParameter = mMessageBody.Split('&');
+
+                mWebinterfaceSingelton.SetMaster(tRemoteIPAdresse, tVVVVParameter[0].Split('=')[1]);
+
+                foreach (string tValuePair in tVVVVParameter)
+                {
+                    string[] tValue = tValuePair.Split('=');
+
+                    if (tValue.Length > 1)
+                    {
+                        mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
+                    }
+                }
+
+                mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("You are Master: " + tRemoteIPAdresse), new HTTPStatusCode("").Code200);
+            }
+            else if (mFilename == "CheckIfSlave.xml")
+            {
+                string tRemoteIPAdresse = mSocketInformation.ClientSocket.RemoteEndPoint.ToString();
+                tRemoteIPAdresse = tRemoteIPAdresse.Split(':')[0];
+                string[] tVVVVParameter = mMessageBody.Split('&');
+
+                string tResponse = mWebinterfaceSingelton.CheckIfSlave(tRemoteIPAdresse,tVVVVParameter[0].Split('=')[1]);
+
+                if (tResponse == "Master")
+                {
+                    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes(tResponse), new HTTPStatusCode("").Code200);
+
+                    foreach (string tValuePair in tVVVVParameter)
+                    {
+                        string[] tValue = tValuePair.Split('=');
+
+                        if (tValue.Length > 1)
+                        {
+                            mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
+                        }
+                    }
+                }
+                else
+                {
+                    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes(tResponse), new HTTPStatusCode("").Code200);
+                }
+
                 
             }
             else if (mFilename == "polling.xml")
@@ -329,11 +382,11 @@ namespace VVVV.Webinterface.HttpServer
                 {
                     StringWriter sw = new StringWriter();
                     XmlTextWriter xw = new XmlTextWriter(sw);
-                                            
+
                     // Save Xml Document to Text Writter.
                     tMessage.WriteTo(xw);
                     System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
-                                            
+
                     // Convert Xml Document To Byte Array.
                     byte[] docAsBytes = encoding.GetBytes(sw.ToString());
 
@@ -344,7 +397,7 @@ namespace VVVV.Webinterface.HttpServer
                     mResponse = new Response(mFilename, "text/xml", Encoding.UTF8.GetBytes("NoNewData"), new HTTPStatusCode("").Code200);
                 }
 
-               
+
             }
             else
             {
