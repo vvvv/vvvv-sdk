@@ -436,6 +436,12 @@ namespace VVVV.Webinterface.Utilities
         {
             Name = "img";
         }
+
+        public Img(string pFilePath)
+        {
+            Name = "img";
+            AddAttribute(new HTMLAttribute("src", pFilePath));
+        }
         
         public Img( string pFilePath, string pAlt)
         {

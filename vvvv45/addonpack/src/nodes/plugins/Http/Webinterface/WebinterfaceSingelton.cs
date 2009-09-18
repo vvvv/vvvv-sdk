@@ -97,7 +97,6 @@ namespace VVVV.Webinterface
 
         //New 
         private static volatile WebinterfaceSingelton instance = null;
-        private SortedList<string, string> mBrowserData = new SortedList<string, string>();
         private SortedList<string, string> mNodeData = new SortedList<string, string>();
         private List<string> mGetMessages = new List<string>();
         private List<string> mPostMessages = new List<string>();
@@ -108,7 +107,7 @@ namespace VVVV.Webinterface
         private SortedList<string, string> mServerFiles = new SortedList<string,string>();
         private List<string> mUrls = new List<string>();
         private SortedList<string,SortedList<int,string>> mValuesToSave = new SortedList<string,SortedList<int,string>>();
-        private string mHostPath;
+        private string mHostPath = String.Empty;
         SortedList<string, SortedList<int, string>> mLoadedValues = new SortedList<string, SortedList<int, string>>();
         List<string> mNodeReceivedValues = new List<string>();
 
@@ -155,13 +154,13 @@ namespace VVVV.Webinterface
         /// <summary>
         /// gets the Folder to Serv;
         /// </summary>
-        public string FolderToServ
-        {
-            get
-            {
-                return mStartupCheck.SartupFolder;
-            }
-        }
+        //public string FolderToServ
+        //{
+        //    get
+        //    {
+        //        return mStartupCheck.SartupFolder;
+        //    }
+        //}
 
         public List<string> ServerFilesUrl
         {
@@ -195,8 +194,20 @@ namespace VVVV.Webinterface
 
             set
             {
-                mHostPath = value;
-                LoadDataFromFile();
+                if (mHostPath == "")
+                {
+                    mHostPath = value;
+                    LoadDataFromFile();
+                }
+            }
+        }
+
+
+        public int TimeOut
+        {
+            set
+            {
+                mTimeOut = value;
             }
         }
 
@@ -216,34 +227,34 @@ namespace VVVV.Webinterface
 
             try
             {
-                mStartupCheck = new StartupCheck();
-                mStartupCheck.SartupFolder = "plugins\\webinterface";
-                //mStartupCheck.StartupSubFolder = "assets";
-                //mStartupCheck.StartupSubFolder = "log";
-                mStartupCheck.StartupSubFolder = "lib";
-                mStartupCheck.CheckifStartupPathExist();
+                //mStartupCheck = new StartupCheck();
+                //mStartupCheck.SartupFolder = "plugins\\webinterface";
+                ////mStartupCheck.StartupSubFolder = "assets";
+                ////mStartupCheck.StartupSubFolder = "log";
+                //mStartupCheck.StartupSubFolder = "lib";
+                //mStartupCheck.CheckifStartupPathExist();
 
 
-                //if(Directory.Exists(mStartupCheck.getSubFolderPath("log")))
-                //{
-                //    mlogger = new Logger(Path.Combine(mStartupCheck.getSubFolderPath("log"), System.DateTime.Today.ToShortDateString() + ".log"));
-                //}
-                //else
-                //{
-                //    mlogger = new Logger(System.DateTime.Today.ToShortDateString() + ".log");
-                //}
+                ////if(Directory.Exists(mStartupCheck.getSubFolderPath("log")))
+                ////{
+                ////    mlogger = new Logger(Path.Combine(mStartupCheck.getSubFolderPath("log"), System.DateTime.Today.ToShortDateString() + ".log"));
+                ////}
+                ////else
+                ////{
+                ////    mlogger = new Logger(System.DateTime.Today.ToShortDateString() + ".log");
+                ////}
 
 
-                //mlogger.log(mlogger.LogType.Info, "VVVV Webinterface Singelton erstellt");
+                ////mlogger.log(mlogger.LogType.Info, "VVVV Webinterface Singelton erstellt");
 
 
-                TextWriterTraceListener tr2 = new TextWriterTraceListener(System.IO.File.CreateText("Debug.txt"));
-                Debug.Listeners.Add(tr2);
-                Debug.WriteLine("Hello");
-                //mSubject = new ConcreteSubject();
-                //////Debug.WriteLine(mSubject, " Subject");
+                ////TextWriterTraceListener tr2 = new TextWriterTraceListener(System.IO.File.CreateText("Debug.txt"));
+                ////Debug.Listeners.Add(tr2);
+                ////Debug.WriteLine("Hello");
+                ////mSubject = new ConcreteSubject();
+                ////////Debug.WriteLine(mSubject, " Subject");
 
-                mServerDaten.Add("", "");
+                //mServerDaten.Add("", "");
             }
             catch (Exception ex)
             {
@@ -497,45 +508,66 @@ namespace VVVV.Webinterface
         public void setNewBrowserDaten(string pSliceID, string pValue)
         {
 
-            lock (_SetBrowserData)
+            Monitor.Enter(mNodeData);
+
+
+            if (mNodeData.ContainsKey(pSliceID))
             {
-
-                if (mBrowserData.ContainsKey(pSliceID))
-                {
-                    mBrowserData.Remove(pSliceID);
-                    mBrowserData.Add(pSliceID, pValue);
-                }
-                else
-                {
-                    mBrowserData.Add(pSliceID, pValue);
-                }
-
-
-                string NodeId = "";
-                if (pSliceID.Contains("SliceId"))
-                {
-                    NodeId = pSliceID.Replace("SliceId", "NodeId");
-                    NodeId = NodeId.Substring(0, NodeId.Length - 5);
-                }
-                else
-                {
-                    NodeId = pSliceID.Substring(0, pSliceID.Length - 5);
-                }
-
-                if (mNodeReceivedValues.Contains(NodeId) == false)
-                {
-                    mNodeReceivedValues.Add(NodeId);
-                }
-                mNodeData = new SortedList<string, string>(mBrowserData);
+                mNodeData.Remove(pSliceID);
+                mNodeData.Add(pSliceID, pValue);
             }
+            else
+            {
+                mNodeData.Add(pSliceID, pValue);
+            }
+
+
+            Monitor.Exit(mNodeData);
+
+
+            Monitor.Enter(mNodeReceivedValues);
+
+            string NodeId = "";
+            if (pSliceID.Contains("SliceId"))
+            {
+                NodeId = pSliceID.Replace("SliceId", "NodeId");
+                NodeId = NodeId.Substring(0, NodeId.Length - 5);
+            }
+            else
+            {
+                NodeId = pSliceID.Substring(0, pSliceID.Length - 5);
+            }
+
+            if (mNodeReceivedValues.Contains(NodeId) == false)
+            {
+                mNodeReceivedValues.Add(NodeId);
+            }
+
+            Monitor.Exit(mNodeReceivedValues);
+
         }
 
         public bool CheckIfNodeIdReceivedValues(string NodeId)
         {
-            if (mNodeReceivedValues.Contains(NodeId))
+
+            if (Monitor.TryEnter(mNodeReceivedValues))
             {
-                mNodeReceivedValues.Remove(NodeId);
-                return true;
+                try
+                {
+                    if (mNodeReceivedValues.Contains(NodeId))
+                    {
+                        mNodeReceivedValues.Remove(NodeId);
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                finally
+                {
+                    Monitor.Exit(mNodeReceivedValues);
+                }
             }
             else
             {
@@ -547,10 +579,10 @@ namespace VVVV.Webinterface
         public void getNewBrowserData(string pSliceId,string pHostPath,int Slice,out string Response)
         {
 
-            //if (Monitor.TryEnter(mNodeData))
-            //{
-                //try
-                //{
+            if (Monitor.TryEnter(mNodeData))
+            {
+            try
+            {
                     if (mNodeData.ContainsKey(pSliceId))
                     {
                         mNodeData.TryGetValue(pSliceId, out Response);
@@ -563,25 +595,29 @@ namespace VVVV.Webinterface
                         if (tSpreadValues.ContainsKey(Slice))
                         {
                             tSpreadValues.TryGetValue(Slice, out tResponse);
+                            Response = tResponse;
                         }
-                        Response = tResponse;
+                        else
+                        {
+                            Response = null;
+                        }
+                        
                     }
                     else
                     {
                         Response = null;
                     }
 
-                //}
-                //finally
-                //{
-                //    //Debug.WriteLine("Locked");
-                //    Monitor.Exit(mNodeData);
-                //}
-            //}
-            //else
-            //{
-            //    Response = "";
-            //}
+                }
+                finally
+                {
+                    Monitor.Exit(mNodeData);
+                }
+            }
+            else
+            {
+                Response = null;
+            }
         }
 
 
@@ -615,7 +651,6 @@ namespace VVVV.Webinterface
                 }
                 finally
                 {
-                    //Debug.WriteLine("Locked");
                     Monitor.Exit(mGetMessages);
                     Monitor.Exit(mPostMessages);
                 }
@@ -746,39 +781,47 @@ namespace VVVV.Webinterface
 
         string mMasterIP = String.Empty;
         bool mSetNewMaster = true;
-        int mTimeOut = 2000;
+        int mTimeOut;
         private object _SyncCheck = new object();
         //Create a timer that waits one minute, then invokes every 5 minutes.
         System.Threading.Timer mMasterTimer;
 
         public string CheckIfMaster(string IPAdress)
         {
-            lock (_SyncCheck)
-            {
-                if (mMasterTimer == null)
-                {
-                    TimerCallback timerDelegate = new TimerCallback(this.TimerCall);
-                    mMasterTimer = new System.Threading.Timer(timerDelegate, null, mTimeOut, System.Threading.Timeout.Infinite);
-                }
 
-                if (mSetNewMaster == true)
+            if (mTimeOut != 0)
+            {
+                lock (_SyncCheck)
                 {
-                    mMasterIP = IPAdress;
-                    mSetNewMaster = false;
-                    Debug.WriteLine(IPAdress + " is Master");
-                    return "Master";
+                    if (mMasterTimer == null)
+                    {
+                        TimerCallback timerDelegate = new TimerCallback(this.TimerCall);
+                        mMasterTimer = new System.Threading.Timer(timerDelegate, null, mTimeOut, System.Threading.Timeout.Infinite);
+                    }
+
+                    if (mSetNewMaster == true)
+                    {
+                        mMasterIP = IPAdress;
+                        mSetNewMaster = false;
+                        Debug.WriteLine(IPAdress + " is Master");
+                        return "Master";
+                    }
+                    else if (mSetNewMaster == false && mMasterIP == IPAdress)
+                    {
+                        mMasterTimer.Change(mTimeOut, System.Threading.Timeout.Infinite);
+                        Debug.WriteLine(IPAdress + " is Master");
+                        return "Master";
+                    }
+                    else
+                    {
+                        Debug.WriteLine(IPAdress + " is Slave");
+                        return "Slave";
+                    }
                 }
-                else if (mSetNewMaster == false && mMasterIP == IPAdress)
-                {
-                    mMasterTimer.Change(mTimeOut, System.Threading.Timeout.Infinite);
-                    Debug.WriteLine(IPAdress + " is Master");
-                    return "Master";
-                }
-                else
-                {
-                    Debug.WriteLine(IPAdress + " is Slave");
-                    return "Slave";
-                }
+            }
+            else
+            {
+                return "Master";
             }
         }
 
@@ -830,20 +873,22 @@ namespace VVVV.Webinterface
                 SortedList<int, string> tSliceList;
                 mValuesToSave.TryGetValue(p.Key, out tSliceList);
                 StringBuilder tSpread = new StringBuilder();
-                foreach (KeyValuePair<int, string> tSliceContent in tSliceList)
-                {
-                    tSpread.Append(tSliceContent.Value + ";");
-                }
+
 
                 w.WriteStartElement("Node");
                 w.WriteAttributeString("id", p.Key.ToString());
-                w.WriteElementString("Spread", tSpread.ToString());
+                w.WriteStartElement("Spread", tSpread.ToString());
+
+                foreach (KeyValuePair<int, string> tSliceContent in tSliceList)
+                {
+                    w.WriteElementString("Slice", tSliceContent.Value);
+                }
+
                 w.WriteEndElement();
-
-
+                w.WriteEndElement();
             }
 
-            w.WriteEndElement();
+            
             w.WriteEndDocument();
             w.Flush();
             fs.Close();
@@ -858,12 +903,8 @@ namespace VVVV.Webinterface
 
             System.Xml.XmlDocument tXml = new XmlDocument();
 
-            
-
-
             if (File.Exists(tHostPath))
             {
-
 
                 XmlDocument tdoc = new XmlDocument();
                 tdoc.Load(new XmlTextReader(tHostPath));
@@ -877,19 +918,21 @@ namespace VVVV.Webinterface
                     string tNodeID = tAttributes[0].Value;
 
                     XmlNode tSpread = tNode.FirstChild;
-                    string tSpreadContent = tSpread.InnerText;
-                    string[] tSpreadList = tSpreadContent.Split(';');
+                    XmlNodeList tSlices = tSpread.ChildNodes;
 
                     SortedList<int, string> tSpreadValues = new SortedList<int, string>();
-                    for (int j = 0; j < tSpreadList.Length; j++)
+
+                    for (int j = 0; j < tSlices.Count; j++)
                     {
-                        if (tSpreadList[j] == "")
+                        XmlNode tSlice = tSlices.Item(j);
+                        string tValue = tSlice.InnerText;
+                        if (tValue == "" || tValue == null)
                         {
                             tSpreadValues.Add(j, null);
                         }
                         else
                         {
-                            tSpreadValues.Add(j, tSpreadList[j]);
+                            tSpreadValues.Add(j, tValue);
                         }
                     }
 

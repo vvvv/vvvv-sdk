@@ -181,41 +181,43 @@ namespace VVVV.Nodes.HttpGUI
 
         protected override void OnEvaluate(int SpreadMax)
         {
-            //if (mChangedSpreadSize)
-            //{
-            for (int i = 0; i < SpreadMax; i++)
+
+
+            bool ReceivedNewMasssages = CheckIfNodeReceivedData();
+
+            if (mChangedSpreadSize || ReceivedNewMasssages)
             {
-                TextField tTextfield = new TextField();
+                for (int i = 0; i < SpreadMax; i++)
+                {
 
-                tTextfield.AddAttribute(new HTMLAttribute("Value", GetSavedValue(i)));
+                    string tResponse;
+                    GetNewDataFromServer(i, out tResponse);
 
-                //SetBodyContent(i, tDiv.Text);
+                    FResponse.SetString(i, tResponse);
 
-                SetTag(i, tTextfield);
+                    TextField tTextfield = new TextField();
 
+                    tTextfield.AddAttribute(new HTMLAttribute("Value", tResponse));
 
-                FResponse.SliceCount = SpreadMax;
+                    SetTag(i, tTextfield);
 
-
-                string tResponse;
-                GetNewDataFromServer(i,out tResponse);
-
-
-
-                FResponse.SetString(i, tResponse);
-
-            }
+                    FResponse.SliceCount = SpreadMax;
 
 
-            string tContent = @"var id = $(this).attr('id');
+
+
+                }
+
+
+                string tContent = @"var id = $(this).attr('id');
                 var content = $(this).val();
                 $.post('ToVVVV.xml', id + '=' + content, null);              
                 ";
-            SetJavaScript(0, new JqueryFunction(true, "." + mGuiDataList[0].NodeId, "keyup", tContent).Text);
+                SetJavaScript(0, new JqueryFunction(true, "." + mGuiDataList[0].NodeId, "keyup", tContent).Text);
 
 
 
-            //}
+            }
         }
 
 

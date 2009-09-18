@@ -205,7 +205,7 @@ namespace VVVV.Webinterface.HttpServer {
         /// <param name="Backlog">Backlog </param>
         /// <param name="pSubject">the subject class which cooperates with the server</param>
         /// <param name="pName">name of the server</param>
-        public Server(int pPort, int Backlog, string pName, string pFolderToServ)
+        public Server(int pPort, int Backlog, string pName)
         {
 
             this.portNumber = pPort;
@@ -215,9 +215,6 @@ namespace VVVV.Webinterface.HttpServer {
             //this.mSubject = pSubject;
 
             connectedSocks = new ArrayList(this.maxSockets);
-
-            //Bin ich richtig hier??
-            mItemsToServ = new ItemsToServ(pFolderToServ);
         }
 
 
@@ -660,7 +657,7 @@ namespace VVVV.Webinterface.HttpServer {
 
                 ////Debug.WriteLine(String.Format("Sent {0} bytes to client.",  bytesSent));
            }
-            catch ( Exception e )
+            catch ( Exception ex )
             {
                 ////Debug.WriteLine( e.ToString() );
             }

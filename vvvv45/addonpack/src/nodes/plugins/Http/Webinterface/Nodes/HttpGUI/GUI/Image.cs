@@ -167,25 +167,18 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-
-
         #region pin creation
 
         protected override void OnSetPluginHost()
         {
             this.FHost.CreateStringInput("Source", TSliceMode.Dynamic, TPinVisibility.True, out FSource);
             FSource.SetSubType("",false);
-            FSource.Order = 1;
 
             this.FHost.CreateStringInput("Alt", TSliceMode.Dynamic, TPinVisibility.True, out FAlt);
             FAlt.SetSubType("", false);
         }
 
         #endregion pin creation
-
-
-
-
 
 
 
@@ -198,24 +191,17 @@ namespace VVVV.Nodes.HttpGUI
         {
 
 
-            if (FSource.PinIsChanged || FAlt.PinIsChanged)
+            if (FSource.PinIsChanged || FAlt.PinIsChanged || mChangedSpreadSize)
             {
-
-
 
                 for (int i = 0; i < SpreadMax; i++)
                 {
-                    
-                    
-                    
                     string currentSourceSlice;
                     string currentAltSlice;
                     string tSource = String.Empty;
                     string tAlt = String.Empty;
                     FSource.GetString(i, out currentSourceSlice);
                     FAlt.GetString(i, out currentAltSlice);
-
-
 
 
                     // Source Pins
@@ -228,19 +214,17 @@ namespace VVVV.Nodes.HttpGUI
                         tSource = "No Source";
                     }
 
-
                     // Alt Pin Input
-                    if (currentAltSlice != null)
+                    if (currentAltSlice != null || currentAltSlice != "")
                     {
-                        tAlt = currentAltSlice;
+                        Img tImage = new Img(tSource,currentAltSlice);
+                        SetTag(i, tImage);
                     }
                     else
                     {
-                        tAlt = "No Alt";
+                        Img tImage = new Img(tSource);
+                        SetTag(i, tImage);
                     }
-
-                    Img tImage = new Img(tSource, tAlt);
-                    SetTag(i,tImage);
                 }
             }
         }

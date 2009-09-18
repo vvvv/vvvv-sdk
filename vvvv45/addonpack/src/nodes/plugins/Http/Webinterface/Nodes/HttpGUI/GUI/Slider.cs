@@ -240,11 +240,6 @@ namespace VVVV.Nodes.HttpGUI
                     //Create Slider Elements and set them to the graph
                     string currentOrientation = String.Empty;
                     string currentName = String.Empty;
-                    string currentSavedValue = GetSavedValue(i);
-                    if (currentSavedValue == null)
-                    {
-                        currentSavedValue = currentDefaultSlice.ToString();
-                    }
 
                     FName.GetString(i, out currentName);
                     FOrientation.GetString(i, out currentOrientation);
@@ -256,7 +251,7 @@ namespace VVVV.Nodes.HttpGUI
                     HTMLText tText = new HTMLText(currentName, true);
 
                     string SliderValueId = SliderId + "Value";
-                    TextField tSliderValueText = new TextField(SliderValueId, currentSavedValue);
+                    TextField tSliderValueText = new TextField(SliderValueId, tResponse);
 
                     string AttributeTextValue = "position:absolute; right:0%; top:10%; border: hidden;";
                     HTMLAttribute tTextAttributeValue = new HTMLAttribute("style", AttributeTextValue);
@@ -313,11 +308,7 @@ $.post('ToVVVV.xml',content, null);
 
 
                     string SliderSelector = "#" + SliderId;
-                    double currentSliderValue = 0;
-                    if (currentSavedValue != null)
-                    {
-                        currentSliderValue = Convert.ToDouble(currentSavedValue) * 10000;
-                    }
+                    double currentSliderValue = Convert.ToDouble(tResponse) * 10000;                    
 
                     SetJavaScript(i, new JqueryFunction(true, SliderSelector, String.Format(SliderInitalize, currentOrientation, currentSliderValue.ToString(), SliderSelector, mGuiDataList[i].SliceId, "#" + SliderValueId, currentMinSlice, currentMaxSlice, currentStepSize)).Text + Environment.NewLine + tTextJS.Text);
                 }

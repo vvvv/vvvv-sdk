@@ -84,29 +84,37 @@ namespace VVVV.Nodes.HttpGUI
 
             FHost.GetNodePath(true, out mNodePath);
 
-            this.OnSetPluginHost();
+            try
+            {
+                mWebinterfaceSingelton.HostPath = mNodePath;
 
-            //Input Pins 
-            this.FHost.CreateNodeInput("Input GUI", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiIn);
-            FHttpGuiIn.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
+                this.OnSetPluginHost();
 
-            FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTransformIn);
+                //Input Pins 
+                this.FHost.CreateNodeInput("Input GUI", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiIn);
+                FHttpGuiIn.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
 
-            FHost.UpdateEnum("PositionType", "absolute", new string[] { "absolute", "fixed ", "relative ", "static " });
-            FHost.CreateEnumInput("Positiontype", TSliceMode.Single, TPinVisibility.True, out FPositionType);
-            FPositionType.SetSubType("PositionType");
+                FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTransformIn);
 
-            FHost.UpdateEnum("BasingPoint", "Center", new string[] { "Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight" });
-            FHost.CreateEnumInput("Basing Point", TSliceMode.Single, TPinVisibility.True, out FBasingPoint);
-            FBasingPoint.SetSubType("BasingPoint");
+                FHost.UpdateEnum("PositionType", "absolute", new string[] { "absolute", "fixed ", "relative ", "static " });
+                FHost.CreateEnumInput("Positiontype", TSliceMode.Single, TPinVisibility.True, out FPositionType);
+                FPositionType.SetSubType("PositionType");
 
-            FHost.CreateNodeInput("Input CSS", TSliceMode.Dynamic, TPinVisibility.True, out FHttpStyleIn);
-            FHttpStyleIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
+                FHost.UpdateEnum("BasingPoint", "Center", new string[] { "Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight" });
+                FHost.CreateEnumInput("Basing Point", TSliceMode.Single, TPinVisibility.True, out FBasingPoint);
+                FBasingPoint.SetSubType("BasingPoint");
 
-            FHost.CreateNodeOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiOut);
-            FHttpGuiOut.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
-            FHttpGuiOut.SetInterface(this);
+                FHost.CreateNodeInput("Input CSS", TSliceMode.Dynamic, TPinVisibility.True, out FHttpStyleIn);
+                FHttpStyleIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
 
+                FHost.CreateNodeOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiOut);
+                FHttpGuiOut.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
+                FHttpGuiOut.SetInterface(this);
+            }
+            catch (Exception ex)
+            {
+                FHost.Log(TLogType.Error, "Error in GUINodeDynamic (Http) by Pin Initialisation" + Environment.NewLine + ex.Message);
+            }
         }
 
 
@@ -213,213 +221,212 @@ namespace VVVV.Nodes.HttpGUI
         public void Evaluate(int SpreadMax)
         {
 
-            
-
-            FHost.GetNodePath(true, out mNodePath);
-            
-            bool ChangedID = false;
-            if (mNodePath !=  mActualNodePath)
+            try
             {
-                mActualNodePath = mNodePath;
-                ChangedID = true;
-            }
-            //Debug.WriteLine(mNodePath);
 
-            #region Check Gui List
+                FHost.GetNodePath(true, out mNodePath);
 
-
-            if (mSpreadMax != SpreadMax )
-            {
-                mChangedSpreadSize = true;
-                
-
-                if (mGuiDataList.Count > SpreadMax)
+                bool ChangedID = false;
+                if (mNodePath != mActualNodePath)
                 {
-                    mGuiDataList.RemoveRange(SpreadMax, mGuiDataList.Count - SpreadMax);
-                    mGuiDataList.Capacity = SpreadMax;
-                }
-                else
-                {
-                    for (int i = mSpreadMax; i < SpreadMax; i++)
-                    {
-                        GuiDataObject tObject = new GuiDataObject();
-                        mGuiDataList.Insert(i, tObject);
-                        mGuiDataList[i].NodeId = HTMLToolkit.CreatePageID(mNodePath);
-                        mGuiDataList[i].SliceId = HTMLToolkit.CreateSliceID(mNodePath, i);
-                    }
-                }
-                mSpreadMax = SpreadMax;
-            }
-
-            if (ChangedID)
-            {
-                for (int i = 0; i < mGuiDataList.Count; i++)
-                {
-                    mGuiDataList[i].NodeId = HTMLToolkit.CreatePageID(mNodePath);
-                    mGuiDataList[i].SliceId = HTMLToolkit.CreateSliceID(mNodePath, i);
+                    mActualNodePath = mNodePath;
+                    ChangedID = true;
                 }
 
-                ChangedID = false;
-            }
+                #region Check Gui List
 
 
-
-
-
-            #endregion Check Gui List
-
-
-
-            #region Transform Pin
-
-            if (FTransformIn.PinIsChanged || FBasingPoint.PinIsChanged || FPositionType.PinIsChanged || mChangedSpreadSize)
-            {
-                string tBasingPoint;
-                FBasingPoint.GetString(0, out tBasingPoint);
-
-                string tPositionType;
-                FPositionType.GetString(0, out tPositionType);
-
-                for (int i = 0; i < SpreadMax; i++)
+                if (mSpreadMax != SpreadMax)
                 {
-                    Matrix4x4 tMatrix;
-
-                    FTransformIn.GetMatrix(i, out tMatrix);
+                    mChangedSpreadSize = true;
 
 
-                    // Position Type
-                    SortedList<string, string> tTransformSlice = new SortedList<string, string>();
-                    tTransformSlice.Add("position", tPositionType);
-
-
-                    //Scale
-                    double tWidth = HTMLToolkit.MapScale(tMatrix.m11, 0, 2, 0, 100);
-                    double tHeight = HTMLToolkit.MapScale(tMatrix.m22, 0, 2, 0, 100);
-
-                    tTransformSlice.Add("width", ReplaceComma(string.Format("{0:0.0}", Math.Round(tWidth, 1)) + "%"));
-                    tTransformSlice.Add("height", ReplaceComma(string.Format("{0:0.0}", Math.Round(tHeight, 1)) + "%"));
-
-                    //X / Y Position
-                    double tX;
-                    double tY;
-
-                    if (tBasingPoint == "BottomRight")
+                    if (mGuiDataList.Count > SpreadMax)
                     {
-                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, 2, 0, 100, tHeight);
-                        tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, -2, 0, 100, tWidth);
-
-                        tTransformSlice.Add("bottom", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
-                        tTransformSlice.Add("right", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
-                    }
-                    else if (tBasingPoint == "TopRight")
-                    {
-                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, -2, 0, 100, tHeight);
-                        tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, -2, 0, 100, tWidth);
-
-                        tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
-                        tTransformSlice.Add("right", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
-                    }
-                    else if (tBasingPoint == "BottomLeft")
-                    {
-                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, 2, 0, 100, tHeight);
-                        tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, 2, 0, 100, tWidth);
-
-                        tTransformSlice.Add("bottom", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
-                        tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
-                    }
-                    else if (tBasingPoint == "TopLeft")
-                    {
-                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, -2, 0, 100, tHeight);
-                        tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, 2, 0, 100, tWidth);
-
-                        tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
-                        tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                        mGuiDataList.RemoveRange(SpreadMax, mGuiDataList.Count - SpreadMax);
+                        mGuiDataList.Capacity = SpreadMax;
                     }
                     else
                     {
-                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 1, -1, 0, 100, tHeight);
-                        tY = HTMLToolkit.MapTransform(tMatrix.m41, -1, 1, 0, 100, tWidth);
+                        for (int i = mSpreadMax; i < SpreadMax; i++)
+                        {
+                            GuiDataObject tObject = new GuiDataObject();
+                            mGuiDataList.Insert(i, tObject);
+                            mGuiDataList[i].NodeId = HTMLToolkit.CreatePageID(mNodePath);
+                            mGuiDataList[i].SliceId = HTMLToolkit.CreateSliceID(mNodePath, i);
+                        }
+                    }
+                    mSpreadMax = SpreadMax;
+                }
 
-                        tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
-                        tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                if (ChangedID)
+                {
+                    for (int i = 0; i < mGuiDataList.Count; i++)
+                    {
+                        mGuiDataList[i].NodeId = HTMLToolkit.CreatePageID(mNodePath);
+                        mGuiDataList[i].SliceId = HTMLToolkit.CreateSliceID(mNodePath, i);
                     }
 
-                    tTransformSlice.Add("z-index", Convert.ToString(Math.Round(tMatrix.m33)));
-
-                    mGuiDataList[i].Transform = new SortedList<string, string>(tTransformSlice);
+                    ChangedID = false;
                 }
-            }
-
-            #endregion Transform Pin
 
 
 
-            #region Upstream Gui Elements
 
-            if (FUpstreamHttpGuiIn != null)
-            {
-                if (mChangedSpreadSize)
+
+                #endregion Check Gui List
+
+
+
+                #region Transform Pin
+
+                if (FTransformIn.PinIsChanged || FBasingPoint.PinIsChanged || FPositionType.PinIsChanged || mChangedSpreadSize)
                 {
-                    List<GuiDataObject> tGuiList;
-                    FUpstreamHttpGuiIn.GetDatenObjekt(0, out tGuiList);
+                    string tBasingPoint;
+                    FBasingPoint.GetString(0, out tBasingPoint);
+
+                    string tPositionType;
+                    FPositionType.GetString(0, out tPositionType);
 
                     for (int i = 0; i < SpreadMax; i++)
                     {
-                        mGuiDataList[i].GuiUpstreamList = tGuiList;
+                        Matrix4x4 tMatrix;
+
+                        FTransformIn.GetMatrix(i, out tMatrix);
+
+
+                        // Position Type
+                        SortedList<string, string> tTransformSlice = new SortedList<string, string>();
+                        tTransformSlice.Add("position", tPositionType);
+
+
+                        //Scale
+                        double tWidth = HTMLToolkit.MapScale(tMatrix.m11, 0, 2, 0, 100);
+                        double tHeight = HTMLToolkit.MapScale(tMatrix.m22, 0, 2, 0, 100);
+
+                        tTransformSlice.Add("width", ReplaceComma(string.Format("{0:0.0}", Math.Round(tWidth, 1)) + "%"));
+                        tTransformSlice.Add("height", ReplaceComma(string.Format("{0:0.0}", Math.Round(tHeight, 1)) + "%"));
+
+                        //X / Y Position
+                        double tX;
+                        double tY;
+
+                        if (tBasingPoint == "BottomRight")
+                        {
+                            tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, 2, 0, 100, tHeight);
+                            tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, -2, 0, 100, tWidth);
+
+                            tTransformSlice.Add("bottom", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                            tTransformSlice.Add("right", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                        }
+                        else if (tBasingPoint == "TopRight")
+                        {
+                            tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, -2, 0, 100, tHeight);
+                            tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, -2, 0, 100, tWidth);
+
+                            tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                            tTransformSlice.Add("right", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                        }
+                        else if (tBasingPoint == "BottomLeft")
+                        {
+                            tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, 2, 0, 100, tHeight);
+                            tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, 2, 0, 100, tWidth);
+
+                            tTransformSlice.Add("bottom", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                            tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                        }
+                        else if (tBasingPoint == "TopLeft")
+                        {
+                            tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, -2, 0, 100, tHeight);
+                            tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, 2, 0, 100, tWidth);
+
+                            tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                            tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                        }
+                        else
+                        {
+                            tX = HTMLToolkit.MapTransform(tMatrix.m42, 1, -1, 0, 100, tHeight);
+                            tY = HTMLToolkit.MapTransform(tMatrix.m41, -1, 1, 0, 100, tWidth);
+
+                            tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                            tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                        }
+
+                        tTransformSlice.Add("z-index", Convert.ToString(Math.Round(tMatrix.m33)));
+
+                        mGuiDataList[i].Transform = new SortedList<string, string>(tTransformSlice);
                     }
                 }
-            }
 
-            #endregion Upstream Gui Elements
-
+                #endregion Transform Pin
 
 
 
-            # region Upstream Css Properties
+                #region Upstream Gui Elements
 
-            int usSStyle;
-            if (FUpstreamStyle != null)
-            {
-                string NodePath;
-                FHost.GetNodePath(false, out NodePath);
-                ////Debug.WriteLine("Enter Css Upstream Gui Node: " + NodePath);
-
-                for (int i = 0; i < SpreadMax; i++)
+                if (FUpstreamHttpGuiIn != null)
                 {
-                    //get upstream slice index
+                    if (mChangedSpreadSize)
+                    {
+                        List<GuiDataObject> tGuiList;
+                        FUpstreamHttpGuiIn.GetDatenObjekt(0, out tGuiList);
 
-                    FHttpStyleIn.GetUpsreamSlice(i, out usSStyle);
+                        for (int i = 0; i < SpreadMax; i++)
+                        {
+                            mGuiDataList[i].GuiUpstreamList = tGuiList;
+                        }
+                    }
+                }
 
-                    SortedList<string, string> tSliceCssPropertie;
-                    FUpstreamStyle.GetCssProperties(i, out tSliceCssPropertie);
+                #endregion Upstream Gui Elements
 
-                    mGuiDataList[i].CssProperties = new SortedList<string, string>(tSliceCssPropertie);
 
+
+                # region Upstream Css Properties
+
+                int usSStyle;
+                if (FUpstreamStyle != null)
+                {
+                    string NodePath;
+                    FHost.GetNodePath(false, out NodePath);
+                    ////Debug.WriteLine("Enter Css Upstream Gui Node: " + NodePath);
+
+                    for (int i = 0; i < SpreadMax; i++)
+                    {
+                        //get upstream slice index
+
+                        FHttpStyleIn.GetUpsreamSlice(i, out usSStyle);
+
+                        SortedList<string, string> tSliceCssPropertie;
+                        FUpstreamStyle.GetCssProperties(i, out tSliceCssPropertie);
+
+                        mGuiDataList[i].CssProperties = new SortedList<string, string>(tSliceCssPropertie);
+
+                    }
+                }
+
+                #endregion Upstream Css Propeties
+
+
+
+
+                this.OnEvaluate(SpreadMax);
+
+
+                if (mSpreadMax == SpreadMax)
+                {
+                    mChangedSpreadSize = false;
                 }
             }
-
-            #endregion Upstream Css Propeties
-
-
-
-
-            this.OnEvaluate(SpreadMax);
-
-            //FHttpGuiOut.SliceCount = SpreadMax;
-
-            if (mSpreadMax == SpreadMax)
+            catch (Exception ex)
             {
-                mChangedSpreadSize = false;
+                FHost.Log(TLogType.Error, "in Node with Id: " + mNodePath + Environment.NewLine + ex.Message);
             }
-            ////Debug.WriteLine("Leave Evaluate GUiNodeDynamic");
         }
 
 
 
         #endregion Evaluate
-
-
-
 
 
 
@@ -465,9 +472,6 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-
-
-
         #region Add to GuiDataObject
 
         public void SetBodyContent(int pSliceIndex, string pContent)
@@ -501,7 +505,6 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-
         #region Get data from WebinterfaceSingelton
 
         public bool CheckIfNodeReceivedData()
@@ -519,19 +522,29 @@ namespace VVVV.Nodes.HttpGUI
 
         public void GetNewDataFromServer(int SliceNumber, out string pContent)
         {
-            mWebinterfaceSingelton.getNewBrowserData(mGuiDataList[SliceNumber].SliceId,mNodePath,SliceNumber,out pContent);
+
+            string tContent;
+
+            mWebinterfaceSingelton.getNewBrowserData(mGuiDataList[SliceNumber].SliceId,mNodePath,SliceNumber,out tContent);
+
+            if (tContent == null && mSavedResponses.ContainsKey(SliceNumber))
+            {
+                mSavedResponses.TryGetValue(SliceNumber, out tContent);
+            }
 
             if (mSavedResponses.ContainsKey(SliceNumber))
             {
                 mSavedResponses.Remove(SliceNumber);
-                mSavedResponses.Add(SliceNumber, pContent);
+                mSavedResponses.Add(SliceNumber, tContent);
             }
             else
             {
-                mSavedResponses.Add(SliceNumber, pContent);
+                mSavedResponses.Add(SliceNumber, tContent);
             }
 
             mWebinterfaceSingelton.AddListToSave(mNodePath, mSavedResponses);
+
+            pContent = tContent;
         }
 
         #endregion Get data from WebinterfaceSingelton
@@ -542,14 +555,7 @@ namespace VVVV.Nodes.HttpGUI
         #region Saved Responses
 
 
-        public string GetSavedValue(int SliceNumber)
-        {
-            string tValue;
-            mSavedResponses.TryGetValue(SliceNumber, out tValue);
 
-            
-            return tValue;
-        }
 
 
 

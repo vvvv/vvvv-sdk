@@ -264,65 +264,67 @@ namespace VVVV.Nodes.Http
             //assign host
             FHost = Host;
 
+            try
+            {
+                string HostPath;
+                FHost.GetHostPath(out HostPath);
+                mWebinterfaceSingelton.HostPath = HostPath;
 
-            //Input
-            FHost.CreateNodeInput("Input", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiIn);
-            FHttpGuiIn.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
+                string NodePath;
+                FHost.GetNodePath(true, out NodePath);
+                mPageName = "Page" + HTMLToolkit.CreatePageID(NodePath);
 
-            FHost.CreateStringInput("Titel", TSliceMode.Single, TPinVisibility.True, out FTitel);
-            FTitel.SetSubType("VVVV Webinterface", false);
+                //Input
+                FHost.CreateNodeInput("Input", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiIn);
+                FHttpGuiIn.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
 
-            FHost.CreateStringInput("Url", TSliceMode.Single, TPinVisibility.True, out FUrl);
-            FUrl.SetSubType("index.html", false);
+                FHost.CreateStringInput("Titel", TSliceMode.Single, TPinVisibility.True, out FTitel);
+                FTitel.SetSubType("VVVV Webinterface", false);
 
-            FHost.CreateNodeInput("CSS", TSliceMode.Dynamic, TPinVisibility.True, out FCssPropertiesIn);
-            FCssPropertiesIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
+                FHost.CreateStringInput("Url", TSliceMode.Single, TPinVisibility.True, out FUrl);
+                FUrl.SetSubType("index.html", false);
 
-            FHost.CreateValueInput("Browser Width", 1, null, TSliceMode.Single, TPinVisibility.True, out FPageWidth);
-            FPageWidth.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
+                FHost.CreateNodeInput("CSS", TSliceMode.Dynamic, TPinVisibility.True, out FCssPropertiesIn);
+                FCssPropertiesIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
 
-            FHost.CreateValueInput("Browser Height", 1, null, TSliceMode.Single, TPinVisibility.True, out FPageHeight);
-            FPageHeight.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
+                FHost.CreateValueInput("Browser Width", 1, null, TSliceMode.Single, TPinVisibility.True, out FPageWidth);
+                FPageWidth.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
 
-            FHost.CreateValueInput("Reload Browser", 1, null, TSliceMode.Single, TPinVisibility.True, out FReload);
-            FReload.SetSubType(0, 1, 1, 0, true, false, true);
+                FHost.CreateValueInput("Browser Height", 1, null, TSliceMode.Single, TPinVisibility.True, out FPageHeight);
+                FPageHeight.SetSubType(0, double.MaxValue, 1, -1, false, false, true);
 
-            FHost.UpdateEnum("Communication", "Manual", new string[] { "Manual", "Polling", "Comet" });
-            FHost.CreateEnumInput("Communication", TSliceMode.Single, TPinVisibility.True, out FCommunication);
-            FCommunication.SetSubType("Communication");
+                FHost.CreateValueInput("Reload Browser", 1, null, TSliceMode.Single, TPinVisibility.True, out FReload);
+                FReload.SetSubType(0, 1, 1, 0, true, false, true);
 
-            FHost.CreateStringInput("HTML Head", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FHtmlHead);
-            FHtmlHead.SetSubType("", false);
+                FHost.UpdateEnum("Communication", "Manual", new string[] { "Manual", "Polling", "Comet" });
+                FHost.CreateEnumInput("Communication", TSliceMode.Single, TPinVisibility.True, out FCommunication);
+                FCommunication.SetSubType("Communication");
 
-            FHost.CreateStringInput("HTML Body", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FHtmlBody);
-            FHtmlBody.SetSubType("", false);
+                FHost.CreateStringInput("HTML Head", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FHtmlHead);
+                FHtmlHead.SetSubType("", false);
 
-            FHost.CreateStringInput("File Path", TSliceMode.Single, TPinVisibility.OnlyInspector, out FPath);
-            FPath.SetSubType(Application.StartupPath + "\\plugins\\webinterface", true);
+                FHost.CreateStringInput("HTML Body", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FHtmlBody);
+                FHtmlBody.SetSubType("", false);
 
-            FHost.CreateValueInput("DoSave", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FSavePage);
-            FSavePage.SetSubType(0, 1, 1, 0, true, false, true);
+                FHost.CreateStringInput("File Path", TSliceMode.Single, TPinVisibility.OnlyInspector, out FPath);
+                FPath.SetSubType(Application.StartupPath + "\\plugins\\webinterface", true);
 
-
-            //create outputs
-            FHost.CreateNodeOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FHttpPageOut);
-            FHttpPageOut.SetSubType(new Guid[1] { HttpPageIO.GUID }, HttpPageIO.FriendlyName);
-            FHttpPageOut.SetInterface(this);
-
-
-            //FHost.CreateStringOutput("HTML File", TSliceMode.Dynamic, TPinVisibility.Hidden, out FHtmlFile);
-            //FHtmlFile.SetSubType("", false);
-
-            //FHost.CreateStringOutput("CSS File", TSliceMode.Dynamic, TPinVisibility.Hidden, out FCssFile);
-            //FCssFile.SetSubType("", false);
-
-            //FHost.CreateStringOutput("JS File", TSliceMode.Dynamic, TPinVisibility.Hidden, out FJsFile);
-            //FJsFile.SetSubType("", false);
+                FHost.CreateValueInput("DoSave", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FSavePage);
+                FSavePage.SetSubType(0, 1, 1, 0, true, false, true);
 
 
-            string PatchPath = String.Empty;
-            FHost.GetNodePath(true, out PatchPath);
-            mPageName = "Page" + HTMLToolkit.CreatePageID(PatchPath);
+                //create outputs
+                FHost.CreateNodeOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FHttpPageOut);
+                FHttpPageOut.SetSubType(new Guid[1] { HttpPageIO.GUID }, HttpPageIO.FriendlyName);
+                FHttpPageOut.SetInterface(this);
+
+            }
+            catch (Exception ex)
+            {
+                FHost.Log(TLogType.Error, "Error Page (Http) by Pin Initialisation" + Environment.NewLine + ex.Message);
+            }
+
+
             
         }
 
@@ -402,6 +404,7 @@ namespace VVVV.Nodes.Http
         /// <param name="SpreadMax"></param>
         public void Evaluate(int SpreadMax)
         {
+
 
 
             #region Upstream
