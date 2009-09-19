@@ -175,9 +175,10 @@ namespace VVVV.Nodes.Timeliner
 			}
 		}
 		
-		public override void DrawSlice(Graphics g, double From, double To, bool AllInOne)
+		public override void DrawSlice(Graphics g, double From, double To, bool AllInOne, bool Collapsed)
 		{
-			base.DrawSlice(g, From, To, AllInOne);
+			base.DrawSlice(g, From, To, AllInOne, Collapsed);
+			
 			
 			TLColorKeyFrame kfc;
 			float left, width;
@@ -238,45 +239,50 @@ namespace VVVV.Nodes.Timeliner
 					}
 				}
 			}
-
+			
 			//draw infos to visible
-			foreach (TLColorKeyFrame k in FInvalidKeyFrames)
+			if (Collapsed)
+				DrawCollapsedKeyFrames(g);
+			else
 			{
-				float x = k.GetTimeAsX();
-				Color inv = VColor.Offset(k.RGBAColor, 0.5).Color;
-				
-				if (k.Selected)
+				foreach (TLColorKeyFrame k in FInvalidKeyFrames)
 				{
-					using (Pen p = new Pen(inv))
-						g.DrawRectangle(p, x-20, 0, 40, sliceHeight);
+					float x = k.GetTimeAsX();
+					Color inv = VColor.Offset(k.RGBAColor, 0.5).Color;
 					
-					//draw color values hsva
-					string s = "H: " + (k.Hue).ToString("f2", TimelinerPlugin.GNumberFormat);
-					using (Brush b = new SolidBrush(inv))
+					if (k.Selected)
 					{
-						g.DrawString(s, FFont, b, x-20, 0);
-						s = "S: " + k.Saturation.ToString("f2", TimelinerPlugin.GNumberFormat);
-						g.DrawString(s, FFont, b, x-20, 10);
-						s = "V: " + k.Value.ToString("f2", TimelinerPlugin.GNumberFormat);
-						g.DrawString(s, FFont, b, x-20, 20);
-						s = "A: " + (k.Alpha).ToString("f2", TimelinerPlugin.GNumberFormat);
-						g.DrawString(s, FFont, b, x-20, 30);
+						using (Pen p = new Pen(inv))
+							g.DrawRectangle(p, x-20, 0, 40, sliceHeight);
+						
+						//draw color values hsva
+						string s = "H: " + (k.Hue).ToString("f2", TimelinerPlugin.GNumberFormat);
+						using (Brush b = new SolidBrush(inv))
+						{
+							g.DrawString(s, FFont, b, x-20, 0);
+							s = "S: " + k.Saturation.ToString("f2", TimelinerPlugin.GNumberFormat);
+							g.DrawString(s, FFont, b, x-20, 10);
+							s = "V: " + k.Value.ToString("f2", TimelinerPlugin.GNumberFormat);
+							g.DrawString(s, FFont, b, x-20, 20);
+							s = "A: " + (k.Alpha).ToString("f2", TimelinerPlugin.GNumberFormat);
+							g.DrawString(s, FFont, b, x-20, 30);
+						}
+						
+						using (Brush b = new SolidBrush(Color.White))
+							g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat) + "s", FFont, b, x-20, 45);
 					}
-					
-					using (Brush b = new SolidBrush(Color.White))
-						g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat) + "s", FFont, b, x-20, 45);
-				}
-				else
-					using (Pen p = new Pen(Color.Silver))
+					else
+						using (Pen p = new Pen(Color.Silver))
 						g.DrawRectangle(p, x-20, 0, 40, sliceHeight);
 
-				SizeF sz = g.MeasureString(OutputAsString, FFont);
-				inv = inv = VColor.Offset(FOutput, 0.5).Color;
-				
-				using (Brush b = new SolidBrush(FOutput.Color))
-					g.FillRectangle(b, new RectangleF(g.ClipBounds.Width-sz.Width, sliceHeight-sz.Height, sz.Width, sz.Height));
-				using (Brush b = new SolidBrush(inv))
-					g.DrawString(OutputAsString, FFont, b, g.ClipBounds.Width-sz.Width-2, sliceHeight-sz.Height);
+					SizeF sz = g.MeasureString(OutputAsString, FFont);
+					inv = inv = VColor.Offset(FOutput, 0.5).Color;
+					
+					using (Brush b = new SolidBrush(FOutput.Color))
+						g.FillRectangle(b, new RectangleF(g.ClipBounds.Width-sz.Width, sliceHeight-sz.Height, sz.Width, sz.Height));
+					using (Brush b = new SolidBrush(inv))
+						g.DrawString(OutputAsString, FFont, b, g.ClipBounds.Width-sz.Width-2, sliceHeight-sz.Height);
+				}
 			}
 		}
 	}

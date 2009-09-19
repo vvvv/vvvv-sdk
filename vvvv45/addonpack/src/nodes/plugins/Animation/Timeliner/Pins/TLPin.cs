@@ -135,7 +135,7 @@ namespace VVVV.Nodes.Timeliner
 		{
 			RectangleF r = g.ClipBounds;
 			float y=0;
-			if (!FCollapsed)
+			//if (!FCollapsed)
 			{
 				Matrix CurrentTransform = g.Transform;
 				
@@ -144,7 +144,7 @@ namespace VVVV.Nodes.Timeliner
 					//y = Math.Max(r.Y, 0); 
 					//g.Clip = new Region(new RectangleF(0, y, r.Width, r.Height));
 					foreach (TLSlice s in FOutputSlices)
-						s.DrawSlice(g, From, To, true);
+						s.DrawSlice(g, From, To, true, FCollapsed);
 				}
 				else
 				{
@@ -155,7 +155,7 @@ namespace VVVV.Nodes.Timeliner
 						y = Math.Max(r.Y - i*sh, 0); 
 						g.Clip = new Region(new RectangleF(0, y, r.Width, Math.Max(0, Math.Min(r.Height - (i*sh), sh-y))));
 						
-						s.DrawSlice(g, From, To, false);
+						s.DrawSlice(g, From, To, false, FCollapsed);
 						
 						//line on top of slice
 						if (i>0)
@@ -176,12 +176,12 @@ namespace VVVV.Nodes.Timeliner
 				g.DrawLine(new Pen(Color.Gray, 1), 0, 1, r.Width, 1);
 				g.DrawLine(new Pen(Color.Gray, 1), 0, r.Top + r.Height-0.5f, r.Width, r.Top + r.Height-0.5f);
 			}
-			else
+			/*else
 			{
 				y = Math.Max(r.Y - Height, 0); 
 				g.Clip = new Region(new RectangleF(0, y, r.Width, Height));
 				g.FillRectangle(new SolidBrush(Color.Silver), r);
-			}
+			}*/
 		}
 		
 		protected override void OnResize(EventArgs e)

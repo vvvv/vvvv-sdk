@@ -285,9 +285,9 @@ namespace VVVV.Nodes.Timeliner
 			}
 		}
 		
-		public override void DrawSlice(Graphics g, double From, double To, bool AllInOne)
+		public override void DrawSlice(Graphics g, double From, double To, bool AllInOne, bool Collapsed)
 		{
-			base.DrawSlice(g, From, To, AllInOne);
+			base.DrawSlice(g, From, To, AllInOne, Collapsed);
 			
 			float x, width;
 			double lastTime = 0;

@@ -22,7 +22,7 @@ namespace VVVV.Nodes.Timeliner
 		
 		public int PinsOrder
 		{
-			set 
+			set
 			{
 				FPinsOrder = value;
 				SliceOrPinOrderChanged();
@@ -44,7 +44,7 @@ namespace VVVV.Nodes.Timeliner
 				if (FOutputAsString != value)
 				{
 					FOutputAsString = value;
-					FOutputChanged = true;						
+					FOutputChanged = true;
 				}
 			}
 		}
@@ -88,12 +88,47 @@ namespace VVVV.Nodes.Timeliner
 			if (kf != null)
 				FInvalidKeyFrames.Add(kf);
 			
-			FInvalidKeyFrames.Sort(delegate(TLBaseKeyFrame k0, TLBaseKeyFrame k1) { return k0.Time.CompareTo(k1.Time); });	
+			FInvalidKeyFrames.Sort(delegate(TLBaseKeyFrame k0, TLBaseKeyFrame k1) { return k0.Time.CompareTo(k1.Time); });
 		}
 
-		public virtual void DrawSlice(Graphics g, double From, double To, bool AllInOne)
+		public virtual void DrawSlice(Graphics g, double From, double To, bool AllInOne, bool Collapsed)
 		{
 			UpdateInvalidKeyFrames(From, To);
+		}
+		
+		protected void DrawCollapsedKeyFrames(Graphics g)
+		{
+			SolidBrush silver = new SolidBrush(Color.Silver);
+			SolidBrush white = new SolidBrush(Color.White);
+			SolidBrush black = new SolidBrush(Color.Black);
+			SolidBrush gray = new SolidBrush(Color.Gray);
+			
+			foreach (TLBaseKeyFrame k in FInvalidKeyFrames)
+			{
+				float sliceWidth = g.ClipBounds.Width;
+				float width = 5;
+				float sliceHeight = FPin.Height / FPin.SliceCount;
+				float x = k.GetTimeAsX() - width/2;
+				float y = 0;
+				
+				if (k.Selected)
+				{
+					g.FillRectangle(silver, x, y, width, sliceHeight);
+					g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat)+"s", FFont, black, x+5, y + 4);
+				}
+				else
+				{
+					g.FillRectangle(white, x, y, width, sliceHeight);
+				}
+				
+				float sWidth = g.MeasureString(OutputAsString, FFont).Width + 2;
+				g.DrawString(OutputAsString, FFont, gray, sliceWidth-sWidth, sliceHeight-16);
+			}
+			
+			silver.Dispose();
+			white.Dispose();
+			black.Dispose();
+			gray.Dispose();
 		}
 		
 		public virtual void Configurate(IPluginConfig Input, bool FirstFrame)

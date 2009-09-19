@@ -204,18 +204,19 @@ namespace VVVV.Nodes.Timeliner
 			}
 		}
 		
-		public override void DrawSlice(Graphics g, double From, double To, bool AllInOne)
+		public override void DrawSlice(Graphics g, double From, double To, bool AllInOne, bool Collapsed)
 		{
 			if (Math.Abs(FMinValue-FMaxValue) < 0.0001)
 				return;
 			
-			base.DrawSlice(g, From, To, AllInOne);
+			base.DrawSlice(g, From, To, AllInOne, Collapsed);
 			
 			float sliceHeight = FPin.Height / FPin.SliceCount;
 			
 			//draw 0 line
 			float y_;
-			using (Pen p = new Pen(Color.Snow))
+			if (!Collapsed)
+				using (Pen p = new Pen(Color.Snow))
 			{
 				if (AllInOne)
 				{
@@ -232,8 +233,11 @@ namespace VVVV.Nodes.Timeliner
 				}
 			}
 			
-			//draw lines
-			using (Pen p = new Pen(Color.Gray, 2))
+			//draw graph
+			float fat = 2;
+			if (Collapsed)
+				fat = 0;
+			using (Pen p = new Pen(Color.Gray, fat))
 			{
 				for (int i=0; i < FInvalidKeyFrames.Count-1; i++)
 				{
@@ -261,8 +265,8 @@ namespace VVVV.Nodes.Timeliner
 					}
 				}
 			}
-			
-			using (Pen p = new Pen(Color.Silver, 2))
+			if (!Collapsed)
+				using (Pen p = new Pen(Color.Silver, 2))
 			{
 				if (FInvalidKeyFrames.Count > 0)
 				{
@@ -288,37 +292,45 @@ namespace VVVV.Nodes.Timeliner
 			//don't clip so infos are always visible
 			float sliceWidth = g.ClipBounds.Width;
 			g.Clip = new Region();
-			SolidBrush silver = new SolidBrush(Color.Silver);
-			SolidBrush white = new SolidBrush(Color.White);
-			SolidBrush black = new SolidBrush(Color.Black);
-			SolidBrush gray = new SolidBrush(Color.Gray);
 			
-			foreach (TLValueKeyFrame k in FInvalidKeyFrames)
+			//draw keyframes
+			if (Collapsed)
+				DrawCollapsedKeyFrames(g);
+			else
 			{
-				//transform the keyframes time by the current transformation
-				float size = 5;
-				float x = k.GetTimeAsX() - size/2;
-				float y = k.GetValueAsY() - size/2;
-				
-				if (k.Selected)
+				SolidBrush silver = new SolidBrush(Color.Silver);
+				SolidBrush white = new SolidBrush(Color.White);
+				SolidBrush black = new SolidBrush(Color.Black);
+				SolidBrush gray = new SolidBrush(Color.Gray);
+
+				foreach (TLValueKeyFrame k in FInvalidKeyFrames)
 				{
-					g.FillRectangle(silver, x, y, size, size);
-					g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat)+"s", FFont, black, x, y-14);
-					g.DrawString(k.Value.ToString("f4", TimelinerPlugin.GNumberFormat), FFont, black, x, y+7);
-				}
-				else
-				{
-					g.FillRectangle(white, x, y, size, size);
+					//transform the keyframes time by the current transformation
+					float width = 5;
+					float height = 5;
+					float x = k.GetTimeAsX() - width/2;
+					float y = k.GetValueAsY() - height/2;
+					
+					if (k.Selected)
+					{
+						g.FillRectangle(silver, x, y, width, height);
+						g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat)+"s", FFont, black, x, y-14);
+						g.DrawString(k.Value.ToString("f4", TimelinerPlugin.GNumberFormat), FFont, black, x, y+7);
+					}
+					else
+					{
+						g.FillRectangle(white, x, y, width, height);
+					}
+					
+					float sWidth = g.MeasureString(OutputAsString, FFont).Width + 2;
+					g.DrawString(OutputAsString, FFont, gray, sliceWidth-sWidth, sliceHeight-16);
 				}
 				
-				float sWidth = g.MeasureString(OutputAsString, FFont).Width + 2;
-				g.DrawString(OutputAsString, FFont, gray, sliceWidth-sWidth, sliceHeight-16);
+				silver.Dispose();
+				white.Dispose();
+				black.Dispose();
+				gray.Dispose();
 			}
-			
-			silver.Dispose();
-			white.Dispose();
-			black.Dispose();
-			gray.Dispose();	
 		}
 	}
 }

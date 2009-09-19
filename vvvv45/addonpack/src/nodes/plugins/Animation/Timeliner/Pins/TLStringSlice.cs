@@ -28,16 +28,16 @@ namespace VVVV.Nodes.Timeliner
 		
 		protected override void CreatePins()
 		{
-			FHost.CreateValueConfig(FPin.Name + "-Time" + FSliceIndex.ToString(), 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyTime);        	
+			FHost.CreateValueConfig(FPin.Name + "-Time" + FSliceIndex.ToString(), 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyTime);
 			FKeyTime.SliceCount=0;
 			FKeyTime.SetSubType(Double.MinValue, Double.MaxValue,0.001D,0,false, false,false);
 			
-			FHost.CreateValueConfig(FPin.Name + "-FlagY" + FSliceIndex.ToString(), 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyFlagY);        	
+			FHost.CreateValueConfig(FPin.Name + "-FlagY" + FSliceIndex.ToString(), 1, null, TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyFlagY);
 			FKeyFlagY.SliceCount=0;
 			FKeyFlagY.SetSubType(Double.MinValue, Double.MaxValue,0.001D,0,false, false,false);
-	    	
-	    	FHost.CreateStringConfig(FPin.Name + "-Value" + FSliceIndex.ToString(), TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyValue);
-        	FKeyValue.SliceCount=0;
+			
+			FHost.CreateStringConfig(FPin.Name + "-Value" + FSliceIndex.ToString(), TSliceMode.Dynamic, TPinVisibility.Hidden, out FKeyValue);
+			FKeyValue.SliceCount=0;
 			FKeyValue.SetSubType("default",false);
 		}
 		
@@ -63,7 +63,7 @@ namespace VVVV.Nodes.Timeliner
 			FKeyFlagY.Order = FPin.Order;
 			FKeyValue.Order = FPin.Order;
 		}
-	
+		
 		public override void Evaluate(double CurrentTime)
 		{
 			base.Evaluate(CurrentTime);
@@ -86,7 +86,7 @@ namespace VVVV.Nodes.Timeliner
 
 				double time, flag;
 				string val;
-				for (int i = 0; i<FKeyValue.SliceCount;i++)	
+				for (int i = 0; i<FKeyValue.SliceCount;i++)
 				{
 					FKeyTime.GetValue(i, out time);
 					FKeyFlagY.GetValue(i, out flag);
@@ -94,7 +94,7 @@ namespace VVVV.Nodes.Timeliner
 					AddKeyFrame(time, (float) flag, val);
 				}
 				
-				FKeyFrames.Sort(delegate(TLBaseKeyFrame k0, TLBaseKeyFrame k1) { return k0.Time.CompareTo(k1.Time); });	
+				FKeyFrames.Sort(delegate(TLBaseKeyFrame k0, TLBaseKeyFrame k1) { return k0.Time.CompareTo(k1.Time); });
 			}
 			
 			base.Configurate(Input, FirstFrame);
@@ -134,36 +134,41 @@ namespace VVVV.Nodes.Timeliner
 			}
 		}
 		
-		public override void DrawSlice(Graphics g, double From, double To, bool AllInOne)
+		public override void DrawSlice(Graphics g, double From, double To, bool AllInOne, bool Collapsed)
 		{
-			base.DrawSlice(g, From, To, AllInOne);
-			Region SliceClip = g.Clip;
-			foreach (TLStringKeyFrame k in FInvalidKeyFrames)
+			base.DrawSlice(g, From, To, AllInOne, Collapsed);
+			if (Collapsed)
+				DrawCollapsedKeyFrames(g);
+			else
 			{
-				//transform the keyframes time by the current transformation
-				float x = k.GetTimeAsX(); 
-				float y = k.GetFlagPosAsY();
+				Region SliceClip = g.Clip;
+				foreach (TLStringKeyFrame k in FInvalidKeyFrames)
+				{
+					//transform the keyframes time by the current transformation
+					float x = k.GetTimeAsX();
+					float y = k.GetFlagPosAsY();
 
-				if (k.Selected)
-				{
-					g.FillRectangle(new SolidBrush(Color.Silver), x, y, k.Width-1, 14);
-					//don't clip so infos are always visible
-					g.Clip = new Region();
-					g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat)+"s", FFont, new SolidBrush(Color.Black), x+2, y-14);
-					g.Clip = SliceClip;
-				}
-				else
-				{
-					g.FillRectangle(new SolidBrush(Color.White), x, y, k.Width-1, 14);
+					if (k.Selected)
+					{
+						g.FillRectangle(new SolidBrush(Color.Silver), x, y, k.Width-1, 14);
+						//don't clip so infos are always visible
+						g.Clip = new Region();
+						g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat)+"s", FFont, new SolidBrush(Color.Black), x+2, y-14);
+						g.Clip = SliceClip;
+					}
+					else
+					{
+						g.FillRectangle(new SolidBrush(Color.White), x, y, k.Width-1, 14);
+					}
+					
+					g.DrawString(k.Value, FFont, new SolidBrush(Color.Black), x+2, y);
 				}
 				
-				g.DrawString(k.Value, FFont, new SolidBrush(Color.Black), x+2, y);				
+				float sliceheight = FPin.Height / FPin.SliceCount;
+				float sWidth = g.MeasureString(OutputAsString, FFont).Width + 2;
+				g.DrawString(OutputAsString, FFont, new SolidBrush(Color.Gray), g.ClipBounds.Width-sWidth, sliceheight-16);
 			}
-			
-			float sliceheight = FPin.Height / FPin.SliceCount;
-			float sWidth = g.MeasureString(OutputAsString, FFont).Width + 2;
-			g.DrawString(OutputAsString, FFont, new SolidBrush(Color.Gray), g.ClipBounds.Width-sWidth, sliceheight-16);
 		}
-	}		
+	}
 }
 

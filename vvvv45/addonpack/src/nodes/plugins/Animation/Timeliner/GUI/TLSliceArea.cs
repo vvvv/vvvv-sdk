@@ -574,6 +574,28 @@ namespace VVVV.Nodes.Timeliner
 						break;
 					}
 					
+				case TLMouseState.msDraggingXOnly:
+					{
+						//if pin is collapsed only mousstate msDraggingXOnly is possible
+						//so also check here for a right doubleclick to delete keyframes
+						if (e.Button == MouseButtons.Right)
+						{
+							TLBasePin pin = PosToPin(e.Location);
+							if ((pin != null) && (pin.Collapsed))
+							{
+								foreach(TLSlice s in pin.OutputSlices)
+									for (int i=s.KeyFrames.Count-1; i>-1; i--)
+									if (s.KeyFrames[i].HitByPoint(e.Location, pin.Collapsed) && s.KeyFrames[i].Selected)
+								{
+									DeleteKeyFrame(pin, s, s.KeyFrames[i]);
+								}
+								
+								pin.SaveKeyFrames();
+							}
+						}
+						break;
+					}
+					
 				case TLMouseState.msDraggingYOnly:
 					{
 						if (e.Button == MouseButtons.Right)
@@ -583,7 +605,7 @@ namespace VVVV.Nodes.Timeliner
 							{
 								foreach(TLSlice s in pin.OutputSlices)
 									for (int i=s.KeyFrames.Count-1; i>-1; i--)
-									if (s.KeyFrames[i].HitByPoint(e.Location) && s.KeyFrames[i].Selected)
+									if (s.KeyFrames[i].HitByPoint(e.Location, pin.Collapsed) && s.KeyFrames[i].Selected)
 								{
 									DeleteKeyFrame(pin, s, s.KeyFrames[i]);
 								}
@@ -619,7 +641,7 @@ namespace VVVV.Nodes.Timeliner
 						TLBaseKeyFrame kf = null;
 						foreach (TLSlice s in pin.OutputSlices)
 						{
-							kf = s.KeyFrames.Find(delegate(TLBaseKeyFrame k) {return k.HitByPoint(e.Location);});
+							kf = s.KeyFrames.Find(delegate(TLBaseKeyFrame k) {return k.HitByPoint(e.Location, pin.Collapsed);});
 							if (kf != null)
 								break; //out of foreach
 						}
@@ -650,7 +672,9 @@ namespace VVVV.Nodes.Timeliner
 						{
 							Cursor.Hide();
 							
-							if (e.Button == MouseButtons.Left)	//mouse is hovering a keyframe -> go drag
+							if (pin.Collapsed)
+								FMouseState = TLMouseState.msDraggingXOnly;
+							else if (e.Button == MouseButtons.Left)	//mouse is hovering a keyframe -> go drag
 							{
 								FMouseState = TLMouseState.msDragging;
 							}
@@ -769,7 +793,7 @@ namespace VVVV.Nodes.Timeliner
 						{
 							foreach (TLSlice s in pin.OutputSlices)
 							{
-								kf = s.KeyFrames.Find(delegate(TLBaseKeyFrame k) {return k.HitByPoint(pt);});
+								kf = s.KeyFrames.Find(delegate(TLBaseKeyFrame k) {return k.HitByPoint(pt, pin.Collapsed);});
 								if (kf != null)
 									break; //out of foreach
 							}
@@ -800,14 +824,14 @@ namespace VVVV.Nodes.Timeliner
 						{
 							bool wasSelected = k.Selected;
 							if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
-								k.Selected |= k.HitByRect(sr);
+								k.Selected |= k.HitByRect(sr, p.Collapsed);
 							else if ((Control.ModifierKeys & Keys.Alt) == Keys.Alt)
 							{
-								if (k.HitByRect(sr))
+								if (k.HitByRect(sr, p.Collapsed))
 									k.Selected = false;
 							}
 							else
-								k.SelectByRect(sr);
+								k.SelectByRect(sr, p.Collapsed);
 							
 							if (wasSelected != k.Selected)
 								this.Invalidate(k.RedrawArea);

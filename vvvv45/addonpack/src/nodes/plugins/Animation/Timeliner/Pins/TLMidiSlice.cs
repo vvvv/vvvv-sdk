@@ -179,9 +179,9 @@ namespace VVVV.Nodes.Timeliner
 		{
 		}
 		
-		public override void DrawSlice(Graphics g, double From, double To, bool AllInOne)
+		public override void DrawSlice(Graphics g, double From, double To, bool AllInOne, bool Collapsed)
 		{
-			base.DrawSlice(g, From, To, AllInOne);
+			base.DrawSlice(g, From, To, AllInOne, Collapsed);
 			if ((MidiScore == null) || (MidiScore.TimeSignature.Denominator == 0))
 				return;
 			

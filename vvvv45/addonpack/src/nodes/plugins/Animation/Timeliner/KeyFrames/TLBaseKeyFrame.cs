@@ -51,6 +51,19 @@ namespace VVVV.Nodes.Timeliner
 			get {return GetHitArea();}
 		}
 		
+		public Region CollapsedHitArea
+		{
+			get 
+			{
+				float size = 10;
+				float x = GetTimeAsX() - size/2;
+				float y = FSliceTop;
+		
+				Region flag = new Region(new RectangleF(x, y, size, FSliceHeight));
+				return flag;
+			}
+		}
+		
 		public bool Selected
 		{
 			get {return FSelected;}
@@ -71,24 +84,25 @@ namespace VVVV.Nodes.Timeliner
 			return GetRedrawArea();
 		}
 		
-		public bool HitByPoint(PointF P)
+		public bool HitByPoint(PointF P, bool Collapsed)
 		{
-			return HitArea.IsVisible(P);
+			if (Collapsed)
+				return CollapsedHitArea.IsVisible(P);
+			else
+				return HitArea.IsVisible(P);
 		}
 		
-		public bool SelectByPoint(PointF P)
+		public bool HitByRect(RectangleF R, bool Collapsed)
 		{
-			return FSelected = HitByPoint(P);
+			if (Collapsed)
+				return CollapsedHitArea.IsVisible(R);
+			else
+				return HitArea.IsVisible(R);
 		}
 		
-		public bool HitByRect(RectangleF R)
+		public bool SelectByRect(RectangleF R, bool Collapsed)
 		{
-			return HitArea.IsVisible(R);
-		}
-		
-		public bool SelectByRect(RectangleF R)
-		{
-			return FSelected = HitByRect(R);
+			return FSelected = HitByRect(R, Collapsed);
 		}
 
 		public virtual void MoveTime(double DeltaTime, double Minimum, double Maximum)

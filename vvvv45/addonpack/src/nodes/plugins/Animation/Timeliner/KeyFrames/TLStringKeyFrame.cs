@@ -50,7 +50,7 @@ namespace VVVV.Nodes.Timeliner
 		
 		protected override Region GetRedrawArea()
 		{
-			Region flag = new Region(new RectangleF((float) (GetTimeAsX())-2, FSliceTop + GetFlagPosAsY() - 15, Math.Max(FWidth+2, 40), 30));
+			Region flag = new Region(new RectangleF((float) (GetTimeAsX())-5, FSliceTop + GetFlagPosAsY() - 15, Math.Max(FWidth+5, 40), 30));
 			return flag;
 		}
 		
