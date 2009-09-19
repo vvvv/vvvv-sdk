@@ -304,6 +304,7 @@ namespace VVVV.Webinterface.HttpServer
 
                 //string tResponse = mWebinterfaceSingelton.CheckIfMaster(tRemoteIPAdresse, tVVVVParameter[0].Split('=')[1]);
 
+
                 if (true)
                 {
                     
@@ -316,11 +317,11 @@ namespace VVVV.Webinterface.HttpServer
                             mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
                         }
                     }
-                    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("Master"), new HTTPStatusCode("").Code200);
+                    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("VVVV Received Post Request"), new HTTPStatusCode("").Code200);
                 }
                 else
                 {
-                    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes(tResponse), new HTTPStatusCode("").Code200);
+                    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("VVVV Received Post Request"), new HTTPStatusCode("").Code200);
                 }
 
             }

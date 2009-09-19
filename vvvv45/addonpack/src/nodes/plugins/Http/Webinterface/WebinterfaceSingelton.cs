@@ -848,7 +848,7 @@ namespace VVVV.Webinterface
             }
             else
             {
-                mMasterTimer.Change(mTimeOut, System.Threading.Timeout.Infinite);
+                //mMasterTimer.Change(mTimeOut, System.Threading.Timeout.Infinite);
                 return "Master: " + mMasterIP;
             }
         }
