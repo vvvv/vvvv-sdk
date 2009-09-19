@@ -95,6 +95,7 @@ namespace VVVV.Nodes
 		private void InitializeComponent()
 		{
 			this.MainMenu = new System.Windows.Forms.Panel();
+			this.ToggleCollapseButton = new System.Windows.Forms.Button();
 			this.MidiButton = new System.Windows.Forms.Button();
 			this.WavButton = new System.Windows.Forms.Button();
 			this.AutomataCheckBox = new System.Windows.Forms.CheckBox();
@@ -120,6 +121,7 @@ namespace VVVV.Nodes
 			// MainMenu
 			// 
 			this.MainMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+			this.MainMenu.Controls.Add(this.ToggleCollapseButton);
 			this.MainMenu.Controls.Add(this.MidiButton);
 			this.MainMenu.Controls.Add(this.WavButton);
 			this.MainMenu.Controls.Add(this.AutomataCheckBox);
@@ -134,6 +136,17 @@ namespace VVVV.Nodes
 			this.MainMenu.Name = "MainMenu";
 			this.MainMenu.Size = new System.Drawing.Size(688, 25);
 			this.MainMenu.TabIndex = 0;
+			// 
+			// ToggleCollapseButton
+			// 
+			this.ToggleCollapseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.ToggleCollapseButton.Location = new System.Drawing.Point(113, 0);
+			this.ToggleCollapseButton.Name = "ToggleCollapseButton";
+			this.ToggleCollapseButton.Size = new System.Drawing.Size(40, 23);
+			this.ToggleCollapseButton.TabIndex = 11;
+			this.ToggleCollapseButton.Text = "v | >";
+			this.ToggleCollapseButton.UseVisualStyleBackColor = true;
+			this.ToggleCollapseButton.Click += new System.EventHandler(this.ToggleCollapseButtonClick);
 			// 
 			// MidiButton
 			// 
@@ -335,6 +348,7 @@ namespace VVVV.Nodes
 			this.SplitContainer.ResumeLayout(false);
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.Button ToggleCollapseButton;
 		private System.Windows.Forms.SplitContainer SplitContainer;
 		private System.Windows.Forms.Button MidiButton;
 		private System.Windows.Forms.Button WavButton;
@@ -1340,6 +1354,18 @@ namespace VVVV.Nodes
 			
 			SliceArea.SplitterPosition = SplitContainer.SplitterDistance;
 			SliceArea.Refresh();
+		}
+		
+		void ToggleCollapseButtonClick(object sender, EventArgs e)
+		{
+			int count = 0;
+			foreach(TLBasePin pin in FOutputPins)
+				if (pin.Collapsed)
+					count++;
+			
+			bool collapsed = count > FOutputPins.Count/2;
+			foreach(TLBasePin pin in FOutputPins)
+				pin.Collapsed = !collapsed;
 		}
 	}
 }

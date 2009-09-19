@@ -115,6 +115,11 @@ namespace VVVV.Nodes.Timeliner
 		public bool Collapsed
 		{
    			get { return FCollapsed;}
+   			set 
+   			{
+   				FCollapsed = value;
+   				UserChangedCollapsedState();   				
+   			}
 		}
 		
 		protected int FUncollapsedHeight;
@@ -134,6 +139,19 @@ namespace VVVV.Nodes.Timeliner
    			get { return FOutputSlices;}
 		}
 
+  		protected void UserChangedCollapsedState()
+		{
+			UpdateCollapsedState();
+			
+			PinChanged();
+			UpdateView();
+		}
+		
+		protected virtual void UpdateCollapsedState()
+		{
+			
+		}
+  		
 		protected void PinChanged()
 		{
 			if (OnPinChanged != null)

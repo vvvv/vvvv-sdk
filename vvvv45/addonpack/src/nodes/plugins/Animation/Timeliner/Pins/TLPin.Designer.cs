@@ -71,6 +71,7 @@
 			this.CollapseButton.Text = "V";
 			this.CollapseButton.UseVisualStyleBackColor = true;
 			this.CollapseButton.Click += new System.EventHandler(this.CollapseButtonClick);
+			this.CollapseButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.CollapseButtonMouseUp);
 			// 
 			// PinNameEdit
 			// 
@@ -81,7 +82,6 @@
 			this.PinNameEdit.Name = "PinNameEdit";
 			this.PinNameEdit.Size = new System.Drawing.Size(101, 13);
 			this.PinNameEdit.TabIndex = 2;
-			//this.PinNameEdit.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TopPanelMouseMove);
 			this.PinNameEdit.Leave += new System.EventHandler(this.PinNameEditLeave);
 			this.PinNameEdit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PinNameEditKeyPress);
 			// 

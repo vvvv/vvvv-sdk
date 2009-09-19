@@ -273,13 +273,10 @@ namespace VVVV.Nodes.Timeliner
 		{
 			FCollapsed = !FCollapsed;
 			
-			UpdateCollapsedState();
-			
-			PinChanged();
-			UpdateView();			
+			UserChangedCollapsedState();
 		}
 		
-		void UpdateCollapsedState()
+		protected override void UpdateCollapsedState()
 		{
 			if(FCollapsed)
 			{
@@ -344,6 +341,12 @@ namespace VVVV.Nodes.Timeliner
 			}
 				
 			return handled;
+		}
+		
+		void CollapseButtonMouseUp(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Right)
+				return;
 		}
 	}
 }
