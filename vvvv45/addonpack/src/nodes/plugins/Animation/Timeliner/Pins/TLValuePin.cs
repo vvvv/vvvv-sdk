@@ -55,8 +55,6 @@ namespace VVVV.Nodes.Timeliner
         	
         	MinIO.Minimum = MaxIO.Minimum = double.MinValue;
 	    	MinIO.Maximum = MaxIO.Maximum = double.MaxValue;
-	    	
-        	UpdateSliceSpecificSettings();
 		}
 
 		public override void UpdateSliceSpecificSettings()

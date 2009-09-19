@@ -98,8 +98,8 @@ namespace VVVV.Nodes.Timeliner
 		
 		public virtual void Configurate(IPluginConfig Input, bool FirstFrame)
 		{
-			if (FirstFrame)
-				(FPin as TLPin).UpdateSliceSpecificSettings();
+			//if (FirstFrame)
+			//	(FPin as TLPin).UpdateSliceSpecificSettings();
 		}
 		
 		protected abstract void CreatePins();

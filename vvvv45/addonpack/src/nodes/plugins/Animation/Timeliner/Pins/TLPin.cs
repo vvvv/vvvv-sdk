@@ -49,13 +49,14 @@ namespace VVVV.Nodes.Timeliner
 			catch
         	{}
 
-			UpdateCollapsedState();
-			CreatePins();		
+			
+			CreatePins();				
 		}
 		
 		public virtual void UpdateSliceSpecificSettings()
 		{
-        	UpdateAllInOneState();
+        	UpdateAllInOneState();    
+        	UpdateCollapsedState();
 		}
 		
 		protected override void InitializeHeight()
@@ -231,8 +232,6 @@ namespace VVVV.Nodes.Timeliner
 			}
 		}
 		
-		
-		
 		public TLBaseKeyFrame AddKeyFrame(Point P)
 		{
 			TLBaseKeyFrame k = null;
@@ -285,7 +284,7 @@ namespace VVVV.Nodes.Timeliner
 			if(FCollapsed)
 			{
 				FUncollapsedHeight = Height;
-				Height = 20;
+				Height = FOutputSlices.Count * 20;
 				CollapseButton.Text = ">";				
 			}
 			else

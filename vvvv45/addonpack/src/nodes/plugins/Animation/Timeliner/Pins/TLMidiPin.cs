@@ -60,8 +60,6 @@ namespace VVVV.Nodes.Timeliner
 			}
 			catch
 			{}
-
-			UpdateSliceSpecificSettings();
 		}
 
 		public override void UpdateSliceSpecificSettings()
