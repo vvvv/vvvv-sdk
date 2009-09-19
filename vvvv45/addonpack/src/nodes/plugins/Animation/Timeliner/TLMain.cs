@@ -698,6 +698,10 @@ namespace VVVV.Nodes
 				
 				//for backwards compatibility update pinsettings once after startup:
 				UpdatePinSettingsFromActualPinLayout();
+				
+				foreach (TLBasePin pin in FOutputPins)
+					if (pin is TLPin)
+					(pin as TLPin).UpdateSliceSpecificSettings();
 			}
 		}
 		
@@ -735,8 +739,6 @@ namespace VVVV.Nodes
 			XmlAttribute attr;
 			
 			int i;
-			
-			          
 			for (i=0; i<FPinSettings.SliceCount; i++)
 			{
 				currentID = 0;
