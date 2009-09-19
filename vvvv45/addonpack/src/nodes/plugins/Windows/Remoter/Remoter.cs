@@ -877,9 +877,9 @@ namespace VVVV.Nodes
 			// AddProcessButton
 			// 
 			this.AddProcessButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.AddProcessButton.Location = new System.Drawing.Point(3, 61);
+			this.AddProcessButton.Location = new System.Drawing.Point(3, 66);
 			this.AddProcessButton.Name = "AddProcessButton";
-			this.AddProcessButton.Size = new System.Drawing.Size(25, 23);
+			this.AddProcessButton.Size = new System.Drawing.Size(20, 20);
 			this.AddProcessButton.TabIndex = 43;
 			this.AddProcessButton.Text = "+";
 			this.AddProcessButton.UseVisualStyleBackColor = true;
@@ -1128,9 +1128,9 @@ namespace VVVV.Nodes
 			// 
 			this.IPListPanel.AutoScroll = true;
 			this.IPListPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.IPListPanel.Location = new System.Drawing.Point(3, 49);
+			this.IPListPanel.Location = new System.Drawing.Point(3, 44);
 			this.IPListPanel.Name = "IPListPanel";
-			this.IPListPanel.Size = new System.Drawing.Size(231, 272);
+			this.IPListPanel.Size = new System.Drawing.Size(231, 277);
 			this.IPListPanel.TabIndex = 5;
 			// 
 			// GroupFilterDropDown
@@ -1139,7 +1139,7 @@ namespace VVVV.Nodes
 			this.GroupFilterDropDown.FormattingEnabled = true;
 			this.GroupFilterDropDown.Items.AddRange(new object[] {
 									"All"});
-			this.GroupFilterDropDown.Location = new System.Drawing.Point(3, 28);
+			this.GroupFilterDropDown.Location = new System.Drawing.Point(3, 23);
 			this.GroupFilterDropDown.Name = "GroupFilterDropDown";
 			this.GroupFilterDropDown.Size = new System.Drawing.Size(231, 21);
 			this.GroupFilterDropDown.Sorted = true;
@@ -1200,7 +1200,7 @@ namespace VVVV.Nodes
 			this.LeftTopPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.LeftTopPanel.Location = new System.Drawing.Point(3, 3);
 			this.LeftTopPanel.Name = "LeftTopPanel";
-			this.LeftTopPanel.Size = new System.Drawing.Size(231, 25);
+			this.LeftTopPanel.Size = new System.Drawing.Size(231, 20);
 			this.LeftTopPanel.TabIndex = 1;
 			// 
 			// NewIPEdit
@@ -1219,7 +1219,7 @@ namespace VVVV.Nodes
 			this.AddIPButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.AddIPButton.Location = new System.Drawing.Point(211, 0);
 			this.AddIPButton.Name = "AddIPButton";
-			this.AddIPButton.Size = new System.Drawing.Size(20, 25);
+			this.AddIPButton.Size = new System.Drawing.Size(20, 20);
 			this.AddIPButton.TabIndex = 1;
 			this.AddIPButton.Text = "+";
 			this.AddIPButton.UseVisualStyleBackColor = true;
@@ -2335,7 +2335,8 @@ namespace VVVV.Nodes
 				IgnorePattern.Text = attr.Value;
 				
 				attr = tool.Attributes.GetNamedItem("TestOnly") as XmlAttribute;
-				MirrorTestCheckBox.Checked = bool.Parse(attr.Value);
+				if (attr != null)
+					MirrorTestCheckBox.Checked = bool.Parse(attr.Value);
 				
 				FSettings.LoadXml(Settings); //not sure why need to load here again
 				
@@ -2467,7 +2468,7 @@ namespace VVVV.Nodes
 			tool.Attributes.Append(attr);
 			
 			attr = FSettings.CreateAttribute("WatchProcessPath");
-			FWatchProcessID = WatchProcessPathComboBox.SelectedIndex;
+			FWatchProcessID = Math.Max(0, WatchProcessPathComboBox.SelectedIndex);
 			ProcessControl pcc = PsToolsProcessPanel.Controls[FWatchProcessID] as ProcessControl;
 			FWatchProcessName = pcc.Process;
 			attr.Value = FWatchProcessID.ToString();
