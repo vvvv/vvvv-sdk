@@ -405,274 +405,281 @@ namespace VVVV.Nodes.Http
         public void Evaluate(int SpreadMax)
         {
 
-
-
-            #region Upstream
-
-            mGuiTypes = new SortedList<int, string>();
-            mHtmlAttributs = new SortedList<int, SortedList<string, string>>();
-            mCssStyles = new SortedList<int, SortedList<string, string>>();
-            mHtmlText = new string[SpreadMax];
-
-            
-
-            //Saves the incoming Html Slices
-            if (FUpstreamInterface != null)
+            try
             {
-                List<GuiDataObject> tGuiDaten;
-                FUpstreamInterface.GetDatenObjekt(0, out tGuiDaten);
-                mGuiDatenListe.Clear();
-                mGuiDatenListe = new List<GuiDataObject>(tGuiDaten);
-                
-            }
+
+                #region Upstream
+
+                mGuiTypes = new SortedList<int, string>();
+                mHtmlAttributs = new SortedList<int, SortedList<string, string>>();
+                mCssStyles = new SortedList<int, SortedList<string, string>>();
+                mHtmlText = new string[SpreadMax];
 
 
 
-            #endregion Upstream
-
-
-
-
-            #region Read Url
-
-            if (FUrl.PinIsChanged)
-            {
-                FUrl.GetString(0, out mUrl);
-            }
-
-            #endregion Read Url
-
-
-
-
-            #region Reload Page
-
-            if (FReload.PinIsChanged)
-            {
-                double currentReloadSlice;
-                FReload.GetValue(0, out currentReloadSlice);
-                if (currentReloadSlice > 0.5)
+                //Saves the incoming Html Slices
+                if (FUpstreamInterface != null)
                 {
-                    mWebinterfaceSingelton.setPollingMessage("Reload","Lade mich neu",true);
-                }
-            }
-            #endregion Reload Page
-
-
-
-
-            #region Get HTML Body and Head String
-
-            if (FHtmlHead.PinIsChanged || FHtmlBody.PinIsChanged)
-            {
-
-                string tContentBody = "";
-                string tContentHead = "";
-                double tReload;
-
-
-                FReload.GetValue(0, out tReload);
-
-                // Get HTML Body string
-                for (int i = 0; i < FHtmlBody.SliceCount; i++)
-                {
-
-                    string currentHtmlBodySlice = "";
-                    FHtmlBody.GetString(i, out currentHtmlBodySlice);
-                    tContentBody += currentHtmlBodySlice + Environment.NewLine;
+                    List<GuiDataObject> tGuiDaten;
+                    FUpstreamInterface.GetDatenObjekt(0, out tGuiDaten);
+                    mGuiDatenListe.Clear();
+                    mGuiDatenListe = new List<GuiDataObject>(tGuiDaten);
 
                 }
 
-                mPageBodyString = tContentBody;
 
-                // Get Html Head String
-                for (int i = 0; i < FHtmlHead.SliceCount; i++)
+
+                #endregion Upstream
+
+
+
+
+                #region Read Url
+
+                if (FUrl.PinIsChanged)
                 {
-                    string currentHtmlHeadSlice = "";
-                    FHtmlHead.GetString(i, out currentHtmlHeadSlice);
-                    tContentHead += currentHtmlHeadSlice + Environment.NewLine;
+                    FUrl.GetString(0, out mUrl);
                 }
 
-                mPageHeadString = tContentHead;
-
-
-            }
-
-
-            #endregion Get HTML Body and Head String
+                #endregion Read Url
 
 
 
-            #region Body CSS Properties
 
+                #region Reload Page
 
-            //Upstream Css Properties
-            int uSSSytle;
-            if (FUpstreamStyleIn != null)
-            {
-                mBodyRule = new Rule("body");
-                
-                for (int i = 0; i < FCssPropertiesIn.SliceCount; i++)
+                if (FReload.PinIsChanged)
                 {
-                    FCssPropertiesIn.GetUpsreamSlice(i, out uSSSytle);
-                    SortedList<string, string> tStylePropertie;
-                    FUpstreamStyleIn.GetCssProperties(uSSSytle, out tStylePropertie);
-
-                    foreach(KeyValuePair<string,string> KeyPair in tStylePropertie)
+                    double currentReloadSlice;
+                    FReload.GetValue(0, out currentReloadSlice);
+                    if (currentReloadSlice > 0.5)
                     {
-                        mBodyRule.AddProperty(new Property(KeyPair.Key, KeyPair.Value));
+                        mWebinterfaceSingelton.setPollingMessage("Reload", "Lade mich neu", true);
                     }
                 }
-            }
-            else
-            {
-                mBodyRule = new Rule("body");
-                mBodyRule.AddProperty(new Property("background-color", "#E0E0E0"));
-            }
-
-            #endregion Body CSS Properties
+                #endregion Reload Page
 
 
 
 
-            #region Build Page
+                #region Get HTML Body and Head String
 
-
-            mPage = null;
-            mPage = new Page(true);
-            // titel
-            string currentSliceTitel = "";
-            FTitel.GetString(0, out currentSliceTitel);
-            mPage.Head.Insert(new Title(currentSliceTitel));
-
-            // Css File
-            mPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
-            mPage.Head.Insert(new Link("jqueryUI.css", "stylesheet", "text/css"));
-            mPage.Head.Insert(new JavaScript("jquery.js", true));
-            mPage.Head.Insert(new JavaScript("jquerytimer.js", true));
-            mPage.Head.Insert(new JavaScript("jqueryUI.js", true));
-            mPage.Head.Insert(new JavaScript(mPageName + ".js", true));
-
-
-            //mPageBuilder.UpdateGuiList(mGuiDatenListe, mPage);
-            //Communication Type
-
-
-
-
-
-            string tCommunicationType;
-            FCommunication.GetString(0, out tCommunicationType);
-            if (tCommunicationType == "Polling")
-            {
-                mPage.Head.Insert((new JavaScript(JSToolkit.Polling("1000", "'Gib mit neue Daten'"), false)));
-
-            }
-            else if (tCommunicationType == "Comet")
-            {
-               mPage.Head.Insert(new JavaScript(JSToolkit.Comet(), false));
-            }
-
-
-            //Browser Window
-
-            double currentWidthSlice;
-            double currentHeightSlice;
-            FPageWidth.GetValue(0, out currentWidthSlice);
-            FPageHeight.GetValue(0, out currentHeightSlice);
-
-            string tBrowserWidth = "" + Math.Round(currentWidthSlice);
-            string tBrowserHeight = "" + Math.Round(currentHeightSlice);
-
-
-            if ((currentWidthSlice != -1 || currentHeightSlice != -1))
-            {
-                mPage.Head.Insert(JSToolkit.ResizeBrowser(currentWidthSlice.ToString(), currentHeightSlice.ToString()));
-
-            }
-            
-            //body Css
-            CSSStyle tCssStyle = new CSSStyle();
-            tCssStyle.Insert(mBodyRule.Text);
-
-
-            mPage.Head.Insert(tCssStyle);
-           
-
-
-            //Insert Input Strings
-            mPage.Body.Insert(mPageBodyString);
-            mPage.Head.Insert(mPageHeadString);
-
-
-            mWebinterfaceSingelton.setHtmlPageData(mPageName, mUrl, mPage, mGuiDatenListe);
-
-            //set Field Properties
-            //mCssFile = mPageBuilder.CssMainFile.ToString() + Environment.NewLine + mBodyRule.Text;
-            //mJsFile = mPageBuilder.JsFile.ToString();
-
-            //Output Files
-            //FHtmlFile.SetString(0, mPage.Text);
-            //FCssFile.SetString(0, mCssFile);
-            //FJsFile.SetString(0, mJsFile);
-            
-
-                
-                    
-            
-            #endregion Build Page
-
-
-
-
-            #region Save Page
-
-            string tPath;
-            double tSave;
-            string tUrl;
-
-            FPath.GetString(0, out tPath);
-            FSavePage.GetValue(0, out tSave);
-            FUrl.GetString(0, out tUrl);
-
-
-
-
-            if (FSavePage.PinIsChanged)
-            {
-                if (tSave > 0.5)
+                if (FHtmlHead.PinIsChanged || FHtmlBody.PinIsChanged)
                 {
 
-                    SortedList<string, string> tFiles = new SortedList<string, string>();
-                    tFiles.Add(tPath + "\\" + tUrl, mPage.Text);
-                    //tFiles.Add(tPath + "\\" + mPage +  ".css", mCssFile);
-                    //tFiles.Add(tPath + "\\" + mPage + ".js", mJsFile);
+                    string tContentBody = "";
+                    string tContentHead = "";
+                    double tReload;
 
-                    foreach (KeyValuePair<string, string> pFile in tFiles)
+
+                    FReload.GetValue(0, out tReload);
+
+                    // Get HTML Body string
+                    for (int i = 0; i < FHtmlBody.SliceCount; i++)
                     {
-                        try
-                        {
 
-                            if (File.Exists(pFile.Key))
-                            {
-                                File.Delete(pFile.Key);
-                                HTMLToolkit.SavePage(pFile.Key, pFile.Value);
-                                FHost.Log(TLogType.Message, "File: " + mPage + " has been deleted an resaved");
-                            }
-                            else
-                            {
-                                HTMLToolkit.SavePage(pFile.Key, pFile.Value);
-                            }
-                        }
-                        catch
+                        string currentHtmlBodySlice = "";
+                        FHtmlBody.GetString(i, out currentHtmlBodySlice);
+                        tContentBody += currentHtmlBodySlice + Environment.NewLine;
+
+                    }
+
+                    mPageBodyString = tContentBody;
+
+                    // Get Html Head String
+                    for (int i = 0; i < FHtmlHead.SliceCount; i++)
+                    {
+                        string currentHtmlHeadSlice = "";
+                        FHtmlHead.GetString(i, out currentHtmlHeadSlice);
+                        tContentHead += currentHtmlHeadSlice + Environment.NewLine;
+                    }
+
+                    mPageHeadString = tContentHead;
+
+
+                }
+
+
+                #endregion Get HTML Body and Head String
+
+
+
+                #region Body CSS Properties
+
+
+                //Upstream Css Properties
+                int uSSSytle;
+                if (FUpstreamStyleIn != null)
+                {
+                    mBodyRule = new Rule("body");
+
+                    for (int i = 0; i < FCssPropertiesIn.SliceCount; i++)
+                    {
+                        FCssPropertiesIn.GetUpsreamSlice(i, out uSSSytle);
+                        SortedList<string, string> tStylePropertie;
+                        FUpstreamStyleIn.GetCssProperties(uSSSytle, out tStylePropertie);
+
+                        foreach (KeyValuePair<string, string> KeyPair in tStylePropertie)
                         {
-                            throw new Exception("somthing wrong in here Renderer");
+                            mBodyRule.AddProperty(new Property(KeyPair.Key, KeyPair.Value));
                         }
                     }
                 }
-            }
+                else
+                {
+                    mBodyRule = new Rule("body");
+                    mBodyRule.AddProperty(new Property("background-color", "#E0E0E0"));
+                }
 
-            #endregion Save Page
+                #endregion Body CSS Properties
+
+
+
+
+                #region Build Page
+
+
+                mPage = null;
+                mPage = new Page(true);
+                // titel
+                string currentSliceTitel = "";
+                FTitel.GetString(0, out currentSliceTitel);
+                mPage.Head.Insert(new Title(currentSliceTitel));
+
+                // Css File
+                mPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
+                mPage.Head.Insert(new Link("jqueryUI.css", "stylesheet", "text/css"));
+                mPage.Head.Insert(new JavaScript("jquery.js", true));
+                mPage.Head.Insert(new JavaScript("jquerytimer.js", true));
+                mPage.Head.Insert(new JavaScript("jqueryUI.js", true));
+                mPage.Head.Insert(new JavaScript(mPageName + ".js", true));
+
+
+                //mPageBuilder.UpdateGuiList(mGuiDatenListe, mPage);
+                //Communication Type
+
+
+
+
+
+                string tCommunicationType;
+                FCommunication.GetString(0, out tCommunicationType);
+                if (tCommunicationType == "Polling")
+                {
+                    mPage.Head.Insert((new JavaScript(JSToolkit.Polling("1000", "'Gib mit neue Daten'"), false)));
+
+                }
+                else if (tCommunicationType == "Comet")
+                {
+                    mPage.Head.Insert(new JavaScript(JSToolkit.Comet(), false));
+                }
+
+
+                //Browser Window
+
+                double currentWidthSlice;
+                double currentHeightSlice;
+                FPageWidth.GetValue(0, out currentWidthSlice);
+                FPageHeight.GetValue(0, out currentHeightSlice);
+
+                string tBrowserWidth = "" + Math.Round(currentWidthSlice);
+                string tBrowserHeight = "" + Math.Round(currentHeightSlice);
+
+
+                if ((currentWidthSlice != -1 || currentHeightSlice != -1))
+                {
+                    mPage.Head.Insert(JSToolkit.ResizeBrowser(currentWidthSlice.ToString(), currentHeightSlice.ToString()));
+
+                }
+
+                //body Css
+                CSSStyle tCssStyle = new CSSStyle();
+                tCssStyle.Insert(mBodyRule.Text);
+
+
+                mPage.Head.Insert(tCssStyle);
+
+
+
+                //Insert Input Strings
+                mPage.Body.Insert(mPageBodyString);
+                mPage.Head.Insert(mPageHeadString);
+
+
+                mWebinterfaceSingelton.setHtmlPageData(mPageName, mUrl, mPage, mGuiDatenListe);
+
+                //set Field Properties
+                //mCssFile = mPageBuilder.CssMainFile.ToString() + Environment.NewLine + mBodyRule.Text;
+                //mJsFile = mPageBuilder.JsFile.ToString();
+
+                //Output Files
+                //FHtmlFile.SetString(0, mPage.Text);
+                //FCssFile.SetString(0, mCssFile);
+                //FJsFile.SetString(0, mJsFile);
+
+
+
+
+
+                #endregion Build Page
+
+
+
+
+                #region Save Page
+
+                string tPath;
+                double tSave;
+                string tUrl;
+
+                FPath.GetString(0, out tPath);
+                FSavePage.GetValue(0, out tSave);
+                FUrl.GetString(0, out tUrl);
+
+
+
+
+                if (FSavePage.PinIsChanged)
+                {
+                    if (tSave > 0.5)
+                    {
+
+                        SortedList<string, string> tFiles = new SortedList<string, string>();
+                        tFiles.Add(tPath + "\\" + tUrl, mPage.Text);
+                        //tFiles.Add(tPath + "\\" + mPage +  ".css", mCssFile);
+                        //tFiles.Add(tPath + "\\" + mPage + ".js", mJsFile);
+
+                        foreach (KeyValuePair<string, string> pFile in tFiles)
+                        {
+                            try
+                            {
+
+                                if (File.Exists(pFile.Key))
+                                {
+                                    File.Delete(pFile.Key);
+                                    HTMLToolkit.SavePage(pFile.Key, pFile.Value);
+                                    FHost.Log(TLogType.Message, "File: " + mPage + " has been deleted an resaved");
+                                }
+                                else
+                                {
+                                    HTMLToolkit.SavePage(pFile.Key, pFile.Value);
+                                }
+                            }
+                            catch
+                            {
+                                throw new Exception("somthing wrong in here Renderer");
+                            }
+                        }
+                    }
+                }
+
+                #endregion Save Page
+
+            }
+            catch (Exception ex)
+            {
+                FHost.Log(TLogType.Error, "Error in Page (Http)" + Environment.NewLine + ex.Message);
+            }
 
         }
 

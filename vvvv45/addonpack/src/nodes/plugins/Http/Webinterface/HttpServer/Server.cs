@@ -58,6 +58,7 @@ namespace VVVV.Webinterface.HttpServer {
         protected int portNumber;
         protected int maxSockets;
         protected int sockCount = 0;
+        private bool mInit = false;
 
         //Thread signal.
         private ManualResetEvent allDone = new ManualResetEvent(false);
@@ -187,6 +188,15 @@ namespace VVVV.Webinterface.HttpServer {
             get
             {
                 return mFileNames;
+            }
+        }
+
+
+        public bool Init
+        {
+            get
+            {
+                return mInit;
             }
         }
 
@@ -321,17 +331,16 @@ namespace VVVV.Webinterface.HttpServer {
                 
 
 
-                ////Debug.WriteLine("-------------- Stop Listing to Socket --------------");
             }
             catch (SocketException se)
             {
                 threadEnd[0].Set();
-                ////Debug.WriteLine(se.Message.ToString());
+                mInit = false;
             }
             catch (Exception ex)
             {
                 threadEnd[0].Set();
-                ////Debug.WriteLine("Server Constructor: \n" + ex.ToString());
+                mInit = false;
             }
         }
 

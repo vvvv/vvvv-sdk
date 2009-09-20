@@ -14,6 +14,7 @@ namespace VVVV.Nodes.HttpGUI
         private bool FDisposed = false;
         private IValueOut FResponse;
         private IEnumIn FMode;
+        private IValueIn FDefault;
 
         #endregion field declaration
 
@@ -166,6 +167,10 @@ namespace VVVV.Nodes.HttpGUI
             FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
             FResponse.SetSubType(0, 1, 1, 0, false, false, true);
 
+            FHost.CreateValueInput("Default", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDefault);
+            FDefault.SetSubType(0,1,1,0,false,true, true);
+
+
             FHost.UpdateEnum("ButtonMode", "Toggle", new string[] { "Toggle", "Bang" });
             FHost.CreateEnumInput("ButtonMode", TSliceMode.Single, TPinVisibility.True, out FMode);
             FMode.SetSubType("ButtonMode");
@@ -184,20 +189,29 @@ namespace VVVV.Nodes.HttpGUI
 
             bool checkIfNeDataArreived = CheckIfNodeReceivedData();
 
-            if (mChangedSpreadSize || checkIfNeDataArreived || FMode.PinIsChanged)
+            if (mChangedSpreadSize || checkIfNeDataArreived || FMode.PinIsChanged || FDefault.PinIsChanged)
             {
 
                 for (int i = 0; i < SpreadMax; i++)
                 {
-                    string Mode;
-                    FMode.GetString(i, out Mode);
+                    string CurrentMode;
+                    FMode.GetString(i, out CurrentMode);
+
+                    double CurrentDefaultSlice;
+                    FDefault.GetValue(i, out CurrentDefaultSlice);
 
                     string tResponse;
                     GetNewDataFromServer(i, out tResponse);
+
+                    if (tResponse == null)
+                    {
+                        tResponse = CurrentDefaultSlice.ToString();
+                    }
+
                     FResponse.SliceCount = SpreadMax;
                     FResponse.SetValue(i,Convert.ToInt16(tResponse));
 
-                    if (Mode == "Toggle")
+                    if (CurrentMode == "Toggle")
                     {
                        
                         HtmlDiv tDiv = new HtmlDiv();

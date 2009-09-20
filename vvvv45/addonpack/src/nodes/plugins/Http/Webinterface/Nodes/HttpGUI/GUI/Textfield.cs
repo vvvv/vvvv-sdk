@@ -13,6 +13,7 @@ namespace VVVV.Nodes.HttpGUI
 
         private bool FDisposed = false;
         private IStringOut FResponse;
+        private IStringIn FDefault;
 
         #endregion field declaration
 
@@ -168,6 +169,8 @@ namespace VVVV.Nodes.HttpGUI
             FHost.CreateStringOutput("Response",TSliceMode.Dynamic,TPinVisibility.True, out FResponse);
             FResponse.SetSubType("", false);
 
+            FHost.CreateStringInput("Default", TSliceMode.Dynamic, TPinVisibility.True, out FDefault);
+            FDefault.SetSubType("", false);
             
         }
 
@@ -192,6 +195,14 @@ namespace VVVV.Nodes.HttpGUI
 
                     string tResponse;
                     GetNewDataFromServer(i, out tResponse);
+
+                    string currentDefault;
+                    FDefault.GetString(i,out currentDefault);
+
+                    if (tResponse == "")
+                    {
+                        tResponse = currentDefault;
+                    }
 
                     FResponse.SetString(i, tResponse);
 

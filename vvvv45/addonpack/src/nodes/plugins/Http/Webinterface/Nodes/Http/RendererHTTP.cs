@@ -41,6 +41,7 @@ using System.Threading;
 using System.Text;
 using System.Management;
 using System.Net;
+using System.Net.Sockets;
 
 using VVVV.Webinterface;
 using VVVV.Webinterface.Utilities;
@@ -445,7 +446,6 @@ namespace VVVV.Nodes.Http
             FEnableServer.GetValue(0, out pState);
 
 
-
             if (FEnableServer.PinIsChanged)
             {
                 if (pState > 0.5)
@@ -453,9 +453,14 @@ namespace VVVV.Nodes.Http
                     mServer = new VVVV.Webinterface.HttpServer.Server(80, 50, "ServerOne");
                     //mWebinterfaceSingelton.AddServhandling(mServer);
                     //mServer.ServeFolder(mServerFolder);
-                    mServer.Start();             
+                    mServer.Start();
+
+                    if(mServer.Init == false)
+                    {
+                        FHost.Log(TLogType.Error, "Http Port 80 taken by an other Application like Skype etc.");
+                    }
                 }
-                else if(pState < 0.5)
+                else if (pState < 0.5)
                 {
                     if (mServer != null)
                     {
@@ -466,6 +471,9 @@ namespace VVVV.Nodes.Http
                     }
                 }
             }
+            
+                
+            
 
 
             #endregion Enable Server
@@ -557,46 +565,54 @@ namespace VVVV.Nodes.Http
 
             #region Get Post Messages
 
-            if (mServer != null)
+
+            try
             {
-                List<string> tGetMessages;
-                List<string> tPostMessages;
-                mWebinterfaceSingelton.getRequestMessage(out tGetMessages, out tPostMessages);
 
-
-                if (tGetMessages != null && tGetMessages.Count > 0)
+                if (mServer != null)
                 {
-                    FGetMessages.SliceCount = tGetMessages.Count;
-                    for (int i = 0; i < tGetMessages.Count; i++)
+                    List<string> tGetMessages;
+                    List<string> tPostMessages;
+                    mWebinterfaceSingelton.getRequestMessage(out tGetMessages, out tPostMessages);
+
+
+                    if (tGetMessages != null && tGetMessages.Count > 0)
                     {
-                        FGetMessages.SetString(i, tGetMessages[i]);
+                        FGetMessages.SliceCount = tGetMessages.Count;
+                        for (int i = 0; i < tGetMessages.Count; i++)
+                        {
+                            FGetMessages.SetString(i, tGetMessages[i]);
+                        }
                     }
-                }
-                else
-                {
-                    FGetMessages.SliceCount = 0;
-                    
-                }
-
-                if (tPostMessages != null && tPostMessages.Count > 0)
-                {
-                    FPostMessages.SliceCount = tPostMessages.Count;
-                    for (int i = 0; i < tPostMessages.Count; i++)
+                    else
                     {
-                        FPostMessages.SetString(i, tPostMessages[i]);
+                        FGetMessages.SliceCount = 0;
+
                     }
+
+                    if (tPostMessages != null && tPostMessages.Count > 0)
+                    {
+                        FPostMessages.SliceCount = tPostMessages.Count;
+                        for (int i = 0; i < tPostMessages.Count; i++)
+                        {
+                            FPostMessages.SetString(i, tPostMessages[i]);
+                        }
+                    }
+                    else
+                    {
+                        FPostMessages.SliceCount = 0;
+                    }
+
                 }
-                else
-                {
-                    FPostMessages.SliceCount = 0;
-                }
-                
+            }
+            catch (Exception ex)
+            {
+                FHost.Log(TLogType.Error, "Error in Renderer (Http) -  GET POST Handling");
             }
 
 
 
             #endregion Get Post Messages
-
 
 
             #region TimeOut
