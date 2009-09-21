@@ -4,7 +4,7 @@ using System.Text;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.Webinterface.Utilities;
-using VVVV.Nodes.HttpGUI.Datenobjekte;
+using VVVV.Nodes.HttpGUI;
 using VVVV.Utils.VMath;
 
 namespace VVVV.Nodes.HttpGUI

@@ -199,7 +199,7 @@ namespace VVVV.Nodes.HttpGUI
                     string currentDefault;
                     FDefault.GetString(i,out currentDefault);
 
-                    if (tResponse == "")
+                    if (tResponse == null)
                     {
                         tResponse = currentDefault;
                     }

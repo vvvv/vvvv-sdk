@@ -36,7 +36,7 @@ using System.Diagnostics;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using VVVV.Nodes.HttpGUI.Datenobjekte;
+using VVVV.Nodes.HttpGUI;
 //the vvvv node namespace
 namespace VVVV.Nodes.HttpGUI
 {

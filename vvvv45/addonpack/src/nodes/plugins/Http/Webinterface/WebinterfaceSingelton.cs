@@ -361,6 +361,11 @@ namespace VVVV.Webinterface
         #region Build HtmlPages
 
 
+
+        /// <summary>
+        /// Add the Name of the Page to a List to check which
+        /// </summary>
+        /// <param name="pPageName"></param>
         public void AddConnectedPage(string pPageName)
         {
             if (mConnectedPages.Contains(pPageName) == false)
