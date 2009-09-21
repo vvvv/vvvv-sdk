@@ -494,6 +494,13 @@ namespace VVVV.Nodes.HttpGUI
             mGuiDataList[pSliceIndex].Tag = pTag;
         }
 
+        public void SetTag(int pSliceIndex, Tag pTag, string ClassName)
+        {
+            pTag.AddAttribute(new HTMLAttribute("id", mGuiDataList[pSliceIndex].SliceId));
+            pTag.AddAttribute(new HTMLAttribute("class", mGuiDataList[pSliceIndex].SliceId + " " + mGuiDataList[pSliceIndex].NodeId + " " + ClassName ));
+            mGuiDataList[pSliceIndex].Tag = pTag;
+        }
+
 
         public void SetJavaScript(int pSliceIndex, string pContent)
         {
