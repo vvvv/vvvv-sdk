@@ -183,9 +183,9 @@ namespace VVVV.Nodes.HttpGUI
 		{
 
 			//check if we received any new data from the web server
-			bool ReceivedResponse = CheckIfNodeReceivedData();
+			bool receivedResponse = CheckIfNodeReceivedData();
 
-			if (mChangedSpreadSize || FNameStringInput.PinIsChanged || ReceivedResponse)
+			if (mChangedSpreadSize || FNameStringInput.PinIsChanged || receivedResponse)
 			{
 				for (int i = 0; i < SpreadMax; i++)
 				{
@@ -194,43 +194,37 @@ namespace VVVV.Nodes.HttpGUI
 					//the incoming int SpreadMax is the maximum slicecount of all input pins, which is a good default
 					FResponseColorOutput.SliceCount = SpreadMax;
 
-					
-					
 					//read the new data we received from the server
-					
-					if (ReceivedResponse)
+					string tResponse;
+					GetNewDataFromServer(i, out tResponse);
+					if (tResponse == null)
 					{
-						string tResponse;
-						GetNewDataFromServer(i, out tResponse);
-						if (tResponse == null)
-						{
-							//tResponse = currentDefaultSlice.ToString();
-						}
-						string [] rgb = tResponse.Split(new char [] {'.'});
-						FResponseColorOutput.SetColor(i, new RGBAColor(double.Parse(rgb[0]) / 255.0, double.Parse(rgb[1]) / 255.0, double.Parse(rgb[2]) / 255.0, 1.0));
+						tResponse = "0.0.0";
 					}
+					//parse the color representation that got passed as a POST parameter
+                    string [] rgb = tResponse.Split(new char [] {'.'});
+					//update the output pin with the new response
+                    FResponseColorOutput.SetColor(i, new RGBAColor(double.Parse(rgb[0]) / 255.0, double.Parse(rgb[1]) / 255.0, double.Parse(rgb[2]) / 255.0, 1.0));
 
-
-					string nameStringSlice = String.Empty;
-
-					//read data from inputs
+                    //read data from inputs
+                    string nameStringSlice = String.Empty;
 					FNameStringInput.GetString(i, out nameStringSlice);
 					
-					//create a container div to house our custom color picker widget
-					
+					//create a container div to house our color picker widget
 					HtmlDiv tMainContainer = new HtmlDiv();
 					
 					//create a div for the actual jquery colorpicker
 					string ColorPickerId = GetSliceId(i) + i.ToString();
-					//TextField tColorPicker = new TextField(ColorPickerId);
+					HtmlDiv tColorPicker = new HtmlDiv(ColorPickerId);
+
 					//style the colorpicker
-                    //HTMLAttribute tColorPickerStyle = new HTMLAttribute("style", "postion:absolute; top:50%");
-                    //tColorPicker.AddAttribute(tColorPickerStyle);
-                    //HTMLAttribute tColorPickerClass = new HTMLAttribute("class", "colorpickervvvv");
-                    //tColorPicker.AddAttribute(tColorPickerClass);
+					HTMLAttribute tColorPickerStyle = new HTMLAttribute("style", "postion:absolute; top:50%");
+					tColorPicker.AddAttribute(tColorPickerStyle);
+					HTMLAttribute tColorPickerClass = new HTMLAttribute("class", "colorpickervvvv");
+					tColorPicker.AddAttribute(tColorPickerClass);
 					
 					//insert into the container div
-					//tMainContainer.Insert(tColorPicker);
+					tMainContainer.Insert(tColorPicker);
 
 					//create a text label for the widget
 					HTMLText tLabel = new HTMLText(nameStringSlice, true);
@@ -244,21 +238,24 @@ namespace VVVV.Nodes.HttpGUI
 					//write the container HTML tag using all inserted info
 					SetTag(i, tMainContainer, "ColorPicker");
 
+                    //generate JQuery code to create our color picker when the document loads
 					string colorPickerInitializeCode =
-						@"ColorPicker({
+						@"ColorPicker({{
 							flat: true,
-							onChange: function (hsb, hex, rgb) {
+                            color: {{r: {0}, g: {1}, b: {2}}},
+							onChange: function (hsb, hex, rgb) {{
 								var params = new Object();
-								params[$(this).parent().attr('id')] = rgb.r.toString() + '.' + rgb.g.toString() + '.' + rgb.b.toString();
+								params[$(this).parent().parent().attr('id')] = rgb.r.toString() + '.' + rgb.g.toString() + '.' + rgb.b.toString();
 								$.post('ToVVVV.xml', params);
-							}
-						})";
+							}}
+						}})";
 
-					JqueryFunction colorPickerInitializeFunction = new JqueryFunction(true,"#" +  GetSliceId(i), colorPickerInitializeCode);
-                    //JqueryFunction colorPickerInitializeFunction = new JqueryFunction(true, "#" + "input[class*='colorpickervvvv'", colorPickerInitializeCode);
-					
+					//set the color picker to the color currently set on the server side
+                    colorPickerInitializeCode = String.Format(colorPickerInitializeCode, rgb[0], rgb[1], rgb[2]);
 
-					SetJavaScript(i, colorPickerInitializeFunction.Text);
+                    //insert the JQuery code into the javascript file for this page
+                    JqueryFunction colorPickerInitializeFunction = new JqueryFunction(true, "#" + GetSliceId(i) + i.ToString(), colorPickerInitializeCode);
+                    SetJavaScript(i, colorPickerInitializeFunction.Text);
 				}
 			}
 		}
