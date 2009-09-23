@@ -568,7 +568,7 @@ namespace VVVV.Webinterface.Utilities
             {
 
                 string tText = @" $(document).ready(function(){{
-                   $('{0}').{1}(function(event){{
+                   $(""{0}"").{1}(function(event){{
                      {2}
                    }});
                  }});";
@@ -593,14 +593,14 @@ namespace VVVV.Webinterface.Utilities
             {
 
                 string tText = @" $(document).ready(function(){{
-                   $('{0}').{1};
+                   $(""{0}"").{1};
                  }});";
 
                 Text = String.Format(tText, pSelector, pCommand);
             }
             else
             {
-                string tText = @"$('{0}').{1}";
+                string tText = @"$(""{0}"").{1}";
 
                 Text = String.Format(tText, pSelector, pCommand);
             }
