@@ -222,15 +222,15 @@ namespace VVVV.Nodes.HttpGUI
 					
 					//create a div for the actual jquery colorpicker
 					string ColorPickerId = GetSliceId(i) + i.ToString();
-					HtmlDiv tColorPicker = new HtmlDiv(ColorPickerId);
+					//TextField tColorPicker = new TextField(ColorPickerId);
 					//style the colorpicker
-					HTMLAttribute tColorPickerStyle = new HTMLAttribute("style", "postion:absolute; top:50%");
-					tColorPicker.AddAttribute(tColorPickerStyle);
-					HTMLAttribute tColorPickerClass = new HTMLAttribute("class", "colorpickervvvv");
-					tColorPicker.AddAttribute(tColorPickerClass);
+                    //HTMLAttribute tColorPickerStyle = new HTMLAttribute("style", "postion:absolute; top:50%");
+                    //tColorPicker.AddAttribute(tColorPickerStyle);
+                    //HTMLAttribute tColorPickerClass = new HTMLAttribute("class", "colorpickervvvv");
+                    //tColorPicker.AddAttribute(tColorPickerClass);
 					
 					//insert into the container div
-					tMainContainer.Insert(tColorPicker);
+					//tMainContainer.Insert(tColorPicker);
 
 					//create a text label for the widget
 					HTMLText tLabel = new HTMLText(nameStringSlice, true);
@@ -254,8 +254,10 @@ namespace VVVV.Nodes.HttpGUI
 							}
 						})";
 
-					JqueryFunction colorPickerInitializeFunction = new JqueryFunction(true, ".colorpickervvvv", colorPickerInitializeCode);
+					JqueryFunction colorPickerInitializeFunction = new JqueryFunction(true,"#" +  GetSliceId(i), colorPickerInitializeCode);
+                    //JqueryFunction colorPickerInitializeFunction = new JqueryFunction(true, "#" + "input[class*='colorpickervvvv'", colorPickerInitializeCode);
 					
+
 					SetJavaScript(i, colorPickerInitializeFunction.Text);
 				}
 			}
