@@ -260,7 +260,7 @@ namespace VVVV.Nodes.HttpGUI
                             FNodeId = HTMLToolkit.CreatePageID(FNodePath);
                             FGuiDataList[i].NodeId = FNodeId;
 
-                            FSliceId[i] = HTMLToolkit.CreateSliceID(FNodePath, i);
+                            FSliceId.Add(HTMLToolkit.CreateSliceID(FNodePath, i));
                             FGuiDataList[i].SliceId = FSliceId[i];
 
                         }
@@ -432,6 +432,13 @@ namespace VVVV.Nodes.HttpGUI
                     for (int i = 0; i < SpreadMax; i++)
                     {
                         ReceivedString[i] = GetNewDataFromServer(i);
+                    }
+                }
+                else if (ReceivedString.Count == 0)
+                {
+                    for (int i = 0; i < SpreadMax; i++)
+                    {
+                        ReceivedString.Add(null);
                     }
                 }
 

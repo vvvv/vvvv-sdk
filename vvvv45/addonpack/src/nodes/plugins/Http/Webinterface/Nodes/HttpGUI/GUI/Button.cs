@@ -197,7 +197,8 @@ namespace VVVV.Nodes.HttpGUI
                     double CurrentDefaultSlice;
                     FDefault.GetValue(i, out CurrentDefaultSlice);
 
-                    string tResponse = ReceivedString[i];
+
+                    string tResponse = ReceivedString.ToArray()[i];
 
                     if (tResponse == null)
                     {
@@ -221,18 +222,18 @@ namespace VVVV.Nodes.HttpGUI
                         {
                             AttributeContent = @"position:relative;background-color:#808080; width:50%; height:50%;top:25%;left:25%;border-style:solid; border-color:#808080; border-width:thin;";
 
-                                                tContent = @"toggle(
-function () {
-$('div',this).css({'background-color':'#9C9C9C'});
-var id = $(this).attr('id');
-$.post('ToVVVV.xml', id + '=0', null);
-},
-function () {
-$('div',this).css({'background-color':'#808080'});
-var id = $(this).attr('id');
-$.post('ToVVVV.xml', id + '=1', null);
-});
-";           
+                            tContent = @"toggle(
+                            function () {
+                                $('div',this).css({'background-color':'#9C9C9C'});
+                                var id = $(this).attr('id');
+                                $.post('ToVVVV.xml', id + '=0', null);
+                            },
+                            function () {
+                                $('div',this).css({'background-color':'#808080'});
+                                var id = $(this).attr('id');
+                                $.post('ToVVVV.xml', id + '=1', null);
+                            });
+                            ";           
                         }
                         else
                         {
@@ -240,17 +241,17 @@ $.post('ToVVVV.xml', id + '=1', null);
                             
                             tContent = @"toggle(
                             function () {
-$('div',this).css({'background-color':'#808080'});
-var id = $(this).attr('id');
-$.post('ToVVVV.xml', id + '=1', null);
-},
-function () {
-$('div',this).css({'background-color':'#9C9C9C'});
-var id = $(this).attr('id');
-$.post('ToVVVV.xml', id + '=0', null);
-}
-);
-";       
+                                $('div',this).css({'background-color':'#808080'});
+                                var id = $(this).attr('id');
+                                $.post('ToVVVV.xml', id + '=1', null);
+                            },
+                            function () {
+                                $('div',this).css({'background-color':'#9C9C9C'});
+                                var id = $(this).attr('id');
+                                $.post('ToVVVV.xml', id + '=0', null);
+                            }
+                            );
+                            ";       
                         }
 
                         
@@ -284,19 +285,19 @@ $.post('ToVVVV.xml', id + '=0', null);
 
 
                         string tContent = @"mousedown(function(){
-$('div',this).css({'background-color':'#808080'});
-var id = $(this).attr('id');
-$.post('ToVVVV.xml', id + '=1', null);
-}).mouseup(function(){
-$('div',this).css({'background-color':'#9C9C9C'});
-var id = $(this).attr('id');
-$.post('ToVVVV.xml', id + '=0', null);
-}).mouseleave(function(){
-$('div',this).css({'background-color':'#9C9C9C'});
-var id = $(this).attr('id');
-$.post('ToVVVV.xml', id + '=0', null);
-});
-";
+                            $('div',this).css({'background-color':'#808080'});
+                            var id = $(this).attr('id');
+                            $.post('ToVVVV.xml', id + '=1', null);
+                        }).mouseup(function(){
+                            $('div',this).css({'background-color':'#9C9C9C'});
+                            var id = $(this).attr('id');
+                            $.post('ToVVVV.xml', id + '=0', null);
+                        }).mouseleave(function(){
+                            $('div',this).css({'background-color':'#9C9C9C'});
+                            var id = $(this).attr('id');
+                            $.post('ToVVVV.xml', id + '=0', null);
+                        });
+                        ";
 
                         SetJavaScript(0, new JqueryFunction(true, "." + FGuiDataList[0].NodeId, tContent).Text);
                     }
