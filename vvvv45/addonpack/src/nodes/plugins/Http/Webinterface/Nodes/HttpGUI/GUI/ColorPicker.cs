@@ -179,13 +179,12 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-		protected override void OnEvaluate(int SpreadMax)
+        protected override void OnEvaluate(int SpreadMax, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString)
 		{
 
 			//check if we received any new data from the web server
-			bool receivedResponse = CheckIfNodeReceivedData();
 
-			if (mChangedSpreadSize || FNameStringInput.PinIsChanged || receivedResponse)
+            if (FChangedSpreadSize || FNameStringInput.PinIsChanged || ReceivedNewString)
 			{
 				for (int i = 0; i < SpreadMax; i++)
 				{
@@ -195,8 +194,7 @@ namespace VVVV.Nodes.HttpGUI
 					FResponseColorOutput.SliceCount = SpreadMax;
 
 					//read the new data we received from the server
-					string tResponse;
-					GetNewDataFromServer(i, out tResponse);
+                    string tResponse = ReceivedString[i];
 					if (tResponse == null)
 					{
 						tResponse = "0.0.0";

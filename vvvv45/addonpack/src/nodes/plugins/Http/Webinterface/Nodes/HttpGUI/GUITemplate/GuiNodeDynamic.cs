@@ -40,14 +40,16 @@ namespace VVVV.Nodes.HttpGUI
 
 
         //Required Members
-        public List<GuiDataObject> mGuiDataList = new List<GuiDataObject>();
-        public int mSpreadMax = 0;
-        public bool mChangedSpreadSize = true;
-        private string mNodePath;
-        private string mActualNodePath;
-        private SortedList<int,string> mSavedResponses = new SortedList<int,string>();
-        private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
-
+        public List<GuiDataObject> FGuiDataList = new List<GuiDataObject>();
+        public int FSpreadMax = 0;
+        public bool FChangedSpreadSize = true;
+        private string FNodePath;
+        private string FActualNodePath;
+        private SortedList<int,string> FSavedResponses = new SortedList<int,string>();
+        private WebinterfaceSingelton FWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
+        private string FNodeId;
+        private List<string> FSliceId = new List<string>();
+        private List<string> ReceivedString = new List<string>();
 
 
         #endregion field Definition
@@ -56,14 +58,10 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-
-
-
         #region abstract Methods
 
         protected abstract void OnSetPluginHost();
-        //protected abstract void OnConfigurate(IPluginConfig Input);
-        protected abstract void OnEvaluate(int SpreadMax);
+        protected abstract void OnEvaluate(int SpreadMax, string NodeId, List<string> SlideId, bool ReceivedNewString, List<string> ReceivedString);
 
 
         #endregion abstract Methods
@@ -82,11 +80,11 @@ namespace VVVV.Nodes.HttpGUI
             //assign host
             FHost = Host;
 
-            FHost.GetNodePath(true, out mNodePath);
+            FHost.GetNodePath(true, out FNodePath);
 
             try
             {
-                mWebinterfaceSingelton.HostPath = mNodePath;
+                FWebinterfaceSingelton.HostPath = FNodePath;
 
                 this.OnSetPluginHost();
 
@@ -137,7 +135,7 @@ namespace VVVV.Nodes.HttpGUI
         public void GetDatenObjekt(int Index, out List<GuiDataObject> GuiDaten)
         {
             ////Debug.WriteLine("Enter Get daten Object");
-            GuiDaten = new List<GuiDataObject>(mGuiDataList);
+            GuiDaten = new List<GuiDataObject>(FGuiDataList);
         }
 
 
@@ -151,7 +149,7 @@ namespace VVVV.Nodes.HttpGUI
                     INodeIOBase usI;
                     FHttpGuiIn.GetUpstreamInterface(out usI);
                     FUpstreamHttpGuiIn = usI as IHttpGUIIO;
-                    mChangedSpreadSize = true;
+                    FChangedSpreadSize = true;
                 }
 
             }
@@ -171,9 +169,9 @@ namespace VVVV.Nodes.HttpGUI
             if (Pin == FHttpGuiIn)
             {
 
-                for (int i = 0; i < mGuiDataList.Count; i++)
+                for (int i = 0; i < FGuiDataList.Count; i++)
                 {
-                    mGuiDataList[i].GuiUpstreamList = null;
+                    FGuiDataList[i].GuiUpstreamList = null;
                 }
                 FUpstreamHttpGuiIn = null;
 
@@ -181,9 +179,9 @@ namespace VVVV.Nodes.HttpGUI
             }
             else if (Pin == FHttpStyleIn)
             {
-                for (int i = 0; i < mGuiDataList.Count; i++)
+                for (int i = 0; i < FGuiDataList.Count; i++)
                 {
-                    mGuiDataList[i].Transform = null;
+                    FGuiDataList[i].Transform = null;
                 }
 
                 FUpstreamStyle = null;
@@ -221,50 +219,64 @@ namespace VVVV.Nodes.HttpGUI
         public void Evaluate(int SpreadMax)
         {
 
+            
+
             try
             {
 
-                FHost.GetNodePath(true, out mNodePath);
+
+                FHost.GetNodePath(true, out FNodePath);
 
                 bool ChangedID = false;
-                if (mNodePath != mActualNodePath)
+                if (FNodePath != FActualNodePath)
                 {
-                    mActualNodePath = mNodePath;
+                    FActualNodePath = FNodePath;
                     ChangedID = true;
                 }
 
                 #region Check Gui List
 
 
-                if (mSpreadMax != SpreadMax)
+                if (FSpreadMax != SpreadMax)
                 {
-                    mChangedSpreadSize = true;
+                    FChangedSpreadSize = true;
 
 
-                    if (mGuiDataList.Count > SpreadMax)
+                    if (FGuiDataList.Count > SpreadMax)
                     {
-                        mGuiDataList.RemoveRange(SpreadMax, mGuiDataList.Count - SpreadMax);
-                        mGuiDataList.Capacity = SpreadMax;
+                        FGuiDataList.RemoveRange(SpreadMax, FGuiDataList.Count - SpreadMax);
+                        FGuiDataList.Capacity = SpreadMax;
+
+                        FSliceId.RemoveRange(SpreadMax, FGuiDataList.Count - SpreadMax);
+                        FSliceId.Capacity = SpreadMax;
                     }
                     else
                     {
-                        for (int i = mSpreadMax; i < SpreadMax; i++)
+                        for (int i = FSpreadMax; i < SpreadMax; i++)
                         {
                             GuiDataObject tObject = new GuiDataObject();
-                            mGuiDataList.Insert(i, tObject);
-                            mGuiDataList[i].NodeId = HTMLToolkit.CreatePageID(mNodePath);
-                            mGuiDataList[i].SliceId = HTMLToolkit.CreateSliceID(mNodePath, i);
+                            FGuiDataList.Insert(i, tObject);
+
+                            FNodeId = HTMLToolkit.CreatePageID(FNodePath);
+                            FGuiDataList[i].NodeId = FNodeId;
+
+                            FSliceId[i] = HTMLToolkit.CreateSliceID(FNodePath, i);
+                            FGuiDataList[i].SliceId = FSliceId[i];
+
                         }
                     }
-                    mSpreadMax = SpreadMax;
+                    FSpreadMax = SpreadMax;
                 }
 
                 if (ChangedID)
                 {
-                    for (int i = 0; i < mGuiDataList.Count; i++)
+                    for (int i = 0; i < FGuiDataList.Count; i++)
                     {
-                        mGuiDataList[i].NodeId = HTMLToolkit.CreatePageID(mNodePath);
-                        mGuiDataList[i].SliceId = HTMLToolkit.CreateSliceID(mNodePath, i);
+                        FNodeId = HTMLToolkit.CreatePageID(FNodePath);
+                        FGuiDataList[i].NodeId = FNodeId;
+
+                        FSliceId[i] = HTMLToolkit.CreateSliceID(FNodePath, i);
+                        FGuiDataList[i].SliceId = FSliceId[i];
                     }
 
                     ChangedID = false;
@@ -280,7 +292,7 @@ namespace VVVV.Nodes.HttpGUI
 
                 #region Transform Pin
 
-                if (FTransformIn.PinIsChanged || FBasingPoint.PinIsChanged || FPositionType.PinIsChanged || mChangedSpreadSize)
+                if (FTransformIn.PinIsChanged || FBasingPoint.PinIsChanged || FPositionType.PinIsChanged || FChangedSpreadSize)
                 {
                     string tBasingPoint;
                     FBasingPoint.GetString(0, out tBasingPoint);
@@ -354,7 +366,7 @@ namespace VVVV.Nodes.HttpGUI
 
                         tTransformSlice.Add("z-index", Convert.ToString(Math.Round(tMatrix.m33)));
 
-                        mGuiDataList[i].Transform = new SortedList<string, string>(tTransformSlice);
+                        FGuiDataList[i].Transform = new SortedList<string, string>(tTransformSlice);
                     }
                 }
 
@@ -366,14 +378,14 @@ namespace VVVV.Nodes.HttpGUI
 
                 if (FUpstreamHttpGuiIn != null)
                 {
-                    if (mChangedSpreadSize)
+                    if (FChangedSpreadSize)
                     {
                         List<GuiDataObject> tGuiList;
                         FUpstreamHttpGuiIn.GetDatenObjekt(0, out tGuiList);
 
                         for (int i = 0; i < SpreadMax; i++)
                         {
-                            mGuiDataList[i].GuiUpstreamList = tGuiList;
+                            FGuiDataList[i].GuiUpstreamList = tGuiList;
                         }
                     }
                 }
@@ -400,7 +412,7 @@ namespace VVVV.Nodes.HttpGUI
                         SortedList<string, string> tSliceCssPropertie;
                         FUpstreamStyle.GetCssProperties(i, out tSliceCssPropertie);
 
-                        mGuiDataList[i].CssProperties = new SortedList<string, string>(tSliceCssPropertie);
+                        FGuiDataList[i].CssProperties = new SortedList<string, string>(tSliceCssPropertie);
 
                     }
                 }
@@ -410,17 +422,34 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-                this.OnEvaluate(SpreadMax);
+                #region ReceivedData
 
+                bool ReceivedNewString = CheckIfNodeReceivedData();
+                ReceivedString.Capacity = SpreadMax;
 
-                if (mSpreadMax == SpreadMax)
+                if(ReceivedNewString)
                 {
-                    mChangedSpreadSize = false;
+                    for (int i = 0; i < SpreadMax; i++)
+                    {
+                        ReceivedString[i] = GetNewDataFromServer(i);
+                    }
+                }
+
+                #endregion ReceivedData
+
+
+
+                this.OnEvaluate(SpreadMax, FNodeId, FSliceId, ReceivedNewString,ReceivedString);
+
+
+                if (FSpreadMax == SpreadMax)
+                {
+                    FChangedSpreadSize = false;
                 }
             }
             catch (Exception ex)
             {
-                FHost.Log(TLogType.Error, "in Node with Id: " + mNodePath + Environment.NewLine + ex.Message);
+                FHost.Log(TLogType.Error, "in Node with Id: " + FNodePath + Environment.NewLine + ex.Message);
             }
         }
 
@@ -458,13 +487,13 @@ namespace VVVV.Nodes.HttpGUI
 
         public string GetSliceId(int SliceNumber)
         {
-            return mGuiDataList[SliceNumber].SliceId;
+            return FGuiDataList[SliceNumber].SliceId;
         }
 
 
         public string GetNodeID(int SliceNumber)
         {
-            return mGuiDataList[SliceNumber].NodeId;
+            return FGuiDataList[SliceNumber].NodeId;
         }
 
         #endregion Node Information
@@ -476,35 +505,35 @@ namespace VVVV.Nodes.HttpGUI
 
         public void SetBodyContent(int pSliceIndex, string pContent)
         {
-            mGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.Body, true);
+            FGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.Body, true);
         }
 
 
 
         public void SetHeadContent(int pSliceIndex, string pContent)
         {
-            mGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.Head, true);
+            FGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.Head, true);
         }
 
 
         public void SetTag(int pSliceIndex, Tag pTag)
         {
-            pTag.AddAttribute(new HTMLAttribute("id", mGuiDataList[pSliceIndex].SliceId));
-            pTag.AddAttribute(new HTMLAttribute("class", mGuiDataList[pSliceIndex].SliceId + " " + mGuiDataList[pSliceIndex].NodeId)); 
-            mGuiDataList[pSliceIndex].Tag = pTag;
+            pTag.AddAttribute(new HTMLAttribute("id", FGuiDataList[pSliceIndex].SliceId));
+            pTag.AddAttribute(new HTMLAttribute("class", FGuiDataList[pSliceIndex].SliceId + " " + FGuiDataList[pSliceIndex].NodeId)); 
+            FGuiDataList[pSliceIndex].Tag = pTag;
         }
 
         public void SetTag(int pSliceIndex, Tag pTag, string ClassName)
         {
-            pTag.AddAttribute(new HTMLAttribute("id", mGuiDataList[pSliceIndex].SliceId));
-            pTag.AddAttribute(new HTMLAttribute("class", mGuiDataList[pSliceIndex].SliceId + " " + mGuiDataList[pSliceIndex].NodeId + " " + ClassName ));
-            mGuiDataList[pSliceIndex].Tag = pTag;
+            pTag.AddAttribute(new HTMLAttribute("id", FGuiDataList[pSliceIndex].SliceId));
+            pTag.AddAttribute(new HTMLAttribute("class", FGuiDataList[pSliceIndex].SliceId + " " + FGuiDataList[pSliceIndex].NodeId + " " + ClassName ));
+            FGuiDataList[pSliceIndex].Tag = pTag;
         }
 
 
         public void SetJavaScript(int pSliceIndex, string pContent)
         {
-            mGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.JavaScript, true);
+            FGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.JavaScript, true);
         }
 
         #endregion Add to GuiDataObject
@@ -514,9 +543,9 @@ namespace VVVV.Nodes.HttpGUI
 
         #region Get data from WebinterfaceSingelton
 
-        public bool CheckIfNodeReceivedData()
+        private bool CheckIfNodeReceivedData()
         {
-            if (mWebinterfaceSingelton.CheckIfNodeIdReceivedValues(mGuiDataList[0].NodeId))
+            if (FWebinterfaceSingelton.CheckIfNodeIdReceivedValues(FGuiDataList[0].NodeId))
             {
                 return true;
             }
@@ -527,31 +556,31 @@ namespace VVVV.Nodes.HttpGUI
         }
 
 
-        public void GetNewDataFromServer(int SliceNumber, out string pContent)
+        private string GetNewDataFromServer(int SliceNumber)
         {
 
-            string tContent;
+            string tContent = null;
 
-            mWebinterfaceSingelton.getNewBrowserData(mGuiDataList[SliceNumber].SliceId,mNodePath,SliceNumber,out tContent);
+            FWebinterfaceSingelton.getNewBrowserData(FGuiDataList[SliceNumber].SliceId,FNodePath,SliceNumber,out tContent);
 
-            if (tContent == null && mSavedResponses.ContainsKey(SliceNumber))
+            if (tContent == null && FSavedResponses.ContainsKey(SliceNumber))
             {
-                mSavedResponses.TryGetValue(SliceNumber, out tContent);
+                FSavedResponses.TryGetValue(SliceNumber, out tContent);
             }
 
-            if (mSavedResponses.ContainsKey(SliceNumber))
+            if (FSavedResponses.ContainsKey(SliceNumber))
             {
-                mSavedResponses.Remove(SliceNumber);
-                mSavedResponses.Add(SliceNumber, tContent);
+                FSavedResponses.Remove(SliceNumber);
+                FSavedResponses.Add(SliceNumber, tContent);
             }
             else
             {
-                mSavedResponses.Add(SliceNumber, tContent);
+                FSavedResponses.Add(SliceNumber, tContent);
             }
 
-            mWebinterfaceSingelton.AddListToSave(mNodePath, mSavedResponses);
+            FWebinterfaceSingelton.AddListToSave(FNodePath, FSavedResponses);
 
-            pContent = tContent;
+            return tContent;
         }
 
         #endregion Get data from WebinterfaceSingelton

@@ -199,12 +199,9 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-        protected override void OnEvaluate(int SpreadMax)
+        protected override void OnEvaluate(int SpreadMax, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString)
         {
-
-            bool ReceivedResponse = CheckIfNodeReceivedData();
-
-            if (mChangedSpreadSize || FName.PinIsChanged || FOrientation.PinIsChanged || ReceivedResponse || FMin.PinIsChanged || FMax.PinIsChanged || FDefault.PinIsChanged || FStepSize.PinIsChanged)
+            if (FChangedSpreadSize || ReceivedNewString || FName.PinIsChanged || FOrientation.PinIsChanged || FMin.PinIsChanged || FMax.PinIsChanged || FDefault.PinIsChanged || FStepSize.PinIsChanged)
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -213,6 +210,9 @@ namespace VVVV.Nodes.HttpGUI
                     double currentMaxSlice;
                     double currentDefaultSlice;
                     double currentStepSize;
+
+                    string currentSliceId = GetSliceId(i);
+                    
 
 
                     FMin.GetValue(i,out currentMinSlice);
@@ -228,9 +228,9 @@ namespace VVVV.Nodes.HttpGUI
                     //Check if there are new Messages on the Server
                     FResponse.SliceCount = SpreadMax;
 
-                    string tResponse;
-                    GetNewDataFromServer(i, out tResponse);
-                    if (tResponse == null || tResponse == "")
+                    string tResponse = ReceivedString[i];
+                    
+                    if (tResponse == null)
                     {
                         tResponse = currentDefaultSlice.ToString();
                     }
@@ -285,7 +285,7 @@ var content = '{1}' + '=' + value;
 $.post('ToVVVV.xml',content, null);
 ";
 
-                    JqueryFunction tTextJS = new JqueryFunction(true, "#" + SliderValueId, "keyup", String.Format(TextfeldJsContent, "#" + SliderId, mGuiDataList[i].SliceId, currentStepSize));
+                    JqueryFunction tTextJS = new JqueryFunction(true, "#" + SliderValueId, "keyup", String.Format(TextfeldJsContent, "#" + SliderId, currentSliceId, currentStepSize));
 
                     string SliderInitalize =
     @"slider({{
@@ -310,7 +310,7 @@ $.post('ToVVVV.xml',content, null);
                     string SliderSelector = "#" + SliderId;
                     double currentSliderValue = Convert.ToDouble(tResponse) * 10000;                    
 
-                    SetJavaScript(i, new JqueryFunction(true, SliderSelector, String.Format(SliderInitalize, currentOrientation, currentSliderValue.ToString(), SliderSelector, mGuiDataList[i].SliceId, "#" + SliderValueId, currentMinSlice, currentMaxSlice, currentStepSize)).Text + Environment.NewLine + tTextJS.Text);
+                    SetJavaScript(i, new JqueryFunction(true, SliderSelector, String.Format(SliderInitalize, currentOrientation, currentSliderValue.ToString(), SliderSelector, currentSliceId, "#" + SliderValueId, currentMinSlice, currentMaxSlice, currentStepSize)).Text + Environment.NewLine + tTextJS.Text);
                 }
             }
         }

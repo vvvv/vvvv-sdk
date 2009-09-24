@@ -174,31 +174,30 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-        protected override void OnEvaluate(int SpreadMax)
+        protected override void OnEvaluate(int SpreadMax,string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString)
         {
 
-            bool CheckIfReceivedData = CheckIfNodeReceivedData();
-            if (mChangedSpreadSize || CheckIfReceivedData)
+
+            if (FChangedSpreadSize || ReceivedNewString)
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
 
                     FResponse.SliceCount = SpreadMax;
-                    string tResponse;
-                    GetNewDataFromServer(i, out tResponse);
+                    string Response = ReceivedString[i];
 
-                    if (tResponse == null)
+                    if (ReceivedString[i] == null)
                     {
                         FResponse.SetValue(i, 0);
                     }
                     else
                     {
-                        FResponse.SetValue(i, Convert.ToInt16(tResponse));
+                        FResponse.SetValue(i, Convert.ToInt16(Response));
                     }
 
                     RadioButton tCheckbox = new RadioButton();
 
-                    if (tResponse == "1")
+                    if (Response == "1")
                     {
                         tCheckbox.AddAttribute(new HTMLAttribute("checked","checked"));
                     }

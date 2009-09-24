@@ -302,30 +302,18 @@ namespace VVVV.Webinterface.HttpServer
                 string[] tVVVVParameter = mMessageBody.Split('&');
 
 
-                //string tResponse = mWebinterfaceSingelton.CheckIfMaster(tRemoteIPAdresse, tVVVVParameter[0].Split('=')[1]);
-
-
-                if (true)
+                foreach (string tValuePair in tVVVVParameter)
                 {
+                    string[] tValue = tValuePair.Split('=');
                     
-                    foreach (string tValuePair in tVVVVParameter)
+                    if (tValue.Length > 1)
                     {
-                        string[] tValue = tValuePair.Split('=');
-                        
-                        if (tValue.Length > 1)
-                        {
-                            mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
-                        }
+                        mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
                     }
-
-
-                    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("VVVV Received Post Request"), new HTTPStatusCode("").Code200);
-                }
-                else
-                {
-                    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("VVVV Received Post Request"), new HTTPStatusCode("").Code200);
                 }
 
+
+                mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("VVVV Received Post Request"), new HTTPStatusCode("").Code200);
             }
             else if (mFilename == "MakeMeMaster.xml")
             {

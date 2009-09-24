@@ -73,7 +73,7 @@
     <Compile Include="Nodes\HttpGUI\GUI\Container.cs" />
     <Compile Include="Nodes\HttpGUI\GUI\Group.cs" />
     <Compile Include="Nodes\HttpGUI\GUITemplate\GuiNodeDynamic.cs" />
-    <Compile Include="Nodes\HttpGUI\GUITemplate\GuiTemplate.cs" />
+    <None Include="Nodes\HttpGUI\GUITemplate\GuiTemplate.cs" />
     <Compile Include="Nodes\Http\CssBuilder.cs" />
     <Compile Include="Nodes\Http\PageBuilder.cs" />
     <Compile Include="Nodes\Http_Interface.cs" />
@@ -108,16 +108,18 @@
     <Compile Include="Utilities\ServerToolkit.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Dependencies\Webinterface\lib\" />
-    <Folder Include="HelpPatches\" />
-    <ProjectReference Include="..\..\_PluginInterfaces\PluginInterfaces.csproj">
+    <ProjectReference Include="..\..\..\_PluginInterfaces\trunk\PluginInterfaces.csproj">
       <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
       <Name>PluginInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\_Utils\Utils.csproj">
+    <ProjectReference Include="..\..\..\_Utils\trunk\Utils.csproj">
       <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
       <Name>Utils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dependencies\Webinterface\lib\" />
+    <Folder Include="HelpPatches\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

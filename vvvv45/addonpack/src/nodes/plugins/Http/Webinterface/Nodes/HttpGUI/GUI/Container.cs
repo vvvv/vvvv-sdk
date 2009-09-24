@@ -171,7 +171,7 @@ namespace VVVV.Nodes.HttpGUI
         #region Main Loop
 
 
-        protected override void OnEvaluate(int SpreadMax)
+        protected override void OnEvaluate(int SpreadMax, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString)
         {
             for (int i = 0; i < SpreadMax; i++)
             {

@@ -183,13 +183,10 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-        protected override void OnEvaluate(int SpreadMax)
+        protected override void OnEvaluate(int SpreadMax, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString)
         {
 
-
-            bool checkIfNeDataArreived = CheckIfNodeReceivedData();
-
-            if (mChangedSpreadSize || checkIfNeDataArreived || FMode.PinIsChanged || FDefault.PinIsChanged)
+            if (FChangedSpreadSize || ReceivedNewString || FMode.PinIsChanged || FDefault.PinIsChanged)
             {
 
                 for (int i = 0; i < SpreadMax; i++)
@@ -200,8 +197,7 @@ namespace VVVV.Nodes.HttpGUI
                     double CurrentDefaultSlice;
                     FDefault.GetValue(i, out CurrentDefaultSlice);
 
-                    string tResponse;
-                    GetNewDataFromServer(i, out tResponse);
+                    string tResponse = ReceivedString[i];
 
                     if (tResponse == null)
                     {
@@ -302,7 +298,7 @@ $.post('ToVVVV.xml', id + '=0', null);
 });
 ";
 
-                        SetJavaScript(0, new JqueryFunction(true, "." + mGuiDataList[0].NodeId, tContent).Text);
+                        SetJavaScript(0, new JqueryFunction(true, "." + FGuiDataList[0].NodeId, tContent).Text);
                     }
                 }
             }
