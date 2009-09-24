@@ -187,11 +187,11 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-        protected override void OnEvaluate(int SpreadMax)
+        protected override void OnEvaluate(int SpreadMax, string NodeId, List<string> SlideId)
         {
 
 
-            if (FSource.PinIsChanged || FAlt.PinIsChanged || mChangedSpreadSize)
+            if (FSource.PinIsChanged || FAlt.PinIsChanged || FChangedSpreadSize)
             {
 
                 for (int i = 0; i < SpreadMax; i++)

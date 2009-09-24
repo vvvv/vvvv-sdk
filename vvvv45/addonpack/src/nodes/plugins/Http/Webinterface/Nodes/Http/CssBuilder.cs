@@ -68,19 +68,21 @@ namespace VVVV.Nodes.Http
 
         public void Build()
         {
+           
+            
             foreach (KeyValuePair<string, SortedList<string, string>> pKeyPair in mCssSliceLists)
             {
-                string tSliceId = pKeyPair.Key;
-                SortedList<string, string> tProperties = pKeyPair.Value;
-
-
                 
-                string tNodeId = tSliceId.Substring(0, tSliceId.Length - 5);
-                if (tSliceId.Contains("SliceId"))
-                {
-                    tNodeId = tNodeId.Replace("SliceId", "NodeId");
-                }
 
+                string WholeId = pKeyPair.Key;
+                int Index = WholeId.IndexOf("Slice");
+
+                string tNodeId = WholeId.Substring(0, Index); 
+
+                string tSliceId = WholeId.Substring(Index, WholeId.Length - Index);
+
+
+                SortedList<string, string> tProperties = pKeyPair.Value;
                 CreateCssRule(tProperties, tNodeId, tSliceId);
             }
 
@@ -132,7 +134,7 @@ namespace VVVV.Nodes.Http
                 }
 
 
-                Rule tSliceCss = new Rule(pSliceID + "." + pNodeId, Rule.SelectorType.Class);
+                Rule tSliceCss = new Rule(pNodeId + "." + pSliceID, Rule.SelectorType.Class);
 
                 foreach (KeyValuePair<string, string> pPair in tCleanList)
                 {
@@ -197,7 +199,7 @@ namespace VVVV.Nodes.Http
 
         private string BuildFirstSlice()
         {
-            Rule tFirstSlice = new Rule(mFirstSliceName + "." + mActuallNodeId, Rule.SelectorType.Class);
+            Rule tFirstSlice = new Rule(mActuallNodeId + "." + mFirstSliceName, Rule.SelectorType.Class);
 
             SortedList<string, string> tCleanList = compareLists(mFirstSlice, mNodeCss);
 

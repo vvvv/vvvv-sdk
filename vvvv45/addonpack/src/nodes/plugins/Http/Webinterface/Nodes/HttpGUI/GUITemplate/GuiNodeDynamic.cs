@@ -50,7 +50,7 @@ namespace VVVV.Nodes.HttpGUI
         private string FNodeId;
         private List<string> FSliceId = new List<string>();
         private List<string> ReceivedString = new List<string>();
-
+        private bool FInitFlag = true;
 
         #endregion field Definition
 
@@ -248,7 +248,6 @@ namespace VVVV.Nodes.HttpGUI
                         FGuiDataList.Capacity = SpreadMax;
 
                         FSliceId.RemoveRange(SpreadMax, FGuiDataList.Count - SpreadMax);
-                        FSliceId.Capacity = SpreadMax;
                     }
                     else
                     {
@@ -281,10 +280,6 @@ namespace VVVV.Nodes.HttpGUI
 
                     ChangedID = false;
                 }
-
-
-
-
 
                 #endregion Check Gui List
 
@@ -425,21 +420,27 @@ namespace VVVV.Nodes.HttpGUI
                 #region ReceivedData
 
                 bool ReceivedNewString = CheckIfNodeReceivedData();
-                ReceivedString.Capacity = SpreadMax;
+                
 
-                if(ReceivedNewString)
+                if(ReceivedNewString || FInitFlag || FChangedSpreadSize)
                 {
                     for (int i = 0; i < SpreadMax; i++)
                     {
-                        ReceivedString[i] = GetNewDataFromServer(i);
+                        if (FInitFlag)
+                        {
+                            ReceivedString.Add(GetNewDataFromServer(i));
+                        }
+                        else if (i >= ReceivedString.Count)
+                        {
+                            ReceivedString.Add(GetNewDataFromServer(i));
+                        }
+                        else
+                        {
+                            ReceivedString[i] = GetNewDataFromServer(i);
+                        }
                     }
-                }
-                else if (ReceivedString.Count == 0)
-                {
-                    for (int i = 0; i < SpreadMax; i++)
-                    {
-                        ReceivedString.Add(null);
-                    }
+
+                    FInitFlag = false;
                 }
 
                 #endregion ReceivedData
@@ -463,6 +464,8 @@ namespace VVVV.Nodes.HttpGUI
 
 
         #endregion Evaluate
+
+
 
 
 
@@ -508,32 +511,34 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
+
+
         #region Add to GuiDataObject
 
-        public void SetBodyContent(int pSliceIndex, string pContent)
-        {
-            FGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.Body, true);
-        }
+        //public void SetBodyContent(int pSliceIndex, string pContent)
+        //{
+        //    FGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.Body, true);
+        //}
 
 
 
-        public void SetHeadContent(int pSliceIndex, string pContent)
-        {
-            FGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.Head, true);
-        }
+        //public void SetHeadContent(int pSliceIndex, string pContent)
+        //{
+        //    FGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.Head, true);
+        //}
 
 
         public void SetTag(int pSliceIndex, Tag pTag)
         {
-            pTag.AddAttribute(new HTMLAttribute("id", FGuiDataList[pSliceIndex].SliceId));
-            pTag.AddAttribute(new HTMLAttribute("class", FGuiDataList[pSliceIndex].SliceId + " " + FGuiDataList[pSliceIndex].NodeId)); 
+            pTag.AddAttribute(new HTMLAttribute("id", FSliceId[pSliceIndex]));
+            pTag.AddAttribute(new HTMLAttribute("class", FNodeId + " Slice" +  String.Format("{0:00000}", pSliceIndex))); 
             FGuiDataList[pSliceIndex].Tag = pTag;
         }
 
         public void SetTag(int pSliceIndex, Tag pTag, string ClassName)
         {
-            pTag.AddAttribute(new HTMLAttribute("id", FGuiDataList[pSliceIndex].SliceId));
-            pTag.AddAttribute(new HTMLAttribute("class", FGuiDataList[pSliceIndex].SliceId + " " + FGuiDataList[pSliceIndex].NodeId + " " + ClassName ));
+            pTag.AddAttribute(new HTMLAttribute("id", FSliceId[pSliceIndex]));
+            pTag.AddAttribute(new HTMLAttribute("class", FNodeId + " Slice" + String.Format("{0:00000}", pSliceIndex) + " " + ClassName)); 
             FGuiDataList[pSliceIndex].Tag = pTag;
         }
 
@@ -544,6 +549,8 @@ namespace VVVV.Nodes.HttpGUI
         }
 
         #endregion Add to GuiDataObject
+
+
 
 
 
@@ -591,19 +598,6 @@ namespace VVVV.Nodes.HttpGUI
         }
 
         #endregion Get data from WebinterfaceSingelton
-
-
-
-
-        #region Saved Responses
-
-
-
-
-
-
-        #endregion Saved Responses
-
 
 
     }
