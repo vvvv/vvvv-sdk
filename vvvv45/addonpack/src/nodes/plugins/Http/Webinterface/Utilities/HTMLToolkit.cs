@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 using VVVV.Utils.VMath;
 
@@ -66,8 +67,10 @@ namespace VVVV.Webinterface.Utilities
             string tNewNodePath = String.Empty;
             bool ContainsDescriptivName = false;
 
-            foreach (string tID in tPatchIDs)
+            for (int i = 0; i < tPatchIDs.Length; i++)
             {
+                string tID = tPatchIDs[i];
+
                 if (tID != "")
                 {
                     if (Regex.IsMatch(tID, "[a-zA-z]"))
@@ -77,13 +80,19 @@ namespace VVVV.Webinterface.Utilities
                     }
                     else
                     {
-                        int temp = Convert.ToInt16(tID);
-                        tNewNodePath += String.Format("{0:00000}", temp);
+                        if (i == tPatchIDs.Length - 1)
+                        {
+                            int temp = Convert.ToInt16(tID);
+                            tNewNodePath += "Node" + String.Format("{0:00000}", temp);
+                        }
+
+                        else
+                        {
+                            int temp = Convert.ToInt16(tID);
+                            tNewNodePath += "Patch" + String.Format("{0:00000}", temp);
+                        }
+
                     }
-                }
-                else
-                {
-                    
                 }
             }
 
@@ -93,7 +102,7 @@ namespace VVVV.Webinterface.Utilities
             }
             else
             {
-                return "NodeId" + tNewNodePath;
+                return tNewNodePath;
             }
         }
 
@@ -103,8 +112,10 @@ namespace VVVV.Webinterface.Utilities
             string tNewNodePath = String.Empty;
             bool ContainsDescriptivName = false;
 
-            foreach (string tID in tPatchIDs)
+            for (int i = 0; i < tPatchIDs.Length; i++)
             {
+                string tID = tPatchIDs[i];
+
                 if (tID != "")
                 {
                     if (Regex.IsMatch(tID, "[a-zA-z]"))
@@ -114,23 +125,29 @@ namespace VVVV.Webinterface.Utilities
                     }
                     else
                     {
-                        int temp = Convert.ToInt16(tID);
-                        tNewNodePath += String.Format("{0:00000}", temp);
-                    }
-                }
-                else
-                {
+                        if (i == tPatchIDs.Length - 1)
+                        {
+                            int temp = Convert.ToInt16(tID);
+                            tNewNodePath += "Node" + String.Format("{0:00000}", temp);
+                        }
 
+                        else
+                        {
+                            int temp = Convert.ToInt16(tID);
+                            tNewNodePath += "Patch" + String.Format("{0:00000}", temp);
+                        }
+
+                    }
                 }
             }
 
             if (ContainsDescriptivName)
             {
-                return tNewNodePath + String.Format("{0:00000}", pSliceId); ;
+                return tNewNodePath + "Slice" +String.Format("{0:00000}", pSliceId); ;
             }
             else
             {
-                return "SliceId" + tNewNodePath + String.Format("{0:00000}", pSliceId); ;
+                return tNewNodePath + "Slice" + String.Format("{0:00000}", pSliceId); ;
             }
             
             

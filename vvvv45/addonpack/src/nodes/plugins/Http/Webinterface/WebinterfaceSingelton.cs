@@ -536,11 +536,11 @@ namespace VVVV.Webinterface
             if (pSliceID.Contains("SliceId"))
             {
                 NodeId = pSliceID.Replace("SliceId", "NodeId");
-                NodeId = NodeId.Substring(0, NodeId.Length - 5);
+                NodeId = NodeId.Substring(0, NodeId.Length - 10);
             }
             else
             {
-                NodeId = pSliceID.Substring(0, pSliceID.Length - 5);
+                NodeId = pSliceID.Substring(0, pSliceID.Length - 10);
             }
 
             if (mNodeReceivedValues.Contains(NodeId) == false)
