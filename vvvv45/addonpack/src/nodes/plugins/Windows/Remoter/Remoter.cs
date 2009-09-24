@@ -1922,7 +1922,7 @@ namespace VVVV.Nodes
 					{
 						filename += "psexec.exe";
 						pc = PsToolsProcessPanel.Controls[RemoteProcessPathComboBox.SelectedIndex] as ProcessControl;
-						arguments += " -i -d \"" + pc.Process + "\" " + pc.Arguments;
+						arguments += " -i 0 -d \"" + pc.Process + "\" " + pc.Arguments;
 						workingdir = System.IO.Path.GetDirectoryName(pc.Process);
 						break;
 					}
@@ -1944,7 +1944,7 @@ namespace VVVV.Nodes
 					{
 						filename += "psexec.exe";
 						pc = PsToolsProcessPanel.Controls[FWatchProcessID] as ProcessControl;
-						arguments += " -i -d \"" + pc.Process + "\" " + pc.Arguments;
+						arguments += " -i 0 -d \"" + pc.Process + "\" " + pc.Arguments;
 						workingdir = System.IO.Path.GetDirectoryName(pc.Process);
 						break;
 					}
@@ -2034,7 +2034,7 @@ namespace VVVV.Nodes
 				ManagementClass theClass = new ManagementClass(theScope, new ManagementPath("Win32_Process"), new ObjectGetOptions());
 				theClass.InvokeMethod("Create", theProcessToRun);*/
 				string result = ExecutePsToolCommand(TPsToolCommand.Execute, ipc.IP);
-				if (result != "")
+				if (string.IsNullOrEmpty(result))
 					FHost.Log(TLogType.Error, result);
 			}
 		}
@@ -2085,7 +2085,9 @@ namespace VVVV.Nodes
 		{
 			string arguments, ignorepattern = "";
 			
-			string[] ignores = IgnorePattern.Text.Split(';');
+			ignorepattern = IgnorePattern.Text.TrimEnd(";".ToCharArray());
+			
+			string[] ignores = ignorepattern.Split(';');
 			for (int i=0; i<ignores.Length; i++)
 				ignorepattern += " -if=" + ignores[i].Trim();
 			
