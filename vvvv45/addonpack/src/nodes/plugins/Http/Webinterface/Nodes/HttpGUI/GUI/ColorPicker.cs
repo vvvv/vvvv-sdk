@@ -16,6 +16,7 @@ namespace VVVV.Nodes.HttpGUI
 
 		private bool FDisposed = false;
 		private IStringIn FNameStringInput;
+		private IColorIn FDefaultColorColorInput;
 		private IColorOut FResponseColorOutput;
 
 		#endregion field declaration
@@ -167,7 +168,10 @@ namespace VVVV.Nodes.HttpGUI
 			// create required pins
 			FHost.CreateStringInput("Name", TSliceMode.Dynamic, TPinVisibility.True, out FNameStringInput);
 			FNameStringInput.SetSubType("", false);
-			
+
+			FHost.CreateColorInput("Default Color", TSliceMode.Dynamic, TPinVisibility.True, out FDefaultColorColorInput);
+			FDefaultColorColorInput.SetSubType(new RGBAColor(0.0, 1.0, 0.0, 1.0), false);
+
 			FHost.CreateColorOutput("Response", TSliceMode.Dynamic, TPinVisibility.True, out FResponseColorOutput);
 			FResponseColorOutput.SetSubType(new RGBAColor(0.0, 1.0, 0.0, 1.0), false);
 		}
@@ -179,12 +183,12 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-        protected override void OnEvaluate(int SpreadMax, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString)
+		protected override void OnEvaluate(int SpreadMax, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString)
 		{
 
 			//check if we received any new data from the web server
 
-            if (FChangedSpreadSize || FNameStringInput.PinIsChanged || ReceivedNewString)
+			if (FChangedSpreadSize || FNameStringInput.PinIsChanged || ReceivedNewString)
 			{
 				for (int i = 0; i < SpreadMax; i++)
 				{
@@ -193,21 +197,44 @@ namespace VVVV.Nodes.HttpGUI
 					//the incoming int SpreadMax is the maximum slicecount of all input pins, which is a good default
 					FResponseColorOutput.SliceCount = SpreadMax;
 
-					//read the new data we received from the server
-                    string tResponse = ReceivedString[i];
-					if (tResponse == null)
-					{
-						tResponse = "0.0.0";
-					}
-					//parse the color representation that got passed as a POST parameter
-                    string [] rgb = tResponse.Split(new char [] {'.'});
-					//update the output pin with the new response
-                    FResponseColorOutput.SetColor(i, new RGBAColor(double.Parse(rgb[0]) / 255.0, double.Parse(rgb[1]) / 255.0, double.Parse(rgb[2]) / 255.0, 1.0));
-
-                    //read data from inputs
-                    string nameStringSlice = String.Empty;
-					FNameStringInput.GetString(i, out nameStringSlice);
+					//read data from inputs
+					string nameStringSlice = String.Empty;
+					RGBAColor defaultColorSlice;
 					
+					FNameStringInput.GetString(i, out nameStringSlice);
+					FDefaultColorColorInput.GetColor(i, out defaultColorSlice);
+
+					//check for request data
+                    RGBAColor responseColorSlice;
+					string[] rgb;
+
+					//if we received a request
+					if (ReceivedString[i] != null)
+					{
+						//parse the color representation that got passed as a POST parameter
+						rgb = ReceivedString[i].Split(new char[] { '.' });
+						if (rgb.Length >= 3)
+						{
+							responseColorSlice = new RGBAColor(double.Parse(rgb[0]) / 255.0, double.Parse(rgb[1]) / 255.0, double.Parse(rgb[2]) / 255.0, 1.0);
+                        }
+						else
+						{
+							//parse the default color
+                            responseColorSlice = defaultColorSlice;
+                            rgb = new string[3] { ((int)(defaultColorSlice.R * 255.0)).ToString(), ((int)(defaultColorSlice.G * 255.0)).ToString(), ((int)(defaultColorSlice.B * 255.0)).ToString()};
+                            
+						}
+					}
+					else
+					{
+                        //parse the default color
+                        responseColorSlice = defaultColorSlice;
+                        rgb = new string[3] { ((int)(defaultColorSlice.R * 255.0)).ToString(), ((int)(defaultColorSlice.G * 255.0)).ToString(), ((int)(defaultColorSlice.B * 255.0)).ToString() };
+					}
+					
+					//update the output pin with the new response color
+					FResponseColorOutput.SetColor(i, responseColorSlice);
+
 					//create a container div to house our color picker widget
 					HtmlDiv tMainContainer = new HtmlDiv();
 					
@@ -232,15 +259,14 @@ namespace VVVV.Nodes.HttpGUI
 					//insert into the container div
 					tMainContainer.Insert(tLabel);
 					
-					
 					//write the container HTML tag using all inserted info
 					SetTag(i, tMainContainer, "ColorPicker");
 
-                    //generate JQuery code to create our color picker when the document loads
+					//generate JQuery code to create our color picker when the document loads
 					string colorPickerInitializeCode =
 						@"ColorPicker({{
 							flat: true,
-                            color: {{r: {0}, g: {1}, b: {2}}},
+							color: {{r: {0}, g: {1}, b: {2}}},
 							onChange: function (hsb, hex, rgb) {{
 								var params = new Object();
 								params[$(this).parent().parent().attr('id')] = rgb.r.toString() + '.' + rgb.g.toString() + '.' + rgb.b.toString();
@@ -249,16 +275,15 @@ namespace VVVV.Nodes.HttpGUI
 						}})";
 
 					//set the color picker to the color currently set on the server side
-                    colorPickerInitializeCode = String.Format(colorPickerInitializeCode, rgb[0], rgb[1], rgb[2]);
+					colorPickerInitializeCode = String.Format(colorPickerInitializeCode, rgb[0], rgb[1], rgb[2]);
 
-                    //insert the JQuery code into the javascript file for this page
-                    JqueryFunction colorPickerInitializeFunction = new JqueryFunction(true, "#" + GetSliceId(i) + i.ToString(), colorPickerInitializeCode);
-                    SetJavaScript(i, colorPickerInitializeFunction.Text);
+					//insert the JQuery code into the javascript file for this page
+					JqueryFunction colorPickerInitializeFunction = new JqueryFunction(true, "#" + GetSliceId(i) + i.ToString(), colorPickerInitializeCode);
+					SetJavaScript(i, colorPickerInitializeFunction.Text);
 				}
 			}
 		}
 
-
-		#endregion Main Loop
-	}
+        #endregion Main Loop
+    }
 }
