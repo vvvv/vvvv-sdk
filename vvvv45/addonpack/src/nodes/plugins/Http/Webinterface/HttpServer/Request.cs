@@ -262,7 +262,7 @@ namespace VVVV.Webinterface.HttpServer
         private void GetRequest()
         {
              mWebinterfaceSingelton.setResponseMessage(mMessageBody, mRequestType);
-             mResponse = new Response(mFilename,new LoadSelectContent(mFilename, mFolderToServ, mHtmlPages).ContentAsBytes, new HTTPStatusCode("").Code200);
+             mResponse = new Response(mFilename,new LoadSelectContent(mFilename, mFileLocation, mFolderToServ, mHtmlPages).ContentAsBytes, new HTTPStatusCode("").Code200);
             
         }
 

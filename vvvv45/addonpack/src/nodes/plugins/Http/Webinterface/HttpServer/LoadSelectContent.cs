@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using VVVV.Webinterface.HttpServer;
+
 
 namespace VVVV.Webinterface.HttpServer
 {
@@ -13,6 +15,7 @@ namespace VVVV.Webinterface.HttpServer
         private string mContent;
         private byte[] mContentAsByte;
         private string mFileExtension;
+        private string mFileLocation;
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
         
 
@@ -42,8 +45,10 @@ namespace VVVV.Webinterface.HttpServer
             }
         }
 
-        public LoadSelectContent( string pFilename, List<string> pPaths, SortedList<string,byte[]> pHtmlPages)
+        public LoadSelectContent( string pFilename,string pFileLocation, List<string> pPaths, SortedList<string,byte[]> pHtmlPages)
         {
+
+
             if (pFilename == "dummy.html")
             {
                 string tPageToSend = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
@@ -68,17 +73,43 @@ namespace VVVV.Webinterface.HttpServer
                 mContentAsByte = Encoding.UTF8.GetBytes(RequestedFile);
             }else
             {
-                LoadFromDisc(pFilename, pPaths);
+                LoadFromDisc(pFilename,pFileLocation,pPaths);
             }
         }
 
 
-        private void LoadFromDisc(string pFilename, List<string> pPaths)
+        private void LoadFromDisc(string pFilename,string pFileLocation, List<string> pPaths)
         {
             bool FoundFileFlag = false;
 
             foreach (string pPath in pPaths)
             {
+
+                
+
+                try
+                {
+                    pFileLocation = Regex.Replace(pFileLocation, @"/", @"\");
+                    pFileLocation = Regex.Replace(pFileLocation, @"^\\", ""); 
+                    string newPath = Path.Combine(pPath,pFileLocation);
+                    
+                    if (File.Exists(newPath))
+                    {
+                        Debug.WriteLine("Filepath exist");
+                        Debug.WriteLine("pPath: " + pPath);
+                        Debug.WriteLine("pFileLocation: " + pFileLocation);
+                        Debug.WriteLine("newFilePath:  " + newPath);    
+
+                        FoundFileFlag = true;
+                        LoadFile(newPath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+
+
                 DirectoryInfo tDInfo = new DirectoryInfo(pPath);
                 FileInfo[] tFileInfoList = tDInfo.GetFiles();
 
@@ -89,7 +120,7 @@ namespace VVVV.Webinterface.HttpServer
                         if (pFileInfo.Name == pFilename)
                         {
                             FoundFileFlag = true;
-                            LoadFile(pFileInfo);
+                            LoadFile(pFileInfo.FullName);
                         }
                     }
                 }
@@ -107,13 +138,13 @@ namespace VVVV.Webinterface.HttpServer
         }
 
 
-        private void LoadFile(FileInfo pFileInfo)
+        private void LoadFile(string pFilePath)
         {
             try
             {
-                FileStream tFs = new FileStream(pFileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                FileStream tFs = new FileStream(pFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
                 BinaryReader reader = new BinaryReader(tFs);
-                mFileExtension = pFileInfo.FullName;
+                mFileExtension = pFilePath;
 
                 byte[] bytes = new byte[tFs.Length];
                 int read;
