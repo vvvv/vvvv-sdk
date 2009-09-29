@@ -431,15 +431,15 @@ namespace VVVV.Webinterface
                 {
 
                     PageValues tPageValues;
-                    Monitor.Enter(mGuiLists);
+                    //Monitor.Enter(mGuiLists);
                     mGuiLists.TryGetValue(pUrl, out tPageValues);
-                    Monitor.Exit(mGuiLists);
+                    //Monitor.Exit(mGuiLists);
 
                     PageBuilder tPageBuilder = new PageBuilder();
                     tPageBuilder.UpdateGuiList(tPageValues.GuiList, tPageValues.Page);
                     tPageBuilder.Build();
 
-                    Monitor.Enter(mServerFiles);
+                    //Monitor.Enter(mServerFiles);
                     mServerFiles.Remove(pUrl);
                     mServerFiles.Remove(tPageValues.PageName + ".css");
                     mServerFiles.Remove(tPageValues.PageName + ".js");
@@ -447,14 +447,11 @@ namespace VVVV.Webinterface
                     mServerFiles.Add(tPageValues.PageName + ".css", tPageBuilder.CssFile.ToString());
                     mServerFiles.Add(tPageValues.PageName + ".js", tPageBuilder.JsFile.ToString());
 
-                    Monitor.Exit(mServerFiles);
-                    return mServerFiles;
-                }
-                else
-                {
-                    return mServerFiles;
-                }
+                    //Monitor.Exit(mServerFiles);
+                }   
             }
+
+            return mServerFiles;
         }
 
         private void GetPageList()
