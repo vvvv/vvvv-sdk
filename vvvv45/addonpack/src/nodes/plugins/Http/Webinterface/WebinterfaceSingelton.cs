@@ -423,7 +423,7 @@ namespace VVVV.Webinterface
         }
 
 
-        public void BuildPages(string pUrl)
+        public SortedList<string,string> BuildPages(string pUrl)
         {
             lock (_BuildLock)
             {
@@ -448,6 +448,11 @@ namespace VVVV.Webinterface
                     mServerFiles.Add(tPageValues.PageName + ".js", tPageBuilder.JsFile.ToString());
 
                     Monitor.Exit(mServerFiles);
+                    return mServerFiles;
+                }
+                else
+                {
+                    return mServerFiles;
                 }
             }
         }
