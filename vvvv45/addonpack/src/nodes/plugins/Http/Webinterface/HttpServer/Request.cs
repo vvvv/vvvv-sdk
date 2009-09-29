@@ -31,6 +31,7 @@ namespace VVVV.Webinterface.HttpServer
 
         private SortedList<string, byte[]> mHtmlPages;
         List<string> mFolderToServ;
+        private SortedList<string, string> mPostMessages = new SortedList<string, string>();
 
         # region public properties
 
@@ -110,7 +111,7 @@ namespace VVVV.Webinterface.HttpServer
 
         # region constructor
 
-        public Request(string pRequest, List<string> pFolderToServ, SortedList<string, byte[]> pHtmlPages, SocketInformation pSocketInformation)
+        public Request(string pRequest, List<string> pFolderToServ, SortedList<string, byte[]> pHtmlPages, SocketInformation pSocketInformation, SortedList<string,string> pPostMessages)
         {
 
 
@@ -118,6 +119,7 @@ namespace VVVV.Webinterface.HttpServer
             this.mFolderToServ = pFolderToServ;
             this.mHtmlPages = pHtmlPages;
             this.mSocketInformation = pSocketInformation;
+            this.mPostMessages = pPostMessages;
             mMessageHead = pRequest.Substring(0,pRequest.LastIndexOf(Environment.NewLine));
             mMessageBody = pRequest.Substring(pRequest.LastIndexOf(Environment.NewLine));
             mMessageBody = mMessageBody.TrimStart(new Char[] { '\n', '\r', '?' });
@@ -292,7 +294,7 @@ namespace VVVV.Webinterface.HttpServer
 
 
             mRequestHeadParameterList.TryGetValue("Content-Type", out tContentType);
-            mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("Received POST Request"), new HTTPStatusCode("").Code200);
+            mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("VVVV Received POST Request, but file not found"), new HTTPStatusCode("").Code404);
 
             if (mFilename == "ToVVVV.xml")
             {
@@ -389,6 +391,12 @@ namespace VVVV.Webinterface.HttpServer
                 }
 
 
+            }
+            else if (mPostMessages.ContainsKey(mFilename))
+            {
+                string PostResponse;
+                mPostMessages.TryGetValue(mFilename, out PostResponse);
+                mResponse = new Response(mFilename, "text/xml", Encoding.UTF8.GetBytes(PostResponse), new HTTPStatusCode("").Code200);
             }
             else
             {

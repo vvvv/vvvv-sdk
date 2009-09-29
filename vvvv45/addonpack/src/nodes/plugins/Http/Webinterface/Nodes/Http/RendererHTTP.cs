@@ -80,6 +80,8 @@ namespace VVVV.Nodes.Http
         private INodeIn FHttpPageIn;
         private IValueIn FOpenBrowser;
         private IValueIn FSaveState;
+        private IStringIn FPostFilename;
+        private IStringIn FPostMessage;
         //private IValueIn FPort;
 
         //output pin 
@@ -102,6 +104,7 @@ namespace VVVV.Nodes.Http
         //private string mServerFolder;
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
         private SortedList<string, byte[]> mHtmlPageList = new SortedList<string, byte[]>();
+        private SortedList<string, string> mPostMessages = new SortedList<string, string>();
 
 
         private List<string> PageNames = new List<string>();
@@ -244,6 +247,7 @@ namespace VVVV.Nodes.Http
 
 
 
+
         #region pin creation
 
 
@@ -272,6 +276,12 @@ namespace VVVV.Nodes.Http
 
                 FHost.CreateValueInput("Save", 1, null, TSliceMode.Single, TPinVisibility.True, out FSaveState);
                 FSaveState.SetSubType(0, 1, 1, 0, true, false, true);
+
+                FHost.CreateStringInput("POST Filename", TSliceMode.Dynamic, TPinVisibility.True, out FPostFilename);
+                FPostFilename.SetSubType("", false);
+
+                FHost.CreateStringInput("POST Message", TSliceMode.Dynamic, TPinVisibility.True, out FPostMessage);
+                FPostMessage.SetSubType("", false);
 
                 FHost.CreateValueInput("Open Browser", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FOpenBrowser);
                 FOpenBrowser.SetSubType(0, 1, 1, 0, true, false, true);
@@ -309,6 +319,7 @@ namespace VVVV.Nodes.Http
         }
 
         #endregion pin creation
+
 
 
 
@@ -370,6 +381,7 @@ namespace VVVV.Nodes.Http
             
         }
         #endregion NodeIO
+
 
 
 
@@ -438,7 +450,6 @@ namespace VVVV.Nodes.Http
         /// <param name="SpreadMax"></param>
         public void Evaluate(int SpreadMax)
         {
-
 
             #region Enable Server
 
@@ -629,6 +640,42 @@ namespace VVVV.Nodes.Http
 
 
             #endregion TimeOut
+
+
+            #region POST Input 
+
+            if (FPostMessage.PinIsChanged || FPostFilename.PinIsChanged)
+            {
+
+                mPostMessages.Clear();
+                for (int i = 0; i < SpreadMax; i++)
+                {
+                    string currentPostFileName = String.Empty;
+                    string currentPostMessage = String.Empty;
+
+                    FPostFilename.GetString(i, out currentPostFileName);
+                    FPostMessage.GetString(i, out currentPostMessage);
+
+                    if (currentPostFileName != null)
+                    {
+                        if (mPostMessages.ContainsKey(currentPostFileName))
+                        {
+                            mPostMessages.Remove(currentPostFileName);
+                            mPostMessages.Add(currentPostFileName, currentPostMessage);
+                        }
+                        else
+                        {
+                            mPostMessages.Add(currentPostFileName, currentPostMessage);
+                        }
+                    }
+                }
+
+                if (mServer != null)
+                {
+                    mServer.PostMessages = mPostMessages;
+                }
+            }
+            #endregion POST Input
 
         }
 

@@ -33,8 +33,6 @@ namespace VVVV.Webinterface.HttpServer {
 
 
 
-
-
         #region filed declaration 
 
 
@@ -72,6 +70,7 @@ namespace VVVV.Webinterface.HttpServer {
         private SortedList<string,string> mCssFiles;
         private SortedList<string, string> mJsFiles;
         private List<string> mFoldersToServ;
+        private SortedList<string, string> mPostMessages = new SortedList<string, string>();
 
         
         
@@ -155,6 +154,14 @@ namespace VVVV.Webinterface.HttpServer {
             set
             {
                 mShuttingDown = value;
+            }
+        }
+
+        public SortedList<string, string> PostMessages
+        {
+            set
+            {
+                mPostMessages = value;
             }
         }
 
@@ -591,7 +598,7 @@ namespace VVVV.Webinterface.HttpServer {
                         tSocketInformation.TimeStamp = DateTime.Now;
                         try
                         {
-                            Request tRequest = new Request(tSocketInformation.Request.ToString(), mFoldersToServ, tSocketInformation.HtmlPages, tSocketInformation);
+                            Request tRequest = new Request(tSocketInformation.Request.ToString(), mFoldersToServ, tSocketInformation.HtmlPages, tSocketInformation, mPostMessages);
                             tSocketInformation.RequestObject = tRequest;
                             tSocketInformation.ResponseAsBytes = tRequest.Response.TextInBytes;
 
