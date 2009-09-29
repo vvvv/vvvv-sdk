@@ -537,6 +537,10 @@ namespace VVVV.Nodes.Http
                                 tFiles.Add(tFileInfos[j].Name);
                             }
                         }
+                        else
+                        {
+                            FHost.Log(TLogType.Message, "Definded Directory for Renderer (HTTP) does not exist: " + Environment.NewLine + tCurrentDirectories);
+                        }
                     }
                 }
 

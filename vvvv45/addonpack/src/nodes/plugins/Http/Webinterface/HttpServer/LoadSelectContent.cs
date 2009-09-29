@@ -33,7 +33,6 @@ namespace VVVV.Webinterface.HttpServer
         /// <param name="pHtmlPages">Pages to Build by an GET Request</param>
         public LoadSelectContent( string pFilename,string pFileLocation, List<string> pPaths, SortedList<string,byte[]> pHtmlPages)
         {
-
             if (pFilename == "dummy.html")
             {
                 //Build an special HTML dummyFile for the comet communication
@@ -125,6 +124,14 @@ namespace VVVV.Webinterface.HttpServer
                 BinaryReader reader = new BinaryReader(tFs);
 
                 byte[] bytes = new byte[tFs.Length];
+                int read;
+                string LoadedFile = String.Empty;
+                while ((read = reader.Read(bytes, 0, bytes.Length)) != 0)
+                {
+                    // Read from the file and write the data to the network
+                    LoadedFile = LoadedFile + Encoding.UTF8.GetString(bytes, 0, read);
+                }
+
 
                 mContentAsByte = bytes;
 
