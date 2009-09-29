@@ -22,11 +22,13 @@ namespace VVVV.Nodes.Http
         private SortedList<string, Tag> mTags = new SortedList<string, Tag>();
         List<GuiDataObject> mGuiElemente  =new List<GuiDataObject>();
         bool mBuildFlag = false;
+        private Object _updatelock = new Object();
 
         public Page Page
         {
             get
             {
+                Debug.WriteLine("get Page");
                 return mPage;
             }
         }
@@ -51,6 +53,7 @@ namespace VVVV.Nodes.Http
         {
             get
             {
+                Debug.WriteLine("Get HtmlFile");
                 return mPage.Text;
             }
         }
@@ -88,32 +91,45 @@ namespace VVVV.Nodes.Http
 
         public void UpdateGuiList(List<GuiDataObject> pGuiElemente, Page pPage)
         {
-
-            if (mBuildFlag == false)
+            Debug.WriteLine("Update Start");
+            if (Monitor.TryEnter(_updatelock, 1000))
             {
-                mPage = pPage;
-                mJsFileList.Clear();
-                mCssBuilder.Reset();
-                mTags.Clear();
 
-                //Build
-                mGuiElemente = new List<GuiDataObject>(pGuiElemente);
+                try
+                {
+                    if (mBuildFlag == false)
+                    {
+                        mPage = pPage;
+                        mJsFileList.Clear();
+                        mCssBuilder.Reset();
+                        mTags.Clear();
+
+                        //Build
+                        mGuiElemente = new List<GuiDataObject>(pGuiElemente);
+                    }
+                }
+                finally
+                {
+                    Monitor.Exit(_updatelock);
+                }
             }
+            Debug.WriteLine("Update Ende");
         }
 
         public void Build()
         {
-            try
+            Monitor.Enter(_updatelock);
+            mBuildFlag = true;
+            Debug.WriteLine("Start Build Vorgang");
+            if (mGuiElemente.Count == 0)
             {
-                mBuildFlag = true;
-                mPage.Body = (Body)BuildHtmlFrame(mGuiElemente, mPage.Body);
-                mCssBuilder.Build();
-                mBuildFlag = false;
+                Debug.WriteLine("count 0");
             }
-            catch(InvalidOperationException ex)
-            {
-                
-            }
+            mPage.Body = (Body)BuildHtmlFrame(new List<GuiDataObject>(mGuiElemente), mPage.Body);
+            Debug.WriteLine("Ende Build Vorgang");
+            mCssBuilder.Build();
+            mBuildFlag = false;
+            Monitor.Exit(_updatelock);
         }
 
 
