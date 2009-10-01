@@ -29,6 +29,7 @@ fltEq = function(x, y) {
 				onBeforeShow: function(){},
 				onHide: function () {},
 				onChange: function () {},
+				onChangeComplete: function () {},
 				onSubmit: function () {},
 				color: 'ff0000',
 				livePreview: true,
@@ -118,11 +119,12 @@ fltEq = function(x, y) {
 			downIncrement = function (ev) {
 				var field = $(this).parent().find('input').focus();
 				var current = {
+					cal: $(this).parent().parent(),
 					el: $(this).parent().addClass('colorpicker_slider'),
 					max: this.parentNode.className.indexOf('_hsb_h') > 0 ? 360.0 : (this.parentNode.className.indexOf('_hsb') > 0 ? resolution : resolution),
 					y: ev.pageY,
 					field: field,
-          scale: this.parentNode.className.indexOf('_hsb_h') <= 0 ? resolution / 400.0 : 0.5,
+					scale: this.parentNode.className.indexOf('_hsb_h') <= 0 ? resolution / 400.0 : 0.5,
 					val: parseFloat(field.val(), 10),
 					preview: $(this).parent().parent().data('colorpicker').livePreview					
 				};
@@ -141,6 +143,9 @@ fltEq = function(x, y) {
 				ev.data.el.removeClass('colorpicker_slider').find('input').focus();
 				$(document).unbind('mouseup', upIncrement);
 				$(document).unbind('mousemove', moveIncrement);
+				var cal = ev.data.cal;
+				var col = cal.data('colorpicker').color;
+				cal.data('colorpicker').onChangeComplete.apply(cal, [col, HSBToHex(col), HSBToRGB(col)]);
 				return false;
 			},
 			downHue = function (ev) {
@@ -164,10 +169,13 @@ fltEq = function(x, y) {
 				return false;
 			},
 			upHue = function (ev) {
-				fillRGBFields(ev.data.cal.data('colorpicker').color, ev.data.cal.get(0));
-				fillHexFields(ev.data.cal.data('colorpicker').color, ev.data.cal.get(0));
+				var cal = ev.data.cal;
+				var col = cal.data('colorpicker').color;
+				fillRGBFields(col, cal.get(0));
+				fillHexFields(col, cal.get(0));
 				$(document).unbind('mouseup', upHue);
 				$(document).unbind('mousemove', moveHue);
+				cal.data('colorpicker').onChangeComplete.apply(cal, [col, HSBToHex(col), HSBToRGB(col)]);
 				return false;
 			},
 			downSelector = function (ev) {
@@ -194,10 +202,13 @@ fltEq = function(x, y) {
 				return false;
 			},
 			upSelector = function (ev) {
-				fillRGBFields(ev.data.cal.data('colorpicker').color, ev.data.cal.get(0));
-				fillHexFields(ev.data.cal.data('colorpicker').color, ev.data.cal.get(0));
+				var cal = ev.data.cal;
+				var col = cal.data('colorpicker').color;
+				fillRGBFields(col, cal.get(0));
+				fillHexFields(col, cal.get(0));
 				$(document).unbind('mouseup', upSelector);
 				$(document).unbind('mousemove', moveSelector);
+				cal.data('colorpicker').onChangeComplete.apply(cal, [col, HSBToHex(col), HSBToRGB(col)]);
 				return false;
 			},
 			enterSubmit = function (ev) {
