@@ -91,11 +91,12 @@ fltEq = function(x, y) {
 						b: parseFloat(cal.data('colorpicker').fields.eq(6).val(), 10)
 					});
 				} else {
-					cal.data('colorpicker').color = col = RGBToHSB({
+					var rgb = fixRGB({
 						r: parseFloat(cal.data('colorpicker').fields.eq(1).val(), 10),
 						g: parseFloat(cal.data('colorpicker').fields.eq(2).val(), 10),
 						b: parseFloat(cal.data('colorpicker').fields.eq(3).val(), 10)
 					});
+					cal.data('colorpicker').color = col = RGBToHSB(rgb);
 				}
 				if (ev) {
 					fillRGBFields(col, cal.get(0));
@@ -106,6 +107,9 @@ fltEq = function(x, y) {
 				setHue(col, cal.get(0));
 				setNewColor(col, cal.get(0));
 				cal.data('colorpicker').onChange.apply(cal, [col, HSBToHex(col), HSBToRGB(col)]);
+				if (typeof(ev) == "object") {
+					cal.data('colorpicker').onChangeComplete.apply(cal, [col, HSBToHex(col), HSBToRGB(col)]);
+				}
 			},
 			blur = function (ev) {
 				var cal = $(this).parent().parent();
