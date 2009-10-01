@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Web;
+using System.Xml;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Webinterface.Utilities;
@@ -212,16 +214,20 @@ namespace VVVV.Nodes.HttpGUI
 					if (ReceivedString[i] != null)
 					{
 						//parse the color representation that got passed as a POST parameter
-						rgb = ReceivedString[i].Split(new char[] { '.' });
+                        XmlDocument xmlDocument = new XmlDocument();
+                        xmlDocument.LoadXml(HttpUtility.UrlDecode(ReceivedString[i]));
+                        //the color value comes in the same xml representation that is used in a vvvv patch file
+                        string colorValues = xmlDocument.DocumentElement.Attributes["values"].InnerXml;
+                        rgb = colorValues.Trim(new char[] { '|' }).Split(new char[] { ',' });
 						if (rgb.Length >= 3)
 						{
-							responseColorSlice = new RGBAColor(double.Parse(rgb[0]) / 255.0, double.Parse(rgb[1]) / 255.0, double.Parse(rgb[2]) / 255.0, 1.0);
+							responseColorSlice = new RGBAColor(double.Parse(rgb[0]), double.Parse(rgb[1]), double.Parse(rgb[2]), 1.0);
                         }
 						else
 						{
 							//parse the default color
                             responseColorSlice = defaultColorSlice;
-                            rgb = new string[3] { ((int)(defaultColorSlice.R * 255.0)).ToString(), ((int)(defaultColorSlice.G * 255.0)).ToString(), ((int)(defaultColorSlice.B * 255.0)).ToString()};
+                            rgb = new string[3] { defaultColorSlice.R.ToString(), defaultColorSlice.G.ToString(), defaultColorSlice.B.ToString() };
                             
 						}
 					}
@@ -229,7 +235,7 @@ namespace VVVV.Nodes.HttpGUI
 					{
                         //parse the default color
                         responseColorSlice = defaultColorSlice;
-                        rgb = new string[3] { ((int)(defaultColorSlice.R * 255.0)).ToString(), ((int)(defaultColorSlice.G * 255.0)).ToString(), ((int)(defaultColorSlice.B * 255.0)).ToString() };
+                        rgb = new string[3] {defaultColorSlice.R.ToString(), defaultColorSlice.G.ToString(), defaultColorSlice.B.ToString()};
 					}
 					
 					//update the output pin with the new response color
@@ -269,7 +275,7 @@ namespace VVVV.Nodes.HttpGUI
 							color: {{r: {0}, g: {1}, b: {2}}},
 							onChange: function (hsb, hex, rgb) {{
 								var params = new Object();
-								params[$(this).parent().parent().attr('id')] = rgb.r.toString() + '.' + rgb.g.toString() + '.' + rgb.b.toString();
+								params[$(this).parent().parent().attr('id')] = '<PIN pinname=""Color Input"" slicecount=""1"" values=""|' + rgb.r.toString() + ',' + rgb.g.toString() + ',' + rgb.b.toString() + ',1.00000|""></PIN>'
 								$.post('ToVVVV.xml', params);
 							}}
 						}})";
