@@ -586,8 +586,8 @@ fltEq = function(x, y) {
 	}();
 	$.fn.extend({
 		ColorPicker: ColorPicker.init,
-		ColorPickerHide: ColorPicker.hide,
-		ColorPickerShow: ColorPicker.show,
+		ColorPickerHide: ColorPicker.hidePicker,
+		ColorPickerShow: ColorPicker.showPicker,
 		ColorPickerSetColor: ColorPicker.setColor
 	});
 })(jQuery)
