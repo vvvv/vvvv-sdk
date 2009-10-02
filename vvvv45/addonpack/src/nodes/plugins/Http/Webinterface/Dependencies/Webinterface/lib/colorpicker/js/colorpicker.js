@@ -69,7 +69,7 @@ fltEq = function(x, y) {
 			setNewColor = function (hsb, cal) {
 				$(cal).data('colorpicker').newColor.css('backgroundColor', '#' + HSBToHex(hsb));
 			},
-			keyDown = function (ev) {
+			keyUp = function (ev) {
 				var pressedKey = ev.charCode || ev.keyCode || -1;
 				if ((pressedKey > charMin && pressedKey <= 90) || pressedKey == 32) {
 					return false;
@@ -91,12 +91,11 @@ fltEq = function(x, y) {
 						b: parseFloat(cal.data('colorpicker').fields.eq(6).val(), 10)
 					});
 				} else {
-					var rgb = fixRGB({
+					cal.data('colorpicker').color = col = RGBToHSB(fixRGB({
 						r: parseFloat(cal.data('colorpicker').fields.eq(1).val(), 10),
 						g: parseFloat(cal.data('colorpicker').fields.eq(2).val(), 10),
 						b: parseFloat(cal.data('colorpicker').fields.eq(3).val(), 10)
-					});
-					cal.data('colorpicker').color = col = RGBToHSB(rgb);
+					}));
 				}
 				if (ev) {
 					fillRGBFields(col, cal.get(0));
@@ -284,18 +283,30 @@ fltEq = function(x, y) {
 				};
 			},
 			fixHSB = function (hsb) {
-				return {
+				var fixed = {
 					h: Math.min(360.0, Math.max(0.0, hsb.h)),
 					s: Math.min(resolution, Math.max(0.0, hsb.s)),
 					b: Math.min(resolution, Math.max(0.0, hsb.b))
-				};
+				}
+				for (key in fixed) {
+					if (isNaN(fixed[key])) {
+						fixed[key] = 0.0;
+					}
+				}
+				return fixed;
 			}, 
 			fixRGB = function (rgb) {
-				return {
+				var fixed = {
 					r: Math.min(resolution, Math.max(0.0, rgb.r)),
 					g: Math.min(resolution, Math.max(0.0, rgb.g)),
 					b: Math.min(resolution, Math.max(0.0, rgb.b))
-				};
+				}
+				for (key in fixed) {
+					if (isNaN(fixed[key])) {
+						fixed[key] = 0.0;
+					}
+				}
+				return fixed;
 			},
 			fixHex = function (hex) {
 				var len = 6 - hex.length;
@@ -498,7 +509,7 @@ fltEq = function(x, y) {
 						}
 						options.fields = cal
 											.find('input')
-												.bind('keydown', keyDown)
+												.bind('keyup', keyUp)
 												.bind('change', change)
 												.bind('blur', blur)
 												.bind('focus', focus);
