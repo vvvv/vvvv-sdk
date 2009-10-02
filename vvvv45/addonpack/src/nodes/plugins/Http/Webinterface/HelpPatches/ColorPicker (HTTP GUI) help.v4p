@@ -1,0 +1,267 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.dtd" >
+   <PATCH nodename="I:\Documents and Settings\Administrator\My Documents\My Code\vvvvplugins\Http\Webinterface\HelpPatches\ColorPicker (HTTP GUI) help.v4p">
+   <BOUNDS height="7530" left="12570" top="8085" type="Window" width="12255">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="990" left="255" top="525" type="Box" width="5040">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Creates a webbased Color Picker. The color selected on the web page by the user (Response Pin ) is transmitted via TCP/IP from the Webbrowser back to VVVV. You need to enable the Server in the Renderer HTTP. |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|ColorPicker - HTTP Gui|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="13" nodename=":PLUGINS:\WebInterface.dll|VVVV.Nodes.HttpGUI.ColorPicker">
+   <BOUNDS height="0" left="765" top="4770" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="765" top="4770" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="16680" top="10800" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Out" visible="1">
+   </PIN>
+   <PIN pinname="Response" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Mode">
+   </PIN>
+   <PIN pinname="ChangeState" visible="1">
+   </PIN>
+   <PIN pinname="Default Color" visible="1">
+   </PIN>
+   <PIN pinname="Update Continuous" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="765" top="5595" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="765" top="5595" type="Box" width="2250">
+   </BOUNDS>
+   <BOUNDS height="160" left="17340" top="11655" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Response">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Color Input" srcnodeid="13" srcpinname="Response">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="765" top="3405" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="765" top="3405" type="Box" width="2250">
+   </BOUNDS>
+   <BOUNDS height="160" left="18225" top="10185" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Default Color|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Default Color" srcnodeid="11" srcpinname="Color Output">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3480" top="3405" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="3480" top="3405" type="Box" width="480">
+   </BOUNDS>
+   <BOUNDS height="160" left="19725" top="10425" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Update Continuous|">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Update Continuous" srcnodeid="10" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="735" top="2445" type="Node" width="705">
+   </BOUNDS>
+   <BOUNDS height="885" left="735" top="2445" type="Box" width="2340">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The color that will appear in the color picker if no color has previously been selected or saved on the server|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="270" left="3375" top="1635" type="Node" width="5085">
+   </BOUNDS>
+   <BOUNDS height="1710" left="3375" top="1635" type="Box" width="2460">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|If on, the color picker posts back to the server continuously.  If off, the color picker only posts back when the user releases the mouse or commits a typed value to a text input field.  The second mode may be preferable on a remote connection.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input 1" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="7" nodename="SystemFolder (File)">
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="8010" top="345" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="6" nodename="Add (String)">
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="8010" top="930" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input 2" srcnodeid="5" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\..\..\..\..\..\Program Files (x86)\vvvv_40beta21\plugins\webinterface\lib\colorpicker\help\colorpicker_example.png|">
+   </PIN>
+   <BOUNDS height="0" left="9255" top="360" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="9255" top="360" type="Box" width="2040">
+   </BOUNDS>
+   <BOUNDS height="160" left="24720" top="9630" type="Window" width="215">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="4" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="8010" top="2835" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="3" nodename="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="9255" top="1245" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Original Width" visible="1">
+   </PIN>
+   <PIN pinname="Original Height" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Filename" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="6060" top="3420" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="2775" left="6060" top="3420" type="Box" width="5385">
+   </BOUNDS>
+   <BOUNDS height="4905" left="28890" top="14880" type="Window" width="6120">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Ratio Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Layers" srcnodeid="4" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="1" nodename="Billboard (Transform)">
+   <BOUNDS height="0" left="8010" top="1665" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Object Space" slicecount="1" values="Pixel">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="0" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="8010" top="2265" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="ScaleY" visible="1">
+   </PIN>
+   <PIN pinname="Rotate" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="ScaleX" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Transform In" srcnodeid="1" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Transform" srcnodeid="0" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="ScaleX" srcnodeid="3" srcpinname="Original Width">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="ScaleY" srcnodeid="3" srcpinname="Original Height">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Texture Out" dstnodeid="4" dstpinname="Texture">
+   <LINKPOINT x="9990" y="2565">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16">
+   <BOUNDS type="Node" left="5940" top="6315" width="4290" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5940" top="6315" width="5790" height="615">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|A sample snapshot of what the Color Picker looks like in the browser|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   </PATCH>
