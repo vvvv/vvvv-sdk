@@ -18,6 +18,7 @@ namespace VVVV.Nodes.HttpGUI
 
 		private bool FDisposed = false;
 		private IStringIn FNameStringInput;
+        private IValueIn FUpdateContinuousValueInput;
 		private IColorIn FDefaultColorColorInput;
 		private IColorOut FResponseColorOutput;
 
@@ -170,9 +171,12 @@ namespace VVVV.Nodes.HttpGUI
 			// create required pins
 			FHost.CreateStringInput("Name", TSliceMode.Dynamic, TPinVisibility.True, out FNameStringInput);
 			FNameStringInput.SetSubType("", false);
-
-			FHost.CreateColorInput("Default Color", TSliceMode.Dynamic, TPinVisibility.True, out FDefaultColorColorInput);
+            
+            FHost.CreateColorInput("Default Color", TSliceMode.Dynamic, TPinVisibility.True, out FDefaultColorColorInput);
 			FDefaultColorColorInput.SetSubType(new RGBAColor(0.0, 1.0, 0.0, 1.0), false);
+
+            FHost.CreateValueInput("Update Continuous", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FUpdateContinuousValueInput);
+            FUpdateContinuousValueInput.SetSubType(0.0, 1.0, 1.0, 1.0, false, true, false);
 
 			FHost.CreateColorOutput("Response", TSliceMode.Dynamic, TPinVisibility.True, out FResponseColorOutput);
 			FResponseColorOutput.SetSubType(new RGBAColor(0.0, 1.0, 0.0, 1.0), false);
@@ -190,7 +194,7 @@ namespace VVVV.Nodes.HttpGUI
 
 			//check if we received any new data from the web server
 
-			if (FChangedSpreadSize || FNameStringInput.PinIsChanged || ReceivedNewString)
+			if (FChangedSpreadSize || FNameStringInput.PinIsChanged || FDefaultColorColorInput.PinIsChanged || FUpdateContinuousValueInput.PinIsChanged || ReceivedNewString)
 			{
 				for (int i = 0; i < SpreadMax; i++)
 				{
@@ -199,12 +203,14 @@ namespace VVVV.Nodes.HttpGUI
 					//the incoming int SpreadMax is the maximum slicecount of all input pins, which is a good default
 					FResponseColorOutput.SliceCount = SpreadMax;
 
-					//read data from inputs
-					string nameStringSlice = String.Empty;
+                    //read data from inputs
+                    string nameStringSlice = String.Empty;
 					RGBAColor defaultColorSlice;
+                    double updateContinuousSlice;
 					
 					FNameStringInput.GetString(i, out nameStringSlice);
 					FDefaultColorColorInput.GetColor(i, out defaultColorSlice);
+                    FUpdateContinuousValueInput.GetValue(i, out updateContinuousSlice);
 
 					//check for request data
                     RGBAColor responseColorSlice;
@@ -241,50 +247,30 @@ namespace VVVV.Nodes.HttpGUI
 					//update the output pin with the new response color
 					FResponseColorOutput.SetColor(i, responseColorSlice);
 
-					//create a container div to house our color picker widget
-					HtmlDiv tMainContainer = new HtmlDiv();
-					
-					//create a div for the actual jquery colorpicker
-					string ColorPickerId = GetSliceId(i) + i.ToString();
-					HtmlDiv tColorPicker = new HtmlDiv(ColorPickerId);
+					//create a div for the jquery colorpicker
+					HtmlDiv tColorPicker = new HtmlDiv(SliceId[i]);
 
-					//style the colorpicker
-					HTMLAttribute tColorPickerStyle = new HTMLAttribute("style", "postion:absolute; top:50%");
-					tColorPicker.AddAttribute(tColorPickerStyle);
-					HTMLAttribute tColorPickerClass = new HTMLAttribute("class", "colorpickervvvv");
-					tColorPicker.AddAttribute(tColorPickerClass);
-					
-					//insert into the container div
-					tMainContainer.Insert(tColorPicker);
-
-					//create a text label for the widget
-					HTMLText tLabel = new HTMLText(nameStringSlice, true);
-					//style the label
-					HTMLAttribute tLabelStyle = new HTMLAttribute("style", "position:absolute; top:10%; width:80%");
-					tLabel.AddAttribute(tLabelStyle);
-					//insert into the container div
-					tMainContainer.Insert(tLabel);
-					
-					//write the container HTML tag using all inserted info
-					SetTag(i, tMainContainer, "ColorPicker");
+					//write the HTML tag using all inserted info
+					SetTag(i, tColorPicker);
 
 					//generate JQuery code to create our color picker when the document loads
 					string colorPickerInitializeCode =
 						@"ColorPicker({{
 							flat: true,
 							color: {{r: {0}, g: {1}, b: {2}}},
-							onChange: function (hsb, hex, rgb) {{
+							{3}: function (hsb, hex, rgb) {{
 								var params = new Object();
-								params[$(this).parent().parent().attr('id')] = '<PIN pinname=""Color Input"" slicecount=""1"" values=""|' + rgb.r.toString() + ',' + rgb.g.toString() + ',' + rgb.b.toString() + ',1.00000|""></PIN>'
+								params[$(this).parent().attr('id')] = '<PIN pinname=""Color Input"" slicecount=""1"" values=""|' + rgb.r.toString() + ',' + rgb.g.toString() + ',' + rgb.b.toString() + ',1.00000|""></PIN>'
 								$.post('ToVVVV.xml', params);
 							}}
 						}})";
 
-					//set the color picker to the color currently set on the server side
-					colorPickerInitializeCode = String.Format(colorPickerInitializeCode, rgb[0], rgb[1], rgb[2]);
+					//set the color picker to the color currently set on the server side, and setup the post method to fire
+                    //at the appropriate time according to the Update Continuous pin
+					colorPickerInitializeCode = String.Format(colorPickerInitializeCode, rgb[0], rgb[1], rgb[2], updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete");
 
 					//insert the JQuery code into the javascript file for this page
-					JqueryFunction colorPickerInitializeFunction = new JqueryFunction(true, "#" + GetSliceId(i) + i.ToString(), colorPickerInitializeCode);
+					JqueryFunction colorPickerInitializeFunction = new JqueryFunction(true, "#" + SliceId[i], colorPickerInitializeCode);
 					SetJavaScript(i, colorPickerInitializeFunction.Text);
 				}
 			}
