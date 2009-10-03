@@ -1103,13 +1103,13 @@ namespace VVVV.Nodes
 				else if (ke.KeyCode == Keys.PageUp)
 				{
 					if (FAutomata != null)
-						GTimer.SetTime(0, FAutomata.NextState.Time-0.0001);
+						GTimer.SetTime(0, FAutomata.NextState.Time-TLTime.MinTimeStep);
 					return true;
 				}
 				else if (ke.KeyCode == Keys.PageDown)
 				{
 					if (FAutomata != null)
-						GTimer.SetTime(0, FAutomata.PreviousState.Time-0.0001);
+						GTimer.SetTime(0, FAutomata.PreviousState.Time-TLTime.MinTimeStep);
 					return true;
 				}
 				else if (ke.KeyCode == Keys.Delete)
