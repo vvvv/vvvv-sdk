@@ -2,8 +2,10 @@ using System;
 
 namespace VVVV.Nodes.Timeliner
 {
+	
 	public sealed class TLTime
 	{
+		public const double MinTimeStep = 0.0001;
 		private double[] FCurrentTimes = new double[0];
 		private bool[] FTimeChanged = new bool[0];
 		private double FStartTime;
