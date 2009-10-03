@@ -301,10 +301,17 @@ namespace VVVV.Nodes.Timeliner
 				{
 					first = false;
 					newtime = k.Time;
+					
+					//when aligning other keys to a state make, we want to align them to the start of the next state
+					if (k is TLStateKeyFrame)
+						newtime += TLTime.MinTimeStep;
 				}
-				this.Invalidate(k.RedrawArea);
-				k.Time = newtime;
-				this.Invalidate(k.RedrawArea);
+				else
+				{
+					this.Invalidate(k.RedrawArea);
+					k.Time = newtime;
+					this.Invalidate(k.RedrawArea);
+				}
 			}
 			
 			SaveAllKeyFrames();
@@ -501,12 +508,32 @@ namespace VVVV.Nodes.Timeliner
 						break;
 					}
 					
-				case TLMouseState.msDragging://not msIdle, because on mousedown state has already become msDragging
+				case TLMouseState.msDragging:
+				case TLMouseState.msDraggingXOnly: //not msIdle, because on mousedown state has already become msDragging
 					{
 						Cursor.Show();	//was hidden on mousedown
 						
 						List<TLBaseKeyFrame> allkeys = new List<TLBaseKeyFrame>();
 						TLBasePin tPin = PosToPin(e.Location);
+						
+						//if pin is collapsed only mousstate msDraggingXOnly is possible
+						//so also check here for a right doubleclick to delete keyframes
+						if (e.Button == MouseButtons.Right)
+						{
+							TLBasePin pin = PosToPin(e.Location);
+							if ((pin != null) && (pin.Collapsed))
+							{
+								foreach(TLSlice s in pin.OutputSlices)
+									for (int i=s.KeyFrames.Count-1; i>-1; i--)
+									if (s.KeyFrames[i].HitByPoint(e.Location, pin.Collapsed) && s.KeyFrames[i].Selected)
+								{
+									DeleteKeyFrame(pin, s, s.KeyFrames[i]);
+								}
+								
+								pin.SaveKeyFrames();
+							}
+						}
+						
 						
 						if (tPin is TLStringPin)
 						{
@@ -571,28 +598,6 @@ namespace VVVV.Nodes.Timeliner
 							FMouseState = TLMouseState.msEditing;
 						}
 						
-						break;
-					}
-					
-				case TLMouseState.msDraggingXOnly:
-					{
-						//if pin is collapsed only mousstate msDraggingXOnly is possible
-						//so also check here for a right doubleclick to delete keyframes
-						if (e.Button == MouseButtons.Right)
-						{
-							TLBasePin pin = PosToPin(e.Location);
-							if ((pin != null) && (pin.Collapsed))
-							{
-								foreach(TLSlice s in pin.OutputSlices)
-									for (int i=s.KeyFrames.Count-1; i>-1; i--)
-									if (s.KeyFrames[i].HitByPoint(e.Location, pin.Collapsed) && s.KeyFrames[i].Selected)
-								{
-									DeleteKeyFrame(pin, s, s.KeyFrames[i]);
-								}
-								
-								pin.SaveKeyFrames();
-							}
-						}
 						break;
 					}
 					
@@ -672,19 +677,15 @@ namespace VVVV.Nodes.Timeliner
 						{
 							Cursor.Hide();
 							
-							if (pin.Collapsed)
-								FMouseState = TLMouseState.msDraggingXOnly;
-							else if (e.Button == MouseButtons.Left)	//mouse is hovering a keyframe -> go drag
-							{
+							if (e.Button == MouseButtons.Left)	//mouse is hovering a keyframe -> go drag
 								FMouseState = TLMouseState.msDragging;
-							}
 							else if (e.Button == MouseButtons.Right)	//mouse is hovering a keyframe -> go drag Y only
 							{
 								if ((Control.ModifierKeys & Keys.Alt) == Keys.Alt)
 									FExpandToRight = CheckExpansionToRight(e.Location);
 								FMouseState = TLMouseState.msDraggingYOnly;
 							}
-							else if (e.Button == MouseButtons.Middle)	//mouse is hovering a keyframe -> go drag Y only
+							else if (e.Button == MouseButtons.Middle)	//mouse is hovering a keyframe -> go drag X only
 							{
 								if ((Control.ModifierKeys & Keys.Alt) == Keys.Alt)
 									FExpandToRight = CheckExpansionToRight(e.Location);
@@ -696,7 +697,10 @@ namespace VVVV.Nodes.Timeliner
 								SelectAll(false);
 								kf.Selected = true;
 								FPinsWithSelectedKeyframes.Add(pin);
-								this.Invalidate(kf.RedrawArea);
+								if (kf is TLStateKeyFrame)
+									this.Invalidate(GetUpdateRegion(pin, pin.OutputSlices[0], kf));
+								else
+									this.Invalidate(kf.RedrawArea);
 							}
 						}
 						
@@ -736,7 +740,7 @@ namespace VVVV.Nodes.Timeliner
 			if (next == null)
 				return double.MaxValue;
 			else
-				return next.Time-0.0001;
+				return next.Time-TLTime.MinTimeStep;
 		}
 		
 		private double GetPrevTime(List<TLBaseKeyFrame> KeyFrames, TLBaseKeyFrame Current)
@@ -748,7 +752,7 @@ namespace VVVV.Nodes.Timeliner
 			if (prev == null)
 				return double.MinValue;
 			else
-				return prev.Time+0.0001;
+				return prev.Time+TLTime.MinTimeStep;
 		}
 		
 		protected override void OnMouseMove(MouseEventArgs e)
@@ -779,6 +783,14 @@ namespace VVVV.Nodes.Timeliner
 				Cursor.Position = new Point(Screen.FromPoint(pt).Bounds.Width-1, Cursor.Position.Y);
 				pt = this.PointToClient(Cursor.Position);
 				FLastMousePoint = new Point(pt.X - ptDelta, FLastMousePoint.Y);
+			}
+			
+			TLBasePin automata = null;
+			for (int i=0; i<FOutputPins.Count; i++)
+				if (FOutputPins[i] is TLAutomataPin)
+			{
+				automata = FOutputPins[i];
+				break;
 			}
 			
 			switch(FMouseState)
@@ -834,7 +846,7 @@ namespace VVVV.Nodes.Timeliner
 								k.SelectByRect(sr, p.Collapsed);
 							
 							if (wasSelected != k.Selected)
-								this.Invalidate(k.RedrawArea);
+								this.Invalidate(GetUpdateRegion(p, s, k));
 						}
 						
 						//invalidate SelectionArea
@@ -862,14 +874,12 @@ namespace VVVV.Nodes.Timeliner
 							if ((first != null) && (last != null))
 								span = last.PositionY - first.PositionY;
 							
-							foreach (TLBaseKeyFrame k in s.KeyFrames)
+							if ((!p.Collapsed) || (Control.ModifierKeys == Keys.Shift))
+								foreach (TLBaseKeyFrame k in s.KeyFrames)
 								if (k.Selected)
 							{
 								double delta = pt.Y - FLastMousePoint.Y;
-								
-								if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
-									delta /= 10;
-								
+
 								if (k is TLColorKeyFrame)
 								{
 									delta/=10;
@@ -888,7 +898,7 @@ namespace VVVV.Nodes.Timeliner
 								{
 									update.Union(k.RedrawArea);
 
-									if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+									if (Control.ModifierKeys == Keys.Shift)
 										delta /= 10;
 									if (FExpandToRight)
 										delta *= -1;
@@ -937,15 +947,28 @@ namespace VVVV.Nodes.Timeliner
 								
 								if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
 									delta /= 10;
-								if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
-									delta /= 10;
 								if (FExpandToRight)
 									delta *= -1;
 								
-								if (((Control.ModifierKeys & Keys.Alt) == Keys.Alt) && (span > 0))
-									k.MoveTime(delta * (k.Time-target.Time)/span, GetPrevTime(s.KeyFrames, k), GetNextTime(s.KeyFrames, k));
+								double nextsTime = GetNextTime(s.KeyFrames, k);
+								double prevsTime = GetPrevTime(s.KeyFrames, k);
+								if ((Control.ModifierKeys == Keys.Alt) && (span > 0))
+									k.MoveTime(delta * (k.Time-target.Time)/span, prevsTime, nextsTime);
 								else
-									k.MoveTime(delta, GetPrevTime(s.KeyFrames, k), GetNextTime(s.KeyFrames, k));
+									k.MoveTime(delta, prevsTime, nextsTime);
+								
+								//snap to state
+								if ((automata != null) && (Control.ModifierKeys == Keys.Control))
+								{
+									TLBaseKeyFrame nextState = automata.OutputSlices[0].KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return Math.Abs(kf.GetTimeAsX() - pt.X) < 15;});
+									
+									if (nextState != null)
+									{
+										double snapTime = nextState.Time + TLTime.MinTimeStep;
+										if ((snapTime > prevsTime) && (snapTime < nextsTime))
+											k.Time = snapTime;
+									}
+								}
 								
 								update.Union(GetUpdateRegion(p, s, k));
 							}
@@ -974,18 +997,28 @@ namespace VVVV.Nodes.Timeliner
 								deltaX /= 10;
 								deltaY /= 10;
 							}
-							if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
-							{
-								deltaX /= 10;
-								deltaY /= 10;
-							}
 							
 							//may use a linked list of keyframes for faster access to neighbours?
 							//TLBaseKeyFrame next = s.KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return kf.Time > k.Time;});
 							//TLBaseKeyFrame last = s.KeyFrames.FindLast(delegate(TLBaseKeyFrame kf) {return kf.Time < k.Time;});
 							
-							k.MoveTime(deltaX, GetPrevTime(s.KeyFrames, k), GetNextTime(s.KeyFrames, k));
-							k.MoveY(deltaY);
+							double nextsTime = GetNextTime(s.KeyFrames, k);
+							double prevsTime = GetPrevTime(s.KeyFrames, k);
+							k.MoveTime(deltaX, prevsTime, nextsTime);
+							if (!p.Collapsed)
+								k.MoveY(deltaY);
+							//snap to state
+							if ((automata != null) && (Control.ModifierKeys == Keys.Control))
+							{
+								TLBaseKeyFrame nextState = automata.OutputSlices[0].KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return Math.Abs(kf.GetTimeAsX() - pt.X) < 15;});
+								
+								if (nextState != null)
+								{
+									double snapTime = nextState.Time + TLTime.MinTimeStep;
+									if ((snapTime > prevsTime) && (snapTime < nextsTime))
+										k.Time = snapTime;
+								}
+							}
 							
 							update.Union(GetUpdateRegion(p, s, k));
 						}
@@ -995,7 +1028,16 @@ namespace VVVV.Nodes.Timeliner
 					}
 				case TLMouseState.msDraggingTimeBar:
 					{
-						FTimer.SetTime(0, FTransformer.XPosToTime(pt.X));
+						double targetTime = FTransformer.XPosToTime(pt.X);
+						//snap to state
+						if ((automata != null) && (Control.ModifierKeys == Keys.Control))
+						{
+							TLBaseKeyFrame nextState = automata.OutputSlices[0].KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return Math.Abs(kf.GetTimeAsX() - pt.X) < 15;});
+							if (nextState != null)
+								targetTime = nextState.Time;
+						}
+						
+						FTimer.SetTime(0, targetTime);
 						break;
 					}
 					
