@@ -103,32 +103,37 @@ namespace VVVV.Nodes.Timeliner
 			SolidBrush black = new SolidBrush(Color.Black);
 			SolidBrush gray = new SolidBrush(Color.Gray);
 			
-			foreach (TLBaseKeyFrame k in FInvalidKeyFrames)
+			try
 			{
-				float sliceWidth = g.ClipBounds.Width;
-				float width = 5;
-				float sliceHeight = FPin.Height / FPin.SliceCount;
-				float x = k.GetTimeAsX() - width/2;
-				float y = 0;
-				
-				if (k.Selected)
+				foreach (TLBaseKeyFrame k in FInvalidKeyFrames)
 				{
-					g.FillRectangle(silver, x, y, width, sliceHeight);
-					g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat)+"s", FFont, black, x+5, y + 4);
+					float sliceWidth = g.ClipBounds.Width;
+					float width = 5;
+					float sliceHeight = FPin.Height / FPin.SliceCount;
+					float x = k.GetTimeAsX() - width/2;
+					float y = 0;
+					
+					if (k.Selected)
+					{
+						g.FillRectangle(silver, x, y, width, sliceHeight);
+						g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat)+"s", FFont, black, x+5, y + 4);
+					}
+					else
+					{
+						g.FillRectangle(white, x, y, width, sliceHeight);
+					}
+					
+					float sWidth = g.MeasureString(OutputAsString, FFont).Width + 2;
+					g.DrawString(OutputAsString, FFont, gray, sliceWidth-sWidth, sliceHeight-16);
 				}
-				else
-				{
-					g.FillRectangle(white, x, y, width, sliceHeight);
-				}
-				
-				float sWidth = g.MeasureString(OutputAsString, FFont).Width + 2;
-				g.DrawString(OutputAsString, FFont, gray, sliceWidth-sWidth, sliceHeight-16);
 			}
-			
-			silver.Dispose();
-			white.Dispose();
-			black.Dispose();
-			gray.Dispose();
+			finally
+			{
+				silver.Dispose();
+				white.Dispose();
+				black.Dispose();
+				gray.Dispose();
+			}
 		}
 		
 		public virtual void Configurate(IPluginConfig Input, bool FirstFrame)

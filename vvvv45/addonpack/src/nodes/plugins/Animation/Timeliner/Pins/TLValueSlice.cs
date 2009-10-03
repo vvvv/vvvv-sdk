@@ -288,48 +288,52 @@ namespace VVVV.Nodes.Timeliner
 				}
 			}
 			
-			//draw infos
-			//don't clip so infos are always visible
-			float sliceWidth = g.ClipBounds.Width;
-			g.Clip = new Region();
-			
 			//draw keyframes
 			if (Collapsed)
 				DrawCollapsedKeyFrames(g);
 			else
 			{
+				//draw infos
+				//don't clip so infos are always visible
+				float sliceWidth = g.ClipBounds.Width;
+				g.Clip = new Region();
+				
 				SolidBrush silver = new SolidBrush(Color.Silver);
 				SolidBrush white = new SolidBrush(Color.White);
 				SolidBrush black = new SolidBrush(Color.Black);
 				SolidBrush gray = new SolidBrush(Color.Gray);
-
-				foreach (TLValueKeyFrame k in FInvalidKeyFrames)
+				try
 				{
-					//transform the keyframes time by the current transformation
-					float width = 5;
-					float height = 5;
-					float x = k.GetTimeAsX() - width/2;
-					float y = k.GetValueAsY() - height/2;
-					
-					if (k.Selected)
+					foreach (TLValueKeyFrame k in FInvalidKeyFrames)
 					{
-						g.FillRectangle(silver, x, y, width, height);
-						g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat)+"s", FFont, black, x, y-14);
-						g.DrawString(k.Value.ToString("f4", TimelinerPlugin.GNumberFormat), FFont, black, x, y+7);
-					}
-					else
-					{
-						g.FillRectangle(white, x, y, width, height);
+						//transform the keyframes time by the current transformation
+						float width = 5;
+						float height = 5;
+						float x = k.GetTimeAsX() - width/2;
+						float y = k.GetValueAsY() - height/2;
+						
+						if (k.Selected)
+						{
+							g.FillRectangle(silver, x, y, width, height);
+							g.DrawString(k.Time.ToString("f2", TimelinerPlugin.GNumberFormat)+"s", FFont, black, x, y-14);
+							g.DrawString(k.Value.ToString("f4", TimelinerPlugin.GNumberFormat), FFont, black, x, y+7);
+						}
+						else
+						{
+							g.FillRectangle(white, x, y, width, height);
+						}
 					}
 					
 					float sWidth = g.MeasureString(OutputAsString, FFont).Width + 2;
 					g.DrawString(OutputAsString, FFont, gray, sliceWidth-sWidth, sliceHeight-16);
 				}
-				
-				silver.Dispose();
-				white.Dispose();
-				black.Dispose();
-				gray.Dispose();
+				finally
+				{
+					silver.Dispose();
+					white.Dispose();
+					black.Dispose();
+					gray.Dispose();
+				}
 			}
 		}
 	}

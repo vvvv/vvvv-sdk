@@ -280,10 +280,12 @@ namespace VVVV.Nodes.Timeliner
 					
 					using (Brush b = new SolidBrush(FOutput.Color))
 						g.FillRectangle(b, new RectangleF(g.ClipBounds.Width-sz.Width, sliceHeight-sz.Height, sz.Width, sz.Height));
+					using (Pen p = new Pen(Color.Silver))
+						g.DrawLine(p, x, 0, x, 3);
 					using (Brush b = new SolidBrush(inv))
 						g.DrawString(OutputAsString, FFont, b, g.ClipBounds.Width-sz.Width-2, sliceHeight-sz.Height);
 				}
-			}
+			}			
 		}
 	}
 }
