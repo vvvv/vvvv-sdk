@@ -269,9 +269,13 @@ namespace VVVV.Nodes.HttpGUI
                     //at the appropriate time according to the Update Continuous pin
 					colorPickerInitializeCode = String.Format(colorPickerInitializeCode, rgb[0], rgb[1], rgb[2], updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete");
 
+					//set the newly created colorpicker sub-div to use absolute positioning
+					string colorPickerPositionAbsoluteCode = "children().eq(0).css('position', 'absolute')";
+
 					//insert the JQuery code into the javascript file for this page
 					JqueryFunction colorPickerInitializeFunction = new JqueryFunction(true, "#" + SliceId[i], colorPickerInitializeCode);
-					SetJavaScript(i, colorPickerInitializeFunction.Text);
+					JqueryFunction colorPickerPositionAbsoluteFunction = new JqueryFunction(true, "#" + SliceId[i], colorPickerPositionAbsoluteCode);
+					SetJavaScript(i, colorPickerInitializeFunction.Text + colorPickerPositionAbsoluteFunction.Text);
 				}
 			}
 		}
