@@ -69,7 +69,6 @@ namespace VVVV.Nodes.Timeliner
 				FTimeChanged[i] = false;
 		}
 		
-		
 		public double HostTime
 		{
 			get { return FHostTime;}
@@ -109,6 +108,7 @@ namespace VVVV.Nodes.Timeliner
 					FAutomata.ForceStateFromCurrentTime(FCurrentTimes[0]);
 				
 				EvaluateAutomata();
+				
 			}
 
 			FForceCurrentTime = false;

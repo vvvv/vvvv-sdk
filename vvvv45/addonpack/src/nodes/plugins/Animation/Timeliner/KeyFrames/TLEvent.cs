@@ -43,8 +43,8 @@ namespace VVVV.Nodes.Timeliner
 	
 	public class TLEvent
 	{
-		private IValueIn FEventPin;
-		public IValueIn EventPin
+		private IValueFastIn FEventPin;
+		public IValueFastIn EventPin
 		{
 			get{return FEventPin;}
 			set{FEventPin = value;}

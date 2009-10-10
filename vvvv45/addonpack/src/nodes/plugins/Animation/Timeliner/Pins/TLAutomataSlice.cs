@@ -44,7 +44,7 @@ namespace VVVV.Nodes.Timeliner
 			get{return FPauseTime;}
 		}
 		
-		private List<IValueIn> FEventPins = new List<IValueIn>();
+		private List<IValueFastIn> FEventPins = new List<IValueFastIn>();
 
 		public TLAutomataSlice(IPluginHost Host, TLBasePin Pin, int SliceIndex, int PinsOrder): base(Host, Pin, SliceIndex, PinsOrder)
 		{}
@@ -140,25 +140,24 @@ namespace VVVV.Nodes.Timeliner
 				
 				FKeyFrames.Sort(delegate(TLBaseKeyFrame k0, TLBaseKeyFrame k1) { return k0.Time.CompareTo(k1.Time); });	
 			}
-					
 			
 			//make sure every state's events have according input-pins
 			//remove all inputs that don't have an according event
 			//go through all events and find a corresponding pin
-			List<IValueIn> tmpList = new List<IValueIn>();
-			IValueIn tmpEventPin;
+			List<IValueFastIn> tmpList = new List<IValueFastIn>();
+			IValueFastIn tmpEventPin;
 			foreach (TLStateKeyFrame skf in FKeyFrames)
 			{
 				foreach(TLEvent e in skf.Events)
 				{
 					if (e.Name != "OnEnd")
 					{
-						IValueIn ep = FEventPins.Find(delegate(IValueIn p) {return p.Name == e.Name;});
+						IValueFastIn ep = FEventPins.Find(delegate(IValueFastIn p) {return p.Name == e.Name;});
 						
 						if (ep == null)
 						{
-							FHost.CreateValueInput(e.Name, 1, null, TSliceMode.Single, TPinVisibility.True, out tmpEventPin);
-							tmpEventPin.SetSubType(0, 1, 1, 0, true, false, false);
+							FHost.CreateValueFastInput(e.Name, 1, null, TSliceMode.Single, TPinVisibility.True, out tmpEventPin);
+							tmpEventPin.SetSubType(0, 1, 1, 0, false, false, false);
 							e.EventPin = tmpEventPin;
 							tmpList.Add(tmpEventPin);
 							FEventPins.Add(tmpEventPin);
@@ -166,7 +165,8 @@ namespace VVVV.Nodes.Timeliner
 						else
 						{
 							e.EventPin = ep;
-							tmpList.Add(ep);
+							if (!tmpList.Contains(ep))
+								tmpList.Add(ep);
 						}
 					}
 				}

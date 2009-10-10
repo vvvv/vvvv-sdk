@@ -693,7 +693,7 @@ namespace VVVV.Nodes
 			{
 				if (p is TLRulerPin)
 					p.Evaluate(GTimer.GetTime(0));
-				else
+				else if (!(p is TLAutomataPin)) //as automata is already evaluated above
 					p.Evaluate(GTimer.GetTime(index++));
 			}
 			/*	for (int i = 0; i<FOutputPins.Count;i++)
