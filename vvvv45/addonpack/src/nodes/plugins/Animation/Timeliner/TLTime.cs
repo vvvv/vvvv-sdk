@@ -19,6 +19,7 @@ namespace VVVV.Nodes.Timeliner
 		public TLAutomataPin Automata
 		{
 			set{FAutomata = value;}
+			get{return FAutomata;}
 		}
 		
 		public TLTime()

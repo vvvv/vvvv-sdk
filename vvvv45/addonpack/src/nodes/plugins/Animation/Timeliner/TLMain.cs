@@ -263,7 +263,7 @@ namespace VVVV.Nodes
 			// 
 			// InsertPreview
 			// 
-			this.InsertPreview.BackColor = System.Drawing.Color.Lime;
+			this.InsertPreview.BackColor = System.Drawing.Color.Black;
 			this.InsertPreview.Location = new System.Drawing.Point(156, 17);
 			this.InsertPreview.Name = "InsertPreview";
 			this.InsertPreview.Size = new System.Drawing.Size(150, 2);
