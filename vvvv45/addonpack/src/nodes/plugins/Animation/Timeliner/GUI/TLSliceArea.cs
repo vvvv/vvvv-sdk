@@ -874,8 +874,6 @@ namespace VVVV.Nodes.Timeliner
 						double span = 0;
 						TLBaseKeyFrame first, last, target;
 						
-						
-						
 						if (FMouseDownKeyFrame is TLStateKeyFrame)
 						{
 							double delta = pt.X - FLastMousePoint.X;
@@ -890,14 +888,14 @@ namespace VVVV.Nodes.Timeliner
 								foreach (TLSlice s in p.OutputSlices)
 								foreach (TLBaseKeyFrame kf in s.KeyFrames)
 							{
-								if (kf.Time < FMouseDownKeyFrame.Time)
+								if (kf.Time > FMouseDownKeyFrame.Time)
 								{
-									kf.MoveTime(delta, double.MinValue, nextsTime);
+									kf.MoveTime(delta, prevsTime, double.MaxValue);
 									update.Union(GetUpdateRegion(p, s, kf));
 								}
-								else if ((kf.Time < nextsTime) && (kf != FMouseDownKeyFrame))
+								else if ((kf.Time > prevsTime) && (kf != FMouseDownKeyFrame))
 								{
-									kf.Time = nextsTime - ((nextsTime - kf.Time) / (nextsTime - oldStateTime)) * (nextsTime - FMouseDownKeyFrame.Time);
+									kf.Time = prevsTime + ((kf.Time - prevsTime) / (oldStateTime - prevsTime)) * (FMouseDownKeyFrame.Time - prevsTime);
 									update.Union(GetUpdateRegion(p, s, kf));
 								}
 							}
@@ -986,18 +984,18 @@ namespace VVVV.Nodes.Timeliner
 								foreach (TLSlice s in p.OutputSlices)
 								foreach (TLBaseKeyFrame kf in s.KeyFrames)
 							{
-								if (kf.Time > FMouseDownKeyFrame.Time)
+								if (kf.Time < FMouseDownKeyFrame.Time)
 								{
-									kf.MoveTime(delta, prevsTime, double.MaxValue);
+									kf.MoveTime(delta, double.MinValue, nextsTime);
 									update.Union(GetUpdateRegion(p, s, kf));
 								}
-								else if ((kf.Time > prevsTime) && (kf != FMouseDownKeyFrame))
+								else if ((kf.Time < nextsTime) && (kf != FMouseDownKeyFrame))
 								{
-									kf.Time = prevsTime + ((kf.Time - prevsTime) / (oldStateTime - prevsTime)) * (FMouseDownKeyFrame.Time - prevsTime);
+									kf.Time = nextsTime - ((nextsTime - kf.Time) / (nextsTime - oldStateTime)) * (nextsTime - FMouseDownKeyFrame.Time);
 									update.Union(GetUpdateRegion(p, s, kf));
 								}
 							}
-						}
+						}						
 						else
 						{
 							foreach (TLBasePin p in FOutputPins)
