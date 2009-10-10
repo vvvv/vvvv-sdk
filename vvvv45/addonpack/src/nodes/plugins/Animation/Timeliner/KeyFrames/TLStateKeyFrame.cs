@@ -49,8 +49,6 @@ namespace VVVV.Nodes.Timeliner
 					FEvents.Add(new TLEvent(events[i]));
 			}
 		}
-		
-		
 
 		public TLStateKeyFrame(TLTransformer Transformer, double Time, string Name, string Events, float SliceTop, float SliceHeight): base(Transformer, Time, SliceTop, SliceHeight)
 		{
@@ -60,9 +58,15 @@ namespace VVVV.Nodes.Timeliner
 		
 		protected override Region GetRedrawArea()
 		{
-			Region flag = new Region(new RectangleF((float) (GetTimeAsX())-20, FSliceTop, 20, FSliceHeight));
+			//needs to be bigger than hitarea to include the white splitters covering all of slicearea
+			Region flag = new Region(new RectangleF((float) (GetTimeAsX())-20, 0, 25, 10000));
 			return flag;
 		}
 		
+		protected override Region GetHitArea()
+		{
+			Region flag = new Region(new RectangleF((float) (GetTimeAsX())-20, FSliceTop, 20, FSliceHeight));
+			return flag;
+		}		
 	}
 }
