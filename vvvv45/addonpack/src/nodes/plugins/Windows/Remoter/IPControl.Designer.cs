@@ -52,7 +52,7 @@ namespace VVVV.Nodes
 			this.VNCButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.VNCButton.Location = new System.Drawing.Point(32, 2);
 			this.VNCButton.Name = "VNCButton";
-			this.VNCButton.Size = new System.Drawing.Size(30, 15);
+			this.VNCButton.Size = new System.Drawing.Size(32, 15);
 			this.VNCButton.TabIndex = 0;
 			this.VNCButton.Text = "VNC";
 			this.VNCButton.UseVisualStyleBackColor = true;
@@ -106,7 +106,7 @@ namespace VVVV.Nodes
 			this.EXPButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.EXPButton.Location = new System.Drawing.Point(32, 17);
 			this.EXPButton.Name = "EXPButton";
-			this.EXPButton.Size = new System.Drawing.Size(30, 15);
+			this.EXPButton.Size = new System.Drawing.Size(32, 15);
 			this.EXPButton.TabIndex = 5;
 			this.EXPButton.Text = "EXP";
 			this.EXPButton.UseVisualStyleBackColor = true;
