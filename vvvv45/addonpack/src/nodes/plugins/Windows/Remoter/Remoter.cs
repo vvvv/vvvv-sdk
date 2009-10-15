@@ -50,7 +50,6 @@ using VVVV.Utils.VMath;
  * allow processes to be started with processaffinity
  * show local ip(s)
  * show computer names
- * history of last processes started in a pulldown for easier switching
  * monitoring (cpu, memory, running time...)
  * mediensteuerungs simulation: connects to port/ip udp or tcp and can send strings
  */
@@ -1054,18 +1053,18 @@ namespace VVVV.Nodes
 			this.SimulatorPortUpDown.Dock = System.Windows.Forms.DockStyle.Right;
 			this.SimulatorPortUpDown.Location = new System.Drawing.Point(220, 0);
 			this.SimulatorPortUpDown.Maximum = new decimal(new int[] {
-									65535,
-									0,
-									0,
-									0});
+			                                               	65535,
+			                                               	0,
+			                                               	0,
+			                                               	0});
 			this.SimulatorPortUpDown.Name = "SimulatorPortUpDown";
 			this.SimulatorPortUpDown.Size = new System.Drawing.Size(56, 20);
 			this.SimulatorPortUpDown.TabIndex = 3;
 			this.SimulatorPortUpDown.Value = new decimal(new int[] {
-									44444,
-									0,
-									0,
-									0});
+			                                             	44444,
+			                                             	0,
+			                                             	0,
+			                                             	0});
 			this.SimulatorPortUpDown.ValueChanged += new System.EventHandler(this.SimulatorPortUpDownValueChanged);
 			// 
 			// SimulatorConnectButton
@@ -1673,12 +1672,12 @@ namespace VVVV.Nodes
 		{
 			string filename = FVNCPath + "\\vncviewer.exe";
 			if (System.IO.File.Exists(filename))
-				Execute(filename, FVNCPath, IP + " /password " + VNCPassword.Text, false);
+				Execute(filename, FVNCPath, IP + " /password " + VNCPassword.Text, false, false);
 		}
 		
 		private void EXPButtonHandlerCB(string IP)
 		{
-			Execute("explorer.exe", "\\\\"+IP + TargetPath.Text, "\\\\"+IP + TargetPath.Text, false);
+			Execute("explorer.exe", "\\\\"+IP + TargetPath.Text, "\\\\"+IP + TargetPath.Text, false, false);
 		}
 		
 		private void AddIP(string IP, string MAC, bool Selected, string Groups)
@@ -2005,11 +2004,11 @@ namespace VVVV.Nodes
 		private string ExecutePsToolCommand(TPsToolCommand Command, string Host)
 		{
 			if (PsToolsUsername.Text == "")
-				return "Username for remote PC is not specified. See Settings!";
+				return "Error: Username for remote PC is not specified. See Settings!";
 			if (PsToolsPassword.Text == "")
-				return "Password for remote PC is not specified. See Settings!";
+				return "Error: Password for remote PC is not specified. See Settings!";
 			if (FPsToolsPath == "")
-				return "Path to PsTools is not specified. See Settings!";
+				return "Error: Path to PsTools is not specified. See Settings!";
 			
 			string filename = FPsToolsPath + "\\";
 			string workingdir = "";
@@ -2064,47 +2063,58 @@ namespace VVVV.Nodes
 			
 			string result = "";
 			if (System.IO.File.Exists(filename))
-				result = Execute(filename, workingdir, arguments, true);
+				result = Execute(filename, workingdir, arguments, true, false);
 			else
-				result = "File not found: " + filename;
+				result = "Error: File not found: " + filename;
 			
 			return result;
 		}
 		
-		private string Execute(string Filename, string WorkingDir, string Arguments, bool RedirectStandardOutput)
+		private string Execute(string Filename, string WorkingDir, string Arguments, bool RedirectStandardOutput, bool OutputImmediately)
 		{
 			Process proc = new Process();
 			proc.StartInfo.CreateNoWindow = true;
 			proc.StartInfo.RedirectStandardOutput = RedirectStandardOutput;
+			proc.StartInfo.RedirectStandardError = RedirectStandardOutput;
 			proc.StartInfo.UseShellExecute = false;
-			proc.EnableRaisingEvents = true;
+			//proc.EnableRaisingEvents = true;
 			proc.StartInfo.FileName = Filename;
 			proc.StartInfo.Arguments = Arguments;
 			proc.StartInfo.WorkingDirectory = WorkingDir;
+			if (OutputImmediately)
+			{
+				proc.OutputDataReceived += new DataReceivedEventHandler(ConsoleOutputHandler);
+				proc.ErrorDataReceived += new DataReceivedEventHandler(ConsoleOutputHandler);
+				//proc.o += new DataReceivedEventHandler(ConsoleOutputHandler);
+			}
 			
 			string result ="";
 			try
 			{
 				proc.Start();
 				
-				System.IO.StreamReader sOut;
-				
 				//this would block Remoter while a VNC viewer is running
 				if (RedirectStandardOutput)
 				{
-					sOut = proc.StandardOutput;
-					do
+					//
+					if (OutputImmediately)
 					{
-						result += sOut.ReadLine() + "\n";
+						proc.BeginOutputReadLine();
+						proc.BeginErrorReadLine();
 					}
-					while(!sOut.EndOfStream); //!proc.HasExited);
-					sOut.Close();
+					else
+					{	
+						System.IO.StreamReader sOut;
+						sOut = proc.StandardOutput;
+						do
+						{
+							if (!OutputImmediately)
+								result += sOut.ReadLine() + "\n";
+						}
+						while(!sOut.EndOfStream); //!proc.HasExited);
+						sOut.Close();
+					}
 				}
-				/*
-				if (!proc.HasExited)
-				{
-					proc.Kill();
-				}*/
 				
 				proc.Close();
 			}
@@ -2114,6 +2124,12 @@ namespace VVVV.Nodes
 			}
 			
 			return result;
+		}
+		
+		private void ConsoleOutputHandler(object sendingProcess,
+		                                         DataReceivedEventArgs outLine)
+		{
+			FHost.Log(TLogType.Message, outLine.Data);
 		}
 		
 		private void StartProcess()
@@ -2126,13 +2142,6 @@ namespace VVVV.Nodes
 			foreach(IPControl ipc in IPListPanel.Controls)
 				if ((ipc.IsSelected) && (ipc.IsOnline))
 			{
-				/*object[] theProcessToRun = {"notepad.exe"};
-				ConnectionOptions theConnection = new ConnectionOptions();
-				theConnection.Username = PsToolsUsername.Text;
-				theConnection.Password = PsToolsPassword.Text;
-				ManagementScope theScope = new ManagementScope("\\\\" + ipc.IP + "\\root\\cimv2", theConnection);
-				ManagementClass theClass = new ManagementClass(theScope, new ManagementPath("Win32_Process"), new ObjectGetOptions());
-				theClass.InvokeMethod("Create", theProcessToRun);*/
 				string result = ExecutePsToolCommand(TPsToolCommand.Execute, ipc.IP);
 				if (string.IsNullOrEmpty(result))
 					FHost.Log(TLogType.Error, result);
@@ -2189,6 +2198,7 @@ namespace VVVV.Nodes
 			
 			string[] ignores = ignorepattern.Split(';');
 			for (int i=0; i<ignores.Length; i++)
+				if (!string.IsNullOrEmpty(ignores[i]))
 				ignorepattern += " -if=" + ignores[i].Trim();
 			
 			string testonly = "";
@@ -2198,8 +2208,8 @@ namespace VVVV.Nodes
 			foreach(IPControl ipc in IPListPanel.Controls)
 				if ((ipc.IsSelected) && (ipc.IsOnline))
 			{
-				arguments = "\"" + SourcePath.Text + "\" \"\\\\" + ipc.IP + TargetPath.Text + "\"" + ignorepattern + testonly;
-				FHost.Log(TLogType.Message, Execute(FMirrorPath + "\\mirror.exe", FMirrorPath, arguments, true));
+				arguments = "\"" + SourcePath.Text + "\" \"\\\\" + ipc.IP + TargetPath.Text + "\"" + ignorepattern + testonly + " -sa";
+				Execute(FMirrorPath + "\\mirror.exe", FMirrorPath, arguments, true, true);
 			}
 		}
 		
@@ -2306,7 +2316,12 @@ namespace VVVV.Nodes
 						{
 							//this only detects processes that have vanished, not hanging ones.
 							string result = ExecutePsToolCommand(TPsToolCommand.Watch, ipc.IP);
-							if (result.Contains("process " + System.IO.Path.GetFileNameWithoutExtension(FWatchProcessName) + " was not found"))
+							if (result.Contains("Error: "))
+							{
+								ipc.AppIsOnline = false;
+								WatchWorker.ReportProgress(0, result);
+							}
+							else if (result.Contains("process " + System.IO.Path.GetFileNameWithoutExtension(FWatchProcessName) + " was not found"))
 							{
 								ipc.AppIsOnline = false;
 								
@@ -2753,7 +2768,7 @@ namespace VVVV.Nodes
 		{
 			string filename = FVNCPath + "\\vncviewer.exe";
 			if (System.IO.File.Exists(filename))
-				Execute(filename, FVNCPath, NewIPEdit.Text + " /password " + VNCPassword.Text, false);
+				Execute(filename, FVNCPath, NewIPEdit.Text + " /password " + VNCPassword.Text, false, false);
 		}
 	}
 
