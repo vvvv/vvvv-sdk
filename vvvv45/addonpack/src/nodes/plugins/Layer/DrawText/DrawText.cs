@@ -31,6 +31,7 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Collections;
+using System.Text;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils;
@@ -65,6 +66,7 @@ namespace VVVV.Nodes
 		private IValueIn FItalicInput;
 		private IValueIn FBoldInput;
 		private IStringIn FTextInput;
+		private IEnumIn FCharEncoding;
 		private IEnumIn FFontInput;
 		private IValueIn FSizeInput;
 		private IEnumIn FNormalizeInput;
@@ -73,7 +75,6 @@ namespace VVVV.Nodes
 		private IEnumIn FHorizontalAlignInput;
 		private IEnumIn FVerticalAlignInput;
 		private IEnumIn FTextRenderingModeInput;
-		//private IEnumIn FTransformSpace;
 		private IValueIn FEnabledInput;
 		
 		private IValueIn FShowBrush;
@@ -223,6 +224,8 @@ namespace VVVV.Nodes
 			FRectInput.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0, 0, false, false, false);
 			FHost.CreateStringInput("Text", TSliceMode.Dynamic, TPinVisibility.True, out FTextInput);
 			FTextInput.SetSubType("vvvv", false);
+			FHost.CreateEnumInput("Character Encoding", TSliceMode.Dynamic, TPinVisibility.True, out FCharEncoding);
+			FCharEncoding.SetSubType("CharEncoding");
 			FHost.CreateEnumInput("Font", TSliceMode.Single, TPinVisibility.True, out FFontInput);
 			FFontInput.SetSubType("SystemFonts");
 			FHost.CreateValueInput("Italic", 1, null, TSliceMode.Single, TPinVisibility.True, out FItalicInput);
@@ -234,9 +237,6 @@ namespace VVVV.Nodes
 			
 			FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorInput);
 			FColorInput.SetSubType(VColor.White, true);
-			
-			//rectangle
-			//clip
 			
 			FHost.CreateColorInput("Brush Color", TSliceMode.Dynamic, TPinVisibility.True, out FBrushColor);
 			FBrushColor.SetSubType(VColor.Black, true);
@@ -362,7 +362,7 @@ namespace VVVV.Nodes
 		
 		public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
 		{
-			//concerning the cut characters in some fonts, especially when rendered itallic see:
+			//concerning the cut characters in some fonts, especially when rendered italic see:
 			//http://www.gamedev.net/community/forums/topic.asp?topic_id=441338
 			//seems to be an official bug and we'd need to write our very own font rendering to fix that
 			
@@ -392,8 +392,7 @@ namespace VVVV.Nodes
 			switch (normalize)
 			{
 				case 0: preScale = VMath.Scale(1, -1, 1); break;  
-				//"off" means that text will be in pixels
-				
+				//"off" means that text will be in pixels				
 			}
 									
 			Matrix4x4 world;
@@ -413,6 +412,14 @@ namespace VVVV.Nodes
 				if (string.IsNullOrEmpty(text))
 					continue;
 				
+				string encoding;
+				FCharEncoding.GetString(i, out encoding);
+				if (encoding == "UTF8")
+				{
+					byte[] utf8bytes = Encoding.Default.GetBytes(text);
+					text = Encoding.UTF8.GetString(utf8bytes);
+				}
+
 				FColorInput.GetColor(i, out textColor);
 								
 				DrawTextFormat dtf = DrawTextFormat.NoClip | DrawTextFormat.ExpandTabs;
