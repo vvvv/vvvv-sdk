@@ -160,7 +160,8 @@ namespace VVVV.Nodes.Timeliner
 			float time;
 			
 			//draw state times
-			using(Pen p = new Pen(Color.FromArgb(255, 240, 240, 240)))
+			if (FTimer.Automata != null)
+				using(Pen p = new Pen(Color.FromArgb(255, 240, 240, 240)))
 				foreach (TLStateKeyFrame state in FTimer.Automata.OutputSlices[0].KeyFrames)
 			{
 				time = FTransformer.TransformPoint(new PointF((float) state.Time, 0)).X;
@@ -995,7 +996,7 @@ namespace VVVV.Nodes.Timeliner
 									update.Union(GetUpdateRegion(p, s, kf));
 								}
 							}
-						}						
+						}
 						else
 						{
 							foreach (TLBasePin p in FOutputPins)
