@@ -2197,6 +2197,7 @@ namespace VVVV.Nodes
 			ignorepattern = IgnorePattern.Text.TrimEnd(";".ToCharArray());
 			
 			string[] ignores = ignorepattern.Split(';');
+			ignorepattern = "";
 			for (int i=0; i<ignores.Length; i++)
 				if (!string.IsNullOrEmpty(ignores[i]))
 				ignorepattern += " -if=" + ignores[i].Trim();

@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 // change them to the information which is associated with the assembly
 // you compile.
 
-[assembly: AssemblyTitle("GUITemplatePlugin")]
-[assembly: AssemblyDescription("Template for a VVVV Plugin with GUI")]
+[assembly: AssemblyTitle("Remoter")]
+[assembly: AssemblyDescription("Tool for remoting a list of clients")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("VVVV group")]
-[assembly: AssemblyProduct("GUITemplatePlugin")]
+[assembly: AssemblyProduct("Remoter")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
