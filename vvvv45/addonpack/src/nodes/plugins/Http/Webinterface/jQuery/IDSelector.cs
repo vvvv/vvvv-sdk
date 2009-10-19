@@ -4,13 +4,13 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	class IDSelector : Selector
+	class IDSelector : StringSelector
 	{
 		protected string FID;
 
 		public IDSelector(string ID)
 		{
-			PID = ID;
+			FID = ID;
 		}
 
 		public string PID

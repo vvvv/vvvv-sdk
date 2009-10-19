@@ -4,15 +4,13 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public abstract class Selector : IScriptGenerator
+	public abstract class ObjectSelector : Selector
 	{
-		public static Selector SelectorAll = new RawStringSelector("*");
-		
-		public string PScript
+		public override string PScript
 		{
 			get
 			{
-				return("'" + PSelector + "'");
+				return (PSelector);
 			}
 		}
 

@@ -13,6 +13,16 @@ namespace VVVV.Nodes.jQuery
 			FJQuery = new JQuery();
 		}
 
+		public JQueryAnonymousFunction(JQuery jQuery)
+		{
+			FJQuery = jQuery;
+		}
+
+		public JQuery PJQuery
+		{
+			set { FJQuery = value; }
+		}
+
 		public override string PScript
 		{
 			get

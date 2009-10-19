@@ -4,13 +4,13 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	class ClassSelector : Selector
+	class ClassSelector : StringSelector
 	{
 		protected string FClassName;
 
 		public ClassSelector(string ClassName)
 		{
-			PClassName = ClassName;
+			FClassName = ClassName;
 		}
 
 		public string PClassName

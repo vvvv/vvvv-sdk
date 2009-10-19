@@ -8,6 +8,11 @@ namespace VVVV.Nodes.jQuery
 	{
 		private string FName;
 
+		public Method(string name)
+		{
+			FName = name;
+		}
+		
 		public string PName
 		{
 			set { FName = value; }

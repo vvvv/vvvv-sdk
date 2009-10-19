@@ -16,6 +16,11 @@ namespace VVVV.Nodes.jQuery
 			FArguments = new Queue<Argument>();
 		}
 
+		public void AddArgument(Argument argument)
+		{
+			FArguments.Enqueue(argument);
+		}
+
 		public string PScript
 		{
 			get
