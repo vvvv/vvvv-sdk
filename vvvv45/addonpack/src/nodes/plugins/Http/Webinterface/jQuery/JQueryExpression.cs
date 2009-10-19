@@ -11,13 +11,18 @@ namespace VVVV.Nodes.jQuery
 
 		public JQueryExpression()
 		{
-			FSelector = Selector.SelectorAll;
+			FSelector = Selector.AllSelector;
 			FMethodCalls = new Queue<MethodCall>();
 		}
 
 		public JQueryExpression(Selector selector)
 		{
 			FSelector = selector;
+		}
+
+		public void AddMethodCall(MethodCall methodCall)
+		{
+			FMethodCalls.Enqueue(methodCall);
 		}
 
 		public string PScript
