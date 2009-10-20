@@ -266,7 +266,22 @@ namespace VVVV.Nodes.HttpGUI
 							}}
 						}})";
 
-					JQuery jq = new JQuery();
+
+					JavaScriptGenericObject color = new JavaScriptGenericObject();
+					color.Set("r", new JavaScriptNumberObject(double.Parse(rgb[0])));
+					color.Set("g", new JavaScriptNumberObject(double.Parse(rgb[1])));
+					color.Set("b", new JavaScriptNumberObject(double.Parse(rgb[2])));
+					JavaScriptGenericObject jgo = new JavaScriptGenericObject();
+					jgo.Set("flat", new JavaScriptBooleanObject(true));
+					jgo.Set("color", color);
+					jgo.Set(updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete", new JavaScriptAnonymousFunction(new JQuery()));
+					JQueryExpression ex = new JQueryExpression(new IDSelector(SliceId[i])).ApplyMethodCall("ColorPicker", jgo);
+					
+
+
+					JQuery dr = JQuery.GenerateDocumentReady(new JQuery(ex));
+
+					/*JQuery jq = new JQuery();
 					JQueryExpression ex = new JQueryExpression(Selector.DocumentSelector);
 					MethodCall mc = new MethodCall(new Method("ready"));
 					JavaScriptAnonymousFunction jaf = new JavaScriptAnonymousFunction();
@@ -282,7 +297,7 @@ namespace VVVV.Nodes.HttpGUI
 
 					mc.AddArgument(new JavaScriptObjectArgument(jaf));
 					ex.AddMethodCall(mc);
-					jq.AddStatement(ex);
+					jq.AddStatement(ex);*/
 
 					//set the color picker to the color currently set on the server side, and setup the post method to fire
                     //at the appropriate time according to the Update Continuous pin
@@ -294,7 +309,7 @@ namespace VVVV.Nodes.HttpGUI
 					//insert the JQuery code into the javascript file for this page
 					JqueryFunction colorPickerInitializeFunction = new JqueryFunction(true, "#" + SliceId[i], colorPickerInitializeCode);
 					JqueryFunction colorPickerPositionAbsoluteFunction = new JqueryFunction(true, "#" + SliceId[i], colorPickerPositionAbsoluteCode);
-					SetJavaScript(i, colorPickerInitializeFunction.Text + colorPickerPositionAbsoluteFunction.Text + jq.PScript);
+					SetJavaScript(i, dr.PScript + colorPickerPositionAbsoluteFunction.Text);
 				}
 			}
 		}

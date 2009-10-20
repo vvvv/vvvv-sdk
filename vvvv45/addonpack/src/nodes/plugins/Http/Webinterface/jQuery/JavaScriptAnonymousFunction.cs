@@ -7,31 +7,38 @@ namespace VVVV.Nodes.jQuery
 	class JavaScriptAnonymousFunction : JavaScriptObject
 	{
 		protected JQuery FJQuery;
-
-		public JavaScriptAnonymousFunction()
-		{
-			FJQuery = new JQuery();
-		}
+		protected Queue<string> FArgumentNames;
 
 		public JavaScriptAnonymousFunction(JQuery jQuery)
 		{
-			PJQuery = jQuery;
+			
+			FJQuery = jQuery;
+			FArgumentNames = new Queue<string>();
 		}
 
 		public JQuery PJQuery
 		{
-			set
-			{
-				FJQuery = value;
-				FJQuery.PScriptBlock.Indent();
-			}
+			set { FJQuery = value; }
 		}
 
 		public override string PScript
 		{
 			get
 			{
-				string text = "function() {\n";
+				string text = "function(";
+				int queueLength = FArgumentNames.Count;
+				int count = 1;
+				foreach (string argument in FArgumentNames)
+				{
+					text += argument;
+					if (count != queueLength)
+					{
+						text += ",";
+					}
+					count++;
+				}
+				
+				text += ") {\n";
 				text += FJQuery.PScript;
 				text += "}";
 				return text;

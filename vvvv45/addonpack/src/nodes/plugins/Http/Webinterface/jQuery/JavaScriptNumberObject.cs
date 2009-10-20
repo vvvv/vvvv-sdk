@@ -13,11 +13,20 @@ namespace VVVV.Nodes.jQuery
 			FValue = value;
 		}
 
-		public double PValue
+		public JavaScriptNumberObject(int value)
+		{
+			FValue = (double)value;
+		}
+
+		public double PDoubleValue
 		{
 			set { FValue = value; }
 		}
-	
+
+		public int PIntValue
+		{
+			set { FValue = (double) value; }
+		}
 
 		public override string PScript
 		{

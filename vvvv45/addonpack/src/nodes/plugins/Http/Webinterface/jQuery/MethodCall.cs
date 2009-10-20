@@ -10,21 +10,38 @@ namespace VVVV.Nodes.jQuery
 		protected Method FMethod;
 		protected Queue<Argument> FArguments;
 
-		public MethodCall(Method method)
+		protected MethodCall()
 		{
-			FMethod = method;
 			FArguments = new Queue<Argument>();
 		}
+		
+		public MethodCall(Method method) : this()
+		{
+			FMethod = method;	
+		}
 
-		public MethodCall(String method)
+		public MethodCall(String method) : this()
 		{
 			FMethod = new Method(method);
-			FArguments = new Queue<Argument>();
 		}
 
-		public void AddArgument(Argument argument)
+		public MethodCall(String method, params object[] arguments) : this()
 		{
-			FArguments.Enqueue(argument);
+			FMethod = new Method(method);
+			for (int i = 0; i < arguments.Length; i++)
+			{
+				Argument argumentObject;
+				if (arguments[i] is Argument)
+				{
+					argumentObject = (Argument)arguments[i];
+				}
+				else
+				{
+					argumentObject = new JavaScriptObjectArgument(JavaScriptObject.ConvertToJavaScriptObject(arguments[i]));
+				}
+				FArguments.Enqueue(argumentObject);
+			}
+
 		}
 
 		public string PScript

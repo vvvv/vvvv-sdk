@@ -21,9 +21,10 @@ namespace VVVV.Nodes.jQuery
 			FMethodCalls = new Queue<MethodCall>();
 		}
 
-		public void AddMethodCall(MethodCall methodCall)
+		public JQueryExpression ApplyMethodCall(String methodName, params object[] arguments)
 		{
-			FMethodCalls.Enqueue(methodCall);
+			FMethodCalls.Enqueue(new MethodCall(methodName, arguments));
+			return this;
 		}
 
 		public string PScript

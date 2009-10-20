@@ -12,12 +12,8 @@ namespace VVVV.Nodes.jQuery
 		public static JQuery GenerateDocumentReady(JQuery handler)
 		{
 			JQueryExpression documentReadyExpression = new JQueryExpression(Selector.DocumentSelector);
-			MethodCall readyMethod = new MethodCall("ready");
-			readyMethod.AddArgument(new JavaScriptObjectArgument(new JavaScriptAnonymousFunction(handler)));
-			documentReadyExpression.AddMethodCall(readyMethod);
-
-			JQuery documentReady = new JQuery();
-			documentReady.AddStatement(documentReadyExpression);
+			documentReadyExpression.ApplyMethodCall("ready", new JavaScriptAnonymousFunction(handler));
+			JQuery documentReady = new JQuery(documentReadyExpression);
 			return documentReady;
 		}
 
@@ -25,6 +21,15 @@ namespace VVVV.Nodes.jQuery
 		{
 			FStatements = new Queue<JQueryExpression>();
 			FScriptBlock = new ScriptBlock();
+		}
+
+		public JQuery(params JQueryExpression[] statements) : this()
+		{
+			
+			for (int i = 0; i < statements.Length; i++)
+			{
+				FStatements.Enqueue(statements[i]);
+			}
 		}
 
 		public ScriptBlock PScriptBlock
@@ -40,10 +45,10 @@ namespace VVVV.Nodes.jQuery
 				string text = "";
 				foreach (JQueryExpression statement in FStatements)
 				{
-					for (int i = 0; i < FScriptBlock.PIndentSteps; i++)
+					/*for (int i = 0; i < FScriptBlock.PIndentSteps; i++)
 					{
 						text += "\t";
-					}
+					}*/
 					
 					text += statement.PScript + ";";
 					if (FScriptBlock.PDoBreakInternalLines)
@@ -53,11 +58,6 @@ namespace VVVV.Nodes.jQuery
 				}
 				return text;
 			}
-		}
-
-		public void AddStatement(JQueryExpression statement)
-		{
-			FStatements.Enqueue(statement);
 		}
 	}
 }

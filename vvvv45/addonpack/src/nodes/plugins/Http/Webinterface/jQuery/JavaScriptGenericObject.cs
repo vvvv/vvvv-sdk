@@ -12,7 +12,7 @@ namespace VVVV.Nodes.jQuery
 		public JavaScriptGenericObject ()
 		{
 			FJscriptDictionaryObject = new Dictionary<string, JavaScriptObject>();
-			FScriptBlock = new ScriptBlock(0, false);
+			FScriptBlock = new ScriptBlock(false);
 		}
 
 		public JavaScriptGenericObject(ScriptBlock scriptBlock)
