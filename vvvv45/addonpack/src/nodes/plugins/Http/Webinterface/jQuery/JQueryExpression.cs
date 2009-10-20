@@ -18,6 +18,7 @@ namespace VVVV.Nodes.jQuery
 		public JQueryExpression(Selector selector)
 		{
 			FSelector = selector;
+			FMethodCalls = new Queue<MethodCall>();
 		}
 
 		public void AddMethodCall(MethodCall methodCall)

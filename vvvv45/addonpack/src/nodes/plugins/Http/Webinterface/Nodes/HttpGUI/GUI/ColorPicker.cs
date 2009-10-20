@@ -6,6 +6,7 @@ using System.Xml;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Webinterface.Utilities;
+using VVVV.Nodes.jQuery;
 
 using System.Diagnostics;
 
@@ -265,6 +266,24 @@ namespace VVVV.Nodes.HttpGUI
 							}}
 						}})";
 
+					JQuery jq = new JQuery();
+					JQueryExpression ex = new JQueryExpression(Selector.DocumentSelector);
+					MethodCall mc = new MethodCall(new Method("ready"));
+					JavaScriptAnonymousFunction jaf = new JavaScriptAnonymousFunction();
+
+					JQueryExpression sb = new JQueryExpression(new RawStringSelector("body"));
+					MethodCall mc2 = new MethodCall(new Method("css"));
+					mc2.AddArgument(new JavaScriptObjectArgument(new JavaScriptStringObject("background-color")));
+					mc2.AddArgument(new JavaScriptObjectArgument(new JavaScriptStringObject("#FF0000")));
+					sb.AddMethodCall(mc2);
+					JQuery jq2 = new JQuery();
+					jq2.AddStatement(sb);
+					jaf.PJQuery = jq2;
+
+					mc.AddArgument(new JavaScriptObjectArgument(jaf));
+					ex.AddMethodCall(mc);
+					jq.AddStatement(ex);
+
 					//set the color picker to the color currently set on the server side, and setup the post method to fire
                     //at the appropriate time according to the Update Continuous pin
 					colorPickerInitializeCode = String.Format(colorPickerInitializeCode, rgb[0], rgb[1], rgb[2], updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete");
@@ -275,7 +294,7 @@ namespace VVVV.Nodes.HttpGUI
 					//insert the JQuery code into the javascript file for this page
 					JqueryFunction colorPickerInitializeFunction = new JqueryFunction(true, "#" + SliceId[i], colorPickerInitializeCode);
 					JqueryFunction colorPickerPositionAbsoluteFunction = new JqueryFunction(true, "#" + SliceId[i], colorPickerPositionAbsoluteCode);
-					SetJavaScript(i, colorPickerInitializeFunction.Text + colorPickerPositionAbsoluteFunction.Text);
+					SetJavaScript(i, colorPickerInitializeFunction.Text + colorPickerPositionAbsoluteFunction.Text + jq.PScript);
 				}
 			}
 		}

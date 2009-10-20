@@ -4,30 +4,34 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	class JQueryAnonymousFunction : JavaScriptObject
+	class JavaScriptAnonymousFunction : JavaScriptObject
 	{
 		protected JQuery FJQuery;
 
-		public JQueryAnonymousFunction()
+		public JavaScriptAnonymousFunction()
 		{
 			FJQuery = new JQuery();
 		}
 
-		public JQueryAnonymousFunction(JQuery jQuery)
+		public JavaScriptAnonymousFunction(JQuery jQuery)
 		{
-			FJQuery = jQuery;
+			PJQuery = jQuery;
 		}
 
 		public JQuery PJQuery
 		{
-			set { FJQuery = value; }
+			set
+			{
+				FJQuery = value;
+				FJQuery.Indent();
+			}
 		}
 
 		public override string PScript
 		{
 			get
 			{
-				string text = "function() {";
+				string text = "function() {\n";
 				text += FJQuery.PScript;
 				text += "}";
 				return text;
