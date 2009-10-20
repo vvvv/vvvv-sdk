@@ -56,7 +56,7 @@ namespace VVVV.Nodes.jQuery
 				text += argument.PScript(indentSteps, breakInternalLines);
 				if (count != queueLength)
 				{
-					text += ",";
+					text += ", ";
 				}
 				count++;
 			}

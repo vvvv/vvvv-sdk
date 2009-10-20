@@ -273,13 +273,13 @@ namespace VVVV.Nodes.HttpGUI
 					color.Set("b", new JavaScriptNumberObject(double.Parse(rgb[2])));
 					JavaScriptGenericObject jgo = new JavaScriptGenericObject();
 					jgo.Set("flat", new JavaScriptBooleanObject(true));
-					jgo.Set(updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete", new JavaScriptAnonymousFunction(new JQuery()));
+					jgo.Set(updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete", new JavaScriptAnonymousFunction(new JQuery(), "hsb", "hex", "rgb"));
 					jgo.Set("color", color);
 					JQueryExpression ex = new JQueryExpression(new IDSelector(SliceId[i])).ApplyMethodCall("ColorPicker", jgo);
 					
 
 
-					JQuery dr = JQuery.GenerateDocumentReady(new JQuery());
+					JQuery dr = JQuery.GenerateDocumentReady(new JQuery(ex));
 
 					/*JQuery jq = new JQuery();
 					JQueryExpression ex = new JQueryExpression(Selector.DocumentSelector);

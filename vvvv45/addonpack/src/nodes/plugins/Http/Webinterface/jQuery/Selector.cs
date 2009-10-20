@@ -8,7 +8,7 @@ namespace VVVV.Nodes.jQuery
 	{
 		public static Selector AllSelector = new RawStringSelector("*");
 		public static Selector DocumentSelector = new NameObjectSelector("document");
-
+		public static Selector ThisSelector = new NameObjectSelector("this");
 
 
 		#region IScriptGenerator Members

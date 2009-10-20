@@ -7,13 +7,16 @@ namespace VVVV.Nodes.jQuery
 	class JavaScriptAnonymousFunction : JavaScriptObject
 	{
 		protected JQuery FJQuery;
-		protected Queue<string> FArgumentNames;
+		protected Queue<JavaScriptVariableObject> FArgumentNames;
 
-		public JavaScriptAnonymousFunction(JQuery jQuery)
+		public JavaScriptAnonymousFunction(JQuery jQuery, params string[] argumentNames)
 		{
-			
 			FJQuery = jQuery;
-			FArgumentNames = new Queue<string>();
+			FArgumentNames = new Queue<JavaScriptVariableObject>();
+			for (int i = 0; i < argumentNames.Length; i++)
+			{
+				FArgumentNames.Enqueue(new JavaScriptVariableObject(argumentNames[i]));
+			}
 		}
 
 		public JQuery PJQuery
@@ -26,12 +29,12 @@ namespace VVVV.Nodes.jQuery
 			string text = "function(";
 			int queueLength = FArgumentNames.Count;
 			int count = 1;
-			foreach (string argument in FArgumentNames)
+			foreach (JavaScriptVariableObject argument in FArgumentNames)
 			{
-				text += argument;
+				text += argument.PScript(indentSteps, breakInternalLines);
 				if (count != queueLength)
 				{
-					text += ",";
+					text += ", ";
 				}
 				count++;
 			}
