@@ -18,13 +18,13 @@ namespace VVVV.Nodes.jQuery
 			set { FName = value; }
 		}
 
-		public string PScript
+		#region IScriptGenerator Members
+
+		public string PScript(int indentSteps, bool breakInternalLines)
 		{
-			get
-			{
-				return FName;
-			}
+			return FName;
 		}
 
+		#endregion
 	}
 }

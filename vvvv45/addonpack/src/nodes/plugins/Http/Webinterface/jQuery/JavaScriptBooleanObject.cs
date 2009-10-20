@@ -17,11 +17,10 @@ namespace VVVV.Nodes.jQuery
 		{
 			set { FValue = value; }
 		}
-	
 
-		public override string PScript
+		public override string PScript(int indentSteps, bool breakInternalLines)
 		{
-			get { return FValue.ToString().ToLower(); }
+			return FValue.ToString().ToLower();
 		}
 	}
 }

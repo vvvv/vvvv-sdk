@@ -28,9 +28,9 @@ namespace VVVV.Nodes.jQuery
 			set { FValue = (double) value; }
 		}
 
-		public override string PScript
+		public override string PScript(int indentSteps, bool breakInternalLines)
 		{
-			get { return FValue.ToString(); }
+			return FValue.ToString();
 		}
 	}
 }

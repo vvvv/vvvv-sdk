@@ -26,33 +26,50 @@ namespace VVVV.Nodes.jQuery
 			FJscriptDictionaryObject.Add(key, value);
 		}
 
-		public override string PScript
-		{	
-			get
+
+
+		public override string PScript(int indentSteps, bool breakInternalLines)
+		{
+			string text = "{";
+			if (breakInternalLines)
 			{
-				string text = "{";
-				int dictionaryLength = FJscriptDictionaryObject.Count;
-				int count = 1;
-				foreach (KeyValuePair<string, JavaScriptObject> kvp in FJscriptDictionaryObject)
-				{
-					text += kvp.Key + " : " + kvp.Value.PScript;
-					if (count != dictionaryLength)
-					{
-						text += ",";
-						if (!FScriptBlock.PDoBreakInternalLines)
-						{
-							text += " ";
-						}
-					}
-					if (FScriptBlock.PDoBreakInternalLines)
-					{
-						text += "\n";
-					}
-					count++;
-				}
-				text += "}";
-				return text;
+				text += "\n";
 			}
+			int dictionaryLength = FJscriptDictionaryObject.Count;
+			int count = 1;
+			foreach (KeyValuePair<string, JavaScriptObject> kvp in FJscriptDictionaryObject)
+			{
+				if (breakInternalLines)
+				{
+					for (int i = 0; i < indentSteps + 1; i++)
+					{
+						text += "\t";
+					}
+				}
+				text += kvp.Key + " : " + kvp.Value.PScript(indentSteps + 1, kvp.Value is JavaScriptAnonymousFunction && breakInternalLines);
+				if (count != dictionaryLength)
+				{
+					text += ",";
+					if (!breakInternalLines)
+					{
+						text += " ";
+					}
+				}
+				if (breakInternalLines)
+				{
+					text += "\n";
+				}
+				count++;
+			}
+			if (breakInternalLines)
+			{
+				for (int i = 0; i < indentSteps; i++)
+				{
+					text += "\t";
+				}
+			}
+			text += "}";
+			return text;
 		}
 	}
 }

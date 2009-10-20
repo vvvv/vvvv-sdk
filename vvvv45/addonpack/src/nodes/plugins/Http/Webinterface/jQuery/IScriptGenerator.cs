@@ -16,9 +16,6 @@ namespace VVVV.Nodes.jQuery
 		/// <summary>	 Returns all generated script as a string. </summary>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		string PScript
-		{
-			get;
-		}
+		string PScript(int indentSteps, bool breakInternalLines);
 	}
 }

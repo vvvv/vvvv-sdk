@@ -6,10 +6,10 @@ namespace VVVV.Nodes.jQuery
 {
 	public abstract class Argument : IScriptGenerator
 	{
+		#region IScriptGenerator Members
 
-		public abstract string PScript
-		{
-			get;
-		}
+		public abstract string PScript(int indentSteps, bool breakInternalLines);
+
+		#endregion
 	}
 }

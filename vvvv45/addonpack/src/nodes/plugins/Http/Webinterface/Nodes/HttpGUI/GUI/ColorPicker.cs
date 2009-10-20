@@ -273,13 +273,13 @@ namespace VVVV.Nodes.HttpGUI
 					color.Set("b", new JavaScriptNumberObject(double.Parse(rgb[2])));
 					JavaScriptGenericObject jgo = new JavaScriptGenericObject();
 					jgo.Set("flat", new JavaScriptBooleanObject(true));
-					jgo.Set("color", color);
 					jgo.Set(updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete", new JavaScriptAnonymousFunction(new JQuery()));
+					jgo.Set("color", color);
 					JQueryExpression ex = new JQueryExpression(new IDSelector(SliceId[i])).ApplyMethodCall("ColorPicker", jgo);
 					
 
 
-					JQuery dr = JQuery.GenerateDocumentReady(new JQuery(ex));
+					JQuery dr = JQuery.GenerateDocumentReady(new JQuery());
 
 					/*JQuery jq = new JQuery();
 					JQueryExpression ex = new JQueryExpression(Selector.DocumentSelector);
@@ -309,7 +309,7 @@ namespace VVVV.Nodes.HttpGUI
 					//insert the JQuery code into the javascript file for this page
 					JqueryFunction colorPickerInitializeFunction = new JqueryFunction(true, "#" + SliceId[i], colorPickerInitializeCode);
 					JqueryFunction colorPickerPositionAbsoluteFunction = new JqueryFunction(true, "#" + SliceId[i], colorPickerPositionAbsoluteCode);
-					SetJavaScript(i, dr.PScript + colorPickerPositionAbsoluteFunction.Text);
+					SetJavaScript(i, dr.PScript(1, true) + colorPickerPositionAbsoluteFunction.Text);
 				}
 			}
 		}

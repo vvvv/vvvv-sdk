@@ -12,10 +12,10 @@ namespace VVVV.Nodes.jQuery
 		{
 			FJavaScriptObject = javaScriptObject;
 		}
-		
-		public override string PScript
+
+		public override string PScript(int indentSteps, bool breakInternalLines)
 		{
-			get { return FJavaScriptObject.PScript; }
+			return FJavaScriptObject.PScript(indentSteps, breakInternalLines);
 		}
 	}
 }

@@ -44,25 +44,26 @@ namespace VVVV.Nodes.jQuery
 
 		}
 
-		public string PScript
+		#region IScriptGenerator Members
+
+		public string PScript(int indentSteps, bool breakInternalLines)
 		{
-			get
+			string text = '.' + FMethod.PScript(indentSteps, breakInternalLines) + '(';
+			int queueLength = FArguments.Count;
+			int count = 1;
+			foreach (Argument argument in FArguments)
 			{
-				string text = '.' + FMethod.PScript + '(';
-				int queueLength = FArguments.Count;
-				int count = 1;
-				foreach (Argument argument in FArguments)
+				text += argument.PScript(indentSteps, breakInternalLines);
+				if (count != queueLength)
 				{
-					text += argument.PScript;
-					if (count != queueLength)
-					{
-						text += ",";
-					}
-					count++;
+					text += ",";
 				}
-				text += ')';
-				return text;
+				count++;
 			}
+			text += ')';
+			return text;
 		}
+
+		#endregion
 	}
 }

@@ -6,17 +6,14 @@ namespace VVVV.Nodes.jQuery
 {
 	public abstract class StringSelector : Selector
 	{
-		public override string PScript
-		{
-			get
-			{
-				return("'" + PSelector + "'");
-			}
-		}
-
 		protected abstract string PSelector
 		{
 			get;
+		}
+
+		public override string PScript(int indentSteps, bool breakInternalLines)
+		{
+			return ("'" + PSelector + "'");
 		}
 	}
 }

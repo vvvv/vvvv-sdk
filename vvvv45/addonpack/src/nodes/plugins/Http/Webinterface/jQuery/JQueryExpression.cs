@@ -27,17 +27,18 @@ namespace VVVV.Nodes.jQuery
 			return this;
 		}
 
-		public string PScript
+		#region IScriptGenerator Members
+
+		public string PScript(int indentSteps, bool breakInternalLines)
 		{
-			get
+			string text = "$(" + FSelector.PScript(indentSteps, breakInternalLines) + ")";
+			foreach (MethodCall methodCall in FMethodCalls)
 			{
-				string text = "$(" + FSelector.PScript + ")";
-				foreach (MethodCall methodCall in FMethodCalls)
-				{
-					text += methodCall.PScript;
-				}
-				return text;
+				text += methodCall.PScript(indentSteps, breakInternalLines);
 			}
+			return text;
 		}
+
+		#endregion
 	}
 }

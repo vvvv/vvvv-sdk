@@ -36,28 +36,24 @@ namespace VVVV.Nodes.jQuery
 		{
 			get { return FScriptBlock; }
 		}
-	
 
-		public string PScript
+		#region IScriptGenerator Members
+
+		public string PScript(int indentSteps, bool breakInternalLines)
 		{
-			get
+			string text = "";
+			foreach (JQueryExpression statement in FStatements)
 			{
-				string text = "";
-				foreach (JQueryExpression statement in FStatements)
+				for (int i = 0; i < indentSteps; i++)
 				{
-					/*for (int i = 0; i < FScriptBlock.PIndentSteps; i++)
-					{
-						text += "\t";
-					}*/
-					
-					text += statement.PScript + ";";
-					if (FScriptBlock.PDoBreakInternalLines)
-					{
-						text += "\n";
-					}
+					text += "\t";
 				}
-				return text;
+
+				text += statement.PScript(indentSteps, breakInternalLines) + ";";
 			}
+			return text;
 		}
+
+		#endregion
 	}
 }
