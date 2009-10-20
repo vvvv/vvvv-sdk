@@ -7,26 +7,16 @@ namespace VVVV.Nodes.jQuery
 	class JavaScriptGenericObject : JavaScriptObject
 	{
 		protected Dictionary<String, JavaScriptObject> FJscriptDictionaryObject;
-		protected ScriptBlock FScriptBlock;
 			
 		public JavaScriptGenericObject ()
 		{
 			FJscriptDictionaryObject = new Dictionary<string, JavaScriptObject>();
-			FScriptBlock = new ScriptBlock(false);
-		}
-
-		public JavaScriptGenericObject(ScriptBlock scriptBlock)
-		{
-			FJscriptDictionaryObject = new Dictionary<string, JavaScriptObject>();
-			FScriptBlock = scriptBlock;
 		}
 
 		public void Set(string key, JavaScriptObject value)
 		{
 			FJscriptDictionaryObject.Add(key, value);
 		}
-
-
 
 		public override string PScript(int indentSteps, bool breakInternalLines)
 		{

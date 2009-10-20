@@ -4,25 +4,25 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	class NameObjectSelector : ObjectSelector
+	class RawStringSelector : StringSelector
 	{
-		protected string FObjectName;
+		protected string FRawString;
 		
-		public NameObjectSelector(string objectName)
+		public RawStringSelector(string rawString)
 		{
-			FObjectName = objectName;
+			FRawString = rawString;
 		}
 
-		public string PObjectName
+		public string PRawString
 		{
-			set { FObjectName = value; }
+			set { FRawString = value; }
 		}
 
 		protected override string PSelector
 		{
 			get
 			{
-				return FObjectName;
+				return FRawString;
 			}
 		}
 	}

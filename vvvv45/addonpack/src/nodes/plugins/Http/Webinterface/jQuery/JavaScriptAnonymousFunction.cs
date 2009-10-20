@@ -9,6 +9,11 @@ namespace VVVV.Nodes.jQuery
 		protected JQuery FJQuery;
 		protected Queue<JavaScriptVariableObject> FArgumentNames;
 
+		public JavaScriptAnonymousFunction() : this(new JQuery())
+		{
+
+		}
+		
 		public JavaScriptAnonymousFunction(JQuery jQuery, params string[] argumentNames)
 		{
 			FJQuery = jQuery;

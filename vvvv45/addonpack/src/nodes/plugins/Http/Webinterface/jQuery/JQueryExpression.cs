@@ -9,10 +9,8 @@ namespace VVVV.Nodes.jQuery
 		protected Selector FSelector;
 		protected Queue<MethodCall> FMethodCalls;
 
-		public JQueryExpression()
+		public JQueryExpression() : this(Selector.AllSelector)
 		{
-			FSelector = Selector.AllSelector;
-			FMethodCalls = new Queue<MethodCall>();
 		}
 
 		public JQueryExpression(Selector selector)

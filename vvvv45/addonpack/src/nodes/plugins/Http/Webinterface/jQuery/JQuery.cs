@@ -7,7 +7,6 @@ namespace VVVV.Nodes.jQuery
 	class JQuery : IScriptGenerator
 	{
 		protected Queue<JQueryExpression> FStatements;
-		protected ScriptBlock FScriptBlock;
 
 		public static JQuery GenerateDocumentReady(JQuery handler)
 		{
@@ -20,21 +19,14 @@ namespace VVVV.Nodes.jQuery
 		public JQuery()
 		{
 			FStatements = new Queue<JQueryExpression>();
-			FScriptBlock = new ScriptBlock();
 		}
 
 		public JQuery(params JQueryExpression[] statements) : this()
 		{
-			
 			for (int i = 0; i < statements.Length; i++)
 			{
 				FStatements.Enqueue(statements[i]);
 			}
-		}
-
-		public ScriptBlock PScriptBlock
-		{
-			get { return FScriptBlock; }
 		}
 
 		#region IScriptGenerator Members
