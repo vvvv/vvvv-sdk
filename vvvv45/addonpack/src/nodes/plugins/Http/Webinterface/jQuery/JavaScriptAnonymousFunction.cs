@@ -23,7 +23,7 @@ namespace VVVV.Nodes.jQuery
 			set
 			{
 				FJQuery = value;
-				FJQuery.Indent();
+				FJQuery.PScriptBlock.Indent();
 			}
 		}
 

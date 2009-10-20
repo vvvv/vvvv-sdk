@@ -16,6 +16,12 @@ namespace VVVV.Nodes.jQuery
 			FArguments = new Queue<Argument>();
 		}
 
+		public MethodCall(String method)
+		{
+			FMethod = new Method(method);
+			FArguments = new Queue<Argument>();
+		}
+
 		public void AddArgument(Argument argument)
 		{
 			FArguments.Enqueue(argument);
