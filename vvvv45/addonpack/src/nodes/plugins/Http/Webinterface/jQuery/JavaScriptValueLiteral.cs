@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	class JavaScriptValueLiteral<T> : JavaScriptObject
+	public class JavaScriptValueLiteral<T> : JavaScriptObject
 	{
 		protected T FValue;
 
@@ -22,7 +22,7 @@ namespace VVVV.Nodes.jQuery
 		public override string PScript(int indentSteps, bool breakInternalLines)
 		{
 			string stringValue = FValue as string;
-			if (FValue != null)
+			if (stringValue != null)
 			{
 				return "'" + stringValue + "'";
 			}

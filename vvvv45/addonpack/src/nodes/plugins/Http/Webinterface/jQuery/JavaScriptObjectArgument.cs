@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	class JavaScriptObjectArgument : Argument
+	public class JavaScriptObjectArgument : Argument
 	{
 		JavaScriptObject FJavaScriptObject;
 

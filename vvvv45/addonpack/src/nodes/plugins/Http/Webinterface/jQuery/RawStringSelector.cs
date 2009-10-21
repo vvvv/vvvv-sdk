@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	class RawStringSelector : StringSelector
+	public class RawStringSelector : StringSelector
 	{
 		protected string FRawString;
 		

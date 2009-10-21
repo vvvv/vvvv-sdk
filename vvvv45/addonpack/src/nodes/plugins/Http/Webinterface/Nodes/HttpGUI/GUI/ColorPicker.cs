@@ -268,11 +268,11 @@ namespace VVVV.Nodes.HttpGUI
 
 
 					JavaScriptGenericObject color = new JavaScriptGenericObject();
-					color.Set("r", new JavaScriptNumberObject(double.Parse(rgb[0])));
-					color.Set("g", new JavaScriptNumberObject(double.Parse(rgb[1])));
-					color.Set("b", new JavaScriptNumberObject(double.Parse(rgb[2])));
+					color.Set("r", JavaScriptValueLiteralFactory.Create(double.Parse(rgb[0])));
+					color.Set("g", JavaScriptValueLiteralFactory.Create(double.Parse(rgb[1])));
+					color.Set("b", JavaScriptValueLiteralFactory.Create(double.Parse(rgb[2])));
 					JavaScriptGenericObject jgo = new JavaScriptGenericObject();
-					jgo.Set("flat", new JavaScriptBooleanObject(true));
+					jgo.Set("flat", JavaScriptValueLiteralFactory.Create(true));
 					jgo.Set(updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete", new JavaScriptAnonymousFunction(new JQuery(), "hsb", "hex", "rgb"));
 					jgo.Set("color", color);
 					

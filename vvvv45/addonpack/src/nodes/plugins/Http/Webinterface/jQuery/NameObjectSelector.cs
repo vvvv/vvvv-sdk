@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	class NameObjectSelector : ObjectSelector
+	public class NameObjectSelector : ObjectSelector
 	{
 		protected string FObjectName;
 		

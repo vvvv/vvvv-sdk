@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	class MethodCall : IScriptGenerator
+	public class MethodCall : IScriptGenerator
 	{
 		protected Method FMethod;
 		protected Queue<Argument> FArguments;

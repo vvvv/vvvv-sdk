@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	class JQuery : IScriptGenerator
+	public class JQuery : IScriptGenerator
 	{
 		protected Queue<JQueryExpression> FStatements;
 

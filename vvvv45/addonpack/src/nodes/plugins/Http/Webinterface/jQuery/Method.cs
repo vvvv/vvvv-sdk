@@ -4,9 +4,9 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	class Method : IScriptGenerator
+	public class Method : IScriptGenerator
 	{
-		private string FName;
+		protected string FName;
 
 		public Method(string name)
 		{

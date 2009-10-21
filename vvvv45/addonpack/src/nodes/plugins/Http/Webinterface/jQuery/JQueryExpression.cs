@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	class JQueryExpression : IScriptGenerator
+	public class JQueryExpression : IScriptGenerator
 	{
 		protected Selector FSelector;
 		protected Queue<MethodCall> FMethodCalls;

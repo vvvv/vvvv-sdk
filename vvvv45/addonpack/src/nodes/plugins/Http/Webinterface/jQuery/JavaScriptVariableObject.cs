@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	class JavaScriptVariableObject : JavaScriptObject
+	public class JavaScriptVariableObject : JavaScriptObject
 	{
 		protected string FVariableName;
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	class JavaScriptAnonymousFunction : JavaScriptObject
+	public class JavaScriptAnonymousFunction : JavaScriptObject
 	{
 		protected JQuery FJQuery;
 		protected Queue<JavaScriptVariableObject> FArgumentNames;

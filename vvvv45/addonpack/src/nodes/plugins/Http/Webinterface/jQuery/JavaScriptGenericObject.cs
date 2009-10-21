@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	class JavaScriptGenericObject : JavaScriptObject
+	public class JavaScriptGenericObject : JavaScriptObject
 	{
 		protected Dictionary<String, JavaScriptObject> FJscriptDictionaryObject;
 			

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	class IDSelector : StringSelector
+	public class IDSelector : StringSelector
 	{
 		protected string FID;
 
