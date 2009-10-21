@@ -75,33 +75,36 @@ namespace VVVV.Webinterface.HttpServer
             bool FoundFileFlag = false;
 
             //checks for evers path defined by vvvv if there is an file on disc
-            foreach (string pPath in pPaths)
+            if (pPaths != null)
             {
-                //Changes the HTML References to windows file references
-                pFileLocation = Regex.Replace(pFileLocation, @"/", @"\");
-
-                //delets the first backslashes because it throws an wrong path in Path.Combine
-                pFileLocation = Regex.Replace(pFileLocation, @"^\\", ""); 
-                string newPath = Path.Combine(pPath,pFileLocation);
-
-                //check the combined absolute path
-                if (File.Exists(newPath))
+                foreach (string pPath in pPaths)
                 {
-                    FoundFileFlag = true;
-                    LoadFile(newPath);
-                }
-                else
-                {
-                    //searches in every root folder if there is the requested file 
-                    DirectoryInfo tDInfo = new DirectoryInfo(pPath);
-                    FileInfo[] tFileInfoList = tDInfo.GetFiles();
+                    //Changes the HTML References to windows file references
+                    pFileLocation = Regex.Replace(pFileLocation, @"/", @"\");
 
-                    foreach (FileInfo pFileInfo in tFileInfoList)
+                    //delets the first backslashes because it throws an wrong path in Path.Combine
+                    pFileLocation = Regex.Replace(pFileLocation, @"^\\", "");
+                    string newPath = Path.Combine(pPath, pFileLocation);
+
+                    //check the combined absolute path
+                    if (File.Exists(newPath))
                     {
-                        if (pFileInfo.Name == pFilename)
+                        FoundFileFlag = true;
+                        LoadFile(newPath);
+                    }
+                    else
+                    {
+                        //searches in every root folder if there is the requested file 
+                        DirectoryInfo tDInfo = new DirectoryInfo(pPath);
+                        FileInfo[] tFileInfoList = tDInfo.GetFiles();
+
+                        foreach (FileInfo pFileInfo in tFileInfoList)
                         {
-                            FoundFileFlag = true;
-                            LoadFile(pFileInfo.FullName);
+                            if (pFileInfo.Name == pFilename)
+                            {
+                                FoundFileFlag = true;
+                                LoadFile(pFileInfo.FullName);
+                            }
                         }
                     }
                 }

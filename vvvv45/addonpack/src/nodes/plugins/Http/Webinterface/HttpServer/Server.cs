@@ -45,11 +45,8 @@ namespace VVVV.Webinterface.HttpServer {
         IPEndPoint mIpLocal;
         private int mBacklog;
         private bool mShuttingDown = false;
-        //private int convID;
         private Timer mLostTimer;
         private const int mTimerTimeout = 300000;
-        //private const int mTimerTimeout = 3000;
-        private const int mTimeoutMinutes = 3;
         private const int numThreads = 1;
         protected Hashtable connectedHT = new Hashtable();
         protected ArrayList connectedSocks;
@@ -60,8 +57,8 @@ namespace VVVV.Webinterface.HttpServer {
 
         //Thread signal.
         private ManualResetEvent allDone = new ManualResetEvent(false);
-        private Thread[] serverThread = new Thread[numThreads];
-        private AutoResetEvent[] threadEnd = new AutoResetEvent[numThreads];
+        private Thread serverThread;
+        private AutoResetEvent threadEnd;
         private Object thisLock = new Object();
 
 
@@ -74,17 +71,11 @@ namespace VVVV.Webinterface.HttpServer {
 
         
         
-       
+      
 
         #region toSort
 
 
-        //Server(DNS)
-        private string mName;
-        private ItemsToServ mItemsToServ;
-
-        private List<string> mFileList;
-        private List<string> mFileNames;
         private ArrayList mClientSocketList = new ArrayList();
         private SortedList<string, Socket> mIndexSocketList = new SortedList<string, Socket>();
         private SortedList<string, Socket> mDummySocketList = new SortedList<string, Socket>();
@@ -105,17 +96,6 @@ namespace VVVV.Webinterface.HttpServer {
 
 
         #region properties
-
-        /// <summary>
-        /// Name of the Server
-        /// </summary>
-        public string Name
-        {
-            get
-            {
-                return mName;
-            }
-        }
 
         public SortedList<string,string> VVVVCssFile
         {
@@ -165,40 +145,6 @@ namespace VVVV.Webinterface.HttpServer {
             }
         }
 
-
-
-        /// <summary>
-        /// sets the port of the Server
-        /// </summary>
-        public int Port 
-        { 
-            set 
-            {
-                mIpLocal.Port = value;
-                ////Debug.WriteLine("set Server to Port: " + value.ToString());
-            } 
-        }
-
-        public List<string> FileList
-        {
-            get
-            {
-                return mFileList;
-            }
-        }
-        /// <summary>
-        /// sets the folder to serve
-        /// </summary>
-
-        public List<string> FileNames
-        {
-            get
-            {
-                return mFileNames;
-            }
-        }
-
-
         public bool Init
         {
             get
@@ -220,17 +166,12 @@ namespace VVVV.Webinterface.HttpServer {
         /// </summary>
         /// <param name="Port">Server Port</param>
         /// <param name="Backlog">Backlog </param>
-        /// <param name="pSubject">the subject class which cooperates with the server</param>
-        /// <param name="pName">name of the server</param>
-        public Server(int pPort, int Backlog, string pName)
+        public Server(int pPort, int Backlog)
         {
 
             this.portNumber = pPort;
             this.maxSockets = 10000;
             this.mBacklog = Backlog;
-            this.mName = pName;
-            //this.mSubject = pSubject;
-
             connectedSocks = new ArrayList(this.maxSockets);
         }
 
@@ -296,20 +237,18 @@ namespace VVVV.Webinterface.HttpServer {
         public void Start()
         {
             // Clear the thread end events
-            for (int lcv = 0; lcv < numThreads; lcv++)
-                threadEnd[lcv] = new AutoResetEvent(false);
-
+            threadEnd = new AutoResetEvent(false);
+            mShuttingDown = false;
             ThreadStart threadStart1 = new ThreadStart(this.StartListening);
-            serverThread[0] = new Thread(threadStart1);
-            serverThread[0].IsBackground = true;
-            serverThread[0].Start();
+            serverThread = new Thread(threadStart1);
+            serverThread.IsBackground = true;
+            serverThread.Start();
 
             
             int tMaxWorkerThreads;
             int tMaxAsynThreads;
             ThreadPool.GetMaxThreads(out tMaxWorkerThreads, out tMaxAsynThreads);
             ThreadPool.SetMaxThreads(tMaxWorkerThreads, tMaxWorkerThreads);
-            ////Debug.WriteLine(String.Format("{0}  Threads  /  {1} Asynthreads in threadspool", tMaxWorkerThreads, tMaxAsynThreads));
             // Create the delegate that invokes methods for the timer.
             TimerCallback timerDelegate = new TimerCallback(this.CheckSockets);
             //Create a timer that waits one minute, then invokes every 5 minutes.
@@ -324,49 +263,61 @@ namespace VVVV.Webinterface.HttpServer {
             {
                 mIpLocal = new IPEndPoint(IPAddress.Any, portNumber);
                 mMainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
+                mMainSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 mMainSocket.Bind(mIpLocal);
                 // Start listening...<
                 mMainSocket.Listen(100);
                 // Create the call back for any client connections...
+
                 while (mShuttingDown == false)
                 {
                     allDone.Reset();
                     mMainSocket.BeginAccept(new AsyncCallback(OnClientConnectCallback), mMainSocket);
                     allDone.WaitOne();
                 }
-                
 
+                if (mMainSocket.Connected == true)
+                {
+                    Debug.WriteLine(String.Format("Socket {0} still alive", portNumber));
+                }
 
             }
             catch (SocketException se)
             {
-                threadEnd[0].Set();
+                //threadEnd[0].Set();
                 mInit = false;
             }
             catch (Exception ex)
             {
-                threadEnd[0].Set();
+                //threadEnd[0].Set();
                 mInit = false;
             }
+
+            Debug.WriteLine(serverThread.IsAlive.ToString());
+            mMainSocket.Close();
+            mMainSocket = null;
         }
 
 
 
         public void Stop()
         {
-            ShuttingDown = true;
-            int lcv;
-            mLostTimer.Dispose();
-            mLostTimer = null;
 
-            for (lcv = 0; lcv < numThreads; lcv++)
+            mShuttingDown = true;
+            threadEnd.Set();
+
+            if (serverThread.IsAlive)
             {
-                if (!serverThread[lcv].IsAlive)
-                    threadEnd[lcv].Set();    // Set event if thread is already dead
+                
             }
-                      
 
+
+            //mLostTimer.Dispose();
+            //mLostTimer = null;
+
+            //int lcv;
+            
+            
             // Create a connection to the port to unblock the listener thread
             Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPEndPoint endPoint = new IPEndPoint(IPAddress.Loopback, this.portNumber);
@@ -374,10 +325,22 @@ namespace VVVV.Webinterface.HttpServer {
             //sock.Close();
             sock = null;
 
-            // Check thread end events and wait for up to 5 seconds.
-            for (lcv = 0; lcv < numThreads; lcv++)
-                threadEnd[lcv].WaitOne(5000, false);
+           
 
+
+
+            // Check thread end events and wait for up to 5 seconds.
+            //for (lcv = 0; lcv < numThreads; lcv++)
+            //    threadEnd[lcv].WaitOne(5000, false);
+
+        }
+
+        public void OnServerClose(IAsyncResult asynConnect)
+        {
+            if (mMainSocket.Connected == false)
+            {
+                mMainSocket = null;
+            }
         }
 
 
@@ -386,8 +349,6 @@ namespace VVVV.Webinterface.HttpServer {
             mLostTimer.Change(System.Threading.Timeout.Infinite,
                 System.Threading.Timeout.Infinite);
             
-            
-
             if ( connectedSocks.Count != 0)
             {
                 Monitor.Enter(connectedSocks);
@@ -467,7 +428,7 @@ namespace VVVV.Webinterface.HttpServer {
                     }
                     else
                     {
-                        Debug.WriteLine(string.Format("Socket is not in the {0}  connected hash table!", this.Name));
+                        Debug.WriteLine(string.Format("Socket is not in the connected hash table!"));
                     }
                 }
             }
@@ -501,8 +462,6 @@ namespace VVVV.Webinterface.HttpServer {
         /// <param name="asynConnect"> Contains the SocketInformationObjekt</param>
         public void OnClientConnectCallback(IAsyncResult asynConnect)
         {
-                //////Debug.WriteLine("-------------onClientConnect----------------" + Environment.NewLine);
-
                 allDone.Set();
 
                 //The Socket witch connects to the Server
@@ -688,15 +647,15 @@ namespace VVVV.Webinterface.HttpServer {
 
         #region ServeData
 
-        public void ServeFolder(string pPath)
-        {
+        //public void ServeFolder(string pPath)
+        //{
             
-            ////Debug.WriteLine("serve Folder: " + pPath);
-            mItemsToServ.ReadServerFolder(pPath);
+        //    ////Debug.WriteLine("serve Folder: " + pPath);
+        //    mItemsToServ.ReadServerFolder(pPath);
 
-            mFileList = mItemsToServ.FileListVVVV;
-            mFileNames = mItemsToServ.FileListNameVVVV;
-        }
+        //    mFileList = mItemsToServ.FileListVVVV;
+        //    mFileNames = mItemsToServ.FileListNameVVVV;
+        //}
 
         #endregion ServeData
 

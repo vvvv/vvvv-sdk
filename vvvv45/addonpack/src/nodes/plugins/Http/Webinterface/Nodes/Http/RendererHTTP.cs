@@ -91,6 +91,7 @@ namespace VVVV.Nodes.Http
         private IValueIn FTimeOut;
         
         //Config Pin
+        private IValueConfig FPort;
         private IValueConfig FPageCount;
 
 
@@ -105,9 +106,10 @@ namespace VVVV.Nodes.Http
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
         private SortedList<string, byte[]> mHtmlPageList = new SortedList<string, byte[]>();
         private SortedList<string, string> mPostMessages = new SortedList<string, string>();
-
-
+        private int mPortNumber = 80;
         private List<string> PageNames = new List<string>();
+        Thread mServerThread;
+
 
         #endregion field declaration
 
@@ -267,8 +269,12 @@ namespace VVVV.Nodes.Http
                 mWebinterfaceSingelton.HostPath = HostPath;
 
                 //conig
+                FHost.CreateValueConfig("Port", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPort);
+                FPort.SetSubType(0, 65535, 1, 80, false, false, true);
+
                 FHost.CreateValueConfig("PageCount", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPageCount);
                 FPageCount.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
+
 
                 //inputs
                 FHost.CreateStringInput("Directories", TSliceMode.Dynamic, TPinVisibility.True, out FDirectories);
@@ -277,17 +283,17 @@ namespace VVVV.Nodes.Http
                 FHost.CreateValueInput("Save", 1, null, TSliceMode.Single, TPinVisibility.True, out FSaveState);
                 FSaveState.SetSubType(0, 1, 1, 0, true, false, true);
 
-                FHost.CreateStringInput("POST Filename", TSliceMode.Dynamic, TPinVisibility.True, out FPostFilename);
+                FHost.CreateValueInput("Enable", 1, null, TSliceMode.Single, TPinVisibility.True, out FEnableServer);
+                FEnableServer.SetSubType(0, 1, 1, 1, false, true, true);
+
+                FHost.CreateStringInput("POST Filename", TSliceMode.Dynamic, TPinVisibility.False, out FPostFilename);
                 FPostFilename.SetSubType("", false);
 
-                FHost.CreateStringInput("POST Message", TSliceMode.Dynamic, TPinVisibility.True, out FPostMessage);
+                FHost.CreateStringInput("POST Message", TSliceMode.Dynamic, TPinVisibility.False, out FPostMessage);
                 FPostMessage.SetSubType("", false);
 
                 FHost.CreateValueInput("Open Browser", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FOpenBrowser);
                 FOpenBrowser.SetSubType(0, 1, 1, 0, true, false, true);
-
-                FHost.CreateValueInput("Enable", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FEnableServer);
-                FEnableServer.SetSubType(0, 1, 1, 1, false, true, true);
 
                 FHost.CreateValueInput("TimeOut", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FTimeOut);
                 FTimeOut.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
@@ -295,8 +301,6 @@ namespace VVVV.Nodes.Http
                 FHost.CreateNodeInput("Input1", TSliceMode.Dynamic, TPinVisibility.True, out FHttpPageIn);
                 FHttpPageIn.SetSubType(new Guid[1] { HttpPageIO.GUID }, HttpPageIO.FriendlyName);
                 FInputPinList.Add(FHttpPageIn);
-
-                
 
 
                 //outputs	 
@@ -427,18 +431,12 @@ namespace VVVV.Nodes.Http
                     }
                 }
             }
-
-            //if (Input == FPort)
-            //{
-            //    if (mServer != null)
-            //    {
-            //        double tPort;
-            //        FPort.GetValue(0, out tPort);
-            //        mServer.Port = Convert.ToInt32(tPort);
-            //    }
-            //    else { return; }
-            //}
-
+            else if (Input == FPort)
+            {
+                double PortNumber;
+                FPort.GetValue(0, out PortNumber);
+                mPortNumber = (int)PortNumber;
+            }
         }
 
 
@@ -461,10 +459,14 @@ namespace VVVV.Nodes.Http
             {
                 if (pState > 0.5)
                 {
-                    mServer = new VVVV.Webinterface.HttpServer.Server(80, 50, "ServerOne");
-                    //mWebinterfaceSingelton.AddServhandling(mServer);
-                    //mServer.ServeFolder(mServerFolder);
+                    //ThreadStart threadStart1 = new ThreadStart(this.StartListening);
+
+
+                    mServer = new VVVV.Webinterface.HttpServer.Server(mPortNumber, 50);
                     mServer.Start();
+                    //serverThread = new Thread(mServer.Start);
+                    //serverThread.IsBackground = true;
+                    //serverThread.Start();
 
                     if(mServer.Init == false)
                     {
@@ -476,8 +478,8 @@ namespace VVVV.Nodes.Http
                     if (mServer != null)
                     {
                         //mWebinterfaceSingelton.DeleteServhandling(mServer);
+                       
                         mServer.Stop();
-                        mServer.Dispose();
                         mServer = null;
                     }
                 }
