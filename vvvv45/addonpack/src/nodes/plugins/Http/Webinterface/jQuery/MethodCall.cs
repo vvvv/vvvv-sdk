@@ -35,9 +35,13 @@ namespace VVVV.Nodes.jQuery
 				{
 					argumentObject = (Argument)arguments[i];
 				}
+				else if (arguments[i] is JavaScriptObject)
+				{
+					argumentObject = new JavaScriptObjectArgument((JavaScriptObject)arguments[i]);
+				}
 				else
 				{
-					argumentObject = new JavaScriptObjectArgument(JavaScriptObject.ConvertToJavaScriptObject(arguments[i]));
+					argumentObject = new JavaScriptObjectArgument(JavaScriptValueLiteralFactory.Create(arguments[i]));
 				}
 				FArguments.Enqueue(argumentObject);
 			}

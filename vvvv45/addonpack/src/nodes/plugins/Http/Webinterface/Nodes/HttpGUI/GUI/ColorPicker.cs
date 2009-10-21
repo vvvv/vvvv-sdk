@@ -275,6 +275,7 @@ namespace VVVV.Nodes.HttpGUI
 					jgo.Set("flat", new JavaScriptBooleanObject(true));
 					jgo.Set(updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete", new JavaScriptAnonymousFunction(new JQuery(), "hsb", "hex", "rgb"));
 					jgo.Set("color", color);
+					
 					JQueryExpression ex = new JQueryExpression(new IDSelector(SliceId[i])).ApplyMethodCall("ColorPicker", jgo);
 					
 
