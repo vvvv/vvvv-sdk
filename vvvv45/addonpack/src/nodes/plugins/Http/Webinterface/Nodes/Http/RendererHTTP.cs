@@ -168,8 +168,8 @@ namespace VVVV.Nodes.Http
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
-
-                mServer.Dispose();
+                mServer.Stop();
+                mServer = null;
                 FHost.Log(TLogType.Debug, "Renderer (HTML) Node is being deleted");
 
                 // Note that this is not thread safe.
