@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public abstract class ObjectSelector : Selector
+	public abstract class ObjectSelector
 	{
 		
 		protected abstract string PSelector
@@ -12,7 +12,7 @@ namespace VVVV.Nodes.jQuery
 			get;
 		}
 
-		public override string PScript(int indentSteps, bool breakInternalLines)
+		public string PScript(int indentSteps, bool breakInternalLines)
 		{
 			return (PSelector);
 		}

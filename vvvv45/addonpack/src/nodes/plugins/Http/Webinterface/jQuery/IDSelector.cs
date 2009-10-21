@@ -4,26 +4,16 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public class IDSelector : StringSelector
+	public class IDSelector : JavaScriptValueLiteral<string>
 	{
-		protected string FID;
-
-		public IDSelector(string ID)
+		public IDSelector(string ID) : base(ID)
 		{
-			FID = ID;
+			Id = ID;
 		}
 
-		public string PID
+		public string Id
 		{
-			set { FID = value; }
-		}
-
-		protected override string PSelector
-		{
-			get
-			{
-				return "#" + FID;
-			}
+			set { PValue = "#" + value; }
 		}
 	}
 }

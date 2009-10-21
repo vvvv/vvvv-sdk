@@ -8,11 +8,11 @@ namespace VVVV.Nodes.jQuery
 	public class MethodCall : IScriptGenerator
 	{
 		protected Method FMethod;
-		protected Queue<Argument> FArguments;
+		protected Queue<JavaScriptObject> FArguments;
 
 		protected MethodCall()
 		{
-			FArguments = new Queue<Argument>();
+			FArguments = new Queue<JavaScriptObject>();
 		}
 		
 		public MethodCall(Method method) : this()
@@ -30,20 +30,19 @@ namespace VVVV.Nodes.jQuery
 			FMethod = new Method(method);
 			for (int i = 0; i < arguments.Length; i++)
 			{
-				Argument argumentObject;
-				if (arguments[i] is Argument)
+				JavaScriptObject argumentObject;
+				if (arguments[i] != null)
 				{
-					argumentObject = (Argument)arguments[i];
+					if (arguments[i] is JavaScriptObject)
+					{
+						argumentObject = (JavaScriptObject)arguments[i];
+					}
+					else
+					{
+						argumentObject = JavaScriptValueLiteralFactory.Create(arguments[i]);
+					}
+					FArguments.Enqueue(argumentObject);
 				}
-				else if (arguments[i] is JavaScriptObject)
-				{
-					argumentObject = new JavaScriptObjectArgument((JavaScriptObject)arguments[i]);
-				}
-				else
-				{
-					argumentObject = new JavaScriptObjectArgument(JavaScriptValueLiteralFactory.Create(arguments[i]));
-				}
-				FArguments.Enqueue(argumentObject);
 			}
 
 		}
@@ -55,7 +54,7 @@ namespace VVVV.Nodes.jQuery
 			string text = '.' + FMethod.PScript(indentSteps, breakInternalLines) + '(';
 			int queueLength = FArguments.Count;
 			int count = 1;
-			foreach (Argument argument in FArguments)
+			foreach (JavaScriptObject argument in FArguments)
 			{
 				text += argument.PScript(indentSteps, breakInternalLines);
 				if (count != queueLength)

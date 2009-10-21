@@ -6,16 +6,21 @@ namespace VVVV.Nodes.jQuery
 {
 	public class JavaScriptGenericObject : JavaScriptObject
 	{
-		protected Dictionary<String, JavaScriptObject> FJscriptDictionaryObject;
+		protected Dictionary<string, JavaScriptObject> FJscriptDictionaryObject;
 			
 		public JavaScriptGenericObject ()
 		{
 			FJscriptDictionaryObject = new Dictionary<string, JavaScriptObject>();
 		}
 
-		public void Set(string key, JavaScriptObject value)
+		public void Set<T>(string key, T value)
 		{
-			FJscriptDictionaryObject.Add(key, value);
+			JavaScriptObject jsObject = value as JavaScriptObject;
+			if (jsObject == null)
+			{
+				jsObject = JavaScriptValueLiteralFactory.Create(value);
+			}
+			FJscriptDictionaryObject.Add(key, jsObject);
 		}
 
 		public override string PScript(int indentSteps, bool breakInternalLines)

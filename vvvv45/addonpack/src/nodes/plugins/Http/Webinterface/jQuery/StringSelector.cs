@@ -4,14 +4,14 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public abstract class StringSelector : Selector
+	public abstract class StringSelector
 	{
 		protected abstract string PSelector
 		{
 			get;
 		}
 
-		public override string PScript(int indentSteps, bool breakInternalLines)
+		public string PScript(int indentSteps, bool breakInternalLines)
 		{
 			return ("'" + PSelector + "'");
 		}

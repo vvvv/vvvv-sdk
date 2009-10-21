@@ -249,6 +249,7 @@ namespace VVVV.Nodes.HttpGUI
 					FResponseColorOutput.SetColor(i, responseColorSlice);
 
 					//create a div for the jquery colorpicker
+				
 					HtmlDiv tColorPicker = new HtmlDiv(SliceId[i]);
 
 					//write the HTML tag using all inserted info
@@ -267,13 +268,21 @@ namespace VVVV.Nodes.HttpGUI
 						}})";
 
 
+					JQueryExpression getId = new JQueryExpression(Selector.ThisSelector).ApplyMethodCall("parent").ApplyMethodCall("attr", "id");
+					JQueryExpression generateXML = new JQueryExpression(JavaScriptValueLiteralFactory.Create("<PIN></PIN>")).ApplyMethodCall("attr", "pinname", "Color Input").ApplyMethodCall("attr", "slicecount", 1);
+
+					JQueryExpression paramz = new JQueryExpression(new JavaScriptGenericObject()).ApplyMethodCall("attr", getId, generateXML).ApplyMethodCall("get", 0);
+
+					JQueryExpression postExpression = new JQueryExpression();
+					postExpression.Post("ToVVVV.xml", paramz, null, null);
+
 					JavaScriptGenericObject color = new JavaScriptGenericObject();
-					color.Set("r", JavaScriptValueLiteralFactory.Create(double.Parse(rgb[0])));
-					color.Set("g", JavaScriptValueLiteralFactory.Create(double.Parse(rgb[1])));
-					color.Set("b", JavaScriptValueLiteralFactory.Create(double.Parse(rgb[2])));
+					color.Set("r", double.Parse(rgb[0]));
+					color.Set("g", double.Parse(rgb[1]));
+					color.Set("b", double.Parse(rgb[2]));
 					JavaScriptGenericObject jgo = new JavaScriptGenericObject();
 					jgo.Set("flat", JavaScriptValueLiteralFactory.Create(true));
-					jgo.Set(updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete", new JavaScriptAnonymousFunction(new JQuery(), "hsb", "hex", "rgb"));
+					jgo.Set(updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete", new JavaScriptAnonymousFunction(new JQuery(postExpression), "hsb", "hex", "rgb"));
 					jgo.Set("color", color);
 					
 					JQueryExpression ex = new JQueryExpression(new IDSelector(SliceId[i])).ApplyMethodCall("ColorPicker", jgo);

@@ -4,19 +4,23 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public class JQueryExpression : IScriptGenerator
+	public class JQueryExpression : JavaScriptObject
 	{
-		protected Selector FSelector;
+		protected JQueryObject FJQueryObject;
 		protected Queue<MethodCall> FMethodCalls;
 
-		public JQueryExpression() : this(Selector.AllSelector)
+		public JQueryExpression(JQueryObject jQueryObject)
+		{
+			FJQueryObject = jQueryObject;
+			FMethodCalls = new Queue<MethodCall>();
+		}
+		
+		public JQueryExpression() : this(new JQueryObject())
 		{
 		}
 
-		public JQueryExpression(Selector selector)
+		public JQueryExpression(JavaScriptObject jsObject) : this(new JQueryObject(jsObject))
 		{
-			FSelector = selector;
-			FMethodCalls = new Queue<MethodCall>();
 		}
 
 		public JQueryExpression ApplyMethodCall(String methodName, params object[] arguments)
@@ -25,18 +29,19 @@ namespace VVVV.Nodes.jQuery
 			return this;
 		}
 
-		#region IScriptGenerator Members
-
-		public string PScript(int indentSteps, bool breakInternalLines)
+		public void Post(string url, JavaScriptObject data, string type, JavaScriptAnonymousFunction callback)
 		{
-			string text = "$(" + FSelector.PScript(indentSteps, breakInternalLines) + ")";
+			FMethodCalls.Enqueue(new MethodCall("post", url, data, type, callback));
+		}
+
+		public override string PScript(int indentSteps, bool breakInternalLines)
+		{
+			string text = FJQueryObject.PScript(indentSteps, breakInternalLines);
 			foreach (MethodCall methodCall in FMethodCalls)
 			{
 				text += methodCall.PScript(indentSteps, breakInternalLines);
 			}
 			return text;
 		}
-
-		#endregion
 	}
 }

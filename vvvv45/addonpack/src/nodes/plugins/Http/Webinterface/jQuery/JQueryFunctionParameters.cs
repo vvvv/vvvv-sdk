@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public abstract class Argument : IScriptGenerator
+	public abstract class JQueryFunctionParameters : IScriptGenerator
 	{
 		#region IScriptGenerator Members
 
