@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public class Selector
+	public abstract class Selector : JavaScriptValueLiteral<string>
 	{
 		public static JavaScriptObject AllSelector = JavaScriptValueLiteralFactory.Create("*");
 		public static JavaScriptObject DocumentSelector = new JavaScriptVariableObject("document");

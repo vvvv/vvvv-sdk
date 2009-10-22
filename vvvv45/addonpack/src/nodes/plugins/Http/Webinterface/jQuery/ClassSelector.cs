@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public class ClassSelector : JavaScriptValueLiteral<string>
+	public class ClassSelector : Selector
 	{
 		public ClassSelector(string className)
 		{

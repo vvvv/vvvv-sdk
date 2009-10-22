@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public class IDSelector : JavaScriptValueLiteral<string>
+	public class IDSelector : Selector
 	{
 		public IDSelector(string ID)
 		{
