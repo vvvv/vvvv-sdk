@@ -356,12 +356,18 @@ namespace VVVV.Webinterface.HttpServer {
             
             
             // Create a connection to the port to unblock the listener thread
-            Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Loopback, this.portNumber);
-            sock.Connect(endPoint);
-            //sock.Close();
-            sock = null;
+            try
+            {
+                Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                IPEndPoint endPoint = new IPEndPoint(IPAddress.Loopback, this.portNumber);
+                sock.Connect(endPoint);
+                //sock.Close();
+                sock = null;
+            }
+            catch (Exception ex)
+            {
 
+            }
            
 
 
