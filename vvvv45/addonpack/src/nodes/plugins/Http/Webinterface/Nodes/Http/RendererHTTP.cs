@@ -575,7 +575,7 @@ namespace VVVV.Nodes.Http
                     }
                 }
 
-                if (tDirectories.Count > 0)
+                if (mServer != null)
                 {
                     mServer.FoldersToServ = tDirectories;
                 }
