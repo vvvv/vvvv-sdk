@@ -5,6 +5,7 @@ using System.Collections;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.Net.NetworkInformation;
 using System.Threading;
 using System.Diagnostics;
 using System.Web;
@@ -54,6 +55,9 @@ namespace VVVV.Webinterface.HttpServer {
         protected int maxSockets;
         protected int sockCount = 0;
         private bool mInit = false;
+        private List<int> mPorts = new List<int>();
+        private int mFreePort;
+        private bool mPortFree = false;
 
         //Thread signal.
         private ManualResetEvent allDone = new ManualResetEvent(false);
@@ -74,8 +78,6 @@ namespace VVVV.Webinterface.HttpServer {
       
 
         #region toSort
-
-
         private ArrayList mClientSocketList = new ArrayList();
         private SortedList<string, Socket> mIndexSocketList = new SortedList<string, Socket>();
         private SortedList<string, Socket> mDummySocketList = new SortedList<string, Socket>();
@@ -153,6 +155,14 @@ namespace VVVV.Webinterface.HttpServer {
             }
         }
 
+        public int FreePort
+        {
+            get
+            {
+                return mFreePort;
+            }
+        }
+
         #endregion properties
 
 
@@ -173,6 +183,33 @@ namespace VVVV.Webinterface.HttpServer {
             this.maxSockets = 10000;
             this.mBacklog = Backlog;
             connectedSocks = new ArrayList(this.maxSockets);
+
+            IPGlobalProperties GlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
+            TcpConnectionInformation[] TCPConnections = GlobalProperties.GetActiveTcpConnections();
+            IPEndPoint[] TcpEndPoints = GlobalProperties.GetActiveTcpListeners();
+            IPEndPoint[] UdpEndpoints = GlobalProperties.GetActiveUdpListeners();
+
+            foreach (TcpConnectionInformation TcpInformation in TCPConnections)
+            {
+                mPorts.Add(TcpInformation.LocalEndPoint.Port);
+            }
+
+            foreach (IPEndPoint TcpEndPoint in TcpEndPoints)
+            {
+                mPorts.Add(TcpEndPoint.Port);
+            }
+
+            foreach (IPEndPoint UdpEndPoint in UdpEndpoints)
+            {
+                mPorts.Add(UdpEndPoint.Port);
+            }
+
+            mPorts.Sort();
+            if(mPorts.Contains(this.portNumber) == false)
+            {
+                mFreePort = mPorts[0];
+                mPortFree = true;
+            }
         }
 
 
@@ -234,25 +271,31 @@ namespace VVVV.Webinterface.HttpServer {
 
 
 
-        public void Start()
+        public bool Start()
         {
             // Clear the thread end events
             threadEnd = new AutoResetEvent(false);
-            mShuttingDown = false;
-            ThreadStart threadStart1 = new ThreadStart(this.StartListening);
-            serverThread = new Thread(threadStart1);
-            serverThread.IsBackground = true;
-            serverThread.Start();
+            if (mPortFree == true)
+            {
+                
+                mShuttingDown = false;
+                ThreadStart threadStart1 = new ThreadStart(this.StartListening);
+                serverThread = new Thread(threadStart1);
+                serverThread.IsBackground = true;
+                serverThread.Start();
 
-            
-            int tMaxWorkerThreads;
-            int tMaxAsynThreads;
-            ThreadPool.GetMaxThreads(out tMaxWorkerThreads, out tMaxAsynThreads);
-            ThreadPool.SetMaxThreads(tMaxWorkerThreads, tMaxWorkerThreads);
-            // Create the delegate that invokes methods for the timer.
-            TimerCallback timerDelegate = new TimerCallback(this.CheckSockets);
-            //Create a timer that waits one minute, then invokes every 5 minutes.
-            //mLostTimer = new Timer(timerDelegate, null, Server.mTimerTimeout, Server.mTimerTimeout);
+
+                int tMaxWorkerThreads;
+                int tMaxAsynThreads;
+                ThreadPool.GetMaxThreads(out tMaxWorkerThreads, out tMaxAsynThreads);
+                ThreadPool.SetMaxThreads(tMaxWorkerThreads, tMaxWorkerThreads);
+                // Create the delegate that invokes methods for the timer.
+                TimerCallback timerDelegate = new TimerCallback(this.CheckSockets);
+                //Create a timer that waits one minute, then invokes every 5 minutes.
+                //mLostTimer = new Timer(timerDelegate, null, Server.mTimerTimeout, Server.mTimerTimeout);
+            }
+
+            return mPortFree;
         }
 
 
@@ -305,12 +348,6 @@ namespace VVVV.Webinterface.HttpServer {
 
             mShuttingDown = true;
             threadEnd.Set();
-
-            if (serverThread.IsAlive)
-            {
-                
-            }
-
 
             //mLostTimer.Dispose();
             //mLostTimer = null;
