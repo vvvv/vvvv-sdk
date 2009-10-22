@@ -6,8 +6,8 @@ namespace VVVV.Nodes.jQuery
 {
 	public class Selector
 	{
-		public static Selector AllSelector = new RawStringSelector("*");
-		public static Selector DocumentSelector = new NameObjectSelector("document");
-		public static Selector ThisSelector = new NameObjectSelector("this");
+		public static JavaScriptObject AllSelector = JavaScriptValueLiteralFactory.Create("*");
+		public static JavaScriptObject DocumentSelector = new JavaScriptVariableObject("document");
+		public static JavaScriptObject ThisSelector = new JavaScriptVariableObject("this");
 	}
 }

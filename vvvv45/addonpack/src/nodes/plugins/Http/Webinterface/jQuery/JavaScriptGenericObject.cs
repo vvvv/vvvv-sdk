@@ -23,14 +23,16 @@ namespace VVVV.Nodes.jQuery
 			FJscriptDictionaryObject.Add(key, jsObject);
 		}
 
-		public override string PScript(int indentSteps, bool breakInternalLines)
+		public override string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string text = "{";
-			if (breakInternalLines)
+			int dictionaryLength = FJscriptDictionaryObject.Count;
+			bool hasInternalLines = dictionaryLength > 0;
+			if (breakInternalLines && hasInternalLines)
 			{
 				text += "\n";
 			}
-			int dictionaryLength = FJscriptDictionaryObject.Count;
+			
 			int count = 1;
 			foreach (KeyValuePair<string, JavaScriptObject> kvp in FJscriptDictionaryObject)
 			{
@@ -41,7 +43,7 @@ namespace VVVV.Nodes.jQuery
 						text += "\t";
 					}
 				}
-				text += kvp.Key + " : " + kvp.Value.PScript(indentSteps + 1, kvp.Value is JavaScriptAnonymousFunction && breakInternalLines);
+				text += kvp.Key + " : " + kvp.Value.PScript(indentSteps + 1, kvp.Value is JavaScriptAnonymousFunction && breakInternalLines, breakAfter);
 				if (count != dictionaryLength)
 				{
 					text += ",";
@@ -56,7 +58,7 @@ namespace VVVV.Nodes.jQuery
 				}
 				count++;
 			}
-			if (breakInternalLines)
+			if (breakInternalLines && hasInternalLines)
 			{
 				for (int i = 0; i < indentSteps; i++)
 				{

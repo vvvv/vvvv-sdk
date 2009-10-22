@@ -34,12 +34,12 @@ namespace VVVV.Nodes.jQuery
 			FMethodCalls.Enqueue(new MethodCall("post", url, data, type, callback));
 		}
 
-		public override string PScript(int indentSteps, bool breakInternalLines)
+		public override string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
-			string text = FJQueryObject.PScript(indentSteps, breakInternalLines);
+			string text = FJQueryObject.PScript(indentSteps, breakInternalLines, breakAfter);
 			foreach (MethodCall methodCall in FMethodCalls)
 			{
-				text += methodCall.PScript(indentSteps, breakInternalLines);
+				text += methodCall.PScript(indentSteps, breakInternalLines, breakAfter);
 			}
 			return text;
 		}

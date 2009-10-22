@@ -8,7 +8,7 @@ namespace VVVV.Nodes.jQuery
 	{
 		#region IScriptGenerator Members
 
-		public abstract string PScript(int indentSteps, bool breakInternalLines);
+		public abstract string PScript(int indentSteps, bool breakInternalLines, bool breakAfter);
 
 		#endregion
 	}

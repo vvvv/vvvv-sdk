@@ -29,11 +29,19 @@ namespace VVVV.Nodes.jQuery
 			}
 		}
 
+		public bool PIsEmpty
+		{
+			get { return FStatements.Count == 0; }
+		}
+	
+
 		#region IScriptGenerator Members
 
-		public string PScript(int indentSteps, bool breakInternalLines)
+		public string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string text = "";
+			int numStatements = FStatements.Count;
+			int count = 1;
 			foreach (JQueryExpression statement in FStatements)
 			{
 				for (int i = 0; i < indentSteps; i++)
@@ -41,7 +49,16 @@ namespace VVVV.Nodes.jQuery
 					text += "\t";
 				}
 
-				text += statement.PScript(indentSteps, breakInternalLines) + ";";
+				text += statement.PScript(indentSteps, breakInternalLines, breakAfter) + ";";
+				if (breakInternalLines && count != numStatements)
+				{
+					text += "\n";
+				}
+				count++;
+			}
+			if (breakAfter && numStatements > 0)
+			{
+				text += "\n";
 			}
 			return text;
 		}

@@ -270,8 +270,9 @@ namespace VVVV.Nodes.HttpGUI
 
 					JQueryExpression getId = new JQueryExpression(Selector.ThisSelector).ApplyMethodCall("parent").ApplyMethodCall("attr", "id");
 					JQueryExpression generateXML = new JQueryExpression(JavaScriptValueLiteralFactory.Create("<PIN></PIN>")).ApplyMethodCall("attr", "pinname", "Color Input").ApplyMethodCall("attr", "slicecount", 1);
+					JQueryExpression wrapXML = new JQueryExpression(JavaScriptValueLiteralFactory.Create("<XML></XML>")).ApplyMethodCall("append", generateXML).ApplyMethodCall("html");
 
-					JQueryExpression paramz = new JQueryExpression(new JavaScriptGenericObject()).ApplyMethodCall("attr", getId, generateXML).ApplyMethodCall("get", 0);
+					JQueryExpression paramz = new JQueryExpression(new JavaScriptGenericObject()).ApplyMethodCall("attr", getId, wrapXML).ApplyMethodCall("get", 0);
 
 					JQueryExpression postExpression = new JQueryExpression();
 					postExpression.Post("ToVVVV.xml", paramz, null, null);
@@ -319,7 +320,7 @@ namespace VVVV.Nodes.HttpGUI
 					//insert the JQuery code into the javascript file for this page
 					JqueryFunction colorPickerInitializeFunction = new JqueryFunction(true, "#" + SliceId[i], colorPickerInitializeCode);
 					JqueryFunction colorPickerPositionAbsoluteFunction = new JqueryFunction(true, "#" + SliceId[i], colorPickerPositionAbsoluteCode);
-					SetJavaScript(i, dr.PScript(1, true) + colorPickerPositionAbsoluteFunction.Text);
+					SetJavaScript(i, dr.PScript(1, true, true) + colorPickerPositionAbsoluteFunction.Text);
 				}
 			}
 		}

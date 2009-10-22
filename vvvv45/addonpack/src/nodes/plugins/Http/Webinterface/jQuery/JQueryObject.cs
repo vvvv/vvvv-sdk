@@ -25,12 +25,12 @@ namespace VVVV.Nodes.jQuery
 			FFunctionParameters = null;
 		}
 
-		public string PScript(int indentSteps, bool breakInternalLines)
+		public string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string text = "$";
 			if (FFunctionParameters != null)
 			{
-				text += "(" + FFunctionParameters.PScript(indentSteps, breakInternalLines) + ")" ;
+				text += "(" + FFunctionParameters.PScript(indentSteps, breakInternalLines, breakAfter) + ")" ;
 			}
 			return text;
 		}

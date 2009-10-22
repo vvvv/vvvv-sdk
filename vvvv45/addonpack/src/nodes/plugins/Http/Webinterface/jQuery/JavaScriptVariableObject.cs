@@ -13,7 +13,7 @@ namespace VVVV.Nodes.jQuery
 			FVariableName = variableName;
 		}
 		
-		public override string PScript(int indentSteps, bool breakInternalLines)
+		public override string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			return FVariableName;
 		}

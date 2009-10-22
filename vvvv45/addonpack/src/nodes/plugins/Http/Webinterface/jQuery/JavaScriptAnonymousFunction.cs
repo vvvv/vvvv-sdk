@@ -29,14 +29,15 @@ namespace VVVV.Nodes.jQuery
 			set { FJQuery = value; }
 		}
 
-		public override string PScript(int indentSteps, bool breakInternalLines)
+		public override string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string text = "function(";
 			int queueLength = FArgumentNames.Count;
+			bool doBreakInternalLines = breakInternalLines && !FJQuery.PIsEmpty;
 			int count = 1;
 			foreach (JavaScriptVariableObject argument in FArgumentNames)
 			{
-				text += argument.PScript(indentSteps, breakInternalLines);
+				text += argument.PScript(indentSteps, breakInternalLines, breakAfter);
 				if (count != queueLength)
 				{
 					text += ", ";
@@ -45,12 +46,12 @@ namespace VVVV.Nodes.jQuery
 			}
 
 			text += ") {";
-			if (breakInternalLines)
+			if (doBreakInternalLines)
 			{
 				text += "\n";
 			}
-			text += FJQuery.PScript(breakInternalLines ? indentSteps + 1 : 0, breakInternalLines);
-			if (breakInternalLines)
+			text += FJQuery.PScript(doBreakInternalLines ? indentSteps + 1 : 0, breakInternalLines, breakInternalLines);
+			if (doBreakInternalLines)
 			{
 				for (int i = 0; i < indentSteps; i++)
 				{

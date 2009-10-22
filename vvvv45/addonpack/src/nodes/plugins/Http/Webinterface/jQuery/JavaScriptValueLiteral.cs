@@ -19,7 +19,7 @@ namespace VVVV.Nodes.jQuery
 		}
 	
 
-		public override string PScript(int indentSteps, bool breakInternalLines)
+		public override string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string stringValue = FValue as string;
 			if (stringValue != null)
