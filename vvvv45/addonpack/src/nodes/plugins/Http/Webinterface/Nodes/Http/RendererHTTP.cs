@@ -109,6 +109,7 @@ namespace VVVV.Nodes.Http
         private int mPortNumber = 80;
         private List<string> PageNames = new List<string>();
         Thread mServerThread;
+        List<string> mDirectories = new List<string>();
 
 
         #endregion field declaration
@@ -168,11 +169,8 @@ namespace VVVV.Nodes.Http
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
-                if (mServer != null)
-                {
-                    mServer.Stop();
-                }
-                mServer = null;
+
+                mServer.Stop();
                 FHost.Log(TLogType.Debug, "Renderer (HTTP) Node is being deleted");
 
                 // Note that this is not thread safe.
@@ -443,23 +441,17 @@ namespace VVVV.Nodes.Http
                 if (mServer != null)
                 {
                     mServer.Stop();
-                    mServer = new VVVV.Webinterface.HttpServer.Server(mPortNumber, 50);
                     bool Portfree = mServer.Start();
                     if (Portfree == false)
                     {
                         FHost.Log(TLogType.Error, String.Format("Http Port {0} taken by an other Application like Skype etc.. Please choose an other Port.", mPortNumber));
-                        mServer = null;
+                       
                     }
-                }
-                else
-                {
-                    mServer = new VVVV.Webinterface.HttpServer.Server(mPortNumber, 50);
-                    bool Portfree = mServer.Start();
-                    if (Portfree == false)
+                    else
                     {
-                        FHost.Log(TLogType.Error, String.Format("Http Port {0} taken by an other Application like Skype etc.. Please choose an other Port.", mPortNumber));
-                        mServer = null;
-                    };
+                        mServer.FoldersToServ = mDirectories;
+                    }
+
                 }
             }
         }
@@ -474,7 +466,7 @@ namespace VVVV.Nodes.Http
         public void Evaluate(int SpreadMax)
         {
 
-            #region Enable Server
+            #region Enable Server 
 
             double pState;
             FEnableServer.GetValue(0, out pState);
@@ -487,10 +479,15 @@ namespace VVVV.Nodes.Http
 
                     mServer = new VVVV.Webinterface.HttpServer.Server(mPortNumber, 50);
                     bool Portfree = mServer.Start();
+                    Thread.Sleep(1000);
                     if (Portfree == false)
                     {
                         FHost.Log(TLogType.Error, String.Format("Http Port {0} taken by an other Application like Skype etc.. Please choose an other Port.", mPortNumber));
-                        mServer = null;
+                        //mServer = null;
+                    }
+                    else
+                    {
+                        mServer.FoldersToServ = mDirectories;
                     }
                 }
                 else if (pState < 0.5)
@@ -498,7 +495,7 @@ namespace VVVV.Nodes.Http
                     if (mServer != null)
                     {
                         mServer.Stop();
-                        mServer = null;
+                        //mServer = null;
                     }
                 }
             }
@@ -575,10 +572,11 @@ namespace VVVV.Nodes.Http
                     }
                 }
 
-                if (mServer != null)
-                {
-                    mServer.FoldersToServ = tDirectories;
-                }
+                mDirectories = tDirectories;
+
+
+                mServer.FoldersToServ = tDirectories;
+                
 
                 if (tFiles.Count > 0)
                 {
