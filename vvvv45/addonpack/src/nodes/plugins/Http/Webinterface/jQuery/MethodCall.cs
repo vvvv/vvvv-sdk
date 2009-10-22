@@ -30,18 +30,9 @@ namespace VVVV.Nodes.jQuery
 			FMethod = new Method(method);
 			for (int i = 0; i < arguments.Length; i++)
 			{
-				JavaScriptObject argumentObject;
 				if (arguments[i] != null)
 				{
-					if (arguments[i] is JavaScriptObject)
-					{
-						argumentObject = (JavaScriptObject)arguments[i];
-					}
-					else
-					{
-						argumentObject = JavaScriptValueLiteralFactory.Create(arguments[i]);
-					}
-					FArguments.Enqueue(argumentObject);
+					FArguments.Enqueue(JavaScriptObject.ConvertToJavaScriptObject(arguments[i]));
 				}
 			}
 

@@ -4,27 +4,16 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public class ClassSelector : StringSelector
+	public class ClassSelector : JavaScriptValueLiteral<string>
 	{
-		protected string FClassName;
-
-		public ClassSelector(string ClassName)
+		public ClassSelector(string className) : base(className)
 		{
-			FClassName = ClassName;
+			PClassName = className;
 		}
 
 		public string PClassName
 		{
-			set { FClassName = value; }
-		}
-	
-
-		protected override string PSelector
-		{
-			get
-			{
-				return "." + FClassName;
-			}
+			set { PValue = "." + value; }
 		}
 	}
 }

@@ -213,9 +213,9 @@ namespace VVVV.Nodes.HttpGUI
 					FDefaultColorColorInput.GetColor(i, out defaultColorSlice);
                     FUpdateContinuousValueInput.GetValue(i, out updateContinuousSlice);
 
-					//check for request data
-                    RGBAColor responseColorSlice;
-					string[] rgb;
+					//parse the default color
+					string[] rgb = new string[4] {defaultColorSlice.R.ToString(), defaultColorSlice.G.ToString(), defaultColorSlice.B.ToString(), defaultColorSlice.A.ToString()};
+					bool validColorReceived = false;
 
 					//if we received a request
 					if (ReceivedString[i] != null)
@@ -223,26 +223,28 @@ namespace VVVV.Nodes.HttpGUI
 						//parse the color representation that got passed as a POST parameter
                         XmlDocument xmlDocument = new XmlDocument();
                         xmlDocument.LoadXml(HttpUtility.UrlDecode(ReceivedString[i]));
-                        //the color value comes in the same xml representation that is used in a vvvv patch file
-                        string colorValues = xmlDocument.DocumentElement.Attributes["values"].InnerXml;
-                        rgb = colorValues.Trim(new char[] { '|' }).Split(new char[] { ',' });
-						if (rgb.Length >= 3)
+                        XmlNodeList xmlNodeList = xmlDocument.DocumentElement.GetElementsByTagName("value");
+						for (int j = 0; j < 4; j++)
 						{
-							responseColorSlice = new RGBAColor(double.Parse(rgb[0]), double.Parse(rgb[1]), double.Parse(rgb[2]), 1.0);
-                        }
-						else
-						{
-							//parse the default color
-                            responseColorSlice = defaultColorSlice;
-                            rgb = new string[3] { defaultColorSlice.R.ToString(), defaultColorSlice.G.ToString(), defaultColorSlice.B.ToString() };
-                            
+							XmlNode xmlNode = xmlNodeList.Item(j);
+							if (xmlNode != null)
+							{
+								rgb[j] = xmlNode.InnerXml;
+								validColorReceived = true;
+							}
 						}
+						
+					}
+				    
+                    RGBAColor responseColorSlice ;
+					
+					if (validColorReceived)
+					{
+						responseColorSlice = new RGBAColor(double.Parse(rgb[0]), double.Parse(rgb[1]), double.Parse(rgb[2]), double.Parse(rgb[3]));
 					}
 					else
 					{
-                        //parse the default color
-                        responseColorSlice = defaultColorSlice;
-                        rgb = new string[3] {defaultColorSlice.R.ToString(), defaultColorSlice.G.ToString(), defaultColorSlice.B.ToString()};
+						responseColorSlice = defaultColorSlice;
 					}
 					
 					//update the output pin with the new response color
@@ -255,9 +257,8 @@ namespace VVVV.Nodes.HttpGUI
 					//write the HTML tag using all inserted info
 					SetTag(i, tColorPicker);
 
-					//generate JQuery code to create our color picker when the document loads
-					string colorPickerInitializeCode =
-						@"ColorPicker({{
+					//generate JQuery code to create our color picker when the document loads - it will look something like the following block
+					/*@"ColorPicker({{
 							flat: true,
 							color: {{r: {0}, g: {1}, b: {2}}},
 							{3}: function (hsb, hex, rgb) {{
@@ -265,62 +266,49 @@ namespace VVVV.Nodes.HttpGUI
 								params[$(this).parent().attr('id')] = '<PIN pinname=""Color Input"" slicecount=""1"" values=""|' + rgb.r.toString() + ',' + rgb.g.toString() + ',' + rgb.b.toString() + ',1.00000|""></PIN>'
 								$.post('ToVVVV.xml', params);
 							}}
-						}})";
+					}})";*/
 
 
-					JQueryExpression getId = new JQueryExpression(Selector.ThisSelector).ApplyMethodCall("parent").ApplyMethodCall("attr", "id");
-					JQueryExpression generateXML = new JQueryExpression(JavaScriptValueLiteralFactory.Create("<PIN></PIN>")).ApplyMethodCall("attr", "pinname", "Color Input").ApplyMethodCall("attr", "slicecount", 1);
-					JQueryExpression wrapXML = new JQueryExpression(JavaScriptValueLiteralFactory.Create("<XML></XML>")).ApplyMethodCall("append", generateXML).ApplyMethodCall("html");
+					JQueryExpression getSliceId = new JQueryExpression(Selector.ThisSelector).ApplyMethodCall("parent").ApplyMethodCall("attr", "id");
+					JQueryExpression generateXMLPost = new JQueryExpression(JavaScriptValueLiteralFactory.Create("<PIN></PIN>")).ApplyMethodCall("attr", "pinname", "Color Input").ApplyMethodCall("attr", "slicecount", 1);
+					JQueryExpression generateColorValuesXML = new JQueryExpression(JavaScriptValueLiteralFactory.Create("<value id=\"r\"></value><value id=\"g\"></value><value id=\"b\"></value><value id=\"a\"></value>"));
+					generateXMLPost.Append(generateColorValuesXML);
+					generateXMLPost.ApplyMethodCall("children", "value#r").Append(new JQueryExpression(new JavaScriptVariableObject("rgb")).ApplyMethodCall("attr", "r").ApplyMethodCall("toString")).ApplyMethodCall("end");
+					generateXMLPost.ApplyMethodCall("children", "value#g").Append(new JQueryExpression(new JavaScriptVariableObject("rgb")).ApplyMethodCall("attr", "g").ApplyMethodCall("toString")).ApplyMethodCall("end");
+					generateXMLPost.ApplyMethodCall("children", "value#b").Append(new JQueryExpression(new JavaScriptVariableObject("rgb")).ApplyMethodCall("attr", "b").ApplyMethodCall("toString")).ApplyMethodCall("end");
+					generateXMLPost.ApplyMethodCall("children", "value#a").Append(1.0).ApplyMethodCall("end");
 
-					JQueryExpression paramz = new JQueryExpression(new JavaScriptGenericObject()).ApplyMethodCall("attr", getId, wrapXML).ApplyMethodCall("get", 0);
+					JQueryExpression wrapXMLPost = new JQueryExpression(JavaScriptValueLiteralFactory.Create("<XML></XML>")).Append(generateXMLPost);
+					
+					wrapXMLPost.ApplyMethodCall("html");
 
-					JQueryExpression postExpression = new JQueryExpression();
-					postExpression.Post("ToVVVV.xml", paramz, null, null);
+					JQueryExpression createPostParameters = new JQueryExpression(new JavaScriptGenericObject()).ApplyMethodCall("attr", getSliceId, wrapXMLPost).ApplyMethodCall("get", 0);
 
+					JQueryExpression postToServer = new JQueryExpression();
+					postToServer.Post("ToVVVV.xml", createPostParameters, null, null);
+
+					//Create the object that sets the colorpicker options
+					JavaScriptGenericObject colorPickerParams = new JavaScriptGenericObject();
+					colorPickerParams.Set("flat", JavaScriptValueLiteralFactory.Create(true));
+					//setup the post method to fire at the appropriate time according to the Update Continuous pin
+					colorPickerParams.Set(updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete", new JavaScriptAnonymousFunction(new JQuery(postToServer), "hsb", "hex", "rgb"));
+					//set the color picker to the color currently set on the server side
 					JavaScriptGenericObject color = new JavaScriptGenericObject();
 					color.Set("r", double.Parse(rgb[0]));
 					color.Set("g", double.Parse(rgb[1]));
 					color.Set("b", double.Parse(rgb[2]));
-					JavaScriptGenericObject jgo = new JavaScriptGenericObject();
-					jgo.Set("flat", JavaScriptValueLiteralFactory.Create(true));
-					jgo.Set(updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete", new JavaScriptAnonymousFunction(new JQuery(postExpression), "hsb", "hex", "rgb"));
-					jgo.Set("color", color);
+					colorPickerParams.Set("color", color);
 					
-					JQueryExpression ex = new JQueryExpression(new IDSelector(SliceId[i])).ApplyMethodCall("ColorPicker", jgo);
-					
-
-
-					JQuery dr = JQuery.GenerateDocumentReady(new JQuery(ex));
-
-					/*JQuery jq = new JQuery();
-					JQueryExpression ex = new JQueryExpression(Selector.DocumentSelector);
-					MethodCall mc = new MethodCall(new Method("ready"));
-					JavaScriptAnonymousFunction jaf = new JavaScriptAnonymousFunction();
-
-					JQueryExpression sb = new JQueryExpression(new RawStringSelector("body"));
-					MethodCall mc2 = new MethodCall(new Method("css"));
-					mc2.AddArgument(new JavaScriptObjectArgument(new JavaScriptStringObject("background-color")));
-					mc2.AddArgument(new JavaScriptObjectArgument(new JavaScriptStringObject("#FF0000")));
-					sb.AddMethodCall(mc2);
-					JQuery jq2 = new JQuery();
-					jq2.AddStatement(sb);
-					jaf.PJQuery = jq2;
-
-					mc.AddArgument(new JavaScriptObjectArgument(jaf));
-					ex.AddMethodCall(mc);
-					jq.AddStatement(ex);*/
-
-					//set the color picker to the color currently set on the server side, and setup the post method to fire
-                    //at the appropriate time according to the Update Continuous pin
-					colorPickerInitializeCode = String.Format(colorPickerInitializeCode, rgb[0], rgb[1], rgb[2], updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete");
-
+					//Apply all the colorpicker code to our div
+					JQueryExpression documentReadyHandler = new JQueryExpression(new IDSelector(SliceId[i])).ApplyMethodCall("ColorPicker", colorPickerParams);
 					//set the newly created colorpicker sub-div to use absolute positioning
-					string colorPickerPositionAbsoluteCode = "children().eq(0).css('position', 'absolute')";
+					documentReadyHandler.ApplyMethodCall("children").ApplyMethodCall("eq", 0).ApplyMethodCall("css", "position", "absolute");
+					
+					//Assign all our code to the document ready handler
+					JQuery onDocumentReady = JQuery.GenerateDocumentReady(new JQuery(documentReadyHandler));
 
 					//insert the JQuery code into the javascript file for this page
-					JqueryFunction colorPickerInitializeFunction = new JqueryFunction(true, "#" + SliceId[i], colorPickerInitializeCode);
-					JqueryFunction colorPickerPositionAbsoluteFunction = new JqueryFunction(true, "#" + SliceId[i], colorPickerPositionAbsoluteCode);
-					SetJavaScript(i, dr.PScript(1, true, true) + colorPickerPositionAbsoluteFunction.Text);
+					SetJavaScript(i, onDocumentReady.PScript(1, true, true));
 				}
 			}
 		}

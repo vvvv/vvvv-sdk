@@ -29,6 +29,12 @@ namespace VVVV.Nodes.jQuery
 			return this;
 		}
 
+		public JQueryExpression Append(object jsObject)
+		{
+			FMethodCalls.Enqueue(new MethodCall("append", jsObject));
+			return this;
+		}
+		
 		public void Post(string url, JavaScriptObject data, string type, JavaScriptAnonymousFunction callback)
 		{
 			FMethodCalls.Enqueue(new MethodCall("post", url, data, type, callback));
