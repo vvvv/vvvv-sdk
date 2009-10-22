@@ -6,7 +6,7 @@ namespace VVVV.Nodes.jQuery
 {
 	public class IDSelector : JavaScriptValueLiteral<string>
 	{
-		public IDSelector(string ID) : base(ID)
+		public IDSelector(string ID)
 		{
 			Id = ID;
 		}

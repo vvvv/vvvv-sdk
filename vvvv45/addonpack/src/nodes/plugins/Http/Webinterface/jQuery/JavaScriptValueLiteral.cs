@@ -8,6 +8,11 @@ namespace VVVV.Nodes.jQuery
 	{
 		protected T FValue;
 
+		protected JavaScriptValueLiteral()
+		{
+
+		}
+		
 		public JavaScriptValueLiteral(T value)
 		{
 			FValue = value;

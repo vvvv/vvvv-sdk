@@ -6,7 +6,7 @@ namespace VVVV.Nodes.jQuery
 {
 	public class ClassSelector : JavaScriptValueLiteral<string>
 	{
-		public ClassSelector(string className) : base(className)
+		public ClassSelector(string className)
 		{
 			PClassName = className;
 		}
