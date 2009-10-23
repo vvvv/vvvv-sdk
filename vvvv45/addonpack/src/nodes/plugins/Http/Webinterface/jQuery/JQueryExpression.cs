@@ -4,8 +4,8 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public class JQueryExpression : JavaScriptObject
-	{
+	public class JQueryExpression : JavaScriptObject, IScriptGenerator
+    {
         #region Static Methods
     
         public static JQueryExpression This()
@@ -21,6 +21,21 @@ namespace VVVV.Nodes.jQuery
         public static JQueryExpression Object(string objectName)
         {
             return new JQueryExpression(new JavaScriptVariableObject(objectName));
+        }
+
+        public static JQueryExpression Dollars(JavaScriptObject functionParameters)
+        {
+            return new JQueryExpression(functionParameters);
+        }
+
+        public static JQueryExpression Dollars(string functionParameters)
+        {
+            return new JQueryExpression(functionParameters);
+        }
+
+        public static JQueryExpression Dollars()
+        {
+            return new JQueryExpression();
         }
 
         #endregion
@@ -74,15 +89,29 @@ namespace VVVV.Nodes.jQuery
             return text;
         }
 
-        #region JQueryAPIFunctions
+        public void Post(string url, JavaScriptObject data, string type, JavaScriptAnonymousFunction callback)
+        {
+            FMethodCalls.Enqueue(new MethodCall("post", url, data, type, callback));
+        }
+
         public JQueryExpression Append(object jsObject)
         {
             return ApplyMethodCall("append", jsObject);
         }
 
-        public JQueryExpression Attr(object attribute, object value)
+        public JQueryExpression Attr(object name, object value)
         {
-            return ApplyMethodCall("attr", attribute, value);
+            return ApplyMethodCall("attr", name, value);
+        }
+
+        public JQueryExpression Children()
+        {
+            return ApplyMethodCall("children");
+        }
+        
+        public JQueryExpression Children(object selectorExpression)
+        {
+            return ApplyMethodCall("children", selectorExpression);
         }
 
         public JQueryExpression Css(object property, object value)
@@ -90,10 +119,19 @@ namespace VVVV.Nodes.jQuery
             return ApplyMethodCall("css", property, value);
         }
 
-        public void Post(string url, JavaScriptObject data, string type, JavaScriptAnonymousFunction callback)
+        public JQueryExpression End()
         {
-            FMethodCalls.Enqueue(new MethodCall("post", url, data, type, callback));
-        } 
-        #endregion
-	}
+            return ApplyMethodCall("end");
+        }
+
+        public JQueryExpression Parent()
+        {
+            return ApplyMethodCall("parent");
+        }
+
+        public JQueryExpression Parent(object selectorExpression)
+        {
+            return ApplyMethodCall("parent", selectorExpression);
+        }
+    }
 }
