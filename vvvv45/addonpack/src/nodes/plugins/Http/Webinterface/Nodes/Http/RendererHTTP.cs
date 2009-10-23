@@ -82,7 +82,7 @@ namespace VVVV.Nodes.Http
         private IValueIn FSaveState;
         private IStringIn FPostFilename;
         private IStringIn FPostMessage;
-        //private IValueIn FPort;
+        private IStringIn FLink;
 
         //output pin 
         private IStringOut FGetMessages;
@@ -102,7 +102,7 @@ namespace VVVV.Nodes.Http
 
         //Server
         private int mPortNumber = 80;
-        private int mBacklog = 50;
+        private int mBacklog = 500;
         private VVVV.Webinterface.HttpServer.Server mServer;
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
         private SortedList<string, byte[]> mHtmlPageList = new SortedList<string, byte[]>();
@@ -303,6 +303,9 @@ namespace VVVV.Nodes.Http
                 FHost.CreateValueInput("Open Browser", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FOpenBrowser);
                 FOpenBrowser.SetSubType(0, 1, 1, 0, true, false, true);
 
+                FHost.CreateStringInput("Link", TSliceMode.Single, TPinVisibility.OnlyInspector, out FLink);
+                FLink.SetSubType("http://localhost/index.html", false);
+
                 FHost.CreateValueInput("TimeOut", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FTimeOut);
                 FTimeOut.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
 
@@ -496,14 +499,16 @@ namespace VVVV.Nodes.Http
 
             #region Open Browser
 
-            if (FOpenBrowser.PinIsChanged)
+            if (FOpenBrowser.PinIsChanged || FLink.PinIsChanged)
             {
                 double currentValue;
-                FOpenBrowser.GetValue(1, out currentValue);
+                FOpenBrowser.GetValue(0, out currentValue);
+                string currentLink;
+                FLink.GetString(0, out currentLink);
 
-                if (currentValue == 1)
+                if (currentValue > 0.5)
                 {
-                    System.Diagnostics.Process.Start("http://localhost/index.html");
+                    System.Diagnostics.Process.Start(currentLink);
                 }
             }
 
