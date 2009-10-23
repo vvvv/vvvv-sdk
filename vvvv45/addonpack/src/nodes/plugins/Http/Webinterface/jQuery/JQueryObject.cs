@@ -6,8 +6,6 @@ namespace VVVV.Nodes.jQuery
 {
 	public class JQueryObject : IScriptGenerator
 	{
-		#region IScriptGenerator Members
-
 		protected JavaScriptObject FFunctionParameters;
 
 		public JQueryObject ()
@@ -23,9 +21,11 @@ namespace VVVV.Nodes.jQuery
 		public void Clear()
 		{
 			FFunctionParameters = null;
-		}
+        }
 
-		public string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+        #region IScriptGenerator Members
+
+        public string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string text = "$";
 			if (FFunctionParameters != null)
