@@ -33,6 +33,17 @@ namespace VVVV.Nodes
 			get{return FIP;}
 		}
 		
+		private string FHostName;
+		public string HostName
+		{
+			get{return FHostName;}
+			set
+			{
+				FHostName = value;
+				HostNameLabel.Text = FHostName;
+			}
+		}
+		
 		private string FMacAddress;
 		public string MacAddress
 		{
@@ -40,16 +51,14 @@ namespace VVVV.Nodes
 			set
 			{
 				FMacAddress = value;
-				if (FMacAddress == "")
-					MacLabel.Text = "MAC Address";
-				else
+				if (! string.IsNullOrEmpty(FMacAddress))
 				{
-					MacLabel.Text = value;
 					char s = '-';
-					string[] mac = value.Split(s);
+					string[] mac = FMacAddress.Split(s);
 					for (int i=0; i<6; i++)
 						FMACBytes[i] = Convert.ToByte(mac[i], 16);
 				}
+				MacIPLabel.Text = FIP + "  -  " + FMacAddress;
 			}
 		}
 		
@@ -97,14 +106,15 @@ namespace VVVV.Nodes
 			set
 			{
 				FIsSelected = value;
+				Font tmpFont = new Font(HostNameLabel.Font, FontStyle.Bold);
 				if (FIsSelected)
-					IPLabel.Font = new Font(IPLabel.Font, FontStyle.Bold);
+					HostNameLabel.Font = tmpFont;
 				else
 				{
-					IPLabel.Font = new Font(IPLabel.Font, FontStyle.Regular);
+					HostNameLabel.Font = new Font(HostNameLabel.Font, FontStyle.Regular);
 					AppPanel.BackColor = Color.DarkRed;
 				}
-				MacLabel.Font = IPLabel.Font;
+				MacIPLabel.Font = HostNameLabel.Font;
 			}
 		}
 		
@@ -115,6 +125,12 @@ namespace VVVV.Nodes
 		
 		private Process FProcess;
 		
+		private bool FDeleteMe;
+		public bool DeleteMe
+		{
+			get{return FDeleteMe;}
+		}
+		
 		public IPControl(string IP)
 		{
 			//
@@ -123,7 +139,7 @@ namespace VVVV.Nodes
 			InitializeComponent();
 			
 			FIP = IP;
-			IPLabel.Text = FIP;
+			MacIPLabel.Text = FIP;
 		}
 		
 		public void AddGroups(string Groups)
@@ -140,6 +156,8 @@ namespace VVVV.Nodes
 			
 			if (FGroups.Count > 0)
 				XButton.Enabled = false;
+			
+			FDeleteMe = false;
 		}
 		
 		public void RemoveGroup(string Group)
@@ -148,7 +166,7 @@ namespace VVVV.Nodes
 			{
 				FGroups.Remove(Group);
 				if (FGroups.Count == 0)
-					OnXButton.Invoke(FIP);
+					FDeleteMe = true;
 			}
 		}
 		
@@ -181,8 +199,8 @@ namespace VVVV.Nodes
 				IsSelected = true;
 			if (e.Button == MouseButtons.Right)
 				IsSelected = false;
-			IPLabel.Capture = false;
-			MacLabel.Capture = false;
+			HostNameLabel.Capture = false;
+			MacIPLabel.Capture = false;
 		}
 		
 		void IPLabelMouseMove(object sender, MouseEventArgs e)
@@ -276,7 +294,7 @@ namespace VVVV.Nodes
 			{
 				FLastWatchTime = dt;
 				return true;
-			}		
+			}
 		}
 		
 		public void UpdateOnlineState()
@@ -329,15 +347,11 @@ namespace VVVV.Nodes
 				//http://social.microsoft.com/Forums/en-US/vblanguage/thread/d4967e05-9914-49c4-9c9b-53fe8d52fee0/
 				SendARP((UInt32)addr.Address, 0, mac, ref length);
 				
-				FMacAddress = BitConverter.ToString(mac, 0, (int) length);
+				MacAddress = BitConverter.ToString(mac, 0, (int) length);
 				
-				if (FMacAddress == "")
-					MacLabel.Text = "MAC Address";
-				else
-					MacLabel.Text = FMacAddress;
+				//also read out hostname..takes quite some time
+				HostName = System.Net.Dns.GetHostByAddress(FIP).HostName;
 			}
 		}
 	}
-
-	
 }

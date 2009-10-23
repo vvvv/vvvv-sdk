@@ -37,16 +37,20 @@ namespace VVVV.Nodes
 		private void InitializeComponent()
 		{
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.IPsEdit = new System.Windows.Forms.TextBox();
-			this.TopPanel = new System.Windows.Forms.Panel();
-			this.GroupLabel = new System.Windows.Forms.Label();
-			this.EditButton = new System.Windows.Forms.Button();
 			this.AppPanel = new System.Windows.Forms.Panel();
 			this.OnlinePanel = new System.Windows.Forms.Panel();
+			this.IPsEdit = new System.Windows.Forms.TextBox();
+			this.TopPanel = new System.Windows.Forms.Panel();
+			this.panel3 = new System.Windows.Forms.Panel();
+			this.GroupLabel = new System.Windows.Forms.Label();
+			this.panel2 = new System.Windows.Forms.Panel();
+			this.EditButton = new System.Windows.Forms.Button();
 			this.NamePanel = new System.Windows.Forms.Panel();
 			this.GroupNameEdit = new System.Windows.Forms.TextBox();
 			this.XButton = new System.Windows.Forms.Button();
 			this.TopPanel.SuspendLayout();
+			this.panel3.SuspendLayout();
+			this.panel2.SuspendLayout();
 			this.NamePanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -59,41 +63,77 @@ namespace VVVV.Nodes
 			this.panel1.Size = new System.Drawing.Size(238, 1);
 			this.panel1.TabIndex = 7;
 			// 
+			// AppPanel
+			// 
+			this.AppPanel.BackColor = System.Drawing.Color.DarkRed;
+			this.AppPanel.Dock = System.Windows.Forms.DockStyle.Right;
+			this.AppPanel.Location = new System.Drawing.Point(16, 0);
+			this.AppPanel.Name = "AppPanel";
+			this.AppPanel.Size = new System.Drawing.Size(15, 36);
+			this.AppPanel.TabIndex = 10;
+			// 
+			// OnlinePanel
+			// 
+			this.OnlinePanel.BackColor = System.Drawing.Color.DarkRed;
+			this.OnlinePanel.Dock = System.Windows.Forms.DockStyle.Left;
+			this.OnlinePanel.Location = new System.Drawing.Point(0, 0);
+			this.OnlinePanel.Name = "OnlinePanel";
+			this.OnlinePanel.Size = new System.Drawing.Size(15, 36);
+			this.OnlinePanel.TabIndex = 9;
+			// 
 			// IPsEdit
 			// 
 			this.IPsEdit.AcceptsReturn = true;
 			this.IPsEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.IPsEdit.Location = new System.Drawing.Point(0, 51);
+			this.IPsEdit.Location = new System.Drawing.Point(0, 57);
 			this.IPsEdit.Multiline = true;
 			this.IPsEdit.Name = "IPsEdit";
-			this.IPsEdit.Size = new System.Drawing.Size(238, 89);
+			this.IPsEdit.Size = new System.Drawing.Size(238, 83);
 			this.IPsEdit.TabIndex = 10;
 			// 
 			// TopPanel
 			// 
-			this.TopPanel.Controls.Add(this.GroupLabel);
+			this.TopPanel.Controls.Add(this.panel3);
+			this.TopPanel.Controls.Add(this.panel2);
 			this.TopPanel.Controls.Add(this.EditButton);
-			this.TopPanel.Controls.Add(this.AppPanel);
-			this.TopPanel.Controls.Add(this.OnlinePanel);
 			this.TopPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.TopPanel.Location = new System.Drawing.Point(0, 1);
 			this.TopPanel.Name = "TopPanel";
-			this.TopPanel.Size = new System.Drawing.Size(238, 30);
+			this.TopPanel.Size = new System.Drawing.Size(238, 36);
 			this.TopPanel.TabIndex = 11;
+			// 
+			// panel3
+			// 
+			this.panel3.Controls.Add(this.GroupLabel);
+			this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel3.Location = new System.Drawing.Point(31, 0);
+			this.panel3.Name = "panel3";
+			this.panel3.Size = new System.Drawing.Size(187, 36);
+			this.panel3.TabIndex = 10;
 			// 
 			// GroupLabel
 			// 
-			this.GroupLabel.Dock = System.Windows.Forms.DockStyle.Right;
+			this.GroupLabel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.GroupLabel.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.GroupLabel.Location = new System.Drawing.Point(55, 0);
+			this.GroupLabel.Location = new System.Drawing.Point(0, 0);
 			this.GroupLabel.Name = "GroupLabel";
-			this.GroupLabel.Size = new System.Drawing.Size(163, 30);
-			this.GroupLabel.TabIndex = 6;
+			this.GroupLabel.Size = new System.Drawing.Size(187, 36);
+			this.GroupLabel.TabIndex = 7;
 			this.GroupLabel.Text = "ungrouped";
 			this.GroupLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.GroupLabel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GroupLabelMouseMove);
 			this.GroupLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GroupLabelMouseDown);
 			this.GroupLabel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GroupLabelMouseUp);
+			// 
+			// panel2
+			// 
+			this.panel2.Controls.Add(this.AppPanel);
+			this.panel2.Controls.Add(this.OnlinePanel);
+			this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
+			this.panel2.Location = new System.Drawing.Point(0, 0);
+			this.panel2.Name = "panel2";
+			this.panel2.Size = new System.Drawing.Size(31, 36);
+			this.panel2.TabIndex = 9;
 			// 
 			// EditButton
 			// 
@@ -102,34 +142,18 @@ namespace VVVV.Nodes
 			this.EditButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.EditButton.Location = new System.Drawing.Point(218, 0);
 			this.EditButton.Name = "EditButton";
-			this.EditButton.Size = new System.Drawing.Size(20, 30);
+			this.EditButton.Size = new System.Drawing.Size(20, 36);
 			this.EditButton.TabIndex = 5;
 			this.EditButton.Text = "E";
 			this.EditButton.UseVisualStyleBackColor = true;
 			this.EditButton.Click += new System.EventHandler(this.EditButtonClick);
-			// 
-			// AppPanel
-			// 
-			this.AppPanel.BackColor = System.Drawing.Color.DarkRed;
-			this.AppPanel.Location = new System.Drawing.Point(16, 2);
-			this.AppPanel.Name = "AppPanel";
-			this.AppPanel.Size = new System.Drawing.Size(15, 30);
-			this.AppPanel.TabIndex = 8;
-			// 
-			// OnlinePanel
-			// 
-			this.OnlinePanel.BackColor = System.Drawing.Color.DarkRed;
-			this.OnlinePanel.Location = new System.Drawing.Point(0, 2);
-			this.OnlinePanel.Name = "OnlinePanel";
-			this.OnlinePanel.Size = new System.Drawing.Size(15, 30);
-			this.OnlinePanel.TabIndex = 7;
 			// 
 			// NamePanel
 			// 
 			this.NamePanel.Controls.Add(this.GroupNameEdit);
 			this.NamePanel.Controls.Add(this.XButton);
 			this.NamePanel.Dock = System.Windows.Forms.DockStyle.Top;
-			this.NamePanel.Location = new System.Drawing.Point(0, 31);
+			this.NamePanel.Location = new System.Drawing.Point(0, 37);
 			this.NamePanel.Name = "NamePanel";
 			this.NamePanel.Size = new System.Drawing.Size(238, 20);
 			this.NamePanel.TabIndex = 12;
@@ -164,11 +188,15 @@ namespace VVVV.Nodes
 			this.Name = "GroupControl";
 			this.Size = new System.Drawing.Size(238, 140);
 			this.TopPanel.ResumeLayout(false);
+			this.panel3.ResumeLayout(false);
+			this.panel2.ResumeLayout(false);
 			this.NamePanel.ResumeLayout(false);
 			this.NamePanel.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.Panel panel3;
+		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.Panel NamePanel;
 		private System.Windows.Forms.Panel TopPanel;
 		private System.Windows.Forms.TextBox IPsEdit;
