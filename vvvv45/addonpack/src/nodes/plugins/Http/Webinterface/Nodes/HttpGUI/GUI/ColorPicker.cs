@@ -18,7 +18,6 @@ namespace VVVV.Nodes.HttpGUI
 		#region field declaration
 
 		private bool FDisposed = false;
-		private IStringIn FNameStringInput;
         private IValueIn FUpdateContinuousValueInput;
 		private IColorIn FDefaultColorColorInput;
 		private IColorOut FResponseColorOutput;
@@ -170,10 +169,7 @@ namespace VVVV.Nodes.HttpGUI
 		protected override void OnSetPluginHost()
 		{
 			// create required pins
-			FHost.CreateStringInput("Name", TSliceMode.Dynamic, TPinVisibility.True, out FNameStringInput);
-			FNameStringInput.SetSubType("", false);
-            
-            FHost.CreateColorInput("Default Color", TSliceMode.Dynamic, TPinVisibility.True, out FDefaultColorColorInput);
+			FHost.CreateColorInput("Default Color", TSliceMode.Dynamic, TPinVisibility.True, out FDefaultColorColorInput);
 			FDefaultColorColorInput.SetSubType(new RGBAColor(0.0, 1.0, 0.0, 1.0), false);
 
             FHost.CreateValueInput("Update Continuous", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FUpdateContinuousValueInput);
@@ -195,7 +191,7 @@ namespace VVVV.Nodes.HttpGUI
 
 			//check if we received any new data from the web server
 
-			if (FChangedSpreadSize || FNameStringInput.PinIsChanged || FDefaultColorColorInput.PinIsChanged || FUpdateContinuousValueInput.PinIsChanged || ReceivedNewString)
+			if (FChangedSpreadSize || FDefaultColorColorInput.PinIsChanged || FUpdateContinuousValueInput.PinIsChanged || ReceivedNewString)
 			{
 				for (int i = 0; i < SpreadMax; i++)
 				{
@@ -205,11 +201,9 @@ namespace VVVV.Nodes.HttpGUI
 					FResponseColorOutput.SliceCount = SpreadMax;
 
                     //read data from inputs
-                    string nameStringSlice = String.Empty;
 					RGBAColor defaultColorSlice;
                     double updateContinuousSlice;
 					
-					FNameStringInput.GetString(i, out nameStringSlice);
 					FDefaultColorColorInput.GetColor(i, out defaultColorSlice);
                     FUpdateContinuousValueInput.GetValue(i, out updateContinuousSlice);
 
