@@ -51,13 +51,14 @@ namespace VVVV.Webinterface.HttpServer {
         private const int numThreads = 1;
         protected Hashtable connectedHT = new Hashtable();
         protected ArrayList connectedSocks;
-        protected int portNumber;
+        protected int mPortNumber;
         protected int maxSockets;
         protected int sockCount = 0;
         private bool mInit = false;
-        private List<int> mPorts = new List<int>();
+        private List<int> mBlockedPorts = new List<int>();
         private int mFreePort;
         private bool mPortFree = false;
+        private bool mRunning = false;
 
         //Thread signal.
         private ManualResetEvent allDone = new ManualResetEvent(false);
@@ -155,11 +156,19 @@ namespace VVVV.Webinterface.HttpServer {
             }
         }
 
-        public int FreePort
+        public bool Running
         {
             get
             {
-                return mFreePort;
+                return mRunning;
+            }
+        }
+
+        public int Port
+        {
+            set 
+            {
+                mPortNumber = value;
             }
         }
 
@@ -178,38 +187,10 @@ namespace VVVV.Webinterface.HttpServer {
         /// <param name="Backlog">Backlog </param>
         public Server(int pPort, int Backlog)
         {
-
-            this.portNumber = pPort;
+            this.mPortNumber = pPort;
             this.maxSockets = 10000;
             this.mBacklog = Backlog;
             connectedSocks = new ArrayList(this.maxSockets);
-
-            IPGlobalProperties GlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
-            TcpConnectionInformation[] TCPConnections = GlobalProperties.GetActiveTcpConnections();
-            IPEndPoint[] TcpEndPoints = GlobalProperties.GetActiveTcpListeners();
-            IPEndPoint[] UdpEndpoints = GlobalProperties.GetActiveUdpListeners();
-
-            foreach (TcpConnectionInformation TcpInformation in TCPConnections)
-            {
-                mPorts.Add(TcpInformation.LocalEndPoint.Port);
-            }
-
-            foreach (IPEndPoint TcpEndPoint in TcpEndPoints)
-            {
-                mPorts.Add(TcpEndPoint.Port);
-            }
-
-            foreach (IPEndPoint UdpEndPoint in UdpEndpoints)
-            {
-                mPorts.Add(UdpEndPoint.Port);
-            }
-
-            mPorts.Sort();
-            if(mPorts.Contains(this.portNumber) == false)
-            {
-                mFreePort = mPorts[0];
-                mPortFree = true;
-            }
         }
 
 
@@ -264,27 +245,25 @@ namespace VVVV.Webinterface.HttpServer {
         #endregion constructor /deconstructor
 
 
-
-
-
         #region Socket Connection
 
 
 
-        public bool Start()
+        public void Start()
         {
             // Clear the thread end events
-            threadEnd = new AutoResetEvent(false);
-            if (mPortFree == true)
+            if (CheckPorts())
             {
-                
+                mRunning = true;
                 mShuttingDown = false;
+                threadEnd = new AutoResetEvent(false);
+
                 ThreadStart threadStart1 = new ThreadStart(this.StartListening);
                 serverThread = new Thread(threadStart1);
                 serverThread.IsBackground = true;
                 serverThread.Start();
 
-
+                
                 int tMaxWorkerThreads;
                 int tMaxAsynThreads;
                 ThreadPool.GetMaxThreads(out tMaxWorkerThreads, out tMaxAsynThreads);
@@ -294,7 +273,40 @@ namespace VVVV.Webinterface.HttpServer {
                 //Create a timer that waits one minute, then invokes every 5 minutes.
                 //mLostTimer = new Timer(timerDelegate, null, Server.mTimerTimeout, Server.mTimerTimeout);
             }
+        }
 
+        private bool CheckPorts()
+        {
+            mPortFree = false;
+            mBlockedPorts.Clear();
+
+            IPGlobalProperties GlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
+            TcpConnectionInformation[] TCPConnections = GlobalProperties.GetActiveTcpConnections();
+            IPEndPoint[] TcpEndPoints = GlobalProperties.GetActiveTcpListeners();
+            IPEndPoint[] UdpEndpoints = GlobalProperties.GetActiveUdpListeners();
+
+            foreach (TcpConnectionInformation TcpInformation in TCPConnections)
+            {
+                mBlockedPorts.Add(TcpInformation.LocalEndPoint.Port);
+            }
+
+            foreach (IPEndPoint TcpEndPoint in TcpEndPoints)
+            {
+                mBlockedPorts.Add(TcpEndPoint.Port);
+            }
+
+            foreach (IPEndPoint UdpEndPoint in UdpEndpoints)
+            {
+                mBlockedPorts.Add(UdpEndPoint.Port);
+            }
+
+            if (mBlockedPorts.Contains(this.mPortNumber) == false)
+            {
+                mPortFree = true;
+                return mPortFree;
+            }
+
+            
             return mPortFree;
         }
 
@@ -304,9 +316,9 @@ namespace VVVV.Webinterface.HttpServer {
         {
             try
             {
-                mIpLocal = new IPEndPoint(IPAddress.Any, portNumber);
+                mIpLocal = new IPEndPoint(IPAddress.Any, mPortNumber);
                 mMainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                mMainSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                mMainSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
                 mMainSocket.Bind(mIpLocal);
                 // Start listening...<
                 mMainSocket.Listen(100);
@@ -321,7 +333,7 @@ namespace VVVV.Webinterface.HttpServer {
 
                 if (mMainSocket.Connected == true)
                 {
-                    Debug.WriteLine(String.Format("Socket {0} still alive", portNumber));
+                    Debug.WriteLine(String.Format("Socket {0} still alive", mPortNumber));
                 }
 
             }
@@ -345,36 +357,25 @@ namespace VVVV.Webinterface.HttpServer {
 
         public void Stop()
         {
-
             mShuttingDown = true;
             threadEnd.Set();
 
-            //mLostTimer.Dispose();
-            //mLostTimer = null;
-
-            //int lcv;
-            
-            
             // Create a connection to the port to unblock the listener thread
             try
             {
                 Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                IPEndPoint endPoint = new IPEndPoint(IPAddress.Loopback, this.portNumber);
+                IPEndPoint endPoint = new IPEndPoint(IPAddress.Loopback, this.mPortNumber);
                 sock.Connect(endPoint);
-                //sock.Close();
                 sock = null;
             }
             catch (Exception ex)
             {
-
+                
             }
-           
 
-
-
-            // Check thread end events and wait for up to 5 seconds.
-            //for (lcv = 0; lcv < numThreads; lcv++)
-            //    threadEnd[lcv].WaitOne(5000, false);
+            //mLostTimer.Dispose();
+            //mLostTimer = null;
+            mRunning = false;
 
         }
 
@@ -483,6 +484,7 @@ namespace VVVV.Webinterface.HttpServer {
                 {
                     sock.Shutdown(SocketShutdown.Both);
                 }
+                sock.Disconnect(true);
                 sock.Close();
                 sock = null;
                 state.ClientSocket = null;
@@ -683,29 +685,6 @@ namespace VVVV.Webinterface.HttpServer {
 
 
         #endregion request Handle
-
-
-
-
-
-        #region ServeData
-
-        //public void ServeFolder(string pPath)
-        //{
-            
-        //    ////Debug.WriteLine("serve Folder: " + pPath);
-        //    mItemsToServ.ReadServerFolder(pPath);
-
-        //    mFileList = mItemsToServ.FileListVVVV;
-        //    mFileNames = mItemsToServ.FileListNameVVVV;
-        //}
-
-        #endregion ServeData
-
-
-
-
-
-        
+       
     }
 }

@@ -101,14 +101,14 @@ namespace VVVV.Nodes.Http
 
 
         //Server
+        private int mPortNumber = 80;
+        private int mBacklog = 50;
         private VVVV.Webinterface.HttpServer.Server mServer;
-        //private string mServerFolder;
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
         private SortedList<string, byte[]> mHtmlPageList = new SortedList<string, byte[]>();
         private SortedList<string, string> mPostMessages = new SortedList<string, string>();
-        private int mPortNumber = 80;
+
         private List<string> PageNames = new List<string>();
-        Thread mServerThread;
         List<string> mDirectories = new List<string>();
 
 
@@ -126,7 +126,9 @@ namespace VVVV.Nodes.Http
         /// </summary>
         public Renderer()
         {
-            //mServerFolder = mWebinterfaceSingelton.FolderToServ;
+            mServer = new VVVV.Webinterface.HttpServer.Server(mPortNumber, mBacklog);
+            Ressources r = new Ressources();
+            r.SearchFile("colorpicker_background.png");
         }
 
 
@@ -170,7 +172,12 @@ namespace VVVV.Nodes.Http
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
 
-                mServer.Stop();
+                if (mServer.Running)
+                {
+                    mServer.Stop();
+                }
+                mServer = null;
+
                 FHost.Log(TLogType.Debug, "Renderer (HTTP) Node is being deleted");
 
                 // Note that this is not thread safe.
@@ -393,9 +400,6 @@ namespace VVVV.Nodes.Http
         #region mainloop
 
 
-
-
-
         public void Configurate(IPluginConfig Input)
         {
 
@@ -413,7 +417,6 @@ namespace VVVV.Nodes.Http
                         INodeIn pinToDelete = FInputPinList[FInputPinList.Count - 1];
                         FInputPinList.Remove(pinToDelete);
                         FNodeUpstream.Remove(pinToDelete.Name);
-
                         FHost.DeletePin(pinToDelete);
                         pinToDelete = null;
                     }
@@ -424,11 +427,9 @@ namespace VVVV.Nodes.Http
                     for (int i = 0; i > diff; i--)
                     {
                         INodeIn newPin;
-
                         FHost.CreateNodeInput("Input" + (FInputPinList.Count + 1), TSliceMode.Dynamic, TPinVisibility.True, out newPin);
                         newPin.SetSubType(new Guid[1] { HttpPageIO.GUID }, HttpPageIO.FriendlyName);
                         FInputPinList.Add(newPin);
-
                     }
                 }
             }
@@ -438,20 +439,15 @@ namespace VVVV.Nodes.Http
                 FPort.GetValue(0, out PortNumber);
                 mPortNumber = (int)PortNumber;
 
-                if (mServer != null)
+                if (mServer.Running)
                 {
                     mServer.Stop();
-                    bool Portfree = mServer.Start();
-                    if (Portfree == false)
-                    {
-                        FHost.Log(TLogType.Error, String.Format("Http Port {0} taken by an other Application like Skype etc.. Please choose an other Port.", mPortNumber));
-                       
-                    }
-                    else
-                    {
-                        mServer.FoldersToServ = mDirectories;
-                    }
-
+                    mServer.Port = mPortNumber;
+                    mServer.Start();
+                }
+                else
+                {
+                    mServer.Port = mPortNumber;
                 }
             }
         }
@@ -476,26 +472,17 @@ namespace VVVV.Nodes.Http
             {
                 if (pState > 0.5)
                 {
-
-                    mServer = new VVVV.Webinterface.HttpServer.Server(mPortNumber, 50);
-                    bool Portfree = mServer.Start();
-                    Thread.Sleep(1000);
-                    if (Portfree == false)
+                    mServer.Start();
+                    if (mServer.Running == false)
                     {
-                        FHost.Log(TLogType.Error, String.Format("Http Port {0} taken by an other Application like Skype etc.. Please choose an other Port.", mPortNumber));
-                        //mServer = null;
-                    }
-                    else
-                    {
-                        mServer.FoldersToServ = mDirectories;
+                        FHost.Log(TLogType.Error, String.Format("Http Port {0} taken by an other Application like Skype etc.. Please choose an other Port and Reenable the Render(HTTP).", mPortNumber));
                     }
                 }
                 else if (pState < 0.5)
                 {
-                    if (mServer != null)
+                    if (mServer.Running == true)
                     {
                         mServer.Stop();
-                        //mServer = null;
                     }
                 }
             }
@@ -571,9 +558,6 @@ namespace VVVV.Nodes.Http
                         }
                     }
                 }
-
-                mDirectories = tDirectories;
-
 
                 mServer.FoldersToServ = tDirectories;
                 

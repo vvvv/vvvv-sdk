@@ -111,7 +111,17 @@ namespace VVVV.Webinterface.HttpServer
             }
             if (FoundFileFlag == false)
             {
-                mContentAsByte = Encoding.UTF8.GetBytes("File " + "'" + pFilename + "'" + " Not Found");
+                Ressources r = new Ressources();
+                Byte[] RessourceFile = r.SearchFile(pFilename);
+                if (RessourceFile != null)
+                {
+                    mContentAsByte = RessourceFile;
+                }else
+                {
+                    mContentAsByte = Encoding.UTF8.GetBytes("File " + "'" + pFilename + "'" + " Not Found");
+                }
+
+                r = null;
             }
         }
 
