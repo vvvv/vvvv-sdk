@@ -269,27 +269,27 @@ namespace VVVV.Nodes.HttpGUI
 					}})";*/
 
 
-					JQueryExpression getSliceId = new JQueryExpression(Selector.ThisSelector).ApplyMethodCall("parent").ApplyMethodCall("attr", "id");
-					JQueryExpression generateXMLPost = new JQueryExpression(JavaScriptValueLiteralFactory.Create("<PIN></PIN>")).ApplyMethodCall("attr", "pinname", "Color Input").ApplyMethodCall("attr", "slicecount", 1);
-					JQueryExpression generateColorValuesXML = new JQueryExpression(JavaScriptValueLiteralFactory.Create("<value id=\"r\"></value><value id=\"g\"></value><value id=\"b\"></value><value id=\"a\"></value>"));
+                    JQueryExpression getSliceId = JQueryExpression.This().ApplyMethodCall("parent").ApplyMethodCall("attr", "id");
+                    JQueryExpression generateXMLPost = new JQueryExpression("<PIN></PIN>").Attr("pinname", "Color Input").Attr("slicecount", 1);
+					JQueryExpression generateColorValuesXML = new JQueryExpression("<value id=\"r\"></value><value id=\"g\"></value><value id=\"b\"></value><value id=\"a\"></value>");
 					generateXMLPost.Append(generateColorValuesXML);
-					generateXMLPost.ApplyMethodCall("children", "value#r").Append(new JQueryExpression(new JavaScriptVariableObject("rgb")).ApplyMethodCall("attr", "r").ApplyMethodCall("toString")).ApplyMethodCall("end");
-					generateXMLPost.ApplyMethodCall("children", "value#g").Append(new JQueryExpression(new JavaScriptVariableObject("rgb")).ApplyMethodCall("attr", "g").ApplyMethodCall("toString")).ApplyMethodCall("end");
-					generateXMLPost.ApplyMethodCall("children", "value#b").Append(new JQueryExpression(new JavaScriptVariableObject("rgb")).ApplyMethodCall("attr", "b").ApplyMethodCall("toString")).ApplyMethodCall("end");
+					generateXMLPost.ApplyMethodCall("children", "value#r").Append(JQueryExpression.Object("rgb").ApplyMethodCall("attr", "r").ApplyMethodCall("toString")).ApplyMethodCall("end");
+					generateXMLPost.ApplyMethodCall("children", "value#g").Append(JQueryExpression.Object("rgb").ApplyMethodCall("attr", "g").ApplyMethodCall("toString")).ApplyMethodCall("end");
+					generateXMLPost.ApplyMethodCall("children", "value#b").Append(JQueryExpression.Object("rgb").ApplyMethodCall("attr", "b").ApplyMethodCall("toString")).ApplyMethodCall("end");
 					generateXMLPost.ApplyMethodCall("children", "value#a").Append(1.0).ApplyMethodCall("end");
 
-					JQueryExpression wrapXMLPost = new JQueryExpression(JavaScriptValueLiteralFactory.Create("<XML></XML>")).Append(generateXMLPost);
+					JQueryExpression wrapXMLPost = new JQueryExpression("<XML></XML>").Append(generateXMLPost);
 					
 					wrapXMLPost.ApplyMethodCall("html");
 
-					JQueryExpression createPostParameters = new JQueryExpression(new JavaScriptGenericObject()).ApplyMethodCall("attr", getSliceId, wrapXMLPost).ApplyMethodCall("get", 0);
+					JQueryExpression createPostParameters = new JQueryExpression(new JavaScriptGenericObject()).Attr(getSliceId, wrapXMLPost).ApplyMethodCall("get", 0);
 
 					JQueryExpression postToServer = new JQueryExpression();
 					postToServer.Post("ToVVVV.xml", createPostParameters, null, null);
 
 					//Create the object that sets the colorpicker options
 					JavaScriptGenericObject colorPickerParams = new JavaScriptGenericObject();
-					colorPickerParams.Set("flat", JavaScriptValueLiteralFactory.Create(true));
+					colorPickerParams.Set("flat", JavaScriptObjectFactory.Create(true));
 					//setup the post method to fire at the appropriate time according to the Update Continuous pin
 					colorPickerParams.Set(updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete", new JavaScriptAnonymousFunction(new JQuery(postToServer), "hsb", "hex", "rgb"));
 					//set the color picker to the color currently set on the server side
@@ -298,11 +298,12 @@ namespace VVVV.Nodes.HttpGUI
 					color.Set("g", double.Parse(rgb[1]));
 					color.Set("b", double.Parse(rgb[2]));
 					colorPickerParams.Set("color", color);
-					
+
+
 					//Apply all the colorpicker code to our div
 					JQueryExpression documentReadyHandler = new JQueryExpression(new IDSelector(SliceId[i])).ApplyMethodCall("ColorPicker", colorPickerParams);
 					//set the newly created colorpicker sub-div to use absolute positioning
-					documentReadyHandler.ApplyMethodCall("children").ApplyMethodCall("eq", 0).ApplyMethodCall("css", "position", "absolute");
+					documentReadyHandler.ApplyMethodCall("children").ApplyMethodCall("eq", 0).Css("position", "absolute");
 					
 					//Assign all our code to the document ready handler
 					JQuery onDocumentReady = JQuery.GenerateDocumentReady(new JQuery(documentReadyHandler));

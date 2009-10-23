@@ -4,11 +4,18 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public class JavaScriptValueLiteralFactory
+	public class JavaScriptObjectFactory
 	{
-		public static JavaScriptValueLiteral<T> Create<T>(T value)
+		public static JavaScriptObject Create<T>(T value)
 		{
-			return new JavaScriptValueLiteral<T>(value);
+            JavaScriptObject jsObject = value as JavaScriptObject;
+            
+            if (jsObject == null)
+            {
+                jsObject = new JavaScriptValueLiteral<T>(value);
+            }
+
+            return jsObject;
 		}
 	}
 }

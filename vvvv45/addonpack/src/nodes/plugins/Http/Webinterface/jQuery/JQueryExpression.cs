@@ -6,22 +6,48 @@ namespace VVVV.Nodes.jQuery
 {
 	public class JQueryExpression : JavaScriptObject
 	{
-		protected JQueryObject FJQueryObject;
-		protected Queue<MethodCall> FMethodCalls;
+        #region Static Methods
+    
+        public static JQueryExpression This()
+        {
+            return new JQueryExpression(new JavaScriptVariableObject("this"));
+        }
 
-		public JQueryExpression(JQueryObject jQueryObject)
-		{
-			FJQueryObject = jQueryObject;
-			FMethodCalls = new Queue<MethodCall>();
-		}
-		
-		public JQueryExpression() : this(new JQueryObject())
-		{
-		}
+        public static JQueryExpression Document()
+        {
+            return new JQueryExpression(new JavaScriptVariableObject("document"));
+        }
 
-		public JQueryExpression(JavaScriptObject jsObject) : this(new JQueryObject(jsObject))
-		{
-		}
+        public static JQueryExpression Object(string objectName)
+        {
+            return new JQueryExpression(new JavaScriptVariableObject(objectName));
+        }
+
+        #endregion
+
+        #region Fields
+        protected JavaScriptObject FJQueryFunctionParameters;
+        protected Queue<MethodCall> FMethodCalls; 
+        #endregion
+
+        #region Constructors
+        public JQueryExpression(JavaScriptObject functionParameters)
+        {
+            FJQueryFunctionParameters = functionParameters;
+            FMethodCalls = new Queue<MethodCall>();
+        }
+
+        public JQueryExpression(string functionParameters) : 
+            this(JavaScriptObjectFactory.Create(functionParameters))
+        {
+
+        }
+
+        public JQueryExpression(): this((JavaScriptObject)null)
+        {
+
+        } 
+        #endregion
 
 		public JQueryExpression ApplyMethodCall(String methodName, params object[] arguments)
 		{
@@ -29,25 +55,45 @@ namespace VVVV.Nodes.jQuery
 			return this;
 		}
 
-		public JQueryExpression Append(object jsObject)
-		{
-			FMethodCalls.Enqueue(new MethodCall("append", jsObject));
-			return this;
-		}
-		
-		public void Post(string url, JavaScriptObject data, string type, JavaScriptAnonymousFunction callback)
-		{
-			FMethodCalls.Enqueue(new MethodCall("post", url, data, type, callback));
-		}
+        public JQuery AsJQuery()
+        {
+            return new JQuery(this);
+        }
 
-		public override string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
-		{
-			string text = FJQueryObject.PScript(indentSteps, breakInternalLines, breakAfter);
-			foreach (MethodCall methodCall in FMethodCalls)
-			{
-				text += methodCall.PScript(indentSteps, breakInternalLines, breakAfter);
-			}
-			return text;
-		}
+        public override string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+        {
+            string text = "$";
+            if (FJQueryFunctionParameters != null)
+            {
+                text += "(" + FJQueryFunctionParameters.PScript(indentSteps, breakInternalLines, breakAfter) + ")";
+            }
+            foreach (MethodCall methodCall in FMethodCalls)
+            {
+                text += methodCall.PScript(indentSteps, breakInternalLines, breakAfter);
+            }
+            return text;
+        }
+
+        #region JQueryAPIFunctions
+        public JQueryExpression Append(object jsObject)
+        {
+            return ApplyMethodCall("append", jsObject);
+        }
+
+        public JQueryExpression Attr(object attribute, object value)
+        {
+            return ApplyMethodCall("attr", attribute, value);
+        }
+
+        public JQueryExpression Css(object property, object value)
+        {
+            return ApplyMethodCall("css", property, value);
+        }
+
+        public void Post(string url, JavaScriptObject data, string type, JavaScriptAnonymousFunction callback)
+        {
+            FMethodCalls.Enqueue(new MethodCall("post", url, data, type, callback));
+        } 
+        #endregion
 	}
 }

@@ -10,10 +10,8 @@ namespace VVVV.Nodes.jQuery
 
 		public static JQuery GenerateDocumentReady(JQuery handler)
 		{
-			JQueryExpression documentReadyExpression = new JQueryExpression(Selector.DocumentSelector);
-			documentReadyExpression.ApplyMethodCall("ready", new JavaScriptAnonymousFunction(handler));
-			JQuery documentReady = new JQuery(documentReadyExpression);
-			return documentReady;
+			return JQueryExpression.Document().ApplyMethodCall("ready", new JavaScriptAnonymousFunction(handler))
+                   .AsJQuery();
 		}
 
 		public JQuery()

@@ -32,7 +32,7 @@ namespace VVVV.Nodes.jQuery
 			{
 				if (arguments[i] != null)
 				{
-					FArguments.Enqueue(JavaScriptObject.ConvertToJavaScriptObject(arguments[i]));
+					FArguments.Enqueue(JavaScriptObjectFactory.Create(arguments[i]));
 				}
 			}
 
