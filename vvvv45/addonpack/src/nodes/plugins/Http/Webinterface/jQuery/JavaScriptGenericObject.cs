@@ -18,9 +18,9 @@ namespace VVVV.Nodes.jQuery
 			JavaScriptObject jsObject = value as JavaScriptObject;
 			if (jsObject == null)
 			{
-				jsObject = JavaScriptValueLiteralFactory.Create(value);
+				jsObject = JavaScriptObjectFactory.Create(value);
 			}
-			FJscriptDictionaryObject.Add(key, jsObject);
+			FJscriptDictionaryObject[key] = jsObject;
 		}
 
 		public override string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
