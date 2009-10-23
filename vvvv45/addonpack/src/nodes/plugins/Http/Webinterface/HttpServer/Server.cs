@@ -281,24 +281,24 @@ namespace VVVV.Webinterface.HttpServer {
             mBlockedPorts.Clear();
 
             IPGlobalProperties GlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
-            TcpConnectionInformation[] TCPConnections = GlobalProperties.GetActiveTcpConnections();
+            //TcpConnectionInformation[] TCPConnections = GlobalProperties.GetActiveTcpConnections();
             IPEndPoint[] TcpEndPoints = GlobalProperties.GetActiveTcpListeners();
-            IPEndPoint[] UdpEndpoints = GlobalProperties.GetActiveUdpListeners();
+            //IPEndPoint[] UdpEndpoints = GlobalProperties.GetActiveUdpListeners();
 
-            foreach (TcpConnectionInformation TcpInformation in TCPConnections)
-            {
-                mBlockedPorts.Add(TcpInformation.LocalEndPoint.Port);
-            }
+            //foreach (TcpConnectionInformation TcpInformation in TCPConnections)
+            //{
+            //    mBlockedPorts.Add(TcpInformation.LocalEndPoint.Port);
+            //}
 
             foreach (IPEndPoint TcpEndPoint in TcpEndPoints)
             {
                 mBlockedPorts.Add(TcpEndPoint.Port);
             }
 
-            foreach (IPEndPoint UdpEndPoint in UdpEndpoints)
-            {
-                mBlockedPorts.Add(UdpEndPoint.Port);
-            }
+            //foreach (IPEndPoint UdpEndPoint in UdpEndpoints)
+            //{
+            //    mBlockedPorts.Add(UdpEndPoint.Port);
+            //}
 
             if (mBlockedPorts.Contains(this.mPortNumber) == false)
             {
@@ -318,7 +318,8 @@ namespace VVVV.Webinterface.HttpServer {
             {
                 mIpLocal = new IPEndPoint(IPAddress.Any, mPortNumber);
                 mMainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                mMainSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
+                mMainSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                //mMainSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
                 mMainSocket.Bind(mIpLocal);
                 // Start listening...<
                 mMainSocket.Listen(100);
