@@ -129,7 +129,7 @@ namespace VVVV.Nodes.HttpGUI
 
         #region IMyNodeIO
 
-        public void GetDatenObjekt(int Index, out List<GuiDataObject> GuiDaten)
+        public void GetDataObject(int Index, out List<GuiDataObject> GuiDaten)
         {
             ////Debug.WriteLine("Enter Get daten Object");
             GuiDaten = new List<GuiDataObject>(FGuiDataList);
