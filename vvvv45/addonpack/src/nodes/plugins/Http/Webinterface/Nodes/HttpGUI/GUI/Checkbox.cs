@@ -223,5 +223,10 @@ $(""input[class*='{0}']:not(input[id=""+id+""])"").each(function()
 
 
         #endregion Main Loop
-    }
+
+		protected override bool DynamicPinsAreChanged()
+		{
+			return false;
+		}
+	}
 }

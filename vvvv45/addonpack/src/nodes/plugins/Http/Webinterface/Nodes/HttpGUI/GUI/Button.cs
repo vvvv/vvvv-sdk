@@ -307,5 +307,10 @@ namespace VVVV.Nodes.HttpGUI
 
 
         #endregion Main Loop
-    }
+
+		protected override bool DynamicPinsAreChanged()
+		{
+			throw new Exception("The method or operation is not implemented.");
+		}
+	}
 }

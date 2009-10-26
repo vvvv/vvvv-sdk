@@ -191,7 +191,7 @@ namespace VVVV.Nodes.HttpGUI
 
 			//check if we received any new data from the web server
 
-			if (FChangedSpreadSize || FDefaultColorColorInput.PinIsChanged || FUpdateContinuousValueInput.PinIsChanged || ReceivedNewString)
+			if (FChangedSpreadSize || DynamicPinsAreChanged() || ReceivedNewString)
 			{
 				for (int i = 0; i < SpreadMax; i++)
 				{
@@ -307,5 +307,10 @@ namespace VVVV.Nodes.HttpGUI
 		}
 
         #endregion Main Loop
-    }
+
+		protected override bool DynamicPinsAreChanged()
+		{
+			return (FDefaultColorColorInput.PinIsChanged || FUpdateContinuousValueInput.PinIsChanged);
+		}
+	}
 }

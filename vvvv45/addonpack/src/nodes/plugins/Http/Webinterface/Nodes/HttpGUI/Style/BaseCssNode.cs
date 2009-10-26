@@ -286,5 +286,15 @@ namespace VVVV.Nodes.HttpGUI.CSS
             return tSliceCount[tSliceCount.Count -1];
         }
 
-    }
+
+		#region IHttpGUIStyleIO Members
+
+
+		public bool PinIsChanged()
+		{
+			return true;
+		}
+
+		#endregion
+	}
 }

@@ -188,7 +188,7 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-            if (FChangedSpreadSize || ReceivedNewString)
+            if (FChangedSpreadSize || ReceivedNewString || DynamicPinsAreChanged())
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -232,5 +232,10 @@ namespace VVVV.Nodes.HttpGUI
 
 
         #endregion Main Loop
-    }
+
+		protected override bool DynamicPinsAreChanged()
+		{
+			return FDefault.PinIsChanged;
+		}
+	}
 }

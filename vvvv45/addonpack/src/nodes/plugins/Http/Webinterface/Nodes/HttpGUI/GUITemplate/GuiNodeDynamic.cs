@@ -41,7 +41,8 @@ namespace VVVV.Nodes.HttpGUI
 
         //Required Members
         public List<GuiDataObject> FGuiDataList = new List<GuiDataObject>();
-        public int FSpreadMax = 0;
+		public List<GuiDataObject> FUpstreamGuiList;
+		public int FSpreadMax = 0;
         public bool FChangedSpreadSize = true;
         private string FNodePath;
         private string FActualNodePath;
@@ -51,6 +52,8 @@ namespace VVVV.Nodes.HttpGUI
         private List<string> FSliceId = new List<string>();
         private List<string> ReceivedString = new List<string>();
         private bool FInitFlag = true;
+		private bool FHttpGuiInConnectedThisFrame = false;
+		private bool FGuiListModified = false;
 
         #endregion field Definition
 
@@ -62,6 +65,7 @@ namespace VVVV.Nodes.HttpGUI
 
         protected abstract void OnSetPluginHost();
         protected abstract void OnEvaluate(int SpreadMax, string NodeId, List<string> SlideId, bool ReceivedNewString, List<string> ReceivedString);
+		protected abstract bool DynamicPinsAreChanged();
 
 
         #endregion abstract Methods
@@ -132,12 +136,16 @@ namespace VVVV.Nodes.HttpGUI
 
         #region IMyNodeIO
 
-        public void GetDatenObjekt(int Index, out List<GuiDataObject> GuiDaten)
+		public bool PinIsChanged()
+		{
+			return (FGuiListModified || DynamicPinsAreChanged());
+		}
+
+        public void GetDataObject(int Index, out List<GuiDataObject> GuiDaten)
         {
             ////Debug.WriteLine("Enter Get daten Object");
             GuiDaten = new List<GuiDataObject>(FGuiDataList);
         }
-
 
         public void ConnectPin(IPluginIO Pin)
         {
@@ -149,7 +157,7 @@ namespace VVVV.Nodes.HttpGUI
                     INodeIOBase usI;
                     FHttpGuiIn.GetUpstreamInterface(out usI);
                     FUpstreamHttpGuiIn = usI as IHttpGUIIO;
-                    FChangedSpreadSize = true;
+                    FHttpGuiInConnectedThisFrame = true;
                 }
 
             }
@@ -218,9 +226,8 @@ namespace VVVV.Nodes.HttpGUI
 
         public void Evaluate(int SpreadMax)
         {
-
+			FGuiListModified = false;
             
-
             try
             {
 
@@ -237,7 +244,22 @@ namespace VVVV.Nodes.HttpGUI
                 #region Check Gui List
 
 
-                if (FSpreadMax != SpreadMax)
+                #region Upstream Gui Elements
+
+				bool upstreamGuiListChanged = false;
+				
+				if (FUpstreamHttpGuiIn != null)
+				{
+					if (FHttpGuiInConnectedThisFrame || FUpstreamHttpGuiIn.PinIsChanged())
+					{
+						FUpstreamHttpGuiIn.GetDataObject(0, out FUpstreamGuiList);
+						upstreamGuiListChanged = true;
+					}
+				}
+				
+				#endregion Upstream Gui Elements
+
+				if (FSpreadMax != SpreadMax)
                 {
                     FChangedSpreadSize = true;
 
@@ -264,8 +286,20 @@ namespace VVVV.Nodes.HttpGUI
 
                         }
                     }
+
+
+
                     FSpreadMax = SpreadMax;
                 }
+
+				if (FChangedSpreadSize || upstreamGuiListChanged)
+				{
+					for (int i = 0; i < SpreadMax; i++)
+					{
+						FGuiDataList[i].GuiUpstreamList = FUpstreamGuiList;
+					}
+					FGuiListModified = true;
+				}
 
                 if (ChangedID)
                 {
@@ -284,12 +318,13 @@ namespace VVVV.Nodes.HttpGUI
                 #endregion Check Gui List
 
 
-
                 #region Transform Pin
 
                 if (FTransformIn.PinIsChanged || FBasingPoint.PinIsChanged || FPositionType.PinIsChanged || FChangedSpreadSize)
                 {
-                    string tBasingPoint;
+					FGuiListModified = true;
+					
+					string tBasingPoint;
                     FBasingPoint.GetString(0, out tBasingPoint);
 
                     string tPositionType;
@@ -368,48 +403,32 @@ namespace VVVV.Nodes.HttpGUI
                 #endregion Transform Pin
 
 
-
-                #region Upstream Gui Elements
-
-                if (FUpstreamHttpGuiIn != null)
-                {
-                    if (FChangedSpreadSize)
-                    {
-                        List<GuiDataObject> tGuiList;
-                        FUpstreamHttpGuiIn.GetDatenObjekt(0, out tGuiList);
-
-                        for (int i = 0; i < SpreadMax; i++)
-                        {
-                            FGuiDataList[i].GuiUpstreamList = tGuiList;
-                        }
-                    }
-                }
-
-                #endregion Upstream Gui Elements
-
-
-
                 # region Upstream Css Properties
 
                 int usSStyle;
                 if (FUpstreamStyle != null)
                 {
-                    string NodePath;
-                    FHost.GetNodePath(false, out NodePath);
-                    ////Debug.WriteLine("Enter Css Upstream Gui Node: " + NodePath);
+					if (FUpstreamStyle.PinIsChanged() || FChangedSpreadSize)
+					{
+						FGuiListModified = true;
+						
+						string NodePath;
+						FHost.GetNodePath(false, out NodePath);
+						////Debug.WriteLine("Enter Css Upstream Gui Node: " + NodePath);
 
-                    for (int i = 0; i < SpreadMax; i++)
-                    {
-                        //get upstream slice index
+						for (int i = 0; i < SpreadMax; i++)
+						{
+							//get upstream slice index
 
-                        FHttpStyleIn.GetUpsreamSlice(i, out usSStyle);
+							FHttpStyleIn.GetUpsreamSlice(i, out usSStyle);
 
-                        SortedList<string, string> tSliceCssPropertie;
-                        FUpstreamStyle.GetCssProperties(i, out tSliceCssPropertie);
+							SortedList<string, string> tSliceCssPropertie;
+							FUpstreamStyle.GetCssProperties(i, out tSliceCssPropertie);
 
-                        FGuiDataList[i].CssProperties = new SortedList<string, string>(tSliceCssPropertie);
+							FGuiDataList[i].CssProperties = new SortedList<string, string>(tSliceCssPropertie);
 
-                    }
+						}
+					}
                 }
 
                 #endregion Upstream Css Propeties
@@ -454,6 +473,8 @@ namespace VVVV.Nodes.HttpGUI
                 {
                     FChangedSpreadSize = false;
                 }
+
+				FHttpGuiInConnectedThisFrame = false;
             }
             catch (Exception ex)
             {
@@ -600,5 +621,12 @@ namespace VVVV.Nodes.HttpGUI
         #endregion Get data from WebinterfaceSingelton
 
 
-    }
+
+		#region IHttpGUIIO Members
+
+
+
+
+		#endregion
+	}
 }

@@ -17,8 +17,6 @@ namespace VVVV.Nodes.HttpGUI
         #region field declaration
 
 
-        private IStringIn FSource;
-        private IStringIn FAlt;
         private string mNodeId;
 
 
@@ -75,7 +73,7 @@ namespace VVVV.Nodes.HttpGUI
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
 
-                FHost.Log(TLogType.Message, "Image (Http Gui) Node is being deleted");
+                FHost.Log(TLogType.Message, "Container (Http Gui) Node is being deleted");
 
                 // Note that this is not thread safe.
                 // Another thread could start disposing the object
@@ -187,5 +185,10 @@ namespace VVVV.Nodes.HttpGUI
 
         #endregion Main Loop
 
-    }
+
+		protected override bool DynamicPinsAreChanged()
+		{
+			return false;
+		}
+	}
 }

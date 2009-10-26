@@ -201,7 +201,7 @@ namespace VVVV.Nodes.HttpGUI
 
         protected override void OnEvaluate(int SpreadMax, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString)
         {
-            if (FChangedSpreadSize || ReceivedNewString || FName.PinIsChanged || FOrientation.PinIsChanged || FMin.PinIsChanged || FMax.PinIsChanged || FDefault.PinIsChanged || FStepSize.PinIsChanged)
+            if (FChangedSpreadSize || ReceivedNewString || DynamicPinsAreChanged())
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -317,5 +317,10 @@ $.post('ToVVVV.xml',content, null);
 
 
         #endregion Main Loop
-    }
+
+		protected override bool DynamicPinsAreChanged()
+		{
+			return (FName.PinIsChanged || FOrientation.PinIsChanged || FMin.PinIsChanged || FMax.PinIsChanged || FDefault.PinIsChanged || FStepSize.PinIsChanged);
+		}
+	}
 }

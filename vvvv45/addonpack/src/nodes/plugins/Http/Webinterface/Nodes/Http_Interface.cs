@@ -12,7 +12,8 @@ namespace VVVV.Nodes.HttpGUI
 	[Guid("8869A551-6F32-4F0D-9003-27AC990D53D6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IHttpGUIIO: INodeIOBase
 	{
-        void GetDatenObjekt(int Index, out List<GuiDataObject> GuiDaten);
+        void GetDataObject(int Index, out List<GuiDataObject> GuiDaten);
+		bool PinIsChanged();
 
 	}
 
@@ -44,6 +45,7 @@ namespace VVVV.Nodes.HttpGUI
     public interface IHttpGUIStyleIO : INodeIOBase
     {
         void GetCssProperties(int Index, out SortedList<string,string> CssProperties);
+		bool PinIsChanged();
     }
 
     public class HttpGUIStyleIO

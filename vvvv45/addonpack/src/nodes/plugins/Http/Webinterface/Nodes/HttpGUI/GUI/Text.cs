@@ -7,7 +7,7 @@ using VVVV.Webinterface.Utilities;
 
 namespace VVVV.Nodes.HttpGUI
 {
-    class Text : GuiNodeStatic, IPlugin, IDisposable
+    class Text : GuiNodeDynamic, IPlugin, IDisposable
     {
     	
     	#region field declaration 
@@ -180,11 +180,11 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-        protected override void OnEvaluate(int SpreadMax, string NodeId, List<string> SliceId)
+        protected override void OnEvaluate(int SpreadMax, string NodeId, List<string> SlideId, bool ReceivedNewString, List<string> ReceivedString)
         {
             
 
-            if (FTextIn.PinIsChanged || FTextTagType.PinIsChanged)
+            if (DynamicPinsAreChanged() || FChangedSpreadSize)
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -211,5 +211,10 @@ namespace VVVV.Nodes.HttpGUI
         }
         
         #endregion Main Loop
-    }
+
+		protected override bool DynamicPinsAreChanged()
+		{
+			return (FTextIn.PinIsChanged || FTextTagType.PinIsChanged);
+		}
+	}
 }

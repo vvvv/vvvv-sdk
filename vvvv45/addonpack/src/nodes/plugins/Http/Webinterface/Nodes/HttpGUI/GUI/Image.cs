@@ -6,7 +6,7 @@ using VVVV.Webinterface.Utilities;
 
 namespace VVVV.Nodes.HttpGUI
 {
-    class Image : GuiNodeStatic, IPlugin, IDisposable
+    class Image : GuiNodeDynamic, IPlugin, IDisposable
     {
 
 
@@ -187,11 +187,11 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-        protected override void OnEvaluate(int SpreadMax, string NodeId, List<string> SlideId)
+        protected override void OnEvaluate(int SpreadMax, string NodeId, List<string> SlideId, bool ReceivedNewString, List<string> ReceivedString)
         {
 
 
-            if (FSource.PinIsChanged || FAlt.PinIsChanged || FChangedSpreadSize)
+            if (DynamicPinsAreChanged() || FChangedSpreadSize)
             {
 
                 for (int i = 0; i < SpreadMax; i++)
@@ -231,5 +231,10 @@ namespace VVVV.Nodes.HttpGUI
 
 
         #endregion Main Loop
-    }
+
+		protected override bool DynamicPinsAreChanged()
+		{
+			return (FSource.PinIsChanged || FAlt.PinIsChanged);
+		}
+	}
 }

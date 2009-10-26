@@ -421,7 +421,7 @@ namespace VVVV.Nodes.Http
                 if (FUpstreamInterface != null)
                 {
                     List<GuiDataObject> tGuiDaten;
-                    FUpstreamInterface.GetDatenObjekt(0, out tGuiDaten);
+                    FUpstreamInterface.GetDataObject(0, out tGuiDaten);
                     mGuiDatenListe.Clear();
                     mGuiDatenListe = new List<GuiDataObject>(tGuiDaten);
 

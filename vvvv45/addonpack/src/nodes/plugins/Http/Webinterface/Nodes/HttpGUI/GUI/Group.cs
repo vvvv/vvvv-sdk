@@ -252,7 +252,7 @@ namespace VVVV.Nodes.HttpGUI
         #region IMyNodeIO
 
 
-        public void GetDatenObjekt(int Index, out List<GuiDataObject> GuiDaten)
+        public void GetDataObject(int Index, out List<GuiDataObject> GuiDaten)
         {
             GuiDaten = mGuiDataList;
         }
@@ -378,7 +378,7 @@ namespace VVVV.Nodes.HttpGUI
                 {
 
                     List<GuiDataObject> tGuiDaten;
-                    FUpstream.GetDatenObjekt(0, out tGuiDaten);
+                    FUpstream.GetDataObject(0, out tGuiDaten);
                     mGuiDataList.AddRange(tGuiDaten); 
                     
                 }
@@ -386,5 +386,15 @@ namespace VVVV.Nodes.HttpGUI
         }
 
         #endregion mainloop
-    }
+
+		#region IHttpGUIIO Members
+
+
+		public bool PinIsChanged()
+		{
+			return true;
+		}
+
+		#endregion
+	}
 }
