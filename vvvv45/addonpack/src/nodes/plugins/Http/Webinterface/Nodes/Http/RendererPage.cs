@@ -418,13 +418,9 @@ namespace VVVV.Nodes.Http
 
 
                 //Saves the incoming Html Slices
-                if (FUpstreamInterface != null)
+                if (FUpstreamInterface != null && FUpstreamInterface.PinIsChanged())
                 {
-                    List<GuiDataObject> tGuiDaten;
-                    FUpstreamInterface.GetDataObject(0, out tGuiDaten);
-                    mGuiDatenListe.Clear();
-                    mGuiDatenListe = new List<GuiDataObject>(tGuiDaten);
-
+                    FUpstreamInterface.GetDataObject(0, out mGuiDatenListe);
                 }
 
 

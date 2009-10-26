@@ -254,7 +254,7 @@ namespace VVVV.Nodes.HttpGUI
 
         public void GetDataObject(int Index, out List<GuiDataObject> GuiDaten)
         {
-            GuiDaten = mGuiDataList;
+			GuiDaten = new List<GuiDataObject>(mGuiDataList);
         }
 
 
