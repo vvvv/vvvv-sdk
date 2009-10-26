@@ -99,33 +99,28 @@ namespace VVVV.Nodes.HttpGUI
     }
 
 
+	[Guid("8EA17FEC-7848-4e0f-81DA-0E055B69BBE3"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IJQueryIO : INodeIOBase
+	{
+		bool PinIsChanged();
+	}
 
+	public class JQueryIO
+	{
+		private static Guid FGuid;
 
-    [Guid("FDFEC9C0-8049-4fb6-A5C8-FE04F26F4CA6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IHttpGUIFunktionIO : INodeIOBase
-    {
-        void GetFunktionObjekt(int Index);
+		public static Guid GUID
+		{
+			get
+			{
+				if (FGuid == Guid.Empty)
 
-    }
+					FGuid = new Guid("8EA17FEC-7848-4e0f-81DA-0E055B69BBE3");
+				return FGuid;
+			}
 
-    public class HttpGUIFunktionIO
-    {
-        private static Guid FGuid;
+		}
 
-
-        public static Guid GUID
-        {
-            get
-            {
-                if (FGuid == Guid.Empty)
-
-                    FGuid = new Guid("FDFEC9C0-8049-4fb6-A5C8-FE04F26F4CA6");
-                return FGuid;
-            }
-
-        }
-
-
-        public static string FriendlyName = "HTTP GUI Funktion";
-    }
+		public static string FriendlyName = "JQuery";
+	}
 }

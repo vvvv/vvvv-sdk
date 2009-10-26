@@ -28,8 +28,7 @@ namespace VVVV.Nodes.HttpGUI
         // Input Pins
         private IEnumIn FPositionType;
         private IEnumIn FBasingPoint;
-        public INodeOut FHttpGuiOut;
-
+        
         public INodeIn FHttpGuiIn;
         public IHttpGUIIO FUpstreamHttpGuiIn;
 
@@ -37,6 +36,10 @@ namespace VVVV.Nodes.HttpGUI
         public IHttpGUIStyleIO FUpstreamStyle;
 
         public ITransformIn FTransformIn;
+
+		public INodeIn FJQueryNodeIn;
+
+		public INodeOut FHttpGuiOut;
 
 
         //Required Members
@@ -108,6 +111,9 @@ namespace VVVV.Nodes.HttpGUI
 
                 FHost.CreateNodeInput("Input CSS", TSliceMode.Dynamic, TPinVisibility.True, out FHttpStyleIn);
                 FHttpStyleIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
+
+				FHost.CreateNodeInput("JQuery", TSliceMode.Dynamic, TPinVisibility.True, out FJQueryNodeIn);
+				FJQueryNodeIn.SetSubType(new Guid[1] { JQueryIO.GUID }, JQueryIO.FriendlyName);
 
                 FHost.CreateNodeOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiOut);
                 FHttpGuiOut.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
