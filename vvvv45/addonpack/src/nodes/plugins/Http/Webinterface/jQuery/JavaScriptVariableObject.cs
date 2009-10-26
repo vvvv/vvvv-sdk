@@ -4,16 +4,21 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public class JavaScriptVariableObject : JavaScriptObject
+	public class JavaScriptVariableObject : IJavaScriptObject
 	{
 		protected string FVariableName;
 
+		private JavaScriptVariableObject()
+		{
+
+		}
+		
 		public JavaScriptVariableObject(string variableName)
 		{
 			FVariableName = variableName;
 		}
 		
-		public override string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		public string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			return FVariableName;
 		}

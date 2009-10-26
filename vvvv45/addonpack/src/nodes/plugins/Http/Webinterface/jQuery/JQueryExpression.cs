@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public class JQueryExpression : JavaScriptObject, IScriptGenerator
+	public class JQueryExpression : JQuery, IJavaScriptObject
     {
         #region Static Methods
     
@@ -23,7 +23,7 @@ namespace VVVV.Nodes.jQuery
             return new JQueryExpression(new JavaScriptVariableObject(objectName));
         }
 
-        public static JQueryExpression Dollars(JavaScriptObject functionParameters)
+        public static JQueryExpression Dollars(IJavaScriptObject functionParameters)
         {
             return new JQueryExpression(functionParameters);
         }
@@ -41,15 +41,16 @@ namespace VVVV.Nodes.jQuery
         #endregion
 
         #region Fields
-        protected JavaScriptObject FJQueryFunctionParameters;
+        protected IJavaScriptObject FJQueryFunctionParameters;
         protected Queue<MethodCall> FMethodCalls; 
         #endregion
 
         #region Constructors
-        public JQueryExpression(JavaScriptObject functionParameters)
+        public JQueryExpression(IJavaScriptObject functionParameters)
         {
             FJQueryFunctionParameters = functionParameters;
             FMethodCalls = new Queue<MethodCall>();
+			FStatements.Enqueue(this);
         }
 
         public JQueryExpression(string functionParameters) : 
@@ -58,7 +59,7 @@ namespace VVVV.Nodes.jQuery
 
         }
 
-        public JQueryExpression(): this((JavaScriptObject)null)
+        public JQueryExpression(): this((IJavaScriptObject)null)
         {
 
         } 
@@ -70,12 +71,7 @@ namespace VVVV.Nodes.jQuery
 			return this;
 		}
 
-        public JQuery AsJQuery()
-        {
-            return new JQuery(this);
-        }
-
-        public override string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+        public new string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
         {
             string text = "$";
             if (FJQueryFunctionParameters != null)
@@ -89,7 +85,7 @@ namespace VVVV.Nodes.jQuery
             return text;
         }
 
-        public void Post(string url, JavaScriptObject data, string type, JavaScriptAnonymousFunction callback)
+        public void Post(string url, IJavaScriptObject data, string type, JavaScriptAnonymousFunction callback)
         {
             FMethodCalls.Enqueue(new MethodCall("post", url, data, type, callback));
         }

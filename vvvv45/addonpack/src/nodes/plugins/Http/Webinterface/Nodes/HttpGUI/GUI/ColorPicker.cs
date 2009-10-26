@@ -284,10 +284,10 @@ namespace VVVV.Nodes.HttpGUI
 					JavaScriptGenericObject colorPickerParams = new JavaScriptGenericObject();
 					colorPickerParams.Set("flat", true);
 					//setup the post method to fire at the appropriate time according to the Update Continuous pin
-					colorPickerParams.Set(updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete", new JavaScriptAnonymousFunction(new JQuery(postToServer), "hsb", "hex", "rgb"));
+					colorPickerParams.Set(updateContinuousSlice > 0.5 ? "onChange" : "onChangeComplete", new JavaScriptAnonymousFunction(postToServer, "hsb", "hex", "rgb"));
 					//set the color picker to the color currently set on the server side
 					JavaScriptGenericObject color = new JavaScriptGenericObject();
-					color.Set("r", double.Parse(rgb[0]));
+					color.Set("r", double.Parse(rgb[0])); 
 					color.Set("g", double.Parse(rgb[1]));
 					color.Set("b", double.Parse(rgb[2]));
 					colorPickerParams.Set("color", color);
@@ -298,7 +298,7 @@ namespace VVVV.Nodes.HttpGUI
 					documentReadyHandler.Children().ApplyMethodCall("eq", 0).Css("position", "absolute");
 					
 					//Assign all our code to the document ready handler
-					JQuery onDocumentReady = JQuery.GenerateDocumentReady(new JQuery(documentReadyHandler));
+					JQuery onDocumentReady = JQuery.GenerateDocumentReady(documentReadyHandler);
 
 					//insert the JQuery code into the javascript file for this page
 					SetJavaScript(i, onDocumentReady.PScript(1, true, true));

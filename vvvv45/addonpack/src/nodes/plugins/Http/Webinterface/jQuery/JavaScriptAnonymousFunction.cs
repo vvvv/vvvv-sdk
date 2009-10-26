@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public class JavaScriptAnonymousFunction : JavaScriptObject
+	public class JavaScriptAnonymousFunction : IJavaScriptObject
 	{
 		protected JQuery FJQuery;
 		protected Queue<JavaScriptVariableObject> FArgumentNames;
@@ -29,7 +29,7 @@ namespace VVVV.Nodes.jQuery
 			set { FJQuery = value; }
 		}
 
-		public override string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		public string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string text = "function(";
 			int queueLength = FArgumentNames.Count;

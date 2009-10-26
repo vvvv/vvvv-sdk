@@ -10,8 +10,7 @@ namespace VVVV.Nodes.jQuery
 
 		public static JQuery GenerateDocumentReady(JQuery handler)
 		{
-			return JQueryExpression.Document().ApplyMethodCall("ready", new JavaScriptAnonymousFunction(handler))
-                   .AsJQuery();
+			return JQueryExpression.Document().ApplyMethodCall("ready", new JavaScriptAnonymousFunction(handler));
 		}
 
 		public JQuery()
@@ -35,7 +34,7 @@ namespace VVVV.Nodes.jQuery
 
 		#region IScriptGenerator Members
 
-		public string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		public virtual string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string text = "";
 			int numStatements = FStatements.Count;

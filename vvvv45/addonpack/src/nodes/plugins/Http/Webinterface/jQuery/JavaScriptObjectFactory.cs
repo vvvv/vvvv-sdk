@@ -6,9 +6,14 @@ namespace VVVV.Nodes.jQuery
 {
 	public class JavaScriptObjectFactory
 	{
-		public static JavaScriptObject Create<T>(T value)
+		private JavaScriptObjectFactory()
 		{
-            JavaScriptObject jsObject = value as JavaScriptObject;
+
+		}
+		
+		public static IJavaScriptObject Create<T>(T value)
+		{
+            IJavaScriptObject jsObject = value as IJavaScriptObject;
             
             if (jsObject == null)
             {

@@ -4,18 +4,18 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public class JavaScriptGenericObject : JavaScriptObject
+	public class JavaScriptGenericObject : IJavaScriptObject
 	{
-		protected Dictionary<string, JavaScriptObject> FJscriptDictionaryObject;
+		protected Dictionary<string, IJavaScriptObject> FJscriptDictionaryObject;
 			
 		public JavaScriptGenericObject ()
 		{
-			FJscriptDictionaryObject = new Dictionary<string, JavaScriptObject>();
+			FJscriptDictionaryObject = new Dictionary<string, IJavaScriptObject>();
 		}
 
 		public void Set<T>(string key, T value)
 		{
-			JavaScriptObject jsObject = value as JavaScriptObject;
+			IJavaScriptObject jsObject = value as IJavaScriptObject;
 			if (jsObject == null)
 			{
 				jsObject = JavaScriptObjectFactory.Create(value);
@@ -23,7 +23,7 @@ namespace VVVV.Nodes.jQuery
 			FJscriptDictionaryObject[key] = jsObject;
 		}
 
-		public override string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		public string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string text = "{";
 			int dictionaryLength = FJscriptDictionaryObject.Count;
@@ -34,7 +34,7 @@ namespace VVVV.Nodes.jQuery
 			}
 			
 			int count = 1;
-			foreach (KeyValuePair<string, JavaScriptObject> kvp in FJscriptDictionaryObject)
+			foreach (KeyValuePair<string, IJavaScriptObject> kvp in FJscriptDictionaryObject)
 			{
 				if (breakInternalLines)
 				{

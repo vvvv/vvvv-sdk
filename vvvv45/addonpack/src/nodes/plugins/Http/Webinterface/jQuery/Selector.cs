@@ -6,6 +6,6 @@ namespace VVVV.Nodes.jQuery
 {
 	public abstract class Selector : JavaScriptValueLiteral<string>
 	{
-		public static JavaScriptObject All = JavaScriptObjectFactory.Create("*");
+		public static IJavaScriptObject All = JavaScriptObjectFactory.Create("*");
 	}
 }

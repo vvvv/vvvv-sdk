@@ -8,11 +8,11 @@ namespace VVVV.Nodes.jQuery
 	public class MethodCall : IScriptGenerator
 	{
 		protected Method FMethod;
-		protected Queue<JavaScriptObject> FArguments;
+		protected Queue<IJavaScriptObject> FArguments;
 
 		protected MethodCall()
 		{
-			FArguments = new Queue<JavaScriptObject>();
+			FArguments = new Queue<IJavaScriptObject>();
 		}
 		
 		public MethodCall(Method method) : this()
@@ -45,7 +45,7 @@ namespace VVVV.Nodes.jQuery
 			string text = '.' + FMethod.PScript(indentSteps, breakInternalLines, breakAfter) + '(';
 			int queueLength = FArguments.Count;
 			int count = 1;
-			foreach (JavaScriptObject argument in FArguments)
+			foreach (IJavaScriptObject argument in FArguments)
 			{
 				text += argument.PScript(indentSteps, breakInternalLines, breakAfter);
 				if (count != queueLength)
