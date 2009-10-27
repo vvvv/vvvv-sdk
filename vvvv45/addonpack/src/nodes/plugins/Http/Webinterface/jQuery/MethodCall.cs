@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public class MethodCall : IScriptGenerator
+	public class MethodCall : ChainableOperation
 	{
 		protected Method FMethod;
 		protected Queue<IJavaScriptObject> FArguments;
@@ -40,7 +40,7 @@ namespace VVVV.Nodes.jQuery
 
 		#region IScriptGenerator Members
 
-		public string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		public override string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string text = '.' + FMethod.PScript(indentSteps, breakInternalLines, breakAfter) + '(';
 			int queueLength = FArguments.Count;

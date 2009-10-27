@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public class JavaScriptVariableObject : IJavaScriptObject
+	public class JavaScriptVariableObject : JavaScriptObject
 	{
 		protected string FVariableName;
 
@@ -18,7 +18,7 @@ namespace VVVV.Nodes.jQuery
 			FVariableName = variableName;
 		}
 		
-		public string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		protected override string GetObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			return FVariableName;
 		}

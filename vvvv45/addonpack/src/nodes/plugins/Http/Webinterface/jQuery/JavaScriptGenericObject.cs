@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public class JavaScriptGenericObject : IJavaScriptObject
+	public class JavaScriptGenericObject : JavaScriptObject
 	{
 		protected Dictionary<string, IJavaScriptObject> FJscriptDictionaryObject;
 			
@@ -23,7 +23,7 @@ namespace VVVV.Nodes.jQuery
 			FJscriptDictionaryObject[key] = jsObject;
 		}
 
-		public string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		protected override string GetObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string text = "{";
 			int dictionaryLength = FJscriptDictionaryObject.Count;

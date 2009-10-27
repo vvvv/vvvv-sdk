@@ -6,7 +6,7 @@ namespace VVVV.Nodes.jQuery
 {
 	public class JQuery : IScriptGenerator
 	{
-		protected Queue<JQueryExpression> FStatements;
+		protected Queue<Expression> FStatements;
 
 		public static JQuery GenerateDocumentReady(JQuery handler)
 		{
@@ -15,7 +15,7 @@ namespace VVVV.Nodes.jQuery
 
 		public JQuery()
 		{
-			FStatements = new Queue<JQueryExpression>();
+			FStatements = new Queue<Expression>();
 		}
 
 		public JQuery(params JQueryExpression[] statements) : this()
@@ -39,7 +39,7 @@ namespace VVVV.Nodes.jQuery
 			string text = "";
 			int numStatements = FStatements.Count;
 			int count = 1;
-			foreach (JQueryExpression statement in FStatements)
+			foreach (Expression statement in FStatements)
 			{
 				for (int i = 0; i < indentSteps; i++)
 				{

@@ -266,10 +266,11 @@ namespace VVVV.Nodes.HttpGUI
                     JQueryExpression getSliceId = JQueryExpression.This().Parent().ApplyMethodCall("attr", "id");
                     JQueryExpression generateXMLPost = JQueryExpression.Dollars("<PIN></PIN>").Attr("pinname", "Color Input").Attr("slicecount", 1);
 					JQueryExpression generateColorValuesXML = new JQueryExpression("<value id=\"r\"></value><value id=\"g\"></value><value id=\"b\"></value><value id=\"a\"></value>");
+					JavaScriptObject rgbParam = new JavaScriptVariableObject("rgb");
 					generateXMLPost.Append(generateColorValuesXML);
-					generateXMLPost.Children("value#r").Append(JQueryExpression.Object("rgb").ApplyMethodCall("attr", "r").ApplyMethodCall("toString")).End();
-					generateXMLPost.Children("value#g").Append(JQueryExpression.Object("rgb").ApplyMethodCall("attr", "g").ApplyMethodCall("toString")).End();
-					generateXMLPost.Children("value#b").Append(JQueryExpression.Object("rgb").ApplyMethodCall("attr", "b").ApplyMethodCall("toString")).End();
+					generateXMLPost.Children("value#r").Append(rgbParam.Member("r").toString()).End();
+					generateXMLPost.Children("value#g").Append(rgbParam.Member("g").toString()).End();
+					generateXMLPost.Children("value#b").Append(rgbParam.Member("b").toString()).End();
 					generateXMLPost.Children("value#a").Append(1.0).End();
 
 					JQueryExpression wrapXMLPost = new JQueryExpression("<XML></XML>").Append(generateXMLPost);

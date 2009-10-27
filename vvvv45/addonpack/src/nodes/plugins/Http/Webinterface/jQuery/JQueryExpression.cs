@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Nodes.jQuery
 {
-	public class JQueryExpression : JQuery, IJavaScriptObject
+	public class JQueryExpression : Expression
     {
         #region Static Methods
     
@@ -42,15 +42,12 @@ namespace VVVV.Nodes.jQuery
 
         #region Fields
         protected IJavaScriptObject FJQueryFunctionParameters;
-        protected Queue<MethodCall> FMethodCalls; 
         #endregion
 
         #region Constructors
         public JQueryExpression(IJavaScriptObject functionParameters)
         {
             FJQueryFunctionParameters = functionParameters;
-            FMethodCalls = new Queue<MethodCall>();
-			FStatements.Enqueue(this);
         }
 
         public JQueryExpression(string functionParameters) : 
@@ -67,27 +64,23 @@ namespace VVVV.Nodes.jQuery
 
 		public JQueryExpression ApplyMethodCall(String methodName, params object[] arguments)
 		{
-			FMethodCalls.Enqueue(new MethodCall(methodName, arguments));
+			AddMethodCall(methodName, arguments);
 			return this;
 		}
 
-        public new string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		protected override string GetObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter)
         {
             string text = "$";
             if (FJQueryFunctionParameters != null)
             {
                 text += "(" + FJQueryFunctionParameters.PScript(indentSteps, breakInternalLines, breakAfter) + ")";
             }
-            foreach (MethodCall methodCall in FMethodCalls)
-            {
-                text += methodCall.PScript(indentSteps, breakInternalLines, breakAfter);
-            }
-            return text;
+			return text;
         }
 
         public void Post(string url, IJavaScriptObject data, string type, JavaScriptAnonymousFunction callback)
         {
-            FMethodCalls.Enqueue(new MethodCall("post", url, data, type, callback));
+            FChainedOperations.Enqueue(new MethodCall("post", url, data, type, callback));
         }
 
         public JQueryExpression Append(object jsObject)
