@@ -186,12 +186,12 @@ namespace VVVV.Nodes.HttpGUI
 
 
 
-		protected override void OnEvaluate(int SpreadMax, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString)
+		protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString)
 		{
 
 			//check if we received any new data from the web server
 
-			if (FChangedSpreadSize || DynamicPinsAreChanged() || ReceivedNewString)
+			if (changedSpreadSize || DynamicPinsAreChanged() || ReceivedNewString)
 			{
 				for (int i = 0; i < SpreadMax; i++)
 				{
