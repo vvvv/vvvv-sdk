@@ -69,7 +69,7 @@ namespace VVVV.Nodes.HttpGUI
         private List<INodeIn> FInputPinList;
         private List<INodeIOBase> FUpstreamInterfaceList;
         private SortedList<string, IHttpGUIIO> FNodeUpstream;
-
+        private bool FPinIsChanged = false;
 
 
         List<GuiDataObject> mGuiDataList = new List<GuiDataObject>();
@@ -354,45 +354,63 @@ namespace VVVV.Nodes.HttpGUI
         {
 
             int TSliceMax = 0;
+            FPinIsChanged = false;
 
             for (int i = 0; i < FInputPinList.Count; i++)
             {
                 TSliceMax += FInputPinList[i].SliceCount;
             }
 
-            //FMyNodeOutput.SliceCount = TSliceMax;
-
-
-            mGuiDataList.Clear();
-
-
             foreach (INodeIn pNodeIn in FInputPinList)
             {
                 string tNodeName = pNodeIn.Name;
-                int  tNumber = Convert.ToInt16(tNodeName.Replace("Input", "")) - 1;
 
                 IHttpGUIIO FUpstream;
                 FNodeUpstream.TryGetValue(pNodeIn.Name, out FUpstream);
 
                 if (FUpstream != null)
                 {
-
-                    List<GuiDataObject> tGuiDaten;
-                    FUpstream.GetDataObject(0, out tGuiDaten);
-                    mGuiDataList.AddRange(tGuiDaten); 
-                    
+                    if (FUpstream.PinIsChanged())
+                    {
+                        FPinIsChanged = true;
+                    }
                 }
             }
+
+            if (FPinIsChanged)
+            {
+                mGuiDataList.Clear();
+                foreach (INodeIn pNodeIn in FInputPinList)
+                {
+                    string tNodeName = pNodeIn.Name;
+
+                    IHttpGUIIO FUpstream;
+                    FNodeUpstream.TryGetValue(pNodeIn.Name, out FUpstream);
+
+                    if (FUpstream != null)
+                    {
+                        List<GuiDataObject> tGuiDaten;
+                        FUpstream.GetDataObject(0, out tGuiDaten);
+                        mGuiDataList.AddRange(tGuiDaten);
+
+                    }
+                }
+            }
+            
         }
 
         #endregion mainloop
+
+
+
+
 
 		#region IHttpGUIIO Members
 
 
 		public bool PinIsChanged()
 		{
-			return true;
+			return FPinIsChanged;
 		}
 
 		#endregion
