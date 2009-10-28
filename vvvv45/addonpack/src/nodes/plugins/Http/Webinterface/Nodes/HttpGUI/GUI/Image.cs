@@ -17,8 +17,6 @@ namespace VVVV.Nodes.HttpGUI
 
         private IStringIn FSource;
         private IStringIn FAlt;
-        private string mNodeId;
-
 
         private bool FDisposed = false;
 
