@@ -107,6 +107,7 @@ namespace VVVV.Nodes.Http
         //private string mJsFile = String.Empty;
         PageBuilder mPageBuilder = new PageBuilder();
         private Rule mBodyRule;
+        private bool FConnectHttp = false;
 
 
         #endregion field declaration
@@ -352,6 +353,7 @@ namespace VVVV.Nodes.Http
                 INodeIOBase usI;
                 FHttpGuiIn.GetUpstreamInterface(out usI);
                 FUpstreamInterface = usI as IHttpGUIIO;
+                FConnectHttp = true;
             }
             else if (Pin == FCssPropertiesIn)
             {
@@ -368,6 +370,7 @@ namespace VVVV.Nodes.Http
             //reset the cached reference to the upstream interface when the NodeInput is being disconnected
             if (Pin == FHttpGuiIn)
             {
+                mGuiDatenListe.Clear();
                 FUpstreamInterface = null;
             }
             else if (Pin == FCssPropertiesIn)
@@ -416,9 +419,8 @@ namespace VVVV.Nodes.Http
                 mHtmlText = new string[SpreadMax];
 
 
-
                 //Saves the incoming Html Slices
-                if (FUpstreamInterface != null && FUpstreamInterface.PinIsChanged())
+                if (FUpstreamInterface != null && (FUpstreamInterface.PinIsChanged() || FConnectHttp))
                 {
                     FUpstreamInterface.GetDataObject(0, out mGuiDatenListe);
                 }

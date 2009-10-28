@@ -70,6 +70,7 @@ namespace VVVV.Nodes.HttpGUI
         private List<INodeIOBase> FUpstreamInterfaceList;
         private SortedList<string, IHttpGUIIO> FNodeUpstream;
         private bool FPinIsChanged = false;
+        private bool FPinIsConnectedDisconnected = false;
 
 
         List<GuiDataObject> mGuiDataList = new List<GuiDataObject>();
@@ -264,6 +265,7 @@ namespace VVVV.Nodes.HttpGUI
         {
             mInputCount = FInputPinList.Count;
             //cache a reference to the upstream interface when the NodeInput pin is being connected
+            FPinIsConnectedDisconnected = true;
 
              foreach (INodeIn pNodeIn in FInputPinList)
              {
@@ -290,6 +292,8 @@ namespace VVVV.Nodes.HttpGUI
 
         public void DisconnectPin(IPluginIO Pin)
         {
+            FPinIsConnectedDisconnected = true;
+
             foreach (INodeIn pNodeIn in FInputPinList)
             {
                 if (Pin == pNodeIn)
@@ -354,8 +358,6 @@ namespace VVVV.Nodes.HttpGUI
         {
 
             int TSliceMax = 0;
-            FPinIsChanged = false;
-
             for (int i = 0; i < FInputPinList.Count; i++)
             {
                 TSliceMax += FInputPinList[i].SliceCount;
@@ -377,7 +379,7 @@ namespace VVVV.Nodes.HttpGUI
                 }
             }
 
-            if (FPinIsChanged)
+            if (PinIsChanged())
             {
                 mGuiDataList.Clear();
                 foreach (INodeIn pNodeIn in FInputPinList)
@@ -396,7 +398,9 @@ namespace VVVV.Nodes.HttpGUI
                     }
                 }
             }
-            
+
+            FPinIsChanged = false;
+            FPinIsConnectedDisconnected = false;
         }
 
         #endregion mainloop
@@ -410,7 +414,7 @@ namespace VVVV.Nodes.HttpGUI
 
 		public bool PinIsChanged()
 		{
-			return FPinIsChanged;
+			return FPinIsChanged ||FPinIsConnectedDisconnected;
 		}
 
 		#endregion
