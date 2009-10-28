@@ -186,7 +186,7 @@ namespace VVVV.Nodes.HttpGUI
         protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString)
         {
 
-            if (changedSpreadSize || ReceivedNewString || FMode.PinIsChanged || FDefault.PinIsChanged)
+            if (changedSpreadSize || ReceivedNewString || PinIsChanged())
             {
 
                 for (int i = 0; i < SpreadMax; i++)
@@ -305,12 +305,13 @@ namespace VVVV.Nodes.HttpGUI
             }
         }
 
+        protected override bool DynamicPinsAreChanged()
+        {
+            return (FMode.PinIsChanged || FDefault.PinIsChanged);
+        }
 
         #endregion Main Loop
 
-		protected override bool DynamicPinsAreChanged()
-		{
-			throw new Exception("The method or operation is not implemented.");
-		}
+
 	}
 }
