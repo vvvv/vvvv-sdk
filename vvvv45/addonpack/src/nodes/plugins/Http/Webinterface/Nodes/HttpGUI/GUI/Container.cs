@@ -17,9 +17,6 @@ namespace VVVV.Nodes.HttpGUI
         #region field declaration
 
 
-        private string mNodeId;
-
-
         private bool FDisposed = false;
 
         #endregion field declaration

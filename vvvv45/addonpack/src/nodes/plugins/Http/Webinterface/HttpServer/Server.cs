@@ -56,7 +56,6 @@ namespace VVVV.Webinterface.HttpServer {
         protected int sockCount = 0;
         private bool mInit = false;
         private List<int> mBlockedPorts = new List<int>();
-        private int mFreePort;
         private bool mPortFree = false;
         private bool mRunning = false;
 
@@ -271,7 +270,7 @@ namespace VVVV.Webinterface.HttpServer {
                 // Create the delegate that invokes methods for the timer.
                 TimerCallback timerDelegate = new TimerCallback(this.CheckSockets);
                 //Create a timer that waits one minute, then invokes every 5 minutes.
-                //mLostTimer = new Timer(timerDelegate, null, Server.mTimerTimeout, Server.mTimerTimeout);
+                mLostTimer = new Timer(timerDelegate, null, Server.mTimerTimeout, Server.mTimerTimeout);
             }
         }
 
@@ -340,14 +339,15 @@ namespace VVVV.Webinterface.HttpServer {
             }
             catch (SocketException se)
             {
-                //threadEnd[0].Set();
+                string ErrorMessage = se.Message;
                 mInit = false;
             }
             catch (Exception ex)
             {
-                //threadEnd[0].Set();
+                string ErrorMessage = ex.Message;
                 mInit = false;
             }
+
 
             Debug.WriteLine(serverThread.IsAlive.ToString());
             mMainSocket.Close();
@@ -371,7 +371,7 @@ namespace VVVV.Webinterface.HttpServer {
             }
             catch (Exception ex)
             {
-                
+                string ErrorMessage = ex.Message;
             }
 
             //mLostTimer.Dispose();
@@ -549,13 +549,15 @@ namespace VVVV.Webinterface.HttpServer {
 
                 }
 
-                catch (SocketException es)
+                catch (SocketException se)
                 {
+                    string ErrorMessage = se.Message;
                     RemoveSocket(tSocketInformations);
                     ////Debug.WriteLine("Socket Error " + es.Message.ToString());
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
+                    string ErrorMessage = ex.Message;
                     RemoveSocket(tSocketInformations);
                     ////Debug.WriteLine("Any Error " + e.Message.ToString());
                 }
@@ -610,8 +612,9 @@ namespace VVVV.Webinterface.HttpServer {
                         }
                         catch (Exception ex)
                         {
-                            ////Debug.WriteLine(String.Format("Error in RequestHandling: {0}", ex.Message));
-                            tSocketInformation.ResponseAsBytes = Encoding.UTF8.GetBytes(new ResponseHeader(new HTTPStatusCode("").Code200).Text);
+                            string ErrorMessage = ex.Message;
+                            Response ErrorResponse = new Response("unkown.html", Encoding.UTF8.GetBytes("Error by creating an Response." + Environment.NewLine + ErrorMessage), new HTTPStatusCode("").Code500);
+                            tSocketInformation.ResponseAsBytes = ErrorResponse.TextInBytes;
                         }
                         
                         //SendData(tSocketInformation);
@@ -680,7 +683,8 @@ namespace VVVV.Webinterface.HttpServer {
            }
             catch ( Exception ex )
             {
-                ////Debug.WriteLine( e.ToString() );
+
+                string ErrorMessage = ex.Message;
             }
         }
 

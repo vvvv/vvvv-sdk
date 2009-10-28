@@ -632,7 +632,7 @@ namespace VVVV.Nodes.Http
             }
             catch (Exception ex)
             {
-                FHost.Log(TLogType.Error, "Error in Renderer (Http) -  GET POST Handling");
+                FHost.Log(TLogType.Error, "Error in Renderer (Http) -  GET POST Handling" + Environment.NewLine + ex.Message);
             }
 
 

@@ -86,13 +86,9 @@ namespace VVVV.Webinterface
         private static object m_lock = new Object();
         private static object _SetBrowserData = new Object();
         private static object _BuildLock = new Object();
-        //private ConcreteSubject mSubject;
         
         private SortedList<string, SortedList<string, string>> mNodeDaten = new SortedList<string, SortedList<string, string>>();
         private SortedList<string, string> mServerDaten = new SortedList<string, string>();
-
-        //private Logger mlogger;
-        private StartupCheck mStartupCheck;
 
 
         //New 
@@ -225,41 +221,6 @@ namespace VVVV.Webinterface
         private WebinterfaceSingelton()
         {
 
-			//try
-			//{
-			//    mStartupCheck = new StartupCheck();
-			//    mStartupCheck.SartupFolder = "plugins\\webinterface";
-			//    mStartupCheck.StartupSubFolder = "assets";
-			//    mStartupCheck.StartupSubFolder = "log";
-			//    mStartupCheck.StartupSubFolder = "lib";
-			//    mStartupCheck.CheckifStartupPathExist();
-
-
-			//    if (Directory.Exists(mStartupCheck.getSubFolderPath("log")))
-			//    {
-			//        mlogger = new Logger(Path.Combine(mStartupCheck.getSubFolderPath("log"), System.DateTime.Today.ToShortDateString() + ".log"));
-			//    }
-			//    else
-			//    {
-			//        mlogger = new Logger(System.DateTime.Today.ToShortDateString() + ".log");
-			//    }
-
-
-			//    mlogger.log(mlogger.LogType.Info, "VVVV Webinterface Singelton erstellt");
-
-
-			//    TextWriterTraceListener tr2 = new TextWriterTraceListener(System.IO.File.CreateText("Debug.txt"));
-			//    Debug.Listeners.Add(tr2);
-			//    Debug.WriteLine("Hello");
-			//    mSubject = new ConcreteSubject();
-			//    Debug.WriteLine(mSubject, " Subject");
-
-			//    mServerDaten.Add("", "");
-			//}
-			//catch (Exception ex)
-			//{
-                
-			//}
         }
 
         /// <summary>
