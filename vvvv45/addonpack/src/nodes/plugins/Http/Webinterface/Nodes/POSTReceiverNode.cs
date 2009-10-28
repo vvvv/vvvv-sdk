@@ -18,9 +18,12 @@ namespace VVVV.Nodes.HttpGUI
 		protected bool FChangedNodeId = true;
 		protected List<string> FSliceId = new List<string>();
 		protected int FSpreadMax = 0;
-		private SortedList<int, string> FSavedResponses = new SortedList<int, string>();
+		protected SortedList<int, string> FSavedResponses = new SortedList<int, string>();
 		protected string FNodePath;
-		public bool FChangedSpreadSize = false;
+		protected bool FChangedSpreadSize = false;
+		protected bool FReceivedNewString = false;
+		protected List<string> FReceivedString = new List<string>();
+		protected bool FInitFlag = true;
 
 		//this method is called by vvvv when the node is created
 		public void SetPluginHost(IPluginHost Host)
@@ -60,7 +63,7 @@ namespace VVVV.Nodes.HttpGUI
 				}
 
 				FChangedSpreadSize = FSpreadMax != SpreadMax;
-				
+
 				if (FChangedSpreadSize)
 				{
 					if (FSliceId.Count > SpreadMax)
@@ -74,9 +77,35 @@ namespace VVVV.Nodes.HttpGUI
 							FSliceId.Add(HTMLToolkit.CreateSliceID(FNodePath, i));
 						}
 					}
-
-					
 				}
+
+				#region ReceivedData
+
+				FReceivedNewString = CheckIfNodeReceivedData();
+
+
+				if (FReceivedNewString || FInitFlag || FChangedSpreadSize)
+				{
+					for (int i = 0; i < SpreadMax; i++)
+					{
+						if (FInitFlag)
+						{
+							FReceivedString.Add(GetNewDataFromServer(i));
+						}
+						else if (i >= FReceivedString.Count)
+						{
+							FReceivedString.Add(GetNewDataFromServer(i));
+						}
+						else
+						{
+							FReceivedString[i] = GetNewDataFromServer(i);
+						}
+					}
+
+					FInitFlag = false;
+				}
+
+				#endregion ReceivedData
 
 				BaseEvaluate(SpreadMax);
 				FSpreadMax = SpreadMax;

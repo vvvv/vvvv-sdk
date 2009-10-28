@@ -25,18 +25,19 @@ namespace VVVV.Nodes.HttpGUI
         
 
         // Input Pins
-        private IEnumIn FPositionType;
-        private IEnumIn FBasingPoint;
-        
         public INodeIn FHttpGuiIn;
         public IHttpGUIIO FUpstreamHttpGuiIn;
+
+		public ITransformIn FTransformIn;
+
+		private IEnumIn FPositionType;
+		private IEnumIn FBasingPoint;
 
         public INodeIn FHttpStyleIn;
         public IHttpGUIStyleIO FUpstreamStyle;
 
-        public ITransformIn FTransformIn;
-
 		public INodeIn FJQueryNodeIn;
+
 
 		public INodeOut FHttpGuiOut;
 
@@ -44,8 +45,6 @@ namespace VVVV.Nodes.HttpGUI
         //Required Members
         public List<GuiDataObject> FGuiDataList = new List<GuiDataObject>();
 		public List<GuiDataObject> FUpstreamGuiList;
-        private List<string> ReceivedString = new List<string>();
-        private bool FInitFlag = true;
 		private bool FHttpGuiInConnectedThisFrame = true;
 		private bool FGuiListModified = false;
 	
@@ -82,7 +81,7 @@ namespace VVVV.Nodes.HttpGUI
 
             FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTransformIn);
 
-            FHost.UpdateEnum("PositionType", "absolute", new string[] { "absolute", "fixed ", "relative ", "static " });
+			FHost.UpdateEnum("PositionType", "absolute", new string[] { "absolute", "fixed ", "relative ", "static " });
             FHost.CreateEnumInput("Positiontype", TSliceMode.Single, TPinVisibility.True, out FPositionType);
             FPositionType.SetSubType("PositionType");
 
@@ -210,6 +209,7 @@ namespace VVVV.Nodes.HttpGUI
         {
 			
 			FGuiListModified = false;
+			
 
             #region Check Gui List
 
@@ -231,7 +231,7 @@ namespace VVVV.Nodes.HttpGUI
 
 			if (FChangedSpreadSize)
             {
-                if (FGuiDataList.Count > SpreadMax)
+				if (FGuiDataList.Count > SpreadMax)
                 {
                     FGuiDataList.RemoveRange(SpreadMax, FGuiDataList.Count - SpreadMax);
                     FGuiDataList.Capacity = SpreadMax;
@@ -243,16 +243,10 @@ namespace VVVV.Nodes.HttpGUI
                         GuiDataObject tObject = new GuiDataObject();
                         FGuiDataList.Insert(i, tObject);
 
-                        
                         FGuiDataList[i].NodeId = FNodeId;
-
                         FGuiDataList[i].SliceId = FSliceId[i];
                     }
                 }
-
-
-
-                
             }
 
 			if (FChangedSpreadSize || upstreamGuiListChanged)
@@ -394,39 +388,7 @@ namespace VVVV.Nodes.HttpGUI
             #endregion Upstream Css Propeties
 
 
-
-
-            #region ReceivedData
-
-            bool ReceivedNewString = CheckIfNodeReceivedData();
-            
-
-            if(ReceivedNewString || FInitFlag || FChangedSpreadSize)
-            {
-                for (int i = 0; i < SpreadMax; i++)
-                {
-                    if (FInitFlag)
-                    {
-                        ReceivedString.Add(GetNewDataFromServer(i));
-                    }
-                    else if (i >= ReceivedString.Count)
-                    {
-                        ReceivedString.Add(GetNewDataFromServer(i));
-                    }
-                    else
-                    {
-                        ReceivedString[i] = GetNewDataFromServer(i);
-                    }
-                }
-
-                FInitFlag = false;
-            }
-
-            #endregion ReceivedData
-
-
-
-            this.OnEvaluate(SpreadMax, FChangedSpreadSize, FNodeId, FSliceId, ReceivedNewString,ReceivedString);
+            this.OnEvaluate(SpreadMax, FChangedSpreadSize, FNodeId, FSliceId, FReceivedNewString,FReceivedString);
 
 
 			FHttpGuiInConnectedThisFrame = false;
