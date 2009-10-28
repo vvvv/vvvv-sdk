@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace VVVV.Nodes.jQuery
+namespace VVVV.Webinterface.jQuery
 {
 	public class ClassSelector : Selector
 	{

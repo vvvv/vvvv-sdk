@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace VVVV.Nodes.jQuery
+namespace VVVV.Webinterface.jQuery
 {
 	public class JQueryExpression : Expression
     {
@@ -59,7 +59,8 @@ namespace VVVV.Nodes.jQuery
         public JQueryExpression(): this((IJavaScriptObject)null)
         {
 
-        } 
+        }
+
         #endregion
 
 		public JQueryExpression ApplyMethodCall(String methodName, params object[] arguments)
@@ -77,6 +78,11 @@ namespace VVVV.Nodes.jQuery
             }
 			return text;
         }
+
+		public void SetSelector(IJavaScriptObject functionParameters)
+		{
+			FJQueryFunctionParameters = functionParameters;
+		}
 
         public void Post(string url, IJavaScriptObject data, string type, JavaScriptAnonymousFunction callback)
         {

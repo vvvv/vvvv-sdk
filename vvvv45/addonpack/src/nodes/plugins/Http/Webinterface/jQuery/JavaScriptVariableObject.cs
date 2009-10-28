@@ -2,17 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace VVVV.Nodes.jQuery
+namespace VVVV.Webinterface.jQuery
 {
 	public class JavaScriptVariableObject : JavaScriptObject
 	{
 		protected string FVariableName;
 
-		private JavaScriptVariableObject()
-		{
-
-		}
-		
 		public JavaScriptVariableObject(string variableName)
 		{
 			FVariableName = variableName;
