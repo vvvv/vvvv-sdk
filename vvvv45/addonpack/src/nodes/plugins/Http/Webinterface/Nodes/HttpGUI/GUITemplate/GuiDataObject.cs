@@ -13,6 +13,7 @@ namespace VVVV.Nodes.HttpGUI
             Head = 0,
             Body = 1,
             JavaScript = 2,
+			UpstreamJQuery = 3
         }
 
 
@@ -22,14 +23,19 @@ namespace VVVV.Nodes.HttpGUI
         private SortedList<string,string> mTransform = new SortedList<string,string>();
         private string mNodeId = "";
         private string mSliceId = "";
-        private StringBuilder mHead;
-        private StringBuilder mBody;
+		private SortedList<Position, StringBuilder> FContent = new SortedList<Position, StringBuilder>();
         private Tag mTag;
-        private StringBuilder mJavaScript;
 
 
+		public GuiDataObject()
+		{
+			for (Position p = Position.Head; p <= Position.UpstreamJQuery; p++)
+			{
+				FContent[p] = new StringBuilder();
+			}
+		}
 
-        public Tag Tag
+		public Tag Tag
         {
             get
             {
@@ -47,9 +53,9 @@ namespace VVVV.Nodes.HttpGUI
         {
             get
             {
-                if (mHead != null)
+                if (FContent[Position.Head] != null)
                 {
-                    return mHead.ToString();
+                    return FContent[Position.Head].ToString();
                 }
                 else
                 {
@@ -62,7 +68,7 @@ namespace VVVV.Nodes.HttpGUI
         {
             get
             {
-                return mJavaScript;
+                return FContent[Position.JavaScript].Append(FContent[Position.UpstreamJQuery]);
             }
         }
 
@@ -71,9 +77,9 @@ namespace VVVV.Nodes.HttpGUI
         {
             get
             {
-                if (mBody != null)
+                if (FContent[Position.Body] != null)
                 {
-                    return mBody.ToString();
+                    return FContent[Position.Body].ToString();
                 }
                 else
                 {
@@ -151,34 +157,12 @@ namespace VVVV.Nodes.HttpGUI
 				ResetContent(pPosition);
             }
 
-            if (pPosition == Position.Head)
-            {
-                mHead.Append(pContent);
-            }
-            else if(pPosition == Position.Body)
-            {
-                mBody.Append(pContent);
-            }
-			else if(pPosition == Position.JavaScript)
-            {
-                mJavaScript.Append(pContent);
-            }
+			FContent[pPosition].Append(pContent);
         }
 
 		public void ResetContent(Position pPosition)
 		{
-			if (pPosition == Position.Head)
-			{
-				mHead = new StringBuilder();
-			}
-			else if (pPosition == Position.Body)
-			{
-				mBody = new StringBuilder();
-			}
-			else if (pPosition == Position.JavaScript)
-			{
-				mJavaScript = new StringBuilder();
-			}
+			FContent[pPosition] = new StringBuilder();
 		}
 
 		#region ICloneable Members
@@ -202,23 +186,11 @@ namespace VVVV.Nodes.HttpGUI
 			clonedObject.mNodeId = System.String.Copy(mNodeId);
 			clonedObject.mSliceId = System.String.Copy(mSliceId);
 
-			if (mHead != null)
+			for (Position p = Position.Head; p <= Position.UpstreamJQuery; p++)
 			{
-				clonedObject.mHead = new StringBuilder(mHead.ToString());
+				clonedObject.FContent[p] = new StringBuilder(FContent[p].ToString());
 			}
-			else
-			{
-				clonedObject.mHead = mHead;
-			}
-
-			if (mBody != null)
-			{
-				clonedObject.mBody = new StringBuilder(mBody.ToString());
-			}
-			else
-			{
-				clonedObject.mBody = mBody;
-			}
+			
 
 			if (mTag != null)
 			{
@@ -230,15 +202,6 @@ namespace VVVV.Nodes.HttpGUI
 			}
 			
 			clonedObject.mTag = (Tag)(mTag.Clone());
- 
-			if (mJavaScript != null)
-			{
-				clonedObject.mJavaScript = new StringBuilder(mJavaScript.ToString());
-			}
-			else
-			{
-				clonedObject.mJavaScript = mJavaScript;
-			}
 
 			return clonedObject;
 		}

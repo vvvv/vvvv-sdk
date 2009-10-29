@@ -294,7 +294,7 @@ namespace VVVV.Nodes.HttpGUI
 				for (int i = 0; i < SpreadMax; i++)
 				{
 					FUpstreamJQueryNodeData = FUpstreamJQueryNodeInterface.GetJQueryData(i);
-					AddJavaScript(i, JQuery.GenerateDocumentReady(FUpstreamJQueryNodeData.BuildChain().SetSelector(new ClassSelector(FNodeId))).GenerateScript(1, true, true), true);
+					FGuiDataList[i].AddString(JQuery.GenerateDocumentReady(FUpstreamJQueryNodeData.BuildChain().SetSelector(new ClassSelector(FNodeId))).GenerateScript(1, true, true), GuiDataObject.Position.UpstreamJQuery, true);
 				}
 				FGuiListModified = true;
 			}
@@ -302,7 +302,7 @@ namespace VVVV.Nodes.HttpGUI
 			{
 				for (int i = 0; i < SpreadMax; i++)
 				{
-					ResetJavaScript(i);
+					FGuiDataList[i].ResetContent(GuiDataObject.Position.UpstreamJQuery);
 				}
 				FGuiListModified = true;
 			}
