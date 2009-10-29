@@ -19,8 +19,6 @@ namespace VVVV.Nodes.HttpGUI
 		protected JQueryNodeIOData FUpstreamJQueryNodeData;
 		
 		protected JQueryExpression FExpression = JQueryExpression.This();
-		protected bool FJQueryInputNewConnect;
-		protected bool FJQueryInputNewDisconnect;
 		protected bool FPinChangedThisFrame;
 
 		protected abstract bool DynamicPinsAreChanged();
@@ -45,29 +43,32 @@ namespace VVVV.Nodes.HttpGUI
 		protected override void BaseEvaluate(int SpreadMax)
 		{
 			bool newDataOnJQueryInput = false;
-			
-			for (int i = 0; i < SpreadMax; i++)
+
+			if (FInputJQueryNodeInput.PinIsChanged)
 			{
-				
-				if (FJQueryInputNewConnect || (FInputJQueryNodeInput.IsConnected && FUpstreamJQueryNodeInterface.PinIsChanged))
+				System.Diagnostics.Debug.WriteLine("NodePinChanged");
+			}
+
+			if (FInputJQueryNodeInput.IsConnected && (FInputJQueryNodeInput.PinIsChanged || FUpstreamJQueryNodeInterface.PinIsChanged))
+			{
+				newDataOnJQueryInput = true;
+				for (int i = 0; i < SpreadMax; i++)
 				{
 					FUpstreamJQueryNodeData = FUpstreamJQueryNodeInterface.GetJQueryData(i);
-					newDataOnJQueryInput = true;
 				}
+
 			}
 
 			OnEvaluate(SpreadMax, FChangedSpreadSize, FNodeId, FSliceId, FReceivedNewString, FReceivedString);
 
-			for (int i = 0; i < SpreadMax; i++)
+			if (FPinChangedThisFrame = FInputJQueryNodeInput.PinIsChanged || newDataOnJQueryInput || DynamicPinsAreChanged())
 			{
-				FPinChangedThisFrame = newDataOnJQueryInput || FJQueryInputNewDisconnect || DynamicPinsAreChanged();
-				if (FPinChangedThisFrame)
+				for (int i = 0; i < SpreadMax; i++)
 				{
+					
 					FJQueryCodeStringOutput.SetString(i, FExpression.Chain(FUpstreamJQueryNodeData != null ? FUpstreamJQueryNodeData.BuildChain() : new JQueryExpression()).PScript(0, true, true));
 				}
 			}
-			FJQueryInputNewConnect = false;
-			FJQueryInputNewDisconnect = false;
 		}
 
 		protected abstract void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SlideId, bool ReceivedNewString, List<string> ReceivedString);
@@ -84,7 +85,6 @@ namespace VVVV.Nodes.HttpGUI
 					INodeIOBase upstreamInterface;
 					FInputJQueryNodeInput.GetUpstreamInterface(out upstreamInterface);
 					FUpstreamJQueryNodeInterface = upstreamInterface as IJQueryIO;
-					FJQueryInputNewConnect = true;
 				}
 
 			}
@@ -97,7 +97,6 @@ namespace VVVV.Nodes.HttpGUI
 			{
 				FUpstreamJQueryNodeInterface = null;
 				FUpstreamJQueryNodeData = null;
-				FJQueryInputNewDisconnect = true;
 			}
 		}
 
