@@ -81,10 +81,7 @@ namespace VVVV.Webinterface.jQuery
 			
 			for (int i = 0; i < expressions.Length; i++)
 			{
-				foreach (ChainableOperation op in expressions[i].FChainedOperations)
-				{
-					operations.Add(op);
-				}
+				operations.AddRange(expressions[i].FChainedOperations);
 			}
 
 			return new JQueryExpression(FJQueryFunctionParameters, operations);

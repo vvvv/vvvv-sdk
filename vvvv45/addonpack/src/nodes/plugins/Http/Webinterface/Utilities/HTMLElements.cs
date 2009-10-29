@@ -14,6 +14,11 @@ namespace VVVV.Webinterface.Utilities
 
 	class CSSAttribute : Attribute
 	{
+		protected CSSAttribute()
+		{
+
+		}
+		
 		public CSSAttribute(string pName, string pValue)
 			: base(pName, pValue)
 		{
@@ -23,6 +28,11 @@ namespace VVVV.Webinterface.Utilities
 
 	class HTMLAttribute : Attribute
 	{
+		protected HTMLAttribute()
+		{
+
+		}
+		
 		public HTMLAttribute(string pName, string pValue)
 			: base(pName, pValue)
 		{
@@ -40,7 +50,12 @@ namespace VVVV.Webinterface.Utilities
 
     class EmptyTag : Tag
     {
-        public EmptyTag(string pName)
+		protected EmptyTag()
+		{
+
+		}
+		
+		public EmptyTag(string pName)
         {
             Name = pName;
         }
@@ -84,6 +99,28 @@ namespace VVVV.Webinterface.Utilities
             tWriter.Flush();
             tWriter.Close();
         }
+
+		public override object Clone()
+		{
+			Page clonedObject = (Page)(base.Clone());
+			if (Head != null)
+			{
+				clonedObject.Head = (Head)(Head.Clone());
+			}
+			else
+			{
+				clonedObject.Head = Head;
+			}
+			if (Body != null)
+			{
+				clonedObject.Body = (Body)(Body.Clone());
+			}
+			else
+			{
+				clonedObject.Body = Body;
+			}
+			return clonedObject;
+		}
     }
 
     public class Head : Tag
@@ -104,7 +141,12 @@ namespace VVVV.Webinterface.Utilities
 
     class Title : Tag
     {
-        public Title(string pText)
+		protected Title()
+		{
+
+		}
+		
+		public Title(string pText)
         {
             Name = "title";
             Insert(pText);
@@ -136,8 +178,12 @@ namespace VVVV.Webinterface.Utilities
 
     class Link : Tag
     {
-        
-        
+
+		protected Link()
+		{
+
+		}
+
         public Link(string pHRef, string pType)
         {
             Name = "link";
@@ -172,7 +218,12 @@ namespace VVVV.Webinterface.Utilities
 
     class IPodIconLink : Tag
     {
-        public IPodIconLink(string pRel, string pHref)
+		protected IPodIconLink()
+		{
+
+		}
+		
+		public IPodIconLink(string pRel, string pHref)
         {
             Name = "link";
             AddAttribute(new HTMLAttribute("rel", pRel).Text);
@@ -469,7 +520,12 @@ namespace VVVV.Webinterface.Utilities
 
     class Table : Tag
     {
-        public Table(System.Data.DataTable pDataTable, int pBorderSize, int pCellPadding)
+		protected Table()
+		{
+
+		}
+		
+		public Table(System.Data.DataTable pDataTable, int pBorderSize, int pCellPadding)
         {
             Name = "table";
             AddAttribute(new HTMLAttribute("border", pBorderSize.ToString()));
@@ -548,7 +604,12 @@ namespace VVVV.Webinterface.Utilities
 
     public class JavaFunction : Tag
     {
-        public JavaFunction(string pFunctionName, string pFunction)
+		protected JavaFunction()
+		{
+
+		}
+		
+		public JavaFunction(string pFunctionName, string pFunction)
         {
             Text = "function " + pFunctionName + "() {" + Environment.NewLine + pFunction + Environment.NewLine +"}";
         }
@@ -562,7 +623,12 @@ namespace VVVV.Webinterface.Utilities
 
     public class JqueryFunction : Tag
     {
-        public JqueryFunction(bool pOnDocumentReady, string pSelector,string pEventType, string pFunctionContent)
+		protected JqueryFunction()
+		{
+
+		}
+		
+		public JqueryFunction(bool pOnDocumentReady, string pSelector,string pEventType, string pFunctionContent)
         {
             if(pOnDocumentReady)
             {
@@ -613,7 +679,12 @@ namespace VVVV.Webinterface.Utilities
 
     class Paragraph : Tag
     {
-        public Paragraph(string pID)
+		protected Paragraph()
+		{
+
+		}
+		
+		public Paragraph(string pID)
         {
             Name = "p";
             AddAttribute(new HTMLAttribute("id", pID));

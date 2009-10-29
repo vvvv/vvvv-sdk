@@ -5,7 +5,7 @@ using VVVV.Webinterface.Utilities;
 
 namespace VVVV.Nodes.HttpGUI
 {
-    public class GuiDataObject
+    public class GuiDataObject : ICloneable
     {
 
         public enum Position
@@ -148,9 +148,7 @@ namespace VVVV.Nodes.HttpGUI
         {
             if (Reset)
             {
-                mHead = new StringBuilder();
-                mBody = new StringBuilder();
-                mJavaScript = new StringBuilder();
+				ResetContent(pPosition);
             }
 
             if (pPosition == Position.Head)
@@ -160,12 +158,92 @@ namespace VVVV.Nodes.HttpGUI
             else if(pPosition == Position.Body)
             {
                 mBody.Append(pContent);
-            }else if(pPosition == Position.JavaScript)
+            }
+			else if(pPosition == Position.JavaScript)
             {
                 mJavaScript.Append(pContent);
             }
         }
 
-    }
+		public void ResetContent(Position pPosition)
+		{
+			if (pPosition == Position.Head)
+			{
+				mHead = new StringBuilder();
+			}
+			else if (pPosition == Position.Body)
+			{
+				mBody = new StringBuilder();
+			}
+			else if (pPosition == Position.JavaScript)
+			{
+				mJavaScript = new StringBuilder();
+			}
+		}
+
+		#region ICloneable Members
+
+		public object Clone()
+		{
+			GuiDataObject clonedObject = new GuiDataObject();
+			foreach (KeyValuePair<string, string> kvp in mCssProperties)
+			{
+				clonedObject.mCssProperties.Add(System.String.Copy(kvp.Key), System.String.Copy(kvp.Value));
+			}
+
+			clonedObject.mGuiUpstreamList = mGuiUpstreamList;
+
+			foreach (KeyValuePair<string, string> kvp in mTransform)
+			{
+				clonedObject.mTransform.Add(System.String.Copy(kvp.Key), System.String.Copy(kvp.Value));
+			}
+
+			
+			clonedObject.mNodeId = System.String.Copy(mNodeId);
+			clonedObject.mSliceId = System.String.Copy(mSliceId);
+
+			if (mHead != null)
+			{
+				clonedObject.mHead = new StringBuilder(mHead.ToString());
+			}
+			else
+			{
+				clonedObject.mHead = mHead;
+			}
+
+			if (mBody != null)
+			{
+				clonedObject.mBody = new StringBuilder(mBody.ToString());
+			}
+			else
+			{
+				clonedObject.mBody = mBody;
+			}
+
+			if (mTag != null)
+			{
+				clonedObject.mTag = (Tag)(mTag.Clone());
+			}
+			else
+			{
+				clonedObject.mTag = mTag;
+			}
+			
+			clonedObject.mTag = (Tag)(mTag.Clone());
+ 
+			if (mJavaScript != null)
+			{
+				clonedObject.mJavaScript = new StringBuilder(mJavaScript.ToString());
+			}
+			else
+			{
+				clonedObject.mJavaScript = mJavaScript;
+			}
+
+			return clonedObject;
+		}
+
+		#endregion
+	}
 
 }

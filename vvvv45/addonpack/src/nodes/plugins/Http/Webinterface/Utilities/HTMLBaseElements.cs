@@ -1,8 +1,9 @@
-
-
 using System;
 using System.Collections.Generic;
 using System.Text;
+
+using System.Reflection;
+using System.Diagnostics;
 
 namespace VVVV.Webinterface.Utilities
 {
@@ -11,7 +12,7 @@ namespace VVVV.Webinterface.Utilities
     /// Holds the base functions for the HTML and CSS attributs 
     /// coded by chrismo
     /// </summary>
-    public abstract class Attribute
+    public abstract class Attribute : ICloneable
     {
 		private string m_Structure = "namevalue";
 		private string m_Name;
@@ -54,7 +55,16 @@ namespace VVVV.Webinterface.Utilities
             m_Values.Add(pValue);
         }
 
-        /// <summary>
+		/// <summary>
+		/// Attribute construcor.
+		/// builds an empty attribute for use in the clone method
+		/// </summary>
+		protected Attribute()
+		{
+
+		}
+
+		/// <summary>
         /// inserts a value to the m_value List
         /// </summary>
         /// <param name="pValue"></param>
@@ -71,14 +81,48 @@ namespace VVVV.Webinterface.Utilities
         {
             m_Values.Add(pAttribute.Text);
         }
-    }
+
+		#region ICloneable Members
+
+		public object Clone()
+		{
+			Attribute clonedObject = this;
+
+			try
+			{
+				ConstructorInfo constructorInfo = this.GetType().GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, Type.DefaultBinder, Type.EmptyTypes, null);
+				if (constructorInfo == null) throw (new Exception("Attribute Derived Class has no zero-argument constructor"));
+				clonedObject = (Attribute)constructorInfo.Invoke(null);
+
+				clonedObject.m_Structure = System.String.Copy(m_Structure);
+				clonedObject.m_Name = System.String.Copy(m_Name);
+
+				clonedObject.m_Values.Clear();
+				
+				foreach (string str in m_Values)
+				{
+					clonedObject.m_Values.Add(System.String.Copy(str));
+				}
+			}
+			catch (Exception e)
+			{
+				Debug.WriteLine("Attribute cloning failed, could not obtain and instantiate derived class");
+				Debug.WriteLine(e.Message);
+			}
+
+			return clonedObject;
+
+		}
+		
+		#endregion
+	}
 
 
     /// <summary>
     /// abstract Tag class defintion
     /// builds HTML or XML Tags
     /// </summary>
-    public abstract class Tag
+    public abstract class Tag : ICloneable
     {
 
         private int m_Level = 0;
@@ -301,6 +345,63 @@ namespace VVVV.Webinterface.Utilities
         }
 
 
+
+		#region ICloneable Members
+
+		public virtual object Clone()
+		{
+			Tag clonedObject = this;
+
+			try
+			{
+				ConstructorInfo constructorInfo = this.GetType().GetConstructor(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance, Type.DefaultBinder, Type.EmptyTypes, null);
+				if (constructorInfo == null) throw (new Exception("Tag Derived Class has no zero-argument constructor"));
+				clonedObject = (Tag)constructorInfo.Invoke(null);
+
+				clonedObject.m_Level = m_Level;
+				clonedObject.m_Text = System.String.Copy(m_Text);
+				clonedObject.OverrideText = OverrideText;
+
+				clonedObject.m_Name = System.String.Copy(m_Name);
+				clonedObject.m_OpenBegin = System.String.Copy(m_OpenBegin);
+				clonedObject.m_CloseBegin = System.String.Copy(m_CloseBegin);
+				clonedObject.m_End = System.String.Copy(m_End);
+				clonedObject.mHtmlHeader = System.String.Copy(mHtmlHeader);
+
+				clonedObject.m_Attributes.Clear();
+				foreach (Attribute attribute in m_Attributes)
+				{
+					clonedObject.m_Attributes.Add((Attribute)(attribute.Clone()));
+				}
+
+				clonedObject.m_AttributesAsStrings.Clear();
+				foreach (string str in m_AttributesAsStrings)
+				{
+					clonedObject.m_AttributesAsStrings.Add(System.String.Copy(str));
+				}
+
+				clonedObject.m_Tags.Clear();
+				foreach (Tag tag in m_Tags)
+				{
+					clonedObject.m_Tags.Add((Tag)(tag.Clone()));
+				}
+
+				clonedObject.m_Strings.Clear();
+				foreach (String str in m_Strings)
+				{
+					clonedObject.m_Strings.Add(System.String.Copy(str));
+				}
+			}
+			catch (Exception e)
+			{
+				Debug.WriteLine("Tag cloning failed, could not obtain and instantiate derived class");
+				Debug.WriteLine(e.Message);
+			}
+
+			return clonedObject;
+		}
+
+		#endregion
 	}
 
 
@@ -313,6 +414,11 @@ namespace VVVV.Webinterface.Utilities
     /// </summary>
 	class Property : Attribute
 	{
+		protected Property()
+		{
+
+		}
+		
 		public Property(string pName, string pValue)
 			: base(pName, pValue)
 		{

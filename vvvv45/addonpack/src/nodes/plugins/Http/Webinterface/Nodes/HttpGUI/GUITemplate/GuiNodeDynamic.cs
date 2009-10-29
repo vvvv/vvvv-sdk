@@ -6,6 +6,7 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.Nodes.HttpGUI;
 using VVVV.Utils.VMath;
 using VVVV.Webinterface.Utilities;
+using VVVV.Webinterface.jQuery;
 using VVVV.Webinterface;
 using System.Diagnostics;
 using System.Globalization;
@@ -36,8 +37,8 @@ namespace VVVV.Nodes.HttpGUI
         public INodeIn FHttpStyleIn;
         public IHttpGUIStyleIO FUpstreamStyle;
 
-		public INodeIn FJQueryNodeIn;
-
+		public INodeIn FJQueryNodeInput;
+		protected IJQueryIO FUpstreamJQueryNodeInterface;
 
 		public INodeOut FHttpGuiOut;
 
@@ -45,6 +46,7 @@ namespace VVVV.Nodes.HttpGUI
         //Required Members
         public List<GuiDataObject> FGuiDataList = new List<GuiDataObject>();
 		public List<GuiDataObject> FUpstreamGuiList;
+		protected JQueryNodeIOData FUpstreamJQueryNodeData;
 		private bool FHttpGuiInConnectedThisFrame = true;
 		private bool FGuiListModified = false;
 	
@@ -92,8 +94,8 @@ namespace VVVV.Nodes.HttpGUI
             FHost.CreateNodeInput("Input CSS", TSliceMode.Dynamic, TPinVisibility.True, out FHttpStyleIn);
             FHttpStyleIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
 
-			FHost.CreateNodeInput("JQuery", TSliceMode.Dynamic, TPinVisibility.True, out FJQueryNodeIn);
-			FJQueryNodeIn.SetSubType(new Guid[1] { JQueryIO.GUID }, JQueryIO.FriendlyName);
+			FHost.CreateNodeInput("JQuery", TSliceMode.Single, TPinVisibility.True, out FJQueryNodeInput);
+			FJQueryNodeInput.SetSubType(new Guid[1] { JQueryIO.GUID }, JQueryIO.FriendlyName);
 
             FHost.CreateNodeOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiOut);
             FHttpGuiOut.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
@@ -111,12 +113,6 @@ namespace VVVV.Nodes.HttpGUI
         #endregion pin creation
 
 
-
-
-
-
-
-
         #region IMyNodeIO
 
 		public bool PinIsChanged()
@@ -126,11 +122,15 @@ namespace VVVV.Nodes.HttpGUI
 
         public void GetDataObject(int Index, out List<GuiDataObject> GuiDaten)
         {
-            ////Debug.WriteLine("Enter Get daten Object");
+			////Debug.WriteLine("Enter Get daten Object");
             GuiDaten = new List<GuiDataObject>(FGuiDataList);
+			//for (int i = 0; i < FGuiDataList.Count; i++)
+			//{
+			//    GuiDaten.Add((GuiDataObject)(FGuiDataList[i].Clone()));
+			//}
         }
 
-        public void ConnectPin(IPluginIO Pin)
+		public void ConnectPin(IPluginIO Pin)
         {
             //cache a reference to the upstream interface when the NodeInput pin is being connected
             if (Pin == FHttpGuiIn)
@@ -150,6 +150,16 @@ namespace VVVV.Nodes.HttpGUI
                 FHttpStyleIn.GetUpstreamInterface(out usIHttpStyle);
                 FUpstreamStyle = usIHttpStyle as IHttpGUIStyleIO;
             }
+			else if (Pin == FJQueryNodeInput)
+			{
+				if (FJQueryNodeInput != null)
+				{
+					INodeIOBase upstreamInterface;
+					FJQueryNodeInput.GetUpstreamInterface(out upstreamInterface);
+					FUpstreamJQueryNodeInterface = upstreamInterface as IJQueryIO;
+				}
+			}
+
         }
 
 
@@ -177,6 +187,11 @@ namespace VVVV.Nodes.HttpGUI
 
                 FUpstreamStyle = null;
             }
+			if (Pin == FJQueryNodeInput)
+			{
+				FUpstreamJQueryNodeInterface = null;
+				FUpstreamJQueryNodeData = null;
+			}
 
         }
 
@@ -217,7 +232,7 @@ namespace VVVV.Nodes.HttpGUI
             #region Upstream Gui Elements
 
 			bool upstreamGuiListChanged = false;
-			
+
 			if (FUpstreamHttpGuiIn != null)
 			{
 				if (FHttpGuiInConnectedThisFrame || FUpstreamHttpGuiIn.PinIsChanged())
@@ -226,9 +241,9 @@ namespace VVVV.Nodes.HttpGUI
 					upstreamGuiListChanged = true;
 				}
 			}
-			
+						
 			#endregion Upstream Gui Elements
-
+			
 			if (FChangedSpreadSize)
             {
 				if (FGuiDataList.Count > SpreadMax)
@@ -271,6 +286,30 @@ namespace VVVV.Nodes.HttpGUI
 
             #endregion Check Gui List
 
+
+			#region JQuery
+			
+			if (FJQueryNodeInput.IsConnected && (FJQueryNodeInput.PinIsChanged || FUpstreamJQueryNodeInterface.PinIsChanged))
+			{
+				for (int i = 0; i < SpreadMax; i++)
+				{
+					FUpstreamJQueryNodeData = FUpstreamJQueryNodeInterface.GetJQueryData(i);
+					AddJavaScript(i, JQuery.GenerateDocumentReady(FUpstreamJQueryNodeData.BuildChain().SetSelector(new ClassSelector(FNodeId))).GenerateScript(1, true, true), true);
+				}
+				FGuiListModified = true;
+			}
+			else if (FJQueryNodeInput.PinIsChanged)
+			{
+				for (int i = 0; i < SpreadMax; i++)
+				{
+					ResetJavaScript(i);
+				}
+				FGuiListModified = true;
+			}
+
+
+			
+			#endregion
 
             #region Transform Pin
 
@@ -364,7 +403,7 @@ namespace VVVV.Nodes.HttpGUI
             {
 				if (FUpstreamStyle.PinIsChanged() || FChangedSpreadSize)
 				{
-					FGuiListModified = true;
+					//FGuiListModified = true;
 					
 					string NodePath;
 					FHost.GetNodePath(false, out NodePath);
@@ -476,10 +515,15 @@ namespace VVVV.Nodes.HttpGUI
         }
 
 
-        public void SetJavaScript(int pSliceIndex, string pContent)
+        public void AddJavaScript(int pSliceIndex, string pContent, bool reset)
         {
-            FGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.JavaScript, true);
+            FGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.JavaScript, reset);
         }
+
+		public void ResetJavaScript(int pSliceIndex)
+		{
+			FGuiDataList[pSliceIndex].ResetContent(GuiDataObject.Position.JavaScript);
+		}
 
         #endregion Add to GuiDataObject
 		

@@ -8,11 +8,11 @@ namespace VVVV.Webinterface.jQuery
 	public class MethodCall : ChainableOperation
 	{
 		protected Method FMethod;
-		protected Queue<IJavaScriptObject> FArguments;
+		protected List<IJavaScriptObject> FArguments;
 
 		protected MethodCall()
 		{
-			FArguments = new Queue<IJavaScriptObject>();
+			FArguments = new List<IJavaScriptObject>();
 		}
 		
 		public MethodCall(Method method) : this()
@@ -32,7 +32,7 @@ namespace VVVV.Webinterface.jQuery
 			{
 				if (arguments[i] != null)
 				{
-					FArguments.Enqueue(JavaScriptObjectFactory.Create(arguments[i]));
+					FArguments.Add(JavaScriptObjectFactory.Create(arguments[i]));
 				}
 			}
 
