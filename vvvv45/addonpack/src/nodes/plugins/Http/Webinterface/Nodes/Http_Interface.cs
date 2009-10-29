@@ -102,7 +102,11 @@ namespace VVVV.Nodes.HttpGUI
 	[Guid("8EA17FEC-7848-4e0f-81DA-0E055B69BBE3"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IJQueryIO : INodeIOBase
 	{
-		bool PinIsChanged();
+		JQueryNodeIOData GetJQueryData(int slice);
+		bool PinIsChanged
+		{
+			get;
+		}
 	}
 
 	public class JQueryIO

@@ -42,7 +42,7 @@ namespace VVVV.Nodes.HttpGUI
 			}
 			catch (Exception ex)
 			{
-				FHost.Log(TLogType.Error, "Error in GUINodeDynamic (Http) by Pin Initialisation" + Environment.NewLine + ex.Message);
+				FHost.Log(TLogType.Error, "Error in POSTReceiverNode (Http) by Pin Initialisation" + Environment.NewLine + ex.Message);
 			}
 		}
 
