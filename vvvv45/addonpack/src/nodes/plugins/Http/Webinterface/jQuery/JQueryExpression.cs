@@ -56,6 +56,12 @@ namespace VVVV.Webinterface.jQuery
 
         }
 
+		protected JQueryExpression(IJavaScriptObject functionParameters, List<ChainableOperation> operations)
+		{
+			FJQueryFunctionParameters = functionParameters;
+			FChainedOperations = operations;
+		}
+
         public JQueryExpression(): this((IJavaScriptObject)null)
         {
 
@@ -67,6 +73,21 @@ namespace VVVV.Webinterface.jQuery
 		{
 			AddMethodCall(methodName, arguments);
 			return this;
+		}
+
+		public JQueryExpression Chain(params JQueryExpression[] expressions)
+		{
+			List<ChainableOperation> operations = new List<ChainableOperation>(FChainedOperations);
+			
+			for (int i = 0; i < expressions.Length; i++)
+			{
+				foreach (ChainableOperation op in expressions[i].FChainedOperations)
+				{
+					operations.Add(op);
+				}
+			}
+
+			return new JQueryExpression(FJQueryFunctionParameters, operations);
 		}
 
 		protected override string GetObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter)
@@ -86,7 +107,7 @@ namespace VVVV.Webinterface.jQuery
 
         public void Post(string url, IJavaScriptObject data, string type, JavaScriptAnonymousFunction callback)
         {
-            FChainedOperations.Enqueue(new MethodCall("post", url, data, type, callback));
+            FChainedOperations.Add(new MethodCall("post", url, data, type, callback));
         }
 
         public JQueryExpression Append(object jsObject)

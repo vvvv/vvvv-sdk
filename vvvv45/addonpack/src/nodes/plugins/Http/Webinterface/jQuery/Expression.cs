@@ -7,18 +7,24 @@ namespace VVVV.Webinterface.jQuery
 	public abstract class Expression : JQuery, IJavaScriptObject
 	{
 		#region Fields
-		protected Queue<ChainableOperation> FChainedOperations;
+		protected List<ChainableOperation> FChainedOperations;
 		#endregion
+
+		public IEnumerable<ChainableOperation> ChainedOperations
+		{
+			get { return FChainedOperations; }
+		}
+	
 
 		public Expression()
         {
-            FChainedOperations = new Queue<ChainableOperation>();
+            FChainedOperations = new List<ChainableOperation>();
 			FStatements.Enqueue(this);
         }
 
 		protected void AddMethodCall(String methodName, params object[] arguments)
 		{
-			FChainedOperations.Enqueue(new MethodCall(methodName, arguments));
+			FChainedOperations.Add(new MethodCall(methodName, arguments));
 		}
 
 		public virtual new string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)

@@ -28,14 +28,14 @@ namespace VVVV.Webinterface.jQuery
 		public JavaScriptExpression Member(string memberName)
 		{
 			JavaScriptExpression expression = WrapObjectAsExpression();
-			expression.FChainedOperations.Enqueue(new DataMemberAccessor(memberName));
+			expression.FChainedOperations.Add(new DataMemberAccessor(memberName));
 			return expression;
 		}
 
 		public JavaScriptExpression toString()
 		{
 			JavaScriptExpression expression = WrapObjectAsExpression();
-			expression.FChainedOperations.Enqueue(new MethodCall("toString"));
+			expression.FChainedOperations.Add(new MethodCall("toString"));
 			return expression;
 		}
 
