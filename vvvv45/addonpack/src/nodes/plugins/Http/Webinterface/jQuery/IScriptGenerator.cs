@@ -6,6 +6,6 @@ namespace VVVV.Webinterface.jQuery
 {
 	public interface IScriptGenerator
 	{
-		string PScript(int indentSteps, bool breakInternalLines, bool breakAfter);
+		string GenerateScript(int indentSteps, bool breakInternalLines, bool breakAfter);
 	}
 }

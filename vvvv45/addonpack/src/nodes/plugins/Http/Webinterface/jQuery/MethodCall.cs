@@ -40,14 +40,14 @@ namespace VVVV.Webinterface.jQuery
 
 		#region IScriptGenerator Members
 
-		public override string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		public override string GenerateScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
-			string text = '.' + FMethod.PScript(indentSteps, breakInternalLines, breakAfter) + '(';
+			string text = '.' + FMethod.GenerateScript(indentSteps, breakInternalLines, breakAfter) + '(';
 			int queueLength = FArguments.Count;
 			int count = 1;
 			foreach (IJavaScriptObject argument in FArguments)
 			{
-				text += argument.PScript(indentSteps, breakInternalLines, breakAfter);
+				text += argument.GenerateScript(indentSteps, breakInternalLines, breakAfter);
 				if (count != queueLength)
 				{
 					text += ", ";

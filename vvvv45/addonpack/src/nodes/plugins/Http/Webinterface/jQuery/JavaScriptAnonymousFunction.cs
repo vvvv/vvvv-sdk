@@ -29,7 +29,7 @@ namespace VVVV.Webinterface.jQuery
 			set { FJQuery = value; }
 		}
 
-		protected override string GetObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		protected override string GenerateObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string text = "function(";
 			int queueLength = FArgumentNames.Count;
@@ -37,7 +37,7 @@ namespace VVVV.Webinterface.jQuery
 			int count = 1;
 			foreach (JavaScriptVariableObject argument in FArgumentNames)
 			{
-				text += argument.PScript(indentSteps, breakInternalLines, breakAfter);
+				text += argument.GenerateScript(indentSteps, breakInternalLines, breakAfter);
 				if (count != queueLength)
 				{
 					text += ", ";
@@ -50,7 +50,7 @@ namespace VVVV.Webinterface.jQuery
 			{
 				text += "\n";
 			}
-			text += FJQuery.PScript(doBreakInternalLines ? indentSteps + 1 : 0, breakInternalLines, breakInternalLines);
+			text += FJQuery.GenerateScript(doBreakInternalLines ? indentSteps + 1 : 0, breakInternalLines, breakInternalLines);
 			if (doBreakInternalLines)
 			{
 				for (int i = 0; i < indentSteps; i++)

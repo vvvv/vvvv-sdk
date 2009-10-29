@@ -90,19 +90,20 @@ namespace VVVV.Webinterface.jQuery
 			return new JQueryExpression(FJQueryFunctionParameters, operations);
 		}
 
-		protected override string GetObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		protected override string GenerateObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter)
         {
             string text = "$";
             if (FJQueryFunctionParameters != null)
             {
-                text += "(" + FJQueryFunctionParameters.PScript(indentSteps, breakInternalLines, breakAfter) + ")";
+                text += "(" + FJQueryFunctionParameters.GenerateScript(indentSteps, breakInternalLines, breakAfter) + ")";
             }
 			return text;
         }
 
-		public void SetSelector(IJavaScriptObject functionParameters)
+		public JQueryExpression SetSelector(IJavaScriptObject functionParameters)
 		{
 			FJQueryFunctionParameters = functionParameters;
+			return this;
 		}
 
         public void Post(string url, IJavaScriptObject data, string type, JavaScriptAnonymousFunction callback)

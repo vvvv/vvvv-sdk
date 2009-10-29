@@ -34,7 +34,7 @@ namespace VVVV.Webinterface.jQuery
 
 		#region IScriptGenerator Members
 
-		public virtual string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		public virtual string GenerateScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string text = "";
 			int numStatements = FStatements.Count;
@@ -46,7 +46,7 @@ namespace VVVV.Webinterface.jQuery
 					text += "\t";
 				}
 
-				text += statement.PScript(indentSteps, breakInternalLines, breakAfter) + ";";
+				text += statement.GenerateScript(indentSteps, breakInternalLines, breakAfter) + ";";
 				if (breakInternalLines && count != numStatements)
 				{
 					text += "\n";

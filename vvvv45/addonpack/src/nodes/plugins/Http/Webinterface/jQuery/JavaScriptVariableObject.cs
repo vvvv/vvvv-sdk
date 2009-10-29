@@ -13,7 +13,7 @@ namespace VVVV.Webinterface.jQuery
 			FVariableName = variableName;
 		}
 		
-		protected override string GetObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		protected override string GenerateObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			return FVariableName;
 		}

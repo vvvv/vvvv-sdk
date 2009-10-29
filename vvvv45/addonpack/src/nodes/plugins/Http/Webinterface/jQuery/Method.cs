@@ -20,7 +20,7 @@ namespace VVVV.Webinterface.jQuery
 
 		#region IScriptGenerator Members
 
-		public string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		public string GenerateScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			return FName;
 		}

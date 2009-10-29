@@ -44,10 +44,10 @@ namespace VVVV.Nodes.HttpGUI
 		{
 			bool newDataOnJQueryInput = false;
 
-			if (FInputJQueryNodeInput.PinIsChanged)
-			{
-				System.Diagnostics.Debug.WriteLine("NodePinChanged");
-			}
+			//if (FInputJQueryNodeInput.PinIsChanged)
+			//{
+			//    System.Diagnostics.Debug.WriteLine("NodePinChanged");
+			//}
 
 			if (FInputJQueryNodeInput.IsConnected && (FInputJQueryNodeInput.PinIsChanged || FUpstreamJQueryNodeInterface.PinIsChanged))
 			{
@@ -66,7 +66,7 @@ namespace VVVV.Nodes.HttpGUI
 				for (int i = 0; i < SpreadMax; i++)
 				{
 					
-					FJQueryCodeStringOutput.SetString(i, FExpression.Chain(FUpstreamJQueryNodeData != null ? FUpstreamJQueryNodeData.BuildChain() : new JQueryExpression()).PScript(0, true, true));
+					FJQueryCodeStringOutput.SetString(i, FExpression.Chain(FUpstreamJQueryNodeData != null ? FUpstreamJQueryNodeData.BuildChain() : new JQueryExpression()).GenerateScript(0, true, true));
 				}
 			}
 		}

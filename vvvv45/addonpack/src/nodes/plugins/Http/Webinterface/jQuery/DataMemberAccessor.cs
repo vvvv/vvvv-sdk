@@ -18,7 +18,7 @@ namespace VVVV.Webinterface.jQuery
 			set { FMemberName = value; }
 		}
 	
-		public override string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		public override string GenerateScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			return ('.' + FMemberName);
 		}

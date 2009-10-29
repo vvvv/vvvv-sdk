@@ -23,7 +23,7 @@ namespace VVVV.Webinterface.jQuery
 			FJscriptDictionaryObject[key] = jsObject;
 		}
 
-		protected override string GetObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		protected override string GenerateObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string text = "{";
 			int dictionaryLength = FJscriptDictionaryObject.Count;
@@ -43,7 +43,7 @@ namespace VVVV.Webinterface.jQuery
 						text += "\t";
 					}
 				}
-				text += kvp.Key + " : " + kvp.Value.PScript(indentSteps + 1, kvp.Value is JavaScriptAnonymousFunction && breakInternalLines, breakAfter);
+				text += kvp.Key + " : " + kvp.Value.GenerateScript(indentSteps + 1, kvp.Value is JavaScriptAnonymousFunction && breakInternalLines, breakAfter);
 				if (count != dictionaryLength)
 				{
 					text += ",";

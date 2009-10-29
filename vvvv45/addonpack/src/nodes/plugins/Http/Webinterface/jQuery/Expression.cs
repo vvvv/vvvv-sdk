@@ -27,16 +27,16 @@ namespace VVVV.Webinterface.jQuery
 			FChainedOperations.Add(new MethodCall(methodName, arguments));
 		}
 
-		public virtual new string PScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		public virtual new string GenerateScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
-			string text = GetObjectScript(indentSteps, breakInternalLines, breakAfter);
+			string text = GenerateObjectScript(indentSteps, breakInternalLines, breakAfter);
 			foreach (ChainableOperation op in FChainedOperations)
 			{
-				text += op.PScript(indentSteps, breakInternalLines, breakAfter);
+				text += op.GenerateScript(indentSteps, breakInternalLines, breakAfter);
 			}
 			return text;
 		}
 
-		protected abstract string GetObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter);
+		protected abstract string GenerateObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter);
 	}
 }

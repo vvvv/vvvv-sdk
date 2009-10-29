@@ -8,7 +8,7 @@ namespace VVVV.Webinterface.jQuery
 	{
 		#region IScriptGenerator Members
 
-		protected abstract override string GetObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter);
+		protected abstract override string GenerateObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter);
 
 		#endregion
 	}

@@ -24,7 +24,7 @@ namespace VVVV.Webinterface.jQuery
 		}
 	
 
-		protected override string GetObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter)
+		protected override string GenerateObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string stringValue = FValue as string;
 			if (stringValue != null)
