@@ -586,10 +586,7 @@ namespace VVVV.Nodes.Http
                     }
                     
 
-
-
                     //Browser Window
-
 
 
                     double currentWidthSlice;
