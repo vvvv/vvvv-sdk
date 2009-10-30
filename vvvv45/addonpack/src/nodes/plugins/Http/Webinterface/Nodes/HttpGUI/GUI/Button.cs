@@ -266,7 +266,7 @@ namespace VVVV.Nodes.HttpGUI
                         
                         
 
-                        AddJavaScript(0, new JqueryFunction(true, "." + GetNodeID(0), tContent).Text, false);
+                        AddJavaScript(0, new JqueryFunction(true, "." + GetNodeID(0), tContent).Text, true);
 
                     }
                     else
@@ -299,7 +299,7 @@ namespace VVVV.Nodes.HttpGUI
                         });
                         ";
 
-                        AddJavaScript(0, new JqueryFunction(true, "." + FGuiDataList[0].NodeId, tContent).Text, false);
+                        AddJavaScript(0, new JqueryFunction(true, "." + FGuiDataList[0].NodeId, tContent).Text, true);
                     }
                 }
             }

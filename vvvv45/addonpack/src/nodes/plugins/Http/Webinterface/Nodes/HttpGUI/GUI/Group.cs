@@ -73,7 +73,7 @@ namespace VVVV.Nodes.HttpGUI
         private bool FPinIsConnectedDisconnected = false;
 
 
-        List<GuiDataObject> mGuiDataList = new List<GuiDataObject>();
+        List<GuiDataObject> FGuiDataList = new List<GuiDataObject>();
         private int mInputCount;
 
         #endregion field declaration
@@ -255,7 +255,11 @@ namespace VVVV.Nodes.HttpGUI
 
         public void GetDataObject(int Index, out List<GuiDataObject> GuiDaten)
         {
-			GuiDaten = new List<GuiDataObject>(mGuiDataList);
+            GuiDaten = new List<GuiDataObject>();
+            for (int i = 0; i < FGuiDataList.Count; i++)
+            {
+                GuiDaten.Add((GuiDataObject)(FGuiDataList[i].Clone()));
+            }
         }
 
 
@@ -381,7 +385,7 @@ namespace VVVV.Nodes.HttpGUI
 
             if (PinIsChanged())
             {
-                mGuiDataList.Clear();
+                FGuiDataList.Clear();
                 foreach (INodeIn pNodeIn in FInputPinList)
                 {
                     string tNodeName = pNodeIn.Name;
@@ -393,7 +397,7 @@ namespace VVVV.Nodes.HttpGUI
                     {
                         List<GuiDataObject> tGuiDaten;
                         FUpstream.GetDataObject(0, out tGuiDaten);
-                        mGuiDataList.AddRange(tGuiDaten);
+                        FGuiDataList.AddRange(tGuiDaten);
 
                     }
                 }

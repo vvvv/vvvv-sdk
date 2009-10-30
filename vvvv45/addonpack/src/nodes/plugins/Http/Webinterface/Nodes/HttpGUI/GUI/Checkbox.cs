@@ -218,7 +218,7 @@ $(""input[class*='{0}']:not(input[id=""+id+""])"").each(function()
 			$.post('ToVVVV.xml', id + '=0', null);
 		}});
 ";
-            AddJavaScript(0, new JqueryFunction(true, "." + GetNodeID(0), "click", String.Format(tContent, GetNodeID(0))).Text, false);
+            AddJavaScript(0, new JqueryFunction(true, "." + GetNodeID(0), "click", String.Format(tContent, GetNodeID(0))).Text, true);
         }
 
 

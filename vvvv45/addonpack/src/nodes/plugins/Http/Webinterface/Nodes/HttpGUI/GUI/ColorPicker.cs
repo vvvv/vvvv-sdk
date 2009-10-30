@@ -302,7 +302,7 @@ namespace VVVV.Nodes.HttpGUI
 					JQuery onDocumentReady = JQuery.GenerateDocumentReady(documentReadyHandler);
 
 					//insert the JQuery code into the javascript file for this page
-					AddJavaScript(i, onDocumentReady.GenerateScript(1, true, true), false);
+					AddJavaScript(i, onDocumentReady.GenerateScript(1, true, true), true);
 				}
 			}
 		}

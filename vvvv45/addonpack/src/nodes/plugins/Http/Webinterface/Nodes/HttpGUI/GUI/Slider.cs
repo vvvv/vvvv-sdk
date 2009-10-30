@@ -310,7 +310,7 @@ $.post('ToVVVV.xml',content, null);
                     string SliderSelector = "#" + SliderId;
                     double currentSliderValue = Convert.ToDouble(tResponse) * 10000;                    
 
-                    AddJavaScript(i, new JqueryFunction(true, SliderSelector, String.Format(SliderInitalize, currentOrientation, currentSliderValue.ToString(), SliderSelector, currentSliceId, "#" + SliderValueId, currentMinSlice, currentMaxSlice, currentStepSize)).Text + Environment.NewLine + tTextJS.Text, false);
+                    AddJavaScript(i, new JqueryFunction(true, SliderSelector, String.Format(SliderInitalize, currentOrientation, currentSliderValue.ToString(), SliderSelector, currentSliceId, "#" + SliderValueId, currentMinSlice, currentMaxSlice, currentStepSize)).Text + Environment.NewLine + tTextJS.Text, true);
                 }
             }
         }

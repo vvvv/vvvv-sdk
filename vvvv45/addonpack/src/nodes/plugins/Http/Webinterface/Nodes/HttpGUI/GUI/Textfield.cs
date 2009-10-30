@@ -223,7 +223,7 @@ namespace VVVV.Nodes.HttpGUI
                 var content = $(this).val();
                 $.post('ToVVVV.xml', id + '=' + content, null);              
                 ";
-                AddJavaScript(0, new JqueryFunction(true, "." + FGuiDataList[0].NodeId, "keyup", tContent).Text, false);
+                AddJavaScript(0, new JqueryFunction(true, "." + FGuiDataList[0].NodeId, "keyup", tContent).Text, true);
 
 
 
