@@ -403,7 +403,7 @@ namespace VVVV.Nodes.HttpGUI
             {
 				if (FUpstreamStyle.PinIsChanged() || FChangedSpreadSize)
 				{
-					//FGuiListModified = true;
+					FGuiListModified = true;
 					
 					string NodePath;
 					FHost.GetNodePath(false, out NodePath);

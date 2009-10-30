@@ -308,7 +308,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
         protected override void OnEvaluate(int SpreadMax)
         {
 
-			if (FFontSizeIn.PinIsChanged || FColorInput.PinIsChanged || FFontFamiliyIn.PinIsChanged || FFontStyleIn.PinIsChanged || FFontWeigthIn.PinIsChanged || FTextDecortationIn.PinIsChanged || FWordSpacingIn.PinIsChanged ||FLetterSpacingIn.PinIsChanged || FFontStretchIn.PinIsChanged)
+			if (DynamicPinIsChanged())
             {
 				// set slices count
                 IPluginIn[] tInputs = { FFontSizeIn, FColorInput, FFontFamiliyIn, FFontStyleIn, FFontWeigthIn, FTextDecortationIn, FWordSpacingIn, FLetterSpacingIn, FFontStretchIn};
@@ -360,5 +360,12 @@ namespace VVVV.Nodes.HttpGUI.CSS
         }
 				
         #endregion mainloop
+
+
+
+        protected override bool DynamicPinIsChanged()
+        {
+            return (FFontSizeIn.PinIsChanged || FColorInput.PinIsChanged || FFontFamiliyIn.PinIsChanged || FFontStyleIn.PinIsChanged || FFontWeigthIn.PinIsChanged || FTextDecortationIn.PinIsChanged || FWordSpacingIn.PinIsChanged || FLetterSpacingIn.PinIsChanged || FFontStretchIn.PinIsChanged);
+        }
     }
 }

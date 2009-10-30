@@ -52,7 +52,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
         protected abstract void OnConfigurate(IPluginConfig Input);
         protected abstract void OnEvaluate(int SpreadMax);
         protected abstract void OnPluginHostSet();
-
+        protected abstract bool DynamicPinIsChanged();
 
         #endregion abstract Methods
 
@@ -183,83 +183,84 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
                 if (FUpstreamStyleIn != null)
                 {
-                    string NodePath;
-                    FHost.GetNodePath(false, out NodePath);
-                    mCssPropertiesCombined.Clear();
-                    ////Debug.WriteLine("Enter Upstream: " + NodePath);
 
-                    int SliceOffsetCounter = 0;
-
-                    for (int i = 0; i < SpreadMax; i++)
+                    if (FUpstreamStyleIn.PinIsChanged())
                     {
-                        //get upstream slice index
+                        mCssPropertiesCombined.Clear();
 
-                        FCssPropertiesIn.GetUpsreamSlice(i, out usS);
+                        int SliceOffsetCounter = 0;
 
-
-                        SortedList<string, string> tStylePropertyIn;
-                        FUpstreamStyleIn.GetCssProperties(i, out tStylePropertyIn);
-
-
-                        SortedList<string, string> tCssSliceList;
-                        mCssPropertiesOwn.TryGetValue(i, out tCssSliceList);
-
-
-
-                        if (tCssSliceList == null)
+                        for (int i = 0; i < SpreadMax; i++)
                         {
+                            //get upstream slice index
 
-                            mCssPropertiesOwn.TryGetValue(SliceOffsetCounter, out tCssSliceList);
-                            SortedList<string, string> tWorkerList = new SortedList<string, string>(tCssSliceList);
-                            SliceOffsetCounter++;
-                            if (SliceOffsetCounter >= mCssPropertiesOwn.Count)
-                            {
-                                SliceOffsetCounter = 0;
-                            }
+                            FCssPropertiesIn.GetUpsreamSlice(i, out usS);
 
-                            foreach (KeyValuePair<string, string> pKey in tStylePropertyIn)
+
+                            SortedList<string, string> tStylePropertyIn;
+                            FUpstreamStyleIn.GetCssProperties(i, out tStylePropertyIn);
+
+
+                            SortedList<string, string> tCssSliceList;
+                            mCssPropertiesOwn.TryGetValue(i, out tCssSliceList);
+
+
+
+                            if (tCssSliceList == null)
                             {
-                                if (tWorkerList.ContainsKey(pKey.Key))
+
+                                mCssPropertiesOwn.TryGetValue(SliceOffsetCounter, out tCssSliceList);
+                                SortedList<string, string> tWorkerList = new SortedList<string, string>(tCssSliceList);
+                                SliceOffsetCounter++;
+                                if (SliceOffsetCounter >= mCssPropertiesOwn.Count)
                                 {
-                                    tWorkerList.Remove(pKey.Key);
-                                    tWorkerList.Add(pKey.Key, pKey.Value);
+                                    SliceOffsetCounter = 0;
+                                }
+
+                                foreach (KeyValuePair<string, string> pKey in tStylePropertyIn)
+                                {
+                                    if (tWorkerList.ContainsKey(pKey.Key))
+                                    {
+                                        tWorkerList.Remove(pKey.Key);
+                                        tWorkerList.Add(pKey.Key, pKey.Value);
+                                    }
+                                    else
+                                    {
+                                        tWorkerList.Add(pKey.Key, pKey.Value);
+                                    }
+                                }
+
+                                if (mCssPropertiesCombined.ContainsKey(i))
+                                {
+                                    mCssPropertiesCombined.Remove(i);
+                                    mCssPropertiesCombined.Add(i, new SortedList<string, string>(tWorkerList));
                                 }
                                 else
                                 {
-                                    tWorkerList.Add(pKey.Key, pKey.Value);
+                                    mCssPropertiesCombined.Add(i, new SortedList<string, string>(tWorkerList));
                                 }
-                            }
 
-                            if (mCssPropertiesCombined.ContainsKey(i))
+                            }
+                            else if (tStylePropertyIn != null)
                             {
+
+                                SortedList<string, string> tWorkerList = new SortedList<string, string>(tCssSliceList);
+                                foreach (KeyValuePair<string, string> pKey in tStylePropertyIn)
+                                {
+                                    if (tWorkerList.ContainsKey(pKey.Key) == false)
+                                    {
+                                        tWorkerList.Add(pKey.Key, pKey.Value);
+                                    }
+                                }
+
                                 mCssPropertiesCombined.Remove(i);
                                 mCssPropertiesCombined.Add(i, new SortedList<string, string>(tWorkerList));
                             }
-                            else
-                            {
-                                mCssPropertiesCombined.Add(i, new SortedList<string, string>(tWorkerList));
-                            }
-
-                        }
-                        else if (tStylePropertyIn != null)
-                        {
-
-                            SortedList<string, string> tWorkerList = new SortedList<string, string>(tCssSliceList);
-                            foreach (KeyValuePair<string, string> pKey in tStylePropertyIn)
-                            {
-                                if (tWorkerList.ContainsKey(pKey.Key) == false)
-                                {
-                                    tWorkerList.Add(pKey.Key, pKey.Value);
-                                }
-                            }
-
-                            mCssPropertiesCombined.Remove(i);
-                            mCssPropertiesCombined.Add(i, new SortedList<string, string>(tWorkerList));
                         }
                     }
-                }
 
-                FCssPropertieOut.SliceCount = SpreadMax;
+                    FCssPropertieOut.SliceCount = SpreadMax;
+                }
             }
             catch (Exception ex)
             {
@@ -292,7 +293,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
 		public bool PinIsChanged()
 		{
-			return true;
+			return DynamicPinIsChanged();
 		}
 
 		#endregion

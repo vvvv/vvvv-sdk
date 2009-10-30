@@ -56,7 +56,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
         private List<IStringIn> FInputNameList = new List<IStringIn>();
         private List<IStringIn> FInputValueList = new List<IStringIn>();
-        
+        private bool FPinIsChanged = false;
 
 
         #endregion field declaration
@@ -308,50 +308,72 @@ namespace VVVV.Nodes.HttpGUI.CSS
         {
 
 
+            FPinIsChanged = false;
 
-            // set slices count
-
-            
-            mCssPropertiesOwn.Clear();
-
-            for (int i = 0; i < SpreadMax; i++)
+            foreach (IStringIn Pin in FInputNameList)
             {
-
-                SortedList<string, string> tCssProperty = new SortedList<string, string>();
-
-                for (int j = 0; j < FInputNameList.Count; j++)
+                if (Pin.PinIsChanged)
                 {
-                    IStringIn currentInputName = FInputNameList[j];
-                    IStringIn currentInputValue = FInputValueList[j];
+                    FPinIsChanged = true;
+                }
+            }
+
+            foreach (IStringIn Pin in FInputValueList)
+            {
+                if (Pin.PinIsChanged)
+                {
+                    FPinIsChanged = true;
+                }
+            }
 
 
-                    string currentNameSlice;
-                    string currentValueSlice;
+            if (DynamicPinIsChanged())
+            {
+                mCssPropertiesOwn.Clear();
 
-                    currentInputName.GetString(i, out currentNameSlice);
-                    currentInputValue.GetString(i, out currentValueSlice);
+                for (int i = 0; i < SpreadMax; i++)
+                {
 
-                    if (currentNameSlice == null || currentValueSlice == null)
+                    SortedList<string, string> tCssProperty = new SortedList<string, string>();
+
+                    for (int j = 0; j < FInputNameList.Count; j++)
                     {
+                        IStringIn currentInputName = FInputNameList[j];
+                        IStringIn currentInputValue = FInputValueList[j];
 
-                    }
-                    else
-                    {
-                        if (tCssProperty.ContainsKey(currentNameSlice) == false)
+                        string currentNameSlice;
+                        string currentValueSlice;
+
+                        currentInputName.GetString(i, out currentNameSlice);
+                        currentInputValue.GetString(i, out currentValueSlice);
+
+                        if (currentNameSlice == null || currentValueSlice == null)
                         {
-                            tCssProperty.Add(currentNameSlice, currentValueSlice);
+
+                        }
+                        else
+                        {
+                            if (tCssProperty.ContainsKey(currentNameSlice) == false)
+                            {
+                                tCssProperty.Add(currentNameSlice, currentValueSlice);
+                            }
+
                         }
 
                     }
 
+                    mCssPropertiesOwn.Add(i, tCssProperty);
                 }
-
-                mCssPropertiesOwn.Add(i, tCssProperty);
             }
             
 
         }
 
         #endregion mainloop
+
+        protected override bool DynamicPinIsChanged()
+        {
+            return FPinIsChanged;
+        }
     }
 }

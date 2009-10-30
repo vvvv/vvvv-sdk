@@ -295,7 +295,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
             //////Debug.WriteLine("Enter OnEvaluate Border");
             try
             {
-                if (FBorderWidthIn.PinIsChanged || FColorInput.PinIsChanged || FBorderStyleIn.PinIsChanged)
+                if (DynamicPinIsChanged())
                 {
 
                     IPluginIn[] tInputs = { FBorderWidthIn, FColorInput, FBorderStyleIn };
@@ -332,5 +332,10 @@ namespace VVVV.Nodes.HttpGUI.CSS
         }
 				
        #endregion mainloop
+
+        protected override bool DynamicPinIsChanged()
+        {
+            return (FBorderWidthIn.PinIsChanged || FColorInput.PinIsChanged || FBorderStyleIn.PinIsChanged);
+        }
     }
 }

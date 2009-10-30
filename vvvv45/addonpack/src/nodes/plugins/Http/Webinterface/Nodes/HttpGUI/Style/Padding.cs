@@ -308,5 +308,10 @@ namespace VVVV.Nodes.HttpGUI.CSS
         }	
 
         #endregion mainloop
+
+        protected override bool DynamicPinIsChanged()
+        {
+            return (FLeft.PinIsChanged || FTop.PinIsChanged || FRight.PinIsChanged || FBottom.PinIsChanged);
+        }
     }
 }

@@ -265,7 +265,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
         {
             try
             {
-                if (FColorInput.PinIsChanged)
+                if (DynamicPinIsChanged())
                 {
                     // set slices count
 
@@ -299,5 +299,10 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
 
 
+
+        protected override bool DynamicPinIsChanged()
+        {
+            return FColorInput.PinIsChanged;
+        }
     }
 }
