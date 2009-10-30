@@ -62,7 +62,7 @@ namespace VVVV.Nodes.HttpGUI
 
 			OnEvaluate(SpreadMax, FChangedSpreadSize, FNodeId, FSliceId, FReceivedNewString, FReceivedString);
 
-			if (FInputPinChangedThisFrame = FJQueryNodeInputEventThisFrame || newDataOnJQueryInput || DynamicPinsAreChanged())
+			if (FInputPinChangedThisFrame = FJQueryNodeInputEventThisFrame || newDataOnJQueryInput || FChangedSpreadSize || DynamicPinsAreChanged())
 			{
 				for (int i = 0; i < SpreadMax; i++)
 				{
