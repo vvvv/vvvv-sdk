@@ -64,11 +64,11 @@ namespace VVVV.Nodes.HttpGUI
             }
         }
 
-        public StringBuilder JavaScript
+        public string JavaScript
         {
             get
             {
-                return FContent[Position.JavaScript].Append(FContent[Position.UpstreamJQuery]);
+                return FContent[Position.JavaScript].ToString() + FContent[Position.UpstreamJQuery].ToString();
             }
         }
 

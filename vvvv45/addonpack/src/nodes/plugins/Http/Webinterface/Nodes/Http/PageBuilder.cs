@@ -148,12 +148,11 @@ namespace VVVV.Nodes.Http
                 ////Debug.WriteLine("tTag.Level: " + tTag.Level);
                 ////Debug.WriteLine("tTag.Name: " + tTag.Name);
 
-                if (pElement.JavaScript != null)
+                string javaScript = pElement.JavaScript;
+                
+                if (javaScript != null && javaScript.ToString() != "")
                 {
-                    if (pElement.JavaScript.ToString() != "")
-                    {
-                        AddJavaScript(pElement.JavaScript.ToString());
-                    }
+                    AddJavaScript(javaScript);
                 }
 
                 Tag mtTag = pElement.Tag;
