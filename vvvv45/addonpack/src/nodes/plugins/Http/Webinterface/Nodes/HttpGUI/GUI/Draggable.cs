@@ -14,6 +14,18 @@ namespace VVVV.Nodes.HttpGUI
 
         private bool FDisposed = false;
 
+        private IEnumIn FAxisEnumInput;
+
+        private INodeIn FOnStopNodeInput;
+        private IJQueryIO FUpstreamOnStopNodeInterface;
+
+        protected JQueryNodeIOData FUpstreamOnStopNodeData;
+        
+        private bool FOnStopNodeInputEventThisFrame;
+        protected bool FInputNodePinChangedThisFrame;
+        
+        private JavaScriptGenericObject FDraggableArguments;
+
         #endregion field declaration
 
 
@@ -25,6 +37,9 @@ namespace VVVV.Nodes.HttpGUI
         /// </summary>
         public Draggable()
         {
+            FExpression = JQueryExpression.This();
+            FDraggableArguments = new JavaScriptGenericObject();
+            FExpression.ApplyMethodCall("draggable", FDraggableArguments);
         }
 
         /// <summary>
@@ -162,6 +177,12 @@ namespace VVVV.Nodes.HttpGUI
         protected override void OnSetPluginHost()
         {
             // create required pins
+            FHost.CreateEnumInput("Axis", TSliceMode.Single, TPinVisibility.True, out FAxisEnumInput);
+            FHost.UpdateEnum("Draggable.Axis", "None", new string[] { "None", "x", "y" });
+            FAxisEnumInput.SetSubType("Draggable.Axis");
+
+            FHost.CreateNodeInput("OnStop", TSliceMode.Single, TPinVisibility.True, out FOnStopNodeInput);
+            FOnStopNodeInput.SetSubType(new Guid[1] { JQueryIO.GUID }, JQueryIO.FriendlyName);
         }
 
         #endregion pin creation
@@ -173,18 +194,88 @@ namespace VVVV.Nodes.HttpGUI
 
 		protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SlideId, bool ReceivedNewString, List<string> ReceivedString)
 		{
-			if (changedSpreadSize || DynamicPinsAreChanged())
+            bool newDataOnOnStopInputSlice = false;
+
+            if (FOnStopNodeInput.IsConnected && (FOnStopNodeInputEventThisFrame || FUpstreamOnStopNodeInterface.PinIsChanged))
+            {
+                newDataOnOnStopInputSlice = true;
+                for (int i = 0; i < SpreadMax; i++)
+                {
+                    FUpstreamOnStopNodeData = FUpstreamOnStopNodeInterface.GetJQueryData(i);
+                }
+
+            }
+
+            FInputNodePinChangedThisFrame = FOnStopNodeInputEventThisFrame || newDataOnOnStopInputSlice;
+
+            if (changedSpreadSize || DynamicPinsAreChanged())
 			{
-				FExpression = JQueryExpression.This();
-				FExpression.ApplyMethodCall("draggable");
+                for (int i = 0; i < SpreadMax; i++)
+                {
+                    #region axis
+                    string axisSlice;
+
+                    FAxisEnumInput.GetString(i, out axisSlice);
+                    if (axisSlice == "None")
+                    {
+                        FDraggableArguments.Set("axis", false);
+                    }
+                    else
+                    {
+                        FDraggableArguments.Set("axis", axisSlice);
+                    } 
+                    #endregion
+
+                    if (FUpstreamOnStopNodeData != null)
+                    {
+                        //this will be a little tough to handle
+                        //how do I get my hands back on the code that I added for this handler if
+                        //this pin gets disconnected
+                    }
+                }
 			}
 		}
-        
+
         #endregion Main Loop
 
-		protected override bool DynamicPinsAreChanged()
+        protected override bool DynamicPinsAreChanged()
 		{
-			return (false);
+			return (FAxisEnumInput.PinIsChanged || FInputNodePinChangedThisFrame);
 		}
+
+        #region IPluginConnections Members
+
+        public override void ConnectPin(IPluginIO pin)
+        {
+            base.ConnectPin(pin);
+            
+            //cache a reference to the upstream interface when the NodeInput pin is being connected
+            if (pin == FOnStopNodeInput)
+            {
+                if (FOnStopNodeInput != null)
+                {
+                    INodeIOBase upstreamInterface;
+                    FOnStopNodeInput.GetUpstreamInterface(out upstreamInterface);
+                    FUpstreamOnStopNodeInterface = upstreamInterface as IJQueryIO;
+                    FOnStopNodeInputEventThisFrame = true;
+                }
+
+            }
+        }
+
+        public override void DisconnectPin(IPluginIO pin)
+        {
+            base.DisconnectPin(pin);
+            
+            //reset the cached reference to the upstream interface when the NodeInput is being disconnected
+            if (pin == FOnStopNodeInput)
+            {
+                FUpstreamOnStopNodeInterface = null;
+                FUpstreamJQueryNodeData = null;
+                FOnStopNodeInputEventThisFrame = true;
+            }
+        }
+
+        #endregion
 	}
 }

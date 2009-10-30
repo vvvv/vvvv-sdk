@@ -78,7 +78,7 @@ namespace VVVV.Nodes.HttpGUI
 
 		#region IPluginConnections Members
 
-		public void ConnectPin(IPluginIO pin)
+		public virtual void ConnectPin(IPluginIO pin)
 		{
 			//cache a reference to the upstream interface when the NodeInput pin is being connected
 			if (pin == FInputJQueryNodeInput)
@@ -94,7 +94,7 @@ namespace VVVV.Nodes.HttpGUI
 			}
 		}
 
-		public void DisconnectPin(IPluginIO pin)
+		public virtual void DisconnectPin(IPluginIO pin)
 		{
 			//reset the cached reference to the upstream interface when the NodeInput is being disconnected
 			if (pin == FInputJQueryNodeInput)
