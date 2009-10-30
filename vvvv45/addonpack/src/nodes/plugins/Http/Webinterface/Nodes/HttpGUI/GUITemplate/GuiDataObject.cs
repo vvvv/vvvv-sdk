@@ -188,7 +188,7 @@ namespace VVVV.Nodes.HttpGUI
 
 			for (Position p = Position.Head; p <= Position.UpstreamJQuery; p++)
 			{
-				clonedObject.FContent[p] = new StringBuilder(FContent[p].ToString());
+				clonedObject.FContent[p].Append(FContent[p].ToString());
 			}
 			
 
@@ -200,8 +200,6 @@ namespace VVVV.Nodes.HttpGUI
 			{
 				clonedObject.mTag = mTag;
 			}
-			
-			clonedObject.mTag = (Tag)(mTag.Clone());
 
 			return clonedObject;
 		}
