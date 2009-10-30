@@ -36,8 +36,10 @@ namespace VVVV.Webinterface.Utilities
 
 				StringBuilder tValueText = new StringBuilder();
 
-           		foreach (string tValue in Values)
-					tValueText.Append(tValue);
+                for (int i = 0; i < Values.Length; i++)
+                {
+                    tValueText.Append(Values[i]);
+                }
 
 				return tText.Replace("value", tValueText.ToString()).ToString();
             }
@@ -325,19 +327,28 @@ namespace VVVV.Webinterface.Utilities
 
             tText.Append(tTabs + m_OpenBegin);
 
-            foreach (string tAttribute in m_AttributesAsStrings)
-                tText.Append(tAttribute);
 
-            foreach (Attribute tAttribute in m_Attributes)
-                tText.Append(tAttribute.Text);
+            for (int i = 0; i < m_AttributesAsStrings.Count; i++)
+            {
+                tText.Append(m_AttributesAsStrings[i]);
+            }
+
+            for (int i = 0; i < m_Attributes.Count; i++)
+            {
+                tText.Append(m_Attributes[i].Text);
+            }
 
             tText.Append(m_CloseBegin + Environment.NewLine);
 
-            foreach (Tag tTag in m_Tags)
-                tText.Append(tTabs + tTag.Text);
+            for (int i = 0; i <  m_Tags.Count; i++)
+            {
+                tText.Append(tTabs + m_Tags[i].Text);
+            }
 
-            foreach (string tString in m_Strings)
-                tText.Append(tTabs + tString + Environment.NewLine);
+            for (int i = 0; i < m_Strings.Count; i++)
+            {
+                tText.Append(tTabs + m_Strings[i] + Environment.NewLine);
+            }
 
             tText.Append(tTabs + m_End + Environment.NewLine);
 
