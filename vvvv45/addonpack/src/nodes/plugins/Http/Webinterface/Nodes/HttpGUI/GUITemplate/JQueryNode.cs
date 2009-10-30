@@ -19,7 +19,8 @@ namespace VVVV.Nodes.HttpGUI
 		protected JQueryNodeIOData FUpstreamJQueryNodeData;
 		
 		protected JQueryExpression FExpression = JQueryExpression.This();
-		protected bool FPinChangedThisFrame;
+		protected bool FJQueryNodeInputEventThisFrame;
+		protected bool FInputPinChangedThisFrame;
 
 		protected abstract bool DynamicPinsAreChanged();
 
@@ -49,7 +50,7 @@ namespace VVVV.Nodes.HttpGUI
 			//    System.Diagnostics.Debug.WriteLine("NodePinChanged");
 			//}
 
-			if (FInputJQueryNodeInput.IsConnected && (FInputJQueryNodeInput.PinIsChanged || FUpstreamJQueryNodeInterface.PinIsChanged))
+			if (FInputJQueryNodeInput.IsConnected && (FJQueryNodeInputEventThisFrame || FUpstreamJQueryNodeInterface.PinIsChanged))
 			{
 				newDataOnJQueryInput = true;
 				for (int i = 0; i < SpreadMax; i++)
@@ -61,7 +62,7 @@ namespace VVVV.Nodes.HttpGUI
 
 			OnEvaluate(SpreadMax, FChangedSpreadSize, FNodeId, FSliceId, FReceivedNewString, FReceivedString);
 
-			if (FPinChangedThisFrame = FInputJQueryNodeInput.PinIsChanged || newDataOnJQueryInput || DynamicPinsAreChanged())
+			if (FInputPinChangedThisFrame = FJQueryNodeInputEventThisFrame || newDataOnJQueryInput || DynamicPinsAreChanged())
 			{
 				for (int i = 0; i < SpreadMax; i++)
 				{
@@ -69,6 +70,8 @@ namespace VVVV.Nodes.HttpGUI
 					FJQueryCodeStringOutput.SetString(i, FExpression.Chain(FUpstreamJQueryNodeData != null ? FUpstreamJQueryNodeData.BuildChain() : new JQueryExpression()).GenerateScript(0, true, true));
 				}
 			}
+
+			FJQueryNodeInputEventThisFrame = false;
 		}
 
 		protected abstract void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SlideId, bool ReceivedNewString, List<string> ReceivedString);
@@ -85,6 +88,7 @@ namespace VVVV.Nodes.HttpGUI
 					INodeIOBase upstreamInterface;
 					FInputJQueryNodeInput.GetUpstreamInterface(out upstreamInterface);
 					FUpstreamJQueryNodeInterface = upstreamInterface as IJQueryIO;
+					FJQueryNodeInputEventThisFrame = true;
 				}
 
 			}
@@ -97,6 +101,7 @@ namespace VVVV.Nodes.HttpGUI
 			{
 				FUpstreamJQueryNodeInterface = null;
 				FUpstreamJQueryNodeData = null;
+				FJQueryNodeInputEventThisFrame = true;
 			}
 		}
 
@@ -106,7 +111,7 @@ namespace VVVV.Nodes.HttpGUI
 
 		public bool PinIsChanged
 		{
-			get { return FPinChangedThisFrame; }
+			get { return FInputPinChangedThisFrame; }
 		}
 
 		public JQueryNodeIOData GetJQueryData(int slice)
