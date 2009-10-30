@@ -30,16 +30,16 @@ namespace VVVV.Webinterface.Utilities
         {
             get
             {
-				string tText = "";
+				StringBuilder tText = new StringBuilder();
 				
-				tText += m_Structure.Replace("name", Name);
+				tText.Append(m_Structure.Replace("name", Name));
 
-				string tValueText = "";
+				StringBuilder tValueText = new StringBuilder();
 
            		foreach (string tValue in Values)
-					tValueText += tValue;
+					tValueText.Append(tValue);
 
-				return tText.Replace("value", tValueText);
+				return tText.Replace("value", tValueText.ToString()).ToString();
             }
         }
 
@@ -321,27 +321,27 @@ namespace VVVV.Webinterface.Utilities
             for (int i = 0; i < m_Level-1; i++)
                 tTabs += "\t";
 
-            string tText = "";
+            StringBuilder tText = new StringBuilder();
 
-            tText += tTabs + m_OpenBegin;
+            tText.Append(tTabs + m_OpenBegin);
 
             foreach (string tAttribute in m_AttributesAsStrings)
-                tText += tAttribute;
+                tText.Append(tAttribute);
 
             foreach (Attribute tAttribute in m_Attributes)
-                tText += tAttribute.Text;
+                tText.Append(tAttribute.Text);
 
-            tText += m_CloseBegin + Environment.NewLine;
+            tText.Append(m_CloseBegin + Environment.NewLine);
 
             foreach (Tag tTag in m_Tags)
-                tText += tTabs + tTag.Text;
+                tText.Append(tTabs + tTag.Text);
 
             foreach (string tString in m_Strings)
-                tText += tTabs + tString + Environment.NewLine;
+                tText.Append(tTabs + tString + Environment.NewLine);
 
-            tText += tTabs + m_End + Environment.NewLine;
+            tText.Append(tTabs + m_End + Environment.NewLine);
 
-            return tText;
+            return tText.ToString();
         }
 
 
