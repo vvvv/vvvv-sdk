@@ -360,7 +360,7 @@ namespace VVVV.Nodes.HttpGUI
         //all data handling should be in here
         public void Evaluate(int SpreadMax)
         {
-
+            FPinIsChanged = false;
             int TSliceMax = 0;
             for (int i = 0; i < FInputPinList.Count; i++)
             {
@@ -403,7 +403,7 @@ namespace VVVV.Nodes.HttpGUI
                 }
             }
 
-            FPinIsChanged = false;
+            
             FPinIsConnectedDisconnected = false;
         }
 

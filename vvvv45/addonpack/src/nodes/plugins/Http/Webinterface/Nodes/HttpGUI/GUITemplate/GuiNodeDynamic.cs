@@ -222,9 +222,9 @@ namespace VVVV.Nodes.HttpGUI
 
 		protected override void BaseEvaluate(int SpreadMax)
         {
-			
-			
-			
+
+
+            FGuiListModified = false;
 
             #region Check Gui List
 
@@ -431,7 +431,7 @@ namespace VVVV.Nodes.HttpGUI
 
 
 			FHttpGuiInConnectedThisFrame = false;
-            FGuiListModified = false;
+            
         }
 
 
