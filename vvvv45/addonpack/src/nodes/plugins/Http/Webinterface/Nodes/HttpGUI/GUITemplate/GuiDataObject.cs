@@ -162,8 +162,7 @@ namespace VVVV.Nodes.HttpGUI
 
 		public void ResetContent(Position pPosition)
 		{
-			FContent.Remove(pPosition);
-			FContent[pPosition] = new StringBuilder();
+			FContent[pPosition].Length = 0;
 		}
 
 		#region ICloneable Members
