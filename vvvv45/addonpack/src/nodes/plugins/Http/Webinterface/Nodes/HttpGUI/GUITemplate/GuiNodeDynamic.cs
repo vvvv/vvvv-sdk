@@ -123,11 +123,11 @@ namespace VVVV.Nodes.HttpGUI
         public void GetDataObject(int Index, out List<GuiDataObject> GuiDaten)
         {
 			////Debug.WriteLine("Enter Get daten Object");
-            GuiDaten = new List<GuiDataObject>(FGuiDataList);
-			//for (int i = 0; i < FGuiDataList.Count; i++)
-			//{
-			//    GuiDaten.Add((GuiDataObject)(FGuiDataList[i].Clone()));
-			//}
+            GuiDaten = new List<GuiDataObject>();
+            for (int i = 0; i < FGuiDataList.Count; i++)
+            {
+                GuiDaten.Add((GuiDataObject)(FGuiDataList[i].Clone()));
+            }
         }
 
 		public void ConnectPin(IPluginIO Pin)
@@ -223,7 +223,7 @@ namespace VVVV.Nodes.HttpGUI
 		protected override void BaseEvaluate(int SpreadMax)
         {
 			
-			FGuiListModified = false;
+			
 			
 
             #region Check Gui List
@@ -431,7 +431,9 @@ namespace VVVV.Nodes.HttpGUI
 
 
 			FHttpGuiInConnectedThisFrame = false;
+            FGuiListModified = false;
         }
+
 
 
 

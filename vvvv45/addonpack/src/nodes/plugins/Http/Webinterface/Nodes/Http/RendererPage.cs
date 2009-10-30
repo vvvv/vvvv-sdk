@@ -70,7 +70,6 @@ namespace VVVV.Nodes.Http
         private IStringIn FUrl;
         private IValueIn FReload;
         private IStringIn FPath;
-        private IValueIn FSavePage;
         private IEnumIn FCommunication;
         private IValueIn FPageWidth;
         private IValueIn FPageHeight;
@@ -108,6 +107,8 @@ namespace VVVV.Nodes.Http
         PageBuilder mPageBuilder = new PageBuilder();
         private Rule mBodyRule;
         private bool FConnectHttp = false;
+
+        private bool FUpdateToWebinterface = false;
 
 
         #endregion field declaration
@@ -310,8 +311,6 @@ namespace VVVV.Nodes.Http
                 FHost.CreateStringInput("File Path", TSliceMode.Single, TPinVisibility.OnlyInspector, out FPath);
                 FPath.SetSubType(Application.StartupPath + "\\plugins\\webinterface", true);
 
-                FHost.CreateValueInput("DoSave", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FSavePage);
-                FSavePage.SetSubType(0, 1, 1, 0, true, false, true);
 
 
                 //create outputs
@@ -418,12 +417,8 @@ namespace VVVV.Nodes.Http
                 mCssStyles = new SortedList<int, SortedList<string, string>>();
                 mHtmlText = new string[SpreadMax];
 
+                FUpdateToWebinterface = false;
 
-                //Saves the incoming Html Slices
-                if (FUpstreamInterface != null && (FUpstreamInterface.PinIsChanged() || FConnectHttp))
-                {
-                    FUpstreamInterface.GetDataObject(0, out mGuiDatenListe);
-                }
 
 
 
@@ -436,6 +431,7 @@ namespace VVVV.Nodes.Http
 
                 if (FUrl.PinIsChanged)
                 {
+                    FUpdateToWebinterface = true;
                     FUrl.GetString(0, out mUrl);
                 }
 
@@ -468,7 +464,7 @@ namespace VVVV.Nodes.Http
                     string tContentBody = "";
                     string tContentHead = "";
                     double tReload;
-
+                    FUpdateToWebinterface = true;
 
                     FReload.GetValue(0, out tReload);
 
@@ -505,21 +501,25 @@ namespace VVVV.Nodes.Http
                 #region Body CSS Properties
 
 
-                //Upstream Css Properties
+                //Upstream Css Properties00
                 int uSSSytle;
                 if (FUpstreamStyleIn != null)
                 {
-                    mBodyRule = new Rule("body");
 
-                    for (int i = 0; i < FCssPropertiesIn.SliceCount; i++)
+                    if (FUpstreamStyleIn.PinIsChanged())
                     {
-                        FCssPropertiesIn.GetUpsreamSlice(i, out uSSSytle);
-                        SortedList<string, string> tStylePropertie;
-                        FUpstreamStyleIn.GetCssProperties(uSSSytle, out tStylePropertie);
+                        mBodyRule = new Rule("body");
 
-                        foreach (KeyValuePair<string, string> KeyPair in tStylePropertie)
+                        for (int i = 0; i < FCssPropertiesIn.SliceCount; i++)
                         {
-                            mBodyRule.AddProperty(new Property(KeyPair.Key, KeyPair.Value));
+                            FCssPropertiesIn.GetUpsreamSlice(i, out uSSSytle);
+                            SortedList<string, string> tStylePropertie;
+                            FUpstreamStyleIn.GetCssProperties(uSSSytle, out tStylePropertie);
+
+                            foreach (KeyValuePair<string, string> KeyPair in tStylePropertie)
+                            {
+                                mBodyRule.AddProperty(new Property(KeyPair.Key, KeyPair.Value));
+                            }
                         }
                     }
                 }
@@ -534,79 +534,104 @@ namespace VVVV.Nodes.Http
 
 
 
+
                 #region Build Page
 
-
-                mPage = null;
-                mPage = new Page(true);
-                // titel
-                string currentSliceTitel = "";
-                FTitel.GetString(0, out currentSliceTitel);
-                mPage.Head.Insert(new Title(currentSliceTitel));
-
-                // Css File
-                mPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
-                mPage.Head.Insert(new Link("jqueryUI.css", "stylesheet", "text/css"));
-                mPage.Head.Insert(new Link("colorpicker.css", "stylesheet", "text/css"));
-                mPage.Head.Insert(new JavaScript("jquery.js", true));
-                mPage.Head.Insert(new JavaScript("jquerytimer.js", true));
-                mPage.Head.Insert(new JavaScript("jqueryUI.js", true));
-                mPage.Head.Insert(new JavaScript(mPageName + ".js", true));
-                mPage.Head.Insert(new JavaScript("colorpicker.js", true));
-
-
-                //mPageBuilder.UpdateGuiList(mGuiDatenListe, mPage);
-                //Communication Type
-
-
-
-
-
-                string tCommunicationType;
-                FCommunication.GetString(0, out tCommunicationType);
-                if (tCommunicationType == "Polling")
+       
+                if(FUpstreamInterface != null)
                 {
-                    mPage.Head.Insert((new JavaScript(JSToolkit.Polling("1000", "'Gib mit neue Daten'"), false)));
-
-                }
-                else if (tCommunicationType == "Comet")
-                {
-                    mPage.Head.Insert(new JavaScript(JSToolkit.Comet(), false));
+                    if (FUpstreamInterface.PinIsChanged())
+                    {
+                        FUpdateToWebinterface = FUpstreamInterface.PinIsChanged();
+                    }
                 }
 
 
-                //Browser Window
-
-                double currentWidthSlice;
-                double currentHeightSlice;
-                FPageWidth.GetValue(0, out currentWidthSlice);
-                FPageHeight.GetValue(0, out currentHeightSlice);
-
-                string tBrowserWidth = "" + Math.Round(currentWidthSlice);
-                string tBrowserHeight = "" + Math.Round(currentHeightSlice);
-
-
-                if ((currentWidthSlice != -1 || currentHeightSlice != -1))
+                if (FUpdateToWebinterface || FCommunication.PinIsChanged || FPageHeight.PinIsChanged || FPageWidth.PinIsChanged || FConnectHttp)
                 {
-                    mPage.Head.Insert(JSToolkit.ResizeBrowser(currentWidthSlice.ToString(), currentHeightSlice.ToString()));
+                    mPage = null;
+                    mPage = new Page(true);
+                    // titel
+                    string currentSliceTitel = "";
+                    FTitel.GetString(0, out currentSliceTitel);
+                    mPage.Head.Insert(new Title(currentSliceTitel));
 
+                    // Css File
+                    mPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
+                    mPage.Head.Insert(new Link("jqueryUI.css", "stylesheet", "text/css"));
+                    mPage.Head.Insert(new Link("colorpicker.css", "stylesheet", "text/css"));
+                    mPage.Head.Insert(new JavaScript("jquery.js", true));
+                    mPage.Head.Insert(new JavaScript("jquerytimer.js", true));
+                    mPage.Head.Insert(new JavaScript("jqueryUI.js", true));
+                    mPage.Head.Insert(new JavaScript(mPageName + ".js", true));
+                    mPage.Head.Insert(new JavaScript("colorpicker.js", true));
+
+
+                    //mPageBuilder.UpdateGuiList(mGuiDatenListe, mPage);
+                    //Communication Type
+
+
+
+                    FUpdateToWebinterface = true;
+                    string tCommunicationType;
+                    FCommunication.GetString(0, out tCommunicationType);
+                    if (tCommunicationType == "Polling")
+                    {
+                        mPage.Head.Insert((new JavaScript(JSToolkit.Polling("1000", "'Gib mit neue Daten'"), false)));
+
+                    }
+                    else if (tCommunicationType == "Comet")
+                    {
+                        mPage.Head.Insert(new JavaScript(JSToolkit.Comet(), false));
+                    }
+                    
+
+
+
+                    //Browser Window
+
+
+
+                    double currentWidthSlice;
+                    double currentHeightSlice;
+                    FPageWidth.GetValue(0, out currentWidthSlice);
+                    FPageHeight.GetValue(0, out currentHeightSlice);
+
+                    string tBrowserWidth = "" + Math.Round(currentWidthSlice);
+                    string tBrowserHeight = "" + Math.Round(currentHeightSlice);
+
+
+                    if ((currentWidthSlice != -1 || currentHeightSlice != -1))
+                    {
+                        mPage.Head.Insert(JSToolkit.ResizeBrowser(currentWidthSlice.ToString(), currentHeightSlice.ToString()));
+
+                    }
+
+                    
+
+                    //body Css
+                    CSSStyle tCssStyle = new CSSStyle();
+                    tCssStyle.Insert(mBodyRule.Text);
+
+
+                    mPage.Head.Insert(tCssStyle);
+
+
+
+                    //Insert Input Strings
+                    mPage.Body.Insert(mPageBodyString);
+                    mPage.Head.Insert(mPageHeadString);
+
+
+                    if ((FUpstreamInterface != null && FUpstreamInterface.PinIsChanged()) || FConnectHttp)
+                    {
+                        FUpstreamInterface.GetDataObject(0, out mGuiDatenListe);
+                    }
+                
+
+                    mWebinterfaceSingelton.setHtmlPageData(mPageName, mUrl, mPage, mGuiDatenListe);
+                    
                 }
-
-                //body Css
-                CSSStyle tCssStyle = new CSSStyle();
-                tCssStyle.Insert(mBodyRule.Text);
-
-
-                mPage.Head.Insert(tCssStyle);
-
-
-
-                //Insert Input Strings
-                mPage.Body.Insert(mPageBodyString);
-                mPage.Head.Insert(mPageHeadString);
-
-
-                mWebinterfaceSingelton.setHtmlPageData(mPageName, mUrl, mPage, mGuiDatenListe);
 
                 //set Field Properties
                 //mCssFile = mPageBuilder.CssMainFile.ToString() + Environment.NewLine + mBodyRule.Text;
@@ -622,58 +647,7 @@ namespace VVVV.Nodes.Http
 
 
                 #endregion Build Page
-
-
-
-
-                #region Save Page
-
-                string tPath;
-                double tSave;
-                string tUrl;
-
-                FPath.GetString(0, out tPath);
-                FSavePage.GetValue(0, out tSave);
-                FUrl.GetString(0, out tUrl);
-
-
-
-
-                if (FSavePage.PinIsChanged)
-                {
-                    if (tSave > 0.5)
-                    {
-
-                        SortedList<string, string> tFiles = new SortedList<string, string>();
-                        tFiles.Add(tPath + "\\" + tUrl, mPage.Text);
-                        //tFiles.Add(tPath + "\\" + mPage +  ".css", mCssFile);
-                        //tFiles.Add(tPath + "\\" + mPage + ".js", mJsFile);
-
-                        foreach (KeyValuePair<string, string> pFile in tFiles)
-                        {
-                            try
-                            {
-
-                                if (File.Exists(pFile.Key))
-                                {
-                                    File.Delete(pFile.Key);
-                                    HTMLToolkit.SavePage(pFile.Key, pFile.Value);
-                                    FHost.Log(TLogType.Message, "File: " + mPage + " has been deleted an resaved");
-                                }
-                                else
-                                {
-                                    HTMLToolkit.SavePage(pFile.Key, pFile.Value);
-                                }
-                            }
-                            catch
-                            {
-                                throw new Exception("somthing wrong in here Renderer");
-                            }
-                        }
-                    }
-                }
-
-                #endregion Save Page
+                FConnectHttp = false;
 
             }
             catch (Exception ex)
