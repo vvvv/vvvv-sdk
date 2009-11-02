@@ -355,6 +355,11 @@ namespace VVVV.Webinterface.Utilities
             return tText.ToString();
         }
 
+        public void ClearTagsInside()
+        {
+             m_Tags.Clear();
+             m_Strings.Clear();
+        }
 
 
 		#region ICloneable Members
