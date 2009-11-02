@@ -422,5 +422,20 @@ namespace VVVV.Nodes.HttpGUI
 		}
 
 		#endregion
+
+		#region IHttpGUIIO Members
+
+
+		public string GetNodeId(int Index)
+		{
+			throw new Exception("The method or operation is not implemented.");
+		}
+
+		public string GetSliceId(int Index)
+		{
+			throw new Exception("The method or operation is not implemented.");
+		}
+
+		#endregion
 	}
 }

@@ -13,6 +13,8 @@ namespace VVVV.Nodes.HttpGUI
 	public interface IHttpGUIIO: INodeIOBase
 	{
         void GetDataObject(int Index, out List<GuiDataObject> GuiDaten);
+		string GetNodeId(int Index);
+		string GetSliceId(int Index);
 		bool PinIsChanged();
 
 	}

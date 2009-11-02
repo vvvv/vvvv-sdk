@@ -18,13 +18,20 @@ namespace VVVV.Nodes.HttpGUI
 
         private INodeIn FOnStopNodeInput;
         private IJQueryIO FUpstreamOnStopNodeInterface;
-		protected JQueryNodeIOData FUpstreamOnStopNodeData;
+		protected JQueryNodeIOData FUpstreamOnStopNodeData = null;
 		private JQueryExpression FUpstreamOnStopExpression;
 
 		private IEnumIn FOnStopApplyTo;
 
+		private INodeIn FOnStopSelectorNodeInput;
+		private IHttpGUIIO FUpstreamOnStopSelectorNodeInterface;
+		private string FUpstreamOnStopSelectorNodeId = null;
+
         private bool FOnStopNodeInputEventThisFrame;
-        protected bool FInputNodePinChangedThisFrame;
+		private bool FOnStopSelectorNodeInputEventThisFrame;
+		
+		protected bool FInputNodePinChangedThisFrame;
+		protected bool FOnStopSelectorNodeChangedThisFrame;
 
         private JavaScriptGenericObject FDraggableArguments;
 
@@ -200,8 +207,11 @@ namespace VVVV.Nodes.HttpGUI
             FOnStopNodeInput.SetSubType(new Guid[1] { JQueryIO.GUID }, JQueryIO.FriendlyName);
 
 			FHost.CreateEnumInput("On Stop Apply To", TSliceMode.Single, TPinVisibility.True, out FOnStopApplyTo);
-			FHost.UpdateEnum("Draggable.OnStopApplyTo", "Helper", new string[] { "Helper", "This"});
+			FHost.UpdateEnum("Draggable.OnStopApplyTo", "Helper", new string[] { "Helper", "This", "Selector"});
 			FOnStopApplyTo.SetSubType("Draggable.OnStopApplyTo");
+
+			FHost.CreateNodeInput("On Stop Selector", TSliceMode.Single, TPinVisibility.True, out FOnStopSelectorNodeInput);
+			FOnStopSelectorNodeInput.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
         }
 
         #endregion pin creation
@@ -214,6 +224,7 @@ namespace VVVV.Nodes.HttpGUI
 		protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SlideId, bool ReceivedNewString, List<string> ReceivedString)
 		{
             bool newDataOnOnStopInputSlice = false;
+			bool newDataOnOnStopSelectorInputSlice = false;
 
             if (FOnStopNodeInput.IsConnected && (FOnStopNodeInputEventThisFrame || FUpstreamOnStopNodeInterface.PinIsChanged))
             {
@@ -223,10 +234,19 @@ namespace VVVV.Nodes.HttpGUI
                     FUpstreamOnStopNodeData = FUpstreamOnStopNodeInterface.GetJQueryData(i);
 					FUpstreamOnStopExpression = FUpstreamOnStopNodeData.BuildChain();
                 }
-
             }
 
+			if (FOnStopSelectorNodeInput.IsConnected && (FOnStopSelectorNodeInputEventThisFrame || FUpstreamOnStopSelectorNodeInterface.PinIsChanged()))
+			{
+				newDataOnOnStopInputSlice = true;
+				for (int i = 0; i < SpreadMax; i++)
+				{
+					FUpstreamOnStopSelectorNodeId = FUpstreamOnStopSelectorNodeInterface.GetNodeId(i);
+				}
+			}
+
             FInputNodePinChangedThisFrame = FOnStopNodeInputEventThisFrame || newDataOnOnStopInputSlice;
+			FOnStopSelectorNodeChangedThisFrame = FOnStopSelectorNodeInputEventThisFrame || newDataOnOnStopSelectorInputSlice;
 
             if (changedSpreadSize || DynamicPinsAreChanged())
 			{
@@ -261,6 +281,9 @@ namespace VVVV.Nodes.HttpGUI
 							case "Helper":
 								handlerExpression = JQueryExpression.Dollars(FOnStopHandler.Arguments[1].Member("helper"));
 								break;
+							case "Selector":
+								handlerExpression = FUpstreamOnStopSelectorNodeId != null ? JQueryExpression.Dollars(new ClassSelector(FUpstreamOnStopSelectorNodeId)): JQueryExpression.This();
+								break;
 							default:
 								handlerExpression = JQueryExpression.This();
 								break;
@@ -283,7 +306,7 @@ namespace VVVV.Nodes.HttpGUI
 
         protected override bool DynamicPinsAreChanged()
 		{
-			return (FAxisEnumInput.PinIsChanged || FOnStopApplyTo.PinIsChanged || FInputNodePinChangedThisFrame);
+			return (FAxisEnumInput.PinIsChanged || FOnStopApplyTo.PinIsChanged || FInputNodePinChangedThisFrame || FOnStopSelectorNodeChangedThisFrame);
 		}
 
         #region IPluginConnections Members
@@ -302,8 +325,17 @@ namespace VVVV.Nodes.HttpGUI
                     FUpstreamOnStopNodeInterface = upstreamInterface as IJQueryIO;
                     FOnStopNodeInputEventThisFrame = true;
                 }
-
             }
+			else if (pin == FOnStopSelectorNodeInput)
+			{
+				if (FOnStopSelectorNodeInput != null)
+				{
+					INodeIOBase upstreamInterface;
+					FOnStopSelectorNodeInput.GetUpstreamInterface(out upstreamInterface);
+					FUpstreamOnStopSelectorNodeInterface = upstreamInterface as IHttpGUIIO;
+					FOnStopSelectorNodeInputEventThisFrame = true;
+				}
+			}
         }
 
         public override void DisconnectPin(IPluginIO pin)
@@ -315,8 +347,14 @@ namespace VVVV.Nodes.HttpGUI
             {
                 FUpstreamOnStopNodeInterface = null;
                 FUpstreamOnStopNodeData = null;
-                FOnStopNodeInputEventThisFrame = true;
+                FOnStopSelectorNodeInputEventThisFrame = true;
             }
+			else if (pin == FOnStopSelectorNodeInput)
+			{
+				FUpstreamOnStopSelectorNodeInterface = null;
+				FUpstreamOnStopSelectorNodeId = null;
+				FOnStopSelectorNodeInputEventThisFrame = true;
+			}
         }
 
         #endregion

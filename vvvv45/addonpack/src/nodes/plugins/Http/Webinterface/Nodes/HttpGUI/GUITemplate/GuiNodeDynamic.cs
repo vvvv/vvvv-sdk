@@ -475,7 +475,7 @@ namespace VVVV.Nodes.HttpGUI
         }
 
 
-        public string GetNodeID(int SliceNumber)
+        public string GetNodeId(int SliceNumber)
         {
             return FGuiDataList[SliceNumber].NodeId;
         }
@@ -528,15 +528,5 @@ namespace VVVV.Nodes.HttpGUI
 		}
 
         #endregion Add to GuiDataObject
-		
-        
-		#region IHttpGUIIO Members
-
-
-
-
-		#endregion
-
-
 	}
 }

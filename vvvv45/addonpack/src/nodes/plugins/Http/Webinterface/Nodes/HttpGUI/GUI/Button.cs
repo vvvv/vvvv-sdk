@@ -266,7 +266,7 @@ namespace VVVV.Nodes.HttpGUI
                         
                         
 
-                        AddJavaScript(0, new JqueryFunction(true, "." + GetNodeID(0), tContent).Text, true);
+                        AddJavaScript(0, new JqueryFunction(true, "." + GetNodeId(0), tContent).Text, true);
 
                     }
                     else
