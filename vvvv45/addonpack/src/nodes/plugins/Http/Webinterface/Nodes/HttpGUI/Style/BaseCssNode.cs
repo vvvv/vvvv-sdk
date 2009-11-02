@@ -35,8 +35,8 @@ namespace VVVV.Nodes.HttpGUI.CSS
         public Dictionary<int, SortedList<string, string>> mCssPropertiesIn = new Dictionary<int, SortedList<string, string>>();
         public Dictionary<int, SortedList<string, string>> mCssPropertiesCombined = new Dictionary<int, SortedList<string, string>>();
 
-        public string mPluginName = "";
-        
+        private bool FConnectPin = false;
+        private bool FDisconnectPin = false;
 
         #endregion field Definition
 
@@ -136,7 +136,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
                 INodeIOBase usI;
                 FCssPropertiesIn.GetUpstreamInterface(out usI);
                 FUpstreamStyleIn = usI as IHttpGUIStyleIO;
-                
+                FConnectPin = true;
             }
         }
 
@@ -147,6 +147,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
             if (Pin == FCssPropertiesIn)
             {
                 FUpstreamStyleIn = null;
+                mCssPropertiesIn.Clear();
             }
         }
 
@@ -178,16 +179,13 @@ namespace VVVV.Nodes.HttpGUI.CSS
             try
             {
                 this.OnEvaluate(SpreadMax);
-
                 int usS;
 
                 if (FUpstreamStyleIn != null)
                 {
-
-                    if (FUpstreamStyleIn.PinIsChanged())
+                    if (FUpstreamStyleIn.PinIsChanged() || FConnectPin || FDisconnectPin)
                     {
                         mCssPropertiesCombined.Clear();
-
                         int SliceOffsetCounter = 0;
 
                         for (int i = 0; i < SpreadMax; i++)
@@ -266,6 +264,9 @@ namespace VVVV.Nodes.HttpGUI.CSS
             {
                 FHost.Log(TLogType.Error, ex.Message);
             }
+
+            FConnectPin = false;
+            FDisconnectPin = false;
         }
 
         #endregion Evaluate
@@ -293,7 +294,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
 		public bool PinIsChanged()
 		{
-			return DynamicPinIsChanged();
+			return (DynamicPinIsChanged() || FConnectPin || FDisconnectPin);
 		}
 
 		#endregion

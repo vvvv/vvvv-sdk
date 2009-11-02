@@ -182,7 +182,7 @@ namespace VVVV.Nodes.HttpGUI
             {
                 for (int i = 0; i < FGuiDataList.Count; i++)
                 {
-                    FGuiDataList[i].Transform = null;
+                    FGuiDataList[i].CssProperties.Clear();
                 }
 
                 FUpstreamStyle = null;
@@ -401,7 +401,7 @@ namespace VVVV.Nodes.HttpGUI
             int usSStyle;
             if (FUpstreamStyle != null)
             {
-				if (FUpstreamStyle.PinIsChanged() || FChangedSpreadSize)
+				if (FHttpStyleIn.IsConnected && (FHttpStyleIn.PinIsChanged || FUpstreamStyle.PinIsChanged() || FChangedSpreadSize))
 				{
 					FGuiListModified = true;
 					
