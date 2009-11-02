@@ -15,6 +15,7 @@ namespace VVVV.Nodes.HttpGUI
         private bool FDisposed = false;
 
         private IEnumIn FAxisEnumInput;
+		private IEnumIn FRevertEnumInput;
 
         private INodeIn FOnStopNodeInput;
         private IJQueryIO FUpstreamOnStopNodeInterface;
@@ -164,7 +165,7 @@ namespace VVVV.Nodes.HttpGUI
                     //the nodes author: your sign
                     FPluginInfo.Author = "iceberg";
                     //describe the nodes function
-                    FPluginInfo.Help = "Node for adding the JQuery Draggable behavior to an HTML element";
+                    FPluginInfo.Help = "Node for adding the JQuery UI Draggable Interaction to an HTML DOM element";
                     //specify a comma separated list of tags that describe the node
                     FPluginInfo.Tags = "";
 
@@ -203,6 +204,10 @@ namespace VVVV.Nodes.HttpGUI
             FHost.UpdateEnum("Draggable.Axis", "None", new string[] { "None", "x", "y" });
             FAxisEnumInput.SetSubType("Draggable.Axis");
 
+			FHost.CreateEnumInput("Revert", TSliceMode.Single, TPinVisibility.True, out FRevertEnumInput);
+			FHost.UpdateEnum("Draggable.Revert", "false", new string[] { "false", "true", "invalid", "valid"});
+			FRevertEnumInput.SetSubType("Draggable.Revert");
+
             FHost.CreateNodeInput("OnStop", TSliceMode.Single, TPinVisibility.True, out FOnStopNodeInput);
             FOnStopNodeInput.SetSubType(new Guid[1] { JQueryIO.GUID }, JQueryIO.FriendlyName);
 
@@ -238,7 +243,7 @@ namespace VVVV.Nodes.HttpGUI
 
 			if (FOnStopSelectorNodeInput.IsConnected && (FOnStopSelectorNodeInputEventThisFrame || FUpstreamOnStopSelectorNodeInterface.PinIsChanged()))
 			{
-				newDataOnOnStopInputSlice = true;
+				newDataOnOnStopSelectorInputSlice = true;
 				for (int i = 0; i < SpreadMax; i++)
 				{
 					FUpstreamOnStopSelectorNodeId = FUpstreamOnStopSelectorNodeInterface.GetNodeId(i);
@@ -266,6 +271,27 @@ namespace VVVV.Nodes.HttpGUI
                     } 
                     #endregion
 
+					#region revert
+					string revertSlice;
+
+					FRevertEnumInput.GetString(i, out revertSlice);
+					
+					switch (revertSlice)
+					{
+						case "false":
+							FDraggableArguments.Set("revert", false);
+							break;
+						case "true":
+							FDraggableArguments.Set("revert", true);
+							break;
+						default:
+							FDraggableArguments.Set("revert", revertSlice);
+							break;
+					}
+					#endregion
+
+
+					#region onStop
 					if (FUpstreamOnStopNodeData != null)
 					{
 						string onStopApplyToSlice;
@@ -282,7 +308,7 @@ namespace VVVV.Nodes.HttpGUI
 								handlerExpression = JQueryExpression.Dollars(FOnStopHandler.Arguments[1].Member("helper"));
 								break;
 							case "Selector":
-								handlerExpression = FUpstreamOnStopSelectorNodeId != null ? JQueryExpression.Dollars(new ClassSelector(FUpstreamOnStopSelectorNodeId)): JQueryExpression.This();
+								handlerExpression = FUpstreamOnStopSelectorNodeId != null ? JQueryExpression.Dollars(new ClassSelector(FUpstreamOnStopSelectorNodeId)) : JQueryExpression.This();
 								break;
 							default:
 								handlerExpression = JQueryExpression.This();
@@ -294,7 +320,8 @@ namespace VVVV.Nodes.HttpGUI
 					else
 					{
 						FBindOnStopHandler.DoInclude = false;
-					}
+					} 
+					#endregion
 
                 }
 			}
@@ -306,7 +333,7 @@ namespace VVVV.Nodes.HttpGUI
 
         protected override bool DynamicPinsAreChanged()
 		{
-			return (FAxisEnumInput.PinIsChanged || FOnStopApplyTo.PinIsChanged || FInputNodePinChangedThisFrame || FOnStopSelectorNodeChangedThisFrame);
+			return (FAxisEnumInput.PinIsChanged || FOnStopApplyTo.PinIsChanged || FRevertEnumInput.PinIsChanged || FInputNodePinChangedThisFrame || FOnStopSelectorNodeChangedThisFrame);
 		}
 
         #region IPluginConnections Members
