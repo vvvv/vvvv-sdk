@@ -125,6 +125,8 @@ namespace VVVV.Nodes.Http
             {
                 Debug.WriteLine("count 0");
             }
+
+            mPage.Body.ClearTagsInside();
             mPage.Body = (Body)BuildHtmlFrame(new List<GuiDataObject>(mGuiElemente), mPage.Body);
             Debug.WriteLine("Ende Build Vorgang");
             mCssBuilder.Build();
