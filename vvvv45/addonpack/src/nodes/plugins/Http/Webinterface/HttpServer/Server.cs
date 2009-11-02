@@ -380,13 +380,6 @@ namespace VVVV.Webinterface.HttpServer {
 
         }
 
-        public void OnServerClose(IAsyncResult asynConnect)
-        {
-            if (mMainSocket.Connected == false)
-            {
-                mMainSocket = null;
-            }
-        }
 
 
         private void CheckSockets(object eventState)
