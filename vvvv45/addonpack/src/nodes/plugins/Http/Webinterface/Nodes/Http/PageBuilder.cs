@@ -91,7 +91,7 @@ namespace VVVV.Nodes.Http
 
         public void UpdateGuiList(List<GuiDataObject> pGuiElemente, Page pPage)
         {
-            Debug.WriteLine("Update Start");
+            //Debug.WriteLine("Update Start");
             if (Monitor.TryEnter(_updatelock, 1000))
             {
 
@@ -113,14 +113,14 @@ namespace VVVV.Nodes.Http
                     Monitor.Exit(_updatelock);
                 }
             }
-            Debug.WriteLine("Update Ende");
+            //Debug.WriteLine("Update Ende");
         }
 
         public void Build()
         {
             Monitor.Enter(_updatelock);
             mBuildFlag = true;
-            Debug.WriteLine("Start Build Vorgang");
+            //Debug.WriteLine("Start Build Vorgang");
             if (mGuiElemente.Count == 0)
             {
                 Debug.WriteLine("count 0");
@@ -128,7 +128,7 @@ namespace VVVV.Nodes.Http
 
             mPage.Body.ClearTagsInside();
             mPage.Body = (Body)BuildHtmlFrame(new List<GuiDataObject>(mGuiElemente), mPage.Body);
-            Debug.WriteLine("Ende Build Vorgang");
+            //Debug.WriteLine("Ende Build Vorgang");
             mCssBuilder.Build();
             mBuildFlag = false;
             Monitor.Exit(_updatelock);
