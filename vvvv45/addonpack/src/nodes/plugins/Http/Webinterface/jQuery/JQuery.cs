@@ -6,7 +6,7 @@ namespace VVVV.Webinterface.jQuery
 {
 	public class JQuery : IScriptGenerator
 	{
-		protected Queue<Expression> FStatements;
+		protected List<Expression> FStatements;
 
 		public static JQuery GenerateDocumentReady(JQuery handler)
 		{
@@ -15,20 +15,28 @@ namespace VVVV.Webinterface.jQuery
 
 		public JQuery()
 		{
-			FStatements = new Queue<Expression>();
+			FStatements = new List<Expression>();
 		}
 
 		public JQuery(params JQueryExpression[] statements) : this()
 		{
 			for (int i = 0; i < statements.Length; i++)
 			{
-				FStatements.Enqueue(statements[i]);
+				FStatements.Add(statements[i]);
 			}
 		}
 
 		public bool PIsEmpty
 		{
 			get { return FStatements.Count == 0; }
+		}
+
+		public JQueryExpression Expression
+		{
+			set {
+				FStatements.Clear();
+				FStatements.Add(value);
+			}
 		}
 	
 

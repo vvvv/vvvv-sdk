@@ -18,13 +18,20 @@ namespace VVVV.Nodes.HttpGUI
 
         private INodeIn FOnStopNodeInput;
         private IJQueryIO FUpstreamOnStopNodeInterface;
+		protected JQueryNodeIOData FUpstreamOnStopNodeData;
+		private JQueryExpression FUpstreamOnStopExpression;
 
-        protected JQueryNodeIOData FUpstreamOnStopNodeData;
-        
+		private IEnumIn FOnStopApplyTo;
+
         private bool FOnStopNodeInputEventThisFrame;
         protected bool FInputNodePinChangedThisFrame;
-        
+
         private JavaScriptGenericObject FDraggableArguments;
+
+		private JQuery FOnStopHandlerBody;
+		private JavaScriptAnonymousFunction FOnStopHandler;
+		private MethodCall FBindOnStopHandler;
+
 
         #endregion field declaration
 
@@ -40,6 +47,14 @@ namespace VVVV.Nodes.HttpGUI
             FExpression = JQueryExpression.This();
             FDraggableArguments = new JavaScriptGenericObject();
             FExpression.ApplyMethodCall("draggable", FDraggableArguments);
+
+			FOnStopHandlerBody = new JQuery();
+			FOnStopHandler = new JavaScriptAnonymousFunction(FOnStopHandlerBody, "event", "ui");
+
+			FBindOnStopHandler = new MethodCall("bind", "dragstop", FOnStopHandler);
+			FBindOnStopHandler.DoInclude = false;
+
+			FExpression.AddChainedOperation(FBindOnStopHandler);
         }
 
         /// <summary>
@@ -183,6 +198,10 @@ namespace VVVV.Nodes.HttpGUI
 
             FHost.CreateNodeInput("OnStop", TSliceMode.Single, TPinVisibility.True, out FOnStopNodeInput);
             FOnStopNodeInput.SetSubType(new Guid[1] { JQueryIO.GUID }, JQueryIO.FriendlyName);
+
+			FHost.CreateEnumInput("On Stop Apply To", TSliceMode.Single, TPinVisibility.True, out FOnStopApplyTo);
+			FHost.UpdateEnum("Draggable.OnStopApplyTo", "Helper", new string[] { "Helper", "This"});
+			FOnStopApplyTo.SetSubType("Draggable.OnStopApplyTo");
         }
 
         #endregion pin creation
@@ -202,6 +221,7 @@ namespace VVVV.Nodes.HttpGUI
                 for (int i = 0; i < SpreadMax; i++)
                 {
                     FUpstreamOnStopNodeData = FUpstreamOnStopNodeInterface.GetJQueryData(i);
+					FUpstreamOnStopExpression = FUpstreamOnStopNodeData.BuildChain();
                 }
 
             }
@@ -226,21 +246,44 @@ namespace VVVV.Nodes.HttpGUI
                     } 
                     #endregion
 
-                    if (FUpstreamOnStopNodeData != null)
-                    {
-                        //this will be a little tough to handle
-                        //how do I get my hands back on the code that I added for this handler if
-                        //this pin gets disconnected
-                    }
+					if (FUpstreamOnStopNodeData != null)
+					{
+						string onStopApplyToSlice;
+						FOnStopApplyTo.GetString(i, out onStopApplyToSlice);
+
+						FBindOnStopHandler.DoInclude = true;
+						JQueryExpression handlerExpression;
+						switch (onStopApplyToSlice)
+						{
+							case "This":
+								handlerExpression = JQueryExpression.This();
+								break;
+							case "Helper":
+								handlerExpression = JQueryExpression.Dollars(FOnStopHandler.Arguments[1].Member("helper"));
+								break;
+							default:
+								handlerExpression = JQueryExpression.This();
+								break;
+
+						}
+						FOnStopHandlerBody.Expression = handlerExpression.Chain(FUpstreamOnStopExpression);
+					}
+					else
+					{
+						FBindOnStopHandler.DoInclude = false;
+					}
+
                 }
 			}
+
+			FOnStopNodeInputEventThisFrame = false;
 		}
 
         #endregion Main Loop
 
         protected override bool DynamicPinsAreChanged()
 		{
-			return (FAxisEnumInput.PinIsChanged || FInputNodePinChangedThisFrame);
+			return (FAxisEnumInput.PinIsChanged || FOnStopApplyTo.PinIsChanged || FInputNodePinChangedThisFrame);
 		}
 
         #region IPluginConnections Members
@@ -271,7 +314,7 @@ namespace VVVV.Nodes.HttpGUI
             if (pin == FOnStopNodeInput)
             {
                 FUpstreamOnStopNodeInterface = null;
-                FUpstreamJQueryNodeData = null;
+                FUpstreamOnStopNodeData = null;
                 FOnStopNodeInputEventThisFrame = true;
             }
         }

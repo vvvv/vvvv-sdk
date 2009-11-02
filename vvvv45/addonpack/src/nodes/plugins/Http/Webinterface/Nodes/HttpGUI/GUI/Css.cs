@@ -7,16 +7,16 @@ using VVVV.Webinterface.jQuery;
 
 namespace VVVV.Nodes.HttpGUI
 {
-    class Attr : JQueryNode, IPlugin, IDisposable
+    class Css : JQueryNode, IPlugin, IDisposable
     {
     	
     	#region field declaration 
 
         private bool FDisposed = false;
-		private IStringIn FAttributeStringInput;
+		private IEnumIn FPropertyEnumInput;
 		private IStringIn FValueStringInput;
 
-		private MethodCall FAttrMethodCall;
+		private MethodCall FCssMethodCall;
 
         #endregion field declaration
 
@@ -27,10 +27,10 @@ namespace VVVV.Nodes.HttpGUI
         /// the nodes constructor
         /// nothing to declare for this node
         /// </summary>
-        public Attr()
+        public Css()
         {
-			FAttrMethodCall = new MethodCall("attr", "Attribute", "Value");
-			FExpression.AddChainedOperation(FAttrMethodCall);
+			FCssMethodCall = new MethodCall("css", "color", "Value");
+			FExpression.AddChainedOperation(FCssMethodCall);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace VVVV.Nodes.HttpGUI
             /// It gives your base class the opportunity to finalize.
             /// Do not provide destructors in WebTypes derived from this class.
             /// </summary>
-        ~Attr()
+        ~Css()
             {
                 // Do not re-create Dispose clean-up code here.
                 // Calling Dispose(false) is optimal in terms of
@@ -123,7 +123,7 @@ namespace VVVV.Nodes.HttpGUI
                     FPluginInfo = new PluginInfo();
 
                     //the nodes main name: use CamelCaps and no spaces
-                    FPluginInfo.Name = "Attr";
+                    FPluginInfo.Name = "Css";
                     //the nodes category: try to use an existing one
                     FPluginInfo.Category = "JQuery";
                     //the nodes version: optional. leave blank if not
@@ -133,7 +133,7 @@ namespace VVVV.Nodes.HttpGUI
                     //the nodes author: your sign
                     FPluginInfo.Author = "iceberg";
                     //describe the nodes function
-                    FPluginInfo.Help = "Node for calling the JQuery Attr function";
+                    FPluginInfo.Help = "Node for calling the JQuery Css function";
                     //specify a comma separated list of tags that describe the node
                     FPluginInfo.Tags = "";
 
@@ -168,8 +168,9 @@ namespace VVVV.Nodes.HttpGUI
         protected override void OnSetPluginHost()
         {
             // create required pins
-            FHost.CreateStringInput("Attribute", TSliceMode.Single, TPinVisibility.True, out FAttributeStringInput);
-            FAttributeStringInput.SetSubType("Attribute", false);
+            FHost.CreateEnumInput("Property", TSliceMode.Single, TPinVisibility.True, out FPropertyEnumInput);
+			FHost.UpdateEnum("Css.Property", "color", new string[] { "border", "color"});
+			FPropertyEnumInput.SetSubType("Css.Property");
 
 			FHost.CreateStringInput("Value", TSliceMode.Single, TPinVisibility.True, out FValueStringInput);
 			FValueStringInput.SetSubType("Value", false);
@@ -186,15 +187,15 @@ namespace VVVV.Nodes.HttpGUI
 		{
 			if (changedSpreadSize || DynamicPinsAreChanged())
 			{
-				string attributeSlice;
+				string propertySlice;
 				string valueSlice;
 
-				FAttributeStringInput.GetString(0, out attributeSlice);
+				FPropertyEnumInput.GetString(0, out propertySlice);
 				FValueStringInput.GetString(0, out valueSlice);
 
-				if (attributeSlice == null)
+				if (propertySlice == null)
 				{
-					attributeSlice = "";
+					propertySlice = "";
 				}
 
 				if (valueSlice == null)
@@ -202,7 +203,7 @@ namespace VVVV.Nodes.HttpGUI
 					valueSlice = "";
 				}
 
-				FAttrMethodCall.SetParameters(attributeSlice, valueSlice);
+				FCssMethodCall.SetParameters(propertySlice, valueSlice);
 			}
 		}
         
@@ -210,7 +211,7 @@ namespace VVVV.Nodes.HttpGUI
 
 		protected override bool DynamicPinsAreChanged()
 		{
-			return (FAttributeStringInput.PinIsChanged || FValueStringInput.PinIsChanged);
+			return (FPropertyEnumInput.PinIsChanged || FValueStringInput.PinIsChanged);
 		}
 	}
 }

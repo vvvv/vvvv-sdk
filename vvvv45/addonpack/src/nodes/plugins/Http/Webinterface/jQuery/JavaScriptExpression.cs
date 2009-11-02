@@ -21,7 +21,7 @@ namespace VVVV.Webinterface.jQuery
 		public JavaScriptExpression ApplyMethodCall(string methodName, params object[] arguments)
 		{
 			JavaScriptExpression expression = WrapObjectAsExpression();
-			expression.AddMethodCall(methodName, arguments);
+			expression.AddChainedMethodCall(methodName, arguments);
 			return expression;
 		}
 

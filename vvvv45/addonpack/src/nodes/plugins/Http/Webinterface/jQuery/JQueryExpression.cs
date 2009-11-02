@@ -71,7 +71,7 @@ namespace VVVV.Webinterface.jQuery
 
 		public JQueryExpression ApplyMethodCall(String methodName, params object[] arguments)
 		{
-			AddMethodCall(methodName, arguments);
+			AddChainedMethodCall(methodName, arguments);
 			return this;
 		}
 

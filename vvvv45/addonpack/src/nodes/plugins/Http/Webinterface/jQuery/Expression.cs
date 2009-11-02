@@ -10,21 +10,20 @@ namespace VVVV.Webinterface.jQuery
 		protected List<ChainableOperation> FChainedOperations;
 		#endregion
 
-		public IEnumerable<ChainableOperation> ChainedOperations
-		{
-			get { return FChainedOperations; }
-		}
-	
-
 		public Expression()
         {
             FChainedOperations = new List<ChainableOperation>();
-			FStatements.Enqueue(this);
+			FStatements.Add(this);
         }
 
-		protected void AddMethodCall(String methodName, params object[] arguments)
+		public void AddChainedMethodCall(String methodName, params object[] arguments)
 		{
 			FChainedOperations.Add(new MethodCall(methodName, arguments));
+		}
+
+		public void AddChainedOperation(ChainableOperation op)
+		{
+			FChainedOperations.Add(op);
 		}
 
 		public virtual new string GenerateScript(int indentSteps, bool breakInternalLines, bool breakAfter)
@@ -32,7 +31,10 @@ namespace VVVV.Webinterface.jQuery
 			string text = GenerateObjectScript(indentSteps, breakInternalLines, breakAfter);
 			foreach (ChainableOperation op in FChainedOperations)
 			{
-				text += op.GenerateScript(indentSteps, breakInternalLines, breakAfter);
+				if (op.DoInclude)
+				{
+					text += op.GenerateScript(indentSteps, breakInternalLines, breakAfter);
+				}
 			}
 			return text;
 		}

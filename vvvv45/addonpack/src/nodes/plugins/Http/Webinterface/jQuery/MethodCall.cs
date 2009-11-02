@@ -38,6 +38,18 @@ namespace VVVV.Webinterface.jQuery
 
 		}
 
+		public void SetParameters(params object[] arguments)
+		{
+			FArguments.Clear();
+			for (int i = 0; i < arguments.Length; i++)
+			{
+				if (arguments[i] != null)
+				{
+					FArguments.Add(JavaScriptObjectFactory.Create(arguments[i]));
+				}
+			}
+		}
+
 		#region IScriptGenerator Members
 
 		public override string GenerateScript(int indentSteps, bool breakInternalLines, bool breakAfter)

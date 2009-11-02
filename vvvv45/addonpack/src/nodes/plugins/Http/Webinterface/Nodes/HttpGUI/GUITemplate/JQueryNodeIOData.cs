@@ -17,11 +17,6 @@ namespace VVVV.Nodes.HttpGUI
 			set { FUpstreamJQueryData = value; }
 		}
 
-		public JQueryExpression Expression
-		{
-			get { return FExpression; }
-		}
-
 		private JQueryNodeIOData()
 		{
 			FUpstreamJQueryData = null;

@@ -7,7 +7,12 @@ namespace VVVV.Webinterface.jQuery
 	public class JavaScriptAnonymousFunction : JavaScriptObject
 	{
 		protected JQuery FJQuery;
-		protected Queue<JavaScriptVariableObject> FArgumentNames;
+		private List<JavaScriptVariableObject> FArguments;
+
+		public List<JavaScriptVariableObject> Arguments
+		{
+			get { return FArguments; }
+		}
 
 		public JavaScriptAnonymousFunction() : this(new JQuery())
 		{
@@ -17,10 +22,10 @@ namespace VVVV.Webinterface.jQuery
 		public JavaScriptAnonymousFunction(JQuery jQuery, params string[] argumentNames)
 		{
 			FJQuery = jQuery;
-			FArgumentNames = new Queue<JavaScriptVariableObject>();
+			FArguments = new List<JavaScriptVariableObject>();
 			for (int i = 0; i < argumentNames.Length; i++)
 			{
-				FArgumentNames.Enqueue(new JavaScriptVariableObject(argumentNames[i]));
+				FArguments.Add(new JavaScriptVariableObject(argumentNames[i]));
 			}
 		}
 
@@ -32,10 +37,10 @@ namespace VVVV.Webinterface.jQuery
 		protected override string GenerateObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string text = "function(";
-			int queueLength = FArgumentNames.Count;
+			int queueLength = FArguments.Count;
 			bool doBreakInternalLines = breakInternalLines && !FJQuery.PIsEmpty;
 			int count = 1;
-			foreach (JavaScriptVariableObject argument in FArgumentNames)
+			foreach (JavaScriptVariableObject argument in FArguments)
 			{
 				text += argument.GenerateScript(indentSteps, breakInternalLines, breakAfter);
 				if (count != queueLength)
