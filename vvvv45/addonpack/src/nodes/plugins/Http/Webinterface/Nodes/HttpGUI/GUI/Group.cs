@@ -77,7 +77,8 @@ namespace VVVV.Nodes.HttpGUI
         private int mInputCount;
 
         private List<string> FNodeIdList = new List<string>();
-        private List<string> FNodeIdListAll = new List<string>();
+        private bool FInputPinChangedThisFrame = false;
+
 
         #endregion field declaration
 
@@ -404,14 +405,15 @@ namespace VVVV.Nodes.HttpGUI
                         {
                             if (FNodeIdList.Contains(tGuiData[i].NodeId) == false)
                             {
-                                FNodeIdList.Add(tGuiData[0].NodeId);
+                                FNodeIdList.Add(tGuiData[i].NodeId);
                             }
                         }
                     }
                 }
             }
 
-            
+
+            FInputPinChangedThisFrame = FPinIsChanged || FPinIsConnectedDisconnected;
             FPinIsConnectedDisconnected = false;
         }
 
@@ -432,7 +434,7 @@ namespace VVVV.Nodes.HttpGUI
 
         public bool PinIsChanged()
         {
-            return FPinIsChanged || FPinIsConnectedDisconnected;
+            return FInputPinChangedThisFrame;
         }
 
 		public string GetNodeId(int Index)
@@ -447,7 +449,7 @@ namespace VVVV.Nodes.HttpGUI
 
 		public List<string> GetAllNodeIds()
 		{
-            return FNodeIdListAll;
+            return FNodeIdList;
 		}
 
 		#endregion
