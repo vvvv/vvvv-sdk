@@ -528,5 +528,17 @@ namespace VVVV.Nodes.HttpGUI
 		}
 
         #endregion Add to GuiDataObject
+
+		#region IHttpGUIIO Members
+
+
+		public List<string> GetAllNodeIds()
+		{
+			List<string> allNodeIds = new List<string>();
+			allNodeIds.Add(FNodeId);
+			return allNodeIds;
+		}
+
+		#endregion
 	}
 }

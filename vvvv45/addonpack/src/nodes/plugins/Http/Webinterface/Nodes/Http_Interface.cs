@@ -15,6 +15,7 @@ namespace VVVV.Nodes.HttpGUI
         void GetDataObject(int Index, out List<GuiDataObject> GuiDaten);
 		string GetNodeId(int Index);
 		string GetSliceId(int Index);
+		List<string> GetAllNodeIds();
 		bool PinIsChanged();
 
 	}

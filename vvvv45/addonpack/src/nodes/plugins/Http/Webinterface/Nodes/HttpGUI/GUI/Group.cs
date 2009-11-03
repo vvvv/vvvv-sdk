@@ -436,6 +436,11 @@ namespace VVVV.Nodes.HttpGUI
 			throw new Exception("The method or operation is not implemented.");
 		}
 
+		public List<string> GetAllNodeIds()
+		{
+			throw new Exception("The method or operation is not implemented.");
+		}
+
 		#endregion
 	}
 }
