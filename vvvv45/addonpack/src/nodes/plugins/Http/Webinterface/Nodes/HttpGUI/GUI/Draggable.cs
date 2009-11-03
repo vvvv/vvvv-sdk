@@ -26,7 +26,7 @@ namespace VVVV.Nodes.HttpGUI
 
 		private INodeIn FOnStopSelectorNodeInput;
 		private IHttpGUIIO FUpstreamOnStopSelectorNodeInterface;
-		private string FUpstreamOnStopSelectorNodeId = null;
+		private List<string> FUpstreamOnStopSelectorNodeIds = null;
 
         private bool FOnStopNodeInputEventThisFrame;
 		private bool FOnStopSelectorNodeInputEventThisFrame;
@@ -246,7 +246,7 @@ namespace VVVV.Nodes.HttpGUI
 				newDataOnOnStopSelectorInputSlice = true;
 				for (int i = 0; i < SpreadMax; i++)
 				{
-					FUpstreamOnStopSelectorNodeId = FUpstreamOnStopSelectorNodeInterface.GetNodeId(i);
+					FUpstreamOnStopSelectorNodeIds = FUpstreamOnStopSelectorNodeInterface.GetAllNodeIds();
 				}
 			}
 
@@ -308,7 +308,7 @@ namespace VVVV.Nodes.HttpGUI
 								handlerExpression = JQueryExpression.Dollars(FOnStopHandler.Arguments[1].Member("helper"));
 								break;
 							case "Selector":
-								handlerExpression = FUpstreamOnStopSelectorNodeId != null ? JQueryExpression.Dollars(new ClassSelector(FUpstreamOnStopSelectorNodeId)) : JQueryExpression.This();
+								handlerExpression = FUpstreamOnStopSelectorNodeIds != null ? JQueryExpression.Dollars(new CompoundSelector(FUpstreamOnStopSelectorNodeIds)) : JQueryExpression.This();
 								break;
 							default:
 								handlerExpression = JQueryExpression.This();
@@ -379,7 +379,7 @@ namespace VVVV.Nodes.HttpGUI
 			else if (pin == FOnStopSelectorNodeInput)
 			{
 				FUpstreamOnStopSelectorNodeInterface = null;
-				FUpstreamOnStopSelectorNodeId = null;
+				FUpstreamOnStopSelectorNodeIds = null;
 				FOnStopSelectorNodeInputEventThisFrame = true;
 			}
         }
