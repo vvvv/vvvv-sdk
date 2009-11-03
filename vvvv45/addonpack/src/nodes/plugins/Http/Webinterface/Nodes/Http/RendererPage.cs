@@ -558,7 +558,7 @@ namespace VVVV.Nodes.Http
 
                     // Css File
                     mPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
-                    mPage.Head.Insert(new Link("jqueryUI.css", "stylesheet", "text/css"));
+                    mPage.Head.Insert(new Link("jquery.css", "stylesheet", "text/css"));
                     mPage.Head.Insert(new Link("colorpicker.css", "stylesheet", "text/css"));
                     mPage.Head.Insert(new JavaScript("jquery.js", true));
                     mPage.Head.Insert(new JavaScript("jquerytimer.js", true));
