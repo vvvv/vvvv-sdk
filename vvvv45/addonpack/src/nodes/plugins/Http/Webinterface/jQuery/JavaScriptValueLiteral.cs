@@ -20,6 +20,7 @@ namespace VVVV.Webinterface.jQuery
 
 		public T PValue
 		{
+			get { return FValue; }
 			set { FValue = value; }
 		}
 	
