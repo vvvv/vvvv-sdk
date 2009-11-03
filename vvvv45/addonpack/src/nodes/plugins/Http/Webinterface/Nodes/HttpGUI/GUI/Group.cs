@@ -76,6 +76,9 @@ namespace VVVV.Nodes.HttpGUI
         List<GuiDataObject> FGuiDataList = new List<GuiDataObject>();
         private int mInputCount;
 
+        private List<string> FNodeIdList = new List<string>();
+        private List<string> FNodeIdListAll = new List<string>();
+
         #endregion field declaration
 
 
@@ -303,9 +306,7 @@ namespace VVVV.Nodes.HttpGUI
                 if (Pin == pNodeIn)
                 {
                     string tNodeName = pNodeIn.Name;
-
                     FNodeUpstream.Remove(pNodeIn.Name);
-                    
                 }
             }
         }
@@ -383,22 +384,29 @@ namespace VVVV.Nodes.HttpGUI
                 }
             }
 
-            if (PinIsChanged())
+            if (PinIsChanged() || FPinIsConnectedDisconnected)
             {
                 FGuiDataList.Clear();
+                FNodeIdList.Clear();
                 foreach (INodeIn pNodeIn in FInputPinList)
                 {
                     string tNodeName = pNodeIn.Name;
-
                     IHttpGUIIO FUpstream;
                     FNodeUpstream.TryGetValue(pNodeIn.Name, out FUpstream);
 
                     if (FUpstream != null)
                     {
-                        List<GuiDataObject> tGuiDaten;
-                        FUpstream.GetDataObject(0, out tGuiDaten);
-                        FGuiDataList.AddRange(tGuiDaten);
+                        List<GuiDataObject> tGuiData;
+                        FUpstream.GetDataObject(0, out tGuiData);
+                        FGuiDataList.AddRange(tGuiData);
 
+                        for (int i = 0; i < tGuiData.Count; i++)
+                        {
+                            if (FNodeIdList.Contains(tGuiData[i].NodeId) == false)
+                            {
+                                FNodeIdList.Add(tGuiData[0].NodeId);
+                            }
+                        }
                     }
                 }
             }
@@ -416,29 +424,30 @@ namespace VVVV.Nodes.HttpGUI
 		#region IHttpGUIIO Members
 
 
-		public bool PinIsChanged()
-		{
-			return FPinIsChanged ||FPinIsConnectedDisconnected;
-		}
+
 
 		#endregion
 
 		#region IHttpGUIIO Members
 
+        public bool PinIsChanged()
+        {
+            return FPinIsChanged || FPinIsConnectedDisconnected;
+        }
 
 		public string GetNodeId(int Index)
 		{
-			throw new Exception("The method or operation is not implemented.");
+            return FGuiDataList[Index].NodeId;
 		}
 
 		public string GetSliceId(int Index)
 		{
-			throw new Exception("The method or operation is not implemented.");
+			return FGuiDataList[Index].SliceId;
 		}
 
 		public List<string> GetAllNodeIds()
 		{
-			throw new Exception("The method or operation is not implemented.");
+            return FNodeIdListAll;
 		}
 
 		#endregion
