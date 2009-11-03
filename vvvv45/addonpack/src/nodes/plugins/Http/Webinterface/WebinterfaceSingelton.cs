@@ -347,7 +347,6 @@ namespace VVVV.Webinterface
 
 
 
-
         public void setHtmlPageData(string pPageName, string pUrl,Page pPage, List<GuiDataObject> pGuiList)
         {
             if (Monitor.TryEnter(mGuiLists))
