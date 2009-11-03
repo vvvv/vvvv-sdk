@@ -40,6 +40,8 @@ namespace VVVV.Nodes.HttpGUI
 		private JavaScriptAnonymousFunction FOnStopHandler;
 		private MethodCall FBindOnStopHandler;
 
+		private JavaScriptAnonymousFunction FOnStopPostHandler;
+		private MethodCall FBindOnStopPostHandler;
 
         #endregion field declaration
 
@@ -56,9 +58,28 @@ namespace VVVV.Nodes.HttpGUI
             FDraggableArguments = new JavaScriptGenericObject();
             FExpression.ApplyMethodCall("draggable", FDraggableArguments);
 
+			
+			FOnStopPostHandler = new JavaScriptAnonymousFunction("event", "ui");
+			FBindOnStopPostHandler = new MethodCall("bind", "dragstop", FOnStopPostHandler);
+			FExpression.AddChainedOperation(FBindOnStopPostHandler);
+
+			JQueryExpression generateXMLPost = JQueryExpression.Dollars("<xml></xml>");
+			generateXMLPost.Append(JQueryExpression.Dollars("<slice></slice>").Attr("id", JQueryExpression.This().ApplyMethodCall("attr", "id"))).Children().ApplyMethodCall("eq", 0);
+			generateXMLPost.Append(JQueryExpression.Dollars("<value id=\"position.x\"></value>").Append(FOnStopPostHandler.Arguments[1].Member("position").Member("left")));
+			generateXMLPost.Append(JQueryExpression.Dollars("<value id=\"position.y\"></value>").Append(FOnStopPostHandler.Arguments[1].Member("position").Member("top")));
+			generateXMLPost.Append(JQueryExpression.Dollars("<value id=\"offset.x\"></value>").Append(FOnStopPostHandler.Arguments[1].Member("offset").Member("left")));
+			generateXMLPost.Append(JQueryExpression.Dollars("<value id=\"offset.y\"></value>").Append(FOnStopPostHandler.Arguments[1].Member("offset").Member("top")));
+			generateXMLPost.End().End().ApplyMethodCall("html");
+
+			JQueryExpression createPostParameters = new JQueryExpression(new JavaScriptGenericObject()).Attr(JQueryExpression.This().ApplyMethodCall("attr", "id"), generateXMLPost).ApplyMethodCall("get", 0);
+
+			JQueryExpression postToServer = new JQueryExpression();
+			postToServer.Post("ToVVVV.xml", createPostParameters, null, null);
+			FOnStopPostHandler.PJQuery = postToServer;
+
+
 			FOnStopHandlerBody = new JQuery();
 			FOnStopHandler = new JavaScriptAnonymousFunction(FOnStopHandlerBody, "event", "ui");
-
 			FBindOnStopHandler = new MethodCall("bind", "dragstop", FOnStopHandler);
 			FBindOnStopHandler.DoInclude = false;
 
@@ -327,6 +348,7 @@ namespace VVVV.Nodes.HttpGUI
 			}
 
 			FOnStopNodeInputEventThisFrame = false;
+			FOnStopSelectorNodeInputEventThisFrame = false;
 		}
 
         #endregion Main Loop

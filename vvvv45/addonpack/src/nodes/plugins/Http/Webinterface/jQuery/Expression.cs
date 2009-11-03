@@ -8,11 +8,19 @@ namespace VVVV.Webinterface.jQuery
 	{
 		#region Fields
 		protected List<ChainableOperation> FChainedOperations;
+		protected bool FDoInclude;		
 		#endregion
+		
+		public bool DoInclude
+		{
+			get { return FDoInclude; }
+			set { FDoInclude = value; }
+		}
 
 		public Expression()
         {
-            FChainedOperations = new List<ChainableOperation>();
+			FDoInclude = true;
+			FChainedOperations = new List<ChainableOperation>();
 			FStatements.Add(this);
         }
 

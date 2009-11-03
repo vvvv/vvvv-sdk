@@ -16,7 +16,7 @@ namespace VVVV.Nodes.HttpGUI
 
         private INodeIn FAcceptNodeInput;
 		private IHttpGUIIO FUpstreamAcceptNodeInterface;
-		private string FUpstreamAcceptNodeId = null;
+		private List<string> FUpstreamAcceptNodeIds = null;
 
         private bool FAcceptNodeInputEventThisFrame;
 		
@@ -196,7 +196,7 @@ namespace VVVV.Nodes.HttpGUI
 				newDataOnAcceptInputSlice = true;
 				for (int i = 0; i < SpreadMax; i++)
 				{
-					FUpstreamAcceptNodeId = FUpstreamAcceptNodeInterface.GetNodeId(i);
+					FUpstreamAcceptNodeIds = FUpstreamAcceptNodeInterface.GetAllNodeIds();
 				}
 			}
 
@@ -206,9 +206,9 @@ namespace VVVV.Nodes.HttpGUI
 			{
                 for (int i = 0; i < SpreadMax; i++)
                 {
-                    if (FUpstreamAcceptNodeId != null)
+                    if (FUpstreamAcceptNodeIds != null)
 					{
-						FDroppableArguments.Set("accept", new ClassSelector(FUpstreamAcceptNodeId));
+						FDroppableArguments.Set("accept", new CompoundSelector(FUpstreamAcceptNodeIds));
 					}
 					else
 					{
@@ -255,7 +255,7 @@ namespace VVVV.Nodes.HttpGUI
             if (pin == FAcceptNodeInput)
 			{
 				FUpstreamAcceptNodeInterface = null;
-				FUpstreamAcceptNodeId = null;
+				FUpstreamAcceptNodeIds = null;
 				FAcceptNodeInputEventThisFrame = true;
 			}
         }

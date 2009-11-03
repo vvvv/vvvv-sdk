@@ -14,19 +14,27 @@ namespace VVVV.Webinterface.jQuery
 			get { return FArguments; }
 		}
 
-		public JavaScriptAnonymousFunction() : this(new JQuery())
+		public JavaScriptAnonymousFunction() : this(new JQuery(), null)
 		{
-
+		
 		}
 		
 		public JavaScriptAnonymousFunction(JQuery jQuery, params string[] argumentNames)
 		{
 			FJQuery = jQuery;
 			FArguments = new List<JavaScriptVariableObject>();
-			for (int i = 0; i < argumentNames.Length; i++)
+			if (argumentNames != null)
 			{
-				FArguments.Add(new JavaScriptVariableObject(argumentNames[i]));
+				for (int i = 0; i < argumentNames.Length; i++)
+				{
+					FArguments.Add(new JavaScriptVariableObject(argumentNames[i]));
+				}
 			}
+		}
+
+		public JavaScriptAnonymousFunction(params string[] argumentNames) : this(new JQuery(), argumentNames)
+		{
+
 		}
 
 		public JQuery PJQuery

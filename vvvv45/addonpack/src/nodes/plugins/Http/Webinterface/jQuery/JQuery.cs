@@ -18,7 +18,7 @@ namespace VVVV.Webinterface.jQuery
 			FStatements = new List<Expression>();
 		}
 
-		public JQuery(params JQueryExpression[] statements) : this()
+		public JQuery(params Expression[] statements) : this()
 		{
 			for (int i = 0; i < statements.Length; i++)
 			{
@@ -28,40 +28,53 @@ namespace VVVV.Webinterface.jQuery
 
 		public bool PIsEmpty
 		{
-			get { return FStatements.Count == 0; }
+			get
+			{
+				for (int i = 0; i < FStatements.Count; i++)
+				{
+					if (FStatements[i].DoInclude) return false;
+				}
+
+				return true;
+			}
 		}
 
-		public JQueryExpression Expression
+		public Expression Expression
 		{
 			set {
 				FStatements.Clear();
 				FStatements.Add(value);
 			}
 		}
-	
+
+		public void AddExpression(Expression expression)
+		{
+			FStatements.Add(expression);
+		}
 
 		#region IScriptGenerator Members
 
 		public virtual string GenerateScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{
 			string text = "";
-			int numStatements = FStatements.Count;
-			int count = 1;
-			foreach (Expression statement in FStatements)
+			int count = 0;
+			for (int i = 0; i < FStatements.Count; i++)
 			{
-				for (int i = 0; i < indentSteps; i++)
+				if (FStatements[i].DoInclude)
 				{
-					text += "\t";
+					if (breakInternalLines && count > 0)
+					{
+						text += "\n";
+					}
+					for (int j = 0; j < indentSteps; j++)
+					{
+						text += "\t";
+					}
+					text += FStatements[i].GenerateScript(indentSteps, breakInternalLines, breakAfter) + ";";
+					count++;
 				}
-
-				text += statement.GenerateScript(indentSteps, breakInternalLines, breakAfter) + ";";
-				if (breakInternalLines && count != numStatements)
-				{
-					text += "\n";
-				}
-				count++;
 			}
-			if (breakAfter && numStatements > 0)
+			if (breakAfter && count > 0)
 			{
 				text += "\n";
 			}

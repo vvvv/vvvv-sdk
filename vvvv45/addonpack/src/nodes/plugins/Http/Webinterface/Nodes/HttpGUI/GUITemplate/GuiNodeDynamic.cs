@@ -40,6 +40,8 @@ namespace VVVV.Nodes.HttpGUI
 		public INodeIn FJQueryNodeInput;
 		protected IJQueryIO FUpstreamJQueryNodeInterface;
 
+		protected IValueIn FSavePostedPropertiesValueInput;
+
 		public INodeOut FHttpGuiOut;
 
 
@@ -96,6 +98,9 @@ namespace VVVV.Nodes.HttpGUI
 
 			FHost.CreateNodeInput("JQuery", TSliceMode.Single, TPinVisibility.True, out FJQueryNodeInput);
 			FJQueryNodeInput.SetSubType(new Guid[1] { JQueryIO.GUID }, JQueryIO.FriendlyName);
+
+			FHost.CreateValueInput("Save Posted Properties", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSavePostedPropertiesValueInput);
+			FSavePostedPropertiesValueInput.SetSubType(0.0, 1.0, 1.0, 1.0, false, true, false);
 
             FHost.CreateNodeOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiOut);
             FHttpGuiOut.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
@@ -280,8 +285,6 @@ namespace VVVV.Nodes.HttpGUI
                     FGuiDataList[i].NodeId = FNodeId;
                     FGuiDataList[i].SliceId = FSliceId[i];
                 }
-
-                FChangedNodeId = false;
             }
 
             #endregion Check Gui List
@@ -313,7 +316,7 @@ namespace VVVV.Nodes.HttpGUI
 
             #region Transform Pin
 
-            if (FTransformIn.PinIsChanged || FBasingPoint.PinIsChanged || FPositionType.PinIsChanged || FChangedSpreadSize)
+            if (FTransformIn.PinIsChanged || FBasingPoint.PinIsChanged || FPositionType.PinIsChanged || FSavePostedPropertiesValueInput.PinIsChanged || FChangedSpreadSize)
             {
 				FGuiListModified = true;
 				

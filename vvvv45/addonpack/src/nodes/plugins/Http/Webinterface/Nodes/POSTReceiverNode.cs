@@ -108,6 +108,7 @@ namespace VVVV.Nodes.HttpGUI
 				#endregion ReceivedData
 
 				BaseEvaluate(SpreadMax);
+				FChangedNodeId = false;
 				FSpreadMax = SpreadMax;
 			}
 			catch (Exception ex)
