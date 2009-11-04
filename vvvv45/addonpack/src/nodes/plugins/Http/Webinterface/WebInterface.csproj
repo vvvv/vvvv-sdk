@@ -90,6 +90,12 @@
     <Compile Include="jQuery\Selector.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Nodes\HttpGUI\CSS\BackgroundColor.cs" />
+    <Compile Include="Nodes\HttpGUI\CSS\BaseCssNode.cs" />
+    <Compile Include="Nodes\HttpGUI\CSS\Border.cs" />
+    <Compile Include="Nodes\HttpGUI\CSS\CssProperty.cs" />
+    <Compile Include="Nodes\HttpGUI\CSS\Font.cs" />
+    <Compile Include="Nodes\HttpGUI\CSS\Padding.cs" />
     <Compile Include="Nodes\HttpGUI\GUITemplate\GuiDataObject.cs" />
     <Compile Include="Nodes\HttpGUI\GUITemplate\JQueryNode.cs" />
     <Compile Include="Nodes\HttpGUI\GUITemplate\JQueryNodeIOData.cs" />
@@ -103,7 +109,6 @@
     <Compile Include="Nodes\HttpGUI\GUI\Droppable.cs" />
     <Compile Include="Nodes\HttpGUI\GUI\Group.cs" />
     <Compile Include="Nodes\HttpGUI\GUITemplate\GuiNodeDynamic.cs" />
-    <None Include="Nodes\HttpGUI\GUITemplate\GuiTemplate.cs" />
     <Compile Include="Nodes\Http\CssBuilder.cs" />
     <Compile Include="Nodes\Http\PageBuilder.cs" />
     <Compile Include="Nodes\Http_Interface.cs" />
@@ -111,12 +116,6 @@
     <Compile Include="Nodes\HttpGUI\GUI\Slider.cs" />
     <Compile Include="Nodes\HttpGUI\GUI\Text.cs" />
     <Compile Include="Nodes\HttpGUI\GUI\Textfield.cs" />
-    <Compile Include="Nodes\HttpGUI\Style\BackgroundColor.cs" />
-    <Compile Include="Nodes\HttpGUI\Style\BaseCssNode.cs" />
-    <Compile Include="Nodes\HttpGUI\Style\Border.cs" />
-    <Compile Include="Nodes\HttpGUI\Style\CssProperty.cs" />
-    <Compile Include="Nodes\HttpGUI\Style\Font.cs" />
-    <Compile Include="Nodes\HttpGUI\Style\Padding.cs" />
     <None Include="Nodes\Http\BaseGUIBuilder.cs" />
     <Compile Include="Nodes\Http\RendererPage.cs" />
     <Compile Include="Nodes\Http\RendererHTTP.cs" />
@@ -130,14 +129,13 @@
     <Compile Include="HttpServer\SocketInformation.cs" />
     <Compile Include="Nodes\POSTReceiverNode.cs" />
     <Compile Include="Nodes\HttpGUI\GUI\Css.cs" />
-    <Compile Include="Utilities\StartupCheck.cs" />
+    <Compile Include="Utilities\JSToolkit.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="WebinterfaceSingelton.cs" />
     <Compile Include="Utilities\HTMLBaseElements.cs" />
     <Compile Include="Utilities\HTMLElements.cs" />
     <Compile Include="Utilities\HTMLToolkit.cs" />
-    <Compile Include="Utilities\JSToolkit.cs" />
-    <Compile Include="Utilities\Logger.cs" />
-    <Compile Include="Utilities\ServerToolkit.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Ressources\jquery.js" />
@@ -161,18 +159,36 @@
     <EmbeddedResource Include="Ressources\Colorpicker\images\colorpicker_submit.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\_PluginInterfaces\PluginInterfaces.csproj">
+    <ProjectReference Include="..\..\..\_PluginInterfaces\trunk\PluginInterfaces.csproj">
       <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
       <Name>PluginInterfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\_Utils\Utils.csproj">
+    <ProjectReference Include="..\..\..\_Utils\trunk\Utils.csproj">
       <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
       <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Dependencies\Webinterface\lib\" />
+    <EmbeddedResource Include="Ressources\jquery.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Ressources\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Ressources\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Ressources\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Ressources\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Ressources\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Ressources\images\ui-bg_glass_75_ffffff_1x400.png" />
+    <Content Include="Ressources\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Ressources\images\ui-bg_inset-soft_95_fef1ec_1x100.png" />
+    <Content Include="Ressources\images\ui-icons_222222_256x240.png" />
+    <Content Include="Ressources\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Ressources\images\ui-icons_454545_256x240.png" />
+    <Content Include="Ressources\images\ui-icons_888888_256x240.png" />
+    <Content Include="Ressources\images\ui-icons_cd0a0a_256x240.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="HelpPatches\" />
+    <Folder Include="Nodes\HttpGUI\JQuery\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
