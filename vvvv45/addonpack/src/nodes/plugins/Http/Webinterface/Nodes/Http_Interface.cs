@@ -5,8 +5,9 @@ using System.Runtime.InteropServices;
 using VVVV.Nodes.HttpGUI;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Webinterface.Utilities;
+using VVVV.Nodes.Http.BaseNodes;
 
-namespace VVVV.Nodes.HttpGUI
+namespace VVVV.Nodes.Http
 {
 
 	[Guid("8869A551-6F32-4F0D-9003-27AC990D53D6"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
