@@ -90,32 +90,34 @@
     <Compile Include="jQuery\Selector.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Nodes\HttpGUI\CSS\BackgroundColor.cs" />
-    <Compile Include="Nodes\HttpGUI\CSS\BaseCssNode.cs" />
-    <Compile Include="Nodes\HttpGUI\CSS\Border.cs" />
-    <Compile Include="Nodes\HttpGUI\CSS\CssProperty.cs" />
-    <Compile Include="Nodes\HttpGUI\CSS\Font.cs" />
-    <Compile Include="Nodes\HttpGUI\CSS\Padding.cs" />
-    <Compile Include="Nodes\HttpGUI\GUITemplate\GuiDataObject.cs" />
-    <Compile Include="Nodes\HttpGUI\GUITemplate\JQueryNode.cs" />
-    <Compile Include="Nodes\HttpGUI\GUITemplate\JQueryNodeIOData.cs" />
-    <Compile Include="Nodes\HttpGUI\GUI\Button.cs" />
-    <Compile Include="Nodes\HttpGUI\GUI\Checkbox.cs" />
-    <Compile Include="Nodes\HttpGUI\GUI\ColorPicker.cs" />
-    <Compile Include="Nodes\HttpGUI\GUI\Container.cs" />
     <Compile Include="jQuery\Expression.cs" />
-    <Compile Include="Nodes\HttpGUI\GUI\Attr.cs" />
-    <Compile Include="Nodes\HttpGUI\GUI\Draggable.cs" />
-    <Compile Include="Nodes\HttpGUI\GUI\Droppable.cs" />
-    <Compile Include="Nodes\HttpGUI\GUI\Group.cs" />
-    <Compile Include="Nodes\HttpGUI\GUITemplate\GuiNodeDynamic.cs" />
+    <Compile Include="Nodes\Http\BaseNodes\GuiDataObject.cs" />
+    <Compile Include="Nodes\Http\BaseNodes\GuiNodeDynamic.cs" />
+    <Compile Include="Nodes\Http\BaseNodes\JQueryNode.cs" />
+    <Compile Include="Nodes\Http\BaseNodes\JQueryNodeIOData.cs" />
+    <Compile Include="Nodes\Http\BaseNodes\POSTReceiverNode.cs" />
     <Compile Include="Nodes\Http\CssBuilder.cs" />
+    <Compile Include="Nodes\Http\Css\BackgroundColor.cs" />
+    <Compile Include="Nodes\Http\Css\BaseCssNode.cs" />
+    <Compile Include="Nodes\Http\Css\Border.cs" />
+    <Compile Include="Nodes\Http\Css\CssProperty.cs" />
+    <Compile Include="Nodes\Http\Css\Font.cs" />
+    <Compile Include="Nodes\Http\Css\Padding.cs" />
+    <Compile Include="Nodes\Http\GUI\Button.cs" />
+    <Compile Include="Nodes\Http\GUI\Checkbox.cs" />
+    <Compile Include="Nodes\Http\GUI\ColorPicker.cs" />
+    <Compile Include="Nodes\Http\GUI\Container.cs" />
+    <Compile Include="Nodes\Http\GUI\Group.cs" />
+    <Compile Include="Nodes\Http\GUI\Image.cs" />
+    <Compile Include="Nodes\Http\GUI\Slider.cs" />
+    <Compile Include="Nodes\Http\GUI\Text.cs" />
+    <Compile Include="Nodes\Http\GUI\Textfield.cs" />
+    <Compile Include="Nodes\Http\Jquery\Attr.cs" />
+    <Compile Include="Nodes\Http\Jquery\Css.cs" />
+    <Compile Include="Nodes\Http\Jquery\Draggable.cs" />
+    <Compile Include="Nodes\Http\Jquery\Droppable.cs" />
     <Compile Include="Nodes\Http\PageBuilder.cs" />
     <Compile Include="Nodes\Http_Interface.cs" />
-    <Compile Include="Nodes\HttpGUI\GUI\Image.cs" />
-    <Compile Include="Nodes\HttpGUI\GUI\Slider.cs" />
-    <Compile Include="Nodes\HttpGUI\GUI\Text.cs" />
-    <Compile Include="Nodes\HttpGUI\GUI\Textfield.cs" />
     <None Include="Nodes\Http\BaseGUIBuilder.cs" />
     <Compile Include="Nodes\Http\RendererPage.cs" />
     <Compile Include="Nodes\Http\RendererHTTP.cs" />
@@ -127,8 +129,6 @@
     <Compile Include="HttpServer\ResponseHeader.cs" />
     <Compile Include="HttpServer\HttpStatusCode.cs" />
     <Compile Include="HttpServer\SocketInformation.cs" />
-    <Compile Include="Nodes\POSTReceiverNode.cs" />
-    <Compile Include="Nodes\HttpGUI\GUI\Css.cs" />
     <Compile Include="Utilities\JSToolkit.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -185,10 +185,10 @@
     <Content Include="Ressources\images\ui-icons_454545_256x240.png" />
     <Content Include="Ressources\images\ui-icons_888888_256x240.png" />
     <Content Include="Ressources\images\ui-icons_cd0a0a_256x240.png" />
+    <EmbeddedResource Include="Ressources\ServerDebugFile.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="HelpPatches\" />
-    <Folder Include="Nodes\HttpGUI\JQuery\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
