@@ -45,7 +45,6 @@ using System.Net.Sockets;
 
 using VVVV.Webinterface;
 using VVVV.Webinterface.Utilities;
-using VVVV.Webinterface.Data;
 using VVVV.Webinterface.HttpServer;
 using VVVV.Nodes.Http;
 using VVVV.Nodes.HttpGUI;

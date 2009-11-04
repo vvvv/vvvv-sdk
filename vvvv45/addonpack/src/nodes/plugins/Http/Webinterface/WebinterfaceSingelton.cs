@@ -38,7 +38,6 @@ using System.Windows.Forms;
 
 
 
-using VVVV.Webinterface.Data;
 using VVVV.Nodes.HttpGUI;
 using VVVV.Nodes.Http;
 using VVVV.Webinterface.HttpServer;

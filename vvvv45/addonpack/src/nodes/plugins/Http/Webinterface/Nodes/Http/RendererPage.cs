@@ -40,7 +40,6 @@ using System.Diagnostics;
 
 using VVVV.Webinterface;
 using VVVV.Webinterface.Utilities;
-using VVVV.Webinterface.Data;
 using VVVV.Nodes.Http;
 using VVVV.Nodes.HttpGUI;
 
