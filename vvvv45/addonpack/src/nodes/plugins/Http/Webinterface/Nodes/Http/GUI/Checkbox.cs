@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Webinterface.Utilities;
+using VVVV.Nodes.Http.BaseNodes;
 
-namespace VVVV.Nodes.HttpGUI
+namespace VVVV.Nodes.Http.GUI
 {
     class Checkbox : GuiNodeDynamic, IPlugin, IDisposable
     {

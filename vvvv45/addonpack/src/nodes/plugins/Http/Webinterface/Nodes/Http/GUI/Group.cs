@@ -36,9 +36,11 @@ using System.Diagnostics;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using VVVV.Nodes.HttpGUI;
+using VVVV.Nodes.Http;
+using VVVV.Nodes.Http.BaseNodes;
+
 //the vvvv node namespace
-namespace VVVV.Nodes.HttpGUI
+namespace VVVV.Nodes.Http.GUI
 {
     //class definition
     public class Group : IPlugin, IDisposable, IHttpGUIIO, IPluginConnections

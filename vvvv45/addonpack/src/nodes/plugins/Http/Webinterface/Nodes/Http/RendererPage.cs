@@ -41,7 +41,7 @@ using System.Diagnostics;
 using VVVV.Webinterface;
 using VVVV.Webinterface.Utilities;
 using VVVV.Nodes.Http;
-using VVVV.Nodes.HttpGUI;
+using VVVV.Nodes.Http.BaseNodes;
 
 //the vvvv node namespace
 namespace VVVV.Nodes.Http

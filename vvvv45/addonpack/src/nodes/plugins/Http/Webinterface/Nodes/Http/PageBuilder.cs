@@ -4,8 +4,8 @@ using System.Text;
 using System.Reflection;
 using System.Threading;
 using System.Diagnostics;
-using VVVV.Nodes.HttpGUI;
 using VVVV.Webinterface.Utilities;
+using VVVV.Nodes.Http.BaseNodes;
 
 namespace VVVV.Nodes.Http
 {

@@ -5,8 +5,9 @@ using System.Text;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Webinterface.Utilities;
 using VVVV.Webinterface.jQuery;
+using VVVV.Nodes.Http.BaseNodes;
 
-namespace VVVV.Nodes.HttpGUI
+namespace VVVV.Nodes.Http.BaseNodes
 {
 	public abstract class JQueryNode : POSTReceiverNode, IJQueryIO, IPluginConnections
 	{

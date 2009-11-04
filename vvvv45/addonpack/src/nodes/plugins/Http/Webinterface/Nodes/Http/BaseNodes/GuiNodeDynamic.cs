@@ -12,7 +12,7 @@ using System.Diagnostics;
 using System.Globalization;
 
 
-namespace VVVV.Nodes.HttpGUI
+namespace VVVV.Nodes.Http.BaseNodes
 {
     public abstract class GuiNodeDynamic : POSTReceiverNode, IHttpGUIIO, IPluginConnections
     {

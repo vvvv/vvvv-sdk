@@ -4,8 +4,9 @@ using System.Text;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Webinterface.Utilities;
 using System.Diagnostics;
+using VVVV.Nodes.Http.BaseNodes;
 
-namespace VVVV.Nodes.HttpGUI
+namespace VVVV.Nodes.Http.GUI
 {
     class Slider : GuiNodeDynamic, IPlugin, IDisposable
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VVVV.Webinterface.Utilities;
 
-namespace VVVV.Nodes.HttpGUI
+namespace VVVV.Nodes.Http.BaseNodes
 {
     public class GuiDataObject : ICloneable
     {

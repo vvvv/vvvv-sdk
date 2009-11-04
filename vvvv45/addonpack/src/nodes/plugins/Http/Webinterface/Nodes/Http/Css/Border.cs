@@ -37,12 +37,12 @@ using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
 using VVVV.Webinterface.Utilities;
-
+using VVVV.Nodes.Http.BaseNodes;
 
 
 
 //the vvvv node namespace
-namespace VVVV.Nodes.HttpGUI.CSS
+namespace VVVV.Nodes.Http.CSS
 {
 
 

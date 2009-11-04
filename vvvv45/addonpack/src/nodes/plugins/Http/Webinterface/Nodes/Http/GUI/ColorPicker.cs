@@ -7,6 +7,7 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Webinterface.Utilities;
 using VVVV.Webinterface.jQuery;
+using VVVV.Nodes.Http.BaseNodes;
 
 using System.Diagnostics;
 

@@ -7,7 +7,9 @@ using VVVV.Webinterface.Utilities;
 using VVVV.Nodes.HttpGUI;
 using VVVV.Utils.VMath;
 
-namespace VVVV.Nodes.HttpGUI
+using VVVV.Nodes.Http.BaseNodes;
+
+namespace VVVV.Nodes.Http.GUI
 {
 
 

@@ -9,10 +9,10 @@ using VVVV.Utils.VMath;
 
 using VVVV.Webinterface;
 using VVVV.Webinterface.Utilities;
+using VVVV.Nodes.Http.BaseNodes;
 
 
-
-namespace VVVV.Nodes.HttpGUI.CSS
+namespace VVVV.Nodes.Http.BaseNodes
 {
     public abstract class BaseCssNode : IHttpGUIStyleIO, IPluginConnections
     {

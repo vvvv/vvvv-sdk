@@ -36,6 +36,7 @@ using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
 using VVVV.Webinterface.Utilities;
+using VVVV.Nodes.Http.BaseNodes;
 
 
 

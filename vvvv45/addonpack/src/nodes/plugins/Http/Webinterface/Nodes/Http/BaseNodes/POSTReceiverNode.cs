@@ -6,7 +6,7 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.Webinterface.Utilities;
 using VVVV.Webinterface;
 
-namespace VVVV.Nodes.HttpGUI
+namespace VVVV.Nodes.Http.BaseNodes
 {
 	public abstract class POSTReceiverNode
 	{

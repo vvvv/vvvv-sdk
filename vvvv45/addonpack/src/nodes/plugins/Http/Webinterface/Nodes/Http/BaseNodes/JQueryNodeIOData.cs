@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 
 using VVVV.Webinterface.jQuery;
+using VVVV.Nodes.Http.BaseNodes;
 
-namespace VVVV.Nodes.HttpGUI
+namespace VVVV.Nodes.Http.BaseNodes
 {
 	public class JQueryNodeIOData
 	{
