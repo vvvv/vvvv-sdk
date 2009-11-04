@@ -405,7 +405,8 @@ namespace VVVV.Webinterface.Utilities
 				clonedObject.m_Strings.Clear();
 				foreach (String str in m_Strings)
 				{
-					clonedObject.m_Strings.Add(System.String.Copy(str));
+                    if(str != null)
+                        clonedObject.m_Strings.Add(System.String.Copy(str));
 				}
 			}
 			catch (Exception e)
