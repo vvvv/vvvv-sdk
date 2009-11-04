@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 using VVVV.Webinterface.Utilities;
 
-namespace VVVV.Nodes.Http
+namespace VVVV.Webinterface.HttpServer
 {
     class CssBuilder
     {

@@ -101,9 +101,6 @@ namespace VVVV.Nodes.Http
         private string mUrl = String.Empty;
         private string mPageHeadString = String.Empty;
         private string mPageBodyString = String.Empty;
-        //private string mCssFile = String.Empty;
-        //private string mJsFile = String.Empty;
-        PageBuilder mPageBuilder = new PageBuilder();
         private Rule mBodyRule;
         private bool FConnectHttp = false;
 

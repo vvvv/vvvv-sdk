@@ -7,7 +7,7 @@ using System.Diagnostics;
 using VVVV.Webinterface.Utilities;
 using VVVV.Nodes.Http.BaseNodes;
 
-namespace VVVV.Nodes.Http
+namespace VVVV.Webinterface.HttpServer
 {
     class PageBuilder
     {
