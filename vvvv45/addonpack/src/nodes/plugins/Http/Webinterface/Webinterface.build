@@ -16,13 +16,6 @@
     <include name="${root.bin}/_PluginInterfaces.dll" />
   </assemblyfileset>
 
-  <target name="post-build">
-    <copy todir="${plugin.path}">
-      <fileset basedir="Dependencies">
-        <include name="**/*" />
-      </fileset>
-    </copy>
-  </target>
 
   <target name="copy-help-custom">
     <copy todir="${plugin.path}">
@@ -31,15 +24,5 @@
       </fileset>
     </copy>
   </target>
-  
-    <target name="post-build">
-    <copy todir="${plugin.path}">
-      <fileset basedir="Dependencies">
-        <include name="**/*" />
-      </fileset>
-    </copy>
-  </target>
-
-  
-
+ 
 </project>
