@@ -345,6 +345,7 @@ namespace VVVV.Nodes
 			// SplitContainer
 			// 
 			this.SplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.SplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
 			this.SplitContainer.Location = new System.Drawing.Point(0, 0);
 			this.SplitContainer.Name = "SplitContainer";
 			// 
@@ -402,9 +403,9 @@ namespace VVVV.Nodes
 			this.GroupFilterDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.GroupFilterDropDown.FormattingEnabled = true;
 			this.GroupFilterDropDown.Items.AddRange(new object[] {
-			                                        	".All",
-			                                        	".Offline",
-			                                        	".Online"});
+									".All",
+									".Offline",
+									".Online"});
 			this.GroupFilterDropDown.Location = new System.Drawing.Point(3, 23);
 			this.GroupFilterDropDown.Name = "GroupFilterDropDown";
 			this.GroupFilterDropDown.Size = new System.Drawing.Size(293, 21);
@@ -1253,18 +1254,18 @@ namespace VVVV.Nodes
 			this.SimulatorPortUpDown.Dock = System.Windows.Forms.DockStyle.Right;
 			this.SimulatorPortUpDown.Location = new System.Drawing.Point(375, 0);
 			this.SimulatorPortUpDown.Maximum = new decimal(new int[] {
-			                                               	65535,
-			                                               	0,
-			                                               	0,
-			                                               	0});
+									65535,
+									0,
+									0,
+									0});
 			this.SimulatorPortUpDown.Name = "SimulatorPortUpDown";
 			this.SimulatorPortUpDown.Size = new System.Drawing.Size(56, 20);
 			this.SimulatorPortUpDown.TabIndex = 3;
 			this.SimulatorPortUpDown.Value = new decimal(new int[] {
-			                                             	44444,
-			                                             	0,
-			                                             	0,
-			                                             	0});
+									44444,
+									0,
+									0,
+									0});
 			this.SimulatorPortUpDown.Click += new System.EventHandler(this.SimulatorPortUpDownValueChanged);
 			// 
 			// SimulatorConnectButton
