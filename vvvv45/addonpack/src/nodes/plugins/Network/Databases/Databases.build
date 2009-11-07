@@ -32,6 +32,11 @@
         <include name="**/*" />
       </fileset>
     </copy>
+    <copy todir="${plugin.path}">
+      <fileset basedir="SQLLiteNodes\Dependencies">
+        <include name="**/*" />
+      </fileset>
+    </copy>
   </target>
 
   <target name="copy-help-custom">
@@ -58,6 +63,11 @@
     </copy>
     <copy todir="${plugin.path}">
       <fileset basedir="OdbcNodes/help">
+        <include name="*.v4p" />
+      </fileset>
+    </copy>
+    <copy todir="${plugin.path}">
+      <fileset basedir="SQLLiteNodes/help">
         <include name="*.v4p" />
       </fileset>
     </copy>
