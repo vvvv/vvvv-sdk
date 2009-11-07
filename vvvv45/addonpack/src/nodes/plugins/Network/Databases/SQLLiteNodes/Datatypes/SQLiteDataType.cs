@@ -23,7 +23,7 @@ namespace VVVV.DataTypes
 
         public override string FriendlyName
         {
-            get { return "PostgreSQL Connection"; }
+            get { return "SQLite Connection"; }
         }
 
         public override IDbDataAdapter GetDataAdapter(string sql)
