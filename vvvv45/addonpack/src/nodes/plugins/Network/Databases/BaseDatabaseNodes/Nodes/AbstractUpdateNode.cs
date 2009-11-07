@@ -164,7 +164,7 @@ namespace VVVV.Nodes
         #region AutoEvaluate
         public bool AutoEvaluate
         {
-            get { return false; }
+            get { return true; }
         }
         #endregion
     }

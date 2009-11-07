@@ -127,11 +127,8 @@ namespace VVVV.Nodes
             {
                 if (this.FConnectionObject.Connection.State == ConnectionState.Open)
                 {
-
                     try
                     {
-
-
                         IDbCommand cmd = this.FConnectionObject.GetCommand();
                         cmd.CommandType = CommandType.Text;
                         cmd.CommandText = this.FQuery;
@@ -155,7 +152,7 @@ namespace VVVV.Nodes
         #region AutoEvaluate
         public bool AutoEvaluate
         {
-            get { return false; }
+            get { return true; }
         }
         #endregion
     }
