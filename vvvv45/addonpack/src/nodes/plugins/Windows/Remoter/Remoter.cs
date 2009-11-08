@@ -49,7 +49,6 @@ using VVVV.Utils.VMath;
  * email notification of failures
  * allow processes to be started with processaffinity
  * show local ip(s)
- * show computer names
  * monitoring (cpu, memory, running time...)
  * mediensteuerungs simulation: connects to port/ip udp or tcp and can send strings
  */
