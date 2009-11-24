@@ -2,6 +2,7 @@
 #include "AmbiguousRule.h"
 
 #include "Builder.h"
+#include "RandomStreams.h"
 
 #include "../../SyntopiaCore/Logging/Logging.h"
 
@@ -23,21 +24,20 @@ namespace StructureSynth {
 
 		void AmbiguousRule::apply(Builder* builder) const {
 			// Calc sum of weigths
-			double totalWeigth = 0;
+			double totalWeight = 0;
 			for (int i = 0; i < rules.size(); i++) {
-				totalWeigth += rules[i]->getWeight();
+				totalWeight += rules[i]->getWeight();
 			}
 
 
-			int r = rand();
-			double random = totalWeigth*(r/(double)RAND_MAX);
+			double random = totalWeight*RandomStreams::Geometry()->getDouble();
 
 
-			// Choose a random rule according to weigths
-			double accWeigth = 0;
+			// Choose a random rule according to weights
+			double accWeight = 0;
 			for (int i = 0; i < rules.size(); i++) {
-				accWeigth += rules[i]->getWeight();
-				if (random <= accWeigth) {
+				accWeight += rules[i]->getWeight();
+				if (random <= accWeight) {
 					rules[i]->apply(builder);
 					return;
 				}

@@ -23,6 +23,7 @@ namespace StructureSynth {
 		/// Constructor. Automatically adds built-in rules.
 		RuleSet::RuleSet() {
 			topLevelRule = new CustomRule("TopLevelRule");
+			recurseDepth = false;
 
 			/// Add instances of predefined built-in types.
 			rules.append(new PrimitiveRule(PrimitiveRule::Box));
@@ -32,8 +33,17 @@ namespace StructureSynth {
 			rules.append(new PrimitiveRule(PrimitiveRule::Line));
 			rules.append(new PrimitiveRule(PrimitiveRule::Dot));
 			rules.append(new PrimitiveRule(PrimitiveRule::Grid));
+			rules.append(new PrimitiveRule(PrimitiveRule::Template));
 			rules.append(topLevelRule);
 		};
+
+		void RuleSet::setRulesMaxDepth(int maxDepth) {
+			for (int i = 0; i < rules.size(); i++) {
+				int md = rules[i]->getMaxDepth();
+				//INFO(QString("Rule: %1, %2 -> %3").arg(rules[i]->getName()).arg(md).arg(maxDepth));
+				if (md <= 0) rules[i]->setMaxDepth(maxDepth);
+			}
+		}
 
 
 		/// Deletes rules
@@ -88,18 +98,21 @@ namespace StructureSynth {
 
 
 		/// Resolve symbolic names into pointers
-		void RuleSet::resolveNames() {
+		QStringList RuleSet::resolveNames() {
 
 			// build map
 			QMap<QString, Rule*> map;
 			for (int i = 0; i < rules.size(); i++) map[rules[i]->getName()] = rules[i];
 
+			QStringList usedPrimitives;
+			
 
 
 			// resolve rules.
 			for (int i = 0; i < rules.size(); i++) {
 
 				QList<RuleRef*> refs = rules[i]->getRuleRefs();
+
 
 				for (int j = 0; j < refs.size(); j++) {
 					QString name = refs[j]->getReference();
@@ -166,10 +179,16 @@ namespace StructureSynth {
 							}
 						}
 					}
+					if ( dynamic_cast<PrimitiveRule*>(map[name]) ) {
+						if (!usedPrimitives.contains(name)) usedPrimitives.append(name);
+					}
 					refs[j]->setRef(map[name]);
 				}
 
 			}
+
+			
+			return usedPrimitives;
 
 		}
 

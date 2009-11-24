@@ -42,7 +42,7 @@ namespace StructureSynth {
 				}
 				for (int i = 0; i < counters.size(); i++) {
 					for (int j = 0; j < counters[i]; j++) {
-						s0 = loops[i].transformation.apply(s0);
+						s0 = loops[i].transformation.apply(s0, b->getColorPool());
 					}
 				}
 				if (callingRule) {

@@ -5,6 +5,7 @@
 #include "../../../SyntopiaCore/GLEngine/Dot.h"
 #include "../../../SyntopiaCore/GLEngine/Line.h"
 #include "../../../SyntopiaCore/GLEngine/Mesh.h"
+#include "../../../SyntopiaCore/GLEngine/Triangle.h"
 #include "../../../SyntopiaCore/Math/Vector3.h"
 
 using namespace SyntopiaCore::GLEngine;
@@ -35,7 +36,7 @@ namespace StructureSynth {
 										SyntopiaCore::Math::Vector3f endBase, 
 										SyntopiaCore::Math::Vector3f endDir1, 
 										SyntopiaCore::Math::Vector3f endDir2, 
-										const QString& classID) {
+										const QString& /*classID*/) {
 					Object3D* o =new Mesh( startBase, startDir1, startDir2, endBase, endDir1, endDir2);
 					o->setColor(rgb, alpha);
 				
@@ -56,6 +57,15 @@ namespace StructureSynth {
 					o->setColor(rgb, alpha);
 					engine->addObject(o);
 			};
+
+			void OpenGLRenderer::drawTriangle(SyntopiaCore::Math::Vector3f p1,
+										 SyntopiaCore::Math::Vector3f p2,
+									     SyntopiaCore::Math::Vector3f p3,
+										 const QString& /*classID*/) {
+				   Object3D* o = new Triangle(p1, p2,p3);
+				   o->setColor(rgb, alpha);
+				   engine->addObject(o);
+			}
 
 			void OpenGLRenderer::drawDot(SyntopiaCore::Math::Vector3f v, const QString &) {
 					Object3D* o = new Dot(v);

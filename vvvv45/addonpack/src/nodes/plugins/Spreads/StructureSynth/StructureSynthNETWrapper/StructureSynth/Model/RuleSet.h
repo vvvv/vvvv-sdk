@@ -19,7 +19,8 @@ namespace StructureSynth {
 				void addRule(Rule* rule);
 
 				/// Resolve symbolic names into pointers
-				void resolveNames();
+				/// Returns a list of the primitives used
+				QStringList resolveNames();
 
 				/// TODO: Implement
 				QStringList getUnreferencedNames();
@@ -31,9 +32,14 @@ namespace StructureSynth {
 				/// For debug
 				void dumpInfo() const;
 
+				void setRecurseDepthFirst(bool value) { recurseDepth = value; };
+				bool recurseDepthFirst() { return recurseDepth; }
+				void setRulesMaxDepth(int maxDepth);
+
 		private:
 			 QList<Rule*> rules;
 			 CustomRule* topLevelRule;
+			 bool recurseDepth;
 		};
 
 	}

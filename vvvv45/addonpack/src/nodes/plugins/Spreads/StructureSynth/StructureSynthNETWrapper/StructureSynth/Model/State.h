@@ -25,7 +25,7 @@ namespace StructureSynth {
 			QMap<const Rule*, int> maxDepths;    // Rules may have a max. recursion depth before they are retired. 
 												 // We need to keep track of this in the state.
 			SyntopiaCore::Math::Matrix4f* prevMatrix; // previous matrix (if stored)
-			
+			int seed;
 		};
 
 

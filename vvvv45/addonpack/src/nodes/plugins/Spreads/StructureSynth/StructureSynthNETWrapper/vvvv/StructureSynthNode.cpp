@@ -6,6 +6,7 @@
 #include "../StructureSynth/Model/Builder.h"
 #include "../StructureSynth/Model/Ruleset.h"
 #include "../StructureSynth/Model/Rendering/ListRenderer.h"
+#include "../StructureSynth/Model/RandomStreams.h"
 
 #include <QString>
 #include <QClipBoard>
@@ -39,6 +40,7 @@ namespace MyNodes
 
 		this->FHost ->CreateValueInput("Random Seed",1,arr1d,TSliceMode::Single,TPinVisibility::True,this->vInSeed);
 		this->vInSeed->SetSubType(1,Double::MaxValue,0.01,1,false,false,true);
+
 		this->FHost->CreateTransformOutput("Sphere",TSliceMode::Dynamic,TPinVisibility::True,this->vOutSphere);
 		this->FHost->CreateColorOutput("Sphere Color",TSliceMode::Dynamic,TPinVisibility::True,this->vOutSphereColor);
 
@@ -53,6 +55,10 @@ namespace MyNodes
 
 		this->FHost->CreateValueOutput("Triangle Positions",3,arr3d,TSliceMode::Dynamic,TPinVisibility::True,this->vOutPositions);
 		//this->FHost->CreateValueOutput("Grid Color",TSliceMode::Dynamic,TPinVisibility::True,this->vOutGridColor);
+
+		
+		this->FHost->CreateValueOutput("Points",3,arr3d,TSliceMode::Dynamic,TPinVisibility::True,this->vOutPoints);
+		this->FHost->CreateColorOutput("Points Color",TSliceMode::Dynamic,TPinVisibility::True,this->vOutPointsColor);
 
 		this->FHost->CreateStringOutput("Message",TSliceMode::Single,TPinVisibility::True,this->vOutMessage);
 
@@ -70,7 +76,7 @@ namespace MyNodes
 
 	void StructureSynthNode::Configurate(IPluginConfig^ Input) 
 	{
-		QString qinput("Testing");
+		
 	}
 
 	void StructureSynthNode::Evaluate(int SpreadMax) 
@@ -85,14 +91,19 @@ namespace MyNodes
 			char* chrinput = (char*)(void*)Marshal::StringToHGlobalAnsi(input);
 			QString qinput(chrinput);
 
-			srand(Convert::ToInt32(seed));
-
+			//srand(Convert::ToInt32(seed));
+			RandomStreams::SetSeed(Convert::ToInt32(seed));
+			
 			try 
 			{
-				ListRenderer rendering(2);
+				
+				ListRenderer rendering;
 				
 				rendering.begin();
-				Tokenizer tok(Preprocessor::Process(qinput));
+				//Tokenizer tok(Preprocessor::Process(qinput));
+				Preprocessor* p = new Preprocessor();
+				//p->Process(qinput);
+				Tokenizer tok(p->Process(qinput));
 
 				EisenParser e(&tok);
 				RuleSet* rs = e.parseRuleset();
@@ -109,7 +120,7 @@ namespace MyNodes
 				for (int i = 0; i<spherecount;i++) 
 				{
 					SyntopiaCore::Math::Vector3f t = rendering.spheres_center.at(i);
-					float s = rendering.spheres_radius.at(i);
+					float s = rendering.spheres_radius.at(i) * 2;
 					//VMath::
 
 					Matrix4x4 mat = VMath::Translate(t.x(),t.y(),t.z()) * VMath::Scale(s,s,s);
@@ -176,12 +187,27 @@ namespace MyNodes
 					this->vOutPositions->SetValue3D(i*3+2,tri.v3.x(),tri.v3.y(),tri.v3.z());
 				}
 
+				int ptcount = rendering.points.count();
+				this->vOutPoints->SliceCount = ptcount;
+				this->vOutPointsColor->SliceCount = ptcount;
+				for (int i = 0; i < ptcount;i++) 
+				{
+					Vector3f tri = rendering.points.at(i);
+					VRGBAColor color = rendering.points_color.at(i);
+
+					this->vOutPoints->SetValue3D(i,tri.x(),tri.y(),tri.z());
+					this->vOutPointsColor->SetColor(i,RGBAColor(color.r,color.g,color.b,color.a));
+				}
+
+				delete p;
+
 				this->vOutMessage->SetString(0,"OK");
 			} 
 			catch (ParseError error) 
 			{
 				this->vOutMessage->SetString(0,"Error");
 			}
+			
 
 
 		}

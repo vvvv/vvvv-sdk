@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "POVRenderer.h"
 #include "../../../SyntopiaCore/Math/Vector3.h"
 

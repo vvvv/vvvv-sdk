@@ -25,7 +25,7 @@ namespace StructureSynth {
 			/// A renderer implementation based on the SyntopiaCore POV widget.
 			class ListRenderer : public Renderer {
 			public:
-				ListRenderer(int test);
+				ListRenderer();
 				
 				virtual ~ListRenderer();
 
@@ -95,6 +95,9 @@ namespace StructureSynth {
 				QVector<VRGBAColor> lines_color;
 
 				QVector<VTriangle> triangles;
+
+				QVector<Vector3f> points;
+				QVector<VRGBAColor> points_color;
 			private:
 				int counter;
 				SyntopiaCore::Math::Vector3f rgb;

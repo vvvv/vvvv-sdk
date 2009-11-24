@@ -1,14 +1,14 @@
-// PluginTemplateCpp.h
-
 #pragma once
 
 using namespace System;
 using namespace VVVV::PluginInterfaces::V1;
 
-namespace MyNodes {
-
-	public ref class StructureSynthNode :IPlugin
+namespace VVVV 
+{
+	namespace Nodes
 	{
+		public ref class StructureSynthThreadedNode
+		{
 		private:
 			IPluginHost^ FHost;
 
@@ -29,16 +29,12 @@ namespace MyNodes {
 			IColorOut^ vOutLinesColor;
 
 			IValueOut^ vOutPositions;
-			//IValueOut^ vOutIndices;
 
-			IValueOut^ vOutPoints;
-			IColorOut^ vOutPointsColor;
-
+			IValueOut^ vOutProcessing;
+			IValueOut^ vOutCompleted;
 			IStringOut^ vOutMessage;
-
 		public:
-			StructureSynthNode() { }
-			~StructureSynthNode() { }
+			StructureSynthThreadedNode(void);
 
 			static property IPluginInfo^ PluginInfo 
 			{
@@ -48,8 +44,8 @@ namespace MyNodes {
 					IPluginInfo^ Info = gcnew VVVV::PluginInterfaces::V1::PluginInfo();
 					Info->Name = "StructureSynth";
 					Info->Category = "Spreads";
-					Info->Version = "";
-					Info->Help = "Structure Synth renderer";
+					Info->Version = "Threaded";
+					Info->Help = "Structure Synth renderer, threaded version";
 					Info->Bugs = "";
 					Info->Credits = "";
 					Info->Warnings = "";
@@ -65,6 +61,7 @@ namespace MyNodes {
 					return Info;
 				}
 			}
+
 			virtual void SetPluginHost(IPluginHost^ Host);
 			virtual void Configurate(IPluginConfig^ Input);
 			virtual void Evaluate(int SpreadMax);
@@ -72,7 +69,6 @@ namespace MyNodes {
 			virtual property bool AutoEvaluate {
 				bool get() { return false; }
 			}
-
-
-	};
+		};
+	}
 }

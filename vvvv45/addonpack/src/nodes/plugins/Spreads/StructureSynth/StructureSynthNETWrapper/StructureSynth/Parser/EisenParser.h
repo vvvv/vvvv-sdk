@@ -25,8 +25,10 @@ namespace StructureSynth {
 			/// Parses the input, and returns the corresponding ruleset.
 			/// Throws a ParseError if any errors are encountered
 			Model::RuleSet* parseRuleset();
+			bool recurseDepthFirst() { return recurseDepth; }
 
 		private:
+			bool recurseDepth;
 			void getSymbol();
 			Model::Rule* rule();
 			Model::RuleSet* ruleset();

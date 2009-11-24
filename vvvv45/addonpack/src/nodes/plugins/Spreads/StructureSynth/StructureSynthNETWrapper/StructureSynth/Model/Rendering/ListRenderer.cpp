@@ -21,7 +21,7 @@ namespace StructureSynth {
 		namespace Rendering {
 
 
-			ListRenderer::ListRenderer(int test) 
+			ListRenderer::ListRenderer() 
 			{		
 
 			}
@@ -59,7 +59,8 @@ namespace StructureSynth {
 
 			void ListRenderer::drawDot(SyntopiaCore::Math::Vector3f v,const QString& classID) 
 			{
-
+				this->points.append(v);
+				this->points_color.append(VRGBAColor(rgb,alpha));
 			};
 
 			void ListRenderer::drawSphere(SyntopiaCore::Math::Vector3f center, float radius,const QString& classID) 

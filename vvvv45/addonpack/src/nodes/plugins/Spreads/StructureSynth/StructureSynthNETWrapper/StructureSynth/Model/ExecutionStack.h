@@ -7,6 +7,7 @@ namespace StructureSynth {
 	namespace Model {	
 
 		struct RuleState {
+			RuleState() {};
 			RuleState(Rule* rule, State state) : rule(rule), state(state) {};
 
 			Rule* rule;
@@ -18,7 +19,7 @@ namespace StructureSynth {
 		///  The rules on the stack are all executed in each generation,
 		///  and each rule will add a number of new rules to the next generation of the stack.
 		///  Only one level is recursion is followed at each generation.
-		typedef QList<RuleState> ExecutionStack;
+		typedef QVector<RuleState> ExecutionStack;
 
 		/*
 		struct ExecutionStack {

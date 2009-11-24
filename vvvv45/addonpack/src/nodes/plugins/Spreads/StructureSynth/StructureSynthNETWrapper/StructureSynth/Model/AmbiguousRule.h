@@ -24,6 +24,9 @@ namespace StructureSynth {
 			QList<CustomRule*> getRules() { return rules; };
 			
 			void appendRule(CustomRule* r) { rules.append(r); }
+
+			virtual void setMaxDepth(int maxDepth) { for (int i = 0; i < rules.size(); i++) rules[i]->setMaxDepth(maxDepth); }
+			
 		private:
 			QList<CustomRule*> rules;
 		};

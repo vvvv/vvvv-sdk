@@ -19,7 +19,7 @@ namespace StructureSynth {
 		Tokenizer::Tokenizer(QString input) {
 
 			QStringList operators;
-			operators << "c" << "color"  << "a" << "alpha" << "matrix" << "h" << "hue" << "sat" << "b" << "brightness" << "v" << "x" << "y" << "z" << "rx" << "ry" << "rz" << "s" << "fx" << "fy" << "fz" << "maxdepth" << "weight" << "md" << "w";
+			operators << "c" << "color" << "blend" << "a" << "alpha" << "matrix" << "h" << "hue" << "sat" << "b" << "brightness" << "v" << "x" << "y" << "z" << "rx" << "ry" << "rz" << "s" << "fx" << "fy" << "fz" << "maxdepth" << "weight" << "md" << "w";
 
 			currentSymbol = -1;
 
