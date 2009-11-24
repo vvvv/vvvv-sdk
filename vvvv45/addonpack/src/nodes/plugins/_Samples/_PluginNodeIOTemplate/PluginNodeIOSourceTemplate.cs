@@ -40,7 +40,7 @@ using VVVV.Utils.VMath;
 namespace VVVV.Nodes
 {
 	//class definition
-	public class PluginNodeIOSourceTemplate: IPlugin, IDisposable
+	public class PluginNodeIOSourceTemplate: IPlugin, IDisposable, IMyNodeIO
     {	          	
     	#region field declaration
     	
@@ -50,10 +50,12 @@ namespace VVVV.Nodes
    		private bool FDisposed = false;
 
     	//input pin declaration
-    	private IStringIn FFileNameInput;
+    	private IValueIn FMyValueInput;
     	
     	//output pin declaration
     	private INodeOut FMyNodeOutput;
+    	
+    	private int[] FData;
     	
     	#endregion field declaration
        
@@ -92,19 +94,11 @@ namespace VVVV.Nodes
         		if(disposing)
         		{
         			// Dispose managed resources.
-        			int c;
-        			do
-        			{
-        				c = Marshal.ReleaseComObject(FFileNameInput);        			
-        			}
-        			while (c > 0);
-        			
-        			FHost.Log(TLogType.Debug, "refcount: " + c.ToString());
         		}
         		// Release unmanaged resources. If disposing is false,
         		// only the following code is executed.
 	        	
-        		//FHost.Log(TLogType.Debug, "PluginTemplate is being deleted");
+        		FHost.Log(TLogType.Debug, "PluginTemplate is being deleted");
         		
         		// Note that this is not thread safe.
         		// Another thread could start disposing the object
@@ -195,38 +189,64 @@ namespace VVVV.Nodes
 	    	FHost = Host;
 
 	    	//create inputs
-	    	FHost.CreateStringInput("Filename", TSliceMode.Single, TPinVisibility.True, out FFileNameInput);
-			FFileNameInput.SetSubType("", true);
+	    	FHost.CreateValueInput("Value Input", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueInput);
+	    	FMyValueInput.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.5, false, false, false);
 	    	
-	    	//create outputs
+	    	//create outputs	    	
 	    	FHost.CreateNodeOutput("NodePin Out", TSliceMode.Dynamic, TPinVisibility.True, out FMyNodeOutput);
 	    	FMyNodeOutput.SetSubType(new Guid[1]{MyNodeIO.GUID}, MyNodeIO.FriendlyName);
+	    	FMyNodeOutput.SetInterface(this);
         } 
 
         #endregion pin creation
+        
+        #region IMyNodeIO
+		public void GetSlice(int Index, out int Value)
+		{
+			//return data from the internal buffer
+			Value = FData[Index];
+		}
+		
+        #endregion
         
         #region mainloop
         
         public void Configurate(IPluginConfig Input)
         {
-
+        	//nothing to configure in this plugin
+        	//only used in conjunction with inputs of type cmpdConfigurate
         }
         
         //here we go, thats the method called by vvvv each frame
         //all data handling should be in here
         public void Evaluate(int SpreadMax)
-        {    
-        	try {
-	        	bool changed = FFileNameInput.PinIsChanged; // crash
-	        	//int count = FFileNameInput.SliceCount; // crash
-	        	//int spread = FFileNameInput.SpreadAsString[0]; // crash
-	        	//bool connected = FFileNameInput.IsConnected; // no crash
-	        	//string name = FFileNameInput.Name; // no crash
-	        	//int order = FFileNameInput.Order; // no crash
-        	} catch (Exception e) {
-        		FHost.Log(TLogType.Error, e.Message);
-        		FHost.Log(TLogType.Error, e.StackTrace);
-        	}
+        {     	
+        	//if any of the inputs has changed
+        	//recompute the outputs
+        	if (FMyValueInput.PinIsChanged)
+        	{	
+	        	//first set slicecounts for all outputs
+	        	//the incoming int SpreadMax is the maximum slicecount of all input pins, which is a good default
+	        	FMyNodeOutput.SliceCount = SpreadMax;
+				
+	        	//internal data buffer
+	        	FData = new int[SpreadMax];
+	        	
+	        	//the variables to fill with the input data
+	        	double currentValueSlice;
+	        	
+        		//loop for all slices
+        		for (int i=0; i<SpreadMax; i++)
+        		{		
+        			//read data from value input
+        			FMyValueInput.GetValue(i, out currentValueSlice);
+        			
+        			//do something with the input and save it
+        			FData[i] = (int) currentValueSlice * 1000;
+        		}
+        		
+        		FMyNodeOutput.MarkPinAsChanged();
+        	}      	
         }
              
         #endregion mainloop  

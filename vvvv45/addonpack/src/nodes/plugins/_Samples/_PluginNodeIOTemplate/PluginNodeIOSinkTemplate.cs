@@ -37,7 +37,7 @@ using VVVV.Utils.VMath;
 namespace VVVV.Nodes
 {
 	//class definition
-	public class PluginNodeIOSinkTemplate: IPlugin, IDisposable
+	public class PluginNodeIOSinkTemplate: IPlugin, IPluginConnections, IDisposable
     {	          	
     	#region field declaration
     	
@@ -48,6 +48,11 @@ namespace VVVV.Nodes
 
     	//input pin declaration
 		private INodeIn FMyNodeInput;
+    	
+    	//output pin declaration
+    	private IValueOut FMyValueOutput;
+    	
+    	private IMyNodeIO FUpstreamInterface;
     	
     	#endregion field declaration
        
@@ -167,7 +172,7 @@ namespace VVVV.Nodes
         public bool AutoEvaluate
         {
         	//return true if this node needs to calculate every frame even if nobody asks for its output
-        	get {return true;}
+        	get {return false;}
         }
         
         #endregion node name and infos
@@ -180,8 +185,13 @@ namespace VVVV.Nodes
         	//assign host
 	    	FHost = Host;
 
+	    	//create inputs
 	    	FHost.CreateNodeInput("NodePin In", TSliceMode.Dynamic, TPinVisibility.True, out FMyNodeInput);
 	    	FMyNodeInput.SetSubType(new Guid[1]{MyNodeIO.GUID}, MyNodeIO.FriendlyName);
+	    	
+	    	//create outputs	    	
+	    	FHost.CreateValueOutput("Value Output", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueOutput);
+	    	FMyValueOutput.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
         }
 
         #endregion pin creation
@@ -190,23 +200,55 @@ namespace VVVV.Nodes
         
         public void Configurate(IPluginConfig Input)
         {
-
+        	//nothing to configure in this plugin
+        	//only used in conjunction with inputs of type cmpdConfigurate
+        }
+        
+        public void ConnectPin(IPluginIO Pin)
+        {
+        	//cache a reference to the upstream interface when the NodeInput pin is being connected
+        	if (Pin == FMyNodeInput)
+        	{
+        		INodeIOBase usI;
+        		FMyNodeInput.GetUpstreamInterface(out usI);
+        		FUpstreamInterface = usI as IMyNodeIO;
+        	}
+        }
+        
+        public void DisconnectPin(IPluginIO Pin)
+        {
+        	//reset the cached reference to the upstream interface when the NodeInput is being disconnected
+        	if (Pin == FMyNodeInput)
+        	{
+        		FUpstreamInterface = null;
+        	}
         }
         
         //here we go, thats the method called by vvvv each frame
         //all data handling should be in here
         public void Evaluate(int SpreadMax)
         {     	
-        	try {
-		        bool changed = FMyNodeInput.PinIsChanged; // crash
-	        	//int count = FMyNodeInput.SliceCount; // no crash but memory exception
-	        	//int spread = FMyNodeInput.SpreadAsString[0]; // no crash but memory exception
-	        	//bool connected = FMyNodeInput.IsConnected; // no crash
-	        	//string name = FMyNodeInput.Name; // no crash
-	        	//int order = FMyNodeInput.Order; // no crash
-        	} catch (Exception e) {
-        		FHost.Log(TLogType.Error, e.Message);
-        		FHost.Log(TLogType.Error, e.StackTrace);
+	    	//first set slicecounts for all outputs
+	        //the incoming int SpreadMax is the maximum slicecount of all input pins, which is a good default
+	        FMyValueOutput.SliceCount = SpreadMax;
+	        	
+	        int v = 0;
+        	int usS;
+	        //see if we have a reference to the upstream interface
+	        if ((FUpstreamInterface != null) && (FMyNodeInput.PinIsChanged))
+        	{
+        		//loop for all slices
+        		
+        		for (int i=0; i<SpreadMax; i++)
+        		{		
+        			//get upstream slice index
+        			FMyNodeInput.GetUpsreamSlice(i, out usS);
+        			//get value of upstream nodepin
+        			FUpstreamInterface.GetSlice(usS, out v);
+        			
+        			//write value to output
+        			FMyValueOutput.SetValue(i, v);        			
+        		}
         	}
         }
              
