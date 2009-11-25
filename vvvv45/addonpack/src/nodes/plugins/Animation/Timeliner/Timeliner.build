@@ -18,6 +18,11 @@
     <include name="${root.bin}/_PluginInterfaces.dll" />
     <include name="Dependencies/Sanford.Multimedia.Midi.dll" />
   </assemblyfileset>
+  
+  <fileset id="project.sources" failonempty="true">
+    <include name="**/*.cs" />
+    <include name="${shared.src}/ManagedVCL/ManagedVCLControl.cs" />
+  </fileset>
 
   <target name="post-build">
     <copy todir="${plugin.path}">
