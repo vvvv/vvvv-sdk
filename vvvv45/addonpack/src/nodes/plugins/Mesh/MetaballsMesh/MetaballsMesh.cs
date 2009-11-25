@@ -1,7 +1,7 @@
 #region licence/info
 
 //////project name
-//vvvv plugin template
+//Metaballs Mesh
 
 //////description
 //basic vvvv node plugin template.
@@ -21,7 +21,7 @@
 //VVVV.Utils.VMath;
 
 //////initial author
-//vvvv group
+//majortom
 
 #endregion licence/info
 
@@ -148,15 +148,15 @@ namespace VVVV.Nodes
 					FPluginInfo = new PluginInfo();
 					
 					//the nodes main name: use CamelCaps and no spaces
-					FPluginInfo.Name = "MetaballsMesh";
+					FPluginInfo.Name = "Metaballs";
 					//the nodes category: try to use an existing one
-					FPluginInfo.Category = "Template";
+					FPluginInfo.Category = "EX9.Geometry";
 					//the nodes version: optional. leave blank if not
 					//needed to distinguish two nodes of the same name and category
-					FPluginInfo.Version = "Mesh";
+					FPluginInfo.Version = "";
 					
 					//the nodes author: your sign
-					FPluginInfo.Author = "vvvv group";
+					FPluginInfo.Author = "majortom";
 					//describe the nodes function
 					FPluginInfo.Help = "MetaballsMesh";
 					//specify a comma separated list of tags that describe the node
