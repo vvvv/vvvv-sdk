@@ -23,8 +23,6 @@ namespace VVVV.Nodes.Timeliner
 			get{return FMidiScore;}
 		}
 		
-		private OpenFileDialog FOpenDialog;
-		
 		// PINS
 		///////////////////////
 		/// 

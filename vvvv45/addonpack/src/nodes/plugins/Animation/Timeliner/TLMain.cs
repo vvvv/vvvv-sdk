@@ -1058,16 +1058,13 @@ namespace VVVV.Nodes
 		//seems to work in standalone and docked to a vvvv-window though.
 		protected override bool ProcessCmdKey(ref Message m, Keys keyData)
 		{
-			const int WM_KEYDOWN = 0x100;
-			//FHost.Log(TLogType.Debug, "cmd keydown");
-			
 			return base.ProcessCmdKey(ref m, keyData);
 		}
 		
 		protected override bool ProcessKeyPreview(ref Message m)
 		{
 			const int WM_KEYDOWN = 0x100;
-			const int WM_KEYUP = 0x101;
+			//const int WM_KEYUP = 0x101;
 			
 			if (m.Msg == WM_KEYDOWN)
 			{

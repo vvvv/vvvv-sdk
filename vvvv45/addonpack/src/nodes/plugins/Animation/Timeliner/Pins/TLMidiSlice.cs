@@ -14,7 +14,6 @@ namespace VVVV.Nodes.Timeliner
 {
 	public class TLMidiSlice :  TLSlice
 	{
-		private Font FFont = new Font("Verdana", 7);
 		/*
 		private IValueIO FNoteIn;
 		private IValueIO FBarIn;
@@ -23,7 +22,6 @@ namespace VVVV.Nodes.Timeliner
 		 */
 		
 		private string FOutput;
-
 		public string Output
 		{
 			get {return FOutput;}
@@ -67,7 +65,9 @@ namespace VVVV.Nodes.Timeliner
 		
 		
 		public TLMidiSlice(IPluginHost Host, TLBasePin Pin, int SliceIndex, int PinsOrder): base(Host, Pin, SliceIndex, PinsOrder)
-		{}
+		{
+			FFont = new Font("Verdana", 7);
+		}
 		
 		protected override void CreatePins()
 		{}
