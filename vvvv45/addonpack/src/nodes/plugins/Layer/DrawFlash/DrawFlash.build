@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding='iso-8859-1' ?>
+<project
+	name="VVVV.Plugin"
+	default="build"
+	xmlns="http://nant.sf.net/release/0.85/nant.xsd"
+>
+
+  <property name="root.dir" value="../../../" />
+  <include buildfile="${root.dir}/nant-plugins.xml" />
+  <property name="lib.name" value="DrawFlash.dll" />
+
+  <assemblyfileset id="project.references">
+    <include name="${root.bin}/_Utils.dll" />
+    <include name="${root.bin}/_PluginInterfaces.dll" />
+    <include name="${slimdx.dll}" />
+	<include name="Dependencies/FantastiqUInet.dll" />
+  </assemblyfileset>
+
+  <fileset id="project.sources" failonempty="true">
+    <include name="**/*.cs" />
+    <include name="${shared.src}/SlimDX/SlimDXUtils.cs" />
+  </fileset>
+  
+  <target name="post-build">
+    <copy todir="${plugin.path}">
+      <fileset basedir="Dependencies">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+  </target>
+
+</project>
