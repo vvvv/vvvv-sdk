@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\chrismo\Desktop\SVN\vvvv\Layer\DrawFlash\trunk\DrawFlash (Device C#) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha21.4.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\vvvv_trunk\plugins\Flash (EX9) help.v4p">
    <BOUNDS height="7350" left="585" top="7440" type="Window" width="7410">
    </BOUNDS>
    <NODE componentmode="Hidden" id="8" nodename="Group (EX9)">
@@ -55,7 +55,7 @@
    </PIN>
    <PIN pinname="Mouse Left Button" visible="1">
    </PIN>
-   <PIN pinname="SWF Path" slicecount="1" visible="1" values="|DrawFlash (Device C#) help.swf|">
+   <PIN pinname="SWF Path" visible="1">
    </PIN>
    <PIN pinname="Load" slicecount="1" visible="1" values="0">
    </PIN>
@@ -77,7 +77,7 @@
    <LINK dstnodeid="8" dstpinname="Layer 1" srcnodeid="6" srcpinname="Layer">
    </LINK>
    <NODE componentmode="Hidden" id="5" nodename="Transform (Transform 3d)">
-   <BOUNDS height="0" left="4665" top="2250" type="Node" width="0">
+   <BOUNDS height="0" left="5355" top="2430" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -149,9 +149,9 @@
    </BOUNDS>
    </NODE>
    <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="1485" top="360" type="Node" width="0">
+   <BOUNDS height="0" left="4275" top="360" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="1380" left="1485" top="360" type="Box" width="900">
+   <BOUNDS height="1380" left="4275" top="360" type="Box" width="900">
    </BOUNDS>
    <BOUNDS height="160" left="17070" top="7620" type="Window" width="215">
    </BOUNDS>
@@ -165,5 +165,35 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="6" dstpinname="GoToFrame" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <NODE nodename="Self (VVVV)" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="1335" top="705" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="FileName (File Split)" componentmode="Hidden" id="10">
+   <BOUNDS type="Node" left="1335" top="1095" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Shortname" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Filename" dstnodeid="10" dstpinname="Filename">
+   </LINK>
+   <NODE nodename="Add (String)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="1695" top="1725" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" values=".swf">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Shortname" dstnodeid="11" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="6" dstpinname="SWF Path">
    </LINK>
    </PATCH>
