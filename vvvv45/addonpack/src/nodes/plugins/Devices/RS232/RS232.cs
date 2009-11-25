@@ -71,8 +71,6 @@ namespace VVVV.Nodes
                     foreach (Port tPort in _Ports)
                         tPort.Dispose();
                 }
-
-                FHost.Log(TLogType.Debug, "ScreenInfo is being deleted");
             }
             FDisposed = true;
         }
