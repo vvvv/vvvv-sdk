@@ -93,8 +93,8 @@ namespace VVVV.Nodes
                 // PLUGIN INFORMATIONS
                 ///////////////////////
                 Info.Name = "RS232";
-                Info.Category = "Device";
-                Info.Version = "C#";
+                Info.Category = "Devices";
+                Info.Version = "Spreadable";
                 Info.Help = "none";
                 Info.Bugs = "none";
 
@@ -118,39 +118,38 @@ namespace VVVV.Nodes
 
 
             //INPUT-PINS
-            FHost.CreateStringInput("Data", TSliceMode.Dynamic, TPinVisibility.True, out FDataIn);
+            FHost.CreateStringInput("Input", TSliceMode.Dynamic, TPinVisibility.True, out FDataIn);
             FDataIn.SetSubType("", false);
             FHost.CreateValueInput("Do Send", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDoSendIn);
             FDoSendIn.SetSubType(0, 1, 1, 0, true, false, true);
-            FHost.CreateValueInput("Enable", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FEnableIn);
-            FEnableIn.SetSubType(0, 1, 1, 0, false, false, true);
             FHost.CreateValueInput("Keep Last Data", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FKeepLastDataIn);
             FKeepLastDataIn.SetSubType(0, 1, 1, 0, false, false, true);
-            FHost.CreateValueInput("Port", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPortNumberIn);
-            FPortNumberIn.SetSubType(1, 15, 1, 1, false, false, true);
             FHost.CreateValueInput("Baudrate", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBaudrateIn);
             FBaudrateIn.SetSubType(Double.MinValue, Double.MaxValue, 1, 9600, false, false, true);
-            FHost.UpdateEnum("Parity", "None", new string[] { "None", "Odd", "Even", "Mark", "Space" });
+          
+            FHost.CreateEnumInput("Data Bits", TSliceMode.Dynamic, TPinVisibility.True, out FDatabitsIn);
+            FDatabitsIn.SetSubType("DataBits");
+            FHost.CreateEnumInput("Stop Bits", TSliceMode.Dynamic, TPinVisibility.True, out FStopbitsIn);
+            FStopbitsIn.SetSubType("StopBits");
+            
             FHost.CreateEnumInput("Parity", TSliceMode.Dynamic, TPinVisibility.True, out FParityIn);
             FParityIn.SetSubType("Parity");
-            FHost.UpdateEnum("Data Bits", "8", new string[] { "5", "6", "7", "8" });
-            FHost.CreateEnumInput("Data Bits", TSliceMode.Dynamic, TPinVisibility.True, out FDatabitsIn);
-            FDatabitsIn.SetSubType("Data Bits");
-            FHost.UpdateEnum("Stop Bits", "1", new string[] { "1", "1.5", "2" });
-            FHost.CreateEnumInput("Stop Bits", TSliceMode.Dynamic, TPinVisibility.True, out FStopbitsIn);
-            FStopbitsIn.SetSubType("Stop Bits");
+            
             FHost.UpdateEnum("Hand Shake", "None", new string[] { "None", "RequestToSend", "RequestToSendXOnXOff", "XOnXOff" });
             FHost.CreateEnumInput("Hand Shake", TSliceMode.Dynamic, TPinVisibility.True, out FHandShakeIn);
             FHandShakeIn.SetSubType("Hand Shake");
             
-
+            FHost.CreateValueInput("Enabled", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FEnableIn);
+            FEnableIn.SetSubType(0, 1, 1, 0, false, false, true);
+			FHost.CreateValueInput("ComPort", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPortNumberIn);
+            FPortNumberIn.SetSubType(1, 15, 1, 1, false, false, true);
 
             // OUTPUT-PINS
-            FHost.CreateStringOutput("Data", TSliceMode.Dynamic, TPinVisibility.True, out FDataOut);
+            FHost.CreateStringOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FDataOut);
             FDataOut.SetSubType("", false);
-            FHost.CreateValueOutput("OnData", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FOnDataOut);
+            FHost.CreateValueOutput("On Data", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FOnDataOut);
             FOnDataOut.SetSubType(0, 1, 1, 0, true, false, true);
-            FHost.CreateValueOutput("Connected", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FConnectedOut);
+            FHost.CreateValueOutput("IsConnected", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FConnectedOut);
             FConnectedOut.SetSubType(0, 1, 1, 0, false, false, true);
             FHost.CreateValueOutput("Available Ports", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPortsOut);
             FPortsOut.SetSubType(1, 15, 1, 1, false, false, true);
