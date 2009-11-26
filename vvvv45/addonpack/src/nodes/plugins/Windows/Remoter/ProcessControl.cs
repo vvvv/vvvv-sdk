@@ -34,6 +34,14 @@ namespace VVVV.Nodes
 			}
 		}
 		
+		public string ProcessAndArguments
+		{
+			get
+			{
+				return ProcessEdit.Text + " " + ArgumentsEdit.Text;
+			}
+		}
+		
 		public ProcessControl()
 		{
 			//
