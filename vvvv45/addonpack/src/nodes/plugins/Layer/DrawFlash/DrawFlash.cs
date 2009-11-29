@@ -82,7 +82,6 @@ namespace VVVV.Nodes
         private IValueIn FMouseLeftButton;
         private IEnumIn FBufferMode;
         private IValueIn FEnabledInput;
-        private IValueIn FResetSiemensSWF;
         private IValueIn FGoToFrame;
         private IEnumIn FQuality;
 
@@ -293,10 +292,6 @@ namespace VVVV.Nodes
             FHost.CreateValueInput("Enabled", 1, null, TSliceMode.Single, TPinVisibility.True, out FEnabledInput);
             FEnabledInput.SetSubType(0, 1, 1, 1, false, true, false);
 
-            // temp, only for siemens project
-            FHost.CreateValueInput("Reset", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResetSiemensSWF);
-            FResetSiemensSWF.SetSubType(0, 1, 1, 0, true, false, false);
-
             FHost.CreateValueInput("GoToFrame", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FGoToFrame);
             FGoToFrame.SetSubType(0, Int32.MaxValue, 1, 0, false, false, true);
 
@@ -350,27 +345,6 @@ namespace VVVV.Nodes
             try
             {
                 FSpreadCount = pSpreadMax;
-
-
-
-                // temp for siemens project
-                // no possibility to jump to a certain frame
-                // ********************************************************
-                if (FResetSiemensSWF.PinIsChanged)
-                {
-                    double tReset;
-
-                    FResetSiemensSWF.GetValue(0, out tReset);
-
-                    if (tReset == 1.0)
-                    {
-                        _FNUIFlashPlayer.UpdateMousePosition(90, 100);
-                        _FNUIFlashPlayer.UpdateMouseButton(0, true);
-                        _FNUIFlashPlayer.UpdateMouseButton(0, false);
-                    }
-                }
-                // ********************************************************
-
 
                 if (FGoToFrame.PinIsChanged)
                     GoToFrame(0);
