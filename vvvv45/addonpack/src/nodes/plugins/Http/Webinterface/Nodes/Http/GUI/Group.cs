@@ -241,7 +241,7 @@ namespace VVVV.Nodes.Http.GUI
             FInputPinList.Add(FInput2);
 
             //create outputs	    	
-            FHost.CreateNodeOutput("NodePin Out", TSliceMode.Dynamic, TPinVisibility.True, out FMyNodeOutput);
+            FHost.CreateNodeOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FMyNodeOutput);
             FMyNodeOutput.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
             FMyNodeOutput.SetInterface(this);
 
@@ -387,7 +387,7 @@ namespace VVVV.Nodes.Http.GUI
                 }
             }
 
-            if (PinIsChanged() || FPinIsConnectedDisconnected)
+            if (FPinIsChanged || FPinIsConnectedDisconnected || FInputPinChangedThisFrame)
             {
                 FGuiDataList.Clear();
                 FNodeIdList.Clear();
