@@ -37,6 +37,7 @@ namespace VVVV.Nodes.Http.BaseNodes
 
         private bool FConnectPin = false;
         private bool FDisconnectPin = false;
+        private bool FPinIsChanged = false;
 
         #endregion field Definition
 
@@ -176,17 +177,20 @@ namespace VVVV.Nodes.Http.BaseNodes
         {
 
 
+
             try
             {
                 this.OnEvaluate(SpreadMax);
+                FPinIsChanged = false;   
                 int usS;
 
                 if (FUpstreamStyleIn != null)
                 {
-                    if (FUpstreamStyleIn.PinIsChanged() || FConnectPin || FDisconnectPin)
+                    if (FUpstreamStyleIn.PinIsChanged() || FConnectPin || FDisconnectPin || PinIsChanged())
                     {
                         mCssPropertiesCombined.Clear();
                         int SliceOffsetCounter = 0;
+                        FPinIsChanged = true;
 
                         for (int i = 0; i < SpreadMax; i++)
                         {
@@ -204,7 +208,7 @@ namespace VVVV.Nodes.Http.BaseNodes
 
 
 
-                            if (tCssSliceList == null)
+                            if (tCssSliceList != null)
                             {
 
                                 mCssPropertiesOwn.TryGetValue(SliceOffsetCounter, out tCssSliceList);
@@ -231,15 +235,16 @@ namespace VVVV.Nodes.Http.BaseNodes
                                 if (mCssPropertiesCombined.ContainsKey(i))
                                 {
                                     mCssPropertiesCombined.Remove(i);
-                                    mCssPropertiesCombined.Add(i, new SortedList<string, string>(tWorkerList));
+                                    mCssPropertiesCombined.Add(i, tWorkerList);
                                 }
                                 else
                                 {
-                                    mCssPropertiesCombined.Add(i, new SortedList<string, string>(tWorkerList));
+                                    mCssPropertiesCombined.Add(i, tWorkerList);
                                 }
 
                             }
-                            else if (tStylePropertyIn != null)
+
+                            if (tStylePropertyIn != null)
                             {
 
                                 SortedList<string, string> tWorkerList = new SortedList<string, string>(tCssSliceList);
@@ -252,7 +257,7 @@ namespace VVVV.Nodes.Http.BaseNodes
                                 }
 
                                 mCssPropertiesCombined.Remove(i);
-                                mCssPropertiesCombined.Add(i, new SortedList<string, string>(tWorkerList));
+                                mCssPropertiesCombined.Add(i, tWorkerList);
                             }
                         }
                     }
@@ -294,7 +299,7 @@ namespace VVVV.Nodes.Http.BaseNodes
 
 		public bool PinIsChanged()
 		{
-			return (DynamicPinIsChanged() || FConnectPin || FDisconnectPin);
+			return (DynamicPinIsChanged() || FConnectPin || FDisconnectPin || FPinIsChanged);
 		}
 
 		#endregion

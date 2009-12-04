@@ -13,7 +13,7 @@ namespace VVVV.Nodes.Http.BaseNodes
 		//Host
         protected IPluginHost FHost;
 		
-		private WebinterfaceSingelton FWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
+		protected WebinterfaceSingelton FWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
 		protected string FNodeId;
 		protected bool FChangedNodeId = true;
 		protected List<string> FSliceId = new List<string>();
@@ -37,7 +37,6 @@ namespace VVVV.Nodes.Http.BaseNodes
 			try
 			{
 				FWebinterfaceSingelton.HostPath = FNodePath;
-
 				CreateBasePins();
 			}
 			catch (Exception ex)
@@ -107,7 +106,7 @@ namespace VVVV.Nodes.Http.BaseNodes
 
 				#endregion ReceivedData
 
-				BaseEvaluate(SpreadMax);
+				BaseEvaluate(SpreadMax, FReceivedNewString);
 				FChangedNodeId = false;
 				FSpreadMax = SpreadMax;
 			}
@@ -117,7 +116,7 @@ namespace VVVV.Nodes.Http.BaseNodes
 			}
 		}
 
-		protected abstract void BaseEvaluate(int SpreadMax);
+		protected abstract void BaseEvaluate(int SpreadMax, bool ReceivedNewString);
 
 		#region Get data from WebinterfaceSingelton
 

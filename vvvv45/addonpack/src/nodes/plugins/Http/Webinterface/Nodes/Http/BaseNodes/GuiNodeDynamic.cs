@@ -10,6 +10,7 @@ using VVVV.Webinterface.jQuery;
 using VVVV.Webinterface;
 using System.Diagnostics;
 using System.Globalization;
+using System.Xml;
 
 
 namespace VVVV.Nodes.Http.BaseNodes
@@ -225,11 +226,11 @@ namespace VVVV.Nodes.Http.BaseNodes
 
         #region Evaluate
 
-		protected override void BaseEvaluate(int SpreadMax)
+		protected override void BaseEvaluate(int SpreadMax, bool ReceivedNewString)
         {
 
 
-            FGuiListModified = false;
+            FGuiListModified = ReceivedNewString;
 
             #region Check Gui List
 
@@ -291,24 +292,31 @@ namespace VVVV.Nodes.Http.BaseNodes
 
 
 			#region JQuery
-			
-			if (FJQueryNodeInput.IsConnected && (FJQueryNodeInput.PinIsChanged || FUpstreamJQueryNodeInterface.PinIsChanged))
-			{
-				for (int i = 0; i < SpreadMax; i++)
-				{
-					FUpstreamJQueryNodeData = FUpstreamJQueryNodeInterface.GetJQueryData(i);
-					FGuiDataList[i].AddString(JQuery.GenerateDocumentReady(FUpstreamJQueryNodeData.BuildChain().SetSelector(new ClassSelector(FNodeId))).GenerateScript(1, true, true), GuiDataObject.Position.UpstreamJQuery, true);
-				}
-				FGuiListModified = true;
-			}
-			else if (FJQueryNodeInput.PinIsChanged)
-			{
-				for (int i = 0; i < SpreadMax; i++)
-				{
-					FGuiDataList[i].ResetContent(GuiDataObject.Position.UpstreamJQuery);
-				}
-				FGuiListModified = true;
-			}
+
+            try
+            {
+                if (FJQueryNodeInput.IsConnected && (FJQueryNodeInput.PinIsChanged || FUpstreamJQueryNodeInterface.PinIsChanged))
+                {
+                    for (int i = 0; i < SpreadMax; i++)
+                    {
+                        FUpstreamJQueryNodeData = FUpstreamJQueryNodeInterface.GetJQueryData(i);
+                        FGuiDataList[i].AddString(JQuery.GenerateDocumentReady(FUpstreamJQueryNodeData.BuildChain().SetSelector(new ClassSelector(FNodeId))).GenerateScript(1, true, true), GuiDataObject.Position.UpstreamJQuery, true);
+                    }
+                    FGuiListModified = true;
+                }
+                else if (FJQueryNodeInput.PinIsChanged)
+                {
+                    for (int i = 0; i < SpreadMax; i++)
+                    {
+                        FGuiDataList[i].ResetContent(GuiDataObject.Position.UpstreamJQuery);
+                    }
+                    FGuiListModified = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                FHost.Log(TLogType.Error, ex.Message);
+            }
 
 
 			
@@ -421,8 +429,7 @@ namespace VVVV.Nodes.Http.BaseNodes
 						SortedList<string, string> tSliceCssPropertie;
 						FUpstreamStyle.GetCssProperties(i, out tSliceCssPropertie);
 
-						FGuiDataList[i].CssProperties = new SortedList<string, string>(tSliceCssPropertie);
-
+						FGuiDataList[i].CssProperties = tSliceCssPropertie;
 					}
 				}
             }
@@ -492,19 +499,6 @@ namespace VVVV.Nodes.Http.BaseNodes
 
         #region Add to GuiDataObject
 
-        //public void SetBodyContent(int pSliceIndex, string pContent)
-        //{
-        //    FGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.Body, true);
-        //}
-
-
-
-        //public void SetHeadContent(int pSliceIndex, string pContent)
-        //{
-        //    FGuiDataList[pSliceIndex].AddString(pContent, GuiDataObject.Position.Head, true);
-        //}
-
-
         public void SetTag(int pSliceIndex, Tag pTag)
         {
             pTag.AddAttribute(new HTMLAttribute("id", FSliceId[pSliceIndex]));
@@ -532,10 +526,43 @@ namespace VVVV.Nodes.Http.BaseNodes
 
         #endregion Add to GuiDataObject
 
-		#region IHttpGUIIO Members
+
+        #region Polling
+
+        /// <summary>
+        /// Creates an Xml File with is polled by the server
+        /// </summary>
+        /// <param name="SliceID">the Object which value should be set</param>
+        /// <param name="ObjectMethodName">the Name of the Method which is used to set the necessary value</param>
+        /// <param name="Elements">the Mehtod parameters to set the value</param>
+        public void SetPollingData(int index, string SliceID, string ObjectMethodName, string[] MethodeParameters)
+        {
+            //the xml Document to create the XmlNode witch contains theinformation for the Browser
+            XmlDocument doc = new XmlDocument();
+            XmlNode RootNode, ElementNode;
+
+            RootNode = doc.CreateElement("node");
+            doc.AppendChild(RootNode);
+
+            RootNode.Attributes.Append(doc.CreateAttribute("SliceId")).InnerText = "#" + SliceID;
+            RootNode.Attributes.Append(doc.CreateAttribute("ObjectMethodName")).InnerText = ObjectMethodName; 
+
+            for (int i = 0; i < MethodeParameters.Length; i++)
+			{
+                ElementNode = doc.CreateElement("MethodParameters");
+                ElementNode.InnerText = MethodeParameters[i];
+                RootNode.AppendChild(ElementNode);
+			}
+
+            FWebinterfaceSingelton.setPollingMessage(SliceID, doc);
+        }
+
+        #endregion
+
+        #region IHttpGUIIO Members
 
 
-		public List<string> GetAllNodeIds()
+        public List<string> GetAllNodeIds()
 		{
 			List<string> allNodeIds = new List<string>();
 			allNodeIds.Add(FNodeId);
