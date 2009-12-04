@@ -65,7 +65,7 @@ namespace VVVV.Webinterface
     ///	 <description>creates an cnstance of the ConcretSunject class</description>
     /// </item>
     ///  </list>
-    sealed class WebinterfaceSingelton
+    public sealed class WebinterfaceSingelton
     {
 
         public struct PageValues
@@ -96,7 +96,7 @@ namespace VVVV.Webinterface
         private List<string> mGetMessages = new List<string>();
         private List<string> mPostMessages = new List<string>();
         private SortedList<string,string> mBrowserPolling = new SortedList<string,string>();
-        private SortedList<string,string> mNodePolling = new SortedList<string,string>();
+        private SortedList<string, XmlDocument> mNodePolling = new SortedList<string, XmlDocument>();
         private SortedList<string, PageValues> mGuiLists = new SortedList<string,PageValues>();
         private List<string> mConnectedPages = new List<string>();
         private SortedList<string, string> mServerFiles = new SortedList<string,string>();
@@ -413,52 +413,6 @@ namespace VVVV.Webinterface
             return mServerFiles;
         }
 
-        private void GetPageList()
-        {
-
-        }
-
-
-        //private void HandlePageList(string pPageName, Page pPage, string pCssFile, string pJsFile, string pUrl)
-        //{
-
-        //    if (PageNames.Contains(pPageName))
-        //    {
-        //        PageNames.Remove(pPageName);
-        //        PageNames.Add(pPageName);
-
-        //        mHtmlPageList.Remove(pUrl);
-        //        mHtmlPageList.Add(pUrl, Encoding.UTF8.GetBytes(pPage.Text));
-
-        //        mHtmlPageList.Remove(pPageName + ".css");
-        //        mHtmlPageList.Add(pPageName + ".css", Encoding.UTF8.GetBytes(pCssFile));
-
-        //        mHtmlPageList.Remove(pPageName + ".js");
-        //        mHtmlPageList.Add(pPageName + ".js", Encoding.UTF8.GetBytes(pJsFile));
-
-        //    }
-        //    else
-        //    {
-        //        PageNames.Add(pPageName);
-        //        mHtmlPageList.Add(pUrl, Encoding.UTF8.GetBytes(pPage.Text));
-        //        mHtmlPageList.Add(pPageName + ".css", Encoding.UTF8.GetBytes(pCssFile));
-        //        mHtmlPageList.Add(pPageName + ".js", Encoding.UTF8.GetBytes(pJsFile));
-
-        //    }
-        //}
-
-        //private void RemovePageFormList(string pPageName, Page pPage, string pCssFile, string pJsFile, string pUrl)
-        //{
-
-        //    if (PageNames.Contains(pPageName))
-        //    {
-        //        PageNames.Remove(pPageName);
-        //        mHtmlPageList.Remove(pUrl);
-        //        mHtmlPageList.Remove(pPageName + ".css");
-        //        mHtmlPageList.Remove(pPageName + ".js");
-
-        //    }
-        //}
 
         #endregion Build HtmlPages
 
@@ -552,6 +506,7 @@ namespace VVVV.Webinterface
                     if (mNodeData.ContainsKey(pSliceId))
                     {
                         mNodeData.TryGetValue(pSliceId, out Response);
+                        mNodeData.Remove(pSliceId);
                     }
                     else if (mLoadedValues.ContainsKey(pHostPath))
                     {
@@ -662,7 +617,7 @@ namespace VVVV.Webinterface
         }
 
 
-        public void setPollingMessage(string SliceId, string pContent)
+        public void setPollingMessage(string SliceId, XmlDocument pContent)
         {
             Monitor.Enter(mNodePolling);
             
@@ -708,7 +663,10 @@ namespace VVVV.Webinterface
             XmlElement tRoot = tXml.DocumentElement;
             XmlElement tBrowser = tXml.CreateElement("", "browser", "");
             XmlElement tNodes = tXml.CreateElement("", "nodes", "");
-           
+            tRoot.AppendChild(tBrowser);
+            tRoot.AppendChild(tNodes);
+
+
             if(mBrowserPolling.Count > 0)
             {
                 foreach (KeyValuePair<string, string> tPair in mBrowserPolling)
@@ -722,17 +680,16 @@ namespace VVVV.Webinterface
 
             if(mNodePolling.Count > 0)
             {
-                foreach(KeyValuePair<string,string> tPair in mNodePolling)
+                foreach (KeyValuePair<string, XmlDocument> tPair in mNodePolling)
                 {
-                    XmlElement tNodeSlice;
-                    tNodeSlice = tXml.CreateElement("", "node", "");
-                    tNodeSlice.SetAttribute("SliceId",tPair.Key);
-                    tNodes.AppendChild(tNodeSlice);
+
+                    XmlNode Node = tXml.ImportNode(tPair.Value.SelectSingleNode("node"), true); 
+                    tNodes.AppendChild(Node);
+                    
                 }
             }
 
-            tRoot.AppendChild(tBrowser);
-            tRoot.AppendChild(tNodes);
+  
             return tXml;
         }
          
