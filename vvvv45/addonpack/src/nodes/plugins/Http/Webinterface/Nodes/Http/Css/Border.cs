@@ -293,42 +293,36 @@ namespace VVVV.Nodes.Http.CSS
         {
 
             //////Debug.WriteLine("Enter OnEvaluate Border");
-            try
+
+            if (DynamicPinIsChanged())
             {
-                if (DynamicPinIsChanged())
+
+                IPluginIn[] tInputs = { FBorderWidthIn, FColorInput, FBorderStyleIn };
+                int tSliceCount = GetSliceCount(tInputs);
+
+                mCssPropertiesOwn.Clear();
+
+                for (int i = 0; i < tSliceCount; i++)
                 {
 
-                    IPluginIn[] tInputs = { FBorderWidthIn, FColorInput, FBorderStyleIn };
-                    int tSliceCount = GetSliceCount(tInputs);
+                    double currentBorderWidthSlice;
+                    RGBAColor currentColorSlice;
+                    string currentBorderStyle;
+                    SortedList<string, string> tCssProperty = new SortedList<string, string>();
 
-                    mCssPropertiesOwn.Clear();
+                    // get current values
+                    FBorderWidthIn.GetValue(i, out currentBorderWidthSlice);
+                    FColorInput.GetColor(i, out currentColorSlice);
+                    FBorderStyleIn.GetString(i, out currentBorderStyle);
 
-                    for (int i = 0; i < tSliceCount; i++)
-                    {
+                    tCssProperty.Add("border-width", ((Math.Round(currentBorderWidthSlice * 100, 1).ToString() + "px").Replace(",", ".")));
+                    tCssProperty.Add("border-color", "rgb(" + Math.Round(currentColorSlice.R * 100) + "%," + Math.Round(currentColorSlice.G * 100) + "%," + Math.Round(currentColorSlice.B * 100) + "%)");
+                    tCssProperty.Add("border-style", currentBorderStyle);
 
-                        double currentBorderWidthSlice;
-                        RGBAColor currentColorSlice;
-                        string currentBorderStyle;
-                        SortedList<string, string> tCssProperty = new SortedList<string, string>();
-
-                        // get current values
-                        FBorderWidthIn.GetValue(i, out currentBorderWidthSlice);
-                        FColorInput.GetColor(i, out currentColorSlice);
-                        FBorderStyleIn.GetString(i, out currentBorderStyle);
-
-                        tCssProperty.Add("border-width", ((Math.Round(currentBorderWidthSlice * 100, 1).ToString() + "px").Replace(",", ".")));
-                        tCssProperty.Add("border-color", "rgb(" + Math.Round(currentColorSlice.R * 100) + "%," + Math.Round(currentColorSlice.G * 100) + "%," + Math.Round(currentColorSlice.B * 100) + "%)");
-                        tCssProperty.Add("border-style", currentBorderStyle);
-
-                        mCssPropertiesOwn.Add(i, tCssProperty);
-                    }
+                    mCssPropertiesOwn.Add(i, tCssProperty);
                 }
             }
-            catch (Exception ex)
-            {
-                FHost.Log(TLogType.Error, ex.Message);
-            }
-
+            
         }
 				
        #endregion mainloop

@@ -234,8 +234,9 @@ namespace VVVV.Nodes.Http.CSS
         protected override void OnPluginHostSet()
         {
             //Inputs
-			FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorInput);
-			FColorInput.SetSubType(VColor.Black, false);
+
+                FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorInput);
+                FColorInput.SetSubType(VColor.Black, false);
         }
 
         #endregion pin creation
@@ -264,8 +265,6 @@ namespace VVVV.Nodes.Http.CSS
         /// <param name="SpreadMax">number of Slices</param>
         protected override void OnEvaluate(int SpreadMax)
         {
-            try
-            {
                 if (DynamicPinIsChanged())
                 {
                     // set slices count
@@ -288,12 +287,6 @@ namespace VVVV.Nodes.Http.CSS
                         mCssPropertiesOwn.Add(i, tCssProperty);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                FHost.Log(TLogType.Error, ex.Message);
-            }
-
         }
 
         #endregion mainloop
