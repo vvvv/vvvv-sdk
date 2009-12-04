@@ -102,8 +102,8 @@ namespace VVVV.Nodes.Http
         private string mPageHeadString = String.Empty;
         private string mPageBodyString = String.Empty;
         private Rule mBodyRule;
-        private bool FConnectHttp = false;
-
+        private bool FConnectPin = false;
+        private bool FDisconnectPin = false;
         private bool FUpdateToWebinterface = false;
 
 
@@ -348,13 +348,14 @@ namespace VVVV.Nodes.Http
                 INodeIOBase usI;
                 FHttpGuiIn.GetUpstreamInterface(out usI);
                 FUpstreamInterface = usI as IHttpGUIIO;
-                FConnectHttp = true;
+                FConnectPin = true;
             }
             else if (Pin == FCssPropertiesIn)
             {
                 INodeIOBase usI;
                 FCssPropertiesIn.GetUpstreamInterface(out usI);
                 FUpstreamStyleIn = usI as IHttpGUIStyleIO;
+                FConnectPin = true;
             }
         }
 
@@ -367,10 +368,15 @@ namespace VVVV.Nodes.Http
             {
                 mGuiDatenListe.Clear();
                 FUpstreamInterface = null;
+                FDisconnectPin = true;
             }
             else if (Pin == FCssPropertiesIn)
             {
                 FUpstreamStyleIn = null;
+
+                mBodyRule = new Rule("body");
+                mBodyRule.AddProperty(new Property("background-color", "#E0E0E0"));
+                FDisconnectPin = true;
             }
         }
 
@@ -406,20 +412,12 @@ namespace VVVV.Nodes.Http
             try
             {
 
-                #region Upstream
-
                 mGuiTypes = new SortedList<int, string>();
                 mHtmlAttributs = new SortedList<int, SortedList<string, string>>();
                 mCssStyles = new SortedList<int, SortedList<string, string>>();
                 mHtmlText = new string[SpreadMax];
 
                 FUpdateToWebinterface = false;
-
-
-
-
-                #endregion Upstream
-
 
 
 
@@ -456,7 +454,7 @@ namespace VVVV.Nodes.Http
 
                 if (FHtmlHead.PinIsChanged || FHtmlBody.PinIsChanged)
                 {
-
+                    FUpdateToWebinterface = true;
                     string tContentBody = "";
                     string tContentHead = "";
                     double tReload;
@@ -502,8 +500,10 @@ namespace VVVV.Nodes.Http
                 if (FUpstreamStyleIn != null)
                 {
 
-                    if (FUpstreamStyleIn.PinIsChanged())
+                    if (FUpstreamStyleIn.PinIsChanged() || FConnectPin)
                     {
+                        FUpdateToWebinterface = true;
+
                         mBodyRule = new Rule("body");
 
                         for (int i = 0; i < FCssPropertiesIn.SliceCount; i++)
@@ -543,7 +543,7 @@ namespace VVVV.Nodes.Http
                 }
 
 
-                if (FUpdateToWebinterface || FCommunication.PinIsChanged || FPageHeight.PinIsChanged || FPageWidth.PinIsChanged || FConnectHttp)
+                if (FUpdateToWebinterface || FCommunication.PinIsChanged || FPageHeight.PinIsChanged || FPageWidth.PinIsChanged || FConnectPin || FDisconnectPin)
                 {
                     mPage = null;
                     mPage = new Page(true);
@@ -561,6 +561,7 @@ namespace VVVV.Nodes.Http
                     mPage.Head.Insert(new JavaScript("jqueryUI.js", true));
                     mPage.Head.Insert(new JavaScript(mPageName + ".js", true));
                     mPage.Head.Insert(new JavaScript("colorpicker.js", true));
+                   
 
 
                     //mPageBuilder.UpdateGuiList(mGuiDatenListe, mPage);
@@ -573,7 +574,7 @@ namespace VVVV.Nodes.Http
                     FCommunication.GetString(0, out tCommunicationType);
                     if (tCommunicationType == "Polling")
                     {
-                        mPage.Head.Insert((new JavaScript(JSToolkit.Polling("1000", "'Gib mit neue Daten'"), false)));
+                        mPage.Head.Insert(new JavaScript("polling.js", true));
 
                     }
                     else if (tCommunicationType == "Comet")
@@ -616,7 +617,7 @@ namespace VVVV.Nodes.Http
                     mPage.Head.Insert(mPageHeadString);
 
 
-                    if ((FUpstreamInterface != null && FUpstreamInterface.PinIsChanged()) || FConnectHttp)
+                    if ((FUpstreamInterface != null && FUpstreamInterface.PinIsChanged()) || FConnectPin || FDisconnectPin)
                     {
                         FUpstreamInterface.GetDataObject(0, out mGuiDatenListe);
                     }
@@ -640,7 +641,8 @@ namespace VVVV.Nodes.Http
 
 
                 #endregion Build Page
-                FConnectHttp = false;
+                FConnectPin = false;
+                FDisconnectPin = false;
 
             }
             catch (Exception ex)
