@@ -21,6 +21,7 @@ namespace VVVV.Nodes.Http.GUI
         private IValueIn FMax;
         private IValueIn FDefault;
         private IValueIn FStepSize;
+        private IValueIn FSendPollingToBrowser;
 
 
         #endregion field declaration
@@ -169,10 +170,6 @@ namespace VVVV.Nodes.Http.GUI
 
         protected override void OnSetPluginHost()
         {
-            // create required pins
-            FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
-            FResponse.SetSubType(0, 1, 1, 0, false, false, false);
-
             FHost.CreateStringInput("Name", TSliceMode.Dynamic, TPinVisibility.True, out FName);
             FName.SetSubType("", false);
 
@@ -191,9 +188,16 @@ namespace VVVV.Nodes.Http.GUI
 
             FHost.CreateValueInput("StepSize", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FStepSize);
             FStepSize.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.01, false, false, false);
+
+            FHost.CreateValueInput("Send", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSendPollingToBrowser);
+            FSendPollingToBrowser.SetSubType(0, 1, 1, 0, true, false, true);
+
+            FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
+            FResponse.SetSubType(0, 1, 1, 0, false, false, false);
         }
 
         #endregion pin creation
+
 
 
         #region Main Loop
@@ -213,46 +217,63 @@ namespace VVVV.Nodes.Http.GUI
                     double currentStepSize;
 
                     string currentSliceId = GetSliceId(i);
-                    
-
+                    string currentOrientation = String.Empty;
+                    string currentName = String.Empty;
+                    string SliderId = GetSliceId(i) + i.ToString();
+                    string SliderTextfieldId = SliderId + "Value";
+                    string SliderSelector = "#" + SliderId;
 
                     FMin.GetValue(i,out currentMinSlice);
                     FMax.GetValue(i,out currentMaxSlice);
                     FDefault.GetValue(i,out currentDefaultSlice);
                     FStepSize.GetValue(i,out currentStepSize);
+                    FName.GetString(i, out currentName);
+                    FOrientation.GetString(i, out currentOrientation);
+
 
                     currentStepSize *= 10000;
                     currentMinSlice *= 10000;
                     currentMaxSlice *= 10000;
-                    
 
-                    //Check if there are new Messages on the Server
                     FResponse.SliceCount = SpreadMax;
-
                     string tResponse = ReceivedString[i];
                     
-                    if (tResponse == null)
+
+                    
+                    
+                    double currentSendValue = 0;
+                    FSendPollingToBrowser.GetValue(i,out currentSendValue);
+                    bool SendToBrowser = FSendPollingToBrowser.PinIsChanged && (currentSendValue > 0.5);
+
+                    if (tResponse == null || SendToBrowser)
                     {
                         tResponse = currentDefaultSlice.ToString();
+                        FReceivedString[i] = currentDefaultSlice.ToString();
+                        FSavedResponses[i] = currentDefaultSlice.ToString();
+                        FResponse.SetValue(i, Convert.ToDouble(tResponse));
                     }
-                    FResponse.SetValue(i, Convert.ToDouble(tResponse));
 
+                    if (ReceivedNewString)
+                    {
+                        FResponse.SetValue(i, Convert.ToDouble(tResponse));
+                    }
 
-                    //Create Slider Elements and set them to the graph
-                    string currentOrientation = String.Empty;
-                    string currentName = String.Empty;
+                    double currentSliderValue = Convert.ToDouble(tResponse) * 10000;  
 
-                    FName.GetString(i, out currentName);
-                    FOrientation.GetString(i, out currentOrientation);
-
-                    string SliderId = GetSliceId(i) + i.ToString();
+                    if (SendToBrowser)
+                    {
+                        string[] tElementSlider = new string[3] { "option", "value", currentSliderValue.ToString() };
+                        SetPollingData(i, SliderId, "slider", tElementSlider);
+                        string[] tElementTextfield = new string[1] { currentDefaultSlice.ToString() };
+                        SetPollingData(i, SliderTextfieldId, "val", tElementTextfield);
+                    }
 
                     HtmlDiv tMainContainer = new HtmlDiv();
                     HtmlDiv tSlider = new HtmlDiv(SliderId);
                     HTMLText tText = new HTMLText(currentName, true);
 
-                    string SliderValueId = SliderId + "Value";
-                    TextField tSliderValueText = new TextField(SliderValueId, tResponse);
+                    
+                    TextField tSliderValueText = new TextField(SliderTextfieldId, tResponse);
 
                     string AttributeTextValue = "position:absolute; right:0%; top:10%; border: hidden;";
                     HTMLAttribute tTextAttributeValue = new HTMLAttribute("style", AttributeTextValue);
@@ -286,7 +307,7 @@ var content = '{1}' + '=' + value;
 $.post('ToVVVV.xml',content, null);
 ";
 
-                    JqueryFunction tTextJS = new JqueryFunction(true, "#" + SliderValueId, "keyup", String.Format(TextfeldJsContent, "#" + SliderId, currentSliceId, currentStepSize));
+                    JqueryFunction tTextJS = new JqueryFunction(true, "#" + SliderTextfieldId, "keyup", String.Format(TextfeldJsContent, "#" + SliderId, currentSliceId, currentStepSize));
 
                     string SliderInitalize =
     @"slider({{
@@ -308,10 +329,9 @@ $.post('ToVVVV.xml',content, null);
           ";
 
 
-                    string SliderSelector = "#" + SliderId;
-                    double currentSliderValue = Convert.ToDouble(tResponse) * 10000;                    
+                  
 
-                    AddJavaScript(i, new JqueryFunction(true, SliderSelector, String.Format(SliderInitalize, currentOrientation, currentSliderValue.ToString(), SliderSelector, currentSliceId, "#" + SliderValueId, currentMinSlice, currentMaxSlice, currentStepSize)).Text + Environment.NewLine + tTextJS.Text, true);
+                    AddJavaScript(i, new JqueryFunction(true, SliderSelector, String.Format(SliderInitalize, currentOrientation, currentSliderValue.ToString(), SliderSelector, currentSliceId, "#" + SliderTextfieldId, currentMinSlice, currentMaxSlice, currentStepSize)).Text + Environment.NewLine + tTextJS.Text, true);
                 }
             }
         }
@@ -321,7 +341,7 @@ $.post('ToVVVV.xml',content, null);
 
 		protected override bool DynamicPinsAreChanged()
 		{
-			return (FName.PinIsChanged || FOrientation.PinIsChanged || FMin.PinIsChanged || FMax.PinIsChanged || FDefault.PinIsChanged || FStepSize.PinIsChanged);
+			return (FName.PinIsChanged || FOrientation.PinIsChanged || FMin.PinIsChanged || FMax.PinIsChanged || FDefault.PinIsChanged || FStepSize.PinIsChanged || FSendPollingToBrowser.PinIsChanged);
 		}
 	}
 }
