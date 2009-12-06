@@ -174,7 +174,19 @@ namespace VVVV.Utils.VMath
 			this.m31 = m31; this.m32 = m32; this.m33 = m33; this.m34 = m34;	
 			this.m41 = m41; this.m42 = m42; this.m43 = m43; this.m44 = m44;
 		}
-		
+
+        /// <summary>
+        /// Contructor for a 4x4 matrix from a Vector4D v, given by the matrix representation of Quaternions into a Matrix4x4
+        /// ( see http://en.wikipedia.org/wiki/Quaternion#Matrix_representations )
+        /// </summary>
+        /// <param name="v"></param>
+        public Matrix4x4(Vector4D v)
+        {
+            m11 = v.x; m12 = -v.y; m13 = -v.z; m14 = -v.w;         
+            m21 = v.y; m22 =  v.x; m23 =  v.w; m24 = -v.z;
+            m31 = v.z; m32 = -v.w; m33 =  v.x; m34 =  v.y;
+            m41 = v.w; m42 =  v.z; m43 = -v.y; m44 =  v.x;   
+        }		
 		#endregion constructors
 		
 		#region properties/indexer
