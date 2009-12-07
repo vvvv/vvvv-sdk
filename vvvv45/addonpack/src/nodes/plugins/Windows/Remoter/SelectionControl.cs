@@ -20,6 +20,7 @@ namespace VVVV.Nodes
 	public partial class SelectionControl : UserControl
 	{
 		public event ButtonUpHandler OnXButton;
+		public event ButtonUpHandler OnSelectionChanged;
 		
 		private bool FEditing = false;
 		
@@ -27,10 +28,10 @@ namespace VVVV.Nodes
 		public string SelectionName
 		{
 			get {return FSelectionName;}
-			set 
+			set
 			{
-				NameLabel.Text = value;
 				FSelectionName = value;
+				UpdateSelectionLabel();
 			}
 		}
 		
@@ -38,12 +39,34 @@ namespace VVVV.Nodes
 		public List<IPControl> IPControls
 		{
 			get {return FIPControls;}
-			set 
+			set {FIPControls = value;}
+		}
+		
+		public string IPList
+		{
+			get
 			{
-				FIPControls = value;
+				string list = "";
+				foreach (IPControl ipc in FSelectedIPs)
+					list += ipc.IP + ";";
 				
-				//this is called only once after creation. take selection from now
-				TakeSelection();
+				return list;
+			}
+			set
+			{
+				FSelectedIPs = new List<IPControl>();
+				char s = ';';
+				string[] ips = value.Split(s);
+				IPControl ipc;
+				
+				for (int i=0; i<ips.Length; i++)
+				{
+					ipc = IPControls.Find(delegate(IPControl ip){return ip.IP == ips[i];});
+					if (ipc != null)
+						FSelectedIPs.Add(ipc);
+				}
+				
+				UpdateSelectionLabel();
 			}
 		}
 		
@@ -79,7 +102,8 @@ namespace VVVV.Nodes
 				EditButton.Text = "E";
 				Height = 25;
 				SelectionName = NameEdit.Text;
-			}			
+				OnSelectionChanged.Invoke(this);
+			}
 		}
 		
 		void DeleteButtonClick(object sender, EventArgs e)
@@ -99,17 +123,27 @@ namespace VVVV.Nodes
 		void TakeSelectionButtonClick(object sender, EventArgs e)
 		{
 			TakeSelection();
+			OnSelectionChanged.Invoke(this);
 		}
 		
-		private void TakeSelection()
+		public void TakeSelection()
 		{
 			FSelectedIPs = FIPControls.FindAll(delegate(IPControl ipc){return ipc.IsSelected;});
+			UpdateSelectionLabel();
+		}
+		
+		private void UpdateSelectionLabel()
+		{
+			if (FSelectedIPs == null)
+				NameLabel.Text = FSelectionName + " (0)";
+			else
+				NameLabel.Text = FSelectionName + " (" + FSelectedIPs.Count.ToString() + ")";
 		}
 		
 		public void RemoveIP(IPControl ipc)
 		{
 			FSelectedIPs.Remove(ipc);
 		}
-			
+		
 	}
 }

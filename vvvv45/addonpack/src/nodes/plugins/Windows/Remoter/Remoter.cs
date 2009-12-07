@@ -60,7 +60,7 @@ namespace VVVV.Nodes
 	public class Remoter: UserControl, IPlugin
 	{
 		public enum TPsToolCommand {Execute, Kill, Watch, WatchExecute, Reboot, Shutdown};
-		public enum TWatchMode {Off, Restart, Reboot};
+		
 		public enum TIPCLiveUpdate {Off, AllOnline, AllOffline};
 		private const string UNGROUPED = "ungrouped";
 		
@@ -97,8 +97,6 @@ namespace VVVV.Nodes
 		
 		private System.Net.Sockets.TcpClient FTCPClient;
 		private System.Net.Sockets.NetworkStream FTCPStream;
-		
-		private VVVV.Nodes.Remoter.TWatchMode FWatchMode = TWatchMode.Off;
 		
 		private XmlDocument FSettings;
 		private int FSplitterDistance;
@@ -269,14 +267,15 @@ namespace VVVV.Nodes
 			this.RestartButton = new System.Windows.Forms.Button();
 			this.StartButton = new System.Windows.Forms.Button();
 			this.RemoteProcessPathComboBox = new System.Windows.Forms.ComboBox();
-			this.SelectionsPage = new System.Windows.Forms.TabPage();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.SelectionNameEdit = new System.Windows.Forms.TextBox();
-			this.SelectionAddButton = new System.Windows.Forms.Button();
 			this.TasksPage = new System.Windows.Forms.TabPage();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.TaskNameEdit = new System.Windows.Forms.TextBox();
 			this.TaskAddButton = new System.Windows.Forms.Button();
+			this.SelectionsPage = new System.Windows.Forms.TabPage();
+			this.SelectionsPanel = new System.Windows.Forms.Panel();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.SelectionNameEdit = new System.Windows.Forms.TextBox();
+			this.SelectionAddButton = new System.Windows.Forms.Button();
 			this.SettingsPage = new System.Windows.Forms.TabPage();
 			this.MirrorBox = new System.Windows.Forms.GroupBox();
 			this.IgnorePattern = new System.Windows.Forms.TextBox();
@@ -315,6 +314,7 @@ namespace VVVV.Nodes
 			this.SimulatorConnectButton = new System.Windows.Forms.Button();
 			this.SimulatorTCPCheckBox = new System.Windows.Forms.RadioButton();
 			this.SimulatorUDPCheckBox = new System.Windows.Forms.RadioButton();
+			this.TasksPanel = new System.Windows.Forms.Panel();
 			this.SplitContainer.Panel1.SuspendLayout();
 			this.SplitContainer.Panel2.SuspendLayout();
 			this.SplitContainer.SuspendLayout();
@@ -330,10 +330,10 @@ namespace VVVV.Nodes
 			this.panel10.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
-			this.SelectionsPage.SuspendLayout();
-			this.panel1.SuspendLayout();
 			this.TasksPage.SuspendLayout();
 			this.panel2.SuspendLayout();
+			this.SelectionsPage.SuspendLayout();
+			this.panel1.SuspendLayout();
 			this.SettingsPage.SuspendLayout();
 			this.MirrorBox.SuspendLayout();
 			this.MirrorPathPanel.SuspendLayout();
@@ -417,9 +417,9 @@ namespace VVVV.Nodes
 			this.GroupFilterDropDown.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.GroupFilterDropDown.FormattingEnabled = true;
 			this.GroupFilterDropDown.Items.AddRange(new object[] {
-									".All",
-									".Offline",
-									".Online"});
+			                                        	".All",
+			                                        	".Offline",
+			                                        	".Online"});
 			this.GroupFilterDropDown.Location = new System.Drawing.Point(3, 23);
 			this.GroupFilterDropDown.Name = "GroupFilterDropDown";
 			this.GroupFilterDropDown.Size = new System.Drawing.Size(353, 21);
@@ -662,8 +662,8 @@ namespace VVVV.Nodes
 			// 
 			this.RightTabControl.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
 			this.RightTabControl.Controls.Add(this.CommandsPage);
-			this.RightTabControl.Controls.Add(this.SelectionsPage);
 			this.RightTabControl.Controls.Add(this.TasksPage);
+			this.RightTabControl.Controls.Add(this.SelectionsPage);
 			this.RightTabControl.Controls.Add(this.SettingsPage);
 			this.RightTabControl.Controls.Add(this.SimulatorPage);
 			this.RightTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -688,7 +688,7 @@ namespace VVVV.Nodes
 			this.CommandsPage.Padding = new System.Windows.Forms.Padding(3);
 			this.CommandsPage.Size = new System.Drawing.Size(277, 462);
 			this.CommandsPage.TabIndex = 1;
-			this.CommandsPage.Text = "Commands";
+			this.CommandsPage.Text = "Ad Hoc";
 			this.CommandsPage.UseVisualStyleBackColor = true;
 			// 
 			// panel10
@@ -880,56 +880,16 @@ namespace VVVV.Nodes
 			this.RemoteProcessPathComboBox.TabIndex = 13;
 			this.RemoteProcessPathComboBox.SelectedIndexChanged += new System.EventHandler(this.SettingsChanged);
 			// 
-			// SelectionsPage
-			// 
-			this.SelectionsPage.Controls.Add(this.panel1);
-			this.SelectionsPage.Location = new System.Drawing.Point(4, 25);
-			this.SelectionsPage.Name = "SelectionsPage";
-			this.SelectionsPage.Padding = new System.Windows.Forms.Padding(3);
-			this.SelectionsPage.Size = new System.Drawing.Size(277, 462);
-			this.SelectionsPage.TabIndex = 3;
-			this.SelectionsPage.Text = "Selections";
-			this.SelectionsPage.UseVisualStyleBackColor = true;
-			// 
-			// panel1
-			// 
-			this.panel1.Controls.Add(this.SelectionNameEdit);
-			this.panel1.Controls.Add(this.SelectionAddButton);
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel1.Location = new System.Drawing.Point(3, 3);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(271, 20);
-			this.panel1.TabIndex = 0;
-			// 
-			// SelectionNameEdit
-			// 
-			this.SelectionNameEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.SelectionNameEdit.Location = new System.Drawing.Point(0, 0);
-			this.SelectionNameEdit.Name = "SelectionNameEdit";
-			this.SelectionNameEdit.Size = new System.Drawing.Size(251, 20);
-			this.SelectionNameEdit.TabIndex = 0;
-			this.SelectionNameEdit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SelectionNameEditKeyPress);
-			// 
-			// SelectionAddButton
-			// 
-			this.SelectionAddButton.Dock = System.Windows.Forms.DockStyle.Right;
-			this.SelectionAddButton.Location = new System.Drawing.Point(251, 0);
-			this.SelectionAddButton.Name = "SelectionAddButton";
-			this.SelectionAddButton.Size = new System.Drawing.Size(20, 20);
-			this.SelectionAddButton.TabIndex = 1;
-			this.SelectionAddButton.Text = "+";
-			this.SelectionAddButton.UseVisualStyleBackColor = true;
-			this.SelectionAddButton.Click += new System.EventHandler(this.SelectionAddButtonClick);
-			// 
 			// TasksPage
 			// 
+			this.TasksPage.Controls.Add(this.TasksPanel);
 			this.TasksPage.Controls.Add(this.panel2);
 			this.TasksPage.Location = new System.Drawing.Point(4, 25);
 			this.TasksPage.Name = "TasksPage";
 			this.TasksPage.Padding = new System.Windows.Forms.Padding(3);
 			this.TasksPage.Size = new System.Drawing.Size(277, 462);
 			this.TasksPage.TabIndex = 4;
-			this.TasksPage.Text = "Tasks";
+			this.TasksPage.Text = "Group Commands";
 			this.TasksPage.UseVisualStyleBackColor = true;
 			// 
 			// panel2
@@ -961,6 +921,56 @@ namespace VVVV.Nodes
 			this.TaskAddButton.Text = "+";
 			this.TaskAddButton.UseVisualStyleBackColor = true;
 			this.TaskAddButton.Click += new System.EventHandler(this.TaskAddButtonClick);
+			// 
+			// SelectionsPage
+			// 
+			this.SelectionsPage.Controls.Add(this.SelectionsPanel);
+			this.SelectionsPage.Controls.Add(this.panel1);
+			this.SelectionsPage.Location = new System.Drawing.Point(4, 25);
+			this.SelectionsPage.Name = "SelectionsPage";
+			this.SelectionsPage.Padding = new System.Windows.Forms.Padding(3);
+			this.SelectionsPage.Size = new System.Drawing.Size(277, 462);
+			this.SelectionsPage.TabIndex = 3;
+			this.SelectionsPage.Text = "Selections";
+			this.SelectionsPage.UseVisualStyleBackColor = true;
+			// 
+			// SelectionsPanel
+			// 
+			this.SelectionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.SelectionsPanel.Location = new System.Drawing.Point(3, 23);
+			this.SelectionsPanel.Name = "SelectionsPanel";
+			this.SelectionsPanel.Size = new System.Drawing.Size(271, 436);
+			this.SelectionsPanel.TabIndex = 1;
+			// 
+			// panel1
+			// 
+			this.panel1.Controls.Add(this.SelectionNameEdit);
+			this.panel1.Controls.Add(this.SelectionAddButton);
+			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.panel1.Location = new System.Drawing.Point(3, 3);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(271, 20);
+			this.panel1.TabIndex = 0;
+			// 
+			// SelectionNameEdit
+			// 
+			this.SelectionNameEdit.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.SelectionNameEdit.Location = new System.Drawing.Point(0, 0);
+			this.SelectionNameEdit.Name = "SelectionNameEdit";
+			this.SelectionNameEdit.Size = new System.Drawing.Size(251, 20);
+			this.SelectionNameEdit.TabIndex = 0;
+			this.SelectionNameEdit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SelectionNameEditKeyPress);
+			// 
+			// SelectionAddButton
+			// 
+			this.SelectionAddButton.Dock = System.Windows.Forms.DockStyle.Right;
+			this.SelectionAddButton.Location = new System.Drawing.Point(251, 0);
+			this.SelectionAddButton.Name = "SelectionAddButton";
+			this.SelectionAddButton.Size = new System.Drawing.Size(20, 20);
+			this.SelectionAddButton.TabIndex = 1;
+			this.SelectionAddButton.Text = "+";
+			this.SelectionAddButton.UseVisualStyleBackColor = true;
+			this.SelectionAddButton.Click += new System.EventHandler(this.SelectionAddButtonClick);
 			// 
 			// SettingsPage
 			// 
@@ -1325,18 +1335,18 @@ namespace VVVV.Nodes
 			this.SimulatorPortUpDown.Dock = System.Windows.Forms.DockStyle.Right;
 			this.SimulatorPortUpDown.Location = new System.Drawing.Point(158, 0);
 			this.SimulatorPortUpDown.Maximum = new decimal(new int[] {
-									65535,
-									0,
-									0,
-									0});
+			                                               	65535,
+			                                               	0,
+			                                               	0,
+			                                               	0});
 			this.SimulatorPortUpDown.Name = "SimulatorPortUpDown";
 			this.SimulatorPortUpDown.Size = new System.Drawing.Size(56, 20);
 			this.SimulatorPortUpDown.TabIndex = 3;
 			this.SimulatorPortUpDown.Value = new decimal(new int[] {
-									44444,
-									0,
-									0,
-									0});
+			                                             	44444,
+			                                             	0,
+			                                             	0,
+			                                             	0});
 			this.SimulatorPortUpDown.Click += new System.EventHandler(this.SimulatorPortUpDownValueChanged);
 			// 
 			// SimulatorConnectButton
@@ -1373,6 +1383,14 @@ namespace VVVV.Nodes
 			this.SimulatorUDPCheckBox.Text = "UDP";
 			this.SimulatorUDPCheckBox.UseVisualStyleBackColor = true;
 			// 
+			// TasksPanel
+			// 
+			this.TasksPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.TasksPanel.Location = new System.Drawing.Point(3, 23);
+			this.TasksPanel.Name = "TasksPanel";
+			this.TasksPanel.Size = new System.Drawing.Size(271, 436);
+			this.TasksPanel.TabIndex = 2;
+			// 
 			// Remoter
 			// 
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
@@ -1397,12 +1415,12 @@ namespace VVVV.Nodes
 			this.panel10.ResumeLayout(false);
 			this.tableLayoutPanel2.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);
-			this.SelectionsPage.ResumeLayout(false);
-			this.panel1.ResumeLayout(false);
-			this.panel1.PerformLayout();
 			this.TasksPage.ResumeLayout(false);
 			this.panel2.ResumeLayout(false);
 			this.panel2.PerformLayout();
+			this.SelectionsPage.ResumeLayout(false);
+			this.panel1.ResumeLayout(false);
+			this.panel1.PerformLayout();
 			this.SettingsPage.ResumeLayout(false);
 			this.MirrorBox.ResumeLayout(false);
 			this.MirrorBox.PerformLayout();
@@ -1421,6 +1439,8 @@ namespace VVVV.Nodes
 			((System.ComponentModel.ISupportInitialize)(this.SimulatorPortUpDown)).EndInit();
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.Panel TasksPanel;
+		private System.Windows.Forms.Panel SelectionsPanel;
 		private System.Windows.Forms.Button AddVisibleToSelectionButton;
 		private System.Windows.Forms.Button DeleteSelectedIPsButton;
 		private System.Windows.Forms.Button ClearSelectionButton;
@@ -1531,15 +1551,14 @@ namespace VVVV.Nodes
 			FHost = Host;
 
 			//create config inputs
+			//first the IPs
+			FHost.CreateStringConfig("IPs", TSliceMode.Dynamic, TPinVisibility.True, out FIPListInput);
+			FIPListInput.SetSubType("127.0.0.1", false);
+
+			//settings are depending on IPs already there when loading
 			FHost.CreateStringConfig("Settings", TSliceMode.Single, TPinVisibility.True, out FSettingsInput);
 			FSettingsInput.SliceCount = 1;
 			
-			//create inputs
-			FHost.CreateValueInput("Value Input", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueInput);
-			FMyValueInput.SetSubType(0, 1, 1, 0, false, false, false);
-			
-			FHost.CreateStringConfig("IPs", TSliceMode.Dynamic, TPinVisibility.True, out FIPListInput);
-			FIPListInput.SetSubType("127.0.0.1", false);
 
 			//create outputs
 			FHost.CreateValueOutput("IP Online", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FOnlineOutput);
@@ -1802,12 +1821,6 @@ namespace VVVV.Nodes
 			UpdateIPListInput();
 		}
 		
-		void RemoveAllButtonClick(object sender, EventArgs e)
-		{
-			IPListPanel.Controls.Clear();
-			
-			
-		}
 		
 		void NewIPEditKeyPress(object sender, KeyPressEventArgs e)
 		{
@@ -1815,25 +1828,7 @@ namespace VVVV.Nodes
 				DoAddIP(NewIPEdit.Text.Trim(), "");
 		}
 		
-		void SelectAllButtonClick(object sender, EventArgs e)
-		{
-			if (IPListPanel.Controls.Count == 0)
-				return;
-			
-			bool selected = !(IPListPanel.Controls[0] as IPControl).IsSelected;
-			foreach(IPControl ipc in IPListPanel.Controls)
-				ipc.IsSelected = selected;
-			
-			UpdateIPListInput();
-		}
 		
-		void InvertSelectionButtonClick(object sender, EventArgs e)
-		{
-			foreach(IPControl ipc in IPListPanel.Controls)
-				ipc.IsSelected = !ipc.IsSelected;
-			
-			UpdateIPListInput();
-		}
 		#endregion IPs
 		
 		#region IPGroups
@@ -2400,7 +2395,7 @@ namespace VVVV.Nodes
 				UpdateGroupsAppOnlineState();
 			}
 		}
-		*/
+		 */
 		private void UpdateGroupsAppOnlineState()
 		{
 			foreach(GroupControl gc in GroupListPanel.Controls)
@@ -2456,7 +2451,7 @@ namespace VVVV.Nodes
 		private void LoadSettings(string Settings)
 		{
 			XmlNode tool;
-			XmlNodeList processes;
+			XmlNodeList processes, selections, tasks;
 			XmlAttribute attr;
 			
 			try
@@ -2475,7 +2470,7 @@ namespace VVVV.Nodes
 				PsToolsPassword.Text = attr.Value;
 				
 				FSettings.LoadXml(Settings); //not sure why need to load here again
-				//vnc
+				//processes
 				processes = FSettings.SelectNodes(@"REMOTER/PSTOOLS/PROCESS");
 				string path, arguments;
 				foreach (XmlNode process in processes)
@@ -2548,6 +2543,47 @@ namespace VVVV.Nodes
 				tool = FSettings.SelectSingleNode(@"REMOTER/GUI");
 				attr = tool.Attributes.GetNamedItem("Splitter") as XmlAttribute;
 				FSplitterDistance = int.Parse(attr.Value);
+				
+				//selections
+				FSettings.LoadXml(Settings); //not sure why need to load here again
+				selections = FSettings.SelectNodes(@"REMOTER/SELECTIONS/SELECTION");
+				string name, iplist;
+				foreach (XmlNode selection in selections)
+				{
+					attr = selection.Attributes.GetNamedItem("Name") as XmlAttribute;
+					name = attr.Value;
+					
+					attr = selection.Attributes.GetNamedItem("IPList") as XmlAttribute;
+					iplist = attr.Value;
+					
+					AddSelection(name, iplist);
+				}
+				
+				//tasks
+				FSettings.LoadXml(Settings); //not sure why need to load here again
+				tasks = FSettings.SelectNodes(@"REMOTER/TASKS/TASK");
+				string description, group, proc;
+				bool watch;
+				TWatchMode watchmode;
+				foreach (XmlNode task in tasks)
+				{
+					attr = task.Attributes.GetNamedItem("Description") as XmlAttribute;
+					description = attr.Value;
+					
+					attr = task.Attributes.GetNamedItem("Group") as XmlAttribute;
+					group = attr.Value;
+					
+					attr = task.Attributes.GetNamedItem("Process") as XmlAttribute;
+					proc = attr.Value;
+					
+					attr = task.Attributes.GetNamedItem("Watch") as XmlAttribute;
+					watch = bool.Parse(attr.Value);
+					
+					attr = task.Attributes.GetNamedItem("WatchMode") as XmlAttribute;
+					watchmode = (TWatchMode) Enum.Parse(typeof(TWatchMode), attr.Value);
+					
+					AddTask(description, group, proc, watch, watchmode);
+				}
 			}
 			catch
 			{
@@ -2558,11 +2594,12 @@ namespace VVVV.Nodes
 		private void SaveSettings()
 		{
 			//gather all settings as one XML string
-			XmlNode main, tool, process;
+			XmlNode main, tool, process, selection, task;
 			XmlAttribute attr;
 			
 			FSettings.RemoveAll();
 			main = FSettings.CreateElement("REMOTER");
+			
 			//pstools
 			tool = FSettings.CreateElement("PSTOOLS");
 			main.AppendChild(tool);
@@ -2663,6 +2700,56 @@ namespace VVVV.Nodes
 			attr = FSettings.CreateAttribute("Splitter");
 			attr.Value = SplitContainer.SplitterDistance.ToString();
 			tool.Attributes.Append(attr);
+			
+			//settings
+			tool = FSettings.CreateElement("SELECTIONS");
+			main.AppendChild(tool);
+			//attr = FSettings.CreateAttribute("
+			
+			foreach(SelectionControl sc in this.SelectionsPanel.Controls)
+			{
+				selection = FSettings.CreateElement("SELECTION");
+				tool.AppendChild(selection);
+				
+				attr = FSettings.CreateAttribute("Name");
+				attr.Value = sc.SelectionName;
+				selection.Attributes.Append(attr);
+				
+				attr = FSettings.CreateAttribute("IPList");
+				attr.Value = sc.IPList;
+				selection.Attributes.Append(attr);
+			}
+			
+			//tasks
+			tool = FSettings.CreateElement("TASKS");
+			main.AppendChild(tool);
+			
+			foreach(TaskControl tc in TasksPanel.Controls)
+			{
+				task = FSettings.CreateElement("TASK");
+				tool.AppendChild(task);
+				
+				attr = FSettings.CreateAttribute("Description");
+				attr.Value = tc.Description;
+				task.Attributes.Append(attr);
+				
+				attr = FSettings.CreateAttribute("Group");
+				attr.Value = tc.Group;
+				task.Attributes.Append(attr);
+				
+				attr = FSettings.CreateAttribute("Process");
+				attr.Value = tc.Process;
+				task.Attributes.Append(attr);
+				
+				attr = FSettings.CreateAttribute("Watch");
+				attr.Value = tc.Watch.ToString();
+				task.Attributes.Append(attr);
+				
+				attr = FSettings.CreateAttribute("WatchMode");
+				attr.Value = tc.WatchMode.ToString();
+				task.Attributes.Append(attr);
+			}
+			
 			
 			//write to settingspin
 			FSettingsInput.SetString(0, main.OuterXml);
@@ -2784,7 +2871,7 @@ namespace VVVV.Nodes
 			PsToolsProcessPanel.Controls.Remove(Control);
 			FProcesses.Remove(Control as ProcessControl);
 			
-			AdaptPsToolsProcessPanelHeight();	
+			AdaptPsToolsProcessPanelHeight();
 			
 			SaveSettings();
 		}
@@ -2803,105 +2890,60 @@ namespace VVVV.Nodes
 		
 		void SplitContainerSplitterMoved(object sender, SplitterEventArgs e)
 		{
+			//not calling savesettings directly here, as this is also called while loading
 			SettingsChanged(sender, e);
 		}
 
 		#region selections
 		void SelectionAddButtonClick(object sender, EventArgs e)
 		{
-			DoAddSelection(SelectionNameEdit.Text.Trim());
+			AddSelection(SelectionNameEdit.Text.Trim(), "");
+			SaveSettings();
 		}
 		
 		void SelectionNameEditKeyPress(object sender, KeyPressEventArgs e)
 		{
 			if (e.KeyChar == (char)13)
-				DoAddSelection(SelectionNameEdit.Text.Trim());
+			{
+				AddSelection(SelectionNameEdit.Text.Trim(), "");
+				SaveSettings();
+			}
 		}
 		
 		private void DeleteSelectionHandler(UserControl Control)
 		{
 			FSelections.Remove(Control as SelectionControl);
-			SelectionsPage.Controls.Remove(Control);
+			SelectionsPanel.Controls.Remove(Control);
+			SaveSettings();
 		}
 		
-		private void DoAddSelection(string Name)
+		private void SelectionChangedHandler(UserControl Control)
+		{
+			SaveSettings();
+		}
+		
+		private void AddSelection(string Name, string IPList)
 		{
 			if (string.IsNullOrEmpty(Name))
 				return;
 			
 			SelectionControl selection = new SelectionControl();
+			selection.OnXButton += new ButtonUpHandler(DeleteSelectionHandler);
+			selection.OnSelectionChanged += new ButtonUpHandler(SelectionChangedHandler);
 			selection.SelectionName = Name;
 			selection.IPControls = FIPSortList;
-			selection.OnXButton += new ButtonUpHandler(DeleteSelectionHandler);
+			
+			if (string.IsNullOrEmpty(IPList))
+				selection.TakeSelection();
+			else
+				selection.IPList = IPList;
 
-			SelectionsPage.Controls.Add(selection);
+			SelectionsPanel.Controls.Add(selection);
 			selection.Dock = DockStyle.Top;
 			selection.BringToFront();
 			
 			FSelections.Add(selection);
 		}
-		#endregion selections
-		
-		#region tasks
-		void TaskAddButtonClick(object sender, EventArgs e)
-		{
-			DoAddTask(TaskNameEdit.Text.Trim());
-		}
-		
-		void TaskNameEditKeyPress(object sender, KeyPressEventArgs e)
-		{
-			if (e.KeyChar == (char)13)
-				DoAddTask(TaskNameEdit.Text.Trim());
-		}
-		
-		private void DeleteTaskHandler(UserControl Control)
-		{
-			FTasks.Remove(Control as TaskControl);
-			SelectionsPage.Controls.Remove(Control);
-		}
-		
-		private void ExecuteTaskHandler(UserControl Control)
-		{
-			TaskControl task = Control as TaskControl;
-			switch (task.TaskType)
-			{
-				case TTaskType.Start:
-					{
-						
-						break;
-					}	
-				case TTaskType.Restart:
-					{
-						
-						break;
-					}	
-				case TTaskType.Kill:
-					{
-						
-						break;
-					}	
-			}
-		}
-		
-		private void DoAddTask(string Name)
-		{
-			TaskControl task = new TaskControl();
-			task.TaskName = Name;
-						
-			task.SelectionDrop.DataSource = FSelections;
-			task.SelectionDrop.DisplayMember = "SelectionName";
-			task.ProcessDrop.DataSource = FProcesses;
-			task.SelectionDrop.DisplayMember = "ProcessAndArguments";
-			task.OnXButton += new ButtonUpHandler(DeleteTaskHandler);
-			task.OnExecute += new ButtonUpHandler(ExecuteTaskHandler);
-			
-			FTasks.Add(task);
-			TasksPage.Controls.Add(task);
-			task.Dock = DockStyle.Top;
-			task.BringToFront();
-		}
-		#endregion tasks		
-				
 		
 		void ClearSelectionButtonClick(object sender, EventArgs e)
 		{
@@ -2921,7 +2963,7 @@ namespace VVVV.Nodes
 			
 			foreach(IPControl ipc in IPListPanel.Controls)
 				if (ipc.Visible)
-					ipc.IsSelected = true;
+				ipc.IsSelected = true;
 			
 			UpdateIPListInput();
 		}
@@ -2933,10 +2975,100 @@ namespace VVVV.Nodes
 			
 			foreach(IPControl ipc in IPListPanel.Controls)
 				if (ipc.Visible)
-					ipc.IsSelected = false;
+				ipc.IsSelected = false;
 			
 			UpdateIPListInput();
 		}
+		
+		void SelectAllButtonClick(object sender, EventArgs e)
+		{
+			if (IPListPanel.Controls.Count == 0)
+				return;
+			
+			bool selected = !(IPListPanel.Controls[0] as IPControl).IsSelected;
+			foreach(IPControl ipc in IPListPanel.Controls)
+				ipc.IsSelected = selected;
+			
+			UpdateIPListInput();
+		}
+		
+		void InvertSelectionButtonClick(object sender, EventArgs e)
+		{
+			foreach(IPControl ipc in IPListPanel.Controls)
+				ipc.IsSelected = !ipc.IsSelected;
+			
+			UpdateIPListInput();
+		}
+		#endregion selections
+		
+		#region tasks
+		void TaskAddButtonClick(object sender, EventArgs e)
+		{
+			AddTask(TaskNameEdit.Text.Trim(), "", "", false, TWatchMode.Off);
+		}
+		
+		void TaskNameEditKeyPress(object sender, KeyPressEventArgs e)
+		{
+			if (e.KeyChar == (char)13)
+				AddTask(TaskNameEdit.Text.Trim(), "", "", false, TWatchMode.Off);
+		}
+		
+		private void DeleteTaskHandler(UserControl Control)
+		{
+			FTasks.Remove(Control as TaskControl);
+			SelectionsPage.Controls.Remove(Control);
+		}
+		
+		private void ExecuteTaskHandler(UserControl Control)
+		{
+			TaskControl task = Control as TaskControl;
+			switch (task.TaskType)
+			{
+				case TTaskType.Start:
+					{
+						
+						break;
+					}
+				case TTaskType.Restart:
+					{
+						
+						break;
+					}
+				case TTaskType.Kill:
+					{
+						
+						break;
+					}
+			}
+		}
+		
+		private void SaveTaskHandler(UserControl Control)
+		{
+			SaveSettings();
+		}
+		
+		private void AddTask(string Description, string Group, string Process, bool Watch, TWatchMode WatchMode)
+		{
+			TaskControl task = new TaskControl();
+			task.Description = Description;
+			task.Watch = Watch;
+			task.WatchMode = WatchMode;
+			
+			task.GroupDrop.DataSource = FSelections;
+			task.GroupDrop.DisplayMember = "SelectionName";
+			task.ProcessDrop.DataSource = FProcesses;
+			task.ProcessDrop.DisplayMember = "ProcessAndArguments";
+			
+			task.OnXButton += new ButtonUpHandler(DeleteTaskHandler);
+			task.OnExecute += new ButtonUpHandler(ExecuteTaskHandler);
+			task.OnSave += new ButtonUpHandler(SaveTaskHandler);
+			
+			FTasks.Add(task);
+			TasksPanel.Controls.Add(task);
+			task.Dock = DockStyle.Top;
+			task.BringToFront();
+		}
+		#endregion tasks
 	}
 
 	public delegate void ButtonHandler(string IP);
@@ -2944,4 +3076,5 @@ namespace VVVV.Nodes
 	public delegate void GroupChangedHandler(GroupControl Group, string OldGroupName, List<string> IPs);
 	
 	public enum TTaskType {Start, Restart, Kill, WakeOnLan, Reboot, ShutDown};
+	public enum TWatchMode {Off, Restart, Reboot};
 }

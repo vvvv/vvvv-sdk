@@ -12,19 +12,71 @@ namespace VVVV.Nodes
 	{
 		public event ButtonUpHandler OnXButton;
 		public event ButtonUpHandler OnExecute;
+		public event ButtonUpHandler OnSave;
 		
 		private bool FEditing = false;
 		
-		private string FTaskName;
-		public string TaskName
+		private string FDescription;
+		public string Description
 		{
-			get {return FTaskName;}
-			set 
+			get {return FDescription;}
+			set
 			{
-				NameLabel.Text = value;
-				FTaskName = value;
+				DescriptionLabel.Text = value;
+				FDescription = value;
 			}
 		}
+		
+		public bool Watch
+		{
+			get {return WatchCheckBox.Checked;}
+			set {WatchCheckBox.Checked = value;}
+		}
+		
+		public string Group
+		{
+			get {return "ungrouped";}
+		}
+		
+		public string Process
+		{
+			get {return "1";}
+		}
+		
+		public TWatchMode WatchMode
+		{
+			get
+			{
+				if (WatchRestart.Checked)
+					return TWatchMode.Restart;
+				else if (WatchReboot.Checked)
+					return TWatchMode.Reboot;
+				else
+					return TWatchMode.Off;
+			}
+			set
+			{
+				switch(value)
+				{
+					case TWatchMode.Off:
+						{
+							WatchDoNothing.Checked = true;
+							break;
+						}
+					case TWatchMode.Restart:
+						{
+							WatchRestart.Checked = true;
+							break;
+						}
+					case TWatchMode.Reboot:
+						{
+							WatchReboot.Checked = true;
+							break;
+						}
+				}
+			}
+		}
+		
 		
 		private TTaskType FTaskType;
 		public TTaskType TaskType
@@ -32,9 +84,9 @@ namespace VVVV.Nodes
 			get {return FTaskType;}
 		}
 		
-		public System.Windows.Forms.ComboBox SelectionDrop
+		public System.Windows.Forms.ComboBox GroupDrop
 		{
-			get {return SelectionBox;}
+			get {return GroupBox;}
 		}
 		
 		public System.Windows.Forms.ComboBox ProcessDrop
@@ -65,14 +117,15 @@ namespace VVVV.Nodes
 			{
 				EditButton.Text = "S";
 				Height = 135;
-				NameEdit.Text = FTaskName;
+				DescriptionEdit.Text = FDescription;
 			}
 			else
 			{
 				EditButton.Text = "E";
 				Height = 25;
-				TaskName = NameEdit.Text;
-			}			
+				Description = DescriptionEdit.Text;
+				OnSave.Invoke(this);
+			}
 		}
 		
 		void StartButtonClick(object sender, EventArgs e)

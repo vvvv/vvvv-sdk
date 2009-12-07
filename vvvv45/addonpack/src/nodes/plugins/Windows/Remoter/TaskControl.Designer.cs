@@ -37,7 +37,7 @@ namespace VVVV.Nodes
 		private void InitializeComponent()
 		{
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.NameLabel = new System.Windows.Forms.Label();
+			this.DescriptionLabel = new System.Windows.Forms.Label();
 			this.StartButton = new System.Windows.Forms.Button();
 			this.RestartButton = new System.Windows.Forms.Button();
 			this.KillButton = new System.Windows.Forms.Button();
@@ -49,10 +49,10 @@ namespace VVVV.Nodes
 			this.WatchDoNothing = new System.Windows.Forms.RadioButton();
 			this.label1 = new System.Windows.Forms.Label();
 			this.WriteToBatButton = new System.Windows.Forms.Button();
-			this.SelectionBox = new System.Windows.Forms.ComboBox();
+			this.GroupBox = new System.Windows.Forms.ComboBox();
 			this.ProcessBox = new System.Windows.Forms.ComboBox();
 			this.panel2 = new System.Windows.Forms.Panel();
-			this.NameEdit = new System.Windows.Forms.TextBox();
+			this.DescriptionEdit = new System.Windows.Forms.TextBox();
 			this.DeleteButton = new System.Windows.Forms.Button();
 			this.panel1.SuspendLayout();
 			this.panel3.SuspendLayout();
@@ -61,7 +61,7 @@ namespace VVVV.Nodes
 			// 
 			// panel1
 			// 
-			this.panel1.Controls.Add(this.NameLabel);
+			this.panel1.Controls.Add(this.DescriptionLabel);
 			this.panel1.Controls.Add(this.StartButton);
 			this.panel1.Controls.Add(this.RestartButton);
 			this.panel1.Controls.Add(this.KillButton);
@@ -73,15 +73,15 @@ namespace VVVV.Nodes
 			this.panel1.Size = new System.Drawing.Size(470, 25);
 			this.panel1.TabIndex = 14;
 			// 
-			// NameLabel
+			// DescriptionLabel
 			// 
-			this.NameLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.NameLabel.Location = new System.Drawing.Point(0, 0);
-			this.NameLabel.Name = "NameLabel";
-			this.NameLabel.Size = new System.Drawing.Size(236, 25);
-			this.NameLabel.TabIndex = 6;
-			this.NameLabel.Text = "TaskName";
-			this.NameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.DescriptionLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.DescriptionLabel.Location = new System.Drawing.Point(0, 0);
+			this.DescriptionLabel.Name = "DescriptionLabel";
+			this.DescriptionLabel.Size = new System.Drawing.Size(236, 25);
+			this.DescriptionLabel.TabIndex = 6;
+			this.DescriptionLabel.Text = "Description";
+			this.DescriptionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// StartButton
 			// 
@@ -205,14 +205,14 @@ namespace VVVV.Nodes
 			this.WriteToBatButton.Text = "Write .bat file";
 			this.WriteToBatButton.UseVisualStyleBackColor = true;
 			// 
-			// SelectionBox
+			// GroupBox
 			// 
-			this.SelectionBox.Dock = System.Windows.Forms.DockStyle.Top;
-			this.SelectionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.SelectionBox.Location = new System.Drawing.Point(0, 45);
-			this.SelectionBox.Name = "SelectionBox";
-			this.SelectionBox.Size = new System.Drawing.Size(470, 21);
-			this.SelectionBox.TabIndex = 21;
+			this.GroupBox.Dock = System.Windows.Forms.DockStyle.Top;
+			this.GroupBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.GroupBox.Location = new System.Drawing.Point(0, 45);
+			this.GroupBox.Name = "GroupBox";
+			this.GroupBox.Size = new System.Drawing.Size(470, 21);
+			this.GroupBox.TabIndex = 21;
 			// 
 			// ProcessBox
 			// 
@@ -225,7 +225,7 @@ namespace VVVV.Nodes
 			// 
 			// panel2
 			// 
-			this.panel2.Controls.Add(this.NameEdit);
+			this.panel2.Controls.Add(this.DescriptionEdit);
 			this.panel2.Controls.Add(this.DeleteButton);
 			this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel2.Location = new System.Drawing.Point(0, 25);
@@ -233,14 +233,13 @@ namespace VVVV.Nodes
 			this.panel2.Size = new System.Drawing.Size(470, 20);
 			this.panel2.TabIndex = 23;
 			// 
-			// NameEdit
+			// DescriptionEdit
 			// 
-			this.NameEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.NameEdit.Location = new System.Drawing.Point(0, 0);
-			this.NameEdit.Name = "NameEdit";
-			this.NameEdit.Size = new System.Drawing.Size(453, 20);
-			this.NameEdit.TabIndex = 21;
-			this.NameEdit.Text = "Name";
+			this.DescriptionEdit.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.DescriptionEdit.Location = new System.Drawing.Point(0, 0);
+			this.DescriptionEdit.Name = "DescriptionEdit";
+			this.DescriptionEdit.Size = new System.Drawing.Size(453, 20);
+			this.DescriptionEdit.TabIndex = 21;
 			// 
 			// DeleteButton
 			// 
@@ -260,7 +259,7 @@ namespace VVVV.Nodes
 			this.Controls.Add(this.WriteToBatButton);
 			this.Controls.Add(this.panel3);
 			this.Controls.Add(this.ProcessBox);
-			this.Controls.Add(this.SelectionBox);
+			this.Controls.Add(this.GroupBox);
 			this.Controls.Add(this.panel2);
 			this.Controls.Add(this.panel1);
 			this.Name = "TaskControl";
@@ -271,15 +270,15 @@ namespace VVVV.Nodes
 			this.panel2.PerformLayout();
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.Label DescriptionLabel;
+		private System.Windows.Forms.ComboBox GroupBox;
+		private System.Windows.Forms.TextBox DescriptionEdit;
 		private System.Windows.Forms.Button DeleteButton;
-		private System.Windows.Forms.TextBox NameEdit;
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.Button EditButton;
 		private System.Windows.Forms.ComboBox ProcessBox;
-		private System.Windows.Forms.ComboBox SelectionBox;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Panel panel3;
-		private System.Windows.Forms.Label NameLabel;
 		private System.Windows.Forms.CheckBox WatchCheckBox;
 		private System.Windows.Forms.Button StartButton;
 		private System.Windows.Forms.Button RestartButton;
