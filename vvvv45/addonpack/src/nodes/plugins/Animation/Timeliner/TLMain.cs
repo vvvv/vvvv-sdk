@@ -300,6 +300,7 @@ namespace VVVV.Nodes
 			this.SplitContainer.Panel2.AutoScroll = true;
 			this.SplitContainer.Panel2.Controls.Add(this.PinHeaderPanel1);
 			this.SplitContainer.Size = new System.Drawing.Size(150, 330);
+			this.SplitContainer.SplitterDistance = 20;
 			this.SplitContainer.SplitterWidth = 5;
 			this.SplitContainer.TabIndex = 2;
 			this.SplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainerSplitterMoved);
@@ -313,7 +314,7 @@ namespace VVVV.Nodes
 			this.PinHeaderPanel0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
 			this.PinHeaderPanel0.Location = new System.Drawing.Point(0, 0);
 			this.PinHeaderPanel0.Name = "PinHeaderPanel0";
-			this.PinHeaderPanel0.Size = new System.Drawing.Size(150, 50);
+			this.PinHeaderPanel0.Size = new System.Drawing.Size(150, 20);
 			this.PinHeaderPanel0.TabIndex = 0;
 			this.PinHeaderPanel0.Tag = "0";
 			this.PinHeaderPanel0.DragOver += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragOver);
@@ -328,7 +329,7 @@ namespace VVVV.Nodes
 			this.PinHeaderPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.PinHeaderPanel1.Location = new System.Drawing.Point(0, 0);
 			this.PinHeaderPanel1.Name = "PinHeaderPanel1";
-			this.PinHeaderPanel1.Size = new System.Drawing.Size(150, 275);
+			this.PinHeaderPanel1.Size = new System.Drawing.Size(150, 305);
 			this.PinHeaderPanel1.TabIndex = 1;
 			this.PinHeaderPanel1.Tag = "1";
 			this.PinHeaderPanel1.DragOver += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragOver);
