@@ -69,7 +69,7 @@ namespace VVVV.Nodes
 			this.AppPanel.Dock = System.Windows.Forms.DockStyle.Right;
 			this.AppPanel.Location = new System.Drawing.Point(16, 0);
 			this.AppPanel.Name = "AppPanel";
-			this.AppPanel.Size = new System.Drawing.Size(15, 36);
+			this.AppPanel.Size = new System.Drawing.Size(15, 32);
 			this.AppPanel.TabIndex = 10;
 			// 
 			// OnlinePanel
@@ -78,17 +78,17 @@ namespace VVVV.Nodes
 			this.OnlinePanel.Dock = System.Windows.Forms.DockStyle.Left;
 			this.OnlinePanel.Location = new System.Drawing.Point(0, 0);
 			this.OnlinePanel.Name = "OnlinePanel";
-			this.OnlinePanel.Size = new System.Drawing.Size(15, 36);
+			this.OnlinePanel.Size = new System.Drawing.Size(15, 32);
 			this.OnlinePanel.TabIndex = 9;
 			// 
 			// IPsEdit
 			// 
 			this.IPsEdit.AcceptsReturn = true;
 			this.IPsEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.IPsEdit.Location = new System.Drawing.Point(0, 57);
+			this.IPsEdit.Location = new System.Drawing.Point(0, 53);
 			this.IPsEdit.Multiline = true;
 			this.IPsEdit.Name = "IPsEdit";
-			this.IPsEdit.Size = new System.Drawing.Size(238, 83);
+			this.IPsEdit.Size = new System.Drawing.Size(238, 87);
 			this.IPsEdit.TabIndex = 10;
 			// 
 			// TopPanel
@@ -99,7 +99,7 @@ namespace VVVV.Nodes
 			this.TopPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.TopPanel.Location = new System.Drawing.Point(0, 1);
 			this.TopPanel.Name = "TopPanel";
-			this.TopPanel.Size = new System.Drawing.Size(238, 36);
+			this.TopPanel.Size = new System.Drawing.Size(238, 32);
 			this.TopPanel.TabIndex = 11;
 			// 
 			// panel3
@@ -108,7 +108,7 @@ namespace VVVV.Nodes
 			this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel3.Location = new System.Drawing.Point(31, 0);
 			this.panel3.Name = "panel3";
-			this.panel3.Size = new System.Drawing.Size(187, 36);
+			this.panel3.Size = new System.Drawing.Size(187, 32);
 			this.panel3.TabIndex = 10;
 			// 
 			// GroupLabel
@@ -117,7 +117,7 @@ namespace VVVV.Nodes
 			this.GroupLabel.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.GroupLabel.Location = new System.Drawing.Point(0, 0);
 			this.GroupLabel.Name = "GroupLabel";
-			this.GroupLabel.Size = new System.Drawing.Size(187, 36);
+			this.GroupLabel.Size = new System.Drawing.Size(187, 32);
 			this.GroupLabel.TabIndex = 7;
 			this.GroupLabel.Text = "ungrouped";
 			this.GroupLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -132,7 +132,7 @@ namespace VVVV.Nodes
 			this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
 			this.panel2.Location = new System.Drawing.Point(0, 0);
 			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(31, 36);
+			this.panel2.Size = new System.Drawing.Size(31, 32);
 			this.panel2.TabIndex = 9;
 			// 
 			// EditButton
@@ -142,7 +142,7 @@ namespace VVVV.Nodes
 			this.EditButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.EditButton.Location = new System.Drawing.Point(218, 0);
 			this.EditButton.Name = "EditButton";
-			this.EditButton.Size = new System.Drawing.Size(20, 36);
+			this.EditButton.Size = new System.Drawing.Size(20, 32);
 			this.EditButton.TabIndex = 5;
 			this.EditButton.Text = "E";
 			this.EditButton.UseVisualStyleBackColor = true;
@@ -153,7 +153,7 @@ namespace VVVV.Nodes
 			this.NamePanel.Controls.Add(this.GroupNameEdit);
 			this.NamePanel.Controls.Add(this.XButton);
 			this.NamePanel.Dock = System.Windows.Forms.DockStyle.Top;
-			this.NamePanel.Location = new System.Drawing.Point(0, 37);
+			this.NamePanel.Location = new System.Drawing.Point(0, 33);
 			this.NamePanel.Name = "NamePanel";
 			this.NamePanel.Size = new System.Drawing.Size(238, 20);
 			this.NamePanel.TabIndex = 12;

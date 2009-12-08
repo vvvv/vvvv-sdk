@@ -350,7 +350,7 @@ namespace VVVV.Nodes
 				MacAddress = BitConverter.ToString(mac, 0, (int) length);
 				
 				//also read out hostname..takes quite some time
-				HostName = System.Net.Dns.GetHostByAddress(FIP).HostName;
+				HostName = System.Net.Dns.GetHostEntry(FIP).HostName;
 			}
 		}
 	}

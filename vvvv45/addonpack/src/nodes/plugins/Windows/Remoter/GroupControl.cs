@@ -77,12 +77,7 @@ namespace VVVV.Nodes
 				}
 			}
 		}
-		/*
-		public ComboBox Processes
-		{
-			get{return ProcessComboBox;}
-		}
-		*/
+
 		public GroupControl(string GroupName)
 		{
 			//
@@ -100,6 +95,8 @@ namespace VVVV.Nodes
 				GroupNameEdit.Enabled = false;
 				IPsEdit.Enabled = false;
 			}
+			
+			Height = 32;
 		}
 		
 		public void AddIP(IPControl IP)
@@ -138,7 +135,7 @@ namespace VVVV.Nodes
 		{
 			if (FEditing)
 			{
-				this.Height = 37;
+				this.Height = 32;
 				EditButton.Text = "E";
 				
 				if (FGroupName != UNGROUPED)
@@ -157,7 +154,7 @@ namespace VVVV.Nodes
 			}
 			else
 			{
-				this.Height = 56 + (FIPControls.Count + 1) * 20;
+				this.Height = 52 + (FIPControls.Count + 1) * 20;
 				string[] ips = new string[FIPControls.Count];
 				for (int i=0; i<ips.Length; i++)
 					ips[i] = FIPControls[i].IP;
@@ -166,11 +163,6 @@ namespace VVVV.Nodes
 			}
 			
 			FEditing = !FEditing;
-		}
-		
-		void ProcessComboBoxSelectedIndexChanged(object sender, EventArgs e)
-		{
-			//GroupChangedHandler(this, );
 		}
 	}
 }

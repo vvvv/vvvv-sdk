@@ -41,7 +41,7 @@ using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
 /*todos
- * do things in threads
+ * replace IPControls with ordinary ListView
  * consistent log-messages
  * expect ping (for watchdog)
  * remoting of RemoterSA
@@ -69,7 +69,6 @@ namespace VVVV.Nodes
 		private bool FDisposed = false;
 		
 		//input pin declaration
-		private IValueIn FMyValueInput;
 		private IStringConfig FSettingsInput;
 		private IStringConfig FIPListInput;
 		
@@ -84,10 +83,8 @@ namespace VVVV.Nodes
 		private string FMirrorPath;
 		private int FOnlineCheckID = 0;
 		private bool FLoading = true;
-		private int FWatchProcessID = 0;
 
 		private List<IPControl> FIPSortList = new List<IPControl>();
-		private BindingList<SelectionControl> FSelections = new BindingList<SelectionControl>();
 		private BindingList<ProcessControl> FProcesses = new BindingList<ProcessControl>();
 		private BindingList<string> FGroups = new BindingList<string>();
 		
@@ -107,7 +104,6 @@ namespace VVVV.Nodes
 		{
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			InitializeComponent();
-			
 			FSettings = new XmlDocument();
 			
 			GroupFilterDropDown.SelectedIndex = 0;
@@ -231,6 +227,7 @@ namespace VVVV.Nodes
 			this.SplitContainer = new System.Windows.Forms.SplitContainer();
 			this.LeftTabControl = new System.Windows.Forms.TabControl();
 			this.IPPage = new System.Windows.Forms.TabPage();
+			this.IPListPanel = new System.Windows.Forms.Panel();
 			this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
 			this.label5 = new System.Windows.Forms.Label();
 			this.ClearSelectionButton = new System.Windows.Forms.Button();
@@ -238,7 +235,6 @@ namespace VVVV.Nodes
 			this.AddVisibleToSelectionButton = new System.Windows.Forms.Button();
 			this.RemoveVisibleFromSelectionButton = new System.Windows.Forms.Button();
 			this.DeleteSelectedIPsButton = new System.Windows.Forms.Button();
-			this.IPListPanel = new System.Windows.Forms.Panel();
 			this.GroupFilterDropDown = new System.Windows.Forms.ComboBox();
 			this.LeftTopPanel = new System.Windows.Forms.Panel();
 			this.NewIPEdit = new System.Windows.Forms.TextBox();
@@ -250,32 +246,28 @@ namespace VVVV.Nodes
 			this.NewGroupEdit = new System.Windows.Forms.TextBox();
 			this.AddGroupButton = new System.Windows.Forms.Button();
 			this.panel8 = new System.Windows.Forms.Panel();
-			this.InvertGroupSelectionButton = new System.Windows.Forms.Button();
+			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.SelectAllGroupsButton = new System.Windows.Forms.Button();
 			this.RemoveAllGroupsButton = new System.Windows.Forms.Button();
+			this.InvertGroupSelectionButton = new System.Windows.Forms.Button();
+			this.ClearGroupSelectionButton = new System.Windows.Forms.Button();
+			this.label8 = new System.Windows.Forms.Label();
 			this.RightTabControl = new System.Windows.Forms.TabControl();
 			this.CommandsPage = new System.Windows.Forms.TabPage();
 			this.TasksPanel = new System.Windows.Forms.Panel();
-			this.panel18 = new System.Windows.Forms.Panel();
-			this.TaskDescriptionEdit = new System.Windows.Forms.TextBox();
+			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+			this.RemoteProcessPathDrop = new System.Windows.Forms.ComboBox();
 			this.TaskAddButton = new System.Windows.Forms.Button();
-			this.panel11 = new System.Windows.Forms.Panel();
-			this.panel10 = new System.Windows.Forms.Panel();
-			this.MirrorButton = new System.Windows.Forms.Button();
-			this.panel12 = new System.Windows.Forms.Panel();
+			this.TaskDescriptionEdit = new System.Windows.Forms.TextBox();
 			this.MirrorTestCheckBox = new System.Windows.Forms.CheckBox();
-			this.panel5 = new System.Windows.Forms.Panel();
-			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+			this.MirrorButton = new System.Windows.Forms.Button();
 			this.ShutdownButton = new System.Windows.Forms.Button();
 			this.RebootButton = new System.Windows.Forms.Button();
 			this.WakeOnLanButton = new System.Windows.Forms.Button();
 			this.MACAddressButton = new System.Windows.Forms.Button();
-			this.panel4 = new System.Windows.Forms.Panel();
-			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.KillButton = new System.Windows.Forms.Button();
-			this.RestartButton = new System.Windows.Forms.Button();
+			this.button3 = new System.Windows.Forms.Button();
 			this.StartButton = new System.Windows.Forms.Button();
-			this.RemoteProcessPathDrop = new System.Windows.Forms.ComboBox();
 			this.SettingsPage = new System.Windows.Forms.TabPage();
 			this.MirrorBox = new System.Windows.Forms.GroupBox();
 			this.IgnorePattern = new System.Windows.Forms.TextBox();
@@ -334,12 +326,10 @@ namespace VVVV.Nodes
 			this.GroupPage.SuspendLayout();
 			this.panel9.SuspendLayout();
 			this.panel8.SuspendLayout();
+			this.tableLayoutPanel1.SuspendLayout();
 			this.RightTabControl.SuspendLayout();
 			this.CommandsPage.SuspendLayout();
-			this.panel18.SuspendLayout();
-			this.panel10.SuspendLayout();
-			this.tableLayoutPanel2.SuspendLayout();
-			this.tableLayoutPanel1.SuspendLayout();
+			this.tableLayoutPanel3.SuspendLayout();
 			this.SettingsPage.SuspendLayout();
 			this.MirrorBox.SuspendLayout();
 			this.MirrorPathPanel.SuspendLayout();
@@ -394,12 +384,14 @@ namespace VVVV.Nodes
 			this.LeftTabControl.SelectedIndex = 0;
 			this.LeftTabControl.Size = new System.Drawing.Size(409, 491);
 			this.LeftTabControl.TabIndex = 4;
-			this.LeftTabControl.TabIndexChanged += new System.EventHandler(this.LeftTabControlSelectedIndexChanged);
+			this.LeftTabControl.SelectedIndexChanged += new System.EventHandler(this.LeftTabControlSelectedIndexChanged);
 			// 
 			// IPPage
 			// 
-			this.IPPage.Controls.Add(this.tableLayoutPanel5);
+			this.IPPage.BackColor = System.Drawing.SystemColors.Control;
+			this.IPPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.IPPage.Controls.Add(this.IPListPanel);
+			this.IPPage.Controls.Add(this.tableLayoutPanel5);
 			this.IPPage.Controls.Add(this.GroupFilterDropDown);
 			this.IPPage.Controls.Add(this.LeftTopPanel);
 			this.IPPage.Location = new System.Drawing.Point(4, 25);
@@ -408,7 +400,16 @@ namespace VVVV.Nodes
 			this.IPPage.Size = new System.Drawing.Size(401, 462);
 			this.IPPage.TabIndex = 0;
 			this.IPPage.Text = "IPs";
-			this.IPPage.UseVisualStyleBackColor = true;
+			// 
+			// IPListPanel
+			// 
+			this.IPListPanel.AutoScroll = true;
+			this.IPListPanel.BackColor = System.Drawing.SystemColors.Control;
+			this.IPListPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.IPListPanel.Location = new System.Drawing.Point(3, 44);
+			this.IPListPanel.Name = "IPListPanel";
+			this.IPListPanel.Size = new System.Drawing.Size(393, 388);
+			this.IPListPanel.TabIndex = 5;
 			// 
 			// tableLayoutPanel5
 			// 
@@ -426,97 +427,89 @@ namespace VVVV.Nodes
 			this.tableLayoutPanel5.Controls.Add(this.RemoveVisibleFromSelectionButton, 3, 0);
 			this.tableLayoutPanel5.Controls.Add(this.DeleteSelectedIPsButton, 5, 0);
 			this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 435);
+			this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 432);
 			this.tableLayoutPanel5.Name = "tableLayoutPanel5";
 			this.tableLayoutPanel5.RowCount = 1;
 			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel5.Size = new System.Drawing.Size(395, 24);
+			this.tableLayoutPanel5.Size = new System.Drawing.Size(393, 25);
 			this.tableLayoutPanel5.TabIndex = 8;
 			// 
 			// label5
 			// 
+			this.label5.BackColor = System.Drawing.SystemColors.Control;
 			this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.label5.Location = new System.Drawing.Point(0, 0);
 			this.label5.Margin = new System.Windows.Forms.Padding(0);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(55, 24);
+			this.label5.Size = new System.Drawing.Size(55, 25);
 			this.label5.TabIndex = 8;
 			this.label5.Text = "Selection";
 			this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// ClearSelectionButton
 			// 
+			this.ClearSelectionButton.BackColor = System.Drawing.SystemColors.Control;
 			this.ClearSelectionButton.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ClearSelectionButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.ClearSelectionButton.Location = new System.Drawing.Point(55, 0);
 			this.ClearSelectionButton.Margin = new System.Windows.Forms.Padding(0);
 			this.ClearSelectionButton.Name = "ClearSelectionButton";
-			this.ClearSelectionButton.Size = new System.Drawing.Size(47, 24);
+			this.ClearSelectionButton.Size = new System.Drawing.Size(46, 25);
 			this.ClearSelectionButton.TabIndex = 9;
 			this.ClearSelectionButton.Text = "Clear";
-			this.ClearSelectionButton.UseVisualStyleBackColor = true;
+			this.ClearSelectionButton.UseVisualStyleBackColor = false;
 			this.ClearSelectionButton.Click += new System.EventHandler(this.ClearSelectionButtonClick);
 			// 
 			// InvertSelectionButton
 			// 
+			this.InvertSelectionButton.BackColor = System.Drawing.SystemColors.Control;
 			this.InvertSelectionButton.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.InvertSelectionButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.InvertSelectionButton.Location = new System.Drawing.Point(295, 0);
+			this.InvertSelectionButton.Location = new System.Drawing.Point(292, 0);
 			this.InvertSelectionButton.Margin = new System.Windows.Forms.Padding(0);
 			this.InvertSelectionButton.Name = "InvertSelectionButton";
-			this.InvertSelectionButton.Size = new System.Drawing.Size(47, 24);
+			this.InvertSelectionButton.Size = new System.Drawing.Size(46, 25);
 			this.InvertSelectionButton.TabIndex = 12;
 			this.InvertSelectionButton.Text = "Invert";
-			this.InvertSelectionButton.UseVisualStyleBackColor = true;
+			this.InvertSelectionButton.UseVisualStyleBackColor = false;
 			this.InvertSelectionButton.Click += new System.EventHandler(this.InvertSelectionButtonClick);
 			// 
 			// AddVisibleToSelectionButton
 			// 
+			this.AddVisibleToSelectionButton.BackColor = System.Drawing.SystemColors.Control;
 			this.AddVisibleToSelectionButton.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.AddVisibleToSelectionButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.AddVisibleToSelectionButton.Location = new System.Drawing.Point(102, 0);
+			this.AddVisibleToSelectionButton.Location = new System.Drawing.Point(101, 0);
 			this.AddVisibleToSelectionButton.Margin = new System.Windows.Forms.Padding(0);
 			this.AddVisibleToSelectionButton.Name = "AddVisibleToSelectionButton";
-			this.AddVisibleToSelectionButton.Size = new System.Drawing.Size(82, 24);
+			this.AddVisibleToSelectionButton.Size = new System.Drawing.Size(81, 25);
 			this.AddVisibleToSelectionButton.TabIndex = 10;
 			this.AddVisibleToSelectionButton.Text = "Add Visible";
-			this.AddVisibleToSelectionButton.UseVisualStyleBackColor = true;
+			this.AddVisibleToSelectionButton.UseVisualStyleBackColor = false;
 			this.AddVisibleToSelectionButton.Click += new System.EventHandler(this.AddVisibleToSelectionButtonClick);
 			// 
 			// RemoveVisibleFromSelectionButton
 			// 
+			this.RemoveVisibleFromSelectionButton.BackColor = System.Drawing.SystemColors.Control;
 			this.RemoveVisibleFromSelectionButton.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.RemoveVisibleFromSelectionButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.RemoveVisibleFromSelectionButton.Location = new System.Drawing.Point(184, 0);
+			this.RemoveVisibleFromSelectionButton.Location = new System.Drawing.Point(182, 0);
 			this.RemoveVisibleFromSelectionButton.Margin = new System.Windows.Forms.Padding(0);
 			this.RemoveVisibleFromSelectionButton.Name = "RemoveVisibleFromSelectionButton";
-			this.RemoveVisibleFromSelectionButton.Size = new System.Drawing.Size(111, 24);
+			this.RemoveVisibleFromSelectionButton.Size = new System.Drawing.Size(110, 25);
 			this.RemoveVisibleFromSelectionButton.TabIndex = 11;
 			this.RemoveVisibleFromSelectionButton.Text = "Remove Visible";
-			this.RemoveVisibleFromSelectionButton.UseVisualStyleBackColor = true;
+			this.RemoveVisibleFromSelectionButton.UseVisualStyleBackColor = false;
 			this.RemoveVisibleFromSelectionButton.Click += new System.EventHandler(this.RemoveVisibleFromSelectionButtonClick);
 			// 
 			// DeleteSelectedIPsButton
 			// 
+			this.DeleteSelectedIPsButton.BackColor = System.Drawing.SystemColors.Control;
 			this.DeleteSelectedIPsButton.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.DeleteSelectedIPsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.DeleteSelectedIPsButton.Location = new System.Drawing.Point(342, 0);
+			this.DeleteSelectedIPsButton.Location = new System.Drawing.Point(338, 0);
 			this.DeleteSelectedIPsButton.Margin = new System.Windows.Forms.Padding(0);
 			this.DeleteSelectedIPsButton.Name = "DeleteSelectedIPsButton";
-			this.DeleteSelectedIPsButton.Size = new System.Drawing.Size(53, 24);
+			this.DeleteSelectedIPsButton.Size = new System.Drawing.Size(55, 25);
 			this.DeleteSelectedIPsButton.TabIndex = 13;
 			this.DeleteSelectedIPsButton.Text = "Delete";
-			this.DeleteSelectedIPsButton.UseVisualStyleBackColor = true;
+			this.DeleteSelectedIPsButton.UseVisualStyleBackColor = false;
 			this.DeleteSelectedIPsButton.Click += new System.EventHandler(this.DeleteButtonClick);
-			// 
-			// IPListPanel
-			// 
-			this.IPListPanel.AutoScroll = true;
-			this.IPListPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.IPListPanel.Location = new System.Drawing.Point(3, 44);
-			this.IPListPanel.Name = "IPListPanel";
-			this.IPListPanel.Size = new System.Drawing.Size(395, 415);
-			this.IPListPanel.TabIndex = 5;
 			// 
 			// GroupFilterDropDown
 			// 
@@ -529,7 +522,7 @@ namespace VVVV.Nodes
 									".Online"});
 			this.GroupFilterDropDown.Location = new System.Drawing.Point(3, 23);
 			this.GroupFilterDropDown.Name = "GroupFilterDropDown";
-			this.GroupFilterDropDown.Size = new System.Drawing.Size(395, 21);
+			this.GroupFilterDropDown.Size = new System.Drawing.Size(393, 21);
 			this.GroupFilterDropDown.Sorted = true;
 			this.GroupFilterDropDown.TabIndex = 6;
 			this.GroupFilterDropDown.SelectedIndexChanged += new System.EventHandler(this.GroupFilterDropDownSelectedIndexChanged);
@@ -542,7 +535,7 @@ namespace VVVV.Nodes
 			this.LeftTopPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.LeftTopPanel.Location = new System.Drawing.Point(3, 3);
 			this.LeftTopPanel.Name = "LeftTopPanel";
-			this.LeftTopPanel.Size = new System.Drawing.Size(395, 20);
+			this.LeftTopPanel.Size = new System.Drawing.Size(393, 20);
 			this.LeftTopPanel.TabIndex = 1;
 			// 
 			// NewIPEdit
@@ -550,66 +543,69 @@ namespace VVVV.Nodes
 			this.NewIPEdit.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.NewIPEdit.Location = new System.Drawing.Point(0, 0);
 			this.NewIPEdit.Name = "NewIPEdit";
-			this.NewIPEdit.Size = new System.Drawing.Size(333, 20);
+			this.NewIPEdit.Size = new System.Drawing.Size(331, 20);
 			this.NewIPEdit.TabIndex = 0;
 			this.NewIPEdit.Text = "192.168.0.1";
 			this.NewIPEdit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NewIPEditKeyPress);
 			// 
 			// AddIPButton
 			// 
+			this.AddIPButton.BackColor = System.Drawing.SystemColors.Control;
 			this.AddIPButton.Dock = System.Windows.Forms.DockStyle.Right;
-			this.AddIPButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.AddIPButton.Location = new System.Drawing.Point(333, 0);
+			this.AddIPButton.Location = new System.Drawing.Point(331, 0);
 			this.AddIPButton.Name = "AddIPButton";
 			this.AddIPButton.Size = new System.Drawing.Size(20, 20);
 			this.AddIPButton.TabIndex = 1;
 			this.AddIPButton.Text = "+";
-			this.AddIPButton.UseVisualStyleBackColor = true;
+			this.AddIPButton.UseVisualStyleBackColor = false;
 			this.AddIPButton.Click += new System.EventHandler(this.AddIPButtonClick);
 			// 
 			// VNCButton
 			// 
+			this.VNCButton.BackColor = System.Drawing.SystemColors.Control;
 			this.VNCButton.Dock = System.Windows.Forms.DockStyle.Right;
-			this.VNCButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.VNCButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.VNCButton.Location = new System.Drawing.Point(353, 0);
+			this.VNCButton.Location = new System.Drawing.Point(351, 0);
 			this.VNCButton.Name = "VNCButton";
 			this.VNCButton.Size = new System.Drawing.Size(42, 20);
 			this.VNCButton.TabIndex = 2;
 			this.VNCButton.Text = "VNC";
-			this.VNCButton.UseVisualStyleBackColor = true;
+			this.VNCButton.UseVisualStyleBackColor = false;
 			this.VNCButton.Click += new System.EventHandler(this.VNCButtonClick);
 			// 
 			// GroupPage
 			// 
+			this.GroupPage.BackColor = System.Drawing.SystemColors.Control;
+			this.GroupPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.GroupPage.Controls.Add(this.GroupListPanel);
 			this.GroupPage.Controls.Add(this.panel9);
 			this.GroupPage.Controls.Add(this.panel8);
 			this.GroupPage.Location = new System.Drawing.Point(4, 25);
 			this.GroupPage.Name = "GroupPage";
 			this.GroupPage.Padding = new System.Windows.Forms.Padding(3);
-			this.GroupPage.Size = new System.Drawing.Size(407, 462);
+			this.GroupPage.Size = new System.Drawing.Size(401, 462);
 			this.GroupPage.TabIndex = 1;
 			this.GroupPage.Text = "Groups";
-			this.GroupPage.UseVisualStyleBackColor = true;
 			// 
 			// GroupListPanel
 			// 
 			this.GroupListPanel.AutoScroll = true;
+			this.GroupListPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.GroupListPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.GroupListPanel.Location = new System.Drawing.Point(3, 28);
+			this.GroupListPanel.Location = new System.Drawing.Point(3, 23);
 			this.GroupListPanel.Name = "GroupListPanel";
-			this.GroupListPanel.Size = new System.Drawing.Size(401, 406);
+			this.GroupListPanel.Size = new System.Drawing.Size(393, 409);
 			this.GroupListPanel.TabIndex = 6;
 			// 
 			// panel9
 			// 
+			this.panel9.BackColor = System.Drawing.SystemColors.Control;
 			this.panel9.Controls.Add(this.NewGroupEdit);
 			this.panel9.Controls.Add(this.AddGroupButton);
 			this.panel9.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel9.Location = new System.Drawing.Point(3, 3);
 			this.panel9.Name = "panel9";
-			this.panel9.Size = new System.Drawing.Size(401, 25);
+			this.panel9.Size = new System.Drawing.Size(393, 20);
 			this.panel9.TabIndex = 5;
 			// 
 			// NewGroupEdit
@@ -617,69 +613,116 @@ namespace VVVV.Nodes
 			this.NewGroupEdit.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.NewGroupEdit.Location = new System.Drawing.Point(0, 0);
 			this.NewGroupEdit.Name = "NewGroupEdit";
-			this.NewGroupEdit.Size = new System.Drawing.Size(381, 20);
+			this.NewGroupEdit.Size = new System.Drawing.Size(373, 20);
 			this.NewGroupEdit.TabIndex = 2;
 			this.NewGroupEdit.Text = "N\'Sync";
 			this.NewGroupEdit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NewIPEditKeyPress);
 			// 
 			// AddGroupButton
 			// 
+			this.AddGroupButton.BackColor = System.Drawing.SystemColors.Control;
 			this.AddGroupButton.Dock = System.Windows.Forms.DockStyle.Right;
 			this.AddGroupButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.AddGroupButton.Location = new System.Drawing.Point(381, 0);
+			this.AddGroupButton.Location = new System.Drawing.Point(373, 0);
 			this.AddGroupButton.Name = "AddGroupButton";
-			this.AddGroupButton.Size = new System.Drawing.Size(20, 25);
+			this.AddGroupButton.Size = new System.Drawing.Size(20, 20);
 			this.AddGroupButton.TabIndex = 3;
 			this.AddGroupButton.Text = "+";
-			this.AddGroupButton.UseVisualStyleBackColor = true;
+			this.AddGroupButton.UseVisualStyleBackColor = false;
 			this.AddGroupButton.Click += new System.EventHandler(this.AddGroupButtonClick);
 			// 
 			// panel8
 			// 
-			this.panel8.Controls.Add(this.InvertGroupSelectionButton);
-			this.panel8.Controls.Add(this.SelectAllGroupsButton);
-			this.panel8.Controls.Add(this.RemoveAllGroupsButton);
+			this.panel8.Controls.Add(this.tableLayoutPanel1);
+			this.panel8.Controls.Add(this.label8);
 			this.panel8.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel8.Location = new System.Drawing.Point(3, 434);
+			this.panel8.Location = new System.Drawing.Point(3, 432);
 			this.panel8.Name = "panel8";
-			this.panel8.Size = new System.Drawing.Size(401, 25);
+			this.panel8.Size = new System.Drawing.Size(393, 25);
 			this.panel8.TabIndex = 4;
 			// 
-			// InvertGroupSelectionButton
+			// tableLayoutPanel1
 			// 
-			this.InvertGroupSelectionButton.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.InvertGroupSelectionButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.InvertGroupSelectionButton.Location = new System.Drawing.Point(60, 0);
-			this.InvertGroupSelectionButton.Name = "InvertGroupSelectionButton";
-			this.InvertGroupSelectionButton.Size = new System.Drawing.Size(263, 25);
-			this.InvertGroupSelectionButton.TabIndex = 4;
-			this.InvertGroupSelectionButton.Text = "Invert Selection";
-			this.InvertGroupSelectionButton.UseVisualStyleBackColor = true;
-			this.InvertGroupSelectionButton.Click += new System.EventHandler(this.InvertSelectionButtonClick);
+			this.tableLayoutPanel1.ColumnCount = 4;
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+			this.tableLayoutPanel1.Controls.Add(this.SelectAllGroupsButton, 0, 0);
+			this.tableLayoutPanel1.Controls.Add(this.RemoveAllGroupsButton, 3, 0);
+			this.tableLayoutPanel1.Controls.Add(this.InvertGroupSelectionButton, 2, 0);
+			this.tableLayoutPanel1.Controls.Add(this.ClearGroupSelectionButton, 0, 0);
+			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(55, 0);
+			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+			this.tableLayoutPanel1.RowCount = 1;
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(338, 25);
+			this.tableLayoutPanel1.TabIndex = 10;
 			// 
 			// SelectAllGroupsButton
 			// 
-			this.SelectAllGroupsButton.Dock = System.Windows.Forms.DockStyle.Left;
-			this.SelectAllGroupsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.SelectAllGroupsButton.Location = new System.Drawing.Point(0, 0);
+			this.SelectAllGroupsButton.BackColor = System.Drawing.SystemColors.Control;
+			this.SelectAllGroupsButton.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.SelectAllGroupsButton.Location = new System.Drawing.Point(84, 0);
+			this.SelectAllGroupsButton.Margin = new System.Windows.Forms.Padding(0);
 			this.SelectAllGroupsButton.Name = "SelectAllGroupsButton";
-			this.SelectAllGroupsButton.Size = new System.Drawing.Size(60, 25);
-			this.SelectAllGroupsButton.TabIndex = 1;
-			this.SelectAllGroupsButton.Text = "Select all";
-			this.SelectAllGroupsButton.UseVisualStyleBackColor = true;
+			this.SelectAllGroupsButton.Size = new System.Drawing.Size(84, 25);
+			this.SelectAllGroupsButton.TabIndex = 7;
+			this.SelectAllGroupsButton.Text = "All";
+			this.SelectAllGroupsButton.UseVisualStyleBackColor = false;
 			this.SelectAllGroupsButton.Click += new System.EventHandler(this.SelectAllGroupsButtonClick);
 			// 
 			// RemoveAllGroupsButton
 			// 
-			this.RemoveAllGroupsButton.Dock = System.Windows.Forms.DockStyle.Right;
-			this.RemoveAllGroupsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.RemoveAllGroupsButton.Location = new System.Drawing.Point(323, 0);
+			this.RemoveAllGroupsButton.BackColor = System.Drawing.SystemColors.Control;
+			this.RemoveAllGroupsButton.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.RemoveAllGroupsButton.Location = new System.Drawing.Point(252, 0);
+			this.RemoveAllGroupsButton.Margin = new System.Windows.Forms.Padding(0);
 			this.RemoveAllGroupsButton.Name = "RemoveAllGroupsButton";
-			this.RemoveAllGroupsButton.Size = new System.Drawing.Size(78, 25);
-			this.RemoveAllGroupsButton.TabIndex = 0;
-			this.RemoveAllGroupsButton.Text = "Remove all IPs";
-			this.RemoveAllGroupsButton.UseVisualStyleBackColor = true;
+			this.RemoveAllGroupsButton.Size = new System.Drawing.Size(86, 25);
+			this.RemoveAllGroupsButton.TabIndex = 6;
+			this.RemoveAllGroupsButton.Text = "Delete";
+			this.RemoveAllGroupsButton.UseVisualStyleBackColor = false;
 			this.RemoveAllGroupsButton.Click += new System.EventHandler(this.RemoveAllGroupsButtonClick);
+			// 
+			// InvertGroupSelectionButton
+			// 
+			this.InvertGroupSelectionButton.BackColor = System.Drawing.SystemColors.Control;
+			this.InvertGroupSelectionButton.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.InvertGroupSelectionButton.Location = new System.Drawing.Point(168, 0);
+			this.InvertGroupSelectionButton.Margin = new System.Windows.Forms.Padding(0);
+			this.InvertGroupSelectionButton.Name = "InvertGroupSelectionButton";
+			this.InvertGroupSelectionButton.Size = new System.Drawing.Size(84, 25);
+			this.InvertGroupSelectionButton.TabIndex = 5;
+			this.InvertGroupSelectionButton.Text = "Invert";
+			this.InvertGroupSelectionButton.UseVisualStyleBackColor = false;
+			this.InvertGroupSelectionButton.Click += new System.EventHandler(this.InvertGroupSelectionButtonClick);
+			// 
+			// ClearGroupSelectionButton
+			// 
+			this.ClearGroupSelectionButton.BackColor = System.Drawing.SystemColors.Control;
+			this.ClearGroupSelectionButton.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ClearGroupSelectionButton.Location = new System.Drawing.Point(0, 0);
+			this.ClearGroupSelectionButton.Margin = new System.Windows.Forms.Padding(0);
+			this.ClearGroupSelectionButton.Name = "ClearGroupSelectionButton";
+			this.ClearGroupSelectionButton.Size = new System.Drawing.Size(84, 25);
+			this.ClearGroupSelectionButton.TabIndex = 2;
+			this.ClearGroupSelectionButton.Text = "Clear";
+			this.ClearGroupSelectionButton.UseVisualStyleBackColor = false;
+			this.ClearGroupSelectionButton.Click += new System.EventHandler(this.ClearGroupSelectionButtonClick);
+			// 
+			// label8
+			// 
+			this.label8.BackColor = System.Drawing.SystemColors.Control;
+			this.label8.Dock = System.Windows.Forms.DockStyle.Left;
+			this.label8.Location = new System.Drawing.Point(0, 0);
+			this.label8.Margin = new System.Windows.Forms.Padding(0);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(55, 25);
+			this.label8.TabIndex = 9;
+			this.label8.Text = "Selection";
+			this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// RightTabControl
 			// 
@@ -696,275 +739,242 @@ namespace VVVV.Nodes
 			// 
 			// CommandsPage
 			// 
-			this.CommandsPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+			this.CommandsPage.BackColor = System.Drawing.SystemColors.Control;
+			this.CommandsPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.CommandsPage.Controls.Add(this.TasksPanel);
-			this.CommandsPage.Controls.Add(this.panel18);
-			this.CommandsPage.Controls.Add(this.panel11);
-			this.CommandsPage.Controls.Add(this.panel10);
-			this.CommandsPage.Controls.Add(this.panel5);
-			this.CommandsPage.Controls.Add(this.tableLayoutPanel2);
-			this.CommandsPage.Controls.Add(this.MACAddressButton);
-			this.CommandsPage.Controls.Add(this.panel4);
-			this.CommandsPage.Controls.Add(this.tableLayoutPanel1);
-			this.CommandsPage.Controls.Add(this.RemoteProcessPathDrop);
+			this.CommandsPage.Controls.Add(this.tableLayoutPanel3);
 			this.CommandsPage.Location = new System.Drawing.Point(4, 25);
 			this.CommandsPage.Name = "CommandsPage";
 			this.CommandsPage.Padding = new System.Windows.Forms.Padding(3);
 			this.CommandsPage.Size = new System.Drawing.Size(273, 462);
 			this.CommandsPage.TabIndex = 1;
 			this.CommandsPage.Text = "Commands";
-			this.CommandsPage.UseVisualStyleBackColor = true;
 			// 
 			// TasksPanel
 			// 
+			this.TasksPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.TasksPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.TasksPanel.Location = new System.Drawing.Point(3, 178);
+			this.TasksPanel.Location = new System.Drawing.Point(3, 180);
 			this.TasksPanel.Name = "TasksPanel";
-			this.TasksPanel.Size = new System.Drawing.Size(267, 281);
+			this.TasksPanel.Size = new System.Drawing.Size(265, 277);
 			this.TasksPanel.TabIndex = 0;
 			// 
-			// panel18
+			// tableLayoutPanel3
 			// 
-			this.panel18.Controls.Add(this.TaskDescriptionEdit);
-			this.panel18.Controls.Add(this.TaskAddButton);
-			this.panel18.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel18.Location = new System.Drawing.Point(3, 157);
-			this.panel18.Name = "panel18";
-			this.panel18.Size = new System.Drawing.Size(267, 21);
-			this.panel18.TabIndex = 55;
-			// 
-			// TaskDescriptionEdit
-			// 
-			this.TaskDescriptionEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.TaskDescriptionEdit.Location = new System.Drawing.Point(0, 0);
-			this.TaskDescriptionEdit.Name = "TaskDescriptionEdit";
-			this.TaskDescriptionEdit.Size = new System.Drawing.Size(204, 20);
-			this.TaskDescriptionEdit.TabIndex = 0;
-			// 
-			// TaskAddButton
-			// 
-			this.TaskAddButton.Dock = System.Windows.Forms.DockStyle.Right;
-			this.TaskAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.TaskAddButton.Location = new System.Drawing.Point(204, 0);
-			this.TaskAddButton.Name = "TaskAddButton";
-			this.TaskAddButton.Size = new System.Drawing.Size(63, 21);
-			this.TaskAddButton.TabIndex = 1;
-			this.TaskAddButton.Text = "Add Task";
-			this.TaskAddButton.UseVisualStyleBackColor = true;
-			this.TaskAddButton.Click += new System.EventHandler(this.TaskAddButtonClick);
-			// 
-			// panel11
-			// 
-			this.panel11.BackColor = System.Drawing.Color.Gray;
-			this.panel11.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel11.Location = new System.Drawing.Point(3, 149);
-			this.panel11.Name = "panel11";
-			this.panel11.Size = new System.Drawing.Size(267, 8);
-			this.panel11.TabIndex = 54;
-			// 
-			// panel10
-			// 
-			this.panel10.Controls.Add(this.MirrorButton);
-			this.panel10.Controls.Add(this.panel12);
-			this.panel10.Controls.Add(this.MirrorTestCheckBox);
-			this.panel10.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel10.Location = new System.Drawing.Point(3, 125);
-			this.panel10.Name = "panel10";
-			this.panel10.Size = new System.Drawing.Size(267, 24);
-			this.panel10.TabIndex = 49;
-			// 
-			// MirrorButton
-			// 
-			this.MirrorButton.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.MirrorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.MirrorButton.Location = new System.Drawing.Point(0, 0);
-			this.MirrorButton.Name = "MirrorButton";
-			this.MirrorButton.Size = new System.Drawing.Size(181, 24);
-			this.MirrorButton.TabIndex = 24;
-			this.MirrorButton.Text = "Mirror Now";
-			this.MirrorButton.UseVisualStyleBackColor = true;
-			this.MirrorButton.Click += new System.EventHandler(this.MirrorButtonClick);
-			// 
-			// panel12
-			// 
-			this.panel12.Dock = System.Windows.Forms.DockStyle.Right;
-			this.panel12.Location = new System.Drawing.Point(181, 0);
-			this.panel12.Name = "panel12";
-			this.panel12.Size = new System.Drawing.Size(11, 24);
-			this.panel12.TabIndex = 27;
-			// 
-			// MirrorTestCheckBox
-			// 
-			this.MirrorTestCheckBox.Dock = System.Windows.Forms.DockStyle.Right;
-			this.MirrorTestCheckBox.Location = new System.Drawing.Point(192, 0);
-			this.MirrorTestCheckBox.Name = "MirrorTestCheckBox";
-			this.MirrorTestCheckBox.Size = new System.Drawing.Size(75, 24);
-			this.MirrorTestCheckBox.TabIndex = 25;
-			this.MirrorTestCheckBox.Text = "Test Only";
-			this.MirrorTestCheckBox.UseVisualStyleBackColor = true;
-			this.MirrorTestCheckBox.Click += new System.EventHandler(this.SettingsChanged);
-			// 
-			// panel5
-			// 
-			this.panel5.BackColor = System.Drawing.Color.Gray;
-			this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel5.Location = new System.Drawing.Point(3, 117);
-			this.panel5.Name = "panel5";
-			this.panel5.Size = new System.Drawing.Size(267, 8);
-			this.panel5.TabIndex = 48;
-			// 
-			// tableLayoutPanel2
-			// 
-			this.tableLayoutPanel2.ColumnCount = 3;
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-			this.tableLayoutPanel2.Controls.Add(this.ShutdownButton, 0, 0);
-			this.tableLayoutPanel2.Controls.Add(this.RebootButton, 0, 0);
-			this.tableLayoutPanel2.Controls.Add(this.WakeOnLanButton, 0, 0);
-			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
-			this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 87);
-			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-			this.tableLayoutPanel2.RowCount = 1;
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(267, 30);
-			this.tableLayoutPanel2.TabIndex = 52;
-			// 
-			// ShutdownButton
-			// 
-			this.ShutdownButton.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ShutdownButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.ShutdownButton.Location = new System.Drawing.Point(181, 3);
-			this.ShutdownButton.Name = "ShutdownButton";
-			this.ShutdownButton.Size = new System.Drawing.Size(83, 24);
-			this.ShutdownButton.TabIndex = 24;
-			this.ShutdownButton.Text = "Shutdown";
-			this.ShutdownButton.UseVisualStyleBackColor = true;
-			this.ShutdownButton.Click += new System.EventHandler(this.ShutdownButtonClick);
-			// 
-			// RebootButton
-			// 
-			this.RebootButton.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.RebootButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.RebootButton.Location = new System.Drawing.Point(92, 3);
-			this.RebootButton.Name = "RebootButton";
-			this.RebootButton.Size = new System.Drawing.Size(83, 24);
-			this.RebootButton.TabIndex = 23;
-			this.RebootButton.Text = "Reboot";
-			this.RebootButton.UseVisualStyleBackColor = true;
-			this.RebootButton.Click += new System.EventHandler(this.RebootButtonClick);
-			// 
-			// WakeOnLanButton
-			// 
-			this.WakeOnLanButton.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.WakeOnLanButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.WakeOnLanButton.Location = new System.Drawing.Point(3, 3);
-			this.WakeOnLanButton.Name = "WakeOnLanButton";
-			this.WakeOnLanButton.Size = new System.Drawing.Size(83, 24);
-			this.WakeOnLanButton.TabIndex = 22;
-			this.WakeOnLanButton.Text = "WakeOnLan";
-			this.WakeOnLanButton.UseVisualStyleBackColor = true;
-			this.WakeOnLanButton.Click += new System.EventHandler(this.WakeOnLanButtonClick);
-			// 
-			// MACAddressButton
-			// 
-			this.MACAddressButton.Dock = System.Windows.Forms.DockStyle.Top;
-			this.MACAddressButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.MACAddressButton.Location = new System.Drawing.Point(3, 62);
-			this.MACAddressButton.Name = "MACAddressButton";
-			this.MACAddressButton.Size = new System.Drawing.Size(267, 25);
-			this.MACAddressButton.TabIndex = 20;
-			this.MACAddressButton.Text = "Get a MAC + HostName";
-			this.MACAddressButton.UseVisualStyleBackColor = true;
-			this.MACAddressButton.Click += new System.EventHandler(this.MACAddressButtonClick);
-			// 
-			// panel4
-			// 
-			this.panel4.BackColor = System.Drawing.Color.Gray;
-			this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel4.Location = new System.Drawing.Point(3, 54);
-			this.panel4.Name = "panel4";
-			this.panel4.Size = new System.Drawing.Size(267, 8);
-			this.panel4.TabIndex = 48;
-			// 
-			// tableLayoutPanel1
-			// 
-			this.tableLayoutPanel1.ColumnCount = 3;
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-			this.tableLayoutPanel1.Controls.Add(this.KillButton, 0, 0);
-			this.tableLayoutPanel1.Controls.Add(this.RestartButton, 0, 0);
-			this.tableLayoutPanel1.Controls.Add(this.StartButton, 0, 0);
-			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.tableLayoutPanel1.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 24);
-			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 1;
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(267, 30);
-			this.tableLayoutPanel1.TabIndex = 51;
-			// 
-			// KillButton
-			// 
-			this.KillButton.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.KillButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.KillButton.Location = new System.Drawing.Point(181, 3);
-			this.KillButton.Name = "KillButton";
-			this.KillButton.Size = new System.Drawing.Size(83, 24);
-			this.KillButton.TabIndex = 16;
-			this.KillButton.Text = "Kill";
-			this.KillButton.UseVisualStyleBackColor = true;
-			this.KillButton.Click += new System.EventHandler(this.KillButtonClick);
-			// 
-			// RestartButton
-			// 
-			this.RestartButton.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.RestartButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.RestartButton.Location = new System.Drawing.Point(92, 3);
-			this.RestartButton.Name = "RestartButton";
-			this.RestartButton.Size = new System.Drawing.Size(83, 24);
-			this.RestartButton.TabIndex = 15;
-			this.RestartButton.Text = "Restart";
-			this.RestartButton.UseVisualStyleBackColor = true;
-			this.RestartButton.Click += new System.EventHandler(this.RestartButtonClick);
-			// 
-			// StartButton
-			// 
-			this.StartButton.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.StartButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.StartButton.Location = new System.Drawing.Point(3, 3);
-			this.StartButton.Name = "StartButton";
-			this.StartButton.Size = new System.Drawing.Size(83, 24);
-			this.StartButton.TabIndex = 14;
-			this.StartButton.Text = "Start";
-			this.StartButton.UseVisualStyleBackColor = true;
-			this.StartButton.Click += new System.EventHandler(this.StartButtonClick);
+			this.tableLayoutPanel3.ColumnCount = 3;
+			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
+			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
+			this.tableLayoutPanel3.Controls.Add(this.RemoteProcessPathDrop, 0, 0);
+			this.tableLayoutPanel3.Controls.Add(this.TaskAddButton, 2, 5);
+			this.tableLayoutPanel3.Controls.Add(this.TaskDescriptionEdit, 0, 5);
+			this.tableLayoutPanel3.Controls.Add(this.MirrorTestCheckBox, 3, 4);
+			this.tableLayoutPanel3.Controls.Add(this.MirrorButton, 0, 4);
+			this.tableLayoutPanel3.Controls.Add(this.ShutdownButton, 2, 3);
+			this.tableLayoutPanel3.Controls.Add(this.RebootButton, 1, 3);
+			this.tableLayoutPanel3.Controls.Add(this.WakeOnLanButton, 0, 3);
+			this.tableLayoutPanel3.Controls.Add(this.MACAddressButton, 0, 2);
+			this.tableLayoutPanel3.Controls.Add(this.KillButton, 2, 1);
+			this.tableLayoutPanel3.Controls.Add(this.button3, 1, 1);
+			this.tableLayoutPanel3.Controls.Add(this.StartButton, 0, 1);
+			this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Top;
+			this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
+			this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+			this.tableLayoutPanel3.RowCount = 6;
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel3.Size = new System.Drawing.Size(265, 177);
+			this.tableLayoutPanel3.TabIndex = 0;
 			// 
 			// RemoteProcessPathDrop
 			// 
+			this.tableLayoutPanel3.SetColumnSpan(this.RemoteProcessPathDrop, 3);
 			this.RemoteProcessPathDrop.Dock = System.Windows.Forms.DockStyle.Top;
 			this.RemoteProcessPathDrop.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.RemoteProcessPathDrop.Location = new System.Drawing.Point(3, 3);
 			this.RemoteProcessPathDrop.Name = "RemoteProcessPathDrop";
-			this.RemoteProcessPathDrop.Size = new System.Drawing.Size(267, 21);
-			this.RemoteProcessPathDrop.TabIndex = 13;
+			this.RemoteProcessPathDrop.Size = new System.Drawing.Size(259, 21);
+			this.RemoteProcessPathDrop.TabIndex = 30;
 			this.RemoteProcessPathDrop.SelectedIndexChanged += new System.EventHandler(this.SettingsChanged);
+			// 
+			// TaskAddButton
+			// 
+			this.TaskAddButton.BackColor = System.Drawing.SystemColors.Control;
+			this.TaskAddButton.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.TaskAddButton.Location = new System.Drawing.Point(179, 153);
+			this.TaskAddButton.Name = "TaskAddButton";
+			this.TaskAddButton.Size = new System.Drawing.Size(83, 21);
+			this.TaskAddButton.TabIndex = 29;
+			this.TaskAddButton.Text = "Add Task";
+			this.TaskAddButton.UseVisualStyleBackColor = false;
+			this.TaskAddButton.Click += new System.EventHandler(this.TaskAddButtonClick);
+			// 
+			// TaskDescriptionEdit
+			// 
+			this.tableLayoutPanel3.SetColumnSpan(this.TaskDescriptionEdit, 2);
+			this.TaskDescriptionEdit.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.TaskDescriptionEdit.Location = new System.Drawing.Point(3, 153);
+			this.TaskDescriptionEdit.Name = "TaskDescriptionEdit";
+			this.TaskDescriptionEdit.Size = new System.Drawing.Size(170, 20);
+			this.TaskDescriptionEdit.TabIndex = 28;
+			// 
+			// MirrorTestCheckBox
+			// 
+			this.MirrorTestCheckBox.BackColor = System.Drawing.SystemColors.Control;
+			this.MirrorTestCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.MirrorTestCheckBox.Location = new System.Drawing.Point(179, 123);
+			this.MirrorTestCheckBox.Name = "MirrorTestCheckBox";
+			this.MirrorTestCheckBox.Size = new System.Drawing.Size(83, 24);
+			this.MirrorTestCheckBox.TabIndex = 27;
+			this.MirrorTestCheckBox.Text = "Test Only";
+			this.MirrorTestCheckBox.UseVisualStyleBackColor = false;
+			this.MirrorTestCheckBox.Click += new System.EventHandler(this.MirrorTestCheckBoxClick);
+			// 
+			// MirrorButton
+			// 
+			this.MirrorButton.BackColor = System.Drawing.SystemColors.Control;
+			this.tableLayoutPanel3.SetColumnSpan(this.MirrorButton, 2);
+			this.MirrorButton.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.MirrorButton.Location = new System.Drawing.Point(3, 123);
+			this.MirrorButton.Name = "MirrorButton";
+			this.MirrorButton.Size = new System.Drawing.Size(170, 24);
+			this.MirrorButton.TabIndex = 26;
+			this.MirrorButton.Text = "Mirror Now";
+			this.MirrorButton.UseVisualStyleBackColor = false;
+			this.MirrorButton.Click += new System.EventHandler(this.MirrorButtonClick);
+			// 
+			// ShutdownButton
+			// 
+			this.ShutdownButton.BackColor = System.Drawing.SystemColors.Control;
+			this.ShutdownButton.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ShutdownButton.Location = new System.Drawing.Point(179, 93);
+			this.ShutdownButton.Name = "ShutdownButton";
+			this.ShutdownButton.Size = new System.Drawing.Size(83, 24);
+			this.ShutdownButton.TabIndex = 25;
+			this.ShutdownButton.Text = "Shutdown";
+			this.ShutdownButton.UseVisualStyleBackColor = false;
+			this.ShutdownButton.Click += new System.EventHandler(this.ShutdownButtonClick);
+			// 
+			// RebootButton
+			// 
+			this.RebootButton.BackColor = System.Drawing.SystemColors.Control;
+			this.RebootButton.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.RebootButton.Location = new System.Drawing.Point(91, 93);
+			this.RebootButton.Name = "RebootButton";
+			this.RebootButton.Size = new System.Drawing.Size(82, 24);
+			this.RebootButton.TabIndex = 24;
+			this.RebootButton.Text = "Reboot";
+			this.RebootButton.UseVisualStyleBackColor = false;
+			this.RebootButton.Click += new System.EventHandler(this.RebootButtonClick);
+			// 
+			// WakeOnLanButton
+			// 
+			this.WakeOnLanButton.BackColor = System.Drawing.SystemColors.Control;
+			this.WakeOnLanButton.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.WakeOnLanButton.Location = new System.Drawing.Point(3, 93);
+			this.WakeOnLanButton.Name = "WakeOnLanButton";
+			this.WakeOnLanButton.Size = new System.Drawing.Size(82, 24);
+			this.WakeOnLanButton.TabIndex = 23;
+			this.WakeOnLanButton.Text = "WakeOnLan";
+			this.WakeOnLanButton.UseVisualStyleBackColor = false;
+			this.WakeOnLanButton.Click += new System.EventHandler(this.WakeOnLanButtonClick);
+			// 
+			// MACAddressButton
+			// 
+			this.MACAddressButton.BackColor = System.Drawing.SystemColors.Control;
+			this.tableLayoutPanel3.SetColumnSpan(this.MACAddressButton, 3);
+			this.MACAddressButton.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.MACAddressButton.Location = new System.Drawing.Point(3, 63);
+			this.MACAddressButton.Name = "MACAddressButton";
+			this.MACAddressButton.Size = new System.Drawing.Size(259, 24);
+			this.MACAddressButton.TabIndex = 21;
+			this.MACAddressButton.Text = "Get a MAC + HostName";
+			this.MACAddressButton.UseVisualStyleBackColor = false;
+			this.MACAddressButton.Click += new System.EventHandler(this.MACAddressButtonClick);
+			// 
+			// KillButton
+			// 
+			this.KillButton.BackColor = System.Drawing.SystemColors.Control;
+			this.KillButton.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.KillButton.Location = new System.Drawing.Point(179, 33);
+			this.KillButton.Name = "KillButton";
+			this.KillButton.Size = new System.Drawing.Size(83, 24);
+			this.KillButton.TabIndex = 20;
+			this.KillButton.Text = "Kill";
+			this.KillButton.UseVisualStyleBackColor = false;
+			this.KillButton.Click += new System.EventHandler(this.KillButtonClick);
+			// 
+			// button3
+			// 
+			this.button3.BackColor = System.Drawing.SystemColors.Control;
+			this.button3.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.button3.Location = new System.Drawing.Point(91, 33);
+			this.button3.Name = "button3";
+			this.button3.Size = new System.Drawing.Size(82, 24);
+			this.button3.TabIndex = 18;
+			this.button3.Text = "Restart";
+			this.button3.UseVisualStyleBackColor = false;
+			this.button3.Click += new System.EventHandler(this.RestartButtonClick);
+			// 
+			// StartButton
+			// 
+			this.StartButton.BackColor = System.Drawing.SystemColors.Control;
+			this.StartButton.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.StartButton.Location = new System.Drawing.Point(3, 33);
+			this.StartButton.Name = "StartButton";
+			this.StartButton.Size = new System.Drawing.Size(82, 24);
+			this.StartButton.TabIndex = 15;
+			this.StartButton.Text = "Start";
+			this.StartButton.UseVisualStyleBackColor = false;
+			this.StartButton.Click += new System.EventHandler(this.StartButtonClick);
 			// 
 			// SettingsPage
 			// 
 			this.SettingsPage.AutoScroll = true;
-			this.SettingsPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+			this.SettingsPage.BackColor = System.Drawing.SystemColors.Control;
+			this.SettingsPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.SettingsPage.Controls.Add(this.MirrorBox);
 			this.SettingsPage.Controls.Add(this.VNCBox);
 			this.SettingsPage.Controls.Add(this.PsToolsBox);
 			this.SettingsPage.Location = new System.Drawing.Point(4, 25);
 			this.SettingsPage.Name = "SettingsPage";
 			this.SettingsPage.Padding = new System.Windows.Forms.Padding(3);
-			this.SettingsPage.Size = new System.Drawing.Size(229, 462);
+			this.SettingsPage.Size = new System.Drawing.Size(273, 462);
 			this.SettingsPage.TabIndex = 0;
 			this.SettingsPage.Text = "Settings";
-			this.SettingsPage.UseVisualStyleBackColor = true;
 			// 
 			// MirrorBox
 			// 
@@ -978,7 +988,7 @@ namespace VVVV.Nodes
 			this.MirrorBox.Dock = System.Windows.Forms.DockStyle.Top;
 			this.MirrorBox.Location = new System.Drawing.Point(3, 161);
 			this.MirrorBox.Name = "MirrorBox";
-			this.MirrorBox.Size = new System.Drawing.Size(223, 145);
+			this.MirrorBox.Size = new System.Drawing.Size(265, 145);
 			this.MirrorBox.TabIndex = 2;
 			this.MirrorBox.TabStop = false;
 			this.MirrorBox.Text = "Mirror";
@@ -988,7 +998,7 @@ namespace VVVV.Nodes
 			this.IgnorePattern.Dock = System.Windows.Forms.DockStyle.Top;
 			this.IgnorePattern.Location = new System.Drawing.Point(3, 123);
 			this.IgnorePattern.Name = "IgnorePattern";
-			this.IgnorePattern.Size = new System.Drawing.Size(217, 20);
+			this.IgnorePattern.Size = new System.Drawing.Size(259, 20);
 			this.IgnorePattern.TabIndex = 23;
 			this.IgnorePattern.Text = "*.v4p; *~.xml";
 			this.IgnorePattern.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SettingsKeyPress);
@@ -998,7 +1008,7 @@ namespace VVVV.Nodes
 			this.label7.Dock = System.Windows.Forms.DockStyle.Top;
 			this.label7.Location = new System.Drawing.Point(3, 108);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(217, 15);
+			this.label7.Size = new System.Drawing.Size(259, 15);
 			this.label7.TabIndex = 54;
 			this.label7.Text = "Ignore Pattern";
 			// 
@@ -1007,7 +1017,7 @@ namespace VVVV.Nodes
 			this.TargetPath.Dock = System.Windows.Forms.DockStyle.Top;
 			this.TargetPath.Location = new System.Drawing.Point(3, 88);
 			this.TargetPath.Name = "TargetPath";
-			this.TargetPath.Size = new System.Drawing.Size(217, 20);
+			this.TargetPath.Size = new System.Drawing.Size(259, 20);
 			this.TargetPath.TabIndex = 22;
 			this.TargetPath.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SettingsKeyPress);
 			// 
@@ -1016,7 +1026,7 @@ namespace VVVV.Nodes
 			this.label6.Dock = System.Windows.Forms.DockStyle.Top;
 			this.label6.Location = new System.Drawing.Point(3, 73);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(217, 15);
+			this.label6.Size = new System.Drawing.Size(259, 15);
 			this.label6.TabIndex = 52;
 			this.label6.Text = "Target Path";
 			// 
@@ -1025,7 +1035,7 @@ namespace VVVV.Nodes
 			this.SourcePath.Dock = System.Windows.Forms.DockStyle.Top;
 			this.SourcePath.Location = new System.Drawing.Point(3, 53);
 			this.SourcePath.Name = "SourcePath";
-			this.SourcePath.Size = new System.Drawing.Size(217, 20);
+			this.SourcePath.Size = new System.Drawing.Size(259, 20);
 			this.SourcePath.TabIndex = 21;
 			this.SourcePath.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SettingsKeyPress);
 			// 
@@ -1034,7 +1044,7 @@ namespace VVVV.Nodes
 			this.label4.Dock = System.Windows.Forms.DockStyle.Top;
 			this.label4.Location = new System.Drawing.Point(3, 38);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(217, 15);
+			this.label4.Size = new System.Drawing.Size(259, 15);
 			this.label4.TabIndex = 50;
 			this.label4.Text = "Source Path";
 			// 
@@ -1045,7 +1055,7 @@ namespace VVVV.Nodes
 			this.MirrorPathPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.MirrorPathPanel.Location = new System.Drawing.Point(3, 16);
 			this.MirrorPathPanel.Name = "MirrorPathPanel";
-			this.MirrorPathPanel.Size = new System.Drawing.Size(217, 22);
+			this.MirrorPathPanel.Size = new System.Drawing.Size(259, 22);
 			this.MirrorPathPanel.TabIndex = 20;
 			// 
 			// MirrorPathLabel
@@ -1053,7 +1063,7 @@ namespace VVVV.Nodes
 			this.MirrorPathLabel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.MirrorPathLabel.Location = new System.Drawing.Point(43, 0);
 			this.MirrorPathLabel.Name = "MirrorPathLabel";
-			this.MirrorPathLabel.Size = new System.Drawing.Size(174, 22);
+			this.MirrorPathLabel.Size = new System.Drawing.Size(216, 22);
 			this.MirrorPathLabel.TabIndex = 48;
 			this.MirrorPathLabel.Text = "\\Mirror";
 			this.MirrorPathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1061,7 +1071,6 @@ namespace VVVV.Nodes
 			// MirrorPathButton
 			// 
 			this.MirrorPathButton.Dock = System.Windows.Forms.DockStyle.Left;
-			this.MirrorPathButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.MirrorPathButton.Location = new System.Drawing.Point(0, 0);
 			this.MirrorPathButton.Name = "MirrorPathButton";
 			this.MirrorPathButton.Size = new System.Drawing.Size(43, 22);
@@ -1078,7 +1087,7 @@ namespace VVVV.Nodes
 			this.VNCBox.Dock = System.Windows.Forms.DockStyle.Top;
 			this.VNCBox.Location = new System.Drawing.Point(3, 98);
 			this.VNCBox.Name = "VNCBox";
-			this.VNCBox.Size = new System.Drawing.Size(223, 63);
+			this.VNCBox.Size = new System.Drawing.Size(265, 63);
 			this.VNCBox.TabIndex = 1;
 			this.VNCBox.TabStop = false;
 			this.VNCBox.Text = "VNC";
@@ -1090,7 +1099,7 @@ namespace VVVV.Nodes
 			this.VNCPathPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.VNCPathPanel.Location = new System.Drawing.Point(3, 16);
 			this.VNCPathPanel.Name = "VNCPathPanel";
-			this.VNCPathPanel.Size = new System.Drawing.Size(217, 22);
+			this.VNCPathPanel.Size = new System.Drawing.Size(259, 22);
 			this.VNCPathPanel.TabIndex = 10;
 			// 
 			// VNCPathLabel
@@ -1098,7 +1107,7 @@ namespace VVVV.Nodes
 			this.VNCPathLabel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.VNCPathLabel.Location = new System.Drawing.Point(43, 0);
 			this.VNCPathLabel.Name = "VNCPathLabel";
-			this.VNCPathLabel.Size = new System.Drawing.Size(174, 22);
+			this.VNCPathLabel.Size = new System.Drawing.Size(216, 22);
 			this.VNCPathLabel.TabIndex = 48;
 			this.VNCPathLabel.Text = "\\UltraVNC";
 			this.VNCPathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1106,7 +1115,6 @@ namespace VVVV.Nodes
 			// VNCPathButton
 			// 
 			this.VNCPathButton.Dock = System.Windows.Forms.DockStyle.Left;
-			this.VNCPathButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.VNCPathButton.Location = new System.Drawing.Point(0, 0);
 			this.VNCPathButton.Name = "VNCPathButton";
 			this.VNCPathButton.Size = new System.Drawing.Size(43, 22);
@@ -1144,14 +1152,13 @@ namespace VVVV.Nodes
 			this.PsToolsBox.Dock = System.Windows.Forms.DockStyle.Top;
 			this.PsToolsBox.Location = new System.Drawing.Point(3, 3);
 			this.PsToolsBox.Name = "PsToolsBox";
-			this.PsToolsBox.Size = new System.Drawing.Size(223, 95);
+			this.PsToolsBox.Size = new System.Drawing.Size(265, 95);
 			this.PsToolsBox.TabIndex = 0;
 			this.PsToolsBox.TabStop = false;
 			this.PsToolsBox.Text = "PsTools";
 			// 
 			// AddProcessButton
 			// 
-			this.AddProcessButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.AddProcessButton.Location = new System.Drawing.Point(3, 63);
 			this.AddProcessButton.Name = "AddProcessButton";
 			this.AddProcessButton.Size = new System.Drawing.Size(25, 20);
@@ -1165,7 +1172,7 @@ namespace VVVV.Nodes
 			this.PsToolsProcessPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.PsToolsProcessPanel.Location = new System.Drawing.Point(3, 82);
 			this.PsToolsProcessPanel.Name = "PsToolsProcessPanel";
-			this.PsToolsProcessPanel.Size = new System.Drawing.Size(217, 10);
+			this.PsToolsProcessPanel.Size = new System.Drawing.Size(259, 10);
 			this.PsToolsProcessPanel.TabIndex = 42;
 			// 
 			// PsToolsPathPanel
@@ -1175,7 +1182,7 @@ namespace VVVV.Nodes
 			this.PsToolsPathPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this.PsToolsPathPanel.Location = new System.Drawing.Point(3, 16);
 			this.PsToolsPathPanel.Name = "PsToolsPathPanel";
-			this.PsToolsPathPanel.Size = new System.Drawing.Size(217, 22);
+			this.PsToolsPathPanel.Size = new System.Drawing.Size(259, 22);
 			this.PsToolsPathPanel.TabIndex = 0;
 			// 
 			// PsToolsPathLabel
@@ -1183,7 +1190,7 @@ namespace VVVV.Nodes
 			this.PsToolsPathLabel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.PsToolsPathLabel.Location = new System.Drawing.Point(43, 0);
 			this.PsToolsPathLabel.Name = "PsToolsPathLabel";
-			this.PsToolsPathLabel.Size = new System.Drawing.Size(174, 22);
+			this.PsToolsPathLabel.Size = new System.Drawing.Size(216, 22);
 			this.PsToolsPathLabel.TabIndex = 48;
 			this.PsToolsPathLabel.Text = "\\PsTools";
 			this.PsToolsPathLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1191,7 +1198,6 @@ namespace VVVV.Nodes
 			// PsToolsPathButton
 			// 
 			this.PsToolsPathButton.Dock = System.Windows.Forms.DockStyle.Left;
-			this.PsToolsPathButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.PsToolsPathButton.Location = new System.Drawing.Point(0, 0);
 			this.PsToolsPathButton.Name = "PsToolsPathButton";
 			this.PsToolsPathButton.Size = new System.Drawing.Size(43, 22);
@@ -1235,24 +1241,25 @@ namespace VVVV.Nodes
 			// 
 			// SimulatorPage
 			// 
+			this.SimulatorPage.BackColor = System.Drawing.SystemColors.Control;
+			this.SimulatorPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.SimulatorPage.Controls.Add(this.SimulatorListBox);
 			this.SimulatorPage.Controls.Add(this.panel7);
 			this.SimulatorPage.Controls.Add(this.panel6);
 			this.SimulatorPage.Location = new System.Drawing.Point(4, 25);
 			this.SimulatorPage.Name = "SimulatorPage";
 			this.SimulatorPage.Padding = new System.Windows.Forms.Padding(3);
-			this.SimulatorPage.Size = new System.Drawing.Size(229, 462);
+			this.SimulatorPage.Size = new System.Drawing.Size(273, 462);
 			this.SimulatorPage.TabIndex = 2;
 			this.SimulatorPage.Text = "Simulator";
-			this.SimulatorPage.UseVisualStyleBackColor = true;
 			// 
 			// SimulatorListBox
 			// 
 			this.SimulatorListBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.SimulatorListBox.FormattingEnabled = true;
-			this.SimulatorListBox.Location = new System.Drawing.Point(3, 47);
+			this.SimulatorListBox.Location = new System.Drawing.Point(3, 45);
 			this.SimulatorListBox.Name = "SimulatorListBox";
-			this.SimulatorListBox.Size = new System.Drawing.Size(223, 407);
+			this.SimulatorListBox.Size = new System.Drawing.Size(265, 407);
 			this.SimulatorListBox.TabIndex = 3;
 			this.SimulatorListBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.SimulatorListBoxMouseUp);
 			// 
@@ -1263,7 +1270,7 @@ namespace VVVV.Nodes
 			this.panel7.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel7.Location = new System.Drawing.Point(3, 25);
 			this.panel7.Name = "panel7";
-			this.panel7.Size = new System.Drawing.Size(223, 22);
+			this.panel7.Size = new System.Drawing.Size(265, 20);
 			this.panel7.TabIndex = 5;
 			// 
 			// SimulatorStringEdit
@@ -1271,17 +1278,16 @@ namespace VVVV.Nodes
 			this.SimulatorStringEdit.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.SimulatorStringEdit.Location = new System.Drawing.Point(0, 0);
 			this.SimulatorStringEdit.Name = "SimulatorStringEdit";
-			this.SimulatorStringEdit.Size = new System.Drawing.Size(203, 20);
+			this.SimulatorStringEdit.Size = new System.Drawing.Size(245, 20);
 			this.SimulatorStringEdit.TabIndex = 0;
 			this.SimulatorStringEdit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SimulatorStringEditKeyPress);
 			// 
 			// AddSimulatorStringButton
 			// 
 			this.AddSimulatorStringButton.Dock = System.Windows.Forms.DockStyle.Right;
-			this.AddSimulatorStringButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.AddSimulatorStringButton.Location = new System.Drawing.Point(203, 0);
+			this.AddSimulatorStringButton.Location = new System.Drawing.Point(245, 0);
 			this.AddSimulatorStringButton.Name = "AddSimulatorStringButton";
-			this.AddSimulatorStringButton.Size = new System.Drawing.Size(20, 22);
+			this.AddSimulatorStringButton.Size = new System.Drawing.Size(20, 20);
 			this.AddSimulatorStringButton.TabIndex = 1;
 			this.AddSimulatorStringButton.Text = "+";
 			this.AddSimulatorStringButton.UseVisualStyleBackColor = true;
@@ -1297,7 +1303,7 @@ namespace VVVV.Nodes
 			this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel6.Location = new System.Drawing.Point(3, 3);
 			this.panel6.Name = "panel6";
-			this.panel6.Size = new System.Drawing.Size(223, 22);
+			this.panel6.Size = new System.Drawing.Size(265, 22);
 			this.panel6.TabIndex = 4;
 			// 
 			// SimulatorIPEdit
@@ -1305,14 +1311,14 @@ namespace VVVV.Nodes
 			this.SimulatorIPEdit.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.SimulatorIPEdit.Location = new System.Drawing.Point(99, 0);
 			this.SimulatorIPEdit.Name = "SimulatorIPEdit";
-			this.SimulatorIPEdit.Size = new System.Drawing.Size(11, 20);
+			this.SimulatorIPEdit.Size = new System.Drawing.Size(53, 20);
 			this.SimulatorIPEdit.TabIndex = 4;
 			this.SimulatorIPEdit.Click += new System.EventHandler(this.SimulatorIPEditTextChanged);
 			// 
 			// SimulatorPortUpDown
 			// 
 			this.SimulatorPortUpDown.Dock = System.Windows.Forms.DockStyle.Right;
-			this.SimulatorPortUpDown.Location = new System.Drawing.Point(110, 0);
+			this.SimulatorPortUpDown.Location = new System.Drawing.Point(152, 0);
 			this.SimulatorPortUpDown.Maximum = new decimal(new int[] {
 									65535,
 									0,
@@ -1331,8 +1337,7 @@ namespace VVVV.Nodes
 			// SimulatorConnectButton
 			// 
 			this.SimulatorConnectButton.Dock = System.Windows.Forms.DockStyle.Right;
-			this.SimulatorConnectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.SimulatorConnectButton.Location = new System.Drawing.Point(166, 0);
+			this.SimulatorConnectButton.Location = new System.Drawing.Point(208, 0);
 			this.SimulatorConnectButton.Name = "SimulatorConnectButton";
 			this.SimulatorConnectButton.Size = new System.Drawing.Size(57, 22);
 			this.SimulatorConnectButton.TabIndex = 5;
@@ -1458,7 +1463,7 @@ namespace VVVV.Nodes
 			// 
 			// Remoter
 			// 
-			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+			this.BackColor = System.Drawing.SystemColors.Control;
 			this.Controls.Add(this.SplitContainer);
 			this.DoubleBuffered = true;
 			this.Name = "Remoter";
@@ -1475,13 +1480,11 @@ namespace VVVV.Nodes
 			this.panel9.ResumeLayout(false);
 			this.panel9.PerformLayout();
 			this.panel8.ResumeLayout(false);
+			this.tableLayoutPanel1.ResumeLayout(false);
 			this.RightTabControl.ResumeLayout(false);
 			this.CommandsPage.ResumeLayout(false);
-			this.panel18.ResumeLayout(false);
-			this.panel18.PerformLayout();
-			this.panel10.ResumeLayout(false);
-			this.tableLayoutPanel2.ResumeLayout(false);
-			this.tableLayoutPanel1.ResumeLayout(false);
+			this.tableLayoutPanel3.ResumeLayout(false);
+			this.tableLayoutPanel3.PerformLayout();
 			this.SettingsPage.ResumeLayout(false);
 			this.MirrorBox.ResumeLayout(false);
 			this.MirrorBox.PerformLayout();
@@ -1501,6 +1504,11 @@ namespace VVVV.Nodes
 			this.panel14.ResumeLayout(false);
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.Button ClearGroupSelectionButton;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+		private System.Windows.Forms.Button button3;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
 		private System.Windows.Forms.ComboBox RemoteProcessPathDrop;
 		private System.Windows.Forms.ComboBox comboBox1;
@@ -1513,9 +1521,7 @@ namespace VVVV.Nodes
 		private System.Windows.Forms.Panel panel14;
 		private System.Windows.Forms.Panel panel13;
 		private System.Windows.Forms.Panel panel3;
-		private System.Windows.Forms.Panel panel11;
 		private System.Windows.Forms.TextBox TaskDescriptionEdit;
-		private System.Windows.Forms.Panel panel18;
 		private System.Windows.Forms.Panel TasksPanel;
 		private System.Windows.Forms.Button AddVisibleToSelectionButton;
 		private System.Windows.Forms.Button DeleteSelectedIPsButton;
@@ -1524,15 +1530,11 @@ namespace VVVV.Nodes
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Button TaskAddButton;
 		private System.Windows.Forms.TabControl RightTabControl;
-		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
 		private System.Windows.Forms.SplitContainer SplitContainer;
 		private System.Windows.Forms.Button VNCButton;
 		private System.Windows.Forms.Panel PsToolsProcessPanel;
-		private System.Windows.Forms.Panel panel12;
 		private System.Windows.Forms.Button AddProcessButton;
 		private System.Windows.Forms.CheckBox MirrorTestCheckBox;
-		private System.Windows.Forms.Panel panel10;
 		private System.ComponentModel.BackgroundWorker OnlineWorker;
 		private System.ComponentModel.BackgroundWorker WatchWorker;
 		
@@ -1567,8 +1569,6 @@ namespace VVVV.Nodes
 		private System.Windows.Forms.TabPage CommandsPage;
 		private System.Windows.Forms.TabPage SettingsPage;
 		private System.Windows.Forms.TabPage SimulatorPage;
-		private System.Windows.Forms.Panel panel5;
-		private System.Windows.Forms.Panel panel4;
 		private System.Windows.Forms.Button MACAddressButton;
 		private System.Windows.Forms.Button WakeOnLanButton;
 		private System.Windows.Forms.Button InvertSelectionButton;
@@ -1602,7 +1602,6 @@ namespace VVVV.Nodes
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Button StartButton;
-		private System.Windows.Forms.Button RestartButton;
 		private System.Windows.Forms.Button KillButton;
 		private System.Windows.Forms.Button PsToolsPathButton;
 		private System.Windows.Forms.Label PsToolsPathLabel;
@@ -1643,7 +1642,7 @@ namespace VVVV.Nodes
 			//settings are depending on IPs already there when loading
 			FHost.CreateStringConfig("Settings", TSliceMode.Single, TPinVisibility.True, out FSettingsInput);
 			FSettingsInput.SetSubType("", false);
-			//FSettingsInput.SliceCount = 1;			
+			//FSettingsInput.SliceCount = 1;
 
 			//create outputs
 			FHost.CreateValueOutput("IP Online", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FOnlineOutput);
@@ -1729,7 +1728,7 @@ namespace VVVV.Nodes
 			FIPSortList.Clear();
 			foreach (IPControl ipc in IPListPanel.Controls)
 				if (ipc != null)
-				FIPSortList.Add(ipc);
+					FIPSortList.Add(ipc);
 			
 			if (FIPSortList.Count > 0)
 				FIPSortList.Sort(delegate(IPControl ipc1, IPControl ipc2)
@@ -1841,9 +1840,9 @@ namespace VVVV.Nodes
 			
 			for (int i=0; i<groups.Length; i++)
 				if (groups[i] == "")
-				AddGroup(UNGROUPED, ip);
-			else
-				AddGroup(groups[i], ip);
+					AddGroup(UNGROUPED, ip);
+				else
+					AddGroup(groups[i], ip);
 		}
 		
 		private void DoAddIP(string NewIP, string Group)
@@ -1874,6 +1873,7 @@ namespace VVVV.Nodes
 			else
 				AddIP(NewIP, "", false, Group, "");
 			
+			SortIPs();
 			UpdateIPListInput();
 			IPListPanel.ResumeLayout();
 		}
@@ -1901,8 +1901,8 @@ namespace VVVV.Nodes
 		{
 			for (int i=IPListPanel.Controls.Count-1; i>=0; i--)
 				if ((IPListPanel.Controls[i] as IPControl).IsSelected
-				   && (IPListPanel.Controls[i] as IPControl).Groups == "")
-				IPListPanel.Controls.RemoveAt(i);
+				    && (IPListPanel.Controls[i] as IPControl).Groups == "")
+					IPListPanel.Controls.RemoveAt(i);
 			
 			UpdateIPListInput();
 		}
@@ -1936,7 +1936,6 @@ namespace VVVV.Nodes
 			
 			//add group only if its not yet there
 			GroupControl gc = new GroupControl(Group);
-			gc.Height = 37;
 			gc.IsSelected = false;
 			gc.Parent = GroupListPanel;
 			gc.Dock = DockStyle.Top;
@@ -1974,7 +1973,7 @@ namespace VVVV.Nodes
 				ipc.IsSelected = false;
 				foreach(GroupControl gc in GroupListPanel.Controls)
 					if (gc.IsSelected)
-					ipc.IsSelected |= ipc.IsPartOfGroup(gc.GroupName);
+						ipc.IsSelected |= ipc.IsPartOfGroup(gc.GroupName);
 			}
 		}
 		
@@ -1991,8 +1990,6 @@ namespace VVVV.Nodes
 			//since the groups name may have changed, remove the oldname and add the newname again
 			FGroups.Remove(OldGroupName);
 			FGroups.Add(Group.GroupName);
-			//GroupFilterDropDown.Items.Remove(OldGroupName);
-			//GroupFilterDropDown.Items.Add(Group.GroupName);
 			
 			//parse this groupcontrols ips and add them
 			foreach(string s in IPs)
@@ -2001,7 +1998,7 @@ namespace VVVV.Nodes
 			//delete remaining ips that are still marked for being deleted
 			for (int i = IPListPanel.Controls.Count-1; i>=0; i--)
 				if ((IPListPanel.Controls[i] as IPControl).DeleteMe)
-				IPListPanel.Controls.RemoveAt(i);
+					IPListPanel.Controls.RemoveAt(i);
 		}
 		
 		private void GroupXButtonHandlerCB(string Group)
@@ -2095,10 +2092,8 @@ namespace VVVV.Nodes
 			if (GroupListPanel.Controls.Count == 0)
 				return;
 			
-			bool selected = !(GroupListPanel.Controls[0] as GroupControl).IsSelected;
-			
 			foreach(GroupControl gc in GroupListPanel.Controls)
-				gc.IsSelected = selected;
+				gc.IsSelected = true;
 			
 			UpdateIPSelectionsFromGroups();
 		}
@@ -2116,6 +2111,17 @@ namespace VVVV.Nodes
 			for (int i=GroupListPanel.Controls.Count-1; i>=0; i--)
 				RemoveGroup((GroupListPanel.Controls[i] as GroupControl).GroupName);
 		}
+		
+		void ClearGroupSelectionButtonClick(object sender, EventArgs e)
+		{
+			if (GroupListPanel.Controls.Count == 0)
+				return;
+			
+			foreach(GroupControl gc in GroupListPanel.Controls)
+				gc.IsSelected = false;
+			
+			UpdateIPSelectionsFromGroups();
+		}
 		#endregion IPGroups
 		
 		#region commands
@@ -2124,7 +2130,7 @@ namespace VVVV.Nodes
 			FHost.Log(TLogType.Warning, (string) e.UserState);
 		}
 		
-		private string ExecutePsToolCommand(TPsToolCommand Command, int Timeout, string Host)
+		private string ExecutePsToolCommand(string Host, int ProcessID, TPsToolCommand Command, int Timeout)
 		{
 			if (PsToolsUsername.Text == "")
 				return "Username for remote PC is not specified. See Settings!";
@@ -2136,41 +2142,29 @@ namespace VVVV.Nodes
 			string filename = FPsToolsPath + "\\";
 			string workingdir = "";
 			string arguments = "\\\\" + Host + " -u " + PsToolsUsername.Text + " -p " + PsToolsPassword.Text;
-			ProcessControl pc;
 			
 			switch (Command)
 			{
 				case TPsToolCommand.Execute:
 					{
 						filename += "psexec.exe";
-						pc = PsToolsProcessPanel.Controls[RemoteProcessPathDrop.SelectedIndex] as ProcessControl;
 						if (Timeout > 0)
-							arguments += " -n " + Timeout + " -i 0 -d \"" + pc.Process + "\" " + pc.Arguments;
+							arguments += " -n " + Timeout + " -i 0 -d \"" + FProcesses[ProcessID].Process + "\" " + FProcesses[ProcessID].Arguments;
 						else
-							arguments += " -i 0 -d \"" + pc.Process + "\" " + pc.Arguments;
-						workingdir = System.IO.Path.GetDirectoryName(pc.Process);
+							arguments += " -i 0 -d \"" + FProcesses[ProcessID].Process + "\" " + FProcesses[ProcessID].Arguments;
+						workingdir = System.IO.Path.GetDirectoryName(FProcesses[ProcessID].Process);
 						break;
 					}
 				case TPsToolCommand.Kill:
 					{
 						filename += "pskill.exe";
-						pc = PsToolsProcessPanel.Controls[RemoteProcessPathDrop.SelectedIndex] as ProcessControl;
-						arguments += " -t " + System.IO.Path.GetFileNameWithoutExtension(pc.Process);
+						arguments += " -t " + System.IO.Path.GetFileNameWithoutExtension(FProcesses[ProcessID].Process);
 						break;
 					}
 				case TPsToolCommand.Watch:
 					{
 						filename += "pslist.exe";
-						pc = PsToolsProcessPanel.Controls[FWatchProcessID] as ProcessControl;
-						arguments += " -m " + System.IO.Path.GetFileNameWithoutExtension(pc.Process);
-						break;
-					}
-				case TPsToolCommand.WatchExecute:
-					{
-						filename += "psexec.exe";
-						pc = PsToolsProcessPanel.Controls[FWatchProcessID] as ProcessControl;
-						arguments += " -i 0 -d \"" + pc.Process + "\" " + pc.Arguments;
-						workingdir = System.IO.Path.GetDirectoryName(pc.Process);
+						arguments += " -m " + System.IO.Path.GetFileNameWithoutExtension(FProcesses[ProcessID].Process);
 						break;
 					}
 				case TPsToolCommand.Reboot:
@@ -2258,12 +2252,12 @@ namespace VVVV.Nodes
 			FHost.Log(TLogType.Message, outLine.Data);
 		}
 		
-		private void RunTask(TPsToolCommand Command, List<IPControl> IPs, int ProcessIndex, int Timeout)
+		private void RunTask(TPsToolCommand Command, List<IPControl> IPs, int ProcessID, int Timeout)
 		{
 			foreach(IPControl ipc in IPs)
 				if (ipc.IsOnline)
 			{
-				string result = ExecutePsToolCommand(Command, Timeout, ipc.IP);
+				string result = ExecutePsToolCommand(ipc.IP, ProcessID, Command, Timeout);
 				if (result.Length > 1)
 					FHost.Log(TLogType.Error, result);
 			}
@@ -2274,7 +2268,7 @@ namespace VVVV.Nodes
 			List<IPControl> selectedIPs = new List<IPControl>();
 			foreach (IPControl ipc in IPListPanel.Controls)
 				if (ipc.IsSelected)
-				    selectedIPs.Add(ipc);
+					selectedIPs.Add(ipc);
 			
 			return selectedIPs;
 		}
@@ -2299,14 +2293,14 @@ namespace VVVV.Nodes
 		{
 			foreach(IPControl ipc in IPListPanel.Controls)
 				if ((ipc.IsSelected) && (ipc.IsOnline))
-				ExecutePsToolCommand(TPsToolCommand.Reboot, 0, ipc.IP);
+					ExecutePsToolCommand(ipc.IP, -1, TPsToolCommand.Reboot, 0);
 		}
 		
 		void ShutdownButtonClick(object sender, EventArgs e)
 		{
 			foreach(IPControl ipc in IPListPanel.Controls)
 				if ((ipc.IsSelected) && (ipc.IsOnline))
-				ExecutePsToolCommand(TPsToolCommand.Shutdown, 0, ipc.IP);
+					ExecutePsToolCommand(ipc.IP, -1, TPsToolCommand.Shutdown, 0);
 		}
 		
 		void MirrorButtonClick(object sender, EventArgs e)
@@ -2319,7 +2313,7 @@ namespace VVVV.Nodes
 			ignorepattern = "";
 			for (int i=0; i<ignores.Length; i++)
 				if (!string.IsNullOrEmpty(ignores[i]))
-				ignorepattern += " -if=" + ignores[i].Trim();
+					ignorepattern += " -if=" + ignores[i].Trim();
 			
 			string testonly = "";
 			if (MirrorTestCheckBox.Checked)
@@ -2396,67 +2390,72 @@ namespace VVVV.Nodes
 		void WatchWorkerDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
 		{
 			//go through all tasks and see if they want to be watched
-			
-		/*	while(true)
+			while(true)
 			{
-				if (TasksPanel.Controls.Count > 0)
+				foreach (TaskControl task in FTasks)
 				{
-					FWatchCheckID = (FWatchCheckID + 1) % TasksPanel.Controls.Count;
-					
-					TaskControl task = (TasksPanel.Controls[FWatchCheckID] as TaskControl);
-					
-					if (ipc.NeedsWatchUpdate() && (ipc.IsSelected) && (ipc.IsOnline))
+					if (task.Watch)
 					{
-						//if expect ping is on
-						
-						//else
-						//for local processes use: Process.Responding
-						if (ipc.IsLocalHost)
+						List<IPControl> groupIPs = IPsOfGroup(task.GroupID);
+						foreach (IPControl ipc in groupIPs)
 						{
-							if (!ipc.LocalProcessIsResponding(WatchProcessPathComboBox.Text))
+							if (ipc.NeedsWatchUpdate() && (ipc.IsOnline))
 							{
-								if (WatchModeRestart.Checked)
-									ExecutePsToolCommand(TPsToolCommand.WatchExecute, ipc.IP);
-								else if (WatchModeReboot.Checked)
-									ExecutePsToolCommand(TPsToolCommand.Reboot, ipc.IP);
-							}
-						}
-						//for remote processes use:
-						else
-						{
-							//this only detects processes that have vanished, not hanging ones.
-							string result = ExecutePsToolCommand(TPsToolCommand.Watch, ipc.IP);
-							if (result.Contains("Error: "))
-							{
-								ipc.AppIsOnline = false;
-								WatchWorker.ReportProgress(0, result);
-							}
-							else if (result.Contains("process " + System.IO.Path.GetFileNameWithoutExtension(FWatchProcessName) + " was not found"))
-							{
-								ipc.AppIsOnline = false;
+								string processName = System.IO.Path.GetFileNameWithoutExtension(FProcesses[task.ProcessID].Process);
 								
-								if (WatchModeRestart.Checked)
-									ExecutePsToolCommand(TPsToolCommand.WatchExecute, ipc.IP);
-								else if (WatchModeReboot.Checked)
-									ExecutePsToolCommand(TPsToolCommand.Reboot, ipc.IP);
+								//for local processes use: Process.Responding
+								if (ipc.IsLocalHost)
+									ipc.AppIsOnline = ipc.LocalProcessIsResponding(processName);
+								else
+									//for remote processes use:
+								{
+									//this only detects processes that have vanished, not hanging ones!
+									string result = ExecutePsToolCommand(ipc.IP, task.ProcessID, TPsToolCommand.Watch, 0);
+									if (result.Contains("Error: "))
+									{
+										ipc.AppIsOnline = false;
+										WatchWorker.ReportProgress(0, result);
+									}
+									else if (result.Contains("process " + System.IO.Path.GetFileNameWithoutExtension(processName) + " was not found"))
+									{
+										ipc.AppIsOnline = false;
+									}
+									else if (result.Contains("Failed"))
+									{
+										ipc.AppIsOnline = false;
+										WatchWorker.ReportProgress(0, "Failed to watch remote process on: " + ipc.IP);
+									}
+									else
+										ipc.AppIsOnline = true;
+								}
+								
+								if (!ipc.AppIsOnline)
+									switch (task.WatchMode)
+								{
+									case TWatchMode.Restart:
+										{
+											string result = ExecutePsToolCommand(ipc.IP, task.ProcessID, TPsToolCommand.Execute, task.Timeout);
+											if (!(result.Length > 1))
+												ipc.AppIsOnline = true;
+											break;
+										}
+									case TWatchMode.Reboot:
+										{
+											ExecutePsToolCommand(ipc.IP, task.ProcessID, TPsToolCommand.Reboot, 0);
+											break;
+										}
+								}
 							}
-							else if (result.Contains("Failed"))
-							{
-								ipc.AppIsOnline = false;
-								WatchWorker.ReportProgress(0, "Failed to watch remote process on: " + ipc.IP);
-							}
-							else
-								ipc.AppIsOnline = true;
+							
+							UpdateGroupsAppOnlineState();
+							System.Threading.Thread.Sleep(5);
 						}
 					}
 				}
-
-				UpdateGroupsAppOnlineState();
-				
 				System.Threading.Thread.Sleep(5);
-			}*/
+			}
 		}
-		 
+		
 		private void UpdateGroupsAppOnlineState()
 		{
 			foreach(GroupControl gc in GroupListPanel.Controls)
@@ -2644,7 +2643,7 @@ namespace VVVV.Nodes
 		private void SaveSettings()
 		{
 			//gather all settings as one XML string
-			XmlNode main, tool, process, selection, task;
+			XmlNode main, tool, process, task;
 			XmlAttribute attr;
 			
 			FSettings.RemoveAll();
@@ -2811,7 +2810,7 @@ namespace VVVV.Nodes
 			}
 			else if (e.Button == MouseButtons.Right)
 				if (SimulatorListBox.SelectedIndex > -1)
-				SimulatorListBox.Items.RemoveAt(SimulatorListBox.SelectedIndex);
+					SimulatorListBox.Items.RemoveAt(SimulatorListBox.SelectedIndex);
 		}
 		
 		private void UpdateSimulatorConnection()
@@ -2898,7 +2897,7 @@ namespace VVVV.Nodes
 		
 		private void AdaptPsToolsProcessPanelHeight()
 		{
-			PsToolsProcessPanel.Height = PsToolsProcessPanel.Controls.Count * 20;
+			PsToolsProcessPanel.Height = PsToolsProcessPanel.Controls.Count * 25;
 			PsToolsBox.Height = PsToolsProcessPanel.Height + 85;
 		}
 		
@@ -2938,7 +2937,7 @@ namespace VVVV.Nodes
 			
 			foreach(IPControl ipc in IPListPanel.Controls)
 				if (ipc.Visible)
-				ipc.IsSelected = true;
+					ipc.IsSelected = true;
 			
 			UpdateIPListInput();
 		}
@@ -2950,7 +2949,7 @@ namespace VVVV.Nodes
 			
 			foreach(IPControl ipc in IPListPanel.Controls)
 				if (ipc.Visible)
-				ipc.IsSelected = false;
+					ipc.IsSelected = false;
 			
 			UpdateIPListInput();
 		}
@@ -2999,15 +2998,22 @@ namespace VVVV.Nodes
 			SaveSettings();
 		}
 		
+		private List<IPControl> IPsOfGroup(int GroupID)
+		{
+			List<IPControl> groupIPs = new List<IPControl>();
+			foreach (IPControl ipc in IPListPanel.Controls)
+				if (ipc.IsPartOfGroup(FGroups[GroupID]))
+					groupIPs.Add(ipc);
+			
+			return groupIPs;
+		}
+		
 		private void ExecuteTaskHandler(UserControl Control)
 		{
 			TaskControl task = Control as TaskControl;
 			
-			List<IPControl> groupIPs = new List<IPControl>();
-			foreach (IPControl ipc in IPListPanel.Controls)
-				if (ipc.IsPartOfGroup(FGroups[task.GroupID]))
-				    groupIPs.Add(ipc);
-				    
+			List<IPControl> groupIPs = IPsOfGroup(task.GroupID);
+			
 			switch (task.TaskType)
 			{
 				case TTaskType.Start:
@@ -3064,7 +3070,7 @@ namespace VVVV.Nodes
 	public delegate void ButtonHandler(string IP);
 	public delegate void ButtonUpHandler(UserControl Control);
 	public delegate void GroupChangedHandler(GroupControl Group, string OldGroupName, List<string> IPs);
-	
+
 	public enum TTaskType {Start, Restart, Kill}
 	public enum TPsToolCommand {Execute, Kill, Watch, WatchExecute, Reboot, Shutdown};
 	public enum TWatchMode {Off, Restart, Reboot};

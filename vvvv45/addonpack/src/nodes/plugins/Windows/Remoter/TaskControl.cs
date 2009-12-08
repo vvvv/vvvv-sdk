@@ -5,9 +5,6 @@ using System.Windows.Forms;
 
 namespace VVVV.Nodes
 {
-	/// <summary>
-	/// Description of ProcessControl2.
-	/// </summary>
 	public partial class TaskControl : UserControl
 	{
 		public event ButtonUpHandler OnXButton;
@@ -33,16 +30,26 @@ namespace VVVV.Nodes
 			set {WatchCheckBox.Checked = value;}
 		}
 		
+		private int FGroupID;
 		public int GroupID
 		{
-			get {return GroupDrop.SelectedIndex;}
-			set {GroupDrop.SelectedIndex = value;}
+			get {return FGroupID;}
+			set 
+			{
+				FGroupID = value;
+				GroupDrop.SelectedIndex = value;
+			}
 		}
 		
+		private int FProcessID;
 		public int ProcessID
 		{
-			get {return ProcessDrop.SelectedIndex;}
-			set {ProcessDrop.SelectedIndex = value;}
+			get {return FProcessID;}
+			set 
+			{
+				FProcessID = value;
+				ProcessDrop.SelectedIndex = value;
+			}
 		}
 		
 		public int Timeout
@@ -108,7 +115,7 @@ namespace VVVV.Nodes
 			//
 			InitializeComponent();
 			
-			Height = 25;
+			Height = 28;
 		}
 		
 		void DeleteButtonClick(object sender, EventArgs e)
@@ -129,7 +136,7 @@ namespace VVVV.Nodes
 			else
 			{
 				EditButton.Text = "E";
-				Height = 25;
+				Height = 28;
 				Description = DescriptionEdit.Text;
 				OnSave.Invoke(this);
 			}
@@ -151,6 +158,21 @@ namespace VVVV.Nodes
 		{
 			FTaskType = TTaskType.Kill;
 			OnExecute(this);
+		}
+		
+		void WatchCheckBoxClick(object sender, EventArgs e)
+		{
+			OnSave.Invoke(this);
+		}
+		
+		void GroupBoxSelectedIndexChanged(object sender, EventArgs e)
+		{
+			FGroupID = GroupDrop.SelectedIndex;
+		}
+		
+		void ProcessBoxSelectedIndexChanged(object sender, EventArgs e)
+		{
+			FProcessID = ProcessDrop.SelectedIndex;
 		}
 	}
 }

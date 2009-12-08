@@ -54,8 +54,8 @@ namespace VVVV.Nodes
 			this.DescriptionEdit = new System.Windows.Forms.TextBox();
 			this.DeleteButton = new System.Windows.Forms.Button();
 			this.panel4 = new System.Windows.Forms.Panel();
-			this.label2 = new System.Windows.Forms.Label();
 			this.TimeOutUpDown = new System.Windows.Forms.NumericUpDown();
+			this.label2 = new System.Windows.Forms.Label();
 			this.panel1.SuspendLayout();
 			this.panel3.SuspendLayout();
 			this.panel2.SuspendLayout();
@@ -74,15 +74,17 @@ namespace VVVV.Nodes
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel1.Location = new System.Drawing.Point(0, 0);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(377, 25);
+			this.panel1.Size = new System.Drawing.Size(373, 25);
 			this.panel1.TabIndex = 14;
 			// 
 			// DescriptionLabel
 			// 
 			this.DescriptionLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.DescriptionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.DescriptionLabel.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.DescriptionLabel.Location = new System.Drawing.Point(0, 0);
 			this.DescriptionLabel.Name = "DescriptionLabel";
-			this.DescriptionLabel.Size = new System.Drawing.Size(143, 25);
+			this.DescriptionLabel.Size = new System.Drawing.Size(139, 25);
 			this.DescriptionLabel.TabIndex = 6;
 			this.DescriptionLabel.Text = "Description";
 			this.DescriptionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -91,7 +93,7 @@ namespace VVVV.Nodes
 			// 
 			this.StartButton.Dock = System.Windows.Forms.DockStyle.Right;
 			this.StartButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.StartButton.Location = new System.Drawing.Point(143, 0);
+			this.StartButton.Location = new System.Drawing.Point(139, 0);
 			this.StartButton.Name = "StartButton";
 			this.StartButton.Size = new System.Drawing.Size(50, 25);
 			this.StartButton.TabIndex = 7;
@@ -103,7 +105,7 @@ namespace VVVV.Nodes
 			// 
 			this.RestartButton.Dock = System.Windows.Forms.DockStyle.Right;
 			this.RestartButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.RestartButton.Location = new System.Drawing.Point(193, 0);
+			this.RestartButton.Location = new System.Drawing.Point(189, 0);
 			this.RestartButton.Name = "RestartButton";
 			this.RestartButton.Size = new System.Drawing.Size(50, 25);
 			this.RestartButton.TabIndex = 8;
@@ -115,7 +117,7 @@ namespace VVVV.Nodes
 			// 
 			this.KillButton.Dock = System.Windows.Forms.DockStyle.Right;
 			this.KillButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.KillButton.Location = new System.Drawing.Point(243, 0);
+			this.KillButton.Location = new System.Drawing.Point(239, 0);
 			this.KillButton.Name = "KillButton";
 			this.KillButton.Size = new System.Drawing.Size(50, 25);
 			this.KillButton.TabIndex = 9;
@@ -126,18 +128,19 @@ namespace VVVV.Nodes
 			// WatchCheckBox
 			// 
 			this.WatchCheckBox.Dock = System.Windows.Forms.DockStyle.Right;
-			this.WatchCheckBox.Location = new System.Drawing.Point(293, 0);
+			this.WatchCheckBox.Location = new System.Drawing.Point(289, 0);
 			this.WatchCheckBox.Name = "WatchCheckBox";
 			this.WatchCheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
 			this.WatchCheckBox.Size = new System.Drawing.Size(67, 25);
 			this.WatchCheckBox.TabIndex = 5;
 			this.WatchCheckBox.Text = "Watch";
 			this.WatchCheckBox.UseVisualStyleBackColor = true;
+			this.WatchCheckBox.Click += new System.EventHandler(this.WatchCheckBoxClick);
 			// 
 			// EditButton
 			// 
 			this.EditButton.Dock = System.Windows.Forms.DockStyle.Right;
-			this.EditButton.Location = new System.Drawing.Point(360, 0);
+			this.EditButton.Location = new System.Drawing.Point(356, 0);
 			this.EditButton.Name = "EditButton";
 			this.EditButton.Size = new System.Drawing.Size(17, 25);
 			this.EditButton.TabIndex = 10;
@@ -154,13 +157,13 @@ namespace VVVV.Nodes
 			this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel3.Location = new System.Drawing.Point(0, 107);
 			this.panel3.Name = "panel3";
-			this.panel3.Size = new System.Drawing.Size(377, 18);
+			this.panel3.Size = new System.Drawing.Size(373, 18);
 			this.panel3.TabIndex = 16;
 			// 
 			// WatchReboot
 			// 
 			this.WatchReboot.Dock = System.Windows.Forms.DockStyle.Left;
-			this.WatchReboot.Location = new System.Drawing.Point(287, 0);
+			this.WatchReboot.Location = new System.Drawing.Point(232, 0);
 			this.WatchReboot.Name = "WatchReboot";
 			this.WatchReboot.Size = new System.Drawing.Size(88, 18);
 			this.WatchReboot.TabIndex = 17;
@@ -171,9 +174,9 @@ namespace VVVV.Nodes
 			// 
 			this.WatchRestart.Checked = true;
 			this.WatchRestart.Dock = System.Windows.Forms.DockStyle.Left;
-			this.WatchRestart.Location = new System.Drawing.Point(201, 0);
+			this.WatchRestart.Location = new System.Drawing.Point(178, 0);
 			this.WatchRestart.Name = "WatchRestart";
-			this.WatchRestart.Size = new System.Drawing.Size(86, 18);
+			this.WatchRestart.Size = new System.Drawing.Size(54, 18);
 			this.WatchRestart.TabIndex = 16;
 			this.WatchRestart.TabStop = true;
 			this.WatchRestart.Text = "restart";
@@ -182,9 +185,9 @@ namespace VVVV.Nodes
 			// WatchDoNothing
 			// 
 			this.WatchDoNothing.Dock = System.Windows.Forms.DockStyle.Left;
-			this.WatchDoNothing.Location = new System.Drawing.Point(111, 0);
+			this.WatchDoNothing.Location = new System.Drawing.Point(116, 0);
 			this.WatchDoNothing.Name = "WatchDoNothing";
-			this.WatchDoNothing.Size = new System.Drawing.Size(90, 18);
+			this.WatchDoNothing.Size = new System.Drawing.Size(62, 18);
 			this.WatchDoNothing.TabIndex = 15;
 			this.WatchDoNothing.Text = "nothing";
 			this.WatchDoNothing.UseVisualStyleBackColor = true;
@@ -194,7 +197,7 @@ namespace VVVV.Nodes
 			this.label1.Dock = System.Windows.Forms.DockStyle.Left;
 			this.label1.Location = new System.Drawing.Point(0, 0);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(111, 18);
+			this.label1.Size = new System.Drawing.Size(116, 18);
 			this.label1.TabIndex = 18;
 			this.label1.Text = "On lost process do:";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -205,8 +208,9 @@ namespace VVVV.Nodes
 			this.GroupBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.GroupBox.Location = new System.Drawing.Point(0, 45);
 			this.GroupBox.Name = "GroupBox";
-			this.GroupBox.Size = new System.Drawing.Size(377, 21);
+			this.GroupBox.Size = new System.Drawing.Size(373, 21);
 			this.GroupBox.TabIndex = 21;
+			this.GroupBox.SelectedIndexChanged += new System.EventHandler(this.GroupBoxSelectedIndexChanged);
 			// 
 			// ProcessBox
 			// 
@@ -214,8 +218,9 @@ namespace VVVV.Nodes
 			this.ProcessBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.ProcessBox.Location = new System.Drawing.Point(0, 66);
 			this.ProcessBox.Name = "ProcessBox";
-			this.ProcessBox.Size = new System.Drawing.Size(377, 21);
+			this.ProcessBox.Size = new System.Drawing.Size(373, 21);
 			this.ProcessBox.TabIndex = 22;
+			this.ProcessBox.SelectedIndexChanged += new System.EventHandler(this.ProcessBoxSelectedIndexChanged);
 			// 
 			// panel2
 			// 
@@ -224,7 +229,7 @@ namespace VVVV.Nodes
 			this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel2.Location = new System.Drawing.Point(0, 25);
 			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(377, 20);
+			this.panel2.Size = new System.Drawing.Size(373, 20);
 			this.panel2.TabIndex = 23;
 			// 
 			// DescriptionEdit
@@ -232,13 +237,13 @@ namespace VVVV.Nodes
 			this.DescriptionEdit.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.DescriptionEdit.Location = new System.Drawing.Point(0, 0);
 			this.DescriptionEdit.Name = "DescriptionEdit";
-			this.DescriptionEdit.Size = new System.Drawing.Size(360, 20);
+			this.DescriptionEdit.Size = new System.Drawing.Size(356, 20);
 			this.DescriptionEdit.TabIndex = 21;
 			// 
 			// DeleteButton
 			// 
 			this.DeleteButton.Dock = System.Windows.Forms.DockStyle.Right;
-			this.DeleteButton.Location = new System.Drawing.Point(360, 0);
+			this.DeleteButton.Location = new System.Drawing.Point(356, 0);
 			this.DeleteButton.Name = "DeleteButton";
 			this.DeleteButton.Size = new System.Drawing.Size(17, 20);
 			this.DeleteButton.TabIndex = 22;
@@ -253,18 +258,8 @@ namespace VVVV.Nodes
 			this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel4.Location = new System.Drawing.Point(0, 87);
 			this.panel4.Name = "panel4";
-			this.panel4.Size = new System.Drawing.Size(377, 20);
+			this.panel4.Size = new System.Drawing.Size(373, 20);
 			this.panel4.TabIndex = 24;
-			// 
-			// label2
-			// 
-			this.label2.Dock = System.Windows.Forms.DockStyle.Left;
-			this.label2.Location = new System.Drawing.Point(0, 0);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(65, 20);
-			this.label2.TabIndex = 0;
-			this.label2.Text = "Timeout (s):";
-			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// TimeOutUpDown
 			// 
@@ -284,18 +279,30 @@ namespace VVVV.Nodes
 									0,
 									0});
 			// 
+			// label2
+			// 
+			this.label2.Dock = System.Windows.Forms.DockStyle.Left;
+			this.label2.Location = new System.Drawing.Point(0, 0);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(65, 20);
+			this.label2.TabIndex = 0;
+			this.label2.Text = "Timeout (s):";
+			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
 			// TaskControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.Controls.Add(this.panel3);
 			this.Controls.Add(this.panel4);
 			this.Controls.Add(this.ProcessBox);
 			this.Controls.Add(this.GroupBox);
 			this.Controls.Add(this.panel2);
 			this.Controls.Add(this.panel1);
+			this.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.Name = "TaskControl";
-			this.Size = new System.Drawing.Size(377, 127);
+			this.Size = new System.Drawing.Size(373, 123);
 			this.panel1.ResumeLayout(false);
 			this.panel3.ResumeLayout(false);
 			this.panel2.ResumeLayout(false);

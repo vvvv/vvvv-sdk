@@ -36,53 +36,71 @@ namespace VVVV.Nodes
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.RemoveButton = new System.Windows.Forms.Button();
 			this.ProcessEdit = new System.Windows.Forms.TextBox();
 			this.ArgumentsEdit = new System.Windows.Forms.TextBox();
+			this.tableLayoutPanel1.SuspendLayout();
 			this.SuspendLayout();
+			// 
+			// tableLayoutPanel1
+			// 
+			this.tableLayoutPanel1.ColumnCount = 3;
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel1.Controls.Add(this.ArgumentsEdit, 0, 0);
+			this.tableLayoutPanel1.Controls.Add(this.ProcessEdit, 0, 0);
+			this.tableLayoutPanel1.Controls.Add(this.RemoveButton, 0, 0);
+			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+			this.tableLayoutPanel1.RowCount = 1;
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(409, 25);
+			this.tableLayoutPanel1.TabIndex = 3;
 			// 
 			// RemoveButton
 			// 
 			this.RemoveButton.Dock = System.Windows.Forms.DockStyle.Left;
-			this.RemoveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.RemoveButton.Location = new System.Drawing.Point(0, 0);
+			this.RemoveButton.Location = new System.Drawing.Point(3, 3);
 			this.RemoveButton.Name = "RemoveButton";
-			this.RemoveButton.Size = new System.Drawing.Size(25, 20);
-			this.RemoveButton.TabIndex = 2;
+			this.RemoveButton.Size = new System.Drawing.Size(19, 19);
+			this.RemoveButton.TabIndex = 3;
 			this.RemoveButton.Text = "X";
 			this.RemoveButton.UseVisualStyleBackColor = true;
 			this.RemoveButton.Click += new System.EventHandler(this.RemoveButtonClick);
 			// 
 			// ProcessEdit
 			// 
-			this.ProcessEdit.Dock = System.Windows.Forms.DockStyle.Left;
-			this.ProcessEdit.Location = new System.Drawing.Point(25, 0);
+			this.ProcessEdit.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ProcessEdit.Location = new System.Drawing.Point(28, 3);
 			this.ProcessEdit.Name = "ProcessEdit";
-			this.ProcessEdit.Size = new System.Drawing.Size(136, 20);
-			this.ProcessEdit.TabIndex = 0;
+			this.ProcessEdit.Size = new System.Drawing.Size(186, 20);
+			this.ProcessEdit.TabIndex = 4;
 			this.ProcessEdit.TextChanged += new System.EventHandler(this.ProcessEditTextChanged);
 			// 
 			// ArgumentsEdit
 			// 
 			this.ArgumentsEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.ArgumentsEdit.Location = new System.Drawing.Point(161, 0);
+			this.ArgumentsEdit.Location = new System.Drawing.Point(220, 3);
 			this.ArgumentsEdit.Name = "ArgumentsEdit";
-			this.ArgumentsEdit.Size = new System.Drawing.Size(248, 20);
-			this.ArgumentsEdit.TabIndex = 1;
+			this.ArgumentsEdit.Size = new System.Drawing.Size(186, 20);
+			this.ArgumentsEdit.TabIndex = 5;
 			this.ArgumentsEdit.TextChanged += new System.EventHandler(this.ArgumentsEditTextChanged);
 			// 
 			// ProcessControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.ArgumentsEdit);
-			this.Controls.Add(this.ProcessEdit);
-			this.Controls.Add(this.RemoveButton);
+			this.Controls.Add(this.tableLayoutPanel1);
 			this.Name = "ProcessControl";
-			this.Size = new System.Drawing.Size(409, 20);
+			this.Size = new System.Drawing.Size(409, 25);
+			this.tableLayoutPanel1.ResumeLayout(false);
+			this.tableLayoutPanel1.PerformLayout();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 		}
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.TextBox ArgumentsEdit;
 		private System.Windows.Forms.TextBox ProcessEdit;
 		private System.Windows.Forms.Button RemoveButton;
