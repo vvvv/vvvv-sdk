@@ -33,14 +33,22 @@ namespace VVVV.Nodes
 			set {WatchCheckBox.Checked = value;}
 		}
 		
-		public string Group
+		public int GroupID
 		{
-			get {return "ungrouped";}
+			get {return GroupDrop.SelectedIndex;}
+			set {GroupDrop.SelectedIndex = value;}
 		}
 		
-		public string Process
+		public int ProcessID
 		{
-			get {return "1";}
+			get {return ProcessDrop.SelectedIndex;}
+			set {ProcessDrop.SelectedIndex = value;}
+		}
+		
+		public int Timeout
+		{
+			get {return (int) TimeOutUpDown.Value;}
+			set {TimeOutUpDown.Value = value;}
 		}
 		
 		public TWatchMode WatchMode
@@ -76,7 +84,6 @@ namespace VVVV.Nodes
 				}
 			}
 		}
-		
 		
 		private TTaskType FTaskType;
 		public TTaskType TaskType
