@@ -128,7 +128,8 @@ namespace VVVV.Nodes
 					// Dispose managed resources.
 					FSensor = null;
 					FKeyboard = null;
-					FDevice.Disconnect();
+					if (FDevice != null)
+						FDevice.Disconnect();
 				}
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.
