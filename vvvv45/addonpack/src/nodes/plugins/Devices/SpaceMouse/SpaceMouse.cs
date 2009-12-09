@@ -95,7 +95,7 @@ namespace VVVV.Nodes
 			}
 			catch (COMException e)
 			{
-				FHost.Log(TLogType.Error, "SpaceMouse: " + e.Message);
+				Console.Error.WriteLine("SpaceMouse: " + e.Message);
 			}
 		}
 		
