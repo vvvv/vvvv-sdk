@@ -14,6 +14,14 @@
     <include name="${root.bin}/_PluginInterfaces.dll" />
     <include name="Dependencies/TDx.TDxInput.dll" />
   </assemblyfileset>
+  
+  <target name="post-build">
+    <copy todir="${plugin.path}">
+      <fileset basedir="Dependencies">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+  </target>
 
   <fileset id="project.sources" failonempty="true">
     <include name="**/*.cs" />
