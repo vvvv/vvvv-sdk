@@ -134,7 +134,8 @@ namespace VVVV.Nodes
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.
 				
-				FHost.Log(TLogType.Debug, "SpaceMouse is being deleted");
+				if (FHost != null)
+					FHost.Log(TLogType.Debug, "SpaceMouse is being deleted");
 				
 				// Note that this is not thread safe.
 				// Another thread could start disposing the object
