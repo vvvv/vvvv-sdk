@@ -248,9 +248,9 @@ namespace VVVV.Nodes.Http.GUI
                     if (tResponse == null || SendToBrowser)
                     {
                         tResponse = currentDefaultSlice.ToString();
-                        FReceivedString[i] = currentDefaultSlice.ToString();
+                        //FReceivedString[i] = currentDefaultSlice.ToString();
                         FSavedResponses[i] = currentDefaultSlice.ToString();
-                        FResponse.SetValue(i, Convert.ToDouble(tResponse));
+                        //FResponse.SetValue(i, Convert.ToDouble(tResponse));
                     }
 
                     if (ReceivedNewString)
