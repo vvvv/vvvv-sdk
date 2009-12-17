@@ -5,6 +5,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using VVVV.Webinterface.HttpServer;
+using VVVV.Webinterface.Utilities;
 
 
 namespace VVVV.Webinterface.HttpServer
@@ -118,7 +119,7 @@ namespace VVVV.Webinterface.HttpServer
                     mContentAsByte = RessourceFile;
                 }else
                 {
-                    mContentAsByte = Encoding.UTF8.GetBytes("File " + "'" + pFilename + "'" + " Not Found");
+                    mContentAsByte = Encoding.UTF8.GetBytes(HTMLToolkit.ErrorMessage(pFilename));
                 }
 
                 r = null;
