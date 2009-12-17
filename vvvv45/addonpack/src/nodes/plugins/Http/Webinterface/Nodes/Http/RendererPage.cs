@@ -561,7 +561,7 @@ namespace VVVV.Nodes.Http
                     mPage.Head.Insert(new JavaScript("jqueryUI.js", true));
                     mPage.Head.Insert(new JavaScript(mPageName + ".js", true));
                     mPage.Head.Insert(new JavaScript("colorpicker.js", true));
-                   
+                    mPage.Head.Insert(new JavaScript("XMLHttpRequest.js", true));
 
 
                     //mPageBuilder.UpdateGuiList(mGuiDatenListe, mPage);
@@ -579,7 +579,7 @@ namespace VVVV.Nodes.Http
                     }
                     else if (tCommunicationType == "Comet")
                     {
-                        mPage.Head.Insert(new JavaScript(JSToolkit.Comet(), false));
+                        mPage.Head.Insert(new JavaScript(JSToolkit.Comet(), true));
                     }
                     
 
