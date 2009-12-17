@@ -103,7 +103,8 @@ namespace VVVV.Webinterface.Utilities
 				
 				foreach (string str in m_Values)
 				{
-					clonedObject.m_Values.Add(System.String.Copy(str));
+                    if (str != null)
+                        clonedObject.m_Values.Add(System.String.Copy(str));
 				}
 			}
 			catch (Exception e)

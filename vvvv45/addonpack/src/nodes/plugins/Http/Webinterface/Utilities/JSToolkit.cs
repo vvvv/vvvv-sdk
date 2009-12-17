@@ -16,18 +16,7 @@ namespace VVVV.Webinterface.Utilities
         #endregion constructor
 
 
-        public static string ReloadPageFuntkionContent()
-        {
-            return "window.location.reload ();" + Environment.NewLine;
-        }
 
-
-
-        public static string ReloadPageVar()
-        {
-            return  "var aktiv = window.setInterval(\"reload_window()\", 600);" + Environment.NewLine;
-                            
-        }
 
 
 
@@ -65,101 +54,7 @@ namespace VVVV.Webinterface.Utilities
         }
 
 
-
-        public static string Alert()
-        {
-            string temp = "function HandleResponse() {" + Environment.NewLine +
-
-                                //"if (http_request.readyState == 4)" + Environment.NewLine +
-                                //"{" + Environment.NewLine +
-                                //     "if (http_request.status == 200)" + Environment.NewLine +
-                                //     "{" + Environment.NewLine +
-                                //         //"alert(http_request.responseText);" + Environment.NewLine +
-                                //     "}" + Environment.NewLine +
-                                //     "else" + Environment.NewLine +
-                                //     "{" + Environment.NewLine +
-                                //        //"var xmldoc = http_request.responseText;" + Environment.NewLine +
-                                //        //"alert(xmldoc);" + Environment.NewLine + 
-                                //     "}" + Environment.NewLine +
-                                //"}" + Environment.NewLine +
-                            "}" + Environment.NewLine + Environment.NewLine;
-            return temp;
-        }
-
-
-
-        public static string MouseMove()
-        {
-            return "window.captureEvents(Event.MOUSEMOVE);" + Environment.NewLine + 
-                   "function nsmouse(evnt){ " + Environment.NewLine +
-                   "xpos = evnt.pageX + 20;" +  Environment.NewLine +
-                   "ypos = evnt.pageY + 20;" + Environment.NewLine + 
-                   "macheRequest('mouse1','mouseY',xpos + '&' + ypos);" + Environment.NewLine + 
-                   "}" + Environment.NewLine +
-                   "window.onMouseMove = nsmouse;" + Environment.NewLine; 
-        }
-
-
-
-        public static string ButtonToggle()
-        {
-                return
-                @"
-                var getvalue = document.getElementById(pId).getAttribute('value')
-                var element = document.getElementById(pId);
-
-                
-
-                var elementChildren = element.childNodes;
-                for(var i = 0; i < elementChildren.length; i++)
-                {
-                    if(elementChildren.item(i).id == 'ButtonInlay')
-                    {
-                        var buttonInlay = elementChildren.item(i);
-                    }
-                }   
-
-                if(getvalue == '0') {
-                    document.getElementById(pId).setAttribute('value','1')             
-                    buttonInlay.style.background = '#808080';
-                    getvalue = '1';
-                } 
-                else {
-                    document.getElementById(pId).setAttribute('value','0')
-                    buttonInlay.removeAttribute('style'); 
-                    getvalue = '0';
-                }
-                makeRequest(pId,getvalue);
-                ";
-
-        }
-
-
-
-        public static string ButtonBang()
-        {
-            return
-                @"
-                    var element = document.getElementById(pId);
-                    var elementChildren = element.childNodes;
-                    var buttonInlay;
-                    for(var i = 0; i < elementChildren.length; i++)
-                    {
-                        if(elementChildren.item(i).id == 'ButtonInlay')
-                        {
-                            buttonInlay = elementChildren.item(i);
-                            buttonInlay.style.background = '#808080';
-                        }
-                    }   
-                    makeRequest(pId,1);
-                    var counter;
-                    for(var i = 0; i < 100000; i++)
-                    {
-                        counter ++;
-                    }
-                    buttonInlay.removeAttribute('style'); 
-                ";
-        }
+        
 
 
 
@@ -199,73 +94,10 @@ namespace VVVV.Webinterface.Utilities
         }
 
 
-
-        public static string TextfieldSendData()
-        {
-            return
-            @"
-            var getvalue = document.getElementById(pId).value
-            makeRequest(pId, getvalue);
-            ";
-        }
-
-
-
         public static string Comet()
         {
             IFrame tIFrame = new IFrame();
             return tIFrame.Text;
-        }
-
-
-
-        public static string Polling(string IntervalTime, string ValuesToSent)
-        {
-            string temp = @"
-//Polling Technik requires jquery timer 
-
-    $(document).ready(function(){{
-        $(document).everyTime({0},function(i) {{
-            processChunk(i);    
-        }}, 0);
-    }});
-
-    function processChunk(i){{ 
-        $.ajax({{
-            type: ""POST"",
-            url: ""polling.xml"",
-            data: {1},
-            success: function(xml)
-            {{
-                
-                if($(xml).find('Reload'))
-                {{
-                    location.reload(true);
-                }}
-
-            }}
-        }});
-    }};   " + Environment.NewLine;
-
-            return String.Format(temp, IntervalTime, ValuesToSent);
-        }
-
-
-
-        public static string ErrorMessage(string pFilename)
-        {
-
-            return
-            String.Format(@"
-            <!DOCTYPE HTML PUBLIC ""-//IETF//DTD HTML 2.0//EN"">
-            <html><head>
-            <title>404 Not Found</title>
-            </head><body>
-            <h1>Not Found</h1>
-            <p>The requested File /{0} was not found on this server.</p>
-            <hr>
-            </body></html>
-            ", pFilename);
         }
 
 
