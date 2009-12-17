@@ -581,7 +581,7 @@ namespace VVVV.Webinterface.HttpServer {
                 {
                     //Adding the received data to the SocketInformation Object 
                     Monitor.Enter(tSocketInformation);
-                    tSocketInformation.Request.Append(Encoding.UTF8.GetString(tSocketInformation.Buffer, 0, bytesRead));
+                    tSocketInformation.AppendRequest(Encoding.UTF8.GetString(tSocketInformation.Buffer, 0, bytesRead));
                     Monitor.Exit(tSocketInformation);
 
 

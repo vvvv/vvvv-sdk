@@ -14,14 +14,14 @@ namespace VVVV.Webinterface.HttpServer
         private string mSocketIP = String.Empty;
         private const int mBufferSize = 1024;
         private byte[] mDataBuffer = new byte[mBufferSize];
-        public StringBuilder Request = new StringBuilder();
+        private StringBuilder FRequest = new StringBuilder();
         private string mResponse;
         private DateTime mTimeStamp;
         private byte[] mResponseAsBytes;
         private SortedList<string, byte[]> mHtmlPages;
         private Request mRequestObject;
         private Stopwatch mStopwatch;
-        
+        private int FTotalBytes = 0;
         
         
 
@@ -136,12 +136,39 @@ namespace VVVV.Webinterface.HttpServer
                 mStopwatch = value;
             }
         }
+
+        public int TotalBytes
+        {
+            get
+            {
+                return FTotalBytes;
+            }
+        }
+
+        public string Request
+        {
+            get
+            {
+               return FRequest.ToString();
+            }
+        }
     
 
         public SocketInformation(Socket pClientSocket, string pSocketId)
         {
             this.mClientSocket = pClientSocket;
             this.mSocketIP = pSocketId;
+        }
+
+        public void AppendRequest(string Content)
+        {
+            FRequest.Append(Content);
+        }
+
+
+        public void AddToTotalBytes(int count)
+        {
+            FTotalBytes += count;
         }
     }
 }
