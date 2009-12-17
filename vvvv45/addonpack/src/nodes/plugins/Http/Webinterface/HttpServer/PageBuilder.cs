@@ -128,6 +128,7 @@ namespace VVVV.Webinterface.HttpServer
 
             mPage.Body.ClearTagsInside();
             mPage.Body = (Body)BuildHtmlFrame(new List<GuiDataObject>(mGuiElemente), mPage.Body);
+            mTags.Clear();
             //Debug.WriteLine("Ende Build Vorgang");
             mCssBuilder.Build();
             mBuildFlag = false;
@@ -140,7 +141,7 @@ namespace VVVV.Webinterface.HttpServer
 
             ////Debug.WriteLine("------------ Enter BuildHtmlFrame -------------");
             ////Debug.WriteLine("pGuiObjectIn.Count: " + pGuiObjectIn.Count.ToString());
-            
+            tTag.ClearTagsInside();
 
             foreach (GuiDataObject pElement in pGuiObjectIn)
             {
@@ -161,7 +162,7 @@ namespace VVVV.Webinterface.HttpServer
 
                 if (mTags.ContainsKey(pElement.SliceId) == false)
                 {
-                    mTags.Add(pElement.SliceId, pElement.Tag);
+                    mTags.Add(pElement.SliceId,pElement.Tag);
                     AddCssProperties(pElement);
 
                     if (pElement.GuiUpstreamList != null)

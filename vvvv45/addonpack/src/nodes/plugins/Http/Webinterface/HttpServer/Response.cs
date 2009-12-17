@@ -40,6 +40,11 @@ namespace VVVV.Webinterface.HttpServer
         }
 
 
+        public Response(byte[] pContent)
+        {
+            mResponseAsBytes = pContent;
+        }
+
 
         public Response(string pFilename,byte[] pContent, string pStausCode)
         {

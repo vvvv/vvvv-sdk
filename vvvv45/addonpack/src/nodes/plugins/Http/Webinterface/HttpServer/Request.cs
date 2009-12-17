@@ -120,8 +120,8 @@ namespace VVVV.Webinterface.HttpServer
             this.mHtmlPages = pHtmlPages;
             this.mSocketInformation = pSocketInformation;
             this.mPostMessages = pPostMessages;
-            mMessageHead = pRequest.Substring(0,pRequest.LastIndexOf(Environment.NewLine));
-            mMessageBody = pRequest.Substring(pRequest.LastIndexOf(Environment.NewLine));
+            mMessageHead = pRequest.Substring(0,pRequest.IndexOf("\r\n\r\n"));
+            mMessageBody = pRequest.Substring(pRequest.IndexOf("\r\n\r\n"));
             mMessageBody = mMessageBody.TrimStart(new Char[] { '\n', '\r', '?' });
 
 
@@ -158,16 +158,26 @@ namespace VVVV.Webinterface.HttpServer
 
         private void SplitHeadParameter(string[] pParameter)
         {
-            int tLength = pParameter.Length;
-            for (int i = 1; i < pParameter.Length; i++)
-            {
-                string line = pParameter[i];
-                if (line.Contains(":"))
+
+                int tLength = pParameter.Length;
+                for (int i = 1; i < pParameter.Length; i++)
                 {
-                    mRequestHeadParameterList.Add(line.Substring(0, line.IndexOf(":")), line.Substring(line.LastIndexOf(":") + 1));
-                    //////Debug.WriteLine(line.Substring(0, line.IndexOf(":")) + ":" + line.Substring(line.LastIndexOf(":") + 1));
+                    string line = pParameter[i];
+                    if (line.Contains(":"))
+                    {
+ 
+                        try
+                        {
+                        mRequestHeadParameterList.Add(line.Substring(0, line.IndexOf(":")), line.Substring(line.LastIndexOf(":") + 1));
+                        //////Debug.WriteLine(line.Substring(0, line.IndexOf(":")) + ":" + line.Substring(line.LastIndexOf(":") + 1));
+                        }catch(Exception ex)
+                        {
+                                    
+                            Debug.WriteLine(" Error in Reading page Header " + Environment.NewLine + ex.Message);
+                        }
+
+                    }
                 }
-            }
         }
 
         private void SplitFirstLine(string pFirstLine)
@@ -296,58 +306,39 @@ namespace VVVV.Webinterface.HttpServer
             mRequestHeadParameterList.TryGetValue("Content-Type", out tContentType);
             mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("VVVV Received POST Request, but file not found"), new HTTPStatusCode("").Code404);
 
-            if (mFilename == "ToVVVV.xml")
+            string tRemoteIPAdresse = mSocketInformation.ClientSocket.RemoteEndPoint.ToString();
+            string[] tVVVVParameter = mMessageBody.Split('&');
+
+            switch (mFilename)
             {
 
-                string tRemoteIPAdresse = mSocketInformation.ClientSocket.RemoteEndPoint.ToString();
-                tRemoteIPAdresse = tRemoteIPAdresse.Split(':')[0];
-                string[] tVVVVParameter = mMessageBody.Split('&');
+                case "ToVVVV.xml":
+                        //string tRemoteIPAdresse = mSocketInformation.ClientSocket.RemoteEndPoint.ToString();
+                        //tRemoteIPAdresse = tRemoteIPAdresse.Split(':')[0];
+                        //string[] tVVVVParameter = mMessageBody.Split('&');
 
 
-                foreach (string tValuePair in tVVVVParameter)
-                {
-                    string[] tValue = tValuePair.Split('=');
-                    
-                    if (tValue.Length > 1)
-                    {
-                        mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
-                    }
-                }
+                        foreach (string tValuePair in tVVVVParameter)
+                        {
+                            string[] tValue = tValuePair.Split('=');
+
+                            if (tValue.Length > 1)
+                            {
+                                mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
+                            }
+                        }
+                        mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("VVVV Received Post Request"), new HTTPStatusCode("").Code200);
+                    break;
 
 
-                mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("VVVV Received Post Request"), new HTTPStatusCode("").Code200);
-            }
-            else if (mFilename == "MakeMeMaster.xml")
-            {
-                string tRemoteIPAdresse = mSocketInformation.ClientSocket.RemoteEndPoint.ToString();
-                tRemoteIPAdresse = tRemoteIPAdresse.Split(':')[0];
-                string[] tVVVVParameter = mMessageBody.Split('&');
 
-                mWebinterfaceSingelton.SetMaster(tRemoteIPAdresse, tVVVVParameter[0].Split('=')[1]);
 
-                foreach (string tValuePair in tVVVVParameter)
-                {
-                    string[] tValue = tValuePair.Split('=');
+                case "MakeMeMaster.xml":
+                    //string tRemoteIPAdresse = mSocketInformation.ClientSocket.RemoteEndPoint.ToString();
+                    //tRemoteIPAdresse = tRemoteIPAdresse.Split(':')[0];
+                    //string[] tVVVVParameter = mMessageBody.Split('&');
 
-                    if (tValue.Length > 1)
-                    {
-                        mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
-                    }
-                }
-
-                mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("You are Master: " + tRemoteIPAdresse), new HTTPStatusCode("").Code200);
-            }
-            else if (mFilename == "CheckIfSlave.xml")
-            {
-                string tRemoteIPAdresse = mSocketInformation.ClientSocket.RemoteEndPoint.ToString();
-                tRemoteIPAdresse = tRemoteIPAdresse.Split(':')[0];
-                string[] tVVVVParameter = mMessageBody.Split('&');
-
-                string tResponse = mWebinterfaceSingelton.CheckIfSlave(tRemoteIPAdresse,tVVVVParameter[0].Split('=')[1]);
-
-                if (tResponse == "Master")
-                {
-                    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes(tResponse), new HTTPStatusCode("").Code200);
+                    mWebinterfaceSingelton.SetMaster(tRemoteIPAdresse, tVVVVParameter[0].Split('=')[1]);
 
                     foreach (string tValuePair in tVVVVParameter)
                     {
@@ -358,54 +349,206 @@ namespace VVVV.Webinterface.HttpServer
                             mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
                         }
                     }
-                }
-                else
-                {
-                    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes(tResponse), new HTTPStatusCode("").Code200);
-                }
+
+                    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("You are Master: " + tRemoteIPAdresse), new HTTPStatusCode("").Code200);
+                break;
+
+
+
+
+
+                case "CheckIfSlave.xml":
+                        //string tRemoteIPAdresse = mSocketInformation.ClientSocket.RemoteEndPoint.ToString();
+                        //tRemoteIPAdresse = tRemoteIPAdresse.Split(':')[0];
+                        //string[] tVVVVParameter = mMessageBody.Split('&');
+
+                        string tResponse = mWebinterfaceSingelton.CheckIfSlave(tRemoteIPAdresse, tVVVVParameter[0].Split('=')[1]);
+
+                        if (tResponse == "Master")
+                        {
+                            mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes(tResponse), new HTTPStatusCode("").Code200);
+
+                            foreach (string tValuePair in tVVVVParameter)
+                            {
+                                string[] tValue = tValuePair.Split('=');
+
+                                if (tValue.Length > 1)
+                                {
+                                    mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes(tResponse), new HTTPStatusCode("").Code200);
+                        }
+                    break;
+
+
+
+
+
+                case "polling.xml":
+                    XmlDocument tMessage;
+                    mWebinterfaceSingelton.getPollingMessage(out tMessage);
+
+                    if (tMessage != null)
+                    {
+                        StringWriter sw = new StringWriter();
+                        XmlTextWriter xw = new XmlTextWriter(sw);
+
+                        // Save Xml Document to Text Writter.
+                        tMessage.WriteTo(xw);
+                        System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+
+                        // Convert Xml Document To Byte Array.
+                        byte[] docAsBytes = encoding.GetBytes(sw.ToString());
+
+                        mResponse = new Response(mFilename, "text/xml", docAsBytes, new HTTPStatusCode("").Code200);
+                    }
+                    else
+                    {
+                        mResponse = new Response(mFilename, "text/xml", Encoding.UTF8.GetBytes("NoNewData"), new HTTPStatusCode("").Code200);
+                    }
+                break;
+
+
+
+                case "uploadify.php":
+
+                    mResponse = new Response(mFilename, "text/xml", Encoding.UTF8.GetBytes("1"), new HTTPStatusCode("").Code200);
+                    break;
+
+
+
+
+                default:
+                        if (mPostMessages.ContainsKey(mFilename))
+                        {
+                            string PostResponse;
+                            mPostMessages.TryGetValue(mFilename, out PostResponse);
+                            mResponse = new Response(mFilename, "text/xml", Encoding.UTF8.GetBytes(PostResponse), new HTTPStatusCode("").Code200);
+                        }
+                        else
+                        {
+                            tReqeustedFileExtension = DetectedFileExtension(ContentType);
+                            if (tReqeustedFileExtension == "unknown" && ContentType.Contains("javascript"))
+                            {
+                                tReqeustedFileExtension = ".js";
+                            }
+                        }
+                    break;
+            }
+
+
+            //if (mFilename == "ToVVVV.xml")
+            //{
+
+            //    string tRemoteIPAdresse = mSocketInformation.ClientSocket.RemoteEndPoint.ToString();
+            //    tRemoteIPAdresse = tRemoteIPAdresse.Split(':')[0];
+            //    string[] tVVVVParameter = mMessageBody.Split('&');
+
+
+            //    foreach (string tValuePair in tVVVVParameter)
+            //    {
+            //        string[] tValue = tValuePair.Split('=');
+                    
+            //        if (tValue.Length > 1)
+            //        {
+            //            mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
+            //        }
+            //    }
+            //    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("VVVV Received Post Request"), new HTTPStatusCode("").Code200);
+            //}
+            //else if (mFilename == "MakeMeMaster.xml")
+            //{
+            //    string tRemoteIPAdresse = mSocketInformation.ClientSocket.RemoteEndPoint.ToString();
+            //    tRemoteIPAdresse = tRemoteIPAdresse.Split(':')[0];
+            //    string[] tVVVVParameter = mMessageBody.Split('&');
+
+            //    mWebinterfaceSingelton.SetMaster(tRemoteIPAdresse, tVVVVParameter[0].Split('=')[1]);
+
+            //    foreach (string tValuePair in tVVVVParameter)
+            //    {
+            //        string[] tValue = tValuePair.Split('=');
+
+            //        if (tValue.Length > 1)
+            //        {
+            //            mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
+            //        }
+            //    }
+
+            //    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("You are Master: " + tRemoteIPAdresse), new HTTPStatusCode("").Code200);
+            //}
+            //else if (mFilename == "CheckIfSlave.xml")
+            //{
+            //    string tRemoteIPAdresse = mSocketInformation.ClientSocket.RemoteEndPoint.ToString();
+            //    tRemoteIPAdresse = tRemoteIPAdresse.Split(':')[0];
+            //    string[] tVVVVParameter = mMessageBody.Split('&');
+
+            //    string tResponse = mWebinterfaceSingelton.CheckIfSlave(tRemoteIPAdresse,tVVVVParameter[0].Split('=')[1]);
+
+            //    if (tResponse == "Master")
+            //    {
+            //        mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes(tResponse), new HTTPStatusCode("").Code200);
+
+            //        foreach (string tValuePair in tVVVVParameter)
+            //        {
+            //            string[] tValue = tValuePair.Split('=');
+
+            //            if (tValue.Length > 1)
+            //            {
+            //                mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes(tResponse), new HTTPStatusCode("").Code200);
+            //    }
 
                 
-            }
-            else if (mFilename == "polling.xml")
-            {
-                XmlDocument tMessage;
-                mWebinterfaceSingelton.getPollingMessage(out tMessage);
+            //}
+            //else if (mFilename == "polling.xml")
+            //{
+            //    XmlDocument tMessage;
+            //    mWebinterfaceSingelton.getPollingMessage(out tMessage);
 
-                if (tMessage != null)
-                {
-                    StringWriter sw = new StringWriter();
-                    XmlTextWriter xw = new XmlTextWriter(sw);
+            //    if (tMessage != null)
+            //    {
+            //        StringWriter sw = new StringWriter();
+            //        XmlTextWriter xw = new XmlTextWriter(sw);
 
-                    // Save Xml Document to Text Writter.
-                    tMessage.WriteTo(xw);
-                    System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+            //        // Save Xml Document to Text Writter.
+            //        tMessage.WriteTo(xw);
+            //        System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
 
-                    // Convert Xml Document To Byte Array.
-                    byte[] docAsBytes = encoding.GetBytes(sw.ToString());
+            //        // Convert Xml Document To Byte Array.
+            //        byte[] docAsBytes = encoding.GetBytes(sw.ToString());
 
-                    mResponse = new Response(mFilename, "text/xml", docAsBytes, new HTTPStatusCode("").Code200);
-                }
-                else
-                {
-                    mResponse = new Response(mFilename, "text/xml", Encoding.UTF8.GetBytes("NoNewData"), new HTTPStatusCode("").Code200);
-                }
+            //        mResponse = new Response(mFilename, "text/xml", docAsBytes, new HTTPStatusCode("").Code200);
+            //    }
+            //    else
+            //    {
+            //        mResponse = new Response(mFilename, "text/xml", Encoding.UTF8.GetBytes("NoNewData"), new HTTPStatusCode("").Code200);
+            //    }
 
 
-            }
-            else if (mPostMessages.ContainsKey(mFilename))
-            {
-                string PostResponse;
-                mPostMessages.TryGetValue(mFilename, out PostResponse);
-                mResponse = new Response(mFilename, "text/xml", Encoding.UTF8.GetBytes(PostResponse), new HTTPStatusCode("").Code200);
-            }
-            else
-            {
-                tReqeustedFileExtension = DetectedFileExtension(ContentType);
-                if (tReqeustedFileExtension == "unknown" && ContentType.Contains("javascript"))
-                {
-                    tReqeustedFileExtension = ".js";
-                }
-            }
+            //}
+            //else if (mPostMessages.ContainsKey(mFilename))
+            //{
+            //    string PostResponse;
+            //    mPostMessages.TryGetValue(mFilename, out PostResponse);
+            //    mResponse = new Response(mFilename, "text/xml", Encoding.UTF8.GetBytes(PostResponse), new HTTPStatusCode("").Code200);
+            //}
+            //else
+            //{
+            //    tReqeustedFileExtension = DetectedFileExtension(ContentType);
+            //    if (tReqeustedFileExtension == "unknown" && ContentType.Contains("javascript"))
+            //    {
+            //        tReqeustedFileExtension = ".js";
+            //    }
+            //}
         }
 
         #endregion POST Request
