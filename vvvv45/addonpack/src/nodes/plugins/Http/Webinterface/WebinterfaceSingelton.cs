@@ -496,7 +496,7 @@ namespace VVVV.Webinterface
         }
 
 
-        public void getNewBrowserData(string pSliceId,string pHostPath,int Slice,out string Response)
+        public void getNewBrowserData(string pSliceId,string pHostPath,int Slice,out string Response, bool InitFlag)
         {
 
             if (Monitor.TryEnter(mNodeData))
@@ -508,11 +508,12 @@ namespace VVVV.Webinterface
                         mNodeData.TryGetValue(pSliceId, out Response);
                         mNodeData.Remove(pSliceId);
                     }
-                    else if (mLoadedValues.ContainsKey(pHostPath))
+                    else if (mLoadedValues.ContainsKey(pHostPath) && InitFlag == true)
                     {
                         string tResponse = "";
                         SortedList<int, string> tSpreadValues = new SortedList<int, string>();
                         mLoadedValues.TryGetValue(pHostPath, out tSpreadValues);
+
                         if (tSpreadValues.ContainsKey(Slice))
                         {
                             tSpreadValues.TryGetValue(Slice, out tResponse);
