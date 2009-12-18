@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_project_file>
-	<FileVersion major="1" minor="5" />
+	<FileVersion major="1" minor="6" />
 	<Project>
 		<Option title="ARTK+Tracker" />
 		<Option pch_mode="2" />
-		<Option default_target="" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="" />
 		<Build>
 			<Target title="Release">
-				<Option output="ARTK+Tracker.dll" prefix_auto="1" extension_auto="1" />
+				<Option output="ARTK+Tracker" prefix_auto="1" extension_auto="1" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
@@ -26,7 +24,7 @@
 				</Linker>
 			</Target>
 			<Target title="Debug">
-				<Option output="ARTK+Tracker.dll" prefix_auto="1" extension_auto="1" />
+				<Option output="ARTK+Tracker" prefix_auto="1" extension_auto="1" />
 				<Option type="3" />
 				<Option compiler="gcc" />
 				<Option createStaticLib="1" />
@@ -39,39 +37,20 @@
 		</Build>
 		<Compiler>
 			<Add option="-D__GNUWIN32__" />
-			<Add directory="D:\Dev\ARToolkitPlus\include" />
+			<Add directory="$(ARToolKitPlus)\include" />
 		</Compiler>
 		<Linker>
 			<Add option="--add-stdcall-alias" />
 			<Add option="--input-def FreeFrame.def" />
-			<Add library="D:\Dev\ARToolkitPlus\lib\Win32\libARToolKitPlusd.a" />
+			<Add library="$(ARToolKitPlus)\lib\Win32\libARToolKitPlus.a" />
 		</Linker>
-		<Unit filename="ARTK+Tracker.cpp">
-			<Option compilerVar="CPP" />
-			<Option target="Release" />
-			<Option target="Debug" />
-		</Unit>
-		<Unit filename="ARTK+Tracker.h">
-			<Option compilerVar="CPP" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option target="Release" />
-			<Option target="Debug" />
-		</Unit>
-		<Unit filename="FreeFrame.cpp">
-			<Option compilerVar="CPP" />
-			<Option target="Release" />
-			<Option target="Debug" />
-		</Unit>
-		<Unit filename="FreeFrame.h">
-			<Option compilerVar="CPP" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option target="Release" />
-			<Option target="Debug" />
-		</Unit>
+		<Unit filename="ARTK+Tracker.cpp" />
+		<Unit filename="ARTK+Tracker.h" />
+		<Unit filename="FreeFrame.cpp" />
+		<Unit filename="FreeFrame.h" />
 		<Extensions>
 			<code_completion />
+			<debugger />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
