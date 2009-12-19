@@ -51,7 +51,7 @@
 
 #include <gl\gl.h>
 #include <gl\glu.h>
-#include <gl\glaux.h>
+//#include <gl\glaux.h> deprecated in VS2008
 
 #include "iCalibFilter.h"
 
