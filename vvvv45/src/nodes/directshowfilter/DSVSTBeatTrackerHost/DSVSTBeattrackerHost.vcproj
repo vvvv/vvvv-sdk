@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="DSVSTBeattrackerHost"
 	ProjectGUID="{F03EA5AB-4074-4E9D-9466-CB117BAA1A3F}"
 	RootNamespace="testtracker.def"
@@ -16,14 +16,14 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Release Unicode|Win32"
-			OutputDirectory=".\Release_Unicode"
-			IntermediateDirectory=".\Release_Unicode"
+			Name="Release|Win32"
+			OutputDirectory=".\Release"
+			IntermediateDirectory=".\Release"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC70.vsprops"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="0"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -43,30 +43,31 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Release_Unicode/gargle.tlb"
+				TypeLibraryName=".\Release/DSVSTBeattrackerHost.tlb"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Oxs /D_WIN32_WINNT=-0x0400 "
+				AdditionalOptions="/Oxs /D_WIN32_WINNT=-0x0501 "
 				Optimization="3"
-				AdditionalIncludeDirectories="&quot;D:\Programme\Microsoft Platform SDK for Windows Server 2003 R2\Include\crt&quot;;&quot;D:\Dokumente und Einstellungen\shine47_2\Eigene Dateien\Visual Studio 2005\Projects\public.sdk\source\vst2.x&quot;;&quot;D:\Dokumente und Einstellungen\shine47_2\Eigene Dateien\Visual Studio 2005\Projects\pluginterfaces\vst2.x&quot;"
-				PreprocessorDefinitions="DBG=0;WINVER=0x400;INC_OLE2;STRICT;_WIN32;_MT;_DLL;_X86_=1;WIN32;UNICODE"
+				AdditionalIncludeDirectories="&quot;$(DXSDK_DIR)Include&quot;;&quot;$(BaseClasses)&quot;;&quot;$(MSSdk)\Include&quot;;&quot;$(MSSdkWinServer2003)\Include\atl&quot;;&quot;$(MSSdkWinServer2003)\Include\crt&quot;;&quot;$(VSTSDK)public.sdk\source\vst2.x&quot;;&quot;$(VSTSDK)pluginterfaces\vst2.x&quot;;&quot;$(VSTSDK)&quot;;&quot;$(WTL80)include&quot;"
+				PreprocessorDefinitions="DBG=0;WINVER=0x0501;INC_OLE2;STRICT;_WIN32;_MT;_DLL;_X86_=1;WIN32"
 				StringPooling="false"
 				MinimalRebuild="false"
+				ExceptionHandling="1"
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="false"
-				UsePrecompiledHeader="0"
 				PrecompiledHeaderThrough="streams.h"
 				PrecompiledHeaderFile=""
-				AssemblerListingLocation=".\Release_Unicode/"
-				ObjectFile=".\Release_Unicode/"
-				ProgramDataBaseFileName=".\Release_Unicode/"
+				AssemblerListingLocation=".\Release/"
+				ObjectFile=".\Release/"
+				ProgramDataBaseFileName=".\Release/"
 				WarningLevel="0"
 				SuppressStartupBanner="false"
 				DebugInformationFormat="0"
 				CallingConvention="2"
 				CompileAs="0"
+				ShowIncludes="true"
 				ErrorReporting="0"
 			/>
 			<Tool
@@ -76,7 +77,7 @@
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG,WIN32"
 				Culture="1033"
-				AdditionalIncludeDirectories="..\..\BaseClasses"
+				AdditionalIncludeDirectories="&quot;$(BaseClasses)&quot;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -86,13 +87,13 @@
 				IgnoreImportLibrary="false"
 				LinkLibraryDependencies="true"
 				AdditionalOptions="/MACHINE:I386 /IGNORE:4089 /IGNORE:4098"
-				AdditionalDependencies="&quot;D:\Programme\Microsoft Platform SDK for Windows Server 2003 R2\Samples\Multimedia\DirectShow\BaseClasses\Release_Unicode\strmbase.lib&quot; &quot;D:\Programme\Microsoft Platform SDK for Windows Server 2003 R2\Lib\WinMM.Lib&quot;"
-				OutputFile="D:\Dokumente und Einstellungen\shine47\Eigene Dateien\Borland Studio Projects\vvvvdev\bin\DSVSTBeattrackerHost.ax"
+				AdditionalDependencies="strmbase.lib WinMM.Lib Msvcrt.lib"
+				OutputFile=".\Release/DSVSTBeattrackerHost.ax"
 				LinkIncremental="0"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;D:\Programme\Microsoft Platform SDK for Windows Server 2003 R2\Lib&quot;"
+				AdditionalLibraryDirectories="&quot;$(MSSdk)\Lib&quot;;&quot;$(BaseClasses)\Release&quot;"
 				ManifestFile="$(IntDir)\$(TargetFileName).intermediate.manifest"
-				IgnoreAllDefaultLibraries="false"
+				IgnoreAllDefaultLibraries="true"
 				ModuleDefinitionFile=".\DSVSTBeattrackerHost.def"
 				GenerateDebugInformation="false"
 				OptimizeReferences="0"
@@ -130,206 +131,9 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
-			ConfigurationType="2"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC70.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="NDEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Release/gargle.tlb"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalOptions="/Oxs /D_WIN32_WINNT=-0x0400 "
-				AdditionalIncludeDirectories="..\..\BaseClasses,..\..\..\..\..\include"
-				PreprocessorDefinitions="DBG=0;WINVER=0x400;INC_OLE2;STRICT;WIN32;_WIN32;_MT;_DLL;_X86_=1"
-				StringPooling="true"
-				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderThrough="streams.h"
-				PrecompiledHeaderFile=".\Release/gargle.pch"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
-				WarningLevel="4"
-				SuppressStartupBanner="true"
-				CallingConvention="2"
-				CompileAs="0"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="NDEBUG,WIN32"
-				Culture="1033"
-				AdditionalIncludeDirectories="..\..\BaseClasses"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386 /IGNORE:4089 /IGNORE:4098"
-				AdditionalDependencies="..\..\BaseClasses\release\strmbase.lib msvcrt.lib quartz.lib vfw32.lib winmm.lib version.lib largeint.lib comctl32.lib olepro32.lib"
-				OutputFile=".\Release\gargle.ax"
-				LinkIncremental="1"
-				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\..\..\lib"
-				IgnoreAllDefaultLibraries="false"
-				ModuleDefinitionFile=".\gargle.def"
-				OptimizeReferences="0"
-				EnableCOMDATFolding="2"
-				SetChecksum="true"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary=".\Release/gargle.lib"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\Debug"
 			IntermediateDirectory=".\Debug"
-			ConfigurationType="2"
-			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC70.vsprops"
-			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="false"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				PreprocessorDefinitions="_DEBUG"
-				MkTypLibCompatible="true"
-				SuppressStartupBanner="true"
-				TargetEnvironment="1"
-				TypeLibraryName=".\Debug/gargle.tlb"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalOptions="/Oid "
-				Optimization="0"
-				AdditionalIncludeDirectories="..\..\BaseClasses,..\..\..\..\..\include"
-				PreprocessorDefinitions="_WIN32_WINNT=0x0400;WINVER=0x0400;DBG=1;DEBUG;_DEBUG;INC_OLE2;STRICT;WIN32;_WIN32;_MT;_DLL;_X86_=1"
-				RuntimeLibrary="3"
-				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="0"
-				PrecompiledHeaderThrough="streams.h"
-				PrecompiledHeaderFile=".\Debug/gargle.pch"
-				AssemblerListingLocation=".\Debug/"
-				ObjectFile=".\Debug/"
-				ProgramDataBaseFileName=".\Debug/"
-				WarningLevel="4"
-				SuppressStartupBanner="true"
-				DebugInformationFormat="3"
-				CallingConvention="2"
-				CompileAs="0"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-				PreprocessorDefinitions="_DEBUG,WIN32"
-				Culture="1033"
-				AdditionalIncludeDirectories="..\..\BaseClasses"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386 /IGNORE:4089 /IGNORE:4098"
-				AdditionalDependencies="..\..\BaseClasses\debug\strmbasd.lib msvcrtd.lib quartz.lib vfw32.lib winmm.lib version.lib largeint.lib comctl32.lib olepro32.lib"
-				OutputFile=".\Debug\gargle.ax"
-				LinkIncremental="2"
-				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\..\..\..\lib"
-				IgnoreAllDefaultLibraries="false"
-				ModuleDefinitionFile=".\gargle.def"
-				GenerateDebugInformation="true"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				ImportLibrary=".\Debug/gargle.lib"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Debug Unicode|Win32"
-			OutputDirectory=".\Debug_Unicode"
-			IntermediateDirectory=".\Debug_Unicode"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC70.vsprops"
 			UseOfMFC="0"
@@ -354,22 +158,23 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName=".\Debug_Unicode/gargle.tlb"
+				TypeLibraryName=".\Debug/DSVSTBeattrackerHost.tlb"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/Oid "
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;D:\Programme\Microsoft Platform SDK for Windows Server 2003 R2\Include\crt&quot;;&quot;D:\Dokumente und Einstellungen\shine47_2\Eigene Dateien\Visual Studio 2005\Projects\public.sdk\source\vst2.x&quot;;&quot;D:\Dokumente und Einstellungen\shine47_2\Eigene Dateien\Visual Studio 2005\Projects\pluginterfaces\vst2.x&quot;"
-				PreprocessorDefinitions="_WIN32_WINNT=0x0400;WINVER=0x0400;DBG=1;DEBUG;_DEBUG;INC_OLE2;STRICT;_WIN32;_MT;_DLL;_X86_=1;WIN32;UNICODE"
+				AdditionalIncludeDirectories="&quot;$(DXSDK_DIR)Include&quot;;&quot;$(BaseClasses)&quot;;&quot;$(MSSdk)\Include&quot;;&quot;$(MSSdkWinServer2003)\Include\atl&quot;;&quot;$(MSSdkWinServer2003)\Include\crt&quot;;&quot;$(VSTSDK)public.sdk\source\vst2.x&quot;;&quot;$(VSTSDK)pluginterfaces\vst2.x&quot;;&quot;$(VSTSDK)&quot;;&quot;$(WTL80)include&quot;"
+				PreprocessorDefinitions="_WIN32_WINNT=0x0501;WINVER=0x0501;DBG=1;DEBUG;_DEBUG;INC_OLE2;STRICT;_WIN32;_MT;_DLL;_X86_=1;WIN32"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
+				TreatWChar_tAsBuiltInType="false"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderThrough="streams.h"
-				PrecompiledHeaderFile=".\Debug_Unicode/gargle.pch"
-				AssemblerListingLocation=".\Debug_Unicode/"
-				ObjectFile=".\Debug_Unicode/"
-				ProgramDataBaseFileName=".\Debug_Unicode/"
+				PrecompiledHeaderFile=".\Debug/DSVSTBeattrackerHost.pch"
+				AssemblerListingLocation=".\Debug/"
+				ObjectFile=".\Debug/"
+				ProgramDataBaseFileName=".\Debug/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -391,12 +196,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386 /IGNORE:4089 /IGNORE:4098 /MANIFEST /MANIFESTFILE:&quot;.\Debug_Unicode\DSVSTWrapper.ax.intermediate.manifest&quot;"
-				AdditionalDependencies="&quot;D:\Programme\Microsoft Platform SDK for Windows Server 2003 R2\Samples\Multimedia\DirectShow\BaseClasses\Debug_Unicode\strmbasd.lib&quot; &quot;D:\Programme\Microsoft Platform SDK for Windows Server 2003 R2\Lib\WinMM.Lib&quot;"
-				OutputFile="D:\Dokumente und Einstellungen\shine47\Eigene Dateien\Borland Studio Projects\vvvvdev\bin\DSVSTWrapper.ax"
+				AdditionalOptions="/MACHINE:I386 /IGNORE:4089 /IGNORE:4098 /MANIFEST /MANIFESTFILE:&quot;.\Debug\DSVSTWrapper.ax.intermediate.manifest&quot;"
+				AdditionalDependencies="strmbasd.lib WinMM.Lib"
+				OutputFile=".\Debug/DSVSTWrapper.ax"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;D:\Programme\Microsoft Platform SDK for Windows Server 2003 R2\Lib&quot;"
+				AdditionalLibraryDirectories="&quot;$(MSSdk)\Lib&quot;;&quot;$(BaseClasses)\Debug&quot;"
 				GenerateManifest="true"
 				ManifestFile="$(IntDir)\$(TargetFileName).intermediate.manifest"
 				AdditionalManifestDependencies=""
@@ -405,7 +210,7 @@
 				GenerateDebugInformation="true"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
-				ImportLibrary=".\Debug_Unicode/DSVSTWrapper.lib"
+				ImportLibrary=".\Debug/DSVSTWrapper.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -510,4 +315,6 @@
 			</File>
 		</Filter>
 	</Files>
+	<Globals>
+	</Globals>
 </VisualStudioProject>
