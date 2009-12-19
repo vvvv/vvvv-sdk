@@ -196,9 +196,9 @@
    </NODE>
    <LINK dstnodeid="16" dstpinname="Transform In" srcnodeid="10" srcpinname="Transform Out">
    </LINK>
-   <LINK dstnodeid="10" dstpinname="X" srcnodeid="19" srcpinname="Output X" linkstyle="Bezier" hiddenwhenlocked="1">
+   <LINK dstnodeid="10" dstpinname="X" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="19" srcpinname="Output X">
    </LINK>
-   <LINK dstnodeid="10" dstpinname="Y" srcnodeid="19" srcpinname="Output Y" linkstyle="Bezier" hiddenwhenlocked="1">
+   <LINK dstnodeid="10" dstpinname="Y" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="19" srcpinname="Output Y">
    </LINK>
    <NODE componentmode="Hidden" id="9" nodename="LFO (Animation)">
    <BOUNDS height="0" left="1380" top="1860" type="Node" width="0">
@@ -350,12 +350,26 @@
    </LINK>
    <LINK dstnodeid="12" dstpinname="Z" srcnodeid="0" srcpinname="Output Z">
    </LINK>
-   <LINK srcnodeid="13" srcpinname="Transform Out" dstnodeid="18" dstpinname="Transform">
+   <LINK dstnodeid="18" dstpinname="Transform" srcnodeid="13" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="16" srcpinname="Transform Out" dstnodeid="14" dstpinname="Transform">
+   <LINK dstnodeid="14" dstpinname="Transform" srcnodeid="16" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="18" srcpinname="Layer" dstnodeid="17" dstpinname="Layer 1">
+   <LINK dstnodeid="17" dstpinname="Layer 1" srcnodeid="18" srcpinname="Layer">
    </LINK>
-   <LINK srcnodeid="14" srcpinname="Layer" dstnodeid="17" dstpinname="Layer 2">
+   <LINK dstnodeid="17" dstpinname="Layer 2" srcnodeid="14" srcpinname="Layer">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="23">
+   <BOUNDS type="Node" left="3975" top="2415" width="4845" height="900">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3975" top="2415" width="4845" height="900">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|This plugin is the implementation of the inverse of Stereopraphic projection but i think it&apos;s ok to call it just &quot;Stereographic&quot;, infact adding a point at infinity in the three dimensional space&cr;&lf;Sterographic projections turns into a self-inverse transformation.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
    </PATCH>
