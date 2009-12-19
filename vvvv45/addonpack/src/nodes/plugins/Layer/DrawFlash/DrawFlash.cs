@@ -264,17 +264,17 @@ namespace VVVV.Nodes
             FHost = pHost;
 
             //create inputs
-            FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTranformIn);
+            FHost.CreateTransformInput("Transform", TSliceMode.Single, TPinVisibility.True, out FTranformIn);
 
-            FHost.CreateStringInput("Filename", TSliceMode.Dynamic, TPinVisibility.True, out FSWFPath);
+            FHost.CreateStringInput("Filename", TSliceMode.Single, TPinVisibility.True, out FSWFPath);
             FSWFPath.SetSubType("", true);
 
-            FHost.CreateValueInput("Load", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FLoadSWF);
+            FHost.CreateValueInput("Load", 1, null, TSliceMode.Single, TPinVisibility.True, out FLoadSWF);
             FLoadSWF.SetSubType(0, 1, 1, 0, true, false, false);
 
-            FHost.CreateValueInput("Mouse X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMouseX);
-            FHost.CreateValueInput("Mouse Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMouseY);
-            FHost.CreateValueInput("Mouse Left Button", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMouseLeftButton);
+            FHost.CreateValueInput("Mouse X", 1, null, TSliceMode.Single, TPinVisibility.True, out FMouseX);
+            FHost.CreateValueInput("Mouse Y", 1, null, TSliceMode.Single, TPinVisibility.True, out FMouseY);
+            FHost.CreateValueInput("Mouse Left Button", 1, null, TSliceMode.Single, TPinVisibility.True, out FMouseLeftButton);
 
             FHost.UpdateEnum("Buffer Mode", "Single", new string[] { "Single", "Double" });
             FHost.CreateEnumInput("Buffer Mode", TSliceMode.Dynamic, TPinVisibility.True, out FBufferMode);
@@ -284,7 +284,7 @@ namespace VVVV.Nodes
             FHost.CreateEnumInput("Quality", TSliceMode.Dynamic, TPinVisibility.True, out FQuality);
             FQuality.SetSubType("Quality");
 
-            FHost.CreateValueInput("Seek Frame", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FGoToFrame);
+            FHost.CreateValueInput("Seek Frame", 1, null, TSliceMode.Single, TPinVisibility.True, out FGoToFrame);
             FGoToFrame.SetSubType(0, Int32.MaxValue, 1, 0, false, false, true);
             
             FHost.CreateValueInput("Enabled", 1, null, TSliceMode.Single, TPinVisibility.True, out FEnabledInput);
@@ -294,7 +294,7 @@ namespace VVVV.Nodes
             //create outputs
             FHost.CreateLayerOutput("Layer", TPinVisibility.True, out FLayerOutput);
 
-            FHost.CreateValueOutput("Frame Rate", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FFrameRateOutput);
+            FHost.CreateValueOutput("Frame Rate", 1, null, TSliceMode.Single, TPinVisibility.True, out FFrameRateOutput);
         }
 
         #endregion pin creation
