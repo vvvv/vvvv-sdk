@@ -19,8 +19,6 @@ sampler Samp = sampler_state    //sampler for doing the texture-lookup
     MipFilter = LINEAR;         //sampler states
     MinFilter = LINEAR;
     MagFilter = LINEAR;
-    //AddressU = ;
-    //AddressV = Mirror;
 };
 
 //texture transformation marked with semantic TEXTUREMATRIX to achieve symmetric transformations
@@ -77,7 +75,7 @@ float4 PS(vs2ps In): COLOR
     cHV -= b;
 
     //xor horizontal and vertical stripes
-    float chess = (cHV.x + cHV.y) % 2;
+    bool chess = (cHV.x + cHV.y) % 2;
 
     //missuse a lerp to decide between color 1 and color 2
     return lerp(Black, White, chess);
@@ -87,35 +85,11 @@ float4 PS(vs2ps In): COLOR
 // TECHNIQUES:
 // --------------------------------------------------------------------------------------------------
 
-technique TSimpleShader
+technique TChess
 {
     pass P0
     {
         VertexShader = compile vs_1_1 VS();
         PixelShader  = compile ps_2_0 PS();
-    }
-}
-
-technique TFixedFunction
-{
-    pass P0
-    {
-        //transforms
-        WorldTransform[0]   = (tW);
-        ViewTransform       = (tV);
-        ProjectionTransform = (tP);
-
-        //texturing
-        Sampler[0] = (Samp);
-        TextureTransform[0] = (tTex);
-        TexCoordIndex[0] = 0;
-        TextureTransformFlags[0] = COUNT2;
-        //Wrap0 = U;  // useful when mesh is round like a sphere
-        
-        Lighting       = FALSE;
-
-        //shaders
-        VertexShader = NULL;
-        PixelShader  = NULL;
     }
 }
