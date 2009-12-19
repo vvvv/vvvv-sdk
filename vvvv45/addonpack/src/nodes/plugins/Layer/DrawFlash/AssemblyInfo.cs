@@ -8,10 +8,10 @@ using System.Runtime.InteropServices;
 // change them to the information which is associated with the assembly
 // you compile.
 
-[assembly: AssemblyTitle("PluginMeshTemplate")]
-[assembly: AssemblyDescription("Mesh Template for a VVVV Plugin")]
+[assembly: AssemblyTitle("Flash")]
+[assembly: AssemblyDescription("Flash Layer")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("VVVV group")]
+[assembly: AssemblyCompany("chrismo")]
 [assembly: AssemblyProduct("PluginMeshTemplate")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]

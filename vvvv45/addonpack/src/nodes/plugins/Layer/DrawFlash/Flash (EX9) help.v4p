@@ -1,9 +1,9 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha21.4.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha21.5.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\vvvv_trunk\plugins\Flash (EX9) help.v4p">
-   <BOUNDS height="7350" left="585" top="7440" type="Window" width="7410">
+   <BOUNDS height="8160" left="1455" top="7080" type="Window" width="8370">
    </BOUNDS>
-   <NODE componentmode="Hidden" id="8" nodename="Group (EX9)">
-   <BOUNDS height="0" left="3735" top="4950" type="Node" width="0">
+   <NODE componentmode="Hidden" id="40" nodename="Group (EX9)">
+   <BOUNDS height="0" left="3210" top="6105" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Layer 2" visible="1">
    </PIN>
@@ -22,8 +22,8 @@
    <PIN pinname="Layer 4" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="7" nodename="Mouse (System Window)">
-   <BOUNDS height="0" left="3165" top="480" type="Node" width="0">
+   <NODE componentmode="Hidden" id="39" nodename="Mouse (System Window)">
+   <BOUNDS height="0" left="3945" top="3540" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -34,10 +34,10 @@
    <PIN pinname="Mouse Wheel" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" hiddenwhenlocked="0" id="6" managers="" nodename=":PLUGINS:\DrawFlash.dll|VVVV.Nodes.DrawFlash">
-   <BOUNDS height="0" left="2790" top="3585" type="Node" width="0">
+   <NODE componentmode="InAWindow" hiddenwhenlocked="0" id="38" managers="" nodename=":PLUGINS:\DrawFlash.dll|VVVV.Nodes.DrawFlash">
+   <BOUNDS height="0" left="3210" top="5385" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="0" left="2790" top="3585" type="Box" width="0">
+   <BOUNDS height="0" left="3210" top="5385" type="Box" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="28335" top="10515" type="Window" width="0">
    </BOUNDS>
@@ -57,7 +57,7 @@
    </PIN>
    <PIN pinname="SWF Path" visible="1">
    </PIN>
-   <PIN pinname="Load" slicecount="1" visible="1" values="0">
+   <PIN pinname="Load" visible="1">
    </PIN>
    <PIN pinname="Frame Rate" visible="1">
    </PIN>
@@ -65,7 +65,7 @@
    </PIN>
    <PIN pinname="Enabled" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Reset" slicecount="1" values="0">
+   <PIN pinname="Reset">
    </PIN>
    <PIN pinname="Buffer Mode" slicecount="1" values="Single">
    </PIN>
@@ -73,85 +73,37 @@
    </PIN>
    <PIN pinname="Quality" slicecount="1" values="Best">
    </PIN>
-   </NODE>
-   <LINK dstnodeid="8" dstpinname="Layer 1" srcnodeid="6" srcpinname="Layer">
-   </LINK>
-   <NODE componentmode="Hidden" id="5" nodename="Transform (Transform 3d)">
-   <BOUNDS height="0" left="5355" top="2430" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
+   <PIN pinname="Filename" visible="1">
    </PIN>
-   <PIN pinname="ScaleX" slicecount="1" values="0.02">
-   </PIN>
-   <PIN pinname="ScaleY" slicecount="1" values="0.02">
-   </PIN>
-   <PIN pinname="TranslateX" visible="1">
-   </PIN>
-   <PIN pinname="TranslateY" visible="1">
+   <PIN pinname="Seek Frame" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="4" nodename="Transform (Transform 3d)">
-   <BOUNDS height="0" left="525" top="2280" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="ScaleX" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="ScaleZ" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="ScaleY" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="TranslateX" slicecount="1" values="-7.32053306862213E-016">
-   </PIN>
-   <PIN pinname="TranslateY" slicecount="1" values="-1.76941794549634E-016">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="6" dstpinname="Transform" srcnodeid="4" srcpinname="Transform Out">
+   <LINK dstnodeid="40" dstpinname="Layer 1" srcnodeid="38" srcpinname="Layer">
    </LINK>
-   <LINK dstnodeid="6" dstpinname="Mouse X" srcnodeid="7" srcpinname="X">
+   <LINK dstnodeid="38" dstpinname="Mouse X" srcnodeid="39" srcpinname="X">
    </LINK>
-   <LINK dstnodeid="6" dstpinname="Mouse Y" srcnodeid="7" srcpinname="Y">
+   <LINK dstnodeid="38" dstpinname="Mouse Y" srcnodeid="39" srcpinname="Y">
    </LINK>
-   <LINK dstnodeid="6" dstpinname="Mouse Left Button" srcnodeid="7" srcpinname="Left Button">
+   <LINK dstnodeid="38" dstpinname="Mouse Left Button" srcnodeid="39" srcpinname="Left Button">
    </LINK>
-   <NODE componentmode="Hidden" id="3" nodename="Quad (DX9)">
-   <BOUNDS height="0" left="4590" top="3810" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="8" dstpinname="Layer 2" srcnodeid="3" srcpinname="Layer">
-   </LINK>
-   <LINK dstnodeid="3" dstpinname="Transform" srcnodeid="5" srcpinname="Transform Out">
-   </LINK>
-   <LINK dstnodeid="5" dstpinname="TranslateX" srcnodeid="7" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="5" dstpinname="TranslateY" srcnodeid="7" srcpinname="Y">
-   </LINK>
-   <NODE componentmode="InAWindow" id="2" nodename="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="37" nodename="Renderer (EX9)">
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <BOUNDS height="0" left="3345" top="6090" type="Node" width="0">
+   <BOUNDS height="0" left="3210" top="6555" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="1800" left="3345" top="6090" type="Box" width="2400">
+   <BOUNDS height="1800" left="3210" top="6555" type="Box" width="2400">
    </BOUNDS>
-   <BOUNDS height="6435" left="8895" top="6165" type="Window" width="8370">
+   <BOUNDS height="6435" left="1455" top="645" type="Window" width="8370">
    </BOUNDS>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="2" dstpinname="Layers" srcnodeid="8" srcpinname="Layer">
+   <LINK dstnodeid="37" dstpinname="Layers" srcnodeid="40" srcpinname="Layer">
    </LINK>
-   <NODE componentmode="InAWindow" id="1" nodename="Renderer (TTY)">
-   <BOUNDS height="0" left="915" top="4965" type="Node" width="0">
+   <NODE componentmode="InABox" id="36" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6285" top="2025" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="1800" left="915" top="4965" type="Box" width="2400">
-   </BOUNDS>
-   <BOUNDS height="4860" left="1335" top="2175" type="Window" width="6120">
-   </BOUNDS>
-   </NODE>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="4275" top="360" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="1380" left="4275" top="360" type="Box" width="900">
+   <BOUNDS height="1380" left="6285" top="2025" type="Box" width="900">
    </BOUNDS>
    <BOUNDS height="160" left="17070" top="7620" type="Window" width="215">
    </BOUNDS>
@@ -164,36 +116,206 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="6" dstpinname="GoToFrame" srcnodeid="0" srcpinname="Y Output Value">
-   </LINK>
-   <NODE nodename="Self (VVVV)" componentmode="Hidden" id="9">
-   <BOUNDS type="Node" left="1335" top="705" width="0" height="0">
+   <NODE componentmode="InABox" id="35" nodename="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
    </BOUNDS>
-   <PIN pinname="Filename" visible="1">
+   <BOUNDS height="360" left="255" top="525" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Renders the Surface of a SWF File to a Direct3D Texture.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE nodename="FileName (File Split)" componentmode="Hidden" id="10">
-   <BOUNDS type="Node" left="1335" top="1095" width="0" height="0">
+   <NODE componentmode="InABox" id="34" nodename="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
    </BOUNDS>
-   <PIN pinname="Filename" visible="1">
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Flash - EX9|">
    </PIN>
-   <PIN pinname="Shortname" visible="1">
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <LINK srcnodeid="9" srcpinname="Filename" dstnodeid="10" dstpinname="Filename">
-   </LINK>
-   <NODE nodename="Add (String)" componentmode="Hidden" id="11">
-   <BOUNDS type="Node" left="1695" top="1725" width="0" height="0">
+   <NODE componentmode="Hidden" id="33" nodename=":MODULES:\vvvv group\EX9\Cursor (DX9).v4p" path="Y:\vvvv_trunk\modules\vvvv group\EX9\">
+   <BOUNDS height="0" left="4875" top="5400" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input 2" slicecount="1" values=".swf">
+   <BOUNDS height="3600" left="4875" top="5400" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="6000" left="9420" top="12045" type="Window" width="9000">
+   </BOUNDS>
+   <PIN pinname="Mouse Down" visible="1">
    </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Point Size" slicecount="3" visible="1" values="0.02,0.02,0.02">
+   </PIN>
+   <PIN pinname="Mouse XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Selection" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="33" dstpinname="Mouse Down" srcnodeid="39" srcpinname="Left Button">
+   </LINK>
+   <LINK dstnodeid="40" dstpinname="Layer 2" srcnodeid="33" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="32" nodename="Vector (3d Join)">
+   <BOUNDS height="0" left="5355" top="4950" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="32" dstpinname="X" srcnodeid="39" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="32" dstpinname="Y" srcnodeid="39" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="32" dstpinname="Z" srcnodeid="39" srcpinname="Mouse Wheel">
+   </LINK>
+   <LINK dstnodeid="33" dstpinname="Mouse XYZ" srcnodeid="32" srcpinname="XYZ">
+   </LINK>
+   <LINK dstnodeid="38" dstpinname="Seek Frame" srcnodeid="36" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="31" nodename="UniformScale (Transform)">
+   <BOUNDS height="0" left="4335" top="6120" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="37" dstpinname="View Transform" srcnodeid="31" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="30" nodename="Cons (String)">
+   <BOUNDS height="0" left="2070" top="3270" type="Node" width="0">
+   </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="10" srcpinname="Shortname" dstnodeid="11" dstpinname="Input 1">
+   <NODE componentmode="Hidden" id="29" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="825" top="4725" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="38" dstpinname="Transform" srcnodeid="29" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="6" dstpinname="SWF Path">
+   <NODE componentmode="Hidden" id="28" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="990" top="4260" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="29" dstpinname="TranslateX" srcnodeid="28" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="27" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2580" top="2400" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="285" left="2580" top="2400" type="Box" width="3285">
+   </BOUNDS>
+   <BOUNDS height="160" left="4080" top="10380" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="..\girlpower\flash\flash_benchmark_cs3.swf">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="30" dstpinname="Input 2" srcnodeid="27" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (String)">
+   <BOUNDS height="0" left="900" top="2400" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="315" left="900" top="2400" type="Box" width="1560">
+   </BOUNDS>
+   <BOUNDS height="160" left="2370" top="10440" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|Flash (EX9) help.swf|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="30" dstpinname="Input 1" srcnodeid="26" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="25" nodename="IOBox (String)">
+   <BOUNDS height="270" left="900" top="1950" type="Node" width="495">
+   </BOUNDS>
+   <BOUNDS height="270" left="900" top="1950" type="Box" width="495">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|file 1|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="24" nodename="IOBox (String)">
+   <BOUNDS height="270" left="2580" top="1995" type="Node" width="495">
+   </BOUNDS>
+   <BOUNDS height="270" left="2580" top="1995" type="Box" width="495">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|file 2|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2955" top="2925" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="2955" top="2925" type="Box" width="480">
+   </BOUNDS>
+   <BOUNDS height="160" left="8250" top="11760" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Load">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="38" dstpinname="Load" srcnodeid="23" srcpinname="Y Output Value">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="Output" dstnodeid="38" dstpinname="Filename">
    </LINK>
    </PATCH>

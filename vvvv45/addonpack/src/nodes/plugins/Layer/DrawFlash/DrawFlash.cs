@@ -4,8 +4,7 @@
 //vvvv draw flash
 
 //////description
-//basic vvvv node plugin template.
-//Copy this an rename it, to write your own plugin node.
+//Renders the Surface of a SWF File to a Direct3D Texture
 
 //////licence
 //GNU Lesser General Public License (LGPL)
@@ -19,9 +18,10 @@
 //VVVV.PluginInterfaces.V1;
 //VVVV.Utils.VColor;
 //VVVV.Utils.VMath;
+//FantastiqUINet
 
 //////initial author
-//vvvv group
+//vvvv group, chrismo
 
 #endregion licence/info
 
@@ -46,24 +46,14 @@ using System.Diagnostics;
 //the vvvv node namespace
 namespace VVVV.Nodes
 {
-
-
-
-
-
     //class definition
     public class DrawFlash : IPlugin, IDisposable, IPluginDXLayer
     {
-        private FNUIMain _FNUIMain;
-        private FNUIFlashPlayer _FNUIFlashPlayer;
-
-        private Texture _Texture1, _Texture2;
-        private int _Width = 0, _Height = 0;
-
-        private float _FrameRate;
-        private int _Frames;
-
-        private int _BufferMode = 0;
+    	//note: the binary version of this plugin shipping with vvvvs addonpack 
+    	//is licensed by meso.net
+    	//to build your own non-trial version enter your license key here:	
+        const string LICENSENAME = "";
+        const string LICENSENUMBER = "";
 
         #region field declaration
 
@@ -71,8 +61,6 @@ namespace VVVV.Nodes
         public IPluginHost FHost;
         //Track whether Dispose has been called.
         private bool FDisposed = false;
-
-        private int FSpreadCount;
 
         private ITransformIn FTranformIn;
         private IStringIn FSWFPath;
@@ -92,12 +80,22 @@ namespace VVVV.Nodes
         private IDXLayerIO FLayerOutput;
         private IValueOut FFrameRateOutput;
 
-
         private Dictionary<int, Sprite> FSprites = new Dictionary<int, Sprite>();
         bool _NeedsUpdate;
+        private int FSpreadCount;
+        
+        private FNUIMain _FNUIMain;
+        private FNUIFlashPlayer _FNUIFlashPlayer;
+
+        private Texture _Texture1, _Texture2;
+        private int _Width = 0, _Height = 0;
+
+        private float _FrameRate;
+        private int _Frames;
+
+        private int _BufferMode = 0;
 
         #endregion field declaration
-
 
         #region constructor/destructor
 
@@ -109,7 +107,7 @@ namespace VVVV.Nodes
             tPresentParas.Windowed = true;
 
             _FNUIMain = new FNUIMain();
-            _FNUIMain.SetLicenseKey(0, "Meso", "4139876481");
+            _FNUIMain.SetLicenseKey(0, LICENSENAME, LICENSENUMBER);
             _FNUIMain.CreateUI("");
         }
 
@@ -201,7 +199,6 @@ namespace VVVV.Nodes
 
         #endregion constructor/destructor
 
-
         #region node name and info
 
         //provide node infos
@@ -258,7 +255,6 @@ namespace VVVV.Nodes
 
         #endregion node name and info
 
-
         #region pin creation
 
         //this method is called by vvvv when the node is created
@@ -270,7 +266,7 @@ namespace VVVV.Nodes
             //create inputs
             FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTranformIn);
 
-            FHost.CreateStringInput("SWF Path", TSliceMode.Dynamic, TPinVisibility.True, out FSWFPath);
+            FHost.CreateStringInput("Filename", TSliceMode.Dynamic, TPinVisibility.True, out FSWFPath);
             FSWFPath.SetSubType("", true);
 
             FHost.CreateValueInput("Load", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FLoadSWF);
@@ -288,12 +284,11 @@ namespace VVVV.Nodes
             FHost.CreateEnumInput("Quality", TSliceMode.Dynamic, TPinVisibility.True, out FQuality);
             FQuality.SetSubType("Quality");
 
-
+            FHost.CreateValueInput("Seek Frame", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FGoToFrame);
+            FGoToFrame.SetSubType(0, Int32.MaxValue, 1, 0, false, false, true);
+            
             FHost.CreateValueInput("Enabled", 1, null, TSliceMode.Single, TPinVisibility.True, out FEnabledInput);
             FEnabledInput.SetSubType(0, 1, 1, 1, false, true, false);
-
-            FHost.CreateValueInput("GoToFrame", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FGoToFrame);
-            FGoToFrame.SetSubType(0, Int32.MaxValue, 1, 0, false, false, true);
 
 
             //create outputs
@@ -303,7 +298,6 @@ namespace VVVV.Nodes
         }
 
         #endregion pin creation
-
 
         #region mainloop
 
@@ -401,10 +395,6 @@ namespace VVVV.Nodes
         }
 
         #endregion mainloop
-
-
-
-
 
         #region DXLayer
 
@@ -646,9 +636,6 @@ namespace VVVV.Nodes
         }
 
         #endregion
-
-
-
 
         #region FantastiqUI
 
