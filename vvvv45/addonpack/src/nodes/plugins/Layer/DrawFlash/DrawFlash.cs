@@ -277,11 +277,11 @@ namespace VVVV.Nodes
             FHost.CreateValueInput("Mouse Left Button", 1, null, TSliceMode.Single, TPinVisibility.True, out FMouseLeftButton);
 
             FHost.UpdateEnum("Buffer Mode", "Single", new string[] { "Single", "Double" });
-            FHost.CreateEnumInput("Buffer Mode", TSliceMode.Dynamic, TPinVisibility.True, out FBufferMode);
+            FHost.CreateEnumInput("Buffer Mode", TSliceMode.Single, TPinVisibility.True, out FBufferMode);
             FBufferMode.SetSubType("Buffer Mode");
 
             FHost.UpdateEnum("Quality", "Best", new string[] { "Low", "Medium", "High", "Best" });
-            FHost.CreateEnumInput("Quality", TSliceMode.Dynamic, TPinVisibility.True, out FQuality);
+            FHost.CreateEnumInput("Quality", TSliceMode.Single, TPinVisibility.True, out FQuality);
             FQuality.SetSubType("Quality");
 
             FHost.CreateValueInput("Seek Frame", 1, null, TSliceMode.Single, TPinVisibility.True, out FGoToFrame);
