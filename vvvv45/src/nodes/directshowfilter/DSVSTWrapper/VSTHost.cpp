@@ -94,7 +94,6 @@ VstIntPtr VSTCALLBACK HostCallback ( AEffect *effect,
 	
 	case audioMasterCurrentId                    : OutputDebugString(L"AudioMasteCurrentId\n");                    break;
 	case audioMasterIdle                         : OutputDebugString(L"AudioMasterIdle\n");                        break;
-	case audioMasterPinConnected                 : OutputDebugString(L"AudioMasterPinConnected\n");                break;
 	
 	case audioMasterGetTime                      : return vstHost->getTime();
 	
