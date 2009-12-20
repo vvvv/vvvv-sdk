@@ -152,7 +152,7 @@ DWORD initialise()
    	char outName6[17] = "Height";
    	char outName7[17] = "Orientation";
    	char outName8[17] = "Area";
-   	char outName9[17] = "ID";
+   	char outName9[17] = "Contours ID";
 
    	memcpy(GOutputConstants[0].Name, outName0, 16);
    	memcpy(GOutputConstants[1].Name, outName1, 16);
