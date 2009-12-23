@@ -42,7 +42,7 @@ namespace VVVV.Nodes.Http.BaseNodes
 			OnSetPluginHost();
 		}
 
-		protected override void BaseEvaluate(int SpreadMax)
+		protected override void BaseEvaluate(int SpreadMax, bool ReceivedNewString)
 		{
 			bool newDataOnJQueryInput = false;
 

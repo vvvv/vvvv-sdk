@@ -138,7 +138,7 @@ namespace VVVV.Nodes.Http.BaseNodes
 
 			string tContent = null;
 
-			FWebinterfaceSingelton.getNewBrowserData(FSliceId[SliceNumber], FNodePath, SliceNumber, out tContent);
+			FWebinterfaceSingelton.getNewBrowserData(FSliceId[SliceNumber], FNodePath, SliceNumber, out tContent, FInitFlag);
 
 			if (tContent == null && FSavedResponses.ContainsKey(SliceNumber))
 			{

@@ -52,6 +52,7 @@ namespace VVVV.Nodes.Http.BaseNodes
 		protected JQueryNodeIOData FUpstreamJQueryNodeData;
 		private bool FHttpGuiInConnectedThisFrame = true;
 		private bool FGuiListModified = false;
+        private bool FDisconnectStyle = false;
 	
 
         #endregion field Definition
@@ -181,7 +182,7 @@ namespace VVVV.Nodes.Http.BaseNodes
                     FGuiDataList[i].GuiUpstreamList = null;
                 }
                 FUpstreamHttpGuiIn = null;
-
+                FHttpGuiInConnectedThisFrame = true;
 
             }
             else if (Pin == FHttpStyleIn)
@@ -190,7 +191,7 @@ namespace VVVV.Nodes.Http.BaseNodes
                 {
                     FGuiDataList[i].CssProperties.Clear();
                 }
-
+                FDisconnectStyle = true;
                 FUpstreamStyle = null;
             }
 			if (Pin == FJQueryNodeInput)
@@ -412,26 +413,36 @@ namespace VVVV.Nodes.Http.BaseNodes
             int usSStyle;
             if (FUpstreamStyle != null)
             {
-				if (FHttpStyleIn.IsConnected && (FHttpStyleIn.PinIsChanged || FUpstreamStyle.PinIsChanged() || FChangedSpreadSize))
-				{
-					FGuiListModified = true;
-					
-					string NodePath;
-					FHost.GetNodePath(false, out NodePath);
-					////Debug.WriteLine("Enter Css Upstream Gui Node: " + NodePath);
+                if (FHttpStyleIn.IsConnected && (FHttpStyleIn.PinIsChanged || FUpstreamStyle.PinIsChanged() || FChangedSpreadSize))
+                {
+                    FGuiListModified = true;
 
-					for (int i = 0; i < SpreadMax; i++)
-					{
-						//get upstream slice index
+                    string NodePath;
+                    FHost.GetNodePath(false, out NodePath);
+                    ////Debug.WriteLine("Enter Css Upstream Gui Node: " + NodePath);
 
-						FHttpStyleIn.GetUpsreamSlice(i, out usSStyle);
+                    for (int i = 0; i < SpreadMax; i++)
+                    {
+                        //get upstream slice index
 
-						SortedList<string, string> tSliceCssPropertie;
-						FUpstreamStyle.GetCssProperties(i, out tSliceCssPropertie);
+                        FHttpStyleIn.GetUpsreamSlice(i, out usSStyle);
 
-						FGuiDataList[i].CssProperties = tSliceCssPropertie;
-					}
-				}
+                        SortedList<string, string> tSliceCssPropertie;
+                        FUpstreamStyle.GetCssProperties(i, out tSliceCssPropertie);
+
+                        FGuiDataList[i].CssProperties = tSliceCssPropertie;
+                    }
+                }
+            }
+            if (FDisconnectStyle)
+            {
+                FDisconnectStyle = false;
+                FGuiListModified = true;
+
+                for (int i = 0; i < SpreadMax; i++)
+                {
+                    FGuiDataList[i].CssProperties.Clear();
+                }
             }
 
             #endregion Upstream Css Propeties
