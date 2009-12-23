@@ -102,7 +102,8 @@ namespace VVVV.Nodes.Http
         //Server
         private int mPortNumber = 80;
         private int mBacklog = 500;
-        private VVVV.Webinterface.HttpServer.Server mServer;
+        //private VVVV.Webinterface.HttpServer.Server mServer;
+        private ListenerTest FServer;
         private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
         private SortedList<string, byte[]> mHtmlPageList = new SortedList<string, byte[]>();
         private SortedList<string, string> mPostMessages = new SortedList<string, string>();
@@ -125,9 +126,8 @@ namespace VVVV.Nodes.Http
         /// </summary>
         public Renderer()
         {
-            mServer = new VVVV.Webinterface.HttpServer.Server(mPortNumber, mBacklog);
-            Ressources r = new Ressources();
-            r.SearchFile("colorpicker_background.png");
+            //mServer = new VVVV.Webinterface.HttpServer.Server(mPortNumber, mBacklog);
+            FServer = new ListenerTest(mPortNumber);
         }
 
 
@@ -171,11 +171,14 @@ namespace VVVV.Nodes.Http
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
 
-                if (mServer.Running)
+                if (FServer.Running)
                 {
-                    mServer.Stop();
+                    FServer.Stop();
+                    FServer.Close();
                 }
-                mServer = null;
+
+                
+                FServer = null;
 
                 FHost.Log(TLogType.Debug, "Renderer (HTTP) Node is being deleted");
 
@@ -441,15 +444,15 @@ namespace VVVV.Nodes.Http
                 FPort.GetValue(0, out PortNumber);
                 mPortNumber = (int)PortNumber;
 
-                if (mServer.Running)
+                if (FServer.Running)
                 {
-                    mServer.Stop();
-                    mServer.Port = mPortNumber;
-                    mServer.Start();
+                    FServer.Stop();
+                    FServer.Port = mPortNumber;
+                    FServer.Start();
                 }
                 else
                 {
-                    mServer.Port = mPortNumber;
+                    FServer.Port = mPortNumber;
                 }
             }
         }
@@ -466,29 +469,54 @@ namespace VVVV.Nodes.Http
 
             #region Enable Server 
 
+            //double pState;
+            //FEnableServer.GetValue(0, out pState);
+
+
+            //if (FEnableServer.PinIsChanged)
+            //{
+            //    if (pState > 0.5)
+            //    {
+            //        mServer.Start();
+            //        if (mServer.Running == false)
+            //        {
+            //            FHost.Log(TLogType.Error, String.Format("Http Port {0} taken by an other Application like Skype etc.. Please choose an other Port and Reenable the Render(HTTP).", mPortNumber));
+            //        }
+            //    }
+            //    else if (pState < 0.5)
+            //    {
+            //        if (mServer.Running == true)
+            //        {
+            //            mServer.Stop();
+            //        }
+            //    }
+            //}
+
+
             double pState;
             FEnableServer.GetValue(0, out pState);
 
 
             if (FEnableServer.PinIsChanged)
             {
+                
+
                 if (pState > 0.5)
                 {
-                    mServer.Start();
-                    if (mServer.Running == false)
+                    FServer.Start();
+                    if (FServer.Running == false)
                     {
                         FHost.Log(TLogType.Error, String.Format("Http Port {0} taken by an other Application like Skype etc.. Please choose an other Port and Reenable the Render(HTTP).", mPortNumber));
                     }
                 }
                 else if (pState < 0.5)
                 {
-                    if (mServer.Running == true)
+                    if (FServer.Running == true)
                     {
-                        mServer.Stop();
+                        FServer.Stop();
                     }
                 }
             }
-            
                 
             
 
@@ -563,7 +591,7 @@ namespace VVVV.Nodes.Http
                     }
                 }
 
-                mServer.FoldersToServ = tDirectories;
+                FServer.FoldersToServ = tDirectories;
                 
 
                 if (tFiles.Count > 0)
@@ -593,7 +621,7 @@ namespace VVVV.Nodes.Http
             try
             {
 
-                if (mServer != null)
+                if (FServer != null)
                 {
                     List<string> tGetMessages;
                     List<string> tPostMessages;
@@ -679,9 +707,9 @@ namespace VVVV.Nodes.Http
                     }
                 }
 
-                if (mServer != null)
+                if (FServer != null)
                 {
-                    mServer.PostMessages = mPostMessages;
+                    FServer.PostMessages = mPostMessages;
                 }
             }
             #endregion POST Input
