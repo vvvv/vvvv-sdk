@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.IO;
+using System.Net;
 
 
 
@@ -19,7 +20,7 @@ namespace VVVV.Webinterface.HttpServer
         private string mHttpVersion;
         private string mFilename;
         private string mFileLocation;
-        private SocketInformation mSocketInformation;
+        private HttpListenerRequest FRequest;
         private SortedDictionary<string, string> mRequestHeadParameterList = new SortedDictionary<string, string>();
         private SortedDictionary<string, string> mRequestBodyParameterList = new SortedDictionary<string, string>();
         
@@ -111,33 +112,37 @@ namespace VVVV.Webinterface.HttpServer
 
         # region constructor
 
-        public Request(string pRequest, List<string> pFolderToServ, SortedList<string, byte[]> pHtmlPages, SocketInformation pSocketInformation, SortedList<string,string> pPostMessages)
+        public Request(List<string> pFolderToServ, HttpListenerRequest pRequest, SortedList<string,string> pPostMessages)
         {
 
 
 
             this.mFolderToServ = pFolderToServ;
-            this.mHtmlPages = pHtmlPages;
-            this.mSocketInformation = pSocketInformation;
+            this.FRequest = pRequest;
             this.mPostMessages = pPostMessages;
-            mMessageHead = pRequest.Substring(0,pRequest.IndexOf("\r\n\r\n"));
-            mMessageBody = pRequest.Substring(pRequest.IndexOf("\r\n\r\n"));
-            mMessageBody = mMessageBody.TrimStart(new Char[] { '\n', '\r', '?' });
+
+            this.mFileLocation = pRequest.Url.LocalPath;
+                
+            int SegementLength = pRequest.Url.Segments.Length;
+            this.mFilename = pRequest.Url.Segments[SegementLength - 1];
+            this.mRequestType = pRequest.HttpMethod;
+            //mMessageHead = pRequest.Substring(0,pRequest.IndexOf("\r\n\r\n"));
+            mMessageBody = ReadRequestContent(pRequest);
+            //mMessageBody = mMessageBody.TrimStart(new Char[] { '\n', '\r', '?' });
+            //string[] tHeadLines = mMessageHead.Split('\n');
+            //SplitHeadParameter(tHeadLines);
+            //SplitFirstLine(tHeadLines[0]);
 
 
 
-            string[] tHeadLines = mMessageHead.Split('\n');
-            SplitHeadParameter(tHeadLines);
-            SplitFirstLine(tHeadLines[0]);
 
 
-
-            if (mRequestType == "GET" || mRequestType == "OPTIONS")
+            if (FRequest.HttpMethod == "GET" || FRequest.HttpMethod == "OPTIONS")
             {
                 GetRequest();
             }
-               
-            else if (mRequestType == "POST")
+
+            else if (FRequest.HttpMethod == "POST")
             {
 
                 PostRequest();
@@ -148,10 +153,41 @@ namespace VVVV.Webinterface.HttpServer
             }    
         }
 
+
+        private string ReadRequestContent(HttpListenerRequest request)
+        {
+
+
+            if (!request.HasEntityBody)
+            {
+                Debug.WriteLine("No client data was sent with the request.");
+                return "No client data was sent with the request.";
+            }
+            System.IO.Stream body = request.InputStream;
+            System.Text.Encoding encoding = request.ContentEncoding;
+            System.IO.StreamReader reader = new System.IO.StreamReader(body, encoding);
+            if (request.ContentType != null)
+            {
+                Debug.WriteLine("Client data content type {0}", request.ContentType);
+            }
+            Debug.WriteLine(String.Format("Client data content length {0}", request.ContentLength64));
+
+            Debug.WriteLine("Start of client data:");
+            // Convert the data to a string and display it on the Debug.
+            string RequestContent = reader.ReadToEnd();
+            Debug.WriteLine(RequestContent);
+            Debug.WriteLine("End of client data:");
+            body.Close();
+            reader.Close();
+
+
+
+
+            return RequestContent;
+            // If you are finished with the request, it should be closed also.
+        }
+
         #endregion constructor
-
-
-
 
         #region Analyse Http Head
 
@@ -274,7 +310,7 @@ namespace VVVV.Webinterface.HttpServer
         private void GetRequest()
         {
              mWebinterfaceSingelton.setResponseMessage(mMessageBody, mRequestType);
-             mResponse = new Response(mFilename,new LoadSelectContent(mFilename, mFileLocation, mFolderToServ, mHtmlPages).ContentAsBytes, new HTTPStatusCode("").Code200);
+             mResponse = new Response(mFilename,new LoadSelectContent(mFilename, mFileLocation, mFolderToServ).ContentAsBytes, new HTTPStatusCode("").Code200);
             
         }
 
@@ -288,25 +324,26 @@ namespace VVVV.Webinterface.HttpServer
 
         private void PostRequest()
         {
-            string tContentTypeHeader;
-            mRequestHeadParameterList.TryGetValue("Content-Type", out tContentTypeHeader);
+            //string tContentTypeHeader;
+            //mRequestHeadParameterList.TryGetValue("Content-Type", out tContentTypeHeader);
 
-            string[] tValues = tContentTypeHeader.Split(';');
+            //string[] tValues = tContentTypeHeader.Split(';');
 
-            string ContentType = tValues[0];
-            ContentType = ContentType.Trim();
+            //string ContentType = tValues[0];
+            //ContentType = ContentType.Trim();
 
             string tReqeustedFileExtension = String.Empty;
 
 
             mWebinterfaceSingelton.setResponseMessage(mMessageBody, mRequestType);
-            string tContentType = String.Empty;
+            //string tContentType = String.Empty;
 
 
-            mRequestHeadParameterList.TryGetValue("Content-Type", out tContentType);
-            mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("VVVV Received POST Request, but file not found"), new HTTPStatusCode("").Code404);
+            //mRequestHeadParameterList.TryGetValue("Content-Type", out tContentType);
+            mResponse = new Response(mFilename, FRequest.Headers.Get("Content-Type"), Encoding.UTF8.GetBytes("VVVV Received POST Request, but file not found"), new HTTPStatusCode("").Code404);
 
-            string tRemoteIPAdresse = mSocketInformation.ClientSocket.RemoteEndPoint.ToString();
+            string tRemoteIPAdresse = FRequest.RemoteEndPoint.ToString();
+            tRemoteIPAdresse = tRemoteIPAdresse.Split(':')[0];
             string[] tVVVVParameter = mMessageBody.Split('&');
 
             switch (mFilename)
@@ -317,7 +354,6 @@ namespace VVVV.Webinterface.HttpServer
                         //tRemoteIPAdresse = tRemoteIPAdresse.Split(':')[0];
                         //string[] tVVVVParameter = mMessageBody.Split('&');
 
-
                         foreach (string tValuePair in tVVVVParameter)
                         {
                             string[] tValue = tValuePair.Split('=');
@@ -327,7 +363,7 @@ namespace VVVV.Webinterface.HttpServer
                                 mWebinterfaceSingelton.setNewBrowserDaten(tValue[0], tValue[1]);
                             }
                         }
-                        mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("VVVV Received Post Request"), new HTTPStatusCode("").Code200);
+                        mResponse = new Response(mFilename, FRequest.Headers.Get("Content-Type"), Encoding.UTF8.GetBytes("VVVV Received Post Request"), new HTTPStatusCode("").Code200);
                     break;
 
 
@@ -350,7 +386,7 @@ namespace VVVV.Webinterface.HttpServer
                         }
                     }
 
-                    mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes("You are Master: " + tRemoteIPAdresse), new HTTPStatusCode("").Code200);
+                    mResponse = new Response(mFilename, FRequest.Headers.Get("Content-Type"), Encoding.UTF8.GetBytes("You are Master: " + tRemoteIPAdresse), new HTTPStatusCode("").Code200);
                 break;
 
 
@@ -366,7 +402,7 @@ namespace VVVV.Webinterface.HttpServer
 
                         if (tResponse == "Master")
                         {
-                            mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes(tResponse), new HTTPStatusCode("").Code200);
+                            mResponse = new Response(mFilename, FRequest.Headers.Get("Content-Type"), Encoding.UTF8.GetBytes(tResponse), new HTTPStatusCode("").Code200);
 
                             foreach (string tValuePair in tVVVVParameter)
                             {
@@ -380,7 +416,7 @@ namespace VVVV.Webinterface.HttpServer
                         }
                         else
                         {
-                            mResponse = new Response(mFilename, tContentType, Encoding.UTF8.GetBytes(tResponse), new HTTPStatusCode("").Code200);
+                            mResponse = new Response(mFilename, FRequest.Headers.Get("Content-Type"), Encoding.UTF8.GetBytes(tResponse), new HTTPStatusCode("").Code200);
                         }
                     break;
 
@@ -431,8 +467,8 @@ namespace VVVV.Webinterface.HttpServer
                         }
                         else
                         {
-                            tReqeustedFileExtension = DetectedFileExtension(ContentType);
-                            if (tReqeustedFileExtension == "unknown" && ContentType.Contains("javascript"))
+                            tReqeustedFileExtension = DetectedFileExtension(FRequest.Headers.Get("Content-Type"));
+                            if (tReqeustedFileExtension == "unknown" && FRequest.Headers.Get("Content-Type").Contains("javascript"))
                             {
                                 tReqeustedFileExtension = ".js";
                             }

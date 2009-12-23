@@ -56,7 +56,7 @@ namespace VVVV.Webinterface.HttpServer
             mHeader.SetAttribute("content-length", pContent.Length.ToString());
             mHeader.SetAttribute("connection", "close");
            
-            mResponseAsBytes = Combine(Encoding.UTF8.GetBytes(mHeader.Text), pContent);
+            mResponseAsBytes = pContent;
         }
 
 
@@ -78,7 +78,7 @@ namespace VVVV.Webinterface.HttpServer
             }
             
 
-            mResponseAsBytes = Combine(Encoding.UTF8.GetBytes(mHeader.Text), pContent);
+            mResponseAsBytes = pContent;
         }
 
 

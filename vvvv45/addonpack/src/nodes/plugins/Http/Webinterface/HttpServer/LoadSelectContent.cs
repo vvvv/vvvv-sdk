@@ -32,7 +32,7 @@ namespace VVVV.Webinterface.HttpServer
         /// <param name="pFileLocation">whole file URI which is reqquested by the client</param>
         /// <param name="pPaths">Root Pathes set by VVVV Renderer (HTTP)</param>
         /// <param name="pHtmlPages">Pages to Build by an GET Request</param>
-        public LoadSelectContent( string pFilename,string pFileLocation, List<string> pPaths, SortedList<string,byte[]> pHtmlPages)
+        public LoadSelectContent( string pFilename,string pFileLocation, List<string> pPaths)
         {
             if (pFilename == "dummy.html")
             {

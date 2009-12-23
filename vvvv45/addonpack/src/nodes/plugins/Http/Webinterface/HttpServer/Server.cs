@@ -66,9 +66,6 @@ namespace VVVV.Webinterface.HttpServer {
 
 
         //Files
-        private SortedList<string, byte[]> mHtmlPages = new SortedList<string, byte[]>();
-        private SortedList<string,string> mCssFiles;
-        private SortedList<string, string> mJsFiles;
         private List<string> mFoldersToServ;
         private SortedList<string, string> mPostMessages = new SortedList<string, string>();
 
@@ -98,21 +95,6 @@ namespace VVVV.Webinterface.HttpServer {
 
         #region properties
 
-        public SortedList<string,string> VVVVCssFile
-        {
-            set
-            {
-                mCssFiles = value;
-            }
-        }
-
-        public SortedList<string,string> VVVVJsFile
-        {
-            set
-            {
-                mJsFiles = value;
-            }
-        }
 
         public List<string> FoldersToServ
         {
@@ -122,13 +104,6 @@ namespace VVVV.Webinterface.HttpServer {
             }
         }
 
-        public SortedList<string, byte[]> HtmlPages
-        {
-            set
-            {
-                mHtmlPages = value;
-            }
-        }
 
         public bool ShuttingDown
         {
@@ -510,7 +485,6 @@ namespace VVVV.Webinterface.HttpServer {
                 
                 //Adding Time and Socket to the SocketInformation Object 
                 SocketInformation tSocketInformations = new SocketInformation(tClientSocket, tClientSocket.RemoteEndPoint.ToString());
-                tSocketInformations.HtmlPages = mHtmlPages;
 
 
                 Stopwatch myStop = new Stopwatch();
@@ -597,9 +571,9 @@ namespace VVVV.Webinterface.HttpServer {
                         tSocketInformation.TimeStamp = DateTime.Now;
                         try
                         {
-                            Request tRequest = new Request(tSocketInformation.Request.ToString(), mFoldersToServ, tSocketInformation.HtmlPages, tSocketInformation, mPostMessages);
-                            tSocketInformation.RequestObject = tRequest;
-                            tSocketInformation.ResponseAsBytes = tRequest.Response.TextInBytes;
+                            //Request tRequest = new Request(tSocketInformation.Request.ToString(), mFoldersToServ, tSocketInformation, mPostMessages);
+                            //tSocketInformation.RequestObject = tRequest;
+                            //tSocketInformation.ResponseAsBytes = tRequest.Response.TextInBytes;
 
                         }
                         catch (Exception ex)
