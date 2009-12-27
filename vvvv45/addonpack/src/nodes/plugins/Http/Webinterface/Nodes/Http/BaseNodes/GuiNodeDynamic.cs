@@ -32,6 +32,8 @@ namespace VVVV.Nodes.Http.BaseNodes
 
 		public ITransformIn FTransformIn;
 
+        private IValueIn FSendPolling;
+
 		private IEnumIn FPositionType;
 		private IEnumIn FBasingPoint;
 
@@ -53,6 +55,8 @@ namespace VVVV.Nodes.Http.BaseNodes
 		private bool FHttpGuiInConnectedThisFrame = true;
 		private bool FGuiListModified = false;
         private bool FDisconnectStyle = false;
+
+        private SortedList<int, SortedList<string, XmlDocument>> FPollingMessages = new SortedList<int, SortedList<string, XmlDocument>>();
 	
 
         #endregion field Definition
@@ -64,7 +68,7 @@ namespace VVVV.Nodes.Http.BaseNodes
         #region abstract Methods
 
         protected abstract void OnSetPluginHost();
-        protected abstract void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SlideId, bool ReceivedNewString, List<string> ReceivedString);
+        protected abstract void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SlideId, bool ReceivedNewString, List<string> ReceivedString, List<bool> SendToBrowser);
 		protected abstract bool DynamicPinsAreChanged();
 
 
@@ -82,17 +86,23 @@ namespace VVVV.Nodes.Http.BaseNodes
         protected override void CreateBasePins()
         {
             //Input Pins 
+
+            OnSetPluginHost();
+
             FHost.CreateNodeInput("Input GUI", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiIn);
             FHttpGuiIn.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
 
             FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTransformIn);
 
+            FHost.CreateValueInput("Send", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FSendPolling);
+            FSendPolling.SetSubType(0, 1, 1, 0, true, false, true);
+
 			FHost.UpdateEnum("PositionType", "absolute", new string[] { "absolute", "fixed ", "relative ", "static " });
-            FHost.CreateEnumInput("Positiontype", TSliceMode.Single, TPinVisibility.True, out FPositionType);
+            FHost.CreateEnumInput("Positiontype", TSliceMode.Single, TPinVisibility.OnlyInspector, out FPositionType);
             FPositionType.SetSubType("PositionType");
 
             FHost.UpdateEnum("BasingPoint", "Center", new string[] { "Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight" });
-            FHost.CreateEnumInput("Basing Point", TSliceMode.Single, TPinVisibility.True, out FBasingPoint);
+            FHost.CreateEnumInput("Basing Point", TSliceMode.Single, TPinVisibility.OnlyInspector, out FBasingPoint);
             FBasingPoint.SetSubType("BasingPoint");
 
             FHost.CreateNodeInput("Input CSS", TSliceMode.Dynamic, TPinVisibility.True, out FHttpStyleIn);
@@ -101,14 +111,15 @@ namespace VVVV.Nodes.Http.BaseNodes
 			FHost.CreateNodeInput("JQuery", TSliceMode.Single, TPinVisibility.True, out FJQueryNodeInput);
 			FJQueryNodeInput.SetSubType(new Guid[1] { JQueryIO.GUID }, JQueryIO.FriendlyName);
 
-			FHost.CreateValueInput("Save Posted Properties", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSavePostedPropertiesValueInput);
+			FHost.CreateValueInput("Save Posted Properties", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FSavePostedPropertiesValueInput);
 			FSavePostedPropertiesValueInput.SetSubType(0.0, 1.0, 1.0, 1.0, false, true, false);
 
             FHost.CreateNodeOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiOut);
             FHttpGuiOut.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
             FHttpGuiOut.SetInterface(this);
+            FHttpGuiOut.Order = -1;
 
-			OnSetPluginHost();
+			
         }
 
 
@@ -118,6 +129,7 @@ namespace VVVV.Nodes.Http.BaseNodes
         }
 
         #endregion pin creation
+
 
 
         #region IMyNodeIO
@@ -323,6 +335,7 @@ namespace VVVV.Nodes.Http.BaseNodes
 			
 			#endregion
 
+
             #region Transform Pin
 
             if (FTransformIn.PinIsChanged || FBasingPoint.PinIsChanged || FPositionType.PinIsChanged || FSavePostedPropertiesValueInput.PinIsChanged || FChangedSpreadSize)
@@ -448,7 +461,29 @@ namespace VVVV.Nodes.Http.BaseNodes
             #endregion Upstream Css Propeties
 
 
-            this.OnEvaluate(SpreadMax, FChangedSpreadSize, FNodeId, FSliceId, FReceivedNewString,FReceivedString);
+            #region Polling
+
+            List<bool> SendToBrowser = new List<bool>(); 
+            SendToBrowser.Clear();
+
+            for (int i = 0; i < SpreadMax; i++)
+			{
+                double currentSendValue = 0;
+                FSendPolling.GetValue(i, out currentSendValue);
+
+                SendToBrowser.Insert(i,FSendPolling.PinIsChanged && (currentSendValue > 0.5));
+                if(FSendPolling.PinIsChanged && (currentSendValue > 0.5))
+                {
+                    FReceivedString[i] = null;
+                    SetPollingMessage(i);
+                }
+			}
+            
+
+
+            #endregion 
+
+            this.OnEvaluate(SpreadMax, FChangedSpreadSize, FNodeId, FSliceId, FReceivedNewString,FReceivedString, SendToBrowser);
 
 
 			FHttpGuiInConnectedThisFrame = false;
@@ -546,8 +581,10 @@ namespace VVVV.Nodes.Http.BaseNodes
         /// <param name="SliceID">the Object which value should be set</param>
         /// <param name="ObjectMethodName">the Name of the Method which is used to set the necessary value</param>
         /// <param name="Elements">the Mehtod parameters to set the value</param>
-        public void SetPollingData(int index, string SliceID, string ObjectMethodName, string[] MethodeParameters)
+        public void CreatePollingMessage(int index, string SliceID, string ObjectMethodName, string[] MethodeParameters)
         {
+            SortedList<string, XmlDocument> tPollingValues = new SortedList<string, XmlDocument>();
+
             //the xml Document to create the XmlNode witch contains theinformation for the Browser
             XmlDocument doc = new XmlDocument();
             XmlNode RootNode, ElementNode;
@@ -565,8 +602,46 @@ namespace VVVV.Nodes.Http.BaseNodes
                 RootNode.AppendChild(ElementNode);
 			}
 
-            FWebinterfaceSingelton.setPollingMessage(SliceID, doc);
+            
+            if(FPollingMessages.ContainsKey(index))
+            {
+                FPollingMessages.TryGetValue(index, out tPollingValues);
+                if (tPollingValues.ContainsKey(SliceID) == false)
+                {
+                    tPollingValues.Add(SliceID, doc);
+                }
+                else
+                {
+                    tPollingValues.Remove(SliceID);
+                    tPollingValues.Add(SliceID, doc);
+                }
+                FPollingMessages.Remove(index);
+                FPollingMessages.Add(index, tPollingValues);
+                
+            }else
+            {
+                tPollingValues.Add(SliceID, doc);
+                FPollingMessages.Add(index, tPollingValues);
+            }
         }
+
+        private void SetPollingMessage(int index)
+        {
+
+            SortedList<string,XmlDocument> tPollingValues;
+            FPollingMessages.TryGetValue(index,out tPollingValues);
+
+            if (tPollingValues != null)
+            {
+                foreach (KeyValuePair<string, XmlDocument> Pair in tPollingValues)
+                {
+                    FWebinterfaceSingelton.setPollingMessage(Pair.Key, Pair.Value);
+                }
+            }
+            
+        }
+
+
 
         #endregion
 

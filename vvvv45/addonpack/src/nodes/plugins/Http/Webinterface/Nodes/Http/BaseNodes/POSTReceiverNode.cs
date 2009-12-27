@@ -101,14 +101,15 @@ namespace VVVV.Nodes.Http.BaseNodes
 						}
 					}
 
-					FInitFlag = false;
-				}
+                    
+                }
 
 				#endregion ReceivedData
 
 				BaseEvaluate(SpreadMax, FReceivedNewString);
 				FChangedNodeId = false;
 				FSpreadMax = SpreadMax;
+                FInitFlag = false;
 			}
 			catch (Exception ex)
 			{

@@ -13,7 +13,11 @@ namespace VVVV.Nodes.Http.GUI
         #region field declaration
 
         private bool FDisposed = false;
+
+        private IValueIn FDefault;
+
         private IValueOut FResponse;
+
 
         #endregion field declaration
 
@@ -163,6 +167,9 @@ namespace VVVV.Nodes.Http.GUI
         protected override void OnSetPluginHost()
         {
             // create required pins
+            FHost.CreateValueInput("Default", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDefault);
+            FDefault.SetSubType(0, 1, 1, 0, false, true, true);
+
             FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
             FResponse.SetSubType(0, 1, 1, 0, false, false, true);
 
@@ -175,28 +182,33 @@ namespace VVVV.Nodes.Http.GUI
 
 
 
-        protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString)
+        protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString, List<bool> SendToBrowser)
         {
 
 
-            if (changedSpreadSize || ReceivedNewString)
+            if (changedSpreadSize || ReceivedNewString || DynamicPinsAreChanged())
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
 
+                    double currentDefaultSlice;
+
                     FResponse.SliceCount = SpreadMax;
                     string Response = ReceivedString[i];
 
+                    FDefault.GetValue(i, out currentDefaultSlice);
+
                     if (ReceivedString[i] == null)
                     {
-                        FResponse.SetValue(i, 0);
+                        Response = currentDefaultSlice.ToString();
+                        FResponse.SetValue(i, currentDefaultSlice);
                     }
                     else
                     {
                         FResponse.SetValue(i, Convert.ToInt16(Response));
                     }
 
-                    RadioButton tCheckbox = new RadioButton();
+                    CheckBox tCheckbox = new CheckBox();
 
                     if (Response == "1")
                     {
@@ -205,6 +217,20 @@ namespace VVVV.Nodes.Http.GUI
                     
 
                     SetTag(i, tCheckbox);
+
+
+                    
+                    //Set Polling Message to send
+                    string[] tElementSlider;
+                    if (currentDefaultSlice == 0)
+                    {
+                        tElementSlider = new string[2] { "checked", "" };
+                    }
+                    else
+                    {
+                        tElementSlider = new string[2] { "checked","checked"};
+                    }
+                    CreatePollingMessage(i, SliceId[i], "attr", tElementSlider);
                 }
             }
 
@@ -220,6 +246,9 @@ $(""input[class*='{0}']:not(input[id=""+id+""])"").each(function()
 		}});
 ";
             AddJavaScript(0, new JqueryFunction(true, "." + GetNodeId(0), "click", String.Format(tContent, GetNodeId(0))).Text, true);
+
+
+            
         }
 
 
@@ -227,7 +256,7 @@ $(""input[class*='{0}']:not(input[id=""+id+""])"").each(function()
 
 		protected override bool DynamicPinsAreChanged()
 		{
-			return false;
+			return FDefault.PinIsChanged;
 		}
 	}
 }

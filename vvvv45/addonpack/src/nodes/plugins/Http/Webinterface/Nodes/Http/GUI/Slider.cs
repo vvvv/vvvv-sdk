@@ -21,7 +21,6 @@ namespace VVVV.Nodes.Http.GUI
         private IValueIn FMax;
         private IValueIn FDefault;
         private IValueIn FStepSize;
-        private IValueIn FSendPollingToBrowser;
 
 
         #endregion field declaration
@@ -189,9 +188,6 @@ namespace VVVV.Nodes.Http.GUI
             FHost.CreateValueInput("StepSize", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FStepSize);
             FStepSize.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.01, false, false, false);
 
-            FHost.CreateValueInput("Send", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSendPollingToBrowser);
-            FSendPollingToBrowser.SetSubType(0, 1, 1, 0, true, false, true);
-
             FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
             FResponse.SetSubType(0, 1, 1, 0, false, false, false);
         }
@@ -204,7 +200,7 @@ namespace VVVV.Nodes.Http.GUI
 
 
 
-        protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString)
+        protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString, List<bool> SendToBrowser)
         {
             if (changedSpreadSize || ReceivedNewString || DynamicPinsAreChanged())
             {
@@ -239,18 +235,11 @@ namespace VVVV.Nodes.Http.GUI
                     string tResponse = ReceivedString[i];
                     
 
-                    
-                    
-                    double currentSendValue = 0;
-                    FSendPollingToBrowser.GetValue(i,out currentSendValue);
-                    bool SendToBrowser = FSendPollingToBrowser.PinIsChanged && (currentSendValue > 0.5);
-
-                    if (tResponse == null || SendToBrowser)
+                    if (tResponse == null)
                     {
                         tResponse = currentDefaultSlice.ToString();
-                        //FReceivedString[i] = currentDefaultSlice.ToString();
                         FSavedResponses[i] = currentDefaultSlice.ToString();
-                        //FResponse.SetValue(i, Convert.ToDouble(tResponse));
+                        FResponse.SetValue(i, Convert.ToDouble(tResponse));
                     }
 
                     if (ReceivedNewString)
@@ -260,13 +249,6 @@ namespace VVVV.Nodes.Http.GUI
 
                     double currentSliderValue = Convert.ToDouble(tResponse) * 10000;  
 
-                    if (SendToBrowser)
-                    {
-                        string[] tElementSlider = new string[3] { "option", "value", currentSliderValue.ToString() };
-                        SetPollingData(i, SliderId, "slider", tElementSlider);
-                        string[] tElementTextfield = new string[1] { currentDefaultSlice.ToString() };
-                        SetPollingData(i, SliderTextfieldId, "val", tElementTextfield);
-                    }
 
                     HtmlDiv tMainContainer = new HtmlDiv();
                     HtmlDiv tSlider = new HtmlDiv(SliderId);
@@ -332,6 +314,12 @@ $.post('ToVVVV.xml',content, null);
                   
 
                     AddJavaScript(i, new JqueryFunction(true, SliderSelector, String.Format(SliderInitalize, currentOrientation, currentSliderValue.ToString(), SliderSelector, currentSliceId, "#" + SliderTextfieldId, currentMinSlice, currentMaxSlice, currentStepSize)).Text + Environment.NewLine + tTextJS.Text, true);
+
+                    string[] tElementSlider = new string[3] { "option", "value", currentSliderValue.ToString() };
+                    CreatePollingMessage(i, SliderId, "slider", tElementSlider);
+                    string[] tElementTextfield = new string[1] { currentDefaultSlice.ToString() };
+                    CreatePollingMessage(i, SliderTextfieldId, "val", tElementTextfield);
+                    
                 }
             }
         }
@@ -341,7 +329,7 @@ $.post('ToVVVV.xml',content, null);
 
 		protected override bool DynamicPinsAreChanged()
 		{
-			return (FName.PinIsChanged || FOrientation.PinIsChanged || FMin.PinIsChanged || FMax.PinIsChanged || FDefault.PinIsChanged || FStepSize.PinIsChanged || FSendPollingToBrowser.PinIsChanged);
+			return (FName.PinIsChanged || FOrientation.PinIsChanged || FMin.PinIsChanged || FMax.PinIsChanged || FDefault.PinIsChanged || FStepSize.PinIsChanged);
 		}
 	}
 }
