@@ -1,0 +1,119 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha21.4.dtd" >
+   <PATCH nodename="D:\work\personal\builds\vvvv\special\dlls\RegExprNodes\RegExpr (String Replace) help.v4p">
+   <BOUNDS height="8460" left="420" top="855" type="Window" width="9525">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="945" left="255" top="525" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Replaces content of a string by matching a regular expression.&cr;&lf;In this example, we strip html tags from the string.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|RegExpr - String Replace|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="7230" top="6435" type="Node" width="615">
+   </BOUNDS>
+   <BOUNDS height="2400" left="7230" top="6435" type="Box" width="585">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="7260" top="6795" type="Node" width="1785">
+   </BOUNDS>
+   <BOUNDS height="2400" left="7260" top="6795" type="Box" width="1755">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="RegExprNodes.dll|VVVV.Nodes.RegExprReplaceNode" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="3150" top="5205" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3150" top="5205" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="2670" top="4905" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Regular Expression" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="6">
+   <BOUNDS type="Node" left="3390" top="4005" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3390" top="4005" width="1140" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="3315" top="2640" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|&lt;(.||\n)*?&gt;|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Expression">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Output String" dstnodeid="4" dstpinname="Regular Expression">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="8">
+   <BOUNDS type="Node" left="615" top="6210" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="615" top="6210" width="2580" height="1245">
+   </BOUNDS>
+   <BOUNDS type="Window" left="3870" top="6825" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="8" dstpinname="Input String">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3150" top="1575" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="2205" left="3150" top="1575" type="Box" width="2580">
+   </BOUNDS>
+   <BOUNDS height="160" left="4245" top="3960" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1" slicecount="1" values="|&lt;html&gt;&cr;&lf;&lt;body&gt;&cr;&lf;&lt;p&gt;Hello &lt;b&gt;there&lt;/b&gt;&lt;/p&gt;&cr;&lf;&lt;/body&gt;&cr;&lf;&lt;/html&gt;|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Output String" dstnodeid="4" dstpinname="Input">
+   </LINK>
+   </PATCH>
