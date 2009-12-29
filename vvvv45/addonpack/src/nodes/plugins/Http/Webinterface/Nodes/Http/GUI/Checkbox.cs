@@ -208,7 +208,7 @@ namespace VVVV.Nodes.Http.GUI
                         FResponse.SetValue(i, Convert.ToInt16(Response));
                     }
 
-                    CheckBox tCheckbox = new CheckBox();
+                    RadioButton tCheckbox = new RadioButton();
 
                     if (Response == "1")
                     {

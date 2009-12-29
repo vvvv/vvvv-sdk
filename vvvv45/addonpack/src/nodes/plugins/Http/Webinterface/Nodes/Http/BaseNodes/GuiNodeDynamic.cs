@@ -474,6 +474,7 @@ namespace VVVV.Nodes.Http.BaseNodes
                 SendToBrowser.Insert(i,FSendPolling.PinIsChanged && (currentSendValue > 0.5));
                 if(FSendPolling.PinIsChanged && (currentSendValue > 0.5))
                 {
+                    FReceivedNewString = true;
                     FReceivedString[i] = null;
                     SetPollingMessage(i);
                 }
