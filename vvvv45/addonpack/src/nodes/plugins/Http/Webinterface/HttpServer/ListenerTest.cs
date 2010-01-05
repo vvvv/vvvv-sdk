@@ -86,16 +86,22 @@ namespace VVVV.Webinterface.HttpServer
             }
             if(HttpListener.IsSupported)
             {
-                
-                FRunning = true;
-                FHttpListener.Prefixes.Add(String.Format("http://*:{0}/",FPortNumber));
-                FHttpListener.Prefixes.Add(String.Format("http://localhost:{0}/",FPortNumber));
-                FHttpListener.Start();
-                
+                try
+                {
+                    FRunning = true;
+                    FHttpListener.Prefixes.Add(String.Format("http://*:{0}/", FPortNumber));
+                    FHttpListener.Prefixes.Add(String.Format("http://localhost:{0}/", FPortNumber));
+                    FHttpListener.Start();
 
-                ThreadStart threadStart1 = new ThreadStart(StartListening);
-                FServerThread = new Thread(threadStart1);
-                FServerThread.Start();
+
+                    ThreadStart threadStart1 = new ThreadStart(StartListening);
+                    FServerThread = new Thread(threadStart1);
+                    FServerThread.Start();
+                }
+                catch (HttpListenerException ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
                 
             }else
             {
