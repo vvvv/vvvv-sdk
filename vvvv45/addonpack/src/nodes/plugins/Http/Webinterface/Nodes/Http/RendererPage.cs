@@ -558,17 +558,17 @@ namespace VVVV.Nodes.Http
                     mPage.Head.Insert(new Link("colorpicker.css", "stylesheet", "text/css"));
                     mPage.Head.Insert(new Link("jquery.checkbox.css", "stylesheet", "text/css"));
                     mPage.Head.Insert(new Link("jquery.safari-checkbox.css", "stylesheet", "text/css"));
-                    
+ 
                     mPage.Head.Insert(new JavaScript("jquery.js", true));
                     mPage.Head.Insert(new JavaScript("jquerytimer.js", true));
                     mPage.Head.Insert(new JavaScript("jqueryUI.js", true));
                     mPage.Head.Insert(new JavaScript(mPageName + ".js", true));
                     mPage.Head.Insert(new JavaScript("colorpicker.js", true));
                     mPage.Head.Insert(new JavaScript("XMLHttpRequest.js", true));
-                    mPage.Head.Insert(new JavaScript("jquery.checkbox.js",true));
 
-
-                    //mPageBuilder.UpdateGuiList(mGuiDatenListe, mPage);
+                    mPage.Head.Insert(new JavaScript("jquery.checkbox.js", true));
+  
+                                      //mPageBuilder.UpdateGuiList(mGuiDatenListe, mPage);
                     //Communication Type
 
 
@@ -631,20 +631,10 @@ namespace VVVV.Nodes.Http
                     
                 }
 
-                //set Field Properties
-                //mCssFile = mPageBuilder.CssMainFile.ToString() + Environment.NewLine + mBodyRule.Text;
-                //mJsFile = mPageBuilder.JsFile.ToString();
-
-                //Output Files
-                //FHtmlFile.SetString(0, mPage.Text);
-                //FCssFile.SetString(0, mCssFile);
-                //FJsFile.SetString(0, mJsFile);
-
-
-
-
 
                 #endregion Build Page
+
+
                 FConnectPin = false;
                 FDisconnectPin = false;
 
