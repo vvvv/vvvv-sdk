@@ -236,7 +236,7 @@ namespace VVVV.Nodes.Http.CSS
             //Inputs
 
                 FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorInput);
-                FColorInput.SetSubType(VColor.Black, false);
+                FColorInput.SetSubType(VColor.Green, false);
         }
 
         #endregion pin creation
