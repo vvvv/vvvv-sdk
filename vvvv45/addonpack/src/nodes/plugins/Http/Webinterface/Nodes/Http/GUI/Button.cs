@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VVVV.PluginInterfaces.V1;
+using VVVV.Utils.VColor;
 using VVVV.Webinterface.Utilities;
 using VVVV.Nodes.Http.BaseNodes;
 
@@ -13,9 +14,17 @@ namespace VVVV.Nodes.Http.GUI
         #region field declaration
 
         private bool FDisposed = false;
-        private IValueOut FResponse;
-        private IEnumIn FMode;
+
         private IValueIn FDefault;
+        private IColorIn FOnPressColor;
+        private IColorIn FDefaultColor;
+        private IEnumIn FMode;
+        
+
+
+
+        private IValueOut FResponse;
+
 
         #endregion field declaration
 
@@ -164,24 +173,29 @@ namespace VVVV.Nodes.Http.GUI
 
         protected override void OnSetPluginHost()
         {
-            // create required pins
-            FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
-            FResponse.SetSubType(0, 1, 1, 0, false, false, true);
-
+            //input
             FHost.CreateValueInput("Default", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDefault);
             FDefault.SetSubType(0,1,1,0,false,true, true);
 
+            FHost.CreateColorInput("DefaultColor", TSliceMode.Dynamic, TPinVisibility.True, out FDefaultColor);
+            FDefaultColor.SetSubType(new RGBAColor(0.6117, 0.6117, 0.6117, 0), false);
+
+            FHost.CreateColorInput("OnPressColor", TSliceMode.Dynamic, TPinVisibility.True, out FOnPressColor);
+            FOnPressColor.SetSubType(new RGBAColor(0.5019, 0.5019, 0.5019,0), false);
 
             FHost.UpdateEnum("ButtonMode", "Toggle", new string[] { "Toggle", "Bang" });
             FHost.CreateEnumInput("ButtonMode", TSliceMode.Single, TPinVisibility.True, out FMode);
             FMode.SetSubType("ButtonMode");
+
+            //output
+            FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
+            FResponse.SetSubType(0, 1, 1, 0, false, false, true);
         }
 
         #endregion pin creation
 
 
         #region Main Loop
-
 
 
         protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString, List<bool> SendToBrowser)
@@ -209,6 +223,12 @@ namespace VVVV.Nodes.Http.GUI
                     FResponse.SliceCount = SpreadMax;
                     FResponse.SetValue(i,Convert.ToInt16(tResponse));
 
+                    RGBAColor currentDefaultColorSlice;
+                    RGBAColor currentOnPressColorSlice;
+
+                    FDefaultColor.GetColor(i, out currentDefaultColorSlice);
+                    FOnPressColor.GetColor(i, out currentOnPressColorSlice);
+
                     if (CurrentMode == "Toggle")
                     {
                        
@@ -221,38 +241,38 @@ namespace VVVV.Nodes.Http.GUI
 
                         if (tResponse == "1")
                         {
-                            AttributeContent = @"position:relative;background-color:#808080; width:50%; height:50%;top:25%;left:25%;border-style:solid; border-color:#808080; border-width:thin;";
+                            AttributeContent = String.Format(@"position:relative;background-color:rgb({0}%,{1}%,{2}%); width:50%; height:50%;top:25%;left:25%;border-style:solid; border-color:#808080; border-width:thin;",currentOnPressColorSlice.R * 100 , currentOnPressColorSlice.G * 100 , currentOnPressColorSlice.B * 100);
 
-                            tContent = @"toggle(
-                            function () {
-                                $('div',this).css({'background-color':'#9C9C9C'});
+                            tContent = String.Format(@"toggle(
+                            function () {{
+                                $('div',this).css({{'background-color':'rgb({0}%,{1}%,{2}%)'}});
                                 var id = $(this).attr('id');
                                 $.post('ToVVVV.xml', id + '=0', null);
-                            },
-                            function () {
-                                $('div',this).css({'background-color':'#808080'});
+                            }},
+                            function () {{
+                                $('div',this).css({{'background-color':'rgb({3}%,{4}%,{5}%)'}});
                                 var id = $(this).attr('id');
                                 $.post('ToVVVV.xml', id + '=1', null);
-                            });
-                            ";           
+                            }});
+                            ", currentDefaultColorSlice.R * 100 , currentDefaultColorSlice.G * 100 , currentDefaultColorSlice.B * 100, currentOnPressColorSlice.R * 100 , currentOnPressColorSlice.G * 100 ,currentOnPressColorSlice.B * 100);           
                         }
                         else
                         {
-                            AttributeContent = @"position:relative;background-color:#9C9C9C; width:50%; height:50%;top:25%;left:25%;border-style:solid; border-color:#808080; border-width:thin;";
+                            AttributeContent = String.Format(@"position:relative;background-color:rgb({0}%,{1}%,{2}%); width:50%; height:50%;top:25%;left:25%;border-style:solid; border-color:#808080; border-width:thin;", currentDefaultColorSlice.R * 100 , currentDefaultColorSlice.G * 100 , currentDefaultColorSlice.B * 100);
                             
-                            tContent = @"toggle(
-                            function () {
-                                $('div',this).css({'background-color':'#808080'});
+                            tContent = String.Format(@"toggle(
+                            function () {{
+                                $('div',this).css({{'background-color':'rgb({0}%,{1}%,{2}%)'}});
                                 var id = $(this).attr('id');
                                 $.post('ToVVVV.xml', id + '=1', null);
-                            },
-                            function () {
-                                $('div',this).css({'background-color':'#9C9C9C'});
+                            }},
+                            function () {{
+                                $('div',this).css({{'background-color':'rgb({3}%,{4}%,{5}%)'}});
                                 var id = $(this).attr('id');
                                 $.post('ToVVVV.xml', id + '=0', null);
-                            }
+                            }}
                             );
-                            ";       
+                            ", currentOnPressColorSlice.R * 100 , currentOnPressColorSlice.G * 100 , currentOnPressColorSlice.B * 100 , currentDefaultColorSlice.R * 100 , currentDefaultColorSlice.G * 100 , currentDefaultColorSlice.B * 100);       
                         }
 
                         
@@ -262,10 +282,6 @@ namespace VVVV.Nodes.Http.GUI
                         tDiv.Insert(tDivInlay);
 
                         SetTag(i, tDiv);
-
-            
-                        
-                        
 
                         AddJavaScript(0, new JqueryFunction(true, "." + GetNodeId(0), tContent).Text, true);
 
@@ -276,7 +292,7 @@ namespace VVVV.Nodes.Http.GUI
                         HtmlDiv tDivInlay = new HtmlDiv();
                         tDivInlay.Insert("  ");
 
-                        string AttributeContent = "position:relative;background-color:#9C9C9C; width:50%; height:50%;top:25%;left:25%;border-style:solid; border-color:#808080; border-width:thin;";
+                        string AttributeContent = String.Format(@"position:relative;background-color:rgb({0}%,{1}%,{2}%); width:50%; height:50%;top:25%;left:25%;border-style:solid; border-color:#808080; border-width:thin;", currentDefaultColorSlice.R * 100 , currentDefaultColorSlice.G * 100 , currentDefaultColorSlice.B * 100);
                         HTMLAttribute InlayAttribute = new HTMLAttribute("style", AttributeContent);
                         tDivInlay.AddAttribute(InlayAttribute);
 
@@ -285,20 +301,20 @@ namespace VVVV.Nodes.Http.GUI
                         SetTag(i, tDiv);
 
 
-                        string tContent = @"mousedown(function(){
-                            $('div',this).css({'background-color':'#808080'});
+                        string tContent = String.Format(@"mousedown(function(){
+                            $('div',this).css({'background-color':'rgb({0}%,{1}%,{2}%)'});
                             var id = $(this).attr('id');
                             $.post('ToVVVV.xml', id + '=1', null);
                         }).mouseup(function(){
-                            $('div',this).css({'background-color':'#9C9C9C'});
+                            $('div',this).css({'background-color':'rgb({3}%,{4}%,{5}%)'});
                             var id = $(this).attr('id');
                             $.post('ToVVVV.xml', id + '=0', null);
                         }).mouseleave(function(){
-                            $('div',this).css({'background-color':'#9C9C9C'});
+                            $('div',this).css({'background-color':'rgb({6}%,{7}%,{8}%)'});
                             var id = $(this).attr('id');
                             $.post('ToVVVV.xml', id + '=0', null);
                         });
-                        ";
+                        ",currentOnPressColorSlice.R * 100 ,currentOnPressColorSlice.G * 100 ,currentOnPressColorSlice.B * 100, currentDefaultColorSlice.R * 100 , currentDefaultColorSlice.G * 100 , currentDefaultColorSlice.B * 100 ,currentDefaultColorSlice.R * 100 , currentDefaultColorSlice.G * 100 , currentDefaultColorSlice.B * 100);
 
                         AddJavaScript(0, new JqueryFunction(true, "." + FGuiDataList[0].NodeId, tContent).Text, true);
                     }
@@ -308,7 +324,7 @@ namespace VVVV.Nodes.Http.GUI
 
         protected override bool DynamicPinsAreChanged()
         {
-            return (FMode.PinIsChanged || FDefault.PinIsChanged);
+            return (FMode.PinIsChanged || FDefault.PinIsChanged || FOnPressColor.PinIsChanged || FDefaultColor.PinIsChanged);
         }
 
         #endregion Main Loop
