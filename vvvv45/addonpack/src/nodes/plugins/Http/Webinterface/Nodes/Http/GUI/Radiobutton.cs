@@ -16,9 +16,9 @@ namespace VVVV.Nodes.Http.GUI
         private bool FDisposed = false;
 
         private IValueIn FDefault;
-
+        private IEnumIn FLook;
         private IValueOut FResponse;
-
+        
 
         #endregion field declaration
 
@@ -171,8 +171,14 @@ namespace VVVV.Nodes.Http.GUI
             FHost.CreateValueInput("Default", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDefault);
             FDefault.SetSubType(0, 1, 1, 0, false, true, true);
 
+            FHost.CreateEnumInput("Look", TSliceMode.Single, TPinVisibility.True, out FLook);
+            FLook.SetSubType("LookAndFeel");
+            FHost.UpdateEnum("LookAndFeel", "HTML", new string[] { "HTML", "Safari", "GreenAndRed" });
+
             FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
             FResponse.SetSubType(0, 1, 1, 0, false, false, true);
+
+
 
         }
 
@@ -241,6 +247,20 @@ namespace VVVV.Nodes.Http.GUI
                 }
 
 
+
+                string LookAndFeel;
+                FLook.GetString(0, out LookAndFeel);
+
+
+
+
+
+
+                
+
+
+
+
                 //Generate the JavaScript an add it to the GUIDataObject
                 JavaScriptVariableObject id = new JavaScriptVariableObject("id");
                 JavaScriptVariableObject tThis = new JavaScriptVariableObject("this");
@@ -275,8 +295,38 @@ namespace VVVV.Nodes.Http.GUI
                 DocumentReadyHandler.ApplyMethodCall("click", Function);
                 JQuery DocumentReady = JQuery.GenerateDocumentReady(DocumentReadyHandler);
 
-                //generates the Documente Ready Scripte as Text
-                AddJavaScript(0, DocumentReady.GenerateScript(1, true, true), true);
+                
+
+                if (LookAndFeel != "HTML")
+                {
+                    // createas an Second Document ready to initalise the checkbox plugin for different look an feels
+                    JQueryExpression DocumentReadyHandlerLook = new JQueryExpression(new CompoundSelector(new HTMLElementSelector("input:radio"), new ClassSelector(GetNodeId(0))));
+                    JQuery DocumentReadyLook = JQuery.GenerateDocumentReady(DocumentReadyHandlerLook);
+
+                    if (LookAndFeel == "Safari")
+                    {
+                        //let the checkboxes look like safari checkboxes
+                        JavaScriptGenericObject Option = new JavaScriptGenericObject();
+                        Option.Set("cls", new JavaScriptValueLiteral<string>("jquery-safari-checkbox"));
+                        DocumentReadyHandlerLook.ApplyMethodCall("checkbox", Option);
+                    }
+                    if (LookAndFeel == "GreenAndRed")
+                    {
+                        //let the checkboxes look like green and red On/Off buttons
+                        DocumentReadyHandlerLook.ApplyMethodCall("checkbox", null);
+                    }
+
+                    //generates the Documente Ready Scripte as Text
+                    AddJavaScript(0, DocumentReadyLook.GenerateScript(1, true, true) + Environment.NewLine + DocumentReady.GenerateScript(1,true,true), true);
+                }
+                else
+                {
+                    //generates the Documente Ready Scripte as Text
+                    AddJavaScript(0, DocumentReady.GenerateScript(1, true, true), true);
+                }
+
+
+                
             }
         }
 
@@ -285,7 +335,7 @@ namespace VVVV.Nodes.Http.GUI
 
 		protected override bool DynamicPinsAreChanged()
 		{
-			return FDefault.PinIsChanged;
+			return FDefault.PinIsChanged || FLook.PinIsChanged;
 		}
 	}
 }
