@@ -28,14 +28,17 @@ namespace VVVV.Webinterface.jQuery
 		public MethodCall(String method, params object[] arguments) : this()
 		{
 			FMethod = new Method(method);
-			for (int i = 0; i < arguments.Length; i++)
-			{
-				if (arguments[i] != null)
-				{
-					FArguments.Add(JavaScriptObjectFactory.Create(arguments[i]));
-				}
-			}
 
+            if (arguments != null)
+            {
+                for (int i = 0; i < arguments.Length; i++)
+                {
+                    if (arguments[i] != null)
+                    {
+                        FArguments.Add(JavaScriptObjectFactory.Create(arguments[i]));
+                    }
+                }
+            }
 		}
 
 		public void SetParameters(params object[] arguments)
