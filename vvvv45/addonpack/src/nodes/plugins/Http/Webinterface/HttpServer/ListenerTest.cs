@@ -136,6 +136,9 @@ namespace VVVV.Webinterface.HttpServer
                 Request tRequest = new Request(FFoldersToServ, Request, mPostMessages);
 
                 HttpListenerResponse response = context.Response;
+                response.AddHeader("Cache-Control", "no-store");
+                response.AddHeader("Content-Type", Request.ContentType);
+                
                 // Construct a response.
                 byte[] buffer = tRequest.Response.TextInBytes;
                 // Get a response stream and write the response to it.

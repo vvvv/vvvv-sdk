@@ -55,7 +55,7 @@ namespace VVVV.Webinterface.HttpServer
             mHeader.SetAttribute("accept-ranges", "bytes");
             mHeader.SetAttribute("content-length", pContent.Length.ToString());
             mHeader.SetAttribute("connection", "close");
-           
+            mHeader.SetAttribute("Cache-Control", "no-store"); 
             mResponseAsBytes = pContent;
         }
 
@@ -68,6 +68,7 @@ namespace VVVV.Webinterface.HttpServer
             mHeader.SetAttribute("content-type", pContentType);
             mHeader.SetAttribute("accept-ranges", "bytes");
             mHeader.SetAttribute("content-length", pContent.Length.ToString());
+            mHeader.SetAttribute("Cache-Control", "no-store"); 
             if (pFilename == "dummy.html")
             {
                 mHeader.SetAttribute("connection", "keep-alive");

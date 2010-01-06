@@ -311,7 +311,7 @@ namespace VVVV.Webinterface.HttpServer
         {
              mWebinterfaceSingelton.setResponseMessage(mMessageBody, mRequestType);
              mResponse = new Response(mFilename,new LoadSelectContent(mFilename, mFileLocation, mFolderToServ).ContentAsBytes, new HTTPStatusCode("").Code200);
-            
+             
         }
 
 
@@ -341,7 +341,7 @@ namespace VVVV.Webinterface.HttpServer
 
             //mRequestHeadParameterList.TryGetValue("Content-Type", out tContentType);
             mResponse = new Response(mFilename, FRequest.Headers.Get("Content-Type"), Encoding.UTF8.GetBytes("VVVV Received POST Request, but file not found"), new HTTPStatusCode("").Code404);
-
+            
             string tRemoteIPAdresse = FRequest.RemoteEndPoint.ToString();
             tRemoteIPAdresse = tRemoteIPAdresse.Split(':')[0];
             string[] tVVVVParameter = mMessageBody.Split('&');
