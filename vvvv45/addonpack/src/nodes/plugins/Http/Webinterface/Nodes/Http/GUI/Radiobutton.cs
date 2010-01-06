@@ -290,7 +290,7 @@ namespace VVVV.Nodes.Http.GUI
                 if (LookAndFeel != "HTML")
                 {
                     // createas an Second Document ready to initalise the checkbox plugin for different look an feels
-                    JQueryExpression DocumentReadyHandlerLook = new JQueryExpression(new CompoundSelector(new HTMLElementSelector("input:radio"), new ClassSelector(GetNodeId(0))));
+                    JQueryExpression DocumentReadyHandlerLook = new JQueryExpression(new BlankSelector(String.Format(@"""input[class*='{0}']""", GetNodeId(0))));
                     JQuery DocumentReadyLook = JQuery.GenerateDocumentReady(DocumentReadyHandlerLook);
 
                     if (LookAndFeel == "Safari")
