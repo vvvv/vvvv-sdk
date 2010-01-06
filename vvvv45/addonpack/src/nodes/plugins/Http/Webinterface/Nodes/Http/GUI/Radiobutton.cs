@@ -191,14 +191,18 @@ namespace VVVV.Nodes.Http.GUI
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
-
-                    double currentDefaultSlice;
-
+                    
+                    // sets the Slicecount of the Response pin
                     FResponse.SliceCount = SpreadMax;
+
+                    //Gets the Received Slice String from the Server
                     string Response = ReceivedString[i];
 
+                    //reads the Default value from the input pin
+                    double currentDefaultSlice;
                     FDefault.GetValue(i, out currentDefaultSlice);
 
+                    //if there is no response use the default value as Response
                     if (ReceivedString[i] == null)
                     {
                         Response = currentDefaultSlice.ToString();
@@ -209,18 +213,21 @@ namespace VVVV.Nodes.Http.GUI
                         FResponse.SetValue(i, Convert.ToInt16(Response));
                     }
 
+
+                    //Creates an HTML Radiobutton 
                     RadioButton tCheckbox = new RadioButton();
 
+                    //if the Response is 1 set the HTML attribute checked to checked
                     if (Response == "1")
                     {
                         tCheckbox.AddAttribute(new HTMLAttribute("checked", "checked"));
                     }
 
-
+                    //set the HTML Tag to the GUIDataNode
                     SetTag(i, tCheckbox);
 
 
-                    //Set Polling Message its send to the server if the FSendPin.IS Changed in the DynmaicGuiClass
+                    //Set Polling Messag, which is send to the server if the FSendPin (DynamicGUINode) is Changed
                     string[] tElementSlider;
                     if (currentDefaultSlice == 0)
                     {
