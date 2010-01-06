@@ -163,6 +163,7 @@ namespace VVVV.Nodes.Http.GUI
         #endregion Plugin Information
 
 
+
         #region pin creation
 
         protected override void OnSetPluginHost()
@@ -185,8 +186,8 @@ namespace VVVV.Nodes.Http.GUI
         #endregion pin creation
 
 
-        #region Main Loop
 
+        #region Main Loop
 
 
         protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString, List<bool> SendToBrowser)
@@ -247,20 +248,6 @@ namespace VVVV.Nodes.Http.GUI
                 }
 
 
-
-                string LookAndFeel;
-                FLook.GetString(0, out LookAndFeel);
-
-
-
-
-
-
-                
-
-
-
-
                 //Generate the JavaScript an add it to the GUIDataObject
                 JavaScriptVariableObject id = new JavaScriptVariableObject("id");
                 JavaScriptVariableObject tThis = new JavaScriptVariableObject("this");
@@ -296,6 +283,9 @@ namespace VVVV.Nodes.Http.GUI
                 JQuery DocumentReady = JQuery.GenerateDocumentReady(DocumentReadyHandler);
 
                 
+                //reads the lookAndFeel Enum Pin
+                string LookAndFeel;
+                FLook.GetString(0, out LookAndFeel);
 
                 if (LookAndFeel != "HTML")
                 {
@@ -333,7 +323,8 @@ namespace VVVV.Nodes.Http.GUI
 
         #endregion Main Loop
 
-		protected override bool DynamicPinsAreChanged()
+        
+        protected override bool DynamicPinsAreChanged()
 		{
 			return FDefault.PinIsChanged || FLook.PinIsChanged;
 		}
