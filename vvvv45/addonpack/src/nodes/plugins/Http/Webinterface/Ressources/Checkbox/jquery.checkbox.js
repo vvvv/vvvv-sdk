@@ -73,7 +73,15 @@
 				function(e) { ch.wrapperInner.removeClass(settings.cls + '-hover');CB(e); }
 			);
 			
-			ch.wrapper.css({position: 'absolute' , top: $ch.css('top'), left: $ch.css('left'), right: $ch.css('right'), bottom: $ch.css('bottom')});
+			
+			// var twidth = ( 100 * parseFloat($ch.css('width')) / parseFloat($ch.parent().css('width')) )+ "%";
+			// var theight = ( 100 * parseFloat($ch.css('width')) / parseFloat($ch.parent().css('height')) )+ "%";
+			// var tleft = ( 100 * parseFloat($ch.css('left')) / parseFloat($ch.parent().css('left')) )+ "%";
+			// var ttop = ( 100 * parseFloat($ch.css('top')) / parseFloat($ch.parent().css('top')) )+ "%";
+			// var tbottom = ( 100 * parseFloat($ch.css('bottom')) / parseFloat($ch.parent().css('bottom')) )+ "%";
+			// var tright = ( 100 * parseFloat($ch.css('right')) / parseFloat($ch.parent().css('right')) )+ "%";
+			
+			ch.wrapper.css({position: 'absolute' , top: $ch.css('top'), left: $ch.css('left'), right: $ch.css('right'), bottom: $ch.css('bottom'), width: $ch.css('width'), height: $ch.css('width') });
 			
 			/* Wrapping checkbox */
 			$ch.css({position: 'absolute', zIndex: -1, visibility: 'hidden'}).after(ch.wrapper);
