@@ -136,7 +136,7 @@ namespace VVVV.Nodes
 					FPluginInfo = new PluginInfo();
 					
 					//the nodes main name: use CamelCaps and no spaces
-					FPluginInfo.Name = "Fibonacci";
+					FPluginInfo.Name = "Fibo"; // the second user-node :)
 					//the nodes category: try to use an existing one
 					FPluginInfo.Category = "Spreads";
 					//the nodes version: optional. leave blank if not
