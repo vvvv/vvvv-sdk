@@ -926,7 +926,7 @@ namespace VVVV.PluginInterfaces.V1
 	/// </summary>
 	[Guid("C933059A-C46E-4149-966D-04D03B93A078"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IEnumOut: IPluginIn
+	public interface IEnumOut: IPluginOut
 	{
 		/// <summary>
 		/// Used to write an Enum given as an ordinal value to the pin at the specified slice.
