@@ -252,20 +252,6 @@ namespace VVVV.Nodes.Http.GUI
                 JavaScriptVariableObject id = new JavaScriptVariableObject("id");
                 JavaScriptVariableObject tThis = new JavaScriptVariableObject("this");
 
-                //set the checked Attribute which are not clicked to false
-                List<Expression> InnerLines = new List<Expression>();
-                InnerLines.Add(new JavaScriptDeclaration<JavaScriptVariableObject>(id, "this.id"));
-                InnerLines.Add(new JavaScriptDeclaration<JavaScriptExpression>(tThis.Member("checked"), "false", false));
-                JQueryExpression InnerPostToServer = new JQueryExpression();
-                InnerPostToServer.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"id + '=0'")), null, null);
-                InnerLines.Add(InnerPostToServer);
-
-                //looks for alle other radiobuttons of the NodeID Group and
-                JavaScriptCodeBlock innerBlock = new JavaScriptCodeBlock(InnerLines);
-                JavaScriptAnonymousFunction innerFunction = new JavaScriptAnonymousFunction(innerBlock, null);
-                JQueryExpression innerSelector = new JQueryExpression(new BlankSelector(String.Format(@"""input[class*='{0}']:not(input[id=""+id+""])""", GetNodeId(0))));
-                innerSelector.ApplyMethodCall("each", innerFunction);
-
                 //set the click object of the an NodeID Group to checked an post the ID to the Server
                 List<Expression> Lines = new List<Expression>();
                 Lines.Add(new JavaScriptDeclaration<JavaScriptVariableObject>(id, "this.id"));
@@ -273,7 +259,6 @@ namespace VVVV.Nodes.Http.GUI
                 JQueryExpression postToServer = new JQueryExpression();
                 postToServer.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"id + '=1'")), null, null);
                 Lines.Add(postToServer);
-                Lines.Add(innerSelector);
 
                 //binds the click event to all NodeID Group elements
                 JavaScriptCodeBlock Block = new JavaScriptCodeBlock(Lines);
