@@ -125,7 +125,7 @@ namespace VVVV.Nodes.Http.GUI
                     FPluginInfo.Category = "HTTP";
                     //the nodes version: optional. leave blank if not
                     //needed to distinguish two nodes of the same name and category
-                    FPluginInfo.Version = "HTML";
+                    FPluginInfo.Version = "";
 
                     //the nodes author: your sign
                     FPluginInfo.Author = "phlegma";
