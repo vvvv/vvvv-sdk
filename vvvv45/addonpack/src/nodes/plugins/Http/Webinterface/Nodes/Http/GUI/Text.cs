@@ -184,7 +184,7 @@ namespace VVVV.Nodes.Http.GUI
         {
             
 
-            if (DynamicPinsAreChanged() || changedSpreadSize)
+            if (DynamicPinsAreChanged() || changedSpreadSize || ReceivedNewString)
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {

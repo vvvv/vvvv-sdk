@@ -214,11 +214,7 @@ namespace VVVV.Nodes.HttpGUI
 
                     FResponse.SliceCount = SpreadMax;
 
-
-
-
                 }
-
 
                 string tContent = @"var id = $(this).attr('id');
                 var content = $(this).val();

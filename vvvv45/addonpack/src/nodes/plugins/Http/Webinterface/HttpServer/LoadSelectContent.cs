@@ -57,6 +57,9 @@ namespace VVVV.Webinterface.HttpServer
                 string RequestedFile;
                 tServerFiles.TryGetValue(pFilename, out RequestedFile);
                 mContentAsByte = Encoding.UTF8.GetBytes(RequestedFile);
+            }else if(mWebinterfaceSingelton.getFileFromStorage(pFilename) != null)
+            {
+                mContentAsByte = mWebinterfaceSingelton.getFileFromStorage(pFilename);
             }else
             {
                 //loads file from disc

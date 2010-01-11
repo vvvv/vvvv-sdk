@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Webinterface.Utilities;
 using VVVV.Nodes.Http.BaseNodes;
@@ -171,7 +172,7 @@ namespace VVVV.Nodes.Http.GUI
         protected override void OnSetPluginHost()
         {
             this.FHost.CreateStringInput("Source", TSliceMode.Dynamic, TPinVisibility.True, out FSource);
-            FSource.SetSubType("",false);
+            FSource.SetSubType("",true);
 
             this.FHost.CreateStringInput("Alt", TSliceMode.Dynamic, TPinVisibility.True, out FAlt);
             FAlt.SetSubType("", false);
@@ -186,27 +187,27 @@ namespace VVVV.Nodes.Http.GUI
 
 
 
-        protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SlideId, bool ReceivedNewString, List<string> ReceivedString, List<bool> SendToBrowser)
+        protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString, List<bool> SendToBrowser)
         {
 
 
-            if (DynamicPinsAreChanged() || changedSpreadSize)
+            if (DynamicPinsAreChanged() || changedSpreadSize || ReceivedNewString)
             {
 
                 for (int i = 0; i < SpreadMax; i++)
                 {
                     string currentSourceSlice;
                     string currentAltSlice;
-                    string tSource = String.Empty;
                     string tAlt = String.Empty;
                     FSource.GetString(i, out currentSourceSlice);
                     FAlt.GetString(i, out currentAltSlice);
 
+                    string tSource = new FileInfo(currentSourceSlice).Name;
 
                     // Source Pins
-                    if (currentSourceSlice != null || currentSourceSlice == "")
+                    if (tSource != null && tSource != "")
                     {
-                        tSource = currentSourceSlice;
+                        FWebinterfaceSingelton.SetFileToStorage(tSource, File.ReadAllBytes(currentSourceSlice));
                     }
                     else
                     {
@@ -224,6 +225,8 @@ namespace VVVV.Nodes.Http.GUI
                         Img tImage = new Img(tSource);
                         SetTag(i, tImage);
                     }
+
+                    CreatePollingMessage(i, SliceId[i], "attr","src",tSource);
                 }
             }
         }
