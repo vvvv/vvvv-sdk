@@ -582,7 +582,7 @@ namespace VVVV.Nodes.Http.BaseNodes
         /// <param name="SliceID">the Object which value should be set</param>
         /// <param name="ObjectMethodName">the Name of the Method which is used to set the necessary value</param>
         /// <param name="Elements">the Mehtod parameters to set the value</param>
-        public void CreatePollingMessage(int index, string SliceID, string ObjectMethodName, string[] MethodeParameters)
+        public void CreatePollingMessage(int index, string SliceID, string ObjectMethodName,params string[] MethodeParameters)
         {
             SortedList<string, XmlDocument> tPollingValues = new SortedList<string, XmlDocument>();
 
@@ -594,15 +594,18 @@ namespace VVVV.Nodes.Http.BaseNodes
             doc.AppendChild(RootNode);
 
             RootNode.Attributes.Append(doc.CreateAttribute("SliceId")).InnerText = "#" + SliceID;
-            RootNode.Attributes.Append(doc.CreateAttribute("ObjectMethodName")).InnerText = ObjectMethodName; 
+            RootNode.Attributes.Append(doc.CreateAttribute("ObjectMethodName")).InnerText = ObjectMethodName;
 
-            for (int i = 0; i < MethodeParameters.Length; i++)
-			{
-                ElementNode = doc.CreateElement("MethodParameters");
-                ElementNode.InnerText = MethodeParameters[i];
-                RootNode.AppendChild(ElementNode);
-			}
+            if (MethodeParameters != null)
+            {
+                for (int i = 0; i < MethodeParameters.Length; i++)
+                {
+                    ElementNode = doc.CreateElement("MethodParameters");
+                    ElementNode.InnerText = MethodeParameters[i];
+                    RootNode.AppendChild(ElementNode);
+                }
 
+            }
             
             if(FPollingMessages.ContainsKey(index))
             {
@@ -625,6 +628,9 @@ namespace VVVV.Nodes.Http.BaseNodes
                 FPollingMessages.Add(index, tPollingValues);
             }
         }
+
+
+
 
         private void SetPollingMessage(int index)
         {
