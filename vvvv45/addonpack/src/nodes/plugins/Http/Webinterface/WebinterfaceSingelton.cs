@@ -105,6 +105,8 @@ namespace VVVV.Webinterface
         private string mHostPath = String.Empty;
         SortedList<string, SortedList<int, string>> mLoadedValues = new SortedList<string, SortedList<int, string>>();
         List<string> mNodeReceivedValues = new List<string>();
+        SortedList<string, byte[]> FDataStorage = new SortedList<string,byte[]>();
+
 
         #endregion field declaration
 
@@ -802,8 +804,6 @@ namespace VVVV.Webinterface
 
 
 
-
-
         #region  SaveDataToFile
 
         public void AddListToSave(string NodeID, SortedList<int,string> SpreadList)
@@ -922,7 +922,46 @@ namespace VVVV.Webinterface
 
         #endregion  SaveDataToFile
 
+        #region Data Storgae
 
+
+        public void SetFileToStorage(string Filename, byte[] File)
+        {
+            Monitor.Enter(FDataStorage);
+
+            if (FDataStorage.ContainsKey(Filename))
+            {
+                FDataStorage.Remove(Filename);
+                FDataStorage.Add(Filename, File);
+            }
+            else
+            {
+                FDataStorage.Add(Filename, File);
+            }
+
+            Monitor.Exit(FDataStorage);
+        }
+
+        public byte[] getFileFromStorage(string Filename)
+        {
+            byte[] File;
+
+            Monitor.TryEnter(FDataStorage, 500);
+            if (FDataStorage.ContainsKey(Filename))
+            {
+                FDataStorage.TryGetValue(Filename, out File);
+            }
+            else
+            {
+               File = null;
+            }
+
+            Monitor.Exit(FDataStorage);
+            return File;
+        }
+
+
+        #endregion 
 
 
 
