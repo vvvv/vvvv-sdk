@@ -4,6 +4,7 @@ using System.Text;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Webinterface.Utilities;
 using VVVV.Nodes.Http.BaseNodes;
+using VVVV.Webinterface.jQuery;
 
 namespace VVVV.Nodes.HttpGUI
 {
@@ -214,16 +215,25 @@ namespace VVVV.Nodes.HttpGUI
 
                     FResponse.SliceCount = SpreadMax;
 
+                    CreatePollingMessage(i, SliceId[i], "val", currentDefault);
+
                 }
 
-                string tContent = @"var id = $(this).attr('id');
-                var content = $(this).val();
-                $.post('ToVVVV.xml', id + '=' + content, null);              
-                ";
-                AddJavaScript(0, new JqueryFunction(true, "." + FGuiDataList[0].NodeId, "keyup", tContent).Text, true);
 
+                //Generate the JavaScript an add it to the GUIDataObject
 
+                JQueryExpression postToServer = new JQueryExpression();
+                postToServer.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"$(this).attr('id') + '=' + $(this).val()")), null, null);
 
+                JavaScriptCodeBlock Block = new JavaScriptCodeBlock(postToServer);
+
+                JavaScriptAnonymousFunction Function = new JavaScriptAnonymousFunction(Block, new string[] { "event" });
+                JQueryExpression DocumentReadyHandler = new JQueryExpression(new ClassSelector(GetNodeId(0)));
+                DocumentReadyHandler.ApplyMethodCall("keyup", Function);
+                JQuery DocumentReady = JQuery.GenerateDocumentReady(DocumentReadyHandler);
+
+                AddJavaScript(0, DocumentReady.GenerateScript(0,true,true), true);
+               
             }
         }
 
