@@ -180,7 +180,7 @@ namespace VVVV.Nodes.Http.GUI
 
 
 
-        protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SlideId, bool ReceivedNewString, List<string> ReceivedString, List<bool> SendToBrowser)
+        protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString, List<bool> SendToBrowser)
         {
             
 
@@ -206,11 +206,13 @@ namespace VVVV.Nodes.Http.GUI
                     }
                    
                     SetTag(i, tText);
+                    CreatePollingMessage(i, SliceId[i], "text", currentText);
                 }
             }
         }
         
         #endregion Main Loop
+
 
 		protected override bool DynamicPinsAreChanged()
 		{
