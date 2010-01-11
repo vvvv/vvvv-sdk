@@ -169,7 +169,7 @@ namespace VVVV.Nodes.Http.GUI
 
         protected override void OnSetPluginHost()
         {
-            FHost.CreateStringInput("Name", TSliceMode.Dynamic, TPinVisibility.True, out FName);
+            FHost.CreateStringInput("Label", TSliceMode.Dynamic, TPinVisibility.True, out FName);
             FName.SetSubType("", false);
 
             FHost.UpdateEnum("Orientation", "horizontal", new string[] { "horizontal", "vertical" });

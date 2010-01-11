@@ -168,7 +168,7 @@ namespace VVVV.Nodes.Http.GUI
             FHost.CreateStringInput("Text", TSliceMode.Dynamic, TPinVisibility.True, out FTextIn);
             FTextIn.SetSubType("", false);
 
-            FHost.UpdateEnum("TextTagType", "p", new string[] { "p", "span" });
+            FHost.UpdateEnum("TagType", "p", new string[] { "p", "span" });
             FHost.CreateEnumInput("TagType", TSliceMode.Dynamic, TPinVisibility.True, out FTextTagType);
             FTextTagType.SetSubType("TextTagType");
         }

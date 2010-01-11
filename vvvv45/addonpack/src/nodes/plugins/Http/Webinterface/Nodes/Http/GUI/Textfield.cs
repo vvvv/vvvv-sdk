@@ -168,11 +168,11 @@ namespace VVVV.Nodes.HttpGUI
         protected override void OnSetPluginHost()
         {
             // create required pins
-            FHost.CreateStringOutput("Response",TSliceMode.Dynamic,TPinVisibility.True, out FResponse);
-            FResponse.SetSubType("", false);
-
             FHost.CreateStringInput("Default", TSliceMode.Dynamic, TPinVisibility.True, out FDefault);
             FDefault.SetSubType("", false);
+
+            FHost.CreateStringOutput("Response", TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
+            FResponse.SetSubType("", false);
             
         }
 
