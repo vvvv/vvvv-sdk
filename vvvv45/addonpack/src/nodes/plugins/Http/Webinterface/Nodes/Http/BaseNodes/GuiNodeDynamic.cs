@@ -89,7 +89,7 @@ namespace VVVV.Nodes.Http.BaseNodes
 
             OnSetPluginHost();
 
-            FHost.CreateNodeInput("Input GUI", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiIn);
+            FHost.CreateNodeInput("GUI", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiIn);
             FHttpGuiIn.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
 
             FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTransformIn);
@@ -105,7 +105,7 @@ namespace VVVV.Nodes.Http.BaseNodes
             FHost.CreateEnumInput("Basing Point", TSliceMode.Single, TPinVisibility.OnlyInspector, out FBasingPoint);
             FBasingPoint.SetSubType("BasingPoint");
 
-            FHost.CreateNodeInput("Input CSS", TSliceMode.Dynamic, TPinVisibility.True, out FHttpStyleIn);
+            FHost.CreateNodeInput("CSS", TSliceMode.Dynamic, TPinVisibility.True, out FHttpStyleIn);
             FHttpStyleIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
 
 			FHost.CreateNodeInput("JQuery", TSliceMode.Single, TPinVisibility.True, out FJQueryNodeInput);
