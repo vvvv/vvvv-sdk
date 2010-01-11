@@ -412,7 +412,7 @@ namespace VVVV.Nodes.Http.BaseNodes
                         tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
                     }
 
-                    tTransformSlice.Add("z-index", Convert.ToString(Math.Round(tMatrix.m33)));
+                    tTransformSlice.Add("z-index", Convert.ToString(Math.Round(tMatrix.m43)));
 
                     FGuiDataList[i].Transform = new SortedList<string, string>(tTransformSlice);
                 }
