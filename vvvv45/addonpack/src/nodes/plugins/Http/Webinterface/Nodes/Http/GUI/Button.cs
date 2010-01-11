@@ -177,10 +177,10 @@ namespace VVVV.Nodes.Http.GUI
             FHost.CreateValueInput("Default", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDefault);
             FDefault.SetSubType(0,1,1,0,false,true, true);
 
-            FHost.CreateColorInput("DefaultColor", TSliceMode.Dynamic, TPinVisibility.True, out FDefaultColor);
+            FHost.CreateColorInput("Default Color", TSliceMode.Dynamic, TPinVisibility.True, out FDefaultColor);
             FDefaultColor.SetSubType(new RGBAColor(0.6117, 0.6117, 0.6117, 0), false);
 
-            FHost.CreateColorInput("OnPressColor", TSliceMode.Dynamic, TPinVisibility.True, out FOnPressColor);
+            FHost.CreateColorInput("OnPress Color", TSliceMode.Dynamic, TPinVisibility.True, out FOnPressColor);
             FOnPressColor.SetSubType(new RGBAColor(0.5019, 0.5019, 0.5019,0), false);
 
             FHost.UpdateEnum("ButtonMode", "Toggle", new string[] { "Toggle", "Bang" });
