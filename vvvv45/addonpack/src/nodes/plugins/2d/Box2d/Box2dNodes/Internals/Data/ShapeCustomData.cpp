@@ -3,8 +3,10 @@
 
 ShapeCustomData::ShapeCustomData(void)
 {
+	this->MarkedForDeletion= false;
 }
 
 ShapeCustomData::~ShapeCustomData(void)
 {
+
 }

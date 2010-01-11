@@ -6,6 +6,7 @@ public:
 	ShapeCustomData(void);
 	~ShapeCustomData(void);
 	int Id;
-	std::string UserData;
+	char* Custom;
+	bool MarkedForDeletion;
 
 };

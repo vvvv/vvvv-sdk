@@ -8,4 +8,5 @@ BodyCustomData::BodyCustomData(void)
 
 BodyCustomData::~BodyCustomData(void)
 {
+	delete Custom;
 }
