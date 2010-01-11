@@ -1,5 +1,7 @@
 #pragma once
 
+#include "WorldDataType.h"
+
 namespace VVVV 
 {
 	namespace DataTypes 

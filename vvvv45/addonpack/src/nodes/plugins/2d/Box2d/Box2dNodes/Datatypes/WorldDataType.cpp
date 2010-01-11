@@ -50,6 +50,12 @@ namespace VVVV
 			return this->shapecounter;
 		}
 
+		int WorldDataType::GetNewJointId() 
+		{
+			this->jointcounter++;
+			return this->jointcounter;
+		}
+
 
 		void WorldDataType::SetWorld(b2World* world) 
 		{

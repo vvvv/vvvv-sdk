@@ -14,6 +14,8 @@ namespace VVVV
 			void SetWorld(b2World* world);
 			bool GetIsEnabled();
 			void SetIsEnabled(bool value);
+			bool HasReset();
+			void SetReset(bool value);
 		};
 
 		public ref class WorldDataType : IBoxWorldIO
@@ -22,10 +24,12 @@ namespace VVVV
 				static Guid^ FGuid;
 				bool enabled;
 				bool isvalid;
+				bool hasreset;
 				b2World* mWorld;
 				bool worldchanged;
 				int bodycounter;
 				int shapecounter;
+				int jointcounter;
 
 			public:
 				WorldDataType(void);
@@ -36,12 +40,16 @@ namespace VVVV
 				virtual void SetIsEnabled(bool value);
 				virtual b2World* GetWorld();		
 				virtual void SetWorld(b2World* world);
+				virtual bool HasReset() { return this->hasreset; }
+				virtual void SetReset(bool value) { this->hasreset = value; }
 
 				int GetNewBodyId();
 				int GetNewShapeId();
+				int GetNewJointId();
 
 				bool Reset;
 				vector<b2ContactPoint*>* Contacts;
+				vector<double>* Newcontacts;
 
 				static String^ FriendlyName = "Box2d World";
 				static property Guid^ GUID 

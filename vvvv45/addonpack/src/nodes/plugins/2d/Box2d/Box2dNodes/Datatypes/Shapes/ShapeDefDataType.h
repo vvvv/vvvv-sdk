@@ -1,5 +1,6 @@
 #pragma once
 
+using namespace System::Collections::Generic;
 
 namespace VVVV 
 {
@@ -10,21 +11,26 @@ namespace VVVV
 		public interface class IShapeDefIO: INodeIOBase
 		{
 			b2ShapeDef* GetSlice(int index);
+			String^ GetCustom(int index);
 		};
 
 
-		public ref class ShapeDefDataType : IShapeDefIO 
+		public ref class ShapeDefDataType : IShapeDefIO , public IDisposable
 		{
 			private:
 				vector<b2ShapeDef*>* m_shapes;
+				List<String^>^ m_custom;
 			public:
 
 				ShapeDefDataType();
+				~ShapeDefDataType();
 				virtual b2ShapeDef* GetSlice(int index);
+				virtual String^ GetCustom(int index);
 				void Reset();
 				b2CircleDef* AddCircle();
 				b2PolygonDef* AddPolygon();
 				b2EdgeChainDef* AddEdgeChain();
+				void AddCustom(String^ cust);
 
 				static String^ FriendlyName = "Box2d Shape Definition";
 				static property Guid^ GUID 
