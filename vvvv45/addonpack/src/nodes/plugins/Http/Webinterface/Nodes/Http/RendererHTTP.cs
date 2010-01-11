@@ -282,7 +282,7 @@ namespace VVVV.Nodes.Http
                 FHost.CreateValueConfig("Port", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPort);
                 FPort.SetSubType(0, 65535, 1, 80, false, false, true);
 
-                FHost.CreateValueConfig("PageCount", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPageCount);
+                FHost.CreateValueConfig("Pagecount", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPageCount);
                 FPageCount.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
 
 
