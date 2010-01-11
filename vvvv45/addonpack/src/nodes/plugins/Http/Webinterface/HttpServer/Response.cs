@@ -16,7 +16,7 @@ namespace VVVV.Webinterface.HttpServer
         private string mBody = "";
         private ResponseHeader mHeader;
         private byte[] mResponseAsBytes;
-        
+        private string FContentType;
 
         #endregion field declaration
 
@@ -46,8 +46,18 @@ namespace VVVV.Webinterface.HttpServer
         }
 
 
+        public string ContentType
+        {
+            get
+            {
+                return FContentType;
+            }
+        }
+
+
         public Response(string pFilename,byte[] pContent, string pStausCode)
         {
+            FContentType = GetContentType(pFilename);
 
             mHeader = new ResponseHeader(pStausCode);
 
@@ -62,6 +72,7 @@ namespace VVVV.Webinterface.HttpServer
 
         public Response(string pFilename, string pContentType, byte[] pContent, string pStausCode)
         {
+            FContentType = GetContentType(pFilename);
 
             mHeader = new ResponseHeader(pStausCode);
 
