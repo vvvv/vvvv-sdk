@@ -8,19 +8,11 @@ namespace VVVV.Webinterface.jQuery
     {
 
 
-        private List<string> FLines = new List<string>();
         private List<Expression> FJavaScriptObjects = new List<Expression>();
 
-
-        public JavaScriptCodeBlock(string[] Lines)
+        public JavaScriptCodeBlock(params Expression[] Expressions)
         {
-            if (Lines != null)
-            {
-                foreach (string Line in Lines)
-                {
-                    FLines.Add(Line);
-                }
-            }
+            FJavaScriptObjects.AddRange(Expressions);
         }
 
         public JavaScriptCodeBlock(List<Expression> JavaScriptObjects)
@@ -31,6 +23,18 @@ namespace VVVV.Webinterface.jQuery
         public JavaScriptCodeBlock(Expression JavaScriptObject)
         {
             if (JavaScriptObject != null)
+            {
+                FJavaScriptObjects.Add(JavaScriptObject);
+            }
+        }
+
+        public void AddLine(Expression JavaScriptObject, bool InFront)
+        {
+            if (InFront)
+            {
+                FJavaScriptObjects.Insert(0, JavaScriptObject);
+            }
+            else
             {
                 FJavaScriptObjects.Add(JavaScriptObject);
             }
@@ -51,6 +55,7 @@ namespace VVVV.Webinterface.jQuery
                         text += "\t";
                     }
                 }
+
                 text += JavaObject.GenerateScript(indentSteps, breakInternalLines, breakAfter);
 
                 if (breakAfter)
