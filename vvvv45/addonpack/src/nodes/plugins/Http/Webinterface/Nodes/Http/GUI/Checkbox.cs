@@ -221,7 +221,7 @@ namespace VVVV.Nodes.Http.GUI
                     }
 
 
-                    //Creates an HTML Radiobutton 
+                    //Creates an HTML Checkbox 
                     CheckBox tCheckbox = new CheckBox();
 
                     //if the Response is 1 set the HTML attribute checked to checked
@@ -252,16 +252,16 @@ namespace VVVV.Nodes.Http.GUI
                 JavaScriptVariableObject id = new JavaScriptVariableObject("id");
                 JavaScriptVariableObject tThis = new JavaScriptVariableObject("this");
 
-                //set the click object of the an NodeID Group to checked an post the ID to the Server
-                List<Expression> Lines = new List<Expression>();
-                Lines.Add(new JavaScriptDeclaration<JavaScriptVariableObject>(id, "this.id"));
-                Lines.Add(new JavaScriptDeclaration<JavaScriptExpression>(tThis.Member("checked"), "true", false));
-                JQueryExpression postToServer = new JQueryExpression();
-                postToServer.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"id + '=1'")), null, null);
-                Lines.Add(postToServer);
+                JQueryExpression postToServerTrue = new JQueryExpression();
+                postToServerTrue.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"this.id + '=0'")), null, null);
 
-                //binds the click event to all NodeID Group elements
-                JavaScriptCodeBlock Block = new JavaScriptCodeBlock(Lines);
+                JQueryExpression postToServerFalse = new JQueryExpression();
+                postToServerFalse.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"this.id + '=1'")), null, null);
+
+                JavaScriptCodeBlock IfStatement = new JavaScriptCodeBlock(JQueryExpression.This().Attr("checked", "false"), postToServerTrue);
+                JavaScriptCodeBlock ElseStatement = new JavaScriptCodeBlock(new JQueryExpression().Attr("checked","true"), postToServerFalse);
+                JavaScriptCodeBlock Block = new JavaScriptCodeBlock(new JavaScriptIfCondition(new JavaScriptCondition<JavaScriptExpression>(tThis.Member("checked"), "==", true), IfStatement, ElseStatement));
+
                 JavaScriptAnonymousFunction Function = new JavaScriptAnonymousFunction(Block, new string[] { "event" });
                 JQueryExpression DocumentReadyHandler = new JQueryExpression(new ClassSelector(GetNodeId(0)));
                 DocumentReadyHandler.ApplyMethodCall("click", Function);
