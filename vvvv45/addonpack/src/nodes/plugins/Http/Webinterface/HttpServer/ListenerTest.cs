@@ -137,7 +137,7 @@ namespace VVVV.Webinterface.HttpServer
 
                 HttpListenerResponse response = context.Response;
                 response.AddHeader("Cache-Control", "no-store");
-                response.AddHeader("Content-Type", Request.ContentType);
+                response.ContentType = tRequest.Response.ContentType;
                 
                 // Construct a response.
                 byte[] buffer = tRequest.Response.TextInBytes;
