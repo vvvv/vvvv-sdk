@@ -1,0 +1,67 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{944D2BD5-2BCB-4A22-91B9-84949D26D150}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VVVV</RootNamespace>
+    <AssemblyName>SystemNodes</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Nodes\EventLogWriterNode.cs" />
+    <Compile Include="Nodes\FileSystemWatcherNode.cs" />
+    <Compile Include="Nodes\GetDrivesInfoNode.cs" />
+    <Compile Include="Nodes\GetEnvironmentNode.cs" />
+    <Compile Include="Nodes\InfoCodec.cs" />
+    <Compile Include="Nodes\InfoDevice.cs" />
+    <Compile Include="Nodes\InfoFile.cs" />
+    <Compile Include="Nodes\ServicesInfoNode.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Nodes\SetEnvironmentNode.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\_PluginInterfaces\trunk\PluginInterfaces.csproj">
+      <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
+      <Name>PluginInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\_Utils\trunk\Utils.csproj">
+      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
