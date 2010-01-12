@@ -55,12 +55,19 @@ namespace VVVV
 			IPluginHost^ FHost;
 
 			INodeIn^ vInShapes;
+			IValueIn^ vInClosed;
+			IValueIn^ vInLocal;
 			ShapeDataType^ m_polygons;
 
 			IValueOut^ vOutCenters;
 			IValueOut^ vOutVertices;
 			IValueOut^ vOutVerticesCount;
+			IValueOut^ vOutIsSensor;
 			IValueOut^ vOutId;
+			IStringOut^ vOutCustom;
+
+			bool m_closed;
+			bool m_local;
 		};
 	}
 }

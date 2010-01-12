@@ -1,5 +1,9 @@
 #pragma once
-#include "../../DataTypes/Shapes/ShapeDataType.h"
+
+#include "../../DataTypes/GroundDataType.h"
+#include "../../DataTypes/BodyDataType.h"
+#include "../../DataTypes/Shapes/ShapeDefDataType.h"
+#include "../../Internals/Data/ShapeCustomData.h"
 
 using namespace VVVV::DataTypes;
 
@@ -7,10 +11,10 @@ namespace VVVV
 {
 	namespace Nodes 
 	{
-		public ref class Box2dGetCircles: IPlugin,IPluginConnections
+		public ref class Box2dCreateShapeNode : IPlugin,IPluginConnections
 		{
 		public:
-			Box2dGetCircles(void);
+			Box2dCreateShapeNode(void);
 
 			static property IPluginInfo^ PluginInfo 
 				{
@@ -18,10 +22,10 @@ namespace VVVV
 					{
 						//IPluginInfo^ Info;
 						IPluginInfo^ Info = gcnew VVVV::PluginInterfaces::V1::PluginInfo();
-						Info->Name = "GetCircles";
+						Info->Name = "CreateShape";
 						Info->Category = "Box2d";
 						Info->Version = "";
-						Info->Help = "Box2d Circle Shape";
+						Info->Help = "Creates box2d shape in an existing body";
 						Info->Bugs = "";
 						Info->Credits = "Box2d";
 						Info->Warnings = "";
@@ -37,31 +41,34 @@ namespace VVVV
 						return Info;
 					}
 				}
-	
+
+
 
 			virtual void SetPluginHost(IPluginHost^ Host);
 			virtual void Configurate(IPluginConfig^ Input);
 			virtual void Evaluate(int SpreadMax);
 			virtual void ConnectPin(IPluginIO^ Pin);
 			virtual void DisconnectPin(IPluginIO^ Pin);
-			
+
 			virtual property bool AutoEvaluate 
 			{
-				bool get() { return false; }
+				bool get() { return true; }
 			}
-		protected:
-
 		private:
 			IPluginHost^ FHost;
 
+			INodeIn^ vInWorld;
+			INodeIn^ vInBodies;
 			INodeIn^ vInShapes;
-			ShapeDataType^ m_circles;
-
-			IValueOut^ vOutPosition;
-			IValueOut^ vOutRadius;
-			IValueOut^ vOutIsSensor;
-			IValueOut^ vOutId;
-			IStringOut^ vOutCustom;
+			IValueIn^ vInShapeCount;
+			IValueIn^ vInDoCreate;
+			
+			WorldDataType^ mWorld;
+			ShapeDefDataType^ mShapes;
+			BodyDataType^ mBodies;
+			GroundDataType^ mGround;
+			bool isbody;
 		};
+
 	}
 }

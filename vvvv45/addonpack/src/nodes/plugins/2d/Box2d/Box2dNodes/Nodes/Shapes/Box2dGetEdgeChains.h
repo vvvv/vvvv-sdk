@@ -60,6 +60,8 @@ namespace VVVV
 			IValueOut^ vOutCenters;
 			IValueOut^ vOutVertices1;
 			IValueOut^ vOutVertices2;
+			IValueOut^ vOutIsSensor;
+			IStringOut^ vOutCustom;
 			//IValueOut^ vOutId;
 		};
 	}

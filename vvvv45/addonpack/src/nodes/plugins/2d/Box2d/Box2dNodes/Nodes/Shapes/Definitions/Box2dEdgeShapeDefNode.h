@@ -5,10 +5,10 @@ namespace VVVV
 {
 	namespace Nodes 
 	{
-		ref class Box2dBoxDefNode : Box2dBaseShapeDefNode,IPlugin
+		public ref class Box2dEdgeShapeDefNode : Box2dBaseShapeDefNode,IPlugin
 		{
 		public:
-			Box2dBoxDefNode(void);
+			Box2dEdgeShapeDefNode(void);
 
 			static property IPluginInfo^ PluginInfo 
 				{
@@ -16,10 +16,10 @@ namespace VVVV
 					{
 						//IPluginInfo^ Info;
 						IPluginInfo^ Info = gcnew VVVV::PluginInterfaces::V1::PluginInfo();
-						Info->Name = "Box";
+						Info->Name = "EdgeChain";
 						Info->Category = "Box2d";
 						Info->Version = "";
-						Info->Help = "Box2d Box Shape definition";
+						Info->Help = "Box2d Edge Chain definition";
 						Info->Bugs = "";
 						Info->Credits = "Box2d";
 						Info->Warnings = "";
@@ -36,19 +36,16 @@ namespace VVVV
 					}
 				}
 
-
-
-
-
 			virtual void Evaluate(int SpreadMax) override;
 		
 		protected:
 			virtual void OnPluginHostSet() override;
 
 		private:
-			IValueIn^ vInLocalPosition;
-			IValueIn^ vInAngle;
-			IValueIn^ vInSize;
+			IValueIn^ vInVertices;
+			IValueIn^ vInVerticesCount;
+			IValueIn^ vInLoop;
+			
 		};
 	}
 }

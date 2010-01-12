@@ -29,6 +29,9 @@ namespace VVVV
 			this->FHost->CreateValueOutput("Vertices 2",2,ArrayUtils::Array2D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutVertices2);
 			this->vOutVertices2->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,0.0,0.0,false,false,false);
 
+			this->FHost->CreateValueOutput("Is Sensor",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutIsSensor);
+			this->vOutIsSensor->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,true,false);
+
 
 			//this->FHost->CreateValueOutput("Shape Id",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutId);
 			//this->vOutId->SetSubType(Double::MinValue,Double::MaxValue,1,0.0,false,false,true);
@@ -45,11 +48,9 @@ namespace VVVV
 		{
 			if (this->vInShapes->IsConnected) 
 			{
-				//std::vector<b2Vec2> centers;
 				std::vector<b2Vec2> vertices1;
 				std::vector<b2Vec2> vertices2;
-				//std::vector<int> vcount;
-				//std::vector<int> ids;
+				std::vector<bool> issensor;
 				int cnt = 0;
 				for (int i = 0; i < this->vInShapes->SliceCount ; i++) 
 				{
@@ -62,28 +63,13 @@ namespace VVVV
 						b2EdgeShape* poly = (b2EdgeShape*)shape;
 						vertices1.push_back(poly->GetVertex1());
 						vertices2.push_back(poly->GetVertex2());
-						/*if (poly->GetVertexCount() > 0) 
-						{
-							vcount.push_back(poly->GetVertexCount()+1);
-							centers.push_back(poly->GetBody()->GetWorldPoint(poly->GetCentroid()));
-
-							const b2Vec2* verts = poly->GetVertices();
-							for (int j=0; j < poly->GetVertexCount();j++) 
-							{
-								vertices.push_back(poly->GetBody()->GetWorldPoint(verts[j]));
-							}
-							vertices.push_back(poly->GetBody()->GetWorldPoint(verts[0]));
-
-							ShapeCustomData* sdata = (ShapeCustomData*)shape->GetUserData();
-							ids.push_back(sdata->Id);
-
-							cnt++;
-						}*/
+						issensor.push_back(shape->IsSensor());
 					}
 				}
 
 				this->vOutVertices1->SliceCount = vertices1.size();
 				this->vOutVertices2->SliceCount = vertices2.size();
+				this->vOutIsSensor->SliceCount = issensor.size();
 				//this->vOutVerticesCount->SliceCount = vcount.size();
 				//this->vOutCenters->SliceCount = centers.size();
 				//this->vOutId->SliceCount = 0;//ids.size();
@@ -92,6 +78,7 @@ namespace VVVV
 				{
 					this->vOutVertices1->SetValue2D(i,vertices1.at(i).x,vertices1.at(i).y);
 					this->vOutVertices2->SetValue2D(i,vertices2.at(i).x,vertices2.at(i).y);
+					this->vOutIsSensor->SetValue(i, issensor.at(i));
 				}
 
 				/*

@@ -7,10 +7,10 @@ namespace VVVV
 {
 	namespace Nodes 
 	{
-		public ref class Box2dGetCircles: IPlugin,IPluginConnections
+		public ref class Box2dUpdateShapeNode : IPlugin,IPluginConnections
 		{
 		public:
-			Box2dGetCircles(void);
+			Box2dUpdateShapeNode(void);
 
 			static property IPluginInfo^ PluginInfo 
 				{
@@ -18,10 +18,10 @@ namespace VVVV
 					{
 						//IPluginInfo^ Info;
 						IPluginInfo^ Info = gcnew VVVV::PluginInterfaces::V1::PluginInfo();
-						Info->Name = "GetCircles";
+						Info->Name = "UpdateShape";
 						Info->Category = "Box2d";
 						Info->Version = "";
-						Info->Help = "Box2d Circle Shape";
+						Info->Help = "Update box2d shape";
 						Info->Bugs = "";
 						Info->Credits = "Box2d";
 						Info->Warnings = "";
@@ -37,7 +37,6 @@ namespace VVVV
 						return Info;
 					}
 				}
-	
 
 			virtual void SetPluginHost(IPluginHost^ Host);
 			virtual void Configurate(IPluginConfig^ Input);
@@ -47,21 +46,27 @@ namespace VVVV
 			
 			virtual property bool AutoEvaluate 
 			{
-				bool get() { return false; }
+				bool get() { return true; }
 			}
-		protected:
 
 		private:
 			IPluginHost^ FHost;
 
 			INodeIn^ vInShapes;
-			ShapeDataType^ m_circles;
+			ShapeDataType^ m_shapes;
 
-			IValueOut^ vOutPosition;
-			IValueOut^ vOutRadius;
-			IValueOut^ vOutIsSensor;
-			IValueOut^ vOutId;
-			IStringOut^ vOutCustom;
+			IValueIn^ vInDensity;
+			IValueIn^ vInSetDensity;
+
+			IValueIn^ vInFriction;
+			IValueIn^ vInSetFriction;
+
+			IValueIn^ vInRestitution;
+			IValueIn^ vInSetRestitution;
+
+			IStringIn^ vInCustom;
+			IValueIn^ vInSetCustom;
+
 		};
 	}
 }

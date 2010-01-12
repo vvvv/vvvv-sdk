@@ -26,6 +26,12 @@ namespace VVVV
 			this->FHost->CreateValueOutput("Radius",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutRadius);
 			this->vOutRadius->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
 
+			this->FHost->CreateValueOutput("Is Sensor",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutIsSensor);
+			this->vOutIsSensor->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,true,false);
+
+			this->FHost->CreateStringOutput("Custom",TSliceMode::Dynamic,TPinVisibility::True,this->vOutCustom);
+			this->vOutCustom->SetSubType("",false);
+
 			this->FHost->CreateValueOutput("Shape Id",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutId);
 			this->vOutId->SetSubType(Double::MinValue,Double::MaxValue,1,0.0,false,false,true);
 		}
@@ -44,6 +50,8 @@ namespace VVVV
 				List<Vector2D> pos = gcnew List<Vector2D>();
 				List<double>^ radius = gcnew List<double>();
 				List<int>^ ids = gcnew List<int>();
+				List<String^>^ custs = gcnew List<String^>(); 
+				std::vector<bool> issensor;
 				int cnt = 0;
 				for (int i = 0; i < this->vInShapes->SliceCount ; i++) 
 				{
@@ -64,6 +72,9 @@ namespace VVVV
 
 						ShapeCustomData* sdata = (ShapeCustomData*)shape->GetUserData();
 						ids->Add(sdata->Id);
+						issensor.push_back(shape->IsSensor());
+						String^ str = gcnew String(sdata->Custom);
+						custs->Add(str);
 
 						cnt++;
 					}
@@ -72,12 +83,16 @@ namespace VVVV
 				this->vOutPosition->SliceCount = cnt;
 				this->vOutRadius->SliceCount = cnt;
 				this->vOutId->SliceCount = cnt;
+				this->vOutIsSensor->SliceCount = issensor.size();
+				this->vOutCustom->SliceCount = cnt;
 
 				for (int i = 0; i < cnt ; i++) 
 				{
 					this->vOutPosition->SetValue2D(i,pos[i].x,pos[i].y);
 					this->vOutRadius->SetValue(i,radius[i]);
 					this->vOutId->SetValue(i,ids[i]);
+					this->vOutIsSensor->SetValue(i, issensor.at(i));
+					this->vOutCustom->SetString(i, custs[i]);
 				}
 			}
 		}

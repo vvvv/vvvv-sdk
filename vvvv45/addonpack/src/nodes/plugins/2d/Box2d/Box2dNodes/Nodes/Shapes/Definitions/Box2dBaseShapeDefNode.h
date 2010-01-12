@@ -1,5 +1,6 @@
 #pragma once
-#include "../../DataTypes/Shapes/ShapeDefDataType.h"
+#include "../../../DataTypes/Shapes/ShapeDefDataType.h"
+#include "../../../Internals/Data/ShapeCustomData.h"
 
 using namespace VVVV::DataTypes;
 
@@ -29,6 +30,7 @@ namespace VVVV
 			IValueIn^ vInFriction;
 			IValueIn^ vInRestitution;
 			IValueIn^ vInIsSensor;
+			IStringIn^ vInCustom;
 
 			INodeOut^ vOutShapes;
 
