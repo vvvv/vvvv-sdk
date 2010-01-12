@@ -32,6 +32,16 @@ namespace VVVV
 					return arr;
 				}
 
+				static array<String ^> ^ Array4D() 
+				{
+					array<String ^> ^ arr = gcnew array<String ^>(4);
+					arr->SetValue("X",0);
+					arr->SetValue("Y",1);
+					arr->SetValue("Z",2);
+					arr->SetValue("W",3);
+					return arr;
+				}
+
 				static array<Guid> ^ SingleGuidArray(Guid^ uid) 
 				{
 					array<Guid> ^ arr1d = gcnew array<Guid>(1);
