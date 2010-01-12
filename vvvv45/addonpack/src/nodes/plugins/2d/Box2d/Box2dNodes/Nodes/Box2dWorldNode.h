@@ -1,8 +1,8 @@
 #pragma once
 #include "../DataTypes/WorldDataType.h"
 #include "../DataTypes/BodyDataType.h"
+#include "../DataTypes/JointDataType.h"
 #include "../DataTypes/GroundDataType.h"
-//#include "../DataTypes/ContactDataType.h"
 #include "../Internals/Contact/ContactListener.h"
 
 using namespace VVVV::DataTypes;
@@ -11,7 +11,7 @@ namespace VVVV
 {
 	namespace Nodes 
 	{
-		public ref class Box2dWorldNode : IPlugin, public IDisposable
+		public ref class Box2dWorldNode : IPlugin,public IDisposable
 		{
 			private:
 				IPluginHost^ FHost;
@@ -27,18 +27,25 @@ namespace VVVV
 				IValueIn^ vInReset;
 
 				IValueOut^ vOutWorldValid;
+				IValueOut^ vOutControllerCount;
 				INodeOut^ vOutWorldNode;
 				INodeOut^ vOutBodies;
 				INodeOut^ vOutGround;
-				//INodeOut^ vOutContacts;
+				INodeOut^ vOutJoints;
+				IValueOut^ vOutReset;
 
 				WorldDataType^ mWorld;
 				BodyDataType^ mBodies;
 				GroundDataType^ mGround;
-				//ContactDataType^ mContacts;
+				JointDataType^ mJoints;
+
 				b2World* internalworld;
+
+				bool ctrlconnected;
 				
 				vector<b2ContactPoint*>* contacts;
+				vector<double>* newcontacts;
+				vector<b2Controller*>* controller;
 				ContactListener* MyListener;
 			
 			public:

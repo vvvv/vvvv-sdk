@@ -2,6 +2,7 @@
 #include "../../../DataTypes/BodyDataType.h"
 #include "../../../DataTypes/GroundDataType.h"
 #include "../../../DataTypes/WorldDataType.h"
+#include "../../../Internals/Data/JointCustomData.h"
 
 using namespace VVVV::DataTypes;
 
@@ -40,6 +41,9 @@ namespace VVVV
 			INodeIn^ vInBody2;
 			BodyDataType^ m_body2;
 
+			IValueIn^ vInCollideConnected;
+
+			IStringIn^ vInCustom;
 			IValueIn^ vInDoCreate;
 
 			virtual void OnPluginHostSet() abstract;

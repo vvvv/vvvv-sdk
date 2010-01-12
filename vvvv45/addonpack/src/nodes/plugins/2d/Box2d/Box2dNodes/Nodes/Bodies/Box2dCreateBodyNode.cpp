@@ -43,20 +43,19 @@ namespace VVVV
 			this->vInAngularDamping->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
 
 			this->FHost->CreateValueInput("Fixed Rotation",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInFixedRotation);
-			this->vInFixedRotation->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,true,false);
+			this->vInFixedRotation->SetSubType(0,1,1.0,0.0,false,true,false);
 
 			this->FHost->CreateValueInput("Is Bullet",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInIsBullet);
-			this->vInIsBullet->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,true,false);
+			this->vInIsBullet->SetSubType(0,1,1.0,0.0,false,true,false);
 
 			this->FHost->CreateStringInput("Custom",TSliceMode::Dynamic,TPinVisibility::True,this->vInCustom);
 			this->vInCustom->SetSubType("",false);
 
 			this->FHost->CreateValueInput("Do Create",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInDoCreate);
-			this->vInDoCreate->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);
+			this->vInDoCreate->SetSubType(0,1,1.0,0.0,true,false,false);
 
 			//this->FHost->CreateValueOutput("Can Create",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutCanCreate);
 			//this->vOutCanCreate->SetSubType(0,1,1,0,true,false,false);
-
 
 			this->FHost->CreateNodeOutput("Body",TSliceMode::Dynamic,TPinVisibility::True,this->vOutBodies);
 			this->vOutBodies->SetSubType(ArrayUtils::SingleGuidArray(BodyDataType::GUID),BodyDataType::FriendlyName);
@@ -101,40 +100,70 @@ namespace VVVV
 						bodydef.position.Set(x,y);
 						bodydef.isBullet = (bull >= 0.5);
 						bodydef.fixedRotation = (fr >= 0.5);
-						bodydef.angle = a * (Math::PI / 2.0);
+						bodydef.angle = a * (Math::PI * 2.0);
 						bodydef.linearDamping = ld;
 						bodydef.angularDamping = ad;
-
-						
+					
 						BodyCustomData* bdata = new BodyCustomData();
 						
 						bdata->Id = this->mWorld->GetNewBodyId();
 						bdata->Custom = (char*)(void*)Marshal::StringToHGlobalAnsi(cust);
 
-						b2Body* body = this->mWorld->GetWorld()->CreateBody(&bodydef);
-						body->SetLinearVelocity(b2Vec2(vx,vy));
-						body->SetAngularVelocity(va);
-						body->SetUserData(bdata);
-						
-
 						int realslice;
 						this->vInShapes->GetUpsreamSlice(i % this->vInShapes->SliceCount,realslice);
 						
 						b2ShapeDef* shapedef = this->mShapes->GetSlice(realslice);
-						
-						b2Shape* shape = body->CreateShape(shapedef);
-						
-						ShapeCustomData* sdata = new ShapeCustomData();
-						sdata->Id = this->mWorld->GetNewShapeId();
-						shape->SetUserData(sdata);
+						String^ shapecust = this->mShapes->GetCustom(realslice);
 
-						if (shapedef->density != 0.0) 
+
+
+						bool testcount;
+						if (shapedef->type == e_edgeShape)
 						{
-							body->SetMassFromShapes();
+							b2EdgeChainDef* chain = (b2EdgeChainDef*)shapedef;
+							int vcount = chain->vertexCount;
+							if (chain->isALoop)
+							{
+								vcount++;
+							}
+
+							testcount = this->mWorld->GetWorld()->GetProxyCount() + vcount <= b2_maxProxies;
+
+						}
+						else
+						{
+							testcount = this->mWorld->GetWorld()->GetProxyCount() < b2_maxProxies;
 						}
 
-						//this->createdbodies->push_back(body);
-						this->mBodies->Add(body);
+						if (testcount)
+						{
+							b2Body* body = this->mWorld->GetWorld()->CreateBody(&bodydef);
+							body->SetLinearVelocity(b2Vec2(vx,vy));
+							body->SetAngularVelocity(va);
+							body->SetUserData(bdata);
+							
+							b2Shape* shape = body->CreateShape(shapedef);
+							
+							if (shape->GetType() == e_unknownShape)
+							{
+
+							}
+							else
+							{
+								ShapeCustomData* sdata = new ShapeCustomData();
+								sdata->Id = this->mWorld->GetNewShapeId();
+								sdata->Custom = (char*)(void*)Marshal::StringToHGlobalAnsi(shapecust);
+								shape->SetUserData(sdata);
+							}
+
+							if (shapedef->density != 0.0) 
+							{
+								body->SetMassFromShapes();
+							}
+
+							//this->createdbodies->push_back(body);
+							this->mBodies->Add(body);
+						}
 
 					}
 				}
@@ -164,6 +193,7 @@ namespace VVVV
 				this->mShapes = (ShapeDefDataType^)usI;
 			}
 		}
+
 
 		void Box2dCreateBodyNode::DisconnectPin(IPluginIO^ Pin)
 		{

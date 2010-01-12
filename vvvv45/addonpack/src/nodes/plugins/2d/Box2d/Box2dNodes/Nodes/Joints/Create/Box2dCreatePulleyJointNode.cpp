@@ -49,8 +49,9 @@ namespace VVVV
 						this->vInDoCreate->GetValue(i,dblcreate);
 						if (dblcreate >= 0.5) 
 						{
-							double b1x,b1y,b2x,b2y,a1x,a1y,a2x,a2y,ml1,ml2,ratio;
+							double b1x,b1y,b2x,b2y,a1x,a1y,a2x,a2y,ml1,ml2,ratio,cc;
 							int realslice1,realslice2;
+							String^ cust;
 
 							this->vInBody1->GetUpsreamSlice(i % this->vInBody1->SliceCount,realslice1);
 							b2Body* body1 = this->m_body1->GetSlice(realslice1);
@@ -65,6 +66,7 @@ namespace VVVV
 							this->vInMaxLength1->GetValue(i,ml1);
 							this->vInMaxLength2->GetValue(i,ml2);
 							this->vInRatio->GetValue(i,ratio);
+							this->vInCollideConnected->GetValue(i, cc);
 
 							b2PulleyJointDef jointDef;
 							b2Vec2 anchor1(b1x,b1y);
@@ -75,8 +77,14 @@ namespace VVVV
 							jointDef.Initialize(body1, body2, groundAnchor1, groundAnchor2, anchor1, anchor2, ratio);
 							jointDef.maxLength1 = ml1;
 							jointDef.maxLength2 = ml2;
+							jointDef.collideConnected = cc >= 0.5;
 
-							this->mWorld->GetWorld()->CreateJoint(&jointDef);
+							JointCustomData* jdata = new JointCustomData();
+							jdata->Id = this->mWorld->GetNewJointId();
+							jdata->Custom = (char*)(void*)Marshal::StringToHGlobalAnsi(cust);
+
+							b2Joint* j = this->mWorld->GetWorld()->CreateJoint(&jointDef);
+							j->SetUserData(jdata);
 						}
 					}
 				}

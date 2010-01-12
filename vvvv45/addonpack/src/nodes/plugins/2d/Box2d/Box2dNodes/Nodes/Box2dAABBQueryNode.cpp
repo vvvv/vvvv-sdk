@@ -28,7 +28,7 @@ namespace VVVV
 			this->vInUpperBound->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,0.1,0.1,false,false,false);
 
 			this->FHost->CreateValueInput("Do Query",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vInDoQuery);
-			this->vInDoQuery->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);
+			this->vInDoQuery->SetSubType(0,1,1,0.0,true,false,false);
 
 			this->FHost->CreateValueOutput("Query Index",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutQueryIndex);
 			this->vOutQueryIndex->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);

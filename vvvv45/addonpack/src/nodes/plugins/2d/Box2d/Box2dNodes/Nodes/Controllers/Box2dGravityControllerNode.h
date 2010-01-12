@@ -1,6 +1,7 @@
 #pragma once
-#include "../../../DataTypes/BodyDataType.h"
-#include "Box2dCreateJointNode.h"
+
+#include "../../DataTypes/Controllers/ControllerDefDataType.h"
+#include "Box2dBaseControllerDefNode.h"
 
 using namespace VVVV::DataTypes;
 
@@ -8,19 +9,21 @@ namespace VVVV
 {
 	namespace Nodes 
 	{
-		ref class Box2dCreateRevoluteJointNode : Box2dCreateJointNode, IPlugin, IPluginConnections
+		public ref class Box2dGravityControllerDefNode : Box2dBaseControllerDefNode,IPlugin,IPluginConnections,public IDisposable
 		{
 		public:
+			Box2dGravityControllerDefNode(void);
+
 			static property IPluginInfo^ PluginInfo 
 				{
 					IPluginInfo^ get() 
 					{
 						//IPluginInfo^ Info;
 						IPluginInfo^ Info = gcnew VVVV::PluginInterfaces::V1::PluginInfo();
-						Info->Name = "CreateRevoluteJoint";
+						Info->Name = "Gravity";
 						Info->Category = "Box2d";
-						Info->Version = "";
-						Info->Help = "Creates a revolute joint between 2 bodies";
+						Info->Version = "Controller";
+						Info->Help = "Box2d gravity controller";
 						Info->Bugs = "";
 						Info->Credits = "Box2d";
 						Info->Warnings = "";
@@ -36,24 +39,18 @@ namespace VVVV
 						return Info;
 					}
 				}
-
-
-
-
-
-			Box2dCreateRevoluteJointNode(void);
-			virtual void Evaluate(int SpreadMax) override;
+		
 		protected:
 			virtual void OnPluginHostSet() override;
+			virtual void OnEvaluate(int SpreadMax, bool reset) override;
+
+
 		private:
-			IValueIn^ vInPosition;
-			IValueIn^ vInMinAngle;
-			IValueIn^ vInMaxAngle;
-			IValueIn^ vInEnableLimit;
-			IValueIn^ vInMaxMotorTorque;
-			IValueIn^ vInMotorSpeed;
-			IValueIn^ vInEnableMotor;
+			IValueIn^ vInForce;
+			IValueIn^ vInInvSquare;
+			b2GravityControllerDef* ctrldef;
+
 		};
 	}
-}
 
+}

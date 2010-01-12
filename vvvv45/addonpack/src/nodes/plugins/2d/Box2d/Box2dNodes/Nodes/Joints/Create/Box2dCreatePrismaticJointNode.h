@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../../../DataTypes/BodyDataType.h"
 #include "Box2dCreateJointNode.h"
 
@@ -8,7 +9,7 @@ namespace VVVV
 {
 	namespace Nodes 
 	{
-		ref class Box2dCreateRevoluteJointNode : Box2dCreateJointNode, IPlugin, IPluginConnections
+		ref class Box2dCreatePrismaticJointNode : Box2dCreateJointNode, IPlugin, IPluginConnections
 		{
 		public:
 			static property IPluginInfo^ PluginInfo 
@@ -17,7 +18,7 @@ namespace VVVV
 					{
 						//IPluginInfo^ Info;
 						IPluginInfo^ Info = gcnew VVVV::PluginInterfaces::V1::PluginInfo();
-						Info->Name = "CreateRevoluteJoint";
+						Info->Name = "CreatePrismaticJoint";
 						Info->Category = "Box2d";
 						Info->Version = "";
 						Info->Help = "Creates a revolute joint between 2 bodies";
@@ -41,19 +42,25 @@ namespace VVVV
 
 
 
-			Box2dCreateRevoluteJointNode(void);
+			Box2dCreatePrismaticJointNode(void);
 			virtual void Evaluate(int SpreadMax) override;
 		protected:
 			virtual void OnPluginHostSet() override;
 		private:
 			IValueIn^ vInPosition;
-			IValueIn^ vInMinAngle;
-			IValueIn^ vInMaxAngle;
+
+			IValueIn^ vInLocalAxis;
+
+			IValueIn^ vInReferenceAngle;
+
 			IValueIn^ vInEnableLimit;
-			IValueIn^ vInMaxMotorTorque;
+
+			IValueIn^ vInLowTranslation;
+			IValueIn^ vInUpTranslation;
+
+			IValueIn^ vInMaxMotorForce;
 			IValueIn^ vInMotorSpeed;
 			IValueIn^ vInEnableMotor;
 		};
 	}
 }
-

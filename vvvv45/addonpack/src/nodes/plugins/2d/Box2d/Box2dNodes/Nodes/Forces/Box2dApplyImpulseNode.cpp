@@ -25,7 +25,7 @@ namespace VVVV
 			this->vInPosition->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,0.0,0.0,false,false,false);
 
 			this->FHost->CreateValueInput("Apply",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInApply);
-			this->vInApply->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);	
+			this->vInApply->SetSubType(0,1,1,0.0,true,false,false);	
 
 		}
 

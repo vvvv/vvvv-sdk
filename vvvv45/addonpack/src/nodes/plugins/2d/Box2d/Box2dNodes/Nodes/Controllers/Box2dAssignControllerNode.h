@@ -1,5 +1,7 @@
 #pragma once
+
 #include "../../DataTypes/BodyDataType.h"
+#include "../../DataTypes/Controllers/ControllerDataType.h"
 
 using namespace VVVV::DataTypes;
 
@@ -7,21 +9,20 @@ namespace VVVV
 {
 	namespace Nodes 
 	{
-		public ref class Box2dUpdateBodyNode : IPlugin,IPluginConnections
+		public ref class Box2dAssignControllerNode : IPlugin,IPluginConnections
 		{
 		public:
-			Box2dUpdateBodyNode(void);
-
+			Box2dAssignControllerNode(void);
 			static property IPluginInfo^ PluginInfo 
 				{
 					IPluginInfo^ get() 
 					{
 						//IPluginInfo^ Info;
 						IPluginInfo^ Info = gcnew VVVV::PluginInterfaces::V1::PluginInfo();
-						Info->Name = "UpdateBody";
+						Info->Name = "AssignController";
 						Info->Category = "Box2d";
 						Info->Version = "";
-						Info->Help = "Update box2d body";
+						Info->Help = "Assign a controller to a box2d body";
 						Info->Bugs = "";
 						Info->Credits = "Box2d";
 						Info->Warnings = "";
@@ -38,41 +39,30 @@ namespace VVVV
 					}
 				}
 
+
+
+
+
 			virtual void SetPluginHost(IPluginHost^ Host);
 			virtual void Configurate(IPluginConfig^ Input);
-			virtual void Evaluate(int SpreadMax);
 			virtual void ConnectPin(IPluginIO^ Pin);
 			virtual void DisconnectPin(IPluginIO^ Pin);
+
+			virtual void Evaluate(int SpreadMax);
 			
 			virtual property bool AutoEvaluate 
 			{
 				bool get() { return true; }
 			}
-
 		private:
 			IPluginHost^ FHost;
+			INodeIn^ vInController;
+			ControllerDataType^ m_controller;
 
-			INodeIn^ vInBodies;
-			BodyDataType^ m_bodies;
+			INodeIn^ vInBody;
+			BodyDataType^ m_body;
 
-			IValueIn^ vInPosition;
-			IValueIn^ vInSetPosition;
-
-			IValueIn^ vInAngle;
-			IValueIn^ vInSetAngle;
-
-			IValueIn^ vInVelocity;
-			IValueIn^ vInSetVelocity;
-
-			IValueIn^ vInAngularVelocity;
-			IValueIn^ vInSetAngularVelocity;
-
-			IStringIn^ vInCustom;
-			IValueIn^ vInSetCustom;
-
-			IValueIn^ vInSleeping;
-			IValueIn^ vInSetSleeping;
-
+			IValueIn^ vInDoCreate;
 		};
 	}
 }

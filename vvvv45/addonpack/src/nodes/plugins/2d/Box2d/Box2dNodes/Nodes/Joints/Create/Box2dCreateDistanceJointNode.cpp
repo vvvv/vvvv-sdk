@@ -42,11 +42,13 @@ namespace VVVV
 						this->vInDoCreate->GetValue(i,dblcreate);
 						if (dblcreate >= 0.5) 
 						{
-							double b1x,b1y,b2x,b2y,freq,dr;
+							double b1x,b1y,b2x,b2y,freq,dr,cc;
 							int realslice1,realslice2;
+							String^ cust;
 
 							this->vInFrequency->GetValue(i, freq);
 							this->vInDampingRatio->GetValue(i,dr);
+							this->vInCollideConnected->GetValue(i, cc);
 
 							b2Body* body1;
 
@@ -71,9 +73,15 @@ namespace VVVV
 							jointDef.frequencyHz = freq;
 							jointDef.dampingRatio = dr;
 							jointDef.Initialize(body1, body2, b2Vec2(b1x,b1y), b2Vec2(b2x,b2y));
-							jointDef.collideConnected = true;
 
-							this->mWorld->GetWorld()->CreateJoint(&jointDef);
+							jointDef.collideConnected = cc >= 0.5;
+
+							JointCustomData* jdata = new JointCustomData();
+							jdata->Id = this->mWorld->GetNewJointId();
+							jdata->Custom = (char*)(void*)Marshal::StringToHGlobalAnsi(cust);
+
+							b2Joint* j = this->mWorld->GetWorld()->CreateJoint(&jointDef);
+							j->SetUserData(jdata);
 						}
 					}
 				}

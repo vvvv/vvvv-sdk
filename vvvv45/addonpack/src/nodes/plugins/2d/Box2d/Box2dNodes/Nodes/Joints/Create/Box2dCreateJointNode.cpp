@@ -20,11 +20,18 @@ namespace VVVV
 			this->FHost->CreateNodeInput("Body 1",TSliceMode::Dynamic,TPinVisibility::True,this->vInBody1);
 			this->vInBody1->SetSubType(ArrayUtils::DoubleGuidArray(BodyDataType::GUID,GroundDataType::GUID),BodyDataType::FriendlyName);
 
-			this->FHost->CreateNodeInput("Body2",TSliceMode::Dynamic,TPinVisibility::True,this->vInBody2);
+			this->FHost->CreateNodeInput("Body 2",TSliceMode::Dynamic,TPinVisibility::True,this->vInBody2);
 			this->vInBody2->SetSubType(ArrayUtils::SingleGuidArray(BodyDataType::GUID),BodyDataType::FriendlyName);
 
+			this->FHost->CreateValueInput("Collide Connected",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInCollideConnected);
+			this->vInCollideConnected->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,true,false);
+
+		
 			//Output
 			this->OnPluginHostSet();
+
+			this->FHost->CreateStringInput("Custom",TSliceMode::Dynamic,TPinVisibility::True,this->vInCustom);
+			this->vInCustom->SetSubType("",false);
 
 			this->FHost->CreateValueInput("Do Create",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInDoCreate);
 			this->vInDoCreate->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);

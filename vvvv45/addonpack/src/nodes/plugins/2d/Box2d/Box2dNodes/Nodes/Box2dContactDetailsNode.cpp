@@ -18,13 +18,19 @@ namespace VVVV
 			this->vInWorld->SetSubType(ArrayUtils::SingleGuidArray(WorldDataType::GUID),WorldDataType::FriendlyName);
 
 			this->FHost->CreateValueOutput("Position",2,ArrayUtils::Array2D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutPosition);
-			this->vOutPosition->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
+			this->vOutPosition->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,0.0,0.0,false,false,false);
+
+			this->FHost->CreateValueOutput("Normals",2,ArrayUtils::Array2D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutNormals);
+			this->vOutNormals->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,0.0,0.0,false,false,false);
 
 			this->FHost->CreateValueOutput("Shapes 1",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutShapes1);
 			this->vOutShapes1->SetSubType(Double::MinValue,Double::MaxValue,1,0.0,false,false,true);
 
 			this->FHost->CreateValueOutput("Shapes 2",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutShapes2);
 			this->vOutShapes2->SetSubType(Double::MinValue,Double::MaxValue,1,0.0,false,false,true);
+
+			this->FHost->CreateValueOutput("Is New",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutNew);
+			this->vOutNew->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);	
 
 		}
 
@@ -42,33 +48,42 @@ namespace VVVV
 				if (m_world->GetIsValid()) 
 				{
 					this->vOutPosition->SliceCount = this->m_world->Contacts->size();
+					this->vOutNormals->SliceCount = this->m_world->Contacts->size();
 					this->vOutShapes1->SliceCount = this->m_world->Contacts->size();
 					this->vOutShapes2->SliceCount = this->m_world->Contacts->size();
+					this->vOutNew->SliceCount = this->m_world->Contacts->size();
 	
 					for (int i = 0; i < this->m_world->Contacts->size(); i++) 
 					{
 						b2ContactPoint* contact = this->m_world->Contacts->at(i);
 
 						this->vOutPosition->SetValue2D(i,contact->position.x,contact->position.y);
+						this->vOutNormals->SetValue2D(i,contact->normal.x,contact->normal.y);
+						
 
 						ShapeCustomData* sdata = (ShapeCustomData*)contact->shape1->GetUserData();
 						this->vOutShapes1->SetValue(i,sdata->Id);
 						sdata = (ShapeCustomData*)contact->shape2->GetUserData();
 						this->vOutShapes2->SetValue(i,sdata->Id);
+						this->vOutNew->SetValue(i,this->m_world->Newcontacts->at(i));
 					}
 				}
 				else 
 				{
 					this->vOutPosition->SliceCount = 0;
+					this->vOutNormals->SliceCount = 0;
 					this->vOutShapes1->SliceCount = 0;
 					this->vOutShapes2->SliceCount = 0;
+					this->vOutNew->SliceCount = 0;
 				}
 			} 
 			else 
 			{
 				this->vOutPosition->SliceCount = 0;
+				this->vOutNormals->SliceCount = 0;
 				this->vOutShapes1->SliceCount = 0;
 				this->vOutShapes2->SliceCount = 0;
+				this->vOutNew->SliceCount = 0;
 			}
 		}
 

@@ -22,27 +22,41 @@ namespace VVVV
 			this->vInPosition->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,0.0,0.0,false,false,false);
 
 			this->FHost->CreateValueInput("Set Position",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInSetPosition);
-			this->vInSetPosition->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);	
+			this->vInSetPosition->SetSubType(0,1,1.0,0.0,true,false,false);	
+
+			this->FHost->CreateValueInput("Angle",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInAngle);
+			this->vInAngle->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
+
+			this->FHost->CreateValueInput("Set Angle",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInSetAngle);
+			this->vInSetAngle->SetSubType(0,1,1.0,0.0,true,false,false);
 
 			this->FHost->CreateValueInput("Velocity",2,ArrayUtils::Array2D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInVelocity);
 			this->vInVelocity->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,0.0,0.0,false,false,false);
 
 			this->FHost->CreateValueInput("Set Velocity",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInSetVelocity);
-			this->vInSetVelocity->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);	
+			this->vInSetVelocity->SetSubType(0,1,1.0,0.0,true,false,false);	
 
 			this->FHost->CreateValueInput("Angular Velocity",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInAngularVelocity);
 			this->vInAngularVelocity->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
 
 			this->FHost->CreateValueInput("Set Angular Velocity",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInSetAngularVelocity);
-			this->vInSetAngularVelocity->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);
+			this->vInSetAngularVelocity->SetSubType(0,1,1.0,0.0,true,false,false);
 
 			this->FHost->CreateStringInput("Custom",TSliceMode::Dynamic,TPinVisibility::True,this->vInCustom);
 			this->vInCustom->SetSubType("",false);
 
 			this->FHost->CreateValueInput("Set Custom",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInSetCustom);
-			this->vInSetCustom->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);
+			this->vInSetCustom->SetSubType(0,1,1,0.0,true,false,false);
+
+			this->FHost->CreateValueInput("Sleeping",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInSleeping);
+			this->vInSleeping->SetSubType(0,1,1.0,0.0,false,true,false);
+
+			this->FHost->CreateValueInput("Set Sleeping",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInSetSleeping);
+			this->vInSetSleeping->SetSubType(0,1,1.0,0.0,true,false,false);
+
 		}
 
+		
 		void Box2dUpdateBodyNode::Configurate(IPluginConfig^ Input)
 		{
 
@@ -54,7 +68,7 @@ namespace VVVV
 			this->vInBodies->PinIsChanged;
 			if (this->vInBodies->IsConnected) 
 			{
-				double dblsp,dblsv,dblsav,dblsc;
+				double dblsp,dblsv,dblsav,dblsc,dbla,dblsa,dblsleep,dblsetsleep;
 				for (int i = 0; i < this->vInBodies->SliceCount; i++) 
 				{
 					int realslice;
@@ -65,11 +79,32 @@ namespace VVVV
 					int id = bdata->Id;
 
 					this->vInSetPosition->GetValue(i,dblsp);
-					if (dblsp >= 0.5) 
+					this->vInSetAngle->GetValue(i, dblsa);
+					if (dblsp >= 0.5 || dblsa >= 0.5) 
 					{
-						double x,y;
-						this->vInPosition->GetValue2D(i,x,y);
-						body->SetXForm(b2Vec2(x,y),body->GetAngle());
+						double x,y,a;
+
+						if (dblsp)
+						{
+							this->vInPosition->GetValue2D(i,x,y);
+						}
+						else
+						{
+							x = body->GetPosition().x;
+							y = body->GetPosition().y;
+						}
+
+						if (dblsa)
+						{
+							this->vInAngle->GetValue(i, a);
+							a = a * (float)System::Math::PI;
+						}
+						else 
+						{
+							a = body->GetAngle();
+						}
+
+						body->SetXForm(b2Vec2(x,y),a);
 					}
 
 					this->vInSetVelocity->GetValue(i,dblsv);
@@ -95,6 +130,21 @@ namespace VVVV
 						this->vInCustom->GetString(i,cust);
 						BodyCustomData* bdata = (BodyCustomData*)body->GetUserData();
 						bdata->Custom = (char*)(void*)Marshal::StringToHGlobalAnsi(cust);
+					}
+
+					this->vInSetSleeping->GetValue(i, dblsetsleep);
+					if (dblsetsleep >= 0.5)
+					{
+						this->vInSleeping->GetValue(i,dblsleep);
+						if (dblsleep >= 0.5 || body->IsSleeping())
+						{
+							body->WakeUp();
+						}
+
+						if (dblsleep < 0.5 || !body->IsSleeping())
+						{
+							body->PutToSleep();
+						}
 					}
 				}
 			}

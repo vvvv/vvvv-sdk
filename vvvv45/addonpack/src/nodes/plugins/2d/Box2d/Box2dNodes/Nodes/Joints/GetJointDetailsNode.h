@@ -1,7 +1,7 @@
 #pragma once
+
 #include "../../DataTypes/BodyDataType.h"
-#include "../../DataTypes/GroundDataType.h"
-#include "../../DataTypes/Shapes/ShapeDataType.h"
+#include "../../DataTypes/JointDataType.h"
 
 using namespace VVVV::DataTypes;
 
@@ -9,10 +9,10 @@ namespace VVVV
 {
 	namespace Nodes 
 	{
-		public ref class GetBodyDetailsNode : IPlugin,IPluginConnections
+		public ref class GetJointDetailsNode : IPlugin,IPluginConnections
 		{
 		public:
-			GetBodyDetailsNode(void);
+			GetJointDetailsNode(void);
 
 			virtual void SetPluginHost(IPluginHost^ Host);
 			virtual void Configurate(IPluginConfig^ Input);
@@ -31,10 +31,10 @@ namespace VVVV
 					{
 						//IPluginInfo^ Info;
 						IPluginInfo^ Info = gcnew VVVV::PluginInterfaces::V1::PluginInfo();
-						Info->Name = "GetBodyDetails";
+						Info->Name = "GetJointDetails";
 						Info->Category = "Box2d";
 						Info->Version = "";
-						Info->Help = "Get details about a created box2d body";
+						Info->Help = "Get details about a created box2d joint";
 						Info->Bugs = "";
 						Info->Credits = "Box2d";
 						Info->Warnings = "";
@@ -56,27 +56,24 @@ namespace VVVV
 		private:
 			IPluginHost^ FHost;
 
-			INodeIn^ vInBodies;
-			BodyDataType^ m_bodies;
-			GroundDataType^ mGround;
-			bool isbody;
+			INodeIn^ vInJoints;
+			JointDataType^ m_joints;
 
-			IValueOut^ vOutPosition;
-			IValueOut^ vOutRotation;
-			IValueOut^ vOutVelocity;
-			IValueOut^ vOutIsDynamic;
-			IValueOut^ vOutIsSleeping;
-			IValueOut^ vOutIsFrozen;
-			IValueOut^ vOutMass;
-			IValueOut^ vOutInertia;
+
+			INodeOut^ vOutBody1;
+			BodyDataType^ m_bodies1;
+			IValueOut^ vOutPosition1;
+
+			INodeOut^ vOutBody2;
+			BodyDataType^ m_bodies2;
+			IValueOut^ vOutPosition2;
+
+			IStringOut^ vOutType;
+
 			IStringOut^ vOutCustom;
-			INodeOut^ vOutShapes;
-			IStringOut^ vOutShapeType;
-			IValueOut^ vOutShapeCount;
-
 			IValueOut^ vOutId;
-			ShapeDataType^ m_shapes;
 
 		};
 	}
 }
+

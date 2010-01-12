@@ -59,9 +59,10 @@ namespace VVVV
 			WorldDataType^ m_world;
 
 			IValueOut^ vOutPosition;
-
+			IValueOut^ vOutNormals;
 			IValueOut^ vOutShapes1;
 			IValueOut^ vOutShapes2;
+			IValueOut^ vOutNew;
 
 		};
 	}

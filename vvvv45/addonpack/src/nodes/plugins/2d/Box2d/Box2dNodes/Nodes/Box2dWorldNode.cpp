@@ -2,7 +2,8 @@
 #include "Box2dWorldNode.h"
 
 #include "../Internals/Data/BodyCustomData.h"
-
+#include "../Internals/Data/ShapeCustomData.h"
+#include "../Internals/Data/JointCustomData.h"
 namespace VVVV 
 {
 	namespace Nodes 
@@ -12,9 +13,13 @@ namespace VVVV
 			this->mWorld = gcnew WorldDataType();
 			this->mBodies = gcnew BodyDataType();
 			this->mGround = gcnew GroundDataType();
+			this->mJoints = gcnew JointDataType();
 			this->contacts = new vector<b2ContactPoint*>();
-			this->MyListener = new ContactListener(this->contacts);
+			this->newcontacts = new vector<double>();
+			this->MyListener = new ContactListener(this->contacts,this->newcontacts);
 			this->mWorld->Contacts = this->contacts;
+			this->mWorld->Newcontacts = this->newcontacts;
+			this->ctrlconnected = false;
 		}
 
 		Box2dWorldNode::~Box2dWorldNode() 
@@ -49,6 +54,10 @@ namespace VVVV
 			this->FHost->CreateValueFastInput("Velocity Iterations",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vInVelIterations);
 			this->vInVelIterations->SetSubType(1,Double::MaxValue,1,10,false,false,true);
 
+			//Allow to put objects in sleep mode
+			this->FHost->CreateValueInput("Allow Sleep",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vInAllowSleep);
+			this->vInAllowSleep->SetSubType(0,1,1,1,false,true,false);
+
 			//Is World Enabled
 			this->FHost->CreateValueInput("Enabled",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vInEnabled);
 			this->vInEnabled->SetSubType(0,1,1,0,false,true,false);
@@ -56,14 +65,15 @@ namespace VVVV
 			this->FHost->CreateValueInput("Reset",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vInReset);
 			this->vInReset->SetSubType(0,1,1,0,true,false,false);
 
-			//Allow to put objects in sleep mode
-			this->FHost->CreateValueInput("Allow Sleep",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vInAllowSleep);
-			this->vInAllowSleep->SetSubType(0,1,1,1,false,true,false);
+
 
 			//World output
 			this->FHost->CreateNodeOutput("World",TSliceMode::Single,TPinVisibility::True,this->vOutWorldNode);
 			this->vOutWorldNode->SetSubType(ArrayUtils::SingleGuidArray(WorldDataType::GUID),WorldDataType::FriendlyName);
 			this->vOutWorldNode->SetInterface(this->mWorld);
+
+			this->FHost->CreateValueOutput("Controller Count",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vOutControllerCount);
+			this->vOutControllerCount->SetSubType(0,Double::MaxValue,1,0,false,false,true);
 
 			this->FHost->CreateValueOutput("World Valid",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vOutWorldValid);
 			this->vOutWorldValid->SetSubType(0,1,1,0,false,true,false);
@@ -75,6 +85,13 @@ namespace VVVV
 			this->FHost->CreateNodeOutput("Bodies",TSliceMode::Dynamic,TPinVisibility::True,this->vOutBodies);
 			this->vOutBodies->SetSubType(ArrayUtils::SingleGuidArray(BodyDataType::GUID),BodyDataType::FriendlyName);
 			this->vOutBodies->SetInterface(this->mBodies);
+
+			this->FHost->CreateNodeOutput("Joints",TSliceMode::Dynamic,TPinVisibility::True,this->vOutJoints);
+			this->vOutJoints->SetSubType(ArrayUtils::SingleGuidArray(JointDataType::GUID),JointDataType::FriendlyName);
+			this->vOutJoints->SetInterface(this->mJoints);
+
+			this->FHost->CreateValueOutput("Has Reset",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vOutReset);
+			this->vOutReset->SetSubType(0,1,1,0,true,false,false);
 		}
 
 
@@ -85,7 +102,8 @@ namespace VVVV
 
 		
 		void Box2dWorldNode::Evaluate(int SpreadMax) 
-		{			
+		{	
+			
 			double reset;
 			this->vInReset->GetValue(0,reset);
 
@@ -124,7 +142,7 @@ namespace VVVV
 					this->internalworld->SetContactListener(this->MyListener);
 					this->mGround->SetGround(this->internalworld->GetGroundBody());
 					this->mGround->SetIsValid(true);
-					
+					this->mWorld->SetReset(true);				
 				} 
 				else 
 				{
@@ -132,6 +150,7 @@ namespace VVVV
 					this->mWorld->SetWorld(this->internalworld);
 					this->mGround->SetIsValid(false);
 					this->mGround->SetGround(nullptr);
+					this->mWorld->SetReset(true);
 				}
 
 				this->mWorld->Reset = true;
@@ -139,6 +158,12 @@ namespace VVVV
 				this->vOutWorldValid->SetValue(0, Convert::ToDouble(this->mWorld->GetIsValid()));
 
 			}
+			else
+			{
+				this->mWorld->SetReset(false);
+			}
+
+			this->vOutReset->SetValue(0,Convert::ToDouble(this->mWorld->Reset));
 
 			if (this->vInGravity->PinIsChanged) 
 			{
@@ -160,7 +185,16 @@ namespace VVVV
 
 			//Process if enabled
 			this->mBodies->Reset();
+			this->mJoints->Reset();
+
+			for (int i = 0; i < this->contacts->size(); i++)
+			{
+				b2ContactPoint* pt = this->contacts->at(i);
+				delete pt;
+			}
 			this->contacts->clear();
+
+			this->newcontacts->clear();
 
 			//Delete bodies marked as such
 			if (this->mWorld->GetIsValid()) 
@@ -175,10 +209,78 @@ namespace VVVV
 						BodyCustomData* bdata = (BodyCustomData*)b->GetUserData();
 						if (bdata->MarkedForDeletion) 
 						{
-
 							this->mWorld->GetWorld()->DestroyBody(b);
+						} 
+						else
+						{
+							b2Shape* snode = b->GetShapeList();
+
+							bool del = false;
+							while (snode)
+							{
+								b2Shape* s = snode;
+								snode = snode->GetNext();
+
+								if (s->GetType() == e_circleShape || s->GetType() == e_polygonShape) 
+								{
+									ShapeCustomData* sdata = (ShapeCustomData*)s->GetUserData();
+									if (sdata->MarkedForDeletion)
+									{
+										b->DestroyShape(s);
+										del = true;
+									}
+								}
+							}
+
+							if (del && b->IsDynamic())
+							{
+								b->SetMassFromShapes();
+							}
 						}
-					}    
+					} 
+					else
+					{
+						b2Shape* snode = b->GetShapeList();
+
+						bool del = false;
+						while (snode)
+						{
+							b2Shape* s = snode;
+							snode = snode->GetNext();
+
+							if (s->GetType() == e_circleShape || s->GetType() == e_polygonShape || s->GetType() == e_edgeShape) 
+							{
+								ShapeCustomData* sdata = (ShapeCustomData*)s->GetUserData();
+								if (sdata->MarkedForDeletion)
+								{
+									b->DestroyShape(s);
+									del = true;
+								}
+							}
+						}
+
+						if (del && b->IsDynamic())
+						{
+							b->SetMassFromShapes();
+						}
+					}
+
+				}
+
+				b2Joint* nodej = this->mWorld->GetWorld()->GetJointList();
+				while (nodej)
+				{
+					b2Joint* j = nodej;
+					nodej = nodej->GetNext();
+
+					if (j->GetUserData() != nullptr)
+					{
+						JointCustomData* jdata = (JointCustomData*)j->GetUserData();
+						if (jdata->MarkedForDeletion) 
+						{
+							this->mWorld->GetWorld()->DestroyJoint(j);
+						}
+					}
 				}
 
 				if (this->mWorld->GetIsEnabled()) 
@@ -200,13 +302,25 @@ namespace VVVV
 						this->mBodies->Add(b);
 					}
 				}
+
+				this->vOutJoints->MarkPinAsChanged();
+				this->vOutJoints->SliceCount = this->mWorld->GetWorld()->GetJointCount();
+				for (b2Joint* j = this->mWorld->GetWorld()->GetJointList(); j; j = j->GetNext())
+				{
+					this->mJoints->Add(j);
+				}
+
+				this->vOutControllerCount->SetValue(0, this->internalworld->GetControllerCount());
 			} 
 			else 
 			{
+				this->vOutControllerCount->SetValue(0,-1);
 				this->vOutBodies->SliceCount = 0;
 			}
 		}
 
 
+
+				
 	}
 }

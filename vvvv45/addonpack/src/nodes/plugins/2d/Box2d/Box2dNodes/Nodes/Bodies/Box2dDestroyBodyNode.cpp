@@ -15,7 +15,7 @@ namespace VVVV
 			this->vInBodies->SetSubType(ArrayUtils::SingleGuidArray(BodyDataType::GUID),BodyDataType::FriendlyName);
 
 			this->FHost->CreateValueInput("Do Destroy",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInDoDestroy);
-			this->vInDoDestroy->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);	
+			this->vInDoDestroy->SetSubType(Double::MinValue,Double::MaxValue,1.0,0.0,true,false,false);	
 
 			
 
@@ -34,7 +34,7 @@ namespace VVVV
 				double dbldelete;
 				
 
-					double dblsp,dblsv,dblsav;
+					//double dblsp,dblsv,dblsav;
 					for (int i = 0; i < this->vInBodies->SliceCount; i++) 
 					{
 						this->vInDoDestroy->GetValue(i, dbldelete);
@@ -43,8 +43,13 @@ namespace VVVV
 							int realslice;
 							this->vInBodies->GetUpsreamSlice(i % this->vInBodies->SliceCount,realslice);
 							b2Body* body = this->m_bodies->GetSlice(realslice);
-							BodyCustomData* bdata = (BodyCustomData*)body->GetUserData();
-							bdata->MarkedForDeletion = true;
+
+							//Just In Case
+							if (body != body->GetWorld()->GetGroundBody())
+							{
+								BodyCustomData* bdata = (BodyCustomData*)body->GetUserData();
+								bdata->MarkedForDeletion = true;
+							}
 						}
 					}
 				

@@ -1,5 +1,5 @@
 #pragma once
-#include "../../DataTypes/BodyDataType.h"
+#include "../../DataTypes/JointDataType.h"
 
 using namespace VVVV::DataTypes;
 
@@ -7,21 +7,19 @@ namespace VVVV
 {
 	namespace Nodes 
 	{
-		public ref class Box2dUpdateBodyNode : IPlugin,IPluginConnections
+		public ref class Box2dDestroyJointNode : IPlugin,IPluginConnections
 		{
 		public:
-			Box2dUpdateBodyNode(void);
-
 			static property IPluginInfo^ PluginInfo 
 				{
 					IPluginInfo^ get() 
 					{
 						//IPluginInfo^ Info;
 						IPluginInfo^ Info = gcnew VVVV::PluginInterfaces::V1::PluginInfo();
-						Info->Name = "UpdateBody";
+						Info->Name = "DestroyJoint";
 						Info->Category = "Box2d";
 						Info->Version = "";
-						Info->Help = "Update box2d body";
+						Info->Help = "Destroys box2d joint";
 						Info->Bugs = "";
 						Info->Credits = "Box2d";
 						Info->Warnings = "";
@@ -52,27 +50,12 @@ namespace VVVV
 		private:
 			IPluginHost^ FHost;
 
-			INodeIn^ vInBodies;
-			BodyDataType^ m_bodies;
+			INodeIn^ vInJoints;
+			JointDataType^ m_joints;
 
-			IValueIn^ vInPosition;
-			IValueIn^ vInSetPosition;
-
-			IValueIn^ vInAngle;
-			IValueIn^ vInSetAngle;
-
-			IValueIn^ vInVelocity;
-			IValueIn^ vInSetVelocity;
-
-			IValueIn^ vInAngularVelocity;
-			IValueIn^ vInSetAngularVelocity;
-
-			IStringIn^ vInCustom;
-			IValueIn^ vInSetCustom;
-
-			IValueIn^ vInSleeping;
-			IValueIn^ vInSetSleeping;
+			IValueIn^ vInDoDestroy;
 
 		};
 	}
 }
+
