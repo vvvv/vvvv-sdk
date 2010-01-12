@@ -7,6 +7,7 @@ namespace VVVV.Webinterface.jQuery
 	public class JavaScriptValueLiteral<T> : JavaScriptObject
 	{
 		protected T FValue;
+        protected bool FWithQuotes = true;
 
 		protected JavaScriptValueLiteral()
 		{
@@ -23,7 +24,7 @@ namespace VVVV.Webinterface.jQuery
 			get { return FValue; }
 			set { FValue = value; }
 		}
-	
+
 
 		protected override string GenerateObjectScript(int indentSteps, bool breakInternalLines, bool breakAfter)
 		{

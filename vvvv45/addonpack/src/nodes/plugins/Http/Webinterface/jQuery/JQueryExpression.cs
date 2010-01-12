@@ -118,6 +118,16 @@ namespace VVVV.Webinterface.jQuery
             return ApplyMethodCall("attr", name, value);
         }
 
+        public JQueryExpression Attr(object name)
+        {
+            return ApplyMethodCall("attr", name);
+        }
+
+        public JQueryExpression Bind(object name, object value)
+        {
+            return ApplyMethodCall("bind", name, value);
+        }
+
         public JQueryExpression Children()
         {
             return ApplyMethodCall("children");

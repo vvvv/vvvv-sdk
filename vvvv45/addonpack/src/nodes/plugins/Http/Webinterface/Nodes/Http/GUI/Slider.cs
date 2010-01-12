@@ -5,6 +5,7 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.Webinterface.Utilities;
 using System.Diagnostics;
 using VVVV.Nodes.Http.BaseNodes;
+using VVVV.Webinterface.jQuery;
 
 namespace VVVV.Nodes.Http.GUI
 {
@@ -21,6 +22,7 @@ namespace VVVV.Nodes.Http.GUI
         private IValueIn FMax;
         private IValueIn FDefault;
         private IValueIn FStepSize;
+        private IValueIn FUpdateContinuousValueInput;
 
 
         #endregion field declaration
@@ -188,6 +190,9 @@ namespace VVVV.Nodes.Http.GUI
             FHost.CreateValueInput("StepSize", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FStepSize);
             FStepSize.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.01, false, false, false);
 
+            FHost.CreateValueInput("Update Continuous", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FUpdateContinuousValueInput);
+            FUpdateContinuousValueInput.SetSubType(0.0, 1.0, 1.0, 1, false, true, false);
+
             FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
             FResponse.SetSubType(0, 1, 1, 0, false, false, false);
         }
@@ -211,12 +216,16 @@ namespace VVVV.Nodes.Http.GUI
                     double currentMaxSlice;
                     double currentDefaultSlice;
                     double currentStepSize;
+                    double updateContinuousSlice;
+
+                    
 
                     string currentSliceId = GetSliceId(i);
                     string currentOrientation = String.Empty;
                     string currentName = String.Empty;
-                    string SliderId = GetSliceId(i) + i.ToString();
-                    string SliderTextfieldId = SliderId + "Value";
+
+                    string SliderId = SliceId[i] + "Slider" + i.ToString();
+                    string SliderTextfieldId = SliceId[i] + "Textfield" + i.ToString();
                     string SliderSelector = "#" + SliderId;
 
                     FMin.GetValue(i,out currentMinSlice);
@@ -225,7 +234,7 @@ namespace VVVV.Nodes.Http.GUI
                     FStepSize.GetValue(i,out currentStepSize);
                     FName.GetString(i, out currentName);
                     FOrientation.GetString(i, out currentOrientation);
-
+                    FUpdateContinuousValueInput.GetValue(i, out updateContinuousSlice);
 
                     currentStepSize *= 10000;
                     currentMinSlice *= 10000;
@@ -250,6 +259,7 @@ namespace VVVV.Nodes.Http.GUI
                     double currentSliderValue = Convert.ToDouble(tResponse) * 10000;  
 
 
+
                     HtmlDiv tMainContainer = new HtmlDiv();
                     HtmlDiv tSlider = new HtmlDiv(SliderId);
                     HTMLText tText = new HTMLText(currentName, true);
@@ -269,51 +279,86 @@ namespace VVVV.Nodes.Http.GUI
                     HTMLAttribute tSliderAttribute = new HTMLAttribute("style", AttributeSlider);
                     tSlider.AddAttribute(tSliderAttribute);
 
-
                     tMainContainer.Insert(tText);
                     tMainContainer.Insert(tSliderValueText);
                     tMainContainer.Insert(tSlider);
-
-
                     SetTag(i, tMainContainer);
 
 
 
 
+                    //Generates an document.ready block and lsiten for the keyup event of the texzfield
+                    //Slecetors for Sliders and Textfield
+                    IDSelector SelectorSlider =  new IDSelector(SliderId);
+                    IDSelector SelectorTextfield = new IDSelector(SliderTextfieldId);
 
-                    string TextfeldJsContent = @"
-var value = $(this).val();
-var SliderValue = value * 10000;
-$('{0}').slider('option', 'value', SliderValue);
-var content = '{1}' + '=' + value; 
-$.post('ToVVVV.xml',content, null);
-";
+                    // reads the content form the textfield
+                    JavaScriptDeclaration<JavaScriptVariableObject> TextfieldContent = new JavaScriptDeclaration<JavaScriptVariableObject>(new JavaScriptVariableObject("TextfieldContent"), new JQueryExpression(SelectorTextfield).ApplyMethodCall("val").GenerateScript(0,false,false) + " * 10000");
+                    //send the value to vvvv
+                    JQueryExpression postToServer = new JQueryExpression();
+                    postToServer.Post("ToVVVV.xml", new JavaScriptSnippet(JQueryExpression.This().Parent().ApplyMethodCall("attr", "id").GenerateScript(0, false, false) + " + '=' + " + "$(this).val()"), null, null);
 
-                    JqueryFunction tTextJS = new JqueryFunction(true, "#" + SliderTextfieldId, "keyup", String.Format(TextfeldJsContent, "#" + SliderId, currentSliceId, currentStepSize));
+                    //set the slider value that it is the same as in the textield
+                    JavaScriptSnippet SetSliderValue = new JavaScriptSnippet(String.Format(@"$('#{0}').slider('option', 'value', TextfieldContent)",SliderId));
 
-                    string SliderInitalize =
-    @"slider({{
-          animate: false,
-          max: {6},
-          min: {5},
-          orientation: '{0}',
-          step:{7},
-          value: {1},
-          slide: function(event,ui){{
-                  var id = $(this).attr('id');
-                  var value = $('{2}').slider('option', 'value');
-                  var SliderValue = value / 10000;
-                  var content = '{3}' + '=' + SliderValue; 
-                  $.post('ToVVVV.xml',content, null);
-                  $('{4}').val(SliderValue);
-                  }},
-          }})
-          ";
+                    //combines all codes lines to one block
+                    JavaScriptCodeBlock Block = new JavaScriptCodeBlock(TextfieldContent, SetSliderValue, postToServer);
+
+                     //creates the keyup funcition and add it to the document ready
+                    JavaScriptAnonymousFunction Function = new JavaScriptAnonymousFunction(Block, new string[] { "event" });
+                    JQueryExpression DocumentReadyHandler = new JQueryExpression(SelectorTextfield);
+                    DocumentReadyHandler.ApplyMethodCall("keyup", Function);
+
+                    //creates the document ready fucniton
+                    JQuery DocumentReady = JQuery.GenerateDocumentReady(DocumentReadyHandler);
 
 
-                  
 
-                    AddJavaScript(i, new JqueryFunction(true, SliderSelector, String.Format(SliderInitalize, currentOrientation, currentSliderValue.ToString(), SliderSelector, currentSliceId, "#" + SliderTextfieldId, currentMinSlice, currentMaxSlice, currentStepSize)).Text + Environment.NewLine + tTextJS.Text, true);
+
+
+
+
+                    //Generates an document.ready block to initialise the sliders with there option object
+                    JavaScriptGenericObject SliderParams = new JavaScriptGenericObject();
+                    SliderParams.Set("animate", true);
+                    SliderParams.Set("max", currentMaxSlice);
+                    SliderParams.Set("min", currentMinSlice);
+                    SliderParams.Set("orientation", currentOrientation);
+                    SliderParams.Set("step", currentStepSize);
+                    SliderParams.Set("value", currentSliderValue);
+                    JQueryExpression SliderDocumentReadyHandler = new JQueryExpression(SelectorSlider);
+                    SliderDocumentReadyHandler.ApplyMethodCall("slider", SliderParams);
+                    JQuery SliderDocumentReady = JQuery.GenerateDocumentReady(SliderDocumentReadyHandler);
+
+
+
+
+
+
+                    //Generates an document.ready block and bind the sider event to the slider divs
+
+                    //Selects the id from the parent div
+                    JavaScriptDeclaration<JavaScriptVariableObject> id = new JavaScriptDeclaration<JavaScriptVariableObject>(new JavaScriptVariableObject("id"), JQueryExpression.This().Parent().ApplyMethodCall("attr", "id").GenerateScript(0, false, false));
+
+                    //reads the value from the slider 
+                    JavaScriptDeclaration<JavaScriptVariableObject> Value = new JavaScriptDeclaration<JavaScriptVariableObject>(new JavaScriptVariableObject("value"), JQueryExpression.This().ApplyMethodCall("slider", "option", "value").GenerateScript(0, false, false) + " / 10000");
+                    JQueryExpression postToServerSlider = new JQueryExpression();
+
+                    //post the values to vvvv
+                    postToServerSlider.Post("ToVVVV.xml", new JavaScriptSnippet("id + '=' + value"), null, null);
+                    JavaScriptSnippet SetTextfieldValue = new JavaScriptSnippet(String.Format(@"$('#{0}').val( value )", SliderTextfieldId));
+
+                    //combines all codes lines to one block
+                    JavaScriptCodeBlock SlideEvent = new JavaScriptCodeBlock(id, Value, postToServerSlider, SetTextfieldValue);
+                    
+                    JavaScriptAnonymousFunction SlideFunction = new JavaScriptAnonymousFunction(SlideEvent,"event","ui");
+                    JQueryExpression SliderEventDocumentReadyHandler = new JQueryExpression(SelectorSlider).Bind(updateContinuousSlice > 0.5 ? "slide" : "slidestop", SlideFunction);
+                    JQuery SliderEventDocumentReady = JQuery.GenerateDocumentReady(SliderEventDocumentReadyHandler);
+
+
+
+                    AddJavaScript(i, SliderEventDocumentReady.GenerateScript(0, true, true) + Environment.NewLine + SliderDocumentReady.GenerateScript(1, true, true) + Environment.NewLine + DocumentReady.GenerateScript(1, true, true), true);
+                    //AddJavaScript(i, new JqueryFunction(true, SliderSelector, String.Format(SliderInitalize, currentOrientation, currentSliderValue.ToString(), SliderSelector, currentSliceId, "#" + SliderTextfieldId, currentMinSlice, currentMaxSlice, currentStepSize)).Text + Environment.NewLine + DocumentReady.GenerateScript(1, true, true), true);
 
                     string[] tElementSlider = new string[3] { "option", "value", currentSliderValue.ToString() };
                     CreatePollingMessage(i, SliderId, "slider", tElementSlider);

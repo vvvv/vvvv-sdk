@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VVVV.Webinterface.jQuery
 {
-    class BlankSelector:JavaScriptObject
+    class BlankSelector: Selector
     {
 
         private string FName;

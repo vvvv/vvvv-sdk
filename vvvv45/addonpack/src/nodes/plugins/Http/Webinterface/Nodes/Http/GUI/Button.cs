@@ -301,19 +301,19 @@ namespace VVVV.Nodes.Http.GUI
                         SetTag(i, tDiv);
 
 
-                        string tContent = String.Format(@"mousedown(function(){
-                            $('div',this).css({'background-color':'rgb({0}%,{1}%,{2}%)'});
+                        string tContent = String.Format(@"mousedown(function(){{
+                            $('div',this).css({{'background-color':'rgb({0}%,{1}%,{2}%)'}});
                             var id = $(this).attr('id');
                             $.post('ToVVVV.xml', id + '=1', null);
-                        }).mouseup(function(){
-                            $('div',this).css({'background-color':'rgb({3}%,{4}%,{5}%)'});
+                        }}).mouseup(function(){{
+                            $('div',this).css({{'background-color':'rgb({3}%,{4}%,{5}%)'}});
                             var id = $(this).attr('id');
                             $.post('ToVVVV.xml', id + '=0', null);
-                        }).mouseleave(function(){
-                            $('div',this).css({'background-color':'rgb({6}%,{7}%,{8}%)'});
+                        }}).mouseleave(function(){{
+                            $('div',this).css({{'background-color':'rgb({6}%,{7}%,{8}%)'}});
                             var id = $(this).attr('id');
                             $.post('ToVVVV.xml', id + '=0', null);
-                        });
+                        }});
                         ",currentOnPressColorSlice.R * 100 ,currentOnPressColorSlice.G * 100 ,currentOnPressColorSlice.B * 100, currentDefaultColorSlice.R * 100 , currentDefaultColorSlice.G * 100 , currentDefaultColorSlice.B * 100 ,currentDefaultColorSlice.R * 100 , currentDefaultColorSlice.G * 100 , currentDefaultColorSlice.B * 100);
 
                         AddJavaScript(0, new JqueryFunction(true, "." + FGuiDataList[0].NodeId, tContent).Text, true);
