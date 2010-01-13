@@ -31,6 +31,7 @@ using System;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
@@ -54,7 +55,7 @@ namespace VVVV.Nodes.Http.CSS
     /// css node class definition. 
     /// generates css code for the backgroundcolor for a html element
     /// </summary>
-    public class BackgroundColor : BaseCssNode,IDisposable, IPlugin
+    public class Background : BaseCssNode,IDisposable, IPlugin
     {
 
 
@@ -69,10 +70,11 @@ namespace VVVV.Nodes.Http.CSS
 
         //input pin declaration
 		private IColorIn FColorInput;
-
+        private IStringIn FPath;
+        private IEnumIn FRepeat;
+        private IStringIn FPosition;
 
         #endregion field declaration
-
 
 
 
@@ -84,7 +86,7 @@ namespace VVVV.Nodes.Http.CSS
         /// the nodes constructor
         /// nothing to declare for this node
         /// </summary>
-        public BackgroundColor()
+        public Background()
         {
             
         }
@@ -147,7 +149,7 @@ namespace VVVV.Nodes.Http.CSS
         /// It gives your base class the opportunity to finalize.
         /// Do not provide destructors in WebTypes derived from this class.
         /// </summary>
-        ~BackgroundColor()
+        ~Background()
         {
             // Do not re-create Dispose clean-up code here.
             // Calling Dispose(false) is optimal in terms of
@@ -177,7 +179,7 @@ namespace VVVV.Nodes.Http.CSS
                     // see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
                     FPluginInfo = new PluginInfo();
 
-                    FPluginInfo.Name = "BackgroundColor";
+                    FPluginInfo.Name = "Background";
                     // the nodes main name: use CamelCaps and no spaces
 
                     // the nodes category: try to use an existing one
@@ -235,8 +237,18 @@ namespace VVVV.Nodes.Http.CSS
         {
             //Inputs
 
-                FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorInput);
-                FColorInput.SetSubType(VColor.Green, false);
+            FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorInput);
+            FColorInput.SetSubType(VColor.Green, false);
+
+            FHost.CreateStringInput("Path", TSliceMode.Dynamic, TPinVisibility.True, out FPath);
+            FPath.SetSubType("", true);
+
+            FHost.CreateEnumInput("Repeat", TSliceMode.Dynamic, TPinVisibility.True, out FRepeat);
+            FRepeat.SetSubType("BackgroundRepeat");
+            FHost.UpdateEnum("BackgroundRepeat", "no-repeat", new string[] { "no-repeat", "repeat" ,"repeat-x", "repeat-y" ,"space" , "round" });
+
+            FHost.CreateStringInput("Position", TSliceMode.Dynamic, TPinVisibility.True, out FPosition);
+            FPosition.SetSubType("center", false);
         }
 
         #endregion pin creation
@@ -268,23 +280,45 @@ namespace VVVV.Nodes.Http.CSS
                 if (DynamicPinIsChanged())
                 {
                     // set slices count
-
                     IPluginIn[] tInputs = { FColorInput };
                     int tSliceCount = GetSliceCount(tInputs);
 
-
-                    RGBAColor currentColorSlice;
                     mCssPropertiesOwn.Clear();
 
                     for (int i = 0; i < tSliceCount; i++)
                     {
                         SortedList<string, string> tCssProperty = new SortedList<string, string>();
                         // get current values
-                        FColorInput.GetColor(i, out currentColorSlice);
+                        RGBAColor currentColorSlice;
+                        string currentPath;
+                        string currentRepeat;
+                        string currentPositon;
 
-                        // add css webattributes
-                        tCssProperty.Add("background-color", "rgb(" + Math.Round(currentColorSlice.R * 100) + "%," + Math.Round(currentColorSlice.G * 100) + "%," + Math.Round(currentColorSlice.B * 100) + "%)");
+
+                        FColorInput.GetColor(i, out currentColorSlice);
+                        FPath.GetString(i, out currentPath);
+                        FRepeat.GetString(i, out currentRepeat);
+                        FPosition.GetString(i, out currentPositon);
+
+                        FileInfo Info = new FileInfo(currentPath);
+
+                        if (Info != null  && Info.Name != "")
+                        {
+                            tCssProperty.Add("background-image", String.Format(@" url({0})", Info.Name));
+                            tCssProperty.Add("background-repeat", currentRepeat);
+                            tCssProperty.Add("background-position", currentPositon);
+
+                            FWebinterfaceSingelton.SetFileToStorage(Info.Name, File.ReadAllBytes(currentPath));
+                        }
+                        else
+                        {
+                            tCssProperty.Add("background-color", "rgb(" + Math.Round(currentColorSlice.R * 100) + "%," + Math.Round(currentColorSlice.G * 100) + "%," + Math.Round(currentColorSlice.B * 100) + "%)");
+                           
+                        }
+
                         mCssPropertiesOwn.Add(i, tCssProperty);
+                        // add css webattributes
+                        
                     }
                 }
         }
@@ -296,7 +330,7 @@ namespace VVVV.Nodes.Http.CSS
 
         protected override bool DynamicPinIsChanged()
         {
-            return FColorInput.PinIsChanged;
+            return FColorInput.PinIsChanged || FPath.PinIsChanged || FRepeat.PinIsChanged;
         }
     }
 }

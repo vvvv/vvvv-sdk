@@ -39,6 +39,8 @@ namespace VVVV.Nodes.Http.BaseNodes
         private bool FDisconnectPin = false;
         private bool FPinIsChanged = false;
 
+        protected WebinterfaceSingelton FWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
+
         #endregion field Definition
 
 
