@@ -117,6 +117,8 @@ namespace VVVV.Webinterface.HttpServer
             {
                 Ressources r = new Ressources();
                 Byte[] RessourceFile = r.SearchFile(pFilename);
+                
+
                 if (RessourceFile != null)
                 {
                     mContentAsByte = RessourceFile;
