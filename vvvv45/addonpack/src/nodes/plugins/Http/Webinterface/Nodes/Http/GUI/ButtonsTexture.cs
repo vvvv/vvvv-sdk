@@ -7,6 +7,7 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Webinterface.Utilities;
 using VVVV.Nodes.Http.BaseNodes;
+using VVVV.Webinterface.jQuery;
 
 namespace VVVV.Nodes.Http.GUI
 {
@@ -183,9 +184,9 @@ namespace VVVV.Nodes.Http.GUI
             FHost.CreateStringInput("Press", TSliceMode.Dynamic, TPinVisibility.True, out FPathPress);
             FPathPress.SetSubType("", true);
 
-            //FHost.UpdateEnum("ButtonMode", "Toggle", new string[] { "Toggle", "Bang" });
-            //FHost.CreateEnumInput("ButtonMode", TSliceMode.Single, TPinVisibility.True, out FMode);
-            //FMode.SetSubType("ButtonMode");
+            FHost.UpdateEnum("ButtonMode", "Toggle", new string[] { "Toggle", "Bang" });
+            FHost.CreateEnumInput("ButtonMode", TSliceMode.Single, TPinVisibility.True, out FMode);
+            FMode.SetSubType("ButtonMode");
 
             //output
             FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
@@ -206,9 +207,7 @@ namespace VVVV.Nodes.Http.GUI
 
                 for (int i = 0; i < SpreadMax; i++)
                 {
-                    //string CurrentMode;
-                    //FMode.GetString(i, out CurrentMode);
-
+                    
                     double CurrentDefaultSlice;
                     FDefault.GetValue(i, out CurrentDefaultSlice);
 
@@ -225,9 +224,11 @@ namespace VVVV.Nodes.Http.GUI
 
                     string currentPathDefault;
                     string currentPathPress;
+                    string CurrentMode;
 
                     FPathDefault.GetString(i,out currentPathDefault);
                     FPathPress.GetString(i, out currentPathPress);
+                    FMode.GetString(i, out CurrentMode);
 
 
 
@@ -236,6 +237,94 @@ namespace VVVV.Nodes.Http.GUI
 
                     if (InfoDefault.Name != "" && InfoPress.Name != "")
                     {
+
+                        FWebinterfaceSingelton.SetFileToStorage(InfoDefault.Name,File.ReadAllBytes(currentPathDefault));
+                        FWebinterfaceSingelton.SetFileToStorage(InfoPress.Name,File.ReadAllBytes(currentPathPress));
+
+                        
+                        Img Image = new Img();
+                        HTMLAttribute tSource;
+
+                        if (ReceivedString[i] == null)
+                        {
+                            ReceivedString[i] = CurrentDefaultSlice.ToString();
+                        }
+
+
+                        if (ReceivedString[i] == "1")
+                        {
+                            tSource = new HTMLAttribute("src", InfoPress.Name);
+                            
+                        }
+                        else
+                        {
+                             tSource = new HTMLAttribute("src", InfoDefault.Name);
+                        }
+
+                        Image.AddAttribute(tSource);
+                        
+                        SetTag(i, Image);
+
+                        string[] tElementSlider;
+                        if (ReceivedString[i] == "0")
+                        {
+                            tElementSlider = new string[2] { "src", InfoDefault.Name };
+                        }
+                        else
+                        {
+                            tElementSlider = new string[2] { "src", InfoPress.Name };
+                        }
+                        CreatePollingMessage(i, SliceId[i], "attr", tElementSlider);
+
+
+                        if (CurrentMode == "Toggle")
+                        {
+                            JQueryExpression postToServerTrue = new JQueryExpression();
+                            postToServerTrue.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"this.id + '=1'")), null, null);
+
+                            JQueryExpression postToServerFalse = new JQueryExpression();
+                            postToServerFalse.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"this.id + '=0'")), null, null);
+
+                            JavaScriptCodeBlock IfStatement = new JavaScriptCodeBlock(JQueryExpression.This().Attr("src", InfoPress.Name), postToServerTrue);
+                            JavaScriptCodeBlock ElseStatement = new JavaScriptCodeBlock(JQueryExpression.This().Attr("src", InfoDefault.Name), postToServerFalse);
+                            JavaScriptCodeBlock Block = new JavaScriptCodeBlock(new JavaScriptIfCondition(new JavaScriptCondition(JQueryExpression.This().Attr("src"), "==", InfoDefault.Name), IfStatement, ElseStatement));
+
+                            JavaScriptAnonymousFunction Function = new JavaScriptAnonymousFunction(Block, new string[] { "event" });
+                            JQueryExpression DocumentReadyHandler = new JQueryExpression(new ClassSelector(GetNodeId(0)));
+                            DocumentReadyHandler.ApplyMethodCall("click", Function);
+
+                            JQuery DocumentReady = JQuery.GenerateDocumentReady(DocumentReadyHandler);
+                            AddJavaScript(0, DocumentReady.GenerateScript(1, true, true), true);
+                        }
+                        else
+                        {
+                            JQueryExpression postToServerTrue = new JQueryExpression();
+                            postToServerTrue.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"this.id + '=1'")), null, null);
+                            ;
+                            
+                            JQueryExpression postToServerFalse = new JQueryExpression();
+                            postToServerFalse.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"this.id + '=0'")), null, null);
+                          
+
+                            JavaScriptAnonymousFunction MouseDown = new JavaScriptAnonymousFunction(new JavaScriptCodeBlock(JQueryExpression.This().Attr("src", InfoPress.Name), postToServerTrue), new string[] { "event" });
+                            JavaScriptAnonymousFunction MouseUp = new JavaScriptAnonymousFunction(new JavaScriptCodeBlock(JQueryExpression.This().Attr("src", InfoDefault.Name), postToServerFalse), new string[] { "event" });
+
+                            JQueryExpression DocumentReadyHandler = new JQueryExpression(new ClassSelector(GetNodeId(0)));
+                            DocumentReadyHandler.ApplyMethodCall("mousedown", MouseDown);
+                            DocumentReadyHandler.ApplyMethodCall("mouseup", MouseUp);
+                            DocumentReadyHandler.ApplyMethodCall("mouseleave", MouseUp);
+
+
+                            JQuery DocumentReady = JQuery.GenerateDocumentReady(DocumentReadyHandler);
+                            AddJavaScript(0, DocumentReady.GenerateScript(1, true, true), true);
+                        }
+
+
+
+
+
+
+                        
 
 //                        if (CurrentMode == "Toggle")
 //                        {

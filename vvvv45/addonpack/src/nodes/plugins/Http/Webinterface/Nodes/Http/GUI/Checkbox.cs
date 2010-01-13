@@ -260,7 +260,7 @@ namespace VVVV.Nodes.Http.GUI
 
                 JavaScriptCodeBlock IfStatement = new JavaScriptCodeBlock(JQueryExpression.This().Attr("checked", "false"), postToServerTrue);
                 JavaScriptCodeBlock ElseStatement = new JavaScriptCodeBlock(new JQueryExpression().Attr("checked","true"), postToServerFalse);
-                JavaScriptCodeBlock Block = new JavaScriptCodeBlock(new JavaScriptIfCondition(new JavaScriptCondition<JavaScriptExpression>(tThis.Member("checked"), "==", true), IfStatement, ElseStatement));
+                JavaScriptCodeBlock Block = new JavaScriptCodeBlock(new JavaScriptIfCondition(new JavaScriptCondition(tThis.Member("checked"), "==", true), IfStatement, ElseStatement));
 
                 JavaScriptAnonymousFunction Function = new JavaScriptAnonymousFunction(Block, new string[] { "event" });
                 JQueryExpression DocumentReadyHandler = new JQueryExpression(new ClassSelector(GetNodeId(0)));
