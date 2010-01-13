@@ -4,22 +4,30 @@ using System.Text;
 
 namespace VVVV.Webinterface.jQuery
 {
-    class JavaScriptCondition<T>:JavaScriptObject where T : JavaScriptExpression
+    class JavaScriptCondition:JavaScriptObject
     {
         private string FCondition;
-        private T FVariable;
-        private bool FTrueOrFalse;
+        private Expression FVariable;
+        private string FArgument;
+        private bool FBool;
 
         public JavaScriptCondition(string Condition)
         {
             FCondition = Condition;
         }
 
-        public JavaScriptCondition(T Variable, string Condition, bool TrueOrFalse)
+        public JavaScriptCondition(Expression Variable, string Condition, string Argument)
         {
             FVariable = Variable;
             FCondition = Condition;
-            FTrueOrFalse = TrueOrFalse;
+            FArgument = Argument;
+        }
+
+        public JavaScriptCondition(Expression Variable, string Condition, bool Bool)
+        {
+            FVariable = Variable;
+            FCondition = Condition;
+            FBool = Bool;
         }
 
 
@@ -28,7 +36,14 @@ namespace VVVV.Webinterface.jQuery
         {
             if(FVariable != null)
             {
-                return FVariable.GenerateScript(0,false,false) + " " + FCondition + " " + FTrueOrFalse.ToString().ToLower();
+                if (FArgument != null)
+                {
+                    return FVariable.GenerateScript(0, false, false) + " " + FCondition + " \"" + FArgument + "\"";
+                }
+                else
+                {
+                    return FVariable.GenerateScript(0, false, false) + " " + FCondition + " " + FBool.ToString().ToLower();
+                }
             }
             else
             {

@@ -7,11 +7,11 @@ namespace VVVV.Webinterface.jQuery
     class JavaScriptIfCondition : JavaScriptObject
     {
 
-        private JavaScriptCondition<JavaScriptExpression> FCondition;
+        private Expression FCondition;
         private JavaScriptCodeBlock FIfStatement;
         private JavaScriptCodeBlock FElseStatement;
 
-        public JavaScriptIfCondition(JavaScriptCondition<JavaScriptExpression> Condition, JavaScriptCodeBlock IfStatement, JavaScriptCodeBlock ElseStatement)
+        public JavaScriptIfCondition(Expression Condition, JavaScriptCodeBlock IfStatement, JavaScriptCodeBlock ElseStatement)
         {
             FCondition = Condition;
             FIfStatement = IfStatement;
