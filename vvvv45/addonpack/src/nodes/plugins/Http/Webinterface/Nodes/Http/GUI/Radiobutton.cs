@@ -236,7 +236,7 @@ namespace VVVV.Nodes.Http.GUI
 
                     //Set Polling Messag, which is send to the server if the FSendPin (DynamicGUINode) is Changed
                     string[] tElementSlider;
-                    if (currentDefaultSlice == 0)
+                    if (Response == "0")
                     {
                         tElementSlider = new string[2] { "checked", "" };
                     }

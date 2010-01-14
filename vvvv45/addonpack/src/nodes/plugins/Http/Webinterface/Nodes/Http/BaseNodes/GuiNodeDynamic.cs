@@ -471,8 +471,8 @@ namespace VVVV.Nodes.Http.BaseNodes
                 double currentSendValue = 0;
                 FSendPolling.GetValue(i, out currentSendValue);
 
-                SendToBrowser.Insert(i,FSendPolling.PinIsChanged && (currentSendValue > 0.5));
-                if(FSendPolling.PinIsChanged && (currentSendValue > 0.5))
+                SendToBrowser.Insert(i,FSendPolling.PinIsChanged);
+                if(FSendPolling.PinIsChanged)
                 {
                     FReceivedNewString = true;
                     FReceivedString[i] = null;

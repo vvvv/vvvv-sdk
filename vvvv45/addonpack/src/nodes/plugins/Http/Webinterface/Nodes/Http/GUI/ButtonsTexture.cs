@@ -22,9 +22,10 @@ namespace VVVV.Nodes.Http.GUI
         private IStringIn FPathDefault;
         private IStringIn FPathPress;
         private IEnumIn FMode;
-
-
+        private IValueIn FReload;
         private IValueOut FResponse;
+
+        private List<bool> FReceivedThisFrame = new List<bool>();
 
 
         #endregion field declaration
@@ -188,6 +189,9 @@ namespace VVVV.Nodes.Http.GUI
             FHost.CreateEnumInput("ButtonMode", TSliceMode.Single, TPinVisibility.True, out FMode);
             FMode.SetSubType("ButtonMode");
 
+            FHost.CreateValueInput("Reload", 1, null, TSliceMode.Single, TPinVisibility.True, out FReload);
+            FReload.SetSubType(0, 1, 1, 0, true, false, true);
+
             //output
             FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
             FResponse.SetSubType(0, 1, 1, 0, false, false, true);
@@ -207,41 +211,31 @@ namespace VVVV.Nodes.Http.GUI
 
                 for (int i = 0; i < SpreadMax; i++)
                 {
-                    
+
                     double CurrentDefaultSlice;
                     FDefault.GetValue(i, out CurrentDefaultSlice);
-
-
-                    string tResponse = ReceivedString.ToArray()[i];
-
-                    if (tResponse == null)
-                    {
-                        tResponse = CurrentDefaultSlice.ToString();
-                    }
-
-                    FResponse.SliceCount = SpreadMax;
-                    FResponse.SetValue(i, Convert.ToInt16(tResponse));
 
                     string currentPathDefault;
                     string currentPathPress;
                     string CurrentMode;
 
-                    FPathDefault.GetString(i,out currentPathDefault);
+                    FPathDefault.GetString(i, out currentPathDefault);
                     FPathPress.GetString(i, out currentPathPress);
                     FMode.GetString(i, out CurrentMode);
 
 
+                    bool DirectoryExist = Directory.Exists(currentPathDefault) && Directory.Exists(currentPathPress);
+                    bool FileExist = File.Exists(currentPathDefault) && File.Exists(currentPathPress);
 
-                    FileInfo InfoDefault = new FileInfo(currentPathDefault);
-                    FileInfo InfoPress = new FileInfo(currentPathPress);
-
-                    if (InfoDefault.Name != "" && InfoPress.Name != "")
+                    if (FileExist)
                     {
 
-                        FWebinterfaceSingelton.SetFileToStorage(InfoDefault.Name,File.ReadAllBytes(currentPathDefault));
-                        FWebinterfaceSingelton.SetFileToStorage(InfoPress.Name,File.ReadAllBytes(currentPathPress));
+                        FileInfo InfoDefault = new FileInfo(currentPathDefault);
+                        FileInfo InfoPress = new FileInfo(currentPathPress);
 
-                        
+                        FWebinterfaceSingelton.SetFileToStorage(InfoDefault.Name, File.ReadAllBytes(currentPathDefault));
+                        FWebinterfaceSingelton.SetFileToStorage(InfoPress.Name, File.ReadAllBytes(currentPathPress));
+
                         Img Image = new Img();
                         HTMLAttribute tSource;
 
@@ -254,15 +248,15 @@ namespace VVVV.Nodes.Http.GUI
                         if (ReceivedString[i] == "1")
                         {
                             tSource = new HTMLAttribute("src", InfoPress.Name);
-                            
+
                         }
                         else
                         {
-                             tSource = new HTMLAttribute("src", InfoDefault.Name);
+                            tSource = new HTMLAttribute("src", InfoDefault.Name);
                         }
 
                         Image.AddAttribute(tSource);
-                        
+
                         SetTag(i, Image);
 
                         string[] tElementSlider;
@@ -279,6 +273,15 @@ namespace VVVV.Nodes.Http.GUI
 
                         if (CurrentMode == "Toggle")
                         {
+                            if (ReceivedString[i] == null)
+                            {
+                                ReceivedString[i] = CurrentDefaultSlice.ToString();
+                            }
+
+                            FResponse.SliceCount = SpreadMax;
+                            FResponse.SetValue(i, Convert.ToInt16(ReceivedString[i]));
+
+
                             JQueryExpression postToServerTrue = new JQueryExpression();
                             postToServerTrue.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"this.id + '=1'")), null, null);
 
@@ -298,16 +301,18 @@ namespace VVVV.Nodes.Http.GUI
                         }
                         else
                         {
+                            FResponse.SliceCount = SpreadMax;
+                            if (ReceivedString[i] != null)
+                            {
+
+                                FResponse.SetValue(i, Convert.ToInt16(ReceivedString[i]));
+                                FReceivedString[i] = null;
+                            }
                             JQueryExpression postToServerTrue = new JQueryExpression();
                             postToServerTrue.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"this.id + '=1'")), null, null);
-                            ;
-                            
-                            JQueryExpression postToServerFalse = new JQueryExpression();
-                            postToServerFalse.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"this.id + '=0'")), null, null);
-                          
 
                             JavaScriptAnonymousFunction MouseDown = new JavaScriptAnonymousFunction(new JavaScriptCodeBlock(JQueryExpression.This().Attr("src", InfoPress.Name), postToServerTrue), new string[] { "event" });
-                            JavaScriptAnonymousFunction MouseUp = new JavaScriptAnonymousFunction(new JavaScriptCodeBlock(JQueryExpression.This().Attr("src", InfoDefault.Name), postToServerFalse), new string[] { "event" });
+                            JavaScriptAnonymousFunction MouseUp = new JavaScriptAnonymousFunction(new JavaScriptCodeBlock(JQueryExpression.This().Attr("src", InfoDefault.Name)), new string[] { "event" });
 
                             JQueryExpression DocumentReadyHandler = new JQueryExpression(new ClassSelector(GetNodeId(0)));
                             DocumentReadyHandler.ApplyMethodCall("mousedown", MouseDown);
@@ -318,116 +323,33 @@ namespace VVVV.Nodes.Http.GUI
                             JQuery DocumentReady = JQuery.GenerateDocumentReady(DocumentReadyHandler);
                             AddJavaScript(0, DocumentReady.GenerateScript(1, true, true), true);
                         }
-
-
-
-
-
-
-                        
-
-//                        if (CurrentMode == "Toggle")
-//                        {
-//                            #region out
-//                            HtmlDiv tDiv = new HtmlDiv();
-//                            HtmlDiv tDivInlay = new HtmlDiv();
-//                            tDivInlay.Insert("  ");
-
-//                            string AttributeContent = "";
-//                            string tContent = "";
-
-//                            if (tResponse == "1")
-//                            {
-//                                AttributeContent = String.Format(@"position:relative;background-color:rgb({0}%,{1}%,{2}%); width:50%; height:50%;top:25%;left:25%;border-style:solid; border-color:#808080; border-width:thin;", currentOnPressColorSlice.R * 100, currentOnPressColorSlice.G * 100, currentOnPressColorSlice.B * 100);
-
-//                                tContent = String.Format(@"toggle(
-//                            function () {{
-//                                $('div',this).css({{'background-color':'rgb({0}%,{1}%,{2}%)'}});
-//                                var id = $(this).attr('id');
-//                                $.post('ToVVVV.xml', id + '=0', null);
-//                            }},
-//                            function () {{
-//                                $('div',this).css({{'background-color':'rgb({3}%,{4}%,{5}%)'}});
-//                                var id = $(this).attr('id');
-//                                $.post('ToVVVV.xml', id + '=1', null);
-//                            }});
-//                            ", currentDefaultColorSlice.R * 100, currentDefaultColorSlice.G * 100, currentDefaultColorSlice.B * 100, currentOnPressColorSlice.R * 100, currentOnPressColorSlice.G * 100, currentOnPressColorSlice.B * 100);
-//                            }
-//                            else
-//                            {
-//                                AttributeContent = String.Format(@"position:relative;background-color:rgb({0}%,{1}%,{2}%); width:50%; height:50%;top:25%;left:25%;border-style:solid; border-color:#808080; border-width:thin;", currentDefaultColorSlice.R * 100, currentDefaultColorSlice.G * 100, currentDefaultColorSlice.B * 100);
-
-//                                tContent = String.Format(@"toggle(
-//                            function () {{
-//                                $('div',this).css({{'background-color':'rgb({0}%,{1}%,{2}%)'}});
-//                                var id = $(this).attr('id');
-//                                $.post('ToVVVV.xml', id + '=1', null);
-//                            }},
-//                            function () {{
-//                                $('div',this).css({{'background-color':'rgb({3}%,{4}%,{5}%)'}});
-//                                var id = $(this).attr('id');
-//                                $.post('ToVVVV.xml', id + '=0', null);
-//                            }}
-//                            );
-//                            ", currentOnPressColorSlice.R * 100, currentOnPressColorSlice.G * 100, currentOnPressColorSlice.B * 100, currentDefaultColorSlice.R * 100, currentDefaultColorSlice.G * 100, currentDefaultColorSlice.B * 100);
-//                            }
-
-
-//                            HTMLAttribute InlayAttribute = new HTMLAttribute("style", AttributeContent);
-//                            tDivInlay.AddAttribute(InlayAttribute);
-
-//                            tDiv.Insert(tDivInlay);
-
-//                            SetTag(i, tDiv);
-
-//                            AddJavaScript(0, new JqueryFunction(true, "." + GetNodeId(0), tContent).Text, true);
-
-//                            #endregion
-//                        }
-//                        else
-//                        {
-//                            HtmlDiv tDiv = new HtmlDiv();
-//                            HtmlDiv tDivInlay = new HtmlDiv();
-//                            tDivInlay.Insert("  ");
-
-//                            string AttributeContent = String.Format(@"position:relative;background-color:rgb({0}%,{1}%,{2}%); width:50%; height:50%;top:25%;left:25%;border-style:solid; border-color:#808080; border-width:thin;", currentDefaultColorSlice.R * 100, currentDefaultColorSlice.G * 100, currentDefaultColorSlice.B * 100);
-//                            HTMLAttribute InlayAttribute = new HTMLAttribute("style", AttributeContent);
-//                            tDivInlay.AddAttribute(InlayAttribute);
-
-//                            tDiv.Insert(tDivInlay);
-
-//                            SetTag(i, tDiv);
-
-
-//                            string tContent = String.Format(@"mousedown(function(){{
-//                            $('div',this).css({{'background-color':'rgb({0}%,{1}%,{2}%)'}});
-//                            var id = $(this).attr('id');
-//                            $.post('ToVVVV.xml', id + '=1', null);
-//                        }}).mouseup(function(){{
-//                            $('div',this).css({{'background-color':'rgb({3}%,{4}%,{5}%)'}});
-//                            var id = $(this).attr('id');
-//                            $.post('ToVVVV.xml', id + '=0', null);
-//                        }}).mouseleave(function(){{
-//                            $('div',this).css({{'background-color':'rgb({6}%,{7}%,{8}%)'}});
-//                            var id = $(this).attr('id');
-//                            $.post('ToVVVV.xml', id + '=0', null);
-//                        }});
-//                        ", currentOnPressColorSlice.R * 100, currentOnPressColorSlice.G * 100, currentOnPressColorSlice.B * 100, currentDefaultColorSlice.R * 100, currentDefaultColorSlice.G * 100, currentDefaultColorSlice.B * 100, currentDefaultColorSlice.R * 100, currentDefaultColorSlice.G * 100, currentDefaultColorSlice.B * 100);
-
-//                            AddJavaScript(0, new JqueryFunction(true, "." + FGuiDataList[0].NodeId, tContent).Text, true);
-//                        }
                     }
                     else
                     {
+                        SetTag(i, new Img("", "noPic"));
                         FHost.Log(TLogType.Message, FPluginInfo.Name + ": please loaded Textures");
                     }
+                }
+            }
+            else
+            {
+                for (int i = 0; i < SpreadMax; i++)
+                {
+
+                    string currentMode;
+                    FMode.GetString(i, out currentMode);
+                    if (currentMode == "Bang")
+                    {
+                        FResponse.SetValue(i, 0);
+                    }
+
                 }
             }
         }
 
         protected override bool DynamicPinsAreChanged()
         {
-            return (FDefault.PinIsChanged || FPathDefault.PinIsChanged || FPathPress.PinIsChanged );
+            return (FDefault.PinIsChanged || FPathDefault.PinIsChanged || FPathPress.PinIsChanged || FMode.PinIsChanged || FReload.PinIsChanged );
         }
 
         #endregion Main Loop

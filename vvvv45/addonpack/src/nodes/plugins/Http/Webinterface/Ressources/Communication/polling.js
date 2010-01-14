@@ -1,6 +1,6 @@
     //Ask VVVV every second if there are new data from vvvv
 	$(document).ready(function(){
-        $(document).everyTime(1500,function(i) {
+        $(document).everyTime(900,function(i) {
 		
            $.ajax({
             type: "POST",

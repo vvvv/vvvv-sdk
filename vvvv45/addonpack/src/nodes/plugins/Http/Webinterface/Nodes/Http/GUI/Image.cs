@@ -204,14 +204,17 @@ namespace VVVV.Nodes.Http.GUI
 
                     string tSource = new FileInfo(currentSourceSlice).Name;
 
+                    bool FileExist = File.Exists(currentSourceSlice);
+
                     // Source Pins
-                    if (tSource != null && tSource != "")
+                    if (FileExist)
                     {
                         FWebinterfaceSingelton.SetFileToStorage(tSource, File.ReadAllBytes(currentSourceSlice));
                     }
                     else
                     {
                         tSource = "No Source";
+                        FHost.Log(TLogType.Message, FPluginInfo.Namespace + ": can't load " + currentSourceSlice);
                     }
 
                     // Alt Pin Input

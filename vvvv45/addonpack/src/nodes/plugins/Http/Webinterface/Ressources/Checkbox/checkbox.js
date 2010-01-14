@@ -74,27 +74,54 @@
 			);
 
 
-			var D = document;
-
-			twidth = ( 100 * parseFloat($ch.css('width')) / parseFloat($(document).width()))+ "%";
+			
+			DocumentWidth = $.getDocWidth();
+			DocumentHeight = $.getDocHeight();
+			
+			twidth = $ch.css('width');
+			theigth = $ch.css('height');
+			tleft = $ch.css('left');
+			ttop = $ch.css('top');
+			
+			WidthIndex = twidth.indexOf('%');
+			HeightIndex = theigth.indexOf('%');
+			LeftIndex = tleft.indexOf('%');
+			TopIndex = ttop.indexOf('%');
+			
+			
+			if(WidthIndex == -1)
+			{
+				twidth = ( 100 * parseFloat($ch.css('width')) / parseFloat(DocumentWidth))+ "%";
+			}
 			if(twidth == "Infinity%" || twidth == "NaN%")
 			{
 				twidth = "auto";
 			}
 			
-			theight = ( 100 * parseFloat($ch.css('height')) /  parseFloat($(document).height()))+ "%";
+			
+			if(HeightIndex == -1)
+			{
+				theight = ( 100 * parseFloat($ch.css('height')) /  parseFloat(DocumentHeight))+ "%";
+			}
 			if(theight == "Infinity%" || theight == "NaN%")
 			{
 				theight = "auto";
 			}
 			
-			tleft = ( 100 * parseFloat($ch.css('left')) / parseFloat($(document).width()))+ "%";
+			
+			if(LeftIndex == -1)
+			{
+				tleft = ( 100 * parseFloat($ch.css('left')) / parseFloat(DocumentWidth))+ "%";
+			}
 			if(tleft == "Infinity%" || tleft == "NaN%")
 			{
 				tleft = "auto";
 			}
 			
-			ttop = ( 100 * parseFloat($ch.css('top')) / parseFloat($(document).height()))+ "%";
+			if(TopIndex == -1)
+			{
+				ttop = ( 100 * parseFloat($ch.css('top')) / parseFloat(DocumentHeight))+ "%";
+			}
 			if(ttop == "Infinity%" || ttop == "NaN%")
 			{
 				ttop = "auto";

@@ -114,9 +114,16 @@ namespace VVVV.Webinterface.HttpServer
         {
             while (FRunning)
             {
-                FAllDone.Reset();
-                FHttpListener.BeginGetContext(new AsyncCallback(ListenerCallback), FHttpListener);
-                FAllDone.WaitOne();
+                try
+                {
+                    FAllDone.Reset();
+                    FHttpListener.BeginGetContext(new AsyncCallback(ListenerCallback), FHttpListener);
+                    FAllDone.WaitOne();
+                }
+                catch(Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
             }
 
         }
