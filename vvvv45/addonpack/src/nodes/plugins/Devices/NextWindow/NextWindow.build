@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding='iso-8859-1' ?>
+<project
+	name="SSHClient"
+	default="build"
+	xmlns="http://nant.sf.net/release/0.85/nant.xsd"
+>
+
+  <property name="root.dir" value="../../../" />
+  <include buildfile="${root.dir}/nant-plugins.xml" />
+  <property name="lib.name" value="VVVV.NextWindow.dll" />
+
+
+    <target name="copy-help-custom">
+    <copy todir="${plugin.path}">
+      <fileset basedir="help">
+        <include name="*.v4p" />
+      </fileset>
+    </copy>
+	<copy todir="${plugin.path}">
+      <fileset basedir="Dependencies">
+        <include name="*.dll" />
+      </fileset>
+    </copy>
+  </target>
+
+
+</project>
