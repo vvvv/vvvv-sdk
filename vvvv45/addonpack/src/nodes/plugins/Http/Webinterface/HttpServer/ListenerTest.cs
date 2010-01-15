@@ -100,7 +100,7 @@ namespace VVVV.Webinterface.HttpServer
                 }
                 catch (HttpListenerException ex)
                 {
-                    Debug.WriteLine(ex.Message);
+                    //Debug.WriteLine(ex.Message);
                 }
                 
             }else
@@ -122,7 +122,7 @@ namespace VVVV.Webinterface.HttpServer
                 }
                 catch(Exception ex)
                 {
-                    Debug.WriteLine(ex.Message);
+                    //Debug.WriteLine(ex.Message);
                 }
             }
 
@@ -157,7 +157,7 @@ namespace VVVV.Webinterface.HttpServer
             }
             catch (Exception Ex)
             {
-                Debug.WriteLine(Ex.Message);
+                //Debug.WriteLine(Ex.Message);
             }
      
         }
@@ -172,7 +172,7 @@ namespace VVVV.Webinterface.HttpServer
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                //Debug.WriteLine(ex.Message);
             }
 
             

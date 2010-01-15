@@ -563,7 +563,7 @@ namespace VVVV.Webinterface.HttpServer {
                     Content = tSocketInformation.Request.ToString();
 
                     //looks if alle data is received from the Socket
-                    // ?? sind damit alle Fälle abgedeckt (debuggen);
+                    // ?? sind damit alle Fälle abgedeckt (//Debuggen);
                     if ((Content.Length > 0) && ((Content[0] != '<') ||
                         ((Content[0] == '<') && (Content.IndexOf("</message>") > -1))))
                     {

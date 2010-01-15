@@ -543,7 +543,7 @@ namespace VVVV.Nodes.Http
                 }
 
 
-                if (FUpdateToWebinterface || FCommunication.PinIsChanged || FPageHeight.PinIsChanged || FPageWidth.PinIsChanged || FConnectPin || FDisconnectPin)
+                if (FUpdateToWebinterface || FCommunication.PinIsChanged || FPageHeight.PinIsChanged || FPageWidth.PinIsChanged || FTitel.PinIsChanged || FConnectPin || FDisconnectPin)
                 {
                     mPage = null;
                     mPage = new Page(true);
@@ -617,14 +617,19 @@ namespace VVVV.Nodes.Http
                     mPage.Body.Insert(mPageBodyString);
                     mPage.Head.Insert(mPageHeadString);
 
-
-                    if ((FUpstreamInterface != null && FUpstreamInterface.PinIsChanged()) || FConnectPin || FDisconnectPin)
+                    if (FUpstreamInterface != null)
                     {
-                        FUpstreamInterface.GetDataObject(0, out mGuiDatenListe);
+                        if (FUpstreamInterface.PinIsChanged() || FConnectPin || FDisconnectPin)
+                        {
+
+                            FUpstreamInterface.GetDataObject(0, out mGuiDatenListe);
+                            mWebinterfaceSingelton.setHtmlPageData(mPageName, mUrl, mPage, mGuiDatenListe);
+
+                        }
                     }
                 
 
-                    mWebinterfaceSingelton.setHtmlPageData(mPageName, mUrl, mPage, mGuiDatenListe);
+                    
                     
                 }
 

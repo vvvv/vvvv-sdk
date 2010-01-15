@@ -160,7 +160,7 @@ namespace VVVV.Webinterface.HttpServer
 
             if (!request.HasEntityBody)
             {
-                Debug.WriteLine("No client data was sent with the request.");
+                //Debug.WriteLine("No client data was sent with the request.");
                 return "No client data was sent with the request.";
             }
             System.IO.Stream body = request.InputStream;
@@ -168,15 +168,15 @@ namespace VVVV.Webinterface.HttpServer
             System.IO.StreamReader reader = new System.IO.StreamReader(body, encoding);
             if (request.ContentType != null)
             {
-                Debug.WriteLine("Client data content type {0}", request.ContentType);
+                //Debug.WriteLine("Client data content type {0}", request.ContentType);
             }
-            Debug.WriteLine(String.Format("Client data content length {0}", request.ContentLength64));
+            //Debug.WriteLine(String.Format("Client data content length {0}", request.ContentLength64));
 
-            Debug.WriteLine("Start of client data:");
+            //Debug.WriteLine("Start of client data:");
             // Convert the data to a string and display it on the Debug.
             string RequestContent = reader.ReadToEnd();
-            Debug.WriteLine(RequestContent);
-            Debug.WriteLine("End of client data:");
+            //Debug.WriteLine(RequestContent);
+            //Debug.WriteLine("End of client data:");
             body.Close();
             reader.Close();
 

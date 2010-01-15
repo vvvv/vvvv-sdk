@@ -19,6 +19,7 @@ namespace VVVV.Nodes.Http.GUI
 
         private IStringIn FSource;
         private IStringIn FAlt;
+        private IValueIn FReload;
 
         private bool FDisposed = false;
 

@@ -16,6 +16,7 @@ namespace VVVV.Nodes.HttpGUI
         private bool FDisposed = false;
         private IStringOut FResponse;
         private IStringIn FDefault;
+        private IValueIn FPasswort;
 
         #endregion field declaration
 
@@ -174,6 +175,8 @@ namespace VVVV.Nodes.HttpGUI
             FHost.CreateStringOutput("Response", TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
             FResponse.SetSubType("", false);
             
+            FHost.CreateValueInput("Password" ,1,null, TSliceMode.Dynamic, TPinVisibility.True, out FPasswort);
+            FPasswort.SetSubType(0,1,1,0,false,true,true);
         }
 
         #endregion pin creation
@@ -197,8 +200,11 @@ namespace VVVV.Nodes.HttpGUI
 
                     string tResponse = ReceivedString[i];
 
+                    double currentPassword;
                     string currentDefault;
+
                     FDefault.GetString(i,out currentDefault);
+                    FPasswort.GetValue(i, out currentPassword);
 
                     if (tResponse == null)
                     {
@@ -207,9 +213,19 @@ namespace VVVV.Nodes.HttpGUI
 
                     FResponse.SetString(i, tResponse);
 
+
                     TextField tTextfield = new TextField();
 
+                    if (currentPassword > 0.5)
+                    {
+                        tTextfield.AddAttribute(new HTMLAttribute("type", "password"));
+                    }
+
+
+                    
+
                     tTextfield.AddAttribute(new HTMLAttribute("Value", tResponse));
+
 
                     SetTag(i, tTextfield);
 
@@ -242,7 +258,7 @@ namespace VVVV.Nodes.HttpGUI
 
 		protected override bool DynamicPinsAreChanged()
 		{
-			return FDefault.PinIsChanged;
+			return FDefault.PinIsChanged || FPasswort.PinIsChanged;
 		}
 	}
 }

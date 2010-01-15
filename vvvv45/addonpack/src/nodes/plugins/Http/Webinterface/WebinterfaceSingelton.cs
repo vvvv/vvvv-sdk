@@ -589,7 +589,8 @@ namespace VVVV.Webinterface
 
         public void getPollingMessage(out XmlDocument pContent)
         {
-            if (Monitor.TryEnter(mNodePolling) && Monitor.TryEnter(mBrowserPolling))
+            Debug.WriteLine("Get Polling");
+            if (Monitor.TryEnter(mNodePolling,500) && Monitor.TryEnter(mBrowserPolling,500))
             {
                 try
                 {
@@ -597,6 +598,7 @@ namespace VVVV.Webinterface
                     {
                         XmlDocument tXml = CreatePollingXml();
                         pContent = tXml;
+                        Debug.WriteLine("Get Polling has content");
                         mBrowserPolling.Clear();
                         mNodePolling.Clear();
                     }
@@ -623,7 +625,7 @@ namespace VVVV.Webinterface
         public void setPollingMessage(string SliceId, XmlDocument pContent)
         {
             Monitor.Enter(mNodePolling);
-            
+            Debug.WriteLine(SliceId);
             if (mNodePolling.ContainsKey(SliceId) == false)
             {
                 mNodePolling.Add(SliceId, pContent);
