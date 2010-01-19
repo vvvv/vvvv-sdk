@@ -40,7 +40,9 @@ namespace VVVV.Nodes
         private DoubleDataHolder FData;
 
         private IStringIn FPinInReceiveString;
+        private IValueIn FPinInDefault;
         private IValueOut FPinOutValue;
+        private IValueOut FPinOutMatchCount;
         private string FKey = "";
 
         private bool FInvalidate = false;
@@ -50,7 +52,7 @@ namespace VVVV.Nodes
         #region Auto Evaluate
         public bool AutoEvaluate
         {
-            get { return false; }
+            get { return true; }
         }
         #endregion
 
@@ -65,11 +67,17 @@ namespace VVVV.Nodes
             this.FData.OnUpdate += this.FData_OnAdd;
     
             this.FHost.CreateStringInput("Receive String", TSliceMode.Single, TPinVisibility.True, out this.FPinInReceiveString);
-            this.FPinInReceiveString.SetSubType("", false);
-
+            this.FPinInReceiveString.SetSubType("send", false);
+      
+            this.FHost.CreateValueInput("Default", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInDefault);
+            this.FPinInDefault.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
+        
             this.FHost.CreateValueOutput("Output", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutValue);
             this.FPinOutValue.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
-        
+
+            this.FHost.CreateValueOutput("Found", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutMatchCount);
+            this.FPinOutMatchCount.SetSubType(0, 1, 1, 0, false,true, false);
+         
         }
 
         void FData_OnAdd(string key)
@@ -100,14 +108,31 @@ namespace VVVV.Nodes
                 this.FInvalidate = true;
             }
 
-            if (this.FInvalidate)
+            if (this.FInvalidate || this.FPinInDefault.PinIsChanged)
             {
-                List<double> dbl = this.FData.GetData(this.FKey);
-                this.FPinOutValue.SliceCount = dbl.Count;
-                for (int i = 0; i < dbl.Count; i++)
+                bool found;
+                List<double> dbl = this.FData.GetData(this.FKey,out found);
+
+                if (found)
                 {
-                    this.FPinOutValue.SetValue(i, dbl[i]);
+                    this.FPinOutValue.SliceCount = dbl.Count;
+                    for (int i = 0; i < dbl.Count; i++)
+                    {
+                        this.FPinOutValue.SetValue(i, dbl[i]);
+                    }
                 }
+                else
+                {
+                    this.FPinOutValue.SliceCount = this.FPinInDefault.SliceCount;
+                    for (int i = 0; i < this.FPinInDefault.SliceCount; i++)
+                    {
+                        double dbli;
+                        this.FPinInDefault.GetValue(i, out dbli);
+                        this.FPinOutValue.SetValue(i, dbli);
+                    }
+                }
+
+                this.FPinOutMatchCount.SetValue(0, Convert.ToDouble(found));
                 this.FInvalidate = false;
             }
 

@@ -42,6 +42,8 @@ namespace VVVV.Nodes
 
         private IStringIn FPinInReceiveString;
         private IColorOut FPinOutValue;
+        private IColorIn FPinInDefault;
+        private IValueOut FPinOutMatchCount;
         private string FKey = "";
 
         private bool FInvalidate = false;
@@ -51,7 +53,7 @@ namespace VVVV.Nodes
         #region Auto Evaluate
         public bool AutoEvaluate
         {
-            get { return false; }
+            get { return true; }
         }
         #endregion
 
@@ -66,10 +68,16 @@ namespace VVVV.Nodes
             this.FData.OnUpdate += this.FData_OnAdd;
     
             this.FHost.CreateStringInput("Receive String", TSliceMode.Single, TPinVisibility.True, out this.FPinInReceiveString);
-            this.FPinInReceiveString.SetSubType("", false);
+            this.FPinInReceiveString.SetSubType("send", false);
+
+            this.FHost.CreateColorInput("Default",TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInDefault);
+            this.FPinInDefault.SetSubType(VColor.Black, true);
 
             this.FHost.CreateColorOutput("Output",TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutValue);
             this.FPinOutValue.SetSubType(VColor.Black, true);
+
+            this.FHost.CreateValueOutput("Found", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinOutMatchCount);
+            this.FPinOutMatchCount.SetSubType(0, 1, 1, 0, false, true, false);
         
         }
 
@@ -101,14 +109,29 @@ namespace VVVV.Nodes
                 this.FInvalidate = true;
             }
 
-            if (this.FInvalidate)
+            if (this.FInvalidate || this.FPinInDefault.PinIsChanged)
             {
-                List<RGBAColor> dbl = this.FData.GetData(this.FKey);
-                this.FPinOutValue.SliceCount = dbl.Count;
-                for (int i = 0; i < dbl.Count; i++)
+                bool found;
+                List<RGBAColor> dbl = this.FData.GetData(this.FKey,out found);
+                if (found)
                 {
-                    this.FPinOutValue.SetColor(i, dbl[i]);
+                    this.FPinOutValue.SliceCount = dbl.Count;
+                    for (int i = 0; i < this.FPinInDefault.SliceCount; i++)
+                    {
+                        this.FPinOutValue.SetColor(i, dbl[i]);
+                    }
                 }
+                else
+                {
+                    this.FPinOutValue.SliceCount = this.FPinInDefault.SliceCount;
+                    for (int i = 0; i < dbl.Count; i++)
+                    {
+                        RGBAColor col;
+                        this.FPinInDefault.GetColor(i, out col);
+                        this.FPinOutValue.SetColor(i, col);
+                    }
+                }
+                this.FPinOutMatchCount.SetValue(0, Convert.ToDouble(found));
                 this.FInvalidate = false;
             }
 

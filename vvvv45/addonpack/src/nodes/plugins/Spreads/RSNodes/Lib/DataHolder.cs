@@ -63,14 +63,16 @@ namespace VVVV.Lib
             }
         }
 
-        public List<T> GetData(string key)
+        public List<T> GetData(string key, out bool found)
         {
             if (this.data.ContainsKey(key))
             {
+                found = true;
                 return this.data[key];
             }
             else
             {
+                found = false;
                 return new List<T>();
             }
         }
