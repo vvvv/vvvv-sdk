@@ -22,5 +22,13 @@
     <include name="**/*.cs" />
     <include name="${shared.src}/SlimDX/SlimDXUtils.cs" />
   </fileset>
+  
+  <target name="post-build">
+    <copy todir="${plugin.path}">
+      <fileset basedir="dependencies">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+  </target>
 
 </project>
