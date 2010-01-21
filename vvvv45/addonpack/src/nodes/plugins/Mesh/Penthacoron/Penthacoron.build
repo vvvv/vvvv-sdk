@@ -4,13 +4,20 @@
 	default="build"
 	xmlns="http://nant.sf.net/release/0.85/nant.xsd"
 >
-  <!-- Root dir must point to vvvv c# repository-->
+
   <property name="root.dir" value="../../../" />
-
-  <!-- Leave as it is -->
   <include buildfile="${root.dir}/nant-plugins.xml" />
-
-  <!-- Set your ddl name here -->
   <property name="lib.name" value="Penthacoron.dll" />
 
+  <assemblyfileset id="project.references">
+    <include name="${root.bin}/_Utils.dll" />
+    <include name="${root.bin}/_PluginInterfaces.dll" />
+    <include name="${SlimDX.dll}" />
+  </assemblyfileset>
+
+  <fileset id="project.sources" failonempty="true">
+    <include name="**/*.cs" />
+    <include name="${shared.src}/SlimDX/SlimDXUtils.cs" />
+  </fileset>
+  
 </project>
