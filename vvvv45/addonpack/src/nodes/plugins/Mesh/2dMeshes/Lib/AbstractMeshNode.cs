@@ -7,6 +7,8 @@ using SlimDX;
 
 namespace VVVV.Lib
 {
+    public enum e2dMeshTextureMapping { Stretch, Crop }
+
     public unsafe abstract class AbstractMeshNode
     {
         #region Fields and abstract stuff
@@ -87,6 +89,11 @@ namespace VVVV.Lib
                 if (update && this.FInvalidate)
                 {
                     RemoveResource(OnDevice);
+                }
+
+                if (!update)
+                {
+                    this.FInvalidate = true;
                 }
 
                 if (this.FInvalidate)

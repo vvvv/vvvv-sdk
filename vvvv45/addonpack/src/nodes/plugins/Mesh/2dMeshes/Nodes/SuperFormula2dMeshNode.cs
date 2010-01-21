@@ -10,9 +10,10 @@ namespace VVVV.Nodes
     public class SuperFormula2dMeshNode : AbstractMeshNode, IPlugin, IDisposable, IPluginDXMesh
     {
         #region Fields
-        private IValueIn FPinInAB;
         private IValueIn FPinInM;
         private IValueIn FPinInN;
+        private IValueIn FPinInInnerRadius;
+        private IValueIn FPinInCycles;
         private IValueIn FPinInResolution;
         #endregion
 
@@ -47,15 +48,17 @@ namespace VVVV.Nodes
 
         protected override void SetInputs()
         {
-            
-            this.FHost.CreateValueInput("Size", 2, new string[] { "A", "B" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInAB);
-            this.FPinInAB.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 1, 1, false, false, false);
-     
             this.FHost.CreateValueInput("M", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInM);
             this.FPinInM.SetSubType(double.MinValue, double.MaxValue, 0.01, 2, false, false, false);
               
             this.FHost.CreateValueInput("N", 3, new string[] { "1", "2","3" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInN);
             this.FPinInN.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 2,2,2, false, false, false);
+
+            this.FHost.CreateValueInput("Inner Radius", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInInnerRadius);
+            this.FPinInInnerRadius.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
+
+            this.FHost.CreateValueInput("Cycles", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInCycles);
+            this.FPinInCycles.SetSubType(double.MinValue, double.MaxValue, 0.01, 1.0, false, false, false);
        
             this.FHost.CreateValueInput("Resolution", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInResolution);
             this.FPinInResolution.SetSubType(0, double.MaxValue, 1, 20, false, false, true);
@@ -64,7 +67,8 @@ namespace VVVV.Nodes
 
         public void Evaluate(int SpreadMax)
         {
-            if (this.FPinInAB.PinIsChanged
+            if (this.FPinInCycles.PinIsChanged
+                || this.FPinInInnerRadius.PinIsChanged
                 || this.FPinInM.PinIsChanged
                 || this.FPinInN.PinIsChanged
                 || this.FPinInResolution.PinIsChanged)
@@ -73,24 +77,22 @@ namespace VVVV.Nodes
                 this.FIndices.Clear();
                 for (int i = 0; i < SpreadMax; i++)
                 {
-                    double a, b, m, n1, n2, n3, dblres;
+                    double m, n1, n2, n3, dblres,inner,cycles;
                     
                     this.FPinInResolution.GetValue(i, out dblres);
+                    this.FPinInInnerRadius.GetValue(i, out inner);
+                    this.FPinInCycles.GetValue(i, out cycles);
+
                     int ires = Convert.ToInt32(dblres);
 
-                    this.FPinInAB.GetValue2D(i, out a, out b);
+                    
                     this.FPinInM.GetValue(i, out m);
                     this.FPinInN.GetValue3D(i, out n1, out n2, out n3);
 
-                    Vertex[] vertices = new Vertex[ires + 1];
+                    Vertex[] verts = new Vertex[ires * 2];
+                    short[] indices = new short[(ires - 1) * 6];
 
-                    vertices[0].pv = new Vector3(0, 0, 0);
-                    vertices[0].nv = new Vector3(0, 0, 1);
-                    vertices[0].tu1 = 0.5f;
-                    vertices[0].tv1 = 0.5f;
-
-
-                    double inc = ((Math.PI * 2.0) / ((double)ires));
+                    double inc = ((Math.PI * 2.0 * cycles) / (ires - 1.0));
                     double phi = 0;
 
                     double maxx = double.MinValue;
@@ -100,16 +102,35 @@ namespace VVVV.Nodes
 
                     for (int j = 0; j < ires; j++)
                     {
-                        double r = Math.Pow(Math.Abs(Math.Cos(m * phi / 4.0) / a), n2);
-                        r += Math.Pow(Math.Abs(Math.Sin(m * phi / 4.0) / b), n3);
+                        double r = Math.Pow(Math.Abs(Math.Cos(m * phi / 4.0)), n2);
+                        r += Math.Pow(Math.Abs(Math.Sin(m * phi / 4.0)), n3);
                         r = Math.Pow(r, 1.0 / n1);
 
-                        float x = Convert.ToSingle(r * Math.Cos(phi));
-                        float y = Convert.ToSingle(r * Math.Sin(phi));
+                        float x = Convert.ToSingle(r * inner * 0.5 * Math.Cos(phi));
+                        float y = Convert.ToSingle(r * inner * 0.5 * Math.Sin(phi));
 
+                        Vertex innerv = new Vertex();
+                        innerv.pv = new Vector3(x, y, 0.0f);
+                        innerv.nv = new Vector3(0.0f, 0.0f, 1.0f);
+                        innerv.tu1 = 0.5f - x;
+                        innerv.tv1 = 0.5f - y;
 
-                        vertices[j + 1].pv = new Vector3(x, y, 0);
-                        vertices[j + 1].nv = new Vector3(0, 0, 1);
+                        if (x < minx) { minx = x; }
+                        if (x > maxx) { maxx = x; }
+                        if (y < miny) { miny = y; }
+                        if (y > maxy) { maxy = y; }
+
+                        x = Convert.ToSingle(r * 0.5 * Math.Cos(phi));
+                        y = Convert.ToSingle(r * 0.5 * Math.Sin(phi));
+
+                        Vertex outerv = new Vertex();
+                        outerv.pv = new Vector3(x, y, 0.0f);
+                        outerv.nv = new Vector3(0.0f, 0.0f, 1.0f);
+                        outerv.tu1 = 0.5f - x;
+                        outerv.tv1 = 0.5f - y;
+
+                        verts[j] = innerv;
+                        verts[j + ires] = outerv;
 
                         if (x < minx) { minx = x; }
                         if (x > maxx) { maxx = x; }
@@ -121,29 +142,30 @@ namespace VVVV.Nodes
 
                     double w = maxx - minx;
                     double h = maxy - miny;
-                    for (int j = 0; j < ires; j++)
+                    for (int j = 0; j < verts.Length; j++)
                     {
-                        vertices[j + 1].tu1 = Convert.ToSingle((vertices[j + 1].pv.X - minx) / w);
-                        vertices[j + 1].tv1 = 1.0f - Convert.ToSingle((vertices[j + 1].pv.Y - miny) / h);
+                        verts[j].tu1 = Convert.ToSingle((verts[j].pv.X - minx) / w);
+                        verts[j].tv1 = 1.0f - Convert.ToSingle((verts[j].pv.Y - miny) / h);
                     }
 
-
-                    this.FVertex.Add(vertices);
-
-                    List<short> inds = new List<short>();
-
+                    int indstep = 0;
                     for (int j = 0; j < ires - 1; j++)
                     {
-                        inds.Add(0);
-                        inds.Add(Convert.ToInt16(j + 1));
-                        inds.Add(Convert.ToInt16(j + 2));
+                        //Triangle from low to high
+                        indices[indstep] = Convert.ToInt16(j);
+                        indices[indstep + 1] = Convert.ToInt16(j + 1);
+                        indices[indstep + 2] = Convert.ToInt16(ires + j);
+
+                        //Triangle from high to low
+                        indices[indstep + 3] = Convert.ToInt16(j + 1);
+                        indices[indstep + 4] = Convert.ToInt16(ires + j);
+                        indices[indstep + 5] = Convert.ToInt16(ires + j + 1);
+
+                        indstep += 6;
                     }
 
-                    inds.Add(0);
-                    inds.Add(Convert.ToInt16(vertices.Length - 1));
-                    inds.Add(1);
-
-                    this.FIndices.Add(inds.ToArray());
+                    this.FVertex.Add(verts);
+                    this.FIndices.Add(indices);
                 }
 
                 this.InvalidateMesh(this.FVertex.Count);
