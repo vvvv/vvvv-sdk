@@ -44,6 +44,7 @@ namespace VVVV
 
 			Box2dCreateLineJointNode(void);
 			virtual void Evaluate(int SpreadMax) override;
+			virtual bool ForceBodyOneGround() override { return false; };
 		protected:
 			virtual void OnPluginHostSet() override;
 		private:

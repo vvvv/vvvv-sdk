@@ -67,6 +67,7 @@ namespace VVVV
 							this->vInMaxLength2->GetValue(i,ml2);
 							this->vInRatio->GetValue(i,ratio);
 							this->vInCollideConnected->GetValue(i, cc);
+							this->vInCustom->GetString(i,cust);
 
 							b2PulleyJointDef jointDef;
 							b2Vec2 anchor1(b1x,b1y);

@@ -83,6 +83,7 @@ namespace VVVV
 							this->vInMotorSpeed->GetValue(i, motspeed);
 							this->vInUpTranslation->GetValue(i, ut);
 							this->vInLowTranslation->GetValue(i, lt);
+							this->vInCustom->GetString(i,cust);
 
 							b2LineJointDef jointDef;
 							jointDef.Initialize(body1, body2, b2Vec2(px,py),b2Vec2(ax,ay));

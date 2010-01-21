@@ -17,11 +17,20 @@ namespace VVVV
 			this->FHost->CreateNodeInput("World",TSliceMode::Single,TPinVisibility::True,this->vInWorld);
 			this->vInWorld->SetSubType(ArrayUtils::SingleGuidArray(WorldDataType::GUID),WorldDataType::FriendlyName);
 
-			this->FHost->CreateNodeInput("Body 1",TSliceMode::Dynamic,TPinVisibility::True,this->vInBody1);
-			this->vInBody1->SetSubType(ArrayUtils::DoubleGuidArray(BodyDataType::GUID,GroundDataType::GUID),BodyDataType::FriendlyName);
+			if (this->ForceBodyOneGround())
+			{
+				this->FHost->CreateNodeInput("Body",TSliceMode::Dynamic,TPinVisibility::True,this->vInBody2);
+				this->vInBody2->SetSubType(ArrayUtils::SingleGuidArray(BodyDataType::GUID),BodyDataType::FriendlyName);
+			}
+			else
+			{
+				this->FHost->CreateNodeInput("Body 1",TSliceMode::Dynamic,TPinVisibility::True,this->vInBody1);
+				this->vInBody1->SetSubType(ArrayUtils::DoubleGuidArray(BodyDataType::GUID,GroundDataType::GUID),BodyDataType::FriendlyName);
 
-			this->FHost->CreateNodeInput("Body 2",TSliceMode::Dynamic,TPinVisibility::True,this->vInBody2);
-			this->vInBody2->SetSubType(ArrayUtils::SingleGuidArray(BodyDataType::GUID),BodyDataType::FriendlyName);
+				this->FHost->CreateNodeInput("Body 2",TSliceMode::Dynamic,TPinVisibility::True,this->vInBody2);
+				this->vInBody2->SetSubType(ArrayUtils::SingleGuidArray(BodyDataType::GUID),BodyDataType::FriendlyName);
+			}
+
 
 			this->FHost->CreateValueInput("Collide Connected",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInCollideConnected);
 			this->vInCollideConnected->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,true,false);

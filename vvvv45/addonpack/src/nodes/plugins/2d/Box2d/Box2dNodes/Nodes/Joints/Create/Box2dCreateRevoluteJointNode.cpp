@@ -79,6 +79,7 @@ namespace VVVV
 							this->vInEnableMotor->GetValue(i, enmotor);
 							this->vInMaxMotorTorque->GetValue(i, motorq);
 							this->vInMotorSpeed->GetValue(i, motspeed);
+							this->vInCustom->GetString(i,cust);
 
 
 							b2RevoluteJointDef jointDef;

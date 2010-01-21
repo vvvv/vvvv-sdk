@@ -49,6 +49,7 @@ namespace VVVV
 							this->vInFrequency->GetValue(i, freq);
 							this->vInDampingRatio->GetValue(i,dr);
 							this->vInCollideConnected->GetValue(i, cc);
+							this->vInCustom->GetString(i,cust);
 
 							b2Body* body1;
 

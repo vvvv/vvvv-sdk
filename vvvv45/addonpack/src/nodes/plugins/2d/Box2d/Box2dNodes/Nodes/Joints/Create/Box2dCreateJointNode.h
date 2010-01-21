@@ -47,6 +47,7 @@ namespace VVVV
 			IValueIn^ vInDoCreate;
 
 			virtual void OnPluginHostSet() abstract;
+			virtual bool ForceBodyOneGround() abstract;
 
 		private:
 			

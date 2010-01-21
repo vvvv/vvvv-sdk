@@ -68,7 +68,7 @@ namespace VVVV
 			this->vInBodies->PinIsChanged;
 			if (this->vInBodies->IsConnected) 
 			{
-				double dblsp,dblsv,dblsav,dblsc,dbla,dblsa,dblsleep,dblsetsleep;
+				double dblsp,dblsv,dblsav,dblsc,dblsa,dblsleep,dblsetsleep;
 				for (int i = 0; i < this->vInBodies->SliceCount; i++) 
 				{
 					int realslice;
@@ -104,7 +104,7 @@ namespace VVVV
 							a = body->GetAngle();
 						}
 
-						body->SetXForm(b2Vec2(x,y),a);
+						body->SetXForm(b2Vec2(Convert::ToSingle(x),Convert::ToSingle(y)),Convert::ToSingle(a));
 					}
 
 					this->vInSetVelocity->GetValue(i,dblsv);
@@ -112,7 +112,7 @@ namespace VVVV
 					{
 						double x,y;
 						this->vInVelocity->GetValue2D(i,x,y);
-						body->SetLinearVelocity(b2Vec2(x,y));
+						body->SetLinearVelocity(b2Vec2(Convert::ToSingle(x),Convert::ToSingle(y)));
 					}
 
 					this->vInSetAngularVelocity->GetValue(i,dblsav);
@@ -120,7 +120,7 @@ namespace VVVV
 					{
 						double a;
 						this->vInAngularVelocity->GetValue(i,a);
-						body->SetAngularVelocity(a);
+						body->SetAngularVelocity(Convert::ToSingle(a));
 					}
 
 					this->vInSetCustom->GetValue(i,dblsc);

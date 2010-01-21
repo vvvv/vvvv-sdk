@@ -69,7 +69,7 @@ namespace VVVV
 			this->vInShapes->PinIsChanged;
 			if (this->vInShapes->IsConnected) 
 			{
-				double dbld,dblsd,dblf,dblsf,dblr,dblsr,dblsc;
+				double dblsd,dblsf,dblsr,dblsc;
 				for (int i = 0; i < this->vInShapes->SliceCount; i++) 
 				{
 					int realslice;
