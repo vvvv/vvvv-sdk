@@ -111,7 +111,7 @@ namespace VVVV.Nodes
             if (SpreadMax > 0)
             {
                 int outcount = (int)Math.Ceiling((double)SpreadMax / (double)this.FPinOutputList.Count);
-                
+
                 double* inptr;
                 int incnt;
 
@@ -128,7 +128,7 @@ namespace VVVV.Nodes
 
                 int idx = 0;
                 int ptidx = 0;
-                for (int i = 0; i < SpreadMax; i+=vcount)
+                for (int i = 0; i < SpreadMax; i += vcount)
                 {
                     for (int j = 0; j < vcount; j++)
                     {
@@ -136,6 +136,13 @@ namespace VVVV.Nodes
                         ptidx++;
                     }
                     idx++;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < this.FPinOutputList.Count; i++)
+                {
+                    this.FPinOutputList[i].SliceCount = 0;
                 }
             }
         }

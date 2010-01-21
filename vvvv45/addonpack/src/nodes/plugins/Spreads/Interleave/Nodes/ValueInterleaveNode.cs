@@ -107,28 +107,36 @@ namespace VVVV.Nodes
         #region Evaluate
         public void Evaluate(int SpreadMax)
         {
-            int outcount = SpreadMax * this.FPinInputList.Count;
-            this.FPinOutput.SliceCount = outcount;
 
-            double*[] ptrs = new double*[this.FPinInputList.Count];
-            int[] cnts = new int[this.FPinInputList.Count];
-            int vcount = this.FPinInputList.Count;
-
-            for (int i = 0; i < this.FPinInputList.Count; i++)
+            if (SpreadMax > 0)
             {
-                this.FPinInputList[i].GetValuePointer(out cnts[i], out ptrs[i]);
-            }
+                int outcount = SpreadMax * this.FPinInputList.Count;
+                this.FPinOutput.SliceCount = outcount;
 
-            double* outptr;
-            this.FPinOutput.GetValuePointer(out outptr);
+                double*[] ptrs = new double*[this.FPinInputList.Count];
+                int[] cnts = new int[this.FPinInputList.Count];
+                int vcount = this.FPinInputList.Count;
 
-            for (int i = 0; i < SpreadMax; i++)
-            {
-                for (int j = 0; j < vcount; j++)
+                for (int i = 0; i < this.FPinInputList.Count; i++)
                 {
-                    *outptr = ptrs[j][i % cnts[j]];
-                    outptr++;
+                    this.FPinInputList[i].GetValuePointer(out cnts[i], out ptrs[i]);
                 }
+
+                double* outptr;
+                this.FPinOutput.GetValuePointer(out outptr);
+
+                for (int i = 0; i < SpreadMax; i++)
+                {
+                    for (int j = 0; j < vcount; j++)
+                    {
+                        *outptr = ptrs[j][i % cnts[j]];
+                        outptr++;
+                    }
+                }
+            }
+            else
+            {
+                this.FPinOutput.SliceCount = 0;
             }
         }
         #endregion
