@@ -44,14 +44,10 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="FantastiqUInet, Version=1.0.3512.42718, Culture=neutral, processorArchitecture=x86" />
-    <Reference Include="Microsoft.DirectX, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
-    <Reference Include="Microsoft.DirectX.Direct3D, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
-    <Reference Include="SlimDX, Version=2.0.7.41, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\SlimDX SDK (March 2009)\Bin\x86\SlimDX.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="FantastiqUInet">
+      <HintPath>Dependencies\FantastiqUInet.dll</HintPath>
     </Reference>
+    <Reference Include="SlimDX" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -64,9 +60,6 @@
     </Compile>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="DrawFlash.cs" />
-    <None Include="Dependencies\FantastiqUInet.dll">
-      <Link>FantastiqUInet.dll</Link>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\_PluginInterfaces\PluginInterfaces.csproj">
