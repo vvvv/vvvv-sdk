@@ -115,10 +115,6 @@ namespace VVVV.Nodes
 
         #endregion constructor / desconstructor
 
-
-
-
-
         #region pluginInfo
 
         public bool AutoEvaluate
@@ -143,7 +139,7 @@ namespace VVVV.Nodes
                     //the nodes main name: use CamelCaps and no spaces
                     FPluginInfo.Name = "LinBus";
                     //the nodes category: try to use an existing one
-                    FPluginInfo.Category = "Device";
+                    FPluginInfo.Category = "Devices";
                     //the nodes version: optional. leave blank if not
                     //needed to distinguish two nodes of the same name and category
                     FPluginInfo.Version = "";
@@ -175,8 +171,6 @@ namespace VVVV.Nodes
         }
 
         #endregion pluginInfo
-
-
 
         public void SetPluginHost(IPluginHost Host)
         {
