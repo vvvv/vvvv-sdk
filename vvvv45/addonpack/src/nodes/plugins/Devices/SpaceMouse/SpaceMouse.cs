@@ -172,7 +172,7 @@ namespace VVVV.Nodes
 				//fill out nodes info
 				IPluginInfo Info = new PluginInfo();
 				Info.Name = "SpaceMouse";
-				Info.Category = "Device";
+				Info.Category = "Devices";
 				Info.Version = "";
 				Info.Help = "Offers support for 3DConnexion USB Devices. Needs 3DConnexion driver installed: http://www.3dconnexion.com/support/downloads.php";
 				Info.Bugs = "Button state output is not reliable. The node may only exist once, multiple instances won't work.";
