@@ -82,16 +82,47 @@ namespace VVVV.Utils.VMath
 		                                                                0, 0, 0, 1);
 		
 		#endregion constants
-	
-		#region range functions
 
-		
-		/// <summary>
+        #region numeric functions
+
+        /// <summary>
+        /// Factorial function
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns>The product n * n-1 * n-2 * n-3 * .. * 3 * 2 * 1</returns>
+        public static int Factorial(int n) 
+        {
+            if (n == 0)
+            {
+                return 1;
+            }
+            if (n < 0) { n = -n; }
+            return n*Factorial(n - 1);
+        }
+
+        /// <summary>
+        /// Binomial function
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="k"></param>
+        /// <returns>The number of k-tuples of n items</returns>
+        public static int Binomial(int n,int k)
+        {
+            if (n < 0) { n = -n; }
+            return Factorial(n) / (Factorial(k) * Factorial(n - k));
+        }
+
+        #endregion numeric functions
+
+        #region range functions
+
+
+        /// <summary>
 		/// Min function
 		/// </summary>
 		/// <param name="a"></param>
 		/// <param name="b"></param>
-		/// <returns>Smaller value of the two input parameters</returns>
+        /// <returns>Smaller value of the two input parameters</returns>
 		public static double Min(double a, double b)
 		{
 			if (a < b)
