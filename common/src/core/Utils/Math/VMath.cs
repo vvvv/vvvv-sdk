@@ -92,6 +92,7 @@ namespace VVVV.Utils.VMath
         /// <returns>The product n * n-1 * n-2 * n-3 * .. * 3 * 2 * 1</returns>
         public static int Factorial(int n) 
         {
+            /* DON'T FEED ME WITH LARGE NUMBERS !!! (n>10 can be huge) */
             if (n == 0)
             {
                 return 1;
@@ -106,7 +107,7 @@ namespace VVVV.Utils.VMath
         /// <param name="n"></param>
         /// <param name="k"></param>
         /// <returns>The number of k-tuples of n items</returns>
-        public static int Binomial(int n,int k)
+        public static long Binomial(int n,int k)
         {
             if (n < 0) { n = -n; }
             return Factorial(n) / (Factorial(k) * Factorial(n - k));
