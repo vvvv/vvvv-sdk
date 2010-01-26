@@ -338,7 +338,12 @@ namespace VVVV.Nodes
 				
 				df.Font = new SlimDX.Direct3D9.Font(dev, (int) size, 0, weight, 0, italic>0.5, CharacterSet.Default, Precision.Default, FontQuality.Default, PitchAndFamily.Default, font);
 				df.Sprite = new Sprite(dev);
-				df.Texture = new Texture(dev, 1, 1, 1, Usage.None, Format.L8, Pool.Default);// Format.A8R8G8B8, Pool.Default);
+				
+				df.Texture = new Texture(dev, 1, 1, 1, Usage.None, Format.L8, Pool.Managed);// Format.A8R8G8B8, Pool.Default);
+				//need to fill texture white to be able to set color on sprite later
+				DataRectangle tex = df.Texture.LockRectangle(0, LockFlags.None);
+				tex.Data.WriteByte(255);
+				df.Texture.UnlockRectangle(0);
 				
 				FDeviceFonts.Add(OnDevice, df);
 				
@@ -380,6 +385,7 @@ namespace VVVV.Nodes
 
 			DeviceFont df = FDeviceFonts[DXDevice.DevicePointer()];
 			FTranformIn.SetRenderSpace();
+				
 			df.Sprite.Begin(SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace | SpriteFlags.AlphaBlend);
 			
 			double size;
@@ -469,6 +475,7 @@ namespace VVVV.Nodes
 						case 3: preScale = VMath.Scale(1f/tmpRect.Width, -1f/tmpRect.Height, 1); break;
 						//"on" means that the particle will always be a unit quad. independant of texture size
 				}
+				
 				df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(preScale * world);
 
 				FShowBrush.GetValue(i, out showBrush);
@@ -481,8 +488,16 @@ namespace VVVV.Nodes
 						x -= x;
 					else if (hAlign == 2)
 						x += x;
-						
-					df.Sprite.Draw(df.Texture, new Rectangle(0, 0, tmpRect.Width, tmpRect.Height), new Vector3(x, y, -0.001f), new Vector3(0,0,0), new Color4(brushColor.Color));
+					
+					//workaround for slimdx(august)
+					Matrix4x4 spriteBugWorkaround = VMath.Translate(-x, -y, 0.001);
+					df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(spriteBugWorkaround * preScale * world);
+					 df.Sprite.Draw(df.Texture, new Rectangle(0, 0, tmpRect.Width, tmpRect.Height), new Color4(brushColor.Color));
+					df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(preScale * world);
+					//workaround end
+					
+					//worked with slimdx(march):
+					//df.Sprite.Draw(df.Texture, new Rectangle(0, 0, tmpRect.Width, tmpRect.Height), new Vector3(x, y, -0.001f), null, new Color4(brushColor.Color));
 				}
 				
 				df.Font.DrawString(df.Sprite, text, new Rectangle(-wi/2, -hi/2, wi, hi), dtf, (Color) textColor);
