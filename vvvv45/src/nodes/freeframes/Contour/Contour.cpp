@@ -88,43 +88,47 @@ DWORD initialise()
 
     // -> Types & default values for input pins //
 
-    GParamConstants[0].Type = 10;
-   	GParamConstants[1].Type = 0;
+    GParamConstants[0].Type = 0;
+    GParamConstants[1].Type = 10;
    	GParamConstants[2].Type = 0;
    	GParamConstants[3].Type = 0;
-   	GParamConstants[4].Type = 10;
-   	GParamConstants[5].Type = 0;
+   	GParamConstants[4].Type = 0;
+   	GParamConstants[5].Type = 10;
    	GParamConstants[6].Type = 0;
-   	GParamConstants[7].Type = 10;
+   	GParamConstants[7].Type = 0;
+   	GParamConstants[8].Type = 10;
 
-   	GParamConstants[0].Default = 0.5f;
-   	GParamConstants[1].Default = 0.0f;
+    GParamConstants[0].Default = 1.0f;
+   	GParamConstants[1].Default = 0.5f;
    	GParamConstants[2].Default = 0.0f;
    	GParamConstants[3].Default = 0.0f;
-    GParamConstants[4].Default = 0.01f;
-    GParamConstants[5].Default = 1.0f;
-    GParamConstants[6].Default = 0.0f;
-    GParamConstants[7].Default = 10.0f;
+   	GParamConstants[4].Default = 0.0f;
+    GParamConstants[5].Default = 0.01f;
+    GParamConstants[6].Default = 1.0f;
+    GParamConstants[7].Default = 0.0f;
+    GParamConstants[8].Default = 10.0f;
 
   	 // -> Naming of input pins //
 
-   	char tempName0[17] = "Threshold";
-   	char tempName1[17] = "Invert";
-   	char tempName2[17] = "Cleanse";
-   	char tempName3[17] = "Show Contours";
-   	char tempName4[17] = "Thickness";
-   	char tempName5[17] = "Scaled Values";
-   	char tempName6[17] = "Unique ID";
-   	char tempName7[17] = "Max Countours";
+    char tempName0[17] = "Show Filtered";
+   	char tempName1[17] = "Threshold";
+   	char tempName2[17] = "Invert";
+   	char tempName3[17] = "Cleanse";
+   	char tempName4[17] = "Show Contours";
+   	char tempName5[17] = "Thickness";
+   	char tempName6[17] = "Scaled Values";
+   	char tempName7[17] = "Unique ID";
+   	char tempName8[17] = "Max Countours";
 
-   	memcpy(GParamConstants[0].Name, tempName0, 16);
+    memcpy(GParamConstants[0].Name, tempName0, 16);
    	memcpy(GParamConstants[1].Name, tempName1, 16);
    	memcpy(GParamConstants[2].Name, tempName2, 16);
    	memcpy(GParamConstants[3].Name, tempName3, 16);
    	memcpy(GParamConstants[4].Name, tempName4, 16);
    	memcpy(GParamConstants[5].Name, tempName5, 16);
    	memcpy(GParamConstants[6].Name, tempName6, 16);
-    memcpy(GParamConstants[7].Name, tempName7, 16);
+   	memcpy(GParamConstants[7].Name, tempName7, 16);
+    memcpy(GParamConstants[8].Name, tempName8, 16);
 
     // -> Output pins //
 
@@ -368,20 +372,23 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 
     cvCvtColor(CCurrentImage, GGrayImage, CV_BGR2GRAY);
     // -> threshold the image //
-    cvThreshold(GGrayImage, GGrayImage, FParams[0].Value * 255, 255, CV_THRESH_BINARY);
+    cvThreshold(GGrayImage, GGrayImage, FParams[1].Value * 255, 255, CV_THRESH_BINARY);
     // -> invert image if requested //
-    if (FParams[1].Value>0)
+    if (FParams[2].Value >= 0.5)
     {
         for (int i=0; i<(GGrayImage->height*GGrayImage->width); i++)
             GGrayImage->imageData[i] = (GGrayImage->imageData[i]) ? 0 : 255;
     }
     // -> perform Median filtering (cleansing) of input image if requested //
-    if (FParams[2].Value > 0)
+    if (FParams[3].Value >= 0.5)
     {
         cvSmooth( GGrayImage, tmp, CV_MEDIAN, 9,  9, 0 );
         cvCopy (tmp, GGrayImage, NULL);
     }
-    cvCvtColor(GGrayImage, CCurrentImage, CV_GRAY2BGR);
+
+    if (FParams[0].Value >= 0.5)
+        cvCvtColor(GGrayImage, CCurrentImage, CV_GRAY2BGR);
+
     // -> clear memory from last round //
     cvClearMemStorage(FStorage);
 
@@ -390,7 +397,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     FContoursCount_temp = cvFindContours(GGrayImage, FStorage, &FContours, sizeof(CvContour), CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
 
     //limit contourscount
-    FContoursCount_temp = min(FContoursCount_temp, (int)FParams[7].Value);
+    FContoursCount_temp = min(FContoursCount_temp, (int)FParams[8].Value);
 
     FPointCount = 0;
     if (FBinSizes)
@@ -413,7 +420,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     for(int i=0; i<FContoursCount_temp; i++)
     {
         // -> calculate orientation of contour //
-        if (FParams[5].Value)
+        if (FParams[6].Value)
             cvMoments_mod(FContours, &FMoments[i], (float)w, (float)h, 0);
         else
             cvMoments(FContours, &FMoments[i]);
@@ -486,8 +493,8 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
         if (FMoments[i].m00!=0.0)
         {
             // -> draw contour if requested //
-            if (FParams[3].Value > 0)
-               cvDrawContours(CCurrentImage, FContours, CV_RGB(255,0,0), CV_RGB(0,255,0), /*(int)(FParams[1].Value * 255)*/ 0, (int)(FParams[4].Value * 255), CV_AA);
+            if (FParams[4].Value > 0)
+               cvDrawContours(CCurrentImage, FContours, CV_RGB(255,0,0), CV_RGB(0,255,0), /*(int)(FParams[2].Value * 255)*/ 0, (int)(FParams[5].Value * 255), CV_AA);
 
             binsize = FContours->total;
             // -> allocate memory for temp point array & copy points to the array //
@@ -505,8 +512,8 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
             FOutputs[2].Spread[j] =  binsize;
 
             // -> set position (x, y coordinates) i.e. center of mass //
-            FOutputs[3].Spread[j] = (FParams[5].Value)? (FMoments[i].m10*inv_m00) : (((FMoments[i].m10*inv_m00) / w) - 0.5) * ratio;
-            FOutputs[4].Spread[j] = (FParams[5].Value)? (FMoments[i].m01*inv_m00) : ((FMoments[i].m01*inv_m00) / h) - 0.5;
+            FOutputs[3].Spread[j] = (FParams[6].Value)? (FMoments[i].m10*inv_m00) : (((FMoments[i].m10*inv_m00) / w) - 0.5) * ratio;
+            FOutputs[4].Spread[j] = (FParams[6].Value)? (FMoments[i].m01*inv_m00) : ((FMoments[i].m01*inv_m00) / h) - 0.5;
             Objlist_new[j].x = FOutputs[3].Spread[j];
             Objlist_new[j].y = FOutputs[4].Spread[j];
 
@@ -531,9 +538,9 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
                 CV_SWAP( cs, sn, t );
                 theta = CV_PI*0.5 - theta;
             }
-            FOutputs[5].Spread[j] = (FParams[5].Value)? width : (width /w)*ratio;
-            FOutputs[6].Spread[j] = (FParams[5].Value)? length : (length/h);
-            FOutputs[8].Spread[j] = (FParams[5].Value)? FMoments[i].m00 : FMoments[i].m00/(w*h);
+            FOutputs[5].Spread[j] = (FParams[6].Value)? width : (width /w)*ratio;
+            FOutputs[6].Spread[j] = (FParams[6].Value)? length : (length/h);
+            FOutputs[8].Spread[j] = (FParams[6].Value)? FMoments[i].m00 : FMoments[i].m00/(w*h);
 
             // -> save angle to temp array for further processing (PART V) //
             lastangle_temp[j] = (theta / (2*CV_PI));
@@ -549,7 +556,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 
     if (!B_firstRound)
     {
-        adaptindex(Objlist_old, Objlist_new, FContoursCount_old, FContoursCount, IDs_old, IDs_new, Sortlist, &inc, (int)FParams[6].Value);
+        adaptindex(Objlist_old, Objlist_new, FContoursCount_old, FContoursCount, IDs_old, IDs_new, Sortlist, &inc, (int)FParams[7].Value);
     }
     // -> angle damping //
     if (!B_firstRound)

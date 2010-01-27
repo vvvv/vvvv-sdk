@@ -32,7 +32,7 @@
 #include "highgui.h"
 
 //pin constants
-#define NUM_PARAMS 8
+#define NUM_PARAMS 9
 #define NUM_INPUTS 1
 #define NUM_OUTPUTS 10
 
