@@ -35,7 +35,7 @@
 using namespace std;
 
 //pin constants
-#define NUM_PARAMS 5
+#define NUM_PARAMS 7
 #define NUM_INPUTS 1
 #define NUM_OUTPUTS 2
 

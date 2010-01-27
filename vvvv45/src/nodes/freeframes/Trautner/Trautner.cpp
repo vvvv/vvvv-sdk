@@ -89,29 +89,37 @@ DWORD initialise()
     GParamConstants[0].Type = 0;
 	GParamConstants[1].Type = 0;
 	GParamConstants[2].Type = 0;
-	GParamConstants[3].Type = 10;
-	GParamConstants[4].Type = 100;
+	GParamConstants[3].Type = 0;    //show thresholded
+	GParamConstants[4].Type = 10;   //3->4
+	GParamConstants[5].Type = 100;  //4->5
+	GParamConstants[6].Type = 0;    //reload mask
 
 	GParamConstants[0].Default = 0.0f;
 	GParamConstants[1].Default = 0.0f;
 	GParamConstants[2].Default = 1.0f;
 	GParamConstants[3].Default = 0.1f;
+	GParamConstants[4].Default = 0.0f;
+	GParamConstants[6].Default = 0.0f;
 
 	int i = (int)&filemask[0];
     float* fp = (float*)&i;
- 	GParamConstants[4].Default = *fp;
+ 	GParamConstants[5].Default = *fp;
 
 	char tempName0[17] = "Hold Background";
 	char tempName1[17] = "Dark Background";
 	char tempName2[17] = "Show Mask";
 	char tempName3[17] = "Threshold";
-	char tempName4[17] = "Mask Image";
+	char tempName4[17] = "Show Filtered";
+	char tempName5[17] = "Mask Image";
+	char tempName6[17] = "Reload Mask";
 
 	memcpy(GParamConstants[0].Name, tempName0, 16);
 	memcpy(GParamConstants[1].Name, tempName1, 16);
 	memcpy(GParamConstants[2].Name, tempName2, 16);
 	memcpy(GParamConstants[3].Name, tempName3, 16);
 	memcpy(GParamConstants[4].Name, tempName4, 16);
+	memcpy(GParamConstants[5].Name, tempName5, 16);
+	memcpy(GParamConstants[6].Name, tempName6, 16);
 
     // populate the output structs
     GOutputConstants[0].Type = 10;
@@ -222,7 +230,7 @@ DWORD plugClass::setParameter(SetParameterStruct* pParam)
 {
 	FParams[pParam->index].Value = pParam->value;
 
-	if (pParam->index == 4)
+	if (pParam->index == 5)
 	{
 	    float f = pParam->value;
 	    int* ip = (int*)&f;
@@ -236,6 +244,8 @@ DWORD plugClass::setParameter(SetParameterStruct* pParam)
 
         newMask = true;
 	}
+	if (pParam->index == 6) && (pParam-value >= 0.5)
+        newMask = true;
 
 	return FF_SUCCESS;
 }
@@ -357,7 +367,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
         for (int j=0; j<w; j += 1)
         {
             FPixelCount[mask[j]]++;
-            if (gray[j] > FParams[3].Value * 255)
+            if (gray[j] > FParams[4].Value * 255)
                 FChangedPixels[mask[j]]++;
         }
 
@@ -365,10 +375,10 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
         gray += step;
     }
 
+    if (FParams[3].Value > 0)   //show filtered
+        cvCvtColor(FGrayImage, FCurrentImage, CV_GRAY2BGR);
     if (FParams[2].Value > 0)   //show mask
         cvAdd(FGrayImage, FMask, FGrayImage);
-
-    cvCvtColor(FGrayImage, FCurrentImage, CV_GRAY2BGR);
 
     LeaveCriticalSection(&CriticalSection);
 
