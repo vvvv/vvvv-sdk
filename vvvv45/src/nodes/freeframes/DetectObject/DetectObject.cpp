@@ -138,7 +138,7 @@ DWORD initialise()
 	char outName1[17] = "Y";
 	char outName2[17] = "Width";
 	char outName3[17] = "Height";
-	char outName4[17] = "ID";
+	char outName4[17] = "Object ID";
 	memcpy(GOutputConstants[0].Name, outName0, 16);
 	memcpy(GOutputConstants[1].Name, outName1, 16);
 	memcpy(GOutputConstants[2].Name, outName2, 16);
