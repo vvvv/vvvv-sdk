@@ -244,7 +244,7 @@ DWORD plugClass::setParameter(SetParameterStruct* pParam)
 
         newMask = true;
 	}
-	if (pParam->index == 6) && (pParam-value >= 0.5)
+	if ((pParam->index == 6) && (pParam-value >= 0.5))
         newMask = true;
 
 	return FF_SUCCESS;
@@ -326,7 +326,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
 
     cvCvtColor(FCurrentImage, FGrayImage, CV_BGR2GRAY);
 
-    if (FParams[0].Value == 0) //substract two consecutive images
+    if (FParams[0].Value < 0.5) //substract two consecutive images
     {
         IplImage* tmp = cvCloneImage(FGrayImage);
 
@@ -338,7 +338,7 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
     }
     else //hold background
     {
-        if (FParams[1].Value == 0)  //bright background
+        if (FParams[1].Value < 0.5)  //bright background
         {
             cvSub(FLastImage, FGrayImage, FGrayImage);
         }
@@ -375,9 +375,9 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
         gray += step;
     }
 
-    if (FParams[3].Value > 0)   //show filtered
+    if (FParams[3].Value >= 0.5)   //show filtered
         cvCvtColor(FGrayImage, FCurrentImage, CV_GRAY2BGR);
-    if (FParams[2].Value > 0)   //show mask
+    if (FParams[2].Value >= 0.5)   //show mask
         cvAdd(FGrayImage, FMask, FGrayImage);
 
     LeaveCriticalSection(&CriticalSection);
