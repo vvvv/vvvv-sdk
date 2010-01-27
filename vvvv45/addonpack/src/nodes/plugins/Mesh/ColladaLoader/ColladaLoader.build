@@ -30,5 +30,14 @@
       </fileset>
     </copy>
   </target>
+  
+  <target name="post-build">
+    <copy todir="${plugin.path}">
+      <fileset basedir=".">
+        <include name="*.tga" />
+		<include name="*.dae" />
+      </fileset>
+    </copy>
+  </target>
 
 </project>

@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.dtd" >
-   <PATCH nodename="E:\jobs\2009\t_gallery\vvvv\plugins\Mesh (EX9.Geometry Collada) help.v4p">
-   <BOUNDS height="13800" left="6270" top="495" type="Window" width="9705">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta22.dtd" >
+   <PATCH nodename="C:\Users\joreg\Desktop\vvvvs\vvvv_40beta22_\plugins\Mesh (EX9.Geometry Collada) help.v4p">
+   <BOUNDS height="13800" left="6270" top="495" type="Window" width="10875">
    </BOUNDS>
    <NODE componentmode="InABox" id="35" nodename="IOBox (String)">
    <BOUNDS height="255" left="15" top="390" type="Node" width="570">
@@ -47,11 +47,13 @@
    </PIN>
    <PIN pinname="Texture" visible="1">
    </PIN>
-   <PIN pinname="Ambient Color" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   <PIN pinname="Ambient Color" slicecount="1" visible="1" values="|0.25271,0.25271,0.25271,1.00000|">
    </PIN>
-   <PIN pinname="Diffuse Color" slicecount="1" values="|0.06172,0.06172,0.06172,1.00000|">
+   <PIN pinname="Diffuse Color" slicecount="1" values="|0.68224,0.68224,0.68224,1.00000|">
    </PIN>
    <PIN pinname="Specular Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Light Direction XYZ" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="32" nodename="IOBox (String)">
@@ -68,12 +70,14 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="31" nodename="FileTexture (EX9.Texture)">
-   <BOUNDS height="0" left="5445" top="3570" type="Node" width="0">
+   <NODE componentmode="Hidden" id="31" nodename="FILETEXTURE (EX9.TEXTURE)">
+   <BOUNDS height="0" left="5445" top="3270" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Filename" visible="1">
    </PIN>
    <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="30" nodename="IOBox (Value Advanced)">
@@ -161,13 +165,13 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="||">
+   <PIN pinname="Input String" slicecount="1" values="astroBoy_walk.dae">
    </PIN>
    </NODE>
    <NODE componentmode="InAWindow" id="23" nodename="Renderer (EX9)">
-   <BOUNDS height="0" left="210" top="3300" type="Node" width="0">
+   <BOUNDS height="0" left="210" top="4950" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="2925" left="210" top="3300" type="Box" width="3900">
+   <BOUNDS height="2925" left="210" top="4950" type="Box" width="3900">
    </BOUNDS>
    <BOUNDS height="5010" left="0" top="495" type="Window" width="6240">
    </BOUNDS>
@@ -183,42 +187,6 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="22" nodename="IOBox (String)">
-   <BOUNDS height="270" left="5535" top="3915" type="Node" width="2490">
-   </BOUNDS>
-   <BOUNDS height="270" left="5535" top="3915" type="Box" width="2490">
-   </BOUNDS>
-   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|connect texture pins if necessary|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="21" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" path="E:\jobs\2009\t_gallery\vvvv\modules\vvvv group\Transform\">
-   <BOUNDS height="0" left="2955" top="2730" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="3600" left="2955" top="2730" type="Box" width="4800">
-   </BOUNDS>
-   <BOUNDS height="6000" left="7110" top="9450" type="Window" width="9000">
-   </BOUNDS>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="15">
-   </PIN>
-   <PIN pinname="Initial Yaw" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Initial FOV" slicecount="1" values="0.2">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="23" dstpinname="Projection Transform" srcnodeid="21" srcpinname="Projection">
-   </LINK>
-   <LINK dstnodeid="23" dstpinname="View Transform" srcnodeid="21" srcpinname="View">
-   </LINK>
-   <NODE componentmode="InABox" id="20" nodename="IOBox (String)">
    <BOUNDS height="270" left="4650" top="5325" type="Node" width="4410">
    </BOUNDS>
    <BOUNDS height="915" left="4650" top="5325" type="Box" width="4470">
@@ -232,7 +200,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="19" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)">
    <BOUNDS height="270" left="300" top="6465" type="Node" width="8910">
    </BOUNDS>
    <BOUNDS height="270" left="300" top="6465" type="Box" width="8910">
@@ -246,10 +214,10 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="18" nodename="Renderer (EX9)">
-   <BOUNDS height="0" left="195" top="10935" type="Node" width="0">
+   <NODE componentmode="InAWindow" id="20" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="210" top="12465" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="2925" left="195" top="10935" type="Box" width="3900">
+   <BOUNDS height="2925" left="210" top="12465" type="Box" width="3900">
    </BOUNDS>
    <BOUNDS height="5010" left="0" top="7395" type="Window" width="6240">
    </BOUNDS>
@@ -264,7 +232,7 @@
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)">
    <BOUNDS height="270" left="30" top="6840" type="Node" width="915">
    </BOUNDS>
    <BOUNDS height="420" left="30" top="6840" type="Box" width="4560">
@@ -280,7 +248,7 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
    <BOUNDS height="255" left="30" top="7335" type="Node" width="570">
    </BOUNDS>
    <BOUNDS height="2970" left="30" top="7335" type="Box" width="4365">
@@ -294,10 +262,10 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="15" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" path="E:\jobs\2009\t_gallery\vvvv\modules\vvvv group\Transform\">
-   <BOUNDS height="0" left="2940" top="10365" type="Node" width="0">
+   <NODE componentmode="Hidden" id="17" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" path="C:\Users\joreg\Desktop\vvvvs\vvvv_40beta22_\modules\vvvv group\Transform\">
+   <BOUNDS height="0" left="1170" top="4200" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="3600" left="2940" top="10365" type="Box" width="4800">
+   <BOUNDS height="3600" left="1170" top="4200" type="Box" width="4800">
    </BOUNDS>
    <BOUNDS height="6000" left="9555" top="17640" type="Window" width="9000">
    </BOUNDS>
@@ -305,18 +273,20 @@
    </PIN>
    <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="15">
+   <PIN pinname="Inital Distance" slicecount="1" values="0.2">
    </PIN>
    <PIN pinname="Initial Yaw" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Initial FOV" slicecount="1" values="0.2">
    </PIN>
+   <PIN pinname="Initial Interest" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="18" dstpinname="View Transform" srcnodeid="15" srcpinname="View">
+   <LINK dstnodeid="20" dstpinname="View Transform" srcnodeid="17" srcpinname="View">
    </LINK>
-   <LINK dstnodeid="18" dstpinname="Projection Transform" srcnodeid="15" srcpinname="Projection">
+   <LINK dstnodeid="20" dstpinname="Projection Transform" srcnodeid="17" srcpinname="Projection">
    </LINK>
-   <NODE componentmode="Hidden" id="14" nodename=":EFFECTS:\Skinning.fx">
+   <NODE componentmode="Hidden" id="16" nodename=":EFFECTS:\Skinning.fx">
    <BOUNDS height="0" left="4815" top="12090" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6000" left="4815" top="12090" type="Box" width="6000">
@@ -344,7 +314,7 @@
    <PIN pinname="LightDirection " visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="13" nodename=":PLUGINS:\ColladaLoader.dll|VVVV.Nodes.PluginColladaMesh">
+   <NODE componentmode="Hidden" id="15" nodename=":PLUGINS:\ColladaLoader.dll|VVVV.Nodes.PluginColladaMesh">
    <BOUNDS height="0" left="4980" top="2730" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="4980" top="2730" type="Box" width="0">
@@ -366,9 +336,9 @@
    <PIN pinname="Transforms" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="33" dstpinname="Mesh" srcnodeid="13" srcpinname="Mesh">
+   <LINK dstnodeid="33" dstpinname="Mesh" srcnodeid="15" srcpinname="Mesh">
    </LINK>
-   <NODE componentmode="Hidden" id="12" nodename=":PLUGINS:\ColladaLoader.dll|VVVV.Nodes.PluginColladaLoader">
+   <NODE componentmode="Hidden" id="14" nodename=":PLUGINS:\ColladaLoader.dll|VVVV.Nodes.PluginColladaLoader">
    <BOUNDS height="0" left="4980" top="1815" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="4980" top="1815" type="Box" width="0">
@@ -380,29 +350,29 @@
    <PIN pinname="Filename" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="13" dstpinname="COLLADA Model" srcnodeid="12" srcpinname="COLLADA Model">
+   <LINK dstnodeid="15" dstpinname="COLLADA Model" srcnodeid="14" srcpinname="COLLADA Model">
    </LINK>
-   <LINK dstnodeid="12" dstpinname="Filename" linkstyle="VHV" srcnodeid="24" srcpinname="Output String">
+   <LINK dstnodeid="14" dstpinname="Filename" linkstyle="VHV" srcnodeid="24" srcpinname="Output String">
    <LINKPOINT x="6825" y="735">
    </LINKPOINT>
    <LINKPOINT x="5010" y="735">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="13" dstpinname="Time" linkstyle="VHV" srcnodeid="25" srcpinname="Output">
+   <LINK dstnodeid="15" dstpinname="Time" linkstyle="VHV" srcnodeid="25" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="13" dstpinname="Bin Size" linkstyle="VHV" srcnodeid="30" srcpinname="Y Output Value">
+   <LINK dstnodeid="15" dstpinname="Bin Size" linkstyle="VHV" srcnodeid="30" srcpinname="Y Output Value">
    <LINKPOINT x="7080" y="2460">
    </LINKPOINT>
    <LINKPOINT x="5865" y="2460">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="13" dstpinname="Index" linkstyle="VHV" srcnodeid="29" srcpinname="Y Output Value">
+   <LINK dstnodeid="15" dstpinname="Index" linkstyle="VHV" srcnodeid="29" srcpinname="Y Output Value">
    <LINKPOINT x="9255" y="2505">
    </LINKPOINT>
    <LINKPOINT x="6300" y="2505">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="31" dstpinname="Filename" srcnodeid="13" srcpinname="TextureFileName">
+   <LINK dstnodeid="31" dstpinname="Filename" srcnodeid="15" srcpinname="TextureFileName">
    </LINK>
    <LINK dstnodeid="33" dstpinname="Texture" linkstyle="VHV" srcnodeid="31" srcpinname="Texture Out">
    <LINKPOINT x="5475" y="4230">
@@ -410,9 +380,9 @@
    <LINKPOINT x="6285" y="4230">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="33" dstpinname="Transform" srcnodeid="13" srcpinname="Transforms">
+   <LINK dstnodeid="33" dstpinname="Transform" srcnodeid="15" srcpinname="Transforms">
    </LINK>
-   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
    <BOUNDS height="270" left="4860" top="6840" type="Node" width="1905">
    </BOUNDS>
    <BOUNDS height="585" left="4860" top="6840" type="Box" width="1890">
@@ -426,15 +396,17 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="10" nodename="FileTexture (EX9.Texture)">
+   <NODE componentmode="Hidden" id="12" nodename="FILETEXTURE (EX9.TEXTURE)">
    <BOUNDS height="0" left="5430" top="10290" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Filename" visible="1">
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="6645" top="7755" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="6645" top="7755" type="Box" width="450">
@@ -446,7 +418,7 @@
    <PIN pinname="Y Input Value" slicecount="1" values="-1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="8820" top="7770" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="8820" top="7770" type="Box" width="450">
@@ -458,7 +430,7 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
    <BOUNDS height="270" left="5055" top="7740" type="Node" width="1590">
    </BOUNDS>
    <BOUNDS height="270" left="5055" top="7740" type="Box" width="1590">
@@ -472,7 +444,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
    <BOUNDS height="270" left="7125" top="7740" type="Node" width="1635">
    </BOUNDS>
    <BOUNDS height="285" left="7125" top="7740" type="Box" width="1695">
@@ -486,7 +458,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
    <BOUNDS height="270" left="6225" top="8235" type="Node" width="2940">
    </BOUNDS>
    <BOUNDS height="285" left="6225" top="8235" type="Box" width="3000">
@@ -500,7 +472,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="4" nodename="LFO (Animation)">
+   <NODE componentmode="Hidden" id="6" nodename="LFO (Animation)">
    <BOUNDS height="0" left="6255" top="8535" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -510,7 +482,7 @@
    <PIN pinname="Reset" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
    <BOUNDS height="0" left="6780" top="6915" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="6780" top="6915" type="Box" width="2490">
@@ -519,24 +491,10 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="||">
+   <PIN pinname="Input String" slicecount="1" values="astroBoy_walk.dae">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
-   <BOUNDS height="270" left="5520" top="11430" type="Node" width="2490">
-   </BOUNDS>
-   <BOUNDS height="270" left="5520" top="11430" type="Box" width="2490">
-   </BOUNDS>
-   <BOUNDS height="160" left="885" top="8325" type="Window" width="215">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|connect texture pins if necessary|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="1" nodename=":PLUGINS:\ColladaLoader.dll|VVVV.Nodes.PluginColladaMesh">
+   <NODE componentmode="Hidden" id="4" nodename=":PLUGINS:\ColladaLoader.dll|VVVV.Nodes.PluginColladaMesh">
    <BOUNDS height="0" left="4965" top="9450" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="4965" top="9450" type="Box" width="0">
@@ -560,7 +518,7 @@
    <PIN pinname="Skinning Transforms" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="0" nodename=":PLUGINS:\ColladaLoader.dll|VVVV.Nodes.PluginColladaLoader">
+   <NODE componentmode="Hidden" id="3" nodename=":PLUGINS:\ColladaLoader.dll|VVVV.Nodes.PluginColladaLoader">
    <BOUNDS height="0" left="4965" top="8535" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="4965" top="8535" type="Box" width="0">
@@ -572,59 +530,51 @@
    <PIN pinname="Filename" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="1" dstpinname="COLLADA Model" srcnodeid="0" srcpinname="COLLADA Model">
+   <LINK dstnodeid="4" dstpinname="COLLADA Model" srcnodeid="3" srcpinname="COLLADA Model">
    </LINK>
-   <LINK dstnodeid="0" dstpinname="Filename" linkstyle="VHV" srcnodeid="3" srcpinname="Output String">
+   <LINK dstnodeid="3" dstpinname="Filename" linkstyle="VHV" srcnodeid="5" srcpinname="Output String">
    <LINKPOINT x="6810" y="7515">
    </LINKPOINT>
    <LINKPOINT x="4995" y="7515">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="1" dstpinname="Bin Size" linkstyle="VHV" srcnodeid="9" srcpinname="Y Output Value">
+   <LINK dstnodeid="4" dstpinname="Bin Size" linkstyle="VHV" srcnodeid="11" srcpinname="Y Output Value">
    <LINKPOINT x="7065" y="9180">
    </LINKPOINT>
    <LINKPOINT x="5850" y="9180">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="1" dstpinname="Index" linkstyle="VHV" srcnodeid="8" srcpinname="Y Output Value">
+   <LINK dstnodeid="4" dstpinname="Index" linkstyle="VHV" srcnodeid="10" srcpinname="Y Output Value">
    <LINKPOINT x="9240" y="9240">
    </LINKPOINT>
    <LINKPOINT x="6285" y="9240">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="10" dstpinname="Filename" srcnodeid="1" srcpinname="TextureFileName">
+   <LINK dstnodeid="12" dstpinname="Filename" srcnodeid="4" srcpinname="TextureFileName">
    </LINK>
-   <LINK dstnodeid="1" dstpinname="Time" linkstyle="VHV" srcnodeid="4" srcpinname="Output">
-   <LINKPOINT x="6285" y="9105">
-   </LINKPOINT>
-   <LINKPOINT x="5430" y="9105">
-   </LINKPOINT>
+   <LINK dstnodeid="16" dstpinname="Mesh" srcnodeid="4" srcpinname="Mesh">
    </LINK>
-   <LINK dstnodeid="14" dstpinname="Mesh" srcnodeid="1" srcpinname="Mesh">
+   <LINK dstnodeid="16" dstpinname="Transform" srcnodeid="4" srcpinname="Transforms">
    </LINK>
-   <LINK dstnodeid="14" dstpinname="Transform" srcnodeid="1" srcpinname="Transforms">
-   </LINK>
-   <LINK dstnodeid="14" dstpinname="Texture" linkstyle="VHV" srcnodeid="10" srcpinname="Texture Out">
+   <LINK dstnodeid="16" dstpinname="Texture" linkstyle="VHV" srcnodeid="12" srcpinname="Texture Out">
    <LINKPOINT x="5460" y="11745">
    </LINKPOINT>
    <LINKPOINT x="6105" y="11745">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="14" dstpinname="SkinningMatrices" linkstyle="VHV" srcnodeid="1" srcpinname="Skinning Transforms">
+   <LINK dstnodeid="16" dstpinname="SkinningMatrices" linkstyle="VHV" srcnodeid="4" srcpinname="Skinning Transforms">
    <LINKPOINT x="5310" y="11880">
    </LINKPOINT>
    <LINKPOINT x="5940" y="11880">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="23" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="33" srcpinname="Layer">
-   <LINKPOINT x="4650" y="4635">
+   <LINK dstnodeid="23" dstpinname="Layers" linkstyle="VHV" srcnodeid="33" srcpinname="Layer">
+   <LINKPOINT x="4815" y="4793">
    </LINKPOINT>
-   <LINKPOINT x="4650" y="3135">
-   </LINKPOINT>
-   <LINKPOINT x="240" y="3120">
+   <LINKPOINT x="270" y="4793">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="18" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="14" srcpinname="Layer">
+   <LINK dstnodeid="20" dstpinname="Layers" linkstyle="VHV" srcnodeid="16" srcpinname="Layer">
    <LINKPOINT x="4650" y="12315">
    </LINKPOINT>
    <LINKPOINT x="4650" y="10785">
@@ -632,16 +582,56 @@
    <LINKPOINT x="225" y="10770">
    </LINKPOINT>
    </LINK>
-   <NODE nodename=":MODULES:\vvvv group\EX9\Light (EX9 Direction).v4p" componentmode="Hidden" id="36" path="E:\jobs\2009\t_gallery\vvvv\modules\vvvv group\EX9\">
-   <BOUNDS type="Node" left="5265" top="12735" width="0" height="0">
+   <NODE componentmode="Hidden" id="2" nodename=":MODULES:\vvvv group\EX9\Light (EX9 Direction).v4p" path="C:\Users\joreg\Desktop\vvvvs\vvvv_40beta22_\modules\vvvv group\EX9\">
+   <BOUNDS height="0" left="5280" top="3720" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="5265" top="12735" width="4800" height="3600">
+   <BOUNDS height="3600" left="5280" top="3720" type="Box" width="4800">
    </BOUNDS>
-   <BOUNDS type="Window" left="7125" top="13410" width="9000" height="6000">
+   <BOUNDS height="6000" left="7125" top="13410" type="Window" width="9000">
    </BOUNDS>
    <PIN pinname="Light Direction Out" visible="1">
    </PIN>
+   <PIN pinname="Pitch" slicecount="1" values="0.490000000000001">
+   </PIN>
+   <PIN pinname="Yaw" slicecount="1" values="-3.60822483003176E-015">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="36" srcpinname="Light Direction Out" dstnodeid="14" dstpinname="LightDirection ">
+   <LINK dstnodeid="16" dstpinname="LightDirection " srcnodeid="2" srcpinname="Light Direction Out">
    </LINK>
+   <NODE componentmode="Hidden" id="1" nodename="Vector (3d Join)">
+   <BOUNDS height="0" left="1170" top="3780" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.08">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Initial Interest" srcnodeid="1" srcpinname="XYZ">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Time" linkstyle="VHV" srcnodeid="6" srcpinname="Output">
+   <LINKPOINT x="6285" y="9105">
+   </LINKPOINT>
+   <LINKPOINT x="5430" y="9105">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="View Transform" srcnodeid="17" srcpinname="View">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Projection Transform" srcnodeid="17" srcpinname="Projection">
+   </LINK>
+   <LINK dstnodeid="33" dstpinname="Light Direction XYZ" srcnodeid="2" srcpinname="Light Direction Out">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="1110" left="6810" top="2715" type="Node" width="6315">
+   </BOUNDS>
+   <BOUNDS height="1425" left="6810" top="2715" type="Box" width="3690">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|astroBoy_walk.dae&cr;&lf;&cr;&lf;Copyright 2008 Sony Computer Entertainment Inc.&cr;&lf;Licensed under the Creative Commons Attribution Noncommercial Share Alike license.  &cr;&lf;See  www.creativecommons.org for details.&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
    </PATCH>
