@@ -244,7 +244,7 @@ DWORD plugClass::setParameter(SetParameterStruct* pParam)
 
         newMask = true;
 	}
-	if ((pParam->index == 6) && (pParam-value >= 0.5))
+	if ((pParam->index == 6) && (pParam->value >= 0.5))
         newMask = true;
 
 	return FF_SUCCESS;
