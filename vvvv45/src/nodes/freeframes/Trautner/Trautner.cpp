@@ -375,10 +375,10 @@ DWORD plugClass::processFrame24Bit(LPVOID pFrame)
         gray += step;
     }
 
+    if (FParams[2].Value >= 0.5)   //show mask
+        cvAdd(FGrayImage, FMask, FGrayImage);
     if (FParams[3].Value >= 0.5)   //show filtered
         cvCvtColor(FGrayImage, FCurrentImage, CV_GRAY2BGR);
-    if (FParams[2].Value >= 0.5)   //show mask
-        cvAdd(FCurrentImage, FMask, FCurrentImage);
 
     LeaveCriticalSection(&CriticalSection);
 
