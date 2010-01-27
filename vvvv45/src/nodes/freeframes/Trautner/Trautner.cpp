@@ -89,16 +89,16 @@ DWORD initialise()
     GParamConstants[0].Type = 0;
 	GParamConstants[1].Type = 0;
 	GParamConstants[2].Type = 0;
-	GParamConstants[3].Type = 0;    //show thresholded
+	GParamConstants[3].Type = 0;    //show filtered
 	GParamConstants[4].Type = 10;   //3->4
 	GParamConstants[5].Type = 100;  //4->5
 	GParamConstants[6].Type = 0;    //reload mask
 
 	GParamConstants[0].Default = 0.0f;
 	GParamConstants[1].Default = 0.0f;
-	GParamConstants[2].Default = 1.0f;
-	GParamConstants[3].Default = 0.1f;
-	GParamConstants[4].Default = 0.0f;
+	GParamConstants[2].Default = 0.0f;
+	GParamConstants[3].Default = 1.0f;
+	GParamConstants[4].Default = 0.1f;
 	GParamConstants[6].Default = 0.0f;
 
 	int i = (int)&filemask[0];
@@ -108,8 +108,8 @@ DWORD initialise()
 	char tempName0[17] = "Hold Background";
 	char tempName1[17] = "Dark Background";
 	char tempName2[17] = "Show Mask";
-	char tempName3[17] = "Threshold";
-	char tempName4[17] = "Show Filtered";
+	char tempName3[17] = "Show Filtered";
+	char tempName4[17] = "Threshold";
 	char tempName5[17] = "Mask Image";
 	char tempName6[17] = "Reload Mask";
 
