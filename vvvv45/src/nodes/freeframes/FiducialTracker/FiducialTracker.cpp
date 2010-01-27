@@ -102,7 +102,7 @@ DWORD initialise()
     GOutputConstants[2].Type = 10;
     GOutputConstants[3].Type = 10;
 
-	char outName0[17] = "ID";
+	char outName0[17] = "Fiducial ID";
 	char outName1[17] = "X";
 	char outName2[17] = "Y";
 	char outName3[17] = "Orientation";
