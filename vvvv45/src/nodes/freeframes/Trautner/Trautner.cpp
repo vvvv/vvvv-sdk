@@ -122,8 +122,8 @@ DWORD initialise()
 	memcpy(GParamConstants[6].Name, tempName6, 16);
 
     // populate the output structs
-    GOutputConstants[0].Type = 10;
-    GOutputConstants[1].Type = 10;
+    GOutputConstants[0].Type = 0;
+    GOutputConstants[1].Type = 0;
 
 	char outName0[17] = "PixelCount";
 	char outName1[17] = "Changed Pixels";
