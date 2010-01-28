@@ -132,7 +132,7 @@ DWORD initialise()
     GOutputConstants[1].Type = 10;
     GOutputConstants[2].Type = 10;
     GOutputConstants[3].Type = 10;
-    GOutputConstants[4].Type = 10;
+    GOutputConstants[4].Type = 0;
 
 	char outName0[17] = "X";
 	char outName1[17] = "Y";
