@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding='iso-8859-1' ?>
+<project
+	name="VVVV.Plugin.Binaries"
+	default="build"
+	xmlns="http://nant.sf.net/release/0.85/nant.xsd"
+>
+
+  <property name="root.dir" value="../" />
+  <include buildfile="${root.dir}/nant-plugins.xml" />
+
+  <target name="post-build">
+    <copy todir="${plugin.path}">
+      <fileset basedir="Box2d">
+        <include name="**/*.dll" />
+        <include name="**/help/*" />
+      </fileset>
+    </copy>
+    <copy todir="${plugin.path}/licenses">
+      <fileset basedir="Box2d">
+	<include name="**/*.txt" />
+      </fileset>
+    </copy>
+
+    <copy todir="${plugin.path}">
+      <fileset basedir="CVStructuralAnalysis">
+        <include name="**/*.dll" />
+        <include name="**/help/*" />
+      </fileset>
+    </copy>
+
+    <copy todir="${plugin.path}">
+      <fileset basedir="GeometryNodes">
+        <include name="**/*.dll" />
+        <include name="**/help/*" />
+      </fileset>
+    </copy>
+    <copy todir="${plugin.path}/licenses">
+      <fileset basedir="GeometryNodes">
+	<include name="**/*.txt" />
+      </fileset>
+    </copy>
+
+    <copy todir="${plugin.path}">
+      <fileset basedir="KMeans">
+        <include name="**/*.dll" />
+        <include name="**/help/*" />
+      </fileset>
+    </copy>
+    <copy todir="${plugin.path}/licenses">
+      <fileset basedir="KMeans">
+	<include name="**/*.txt" />
+      </fileset>
+    </copy>
+
+    <copy todir="${plugin.path}">
+      <fileset basedir="StructureSynth">
+        <include name="**/*.dll" />
+        <include name="**/help/*" />
+      </fileset>
+    </copy>
+    <copy todir="${plugin.path}/licenses">
+      <fileset basedir="StructureSynth">
+	<include name="**/*.txt" />
+      </fileset>
+    </copy>
+
+
+  </target>
+</project>
