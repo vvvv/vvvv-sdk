@@ -136,14 +136,14 @@ DWORD initialise()
 
     GOutputConstants[0].Type = 10;
     GOutputConstants[1].Type = 10;
-    GOutputConstants[2].Type = 10;
+    GOutputConstants[2].Type = 0;
     GOutputConstants[3].Type = 10;
     GOutputConstants[4].Type = 10;
     GOutputConstants[5].Type = 10;
     GOutputConstants[6].Type = 10;
     GOutputConstants[7].Type = 10;
     GOutputConstants[8].Type = 10;
-    GOutputConstants[9].Type = 10;
+    GOutputConstants[9].Type = 0;
 
     // -> Naming of output pins //
 
