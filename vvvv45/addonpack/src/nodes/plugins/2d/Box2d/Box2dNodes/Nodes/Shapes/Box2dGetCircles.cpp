@@ -20,6 +20,9 @@ namespace VVVV
 			this->FHost->CreateNodeInput("Shapes",TSliceMode::Dynamic,TPinVisibility::True,this->vInShapes);
 			this->vInShapes->SetSubType(ArrayUtils::SingleGuidArray(ShapeDataType::GUID),ShapeDataType::FriendlyName);
 
+			this->FHost->CreateValueInput("Local Coordinates",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInLocal);
+			this->vInLocal->SetSubType(0,1,1,1,false,true,false);
+
 			this->FHost->CreateValueOutput("Position",2,ArrayUtils::Array2D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutPosition);
 			this->vOutPosition->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,0.0,0.0,false,false,false);
 
@@ -45,6 +48,14 @@ namespace VVVV
 		
 		void Box2dGetCircles::Evaluate(int SpreadMax)
 		{
+			
+			if (this->vInLocal->PinIsChanged)
+			{
+				double dbllocal;
+				this->vInLocal->GetValue(0,dbllocal);
+				this->m_local = dbllocal >= 0.5;
+			}
+
 			if (this->vInShapes->IsConnected) 
 			{
 				List<Vector2D> pos = gcnew List<Vector2D>();
@@ -63,9 +74,17 @@ namespace VVVV
 						b2CircleShape* circle = (b2CircleShape*)shape;
 
 						b2Vec2 local = circle->GetLocalPosition();
-						b2Vec2 world = circle->GetBody()->GetWorldPoint(local);
-						Vector2D vec = Vector2D(world.x,world.y);
-						pos.Add(vec);
+						if (this->m_local)
+						{
+							Vector2D vec = Vector2D(local.x,local.y);
+							pos.Add(vec);
+						}
+						else
+						{
+							b2Vec2 world = circle->GetBody()->GetWorldPoint(local);
+							Vector2D vec = Vector2D(world.x,world.y);
+							pos.Add(vec);
+						}
 
 						radius->Add(circle->GetRadius());
 						
@@ -87,8 +106,8 @@ namespace VVVV
 				this->vOutCustom->SliceCount = cnt;
 
 				for (int i = 0; i < cnt ; i++) 
-				{
-					this->vOutPosition->SetValue2D(i,pos[i].x,pos[i].y);
+				{	
+					this->vOutPosition->SetValue2D(i, pos[i].x,pos[i].y);
 					this->vOutRadius->SetValue(i,radius[i]);
 					this->vOutId->SetValue(i,ids[i]);
 					this->vOutIsSensor->SetValue(i, issensor.at(i));

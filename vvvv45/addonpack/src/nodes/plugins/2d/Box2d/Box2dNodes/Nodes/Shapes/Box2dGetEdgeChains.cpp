@@ -20,6 +20,10 @@ namespace VVVV
 			this->FHost->CreateNodeInput("Shapes",TSliceMode::Dynamic,TPinVisibility::True,this->vInShapes);
 			this->vInShapes->SetSubType(ArrayUtils::SingleGuidArray(ShapeDataType::GUID),ShapeDataType::FriendlyName);
 
+			this->FHost->CreateValueInput("Local Coordinates",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInLocal);
+			this->vInLocal->SetSubType(0,1,1,1,false,true,false);
+
+
 			//this->FHost->CreateValueOutput("Centers",2,ArrayUtils::Array2D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutCenters);
 			//this->vOutCenters->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,0.0,0.0,false,false,false);
 
@@ -46,6 +50,14 @@ namespace VVVV
 		
 		void Box2dGetEdgeChains::Evaluate(int SpreadMax)
 		{
+			if (this->vInLocal->PinIsChanged)
+			{
+				double dbllocal;
+				this->vInLocal->GetValue(0,dbllocal);
+
+				this->m_local = dbllocal >= 0.5;
+			}
+
 			if (this->vInShapes->IsConnected) 
 			{
 				std::vector<b2Vec2> vertices1;
@@ -61,8 +73,18 @@ namespace VVVV
 					if (shape->GetType() == e_edgeShape) 
 					{
 						b2EdgeShape* poly = (b2EdgeShape*)shape;
-						vertices1.push_back(poly->GetVertex1());
-						vertices2.push_back(poly->GetVertex2());
+
+						if (this->m_local)
+						{
+							vertices1.push_back(poly->GetVertex1());
+							vertices2.push_back(poly->GetVertex2());
+						}
+						else
+						{
+							vertices1.push_back(poly->GetBody()->GetWorldPoint(poly->GetVertex1()));
+							vertices2.push_back(poly->GetBody()->GetWorldPoint(poly->GetVertex2()));
+						}
+							
 						issensor.push_back(shape->IsSensor());
 					}
 				}

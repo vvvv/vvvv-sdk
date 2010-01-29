@@ -55,6 +55,7 @@ namespace VVVV
 			IPluginHost^ FHost;
 
 			INodeIn^ vInShapes;
+			IValueIn^ vInLocal;
 			ShapeDataType^ m_circles;
 
 			IValueOut^ vOutPosition;
@@ -62,6 +63,8 @@ namespace VVVV
 			IValueOut^ vOutIsSensor;
 			IValueOut^ vOutId;
 			IStringOut^ vOutCustom;
+
+			bool m_local;
 		};
 	}
 }
