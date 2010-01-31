@@ -10,7 +10,7 @@ using VVVV.Lib;
 namespace VVVV.Nodes
 {
     
-    public class Polygon2dNode : AbstractMeshNode, IPlugin, IDisposable, IPluginDXMesh
+    public class Ploygon2dNode : AbstractMeshNode, IPlugin, IDisposable, IPluginDXMesh
     {
         #region Plugin Info
         public static IPluginInfo PluginInfo
