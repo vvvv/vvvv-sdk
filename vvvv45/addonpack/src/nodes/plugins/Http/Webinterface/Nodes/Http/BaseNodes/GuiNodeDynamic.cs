@@ -52,6 +52,7 @@ namespace VVVV.Nodes.Http.BaseNodes
         public List<GuiDataObject> FGuiDataList = new List<GuiDataObject>();
 		public List<GuiDataObject> FUpstreamGuiList;
 		protected JQueryNodeIOData FUpstreamJQueryNodeData;
+        private List<bool> FSendToBrowser = new List<bool>();
 		private bool FHttpGuiInConnectedThisFrame = true;
 		private bool FGuiListModified = false;
         private bool FDisconnectStyle = false;
@@ -463,28 +464,28 @@ namespace VVVV.Nodes.Http.BaseNodes
 
             #region Polling
 
-            List<bool> SendToBrowser = new List<bool>(); 
-            SendToBrowser.Clear();
+            if (FSendPolling.PinIsChanged)
+            {
 
-            for (int i = 0; i < SpreadMax; i++)
-			{
-                double currentSendValue = 0;
-                FSendPolling.GetValue(i, out currentSendValue);
+                FSendToBrowser = new List<bool>();
+                FSendToBrowser.Clear();
 
-                SendToBrowser.Insert(i,FSendPolling.PinIsChanged);
-                if(FSendPolling.PinIsChanged)
+                for (int i = 0; i < SpreadMax; i++)
                 {
+                    double currentSendValue = 0;
+                    FSendPolling.GetValue(i, out currentSendValue);
+
+                    FSendToBrowser.Insert(i, FSendPolling.PinIsChanged);
+
                     FReceivedNewString = true;
                     FReceivedString[i] = null;
                     SetPollingMessage(i);
                 }
-			}
-            
-
+            }
 
             #endregion 
 
-            this.OnEvaluate(SpreadMax, FChangedSpreadSize, FNodeId, FSliceId, FReceivedNewString,FReceivedString, SendToBrowser);
+            this.OnEvaluate(SpreadMax, FChangedSpreadSize, FNodeId, FSliceId, FReceivedNewString,FReceivedString, FSendToBrowser);
 
 
 			FHttpGuiInConnectedThisFrame = false;
