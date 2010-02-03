@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 // change them to the information which is associated with the assembly
 // you compile.
 
-[assembly: AssemblyTitle("Phidget Interfaces")]
+[assembly: AssemblyTitle("Phidgets")]
 [assembly: AssemblyDescription("Creates an connection between the Phidgets Interfaces and VVVV")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("phlegma")]
-[assembly: AssemblyProduct("PhidgetInterface")]
+[assembly: AssemblyProduct("Phidgets")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
