@@ -4,6 +4,7 @@
 ShapeCustomData::ShapeCustomData(void)
 {
 	this->MarkedForDeletion= false;
+	this->MarkedForUpdate = false;
 }
 
 ShapeCustomData::~ShapeCustomData(void)

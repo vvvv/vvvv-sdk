@@ -8,7 +8,7 @@ namespace VVVV
 		Box2dConstantAccDefNode::Box2dConstantAccDefNode(void)
 		{
 			this->m_controller = gcnew ControllerDataType();
-			this->ctrldef = new b2ConstantAccelControllerDef();
+
 		}
 
 		void Box2dConstantAccDefNode::OnEvaluate(int SpreadMax, bool reset)
@@ -16,20 +16,27 @@ namespace VVVV
 			if (this->vInAcceleration->PinIsChanged
 			|| reset)
 			{
-				double x,y;
-				this->vInAcceleration->GetValue2D(0, x,y);
-				ctrldef->A.x = x;
-				ctrldef->A.y = y;
+				for (int i = 0; i <SpreadMax; i++)
+				{
+					double x,y;
+					this->vInAcceleration->GetValue2D(i, x,y);
 
-				if (reset)
-				{
-					this->ctrl = this->m_world->GetWorld()->CreateController(this->ctrldef);
-				}
-				else
-				{
-					b2ConstantAccelController* ac = (b2ConstantAccelController*) this->ctrl;
-					ac->A.x = x;
-					ac->A.y = y;
+
+					if (reset)
+					{
+						b2ConstantAccelControllerDef ctrldef;
+						ctrldef.A.x = x;
+						ctrldef.A.y = y;
+
+						this->ctrl->push_back(this->m_world->GetWorld()->CreateController(&ctrldef));
+						this->m_controller->Add(this->ctrl->at(i));
+					}
+					else
+					{
+						b2ConstantAccelController* ac = (b2ConstantAccelController*) this->ctrl->at(i);
+						ac->A.x = x;
+						ac->A.y = y;
+					}
 				}
 			}
 		}

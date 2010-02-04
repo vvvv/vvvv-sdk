@@ -51,7 +51,6 @@ namespace VVVV
 			IValueIn^ vInDensity;
 			IValueIn^ vInLinearDrag;
 			IValueIn^ vInAngularDrag;
-			b2BuoyancyControllerDef* ctrldef;
 		};
 	}
 

@@ -31,6 +31,9 @@ namespace VVVV
 			this->FHost->CreateValueInput("Is Sensor",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInIsSensor);
 			this->vInIsSensor->SetSubType(0,1,1,0.0,false,true,false);
 
+			this->FHost->CreateValueInput("Group Index", 1, nullptr, TSliceMode::Dynamic, TPinVisibility::True, this->vInGroupIndex);
+			this->vInGroupIndex->SetSubType(Double::MinValue, Double::MaxValue, 1, 0, false,false, true);
+
 			this->FHost->CreateStringInput("Custom",TSliceMode::Dynamic,TPinVisibility::True,this->vInCustom);
 			this->vInCustom->SetSubType("",false);
 

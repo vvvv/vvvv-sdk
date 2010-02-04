@@ -18,10 +18,11 @@ namespace VVVV
 				|| this->vInDensity->PinIsChanged
 				|| this->vInRestitution->PinIsChanged
 				|| this->vInIsSensor->PinIsChanged
-				|| this->vInCustom->PinIsChanged) 
+				|| this->vInCustom->PinIsChanged
+				|| this->vInGroupIndex->PinIsChanged) 
 			{
 
-				double x,y,count,friction,restitution,density,issensor;
+				double x,y,count,friction,restitution,density,issensor,group;
 				String^ custom;
 				int max = Math::Max(this->vInVerticesCount->SliceCount,this->vInFriction->SliceCount);
 				max = Math::Max(max,this->vInDensity->SliceCount);
@@ -40,6 +41,7 @@ namespace VVVV
 					this->vInRestitution->GetValue(i,restitution);
 					this->vInIsSensor->GetValue(i,issensor);
 					this->vInCustom->GetString(i, custom);
+					this->vInGroupIndex->GetValue(i, group);
 
 					b2PolygonDef* shapeDef = this->m_shapes->AddPolygon();
 
@@ -62,6 +64,7 @@ namespace VVVV
 					shapeDef->friction = friction;
 					shapeDef->restitution = restitution;
 					shapeDef->isSensor = issensor >= 0.5;
+					shapeDef->filter.groupIndex = Convert::ToInt32(group);
 					this->m_shapes->AddCustom(custom);
 				}
 

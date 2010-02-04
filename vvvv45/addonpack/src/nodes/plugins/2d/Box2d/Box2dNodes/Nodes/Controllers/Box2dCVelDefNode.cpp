@@ -8,7 +8,6 @@ namespace VVVV
 		Box2dCVelDefNode::Box2dCVelDefNode(void)
 		{
 			this->m_controller = gcnew ControllerDataType();
-			ctrldef = new b2ConstantForceControllerDef();
 		}
 
 		void Box2dCVelDefNode::OnEvaluate(int SpreadMax, bool reset)
@@ -16,20 +15,27 @@ namespace VVVV
 			if (this->vInVelocity->PinIsChanged
 				|| reset)
 			{
-				double x,y;
-				this->vInVelocity->GetValue2D(0, x,y);
-				ctrldef->F.x = x;
-				ctrldef->F.y = y;
+				for (int i = 0; i < SpreadMax; i++)
+				{
+					double x,y;
+					this->vInVelocity->GetValue2D(i, x,y);
 
-				if (reset)
-				{
-					this->ctrl = this->m_world->GetWorld()->CreateController(this->ctrldef);
-				}
-				else
-				{
-					b2ConstantForceController* ac = (b2ConstantForceController*) this->ctrl;
-					ac->F.x = x;
-					ac->F.y = y;
+					if (reset)
+					{
+						b2ConstantForceControllerDef ctrldef;
+
+						ctrldef.F.x = x;
+						ctrldef.F.y = y;
+
+						this->ctrl->push_back(this->m_world->GetWorld()->CreateController(&ctrldef));
+						this->m_controller->Add(this->ctrl->at(i));
+					}
+					else
+					{
+						b2ConstantForceController* ac = (b2ConstantForceController*) this->ctrl->at(i);
+						ac->F.x = x;
+						ac->F.y = y;
+					}
 				}
 			}
 		}

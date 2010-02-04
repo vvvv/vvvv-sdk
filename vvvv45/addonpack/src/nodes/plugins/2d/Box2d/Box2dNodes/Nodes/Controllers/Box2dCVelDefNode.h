@@ -46,7 +46,6 @@ namespace VVVV
 
 		private:
 			IValueIn^ vInVelocity;
-			b2ConstantForceControllerDef* ctrldef;
 		};
 	}
 

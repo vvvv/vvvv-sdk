@@ -37,7 +37,7 @@ namespace VVVV
 
 			ControllerDataType^ m_controller;
 			INodeOut^ vOutController;
-			b2Controller* ctrl;
+			std::vector<b2Controller*>* ctrl;
 			//IValueOut^ vOutBodyCount;
 		};
 

@@ -43,7 +43,7 @@ namespace VVVV
 
 			//Gravity
 			this->FHost->CreateValueInput("Gravity",2,ArrayUtils::Array2D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInGravity);
-			this->vInGravity->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,0,-10.0,false,false,false);
+			this->vInGravity->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,0,-1.0,false,false,false);
 
 			this->FHost->CreateValueFastInput("Time Step",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vInTimeStep);
 			this->vInTimeStep->SetSubType(0,Double::MaxValue,0.01,0.01,false,false,false);
@@ -215,7 +215,7 @@ namespace VVVV
 						{
 							b2Shape* snode = b->GetShapeList();
 
-							bool del = false;
+							bool change = false;
 							while (snode)
 							{
 								b2Shape* s = snode;
@@ -227,12 +227,22 @@ namespace VVVV
 									if (sdata->MarkedForDeletion)
 									{
 										b->DestroyShape(s);
-										del = true;
+										change = true;
+									}
+
+									if (sdata->MarkedForUpdate)
+									{
+										b->DestroyShape(s);
+										b2Shape* newshape = b->CreateShape(sdata->NewShape);
+										newshape->SetUserData(sdata);
+										sdata->MarkedForUpdate = false;
+										delete sdata->NewShape;
+										change = true;
 									}
 								}
 							}
 
-							if (del && b->IsDynamic())
+							if (change && b->IsDynamic())
 							{
 								b->SetMassFromShapes();
 							}

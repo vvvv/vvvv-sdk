@@ -9,7 +9,6 @@ namespace VVVV
 		Box2dGravityControllerDefNode::Box2dGravityControllerDefNode(void)
 		{
 			this->m_controller = gcnew ControllerDataType();
-			ctrldef = new b2GravityControllerDef();
 		}
 
 		void Box2dGravityControllerDefNode::OnEvaluate(int SpreadMax, bool reset)
@@ -18,23 +17,28 @@ namespace VVVV
 				this->vInInvSquare->PinIsChanged ||
 				reset)
 			{
-				double f,inv;
-
-				this->vInForce->GetValue(0, f);
-				this->vInInvSquare->GetValue(0,inv);
-
-				ctrldef->G = f;
-				ctrldef->invSqr = inv >= 0.5;
-
-				if (reset)
+				for (int i = 0; i < SpreadMax; i++)
 				{
-					this->ctrl = this->m_world->GetWorld()->CreateController(this->ctrldef);
-				}
-				else
-				{
-					b2GravityController* gc = (b2GravityController*) this->ctrl;
-					gc->G = f;
-					gc->invSqr = inv >= 0.5;
+					double f,inv;
+
+					this->vInForce->GetValue(i, f);
+					this->vInInvSquare->GetValue(i,inv);
+
+					if (reset)
+					{
+						b2GravityControllerDef ctrldef;
+						ctrldef.G = f;
+						ctrldef.invSqr = inv >= 0.5;
+
+						this->ctrl->push_back(this->m_world->GetWorld()->CreateController(&ctrldef));
+						this->m_controller->Add(this->ctrl->at(i));
+					}
+					else
+					{
+						b2GravityController* gc = (b2GravityController*) this->ctrl->at(i);
+						gc->G = f;
+						gc->invSqr = inv >= 0.5;
+					}
 				}
 			}
 		}

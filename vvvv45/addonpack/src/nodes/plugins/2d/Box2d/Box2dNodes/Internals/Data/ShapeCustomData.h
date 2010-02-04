@@ -8,5 +8,7 @@ public:
 	int Id;
 	char* Custom;
 	bool MarkedForDeletion;
+	bool MarkedForUpdate;
+	b2ShapeDef* NewShape;
 
 };

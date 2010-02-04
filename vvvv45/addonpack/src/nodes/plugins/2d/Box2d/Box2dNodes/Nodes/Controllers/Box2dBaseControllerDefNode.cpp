@@ -8,7 +8,8 @@ namespace VVVV
 		Box2dBaseControllerDefNode::Box2dBaseControllerDefNode(void)
 		{
 			 this->m_controller = gcnew ControllerDataType();
-			 this->m_controller->SetController(nullptr);
+			 this->ctrl = new vector<b2Controller*>;
+			 //this->m_controller->SetController(nullptr);
 		}
 
 		Box2dBaseControllerDefNode::~Box2dBaseControllerDefNode() 
@@ -17,8 +18,11 @@ namespace VVVV
 			{
 				if (this->m_world->GetIsValid())
 				{
-					this->ctrl->Clear();
-					this->m_world->GetWorld()->DestroyController(this->ctrl);
+					for (int i = 0; i < this->ctrl->size();i++)
+					{
+						this->ctrl->at(i)->Clear();
+						this->m_world->GetWorld()->DestroyController(this->ctrl->at(i));
+					}
 				}
 			}
 		}
@@ -35,7 +39,7 @@ namespace VVVV
 			this->FHost->CreateValueInput("Clear",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInClear);
 			this->vInClear->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);
 
-			this->FHost->CreateNodeOutput("Controller",TSliceMode::Single,TPinVisibility::True,this->vOutController);
+			this->FHost->CreateNodeOutput("Controller",TSliceMode::Dynamic,TPinVisibility::True,this->vOutController);
 			this->vOutController->SetSubType(ArrayUtils::SingleGuidArray(ControllerDataType::GUID),ControllerDataType::FriendlyName);
 			this->vOutController->SetInterface(this->m_controller);
 
@@ -52,7 +56,7 @@ namespace VVVV
 			{
 				if (this->m_world->GetIsValid())
 				{
-					if (this->ctrl == nullptr)
+					if (this->ctrl->size() != SpreadMax)
 					{
 						redo = true;
 					}
@@ -64,26 +68,41 @@ namespace VVVV
 						}
 					}
 
-					this->OnEvaluate(SpreadMax,redo);
-					this->m_controller->SetController(ctrl);
-
-					if (this->ctrl == nullptr)
+					if (redo)
 					{
-						this->FHost->Log(TLogType::Error,Convert::ToString(redo));
-						this->FHost->Log(TLogType::Error,"Null controller");
+						if (!this->m_world->HasReset())
+						{
+							for (int i = 0; i < this->ctrl->size();i++)
+							{
+								this->ctrl->at(i)->Clear();
+								this->m_world->GetWorld()->DestroyController(this->ctrl->at(i));
+							}
+						}
+
+						this->ctrl->clear();
+						this->m_controller->Reset();
 					}
 
-					double dblclear;
-					this->vInClear->GetValue(0, dblclear);
+					this->OnEvaluate(SpreadMax,redo);
 
-					if (dblclear >= 0.5 && this->ctrl !=nullptr)
-					{	
-						this->ctrl->Clear();
+					for (int i = 0; i < this->ctrl->size(); i++)
+					{
+						double dblclear;
+						this->vInClear->GetValue(i, dblclear);
+
+						if (dblclear >= 0.5)
+						{	
+							this->ctrl->at(i)->Clear();
+						}
 					}
+
+					
+
+
 				}
 			}
 
-
+			this->vOutController->SliceCount = this->ctrl->size();
 			this->vOutController->MarkPinAsChanged();
 		}
 
@@ -105,14 +124,16 @@ namespace VVVV
 				{
 					if (this->m_world->GetIsValid())
 					{
-						this->ctrl->Clear();
-						this->m_world->GetWorld()->DestroyController(this->ctrl);
-
+						for (int i = 0; i < this->ctrl->size();i++)
+						{
+							this->ctrl->at(i)->Clear();
+							this->m_world->GetWorld()->DestroyController(this->ctrl->at(i));
+						}
 					}
         			this->m_world = nullptr;
-					this->ctrl = nullptr;
+					this->ctrl->clear();
 				}
-				this->m_controller->SetController(nullptr);
+				this->m_controller->Reset();
         	}
 		}
 

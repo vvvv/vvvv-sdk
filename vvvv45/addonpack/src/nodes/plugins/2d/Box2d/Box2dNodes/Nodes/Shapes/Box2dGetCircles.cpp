@@ -48,6 +48,7 @@ namespace VVVV
 		
 		void Box2dGetCircles::Evaluate(int SpreadMax)
 		{
+			this->vInShapes->PinIsChanged;
 			
 			if (this->vInLocal->PinIsChanged)
 			{

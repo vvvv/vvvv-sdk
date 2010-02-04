@@ -25,25 +25,31 @@ namespace VVVV
 			this->vInDensity->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
 
 			this->FHost->CreateValueInput("Set Density",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInSetDensity);
-			this->vInSetDensity->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);	
+			this->vInSetDensity->SetSubType(0,1,1,0.0,true,false,false);
 
 			this->FHost->CreateValueInput("Friction",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInFriction);
 			this->vInFriction->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
 
 			this->FHost->CreateValueInput("Set Friction",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInSetFriction);
-			this->vInSetFriction->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);
+			this->vInSetFriction->SetSubType(0,1,1,0.0,true,false,false);
 
 			this->FHost->CreateValueInput("Restitution",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInRestitution);
 			this->vInRestitution->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
 
 			this->FHost->CreateValueInput("Set Restitution",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInSetRestitution);
-			this->vInSetRestitution->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);	
+			this->vInSetRestitution->SetSubType(0,1,1,0.0,true,false,false);	
+
+			this->FHost->CreateValueInput("Group Index", 1, nullptr, TSliceMode::Dynamic, TPinVisibility::True, this->vInGroup);
+			this->vInGroup->SetSubType(Double::MinValue, Double::MaxValue, 1, 0, false,false, true);
+
+			this->FHost->CreateValueInput("Set Group",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInSetGroup);
+			this->vInSetGroup->SetSubType(0,1,1,0.0,true,false,false);
 
 			this->FHost->CreateStringInput("Custom",TSliceMode::Dynamic,TPinVisibility::True,this->vInCustom);
 			this->vInCustom->SetSubType("",false);
 
 			this->FHost->CreateValueInput("Set Custom",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInSetCustom);
-			this->vInSetCustom->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,true,false,false);
+			this->vInSetCustom->SetSubType(0,1,1,0.0,true,false,false);
 
 		}
 
@@ -69,7 +75,7 @@ namespace VVVV
 			this->vInShapes->PinIsChanged;
 			if (this->vInShapes->IsConnected) 
 			{
-				double dblsd,dblsf,dblsr,dblsc;
+				double dblsd,dblsf,dblsr,dblsc,dblsg;
 				for (int i = 0; i < this->vInShapes->SliceCount; i++) 
 				{
 					int realslice;
@@ -82,18 +88,38 @@ namespace VVVV
 					this->vInSetFriction->GetValue(i,dblsf);
 					this->vInSetDensity->GetValue(i, dblsd);
 					this->vInSetRestitution->GetValue(i,dblsr);
-					if (dblsf >= 0.5 || dblsd >= 0.5 || dblsr >= 0.5) 
+					this->vInSetGroup->GetValue(i, dblsg);
+					
+					if (dblsg >= 0.5)
 					{
-						double f,r,d;
+						double g;
+						this->vInGroup->GetValue(i,g);
+						b2FilterData filter = shape->GetFilterData();
+						filter.groupIndex = Convert::ToInt32(g);
+					}
 
+					if (dblsf >= 0.5) 
+					{
+						double f;
 						this->vInFriction->GetValue(i, f);
-						this->vInRestitution->GetValue(i, r);
+						shape->SetFriction(f);
+					}
+
+					if (dblsd >= 0.5) 
+					{
+						double d;
 						this->vInDensity->GetValue(i, d);
 
-						shape->SetFriction(f);
 						shape->SetDensity(d);
-						shape->SetRestitution(r);
 						shape->GetBody()->SetMassFromShapes();
+					}
+
+
+					if (dblsr >= 0.5) 
+					{
+						double r;
+						this->vInRestitution->GetValue(i, r);
+						shape->SetRestitution(r);
 					}
 
 					this->vInSetCustom->GetValue(i,dblsc);

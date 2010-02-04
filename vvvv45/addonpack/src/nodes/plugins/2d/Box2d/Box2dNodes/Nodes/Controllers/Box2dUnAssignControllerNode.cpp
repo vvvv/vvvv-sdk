@@ -66,9 +66,7 @@ namespace VVVV
 
 			if (this->vInBody->IsConnected && this->vInController->IsConnected)
 			{
-				b2Controller* ctrl = this->m_controller->GetController();
-				if (ctrl != nullptr)
-				{
+
 					for (int i = 0; i < SpreadMax; i++)
 					{
 						double dbldoassign;
@@ -80,6 +78,12 @@ namespace VVVV
 							b2Body* body;
 							this->vInBody->GetUpsreamSlice(i % this->vInBody->SliceCount,realslice);
 							body = this->m_body->GetSlice(realslice);
+
+							int realslicectrl;
+							this->vInController->GetUpsreamSlice(i % this->vInController->SliceCount,realslicectrl);
+							b2Controller* ctrl = this->m_controller->GetSlice(realslicectrl);
+
+
 
 							bool found = false;
 							b2ControllerEdge* edge = body->GetControllerList();
@@ -102,7 +106,7 @@ namespace VVVV
 						}
 						
 					}
-				}
+				
 			}
 		}
 	}

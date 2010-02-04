@@ -48,7 +48,6 @@ namespace VVVV
 		private:
 			IValueIn^ vInForce;
 			IValueIn^ vInInvSquare;
-			b2GravityControllerDef* ctrldef;
 
 		};
 	}

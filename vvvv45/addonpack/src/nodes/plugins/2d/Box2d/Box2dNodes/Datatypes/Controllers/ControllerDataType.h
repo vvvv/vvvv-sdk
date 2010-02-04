@@ -8,7 +8,8 @@ namespace VVVV
 		InterfaceType(ComInterfaceType::InterfaceIsIUnknown)]
 		public interface class IControllerIO: INodeIOBase
 		{
-			b2Controller* GetController();
+			//b2Controller* GetController();
+			b2Controller* GetSlice(int index);
 		};
 
 
@@ -17,12 +18,15 @@ namespace VVVV
 		{
 			private:
 				static Guid^ m_guid;
-				b2Controller* m_controller;
+				vector<b2Controller*>* m_controllers;
 			public:
 				ControllerDataType();
 
-				virtual b2Controller* GetController() { return m_controller; }
-				void SetController(b2Controller* ctrl) { m_controller = ctrl; }
+
+				virtual b2Controller* GetSlice(int index);
+				void Reset();
+				void Add(b2Controller* ctrl);
+				int Size();
 
 
 				static String^ FriendlyName = "Box2d Controller";

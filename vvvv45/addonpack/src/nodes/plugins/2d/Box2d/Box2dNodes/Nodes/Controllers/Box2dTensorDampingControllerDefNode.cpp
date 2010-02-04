@@ -8,7 +8,6 @@ namespace VVVV
 		Box2dTensorDampingControllerDefNode::Box2dTensorDampingControllerDefNode(void)
 		{
 			this->m_controller = gcnew ControllerDataType();
-			this->ctrldef = new b2TensorDampingControllerDef();
 		}
 
 		void Box2dTensorDampingControllerDefNode::OnEvaluate(int SpreadMax, bool reset)
@@ -16,20 +15,27 @@ namespace VVVV
 			if (this->vInModel->PinIsChanged
 				|| reset)
 			{
-				double x,y,z,w;
-				this->vInModel->GetValue4D(0, x,z,y,w);
-				b2Mat22* mat = new b2Mat22(x,y,z,w);
-				ctrldef->T = *mat;
-				
 
-				if (reset)
+				for (int i = 0; i < SpreadMax; i++)
 				{
-					this->ctrl = this->m_world->GetWorld()->CreateController(this->ctrldef);
-				}
-				else
-				{
-					b2TensorDampingController* gc = (b2TensorDampingController*) this->ctrl;
-					gc->T = *mat;
+					double x,y,z,w;
+					this->vInModel->GetValue4D(i, x,z,y,w);
+					b2Mat22* mat = new b2Mat22(x,y,z,w);
+					
+					if (reset)
+					{
+						b2TensorDampingControllerDef ctrldef;
+						ctrldef.T = *mat;
+						this->ctrl->push_back(this->m_world->GetWorld()->CreateController(&ctrldef));
+						this->m_controller->Add(this->ctrl->at(i));
+					}
+					else
+					{
+						b2TensorDampingController* gc = (b2TensorDampingController*) this->ctrl->at(i);
+						gc->T = *mat;
+					}
+
+
 				}
 			}
 		}

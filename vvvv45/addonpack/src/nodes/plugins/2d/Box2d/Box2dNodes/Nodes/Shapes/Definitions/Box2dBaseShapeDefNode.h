@@ -30,6 +30,7 @@ namespace VVVV
 			IValueIn^ vInFriction;
 			IValueIn^ vInRestitution;
 			IValueIn^ vInIsSensor;
+			IValueIn^ vInGroupIndex;
 			IStringIn^ vInCustom;
 
 			INodeOut^ vOutShapes;

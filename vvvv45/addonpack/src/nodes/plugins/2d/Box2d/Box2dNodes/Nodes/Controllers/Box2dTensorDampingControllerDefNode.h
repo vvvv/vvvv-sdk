@@ -46,7 +46,6 @@ namespace VVVV
 
 		private:
 			IValueIn^ vInModel;
-			b2TensorDampingControllerDef* ctrldef;
 		};
 	}
 

@@ -8,7 +8,6 @@ namespace VVVV
 		Box2dBuoyancyControllerDefNode::Box2dBuoyancyControllerDefNode(void)
 		{
 			this->m_controller = gcnew ControllerDataType();
-			this->ctrldef = new b2BuoyancyControllerDef();
 		}
 
 		void Box2dBuoyancyControllerDefNode::OnEvaluate(int SpreadMax, bool reset)
@@ -20,33 +19,41 @@ namespace VVVV
 				this->vInAngularDrag->PinIsChanged ||
 				reset)
 			{
-				double nx, ny,offset,ld,ad,dens;
-				this->vInNormal->GetValue2D(0, nx,ny);
-				this->vInOffset->GetValue(0, offset);
-				this->vInAngularDrag->GetValue(0, ad);
-				this->vInDensity->GetValue(0, dens);
-				this->vInLinearDrag->GetValue(0, ld);
-
-				ctrldef->normal.x = nx;
-				ctrldef->normal.y = ny;
-				ctrldef->offset = offset;
-				ctrldef->density = dens;
-				ctrldef->linearDrag = ld;
-				ctrldef->angularDrag = ad;
-
-				if (reset)
+				for (int i = 0; i < SpreadMax; i++)
 				{
-					this->ctrl = this->m_world->GetWorld()->CreateController(this->ctrldef);
-				}
-				else
-				{
-					b2BuoyancyController* bc = (b2BuoyancyController*) this->ctrl;
-					bc->normal.x = nx;
-					bc->normal.y = ny;
-					bc->offset = offset;
-					bc->density = dens;
-					bc->linearDrag = ld;
-					bc->angularDrag = ad;
+
+					double nx, ny,offset,ld,ad,dens;
+					this->vInNormal->GetValue2D(i, nx,ny);
+					this->vInOffset->GetValue(i, offset);
+					this->vInAngularDrag->GetValue(i, ad);
+					this->vInDensity->GetValue(i, dens);
+					this->vInLinearDrag->GetValue(i, ld);
+
+					if (reset)
+					{
+						b2BuoyancyControllerDef ctrldef;
+
+						ctrldef.normal.x = nx;
+						ctrldef.normal.y = ny;
+						ctrldef.offset = offset;
+						ctrldef.density = dens;
+						ctrldef.linearDrag = ld;
+						ctrldef.angularDrag = ad;
+
+
+						this->ctrl->push_back(this->m_world->GetWorld()->CreateController(&ctrldef));
+						this->m_controller->Add(this->ctrl->at(i));
+					}
+					else
+					{
+						b2BuoyancyController* bc = (b2BuoyancyController*) this->ctrl->at(i);
+						bc->normal.x = nx;
+						bc->normal.y = ny;
+						bc->offset = offset;
+						bc->density = dens;
+						bc->linearDrag = ld;
+						bc->angularDrag = ad;
+					}
 				}
 			}
 		}
