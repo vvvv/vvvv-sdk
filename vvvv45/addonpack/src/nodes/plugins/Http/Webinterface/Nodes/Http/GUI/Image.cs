@@ -17,7 +17,7 @@ namespace VVVV.Nodes.Http.GUI
         #region field declaration
 
 
-        private IStringIn FSource;
+        private IStringIn FPath;
         private IStringIn FAlt;
         private IValueIn FReload;
 
@@ -112,8 +112,6 @@ namespace VVVV.Nodes.Http.GUI
 
 
 
-
-
         #region Plugin Information
 
 
@@ -172,14 +170,19 @@ namespace VVVV.Nodes.Http.GUI
 
         protected override void OnSetPluginHost()
         {
-            this.FHost.CreateStringInput("Source", TSliceMode.Dynamic, TPinVisibility.True, out FSource);
-            FSource.SetSubType("",true);
+            FHost.CreateStringInput("Filename", TSliceMode.Dynamic, TPinVisibility.True, out FPath);
+            FPath.SetSubType("",true);
 
-            this.FHost.CreateStringInput("Alt", TSliceMode.Dynamic, TPinVisibility.True, out FAlt);
+            FHost.CreateStringInput("Alt", TSliceMode.Dynamic, TPinVisibility.True, out FAlt);
             FAlt.SetSubType("", false);
+
+            FHost.CreateValueInput("Reload",1,null, TSliceMode.Single, TPinVisibility.True, out FReload);
+            FReload.SetSubType(0, 1, 1, 0, true, false, true);
         }
 
         #endregion pin creation
+
+
 
 
 
@@ -197,40 +200,39 @@ namespace VVVV.Nodes.Http.GUI
 
                 for (int i = 0; i < SpreadMax; i++)
                 {
-                    string currentSourceSlice;
+                    string currenPathSlice;
                     string currentAltSlice;
                     string tAlt = String.Empty;
-                    FSource.GetString(i, out currentSourceSlice);
+                    FPath.GetString(i, out currenPathSlice);
                     FAlt.GetString(i, out currentAltSlice);
 
-                    string tSource = new FileInfo(currentSourceSlice).Name;
-
-                    bool FileExist = File.Exists(currentSourceSlice);
+                    string tFilename = new FileInfo(currenPathSlice).Name;
+                    bool FileExist = File.Exists(currenPathSlice);
 
                     // Source Pins
                     if (FileExist)
                     {
-                        FWebinterfaceSingelton.SetFileToStorage(tSource, File.ReadAllBytes(currentSourceSlice));
+                        AddTextureToMemory(currenPathSlice);
                     }
                     else
                     {
-                        tSource = "No Source";
-                        FHost.Log(TLogType.Message, FPluginInfo.Namespace + ": can't load " + currentSourceSlice);
+                        tFilename = "No Source";
+                        FHost.Log(TLogType.Message, FPluginInfo.Namespace + ": can't load " + currenPathSlice);
                     }
 
                     // Alt Pin Input
                     if (currentAltSlice != null || currentAltSlice != "")
                     {
-                        Img tImage = new Img(tSource,currentAltSlice);
+                        Img tImage = new Img(tFilename,currentAltSlice);
                         SetTag(i, tImage);
                     }
                     else
                     {
-                        Img tImage = new Img(tSource);
+                        Img tImage = new Img(tFilename);
                         SetTag(i, tImage);
                     }
 
-                    CreatePollingMessage(i, SliceId[i], "attr","src",tSource);
+                    CreatePollingMessage(i, SliceId[i], "attr","src",tFilename);
                 }
             }
         }
@@ -238,9 +240,12 @@ namespace VVVV.Nodes.Http.GUI
 
         #endregion Main Loop
 
+
+
+
 		protected override bool DynamicPinsAreChanged()
 		{
-			return (FSource.PinIsChanged || FAlt.PinIsChanged);
+			return (FPath.PinIsChanged || FAlt.PinIsChanged || FReload.PinIsChanged);
 		}
 	}
 }
