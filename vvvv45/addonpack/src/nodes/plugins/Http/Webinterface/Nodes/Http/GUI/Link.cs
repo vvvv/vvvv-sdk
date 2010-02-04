@@ -7,6 +7,9 @@ using VVVV.Nodes.Http.BaseNodes;
 
 namespace VVVV.Nodes.Http.GUI
 {
+    /// <summary>
+    /// Creates an Link Node
+    /// </summary>
     class Link : GuiNodeDynamic, IPlugin, IDisposable
     {
 
@@ -106,6 +109,7 @@ namespace VVVV.Nodes.Http.GUI
         #endregion constructor/destructor
 
 
+
         #region Pugin Information
 
         public static IPluginInfo FPluginInfo;
@@ -161,6 +165,7 @@ namespace VVVV.Nodes.Http.GUI
         #endregion Plugin Information
 
 
+
         #region pin creation
 
         protected override void OnSetPluginHost()
@@ -181,6 +186,7 @@ namespace VVVV.Nodes.Http.GUI
         }
 
         #endregion pin creation
+
 
 
         #region Main Loop
@@ -206,23 +212,28 @@ namespace VVVV.Nodes.Http.GUI
 
                     if (currentLink != null && currentLink != "")
                     {
+                        // create the an Link from the Type Tag
                         Webinterface.Utilities.Link HtmlLink = new Webinterface.Utilities.Link(currentLink);
 
+                        //insert an text if exist
                         if (currentText != null && currentText != "")
                         {
                             HtmlLink.Insert(currentText);
                         }
 
+                        //insert Attribute target 
                         if (currentTarget != null && currentTarget != "")
                         {
                             HtmlLink.AddAttribute(new HTMLAttribute("target", currentTarget));
                         }
 
+                        //insert Key which kann be pressed to click the link
                         if (currentKey != null && currentKey != "")
                         {
                             HtmlLink.AddAttribute(new HTMLAttribute("accesskey", currentKey));
                         }
 
+                        //set the tag to the Gui Element Object
                         SetTag(i, HtmlLink);
                     }
                     else
@@ -233,12 +244,17 @@ namespace VVVV.Nodes.Http.GUI
             }
         }
 
-        #endregion Main Loop
-
 
         protected override bool DynamicPinsAreChanged()
         {
+            //checks if any input pin is changeds
             return (FLink.PinIsChanged || FText.PinIsChanged || FTarget.PinIsChanged || FKey.PinIsChanged);
         }
+
+
+        #endregion Main Loop
+
+
+
     }
 }
