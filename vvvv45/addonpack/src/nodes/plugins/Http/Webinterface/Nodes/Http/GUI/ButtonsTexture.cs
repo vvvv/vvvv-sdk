@@ -233,8 +233,8 @@ namespace VVVV.Nodes.Http.GUI
                         FileInfo InfoDefault = new FileInfo(currentPathDefault);
                         FileInfo InfoPress = new FileInfo(currentPathPress);
 
-                        FWebinterfaceSingelton.SetFileToStorage(InfoDefault.Name, File.ReadAllBytes(currentPathDefault));
-                        FWebinterfaceSingelton.SetFileToStorage(InfoPress.Name, File.ReadAllBytes(currentPathPress));
+                        AddTextureToMemory(InfoDefault.Name);
+                        AddTextureToMemory(InfoPress.Name);
 
                         Img Image = new Img();
                         HTMLAttribute tSource;
