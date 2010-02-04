@@ -553,11 +553,11 @@ namespace VVVV.Nodes.Http
                     mPage.Head.Insert(new Title(currentSliceTitel));
 
                     // Css File
-                    mPage.Head.Insert(new Link(mPageName + ".css", "stylesheet", "text/css"));
-                    mPage.Head.Insert(new Link("jquery.css", "stylesheet", "text/css"));
-                    mPage.Head.Insert(new Link("colorpicker.css", "stylesheet", "text/css"));
-                    mPage.Head.Insert(new Link("checkbox.css", "stylesheet", "text/css"));
-                    mPage.Head.Insert(new Link("safaricheck.css", "stylesheet", "text/css"));
+                    mPage.Head.Insert(new HeaderLink(mPageName + ".css", "stylesheet", "text/css"));
+                    mPage.Head.Insert(new HeaderLink("jquery.css", "stylesheet", "text/css"));
+                    mPage.Head.Insert(new HeaderLink("colorpicker.css", "stylesheet", "text/css"));
+                    mPage.Head.Insert(new HeaderLink("checkbox.css", "stylesheet", "text/css"));
+                    mPage.Head.Insert(new HeaderLink("safaricheck.css", "stylesheet", "text/css"));
  
                     mPage.Head.Insert(new JavaScript("jquery.js", true));
                     mPage.Head.Insert(new JavaScript("jquerytimer.js", true));
