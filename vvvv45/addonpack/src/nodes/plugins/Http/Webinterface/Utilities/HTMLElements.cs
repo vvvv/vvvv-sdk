@@ -176,15 +176,16 @@ namespace VVVV.Webinterface.Utilities
         }
     }
 
-    class Link : Tag
+    class HeaderLink : Tag
     {
 
-		protected Link()
-		{
+        public HeaderLink(string pHRef)
+        {
+            Name = "link";
+            AddAttribute(new HTMLAttribute("href", pHRef));
+        }
 
-		}
-
-        public Link(string pHRef, string pType)
+        public HeaderLink(string pHRef, string pType)
         {
             Name = "link";
             AddAttribute(new HTMLAttribute("href", pHRef));
@@ -192,7 +193,7 @@ namespace VVVV.Webinterface.Utilities
            
         }
 
-        public Link(string pHref, string pRel, string pType)
+        public HeaderLink(string pHref, string pRel, string pType)
         {
             Name = "link";
             AddAttribute(new HTMLAttribute("type", pType).Text);
@@ -202,7 +203,7 @@ namespace VVVV.Webinterface.Utilities
             
         }
 
-        public Link(string pHref, string pRel, string pType, string pMedia)
+        public HeaderLink(string pHref, string pRel, string pType, string pMedia)
         {
             Name = "link";
             AddAttribute(new HTMLAttribute("media", pMedia).Text);
@@ -385,7 +386,6 @@ namespace VVVV.Webinterface.Utilities
         
     }
 
-
     class TextArea : Tag
     {
         public TextArea()
@@ -446,7 +446,6 @@ namespace VVVV.Webinterface.Utilities
         }
     }
 
-
     class RadioButton : Tag
     {
 
@@ -456,7 +455,6 @@ namespace VVVV.Webinterface.Utilities
             AddAttribute(new HTMLAttribute("type", "radio"));
         }
     }
-
 
     class Form : Tag
     {
@@ -557,7 +555,7 @@ namespace VVVV.Webinterface.Utilities
         }
     }
 
-    public class JavaScript : Tag
+    class JavaScript : Tag
     {
 
         public JavaScript()
@@ -603,7 +601,7 @@ namespace VVVV.Webinterface.Utilities
         }
     }
 
-    public class JavaFunction : Tag
+    class JavaFunction : Tag
     {
 		protected JavaFunction()
 		{
@@ -621,8 +619,7 @@ namespace VVVV.Webinterface.Utilities
         }
     }
 
-
-    public class JqueryFunction : Tag
+    class JqueryFunction : Tag
     {
 		protected JqueryFunction()
 		{
@@ -676,30 +673,6 @@ namespace VVVV.Webinterface.Utilities
         }
     }
 
-
-
-    class Paragraph : Tag
-    {
-		protected Paragraph()
-		{
-
-		}
-		
-		public Paragraph(string pID)
-        {
-            Name = "p";
-            AddAttribute(new HTMLAttribute("id", pID));
-        }
-    }
-
-    class NoScript : Tag
-    {
-        public NoScript()
-        {
-            Name = "noscript";
-        }
-    }
-
     class IFrame : Tag
     {
         public IFrame()
@@ -732,20 +705,22 @@ namespace VVVV.Webinterface.Utilities
         }
     }
 
-    class Slider : Tag
+    class Link : Tag
     {
-        public Slider()
+        public Link(string href)
         {
-            Name = "div";
+            Name = "a";
+            AddAttribute(new HTMLAttribute("href", href));
         }
 
-        public Slider(string pId, string pClass)
+        public Link(string href, string Text)
         {
-            Name = "div";
-            AddAttribute( new HTMLAttribute("id", pId));
-            AddAttribute(new HTMLAttribute("class", pClass));
+            Name = "a";
+            AddAttribute(new HTMLAttribute("href", href));
+            Insert(Text);
         }
     }
+
 	#endregion
 
 
