@@ -11,6 +11,7 @@ using VVVV.Webinterface;
 using System.Diagnostics;
 using System.Globalization;
 using System.Xml;
+using System.IO;
 
 
 namespace VVVV.Nodes.Http.BaseNodes
@@ -74,9 +75,6 @@ namespace VVVV.Nodes.Http.BaseNodes
 
 
         #endregion abstract Methods
-
-
-
 
 
 
@@ -220,9 +218,6 @@ namespace VVVV.Nodes.Http.BaseNodes
 
 
 
-
-
-
         #region Configurate
 
         public void Configurate(IPluginConfig Input)
@@ -231,9 +226,6 @@ namespace VVVV.Nodes.Http.BaseNodes
         }
 
         #endregion
-
-
-
 
 
 
@@ -342,7 +334,6 @@ namespace VVVV.Nodes.Http.BaseNodes
             if (FTransformIn.PinIsChanged || FBasingPoint.PinIsChanged || FPositionType.PinIsChanged || FSavePostedPropertiesValueInput.PinIsChanged || FChangedSpreadSize)
             {
 				FGuiListModified = true;
-				
 				string tBasingPoint;
                 FBasingPoint.GetString(0, out tBasingPoint);
 
@@ -500,8 +491,6 @@ namespace VVVV.Nodes.Http.BaseNodes
 
 
 
-
-
         #region Node Information
 
 
@@ -543,8 +532,6 @@ namespace VVVV.Nodes.Http.BaseNodes
 
 
 
-
-
         #region Add to GuiDataObject
 
         public void SetTag(int pSliceIndex, Tag pTag)
@@ -573,6 +560,8 @@ namespace VVVV.Nodes.Http.BaseNodes
 		}
 
         #endregion Add to GuiDataObject
+
+
 
 
         #region Polling
@@ -653,6 +642,9 @@ namespace VVVV.Nodes.Http.BaseNodes
 
         #endregion
 
+
+
+
         #region IHttpGUIIO Members
 
 
@@ -664,5 +656,20 @@ namespace VVVV.Nodes.Http.BaseNodes
 		}
 
 		#endregion
-	}
+
+
+
+        #region AddTexturesToSingelton
+
+
+        public void AddTextureToMemory(string Path)
+        {
+            string tSource = new FileInfo(Path).Name;
+            FWebinterfaceSingelton.SetFileToStorage(tSource, File.ReadAllBytes(Path));
+        }
+
+
+
+        #endregion
+    }
 }
