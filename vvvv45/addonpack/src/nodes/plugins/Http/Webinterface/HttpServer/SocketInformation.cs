@@ -6,6 +6,10 @@ using System.Diagnostics;
 
 namespace VVVV.Webinterface.HttpServer
 {
+
+    /// <summary>
+    /// Carries all Information from an HTTP Request. Is Required for async Socket Handling. 
+    /// </summary>
     class SocketInformation
     {
 

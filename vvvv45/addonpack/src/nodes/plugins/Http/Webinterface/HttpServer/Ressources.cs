@@ -7,6 +7,9 @@ using System.Reflection;
 
 namespace VVVV.Webinterface.HttpServer
 {
+    /// <summary>
+    /// Handles the Ressources which are add to the Libary.
+    /// </summary>
     class Ressources
     {
 

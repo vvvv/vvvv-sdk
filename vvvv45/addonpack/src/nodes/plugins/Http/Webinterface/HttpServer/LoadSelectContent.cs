@@ -10,6 +10,10 @@ using VVVV.Webinterface.Utilities;
 
 namespace VVVV.Webinterface.HttpServer
 {
+
+    /// <summary>
+    /// Checks on the disc and in the FileList of the Singelton for Elements which are requested from an Client. 
+    /// </summary>s
     class LoadSelectContent
     {
 

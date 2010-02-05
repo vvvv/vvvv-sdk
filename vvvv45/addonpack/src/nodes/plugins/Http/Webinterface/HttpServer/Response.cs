@@ -8,6 +8,10 @@ using System.Diagnostics;
 
 namespace VVVV.Webinterface.HttpServer
 {
+
+    /// <summary>
+    /// Creates an HTTP Request.
+    /// </summary>
     class Response
     {
 

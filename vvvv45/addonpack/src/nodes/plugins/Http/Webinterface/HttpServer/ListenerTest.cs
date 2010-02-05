@@ -7,6 +7,10 @@ using System.Diagnostics;
 
 namespace VVVV.Webinterface.HttpServer
 {
+
+    /// <summary>
+    /// Implements the HttpListener Class which is used by the Render(HTTP) Node
+    /// </summary>
     class ListenerTest
     {
 

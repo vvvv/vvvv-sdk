@@ -12,6 +12,10 @@ using System.Net;
 
 namespace VVVV.Webinterface.HttpServer
 {
+
+    /// <summary>
+    /// Handles and analyse a HTTP Request.
+    /// </summary>
     class Request
     {
 

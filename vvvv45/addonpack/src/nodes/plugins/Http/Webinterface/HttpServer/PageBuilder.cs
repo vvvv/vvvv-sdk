@@ -9,6 +9,11 @@ using VVVV.Nodes.Http.BaseNodes;
 
 namespace VVVV.Webinterface.HttpServer
 {
+
+
+    /// <summary>
+    /// Builds the HTML Strukt of an requested Page. 
+    /// </summary>
     class PageBuilder
     {
 

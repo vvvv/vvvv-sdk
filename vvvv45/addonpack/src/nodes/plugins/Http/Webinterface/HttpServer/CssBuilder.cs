@@ -8,6 +8,10 @@ using VVVV.Webinterface.Utilities;
 
 namespace VVVV.Webinterface.HttpServer
 {
+
+    /// <summary>
+    /// Creates an Css File for the requestet Page.
+    /// </summary>
     class CssBuilder
     {
 
