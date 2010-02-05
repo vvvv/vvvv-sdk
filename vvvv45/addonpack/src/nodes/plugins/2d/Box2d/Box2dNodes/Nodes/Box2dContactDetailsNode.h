@@ -1,6 +1,7 @@
 #pragma once
 #include "../DataTypes/WorldDataType.h"
 #include "../DataTypes/Shapes/ShapeDataType.h"
+#include "../DataTypes/BodyDataType.h"
 
 using namespace VVVV::DataTypes;
 
@@ -63,6 +64,16 @@ namespace VVVV
 			IValueOut^ vOutShapes1;
 			IValueOut^ vOutShapes2;
 			IValueOut^ vOutNew;
+
+			INodeOut^ vOutShape1;
+			ShapeDataType^ m_shape1;
+			INodeOut^ vOutShape2;
+			ShapeDataType^ m_shape2;
+
+			BodyDataType^ mBody1;
+			BodyDataType^ mBody2;
+			INodeOut^ vOutBody1;
+			INodeOut^ vOutBody2;
 
 		};
 	}

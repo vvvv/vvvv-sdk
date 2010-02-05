@@ -45,10 +45,10 @@ namespace VVVV
 		
 		void Box2dGravityControllerDefNode::OnPluginHostSet()
 		{
-			this->FHost->CreateValueInput("Force",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vInForce);
+			this->FHost->CreateValueInput("Force",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInForce);
 			this->vInForce->SetSubType(Double::MinValue,Double::MaxValue,0.01,1.0,false,false,false);
 
-			this->FHost->CreateValueInput("Inv Square",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vInInvSquare);
+			this->FHost->CreateValueInput("Inv Square",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInInvSquare);
 			this->vInInvSquare->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,true,false);
 		}
 

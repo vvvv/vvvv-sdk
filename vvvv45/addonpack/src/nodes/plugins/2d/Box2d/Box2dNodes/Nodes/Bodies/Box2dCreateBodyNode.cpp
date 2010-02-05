@@ -48,6 +48,9 @@ namespace VVVV
 			this->FHost->CreateValueInput("Is Bullet",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInIsBullet);
 			this->vInIsBullet->SetSubType(0,1,1.0,0.0,false,true,false);
 
+			this->FHost->CreateValueInput("Shape Count", 1, nullptr, TSliceMode::Dynamic, TPinVisibility::True, this->vInShapeCount);
+			this->vInShapeCount->SetSubType(1, Double::MaxValue, 1.0, 1, false,false, true);
+
 			this->FHost->CreateStringInput("Custom",TSliceMode::Dynamic,TPinVisibility::True,this->vInCustom);
 			this->vInCustom->SetSubType("",false);
 
@@ -76,11 +79,13 @@ namespace VVVV
 
 			this->mBodies->Reset();
 
+			int shapeidx = 0;
+
 			if (dblcreate >= 0.5 && this->vInWorld->IsConnected && this->vInShapes->IsConnected) 
 			{
 				if (this->mWorld->GetIsValid()) 
 				{
-					double x,y,a,vx,vy,va,bull,fr,ld,ad;
+					double x,y,a,vx,vy,va,bull,fr,ld,ad,shapecnt;
 					String^ cust;
 					
 
@@ -95,6 +100,9 @@ namespace VVVV
 						this->vInFixedRotation->GetValue(i,fr);
 						this->vInCustom->GetString(i,cust);
 						this->vInAngle->GetValue(i,a);
+						this->vInShapeCount->GetValue(i,shapecnt);
+
+						if (shapecnt < 1) { shapecnt = 1; }
 						
 						b2BodyDef bodydef;
 						bodydef.position.Set(x,y);
@@ -109,54 +117,69 @@ namespace VVVV
 						bdata->Id = this->mWorld->GetNewBodyId();
 						bdata->Custom = (char*)(void*)Marshal::StringToHGlobalAnsi(cust);
 
-						int realslice;
-						this->vInShapes->GetUpsreamSlice(i % this->vInShapes->SliceCount,realslice);
-						
-						b2ShapeDef* shapedef = this->mShapes->GetSlice(realslice);
-						String^ shapecust = this->mShapes->GetCustom(realslice);
-
-
-
 						bool testcount;
-						if (shapedef->type == e_edgeShape)
+						int vcount = 0;
+						for (int sc = 0; sc < shapecnt ; sc++)
 						{
-							b2EdgeChainDef* chain = (b2EdgeChainDef*)shapedef;
-							int vcount = chain->vertexCount;
-							if (chain->isALoop)
-							{
-								vcount++;
-							}
+								int realslice;
+								this->vInShapes->GetUpsreamSlice((shapeidx + sc) % this->vInShapes->SliceCount,realslice);
+								b2ShapeDef* shapedef = this->mShapes->GetSlice(realslice);
 
-							testcount = this->mWorld->GetWorld()->GetProxyCount() + vcount <= b2_maxProxies;
-
+								if (shapedef->type == e_edgeShape)
+								{
+									b2EdgeChainDef* chain = (b2EdgeChainDef*)shapedef;
+									vcount += chain->vertexCount;
+									if (chain->isALoop)
+									{
+										vcount++;
+									}
+								}
+								else
+								{
+									vcount++;
+								}
 						}
-						else
-						{
-							testcount = this->mWorld->GetWorld()->GetProxyCount() < b2_maxProxies;
-						}
 
+						testcount = this->mWorld->GetWorld()->GetProxyCount() + vcount <= b2_maxProxies;
+					
 						if (testcount)
 						{
 							b2Body* body = this->mWorld->GetWorld()->CreateBody(&bodydef);
 							body->SetLinearVelocity(b2Vec2(vx,vy));
 							body->SetAngularVelocity(va);
 							body->SetUserData(bdata);
-							
-							b2Shape* shape = body->CreateShape(shapedef);
-							
-							if (shape->GetType() == e_unknownShape)
-							{
 
-							}
-							else
+							float dens = 0.0f;
+
+							for (int sc = 0; sc < shapecnt; sc++)
 							{
-								ShapeCustomData* sdata = new ShapeCustomData();
-								sdata->Id = this->mWorld->GetNewShapeId();
-								sdata->Custom = (char*)(void*)Marshal::StringToHGlobalAnsi(shapecust);
-								shape->SetUserData(sdata);
+								int realslice;
+								this->vInShapes->GetUpsreamSlice(shapeidx % this->vInShapes->SliceCount,realslice);
+						
+								b2ShapeDef* shapedef = this->mShapes->GetSlice(realslice);
+								String^ shapecust = this->mShapes->GetCustom(realslice);
+
+								dens += shapedef->density;
+
+
+								b2Shape* shape = body->CreateShape(shapedef);
+							
+								if (shape->GetType() == e_unknownShape)
+								{
+
+								}
+								else
+								{
+									ShapeCustomData* sdata = new ShapeCustomData();
+									sdata->Id = this->mWorld->GetNewShapeId();
+									sdata->Custom = (char*)(void*)Marshal::StringToHGlobalAnsi(shapecust);
+									shape->SetUserData(sdata);
+								}
+
+								shapeidx++;
 							}
 
-							if (shapedef->density != 0.0) 
+							if (dens != 0.0) 
 							{
 								body->SetMassFromShapes();
 							}

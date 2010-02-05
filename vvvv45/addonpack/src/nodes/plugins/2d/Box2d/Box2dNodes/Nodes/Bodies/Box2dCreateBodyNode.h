@@ -66,6 +66,7 @@ namespace VVVV
 			IValueIn^ vInAngularDamping;
 			IValueIn^ vInIsBullet;
 			IValueIn^ vInFixedRotation;
+			IValueIn^ vInShapeCount;
 			IStringIn^ vInCustom;
 			IValueIn^ vInDoCreate;
 
