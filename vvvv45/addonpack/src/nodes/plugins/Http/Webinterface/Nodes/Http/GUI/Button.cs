@@ -184,7 +184,7 @@ namespace VVVV.Nodes.Http.GUI
             FOnPressColor.SetSubType(new RGBAColor(0.5019, 0.5019, 0.5019,0), false);
 
             FHost.UpdateEnum("ButtonMode", "Toggle", new string[] { "Toggle", "Bang" });
-            FHost.CreateEnumInput("ButtonMode", TSliceMode.Single, TPinVisibility.True, out FMode);
+            FHost.CreateEnumInput("Mode", TSliceMode.Single, TPinVisibility.True, out FMode);
             FMode.SetSubType("ButtonMode");
 
             //output

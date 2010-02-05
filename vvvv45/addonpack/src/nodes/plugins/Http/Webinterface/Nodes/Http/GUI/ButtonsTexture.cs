@@ -186,7 +186,7 @@ namespace VVVV.Nodes.Http.GUI
             FPathPress.SetSubType("", true);
 
             FHost.UpdateEnum("ButtonMode", "Toggle", new string[] { "Toggle", "Bang" });
-            FHost.CreateEnumInput("ButtonMode", TSliceMode.Single, TPinVisibility.True, out FMode);
+            FHost.CreateEnumInput("Mode", TSliceMode.Single, TPinVisibility.True, out FMode);
             FMode.SetSubType("ButtonMode");
 
             FHost.CreateValueInput("Reload", 1, null, TSliceMode.Single, TPinVisibility.True, out FReload);
