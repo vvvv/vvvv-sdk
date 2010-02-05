@@ -251,15 +251,15 @@ namespace VVVV.Nodes.Http.CSS
 
             // create inputs
              
-                FHost.CreateValueInput("Border Width", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBorderWidthIn);
+                FHost.CreateValueInput("Width", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBorderWidthIn);
                 FBorderWidthIn.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.01, false, false, false);
 
                 FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorInput);
                 FColorInput.SetSubType(VColor.Green, false);
 
-                FHost.UpdateEnum("BorderOutlineStyle", "solid", new string[] { "none", "hidden", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset" });
+                FHost.UpdateEnum("OutlineStyle", "solid", new string[] { "none", "hidden", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset" });
                 FHost.CreateEnumInput("Style", TSliceMode.Single, TPinVisibility.True, out FBorderStyleIn);
-                FBorderStyleIn.SetSubType("BorderOutlineStyle");
+                FBorderStyleIn.SetSubType(OutlineStyle");
 
         }
 

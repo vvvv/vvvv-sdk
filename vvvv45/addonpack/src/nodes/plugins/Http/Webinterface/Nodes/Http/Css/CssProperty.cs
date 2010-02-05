@@ -223,7 +223,7 @@ namespace VVVV.Nodes.Http.CSS
             // assign host
 
             // create inputs
-            FHost.CreateValueConfig("Pin Count", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinCountPin);
+            FHost.CreateValueConfig("Count", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinCountPin);
             FPinCountPin.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
 
             FHost.CreateStringInput("Name", TSliceMode.Dynamic, TPinVisibility.True, out FInputName);

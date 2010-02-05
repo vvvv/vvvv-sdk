@@ -246,25 +246,25 @@ namespace VVVV.Nodes.Http.CSS
         protected override void OnPluginHostSet()
         {
             // create inputs
-            FHost.CreateValueInput("Font Size", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FFontSizeIn);
+            FHost.CreateValueInput("Size", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FFontSizeIn);
             FFontSizeIn.SetSubType(0, double.MaxValue, 0.01, 1, false, false, false);
 
 			FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorInput);
             FColorInput.SetSubType(VColor.Black, false);
 
-            FHost.CreateStringInput("FontFamiliy", TSliceMode.Dynamic, TPinVisibility.True, out FFontFamiliyIn);
+            FHost.CreateStringInput("Familiy", TSliceMode.Dynamic, TPinVisibility.True, out FFontFamiliyIn);
             FFontFamiliyIn.SetSubType("Verdana", false);
 
             FHost.UpdateEnum("FontStyle", "normal ", new string[] { "normal ", "italic ", "oblique " });
-            FHost.CreateEnumInput("FontStyle", TSliceMode.Dynamic, TPinVisibility.True, out FFontStyleIn);
+            FHost.CreateEnumInput("Style", TSliceMode.Dynamic, TPinVisibility.True, out FFontStyleIn);
             FFontStyleIn.SetSubType("FontStyle");
 
             FHost.UpdateEnum("CssFontWeight", "100", new string[] { "100 ", "200", "300","400", "500", "600", "700", "800", "900" });
-            FHost.CreateEnumInput("FontWeight", TSliceMode.Dynamic, TPinVisibility.True, out FFontWeigthIn);
+            FHost.CreateEnumInput("Weight", TSliceMode.Dynamic, TPinVisibility.True, out FFontWeigthIn);
             FFontWeigthIn.SetSubType("CssFontWeight");
 
             FHost.UpdateEnum("FontDecoration", "none ", new string[] { "none  ", "underline ", "overline ", "line-through", "blink " });
-            FHost.CreateEnumInput("FontDecoration", TSliceMode.Dynamic, TPinVisibility.True, out FTextDecortationIn);
+            FHost.CreateEnumInput("Decoration", TSliceMode.Dynamic, TPinVisibility.True, out FTextDecortationIn);
             FTextDecortationIn.SetSubType("FontDecoration");
 
             FHost.CreateValueInput("WordSpacing", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FWordSpacingIn);
@@ -273,7 +273,7 @@ namespace VVVV.Nodes.Http.CSS
             FHost.CreateValueInput("LetterSpacing", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FLetterSpacingIn);
             FLetterSpacingIn.SetSubType(0, double.MaxValue, 0.01, 0, false, false, false);
 
-            FHost.CreateStringInput("FontStretch", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FFontStretchIn);
+            FHost.CreateStringInput("Stretch", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FFontStretchIn);
             FFontStretchIn.SetSubType("normal", false);
 
             
