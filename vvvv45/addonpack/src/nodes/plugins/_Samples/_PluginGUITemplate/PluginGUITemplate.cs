@@ -98,7 +98,8 @@ namespace VVVV.Nodes
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.
 				
-				FHost.Log(TLogType.Debug, "PluginGUITemplate is being deleted");
+				if (FHost != null)
+					FHost.Log(TLogType.Debug, "PluginGUITemplate is being deleted");
 				
 				// Note that this is not thread safe.
 				// Another thread could start disposing the object
