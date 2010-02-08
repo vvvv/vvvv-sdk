@@ -100,7 +100,9 @@ namespace VVVV.Nodes
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
 
-                FHost.Log(TLogType.Debug, "IO Phidget Accelerometer is being deleted");
+                if (FHost != null)
+	                FHost.Log(TLogType.Debug, "IO Phidget Accelerometer is being deleted");
+                
                 // Note that this is not thread safe.
                 // Another thread could start disposing the object
                 // after the managed resources are disposed,

@@ -109,9 +109,15 @@ namespace VVVV.Nodes
         		// Release unmanaged resources. If disposing is false,
         		// only the following code is executed.
 	        	
-        		FHost.Log(TLogType.Debug, "IO Phidget InterfaceKit 888 is being deleted");
-                m_IKitData.Close();
-                m_IKitData = null;
+        		if (FHost != null)
+	        		FHost.Log(TLogType.Debug, "IO Phidget InterfaceKit 888 is being deleted");
+        		
+        		if (m_IKitData != null)
+        		{
+	                m_IKitData.Close();
+    	            m_IKitData = null;
+        		}
+    	            
          		
         		// Note that this is not thread safe.
         		// Another thread could start disposing the object
