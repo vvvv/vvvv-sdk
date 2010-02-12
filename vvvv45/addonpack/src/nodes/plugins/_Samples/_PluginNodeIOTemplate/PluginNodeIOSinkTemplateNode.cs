@@ -142,7 +142,7 @@ namespace VVVV.Nodes
 					FPluginInfo.Category = "Template";
 					//the nodes version: optional. leave blank if not
 					//needed to distinguish two nodes of the same name and category
-					FPluginInfo.Version = "";
+					FPluginInfo.Version = "NodeIO";
 					
 					//the nodes author: your sign
 					FPluginInfo.Author = "vvvv group";
