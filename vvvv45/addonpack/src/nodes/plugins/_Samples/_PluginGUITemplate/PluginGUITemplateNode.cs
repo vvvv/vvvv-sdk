@@ -39,7 +39,7 @@ namespace VVVV.Nodes
 {
 	
 	//class definition, inheriting from UserControl for the GUI stuff
-	public class GUITemplatePlugin: UserControl, IPlugin
+	public class GUITemplatePluginNode: UserControl, IPlugin
 	{
 		#region field declaration
 		
@@ -69,7 +69,7 @@ namespace VVVV.Nodes
 		#endregion field declaration
 		
 		#region constructor/destructor
-		public GUITemplatePlugin()
+		public GUITemplatePluginNode()
 		{
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			InitializeComponent();
@@ -99,7 +99,7 @@ namespace VVVV.Nodes
 				// only the following code is executed.
 				
 				if (FHost != null)
-					FHost.Log(TLogType.Debug, "PluginGUITemplate is being deleted");
+					FHost.Log(TLogType.Debug, "PluginGUITemplateNode is being deleted");
 				
 				// Note that this is not thread safe.
 				// Another thread could start disposing the object
@@ -180,11 +180,11 @@ namespace VVVV.Nodes
 		{
 			this.SuspendLayout();
 			// 
-			// GUITemplatePlugin
+			// GUITemplatePluginNode
 			// 
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
 			this.DoubleBuffered = true;
-			this.Name = "GUITemplatePlugin";
+			this.Name = "GUITemplatePluginNode";
 			this.Size = new System.Drawing.Size(310, 169);
 			this.ResumeLayout(false);
 		}
