@@ -29,6 +29,9 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Drawing;
+using System.Collections.Generic;
+using System.Collections;
+
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
@@ -37,7 +40,7 @@ using VVVV.Utils.VMath;
 namespace VVVV.Nodes
 {
 	//class definition
-	public class PluginNodeIOSinkTemplate: IPlugin, IPluginConnections, IDisposable
+	public class PluginNodeIOSourceTemplateNode: IPlugin, IDisposable, IMyNodeIO
     {	          	
     	#region field declaration
     	
@@ -47,18 +50,18 @@ namespace VVVV.Nodes
    		private bool FDisposed = false;
 
     	//input pin declaration
-		private INodeIn FMyNodeInput;
+    	private IValueIn FMyValueInput;
     	
     	//output pin declaration
-    	private IValueOut FMyValueOutput;
+    	private INodeOut FMyNodeOutput;
     	
-    	private IMyNodeIO FUpstreamInterface;
+    	private int[] FData;
     	
     	#endregion field declaration
        
     	#region constructor/destructor
     	
-        public PluginNodeIOSinkTemplate()
+        public PluginNodeIOSourceTemplateNode()
         {
 			//the nodes constructor
 			//nothing to declare for this node
@@ -96,7 +99,7 @@ namespace VVVV.Nodes
         		// only the following code is executed.
 	        	
         		if (FHost != null)
-        			FHost.Log(TLogType.Debug, "PluginTemplate is being deleted");
+        			FHost.Log(TLogType.Debug, "PluginNodeIOSourceTemplateNode is being deleted");
         		
         		// Note that this is not thread safe.
         		// Another thread could start disposing the object
@@ -113,7 +116,7 @@ namespace VVVV.Nodes
         // does not get called.
         // It gives your base class the opportunity to finalize.
         // Do not provide destructors in types derived from this class.
-        ~PluginNodeIOSinkTemplate()
+        ~PluginNodeIOSourceTemplateNode()
         {
         	// Do not re-create Dispose clean-up code here.
         	// Calling Dispose(false) is optimal in terms of
@@ -137,7 +140,7 @@ namespace VVVV.Nodes
 					FPluginInfo = new PluginInfo();
 					
 					//the nodes main name: use CamelCaps and no spaces
-					FPluginInfo.Name = "TemplateNodeIOSink";
+					FPluginInfo.Name = "TemplateNodeIOSource";
 					//the nodes category: try to use an existing one
 					FPluginInfo.Category = "Template";
 					//the nodes version: optional. leave blank if not
@@ -187,16 +190,26 @@ namespace VVVV.Nodes
 	    	FHost = Host;
 
 	    	//create inputs
-	    	FHost.CreateNodeInput("NodePin In", TSliceMode.Dynamic, TPinVisibility.True, out FMyNodeInput);
-	    	FMyNodeInput.SetSubType(new Guid[1]{MyNodeIO.GUID}, MyNodeIO.FriendlyName);
+	    	FHost.CreateValueInput("Value Input", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueInput);
+	    	FMyValueInput.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.5, false, false, false);
 	    	
 	    	//create outputs	    	
-	    	FHost.CreateValueOutput("Value Output", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueOutput);
-	    	FMyValueOutput.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
-        }
+	    	FHost.CreateNodeOutput("NodePin Out", TSliceMode.Dynamic, TPinVisibility.True, out FMyNodeOutput);
+	    	FMyNodeOutput.SetSubType(new Guid[1]{MyNodeIO.GUID}, MyNodeIO.FriendlyName);
+	    	FMyNodeOutput.SetInterface(this);
+        } 
 
         #endregion pin creation
+        
+        #region IMyNodeIO
+		public void GetSlice(int Index, out int Value)
+		{
+			//return data from the internal buffer
+			Value = FData[Index];
+		}
 		
+        #endregion
+        
         #region mainloop
         
         public void Configurate(IPluginConfig Input)
@@ -205,52 +218,36 @@ namespace VVVV.Nodes
         	//only used in conjunction with inputs of type cmpdConfigurate
         }
         
-        public void ConnectPin(IPluginIO Pin)
-        {
-        	//cache a reference to the upstream interface when the NodeInput pin is being connected
-        	if (Pin == FMyNodeInput)
-        	{
-        		INodeIOBase usI;
-        		FMyNodeInput.GetUpstreamInterface(out usI);
-        		FUpstreamInterface = usI as IMyNodeIO;
-        	}
-        }
-        
-        public void DisconnectPin(IPluginIO Pin)
-        {
-        	//reset the cached reference to the upstream interface when the NodeInput is being disconnected
-        	if (Pin == FMyNodeInput)
-        	{
-        		FUpstreamInterface = null;
-        	}
-        }
-        
         //here we go, thats the method called by vvvv each frame
         //all data handling should be in here
         public void Evaluate(int SpreadMax)
         {     	
-	    	//first set slicecounts for all outputs
-	        //the incoming int SpreadMax is the maximum slicecount of all input pins, which is a good default
-	        FMyValueOutput.SliceCount = SpreadMax;
+        	//if any of the inputs has changed
+        	//recompute the outputs
+        	if (FMyValueInput.PinIsChanged)
+        	{	
+	        	//first set slicecounts for all outputs
+	        	//the incoming int SpreadMax is the maximum slicecount of all input pins, which is a good default
+	        	FMyNodeOutput.SliceCount = SpreadMax;
+				
+	        	//internal data buffer
+	        	FData = new int[SpreadMax];
 	        	
-	        int v = 0;
-        	int usS;
-	        //see if we have a reference to the upstream interface
-	        if ((FUpstreamInterface != null) && (FMyNodeInput.PinIsChanged))
-        	{
+	        	//the variables to fill with the input data
+	        	double currentValueSlice;
+	        	
         		//loop for all slices
-        		
         		for (int i=0; i<SpreadMax; i++)
         		{		
-        			//get upstream slice index
-        			FMyNodeInput.GetUpsreamSlice(i, out usS);
-        			//get value of upstream nodepin
-        			FUpstreamInterface.GetSlice(usS, out v);
+        			//read data from value input
+        			FMyValueInput.GetValue(i, out currentValueSlice);
         			
-        			//write value to output
-        			FMyValueOutput.SetValue(i, v);        			
+        			//do something with the input and save it
+        			FData[i] = (int) currentValueSlice * 1000;
         		}
-        	}
+        		
+        		FMyNodeOutput.MarkPinAsChanged();
+        	}      	
         }
              
         #endregion mainloop  
