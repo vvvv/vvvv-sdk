@@ -38,7 +38,7 @@ namespace VVVV.Nodes
 {
 	
 	//class definition
-	public class PluginThreadedTemplate: IPlugin, IDisposable
+	public class PluginThreadedTemplateNode: IPlugin, IDisposable
     {	          	
     	#region field declaration
     	
@@ -60,7 +60,7 @@ namespace VVVV.Nodes
        
     	#region constructor/destructor
     	
-        public PluginThreadedTemplate()
+        public PluginThreadedTemplateNode()
         {
 			//the nodes constructor
 			//nothing to declare for this node
@@ -98,7 +98,7 @@ namespace VVVV.Nodes
         		// only the following code is executed.
 	        	
         		if (FHost != null)
-        			FHost.Log(TLogType.Debug, "PluginTemplate is being deleted");
+        			FHost.Log(TLogType.Debug, "PluginThreadedTemplateNode is being deleted");
         		
         		// Note that this is not thread safe.
         		// Another thread could start disposing the object
@@ -115,7 +115,7 @@ namespace VVVV.Nodes
         // does not get called.
         // It gives your base class the opportunity to finalize.
         // Do not provide destructors in types derived from this class.
-        ~PluginThreadedTemplate()
+        ~PluginThreadedTemplateNode()
         {
         	// Do not re-create Dispose clean-up code here.
         	// Calling Dispose(false) is optimal in terms of
