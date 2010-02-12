@@ -42,7 +42,7 @@ using SlimDX.Direct3D9;
 namespace VVVV.Nodes
 {
 	//class definition
-	public class PluginMeshTemplate: IPlugin, IDisposable, IPluginDXMesh
+	public class PluginMeshTemplateNode: IPlugin, IDisposable, IPluginDXMesh
 	{
 		#region field declaration
 		
@@ -61,7 +61,7 @@ namespace VVVV.Nodes
 		
 		#region constructor/destructor
 		
-		public PluginMeshTemplate()
+		public PluginMeshTemplateNode()
 		{
 			//the nodes constructor
 			//nothing to declare for this node
@@ -100,7 +100,7 @@ namespace VVVV.Nodes
 				// only the following code is executed.
 
 				if (FHost != null)
-					FHost.Log(TLogType.Debug, "PluginMeshTemplate is being deleted");
+					FHost.Log(TLogType.Debug, "PluginMeshTemplateNode is being deleted");
 				
 				// Note that this is not thread safe.
 				// Another thread could start disposing the object
@@ -117,7 +117,7 @@ namespace VVVV.Nodes
 		// does not get called.
 		// It gives your base class the opportunity to finalize.
 		// Do not provide destructors in types derived from this class.
-		~PluginMeshTemplate()
+		~PluginMeshTemplateNode()
 		{
 			// Do not re-create Dispose clean-up code here.
 			// Calling Dispose(false) is optimal in terms of
