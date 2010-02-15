@@ -2,8 +2,7 @@
 #include "../DataTypes/WorldDataType.h"
 #include "../DataTypes/BodyDataType.h"
 #include "../DataTypes/JointDataType.h"
-#include "../DataTypes/GroundDataType.h"
-#include "../Internals/Contact/ContactListener.h"
+//#include "../Internals/Contact/ContactListener.h"
 
 using namespace VVVV::DataTypes;
 
@@ -16,8 +15,8 @@ namespace VVVV
 			private:
 				IPluginHost^ FHost;
 
-				IValueIn^ vInLowerBound;
-				IValueIn^ vInUpperBound;
+				//IValueIn^ vInLowerBound;
+				//IValueIn^ vInUpperBound;
 				IValueIn^ vInGravity;
 				IValueIn^ vInAllowSleep;
 				IValueIn^ vInEnabled;
@@ -30,23 +29,21 @@ namespace VVVV
 				IValueOut^ vOutControllerCount;
 				INodeOut^ vOutWorldNode;
 				INodeOut^ vOutBodies;
-				INodeOut^ vOutGround;
 				INodeOut^ vOutJoints;
 				IValueOut^ vOutReset;
 
 				WorldDataType^ mWorld;
 				BodyDataType^ mBodies;
-				GroundDataType^ mGround;
 				JointDataType^ mJoints;
 
 				b2World* internalworld;
 
 				bool ctrlconnected;
 				
-				vector<b2ContactPoint*>* contacts;
+				vector<b2Contact*>* contacts;
 				vector<double>* newcontacts;
-				vector<b2Controller*>* controller;
-				ContactListener* MyListener;
+				//vector<b2Controller*>* controller;
+				//ContactListener* MyListener;
 			
 			public:
 				static property IPluginInfo^ PluginInfo 

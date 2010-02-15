@@ -53,16 +53,8 @@ namespace VVVV
 
 							b2Body* body1;
 
-							if (this->isbody) 
-							{
-								this->vInBody1->GetUpsreamSlice(i % this->vInBody1->SliceCount,realslice1);
-								body1 = this->m_body1->GetSlice(realslice1);
-							} 
-							else
-							{
-								body1 = this->m_ground1->GetGround();
-							}
-
+							this->vInBody1->GetUpsreamSlice(i % this->vInBody1->SliceCount,realslice1);
+							body1 = this->m_body1->GetSlice(realslice1);
 
 							this->vInBody2->GetUpsreamSlice(i % this->vInBody2->SliceCount,realslice2);
 							b2Body* body2 = this->m_body2->GetSlice(realslice2);

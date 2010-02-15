@@ -106,19 +106,20 @@ namespace VVVV
 						
 						b2BodyDef bodydef;
 						bodydef.position.Set(x,y);
-						bodydef.isBullet = (bull >= 0.5);
+						bodydef.bullet = (bull >= 0.5);
 						bodydef.fixedRotation = (fr >= 0.5);
 						bodydef.angle = a * (Math::PI * 2.0);
 						bodydef.linearDamping = ld;
 						bodydef.angularDamping = ad;
+						//bodydef.type = b2_dynamicBody;
 					
 						BodyCustomData* bdata = new BodyCustomData();
 						
 						bdata->Id = this->mWorld->GetNewBodyId();
 						bdata->Custom = (char*)(void*)Marshal::StringToHGlobalAnsi(cust);
 
-						bool testcount;
-						int vcount = 0;
+						bool testcount = true;
+						/*int vcount = 0;
 						for (int sc = 0; sc < shapecnt ; sc++)
 						{
 								int realslice;
@@ -138,9 +139,9 @@ namespace VVVV
 								{
 									vcount++;
 								}
-						}
+						}*/
 
-						testcount = this->mWorld->GetWorld()->GetProxyCount() + vcount <= b2_maxProxies;
+						//testcount = this->mWorld->GetWorld()->GetProxyCount() + vcount <= b2_maxProxies;
 					
 						if (testcount)
 						{
@@ -156,15 +157,16 @@ namespace VVVV
 								int realslice;
 								this->vInShapes->GetUpsreamSlice(shapeidx % this->vInShapes->SliceCount,realslice);
 						
-								b2ShapeDef* shapedef = this->mShapes->GetSlice(realslice);
+								b2FixtureDef* shapedef = this->mShapes->GetSlice(realslice);
 								String^ shapecust = this->mShapes->GetCustom(realslice);
 
 								dens += shapedef->density;
 
 
-								b2Shape* shape = body->CreateShape(shapedef);
+								//shapedef-
+								b2Fixture* fixture = body->CreateFixture(shapedef);
 							
-								if (shape->GetType() == e_unknownShape)
+								if (fixture->GetType() == b2Shape::Type::e_unknown)
 								{
 
 								}
@@ -173,15 +175,21 @@ namespace VVVV
 									ShapeCustomData* sdata = new ShapeCustomData();
 									sdata->Id = this->mWorld->GetNewShapeId();
 									sdata->Custom = (char*)(void*)Marshal::StringToHGlobalAnsi(shapecust);
-									shape->SetUserData(sdata);
+									fixture->SetUserData(sdata);
 								}
 
 								shapeidx++;
 							}
 
-							if (dens != 0.0) 
+							
+							if (dens > 0.0) 
 							{
-								body->SetMassFromShapes();
+								body->SetType(b2_dynamicBody);
+								//body->SetMassFromShapes();
+							}
+							else
+							{
+								body->SetType(b2_staticBody);
 							}
 
 							//this->createdbodies->push_back(body);

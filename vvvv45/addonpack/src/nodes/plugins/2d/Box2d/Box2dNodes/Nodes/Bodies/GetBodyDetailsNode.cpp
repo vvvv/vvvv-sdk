@@ -19,7 +19,7 @@ namespace VVVV
 			this->FHost = Host;
 
 			this->FHost->CreateNodeInput("Bodies",TSliceMode::Dynamic,TPinVisibility::True,this->vInBodies);
-			this->vInBodies->SetSubType(ArrayUtils::DoubleGuidArray(BodyDataType::GUID,GroundDataType::GUID),BodyDataType::FriendlyName);
+			this->vInBodies->SetSubType(ArrayUtils::SingleGuidArray(BodyDataType::GUID),BodyDataType::FriendlyName);
 
 			this->FHost->CreateValueOutput("Position",2,ArrayUtils::Array2D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutPosition);
 			this->vOutPosition->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,0.0,0.0,false,false,false);
@@ -35,9 +35,6 @@ namespace VVVV
 
 			this->FHost->CreateValueOutput("Is Sleeping",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutIsSleeping);
 			this->vOutIsSleeping->SetSubType(Double::MinValue,Double::MaxValue,1,0.0,false,true,false);
-
-			this->FHost->CreateValueOutput("Is Frozen",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutIsFrozen);
-			this->vOutIsFrozen->SetSubType(Double::MinValue,Double::MaxValue,1,0.0,false,true,false);
 
 			this->FHost->CreateValueOutput("Mass",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vOutMass);
 			this->vOutMass->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,false,false);
@@ -93,72 +90,49 @@ namespace VVVV
 				this->vOutInertia->SliceCount = cnt;
 				this->vOutShapeCount->SliceCount = cnt;
 				this->vOutIsSleeping->SliceCount = cnt;
-				this->vOutIsFrozen->SliceCount = cnt;
 				List<String^>^ types = gcnew List<String^>();
 
 				for (int i = 0; i < this->vInBodies->SliceCount; i++) 
 				{
 					b2Body* body;
 
-					if (this->isbody) 
-					{
-						int realslicebody;
-						this->vInBodies->GetUpsreamSlice(i % this->vInBodies->SliceCount,realslicebody);
-						body = this->m_bodies->GetSlice(realslicebody);
-					} 
-					else
-					{
-						body = this->mGround->GetGround();
-					}
-
+					int realslicebody;
+					this->vInBodies->GetUpsreamSlice(i % this->vInBodies->SliceCount,realslicebody);
+					body = this->m_bodies->GetSlice(realslicebody);
+					
 					b2Vec2 pos = body->GetPosition();
 					b2Vec2 vel = body->GetLinearVelocity();
 					this->vOutPosition->SetValue2D(i, pos.x,pos.y);
 					this->vOutVelocity->SetValue2D(i, vel.x,vel.y);
 					this->vOutRotation->SetValue(i,body->GetAngle() / (Math::PI * 2.0));
-					this->vOutIsDynamic->SetValue(i,Convert::ToInt32(body->IsDynamic()));
+					//this->vOutIsDynamic->SetValue(i,Convert::ToInt32(body->IsDynamic()));
 					this->vOutMass->SetValue(i,body->GetMass());
 					this->vOutInertia->SetValue(i,body->GetInertia());
-					this->vOutIsFrozen->SetValue(i,Convert::ToDouble(body->IsFrozen()));
-					this->vOutIsSleeping->SetValue(i,Convert::ToDouble(body->IsSleeping()));
+					this->vOutIsSleeping->SetValue(i,Convert::ToDouble(!body->IsAwake()));
 
-					if (this->isbody) 
-					{
-						BodyCustomData* bdata = (BodyCustomData*)body->GetUserData();
-						this->vOutId->SetValue(i, bdata->Id);
-						String^ str = gcnew String(bdata->Custom);
-						this->vOutCustom->SetString(i,str);
-					}
-					else
-					{
-						this->vOutId->SetValue(i, -1);
-						this->vOutCustom->SetString(i,"");
-					}
+					BodyCustomData* bdata = (BodyCustomData*)body->GetUserData();
+					this->vOutId->SetValue(i, bdata->Id);
+					String^ str = gcnew String(bdata->Custom);
+					this->vOutCustom->SetString(i,str);
 
 					int shapecount = 0;
-					for (b2Shape* s = body->GetShapeList(); s; s = s->GetNext())
+					for (b2Fixture* s = body->GetFixtureList(); s; s = s->GetNext())
 					{
-						if (s->GetType() == e_circleShape || s->GetType() == e_polygonShape || s->GetType() == e_edgeShape) 
+						if (s->GetType() == b2Shape::Type::e_circle || s->GetType() == b2Shape::Type::e_polygon) 
 						{
 							this->m_shapes->Add(s);
 							shapecount++;
 						}
 
 						String^ str;
-						switch (s->GetType())
+						if (s->GetType() == b2Shape::Type::e_circle)
 						{
-						case e_circleShape:
 							str = "Circle";
-							break;
-						case e_polygonShape:
+						}
+
+						if (s->GetType() == b2Shape::Type::e_polygon)
+						{
 							str = "Polygon";
-							break;
-						case e_edgeShape:
-							str = "Edge";
-							break;
-						default:
-							str = "Unknown";
-							break;
 						}
 						types->Add(str);
 						
@@ -181,18 +155,9 @@ namespace VVVV
 			if (Pin == this->vInBodies)
         	{
 				INodeIOBase^ usI;
-				try 
-				{
-					this->vInBodies->GetUpstreamInterface(usI);
-					this->m_bodies = (BodyDataType^)usI;
-					this->isbody = true;
-				} 
-				catch (Exception^ ex)
-				{
-					this->vInBodies->GetUpstreamInterface(usI);
-					this->mGround = (GroundDataType^)usI;
-					this->isbody = false;
-				}
+
+				this->vInBodies->GetUpstreamInterface(usI);
+				this->m_bodies = (BodyDataType^)usI;
         	}
 		}
 
@@ -200,14 +165,7 @@ namespace VVVV
 		{
 			if (Pin == this->vInBodies)
         	{
-        		if (this->isbody) 
-				{
-        			this->m_bodies = nullptr;
-				} 
-				else 
-				{
-					this->mGround = nullptr;
-				}
+        		this->m_bodies = nullptr;
         	}
 		}
 	}

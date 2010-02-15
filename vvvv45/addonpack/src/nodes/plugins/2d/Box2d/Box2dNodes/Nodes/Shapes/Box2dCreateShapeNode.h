@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../../DataTypes/GroundDataType.h"
 #include "../../DataTypes/BodyDataType.h"
 #include "../../DataTypes/Shapes/ShapeDefDataType.h"
 #include "../../Internals/Data/ShapeCustomData.h"
@@ -66,8 +65,6 @@ namespace VVVV
 			WorldDataType^ mWorld;
 			ShapeDefDataType^ mShapes;
 			BodyDataType^ mBodies;
-			GroundDataType^ mGround;
-			bool isbody;
 		};
 
 	}

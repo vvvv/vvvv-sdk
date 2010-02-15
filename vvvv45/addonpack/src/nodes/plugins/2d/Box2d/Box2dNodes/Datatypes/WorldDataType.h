@@ -48,7 +48,7 @@ namespace VVVV
 				int GetNewJointId();
 
 				bool Reset;
-				vector<b2ContactPoint*>* Contacts;
+				vector<b2Contact*>* Contacts;
 				vector<double>* Newcontacts;
 
 				static String^ FriendlyName = "Box2d World";

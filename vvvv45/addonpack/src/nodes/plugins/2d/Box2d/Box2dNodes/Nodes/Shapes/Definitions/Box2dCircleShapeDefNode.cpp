@@ -40,14 +40,19 @@ namespace VVVV
 					this->vInCustom->GetString(i, custom);
 					this->vInGroupIndex->GetValue(i, group);
 
-					b2CircleDef* shapeDef = this->m_shapes->AddCircle();
-					shapeDef->radius = r;
+					b2CircleShape* cir = new b2CircleShape();
+					b2FixtureDef* shapeDef = this->m_shapes->AddCircle();
+
+					b2Vec2 center(x,y);
+					cir->m_radius = r;
+					cir->m_p = center;
+
 					shapeDef->density = density;
 					shapeDef->friction = friction;
 					shapeDef->restitution = restitution;
-					shapeDef->localPosition = b2Vec2(x,y);
 					shapeDef->isSensor = issensor >= 0.5;
 					shapeDef->filter.groupIndex = Convert::ToInt32(group);
+					shapeDef->shape = cir;
 
 					this->m_shapes->AddCustom(custom);
 				}

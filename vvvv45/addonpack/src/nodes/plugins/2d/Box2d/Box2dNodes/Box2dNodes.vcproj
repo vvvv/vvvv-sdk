@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(BOX2D)/include&quot;"
+				AdditionalIncludeDirectories="D:\work\repositories\box2d_new\trunk\Box2D"
 				PreprocessorDefinitions="WIN32;_DEBUG"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
@@ -59,9 +59,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="&quot;$(BOX2D)\Library\Box2d_d.lib&quot; $(NOINHERIT)"
+				AdditionalDependencies="Box2d.lib $(NOINHERIT)"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories=""
+				AdditionalLibraryDirectories="D:\work\repositories\box2d_new\trunk\Box2D\Build\VC2005\Box2D\debug\"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
@@ -117,7 +117,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(BOX2D)/include&quot;"
+				AdditionalIncludeDirectories="&quot;D:\work\repositories\box2d_new\trunk\Box2D\Box2D&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -199,7 +199,87 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Nodes\Shapes\Box2dScaleShapeNode.cpp"
+				RelativePath=".\Nodes\Forces\Box2dApplyForceNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Forces\Box2dApplyImpulseNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Forces\Box2dApplyTorqueNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Shapes\Definitions\Box2dBaseShapeDefNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Shapes\Definitions\Box2dBoxDefNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Shapes\Definitions\Box2dCircleShapeDefNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Box2dContactDetailsNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Bodies\Box2dCreateBodyNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\Create\Box2dCreateDistanceJointNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\Create\Box2dCreateJointNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\Create\Box2dCreateLineJointNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\Create\Box2dCreateMouseJointNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\Create\Box2dCreatePrismaticJointNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\Create\Box2dCreatePulleyJointNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\Create\Box2dCreateRevoluteJointNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Shapes\Box2dCreateShapeNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Bodies\Box2dDestroyBodyNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\Box2dDestroyJointNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Shapes\Box2dDestroyShape.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Shapes\Box2dGetCircles.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Shapes\Box2dGetPolygonsNode.cpp"
 				>
 			</File>
 			<File
@@ -207,7 +287,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Nodes\Box2dTestPointNode.cpp"
+				RelativePath=".\Nodes\Bodies\Box2dUpdateBodyNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Box2dWorldNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Bodies\GetBodyDetailsNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\GetJointDetailsNode.cpp"
 				>
 			</File>
 			<File
@@ -220,6 +312,14 @@
 			</File>
 			<File
 				RelativePath=".\Nodes\Joints\MoveMouseJointTargetNode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Datatypes\Shapes\ShapeDataType.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Datatypes\Shapes\ShapeDefDataType.cpp"
 				>
 			</File>
 			<File
@@ -250,219 +350,47 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Datatypes\GroundDataType.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\Datatypes\WorldDataType.cpp"
 					>
 				</File>
 				<Filter
 					Name="Shapes"
 					>
-					<File
-						RelativePath=".\Datatypes\Shapes\ShapeDataType.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Datatypes\Shapes\ShapeDefDataType.cpp"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="Controllers"
 					>
-					<File
-						RelativePath=".\Datatypes\Controllers\ControllerDataType.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Datatypes\Controllers\ControllerDefDataType.cpp"
-						>
-					</File>
 				</Filter>
 			</Filter>
 			<Filter
 				Name="Nodes"
 				>
-				<File
-					RelativePath=".\Nodes\Box2dAABBQueryNode.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Nodes\Box2dContactDetailsNode.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Nodes\Box2dWorldNode.cpp"
-					>
-				</File>
 				<Filter
 					Name="Shapes"
 					>
-					<File
-						RelativePath=".\Nodes\Shapes\Box2dCreateShapeNode.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Shapes\Box2dDestroyShape.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Shapes\Box2dGetCircles.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Shapes\Box2dGetEdgeChains.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Shapes\Box2dGetPolygonsNode.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Shapes\Box2dUpdateShapeNode.cpp"
-						>
-					</File>
 					<Filter
 						Name="Def"
 						>
-						<File
-							RelativePath=".\Nodes\Shapes\Definitions\Box2dBaseShapeDefNode.cpp"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Shapes\Definitions\Box2dBoxDefNode.cpp"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Shapes\Definitions\Box2dCircleShapeDefNode.cpp"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Shapes\Definitions\Box2dEdgeShapeDefNode.cpp"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Shapes\Definitions\Box2dPolygonDefNode.cpp"
-							>
-						</File>
 					</Filter>
 				</Filter>
 				<Filter
 					Name="Bodies"
 					>
-					<File
-						RelativePath=".\Nodes\Bodies\Box2dCreateBodyNode.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Bodies\Box2dDestroyBodyNode.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Bodies\Box2dUpdateBodyNode.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Bodies\GetBodyDetailsNode.cpp"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="Forces"
 					>
-					<File
-						RelativePath=".\Nodes\Forces\Box2dApplyForceNode.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Forces\Box2dApplyImpulseNode.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Forces\Box2dApplyTorqueNode.cpp"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="Joints"
 					>
-					<File
-						RelativePath=".\Nodes\Joints\Create\Box2dCreateDistanceJointNode.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Joints\Create\Box2dCreateJointNode.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Joints\Create\Box2dCreateLineJointNode.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Joints\Create\Box2dCreateMouseJointNode.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Joints\Create\Box2dCreatePrismaticJointNode.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Joints\Create\Box2dCreatePulleyJointNode.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Joints\Create\Box2dCreateRevoluteJointNode.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Joints\Box2dDestroyJointNode.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Joints\GetJointDetailsNode.cpp"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="Controllers"
 					>
-					<File
-						RelativePath=".\Nodes\Controllers\Box2dAssignControllerNode.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Controllers\Box2dUnAssignControllerNode.cpp"
-						>
-					</File>
 					<Filter
 						Name="Def"
 						>
-						<File
-							RelativePath=".\Nodes\Controllers\Box2dBaseControllerDefNode.cpp"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Controllers\Box2dBuoyancyControllerDefNode.cpp"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Controllers\Box2dConstantAccDefNode.cpp"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Controllers\Box2dCVelDefNode.cpp"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Controllers\Box2dGravityControllerNode.cpp"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Controllers\Box2dTensorDampingControllerDefNode.cpp"
-							>
-						</File>
 					</Filter>
 				</Filter>
 			</Filter>
@@ -492,10 +420,6 @@
 				<Filter
 					Name="Contacts"
 					>
-					<File
-						RelativePath=".\Internals\Contact\ContactListener.cpp"
-						>
-					</File>
 				</Filter>
 			</Filter>
 		</Filter>
@@ -505,7 +429,87 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\Nodes\Shapes\Box2dScaleShapeNode.h"
+				RelativePath=".\Nodes\Forces\Box2dApplyForceNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Forces\Box2dApplyImpulseNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Forces\Box2dApplyTorqueNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Shapes\Definitions\Box2dBaseShapeDefNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Shapes\Definitions\Box2dBoxDefNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Shapes\Definitions\Box2dCircleShapeDefNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Box2dContactDetailsNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Bodies\Box2dCreateBodyNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\Create\Box2dCreateDistanceJointNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\Create\Box2dCreateJointNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\Create\Box2dCreateLineJointNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\Create\Box2dCreateMouseJointNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\Create\Box2dCreatePrismaticJointNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\Create\Box2dCreatePulleyJointNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\Create\Box2dCreateRevoluteJointNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Shapes\Box2dCreateShapeNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Bodies\Box2dDestroyBodyNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\Box2dDestroyJointNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Shapes\Box2dDestroyShape.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Shapes\Box2dGetCircles.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Shapes\Box2dGetPolygonsNode.h"
 				>
 			</File>
 			<File
@@ -513,7 +517,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Nodes\Box2dTestPointNode.h"
+				RelativePath=".\Nodes\Bodies\Box2dUpdateBodyNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Box2dWorldNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Bodies\GetBodyDetailsNode.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Nodes\Joints\GetJointDetailsNode.h"
 				>
 			</File>
 			<File
@@ -533,6 +549,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Datatypes\Shapes\ShapeDataType.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Datatypes\Shapes\ShapeDefDataType.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Stdafx.h"
 				>
 			</File>
@@ -544,223 +568,51 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Datatypes\GroundDataType.h"
-					>
-				</File>
-				<File
 					RelativePath=".\Datatypes\WorldDataType.h"
 					>
 				</File>
 				<Filter
 					Name="Shapes"
 					>
-					<File
-						RelativePath=".\Datatypes\Shapes\ShapeDataType.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Datatypes\Shapes\ShapeDefDataType.h"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="Controllers"
 					>
-					<File
-						RelativePath=".\Datatypes\Controllers\ControllerDataType.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Datatypes\Controllers\ControllerDefDataType.h"
-						>
-					</File>
 				</Filter>
 			</Filter>
 			<Filter
 				Name="Nodes"
 				>
-				<File
-					RelativePath=".\Nodes\Box2dAABBQueryNode.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Nodes\Box2dContactDetailsNode.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Nodes\Box2dWorldNode.h"
-					>
-				</File>
 				<Filter
 					Name="Shapes"
 					>
-					<File
-						RelativePath=".\Nodes\Shapes\Box2dCreateShapeNode.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Shapes\Box2dDestroyShape.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Shapes\Box2dGetCircles.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Shapes\Box2dGetEdgeChains.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Shapes\Box2dGetPolygonsNode.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Shapes\Box2dUpdateShapeNode.h"
-						>
-					</File>
 					<Filter
 						Name="Def"
 						>
-						<File
-							RelativePath=".\Nodes\Shapes\Definitions\Box2dBaseShapeDefNode.h"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Shapes\Definitions\Box2dBoxDefNode.h"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Shapes\Definitions\Box2dCircleShapeDefNode.h"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Shapes\Definitions\Box2dEdgeShapeDefNode.h"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Shapes\Definitions\Box2dPolygonDefNode.h"
-							>
-						</File>
 					</Filter>
 				</Filter>
 				<Filter
 					Name="Bodies"
 					>
-					<File
-						RelativePath=".\Nodes\Bodies\Box2dCreateBodyNode.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Bodies\Box2dDestroyBodyNode.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Bodies\Box2dUpdateBodyNode.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Bodies\GetBodyDetailsNode.h"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="Forces"
 					>
-					<File
-						RelativePath=".\Nodes\Forces\Box2dApplyForceNode.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Forces\Box2dApplyImpulseNode.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Forces\Box2dApplyTorqueNode.h"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="Joints"
 					>
-					<File
-						RelativePath=".\Nodes\Joints\Create\Box2dCreateLineJointNode.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Joints\Create\Box2dCreateMouseJointNode.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Joints\Create\Box2dCreatePrismaticJointNode.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Joints\Box2dDestroyJointNode.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Joints\GetJointDetailsNode.h"
-						>
-					</File>
 					<Filter
 						Name="Def"
 						>
-						<File
-							RelativePath=".\Nodes\Joints\Create\Box2dCreateDistanceJointNode.h"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Joints\Create\Box2dCreateJointNode.h"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Joints\Create\Box2dCreatePulleyJointNode.h"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Joints\Create\Box2dCreateRevoluteJointNode.h"
-							>
-						</File>
 					</Filter>
 				</Filter>
 				<Filter
 					Name="Controllers"
 					>
-					<File
-						RelativePath=".\Nodes\Controllers\Box2dAssignControllerNode.h"
-						>
-					</File>
-					<File
-						RelativePath=".\Nodes\Controllers\Box2dUnAssignControllerNode.h"
-						>
-					</File>
 					<Filter
 						Name="Def"
 						>
-						<File
-							RelativePath=".\Nodes\Controllers\Box2dBaseControllerDefNode.h"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Controllers\Box2dBuoyancyControllerDefNode.h"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Controllers\Box2dConstantAccDefNode.h"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Controllers\Box2dCVelDefNode.h"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Controllers\Box2dGravityControllerNode.h"
-							>
-						</File>
-						<File
-							RelativePath=".\Nodes\Controllers\Box2dTensorDampingControllerDefNode.h"
-							>
-						</File>
 					</Filter>
 				</Filter>
 			</Filter>
@@ -778,10 +630,6 @@
 				<Filter
 					Name="Contact"
 					>
-					<File
-						RelativePath=".\Internals\Contact\ContactListener.h"
-						>
-					</File>
 				</Filter>
 				<Filter
 					Name="Data"

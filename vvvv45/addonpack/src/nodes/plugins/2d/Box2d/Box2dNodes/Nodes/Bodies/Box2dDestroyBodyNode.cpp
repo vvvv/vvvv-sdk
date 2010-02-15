@@ -45,11 +45,8 @@ namespace VVVV
 							b2Body* body = this->m_bodies->GetSlice(realslice);
 
 							//Just In Case
-							if (body != body->GetWorld()->GetGroundBody())
-							{
-								BodyCustomData* bdata = (BodyCustomData*)body->GetUserData();
-								bdata->MarkedForDeletion = true;
-							}
+							BodyCustomData* bdata = (BodyCustomData*)body->GetUserData();
+							bdata->MarkedForDeletion = true;
 						}
 					}
 				

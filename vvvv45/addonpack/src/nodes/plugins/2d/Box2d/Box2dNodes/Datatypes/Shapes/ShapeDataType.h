@@ -8,7 +8,7 @@ namespace VVVV
 		InterfaceType(ComInterfaceType::InterfaceIsIUnknown)]
 		public interface class IShapeIO: INodeIOBase
 		{
-			b2Shape* GetSlice(int index);
+			b2Fixture* GetSlice(int index);
 		};
 
 
@@ -16,13 +16,13 @@ namespace VVVV
 		{
 			private:
 				static Guid^ m_guid;
-				vector<b2Shape*>* m_shapes;
+				vector<b2Fixture*>* m_shapes;
 			public:
 				ShapeDataType();
 
-				virtual b2Shape* GetSlice(int index);
+				virtual b2Fixture* GetSlice(int index);
 				void Reset();
-				void Add(b2Shape* shape);
+				void Add(b2Fixture* shape);
 				int Count();
 
 

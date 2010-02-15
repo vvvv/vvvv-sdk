@@ -7,10 +7,10 @@ namespace VVVV
 	{
 		ShapeDataType::ShapeDataType(void)
 		{
-			this->m_shapes = new vector<b2Shape*>;
+			this->m_shapes = new vector<b2Fixture*>;
 		}
 
-		b2Shape* ShapeDataType::GetSlice(int index)
+		b2Fixture* ShapeDataType::GetSlice(int index)
 		{
 			return this->m_shapes->at(index % this->m_shapes->size());
 		}
@@ -20,7 +20,7 @@ namespace VVVV
 			this->m_shapes->clear();
 		}
 
-		void ShapeDataType::Add(b2Shape* shape) 
+		void ShapeDataType::Add(b2Fixture* shape) 
 		{
 			this->m_shapes->push_back(shape);
 		}

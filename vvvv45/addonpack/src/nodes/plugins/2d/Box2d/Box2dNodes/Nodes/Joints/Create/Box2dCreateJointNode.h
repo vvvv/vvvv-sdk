@@ -1,6 +1,5 @@
 #pragma once
 #include "../../../DataTypes/BodyDataType.h"
-#include "../../../DataTypes/GroundDataType.h"
 #include "../../../DataTypes/WorldDataType.h"
 #include "../../../Internals/Data/JointCustomData.h"
 
@@ -35,8 +34,8 @@ namespace VVVV
 
 			INodeIn^ vInBody1;
 			BodyDataType^ m_body1;
-			GroundDataType^ m_ground1;
-			bool isbody;
+			//GroundDataType^ m_ground1;
+			//bool isbody;
 
 			INodeIn^ vInBody2;
 			BodyDataType^ m_body2;

@@ -1,6 +1,5 @@
 #pragma once
 #include "../../DataTypes/BodyDataType.h"
-#include "../../DataTypes/GroundDataType.h"
 #include "../../DataTypes/Shapes/ShapeDataType.h"
 
 using namespace VVVV::DataTypes;
@@ -58,15 +57,12 @@ namespace VVVV
 
 			INodeIn^ vInBodies;
 			BodyDataType^ m_bodies;
-			GroundDataType^ mGround;
-			bool isbody;
 
 			IValueOut^ vOutPosition;
 			IValueOut^ vOutRotation;
 			IValueOut^ vOutVelocity;
 			IValueOut^ vOutIsDynamic;
 			IValueOut^ vOutIsSleeping;
-			IValueOut^ vOutIsFrozen;
 			IValueOut^ vOutMass;
 			IValueOut^ vOutInertia;
 			IStringOut^ vOutCustom;

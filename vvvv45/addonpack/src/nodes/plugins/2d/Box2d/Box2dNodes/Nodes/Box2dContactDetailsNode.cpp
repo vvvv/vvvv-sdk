@@ -83,22 +83,26 @@ namespace VVVV
 	
 					for (int i = 0; i < this->m_world->Contacts->size(); i++) 
 					{
-						b2ContactPoint* contact = this->m_world->Contacts->at(i);
+						b2Contact* contact = this->m_world->Contacts->at(i);
+						b2Manifold* man = contact->GetManifold();
 
-						this->vOutPosition->SetValue2D(i,contact->position.x,contact->position.y);
-						this->vOutNormals->SetValue2D(i,contact->normal.x,contact->normal.y);
+						b2WorldManifold worldManifold;
+						contact->GetWorldManifold(&worldManifold);
+
+						this->vOutPosition->SetValue2D(i,worldManifold.localPoint.x,worldManifold.localPoint.y);
+						this->vOutNormals->SetValue2D(i,worldManifold.localNormal.x,worldManifold.localNormal.y);
 						
 
-						ShapeCustomData* sdata = (ShapeCustomData*)contact->shape1->GetUserData();
+						ShapeCustomData* sdata = (ShapeCustomData*)contact->GetFixtureA()->GetUserData();
 						this->vOutShapes1->SetValue(i,sdata->Id);
-						sdata = (ShapeCustomData*)contact->shape2->GetUserData();
+						sdata = (ShapeCustomData*)contact->GetFixtureB()->GetUserData();
 						this->vOutShapes2->SetValue(i,sdata->Id);
 						this->vOutNew->SetValue(i,this->m_world->Newcontacts->at(i));
 
-						this->m_shape1->Add(contact->shape1);
-						this->m_shape2->Add(contact->shape2);
-						this->mBody1->Add(contact->shape1->GetBody());
-						this->mBody2->Add(contact->shape2->GetBody());
+						this->m_shape1->Add(contact->GetFixtureA());
+						this->m_shape2->Add(contact->GetFixtureB());
+						this->mBody1->Add(contact->GetFixtureA()->GetBody());
+						this->mBody2->Add(contact->GetFixtureB()->GetBody());
 
 						this->vOutShape1->MarkPinAsChanged();
 						this->vOutShape2->MarkPinAsChanged();

@@ -12,11 +12,10 @@ namespace VVVV
 		{
 			this->mWorld = gcnew WorldDataType();
 			this->mBodies = gcnew BodyDataType();
-			this->mGround = gcnew GroundDataType();
 			this->mJoints = gcnew JointDataType();
-			this->contacts = new vector<b2ContactPoint*>();
+			this->contacts = new vector<b2Contact*>();
 			this->newcontacts = new vector<double>();
-			this->MyListener = new ContactListener(this->contacts,this->newcontacts);
+			//this->MyListener = new ContactListener(this->contacts,this->newcontacts);
 			this->mWorld->Contacts = this->contacts;
 			this->mWorld->Newcontacts = this->newcontacts;
 			this->ctrlconnected = false;
@@ -33,13 +32,6 @@ namespace VVVV
 		void Box2dWorldNode::SetPluginHost(IPluginHost^ Host)
 		{
 			this->FHost = Host;
-
-			//Bounds
-			this->FHost->CreateValueInput("Lower Bound",2,ArrayUtils::Array2D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInLowerBound);
-			this->vInLowerBound->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,-100.0,-100.0,false,false,false);
-
-			this->FHost->CreateValueInput("Upper Bound",2,ArrayUtils::Array2D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInUpperBound);
-			this->vInUpperBound->SetSubType2D(Double::MinValue,Double::MaxValue,0.01,100.0,100.0,false,false,false);
 
 			//Gravity
 			this->FHost->CreateValueInput("Gravity",2,ArrayUtils::Array2D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInGravity);
@@ -78,10 +70,6 @@ namespace VVVV
 			this->FHost->CreateValueOutput("World Valid",1,ArrayUtils::Array1D(),TSliceMode::Single,TPinVisibility::True,this->vOutWorldValid);
 			this->vOutWorldValid->SetSubType(0,1,1,0,false,true,false);
 
-			this->FHost->CreateNodeOutput("Ground",TSliceMode::Single,TPinVisibility::True,this->vOutGround);
-			this->vOutGround->SetSubType(ArrayUtils::SingleGuidArray(GroundDataType::GUID),GroundDataType::FriendlyName);
-			this->vOutGround->SetInterface(this->mGround);
-
 			this->FHost->CreateNodeOutput("Bodies",TSliceMode::Dynamic,TPinVisibility::True,this->vOutBodies);
 			this->vOutBodies->SetSubType(ArrayUtils::SingleGuidArray(BodyDataType::GUID),BodyDataType::FriendlyName);
 			this->vOutBodies->SetInterface(this->mBodies);
@@ -111,8 +99,6 @@ namespace VVVV
 
 			//Reset World
 			if (this->vInAllowSleep->PinIsChanged 
-				|| this->vInLowerBound->PinIsChanged
-				|| this->vInUpperBound->PinIsChanged
 				|| reset >= 0.5) 
 			{
 				if (this->internalworld != nullptr) 
@@ -120,36 +106,29 @@ namespace VVVV
 					delete this->internalworld;
 				}
 
-				b2AABB worldAABB;
-				double lbx,lby,ubx,uby,gx,gy,allowsleep;
+				double gx,gy,allowsleep;
 				this->vInAllowSleep->GetValue(0, allowsleep);
 				this->vInGravity->GetValue2D(0,gx,gy);
-				this->vInLowerBound->GetValue2D(0,lbx,lby);
-				this->vInUpperBound->GetValue2D(0,ubx,uby);
 
-				worldAABB.lowerBound.Set(Convert::ToSingle(lbx),Convert::ToSingle(lby));
-				worldAABB.upperBound.Set(Convert::ToSingle(ubx),Convert::ToSingle(uby));
 
-				this->mWorld->SetIsValid(worldAABB.IsValid());
+				this->mWorld->SetIsValid(true);
 
 				if (this->mWorld->GetIsValid()) 
 				{
 					b2Vec2 gravity(Convert::ToSingle(gx),Convert::ToSingle(gy));
 					bool dosleep = allowsleep >= 0.5;
-					this->internalworld  = new b2World(worldAABB, gravity, dosleep);
+					this->internalworld  = new b2World(gravity, dosleep);
 					this->mWorld->SetWorld(this->internalworld);
 					
-					this->internalworld->SetContactListener(this->MyListener);
-					this->mGround->SetGround(this->internalworld->GetGroundBody());
-					this->mGround->SetIsValid(true);
+					//this->internalworld->SetContactListener(this->MyListener);
+					//this->mGround->SetGround(this->internalworld->GetGroundBody());
+					//this->mGround->SetIsValid(true);
 					this->mWorld->SetReset(true);				
 				} 
 				else 
 				{
 					this->internalworld = nullptr;
 					this->mWorld->SetWorld(this->internalworld);
-					this->mGround->SetIsValid(false);
-					this->mGround->SetGround(nullptr);
 					this->mWorld->SetReset(true);
 				}
 
@@ -187,13 +166,12 @@ namespace VVVV
 			this->mBodies->Reset();
 			this->mJoints->Reset();
 
-			for (int i = 0; i < this->contacts->size(); i++)
-			{
-				b2ContactPoint* pt = this->contacts->at(i);
-				delete pt;
-			}
+			//for (int i = 0; i < this->contacts->size(); i++)
+			//{
+			//	b2ContactPoint* pt = this->contacts->at(i);
+			//	delete pt;
+			//}
 			this->contacts->clear();
-
 			this->newcontacts->clear();
 
 			//Delete bodies marked as such
@@ -204,77 +182,42 @@ namespace VVVV
 				{
 					b2Body* b = node;
 					node = node->GetNext();
-					if (b != this->mWorld->GetWorld()->GetGroundBody()) 
+					BodyCustomData* bdata = (BodyCustomData*)b->GetUserData();
+					if (bdata->MarkedForDeletion) 
 					{
-						BodyCustomData* bdata = (BodyCustomData*)b->GetUserData();
-						if (bdata->MarkedForDeletion) 
-						{
-							this->mWorld->GetWorld()->DestroyBody(b);
-						} 
-						else
-						{
-							b2Shape* snode = b->GetShapeList();
-
-							bool change = false;
-							while (snode)
-							{
-								b2Shape* s = snode;
-								snode = snode->GetNext();
-
-								if (s->GetType() == e_circleShape || s->GetType() == e_polygonShape) 
-								{
-									ShapeCustomData* sdata = (ShapeCustomData*)s->GetUserData();
-									if (sdata->MarkedForDeletion)
-									{
-										b->DestroyShape(s);
-										change = true;
-									}
-
-									if (sdata->MarkedForUpdate)
-									{
-										b->DestroyShape(s);
-										b2Shape* newshape = b->CreateShape(sdata->NewShape);
-										newshape->SetUserData(sdata);
-										sdata->MarkedForUpdate = false;
-										delete sdata->NewShape;
-										change = true;
-									}
-								}
-							}
-
-							if (change && b->IsDynamic())
-							{
-								b->SetMassFromShapes();
-							}
-						}
+						this->mWorld->GetWorld()->DestroyBody(b);
 					} 
 					else
-					{
-						b2Shape* snode = b->GetShapeList();
+					{	
+						b2Fixture* snode = b->GetFixtureList();
 
-						bool del = false;
+						bool change = false;
 						while (snode)
 						{
-							b2Shape* s = snode;
+							b2Fixture* s = snode;
 							snode = snode->GetNext();
 
-							if (s->GetType() == e_circleShape || s->GetType() == e_polygonShape || s->GetType() == e_edgeShape) 
+							if (s->GetType() == b2Shape::Type::e_circle || s->GetType() == b2Shape::Type::e_polygon) 
 							{
 								ShapeCustomData* sdata = (ShapeCustomData*)s->GetUserData();
 								if (sdata->MarkedForDeletion)
 								{
-									b->DestroyShape(s);
-									del = true;
+									b->DestroyFixture(s);
+								}
+
+								if (sdata->MarkedForUpdate)
+								{
+									b->DestroyFixture(s);
+									b2Fixture* newshape = b->CreateFixture(sdata->NewShape);
+									newshape->SetUserData(sdata);
+									sdata->MarkedForUpdate = false;
+									delete sdata->NewShape;
 								}
 							}
 						}
-
-						if (del && b->IsDynamic())
-						{
-							b->SetMassFromShapes();
-						}
+							
 					}
-
+					
 				}
 
 				b2Joint* nodej = this->mWorld->GetWorld()->GetJointList();
@@ -304,13 +247,10 @@ namespace VVVV
 				}
 
 				this->vOutBodies->MarkPinAsChanged();
-				this->vOutBodies->SliceCount = this->mWorld->GetWorld()->GetBodyCount() -1;
+				this->vOutBodies->SliceCount = this->mWorld->GetWorld()->GetBodyCount();
 				for (b2Body* b = this->mWorld->GetWorld()->GetBodyList(); b; b = b->GetNext())
 				{
-					if (b != this->mWorld->GetWorld()->GetGroundBody()) 
-					{
-						this->mBodies->Add(b);
-					}
+					this->mBodies->Add(b);
 				}
 
 				this->vOutJoints->MarkPinAsChanged();
@@ -320,11 +260,18 @@ namespace VVVV
 					this->mJoints->Add(j);
 				}
 
-				this->vOutControllerCount->SetValue(0, this->internalworld->GetControllerCount());
+				for (b2Contact* j = this->mWorld->GetWorld()->GetContactList(); j; j = j->GetNext())
+				{
+					this->contacts->push_back(j);
+				}
+
+
+
+				//this->vOutControllerCount->SetValue(0, this->internalworld->GetControllerCount());
 			} 
 			else 
 			{
-				this->vOutControllerCount->SetValue(0,-1);
+				//this->vOutControllerCount->SetValue(0,-1);
 				this->vOutBodies->SliceCount = 0;
 			}
 		}

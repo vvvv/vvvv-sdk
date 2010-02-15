@@ -76,8 +76,8 @@ namespace VVVV
 							b2Vec2 groundAnchor2(a2x,a2y);
 
 							jointDef.Initialize(body1, body2, groundAnchor1, groundAnchor2, anchor1, anchor2, ratio);
-							jointDef.maxLength1 = ml1;
-							jointDef.maxLength2 = ml2;
+							jointDef.maxLengthA = ml1;
+							jointDef.maxLengthB = ml2;
 							jointDef.collideConnected = cc >= 0.5;
 
 							JointCustomData* jdata = new JointCustomData();

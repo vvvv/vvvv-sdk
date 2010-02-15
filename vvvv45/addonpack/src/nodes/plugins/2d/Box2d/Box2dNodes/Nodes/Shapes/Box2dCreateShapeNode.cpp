@@ -18,7 +18,7 @@ namespace VVVV
 			this->vInWorld->SetSubType(ArrayUtils::SingleGuidArray(WorldDataType::GUID),WorldDataType::FriendlyName);
 
 			this->FHost->CreateNodeInput("Bodies",TSliceMode::Dynamic,TPinVisibility::True,this->vInBodies);
-			this->vInBodies->SetSubType(ArrayUtils::DoubleGuidArray(BodyDataType::GUID,GroundDataType::GUID),BodyDataType::FriendlyName);
+			this->vInBodies->SetSubType(ArrayUtils::SingleGuidArray(BodyDataType::GUID),BodyDataType::FriendlyName);
 
 			this->FHost->CreateNodeInput("Shapes",TSliceMode::Dynamic,TPinVisibility::True,this->vInShapes);
 			this->vInShapes->SetSubType(ArrayUtils::SingleGuidArray(ShapeDefDataType::GUID),ShapeDefDataType::FriendlyName);
@@ -60,25 +60,18 @@ namespace VVVV
 						
 						b2Body* body;
 
-						if (this->isbody) 
-						{
-							int realslicebody;
-							this->vInBodies->GetUpsreamSlice(i % this->vInBodies->SliceCount,realslicebody);
-							body = this->mBodies->GetSlice(realslicebody);
-						} 
-						else
-						{
-							body = this->mGround->GetGround();
-						}
+						int realslicebody;
+						this->vInBodies->GetUpsreamSlice(i % this->vInBodies->SliceCount,realslicebody);
+						body = this->mBodies->GetSlice(realslicebody);
 								
 						for (int j = 0; j < icount ; j++)
 						{
 							int realsliceshape;
 							this->vInShapes->GetUpsreamSlice(cnt % this->vInShapes->SliceCount,realsliceshape);
-							b2ShapeDef* shapedef = this->mShapes->GetSlice(realsliceshape);
+							b2FixtureDef* shapedef = this->mShapes->GetSlice(realsliceshape);
 							String^ shapecust = this->mShapes->GetCustom(realsliceshape);
 
-
+							/*
 							bool testcount;
 							if (shapedef->type == e_edgeShape)
 							{
@@ -95,11 +88,11 @@ namespace VVVV
 							else
 							{
 								testcount = this->mWorld->GetWorld()->GetProxyCount() < b2_maxProxies;
-							}
+							}*/
 
-							if (testcount)
+							if (true)
 							{
-								b2Shape* shape = body->CreateShape(shapedef);
+								b2Fixture* shape = body->CreateFixture(shapedef);
 								ShapeCustomData* sdata = new ShapeCustomData();
 								sdata->Id = this->mWorld->GetNewShapeId();
 								sdata->Custom = (char*)(void*)Marshal::StringToHGlobalAnsi(shapecust);
@@ -109,10 +102,6 @@ namespace VVVV
 							cnt++;
 						}
 
-						if (!body->IsStatic()) 
-						{
-							body->SetMassFromShapes();
-						}
 					}
 				}
 
@@ -140,18 +129,8 @@ namespace VVVV
         	if (Pin == this->vInBodies)
         	{
 				INodeIOBase^ usI;
-				try 
-				{
-					this->vInBodies->GetUpstreamInterface(usI);
-					this->mBodies = (BodyDataType^)usI;
-					this->isbody = true;
-				} 
-				catch (Exception^ ex)
-				{
-					this->vInBodies->GetUpstreamInterface(usI);
-					this->mGround = (GroundDataType^)usI;
-					this->isbody = false;
-				}
+				this->vInBodies->GetUpstreamInterface(usI);
+				this->mBodies = (BodyDataType^)usI;
         	}
 			if (Pin == this->vInShapes) 
 			{
@@ -169,14 +148,7 @@ namespace VVVV
         	}
 			if (Pin == this->vInBodies)
         	{
-        		if (this->isbody) 
-				{
-        			this->mBodies = nullptr;
-				} 
-				else 
-				{
-					this->mGround = nullptr;
-				}
+        		this->mBodies = nullptr;
         	}
 			if (Pin == this->vInShapes)
         	{

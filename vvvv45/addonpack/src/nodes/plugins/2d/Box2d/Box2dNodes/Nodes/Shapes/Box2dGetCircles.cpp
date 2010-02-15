@@ -69,12 +69,12 @@ namespace VVVV
 				{
 					int realslice;
 					this->vInShapes->GetUpsreamSlice(i,realslice);
-					b2Shape* shape = this->m_circles->GetSlice(realslice);
-					if (shape->GetType() == e_circleShape) 
+					b2Fixture* fixture = this->m_circles->GetSlice(realslice);
+					if (fixture->GetType() == b2Shape::Type::e_circle) 
 					{
-						b2CircleShape* circle = (b2CircleShape*)shape;
+						b2CircleShape* circle = (b2CircleShape*)fixture->GetShape();
 
-						b2Vec2 local = circle->GetLocalPosition();
+						b2Vec2 local = circle->m_p;
 						if (this->m_local)
 						{
 							Vector2D vec = Vector2D(local.x,local.y);
@@ -82,17 +82,17 @@ namespace VVVV
 						}
 						else
 						{
-							b2Vec2 world = circle->GetBody()->GetWorldPoint(local);
+							b2Vec2 world = fixture->GetBody()->GetWorldPoint(local);
 							Vector2D vec = Vector2D(world.x,world.y);
 							pos.Add(vec);
 						}
 
-						radius->Add(circle->GetRadius());
+						radius->Add(circle->m_radius);
 						
 
-						ShapeCustomData* sdata = (ShapeCustomData*)shape->GetUserData();
+						ShapeCustomData* sdata = (ShapeCustomData*)fixture->GetUserData();
 						ids->Add(sdata->Id);
-						issensor.push_back(shape->IsSensor());
+						issensor.push_back(fixture->IsSensor());
 						String^ str = gcnew String(sdata->Custom);
 						custs->Add(str);
 

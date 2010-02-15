@@ -44,16 +44,10 @@ namespace VVVV
 					{
 						int realslice;
 						this->vInShapes->GetUpsreamSlice(i % this->vInShapes->SliceCount,realslice);
-						b2Shape* shape = this->m_shapes->GetSlice(realslice);
+						b2Fixture* shape = this->m_shapes->GetSlice(realslice);
 
-						if ((shape->GetType() == e_polygonShape) || (shape->GetType() == e_circleShape))
-						{
-							ShapeCustomData* sdata = (ShapeCustomData*)shape->GetUserData();
-							sdata->MarkedForDeletion = true;
-						}
-
-						
-						
+						ShapeCustomData* sdata = (ShapeCustomData*)shape->GetUserData();
+						sdata->MarkedForDeletion = true;
 					}
 				}
 			}

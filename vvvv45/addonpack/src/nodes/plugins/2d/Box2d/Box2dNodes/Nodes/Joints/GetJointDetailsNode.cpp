@@ -86,13 +86,13 @@ namespace VVVV
 					this->vOutId->SetValue(i, jdata->Id);
 					this->vOutCustom->SetString(i,str);
 
-					this->m_bodies1->Add(joint->GetBody1());
-					this->m_bodies2->Add(joint->GetBody2());
+					this->m_bodies1->Add(joint->GetBodyA());
+					this->m_bodies2->Add(joint->GetBodyB());
 
-					b2Vec2 pos1 = joint->GetAnchor1();
+					b2Vec2 pos1 = joint->GetAnchorA();
 					this->vOutPosition1->SetValue2D(i, pos1.x,pos1.y);
 
-					b2Vec2 pos2 = joint->GetAnchor2();
+					b2Vec2 pos2 = joint->GetAnchorB();
 					this->vOutPosition2->SetValue2D(i, pos2.x,pos2.y);
 
 					String^ type;

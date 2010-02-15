@@ -9,6 +9,6 @@ public:
 	char* Custom;
 	bool MarkedForDeletion;
 	bool MarkedForUpdate;
-	b2ShapeDef* NewShape;
+	b2Shape* NewShape;
 
 };

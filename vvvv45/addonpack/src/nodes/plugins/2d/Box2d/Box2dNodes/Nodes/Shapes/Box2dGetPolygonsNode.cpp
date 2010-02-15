@@ -78,11 +78,11 @@ namespace VVVV
 				{
 					int realslice;
 					this->vInShapes->GetUpsreamSlice(i,realslice);
-					b2Shape* shape = this->m_polygons->GetSlice(realslice);
+					b2Fixture* fixture = this->m_polygons->GetSlice(realslice);
 					
-					if (shape->GetType() == e_polygonShape) 
+					if (fixture->GetType() == b2Shape::Type::e_polygon) 
 					{
-						b2PolygonShape* poly = (b2PolygonShape*)shape;
+						b2PolygonShape* poly = (b2PolygonShape*)fixture->GetShape();
 						if (poly->GetVertexCount() > 0) 
 						{
 							if (this->m_closed)
@@ -94,18 +94,20 @@ namespace VVVV
 								vcount.push_back(poly->GetVertexCount());
 							}
 
-							centers.push_back(poly->GetBody()->GetWorldPoint(poly->GetCentroid()));
-
-							const b2Vec2* verts = poly->GetVertices();
+							
+							const b2Vec2* verts = poly->m_vertices;
 							for (int j=0; j < poly->GetVertexCount();j++) 
 							{
 								if (this->m_local)
 								{
 									vertices.push_back(verts[j]);
+									centers.push_back(poly->m_centroid);
 								}
 								else
 								{
-									vertices.push_back(poly->GetBody()->GetWorldPoint(verts[j]));
+									vertices.push_back(fixture->GetBody()->GetWorldPoint(verts[j]));
+									centers.push_back(fixture->GetBody()->GetWorldPoint(poly->m_centroid));
+
 								}
 							}
 
@@ -117,13 +119,13 @@ namespace VVVV
 								}
 								else
 								{
-									vertices.push_back(poly->GetBody()->GetWorldPoint(verts[0]));
+									vertices.push_back(fixture->GetBody()->GetWorldPoint(verts[0]));
 								}
 							}
 
-							ShapeCustomData* sdata = (ShapeCustomData*)shape->GetUserData();
+							ShapeCustomData* sdata = (ShapeCustomData*)fixture->GetUserData();
 							ids.push_back(sdata->Id);
-							issensor.push_back(shape->IsSensor());
+							issensor.push_back(fixture->IsSensor());
 							String^ str = gcnew String(sdata->Custom);
 							custs->Add(str);
 

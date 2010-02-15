@@ -104,7 +104,7 @@ namespace VVVV
 							a = body->GetAngle();
 						}
 
-						body->SetXForm(b2Vec2(Convert::ToSingle(x),Convert::ToSingle(y)),Convert::ToSingle(a));
+						body->SetTransform(b2Vec2(Convert::ToSingle(x),Convert::ToSingle(y)),Convert::ToSingle(a));
 					}
 
 					this->vInSetVelocity->GetValue(i,dblsv);
@@ -136,15 +136,7 @@ namespace VVVV
 					if (dblsetsleep >= 0.5)
 					{
 						this->vInSleeping->GetValue(i,dblsleep);
-						if (dblsleep >= 0.5 || body->IsSleeping())
-						{
-							body->WakeUp();
-						}
-
-						if (dblsleep < 0.5 || !body->IsSleeping())
-						{
-							body->PutToSleep();
-						}
+						body->SetAwake(dblsleep < 0.5);
 					}
 				}
 			}

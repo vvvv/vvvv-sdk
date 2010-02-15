@@ -46,19 +46,21 @@ namespace VVVV
 					this->vInCustom->GetString(i, custom);
 					this->vInGroupIndex->GetValue(i, group);
 
-					b2PolygonDef* shapeDef = this->m_shapes->AddPolygon();
+					b2FixtureDef* shapeDef = this->m_shapes->AddPolygon();
+
+
 					b2Vec2 center(x,y);
-					shapeDef->SetAsBox(sx / 2.0f, sy / 2.0,center,a * (Math::PI * 2.0));
+					b2PolygonShape* poly = new b2PolygonShape();
+					poly->SetAsBox(sx / 2.0f, sy / 2.0,center,a * (Math::PI * 2.0));
+
 					shapeDef->density = density;
 					shapeDef->friction = friction;
 					shapeDef->restitution = restitution;
 					shapeDef->isSensor = issensor >= 0.5;
 					shapeDef->filter.groupIndex = Convert::ToInt32(group);
+					shapeDef->shape = poly;
 
 					this->m_shapes->AddCustom(custom);
-
-
-					
 				}
 
 				this->vOutShapes->MarkPinAsChanged();

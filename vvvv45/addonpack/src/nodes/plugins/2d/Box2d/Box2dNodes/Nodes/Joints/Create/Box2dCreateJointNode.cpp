@@ -17,20 +17,15 @@ namespace VVVV
 			this->FHost->CreateNodeInput("World",TSliceMode::Single,TPinVisibility::True,this->vInWorld);
 			this->vInWorld->SetSubType(ArrayUtils::SingleGuidArray(WorldDataType::GUID),WorldDataType::FriendlyName);
 
-			if (this->ForceBodyOneGround())
-			{
-				this->FHost->CreateNodeInput("Body",TSliceMode::Dynamic,TPinVisibility::True,this->vInBody2);
-				this->vInBody2->SetSubType(ArrayUtils::SingleGuidArray(BodyDataType::GUID),BodyDataType::FriendlyName);
-			}
-			else
-			{
-				this->FHost->CreateNodeInput("Body 1",TSliceMode::Dynamic,TPinVisibility::True,this->vInBody1);
-				this->vInBody1->SetSubType(ArrayUtils::DoubleGuidArray(BodyDataType::GUID,GroundDataType::GUID),BodyDataType::FriendlyName);
 
+			this->FHost->CreateNodeInput("Body 1",TSliceMode::Dynamic,TPinVisibility::True,this->vInBody1);
+			this->vInBody1->SetSubType(ArrayUtils::SingleGuidArray(BodyDataType::GUID),BodyDataType::FriendlyName);
+
+			if (!this->ForceBodyOneGround())
+			{
 				this->FHost->CreateNodeInput("Body 2",TSliceMode::Dynamic,TPinVisibility::True,this->vInBody2);
 				this->vInBody2->SetSubType(ArrayUtils::SingleGuidArray(BodyDataType::GUID),BodyDataType::FriendlyName);
 			}
-
 
 			this->FHost->CreateValueInput("Collide Connected",1,ArrayUtils::Array1D(),TSliceMode::Dynamic,TPinVisibility::True,this->vInCollideConnected);
 			this->vInCollideConnected->SetSubType(Double::MinValue,Double::MaxValue,0.01,0.0,false,true,false);
@@ -62,18 +57,8 @@ namespace VVVV
 			if (Pin == this->vInBody1) 
 			{
 				INodeIOBase^ usI;
-				try 
-				{
-					this->vInBody1->GetUpstreamInterface(usI);
-					this->m_body1 = (BodyDataType^)usI;
-					this->isbody = true;
-				} 
-				catch (Exception^ ex)
-				{
-					this->vInBody1->GetUpstreamInterface(usI);
-					this->m_ground1 = (GroundDataType^)usI;
-					this->isbody = false;
-				}
+				this->vInBody1->GetUpstreamInterface(usI);
+				this->m_body1 = (BodyDataType^)usI;
 			}
 
 			if (Pin == this->vInBody2) 
@@ -95,14 +80,7 @@ namespace VVVV
         	}
 			if (Pin == this->vInBody1)
         	{
-				if (this->isbody) 
-				{
-        			this->m_body1 = nullptr;
-				} 
-				else 
-				{
-					this->m_ground1 = nullptr;
-				}
+        		this->m_body1 = nullptr;
         	}
 			if (Pin == this->vInBody2)
         	{
