@@ -259,7 +259,7 @@ namespace VVVV.Nodes.Http.CSS
 
                 FHost.UpdateEnum("OutlineStyle", "solid", new string[] { "none", "hidden", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset" });
                 FHost.CreateEnumInput("Style", TSliceMode.Single, TPinVisibility.True, out FBorderStyleIn);
-                FBorderStyleIn.SetSubType(OutlineStyle");
+                FBorderStyleIn.SetSubType("OutlineStyle");
 
         }
 
