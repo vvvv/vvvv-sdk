@@ -115,11 +115,11 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Background Color" pintype="Input" slicecount="1" visible="-1" values="|0.00000,0.00000,0.00000,1.00000|">
+   <PIN pinname="Background Color" pintype="Input" slicecount="1" visible="-1" values="|0.99875,0.99875,0.99875,1.00000|">
    </PIN>
-   <PIN pinname="View Transform" pintype="Input" slicecount="1" visible="-1" values="||">
+   <PIN pinname="View Transform" pintype="Input" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Projection Transform" pintype="Input" slicecount="1" visible="-1" values="||">
+   <PIN pinname="Projection Transform" pintype="Input" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
@@ -157,13 +157,15 @@
    </PIN>
    <PIN pinname="EX9 Out" pintype="Output" visible="-1">
    </PIN>
+   <PIN pinname="Aspect Ratio Transform" visible="1" pintype="Input" slicecount="1" values="||">
+   </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="23" nodename="Fill (EX9.RenderState)">
-   <BOUNDS height="0" left="1425" top="7665" type="Node" width="0">
+   <BOUNDS height="0" left="1425" top="7695" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Render State Out" visible="1">
    </PIN>
-   <PIN pinname="Fill Mode" slicecount="1" visible="-1" pintype="Input" values="Solid">
+   <PIN pinname="Fill Mode" pintype="Input" slicecount="1" visible="-1" values="Solid">
    </PIN>
    <PIN pinname="Render State In" visible="1">
    </PIN>
@@ -187,7 +189,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Former Slice" visible="-1" pintype="Output">
+   <PIN pinname="Former Slice" pintype="Output" visible="-1">
    </PIN>
    </NODE>
    <LINK dstnodeid="21" dstpinname="Select" srcnodeid="22" srcpinname="Count">
@@ -201,7 +203,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="8970" top="6765" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="40">
+   <PIN pinname="Y Input Value" slicecount="1" values="50">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -245,7 +247,7 @@
    </PIN>
    <PIN pinname="Specular Color">
    </PIN>
-   <PIN pinname="Color" pintype="Input" slicecount="2" visible="-1" values="|0.10993,0.11766,0.00000,1.00000|,|0.96996,0.68366,0.00000,1.00000|">
+   <PIN pinname="Color" pintype="Input" slicecount="2" visible="-1" values="|0.84434,0.85230,0.00000,1.00000|,|0.00000,0.78058,1.00000,1.00000|">
    </PIN>
    <PIN pinname="Transform" pintype="Input" slicecount="1" visible="-1" values="||">
    </PIN>
@@ -273,20 +275,6 @@
    <LINK dstnodeid="24" dstpinname="Layers" srcnodeid="18" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="18" dstpinname="Render State" srcnodeid="23" srcpinname="Render State Out">
-   </LINK>
-   <NODE componentmode="Hidden" id="17" nodename="Blend (EX9.RenderState Advanced)">
-   <BOUNDS height="0" left="1425" top="7035" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Render State Out" visible="1">
-   </PIN>
-   <PIN pinname="Destination Blend Mode" slicecount="1" values="SrcAlpha">
-   </PIN>
-   <PIN pinname="Alpha Blending" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Source Blend Mode" slicecount="1" values="SrcColor">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="23" dstpinname="Render State In" srcnodeid="17" srcpinname="Render State Out">
    </LINK>
    <NODE componentmode="Hidden" id="16" nodename="CircularSpread (Spreads)">
    <BOUNDS height="270" left="480" top="4395" type="Node" width="3360">
@@ -331,7 +319,7 @@
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Scale" pintype="Input" slicecount="1" visible="-1" values="7">
+   <PIN pinname="Scale" pintype="Input" slicecount="1" visible="-1" values="11">
    </PIN>
    <PIN pinname="Is Integer" pintype="Input" slicecount="1" visible="-1" values="1">
    </PIN>
@@ -347,13 +335,13 @@
    </PIN>
    <PIN pinname="Position Out" visible="1">
    </PIN>
-   <PIN pinname="FilterTime" slicecount="1" visible="-1" pintype="Input" values="4">
+   <PIN pinname="FilterTime" pintype="Input" slicecount="1" visible="-1" values="4">
    </PIN>
-   <PIN pinname="Velocity Out" visible="-1" pintype="Output">
+   <PIN pinname="Velocity Out" pintype="Output" visible="-1">
    </PIN>
-   <PIN pinname="Acceleration Out" visible="-1" pintype="Output">
+   <PIN pinname="Acceleration Out" pintype="Output" visible="-1">
    </PIN>
-   <PIN pinname="Cyclic" visible="-1" pintype="Input" slicecount="1" values="0">
+   <PIN pinname="Cyclic" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="15" dstpinname="X" srcnodeid="13" srcpinname="Position Out">
@@ -365,13 +353,13 @@
    </PIN>
    <PIN pinname="Position Out" visible="1">
    </PIN>
-   <PIN pinname="FilterTime" slicecount="1" visible="-1" pintype="Input" values="4">
+   <PIN pinname="FilterTime" pintype="Input" slicecount="1" visible="-1" values="4">
    </PIN>
-   <PIN pinname="Velocity Out" visible="-1" pintype="Output">
+   <PIN pinname="Velocity Out" pintype="Output" visible="-1">
    </PIN>
-   <PIN pinname="Acceleration Out" visible="-1" pintype="Output">
+   <PIN pinname="Acceleration Out" pintype="Output" visible="-1">
    </PIN>
-   <PIN pinname="Cyclic" visible="-1" pintype="Input" slicecount="1" values="0">
+   <PIN pinname="Cyclic" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="15" dstpinname="Y" srcnodeid="12" srcpinname="Position Out">
@@ -397,17 +385,17 @@
    </BOUNDS>
    <PIN pinname="Cycles" visible="1">
    </PIN>
-   <PIN pinname="Reset" slicecount="1" visible="-1" pintype="Input" values="0">
+   <PIN pinname="Reset" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
-   <PIN pinname="Period" slicecount="1" visible="-1" pintype="Input" values="4">
+   <PIN pinname="Period" pintype="Input" slicecount="1" visible="-1" values="4">
    </PIN>
-   <PIN pinname="Pause" visible="-1" pintype="Input" slicecount="1" values="0">
+   <PIN pinname="Pause" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
-   <PIN pinname="Reverse" visible="-1" pintype="Input" slicecount="1" values="0">
+   <PIN pinname="Reverse" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
-   <PIN pinname="Phase" visible="-1" pintype="Input" slicecount="1" values="0">
+   <PIN pinname="Phase" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
-   <PIN pinname="Output" visible="-1" pintype="Output">
+   <PIN pinname="Output" pintype="Output" visible="-1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="9" nodename="Change (Animation)">
@@ -541,11 +529,19 @@
    <NODE componentmode="Hidden" id="1" nodename="CircularSpread (Spreads)">
    <BOUNDS height="270" left="4350" top="4740" type="Node" width="1485">
    </BOUNDS>
-   <PIN pinname="Spread Count" slicecount="1" values="17">
+   <PIN pinname="Spread Count" slicecount="1" values="11">
    </PIN>
    <PIN pinname="Input X" slicecount="1" visible="1" values="0">
    </PIN>
-   <PIN pinname="Width" slicecount="1" values="0">
+   <PIN pinname="Width" slicecount="1" values="0.25">
+   </PIN>
+   <PIN pinname="Input Y" slicecount="1" values="-3.46944695195361E-018">
+   </PIN>
+   <PIN pinname="Phase" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Factor" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="0.249999999999999">
    </PIN>
    </NODE>
    <LINK dstnodeid="11" dstpinname="Input" srcnodeid="1" srcpinname="Output X">
@@ -566,8 +562,18 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Input">
+   <LINK dstnodeid="21" dstpinname="Input" srcnodeid="20" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Spread Count">
+   <LINK dstnodeid="16" dstpinname="Spread Count" srcnodeid="20" srcpinname="Y Output Value">
+   </LINK>
+   <NODE nodename="Blend (EX9.RenderState)" componentmode="Hidden" id="32">
+   <BOUNDS type="Node" left="1440" top="7050" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Draw Mode" slicecount="1" values="Multiply">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="Render State Out" dstnodeid="23" dstpinname="Render State In">
    </LINK>
    </PATCH>
