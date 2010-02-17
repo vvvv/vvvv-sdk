@@ -53,7 +53,6 @@ namespace VVVV.Nodes
     	
     	//output pin declaration
     	private IValueOut FPinOutVertices;
-        private IValueOut FPinOutVertexCount;
     	
     	#endregion field declaration
        
@@ -197,8 +196,6 @@ namespace VVVV.Nodes
 	    	//create outputs	    	
 	    	FHost.CreateValueOutput("Value Output", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutVertices);
             FPinOutVertices.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0, 0, 0, false, false, false);
-            FHost.CreateValueOutput("Vertex Count ", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutVertexCount);
-            FPinOutVertexCount.SetSubType(0, double.MaxValue, 1, 1, false, false, true);
         }
 
         #endregion pin creation
