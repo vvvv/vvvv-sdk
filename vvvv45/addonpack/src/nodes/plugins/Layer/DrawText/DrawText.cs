@@ -62,6 +62,7 @@ namespace VVVV.Nodes
 		//Track whether Dispose has been called.
 		private bool FDisposed = false;
 		
+		private IDXStateIO FStatePin;
 		private IValueIn FRectInput;
 		private IValueIn FItalicInput;
 		private IValueIn FBoldInput;
@@ -127,9 +128,7 @@ namespace VVVV.Nodes
 				}
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.
-				
-				FHost.Log(TLogType.Debug, "PluginMeshTemplate is being deleted");
-				
+								
 				// Note that this is not thread safe.
 				// Another thread could start disposing the object
 				// after the managed resources are disposed,
@@ -219,6 +218,7 @@ namespace VVVV.Nodes
 			FHost = Host;
 			
 			//create inputs
+			FHost.CreateStateInput(TStateType.RenderState, TSliceMode.Single, TPinVisibility.True, out FStatePin);
 			FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTranformIn);
 			FHost.CreateValueInput("Rectangle", 2, null, TSliceMode.Dynamic, TPinVisibility.True, out FRectInput);
 			FRectInput.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0, 0, false, false, false);
@@ -289,7 +289,7 @@ namespace VVVV.Nodes
 		private void RemoveResource(int OnDevice)
 		{
 			DeviceFont df = FDeviceFonts[OnDevice];
-			FHost.Log(TLogType.Debug, "Destroying Resource...");
+			//FHost.Log(TLogType.Debug, "Destroying Resource...");
 			FDeviceFonts.Remove(OnDevice);
 			
 			df.Font.Dispose();
@@ -318,7 +318,7 @@ namespace VVVV.Nodes
 			
 			if (needsupdate)
 			{
-				FHost.Log(TLogType.Debug, "Creating Resource...");
+				//FHost.Log(TLogType.Debug, "Creating Resource...");
 				Device dev = Device.FromPointer(new IntPtr(OnDevice));
 
 				DeviceFont df = new DeviceFont();
@@ -365,6 +365,13 @@ namespace VVVV.Nodes
 			}
 		}
 		
+		public void SetStates()
+		{
+			FStatePin.SetRenderState((int) RenderState.AlphaTestEnable, 1);
+			FStatePin.SetRenderState((int) RenderState.SourceBlend, (int) Blend.SourceAlpha);
+    		FStatePin.SetRenderState((int) RenderState.DestinationBlend, (int) Blend.InverseSourceAlpha);
+		}
+		
 		public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
 		{
 			//concerning the cut characters in some fonts, especially when rendered italic see:
@@ -385,8 +392,10 @@ namespace VVVV.Nodes
 
 			DeviceFont df = FDeviceFonts[DXDevice.DevicePointer()];
 			FTranformIn.SetRenderSpace();
-				
-			df.Sprite.Begin(SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace | SpriteFlags.AlphaBlend);
+
+			//set states that are defined via upstream nodes
+			FStatePin.SetSliceStates(0);
+			df.Sprite.Begin(SpriteFlags.ObjectSpace | SpriteFlags.DoNotAddRefTexture);
 			
 			double size;
 			FSizeInput.GetValue(0, out size);
