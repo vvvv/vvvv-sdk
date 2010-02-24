@@ -88,6 +88,19 @@ namespace VVVV.PluginInterfaces.V1
 		Output};
 	
 	/// <summary>
+	/// Used to specifiy a State pins type.
+	/// </summary>
+	public enum TStateType {
+		/// <summary>
+		/// The pin is a RenderState pin.
+		/// </summary>
+		RenderState,
+		/// <summary>
+		/// The pin is SamplerState pin.
+		/// </summary>
+		SamplerState};
+	
+	/// <summary>
 	/// Used in the <see cref="VVVV.PluginInterfaces.V1.IPluginHost.Log()">IPluginHost.Log</see> function to specify the type of the log message.
 	/// </summary>
 	public enum TLogType {
@@ -1056,7 +1069,9 @@ namespace VVVV.PluginInterfaces.V1
 		void SetMatrix(int Index, Matrix4x4 Value);
 	}
 	
-	
+	/// <summary>
+	/// Interface to an OutputPin of type DirectX Mesh.
+	/// </summary>
 	[Guid("4D7E1619-0342-48EE-8AD0-13245226FD99"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IDXMeshOut: IPluginOut
@@ -1067,11 +1082,35 @@ namespace VVVV.PluginInterfaces.V1
 		void MarkPinAsChanged();
 	}
 	
+	/// <summary>
+	/// Interface to an OutputPin of type DirectX Layer.
+	/// </summary>
 	[Guid("513190D5-68C5-4623-9BDA-D5C2B8D50172"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IDXLayerIO: IPluginOut
 	{
 		
+	}
+	
+	/// <summary>
+	/// Interface to an InputPin of type DirectX State.
+	/// </summary>
+	[Guid("DBF71AC4-BA83-478F-97AC-F088976F1DA0"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IDXStateIO: IPluginIn
+	{
+		/// <summary>
+		/// Used to set States connected to this input slicewise during the RenderLoop.
+		/// </summary>
+		/// <param name="Slice">The Index of the currently rendered slice</param>
+		void SetSliceStates(int Index);
+		/// <summary>
+		/// Used to set RenderStates from within the plugin.
+		/// </summary>
+		/// <param name="State">The RenderState</param>
+		/// <param name="Value">The RenderStates value</param>
+		void SetRenderState(int State, int Value);
+		//void SetSampleState();
 	}
 	#endregion node pins
 	
@@ -1093,7 +1132,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IValueConfig interface.</param>
-		void CreateValueConfig(string Name, int dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility visibility, out IValueConfig pin);
+		void CreateValueConfig(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueConfig pin);
 		/// <summary>
 		/// Creates an InputPin of type Value. Use this as opposed to <see cref="VVVV.PluginInterfaces.V1.IPluginHost.CreateValueFastInput()">CreateValueFastInput</see>
 		/// if you need to be able to ask for <see cref="VVVV.PluginInterfaces.V1.IPluginIn.PinIsChanged">IPluginIn.PinIsChanged</see>. May be slow with large SpreadCounts.
@@ -1104,7 +1143,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IValueIn interface.</param>
-		void CreateValueInput(string Name, int dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility visibility, out IValueIn pin);
+		void CreateValueInput(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueIn pin);
 		/// <summary>
 		/// Creates an InputPin of type Value that does not implement <see cref="VVVV.PluginInterfaces.V1.IPluginIn.PinIsChanged">IPluginIn.PinIsChanged</see> and is therefore faster with large SpreadCounts.
 		/// </summary>
@@ -1114,7 +1153,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IValueFastIn interface.</param>
-		void CreateValueFastInput(string Name, int dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility visibility, out IValueFastIn pin);
+		void CreateValueFastInput(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueFastIn pin);
 		/// <summary>
 		/// Creates an OutputPin of type Value.
 		/// </summary>
@@ -1124,7 +1163,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IValueOut interface.</param>
-		void CreateValueOutput(string Name, int dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility visibility, out IValueOut pin);
+		void CreateValueOutput(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueOut pin);
 		/// <summary>
 		/// Creates a ConfigurationPin of type String.
 		/// </summary>
@@ -1132,7 +1171,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IStringConfig interface.</param>
-		void CreateStringConfig(string Name, TSliceMode SliceMode, TPinVisibility visibility, out IStringConfig pin);
+		void CreateStringConfig(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IStringConfig pin);
 		/// <summary>
 		/// Creates an InputPin of type String.
 		/// </summary>
@@ -1140,7 +1179,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IStringIn interface.</param>
-		void CreateStringInput(string Name, TSliceMode SliceMode, TPinVisibility visibility, out IStringIn pin);
+		void CreateStringInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IStringIn pin);
 		/// <summary>
 		/// Creates an OutputPin of type String.
 		/// </summary>
@@ -1148,7 +1187,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IStringIn interface.</param>
-		void CreateStringOutput(string Name, TSliceMode SliceMode, TPinVisibility visibility, out IStringOut pin);
+		void CreateStringOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IStringOut pin);
 		/// <summary>
 		/// Creates a ConfigurationPin of type Color.
 		/// </summary>
@@ -1156,7 +1195,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IColorConfig interface.</param>
-		void CreateColorConfig(string Name, TSliceMode SliceMode, TPinVisibility visibility, out IColorConfig pin);
+		void CreateColorConfig(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IColorConfig pin);
 		/// <summary>
 		/// Creates an InputPin of type Color.
 		/// </summary>
@@ -1164,7 +1203,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IColorIn interface.</param>
-		void CreateColorInput(string Name, TSliceMode SliceMode, TPinVisibility visibility, out IColorIn pin);
+		void CreateColorInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IColorIn pin);
 		/// <summary>
 		/// Creates an OutputPin of type Color.
 		/// </summary>
@@ -1172,28 +1211,28 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IColorOut interface.</param>
-		void CreateColorOutput(string Name, TSliceMode SliceMode, TPinVisibility visibility, out IColorOut pin);
+		void CreateColorOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IColorOut pin);
 		/// <summary>
 		/// Creates a ConfigurationPin of type Enum.
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IEnumConfig interface.</param>
-		void CreateEnumConfig(string Name, TSliceMode SliceMode, TPinVisibility visibility, out IEnumConfig pin);			
+		void CreateEnumConfig(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IEnumConfig pin);			
 		/// <summary>
 		/// Creates a InputPin of type Enum.
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IEnumIn interface.</param>
-		void CreateEnumInput(string Name, TSliceMode SliceMode, TPinVisibility visibility, out IEnumIn pin);
+		void CreateEnumInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IEnumIn pin);
 		/// <summary>
 		/// Creates a OutputPin of type Enum.
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IEnumOut interface.</param>
-		void CreateEnumOutput(string Name, TSliceMode SliceMode, TPinVisibility visibility, out IEnumOut pin);
+		void CreateEnumOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IEnumOut pin);
 		/// <summary>
 		/// Creates an InputPin of type Transform.
 		/// </summary>
@@ -1201,7 +1240,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created ITransformIn interface.</param>
-		void CreateTransformInput(string Name, TSliceMode SliceMode, TPinVisibility visibility, out ITransformIn pin);
+		void CreateTransformInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out ITransformIn pin);
 		/// <summary>
 		/// Creates an OutputPin of type Transform.
 		/// </summary>
@@ -1209,7 +1248,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created ITransformOut interface.</param>
-		void CreateTransformOutput(string Name, TSliceMode SliceMode, TPinVisibility visibility, out ITransformOut pin);
+		void CreateTransformOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out ITransformOut pin);
 		/// <summary>
 		/// Creates an InputPin of the generic node type.
 		/// </summary>
@@ -1217,7 +1256,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created INodeIn interface.</param>
-		void CreateNodeInput(string Name, TSliceMode SliceMode, TPinVisibility visibility, out INodeIn pin);
+		void CreateNodeInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out INodeIn pin);
 		/// <summary>
 		/// Creates an OutputPin of the generic node type.
 		/// </summary>
@@ -1225,22 +1264,29 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created INodeIn interface.</param>
-		void CreateNodeOutput(string Name, TSliceMode SliceMode, TPinVisibility visibility, out INodeOut pin);
+		void CreateNodeOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out INodeOut pin);
 		/// <summary>
-		/// Creates an OutputPin of type DirectX mesh
+		/// Creates an OutputPin of type DirectX Mesh
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IDXMeshIO interface.</param>
-		void CreateMeshOutput(string Name, TSliceMode SliceMode, TPinVisibility visibility, out IDXMeshOut pin);
+		void CreateMeshOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IDXMeshOut pin);
 		/// <summary>
 		/// Creates an OutputPin of type DirectX Layer
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IDXLayerIO interface.</param>
-		void CreateLayerOutput(string Name, TPinVisibility visibility, out IDXLayerIO pin);
+		void CreateLayerOutput(string Name, TPinVisibility Visibility, out IDXLayerIO pin);
+		/// <summary>
+		/// Creates an InputPin of type DirectX RenderState
+		/// </summary>
+		/// <param name="Name">The pins name.</param>
+		/// <param name="visibility">The pins initial visibility.</param>
+		/// <param name="pin">Pointer to the created IDXRenderStateIO interface.</param>
+		void CreateStateInput(TStateType StateType, TSliceMode SliceMode, TPinVisibility Visibility, out IDXStateIO pin);
 		/// <summary>
 		/// Deletes the given pin from the plugin
 		/// </summary>
@@ -1396,6 +1442,12 @@ namespace VVVV.PluginInterfaces.V1
 	public interface IPluginDXLayer: IPluginDXResource
 	{
 		/// <summary>
+		/// Called by the PluginHost everytime it needs to update its StateBlock. Here the plugin
+		/// must specify all States it will set during <see cref="VVVV.PluginInterfaces.V1.IPluginDXLayer.Render()">IPluginDXLayer.Render</see>
+		/// via calls to <see cref="VVVV.PluginInterfaces.V1.IDXStateIO">IDXStateIO</see>'s functions.
+		/// </summary>
+		void SetStates();
+		/// <summary>
 		/// Called by the PluginHost everytime the plugin is supposed to render itself.
 		/// This is called from the PluginHost from within DirectX BeginScene/EndScene,
 		/// therefore the plugin shouldn't be doing much here other than some drawing calls.
@@ -1413,9 +1465,6 @@ namespace VVVV.PluginInterfaces.V1
 	public interface IPluginDXDevice
 	{
 		int DevicePointer();
-		//void SetSpace(ITransformIn TransformPin, IEnumIn SpaceEnumPin);
-		//void SetWorldTransform(Matrix4x4 WorldMatrix);
-		//void GetSpacedWorldTransform(Matrix4x4 WorldMatrix, out Matrix4x4 SpacedWorldMatrix);
 	}
 	
 	#endregion host, plugin
