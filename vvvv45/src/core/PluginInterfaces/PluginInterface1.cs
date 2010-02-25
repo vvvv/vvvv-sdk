@@ -1082,6 +1082,16 @@ namespace VVVV.PluginInterfaces.V1
 		void MarkPinAsChanged();
 	}
 	
+	[Guid("3E1B832D-FF75-4BC3-A894-47BC84A6199E"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IDXTextureOut: IPluginOut
+	{
+		/// <summary>
+		/// Used to mark the texture as being changed compared to the last frame. 
+		/// </summary>
+		void MarkPinAsChanged();
+	}
+	
 	/// <summary>
 	/// Interface to an OutputPin of type DirectX Layer.
 	/// </summary>
@@ -1266,7 +1276,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="pin">Pointer to the created INodeIn interface.</param>
 		void CreateNodeOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out INodeOut pin);
 		/// <summary>
-		/// Creates an OutputPin of type DirectX Mesh
+		/// Creates an OutputPin of type DirectX Mesh.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
@@ -1274,14 +1284,22 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="pin">Pointer to the created IDXMeshIO interface.</param>
 		void CreateMeshOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IDXMeshOut pin);
 		/// <summary>
-		/// Creates an OutputPin of type DirectX Layer
+		/// Creates an OutputPin of type DirectX Texture.
+		/// </summary>
+		/// <param name="Name">The pins name.</param>
+		/// <param name="SliceMode">The pins SliceMode.</param>
+		/// <param name="visibility">The pins initial visibility.</param>
+		/// <param name="pin">Pointer to the created IDXTextureOut interface.</param>
+		void CreateTextureOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IDXTextureOut Pin);
+		/// <summary>
+		/// Creates an OutputPin of type DirectX Layer.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IDXLayerIO interface.</param>
 		void CreateLayerOutput(string Name, TPinVisibility Visibility, out IDXLayerIO pin);
 		/// <summary>
-		/// Creates an InputPin of type DirectX RenderState
+		/// Creates an InputPin of type DirectX RenderState.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
@@ -1371,7 +1389,7 @@ namespace VVVV.PluginInterfaces.V1
 	}
 	
 	/// <summary>
-	/// Optional Interface to be implemented on a plugin that needs to know when one of its pins is connected or disconnected
+	/// Optional interface to be implemented on a plugin that needs to know when one of its pins is connected or disconnected
 	/// </summary>
 	[Guid("B77C459E-E561-424B-AB3A-572C9BB6CD93"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -1393,7 +1411,7 @@ namespace VVVV.PluginInterfaces.V1
 	}
 	
 	/// <summary>
-	/// Optional Interface to be implemented on a plugin that deals with DirectX resources like Meshes, Textures, Layers...
+	/// Optional interface to be implemented on a plugin that deals with DirectX resources like Meshes, Textures, Layers...
 	/// </summary>
 	[Guid("1BDD5442-8113-4EF4-9951-906633170D8C"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -1417,7 +1435,7 @@ namespace VVVV.PluginInterfaces.V1
 	}
 	
 	/// <summary>
-	/// Optional Interface to be implemented on a plugin that deals with DirectX Meshes
+	/// Optional interface to be implemented on a plugin that deals with DirectX Meshes
 	/// </summary>
 	[Guid("E0DF9FCE-327E-4492-9C03-BA513CF93FC4"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -1426,16 +1444,34 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Called by the PluginHost everytime a mesh is accessed via a pin on the plugin.
 		/// This is called from the PluginHost from within DirectX BeginScene/EndScene,
-		/// therefore the plugin shouldn't be doing much here other than handing back the right mesh
+		/// therefore the plugin shouldn't be doing much here other than handing back the right mesh.
 		/// </summary>
 		/// <param name="ForPin">Interface to the pin via which the mesh is accessed.</param>
 		/// <param name="OnDevice">Pointer to the device for which the mesh is accessed.</param>
-		/// <param name="mesh">The retrieved mesh</param>
-		void GetMesh(IDXMeshOut ForPin, int OnDevice, out int mesh);
+		/// <param name="Mesh">The retrieved mesh</param>
+		void GetMesh(IDXMeshOut ForPin, int OnDevice, out int Mesh);
+	}
+	
+	/// <summary>
+	/// Optional interface to be implemented on a plugin that deals with DirectX Textures
+	/// </summary>
+	[Guid("A679DDC2-3740-4FDE-9CCF-5EB290A3433B"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IPluginDXTexture: IPluginDXResource
+	{
+		/// <summary>
+		/// Called by the PluginHost everytime a texture is accessed via a pin on the plugin.
+		/// This is called from the PluginHost from within DirectX BeginScene/EndScene,
+		/// therefore the plugin shouldn't be doing much here other than handing back the right texture.
+		/// </summary>
+		/// <param name="ForPin">Interface to the pin via which the texture is accessed.</param>
+		/// <param name="OnDevice">Pointer to the device for which the texture is accessed.</param>
+		/// <param name="Texture">The retrieved mesh</param>
+		void GetTexture(IDXTextureOut ForPin, int OnDevice, out int Texture);
 	}
 
 	/// <summary>
-	/// Optional Interface to be implemented on a plugin that deals with DirectX Layers
+	/// Optional interface to be implemented on a plugin that deals with DirectX Layers
 	/// </summary>
 	[Guid("14F2AA87-EF8B-4A93-8F67-7CCA3F5E3522"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
