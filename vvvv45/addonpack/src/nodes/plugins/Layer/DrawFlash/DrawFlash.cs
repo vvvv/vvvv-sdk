@@ -62,6 +62,8 @@ namespace VVVV.Nodes
         //Track whether Dispose has been called.
         private bool FDisposed = false;
 
+        private IDXRenderStateIn FRenderStatePin;
+        private IDXSamplerStateIn FSamplerStatePin;
         private ITransformIn FTranformIn;
         private IStringIn FSWFPath;
         private IValueIn FLoadSWF;
@@ -264,6 +266,9 @@ namespace VVVV.Nodes
             FHost = pHost;
 
             //create inputs
+            FHost.CreateRenderStateInput(TSliceMode.Single, TPinVisibility.True, out FRenderStatePin);
+            //FHost.CreateSamplerStateInput(TSliceMode.Single, TPinVisibility.True, out FSamplerStatePin);
+            
             FHost.CreateTransformInput("Transform", TSliceMode.Single, TPinVisibility.True, out FTranformIn);
 
             FHost.CreateStringInput("Filename", TSliceMode.Single, TPinVisibility.True, out FSWFPath);
@@ -570,7 +575,12 @@ namespace VVVV.Nodes
             RemoveResource(OnDevice);
         }
 
-
+		public void SetStates()
+		{
+			FRenderStatePin.SetRenderState((int) RenderState.AlphaTestEnable, 1);
+			FRenderStatePin.SetRenderState((int) RenderState.SourceBlend, (int) Blend.SourceAlpha);
+    		FRenderStatePin.SetRenderState((int) RenderState.DestinationBlend, (int) Blend.InverseSourceAlpha);
+		}
 
         public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
         {
@@ -592,17 +602,15 @@ namespace VVVV.Nodes
             else
                 _FNUIFlashPlayer.DisableFlashRendering(false);
 
-
             try
             {
                 Device tDevice = Device.FromPointer(new IntPtr(DXDevice.DevicePointer()));
                 tDevice.SetTransform(TransformState.World, Matrix.Identity);
-
                 Sprite tSprite = FSprites[DXDevice.DevicePointer()];
                 FTranformIn.SetRenderSpace();
 
-
-                tSprite.Begin(SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace | SpriteFlags.AlphaBlend);
+                FRenderStatePin.SetSliceStates(0);
+                tSprite.Begin(SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace);
 
                 Matrix4x4 tTransformMatrix;
 
