@@ -62,7 +62,7 @@ namespace VVVV.Nodes
 		//Track whether Dispose has been called.
 		private bool FDisposed = false;
 		
-		private IDXStateIO FStatePin;
+		private IDXRenderStateIn FRenderStatePin;
 		private IValueIn FRectInput;
 		private IValueIn FItalicInput;
 		private IValueIn FBoldInput;
@@ -218,7 +218,7 @@ namespace VVVV.Nodes
 			FHost = Host;
 			
 			//create inputs
-			FHost.CreateStateInput(TStateType.RenderState, TSliceMode.Single, TPinVisibility.True, out FStatePin);
+			FHost.CreateRenderStateInput(TSliceMode.Single, TPinVisibility.True, out FRenderStatePin);
 			FHost.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTranformIn);
 			FHost.CreateValueInput("Rectangle", 2, null, TSliceMode.Dynamic, TPinVisibility.True, out FRectInput);
 			FRectInput.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0, 0, false, false, false);
@@ -367,9 +367,9 @@ namespace VVVV.Nodes
 		
 		public void SetStates()
 		{
-			FStatePin.SetRenderState((int) RenderState.AlphaTestEnable, 1);
-			FStatePin.SetRenderState((int) RenderState.SourceBlend, (int) Blend.SourceAlpha);
-    		FStatePin.SetRenderState((int) RenderState.DestinationBlend, (int) Blend.InverseSourceAlpha);
+			FRenderStatePin.SetRenderState((int) RenderState.AlphaTestEnable, 1);
+			FRenderStatePin.SetRenderState((int) RenderState.SourceBlend, (int) Blend.SourceAlpha);
+    		FRenderStatePin.SetRenderState((int) RenderState.DestinationBlend, (int) Blend.InverseSourceAlpha);
 		}
 		
 		public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
@@ -394,7 +394,7 @@ namespace VVVV.Nodes
 			FTranformIn.SetRenderSpace();
 
 			//set states that are defined via upstream nodes
-			FStatePin.SetSliceStates(0);
+			FRenderStatePin.SetSliceStates(0);
 			df.Sprite.Begin(SpriteFlags.ObjectSpace | SpriteFlags.DoNotAddRefTexture);
 			
 			double size;
