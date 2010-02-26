@@ -1103,24 +1103,55 @@ namespace VVVV.PluginInterfaces.V1
 	}
 	
 	/// <summary>
-	/// Interface to an InputPin of type DirectX State.
+	/// Base interface to all InputPins of type DirectX State.
 	/// </summary>
-	[Guid("DBF71AC4-BA83-478F-97AC-F088976F1DA0"),
+	[Guid("9A09094D-4627-4CA4-A65D-D9FC2295FAB8"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IDXStateIO: IPluginIn
+	public interface IDXStateIn: IPluginIn
 	{
 		/// <summary>
 		/// Used to set States connected to this input slicewise during the RenderLoop.
 		/// </summary>
 		/// <param name="Slice">The Index of the currently rendered slice</param>
 		void SetSliceStates(int Index);
+	}
+	
+	/// <summary>
+	/// Interface to an InputPin of type DirectX RenderState.
+	/// </summary>
+	[Guid("18DC7340-1AF3-46A5-9FF7-3348644DAB05"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IDXRenderStateIn: IDXStateIn
+	{
 		/// <summary>
-		/// Used to set RenderStates from within the plugin.
+		/// Used to set RenderStates from within <see cref="VVVV.PluginInterfaces.V1.IPluginDXLayer.SetStates()">IPluginDXLayer.SetStates</see>.
 		/// </summary>
 		/// <param name="State">The RenderState</param>
 		/// <param name="Value">The RenderStates value</param>
 		void SetRenderState(int State, int Value);
-		//void SetSampleState();
+	}
+	
+	/// <summary>
+	/// Interface to an InputPin of type DirectX SamplerState.
+	/// </summary>
+	[Guid("49D69B50-6498-4B19-957E-828D86CD9E45"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IDXSamplerStateIn: IDXStateIn
+	{
+		/// <summary>
+		///  Used to set SamplerStates from within <see cref="VVVV.PluginInterfaces.V1.IPluginDXLayer.SetStates()">IPluginDXLayer.SetStates</see>.
+		/// </summary>
+		/// <param name="Sampler">The sampler index to apply the SamplerState to</param>
+		/// <param name="State">The SamplerState</param>
+		/// <param name="Value">The SamplerStates value</param>
+		void SetSamplerState(int Sampler, int State, int Value);
+		/// <summary>
+		/// Used to set TextureStageStates from within <see cref="VVVV.PluginInterfaces.V1.IPluginDXLayer.SetStates()">IPluginDXLayer.SetStates</see>.
+		/// </summary>
+		/// <param name="Sampler"></param>
+		/// <param name="State"></param>
+		/// <param name="Value"></param>
+		void SetTextureStageState(int Sampler, int State, int Value);
 	}
 	#endregion node pins
 	
@@ -1142,174 +1173,181 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="visibility">The pins initial visibility.</param>
 		/// <param name="pin">Pointer to the created IValueConfig interface.</param>
-		void CreateValueConfig(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueConfig pin);
+		void CreateValueConfig(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueConfig Pin);
 		/// <summary>
 		/// Creates an InputPin of type Value. Use this as opposed to <see cref="VVVV.PluginInterfaces.V1.IPluginHost.CreateValueFastInput()">CreateValueFastInput</see>
 		/// if you need to be able to ask for <see cref="VVVV.PluginInterfaces.V1.IPluginIn.PinIsChanged">IPluginIn.PinIsChanged</see>. May be slow with large SpreadCounts.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
-		/// <param name="dimension">The pins dimension count. Valid values: 1, 2, 3 or 4</param>
+		/// <param name="Dimension">The pins dimension count. Valid values: 1, 2, 3 or 4</param>
 		/// <param name="DimensionNames">Optional. An individual suffix to the pins Dimensions.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IValueIn interface.</param>
-		void CreateValueInput(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueIn pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IValueIn interface.</param>
+		void CreateValueInput(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueIn Pin);
 		/// <summary>
 		/// Creates an InputPin of type Value that does not implement <see cref="VVVV.PluginInterfaces.V1.IPluginIn.PinIsChanged">IPluginIn.PinIsChanged</see> and is therefore faster with large SpreadCounts.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
-		/// <param name="dimension">The pins dimension count. Valid values: 1, 2, 3 or 4</param>
+		/// <param name="Dimension">The pins dimension count. Valid values: 1, 2, 3 or 4</param>
 		/// <param name="DimensionNames">Optional. An individual suffix to the pins Dimensions.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IValueFastIn interface.</param>
-		void CreateValueFastInput(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueFastIn pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IValueFastIn interface.</param>
+		void CreateValueFastInput(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueFastIn Pin);
 		/// <summary>
 		/// Creates an OutputPin of type Value.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
-		/// <param name="dimension">The pins dimension count. Valid values: 1, 2, 3 or 4</param>
+		/// <param name="Dimension">The pins dimension count. Valid values: 1, 2, 3 or 4</param>
 		/// <param name="DimensionNames">Optional. An individual suffix to the pins Dimensions.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IValueOut interface.</param>
-		void CreateValueOutput(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueOut pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IValueOut interface.</param>
+		void CreateValueOutput(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueOut Pin);
 		/// <summary>
 		/// Creates a ConfigurationPin of type String.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IStringConfig interface.</param>
-		void CreateStringConfig(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IStringConfig pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IStringConfig interface.</param>
+		void CreateStringConfig(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IStringConfig Pin);
 		/// <summary>
 		/// Creates an InputPin of type String.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IStringIn interface.</param>
-		void CreateStringInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IStringIn pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IStringIn interface.</param>
+		void CreateStringInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IStringIn Pin);
 		/// <summary>
 		/// Creates an OutputPin of type String.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IStringIn interface.</param>
-		void CreateStringOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IStringOut pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IStringIn interface.</param>
+		void CreateStringOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IStringOut Pin);
 		/// <summary>
 		/// Creates a ConfigurationPin of type Color.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IColorConfig interface.</param>
-		void CreateColorConfig(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IColorConfig pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IColorConfig interface.</param>
+		void CreateColorConfig(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IColorConfig Pin);
 		/// <summary>
 		/// Creates an InputPin of type Color.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IColorIn interface.</param>
-		void CreateColorInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IColorIn pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IColorIn interface.</param>
+		void CreateColorInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IColorIn Pin);
 		/// <summary>
 		/// Creates an OutputPin of type Color.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IColorOut interface.</param>
-		void CreateColorOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IColorOut pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IColorOut interface.</param>
+		void CreateColorOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IColorOut Pin);
 		/// <summary>
 		/// Creates a ConfigurationPin of type Enum.
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IEnumConfig interface.</param>
-		void CreateEnumConfig(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IEnumConfig pin);			
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IEnumConfig interface.</param>
+		void CreateEnumConfig(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IEnumConfig Pin);			
 		/// <summary>
 		/// Creates a InputPin of type Enum.
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IEnumIn interface.</param>
-		void CreateEnumInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IEnumIn pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IEnumIn interface.</param>
+		void CreateEnumInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IEnumIn Pin);
 		/// <summary>
 		/// Creates a OutputPin of type Enum.
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IEnumOut interface.</param>
-		void CreateEnumOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IEnumOut pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IEnumOut interface.</param>
+		void CreateEnumOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IEnumOut Pin);
 		/// <summary>
 		/// Creates an InputPin of type Transform.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created ITransformIn interface.</param>
-		void CreateTransformInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out ITransformIn pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created ITransformIn interface.</param>
+		void CreateTransformInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out ITransformIn Pin);
 		/// <summary>
 		/// Creates an OutputPin of type Transform.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created ITransformOut interface.</param>
-		void CreateTransformOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out ITransformOut pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created ITransformOut interface.</param>
+		void CreateTransformOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out ITransformOut Pin);
 		/// <summary>
 		/// Creates an InputPin of the generic node type.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created INodeIn interface.</param>
-		void CreateNodeInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out INodeIn pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created INodeIn interface.</param>
+		void CreateNodeInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out INodeIn Pin);
 		/// <summary>
 		/// Creates an OutputPin of the generic node type.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created INodeIn interface.</param>
-		void CreateNodeOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out INodeOut pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created INodeIn interface.</param>
+		void CreateNodeOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out INodeOut Pin);
 		/// <summary>
 		/// Creates an OutputPin of type DirectX Mesh.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IDXMeshIO interface.</param>
-		void CreateMeshOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IDXMeshOut pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IDXMeshIO interface.</param>
+		void CreateMeshOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IDXMeshOut Pin);
 		/// <summary>
 		/// Creates an OutputPin of type DirectX Texture.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IDXTextureOut interface.</param>
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IDXTextureOut interface.</param>
 		void CreateTextureOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IDXTextureOut Pin);
 		/// <summary>
 		/// Creates an OutputPin of type DirectX Layer.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IDXLayerIO interface.</param>
-		void CreateLayerOutput(string Name, TPinVisibility Visibility, out IDXLayerIO pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IDXLayerIO interface.</param>
+		void CreateLayerOutput(string Name, TPinVisibility Visibility, out IDXLayerIO Pin);
 		/// <summary>
 		/// Creates an InputPin of type DirectX RenderState.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IDXRenderStateIO interface.</param>
-		void CreateStateInput(TStateType StateType, TSliceMode SliceMode, TPinVisibility Visibility, out IDXStateIO pin);
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IDXRenderStateIO interface.</param>
+		void CreateRenderStateInput(TSliceMode SliceMode, TPinVisibility Visibility, out IDXRenderStateIn Pin);
+		/// <summary>
+		/// Creates an InputPin of type DirectX SamplerState.
+		/// </summary>
+		/// <param name="Name">The pins name.</param>
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IDXRenderStateIO interface.</param>
+		void CreateSamplerStateInput(TSliceMode SliceMode, TPinVisibility Visibility, out IDXSamplerStateIn Pin);
 		/// <summary>
 		/// Deletes the given pin from the plugin
 		/// </summary>
-		/// <param name="pin">The pin to be deleted</param>
-		void DeletePin(IPluginIO pin);
+		/// <param name="Pin">The pin to be deleted</param>
+		void DeletePin(IPluginIO Pin);
 		/// <summary>
 		/// Returns the current time which the plugin should use if it does timebased calculations.
 		/// </summary>
@@ -1480,7 +1518,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Called by the PluginHost everytime it needs to update its StateBlock. Here the plugin
 		/// must specify all States it will set during <see cref="VVVV.PluginInterfaces.V1.IPluginDXLayer.Render()">IPluginDXLayer.Render</see>
-		/// via calls to <see cref="VVVV.PluginInterfaces.V1.IDXStateIO">IDXStateIO</see>'s functions.
+		/// via calls to <see cref="VVVV.PluginInterfaces.V1.IDXRenderStateIn">IDXRenderStateIn</see>'s and <see cref="VVVV.PluginInterfaces.V1.IDXSamplerStateIn">IDXSamplerStateIn</see>'s functions.
 		/// </summary>
 		void SetStates();
 		/// <summary>
