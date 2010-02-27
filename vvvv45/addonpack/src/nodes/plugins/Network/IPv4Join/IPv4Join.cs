@@ -188,11 +188,11 @@ namespace VVVV.Nodes
 
 	    	//create inputs
             FHost.CreateValueInput("A", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueInputA);
-            FMyValueInputA.SetSubType(0, 255, 1, 1, false, false, true);
+            FMyValueInputA.SetSubType(0, 255, 1, 127, false, false, true);
             FHost.CreateValueInput("B", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueInputB);
-            FMyValueInputB.SetSubType(0, 255, 1, 1, false, false, true);
+            FMyValueInputB.SetSubType(0, 255, 1, 0, false, false, true);
             FHost.CreateValueInput("C", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueInputC);
-            FMyValueInputC.SetSubType(0, 255, 1, 1, false, false, true);
+            FMyValueInputC.SetSubType(0, 255, 1, 0, false, false, true);
             FHost.CreateValueInput("D", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueInputD);
             FMyValueInputD.SetSubType(0, 255, 1, 1, false, false, true);
 	    	
