@@ -189,7 +189,7 @@ namespace VVVV.Nodes
 	    
             //create outputs	    	
 	    	FHost.CreateValueOutput("Value Output", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueOutput);
-	    	FMyValueOutput.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
+	    	FMyValueOutput.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, true);
 	    	
         }
 
