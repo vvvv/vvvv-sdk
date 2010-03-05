@@ -367,9 +367,9 @@ namespace VVVV.Nodes
 		
 		public void SetStates()
 		{
-			FRenderStatePin.SetRenderState((int) RenderState.AlphaTestEnable, 1);
-			FRenderStatePin.SetRenderState((int) RenderState.SourceBlend, (int) Blend.SourceAlpha);
-    		FRenderStatePin.SetRenderState((int) RenderState.DestinationBlend, (int) Blend.InverseSourceAlpha);
+    		FRenderStatePin.SetRenderState(RenderState.AlphaTestEnable, 1);
+    		FRenderStatePin.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
+    		FRenderStatePin.SetRenderState(RenderState.DestinationBlend, Blend.InverseSourceAlpha);
 		}
 		
 		public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
@@ -498,15 +498,14 @@ namespace VVVV.Nodes
 					else if (hAlign == 2)
 						x += x;
 					
-					//workaround for slimdx(august)
+					/*workaround for slimdx(august)
 					Matrix4x4 spriteBugWorkaround = VMath.Translate(-x, -y, 0.001);
 					df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(spriteBugWorkaround * preScale * world);
 					 df.Sprite.Draw(df.Texture, new Rectangle(0, 0, tmpRect.Width, tmpRect.Height), new Color4(brushColor.Color));
 					df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(preScale * world);
-					//workaround end
+					workaround end*/
 					
-					//worked with slimdx(march):
-					//df.Sprite.Draw(df.Texture, new Rectangle(0, 0, tmpRect.Width, tmpRect.Height), new Vector3(x, y, -0.001f), null, new Color4(brushColor.Color));
+					df.Sprite.Draw(df.Texture, new Rectangle(0, 0, tmpRect.Width, tmpRect.Height), new Vector3(x, y, -0.001f), null, new Color4(brushColor.Color));
 				}
 				
 				df.Font.DrawString(df.Sprite, text, new Rectangle(-wi/2, -hi/2, wi, hi), dtf, (Color) textColor);
