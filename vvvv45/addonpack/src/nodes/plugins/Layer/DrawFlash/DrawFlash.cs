@@ -577,9 +577,9 @@ namespace VVVV.Nodes
 
 		public void SetStates()
 		{
-			FRenderStatePin.SetRenderState((int) RenderState.AlphaTestEnable, 1);
-			FRenderStatePin.SetRenderState((int) RenderState.SourceBlend, (int) Blend.SourceAlpha);
-    		FRenderStatePin.SetRenderState((int) RenderState.DestinationBlend, (int) Blend.InverseSourceAlpha);
+			FRenderStatePin.SetRenderState(RenderState.AlphaTestEnable, 1);
+			FRenderStatePin.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
+    		FRenderStatePin.SetRenderState(RenderState.DestinationBlend, Blend.InverseSourceAlpha);
 		}
 
         public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
