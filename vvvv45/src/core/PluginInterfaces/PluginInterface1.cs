@@ -88,19 +88,6 @@ namespace VVVV.PluginInterfaces.V1
 		Output};
 	
 	/// <summary>
-	/// Used to specifiy a State pins type.
-	/// </summary>
-	public enum TStateType {
-		/// <summary>
-		/// The pin is a RenderState pin.
-		/// </summary>
-		RenderState,
-		/// <summary>
-		/// The pin is SamplerState pin.
-		/// </summary>
-		SamplerState};
-	
-	/// <summary>
 	/// Used in the <see cref="VVVV.PluginInterfaces.V1.IPluginHost.Log()">IPluginHost.Log</see> function to specify the type of the log message.
 	/// </summary>
 	public enum TLogType {
