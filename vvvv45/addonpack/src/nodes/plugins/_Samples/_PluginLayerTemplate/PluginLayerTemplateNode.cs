@@ -294,6 +294,11 @@ namespace VVVV.Nodes
 			}
 		}
 		
+		public void SetStates()
+		{
+    		//here you'd set all render- and samplerstates you want to specify for your layer. 
+		}
+		
 		public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
 		{
 			//Called by the PluginHost everytime the plugin is supposed to render itself.
