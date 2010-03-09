@@ -60,6 +60,11 @@ namespace VVVV.SkeletonInterfaces
 			set;
 		}
 		
+		Matrix4x4 ConstrainedRotation
+		{
+			get;
+		}
+		
 		List<Vector2D> Constraints
 		{
 			get;
@@ -71,6 +76,8 @@ namespace VVVV.SkeletonInterfaces
 		void CalculateCombinedTransforms();
 		
 		void AddChild(IJoint joint);
+		
+		void ClearAll();
 		
 		IJoint DeepCopy();
 		
@@ -89,11 +96,21 @@ namespace VVVV.SkeletonInterfaces
 			get;
 		}
 		
+		IJoint Selected
+		{
+			get;
+			set;
+		}
+		
 		void InsertJoint(string parent, IJoint newJoint);
 		
 		void DeleteJoint(string jointName);
 		
 		void CalculateCombinedTransforms();
+		
+		void BuildJointTable();
+		
+		void ClearAll();
 		
 		ISkeleton DeepCopy();
 		
@@ -101,6 +118,7 @@ namespace VVVV.SkeletonInterfaces
 	
 	public class Skeleton : ISkeleton
 	{
+		
 		private IJoint root;
 		public IJoint Root 
 		{
@@ -112,6 +130,22 @@ namespace VVVV.SkeletonInterfaces
 			set
 			{
 				root = value;
+			}
+		}
+		
+		private IJoint selectedJoint;
+		public IJoint Selected
+		{
+			get
+			{
+				if (selectedJoint!=null)
+					return selectedJoint;
+				else
+					return root;
+			}
+			set
+			{
+				selectedJoint = value;
 			}
 		}
 		
@@ -143,24 +177,24 @@ namespace VVVV.SkeletonInterfaces
 			}
 			
 			IJoint parent;
-			if (jointTable.TryGetValue(parentName, out parent))
+			if (!jointTable.TryGetValue(parentName, out parent))
 			{
 				throw new Exception("Unknown parent '" + parentName + "'.");
 			}
 			
-			parent.Children.Add(joint);
+			parent.AddChild(joint);
 			jointTable.Add(joint.Name, joint);
 		}
 		
 		public void DeleteJoint(string jointName)
 		{
 			IJoint joint;
-			if (jointTable.TryGetValue(jointName, out joint))
+			if (!jointTable.TryGetValue(jointName, out joint))
 			{
 				throw new Exception("Unknown joint '" + jointName + "'.");
 			}
 			IJoint parent = joint.Parent;
-			parent.Children.Remove(joint);
+				parent.Children.Remove(joint);
 			jointTable.Remove(joint.Name);
 			
 		}
@@ -169,6 +203,8 @@ namespace VVVV.SkeletonInterfaces
 		{
 			ISkeleton skeleton = new Skeleton(this.Root.DeepCopy());
 			AddToJointTable(skeleton.JointTable, skeleton.Root);
+			if (this.Selected!=null && skeleton.JointTable[this.Selected.Name]!=null)
+				skeleton.Selected = skeleton.JointTable[this.Selected.Name];
 			return skeleton;
 		}
 		
@@ -177,17 +213,31 @@ namespace VVVV.SkeletonInterfaces
 			root.CalculateCombinedTransforms();
 		}
 		
+		public void ClearAll()
+		{
+			this.root.ClearAll();
+			this.jointTable = new Dictionary<string, IJoint>();
+			this.BuildJointTable();
+		}
+		
 		public void BuildJointTable()
 		{
 			jointTable = new Dictionary<string, IJoint>();
 			AddToJointTable(jointTable, this.Root);
+			int currId = 0;
+			foreach (KeyValuePair<string, IJoint> pair in jointTable)
+			{
+				pair.Value.Id = currId;
+				currId++;
+			}
 		}
 		
 		private static void AddToJointTable(Dictionary<string, IJoint> jointTable, IJoint joint)
 		{
 			jointTable.Add(joint.Name, joint);
-			foreach (IJoint j in joint.Children)
+			for (int i=0; i<joint.Children.Count; i++)
 			{
+				IJoint j = joint.Children[i];
 				AddToJointTable(jointTable, j);
 			}
 		}
