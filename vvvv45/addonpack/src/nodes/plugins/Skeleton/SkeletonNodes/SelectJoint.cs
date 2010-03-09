@@ -56,8 +56,9 @@ namespace VVVV.Nodes
 		private IStringOut FJointNameOutput;
 	
 		private List<IJoint> selectedJoints;
-		private JointInfo selectedJoint = null;
-		private JointInfo rootJoint;
+		private IJoint selectedJoint = null;
+		private IJoint hoveredJoint = null;
+		private IJoint rootJoint;
 		private Skeleton skeleton;
 		private float zoom = 10;
 		
@@ -221,24 +222,27 @@ namespace VVVV.Nodes
 		
 		public void Configurate(IPluginConfig Input)
 		{
-			/*if (Input.Name=="Selection")
-        	{
-				string currName;
+			
+			String debug = Input.SpreadAsString;
+			int debug2 = selectedJoints.Count;
+			if (Input.Name=="Selection" && selectedJoints.Count==0)
+			{
 				IJoint currJoint;
-				int debug = FSelectionInput.SliceCount;
-				for (int i=0; i<FSelectionInput.SliceCount; i++)
-				{
-					FSelectionInput.GetString(i, out currName);
-					if (string.IsNullOrEmpty(currName) && FSelectionInput.SliceCount==1)
+				string[] separator = new string[1];
+        		separator[0] = "-Q-";
+        		string[] selectedNames = Input.SpreadAsString.Split(separator, System.StringSplitOptions.None);
+        		for (int i=0; i<selectedNames.Length-1; i++)
+        		{
+        			if (string.IsNullOrEmpty(selectedNames[i]))
 						break;
-					if (skeleton.JointTable.ContainsKey(currName))
+					if (skeleton.JointTable.ContainsKey(selectedNames[i]))
 					{
-						currJoint = skeleton.JointTable[currName];
+						currJoint = skeleton.JointTable[selectedNames[i]];
 						selectedJoints.Add(currJoint);
 					}
-
 				}
-			}*/
+
+			}
 		}
 		
 		//here we go, thats the method called by vvvv each frame
@@ -247,7 +251,6 @@ namespace VVVV.Nodes
 		{
 			//if any of the inputs has changed
 			//recompute the outputs
-			
 			
 			if (FSkeletonInput.PinIsChanged || !initialized)
 			{
@@ -264,14 +267,17 @@ namespace VVVV.Nodes
 			if (selectedJoints.Count>0)
 			{
 				FJointNameOutput.SliceCount = selectedJoints.Count;
-				FSelectionInput.SliceCount = selectedJoints.Count;
+				//FSelectionInput.SliceCount = selectedJoints.Count;
 				for (int i=0; i<selectedJoints.Count; i++)
 				{
 					FJointNameOutput.SetString(i, selectedJoints[i].Name);
+					//FSelectionInput.SetString(i, selectedJoints[i].Name);
 				}
 			}
 			else
 				FJointNameOutput.SetString(0, "");
+			
+			buildConfig();
 			
 			initialized = true;
 		}
@@ -306,6 +312,20 @@ namespace VVVV.Nodes
 				dragDelta.y = e.Y - dragStartPos.y;
 				Invalidate();
 			}
+			else
+			{
+				Vector3D mousePos = new Vector3D(e.X, e.Y, 0);
+				if (hasHovered(skeleton.Root, mousePos))
+					Invalidate();
+				else
+				{
+					if (hoveredJoint!=null)
+					{
+						hoveredJoint = null;
+						Invalidate();
+					}
+				}
+			}
 		}
 		
 		private void mouseUp(object sender, MouseEventArgs e)
@@ -319,7 +339,23 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		private bool hasClicked(JointInfo currJoint, Vector3D mousePos)
+		private bool hasHovered(IJoint currJoint, Vector3D mousePos)
+		{
+			if (VMath.Dist(mousePos, jointPositions[currJoint.Name])<5) {
+				
+				hoveredJoint = currJoint;
+				return true;
+			}
+			
+			for (int i=0; i<currJoint.Children.Count; i++)
+			{
+				if (hasHovered(currJoint.Children[i], mousePos))
+					return true;
+			}
+			return false;
+		}
+		
+		private bool hasClicked(IJoint currJoint, Vector3D mousePos)
 		{
 			if (VMath.Dist(mousePos, jointPositions[currJoint.Name])<5) {
 				bool alreadySelected = false;
@@ -346,9 +382,9 @@ namespace VVVV.Nodes
 				Invalidate();
 				return true;
 			}
-			for (int i=0; i<currJoint.children.Count; i++)
+			for (int i=0; i<currJoint.Children.Count; i++)
 			{
-				if (hasClicked((JointInfo)currJoint.children[i], mousePos))
+				if (hasClicked((JointInfo)currJoint.Children[i], mousePos))
 					return true;
 			}
 			return false;
@@ -385,7 +421,7 @@ namespace VVVV.Nodes
 			
 		}
 		
-		private Vector3D drawJoint(Graphics g, JointInfo currJoint, Stack transformStack, Color c)
+		private Vector3D drawJoint(Graphics g, IJoint currJoint, Stack transformStack, Color c)
 		{
 			int listIndex = -1;
 			for (int i=0; i<selectedJoints.Count; i++)
@@ -395,11 +431,12 @@ namespace VVVV.Nodes
 					c = Color.Red;
 					listIndex = i;
 				}
+				
 			}
 			
 			Pen jointPen = new Pen(c, 1f);
 			Pen bonePen = new Pen(c, 1f);
-			Matrix4x4 t = currJoint.ConstrainedRotation * currJoint.transform2 * currJoint.transform * (Matrix4x4)transformStack.Peek();
+			Matrix4x4 t = currJoint.ConstrainedRotation * currJoint.AnimationTransform * currJoint.BaseTransform * (Matrix4x4)transformStack.Peek();
 			
 			Vector3D v = t * (new Vector3D(0));
 			g.DrawEllipse(jointPen, (float)v.x-5.0f, (float)v.y-5.0f, 10.0f, 10.0f);
@@ -412,6 +449,14 @@ namespace VVVV.Nodes
 			}
 			c = Color.Black;
 			
+			if (currJoint == hoveredJoint)
+			{
+				Font f = new Font("Verdana", 7);
+				g.FillRectangle(new SolidBrush(Color.Black), (float)v.x+15, (float)v.y-10, (float)(7* (currJoint.Name.Length+1)), 13.0f);
+				SolidBrush b = new SolidBrush(Color.White);
+				g.DrawString(currJoint.Name, f, b, (float)v.x+15, (float)v.y-10);
+			}
+			
 			if (!jointPositions.ContainsKey(currJoint.Name))
 				jointPositions.Add(currJoint.Name, v);
 			else
@@ -420,9 +465,9 @@ namespace VVVV.Nodes
 			transformStack.Push(t);
 			
 			Vector3D v2;
-			for (int i=0; i<currJoint.children.Count; i++)
+			for (int i=0; i<currJoint.Children.Count; i++)
 			{
-				v2 = drawJoint(g, (JointInfo)currJoint.children[i], transformStack, c);
+				v2 = drawJoint(g, (JointInfo)currJoint.Children[i], transformStack, c);
 				g.DrawLine(bonePen, (float)v.x, (float)v.y, (float)v2.x, (float)v2.y);
 			}
 			
@@ -432,6 +477,16 @@ namespace VVVV.Nodes
 			
 			return v;
 
+		}
+		
+		private void buildConfig()
+		{
+			String outputConfig = "";
+			foreach (IJoint j in selectedJoints)
+			{
+				outputConfig += j.Name+"-Q-";
+			}
+			FSelectionInput.SetString(0, outputConfig);
 		}
 		
 		private Matrix4x4 Perspective(double fovy, double aspect, double zNear, double zFar)

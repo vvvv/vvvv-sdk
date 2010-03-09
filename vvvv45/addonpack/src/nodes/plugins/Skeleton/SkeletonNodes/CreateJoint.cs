@@ -54,7 +54,8 @@ namespace VVVV.Nodes
     	private IStringIn FJointNameInput;
     	private IStringIn FParentNameInput;
     	private IValueIn FConstraintsInput;
-    	private ITransformIn FBaseTransformInput;
+    	private IValueIn FBasePositionInput;
+    	private IValueIn FOffsetModeInput;
     	
     	private INodeOut FSkeletonOutput;
 
@@ -201,7 +202,7 @@ namespace VVVV.Nodes
 	    	
 	    	FHost.CreateStringInput("Parent Name", TSliceMode.Dynamic, TPinVisibility.True, out FParentNameInput);
 	    	
-	    	FHost.CreateTransformInput("Base Transform", TSliceMode.Dynamic, TPinVisibility.True, out FBaseTransformInput);
+	    	FHost.CreateValueInput("Base Position", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out FBasePositionInput);
 	    	
 	    	String[] dimensions = new String[2];
 	    	dimensions[0] = "min";
@@ -210,7 +211,15 @@ namespace VVVV.Nodes
 	    	FHost.CreateValueInput("Constraints min max", 2, dimensions, TSliceMode.Dynamic, TPinVisibility.True, out FConstraintsInput);
 	    	FConstraintsInput.SetSubType2D(-1.0, 1.0, 0.01, -1.0, 1.0, false, false, false);
 	    	
-	    	// create outputs
+	    	FHost.CreateValueInput("Positions in World Space", 1, null, TSliceMode.Single, TPinVisibility.True, out FOffsetModeInput);
+	    	FOffsetModeInput.SetSubType(0.0, 0.0, 1.0, 0.0, false, false, true);
+	    	
+	    	/*String[] offsetModes = new String[2];
+	    	offsetModes[0] = "parent";
+	    	offsetModes[1] = "world";
+	    	//FHost.UpdateEnum("OffsetModes", "parent", offsetModes);
+	    	*/
+
 	    	
 	    	FHost.CreateNodeOutput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonOutput);
 	    	FSkeletonOutput.SetSubType(guids, "Skeleton");
@@ -238,7 +247,7 @@ namespace VVVV.Nodes
         	
         	bool recalculate = false;
         	
-        	if (FJointNameInput.PinIsChanged || FBaseTransformInput.PinIsChanged || FParentNameInput.PinIsChanged || FConstraintsInput.PinIsChanged || recalculate)
+        	if (FJointNameInput.PinIsChanged || FBasePositionInput.PinIsChanged || FOffsetModeInput.PinIsChanged || FParentNameInput.PinIsChanged || FConstraintsInput.PinIsChanged || recalculate)
         	{
         		skeleton = new Skeleton();
         		
@@ -247,11 +256,13 @@ namespace VVVV.Nodes
         		{
         			string jointName;
         			string parentName;
-        			Matrix4x4 BaseTransform;
+        			double positionInWorldSpace;
+        			double basePositionX, basePositionY, basePositionZ;
         			FJointNameInput.GetString(i%FJointNameInput.SliceCount, out jointName);
         			FParentNameInput.GetString(i%FParentNameInput.SliceCount, out parentName);
         			IJoint currJoint = new JointInfo(jointName);
-        			FBaseTransformInput.GetMatrix(i%FBaseTransformInput.SliceCount, out BaseTransform);
+        			FBasePositionInput.GetValue3D(i%FBasePositionInput.SliceCount, out basePositionX, out basePositionY, out basePositionZ);
+        			FOffsetModeInput.GetValue(0, out positionInWorldSpace);
         			currJoint.Constraints.Clear();
         			for (int j=i*3; j<i*3+3; j++)
 		        	{
@@ -259,7 +270,6 @@ namespace VVVV.Nodes
 		        		FConstraintsInput.GetValue2D(j%FConstraintsInput.SliceCount, out constraintMin, out constraintMax);
 		        		currJoint.Constraints.Add(new Vector2D(constraintMin, constraintMax));
 		        	}
-        			currJoint.BaseTransform = BaseTransform;
         			if (string.IsNullOrEmpty(parentName))
         			{
         				if (skeleton.Root==null)
@@ -281,6 +291,20 @@ namespace VVVV.Nodes
         				skeleton.BuildJointTable();
         			}
         			
+        			currJoint.BaseTransform = VMath.Translate(basePositionX, basePositionY, basePositionZ); //BaseTransform;
+        			if (positionInWorldSpace>0)
+        			{
+        				foreach (KeyValuePair<string, IJoint> pair in skeleton.JointTable)
+        				{
+        					if (pair.Value.Parent!=null)
+        					{
+	        					Vector3D worldPos = pair.Value.BaseTransform * (new Vector3D(0));
+	        					Vector3D parentWorldPos = pair.Value.Parent.BaseTransform * (new Vector3D(0));
+	        					Vector3D offset = worldPos - parentWorldPos;
+	        					pair.Value.BaseTransform = VMath.Translate(offset);
+        					}
+        				}
+        			}
         			
         		}
 
