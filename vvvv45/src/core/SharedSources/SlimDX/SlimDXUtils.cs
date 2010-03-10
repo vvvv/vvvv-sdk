@@ -71,10 +71,10 @@ namespace VVVV.Shared.VSlimDX
 				scale.x = s.X;
 				scale.y = s.Y;
 				scale.z = s.Z;
-				rotation.x = r.X;
-				rotation.y = r.Y;
-				rotation.z = r.Z;
-				rotation.w = r.W;
+				rotationQuaternion.x = r.X;
+				rotationQuaternion.y = r.Y;
+				rotationQuaternion.z = r.Z;
+				rotationQuaternion.w = r.W;
 				translation.x = t.X;
 				translation.y = t.Y;
 				translation.z = t.Z;
@@ -83,6 +83,9 @@ namespace VVVV.Shared.VSlimDX
 			}
 			else
 			{
+				scale = new Vector3D();
+				rotationQuaternion = new Vector4D();
+				translation = new Vector3D();
 				return false;
 			}
 		}
@@ -98,7 +101,7 @@ namespace VVVV.Shared.VSlimDX
 				scale.x = s.X;
 				scale.y = s.Y;
 				scale.z = s.Z;
-				rotation.x = Math.Atan2(2*(r.X * r.Y + r.Z * r.W), 1 - 2 * (r.Y * r.Y + r.Z * r.Z))
+				rotation.x = Math.Atan2(2*(r.X * r.Y + r.Z * r.W), 1 - 2 * (r.Y * r.Y + r.Z * r.Z));
 				rotation.y = Math.Asin(2 * (r.X * r.Z - r.W * r.Y));
 				rotation.z = Math.Atan2(2 * (r.X * r.W + r.Y * r.Z), 1 - 2 * (r.Z * r.Z + r.W * r.W));
 				translation.x = t.X;
@@ -109,6 +112,9 @@ namespace VVVV.Shared.VSlimDX
 			}
 			else
 			{
+				scale = new Vector3D();
+				rotation = new Vector3D();
+				translation = new Vector3D();
 				return false;
 			}
 		}
