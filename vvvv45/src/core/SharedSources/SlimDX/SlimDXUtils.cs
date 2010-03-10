@@ -1,3 +1,4 @@
+using System;
 using VVVV.Utils.VMath;
 using SlimDX;
 
@@ -57,6 +58,59 @@ namespace VVVV.Shared.VSlimDX
 			Result.m44 = (double) Input.M44;			
 						
 			return Result;
+		}
+		
+		public static bool Decompose(Matrix4x4 m, out Vector3D scale, out Vector4D rotationQuaternion, out Vector3D translation)
+		{			
+			SlimDX.Vector3 s;
+			SlimDX.Quaternion r;
+			SlimDX.Vector3 t;
+			
+			if (Matrix4x4ToSlimDXMatrix(m).Decompose(out s, out r, out t))
+			{
+				scale.x = s.X;
+				scale.y = s.Y;
+				scale.z = s.Z;
+				rotation.x = r.X;
+				rotation.y = r.Y;
+				rotation.z = r.Z;
+				rotation.w = r.W;
+				translation.x = t.X;
+				translation.y = t.Y;
+				translation.z = t.Z;
+				
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+		public static bool Decompose(Matrix4x4 m, out Vector3D scale, out Vector3D rotation, out Vector3D translation)
+		{
+			SlimDX.Vector3 s;
+			SlimDX.Quaternion r;
+			SlimDX.Vector3 t;
+			
+			if (Matrix4x4ToSlimDXMatrix(m).Decompose(out s, out r, out t))
+			{
+				scale.x = s.X;
+				scale.y = s.Y;
+				scale.z = s.Z;
+				rotation.x = Math.Atan2(2*(r.X * r.Y + r.Z * r.W), 1 - 2 * (r.Y * r.Y + r.Z * r.Z))
+				rotation.y = Math.Asin(2 * (r.X * r.Z - r.W * r.Y));
+				rotation.z = Math.Atan2(2 * (r.X * r.W + r.Y * r.Z), 1 - 2 * (r.Z * r.Z + r.W * r.W));
+				translation.x = t.X;
+				translation.y = t.Y;
+				translation.z = t.Z;
+				
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
 }
