@@ -53,14 +53,17 @@ namespace VVVV.SkeletonInterfaces
 			get;
 		}
 		
-		
 		Vector3D Rotation
 		{
 			get;
-			set;
 		}
 		
-		Matrix4x4 ConstrainedRotation
+		Vector3D Translation
+		{
+			get;
+		}
+		
+		Vector3D Scale
 		{
 			get;
 		}
