@@ -71,7 +71,10 @@ namespace VVVV.SkeletonInterfaces
 			set;
 		}
 		
-		Matrix4x4 GetCombinedTransform();
+		Matrix4x4 CombinedTransform
+		{
+			get;
+		}
 		
 		void CalculateCombinedTransforms();
 		
