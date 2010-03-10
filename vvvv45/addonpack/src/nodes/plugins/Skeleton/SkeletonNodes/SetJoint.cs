@@ -300,7 +300,7 @@ namespace VVVV.Nodes
 	        				{
 	        					currRotation = new Vector3D(0);
 	        					FRotationInput.GetValue3D(i, out currRotation.x, out currRotation.y, out currRotation.z);
-	        					currJoint.Rotation = currRotation;
+	        					//currJoint.Rotation = currRotation;
 	        					
 	        				}
 	        				

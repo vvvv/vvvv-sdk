@@ -257,8 +257,13 @@ namespace VVVV.Nodes
 				jointPositions = new Dictionary<string, Vector3D>();
 				INodeIOBase currInterface;
 				FSkeletonInput.GetUpstreamInterface(out currInterface);
-				skeleton = (Skeleton)currInterface;
-				rootJoint = (JointInfo)skeleton.Root;
+				try
+				{
+					skeleton = (Skeleton)currInterface;
+				} catch (Exception e) {
+					FHost.Log(TLogType.Error, e.Message);
+				}
+				rootJoint = (IJoint)skeleton.Root;
 				
 				//redraw gui only if anything changed
 				Invalidate();
@@ -384,7 +389,7 @@ namespace VVVV.Nodes
 			}
 			for (int i=0; i<currJoint.Children.Count; i++)
 			{
-				if (hasClicked((JointInfo)currJoint.Children[i], mousePos))
+				if (hasClicked(currJoint.Children[i], mousePos))
 					return true;
 			}
 			return false;
@@ -437,7 +442,7 @@ namespace VVVV.Nodes
 			
 			Pen jointPen = new Pen(c, 1f);
 			Pen bonePen = new Pen(c, 1f);
-			Matrix4x4 t = currJoint.ConstrainedRotation * currJoint.AnimationTransform * currJoint.BaseTransform * (Matrix4x4)transformStack.Peek();
+			Matrix4x4 t = currJoint.AnimationTransform * currJoint.BaseTransform * (Matrix4x4)transformStack.Peek();
 			
 			Vector3D v = t * (new Vector3D(0));
 			g.DrawEllipse(jointPen, (float)v.x-5.0f, (float)v.y-5.0f, 10.0f, 10.0f);
@@ -468,7 +473,7 @@ namespace VVVV.Nodes
 			Vector3D v2;
 			for (int i=0; i<currJoint.Children.Count; i++)
 			{
-				v2 = drawJoint(g, (JointInfo)currJoint.Children[i], transformStack, c);
+				v2 = drawJoint(g, currJoint.Children[i], transformStack, c);
 				g.DrawLine(bonePen, (float)v.x, (float)v.y, (float)v2.x, (float)v2.y);
 			}
 			

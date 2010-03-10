@@ -248,7 +248,7 @@ namespace VVVV.Nodes
         		if (inputSkeleton!=null)
         		{
         			string jointName;
-        			JointInfo currJoint;
+        			IJoint currJoint;
         			FParentNameOutput.SliceCount = FJointNameInput.SliceCount;
         			FBaseTransformOutput.SliceCount = FJointNameInput.SliceCount;
         			FAnimationTransformOutput.SliceCount = FJointNameInput.SliceCount;
@@ -256,7 +256,7 @@ namespace VVVV.Nodes
         			{
         				
         				FJointNameInput.GetString(i, out jointName);
-        				currJoint = (JointInfo)inputSkeleton.JointTable[jointName];
+        				currJoint = (IJoint)inputSkeleton.JointTable[jointName];
         				if (currJoint!=null && currJoint.Parent!=null)
         					FParentNameOutput.SetString(i, currJoint.Parent.Name);
         				else

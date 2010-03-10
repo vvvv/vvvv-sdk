@@ -232,6 +232,22 @@ namespace VVVV.Nodes
 			}
 		}
 		
+		public Vector3D Translation
+		{
+			get
+			{
+				return new Vector3D();
+			}
+		}
+		
+		public Vector3D Scale
+		{
+			get
+			{
+				return new Vector3D(1.0, 1.0, 1.0);
+			}
+		}
+		
 		public List<Vector2D> Constraints
 		{
 			get
