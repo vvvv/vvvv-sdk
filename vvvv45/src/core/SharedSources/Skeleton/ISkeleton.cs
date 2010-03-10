@@ -122,6 +122,22 @@ namespace VVVV.SkeletonInterfaces
 		
 	}
 	
+	public class SkeletonNodeIO
+	{
+		private static Guid FGuid;
+		public static Guid GUID
+		{
+			get
+			{
+				if (FGuid == Guid.Empty)
+					FGuid = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
+				return FGuid;
+			}
+		}
+		
+		public static string FriendlyName = "Skeleton";
+	}
+	
 	public class Skeleton : ISkeleton
 	{
 		
@@ -177,6 +193,14 @@ namespace VVVV.SkeletonInterfaces
 		
 		public void InsertJoint(string parentName, IJoint joint)
 		{
+			// If we don't have a root accept everything.
+			if (Root == null)
+			{
+				Root = joint;
+				jointTable.Add(joint.Name, joint);
+				return;
+			}
+			
 			if (jointTable.ContainsKey(joint.Name))
 			{
 				throw new Exception("Joint name '" + joint.Name + "' already exists.");
@@ -200,9 +224,10 @@ namespace VVVV.SkeletonInterfaces
 				throw new Exception("Unknown joint '" + jointName + "'.");
 			}
 			IJoint parent = joint.Parent;
-				parent.Children.Remove(joint);
+			parent.Children.Remove(joint);
 			jointTable.Remove(joint.Name);
-			
+			if (jointTable.Count == 0)
+				Root = null;
 		}
 		
 		public ISkeleton DeepCopy()
@@ -221,7 +246,9 @@ namespace VVVV.SkeletonInterfaces
 		
 		public void ClearAll()
 		{
-			this.root.ClearAll();
+			if (Root != null)
+				Root.ClearAll();
+			Root = null;
 			this.jointTable = new Dictionary<string, IJoint>();
 			this.BuildJointTable();
 		}
@@ -229,13 +256,18 @@ namespace VVVV.SkeletonInterfaces
 		public void BuildJointTable()
 		{
 			jointTable = new Dictionary<string, IJoint>();
-			AddToJointTable(jointTable, this.Root);
+			if (Root != null)
+				AddToJointTable(jointTable, this.Root);
+			
+			// TODO: ID Vergabe anschaun!
+			/*
 			int currId = 0;
 			foreach (KeyValuePair<string, IJoint> pair in jointTable)
 			{
 				pair.Value.Id = currId;
 				currId++;
 			}
+			*/
 		}
 		
 		private static void AddToJointTable(Dictionary<string, IJoint> jointTable, IJoint joint)
