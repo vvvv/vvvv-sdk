@@ -423,6 +423,7 @@ namespace VVVV.Nodes
 		
 		private Vector3D drawJoint(Graphics g, IJoint currJoint, Stack transformStack, Color c)
 		{
+
 			int listIndex = -1;
 			for (int i=0; i<selectedJoints.Count; i++)
 			{

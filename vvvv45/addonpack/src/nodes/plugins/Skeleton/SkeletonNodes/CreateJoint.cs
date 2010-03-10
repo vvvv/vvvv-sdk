@@ -55,7 +55,7 @@ namespace VVVV.Nodes
     	private IStringIn FParentNameInput;
     	private IValueIn FConstraintsInput;
     	private IValueIn FBasePositionInput;
-    	private IValueIn FOffsetModeInput;
+    	private IEnumIn FOffsetModeInput;
     	
     	private INodeOut FSkeletonOutput;
 
@@ -207,19 +207,16 @@ namespace VVVV.Nodes
 	    	String[] dimensions = new String[2];
 	    	dimensions[0] = "min";
 	    	dimensions[1] = "max";
+
+    		FHost.CreateValueInput("Constraints", 2, dimensions, TSliceMode.Dynamic, TPinVisibility.True,  out FConstraintsInput);
+	    	FConstraintsInput.SetSubType2D(-1.0, 1.0, 0.1, -1.0, 1.0, false, false, false);
 	    	
-	    	FHost.CreateValueInput("Constraints min max", 2, dimensions, TSliceMode.Dynamic, TPinVisibility.True, out FConstraintsInput);
-	    	FConstraintsInput.SetSubType2D(-1.0, 1.0, 0.01, -1.0, 1.0, false, false, false);
-	    	
-	    	FHost.CreateValueInput("Positions in World Space", 1, null, TSliceMode.Single, TPinVisibility.True, out FOffsetModeInput);
-	    	FOffsetModeInput.SetSubType(0.0, 0.0, 1.0, 0.0, false, false, true);
-	    	
-	    	/*String[] offsetModes = new String[2];
+	    	String[] offsetModes = new String[2];
 	    	offsetModes[0] = "parent";
 	    	offsetModes[1] = "world";
-	    	//FHost.UpdateEnum("OffsetModes", "parent", offsetModes);
-	    	*/
-
+	    	FHost.UpdateEnum("OffsetModes", "parent", offsetModes);
+	    	FHost.CreateEnumInput("Position relative to", TSliceMode.Single, TPinVisibility.True, out FOffsetModeInput);
+	    	FOffsetModeInput.SetSubType("OffsetModes");
 	    	
 	    	FHost.CreateNodeOutput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonOutput);
 	    	FSkeletonOutput.SetSubType(guids, "Skeleton");
@@ -251,7 +248,6 @@ namespace VVVV.Nodes
         	{
         		skeleton = new Skeleton();
         		
-        		double positionInWorldSpace = 0;
         		int currId = 0;
         		for (int i=0; i<FJointNameInput.SliceCount; i++)
         		{
@@ -263,7 +259,6 @@ namespace VVVV.Nodes
         			IJoint currJoint = new JointInfo(jointName);
         			FBasePositionInput.GetValue3D(i%FBasePositionInput.SliceCount, out basePositionX, out basePositionY, out basePositionZ);
         			currJoint.BaseTransform = VMath.Translate(basePositionX, basePositionY, basePositionZ);
-        			FOffsetModeInput.GetValue(0, out positionInWorldSpace);
         			currJoint.Constraints.Clear();
         			for (int j=i*3; j<i*3+3; j++)
 		        	{
@@ -294,7 +289,9 @@ namespace VVVV.Nodes
         			
         		}
         		
-        		/*if (positionInWorldSpace>0)
+        		int positionInWorldSpace = 0;
+        		FOffsetModeInput.GetOrd(0, out positionInWorldSpace);
+        		if (positionInWorldSpace>0)
     			{
         			List<Vector3D> offsetList = new List<Vector3D>();
     				foreach (KeyValuePair<string, IJoint> pair in skeleton.JointTable)
@@ -315,7 +312,7 @@ namespace VVVV.Nodes
     					i++;
     				}
     			}
-    			*/
+    			
 
         		FSkeletonOutput.MarkPinAsChanged();
         	}
