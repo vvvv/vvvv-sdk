@@ -243,7 +243,7 @@ namespace VVVV.Nodes
         			inputSkeleton = null;
         	}
         	
-        	if (FJointNameInput.PinIsChanged)
+        	if (FSkeletonInput.PinIsChanged || FJointNameInput.PinIsChanged)
         	{
         		if (inputSkeleton!=null)
         		{
@@ -263,7 +263,7 @@ namespace VVVV.Nodes
         					FParentNameOutput.SetString(i, "");
         				if (currJoint!=null)
         				{
-	        				FBaseTransformOutput.SetMatrix(i, currJoint.BaseTransform);
+        					FBaseTransformOutput.SetMatrix(i, VMath.Rotate(currJoint.Rotation) * currJoint.BaseTransform);
 	        				FAnimationTransformOutput.SetMatrix(i, currJoint.AnimationTransform);
         				}
         				else

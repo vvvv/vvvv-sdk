@@ -251,17 +251,18 @@ namespace VVVV.Nodes
         	{
         		skeleton = new Skeleton();
         		
+        		double positionInWorldSpace = 0;
         		int currId = 0;
         		for (int i=0; i<FJointNameInput.SliceCount; i++)
         		{
         			string jointName;
         			string parentName;
-        			double positionInWorldSpace;
         			double basePositionX, basePositionY, basePositionZ;
         			FJointNameInput.GetString(i%FJointNameInput.SliceCount, out jointName);
         			FParentNameInput.GetString(i%FParentNameInput.SliceCount, out parentName);
         			IJoint currJoint = new JointInfo(jointName);
         			FBasePositionInput.GetValue3D(i%FBasePositionInput.SliceCount, out basePositionX, out basePositionY, out basePositionZ);
+        			currJoint.BaseTransform = VMath.Translate(basePositionX, basePositionY, basePositionZ);
         			FOffsetModeInput.GetValue(0, out positionInWorldSpace);
         			currJoint.Constraints.Clear();
         			for (int j=i*3; j<i*3+3; j++)
@@ -291,22 +292,30 @@ namespace VVVV.Nodes
         				skeleton.BuildJointTable();
         			}
         			
-        			currJoint.BaseTransform = VMath.Translate(basePositionX, basePositionY, basePositionZ); //BaseTransform;
-        			if (positionInWorldSpace>0)
-        			{
-        				foreach (KeyValuePair<string, IJoint> pair in skeleton.JointTable)
-        				{
-        					if (pair.Value.Parent!=null)
-        					{
-	        					Vector3D worldPos = pair.Value.BaseTransform * (new Vector3D(0));
-	        					Vector3D parentWorldPos = pair.Value.Parent.BaseTransform * (new Vector3D(0));
-	        					Vector3D offset = worldPos - parentWorldPos;
-	        					pair.Value.BaseTransform = VMath.Translate(offset);
-        					}
-        				}
-        			}
-        			
         		}
+        		
+        		/*if (positionInWorldSpace>0)
+    			{
+        			List<Vector3D> offsetList = new List<Vector3D>();
+    				foreach (KeyValuePair<string, IJoint> pair in skeleton.JointTable)
+    				{
+    					Vector3D worldPos = pair.Value.BaseTransform * (new Vector3D(0));
+    					Vector3D parentWorldPos;
+    					if (pair.Value.Parent!=null)
+    						parentWorldPos = pair.Value.Parent.BaseTransform * (new Vector3D(0));
+    					else
+    						parentWorldPos = new Vector3D(0);
+    					Vector3D offset = worldPos - parentWorldPos;
+    					offsetList.Add(offset);
+    				}
+    				int i=0;
+    				foreach (KeyValuePair<string, IJoint> pair in skeleton.JointTable)
+    				{
+    					pair.Value.BaseTransform = VMath.Translate(offsetList[i]);
+    					i++;
+    				}
+    			}
+    			*/
 
         		FSkeletonOutput.MarkPinAsChanged();
         	}
