@@ -111,7 +111,7 @@ namespace VVVV.Nodes
 			IEnumerator childrenEnum = this.children.GetEnumerator();
 			while (childrenEnum.MoveNext())
 			{
-				ret += ((JointInfo)childrenEnum.Current).calculatePreTransform(ConstrainedRotation*this.transform2*this.transform*this.preTransform, this.world2Joint);
+				ret += ((JointInfo)childrenEnum.Current).calculatePreTransform(CombinedTransform, this.world2Joint);
 			}
 			return ret;
 		}
