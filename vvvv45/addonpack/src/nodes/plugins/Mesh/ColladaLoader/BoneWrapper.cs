@@ -170,7 +170,7 @@ namespace VVVV.Nodes
 			get
 			{
 				UpdateCachedValues();
-				return FAnimationTransform * FBaseTransform;
+				return FCachedCombinedTransform;
 			}
 		}
 		

@@ -436,7 +436,7 @@ namespace VVVV.Nodes
 						if (instanceMesh is Model.SkinnedInstanceMesh) {
 							Model.SkinnedInstanceMesh skinnedInstanceMesh = (Model.SkinnedInstanceMesh) instanceMesh;							
 							skinnedInstanceMesh.ApplyAnimations(time);
-							skinningTransforms.AddRange(skinnedInstanceMesh.GetSkinningMatrices());
+							skinningTransforms = skinnedInstanceMesh.GetSkinningMatrices();
 						}
 					}
 					
