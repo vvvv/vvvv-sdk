@@ -37,6 +37,8 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 using VVVV.Utils.SharedMemory;
 using VVVV.SkeletonInterfaces;
+using SlimDX;
+using VVVV.Shared.VSlimDX;
 
 //the vvvv node namespace
 namespace VVVV.Nodes
@@ -67,10 +69,10 @@ namespace VVVV.Nodes
     	
     	private INodeOut FPoseOutput;
     	
-    	private JointInfo outputJoint;
+    	private IJoint outputJoint;
     	private Skeleton outputSkeleton;
     	
-    	private JointInfo pose1, pose2;
+    	private IJoint pose1, pose2;
     	private double amount1, amount2;
     	
     	#endregion field declaration
@@ -276,20 +278,21 @@ namespace VVVV.Nodes
         	//if any of the inputs has changed
         	//recompute the outputs
         	
+        	
         	bool recalculate = false;
             INodeIOBase currInterface;
 
         	if (FPose1Input.PinIsChanged)
         	{
         		FPose1Input.GetUpstreamInterface(out currInterface);
-        		pose1 = (JointInfo)((Skeleton)currInterface).Root;
+        		pose1 = ((Skeleton)currInterface).Root;
         		recalculate = true;
         	}
         	
         	if (FPose2Input.PinIsChanged)
         	{
         		FPose2Input.GetUpstreamInterface(out currInterface);
-        		pose2 = (JointInfo)((Skeleton)currInterface).Root;
+        		pose2 = ((Skeleton)currInterface).Root;
         		recalculate = true;
         	}
         	
@@ -308,7 +311,7 @@ namespace VVVV.Nodes
         	
         	if (recalculate)
         	{
-        		outputJoint = (JointInfo)pose1.DeepCopy();
+        		outputJoint = pose1.DeepCopy();
         		mixJoints(outputJoint, pose1, pose2);
 				outputSkeleton.Root = outputJoint;
 				outputSkeleton.BuildJointTable();
@@ -324,18 +327,21 @@ namespace VVVV.Nodes
         
         #region helper
         
-        private void mixJoints(JointInfo result, JointInfo joint1, JointInfo joint2)
+        private void mixJoints(IJoint result, IJoint joint1, IJoint joint2)
         {
         	Vector3D resultRot = new Vector3D(0);
         	resultRot.x = amount1*joint1.Rotation.x + amount2*joint2.Rotation.x;
         	resultRot.y = amount1*joint1.Rotation.y + amount2*joint2.Rotation.y;
         	resultRot.z = amount1*joint1.Rotation.z + amount2*joint2.Rotation.z;
         	
-        	result.Rotation = resultRot;
+        	//resultRot = joint1.Rotation;
+        	FHost.Log(TLogType.Debug, "rot: "+resultRot.x+" / "+resultRot.y+" / "+resultRot.z);
         	
-        	for (int i=0; i<result.children.Count; i++)
+        	result.AnimationTransform = VMath.Rotate(resultRot);
+        	
+        	for (int i=0; i<result.Children.Count; i++)
         	{
-        		mixJoints((JointInfo)result.Children[i], (JointInfo)joint1.Children[i], (JointInfo)joint2.Children[i]);
+        		mixJoints(result.Children[i], joint1.Children[i], joint2.Children[i]);
         	}
         }
         

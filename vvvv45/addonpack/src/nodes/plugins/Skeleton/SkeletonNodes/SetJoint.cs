@@ -37,6 +37,8 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 using VVVV.Utils.SharedMemory;
 using VVVV.SkeletonInterfaces;
+using SlimDX;
+using VVVV.Shared.VSlimDX;
 
 //the vvvv node namespace
 namespace VVVV.Nodes
@@ -260,6 +262,8 @@ namespace VVVV.Nodes
         	
         	if (FSkeletonInput.PinIsChanged || FAnimationTransformInput.PinIsChanged || FBaseTransformInput.PinIsChanged || FParentNameInput.PinIsChanged || FRotationInput.PinIsChanged || FConstraintsInput.PinIsChanged || recalculate)
         	{
+        		FHost.Log(TLogType.Debug, "changed");
+        		
         		if (FSkeletonInput.IsConnected)
         		{
 	        		INodeIOBase currInterface;
@@ -273,15 +277,16 @@ namespace VVVV.Nodes
         		
         		if (inputSkeleton!=null)
         		{
+        			
 	        		IJoint currJoint;
 	        		for (int i=0; i<jointNames.Count; i++)
 	        		{
 	        			currJoint = inputSkeleton.JointTable[jointNames[i]];
 	        			Matrix4x4 currAnimationT;
 	        			Matrix4x4 currBaseT;
-	        			Vector3D currRotation;
 	        			List<Vector2D> currConstraints;
 	        			string currParentName;
+	        			FHost.Log(TLogType.Debug, "changed2");
 	        			if (currJoint!=null)
 	        			{
 	        				if (FAnimationTransformInput.IsConnected)
@@ -296,13 +301,14 @@ namespace VVVV.Nodes
 		        				currJoint.BaseTransform = currBaseT;
 	        				}
 	        				
-	        				if (FRotationInput.IsConnected)
+	        				/*if (FRotationInput.IsConnected)
 	        				{
 	        					currRotation = new Vector3D(0);
 	        					FRotationInput.GetValue3D(i, out currRotation.x, out currRotation.y, out currRotation.z);
 	        					//currJoint.Rotation = currRotation;
 	        					
 	        				}
+	        				*/
 	        				
 	        				if (FConstraintsInput.IsConnected)
 	        				{

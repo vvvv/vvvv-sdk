@@ -196,7 +196,7 @@ namespace VVVV.Nodes
         public bool AutoEvaluate
         {
         	//return true if this node needs to calculate every frame even if nobody asks for its output
-        	get {return true;}
+        	get {return false;}
         }
         
         #endregion node name and infos
@@ -318,6 +318,7 @@ namespace VVVV.Nodes
         	if (childrenChanged)
         	{
 	        	outputSkeleton.ClearAll();
+	        	outputSkeleton.Root = rootJoint;
 	        	
 	        	for (int i=0; i<childPinsList.Count; i++)
 	        	{
@@ -338,8 +339,6 @@ namespace VVVV.Nodes
 	        		}
 	        	}
         	}
-        	
-        	
         	
         	if (FBaseTransformInput.PinIsChanged)
         	{

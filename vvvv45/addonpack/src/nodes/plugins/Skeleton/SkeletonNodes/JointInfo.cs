@@ -15,6 +15,7 @@ using VVVV.Utils.VMath;
 using System.Globalization;
 using VVVV.PluginInterfaces.V1;
 using VVVV.SkeletonInterfaces;
+using VVVV.Shared.VSlimDX;
 
 namespace VVVV.Nodes
 {
@@ -224,11 +225,11 @@ namespace VVVV.Nodes
 		{
 			get
 			{
-				return this.rotation;
-			}
-			set
-			{
-				rotation = value;
+				Vector3D translation = new Vector3D(0);
+				Vector3D rot = new Vector3D(0);
+				Vector3D scale = new Vector3D(0);
+				VSlimDXUtils.Decompose(this.AnimationTransform, out scale, out rot, out translation);
+				return rot;
 			}
 		}
 		
@@ -236,7 +237,7 @@ namespace VVVV.Nodes
 		{
 			get
 			{
-				return new Vector3D();
+				return new Vector3D(0);
 			}
 		}
 		
@@ -244,7 +245,7 @@ namespace VVVV.Nodes
 		{
 			get
 			{
-				return new Vector3D(1.0, 1.0, 1.0);
+				return new Vector3D(0);
 			}
 		}
 		
@@ -288,7 +289,7 @@ namespace VVVV.Nodes
 		{
 			get
 			{
-				return ConstrainedRotation * this.transform2*this.transform*this.preTransform;
+				return this.AnimationTransform * this.BaseTransform * this.preTransform;
 			}
 		}
 		
@@ -313,7 +314,7 @@ namespace VVVV.Nodes
 			return this.clone();
 		}
 		
-		public Matrix4x4 ConstrainedRotation
+		/*public Matrix4x4 ConstrainedRotation
 		{
 			get
 			{
@@ -322,6 +323,7 @@ namespace VVVV.Nodes
 						            VMath.Map(this.Rotation.z, -1.0, 1.0, 2*Math.PI*this.Constraints[2].x, 2*Math.PI*this.Constraints[2].y, TMapMode.Clamp));
 			}
 		}
+		*/
 		
 	}
 	
