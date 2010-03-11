@@ -14,8 +14,8 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <SourceAnalysisOverrideSettingsFile>C:\Dokumente und Einstellungen\Elias\Anwendungsdaten\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
-    <StartArguments>/o "E:\Bin\vvvv_40beta21\plugins\Mesh (EX9.Geometry Collada) help.v4p"</StartArguments>
-    <OutputPath>bin\</OutputPath>
+    <StartArguments>d</StartArguments>
+    <OutputPath>..\..\..\..\..\output\core\vvvv\plugins\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <Optimize>False</Optimize>
@@ -24,7 +24,7 @@
     <DebugType>Full</DebugType>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <StartAction>Program</StartAction>
-    <StartProgram>E:\Bin\vvvv_40beta21\vvvv.exe</StartProgram>
+    <StartProgram>..\..\..\..\..\output\core\vvvv\vvvv.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <Optimize>True</Optimize>
@@ -32,6 +32,8 @@
     <DebugSymbols>False</DebugSymbols>
     <DebugType>None</DebugType>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <StartAction>Program</StartAction>
+    <StartProgram>..\..\..\..\..\output\core\vvvv\vvvv.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <RegisterForComInterop>False</RegisterForComInterop>
@@ -54,12 +56,18 @@
       <Link>SlimDXUtils.cs</Link>
     </Compile>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="BoneWrapper.cs" />
     <Compile Include="ColladaModelNodeIO.cs" />
+    <Compile Include="ColladaSkeletonNode.cs" />
     <Compile Include="LoggerWrapper.cs" />
     <Compile Include="PluginColladaLoader.cs" />
     <Compile Include="PluginColladaMesh.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Skeleton\SkeletonInterfaces\SkeletonInterfaces.csproj">
+      <Project>{0813E570-CB1C-49F3-BB7E-7048C115ED05}</Project>
+      <Name>SkeletonInterfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\_PluginInterfaces\PluginInterfaces.csproj">
       <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
       <Name>PluginInterfaces</Name>
