@@ -271,6 +271,8 @@ namespace VVVV.Nodes
         	//if any of the inputs has changed
         	//recompute the outputs
         	
+        	
+        	
         	if (FJointNameInput.PinIsChanged || !initialized)
         	{
         		string name;
@@ -319,6 +321,7 @@ namespace VVVV.Nodes
         	{
 	        	outputSkeleton.ClearAll();
 	        	outputSkeleton.Root = rootJoint;
+	        	outputSkeleton.BuildJointTable();
 	        	
 	        	for (int i=0; i<childPinsList.Count; i++)
 	        	{

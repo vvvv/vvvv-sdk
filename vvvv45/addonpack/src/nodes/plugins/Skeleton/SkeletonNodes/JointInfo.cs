@@ -10,9 +10,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using VVVV.Utils.VMath;
-using System.Globalization;
 using VVVV.PluginInterfaces.V1;
 using VVVV.SkeletonInterfaces;
 using VVVV.Shared.VSlimDX;
@@ -32,12 +30,9 @@ namespace VVVV.Nodes
 		public int index;
 		public List<IJoint> children;
 		public IJoint parent;
-		public Matrix4x4 world2Joint;
-		public Matrix4x4 transform;
-		public Matrix4x4 transform2;
+		public Matrix4x4 baseTransform;
+		public Matrix4x4 animationTransform;
 		public Vector3D rotation;
-		public Hashtable skinWeights;
-		public Vector3D worldPos;
 		public Matrix4x4 preTransform;
 		public System.Guid guid;
 		public List<Vector2D> constraints; 
@@ -56,12 +51,9 @@ namespace VVVV.Nodes
 			index = 0;
 			shortname = n;
 			children = new List<IJoint>();
-			skinWeights = new Hashtable();
-			transform = new Matrix4x4(VMath.IdentityMatrix);
-			transform2 = new Matrix4x4(VMath.IdentityMatrix);
+			baseTransform = new Matrix4x4(VMath.IdentityMatrix);
+			animationTransform = new Matrix4x4(VMath.IdentityMatrix);
 			rotation = new Vector3D(0);
-			world2Joint = new Matrix4x4(VMath.IdentityMatrix);
-			worldPos = new Vector3D(0);
 			preTransform = new Matrix4x4(VMath.IdentityMatrix);
 			constraints = new List<Vector2D>();
 			constraints.Add(new Vector2D(-1.0, 1.0));
@@ -76,12 +68,9 @@ namespace VVVV.Nodes
 			index = 0;
 			shortname = "";
 			children = new List<IJoint>();
-			skinWeights = new Hashtable();
-			transform = new Matrix4x4(VMath.IdentityMatrix);
-			transform2 = new Matrix4x4(VMath.IdentityMatrix);
+			baseTransform = new Matrix4x4(VMath.IdentityMatrix);
+			animationTransform = new Matrix4x4(VMath.IdentityMatrix);
 			rotation = new Vector3D(0);
-			world2Joint = new Matrix4x4(VMath.IdentityMatrix);
-			worldPos = new Vector3D(0);
 			preTransform = new Matrix4x4(VMath.IdentityMatrix);
 			constraints = new List<Vector2D>();
 			constraints.Add(new Vector2D(-1.0, 1.0));
@@ -93,26 +82,22 @@ namespace VVVV.Nodes
 		
 		public void setTransform(Matrix4x4 t)
 		{
-			transform = t;
+			baseTransform = t;
 		}
 		
 		public void setTransform2(Matrix4x4 t)
 		{
-			transform2 = t;
+			animationTransform = t;
 		}
 		
-		public string calculatePreTransform(Matrix4x4 parentTransform, Matrix4x4 parentWorld2Joint)
+		public string calculatePreTransform(Matrix4x4 parentTransform)
 		{
 			string ret = "";
 			this.preTransform = parentTransform;
-			this.world2Joint = parentWorld2Joint* VMath.Inverse(this.transform);
-			ret = this.name+"\n======\n";
-			ret += this.transform.ToString()+"\n";
-			ret += this.world2Joint.ToString()+"\n-----\n";
 			IEnumerator childrenEnum = this.children.GetEnumerator();
 			while (childrenEnum.MoveNext())
 			{
-				ret += ((JointInfo)childrenEnum.Current).calculatePreTransform(CombinedTransform, this.world2Joint);
+				ret += ((JointInfo)childrenEnum.Current).calculatePreTransform(CombinedTransform);
 			}
 			return ret;
 		}
@@ -128,7 +113,7 @@ namespace VVVV.Nodes
 			return ret;
 		}
 		
-		public JointInfo clone(bool includeSkinWeights)
+		public JointInfo clone()
 		{
 			JointInfo ret = new JointInfo();
 			ret.guid = new System.Guid(this.guid.ToString());
@@ -137,9 +122,8 @@ namespace VVVV.Nodes
 			JointInfo child;
 			for (int i=0; i<=15; i++)
 			{
-				ret.transform[i] = this.transform[i];
-				ret.transform2[i] = this.transform2[i];
-				ret.world2Joint[i] = this.world2Joint[i];
+				ret.baseTransform[i] = this.baseTransform[i];
+				ret.animationTransform[i] = this.animationTransform[i];
 				ret.preTransform[i] = this.preTransform[i];
 			}
 			
@@ -155,29 +139,13 @@ namespace VVVV.Nodes
 				ret.constraints.Add(v);
 			}
 			
-			for (int i=0; i<3; i++)
-			{
-				ret.worldPos[i] = this.worldPos[i];
-			}
 			for (int i=0; i<this.children.Count; i++)
 			{
-				child = ((JointInfo)this.children[i]).clone(includeSkinWeights);
+				child = ((JointInfo)this.children[i]).clone();
 				ret.children.Add(child);
 			}
-			if (includeSkinWeights)
-			{
-				IDictionaryEnumerator weightEnum = skinWeights.GetEnumerator();
-				while (weightEnum.MoveNext())
-				{
-					ret.skinWeights.Add((int)weightEnum.Key, (double)weightEnum.Value);
-				}
-			}
+			
 			return ret;
-		}
-		
-		public JointInfo clone()
-		{
-			return this.clone(true);
 		}
 		
 		
@@ -265,11 +233,11 @@ namespace VVVV.Nodes
 		{
 			get
 			{
-				return transform2;
+				return animationTransform;
 			}
 			set
 			{
-				transform2 = value;
+				animationTransform = value;
 			}
 		}
 		
@@ -277,11 +245,11 @@ namespace VVVV.Nodes
 		{
 			get
 			{
-				return transform;
+				return baseTransform;
 			}
 			set
 			{
-				transform = value;
+				baseTransform = value;
 			}
 		}
 		
@@ -295,7 +263,7 @@ namespace VVVV.Nodes
 		
 		public void CalculateCombinedTransforms()
 		{
-			this.calculatePreTransform(VMath.IdentityMatrix, VMath.IdentityMatrix);
+			this.calculatePreTransform(VMath.IdentityMatrix);
 		}
 		
 		
