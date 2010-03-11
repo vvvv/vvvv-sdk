@@ -80,6 +80,7 @@ namespace VVVV.Nodes
 			//the nodes constructor
 			//nothing to declare for this node
 			rootJoint = new JointInfo();
+			rootJoint.Id = 0;
 			outputSkeleton = new Skeleton(rootJoint);
 			outputSkeleton.BuildJointTable();
 			childPinsList = new List<INodeIn>();
@@ -217,8 +218,8 @@ namespace VVVV.Nodes
 	    	FHost.CreateTransformInput("Base Transform", TSliceMode.Single, TPinVisibility.True, out FBaseTransformInput);
 	    	
 	    	String[] dimensions = new String[2];
-	    	dimensions[0] = "min";
-	    	dimensions[1] = "max";
+	    	dimensions[0] = "Min";
+	    	dimensions[1] = "Max";
 	    	FHost.CreateValueInput("Rotation Constraints", 2, dimensions, TSliceMode.Dynamic, TPinVisibility.True, out FRotationConstraintsInput);
 	    	FRotationConstraintsInput.SetSubType2D(-1.0, 1.0, 0.1, -1.0, 1.0, false, false, false);
 	    	
@@ -341,6 +342,14 @@ namespace VVVV.Nodes
 	        			}
 	        		}
 	        	}
+	        	
+	        	// re-calculate the IDs ...
+	        	int currId = 0;
+				foreach (KeyValuePair<string, IJoint> pair in outputSkeleton.JointTable)
+				{
+					pair.Value.Id = currId;
+					currId++;
+				}
         	}
         	
         	if (FBaseTransformInput.PinIsChanged)

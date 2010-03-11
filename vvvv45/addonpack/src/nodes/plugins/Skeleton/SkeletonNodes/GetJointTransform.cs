@@ -280,11 +280,11 @@ namespace VVVV.Nodes
         		for (int i=0; i<jointNames.Count; i++)
         		{
         			currJoint = inputSkeleton.JointTable[jointNames[i]];
-        			FInverseBindPoseInput.GetMatrix(i, out currIBPMatrix);
+        			FInverseBindPoseInput.GetMatrix(currJoint.Id, out currIBPMatrix);
         			if (currJoint!=null)
-        				FTransformOutput.SetMatrix(i, currIBPMatrix * currJoint.CombinedTransform);
+        				FTransformOutput.SetMatrix(currJoint.Id, currIBPMatrix * currJoint.CombinedTransform);
         			else
-        				FTransformOutput.SetMatrix(i, VMath.IdentityMatrix);
+        				FTransformOutput.SetMatrix(currJoint.Id, VMath.IdentityMatrix);
         		}
         	}
         
