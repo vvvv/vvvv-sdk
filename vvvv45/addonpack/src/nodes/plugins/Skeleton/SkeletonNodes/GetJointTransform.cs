@@ -264,27 +264,33 @@ namespace VVVV.Nodes
         	
         	if (recalculate && inputSkeleton!=null)
         	{
-        		if (jointNames==null || (jointNames.Count==1 && string.IsNullOrEmpty(jointNames[0])))
-        		{
-        			jointNames = new List<string>();
-        			foreach (KeyValuePair<string, IJoint> pair in inputSkeleton.JointTable)
-        			{
-        				jointNames.Add(pair.Key);
-        			}
-        		}
+        		Dictionary<int, string> joints = new Dictionary<int, string>();
+    			foreach (KeyValuePair<string, IJoint> pair in inputSkeleton.JointTable)
+    			{
+    				// Only add those with a valid array index.
+    				// It's not a must that all bones are used as skinning matrices.
+    				if (pair.Value.Id >= 0)
+    					joints[pair.Value.Id] = pair.Key;
+    			}
         		
         		inputSkeleton.CalculateCombinedTransforms();
-        		FTransformOutput.SliceCount = jointNames.Count;
+        		FTransformOutput.SliceCount = joints.Count;
         		IJoint currJoint;
         		Matrix4x4 currIBPMatrix;
-        		for (int i=0; i<jointNames.Count; i++)
+        		
+        		FTransformOutput.SliceCount = 60;
+        		for (int i=0; i<joints.Count; i++)
         		{
-        			currJoint = inputSkeleton.JointTable[jointNames[i]];
-        			FInverseBindPoseInput.GetMatrix(currJoint.Id, out currIBPMatrix);
+        			currJoint = inputSkeleton.JointTable[joints[i]];
+        			FInverseBindPoseInput.GetMatrix(i, out currIBPMatrix);
         			if (currJoint!=null)
-        				FTransformOutput.SetMatrix(currJoint.Id, currIBPMatrix * currJoint.CombinedTransform);
+        				FTransformOutput.SetMatrix(i, currIBPMatrix * currJoint.CombinedTransform);
         			else
-        				FTransformOutput.SetMatrix(currJoint.Id, VMath.IdentityMatrix);
+        				FTransformOutput.SetMatrix(i, VMath.IdentityMatrix);
+        		}
+        		for (int i = joints.Count; i < 60; i++)
+        		{
+        			FTransformOutput.SetMatrix(i, VMath.IdentityMatrix);
         		}
         	}
         

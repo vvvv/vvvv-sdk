@@ -2,7 +2,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.Nodes</RootNamespace>
-    <AssemblyName>Skeleton</AssemblyName>
+    <AssemblyName>SkeletonNodes</AssemblyName>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BE8F0188-A22A-4ED6-B94D-963F37F114AD}</ProjectGuid>
@@ -20,6 +20,7 @@
     <OutputPath>..\..\..\vvvv_40beta22.3\plugins\</OutputPath>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <SourceAnalysisOverrideSettingsFile>C:\Dokumente und Einstellungen\tgallery\Anwendungsdaten\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
+    <StartArguments>d</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <Optimize>False</Optimize>
@@ -27,7 +28,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>Full</DebugType>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <StartAction>Project</StartAction>
+    <StartAction>Program</StartAction>
+    <StartProgram>..\..\..\..\..\output\core\vvvv\vvvv.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <Optimize>True</Optimize>
@@ -50,9 +52,6 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\_SharedSources\Skeleton\ISkeleton.cs">
-      <Link>ISkeleton.cs</Link>
-    </Compile>
     <Compile Include="..\..\_SharedSources\SlimDX\SlimDXUtils.cs">
       <Link>SlimDXUtils.cs</Link>
     </Compile>
@@ -76,6 +75,10 @@
     <ProjectReference Include="..\..\_Utils\Utils.csproj">
       <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
       <Name>Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SkeletonInterfaces\SkeletonInterfaces.csproj">
+      <Project>{0813E570-CB1C-49F3-BB7E-7048C115ED05}</Project>
+      <Name>SkeletonInterfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
