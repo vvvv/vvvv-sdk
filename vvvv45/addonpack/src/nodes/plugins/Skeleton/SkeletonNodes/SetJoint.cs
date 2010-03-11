@@ -33,9 +33,6 @@ using System.IO;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using System.Text.RegularExpressions;
-using System.Globalization;
-using VVVV.Utils.SharedMemory;
 using VVVV.SkeletonInterfaces;
 using SlimDX;
 using VVVV.Shared.VSlimDX;
@@ -60,7 +57,7 @@ namespace VVVV.Nodes
     	private IValueIn FConstraintsInput;
     	private ITransformIn FBaseTransformInput;
     	private ITransformIn FAnimationTransformInput;
-    	private IValueIn FRotationInput;
+    	//private IValueIn FRotationInput;
     	
     	private INodeOut FSkeletonOutput;
     	
@@ -213,9 +210,9 @@ namespace VVVV.Nodes
 	    	
 	    	FHost.CreateTransformInput("Base Transform", TSliceMode.Dynamic, TPinVisibility.True, out FBaseTransformInput);
 	    	
-	    	FHost.CreateTransformInput("Animation Transform", TSliceMode.Dynamic, TPinVisibility.Hidden, out FAnimationTransformInput);
+	    	FHost.CreateTransformInput("Animation Transform", TSliceMode.Dynamic, TPinVisibility.True, out FAnimationTransformInput);
 	    	
-			FHost.CreateValueInput("Rotation", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out FRotationInput);
+			//FHost.CreateValueInput("Rotation", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out FRotationInput);
 	    	
 	    	FHost.CreateStringInput("Joint Name", TSliceMode.Dynamic, TPinVisibility.True, out FJointNameInput);
 	    	
@@ -260,7 +257,7 @@ namespace VVVV.Nodes
         		recalculate = true;
         	}
         	
-        	if (FSkeletonInput.PinIsChanged || FAnimationTransformInput.PinIsChanged || FBaseTransformInput.PinIsChanged || FParentNameInput.PinIsChanged || FRotationInput.PinIsChanged || FConstraintsInput.PinIsChanged || recalculate)
+        	if (FSkeletonInput.PinIsChanged || FAnimationTransformInput.PinIsChanged || FBaseTransformInput.PinIsChanged || FParentNameInput.PinIsChanged || FConstraintsInput.PinIsChanged || recalculate)
         	{
         		FHost.Log(TLogType.Debug, "changed");
         		

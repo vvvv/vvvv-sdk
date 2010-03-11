@@ -205,8 +205,8 @@ namespace VVVV.Nodes
 	    	FHost.CreateValueInput("Base Position", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out FBasePositionInput);
 	    	
 	    	String[] dimensions = new String[2];
-	    	dimensions[0] = "min";
-	    	dimensions[1] = "max";
+	    	dimensions[0] = "Min";
+	    	dimensions[1] = "Max";
 
     		FHost.CreateValueInput("Constraints", 2, dimensions, TSliceMode.Dynamic, TPinVisibility.True,  out FConstraintsInput);
 	    	FConstraintsInput.SetSubType2D(-1.0, 1.0, 0.1, -1.0, 1.0, false, false, false);
@@ -280,7 +280,7 @@ namespace VVVV.Nodes
         			{
         				if (skeleton.JointTable.ContainsKey(parentName))
         				{
-        					currJoint.Parent = (IJoint)(skeleton.JointTable[parentName]);
+        					currJoint.Parent = skeleton.JointTable[parentName];
         					currJoint.Id = currId;
         			    	currId++;
         				}
