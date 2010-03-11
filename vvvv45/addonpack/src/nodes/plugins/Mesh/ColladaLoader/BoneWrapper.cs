@@ -114,6 +114,7 @@ namespace VVVV.Nodes
 			set
 			{
 				FParent = value;
+				SetDirty();
 			}
 		}
 		
