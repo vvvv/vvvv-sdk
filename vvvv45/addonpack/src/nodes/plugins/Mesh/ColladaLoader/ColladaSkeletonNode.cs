@@ -307,6 +307,13 @@ namespace VVVV.Nodes
         		{
         			FSkeleton.ClearAll();
         			CreateSkeleton(ref FSkeleton, FSelectedMesh.SkeletonRootBone);
+        			// Set the IDs
+        			int id = 0;
+        			foreach (Model.Bone bone in FSelectedMesh.Bones)
+        			{
+        				FSkeleton.JointTable[bone.Name].Id = id;
+        				id++;
+        			}
         		}
         		else
         		{
