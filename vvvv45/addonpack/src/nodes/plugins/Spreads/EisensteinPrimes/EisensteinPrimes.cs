@@ -48,7 +48,10 @@ namespace VVVV.Nodes
    		private bool FDisposed = false;
 
     	//input pin declaration
-        private IValueIn FMyValueInputM, FMyValueInputN;
+        private IValueIn FMyValueInputM;
+        private IValueIn FMyValueInputN;
+        private IValueIn FMyValuePhaseM;
+        private IValueIn FMyValuePhaseN;
 
     	//output pin declaration
         private IValueOut FMyValueOutputX;
@@ -187,20 +190,26 @@ namespace VVVV.Nodes
 	    	FHost = Host;
 
 	    	//create inputs
-            FHost.CreateValueInput("Value Input m", 1, null, TSliceMode.Single, TPinVisibility.True, out FMyValueInputM);
+            FHost.CreateValueInput("Input m ", 1, null, TSliceMode.Single, TPinVisibility.True, out FMyValueInputM);
             FMyValueInputM.SetSubType(1,double.MaxValue,1,1,false,false,true);
-            
-            FHost.CreateValueInput("Value Input n", 1, null, TSliceMode.Single, TPinVisibility.True, out FMyValueInputN);
+
+            FHost.CreateValueInput("Input n ", 1, null, TSliceMode.Single, TPinVisibility.True, out FMyValueInputN);
             FMyValueInputN.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
+
+            FHost.CreateValueInput("Phase m ", 1, null, TSliceMode.Single, TPinVisibility.True, out FMyValuePhaseM);
+            FMyValuePhaseM.SetSubType(double.MinValue, double.MaxValue, 1, 0, false, false, true);
+
+            FHost.CreateValueInput("Phase n ", 1, null, TSliceMode.Single, TPinVisibility.True, out FMyValuePhaseN);
+            FMyValuePhaseN.SetSubType(double.MinValue, double.MaxValue, 1, 0, false, false, true);
 	    	
 	    	//create outputs	    	
-            FHost.CreateValueOutput("Value Output x", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueOutputX);
+            FHost.CreateValueOutput("Output X ", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueOutputX);
             FMyValueOutputX.SetSubType(1, double.MaxValue, 1, 0, false, false, false);
 
-            FHost.CreateValueOutput("Value Output y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueOutputY);
+            FHost.CreateValueOutput("Output Y ", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueOutputY);
             FMyValueOutputY.SetSubType(1, double.MaxValue, 1, 0, false, false, false);
             
-            FHost.CreateValueOutput("IsPrime", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueOutputIsPrime);
+            FHost.CreateValueOutput("IsPrime ", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMyValueOutputIsPrime);
             FMyValueOutputIsPrime.SetSubType(0, double.MaxValue, 0, 0, false, false, true);
 	    }
 
@@ -220,12 +229,16 @@ namespace VVVV.Nodes
         {     	
         	//if any of the inputs has changed
         	//recompute the outputs
-            if (FMyValueInputM.PinIsChanged || FMyValueInputN.PinIsChanged)
+            if (FMyValueInputM.PinIsChanged || FMyValueInputN.PinIsChanged || FMyValuePhaseM.PinIsChanged || FMyValuePhaseN.PinIsChanged )
         	{
                 double m, n;
                 FMyValueInputM.GetValue(0, out m);
                 FMyValueInputN.GetValue(0, out n);
-                
+
+                double phaseM, phaseN;
+                FMyValuePhaseM.GetValue(0, out phaseM);
+                FMyValuePhaseN.GetValue(0, out phaseN);
+
                 int index;                
                 int sliceCount = (int)(m * n);
 	        	
@@ -243,8 +256,7 @@ namespace VVVV.Nodes
                         double y = Convert.ToDouble(j) * Math.Sqrt(3) / 2;
                         FMyValueOutputX.SetValue(index, x);
                         FMyValueOutputY.SetValue(index, y);
-                        FMyValueOutputIsPrime.SetValue(index, isprime(i,j));
-                        //FHost.Log(TLogType.Debug,"index="+index+" i="+i+" j="+j+" x="+x+" y="+y);
+                        FMyValueOutputIsPrime.SetValue(index, isprime(i + Convert.ToInt32(phaseM), j + Convert.ToInt32(phaseN)));
                     }
                 }
         	}      	
