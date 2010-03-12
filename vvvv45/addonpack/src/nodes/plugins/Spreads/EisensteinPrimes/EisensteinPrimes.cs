@@ -239,8 +239,8 @@ namespace VVVV.Nodes
                     {
                         index = (int)(m * j + i);
                         //write data to outputs
-                        double x = i - (double)j / 2;
-                        double y = (double)j * Math.Sqrt(3) / 2;
+                        double x = Convert.ToDouble(i) - Convert.ToDouble(j) / 2;
+                        double y = Convert.ToDouble(j) * Math.Sqrt(3) / 2;
                         FMyValueOutputX.SetValue(index, x);
                         FMyValueOutputY.SetValue(index, y);
                         FMyValueOutputIsPrime.SetValue(index, isprime(i,j));
