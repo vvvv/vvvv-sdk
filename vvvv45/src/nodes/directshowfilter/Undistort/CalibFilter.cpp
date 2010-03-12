@@ -198,7 +198,8 @@ DWORD WINAPI _3DWindowThreadProc( void* window )
 
 CCalibFilter::~CCalibFilter()
 {
-    SendMessage( m_window3D->m_hwnd, WM_CLOSE, 0, 0 );
+	if (m_window3D != 0)
+		SendMessage( m_window3D->m_hwnd, WM_CLOSE, 0, 0 );
     WaitForSingleObject( m_thread, 100 );
     CloseHandle( m_thread );
 }
