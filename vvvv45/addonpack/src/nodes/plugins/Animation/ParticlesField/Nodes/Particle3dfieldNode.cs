@@ -118,7 +118,7 @@ namespace VVVV.Nodes
             this.FHost.CreateValueOutput("Position", 3, new string[] { "X", "Y","Z" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPosition);
             this.FPinOutPosition.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0, 0,0, false, false, false);
 
-            this.FHost.CreateValueOutput("Previous", 3, new string[] { "X", "Y", "Z" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPrevious);
+            this.FHost.CreateValueOutput("Previous", 3, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPrevious);
             this.FPinOutPrevious.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0, 0, 0, false, false, false);
 
             this.FHost.CreateValueOutput("Age", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutAge);

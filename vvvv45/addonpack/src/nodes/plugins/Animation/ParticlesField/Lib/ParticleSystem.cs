@@ -11,6 +11,8 @@ namespace VVVV.Lib
         private double dtage = 0.01;
         private double dtvelocity = 1.0;
         private Random random = new Random();
+        private bool flipx = false;
+        private bool flipy = false;
 
         private int max_particles = 7000;
 
@@ -22,6 +24,18 @@ namespace VVVV.Lib
         public ParticleSystem(int maxp)
         {
             this.max_particles = maxp;
+        }
+
+        public bool FlipX
+        {
+            get { return this.flipx; }
+            set { this.flipx = value; }
+        }
+
+        public bool FlipY
+        {
+            get { return this.flipy; }
+            set { this.flipy = value; }
         }
 
         public double DtAge
@@ -100,8 +114,9 @@ namespace VVVV.Lib
             //double res = (x - 1.0) * ((double)sizex / 2.0);
             //return Convert.ToInt32(Math.Truncate(res));
             //x++;
+            if (this.flipx) { x = -x; }
             double stepX = 2.0 / (double)sizex;
-            double sx = (x+1) / stepX;
+            double sx  = (x + 1.0) / stepX;
             return Convert.ToInt32(Math.Truncate(sx));
         }
 
@@ -110,6 +125,7 @@ namespace VVVV.Lib
             //double res = (y - 1.0) * ((double)sizey / 2.0);
             //return Convert.ToInt32(Math.Truncate(res));
             //y++;
+            if (this.flipy) { y = -y; }
             double stepY = 2.0 / (double)sizey;
             double sy = (y+1) / stepY;
             return Convert.ToInt32(Math.Truncate(sy));

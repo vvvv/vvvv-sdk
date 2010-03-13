@@ -45,6 +45,8 @@ namespace VVVV.Nodes
         private IValueIn FPinInAgeDeviation;
         private IValueIn FPinInVelocityDeviation;
 
+        private IValueIn FPInInFlip;
+
         private IValueIn FPinInDtAge;
         private IValueIn FPinInDtVelocity;
 
@@ -79,7 +81,7 @@ namespace VVVV.Nodes
             //assign host
             this.FHost = Host;
      
-            this.FHost.CreateValueInput("Position", 2, new string[] { "X", "Y" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInPosition);
+            this.FHost.CreateValueInput("Position", 2, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInPosition);
             this.FPinInPosition.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0, 0, false, false, false);
        
             this.FHost.CreateValueInput("Age", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInAge);
@@ -88,13 +90,13 @@ namespace VVVV.Nodes
             this.FHost.CreateValueInput("Age Deviation", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInAgeDeviation);
             this.FPinInAgeDeviation.SetSubType(0, double.MaxValue, 0.01, 0, false, false, false);
 
-            this.FHost.CreateValueInput("Velocity Deviation", 2, new string[] { "X", "Y" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInVelocityDeviation);
+            this.FHost.CreateValueInput("Velocity Deviation", 2, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInVelocityDeviation);
             this.FPinInVelocityDeviation.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0, 0, false, false, false);
 
-            this.FHost.CreateValueInput("Grid Size", 2, new string[] { "X", "Y" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInGridSize);
+            this.FHost.CreateValueInput("Grid Size", 2, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInGridSize);
             this.FPinInGridSize.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0, 0, false, false, false);
 
-            this.FHost.CreateValueFastInput("Velocity Field", 2, new string[] { "X", "Y" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInField);
+            this.FHost.CreateValueFastInput("Velocity Field", 2, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInField);
             this.FPinInField.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0, 0, false, false, false);
 
             this.FHost.CreateValueInput("Age Time Step", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDtAge);
@@ -102,7 +104,10 @@ namespace VVVV.Nodes
 
             this.FHost.CreateValueInput("Velocity Time Step", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDtVelocity);
             this.FPinInDtVelocity.SetSubType(0, double.MaxValue, 0.01, 0.01, false, false, false);
-
+       
+            this.FHost.CreateValueInput("Flip", 2, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPInInFlip);
+            this.FPInInFlip.SetSubType2D(0, 1, 1, 0, 0, false, false, false);
+        
             this.FHost.CreateValueInput("Count", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInMaxP);
             this.FPinInMaxP.SetSubType(1, double.MaxValue, 1, 7000, false, false, true);
       
@@ -113,10 +118,10 @@ namespace VVVV.Nodes
             this.FPinInEmit.SetSubType(0, 1, 1, 0, true, false, false);
         
         
-            this.FHost.CreateValueOutput("Position", 2, new string[] { "X", "Y" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPosition);
+            this.FHost.CreateValueOutput("Position", 2, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPosition);
             this.FPinOutPosition.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0, 0, false, false, false);
 
-            this.FHost.CreateValueOutput("Previous", 2, new string[] { "X", "Y" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPrevious);
+            this.FHost.CreateValueOutput("Previous", 2, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPrevious);
             this.FPinOutPrevious.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0, 0, false, false, false);
 
             this.FHost.CreateValueOutput("Age", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutAge);
@@ -164,6 +169,15 @@ namespace VVVV.Nodes
                     this.FPinInDtVelocity.GetValue(0, out dtvel);
                     this.FParticleSystem.DtAge = dtage;
                     this.FParticleSystem.DtVelocity = dtvel;
+                }
+
+                if (this.FPInInFlip.PinIsChanged
+                    || hasreset)
+                {
+                    double fx, fy;
+                    this.FPInInFlip.GetValue2D(0, out fx, out fy);
+                    this.FParticleSystem.FlipX = fx >= 0.5;
+                    this.FParticleSystem.FlipY = fy >= 0.5;
                 }
 
                 double dblemit;
