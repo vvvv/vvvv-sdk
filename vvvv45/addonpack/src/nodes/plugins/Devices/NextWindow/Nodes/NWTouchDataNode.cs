@@ -97,10 +97,10 @@ namespace VVVV.Nodes
             this.FHost.CreateValueOutput("Id", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutId);
             this.FPinOutId.SetSubType(double.MinValue, double.MaxValue, 1, 0, false, false, true);
         
-            this.FHost.CreateValueOutput("Position", 2, new string[] { "X", "Y" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPosition);
+            this.FHost.CreateValueOutput("Position", 2, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPosition);
             this.FPinOutPosition.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0, 0, false, false, false);
 
-            this.FHost.CreateValueOutput("Size", 2, new string[] { "X", "Y" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutSize);
+            this.FHost.CreateValueOutput("Size", 2, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutSize);
             this.FPinOutSize.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0, 0, false, false, false);
             
             this.FHost.CreateValueOutput("Velocity", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutVelocity);
