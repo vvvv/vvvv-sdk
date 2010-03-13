@@ -129,7 +129,7 @@ namespace VVVV.Nodes
             this.FHost.CreateValueInput("Touch Id", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInTouchId);
             this.FPinInTouchId.SetSubType(double.MinValue, double.MaxValue, 1, 0, false, false, true);
 
-            this.FHost.CreateValueInput("Touch Position", 2, new string[] { "X", "Y" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInTouchPos);
+            this.FHost.CreateValueInput("Touch Position", 2, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInTouchPos);
             this.FPinInTouchPos.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0, 0, false, false, false);
 
             this.FHost.CreateValueInput("Is new", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInIsNew);
