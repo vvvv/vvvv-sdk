@@ -50,11 +50,11 @@ namespace vvvv.Nodes
             this.FHost = Host;
 
             //Input
-            this.FHost.CreateValueInput("Input", 3, new string[] { "X", "Y", "Z" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInVector);
+            this.FHost.CreateValueInput("Input", 3, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInVector);
             this.FPinInVector.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0, 0, 0, false, false, false);
 
             //Outputs
-            this.FHost.CreateValueOutput("Vertices", 3, new string[] { "X", "Y", "Z" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutVertices);
+            this.FHost.CreateValueOutput("Vertices", 3, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutVertices);
             this.FPinOutVertices.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0, 0, 0, false, false, false);
 
             this.FHost.CreateValueOutput("Indices", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutIndices);
