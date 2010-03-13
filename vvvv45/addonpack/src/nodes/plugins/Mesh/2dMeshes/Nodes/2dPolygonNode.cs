@@ -48,7 +48,7 @@ namespace VVVV.Nodes
         #region Set Plugin Host
         protected override void SetInputs()
         {
-            this.FHost.CreateValueInput("Vertices", 2, new string[] { "X", "Y" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInVertices);
+            this.FHost.CreateValueInput("Vertices", 2, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInVertices);
             this.FPinInVertices.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0, 0, false, false, false);
 
             this.FHost.CreateValueInput("Vertex Count", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInVerticesCount);
