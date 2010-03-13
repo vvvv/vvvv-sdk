@@ -58,7 +58,7 @@ namespace vvvv.Nodes
             this.FHost = Host;
 
             //Input pins
-            this.FHost.CreateValueInput("Input", 2, new string[] { "X", "Y" }, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInput);
+            this.FHost.CreateValueInput("Input", 2, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInput);
             this.FPinInput.SetSubType2D(-1, 1, 0.01, 0,0, false, false, false);
 
             this.FHost.CreateValueInput("Reset", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInReset);
