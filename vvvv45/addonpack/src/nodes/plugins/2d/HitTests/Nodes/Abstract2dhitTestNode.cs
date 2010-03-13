@@ -42,7 +42,7 @@ namespace VVVV.Nodes
 
             this.FHost.CreateTransformInput("Transform In", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInTransform);
 
-            this.FHost.CreateValueInput("Points", 2, new string[] { "X", "Y" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInPoint);
+            this.FHost.CreateValueInput("Points", 2, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInPoint);
             this.FPinInPoint.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0, 0, false, false, false);
 
             this.SetInputPins();
