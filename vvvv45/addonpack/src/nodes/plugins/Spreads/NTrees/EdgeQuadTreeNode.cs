@@ -55,16 +55,16 @@ namespace VVVV.Nodes
         {
             this.FHost = Host;
 
-            this.FHost.CreateValueInput("Input", 2, new string[] { "X", "Y" }, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInput);
+            this.FHost.CreateValueInput("Input", 2, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInput);
             this.FPinInput.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 0,0, false, false, false);
 
             this.FHost.CreateValueInput("Maximum Elements", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInElementCount);
             this.FPinInElementCount.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
 
-            this.FHost.CreateValueInput("Bounds Min", 2, new string[] { "X", "Y" }, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInBoundsMin);
+            this.FHost.CreateValueInput("Bounds Min", 2, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInBoundsMin);
             this.FPinInBoundsMin.SetSubType2D(double.MinValue, double.MaxValue, 0.01, -1, -1, false, false, false);
 
-            this.FHost.CreateValueInput("Bounds Max", 2, new string[] { "X", "Y" }, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInBoundsMax);
+            this.FHost.CreateValueInput("Bounds Max", 2, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInBoundsMax);
             this.FPinInBoundsMax.SetSubType2D(double.MinValue, double.MaxValue, 0.01, 1, 1, false, false, false);
 
             this.FHost.CreateValueOutput("Edge X1", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutputEdgeX1);

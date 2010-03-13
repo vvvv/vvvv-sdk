@@ -65,7 +65,7 @@ namespace VVVV.Nodes
             this.FHost.CreateValueInput("Bounds Max", 3, new string[] { "X", "Y","Z" }, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInBoundsMax);
             this.FPinInBoundsMax.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 1, 1,1, false, false, false);
 
-            this.FHost.CreateValueOutput("Centers", 3, new string[] { "X", "Y" }, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutputCenter);
+            this.FHost.CreateValueOutput("Centers", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutputCenter);
             this.FPinOutputCenter.SetSubType3D(double.MinValue, double.MaxValue, 0.01,0, 0, 0, false, false, false);
 
             this.FHost.CreateValueOutput("Width", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutputWidth);
