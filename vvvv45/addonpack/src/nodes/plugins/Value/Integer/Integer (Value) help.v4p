@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta22.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
    <PATCH nodename="C:\SVN_ROOT\vvvv\plugins\c#\Value\Integer\Integer (Value) help.v4p">
    <BOUNDS height="4260" left="1125" top="1125" type="Window" width="2820">
    </BOUNDS>
@@ -32,7 +32,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="210" top="2640" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="210" top="2640" type="Box" width="795">
@@ -42,7 +42,7 @@
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="240" top="1380" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="240" top="1380" type="Box" width="795">
@@ -54,10 +54,10 @@
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
-   <BOUNDS height="270" left="1290" top="3225" type="Node" width="630">
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="1545" top="3330" type="Node" width="630">
    </BOUNDS>
-   <BOUNDS height="270" left="1290" top="3225" type="Box" width="630">
+   <BOUNDS height="240" left="1545" top="3330" type="Box" width="615">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -68,20 +68,20 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE nodename=":PLUGINS:\Numbers.dll|VVVV.Nodes.Integer" componentmode="Hidden" id="6">
-   <BOUNDS type="Node" left="960" top="1995" width="0" height="0">
+   <NODE componentmode="Hidden" id="0" nodename=":PLUGINS:\Integer.dll|VVVV.Nodes.Integer">
+   <BOUNDS height="0" left="960" top="2025" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="960" top="1995" width="0" height="0">
+   <BOUNDS height="0" left="960" top="2025" type="Box" width="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="2340" top="3285" width="0" height="0">
+   <BOUNDS height="0" left="2430" top="3570" type="Window" width="0">
    </BOUNDS>
    <PIN pinname="Value Input" visible="1">
    </PIN>
    <PIN pinname="Value Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Value Input">
+   <LINK dstnodeid="0" dstpinname="Value Input" srcnodeid="2" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="6" srcpinname="Value Output" dstnodeid="2" dstpinname="Y Input Value">
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="0" srcpinname="Value Output">
    </LINK>
    </PATCH>
