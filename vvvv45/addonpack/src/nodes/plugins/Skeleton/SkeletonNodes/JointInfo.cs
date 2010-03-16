@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using VVVV.Utils.VMath;
 using VVVV.PluginInterfaces.V1;
 using VVVV.SkeletonInterfaces;
-using VVVV.Shared.VSlimDX;
 
 namespace VVVV.Nodes
 {
@@ -115,11 +114,17 @@ namespace VVVV.Nodes
 		
 		public JointInfo clone()
 		{
+			return clone(null);
+		}
+		
+		public JointInfo clone(JointInfo parent)
+		{
 			JointInfo ret = new JointInfo();
 			ret.guid = new System.Guid(this.guid.ToString());
 			ret.Name = this.Name;
 			ret.index = this.index;
-			JointInfo child;
+			ret.parent = parent;
+			
 			for (int i=0; i<=15; i++)
 			{
 				ret.baseTransform[i] = this.baseTransform[i];
@@ -139,9 +144,10 @@ namespace VVVV.Nodes
 				ret.constraints.Add(v);
 			}
 			
+			JointInfo child;
 			for (int i=0; i<this.children.Count; i++)
 			{
-				child = ((JointInfo)this.children[i]).clone();
+				child = ((JointInfo)this.children[i]).clone(this);
 				ret.children.Add(child);
 			}
 			
@@ -196,7 +202,7 @@ namespace VVVV.Nodes
 				Vector3D translation = new Vector3D(0);
 				Vector3D rot = new Vector3D(0);
 				Vector3D scale = new Vector3D(0);
-				VSlimDXUtils.Decompose(this.AnimationTransform, out scale, out rot, out translation);
+				//VSlimDXUtils.Decompose(this.AnimationTransform, out scale, out rot, out translation);
 				return rot;
 			}
 		}
