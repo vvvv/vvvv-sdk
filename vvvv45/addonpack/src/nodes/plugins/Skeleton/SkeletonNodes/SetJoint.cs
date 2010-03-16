@@ -259,7 +259,6 @@ namespace VVVV.Nodes
         	
         	if (FSkeletonInput.PinIsChanged || FAnimationTransformInput.PinIsChanged || FBaseTransformInput.PinIsChanged || FParentNameInput.PinIsChanged || FConstraintsInput.PinIsChanged || recalculate)
         	{
-        		FHost.Log(TLogType.Debug, "changed");
         		
         		if (FSkeletonInput.IsConnected)
         		{
@@ -283,13 +282,13 @@ namespace VVVV.Nodes
 	        			Matrix4x4 currBaseT;
 	        			List<Vector2D> currConstraints;
 	        			string currParentName;
-	        			FHost.Log(TLogType.Debug, "changed2");
 	        			if (currJoint!=null)
 	        			{
 	        				if (FAnimationTransformInput.IsConnected)
 	        				{
 		        				FAnimationTransformInput.GetMatrix(i, out currAnimationT);
 		        				currJoint.AnimationTransform = currAnimationT;
+	
 	        				}
 	        				
 	        				if (FBaseTransformInput.IsConnected)
@@ -346,7 +345,7 @@ namespace VVVV.Nodes
         
         #region helper
         
-
+		
         
         #endregion helper
         
