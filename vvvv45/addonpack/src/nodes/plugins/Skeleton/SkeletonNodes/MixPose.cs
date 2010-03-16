@@ -329,15 +329,29 @@ namespace VVVV.Nodes
         
         private void mixJoints(IJoint result, IJoint joint1, IJoint joint2)
         {
+        	/* old method
         	Vector3D resultRot = new Vector3D(0);
         	resultRot.x = amount1*joint1.Rotation.x + amount2*joint2.Rotation.x;
         	resultRot.y = amount1*joint1.Rotation.y + amount2*joint2.Rotation.y;
         	resultRot.z = amount1*joint1.Rotation.z + amount2*joint2.Rotation.z;
-        	
-        	//resultRot = joint1.Rotation;
-        	FHost.Log(TLogType.Debug, "rot: "+resultRot.x+" / "+resultRot.y+" / "+resultRot.z);
+        	*/
         	
         	result.AnimationTransform = VMath.Rotate(resultRot);
+        	
+        	double enableJoint1 = 1.0;
+        	double enableJoint2 = 1.0;
+        	Vector3D p;
+        	p = joint1.AnimationTransform * new Vector3D(1, 1, 1);
+        	if (p.x == 1 && p.y==1 && p.z==1)
+        		enableJoint1 = 0;
+        	p = joint2.AnimationTransform * new Vector3D(1, 1, 1);
+        	if (p.x == 1 && p.y==1 && p.z==1)
+        		enableJoint2 = 0;
+
+        	Matrix4x4 resultAnimationT = result.AnimationTransform;
+        	VSlimDXUtils.Blend(joint1.AnimationTransform, joint2.AnimationTransform, amount1 * enableJoint1, amount2 * enableJoint2, out resultAnimationT);
+   
+        	result.AnimationTransform = resultAnimationT;
         	
         	for (int i=0; i<result.Children.Count; i++)
         	{
