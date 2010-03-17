@@ -336,7 +336,7 @@ namespace VVVV.Nodes
         	resultRot.z = amount1*joint1.Rotation.z + amount2*joint2.Rotation.z;
         	*/
         	
-        	result.AnimationTransform = VMath.Rotate(resultRot);
+        	//result.AnimationTransform = VMath.Rotate(resultRot);
         	
         	double enableJoint1 = 1.0;
         	double enableJoint2 = 1.0;
