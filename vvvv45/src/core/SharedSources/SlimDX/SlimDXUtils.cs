@@ -75,14 +75,14 @@ namespace VVVV.Shared.VSlimDX
 				success = false;
 			
 			t = t1 * (Single)amount1 + t2 * (Single)amount2;
-			// TODO: Interpolate scaling
+			s = new Vector3(1,1,1) + (Single)amount1 * (new Vector3(1,1,1) - s1) + (Single)amount2 * (new Vector3(1,1,1) - s2);
 			
 			r1 = Quaternion.Slerp(Quaternion.Identity, r1, (Single)amount1);
 			r2 = Quaternion.Slerp(Quaternion.Identity, r2, (Single)amount2);
 			r = r1*r2;
 			r.Normalize();
 
-			m = SlimDXMatrixToMatrix4x4(Matrix.RotationQuaternion(r) * Matrix.Translation(t));
+			m = SlimDXMatrixToMatrix4x4(Matrix.Scaling(s) * Matrix.RotationQuaternion(r) * Matrix.Translation(t));
 			
 			return success;
 		}
