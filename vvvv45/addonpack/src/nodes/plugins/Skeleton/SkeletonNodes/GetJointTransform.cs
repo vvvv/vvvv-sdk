@@ -55,11 +55,16 @@ namespace VVVV.Nodes
     	private INodeIn FSkeletonInput;
     	private ITransformIn FInverseBindPoseInput;
     	private IStringIn FJointNameInput;
+    	private IEnumIn FOutputModeInput;
+    	
+    	public static int OUTPUT_MODE_DYNAMIC = 0;
+    	public static int OUTPUT_MODE_STATIC = 1;
     	
     	private ITransformOut FTransformOutput;
-    	
     	private Skeleton inputSkeleton;
     	private List<string> jointNames;
+    	private int outputMode;
+    	
     	
     	#endregion field declaration
        
@@ -202,6 +207,10 @@ namespace VVVV.Nodes
 	    	
 	    	FHost.CreateTransformInput("Inverse Bind Pose", TSliceMode.Dynamic, TPinVisibility.True, out FInverseBindPoseInput);
 	    	
+	    	FHost.UpdateEnum("SkinningMatricesOutputMode", "Dynamic", new string[]{"Dynamic", "Fixed to 60"});
+	    	FHost.CreateEnumInput("Output Transform Count", TSliceMode.Single, TPinVisibility.True, out FOutputModeInput);
+	    	FOutputModeInput.SetSubType("SkinningMatricesOutputMode");
+	    	
 	    	FHost.CreateStringInput("Joint Name", TSliceMode.Dynamic, TPinVisibility.True, out FJointNameInput);
 	    	
 	    	// create outputs
@@ -262,35 +271,51 @@ namespace VVVV.Nodes
         		//recalculate = true;
         	}
         	
+        	if (FOutputModeInput.PinIsChanged)
+        	{
+        		FOutputModeInput.GetOrd(0, out outputMode);
+        		recalculate = true;
+        	}
+        	
         	if (recalculate && inputSkeleton!=null)
         	{
-        		Dictionary<int, string> joints = new Dictionary<int, string>();
-    			foreach (KeyValuePair<string, IJoint> pair in inputSkeleton.JointTable)
-    			{
-    				// Only add those with a valid array index.
-    				// It's not a must that all bones are used as skinning matrices.
-    				if (pair.Value.Id >= 0)
-    					joints[pair.Value.Id] = pair.Key;
-    			}
+        		// if there are no specific joints selected via input pin, collect them all
+        		if (jointNames==null || (jointNames.Count==1 && string.IsNullOrEmpty(jointNames[0])))
+        		{
+        			jointNames = new List<string>();
+        			foreach (KeyValuePair<string, IJoint> pair in inputSkeleton.JointTable)
+        			{
+        				// Only add those with a valid array index.
+    					// It's not a must that all bones are used as skinning matrices.
+        				if (pair.Value.Id >= 0)
+        					jointNames.Add(pair.Key);
+        			}
+        		}
         		
         		inputSkeleton.CalculateCombinedTransforms();
-        		FTransformOutput.SliceCount = joints.Count;
+        		int jointCount;
+        		if (outputMode == OUTPUT_MODE_DYNAMIC)
+        			jointCount = jointNames.Count;
+        		else
+        			jointCount = 60;
+        		FTransformOutput.SliceCount = jointCount;
         		IJoint currJoint;
         		Matrix4x4 currIBPMatrix;
-        		
-        		FTransformOutput.SliceCount = 60;
-        		for (int i=0; i<joints.Count; i++)
+        		int i=0;
+        		for (i=0; i<jointNames.Count; i++)
         		{
-        			currJoint = inputSkeleton.JointTable[joints[i]];
-        			FInverseBindPoseInput.GetMatrix(i, out currIBPMatrix);
+        			currJoint = inputSkeleton.JointTable[jointNames[i]];
+        			FInverseBindPoseInput.GetMatrix(currJoint.Id, out currIBPMatrix);
         			if (currJoint!=null)
-        				FTransformOutput.SetMatrix(i, currIBPMatrix * currJoint.CombinedTransform);
+        				FTransformOutput.SetMatrix(currJoint.Id, currIBPMatrix * currJoint.CombinedTransform);
         			else
-        				FTransformOutput.SetMatrix(i, VMath.IdentityMatrix);
+        				FTransformOutput.SetMatrix(currJoint.Id, VMath.IdentityMatrix);
         		}
-        		for (int i = joints.Count; i < 60; i++)
+        		
+        		// Pad remaining slices with Identity Matrices
+        		for (int j=i; j<jointCount; j++)
         		{
-        			FTransformOutput.SetMatrix(i, VMath.IdentityMatrix);
+        			FTransformOutput.SetMatrix(j, VMath.IdentityMatrix);
         		}
         	}
         
