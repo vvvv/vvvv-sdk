@@ -66,6 +66,7 @@ namespace VVVV.Nodes
 		private Vector2D dragStartPos = new Vector2D();
 		private Vector2D dragDelta = new Vector2D();
 		private Vector2D panOffset = new Vector2D(0);
+		private Vector3D camRotation = new Vector3D(0);
 		private Dictionary<string, Vector3D> jointPositions;
 		private bool isDragging = false;
 		
@@ -78,6 +79,7 @@ namespace VVVV.Nodes
 		{
 			selectedJoints = new List<IJoint>();
 			jointPositions = new Dictionary<string, Vector3D>();
+			
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			InitializeComponent();
 		}
@@ -194,6 +196,57 @@ namespace VVVV.Nodes
 			this.MouseUp += new MouseEventHandler( this.mouseUp);
 			this.MouseMove += new MouseEventHandler( this.mouseMove);
 			this.ResumeLayout(false);
+			
+			initializeToolbar();
+		}
+		
+		private void initializeToolbar()
+		{
+			Panel axisSelection = new Panel();
+			axisSelection.Location = new Point(0,0);
+			
+			string[] axes = new String[]{"z", "y", "x"};
+			string[] labels = new String[]{"FRONT", "TOP", "SIDE"};
+			int buttonWidth = 50;
+			int buttonHeight = 25;
+			int i;
+			for (i=0; i<axes.Length; i++)
+			{
+				RadioButton axisButton = new RadioButton();
+				axisButton.Text = labels[i];
+				axisButton.Name = axes[i];
+				axisButton.Location = new Point(i*buttonWidth,0);
+				axisButton.Size = new Size(buttonWidth,buttonHeight);
+				axisButton.Parent = axisSelection;
+				axisButton.Appearance = Appearance.Button;
+				axisButton.FlatStyle = FlatStyle.Flat;
+				axisButton.TextAlign = ContentAlignment.MiddleCenter;
+				axisButton.Font = new Font("Lucida Sans", 6);
+				axisButton.CheckedChanged += new EventHandler(this.switchAxis);
+				if (i==0)
+					axisButton.Checked = true;
+			}
+			
+			axisSelection.Size = new Size(i*buttonWidth, buttonHeight);
+			axisSelection.Parent = this;
+		}
+		
+		private void switchAxis(object sender, EventArgs e)
+		{
+			RadioButton b = (RadioButton)sender;
+			if (!b.Checked)
+			{
+				b.BackColor = Color.LightGray;
+				return;
+			}
+			if (b.Name=="x")
+				camRotation = new Vector3D(0, -3.14/2, 0);
+			else if (b.Name=="y")
+				camRotation = new Vector3D(-3.14/2, 0, 0);
+			else
+				camRotation = new Vector3D(0, 0, 0);
+			b.BackColor = Color.Black;
+			Invalidate();
 		}
 		
 		#region pin creation
@@ -229,8 +282,6 @@ namespace VVVV.Nodes
 				string[] separator = new string[1];
         		separator[0] = ",";
         		configSelectedNames = Input.SpreadAsString.Split(separator, System.StringSplitOptions.None);
-    
-        		
 			}
 		}
 		
@@ -352,6 +403,7 @@ namespace VVVV.Nodes
 		
 		private bool hasHovered(IJoint currJoint, Vector3D mousePos)
 		{
+			
 			if (VMath.Dist(mousePos, jointPositions[currJoint.Name])<5) {
 				
 				hoveredJoint = currJoint;
@@ -422,7 +474,7 @@ namespace VVVV.Nodes
 			
 			Stack transformStack = new Stack();
 			Matrix4x4 mat = new Matrix4x4(VMath.IdentityMatrix);
-			mat = /*VMath.RotateY(3.14/4) *  **/  VMath.RotateZ(0.0) * VMath.Scale(zoom, -zoom, zoom) /** this.Perspective(2*3.14/8, 1, 0, 100)*/ * VMath.Translate(200.0+panOffset.x+dragDelta.x, 200.0+panOffset.y+dragDelta.y, 0.0) * mat;
+			mat = VMath.RotateY(camRotation.y) *   VMath.RotateX(camRotation.x) * VMath.Scale(zoom, -zoom, zoom) /** this.Perspective(2*3.14/8, 1, 0, 100)*/ * VMath.Translate(200.0+panOffset.x+dragDelta.x, 200.0+panOffset.y+dragDelta.y, 0.0) * mat;
 			transformStack.Push(mat);
 			
 			if (rootJoint!=null)
@@ -431,6 +483,7 @@ namespace VVVV.Nodes
 			
 			
 		}
+	
 		
 		private Vector3D drawJoint(Graphics g, IJoint currJoint, Stack transformStack, Color c)
 		{
@@ -451,6 +504,7 @@ namespace VVVV.Nodes
 			Matrix4x4 t = currJoint.AnimationTransform * currJoint.BaseTransform * (Matrix4x4)transformStack.Peek();
 			
 			Vector3D v = t * (new Vector3D(0));
+			v.z = 0;
 			g.DrawEllipse(jointPen, (float)v.x-5.0f, (float)v.y-5.0f, 10.0f, 10.0f);
 			if (listIndex>=0)
 			{
@@ -529,4 +583,5 @@ namespace VVVV.Nodes
 		}
 			
 	}
+
 }
