@@ -25,20 +25,11 @@ namespace MyNodes
 {
 	void StructureSynthNode::SetPluginHost(IPluginHost ^ Host) 
 	{
-		array<String ^> ^ arr1d = gcnew array<String ^>(1);
-		array<String ^> ^ arr3d = gcnew array<String ^>(3);
-
-		arr1d->SetValue("X",0);
-
-		arr3d->SetValue("X",0);
-		arr3d->SetValue("Y",1);
-		arr3d->SetValue("Z",2);
-
 		this->FHost = Host;
 		this->FHost->CreateStringInput("Input",TSliceMode::Single,TPinVisibility::True,this->vInFormula);
 		this->vInFormula->SetSubType("{ x 6} sphere",false);
 
-		this->FHost ->CreateValueInput("Random Seed",1,arr1d,TSliceMode::Single,TPinVisibility::True,this->vInSeed);
+		this->FHost ->CreateValueInput("Random Seed",1,nullptr,TSliceMode::Single,TPinVisibility::True,this->vInSeed);
 		this->vInSeed->SetSubType(1,Double::MaxValue,0.01,1,false,false,true);
 
 		this->FHost->CreateTransformOutput("Sphere",TSliceMode::Dynamic,TPinVisibility::True,this->vOutSphere);
@@ -50,14 +41,14 @@ namespace MyNodes
 		this->FHost->CreateTransformOutput("Grid",TSliceMode::Dynamic,TPinVisibility::True,this->vOutGrid);
 		this->FHost->CreateColorOutput("Grid Color",TSliceMode::Dynamic,TPinVisibility::True,this->vOutGridColor);
 
-		this->FHost->CreateValueOutput("Lines",3,arr3d,TSliceMode::Dynamic,TPinVisibility::True,this->vOutLines);
+		this->FHost->CreateValueOutput("Lines",3,nullptr,TSliceMode::Dynamic,TPinVisibility::True,this->vOutLines);
 		this->FHost->CreateColorOutput("Lines Color",TSliceMode::Dynamic,TPinVisibility::True,this->vOutLinesColor);
 
-		this->FHost->CreateValueOutput("Triangle Positions",3,arr3d,TSliceMode::Dynamic,TPinVisibility::True,this->vOutPositions);
+		this->FHost->CreateValueOutput("Triangle Positions",3,nullptr,TSliceMode::Dynamic,TPinVisibility::True,this->vOutPositions);
 		//this->FHost->CreateValueOutput("Grid Color",TSliceMode::Dynamic,TPinVisibility::True,this->vOutGridColor);
 
 		
-		this->FHost->CreateValueOutput("Points",3,arr3d,TSliceMode::Dynamic,TPinVisibility::True,this->vOutPoints);
+		this->FHost->CreateValueOutput("Points",3,nullptr,TSliceMode::Dynamic,TPinVisibility::True,this->vOutPoints);
 		this->FHost->CreateColorOutput("Points Color",TSliceMode::Dynamic,TPinVisibility::True,this->vOutPointsColor);
 
 		this->FHost->CreateStringOutput("Message",TSliceMode::Single,TPinVisibility::True,this->vOutMessage);
@@ -71,7 +62,9 @@ namespace MyNodes
 		this->vOutLines->Order = 6;
 		this->vOutLinesColor->Order = 7;
 		this->vOutPositions->Order = 8;
-		this->vOutMessage->Order = 9;
+		this->vOutPoints->Order = 9;
+		this->vOutPointsColor->Order = 10;
+		this->vOutMessage->Order = 11;
 	}
 
 	void StructureSynthNode::Configurate(IPluginConfig^ Input) 
