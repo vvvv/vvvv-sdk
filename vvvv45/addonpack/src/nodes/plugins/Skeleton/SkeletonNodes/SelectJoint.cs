@@ -61,6 +61,7 @@ namespace VVVV.Nodes
 		private IJoint rootJoint;
 		private Skeleton skeleton;
 		private float zoom = 10;
+		private string[] configSelectedNames;
 		
 		private Vector2D dragStartPos = new Vector2D();
 		private Vector2D dragDelta = new Vector2D();
@@ -223,25 +224,13 @@ namespace VVVV.Nodes
 		public void Configurate(IPluginConfig Input)
 		{
 			
-			String debug = Input.SpreadAsString;
-			int debug2 = selectedJoints.Count;
 			if (Input.Name=="Selection" && selectedJoints.Count==0)
 			{
-				IJoint currJoint;
 				string[] separator = new string[1];
-        		separator[0] = "-Q-";
-        		string[] selectedNames = Input.SpreadAsString.Split(separator, System.StringSplitOptions.None);
-        		for (int i=0; i<selectedNames.Length-1; i++)
-        		{
-        			if (string.IsNullOrEmpty(selectedNames[i]))
-						break;
-					if (skeleton.JointTable.ContainsKey(selectedNames[i]))
-					{
-						currJoint = skeleton.JointTable[selectedNames[i]];
-						selectedJoints.Add(currJoint);
-					}
-				}
-
+        		separator[0] = ",";
+        		configSelectedNames = Input.SpreadAsString.Split(separator, System.StringSplitOptions.None);
+    
+        		
 			}
 		}
 		
@@ -265,24 +254,41 @@ namespace VVVV.Nodes
 				}
 				rootJoint = (IJoint)skeleton.Root;
 				
+				if (!initialized && configSelectedNames!=null)
+				{
+					IJoint currJoint;
+					for (int i=0; i<configSelectedNames.Length; i++)
+	        		{
+	        			if (string.IsNullOrEmpty(configSelectedNames[i]))
+							break;
+						if (skeleton.JointTable.ContainsKey(configSelectedNames[i]))
+						{
+							currJoint = skeleton.JointTable[configSelectedNames[i]];
+							if (currJoint!=null)
+								selectedJoints.Add(currJoint);
+						}
+					}
+				}
+				
 				//redraw gui only if anything changed
 				Invalidate();
 			}
+			
 
 			if (selectedJoints.Count>0)
 			{
 				FJointNameOutput.SliceCount = selectedJoints.Count;
-				//FSelectionInput.SliceCount = selectedJoints.Count;
 				for (int i=0; i<selectedJoints.Count; i++)
 				{
 					FJointNameOutput.SetString(i, selectedJoints[i].Name);
-					//FSelectionInput.SetString(i, selectedJoints[i].Name);
 				}
 			}
 			else
 				FJointNameOutput.SetString(0, "");
 			
 			buildConfig();
+				
+
 			
 			initialized = true;
 		}
@@ -487,12 +493,12 @@ namespace VVVV.Nodes
 		
 		private void buildConfig()
 		{
-			String outputConfig = "";
-			foreach (IJoint j in selectedJoints)
+			
+			FSelectionInput.SliceCount = selectedJoints.Count;
+			for (int i=0; i<selectedJoints.Count; i++)
 			{
-				outputConfig += j.Name+"-Q-";
+				FSelectionInput.SetString(i, selectedJoints[i].Name);
 			}
-			FSelectionInput.SetString(0, outputConfig);
 		}
 		
 		private Matrix4x4 Perspective(double fovy, double aspect, double zNear, double zFar)
