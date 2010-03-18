@@ -1,11 +1,11 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.5.dtd" >
-   <PATCH nodename="D:\work\personal\builds\vvvv\special\dlls\Ready\InterleaveNodes\Interleave (Spreads) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
+   <PATCH nodename="D:\work\repositories\vvvv\Spreads\Interleave\Vector (Spreads Join) help.v4p">
    <BOUNDS height="7695" left="420" top="855" type="Window" width="11715">
    </BOUNDS>
    <NODE componentmode="InABox" id="28" nodename="IOBox (String)">
-   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   <BOUNDS height="255" left="270" top="630" type="Node" width="570">
    </BOUNDS>
-   <BOUNDS height="945" left="255" top="525" type="Box" width="4335">
+   <BOUNDS height="945" left="270" top="630" type="Box" width="4335">
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
@@ -19,11 +19,11 @@
    <NODE componentmode="InABox" id="27" nodename="IOBox (String)">
    <BOUNDS height="270" left="255" top="165" type="Node" width="915">
    </BOUNDS>
-   <BOUNDS height="345" left="255" top="165" type="Box" width="4335">
+   <BOUNDS height="405" left="255" top="165" type="Box" width="4365">
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Interleave - Spreads|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Vector - Spreads Join|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -60,7 +60,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="24" nodename="RandomSpread (Spreads)">
+   <NODE componentmode="Hidden" id="24" nodename="RandomSpread (Spreads Legacy)">
    <BOUNDS height="0" left="1215" top="2670" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -82,7 +82,7 @@
    </NODE>
    <LINK dstnodeid="23" dstpinname="X" srcnodeid="24" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" id="22" nodename="RandomSpread (Spreads)">
+   <NODE componentmode="Hidden" id="22" nodename="RandomSpread (Spreads Legacy)">
    <BOUNDS height="0" left="3075" top="2670" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -93,24 +93,6 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="23" dstpinname="Y" srcnodeid="22" srcpinname="Output">
-   </LINK>
-   <NODE componentmode="Hidden" id="21" nodename="InterleaveNodes.dll|VVVV.Nodes.ValueInterleaveNode">
-   <BOUNDS height="0" left="2325" top="3675" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="0" left="2325" top="3675" type="Box" width="0">
-   </BOUNDS>
-   <BOUNDS height="0" left="2685" top="3690" type="Window" width="0">
-   </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="21" dstpinname="Input 2" srcnodeid="22" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="21" dstpinname="Input 1" srcnodeid="24" srcpinname="Output">
    </LINK>
    <NODE componentmode="InABox" id="20" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="1590" top="1500" type="Node" width="0">
@@ -145,18 +127,12 @@
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="18" dstpinname="Input 1" srcnodeid="23" srcpinname="XY">
-   </LINK>
-   <LINK dstnodeid="18" dstpinname="Input 2" linkstyle="VHV" srcnodeid="21" srcpinname="Output">
-   <LINKPOINT x="2325" y="4200">
-   </LINKPOINT>
-   <LINKPOINT x="1455" y="4200">
-   </LINKPOINT>
    </LINK>
    <NODE componentmode="Hidden" id="17" nodename="AND (Boolean Spectral)">
    <BOUNDS height="0" left="1215" top="5085" type="Node" width="0">
@@ -180,7 +156,7 @@
    </NODE>
    <LINK dstnodeid="16" dstpinname="Y Input Value" srcnodeid="17" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" id="15" nodename="RandomSpread (Spreads)">
+   <NODE componentmode="Hidden" id="15" nodename="RandomSpread (Spreads Legacy)">
    <BOUNDS height="0" left="5595" top="2670" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -190,7 +166,7 @@
    <PIN pinname="Random Seed" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="14" nodename="RandomSpread (Spreads)">
+   <NODE componentmode="Hidden" id="14" nodename="RandomSpread (Spreads Legacy)">
    <BOUNDS height="0" left="7455" top="2670" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -200,28 +176,6 @@
    <PIN pinname="Random Seed" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="13" nodename="InterleaveNodes.dll|VVVV.Nodes.ValueInterleaveNode">
-   <BOUNDS height="0" left="6705" top="3720" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="0" left="6705" top="3720" type="Box" width="0">
-   </BOUNDS>
-   <BOUNDS height="0" left="6645" top="5325" type="Window" width="0">
-   </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Input Count" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Input 3" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="13" dstpinname="Input 2" srcnodeid="14" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="13" dstpinname="Input 1" srcnodeid="15" srcpinname="Output">
-   </LINK>
    <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="5970" top="1545" type="Node" width="0">
    </BOUNDS>
@@ -255,17 +209,11 @@
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="10" dstpinname="Input 2" linkstyle="VHV" srcnodeid="13" srcpinname="Output">
-   <LINKPOINT x="6285" y="5835">
-   </LINKPOINT>
-   <LINKPOINT x="5415" y="5835">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="Hidden" id="9" nodename="AND (Boolean Spectral)">
    <BOUNDS height="0" left="5595" top="5130" type="Node" width="0">
    </BOUNDS>
@@ -288,7 +236,7 @@
    </NODE>
    <LINK dstnodeid="8" dstpinname="Y Input Value" srcnodeid="9" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" id="7" nodename="RandomSpread (Spreads)">
+   <NODE componentmode="Hidden" id="7" nodename="RandomSpread (Spreads Legacy)">
    <BOUNDS height="0" left="9045" top="2670" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -333,8 +281,6 @@
    <LINK dstnodeid="5" dstpinname="Z" srcnodeid="7" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="10" dstpinname="Input 1" srcnodeid="5" srcpinname="XYZ">
-   </LINK>
-   <LINK dstnodeid="13" dstpinname="Input 3" srcnodeid="7" srcpinname="Output">
    </LINK>
    <NODE componentmode="Hidden" id="4" nodename="Random (Value)">
    <BOUNDS height="0" left="1965" top="2160" type="Node" width="0">

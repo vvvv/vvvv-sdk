@@ -13,9 +13,9 @@ namespace VVVV.Nodes
             get
             {
                 IPluginInfo Info = new PluginInfo();
-                Info.Name = "Interleave";							//use CamelCaps and no spaces
+                Info.Name = "Vector";							//use CamelCaps and no spaces
                 Info.Category = "Spreads";						//try to use an existing one
-                Info.Version = "";						//versions are optional. leave blank if not needed
+                Info.Version = "Join";						//versions are optional. leave blank if not needed
                 Info.Help = "Vector (nd) Join";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
