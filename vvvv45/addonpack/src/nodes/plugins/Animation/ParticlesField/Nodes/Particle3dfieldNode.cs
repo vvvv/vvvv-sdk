@@ -89,13 +89,13 @@ namespace VVVV.Nodes
             this.FHost.CreateValueInput("Age Deviation", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInAgeDeviation);
             this.FPinInAgeDeviation.SetSubType(0, double.MaxValue, 0.01, 0, false, false, false);
 
-            this.FHost.CreateValueInput("Velocity Deviation", 3, new string[] { "X", "Y","Z" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInVelocityDeviation);
+            this.FHost.CreateValueInput("Velocity Deviation", 3, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInVelocityDeviation);
             this.FPinInVelocityDeviation.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0, 0,0, false, false, false);
 
-            this.FHost.CreateValueInput("Box Size", 3, new string[] { "X", "Y","Z" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInGridSize);
+            this.FHost.CreateValueInput("Box Size", 3, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInGridSize);
             this.FPinInGridSize.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0,0, 0, false, false, false);
 
-            this.FHost.CreateValueFastInput("Velocity Field", 3, new string[] { "X", "Y","Z" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInField);
+            this.FHost.CreateValueFastInput("Velocity Field", 3, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInField);
             this.FPinInField.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0, 0,0, false, false, false);
 
             this.FHost.CreateValueInput("Age Time Step", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDtAge);
@@ -115,7 +115,7 @@ namespace VVVV.Nodes
             this.FPinInEmit.SetSubType(0, 1, 1, 0, true, false, false);
         
         
-            this.FHost.CreateValueOutput("Position", 3, new string[] { "X", "Y","Z" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPosition);
+            this.FHost.CreateValueOutput("Position", 3, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPosition);
             this.FPinOutPosition.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0, 0,0, false, false, false);
 
             this.FHost.CreateValueOutput("Previous", 3, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPrevious);
