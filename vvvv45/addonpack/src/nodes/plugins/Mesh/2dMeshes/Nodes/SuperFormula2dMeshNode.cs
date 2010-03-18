@@ -51,7 +51,7 @@ namespace VVVV.Nodes
             this.FHost.CreateValueInput("M", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInM);
             this.FPinInM.SetSubType(double.MinValue, double.MaxValue, 0.01, 2, false, false, false);
               
-            this.FHost.CreateValueInput("N", 3, new string[] { "1", "2","3" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInN);
+            this.FHost.CreateValueInput("N", 3, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInN);
             this.FPinInN.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 2,2,2, false, false, false);
 
             this.FHost.CreateValueInput("Inner Radius", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInInnerRadius);
