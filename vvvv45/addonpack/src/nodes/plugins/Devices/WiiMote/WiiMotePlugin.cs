@@ -181,10 +181,10 @@ namespace VVVV.Nodes
 			FHost.CreateValueInput("Infrared Mode", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinInputMode);
 			FPinInputMode.SetSubType(0, 3, 1, FIRMode, false, false, true);
 
-			FHost.CreateValueFastInput("Calibration ZeroG", 3, new string[3]{"X", "Y", "Z"}, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FPinInputCalibrationZeroG);
+			FHost.CreateValueFastInput("Calibration ZeroG", 3, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FPinInputCalibrationZeroG);
 			FPinInputCalibrationZeroG.SetSubType3D(0, 0xFF, 1, 126, 126, 131, false, false, true);
 
-			FHost.CreateValueFastInput("Calibration OneG", 3, new string[3]{"X", "Y", "Z"}, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FPinInputCalibrationOneG);
+			FHost.CreateValueFastInput("Calibration OneG", 3, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FPinInputCalibrationOneG);
 			FPinInputCalibrationOneG.SetSubType3D(0, 0xFF, 1, 151, 151, 151, false, false, true);
 
 			FHost.CreateValueInput("Calibrate", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPinInputCalibrate);
@@ -219,7 +219,7 @@ namespace VVVV.Nodes
 			FHost.CreateValueOutput("System", 3, new string[3]{"Plus", "Minus", "Home"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputControls);
 			FPinOutputControls.SetSubType3D(0, 1, 1, 0, 0, 0, false, true, false);
 			
-			FHost.CreateValueOutput("Acceleration", 3, new string[3]{"X", "Y", "Z"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputAccelleration);
+			FHost.CreateValueOutput("Acceleration", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputAccelleration);
 			FPinOutputAccelleration.SetSubType3D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, false, false, false);
 			
 			FHost.CreateValueOutput("Angle", 3, new string[3]{"Pitch", "Roll", "Yaw"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputTilt);
@@ -259,65 +259,65 @@ namespace VVVV.Nodes
 				case 1: //Nunchuk
 					FHost.Log(TLogType.Debug, "Nunchuk");
 
-					FHost.CreateValueOutput("NunchukButtonz", 2, new string[2]{"C", "Z"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtButtons);
+					FHost.CreateValueOutput("Nunchuk Buttons", 2, new string[2]{"C", "Z"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtButtons);
 					FPinOutputExtButtons.SetSubType2D(0, 1, 1, 0, 0, false, true, false);
 					
-					FHost.CreateValueOutput("NunchukAccelleration", 3, new string[3]{"X", "Y", "Z"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtAccelleration);
+					FHost.CreateValueOutput("Nunchuk Accelleration", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtAccelleration);
 					FPinOutputExtAccelleration.SetSubType3D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, false, false, false);
 					
-					FHost.CreateValueOutput("NunchukTilt", 3, new string[3]{"Pitch", "Roll", "Yaw"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtTilt);
+					FHost.CreateValueOutput("Nunchuk Tilt", 3, new string[3]{"Pitch", "Roll", "Yaw"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtTilt);
 					FPinOutputExtTilt.SetSubType3D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, false, false, false);
 					
-					FHost.CreateValueOutput("NunchukJoystick", 2, new string[2]{"Horizontal", "Vertical"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtJoystickLeft);
+					FHost.CreateValueOutput("Nunchuk Joystick", 2, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtJoystickLeft);
 					FPinOutputExtJoystickLeft.SetSubType2D(-1, 1, 0.0001, 0, 0, false, false, false);
 					break;
 				case 2: // Classic
 					FHost.Log(TLogType.Debug, "Classic");
 
-					FHost.CreateValueOutput("ClassicCursor", 4, new string[4]{"Up", "Down", "Left", "Right"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtCursor);
+					FHost.CreateValueOutput("Classic Cursor", 4, new string[4]{"Up", "Down", "Left", "Right"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtCursor);
 					FPinOutputExtCursor.SetSubType4D(0, 1, 1, 0, 0, 0, 0, false, true, false);
 
-					FHost.CreateValueOutput("ClassicButtons", 4, new string[4]{"A", "B", "X", "Y"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtButtons);
+					FHost.CreateValueOutput("Classic Buttons", 4, new string[4]{"A", "B", "X", "Y"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtButtons);
 					FPinOutputExtButtons.SetSubType4D(0, 1, 1, 0, 0, 0, 0, false, true, false);
 
-					FHost.CreateValueOutput("ClassicSystem", 3, new string[3]{"Plus", "Minus", "Home"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtControls);
+					FHost.CreateValueOutput("Classic System", 3, new string[3]{"Plus", "Minus", "Home"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtControls);
 					FPinOutputExtControls.SetSubType3D(0, 1, 1, 0, 0, 0, false, true, false);
 					
-					FHost.CreateValueOutput("ClassicJoystickLeft", 2, new string[2]{"Horizontal", "Vertical"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtJoystickLeft);
+					FHost.CreateValueOutput("Classic Joystick Left", 2, null, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtJoystickLeft);
 					FPinOutputExtJoystickLeft.SetSubType2D(-1, 1, 0.0001, 0, 0, false, false, false);
 					
-					FHost.CreateValueOutput("ClassicJoystickRight", 2, new string[2]{"Horizontal", "Vertical"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtJoystickRight);
+					FHost.CreateValueOutput("Classic Joystick Right", 2, null, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtJoystickRight);
 					FPinOutputExtJoystickRight.SetSubType2D(-1, 1, 0.0001, 0, 0, false, false, false);
 
-					FHost.CreateValueOutput("ClassicBackControl", 4, new string[4]{"Left", "Right", "Left", "Right"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtControls2);
+					FHost.CreateValueOutput("Classic Back Control", 4, new string[4]{"Left", "Right", "Left", "Right"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtControls2);
 					FPinOutputExtControls2.SetSubType4D(0, 1, 1, 0, 0, 0, 0, false, true, false);
 					
 					break;
 				case 3: //BalanceBoard
 					FHost.Log(TLogType.Debug, "BalanceBoard");
 
-					FHost.CreateValueOutput("BalanceBoardWeight", 1, new string[1]{"in kg"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtButtons);
+					FHost.CreateValueOutput("Balance Board Weight (kg)", 1, null, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtButtons);
 					FPinOutputExtButtons.SetSubType(0, double.MaxValue, 1, 0, false, false, false);
 					
-					FHost.CreateValueOutput("BalanceBoard_Corners", 4, new string[4]{"TL", "TR", "BL", "BR"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtAccelleration);
+					FHost.CreateValueOutput("Balance Board Corners", 4, new string[4]{"TL", "TR", "BL", "BR"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtAccelleration);
 					FPinOutputExtAccelleration.SetSubType4D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, 0, false, false, false);
 					
-					FHost.CreateValueOutput("BalanceBoardCenterOfGravity", 2, new string[2]{"Horizontal", "Vertical"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtJoystickLeft);
+					FHost.CreateValueOutput("Balance Board Center Of Gravity", 2, null, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtJoystickLeft);
 					FPinOutputExtJoystickLeft.SetSubType2D(-1, 1, 0.0001, 0, 0, false, false, false);
 					break;					
 				case 4: // Guitar
 					FHost.Log(TLogType.Debug, "Guitar");
 					
-					FHost.CreateValueOutput("GuitarButtons", 4, new string[4]{"Plus", "Minus", "StrumUp", "StrumDow"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtButtons);
+					FHost.CreateValueOutput("Guitar Buttons", 4, new string[4]{"Plus", "Minus", "StrumUp", "StrumDown"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtButtons);
 					FPinOutputExtButtons.SetSubType4D(0, 1, 1, 0, 0, 0, 0, false, true, false);
 
-					FHost.CreateValueOutput("GuitarBars", 1, new string[1]{"ColorBars"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtControls);
+					FHost.CreateValueOutput("Guitar Color Bar", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtControls);
 					FPinOutputExtControls.SetSubType(0, 1, 1, 0, false, true, false);
 					
-					FHost.CreateValueOutput("GuitarWhammybar", 1, new string[1]{"Whammy"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtJoystickLeft);
+					FHost.CreateValueOutput("Guitar Whammy Bar", 1, null, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtJoystickLeft);
 					FPinOutputExtJoystickLeft.SetSubType2D(0, 1, 0.0001, 0, 0, false, false, false);
 					
-					FHost.CreateValueOutput("GuitarJoystick", 2, new string[2]{"Horizontal", "Vertical"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtJoystickRight);
+					FHost.CreateValueOutput("Guitar Joystick", 2, null, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtJoystickRight);
 					FPinOutputExtJoystickRight.SetSubType2D(-1, 1, 0.0001, 0, 0, false, false, false);
 
 					break;
