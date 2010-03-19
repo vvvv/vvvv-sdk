@@ -49,6 +49,9 @@ namespace VVVV.Nodes
     //class definition
     public class DrawFlash : IPlugin, IDisposable, IPluginDXLayer
     {
+    	[DllImport("user32.dll", CharSet=CharSet.Auto)]
+		internal static extern int MapVirtualKey(int uCode, int nMapType);
+    	
     	//note: the binary version of this plugin shipping with vvvvs addonpack 
     	//is licensed by meso.net
     	//to build your own non-trial version enter your license key here:	
@@ -74,9 +77,11 @@ namespace VVVV.Nodes
         private IValueIn FEnabledInput;
         private IValueIn FGoToFrame;
         private IEnumIn FQuality;
+        
+        private IValueIn FKeyCodeIn;
+		private List<int> FLastKeyState;
 
         private bool _DisposeAllowed = true;
-        private bool _AddDirtyAllowed = true;
 
         //a layer output pin
         private IDXLayerIO FLayerOutput;
@@ -108,6 +113,8 @@ namespace VVVV.Nodes
             tPresentParas.SwapEffect = SwapEffect.Discard;
             tPresentParas.Windowed = true;
 
+            FLastKeyState = new List<int>();
+            
             _FNUIMain = new FNUIMain();
             _FNUIMain.SetLicenseKey(0, LICENSENAME, LICENSENUMBER);
             _FNUIMain.CreateUI("");
@@ -281,6 +288,8 @@ namespace VVVV.Nodes
             FHost.CreateValueInput("Mouse Y", 1, null, TSliceMode.Single, TPinVisibility.True, out FMouseY);
             FHost.CreateValueInput("Mouse Left Button", 1, null, TSliceMode.Single, TPinVisibility.True, out FMouseLeftButton);
 
+            FHost.CreateValueInput("Key Code", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FKeyCodeIn);
+            
             FHost.UpdateEnum("Buffer Mode", "Single", new string[] { "Single", "Double" });
             FHost.CreateEnumInput("Buffer Mode", TSliceMode.Single, TPinVisibility.True, out FBufferMode);
             FBufferMode.SetSubType("Buffer Mode");
@@ -383,15 +392,122 @@ namespace VVVV.Nodes
 
                     if (FMouseLeftButton.PinIsChanged)
                     {
-                        double tLB;
+                    	double tLB;
 
-                        FMouseLeftButton.GetValue(0, out tLB);
+                    	FMouseLeftButton.GetValue(0, out tLB);
 
-                        if (tLB == 1.0)
-                            _FNUIFlashPlayer.UpdateMouseButton(0, true);
-                        else
-                            _FNUIFlashPlayer.UpdateMouseButton(0, false);
+                    	if (tLB == 1.0)
+                    		_FNUIFlashPlayer.UpdateMouseButton(0, true);
+                    	else
+                    		_FNUIFlashPlayer.UpdateMouseButton(0, false);
                     }
+                    
+                    if(FKeyCodeIn.PinIsChanged)
+                    {
+                    	
+                    	List<int> currentKeyState = new List<int>();
+                    	
+                    	int count = FKeyCodeIn.SliceCount;
+                    	
+                    	for(int i = 0; i<count; i++)
+                    	{
+                    		double v;
+                    		FKeyCodeIn.GetValue(i, out v);
+                    		
+                    		if(v > 0) currentKeyState.Add((int)v);
+                    		
+                    	}
+                    	
+                    	count = FLastKeyState.Count;
+                    	for (int i=0; i<count; i++)
+                    	{
+                    		
+                    		if(currentKeyState.IndexOf(FLastKeyState[i]) < 0)
+                    		{
+                    			_FNUIFlashPlayer.SendKey(false, FLastKeyState[i], 0);
+                    			
+                    		}
+                    	}
+                    	
+                    	count = currentKeyState.Count;
+                    	
+                    	bool isShift = currentKeyState.IndexOf(16) >= 0;
+                    	
+                    	for (int i=0; i<count; i++)
+                    	{
+                    		
+                    		if(FLastKeyState.IndexOf(currentKeyState[i]) < 0)
+                    		{
+                    			
+                    			int key = currentKeyState[i];
+                    			
+                    			_FNUIFlashPlayer.SendKey(true, key, 0);
+                    			
+                    
+                    			//char
+                    			if(!isShift && (key >= 65 && key <= 90))
+                    			{
+                    				_FNUIFlashPlayer.SendChar(MapVirtualKey(key, 2)+32, 0);
+                    				
+                    			}
+   
+                    			
+                    			//Ä
+                    			else if (key == 222)
+                    			{
+                    				if(isShift)
+                    				{
+                    					_FNUIFlashPlayer.SendChar(196, 0);
+                    				}else{
+                    					_FNUIFlashPlayer.SendChar(228, 0);
+                    				}
+                    				
+                    			}
+                    			
+                    			//Ö
+                    			else if (key == 192)
+                    			{
+                    				if(isShift)
+                    				{
+                    					_FNUIFlashPlayer.SendChar(214, 0);
+                    				}else{
+                    					_FNUIFlashPlayer.SendChar(246, 0);
+                    				}
+                    				
+                    			}
+                    			
+                    			//Ü
+                    			else if (key == 186)
+                    			{
+                    				if(isShift)
+                    				{
+                    					_FNUIFlashPlayer.SendChar(220, 0);
+                    				}else{
+                    					_FNUIFlashPlayer.SendChar(252, 0);
+                    				}
+                    				
+                    			}
+                    			
+                    			//ß
+                    			else if (key == 219)
+                    			{
+                    				
+                    				_FNUIFlashPlayer.SendChar(223, 0);
+                    				
+                    			}
+                    			
+                    			else
+                    			{
+                    				_FNUIFlashPlayer.SendChar(MapVirtualKey(key, 2), 0);
+                    			}
+                    			
+                    		}
+                    	}
+                    	
+                    	FLastKeyState = currentKeyState;
+                    	
+                    }
+                    
                 }
             }
             catch
