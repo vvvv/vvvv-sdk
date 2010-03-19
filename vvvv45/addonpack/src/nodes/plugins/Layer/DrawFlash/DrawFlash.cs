@@ -581,7 +581,7 @@ namespace VVVV.Nodes
             try
             {
                 //Debug.WriteLine("Create Player :: CreateFlashControl");
-                _FNUIFlashPlayer.CreateFlashControl(0, _Width, _Height, (IntPtr)0, (IntPtr)_BufferMode, false, false);
+                _FNUIFlashPlayer.CreateFlashControl(2, _Width, _Height, (IntPtr)0, (IntPtr)_BufferMode, false, false);
 
                 _FNUIFlashPlayer.DisableFlashRendering(true);
 
