@@ -80,7 +80,7 @@ namespace VVVV.Nodes
             //assign host
             this.FHost = Host;
    
-            this.FHost.CreateValueInput("Position", 3, new string[] { "X", "Y","Z" } , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInPosition);
+            this.FHost.CreateValueInput("Position", 3, null , TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInPosition);
             this.FPinInPosition.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 0, 0,0, false, false, false);
        
             this.FHost.CreateValueInput("Age", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInAge);
