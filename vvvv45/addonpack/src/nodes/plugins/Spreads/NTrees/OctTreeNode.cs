@@ -53,16 +53,16 @@ namespace VVVV.Nodes
         {
             this.FHost = Host;
 
-            this.FHost.CreateValueInput("Input", 3, new string[] { "X", "Y","Z" }, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInput);
+            this.FHost.CreateValueInput("Input", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInput);
             this.FPinInput.SetSubType3D(double.MinValue, double.MaxValue, 0.01,0, 0, 0, false, false, false);
 
             this.FHost.CreateValueInput("Maximum Elements", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInElementCount);
             this.FPinInElementCount.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
 
-            this.FHost.CreateValueInput("Bounds Min", 3, new string[] { "X", "Y","Z" }, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInBoundsMin);
+            this.FHost.CreateValueInput("Bounds Min", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInBoundsMin);
             this.FPinInBoundsMin.SetSubType3D(double.MinValue, double.MaxValue, 0.01, -1, -1,-1, false, false, false);
 
-            this.FHost.CreateValueInput("Bounds Max", 3, new string[] { "X", "Y","Z" }, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInBoundsMax);
+            this.FHost.CreateValueInput("Bounds Max", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInBoundsMax);
             this.FPinInBoundsMax.SetSubType3D(double.MinValue, double.MaxValue, 0.01, 1, 1,1, false, false, false);
 
             this.FHost.CreateValueOutput("Centers", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutputCenter);
