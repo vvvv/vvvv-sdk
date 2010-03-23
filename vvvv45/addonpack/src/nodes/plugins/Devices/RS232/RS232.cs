@@ -30,12 +30,15 @@ namespace VVVV.Nodes
         private IEnumIn FDatabitsIn;
         private IEnumIn FStopbitsIn;
         private IEnumIn FHandShakeIn;
+        private IValueIn FReadBufferIn;
 
         // Output Pins
         private IStringOut FDataOut;
         private IValueOut FOnDataOut;
         private IValueOut FConnectedOut;
         private IValueOut FPortsOut;
+        private IValueOut FReadBufferOut;
+        
 
 
 
@@ -143,12 +146,16 @@ namespace VVVV.Nodes
             FHandShakeIn.SetSubType("Hand Shake");
             FHost.UpdateEnum("Hand Shake", "None", new string[] { "None", "RequestToSend", "RequestToSendXOnXOff", "XOnXOff" });
 
+            FHost.CreateValueInput("ReadBuffer Size", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FReadBufferIn);
+            FReadBufferIn.SetSubType(0, Double.MaxValue,1, 4096, false, false, true);
+
             FHost.CreateValueInput("Enabled", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FEnableIn);
             FEnableIn.SetSubType(0, 1, 1, 0, false, false, true);
 
 			FHost.CreateValueInput("ComPort", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPortNumberIn);
             FPortNumberIn.SetSubType(1, 15, 1, 1, false, false, true);
 
+           
             // OUTPUT-PINS
             FHost.CreateStringOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FDataOut);
             FDataOut.SetSubType("", false);
@@ -161,6 +168,9 @@ namespace VVVV.Nodes
 
             FHost.CreateValueOutput("Available Ports", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPortsOut);
             FPortsOut.SetSubType(1, 15, 1, 1, false, false, true);
+
+            FHost.CreateValueOutput("ReadBuffer Size", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FReadBufferOut);
+            FReadBufferOut.SetSubType(0, Double.MaxValue, 1, 0, false, false, true);
 
             FPortsOut.SliceCount = _AvailablePorts.Length;
         }
@@ -197,6 +207,7 @@ namespace VVVV.Nodes
                 string currentSliceDatabits = "";
                 string currentSliceStopbits;
                 string currentSliceHandShake;
+                double currentReadBufferSize;
 
 
 
@@ -212,6 +223,7 @@ namespace VVVV.Nodes
                     FDatabitsIn.GetString(i, out currentSliceDatabits);
                     FStopbitsIn.GetString(i, out currentSliceStopbits);
                     FHandShakeIn.GetString(i, out currentSliceHandShake);
+                    FReadBufferIn.GetValue(i, out currentReadBufferSize);
 
                     Port tPort;
 
@@ -224,29 +236,16 @@ namespace VVVV.Nodes
                             if ((new List<string>(SerialPort.GetPortNames())).Contains(String.Format("COM{0}", currentSlicePortNumber)))
                             {
                                 tPort = new Port((int)currentSlicePortNumber, (int)currentSliceBaudrate,
-                                                    currentSliceParity, Convert.ToInt32(currentSliceDatabits.Replace("Bits","")), currentSliceStopbits.Replace("Bits",""));
+                                                    currentSliceParity, Convert.ToInt32(currentSliceDatabits.Replace("Bits","")), currentSliceStopbits.Replace("Bits",""),(int) currentReadBufferSize);
 
                                 _Ports.Add(tPort);
+
+                                currentReadBufferSize = (double)tPort.BufferSize;
+                                FReadBufferOut.SetValue(i, currentReadBufferSize);
                             }
                         }
                         else
                         {
-                            if (FBaudrateIn.PinIsChanged)
-                                tPort.Baudrate = (int)currentSliceBaudrate;
-
-                            if (FParityIn.PinIsChanged)
-                                tPort.Parity = currentSliceParity;
-
-                            if (FDatabitsIn.PinIsChanged)
-                                tPort.DataBits = Convert.ToInt32(currentSliceDatabits);
-
-                            if (FStopbitsIn.PinIsChanged)
-                                tPort.StopBits = currentSliceStopbits;
-
-                            if (FHandShakeIn.PinIsChanged)
-                                tPort.HandShake = currentSliceHandShake;
-
-
                             //read data from inputs
                             FDataIn.GetString(i, out currentSliceData);
                             FOnDataOut.SetValue(i, Convert.ToDouble(tPort.OnData));
@@ -265,6 +264,27 @@ namespace VVVV.Nodes
                                     FDataOut.SetString(i, tPort.Data);
                                 else
                                     FDataOut.SetString(i, "");
+                            }
+
+
+                            if (FBaudrateIn.PinIsChanged)
+                                tPort.Baudrate = (int)currentSliceBaudrate;
+
+                            if (FParityIn.PinIsChanged)
+                                tPort.Parity = currentSliceParity;
+
+                            if (FDatabitsIn.PinIsChanged)
+                                tPort.DataBits = Convert.ToInt32(currentSliceDatabits);
+
+                            if (FStopbitsIn.PinIsChanged)
+                                tPort.StopBits = currentSliceStopbits;
+
+                            if (FHandShakeIn.PinIsChanged)
+                                tPort.HandShake = currentSliceHandShake;
+                            if (FReadBufferIn.PinIsChanged)
+                            {
+                                tPort.Dispose();
+                                _Ports.Remove(tPort);
                             }
                         }
                     }
@@ -299,13 +319,6 @@ namespace VVVV.Nodes
 
 
 
-
-
-
-
-
-
-
     /// <summary>
     /// Wrapper for RS232 SerialPort Class.
     /// </summary>
@@ -327,14 +340,23 @@ namespace VVVV.Nodes
         public string HandShake { get { return _Port.Handshake.ToString(); } set { _Port.Handshake = GetHandShake(value); } }
 
 
-        public Port(int pNumber, int pBaudrate, string pParity, int pDataBits, string pStopBits)
+        public Port(int pNumber, int pBaudrate, string pParity, int pDataBits, string pStopBits, int BufferSize)
         {
             _Port = new SerialPort("COM" + (pNumber).ToString(), pBaudrate, GetParity(pParity), pDataBits, GetStopbits(pStopBits));
             _Port.Encoding = System.Text.Encoding.Default;
             _Port.ReadTimeout = 500;
             _Port.WriteTimeout = 500;
+            _Port.ReadBufferSize = BufferSize;
 
-            _Port.Open();
+            try
+            {
+                _Port.Open();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
         }
 
         public void Dispose()
@@ -361,9 +383,17 @@ namespace VVVV.Nodes
         public string Read()
         {
             _Data = _Port.ReadExisting();
-
             return _Data;
         }
+
+        public int BufferSize
+        {
+            get
+            {
+                return _Port.ReadBufferSize;
+            }
+        }
+
 
         private Parity GetParity(string pParity)
         {
