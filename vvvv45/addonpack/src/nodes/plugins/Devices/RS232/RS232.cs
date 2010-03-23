@@ -120,39 +120,48 @@ namespace VVVV.Nodes
             //INPUT-PINS
             FHost.CreateStringInput("Input", TSliceMode.Dynamic, TPinVisibility.True, out FDataIn);
             FDataIn.SetSubType("", false);
+
             FHost.CreateValueInput("Do Send", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDoSendIn);
             FDoSendIn.SetSubType(0, 1, 1, 0, true, false, true);
+
             FHost.CreateValueInput("Keep Last Data", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FKeepLastDataIn);
             FKeepLastDataIn.SetSubType(0, 1, 1, 0, false, false, true);
+
             FHost.CreateValueInput("Baudrate", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBaudrateIn);
             FBaudrateIn.SetSubType(Double.MinValue, Double.MaxValue, 1, 9600, false, false, true);
           
             FHost.CreateEnumInput("Data Bits", TSliceMode.Dynamic, TPinVisibility.True, out FDatabitsIn);
             FDatabitsIn.SetSubType("DataBits");
+
             FHost.CreateEnumInput("Stop Bits", TSliceMode.Dynamic, TPinVisibility.True, out FStopbitsIn);
             FStopbitsIn.SetSubType("StopBits");
             
             FHost.CreateEnumInput("Parity", TSliceMode.Dynamic, TPinVisibility.True, out FParityIn);
             FParityIn.SetSubType("Parity");
-            
-            FHost.UpdateEnum("Hand Shake", "None", new string[] { "None", "RequestToSend", "RequestToSendXOnXOff", "XOnXOff" });
+
             FHost.CreateEnumInput("Hand Shake", TSliceMode.Dynamic, TPinVisibility.True, out FHandShakeIn);
             FHandShakeIn.SetSubType("Hand Shake");
-            
+            FHost.UpdateEnum("Hand Shake", "None", new string[] { "None", "RequestToSend", "RequestToSendXOnXOff", "XOnXOff" });
+
             FHost.CreateValueInput("Enabled", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FEnableIn);
             FEnableIn.SetSubType(0, 1, 1, 0, false, false, true);
+
 			FHost.CreateValueInput("ComPort", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPortNumberIn);
             FPortNumberIn.SetSubType(1, 15, 1, 1, false, false, true);
 
             // OUTPUT-PINS
             FHost.CreateStringOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FDataOut);
             FDataOut.SetSubType("", false);
+
             FHost.CreateValueOutput("On Data", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FOnDataOut);
             FOnDataOut.SetSubType(0, 1, 1, 0, true, false, true);
+
             FHost.CreateValueOutput("IsConnected", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FConnectedOut);
             FConnectedOut.SetSubType(0, 1, 1, 0, false, false, true);
+
             FHost.CreateValueOutput("Available Ports", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPortsOut);
             FPortsOut.SetSubType(1, 15, 1, 1, false, false, true);
+
             FPortsOut.SliceCount = _AvailablePorts.Length;
         }
 
@@ -175,8 +184,6 @@ namespace VVVV.Nodes
                                 
                 for (int i = 0; i < _AvailablePorts.Length; i++)
                     FPortsOut.SetValue(i, Convert.ToDouble(_AvailablePorts[i].Substring(3)));
-
-
 
 
 
@@ -217,7 +224,7 @@ namespace VVVV.Nodes
                             if ((new List<string>(SerialPort.GetPortNames())).Contains(String.Format("COM{0}", currentSlicePortNumber)))
                             {
                                 tPort = new Port((int)currentSlicePortNumber, (int)currentSliceBaudrate,
-                                                    currentSliceParity, Convert.ToInt32(currentSliceDatabits), currentSliceStopbits);
+                                                    currentSliceParity, Convert.ToInt32(currentSliceDatabits.Replace("Bits","")), currentSliceStopbits.Replace("Bits",""));
 
                                 _Ports.Add(tPort);
                             }
