@@ -1121,6 +1121,48 @@ namespace VVVV.Utils.VMath
 		}
 		
 		/// <summary>
+		/// Builds a left-handed perspective projection matrix based on a field of view.
+		/// </summary>
+		/// <param name="FOV">Camera angle in cycles, [0..0.5]</param>
+		/// <param name="Near">Near Plane z</param>
+		/// <param name="Far">Far Plane z</param>
+		/// <param name="Aspect">Aspect Ratio</param>
+		/// <returns>Projection matrix</returns>
+		public static Matrix4x4 PerspectiveLH(double FOV, double Near, double Far, double Aspect)
+		{
+			double scaleY = 1.0/Math.Tan(FOV * Math.PI);
+			double scaleX = scaleY / Aspect;
+			double fn = Far / (Far - Near);
+			
+			return new Matrix4x4(scaleX,      0,        0, 0,
+			                          0, scaleY,        0, 0,
+			                          0,      0,       fn, 1,
+			                          0,      0, -Near*fn, 0);
+			
+		}
+		
+		/// <summary>
+		/// Builds a right-handed perspective projection matrix based on a field of view.
+		/// </summary>
+		/// <param name="FOV">Camera angle in cycles, [0..0.5]</param>
+		/// <param name="Near">Near Plane z</param>
+		/// <param name="Far">Far Plane z</param>
+		/// <param name="Aspect">Aspect Ratio</param>
+		/// <returns>Projection matrix</returns>
+		public static Matrix4x4 PerspectiveRH(double FOV, double Near, double Far, double Aspect)
+		{
+			double scaleY = 1.0/Math.Tan(FOV * 0.5);
+			double scaleX = scaleY / Aspect;
+			double fn = Far / (Far - Near);
+			
+			return new Matrix4x4(scaleX,      0,       0,  0,
+			                          0, scaleY,       0,  0,
+			                          0,      0,      fn, -1,
+			                          0,      0, Near*fn,  0);
+			
+		}
+		
+		/// <summary>
 		/// Transpose a 4x4 matrix
 		/// </summary>
 		/// <param name="A"></param>
@@ -1132,7 +1174,7 @@ namespace VVVV.Utils.VMath
 			                     A.m13, A.m23, A.m33, A.m43,
 			                     A.m14, A.m24, A.m34, A.m44);
 		}
-
+		
 		/// <summary>
 		/// Optimized 4x4 matrix inversion using cramer's rule, found in the game engine http://www.ogre3d.org
 		/// Note that the unary ! operator of Matrix4x4 does the same
