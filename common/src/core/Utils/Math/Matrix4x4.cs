@@ -521,7 +521,7 @@ namespace VVVV.Utils.VMath
 		}
 		
 		/// <summary>
-		/// matrx + value, adds a value to all matrix components
+		/// matrix + value, adds a value to all matrix components
 		/// </summary>
 		/// <param name="A"></param>
 		/// <param name="b"></param>
@@ -637,7 +637,7 @@ namespace VVVV.Utils.VMath
 		
 		
 		/// <summary>
-		/// matrix * 3d vector, applies a matrix transform to a 3d-vector, (x, y, z, 1)
+		/// matrix * 3d vector, applies a matrix transform to a 3d-vector, (x, y, z, 1) and divides by w
 		/// </summary>
 		/// <param name="A"></param>
 		/// <param name="b"></param>

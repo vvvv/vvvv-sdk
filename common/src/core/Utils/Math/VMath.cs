@@ -1151,7 +1151,7 @@ namespace VVVV.Utils.VMath
 		/// <returns>Projection matrix</returns>
 		public static Matrix4x4 PerspectiveRH(double FOV, double Near, double Far, double Aspect)
 		{
-			double scaleY = 1.0/Math.Tan(FOV * 0.5);
+			double scaleY = 1.0/Math.Tan(FOV * Math.PI);
 			double scaleX = scaleY / Aspect;
 			double fn = Far / (Far - Near);
 			
