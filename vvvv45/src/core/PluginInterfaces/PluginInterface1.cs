@@ -6,7 +6,8 @@ using VVVV.Utils.VMath;
 using VVVV.Utils.VColor;
 
 /// <summary>
-/// Version 1 of the VVVV PluginInterface
+/// Version 1 of the VVVV PluginInterface.
+/// DirectX/SlimDX related parts are in a separate file: PluginDXInterface1.cs
 ///
 /// To convert this to a typelib make sure AssemblyInfo.cs states: ComVisible(true).
 /// Then on a commandline type:

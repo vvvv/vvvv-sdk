@@ -1,13 +1,9 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 using SlimDX;
 using SlimDX.Direct3D9;
 
-/// <summary>
-/// DirectX/SlimDX related parts of Version 1 of the VVVV PluginInterface
-/// for further information see PluginInterface1.cs
-/// </summary>
 namespace VVVV.PluginInterfaces.V1
 {
 	#region DXPins
