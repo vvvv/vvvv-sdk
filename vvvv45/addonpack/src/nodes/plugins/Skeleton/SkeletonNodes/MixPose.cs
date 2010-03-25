@@ -28,7 +28,7 @@
 //use what you need
 using System;
 using System.Drawing;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
@@ -54,26 +54,18 @@ namespace VVVV.Nodes
     	// Track whether Dispose has been called.
    		private bool FDisposed = false;
 
-    	private INodeIn FPose1Input;
-    	private INodeIn FPose2Input;
-    	private INodeIn FPose3Input;
-    	private INodeIn FPose4Input;
-    	private INodeIn FPose5Input;
-    	private INodeIn FPose6Input;
-    	private IValueIn FAmount1Input;
-    	private IValueIn FAmount2Input;
-    	private IValueIn FAmount3Input;
-    	private IValueIn FAmount4Input;
-    	private IValueIn FAmount5Input;
-    	private IValueIn FAmount6Input;
+    	private IValueConfig FPoseCount;
+    	private List<INodeIn> poseNodes;
+    	private List<IValueIn> amountNodes;
     	
     	private INodeOut FPoseOutput;
     	
     	private IJoint outputJoint;
     	private Skeleton outputSkeleton;
     	
-    	private IJoint pose1, pose2;
-    	private double amount1, amount2;
+    	private List<IJoint> poses;
+    	private List<double> amounts;
+		double poseCount = 2;
     	
     	#endregion field declaration
        
@@ -86,10 +78,10 @@ namespace VVVV.Nodes
 			outputJoint = new JointInfo();
 			outputSkeleton = new Skeleton(outputJoint);
 			
-			pose1 = new JointInfo();
-			pose2 = new JointInfo();
-			amount1 = 1.0;
-			amount2 = 0.0;
+			poses = new List<IJoint>();
+			amounts = new List<double>();
+			poseNodes = new List<INodeIn>();
+			amountNodes = new List<IValueIn>();
 		}
         
         // Implementing IDisposable's Dispose method.
@@ -215,43 +207,25 @@ namespace VVVV.Nodes
 	    	
 	    	System.Guid[] guids = new System.Guid[1];
 	    	guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
-
-	    	//create inputs
-	    	FHost.CreateNodeInput("Pose 1", TSliceMode.Single, TPinVisibility.True, out FPose1Input);
-	    	FPose1Input.SetSubType(guids, "Skeleton");
 	    	
-	    	FHost.CreateNodeInput("Pose 2", TSliceMode.Single, TPinVisibility.True, out FPose2Input);
-	    	FPose2Input.SetSubType(guids, "Skeleton");
+	    	FHost.CreateValueConfig("Number of Input Poses", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPoseCount);
+	    	FPoseCount.SetSubType(2, 10, 1, 2, false, false, true);
 	    	
-	    	FHost.CreateNodeInput("Pose 3", TSliceMode.Single, TPinVisibility.OnlyInspector, out FPose3Input);
-	    	FPose3Input.SetSubType(guids, "Skeleton");
-	    	
-	    	FHost.CreateNodeInput("Pose 4", TSliceMode.Single, TPinVisibility.OnlyInspector, out FPose4Input);
-	    	FPose4Input.SetSubType(guids, "Skeleton");
-	    	
-	    	FHost.CreateNodeInput("Pose 5", TSliceMode.Single, TPinVisibility.OnlyInspector, out FPose5Input);
-	    	FPose5Input.SetSubType(guids, "Skeleton");
-	    	
-	    	FHost.CreateNodeInput("Pose 6", TSliceMode.Single, TPinVisibility.OnlyInspector, out FPose6Input);
-	    	FPose6Input.SetSubType(guids, "Skeleton");
-	    	
-	    	FHost.CreateValueInput("Amount 1", 1, null, TSliceMode.Single, TPinVisibility.True, out FAmount1Input);
-	    	FAmount1Input.SetSubType(0.0, 1.0, 0.01, 1.0, false, false, false);
-	    	
-	    	FHost.CreateValueInput("Amount 2", 1, null, TSliceMode.Single, TPinVisibility.True, out FAmount2Input);
-	    	FAmount2Input.SetSubType(0.0, 1.0, 0.01, 0.0, false, false, false);
-	    	
-	    	FHost.CreateValueInput("Amount 3", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FAmount3Input);
-	    	FAmount2Input.SetSubType(0.0, 1.0, 0.01, 0.0, false, false, false);
-	    	
-	    	FHost.CreateValueInput("Amount 4", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FAmount4Input);
-	    	FAmount2Input.SetSubType(0.0, 1.0, 0.01, 0.0, false, false, false);
-	    	
-	    	FHost.CreateValueInput("Amount 5", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FAmount5Input);
-	    	FAmount2Input.SetSubType(0.0, 1.0, 0.01, 0.0, false, false, false);
-	    	
-	    	FHost.CreateValueInput("Amount 6", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FAmount6Input);
-	    	FAmount2Input.SetSubType(0.0, 1.0, 0.01, 0.0, false, false, false);
+	    	INodeIn currPoseNode;
+	    	IValueIn currAmountNode;
+	    	for (int i=0; i<2; i++)
+    		{
+    			FHost.CreateNodeInput("Pose "+(i+1), TSliceMode.Single, TPinVisibility.True, out currPoseNode);
+		    	currPoseNode.SetSubType(guids, "Skeleton");
+		    	poseNodes.Add(currPoseNode);
+	
+		    	FHost.CreateValueInput("Amount "+(i+1), 1, null, TSliceMode.Single, TPinVisibility.True, out currAmountNode);
+		    	currAmountNode.SetSubType(0.0, 1.0, 0.01, 0.0, false, false, false);
+		    	amountNodes.Add(currAmountNode);
+		    	
+		    	poses.Add(null);
+		    	amounts.Add(1-i);
+    		}
 	    	
 	    	// create outputs
 	    	
@@ -269,6 +243,46 @@ namespace VVVV.Nodes
         {
         	//nothing to configure in this plugin
         	//only used in conjunction with inputs of type cmpdConfigurate
+        	
+        	if (Input.Name == "Number of Input Poses")
+        	{
+        		System.Guid[] guids = new System.Guid[1];
+	    		guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
+	    		
+        		IValueConfig valueInput = (IValueConfig)Input;
+        		valueInput.GetValue(0, out poseCount);
+        		
+        		int oldPoseCount = poseNodes.Count;
+        		for (int i=oldPoseCount-1; i>=(int)poseCount; i--)
+        		{
+        			FHost.DeletePin(poseNodes[i]);
+        			FHost.DeletePin(amountNodes[i]);
+        		}
+        		for (int i=oldPoseCount-1; i>=(int)poseCount; i--)
+        		{
+        			poseNodes.RemoveAt(i);
+        			amountNodes.RemoveAt(i);
+        			poses.RemoveAt(i);
+        			amounts.RemoveAt(i);
+        		}
+        		
+        		INodeIn currPoseNode;
+        		IValueIn currAmountNode;
+        		for (int i=oldPoseCount; i<(int)poseCount; i++)
+        		{
+        			FHost.CreateNodeInput("Pose "+(i+1), TSliceMode.Single, TPinVisibility.True, out currPoseNode);
+			    	currPoseNode.SetSubType(guids, "Skeleton");
+			    	poseNodes.Add(currPoseNode);
+		
+			    	FHost.CreateValueInput("Amount "+(i+1), 1, null, TSliceMode.Single, TPinVisibility.True, out currAmountNode);
+			    	currAmountNode.SetSubType(0.0, 1.0, 0.01, 0.0, false, false, false);
+			    	amountNodes.Add(currAmountNode);
+			    	
+			    	poses.Add(null);
+		    		amounts.Add(0.0);
+        		}
+		    	
+        	}
         }
         
         //here we go, thats the method called by vvvv each frame
@@ -281,44 +295,51 @@ namespace VVVV.Nodes
         	
         	bool recalculate = false;
             INodeIOBase currInterface;
-
-        	if (FPose1Input.PinIsChanged)
-        	{
-        		FPose1Input.GetUpstreamInterface(out currInterface);
-        		pose1 = ((Skeleton)currInterface).Root;
-        		recalculate = true;
-        	}
-        	
-        	if (FPose2Input.PinIsChanged)
-        	{
-        		FPose2Input.GetUpstreamInterface(out currInterface);
-        		pose2 = ((Skeleton)currInterface).Root;
-        		recalculate = true;
-        	}
-        	
-        	if (FAmount1Input.PinIsChanged)
-        	{
-        		FAmount1Input.GetValue(0, out amount1);
-        		recalculate = true;
-        	}
-        	
-        	if (FAmount2Input.PinIsChanged)
-        	{
-        		FAmount2Input.GetValue(0, out amount2);
-        		recalculate = true;
-        	}
+            
+            for (int i=0; i<poseNodes.Count; i++)
+            {
+            	if (poseNodes[i].PinIsChanged)
+            	{
+            		if (poseNodes[i].IsConnected)
+            		{
+	            		poseNodes[i].GetUpstreamInterface(out currInterface);
+	            		IJoint currPose = ((Skeleton)currInterface).Root;
+	            		poses[i] = currPose;
+            		}
+            		else
+            			poses[i] = null;
+            		recalculate = true;
+            	}
+            	if (amountNodes[i].PinIsChanged)
+	        	{
+            		double amount;
+	        		amountNodes[i].GetValue(0, out amount);
+	        		amounts[i] = amount;
+	        		recalculate = true;
+	        	}
+            }
         	
         	
         	if (recalculate)
         	{
-        		outputJoint = pose1.DeepCopy();
-        		mixJoints(outputJoint, pose1, pose2);
+        		// the following would be much nicer, if mixJoints() would take a dynamic number of poses and amounts
+        		outputJoint = poses[0].DeepCopy();
+        		double amount = amounts[0];
+        		IJoint interimPose;
+        		for (int i=0; i<poses.Count-1; i++)
+        		{
+        			if (poses[i+1]==null)
+        				continue;
+        			interimPose = outputJoint; //.DeepCopy();
+        			mixJoints(outputJoint, interimPose, amount, poses[i+1], amounts[i+1]);
+        			amount = 1.0;
+        		}
 				outputSkeleton.Root = outputJoint;
 				outputSkeleton.BuildJointTable();
         		FPoseOutput.MarkPinAsChanged();
         	}
         
-
+			
         	FPoseOutput.SetInterface(outputSkeleton);
         	
         }
@@ -327,21 +348,12 @@ namespace VVVV.Nodes
         
         #region helper
         
-        private void mixJoints(IJoint result, IJoint joint1, IJoint joint2)
-        {
-        	/* old method
-        	Vector3D resultRot = new Vector3D(0);
-        	resultRot.x = amount1*joint1.Rotation.x + amount2*joint2.Rotation.x;
-        	resultRot.y = amount1*joint1.Rotation.y + amount2*joint2.Rotation.y;
-        	resultRot.z = amount1*joint1.Rotation.z + amount2*joint2.Rotation.z;
-        	*/
-        	
-        	//result.AnimationTransform = VMath.Rotate(resultRot);
-        	
+        private void mixJoints(IJoint result, IJoint joint1, double amount1, IJoint joint2, double amount2)
+        {       	
         	double enableJoint1 = 1.0;
         	double enableJoint2 = 1.0;
         	Vector3D p;
-        	p = joint1.AnimationTransform * new Vector3D(1, 1, 1);
+        	p = joint1.AnimationTransform * new Vector3D(1, 1, 1); // check, if AnimationTransform is Identity Matrix... for the lazy ones...
         	if (p.x == 1 && p.y==1 && p.z==1)
         		enableJoint1 = 0;
         	p = joint2.AnimationTransform * new Vector3D(1, 1, 1);
@@ -355,7 +367,7 @@ namespace VVVV.Nodes
         	
         	for (int i=0; i<result.Children.Count; i++)
         	{
-        		mixJoints(result.Children[i], joint1.Children[i], joint2.Children[i]);
+        		mixJoints(result.Children[i], joint1.Children[i], amount1, joint2.Children[i], amount2);
         	}
         }
         
