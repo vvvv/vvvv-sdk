@@ -8,6 +8,9 @@
 using System;
 using System.Drawing;
 
+/// <summary>
+/// VVVV Color Utilities 
+/// </summary>
 namespace VVVV.Utils.VColor
 {
 	/// <summary>

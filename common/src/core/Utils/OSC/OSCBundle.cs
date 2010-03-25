@@ -29,6 +29,9 @@
 using System;
 using System.Collections;
 
+/// <summary>
+/// VVVV OSC Utilities 
+/// </summary>
 namespace VVVV.Utils.OSC
 {
 	/// <summary>

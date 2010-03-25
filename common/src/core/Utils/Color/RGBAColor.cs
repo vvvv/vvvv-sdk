@@ -10,6 +10,9 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using VVVV.Utils.VMath;
 
+/// <summary>
+/// VVVV Color Utilities 
+/// </summary>
 namespace VVVV.Utils.VColor
 {
 	/// <summary>

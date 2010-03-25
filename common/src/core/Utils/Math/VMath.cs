@@ -11,6 +11,9 @@
  
 using System;
 
+/// <summary>
+/// VVVV Math Utilities 
+/// </summary>
 namespace VVVV.Utils.VMath
 {
 	
