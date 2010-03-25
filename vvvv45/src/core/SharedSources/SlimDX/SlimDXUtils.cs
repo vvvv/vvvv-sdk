@@ -2,6 +2,9 @@ using System;
 using VVVV.Utils.VMath;
 using SlimDX;
 
+/// <summary>
+/// VVVV Shared SlimDX Sources
+/// </summary>
 namespace VVVV.Shared.VSlimDX
 {
 	public sealed class VSlimDXUtils
