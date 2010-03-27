@@ -55,17 +55,13 @@ namespace VVVV.Nodes
     	private ITransformIn FBaseTransformInput;
     	private IValueIn FRotationConstraintsInput;
     	private IStringIn FJointNameInput;
-    	private IValueIn FChildrenCountInput;
-    	private IStringConfig FInputPins; // only for saving purposes
-    	private bool pinsLoaded = false;
-    	
-    	private INodeIn FChildInput;
-    	
+    	private IValueConfig FChildrenCountInput;
+
     	private INodeOut FSkeletonOutput;
     	
 		private ISkeleton outputSkeleton;
 		private IJoint rootJoint;
-		private List<INodeIn> childPinsList;
+		private List<INodeIn> childPins;
     
     	private bool initialized = false;
     	
@@ -83,7 +79,7 @@ namespace VVVV.Nodes
 			rootJoint.Id = 0;
 			outputSkeleton = new Skeleton(rootJoint);
 			outputSkeleton.BuildJointTable();
-			childPinsList = new List<INodeIn>();
+			childPins = new List<INodeIn>();
 			
 			guids = new System.Guid[1];
 	    	guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
@@ -223,10 +219,15 @@ namespace VVVV.Nodes
 	    	FHost.CreateValueInput("Rotation Constraints", 2, dimensions, TSliceMode.Dynamic, TPinVisibility.True, out FRotationConstraintsInput);
 	    	FRotationConstraintsInput.SetSubType2D(-1.0, 1.0, 0.1, -1.0, 1.0, false, false, false);
 	    	
-	    	FHost.CreateValueInput("Children Count", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FChildrenCountInput);
+	    	INodeIn node;
+	    	FHost.CreateNodeInput("Child1", TSliceMode.Single, TPinVisibility.True, out node);
+	    	node.SetSubType(guids, "Skeleton");
+	    	childPins.Add(node);
+	    	
+	    	FHost.CreateValueConfig("Children Count", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FChildrenCountInput);
 	    	FChildrenCountInput.SetSubType(0,50, 1.0, 1.0, false, false, true);
 	    	
-	    	FHost.CreateStringConfig("Input Pins", TSliceMode.Dynamic, TPinVisibility.Hidden, out FInputPins);
+	    	//FHost.CreateValueConfig("Input Pins", TSliceMode.Dynamic, TPinVisibility.Hidden, out FInputPins);
 	    	
 	    	// create outputs
 	    	
@@ -243,25 +244,29 @@ namespace VVVV.Nodes
         
         public void Configurate(IPluginConfig Input)
         {	
-        	if (pinsLoaded)
-        		return;
-        	
-        	if (Input.Name=="Input Pins")
+        	if (Input.Name=="Children Count")
         	{
-        		if (string.IsNullOrEmpty(Input.SpreadAsString))
-        			return;
-        		int pinCount = (int)Decimal.Parse(Input.SpreadAsString);
-        		if (pinCount==childPinsList.Count)
-        			return;
-        		INodeIn FJoint;
-        		for (int i=0; i<pinCount; i++)
+        		IValueConfig valueInput = (IValueConfig)Input;
+        		double pinCount;
+        		valueInput.GetValue(0, out pinCount);
+        		
+        		int oldChildrenCount = childPins.Count;
+        		for (int i=oldChildrenCount-1; i>=(int)pinCount; i--)
         		{
-        			FHost.CreateNodeInput("Child"+(i+1), TSliceMode.Single, TPinVisibility.True, out FJoint);
-	    			FJoint.SetSubType(guids, "Joint");
-					childPinsList.Add(FJoint);
-					
+        			FHost.DeletePin(childPins[i]);
         		}
-        		pinsLoaded = true;
+        		for (int i=oldChildrenCount-1; i>=(int)pinCount; i--)
+        		{
+        			childPins.RemoveAt(i);
+        		}
+        		
+        		INodeIn node;
+        		for (int i=oldChildrenCount; i<pinCount; i++)
+        		{
+        			FHost.CreateNodeInput("Child"+(i+1), TSliceMode.Single, TPinVisibility.True, out node);
+	    			node.SetSubType(guids, "Skeleton");
+					childPins.Add(node);
+        		}
         	}
         }
         
@@ -283,38 +288,10 @@ namespace VVVV.Nodes
         		FSkeletonOutput.MarkPinAsChanged();
         	}
         	
-        	
-        	if (FChildrenCountInput.PinIsChanged || !initialized)
-        	{
-        		double childrenCount;
-        		FChildrenCountInput.GetValue(0, out childrenCount);
-        		
-        		int oldChildrenCount = childPinsList.Count;
-        		
-        		for (int i=childPinsList.Count-1; i>=childrenCount; i--)
-        		{
-        			FHost.DeletePin((IPluginIO)childPinsList[i]);
-        		}
-        		if (childPinsList.Count>childrenCount)
-        		{
-        			childPinsList.RemoveRange((int)childrenCount, childPinsList.Count - (int)childrenCount);
-        		}
-        		for (int i=0; i<childrenCount; i++)
-        		{
-	    			if (i>oldChildrenCount-1)
-	    			{
-	    				FHost.CreateNodeInput("Child"+(i+1), TSliceMode.Single, TPinVisibility.True, out FChildInput);
-	    				FChildInput.SetSubType(guids, "Skeleton");
-	    				childPinsList.Add(FChildInput);
-	    			}
-        		}
-        		FInputPins.SetString(0, ""+childrenCount);
-        	}
-        	
         	bool childrenChanged = false;
-        	for (int i=0; i<childPinsList.Count; i++)
+        	for (int i=0; i<childPins.Count; i++)
         	{
-        		if (childPinsList[i].PinIsChanged)
+        		if (childPins[i].PinIsChanged)
         			childrenChanged = true;
         	}
         	
@@ -324,21 +301,19 @@ namespace VVVV.Nodes
 	        	outputSkeleton.Root = rootJoint;
 	        	outputSkeleton.BuildJointTable();
 	        	
-	        	for (int i=0; i<childPinsList.Count; i++)
+	        	for (int i=0; i<childPins.Count; i++)
 	        	{
 	        		if (true) //childPinsList[i].PinIsChanged)
 	        		{
 	        			FSkeletonOutput.MarkPinAsChanged();
-	        			if (childPinsList[i].IsConnected)
+	        			if (childPins[i].IsConnected)
 	        			{
 	        				INodeIOBase currInterface;
-	        				childPinsList[i].GetUpstreamInterface(out currInterface);
+	        				childPins[i].GetUpstreamInterface(out currInterface);
 	        				ISkeleton subSkeleton = (ISkeleton)currInterface;
 	        				IJoint child = subSkeleton.Root.DeepCopy();
 	        				outputSkeleton.InsertJoint(outputSkeleton.Root.Name, child);
-
 		        			outputSkeleton.BuildJointTable();
-
 	        			}
 	        		}
 	        	}
