@@ -51,10 +51,10 @@ namespace VVVV.Nodes
 		//Track whether Dispose has been called.
 		private bool FDisposed = false;
 		
-		//a mesh output pin
+		//a texture output pin
 		private IDXTextureOut FMyTextureOutput;
 		
-		//a list that holds a mesh for every device
+		//a list that holds a texture for every device
 		private Dictionary<int, Texture> FDeviceTextures = new Dictionary<int, Texture>();
 		
 		#endregion field declaration
@@ -100,7 +100,7 @@ namespace VVVV.Nodes
 				// only the following code is executed.
 
 				if (FHost != null)
-					FHost.Log(TLogType.Debug, "PluginMeshTemplateNode is being deleted");
+					FHost.Log(TLogType.Debug, "PluginTextureTemplateNode is being deleted");
 				
 				// Note that this is not thread safe.
 				// Another thread could start disposing the object
@@ -228,7 +228,7 @@ namespace VVVV.Nodes
 				//if resource is not yet created on given Device, create it now
 				FHost.Log(TLogType.Debug, "Creating Resource...");
 				Device dev = Device.FromPointer(new IntPtr(OnDevice));
-				FDeviceTextures.Add(OnDevice, Texture.FromFile(dev, "C:\\door_01.jpg"));
+				FDeviceTextures.Add(OnDevice, Texture.FromFile(dev, "C:\\Temp\\uncomp\\render_00001.dds"));
 
 				//dispose device
 				dev.Dispose();
@@ -246,7 +246,7 @@ namespace VVVV.Nodes
 				FHost.Log(TLogType.Debug, "Destroying Resource...");
 				FDeviceTextures.Remove(OnDevice);
 				
-				//dispose mesh
+				//dispose texture
 				t.Dispose();
 			}
 			catch
@@ -262,7 +262,7 @@ namespace VVVV.Nodes
 			// therefore the plugin shouldn't be doing much here other than handing back the right texture
 			
 			TexturePointer = 0;
-			//in case the plugin has several mesh outputpins a test for the pin can be made here to get the right mesh.
+			//in case the plugin has several texture outputpins a test for the pin can be made here to get the right texture.
 			if (ForPin == FMyTextureOutput)
 			{
 				Texture t = FDeviceTextures[OnDevice];
