@@ -28,13 +28,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.Sockets;
-using System.IO;
-using System.Text;
-using System.Drawing;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
+
 
 //the vvvv node namespace
 namespace VVVV.Nodes
@@ -42,7 +39,10 @@ namespace VVVV.Nodes
 	
 	//class definition
 	public class TCPClientAdvanced: IPlugin, IDisposable
-    {	          	
+    {	   
+       	
+
+
     	#region field declaration
     	
     	//the host (mandatory)
@@ -57,7 +57,6 @@ namespace VVVV.Nodes
     	private IStringIn FRemoteHostStringInput;
     	private IValueIn FRemotePortValueInput;
     	private IValueIn FHoldOutputInput;
-    	private IValueIn FReadGreedyInput;
     	private IValueIn FReceiveBufferSizeInput;
     	private IValueIn FReceiveTimeoutInput;
     	private IValueIn FSendBufferSizeInput;
@@ -65,20 +64,20 @@ namespace VVVV.Nodes
     	
     	//output pin declaration
     	private IStringOut FOutputStringOutput;
+        private IValueOut FReceivedNewData;
     	private IValueOut FConnectedValueOutput;
-    	private IValueOut FOnConnectFailOutput;
     	
     	//the maximum spread count of all input spreads, stored so we can check when it changes
     	private int FSpreadMax = 0;
     	
     	//collection of TCPClients to listen and send on each specified host/port combination
     	private List<TV4TcpClient> TClients = new List<TV4TcpClient>();
-    	
     	//buffer for reading from the TCP NetworkStream
-    	private byte[] readBuffer = null;
     	
     	#endregion field declaration
        
+
+
     	#region constructor/destructor
     	
         public TCPClientAdvanced()
@@ -148,6 +147,8 @@ namespace VVVV.Nodes
         }
         #endregion constructor/destructor
         
+
+
         #region node name and infos
        
         //provide node infos 
@@ -171,18 +172,18 @@ namespace VVVV.Nodes
 					FPluginInfo.Version = "Client Advanced";
 					
 					//the nodes author: your sign
-					FPluginInfo.Author = "vvvv group";
+					FPluginInfo.Author = "phlegma";
 					//describe the nodes function
 					FPluginInfo.Help = "Connects to a TCP server, sends and receives data over the TCP connection. Allows setting of properties on the underlying socket connection.";
 					//specify a comma separated list of tags that describe the node
 					FPluginInfo.Tags = "";
 					
 					//give credits to thirdparty code used
-					FPluginInfo.Credits = "";
+					FPluginInfo.Credits = "iceberg";
 					//any known problems?
 					FPluginInfo.Bugs = "";
 					//any known usage of the node that may cause troubles?
-					FPluginInfo.Warnings = "";
+					FPluginInfo.Warnings = "Sending is not habdeld in a seperate thread";
 					
 					//leave below as is
 					System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
@@ -204,6 +205,8 @@ namespace VVVV.Nodes
         
         #endregion node name and infos
         
+
+
       	#region pin creation
         
         //this method is called by vvvv when the node is created
@@ -213,27 +216,21 @@ namespace VVVV.Nodes
 	    	FHost = Host;
 
 	    	//create inputs
+            FHost.CreateStringInput("Remote Host", TSliceMode.Dynamic, TPinVisibility.True, out FRemoteHostStringInput);
+            FRemoteHostStringInput.SetSubType("localhost", false);
+
+            FHost.CreateValueInput("Remote Port", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FRemotePortValueInput);
+            FRemotePortValueInput.SetSubType(0.0, 65535.0, 1.0, 4444.0, false, false, true);
+
 	    	FHost.CreateStringInput("Input", TSliceMode.Dynamic, TPinVisibility.True, out FInputStringInput);
 	    	FInputStringInput.SetSubType("", false);	
 	    	
-	    	FHost.CreateValueInput("Enable", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FEnableValueInput);
-	    	FEnableValueInput.SetSubType(0.0, 1.0, 1.0, 1.0, false, true, false);	
-	    	
-	    	FHost.CreateValueInput("Do Send", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDoSendValueInput);
+	    	FHost.CreateValueInput("Send", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDoSendValueInput);
 	    	FDoSendValueInput.SetSubType(0.0, 1.0, 1.0, 0.0, true, false, false);
 	    	
-	    	FHost.CreateStringInput("Remote Host", TSliceMode.Dynamic, TPinVisibility.True, out FRemoteHostStringInput);
-	    	FRemoteHostStringInput.SetSubType("localhost", false);	
-	    	
-	    	FHost.CreateValueInput("Remote Port", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FRemotePortValueInput);
-	    	FRemotePortValueInput.SetSubType(0.0, 65535.0, 1.0, 4444.0, false, false, true);
-	    	
-	    	FHost.CreateValueInput("Hold Output", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FHoldOutputInput);
+	    	FHost.CreateValueInput("Hold", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FHoldOutputInput);
 	    	FHoldOutputInput.SetSubType(0.0, 1.0, 1.0, 0.0, false, true, false);
-	    	
-	    	FHost.CreateValueInput("Read Greedy", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FReadGreedyInput);
-	    	FReadGreedyInput.SetSubType(0.0, 1.0, 1.0, 1.0, false, true, false);
-	    	
+	    
 	    	FHost.CreateValueInput("Receive Buffer Size", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FReceiveBufferSizeInput);
 	    	FReceiveBufferSizeInput.SetSubType(1.0, (double)int.MaxValue, 1.0, 8192.0, false, false, true);
 	    	
@@ -245,19 +242,25 @@ namespace VVVV.Nodes
 	    	
 	    	FHost.CreateValueInput("Send Timeout", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSendTimeoutInput);
 	    	FSendTimeoutInput.SetSubType(0.0, int.MaxValue / 1000.0, 1.0, 0.0, false, false, false);
-	    	
+
+            FHost.CreateValueInput("Enable", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FEnableValueInput);
+            FEnableValueInput.SetSubType(0.0, 1.0, 1.0, 1.0, false, true, false);	
+	    	 
 	    	//create outputs	    	
 	    	FHost.CreateStringOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FOutputStringOutput);
 	    	FOutputStringOutput.SetSubType("", false);
-	    	
+
+            FHost.CreateValueOutput("NewData", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FReceivedNewData);
+            FReceivedNewData.SetSubType(0, 1, 1, 0, true, false, true);
+
 	    	FHost.CreateValueOutput("Connected", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FConnectedValueOutput);
 	    	FConnectedValueOutput.SetSubType(0.0, 1.0, 1.0, 0.0, false, true, false);
 	    	
-	    	FHost.CreateValueOutput("On Connect Fail", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FOnConnectFailOutput);
-	    	FOnConnectFailOutput.SetSubType(0.0, 1.0, 1.0, 0.0, true, false, false);
         }
 
         #endregion pin creation
+
+
         
         #region mainloop
         
@@ -271,7 +274,7 @@ namespace VVVV.Nodes
         //all data handling should be in here
         public void Evaluate(int SpreadMax)
         {
-        	
+            
         	//if the slice count has changed
         	if (SpreadMax != FSpreadMax)
         	{
@@ -291,18 +294,17 @@ namespace VVVV.Nodes
         			for (int i = SpreadMax; i < TClients.Count; i++)
         			{
         				TClients[i].Close(true);
-        				TClients[i] = new TV4TcpClient();
+        				//TClients[i] = new TV4TcpClient();
         			}
         		}
-        	}
-        	
-        	//store the slice count so we can check next frame if it has changed
+            }
+            //store the slice count so we can check next frame if it has changed
         	FSpreadMax = SpreadMax;
 
         	bool anyInputsChanged = FInputStringInput.PinIsChanged || FEnableValueInput.PinIsChanged || FDoSendValueInput.PinIsChanged ||
         	    FRemoteHostStringInput.PinIsChanged || FRemotePortValueInput.PinIsChanged || FHoldOutputInput.PinIsChanged
-        		|| FReadGreedyInput.PinIsChanged || FReceiveBufferSizeInput.PinIsChanged || FReceiveTimeoutInput.PinIsChanged ||
-        		FSendBufferSizeInput.PinIsChanged || FSendTimeoutInput.PinIsChanged;
+        		|| FReceiveBufferSizeInput.PinIsChanged || FReceiveTimeoutInput.PinIsChanged ||
+        		FSendBufferSizeInput.PinIsChanged || FSendTimeoutInput.PinIsChanged; 
         	
         	//if any of the inputs has changed
         	if (anyInputsChanged)
@@ -311,7 +313,7 @@ namespace VVVV.Nodes
         		//the incoming int SpreadMax is the maximum slicecount of all input pins, which is a good default
         		FOutputStringOutput.SliceCount = SpreadMax;
         		FConnectedValueOutput.SliceCount = SpreadMax;
-        		FOnConnectFailOutput.SliceCount = SpreadMax;
+                FReceivedNewData.SliceCount = SpreadMax;
         		
         		int requiredBufferSize = 1;
         		        		
@@ -325,129 +327,108 @@ namespace VVVV.Nodes
         				requiredBufferSize = TClients[i].ReceiveBufferSize;
         			}
         		}
-        		
-        		//if we don't have it already,
-        		//we need to allocate a readBuffer big enough to handle the largest network read buffer specified on the slices
-        		if (readBuffer == null || readBuffer.Length < requiredBufferSize)
-        		{
-        			readBuffer = new byte[requiredBufferSize];
-        		}
         	}
-        		
+
+	
         	//since we are always listening for TCP traffic, we have work to do even if none of the inputs have changed
         	for (int i = 0; i < SpreadMax; i++)
-        	{	
-        		TV4TcpClient tcpClientSlice = TClients[i];
-        		
-        		//if the connection is enabled
-        		if (tcpClientSlice.FEnabled)
-        		{
-        			//if the connection hasn't been made yet, try to connect asynchronously
-        			if (tcpClientSlice.FConnectStatus == TConnectStatus.NeverConnected)
-        			{
-        				tcpClientSlice.BeginConnectAndTrackStatus();
-        			}
-        			
-        			//if we are connected
-        			if (tcpClientSlice.Connected)
-        			{
-        				bool readAnythingSlice = false;
-        				bool connectionLostSlice = false;
-        				try
-        				{
-        					//get the NetworkStream associated with this TcpClient
-        					NetworkStream tcpStreamSlice = tcpClientSlice.GetStream();
-        					
-        					//--send--
-        					
-        					if (tcpStreamSlice.CanWrite && tcpClientSlice.FInput != null)
-        					{
-        						if (tcpClientSlice.FDoSend)
-        						{
-        							//if the send pin is on and we have data to send, send it
-        							byte[] sendBuffer = Encoding.ASCII.GetBytes(tcpClientSlice.FInput);
-        							tcpStreamSlice.Write(sendBuffer, 0, sendBuffer.Length);
-        						}
-        					}
-        					
-        					
-        					//--receive--
-        					
-        					//if we can read
-        					if (tcpStreamSlice.CanRead)
-        					{
-        						bool dataAvailable = true;
-        						//if there is data available to read on the tcp socket, read it and update
-        						//the output pin
-        						dataAvailable = ReadAndProcessDataSlice(ref readAnythingSlice, i);
-        						
-        						if (!dataAvailable)
-        						{
-        							//otherwise, if there is no data available we might have lost the connection, so
-        							//test	 the connection
-        							int nBytesReceived;
-        							bool readData;
-        							TestConnection(ref connectionLostSlice, out readData, out nBytesReceived, i);
-        							//if we received some data during the test
-        							if (readData && nBytesReceived > 0) {
-        									//we read real data during our test that needs to be shown
-        									//on the output pin
-        									ReadAndProcessDataSlice(nBytesReceived, ref readAnythingSlice, i);
-        							}
-        						}
-        					}
-        				}
-        				catch (ObjectDisposedException objectDisposedException)
-        				{
-        					//if the TcpClient or NetworkStream is closed, we're also not connected anymore
-        					connectionLostSlice = true;
-        				}
-        				catch (InvalidOperationException invalidOperationException)
-        				{
-        					//if the socket is closed, we're not connected anymore
-        					connectionLostSlice = true;
-        				}
-        				catch (IOException ioException)
-        				{
-        					//if a network error occured, we're not connected anymore
-        					connectionLostSlice = true;
-        				}
-        				catch (Exception e)
-        				{
-        				}
-        				finally
-        				{
-        					if(connectionLostSlice)
-        					{
-        						//the TcpClient object is now useless so we create a new one to try to reconnect next time
-        						//we copy all the data values from the old client object, but not the actual tcp stream object
-        						TV4TcpClient newClient = new TV4TcpClient(tcpClientSlice);
-        						tcpClientSlice.Close(true);
-        						tcpClientSlice = TClients[i] = newClient;
-        					}
-        					
-        					//if we didn't read anything and we're not holding the last read value,
-        					//clear the output pin
-        					if(!tcpClientSlice.FHoldOutput && !readAnythingSlice)
-        					{
-        						FOutputStringOutput.SetString(i, "");
-        					}
-        				}
-        			}
-        		}
-        		//update the "connected" output pin to show whether we are connected
-        		FConnectedValueOutput.SetValue(i, tcpClientSlice.Connected ? 1.0 : 0.0);
-        		//update the On Connect Fail pin to show if there were any failed connection attempts
-        		//since the end of the last frame
-        		FOnConnectFailOutput.SetValue(i, tcpClientSlice.FConnectFailSinceLastEvaluate ? 1.0 : 0.0);
-        		//start tracking connection failures anew in case any occur between now and the next evaluate call
-        		tcpClientSlice.FConnectFailSinceLastEvaluate = false;
-        	}
+        	{
+                try
+                {
+                    
+                    TV4TcpClient tcpClientSlice = TClients[i];
+                    FReceivedNewData.SetValue(i, 0);
+
+                    //if the connection is enabled
+                    if (tcpClientSlice.FEnabled)
+                    {
+                        //if the connection hasn't been made yet, try to connect asynchronously
+                        if (tcpClientSlice.ConnectStatus == TConnectStatus.NeverConnected)
+                        {
+                            tcpClientSlice.BeginConnectAndTrackStatus();
+                        }
+
+                        //if we didn't read anything and we're not holding the last read value,
+                        //clear the output pin
+                        if (!tcpClientSlice.FHoldOutput)
+                        {
+                            FOutputStringOutput.SetString(i, "");
+                        }
+
+
+                        if (tcpClientSlice.ConnectStatus == TConnectStatus.Connected)
+                        {
+
+                            //set ConnectPin to 1
+                            FConnectedValueOutput.SetValue(i, 1);
+
+                            //-- send --
+                            if (tcpClientSlice.FInput != null)
+                            {
+                                if (tcpClientSlice.FDoSend)
+                                {
+                                    tcpClientSlice.Send();
+                                }
+                            }
+
+
+                            // -- Read --
+                            if (tcpClientSlice.IsReading == false)
+                            {
+                                string dataReceived = tcpClientSlice.GetReadData();
+
+
+                                if (dataReceived != null)
+                                {
+                                    FReceivedNewData.SetValue(i, 1);
+                                    FOutputStringOutput.SetString(i, dataReceived);
+                                    //Debug.WriteLine("Length: " + dataReceived.Length);
+                                }
+
+                                tcpClientSlice.Read();
+                            }
+
+                        }
+
+                        if (tcpClientSlice.ConnectStatus == TConnectStatus.ConnectionLost || tcpClientSlice.ConnectStatus == TConnectStatus.Disconnected)
+                        {
+                            FConnectedValueOutput.SetValue(i, 0);
+                            //the TcpClient object is now useless so we create a new one to try to reconnect next time
+                            //we copy all the data values from the old client object, but not the actual tcp stream object
+                            TV4TcpClient newClient = new TV4TcpClient(tcpClientSlice);
+                            tcpClientSlice.Close(true);
+                            tcpClientSlice = TClients[i] = newClient;
+                        }
+                    }
+                    //update the "connected" output pin to show whether we are connected
+                    FConnectedValueOutput.SetValue(i, tcpClientSlice.Connected ? 1.0 : 0.0);
+                    
+
+
+                    //Reading Error MEssages formt the TCPClient Class
+                    List<string> Errors;
+                    Errors = tcpClientSlice.GetErrorMessages();
+                    if (Errors != null)
+                    {
+                        foreach (string Error in Errors)
+                        {
+                            FHost.Log(TLogType.Error, Error);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    FHost.Log(TLogType.Error, ex.Message);
+                }
+            }
         }
         
         #endregion mainloop
-        
-        #region helper functions
+       
+ 
+
+        #region Get InputPin Values
+
         protected void ProcessInputsSlice(int sliceIndex)
         {
         	String inputStringSlice;
@@ -456,7 +437,6 @@ namespace VVVV.Nodes
         	String remoteHostStringSlice;
         	double remotePortValueSlice;
         	double holdOutputSlice;
-        	double readGreedySlice;
 			double receiveBufferSizeSlice;
 			double receiveTimeoutSlice;
         	double sendBufferSizeSlice;
@@ -473,7 +453,6 @@ namespace VVVV.Nodes
         	FRemoteHostStringInput.GetString(sliceIndex, out remoteHostStringSlice);
         	FRemotePortValueInput.GetValue(sliceIndex, out remotePortValueSlice);
         	FHoldOutputInput.GetValue(sliceIndex, out holdOutputSlice);
-        	FReadGreedyInput.GetValue(sliceIndex, out readGreedySlice);
 			FReceiveBufferSizeInput.GetValue(sliceIndex, out receiveBufferSizeSlice);
 			FReceiveTimeoutInput.GetValue(sliceIndex, out receiveTimeoutSlice);
         	FSendBufferSizeInput.GetValue(sliceIndex, out sendBufferSizeSlice);
@@ -500,7 +479,7 @@ namespace VVVV.Nodes
         	
         	//if the enabled value changed to zero, we need to close the connection
         	//if the remote server or port pin was changed, we will need to connect to the new host and port
-        	if (tcpClientSlice.FConnectStatus != TConnectStatus.NeverConnected &&
+        	if (tcpClientSlice.ConnectStatus != TConnectStatus.NeverConnected &&
         	    (enabledValueSlice <= 0.5 || remoteHostChangedSlice || remotePortChangedSlice))
         	{
         		//if the TcpClient object ever connected it cannot be used for another connection,
@@ -508,7 +487,7 @@ namespace VVVV.Nodes
         		tcpClientSlice.Close(true);
         		tcpClientSlice = TClients[sliceIndex] = new TV4TcpClient();
         		FOutputStringOutput.SetString(sliceIndex, "");
-        		FOnConnectFailOutput.SetValue(sliceIndex, 0);
+                FConnectedValueOutput.SetValue(sliceIndex, 0);
         	}
         	
         	//we need the data every frame even if none of it has changed, so we store a persistent copy of everything
@@ -518,110 +497,12 @@ namespace VVVV.Nodes
         	tcpClientSlice.FRemoteHost = remoteHostStringSlice;
         	tcpClientSlice.FRemotePort = (int)remotePortValueSlice;
         	tcpClientSlice.FHoldOutput = holdOutputSlice > 0.5;
-        	tcpClientSlice.FReadGreedy = readGreedySlice > 0.5;
 			tcpClientSlice.ReceiveBufferSize = (int)receiveBufferSizeSlice;
 			tcpClientSlice.ReceiveTimeout = (int)(receiveTimeoutSlice * 1000.0);
         	tcpClientSlice.SendBufferSize = (int)sendBufferSizeSlice;
         	tcpClientSlice.SendTimeout = (int)(sendTimeoutSlice * 1000.0);
         }
-        
-        
-        protected bool ReadAndProcessDataSlice(int nBytesAlreadyRead, ref bool readAnything, int sliceIndex)
-        {
-        	TV4TcpClient tcpClientSlice = TClients[sliceIndex];
-        	NetworkStream tcpStreamSlice = tcpClientSlice.GetStream();
-        	//we will collect a string of all character data received
-        	String dataReceived = "";
-        	bool dataAvailable = false;
-        	        	        	
-        	//if we already read some data, stringify it and add it to the end of our collected string
-        	if (readBuffer != null && nBytesAlreadyRead > 0)
-        	{
-        		dataReceived = String.Concat(dataReceived,
-        		                             System.Text.Encoding.ASCII.GetString(readBuffer, 0, nBytesAlreadyRead));
-        	    readAnything = true;
-        	    dataAvailable = true;
-        	}
-        	                             
-        	int nBytesReceived;
-        	
-        	//if there is data available, then read it
-        	while (tcpStreamSlice.DataAvailable)
-        	{
-        		dataAvailable = true;
-        		nBytesReceived = tcpStreamSlice.Read(readBuffer, 0, readBuffer.Length);
-        		if (nBytesReceived > 0)
-        		{
-        			//note the fact that we read something
-        			readAnything = true;
-        			//add the data to the end of our collected string
-        			dataReceived = String.Concat(dataReceived,
-        			                             System.Text.Encoding.ASCII.GetString(readBuffer, 0, nBytesReceived));
-        		}
-        							
-        		//if we're not doing greedy reading, then we either have read everything or our
-        		//buffer is full, so we're done reading
-        		if (!tcpClientSlice.FReadGreedy) break;
-        		//if we are doing greedy reading, the loop will continue until all available data has been read
-        	}
-        	
-        	if (readAnything)
-        	{
-        		//update the output pin with the string of read data that we collected
-        		FOutputStringOutput.SetString(sliceIndex, dataReceived);
-        	}
-        	
-        	return dataAvailable;
-        }
-        
-        protected bool ReadAndProcessDataSlice(ref bool readAnything, int sliceIndex)
-        {
-        	return ReadAndProcessDataSlice(0, ref readAnything, sliceIndex);
-        }
-        
-        protected void TestConnection(ref bool connectionLost, out bool readData, out int nBytesReceived, int sliceIndex)
-        {
-        	TV4TcpClient tcpClientSlice = TClients[sliceIndex];	
-        	Socket client = tcpClientSlice.Client;
-        	readData = true;
-        	nBytesReceived = 0;
-        	bool blockingState = client.Blocking;
-        	
-        	try
-        	{
-        		//we do a read that is guaranteed not to block
-        		client.Blocking = false;
-        		nBytesReceived = client.Receive(readBuffer);
-        	}
-        	catch (SocketException socketException)
-        	{
-        		//the non-blocking read failed
-        		readData = false;
-        		
-        		// 10035 == WSAEWOULDBLOCK
-        		//the read may have failed because it WOULD have blocked, ie the
-        		//connection is still there, but nothing has been sent
-        		if (!(socketException.NativeErrorCode.Equals(10035)))
-        		{
-        			//however, if there was some other exception, we've lost the connection
-        			connectionLost = true;
-        		}
-        	}
-        	finally
-        	{
-        		client.Blocking = blockingState;
-        	}
-        	
-        	if (readData)
-        	{
-        		//if we received 0 bytes on a non-blocking read, we've lost the connection
-        		if (nBytesReceived == 0)
-        		{
-        			connectionLost = true;
-        		}
-        	}
-        }
-        
-        #endregion helper functions
+
+        #endregion Get InputPin Values
 	}    
 }
