@@ -218,7 +218,7 @@ namespace VVVV.Nodes
 	        	FMyValueOutput.SliceCount = SpreadMax;
 	        	FMyStringOutput.SliceCount = SpreadMax;
 	        
-	        	double currentValueSlice =  20;
+	        	int currentValueSlice =  0;
 	        	string currentStringSlice = "hallo";
 	        	
         		//loop for all slices
