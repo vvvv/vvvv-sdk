@@ -1,37 +1,107 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
-   <PATCH nodename="C:\Documents and Settings\flame\My Documents\SharpDevelop Projects\Windows\PowerState\powerState(help).v4p">
-   <BOUNDS height="6000" left="9900" top="6000" type="Window" width="9000">
+   <PATCH nodename="C:\Documents and Settings\flame\My Documents\SharpDevelop Projects\Windows\PowerState\PowerState (Windows) help.v4p">
+   <BOUNDS height="5340" left="9900" top="6000" type="Window" width="9465">
    </BOUNDS>
-   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="1005" top="2340" type="Node" width="0">
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="375" top="1485" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="240" left="1005" top="2340" type="Box" width="795">
+   <BOUNDS height="240" left="375" top="1485" type="Box" width="795">
    </BOUNDS>
    <BOUNDS height="160" left="15180" top="10080" type="Window" width="215">
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
-   <BOUNDS height="0" left="2070" top="2250" type="Node" width="0">
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1470" top="1950" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="495" left="2070" top="2250" type="Box" width="615">
+   <BOUNDS height="315" left="1470" top="1950" type="Box" width="570">
    </BOUNDS>
    <BOUNDS height="160" left="17190" top="9780" type="Window" width="215">
    </BOUNDS>
    <PIN pinname="Input String" visible="1">
    </PIN>
    </NODE>
-   <NODE nodename="PowerState.dll" componentmode="InAWindow" id="3">
-   <BOUNDS type="Node" left="1740" top="1725" width="100" height="100">
+   <NODE componentmode="InAWindow" id="0" nodename="PowerState.dll">
+   <BOUNDS height="270" left="1110" top="870" type="Node" width="1830">
    </BOUNDS>
    <PIN pinname="BatteryPower" visible="1">
    </PIN>
    <PIN pinname="PowerMode" visible="1">
    </PIN>
+   <PIN pinname="PowerMessage" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="3" srcpinname="BatteryPower" dstnodeid="1" dstpinname="Y Input Value">
+   <LINK dstnodeid="2" dstpinname="Y Input Value" srcnodeid="0" srcpinname="BatteryPower">
    </LINK>
-   <LINK srcnodeid="3" srcpinname="PowerMode" dstnodeid="0" dstpinname="Input String">
+   <LINK dstnodeid="1" dstpinname="Input String" srcnodeid="0" srcpinname="PowerMode">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="4">
+   <BOUNDS type="Node" left="1635" top="2820" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1635" top="2820" width="1290" height="315">
+   </BOUNDS>
+   <BOUNDS type="Window" left="14055" top="8670" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="PowerMessage" dstnodeid="4" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="5">
+   <BOUNDS type="Node" left="120" top="135" width="1965" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="120" top="135" width="3075" height="285">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Powerstate Plugin // wrimachenbunt 2010|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="6">
+   <BOUNDS type="Node" left="1185" top="1455" width="2100" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1185" top="1455" width="2100" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Battery Power in Percentage|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="7">
+   <BOUNDS type="Node" left="2115" top="1950" width="2505" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2115" top="1950" width="2505" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|PC runs on Main or Battery Power|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="8">
+   <BOUNDS type="Node" left="2985" top="2850" width="5325" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2985" top="2850" width="6375" height="1650">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Tells you about :&cr;&lf;Charging&cr;&lf;Critical (The battery level is below the critical level specified in the user&apos;s preferences.)&cr;&lf;High&cr;&lf;Low&cr;&lf;NoSystemBattery&cr;&lf;Unknown|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
    </PATCH>
