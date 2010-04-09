@@ -1,0 +1,37 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
+   <PATCH nodename="C:\Documents and Settings\flame\My Documents\SharpDevelop Projects\Windows\PowerState\powerState(help).v4p">
+   <BOUNDS height="6000" left="9900" top="6000" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1005" top="2340" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="1005" top="2340" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="15180" top="10080" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2070" top="2250" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="495" left="2070" top="2250" type="Box" width="615">
+   </BOUNDS>
+   <BOUNDS height="160" left="17190" top="9780" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="PowerState.dll" componentmode="InAWindow" id="3">
+   <BOUNDS type="Node" left="1740" top="1725" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="BatteryPower" visible="1">
+   </PIN>
+   <PIN pinname="PowerMode" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="BatteryPower" dstnodeid="1" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="PowerMode" dstnodeid="0" dstpinname="Input String">
+   </LINK>
+   </PATCH>
