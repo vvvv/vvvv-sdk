@@ -129,12 +129,7 @@ namespace VVVV.Utils.VMath
         /// <returns>Smaller value of the two input parameters</returns>
 		public static double Min(double a, double b)
 		{
-			if (a < b)
-			{
-				return a;
-			}
-			
-			return b;
+		    return a < b ? a : b;
 		}
 		
 		/// <summary>
@@ -145,12 +140,7 @@ namespace VVVV.Utils.VMath
 		/// <returns>Greater value of the two input parameters</returns>
 		public static double Max(double a, double b)
 		{
-			if (a > b)
-			{
-				return a;
-			}
-			
-			return b;
+			 return a > b ? a : b;
 		}
 		
 		/// <summary>

@@ -63,12 +63,21 @@ namespace VVVV.Utils.VColor
 	
 		/// <summary>
 		/// C# color type property, can be used for conversion
-		/// Note, that there is also implicit casting to C# color, and explicit casting from C# color
+		/// Note, that there is also implicit casting from C# color, and explicit casting to C# color
 		/// </summary>
 		public Color Color
 		{
-			//clamping is necessary here else SlimDX functions like DrawText(..Color) fail
-			get {return Color.FromArgb((byte) VMath.VMath.Clamp((A*255), 0, 255), (byte)VMath.VMath.Clamp((R*255), 0, 255), (byte)VMath.VMath.Clamp((G*255), 0, 255), (byte)VMath.VMath.Clamp((B*255), 0, 255));}
+			get
+			{
+			    byte a = (byte) (A*255);
+			    byte r = (byte) (R*255);
+			    byte g = (byte) (G*255);
+			    byte b = (byte) (B*255);
+			    
+			    int argb = ((int) a << 24) | ((int) r << 16) | ((int) g << 8) | ((int) b);
+			        
+			    return Color.FromArgb(argb);
+			}
 			set {A = value.A / 255.0; R = value.R / 255.0; G = value.G / 255.0; B = value.B / 255.0;}
 		}
 		
