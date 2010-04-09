@@ -33,6 +33,7 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
+
 //the vvvv node namespace
 namespace VVVV.Nodes
 {
@@ -52,7 +53,7 @@ namespace VVVV.Nodes
     	//output pin declaration
     	private IValueOut FBatteryStateOut;
     	private IStringOut FPowerStateOut;
-    
+    	private IStringOut FPowerMessage;
     	
     	#endregion field declaration
        
@@ -195,6 +196,8 @@ namespace VVVV.Nodes
 	    	FHost.CreateStringOutput("PowerMode", TSliceMode.Single, TPinVisibility.True, out FPowerStateOut);
 	    	FPowerStateOut.SetSubType("", false);
 
+	    	FHost.CreateStringOutput("PowerMessage", TSliceMode.Single, TPinVisibility.True, out FPowerMessage);
+	    	FPowerMessage.SetSubType("", false);
 	    	
         }
 
@@ -217,15 +220,17 @@ namespace VVVV.Nodes
 	        	//the incoming int SpreadMax is the maximum slicecount of all input pins, which is a good default
 	        	FBatteryStateOut.SliceCount = 1;
 	        	FPowerStateOut.SliceCount = 1;
+	        	FPowerMessage.SliceCount = 1;
 	        
 	        	int currentValueSlice =  0;
 	        	string currentStringSlice = "hallo";
-	        	
+	        	string batteryStatus = "nix los hier";
 
     			//function
     			PowerStatus power = SystemInformation.PowerStatus;
 				currentValueSlice = (int)(power.BatteryLifePercent * 100);
-    			
+    			batteryStatus = power.BatteryChargeStatus.ToString();
+				
     			switch (power.PowerLineStatus)
 				{
    				 	case PowerLineStatus.Online:
@@ -244,6 +249,7 @@ namespace VVVV.Nodes
     			//write data to outputs
     			FBatteryStateOut.SetValue(0, currentValueSlice);
     			FPowerStateOut.SetString(0, currentStringSlice);
+    			FPowerMessage.SetString(0, batteryStatus);
 
         }
              
