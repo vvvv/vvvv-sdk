@@ -18,6 +18,8 @@
     <OutputPath>bin\</OutputPath>
     <SignAssembly>False</SignAssembly>
     <DelaySign>False</DelaySign>
+    <SourceAnalysisOverrideSettingsFile>C:\Dokumente und Einstellungen\tgallery\Anwendungsdaten\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <Optimize>False</Optimize>
@@ -49,4 +51,7 @@
       <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>$(MSBuildBinPath)/regasm.exe $(AssemblyName).dll /tlb</PostBuildEvent>
+  </PropertyGroup>
 </Project>
