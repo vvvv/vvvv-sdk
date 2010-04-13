@@ -1625,6 +1625,28 @@ namespace VVVV.PluginInterfaces.V1
 		private IExecutable FExcecutable = null;
 		
 		/// <summary>
+		/// Creates a new NodeInfo from an existing <see cref="VVVV.PluginInterfaces.V1.IPluginInfo">IPluginInfo</see>.
+		/// </summary>
+		/// <param name="PluginInfo"></param>
+		public NodeInfo (IPluginInfo Info)
+		{
+			this.Author = Info.Author;
+			this.Bugs = Info.Bugs;
+			this.Category = Info.Category;
+			this.Class = Info.Class;
+			this.Credits = Info.Credits;
+			this.Help = Info.Help;
+			this.InitialBoxSize = Info.InitialBoxSize;
+			this.InitialComponentMode = Info.InitialComponentMode;
+			this.InitialWindowSize = Info.InitialWindowSize;
+			this.Name = Info.Name;
+			this.Namespace = Info.Namespace;
+			this.Tags = Info.Tags;
+			this.Version = Info.Version;
+			this.Warnings = Info.Warnings;
+		}
+		
+		/// <summary>
 		/// Arguments used by the PluginFactory to create this node.
 		/// </summary>
 		public string Arguments
