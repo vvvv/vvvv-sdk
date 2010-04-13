@@ -208,8 +208,9 @@ namespace VVVV.Nodes
 	    	dimensions[0] = "Min";
 	    	dimensions[1] = "Max";
 
-    		FHost.CreateValueInput("Constraints", 2, dimensions, TSliceMode.Dynamic, TPinVisibility.True,  out FConstraintsInput);
+    		FHost.CreateValueInput("Constraints", 2, dimensions, TSliceMode.Dynamic, TPinVisibility.False,  out FConstraintsInput);
 	    	FConstraintsInput.SetSubType2D(-1.0, 1.0, 0.1, -1.0, 1.0, false, false, false);
+	    	
 	    	
 	    	String[] offsetModes = new String[2];
 	    	offsetModes[0] = "parent";

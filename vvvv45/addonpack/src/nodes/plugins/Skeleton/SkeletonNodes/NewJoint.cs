@@ -216,8 +216,9 @@ namespace VVVV.Nodes
 	    	String[] dimensions = new String[2];
 	    	dimensions[0] = "Min";
 	    	dimensions[1] = "Max";
-	    	FHost.CreateValueInput("Rotation Constraints", 2, dimensions, TSliceMode.Dynamic, TPinVisibility.True, out FRotationConstraintsInput);
+	    	FHost.CreateValueInput("Rotation Constraints", 2, dimensions, TSliceMode.Dynamic, TPinVisibility.False, out FRotationConstraintsInput);
 	    	FRotationConstraintsInput.SetSubType2D(-1.0, 1.0, 0.1, -1.0, 1.0, false, false, false);
+	    	
 	    	
 	    	INodeIn node;
 	    	FHost.CreateNodeInput("Child1", TSliceMode.Single, TPinVisibility.True, out node);
@@ -227,7 +228,7 @@ namespace VVVV.Nodes
 	    	FHost.CreateValueConfig("Children Count", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FChildrenCountInput);
 	    	FChildrenCountInput.SetSubType(0,50, 1.0, 1.0, false, false, true);
 	    	
-	    	//FHost.CreateValueConfig("Input Pins", TSliceMode.Dynamic, TPinVisibility.Hidden, out FInputPins);
+	    	
 	    	
 	    	// create outputs
 	    	
