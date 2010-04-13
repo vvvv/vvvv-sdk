@@ -268,7 +268,7 @@ namespace VVVV.Nodes
         	
         	if (FInverseBindPoseInput.PinIsChanged)
         	{
-        		//recalculate = true;
+        		recalculate = true;
         	}
         	
         	if (FOutputModeInput.PinIsChanged)
