@@ -4,6 +4,7 @@ using System.IO;
 using System.Drawing;
 using VVVV.Utils.VMath;
 using VVVV.Utils.VColor;
+using VVVV.HDE.Interfaces;
 
 /// <summary>
 /// Version 1 of the VVVV PluginInterface.
@@ -109,6 +110,35 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// 
 		Error};
+	
+	/// <summary>
+	/// Used in <see cref="VVVV.PluginInterfaces.V1.INodeInfo">INodeInfo</see> to specify the type of the provided node.
+	/// </summary>
+	public enum TNodeType {
+		/// <summary>
+		/// Specifies a native node.
+		/// </summary>
+		Native,
+		/// <summary>
+		/// Specifies a freeframe node.
+		/// </summary>
+		Freeframe,
+		/// <summary>
+		/// Specifies an effect node.
+		/// </summary>
+		Effect,
+		/// <summary>
+		/// Specifies a directshow node.
+		/// </summary>
+		Directshow,
+		/// <summary>
+		/// Specifies a static plugin node.
+		/// </summary>
+		Plugin,
+		/// <summary>
+		/// Specifies a dynamic plugin node.
+		/// </summary>
+		Dynamic};
 	#endregion enums
 	
 	#region basic pins
@@ -1375,7 +1405,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		string Version {get; set;}
 		/// <summary>
-		/// Describe the nodes function in a view words.
+		/// Describe the nodes function in a few words.
 		/// </summary>
 		string Help {get; set;}
 		/// <summary>
@@ -1419,6 +1449,31 @@ namespace VVVV.PluginInterfaces.V1
 		/// The nodes classname. Filled out automatically, when using code as seen in the PluginTemplate.
 		/// </summary>
 		string Class {get; set;}
+	}
+	
+	/// <summary>
+	/// Interface for the <see cref="VVVV.PluginInterfaces.V1.INodeInfo">INodeInfo</see>. Also see <a href="http://www.vvvv.org/tiki-index.php?page=Conventions.NodeAndPinNaming" target="_blank">VVVV Naming Conventions</a>.
+	/// </summary>
+	[Guid("581998D6-ED08-4E73-821A-46AFF59C78BD"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface INodeInfo : IPluginInfo
+	{
+		/// <summary>
+		/// Arguments used by the PluginFactory to create this node.
+		/// </summary>
+		string Arguments {get; set;}
+		/// <summary>
+		/// Name of the file used by the PluginFactory to create this node.
+		/// </summary>
+		string Filename {get; set;}
+		/// <summary>
+		/// The node type. Set by the PluginFactory.
+		/// </summary>
+		TNodeType Type {get; set;}
+		/// <summary>
+		/// Reference to the <see cref="VVVV.HDE.Interfaces.IExecutable">IExecutable</see> which was used to create this node. Set by the PluginFactory.
+		/// </summary>
+		IExecutable Executable {get; set;}
 	}
 	
 	/// <summary>
@@ -1475,7 +1530,7 @@ namespace VVVV.PluginInterfaces.V1
 			set {FAuthor = value;}
 		}
 		/// <summary>
-		/// Describe the nodes function in a view words.
+		/// Describe the nodes function in a few words.
 		/// </summary>
 		public string Help
 		{
@@ -1554,6 +1609,55 @@ namespace VVVV.PluginInterfaces.V1
 		{
 			get {return FInitialComponentMode;}
 			set {FInitialComponentMode = value;}
+		}
+	}
+	
+	/// <summary>
+	/// Helper Class that implements the <see cref="VVVV.PluginInterfaces.V1.INodeInfo">INodeInfo</see> interface.
+	/// </summary>
+	[Guid("36F845F4-A486-49EC-9A0C-CB254FF2B297")]
+	public class NodeInfo: PluginInfo, INodeInfo
+	{
+		
+		private string FArguments = "";
+		private string FFilename = "";
+		private TNodeType FType = TNodeType.Plugin;
+		private IExecutable FExcecutable = null;
+		
+		/// <summary>
+		/// Arguments used by the PluginFactory to create this node.
+		/// </summary>
+		public string Arguments
+		{
+			get {return FArguments;}
+			set {FArguments = value;}
+		}
+		
+		/// <summary>
+		/// Name of the file used by the PluginFactory to create this node.
+		/// </summary>
+		public string Filename 
+		{
+			get {return FFilename;}
+			set {FFilename = value;}
+		}
+		
+		/// <summary>
+		/// The node type. Set by the PluginFactory.
+		/// </summary>
+		public TNodeType Type 
+		{
+			get {return FType;}
+			set {FType = value;}
+		}
+		
+		/// <summary>
+		/// Reference to the <see cref="VVVV.HDE.Interfaces.IExecutable">IExecutable</see> which was used to create this node. Set by the PluginFactory.
+		/// </summary>
+		public IExecutable Executable 
+		{
+			get {return FExcecutable;}
+			set {FExcecutable = value;}
 		}
 	}
 	
