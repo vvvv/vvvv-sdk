@@ -60,17 +60,10 @@ namespace VVVV.Nodes
     	
     	//output pin declaration
 
-    	private IValueOut FVerticesOutput;
-    	private IValueOut FIndicesOutput;
-    	private IValueOut FUVOutput;
-    	private IStringOut FDebug;
+    	private IValueOut FVerticesOutput;	
     	
-    	
-    	private Hashtable jointList2;
-    	private Hashtable segmentList;
     	private ArrayList vertices;
     	private ArrayList vertTransformed;
-    	private Hashtable animationSets;
     	private Dictionary<int, Dictionary<int,double>> skinWeights;
     	
     	#endregion field declaration
@@ -79,11 +72,7 @@ namespace VVVV.Nodes
     	
         public Skindeformer()
         {
-			
-			jointList2 = new Hashtable();
-			segmentList = new Hashtable();
 			vertices = new ArrayList();
-			animationSets = new Hashtable();
 			
 		}
         
@@ -224,13 +213,6 @@ namespace VVVV.Nodes
 			
 	    	//outputs
 	    	FHost.CreateValueOutput("Vertices XYZ", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FVerticesOutput);
-	    	
-	    	FHost.CreateValueOutput("Texture Coords UV", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FUVOutput);
-	    	
-	    	FHost.CreateValueOutput("Indices", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FIndicesOutput);
-	    	
-	    	FHost.CreateStringOutput("Debug", TSliceMode.Single, TPinVisibility.True, out FDebug);
-	    	FDebug.SetSubType("", false);
 	    	
         }
 
