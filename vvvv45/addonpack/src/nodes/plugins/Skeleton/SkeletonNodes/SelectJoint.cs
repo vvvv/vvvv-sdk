@@ -305,8 +305,9 @@ namespace VVVV.Nodes
 				}
 				rootJoint = (IJoint)skeleton.Root;
 				
-				if (!initialized && configSelectedNames!=null)
+				if (!initialized || configSelectedNames!=null)
 				{
+					selectedJoints.Clear();
 					IJoint currJoint;
 					for (int i=0; i<configSelectedNames.Length; i++)
 	        		{
