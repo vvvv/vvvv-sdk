@@ -56,7 +56,6 @@ namespace VVVV.Nodes
     	private IValueFastIn FVerticesInput;
     	private IValueFastIn FApplyInput;
     	private INodeIn FSkeletonInput;
-    	private ITransformIn FTransformInput;
     	
     	private IValueOut FSkinWeightsOutput;
     	private IValueOut FBindIndicesOutput;
@@ -208,8 +207,6 @@ namespace VVVV.Nodes
 	    	FHost.CreateNodeInput("Skeleton", TSliceMode.Dynamic, TPinVisibility.True, out FSkeletonInput);
 	    	FSkeletonInput.SetSubType(guids, "Skeleton");
 	    	
-	    	FHost.CreateTransformInput("Joint Transforms", TSliceMode.Dynamic, TPinVisibility.True, out FTransformInput);
-	    	
 	    	FHost.CreateValueFastInput("Apply", 1, null, TSliceMode.Single, TPinVisibility.True, out FApplyInput);
 	    	FApplyInput.SetSubType(0,1,1,0,true, false, true);
 	    	
@@ -270,8 +267,9 @@ namespace VVVV.Nodes
         	}
         	double apply;
         	FApplyInput.GetValue(0, out apply);
-        	if (apply==1)
+        	if (apply==1 && skeleton!=null)
         	{
+        		skeleton.CalculateCombinedTransforms();
         		skinWeights = new Dictionary<int, Dictionary<int,double>>();
         		Vector3D origin = new Vector3D(0);
         		double d;
@@ -319,8 +317,7 @@ namespace VVVV.Nodes
         {
         	double distBone = 0.0;
         	Vector3D origin = new Vector3D(0);
-        	Matrix4x4 t;
-        	FTransformInput.GetMatrix(currJoint.Id, out t);
+        	Matrix4x4 t = currJoint.CombinedTransform;
         	Vector3D p1 = t * origin;
         	
         	distBone = VMath.Dist(pos, p1);
@@ -328,7 +325,7 @@ namespace VVVV.Nodes
         	for (int i=0; i<currJoint.Children.Count; i++)
         	{
         		bool outside = false;
-        		FTransformInput.GetMatrix(((IJoint)currJoint.Children[i]).Id, out t);
+        		t = currJoint.Children[i].CombinedTransform;
 	        	Vector3D p2 = t * origin;
 	        	
 	        	Vector3D v = p2 - p1;
