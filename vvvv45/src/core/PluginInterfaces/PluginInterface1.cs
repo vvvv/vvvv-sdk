@@ -124,13 +124,13 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		Freeframe,
 		/// <summary>
+		/// Specifies a VST node.
+		/// </summary>
+		VST,
+		/// <summary>
 		/// Specifies an effect node.
 		/// </summary>
 		Effect,
-		/// <summary>
-		/// Specifies a directshow node.
-		/// </summary>
-		Directshow,
 		/// <summary>
 		/// Specifies a static plugin node.
 		/// </summary>
@@ -1467,6 +1467,10 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		string Filename {get; set;}
 		/// <summary>
+		/// The nodes unique username in the form of: Name (Category Version)
+		/// </summary>
+		string Username {get;}
+		/// <summary>
 		/// The node type. Set by the PluginFactory.
 		/// </summary>
 		TNodeType Type {get; set;}
@@ -1662,6 +1666,20 @@ namespace VVVV.PluginInterfaces.V1
 		{
 			get {return FFilename;}
 			set {FFilename = value;}
+		}
+		
+		/// <summary>
+		/// The nodes unique username in the form of: Name (Category Version)
+		/// </summary>
+		public string Username 
+		{
+			get 
+			{
+			    if (string.IsNullOrEmpty(this.Version))
+					return this.Name + " (" + this.Category + ")";
+				else
+					return this.Name + " (" + this.Category + " " + this.Version + ")";
+			}
 		}
 		
 		/// <summary>
