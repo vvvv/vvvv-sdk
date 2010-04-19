@@ -1088,7 +1088,7 @@ namespace VVVV.PluginInterfaces.V1
 	}
 	#endregion node pins
 	
-	#region host, plugin
+	#region host
 	
 	/// <summary>
 	/// The interface to be implemented by a program to host IPlugins
@@ -1324,19 +1324,30 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="EntryName">String representation of the EnumEntry.</param>
 		void GetEnumEntry(string EnumName, int Index, out string EntryName);
 	}
+	#endregion host
 	
+	#region plugin
 	/// <summary>
 	/// The one single interface a plugin has to implement
 	/// </summary>
-	[Guid("7F813C89-4EDE-4087-A626-4320BE41C87F"),
+	[Guid("084BB2C9-E8B4-4575-8611-C262399B2A95"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IPlugin
+	public interface IPluginBase
 	{
 		/// <summary>
 		/// Called by the PluginHost to hand itself over to the plugin. This is where the plugin creates its initial pins.
 		/// </summary>
 		/// <param name="Host">Interface to the PluginHost.</param>
 		void SetPluginHost(IPluginHost Host);
+	}
+	
+	/// <summary>
+	/// The one single interface a plugin has to implement
+	/// </summary>
+	[Guid("7F813C89-4EDE-4087-A626-4320BE41C87F"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IPlugin: IPluginBase
+	{
 		/// <summary>
 		/// Called by the PluginHost before the Evaluate function every frame for every ConfigurationPin that has changed. 
 		/// The ConfigurationPin is handed over as the functions input parameter. This is where a plugin would typically 
@@ -1362,6 +1373,20 @@ namespace VVVV.PluginInterfaces.V1
 	/// <summary>
 	/// Optional interface to be implemented on a plugin that needs to know when one of its pins is connected or disconnected
 	/// </summary>
+	[Guid("873E27B0-76E9-4F1E-8E42-D0A48DD8F42F"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IHDEPlugin
+	{
+		/// <summary>
+		/// Called by the PluginHost to hand over the HDE host which gives direct access to parts of the HDE.
+		/// </summary>
+		/// <param name="host">Interface to the HDEHost.</param>
+		void SetHDEHost(IHDEHost host);
+	}
+	
+	/// <summary>
+	/// Optional interface to be implemented on a plugin that needs to know when one of its pins is connected or disconnected
+	/// </summary>
 	[Guid("B77C459E-E561-424B-AB3A-572C9BB6CD93"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IPluginConnections
@@ -1381,7 +1406,7 @@ namespace VVVV.PluginInterfaces.V1
 		void DisconnectPin(IPluginIO pin);
 	}
 
-	#endregion host, plugin
+	#endregion plugin
 	
 	#region plugin info
 	
