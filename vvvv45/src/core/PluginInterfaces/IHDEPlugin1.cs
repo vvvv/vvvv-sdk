@@ -3,15 +3,6 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Drawing;
 
-/// <summary>
-/// Version 1 of the VVVV PluginInterface.
-/// DirectX/SlimDX related parts are in a separate file: PluginDXInterface1.cs
-///
-/// To convert this to a typelib make sure AssemblyInfo.cs states: ComVisible(true).
-/// Then on a commandline type:
-/// <c>regasm _PluginInterfaces.dll /tlb</c>
-/// This generates and registers the typelib which can then be imported e.g. via Delphi:Components:Import Component:Import Typelib
-/// </summary>
 namespace VVVV.PluginInterfaces.V1
 {
 	/// <summary>

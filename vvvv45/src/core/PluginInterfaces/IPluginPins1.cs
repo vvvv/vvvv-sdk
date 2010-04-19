@@ -5,6 +5,8 @@ using System.Drawing;
 using VVVV.Utils.VMath;
 using VVVV.Utils.VColor;
 using VVVV.HDE.Model;
+using SlimDX;
+using SlimDX.Direct3D9;
 
 /// <summary>
 /// Version 1 of the VVVV PluginInterface.
@@ -1086,632 +1088,92 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Value">The Matrix to write.</param>
 		void SetMatrix(int Index, Matrix4x4 Value);
 	}
-	#endregion node pins
+	#endregion node pins	
 	
-	#region host
-	
+	#region DXPins
 	/// <summary>
-	/// The interface to be implemented by a program to host IPlugins
+	/// Interface to an OutputPin of type DirectX Mesh.
 	/// </summary>
-	[Guid("E72C5CF0-4738-4F20-948E-83E96D4E7843"),
+	[Guid("4D7E1619-0342-48EE-8AD0-13245226FD99"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IPluginHost
+	public interface IDXMeshOut: IPluginOut
 	{
 		/// <summary>
-		/// Creates a ConfigurationPin of type Value.
+		/// Used to mark the mesh as being changed compared to the last frame. 
 		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="dimension">The pins dimension count. Valid values: 1, 2, 3 or 4</param>
-		/// <param name="DimensionNames">Optional. An individual suffix to the pins Dimensions.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IValueConfig interface.</param>
-		void CreateValueConfig(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueConfig Pin);
-		/// <summary>
-		/// Creates an InputPin of type Value. Use this as opposed to <see cref="VVVV.PluginInterfaces.V1.IPluginHost.CreateValueFastInput()">CreateValueFastInput</see>
-		/// if you need to be able to ask for <see cref="VVVV.PluginInterfaces.V1.IPluginIn.PinIsChanged">IPluginIn.PinIsChanged</see>. May be slow with large SpreadCounts.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="Dimension">The pins dimension count. Valid values: 1, 2, 3 or 4</param>
-		/// <param name="DimensionNames">Optional. An individual suffix to the pins Dimensions.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IValueIn interface.</param>
-		void CreateValueInput(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueIn Pin);
-		/// <summary>
-		/// Creates an InputPin of type Value that does not implement <see cref="VVVV.PluginInterfaces.V1.IPluginIn.PinIsChanged">IPluginIn.PinIsChanged</see> and is therefore faster with large SpreadCounts.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="Dimension">The pins dimension count. Valid values: 1, 2, 3 or 4</param>
-		/// <param name="DimensionNames">Optional. An individual suffix to the pins Dimensions.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IValueFastIn interface.</param>
-		void CreateValueFastInput(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueFastIn Pin);
-		/// <summary>
-		/// Creates an OutputPin of type Value.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="Dimension">The pins dimension count. Valid values: 1, 2, 3 or 4</param>
-		/// <param name="DimensionNames">Optional. An individual suffix to the pins Dimensions.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IValueOut interface.</param>
-		void CreateValueOutput(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueOut Pin);
-		/// <summary>
-		/// Creates a ConfigurationPin of type String.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IStringConfig interface.</param>
-		void CreateStringConfig(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IStringConfig Pin);
-		/// <summary>
-		/// Creates an InputPin of type String.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IStringIn interface.</param>
-		void CreateStringInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IStringIn Pin);
-		/// <summary>
-		/// Creates an OutputPin of type String.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IStringIn interface.</param>
-		void CreateStringOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IStringOut Pin);
-		/// <summary>
-		/// Creates a ConfigurationPin of type Color.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IColorConfig interface.</param>
-		void CreateColorConfig(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IColorConfig Pin);
-		/// <summary>
-		/// Creates an InputPin of type Color.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IColorIn interface.</param>
-		void CreateColorInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IColorIn Pin);
-		/// <summary>
-		/// Creates an OutputPin of type Color.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IColorOut interface.</param>
-		void CreateColorOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IColorOut Pin);
-		/// <summary>
-		/// Creates a ConfigurationPin of type Enum.
-		/// <param name="Name">The pins name.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IEnumConfig interface.</param>
-		void CreateEnumConfig(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IEnumConfig Pin);			
-		/// <summary>
-		/// Creates a InputPin of type Enum.
-		/// <param name="Name">The pins name.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IEnumIn interface.</param>
-		void CreateEnumInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IEnumIn Pin);
-		/// <summary>
-		/// Creates a OutputPin of type Enum.
-		/// <param name="Name">The pins name.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IEnumOut interface.</param>
-		void CreateEnumOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IEnumOut Pin);
-		/// <summary>
-		/// Creates an InputPin of type Transform.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created ITransformIn interface.</param>
-		void CreateTransformInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out ITransformIn Pin);
-		/// <summary>
-		/// Creates an OutputPin of type Transform.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created ITransformOut interface.</param>
-		void CreateTransformOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out ITransformOut Pin);
-		/// <summary>
-		/// Creates an InputPin of the generic node type.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created INodeIn interface.</param>
-		void CreateNodeInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out INodeIn Pin);
-		/// <summary>
-		/// Creates an OutputPin of the generic node type.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created INodeIn interface.</param>
-		void CreateNodeOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out INodeOut Pin);
-		/// <summary>
-		/// Creates an OutputPin of type DirectX Mesh.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IDXMeshIO interface.</param>
-		void CreateMeshOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IDXMeshOut Pin);
-		/// <summary>
-		/// Creates an OutputPin of type DirectX Texture.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IDXTextureOut interface.</param>
-		void CreateTextureOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IDXTextureOut Pin);
-		/// <summary>
-		/// Creates an OutputPin of type DirectX Layer.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IDXLayerIO interface.</param>
-		void CreateLayerOutput(string Name, TPinVisibility Visibility, out IDXLayerIO Pin);
-		/// <summary>
-		/// Creates an InputPin of type DirectX RenderState.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IDXRenderStateIO interface.</param>
-		void CreateRenderStateInput(TSliceMode SliceMode, TPinVisibility Visibility, out IDXRenderStateIn Pin);
-		/// <summary>
-		/// Creates an InputPin of type DirectX SamplerState.
-		/// </summary>
-		/// <param name="Name">The pins name.</param>
-		/// <param name="Visibility">The pins initial visibility.</param>
-		/// <param name="Pin">Pointer to the created IDXRenderStateIO interface.</param>
-		void CreateSamplerStateInput(TSliceMode SliceMode, TPinVisibility Visibility, out IDXSamplerStateIn Pin);
-		/// <summary>
-		/// Deletes the given pin from the plugin
-		/// </summary>
-		/// <param name="Pin">The pin to be deleted</param>
-		void DeletePin(IPluginIO Pin);
-		/// <summary>
-		/// Returns the current time which the plugin should use if it does timebased calculations.
-		/// </summary>
-		/// <param name="CurrentTime">The hosts current time.</param>
-		void GetCurrentTime(out double CurrentTime);
-		/// <summary>
-		/// Returns the absolut file path to the plugins host.
-		/// </summary>
-		/// <param name="Path">Absolut file path to the plugins host (i.e path to the patch the plugin is placed in, in vvvv).</param>
-		void GetHostPath(out string Path);
-		/// <summary>
-		/// Returns a slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.
-		/// </summary>
-		/// <param name="UseDescriptiveNames">If TRUE descriptive node names are used where available instead of the node ID.</param>
-		/// <param name="Path">Slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.</param>
-		void GetNodePath(bool UseDescriptiveNames, out string Path);
-		/// <summary>
-		/// Allows a plugin to write messages to a console on the host (ie. Renderer (TTY) in vvvv).
-		/// </summary>
-		/// <param name="Type">The type of message. Depending on the setting of this parameter the PluginHost can handle messages differently.</param>
-		/// <param name="Message">The message to be logged.</param>
-		void Log(TLogType Type, string Message);
-		/// <summary>
-		/// Allows a plugin to create/update an Enum with vvvv
-		/// </summary>
-		/// <param name="EnumName">The Enums name.</param>
-		/// <param name="Default">The Enums default value.</param>
-		/// <param name="EnumEntries">An array of strings that specify the enums entries.</param>
-		void UpdateEnum(string EnumName, string Default, string[] EnumEntries);
-		/// <summary>
-		/// Returns the number of entries for a given Enum.
-		/// </summary>
-		/// <param name="EnumName">The name of the Enum to get the EntryCount of.</param>
-		/// <param name="EntryCount">Number of entries in the Enum.</param>
-		void GetEnumEntryCount(string EnumName, out int EntryCount);
-		/// <summary>
-		/// Returns the name of a given EnumEntry of a given Enum.
-		/// </summary>
-		/// <param name="EnumName">The name of the Enum to get the EntryName of.</param>
-		/// <param name="Index">Index of the EnumEntry.</param>
-		/// <param name="EntryName">String representation of the EnumEntry.</param>
-		void GetEnumEntry(string EnumName, int Index, out string EntryName);
+		void MarkPinAsChanged();
 	}
-	#endregion host
 	
-	#region plugin
-	/// <summary>
-	/// The one single interface a plugin has to implement
-	/// </summary>
-	[Guid("084BB2C9-E8B4-4575-8611-C262399B2A95"),
+	[Guid("3E1B832D-FF75-4BC3-A894-47BC84A6199E"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IPluginBase
+	public interface IDXTextureOut: IPluginOut
 	{
 		/// <summary>
-		/// Called by the PluginHost to hand itself over to the plugin. This is where the plugin creates its initial pins.
+		/// Used to mark the texture as being changed compared to the last frame. 
 		/// </summary>
-		/// <param name="Host">Interface to the PluginHost.</param>
-		void SetPluginHost(IPluginHost Host);
+		void MarkPinAsChanged();
 	}
 	
 	/// <summary>
-	/// The one single interface a plugin has to implement
+	/// Interface to an OutputPin of type DirectX Layer.
 	/// </summary>
-	[Guid("7F813C89-4EDE-4087-A626-4320BE41C87F"),
+	[Guid("513190D5-68C5-4623-9BDA-D5C2B8D50172"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IPlugin: IPluginBase
+	public interface IDXLayerIO: IPluginOut
 	{
-		/// <summary>
-		/// Called by the PluginHost before the Evaluate function every frame for every ConfigurationPin that has changed. 
-		/// The ConfigurationPin is handed over as the functions input parameter. This is where a plugin would typically 
-		/// create/delete pins as reaction to the changed value of a ConfigurationPin that specifies the number of pins of a specific type.
-		/// </summary>
-		/// <param name="input">Interface to the ConfigurationPin for which the function is called.</param>
-		void Configurate(IPluginConfig input);
-		/// <summary>
-		/// Called by the PluginHost once per frame. This is where the plugin calculates and sets the SliceCounts and Values
-		/// of its outputs depending on the values of its current inputs.
-		/// </summary>
-		/// <param name="SpreadMax">The maximum SliceCount of all of the plugins inputs, which would typically be used
-		/// to adjust the SliceCounts of all outputs accordingly.</param>
-		void Evaluate(int SpreadMax);
-		/// <summary>
-		/// Called by the PluginHost only once during initialization to find out if this plugin needs to be evaluated
-		/// every frame even if there is not output connected. Typically this can return FALSE as long as the plugin doesn't have
-		/// a special reason for doing otherwise.
-		/// </summary>
-		bool AutoEvaluate {get;}
+		
 	}
 	
 	/// <summary>
-	/// Optional interface to be implemented on a plugin that needs to know when one of its pins is connected or disconnected
+	/// Base interface to all InputPins of type DirectX State.
 	/// </summary>
-	[Guid("B77C459E-E561-424B-AB3A-572C9BB6CD93"),
+	[Guid("9A09094D-4627-4CA4-A65D-D9FC2295FAB8"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IPluginConnections
+	public interface IDXStateIn: IPluginIn
 	{
 		/// <summary>
-		/// Called by the PluginHost for every input or output that is being connected. This is typically useful for 
-		/// NodeIO Inputs that can cache a reference to the upstream interface at this place instead of getting the reference
-		/// every frame in Evaluate.
+		/// Used to set States connected to this input slicewise during the RenderLoop.
 		/// </summary>
-		/// <param name="pin">Interface to the pin for which the function is called.</param>
-		void ConnectPin(IPluginIO pin);
-		/// <summary>
-		/// Called by the PluginHost for every input or output that is being disconnected. This is typically useful for 
-		/// NodeIO Inputs that can set a cached reference to the upstream interface to null at this place.
-		/// </summary>
-		/// <param name="pin">Interface to the pin for which the function is called.</param>
-		void DisconnectPin(IPluginIO pin);
+		/// <param name="Slice">The Index of the currently rendered slice</param>
+		void SetSliceStates(int Index);
 	}
-
-	#endregion plugin
-	
-	#region plugin info
 	
 	/// <summary>
-	/// Interface for the <see cref="VVVV.PluginInterfaces.V1.PluginInfo">PluginInfo</see>. Also see <a href="http://www.vvvv.org/tiki-index.php?page=Conventions.NodeAndPinNaming" target="_blank">VVVV Naming Conventions</a>.
+	/// Interface to an InputPin of type DirectX RenderState.
 	/// </summary>
-	[Guid("16EE5CF9-0D75-4ECF-9440-7D2909E8F7DC"),
+	[Guid("18DC7340-1AF3-46A5-9FF7-3348644DAB05"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IPluginInfo
+	public interface IDXRenderStateIn: IDXStateIn
 	{
 		/// <summary>
-		/// The nodes main visible name. Use CamelCaps and no spaces.
+		/// Used to set RenderStates from within <see cref="VVVV.PluginInterfaces.V1.IPluginDXLayer.SetStates()">IPluginDXLayer.SetStates</see>.
 		/// </summary>
-		string Name {get; set;}
-		/// <summary>
-		/// The category in which the plugin can be found. Try to use an existing one.
-		/// </summary>
-		string Category {get; set;}
-		/// <summary>
-		/// Optional. Leave blank if not needed to distinguish two nodes of the same name and category.
-		/// </summary>
-		string Version {get; set;}
-		/// <summary>
-		/// Describe the nodes function in a few words.
-		/// </summary>
-		string Help {get; set;}
-		/// <summary>
-		/// Specify a comma separated list of tags that describe the node. Name, category and Version don't need to be duplicated here.
-		/// </summary>
-		string Tags {get; set;}
-		/// <summary>
-		/// Specify the plugins author.
-		/// </summary>
-		string Author {get; set;}
-		/// <summary>
-		/// Give credits to thirdparty code used.
-		/// </summary>
-		string Credits {get; set;}
-		/// <summary>
-		/// Specify known problems.
-		/// </summary>
-		string Bugs {get; set;}
-		/// <summary>
-		/// Specify any usage of the node that may cause troubles.
-		/// </summary>
-		string Warnings {get; set;}
-		/// <summary>
-		/// Only for GUI plugins. Defines the nodes initial size in window-mode.
-		/// </summary>
-		Size InitialWindowSize {get; set;}
-		/// <summary>
-		/// Only for GUI plugins. Defines the nodes initial size in box-mode.
-		/// </summary>
-		Size InitialBoxSize {get; set;}
-		/// <summary>
-		/// Only for GUI plugins. Defines the nodes initial component mode.
-		/// </summary>
-		TComponentMode InitialComponentMode {get; set;}
-		
-		/// <summary>
-		/// The nodes namespace. Filled out automatically, when using code as seen in the PluginTemplate.
-		/// </summary>
-		string Namespace {get; set;}
-		/// <summary>
-		/// The nodes classname. Filled out automatically, when using code as seen in the PluginTemplate.
-		/// </summary>
-		string Class {get; set;}
+		/// <param name="State">The RenderState</param>
+		/// <param name="Value">The RenderStates value</param>
+		void SetRenderState<T>(RenderState State, T Value);
 	}
 	
 	/// <summary>
-	/// Interface for the <see cref="VVVV.PluginInterfaces.V1.INodeInfo">INodeInfo</see>. Also see <a href="http://www.vvvv.org/tiki-index.php?page=Conventions.NodeAndPinNaming" target="_blank">VVVV Naming Conventions</a>.
+	/// Interface to an InputPin of type DirectX SamplerState.
 	/// </summary>
-	[Guid("581998D6-ED08-4E73-821A-46AFF59C78BD"),
+	[Guid("49D69B50-6498-4B19-957E-828D86CD9E45"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface INodeInfo : IPluginInfo
+	public interface IDXSamplerStateIn: IDXStateIn
 	{
 		/// <summary>
-		/// Arguments used by the PluginFactory to create this node.
+		///  Used to set SamplerStates from within <see cref="VVVV.PluginInterfaces.V1.IPluginDXLayer.SetStates()">IPluginDXLayer.SetStates</see>.
 		/// </summary>
-		string Arguments {get; set;}
+		/// <param name="Sampler">The sampler index to apply the SamplerState to</param>
+		/// <param name="State">The SamplerState</param>
+		/// <param name="Value">The SamplerStates value</param>
+		void SetSamplerState<T>(int Sampler, SamplerState State, T Value);
 		/// <summary>
-		/// Name of the file used by the PluginFactory to create this node.
+		/// Used to set TextureStageStates from within <see cref="VVVV.PluginInterfaces.V1.IPluginDXLayer.SetStates()">IPluginDXLayer.SetStates</see>.
 		/// </summary>
-		string Filename {get; set;}
-		/// <summary>
-		/// The nodes unique username in the form of: Name (Category Version)
-		/// </summary>
-		string Username {get;}
-		/// <summary>
-		/// The node type. Set by the PluginFactory.
-		/// </summary>
-		TNodeType Type {get; set;}
-		/// <summary>
-		/// Reference to the <see cref="VVVV.HDE.Interfaces.IExecutable">IExecutable</see> which was used to create this node. Set by the PluginFactory.
-		/// </summary>
-		IExecutable Executable {get; set;}
+		/// <param name="Sampler"></param>
+		/// <param name="State"></param>
+		/// <param name="Value"></param>
+		void SetTextureStageState<T>(int Sampler, TextureStage State, T Value);
 	}
-	
-	/// <summary>
-	/// Helper Class that implements the <see cref="VVVV.PluginInterfaces.V1.IPluginInfo">IPluginInfo</see> interface.
-	/// </summary>
-	[Guid("FE1216D6-5439-416D-8FB7-16E9A29EF67B")]
-	public class PluginInfo: MarshalByRefObject, IPluginInfo
-	{
-		private string FName = "";
-		private string FCategory = "";
-		private string FVersion = "";
-		private string FAuthor = "";
-		private string FHelp = "";
-		private string FTags = "";
-		private string FBugs = "";
-		private string FCredits = "";
-		private string FWarnings = "";
-		private string FNamespace = "";
-		private string FClass = "";
-		private Size FInitialWindowSize = new Size(0, 0);
-		private Size FInitialBoxSize = new Size(0, 0);
-		private TComponentMode FInitialComponentMode = TComponentMode.Hidden;
-		
-		/// <summary>
-		/// The nodes main visible name. Use CamelCaps and no spaces.
-		/// </summary>
-		public string Name
-		{
-			get {return FName;}
-			set {FName = value;}
-		}
-		/// <summary>
-		/// The category in which the plugin can be found. Try to use an existing one.
-		/// </summary>
-		public string Category
-		{
-			get {return FCategory;}
-			set {FCategory = value;}
-		}
-		/// <summary>
-		/// Optional. Leave blank if not needed to distinguish two nodes of the same name and category.
-		/// </summary>
-		public string Version
-		{
-			get {return FVersion;}
-			set {FVersion = value;}
-		}
-		/// <summary>
-		/// Specify the plugins author.
-		/// </summary>
-		public string Author
-		{
-			get {return FAuthor;}
-			set {FAuthor = value;}
-		}
-		/// <summary>
-		/// Describe the nodes function in a few words.
-		/// </summary>
-		public string Help
-		{
-			get {return FHelp;}
-			set {FHelp = value;}
-		}
-		/// <summary>
-		/// Specify a comma separated list of tags that describe the node. Name, category and Version don't need to be duplicated here.
-		/// </summary>
-		public string Tags
-		{
-			get {return FTags;}
-			set {FTags = value;}
-		}
-		/// <summary>
-		/// Specify known problems.
-		/// </summary>
-		public string Bugs
-		{
-			get {return FBugs;}
-			set {FBugs = value;}
-		}
-		/// <summary>
-		/// Give credits to thirdparty code used.
-		/// </summary>
-		public string Credits
-		{
-			get {return FCredits;}
-			set {FCredits = value;}
-		}
-		/// <summary>
-		/// Specify any usage of the node that may cause troubles.
-		/// </summary>
-		public string Warnings
-		{
-			get {return FWarnings;}
-			set {FWarnings = value;}
-		}
-		/// <summary>
-		/// The nodes namespace. Filled out automatically, when using code as seen in the PluginTemplate.
-		/// </summary>
-		public string Namespace
-		{
-			get {return FNamespace;}
-			set {FNamespace = value;}
-		}
-		/// <summary>
-		/// The nodes classname. Filled out automatically, when using code as seen in the PluginTemplate.
-		/// </summary>
-		public string Class
-		{
-			get {return FClass;}
-			set {FClass = value;}
-		}
-		/// <summary>
-		/// Only for GUI plugins. Defines the nodes initial size in window-mode.
-		/// </summary>
-		public Size InitialWindowSize
-		{
-			get {return FInitialWindowSize;}
-			set {FInitialWindowSize = value;}
-		}
-		/// <summary>
-		/// Only for GUI plugins. Defines the nodes initial size in box-mode.
-		/// </summary>
-		public Size InitialBoxSize
-		{
-			get {return FInitialBoxSize;}
-			set {FInitialBoxSize = value;}
-		}
-		
-		/// <summary>
-		/// Only for GUI plugins. Defines the nodes initial component mode.
-		/// </summary>
-		public TComponentMode InitialComponentMode
-		{
-			get {return FInitialComponentMode;}
-			set {FInitialComponentMode = value;}
-		}
-	}
-	
-	/// <summary>
-	/// Helper Class that implements the <see cref="VVVV.PluginInterfaces.V1.INodeInfo">INodeInfo</see> interface.
-	/// </summary>
-	[Guid("36F845F4-A486-49EC-9A0C-CB254FF2B297")]
-	public class NodeInfo: PluginInfo, INodeInfo
-	{
-		
-		private string FArguments = "";
-		private string FFilename = "";
-		private TNodeType FType = TNodeType.Plugin;
-		private IExecutable FExcecutable = null;
-		
-		/// <summary>
-		/// Creates a new NodeInfo from an existing <see cref="VVVV.PluginInterfaces.V1.IPluginInfo">IPluginInfo</see>.
-		/// </summary>
-		/// <param name="PluginInfo"></param>
-		public NodeInfo (IPluginInfo Info)
-		{
-			this.Author = Info.Author;
-			this.Bugs = Info.Bugs;
-			this.Category = Info.Category;
-			this.Class = Info.Class;
-			this.Credits = Info.Credits;
-			this.Help = Info.Help;
-			this.InitialBoxSize = Info.InitialBoxSize;
-			this.InitialComponentMode = Info.InitialComponentMode;
-			this.InitialWindowSize = Info.InitialWindowSize;
-			this.Name = Info.Name;
-			this.Namespace = Info.Namespace;
-			this.Tags = Info.Tags;
-			this.Version = Info.Version;
-			this.Warnings = Info.Warnings;
-		}
-		
-		/// <summary>
-		/// Arguments used by the PluginFactory to create this node.
-		/// </summary>
-		public string Arguments
-		{
-			get {return FArguments;}
-			set {FArguments = value;}
-		}
-		
-		/// <summary>
-		/// Name of the file used by the PluginFactory to create this node.
-		/// </summary>
-		public string Filename 
-		{
-			get {return FFilename;}
-			set {FFilename = value;}
-		}
-		
-		/// <summary>
-		/// The nodes unique username in the form of: Name (Category Version)
-		/// </summary>
-		public string Username 
-		{
-			get 
-			{
-			    if (string.IsNullOrEmpty(this.Version))
-					return this.Name + " (" + this.Category + ")";
-				else
-					return this.Name + " (" + this.Category + " " + this.Version + ")";
-			}
-		}
-		
-		/// <summary>
-		/// The node type. Set by the PluginFactory.
-		/// </summary>
-		public TNodeType Type 
-		{
-			get {return FType;}
-			set {FType = value;}
-		}
-		
-		/// <summary>
-		/// Reference to the <see cref="VVVV.HDE.Interfaces.IExecutable">IExecutable</see> which was used to create this node. Set by the PluginFactory.
-		/// </summary>
-		public IExecutable Executable 
-		{
-			get {return FExcecutable;}
-			set {FExcecutable = value;}
-		}
-	}
-	
-	#endregion plugin info
-	
+	#endregion DXPins
 }

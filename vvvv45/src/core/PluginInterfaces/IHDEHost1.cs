@@ -8,7 +8,6 @@ namespace VVVV.PluginInterfaces.V1
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IHDEHost 
 	{
-	
 
 	
 	}
