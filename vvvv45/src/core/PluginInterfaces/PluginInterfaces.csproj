@@ -38,6 +38,9 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="IHDEHost.cs" />
+    <Compile Include="IHDEPlugin.cs" />
+    <Compile Include="IPluginFactory.cs" />
     <Compile Include="PluginDXInterface1.cs" />
     <Compile Include="PluginInterface1.cs" />
   </ItemGroup>
@@ -46,9 +49,9 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\vvvv50\src\_HDEInterfaces\HDEInterfaces.csproj">
+    <ProjectReference Include="..\..\..\vvvv50\src\_HDEModel\HDEModel.csproj">
       <Project>{42D93A99-FF48-462B-B8A8-A9C1B1E6B5F8}</Project>
-      <Name>HDEInterfaces</Name>
+      <Name>HDEModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\_Utils\Utils.csproj">
       <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
