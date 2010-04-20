@@ -56,6 +56,7 @@ namespace VVVV.Nodes
     	private IStringIn FJointNameInput;
     	
     	private IStringOut FParentNameOutput;
+    	private IValueOut FJointIdOutput;
     	private ITransformOut FBaseTransformOutput;
     	private ITransformOut FAnimationTransformOutput;
     	
@@ -203,6 +204,8 @@ namespace VVVV.Nodes
 	    	FHost.CreateStringInput("Joint Name", TSliceMode.Dynamic, TPinVisibility.True, out FJointNameInput);
 	    	
 	    	// create outputs
+	    	FHost.CreateValueOutput("ID", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FJointIdOutput);
+	    	FJointIdOutput.SetSubType(0, 500, 1, 0, false, false, true);
 	    	
 	    	FHost.CreateStringOutput("Parent Name", TSliceMode.Dynamic, TPinVisibility.True, out FParentNameOutput);
 	    	
@@ -256,18 +259,21 @@ namespace VVVV.Nodes
         			{
         				
         				FJointNameInput.GetString(i, out jointName);
-        				currJoint = (IJoint)inputSkeleton.JointTable[jointName];
-        				if (currJoint!=null && currJoint.Parent!=null)
-        					FParentNameOutput.SetString(i, currJoint.Parent.Name);
-        				else
-        					FParentNameOutput.SetString(i, "");
-        				if (currJoint!=null)
+        				if (inputSkeleton.JointTable.ContainsKey(jointName))
         				{
-        					FBaseTransformOutput.SetMatrix(i, VMath.Rotate(currJoint.Rotation) * currJoint.BaseTransform);
+	        				currJoint = (IJoint)inputSkeleton.JointTable[jointName];
+	        				if (currJoint.Parent!=null)
+	        					FParentNameOutput.SetString(i, currJoint.Parent.Name);
+	        				else
+	        					FParentNameOutput.SetString(i, "");
+	
+	    					FJointIdOutput.SetValue(i, currJoint.Id);
+	    					FBaseTransformOutput.SetMatrix(i, VMath.Rotate(currJoint.Rotation) * currJoint.BaseTransform);
 	        				FAnimationTransformOutput.SetMatrix(i, currJoint.AnimationTransform);
         				}
         				else
         				{
+        					FJointIdOutput.SetValue(i, -1);
         					FBaseTransformOutput.SetMatrix(i, VMath.IdentityMatrix);
 	        				FAnimationTransformOutput.SetMatrix(i, VMath.IdentityMatrix);
         				}
