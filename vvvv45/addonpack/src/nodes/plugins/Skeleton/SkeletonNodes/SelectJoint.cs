@@ -305,7 +305,7 @@ namespace VVVV.Nodes
 				}
 				rootJoint = (IJoint)skeleton.Root;
 				
-				if (!initialized || configSelectedNames!=null)
+				if (!initialized && configSelectedNames!=null)
 				{
 					selectedJoints.Clear();
 					IJoint currJoint;
@@ -404,7 +404,6 @@ namespace VVVV.Nodes
 		
 		private bool hasHovered(IJoint currJoint, Vector3D mousePos)
 		{
-			
 			if (VMath.Dist(mousePos, jointPositions[currJoint.Name])<5) {
 				
 				hoveredJoint = currJoint;
