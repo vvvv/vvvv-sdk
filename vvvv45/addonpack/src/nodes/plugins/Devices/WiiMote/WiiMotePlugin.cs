@@ -282,10 +282,6 @@ namespace VVVV.Nodes
 			int newExt;
 			FPinConfigExtension.GetOrd(0, out newExt);
 			
-//			string msg;
-//			FPinConfigExtension.GetString(0, out msg);
-//			FHost.Log(TLogType.Message, msg);
-
 			if (newExt != FExtension) {
 				if (FPinOutputExtAccelleration != null) FHost.DeletePin(FPinOutputExtAccelleration);
 				if (FPinOutputExtTilt != null)FHost.DeletePin(FPinOutputExtTilt);
@@ -343,16 +339,16 @@ namespace VVVV.Nodes
 					FHost.CreateValueOutput("Balance Board Weight (kg)", 1, null, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtButtons);
 					FPinOutputExtButtons.SetSubType(0, double.MaxValue, 1, 0, false, false, false);
 					
-					FHost.CreateValueOutput("Balance Board Corners", 4, new string[4]{"TL", "TR", "BL", "BR"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtAccelleration);
+					FHost.CreateValueOutput("Balance Board Corners", 4, new string[4]{"TL", "TR", "BL", "BR"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtAccelleration);
 					FPinOutputExtAccelleration.SetSubType4D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, 0, false, false, false);
 					
-					FHost.CreateValueOutput("Balance Board Center Of Gravity", 2, null, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtJoystickLeft);
+					FHost.CreateValueOutput("Balance Board Center Of Gravity", 2, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtJoystickLeft);
 					FPinOutputExtJoystickLeft.SetSubType2D(-1, 1, 0.0001, 0, 0, false, false, false);
 					break;					
 				case 4: // Guitar
 					FHost.Log(TLogType.Debug, "Guitar");
 					
-					FHost.CreateValueOutput("Guitar Buttons", 4, new string[4]{"Plus", "Minus", "StrumUp", "StrumDown"}, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtButtons);
+					FHost.CreateValueOutput("Guitar Buttons", 4, new string[4]{"Plus", "Minus", "StrumUp", "StrumDown"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtButtons);
 					FPinOutputExtButtons.SetSubType4D(0, 1, 1, 0, 0, 0, 0, false, true, false);
 
 					FHost.CreateValueOutput("Guitar Color Bar", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtControls);
