@@ -305,11 +305,16 @@ namespace VVVV.Nodes
         		for (i=0; i<jointNames.Count; i++)
         		{
         			currJoint = inputSkeleton.JointTable[jointNames[i]];
-        			FInverseBindPoseInput.GetMatrix(currJoint.Id, out currIBPMatrix);
         			if (currJoint!=null)
-        				FTransformOutput.SetMatrix(currJoint.Id, currIBPMatrix * currJoint.CombinedTransform);
-        			else
-        				FTransformOutput.SetMatrix(currJoint.Id, VMath.IdentityMatrix);
+        			{
+        				int sliceIndex;
+        				if (outputMode == OUTPUT_MODE_STATIC)
+        					sliceIndex = currJoint.Id;
+        				else
+        					sliceIndex = i;
+        				FInverseBindPoseInput.GetMatrix(sliceIndex, out currIBPMatrix);
+        				FTransformOutput.SetMatrix(sliceIndex, currIBPMatrix * currJoint.CombinedTransform);
+        			}
         		}
         		
         		// Pad remaining slices with Identity Matrices
