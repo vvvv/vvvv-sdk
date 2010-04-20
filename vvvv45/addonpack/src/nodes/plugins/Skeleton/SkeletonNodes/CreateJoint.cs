@@ -54,7 +54,7 @@ namespace VVVV.Nodes
     	private IStringIn FJointNameInput;
     	private IStringIn FParentNameInput;
     	private IValueIn FConstraintsInput;
-    	private IValueIn FBasePositionInput;
+    	private ITransformIn FBaseTransformInput;
     	private IEnumIn FOffsetModeInput;
     	
     	private INodeOut FSkeletonOutput;
@@ -202,7 +202,7 @@ namespace VVVV.Nodes
 	    	
 	    	FHost.CreateStringInput("Parent Name", TSliceMode.Dynamic, TPinVisibility.True, out FParentNameInput);
 	    	
-	    	FHost.CreateValueInput("Base Position", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out FBasePositionInput);
+	    	FHost.CreateTransformInput("Base Transformation", TSliceMode.Dynamic, TPinVisibility.True, out FBaseTransformInput);
 	    	
 	    	String[] dimensions = new String[2];
 	    	dimensions[0] = "Min";
@@ -245,7 +245,7 @@ namespace VVVV.Nodes
         	
         	bool recalculate = false;
         	
-        	if (FJointNameInput.PinIsChanged || FBasePositionInput.PinIsChanged || FOffsetModeInput.PinIsChanged || FParentNameInput.PinIsChanged || FConstraintsInput.PinIsChanged || recalculate)
+        	if (FJointNameInput.PinIsChanged || FBaseTransformInput.PinIsChanged || FOffsetModeInput.PinIsChanged || FParentNameInput.PinIsChanged || FConstraintsInput.PinIsChanged || recalculate)
         	{
         		skeleton = new Skeleton();
         		
@@ -254,12 +254,12 @@ namespace VVVV.Nodes
         		{
         			string jointName;
         			string parentName;
-        			double basePositionX, basePositionY, basePositionZ;
         			FJointNameInput.GetString(i%FJointNameInput.SliceCount, out jointName);
         			FParentNameInput.GetString(i%FParentNameInput.SliceCount, out parentName);
         			IJoint currJoint = new JointInfo(jointName);
-        			FBasePositionInput.GetValue3D(i%FBasePositionInput.SliceCount, out basePositionX, out basePositionY, out basePositionZ);
-        			currJoint.BaseTransform = VMath.Translate(basePositionX, basePositionY, basePositionZ);
+        			Matrix4x4 baseTransform;
+        			FBaseTransformInput.GetMatrix(i%FBaseTransformInput.SliceCount, out baseTransform);
+        			currJoint.BaseTransform = baseTransform; //VMath.Translate(basePositionX, basePositionY, basePositionZ);
         			currJoint.Constraints.Clear();
         			for (int j=i*3; j<i*3+3; j++)
 		        	{
