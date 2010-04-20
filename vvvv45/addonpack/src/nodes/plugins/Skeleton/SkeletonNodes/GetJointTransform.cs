@@ -64,6 +64,7 @@ namespace VVVV.Nodes
     	private Skeleton inputSkeleton;
     	private List<string> jointNames;
     	private int outputMode;
+    	private bool jointsSelected = false;
     	
     	
     	#endregion field declaration
@@ -240,20 +241,6 @@ namespace VVVV.Nodes
         	
         	bool recalculate = false;
         	
-        	if (FSkeletonInput.PinIsChanged)
-        	{
-        		
-        		if (FSkeletonInput.IsConnected)
-        		{
-	        		INodeIOBase currInterface;
-	        		FSkeletonInput.GetUpstreamInterface(out currInterface);
-	        		inputSkeleton = (Skeleton)currInterface;
-        		}
-        		else
-        			inputSkeleton = null;
-        		recalculate = true;
-        	}
-        	
         	if (FJointNameInput.PinIsChanged)
         	{
         		jointNames = new List<string>();
@@ -263,6 +250,36 @@ namespace VVVV.Nodes
         			FJointNameInput.GetString(i, out jointName);
         			jointNames.Add(jointName);
         		}
+        		recalculate = true;
+        		if (jointNames.Count==1 && string.IsNullOrEmpty(jointNames[0]))
+        			jointsSelected = false;
+        		else
+        			jointsSelected = true;
+        	}
+        	
+        	if (FSkeletonInput.PinIsChanged)
+        	{
+        		if (FSkeletonInput.IsConnected)
+        		{
+	        		INodeIOBase currInterface;
+	        		FSkeletonInput.GetUpstreamInterface(out currInterface);
+	        		inputSkeleton = (Skeleton)currInterface;
+	        		
+	        		// if there are no specific joints selected via input pin, collect them all
+	        		if (jointNames==null || !jointsSelected)
+	        		{
+	        			jointNames = new List<string>();
+	        			foreach (KeyValuePair<string, IJoint> pair in inputSkeleton.JointTable)
+	        			{
+	        				// Only add those with a valid array index.
+	    					// It's not a must that all bones are used as skinning matrices.
+	        				if (pair.Value.Id >= 0)
+	        					jointNames.Add(pair.Key);
+	        			}
+	        		}
+        		}
+        		else
+        			inputSkeleton = null;
         		recalculate = true;
         	}
         	
@@ -279,19 +296,6 @@ namespace VVVV.Nodes
         	
         	if (recalculate && inputSkeleton!=null)
         	{
-        		// if there are no specific joints selected via input pin, collect them all
-        		if (jointNames==null || (jointNames.Count==1 && string.IsNullOrEmpty(jointNames[0])))
-        		{
-        			jointNames = new List<string>();
-        			foreach (KeyValuePair<string, IJoint> pair in inputSkeleton.JointTable)
-        			{
-        				// Only add those with a valid array index.
-    					// It's not a must that all bones are used as skinning matrices.
-        				if (pair.Value.Id >= 0)
-        					jointNames.Add(pair.Key);
-        			}
-        		}
-        		
         		inputSkeleton.CalculateCombinedTransforms();
         		int jointCount;
         		if (outputMode == OUTPUT_MODE_DYNAMIC)
