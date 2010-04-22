@@ -41,11 +41,15 @@ namespace CSharpEditor
 	/// </summary>
 	static class HostCallbackImplementation
 	{
-		public static void Register(CSharpNodeEditor mainForm)
+		static IProjectContent FProjectContent;
+		
+		public static void Register(IProjectContent projectContent)
 		{
+			FProjectContent = projectContent;
+			
 			// Must be implemented. Gets the project content of the active project.
 			HostCallback.GetCurrentProjectContent = delegate {
-				return mainForm.FMyProjectContent;
+				return FProjectContent;
 			};
 			
 			// The default implementation just logs to Log4Net. We want to display a MessageBox.
@@ -61,6 +65,11 @@ namespace CSharpEditor
 				                + include + " from " + fileName
 				                + ":\r\n" + message + "\r\n");
 			};
+		}
+		
+		public static void UnRegister(IProjectContent projectContent)
+		{
+			FProjectContent = null;
 		}
 	}
 }

@@ -30,13 +30,14 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Threading;
 using System.IO;
+using System.Resources;
+using System.Reflection;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
 using ICSharpCode.TextEditor;
-using NRefactory = ICSharpCode.NRefactory;
 using Dom = ICSharpCode.SharpDevelop.Dom;
 
 using CSharpEditor;
@@ -46,23 +47,30 @@ namespace VVVV.Nodes
 {
 	
 	//class definition, inheriting from UserControl for the GUI stuff
-	public class CSharpNodeEditor: ManagedVCL.TopControl, IPlugin
+	public class CSharpNodeEditor: ManagedVCL.TopControl, IHDEPlugin
 	{
 		#region field declaration
+		internal Dom.ProjectContentRegistry FPCRegistry;
+		internal Dom.DefaultProjectContent FProjectContent;
+		internal Dom.ParseInformation FParseInfo;
+		internal System.Windows.Forms.ImageList imageList1;
 		
-		//the host (mandatory)
-		private IPluginHost FHost;
-		// Track whether Dispose has been called.
+		private IHDEHost FHost;
 		private bool FDisposed = false;
+		private ToolStripStatusLabel FParserLabel;
+		private StatusStrip statusStrip1;
+		private ICSharpCode.TextEditor.TextEditorControl FTextEditorControl;
+		private BackgroundParser FBGParser;
+		private BackgroundCodeParser FBGCodeParser;
+		private Form FWrapperForm;
 		
-		//input pin declaration
-		private IStringIn FFilenameInput;
-		
-		internal Dom.ProjectContentRegistry FPcRegistry;
-		internal Dom.DefaultProjectContent FMyProjectContent;
-		internal Dom.ParseInformation FParseInformation = new Dom.ParseInformation();
-		private Dom.ICompilationUnit FLastCompilationUnit;
-		private Thread FParserThread;
+		public Form WrapperForm
+		{
+			get
+			{
+				return FWrapperForm;
+			}
+		}
 		
 		/// <summary>
 		/// Many SharpDevelop.Dom methods take a file name, which is really just a unique identifier
@@ -84,11 +92,13 @@ namespace VVVV.Nodes
 			InitializeComponent();
 			
 			FTextEditorControl.SetHighlighting("C#");
-			HostCallbackImplementation.Register(this);
+			FTextEditorControl.Document.FoldingManager.FoldingStrategy = new ParserFoldingStrategy();
+			
+			HostCallbackImplementation.Register(this.FProjectContent);
 			CodeCompletionKeyHandler.Attach(this, FTextEditorControl);
 			ToolTipProvider.Attach(this, FTextEditorControl);
 			
-			FPcRegistry = new Dom.ProjectContentRegistry(); // Default .NET 2.0 registry
+			FPCRegistry = new Dom.ProjectContentRegistry(); // Default .NET 2.0 registry
 			
 			// Persistence lets SharpDevelop.Dom create a cache file on disk so that
 			// future starts are faster.
@@ -97,8 +107,15 @@ namespace VVVV.Nodes
 			/*FPcRegistry.ActivatePersistence(Path.Combine(Path.GetTempPath(),
 			                                            "CSharpCodeCompletion"));*/
 			
-			FMyProjectContent = new Dom.DefaultProjectContent();
-			FMyProjectContent.Language = CurrentLanguageProperties;
+			FProjectContent = new Dom.DefaultProjectContent();
+			FProjectContent.Language = CurrentLanguageProperties;
+			
+			// create dummy FParseInfo to prevent NullReferenceException when using CC before parsing
+			// for the first time
+			FParseInfo = new Dom.ParseInformation(new Dom.DefaultCompilationUnit(FProjectContent));
+			
+			FBGParser = new BackgroundParser(FPCRegistry, FProjectContent, FParserLabel);
+			FBGCodeParser = new BackgroundCodeParser(FProjectContent, FTextEditorControl.Document, DummyFileName, FParseInfo);
 		}
 		
 		// Dispose(bool disposing) executes in two distinct scenarios.
@@ -116,11 +133,16 @@ namespace VVVV.Nodes
 				if(disposing)
 				{
 					// Dispose managed resources.
+					HostCallbackImplementation.UnRegister(this.FProjectContent);
+					FBGParser.CancelAsync();
+					FTextEditorControl.Dispose();
+					FWrapperForm.Dispose();
 				}
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.
 				
-				FHost.Log(TLogType.Debug, "PluginGUITemplate is being deleted");
+				if (FHost != null)
+					FHost.Log(TLogType.Debug, "CodeEditor is being deleted");
 				
 				// Note that this is not thread safe.
 				// Another thread could start disposing the object
@@ -130,6 +152,8 @@ namespace VVVV.Nodes
 				// implemented by the client.
 			}
 			FDisposed = true;
+			
+			base.Dispose(disposing);
 		}
 		
 		#endregion constructor/destructor
@@ -149,7 +173,7 @@ namespace VVVV.Nodes
 					FPluginInfo = new PluginInfo();
 					
 					//the nodes main name: use CamelCaps and no spaces
-					FPluginInfo.Name = "CSharpNodeEditor";
+					FPluginInfo.Name = "CodeEditor";
 					//the nodes category: try to use an existing one
 					FPluginInfo.Category = "VVVV";
 					//the nodes version: optional. leave blank if not
@@ -159,7 +183,7 @@ namespace VVVV.Nodes
 					//the nodes author: your sign
 					FPluginInfo.Author = "vvvv group";
 					//describe the nodes function
-					FPluginInfo.Help = "CSharpNodeEditor";
+					FPluginInfo.Help = "CodeEditor";
 					//specify a comma separated list of tags that describe the node
 					FPluginInfo.Tags = "";
 					
@@ -197,31 +221,51 @@ namespace VVVV.Nodes
 		
 		#endregion node name and infos
 		
+		#region Windows Forms designer
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CSharpNodeEditor));
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-			this.FParserThreadLabel = new System.Windows.Forms.ToolStripStatusLabel();
+			this.FParserLabel = new System.Windows.Forms.ToolStripStatusLabel();
+			this.FWrapperForm = new System.Windows.Forms.Form();
 			this.FTextEditorControl = new ICSharpCode.TextEditor.TextEditorControl();
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.statusStrip1.SuspendLayout();
+			this.FWrapperForm.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// statusStrip1
 			// 
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.FParserThreadLabel});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 93);
+									this.FParserLabel});
+			this.statusStrip1.Location = new System.Drawing.Point(0, 458);
 			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(294, 22);
+			this.statusStrip1.Size = new System.Drawing.Size(640, 22);
 			this.statusStrip1.TabIndex = 0;
 			this.statusStrip1.Text = "statusStrip1";
 			// 
-			// FParserThreadLabel
+			// FParserLabel
 			// 
-			this.FParserThreadLabel.Name = "FParserThreadLabel";
-			this.FParserThreadLabel.Size = new System.Drawing.Size(109, 17);
-			this.FParserThreadLabel.Text = "toolStripStatusLabel1";
+			this.FParserLabel.Name = "FParserLabel";
+			this.FParserLabel.Size = new System.Drawing.Size(109, 17);
+			this.FParserLabel.Text = "toolStripStatusLabel1";
+			// 
+			// FWrapperForm
+			// 
+			this.FWrapperForm.ClientSize = new System.Drawing.Size(640, 458);
+			this.FWrapperForm.Controls.Add(this.FTextEditorControl);
+			this.FWrapperForm.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.FWrapperForm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+			this.FWrapperForm.Location = new System.Drawing.Point(0, 0);
+			this.FWrapperForm.MaximizeBox = false;
+			this.FWrapperForm.MinimizeBox = false;
+			this.FWrapperForm.Name = "FWrapperForm";
+			this.FWrapperForm.ShowIcon = false;
+			this.FWrapperForm.ShowInTaskbar = false;
+			this.FWrapperForm.Visible = false;
+			this.FWrapperForm.TopLevel = false;
+			this.FWrapperForm.Parent = this;
 			// 
 			// FTextEditorControl
 			// 
@@ -229,154 +273,65 @@ namespace VVVV.Nodes
 			this.FTextEditorControl.IsReadOnly = false;
 			this.FTextEditorControl.Location = new System.Drawing.Point(0, 0);
 			this.FTextEditorControl.Name = "FTextEditorControl";
-			this.FTextEditorControl.ShowEOLMarkers = true;
-			this.FTextEditorControl.ShowSpaces = true;
-			this.FTextEditorControl.ShowTabs = true;
-			this.FTextEditorControl.Size = new System.Drawing.Size(294, 93);
+			this.FTextEditorControl.Size = new System.Drawing.Size(640, 458);
 			this.FTextEditorControl.TabIndex = 0;
+			this.FTextEditorControl.TextChanged += new System.EventHandler(this.FTextEditorControlTextChangedCB);
 			// 
 			// imageList1
 			// 
-			this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-			this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+			this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
 			this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+			this.imageList1.Images.SetKeyName(0, "Icons.16x16.Class.png");
+			this.imageList1.Images.SetKeyName(1, "Icons.16x16.Method.png");
+			this.imageList1.Images.SetKeyName(2, "Icons.16x16.Property.png");
+			this.imageList1.Images.SetKeyName(3, "Icons.16x16.Field.png");
+			this.imageList1.Images.SetKeyName(4, "Icons.16x16.Enum.png");
+			this.imageList1.Images.SetKeyName(5, "Icons.16x16.NameSpace.png");
+			this.imageList1.Images.SetKeyName(6, "Icons.16x16.Event.png");
 			// 
 			// CSharpNodeEditor
 			// 
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-			this.Controls.Add(this.FTextEditorControl);
+			this.Controls.Add(this.FWrapperForm);
 			this.Controls.Add(this.statusStrip1);
 			this.DoubleBuffered = true;
 			this.Name = "CSharpNodeEditor";
-			this.Size = new System.Drawing.Size(294, 115);
+			this.Size = new System.Drawing.Size(640, 480);
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
+			this.FWrapperForm.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
 		private System.ComponentModel.IContainer components;
-		internal System.Windows.Forms.ImageList imageList1;
-		private System.Windows.Forms.ToolStripStatusLabel FParserThreadLabel;
-		private System.Windows.Forms.StatusStrip statusStrip1;
-		private ICSharpCode.TextEditor.TextEditorControl FTextEditorControl;
-		
-		#region pin creation
-		
-		//this method is called by vvvv when the node is created
-		public void SetPluginHost(IPluginHost Host)
-		{
-			//assign host
-			FHost = Host;
-
-			//create inputs
-			FHost.CreateStringInput("String Input", TSliceMode.Dynamic, TPinVisibility.True, out FFilenameInput);
-			FFilenameInput.SetSubType("node.cs", true);
-			//create outputs
-		}
-
-		#endregion pin creation
-		
-		#region mainloop
-		
-		public void Configurate(IPluginConfig Input)
-		{
-			//nothing to configure in this plugin
-			//only used in conjunction with inputs of type cmpdConfigurate
-		}
-		
-		//here we go, thats the method called by vvvv each frame
-		//all data handling should be in here
-		public void Evaluate(int SpreadMax)
-		{
-			//if any of the inputs has changed
-			//recompute the outputs
-			if (FFilenameInput.PinIsChanged)
-			{
-				string filename;
-				FFilenameInput.GetString(0, out filename);
-				
-				FTextEditorControl.LoadFile(filename);
-				FTextEditorControl.EnableFolding = true;
-				
-				//redraw gui only if anything changed
-				Invalidate();
-			}
-		}
-		
-		#endregion mainloop
+		#endregion Windows Forms designer
 		
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
 			
-			FParserThread = new Thread(ParserThread);
-			FParserThread.IsBackground = true;
-			FParserThread.Start();
+			FWrapperForm.Show();
+			
+			FBGParser.RunParserAsync();
 		}
 		
-		void ParserThread()
+		#region IHDEPlugin
+		public void SetHDEHost(IHDEHost host)
 		{
-			BeginInvoke(new MethodInvoker(delegate { FParserThreadLabel.Text = "Loading mscorlib..."; }));
-			FMyProjectContent.AddReferencedContent(FPcRegistry.Mscorlib);
-			
-			// do one initial parser step to enable code-completion while other
-			// references are loading
-			ParseStep();
-			
-			string[] referencedAssemblies = {
-				"System", "System.Data", "System.Drawing", "System.Xml", "System.Windows.Forms", "Microsoft.VisualBasic"
-			};
-			foreach (string assemblyName in referencedAssemblies) {
-				string assemblyNameCopy = assemblyName; // copy for anonymous method
-				BeginInvoke(new MethodInvoker(delegate { FParserThreadLabel.Text = "Loading " + assemblyNameCopy + "..."; }));
-				Dom.IProjectContent referenceProjectContent = FPcRegistry.GetProjectContentForReference(assemblyName, assemblyName);
-				FMyProjectContent.AddReferencedContent(referenceProjectContent);
-				if (referenceProjectContent is Dom.ReflectionProjectContent) {
-					(referenceProjectContent as Dom.ReflectionProjectContent).InitializeReferences();
-				}
-			}
-
-			BeginInvoke(new MethodInvoker(delegate { FParserThreadLabel.Text = "Ready"; }));
-			
-			// Parse the current file every 2 seconds
-			while (!IsDisposed) {
-				ParseStep();
-				
-				Thread.Sleep(2000);
-			}
+			FHost = host;
 		}
 		
-		void ParseStep()
+		public void SetPluginHost(IPluginHost Host)
 		{
-			string code = null;
-			Invoke(new MethodInvoker(delegate {
-			                         	code = FTextEditorControl.Text;
-			                         }));
-			TextReader textReader = new StringReader(code);
-			Dom.ICompilationUnit newCompilationUnit;
-			NRefactory.SupportedLanguage supportedLanguage;
-			supportedLanguage = NRefactory.SupportedLanguage.CSharp;
-			using (NRefactory.IParser p = NRefactory.ParserFactory.CreateParser(supportedLanguage, textReader)) {
-				// we only need to parse types and method definitions, no method bodies
-				// so speed up the parser and make it more resistent to syntax
-				// errors in methods
-				p.ParseMethodBodies = false;
-				
-				p.Parse();
-				newCompilationUnit = ConvertCompilationUnit(p.CompilationUnit);
-			}
-			// Remove information from lastCompilationUnit and add information from newCompilationUnit.
-			FMyProjectContent.UpdateCompilationUnit(FLastCompilationUnit, newCompilationUnit, DummyFileName);
-			FLastCompilationUnit = newCompilationUnit;
-			FParseInformation.SetCompilationUnit(newCompilationUnit);
+			// We don't need the PluginHost for now.
 		}
+		#endregion IHDEPlugin
 		
-		Dom.ICompilationUnit ConvertCompilationUnit(NRefactory.Ast.CompilationUnit cu)
+		void FTextEditorControlTextChangedCB(object sender, EventArgs e)
 		{
-			Dom.NRefactoryResolver.NRefactoryASTConvertVisitor converter;
-			converter = new Dom.NRefactoryResolver.NRefactoryASTConvertVisitor(FMyProjectContent);
-			cu.AcceptVisitor(converter, null);
-			return converter.Cu;
+			TextEditorControl control = sender as TextEditorControl;
+			
+			FBGCodeParser.RunParserAsync(control.Text);
 		}
 	}
 }

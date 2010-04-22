@@ -94,13 +94,13 @@ namespace CSharpEditor
 			//	new DefaultCompletionData("Text", "Description", 1)
 			//};
 			
-			NRefactoryResolver resolver = new NRefactoryResolver(mainForm.FMyProjectContent.Language);
+			NRefactoryResolver resolver = new NRefactoryResolver(mainForm.FProjectContent.Language);
 			Dom.ResolveResult rr = resolver.Resolve(FindExpression(textArea),
-			                                        mainForm.FParseInformation,
+			                                        mainForm.FParseInfo,
 			                                        textArea.MotherTextEditorControl.Text);
 			List<ICompletionData> resultList = new List<ICompletionData>();
 			if (rr != null) {
-				ArrayList completionData = rr.GetCompletionData(mainForm.FMyProjectContent);
+				ArrayList completionData = rr.GetCompletionData(mainForm.FProjectContent);
 				if (completionData != null) {
 					AddCompletionData(resultList, completionData);
 				}
@@ -115,7 +115,7 @@ namespace CSharpEditor
 		/// </summary>
 		Dom.ExpressionResult FindExpression(TextArea textArea)
 		{
-			Dom.IExpressionFinder finder = new Dom.CSharp.CSharpExpressionFinder(mainForm.FParseInformation);
+			Dom.IExpressionFinder finder = new Dom.CSharp.CSharpExpressionFinder(mainForm.FParseInfo);
 
 			Dom.ExpressionResult expression = finder.FindExpression(textArea.Document.TextContent, textArea.Caret.Offset);
 			if (expression.Region.IsEmpty) {

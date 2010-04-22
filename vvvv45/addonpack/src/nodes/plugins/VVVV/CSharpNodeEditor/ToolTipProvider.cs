@@ -57,7 +57,7 @@ namespace CSharpEditor
 		void OnToolTipRequest(object sender, TextEditor.ToolTipRequestEventArgs e)
 		{
 			if (e.InDocument && !e.ToolTipShown) {
-				IExpressionFinder expressionFinder = new CSharpExpressionFinder(mainForm.FParseInformation);
+				IExpressionFinder expressionFinder = new CSharpExpressionFinder(mainForm.FParseInfo);
 				ExpressionResult expression = expressionFinder.FindFullExpression(
 					editor.Text,
 					editor.Document.PositionToOffset(e.LogicalPosition));
@@ -66,9 +66,9 @@ namespace CSharpEditor
 				}
 				
 				TextEditor.TextArea textArea = editor.ActiveTextAreaControl.TextArea;
-				NRefactoryResolver resolver = new NRefactoryResolver(mainForm.FMyProjectContent.Language);
+				NRefactoryResolver resolver = new NRefactoryResolver(mainForm.FProjectContent.Language);
 				ResolveResult rr = resolver.Resolve(expression,
-				                                    mainForm.FParseInformation,
+				                                    mainForm.FParseInfo,
 				                                    textArea.MotherTextEditorControl.Text);
 				string toolTipText = GetText(rr);
 				if (toolTipText != null) {

@@ -1,12 +1,3 @@
-/*
- * Erstellt mit SharpDevelop.
- * Benutzer: grunwald
- * Datum: 27.08.2007
- * Zeit: 14:25
- * 
- * Sie können diese Vorlage unter Extras > Optionen > Codeerstellung > Standardheader ändern.
- */
-
 using System;
 using System.IO;
 using System.Text;

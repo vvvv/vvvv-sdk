@@ -79,7 +79,7 @@ namespace CSharpEditor
 				ICompletionDataProvider completionDataProvider = new CodeCompletionProvider(mainForm);
 				
 				codeCompletionWindow = CodeCompletionWindow.ShowCompletionWindow(
-					mainForm.FindForm(),					// The parent window for the completion window
+					mainForm.WrapperForm,					// The parent window for the completion window
 					editor, 					// The text editor to show the window for
 					CSharpNodeEditor.DummyFileName,		// Filename - will be passed back to the provider
 					completionDataProvider,		// Provider to get the list of possible completions
