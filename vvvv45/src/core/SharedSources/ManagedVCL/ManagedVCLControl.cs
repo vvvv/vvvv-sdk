@@ -17,7 +17,7 @@ namespace ManagedVCL
 	/// Summary description for UserControl.
 	/// </summary>
 	/// 
-	public class TopControl : System.Windows.Forms.UserControl
+	public class TopControl : UserControl
 	{
 		/// <summary>
 		/// Required designer variable.
