@@ -39,16 +39,16 @@ namespace CSharpEditor
 {
 	sealed class ToolTipProvider
 	{
-		CSharpNodeEditor mainForm;
+		CodeEditor mainForm;
 		TextEditor.TextEditorControl editor;
 		
-		private ToolTipProvider(CSharpNodeEditor mainForm, TextEditor.TextEditorControl editor)
+		private ToolTipProvider(CodeEditor mainForm, TextEditor.TextEditorControl editor)
 		{
 			this.mainForm = mainForm;
 			this.editor = editor;
 		}
 		
-		public static void Attach(CSharpNodeEditor mainForm, TextEditor.TextEditorControl editor)
+		public static void Attach(CodeEditor mainForm, TextEditor.TextEditorControl editor)
 		{
 			ToolTipProvider tp = new ToolTipProvider(mainForm, editor);
 			editor.ActiveTextAreaControl.TextArea.ToolTipRequest += tp.OnToolTipRequest;

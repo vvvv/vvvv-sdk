@@ -42,9 +42,9 @@ namespace CSharpEditor
 {
 	class CodeCompletionProvider : ICompletionDataProvider
 	{
-		CSharpNodeEditor mainForm;
+		CodeEditor mainForm;
 		
-		public CodeCompletionProvider(CSharpNodeEditor mainForm)
+		public CodeCompletionProvider(CodeEditor mainForm)
 		{
 			this.mainForm = mainForm;
 		}

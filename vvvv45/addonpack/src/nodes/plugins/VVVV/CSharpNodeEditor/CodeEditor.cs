@@ -47,7 +47,7 @@ namespace VVVV.Nodes
 {
 	
 	//class definition, inheriting from UserControl for the GUI stuff
-	public class CSharpNodeEditor: ManagedVCL.TopControl, IHDEPlugin
+	public class CodeEditor: ManagedVCL.TopControl, IHDEPlugin
 	{
 		#region field declaration
 		internal Dom.ProjectContentRegistry FPCRegistry;
@@ -86,7 +86,7 @@ namespace VVVV.Nodes
 		#endregion field declaration
 		
 		#region constructor/destructor
-		public CSharpNodeEditor()
+		public CodeEditor()
 		{
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			InitializeComponent();
@@ -225,7 +225,7 @@ namespace VVVV.Nodes
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CSharpNodeEditor));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CodeEditor));
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.FParserLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.FWrapperForm = new System.Windows.Forms.Form();
