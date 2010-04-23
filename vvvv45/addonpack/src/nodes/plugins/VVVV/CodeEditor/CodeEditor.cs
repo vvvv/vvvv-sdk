@@ -104,8 +104,8 @@ namespace VVVV.Nodes
 			// future starts are faster.
 			// It also caches XML documentation files in an on-disk hash table, thus
 			// reducing memory usage.
-			/*FPcRegistry.ActivatePersistence(Path.Combine(Path.GetTempPath(),
-			                                            "CSharpCodeCompletion"));*/
+			FPCRegistry.ActivatePersistence(Path.Combine(Path.GetTempPath(),
+			                                            "VVVVCodeEditor"));
 			
 			FProjectContent = new Dom.DefaultProjectContent();
 			FProjectContent.Language = CurrentLanguageProperties;
