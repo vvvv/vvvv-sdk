@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using VVVV.HDE.Model;
 
 namespace VVVV.PluginInterfaces.V1
 {
@@ -8,6 +9,11 @@ namespace VVVV.PluginInterfaces.V1
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IHDEHost 
 	{
+		/// <summary>
+		/// Provides access to the Solution hosted by this IHDEHost.
+		/// </summary>
+		ISolution Solution { get; }
+		
 		/// <summary>
 		/// Allows a HDE plugin to write messages to a console on the host (ie. Renderer (TTY) in vvvv).
 		/// </summary>
