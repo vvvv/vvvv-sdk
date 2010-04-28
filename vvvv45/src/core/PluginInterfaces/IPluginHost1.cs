@@ -18,14 +18,38 @@ using VVVV.HDE.Model;
 namespace VVVV.PluginInterfaces.V1
 {
 
-	#region host
+    #region INode
+    [Guid("98D74C3D-8E8B-4203-A03B-92BDECAF7BDF"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface INode
+	{
+	    /// <summary>
+	    /// Get the node ID.
+	    /// </summary>
+	    /// <returns>Returns this nodes ID.</returns>
+	    int GetID();
+	    /// <summary>
+	    /// Get the nodes info.
+	    /// </summary>
+	    /// <returns>Returns this nodes INodeInfo.</returns>
+	    INodeInfo GetNodeInfo();
+	    /// <summary>
+	    /// In case this node is a patch this allows to access its child nodes.
+	    /// </summary>
+	    /// <returns>Returns an array of this nodes children.</returns>
+	    INode[] GetChildNodes();
+	    //IPin[] GetPins();
+	}
+	#endregion INode
+	    
+	#region IPluginHost
 	
 	/// <summary>
-	/// The interface to be implemented by a program to host IPlugins
+	/// The interface to be implemented by a program to host IPlugins.
 	/// </summary>
 	[Guid("E72C5CF0-4738-4F20-948E-83E96D4E7843"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IPluginHost
+	public interface IPluginHost: INode
 	{
 		/// <summary>
 		/// Creates a ConfigurationPin of type Value.
