@@ -16,9 +16,10 @@ namespace VVVV.Nodes
 		private Dom.ICompilationUnit FLastCompilationUnit;
 		
 		private Dom.DefaultProjectContent FProjectContent;
-		private IDocument FDocument;
 		private Dom.ParseInformation FParseInfo;
 		private string FFilename;
+		
+		public IDocument Document { get; set; }
 		
 		public BackgroundCodeParser(Dom.DefaultProjectContent projectContent, IDocument document, string filename, Dom.ParseInformation parseInfo)
 		{
@@ -30,7 +31,7 @@ namespace VVVV.Nodes
 			FBackgroundWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(RunWorkerCompletedCB);
 			
 			FProjectContent = projectContent;
-			FDocument = document;
+			Document = document;
 			FParseInfo = parseInfo;
 			FFilename = filename;
 		}
@@ -65,7 +66,7 @@ namespace VVVV.Nodes
 		
 		private void RunWorkerCompletedCB(object sender, RunWorkerCompletedEventArgs args)
 		{
-			FDocument.FoldingManager.UpdateFoldings(FFilename, FParseInfo);
+			Document.FoldingManager.UpdateFoldings(FFilename, FParseInfo);
 		}
 		
 		private Dom.ICompilationUnit ConvertCompilationUnit(NRefactory.Ast.CompilationUnit cu)

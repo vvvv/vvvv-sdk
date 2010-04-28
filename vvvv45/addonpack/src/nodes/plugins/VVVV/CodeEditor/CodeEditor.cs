@@ -33,6 +33,7 @@ using System.IO;
 using System.Resources;
 using System.Reflection;
 
+using VVVV.HDE.Model;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
@@ -56,13 +57,15 @@ namespace VVVV.Nodes
 		internal System.Windows.Forms.ImageList imageList1;
 		
 		private IHDEHost FHost;
+		private IPluginHost FPluginHost;
 		private bool FDisposed = false;
 		private ToolStripStatusLabel FParserLabel;
-		private StatusStrip statusStrip1;
 		private ICSharpCode.TextEditor.TextEditorControl FTextEditorControl;
 		private BackgroundParser FBGParser;
 		private BackgroundCodeParser FBGCodeParser;
-		private Form FWrapperForm;
+		private ITextDocument FActiveTextDocument;
+		private TextDocumentEventHandler FTextDocumentEventHandler;
+		private INodeSelectionListener FNodeSelectionListener;
 		
 		public Form WrapperForm
 		{
@@ -104,8 +107,7 @@ namespace VVVV.Nodes
 			// future starts are faster.
 			// It also caches XML documentation files in an on-disk hash table, thus
 			// reducing memory usage.
-			FPCRegistry.ActivatePersistence(Path.Combine(Path.GetTempPath(),
-			                                            "VVVVCodeEditor"));
+			FPCRegistry.ActivatePersistence(Path.Combine(Path.GetTempPath(), "VVVVCodeEditor"));
 			
 			FProjectContent = new Dom.DefaultProjectContent();
 			FProjectContent.Language = CurrentLanguageProperties;
@@ -116,6 +118,10 @@ namespace VVVV.Nodes
 			
 			FBGParser = new BackgroundParser(FPCRegistry, FProjectContent, FParserLabel);
 			FBGCodeParser = new BackgroundCodeParser(FProjectContent, FTextEditorControl.Document, DummyFileName, FParseInfo);
+			
+			FTextEditorControl.TextChanged += new EventHandler(TextEditorControlTextChangedCB);
+			FTextDocumentEventHandler = new TextDocumentEventHandler(TextDocumentContentChangedCB);
+			FNodeSelectionListener = new NodeSelectionListener(this);
 		}
 		
 		// Dispose(bool disposing) executes in two distinct scenarios.
@@ -133,6 +139,12 @@ namespace VVVV.Nodes
 				if(disposing)
 				{
 					// Dispose managed resources.
+					if (FActiveTextDocument != null)
+						FActiveTextDocument.OnContentChanged -= FTextDocumentEventHandler;
+					
+					if (FHost != null)
+						FHost.RemoveListener(FNodeSelectionListener);
+					
 					HostCallbackImplementation.UnRegister(this.FProjectContent);
 					FBGParser.CancelAsync();
 					FTextEditorControl.Dispose();
@@ -141,8 +153,8 @@ namespace VVVV.Nodes
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.
 				
-				if (FHost != null)
-					FHost.Log(TLogType.Debug, "CodeEditor is being deleted");
+				if (FPluginHost != null)
+					FPluginHost.Log(TLogType.Debug, "CodeEditor is being deleted");
 				
 				// Note that this is not thread safe.
 				// Another thread could start disposing the object
@@ -197,7 +209,7 @@ namespace VVVV.Nodes
 					//define the nodes initial size in box-mode
 					FPluginInfo.InitialBoxSize = new Size(200, 100);
 					//define the nodes initial size in window-mode
-					FPluginInfo.InitialWindowSize = new Size(400, 300);
+					FPluginInfo.InitialWindowSize = new Size(800, 600);
 					//define the nodes initial component mode
 					FPluginInfo.InitialComponentMode = TComponentMode.InAWindow;
 					
@@ -226,35 +238,24 @@ namespace VVVV.Nodes
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CodeEditor));
-			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-			this.FParserLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.FWrapperForm = new System.Windows.Forms.Form();
+			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.FProjectTreeView = new System.Windows.Forms.TreeView();
 			this.FTextEditorControl = new ICSharpCode.TextEditor.TextEditorControl();
+			this.FStatusStrip = new System.Windows.Forms.StatusStrip();
+			this.FParserLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-			this.statusStrip1.SuspendLayout();
 			this.FWrapperForm.SuspendLayout();
+			this.splitContainer1.Panel1.SuspendLayout();
+			this.splitContainer1.Panel2.SuspendLayout();
+			this.splitContainer1.SuspendLayout();
+			this.FStatusStrip.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// statusStrip1
-			// 
-			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.FParserLabel});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 458);
-			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(640, 22);
-			this.statusStrip1.TabIndex = 0;
-			this.statusStrip1.Text = "statusStrip1";
-			// 
-			// FParserLabel
-			// 
-			this.FParserLabel.Name = "FParserLabel";
-			this.FParserLabel.Size = new System.Drawing.Size(109, 17);
-			this.FParserLabel.Text = "toolStripStatusLabel1";
 			// 
 			// FWrapperForm
 			// 
 			this.FWrapperForm.ClientSize = new System.Drawing.Size(640, 458);
-			this.FWrapperForm.Controls.Add(this.FTextEditorControl);
+			this.FWrapperForm.Controls.Add(this.splitContainer1);
 			this.FWrapperForm.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.FWrapperForm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.FWrapperForm.Location = new System.Drawing.Point(0, 0);
@@ -267,15 +268,56 @@ namespace VVVV.Nodes
 			this.FWrapperForm.TopLevel = false;
 			this.FWrapperForm.Parent = this;
 			// 
+			// splitContainer1
+			// 
+			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+			this.splitContainer1.Name = "splitContainer1";
+			// 
+			// splitContainer1.Panel1
+			// 
+			this.splitContainer1.Panel1.Controls.Add(this.FProjectTreeView);
+			// 
+			// splitContainer1.Panel2
+			// 
+			this.splitContainer1.Panel2.Controls.Add(this.FTextEditorControl);
+			this.splitContainer1.Size = new System.Drawing.Size(640, 458);
+			this.splitContainer1.SplitterDistance = 213;
+			this.splitContainer1.TabIndex = 0;
+			// 
+			// FProjectTreeView
+			// 
+			this.FProjectTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.FProjectTreeView.Location = new System.Drawing.Point(0, 0);
+			this.FProjectTreeView.Name = "FProjectTreeView";
+			this.FProjectTreeView.Size = new System.Drawing.Size(213, 458);
+			this.FProjectTreeView.TabIndex = 0;
+			this.FProjectTreeView.DoubleClick += new System.EventHandler(this.ProjectTreeViewDoubleClick);
+			// 
 			// FTextEditorControl
 			// 
 			this.FTextEditorControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.FTextEditorControl.IsReadOnly = false;
 			this.FTextEditorControl.Location = new System.Drawing.Point(0, 0);
 			this.FTextEditorControl.Name = "FTextEditorControl";
-			this.FTextEditorControl.Size = new System.Drawing.Size(640, 458);
-			this.FTextEditorControl.TabIndex = 0;
-			this.FTextEditorControl.TextChanged += new System.EventHandler(this.FTextEditorControlTextChangedCB);
+			this.FTextEditorControl.Size = new System.Drawing.Size(423, 458);
+			this.FTextEditorControl.TabIndex = 1;
+			// 
+			// FStatusStrip
+			// 
+			this.FStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+									this.FParserLabel});
+			this.FStatusStrip.Location = new System.Drawing.Point(0, 458);
+			this.FStatusStrip.Name = "FStatusStrip";
+			this.FStatusStrip.Size = new System.Drawing.Size(640, 22);
+			this.FStatusStrip.TabIndex = 0;
+			this.FStatusStrip.Text = "StatusStrip";
+			// 
+			// FParserLabel
+			// 
+			this.FParserLabel.Name = "FParserLabel";
+			this.FParserLabel.Size = new System.Drawing.Size(109, 17);
+			this.FParserLabel.Text = "toolStripStatusLabel1";
 			// 
 			// imageList1
 			// 
@@ -289,20 +331,27 @@ namespace VVVV.Nodes
 			this.imageList1.Images.SetKeyName(5, "Icons.16x16.NameSpace.png");
 			this.imageList1.Images.SetKeyName(6, "Icons.16x16.Event.png");
 			// 
-			// CSharpNodeEditor
+			// CodeEditor
 			// 
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
 			this.Controls.Add(this.FWrapperForm);
-			this.Controls.Add(this.statusStrip1);
+			this.Controls.Add(this.FStatusStrip);
 			this.DoubleBuffered = true;
-			this.Name = "CSharpNodeEditor";
+			this.Name = "CodeEditor";
 			this.Size = new System.Drawing.Size(640, 480);
-			this.statusStrip1.ResumeLayout(false);
-			this.statusStrip1.PerformLayout();
 			this.FWrapperForm.ResumeLayout(false);
+			this.splitContainer1.Panel1.ResumeLayout(false);
+			this.splitContainer1.Panel2.ResumeLayout(false);
+			this.splitContainer1.ResumeLayout(false);
+			this.FStatusStrip.ResumeLayout(false);
+			this.FStatusStrip.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private Form FWrapperForm;
+		private System.Windows.Forms.TreeView FProjectTreeView;
+		private System.Windows.Forms.SplitContainer splitContainer1;
+		private System.Windows.Forms.StatusStrip FStatusStrip;
 		private System.ComponentModel.IContainer components;
 		#endregion Windows Forms designer
 		
@@ -319,19 +368,75 @@ namespace VVVV.Nodes
 		public void SetHDEHost(IHDEHost host)
 		{
 			FHost = host;
+			FHost.AddListener(FNodeSelectionListener);
+			FillProjectTreeView();
 		}
 		
-		public void SetPluginHost(IPluginHost Host)
+		public void SetPluginHost(IPluginHost host)
 		{
-			// We don't need the PluginHost for now.
+			FPluginHost = host;
 		}
 		#endregion IHDEPlugin
 		
-		void FTextEditorControlTextChangedCB(object sender, EventArgs e)
+		public void Open(ITextDocument doc)
+		{
+			if (FActiveTextDocument == doc)
+				return;
+			
+			if (FActiveTextDocument != null)
+				FActiveTextDocument.OnContentChanged -= FTextDocumentEventHandler;
+			
+			FActiveTextDocument = doc;
+			FTextEditorControl.Document.TextContent = FActiveTextDocument.TextContent;
+			FActiveTextDocument.OnContentChanged += FTextDocumentEventHandler;
+		}
+		
+		void FillProjectTreeView()
+		{
+			FProjectTreeView.BeginUpdate();
+			
+			ISolution solution = FHost.Solution;
+			foreach (IProject project in solution.Projects)
+			{
+				TreeNode node = FProjectTreeView.Nodes.Add("Project");
+				foreach (IDocument doc in project.Documents)
+				{
+					TreeNode newNode = node.Nodes.Add(Path.GetFileName(doc.Location.AbsolutePath));
+					newNode.Tag = doc;
+				}
+			}
+			
+			FProjectTreeView.EndUpdate();
+		}
+		
+		void ProjectTreeViewDoubleClick(object sender, EventArgs e)
+		{
+			TreeNode node = FProjectTreeView.SelectedNode;
+			if (node != null && node.Tag is ITextDocument)
+			{
+				Open(node.Tag as ITextDocument);
+			}
+		}
+		
+		void TextEditorControlTextChangedCB(object sender, EventArgs e)
 		{
 			TextEditorControl control = sender as TextEditorControl;
 			
 			FBGCodeParser.RunParserAsync(control.Text);
+			
+			if (FActiveTextDocument != null)
+			{
+				FActiveTextDocument.OnContentChanged -= FTextDocumentEventHandler;
+				FActiveTextDocument.TextContent = control.Document.TextContent;
+				FActiveTextDocument.OnContentChanged += FTextDocumentEventHandler;
+			}
+		}
+		
+		void TextDocumentContentChangedCB(IDocument doc, string content)
+		{
+			int length = FTextEditorControl.Document.TextContent.Length;
+			FTextEditorControl.Document.Replace(0, length, content);
+			FTextEditorControl.Refresh();
 		}
 	}
 }
