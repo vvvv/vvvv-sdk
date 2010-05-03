@@ -19,8 +19,9 @@ namespace VVVV.Nodes
                 Info.Name = "RegExpr";							//use CamelCaps and no spaces
                 Info.Category = "String";						//try to use an existing one
                 Info.Version = "Replace";						//versions are optional. leave blank if not needed
-                Info.Help = "Node template";
+                Info.Help = "Regular Expression replacer";
                 Info.Bugs = "";
+                Info.Author = "vux & dep";
                 Info.Credits = "";								//give credits to thirdparty code used
                 Info.Warnings = "";
 
@@ -45,7 +46,9 @@ namespace VVVV.Nodes
         private IValueIn FPinInCS;
 
         private IStringOut FPinOutput;
+        private IStringOut FPinOutMatches;
         private IValueOut FPinOutErrors;
+        private IValueOut FPinOutBins;
         #endregion
 
         #region Auto Evaluate
@@ -77,10 +80,14 @@ namespace VVVV.Nodes
             this.FHost.CreateStringOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutput);
             this.FPinOutput.SetSubType("", false);
 
+            this.FHost.CreateStringOutput("Matches", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutMatches);
+            this.FPinOutMatches.SetSubType("", false);
 
             this.FHost.CreateValueOutput("Errors", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutErrors);
             this.FPinOutErrors.SetSubType(0, 1, 1, 0, false, true, false);
-        
+
+            this.FHost.CreateValueOutput("Output Bins", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutBins);
+            this.FPinOutBins.SetSubType(0, double.MaxValue, 1, 0, false, false, true);      
            
         }
         #endregion
@@ -101,6 +108,7 @@ namespace VVVV.Nodes
             {
                 this.FPinOutput.SliceCount = SpreadMax;
                 this.FPinOutErrors.SliceCount = SpreadMax;
+                int total_matches = 0, bins = 0;
 
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -124,8 +132,20 @@ namespace VVVV.Nodes
 
                     try
                     {
-                        string output = Regex.Replace(input, expr, rep, reg);
+                        string output = Regex.Replace(input, expr, rep, reg);   //replace
                         this.FPinOutput.SetString(i, output);
+                        MatchCollection coll = Regex.Matches(input, expr, reg);
+                        int j = 0, c = total_matches;
+                        total_matches += coll.Count;
+                        this.FPinOutMatches.SliceCount = total_matches;
+                        foreach (Match match in coll)     //matches
+                        {
+                            this.FPinOutMatches.SetString(c + j, match.Value);
+                            j++;
+                        }
+                        bins++;
+                        this.FPinOutBins.SliceCount = bins;
+                        this.FPinOutBins.SetValue(i, coll.Count);
                         this.FPinOutErrors.SetValue(i, 0);
                     }
                     catch
