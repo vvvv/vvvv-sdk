@@ -31,9 +31,10 @@ using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 
 using VVVV.PluginInterfaces.V1;
+using VVVV.HDE.Viewer.Model;
 
 //the vvvv node namespace
-namespace VVVV.Nodes
+namespace VVVV.Nodes.NodeBrowser
 {
 	
 	//class definition, inheriting from UserControl for the GUI stuff
@@ -48,8 +49,8 @@ namespace VVVV.Nodes
 		private bool FDisposed = false;
 				
 		//further fields
-		List<INodeInfo> FNodeInfos = new List<INodeInfo>();
-		List<CategoryControl> FCategoryControls = new List<CategoryControl>();
+		CategoryModel FCategoryModel = new CategoryModel();
+		AlphabetModel FAlphabetModel = new AlphabetModel();
 		
 		#endregion field declaration
 		
@@ -158,7 +159,11 @@ namespace VVVV.Nodes
 			this.tabControlMain = new System.Windows.Forms.TabControl();
 			this.tabAlphabetical = new System.Windows.Forms.TabPage();
 			this.tabCategory = new System.Windows.Forms.TabPage();
+			this.categoryTreeViewer = new VVVV.HDE.Viewer.TreeViewer();
+			this.alphabetTreeViewer = new VVVV.HDE.Viewer.TreeViewer();
 			this.tabControlMain.SuspendLayout();
+			this.tabAlphabetical.SuspendLayout();
+			this.tabCategory.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControlMain
@@ -176,6 +181,7 @@ namespace VVVV.Nodes
 			// tabAlphabetical
 			// 
 			this.tabAlphabetical.AutoScroll = true;
+			this.tabAlphabetical.Controls.Add(this.alphabetTreeViewer);
 			this.tabAlphabetical.Location = new System.Drawing.Point(4, 25);
 			this.tabAlphabetical.Name = "tabAlphabetical";
 			this.tabAlphabetical.Padding = new System.Windows.Forms.Padding(3);
@@ -187,6 +193,7 @@ namespace VVVV.Nodes
 			// tabCategory
 			// 
 			this.tabCategory.AutoScroll = true;
+			this.tabCategory.Controls.Add(this.categoryTreeViewer);
 			this.tabCategory.Location = new System.Drawing.Point(4, 25);
 			this.tabCategory.Name = "tabCategory";
 			this.tabCategory.Padding = new System.Windows.Forms.Padding(3);
@@ -195,6 +202,22 @@ namespace VVVV.Nodes
 			this.tabCategory.Text = "By Category";
 			this.tabCategory.UseVisualStyleBackColor = true;
 			// 
+			// categoryTreeViewer
+			// 
+			this.categoryTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.categoryTreeViewer.Location = new System.Drawing.Point(3, 3);
+			this.categoryTreeViewer.Name = "categoryTreeViewer";
+			this.categoryTreeViewer.Size = new System.Drawing.Size(311, 485);
+			this.categoryTreeViewer.TabIndex = 0;
+			// 
+			// alphabetTreeViewer
+			// 
+			this.alphabetTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.alphabetTreeViewer.Location = new System.Drawing.Point(3, 3);
+			this.alphabetTreeViewer.Name = "alphabetTreeViewer";
+			this.alphabetTreeViewer.Size = new System.Drawing.Size(311, 485);
+			this.alphabetTreeViewer.TabIndex = 0;
+			// 
 			// NodeBrowserPluginNode
 			// 
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
@@ -202,8 +225,12 @@ namespace VVVV.Nodes
 			this.Name = "NodeBrowserPluginNode";
 			this.Size = new System.Drawing.Size(325, 520);
 			this.tabControlMain.ResumeLayout(false);
+			this.tabAlphabetical.ResumeLayout(false);
+			this.tabCategory.ResumeLayout(false);
 			this.ResumeLayout(false);
 		}
+		private VVVV.HDE.Viewer.TreeViewer alphabetTreeViewer;
+		private VVVV.HDE.Viewer.TreeViewer categoryTreeViewer;
 		private System.Windows.Forms.TabPage tabCategory;
 		private System.Windows.Forms.TabPage tabAlphabetical;
 		private System.Windows.Forms.TabControl tabControlMain;
@@ -224,15 +251,40 @@ namespace VVVV.Nodes
 			
 			//register nodeinfolisteners at hdehost
 			FHDEHost.AddListener(this);
+			
+			//create AdapterFactory
+            NodeListAdapterFactory af = new NodeListAdapterFactory();
+            var cp = new AdapterFactoryContentProvider(af);
+            var lp = new AdapterFactoryLabelProvider(af);
+            
+            //create IContentProvider and hand it to the treeView
+            categoryTreeViewer.SetContentProvider(cp);
+            
+            //create ILabelProvider and hand it to the treeView
+            categoryTreeViewer.SetLabelProvider(lp);
+            
+            categoryTreeViewer.SetRoot(FCategoryModel);
+            
+           
+            //create IContentProvider and hand it to the treeView
+            alphabetTreeViewer.SetContentProvider(cp);
+            
+            //create ILabelProvider and hand it to the treeView
+            alphabetTreeViewer.SetLabelProvider(lp);
+            
+            alphabetTreeViewer.SetRoot(FAlphabetModel);
 		}
 
 		#endregion initialization
 		
 		public void NodeInfoAddedCB(INodeInfo nodeInfo)
 		{
-		    FNodeInfos.Add(nodeInfo);
+		    //insert the nodeInfo into the data model
+		    FCategoryModel.Add(nodeInfo);
+		    FAlphabetModel.Add(nodeInfo);
+		    //the contentprovider will call its changed event to update the view
 		    
-		    //create category if it not already exists
+		 /*   //create category if it not already exists
 		    CategoryControl cc = FCategoryControls.Find(delegate(CategoryControl c) {return string.Equals(c.Category, nodeInfo.Category);});
 		    if (cc == null)
 		    {
@@ -250,14 +302,15 @@ namespace VVVV.Nodes
 		    }
 		    
 		    //add nodeinfo to category
-		    cc.Add(nodeInfo);
+		    cc.Add(nodeInfo);*/
 		}
 		
 		public void NodeInfoRemovedCB(INodeInfo nodeInfo)
 		{
-		    FNodeInfos.Remove(nodeInfo);
+		    FCategoryModel.Remove(nodeInfo);
+		    FAlphabetModel.Remove(nodeInfo);
 
-		    //remove nodeinfo from its category
+		 /*   //remove nodeinfo from its category
 		    CategoryControl cc = FCategoryControls.Find(delegate(CategoryControl c) {return string.Equals(c.Category, nodeInfo.Category);});
 		    if (cc != null)
 		    {
@@ -269,7 +322,7 @@ namespace VVVV.Nodes
 		            tabCategory.Controls.Remove(cc);
 		            FCategoryControls.Remove(cc);
 		        }
-		    }
+		    }*/
 		}
 		
 		public void SetFilterTags(string tags)
