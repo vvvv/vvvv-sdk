@@ -1,0 +1,280 @@
+#region licence/info
+
+//////project name
+//vvvv plugin template with gui
+
+//////description
+//basic vvvv plugin template with gui.
+//Copy this an rename it, to write your own plugin node.
+
+//////licence
+//GNU Lesser General Public License (LGPL)
+//english: http://www.gnu.org/licenses/lgpl.html
+//german: http://www.gnu.de/lgpl-ger.html
+
+//////language/ide
+//C# sharpdevelop
+
+//////dependencies
+//VVVV.PluginInterfaces.V1;
+
+//////initial author
+//vvvv group
+
+#endregion licence/info
+
+//use what you need
+using System;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Collections.Generic;
+
+using VVVV.PluginInterfaces.V1;
+
+//the vvvv node namespace
+namespace VVVV.Nodes
+{
+	
+	//class definition, inheriting from UserControl for the GUI stuff
+	public class NodeBrowserPluginNode: UserControl, IHDEPlugin, INodeInfoListener
+	{
+		#region field declaration
+		
+		//the hosts
+		private IPluginHost FPluginHost;
+		private IHDEHost FHDEHost;
+		// Track whether Dispose has been called.
+		private bool FDisposed = false;
+				
+		//further fields
+		List<INodeInfo> FNodeInfos = new List<INodeInfo>();
+		List<CategoryControl> FCategoryControls = new List<CategoryControl>();
+		
+		#endregion field declaration
+		
+		#region constructor/destructor
+		public NodeBrowserPluginNode()
+		{
+			// The InitializeComponent() call is required for Windows Forms designer support.
+			InitializeComponent();
+			
+			tabControlMain.SelectedIndex = 1;
+		}
+		
+		// Dispose(bool disposing) executes in two distinct scenarios.
+		// If disposing equals true, the method has been called directly
+		// or indirectly by a user's code. Managed and unmanaged resources
+		// can be disposed.
+		// If disposing equals false, the method has been called by the
+		// runtime from inside the finalizer and you should not reference
+		// other objects. Only unmanaged resources can be disposed.
+		protected override void Dispose(bool disposing)
+		{
+			// Check to see if Dispose has already been called.
+			if(!FDisposed)
+			{
+				if(disposing)
+				{
+					// Dispose managed resources.
+					FHDEHost.RemoveListener(this);					
+				}
+				// Release unmanaged resources. If disposing is false,
+				// only the following code is executed.
+                
+				//nothing to declare
+				
+				// Note that this is not thread safe.
+				// Another thread could start disposing the object
+				// after the managed resources are disposed,
+				// but before the disposed flag is set to true.
+				// If thread safety is necessary, it must be
+				// implemented by the client.
+			}
+			FDisposed = true;
+		}
+		
+		#endregion constructor/destructor
+		
+		#region node name and infos
+		
+		//provide node infos
+		private static IPluginInfo FPluginInfo;
+		public static IPluginInfo PluginInfo
+		{
+			get
+			{
+				if (FPluginInfo == null)
+				{
+					//fill out nodes info
+					//see: http://www.vvvv.org/tiki-index.php?page=Conventions.NodeAndPinNaming
+					FPluginInfo = new PluginInfo();
+					
+					//the nodes main name: use CamelCaps and no spaces
+					FPluginInfo.Name = "NodeBrowser";
+					//the nodes category: try to use an existing one
+					FPluginInfo.Category = "HDE";
+					//the nodes version: optional. leave blank if not
+					//needed to distinguish two nodes of the same name and category
+					FPluginInfo.Version = "";
+					
+					//the nodes author: your sign
+					FPluginInfo.Author = "vvvv group";
+					//describe the nodes function
+					FPluginInfo.Help = "The NodeInfo Browser";
+					//specify a comma separated list of tags that describe the node
+					FPluginInfo.Tags = "tag";
+					
+					//give credits to thirdparty code used
+					FPluginInfo.Credits = "";
+					//any known problems?
+					FPluginInfo.Bugs = "";
+					//any known usage of the node that may cause troubles?
+					FPluginInfo.Warnings = "";
+					
+					//define the nodes initial size in box-mode
+					FPluginInfo.InitialBoxSize = new Size(100, 200);
+					//define the nodes initial size in window-mode
+					FPluginInfo.InitialWindowSize = new Size(300, 500);
+					//define the nodes initial component mode
+					FPluginInfo.InitialComponentMode = TComponentMode.InAWindow;
+					
+					//leave below as is
+					System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
+					System.Diagnostics.StackFrame sf = st.GetFrame(0);
+					System.Reflection.MethodBase method = sf.GetMethod();
+					FPluginInfo.Namespace = method.DeclaringType.Namespace;
+					FPluginInfo.Class = method.DeclaringType.Name;
+					//leave above as is
+				}
+				return FPluginInfo;
+			}
+		}
+		
+		#endregion node name and infos
+		
+		private void InitializeComponent()
+		{
+			this.tabControlMain = new System.Windows.Forms.TabControl();
+			this.tabAlphabetical = new System.Windows.Forms.TabPage();
+			this.tabCategory = new System.Windows.Forms.TabPage();
+			this.tabControlMain.SuspendLayout();
+			this.SuspendLayout();
+			// 
+			// tabControlMain
+			// 
+			this.tabControlMain.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+			this.tabControlMain.Controls.Add(this.tabAlphabetical);
+			this.tabControlMain.Controls.Add(this.tabCategory);
+			this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tabControlMain.Location = new System.Drawing.Point(0, 0);
+			this.tabControlMain.Name = "tabControlMain";
+			this.tabControlMain.SelectedIndex = 0;
+			this.tabControlMain.Size = new System.Drawing.Size(325, 520);
+			this.tabControlMain.TabIndex = 0;
+			// 
+			// tabAlphabetical
+			// 
+			this.tabAlphabetical.AutoScroll = true;
+			this.tabAlphabetical.Location = new System.Drawing.Point(4, 25);
+			this.tabAlphabetical.Name = "tabAlphabetical";
+			this.tabAlphabetical.Padding = new System.Windows.Forms.Padding(3);
+			this.tabAlphabetical.Size = new System.Drawing.Size(317, 491);
+			this.tabAlphabetical.TabIndex = 0;
+			this.tabAlphabetical.Text = "Alphabetical";
+			this.tabAlphabetical.UseVisualStyleBackColor = true;
+			// 
+			// tabCategory
+			// 
+			this.tabCategory.AutoScroll = true;
+			this.tabCategory.Location = new System.Drawing.Point(4, 25);
+			this.tabCategory.Name = "tabCategory";
+			this.tabCategory.Padding = new System.Windows.Forms.Padding(3);
+			this.tabCategory.Size = new System.Drawing.Size(317, 491);
+			this.tabCategory.TabIndex = 1;
+			this.tabCategory.Text = "By Category";
+			this.tabCategory.UseVisualStyleBackColor = true;
+			// 
+			// NodeBrowserPluginNode
+			// 
+			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+			this.Controls.Add(this.tabControlMain);
+			this.Name = "NodeBrowserPluginNode";
+			this.Size = new System.Drawing.Size(325, 520);
+			this.tabControlMain.ResumeLayout(false);
+			this.ResumeLayout(false);
+		}
+		private System.Windows.Forms.TabPage tabCategory;
+		private System.Windows.Forms.TabPage tabAlphabetical;
+		private System.Windows.Forms.TabControl tabControlMain;
+		
+		#region initialization
+		
+		//this method is called by vvvv when the node is created
+		public void SetPluginHost(IPluginHost Host)
+		{
+			//assign host
+			FPluginHost = Host;
+		}
+		
+		public void SetHDEHost(IHDEHost Host)
+		{
+			//assign host
+			FHDEHost = Host;
+			
+			//register nodeinfolisteners at hdehost
+			FHDEHost.AddListener(this);
+		}
+
+		#endregion initialization
+		
+		public void NodeInfoAddedCB(INodeInfo nodeInfo)
+		{
+		    FNodeInfos.Add(nodeInfo);
+		    
+		    //create category if it not already exists
+		    CategoryControl cc = FCategoryControls.Find(delegate(CategoryControl c) {return string.Equals(c.Category, nodeInfo.Category);});
+		    if (cc == null)
+		    {
+		        cc = new CategoryControl(nodeInfo.Category);
+		        FCategoryControls.Add(cc);
+		        cc.Dock = DockStyle.Top;
+		        
+		        FCategoryControls.Sort(delegate(CategoryControl c1, CategoryControl c2) {return c1.Category.CompareTo(c2.Category);});
+	        
+		        tabCategory.SuspendLayout();
+		        tabCategory.Controls.Clear();
+		        for (int i = FCategoryControls.Count-1; i >= 0; i--)
+		            tabCategory.Controls.Add(FCategoryControls[i]);
+		        tabCategory.ResumeLayout(true);
+		    }
+		    
+		    //add nodeinfo to category
+		    cc.Add(nodeInfo);
+		}
+		
+		public void NodeInfoRemovedCB(INodeInfo nodeInfo)
+		{
+		    FNodeInfos.Remove(nodeInfo);
+
+		    //remove nodeinfo from its category
+		    CategoryControl cc = FCategoryControls.Find(delegate(CategoryControl c) {return string.Equals(c.Category, nodeInfo.Category);});
+		    if (cc != null)
+		    {
+		        cc.Remove(nodeInfo);
+		        
+		        //remove category if it is now empty
+		        if (cc.NodeCount == 0)
+		        {
+		            tabCategory.Controls.Remove(cc);
+		            FCategoryControls.Remove(cc);
+		        }
+		    }
+		}
+		
+		public void SetFilterTags(string tags)
+		{
+		    
+		}
+	}
+}
