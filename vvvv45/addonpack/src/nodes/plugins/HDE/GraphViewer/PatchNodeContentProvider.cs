@@ -33,5 +33,9 @@ namespace VVVV.Graph.Provider
 		    else
 		        return self.ToString();
 		}
+	    
+        public event EventHandler OnContentChanged;
+	    
+        public event EventHandler OnLabelChanged;
 	}
 }

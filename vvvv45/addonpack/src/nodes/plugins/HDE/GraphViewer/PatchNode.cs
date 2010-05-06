@@ -7,9 +7,9 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.Graph
 {
-	public class PatchNode : INode
+	public class PatchNode: INode
 	{
-	    List<PatchNode> FChildren = new List<VVVV.Graph.PatchNode>();
+	    List<PatchNode> FChildren = new List<PatchNode>();
 	    INode FNode;
 	    
 	    public PatchNode(INode self, INode[] children)

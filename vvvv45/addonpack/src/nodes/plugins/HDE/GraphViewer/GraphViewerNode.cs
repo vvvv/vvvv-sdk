@@ -165,7 +165,6 @@ namespace VVVV.Nodes
         	this.treeViewer.Name = "treeViewer";
         	this.treeViewer.Size = new System.Drawing.Size(310, 366);
         	this.treeViewer.TabIndex = 0;
-        	this.treeViewer.OnLeftClick += new VVVV.HDE.Viewer.TreeViewer.ClickHandler(this.TreeViewerOnLeftClick);
         	// 
         	// textBox1
         	// 
@@ -223,7 +222,6 @@ namespace VVVV.Nodes
             PatchNode root = new PatchNode(null, null);
             
             List<INode> children = new List<INode>();
-            
             if (nodes != null)
                 foreach (INode n in nodes)
             {
