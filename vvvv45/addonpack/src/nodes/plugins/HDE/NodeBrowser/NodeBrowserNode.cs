@@ -158,9 +158,9 @@ namespace VVVV.Nodes.NodeBrowser
 		{
 			this.tabControlMain = new System.Windows.Forms.TabControl();
 			this.tabAlphabetical = new System.Windows.Forms.TabPage();
+			this.alphabetTreeViewer = new VVVV.HDE.Viewer.TreeViewer();
 			this.tabCategory = new System.Windows.Forms.TabPage();
 			this.categoryTreeViewer = new VVVV.HDE.Viewer.TreeViewer();
-			this.alphabetTreeViewer = new VVVV.HDE.Viewer.TreeViewer();
 			this.tabControlMain.SuspendLayout();
 			this.tabAlphabetical.SuspendLayout();
 			this.tabCategory.SuspendLayout();
@@ -190,6 +190,15 @@ namespace VVVV.Nodes.NodeBrowser
 			this.tabAlphabetical.Text = "Alphabetical";
 			this.tabAlphabetical.UseVisualStyleBackColor = true;
 			// 
+			// alphabetTreeViewer
+			// 
+			this.alphabetTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.alphabetTreeViewer.Location = new System.Drawing.Point(3, 3);
+			this.alphabetTreeViewer.Name = "alphabetTreeViewer";
+			this.alphabetTreeViewer.ShowRoot = false;
+			this.alphabetTreeViewer.Size = new System.Drawing.Size(311, 485);
+			this.alphabetTreeViewer.TabIndex = 0;
+			// 
 			// tabCategory
 			// 
 			this.tabCategory.AutoScroll = true;
@@ -207,16 +216,9 @@ namespace VVVV.Nodes.NodeBrowser
 			this.categoryTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.categoryTreeViewer.Location = new System.Drawing.Point(3, 3);
 			this.categoryTreeViewer.Name = "categoryTreeViewer";
+			this.categoryTreeViewer.ShowRoot = true;
 			this.categoryTreeViewer.Size = new System.Drawing.Size(311, 485);
 			this.categoryTreeViewer.TabIndex = 0;
-			// 
-			// alphabetTreeViewer
-			// 
-			this.alphabetTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.alphabetTreeViewer.Location = new System.Drawing.Point(3, 3);
-			this.alphabetTreeViewer.Name = "alphabetTreeViewer";
-			this.alphabetTreeViewer.Size = new System.Drawing.Size(311, 485);
-			this.alphabetTreeViewer.TabIndex = 0;
 			// 
 			// NodeBrowserPluginNode
 			// 
@@ -271,8 +273,9 @@ namespace VVVV.Nodes.NodeBrowser
             
             //create ILabelProvider and hand it to the treeView
             alphabetTreeViewer.SetLabelProvider(lp);
-            
+            //alphabetTreeViewer.ShowRoot = true;
             alphabetTreeViewer.SetRoot(FAlphabetModel);
+            
 		}
 
 		#endregion initialization
