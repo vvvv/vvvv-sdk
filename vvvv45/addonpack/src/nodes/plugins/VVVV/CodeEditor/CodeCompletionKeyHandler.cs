@@ -42,14 +42,14 @@ namespace CSharpEditor
 {
 	class CodeCompletionKeyHandler
 	{
-		CodeEditor mainForm;
-		TextEditorControl editor;
+		CodeEditor FCodeEditor;
+		TextEditorControl FEditorControl;
 		CodeCompletionWindow codeCompletionWindow;
 		
-		private CodeCompletionKeyHandler(CodeEditor mainForm, TextEditorControl editor)
+		private CodeCompletionKeyHandler(CodeEditor codeEditor, TextEditorControl editorControl)
 		{
-			this.mainForm = mainForm;
-			this.editor = editor;
+			this.FCodeEditor = codeEditor;
+			this.FEditorControl = editorControl;
 		}
 		
 		public static CodeCompletionKeyHandler Attach(CodeEditor mainForm, TextEditorControl editor)
@@ -76,11 +76,11 @@ namespace CSharpEditor
 					return true;
 			}
 			if (key == '.') {
-				ICompletionDataProvider completionDataProvider = new CodeCompletionProvider(mainForm);
+				ICompletionDataProvider completionDataProvider = new CodeCompletionProvider(FCodeEditor);
 				
 				codeCompletionWindow = CodeCompletionWindow.ShowCompletionWindow(
-					mainForm.WrapperForm,					// The parent window for the completion window
-					editor, 					// The text editor to show the window for
+					FCodeEditor.DummyForm,					// The parent window for the completion window
+					FEditorControl, 					// The text editor to show the window for
 					CodeEditor.DummyFileName,		// Filename - will be passed back to the provider
 					completionDataProvider,		// Provider to get the list of possible completions
 					key							// Key pressed - will be passed to the provider

@@ -7,11 +7,11 @@ namespace VVVV.Nodes
 {
 	public class NodeSelectionListener : INodeSelectionListener
 	{
-		private CodeEditor FCodeEditor;
+		private CodeEditorPlugin FCodeEditorPlugin;
 		
-		public NodeSelectionListener(CodeEditor codeEditor)
+		public NodeSelectionListener(CodeEditorPlugin codeEditorPlugin)
 		{
-			FCodeEditor = codeEditor;
+			FCodeEditorPlugin = codeEditorPlugin;
 		}
 		
 		public void NodeSelectionChangedCB(INode[] nodes)
@@ -33,7 +33,8 @@ namespace VVVV.Nodes
 				{
 					if (doc is ITextDocument)
 					{
-						FCodeEditor.Open(doc as ITextDocument);
+						// TODO: FCodeEditorPlugin.Open(doc as ITextDocument, nodeInfo);
+						FCodeEditorPlugin.Open(doc as ITextDocument);
 					}
 				}
 			}

@@ -51,7 +51,7 @@ namespace CSharpEditor
 		
 		public ImageList ImageList {
 			get {
-				return mainForm.imageList1;
+				return mainForm.ImageList;
 			}
 		}
 		

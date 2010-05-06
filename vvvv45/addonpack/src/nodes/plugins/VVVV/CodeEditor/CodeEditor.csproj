@@ -4,7 +4,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
-    <RootNamespace>CSharpNodeEditor</RootNamespace>
+    <RootNamespace>VVVV.Nodes</RootNamespace>
     <AssemblyName>CodeEditor</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -61,6 +61,10 @@
     <Compile Include="CodeCompletionKeyHandler.cs" />
     <Compile Include="CodeCompletionProvider.cs" />
     <Compile Include="CodeEditor.cs" />
+    <Compile Include="CodeEditorPlugin.cs" />
+    <Compile Include="CodeEditorPlugin.Designer.cs">
+      <DependentUpon>CodeEditorPlugin.cs</DependentUpon>
+    </Compile>
     <Compile Include="HostCallbackImplementation.cs" />
     <Compile Include="NodeSelectionListener.cs" />
     <Compile Include="ParserFoldingStrategy.cs" />
@@ -68,6 +72,9 @@
     <Compile Include="ToolTipProvider.cs" />
     <EmbeddedResource Include="CodeEditor.resx">
       <DependentUpon>CodeEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CodeEditorPlugin.resx">
+      <DependentUpon>CodeEditorPlugin.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -93,9 +100,25 @@
       <Name>Utils</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\vvvv50\src\HDE\ModelProvider\ModelProvider.csproj">
+      <Project>{833BED4C-BBE6-4865-85F2-91E49A6E6E0E}</Project>
+      <Name>ModelProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\vvvv50\src\HDE\Model\HDEModel.csproj">
       <Project>{42D93A99-FF48-462B-B8A8-A9C1B1E6B5F8}</Project>
       <Name>HDEModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\vvvv50\src\HDE\ViewerModel\ViewerModel.csproj">
+      <Project>{8FF77378-0F75-4E63-8370-F9E583F390AD}</Project>
+      <Name>ViewerModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\vvvv50\src\HDE\Viewer\Viewer.csproj">
+      <Project>{5EDB1E2D-BE83-4D81-BDF5-C3D8E08E8E3C}</Project>
+      <Name>Viewer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\vvvv50\src\Utils\Utils.csproj">
+      <Project>{034AAE5F-0B7E-42E2-B155-A14486F97F36}</Project>
+      <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
