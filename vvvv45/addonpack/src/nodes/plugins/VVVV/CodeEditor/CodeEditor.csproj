@@ -42,6 +42,15 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>Dependencies\ICSharpCode.NRefactory.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpDevelop.Dom">
+      <HintPath>Dependencies\ICSharpCode.SharpDevelop.Dom.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.TextEditor">
+      <HintPath>Dependencies\ICSharpCode.TextEditor.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -78,18 +87,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SharpDevelop30\src\Libraries\ICSharpCode.TextEditor\Project\ICSharpCode.TextEditor.csproj">
-      <Project>{2D18BE89-D210-49EB-A9DD-2246FBB3DF6D}</Project>
-      <Name>ICSharpCode.TextEditor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SharpDevelop30\src\Libraries\NRefactory\Project\NRefactory.csproj">
-      <Project>{3A9AE6AA-BC07-4A2F-972C-581E3AE2F195}</Project>
-      <Name>NRefactory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SharpDevelop30\src\Main\ICSharpCode.SharpDevelop.Dom\Project\ICSharpCode.SharpDevelop.Dom.csproj">
-      <Project>{924EE450-603D-49C1-A8E5-4AFAA31CE6F3}</Project>
-      <Name>ICSharpCode.SharpDevelop.Dom</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\vvvv40_DynamicNodes\src.net\_PluginInterfaces\PluginInterfaces.csproj">
       <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
       <Name>PluginInterfaces</Name>
@@ -103,22 +100,27 @@
     <ProjectReference Include="..\..\..\vvvv50\src\HDE\ModelProvider\ModelProvider.csproj">
       <Project>{833BED4C-BBE6-4865-85F2-91E49A6E6E0E}</Project>
       <Name>ModelProvider</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\vvvv50\src\HDE\Model\HDEModel.csproj">
       <Project>{42D93A99-FF48-462B-B8A8-A9C1B1E6B5F8}</Project>
       <Name>HDEModel</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\vvvv50\src\HDE\ViewerModel\ViewerModel.csproj">
       <Project>{8FF77378-0F75-4E63-8370-F9E583F390AD}</Project>
       <Name>ViewerModel</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\vvvv50\src\HDE\Viewer\Viewer.csproj">
       <Project>{5EDB1E2D-BE83-4D81-BDF5-C3D8E08E8E3C}</Project>
       <Name>Viewer</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\vvvv50\src\Utils\Utils.csproj">
       <Project>{034AAE5F-0B7E-42E2-B155-A14486F97F36}</Project>
       <Name>Utils</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
 </Project>

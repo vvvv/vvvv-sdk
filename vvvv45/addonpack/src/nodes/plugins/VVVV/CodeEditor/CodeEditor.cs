@@ -188,7 +188,7 @@ namespace VVVV.Nodes
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
-			//Show();
+
 			FBGParser.RunParserAsync();
 		}
 		

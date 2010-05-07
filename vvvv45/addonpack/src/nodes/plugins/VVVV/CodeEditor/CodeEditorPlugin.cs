@@ -25,6 +25,7 @@ namespace VVVV.Nodes
 		private IAdapterFactory FAdapterFactory;
 		private IContentProvider FContentProvider;
 		private ILabelProvider FLabelProvider;
+		private IDragDropProvider FDragDropProvider;
 		#endregion
 		
 		#region Properties
@@ -45,6 +46,7 @@ namespace VVVV.Nodes
 			FAdapterFactory = new HdeAdapterFactory();
 			FContentProvider = new AdapterFactoryContentProvider(FAdapterFactory);
 			FLabelProvider = new AdapterFactoryLabelProvider(FAdapterFactory);
+			FDragDropProvider = new AdapterFactoryDragDropProvider(FAdapterFactory);
 			
 			var resources = new ComponentResourceManager(typeof(CodeEditorPlugin));
 			FImageList.ImageStream = ((ImageListStreamer)(resources.GetObject("FImageList.ImageStream")));
@@ -67,8 +69,9 @@ namespace VVVV.Nodes
 			
 			FProjectTreeViewer.SetContentProvider(FContentProvider);
 			FProjectTreeViewer.SetLabelProvider(FLabelProvider);
+			FProjectTreeViewer.SetDragDropProvider(FDragDropProvider);
 			FProjectTreeViewer.SetRoot(HdeHost.Solution);
-			FProjectTreeViewer.OnLeftDoubleClick += LeftDoubleClickCB;
+			FProjectTreeViewer.LeftDoubleClick += LeftDoubleClickCB;
 		}
 		
 		public void SetPluginHost(IPluginHost host)
@@ -153,7 +156,7 @@ namespace VVVV.Nodes
 						HdeHost.RemoveListener(FNodeSelectionListener);
 					
 					if (FProjectTreeViewer != null)
-						FProjectTreeViewer.OnLeftDoubleClick -= LeftDoubleClickCB;
+						FProjectTreeViewer.LeftDoubleClick -= LeftDoubleClickCB;
 				}
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.
@@ -188,30 +191,15 @@ namespace VVVV.Nodes
 				return;
 			}
 			
-			TabPage tabPage = new TabPage(FLabelProvider.GetText(doc));
-			tabPage.Dock = DockStyle.Fill;
 			CodeEditor editor = new CodeEditor(FStatusLabel, FImageList);
+			editor.Dock = DockStyle.Fill;
+			editor.Open(doc);
 			
-			SuspendLayout();
-			FTabControl.SuspendLayout();
-			tabPage.SuspendLayout();
-			editor.SuspendLayout();
-			
+			TabPage tabPage = new TabPage(FLabelProvider.GetText(doc));
 			FTabControl.Controls.Add(tabPage);
 			tabPage.Controls.Add(editor);
-			
-			editor.ResumeLayout(false);
-			editor.PerformLayout();
-			tabPage.ResumeLayout(false);
-			tabPage.PerformLayout();
-			FTabControl.ResumeLayout(false);
-			FTabControl.PerformLayout();
-			ResumeLayout(false);
-			PerformLayout();
-			
-			editor.Show();
+
 			FOpenedDocuments[doc] = editor;
-			editor.Open(doc);
 		}
 		#endregion
 		
