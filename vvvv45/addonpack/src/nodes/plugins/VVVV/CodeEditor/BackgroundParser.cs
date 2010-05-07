@@ -16,7 +16,7 @@ namespace VVVV.Nodes
 		private ToolStripStatusLabel FParserLabel;
 		private Dictionary<string, string> FAssemblyFileMap;
 		
-		public BackgroundParser(Dom.ProjectContentRegistry pcRegistry, Dom.DefaultProjectContent projectContent, ToolStripStatusLabel parserLabel)
+		public BackgroundParser(Dom.ProjectContentRegistry pcRegistry, Dom.DefaultProjectContent projectContent, ToolStripStatusLabel parserLabel, Dictionary<string, string> assemblyTable)
 		{
 			FBackgroundWorker = new BackgroundWorker();
 			FBackgroundWorker.WorkerReportsProgress = true;
@@ -30,9 +30,7 @@ namespace VVVV.Nodes
 			FProjectContent = projectContent;
 			FParserLabel = parserLabel;
 			
-			FAssemblyFileMap = new Dictionary<string, string>();
-			FAssemblyFileMap.Add("PluginInterfaces", "bin\\managed\\PluginInterfaces.dll");
-			FAssemblyFileMap.Add("_Utils", "bin\\managed\\_Utils.dll");
+			FAssemblyFileMap = assemblyTable;
 		}
 		
 		public void RunParserAsync()

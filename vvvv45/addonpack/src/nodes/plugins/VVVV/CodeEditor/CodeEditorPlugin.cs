@@ -191,7 +191,7 @@ namespace VVVV.Nodes
 				return;
 			}
 			
-			CodeEditor editor = new CodeEditor(FStatusLabel, FImageList);
+			CodeEditor editor = new CodeEditor(PluginHost, FStatusLabel, FImageList);
 			editor.Dock = DockStyle.Fill;
 			editor.Open(doc);
 			

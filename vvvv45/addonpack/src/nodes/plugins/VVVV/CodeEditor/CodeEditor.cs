@@ -25,6 +25,7 @@
 
 //use what you need
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -40,6 +41,7 @@ using VVVV.Utils.VMath;
 using VVVV.Utils.Adapter;
 using VVVV.HDE.Viewer.Model;
 using VVVV.HDE.Model.Provider;
+using VVVV.Utils;
 
 using ICSharpCode.TextEditor;
 using Dom = ICSharpCode.SharpDevelop.Dom;
@@ -63,6 +65,7 @@ namespace VVVV.Nodes
 		private BackgroundParser FBGParser;
 		private BackgroundCodeParser FBGCodeParser;
 		private ITextDocument FActiveTextDocument;
+		private System.Windows.Forms.Timer FTimer;
 		
 		/// <summary>
 		/// Many SharpDevelop.Dom methods take a file name, which is really just a unique identifier
@@ -78,13 +81,15 @@ namespace VVVV.Nodes
 		#endregion field declaration
 		
 		#region Properties
+		public IPluginHost PluginHost { get; private set; }
 		public ImageList ImageList { get; private set; }
 		public Form DummyForm { get; private set; }
 		#endregion
 		
 		#region constructor/destructor
-		public CodeEditor(ToolStripStatusLabel statusLabel, ImageList imageList)
+		public CodeEditor(IPluginHost host, ToolStripStatusLabel statusLabel, ImageList imageList)
 		{
+			PluginHost = host;
 			ImageList = imageList;
 //			TopLevel = false;
 			
@@ -115,49 +120,19 @@ namespace VVVV.Nodes
 			// for the first time
 			FParseInfo = new Dom.ParseInformation(new Dom.DefaultCompilationUnit(FProjectContent));
 			
-			FBGParser = new BackgroundParser(FPCRegistry, FProjectContent, statusLabel);
+			var assemblyTable = new Dictionary<string, string>();
+			string path = VVVVHost.ExePath;
+			assemblyTable.Add("PluginInterfaces", path + "\\bin\\managed\\PluginInterfaces.dll");
+			assemblyTable.Add("_Utils", path + "\\bin\\managed\\_Utils.dll");
+			FBGParser = new BackgroundParser(FPCRegistry, FProjectContent, statusLabel, assemblyTable);
 			FBGCodeParser = new BackgroundCodeParser(FProjectContent, FTextEditorControl.Document, DummyFileName, FParseInfo);
 			
-			FTextEditorControl.TextChanged += new EventHandler(TextEditorControlTextChangedCB);
-		}
-		
-		// Dispose(bool disposing) executes in two distinct scenarios.
-		// If disposing equals true, the method has been called directly
-		// or indirectly by a user's code. Managed and unmanaged resources
-		// can be disposed.
-		// If disposing equals false, the method has been called by the
-		// runtime from inside the finalizer and you should not reference
-		// other objects. Only unmanaged resources can be disposed.
-		protected override void Dispose(bool disposing)
-		{
-			// Check to see if Dispose has already been called.
-			if(!FDisposed)
-			{
-				if(disposing)
-				{
-					// Dispose managed resources.
-					if (FActiveTextDocument != null)
-						FActiveTextDocument.ContentChanged -= TextDocumentContentChangedCB;
-					
-					HostCallbackImplementation.UnRegister(this.FProjectContent);
-					FBGParser.CancelAsync();
-					FTextEditorControl.Dispose();
-				}
-				// Release unmanaged resources. If disposing is false,
-				// only the following code is executed.
-				
-				// Note that this is not thread safe.
-				// Another thread could start disposing the object
-				// after the managed resources are disposed,
-				// but before the disposed flag is set to true.
-				// If thread safety is necessary, it must be
-				// implemented by the client.
-			}
-			FDisposed = true;
+			FTextEditorControl.TextChanged += TextEditorControlTextChangedCB;
 			
-			base.Dispose(disposing);
+			FTimer = new System.Windows.Forms.Timer();
+			FTimer.Interval = 500;
+			FTimer.Tick += TimerTickCB;
 		}
-		
 		#endregion constructor/destructor
 		
 		#region Windows Forms designer
@@ -185,11 +160,67 @@ namespace VVVV.Nodes
 		}
 		#endregion Windows Forms designer
 		
+		#region IDisposable
+		// Dispose(bool disposing) executes in two distinct scenarios.
+		// If disposing equals true, the method has been called directly
+		// or indirectly by a user's code. Managed and unmanaged resources
+		// can be disposed.
+		// If disposing equals false, the method has been called by the
+		// runtime from inside the finalizer and you should not reference
+		// other objects. Only unmanaged resources can be disposed.
+		protected override void Dispose(bool disposing)
+		{
+			// Check to see if Dispose has already been called.
+			if(!FDisposed)
+			{
+				if(disposing)
+				{
+					// Dispose managed resources.
+					if (FActiveTextDocument != null)
+						FActiveTextDocument.ContentChanged -= TextDocumentContentChangedCB;
+					
+					if (FTimer != null)
+						FTimer.Dispose();
+					
+					HostCallbackImplementation.UnRegister(this.FProjectContent);
+					FBGParser.CancelAsync();
+					FTextEditorControl.Dispose();
+				}
+				// Release unmanaged resources. If disposing is false,
+				// only the following code is executed.
+				
+				// Note that this is not thread safe.
+				// Another thread could start disposing the object
+				// after the managed resources are disposed,
+				// but before the disposed flag is set to true.
+				// If thread safety is necessary, it must be
+				// implemented by the client.
+			}
+			FDisposed = true;
+			
+			base.Dispose(disposing);
+		}
+		#endregion IDisposable
+		
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
 
 			FBGParser.RunParserAsync();
+		}
+		
+		protected void TimerTickCB(object sender, EventArgs args)
+		{
+			FTimer.Stop();
+			if (FActiveTextDocument != null)
+			{
+				FActiveTextDocument.ContentChanged -= TextDocumentContentChangedCB;
+				FActiveTextDocument.TextContent = FTextEditorControl.Document.TextContent;
+				FActiveTextDocument.ContentChanged += TextDocumentContentChangedCB;
+				
+				PluginHost.Log(TLogType.Debug, "Parsing " + FActiveTextDocument.Location + " ...");
+				FBGCodeParser.RunParserAsync(FActiveTextDocument.TextContent);
+			}
 		}
 		
 		/// <summary>
@@ -223,16 +254,9 @@ namespace VVVV.Nodes
 		
 		void TextEditorControlTextChangedCB(object sender, EventArgs e)
 		{
-			TextEditorControl control = sender as TextEditorControl;
-			
-			FBGCodeParser.RunParserAsync(control.Text);
-			
-			if (FActiveTextDocument != null)
-			{
-				FActiveTextDocument.ContentChanged -= TextDocumentContentChangedCB;
-				FActiveTextDocument.TextContent = control.Document.TextContent;
-				FActiveTextDocument.ContentChanged += TextDocumentContentChangedCB;
-			}
+			// Restart the timer.
+			FTimer.Stop();
+			FTimer.Start();
 		}
 		
 		void TextDocumentContentChangedCB(IDocument doc, string content)
