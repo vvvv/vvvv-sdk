@@ -154,17 +154,9 @@ namespace VVVV.Nodes
         
         private void InitializeComponent()
         {
-        	this.treeViewer = new VVVV.HDE.Viewer.TreeViewer();
         	this.textBox1 = new System.Windows.Forms.TextBox();
+        	this.treeViewer = new VVVV.HDE.Viewer.PanelTreeViewer();
         	this.SuspendLayout();
-        	// 
-        	// treeViewer
-        	// 
-        	this.treeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.treeViewer.Location = new System.Drawing.Point(0, 0);
-        	this.treeViewer.Name = "treeViewer";
-        	this.treeViewer.Size = new System.Drawing.Size(310, 366);
-        	this.treeViewer.TabIndex = 0;
         	// 
         	// textBox1
         	// 
@@ -173,6 +165,16 @@ namespace VVVV.Nodes
         	this.textBox1.Name = "textBox1";
         	this.textBox1.Size = new System.Drawing.Size(310, 20);
         	this.textBox1.TabIndex = 1;
+        	// 
+        	// treeViewer
+        	// 
+        	this.treeViewer.AutoScroll = true;
+        	this.treeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+        	this.treeViewer.Location = new System.Drawing.Point(0, 0);
+        	this.treeViewer.Name = "treeViewer";
+        	this.treeViewer.ShowRoot = true;
+        	this.treeViewer.Size = new System.Drawing.Size(310, 366);
+        	this.treeViewer.TabIndex = 2;
         	// 
         	// GraphViewerPluginNode
         	// 
@@ -186,7 +188,7 @@ namespace VVVV.Nodes
         	this.PerformLayout();
         }
         private System.Windows.Forms.TextBox textBox1;
-        private VVVV.HDE.Viewer.TreeViewer treeViewer;
+        private VVVV.HDE.Viewer.PanelTreeViewer treeViewer;
         
         #region pin creation
         

@@ -34,8 +34,8 @@ namespace VVVV.Graph.Provider
 		        return self.ToString();
 		}
 	    
-        public event EventHandler OnContentChanged;
+        public event EventHandler ContentChanged;
 	    
-        public event EventHandler OnLabelChanged;
+        public event EventHandler LabelChanged;
 	}
 }
