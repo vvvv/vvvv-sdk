@@ -1,4 +1,4 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.PluginInterfaces</RootNamespace>
@@ -20,6 +20,7 @@
     <DelaySign>False</DelaySign>
     <SourceAnalysisOverrideSettingsFile>C:\Dokumente und Einstellungen\tgallery\Anwendungsdaten\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <Optimize>False</Optimize>
@@ -48,6 +49,9 @@
   <ItemGroup>
     <Reference Include="SlimDX" />
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +72,6 @@
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>$(MSBuildBinPath)/regasm.exe $(AssemblyName).dll /tlb</PostBuildEvent>
+    <PostBuildEvent>C:/WINDOWS/Microsoft.NET/Framework/v2.0.50727/regasm.exe $(AssemblyName).dll /tlb</PostBuildEvent>
   </PropertyGroup>
 </Project>
