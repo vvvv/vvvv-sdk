@@ -7,7 +7,7 @@ namespace VVVV.Nodes.NodeBrowser
 	/// <summary>
 	/// Description of NodeInfoContentProvider.
 	/// </summary>
-	public class NodeInfoContentProvider: ITreeContentProvider, ILabelProvider
+	public class NodeInfoContentProvider: ITreeContentProvider, ILabelProvider, IDragDropProvider
 	{
 		public NodeInfoContentProvider()
 		{
@@ -27,8 +27,28 @@ namespace VVVV.Nodes.NodeBrowser
 		    return (element as NodeInfoDummy).Username;
 		}
 	    
-        public event EventHandler OnContentChanged;
+        public event EventHandler ContentChanged;
 	    
-        public event EventHandler OnLabelChanged;
+        public event EventHandler LabelChanged;
+	    
+        public bool AllowDrag(object element)
+        {
+            return true;
+        }
+	    
+        public object DragItem(object element)
+        {
+            return GetText(element);
+        }
+	    
+        public bool AllowDrop(object element, System.Collections.Generic.Dictionary<string, object> dropItems)
+        {
+            return false;
+        }
+	    
+        public void DropItem(object element, System.Collections.Generic.Dictionary<string, object> dropItems)
+        {
+            throw new NotImplementedException();
+        }
 	}
 }

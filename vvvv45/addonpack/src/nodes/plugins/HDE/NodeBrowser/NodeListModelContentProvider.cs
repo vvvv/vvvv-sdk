@@ -27,8 +27,8 @@ namespace VVVV.Nodes.NodeBrowser
 		    return "";
 		}
 	    
-        public event EventHandler OnContentChanged;
+        public event EventHandler ContentChanged;
 
-        public event EventHandler OnLabelChanged;
+        public event EventHandler LabelChanged;
 	}
 }

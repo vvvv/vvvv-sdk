@@ -160,7 +160,7 @@ namespace VVVV.Nodes.NodeBrowser
 			this.tabAlphabetical = new System.Windows.Forms.TabPage();
 			this.alphabetTreeViewer = new VVVV.HDE.Viewer.TreeViewer();
 			this.tabCategory = new System.Windows.Forms.TabPage();
-			this.categoryTreeViewer = new VVVV.HDE.Viewer.TreeViewer();
+			this.categoryTreeViewer = new VVVV.HDE.Viewer.PanelTreeViewer();
 			this.tabControlMain.SuspendLayout();
 			this.tabAlphabetical.SuspendLayout();
 			this.tabCategory.SuspendLayout();
@@ -232,7 +232,7 @@ namespace VVVV.Nodes.NodeBrowser
 			this.ResumeLayout(false);
 		}
 		private VVVV.HDE.Viewer.TreeViewer alphabetTreeViewer;
-		private VVVV.HDE.Viewer.TreeViewer categoryTreeViewer;
+		private VVVV.HDE.Viewer.PanelTreeViewer categoryTreeViewer;
 		private System.Windows.Forms.TabPage tabCategory;
 		private System.Windows.Forms.TabPage tabAlphabetical;
 		private System.Windows.Forms.TabControl tabControlMain;
@@ -254,28 +254,25 @@ namespace VVVV.Nodes.NodeBrowser
 			//register nodeinfolisteners at hdehost
 			FHDEHost.AddListener(this);
 			
-			//create AdapterFactory
+			//create AdapterFactory and provider
             NodeListAdapterFactory af = new NodeListAdapterFactory();
             var cp = new AdapterFactoryContentProvider(af);
             var lp = new AdapterFactoryLabelProvider(af);
+            //var ddp = new AdapterFactoryDragDropProvider(af);
             
-            //create IContentProvider and hand it to the treeView
+            //hand providers over to viewers
             categoryTreeViewer.SetContentProvider(cp);
-            
-            //create ILabelProvider and hand it to the treeView
             categoryTreeViewer.SetLabelProvider(lp);
+            //categoryTreeViewer.SetDragDropProvider(ddp);
             
-            categoryTreeViewer.SetRoot(FCategoryModel);
-            
-           
-            //create IContentProvider and hand it to the treeView
             alphabetTreeViewer.SetContentProvider(cp);
-            
-            //create ILabelProvider and hand it to the treeView
             alphabetTreeViewer.SetLabelProvider(lp);
+            //alphabetTreeViewer.SetDragDropProvider(ddp);
+
+            //hand model root over to viewers
+            categoryTreeViewer.SetRoot(FCategoryModel);
             //alphabetTreeViewer.ShowRoot = true;
             alphabetTreeViewer.SetRoot(FAlphabetModel);
-            
 		}
 
 		#endregion initialization
@@ -286,46 +283,12 @@ namespace VVVV.Nodes.NodeBrowser
 		    FCategoryModel.Add(nodeInfo);
 		    FAlphabetModel.Add(nodeInfo);
 		    //the contentprovider will call its changed event to update the view
-		    
-		 /*   //create category if it not already exists
-		    CategoryControl cc = FCategoryControls.Find(delegate(CategoryControl c) {return string.Equals(c.Category, nodeInfo.Category);});
-		    if (cc == null)
-		    {
-		        cc = new CategoryControl(nodeInfo.Category);
-		        FCategoryControls.Add(cc);
-		        cc.Dock = DockStyle.Top;
-		        
-		        FCategoryControls.Sort(delegate(CategoryControl c1, CategoryControl c2) {return c1.Category.CompareTo(c2.Category);});
-	        
-		        tabCategory.SuspendLayout();
-		        tabCategory.Controls.Clear();
-		        for (int i = FCategoryControls.Count-1; i >= 0; i--)
-		            tabCategory.Controls.Add(FCategoryControls[i]);
-		        tabCategory.ResumeLayout(true);
-		    }
-		    
-		    //add nodeinfo to category
-		    cc.Add(nodeInfo);*/
 		}
 		
 		public void NodeInfoRemovedCB(INodeInfo nodeInfo)
 		{
 		    FCategoryModel.Remove(nodeInfo);
 		    FAlphabetModel.Remove(nodeInfo);
-
-		 /*   //remove nodeinfo from its category
-		    CategoryControl cc = FCategoryControls.Find(delegate(CategoryControl c) {return string.Equals(c.Category, nodeInfo.Category);});
-		    if (cc != null)
-		    {
-		        cc.Remove(nodeInfo);
-		        
-		        //remove category if it is now empty
-		        if (cc.NodeCount == 0)
-		        {
-		            tabCategory.Controls.Remove(cc);
-		            FCategoryControls.Remove(cc);
-		        }
-		    }*/
 		}
 		
 		public void SetFilterTags(string tags)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using VVVV.PluginInterfaces.V1;
-using VVVV.Utils.Notifier;
+using VVVV.Utils.Notify;
 
 namespace VVVV.Nodes.NodeBrowser
 {

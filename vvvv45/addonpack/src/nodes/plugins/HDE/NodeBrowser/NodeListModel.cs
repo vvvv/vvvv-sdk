@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using VVVV.PluginInterfaces.V1;
-using VVVV.Utils.Notifier;
+using VVVV.Utils.Notify;
 
 namespace VVVV.Nodes.NodeBrowser
 {
@@ -62,10 +62,9 @@ namespace VVVV.Nodes.NodeBrowser
 		    {
 		        category = new CategoryEntry(nodeInfo.Category);
 		        NodeList.Add(category);
-		        
-		        NodeList.Sort(delegate(CategoryEntry e1, CategoryEntry e2) {return e1.Name.CompareTo(e2.Name);});
 		    }
 		    	
+		    NodeList.Sort(delegate(CategoryEntry e1, CategoryEntry e2) {return e1.Name.CompareTo(e2.Name);});
 		    category.Add(nodeInfo);
             //FireOnNotifyChanged();
         }

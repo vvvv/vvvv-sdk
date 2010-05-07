@@ -28,8 +28,8 @@ namespace VVVV.Nodes.NodeBrowser
 		    return (element as CategoryEntry).Name;
 		}
 	    
-        public event EventHandler OnLabelChanged;
+        public event EventHandler LabelChanged;
 	    
-        public event EventHandler OnContentChanged;
+        public event EventHandler ContentChanged;
 	}
 }
