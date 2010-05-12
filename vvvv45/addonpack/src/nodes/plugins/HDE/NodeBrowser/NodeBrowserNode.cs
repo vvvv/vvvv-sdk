@@ -31,6 +31,8 @@ using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
+using Microsoft.Practices.Unity;
+
 using VVVV.PluginInterfaces.V1;
 using VVVV.HDE.Viewer.Model;
 
@@ -38,13 +40,14 @@ using VVVV.HDE.Viewer.Model;
 namespace VVVV.Nodes.NodeBrowser
 {
     //class definition, inheriting from UserControl for the GUI stuff
-    public class NodeBrowserPluginNode: UserControl, IHDEPlugin, INodeInfoListener
+    public class NodeBrowserPluginNode: UserControl, IHDEPlugin, INodeInfoListener, INodeBrowser
     {
         #region field declaration
         
         //the hosts
         private IPluginHost FPluginHost;
         private IHDEHost FHDEHost;
+        private INodeBrowserHost FNodeBrowserHost;
         // Track whether Dispose has been called.
         private bool FDisposed = false;
         
@@ -55,6 +58,7 @@ namespace VVVV.Nodes.NodeBrowser
         Dictionary<string, INodeInfo> FNodeDict = new Dictionary<string, INodeInfo>();
         private bool FAndTags = true;
         private int FSelectedLine = -1;
+        private string FManualEntry = "";
         
         #endregion field declaration
         
@@ -65,6 +69,7 @@ namespace VVVV.Nodes.NodeBrowser
             InitializeComponent();
             
             tabControlMain.SelectedIndex = 2;
+            textBoxTags.ContextMenu = new ContextMenu();
         }
         
         // Dispose(bool disposing) executes in two distinct scenarios.
@@ -251,9 +256,11 @@ namespace VVVV.Nodes.NodeBrowser
         	this.richTextBox.Location = new System.Drawing.Point(3, 24);
         	this.richTextBox.Name = "richTextBox";
         	this.richTextBox.ReadOnly = true;
+        	this.richTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
         	this.richTextBox.Size = new System.Drawing.Size(311, 464);
         	this.richTextBox.TabIndex = 0;
         	this.richTextBox.Text = "";
+        	this.richTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseDown);
         	// 
         	// textBoxTags
         	// 
@@ -293,21 +300,53 @@ namespace VVVV.Nodes.NodeBrowser
         #region initialization
         
         //this method is called by vvvv when the node is created
-        public void SetPluginHost(IPluginHost Host)
+        public void SetPluginHost(IPluginHost host)
         {
-            //assign host
-            FPluginHost = Host;
+            FPluginHost = host;
         }
         
-        public void SetHDEHost(IHDEHost Host)
+        public void SetHDEHost(IHDEHost host)
         {
             //assign host
-            FHDEHost = Host;
+            FHDEHost = host;
             
             //register nodeinfolisteners at hdehost
             FHDEHost.AddListener(this);
             
-            //create AdapterFactory and provider
+            //create the fallback container, which contains default mappings for all
+            //the interfaces the viewer model uses.
+            var uc = new UnityContainer();
+            uc.AddNewExtension<ViewerModelContainerExtension>();
+            
+            //now create a child container, which knows how to map the HDE model.
+            var cc = uc.CreateChildContainer();
+            cc.AddNewExtension<NodeBrowserModelProviderExtension>();
+            
+            //create AdapterFactoryContentProvider and hand it to the treeViewer
+            var cp = new UnityContentProvider(cc);
+            categoryTreeViewer.SetContentProvider(cp);
+            alphabetTreeViewer.SetContentProvider(cp);
+            
+            //create AdapterFactoryLabelProvider and hand it to the treeViewer
+            var lp = new UnityLabelProvider(cc);
+            categoryTreeViewer.SetLabelProvider(lp);
+            alphabetTreeViewer.SetLabelProvider(lp);
+            /*
+            //create AdapterFactoryContextMenuProvider and hand it to the treeViewer
+            var cmp = new UnityContextMenuProvider(cc);
+            categoryTreeViewer.SetContextMenuProvider(cmp);
+            alphabetTreeViewer.SetContextMenuProvider(cmp);
+            
+            //create AdapterFactoryDragDropProvider and hand it to the treeViewer
+            var ddp = new UnityDragDropProvider(cc);
+            categoryTreeViewer.SetDragDropProvider(ddp);
+            alphabetTreeViewer.SetDragDropProvider(ddp);
+             */
+            
+            
+            
+            
+            /*    //create AdapterFactory and provider
             NodeListAdapterFactory af = new NodeListAdapterFactory();
             var cp = new AdapterFactoryContentProvider(af);
             var lp = new AdapterFactoryLabelProvider(af);
@@ -321,27 +360,39 @@ namespace VVVV.Nodes.NodeBrowser
             alphabetTreeViewer.SetContentProvider(cp);
             alphabetTreeViewer.SetLabelProvider(lp);
             //alphabetTreeViewer.SetDragDropProvider(ddp);
-
+             */
             //hand model root over to viewers
             //categoryTreeViewer.SetRoot(FCategoryModel);
             //alphabetTreeViewer.ShowRoot = true;
             alphabetTreeViewer.SetRoot(FAlphabetModel);
         }
 
+        public void SetNodeBrowserHost(INodeBrowserHost host)
+        {
+            FNodeBrowserHost = host;
+        }
+        
+        public void Initialize(string Text)
+        {
+            tabControlMain.SelectedIndex = 2;
+            textBoxTags.Text = Text;
+            FManualEntry = Text;
+            RedrawAwesomeBar();
+        }
         #endregion initialization
         
         public void NodeInfoAddedCB(INodeInfo nodeInfo)
         {
-            FPluginHost.Log(TLogType.Debug, nodeInfo.Username);
+            //FPluginHost.Log(TLogType.Debug, nodeInfo.Username);
             string key = nodeInfo.Username + " [" + nodeInfo.Tags + "]";
             FAwesomeList.Add(key);
             FNodeDict[key] = nodeInfo;
             
             //insert the nodeInfo into the data model
             FCategoryModel.Add(nodeInfo);
-            FPluginHost.Log(TLogType.Debug, "added to categories");
+            //FPluginHost.Log(TLogType.Debug, "added to categories");
             FAlphabetModel.Add(nodeInfo);
-            FPluginHost.Log(TLogType.Debug, "added to alphabet");
+            //FPluginHost.Log(TLogType.Debug, "added to alphabet");
             
             
             //FPluginHost.Log(TLogType.Debug, nodeInfo.Category);
@@ -357,51 +408,54 @@ namespace VVVV.Nodes.NodeBrowser
             FCategoryModel.Remove(nodeInfo);
             FAlphabetModel.Remove(nodeInfo);
         }
-        
-        public void SetFilterTags(string tags)
-        {
-            
-        }
 
         void RedrawAwesomeBar()
         {
             richTextBox.Clear();
 
-            string[] tags = textBoxTags.Text.ToLower().Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
-
             List<string> sub;
-            if (FAndTags)
-                sub = FAwesomeList.FindAll(delegate(string node)
-                                           {
-                                               node = node.ToLower();
-                                               bool containsAll = true;
-                                               foreach (string tag in tags)
-                                               {
-                                                   if (!node.Contains(tag))
-                                                   {
-                                                       containsAll = false;
-                                                       break;
-                                                   }
-                                               }
-                                               
-                                               if (containsAll)
-                                                   return true;
-                                               else
-                                                   return false;
-                                           });
+            string text = textBoxTags.Text.ToLower().Trim();
+            string[] tags = new string[0];
+            
+            if (string.IsNullOrEmpty(text))
+                sub = FAwesomeList;
             else
-                sub = FAwesomeList.FindAll(delegate(string node)
-                                           {
-                                               node = node.ToLower();
-                                               foreach (string tag in tags)
+            {
+                tags = text.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
+
+                
+                if (FAndTags)
+                    sub = FAwesomeList.FindAll(delegate(string node)
                                                {
-                                                   if (node.Contains(tag))
+                                                   node = node.ToLower();
+                                                   bool containsAll = true;
+                                                   foreach (string tag in tags)
+                                                   {
+                                                       if (!node.Contains(tag))
+                                                       {
+                                                           containsAll = false;
+                                                           break;
+                                                       }
+                                                   }
+                                                   
+                                                   if (containsAll)
                                                        return true;
-                                               }
-                                               return false;
-                                           });
-            
-            
+                                                   else
+                                                       return false;
+                                               });
+                else
+                    sub = FAwesomeList.FindAll(delegate(string node)
+                                               {
+                                                   node = node.ToLower();
+                                                   foreach (string tag in tags)
+                                                   {
+                                                       if (node.Contains(tag))
+                                                           return true;
+                                                   }
+                                                   return false;
+                                               });
+                
+            }
             sub.Sort(delegate(string s1, string s2){return s1.CompareTo(s2);});
             
             string n;
@@ -423,7 +477,10 @@ namespace VVVV.Nodes.NodeBrowser
         void TextBoxTagsTextChanged(object sender, EventArgs e)
         {
             if (FSelectedLine == -1)
+            {    
+                FManualEntry = textBoxTags.Text;
                 RedrawAwesomeBar();
+            }
         }
 
         protected override bool ProcessDialogKey(Keys keyData)
@@ -442,23 +499,38 @@ namespace VVVV.Nodes.NodeBrowser
         void TextBoxTagsKeyDown(object sender, KeyEventArgs e)
         {
             if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return))
-            {
-                INodeInfo selNode = FNodeDict[textBoxTags.Text.Trim()];
-                //if (sel != null)
-                //    FHDEHost.CreateNode(selNode);
-            }
+                CreateNode();
             else if (e.KeyCode == Keys.Escape)
-            {
-                //FHDEHost.CreateNode(null);
-            }
+                FNodeBrowserHost.CreateNode(null);
             else if (e.KeyCode == Keys.Down)
-                FSelectedLine += 1;
-            else if (e.KeyCode == Keys.Up)
-                FSelectedLine = Math.Max(-1, FSelectedLine - 1);
-            else if (e.KeyCode == Keys.Right)
             {
-                FSelectedLine = -1;
+                FSelectedLine = FSelectedLine + 1;
+                if (FSelectedLine == richTextBox.Lines.Length)
+                {
+                    ResetToManualEntry();
+                    FSelectedLine = -1;
+                }
                 textBoxTags.SelectionStart = textBoxTags.Text.Length;
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                if (FSelectedLine == -1)
+                    FSelectedLine = richTextBox.Lines.Length - 1;
+                else 
+                {
+                    FSelectedLine -= 1;
+                    if (FSelectedLine == -1)
+                        ResetToManualEntry();
+                }       
+                textBoxTags.SelectionStart = textBoxTags.Text.Length;
+            }
+            else if ((e.KeyCode == Keys.Left) || (e.KeyCode == Keys.Right))
+            {
+                if (FSelectedLine != -1)
+                {
+                    FSelectedLine = -1;
+                    textBoxTags.SelectionStart = textBoxTags.Text.Length;
+                }                
             }
             
             RedrawAwesomeSelection();
@@ -466,8 +538,13 @@ namespace VVVV.Nodes.NodeBrowser
         
         void TextBoxTagsMouseDown(object sender, MouseEventArgs e)
         {
-            FSelectedLine = -1;
-            RedrawAwesomeSelection();
+            if (e.Button == MouseButtons.Right)
+                tabControlMain.SelectedIndex = 1;
+            else
+            {
+                FSelectedLine = -1;
+                RedrawAwesomeSelection();
+            }
         }
         
         private void RedrawAwesomeSelection()
@@ -483,6 +560,28 @@ namespace VVVV.Nodes.NodeBrowser
             }
             else
                 richTextBox.SelectionBackColor = Color.LightGray;
+        }
+        
+        void RichTextBoxMouseDown(object sender, MouseEventArgs e)
+        {
+            FSelectedLine = richTextBox.GetLineFromCharIndex(richTextBox.GetCharIndexFromPosition(e.Location));
+            textBoxTags.Text = richTextBox.Lines[FSelectedLine];
+            CreateNode();
+        }
+        
+        private void CreateNode()
+        {
+            INodeInfo selNode = FNodeDict[textBoxTags.Text.Trim()];
+            if (selNode != null)
+                FNodeBrowserHost.CreateNode(selNode);
+            else
+                FNodeBrowserHost.CreateComment(textBoxTags.Text);
+        }
+        
+        private void ResetToManualEntry()
+        {
+            textBoxTags.Text = FManualEntry;
+            textBoxTags.SelectionStart = FManualEntry.Length;
         }
     }
 }
