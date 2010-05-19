@@ -50,5 +50,10 @@ namespace VVVV.Nodes.NodeBrowser
         {
             throw new NotImplementedException();
         }
+	    
+        System.Collections.IEnumerable ITreeContentProvider.GetChildren(object element)
+        {
+            throw new NotImplementedException();
+        }
 	}
 }

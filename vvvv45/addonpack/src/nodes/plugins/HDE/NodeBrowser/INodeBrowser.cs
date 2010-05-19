@@ -14,8 +14,9 @@ namespace VVVV.PluginInterfaces.V1
 		/// Called by the NodeBrowserHost to hand itself over to the NodeBrowser.
 		/// </summary>
 		/// <param name="Host">Interface to the NodeBrowserHost.</param>
-		void SetNodeBrowserHost(INodeBrowserHost Host);
-		void Initialize(string Text);
+		void SetNodeBrowserHost(INodeBrowserHost host);
+		void Initialize(string text, out int width);
+		void FocusAwesombar();
 	}
 	
 	/// <summary>

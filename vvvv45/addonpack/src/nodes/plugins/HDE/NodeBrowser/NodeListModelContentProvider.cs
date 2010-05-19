@@ -30,5 +30,10 @@ namespace VVVV.Nodes.NodeBrowser
         public event EventHandler ContentChanged;
 
         public event EventHandler LabelChanged;
+	    
+        System.Collections.IEnumerable ITreeContentProvider.GetChildren(object element)
+        {
+            throw new NotImplementedException();
+        }
 	}
 }
