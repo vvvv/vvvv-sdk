@@ -64,8 +64,6 @@ namespace VVVV.Nodes
     	
     	//output pin declaration
     	private INodeOut FSkeletonOut;
-    	private ITransformOut FBindShapeOut;
-    	private ITransformOut FInvBindPoseOut;
     	
     	#endregion field declaration
        
@@ -214,11 +212,6 @@ namespace VVVV.Nodes
 	    	FSkeletonOut.SetSubType(new Guid[1] {SkeletonNodeIO.GUID}, SkeletonNodeIO.FriendlyName);
 	    	FSkeletonOut.SetInterface(FSkeleton);
 	    	
-	    	FHost.CreateTransformOutput("Bind Shape Matrix", TSliceMode.Single, TPinVisibility.True, out FBindShapeOut);
-	    	FBindShapeOut.Order = 1;
-	    	FHost.CreateTransformOutput("Inverse Bind Pose Matrix", TSliceMode.Dynamic, TPinVisibility.True, out FInvBindPoseOut);
-	    	FInvBindPoseOut.Order = 2;
-	    	
 	    	COLLADAUtil.Logger = new LoggerWrapper(FHost);
         }
 
@@ -320,13 +313,6 @@ namespace VVVV.Nodes
         			{
         				FSkeleton.JointTable[bone.Name].Id = id;
         				id++;
-        			}
-        			
-        			FBindShapeOut.SetMatrix(0, VSlimDXUtils.SlimDXMatrixToMatrix4x4(FSelectedMesh.BindShapeMatrix));
-        			FInvBindPoseOut.SliceCount = FSelectedMesh.InvBindMatrixList.Count;
-        			for (int i = 0; i < FSelectedMesh.InvBindMatrixList.Count; i++)
-        			{
-        				FInvBindPoseOut.SetMatrix(i, VSlimDXUtils.SlimDXMatrixToMatrix4x4(FSelectedMesh.InvBindMatrixList[i]));
         			}
         		}
         		else

@@ -71,6 +71,8 @@ namespace VVVV.Nodes
 		private IStringOut FTextureFileNameOutput;
 		private ITransformOut FTransformOutput;
 		private ITransformOut FSkinningTransformOutput;
+		private ITransformOut FInvBindPoseTransformOutput;
+		private ITransformOut FBindShapeTransformOutput;
 		private IColorOut FEmissiveColorOut;
 		private IColorOut FDiffuseColorOut;
 		private IColorOut FSpecularColorOut;
@@ -241,6 +243,8 @@ namespace VVVV.Nodes
 			FTransformOutput.Order = int.MinValue + 1;
 			FHost.CreateTransformOutput("Skinning Transforms", TSliceMode.Dynamic, TPinVisibility.True, out FSkinningTransformOutput);
 			FSkinningTransformOutput.Order = int.MinValue + 2;
+			FHost.CreateTransformOutput("Inverse Bind Pose Transforms", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FInvBindPoseTransformOutput);
+			FHost.CreateTransformOutput("Bind Shape Transform", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FBindShapeTransformOutput);
 			FHost.CreateStringOutput("TextureFileName", TSliceMode.Dynamic, TPinVisibility.True, out FTextureFileNameOutput);
 			FTextureFileNameOutput.SetSubType("", true);
 			FHost.CreateColorOutput("Emissive Color", TSliceMode.Dynamic, TPinVisibility.True, out FEmissiveColorOut);
@@ -418,6 +422,7 @@ namespace VVVV.Nodes
 	        		int maxCount = Math.Max(FTimeInput.SliceCount, selectedInstanceMeshes.Count);
 					List<Matrix> transforms = new List<Matrix>();
 					List<Matrix> skinningTransforms = new List<Matrix>();
+					List<Matrix> bindShapeTransforms = new List<Matrix>();
 					for (int i = 0; i < maxCount && selectedInstanceMeshes.Count > 0; i++)
 					{
 						int meshIndex = i % selectedInstanceMeshes.Count;
@@ -436,7 +441,14 @@ namespace VVVV.Nodes
 						if (instanceMesh is Model.SkinnedInstanceMesh) {
 							Model.SkinnedInstanceMesh skinnedInstanceMesh = (Model.SkinnedInstanceMesh) instanceMesh;							
 							skinnedInstanceMesh.ApplyAnimations(time);
-							skinningTransforms = skinnedInstanceMesh.GetSkinningMatrices();
+							skinningTransforms = skinnedInstanceMesh.GetSkinningMatrices();  // am i right, that this whole thing will only work with 1 selected mesh?
+							bindShapeTransforms.Add(skinnedInstanceMesh.BindShapeMatrix);
+							FInvBindPoseTransformOutput.SliceCount = skinnedInstanceMesh.InvBindMatrixList.Count;
+							for (int j=0; j<skinnedInstanceMesh.InvBindMatrixList.Count; j++)
+							{
+								FInvBindPoseTransformOutput.SetMatrix(j, VSlimDXUtils.SlimDXMatrixToMatrix4x4(skinnedInstanceMesh.InvBindMatrixList[j]));
+							}
+							
 						}
 					}
 					
@@ -447,6 +459,10 @@ namespace VVVV.Nodes
 					FSkinningTransformOutput.SliceCount = skinningTransforms.Count;
 					for (int j = 0; j < skinningTransforms.Count; j++)
 						FSkinningTransformOutput.SetMatrix(j, VSlimDXUtils.SlimDXMatrixToMatrix4x4(skinningTransforms[j]));
+					
+					FBindShapeTransformOutput.SliceCount = bindShapeTransforms.Count;
+					for (int j = 0; j < bindShapeTransforms.Count; j++)
+						FBindShapeTransformOutput.SetMatrix(j, VSlimDXUtils.SlimDXMatrixToMatrix4x4(bindShapeTransforms[j]));
 	        	}
         	}
         	catch (Exception e)
