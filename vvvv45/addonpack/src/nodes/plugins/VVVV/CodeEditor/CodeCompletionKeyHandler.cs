@@ -81,7 +81,7 @@ namespace CSharpEditor
 				codeCompletionWindow = CodeCompletionWindow.ShowCompletionWindow(
 					FCodeEditor.DummyForm,					// The parent window for the completion window
 					FEditorControl, 					// The text editor to show the window for
-					CodeEditor.DummyFileName,		// Filename - will be passed back to the provider
+					FCodeEditor.Document.Location.AbsolutePath,		// Filename - will be passed back to the provider
 					completionDataProvider,		// Provider to get the list of possible completions
 					key							// Key pressed - will be passed to the provider
 				);

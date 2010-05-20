@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Collections.Generic;
 
+using VVVV.HDE.Model;
+
 using Dom = ICSharpCode.SharpDevelop.Dom;
 
 namespace VVVV.Nodes
@@ -12,11 +14,10 @@ namespace VVVV.Nodes
 	{
 		private BackgroundWorker FBackgroundWorker;
 		private Dom.ProjectContentRegistry FPCRegistry;
-		private Dom.DefaultProjectContent FProjectContent;
+		private Dictionary<IProject, Dom.DefaultProjectContent> FProjects;
 		private ToolStripStatusLabel FParserLabel;
-		private Dictionary<string, string> FAssemblyFileMap;
 		
-		public BackgroundParser(Dom.ProjectContentRegistry pcRegistry, Dom.DefaultProjectContent projectContent, ToolStripStatusLabel parserLabel, Dictionary<string, string> assemblyTable)
+		public BackgroundParser(Dom.ProjectContentRegistry pcRegistry, Dictionary<IProject, Dom.DefaultProjectContent> projects, ToolStripStatusLabel parserLabel)
 		{
 			FBackgroundWorker = new BackgroundWorker();
 			FBackgroundWorker.WorkerReportsProgress = true;
@@ -27,10 +28,8 @@ namespace VVVV.Nodes
 			FBackgroundWorker.ProgressChanged += new ProgressChangedEventHandler(ProgressChangedCB);
 		
 			FPCRegistry = pcRegistry;
-			FProjectContent = projectContent;
+			FProjects = projects;
 			FParserLabel = parserLabel;
-			
-			FAssemblyFileMap = assemblyTable;
 		}
 		
 		public void RunParserAsync()
@@ -45,28 +44,36 @@ namespace VVVV.Nodes
 		
 		private void DoWorkCB(object sender, DoWorkEventArgs args)
 		{
-			string[] referencedAssemblies = {
-				"mscorlib", "System", "System.Data", "System.Drawing", "System.Xml", "System.Windows.Forms", "PluginInterfaces", "_Utils"
-			};
-			
 			int i = 0;
 			int percentProgress = 0;
 			
-			foreach (string assemblyName in referencedAssemblies) {
-				if (FBackgroundWorker.CancellationPending)
+			foreach (var entry in FProjects)
+			{
+				var project = entry.Key;
+				var projectContent = entry.Value;
+				
+				percentProgress = (i++) * 100;
+			
+				int j = 0;
+				int percentInnerProgress = 0;
+				foreach (var reference in project.References)
 				{
-					args.Cancel = true;
-					break;
-				}
-				
-				percentProgress = ((i++) * 100) / referencedAssemblies.Length;
-				FBackgroundWorker.ReportProgress(percentProgress, assemblyName);
-				
-				string assemblyFilename = ResolveAssemblyFilename(assemblyName);
-				Dom.IProjectContent referencePC = FPCRegistry.GetProjectContentForReference(assemblyName, assemblyFilename);
-				FProjectContent.AddReferencedContent(referencePC);
-				if (referencePC is Dom.ReflectionProjectContent) {
-					(referencePC as Dom.ReflectionProjectContent).InitializeReferences();
+					if (FBackgroundWorker.CancellationPending)
+					{
+						args.Cancel = true;
+						return;
+					}
+					
+					if (reference is AssemblyReference)
+					{
+						var assemblyName = reference.Name;
+						var assemblyFilename = reference.Location.AbsolutePath;
+						var referencePC = FPCRegistry.GetProjectContentForReference(assemblyName, assemblyFilename);
+						projectContent.AddReferencedContent(referencePC);
+					}
+					
+					percentInnerProgress = percentProgress + ((j++) * 100) / project.References.Count;
+					FBackgroundWorker.ReportProgress(percentInnerProgress / FProjects.Count, reference.Name);
 				}
 			}
 		}
@@ -80,15 +87,6 @@ namespace VVVV.Nodes
 		{
 			string assemblyName = args.UserState as string;
 			FParserLabel.Text = "Loading " + assemblyName + " ...";
-		}
-		
-		private string ResolveAssemblyFilename(string assemblyName)
-		{
-			if (FAssemblyFileMap.ContainsKey(assemblyName))
-			{
-				return FAssemblyFileMap[assemblyName];
-			}
-			return assemblyName;
 		}
 	}
 }

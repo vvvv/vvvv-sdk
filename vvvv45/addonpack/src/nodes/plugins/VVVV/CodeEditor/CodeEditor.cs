@@ -35,10 +35,10 @@ using System.Resources;
 using System.Reflection;
 
 using VVVV.HDE.Model;
+using VVVV.HDE.Model.CS;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using VVVV.Utils.Adapter;
 using VVVV.HDE.Viewer.Model;
 using VVVV.HDE.Model.Provider;
 using VVVV.Utils;
@@ -56,42 +56,38 @@ namespace VVVV.Nodes
 	public class CodeEditor: UserControl
 	{
 		#region field declaration
-		internal Dom.ProjectContentRegistry FPCRegistry;
 		internal Dom.DefaultProjectContent FProjectContent;
 		internal Dom.ParseInformation FParseInfo;
 		
-		private bool FDisposed = false;
 		private ICSharpCode.TextEditor.TextEditorControl FTextEditorControl;
-		private BackgroundParser FBGParser;
 		private BackgroundCodeParser FBGCodeParser;
-		private ITextDocument FActiveTextDocument;
 		private System.Windows.Forms.Timer FTimer;
-		
-		/// <summary>
-		/// Many SharpDevelop.Dom methods take a file name, which is really just a unique identifier
-		/// for a file - Dom methods don't try to access code files on disk, so the file does not have
-		/// to exist.
-		/// SharpDevelop itself uses internal names of the kind "[randomId]/Class1.cs" to support
-		/// code-completion in unsaved files.
-		/// </summary>
-		public const string DummyFileName = "edited.cs";
-		
-		static readonly Dom.LanguageProperties CurrentLanguageProperties = Dom.LanguageProperties.CSharp;
-		
 		#endregion field declaration
 		
 		#region Properties
-		public IPluginHost PluginHost { get; private set; }
+		public CodeEditorPlugin EditorPlugin { get; private set; }
+		
 		public ImageList ImageList { get; private set; }
+		
 		public Form DummyForm { get; private set; }
+		
+		public ITextDocument Document { get; private set; }
+		
+		public bool IsDirty 
+		{ 
+			get
+			{
+				return Document.IsDirty;
+			}
+		}
 		#endregion
 		
 		#region constructor/destructor
-		public CodeEditor(IPluginHost host, ToolStripStatusLabel statusLabel, ImageList imageList)
+		public CodeEditor(CodeEditorPlugin editorPlugin, ITextDocument doc, ImageList imageList)
 		{
-			PluginHost = host;
+			EditorPlugin = editorPlugin;
+			Document = doc;
 			ImageList = imageList;
-//			TopLevel = false;
 			
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			InitializeComponent();
@@ -100,37 +96,24 @@ namespace VVVV.Nodes
 			
 			FTextEditorControl.SetHighlighting("C#");
 			FTextEditorControl.Document.FoldingManager.FoldingStrategy = new ParserFoldingStrategy();
+		
+			FProjectContent = EditorPlugin.GetProjectContent(Document.Project);
+			FProjectContent.Language = Dom.LanguageProperties.CSharp;
 			
-			HostCallbackImplementation.Register(this.FProjectContent);
+			HostCallbackImplementation.Register(FProjectContent);
 			CodeCompletionKeyHandler.Attach(this, FTextEditorControl);
 			ToolTipProvider.Attach(this, FTextEditorControl);
-			
-			FPCRegistry = new Dom.ProjectContentRegistry(); // Default .NET 2.0 registry
-			
-			// Persistence lets SharpDevelop.Dom create a cache file on disk so that
-			// future starts are faster.
-			// It also caches XML documentation files in an on-disk hash table, thus
-			// reducing memory usage.
-			FPCRegistry.ActivatePersistence(Path.Combine(Path.GetTempPath(), "VVVVCodeEditor"));
-			
-			FProjectContent = new Dom.DefaultProjectContent();
-			FProjectContent.Language = CurrentLanguageProperties;
 			
 			// create dummy FParseInfo to prevent NullReferenceException when using CC before parsing
 			// for the first time
 			FParseInfo = new Dom.ParseInformation(new Dom.DefaultCompilationUnit(FProjectContent));
 			
-			var assemblyTable = new Dictionary<string, string>();
-			string path = VVVVHost.ExePath;
-			assemblyTable.Add("PluginInterfaces", path + "\\bin\\managed\\PluginInterfaces.dll");
-			assemblyTable.Add("_Utils", path + "\\bin\\managed\\_Utils.dll");
-			FBGParser = new BackgroundParser(FPCRegistry, FProjectContent, statusLabel, assemblyTable);
-			FBGCodeParser = new BackgroundCodeParser(FProjectContent, FTextEditorControl.Document, DummyFileName, FParseInfo);
+			FBGCodeParser = new BackgroundCodeParser(FProjectContent, FTextEditorControl.Document, Document.Location.AbsolutePath, FParseInfo);
 			
 			FTextEditorControl.TextChanged += TextEditorControlTextChangedCB;
 			
 			FTimer = new System.Windows.Forms.Timer();
-			FTimer.Interval = 500;
+			FTimer.Interval = 100;
 			FTimer.Tick += TimerTickCB;
 		}
 		#endregion constructor/destructor
@@ -161,6 +144,7 @@ namespace VVVV.Nodes
 		#endregion Windows Forms designer
 		
 		#region IDisposable
+		private bool FDisposed = false;
 		// Dispose(bool disposing) executes in two distinct scenarios.
 		// If disposing equals true, the method has been called directly
 		// or indirectly by a user's code. Managed and unmanaged resources
@@ -176,14 +160,13 @@ namespace VVVV.Nodes
 				if(disposing)
 				{
 					// Dispose managed resources.
-					if (FActiveTextDocument != null)
-						FActiveTextDocument.ContentChanged -= TextDocumentContentChangedCB;
+					if (Document != null)
+						Document.ContentChanged -= TextDocumentContentChangedCB;
 					
 					if (FTimer != null)
 						FTimer.Dispose();
 					
 					HostCallbackImplementation.UnRegister(this.FProjectContent);
-					FBGParser.CancelAsync();
 					FTextEditorControl.Dispose();
 				}
 				// Release unmanaged resources. If disposing is false,
@@ -206,50 +189,22 @@ namespace VVVV.Nodes
 		{
 			base.OnLoad(e);
 
-			FBGParser.RunParserAsync();
+			FTextEditorControl.Document.TextContent = Document.TextContent;
+			Document.ContentChanged += TextDocumentContentChangedCB;
 		}
 		
 		protected void TimerTickCB(object sender, EventArgs args)
 		{
 			FTimer.Stop();
-			if (FActiveTextDocument != null)
+			if (Document != null)
 			{
-				FActiveTextDocument.ContentChanged -= TextDocumentContentChangedCB;
-				FActiveTextDocument.TextContent = FTextEditorControl.Document.TextContent;
-				FActiveTextDocument.ContentChanged += TextDocumentContentChangedCB;
+				Document.ContentChanged -= TextDocumentContentChangedCB;
+				Document.TextContent = FTextEditorControl.Document.TextContent;
+				Document.ContentChanged += TextDocumentContentChangedCB;
 				
-				PluginHost.Log(TLogType.Debug, "Parsing " + FActiveTextDocument.Location + " ...");
-				FBGCodeParser.RunParserAsync(FActiveTextDocument.TextContent);
+				EditorPlugin.PluginHost.Log(TLogType.Debug, "Parsing " + Document.Location + " ...");
+				FBGCodeParser.RunParserAsync(Document.TextContent);
 			}
-		}
-		
-		/// <summary>
-		/// Opens the specified ITextDocument in the editor.
-		/// </summary>
-		/// <param name="doc">The ITextDocument to open.</param>
-		public void Open(ITextDocument doc)
-		{
-			if (FActiveTextDocument == doc)
-				return;
-			
-			if (FActiveTextDocument != null)
-				FActiveTextDocument.ContentChanged -= TextDocumentContentChangedCB;
-			
-			FActiveTextDocument = doc;
-			FTextEditorControl.Document.TextContent = FActiveTextDocument.TextContent;
-			FActiveTextDocument.ContentChanged += TextDocumentContentChangedCB;
-		}
-		
-		/// <summary>
-		/// Opens the specified ITextDocument in the editor and scrolls to the line
-		/// where this particular INodeInfo was defined.
-		/// </summary>
-		/// <param name="doc">The ITextDocument to open.</param>
-		/// <param name="nodeInfo">The INodeInfo to scroll to.</param>
-		public void Open(ITextDocument doc, INodeInfo nodeInfo)
-		{
-			Open(doc);
-			FTextEditorControl.ActiveTextAreaControl.ScrollTo(100);
 		}
 		
 		void TextEditorControlTextChangedCB(object sender, EventArgs e)

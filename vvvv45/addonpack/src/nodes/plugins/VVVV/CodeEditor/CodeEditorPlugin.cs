@@ -1,15 +1,22 @@
 ﻿using System;
+using System.IO;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
+
+using Microsoft.Practices.Unity;
+
 using ManagedVCL;
 using VVVV.PluginInterfaces.V1;
 using VVVV.HDE.Model;
-using VVVV.Utils.Adapter;
+using VVVV.HDE.Model.CS;
 using VVVV.HDE.Viewer;
 using VVVV.HDE.Viewer.Model;
 using VVVV.HDE.Model.Provider;
+using VVVV.Utils.Event;
+
+using Dom = ICSharpCode.SharpDevelop.Dom;
 
 namespace VVVV.Nodes
 {
@@ -19,13 +26,16 @@ namespace VVVV.Nodes
 	public partial class CodeEditorPlugin : ManagedVCL.TopControl, IHDEPlugin
 	{
 		#region Fields
-		private bool FDisposed = false;
 		private INodeSelectionListener FNodeSelectionListener;
-		private Dictionary<IDocument, CodeEditor> FOpenedDocuments;
-		private IAdapterFactory FAdapterFactory;
+		private Dictionary<ITextDocument, TabPage> FOpenedDocuments;
+		private IUnityContainer FUnityContainer;
 		private IContentProvider FContentProvider;
 		private ILabelProvider FLabelProvider;
 		private IDragDropProvider FDragDropProvider;
+		private IContextMenuProvider FContextMenuProvider;
+		private Dom.ProjectContentRegistry FPCRegistry;
+		private Dictionary<IProject, Dom.DefaultProjectContent> FProjects;
+		private BackgroundParser FBGParser;
 		#endregion
 		
 		#region Properties
@@ -41,12 +51,8 @@ namespace VVVV.Nodes
 			//
 			InitializeComponent();
 			
-			FOpenedDocuments = new Dictionary<IDocument, CodeEditor>();
+			FOpenedDocuments = new Dictionary<ITextDocument, TabPage>();
 			FNodeSelectionListener = new NodeSelectionListener(this);
-			FAdapterFactory = new HdeAdapterFactory();
-			FContentProvider = new AdapterFactoryContentProvider(FAdapterFactory);
-			FLabelProvider = new AdapterFactoryLabelProvider(FAdapterFactory);
-			FDragDropProvider = new AdapterFactoryDragDropProvider(FAdapterFactory);
 			
 			var resources = new ComponentResourceManager(typeof(CodeEditorPlugin));
 			FImageList.ImageStream = ((ImageListStreamer)(resources.GetObject("FImageList.ImageStream")));
@@ -67,11 +73,38 @@ namespace VVVV.Nodes
 			HdeHost = host;
 			HdeHost.AddListener(FNodeSelectionListener);
 			
+			FUnityContainer = HdeHost.Container.CreateChildContainer();
+			FUnityContainer.AddNewExtension<HdeModelContainerExtension>();
+			FContentProvider = new UnityContentProvider(FUnityContainer);
+			FLabelProvider = new UnityLabelProvider(FUnityContainer);
+			FDragDropProvider = new UnityDragDropProvider(FUnityContainer);
+			FContextMenuProvider = new UnityContextMenuProvider(FUnityContainer);
+			
 			FProjectTreeViewer.SetContentProvider(FContentProvider);
 			FProjectTreeViewer.SetLabelProvider(FLabelProvider);
 			FProjectTreeViewer.SetDragDropProvider(FDragDropProvider);
+			FProjectTreeViewer.SetContextMenuProvider(FContextMenuProvider);
 			FProjectTreeViewer.SetRoot(HdeHost.Solution);
 			FProjectTreeViewer.LeftDoubleClick += LeftDoubleClickCB;
+			
+			// Start to parse the solution.
+			FPCRegistry = new Dom.ProjectContentRegistry(); // Default .NET 2.0 registry
+			// Persistence lets SharpDevelop.Dom create a cache file on disk so that
+			// future starts are faster.
+			// It also caches XML documentation files in an on-disk hash table, thus
+			// reducing memory usage.
+			FPCRegistry.ActivatePersistence(Path.Combine(Path.GetTempPath(), "VVVVCodeEditor"));
+			// Setup project contents for each C# project.
+			FProjects = new Dictionary<IProject, Dom.DefaultProjectContent>();
+			foreach (var project in HdeHost.Solution.Projects)
+			{
+				if (project is CSProject)
+				{
+					FProjects.Add(project, new Dom.DefaultProjectContent());
+				}
+			}
+			FBGParser = new BackgroundParser(FPCRegistry, FProjects, FStatusLabel);
+			FBGParser.RunParserAsync();
 		}
 		
 		public void SetPluginHost(IPluginHost host)
@@ -120,6 +153,7 @@ namespace VVVV.Nodes
 					FPluginInfo.InitialWindowSize = new Size(800, 600);
 					//define the nodes initial component mode
 					FPluginInfo.InitialComponentMode = TComponentMode.InAWindow;
+					FPluginInfo.ShortCut = "Ctrl+J";
 				}
 				return FPluginInfo;
 			}
@@ -131,8 +165,65 @@ namespace VVVV.Nodes
 			get {return true;}
 		}
 		#endregion node name and infos
+		#endregion IHDEPlugin
+		
+		#region Methods
+		/// <summary>
+		/// Opens the specified ITextDocument in a new editor or if already opened brings editor to top.
+		/// </summary>
+		/// <param name="doc">The ITextDocument to open.</param>
+		public void Open(ITextDocument doc)
+		{
+			if (!FOpenedDocuments.ContainsKey(doc))
+			{
+				var editor = new CodeEditor(this, doc, FImageList);
+				var tabPage = new TabPage(FLabelProvider.GetText(doc));
+				
+				FTabControl.SuspendLayout();
+				
+				editor.Dock = DockStyle.Fill;
+				FTabControl.Controls.Add(tabPage);
+				tabPage.Controls.Add(editor);
+				
+				FTabControl.ResumeLayout();
+	
+				FOpenedDocuments[doc] = tabPage;
+				doc.ContentChanged += DocumentContentChangedCB;
+			}
+			FTabControl.SelectTab(FOpenedDocuments[doc]);
+		}
+		
+		/// <summary>
+		/// Returns the project content (contains parse information) for an IProject.
+		/// </summary>
+		public Dom.DefaultProjectContent GetProjectContent(IProject project)
+		{
+			if (FProjects.ContainsKey(project))
+				return FProjects[project];
+			return null;
+		}
+		#endregion
+		
+		#region Callbacks
+		void LeftDoubleClickCB(object sender, EventArgs args)
+		{
+			if (sender is ITextDocument)
+			{
+				Open(sender as ITextDocument);
+			}
+		}
+		
+		void DocumentContentChangedCB(ITextDocument document, string content)
+		{
+			if (document.IsDirty)
+				FOpenedDocuments[document].Text = FLabelProvider.GetText(document) + "*";
+			else
+				FOpenedDocuments[document].Text = FLabelProvider.GetText(document);
+		}
+		#endregion
 		
 		#region IDisposable
+		private bool FDisposed = false;
 		// Dispose(bool disposing) executes in two distinct scenarios.
 		// If disposing equals true, the method has been called directly
 		// or indirectly by a user's code. Managed and unmanaged resources
@@ -148,69 +239,36 @@ namespace VVVV.Nodes
 				if(disposing)
 				{
 					// Dispose managed resources.
-					if (components != null) {
-						components.Dispose();
-					}
+					if (FBGParser != null)
+						FBGParser.CancelAsync();
 					
 					if (HdeHost != null)
 						HdeHost.RemoveListener(FNodeSelectionListener);
 					
 					if (FProjectTreeViewer != null)
 						FProjectTreeViewer.LeftDoubleClick -= LeftDoubleClickCB;
+					
+					foreach (var entry in FOpenedDocuments)
+						entry.Key.ContentChanged -= DocumentContentChangedCB;
+					
+					FOpenedDocuments.Clear();
+					FOpenedDocuments = null;
+					
+					if (components != null) {
+						components.Dispose();
+					}
+					components = null;
 				}
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.
 				
 				if (PluginHost != null)
 					PluginHost.Log(TLogType.Debug, "CodeEditorPlugin is being deleted");
-				
-				// Note that this is not thread safe.
-				// Another thread could start disposing the object
-				// after the managed resources are disposed,
-				// but before the disposed flag is set to true.
-				// If thread safety is necessary, it must be
-				// implemented by the client.
 			}
 			FDisposed = true;
 			
 			base.Dispose(disposing);
 		}
 		#endregion IDisposable
-		#endregion IHDEPlugin
-		
-		#region Methods
-		/// <summary>
-		/// Opens the specified ITextDocument in a new editor or if already opened brings editor to top.
-		/// </summary>
-		/// <param name="doc">The ITextDocument to open.</param>
-		public void Open(ITextDocument doc)
-		{
-			if (FOpenedDocuments.ContainsKey(doc))
-			{
-				// TODO: Bring it to top
-				return;
-			}
-			
-			CodeEditor editor = new CodeEditor(PluginHost, FStatusLabel, FImageList);
-			editor.Dock = DockStyle.Fill;
-			editor.Open(doc);
-			
-			TabPage tabPage = new TabPage(FLabelProvider.GetText(doc));
-			FTabControl.Controls.Add(tabPage);
-			tabPage.Controls.Add(editor);
-
-			FOpenedDocuments[doc] = editor;
-		}
-		#endregion
-		
-		#region Callbacks
-		void LeftDoubleClickCB(object sender, EventArgs args)
-		{
-			if (sender is ITextDocument)
-			{
-				Open(sender as ITextDocument);
-			}
-		}
-		#endregion
 	}
 }
