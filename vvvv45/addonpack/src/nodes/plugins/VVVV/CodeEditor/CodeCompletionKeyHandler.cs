@@ -87,7 +87,7 @@ namespace CSharpEditor
 				);
 				if (codeCompletionWindow != null) {
 					// ShowCompletionWindow can return null when the provider returns an empty list
-					codeCompletionWindow.Closed += new EventHandler(CloseCodeCompletionWindow);
+					codeCompletionWindow.Closed += CloseCodeCompletionWindow;
 				}
 			}
 			return false;
@@ -95,8 +95,12 @@ namespace CSharpEditor
 		
 		void CloseCodeCompletionWindow(object sender, EventArgs e)
 		{
+			var editor = sender as TextEditorControl;
+			editor.Disposed -= CloseCodeCompletionWindow;
+			editor.ActiveTextAreaControl.TextArea.KeyEventHandler -= TextAreaKeyEventHandler;
+			
 			if (codeCompletionWindow != null) {
-				codeCompletionWindow.Closed -= new EventHandler(CloseCodeCompletionWindow);
+				codeCompletionWindow.Closed -= CloseCodeCompletionWindow;
 				codeCompletionWindow.Dispose();
 				codeCompletionWindow = null;
 			}

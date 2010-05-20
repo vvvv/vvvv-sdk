@@ -30,7 +30,6 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Threading;
-using System.IO;
 using System.Resources;
 using System.Reflection;
 
@@ -96,6 +95,7 @@ namespace VVVV.Nodes
 			
 			FTextEditorControl.SetHighlighting("C#");
 			FTextEditorControl.Document.FoldingManager.FoldingStrategy = new ParserFoldingStrategy();
+			FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown += TextAreaKeyDownCB;
 		
 			FProjectContent = EditorPlugin.GetProjectContent(Document.Project);
 			FProjectContent.Language = Dom.LanguageProperties.CSharp;
@@ -112,8 +112,9 @@ namespace VVVV.Nodes
 			
 			FTextEditorControl.TextChanged += TextEditorControlTextChangedCB;
 			
+			// Start parsing after 500ms have passed after last key stroke.
 			FTimer = new System.Windows.Forms.Timer();
-			FTimer.Interval = 100;
+			FTimer.Interval = 500;
 			FTimer.Tick += TimerTickCB;
 		}
 		#endregion constructor/destructor
@@ -160,6 +161,9 @@ namespace VVVV.Nodes
 				if(disposing)
 				{
 					// Dispose managed resources.
+					if (FTextEditorControl != null)
+						FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown -= TextAreaKeyDownCB;
+					
 					if (Document != null)
 						Document.ContentChanged -= TextDocumentContentChangedCB;
 					
@@ -192,8 +196,12 @@ namespace VVVV.Nodes
 			FTextEditorControl.Document.TextContent = Document.TextContent;
 			Document.ContentChanged += TextDocumentContentChangedCB;
 		}
-		
-		protected void TimerTickCB(object sender, EventArgs args)
+
+		/// <summary>
+		/// Updates the underlying ITextDocument from changes made in the editor and parses the document.
+		/// This method is called once after 500ms have passed after last key stroke (to save CPU cycles).
+		/// </summary>
+		void TimerTickCB(object sender, EventArgs args)
 		{
 			FTimer.Stop();
 			if (Document != null)
@@ -207,18 +215,29 @@ namespace VVVV.Nodes
 			}
 		}
 		
+		/// <summary>
+		/// Restarts the timer everytime the content of the editor changes.
+		/// </summary>
 		void TextEditorControlTextChangedCB(object sender, EventArgs e)
 		{
-			// Restart the timer.
 			FTimer.Stop();
 			FTimer.Start();
 		}
 		
+		/// <summary>
+		/// Keeps the editor and the underlying ITextDocument in sync.
+		/// </summary>
 		void TextDocumentContentChangedCB(IDocument doc, string content)
 		{
 			int length = FTextEditorControl.Document.TextContent.Length;
 			FTextEditorControl.Document.Replace(0, length, content);
 			FTextEditorControl.Refresh();
+		}
+		
+		void TextAreaKeyDownCB(object sender, KeyEventArgs args)
+		{
+			if (args.Control && args.KeyCode == Keys.S)
+				Document.Save();
 		}
 	}
 }

@@ -52,6 +52,14 @@ namespace CSharpEditor
 		{
 			ToolTipProvider tp = new ToolTipProvider(mainForm, editor);
 			editor.ActiveTextAreaControl.TextArea.ToolTipRequest += tp.OnToolTipRequest;
+			editor.Disposed += tp.TextEditorControlDisposedCB;
+		}
+		
+		void TextEditorControlDisposedCB(object sender, EventArgs e)
+		{
+			var editor = sender as TextEditor.TextEditorControl;
+			editor.ActiveTextAreaControl.TextArea.ToolTipRequest -= OnToolTipRequest;
+			editor.Disposed -= TextEditorControlDisposedCB;
 		}
 		
 		void OnToolTipRequest(object sender, TextEditor.ToolTipRequestEventArgs e)

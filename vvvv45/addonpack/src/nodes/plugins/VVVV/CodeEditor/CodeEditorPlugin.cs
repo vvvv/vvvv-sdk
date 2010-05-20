@@ -189,6 +189,7 @@ namespace VVVV.Nodes
 	
 				FOpenedDocuments[doc] = tabPage;
 				doc.ContentChanged += DocumentContentChangedCB;
+				doc.Saved += DocumentSavedCB;
 			}
 			FTabControl.SelectTab(FOpenedDocuments[doc]);
 		}
@@ -201,6 +202,14 @@ namespace VVVV.Nodes
 			if (FProjects.ContainsKey(project))
 				return FProjects[project];
 			return null;
+		}
+		
+		protected string GetTabPageName(ITextDocument document)
+		{
+			if (document.IsDirty)
+				return FLabelProvider.GetText(document) + "*";
+			else
+				return FLabelProvider.GetText(document);
 		}
 		#endregion
 		
@@ -215,10 +224,13 @@ namespace VVVV.Nodes
 		
 		void DocumentContentChangedCB(ITextDocument document, string content)
 		{
-			if (document.IsDirty)
-				FOpenedDocuments[document].Text = FLabelProvider.GetText(document) + "*";
-			else
-				FOpenedDocuments[document].Text = FLabelProvider.GetText(document);
+			FOpenedDocuments[document].Text = GetTabPageName(document);
+		}
+		
+		void DocumentSavedCB(object sender, EventArgs args)
+		{
+			var document = sender as ITextDocument;
+			FOpenedDocuments[document].Text = GetTabPageName(document);
 		}
 		#endregion
 		
@@ -244,14 +256,18 @@ namespace VVVV.Nodes
 					
 					if (HdeHost != null)
 						HdeHost.RemoveListener(FNodeSelectionListener);
+//					FNodeSelectionListener.Dispose();
+					FNodeSelectionListener = null;
 					
 					if (FProjectTreeViewer != null)
 						FProjectTreeViewer.LeftDoubleClick -= LeftDoubleClickCB;
 					
 					foreach (var entry in FOpenedDocuments)
+					{
 						entry.Key.ContentChanged -= DocumentContentChangedCB;
+						entry.Key.Saved -= DocumentSavedCB;
+					}
 					
-					FOpenedDocuments.Clear();
 					FOpenedDocuments = null;
 					
 					if (components != null) {
