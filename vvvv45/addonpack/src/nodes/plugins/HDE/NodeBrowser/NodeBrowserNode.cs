@@ -30,6 +30,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.IO;
 
 using Microsoft.Practices.Unity;
 
@@ -64,6 +65,7 @@ namespace VVVV.Nodes.NodeBrowser
         private bool FCtrlPressed = false;
         private int FVisibleLines = 16;
         private int FTopVisibleLine = 0;
+        private string FPath;
         
         #endregion field declaration
         
@@ -362,49 +364,24 @@ namespace VVVV.Nodes.NodeBrowser
             var lp = new UnityLabelProvider(cc);
             categoryTreeViewer.SetLabelProvider(lp);
             alphabetTreeViewer.SetLabelProvider(lp);
-            /*
-            //create AdapterFactoryContextMenuProvider and hand it to the treeViewer
-            var cmp = new UnityContextMenuProvider(cc);
-            categoryTreeViewer.SetContextMenuProvider(cmp);
-            alphabetTreeViewer.SetContextMenuProvider(cmp);
             
-            //create AdapterFactoryDragDropProvider and hand it to the treeViewer
-            var ddp = new UnityDragDropProvider(cc);
-            categoryTreeViewer.SetDragDropProvider(ddp);
-            alphabetTreeViewer.SetDragDropProvider(ddp);
-             */
-            
-            
-            
-            
-            /*    //create AdapterFactory and provider
-            NodeListAdapterFactory af = new NodeListAdapterFactory();
-            var cp = new AdapterFactoryContentProvider(af);
-            var lp = new AdapterFactoryLabelProvider(af);
-            //var ddp = new AdapterFactoryDragDropProvider(af);
-            
-            //hand providers over to viewers
-            categoryTreeViewer.SetContentProvider(cp);
-            categoryTreeViewer.SetLabelProvider(lp);
-            //categoryTreeViewer.SetDragDropProvider(ddp);
-            
-            alphabetTreeViewer.SetContentProvider(cp);
-            alphabetTreeViewer.SetLabelProvider(lp);
-            //alphabetTreeViewer.SetDragDropProvider(ddp);
-             */
             //hand model root over to viewers
             //categoryTreeViewer.SetRoot(FCategoryModel);
             //alphabetTreeViewer.ShowRoot = true;
             alphabetTreeViewer.SetRoot(FAlphabetModel);
         }
 
+        #endregion initialization
+        
+        #region INodeBrowser
         public void SetNodeBrowserHost(INodeBrowserHost host)
         {
             FNodeBrowserHost = host;
         }
         
-        public void Initialize(string text, out int width)
+        public void Initialize(string path, string text, out int width)
         {
+            FPath = path;
             width = FAwesomeWidth;
             tabControlMain.SelectedIndex = 0;
             textBoxTags.Text = Text;
@@ -416,8 +393,26 @@ namespace VVVV.Nodes.NodeBrowser
         {
             textBoxTags.Focus();
         }
-        #endregion initialization
         
+        private void CreateNode()
+        {
+            string text = textBoxTags.Text.Trim();
+            try
+            {
+                INodeInfo selNode = FNodeDict[text];
+                FNodeBrowserHost.CreateNode(selNode);
+            }
+            catch
+            {
+                if ((text.Contains(".v4p")) || (text.Contains(".fx")) || (text.Contains(".dll")))
+                    FNodeBrowserHost.CreateNodeFromFile(FPath + text);
+                else
+                    FNodeBrowserHost.CreateComment(textBoxTags.Text);
+            }
+        }
+        #endregion INodeBrowser
+        
+        #region INodeInfoListener
         public void NodeInfoAddedCB(INodeInfo nodeInfo)
         {
             string nodeVersion = nodeInfo.Version;
@@ -456,179 +451,9 @@ namespace VVVV.Nodes.NodeBrowser
             FCategoryModel.Remove(nodeInfo);
             FAlphabetModel.Remove(nodeInfo);
         }
+        #endregion INodeInfoListener
 
-        void RedrawAwesomeBar()
-        {
-            richTextBox.Clear();
-
-            List<string> sub;
-            string text = textBoxTags.Text.ToLower().Trim();
-            string[] tags = new string[0];
-            
-            if (string.IsNullOrEmpty(text))
-                sub = FAwesomeList;
-            else
-            {
-                tags = text.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
-                
-                if (FAndTags)
-                    sub = FAwesomeList.FindAll(delegate(string node)
-                                               {
-                                                   node = node.ToLower();
-                                                   node = node.Replace('é', 'e');
-                                                   bool containsAll = true;
-                                                   foreach (string tag in tags)
-                                                   {
-                                                       if (!node.Contains(tag))
-                                                       {
-                                                           containsAll = false;
-                                                           break;
-                                                       }
-                                                   }
-                                                   
-                                                   if (containsAll)
-                                                       return true;
-                                                   else
-                                                       return false;
-                                               });
-                else
-                    sub = FAwesomeList.FindAll(delegate(string node)
-                                               {
-                                                   node = node.ToLower();
-                                                   node = node.Replace('é', 'e');
-                                                   foreach (string tag in tags)
-                                                   {
-                                                       if (node.Contains(tag))
-                                                           return true;
-                                                   }
-                                                   return false;
-                                               });
-                
-            }
-            sub.Sort(delegate(string s1, string s2)
-                     {
-                         //compare only the nodenames
-                         string name1 = s1.Substring(0, s1.IndexOf('('));
-                         string name2 = s2.Substring(0, s2.IndexOf('('));
-                         int comp = name1.CompareTo(name2);
-
-                         //if names are equal
-                         if (comp == 0)
-                         {
-                             //compare categories
-                             string cat1 = s1.Substring(s1.IndexOf('(')).Trim(new char[2]{'(', ')'});
-                             string cat2 = s2.Substring(s2.IndexOf('(')).Trim(new char[2]{'(', ')'});
-                             int v1, v2;
-                             
-                             //special sorting for categories
-                             if (cat1.Contains("Value"))
-                                 v1 = 9;
-                             else if (cat1.Contains("Spreads"))
-                                 v1 = 8;
-                             else if (cat1.ToUpper().Contains("2D"))
-                                 v1 = 7;
-                             else if (cat1.ToUpper().Contains("3D"))
-                                 v1 = 6;
-                             else if (cat1.ToUpper().Contains("4D"))
-                                 v1 = 5;
-                             else if (cat1.Contains("Animation"))
-                                 v1 = 4;
-                             else if (cat1.Contains("String"))
-                                 v1 = 3;
-                             else if (cat1.Contains("Color"))
-                                 v1 = 2;
-                             else
-                                 v1 = 0;
-                             
-                             if (cat2.Contains("Value"))
-                                 v2 = 9;
-                             else if (cat2.Contains("Spreads"))
-                                 v2 = 8;
-                             else if (cat2.ToUpper().Contains("2D"))
-                                 v2 = 7;
-                             else if (cat2.ToUpper().Contains("3D"))
-                                 v2 = 6;
-                             else if (cat2.ToUpper().Contains("4D"))
-                                 v2 = 5;
-                             else if (cat2.Contains("Animation"))
-                                 v2 = 4;
-                             else if (cat2.Contains("String"))
-                                 v2 = 3;
-                             else if (cat2.Contains("Color"))
-                                 v2 = 2;
-                             else
-                                 v2 = 0;
-                             
-                             if (v1 > v2)
-                                 return -1;
-                             else if (v1 < v2)
-                                 return 1;
-                             else //categories are the same, compare versions
-                             {
-                                 if ((cat1.Length > cat2.Length) && (cat1.Contains(cat2)))
-                                     return 1;
-                                 else if ((cat2.Length > cat1.Length) && (cat2.Contains(cat1)))
-                                     return -1;
-                                 else
-                                     return cat1.CompareTo(cat2);
-                                 
-                                 /*    return string.Compare(cat1, cat2, CultureInfo, CompareOptions.  StringComparison.CurrentCulture);// .Ordinal);
-                                 //unprioritized categories
-                                 if (v1 == 0)
-                                 {
-                                     string ver1 = "", ver2 = "";
-                                     if (cat1.IndexOf(' ') > 0)
-                                         ver1 = cat1.Substring(cat1.IndexOf(' '));
-                                     if (cat2.IndexOf(' ') > 0)
-                                         ver2 = cat2.Substring(cat2.IndexOf(' '));
-                                     
-                                     if ((string.IsNullOrEmpty(ver1)) && (string.IsNullOrEmpty(ver2)))
-                                         return 0;
-                                     else if (string.IsNullOrEmpty(ver1))
-                                         return 1;
-                                     else if (string.IsNullOrEmpty(ver2))
-                                         return -1;
-                                     else
-                                         return ver1.CompareTo(ver2);
-                                 }
-                                 else
-                                 {//compare the category/versions length
-                                     if (cat1.Length > cat2.Length)
-                                         return 1;
-                                     else if (cat1.Length < cat2.Length)
-                                         return -1;
-                                     else
-                                         return cat1.CompareTo(cat2);
-                                 }*/
-                             }
-                         }
-                         else
-                             return comp;
-                     });
-            
-            string n, t;
-            string rtf = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fnil\fcharset0 Verdana;}}\viewkind4\uc1\pard\f0\fs17 ";
-            
-            foreach (string s in sub)
-            {
-                n = s;
-                foreach (string tag in tags)
-                {
-                    t = tag.Replace("+", "\\+");
-                    t = t.Replace("*", "\\*");
-                    n = Regex.Replace(n, t, "\\b $0\\b0 ", RegexOptions.IgnoreCase);
-                }
-
-                rtf += n.PadRight(200) + "\\par ";
-            }
-            rtf += "}";
-
-            richTextBox.Rtf = rtf;
-            FScrolledLine = 0;
-            
-            labelNodeCount.Text = "Selected nodes: " + sub.Count.ToString();
-        }
-        
+        #region TextBoxTags
         void TextBoxTagsTextChanged(object sender, EventArgs e)
         {
             if (FSelectedLine == -1)
@@ -638,19 +463,6 @@ namespace VVVV.Nodes.NodeBrowser
             }
         }
 
-        protected override bool ProcessDialogKey(Keys keyData)
-        {
-            base.ProcessDialogKey(keyData);
-            if (keyData == Keys.Tab)
-            {
-                FAndTags = !FAndTags;
-                RedrawAwesomeBar();
-                return true;
-            }
-            else
-                return false;
-        }
-        
         void TextBoxTagsKeyDown(object sender, KeyEventArgs e)
         {
             if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return))
@@ -734,6 +546,183 @@ namespace VVVV.Nodes.NodeBrowser
             richTextBox.ScrollToCaret();
         }
         
+        private void ResetToManualEntry()
+        {
+            textBoxTags.Text = FManualEntry;
+            textBoxTags.SelectionStart = FManualEntry.Length;
+        }
+        #endregion TextBoxTags
+        
+        #region RichTextBox
+        void RichTextBoxMouseDown(object sender, MouseEventArgs e)
+        {
+            FSelectedLine = richTextBox.GetLineFromCharIndex(richTextBox.GetCharIndexFromPosition(e.Location));
+            textBoxTags.Text = richTextBox.Lines[FSelectedLine].Trim();
+            CreateNode();
+        }
+        
+        void RichTextBoxMouseMove(object sender, MouseEventArgs e)
+        {
+            FSelectedLine = richTextBox.GetLineFromCharIndex(richTextBox.GetCharIndexFromPosition(e.Location));
+            RedrawAwesomeSelection(false);
+        }
+        
+        private void RedrawAwesomeBar()
+        {
+            richTextBox.Clear();
+
+            List<string> sub;
+            string text = textBoxTags.Text.ToLower().Trim();
+            string[] tags = text.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
+            
+            bool sort = true;
+            
+            if (string.IsNullOrEmpty(text))
+                sub = FAwesomeList;
+            else if (text.IndexOf('.') == 0)
+            {
+                sub = new List<string>();
+                
+                foreach (string p in System.IO.Directory.GetFiles(FPath))
+                    sub.Add(Path.GetFileName(p));//.Replace("\\", "\\\\"));
+                
+                sort = false;
+            }
+            else
+            {
+                if (FAndTags)
+                    sub = FAwesomeList.FindAll(delegate(string node)
+                                               {
+                                                   node = node.ToLower();
+                                                   node = node.Replace('é', 'e');
+                                                   bool containsAll = true;
+                                                   foreach (string tag in tags)
+                                                   {
+                                                       if (!node.Contains(tag))
+                                                       {
+                                                           containsAll = false;
+                                                           break;
+                                                       }
+                                                   }
+                                                   
+                                                   if (containsAll)
+                                                       return true;
+                                                   else
+                                                       return false;
+                                               });
+                else
+                    sub = FAwesomeList.FindAll(delegate(string node)
+                                               {
+                                                   node = node.ToLower();
+                                                   node = node.Replace('é', 'e');
+                                                   foreach (string tag in tags)
+                                                   {
+                                                       if (node.Contains(tag))
+                                                           return true;
+                                                   }
+                                                   return false;
+                                               });
+                
+            }
+            if (sort)
+                sub.Sort(delegate(string s1, string s2)
+                         {
+                             //compare only the nodenames
+                             string name1 = s1.Substring(0, s1.IndexOf('('));
+                             string name2 = s2.Substring(0, s2.IndexOf('('));
+                             int comp = name1.CompareTo(name2);
+
+                             //if names are equal
+                             if (comp == 0)
+                             {
+                                 //compare categories
+                                 string cat1 = s1.Substring(s1.IndexOf('(')).Trim(new char[2]{'(', ')'});
+                                 string cat2 = s2.Substring(s2.IndexOf('(')).Trim(new char[2]{'(', ')'});
+                                 int v1, v2;
+                                 
+                                 //special sorting for categories
+                                 if (cat1.Contains("Value"))
+                                     v1 = 9;
+                                 else if (cat1.Contains("Spreads"))
+                                     v1 = 8;
+                                 else if (cat1.ToUpper().Contains("2D"))
+                                     v1 = 7;
+                                 else if (cat1.ToUpper().Contains("3D"))
+                                     v1 = 6;
+                                 else if (cat1.ToUpper().Contains("4D"))
+                                     v1 = 5;
+                                 else if (cat1.Contains("Animation"))
+                                     v1 = 4;
+                                 else if (cat1.Contains("String"))
+                                     v1 = 3;
+                                 else if (cat1.Contains("Color"))
+                                     v1 = 2;
+                                 else
+                                     v1 = 0;
+                                 
+                                 if (cat2.Contains("Value"))
+                                     v2 = 9;
+                                 else if (cat2.Contains("Spreads"))
+                                     v2 = 8;
+                                 else if (cat2.ToUpper().Contains("2D"))
+                                     v2 = 7;
+                                 else if (cat2.ToUpper().Contains("3D"))
+                                     v2 = 6;
+                                 else if (cat2.ToUpper().Contains("4D"))
+                                     v2 = 5;
+                                 else if (cat2.Contains("Animation"))
+                                     v2 = 4;
+                                 else if (cat2.Contains("String"))
+                                     v2 = 3;
+                                 else if (cat2.Contains("Color"))
+                                     v2 = 2;
+                                 else
+                                     v2 = 0;
+                                 
+                                 if (v1 > v2)
+                                     return -1;
+                                 else if (v1 < v2)
+                                     return 1;
+                                 else //categories are the same, compare versions
+                                 {
+                                     if ((cat1.Length > cat2.Length) && (cat1.Contains(cat2)))
+                                         return 1;
+                                     else if ((cat2.Length > cat1.Length) && (cat2.Contains(cat1)))
+                                         return -1;
+                                     else
+                                         return cat1.CompareTo(cat2);
+                                 }
+                             }
+                             else
+                                 return comp;
+                         });
+            
+            string n, t;
+            string rtf = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fnil\fcharset0 Verdana;}}\viewkind4\uc1\pard\f0\fs17 ";
+            
+            foreach (string s in sub)
+            {
+                n = s;
+                foreach (string tag in tags)
+                {
+                    //escape + and * characters as they have special meaning in regexpr
+                    t = tag.Replace("+", "\\+");
+                    t = t.Replace("*", "\\*");
+                    t = t.Replace(".", "");
+                    //mark tags as bold
+                    n = Regex.Replace(n, t, "\\b $0\\b0 ", RegexOptions.IgnoreCase);
+                }
+
+                rtf += n.PadRight(200) + "\\par ";
+            }
+            rtf += "}";
+
+            richTextBox.Rtf = rtf;
+            FScrolledLine = 0;
+            
+            labelNodeCount.Text = "Selected nodes: " + sub.Count.ToString();
+        }
+        
         private void RedrawAwesomeSelection(bool updateTags)
         {
             //clear old selection
@@ -769,39 +758,25 @@ namespace VVVV.Nodes.NodeBrowser
                     textBoxTags.Text = sel.Trim();
             }
         }
+        #endregion RichTextBox
         
-        void RichTextBoxMouseDown(object sender, MouseEventArgs e)
+        protected override bool ProcessDialogKey(Keys keyData)
         {
-            FSelectedLine = richTextBox.GetLineFromCharIndex(richTextBox.GetCharIndexFromPosition(e.Location));
-            textBoxTags.Text = richTextBox.Lines[FSelectedLine].Trim();
-            CreateNode();
-        }
-        
-        private void CreateNode()
-        {
-            INodeInfo selNode = FNodeDict[textBoxTags.Text.Trim()];
-            if (selNode != null)
-                FNodeBrowserHost.CreateNode(selNode);
+            base.ProcessDialogKey(keyData);
+            if (keyData == Keys.Tab)
+            {
+                FAndTags = !FAndTags;
+                RedrawAwesomeBar();
+                return true;
+            }
             else
-                FNodeBrowserHost.CreateComment(textBoxTags.Text);
-        }
-        
-        private void ResetToManualEntry()
-        {
-            textBoxTags.Text = FManualEntry;
-            textBoxTags.SelectionStart = FManualEntry.Length;
+                return false;
         }
         
         void TabControlMainSelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabControlMain.SelectedIndex == 0)
                 textBoxTags.Focus();
-        }
-
-        void RichTextBoxMouseMove(object sender, MouseEventArgs e)
-        {
-            FSelectedLine = richTextBox.GetLineFromCharIndex(richTextBox.GetCharIndexFromPosition(e.Location));
-            RedrawAwesomeSelection(false);
         }
     }
 }

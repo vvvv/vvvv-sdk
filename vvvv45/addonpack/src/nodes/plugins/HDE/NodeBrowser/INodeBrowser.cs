@@ -15,7 +15,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="Host">Interface to the NodeBrowserHost.</param>
 		void SetNodeBrowserHost(INodeBrowserHost host);
-		void Initialize(string text, out int width);
+		void Initialize(string path, string text, out int width);
 		void FocusAwesombar();
 	}
 	
@@ -27,6 +27,7 @@ namespace VVVV.PluginInterfaces.V1
 	public interface INodeBrowserHost
 	{
 		void CreateNode(INodeInfo nodeInfo);
+		void CreateNodeFromFile(string filePath);
 		void CreateComment(string comment);
 		void CreateDynamicNode(string nodeName);
 	}	
