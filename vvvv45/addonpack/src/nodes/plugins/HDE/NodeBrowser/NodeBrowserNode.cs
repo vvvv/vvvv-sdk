@@ -59,13 +59,14 @@ namespace VVVV.Nodes.NodeBrowser
         Dictionary<string, INodeInfo> FNodeDict = new Dictionary<string, INodeInfo>();
         private bool FAndTags = true;
         private int FSelectedLine = -1;
+        private int FHoverLine = -1;
         private string FManualEntry = "";
         private int FScrolledLine = 0;
         private int FAwesomeWidth = 200;
         private bool FCtrlPressed = false;
         private int FVisibleLines = 16;
-        private int FTopVisibleLine = 0;
         private string FPath;
+        
         
         #endregion field declaration
         
@@ -250,6 +251,7 @@ namespace VVVV.Nodes.NodeBrowser
             // 
             // textBoxTags
             // 
+            this.textBoxTags.AcceptsTab = true;
             this.textBoxTags.BackColor = System.Drawing.Color.LightGray;
             this.textBoxTags.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxTags.Dock = System.Windows.Forms.DockStyle.Top;
@@ -258,6 +260,7 @@ namespace VVVV.Nodes.NodeBrowser
             this.textBoxTags.Name = "textBoxTags";
             this.textBoxTags.Size = new System.Drawing.Size(317, 21);
             this.textBoxTags.TabIndex = 0;
+            this.textBoxTags.TabStop = false;
             this.textBoxTags.TextChanged += new System.EventHandler(this.TextBoxTagsTextChanged);
             this.textBoxTags.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxTagsKeyDown);
             this.textBoxTags.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TextBoxTagsKeyUp);
@@ -384,8 +387,12 @@ namespace VVVV.Nodes.NodeBrowser
             FPath = path;
             width = FAwesomeWidth;
             tabControlMain.SelectedIndex = 0;
-            textBoxTags.Text = Text;
-            FManualEntry = Text;
+            if (!string.IsNullOrEmpty(text))
+                FManualEntry = text.Trim();
+            else
+                FManualEntry = "";
+            textBoxTags.Text = FManualEntry;
+            textBoxTags.SelectAll();
             RedrawAwesomeBar();
         }
         
@@ -419,14 +426,15 @@ namespace VVVV.Nodes.NodeBrowser
             string nodeAuthor = nodeInfo.Author;
             string nodeTags = nodeInfo.Tags;
 
+            //don't include legacy nodes in the list
             if ((string.IsNullOrEmpty(nodeVersion)) || (!nodeVersion.ToLower().Contains("legacy")))
             {
-                string tags = "";//nodeTags;
+                string tags = nodeTags;
                 if (nodeAuthor != "vvvv group")
                     tags += " " + nodeAuthor;
                 string key;
-                if (!string.IsNullOrEmpty(tags.Trim()))
-                    key = nodeInfo.Username + " [" + tags.Trim() + "]";
+                if (!string.IsNullOrEmpty(nodeInfo.Tags))
+                    key = nodeInfo.Username + " [" + tags + "]";
                 else
                     key = nodeInfo.Username;
                 
@@ -456,6 +464,7 @@ namespace VVVV.Nodes.NodeBrowser
         #region TextBoxTags
         void TextBoxTagsTextChanged(object sender, EventArgs e)
         {
+            //saving the last manual entry for recovery when stepping through list and reaching index -1 again
             if (FSelectedLine == -1)
             {
                 FManualEntry = textBoxTags.Text;
@@ -471,28 +480,30 @@ namespace VVVV.Nodes.NodeBrowser
                 FNodeBrowserHost.CreateNode(null);
             else if (e.KeyCode == Keys.Down)
             {
-                FSelectedLine = FSelectedLine + 1;
-                if (FSelectedLine == richTextBox.Lines.Length)
+                FHoverLine += 1;
+                if (FHoverLine == richTextBox.Lines.Length)
                 {
                     ResetToManualEntry();
-                    FSelectedLine = -1;
+                    FHoverLine = -1;
                 }
                 textBoxTags.SelectionStart = textBoxTags.Text.Length;
-                
+
+                FSelectedLine = FHoverLine;
                 RedrawAwesomeSelection(true);
             }
             else if (e.KeyCode == Keys.Up)
             {
-                if (FSelectedLine == -1)
-                    FSelectedLine = richTextBox.Lines.Length - 1;
+                if (FHoverLine == -1)
+                    FHoverLine = richTextBox.Lines.Length - 1;
                 else
                 {
-                    FSelectedLine -= 1;
-                    if (FSelectedLine == -1)
+                    FHoverLine -= 1;
+                    if (FHoverLine == -1)
                         ResetToManualEntry();
                 }
                 textBoxTags.SelectionStart = textBoxTags.Text.Length;
-                
+
+                FSelectedLine = FHoverLine;
                 RedrawAwesomeSelection(true);
             }
             else if ((e.KeyCode == Keys.Left) || (e.KeyCode == Keys.Right))
@@ -500,7 +511,9 @@ namespace VVVV.Nodes.NodeBrowser
                 if (FSelectedLine != -1)
                 {
                     FSelectedLine = -1;
+                    FHoverLine = -1;
                     textBoxTags.SelectionStart = textBoxTags.Text.Length;
+                    RedrawAwesomeSelection(true);
                 }
             }
             else if ((e.KeyCode == Keys.Control) || (e.KeyCode == Keys.ControlKey))
@@ -520,6 +533,7 @@ namespace VVVV.Nodes.NodeBrowser
             else
             {
                 FSelectedLine = -1;
+                FHoverLine = -1;
                 RedrawAwesomeSelection(true);
             }
         }
@@ -544,6 +558,9 @@ namespace VVVV.Nodes.NodeBrowser
             
             //scroll to the caret
             richTextBox.ScrollToCaret();
+            
+            //mark hoverline
+            FHoverLine = richTextBox.GetLineFromCharIndex(richTextBox.GetCharIndexFromPosition(e.Location));
         }
         
         private void ResetToManualEntry()
@@ -556,14 +573,15 @@ namespace VVVV.Nodes.NodeBrowser
         #region RichTextBox
         void RichTextBoxMouseDown(object sender, MouseEventArgs e)
         {
-            FSelectedLine = richTextBox.GetLineFromCharIndex(richTextBox.GetCharIndexFromPosition(e.Location));
+            //FSelectedLine = richTextBox.GetLineFromCharIndex(richTextBox.GetCharIndexFromPosition(e.Location));
+            FSelectedLine = FHoverLine;
             textBoxTags.Text = richTextBox.Lines[FSelectedLine].Trim();
             CreateNode();
         }
         
         void RichTextBoxMouseMove(object sender, MouseEventArgs e)
         {
-            FSelectedLine = richTextBox.GetLineFromCharIndex(richTextBox.GetCharIndexFromPosition(e.Location));
+            FHoverLine = richTextBox.GetLineFromCharIndex(richTextBox.GetCharIndexFromPosition(e.Location));
             RedrawAwesomeSelection(false);
         }
         
@@ -584,8 +602,28 @@ namespace VVVV.Nodes.NodeBrowser
                 sub = new List<string>();
                 
                 foreach (string p in System.IO.Directory.GetFiles(FPath))
-                    sub.Add(Path.GetFileName(p));//.Replace("\\", "\\\\"));
+                    sub.Add(Path.GetFileName(p));
                 
+                sub = sub.FindAll(delegate(string node)
+                                               {
+                                                   node = node.ToLower();
+                                                   bool containsAll = true;
+                                                   string t;
+                                                   foreach (string tag in tags)
+                                                   {
+                                                       t = tag.Replace(".", "");
+                                                       if (!node.Contains(t))
+                                                       {
+                                                           containsAll = false;
+                                                           break;
+                                                       }
+                                                   }
+                                                   
+                                                   if (containsAll)
+                                                       return true;
+                                                   else
+                                                       return false;
+                                               });
                 sort = false;
             }
             else
@@ -627,11 +665,32 @@ namespace VVVV.Nodes.NodeBrowser
             if (sort)
                 sub.Sort(delegate(string s1, string s2)
                          {
+                             //create a weighting index depending on the indices the tags appear in the nodenames
+                             //earlier appearance counts more
+                             int w1 = int.MaxValue, w2 = int.MaxValue;
+                             foreach (string tag in tags)
+                             {
+                                 if (s1.ToLower().IndexOf(tag) > -1)
+                                    w1 = Math.Min(w1, s1.ToLower().IndexOf(tag));
+                                 if (s2.ToLower().IndexOf(tag) > -1)
+                                    w2 = Math.Min(w2, s2.ToLower().IndexOf(tag));
+                             }
+                             
+                             if (w1 != w2)
+                             {
+                                 if (w1 < w2)
+                                     return -1;
+                                 else 
+                                     return 1;
+                             }
+                             
+                             //if weights are equal, compare the nodenames
+                             
                              //compare only the nodenames
                              string name1 = s1.Substring(0, s1.IndexOf('('));
                              string name2 = s2.Substring(0, s2.IndexOf('('));
                              int comp = name1.CompareTo(name2);
-
+                             
                              //if names are equal
                              if (comp == 0)
                              {
@@ -697,22 +756,44 @@ namespace VVVV.Nodes.NodeBrowser
                                  return comp;
                          });
             
-            string n, t;
+            string n;
+            char[] bolded;
             string rtf = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fnil\fcharset0 Verdana;}}\viewkind4\uc1\pard\f0\fs17 ";
             
+            System.Text.StringBuilder sb;
             foreach (string s in sub)
             {
-                n = s;
+                //all comparison is case-in-sensitive
+                n = s.ToLower();
+                bolded = n.ToCharArray();
                 foreach (string tag in tags)
                 {
-                    //escape + and * characters as they have special meaning in regexpr
-                    t = tag.Replace("+", "\\+");
-                    t = t.Replace("*", "\\*");
-                    t = t.Replace(".", "");
-                    //mark tags as bold
-                    n = Regex.Replace(n, t, "\\b $0\\b0 ", RegexOptions.IgnoreCase);
+                    //
+                    string t = tag.Replace(".", "");
+                    //t = tag;
+                    if (!string.IsNullOrEmpty(t))
+                    {
+                        //in the bolded char[] mark all matching characters as ° for later being rendered as bold
+                        int start = 0;
+                        while (n.IndexOf(t, start) >= 0)
+                        {
+                            int pos = n.IndexOf(t, start);
+                            for (int i=pos; i<pos + t.Length; i++)
+                                bolded[i] = '°';
+                            start = pos+1;
+                        }
+                    }
                 }
-
+                
+                //now recreate the string including bold markups
+                sb = new System.Text.StringBuilder();
+                for (int i=0; i<s.Length; i++)
+                    if (bolded[i] == '°')
+                        sb.Append("\\b " + s[i] + "\\b0 ");
+                    else
+                        sb.Append(s[i]);
+                
+                n = sb.ToString();
                 rtf += n.PadRight(200) + "\\par ";
             }
             rtf += "}";
@@ -728,29 +809,29 @@ namespace VVVV.Nodes.NodeBrowser
             //clear old selection
             richTextBox.SelectionBackColor = Color.LightGray;
 
-            if (FSelectedLine > -1)
+            if (FHoverLine > -1)
             {
-                //if FSelectedLine not visible
+                //if FHoverLine not visible
                 //then scroll to the caret
                 string sel;
                 int topVisibleLine = richTextBox.GetLineFromCharIndex(richTextBox.GetCharIndexFromPosition(new Point(1, 1)));
                 int bottomVisibleLine = richTextBox.GetLineFromCharIndex(richTextBox.GetCharIndexFromPosition(new Point(1, richTextBox.Height-1)));
                 
-                if (FSelectedLine > bottomVisibleLine)
+                if (FHoverLine > bottomVisibleLine)
                 {
-                    sel = richTextBox.Lines[Math.Max(0, FSelectedLine - FVisibleLines + 1)];
+                    sel = richTextBox.Lines[Math.Max(0, FHoverLine - FVisibleLines + 1)];
                     richTextBox.SelectionStart = richTextBox.Text.IndexOf(sel);
                     richTextBox.ScrollToCaret();
                 }
-                else if (FSelectedLine < topVisibleLine)
+                else if (FHoverLine < topVisibleLine)
                 {
-                    sel = richTextBox.Lines[FSelectedLine];
+                    sel = richTextBox.Lines[FHoverLine];
                     richTextBox.SelectionStart = richTextBox.Text.IndexOf(sel);
                     richTextBox.ScrollToCaret();
                 }
                 
                 //now select the line
-                sel = richTextBox.Lines[FSelectedLine];
+                sel = richTextBox.Lines[FHoverLine];
                 richTextBox.SelectionStart = richTextBox.Text.IndexOf(sel);
                 richTextBox.SelectionLength = sel.Length;
                 richTextBox.SelectionBackColor = Color.WhiteSmoke;
