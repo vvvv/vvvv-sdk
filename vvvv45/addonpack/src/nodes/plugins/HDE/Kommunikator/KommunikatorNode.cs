@@ -34,14 +34,12 @@ using System.Net;
 using System.IO;
 
 using VVVV.PluginInterfaces.V1;
-//using VVVV.Utils.Crypto;
+using VVVV.Utils.Crypto;
 
 //the vvvv node namespace
 namespace VVVV.Nodes.Kommunikator
 {
     //class definition, inheriting from UserControl for the GUI stuff
-    
-    
     public class KommunikatorPluginNode: UserControl, IHDEPlugin, IKommunikator
     {
         #region field declaration
@@ -53,19 +51,20 @@ namespace VVVV.Nodes.Kommunikator
         // Track whether Dispose has been called.
         private bool FDisposed = false;
         
-        //private StringHasher FStringHasher = new StringHasher();
-        private string FFilename;
-        private System.Drawing.Graphics FOverlay; // = new Graphics();
-        private System.Drawing.Image FOriginal;
-        private Point FMouseDownPoint;
+        private StringHasher FStringHasher = new StringHasher();
+        private Graphics FOverlay;
+        private Image FOriginal;
+        private Point FMouseDownPoint, FMouseCurrentPoint;
         private bool FDrawRect;
         private Rectangle FCropRect;
-        private Rectangle FZoomedImage;  
+        private Rectangle FZoomedImage;
         private double FOriginalAspect;
         private double FPictureBoxAspect;
+        private Pen FRectPen;
         
         private const int CHeaderWidth = 900;
-        private const int CHeaderHeight = 200;        
+        private const int CHeaderHeight = 200;
+        private const Uri CPictureUploadUri = new Uri("http://vvvv.org/external-api/picture-upload")
         
         #endregion field declaration
         
@@ -74,6 +73,9 @@ namespace VVVV.Nodes.Kommunikator
         {
             // The InitializeComponent() call is required for Windows Forms designer support.
             InitializeComponent();
+            
+            FRectPen = new Pen(Color.Black);
+            FRectPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
         }
         
         // Dispose(bool disposing) executes in two distinct scenarios.
@@ -173,8 +175,8 @@ namespace VVVV.Nodes.Kommunikator
         private void InitializeComponent()
         {
         	this.panelScreenshot = new System.Windows.Forms.Panel();
-        	this.labelScreenshotInfo = new System.Windows.Forms.Label();
         	this.pictureBoxScreenshot = new System.Windows.Forms.PictureBox();
+        	this.labelScreenshotInfo = new System.Windows.Forms.Label();
         	this.panel2 = new System.Windows.Forms.Panel();
         	this.textBoxScreenshotDescription = new System.Windows.Forms.TextBox();
         	this.textBoxScreenshotTitle = new System.Windows.Forms.TextBox();
@@ -205,15 +207,6 @@ namespace VVVV.Nodes.Kommunikator
         	this.panelScreenshot.Size = new System.Drawing.Size(489, 402);
         	this.panelScreenshot.TabIndex = 2;
         	// 
-        	// labelScreenshotInfo
-        	// 
-        	this.labelScreenshotInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
-        	this.labelScreenshotInfo.Location = new System.Drawing.Point(0, 279);
-        	this.labelScreenshotInfo.Name = "labelScreenshotInfo";
-        	this.labelScreenshotInfo.Size = new System.Drawing.Size(489, 18);
-        	this.labelScreenshotInfo.TabIndex = 10;
-        	this.labelScreenshotInfo.Text = "ScreenshotInfo";
-        	// 
         	// pictureBoxScreenshot
         	// 
         	this.pictureBoxScreenshot.BackColor = System.Drawing.Color.Black;
@@ -231,6 +224,15 @@ namespace VVVV.Nodes.Kommunikator
         	this.pictureBoxScreenshot.Resize += new System.EventHandler(this.PictureBoxScreenshotResize);
         	this.pictureBoxScreenshot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBoxScreenshotMouseDown);
         	this.pictureBoxScreenshot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBoxScreenshotMouseUp);
+        	// 
+        	// labelScreenshotInfo
+        	// 
+        	this.labelScreenshotInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
+        	this.labelScreenshotInfo.Location = new System.Drawing.Point(0, 279);
+        	this.labelScreenshotInfo.Name = "labelScreenshotInfo";
+        	this.labelScreenshotInfo.Size = new System.Drawing.Size(489, 18);
+        	this.labelScreenshotInfo.TabIndex = 10;
+        	this.labelScreenshotInfo.Text = "ScreenshotInfo";
         	// 
         	// panel2
         	// 
@@ -294,6 +296,7 @@ namespace VVVV.Nodes.Kommunikator
         	this.buttonUpload.TabIndex = 14;
         	this.buttonUpload.Text = "Upload";
         	this.buttonUpload.UseVisualStyleBackColor = true;
+        	this.buttonUpload.Click += new System.EventHandler(this.ButtonUploadClick);
         	// 
         	// buttonClose
         	// 
@@ -319,6 +322,7 @@ namespace VVVV.Nodes.Kommunikator
         	this.checkBoxUseAsHeader.TabIndex = 16;
         	this.checkBoxUseAsHeader.Text = "use image as header";
         	this.checkBoxUseAsHeader.UseVisualStyleBackColor = true;
+        	this.checkBoxUseAsHeader.CheckedChanged += new System.EventHandler(this.CheckBoxUseAsHeaderCheckedChanged);
         	// 
         	// textBoxPassword
         	// 
@@ -402,31 +406,74 @@ namespace VVVV.Nodes.Kommunikator
             FKommunikatorHost = host;
         }
         
-        public void Initialize(string filename, string description)
+        public void Initialize(string title, string description)
         {
-            FFilename = System.IO.Path.GetFullPath(filename);
-            string title = System.IO.Path.GetFileNameWithoutExtension(FFilename);
-            title = title.Substring(title.LastIndexOf("_"));
             textBoxScreenshotTitle.Text = title;
             textBoxScreenshotDescription.Text = description;
             
-            FOriginal = Image.FromFile(FFilename);
+            FOriginal = Clipboard.GetImage();
             pictureBoxScreenshot.BackgroundImage = FOriginal;
+            
+            //create overlay image that holds the crop selection 
             Image img = new Bitmap(FOriginal.Width, FOriginal.Height, PixelFormat.Format32bppArgb);
             FOverlay = Graphics.FromImage(img);
             pictureBoxScreenshot.Image = img;
             
-            labelScreenshotInfo.Text = FOriginal.Width.ToString() + " x " + FOriginal.Height.ToString();
-            
-            if ((img.Width >= CHeaderWidth) && (img.Height >= CHeaderHeight))
+            if ((FOriginal.Width >= CHeaderWidth) && (FOriginal.Height >= CHeaderHeight))
                 checkBoxUseAsHeader.Enabled = true;
             else
                 checkBoxUseAsHeader.Enabled = false;
             
             FOriginalAspect = FOriginal.Width / (double) FOriginal.Height;
+            FCropRect = new Rectangle(0, 0, FOriginal.Width, FOriginal.Height);
+            
             UpdateZoomedImageRect();
+            UpdateScreenshotInfo();
         }
         #endregion IKommunikator
+        
+        #region PictureBox
+        void PictureBoxScreenshotMouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                FDrawRect = true;
+                FMouseDownPoint = e.Location;
+            }
+            else
+            {
+                FCropRect = new Rectangle(0, 0, FOriginal.Width, FOriginal.Height);
+                UpdateScreenshotInfo();
+                UpdateOverlay();
+            }
+        }
+        
+        void PictureBoxScreenshotMouseMove(object sender, MouseEventArgs e)
+        {
+            if (FDrawRect)
+            {
+                FMouseCurrentPoint = e.Location;
+                UpdateOverlay();
+            }
+        }
+        
+        void PictureBoxScreenshotMouseUp(object sender, MouseEventArgs e)
+        {
+            FDrawRect = false;
+        }
+        
+        void PictureBoxScreenshotResize(object sender, EventArgs e)
+        {
+            UpdateZoomedImageRect();
+        }
+         
+        #endregion PictureBox
+        
+        private void UpdateScreenshotInfo()
+        {
+            labelScreenshotInfo.Text = "Original: " + FOriginal.Width.ToString() + " x " + FOriginal.Height.ToString() + " Cropped: " + FCropRect.Width.ToString() + " x " + FCropRect.Height.ToString();
+            labelScreenshotInfo.Invalidate();
+        }
         
         private void UpdateZoomedImageRect()
         {
@@ -436,12 +483,12 @@ namespace VVVV.Nodes.Kommunikator
             //aspect > 1 is landscape
             //aspect <= 1 is portrait
             
-            if (FPictureBoxAspect > FOriginalAspect) 
+            if (FPictureBoxAspect > FOriginalAspect)
             {
                 height = pictureBoxScreenshot.Height;
-                width = (int)Math.Round(height * FOriginalAspect);                    
+                width = (int)Math.Round(height * FOriginalAspect);
             }
-            else 
+            else
             {
                 width = pictureBoxScreenshot.Width;
                 height = (int)Math.Round(width / FOriginalAspect);
@@ -453,80 +500,94 @@ namespace VVVV.Nodes.Kommunikator
             FZoomedImage = new Rectangle(left, top, width, height);
         }
         
+        private void UpdateOverlay()
+        {
+            FOverlay.Clear(Color.Transparent);
+            double xScale = FZoomedImage.Width / (double) FOriginal.Width;
+            double yScale = FZoomedImage.Height / (double) FOriginal.Height;
+            
+            int left, top, width, height;
+            if ((checkBoxUseAsHeader.Enabled && checkBoxUseAsHeader.Checked))
+            {
+                left = Math.Max(0, (int) ((FMouseCurrentPoint.X - FZoomedImage.Left) / xScale) - CHeaderWidth/2);
+                left = Math.Min(left, FOriginal.Width - CHeaderWidth);
+                top = Math.Max(0, (int) ((FMouseCurrentPoint.Y - FZoomedImage.Top) / yScale) - CHeaderHeight/2);
+                top = Math.Min(top, FOriginal.Height - CHeaderHeight);
+                width = CHeaderWidth;
+                height = CHeaderHeight;
+            }
+            else
+            {
+                left = Math.Max(0, (int) ((FMouseDownPoint.X - FZoomedImage.Left) / xScale));
+                top = Math.Max(0, (int) ((FMouseDownPoint.Y - FZoomedImage.Top) / yScale));
+                width = Math.Max(10, (int) ((FMouseCurrentPoint.X - FMouseDownPoint.X) / xScale));
+                width = Math.Min(width, FOriginal.Width - left);
+                height = Math.Max(10, (int) ((FMouseCurrentPoint.Y - FMouseDownPoint.Y) / yScale));
+                height = Math.Min(height, FOriginal.Height - top);
+            }
+            
+            FCropRect = new Rectangle(left, top, width, height);
+            
+            FOverlay.DrawRectangle(FRectPen, FCropRect);
+            UpdateScreenshotInfo();
+            pictureBoxScreenshot.Invalidate();
+        }
+       
         void ButtonUploadClick(object sender, EventArgs e)
         {
+            textBoxConsole.Text = "";
+            
             //crop the image
             Bitmap target = new Bitmap(FCropRect.Width, FCropRect.Height);
-
             using(Graphics g = Graphics.FromImage(target))
             {
                 g.DrawImage(FOriginal, new Rectangle(0, 0, target.Width, target.Height), FCropRect, GraphicsUnit.Pixel);
             }
 
             MemoryStream fileData = new MemoryStream();
-            target.Save(fileData, System.Drawing.Imaging.ImageFormat.Jpeg);
+            target.Save(fileData, System.Drawing.Imaging.ImageFormat.Png);
             fileData.Seek(0, SeekOrigin.Begin);
 
-            //FileStream fileData = new FileStream(FFilename, FileMode.Open);
-            
+            //add post-header
             NameValueCollection nvc = new NameValueCollection();
             nvc.Add("name", textBoxUsername.Text);
-            nvc.Add("pass", "5896e2a7da5e64aed99b3bb86fa831f2"); //FStringHasher.ToMD5(textBoxPassword.Text));
+            nvc.Add("pass", FStringHasher.ToMD5(textBoxPassword.Text));
             nvc.Add("header", (checkBoxUseAsHeader.Enabled && checkBoxUseAsHeader.Checked).ToString());
             nvc.Add("title", textBoxScreenshotTitle.Text);
             nvc.Add("description", textBoxScreenshotDescription.Text);
 
-            using (WebResponse response = Upload.PostFile(new Uri("http://dev.vvvv.org:81/drupal/external-api/picture-upload"), nvc, fileData, FFilename, null, null, null, null))
+            using (WebResponse response = Upload.PostFile(CPictureUploadUri, nvc, fileData, "upload.png", null, null, null, null))
             {
                 // the stream returned by WebResponse.GetResponseStream
                 // will contain any content returned by the server after upload
 
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
-                    textBoxConsole.Text = reader.ReadToEnd();
+                    string result = reader.ReadToEnd();
+                    if (result.Contains("OK"))
+                        textBoxConsole.Text = "Upload Successful.";
+                    else if (result.Contains("LOGIN FAILED"))
+                        textBoxConsole.Text = "Login failed!";
+                    else if (result.Contains("SERVER BUSY"))
+                        textBoxConsole.Text = "Server is busy, please try again later.";
+                    else
+                        textBoxConsole.Text = "ERROR: " + result;
                 }
             }
         }
         
-        void PictureBoxScreenshotMouseMove(object sender, MouseEventArgs e)
-        {
-            if (FDrawRect)
-            {
-                FOverlay.Clear(Color.Transparent);
-                int left = FMouseDownPoint.X - FZoomedImage.Left;
-                int top = FMouseDownPoint.Y - FZoomedImage.Top;
-                int width = e.X-FMouseDownPoint.X;
-                int height = e.Y-FMouseDownPoint.Y;
-                FCropRect = new Rectangle((int)(left), top, (int)(width), height);
-                
-                FOverlay.DrawRectangle(new Pen(Color.Black), FCropRect);
-                labelScreenshotInfo.Text = FOriginal.Width.ToString() + " x " + FOriginal.Height.ToString() + " -> " + FCropRect.ToString() + " -> " + FZoomedImage.ToString();
-                labelScreenshotInfo.Invalidate();
-                pictureBoxScreenshot.Invalidate();
-            }
-        }
-        
-        void PictureBoxScreenshotMouseDown(object sender, MouseEventArgs e)
-        {
-            FDrawRect = true;
-            FMouseDownPoint = e.Location;
-        }
-        
-        void PictureBoxScreenshotMouseUp(object sender, MouseEventArgs e)
-        {
-            FDrawRect = false;
-        }
-        
         void ButtonCloseClick(object sender, EventArgs e)
         {
-        	FKommunikatorHost.HideMe();
+            FKommunikatorHost.HideMe();
         }
         
-        void PictureBoxScreenshotResize(object sender, EventArgs e)
+        void CheckBoxUseAsHeaderCheckedChanged(object sender, EventArgs e)
         {
-            labelScreenshotInfo.Text = FOriginal.Width.ToString() + " x " + FOriginal.Height.ToString() + " -> " + FCropRect.ToString() + " -> " + FZoomedImage.ToString();
-                labelScreenshotInfo.Invalidate();
-        	UpdateZoomedImageRect();
+            if (checkBoxUseAsHeader.Checked)
+            {
+                FMouseCurrentPoint = new Point(pictureBoxScreenshot.Width/2, pictureBoxScreenshot.Height/2);
+                UpdateOverlay();
+            }
         }
     }
 }
