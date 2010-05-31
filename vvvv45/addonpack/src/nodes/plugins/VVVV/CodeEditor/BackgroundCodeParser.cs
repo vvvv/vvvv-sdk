@@ -52,9 +52,10 @@ namespace VVVV.Nodes
 				// so speed up the parser and make it more resistent to syntax
 				// errors in methods
 				p.ParseMethodBodies = false;
-
 				p.Parse();
+				
 				newCompilationUnit = ConvertCompilationUnit(p.CompilationUnit);
+				RetrieveRegions(ref newCompilationUnit, p.Lexer.SpecialTracker);
 			}
 			// Remove information from lastCompilationUnit and add information from newCompilationUnit.
 			FProjectContent.UpdateCompilationUnit(FLastCompilationUnit, newCompilationUnit, FFilename);
@@ -71,10 +72,35 @@ namespace VVVV.Nodes
 		
 		private Dom.ICompilationUnit ConvertCompilationUnit(NRefactory.Ast.CompilationUnit cu)
 		{
-			Dom.NRefactoryResolver.NRefactoryASTConvertVisitor converter;
-			converter = new Dom.NRefactoryResolver.NRefactoryASTConvertVisitor(FProjectContent);
-			cu.AcceptVisitor(converter, null);
-			return converter.Cu;
+			var visitor = new Dom.NRefactoryResolver.NRefactoryASTConvertVisitor(FProjectContent);
+			cu.AcceptVisitor(visitor, null);
+			return visitor.Cu;
+		}
+		
+		private void RetrieveRegions(ref Dom.ICompilationUnit cu, ICSharpCode.NRefactory.Parser.SpecialTracker tracker)
+		{
+			var directives = new Stack<NRefactory.PreprocessingDirective>();
+			var foldingRegions = cu.FoldingRegions;
+			
+			// Collect all #region and #endregion directives and push them on a stack.
+			foreach (var special in tracker.CurrentSpecials)
+			{
+				var directive = special as NRefactory.PreprocessingDirective;
+				if (directive != null)
+				{
+					if (directive.Cmd == "#region")
+						directives.Push(directive);
+					else if (directive.Cmd == "#endregion")
+					{
+						if (directives.Count > 0)
+						{
+							var o = directives.Pop();
+							var l = Dom.DomRegion.FromLocation(o.StartPosition, directive.EndPosition);
+							foldingRegions.Add(new Dom.FoldingRegion(o.Arg.Trim(), l));
+						}
+					}
+				}
+			}
 		}
 	}
 }
