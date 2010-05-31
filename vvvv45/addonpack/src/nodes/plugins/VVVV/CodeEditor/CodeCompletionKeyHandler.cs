@@ -26,6 +26,7 @@
 // OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -60,6 +61,7 @@ namespace CSharpEditor
 			
 			// When the editor is disposed, close the code completion window
 			editor.Disposed += h.CloseCodeCompletionWindow;
+			editor.Disposed += h.EditorDisposedCB;
 			
 			return h;
 		}
@@ -69,15 +71,16 @@ namespace CSharpEditor
 		/// </summary>
 		bool TextAreaKeyEventHandler(char key)
 		{
-			if (codeCompletionWindow != null) {
-				// If completion window is open and wants to handle the key, don't let the text area
-				// handle it
-				if (codeCompletionWindow.ProcessKeyEvent(key))
-					return true;
+			if (codeCompletionWindow != null && !codeCompletionWindow.IsDisposed) 
+			{
+				// If completion window is open and wants to handle the key, don't let the text area handle it.
+				return codeCompletionWindow.ProcessKeyEvent(key);
 			}
-			if (key == '.') {
+			
+			if (char.IsLetter(key) || key == '.') 
+			{
 				ICompletionDataProvider completionDataProvider = new CodeCompletionProvider(FCodeEditor);
-				
+
 				codeCompletionWindow = CodeCompletionWindow.ShowCompletionWindow(
 					FCodeEditor.DummyForm,					// The parent window for the completion window
 					FEditorControl, 					// The text editor to show the window for
@@ -85,25 +88,31 @@ namespace CSharpEditor
 					completionDataProvider,		// Provider to get the list of possible completions
 					key							// Key pressed - will be passed to the provider
 				);
-				if (codeCompletionWindow != null) {
+				if (codeCompletionWindow != null) 
+				{
 					// ShowCompletionWindow can return null when the provider returns an empty list
 					codeCompletionWindow.Closed += CloseCodeCompletionWindow;
 				}
 			}
+			
 			return false;
 		}
 		
 		void CloseCodeCompletionWindow(object sender, EventArgs e)
 		{
-			var editor = sender as TextEditorControl;
-			editor.Disposed -= CloseCodeCompletionWindow;
-			editor.ActiveTextAreaControl.TextArea.KeyEventHandler -= TextAreaKeyEventHandler;
-			
-			if (codeCompletionWindow != null) {
+			if (codeCompletionWindow != null) 
+			{
 				codeCompletionWindow.Closed -= CloseCodeCompletionWindow;
 				codeCompletionWindow.Dispose();
 				codeCompletionWindow = null;
 			}
+		}
+		
+		void EditorDisposedCB(object sender, EventArgs e)
+		{
+			var editor = sender as TextEditorControl;
+			editor.Disposed -= CloseCodeCompletionWindow;
+			editor.ActiveTextAreaControl.TextArea.KeyEventHandler -= TextAreaKeyEventHandler;
 		}
 	}
 }

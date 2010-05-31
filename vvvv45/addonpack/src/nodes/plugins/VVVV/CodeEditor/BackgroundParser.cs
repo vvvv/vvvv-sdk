@@ -51,6 +51,7 @@ namespace VVVV.Nodes
 			{
 				var project = entry.Key;
 				var projectContent = entry.Value;
+				projectContent.AddReferencedContent(FPCRegistry.Mscorlib);
 				
 				percentProgress = (i++) * 100;
 			

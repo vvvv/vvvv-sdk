@@ -256,7 +256,6 @@ namespace VVVV.Nodes
 					
 					if (HdeHost != null)
 						HdeHost.RemoveListener(FNodeSelectionListener);
-//					FNodeSelectionListener.Dispose();
 					FNodeSelectionListener = null;
 					
 					if (FProjectTreeViewer != null)
@@ -280,6 +279,7 @@ namespace VVVV.Nodes
 				
 				if (PluginHost != null)
 					PluginHost.Log(TLogType.Debug, "CodeEditorPlugin is being deleted");
+				PluginHost = null;
 			}
 			FDisposed = true;
 			

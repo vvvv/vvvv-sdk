@@ -32,6 +32,9 @@ using System.Drawing.Drawing2D;
 using System.Threading;
 using System.Resources;
 using System.Reflection;
+using System.CodeDom.Compiler;
+using System.IO;
+using System.Diagnostics;
 
 using VVVV.HDE.Model;
 using VVVV.HDE.Model.CS;
@@ -43,6 +46,7 @@ using VVVV.HDE.Model.Provider;
 using VVVV.Utils;
 
 using ICSharpCode.TextEditor;
+using SD = ICSharpCode.TextEditor.Document;
 using Dom = ICSharpCode.SharpDevelop.Dom;
 
 using CSharpEditor;
@@ -94,6 +98,7 @@ namespace VVVV.Nodes
 			DummyForm = new Form();
 			
 			FTextEditorControl.SetHighlighting("C#");
+			FTextEditorControl.TextEditorProperties.SupportReadOnlySegments = true;
 			FTextEditorControl.Document.FoldingManager.FoldingStrategy = new ParserFoldingStrategy();
 			FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown += TextAreaKeyDownCB;
 		
@@ -111,6 +116,9 @@ namespace VVVV.Nodes
 			FBGCodeParser = new BackgroundCodeParser(FProjectContent, FTextEditorControl.Document, Document.Location.AbsolutePath, FParseInfo);
 			
 			FTextEditorControl.TextChanged += TextEditorControlTextChangedCB;
+			
+			// Everytime the project is compiled update the error highlighting.
+			Document.Project.CompileCompleted += CompileCompletedCB;
 			
 			// Start parsing after 500ms have passed after last key stroke.
 			FTimer = new System.Windows.Forms.Timer();
@@ -165,7 +173,10 @@ namespace VVVV.Nodes
 						FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown -= TextAreaKeyDownCB;
 					
 					if (Document != null)
+					{
 						Document.ContentChanged -= TextDocumentContentChangedCB;
+						Document.Project.CompileCompleted -= CompileCompletedCB;
+					}
 					
 					if (FTimer != null)
 						FTimer.Dispose();
@@ -196,6 +207,13 @@ namespace VVVV.Nodes
 			FTextEditorControl.Document.TextContent = Document.TextContent;
 			Document.ContentChanged += TextDocumentContentChangedCB;
 		}
+		
+		private void SyncControlWithDocument()
+		{
+			Document.ContentChanged -= TextDocumentContentChangedCB;
+			Document.TextContent = FTextEditorControl.Document.TextContent;
+			Document.ContentChanged += TextDocumentContentChangedCB;
+		}
 
 		/// <summary>
 		/// Updates the underlying ITextDocument from changes made in the editor and parses the document.
@@ -206,9 +224,7 @@ namespace VVVV.Nodes
 			FTimer.Stop();
 			if (Document != null)
 			{
-				Document.ContentChanged -= TextDocumentContentChangedCB;
-				Document.TextContent = FTextEditorControl.Document.TextContent;
-				Document.ContentChanged += TextDocumentContentChangedCB;
+				SyncControlWithDocument();
 				
 				EditorPlugin.PluginHost.Log(TLogType.Debug, "Parsing " + Document.Location + " ...");
 				FBGCodeParser.RunParserAsync(Document.TextContent);
@@ -237,7 +253,53 @@ namespace VVVV.Nodes
 		void TextAreaKeyDownCB(object sender, KeyEventArgs args)
 		{
 			if (args.Control && args.KeyCode == Keys.S)
+			{
+				SyncControlWithDocument();
 				Document.Save();
+				args.Handled = true;
+			}
+			else
+				args.Handled = false;
+		}
+		
+		List<SD.TextMarker> FErrorMarkers = new List<SD.TextMarker>();
+		void CompileCompletedCB(IProject project, CompilerResults results)
+		{
+			var doc = FTextEditorControl.Document;
+			
+			// Clear all previous error markers.
+			foreach (var marker in FErrorMarkers)
+			{
+				doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, doc.GetLineNumberForOffset(marker.Offset)));
+				doc.MarkerStrategy.RemoveMarker(marker);
+			}
+			FErrorMarkers.Clear();
+			
+			if (results.Errors.HasErrors)
+			{
+				foreach (var error in results.Errors)
+				{
+					if (error is CompilerError)
+					{
+						var compilerError = error as CompilerError;
+						var path = Path.GetFullPath(compilerError.FileName);
+
+						if (path.ToLower() == Document.Location.LocalPath.ToLower())
+						{
+							var location = new TextLocation(compilerError.Column - 1, compilerError.Line - 1);
+							var offset = doc.PositionToOffset(location);
+							var segment = doc.GetLineSegment(location.Line);
+							var length = segment.Length - offset + segment.Offset;
+							var marker = new SD.TextMarker(offset, length, SD.TextMarkerType.WaveLine);
+							doc.MarkerStrategy.AddMarker(marker);
+							doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, segment.LineNumber));
+							FErrorMarkers.Add(marker);
+						}
+					}
+				}
+			}
+
+			FTextEditorControl.Document.CommitUpdate();
 		}
 	}
 }

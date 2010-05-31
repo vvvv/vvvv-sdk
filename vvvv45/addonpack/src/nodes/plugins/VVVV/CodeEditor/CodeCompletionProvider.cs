@@ -26,6 +26,7 @@
 // OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
+using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -42,36 +43,53 @@ namespace CSharpEditor
 {
 	class CodeCompletionProvider : ICompletionDataProvider
 	{
-		CodeEditor mainForm;
+		CodeEditor FCodeEditor;
 		
-		public CodeCompletionProvider(CodeEditor mainForm)
+		public CodeCompletionProvider(CodeEditor codeEditor)
 		{
-			this.mainForm = mainForm;
+			this.FCodeEditor = codeEditor;
 		}
 		
 		public ImageList ImageList {
 			get {
-				return mainForm.ImageList;
+				return FCodeEditor.ImageList;
 			}
 		}
 		
-		public string PreSelection {
-			get {
-				return null;
+		private string FPreSelection = null;
+		public string PreSelection 
+		{ 
+			get
+			{
+				return FPreSelection;
+			}
+			protected set
+			{
+				FPreSelection = value;
 			}
 		}
 		
-		public int DefaultIndex {
-			get {
-				return -1;
+		private int FDefaultIndex = -1;
+		public int DefaultIndex 
+		{
+			get 
+			{
+				return FDefaultIndex;
+			}
+			protected set 
+			{
+				FDefaultIndex = value;
 			}
 		}
 		
 		public CompletionDataProviderKeyResult ProcessKey(char key)
 		{
-			if (char.IsLetterOrDigit(key) || key == '_') {
+			if (char.IsLetterOrDigit(key) || key == '_') 
+			{
 				return CompletionDataProviderKeyResult.NormalKey;
-			} else {
+			} 
+			else 
+			{
 				// key triggers insertion of selected items
 				return CompletionDataProviderKeyResult.InsertionKey;
 			}
@@ -94,17 +112,37 @@ namespace CSharpEditor
 			//	new DefaultCompletionData("Text", "Description", 1)
 			//};
 			
-			NRefactoryResolver resolver = new NRefactoryResolver(mainForm.FProjectContent.Language);
-			Dom.ResolveResult rr = resolver.Resolve(FindExpression(textArea),
-			                                        mainForm.FParseInfo,
-			                                        textArea.MotherTextEditorControl.Text);
-			List<ICompletionData> resultList = new List<ICompletionData>();
-			if (rr != null) {
-				ArrayList completionData = rr.GetCompletionData(mainForm.FProjectContent);
-				if (completionData != null) {
-					AddCompletionData(resultList, completionData);
-				}
+			var resolver = new NRefactoryResolver(FCodeEditor.FProjectContent.Language);
+			
+			var resultList = new List<ICompletionData>();
+			var expressionResult = FindExpression(textArea);
+			
+			Debug.WriteLine(String.Format("Generating completion data for expression result {0}", expressionResult));
+
+			ArrayList completionData = null;
+			if (charTyped == '.')
+			{
+				FPreSelection = null;
+				var rr = resolver.Resolve(expressionResult,
+				                          FCodeEditor.FParseInfo,
+				                          textArea.MotherTextEditorControl.Text);
+				
+				if (rr != null)
+					completionData = rr.GetCompletionData(FCodeEditor.FProjectContent);
 			}
+			else
+			{
+				FPreSelection = "";
+				completionData = resolver.CtrlSpace(textArea.Caret.Line + 1, 
+				                                    textArea.Caret.Column + 1, 
+				                                    FCodeEditor.FParseInfo, 
+				                                    textArea.Document.TextContent,
+				                                    expressionResult.Context);
+			}
+			
+			if (completionData != null)
+				AddCompletionData(ref resultList, completionData, expressionResult.Context);
+			
 			return resultList.ToArray();
 		}
 		
@@ -115,23 +153,27 @@ namespace CSharpEditor
 		/// </summary>
 		Dom.ExpressionResult FindExpression(TextArea textArea)
 		{
-			Dom.IExpressionFinder finder = new Dom.CSharp.CSharpExpressionFinder(mainForm.FParseInfo);
+			var document = textArea.Document;
+			var finder = new Dom.CSharp.CSharpExpressionFinder(FCodeEditor.FParseInfo);
 
-			Dom.ExpressionResult expression = finder.FindExpression(textArea.Document.TextContent, textArea.Caret.Offset);
+			var expression = finder.FindExpression(document.GetText(0, textArea.Caret.Offset), textArea.Caret.Offset);
 			if (expression.Region.IsEmpty) {
 				expression.Region = new Dom.DomRegion(textArea.Caret.Line + 1, textArea.Caret.Column + 1);
 			}
 			return expression;
 		}
-		
-		void AddCompletionData(List<ICompletionData> resultList, ArrayList completionData)
+
+		void AddCompletionData(ref List<ICompletionData> resultList, ArrayList completionData, Dom.ExpressionContext context)
 		{
 			// used to store the method names for grouping overloads
 			Dictionary<string, CodeCompletionData> nameDictionary = new Dictionary<string, CodeCompletionData>();
-			
+
 			// Add the completion data as returned by SharpDevelop.Dom to the
 			// list for the text editor
 			foreach (object obj in completionData) {
+				if (!context.ShowEntry(obj))
+					continue;
+				
 				if (obj is string) {
 					// namespace names are returned as string
 					resultList.Add(new DefaultCompletionData((string)obj, "namespace " + obj, 5));
