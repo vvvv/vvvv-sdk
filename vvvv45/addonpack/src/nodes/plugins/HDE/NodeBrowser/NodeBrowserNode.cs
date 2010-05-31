@@ -147,12 +147,14 @@ namespace VVVV.Nodes.NodeBrowser
                     //needed to distinguish two nodes of the same name and category
                     FPluginInfo.Version = "";
                     
+                    FPluginInfo.ShortCut = "Ctrl+N";
+                    
                     //the nodes author: your sign
                     FPluginInfo.Author = "vvvv group";
                     //describe the nodes function
                     FPluginInfo.Help = "The NodeInfo Browser";
                     //specify a comma separated list of tags that describe the node
-                    FPluginInfo.Tags = "tag";
+                    FPluginInfo.Tags = "";
                     
                     //give credits to thirdparty code used
                     FPluginInfo.Credits = "";
@@ -184,129 +186,129 @@ namespace VVVV.Nodes.NodeBrowser
         
         private void InitializeComponent()
         {
-        	this.tabControlMain = new System.Windows.Forms.TabControl();
-        	this.tabAwesome = new System.Windows.Forms.TabPage();
-        	this.richTextBox = new System.Windows.Forms.RichTextBox();
-        	this.textBoxTags = new System.Windows.Forms.TextBox();
-        	this.labelNodeCount = new System.Windows.Forms.Label();
-        	this.tabCategory = new System.Windows.Forms.TabPage();
-        	this.categoryTreeViewer = new VVVV.HDE.Viewer.PanelTreeViewer();
-        	this.tabControlMain.SuspendLayout();
-        	this.tabAwesome.SuspendLayout();
-        	this.tabCategory.SuspendLayout();
-        	this.SuspendLayout();
-        	// 
-        	// tabControlMain
-        	// 
-        	this.tabControlMain.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-        	this.tabControlMain.Controls.Add(this.tabAwesome);
-        	this.tabControlMain.Controls.Add(this.tabCategory);
-        	this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.tabControlMain.Font = new System.Drawing.Font("Verdana", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        	this.tabControlMain.ItemSize = new System.Drawing.Size(75, 15);
-        	this.tabControlMain.Location = new System.Drawing.Point(0, 0);
-        	this.tabControlMain.Margin = new System.Windows.Forms.Padding(0);
-        	this.tabControlMain.Name = "tabControlMain";
-        	this.tabControlMain.Padding = new System.Drawing.Point(4, 1);
-        	this.tabControlMain.SelectedIndex = 0;
-        	this.tabControlMain.Size = new System.Drawing.Size(325, 520);
-        	this.tabControlMain.TabIndex = 0;
-        	this.tabControlMain.SelectedIndexChanged += new System.EventHandler(this.TabControlMainSelectedIndexChanged);
-        	// 
-        	// tabAwesome
-        	// 
-        	this.tabAwesome.BackColor = System.Drawing.Color.LightGray;
-        	this.tabAwesome.Controls.Add(this.richTextBox);
-        	this.tabAwesome.Controls.Add(this.textBoxTags);
-        	this.tabAwesome.Controls.Add(this.labelNodeCount);
-        	this.tabAwesome.Location = new System.Drawing.Point(4, 19);
-        	this.tabAwesome.Margin = new System.Windows.Forms.Padding(0);
-        	this.tabAwesome.Name = "tabAwesome";
-        	this.tabAwesome.Size = new System.Drawing.Size(317, 497);
-        	this.tabAwesome.TabIndex = 2;
-        	this.tabAwesome.Text = "By Tags";
-        	this.tabAwesome.UseVisualStyleBackColor = true;
-        	// 
-        	// richTextBox
-        	// 
-        	this.richTextBox.BackColor = System.Drawing.Color.LightGray;
-        	this.richTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-        	this.richTextBox.Cursor = System.Windows.Forms.Cursors.Arrow;
-        	this.richTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.richTextBox.Font = new System.Drawing.Font("Verdana", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        	this.richTextBox.Location = new System.Drawing.Point(0, 20);
-        	this.richTextBox.Name = "richTextBox";
-        	this.richTextBox.ReadOnly = true;
-        	this.richTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-        	this.richTextBox.Size = new System.Drawing.Size(317, 463);
-        	this.richTextBox.TabIndex = 1;
-        	this.richTextBox.Text = "";
-        	this.richTextBox.VScroll += new System.EventHandler(this.RichTextBoxVScroll);
-        	this.richTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseMove);
-        	this.richTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseDown);
-        	// 
-        	// textBoxTags
-        	// 
-        	this.textBoxTags.AcceptsTab = true;
-        	this.textBoxTags.BackColor = System.Drawing.Color.LightGray;
-        	this.textBoxTags.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-        	this.textBoxTags.Dock = System.Windows.Forms.DockStyle.Top;
-        	this.textBoxTags.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        	this.textBoxTags.Location = new System.Drawing.Point(0, 0);
-        	this.textBoxTags.Multiline = true;
-        	this.textBoxTags.Name = "textBoxTags";
-        	this.textBoxTags.Size = new System.Drawing.Size(317, 20);
-        	this.textBoxTags.TabIndex = 0;
-        	this.textBoxTags.TabStop = false;
-        	this.textBoxTags.TextChanged += new System.EventHandler(this.TextBoxTagsTextChanged);
-        	this.textBoxTags.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxTagsKeyDown);
-        	this.textBoxTags.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TextBoxTagsKeyUp);
-        	this.textBoxTags.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TextBoxTagsMouseDown);
-        	// 
-        	// labelNodeCount
-        	// 
-        	this.labelNodeCount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-        	this.labelNodeCount.Dock = System.Windows.Forms.DockStyle.Bottom;
-        	this.labelNodeCount.Location = new System.Drawing.Point(0, 483);
-        	this.labelNodeCount.Name = "labelNodeCount";
-        	this.labelNodeCount.Size = new System.Drawing.Size(317, 14);
-        	this.labelNodeCount.TabIndex = 2;
-        	this.labelNodeCount.Text = "labelNodeCount";
-        	// 
-        	// tabCategory
-        	// 
-        	this.tabCategory.AutoScroll = true;
-        	this.tabCategory.Controls.Add(this.categoryTreeViewer);
-        	this.tabCategory.Location = new System.Drawing.Point(4, 19);
-        	this.tabCategory.Name = "tabCategory";
-        	this.tabCategory.Padding = new System.Windows.Forms.Padding(3);
-        	this.tabCategory.Size = new System.Drawing.Size(317, 497);
-        	this.tabCategory.TabIndex = 1;
-        	this.tabCategory.Text = "By Category";
-        	this.tabCategory.UseVisualStyleBackColor = true;
-        	// 
-        	// categoryTreeViewer
-        	// 
-        	this.categoryTreeViewer.AutoScroll = true;
-        	this.categoryTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.categoryTreeViewer.Location = new System.Drawing.Point(3, 3);
-        	this.categoryTreeViewer.Name = "categoryTreeViewer";
-        	this.categoryTreeViewer.ShowRoot = true;
-        	this.categoryTreeViewer.Size = new System.Drawing.Size(311, 491);
-        	this.categoryTreeViewer.TabIndex = 1;
-        	// 
-        	// NodeBrowserPluginNode
-        	// 
-        	this.BackColor = System.Drawing.Color.LightGray;
-        	this.Controls.Add(this.tabControlMain);
-        	this.DoubleBuffered = true;
-        	this.Name = "NodeBrowserPluginNode";
-        	this.Size = new System.Drawing.Size(325, 520);
-        	this.tabControlMain.ResumeLayout(false);
-        	this.tabAwesome.ResumeLayout(false);
-        	this.tabAwesome.PerformLayout();
-        	this.tabCategory.ResumeLayout(false);
-        	this.ResumeLayout(false);
+            this.tabControlMain = new System.Windows.Forms.TabControl();
+            this.tabAwesome = new System.Windows.Forms.TabPage();
+            this.richTextBox = new System.Windows.Forms.RichTextBox();
+            this.textBoxTags = new System.Windows.Forms.TextBox();
+            this.labelNodeCount = new System.Windows.Forms.Label();
+            this.tabCategory = new System.Windows.Forms.TabPage();
+            this.categoryTreeViewer = new VVVV.HDE.Viewer.PanelTreeViewer();
+            this.tabControlMain.SuspendLayout();
+            this.tabAwesome.SuspendLayout();
+            this.tabCategory.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // tabControlMain
+            // 
+            this.tabControlMain.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.tabControlMain.Controls.Add(this.tabAwesome);
+            this.tabControlMain.Controls.Add(this.tabCategory);
+            this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlMain.Font = new System.Drawing.Font("Verdana", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabControlMain.ItemSize = new System.Drawing.Size(75, 15);
+            this.tabControlMain.Location = new System.Drawing.Point(0, 0);
+            this.tabControlMain.Margin = new System.Windows.Forms.Padding(0);
+            this.tabControlMain.Name = "tabControlMain";
+            this.tabControlMain.Padding = new System.Drawing.Point(4, 1);
+            this.tabControlMain.SelectedIndex = 0;
+            this.tabControlMain.Size = new System.Drawing.Size(325, 520);
+            this.tabControlMain.TabIndex = 0;
+            this.tabControlMain.SelectedIndexChanged += new System.EventHandler(this.TabControlMainSelectedIndexChanged);
+            // 
+            // tabAwesome
+            // 
+            this.tabAwesome.BackColor = System.Drawing.Color.LightGray;
+            this.tabAwesome.Controls.Add(this.richTextBox);
+            this.tabAwesome.Controls.Add(this.textBoxTags);
+            this.tabAwesome.Controls.Add(this.labelNodeCount);
+            this.tabAwesome.Location = new System.Drawing.Point(4, 19);
+            this.tabAwesome.Margin = new System.Windows.Forms.Padding(0);
+            this.tabAwesome.Name = "tabAwesome";
+            this.tabAwesome.Size = new System.Drawing.Size(317, 497);
+            this.tabAwesome.TabIndex = 2;
+            this.tabAwesome.Text = "By Tags";
+            this.tabAwesome.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox
+            // 
+            this.richTextBox.BackColor = System.Drawing.Color.LightGray;
+            this.richTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.richTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBox.Font = new System.Drawing.Font("Verdana", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBox.Location = new System.Drawing.Point(0, 20);
+            this.richTextBox.Name = "richTextBox";
+            this.richTextBox.ReadOnly = true;
+            this.richTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.richTextBox.Size = new System.Drawing.Size(317, 463);
+            this.richTextBox.TabIndex = 1;
+            this.richTextBox.Text = "";
+            this.richTextBox.VScroll += new System.EventHandler(this.RichTextBoxVScroll);
+            this.richTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseMove);
+            this.richTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseDown);
+            // 
+            // textBoxTags
+            // 
+            this.textBoxTags.AcceptsTab = true;
+            this.textBoxTags.BackColor = System.Drawing.Color.LightGray;
+            this.textBoxTags.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxTags.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBoxTags.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxTags.Location = new System.Drawing.Point(0, 0);
+            this.textBoxTags.Multiline = true;
+            this.textBoxTags.Name = "textBoxTags";
+            this.textBoxTags.Size = new System.Drawing.Size(317, 20);
+            this.textBoxTags.TabIndex = 0;
+            this.textBoxTags.TabStop = false;
+            this.textBoxTags.TextChanged += new System.EventHandler(this.TextBoxTagsTextChanged);
+            this.textBoxTags.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxTagsKeyDown);
+            this.textBoxTags.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TextBoxTagsKeyUp);
+            this.textBoxTags.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TextBoxTagsMouseDown);
+            // 
+            // labelNodeCount
+            // 
+            this.labelNodeCount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelNodeCount.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.labelNodeCount.Location = new System.Drawing.Point(0, 483);
+            this.labelNodeCount.Name = "labelNodeCount";
+            this.labelNodeCount.Size = new System.Drawing.Size(317, 14);
+            this.labelNodeCount.TabIndex = 2;
+            this.labelNodeCount.Text = "labelNodeCount";
+            // 
+            // tabCategory
+            // 
+            this.tabCategory.AutoScroll = true;
+            this.tabCategory.Controls.Add(this.categoryTreeViewer);
+            this.tabCategory.Location = new System.Drawing.Point(4, 19);
+            this.tabCategory.Name = "tabCategory";
+            this.tabCategory.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCategory.Size = new System.Drawing.Size(317, 497);
+            this.tabCategory.TabIndex = 1;
+            this.tabCategory.Text = "By Category";
+            this.tabCategory.UseVisualStyleBackColor = true;
+            // 
+            // categoryTreeViewer
+            // 
+            this.categoryTreeViewer.AutoScroll = true;
+            this.categoryTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.categoryTreeViewer.Location = new System.Drawing.Point(3, 3);
+            this.categoryTreeViewer.Name = "categoryTreeViewer";
+            this.categoryTreeViewer.ShowRoot = true;
+            this.categoryTreeViewer.Size = new System.Drawing.Size(311, 491);
+            this.categoryTreeViewer.TabIndex = 1;
+            // 
+            // NodeBrowserPluginNode
+            // 
+            this.BackColor = System.Drawing.Color.LightGray;
+            this.Controls.Add(this.tabControlMain);
+            this.DoubleBuffered = true;
+            this.Name = "NodeBrowserPluginNode";
+            this.Size = new System.Drawing.Size(325, 520);
+            this.tabControlMain.ResumeLayout(false);
+            this.tabAwesome.ResumeLayout(false);
+            this.tabAwesome.PerformLayout();
+            this.tabCategory.ResumeLayout(false);
+            this.ResumeLayout(false);
         }
         private System.Windows.Forms.Label labelNodeCount;
         private System.Windows.Forms.TabPage tabAwesome;
@@ -378,15 +380,18 @@ namespace VVVV.Nodes.NodeBrowser
             RedrawAwesomeBar();
         }
         
-        public void FocusAwesombar()
+        public void AfterShow()
         {
             textBoxTags.Focus();
         }
         
-        private void CreateNode()
+        public void BeforeHide()
         {
             FToolTip.Hide(richTextBox);
-            
+        }
+        
+        private void CreateNode()
+        {
             string text = textBoxTags.Text.Trim();
             try
             {
@@ -465,11 +470,8 @@ namespace VVVV.Nodes.NodeBrowser
                     CreateNode();
             }
             else if (e.KeyCode == Keys.Escape)
-            {
-                FToolTip.Hide(richTextBox);
                 FNodeBrowserHost.CreateNode(null);
-            }
-            else if ((textBoxTags.Lines.Length == 1) && (e.KeyCode == Keys.Down))
+            else if ((textBoxTags.Lines.Length < 2) && (e.KeyCode == Keys.Down))
             {
                 FHoverLine += 1;
                 if (FHoverLine == richTextBox.Lines.Length)
@@ -482,7 +484,7 @@ namespace VVVV.Nodes.NodeBrowser
                 FSelectedLine = FHoverLine;
                 RedrawAwesomeSelection(true);
             }
-            else if ((textBoxTags.Lines.Length == 1) && (e.KeyCode == Keys.Up))
+            else if ((textBoxTags.Lines.Length < 2) && (e.KeyCode == Keys.Up))
             {
                 if (FHoverLine == -1)
                     FHoverLine = richTextBox.Lines.Length - 1;
@@ -564,9 +566,21 @@ namespace VVVV.Nodes.NodeBrowser
         #region RichTextBox
         void RichTextBoxMouseDown(object sender, MouseEventArgs e)
         {
-            FSelectedLine = FHoverLine;
-            textBoxTags.Text = richTextBox.Lines[FSelectedLine].Trim();
-            CreateNode();
+            string username = richTextBox.Lines[FHoverLine].Trim();
+            if (e.Button == MouseButtons.Left)
+            {
+                FSelectedLine = FHoverLine;
+                textBoxTags.Text = username;
+                CreateNode();
+            }
+            else if (e.Button == MouseButtons.Middle)
+            {
+                FNodeBrowserHost.ShowNodeReference(FNodeDict[username]);
+            }
+            else
+            {
+                FNodeBrowserHost.ShowHelpPatch(FNodeDict[username]);
+            }
         }
         
         void RichTextBoxMouseMove(object sender, MouseEventArgs e)
@@ -621,25 +635,25 @@ namespace VVVV.Nodes.NodeBrowser
                     sub.Add(Path.GetFileName(p));
                 
                 sub = sub.FindAll(delegate(string node)
-                                               {
-                                                   node = node.ToLower();
-                                                   bool containsAll = true;
-                                                   string t;
-                                                   foreach (string tag in tags)
-                                                   {
-                                                       t = tag.Replace(".", "");
-                                                       if (!node.Contains(t))
-                                                       {
-                                                           containsAll = false;
-                                                           break;
-                                                       }
-                                                   }
-                                                   
-                                                   if (containsAll)
-                                                       return true;
-                                                   else
-                                                       return false;
-                                               });
+                                  {
+                                      node = node.ToLower();
+                                      bool containsAll = true;
+                                      string t;
+                                      foreach (string tag in tags)
+                                      {
+                                          t = tag.Replace(".", "");
+                                          if (!node.Contains(t))
+                                          {
+                                              containsAll = false;
+                                              break;
+                                          }
+                                      }
+                                      
+                                      if (containsAll)
+                                          return true;
+                                      else
+                                          return false;
+                                  });
                 sort = false;
             }
             else
@@ -687,16 +701,16 @@ namespace VVVV.Nodes.NodeBrowser
                              foreach (string tag in tags)
                              {
                                  if (s1.ToLower().IndexOf(tag) > -1)
-                                    w1 = Math.Min(w1, s1.ToLower().IndexOf(tag));
+                                     w1 = Math.Min(w1, s1.ToLower().IndexOf(tag));
                                  if (s2.ToLower().IndexOf(tag) > -1)
-                                    w2 = Math.Min(w2, s2.ToLower().IndexOf(tag));
+                                     w2 = Math.Min(w2, s2.ToLower().IndexOf(tag));
                              }
                              
                              if (w1 != w2)
                              {
                                  if (w1 < w2)
                                      return -1;
-                                 else 
+                                 else
                                      return 1;
                              }
                              
@@ -715,42 +729,61 @@ namespace VVVV.Nodes.NodeBrowser
                                  string cat2 = s2.Substring(s2.IndexOf('(')).Trim(new char[2]{'(', ')'});
                                  int v1, v2;
                                  
+                                 
+                                 //System.Diagnostics.Debug.WriteLine(cat1 + " - " + cat2);
+                                 
                                  //special sorting for categories
                                  if (cat1.Contains("Value"))
-                                     v1 = 9;
+                                     v1 = 99;
                                  else if (cat1.Contains("Spreads"))
-                                     v1 = 8;
+                                     v1 = 98;
                                  else if (cat1.ToUpper().Contains("2D"))
-                                     v1 = 7;
+                                     v1 = 97;
                                  else if (cat1.ToUpper().Contains("3D"))
-                                     v1 = 6;
+                                     v1 = 96;
                                  else if (cat1.ToUpper().Contains("4D"))
-                                     v1 = 5;
+                                     v1 = 95;
                                  else if (cat1.Contains("Animation"))
-                                     v1 = 4;
+                                     v1 = 94;
+                                 else if (cat1.Contains("EX9"))
+                                     v1 = 93;
+                                 else if (cat1.Contains("TTY"))
+                                     v1 = 92;
+                                 else if (cat1.Contains("GDI"))
+                                     v1 = 91;
+                                 else if (cat1.Contains("Flash"))
+                                     v1 = 90;
                                  else if (cat1.Contains("String"))
-                                     v1 = 3;
+                                     v1 = 89;
                                  else if (cat1.Contains("Color"))
-                                     v1 = 2;
+                                     v1 = 88;
                                  else
                                      v1 = 0;
                                  
                                  if (cat2.Contains("Value"))
-                                     v2 = 9;
+                                     v2 = 99;
                                  else if (cat2.Contains("Spreads"))
-                                     v2 = 8;
+                                     v2 = 98;
                                  else if (cat2.ToUpper().Contains("2D"))
-                                     v2 = 7;
+                                     v2 = 97;
                                  else if (cat2.ToUpper().Contains("3D"))
-                                     v2 = 6;
+                                     v2 = 96;
                                  else if (cat2.ToUpper().Contains("4D"))
-                                     v2 = 5;
+                                     v2 = 95;
                                  else if (cat2.Contains("Animation"))
-                                     v2 = 4;
+                                     v2 = 94;
+                                 else if (cat2.Contains("EX9"))
+                                     v2 = 93;
+                                 else if (cat2.Contains("TTY"))
+                                     v2 = 92;
+                                 else if (cat2.Contains("GDI"))
+                                     v2 = 91;
+                                 else if (cat2.Contains("Flash"))
+                                     v2 = 90;
                                  else if (cat2.Contains("String"))
-                                     v2 = 3;
+                                     v2 = 89;
                                  else if (cat2.Contains("Color"))
-                                     v2 = 2;
+                                     v2 = 88;
                                  else
                                      v2 = 0;
                                  
