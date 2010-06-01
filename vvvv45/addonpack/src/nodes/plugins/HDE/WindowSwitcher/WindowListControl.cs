@@ -35,6 +35,12 @@ namespace VVVV.Nodes
             }
         }
         
+        private int FCaptionWidth = 200;
+        public int CaptionWidth
+        {
+            get{return FCaptionWidth;}
+        }
+        
         public WindowListControl(IWindow window)
         {
             //
@@ -43,12 +49,14 @@ namespace VVVV.Nodes
             InitializeComponent();
             
             FWindow = window;
-            labelCaption.Text = FWindow.GetCaption();
         }
         
         public void UpdateCaption()
         {
             labelCaption.Text = FWindow.GetCaption();
+            
+            Size s = TextRenderer.MeasureText(labelCaption.Text, labelCaption.Font, new Size(1, 1));
+            FCaptionWidth = Math.Max(FCaptionWidth, s.Width + 50);
         }        
         
         void WindowListControlMouseEnter(object sender, EventArgs e)

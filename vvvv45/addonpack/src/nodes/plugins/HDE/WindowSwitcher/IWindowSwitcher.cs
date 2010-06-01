@@ -16,6 +16,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Host">Interface to the WindowSwitcherHost.</param>
 		void SetWindowSwitcherHost(IWindowSwitcherHost host);
 		void Initialize(IWindow currentWindow, out int width, out int height);
+		void AfterShow();
 		void Up();
 		void Down();
 	}

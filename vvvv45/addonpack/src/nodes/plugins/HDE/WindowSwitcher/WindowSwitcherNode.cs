@@ -214,10 +214,7 @@ namespace VVVV.Nodes.WindowSwitcher
                                  else
                                      return string.Compare(w1.Window.GetCaption(), w2.Window.GetCaption());
                              });
-            
-            //update FWindowWidth
-            FWindowWidth = 400;
-            
+
             UpdateList();
         }
         
@@ -225,9 +222,7 @@ namespace VVVV.Nodes.WindowSwitcher
         {
             WindowListControl windowToRemove = FWindowList.Find(delegate (WindowListControl wlc) {return wlc.Window == window;});
             FWindowList.Remove(windowToRemove);
-            
-            //update FWindowWidth
-            
+
             UpdateList();
         }
         
@@ -249,6 +244,23 @@ namespace VVVV.Nodes.WindowSwitcher
                 title.BringToFront();
                 
                 foreach (WindowListControl wlc in patches)
+                {
+                    this.Controls.Add(wlc);
+                    wlc.Dock = DockStyle.Top;
+                    wlc.BringToFront();
+                }
+            }
+            
+            //add modules
+            List<WindowListControl> modules = FWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.Module;});
+            if (modules.Count > 0)
+            {
+                title = new CaptionControl("Modules");
+                this.Controls.Add(title);
+                title.Dock = DockStyle.Top;
+                title.BringToFront();
+                
+                foreach (WindowListControl wlc in modules)
                 {
                     this.Controls.Add(wlc);
                     wlc.Dock = DockStyle.Top;
@@ -342,15 +354,21 @@ namespace VVVV.Nodes.WindowSwitcher
             FSelectedWindowIndex = FWindowList.IndexOf(currentWindow);
             FWindowList[FSelectedWindowIndex].Selected = true;
             
+            foreach(WindowListControl wlc in FWindowList)
+            {
+                wlc.UpdateCaption();
+                FWindowWidth = Math.Max(FWindowWidth, wlc.CaptionWidth);
+            }
+            
             //return dimensions of this listing
             width = FWindowWidth;
             height = this.Controls[0].Top + this.Controls[0].Height;
-            
+        }
+        
+        public void AfterShow()
+        {
             //the dummy textbox gets the focus to trigger on CTRL key up
             textBoxDummy.Focus();
-            
-            foreach(WindowListControl wlc in FWindowList)
-                wlc.UpdateCaption();
         }
         
         public void Up()
