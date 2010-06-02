@@ -94,17 +94,22 @@ namespace VVVV.Nodes
 			// It also caches XML documentation files in an on-disk hash table, thus
 			// reducing memory usage.
 			FPCRegistry.ActivatePersistence(Path.Combine(Path.GetTempPath(), "VVVVCodeEditor"));
+			
 			// Setup project contents for each C# project.
 			FProjects = new Dictionary<IProject, Dom.DefaultProjectContent>();
 			foreach (var project in HdeHost.Solution.Projects)
 			{
 				if (project is CSProject)
 				{
-					FProjects.Add(project, new Dom.DefaultProjectContent());
+					var projectContent = new Dom.DefaultProjectContent();
+					FProjects.Add(project, projectContent);
+					project.PropertyChanged += ProjectPropertyChangedCB;
 				}
 			}
+			
+			// Create the background assembly parser
 			FBGParser = new BackgroundParser(FPCRegistry, FProjects, FStatusLabel);
-			FBGParser.RunParserAsync();
+			FBGParser.Parse(FProjects.Keys);
 		}
 		
 		public void SetPluginHost(IPluginHost host)
@@ -232,6 +237,15 @@ namespace VVVV.Nodes
 			var document = sender as ITextDocument;
 			FOpenedDocuments[document].Text = GetTabPageName(document);
 		}
+		
+		void ProjectPropertyChangedCB(object sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == "References")
+			{
+				// Tell the background parser to reparse this project
+				FBGParser.Parse(sender as IProject);
+			}
+		}
 		#endregion
 		
 		#region IDisposable
@@ -251,6 +265,13 @@ namespace VVVV.Nodes
 				if(disposing)
 				{
 					// Dispose managed resources.
+					if (FProjects != null)
+					{
+						foreach (var project in FProjects.Keys)
+							project.PropertyChanged -= ProjectPropertyChangedCB;
+						FProjects.Clear();
+					}
+					
 					if (FBGParser != null)
 						FBGParser.CancelAsync();
 					
