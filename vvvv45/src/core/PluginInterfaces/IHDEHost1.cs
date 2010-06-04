@@ -28,6 +28,14 @@ namespace VVVV.PluginInterfaces.V1
         void NodeSelectionChangedCB(INode[] nodes);
     }
     
+    [Guid("804F060E-5770-4D5E-82F0-A0655321EBE3"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IWindowListener: IListener
+    {
+        void WindowAddedCB(IWindow window);
+        void WindowRemovedCB(IWindow window);
+    }
+    
 	[Guid("2B24AC85-E543-40B3-9090-2828D26978A0"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IHDEHost 

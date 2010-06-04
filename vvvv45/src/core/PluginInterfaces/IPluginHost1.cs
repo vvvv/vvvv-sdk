@@ -41,10 +41,25 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <returns>Returns an array of this nodes children.</returns>
 		INode[] GetChildren();
-		
-		
-		//IPin[] GetPins();
-	}
+	}	
+	#endregion INode
+	
+	#region IWindow
+	[Guid("1DF0E66D-EDE7-49C4-B0DF-DE789D741480"), 
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IWindow
+	{
+		/// <summary>
+		/// Get the windows caption.
+		/// </summary>
+		/// <returns>Returns this windows caption.</returns>
+		string GetCaption();
+		/// <summary>
+		/// Get the windows type.
+		/// </summary>
+		/// <returns>Returns this windows type.</returns>
+		TWindowType GetWindowType();
+	}	
 	#endregion INode
 
 	#region IPluginHost

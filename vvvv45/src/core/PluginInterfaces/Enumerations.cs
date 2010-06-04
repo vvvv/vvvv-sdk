@@ -126,5 +126,35 @@
 		/// Specifies a dynamic plugin node.
 		/// </summary>
 		Dynamic};
+	
+	/// <summary>
+	/// Used in the pin creating functions of <see cref="VVVV.PluginInterfaces.V1.IPluginHost">IPluginHost</see> to specifiy possible SliceCounts.
+	/// </summary>
+	public enum TWindowType {
+		/// <summary>
+		/// A patch editor window.
+		/// </summary>
+		Patch,
+		/// <summary>
+		/// A modules window.
+		/// </summary>
+		Module,
+		/// <summary>
+		/// A code editor window.
+		/// </summary>
+		Editor,
+	    /// <summary>
+		/// A renderer window.
+		/// </summary>
+		Renderer,
+	    /// <summary>
+		/// A plugins window.
+		/// </summary>
+		Plugin,
+	    /// <summary>
+		/// A HDE window.
+		/// </summary>
+		HDE};
+	
 	#endregion enums
 }
