@@ -48,7 +48,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Provides access to the IUnityContainer used by this IHDEHost.
 		/// </summary>
-		IUnityContainer Container { get; }
+		IUnityContainer UnityContainer { get; }
 		
 		void AddListener(IListener listener);
 	    
