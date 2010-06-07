@@ -214,17 +214,64 @@ namespace VVVV.Nodes.WindowSwitcher
                                  else
                                      return string.Compare(w1.Window.GetCaption(), w2.Window.GetCaption());
                              });
-
-            UpdateList();
         }
         
         public void WindowRemovedCB(IWindow window)
         {
             WindowListControl windowToRemove = FWindowList.Find(delegate (WindowListControl wlc) {return wlc.Window == window;});
             FWindowList.Remove(windowToRemove);
-
-            UpdateList();
         }
+        #endregion IWindowListener
+        
+        #region IWindowSwitcher
+        public void SetWindowSwitcherHost(IWindowSwitcherHost host)
+        {
+            FWindowSwitcherHost = host;
+        }
+        
+        public void Initialize(IWindow window, out int width, out int height)
+        {
+            //mark current window
+            WindowListControl currentWindow = FWindowList.Find(delegate (WindowListControl wlc) {return wlc.Window == window;});
+            FWindowList[FSelectedWindowIndex].Selected = false;
+            FSelectedWindowIndex = FWindowList.IndexOf(currentWindow);
+            FWindowList[FSelectedWindowIndex].Selected = true;
+            
+            foreach(WindowListControl wlc in FWindowList)
+            {
+                wlc.UpdateCaption();
+                FWindowWidth = Math.Max(FWindowWidth, wlc.CaptionWidth);
+            }
+            
+            UpdateList();
+            
+            //return dimensions of this listing
+            width = FWindowWidth;
+            height = this.Controls[0].Top + this.Controls[0].Height;
+        }
+        
+        public void AfterShow()
+        {
+            //the dummy textbox gets the focus to trigger on CTRL key up
+            textBoxDummy.Focus();
+        }
+        
+        public void Up()
+        {
+            FWindowList[FSelectedWindowIndex].Selected = false;
+            FSelectedWindowIndex -= 1;
+            if (FSelectedWindowIndex == -1)
+                FSelectedWindowIndex = FWindowList.Count - 1;
+            FWindowList[FSelectedWindowIndex].Selected = true;
+        }
+        
+        public void Down()
+        {
+            FWindowList[FSelectedWindowIndex].Selected = false;
+            FSelectedWindowIndex = (FSelectedWindowIndex + 1) % FWindowList.Count;
+            FWindowList[FSelectedWindowIndex].Selected = true;
+        }
+        #endregion IWindowSwitcher
         
         private void UpdateList()
         {
@@ -338,55 +385,6 @@ namespace VVVV.Nodes.WindowSwitcher
 
             this.ResumeLayout(true);
         }
-        #endregion IWindowListener
-        
-        #region IWindowSwitcher
-        public void SetWindowSwitcherHost(IWindowSwitcherHost host)
-        {
-            FWindowSwitcherHost = host;
-        }
-        
-        public void Initialize(IWindow window, out int width, out int height)
-        {
-            //mark current window
-            WindowListControl currentWindow = FWindowList.Find(delegate (WindowListControl wlc) {return wlc.Window == window;});
-            FWindowList[FSelectedWindowIndex].Selected = false;
-            FSelectedWindowIndex = FWindowList.IndexOf(currentWindow);
-            FWindowList[FSelectedWindowIndex].Selected = true;
-            
-            foreach(WindowListControl wlc in FWindowList)
-            {
-                wlc.UpdateCaption();
-                FWindowWidth = Math.Max(FWindowWidth, wlc.CaptionWidth);
-            }
-            
-            //return dimensions of this listing
-            width = FWindowWidth;
-            height = this.Controls[0].Top + this.Controls[0].Height;
-        }
-        
-        public void AfterShow()
-        {
-            //the dummy textbox gets the focus to trigger on CTRL key up
-            textBoxDummy.Focus();
-        }
-        
-        public void Up()
-        {
-            FWindowList[FSelectedWindowIndex].Selected = false;
-            FSelectedWindowIndex -= 1;
-            if (FSelectedWindowIndex == -1)
-                FSelectedWindowIndex = FWindowList.Count - 1;
-            FWindowList[FSelectedWindowIndex].Selected = true;
-        }
-        
-        public void Down()
-        {
-            FWindowList[FSelectedWindowIndex].Selected = false;
-            FSelectedWindowIndex = (FSelectedWindowIndex + 1) % FWindowList.Count;
-            FWindowList[FSelectedWindowIndex].Selected = true;
-        }
-        #endregion IWindowSwitcher
       
         void TextBoxDummyKeyUp(object sender, KeyEventArgs e)
         {
