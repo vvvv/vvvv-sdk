@@ -53,8 +53,7 @@ namespace VVVV.Nodes.NodeBrowser
         private bool FDisposed = false;
         
         //further fields
-        CategoryModel FCategoryModel = new CategoryModel();
-        AlphabetModel FAlphabetModel = new AlphabetModel();
+        NodeListModel FCategoryModel = new NodeListModel();
         List<string> FAwesomeList = new List<string>();
         Dictionary<string, INodeInfo> FNodeDict = new Dictionary<string, INodeInfo>();
         private bool FAndTags = true;
@@ -193,7 +192,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.textBoxTags = new System.Windows.Forms.TextBox();
         	this.labelNodeCount = new System.Windows.Forms.Label();
         	this.tabCategory = new System.Windows.Forms.TabPage();
-        	this.categoryTreeViewer = new VVVV.HDE.Viewer.PanelTreeViewer();
+        	this.CategoryTreeViewer = new VVVV.HDE.Viewer.TreeViewer();
         	this.tabControlMain.SuspendLayout();
         	this.tabAwesome.SuspendLayout();
         	this.tabCategory.SuspendLayout();
@@ -236,6 +235,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.richTextBox.BackColor = System.Drawing.Color.LightGray;
         	this.richTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
         	this.richTextBox.Cursor = System.Windows.Forms.Cursors.Arrow;
+        	this.richTextBox.DetectUrls = false;
         	this.richTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
         	this.richTextBox.Font = new System.Drawing.Font("Verdana", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         	this.richTextBox.Location = new System.Drawing.Point(0, 20);
@@ -247,6 +247,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.richTextBox.TabStop = false;
         	this.richTextBox.Text = "";
         	this.richTextBox.VScroll += new System.EventHandler(this.RichTextBoxVScroll);
+        	this.richTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseUp);
         	this.richTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseMove);
         	this.richTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseDown);
         	// 
@@ -281,7 +282,7 @@ namespace VVVV.Nodes.NodeBrowser
         	// tabCategory
         	// 
         	this.tabCategory.AutoScroll = true;
-        	this.tabCategory.Controls.Add(this.categoryTreeViewer);
+        	this.tabCategory.Controls.Add(this.CategoryTreeViewer);
         	this.tabCategory.Location = new System.Drawing.Point(4, 19);
         	this.tabCategory.Name = "tabCategory";
         	this.tabCategory.Padding = new System.Windows.Forms.Padding(3);
@@ -290,15 +291,20 @@ namespace VVVV.Nodes.NodeBrowser
         	this.tabCategory.Text = "By Category";
         	this.tabCategory.UseVisualStyleBackColor = true;
         	// 
-        	// categoryTreeViewer
+        	// CategoryTreeViewer
         	// 
-        	this.categoryTreeViewer.AutoScroll = true;
-        	this.categoryTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.categoryTreeViewer.Location = new System.Drawing.Point(3, 3);
-        	this.categoryTreeViewer.Name = "categoryTreeViewer";
-        	this.categoryTreeViewer.ShowRoot = true;
-        	this.categoryTreeViewer.Size = new System.Drawing.Size(311, 491);
-        	this.categoryTreeViewer.TabIndex = 1;
+        	this.CategoryTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+        	this.CategoryTreeViewer.FlatStyle = false;
+        	this.CategoryTreeViewer.Location = new System.Drawing.Point(3, 3);
+        	this.CategoryTreeViewer.Name = "CategoryTreeViewer";
+        	this.CategoryTreeViewer.ShowLines = false;
+        	this.CategoryTreeViewer.ShowPlusMinus = false;
+        	this.CategoryTreeViewer.ShowRoot = false;
+        	this.CategoryTreeViewer.ShowRootLines = false;
+        	this.CategoryTreeViewer.ShowTooltip = true;
+        	this.CategoryTreeViewer.Size = new System.Drawing.Size(311, 491);
+        	this.CategoryTreeViewer.TabIndex = 0;
+        	this.CategoryTreeViewer.LeftClick += new System.EventHandler(this.CategoryTreeViewerLeftClick);
         	// 
         	// NodeBrowserPluginNode
         	// 
@@ -313,11 +319,11 @@ namespace VVVV.Nodes.NodeBrowser
         	this.tabCategory.ResumeLayout(false);
         	this.ResumeLayout(false);
         }
+        private VVVV.HDE.Viewer.TreeViewer CategoryTreeViewer;
         private System.Windows.Forms.Label labelNodeCount;
         private System.Windows.Forms.TabPage tabAwesome;
         private System.Windows.Forms.RichTextBox richTextBox;
         private System.Windows.Forms.TextBox textBoxTags;
-        private VVVV.HDE.Viewer.PanelTreeViewer categoryTreeViewer;
         private System.Windows.Forms.TabPage tabCategory;
         private System.Windows.Forms.TabControl tabControlMain;
         
@@ -336,25 +342,20 @@ namespace VVVV.Nodes.NodeBrowser
             //register nodeinfolisteners at hdehost
             FHDEHost.AddListener(this);
             
-            //create the fallback container, which contains default mappings for all
-            //the interfaces the viewer model uses.
-            var uc = new UnityContainer();
-            uc.AddNewExtension<ViewerModelContainerExtension>();
-            
             //now create a child container, which knows how to map the HDE model.
-            var cc = uc.CreateChildContainer();
-            cc.AddNewExtension<NodeBrowserModelProviderExtension>();
+            var cc = FHDEHost.Container.CreateChildContainer();
+            cc.AddNewExtension<NodeBrowserModelContainerExtension>();
             
-            //create AdapterFactoryContentProvider and hand it to the treeViewer
+            //create a IContentProvider and hand it to the treeViewer
             var cp = new UnityContentProvider(cc);
-            categoryTreeViewer.SetContentProvider(cp);
+            CategoryTreeViewer.SetContentProvider(cp);
             
-            //create AdapterFactoryLabelProvider and hand it to the treeViewer
+            //create ILabelProvider and hand it to the treeViewer
             var lp = new UnityLabelProvider(cc);
-            categoryTreeViewer.SetLabelProvider(lp);
+            CategoryTreeViewer.SetLabelProvider(lp);
             
             //hand model root over to viewers
-            categoryTreeViewer.SetRoot(FCategoryModel);
+            CategoryTreeViewer.SetRoot(FCategoryModel);
         }
 
         #endregion initialization
@@ -436,9 +437,20 @@ namespace VVVV.Nodes.NodeBrowser
                 Size s = TextRenderer.MeasureText(key, new Font("Verdana", 7), new Size(1, 1));
                 FAwesomeWidth = Math.Max(FAwesomeWidth, s.Width);
                 
-                //insert the nodeInfo into the data model
-                FCategoryModel.Add(nodeInfo);
-                FAlphabetModel.Add(nodeInfo);
+                //insert nodeInfo to NodeListModel
+                var nodeInfoEntry = FHDEHost.Container.BuildUp(new NodeInfoEntry(nodeInfo));
+                CategoryEntry catEntry;
+                if (FCategoryModel.Contains(nodeInfoEntry.Category))
+                {
+                    catEntry = FCategoryModel.GetCategoryEntry(nodeInfoEntry.Category);
+                    catEntry.Add(nodeInfoEntry);
+                }
+                else
+                {
+                    catEntry = FHDEHost.Container.BuildUp(new CategoryEntry(nodeInfoEntry.Category));
+                    catEntry.Add(nodeInfoEntry);
+                    FCategoryModel.Add(catEntry);
+                }
             }
         }
         
@@ -448,8 +460,10 @@ namespace VVVV.Nodes.NodeBrowser
             FNodeDict.Remove(key);
             FAwesomeList.Remove(key);
             
-            FCategoryModel.Remove(nodeInfo);
-            FAlphabetModel.Remove(nodeInfo);
+            
+            
+           // FCategoryModel.Remove(nodeInfo);
+           // FAlphabetModel.Remove(nodeInfo);
         }
         #endregion INodeInfoListener
 
@@ -602,6 +616,11 @@ namespace VVVV.Nodes.NodeBrowser
                 ShowToolTip();
                 RedrawAwesomeSelection(false);
             }
+        }
+        
+        void RichTextBoxMouseUp(object sender, MouseEventArgs e)
+        {
+            textBoxTags.Focus();
         }
         
         private void ShowToolTip()
@@ -822,7 +841,7 @@ namespace VVVV.Nodes.NodeBrowser
             char[] bolded;
             string rtf = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fnil\fcharset0 Verdana;}}\viewkind4\uc1\pard\f0\fs17 ";
             
-            System.Text.StringBuilder sb;
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
             foreach (string s in sub)
             {
                 //all comparison is case-in-sensitive
@@ -830,9 +849,7 @@ namespace VVVV.Nodes.NodeBrowser
                 bolded = n.ToCharArray();
                 foreach (string tag in tags)
                 {
-                    //
                     string t = tag.Replace(".", "");
-                    //t = tag;
                     if (!string.IsNullOrEmpty(t))
                     {
                         //in the bolded char[] mark all matching characters as ° for later being rendered as bold
@@ -848,7 +865,7 @@ namespace VVVV.Nodes.NodeBrowser
                 }
                 
                 //now recreate the string including bold markups
-                sb = new System.Text.StringBuilder();
+                sb.Remove(0, sb.Length);
                 for (int i=0; i<s.Length; i++)
                     if (bolded[i] == '°')
                         sb.Append("\\b " + s[i] + "\\b0 ");
@@ -925,6 +942,29 @@ namespace VVVV.Nodes.NodeBrowser
         {
             if (tabControlMain.SelectedIndex == 0)
                 textBoxTags.Focus();
+        }
+        
+        
+        void CategoryTreeViewerLeftClick(object sender, EventArgs e)
+        {
+            if (sender is NodeInfoEntry)
+            {
+                textBoxTags.Text = (sender as NodeInfoEntry).Username;
+                CreateNode();
+            }
+           /* else if (e.Button == MouseButtons.Middle)
+            {
+                FNodeBrowserHost.ShowNodeReference(FNodeDict[username]);
+            }
+            else
+            {
+                FNodeBrowserHost.ShowHelpPatch(FNodeDict[username]);
+            }
+            }*/
+            else if (CategoryTreeViewer.IsExpanded(sender))
+                CategoryTreeViewer.Collapse(sender, false);
+            else
+                CategoryTreeViewer.Solo(sender);
         }
     }
 }

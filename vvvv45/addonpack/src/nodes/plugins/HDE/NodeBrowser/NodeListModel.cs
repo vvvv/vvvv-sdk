@@ -10,72 +10,39 @@ namespace VVVV.Nodes.NodeBrowser
     /// Description of NodeListModel.
     /// </summary>
     /// 
-    public class NodeListModel
+    public class NodeListModel: Notifier
     {
-        List<CategoryEntry> FNodeList = new List<CategoryEntry>();
-        public List<CategoryEntry> NodeList
+        List<CategoryEntry> FCategoryList = new List<CategoryEntry>();
+        public List<CategoryEntry> Categories
         {
-            get {return FNodeList;}
+            get{return FCategoryList;}
         }
-    }
-    
-    public class AlphabetModel: NodeListModel
-    {
-        public AlphabetModel():base()
+        
+        public NodeListModel()
         {
         }
 
-        public void Add(INodeInfo nodeInfo)
+        public void Add(CategoryEntry entry)
         {
-            var category = NodeList.Find(delegate(CategoryEntry entry) {return string.Equals(entry.Name[0], nodeInfo.Name[0]);});
-		    if (category == null)
-		    {
-		        category = new CategoryEntry(nodeInfo.Name[0].ToString());
-		        NodeList.Add(category);
-		        
-		        NodeList.Sort(delegate(CategoryEntry e1, CategoryEntry e2) {return e1.Name.CompareTo(e2.Name);});
-		    }
-		    	
-		    category.Add(nodeInfo);
+            FCategoryList.Add(entry);
+            FCategoryList.Sort(delegate(CategoryEntry c1, CategoryEntry c2) {return c1.Name.CompareTo(c2.Name);});
             //FireOnNotifyChanged();
         }
         
-        public void Remove(INodeInfo nodeInfo)
+        public void Remove(CategoryEntry entry)
         {
-            var category = NodeList.Find(delegate(CategoryEntry entry) {return string.Equals(entry.Name[0], nodeInfo.Name[0]);});
-		    if (category != null)
-                category.Remove(nodeInfo);
-            //FireOnNotifyChanged();
-        }
-    }
-
-    public class CategoryModel: NodeListModel
-    {
-        public CategoryModel(): base()
-        {
-        }
-
-        public void Add(INodeInfo nodeInfo)
-        {
-            var category = NodeList.Find(delegate(CategoryEntry entry) {return string.Equals(entry.Name, nodeInfo.Category);});
-		    if (category == null)
-		    {
-		        category = new CategoryEntry(nodeInfo.Category);
-		        NodeList.Add(category);
-		    }
-		    	
-		    NodeList.Sort(delegate(CategoryEntry e1, CategoryEntry e2) {return e1.Name.CompareTo(e2.Name);});
-		    category.Add(nodeInfo);
+            FCategoryList.Remove(entry);
             //FireOnNotifyChanged();
         }
         
-        public void Remove(INodeInfo nodeInfo)
+        public bool Contains(string CategoryName)
         {
-            var category = NodeList.Find(delegate(CategoryEntry entry) {return string.Equals(entry.Name, nodeInfo.Category);});
-		    if (category != null)
-                category.Remove(nodeInfo);
-            //FireOnNotifyChanged();
+            return FCategoryList.Find(delegate(CategoryEntry ce){return ce.Name == CategoryName;}) != null;
+        }
+        
+        public CategoryEntry GetCategoryEntry(string CategoryName)
+        {
+            return FCategoryList.Find(delegate(CategoryEntry ce){return ce.Name == CategoryName;});
         }
     }
-    
 }

@@ -7,9 +7,9 @@ namespace VVVV.Nodes.NodeBrowser
 	/// <summary>
 	/// Description of NodeInfoContentProvider.
 	/// </summary>
-	public class NodeInfoContentProvider: ITreeContentProvider, ILabelProvider, IDragDropProvider
+	public class NodeInfoEntryProvider: ITreeContentProvider, ILabelProvider, IDragDropProvider
 	{
-		public NodeInfoContentProvider()
+		public NodeInfoEntryProvider()
 		{
 		}
 		
@@ -24,7 +24,7 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		public string GetText(object element)
 		{
-		    return (element as NodeInfoDummy).Username;
+		    return (element as NodeInfoEntry).Username;
 		}
 	    
         public event EventHandler ContentChanged;
@@ -53,7 +53,26 @@ namespace VVVV.Nodes.NodeBrowser
 	    
         System.Collections.IEnumerable ITreeContentProvider.GetChildren(object element)
         {
-            throw new NotImplementedException();
+            return new object[0];
+        }
+	    
+        public string GetToolTip(object element)
+        {
+            string tip = "";
+            var ni = (element as NodeInfoEntry).NodeInfo;
+            if (!string.IsNullOrEmpty(ni.ShortCut))
+                tip = "(" + ni.ShortCut + ") " ;
+            if (!string.IsNullOrEmpty(ni.Help))
+                tip += ni.Help;
+            if (!string.IsNullOrEmpty(ni.Warnings))
+                tip += "\n WARNINGS: " + ni.Warnings;
+            if (!string.IsNullOrEmpty(ni.Bugs))
+                tip += "\n BUGS: " + ni.Bugs;
+            if ((!string.IsNullOrEmpty(ni.Author)) && (ni.Author != "vvvv group"))
+                tip += "\n AUTHOR: " + ni.Author;
+            if (!string.IsNullOrEmpty(ni.Credits))
+                tip += "\n CREDITS: " + ni.Credits;
+            return tip;
         }
 	}
 }

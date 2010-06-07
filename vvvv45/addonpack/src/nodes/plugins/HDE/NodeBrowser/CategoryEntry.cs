@@ -11,9 +11,13 @@ namespace VVVV.Nodes.NodeBrowser
     /// </summary>
     public class CategoryEntry: Notifier
     {
-        List<NodeInfoDummy> FNodeInfos = new List<NodeInfoDummy>();
+        List<NodeInfoEntry> FNodeInfos = new List<NodeInfoEntry>();
+        public List<NodeInfoEntry> NodeInfoEntries
+        {
+            get{return FNodeInfos;}
+        }
         
-        public CategoryEntry(string name)
+        public CategoryEntry(string name): base()
         {
             Name = name;
         }
@@ -23,22 +27,17 @@ namespace VVVV.Nodes.NodeBrowser
             get;set;
         }
         
-        public void Add(INodeInfo nodeInfo)
+        public void Add(NodeInfoEntry entry)
         {
-            FNodeInfos.Add(new NodeInfoDummy(nodeInfo));
-            FNodeInfos.Sort(delegate(NodeInfoDummy e1, NodeInfoDummy e2) {return e1.Username.CompareTo(e2.Username);});
+            FNodeInfos.Add(entry);
+            FNodeInfos.Sort(delegate(NodeInfoEntry e1, NodeInfoEntry e2) {return e1.Username.CompareTo(e2.Username);});
             //FireOnNotifyChanged();
         }
         
-        public void Remove(INodeInfo nodeInfo)
+        public void Remove(NodeInfoEntry entry)
         {
-           // FNodeInfos.Remove(nodeInfo);
+            FNodeInfos.Remove(entry);
             //FireOnNotifyChanged();
-        }
-        
-        public object[] GetNodeInfos()
-        {
-            return FNodeInfos.ToArray();
         }
     }
 }

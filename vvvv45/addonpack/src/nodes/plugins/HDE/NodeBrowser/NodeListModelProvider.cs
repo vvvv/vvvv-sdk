@@ -7,9 +7,9 @@ namespace VVVV.Nodes.NodeBrowser
 	/// <summary>
 	/// Description of NodeListModelContentProvider.
 	/// </summary>
-	public class NodeListModelContentProvider: ITreeContentProvider, ILabelProvider
+	public class NodeListModelProvider: ITreeContentProvider, ILabelProvider
 	{
-		public NodeListModelContentProvider()
+		public NodeListModelProvider()
 		{
 		}
 		
@@ -17,21 +17,21 @@ namespace VVVV.Nodes.NodeBrowser
 		{
 		}
 		
-		public object[] GetChildren(object element)
-		{
-		    return (element as NodeListModel).NodeList.ToArray();
-		}
-		
 		public string GetText(object element)
 		{
-		    return "";
+		    return "root";
 		}
 	    
+        System.Collections.IEnumerable ITreeContentProvider.GetChildren(object element)
+        {
+            return (element as NodeListModel).Categories;
+        }
+	    
         public event EventHandler ContentChanged;
-
+	    
         public event EventHandler LabelChanged;
 	    
-        System.Collections.IEnumerable ITreeContentProvider.GetChildren(object element)
+        public string GetToolTip(object element)
         {
             throw new NotImplementedException();
         }
