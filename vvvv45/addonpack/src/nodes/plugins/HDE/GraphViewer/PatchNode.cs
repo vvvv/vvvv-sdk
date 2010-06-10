@@ -3,63 +3,96 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.CodeDom.Compiler;
 
+using VVVV.Utils.Notify;
 using VVVV.PluginInterfaces.V1;
 
-namespace VVVV.Graph
+namespace VVVV.Nodes.GraphViewer
 {
-	public class PatchNode: INode
-	{
-	    List<PatchNode> FChildren = new List<PatchNode>();
-	    INode FNode;
-	    
-	    public PatchNode(INode self, INode[] children)
-		{
-	        FNode = self;
-	        List<INode> cs = new List<INode>();
-	        
-		    if (children != null)
-    		    foreach(INode child in children)
-		    {
-		        cs.Clear();
-		        for (int i = 0; i < child.GetChildCount(); i++)
-                    cs.Add(child.GetChild(i));
-		        FChildren.Add(new PatchNode(child, cs.ToArray()));
-		        //FChildren.Add(new PatchNode(child.GetChildren()));
-		    }
-    		        
-		}
-		
-		public int GetID()
-		{
-		    return FNode.GetID();
-		}
-		
-		public INodeInfo GetNodeInfo()
-		{
-		    if (FNode != null)
-    		    return FNode.GetNodeInfo();
-		    else 
-		        return null;
-		}
-		
-		public INode[] GetChildren()
-		{
-		    return FChildren.ToArray();
-		}
-		
-		public INode GetChild(int index)
-		{
-		    return FChildren[index];
-		}
-		
-		public int GetChildCount()
-		{
-		    return FChildren.Count;
-		}
-		
-		public void Add(PatchNode patchNode)
-		{
-		    FChildren.Add(patchNode);
-		}
-	}
+    public class PatchNode: Notifier, INodeChangedListener
+    {
+        List<PatchNode> FChildren = new List<PatchNode>();
+        
+        public INode Node{get;set;}
+        public bool Selected{get;set;}
+        public string Text
+        {
+            get
+            {
+                if ((Node != null) && (Node.GetNodeInfo() != null))
+                    return Node.GetNodeInfo().Username + " [id " + Node.GetID().ToString() + "]";
+                else
+                    return "..";
+            }
+        }
+        
+        public PatchNode(INode self)
+        {
+            Node = self;
+            
+            if (Node != null)
+            {
+                UpdateChildren();
+                Node.AddListener(this);
+            }
+        }
+        
+        private void UpdateChildren()
+        {
+            INode[] children = Node.GetChildren();
+            if (children != null)
+            {
+                FChildren.Clear();
+                foreach(INode child in children)
+                {
+                    //for (int i = 0; i < FNode.GetChildCount(); i++)
+                    //    FChildren.Add(new PatchNode(FNode.GetChild(i)));
+                    FChildren.Add(new PatchNode(child));
+                }
+                
+                FChildren.Sort(delegate(PatchNode p1, PatchNode p2) {return p1.Text.CompareTo(p2.Text);});
+                
+                //insert an .. (up) node as first element
+                FChildren.Insert(0, new PatchNode(null));
+            }
+        }
+        
+        public void UnSubscribe()
+        {
+            Node.RemoveListener(this);
+        }
+        
+        public PatchNode[] GetChildren()
+        {
+            return FChildren.ToArray();
+        }
+        
+        public void SelectNodes(INode[] nodes)
+        {
+            //deselect all
+            foreach(PatchNode pn in FChildren)
+                pn.Selected = false;
+            
+            if (nodes != null)
+                //reselect selected
+                foreach(INode node in nodes)
+            {
+                PatchNode pn = FChildren.Find(delegate (PatchNode p) {return p.Node == node;});
+                if (pn != null)
+                    pn.Selected = true;
+            }
+            
+            OnPropertyChanged("Selection");
+        }
+        
+        public void Add(PatchNode patchNode)
+        {
+            FChildren.Add(patchNode);
+        }
+        
+        public void NodeChangedCB()
+        {
+            UpdateChildren();
+            OnPropertyChanged("Children");
+        }
+    }
 }
