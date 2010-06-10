@@ -17,53 +17,7 @@ using VVVV.HDE.Model;
 /// </summary>
 namespace VVVV.PluginInterfaces.V1
 {
-
-	#region INode
-	[Guid("98D74C3D-8E8B-4203-A03B-92BDECAF7BDF"), 
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface INode
-	{
-		/// <summary>
-		/// Get the node ID.
-		/// </summary>
-		/// <returns>Returns this nodes ID.</returns>
-		int GetID();
-		/// <summary>
-		/// Get the nodes info.
-		/// </summary>
-		/// <returns>Returns this nodes INodeInfo.</returns>
-		INodeInfo GetNodeInfo();
-		
-		int GetChildCount();
-		INode GetChild(int index);
-		/// <summary>
-		/// In case this node is a patch this allows to access its child nodes.
-		/// </summary>
-		/// <returns>Returns an array of this nodes children.</returns>
-		INode[] GetChildren();
-	}	
-	#endregion INode
-	
-	#region IWindow
-	[Guid("1DF0E66D-EDE7-49C4-B0DF-DE789D741480"), 
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IWindow
-	{
-		/// <summary>
-		/// Get the windows caption.
-		/// </summary>
-		/// <returns>Returns this windows caption.</returns>
-		string GetCaption();
-		/// <summary>
-		/// Get the windows type.
-		/// </summary>
-		/// <returns>Returns this windows type.</returns>
-		TWindowType GetWindowType();
-	}	
-	#endregion INode
-
 	#region IPluginHost
-
 	/// <summary>
 	/// The interface to be implemented by a program to host IPlugins.
 	/// </summary>
@@ -299,5 +253,4 @@ namespace VVVV.PluginInterfaces.V1
 		void GetEnumEntry(string EnumName, int Index, out string EntryName);
 	}
 	#endregion host
-
 }
