@@ -62,6 +62,7 @@ namespace VVVV.Nodes
 
         //input pins
         private List<IValueIn> FInputPinList;
+        private List<IValueIn> FSelectPinList;
         private List<IValueOut> FOutputPinList;
 
         #endregion field declaration
@@ -72,6 +73,7 @@ namespace VVVV.Nodes
         {
 			//the nodes constructor
             FInputPinList = new List<IValueIn>();
+            FSelectPinList = new List<IValueIn>();
             FOutputPinList = new List<IValueOut>();
 		}
         
@@ -103,6 +105,7 @@ namespace VVVV.Nodes
         		{
         			// Dispose managed resources.
                     FInputPinList.Clear();
+                    FSelectPinList.Clear();
                     FOutputPinList.Clear();
         		}
         		// Release unmanaged resources. If disposing is false,
@@ -213,7 +216,7 @@ namespace VVVV.Nodes
             FInputPin1_2.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.0, false, false, false);
 
             FHost.CreateValueInput("Select 1", 1, null, TSliceMode.Single, TPinVisibility.True, out FSelectPin1);
-            FSelectPin1.SetSubType(0, 1, 1, 1, false, true, false);
+            FSelectPin1.SetSubType(0, double.MaxValue, 1, 1, false, false, true);
 
             FHost.CreateValueInput("Input 2,1", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FInputPin2_1);
             FInputPin2_1.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.0, false, false, false);
@@ -222,14 +225,14 @@ namespace VVVV.Nodes
             FInputPin2_2.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.0, false, false, false);
 
             FHost.CreateValueInput("Select 2", 1, null, TSliceMode.Single, TPinVisibility.True, out FSelectPin2);
-            FSelectPin2.SetSubType(0, 1, 1, 1, false, true, false);
+            FSelectPin2.SetSubType(0, double.MaxValue, 1, 1, false, false, true);
 
             FInputPinList.Add(FInputPin1_1);
             FInputPinList.Add(FInputPin1_2);
             FInputPinList.Add(FInputPin2_1);
             FInputPinList.Add(FInputPin2_2);
-            FInputPinList.Add(FSelectPin1);
-            FInputPinList.Add(FSelectPin2);
+            FSelectPinList.Add(FSelectPin1);
+            FSelectPinList.Add(FSelectPin2);
 
             //create outputs	    	
             FHost.CreateValueOutput("Output 1", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FOutputPin1);
@@ -261,12 +264,18 @@ namespace VVVV.Nodes
                     IValueIn pinToDelete = FInputPinList[i];
                     FHost.DeletePin(pinToDelete);
                 }
+                for (int i = 0; i < FSelectPinList.Count; i++)
+                {
+                    IValueIn pinToDelete = FSelectPinList[i];
+                    FHost.DeletePin(pinToDelete);
+                }
                 for (int i = 0; i < FOutputPinList.Count; i++)
                 {
                     IValueOut pinToDelete = FOutputPinList[i];
                     FHost.DeletePin(pinToDelete);
                 }
                 FInputPinList.Clear();
+                FSelectPinList.Clear();
                 FOutputPinList.Clear();
 
                 // create new pins.
@@ -284,9 +293,11 @@ namespace VVVV.Nodes
 
                     IValueIn selectPin;
                     FHost.CreateValueInput("Select " + (i + 1), 1, null, TSliceMode.Single, TPinVisibility.True, out selectPin);
-                    selectPin.SetSubType(0, 1, 1, 1, false, true, false);
-                    FInputPinList.Add(selectPin);
-
+                    selectPin.SetSubType(0, double.MaxValue, 1, 1, false, false, true);
+                    FSelectPinList.Add(selectPin);
+                }
+                for (int i = 0; i < countPin; i++) 
+                {
                     IValueOut outputPin;
                     FHost.CreateValueOutput("Output " + (i + 1), 1, null, TSliceMode.Dynamic, TPinVisibility.True, out outputPin);
                     outputPin.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
@@ -299,42 +310,49 @@ namespace VVVV.Nodes
         //all data handling should be in here
         public void Evaluate(int SpreadMax)
         {
-            /*
             double countPin;
             double countCons;
             FPinCountPin.GetValue(0, out countPin);
             FPinCountCons.GetValue(0, out countCons);
 
-            //get spread counts
-            int[] countArray = new int[FInputPinList.Count];
-            int totalSpreadCount = 0;
+            int[] select = new int[(int)(countCons)];
 
-            for (int i = 0; i < FInputPinList.Count; i++)
+            for (int cc = 0; cc < countCons;cc++ ) 
             {
-                countArray[i] = FInputPinList[i].SliceCount;
-                totalSpreadCount += countArray[i];
+                double currentValue;
+                FSelectPinList[cc].GetValue(0, out currentValue);
+                select[cc] = (int)currentValue;
             }
 
-            FOutputPin1.SliceCount = totalSpreadCount;
-
-            //copy values
-            int slice = 0;
-            for (int i = 0; i < FInputPinList.Count; i++)
+            for (int cp = 0; cp < countPin; cp++)
             {
-                IValueIn currentInputPin = FInputPinList[i];
+                //get spread counts
+                int[] countArray = new int[(int)(countCons)];
+                int totalSpreadCount = 0;
 
-                for (int j = 0; j < countArray[i]; j++)
+                // indexOfInputPin = i * countPin + cp
+                for (int i = 0; i < countCons; i++)
                 {
-                    double currentValueSlice;
-                    currentInputPin.GetValue(j, out currentValueSlice);
-                    FOutputPin1.SetValue(slice++, currentValueSlice);
+                    // * select[i] so if it is 0 no value is copied
+                    countArray[i] = FInputPinList[(int)(i * countPin + cp)].SliceCount * select[i];
+                    totalSpreadCount += countArray[i];
                 }
 
-            }
-             */
+                FOutputPinList[cp].SliceCount = totalSpreadCount;
 
+                //copy values
+                int slice = 0;
+                for (int i = 0; i < countCons; i++)
+                {
+                    for (int j = 0; j < countArray[i]; j++)
+                    {
+                        double currentValueSlice;
+                        FInputPinList[(int)(i * countPin + cp)].GetValue(j, out currentValueSlice);
+                        FOutputPinList[cp].SetValue(slice++, currentValueSlice);
+                    }
+                }
+            }
         }
- 
         #endregion mainloop
     }
 }
