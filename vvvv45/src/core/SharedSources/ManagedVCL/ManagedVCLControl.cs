@@ -2,12 +2,11 @@
 // Added method ProcessKeyPreview to be able to forward keys like
 // HOME, INSERT and arrow keys.
 // Overwrite IsDialogKey to control application specific behavior.
-
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
+
 using System.Windows.Forms;
 using System.Reflection;
 
