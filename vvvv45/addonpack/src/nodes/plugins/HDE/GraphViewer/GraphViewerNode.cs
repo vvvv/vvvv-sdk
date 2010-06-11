@@ -331,7 +331,7 @@ namespace VVVV.Nodes.GraphViewer
             FHDEHost = host;
             
             //now create a child container, which knows how to map the HDE model.
-            FChildContainer = FHDEHost.Container.CreateChildContainer();
+            FChildContainer = FHDEHost.UnityContainer.CreateChildContainer();
             FChildContainer.AddNewExtension<GraphViewerModelContainerExtension>();
             
             //create an event hub which is used by the event extension to route events.
@@ -402,7 +402,7 @@ namespace VVVV.Nodes.GraphViewer
                     if (FActiveWindow != null)
                     {
                         FActivePatchNode.UnSubscribe();
-                        FHDEHost.Container.Teardown(FActiveWindow);
+                        FHDEHost.UnityContainer.Teardown(FActiveWindow);
                     }
                     
                     UpdateRoot(window.GetNode());
@@ -441,7 +441,7 @@ namespace VVVV.Nodes.GraphViewer
             if (FActiveWindow != null)
             {
                 FActivePatchNode.UnSubscribe();
-                FHDEHost.Container.Teardown(FActiveWindow);
+                FHDEHost.UnityContainer.Teardown(FActiveWindow);
             }
             
             FActivePatchNode = FChildContainer.BuildUp(new PatchNode(patch));
