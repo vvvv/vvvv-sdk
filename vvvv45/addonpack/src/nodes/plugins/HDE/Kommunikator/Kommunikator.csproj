@@ -17,7 +17,7 @@
     <FileAlignment>4096</FileAlignment>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <OutputPath>..\..\..\vvvv40_DynamicNodes\plugins</OutputPath>
+    <OutputPath>..\..\..\vvvv40_DynamicNodes\plugins\</OutputPath>
     <SourceAnalysisOverrideSettingsFile>C:\Users\joreg\AppData\Roaming\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
     <StartArguments>xy</StartArguments>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
@@ -39,11 +39,22 @@
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PluginInterfaces">
+      <HintPath>C:\Users\joreg\dev\vake\source\complete\plugins\_lib\PluginInterfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="_Utils">
+      <HintPath>C:\Users\joreg\dev\vake\source\complete\plugins\_lib\_Utils.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\_SharedSources\ManagedVCL\ManagedVCLControl.cs">
+      <Link>ManagedVCLControl.cs</Link>
+    </Compile>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="IKommunikator.cs" />
     <Compile Include="Uploader.cs" />
@@ -51,18 +62,6 @@
     <EmbeddedResource Include="KommunikatorNode.resx">
       <DependentUpon>KommunikatorNode.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\vvvv40_DynamicNodes\src.net\_PluginInterfaces\PluginInterfaces.csproj">
-      <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
-      <Name>PluginInterfaces</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\vvvv40_DynamicNodes\src.net\_Utils\Utils.csproj">
-      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
-      <Name>Utils</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

@@ -33,6 +33,8 @@ using System.Collections.Specialized;
 using System.Net;
 using System.IO;
 
+using ManagedVCL;
+
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.Crypto;
 
@@ -40,7 +42,7 @@ using VVVV.Utils.Crypto;
 namespace VVVV.Nodes.Kommunikator
 {
     //class definition, inheriting from UserControl for the GUI stuff
-    public class KommunikatorPluginNode: UserControl, IHDEPlugin, IKommunikator
+    public class KommunikatorPluginNode: TopControl, IHDEPlugin, IKommunikator
     {
         #region field declaration
         
@@ -64,7 +66,8 @@ namespace VVVV.Nodes.Kommunikator
         
         private const int CHeaderWidth = 900;
         private const int CHeaderHeight = 200;
-        private const Uri CPictureUploadUri = new Uri("http://vvvv.org/external-api/picture-upload")
+        
+        private System.Uri CPictureUploadUri = new Uri("http://vvvv.org/web-api/picture-upload");
         
         #endregion field declaration
         
@@ -175,21 +178,23 @@ namespace VVVV.Nodes.Kommunikator
         private void InitializeComponent()
         {
         	this.panelScreenshot = new System.Windows.Forms.Panel();
-        	this.pictureBoxScreenshot = new System.Windows.Forms.PictureBox();
-        	this.labelScreenshotInfo = new System.Windows.Forms.Label();
+        	this.ScreenshotPictureBox = new System.Windows.Forms.PictureBox();
+        	this.ScreenshotInfoLabel = new System.Windows.Forms.Label();
         	this.panel2 = new System.Windows.Forms.Panel();
-        	this.textBoxScreenshotDescription = new System.Windows.Forms.TextBox();
-        	this.textBoxScreenshotTitle = new System.Windows.Forms.TextBox();
+        	this.ScreenshotDescriptionTextBox = new System.Windows.Forms.TextBox();
+        	this.ScreenshotTitleTextBox = new System.Windows.Forms.TextBox();
         	this.panel1 = new System.Windows.Forms.Panel();
         	this.panel3 = new System.Windows.Forms.Panel();
-        	this.buttonUpload = new System.Windows.Forms.Button();
-        	this.buttonClose = new System.Windows.Forms.Button();
-        	this.checkBoxUseAsHeader = new System.Windows.Forms.CheckBox();
-        	this.textBoxPassword = new System.Windows.Forms.TextBox();
-        	this.textBoxUsername = new System.Windows.Forms.TextBox();
-        	this.textBoxConsole = new System.Windows.Forms.TextBox();
+        	this.UploadButton = new System.Windows.Forms.Button();
+        	this.SaveButton = new System.Windows.Forms.Button();
+        	this.CloseButton = new System.Windows.Forms.Button();
+        	this.UseAsHeaderCheckBox = new System.Windows.Forms.CheckBox();
+        	this.PasswordTextBox = new System.Windows.Forms.TextBox();
+        	this.UsernameTextBox = new System.Windows.Forms.TextBox();
+        	this.ConsoleTextBox = new System.Windows.Forms.TextBox();
+        	this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
         	this.panelScreenshot.SuspendLayout();
-        	((System.ComponentModel.ISupportInitialize)(this.pictureBoxScreenshot)).BeginInit();
+        	((System.ComponentModel.ISupportInitialize)(this.ScreenshotPictureBox)).BeginInit();
         	this.panel2.SuspendLayout();
         	this.panel1.SuspendLayout();
         	this.panel3.SuspendLayout();
@@ -197,47 +202,47 @@ namespace VVVV.Nodes.Kommunikator
         	// 
         	// panelScreenshot
         	// 
-        	this.panelScreenshot.Controls.Add(this.pictureBoxScreenshot);
-        	this.panelScreenshot.Controls.Add(this.labelScreenshotInfo);
+        	this.panelScreenshot.Controls.Add(this.ScreenshotPictureBox);
+        	this.panelScreenshot.Controls.Add(this.ScreenshotInfoLabel);
         	this.panelScreenshot.Controls.Add(this.panel2);
-        	this.panelScreenshot.Controls.Add(this.textBoxConsole);
+        	this.panelScreenshot.Controls.Add(this.ConsoleTextBox);
         	this.panelScreenshot.Dock = System.Windows.Forms.DockStyle.Fill;
         	this.panelScreenshot.Location = new System.Drawing.Point(0, 0);
         	this.panelScreenshot.Name = "panelScreenshot";
         	this.panelScreenshot.Size = new System.Drawing.Size(489, 402);
         	this.panelScreenshot.TabIndex = 2;
         	// 
-        	// pictureBoxScreenshot
+        	// ScreenshotPictureBox
         	// 
-        	this.pictureBoxScreenshot.BackColor = System.Drawing.Color.Black;
-        	this.pictureBoxScreenshot.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-        	this.pictureBoxScreenshot.Cursor = System.Windows.Forms.Cursors.Cross;
-        	this.pictureBoxScreenshot.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.pictureBoxScreenshot.InitialImage = null;
-        	this.pictureBoxScreenshot.Location = new System.Drawing.Point(0, 0);
-        	this.pictureBoxScreenshot.Name = "pictureBoxScreenshot";
-        	this.pictureBoxScreenshot.Size = new System.Drawing.Size(489, 279);
-        	this.pictureBoxScreenshot.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-        	this.pictureBoxScreenshot.TabIndex = 3;
-        	this.pictureBoxScreenshot.TabStop = false;
-        	this.pictureBoxScreenshot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBoxScreenshotMouseMove);
-        	this.pictureBoxScreenshot.Resize += new System.EventHandler(this.PictureBoxScreenshotResize);
-        	this.pictureBoxScreenshot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBoxScreenshotMouseDown);
-        	this.pictureBoxScreenshot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBoxScreenshotMouseUp);
+        	this.ScreenshotPictureBox.BackColor = System.Drawing.Color.Black;
+        	this.ScreenshotPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+        	this.ScreenshotPictureBox.Cursor = System.Windows.Forms.Cursors.Cross;
+        	this.ScreenshotPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+        	this.ScreenshotPictureBox.InitialImage = null;
+        	this.ScreenshotPictureBox.Location = new System.Drawing.Point(0, 0);
+        	this.ScreenshotPictureBox.Name = "ScreenshotPictureBox";
+        	this.ScreenshotPictureBox.Size = new System.Drawing.Size(489, 279);
+        	this.ScreenshotPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+        	this.ScreenshotPictureBox.TabIndex = 3;
+        	this.ScreenshotPictureBox.TabStop = false;
+        	this.ScreenshotPictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBoxScreenshotMouseMove);
+        	this.ScreenshotPictureBox.Resize += new System.EventHandler(this.PictureBoxScreenshotResize);
+        	this.ScreenshotPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBoxScreenshotMouseDown);
+        	this.ScreenshotPictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBoxScreenshotMouseUp);
         	// 
-        	// labelScreenshotInfo
+        	// ScreenshotInfoLabel
         	// 
-        	this.labelScreenshotInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
-        	this.labelScreenshotInfo.Location = new System.Drawing.Point(0, 279);
-        	this.labelScreenshotInfo.Name = "labelScreenshotInfo";
-        	this.labelScreenshotInfo.Size = new System.Drawing.Size(489, 18);
-        	this.labelScreenshotInfo.TabIndex = 10;
-        	this.labelScreenshotInfo.Text = "ScreenshotInfo";
+        	this.ScreenshotInfoLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+        	this.ScreenshotInfoLabel.Location = new System.Drawing.Point(0, 279);
+        	this.ScreenshotInfoLabel.Name = "ScreenshotInfoLabel";
+        	this.ScreenshotInfoLabel.Size = new System.Drawing.Size(489, 18);
+        	this.ScreenshotInfoLabel.TabIndex = 10;
+        	this.ScreenshotInfoLabel.Text = "ScreenshotInfo";
         	// 
         	// panel2
         	// 
-        	this.panel2.Controls.Add(this.textBoxScreenshotDescription);
-        	this.panel2.Controls.Add(this.textBoxScreenshotTitle);
+        	this.panel2.Controls.Add(this.ScreenshotDescriptionTextBox);
+        	this.panel2.Controls.Add(this.ScreenshotTitleTextBox);
         	this.panel2.Controls.Add(this.panel1);
         	this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
         	this.panel2.Location = new System.Drawing.Point(0, 297);
@@ -245,31 +250,31 @@ namespace VVVV.Nodes.Kommunikator
         	this.panel2.Size = new System.Drawing.Size(489, 85);
         	this.panel2.TabIndex = 9;
         	// 
-        	// textBoxScreenshotDescription
+        	// ScreenshotDescriptionTextBox
         	// 
-        	this.textBoxScreenshotDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-        	this.textBoxScreenshotDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.textBoxScreenshotDescription.Location = new System.Drawing.Point(0, 20);
-        	this.textBoxScreenshotDescription.Multiline = true;
-        	this.textBoxScreenshotDescription.Name = "textBoxScreenshotDescription";
-        	this.textBoxScreenshotDescription.Size = new System.Drawing.Size(344, 65);
-        	this.textBoxScreenshotDescription.TabIndex = 10;
+        	this.ScreenshotDescriptionTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+        	this.ScreenshotDescriptionTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+        	this.ScreenshotDescriptionTextBox.Location = new System.Drawing.Point(0, 20);
+        	this.ScreenshotDescriptionTextBox.Multiline = true;
+        	this.ScreenshotDescriptionTextBox.Name = "ScreenshotDescriptionTextBox";
+        	this.ScreenshotDescriptionTextBox.Size = new System.Drawing.Size(344, 65);
+        	this.ScreenshotDescriptionTextBox.TabIndex = 1;
         	// 
-        	// textBoxScreenshotTitle
+        	// ScreenshotTitleTextBox
         	// 
-        	this.textBoxScreenshotTitle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-        	this.textBoxScreenshotTitle.Dock = System.Windows.Forms.DockStyle.Top;
-        	this.textBoxScreenshotTitle.Location = new System.Drawing.Point(0, 0);
-        	this.textBoxScreenshotTitle.Name = "textBoxScreenshotTitle";
-        	this.textBoxScreenshotTitle.Size = new System.Drawing.Size(344, 20);
-        	this.textBoxScreenshotTitle.TabIndex = 11;
+        	this.ScreenshotTitleTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+        	this.ScreenshotTitleTextBox.Dock = System.Windows.Forms.DockStyle.Top;
+        	this.ScreenshotTitleTextBox.Location = new System.Drawing.Point(0, 0);
+        	this.ScreenshotTitleTextBox.Name = "ScreenshotTitleTextBox";
+        	this.ScreenshotTitleTextBox.Size = new System.Drawing.Size(344, 20);
+        	this.ScreenshotTitleTextBox.TabIndex = 0;
         	// 
         	// panel1
         	// 
         	this.panel1.Controls.Add(this.panel3);
-        	this.panel1.Controls.Add(this.checkBoxUseAsHeader);
-        	this.panel1.Controls.Add(this.textBoxPassword);
-        	this.panel1.Controls.Add(this.textBoxUsername);
+        	this.panel1.Controls.Add(this.UseAsHeaderCheckBox);
+        	this.panel1.Controls.Add(this.PasswordTextBox);
+        	this.panel1.Controls.Add(this.UsernameTextBox);
         	this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
         	this.panel1.Location = new System.Drawing.Point(344, 0);
         	this.panel1.Name = "panel1";
@@ -278,92 +283,110 @@ namespace VVVV.Nodes.Kommunikator
         	// 
         	// panel3
         	// 
-        	this.panel3.Controls.Add(this.buttonUpload);
-        	this.panel3.Controls.Add(this.buttonClose);
+        	this.panel3.Controls.Add(this.UploadButton);
+        	this.panel3.Controls.Add(this.SaveButton);
+        	this.panel3.Controls.Add(this.CloseButton);
         	this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
         	this.panel3.Location = new System.Drawing.Point(0, 63);
         	this.panel3.Name = "panel3";
         	this.panel3.Size = new System.Drawing.Size(145, 22);
         	this.panel3.TabIndex = 17;
         	// 
-        	// buttonUpload
+        	// UploadButton
         	// 
-        	this.buttonUpload.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.buttonUpload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        	this.buttonUpload.Location = new System.Drawing.Point(0, 0);
-        	this.buttonUpload.Name = "buttonUpload";
-        	this.buttonUpload.Size = new System.Drawing.Size(76, 22);
-        	this.buttonUpload.TabIndex = 14;
-        	this.buttonUpload.Text = "Upload";
-        	this.buttonUpload.UseVisualStyleBackColor = true;
-        	this.buttonUpload.Click += new System.EventHandler(this.ButtonUploadClick);
+        	this.UploadButton.Dock = System.Windows.Forms.DockStyle.Fill;
+        	this.UploadButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        	this.UploadButton.Location = new System.Drawing.Point(0, 0);
+        	this.UploadButton.Name = "UploadButton";
+        	this.UploadButton.Size = new System.Drawing.Size(55, 22);
+        	this.UploadButton.TabIndex = 5;
+        	this.UploadButton.Text = "Upload";
+        	this.UploadButton.UseVisualStyleBackColor = true;
+        	this.UploadButton.Click += new System.EventHandler(this.UploadButtonClick);
         	// 
-        	// buttonClose
+        	// SaveButton
         	// 
-        	this.buttonClose.Dock = System.Windows.Forms.DockStyle.Right;
-        	this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        	this.buttonClose.Location = new System.Drawing.Point(76, 0);
-        	this.buttonClose.Name = "buttonClose";
-        	this.buttonClose.Size = new System.Drawing.Size(69, 22);
-        	this.buttonClose.TabIndex = 15;
-        	this.buttonClose.Text = "Close";
-        	this.buttonClose.UseVisualStyleBackColor = true;
-        	this.buttonClose.Click += new System.EventHandler(this.ButtonCloseClick);
+        	this.SaveButton.Dock = System.Windows.Forms.DockStyle.Right;
+        	this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        	this.SaveButton.Location = new System.Drawing.Point(55, 0);
+        	this.SaveButton.Name = "SaveButton";
+        	this.SaveButton.Size = new System.Drawing.Size(45, 22);
+        	this.SaveButton.TabIndex = 6;
+        	this.SaveButton.Text = "Save";
+        	this.SaveButton.UseVisualStyleBackColor = true;
+        	this.SaveButton.Click += new System.EventHandler(this.SaveButtonClick);
         	// 
-        	// checkBoxUseAsHeader
+        	// CloseButton
         	// 
-        	this.checkBoxUseAsHeader.Dock = System.Windows.Forms.DockStyle.Top;
-        	this.checkBoxUseAsHeader.Enabled = false;
-        	this.checkBoxUseAsHeader.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        	this.checkBoxUseAsHeader.Location = new System.Drawing.Point(0, 40);
-        	this.checkBoxUseAsHeader.Name = "checkBoxUseAsHeader";
-        	this.checkBoxUseAsHeader.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-        	this.checkBoxUseAsHeader.Size = new System.Drawing.Size(145, 21);
-        	this.checkBoxUseAsHeader.TabIndex = 16;
-        	this.checkBoxUseAsHeader.Text = "use image as header";
-        	this.checkBoxUseAsHeader.UseVisualStyleBackColor = true;
-        	this.checkBoxUseAsHeader.CheckedChanged += new System.EventHandler(this.CheckBoxUseAsHeaderCheckedChanged);
+        	this.CloseButton.Dock = System.Windows.Forms.DockStyle.Right;
+        	this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        	this.CloseButton.Location = new System.Drawing.Point(100, 0);
+        	this.CloseButton.Name = "CloseButton";
+        	this.CloseButton.Size = new System.Drawing.Size(45, 22);
+        	this.CloseButton.TabIndex = 7;
+        	this.CloseButton.Text = "Close";
+        	this.CloseButton.UseVisualStyleBackColor = true;
+        	this.CloseButton.Click += new System.EventHandler(this.CloseButtonClick);
         	// 
-        	// textBoxPassword
+        	// UseAsHeaderCheckBox
         	// 
-        	this.textBoxPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-        	this.textBoxPassword.Dock = System.Windows.Forms.DockStyle.Top;
-        	this.textBoxPassword.Location = new System.Drawing.Point(0, 20);
-        	this.textBoxPassword.Name = "textBoxPassword";
-        	this.textBoxPassword.PasswordChar = '*';
-        	this.textBoxPassword.Size = new System.Drawing.Size(145, 20);
-        	this.textBoxPassword.TabIndex = 15;
-        	this.textBoxPassword.Text = "guest";
+        	this.UseAsHeaderCheckBox.Dock = System.Windows.Forms.DockStyle.Top;
+        	this.UseAsHeaderCheckBox.Enabled = false;
+        	this.UseAsHeaderCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        	this.UseAsHeaderCheckBox.Location = new System.Drawing.Point(0, 40);
+        	this.UseAsHeaderCheckBox.Name = "UseAsHeaderCheckBox";
+        	this.UseAsHeaderCheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+        	this.UseAsHeaderCheckBox.Size = new System.Drawing.Size(145, 21);
+        	this.UseAsHeaderCheckBox.TabIndex = 4;
+        	this.UseAsHeaderCheckBox.Text = "use image as header";
+        	this.UseAsHeaderCheckBox.UseVisualStyleBackColor = true;
+        	this.UseAsHeaderCheckBox.CheckedChanged += new System.EventHandler(this.UseAsHeaderCheckBoxCheckedChanged);
         	// 
-        	// textBoxUsername
+        	// PasswordTextBox
         	// 
-        	this.textBoxUsername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-        	this.textBoxUsername.Dock = System.Windows.Forms.DockStyle.Top;
-        	this.textBoxUsername.Location = new System.Drawing.Point(0, 0);
-        	this.textBoxUsername.Name = "textBoxUsername";
-        	this.textBoxUsername.Size = new System.Drawing.Size(145, 20);
-        	this.textBoxUsername.TabIndex = 14;
-        	this.textBoxUsername.Text = "guest";
+        	this.PasswordTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+        	this.PasswordTextBox.Dock = System.Windows.Forms.DockStyle.Top;
+        	this.PasswordTextBox.Location = new System.Drawing.Point(0, 20);
+        	this.PasswordTextBox.Name = "PasswordTextBox";
+        	this.PasswordTextBox.PasswordChar = '*';
+        	this.PasswordTextBox.Size = new System.Drawing.Size(145, 20);
+        	this.PasswordTextBox.TabIndex = 3;
+        	this.PasswordTextBox.Text = "guest";
         	// 
-        	// textBoxConsole
+        	// UsernameTextBox
         	// 
-        	this.textBoxConsole.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-        	this.textBoxConsole.Dock = System.Windows.Forms.DockStyle.Bottom;
-        	this.textBoxConsole.Location = new System.Drawing.Point(0, 382);
-        	this.textBoxConsole.Name = "textBoxConsole";
-        	this.textBoxConsole.Size = new System.Drawing.Size(489, 20);
-        	this.textBoxConsole.TabIndex = 11;
+        	this.UsernameTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+        	this.UsernameTextBox.Dock = System.Windows.Forms.DockStyle.Top;
+        	this.UsernameTextBox.Location = new System.Drawing.Point(0, 0);
+        	this.UsernameTextBox.Name = "UsernameTextBox";
+        	this.UsernameTextBox.Size = new System.Drawing.Size(145, 20);
+        	this.UsernameTextBox.TabIndex = 2;
+        	this.UsernameTextBox.Text = "guest";
+        	// 
+        	// ConsoleTextBox
+        	// 
+        	this.ConsoleTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+        	this.ConsoleTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
+        	this.ConsoleTextBox.Location = new System.Drawing.Point(0, 382);
+        	this.ConsoleTextBox.Name = "ConsoleTextBox";
+        	this.ConsoleTextBox.Size = new System.Drawing.Size(489, 20);
+        	this.ConsoleTextBox.TabIndex = 11;
+        	this.ConsoleTextBox.TabStop = false;
+        	// 
+        	// saveFileDialog
+        	// 
+        	this.saveFileDialog.Filter = "\"PNG (*.png)|*.png|All Files (*.*)|*.*";
+        	this.saveFileDialog.Title = "Save Screenshot As...";
         	// 
         	// KommunikatorPluginNode
         	// 
         	this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
         	this.Controls.Add(this.panelScreenshot);
-        	this.DoubleBuffered = true;
         	this.Name = "KommunikatorPluginNode";
         	this.Size = new System.Drawing.Size(489, 402);
         	this.panelScreenshot.ResumeLayout(false);
         	this.panelScreenshot.PerformLayout();
-        	((System.ComponentModel.ISupportInitialize)(this.pictureBoxScreenshot)).EndInit();
+        	((System.ComponentModel.ISupportInitialize)(this.ScreenshotPictureBox)).EndInit();
         	this.panel2.ResumeLayout(false);
         	this.panel2.PerformLayout();
         	this.panel1.ResumeLayout(false);
@@ -371,19 +394,21 @@ namespace VVVV.Nodes.Kommunikator
         	this.panel3.ResumeLayout(false);
         	this.ResumeLayout(false);
         }
-        private System.Windows.Forms.Button buttonClose;
+        private System.Windows.Forms.PictureBox ScreenshotPictureBox;
+        private System.Windows.Forms.TextBox ScreenshotDescriptionTextBox;
+        private System.Windows.Forms.TextBox PasswordTextBox;
+        private System.Windows.Forms.TextBox UsernameTextBox;
+        private System.Windows.Forms.Button UploadButton;
+        private System.Windows.Forms.TextBox ScreenshotTitleTextBox;
+        private System.Windows.Forms.Label ScreenshotInfoLabel;
+        private System.Windows.Forms.CheckBox UseAsHeaderCheckBox;
+        private System.Windows.Forms.TextBox ConsoleTextBox;
+        private System.Windows.Forms.Button CloseButton;
+        private System.Windows.Forms.Button SaveButton;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.TextBox textBoxConsole;
-        private System.Windows.Forms.CheckBox checkBoxUseAsHeader;
-        private System.Windows.Forms.Label labelScreenshotInfo;
-        private System.Windows.Forms.TextBox textBoxScreenshotTitle;
-        private System.Windows.Forms.Button buttonUpload;
-        private System.Windows.Forms.TextBox textBoxUsername;
-        private System.Windows.Forms.TextBox textBoxPassword;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox textBoxScreenshotDescription;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.PictureBox pictureBoxScreenshot;
         private System.Windows.Forms.Panel panelScreenshot;
         
         #region initialization
@@ -401,34 +426,40 @@ namespace VVVV.Nodes.Kommunikator
         #endregion initialization
         
         #region IKommunikator
-        public void SetIKommunikatorHost(IKommunikatorHost host)
+        public void SetKommunikatorHost(IKommunikatorHost host)
         {
             FKommunikatorHost = host;
         }
         
         public void Initialize(string title, string description)
         {
-            textBoxScreenshotTitle.Text = title;
-            textBoxScreenshotDescription.Text = description;
+            ScreenshotTitleTextBox.Text = title;
+            ScreenshotDescriptionTextBox.Text = description;
             
             FOriginal = Clipboard.GetImage();
-            pictureBoxScreenshot.BackgroundImage = FOriginal;
+            ScreenshotPictureBox.BackgroundImage = FOriginal;
             
-            //create overlay image that holds the crop selection 
+            //create overlay image that holds the crop selection
             Image img = new Bitmap(FOriginal.Width, FOriginal.Height, PixelFormat.Format32bppArgb);
             FOverlay = Graphics.FromImage(img);
-            pictureBoxScreenshot.Image = img;
+            ScreenshotPictureBox.Image = img;
             
             if ((FOriginal.Width >= CHeaderWidth) && (FOriginal.Height >= CHeaderHeight))
-                checkBoxUseAsHeader.Enabled = true;
+                UseAsHeaderCheckBox.Enabled = true;
             else
-                checkBoxUseAsHeader.Enabled = false;
+                UseAsHeaderCheckBox.Enabled = false;
             
             FOriginalAspect = FOriginal.Width / (double) FOriginal.Height;
             FCropRect = new Rectangle(0, 0, FOriginal.Width, FOriginal.Height);
             
             UpdateZoomedImageRect();
             UpdateScreenshotInfo();
+        }
+        
+        public void SaveCurrentImage(string filename)
+        {
+            FOriginal = Clipboard.GetImage();
+            SaveToFile(FOriginal, filename);
         }
         #endregion IKommunikator
         
@@ -466,36 +497,34 @@ namespace VVVV.Nodes.Kommunikator
         {
             UpdateZoomedImageRect();
         }
-         
-        #endregion PictureBox
         
         private void UpdateScreenshotInfo()
         {
-            labelScreenshotInfo.Text = "Original: " + FOriginal.Width.ToString() + " x " + FOriginal.Height.ToString() + " Cropped: " + FCropRect.Width.ToString() + " x " + FCropRect.Height.ToString();
-            labelScreenshotInfo.Invalidate();
+            ScreenshotInfoLabel.Text = "Original: " + FOriginal.Width.ToString() + " x " + FOriginal.Height.ToString() + " Cropped: " + FCropRect.Width.ToString() + " x " + FCropRect.Height.ToString();
+            ScreenshotInfoLabel.Invalidate();
         }
         
         private void UpdateZoomedImageRect()
         {
             int left, top, width, height;
-            FPictureBoxAspect = pictureBoxScreenshot.Width / (double) pictureBoxScreenshot.Height;
+            FPictureBoxAspect = ScreenshotPictureBox.Width / (double) ScreenshotPictureBox.Height;
             
             //aspect > 1 is landscape
             //aspect <= 1 is portrait
             
             if (FPictureBoxAspect > FOriginalAspect)
             {
-                height = pictureBoxScreenshot.Height;
+                height = ScreenshotPictureBox.Height;
                 width = (int)Math.Round(height * FOriginalAspect);
             }
             else
             {
-                width = pictureBoxScreenshot.Width;
+                width = ScreenshotPictureBox.Width;
                 height = (int)Math.Round(width / FOriginalAspect);
             }
             
-            left = pictureBoxScreenshot.Width / 2 - width / 2;
-            top = pictureBoxScreenshot.Height / 2 - height / 2;
+            left = ScreenshotPictureBox.Width / 2 - width / 2;
+            top = ScreenshotPictureBox.Height / 2 - height / 2;
             
             FZoomedImage = new Rectangle(left, top, width, height);
         }
@@ -507,7 +536,7 @@ namespace VVVV.Nodes.Kommunikator
             double yScale = FZoomedImage.Height / (double) FOriginal.Height;
             
             int left, top, width, height;
-            if ((checkBoxUseAsHeader.Enabled && checkBoxUseAsHeader.Checked))
+            if ((UseAsHeaderCheckBox.Enabled && UseAsHeaderCheckBox.Checked))
             {
                 left = Math.Max(0, (int) ((FMouseCurrentPoint.X - FZoomedImage.Left) / xScale) - CHeaderWidth/2);
                 left = Math.Min(left, FOriginal.Width - CHeaderWidth);
@@ -530,19 +559,32 @@ namespace VVVV.Nodes.Kommunikator
             
             FOverlay.DrawRectangle(FRectPen, FCropRect);
             UpdateScreenshotInfo();
-            pictureBoxScreenshot.Invalidate();
+            ScreenshotPictureBox.Invalidate();
         }
-       
-        void ButtonUploadClick(object sender, EventArgs e)
+        #endregion PictureBox
+        
+        private Bitmap CropImage()
         {
-            textBoxConsole.Text = "";
-            
-            //crop the image
             Bitmap target = new Bitmap(FCropRect.Width, FCropRect.Height);
             using(Graphics g = Graphics.FromImage(target))
             {
                 g.DrawImage(FOriginal, new Rectangle(0, 0, target.Width, target.Height), FCropRect, GraphicsUnit.Pixel);
             }
+            
+            return target;
+        }
+        
+        private void SaveToFile(Image image, string filename)
+        {
+            image.Save(filename, ImageFormat.Png);  
+        }
+         
+        void UploadButtonClick(object sender, EventArgs e)
+        {
+        	ConsoleTextBox.Text = "";
+            
+            //crop the image
+            Bitmap target = CropImage();
 
             MemoryStream fileData = new MemoryStream();
             target.Save(fileData, System.Drawing.Imaging.ImageFormat.Png);
@@ -550,13 +592,13 @@ namespace VVVV.Nodes.Kommunikator
 
             //add post-header
             NameValueCollection nvc = new NameValueCollection();
-            nvc.Add("name", textBoxUsername.Text);
-            nvc.Add("pass", FStringHasher.ToMD5(textBoxPassword.Text));
-            nvc.Add("header", (checkBoxUseAsHeader.Enabled && checkBoxUseAsHeader.Checked).ToString());
-            nvc.Add("title", textBoxScreenshotTitle.Text);
-            nvc.Add("description", textBoxScreenshotDescription.Text);
+            nvc.Add("name", UsernameTextBox.Text);
+            nvc.Add("pass", FStringHasher.ToMD5(PasswordTextBox.Text));
+            nvc.Add("header", (UseAsHeaderCheckBox.Enabled && UseAsHeaderCheckBox.Checked).ToString());
+            nvc.Add("title", ScreenshotTitleTextBox.Text);
+            nvc.Add("description", ScreenshotDescriptionTextBox.Text);
 
-            using (WebResponse response = Upload.PostFile(CPictureUploadUri, nvc, fileData, "upload.png", null, null, null, null))
+            using (WebResponse response = Upload.PostFile(CPictureUploadUri, nvc, fileData, ScreenshotTitleTextBox.Text + ".png", null, null, null, null))
             {
                 // the stream returned by WebResponse.GetResponseStream
                 // will contain any content returned by the server after upload
@@ -565,27 +607,41 @@ namespace VVVV.Nodes.Kommunikator
                 {
                     string result = reader.ReadToEnd();
                     if (result.Contains("OK"))
-                        textBoxConsole.Text = "Upload Successful.";
+                        ConsoleTextBox.Text = "Upload Successful.";
                     else if (result.Contains("LOGIN FAILED"))
-                        textBoxConsole.Text = "Login failed!";
+                        ConsoleTextBox.Text = "Login failed!";
                     else if (result.Contains("SERVER BUSY"))
-                        textBoxConsole.Text = "Server is busy, please try again later.";
+                        ConsoleTextBox.Text = "Server is busy, please try again later.";
                     else
-                        textBoxConsole.Text = "ERROR: " + result;
+                        ConsoleTextBox.Text = "ERROR: " + result;
                 }
             }
         }
         
-        void ButtonCloseClick(object sender, EventArgs e)
+        void SaveButtonClick(object sender, EventArgs e)
         {
-            FKommunikatorHost.HideMe();
+        	string filename = ScreenshotTitleTextBox.Text;
+            char[] invalids = System.IO.Path.GetInvalidFileNameChars();
+            foreach (char c in invalids)
+                filename = filename.Replace(c, '_');
+            saveFileDialog.FileName = filename;
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                Bitmap target = CropImage();
+                SaveToFile(target, saveFileDialog.FileName);
+            }
         }
         
-        void CheckBoxUseAsHeaderCheckedChanged(object sender, EventArgs e)
+        void CloseButtonClick(object sender, EventArgs e)
         {
-            if (checkBoxUseAsHeader.Checked)
+        	FKommunikatorHost.HideMe();
+        }
+        
+        void UseAsHeaderCheckBoxCheckedChanged(object sender, EventArgs e)
+        {
+        	if (UseAsHeaderCheckBox.Checked)
             {
-                FMouseCurrentPoint = new Point(pictureBoxScreenshot.Width/2, pictureBoxScreenshot.Height/2);
+                FMouseCurrentPoint = new Point(ScreenshotPictureBox.Width/2, ScreenshotPictureBox.Height/2);
                 UpdateOverlay();
             }
         }

@@ -14,14 +14,13 @@ namespace VVVV.PluginInterfaces.V1
 		/// Called by the KommunikatorHost to hand itself over to the Kommunikator.
 		/// </summary>
 		/// <param name="Host">Interface to the KommunikatorHost.</param>
-		void SetIKommunikatorHost(IKommunikatorHost host);
+		void SetKommunikatorHost(IKommunikatorHost host);
 		void Initialize(string path, string description);
-		//void AfterShow();
-		//void BeforeHide();
+		void SaveCurrentImage(string filename);
 	}
 	
 	/// <summary>
-	/// Allows the Kommunikator to communicate back to the host
+	/// Allows the Kommunikator to communicate back to its host
 	/// </summary>
 	[Guid("8FCFCF38-14B4-4BB3-9A2A-7D0D71BB98BD"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
