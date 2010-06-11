@@ -343,7 +343,7 @@ namespace VVVV.Nodes.NodeBrowser
             FHDEHost.AddListener(this);
             
             //now create a child container, which knows how to map the HDE model.
-            var cc = FHDEHost.Container.CreateChildContainer();
+            var cc = FHDEHost.UnityContainer.CreateChildContainer();
             cc.AddNewExtension<NodeBrowserModelContainerExtension>();
             
             //create a IContentProvider and hand it to the treeViewer
@@ -438,7 +438,7 @@ namespace VVVV.Nodes.NodeBrowser
                 FAwesomeWidth = Math.Max(FAwesomeWidth, s.Width);
                 
                 //insert nodeInfo to NodeListModel
-                var nodeInfoEntry = FHDEHost.Container.BuildUp(new NodeInfoEntry(nodeInfo));
+                var nodeInfoEntry = FHDEHost.UnityContainer.BuildUp(new NodeInfoEntry(nodeInfo));
                 CategoryEntry catEntry;
                 if (FCategoryModel.Contains(nodeInfoEntry.Category))
                 {
@@ -447,7 +447,7 @@ namespace VVVV.Nodes.NodeBrowser
                 }
                 else
                 {
-                    catEntry = FHDEHost.Container.BuildUp(new CategoryEntry(nodeInfoEntry.Category));
+                    catEntry = FHDEHost.UnityContainer.BuildUp(new CategoryEntry(nodeInfoEntry.Category));
                     catEntry.Add(nodeInfoEntry);
                     FCategoryModel.Add(catEntry);
                 }
