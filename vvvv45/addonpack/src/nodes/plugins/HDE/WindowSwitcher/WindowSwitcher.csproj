@@ -39,9 +39,15 @@
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PluginInterfaces">
+      <HintPath>C:\Users\joreg\dev\vake\source\complete\plugins\_lib\vvvv\PluginInterfaces.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="_Utils">
+      <HintPath>C:\Users\joreg\dev\vake\source\complete\plugins\_lib\vvvv\_Utils.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -64,13 +70,6 @@
     <EmbeddedResource Include="WindowSwitcherNode.resx">
       <DependentUpon>WindowSwitcherNode.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\vvvv40_DynamicNodes\src.net\_PluginInterfaces\PluginInterfaces.csproj">
-      <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
-      <Name>PluginInterfaces</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
