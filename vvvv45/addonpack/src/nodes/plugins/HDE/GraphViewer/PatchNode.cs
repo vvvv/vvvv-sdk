@@ -18,8 +18,26 @@ namespace VVVV.Nodes.GraphViewer
         {
             get
             {
+                string descriptiveName = "";
+                string srChannel = "";
+                string comment = "";
                 if ((Node != null) && (Node.GetNodeInfo() != null))
-                    return Node.GetNodeInfo().Username + " [id " + Node.GetID().ToString() + "]";
+                {
+                    descriptiveName = Node.GetPin("Descriptive Name").GetValue(0) + " ";
+                                        
+                    if (Node.GetNodeInfo().Username == "IOBox (String)")
+                    {
+                        if ((!Node.GetPin("Input String").IsConnected()) && (!Node.GetPin("Output String").IsConnected()))
+                            comment = Node.GetPin("Input String").GetValue(0) + " ";
+                    }
+                    else if (Node.GetNodeInfo().Name == "S")
+                        srChannel = Node.GetPin("SendString").GetValue(0) + " "; 
+                    else if (Node.GetNodeInfo().Name == "R")
+                        srChannel = Node.GetPin("ReceiveString").GetValue(0) + " "; 
+                    
+                    
+                    return Node.GetNodeInfo().Username + " " + descriptiveName + srChannel + comment + "[id " + Node.GetID().ToString() + "]";
+                }
                 else
                     return "..";
             }

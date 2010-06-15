@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("GraphViewer")]
 [assembly: AssemblyDescription("GraphViewer Plugin for VVVV")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("anonymous")]
+[assembly: AssemblyCompany("vvvv group")]
 [assembly: AssemblyProduct("GraphViewer")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
