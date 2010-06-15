@@ -149,9 +149,9 @@ namespace VVVV.Nodes.Kommunikator
                     FPluginInfo.Warnings = "";
                     
                     //define the nodes initial size in box-mode
-                    FPluginInfo.InitialBoxSize = new Size(200, 100);
+                    FPluginInfo.InitialBoxSize = new Size(400, 300);
                     //define the nodes initial size in window-mode
-                    FPluginInfo.InitialWindowSize = new Size(400, 300);
+                    FPluginInfo.InitialWindowSize = new Size(500, 400);
                     //define the nodes initial component mode
                     FPluginInfo.InitialComponentMode = TComponentMode.InAWindow;
                     
