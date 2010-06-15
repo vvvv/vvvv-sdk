@@ -64,6 +64,10 @@ namespace VVVV.PluginInterfaces.V1
 		INode GetChild(int index);
 		INode[] GetChildren();
 		
+		//todo: check GetPins mem leak?!
+		IPin[] GetPins();
+		IPin GetPin(string Name);
+		
 		/// <summary>
 		/// Allows a plugin to register an IListener on a specific vvvv node.
 		/// </summary>
@@ -76,6 +80,21 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="listener">The listener to unregister.</param>
 		void RemoveListener(IListener listener);
 	}	
+	
+	/// <summary>
+	/// Gives access to a vvvv nodes pins
+	/// </summary>
+	[Guid("2ED56B52-F43C-41C4-9F34-48911048FA13"), 
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IPin
+	{
+	    string GetName();
+	    string GetValue(int index);
+	    bool IsConnected();
+	    //int GetSliceCount();
+	    //enum GetDirection();
+	    //Enum GetType();
+	}
 	
 	[Guid("1ABB290D-9A96-4944-80CC-F544C8CDD14B"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
