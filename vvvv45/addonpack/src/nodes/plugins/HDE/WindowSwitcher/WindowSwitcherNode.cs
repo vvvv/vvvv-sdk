@@ -169,7 +169,7 @@ namespace VVVV.Nodes.WindowSwitcher
         	// 
         	// WindowSwitcherPluginNode
         	// 
-        	this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+        	this.BackColor = System.Drawing.Color.Silver;
         	this.Controls.Add(this.textBoxDummy);
         	this.DoubleBuffered = true;
         	this.Name = "WindowSwitcherPluginNode";

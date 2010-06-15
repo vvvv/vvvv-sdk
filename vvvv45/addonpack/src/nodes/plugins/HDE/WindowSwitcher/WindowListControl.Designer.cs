@@ -35,7 +35,7 @@ namespace VVVV.Nodes
         	// 
         	// labelCaption
         	// 
-        	this.labelCaption.BackColor = System.Drawing.SystemColors.Control;
+        	this.labelCaption.BackColor = System.Drawing.Color.Silver;
         	this.labelCaption.Dock = System.Windows.Forms.DockStyle.Fill;
         	this.labelCaption.Enabled = false;
         	this.labelCaption.Location = new System.Drawing.Point(13, 0);
@@ -46,7 +46,7 @@ namespace VVVV.Nodes
         	// 
         	// panel1
         	// 
-        	this.panel1.BackColor = System.Drawing.SystemColors.Control;
+        	this.panel1.BackColor = System.Drawing.Color.Silver;
         	this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
         	this.panel1.Enabled = false;
         	this.panel1.Location = new System.Drawing.Point(0, 0);

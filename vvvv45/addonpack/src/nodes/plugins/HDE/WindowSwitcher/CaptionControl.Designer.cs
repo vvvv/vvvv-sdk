@@ -34,6 +34,7 @@ namespace VVVV.Nodes
         	// 
         	// labelCaption
         	// 
+        	this.labelCaption.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(154)))), ((int)(((byte)(154)))), ((int)(((byte)(154)))));
         	this.labelCaption.Dock = System.Windows.Forms.DockStyle.Fill;
         	this.labelCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
         	this.labelCaption.Location = new System.Drawing.Point(0, 0);

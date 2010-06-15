@@ -12,6 +12,7 @@ namespace VVVV.Nodes
     /// </summary>
     public partial class WindowListControl : UserControl
     {
+        private Color CHoverColor = Color.FromArgb(255, 216, 216, 216);
         private IWindow FWindow;
         public IWindow Window
         {
@@ -24,13 +25,13 @@ namespace VVVV.Nodes
             {
                 if (value)
                 {
-                    labelCaption.BackColor = Color.LightGray;
-                    panel1.BackColor = Color.LightGray;
+                    labelCaption.BackColor = CHoverColor;
+                    panel1.BackColor = CHoverColor;
                 }
                 else
         	    {
-                    labelCaption.BackColor = SystemColors.Control;
-                    panel1.BackColor = SystemColors.Control;
+                    labelCaption.BackColor = Color.Silver;
+                    panel1.BackColor = Color.Silver;
                 }
             }
         }
