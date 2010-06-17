@@ -47,7 +47,8 @@ namespace VVVV.Nodes.WindowSwitcher
         // Track whether Dispose has been called.
         private bool FDisposed = false;
         
-        private List<WindowListControl> FWindowList = new List<WindowListControl>();
+        private List<WindowListControl> FFullWindowList = new List<WindowListControl>();
+        private List<WindowListControl> FCurrentWindowList = new List<WindowListControl>();
         private int FWindowWidth;
         private int FSelectedWindowIndex;
         
@@ -156,28 +157,28 @@ namespace VVVV.Nodes.WindowSwitcher
         
         private void InitializeComponent()
         {
-        	this.textBoxDummy = new System.Windows.Forms.TextBox();
+        	this.FDummyTextBox = new System.Windows.Forms.TextBox();
         	this.SuspendLayout();
         	// 
-        	// textBoxDummy
+        	// FDummyTextBox
         	// 
-        	this.textBoxDummy.Location = new System.Drawing.Point(73, 30);
-        	this.textBoxDummy.Name = "textBoxDummy";
-        	this.textBoxDummy.Size = new System.Drawing.Size(100, 20);
-        	this.textBoxDummy.TabIndex = 0;
-        	this.textBoxDummy.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TextBoxDummyKeyUp);
+        	this.FDummyTextBox.Location = new System.Drawing.Point(63, 25);
+        	this.FDummyTextBox.Name = "FDummyTextBox";
+        	this.FDummyTextBox.Size = new System.Drawing.Size(100, 20);
+        	this.FDummyTextBox.TabIndex = 0;
+        	this.FDummyTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FDummyTextBoxKeyUp);
         	// 
         	// WindowSwitcherPluginNode
         	// 
         	this.BackColor = System.Drawing.Color.Silver;
-        	this.Controls.Add(this.textBoxDummy);
+        	this.Controls.Add(this.FDummyTextBox);
         	this.DoubleBuffered = true;
         	this.Name = "WindowSwitcherPluginNode";
         	this.Size = new System.Drawing.Size(288, 180);
         	this.ResumeLayout(false);
         	this.PerformLayout();
         }
-        private System.Windows.Forms.TextBox textBoxDummy;
+        private System.Windows.Forms.TextBox FDummyTextBox;
         
         #region initialization
         
@@ -204,8 +205,8 @@ namespace VVVV.Nodes.WindowSwitcher
             wlc.Click += new EventHandler(WindowListControlClick);
             wlc.MouseEnter += new EventHandler(WindowListControlMouseEnter);
             wlc.MouseLeave += new EventHandler(WindowListControlMouseLeave);
-            FWindowList.Add(wlc);
-            FWindowList.Sort(delegate(WindowListControl w1, WindowListControl w2)
+            FFullWindowList.Add(wlc);
+            FFullWindowList.Sort(delegate(WindowListControl w1, WindowListControl w2)
                              {
                                  if (w1.Window.GetWindowType() > w2.Window.GetWindowType())
                                      return 1;
@@ -218,8 +219,8 @@ namespace VVVV.Nodes.WindowSwitcher
         
         public void WindowRemovedCB(IWindow window)
         {
-            WindowListControl windowToRemove = FWindowList.Find(delegate (WindowListControl wlc) {return wlc.Window == window;});
-            FWindowList.Remove(windowToRemove);
+            WindowListControl windowToRemove = FFullWindowList.Find(delegate (WindowListControl wlc) {return wlc.Window == window;});
+            FFullWindowList.Remove(windowToRemove);
         }
         #endregion IWindowListener
         
@@ -232,12 +233,12 @@ namespace VVVV.Nodes.WindowSwitcher
         public void Initialize(IWindow window, out int width, out int height)
         {
             //mark current window
-            WindowListControl currentWindow = FWindowList.Find(delegate (WindowListControl wlc) {return wlc.Window == window;});
-            FWindowList[FSelectedWindowIndex].Selected = false;
-            FSelectedWindowIndex = FWindowList.IndexOf(currentWindow);
-            FWindowList[FSelectedWindowIndex].Selected = true;
+            WindowListControl currentWindow = FFullWindowList.Find(delegate (WindowListControl wlc) {return wlc.Window == window;});
+            FFullWindowList[FSelectedWindowIndex].Selected = false;
+            FSelectedWindowIndex = FFullWindowList.IndexOf(currentWindow);
+            FFullWindowList[FSelectedWindowIndex].Selected = true;
             
-            foreach(WindowListControl wlc in FWindowList)
+            foreach(WindowListControl wlc in FFullWindowList)
             {
                 wlc.UpdateCaption();
                 FWindowWidth = Math.Max(FWindowWidth, wlc.CaptionWidth);
@@ -253,36 +254,40 @@ namespace VVVV.Nodes.WindowSwitcher
         public void AfterShow()
         {
             //the dummy textbox gets the focus to trigger on CTRL key up
-            textBoxDummy.Focus();
+            FDummyTextBox.Focus();
         }
         
         public void Up()
         {
-            FWindowList[FSelectedWindowIndex].Selected = false;
+            FCurrentWindowList[FSelectedWindowIndex].Selected = false;
             FSelectedWindowIndex -= 1;
             if (FSelectedWindowIndex == -1)
-                FSelectedWindowIndex = FWindowList.Count - 1;
-            FWindowList[FSelectedWindowIndex].Selected = true;
+                FSelectedWindowIndex = FCurrentWindowList.Count - 1;
+            FCurrentWindowList[FSelectedWindowIndex].Selected = true;
         }
         
         public void Down()
         {
-            FWindowList[FSelectedWindowIndex].Selected = false;
-            FSelectedWindowIndex = (FSelectedWindowIndex + 1) % FWindowList.Count;
-            FWindowList[FSelectedWindowIndex].Selected = true;
+            FCurrentWindowList[FSelectedWindowIndex].Selected = false;
+            FSelectedWindowIndex = (FSelectedWindowIndex + 1) % FCurrentWindowList.Count;
+            FCurrentWindowList[FSelectedWindowIndex].Selected = true;
         }
         #endregion IWindowSwitcher
         
         private void UpdateList()
         {
+            //the Kommunikator window is always there
+            //exclude it from the list if it is not visible
+            FCurrentWindowList = FFullWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.IsVisible();});
+            
             this.SuspendLayout();
             this.Controls.Clear();
             //the dummy has keyboardfocus and triggers on CTRL key up
-            this.Controls.Add(textBoxDummy);
+            this.Controls.Add(FDummyTextBox);
             
             CaptionControl title;
             //add patches
-            List<WindowListControl> patches = FWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.Patch;});
+            List<WindowListControl> patches = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.Patch;});
             if (patches.Count > 0)
             {
                 title = new CaptionControl("Patches");
@@ -299,7 +304,7 @@ namespace VVVV.Nodes.WindowSwitcher
             }
             
             //add modules
-            List<WindowListControl> modules = FWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.Module;});
+            List<WindowListControl> modules = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.Module;});
             if (modules.Count > 0)
             {
                 title = new CaptionControl("Modules");
@@ -316,7 +321,7 @@ namespace VVVV.Nodes.WindowSwitcher
             }
             
             //add editors
-            List<WindowListControl> editors = FWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.Editor;});
+            List<WindowListControl> editors = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.Editor;});
             if (editors.Count > 0)
             {
                 title = new CaptionControl("Editors");
@@ -333,7 +338,7 @@ namespace VVVV.Nodes.WindowSwitcher
             }
             
             //add renderer
-            List<WindowListControl> renderer = FWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.Renderer;});
+            List<WindowListControl> renderer = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.Renderer;});
             if (renderer.Count > 0)
             {
                 title = new CaptionControl("Renderer");
@@ -350,7 +355,7 @@ namespace VVVV.Nodes.WindowSwitcher
             }
             
             //add plugins
-            List<WindowListControl> plugins = FWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.Plugin;});
+            List<WindowListControl> plugins = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.Plugin;});
             if (plugins.Count > 0)
             {
                 title = new CaptionControl("Plugin");
@@ -367,10 +372,10 @@ namespace VVVV.Nodes.WindowSwitcher
             }
             
             //add HDEs
-            List<WindowListControl> hdes = FWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.HDE;});
+            List<WindowListControl> hdes = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return (wlc.Window.GetWindowType() == TWindowType.HDE) && wlc.Window.IsVisible();});
             if (hdes.Count > 0)
             {
-                title = new CaptionControl("HDE");
+                title = new CaptionControl("vvvv");
                 this.Controls.Add(title);
                 title.Dock = DockStyle.Top;
                 title.BringToFront();
@@ -385,12 +390,6 @@ namespace VVVV.Nodes.WindowSwitcher
 
             this.ResumeLayout(true);
         }
-      
-        void TextBoxDummyKeyUp(object sender, KeyEventArgs e)
-        {
-            if ((e.KeyData == Keys.ControlKey) || (e.KeyData == Keys.Control))
-                FWindowSwitcherHost.HideMe(FWindowList[FSelectedWindowIndex].Window);
-        }
         
         void WindowListControlClick(object sender, EventArgs e)
         {
@@ -399,18 +398,24 @@ namespace VVVV.Nodes.WindowSwitcher
         
         void WindowListControlMouseEnter(object sender, EventArgs e)
         {
-            //deselect previously selected 
-            FWindowList[FSelectedWindowIndex].Selected = false;
-                
+            //deselect previously selected
+            FFullWindowList[FSelectedWindowIndex].Selected = false;
+            
             //select sender
             (sender as WindowListControl).Selected = true;
-            FSelectedWindowIndex = FWindowList.IndexOf(sender as WindowListControl);
+            FSelectedWindowIndex = FFullWindowList.IndexOf(sender as WindowListControl);
         }
         
         void WindowListControlMouseLeave(object sender, EventArgs e)
         {
             //deselect sender
             (sender as WindowListControl).Selected = false;
+        }
+        
+        void FDummyTextBoxKeyUp(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyData == Keys.ControlKey) || (e.KeyData == Keys.Control))
+                FWindowSwitcherHost.HideMe(FFullWindowList[FSelectedWindowIndex].Window);
         }
     }
 }

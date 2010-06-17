@@ -40,7 +40,8 @@ namespace VVVV.Nodes
         	this.labelCaption.Enabled = false;
         	this.labelCaption.Location = new System.Drawing.Point(13, 0);
         	this.labelCaption.Name = "labelCaption";
-        	this.labelCaption.Size = new System.Drawing.Size(222, 18);
+        	this.labelCaption.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
+        	this.labelCaption.Size = new System.Drawing.Size(222, 16);
         	this.labelCaption.TabIndex = 0;
         	this.labelCaption.Text = "labelCaption";
         	// 
@@ -51,7 +52,7 @@ namespace VVVV.Nodes
         	this.panel1.Enabled = false;
         	this.panel1.Location = new System.Drawing.Point(0, 0);
         	this.panel1.Name = "panel1";
-        	this.panel1.Size = new System.Drawing.Size(13, 18);
+        	this.panel1.Size = new System.Drawing.Size(13, 16);
         	this.panel1.TabIndex = 1;
         	// 
         	// WindowListControl
@@ -61,7 +62,7 @@ namespace VVVV.Nodes
         	this.Controls.Add(this.labelCaption);
         	this.Controls.Add(this.panel1);
         	this.Name = "WindowListControl";
-        	this.Size = new System.Drawing.Size(235, 18);
+        	this.Size = new System.Drawing.Size(235, 16);
         	this.MouseLeave += new System.EventHandler(this.WindowListControlMouseLeave);
         	this.MouseEnter += new System.EventHandler(this.WindowListControlMouseEnter);
         	this.ResumeLayout(false);
