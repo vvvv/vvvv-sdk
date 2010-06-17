@@ -399,11 +399,11 @@ namespace VVVV.Nodes.WindowSwitcher
         void WindowListControlMouseEnter(object sender, EventArgs e)
         {
             //deselect previously selected
-            FFullWindowList[FSelectedWindowIndex].Selected = false;
+            FCurrentWindowList[FSelectedWindowIndex].Selected = false;
             
             //select sender
             (sender as WindowListControl).Selected = true;
-            FSelectedWindowIndex = FFullWindowList.IndexOf(sender as WindowListControl);
+            FSelectedWindowIndex = FCurrentWindowList.IndexOf(sender as WindowListControl);
         }
         
         void WindowListControlMouseLeave(object sender, EventArgs e)
@@ -415,7 +415,7 @@ namespace VVVV.Nodes.WindowSwitcher
         void FDummyTextBoxKeyUp(object sender, KeyEventArgs e)
         {
             if ((e.KeyData == Keys.ControlKey) || (e.KeyData == Keys.Control))
-                FWindowSwitcherHost.HideMe(FFullWindowList[FSelectedWindowIndex].Window);
+                FWindowSwitcherHost.HideMe(FCurrentWindowList[FSelectedWindowIndex].Window);
         }
     }
 }
