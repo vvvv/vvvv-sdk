@@ -66,7 +66,7 @@ namespace VVVV.Nodes
 				//fill out nodes info
 				IPluginInfo Info = new PluginInfo();
 				Info.Name = "RotarySlider";
-				Info.Category = "2d GUI";
+				Info.Category = "GUI";
 				Info.Version = "";
 				Info.Help = "A spread of rotary knob groups";
 				Info.Tags = "EX9, DX9, transform, interaction, mouse, slider, fader";
