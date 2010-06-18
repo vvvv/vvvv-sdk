@@ -15,8 +15,8 @@ namespace VVVV.Nodes
             {
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "QuadTree";
-                Info.Category = "2d Edges";
-                Info.Version = "";
+                Info.Category = "2d";
+                Info.Version = "Edges";
                 Info.Help = "Get Quad tree subdivision for a set of points";
                 Info.Bugs = "";
                 Info.Credits = "";
