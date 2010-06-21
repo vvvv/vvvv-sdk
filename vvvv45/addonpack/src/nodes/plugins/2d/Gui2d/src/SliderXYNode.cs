@@ -71,7 +71,7 @@ namespace VVVV.Nodes
 				Info.Category = "GUI";
 				Info.Version = "";
 				Info.Help = "A spread of xy-slider groups";
-				Info.Tags = "EX9, DX9, transform, interaction, mouse, slider, fader";
+				Info.Tags = "EX9, DX9, transform, interaction, mouse, fader";
 				Info.Author = "tonfilm";
 				Info.Bugs = "";
 				Info.Credits = "";

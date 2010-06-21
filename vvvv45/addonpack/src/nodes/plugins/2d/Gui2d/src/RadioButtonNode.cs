@@ -56,7 +56,7 @@ namespace VVVV.Nodes
 				Info.Category = "GUI";
 				Info.Version = "";
 				Info.Help = "A spread of radio buttons";
-				Info.Tags = "EX9, DX9, transform, interaction, mouse, button, bang";
+				Info.Tags = "EX9, DX9, transform, interaction, mouse, bang";
 				Info.Author = "tonfilm";
 				Info.Bugs = "";
 				Info.Credits = "";

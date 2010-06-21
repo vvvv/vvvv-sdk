@@ -61,7 +61,7 @@ namespace VVVV.Nodes
 				Info.Category = "GUI";
 				Info.Version = "";
 				Info.Help = "A spread of toggle botton groups";
-				Info.Tags = "EX9, DX9, transform, interaction, mouse, button, toggle";
+				Info.Tags = "EX9, DX9, transform, interaction, mouse, toggle";
 				Info.Author = "tonfilm";
 				Info.Bugs = "";
 				Info.Credits = "";
