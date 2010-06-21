@@ -182,12 +182,12 @@ namespace VVVV.Nodes.GraphViewer
         	// 
         	this.FTreeViewer.AutoScroll = true;
         	this.FTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.FTreeViewer.FlatStyle = false;
+        	this.FTreeViewer.FlatStyle = true;
         	this.FTreeViewer.Location = new System.Drawing.Point(0, 62);
         	this.FTreeViewer.Name = "FTreeViewer";
         	this.FTreeViewer.ShowLines = true;
         	this.FTreeViewer.ShowPlusMinus = true;
-        	this.FTreeViewer.ShowRoot = true;
+        	this.FTreeViewer.ShowRoot = false;
         	this.FTreeViewer.ShowRootLines = true;
         	this.FTreeViewer.ShowTooltip = false;
         	this.FTreeViewer.Size = new System.Drawing.Size(310, 324);

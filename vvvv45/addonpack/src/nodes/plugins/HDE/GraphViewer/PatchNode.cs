@@ -12,8 +12,10 @@ namespace VVVV.Nodes.GraphViewer
     {
         List<PatchNode> FChildren = new List<PatchNode>();
         
+        private PatchNode FUpNode;
         public INode Node{get;set;}
         public bool Selected{get;set;}
+        public bool MarkedForDelete{get;set;}
         public string Text
         {
             get
@@ -59,18 +61,43 @@ namespace VVVV.Nodes.GraphViewer
             INode[] children = Node.GetChildren();
             if (children != null)
             {
-                FChildren.Clear();
+                //mark all children for being deleted
+                foreach(var child in FChildren)
+                    child.MarkedForDelete = true;
+                
+                //unmark existing children from being deleted and add new ones
+                if (FUpNode != null)
+                    FUpNode.MarkedForDelete = false;
                 foreach(INode child in children)
                 {
-                    //for (int i = 0; i < FNode.GetChildCount(); i++)
-                    //    FChildren.Add(new PatchNode(FNode.GetChild(i)));
-                    FChildren.Add(new PatchNode(child));
+                    bool found = false;
+                    foreach(var c in FChildren)
+                        if (c.Node == child)
+                    {
+                        c.MarkedForDelete = false;
+                        found = true;
+                        break;                        
+                    }
+
+                    if (!found)
+                        FChildren.Add(new PatchNode(child));
+                }
+                
+                //remove all children still marked for delete
+                for (int i=FChildren.Count-1; i>=0; i--) 
+                {
+                    if (FChildren[i].MarkedForDelete)
+                        FChildren.RemoveAt(i);
                 }
                 
                 FChildren.Sort(delegate(PatchNode p1, PatchNode p2) {return p1.Text.CompareTo(p2.Text);});
                 
                 //insert an .. (up) node as first element
-                FChildren.Insert(0, new PatchNode(null));
+                if (FUpNode == null)
+                {
+                    FUpNode = new PatchNode(null);
+                    FChildren.Insert(0, FUpNode);
+                }                
             }
         }
         
