@@ -57,6 +57,7 @@ namespace VVVV.Nodes.NodeBrowser
         //further fields
         NodeListModel FCategoryModel = new NodeListModel();
         List<string> FAwesomeList = new List<string>();
+        List<string> FSelectionList;
         Dictionary<string, INodeInfo> FNodeDict = new Dictionary<string, INodeInfo>();
         private bool FAndTags = true;
         private int FSelectedLine = -1;
@@ -69,8 +70,10 @@ namespace VVVV.Nodes.NodeBrowser
         private int FVisibleLines = 16;
         private string FPath;
         private ToolTip FToolTip = new ToolTip();
+        private Graphics FRichTextGraphics;
         
-        
+        private Color CLabelColor = Color.FromArgb(255, 154, 154, 154);
+        private Color CHoverColor = Color.FromArgb(255, 216, 216, 216);
         #endregion field declaration
         
         #region constructor/destructor
@@ -82,10 +85,17 @@ namespace VVVV.Nodes.NodeBrowser
             FTagsTextBox.ContextMenu = new ContextMenu();
             FTagsTextBox.MouseWheel += new MouseEventHandler(TextBoxTagsMouseWheel);
             
-            FToolTip.BackColor = Color.DarkGray;
+            FToolTip.BackColor = CLabelColor;
             FToolTip.ForeColor = Color.White;
             FToolTip.ShowAlways = true;
             FToolTip.Popup += new PopupEventHandler(ToolTipPopupHandler);
+            
+            SelectPage(NodeBrowserPage.ByTags);
+            
+            FRichTextBox.OnPaint += new EventHandler(DrawNodeTypeIcons);
+            FRichTextGraphics = FRichTextBox.CreateGraphics();
+            
+            this.DoubleBuffered = true;
         }
         
         private void ToolTipPopupHandler(object sender, PopupEventArgs e)
@@ -188,129 +198,128 @@ namespace VVVV.Nodes.NodeBrowser
         
         private void InitializeComponent()
         {
-        	this.FNodeCountLabel = new System.Windows.Forms.Label();
-        	this.FTagPanel = new System.Windows.Forms.Panel();
-        	this.FRichTextBox = new System.Windows.Forms.RichTextBox();
-        	this.FTagsTextBox = new System.Windows.Forms.TextBox();
-        	this.FCategoryPanel = new System.Windows.Forms.Panel();
-        	this.CategoryTreeViewer = new VVVV.HDE.Viewer.TreeViewer();
-        	this.FTopLabel = new System.Windows.Forms.Label();
-        	this.FTagPanel.SuspendLayout();
-        	this.FCategoryPanel.SuspendLayout();
-        	this.SuspendLayout();
-        	// 
-        	// FNodeCountLabel
-        	// 
-        	this.FNodeCountLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-        	this.FNodeCountLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
-        	this.FNodeCountLabel.Location = new System.Drawing.Point(0, 506);
-        	this.FNodeCountLabel.Name = "FNodeCountLabel";
-        	this.FNodeCountLabel.Size = new System.Drawing.Size(325, 14);
-        	this.FNodeCountLabel.TabIndex = 3;
-        	this.FNodeCountLabel.Text = "labelNodeCount";
-        	// 
-        	// FTagPanel
-        	// 
-        	this.FTagPanel.Controls.Add(this.FRichTextBox);
-        	this.FTagPanel.Controls.Add(this.FTagsTextBox);
-        	this.FTagPanel.Location = new System.Drawing.Point(4, 33);
-        	this.FTagPanel.Name = "FTagPanel";
-        	this.FTagPanel.Size = new System.Drawing.Size(144, 440);
-        	this.FTagPanel.TabIndex = 4;
-        	// 
-        	// FRichTextBox
-        	// 
-        	this.FRichTextBox.BackColor = System.Drawing.Color.LightGray;
-        	this.FRichTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-        	this.FRichTextBox.Cursor = System.Windows.Forms.Cursors.Arrow;
-        	this.FRichTextBox.DetectUrls = false;
-        	this.FRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.FRichTextBox.Font = new System.Drawing.Font("Verdana", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        	this.FRichTextBox.Location = new System.Drawing.Point(0, 20);
-        	this.FRichTextBox.Name = "FRichTextBox";
-        	this.FRichTextBox.ReadOnly = true;
-        	this.FRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-        	this.FRichTextBox.Size = new System.Drawing.Size(144, 420);
-        	this.FRichTextBox.TabIndex = 2;
-        	this.FRichTextBox.TabStop = false;
-        	this.FRichTextBox.Text = "";
-        	this.FRichTextBox.VScroll += new System.EventHandler(this.RichTextBoxVScroll);
-        	this.FRichTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseUp);
-        	this.FRichTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseMove);
-        	this.FRichTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseDown);
-        	// 
-        	// FTagsTextBox
-        	// 
-        	this.FTagsTextBox.AcceptsTab = true;
-        	this.FTagsTextBox.BackColor = System.Drawing.Color.LightGray;
-        	this.FTagsTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-        	this.FTagsTextBox.Dock = System.Windows.Forms.DockStyle.Top;
-        	this.FTagsTextBox.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        	this.FTagsTextBox.Location = new System.Drawing.Point(0, 0);
-        	this.FTagsTextBox.Multiline = true;
-        	this.FTagsTextBox.Name = "FTagsTextBox";
-        	this.FTagsTextBox.Size = new System.Drawing.Size(144, 20);
-        	this.FTagsTextBox.TabIndex = 1;
-        	this.FTagsTextBox.TabStop = false;
-        	this.FTagsTextBox.TextChanged += new System.EventHandler(this.TextBoxTagsTextChanged);
-        	this.FTagsTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxTagsKeyDown);
-        	this.FTagsTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TextBoxTagsKeyUp);
-        	this.FTagsTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TextBoxTagsMouseDown);
-        	// 
-        	// FCategoryPanel
-        	// 
-        	this.FCategoryPanel.Controls.Add(this.CategoryTreeViewer);
-        	this.FCategoryPanel.Controls.Add(this.FTopLabel);
-        	this.FCategoryPanel.Location = new System.Drawing.Point(165, 33);
-        	this.FCategoryPanel.Name = "FCategoryPanel";
-        	this.FCategoryPanel.Size = new System.Drawing.Size(159, 439);
-        	this.FCategoryPanel.TabIndex = 5;
-        	// 
-        	// CategoryTreeViewer
-        	// 
-        	this.CategoryTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.CategoryTreeViewer.FlatStyle = false;
-        	this.CategoryTreeViewer.Location = new System.Drawing.Point(0, 15);
-        	this.CategoryTreeViewer.Name = "CategoryTreeViewer";
-        	this.CategoryTreeViewer.ShowLines = false;
-        	this.CategoryTreeViewer.ShowPlusMinus = false;
-        	this.CategoryTreeViewer.ShowRoot = false;
-        	this.CategoryTreeViewer.ShowRootLines = false;
-        	this.CategoryTreeViewer.ShowTooltip = true;
-        	this.CategoryTreeViewer.Size = new System.Drawing.Size(159, 424);
-        	this.CategoryTreeViewer.TabIndex = 1;
-        	this.CategoryTreeViewer.LeftClick += new System.EventHandler(this.CategoryTreeViewerLeftClick);
-        	// 
-        	// FTopLabel
-        	// 
-        	this.FTopLabel.BackColor = System.Drawing.Color.Gray;
-        	this.FTopLabel.Dock = System.Windows.Forms.DockStyle.Top;
-        	this.FTopLabel.Location = new System.Drawing.Point(0, 0);
-        	this.FTopLabel.Name = "FTopLabel";
-        	this.FTopLabel.Size = new System.Drawing.Size(159, 15);
-        	this.FTopLabel.TabIndex = 7;
-        	this.FTopLabel.Text = "Click here to browse by tags";
-        	this.FTopLabel.Click += new System.EventHandler(this.FTopLabelClick);
-        	// 
-        	// NodeBrowserPluginNode
-        	// 
-        	this.BackColor = System.Drawing.Color.LightGray;
-        	this.Controls.Add(this.FCategoryPanel);
-        	this.Controls.Add(this.FTagPanel);
-        	this.Controls.Add(this.FNodeCountLabel);
-        	this.DoubleBuffered = true;
-        	this.Name = "NodeBrowserPluginNode";
-        	this.Size = new System.Drawing.Size(325, 520);
-        	this.FTagPanel.ResumeLayout(false);
-        	this.FTagPanel.PerformLayout();
-        	this.FCategoryPanel.ResumeLayout(false);
-        	this.ResumeLayout(false);
+            this.FNodeCountLabel = new System.Windows.Forms.Label();
+            this.FTagPanel = new System.Windows.Forms.Panel();
+            this.FRichTextBox = new RichTextBoxEx();
+            this.FTagsTextBox = new System.Windows.Forms.TextBox();
+            this.FCategoryPanel = new System.Windows.Forms.Panel();
+            this.CategoryTreeViewer = new VVVV.HDE.Viewer.TreeViewer();
+            this.FTopLabel = new System.Windows.Forms.Label();
+            this.FTagPanel.SuspendLayout();
+            this.FCategoryPanel.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // FNodeCountLabel
+            // 
+            this.FNodeCountLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.FNodeCountLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.FNodeCountLabel.Location = new System.Drawing.Point(0, 506);
+            this.FNodeCountLabel.Name = "FNodeCountLabel";
+            this.FNodeCountLabel.Size = new System.Drawing.Size(325, 14);
+            this.FNodeCountLabel.TabIndex = 3;
+            // 
+            // FTagPanel
+            // 
+            this.FTagPanel.Controls.Add(this.FRichTextBox);
+            this.FTagPanel.Controls.Add(this.FTagsTextBox);
+            this.FTagPanel.Location = new System.Drawing.Point(4, 33);
+            this.FTagPanel.Name = "FTagPanel";
+            this.FTagPanel.Size = new System.Drawing.Size(144, 440);
+            this.FTagPanel.TabIndex = 4;
+            // 
+            // FRichTextBox
+            // 
+            this.FRichTextBox.BackColor = System.Drawing.Color.Silver;
+            this.FRichTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.FRichTextBox.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.FRichTextBox.DetectUrls = false;
+            this.FRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FRichTextBox.Font = new System.Drawing.Font("Verdana", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FRichTextBox.Location = new System.Drawing.Point(0, 20);
+            this.FRichTextBox.Name = "FRichTextBox";
+            this.FRichTextBox.ReadOnly = true;
+            this.FRichTextBox.Size = new System.Drawing.Size(144, 420);
+            this.FRichTextBox.TabIndex = 2;
+            this.FRichTextBox.TabStop = false;
+            this.FRichTextBox.Text = "";
+            this.FRichTextBox.WordWrap = false;
+            this.FRichTextBox.VScroll += new System.EventHandler(this.RichTextBoxVScroll);
+            this.FRichTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseUp);
+            this.FRichTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseMove);
+            this.FRichTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseDown);
+            // 
+            // FTagsTextBox
+            // 
+            this.FTagsTextBox.AcceptsTab = true;
+            this.FTagsTextBox.BackColor = System.Drawing.Color.Silver;
+            this.FTagsTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.FTagsTextBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.FTagsTextBox.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FTagsTextBox.Location = new System.Drawing.Point(0, 0);
+            this.FTagsTextBox.Multiline = true;
+            this.FTagsTextBox.Name = "FTagsTextBox";
+            this.FTagsTextBox.Size = new System.Drawing.Size(144, 20);
+            this.FTagsTextBox.TabIndex = 1;
+            this.FTagsTextBox.TabStop = false;
+            this.FTagsTextBox.TextChanged += new System.EventHandler(this.TextBoxTagsTextChanged);
+            this.FTagsTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxTagsKeyDown);
+            this.FTagsTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TextBoxTagsKeyUp);
+            this.FTagsTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TextBoxTagsMouseDown);
+            // 
+            // FCategoryPanel
+            // 
+            this.FCategoryPanel.Controls.Add(this.CategoryTreeViewer);
+            this.FCategoryPanel.Controls.Add(this.FTopLabel);
+            this.FCategoryPanel.Location = new System.Drawing.Point(165, 33);
+            this.FCategoryPanel.Name = "FCategoryPanel";
+            this.FCategoryPanel.Size = new System.Drawing.Size(159, 439);
+            this.FCategoryPanel.TabIndex = 5;
+            // 
+            // CategoryTreeViewer
+            // 
+            this.CategoryTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CategoryTreeViewer.FlatStyle = false;
+            this.CategoryTreeViewer.Location = new System.Drawing.Point(0, 15);
+            this.CategoryTreeViewer.Name = "CategoryTreeViewer";
+            this.CategoryTreeViewer.ShowLines = false;
+            this.CategoryTreeViewer.ShowPlusMinus = false;
+            this.CategoryTreeViewer.ShowRoot = false;
+            this.CategoryTreeViewer.ShowRootLines = false;
+            this.CategoryTreeViewer.ShowTooltip = true;
+            this.CategoryTreeViewer.Size = new System.Drawing.Size(159, 424);
+            this.CategoryTreeViewer.TabIndex = 1;
+            this.CategoryTreeViewer.LeftClick += new System.EventHandler(this.CategoryTreeViewerLeftClick);
+            // 
+            // FTopLabel
+            // 
+            this.FTopLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(154)))), ((int)(((byte)(154)))), ((int)(((byte)(154)))));
+            this.FTopLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.FTopLabel.Location = new System.Drawing.Point(0, 0);
+            this.FTopLabel.Name = "FTopLabel";
+            this.FTopLabel.Size = new System.Drawing.Size(159, 15);
+            this.FTopLabel.TabIndex = 7;
+            this.FTopLabel.Text = "Click here to browse by tags";
+            this.FTopLabel.Click += new System.EventHandler(this.FTopLabelClick);
+            // 
+            // NodeBrowserPluginNode
+            // 
+            this.BackColor = System.Drawing.Color.Silver;
+            this.Controls.Add(this.FCategoryPanel);
+            this.Controls.Add(this.FTagPanel);
+            this.Controls.Add(this.FNodeCountLabel);
+            this.DoubleBuffered = true;
+            this.Name = "NodeBrowserPluginNode";
+            this.Size = new System.Drawing.Size(325, 520);
+            this.FTagPanel.ResumeLayout(false);
+            this.FTagPanel.PerformLayout();
+            this.FCategoryPanel.ResumeLayout(false);
+            this.ResumeLayout(false);
         }
         private System.Windows.Forms.Label FNodeCountLabel;
         private System.Windows.Forms.Label FTopLabel;
         private System.Windows.Forms.Panel FCategoryPanel;
         private System.Windows.Forms.TextBox FTagsTextBox;
-        private System.Windows.Forms.RichTextBox FRichTextBox;
+        private RichTextBoxEx FRichTextBox;
         private System.Windows.Forms.Panel FTagPanel;
         private VVVV.HDE.Viewer.TreeViewer CategoryTreeViewer;
         
@@ -343,6 +352,9 @@ namespace VVVV.Nodes.NodeBrowser
             
             //hand model root over to viewers
             CategoryTreeViewer.SetRoot(FCategoryModel);
+            
+            //init view
+            RedrawAwesomeBar();
         }
 
         #endregion initialization
@@ -357,8 +369,6 @@ namespace VVVV.Nodes.NodeBrowser
         {
             FPath = path;
             width = FAwesomeWidth;
-            
-            SelectPage(NodeBrowserPage.ByTags);
             
             if (!string.IsNullOrEmpty(text))
                 FManualEntry = text.Trim();
@@ -451,8 +461,8 @@ namespace VVVV.Nodes.NodeBrowser
             
             
             
-           // FCategoryModel.Remove(nodeInfo);
-           // FAlphabetModel.Remove(nodeInfo);
+            // FCategoryModel.Remove(nodeInfo);
+            // FAlphabetModel.Remove(nodeInfo);
         }
         #endregion INodeInfoListener
 
@@ -495,7 +505,7 @@ namespace VVVV.Nodes.NodeBrowser
             else if ((FTagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Up))
             {
                 if (FHoverLine == -1)
-                    FHoverLine = FTagsTextBox.Lines.Length - 1;
+                    FHoverLine = FRichTextBox.Lines.Length - 1;
                 else
                 {
                     FHoverLine -= 1;
@@ -543,7 +553,7 @@ namespace VVVV.Nodes.NodeBrowser
         void TextBoxTagsMouseWheel(object sender, MouseEventArgs e)
         {
             //clear old selection
-            FRichTextBox.SelectionBackColor = Color.LightGray;
+            FRichTextBox.SelectionBackColor = Color.Silver;
             
             int scrollCount = 1;
             if (FCtrlPressed)
@@ -559,7 +569,7 @@ namespace VVVV.Nodes.NodeBrowser
                 return;
             
             //set the caret to the beginning of this line
-            FRichTextBox.SelectionStart = FRichTextBox.GetFirstCharIndexFromLine(FScrolledLine);
+            FRichTextBox.SelectionStart = FRichTextBox.GetFirstCharIndexFromLine(FScrolledLine) + 1;
             
             //scroll to the caret
             FRichTextBox.ScrollToCaret();
@@ -621,224 +631,230 @@ namespace VVVV.Nodes.NodeBrowser
         
         private void ShowToolTip()
         {
-            INodeInfo ni = FNodeDict[FRichTextBox.Lines[FHoverLine].Trim()];
+            string key = FRichTextBox.Lines[FHoverLine].Trim();
+            if (FNodeDict.ContainsKey(key))
+            {
+                INodeInfo ni = FNodeDict[key];
 
-            int y = FRichTextBox.GetPositionFromCharIndex(FRichTextBox.GetFirstCharIndexFromLine(FHoverLine)).Y;
-            string tip = "";
-            if (!string.IsNullOrEmpty(ni.ShortCut))
-                tip = "(" + ni.ShortCut + ") " ;
-            if (!string.IsNullOrEmpty(ni.Help))
-                tip += ni.Help;
-            if (!string.IsNullOrEmpty(ni.Warnings))
-                tip += "\n WARNINGS: " + ni.Warnings;
-            if (!string.IsNullOrEmpty(ni.Bugs))
-                tip += "\n BUGS: " + ni.Bugs;
-            if ((!string.IsNullOrEmpty(ni.Author)) && (ni.Author != "vvvv group"))
-                tip += "\n AUTHOR: " + ni.Author;
-            if (!string.IsNullOrEmpty(ni.Credits))
-                tip += "\n CREDITS: " + ni.Credits;
-            if (!string.IsNullOrEmpty(tip))
-                FToolTip.Show(tip, FRichTextBox, 0, y + 30);
-            else
-                FToolTip.Hide(FRichTextBox);
+                int y = FRichTextBox.GetPositionFromCharIndex(FRichTextBox.GetFirstCharIndexFromLine(FHoverLine)).Y;
+                string tip = "";
+                if (!string.IsNullOrEmpty(ni.ShortCut))
+                    tip = "(" + ni.ShortCut + ") " ;
+                if (!string.IsNullOrEmpty(ni.Help))
+                    tip += ni.Help;
+                if (!string.IsNullOrEmpty(ni.Warnings))
+                    tip += "\n WARNINGS: " + ni.Warnings;
+                if (!string.IsNullOrEmpty(ni.Bugs))
+                    tip += "\n BUGS: " + ni.Bugs;
+                if ((!string.IsNullOrEmpty(ni.Author)) && (ni.Author != "vvvv group"))
+                    tip += "\n AUTHOR: " + ni.Author;
+                if (!string.IsNullOrEmpty(ni.Credits))
+                    tip += "\n CREDITS: " + ni.Credits;
+                if (!string.IsNullOrEmpty(tip))
+                    FToolTip.Show(tip, FRichTextBox, 0, y + 30);
+                else
+                    FToolTip.Hide(FRichTextBox);
+            }
         }
         
         private void RedrawAwesomeBar()
         {
             FRichTextBox.Clear();
 
-            List<string> sub;
             string text = FTagsTextBox.Text.ToLower().Trim();
             string[] tags = text.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
             
             bool sort = true;
             
             if (string.IsNullOrEmpty(text))
-                sub = FAwesomeList;
+                FSelectionList = FAwesomeList;
             else if (text.IndexOf('.') == 0)
             {
-                sub = new List<string>();
+                FSelectionList = new List<string>();
                 
-                foreach (string p in System.IO.Directory.GetFiles(FPath))
-                    sub.Add(Path.GetFileName(p));
-                
-                sub = sub.FindAll(delegate(string node)
-                                  {
-                                      node = node.ToLower();
-                                      bool containsAll = true;
-                                      string t;
-                                      foreach (string tag in tags)
-                                      {
-                                          t = tag.Replace(".", "");
-                                          if (!node.Contains(t))
-                                          {
-                                              containsAll = false;
-                                              break;
-                                          }
-                                      }
-                                      
-                                      if (containsAll)
-                                          return true;
-                                      else
-                                          return false;
-                                  });
+                if (FPath != null)
+                {
+                    foreach (string p in System.IO.Directory.GetFiles(FPath))
+                        FSelectionList.Add(Path.GetFileName(p));
+                    
+                    FSelectionList = FSelectionList.FindAll(delegate(string node)
+                                                            {
+                                                                node = node.ToLower();
+                                                                bool containsAll = true;
+                                                                string t;
+                                                                foreach (string tag in tags)
+                                                                {
+                                                                    t = tag.Replace(".", "");
+                                                                    if (!node.Contains(t))
+                                                                    {
+                                                                        containsAll = false;
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                
+                                                                if (containsAll)
+                                                                    return true;
+                                                                else
+                                                                    return false;
+                                                            });
+                }
                 sort = false;
             }
             else
             {
                 if (FAndTags)
-                    sub = FAwesomeList.FindAll(delegate(string node)
-                                               {
-                                                   node = node.ToLower();
-                                                   node = node.Replace('é', 'e');
-                                                   bool containsAll = true;
-                                                   foreach (string tag in tags)
-                                                   {
-                                                       if (!node.Contains(tag))
-                                                       {
-                                                           containsAll = false;
-                                                           break;
-                                                       }
-                                                   }
-                                                   
-                                                   if (containsAll)
-                                                       return true;
-                                                   else
-                                                       return false;
-                                               });
+                    FSelectionList = FAwesomeList.FindAll(delegate(string node)
+                                                          {
+                                                              node = node.ToLower();
+                                                              node = node.Replace('é', 'e');
+                                                              bool containsAll = true;
+                                                              foreach (string tag in tags)
+                                                              {
+                                                                  if (!node.Contains(tag))
+                                                                  {
+                                                                      containsAll = false;
+                                                                      break;
+                                                                  }
+                                                              }
+                                                              
+                                                              if (containsAll)
+                                                                  return true;
+                                                              else
+                                                                  return false;
+                                                          });
                 else
-                    sub = FAwesomeList.FindAll(delegate(string node)
-                                               {
-                                                   node = node.ToLower();
-                                                   node = node.Replace('é', 'e');
-                                                   foreach (string tag in tags)
-                                                   {
-                                                       if (node.Contains(tag))
-                                                           return true;
-                                                   }
-                                                   return false;
-                                               });
+                    FSelectionList = FAwesomeList.FindAll(delegate(string node)
+                                                          {
+                                                              node = node.ToLower();
+                                                              node = node.Replace('é', 'e');
+                                                              foreach (string tag in tags)
+                                                              {
+                                                                  if (node.Contains(tag))
+                                                                      return true;
+                                                              }
+                                                              return false;
+                                                          });
                 
             }
             if (sort)
-                sub.Sort(delegate(string s1, string s2)
-                         {
-                             //create a weighting index depending on the indices the tags appear in the nodenames
-                             //earlier appearance counts more
-                             int w1 = int.MaxValue, w2 = int.MaxValue;
-                             foreach (string tag in tags)
-                             {
-                                 if (s1.ToLower().IndexOf(tag) > -1)
-                                     w1 = Math.Min(w1, s1.ToLower().IndexOf(tag));
-                                 if (s2.ToLower().IndexOf(tag) > -1)
-                                     w2 = Math.Min(w2, s2.ToLower().IndexOf(tag));
-                             }
-                             
-                             if (w1 != w2)
-                             {
-                                 if (w1 < w2)
-                                     return -1;
-                                 else
-                                     return 1;
-                             }
-                             
-                             //if weights are equal, compare the nodenames
-                             
-                             //compare only the nodenames
-                             string name1 = s1.Substring(0, s1.IndexOf('('));
-                             string name2 = s2.Substring(0, s2.IndexOf('('));
-                             int comp = name1.CompareTo(name2);
-                             
-                             //if names are equal
-                             if (comp == 0)
-                             {
-                                 //compare categories
-                                 string cat1 = s1.Substring(s1.IndexOf('(')).Trim(new char[2]{'(', ')'});
-                                 string cat2 = s2.Substring(s2.IndexOf('(')).Trim(new char[2]{'(', ')'});
-                                 int v1, v2;
-                                 
-                                 
-                                 //System.Diagnostics.Debug.WriteLine(cat1 + " - " + cat2);
-                                 
-                                 //special sorting for categories
-                                 if (cat1.Contains("Value"))
-                                     v1 = 99;
-                                 else if (cat1.Contains("Spreads"))
-                                     v1 = 98;
-                                 else if (cat1.ToUpper().Contains("2D"))
-                                     v1 = 97;
-                                 else if (cat1.ToUpper().Contains("3D"))
-                                     v1 = 96;
-                                 else if (cat1.ToUpper().Contains("4D"))
-                                     v1 = 95;
-                                 else if (cat1.Contains("Animation"))
-                                     v1 = 94;
-                                 else if (cat1.Contains("EX9"))
-                                     v1 = 93;
-                                 else if (cat1.Contains("TTY"))
-                                     v1 = 92;
-                                 else if (cat1.Contains("GDI"))
-                                     v1 = 91;
-                                 else if (cat1.Contains("Flash"))
-                                     v1 = 90;
-                                 else if (cat1.Contains("String"))
-                                     v1 = 89;
-                                 else if (cat1.Contains("Color"))
-                                     v1 = 88;
-                                 else
-                                     v1 = 0;
-                                 
-                                 if (cat2.Contains("Value"))
-                                     v2 = 99;
-                                 else if (cat2.Contains("Spreads"))
-                                     v2 = 98;
-                                 else if (cat2.ToUpper().Contains("2D"))
-                                     v2 = 97;
-                                 else if (cat2.ToUpper().Contains("3D"))
-                                     v2 = 96;
-                                 else if (cat2.ToUpper().Contains("4D"))
-                                     v2 = 95;
-                                 else if (cat2.Contains("Animation"))
-                                     v2 = 94;
-                                 else if (cat2.Contains("EX9"))
-                                     v2 = 93;
-                                 else if (cat2.Contains("TTY"))
-                                     v2 = 92;
-                                 else if (cat2.Contains("GDI"))
-                                     v2 = 91;
-                                 else if (cat2.Contains("Flash"))
-                                     v2 = 90;
-                                 else if (cat2.Contains("String"))
-                                     v2 = 89;
-                                 else if (cat2.Contains("Color"))
-                                     v2 = 88;
-                                 else
-                                     v2 = 0;
-                                 
-                                 if (v1 > v2)
-                                     return -1;
-                                 else if (v1 < v2)
-                                     return 1;
-                                 else //categories are the same, compare versions
-                                 {
-                                     if ((cat1.Length > cat2.Length) && (cat1.Contains(cat2)))
-                                         return 1;
-                                     else if ((cat2.Length > cat1.Length) && (cat2.Contains(cat1)))
-                                         return -1;
-                                     else
-                                         return cat1.CompareTo(cat2);
-                                 }
-                             }
-                             else
-                                 return comp;
-                         });
+                FSelectionList.Sort(delegate(string s1, string s2)
+                                    {
+                                        //create a weighting index depending on the indices the tags appear in the nodenames
+                                        //earlier appearance counts more
+                                        int w1 = int.MaxValue, w2 = int.MaxValue;
+                                        foreach (string tag in tags)
+                                        {
+                                            if (s1.ToLower().IndexOf(tag) > -1)
+                                                w1 = Math.Min(w1, s1.ToLower().IndexOf(tag));
+                                            if (s2.ToLower().IndexOf(tag) > -1)
+                                                w2 = Math.Min(w2, s2.ToLower().IndexOf(tag));
+                                        }
+                                        
+                                        if (w1 != w2)
+                                        {
+                                            if (w1 < w2)
+                                                return -1;
+                                            else
+                                                return 1;
+                                        }
+                                        
+                                        //if weights are equal, compare the nodenames
+                                        
+                                        //compare only the nodenames
+                                        string name1 = s1.Substring(0, s1.IndexOf('('));
+                                        string name2 = s2.Substring(0, s2.IndexOf('('));
+                                        int comp = name1.CompareTo(name2);
+                                        
+                                        //if names are equal
+                                        if (comp == 0)
+                                        {
+                                            //compare categories
+                                            string cat1 = s1.Substring(s1.IndexOf('(')).Trim(new char[2]{'(', ')'});
+                                            string cat2 = s2.Substring(s2.IndexOf('(')).Trim(new char[2]{'(', ')'});
+                                            int v1, v2;
+                                            
+                                            
+                                            //System.Diagnostics.Debug.WriteLine(cat1 + " - " + cat2);
+                                            
+                                            //special sorting for categories
+                                            if (cat1.Contains("Value"))
+                                                v1 = 99;
+                                            else if (cat1.Contains("Spreads"))
+                                                v1 = 98;
+                                            else if (cat1.ToUpper().Contains("2D"))
+                                                v1 = 97;
+                                            else if (cat1.ToUpper().Contains("3D"))
+                                                v1 = 96;
+                                            else if (cat1.ToUpper().Contains("4D"))
+                                                v1 = 95;
+                                            else if (cat1.Contains("Animation"))
+                                                v1 = 94;
+                                            else if (cat1.Contains("EX9"))
+                                                v1 = 93;
+                                            else if (cat1.Contains("TTY"))
+                                                v1 = 92;
+                                            else if (cat1.Contains("GDI"))
+                                                v1 = 91;
+                                            else if (cat1.Contains("Flash"))
+                                                v1 = 90;
+                                            else if (cat1.Contains("String"))
+                                                v1 = 89;
+                                            else if (cat1.Contains("Color"))
+                                                v1 = 88;
+                                            else
+                                                v1 = 0;
+                                            
+                                            if (cat2.Contains("Value"))
+                                                v2 = 99;
+                                            else if (cat2.Contains("Spreads"))
+                                                v2 = 98;
+                                            else if (cat2.ToUpper().Contains("2D"))
+                                                v2 = 97;
+                                            else if (cat2.ToUpper().Contains("3D"))
+                                                v2 = 96;
+                                            else if (cat2.ToUpper().Contains("4D"))
+                                                v2 = 95;
+                                            else if (cat2.Contains("Animation"))
+                                                v2 = 94;
+                                            else if (cat2.Contains("EX9"))
+                                                v2 = 93;
+                                            else if (cat2.Contains("TTY"))
+                                                v2 = 92;
+                                            else if (cat2.Contains("GDI"))
+                                                v2 = 91;
+                                            else if (cat2.Contains("Flash"))
+                                                v2 = 90;
+                                            else if (cat2.Contains("String"))
+                                                v2 = 89;
+                                            else if (cat2.Contains("Color"))
+                                                v2 = 88;
+                                            else
+                                                v2 = 0;
+                                            
+                                            if (v1 > v2)
+                                                return -1;
+                                            else if (v1 < v2)
+                                                return 1;
+                                            else //categories are the same, compare versions
+                                            {
+                                                if ((cat1.Length > cat2.Length) && (cat1.Contains(cat2)))
+                                                    return 1;
+                                                else if ((cat2.Length > cat1.Length) && (cat2.Contains(cat1)))
+                                                    return -1;
+                                                else
+                                                    return cat1.CompareTo(cat2);
+                                            }
+                                        }
+                                        else
+                                            return comp;
+                                    });
             
             string n;
             char[] bolded;
-            string rtf = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fnil\fcharset0 Verdana;}}\viewkind4\uc1\pard\f0\fs17 ";
+            string rtf = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fnil\fcharset0 Verdana;}}\viewkind4\uc1\pard\f0\fs17\li300 ";
             
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            foreach (string s in sub)
+            foreach (string s in FSelectionList)
             {
                 //all comparison is case-in-sensitive
                 n = s.ToLower();
@@ -876,13 +892,13 @@ namespace VVVV.Nodes.NodeBrowser
             FRichTextBox.Rtf = rtf;
             FScrolledLine = 0;
             
-            FNodeCountLabel.Text = "Selected nodes: " + sub.Count.ToString();
+            FNodeCountLabel.Text = "Selected nodes: " + FSelectionList.Count.ToString();
         }
         
         private void RedrawAwesomeSelection(bool updateTags)
         {
             //clear old selection
-            FRichTextBox.SelectionBackColor = Color.LightGray;
+            FRichTextBox.SelectionBackColor = Color.Silver;
 
             if (FHoverLine > -1)
             {
@@ -909,7 +925,7 @@ namespace VVVV.Nodes.NodeBrowser
                 sel = FRichTextBox.Lines[FHoverLine];
                 FRichTextBox.SelectionStart = FRichTextBox.Text.IndexOf(sel);
                 FRichTextBox.SelectionLength = sel.Length;
-                FRichTextBox.SelectionBackColor = Color.WhiteSmoke;
+                FRichTextBox.SelectionBackColor = CHoverColor;
                 if (updateTags)
                     FTagsTextBox.Text = sel.Trim();
             }
@@ -918,6 +934,63 @@ namespace VVVV.Nodes.NodeBrowser
         void RichTextBoxVScroll(object sender, EventArgs e)
         {
             FScrolledLine = FRichTextBox.GetLineFromCharIndex(FRichTextBox.GetCharIndexFromPosition(new Point(0, 0)));
+            FToolTip.Hide(FRichTextBox);
+            //FRichTextBox.Invalidate();
+        }
+
+        void DrawNodeTypeIcons(object sender, EventArgs e)
+        {
+            Bitmap buffer = new Bitmap(20, FRichTextBox.Height);
+            Graphics g = Graphics.FromImage(buffer);
+            
+            //FRichTextGraphics.Clip = new Region(new Rectangle(0, 0, 20, FRichTextBox.Height));
+            g.Clear(Color.Silver);
+           // int y = ((FHoverLine - FScrolledLine) * 13) + 4;
+           // g.FillRectangle(new SolidBrush(Color.LightGray), 0, y, 200, 20);
+            
+            for (int i=FScrolledLine; i<FScrolledLine+FVisibleLines; i++)
+            {
+                if (FNodeDict.ContainsKey(FSelectionList[i].Trim()))
+                {
+                    int cIndex = FRichTextBox.GetFirstCharIndexFromLine(i);
+                    int y = FRichTextBox.GetPositionFromCharIndex(cIndex).Y + 4;
+                    //int y = ((i - FScrolledLine) * 13) + 4;
+                    TNodeType nodeType = FNodeDict[FRichTextBox.Lines[i].Trim()].Type;
+                    
+                    switch (nodeType)
+                    {
+                        case TNodeType.Patch:
+                            {
+                                g.DrawString("M", FRichTextBox.Font, new SolidBrush(Color.Black), 5, y-3, StringFormat.GenericDefault);
+                                break;
+                            }
+                        case TNodeType.Plugin:
+                            {
+                                g.DrawString("P", FRichTextBox.Font, new SolidBrush(Color.Black), 6, y-3, StringFormat.GenericDefault);
+                                break;
+                            }
+                        case TNodeType.Dynamic:
+                            {
+                                g.DrawString("dyn", FRichTextBox.Font, new SolidBrush(Color.Black), 2, y-3, StringFormat.GenericDefault);
+                                break;
+                            }
+                        case TNodeType.Freeframe:
+                            {
+                                g.DrawString("FF", FRichTextBox.Font, new SolidBrush(Color.Black), 4, y-3, StringFormat.GenericDefault);
+                                break;
+                            }
+                        case TNodeType.Effect:
+                            {
+                                g.DrawString("FX", FRichTextBox.Font, new SolidBrush(Color.Black), 4, y-3, StringFormat.GenericDefault);
+                                break;
+                            }
+                    }
+                    FRichTextGraphics.DrawImage(buffer, 0, 0);
+                }
+            }
+            
+            g.Dispose();
+            buffer.Dispose();
         }
         #endregion RichTextBox
         
@@ -926,26 +999,26 @@ namespace VVVV.Nodes.NodeBrowser
             switch (page)
             {
                 case NodeBrowserPage.ByCategory:
-                {
-                    FToolTip.Hide(FRichTextBox);
-                    FTagPanel.Hide();
-                    FCategoryPanel.Dock = DockStyle.Fill;
-                    FCategoryPanel.BringToFront();
-                    FCategoryPanel.Show();
-                    FTopLabel.Text = "-> Browse by Tags";
-                    break;
-                }
+                    {
+                        FToolTip.Hide(FRichTextBox);
+                        FTagPanel.Hide();
+                        FCategoryPanel.Dock = DockStyle.Fill;
+                        FCategoryPanel.BringToFront();
+                        FCategoryPanel.Show();
+                        FTopLabel.Text = "-> Browse by Tags";
+                        break;
+                    }
                 case NodeBrowserPage.ByTags:
-                {
-                    FCategoryPanel.Hide();
-                    FTagPanel.Dock = DockStyle.Fill;
-                    FTagPanel.BringToFront();
-                    FTagPanel.Show();
-                    FTagsTextBox.Focus();
-                    FTopLabel.Text = "-> Browse by Categories";
-                    break;
-                }
-            }          
+                    {
+                        FCategoryPanel.Hide();
+                        FTagPanel.Dock = DockStyle.Fill;
+                        FTagPanel.BringToFront();
+                        FTagPanel.Show();
+                        FTagsTextBox.Focus();
+                        FTopLabel.Text = "-> Browse by Categories";
+                        break;
+                    }
+            }
         }
         
         protected override bool ProcessDialogKey(Keys keyData)
@@ -968,7 +1041,7 @@ namespace VVVV.Nodes.NodeBrowser
                 FTagsTextBox.Text = (sender as NodeInfoEntry).Username;
                 CreateNode();
             }
-           /* else if (e.Button == MouseButtons.Middle)
+            /* else if (e.Button == MouseButtons.Middle)
             {
                 FNodeBrowserHost.ShowNodeReference(FNodeDict[username]);
             }
