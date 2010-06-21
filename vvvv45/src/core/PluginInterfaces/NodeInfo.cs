@@ -54,6 +54,13 @@ namespace VVVV.PluginInterfaces.V1
 		private IExecutable FExcecutable = null;
 		
 		/// <summary>
+		/// Default constructor.
+		/// </summary>
+		public NodeInfo ()
+		{  
+		}
+		
+		/// <summary>
 		/// Creates a new NodeInfo from an existing <see cref="VVVV.PluginInterfaces.V1.IPluginInfo">IPluginInfo</see>.
 		/// </summary>
 		/// <param name="PluginInfo"></param>
