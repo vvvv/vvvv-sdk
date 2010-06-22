@@ -73,7 +73,7 @@ namespace VVVV.Nodes
 			HdeHost = host;
 			HdeHost.AddListener(FNodeSelectionListener);
 			
-			FUnityContainer = HdeHost.Container.CreateChildContainer();
+			FUnityContainer = HdeHost.UnityContainer.CreateChildContainer();
 			FUnityContainer.AddNewExtension<HdeModelContainerExtension>();
 			FContentProvider = new UnityContentProvider(FUnityContainer);
 			FLabelProvider = new UnityLabelProvider(FUnityContainer);
