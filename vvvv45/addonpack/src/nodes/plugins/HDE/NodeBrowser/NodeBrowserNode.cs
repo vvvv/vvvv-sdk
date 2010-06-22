@@ -84,7 +84,7 @@ namespace VVVV.Nodes.NodeBrowser
             get {return FScrolledLine;}
             set
             {
-                FScrolledLine = Math.Min(FScrollBar.Maximum - FVisibleLines + FScrollBar.LargeChange - 3, Math.Max(0, value));
+                FScrolledLine = Math.Max(0, Math.Min(FScrollBar.Maximum - FVisibleLines + FScrollBar.LargeChange - 3, value));
                 FScrollBar.Value = FScrolledLine;
                 UpdateRichTextBox();
             }
@@ -547,7 +547,7 @@ namespace VVVV.Nodes.NodeBrowser
                 //if we are now < -1 -> jump to last entry
                 if (FHoverLine < -1)
                 {
-                    FHoverLine = FVisibleLines - 1;
+                    FHoverLine = Math.Min(FSelectionList.Count, FVisibleLines) - 1;
                     ScrolledLine = FSelectionList.Count;
                 }
                 //if we are now at -1 -> reset to manually entered tags
@@ -559,10 +559,7 @@ namespace VVVV.Nodes.NodeBrowser
                     ScrolledLine -= 1;
                     FHoverLine = 0;
                 }
-                //set caret to end of tagline
-               // FTagsTextBox.SelectionStart = FTagsTextBox.Text.Length;
-
-                //FSelectedLine = FHoverLine;
+             
                 RedrawAwesomeSelection(true);
                 ShowToolTip();
             }
@@ -746,6 +743,7 @@ namespace VVVV.Nodes.NodeBrowser
             //show directory
             else if (text.IndexOf('.') == 0)
             {
+                FSelectionList = new List<string>();
                 if (FPath != null)
                 {
                     foreach (string p in System.IO.Directory.GetFiles(FPath))
@@ -822,6 +820,7 @@ namespace VVVV.Nodes.NodeBrowser
             {
                 FSelectionList = ExtractSubList(FNodeList);
             }
+            
             if (sort)
                 FSelectionList.Sort(delegate(string s1, string s2)
                                     {
