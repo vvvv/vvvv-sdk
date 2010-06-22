@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectGuid>{A63D2EA4-D87C-459B-B57F-19A76A7ADAF0}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -42,6 +43,10 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
+    <Reference Include="HDEModel">
+      <HintPath>..\..\_lib\vvvv\HDEModel.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="ICSharpCode.NRefactory">
       <HintPath>Dependencies\ICSharpCode.NRefactory.dll</HintPath>
     </Reference>
@@ -52,7 +57,15 @@
       <HintPath>Dependencies\ICSharpCode.TextEditor.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity">
-      <HintPath>..\..\..\vvvv50\lib\Unity\Microsoft.Practices.Unity.dll</HintPath>
+      <HintPath>..\..\_lib\Unity\Microsoft.Practices.Unity.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ModelProvider">
+      <HintPath>..\..\_lib\vvvv\ModelProvider.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PluginInterfaces">
+      <HintPath>..\..\_lib\vvvv\PluginInterfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -63,6 +76,22 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Utils">
+      <HintPath>..\..\_lib\vvvv\Utils.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Viewer">
+      <HintPath>..\..\_lib\vvvv\Viewer.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ViewerModel">
+      <HintPath>..\..\_lib\vvvv\ViewerModel.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="_Utils">
+      <HintPath>..\..\_lib\vvvv\_Utils.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\_SharedSources\ManagedVCL\ManagedVCLControl.cs">
@@ -89,42 +118,5 @@
     <EmbeddedResource Include="CodeEditorPlugin.resx">
       <DependentUpon>CodeEditorPlugin.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\vvvv40_DynamicNodes\src.net\_PluginInterfaces\PluginInterfaces.csproj">
-      <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
-      <Name>PluginInterfaces</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\vvvv40_DynamicNodes\src.net\_Utils\Utils.csproj">
-      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
-      <Name>Utils</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\vvvv50\src\HDE\ModelProvider\ModelProvider.csproj">
-      <Project>{833BED4C-BBE6-4865-85F2-91E49A6E6E0E}</Project>
-      <Name>ModelProvider</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\vvvv50\src\HDE\Model\HDEModel.csproj">
-      <Project>{42D93A99-FF48-462B-B8A8-A9C1B1E6B5F8}</Project>
-      <Name>HDEModel</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\vvvv50\src\HDE\ViewerModel\ViewerModel.csproj">
-      <Project>{8FF77378-0F75-4E63-8370-F9E583F390AD}</Project>
-      <Name>ViewerModel</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\vvvv50\src\HDE\Viewer\Viewer.csproj">
-      <Project>{5EDB1E2D-BE83-4D81-BDF5-C3D8E08E8E3C}</Project>
-      <Name>Viewer</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\vvvv50\src\Utils\Utils.csproj">
-      <Project>{034AAE5F-0B7E-42E2-B155-A14486F97F36}</Project>
-      <Name>Utils</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
 </Project>
