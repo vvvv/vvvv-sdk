@@ -44,6 +44,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
@@ -52,13 +53,18 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Color\RGBAColor.cs" />
     <Compile Include="Color\VColor.cs" />
+    <Compile Include="Concurrent\BlockingQueue.cs" />
     <Compile Include="Crypto\StringHasher.cs" />
+    <Compile Include="Disposable.cs" />
     <Compile Include="Math\Matrix4x4.cs" />
     <Compile Include="Math\Tweener.cs" />
     <Compile Include="Math\Vector2D.cs" />
     <Compile Include="Math\Vector3D.cs" />
     <Compile Include="Math\Vector4D.cs" />
     <Compile Include="Math\VMath.cs" />
+    <Compile Include="Network\IRemotingManager.cs" />
+    <Compile Include="Network\Network.cs" />
+    <Compile Include="Network\RemotingManager.cs" />
     <Compile Include="OSC\OSCBundle.cs" />
     <Compile Include="OSC\OSCMessage.cs" />
     <Compile Include="OSC\OSCPacket.cs" />
@@ -68,9 +74,11 @@
     <Compile Include="SharedMemory\Win32Native.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Concurrent" />
     <Folder Include="Crypto" />
     <Folder Include="Math" />
     <Folder Include="Color" />
+    <Folder Include="Network" />
     <Folder Include="OSC" />
     <Folder Include="SharedMemory" />
   </ItemGroup>
