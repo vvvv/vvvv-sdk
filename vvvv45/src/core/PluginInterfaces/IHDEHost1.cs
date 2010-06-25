@@ -127,6 +127,11 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <returns>Returns this windows INode</returns>
 		INode GetNode();
+		/// <summary>
+		/// Get the windows visible state
+		/// </summary>
+		/// <returns>Returns true if this window is visible, false if not.</returns>
+		bool IsVisible();
 	}	
 	#endregion INode
 	
