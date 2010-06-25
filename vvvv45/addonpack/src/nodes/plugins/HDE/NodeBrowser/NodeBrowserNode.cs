@@ -215,7 +215,7 @@ namespace VVVV.Nodes.NodeBrowser
             this.FScrollBar = new System.Windows.Forms.VScrollBar();
             this.FTagsTextBox = new System.Windows.Forms.TextBox();
             this.FCategoryPanel = new System.Windows.Forms.Panel();
-            this.CategoryTreeViewer = new VVVV.HDE.Viewer.TreeViewer();
+            this.FCategoryTreeViewer = new VVVV.HDE.Viewer.TreeViewer();
             this.FTopLabel = new System.Windows.Forms.Label();
             this.FTagPanel.SuspendLayout();
             this.FCategoryPanel.SuspendLayout();
@@ -301,27 +301,27 @@ namespace VVVV.Nodes.NodeBrowser
             // 
             // FCategoryPanel
             // 
-            this.FCategoryPanel.Controls.Add(this.CategoryTreeViewer);
+            this.FCategoryPanel.Controls.Add(this.FCategoryTreeViewer);
             this.FCategoryPanel.Controls.Add(this.FTopLabel);
             this.FCategoryPanel.Location = new System.Drawing.Point(165, 33);
             this.FCategoryPanel.Name = "FCategoryPanel";
             this.FCategoryPanel.Size = new System.Drawing.Size(159, 439);
             this.FCategoryPanel.TabIndex = 5;
             // 
-            // CategoryTreeViewer
+            // FCategoryTreeViewer
             // 
-            this.CategoryTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CategoryTreeViewer.FlatStyle = false;
-            this.CategoryTreeViewer.Location = new System.Drawing.Point(0, 15);
-            this.CategoryTreeViewer.Name = "CategoryTreeViewer";
-            this.CategoryTreeViewer.ShowLines = false;
-            this.CategoryTreeViewer.ShowPlusMinus = false;
-            this.CategoryTreeViewer.ShowRoot = false;
-            this.CategoryTreeViewer.ShowRootLines = false;
-            this.CategoryTreeViewer.ShowTooltip = true;
-            this.CategoryTreeViewer.Size = new System.Drawing.Size(159, 424);
-            this.CategoryTreeViewer.TabIndex = 1;
-            this.CategoryTreeViewer.LeftClick += new System.EventHandler(this.CategoryTreeViewerLeftClick);
+            this.FCategoryTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FCategoryTreeViewer.FlatStyle = true;
+            this.FCategoryTreeViewer.Location = new System.Drawing.Point(0, 15);
+            this.FCategoryTreeViewer.Name = "FCategoryTreeViewer";
+            this.FCategoryTreeViewer.ShowLines = false;
+            this.FCategoryTreeViewer.ShowPlusMinus = false;
+            this.FCategoryTreeViewer.ShowRoot = false;
+            this.FCategoryTreeViewer.ShowRootLines = false;
+            this.FCategoryTreeViewer.ShowTooltip = true;
+            this.FCategoryTreeViewer.Size = new System.Drawing.Size(159, 424);
+            this.FCategoryTreeViewer.TabIndex = 1;
+            this.FCategoryTreeViewer.LeftClick += new System.EventHandler(this.CategoryTreeViewerLeftClick);
             // 
             // FTopLabel
             // 
@@ -347,6 +347,7 @@ namespace VVVV.Nodes.NodeBrowser
             this.FCategoryPanel.ResumeLayout(false);
             this.ResumeLayout(false);
         }
+        private VVVV.HDE.Viewer.TreeViewer FCategoryTreeViewer;
         private VVVV.Nodes.DoubleBufferedPanel FNodeTypePanel;
         private System.Windows.Forms.VScrollBar FScrollBar;
         private System.Windows.Forms.Label FNodeCountLabel;
@@ -355,7 +356,6 @@ namespace VVVV.Nodes.NodeBrowser
         private System.Windows.Forms.TextBox FTagsTextBox;
         private RichTextBox FRichTextBox;
         private System.Windows.Forms.Panel FTagPanel;
-        private VVVV.HDE.Viewer.TreeViewer CategoryTreeViewer;
         
         #region initialization
         //this method is called by vvvv when the node is created
@@ -372,20 +372,20 @@ namespace VVVV.Nodes.NodeBrowser
             //register nodeinfolisteners at hdehost
             FHDEHost.AddListener(this);
             
-            //now create a child container, which knows how to map the HDE model.
+        /*    //now create a child container, which knows how to map the HDE model.
             var cc = FHDEHost.UnityContainer.CreateChildContainer();
             cc.AddNewExtension<NodeBrowserModelContainerExtension>();
             
             //create a IContentProvider and hand it to the treeViewer
             var cp = new UnityContentProvider(cc);
-            CategoryTreeViewer.SetContentProvider(cp);
+            FCategoryTreeViewer.SetContentProvider(cp);
             
             //create ILabelProvider and hand it to the treeViewer
             var lp = new UnityLabelProvider(cc);
-            CategoryTreeViewer.SetLabelProvider(lp);
+            FCategoryTreeViewer.SetLabelProvider(lp);
             
             //hand model root over to viewers
-            CategoryTreeViewer.SetRoot(FCategoryModel);
+            FCategoryTreeViewer.SetRoot(FCategoryModel);*/
         }
 
         #endregion initialization
@@ -444,23 +444,26 @@ namespace VVVV.Nodes.NodeBrowser
         #endregion INodeBrowser
         
         #region INodeInfoListener
+        private string NodeInfoToKey(INodeInfo nodeInfo)
+        {
+            string tags = nodeInfo.Tags;
+            if (nodeInfo.Author != "vvvv group")
+                tags += ", " + nodeInfo.Author;
+
+            if (!string.IsNullOrEmpty(nodeInfo.Tags))
+                return nodeInfo.Username + " [" + tags + "]";
+            else
+                return nodeInfo.Username;
+        }
+        
         public void NodeInfoAddedCB(INodeInfo nodeInfo)
         {
             string nodeVersion = nodeInfo.Version;
-            string nodeAuthor = nodeInfo.Author;
-            string nodeTags = nodeInfo.Tags;
 
             //don't include legacy nodes in the list
             if ((string.IsNullOrEmpty(nodeVersion)) || (!nodeVersion.ToLower().Contains("legacy")))
             {
-                string tags = nodeTags;
-                if (nodeAuthor != "vvvv group")
-                    tags += ", " + nodeAuthor;
-                string key;
-                if (!string.IsNullOrEmpty(nodeInfo.Tags))
-                    key = nodeInfo.Username + " [" + tags + "]";
-                else
-                    key = nodeInfo.Username;
+                string key = NodeInfoToKey(nodeInfo);
                 
                 FNodeList.Add(key);
                 FNodeDict[key] = nodeInfo;
@@ -487,7 +490,7 @@ namespace VVVV.Nodes.NodeBrowser
         
         public void NodeInfoRemovedCB(INodeInfo nodeInfo)
         {
-            string key = nodeInfo.Username + " [" + nodeInfo.Tags + "]";
+            string key = NodeInfoToKey(nodeInfo);
             FNodeDict.Remove(key);
             FNodeList.Remove(key);
             
@@ -552,14 +555,14 @@ namespace VVVV.Nodes.NodeBrowser
                 }
                 //if we are now at -1 -> reset to manually entered tags
                 else if ((FHoverLine == -1) && (ScrolledLine == 0))
-                  ResetToManualEntry();  
+                    ResetToManualEntry();
                 //if this is exceeding the currently visible lines -> scroll up a line
                 else if ((FHoverLine == -1) && (ScrolledLine > 0))
                 {
                     ScrolledLine -= 1;
                     FHoverLine = 0;
                 }
-             
+                
                 RedrawAwesomeSelection(true);
                 ShowToolTip();
             }
@@ -1008,9 +1011,9 @@ namespace VVVV.Nodes.NodeBrowser
                     FNodeFilter = (int) TNodeType.Native;
                 else if (FTags[0] == "M")
                     FNodeFilter = (int) TNodeType.Patch;
-                else if (FTags[0] == "F")
+                else if ((FTags[0] == "F") || (FTags[0] == "FF"))
                     FNodeFilter = (int) TNodeType.Freeframe;
-                else if (FTags[0] == "X")
+                else if ((FTags[0] == "X") || (FTags[0] == "FX"))
                     FNodeFilter = (int) TNodeType.Effect;
                 else if (FTags[0] == "P")
                     FNodeFilter = (int) TNodeType.Plugin;
@@ -1043,17 +1046,20 @@ namespace VVVV.Nodes.NodeBrowser
             //clear old selection
             FRichTextBox.SelectionBackColor = Color.Silver;
 
-            //draw current selection
-            string sel = FRichTextBox.Lines[FHoverLine];
-            FRichTextBox.SelectionStart = FRichTextBox.Text.IndexOf(sel);
-            FRichTextBox.SelectionLength = sel.Length;
-            FRichTextBox.SelectionBackColor = CHoverColor;
-            if (updateTags)
+            if (FHoverLine > -1)
             {
-                FTagsTextBox.Text = sel.Trim();
-                FTagsTextBox.SelectionStart = FTagsTextBox.Text.Length;
+                //draw current selection
+                string sel = FRichTextBox.Lines[FHoverLine];
+                FRichTextBox.SelectionStart = FRichTextBox.Text.IndexOf(sel);
+                FRichTextBox.SelectionLength = sel.Length;
+                FRichTextBox.SelectionBackColor = CHoverColor;
+                if (updateTags)
+                {
+                    FTagsTextBox.Text = sel.Trim();
+                    FTagsTextBox.SelectionStart = FTagsTextBox.Text.Length;
+                }
             }
-
+            
             //make sure the selection is also drawn in the NodeTypePanel
             FNodeTypePanel.Invalidate();
         }
@@ -1146,10 +1152,11 @@ namespace VVVV.Nodes.NodeBrowser
                 FNodeBrowserHost.ShowHelpPatch(FNodeDict[username]);
             }
             }*/
-            else if (CategoryTreeViewer.IsExpanded(sender))
-                CategoryTreeViewer.Collapse(sender, false);
+            else if (FCategoryTreeViewer.IsExpanded(sender))
+                FCategoryTreeViewer.Collapse(sender, false);
             else
-                CategoryTreeViewer.Solo(sender);
+                FCategoryTreeViewer.Solo(sender);
+            
         }
         
         void FTopLabelClick(object sender, EventArgs e)
