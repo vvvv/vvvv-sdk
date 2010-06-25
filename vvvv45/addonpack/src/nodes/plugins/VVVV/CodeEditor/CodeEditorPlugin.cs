@@ -46,7 +46,7 @@ namespace VVVV.Nodes
             FNodeSelectionListener = new NodeSelectionListener(this);
             
             var resources = new ComponentResourceManager(typeof(CodeEditorPlugin));
-            FImageList.ImageStream = ((ImageListStreamer)(resources.GetObject("FImageList.ImageStream")));
+            FImageList.ImageStream = ((ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
             FImageList.TransparentColor = System.Drawing.Color.Transparent;
             FImageList.Images.SetKeyName(0, "Icons.16x16.Class.png");
             FImageList.Images.SetKeyName(1, "Icons.16x16.Method.png");
@@ -212,11 +212,11 @@ namespace VVVV.Nodes
         #endregion
         
         #region Callbacks
-        void LeftDoubleClickCB(object sender, EventArgs args)
+        void LeftDoubleClickCB(ModelMapper sender, EventArgs args)
         {
-            if (sender is ITextDocument)
+            if (sender.Model is ITextDocument)
             {
-                Open(sender as ITextDocument);
+                Open(sender.Model as ITextDocument);
             }
         }
         

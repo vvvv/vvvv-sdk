@@ -74,9 +74,10 @@ namespace VVVV.Nodes
 			this.FProjectTreeViewer.FlatStyle = false;
 			this.FProjectTreeViewer.Location = new System.Drawing.Point(0, 0);
 			this.FProjectTreeViewer.Name = "FProjectTreeViewer";
+			this.FProjectTreeViewer.Root = null;
 			this.FProjectTreeViewer.ShowLines = true;
 			this.FProjectTreeViewer.ShowPlusMinus = true;
-			this.FProjectTreeViewer.ShowRoot = true;
+			this.FProjectTreeViewer.ShowRoot = false;
 			this.FProjectTreeViewer.ShowRootLines = true;
 			this.FProjectTreeViewer.ShowTooltip = false;
 			this.FProjectTreeViewer.Size = new System.Drawing.Size(302, 635);
