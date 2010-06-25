@@ -32,10 +32,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.IO;
 
-using Microsoft.Practices.Unity;
-
 using VVVV.PluginInterfaces.V1;
-using VVVV.HDE.Viewer.Model;
 
 //the vvvv node namespace
 namespace VVVV.Nodes.NodeBrowser
@@ -215,7 +212,7 @@ namespace VVVV.Nodes.NodeBrowser
             this.FScrollBar = new System.Windows.Forms.VScrollBar();
             this.FTagsTextBox = new System.Windows.Forms.TextBox();
             this.FCategoryPanel = new System.Windows.Forms.Panel();
-            this.FCategoryTreeViewer = new VVVV.HDE.Viewer.TreeViewer();
+            this.FCategoryTreeViewer = new VVVV.HDE.Viewer.WinFormsTreeViewer.TreeViewer();
             this.FTopLabel = new System.Windows.Forms.Label();
             this.FTagPanel.SuspendLayout();
             this.FCategoryPanel.SuspendLayout();
@@ -321,7 +318,7 @@ namespace VVVV.Nodes.NodeBrowser
             this.FCategoryTreeViewer.ShowTooltip = true;
             this.FCategoryTreeViewer.Size = new System.Drawing.Size(159, 424);
             this.FCategoryTreeViewer.TabIndex = 1;
-            this.FCategoryTreeViewer.LeftClick += new System.EventHandler(this.CategoryTreeViewerLeftClick);
+//            this.FCategoryTreeViewer.LeftClick += new System.EventHandler(this.CategoryTreeViewerLeftClick);
             // 
             // FTopLabel
             // 
@@ -347,7 +344,7 @@ namespace VVVV.Nodes.NodeBrowser
             this.FCategoryPanel.ResumeLayout(false);
             this.ResumeLayout(false);
         }
-        private VVVV.HDE.Viewer.TreeViewer FCategoryTreeViewer;
+        private VVVV.HDE.Viewer.WinFormsTreeViewer.TreeViewer FCategoryTreeViewer;
         private VVVV.Nodes.DoubleBufferedPanel FNodeTypePanel;
         private System.Windows.Forms.VScrollBar FScrollBar;
         private System.Windows.Forms.Label FNodeCountLabel;
@@ -472,7 +469,7 @@ namespace VVVV.Nodes.NodeBrowser
                 FAwesomeWidth = Math.Max(FAwesomeWidth, s.Width);
                 
                 //insert nodeInfo to NodeListModel
-                var nodeInfoEntry = FHDEHost.UnityContainer.BuildUp(new NodeInfoEntry(nodeInfo));
+                var nodeInfoEntry = new NodeInfoEntry(nodeInfo);
                 CategoryEntry catEntry;
                 if (FCategoryModel.Contains(nodeInfoEntry.Category))
                 {
@@ -481,7 +478,7 @@ namespace VVVV.Nodes.NodeBrowser
                 }
                 else
                 {
-                    catEntry = FHDEHost.UnityContainer.BuildUp(new CategoryEntry(nodeInfoEntry.Category));
+                    catEntry = new CategoryEntry(nodeInfoEntry.Category);
                     catEntry.Add(nodeInfoEntry);
                     FCategoryModel.Add(catEntry);
                 }

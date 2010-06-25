@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 
 using VVVV.PluginInterfaces.V1;
-using VVVV.Utils.Notify;
+//using VVVV.Utils.Notify;
 
 namespace VVVV.Nodes.NodeBrowser
 {
     /// <summary>
     /// Description of CategoryEntry.
     /// </summary>
-    public class CategoryEntry: Notifier
+    public class CategoryEntry//: Notifier
     {
         List<NodeInfoEntry> FNodeInfos = new List<NodeInfoEntry>();
         public List<NodeInfoEntry> NodeInfoEntries

@@ -1,5 +1,5 @@
 ﻿using System;
-using VVVV.HDE.Viewer.Model;
+//using VVVV.HDE.Viewer.Model;
 using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.Nodes.NodeBrowser
@@ -7,7 +7,7 @@ namespace VVVV.Nodes.NodeBrowser
 	/// <summary>
 	/// Description of NodeInfoContentProvider.
 	/// </summary>
-	public class NodeInfoEntryProvider: ITreeContentProvider, ILabelProvider, IDragDropProvider
+	public class NodeInfoEntryProvider//: ITreeContentProvider, ILabelProvider, IDragDropProvider
 	{
 		public NodeInfoEntryProvider()
 		{
@@ -51,10 +51,10 @@ namespace VVVV.Nodes.NodeBrowser
             throw new NotImplementedException();
         }
 	    
-        System.Collections.IEnumerable ITreeContentProvider.GetChildren(object element)
-        {
-            return new object[0];
-        }
+//        System.Collections.IEnumerable ITreeContentProvider.GetChildren(object element)
+//        {
+//            return new object[0];
+//        }
 	    
         public string GetToolTip(object element)
         {

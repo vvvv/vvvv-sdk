@@ -1,5 +1,6 @@
 ﻿using System;
-using VVVV.HDE.Viewer.Model;
+using System.Collections;
+//using VVVV.HDE.Viewer.Model;
 using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.Nodes.NodeBrowser
@@ -7,7 +8,7 @@ namespace VVVV.Nodes.NodeBrowser
 	/// <summary>
 	/// Description of NodeListModelContentProvider.
 	/// </summary>
-	public class NodeListModelProvider: ITreeContentProvider, ILabelProvider
+	public class NodeListModelProvider//: ITreeContentProvider, ILabelProvider
 	{
 		public NodeListModelProvider()
 		{
@@ -22,7 +23,7 @@ namespace VVVV.Nodes.NodeBrowser
 		    return "root";
 		}
 	    
-        System.Collections.IEnumerable ITreeContentProvider.GetChildren(object element)
+        IEnumerable GetChildren(object element)
         {
             return (element as NodeListModel).Categories;
         }

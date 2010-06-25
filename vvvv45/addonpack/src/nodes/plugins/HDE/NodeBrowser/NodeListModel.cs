@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using VVVV.PluginInterfaces.V1;
-using VVVV.Utils.Notify;
+//using VVVV.Utils.Notify;
 
 namespace VVVV.Nodes.NodeBrowser
 {
@@ -10,7 +10,7 @@ namespace VVVV.Nodes.NodeBrowser
     /// Description of NodeListModel.
     /// </summary>
     /// 
-    public class NodeListModel: Notifier
+    public class NodeListModel//: Notifier
     {
         List<CategoryEntry> FCategoryList = new List<CategoryEntry>();
         public List<CategoryEntry> Categories
