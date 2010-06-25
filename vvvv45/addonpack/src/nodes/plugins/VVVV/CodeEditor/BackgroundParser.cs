@@ -4,8 +4,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Collections.Generic;
 
-using VVVV.HDE.Model;
-using VVVV.Utils.Concurrent;
+using VVVV.Core.Model;
 
 using Dom = ICSharpCode.SharpDevelop.Dom;
 

@@ -1,7 +1,6 @@
-﻿
-using System;
+﻿using System;
 using VVVV.PluginInterfaces.V1;
-using VVVV.HDE.Model;
+using VVVV.Core.Model;
 
 namespace VVVV.Nodes
 {

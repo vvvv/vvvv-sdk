@@ -36,13 +36,11 @@ using System.CodeDom.Compiler;
 using System.IO;
 using System.Diagnostics;
 
-using VVVV.HDE.Model;
-using VVVV.HDE.Model.CS;
+using VVVV.Core.Model;
+using VVVV.Core.Model.CS;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using VVVV.HDE.Viewer.Model;
-using VVVV.HDE.Model.Provider;
 using VVVV.Utils;
 
 using ICSharpCode.TextEditor;

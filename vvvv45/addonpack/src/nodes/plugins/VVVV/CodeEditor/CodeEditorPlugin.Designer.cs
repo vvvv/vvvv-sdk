@@ -20,7 +20,7 @@ namespace VVVV.Nodes
 			this.FStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.FImageList = new System.Windows.Forms.ImageList(this.components);
 			this.FSplitContainer = new System.Windows.Forms.SplitContainer();
-			this.FProjectTreeViewer = new VVVV.HDE.Viewer.TreeViewer();
+			this.FProjectTreeViewer = new VVVV.HDE.Viewer.WinFormsTreeViewer.TreeViewer();
 			this.FTabControl = new System.Windows.Forms.TabControl();
 			this.FStatusStrip.SuspendLayout();
 			this.FSplitContainer.Panel1.SuspendLayout();
@@ -109,7 +109,7 @@ namespace VVVV.Nodes
 		}
 		private System.Windows.Forms.TabControl FTabControl;
 		private System.Windows.Forms.ToolStripStatusLabel FStatusLabel;
-		private VVVV.HDE.Viewer.TreeViewer FProjectTreeViewer;
+		private VVVV.HDE.Viewer.WinFormsTreeViewer.TreeViewer FProjectTreeViewer;
 		private System.Windows.Forms.SplitContainer FSplitContainer;
 		private System.Windows.Forms.ImageList FImageList;
 		private System.Windows.Forms.StatusStrip FStatusStrip;
