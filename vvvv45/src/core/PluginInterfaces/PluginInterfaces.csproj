@@ -1,4 +1,5 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.PluginInterfaces</RootNamespace>
@@ -52,7 +53,6 @@
   <ItemGroup>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\..\vvvv50\lib\Unity\Microsoft.Practices.Unity.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="SlimDX" />
     <Reference Include="System" />
@@ -62,14 +62,9 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\vvvv50\src\HDE\Model\HDEModel.csproj">
-      <Project>{42D93A99-FF48-462B-B8A8-A9C1B1E6B5F8}</Project>
-      <Name>HDEModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\vvvv50\src\Utils\Utils.csproj">
-      <Project>{034AAE5F-0B7E-42E2-B155-A14486F97F36}</Project>
-      <Name>Utils</Name>
-      <Private>False</Private>
+    <ProjectReference Include="..\..\..\vvvv50\src\Core\Core.csproj">
+      <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
+      <Name>Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\_Utils\Utils.csproj">
       <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>

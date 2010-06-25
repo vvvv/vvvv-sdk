@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Drawing;
 
-using VVVV.HDE.Model;
+using VVVV.Core.Model;
 
 namespace VVVV.PluginInterfaces.V1
 {

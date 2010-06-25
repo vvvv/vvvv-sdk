@@ -1,7 +1,8 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
-using VVVV.HDE.Model;
+
+using VVVV.Core.Model;
 
 namespace VVVV.PluginInterfaces.V1
 {

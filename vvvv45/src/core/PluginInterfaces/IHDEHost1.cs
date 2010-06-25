@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 using Microsoft.Practices.Unity;
 
-using VVVV.HDE.Model;
+using VVVV.Core.Model;
 
 namespace VVVV.PluginInterfaces.V1
 {

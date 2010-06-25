@@ -2,11 +2,13 @@ using System;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Drawing;
-using VVVV.Utils.VMath;
-using VVVV.Utils.VColor;
-using VVVV.HDE.Model;
+
 using SlimDX;
 using SlimDX.Direct3D9;
+
+using VVVV.Utils.VMath;
+using VVVV.Utils.VColor;
+using VVVV.Core.Model;
 
 /// <summary>
 /// Version 1 of the VVVV PluginInterface.

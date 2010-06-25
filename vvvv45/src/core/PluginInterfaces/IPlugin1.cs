@@ -2,9 +2,10 @@ using System;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Drawing;
+
 using VVVV.Utils.VMath;
 using VVVV.Utils.VColor;
-using VVVV.HDE.Model;
+using VVVV.Core.Model;
 
 namespace VVVV.PluginInterfaces.V1
 {
