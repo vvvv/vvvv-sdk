@@ -33,6 +33,8 @@ using System.Text.RegularExpressions;
 using System.IO;
 
 using VVVV.PluginInterfaces.V1;
+using VVVV.Core;
+using VVVV.Core.Collections;
 
 //the vvvv node namespace
 namespace VVVV.Nodes.NodeBrowser
@@ -52,7 +54,8 @@ namespace VVVV.Nodes.NodeBrowser
         private bool FDisposed = false;
         
         //further fields
-        NodeListModel FCategoryModel = new NodeListModel();
+        CategoryList FCategoryList = new CategoryList();
+        Dictionary<string, string> FCategoryDict = new Dictionary<string, string>();
         List<string> FNodeList = new List<string>();
         List<string> FSelectionList;
         List<string> FRTFSelectionList = new List<string>();
@@ -103,6 +106,38 @@ namespace VVVV.Nodes.NodeBrowser
             FToolTip.Popup += new PopupEventHandler(ToolTipPopupHandler);
             
             SelectPage(NodeBrowserPage.ByTags);
+            
+            FCategoryDict.Add("2d", "Geometry in 2d, like connecting lines, calculating coordinates etc.");
+            FCategoryDict.Add("3d", "Geometry in 3d.");
+            FCategoryDict.Add("4d", "");
+            FCategoryDict.Add("Animation", "Things which will animate over time and therefore have an internal state; Generate motion, smooth and filter motion, record and store values. FlipFlops and other Logic nodes.");
+            FCategoryDict.Add("Astronomy", "Everything having to do with the Earth and the Universe; Current Time, calculation of earth, moon and sun’s parameters.");
+            FCategoryDict.Add("Boolean", "Logic Operators.");
+            FCategoryDict.Add("Color", "Working with color, color addition, subtraction, blending, color models etc.");
+            FCategoryDict.Add("Debug", "Displaying system status information in various undocumented formats.");
+            FCategoryDict.Add("Devices", "Control external devices, and get data from them.");
+            FCategoryDict.Add("Differential", "Create ultra smooth motions by working with position and velocity at the same time.");
+            FCategoryDict.Add("DShow9", "Audio and Video playback and effects based on Microsofts DirectShow Framework.");
+            FCategoryDict.Add("DX9", "DirectX9 based rendering system");
+            FCategoryDict.Add("Enumerations", "Work with enumerated data types");
+            FCategoryDict.Add("EX9", "The DirectX9 based rendering system made more Explicit. So geometry generation is separated from geometry display in the shader.");
+            FCategoryDict.Add("File", "Operations on the file system. Read, write, copy, delete, parse files etc.");
+            FCategoryDict.Add("Flash", "Everything related to rendering Flash content.");
+            FCategoryDict.Add("GDI", "Old school simple rendering system. Simple nodes for didactical use and lowtek graphics.");
+            FCategoryDict.Add("HTML", "Nodes making use of HTML strings local or on the internet");
+            FCategoryDict.Add("Network", "Internet functionality like HTTP, IRC, UDP, TCP, ...");
+            FCategoryDict.Add("Node", "Operations on the generic so called node pins.");
+            FCategoryDict.Add("ODE", "The Open Dynamics Engine for physical behaviour.");
+            FCategoryDict.Add("Quaternion", "Work with Quaternion vectors for rotations.");
+            FCategoryDict.Add("Spectral", "Operations for reducing value spreads to some few values. Summing, Averaging etc.");
+            FCategoryDict.Add("Spreads", "Operations creating value spreads out of few key values. Also spread operations.");
+            FCategoryDict.Add("String", "String functions, appending, searching, sorting, string spread and spectral operations.");
+            FCategoryDict.Add("System", "Control of built in hardware, like mouse, keyboard, sound card mixer, power management etc.");
+            FCategoryDict.Add("Transforms", "Nodes for creating and manipulating 3d-transformations.");
+            FCategoryDict.Add("TTY", "Old school tty console rendering system for printing out status and debug messages.");
+            FCategoryDict.Add("Value", "Everything dealing with numercial values: Mathematical operations, ...");
+            FCategoryDict.Add("VVVV", "Everything directly related to the running vvvv instance: Command line parameters, Event outputs, Quit command, ...");
+            FCategoryDict.Add("Windows", "Control Windows´ Windows, Desktop Icons etc.");
         }
         
         private void ToolTipPopupHandler(object sender, PopupEventArgs e)
@@ -311,6 +346,7 @@ namespace VVVV.Nodes.NodeBrowser
             this.FCategoryTreeViewer.FlatStyle = true;
             this.FCategoryTreeViewer.Location = new System.Drawing.Point(0, 15);
             this.FCategoryTreeViewer.Name = "FCategoryTreeViewer";
+            this.FCategoryTreeViewer.Root = null;
             this.FCategoryTreeViewer.ShowLines = false;
             this.FCategoryTreeViewer.ShowPlusMinus = false;
             this.FCategoryTreeViewer.ShowRoot = false;
@@ -318,7 +354,7 @@ namespace VVVV.Nodes.NodeBrowser
             this.FCategoryTreeViewer.ShowTooltip = true;
             this.FCategoryTreeViewer.Size = new System.Drawing.Size(159, 424);
             this.FCategoryTreeViewer.TabIndex = 1;
-//            this.FCategoryTreeViewer.LeftClick += new System.EventHandler(this.CategoryTreeViewerLeftClick);
+            this.FCategoryTreeViewer.LeftClick += new VVVV.HDE.Viewer.WinFormsTreeViewer.ClickHandler(this.FCategoryTreeViewerLeftClick);
             // 
             // FTopLabel
             // 
@@ -369,20 +405,9 @@ namespace VVVV.Nodes.NodeBrowser
             //register nodeinfolisteners at hdehost
             FHDEHost.AddListener(this);
             
-        /*    //now create a child container, which knows how to map the HDE model.
-            var cc = FHDEHost.UnityContainer.CreateChildContainer();
-            cc.AddNewExtension<NodeBrowserModelContainerExtension>();
-            
-            //create a IContentProvider and hand it to the treeViewer
-            var cp = new UnityContentProvider(cc);
-            FCategoryTreeViewer.SetContentProvider(cp);
-            
-            //create ILabelProvider and hand it to the treeViewer
-            var lp = new UnityLabelProvider(cc);
-            FCategoryTreeViewer.SetLabelProvider(lp);
-            
-            //hand model root over to viewers
-            FCategoryTreeViewer.SetRoot(FCategoryModel);*/
+            var shell = new Shell();
+            var categoryMapper = new ModelMapper(FCategoryList, shell.UnityContainer);
+            FCategoryTreeViewer.Root = categoryMapper;
         }
 
         #endregion initialization
@@ -468,19 +493,27 @@ namespace VVVV.Nodes.NodeBrowser
                 Size s = TextRenderer.MeasureText(key, FRichTextBox.Font, new Size(1, 1));
                 FAwesomeWidth = Math.Max(FAwesomeWidth, s.Width);
                 
-                //insert nodeInfo to NodeListModel
-                var nodeInfoEntry = new NodeInfoEntry(nodeInfo);
-                CategoryEntry catEntry;
-                if (FCategoryModel.Contains(nodeInfoEntry.Category))
+                //insert nodeInfo to FCategoryList
+                bool added = false;
+                foreach (CategoryEntry ce in FCategoryList)
+                    if (ce.Name == nodeInfo.Category)
                 {
-                    catEntry = FCategoryModel.GetCategoryEntry(nodeInfoEntry.Category);
-                    catEntry.Add(nodeInfoEntry);
+                    ce.Add(nodeInfo);
+                    added = true;
+                    break;
                 }
-                else
+                
+                if (!added)
                 {
-                    catEntry = new CategoryEntry(nodeInfoEntry.Category);
-                    catEntry.Add(nodeInfoEntry);
-                    FCategoryModel.Add(catEntry);
+                    string description;
+                    if (FCategoryDict.ContainsKey(nodeInfo.Category))
+                        description = FCategoryDict[nodeInfo.Category];
+                    else
+                        description = "";
+                    
+                    var catEntry = new CategoryEntry(nodeInfo.Category, description);
+                    catEntry.Add(nodeInfo);
+                    FCategoryList.Add(catEntry);
                 }
             }
         }
@@ -490,11 +523,18 @@ namespace VVVV.Nodes.NodeBrowser
             string key = NodeInfoToKey(nodeInfo);
             FNodeDict.Remove(key);
             FNodeList.Remove(key);
+
+            CategoryEntry catEntry = null;
+            foreach (CategoryEntry ce in FCategoryList)
+                if (ce.Name == nodeInfo.Category)
+            {
+                ce.Remove(nodeInfo);
+                catEntry = ce;
+                break;
+            }
             
-            CategoryEntry catEntry = FCategoryModel.GetCategoryEntry(nodeInfo.Category);
-            //catEntry.no
-            
-            //FHDEHost.UnityContainer.te
+            if ((catEntry != null) && (catEntry.Count == 0))
+                FCategoryList.Remove(catEntry);
             
             UpdateOutput();
         }
@@ -746,7 +786,11 @@ namespace VVVV.Nodes.NodeBrowser
                 FSelectionList = new List<string>();
                 if (FPath != null)
                 {
-                    foreach (string p in System.IO.Directory.GetFiles(FPath))
+                    foreach (string p in System.IO.Directory.GetFiles(FPath, "*.dll"))
+                        FSelectionList.Add(Path.GetFileName(p));
+                    foreach (string p in System.IO.Directory.GetFiles(FPath, "*.v4p"))
+                        FSelectionList.Add(Path.GetFileName(p));
+                    foreach (string p in System.IO.Directory.GetFiles(FPath, "*.fx"))
                         FSelectionList.Add(Path.GetFileName(p));
                     
                     FSelectionList = FSelectionList.FindAll(delegate(string node)
@@ -770,6 +814,9 @@ namespace VVVV.Nodes.NodeBrowser
                                                                 else
                                                                     return false;
                                                             });
+                    
+                    FSelectionList.Sort(delegate(string s1, string s2)
+                                        {return s1.CompareTo(s2);});
                 }
                 sort = false;
             }
@@ -1133,11 +1180,11 @@ namespace VVVV.Nodes.NodeBrowser
         #endregion RichTextBox
         
         #region CategoryView
-        void CategoryTreeViewerLeftClick(object sender, EventArgs e)
+        void FCategoryTreeViewerLeftClick(ModelMapper sender, EventArgs args)
         {
-            if (sender is NodeInfoEntry)
+            if (sender.Model is NodeInfoEntry)
             {
-                FTagsTextBox.Text = (sender as NodeInfoEntry).Username;
+                FTagsTextBox.Text = (sender.Model as NodeInfoEntry).Name;
                 CreateNode();
             }
             /* else if (e.Button == MouseButtons.Middle)
@@ -1149,11 +1196,10 @@ namespace VVVV.Nodes.NodeBrowser
                 FNodeBrowserHost.ShowHelpPatch(FNodeDict[username]);
             }
             }*/
-            else if (FCategoryTreeViewer.IsExpanded(sender))
-                FCategoryTreeViewer.Collapse(sender, false);
+            else if (FCategoryTreeViewer.IsExpanded(sender.Model))
+                FCategoryTreeViewer.Collapse(sender.Model, false);
             else
-                FCategoryTreeViewer.Solo(sender);
-            
+                FCategoryTreeViewer.Solo(sender.Model);
         }
         
         void FTopLabelClick(object sender, EventArgs e)

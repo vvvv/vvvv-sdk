@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using VVVV.Core;
+using VVVV.Core.Model;
+using VVVV.Core.View;
 using VVVV.PluginInterfaces.V1;
-//using VVVV.Utils.Notify;
 
 namespace VVVV.Nodes.NodeBrowser
 {
     /// <summary>
-    /// Description of NodeListModel.
+    /// Description of CategoryList.
     /// </summary>
     /// 
-    public class NodeListModel//: Notifier
+    public class CategoryList: IViewableCollection
     {
         List<CategoryEntry> FCategoryList = new List<CategoryEntry>();
         public List<CategoryEntry> Categories
@@ -18,7 +20,7 @@ namespace VVVV.Nodes.NodeBrowser
             get{return FCategoryList;}
         }
         
-        public NodeListModel()
+        public CategoryList()
         {
         }
 
@@ -26,23 +28,28 @@ namespace VVVV.Nodes.NodeBrowser
         {
             FCategoryList.Add(entry);
             FCategoryList.Sort(delegate(CategoryEntry c1, CategoryEntry c2) {return c1.Name.CompareTo(c2.Name);});
-            //FireOnNotifyChanged();
         }
         
         public void Remove(CategoryEntry entry)
         {
             FCategoryList.Remove(entry);
-            //FireOnNotifyChanged();
         }
         
-        public bool Contains(string CategoryName)
+        public event CollectionDelegate Added;
+        
+        public event CollectionDelegate Removed;
+        
+        public int Count 
         {
-            return FCategoryList.Find(delegate(CategoryEntry ce){return ce.Name == CategoryName;}) != null;
+            get 
+            {
+                return FCategoryList.Count;
+            }
         }
         
-        public CategoryEntry GetCategoryEntry(string CategoryName)
+        public System.Collections.IEnumerator GetEnumerator()
         {
-            return FCategoryList.Find(delegate(CategoryEntry ce){return ce.Name == CategoryName;});
+            return FCategoryList.GetEnumerator();
         }
     }
 }
