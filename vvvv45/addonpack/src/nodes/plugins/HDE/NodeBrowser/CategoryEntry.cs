@@ -15,6 +15,8 @@ namespace VVVV.Nodes.NodeBrowser
         List<NodeInfoEntry> FNodeInfos = new List<NodeInfoEntry>();
         string FDescription;
         
+        public event RenamedHandler Renamed;
+        
         public List<NodeInfoEntry> NodeInfoEntries
         {
             get{return FNodeInfos;}
@@ -52,7 +54,8 @@ namespace VVVV.Nodes.NodeBrowser
         
         public event CollectionDelegate Removed;
         
-        public int Count {
+        public int Count 
+        {
             get {return FNodeInfos.Count;;}
         }
         

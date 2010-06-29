@@ -14,6 +14,8 @@ namespace VVVV.Nodes.NodeBrowser
     {
         public INodeInfo NodeInfo;
         
+        public event RenamedHandler Renamed;
+        
         public NodeInfoEntry(INodeInfo nodeInfo): base()
         {
             NodeInfo = nodeInfo;
@@ -57,7 +59,7 @@ namespace VVVV.Nodes.NodeBrowser
         
         public object ItemToDrag()
         {
-            return Name;
+            return NodeInfo.Systemname;
         }
     }
 }
