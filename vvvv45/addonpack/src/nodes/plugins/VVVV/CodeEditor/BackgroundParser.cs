@@ -8,7 +8,7 @@ using VVVV.Core.Model;
 
 using Dom = ICSharpCode.SharpDevelop.Dom;
 
-namespace VVVV.Nodes
+namespace VVVV.HDE.CodeEditor
 {
 	public class BackgroundParser
 	{

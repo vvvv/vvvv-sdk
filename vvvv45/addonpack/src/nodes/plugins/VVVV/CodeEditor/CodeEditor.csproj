@@ -5,8 +5,8 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
-    <RootNamespace>VVVV.Nodes</RootNamespace>
-    <AssemblyName>CodeEditor</AssemblyName>
+    <RootNamespace>VVVV.HDE.CodeEditor</RootNamespace>
+    <AssemblyName>VVVV.HDE.CodeEditor</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SourceAnalysisOverrideSettingsFile>C:\Users\Elias\AppData\Roaming\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
@@ -68,18 +68,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="VVVV.Core">
-      <HintPath>..\..\_lib\vvvv\VVVV.Core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="VVVV.HDE.Viewer.WinFormsTreeViewer">
-      <HintPath>..\..\_lib\vvvv\VVVV.HDE.Viewer.WinFormsTreeViewer.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="VVVV.Utils">
-      <HintPath>..\..\_lib\vvvv\VVVV.Utils.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\_SharedSources\ManagedVCL\ManagedVCLControl.cs">
@@ -103,5 +91,23 @@
     <EmbeddedResource Include="CodeEditorPlugin.resx">
       <DependentUpon>CodeEditorPlugin.Designer.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\vvvv40_DynamicNodes\src.net\_Utils\Utils.csproj">
+      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
+      <Name>Utils</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\vvvv50\src\Core\Core.csproj">
+      <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
+      <Name>Core</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\vvvv50\src\HDE\Viewer\WinFormsTreeViewer\WinFormsTreeViewer.csproj">
+      <Project>{98936436-EA28-437E-A2A4-CC7CAA532658}</Project>
+      <Name>WinFormsTreeViewer</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <Folder Include="Commands" />
   </ItemGroup>
 </Project>

@@ -33,9 +33,7 @@ using ICSharpCode.SharpDevelop.Dom.VBNet;
 using TextEditor = ICSharpCode.TextEditor;
 using NRefactoryResolver = ICSharpCode.SharpDevelop.Dom.NRefactoryResolver.NRefactoryResolver;
 
-using VVVV.Nodes;
-
-namespace CSharpEditor
+namespace VVVV.HDE.CodeEditor
 {
 	sealed class ToolTipProvider
 	{

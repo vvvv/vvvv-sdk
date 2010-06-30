@@ -8,7 +8,7 @@ using ICSharpCode.SharpDevelop.Dom.CSharp;
 using ICSharpCode.SharpDevelop.Dom.VBNet;
 using ICSharpCode.TextEditor.Gui.CompletionWindow;
 
-namespace CSharpEditor
+namespace VVVV.HDE.CodeEditor
 {
 	/// <summary>
 	/// Represents an item in the code completion window.

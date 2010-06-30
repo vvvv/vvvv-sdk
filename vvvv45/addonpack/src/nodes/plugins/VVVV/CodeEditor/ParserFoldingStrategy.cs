@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.TextEditor.Document;
 
-namespace VVVV.Nodes
+namespace VVVV.HDE.CodeEditor
 {
 	public class ParserFoldingStrategy : IFoldingStrategy
 	{

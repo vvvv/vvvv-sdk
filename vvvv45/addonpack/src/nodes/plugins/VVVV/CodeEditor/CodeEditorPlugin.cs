@@ -16,7 +16,7 @@ using VVVV.Core;
 using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
 
-namespace VVVV.Nodes
+namespace VVVV.HDE.CodeEditor
 {
     public partial class CodeEditorPlugin : ManagedVCL.TopControl, IHDEPlugin
     {
@@ -65,8 +65,9 @@ namespace VVVV.Nodes
             HdeHost.AddListener(FNodeSelectionListener);
             
             var unityContainer = HdeHost.UnityContainer.CreateChildContainer();
-            FModelMapper = new ModelMapper(HdeHost.Solution.Projects, unityContainer);
+            FModelMapper = new ModelMapper(HdeHost.Solution, unityContainer);
             FModelMapper.RegisterMapping<IProject, ProjectEnumerableProvider>();
+            FModelMapper.RegisterMapping<ISolution, SolutionEditableCollectionProvider>();
             
             FProjectTreeViewer.Root = FModelMapper;
             

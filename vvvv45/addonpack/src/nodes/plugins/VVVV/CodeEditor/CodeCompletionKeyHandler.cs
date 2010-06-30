@@ -37,9 +37,7 @@ using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Gui;
 using ICSharpCode.TextEditor.Gui.CompletionWindow;
 
-using VVVV.Nodes;
-
-namespace CSharpEditor
+namespace VVVV.HDE.CodeEditor
 {
 	class CodeCompletionKeyHandler
 	{

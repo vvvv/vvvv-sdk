@@ -2,7 +2,7 @@
 using VVVV.PluginInterfaces.V1;
 using VVVV.Core.Model;
 
-namespace VVVV.Nodes
+namespace VVVV.HDE.CodeEditor
 {
 	public class NodeSelectionListener : INodeSelectionListener
 	{

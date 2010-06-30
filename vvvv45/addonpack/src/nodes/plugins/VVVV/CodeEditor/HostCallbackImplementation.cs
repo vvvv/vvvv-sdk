@@ -28,9 +28,8 @@
 using System;
 using System.Windows.Forms;
 using ICSharpCode.SharpDevelop.Dom;
-using VVVV.Nodes;
 
-namespace CSharpEditor
+namespace VVVV.HDE.CodeEditor
 {
 	/// <summary>
 	/// ICSharpCode.SharpDevelop.Dom was created by extracting code from ICSharpCode.SharpDevelop.dll.

@@ -8,7 +8,7 @@ using ICSharpCode.TextEditor.Document;
 using Dom = ICSharpCode.SharpDevelop.Dom;
 using NRefactory = ICSharpCode.NRefactory;
 
-namespace VVVV.Nodes
+namespace VVVV.HDE.CodeEditor
 {
 	public class BackgroundCodeParser
 	{

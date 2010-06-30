@@ -1,5 +1,5 @@
 ﻿
-namespace VVVV.Nodes
+namespace VVVV.HDE.CodeEditor
 {
 	partial class CodeEditorPlugin
 	{
@@ -77,7 +77,7 @@ namespace VVVV.Nodes
 			this.FProjectTreeViewer.Root = null;
 			this.FProjectTreeViewer.ShowLines = true;
 			this.FProjectTreeViewer.ShowPlusMinus = true;
-			this.FProjectTreeViewer.ShowRoot = false;
+			this.FProjectTreeViewer.ShowRoot = true;
 			this.FProjectTreeViewer.ShowRootLines = true;
 			this.FProjectTreeViewer.ShowTooltip = false;
 			this.FProjectTreeViewer.Size = new System.Drawing.Size(302, 635);

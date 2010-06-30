@@ -37,9 +37,7 @@ using ICSharpCode.TextEditor.Gui.CompletionWindow;
 using Dom = ICSharpCode.SharpDevelop.Dom;
 using NRefactoryResolver = ICSharpCode.SharpDevelop.Dom.NRefactoryResolver.NRefactoryResolver;
 
-using VVVV.Nodes;
-
-namespace CSharpEditor
+namespace VVVV.HDE.CodeEditor
 {
 	class CodeCompletionProvider : ICompletionDataProvider
 	{

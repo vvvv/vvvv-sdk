@@ -47,10 +47,7 @@ using ICSharpCode.TextEditor;
 using SD = ICSharpCode.TextEditor.Document;
 using Dom = ICSharpCode.SharpDevelop.Dom;
 
-using CSharpEditor;
-
-//the vvvv node namespace
-namespace VVVV.Nodes
+namespace VVVV.HDE.CodeEditor
 {
 	
 	//class definition, inheriting from UserControl for the GUI stuff
