@@ -104,7 +104,7 @@ namespace VVVV.Nodes
 					if (reference is AssemblyReference)
 					{
 						var assemblyName = reference.Name;
-						var assemblyFilename = reference.Location.AbsolutePath;
+						var assemblyFilename = reference.AssemblyLocation;
 						var referencePC = FPCRegistry.GetProjectContentForReference(assemblyName, assemblyFilename);
 						projectContent.AddReferencedContent(referencePC);
 					}

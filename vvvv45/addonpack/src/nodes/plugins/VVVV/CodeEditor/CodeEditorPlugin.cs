@@ -4,20 +4,20 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
+
 using Microsoft.Practices.Unity;
+
+using Dom = ICSharpCode.SharpDevelop.Dom;
+
 using ManagedVCL;
 using VVVV.Core.View;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Core;
 using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
-using Dom = ICSharpCode.SharpDevelop.Dom;
 
 namespace VVVV.Nodes
 {
-    /// <summary>
-    /// Description of CodeEditorPlugin.
-    /// </summary>
     public partial class CodeEditorPlugin : ManagedVCL.TopControl, IHDEPlugin
     {
         #region Fields
@@ -66,9 +66,9 @@ namespace VVVV.Nodes
             
             var unityContainer = HdeHost.UnityContainer.CreateChildContainer();
             FModelMapper = new ModelMapper(HdeHost.Solution.Projects, unityContainer);
+            FModelMapper.RegisterMapping<IProject, ProjectEnumerableProvider>();
             
             FProjectTreeViewer.Root = FModelMapper;
-            FProjectTreeViewer.LeftDoubleClick += LeftDoubleClickCB;
             
             // Start to parse the solution.
             FPCRegistry = new Dom.ProjectContentRegistry(); // Default .NET 2.0 registry
@@ -78,10 +78,14 @@ namespace VVVV.Nodes
             // reducing memory usage.
             FPCRegistry.ActivatePersistence(Path.Combine(Path.GetTempPath(), "VVVVCodeEditor"));
             
-            // Setup project contents for each C# project.
+            var solution = HdeHost.Solution;
+            solution.Projects.Removed += Project_Removed;
+
+            // Setup project contents for each C# project.            
             FProjects = new Dictionary<IProject, Dom.DefaultProjectContent>();
-            foreach (var project in HdeHost.Solution.Projects)
+            foreach (var project in solution.Projects)
             {
+                project.Documents.Removed += Document_Removed;
                 if (project is CSProject)
                 {
                     var projectContent = new Dom.DefaultProjectContent();
@@ -94,6 +98,16 @@ namespace VVVV.Nodes
             // Create the background assembly parser
             FBGParser = new BackgroundParser(FPCRegistry, FProjects, FStatusLabel);
             FBGParser.Parse(FProjects.Keys);
+        }
+
+        void Project_Removed(IViewableCollection<IProject> collection, IProject item)
+        {
+            foreach (var doc in item.Documents)
+            {
+                var textDoc = doc as ITextDocument;
+                if (textDoc != null)
+                    Close(textDoc);
+            }
         }
 
         void References_Changed(IViewableCollection<IReference> collection, IReference item)
@@ -189,6 +203,16 @@ namespace VVVV.Nodes
             FTabControl.SelectTab(FOpenedDocuments[doc]);
         }
         
+        public void Close(ITextDocument doc)
+        {
+            if (FOpenedDocuments.ContainsKey(doc))
+            {
+                var tabPage = FOpenedDocuments[doc];
+                FTabControl.Controls.Remove(tabPage);
+                FOpenedDocuments.Remove(doc);
+            }
+        }
+
         /// <summary>
         /// Returns the project content (contains parse information) for an IProject.
         /// </summary>
@@ -212,13 +236,13 @@ namespace VVVV.Nodes
         #endregion
         
         #region Callbacks
-        void LeftDoubleClickCB(ModelMapper sender, EventArgs args)
-        {
-            if (sender.Model is ITextDocument)
+        void FProjectTreeViewerDoubleClick(ModelMapper sender, EventArgs args)
+		{
+			if (sender.Model is ITextDocument)
             {
                 Open(sender.Model as ITextDocument);
             }
-        }
+		}
         
         void DocumentContentChangedCB(ITextDocument document, string content)
         {
@@ -229,6 +253,15 @@ namespace VVVV.Nodes
         {
             var document = sender as ITextDocument;
             FOpenedDocuments[document].Text = GetTabPageName(document);
+        }
+        
+        void Document_Removed(IViewableCollection<IDocument> collection, IDocument item)
+        {
+            if (item is ITextDocument)
+            {
+                var textDoc = item as ITextDocument;
+                Close(textDoc);
+            }
         }
         #endregion
         
@@ -255,6 +288,7 @@ namespace VVVV.Nodes
                         {
                             project.References.Added -= References_Changed;
                             project.References.Removed -= References_Changed;
+                            project.Documents.Removed -= Document_Removed;
                         }
                         FProjects.Clear();
                     }
@@ -263,11 +297,14 @@ namespace VVVV.Nodes
                         FBGParser.CancelAsync();
                     
                     if (HdeHost != null)
+                    {
+                        var solution = HdeHost.Solution;
+                        if (solution != null)
+                            solution.Projects.Removed -= Project_Removed;
+                        
                         HdeHost.RemoveListener(FNodeSelectionListener);
+                    }
                     FNodeSelectionListener = null;
-                    
-                    if (FProjectTreeViewer != null)
-                        FProjectTreeViewer.LeftDoubleClick -= LeftDoubleClickCB;
                     
                     foreach (var entry in FOpenedDocuments)
                     {

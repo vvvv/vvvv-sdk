@@ -82,6 +82,7 @@ namespace VVVV.Nodes
 			this.FProjectTreeViewer.ShowTooltip = false;
 			this.FProjectTreeViewer.Size = new System.Drawing.Size(302, 635);
 			this.FProjectTreeViewer.TabIndex = 0;
+			this.FProjectTreeViewer.DoubleClick += new VVVV.HDE.Viewer.WinFormsTreeViewer.ClickHandler(this.FProjectTreeViewerDoubleClick);
 			// 
 			// FTabControl
 			// 
