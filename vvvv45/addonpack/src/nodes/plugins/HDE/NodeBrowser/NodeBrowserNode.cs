@@ -410,7 +410,7 @@ namespace VVVV.Nodes.NodeBrowser
             FHDEHost.AddListener(this);
             
             var shell = new Shell();
-            var categoryMapper = new ModelMapper(FCategoryList, shell.UnityContainer);
+            var categoryMapper = new ModelMapper(FCategoryList, shell.MappingRegistry);
             FCategoryTreeViewer.Root = categoryMapper;
             
             UpdateOutput();
