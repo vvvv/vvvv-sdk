@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 using VVVV.PluginInterfaces.V1;
@@ -10,7 +11,7 @@ namespace VVVV.Nodes.NodeBrowser
     /// <summary>
     /// Description of CategoryEntry.
     /// </summary>
-    public class CategoryEntry: IViewableCollection, INamed, IDescripted
+    public class CategoryEntry: IEnumerable, INamed, IDescripted
     {
         List<NodeInfoEntry> FNodeInfos = new List<NodeInfoEntry>();
         string FDescription;

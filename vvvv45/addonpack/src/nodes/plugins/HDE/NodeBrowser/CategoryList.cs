@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 using VVVV.Core;
@@ -12,7 +13,7 @@ namespace VVVV.Nodes.NodeBrowser
     /// Description of CategoryList.
     /// </summary>
     /// 
-    public class CategoryList: IViewableCollection
+    public class CategoryList: IEnumerable
     {
         List<CategoryEntry> FCategoryList = new List<CategoryEntry>();
         public List<CategoryEntry> Categories
