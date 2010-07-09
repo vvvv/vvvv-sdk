@@ -67,13 +67,13 @@ namespace VVVV.Nodes
 				//fill out nodes info
 				IPluginInfo Info = new PluginInfo();
 				Info.Name = "MTSliderXY";
-				Info.Category = "2d GUI";
-				Info.Version = "";
-				Info.Help = "A spread of xy-slider groups";
+				Info.Category = "GUI";
+				Info.Version = "Multitouch";
+				Info.Help = "A spread of x-y sliders for multi touch";
 				Info.Tags = "EX9, DX9, transform, interaction, mouse, slider, fader";
-				Info.Author = "tonfilm";
+				Info.Author = "vux";
 				Info.Bugs = "";
-				Info.Credits = "";
+				Info.Credits = "tonfilm for initial gui2d";
 				Info.Warnings = "";
 				
 				//leave below as is
