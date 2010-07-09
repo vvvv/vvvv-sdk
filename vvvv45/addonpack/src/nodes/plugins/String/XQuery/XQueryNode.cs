@@ -25,6 +25,7 @@ namespace VVVV.Nodes
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
                 Info.Warnings = "";
+				Info.Author = "vux";
 
                 //leave below as is
                 System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
