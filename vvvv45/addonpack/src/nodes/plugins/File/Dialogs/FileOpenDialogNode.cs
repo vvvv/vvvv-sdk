@@ -18,10 +18,11 @@ namespace VVVV.Nodes
                 Info.Name = "OpenFileDialog";							//use CamelCaps and no spaces
                 Info.Category = "File";						//try to use an existing one
                 Info.Version = "";						//versions are optional. leave blank if not needed
-                Info.Help = "Opens a file dialog (non blocking)";
+                Info.Help = "Opens a file dialog (without blocking vvvv)";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
                 Info.Warnings = "";
+				Info.Author = "vux";
 
                 //leave below as is
                 System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
