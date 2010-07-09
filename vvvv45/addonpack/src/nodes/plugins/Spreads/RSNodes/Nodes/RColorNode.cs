@@ -19,10 +19,11 @@ namespace VVVV.Nodes
                 Info.Name = "R";							//use CamelCaps and no spaces
                 Info.Category = "Color";						//try to use an existing one
                 Info.Version = "Advanced";						//versions are optional. leave blank if not needed
-                Info.Help = "Node template";
+                Info.Help = "LTP version of R (Color)";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
                 Info.Warnings = "";
+				Info.Author = "vux";
 
                 //leave below as is
                 System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
