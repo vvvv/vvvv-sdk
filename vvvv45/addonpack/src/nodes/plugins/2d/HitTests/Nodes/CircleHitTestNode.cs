@@ -17,7 +17,7 @@ namespace VVVV.Nodes
                 Info.Name = "HitTest";							//use CamelCaps and no spaces
                 Info.Category = "2d";						//try to use an existing one
                 Info.Version = "Circle";						//versions are optional. leave blank if not needed
-                Info.Help = "";
+                Info.Help = "Performs a Hittest between a set of points and circle shapes";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
                 Info.Warnings = "";

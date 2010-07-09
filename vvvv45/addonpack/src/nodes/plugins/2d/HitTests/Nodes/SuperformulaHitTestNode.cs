@@ -18,7 +18,7 @@ namespace VVVV.Nodes
                 Info.Name = "HitTest";							//use CamelCaps and no spaces
                 Info.Category = "2d";						//try to use an existing one
                 Info.Version = "Superformula";						//versions are optional. leave blank if not needed
-                Info.Help = "Node template";
+                Info.Help = "Performs a Hittest between a set of points and superformula shapes";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
                 Info.Warnings = "";
