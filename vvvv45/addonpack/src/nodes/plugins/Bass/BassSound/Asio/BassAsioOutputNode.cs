@@ -19,8 +19,8 @@ namespace vvvv.Nodes
             {
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "AudioOut";
-                Info.Category = "BassAsio";
-                Info.Version = "";
+                Info.Category = "Bass";
+                Info.Version = "Asio";
                 Info.Help = "Output node for bass asio";
                 Info.Bugs = "";
                 Info.Credits = "";
@@ -42,6 +42,7 @@ namespace vvvv.Nodes
         private IPluginHost FHost;
         private ChannelsManager manager;
 
+        private IEnumIn FPinInDeviceEnum;
         private IValueIn FPinInDevice;
         private IValueIn FControlPanel;
         private IValueIn FPinInChannels;
@@ -62,7 +63,23 @@ namespace vvvv.Nodes
             //We play this channel trough Asio output, so we choose the device NOSOUND
             Bass.BASS_Init(0, 48000, 0, IntPtr.Zero, null);
 
+            //int cnt = BassAsio.BASS_ASIO_GetDeviceCount();
+            //List<string> devices = new List<string>();
+            //BASS_ASIO_DEVICEINFO[] devinfo = BassAsio.BASS_ASIO_GetDeviceInfos();
+            //for (int i = 0; i < devinfo.Length; i++)
+            //{
+            //    BASS_ASIO_DEVICEINFO d = devinfo[i];
+            //    devices.Add(d.name);
+            //}
+
+
+
+            //this.FHost.UpdateEnum("Bass Asio Devices", devices[0], devices.ToArray());
+
             BassUtils.LoadPlugins();
+
+            //this.FHost.CreateEnumInput("Device Id", TSliceMode.Single, TPinVisibility.True, out this.FPinInDeviceEnum);
+           // this.FPinInDeviceEnum.SetSubType("Bass Asio Devices");
 
             this.FHost.CreateValueInput("Device",1,null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDevice);
             this.FPinInDevice.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
