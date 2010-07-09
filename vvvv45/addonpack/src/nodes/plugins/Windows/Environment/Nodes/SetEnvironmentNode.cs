@@ -17,7 +17,7 @@ namespace VVVV.Nodes
                 Info.Name = "SetEnvironmentVariable";							//use CamelCaps and no spaces
                 Info.Category = "Windows";						//try to use an existing one
                 Info.Version = "";						//versions are optional. leave blank if not needed
-                Info.Help = "Node template";
+                Info.Help = "sets windows environment variable";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
                 Info.Warnings = "";

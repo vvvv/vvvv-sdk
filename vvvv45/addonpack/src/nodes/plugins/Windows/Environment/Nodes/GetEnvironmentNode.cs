@@ -19,7 +19,7 @@ namespace VVVV.Nodes
                 Info.Name = "GetEnvironmentVariable";							//use CamelCaps and no spaces
                 Info.Category = "Windows";						//try to use an existing one
                 Info.Version = "";						//versions are optional. leave blank if not needed
-                Info.Help = "Node template";
+                Info.Help = "Retrieves windows environment variables";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
                 Info.Warnings = "";

@@ -19,7 +19,7 @@ namespace VVVV.Nodes
                 Info.Name = "Info";							//use CamelCaps and no spaces
                 Info.Category = "Windows";						//try to use an existing one
                 Info.Version = "Services";						//versions are optional. leave blank if not needed
-                Info.Help = "Node template";
+                Info.Help = "Retrieves Windows Services list and status";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
                 Info.Warnings = "";

@@ -18,7 +18,7 @@ namespace VVVV.Nodes
                 Info.Name = "Info";							//use CamelCaps and no spaces
                 Info.Category = "System";						//try to use an existing one
                 Info.Version = "Drive";						//versions are optional. leave blank if not needed
-                Info.Help = "Node template";
+                Info.Help = "Retrieves info about window drives.";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
                 Info.Warnings = "";
