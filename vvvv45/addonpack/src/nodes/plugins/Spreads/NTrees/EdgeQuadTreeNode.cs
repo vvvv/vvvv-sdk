@@ -21,6 +21,7 @@ namespace VVVV.Nodes
                 Info.Bugs = "";
                 Info.Credits = "";
                 Info.Warnings = "";
+				Info.Author = "vux";
                 
 
                 //leave below as is
