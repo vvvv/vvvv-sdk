@@ -20,7 +20,7 @@ namespace VVVV.Nodes
                 Info.Name = "Particles";							//use CamelCaps and no spaces
                 Info.Category = "3d";						//try to use an existing one
                 Info.Version = "Field";						//versions are optional. leave blank if not needed
-                Info.Help = "Node template";
+                Info.Help = "3d Velocity field based particle system";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
                 Info.Warnings = "";
