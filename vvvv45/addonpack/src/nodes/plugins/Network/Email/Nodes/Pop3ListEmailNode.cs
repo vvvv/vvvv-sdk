@@ -19,7 +19,7 @@ namespace VVVV.Nodes
                 Info.Name = "ListEmails";							//use CamelCaps and no spaces
                 Info.Category = "Network";						//try to use an existing one
                 Info.Version = "POP3";						//versions are optional. leave blank if not needed
-                Info.Help = "Node template";
+                Info.Help = "Retrieves Emails from a POP3 mailbox";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
                 Info.Warnings = "";
