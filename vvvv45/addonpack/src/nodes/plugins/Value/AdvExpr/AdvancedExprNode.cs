@@ -22,7 +22,7 @@ namespace VVVV.Nodes
                 Info.Name = "Expr";							//use CamelCaps and no spaces
                 Info.Category = "Value";						//try to use an existing one
                 Info.Version = "Advanced";						//versions are optional. leave blank if not needed
-                Info.Help = "";
+                Info.Help = "Auto compiled version of Expr (Value)";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
                 Info.Warnings = "";
