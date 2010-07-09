@@ -99,7 +99,7 @@ namespace VVVV.Nodes
 
                         if (dist < r)
                         {
-                            this.FHits.Add(i, j);
+                            this.FHits.Add(new VVVV.Lib.Hit(i, j)); ;
                             this.FObjectHit[j] = true;
                             this.FPointHit[i] = true;
                         }

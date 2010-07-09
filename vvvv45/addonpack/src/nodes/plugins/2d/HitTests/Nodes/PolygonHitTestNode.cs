@@ -167,7 +167,7 @@ double xt,
                         //if (this.PointInPoly(Convert.ToInt32(vcount),dx,dy,ptx,pty))
                         if (this.inpoly(dx,dy,Convert.ToInt32(vcount),ptx,pty))
                         {
-                            this.FHits.Add(i, j);
+                            this.FHits.Add(new VVVV.Lib.Hit(i, j)); ;
                             this.FObjectHit[j] = true;
                             this.FPointHit[i] = true;
                         }

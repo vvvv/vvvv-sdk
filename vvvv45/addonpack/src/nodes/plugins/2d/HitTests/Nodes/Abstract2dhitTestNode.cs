@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using VVVV.PluginInterfaces.V1;
+using VVVV.Lib;
 
 namespace VVVV.Nodes
 {
@@ -18,7 +19,7 @@ namespace VVVV.Nodes
         protected IValueOut FPinOutPointHit;
         protected IValueOut FPinOutObjectHit;
 
-        protected Dictionary<int, int> FHits = new Dictionary<int, int>();
+        protected List<Hit> FHits = new List<Hit>();
         protected List<bool> FPointHit = new List<bool>();
         protected List<bool> FObjectHit = new List<bool>();
 
@@ -93,10 +94,10 @@ namespace VVVV.Nodes
                 this.FPinOutPointId.SliceCount = this.FHits.Count;
 
                 int cnt = 0;
-                foreach (int ptid in this.FHits.Keys)
+                foreach (Hit hit in this.FHits)
                 {
-                    this.FPinOutPointId.SetValue(cnt, ptid);
-                    this.FPinOutObjectId.SetValue(cnt, this.FHits[ptid]);
+                    this.FPinOutPointId.SetValue(cnt, hit.PointId);
+                    this.FPinOutObjectId.SetValue(cnt, hit.ObjectId);
                     cnt++;
                 }
 
