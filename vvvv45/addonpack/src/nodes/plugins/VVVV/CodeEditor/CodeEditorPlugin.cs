@@ -1,20 +1,19 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
-using System.Collections.Generic;
-
-using Microsoft.Practices.Unity;
-
-using Dom = ICSharpCode.SharpDevelop.Dom;
 
 using ManagedVCL;
-using VVVV.Core.View;
-using VVVV.PluginInterfaces.V1;
+using Microsoft.Practices.Unity;
 using VVVV.Core;
+using VVVV.Core.Commands;
 using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
+using VVVV.Core.View;
+using VVVV.PluginInterfaces.V1;
+using Dom = ICSharpCode.SharpDevelop.Dom;
 
 namespace VVVV.HDE.CodeEditor
 {
@@ -64,10 +63,12 @@ namespace VVVV.HDE.CodeEditor
             HdeHost = host;
             HdeHost.AddListener(FNodeSelectionListener);
             
-            var unityContainer = HdeHost.UnityContainer.CreateChildContainer();
-            FModelMapper = new ModelMapper(HdeHost.Solution, unityContainer);
-            FModelMapper.RegisterMapping<IProject, ProjectEnumerableProvider>();
-            FModelMapper.RegisterMapping<ISolution, SolutionEditableCollectionProvider>();
+            var shell = HdeHost.Shell;
+            var registry = shell.MappingRegistry.CreateChildRegistry();
+            registry.RegisterMapping<IProject, ProjectViewProvider>();
+            registry.RegisterMapping<ISolution, SolutionViewProvider>();
+            
+            FModelMapper = new ModelMapper(shell.Solution, registry);
             
             FProjectTreeViewer.Root = FModelMapper;
             
@@ -79,7 +80,7 @@ namespace VVVV.HDE.CodeEditor
             // reducing memory usage.
             FPCRegistry.ActivatePersistence(Path.Combine(Path.GetTempPath(), "VVVVCodeEditor"));
             
-            var solution = HdeHost.Solution;
+            var solution = shell.Solution;
             solution.Projects.Removed += Project_Removed;
 
             // Setup project contents for each C# project.            
@@ -299,7 +300,7 @@ namespace VVVV.HDE.CodeEditor
                     
                     if (HdeHost != null)
                     {
-                        var solution = HdeHost.Solution;
+                        var solution = HdeHost.Shell.Solution;
                         if (solution != null)
                             solution.Projects.Removed -= Project_Removed;
                         
