@@ -25,16 +25,18 @@
 
 //use what you need
 using System;
-using System.Windows.Forms;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.IO;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
-using VVVV.PluginInterfaces.V1;
 using VVVV.Core;
 using VVVV.Core.Collections;
+using VVVV.Core.Menu;
+using VVVV.Core.View;
+using VVVV.PluginInterfaces.V1;
 
 //the vvvv node namespace
 namespace VVVV.Nodes.NodeBrowser
@@ -409,8 +411,13 @@ namespace VVVV.Nodes.NodeBrowser
             //register nodeinfolisteners at hdehost
             FHDEHost.AddListener(this);
             
-            var shell = new Shell();
-            var categoryMapper = new ModelMapper(FCategoryList, shell.MappingRegistry);
+            var mappingRegistry = new MappingRegistry();
+            mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
+            mappingRegistry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
+            mappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
+            mappingRegistry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();
+            
+            var categoryMapper = new ModelMapper(FCategoryList, mappingRegistry);
             FCategoryTreeViewer.Root = categoryMapper;
             
             UpdateOutput();
