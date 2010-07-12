@@ -33,11 +33,9 @@ using System.ComponentModel;
 
 using Microsoft.Practices.Unity;
 
-using VVVV.Utils.Event;
-using VVVV.Utils.Unity;
 using VVVV.PluginInterfaces.V1;
 using VVVV.HDE.Viewer;
-using VVVV.HDE.Viewer.Model;
+using VVVV.Core;
 
 //the vvvv node namespace
 namespace VVVV.Nodes.GraphViewer
@@ -70,6 +68,8 @@ namespace VVVV.Nodes.GraphViewer
         {
             // The InitializeComponent() call is required for Windows Forms designer support.
             InitializeComponent();
+            
+            FFindTextBox.ContextMenu = new ContextMenu();
         }
         
         // Dispose(bool disposing) executes in two distinct scenarios.
@@ -165,7 +165,7 @@ namespace VVVV.Nodes.GraphViewer
         
         private void InitializeComponent()
         {
-        	this.FTreeViewer = new VVVV.HDE.Viewer.TreeViewer();
+        	this.FTreeViewer = new VVVV.HDE.Viewer.WinFormsTreeViewer.TreeViewer();
         	this.FFindTextBox = new System.Windows.Forms.TextBox();
         	this.panel2 = new System.Windows.Forms.Panel();
         	this.FDownStreamRadioButton = new System.Windows.Forms.RadioButton();
@@ -174,8 +174,11 @@ namespace VVVV.Nodes.GraphViewer
         	this.panel3 = new System.Windows.Forms.Panel();
         	this.FWindowLabel = new System.Windows.Forms.Label();
         	this.FAttachButton = new System.Windows.Forms.Button();
+        	this.panel1 = new System.Windows.Forms.Panel();
+        	this.FResetButton = new System.Windows.Forms.Button();
         	this.panel2.SuspendLayout();
         	this.panel3.SuspendLayout();
+        	this.panel1.SuspendLayout();
         	this.SuspendLayout();
         	// 
         	// FTreeViewer
@@ -185,25 +188,26 @@ namespace VVVV.Nodes.GraphViewer
         	this.FTreeViewer.FlatStyle = true;
         	this.FTreeViewer.Location = new System.Drawing.Point(0, 62);
         	this.FTreeViewer.Name = "FTreeViewer";
+        	this.FTreeViewer.Root = null;
         	this.FTreeViewer.ShowLines = true;
         	this.FTreeViewer.ShowPlusMinus = true;
         	this.FTreeViewer.ShowRoot = false;
         	this.FTreeViewer.ShowRootLines = true;
-        	this.FTreeViewer.ShowTooltip = false;
+        	this.FTreeViewer.ShowTooltip = true;
         	this.FTreeViewer.Size = new System.Drawing.Size(310, 324);
         	this.FTreeViewer.TabIndex = 4;
-        	this.FTreeViewer.LeftClick += new System.EventHandler(this.FTreeViewerLeftClick);
-        	this.FTreeViewer.LeftDoubleClick += new System.EventHandler(this.FTreeViewerLeftDoubleClick);
+        	this.FTreeViewer.Click += new VVVV.HDE.Viewer.WinFormsTreeViewer.ClickHandler(this.FTreeViewerClick);
         	// 
         	// FFindTextBox
         	// 
         	this.FFindTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-        	this.FFindTextBox.Dock = System.Windows.Forms.DockStyle.Top;
-        	this.FFindTextBox.Location = new System.Drawing.Point(0, 42);
+        	this.FFindTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+        	this.FFindTextBox.Location = new System.Drawing.Point(0, 0);
         	this.FFindTextBox.Name = "FFindTextBox";
-        	this.FFindTextBox.Size = new System.Drawing.Size(310, 20);
+        	this.FFindTextBox.Size = new System.Drawing.Size(290, 20);
         	this.FFindTextBox.TabIndex = 0;
         	this.FFindTextBox.TextChanged += new System.EventHandler(this.FFindTextBoxTextChanged);
+        	this.FFindTextBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.FFindTextBoxMouseClick);
         	// 
         	// panel2
         	// 
@@ -269,6 +273,7 @@ namespace VVVV.Nodes.GraphViewer
         	// 
         	// FWindowLabel
         	// 
+        	this.FWindowLabel.AutoEllipsis = true;
         	this.FWindowLabel.Dock = System.Windows.Forms.DockStyle.Fill;
         	this.FWindowLabel.Location = new System.Drawing.Point(75, 0);
         	this.FWindowLabel.Name = "FWindowLabel";
@@ -290,11 +295,33 @@ namespace VVVV.Nodes.GraphViewer
         	this.FAttachButton.UseVisualStyleBackColor = true;
         	this.FAttachButton.Click += new System.EventHandler(this.FAttachButtonClick);
         	// 
+        	// panel1
+        	// 
+        	this.panel1.Controls.Add(this.FFindTextBox);
+        	this.panel1.Controls.Add(this.FResetButton);
+        	this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+        	this.panel1.Location = new System.Drawing.Point(0, 42);
+        	this.panel1.Name = "panel1";
+        	this.panel1.Size = new System.Drawing.Size(310, 20);
+        	this.panel1.TabIndex = 7;
+        	// 
+        	// FResetButton
+        	// 
+        	this.FResetButton.Dock = System.Windows.Forms.DockStyle.Right;
+        	this.FResetButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        	this.FResetButton.Location = new System.Drawing.Point(290, 0);
+        	this.FResetButton.Name = "FResetButton";
+        	this.FResetButton.Size = new System.Drawing.Size(20, 20);
+        	this.FResetButton.TabIndex = 1;
+        	this.FResetButton.Text = "X";
+        	this.FResetButton.UseVisualStyleBackColor = true;
+        	this.FResetButton.Click += new System.EventHandler(this.FResetButtonClick);
+        	// 
         	// GraphViewerPluginNode
         	// 
         	this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
         	this.Controls.Add(this.FTreeViewer);
-        	this.Controls.Add(this.FFindTextBox);
+        	this.Controls.Add(this.panel1);
         	this.Controls.Add(this.panel2);
         	this.Controls.Add(this.panel3);
         	this.DoubleBuffered = true;
@@ -303,9 +330,12 @@ namespace VVVV.Nodes.GraphViewer
         	this.panel2.ResumeLayout(false);
         	this.panel2.PerformLayout();
         	this.panel3.ResumeLayout(false);
+        	this.panel1.ResumeLayout(false);
+        	this.panel1.PerformLayout();
         	this.ResumeLayout(false);
-        	this.PerformLayout();
         }
+        private System.Windows.Forms.Button FResetButton;
+        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label FWindowLabel;
         private System.Windows.Forms.Button FAttachButton;
         private System.Windows.Forms.Panel panel3;
@@ -314,7 +344,7 @@ namespace VVVV.Nodes.GraphViewer
         private System.Windows.Forms.RadioButton FLocalRadioButton;
         private System.Windows.Forms.RadioButton FDownStreamRadioButton;
         private System.Windows.Forms.Panel panel2;
-        private VVVV.HDE.Viewer.TreeViewer FTreeViewer;
+        private VVVV.HDE.Viewer.WinFormsTreeViewer.TreeViewer FTreeViewer;
         
         #region initialization
         
@@ -330,26 +360,10 @@ namespace VVVV.Nodes.GraphViewer
             //assign host
             FHDEHost = host;
             
-            //now create a child container, which knows how to map the HDE model.
-            FChildContainer = FHDEHost.UnityContainer.CreateChildContainer();
-            FChildContainer.AddNewExtension<GraphViewerModelContainerExtension>();
-            
-            //create an event hub which is used by the event extension to route events.
-            //FHDEHost.Container.RegisterType<IEventHub, EventHub>(new ContainerControlledLifetimeManager());
-            //FHDEHost.Container.AddNewExtension<EventExtension<PropertyChangedEventHandler, PropertyChangedEventArgs>>();
-            
-            //create a IContentProvider and hand it to the treeViewer
-            var cp = new UnityContentProvider(FChildContainer);
-            FTreeViewer.SetContentProvider(cp);
-            
-            //create ILabelProvider and hand it to the treeViewer
-            var lp = new UnityLabelProvider(FChildContainer);
-            FTreeViewer.SetLabelProvider(lp);
-            
-            //create ISelectionProvider and hand it to the treeViewer
-            var sp = new UnitySelectionProvider(FChildContainer);
-            FTreeViewer.SetSelectionProvider(sp);
-            
+            /* var shell = new Shell();
+            var nodeMapper = new ModelMapper(FNodes, shell.MappingRegistry);
+            FTreeViewer.Root = nodeMapper;
+             */
             //this will trigger the initial WindowSelectionChangeCB
             FHDEHost.AddListener(this);
         }
@@ -361,6 +375,7 @@ namespace VVVV.Nodes.GraphViewer
         
         public void Initialize(INode root)
         {
+            //via FSuperRoot GraphViewer has access to the whole active graph for searching globally
             FSuperRoot = root;
         }
         #endregion initialization
@@ -444,49 +459,54 @@ namespace VVVV.Nodes.GraphViewer
                 FHDEHost.UnityContainer.Teardown(FActiveWindow);
             }
             
-            FActivePatchNode = FChildContainer.BuildUp(new PatchNode(patch));
-            
-            FTreeViewer.SetRoot(FActivePatchNode);
+            var shell = new Shell();
+            FActivePatchNode = new PatchNode(patch);
+            var nodeMapper = new ModelMapper(FActivePatchNode, shell.MappingRegistry);
+            FTreeViewer.Root = nodeMapper;
         }
         
         #region TreeViewer Events
-        void FTreeViewerLeftDoubleClick(object sender, EventArgs e)
+        void FTreeViewerClick(ModelMapper sender, MouseEventArgs e)
         {
-            if ((sender as PatchNode).Text == "..")
-            {
-                //FSuperRoot provides access to the whole graph
-                //go look for the current node recursively and take its parent
-                INode parent = FindParent(FSuperRoot, FActivePatchNode.Node);
-                
-                //set the new found parent as root to the TreeViewer
-                UpdateRoot(parent);
-                FActiveWindow = null;
-            }
-            else if ((sender as PatchNode).Node.GetChildren() == null)
-            {
-                //open the patch this node is in
-                FGraphViewerHost.ShowPatchOfNode((sender as PatchNode).Node);
-                
-                //and select the node
-                FGraphViewerHost.SelectNode((sender as PatchNode).Node);
-            }
-            else
-            {
-                UpdateRoot((sender as PatchNode).Node);
-                FActiveWindow = null;
-            }            
+            if (e.Button == MouseButtons.Left)
+                FGraphViewerHost.SelectNode((sender.Model as PatchNode).Node);
         }
         
-        void FTreeViewerLeftClick(object sender, EventArgs e)
+        void FTreeViewerDoubleClick(ModelMapper sender, MouseEventArgs e)
         {
-            FGraphViewerHost.SelectNode((sender as PatchNode).Node);
+            if (e.Button == MouseButtons.Left)
+            {
+                if ((sender.Model as PatchNode).Name == "..")
+                {
+                    //FSuperRoot provides access to the whole graph
+                    //go look for the current node recursively and take its parent
+                    INode parent = FindParent(FSuperRoot, FActivePatchNode.Node);
+                    
+                    //set the new found parent as root to the TreeViewer
+                    UpdateRoot(parent);
+                    FActiveWindow = null;
+                }
+                else if ((sender.Model as PatchNode).Node.GetChildren() == null)
+                {
+                    //open the patch this node is in
+                    FGraphViewerHost.ShowPatchOfNode((sender.Model as PatchNode).Node);
+                    
+                    //and select the node
+                    FGraphViewerHost.SelectNode((sender.Model as PatchNode).Node);
+                }
+                else
+                {
+                    UpdateRoot((sender.Model as PatchNode).Node);
+                    FActiveWindow = null;
+                }
+            }
         }
         #endregion TreeViewer Events
         
         private void AddNodesByTag(PatchNode searchResult, PatchNode sourceTree, string tag)
         {
             //go through child nodes of sourceTree recursively and see if any contains the tag
-            foreach (PatchNode pn in sourceTree.GetChildren())
+            foreach (PatchNode pn in sourceTree)
             {
                 //now first go downstream recursively
                 //to see if this pn is needed in the hierarchy to hold any matching downstream nodes
@@ -495,11 +515,12 @@ namespace VVVV.Nodes.GraphViewer
                 parent.Node = pn.Node;
                 AddNodesByTag(parent, pn, tag);
                 
-                if ((parent.GetChildren().Length > 0) || (pn.Text.ToLower().Contains(tag)))
+                if ((parent.Count > 0) || (pn.Name.ToLower().Contains(tag)))
                     searchResult.Add(parent);
             }
         }
         
+        #region Search
         void FFindTextBoxTextChanged(object sender, EventArgs e)
         {
             UpdateSearch();
@@ -524,8 +545,8 @@ namespace VVVV.Nodes.GraphViewer
             else if (FLocalRadioButton.Checked)
             {
                 //go through child nodes of FActivePatch and see if any contains the tag
-                foreach (PatchNode pn in FActivePatchNode.GetChildren())
-                    if (pn.Text.ToLower().Contains(tag))
+                foreach (PatchNode pn in FActivePatchNode)
+                    if (pn.Name.ToLower().Contains(tag))
                         searchResult.Add(pn);
             }
             else if (FDownStreamRadioButton.Checked)
@@ -534,9 +555,14 @@ namespace VVVV.Nodes.GraphViewer
                 AddNodesByTag(searchResult, FActivePatchNode, tag);
             }
             
-            FTreeViewer.SetRoot(searchResult);
+            //FTreeViewer.Root = searchResult;
+            var shell = new Shell();
+            var nodeMapper = new ModelMapper(searchResult, shell.MappingRegistry);
+            FTreeViewer.Root = nodeMapper;
+            
             FTreeViewer.Expand(searchResult, true);
         }
+        #endregion Search
         
         void FAttachButtonClick(object sender, EventArgs e)
         {
@@ -545,6 +571,19 @@ namespace VVVV.Nodes.GraphViewer
                 FAttachButton.Text = "Attached to:";
             else
                 FAttachButton.Text = "Attach";
+        }
+        
+        void FFindTextBoxMouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                FFindTextBox.Text = "";
+            }
+        }
+        
+        void FResetButtonClick(object sender, EventArgs e)
+        {
+        	FFindTextBox.Text = "";
         }
     }
 }
