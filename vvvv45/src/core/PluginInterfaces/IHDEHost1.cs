@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
 using Microsoft.Practices.Unity;
-
+using VVVV.Core;
 using VVVV.Core.Model;
 
 namespace VVVV.PluginInterfaces.V1
@@ -17,14 +16,12 @@ namespace VVVV.PluginInterfaces.V1
 	public interface IHDEHost 
 	{
 		/// <summary>
-		/// Provides access to the ISolution hosted by this IHDEHost.
+		/// Provides access to the Shell.
 		/// </summary>
-		ISolution Solution { get; }
-		
-		/// <summary>
-		/// Provides access to the IUnityContainer used by this IHDEHost.
-		/// </summary>
-		IUnityContainer UnityContainer { get; }
+		Shell Shell
+		{
+		    get;
+		}
 		
 		/// <summary>
 		/// Allows a plugin to register IListeners on the host
