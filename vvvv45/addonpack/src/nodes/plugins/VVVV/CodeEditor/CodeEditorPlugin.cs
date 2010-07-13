@@ -9,9 +9,11 @@ using ManagedVCL;
 using Microsoft.Practices.Unity;
 using VVVV.Core;
 using VVVV.Core.Commands;
+using VVVV.Core.Menu;
 using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
 using VVVV.Core.View;
+using VVVV.Core.Viewer;
 using VVVV.PluginInterfaces.V1;
 using Dom = ICSharpCode.SharpDevelop.Dom;
 
@@ -64,9 +66,16 @@ namespace VVVV.HDE.CodeEditor
             HdeHost.AddListener(FNodeSelectionListener);
             
             var shell = HdeHost.Shell;
-            var registry = shell.MappingRegistry.CreateChildRegistry();
+            var registry = new MappingRegistry();
+            registry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
+            registry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
+            registry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();
+            registry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
+            registry.RegisterDefaultMapping<ILabelEditor>(FProjectTreeViewer);
+            
             registry.RegisterMapping<IProject, ProjectViewProvider>();
             registry.RegisterMapping<ISolution, SolutionViewProvider>();
+            registry.RegisterMapping<ISolution, AddMenuEntry, SolutionAddMenuEntry>();
             
             FModelMapper = new ModelMapper(shell.Solution, registry);
             
