@@ -36,8 +36,18 @@ namespace VVVV.Nodes.NodeBrowser
             get
             {
                 string tip = "";
+                switch (NodeInfo.Type)
+                {
+                        case TNodeType.Native: {tip = ""; break;}
+                        case TNodeType.Plugin: {tip = "P  "; break;}
+                        case TNodeType.Patch: {tip = "M  "; break;}
+                        case TNodeType.Effect: {tip = "FX  "; break;}
+                        case TNodeType.Freeframe: {tip = "FF  "; break;}
+                        case TNodeType.VST: {tip = "V  "; break;}
+                }
+                
                 if (!string.IsNullOrEmpty(NodeInfo.ShortCut))
-                    tip = "(" + NodeInfo.ShortCut + ") " ;
+                    tip += "(" + NodeInfo.ShortCut + ") " ;
                 if (!string.IsNullOrEmpty(NodeInfo.Help))
                     tip += NodeInfo.Help;
                 if (!string.IsNullOrEmpty(NodeInfo.Warnings))
