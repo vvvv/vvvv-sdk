@@ -47,7 +47,7 @@ namespace VVVV.Nodes.GraphViewer
                     {
                         c.MarkedForDelete = false;
                         found = true;
-                        break;                        
+                        break;
                     }
 
                     if (!found)
@@ -55,20 +55,69 @@ namespace VVVV.Nodes.GraphViewer
                 }
                 
                 //remove all children still marked for delete
-                for (int i=FChildNodes.Count-1; i>=0; i--) 
+                for (int i=FChildNodes.Count-1; i>=0; i--)
                 {
                     if (FChildNodes[i].MarkedForDelete)
                         Remove(FChildNodes[i]);
                 }
                 
-                FChildNodes.Sort(delegate(PatchNode p1, PatchNode p2) {return p1.Name.CompareTo(p2.Name);});
+                FChildNodes.Sort(delegate(PatchNode p1, PatchNode p2)
+                                 {
+                                     //order:
+                                     //subpatches
+                                     //inlets
+                                     //outlets
+                                     //Sends
+                                     //Receives
+                                     //comments
+                                     //other nodes
+                                     
+                                     int w1 = 0, w2 = 0;
+                                     if (p1.Count > 0)
+                                         w1 = 100;
+                                     else if (p1.Name.StartsWith("I: "))
+                                         w1 = 91;
+                                     else if (p1.Name.StartsWith("O: "))
+                                         w1 = 90;
+                                     else if (p1.Name.StartsWith("S "))
+                                         w1 = 81;
+                                     else if (p1.Name.StartsWith("R "))
+                                         w1 = 80;
+                                     else if (p1.Name.StartsWith("// "))
+                                         w1 = 70;
+                                     
+                                     if (p2.Count > 0)
+                                         w2 = 100;
+                                     else if (p2.Name.StartsWith("I: "))
+                                         w2 = 91;
+                                     else if (p2.Name.StartsWith("O: "))
+                                         w2 = 90;
+                                     else if (p2.Name.StartsWith("S "))
+                                         w2 = 81;
+                                     else if (p2.Name.StartsWith("R "))
+                                         w2 = 80;
+                                     else if (p2.Name.StartsWith("// "))
+                                         w2 = 70;
+                                     
+                                     if ((w1 > 0) || (w2 > 0))
+                                     {
+                                         if (w1 > w2)
+                                             return -1;
+                                         else if (w1 < w2)
+                                             return 1;
+                                         else
+                                             return 0;
+                                     }
+                                     else 
+                                        return p1.Name.CompareTo(p2.Name);
+                                 });
                 
                 //insert an .. (up) node as first element
                 if (FUpNode == null)
                 {
                     FUpNode = new PatchNode(null);
                     FChildNodes.Insert(0, FUpNode);
-                }                
+                }
             }
         }
         
@@ -123,7 +172,7 @@ namespace VVVV.Nodes.GraphViewer
             }
         }
         
-        public int Count 
+        public int Count
         {
             get{return FChildNodes.Count;}
         }
@@ -133,44 +182,117 @@ namespace VVVV.Nodes.GraphViewer
             return FChildNodes.GetEnumerator();
         }
         
-        public string Name 
+        public string Name
         {
-            get 
+            get
             {
-                string descriptiveName = "";
-                string srChannel = "";
-                string comment = "";
                 if ((Node != null) && (Node.GetNodeInfo() != null))
                 {
-                    descriptiveName = Node.GetPin("Descriptive Name").GetValue(0) + " ";
-                                        
-                    if (Node.GetNodeInfo().Username == "IOBox (String)")
+                    string descriptiveName = Node.GetPin("Descriptive Name").GetValue(0);
+                    string hyphen = "";
+                    if (!string.IsNullOrEmpty(descriptiveName))
+                       hyphen = " -- ";
+                    
+                    var ni = Node.GetNodeInfo();
+                    
+                    //subpatches
+                    if (string.IsNullOrEmpty(ni.Name))
                     {
-                        if ((!Node.GetPin("Input String").IsConnected()) && (!Node.GetPin("Output String").IsConnected()))
-                            comment = Node.GetPin("Input String").GetValue(0) + " ";
+                        string file = System.IO.Path.GetFileName(ni.Filename);
+                        
+                        //unsaved patch
+                        if (string.IsNullOrEmpty(file))
+                            return ni.Filename + hyphen + descriptiveName;
+                        //patch with valid filename
+                        else
+                            return file + hyphen + descriptiveName;
                     }
-                    else if (Node.GetNodeInfo().Name == "S")
-                        srChannel = Node.GetPin("SendString").GetValue(0) + " "; 
-                    else if (Node.GetNodeInfo().Name == "R")
-                        srChannel = Node.GetPin("ReceiveString").GetValue(0) + " "; 
-                    
-                    
-                    return Node.GetNodeInfo().Username + " " + descriptiveName + srChannel + comment;
+                    else if (ni.Username == "IOBox (Value Advanced)")
+                    {
+                        //inlets
+                        if ((!Node.GetPin("Y Input Value").IsConnected()) && (Node.GetPin("Y Output Value").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
+                            return "I: " + descriptiveName;
+                        //outlets
+                        else if ((Node.GetPin("Y Input Value").IsConnected()) && (!Node.GetPin("Y Output Value").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
+                            return "O: " + descriptiveName;
+                        else
+                            return ni.Username + hyphen + descriptiveName;
+                    }
+                    else if (ni.Username == "IOBox (String)")
+                    {
+                        //inlets
+                        if ((!Node.GetPin("Input String").IsConnected()) && (Node.GetPin("Output String").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
+                            return "I: " + descriptiveName;
+                        //outlets
+                        else if ((Node.GetPin("Input String").IsConnected()) && (!Node.GetPin("Output String").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
+                            return "O: " + descriptiveName;
+                        //comments
+                        else if ((!Node.GetPin("Input String").IsConnected()) && (!Node.GetPin("Output String").IsConnected()))
+                            return "// " + Node.GetPin("Input String").GetValue(0);
+                        else
+                            return ni.Username + hyphen + descriptiveName;
+                    }
+                    else if (ni.Username == "IOBox (Color)")
+                    {
+                        //inlets
+                        if ((!Node.GetPin("Input Color").IsConnected()) && (Node.GetPin("Output Color").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
+                            return "I: " + descriptiveName;
+                        //outlets
+                        else if ((Node.GetPin("Input Color").IsConnected()) && (!Node.GetPin("Output Color").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
+                            return "O: " + descriptiveName;
+                        else
+                            return ni.Username + hyphen + descriptiveName;
+                    }
+                    else if (ni.Username == "IOBox (Enumerations)")
+                    {
+                        //inlets
+                        if ((!Node.GetPin("Input Enum").IsConnected()) && (Node.GetPin("Output Enum").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
+                            return "I: " + descriptiveName;
+                        //outlets
+                        else if ((Node.GetPin("Input Enum").IsConnected()) && (!Node.GetPin("Output Enum").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
+                            return "O: " + descriptiveName;
+                        else
+                            return ni.Username + hyphen + descriptiveName;
+                    }
+                    else if (ni.Username == "IOBox (Node)")
+                    {
+                        //inlets
+                        if ((!Node.GetPin("Input Node").IsConnected()) && (Node.GetPin("Output Node").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
+                            return "I: " + descriptiveName;
+                        //outlets
+                        else if ((Node.GetPin("Input Node").IsConnected()) && (!Node.GetPin("Output Node").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
+                            return "O: " + descriptiveName;
+                        else
+                            return ni.Username + hyphen + descriptiveName;
+                    }
+                    else if (ni.Name == "S")
+                        return ni.Username + ": " + Node.GetPin("SendString").GetValue(0);
+                    else if (ni.Name == "R")
+                        return ni.Username + ": " + Node.GetPin("ReceiveString").GetValue(0);
+                    else
+                        return ni.Username + hyphen + descriptiveName;
                 }
                 else
                     return "..";
             }
         }
         
-        public string Description 
+        public string Description
         {
-            get 
+            get
             {
-                var ni = Node.GetNodeInfo();
-                if (ni.Type == TNodeType.Native)
-                    return "[id " + Node.GetID().ToString() + "]"; 
+                if (Node == null)
+                    return "";
                 else
-                    return ni.Filename + " [id " + Node.GetID().ToString() + "]";
+                {
+                    var ni = Node.GetNodeInfo();
+                    if (string.IsNullOrEmpty(ni.Name))
+                        return "[id " + Node.GetID().ToString() + "] " + System.IO.Path.GetDirectoryName(ni.Filename);
+                    else if (ni.Type == TNodeType.Native)
+                        return "[id " + Node.GetID().ToString() + "]";
+                    else
+                        return ni.Filename + " [id " + Node.GetID().ToString() + "]";
+                }
             }
         }
         

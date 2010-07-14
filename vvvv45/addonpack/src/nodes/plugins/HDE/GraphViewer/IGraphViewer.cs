@@ -25,7 +25,7 @@ namespace VVVV.PluginInterfaces.V1
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IGraphViewerHost
 	{
-		void SelectNode(INode node);
+	    void SelectNodes(INode[] node);
 		void ShowPatchOfNode(INode node);
 		void ShowHelpPatch(INodeInfo nodeInfo);
 		void ShowNodeReference(INodeInfo nodeInfo);
