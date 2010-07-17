@@ -1,8 +1,8 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
-   <PATCH nodename="C:\SVN_ROOT\vvvv\plugins\c#\Animation\LorentzAttractor\LorenzAttractor (Animation) help.v4p">
+   <PATCH nodename="C:\SVN_ROOT\vvvv\plugins\c#\Animation\LorenzAttractor\LorenzAttractor (Animation) help.v4p">
    <BOUNDS height="6735" left="1110" top="840" type="Window" width="6195">
    </BOUNDS>
-   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
    <BOUNDS height="270" left="15" top="15" type="Node" width="3660">
    </BOUNDS>
    <BOUNDS height="465" left="15" top="15" type="Box" width="4500">
@@ -18,7 +18,7 @@
    <PIN pinname="Size" slicecount="1" values="14">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
    <BOUNDS height="270" left="15" top="585" type="Node" width="3015">
    </BOUNDS>
    <BOUNDS height="960" left="15" top="585" type="Box" width="3705">
@@ -32,23 +32,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="12" nodename=":PLUGINS:\LorentzAttractor.dll|VVVV.Nodes.PluginTemplate">
-   <BOUNDS height="270" left="675" top="2310" type="Node" width="2205">
-   </BOUNDS>
-   <BOUNDS height="0" left="675" top="2310" type="Box" width="0">
-   </BOUNDS>
-   <BOUNDS height="0" left="2145" top="4530" type="Window" width="0">
-   </BOUNDS>
-   <PIN pinname="Output X" visible="1">
-   </PIN>
-   <PIN pinname="Output Y" visible="1">
-   </PIN>
-   <PIN pinname="Output Z" visible="1">
-   </PIN>
-   <PIN pinname="Input Z" slicecount="1" values="5">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InAWindow" id="11" nodename="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="14" nodename="Renderer (EX9)">
    <BOUNDS height="0" left="495" top="5985" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="5445" left="495" top="5985" type="Box" width="5970">
@@ -64,21 +48,21 @@
    <PIN pinname="Clear" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="4275" top="2760" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="4275" top="2760" type="Box" width="795">
    </BOUNDS>
    <BOUNDS height="160" left="7875" top="4080" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1000">
+   <PIN pinname="Y Input Value" slicecount="1" values="5000">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="10000">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="9" nodename="Change (Animation)">
+   <NODE componentmode="Hidden" id="12" nodename="Change (Animation)">
    <BOUNDS height="0" left="3090" top="2835" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
@@ -86,7 +70,7 @@
    <PIN pinname="OnChange" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="8" nodename="Change (Animation)">
+   <NODE componentmode="Hidden" id="11" nodename="Change (Animation)">
    <BOUNDS height="0" left="2040" top="2835" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
@@ -94,7 +78,7 @@
    <PIN pinname="OnChange" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="7" nodename="Change (Animation)">
+   <NODE componentmode="Hidden" id="10" nodename="Change (Animation)">
    <BOUNDS height="0" left="960" top="2835" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
@@ -102,7 +86,7 @@
    <PIN pinname="OnChange" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="6" nodename="Queue (Spreads)">
+   <NODE componentmode="Hidden" id="9" nodename="Queue (Spreads)">
    <BOUNDS height="0" left="1755" top="3630" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -110,15 +94,15 @@
    <PIN pinname="Input" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="6" dstpinname="Frame Count" srcnodeid="10" srcpinname="Y Output Value" linkstyle="VHV">
+   <LINK dstnodeid="9" dstpinname="Frame Count" linkstyle="VHV" srcnodeid="13" srcpinname="Y Output Value">
    <LINKPOINT x="5330" y="3300">
    </LINKPOINT>
    <LINKPOINT x="2050" y="3300">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="6" dstpinname="do Insert" srcnodeid="8" srcpinname="OnChange">
+   <LINK dstnodeid="9" dstpinname="do Insert" srcnodeid="11" srcpinname="OnChange">
    </LINK>
-   <NODE componentmode="Hidden" id="5" nodename="Queue (Spreads)">
+   <NODE componentmode="Hidden" id="8" nodename="Queue (Spreads)">
    <BOUNDS height="0" left="2805" top="3645" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -128,9 +112,9 @@
    <PIN pinname="Input" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="5" dstpinname="do Insert" srcnodeid="9" srcpinname="OnChange">
+   <LINK dstnodeid="8" dstpinname="do Insert" srcnodeid="12" srcpinname="OnChange">
    </LINK>
-   <NODE componentmode="Hidden" id="4" nodename="Queue (Spreads)">
+   <NODE componentmode="Hidden" id="7" nodename="Queue (Spreads)">
    <BOUNDS height="0" left="675" top="3630" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -138,15 +122,15 @@
    <PIN pinname="Input" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Frame Count" srcnodeid="10" srcpinname="Y Output Value" linkstyle="VHV">
+   <LINK dstnodeid="7" dstpinname="Frame Count" linkstyle="VHV" srcnodeid="13" srcpinname="Y Output Value">
    <LINKPOINT x="5330" y="3300">
    </LINKPOINT>
    <LINKPOINT x="970" y="3300">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="4" dstpinname="do Insert" srcnodeid="7" srcpinname="OnChange">
+   <LINK dstnodeid="7" dstpinname="do Insert" srcnodeid="10" srcpinname="OnChange">
    </LINK>
-   <NODE componentmode="Hidden" id="3" nodename="Vector (3d Join)">
+   <NODE componentmode="Hidden" id="6" nodename="Vector (3d Join)">
    <BOUNDS height="270" left="675" top="4110" type="Node" width="2205">
    </BOUNDS>
    <PIN pinname="Z" visible="1">
@@ -158,13 +142,13 @@
    <PIN pinname="XYZ" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="Z" srcnodeid="5" srcpinname="Output">
+   <LINK dstnodeid="6" dstpinname="Z" srcnodeid="8" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="3" dstpinname="Y" srcnodeid="6" srcpinname="Output">
+   <LINK dstnodeid="6" dstpinname="Y" srcnodeid="9" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="3" dstpinname="X" srcnodeid="4" srcpinname="Output">
+   <LINK dstnodeid="6" dstpinname="X" srcnodeid="7" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" id="2" nodename="Line (EX9.Geometry)">
+   <NODE componentmode="Hidden" id="5" nodename="Line (EX9.Geometry)">
    <PIN pinname="VerticesXYZ" visible="1">
    </PIN>
    <BOUNDS height="0" left="495" top="5190" type="Node" width="0">
@@ -176,17 +160,17 @@
    <PIN pinname="Transform" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="11" dstpinname="Layers" srcnodeid="2" srcpinname="Layer">
+   <LINK dstnodeid="14" dstpinname="Layers" srcnodeid="5" srcpinname="Layer">
    </LINK>
-   <LINK dstnodeid="2" dstpinname="VerticesXYZ" srcnodeid="3" srcpinname="XYZ">
+   <LINK dstnodeid="5" dstpinname="VerticesXYZ" srcnodeid="6" srcpinname="XYZ">
    </LINK>
-   <LINK dstnodeid="5" dstpinname="Frame Count" srcnodeid="10" srcpinname="Y Output Value" linkstyle="VHV">
+   <LINK dstnodeid="8" dstpinname="Frame Count" linkstyle="VHV" srcnodeid="13" srcpinname="Y Output Value">
    <LINKPOINT x="5330" y="3308">
    </LINKPOINT>
    <LINKPOINT x="3100" y="3308">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="Hidden" id="1" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" path="C:\Program Files\vvvv\vvvv_40beta23\modules\vvvv group\Transform\">
+   <NODE componentmode="Hidden" id="4" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" path="C:\Program Files\vvvv\vvvv_40beta23\modules\vvvv group\Transform\">
    <BOUNDS height="0" left="1470" top="5550" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="3600" left="1470" top="5550" type="Box" width="4800">
@@ -195,12 +179,14 @@
    </BOUNDS>
    <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="40">
+   <PIN pinname="Inital Distance" slicecount="1" values="70">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1" values="400">
    </PIN>
    </NODE>
-   <LINK dstnodeid="11" dstpinname="Projection Transform" srcnodeid="1" srcpinname="Projection">
+   <LINK dstnodeid="14" dstpinname="Projection Transform" srcnodeid="4" srcpinname="Projection">
    </LINK>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
    <BOUNDS height="270" left="5205" top="5700" type="Node" width="630">
    </BOUNDS>
    <BOUNDS height="270" left="5205" top="5700" type="Box" width="630">
@@ -214,22 +200,10 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="12" srcpinname="Output X">
+   <LINK dstnodeid="14" dstpinname="View Transform" srcnodeid="4" srcpinname="View">
    </LINK>
-   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="12" srcpinname="Output X">
-   </LINK>
-   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="12" srcpinname="Output Y">
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="12" srcpinname="Output Y">
-   </LINK>
-   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="12" srcpinname="Output Z">
-   </LINK>
-   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="12" srcpinname="Output Z">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="View" dstnodeid="11" dstpinname="View Transform">
-   </LINK>
-   <NODE nodename="Rotate (Transform)" componentmode="Hidden" id="16">
-   <BOUNDS type="Node" left="810" top="4845" width="0" height="0">
+   <NODE componentmode="Hidden" id="2" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="810" top="4845" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -240,16 +214,36 @@
    <PIN pinname="Z" slicecount="1" values="-2.42861286636753E-017">
    </PIN>
    </NODE>
-   <LINK srcnodeid="16" srcpinname="Transform Out" dstnodeid="2" dstpinname="Transform">
+   <LINK dstnodeid="5" dstpinname="Transform" srcnodeid="2" srcpinname="Transform Out">
    </LINK>
-   <NODE nodename="LFO (Animation)" componentmode="Hidden" id="17">
-   <BOUNDS type="Node" left="1215" top="4500" width="0" height="0">
+   <NODE componentmode="Hidden" id="1" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="1215" top="4500" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
    <PIN pinname="Period" slicecount="1" values="100">
    </PIN>
    </NODE>
-   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="16" dstpinname="Y">
+   <LINK dstnodeid="2" dstpinname="Y" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="0" nodename=":PLUGINS:\LorenzAttractor.dll|VVVV.Nodes.PluginTemplate">
+   <BOUNDS height="270" left="675" top="2310" type="Node" width="2190">
+   </BOUNDS>
+   <BOUNDS height="0" left="675" top="2310" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="3315" top="3465" type="Window" width="0">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="0" srcpinname="Output X">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Input" srcnodeid="0" srcpinname="Output X">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Input" srcnodeid="0" srcpinname="Output Y">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="0" srcpinname="Output Y">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="0" srcpinname="Output Z">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="0" srcpinname="Output Z">
    </LINK>
    </PATCH>

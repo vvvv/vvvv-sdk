@@ -46,7 +46,7 @@ namespace VVVV.Nodes
         // Track whether Dispose has been called.
         private bool FDisposed = false;
 
-        private double rho = 14;
+        private double rho = 28;
         private double sigma = 10;
         private double beta = 2.667;
         private double deltaT = 0.01;
@@ -219,14 +219,14 @@ namespace VVVV.Nodes
             FHost.CreateValueInput("deltaT", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FValueInputDeltaT);
             FValueInputDeltaT.SetSubType(0, 1, 0.001, 0.01, false, false, false);
 
-            FHost.CreateValueInput("rho", 1, null, TSliceMode.Single, TPinVisibility.Hidden, out FValueInputRho);
-            FValueInputRho.SetSubType(double.MinValue, double.MaxValue, 0.01, 14, false, false, false);
+            FHost.CreateValueInput("rho", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputRho);
+            FValueInputRho.SetSubType(double.MinValue, double.MaxValue, 0.01, 28, false, false, false);
 
-            FHost.CreateValueInput("sigma", 1, null, TSliceMode.Single, TPinVisibility.Hidden, out FValueInputSigma);
+            FHost.CreateValueInput("sigma", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputSigma);
             FValueInputSigma.SetSubType(double.MinValue, double.MaxValue, 0.01, 10, false, false, false);
 
-            FHost.CreateValueInput("beta", 1, null, TSliceMode.Single, TPinVisibility.Hidden, out FValueInputBeta);
-            FValueInputBeta.SetSubType(double.MinValue, double.MaxValue, 0.01, 8 / 3, false, false, false);
+            FHost.CreateValueInput("beta", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputBeta);
+            FValueInputBeta.SetSubType(double.MinValue, double.MaxValue, 0.01, 2.667, false, false, false);
 
             //create outputs
             FHost.CreateValueOutput("Output X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueOutputX);
