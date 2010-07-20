@@ -15,11 +15,10 @@ namespace VVVV.PluginInterfaces.V1
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IAddonFactory
 	{
-	    bool ExtractNodeInfos(string filename, out INodeInfo[] nodeInfos);
-	    
 	    event NodeInfoEventHandler NodeInfoAdded;
-	    
 	    event NodeInfoEventHandler NodeInfoRemoved;
+	    bool ExtractNodeInfos(string filename, out INodeInfo[] nodeInfos);
+	    void StartWatching();
 	}
 	
 	/// <summary>
@@ -29,7 +28,7 @@ namespace VVVV.PluginInterfaces.V1
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IPluginFactory : IAddonFactory
 	{		
-	    bool Create(INodeInfo nodeInfo, out IPluginBase plugin);
+	    bool Create(INodeInfo nodeInfo, IPluginHost host, out IPluginBase plugin);
 	
 	    bool Register(IExecutable executable);
 	
