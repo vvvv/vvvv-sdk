@@ -103,7 +103,7 @@
 		/// </summary>
 		Native,
 		/// <summary>
-		/// Specifies a patch node.
+		/// Specifies a patch node that may be a module or not.
 		/// </summary>
 		Patch,
 		/// <summary>

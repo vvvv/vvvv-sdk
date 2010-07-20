@@ -69,7 +69,7 @@ namespace VVVV.PluginInterfaces.V1
 		    this.Name = Info.Name;
 		    this.Category = Info.Category;
 		    this.Version = Info.Version;
-		    this.ShortCut = Info.ShortCut;
+		    this.Shortcut = Info.Shortcut;
 			this.Author = Info.Author;
 			this.Help = Info.Help;
 			this.Tags = Info.Tags;

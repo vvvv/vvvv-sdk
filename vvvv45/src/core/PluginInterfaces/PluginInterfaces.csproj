@@ -44,11 +44,13 @@
     <Compile Include="IHDEHost1.cs" />
     <Compile Include="IHDEPlugin1.cs" />
     <Compile Include="IPlugin1.cs" />
+    <Compile Include="IPlugin2.cs" />
     <Compile Include="IPluginFactory1.cs" />
     <Compile Include="IPluginHost1.cs" />
     <Compile Include="IPluginPins1.cs" />
     <Compile Include="NodeInfo.cs" />
     <Compile Include="PluginInfo.cs" />
+    <Compile Include="PluginInfoAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.Unity">
@@ -56,21 +58,19 @@
     </Reference>
     <Reference Include="SlimDX" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition">
+      <HintPath>..\..\..\vvvv50\lib\MEF\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Drawing" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\vvvv50\src\Core\Core.csproj">
-      <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\_Utils\Utils.csproj">
-      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
-      <Name>Utils</Name>
-      <Private>False</Private>
-    </ProjectReference>
+    <Reference Include="VVVV.Core">
+      <HintPath>..\..\..\plugins\_lib\vvvv\VVVV.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.Utils">
+      <HintPath>..\..\..\plugins\_lib\vvvv\VVVV.Utils.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>C:/WINDOWS/Microsoft.NET/Framework/v2.0.50727/regasm.exe $(AssemblyName).dll /tlb</PostBuildEvent>

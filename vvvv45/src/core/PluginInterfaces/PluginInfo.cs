@@ -29,7 +29,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Optional. Shortcut to create an instance of this node.
 		/// </summary>
-		string ShortCut {get; set;}
+		string Shortcut {get; set;}
 		/// <summary>
 		/// Describe the nodes function in a few words.
 		/// </summary>
@@ -88,7 +88,7 @@ namespace VVVV.PluginInterfaces.V1
 		private string FName = "";
 		private string FCategory = "";
 		private string FVersion = "";
-		private string FShortCut = "";
+		private string FShortcut = "";
 		private string FAuthor = "";
 		private string FHelp = "";
 		private string FTags = "";
@@ -128,10 +128,10 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Optional. Shortcut to create an instance of this node.
 		/// </summary>
-		public string ShortCut 
+		public string Shortcut 
 		{
-			get {return FShortCut;}
-			set {FShortCut = value;}
+			get {return FShortcut;}
+			set {FShortcut = value;}
 		}
 		/// <summary>
 		/// Specify the plugins author.
