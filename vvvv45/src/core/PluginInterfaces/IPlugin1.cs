@@ -16,13 +16,7 @@ namespace VVVV.PluginInterfaces.V1
 	[Guid("084BB2C9-E8B4-4575-8611-C262399B2A95"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IPluginBase
-	{
-		/// <summary>
-		/// Called by the PluginHost to hand itself over to the plugin. This is where the plugin creates its initial pins.
-		/// </summary>
-		/// <param name="Host">Interface to the PluginHost.</param>
-		void SetPluginHost(IPluginHost Host);
-	}
+	{}
 	
 	/// <summary>
 	/// The one single interface a plugin has to implement
@@ -31,6 +25,11 @@ namespace VVVV.PluginInterfaces.V1
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IPlugin: IPluginBase
 	{
+	    /// <summary>
+		/// Called by the PluginHost to hand itself over to the plugin. This is where the plugin creates its initial pins.
+		/// </summary>
+		/// <param name="Host">Interface to the PluginHost.</param>
+		void SetPluginHost(IPluginHost Host);
 		/// <summary>
 		/// Called by the PluginHost before the Evaluate function every frame for every ConfigurationPin that has changed. 
 		/// The ConfigurationPin is handed over as the functions input parameter. This is where a plugin would typically 

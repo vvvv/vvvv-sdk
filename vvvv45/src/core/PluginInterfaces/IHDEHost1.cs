@@ -37,6 +37,108 @@ namespace VVVV.PluginInterfaces.V1
 	}
 	#endregion IHDEHost
 	
+	#region NodeBrowser
+	/// <summary>
+	/// Allows the NodeBrower to be contacted by the host
+	/// </summary>
+	[Guid("A0C810DA-E0CC-4A2E-BC3F-8139766945F1"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface INodeBrowser: IPluginBase
+	{
+		void Initialize(string path, string text, out int width);
+		void AfterShow();
+		void BeforeHide();
+	}
+	
+	/// <summary>
+	/// Allows the NodeBrower to communicate back to the host
+	/// </summary>
+	[Guid("5567811E-D2D3-4654-A3E3-2E8324C9F022"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface INodeBrowserHost
+	{
+		void CreateNode(INodeInfo nodeInfo);
+		void CreateNodeFromFile(string filePath);
+		void CreateComment(string comment);
+		void CreateDynamicNode(string nodeName);
+		void ShowHelpPatch(INodeInfo nodeInfo);
+		void ShowNodeReference(INodeInfo nodeInfo);
+	}	
+	#endregion NodeBrowser
+	
+	#region WindowSwitcher
+	/// <summary>
+	/// Allows the WindowSwitcher to be contacted by the host
+	/// </summary>
+	[Guid("41CC97F3-106E-4DC9-AA74-E50C0B5694DD"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IWindowSwitcher: IPluginBase
+	{
+		void Initialize(IWindow currentWindow, out int width, out int height);
+		void AfterShow();
+		void Up();
+		void Down();
+	}
+	
+	/// <summary>
+	/// Allows the WindowSwitcher to communicate back to the host
+	/// </summary>
+	[Guid("A14BBFDE-9B91-430B-B098-FD8E2DC7D60B"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IWindowSwitcherHost
+	{
+		void HideMe(IWindow window);
+	}	
+	#endregion WindowSwitcher
+	
+	#region Kommunikator
+	/// <summary>
+	/// Allows the Kommunikator to be contacted by the host
+	/// </summary>
+	[Guid("CF40CDDD-55BE-42D5-B6BB-1A05AE8FF9A8"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IKommunikator: IPluginBase
+	{
+		void Initialize(string path, string description);
+		void SaveCurrentImage(string filename);
+	}
+	
+	/// <summary>
+	/// Allows the Kommunikator to communicate back to its host
+	/// </summary>
+	[Guid("8FCFCF38-14B4-4BB3-9A2A-7D0D71BB98BD"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IKommunikatorHost
+	{
+		void HideMe();
+	}	
+	#endregion Kommunikator
+	
+	#region GraphViewer
+	/// <summary>
+	/// Allows the GraphViewer to be contacted by the host
+	/// </summary>
+	[Guid("B226EE83-3C06-45E2-9B03-F4105DFDB27D"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IGraphViewer: IPluginBase
+	{
+		void Initialize(INode root);
+	}
+	
+	/// <summary>
+	/// Allows the GraphViewer to communicate back to the host
+	/// </summary>
+	[Guid("CD119190-E089-4AC6-9EC0-FC03DA11B895"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IGraphViewerHost
+	{
+	    void SelectNodes(INode[] node);
+		void ShowPatchOfNode(INode node);
+		void ShowHelpPatch(INodeInfo nodeInfo);
+		void ShowNodeReference(INodeInfo nodeInfo);
+	}	
+	#endregion GraphViewer
+	
 	#region INode
 	/// <summary>
 	/// Gives access to vvvv nodes

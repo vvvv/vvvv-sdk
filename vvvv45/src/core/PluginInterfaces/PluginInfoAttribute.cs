@@ -7,9 +7,9 @@ using VVVV.PluginInterfaces.V2;
 
 [MetadataAttribute]
 [AttributeUsage(AttributeTargets.Class, AllowMultiple=false)]
-public class ExportPluginInfoAttribute: ExportAttribute
+public class PluginInfoAttribute: ExportAttribute
 {
-    public ExportPluginInfoAttribute() : base(typeof(IPluginEvaluate)) { }
+    public PluginInfoAttribute() : base(typeof(IPluginBase)) { }
     public string Name { get; set; }
     public string Category { get; set; }
     public string Version { get; set; }
