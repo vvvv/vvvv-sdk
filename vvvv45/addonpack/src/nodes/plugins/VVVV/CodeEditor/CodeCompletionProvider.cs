@@ -26,14 +26,15 @@
 // OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
-using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
+
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Gui.CompletionWindow;
-
+using VVVV.Core.Model;
 using Dom = ICSharpCode.SharpDevelop.Dom;
 using NRefactoryResolver = ICSharpCode.SharpDevelop.Dom.NRefactoryResolver.NRefactoryResolver;
 
@@ -41,17 +42,20 @@ namespace VVVV.HDE.CodeEditor
 {
 	class CodeCompletionProvider : ICompletionDataProvider
 	{
-		CodeEditor FCodeEditor;
+		protected ITextDocument FDocument;
+		protected IParseInfoProvider FParseInfoProvider;
 		
-		public CodeCompletionProvider(CodeEditor codeEditor)
+		public CodeCompletionProvider(IParseInfoProvider parseInfoProvider, ITextDocument document, ImageList imageList)
 		{
-			this.FCodeEditor = codeEditor;
+			FParseInfoProvider = parseInfoProvider;
+			FDocument = document;
+			ImageList = imageList;
 		}
 		
-		public ImageList ImageList {
-			get {
-				return FCodeEditor.ImageList;
-			}
+		public ImageList ImageList 
+		{
+			get;
+			private set;
 		}
 		
 		private string FPreSelection = null;
@@ -110,10 +114,13 @@ namespace VVVV.HDE.CodeEditor
 			//	new DefaultCompletionData("Text", "Description", 1)
 			//};
 			
-			var resolver = new NRefactoryResolver(FCodeEditor.FProjectContent.Language);
+			var projectContent = FParseInfoProvider.GetProjectContent(FDocument.Project);
+			var parseInfo = FParseInfoProvider.GetParseInfo(FDocument);
+			
+			var resolver = new NRefactoryResolver(projectContent.Language);
 			
 			var resultList = new List<ICompletionData>();
-			var expressionResult = FindExpression(textArea);
+			var expressionResult = FindExpression(parseInfo, textArea);
 			
 			Debug.WriteLine(String.Format("Generating completion data for expression result {0}", expressionResult));
 
@@ -122,18 +129,18 @@ namespace VVVV.HDE.CodeEditor
 			{
 				FPreSelection = null;
 				var rr = resolver.Resolve(expressionResult,
-				                          FCodeEditor.FParseInfo,
+				                          parseInfo,
 				                          textArea.MotherTextEditorControl.Text);
 				
 				if (rr != null)
-					completionData = rr.GetCompletionData(FCodeEditor.FProjectContent);
+					completionData = rr.GetCompletionData(projectContent);
 			}
 			else
 			{
 				FPreSelection = "";
 				completionData = resolver.CtrlSpace(textArea.Caret.Line + 1, 
 				                                    textArea.Caret.Column + 1, 
-				                                    FCodeEditor.FParseInfo, 
+				                                    parseInfo, 
 				                                    textArea.Document.TextContent,
 				                                    expressionResult.Context);
 			}
@@ -149,10 +156,10 @@ namespace VVVV.HDE.CodeEditor
 		/// Also determines the context (using statement, "new"-expression etc.) the
 		/// cursor is at.
 		/// </summary>
-		Dom.ExpressionResult FindExpression(TextArea textArea)
+		Dom.ExpressionResult FindExpression(Dom.ParseInformation parseInfo, TextArea textArea)
 		{
 			var document = textArea.Document;
-			var finder = new Dom.CSharp.CSharpExpressionFinder(FCodeEditor.FParseInfo);
+			var finder = new Dom.CSharp.CSharpExpressionFinder(parseInfo);
 
 			var expression = finder.FindExpression(document.GetText(0, textArea.Caret.Offset), textArea.Caret.Offset);
 			if (expression.Region.IsEmpty) {

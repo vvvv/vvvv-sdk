@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.HDE.CodeEditor</RootNamespace>
-    <AssemblyName>VVVV.HDE.CodeEditor</AssemblyName>
+    <AssemblyName>CodeEditor</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SourceAnalysisOverrideSettingsFile>C:\Users\Elias\AppData\Roaming\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
@@ -15,6 +15,9 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <StartArguments>d</StartArguments>
+    <SignAssembly>False</SignAssembly>
+    <DelaySign>False</DelaySign>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>..\..\..\vvvv40_DynamicNodes\plugins\</OutputPath>
@@ -43,15 +46,6 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="ICSharpCode.NRefactory">
-      <HintPath>Dependencies\ICSharpCode.NRefactory.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpDevelop.Dom">
-      <HintPath>Dependencies\ICSharpCode.SharpDevelop.Dom.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.TextEditor">
-      <HintPath>Dependencies\ICSharpCode.TextEditor.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\_lib\Unity\Microsoft.Practices.Unity.dll</HintPath>
       <Private>False</Private>
@@ -61,6 +55,9 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition">
+      <HintPath>..\..\_lib\MEF\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -83,7 +80,11 @@
     <Compile Include="CodeEditorPlugin.Designer.cs">
       <DependentUpon>CodeEditorPlugin.cs</DependentUpon>
     </Compile>
+    <Compile Include="CodeParser.cs" />
+    <Compile Include="ErrorView\ErrorCollectionColumnProvider.cs" />
+    <Compile Include="ErrorView\ErrorCellProvider.cs" />
     <Compile Include="HostCallbackImplementation.cs" />
+    <Compile Include="IParseInfoProvider.cs" />
     <Compile Include="NodeSelectionListener.cs" />
     <Compile Include="ParserFoldingStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -93,6 +94,19 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\SharpDevelop30\src\Libraries\ICSharpCode.TextEditor\Project\ICSharpCode.TextEditor.csproj">
+      <Project>{2D18BE89-D210-49EB-A9DD-2246FBB3DF6D}</Project>
+      <Name>ICSharpCode.TextEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SharpDevelop30\src\Libraries\NRefactory\Project\NRefactory.csproj">
+      <Project>{3A9AE6AA-BC07-4A2F-972C-581E3AE2F195}</Project>
+      <Name>NRefactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SharpDevelop30\src\Main\ICSharpCode.SharpDevelop.Dom\Project\ICSharpCode.SharpDevelop.Dom.csproj">
+      <Project>{924EE450-603D-49C1-A8E5-4AFAA31CE6F3}</Project>
+      <Name>ICSharpCode.SharpDevelop.Dom</Name>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\vvvv40_DynamicNodes\src.net\_Utils\Utils.csproj">
       <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
       <Name>Utils</Name>
@@ -103,10 +117,11 @@
       <Name>Core</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\vvvv50\src\HDE\Viewer\WinFormsTreeViewer\WinFormsTreeViewer.csproj">
+    <ProjectReference Include="..\..\..\vvvv50\src\HDE\Viewer\WinFormsViewer\WinFormsViewer.csproj">
       <Project>{98936436-EA28-437E-A2A4-CC7CAA532658}</Project>
-      <Name>WinFormsTreeViewer</Name>
+      <Name>WinFormsViewer</Name>
       <Private>False</Private>
     </ProjectReference>
+    <Folder Include="ErrorView" />
   </ItemGroup>
 </Project>

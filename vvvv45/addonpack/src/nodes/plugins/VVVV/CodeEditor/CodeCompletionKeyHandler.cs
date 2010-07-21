@@ -26,40 +26,55 @@
 // OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
-using System.Windows.Forms;
 using System.IO;
 using System.Threading;
+using System.Windows.Forms;
 
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Gui;
 using ICSharpCode.TextEditor.Gui.CompletionWindow;
+using VVVV.Core.Model;
 
 namespace VVVV.HDE.CodeEditor
 {
 	class CodeCompletionKeyHandler
 	{
-		CodeEditor FCodeEditor;
-		TextEditorControl FEditorControl;
-		CodeCompletionWindow codeCompletionWindow;
+		protected static Form FDummyForm = new Form();
 		
-		private CodeCompletionKeyHandler(CodeEditor codeEditor, TextEditorControl editorControl)
+		protected TextEditorControl FEditorControl;
+		protected CodeCompletionWindow codeCompletionWindow;
+		protected IParseInfoProvider FParseInfoProvider;
+		protected ITextDocument FDocument;
+		protected ImageList FImageList;
+		
+		private CodeCompletionKeyHandler(
+			IParseInfoProvider parseInfoProvider, 
+			ITextDocument document, 
+			ImageList imageList, 
+			TextEditorControl editorControl)
 		{
-			this.FCodeEditor = codeEditor;
-			this.FEditorControl = editorControl;
+			FParseInfoProvider = parseInfoProvider;
+			FDocument = document;
+			FImageList = imageList;
+			FEditorControl = editorControl;
 		}
 		
-		public static CodeCompletionKeyHandler Attach(CodeEditor mainForm, TextEditorControl editor)
+		public static CodeCompletionKeyHandler Attach(
+			IParseInfoProvider parseInfoProvider, 
+			ITextDocument document, 
+			ImageList imageList, 
+			TextEditorControl editorControl)
 		{
-			CodeCompletionKeyHandler h = new CodeCompletionKeyHandler(mainForm, editor);
+			CodeCompletionKeyHandler h = new CodeCompletionKeyHandler(parseInfoProvider, document, imageList, editorControl);
 			
-			editor.ActiveTextAreaControl.TextArea.KeyEventHandler += h.TextAreaKeyEventHandler;
+			editorControl.ActiveTextAreaControl.TextArea.KeyEventHandler += h.TextAreaKeyEventHandler;
 			
 			// When the editor is disposed, close the code completion window
-			editor.Disposed += h.CloseCodeCompletionWindow;
-			editor.Disposed += h.EditorDisposedCB;
+			editorControl.Disposed += h.CloseCodeCompletionWindow;
+			editorControl.Disposed += h.EditorDisposedCB;
 			
 			return h;
 		}
@@ -77,12 +92,12 @@ namespace VVVV.HDE.CodeEditor
 			
 			if (char.IsLetter(key) || key == '.') 
 			{
-				ICompletionDataProvider completionDataProvider = new CodeCompletionProvider(FCodeEditor);
+				ICompletionDataProvider completionDataProvider = new CodeCompletionProvider(FParseInfoProvider, FDocument, FImageList);
 
 				codeCompletionWindow = CodeCompletionWindow.ShowCompletionWindow(
-					FCodeEditor.DummyForm,					// The parent window for the completion window
+					FDummyForm,					// The parent window for the completion window
 					FEditorControl, 					// The text editor to show the window for
-					FCodeEditor.Document.Location.AbsolutePath,		// Filename - will be passed back to the provider
+					FDocument.Location.AbsolutePath,		// Filename - will be passed back to the provider
 					completionDataProvider,		// Provider to get the list of possible completions
 					key							// Key pressed - will be passed to the provider
 				);

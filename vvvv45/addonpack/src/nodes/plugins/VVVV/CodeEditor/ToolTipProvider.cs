@@ -30,25 +30,28 @@ using System.Text;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Dom.CSharp;
 using ICSharpCode.SharpDevelop.Dom.VBNet;
-using TextEditor = ICSharpCode.TextEditor;
+using VVVV.Core.Model;
 using NRefactoryResolver = ICSharpCode.SharpDevelop.Dom.NRefactoryResolver.NRefactoryResolver;
+using TextEditor = ICSharpCode.TextEditor;
 
 namespace VVVV.HDE.CodeEditor
 {
-	sealed class ToolTipProvider
+	class ToolTipProvider
 	{
-		CodeEditor mainForm;
-		TextEditor.TextEditorControl editor;
+		protected IParseInfoProvider FParseInfoProvider;
+		protected ITextDocument FDocument;
+		protected TextEditor.TextEditorControl FEditor;
 		
-		private ToolTipProvider(CodeEditor mainForm, TextEditor.TextEditorControl editor)
+		private ToolTipProvider(IParseInfoProvider parseInfoProvider, ITextDocument document, TextEditor.TextEditorControl editor)
 		{
-			this.mainForm = mainForm;
-			this.editor = editor;
+			FParseInfoProvider = parseInfoProvider;
+			FDocument = document;
+			FEditor = editor;
 		}
 		
-		public static void Attach(CodeEditor mainForm, TextEditor.TextEditorControl editor)
+		public static void Attach(IParseInfoProvider parseInfoProvider, ITextDocument document, TextEditor.TextEditorControl editor)
 		{
-			ToolTipProvider tp = new ToolTipProvider(mainForm, editor);
+			ToolTipProvider tp = new ToolTipProvider(parseInfoProvider, document, editor);
 			editor.ActiveTextAreaControl.TextArea.ToolTipRequest += tp.OnToolTipRequest;
 			editor.Disposed += tp.TextEditorControlDisposedCB;
 		}
@@ -63,18 +66,21 @@ namespace VVVV.HDE.CodeEditor
 		void OnToolTipRequest(object sender, TextEditor.ToolTipRequestEventArgs e)
 		{
 			if (e.InDocument && !e.ToolTipShown) {
-				IExpressionFinder expressionFinder = new CSharpExpressionFinder(mainForm.FParseInfo);
-				ExpressionResult expression = expressionFinder.FindFullExpression(
-					editor.Text,
-					editor.Document.PositionToOffset(e.LogicalPosition));
+				var projectContent = FParseInfoProvider.GetProjectContent(FDocument.Project);
+				var parseInfo = FParseInfoProvider.GetParseInfo(FDocument);
+				
+				var expressionFinder = new CSharpExpressionFinder(parseInfo);
+				var expression = expressionFinder.FindFullExpression(
+					FEditor.Text,
+					FEditor.Document.PositionToOffset(e.LogicalPosition));
 				if (expression.Region.IsEmpty) {
 					expression.Region = new DomRegion(e.LogicalPosition.Line + 1, e.LogicalPosition.Column + 1);
 				}
 				
-				TextEditor.TextArea textArea = editor.ActiveTextAreaControl.TextArea;
-				NRefactoryResolver resolver = new NRefactoryResolver(mainForm.FProjectContent.Language);
+				TextEditor.TextArea textArea = FEditor.ActiveTextAreaControl.TextArea;
+				NRefactoryResolver resolver = new NRefactoryResolver(projectContent.Language);
 				ResolveResult rr = resolver.Resolve(expression,
-				                                    mainForm.FParseInfo,
+				                                    parseInfo,
 				                                    textArea.MotherTextEditorControl.Text);
 				string toolTipText = GetText(rr);
 				if (toolTipText != null) {

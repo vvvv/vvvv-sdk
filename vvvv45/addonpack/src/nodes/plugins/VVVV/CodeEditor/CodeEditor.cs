@@ -55,7 +55,6 @@ namespace VVVV.HDE.CodeEditor
 	{
 		#region field declaration
 		internal Dom.DefaultProjectContent FProjectContent;
-		internal Dom.ParseInformation FParseInfo;
 		
 		private ICSharpCode.TextEditor.TextEditorControl FTextEditorControl;
 		private BackgroundCodeParser FBGCodeParser;
@@ -101,14 +100,10 @@ namespace VVVV.HDE.CodeEditor
 			FProjectContent.Language = Dom.LanguageProperties.CSharp;
 			
 			HostCallbackImplementation.Register(FProjectContent);
-			CodeCompletionKeyHandler.Attach(this, FTextEditorControl);
-			ToolTipProvider.Attach(this, FTextEditorControl);
+			CodeCompletionKeyHandler.Attach(editorPlugin, doc, imageList, FTextEditorControl);
+			ToolTipProvider.Attach(editorPlugin, doc, FTextEditorControl);
 			
-			// create dummy FParseInfo to prevent NullReferenceException when using CC before parsing
-			// for the first time
-			FParseInfo = new Dom.ParseInformation(new Dom.DefaultCompilationUnit(FProjectContent));
-			
-			FBGCodeParser = new BackgroundCodeParser(FProjectContent, FTextEditorControl.Document, Document.Location.AbsolutePath, FParseInfo);
+			FBGCodeParser = new BackgroundCodeParser(editorPlugin, doc, FTextEditorControl.Document);
 			
 			FTextEditorControl.TextChanged += TextEditorControlTextChangedCB;
 			
@@ -221,8 +216,8 @@ namespace VVVV.HDE.CodeEditor
 			{
 				SyncControlWithDocument();
 				
-				EditorPlugin.PluginHost.Log(TLogType.Debug, "Parsing " + Document.Location + " ...");
-				FBGCodeParser.RunParserAsync(Document.TextContent);
+//				EditorPlugin.PluginHost.Log(TLogType.Debug, "Parsing " + Document.Location + " ...");
+				FBGCodeParser.RunParserAsync();
 			}
 		}
 		

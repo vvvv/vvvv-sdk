@@ -3,6 +3,7 @@ using System.IO;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Linq;
 
 using VVVV.Core.Model;
 
@@ -26,15 +27,15 @@ namespace VVVV.HDE.CodeEditor
 		
 		private Queue<Tuple<BackgroundWorker, ICollection<IProject>>> FWorkerQueue;
 		private Dom.ProjectContentRegistry FPCRegistry;
-		private Dictionary<IProject, Dom.DefaultProjectContent> FProjects;
+		private IParseInfoProvider FParseInfoProvider;
 		private ToolStripStatusLabel FParserLabel;
 		
-		public BackgroundParser(Dom.ProjectContentRegistry pcRegistry, Dictionary<IProject, Dom.DefaultProjectContent> projects, ToolStripStatusLabel parserLabel)
+		public BackgroundParser(Dom.ProjectContentRegistry pcRegistry, IParseInfoProvider parseInfoProvider, ToolStripStatusLabel parserLabel)
 		{
 			FWorkerQueue = new Queue<Tuple<BackgroundWorker, ICollection<IProject>>>();
 		
 			FPCRegistry = pcRegistry;
-			FProjects = projects;
+			FParseInfoProvider = parseInfoProvider;
 			FParserLabel = parserLabel;
 		}
 		
@@ -45,7 +46,7 @@ namespace VVVV.HDE.CodeEditor
 			Parse(projects);
 		}
 		
-		public void Parse(ICollection<IProject> projects)
+		public void Parse(IEnumerable<IProject> projects)
 		{
 			var worker = new BackgroundWorker();
 			worker.WorkerReportsProgress = true;
@@ -54,7 +55,7 @@ namespace VVVV.HDE.CodeEditor
 			worker.ProgressChanged += ProgressChangedCB;
 			worker.RunWorkerCompleted += RunWorkerCompletedCB;
 			
-			FWorkerQueue.Enqueue(new Tuple<BackgroundWorker, ICollection<IProject>>(worker, projects));
+			FWorkerQueue.Enqueue(new Tuple<BackgroundWorker, ICollection<IProject>>(worker, projects.ToList()));
 			if (FWorkerQueue.Count == 1)
 				worker.RunWorkerAsync(projects);
 		}
@@ -78,7 +79,7 @@ namespace VVVV.HDE.CodeEditor
 			foreach (var project in projects)
 			{
 				// Get the IProjectContent for this project
-				var projectContent = FProjects[project];
+				var projectContent = FParseInfoProvider.GetProjectContent(project);
 				
 				// Clear all referenced content
 				lock(projectContent.ReferencedContents)
@@ -93,6 +94,8 @@ namespace VVVV.HDE.CodeEditor
 			
 				int j = 0;
 				int percentInnerProgress = 0;
+				
+				// Parse all references
 				foreach (var reference in project.References)
 				{
 					if (worker.CancellationPending)
@@ -101,22 +104,30 @@ namespace VVVV.HDE.CodeEditor
 						return;
 					}
 					
-					if (reference is AssemblyReference)
+					if (reference is ProjectReference)
+					{
+						var projectReference = reference as ProjectReference;
+						var referencePC = FParseInfoProvider.GetProjectContent(projectReference.Project);
+						projectContent.AddReferencedContent(referencePC);
+					}
+					else if (reference is IReference)
 					{
 						var assemblyName = reference.Name;
 						var assemblyFilename = reference.AssemblyLocation;
 						var referencePC = FPCRegistry.GetProjectContentForReference(assemblyName, assemblyFilename);
 						projectContent.AddReferencedContent(referencePC);
 					}
-					else if (reference is ProjectReference)
-					{
-						var projectReference = reference as ProjectReference;
-						var referencePC = FProjects[projectReference.Project];
-						projectContent.AddReferencedContent(referencePC);
-					}
 					
 					percentInnerProgress = percentProgress + ((j++) * 100) / project.References.Count;
 					worker.ReportProgress(percentInnerProgress / projects.Count, reference.Name);
+				}
+				
+				// Parse the document itself (all documents)
+				foreach (var doc in project.Documents)
+				{
+					var parser = new CodeParser(FParseInfoProvider);
+					if (doc is ITextDocument)
+						parser.Parse(doc as ITextDocument);
 				}
 			}
 		}
