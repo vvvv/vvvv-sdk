@@ -1,29 +1,4 @@
-#region licence/info
-
-//////project name
-//vvvv plugin template with gui
-
-//////description
-//basic vvvv plugin template with gui.
-//Copy this an rename it, to write your own plugin node.
-
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
-
-//////language/ide
-//C# sharpdevelop
-
-//////dependencies
-//VVVV.PluginInterfaces.V1;
-
-//////initial author
-//vvvv group
-
-#endregion licence/info
-
-//use what you need
+#region usings
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -31,26 +6,37 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.ComponentModel.Composition;
 
 using VVVV.Core;
 using VVVV.Core.Collections;
 using VVVV.Core.Menu;
 using VVVV.Core.View;
 using VVVV.PluginInterfaces.V1;
+#endregion usings
 
 //the vvvv node namespace
 namespace VVVV.Nodes.NodeBrowser
 {
     enum NodeBrowserPage {ByCategory, ByTags};
     
-    //class definition, inheriting from UserControl for the GUI stuff
-    public class NodeBrowserPluginNode: UserControl, IHDEPlugin, INodeInfoListener, INodeBrowser
+    [PluginInfo(Name = "NodeBrowser",
+                Category = "HDE",
+                Shortcut = "Ctrl+N",
+                Author = "vvvv group",
+                Help = "The NodeInfo Browser",
+                InitialBoxWidth = 100,
+                InitialBoxHeight = 200,
+                InitialWindowWidth = 300,
+                InitialWindowHeight = 500,
+                InitialComponentMode = TComponentMode.InAWindow)]
+    public class NodeBrowserPluginNode: UserControl, INodeBrowser, INodeInfoListener
     {
         #region field declaration
         
         //the hosts
-        private IPluginHost FPluginHost;
         private IHDEHost FHDEHost;
+        [Import]
         private INodeBrowserHost FNodeBrowserHost;
         // Track whether Dispose has been called.
         private bool FDisposed = false;
@@ -95,10 +81,13 @@ namespace VVVV.Nodes.NodeBrowser
         #endregion field declaration
         
         #region constructor/destructor
-        public NodeBrowserPluginNode()
+        [ImportingConstructor]
+        public NodeBrowserPluginNode(IHDEHost host)
         {
             // The InitializeComponent() call is required for Windows Forms designer support.
             InitializeComponent();
+            
+            FHDEHost = host;
             
             FTagsTextBox.ContextMenu = new ContextMenu();
             FTagsTextBox.MouseWheel += new MouseEventHandler(TextBoxTagsMouseWheel);
@@ -141,6 +130,20 @@ namespace VVVV.Nodes.NodeBrowser
             FCategoryDict.Add("Value", "Everything dealing with numercial values: Mathematical operations, ...");
             FCategoryDict.Add("VVVV", "Everything directly related to the running vvvv instance: Command line parameters, Event outputs, Quit command, ...");
             FCategoryDict.Add("Windows", "Control Windows´ Windows, Desktop Icons etc.");
+            
+            //register nodeinfolisteners at hdehost
+            FHDEHost.AddListener(this);
+            
+            var mappingRegistry = new MappingRegistry();
+            mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
+            mappingRegistry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
+            mappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
+            mappingRegistry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();
+            
+            var categoryMapper = new ModelMapper(FCategoryList, mappingRegistry);
+            FCategoryTreeViewer.Root = categoryMapper;
+            
+            UpdateOutput();
         }
         
         private void ToolTipPopupHandler(object sender, PopupEventArgs e)
@@ -179,68 +182,7 @@ namespace VVVV.Nodes.NodeBrowser
             }
             FDisposed = true;
         }
-        
-        #endregion constructor/destructor
-        
-        #region node name and infos
-        
-        //provide node infos
-        private static IPluginInfo FPluginInfo;
-        public static IPluginInfo PluginInfo
-        {
-            get
-            {
-                if (FPluginInfo == null)
-                {
-                    //fill out nodes info
-                    //see: http://www.vvvv.org/tiki-index.php?page=Conventions.NodeAndPinNaming
-                    FPluginInfo = new PluginInfo();
-                    
-                    //the nodes main name: use CamelCaps and no spaces
-                    FPluginInfo.Name = "NodeBrowser";
-                    //the nodes category: try to use an existing one
-                    FPluginInfo.Category = "HDE";
-                    //the nodes version: optional. leave blank if not
-                    //needed to distinguish two nodes of the same name and category
-                    FPluginInfo.Version = "";
-                    
-                    FPluginInfo.ShortCut = "Ctrl+N";
-                    
-                    //the nodes author: your sign
-                    FPluginInfo.Author = "vvvv group";
-                    //describe the nodes function
-                    FPluginInfo.Help = "The NodeInfo Browser";
-                    //specify a comma separated list of tags that describe the node
-                    FPluginInfo.Tags = "";
-                    
-                    //give credits to thirdparty code used
-                    FPluginInfo.Credits = "";
-                    //any known problems?
-                    FPluginInfo.Bugs = "";
-                    //any known usage of the node that may cause troubles?
-                    FPluginInfo.Warnings = "";
-                    
-                    //define the nodes initial size in box-mode
-                    FPluginInfo.InitialBoxSize = new Size(100, 200);
-                    //define the nodes initial size in window-mode
-                    FPluginInfo.InitialWindowSize = new Size(300, 500);
-                    //define the nodes initial component mode
-                    FPluginInfo.InitialComponentMode = TComponentMode.InAWindow;
-                    
-                    //leave below as is
-                    System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
-                    System.Diagnostics.StackFrame sf = st.GetFrame(0);
-                    System.Reflection.MethodBase method = sf.GetMethod();
-                    FPluginInfo.Namespace = method.DeclaringType.Namespace;
-                    FPluginInfo.Class = method.DeclaringType.Name;
-                    //leave above as is
-                }
-                return FPluginInfo;
-            }
-        }
-        
-        #endregion node name and infos
-        
+ 
         private void InitializeComponent()
         {
             this.FTagPanel = new System.Windows.Forms.Panel();
@@ -396,41 +338,9 @@ namespace VVVV.Nodes.NodeBrowser
         private RichTextBox FRichTextBox;
         private System.Windows.Forms.Panel FTagPanel;
         
-        #region initialization
-        //this method is called by vvvv when the node is created
-        public void SetPluginHost(IPluginHost host)
-        {
-            FPluginHost = host;
-        }
-        
-        public void SetHDEHost(IHDEHost host)
-        {
-            //assign host
-            FHDEHost = host;
-            
-            //register nodeinfolisteners at hdehost
-            FHDEHost.AddListener(this);
-            
-            var mappingRegistry = new MappingRegistry();
-            mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
-            mappingRegistry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
-            mappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
-            mappingRegistry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();
-            
-            var categoryMapper = new ModelMapper(FCategoryList, mappingRegistry);
-            FCategoryTreeViewer.Root = categoryMapper;
-            
-            UpdateOutput();
-        }
-
-        #endregion initialization
+        #endregion constructor/destructor
         
         #region INodeBrowser
-        public void SetNodeBrowserHost(INodeBrowserHost host)
-        {
-            FNodeBrowserHost = host;
-        }
-        
         public void Initialize(string path, string text, out int width)
         {
             FPath = path;
@@ -697,12 +607,12 @@ namespace VVVV.Nodes.NodeBrowser
             FTagsTextBox.Focus();
             
             //as plugin in its own window
-            if (FPluginHost != null)
+           /* if (FPluginHost != null)
             {
                 string systemname = FNodeDict[username].Systemname;
                 FTagsTextBox.DoDragDrop(systemname, DragDropEffects.All);
                 return;
-            }
+            }*/
             
             //popped up on doubleclick
             if (e.Button == MouseButtons.Left)
@@ -757,8 +667,8 @@ namespace VVVV.Nodes.NodeBrowser
 
                 int y = FRichTextBox.GetPositionFromCharIndex(FRichTextBox.GetFirstCharIndexFromLine(FHoverLine)).Y;
                 string tip = "";
-                if (!string.IsNullOrEmpty(ni.ShortCut))
-                    tip = "(" + ni.ShortCut + ") " ;
+                if (!string.IsNullOrEmpty(ni.Shortcut))
+                    tip = "(" + ni.Shortcut + ") " ;
                 if (!string.IsNullOrEmpty(ni.Help))
                     tip += ni.Help;
                 if (!string.IsNullOrEmpty(ni.Warnings))

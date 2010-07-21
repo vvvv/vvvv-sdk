@@ -51,6 +51,10 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition">
+      <HintPath>..\..\_lib\MEF\System.ComponentModel.Composition.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -58,6 +62,10 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="VVVV.Core">
       <HintPath>..\..\_lib\vvvv\VVVV.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VVVV.HDE.Viewer.WinFormsTreeViewer">
+      <HintPath>..\..\_lib\vvvv\VVVV.HDE.Viewer.WinFormsTreeViewer.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VVVV.Utils">
@@ -70,7 +78,6 @@
     <Compile Include="DoubleBufferedPanel.Designer.cs">
       <DependentUpon>DoubleBufferedPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="INodeBrowser.cs" />
     <Compile Include="CategoryList.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="NodeInfoEntry.cs" />
@@ -79,18 +86,6 @@
     <EmbeddedResource Include="NodeBrowserNode.resx">
       <DependentUpon>NodeBrowserNode.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\vvvv50\src\Core\Core.csproj">
-      <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
-      <Name>Core</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\vvvv50\src\HDE\Viewer\WinFormsTreeViewer\WinFormsTreeViewer.csproj">
-      <Project>{98936436-EA28-437E-A2A4-CC7CAA532658}</Project>
-      <Name>WinFormsTreeViewer</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

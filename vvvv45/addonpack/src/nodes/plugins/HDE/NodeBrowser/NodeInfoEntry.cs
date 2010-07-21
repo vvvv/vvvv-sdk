@@ -46,8 +46,8 @@ namespace VVVV.Nodes.NodeBrowser
                         case TNodeType.VST: {tip = "V  "; break;}
                 }
                 
-                if (!string.IsNullOrEmpty(NodeInfo.ShortCut))
-                    tip += "(" + NodeInfo.ShortCut + ") " ;
+                if (!string.IsNullOrEmpty(NodeInfo.Shortcut))
+                    tip += "(" + NodeInfo.Shortcut + ") " ;
                 if (!string.IsNullOrEmpty(NodeInfo.Help))
                     tip += NodeInfo.Help;
                 if (!string.IsNullOrEmpty(NodeInfo.Warnings))
