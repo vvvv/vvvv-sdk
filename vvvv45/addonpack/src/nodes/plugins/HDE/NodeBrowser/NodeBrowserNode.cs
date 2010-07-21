@@ -140,8 +140,8 @@ namespace VVVV.Nodes.NodeBrowser
             mappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
             mappingRegistry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();
             
-            var categoryMapper = new ModelMapper(FCategoryList, mappingRegistry);
-            FCategoryTreeViewer.Root = categoryMapper;
+            FCategoryTreeViewer.Registry = mappingRegistry;
+            FCategoryTreeViewer.Input = FCategoryList;
             
             UpdateOutput();
         }
@@ -192,7 +192,7 @@ namespace VVVV.Nodes.NodeBrowser
             this.FScrollBar = new System.Windows.Forms.VScrollBar();
             this.FTagsTextBox = new System.Windows.Forms.TextBox();
             this.FCategoryPanel = new System.Windows.Forms.Panel();
-            this.FCategoryTreeViewer = new VVVV.HDE.Viewer.WinFormsTreeViewer.TreeViewer();
+            this.FCategoryTreeViewer = new VVVV.HDE.Viewer.WinFormsViewer.TreeViewer();
             this.FTopLabel = new System.Windows.Forms.Label();
             this.FTagPanel.SuspendLayout();
             this.FCategoryPanel.SuspendLayout();
@@ -295,7 +295,6 @@ namespace VVVV.Nodes.NodeBrowser
             this.FCategoryTreeViewer.FlatStyle = true;
             this.FCategoryTreeViewer.Location = new System.Drawing.Point(0, 15);
             this.FCategoryTreeViewer.Name = "FCategoryTreeViewer";
-            this.FCategoryTreeViewer.Root = null;
             this.FCategoryTreeViewer.ShowLines = false;
             this.FCategoryTreeViewer.ShowPlusMinus = false;
             this.FCategoryTreeViewer.ShowRoot = false;
@@ -303,7 +302,7 @@ namespace VVVV.Nodes.NodeBrowser
             this.FCategoryTreeViewer.ShowTooltip = true;
             this.FCategoryTreeViewer.Size = new System.Drawing.Size(159, 424);
             this.FCategoryTreeViewer.TabIndex = 1;
-            this.FCategoryTreeViewer.Click += new VVVV.HDE.Viewer.WinFormsTreeViewer.ClickHandler(this.FCategoryTreeViewerClick);
+            this.FCategoryTreeViewer.Click += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FCategoryTreeViewerClick);
             // 
             // FTopLabel
             // 
@@ -328,7 +327,7 @@ namespace VVVV.Nodes.NodeBrowser
             this.FCategoryPanel.ResumeLayout(false);
             this.ResumeLayout(false);
         }
-        private VVVV.HDE.Viewer.WinFormsTreeViewer.TreeViewer FCategoryTreeViewer;
+        private VVVV.HDE.Viewer.WinFormsViewer.TreeViewer FCategoryTreeViewer;
         private VVVV.Nodes.DoubleBufferedPanel FNodeTypePanel;
         private System.Windows.Forms.VScrollBar FScrollBar;
         private System.Windows.Forms.Label FNodeCountLabel;
