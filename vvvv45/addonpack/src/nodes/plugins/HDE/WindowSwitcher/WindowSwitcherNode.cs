@@ -1,48 +1,26 @@
-#region licence/info
-
-//////project name
-//vvvv plugin template with gui
-
-//////description
-//basic vvvv plugin template with gui.
-//Copy this an rename it, to write your own plugin node.
-
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
-
-//////language/ide
-//C# sharpdevelop
-
-//////dependencies
-//VVVV.PluginInterfaces.V1;
-
-//////initial author
-//vvvv group
-
-#endregion licence/info
-
-//use what you need
+#region usings
 using System;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 
 using VVVV.PluginInterfaces.V1;
+#endregion usings
 
 //the vvvv node namespace
 namespace VVVV.Nodes.WindowSwitcher
 {
-    //class definition, inheriting from UserControl for the GUI stuff
-    public class WindowSwitcherPluginNode: UserControl, IHDEPlugin, IWindowSwitcher, IWindowListener
+    [PluginInfo(Name = "WindowSwitcher",
+                Category = "HDE",
+                Author = "vvvv group",
+                Help = "The Window Switcher")]
+    public class WindowSwitcherPluginNode: UserControl, IWindowSwitcher, IWindowListener
     {
         #region field declaration
-        
-        //the host (mandatory)
-        private IPluginHost FPluginHost;
         private IHDEHost FHDEHost;
+        [Import]
         private IWindowSwitcherHost FWindowSwitcherHost;
         // Track whether Dispose has been called.
         private bool FDisposed = false;
@@ -55,10 +33,14 @@ namespace VVVV.Nodes.WindowSwitcher
         #endregion field declaration
         
         #region constructor/destructor
-        public WindowSwitcherPluginNode()
+        [ImportingConstructor]
+        public WindowSwitcherPluginNode(IHDEHost host)
         {
             // The InitializeComponent() call is required for Windows Forms designer support.
             InitializeComponent();
+            
+            FHDEHost = host;
+            FHDEHost.AddListener(this);
         }
         
         // Dispose(bool disposing) executes in two distinct scenarios.
@@ -76,6 +58,7 @@ namespace VVVV.Nodes.WindowSwitcher
                 if(disposing)
                 {
                     // Dispose managed resources.
+                    FHDEHost.RemoveListener(this);
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
@@ -89,72 +72,7 @@ namespace VVVV.Nodes.WindowSwitcher
             }
             FDisposed = true;
         }
-        
-        #endregion constructor/destructor
-        
-        #region node name and infos
-        
-        //provide node infos
-        private static IPluginInfo FPluginInfo;
-        public static IPluginInfo PluginInfo
-        {
-            get
-            {
-                if (FPluginInfo == null)
-                {
-                    //fill out nodes info
-                    //see: http://www.vvvv.org/tiki-index.php?page=Conventions.NodeAndPinNaming
-                    FPluginInfo = new PluginInfo();
-                    
-                    //the nodes main name: use CamelCaps and no spaces
-                    FPluginInfo.Name = "WindowSwitcher";
-                    //the nodes category: try to use an existing one
-                    FPluginInfo.Category = "HDE";
-                    //the nodes version: optional. leave blank if not
-                    //needed to distinguish two nodes of the same name and category
-                    FPluginInfo.Version = "";
-                    
-                    //the nodes author: your sign
-                    FPluginInfo.Author = "vvvv group";
-                    //describe the nodes function
-                    FPluginInfo.Help = "Window Switcher";
-                    //specify a comma separated list of tags that describe the node
-                    FPluginInfo.Tags = "";
-                    
-                    //give credits to thirdparty code used
-                    FPluginInfo.Credits = "";
-                    //any known problems?
-                    FPluginInfo.Bugs = "";
-                    //any known usage of the node that may cause troubles?
-                    FPluginInfo.Warnings = "";
-                    
-                    //define the nodes initial size in box-mode
-                    FPluginInfo.InitialBoxSize = new Size(200, 100);
-                    //define the nodes initial size in window-mode
-                    FPluginInfo.InitialWindowSize = new Size(400, 300);
-                    //define the nodes initial component mode
-                    FPluginInfo.InitialComponentMode = TComponentMode.InAWindow;
-                    
-                    //leave below as is
-                    System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
-                    System.Diagnostics.StackFrame sf = st.GetFrame(0);
-                    System.Reflection.MethodBase method = sf.GetMethod();
-                    FPluginInfo.Namespace = method.DeclaringType.Namespace;
-                    FPluginInfo.Class = method.DeclaringType.Name;
-                    //leave above as is
-                }
-                return FPluginInfo;
-            }
-        }
-        
-        public bool AutoEvaluate
-        {
-            //return true if this node needs to calculate every frame even if nobody asks for its output
-            get {return true;}
-        }
-        
-        #endregion node name and infos
-        
+ 
         private void InitializeComponent()
         {
         	this.FDummyTextBox = new System.Windows.Forms.TextBox();
@@ -179,23 +97,7 @@ namespace VVVV.Nodes.WindowSwitcher
         	this.PerformLayout();
         }
         private System.Windows.Forms.TextBox FDummyTextBox;
-        
-        #region initialization
-        
-        //this method is called by vvvv when the node is created
-        public void SetPluginHost(IPluginHost host)
-        {
-            //assign host
-            FPluginHost = host;
-        }
-        
-        public void SetHDEHost(IHDEHost host)
-        {
-            //assign host
-            FHDEHost = host;
-            FHDEHost.AddListener(this);
-        }
-        #endregion initialization
+        #endregion constructor/destructor
 
         #region IWindowListener
         public void WindowAddedCB(IWindow window)
@@ -225,11 +127,6 @@ namespace VVVV.Nodes.WindowSwitcher
         #endregion IWindowListener
         
         #region IWindowSwitcher
-        public void SetWindowSwitcherHost(IWindowSwitcherHost host)
-        {
-            FWindowSwitcherHost = host;
-        }
-        
         public void Initialize(IWindow window, out int width, out int height)
         {
             //mark current window
