@@ -1,35 +1,10 @@
-#region licence/info
-
-//////project name
-//vvvv plugin template with gui
-
-//////description
-//basic vvvv plugin template with gui.
-//Copy this an rename it, to write your own plugin node.
-
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
-
-//////language/ide
-//C# sharpdevelop
-
-//////dependencies
-//VVVV.PluginInterfaces.V1;
-
-//////initial author
-//vvvv group
-
-#endregion licence/info
-
-//use what you need
+#region usings
 using System;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.ComponentModel.Composition;
 
 using Microsoft.Practices.Unity;
 
@@ -38,19 +13,29 @@ using VVVV.HDE.Viewer;
 using VVVV.Core;
 using VVVV.Core.Menu;
 using VVVV.Core.View;
+#endregion usings
 
-//the vvvv node namespace
 namespace VVVV.Nodes.GraphViewer
 {
     public enum SearchMode {Global, Local, Downstream};
-    //class definition, inheriting from UserControl for the GUI stuff
-    public class GraphViewerPluginNode: UserControl, IHDEPlugin, IGraphViewer, INodeSelectionListener, IWindowListener, IWindowSelectionListener
+    
+    [PluginInfo(Name = "GraphViewer",
+                Category = "HDE",
+                Shortcut = "Ctrl+F",
+                Author = "vvvv group",
+                Help = "The Graph Viewer",
+                InitialBoxWidth = 200,
+                InitialBoxHeight = 100,
+                InitialWindowWidth = 340,
+                InitialWindowHeight = 460,
+                InitialComponentMode = TComponentMode.InAWindow)]
+    public class GraphViewerPluginNode: UserControl, IGraphViewer, INodeSelectionListener, IWindowListener, IWindowSelectionListener
     {
         #region field declaration
         
         //the host (mandatory)
-        private IPluginHost FPluginHost;
         private IHDEHost FHDEHost;
+        [Import]
         private IGraphViewerHost FGraphViewerHost;
         private IUnityContainer FChildContainer;
         private IWindow FActiveWindow;
@@ -70,104 +55,18 @@ namespace VVVV.Nodes.GraphViewer
         #endregion field declaration
         
         #region constructor/destructor
-        public GraphViewerPluginNode()
+        [ImportingConstructor]
+        public GraphViewerPluginNode(IHDEHost host)
         {
+            FHDEHost = host;
+            //this will trigger the initial WindowSelectionChangeCB
+            FHDEHost.AddListener(this);
+            
             // The InitializeComponent() call is required for Windows Forms designer support.
             InitializeComponent();
             
             FSearchTextBox.ContextMenu = new ContextMenu();
         }
-        
-        // Dispose(bool disposing) executes in two distinct scenarios.
-        // If disposing equals true, the method has been called directly
-        // or indirectly by a user's code. Managed and unmanaged resources
-        // can be disposed.
-        // If disposing equals false, the method has been called by the
-        // runtime from inside the finalizer and you should not reference
-        // other objects. Only unmanaged resources can be disposed.
-        protected override void Dispose(bool disposing)
-        {
-            // Check to see if Dispose has already been called.
-            if(!FDisposed)
-            {
-                if(disposing)
-                {
-                    // Dispose managed resources.
-                    FHDEHost.RemoveListener(this);
-                }
-                // Release unmanaged resources. If disposing is false,
-                // only the following code is executed.
-                
-                // Note that this is not thread safe.
-                // Another thread could start disposing the object
-                // after the managed resources are disposed,
-                // but before the disposed flag is set to true.
-                // If thread safety is necessary, it must be
-                // implemented by the client.
-            }
-            FDisposed = true;
-        }
-        
-        #endregion constructor/destructor
-        
-        #region node name and infos
-        
-        //provide node infos
-        private static IPluginInfo FPluginInfo;
-        public static IPluginInfo PluginInfo
-        {
-            get
-            {
-                if (FPluginInfo == null)
-                {
-                    //fill out nodes info
-                    //see: http://www.vvvv.org/tiki-index.php?page=Conventions.NodeAndPinNaming
-                    FPluginInfo = new PluginInfo();
-                    
-                    //the nodes main name: use CamelCaps and no spaces
-                    FPluginInfo.Name = "GraphViewer";
-                    //the nodes category: try to use an existing one
-                    FPluginInfo.Category = "HDE";
-                    //the nodes version: optional. leave blank if not
-                    //needed to distinguish two nodes of the same name and category
-                    FPluginInfo.Version = "";
-                    
-                    FPluginInfo.ShortCut = "Ctrl+F";
-                    
-                    //the nodes author: your sign
-                    FPluginInfo.Author = "anonymous";
-                    //describe the nodes function
-                    FPluginInfo.Help = "Offers a basic code layout to start from when writing a vvvv plugin with GUI";
-                    //specify a comma separated list of tags that describe the node
-                    FPluginInfo.Tags = "";
-                    
-                    //give credits to thirdparty code used
-                    FPluginInfo.Credits = "";
-                    //any known problems?
-                    FPluginInfo.Bugs = "";
-                    //any known usage of the node that may cause troubles?
-                    FPluginInfo.Warnings = "";
-                    
-                    //define the nodes initial size in box-mode
-                    FPluginInfo.InitialBoxSize = new Size(200, 100);
-                    //define the nodes initial size in window-mode
-                    FPluginInfo.InitialWindowSize = new Size(340, 460);
-                    //define the nodes initial component mode
-                    FPluginInfo.InitialComponentMode = TComponentMode.InAWindow;
-                    
-                    //leave below as is
-                    System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
-                    System.Diagnostics.StackFrame sf = st.GetFrame(0);
-                    System.Reflection.MethodBase method = sf.GetMethod();
-                    FPluginInfo.Namespace = method.DeclaringType.Namespace;
-                    FPluginInfo.Class = method.DeclaringType.Name;
-                    //leave above as is
-                }
-                return FPluginInfo;
-            }
-        }
-        
-        #endregion node name and infos
         
         private void InitializeComponent()
         {
@@ -363,36 +262,45 @@ namespace VVVV.Nodes.GraphViewer
         private System.Windows.Forms.Panel panel2;
         private VVVV.HDE.Viewer.WinFormsTreeViewer.TreeViewer FTreeViewer;
         
-        #region initialization
-        
-        //this method is called by vvvv when the node is created
-        public void SetPluginHost(IPluginHost host)
+        // Dispose(bool disposing) executes in two distinct scenarios.
+        // If disposing equals true, the method has been called directly
+        // or indirectly by a user's code. Managed and unmanaged resources
+        // can be disposed.
+        // If disposing equals false, the method has been called by the
+        // runtime from inside the finalizer and you should not reference
+        // other objects. Only unmanaged resources can be disposed.
+        protected override void Dispose(bool disposing)
         {
-            //assign host
-            FPluginHost = host;
+            // Check to see if Dispose has already been called.
+            if(!FDisposed)
+            {
+                if(disposing)
+                {
+                    // Dispose managed resources.
+                    FHDEHost.RemoveListener(this);
+                }
+                // Release unmanaged resources. If disposing is false,
+                // only the following code is executed.
+                
+                // Note that this is not thread safe.
+                // Another thread could start disposing the object
+                // after the managed resources are disposed,
+                // but before the disposed flag is set to true.
+                // If thread safety is necessary, it must be
+                // implemented by the client.
+            }
+            FDisposed = true;
         }
         
-        public void SetHDEHost(IHDEHost host)
-        {
-            //assign host
-            FHDEHost = host;
-
-            //this will trigger the initial WindowSelectionChangeCB
-            FHDEHost.AddListener(this);
-        }
+        #endregion constructor/destructor
         
-        public void SetGraphViewerHost(IGraphViewerHost host)
-        {
-            FGraphViewerHost = host;
-        }
-        
+        #region IGraphViewer
         public void Initialize(INode root)
         {
             //via FRoot GraphViewer has access to the whole active graph for searching globally
             FRoot = root;
         }
-
-        #endregion initialization
+        #endregion IGraphViewer
         
         #region IWindowListener
         public void WindowAddedCB(IWindow window)
