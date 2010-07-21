@@ -50,17 +50,21 @@ namespace VVVV.HDE.CodeEditor
 		private Dictionary<IProject, Dom.DefaultProjectContent> FProjects;
 		private Dictionary<ITextDocument, Dom.ParseInformation> FParseInfos;
 		private BackgroundParser FBGParser;
+		private ISolution FSolution;
+		[Import]
+		private ILogger FLogger;
 		#endregion
 		
 		#region Constructor
 		[ImportingConstructor]
-		public CodeEditorPlugin(IHDEHost host)
+		public CodeEditorPlugin(IHDEHost host, ISolution solution)
 		{
 			//
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
 			
+			FSolution = solution;
 			FOpenedDocuments = new Dictionary<ITextDocument, TabPage>();
 			FNodeSelectionListener = new NodeSelectionListener(this);
 			FProjects = new Dictionary<IProject, Dom.DefaultProjectContent>();
@@ -81,9 +85,6 @@ namespace VVVV.HDE.CodeEditor
 			FHDEHost = host;
 			FHDEHost.AddListener(FNodeSelectionListener);
 			
-			var shell = FHDEHost.Shell;
-			ISolution solution = shell.Solution;
-			
 			var registry = new MappingRegistry();
 			registry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
 			registry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
@@ -100,12 +101,12 @@ namespace VVVV.HDE.CodeEditor
 			registry.RegisterMapping<CompilerError, IEnumerable<ICell>, ErrorCellProvider>();
 			
 			FProjectTreeViewer.Registry = registry;
-			FProjectTreeViewer.Input = solution;
+			FProjectTreeViewer.Input = FSolution;
 			
 			FErrorTableViewer.Registry = registry;
 			FErrorTableViewer.Input = Empty.Enumerable;
 			
-			FModelMapper = new ModelMapper(shell.Solution, registry);
+			FModelMapper = new ModelMapper(FSolution, registry);
 			
 			// Start to parse the solution.
 			FPCRegistry = new Dom.ProjectContentRegistry(); // Default .NET 2.0 registry
@@ -118,10 +119,10 @@ namespace VVVV.HDE.CodeEditor
 			// Create the background assembly parser
 			FBGParser = new BackgroundParser(FPCRegistry, this, FStatusLabel);
 			
-			solution.Projects.Added += Project_Added;
-			solution.Projects.Removed += Project_Removed;
+			FSolution.Projects.Added += Project_Added;
+			FSolution.Projects.Removed += Project_Removed;
 
-			foreach (var project in solution.Projects)
+			foreach (var project in FSolution.Projects)
 				SetupProject(project);
 		}
 		#endregion Constructor
@@ -207,7 +208,7 @@ namespace VVVV.HDE.CodeEditor
 				}
 				catch (Exception e)
 				{
-					FHDEHost.Shell.Logger.Log(e);
+					FLogger.Log(e);
 				}
 			}
 			FTabControl.SelectTab(FOpenedDocuments[doc]);
@@ -334,9 +335,8 @@ namespace VVVV.HDE.CodeEditor
 					
 					if (FHDEHost != null)
 					{
-						var solution = FHDEHost.Shell.Solution;
-						if (solution != null)
-							solution.Projects.Removed -= Project_Removed;
+						if (FSolution != null)
+							FSolution.Projects.Removed -= Project_Removed;
 						
 						FHDEHost.RemoveListener(FNodeSelectionListener);
 					}
