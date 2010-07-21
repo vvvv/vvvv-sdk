@@ -1,5 +1,7 @@
-﻿using System;
+﻿#region usings
+using System;
 using System.CodeDom.Compiler;
+using System.ComponentModel.Composition;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,12 +23,26 @@ using VVVV.Core.Viewer;
 using VVVV.HDE.CodeEditor.ErrorView;
 using VVVV.PluginInterfaces.V1;
 using Dom = ICSharpCode.SharpDevelop.Dom;
+#endregion usings
 
 namespace VVVV.HDE.CodeEditor
 {
-	public partial class CodeEditorPlugin : ManagedVCL.TopControl, IHDEPlugin, IParseInfoProvider
+    #region PluginInfo
+    [PluginInfo(Name = "CodeEditor",
+                Category = "HDE",
+                Shortcut = "Ctrl+K",
+                Author = "vvvv group",
+                Help = "The Code Editor",
+                InitialBoxWidth = 200,
+                InitialBoxHeight = 100,
+                InitialWindowWidth = 800,
+                InitialWindowHeight = 600,
+                InitialComponentMode = TComponentMode.InAWindow)]
+    #endregion PluginInfo
+	public partial class CodeEditorPlugin : ManagedVCL.TopControl, IPluginBase, IParseInfoProvider
 	{
 		#region Fields
+		private IHDEHost FHDEHost;
 		private INodeSelectionListener FNodeSelectionListener;
 		private Dictionary<ITextDocument, TabPage> FOpenedDocuments;
 		private ModelMapper FModelMapper;
@@ -36,13 +52,9 @@ namespace VVVV.HDE.CodeEditor
 		private BackgroundParser FBGParser;
 		#endregion
 		
-		#region Properties
-		public IHDEHost HdeHost { get; private set; }
-		public IPluginHost PluginHost { get; private set; }
-		#endregion
-		
 		#region Constructor
-		public CodeEditorPlugin()
+		[ImportingConstructor]
+		public CodeEditorPlugin(IHDEHost host)
 		{
 			//
 			// The InitializeComponent() call is required for Windows Forms designer support.
@@ -64,16 +76,12 @@ namespace VVVV.HDE.CodeEditor
 			FImageList.Images.SetKeyName(4, "Icons.16x16.Enum.png");
 			FImageList.Images.SetKeyName(5, "Icons.16x16.NameSpace.png");
 			FImageList.Images.SetKeyName(6, "Icons.16x16.Event.png");
-		}
-		#endregion Constructor
-		
-		#region IHDEPlugin
-		public void SetHDEHost(IHDEHost host)
-		{
-			HdeHost = host;
-			HdeHost.AddListener(FNodeSelectionListener);
 			
-			var shell = HdeHost.Shell;
+			//set hde host
+			FHDEHost = host;
+			FHDEHost.AddListener(FNodeSelectionListener);
+			
+			var shell = FHDEHost.Shell;
 			ISolution solution = shell.Solution;
 			
 			var registry = new MappingRegistry();
@@ -116,6 +124,7 @@ namespace VVVV.HDE.CodeEditor
 			foreach (var project in solution.Projects)
 				SetupProject(project);
 		}
+		#endregion Constructor
 		
 		protected void SetupProject(IProject project)
 		{
@@ -169,67 +178,7 @@ namespace VVVV.HDE.CodeEditor
 			// Tell the background parser to reparse this project
 			FBGParser.Parse(item.Project);
 		}
-		
-		public void SetPluginHost(IPluginHost host)
-		{
-			PluginHost = host;
-		}
-		
-		#region Node name and infos
-		//provide node infos
-		private static IPluginInfo FPluginInfo;
-		public static IPluginInfo PluginInfo
-		{
-			get
-			{
-				if (FPluginInfo == null)
-				{
-					//fill out nodes info
-					//see: http://www.vvvv.org/tiki-index.php?page=Conventions.NodeAndPinNaming
-					FPluginInfo = new PluginInfo();
-					
-					//the nodes main name: use CamelCaps and no spaces
-					FPluginInfo.Name = "CodeEditor";
-					//the nodes category: try to use an existing one
-					FPluginInfo.Category = "VVVV";
-					//the nodes version: optional. leave blank if not
-					//needed to distinguish two nodes of the same name and category
-					FPluginInfo.Version = "CompileRun";
-					
-					//the nodes author: your sign
-					FPluginInfo.Author = "vvvv group";
-					//describe the nodes function
-					FPluginInfo.Help = "CodeEditor";
-					//specify a comma separated list of tags that describe the node
-					FPluginInfo.Tags = "";
-					
-					//give credits to thirdparty code used
-					FPluginInfo.Credits = "";
-					//any known problems?
-					FPluginInfo.Bugs = "";
-					//any known usage of the node that may cause troubles?
-					FPluginInfo.Warnings = "";
-					
-					//define the nodes initial size in box-mode
-					FPluginInfo.InitialBoxSize = new Size(200, 100);
-					//define the nodes initial size in window-mode
-					FPluginInfo.InitialWindowSize = new Size(800, 600);
-					//define the nodes initial component mode
-					FPluginInfo.InitialComponentMode = TComponentMode.InAWindow;
-					FPluginInfo.Shortcut = "Ctrl+J";
-				}
-				return FPluginInfo;
-			}
-		}
-		
-		public bool AutoEvaluate
-		{
-			//return true if this node needs to calculate every frame even if nobody asks for its output
-			get {return true;}
-		}
-		#endregion node name and infos
-		#endregion IHDEPlugin
-		
+				
 		#region Methods
 		/// <summary>
 		/// Opens the specified ITextDocument in a new editor or if already opened brings editor to top.
@@ -258,7 +207,7 @@ namespace VVVV.HDE.CodeEditor
 				}
 				catch (Exception e)
 				{
-					HdeHost.Shell.Logger.Log(e);
+					FHDEHost.Shell.Logger.Log(e);
 				}
 			}
 			FTabControl.SelectTab(FOpenedDocuments[doc]);
@@ -383,13 +332,13 @@ namespace VVVV.HDE.CodeEditor
 					if (FBGParser != null)
 						FBGParser.CancelAsync();
 					
-					if (HdeHost != null)
+					if (FHDEHost != null)
 					{
-						var solution = HdeHost.Shell.Solution;
+						var solution = FHDEHost.Shell.Solution;
 						if (solution != null)
 							solution.Projects.Removed -= Project_Removed;
 						
-						HdeHost.RemoveListener(FNodeSelectionListener);
+						FHDEHost.RemoveListener(FNodeSelectionListener);
 					}
 					FNodeSelectionListener = null;
 					
@@ -408,10 +357,6 @@ namespace VVVV.HDE.CodeEditor
 				}
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.
-				
-				if (PluginHost != null)
-					PluginHost.Log(TLogType.Debug, "CodeEditorPlugin is being deleted");
-				PluginHost = null;
 			}
 			FDisposed = true;
 			
