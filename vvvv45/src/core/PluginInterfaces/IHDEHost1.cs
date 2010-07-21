@@ -16,14 +16,6 @@ namespace VVVV.PluginInterfaces.V1
 	public interface IHDEHost 
 	{
 		/// <summary>
-		/// Provides access to the Shell.
-		/// </summary>
-		Shell Shell
-		{
-		    get;
-		}
-		
-		/// <summary>
 		/// Allows a plugin to register IListeners on the host
 		/// </summary>
 		/// <param name="listener">The listener to register. Most likely the plugin itself, implementing an IListener.</param>
