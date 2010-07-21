@@ -1,35 +1,11 @@
-#region licence/info
-
-//////project name
-//vvvv plugin template with gui
-
-//////description
-//basic vvvv plugin template with gui.
-//Copy this an rename it, to write your own plugin node.
-
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
-
-//////language/ide
-//C# sharpdevelop
-
-//////dependencies
-//VVVV.PluginInterfaces.V1;
-
-//////initial author
-//vvvv group
-
-#endregion licence/info
-
-//use what you need
+#region usings
 using System;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel.Composition;
 using System.Net;
 using System.IO;
 
@@ -37,18 +13,25 @@ using ManagedVCL;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.Crypto;
+#endregion usings
 
-//the vvvv node namespace
 namespace VVVV.Nodes.Kommunikator
 {
-    //class definition, inheriting from UserControl for the GUI stuff
-    public class KommunikatorPluginNode: TopControl, IHDEPlugin, IKommunikator
+    [PluginInfo(Name = "Kommunikator",
+                Category = "HDE",
+                Author = "vvvv group",
+                Help = "Communicator to vvvv.org",
+                InitialBoxWidth = 400,
+                InitialBoxHeight = 300,
+                InitialWindowWidth = 500,
+                InitialWindowHeight = 400,
+                InitialComponentMode = TComponentMode.InAWindow)]
+    public class KommunikatorPluginNode: TopControl, IKommunikator
     {
         #region field declaration
         
         //the host (mandatory)
-        private IPluginHost FPluginHost;
-        private IHDEHost FHDEHost;
+        [Import]
         private IKommunikatorHost FKommunikatorHost;
         // Track whether Dispose has been called.
         private bool FDisposed = false;
@@ -80,100 +63,6 @@ namespace VVVV.Nodes.Kommunikator
             FRectPen = new Pen(Color.Black);
             FRectPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
         }
-        
-        // Dispose(bool disposing) executes in two distinct scenarios.
-        // If disposing equals true, the method has been called directly
-        // or indirectly by a user's code. Managed and unmanaged resources
-        // can be disposed.
-        // If disposing equals false, the method has been called by the
-        // runtime from inside the finalizer and you should not reference
-        // other objects. Only unmanaged resources can be disposed.
-        protected override void Dispose(bool disposing)
-        {
-            // Check to see if Dispose has already been called.
-            if(!FDisposed)
-            {
-                if(disposing)
-                {
-                    // Dispose managed resources.
-                }
-                // Release unmanaged resources. If disposing is false,
-                // only the following code is executed.
-
-                // Note that this is not thread safe.
-                // Another thread could start disposing the object
-                // after the managed resources are disposed,
-                // but before the disposed flag is set to true.
-                // If thread safety is necessary, it must be
-                // implemented by the client.
-            }
-            FDisposed = true;
-        }
-        
-        #endregion constructor/destructor
-        
-        #region node name and infos
-        
-        //provide node infos
-        private static IPluginInfo FPluginInfo;
-        public static IPluginInfo PluginInfo
-        {
-            get
-            {
-                if (FPluginInfo == null)
-                {
-                    //fill out nodes info
-                    //see: http://www.vvvv.org/tiki-index.php?page=Conventions.NodeAndPinNaming
-                    FPluginInfo = new PluginInfo();
-                    
-                    //the nodes main name: use CamelCaps and no spaces
-                    FPluginInfo.Name = "Kommunikator";
-                    //the nodes category: try to use an existing one
-                    FPluginInfo.Category = "HDE";
-                    //the nodes version: optional. leave blank if not
-                    //needed to distinguish two nodes of the same name and category
-                    FPluginInfo.Version = "";
-                    
-                    //the nodes author: your sign
-                    FPluginInfo.Author = "vvvv group";
-                    //describe the nodes function
-                    FPluginInfo.Help = "Communicator to vvvv.org";
-                    //specify a comma separated list of tags that describe the node
-                    FPluginInfo.Tags = "post screenshot web blog";
-                    
-                    //give credits to thirdparty code used
-                    FPluginInfo.Credits = "";
-                    //any known problems?
-                    FPluginInfo.Bugs = "";
-                    //any known usage of the node that may cause troubles?
-                    FPluginInfo.Warnings = "";
-                    
-                    //define the nodes initial size in box-mode
-                    FPluginInfo.InitialBoxSize = new Size(400, 300);
-                    //define the nodes initial size in window-mode
-                    FPluginInfo.InitialWindowSize = new Size(500, 400);
-                    //define the nodes initial component mode
-                    FPluginInfo.InitialComponentMode = TComponentMode.InAWindow;
-                    
-                    //leave below as is
-                    System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
-                    System.Diagnostics.StackFrame sf = st.GetFrame(0);
-                    System.Reflection.MethodBase method = sf.GetMethod();
-                    FPluginInfo.Namespace = method.DeclaringType.Namespace;
-                    FPluginInfo.Class = method.DeclaringType.Name;
-                    //leave above as is
-                }
-                return FPluginInfo;
-            }
-        }
-        
-        public bool AutoEvaluate
-        {
-            //return true if this node needs to calculate every frame even if nobody asks for its output
-            get {return true;}
-        }
-        
-        #endregion node name and infos
         
         private void InitializeComponent()
         {
@@ -411,26 +300,38 @@ namespace VVVV.Nodes.Kommunikator
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panelScreenshot;
         
-        #region initialization
-        //this method is called by vvvv when the node is created
-        public void SetPluginHost(IPluginHost host)
+        // Dispose(bool disposing) executes in two distinct scenarios.
+        // If disposing equals true, the method has been called directly
+        // or indirectly by a user's code. Managed and unmanaged resources
+        // can be disposed.
+        // If disposing equals false, the method has been called by the
+        // runtime from inside the finalizer and you should not reference
+        // other objects. Only unmanaged resources can be disposed.
+        protected override void Dispose(bool disposing)
         {
-            FPluginHost = host;
+            // Check to see if Dispose has already been called.
+            if(!FDisposed)
+            {
+                if(disposing)
+                {
+                    // Dispose managed resources.
+                }
+                // Release unmanaged resources. If disposing is false,
+                // only the following code is executed.
+
+                // Note that this is not thread safe.
+                // Another thread could start disposing the object
+                // after the managed resources are disposed,
+                // but before the disposed flag is set to true.
+                // If thread safety is necessary, it must be
+                // implemented by the client.
+            }
+            FDisposed = true;
         }
         
-        public void SetHDEHost(IHDEHost host)
-        {
-            //assign host
-            FHDEHost = host;
-        }
-        #endregion initialization
-        
+        #endregion constructor/destructor
+
         #region IKommunikator
-        public void SetKommunikatorHost(IKommunikatorHost host)
-        {
-            FKommunikatorHost = host;
-        }
-        
         public void Initialize(string title, string description)
         {
             ScreenshotTitleTextBox.Text = title;
