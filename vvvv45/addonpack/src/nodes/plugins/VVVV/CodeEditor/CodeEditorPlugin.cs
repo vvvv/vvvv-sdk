@@ -22,6 +22,7 @@ using VVVV.Core.View.Table;
 using VVVV.Core.Viewer;
 using VVVV.HDE.CodeEditor.ErrorView;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 using Dom = ICSharpCode.SharpDevelop.Dom;
 #endregion usings
 
@@ -39,7 +40,7 @@ namespace VVVV.HDE.CodeEditor
                 InitialWindowHeight = 600,
                 InitialComponentMode = TComponentMode.InAWindow)]
     #endregion PluginInfo
-	public partial class CodeEditorPlugin : ManagedVCL.TopControl, IPluginBase, IParseInfoProvider
+	public partial class CodeEditorPlugin : ManagedVCL.TopControl, IPluginHDE, IParseInfoProvider
 	{
 		#region Fields
 		private IHDEHost FHDEHost;

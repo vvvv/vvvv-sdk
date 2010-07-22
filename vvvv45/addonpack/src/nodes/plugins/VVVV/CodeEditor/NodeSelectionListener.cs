@@ -1,5 +1,5 @@
 ﻿using System;
-using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 using VVVV.Core.Model;
 
 namespace VVVV.HDE.CodeEditor
