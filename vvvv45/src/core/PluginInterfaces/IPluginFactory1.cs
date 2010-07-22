@@ -3,8 +3,9 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
 using VVVV.Core.Model;
+using VVVV.PluginInterfaces.V1;
 
-namespace VVVV.PluginInterfaces.V1
+namespace VVVV.PluginInterfaces.V2
 {
 	public delegate void NodeInfoEventHandler(IAddonFactory factory, INodeInfo nodeInfo);
 	

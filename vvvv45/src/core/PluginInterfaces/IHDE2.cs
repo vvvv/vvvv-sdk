@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.Practices.Unity;
+
 using VVVV.Core;
 using VVVV.Core.Model;
+using VVVV.PluginInterfaces.V1;
 
-namespace VVVV.PluginInterfaces.V1
+namespace VVVV.PluginInterfaces.V2
 {
     #region IHDEHost
     /// <summary>
@@ -35,9 +37,10 @@ namespace VVVV.PluginInterfaces.V1
 	/// </summary>
 	[Guid("A0C810DA-E0CC-4A2E-BC3F-8139766945F1"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface INodeBrowser: IPluginBase
+	public interface INodeBrowser: IPluginHDE
 	{
 		void Initialize(string path, string text, out int width);
+		void DragDrop(bool allow);
 		void AfterShow();
 		void BeforeHide();
 	}
@@ -64,7 +67,7 @@ namespace VVVV.PluginInterfaces.V1
 	/// </summary>
 	[Guid("41CC97F3-106E-4DC9-AA74-E50C0B5694DD"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IWindowSwitcher: IPluginBase
+	public interface IWindowSwitcher: IPluginHDE
 	{
 		void Initialize(IWindow currentWindow, out int width, out int height);
 		void AfterShow();
@@ -89,7 +92,7 @@ namespace VVVV.PluginInterfaces.V1
 	/// </summary>
 	[Guid("CF40CDDD-55BE-42D5-B6BB-1A05AE8FF9A8"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IKommunikator: IPluginBase
+	public interface IKommunikator: IPluginHDE
 	{
 		void Initialize(string path, string description);
 		void SaveCurrentImage(string filename);
@@ -112,7 +115,7 @@ namespace VVVV.PluginInterfaces.V1
 	/// </summary>
 	[Guid("B226EE83-3C06-45E2-9B03-F4105DFDB27D"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IGraphViewer: IPluginBase
+	public interface IGraphViewer: IPluginHDE
 	{
 		void Initialize(INode root);
 	}
