@@ -7,8 +7,6 @@ using VVVV.Utils.VMath;
 using VVVV.Utils.VColor;
 using VVVV.Core.Model;
 
-using VVVV.PluginInterfaces.V2;
-
 /// <summary>
 /// Version 1 of the VVVV PluginInterface.
 /// DirectX/SlimDX related parts are in a separate file: PluginDXInterface1.cs
@@ -26,7 +24,7 @@ namespace VVVV.PluginInterfaces.V1
 	/// </summary>
 	[Guid("E72C5CF0-4738-4F20-948E-83E96D4E7843"), 
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IPluginHost : INode
+	public interface IPluginHost
 	{
 		/// <summary>
 		/// Creates a ConfigurationPin of type Value.
