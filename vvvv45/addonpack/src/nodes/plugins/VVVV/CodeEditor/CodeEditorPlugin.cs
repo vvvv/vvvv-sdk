@@ -274,7 +274,7 @@ namespace VVVV.HDE.CodeEditor
 		#endregion
 		
 		#region Callbacks
-		void FProjectTreeViewerDoubleClick(ModelMapper sender, EventArgs args)
+		void FProjectTreeViewerDoubleClick(IModelMapper sender, EventArgs args)
 		{
 			if (sender.Model is ITextDocument)
 			{

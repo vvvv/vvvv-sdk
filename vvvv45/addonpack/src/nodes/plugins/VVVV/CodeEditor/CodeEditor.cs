@@ -195,6 +195,9 @@ namespace VVVV.HDE.CodeEditor
 			base.OnLoad(e);
 
 			FTextEditorControl.Document.TextContent = Document.TextContent;
+			var parserInfo = EditorPlugin.GetParseInfo(Document);
+			if (parserInfo != null)
+				FTextEditorControl.Document.FoldingManager.UpdateFoldings(Document.Location.LocalPath, parserInfo);
 			Document.ContentChanged += TextDocumentContentChangedCB;
 		}
 		
