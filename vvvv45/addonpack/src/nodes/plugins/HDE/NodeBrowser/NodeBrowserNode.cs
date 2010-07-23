@@ -13,6 +13,7 @@ using VVVV.Core.Collections;
 using VVVV.Core.Menu;
 using VVVV.Core.View;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 #endregion usings
 
 //the vvvv node namespace
@@ -37,11 +38,12 @@ namespace VVVV.Nodes.NodeBrowser
         //the hosts
         private IHDEHost FHDEHost;
         [Import]
-        private INodeBrowserHost FNodeBrowserHost;
+        public INodeBrowserHost NodeBrowserHost {get; set;}
         // Track whether Dispose has been called.
         private bool FDisposed = false;
         
         //further fields
+        private bool FAllowDragDrop = true;
         CategoryList FCategoryList = new CategoryList();
         Dictionary<string, string> FCategoryDict = new Dictionary<string, string>();
         List<string> FNodeList = new List<string>();
@@ -54,7 +56,6 @@ namespace VVVV.Nodes.NodeBrowser
         private int FHoverLine = -1;
         private Point FLastMouseHoverLocation = new Point(0, 0);
         private string FManualEntry = "";
-        private int FAwesomeWidth = 200;
         private bool FCtrlPressed = false;
         private int FVisibleLines = 16;
         private string FPath;
@@ -81,13 +82,26 @@ namespace VVVV.Nodes.NodeBrowser
         #endregion field declaration
         
         #region constructor/destructor
+        //alternative constructor for standalone use
+        public NodeBrowserPluginNode()
+        {
+            DefaultConstructor();
+        }
+        
         [ImportingConstructor]
         public NodeBrowserPluginNode(IHDEHost host)
         {
+            DefaultConstructor();
+            
+            //register nodeinfolisteners at hdehost
+            FHDEHost = host;
+            FHDEHost.AddListener(this);
+        }
+        
+        private void DefaultConstructor()
+        {
             // The InitializeComponent() call is required for Windows Forms designer support.
             InitializeComponent();
-            
-            FHDEHost = host;
             
             FTagsTextBox.ContextMenu = new ContextMenu();
             FTagsTextBox.MouseWheel += new MouseEventHandler(TextBoxTagsMouseWheel);
@@ -131,9 +145,6 @@ namespace VVVV.Nodes.NodeBrowser
             FCategoryDict.Add("VVVV", "Everything directly related to the running vvvv instance: Command line parameters, Event outputs, Quit command, ...");
             FCategoryDict.Add("Windows", "Control Windows´ Windows, Desktop Icons etc.");
             
-            //register nodeinfolisteners at hdehost
-            FHDEHost.AddListener(this);
-            
             var mappingRegistry = new MappingRegistry();
             mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
             mappingRegistry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
@@ -150,6 +161,8 @@ namespace VVVV.Nodes.NodeBrowser
         {
             e.ToolTipSize = new Size(Math.Min(e.ToolTipSize.Width, 300), e.ToolTipSize.Height);
         }
+        
+        
         
         // Dispose(bool disposing) executes in two distinct scenarios.
         // If disposing equals true, the method has been called directly
@@ -182,7 +195,7 @@ namespace VVVV.Nodes.NodeBrowser
             }
             FDisposed = true;
         }
- 
+        
         private void InitializeComponent()
         {
             this.FTagPanel = new System.Windows.Forms.Panel();
@@ -340,10 +353,9 @@ namespace VVVV.Nodes.NodeBrowser
         #endregion constructor/destructor
         
         #region INodeBrowser
-        public void Initialize(string path, string text, out int width)
+        public void Initialize(string path, string text)
         {
             FPath = path;
-            width = FAwesomeWidth;
             
             if (!string.IsNullOrEmpty(text))
                 FManualEntry = text.Trim();
@@ -369,20 +381,25 @@ namespace VVVV.Nodes.NodeBrowser
             FToolTip.Hide(FRichTextBox);
         }
         
+        public void DragDrop(bool allow)
+        {
+            FAllowDragDrop = allow;
+        }
+        
         private void CreateNode()
         {
             string text = FTagsTextBox.Text.Trim();
             try
             {
                 INodeInfo selNode = FNodeDict[text];
-                FNodeBrowserHost.CreateNode(selNode);
+                NodeBrowserHost.CreateNode(selNode);
             }
             catch
             {
                 if ((text.Contains(".v4p")) || (text.Contains(".fx")) || (text.Contains(".dll")))
-                    FNodeBrowserHost.CreateNodeFromFile(FPath + text);
+                    NodeBrowserHost.CreateNodeFromFile(FPath + text);
                 else
-                    FNodeBrowserHost.CreateComment(FTagsTextBox.Text);
+                    NodeBrowserHost.CreateComment(FTagsTextBox.Text);
             }
         }
         #endregion INodeBrowser
@@ -391,7 +408,7 @@ namespace VVVV.Nodes.NodeBrowser
         private string NodeInfoToKey(INodeInfo nodeInfo)
         {
             string tags = nodeInfo.Tags;
-            if (nodeInfo.Author != "vvvv group")
+            if ((!string.IsNullOrEmpty(nodeInfo.Author)) && (nodeInfo.Author != "vvvv group"))
                 tags += ", " + nodeInfo.Author;
 
             if (!string.IsNullOrEmpty(nodeInfo.Tags))
@@ -412,9 +429,6 @@ namespace VVVV.Nodes.NodeBrowser
                 FNodeList.Add(key);
                 FNodeDict[key] = nodeInfo;
                 
-                Size s = TextRenderer.MeasureText(key, FRichTextBox.Font, new Size(1, 1));
-                FAwesomeWidth = Math.Max(FAwesomeWidth, s.Width);
-                
                 //insert nodeInfo to FCategoryList
                 bool added = false;
                 foreach (CategoryEntry ce in FCategoryList)
@@ -425,6 +439,7 @@ namespace VVVV.Nodes.NodeBrowser
                     break;
                 }
                 
+                //category not yet present. create a new one
                 if (!added)
                 {
                     string description;
@@ -438,6 +453,29 @@ namespace VVVV.Nodes.NodeBrowser
                     FCategoryList.Add(catEntry);
                 }
             }
+        }
+        
+        public void NodeInfoUpdatedCB(INodeInfo nodeInfo)
+        {
+            string oldkey = "";
+            string newkey = NodeInfoToKey(nodeInfo);
+            //find the old key that is associated with this nodeinfo
+            foreach(var infokey in FNodeDict)
+                if (infokey.Value == nodeInfo)
+            {
+                oldkey = infokey.Key;
+                break;
+            }
+            
+            //re-add the same nodeinfo with the new key
+            var ni = FNodeDict[oldkey];
+            FNodeDict.Remove(oldkey);
+            FNodeDict.Add(newkey, ni);
+            
+            FNodeList.Remove(oldkey);
+            FNodeList.Add(newkey);
+            
+            UpdateOutput();
         }
         
         public void NodeInfoRemovedCB(INodeInfo nodeInfo)
@@ -486,7 +524,7 @@ namespace VVVV.Nodes.NodeBrowser
                     CreateNode();
             }
             else if (e.KeyCode == Keys.Escape)
-                FNodeBrowserHost.CreateNode(null);
+                NodeBrowserHost.CreateNode(null);
             else if ((FTagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Down))
             {
                 FHoverLine += 1;
@@ -606,12 +644,12 @@ namespace VVVV.Nodes.NodeBrowser
             FTagsTextBox.Focus();
             
             //as plugin in its own window
-           /* if (FPluginHost != null)
+            if (FAllowDragDrop)
             {
                 string systemname = FNodeDict[username].Systemname;
                 FTagsTextBox.DoDragDrop(systemname, DragDropEffects.All);
                 return;
-            }*/
+            }
             
             //popped up on doubleclick
             if (e.Button == MouseButtons.Left)
@@ -622,11 +660,11 @@ namespace VVVV.Nodes.NodeBrowser
             }
             else if (e.Button == MouseButtons.Middle)
             {
-                FNodeBrowserHost.ShowNodeReference(FNodeDict[username]);
+                NodeBrowserHost.ShowNodeReference(FNodeDict[username]);
             }
             else
             {
-                FNodeBrowserHost.ShowHelpPatch(FNodeDict[username]);
+                NodeBrowserHost.ShowHelpPatch(FNodeDict[username]);
             }
         }
         
@@ -1141,11 +1179,11 @@ namespace VVVV.Nodes.NodeBrowser
                 }
                 else if (e.Button == MouseButtons.Middle)
                 {
-                    FNodeBrowserHost.ShowNodeReference(FNodeDict[(sender.Model as NodeInfoEntry).Name]);
+                    NodeBrowserHost.ShowNodeReference(FNodeDict[(sender.Model as NodeInfoEntry).Name]);
                 }
                 else
                 {
-                    FNodeBrowserHost.ShowHelpPatch(FNodeDict[(sender.Model as NodeInfoEntry).Name]);
+                    NodeBrowserHost.ShowHelpPatch(FNodeDict[(sender.Model as NodeInfoEntry).Name]);
                 }
             }
             else

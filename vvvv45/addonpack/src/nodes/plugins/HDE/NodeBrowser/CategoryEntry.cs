@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 using VVVV.Core;
 using VVVV.Core.View;
 
