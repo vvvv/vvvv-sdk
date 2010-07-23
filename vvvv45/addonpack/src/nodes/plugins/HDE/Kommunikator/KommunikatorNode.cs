@@ -12,6 +12,7 @@ using System.IO;
 using ManagedVCL;
 
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Crypto;
 #endregion usings
 
