@@ -104,6 +104,7 @@ namespace VVVV.HDE.CodeEditor
 			// FSplitContainer2.Panel2
 			// 
 			this.FSplitContainer2.Panel2.Controls.Add(this.FErrorTableViewer);
+			this.FSplitContainer2.Panel2Collapsed = true;
 			this.FSplitContainer2.Size = new System.Drawing.Size(600, 635);
 			this.FSplitContainer2.SplitterDistance = 493;
 			this.FSplitContainer2.TabIndex = 1;
@@ -114,7 +115,7 @@ namespace VVVV.HDE.CodeEditor
 			this.FTabControl.Location = new System.Drawing.Point(0, 0);
 			this.FTabControl.Name = "FTabControl";
 			this.FTabControl.SelectedIndex = 0;
-			this.FTabControl.Size = new System.Drawing.Size(600, 493);
+			this.FTabControl.Size = new System.Drawing.Size(600, 635);
 			this.FTabControl.TabIndex = 0;
 			// 
 			// FErrorTableViewer

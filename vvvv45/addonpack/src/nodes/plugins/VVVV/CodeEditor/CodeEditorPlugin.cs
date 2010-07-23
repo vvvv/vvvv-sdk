@@ -28,18 +28,18 @@ using Dom = ICSharpCode.SharpDevelop.Dom;
 
 namespace VVVV.HDE.CodeEditor
 {
-    #region PluginInfo
-    [PluginInfo(Name = "CodeEditor",
-                Category = "HDE",
-                Shortcut = "Ctrl+K",
-                Author = "vvvv group",
-                Help = "The Code Editor",
-                InitialBoxWidth = 200,
-                InitialBoxHeight = 100,
-                InitialWindowWidth = 800,
-                InitialWindowHeight = 600,
-                InitialComponentMode = TComponentMode.InAWindow)]
-    #endregion PluginInfo
+	#region PluginInfo
+	[PluginInfo(Name = "CodeEditor",
+	            Category = "HDE",
+	            Shortcut = "Ctrl+K",
+	            Author = "vvvv group",
+	            Help = "The Code Editor",
+	            InitialBoxWidth = 200,
+	            InitialBoxHeight = 100,
+	            InitialWindowWidth = 800,
+	            InitialWindowHeight = 600,
+	            InitialComponentMode = TComponentMode.InAWindow)]
+	#endregion PluginInfo
 	public partial class CodeEditorPlugin : ManagedVCL.TopControl, IPluginHDE, IParseInfoProvider
 	{
 		#region Fields
@@ -100,6 +100,7 @@ namespace VVVV.HDE.CodeEditor
 			
 			registry.RegisterDefaultMapping<IEnumerable<IColumn>, ErrorCollectionColumnProvider>();
 			registry.RegisterMapping<CompilerError, IEnumerable<ICell>, ErrorCellProvider>();
+			registry.RegisterMapping<IEditableIDList<IReference>, ReferencesViewProvider>();
 			
 			FProjectTreeViewer.Registry = registry;
 			FProjectTreeViewer.Input = FSolution;
@@ -164,10 +165,27 @@ namespace VVVV.HDE.CodeEditor
 		{
 			SetupProject(project);
 		}
+		
+		private delegate void DoItLater();
 
 		void Project_CompileCompleted(IProject project, CompilerResults results)
 		{
-			FErrorTableViewer.Input = results.Errors;
+			// TODO: needs get fixed in filefactory
+			var doItLater = new DoItLater(delegate()
+            {
+            	if (results.Errors.Count > 0)
+            	{
+            		FErrorTableViewer.Input = results.Errors;
+            		// TODO: Find better way to calculate splitter distance
+            		FSplitContainer2.SplitterDistance = FSplitContainer2.Height - (FErrorTableViewer.RowCount + 2) * (FErrorTableViewer.RowHeight + 2);
+            		FSplitContainer2.Panel2Collapsed = false;
+            	}
+            	else
+            	{
+            		FSplitContainer2.Panel2Collapsed = true;
+            	}
+            });
+			FErrorTableViewer.BeginInvoke(doItLater);
 		}
 
 		void Project_Removed(IViewableCollection<IProject> collection, IProject project)
@@ -180,7 +198,7 @@ namespace VVVV.HDE.CodeEditor
 			// Tell the background parser to reparse this project
 			FBGParser.Parse(item.Project);
 		}
-				
+		
 		#region Methods
 		/// <summary>
 		/// Opens the specified ITextDocument in a new editor or if already opened brings editor to top.
