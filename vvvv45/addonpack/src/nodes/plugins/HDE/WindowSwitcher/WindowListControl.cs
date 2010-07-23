@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes
 {

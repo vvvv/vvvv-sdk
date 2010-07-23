@@ -6,7 +6,7 @@ using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 
-using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 #endregion usings
 
 //the vvvv node namespace
