@@ -148,6 +148,29 @@ namespace VVVV.PluginInterfaces.V2
 			get {return FExcecutable;}
 			set {FExcecutable = value;}
 		}
+		
+        public override bool Equals(object obj)
+        {
+            INodeInfo ni = null;
+            if (obj is INodeInfo)
+                ni = obj as INodeInfo;    
+            else
+                return false;
+            
+            return (this.Systemname == ni.Systemname) 
+                && (this.Author == ni.Author) 
+                && (this.Warnings == ni.Warnings)
+                && (this.Class == ni.Class)
+                && (this.Credits == ni.Credits)
+                && (this.Filename == ni.Filename)
+                && (this.Help == ni.Help)
+                && (this.InitialBoxSize == ni.InitialBoxSize)
+                && (this.InitialComponentMode == ni.InitialComponentMode)
+                && (this.InitialWindowSize == ni.InitialWindowSize)
+                && (this.Namespace == ni.Namespace)
+                && (this.Shortcut == ni.Shortcut)
+                && (this.Tags == ni.Tags);
+        }
 	}
 	#endregion NodeInfo
 }

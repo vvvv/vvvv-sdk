@@ -39,7 +39,7 @@ namespace VVVV.PluginInterfaces.V2
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface INodeBrowser: IPluginHDE
 	{
-		void Initialize(string path, string text, out int width);
+		void Initialize(string path, string text);
 		void DragDrop(bool allow);
 		void AfterShow();
 		void BeforeHide();
@@ -246,6 +246,7 @@ namespace VVVV.PluginInterfaces.V2
     public interface INodeInfoListener: IListener
     {
         void NodeInfoAddedCB(INodeInfo nodeInfo);
+        void NodeInfoUpdatedCB(INodeInfo nodeInfo);
         void NodeInfoRemovedCB(INodeInfo nodeInfo);
     }
     
