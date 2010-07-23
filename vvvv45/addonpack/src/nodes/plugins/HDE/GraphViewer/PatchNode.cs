@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using VVVV.Core;
 using VVVV.Core.View;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.GraphViewer
 {

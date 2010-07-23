@@ -8,11 +8,12 @@ using System.ComponentModel.Composition;
 
 using Microsoft.Practices.Unity;
 
-using VVVV.PluginInterfaces.V1;
-using VVVV.HDE.Viewer;
 using VVVV.Core;
 using VVVV.Core.Menu;
 using VVVV.Core.View;
+using VVVV.HDE.Viewer;
+using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 #endregion usings
 
 namespace VVVV.Nodes.GraphViewer
@@ -70,7 +71,7 @@ namespace VVVV.Nodes.GraphViewer
         
         private void InitializeComponent()
         {
-            this.FTreeViewer = new VVVV.HDE.Viewer.WinFormsTreeViewer.TreeViewer();
+            this.FTreeViewer = new VVVV.HDE.Viewer.WinFormsViewer.TreeViewer();
             this.FSearchTextBox = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.FDownstreamButton = new System.Windows.Forms.Button();
@@ -94,7 +95,6 @@ namespace VVVV.Nodes.GraphViewer
             this.FTreeViewer.FlatStyle = true;
             this.FTreeViewer.Location = new System.Drawing.Point(0, 64);
             this.FTreeViewer.Name = "FTreeViewer";
-            this.FTreeViewer.Root = null;
             this.FTreeViewer.ShowLines = true;
             this.FTreeViewer.ShowPlusMinus = true;
             this.FTreeViewer.ShowRoot = false;
@@ -102,8 +102,8 @@ namespace VVVV.Nodes.GraphViewer
             this.FTreeViewer.ShowTooltip = true;
             this.FTreeViewer.Size = new System.Drawing.Size(310, 307);
             this.FTreeViewer.TabIndex = 6;
-            this.FTreeViewer.DoubleClick += new VVVV.HDE.Viewer.WinFormsTreeViewer.ClickHandler(this.FTreeViewerDoubleClick);
-            this.FTreeViewer.Click += new VVVV.HDE.Viewer.WinFormsTreeViewer.ClickHandler(this.FTreeViewerClick);
+            this.FTreeViewer.DoubleClick += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FTreeViewerDoubleClick);
+            this.FTreeViewer.Click += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FTreeViewerClick);
             // 
             // FSearchTextBox
             // 
@@ -260,7 +260,7 @@ namespace VVVV.Nodes.GraphViewer
         private System.Windows.Forms.Button FAttachButton;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel2;
-        private VVVV.HDE.Viewer.WinFormsTreeViewer.TreeViewer FTreeViewer;
+        private VVVV.HDE.Viewer.WinFormsViewer.TreeViewer FTreeViewer;
         
         // Dispose(bool disposing) executes in two distinct scenarios.
         // If disposing equals true, the method has been called directly
@@ -405,8 +405,8 @@ namespace VVVV.Nodes.GraphViewer
             mappingRegistry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();
             
             FActivePatchNode = new PatchNode(patch);
-            var nodeMapper = new ModelMapper(FActivePatchNode, mappingRegistry);
-            FTreeViewer.Root = nodeMapper;
+            FTreeViewer.Registry = mappingRegistry;
+            FTreeViewer.Input = FActivePatchNode;
         }
         
         #region TreeViewer Events
@@ -515,8 +515,9 @@ namespace VVVV.Nodes.GraphViewer
             mappingRegistry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
             mappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
             mappingRegistry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();
-            var nodeMapper = new ModelMapper(searchResult, mappingRegistry);
-            FTreeViewer.Root = nodeMapper;
+            
+            FTreeViewer.Registry = mappingRegistry;
+            FTreeViewer.Input = searchResult;
             
             if ((FSearchMode == SearchMode.Downstream) || (FSearchMode == SearchMode.Global))
                 FTreeViewer.Expand(searchResult, true);
