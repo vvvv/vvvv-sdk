@@ -157,8 +157,8 @@ namespace VVVV.PluginInterfaces.V2
             else
                 return false;
             
-            return (this.Systemname == ni.Systemname) 
-                && (this.Author == ni.Author) 
+            return (this.Systemname == ni.Systemname); 
+            /*    && (this.Author == ni.Author) 
                 && (this.Warnings == ni.Warnings)
                 && (this.Class == ni.Class)
                 && (this.Credits == ni.Credits)
@@ -169,7 +169,7 @@ namespace VVVV.PluginInterfaces.V2
                 && (this.InitialWindowSize == ni.InitialWindowSize)
                 && (this.Namespace == ni.Namespace)
                 && (this.Shortcut == ni.Shortcut)
-                && (this.Tags == ni.Tags);
+                && (this.Tags == ni.Tags);*/
         }
 	}
 	#endregion NodeInfo
