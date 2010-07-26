@@ -42,8 +42,6 @@ namespace VVVV.HDE.CodeEditor
 {
 	class CodeCompletionKeyHandler
 	{
-		protected static Form FDummyForm = new Form();
-		
 		protected TextEditorControl FEditorControl;
 		protected CodeCompletionWindow codeCompletionWindow;
 		protected IParseInfoProvider FParseInfoProvider;
@@ -95,7 +93,7 @@ namespace VVVV.HDE.CodeEditor
 				ICompletionDataProvider completionDataProvider = new CodeCompletionProvider(FParseInfoProvider, FDocument, FImageList);
 
 				codeCompletionWindow = CodeCompletionWindow.ShowCompletionWindow(
-					FDummyForm,					// The parent window for the completion window
+					FEditorControl.FindForm(),					// The parent window for the completion window
 					FEditorControl, 					// The text editor to show the window for
 					FDocument.Location.AbsolutePath,		// Filename - will be passed back to the provider
 					completionDataProvider,		// Provider to get the list of possible completions

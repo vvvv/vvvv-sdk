@@ -33,8 +33,9 @@ namespace VVVV.HDE.CodeEditor
 				parser.ParseMethodBodies = false;
 				parser.Parse();
 				
-				var newCompilationUnit = ConvertCompilationUnit(parser, projectContent);
-				RetrieveRegions(ref newCompilationUnit, parser.Lexer.SpecialTracker);
+				var newCompilationUnit = CreateCompilationUnit(parser, projectContent);
+				RetrieveRegions(ref newCompilationUnit, parser);
+				AddCommentTags(ref newCompilationUnit, parser);
 				
 				// Remove information from lastCompilationUnit and add information from newCompilationUnit.
 				projectContent.UpdateCompilationUnit(oldCompilationUnit, newCompilationUnit, filename);
@@ -44,7 +45,7 @@ namespace VVVV.HDE.CodeEditor
 			return parseInfo;
 		}
 		
-		private Dom.ICompilationUnit ConvertCompilationUnit(NRefactory.IParser parser, Dom.IProjectContent projectContent)
+		private Dom.ICompilationUnit CreateCompilationUnit(NRefactory.IParser parser, Dom.IProjectContent projectContent)
 		{
 			var visitor = new Dom.NRefactoryResolver.NRefactoryASTConvertVisitor(projectContent);
 			visitor.Specials = parser.Lexer.SpecialTracker.CurrentSpecials;
@@ -53,11 +54,12 @@ namespace VVVV.HDE.CodeEditor
 			return visitor.Cu;
 		}
 		
-		private void RetrieveRegions(ref Dom.ICompilationUnit cu, NRefactory.Parser.SpecialTracker tracker)
+		private void RetrieveRegions(ref Dom.ICompilationUnit cu, NRefactory.IParser parser)
 		{
 			var directives = new Stack<NRefactory.PreprocessingDirective>();
 			var foldingRegions = cu.FoldingRegions;
-			var hasErrors = cu.ErrorsDuringCompile;
+			var tracker = parser.Lexer.SpecialTracker;
+			
 			// Collect all #region and #endregion directives and push them on a stack.
 			foreach (var special in tracker.CurrentSpecials)
 			{
@@ -76,6 +78,16 @@ namespace VVVV.HDE.CodeEditor
 						}
 					}
 				}
+			}
+		}
+		
+		private void AddCommentTags(ref Dom.ICompilationUnit cu, NRefactory.IParser parser)
+		{
+			foreach (var tagComment in parser.Lexer.TagComments) 
+			{
+				var tagRegion = new Dom.DomRegion(tagComment.StartPosition.Y, tagComment.StartPosition.X);
+				var tag = new Dom.TagComment(tagComment.Tag, tagRegion, tagComment.CommentText);
+				cu.TagComments.Add(tag);
 			}
 		}
 	}

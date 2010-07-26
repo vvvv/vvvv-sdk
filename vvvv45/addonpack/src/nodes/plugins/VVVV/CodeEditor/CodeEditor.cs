@@ -62,11 +62,9 @@ namespace VVVV.HDE.CodeEditor
 		#endregion field declaration
 		
 		#region Properties
-		public CodeEditorPlugin EditorPlugin { get; private set; }
+		public IParseInfoProvider ParseInfoProvider { get; private set; }
 		
 		public ImageList ImageList { get; private set; }
-		
-		public Form DummyForm { get; private set; }
 		
 		public ITextDocument Document { get; private set; }
 		
@@ -80,30 +78,28 @@ namespace VVVV.HDE.CodeEditor
 		#endregion
 		
 		#region constructor/destructor
-		public CodeEditor(CodeEditorPlugin editorPlugin, ITextDocument doc, ImageList imageList)
+		public CodeEditor(IParseInfoProvider parseInfoProvider, ITextDocument doc, ImageList imageList)
 		{
-			EditorPlugin = editorPlugin;
+			ParseInfoProvider = parseInfoProvider;
 			Document = doc;
 			ImageList = imageList;
 			
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			InitializeComponent();
 			
-			DummyForm = new Form();
-			
 			FTextEditorControl.SetHighlighting("C#");
 			FTextEditorControl.TextEditorProperties.SupportReadOnlySegments = true;
 			FTextEditorControl.Document.FoldingManager.FoldingStrategy = new ParserFoldingStrategy();
 			FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown += TextAreaKeyDownCB;
 		
-			FProjectContent = EditorPlugin.GetProjectContent(Document.Project);
+			FProjectContent = ParseInfoProvider.GetProjectContent(Document.Project);
 			FProjectContent.Language = Dom.LanguageProperties.CSharp;
 			
 			HostCallbackImplementation.Register(FProjectContent);
-			CodeCompletionKeyHandler.Attach(editorPlugin, doc, imageList, FTextEditorControl);
-			ToolTipProvider.Attach(editorPlugin, doc, FTextEditorControl);
+			CodeCompletionKeyHandler.Attach(parseInfoProvider, doc, imageList, FTextEditorControl);
+			ToolTipProvider.Attach(parseInfoProvider, doc, FTextEditorControl);
 			
-			FBGCodeParser = new BackgroundCodeParser(editorPlugin, doc, FTextEditorControl.Document);
+			FBGCodeParser = new BackgroundCodeParser(parseInfoProvider, doc, FTextEditorControl.Document);
 			
 			FTextEditorControl.TextChanged += TextEditorControlTextChangedCB;
 			
@@ -195,7 +191,7 @@ namespace VVVV.HDE.CodeEditor
 			base.OnLoad(e);
 
 			FTextEditorControl.Document.TextContent = Document.TextContent;
-			var parserInfo = EditorPlugin.GetParseInfo(Document);
+			var parserInfo = ParseInfoProvider.GetParseInfo(Document);
 			if (parserInfo != null)
 				FTextEditorControl.Document.FoldingManager.UpdateFoldings(Document.Location.LocalPath, parserInfo);
 			Document.ContentChanged += TextDocumentContentChangedCB;
