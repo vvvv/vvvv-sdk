@@ -1,10 +1,10 @@
 ﻿#region usings
 using System;
 using System.CodeDom.Compiler;
-using System.ComponentModel.Composition;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -24,6 +24,7 @@ using VVVV.HDE.CodeEditor.ErrorView;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using Dom = ICSharpCode.SharpDevelop.Dom;
+
 #endregion usings
 
 namespace VVVV.HDE.CodeEditor
@@ -81,7 +82,7 @@ namespace VVVV.HDE.CodeEditor
 			FImageList.Images.SetKeyName(4, "Icons.16x16.Enum.png");
 			FImageList.Images.SetKeyName(5, "Icons.16x16.NameSpace.png");
 			FImageList.Images.SetKeyName(6, "Icons.16x16.Event.png");
-			
+
 			//set hde host
 			FHDEHost = host;
 			FHDEHost.AddListener(FNodeSelectionListener);
@@ -170,22 +171,17 @@ namespace VVVV.HDE.CodeEditor
 
 		void Project_CompileCompleted(IProject project, CompilerResults results)
 		{
-			// TODO: needs get fixed in filefactory
-			var doItLater = new DoItLater(delegate()
-            {
-            	if (results.Errors.Count > 0)
-            	{
-            		FErrorTableViewer.Input = results.Errors;
-            		// TODO: Find better way to calculate splitter distance
-            		FSplitContainer2.SplitterDistance = FSplitContainer2.Height - (FErrorTableViewer.RowCount + 2) * (FErrorTableViewer.RowHeight + 2);
-            		FSplitContainer2.Panel2Collapsed = false;
-            	}
-            	else
-            	{
-            		FSplitContainer2.Panel2Collapsed = true;
-            	}
-            });
-			FErrorTableViewer.BeginInvoke(doItLater);
+        	if (results.Errors.Count > 0)
+        	{
+        		FErrorTableViewer.Input = results.Errors;
+        		// TODO: Find better way to calculate splitter distance
+        		FSplitContainer2.SplitterDistance = FSplitContainer2.Height - (FErrorTableViewer.RowCount + 2) * (FErrorTableViewer.RowHeight + 2);
+        		FSplitContainer2.Panel2Collapsed = false;
+        	}
+        	else
+        	{
+        		FSplitContainer2.Panel2Collapsed = true;
+        	}
 		}
 
 		void Project_Removed(IViewableCollection<IProject> collection, IProject project)

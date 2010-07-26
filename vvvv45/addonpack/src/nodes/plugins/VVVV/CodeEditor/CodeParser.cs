@@ -33,7 +33,7 @@ namespace VVVV.HDE.CodeEditor
 				parser.ParseMethodBodies = false;
 				parser.Parse();
 				
-				var newCompilationUnit = ConvertCompilationUnit(parser.CompilationUnit, projectContent);
+				var newCompilationUnit = ConvertCompilationUnit(parser, projectContent);
 				RetrieveRegions(ref newCompilationUnit, parser.Lexer.SpecialTracker);
 				
 				// Remove information from lastCompilationUnit and add information from newCompilationUnit.
@@ -44,10 +44,12 @@ namespace VVVV.HDE.CodeEditor
 			return parseInfo;
 		}
 		
-		private Dom.ICompilationUnit ConvertCompilationUnit(NRefactory.Ast.CompilationUnit cu, Dom.IProjectContent projectContent)
+		private Dom.ICompilationUnit ConvertCompilationUnit(NRefactory.IParser parser, Dom.IProjectContent projectContent)
 		{
 			var visitor = new Dom.NRefactoryResolver.NRefactoryASTConvertVisitor(projectContent);
-			cu.AcceptVisitor(visitor, null);
+			visitor.Specials = parser.Lexer.SpecialTracker.CurrentSpecials;
+			visitor.VisitCompilationUnit(parser.CompilationUnit, null);
+			visitor.Cu.ErrorsDuringCompile = parser.Errors.Count > 0;
 			return visitor.Cu;
 		}
 		
@@ -55,7 +57,7 @@ namespace VVVV.HDE.CodeEditor
 		{
 			var directives = new Stack<NRefactory.PreprocessingDirective>();
 			var foldingRegions = cu.FoldingRegions;
-			
+			var hasErrors = cu.ErrorsDuringCompile;
 			// Collect all #region and #endregion directives and push them on a stack.
 			foreach (var special in tracker.CurrentSpecials)
 			{
