@@ -16,5 +16,7 @@ namespace VVVV.PluginInterfaces.V2
 			get;
 			set;
 		}
+		
+		void Update();
 	}
 }

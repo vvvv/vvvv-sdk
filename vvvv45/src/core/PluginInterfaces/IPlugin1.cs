@@ -133,7 +133,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="ForPin">Interface to the pin via which the texture is accessed.</param>
 		/// <param name="OnDevice">Pointer to the device for which the texture is accessed.</param>
-		/// <param name="Texture">The retrieved mesh</param>
+		/// <param name="Texture">The retrieved texture</param>
 		void GetTexture(IDXTextureOut ForPin, int OnDevice, out int Texture);
 	}
 

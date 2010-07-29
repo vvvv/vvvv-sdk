@@ -1,11 +1,12 @@
-﻿using System;
+﻿
+using System;
 using System.ComponentModel.Composition;
 
 namespace VVVV.PluginInterfaces.V2
 {
-	public class InputAttribute : PinAttribute
+	public class OutputAttribute : PinAttribute
 	{
-		public InputAttribute(string name)
+		public OutputAttribute(string name)
 			:base(name)
 		{
 		}

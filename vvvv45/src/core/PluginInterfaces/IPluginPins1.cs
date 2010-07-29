@@ -109,7 +109,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// The pins SliceCount specifies the number of Values (2D Vector, String...) it carries. This is like the length of an array or list.
 		/// </summary>
-		int SliceCount{set;}
+		int SliceCount{get; set;}
 		/// <summary>
 		/// Returns a String of the pins concatenated Values. Typcally used internally only to save a pins state to disk.
 		/// </summary>
@@ -941,13 +941,15 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Value">The retrieved Matrix.</param>
 		void GetMatrix(int Index, out Matrix4x4 Value);
 		/// <summary>
-		/// Used to retrieve a World Matrix from the pin at the specified slice. You should call this method only from within your Render method when supporting the IPluginDXLayer interface.
+		/// Used to retrieve a World Matrix from the pin at the specified slice. 
+		/// You should call this method only from within your Render method when supporting the IPluginDXLayer interface.
 		/// </summary>
 		/// <param name="Index">The index of the slice to retrieve the Matrix from.</param>
 		/// <param name="Value">The retrieved Matrix.</param>
 		void GetRenderWorldMatrix(int Index, out Matrix4x4 Value);
 		/// <summary>
-		/// Used to initialize rendering by letting vvvv know which transform pin controls spaces. This sets view and projection matrices.
+		/// Used to initialize rendering by letting vvvv know which transform pin controls spaces. 
+		/// This sets view and projection matrices.
 		/// </summary>
 		void SetRenderSpace();
 	}
