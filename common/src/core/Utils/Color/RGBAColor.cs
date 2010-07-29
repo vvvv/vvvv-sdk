@@ -6,8 +6,10 @@
  */
 
 using System;
-using System.Runtime.InteropServices;
+using System.Diagnostics;
 using System.Drawing;
+using System.Runtime.InteropServices;
+
 using VVVV.Utils.VMath;
 
 /// <summary>
@@ -59,6 +61,20 @@ namespace VVVV.Utils.VColor
 			G = Green;
 			B = Blue;
 			A = Alpha;
+		}
+		
+		/// <summary>
+		/// vvvv color constructor
+		/// </summary>
+		/// <param name="colors">double array of length 4 (red, green, blue, alpha) with values between 0..1</param>
+		public RGBAColor(double[] colors)
+		{
+			Debug.Assert(colors.Length == 4);
+			
+			R = colors[0];
+			G = colors[1];
+			B = colors[2];
+			A = colors[3];
 		}
 	
 		/// <summary>
