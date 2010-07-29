@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using VVVV.PluginInterfaces.V1;
+using VVVV.Utils.VMath;
 
 namespace VVVV.PluginInterfaces.V2
 {
@@ -40,12 +41,20 @@ namespace VVVV.PluginInterfaces.V2
 			return GetEnumerator();
 		}
 		
-		protected void LoadDefaultValues(Type type, PinAttribute attribute, out double minValue, out double maxValue, out double stepSize, out bool isInteger)
+		protected void LoadDefaultValues(Type type, PinAttribute attribute, out int dimension, out double minValue, out double maxValue, out double stepSize, out bool isInteger)
 		{
+			dimension = 1;
 			minValue = attribute.MinValue;
 			maxValue = attribute.MaxValue;
 			stepSize = attribute.StepSize;
 			isInteger = true;
+			
+			if (type == typeof(Vector2D))
+				dimension = 2;
+			else if (type == typeof(Vector3D))
+				dimension = 3;
+			else if (type == typeof(Vector4D))
+				dimension = 4;
 			
 			if (minValue == PinAttribute.DefaultMinValue)
 			{

@@ -11,7 +11,7 @@ namespace VVVV.PluginInterfaces.V2
 		public ColorOutputPin(IPluginHost host, OutputAttribute attribute)
 		{
 			host.CreateColorOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FColorOut);
-			FColorOut.SetSubType(new RGBAColor(attribute.DefaultColor), attribute.HasAlpha);
+			FColorOut.SetSubType(new RGBAColor(attribute.DefaultValues), attribute.HasAlpha);
 		}
 		
 		public override IPluginOut PluginOut

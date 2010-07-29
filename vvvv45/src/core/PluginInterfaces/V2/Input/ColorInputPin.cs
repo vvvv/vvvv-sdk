@@ -11,7 +11,7 @@ namespace VVVV.PluginInterfaces.V2
 		public ColorInputPin(IPluginHost host, InputAttribute attribute)
 		{
 			host.CreateColorInput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FColorIn);
-			FColorIn.SetSubType(new RGBAColor(attribute.DefaultColor), attribute.HasAlpha);
+			FColorIn.SetSubType(new RGBAColor(attribute.DefaultValues), attribute.HasAlpha);
 		}
 		
 		public override IPluginIn PluginIn 

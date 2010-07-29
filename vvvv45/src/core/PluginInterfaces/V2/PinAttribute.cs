@@ -7,7 +7,6 @@ namespace VVVV.PluginInterfaces.V2
 {
 	public abstract class PinAttribute : ImportAttribute
 	{
-		[Input("Lala", DefaultColor=new double[] { 1.0, 2.0, 3.0, 4.0 })]
 		public static readonly double DefaultMinValue = double.MinValue;
 		public static readonly double DefaultMaxValue = double.MaxValue;
 		public static readonly double DefaultStepSize = 1.0;
@@ -23,7 +22,7 @@ namespace VVVV.PluginInterfaces.V2
 			MaxValue = DefaultMaxValue;
 			StepSize = DefaultStepSize;
 			
-			DefaultColor = new double[] { 0.0, 0.0, 0.0, 1.0 };
+			DefaultValues = new double[] { 0.0, 0.0, 0.0, 0.0 };
 		}
 		
 		public string Name
@@ -80,7 +79,7 @@ namespace VVVV.PluginInterfaces.V2
 			set;
 		}
 		
-		public double[] DefaultColor
+		public double[] DefaultValues
 		{
 			get;
 			set;

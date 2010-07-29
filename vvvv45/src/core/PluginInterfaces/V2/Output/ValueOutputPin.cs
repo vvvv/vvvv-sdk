@@ -12,20 +12,35 @@ namespace VVVV.PluginInterfaces.V2
 	{
 		protected IValueOut FValueOut;
 		protected double[] FData;
+		protected int FDimension;
 		
 		public ValueOutputPin(IPluginHost host, OutputAttribute attribute)
 		{
-			FData = new double[1];
-			
 			var type = typeof(T);
 			
 			double minValue, maxValue, stepSize;
 			bool isInteger = true;
 			
-			LoadDefaultValues(type, attribute, out minValue, out maxValue, out stepSize, out isInteger);
+			LoadDefaultValues(type, attribute, out FDimension, out minValue, out maxValue, out stepSize, out isInteger);
 			
-			host.CreateValueOutput(attribute.Name, 1, null, attribute.SliceMode, attribute.Visibility, out FValueOut);
-			FValueOut.SetSubType(minValue, maxValue, stepSize, attribute.DefaultValue, false, false, isInteger);
+			host.CreateValueOutput(attribute.Name, FDimension, null, attribute.SliceMode, attribute.Visibility, out FValueOut);
+			switch (FDimension)
+			{
+				case 2:
+					FValueOut.SetSubType2D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], false, false, isInteger);
+					break;
+				case 3:
+					FValueOut.SetSubType3D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], false, false, isInteger);
+					break;
+				case 4:
+					FValueOut.SetSubType4D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], attribute.DefaultValues[3], false, false, isInteger);
+					break;
+				default:
+					FValueOut.SetSubType(minValue, maxValue, stepSize, attribute.DefaultValue, false, false, isInteger);
+					break;
+			}
+			
+			FData = new double[FDimension * 1];
 		}
 		
 		public override IPluginOut PluginOut
@@ -45,7 +60,7 @@ namespace VVVV.PluginInterfaces.V2
 			set 
 			{
 				if (FData.Length != value)
-					FData = new double[value];
+					FData = new double[value * FDimension];
 				
 				base.SliceCount = value;
 			}

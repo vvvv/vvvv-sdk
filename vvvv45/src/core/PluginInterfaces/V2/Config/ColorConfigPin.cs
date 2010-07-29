@@ -11,7 +11,7 @@ namespace VVVV.PluginInterfaces.V2
 		public ColorConfigPin(IPluginHost host, ConfigAttribute attribute)
 		{
 			host.CreateColorConfig(attribute.Name, attribute.SliceMode, attribute.Visibility, out FColorConfig);
-			FColorConfig.SetSubType(new RGBAColor(attribute.DefaultColor), attribute.HasAlpha);
+			FColorConfig.SetSubType(new RGBAColor(attribute.DefaultValues), attribute.HasAlpha);
 		}
 		
 		public override IPluginConfig PluginConfig
