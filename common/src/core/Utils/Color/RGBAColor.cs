@@ -69,12 +69,25 @@ namespace VVVV.Utils.VColor
 		/// <param name="colors">double array of length 4 (red, green, blue, alpha) with values between 0..1</param>
 		public RGBAColor(double[] colors)
 		{
-			Debug.Assert(colors.Length == 4);
+			if (colors.Length >= 1)
+				R = colors[0];
+			else
+				R = 0.0;
 			
-			R = colors[0];
-			G = colors[1];
-			B = colors[2];
-			A = colors[3];
+			if (colors.Length >= 2)
+				G = colors[1];
+			else
+				G = 0.0;
+			
+			if (colors.Length >= 3)
+				B = colors[2];
+			else
+				B = 0.0;
+			
+			if (colors.Length >= 4)
+				A = colors[3];
+			else
+				A = 0.0;
 		}
 	
 		/// <summary>
