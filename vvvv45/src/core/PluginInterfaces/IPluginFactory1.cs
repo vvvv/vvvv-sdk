@@ -18,6 +18,7 @@ namespace VVVV.PluginInterfaces.V2
 	    event NodeInfoEventHandler NodeInfoRemoved;
 	    IEnumerable<INodeInfo> ExtractNodeInfos(string filename);
 	    void StartWatching();
+	    bool Create(INodeInfo nodeInfo, IAddonHost host);
 	}
 	
 	/// <summary>
@@ -25,10 +26,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// </summary>
 	public interface IPluginFactory : IAddonFactory
 	{		
-	    bool Create(INodeInfo nodeInfo, IPluginHost host, out IPluginBase plugin);
-	
 	    bool Register(IExecutable executable);
-	
 	    bool UnRegister(IExecutable executable);
 	}
 }
