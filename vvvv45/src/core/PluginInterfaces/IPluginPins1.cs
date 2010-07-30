@@ -784,7 +784,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// Note though, that when writing Colors to the Pointer the pins SliceCount has to be taken care of manually.
 		/// </summary>
 		/// <param name="Value">A Pointer to the pins first Colors Red channel double.</param>
-		unsafe void GetValuePointer(out double* Value);
+		unsafe void GetColorPointer(out double* Value);
 		/// <summary>
 		/// Used to set the SubType of a Color pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
 		/// Note though that this does not prevent a user from setting "wrong" Colors on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
