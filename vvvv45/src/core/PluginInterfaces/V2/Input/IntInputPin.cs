@@ -1,7 +1,7 @@
 ﻿using System;
 using VVVV.PluginInterfaces.V1;
 
-namespace VVVV.PluginInterfaces.V2
+namespace VVVV.PluginInterfaces.V2.Input
 {
 	public class IntInputPin : ValueInputPin<int>
 	{

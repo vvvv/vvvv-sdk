@@ -18,10 +18,5 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		void Update();
-		
-		bool IsChanged
-		{
-			get;
-		}
 	}
 }

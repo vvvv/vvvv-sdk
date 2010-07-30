@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 
-namespace VVVV.PluginInterfaces.V2
+namespace VVVV.PluginInterfaces.V2.Input
 {
 	public class DoubleInputPin : ValueInputPin<double>
 	{

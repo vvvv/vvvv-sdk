@@ -2,7 +2,7 @@
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VMath;
 
-namespace VVVV.PluginInterfaces.V2
+namespace VVVV.PluginInterfaces.V2.Input
 {
 	public class Vector2DInputPin : ValueInputPin<Vector2D>
 	{

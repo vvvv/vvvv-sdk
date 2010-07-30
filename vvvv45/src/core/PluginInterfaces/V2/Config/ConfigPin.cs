@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using VVVV.PluginInterfaces.V1;
 
-namespace VVVV.PluginInterfaces.V2
+namespace VVVV.PluginInterfaces.V2.Config
 {
 	public abstract class ConfigPin<T> : Pin<T>
 	{

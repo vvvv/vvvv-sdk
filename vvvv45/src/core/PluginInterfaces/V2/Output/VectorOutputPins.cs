@@ -2,7 +2,7 @@
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VMath;
 
-namespace VVVV.PluginInterfaces.V2
+namespace VVVV.PluginInterfaces.V2.Output
 {
 
 	public class Vector2DOutputPin : ValueOutputPin<Vector2D>

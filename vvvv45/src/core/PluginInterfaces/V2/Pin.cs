@@ -64,6 +64,12 @@ namespace VVVV.PluginInterfaces.V2
 				dimension = 3;
 			else if (type == typeof(Vector4D))
 				dimension = 4;
+			else if (type == typeof(Vector2))
+				dimension = 2;
+			else if (type == typeof(Vector3))
+				dimension = 3;
+			else if (type == typeof(Vector4))
+				dimension = 4;
 			
 			if (minValue == PinAttribute.DefaultMinValue)
 			{

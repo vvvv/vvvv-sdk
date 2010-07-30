@@ -2,7 +2,7 @@
 using SlimDX;
 using VVVV.PluginInterfaces.V1;
 
-namespace VVVV.PluginInterfaces.V2
+namespace VVVV.PluginInterfaces.V2.Output
 {
 	public class SlimDXMatrixOutputPin : OutputPin<Matrix>
 	{
