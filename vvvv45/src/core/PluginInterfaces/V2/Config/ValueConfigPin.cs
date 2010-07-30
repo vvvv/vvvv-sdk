@@ -8,7 +8,7 @@ namespace VVVV.PluginInterfaces.V2.Config
 	/// T is one of:
 	/// bool, byte, sbyte, int, uint, short, ushort, long, ulong, float, double
 	/// </summary>
-	public abstract class ValueConfigPin<T> : ConfigPin<T> where T: struct
+	public abstract class ValueConfigPin<T> : ConfigPin<T>, IPinUpdater where T: struct
 	{
 		protected IValueConfig FValueConfig;
 		protected double[] FData;
@@ -41,6 +41,8 @@ namespace VVVV.PluginInterfaces.V2.Config
 					break;
 			}
 			
+			FValueConfig.SetPinUpdater(this);
+			
 			FData = new double[FDimension * 1];
 		}
 		
@@ -64,6 +66,7 @@ namespace VVVV.PluginInterfaces.V2.Config
 					FData = new double[value * FDimension];
 				
 				FSliceCount = value;
+				FValueConfig.SliceCount = value;
 			}
 		}
 		
@@ -73,13 +76,8 @@ namespace VVVV.PluginInterfaces.V2.Config
 			double* source;
 			
 			FValueConfig.GetValuePointer(out sliceCount, out source);
-			
-			if (sliceCount != FData.Length)
-				FData = new double[sliceCount * FDimension];
-			
-			Marshal.Copy(new IntPtr(source), FData, 0, sliceCount * FDimension);
-			
-			OnChanged();
+			SliceCount = sliceCount;
+			Marshal.Copy(new IntPtr(source), FData, 0, FData.Length);
 		}
 	}
 }

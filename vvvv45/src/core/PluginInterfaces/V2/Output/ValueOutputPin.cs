@@ -57,6 +57,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 					FData = new double[value * FDimension];
 				
 				FSliceCount = value;
+				FValueOut.SliceCount = value;
 			}
 		}
 		
