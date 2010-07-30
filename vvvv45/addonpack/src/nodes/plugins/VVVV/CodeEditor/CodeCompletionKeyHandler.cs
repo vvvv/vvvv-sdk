@@ -47,26 +47,34 @@ namespace VVVV.HDE.CodeEditor
 		protected IParseInfoProvider FParseInfoProvider;
 		protected ITextDocument FDocument;
 		protected ImageList FImageList;
+		protected Dictionary<string, string> FHLSLReference;
+		protected Dictionary<string, string> FTypeReference;
 		
 		private CodeCompletionKeyHandler(
 			IParseInfoProvider parseInfoProvider, 
 			ITextDocument document, 
 			ImageList imageList, 
-			TextEditorControl editorControl)
+			TextEditorControl editorControl,
+			Dictionary<string, string> hlslReference,
+		    Dictionary<string, string> typeReference)
 		{
 			FParseInfoProvider = parseInfoProvider;
 			FDocument = document;
 			FImageList = imageList;
 			FEditorControl = editorControl;
+			FHLSLReference = hlslReference;
+			FTypeReference = typeReference;
 		}
 		
 		public static CodeCompletionKeyHandler Attach(
 			IParseInfoProvider parseInfoProvider, 
 			ITextDocument document, 
 			ImageList imageList, 
-			TextEditorControl editorControl)
+			TextEditorControl editorControl,
+			Dictionary<string, string> hlslReference,
+		    Dictionary<string, string> typeReference)
 		{
-			CodeCompletionKeyHandler h = new CodeCompletionKeyHandler(parseInfoProvider, document, imageList, editorControl);
+			CodeCompletionKeyHandler h = new CodeCompletionKeyHandler(parseInfoProvider, document, imageList, editorControl, hlslReference, typeReference);
 			
 			editorControl.ActiveTextAreaControl.TextArea.KeyEventHandler += h.TextAreaKeyEventHandler;
 			
@@ -90,7 +98,7 @@ namespace VVVV.HDE.CodeEditor
 			
 			if (char.IsLetter(key) || key == '.') 
 			{
-				ICompletionDataProvider completionDataProvider = new CodeCompletionProvider(FParseInfoProvider, FDocument, FImageList);
+				ICompletionDataProvider completionDataProvider = new CodeCompletionProvider(FParseInfoProvider, FDocument, FImageList, FHLSLReference, FTypeReference);
 
 				codeCompletionWindow = CodeCompletionWindow.ShowCompletionWindow(
 					FEditorControl.FindForm(),					// The parent window for the completion window

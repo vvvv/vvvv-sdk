@@ -78,7 +78,7 @@ namespace VVVV.HDE.CodeEditor
 		#endregion
 		
 		#region constructor/destructor
-		public CodeEditor(IParseInfoProvider parseInfoProvider, ITextDocument doc, ImageList imageList)
+		public CodeEditor(IParseInfoProvider parseInfoProvider, ITextDocument doc, ImageList imageList, Dictionary<string, string> hlslReference, Dictionary<string, string> typeReference)
 		{
 			ParseInfoProvider = parseInfoProvider;
 			Document = doc;
@@ -87,7 +87,18 @@ namespace VVVV.HDE.CodeEditor
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			InitializeComponent();
 			
-			FTextEditorControl.SetHighlighting("C#");
+			FTextEditorControl.TextEditorProperties.MouseWheelTextZoom = false;
+			var dp = FTextEditorControl.ActiveTextAreaControl.TextArea.GutterMargin.DrawingPosition;
+			
+			var path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), @"..\bin"));
+			var provider = new SD.FileSyntaxModeProvider(path);
+            SD.HighlightingManager.Manager.AddSyntaxModeFileProvider(provider);
+                
+            var highlighter = SD.HighlightingManager.Manager.FindHighlighterForFile(doc.Location.LocalPath);
+            if (highlighter.Name == "HLSL")
+               FTextEditorControl.EnableFolding = false;
+
+            FTextEditorControl.SetHighlighting(highlighter.Name);
 			FTextEditorControl.TextEditorProperties.SupportReadOnlySegments = true;
 			FTextEditorControl.Document.FoldingManager.FoldingStrategy = new ParserFoldingStrategy();
 			FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown += TextAreaKeyDownCB;
@@ -96,7 +107,7 @@ namespace VVVV.HDE.CodeEditor
 			FProjectContent.Language = Dom.LanguageProperties.CSharp;
 			
 			HostCallbackImplementation.Register(FProjectContent);
-			CodeCompletionKeyHandler.Attach(parseInfoProvider, doc, imageList, FTextEditorControl);
+			CodeCompletionKeyHandler.Attach(parseInfoProvider, doc, imageList, FTextEditorControl, hlslReference, typeReference);
 			ToolTipProvider.Attach(parseInfoProvider, doc, FTextEditorControl);
 			
 			FBGCodeParser = new BackgroundCodeParser(parseInfoProvider, doc, FTextEditorControl.Document);
@@ -121,12 +132,16 @@ namespace VVVV.HDE.CodeEditor
 			// 
 			// FTextEditorControl
 			// 
+			this.FTextEditorControl.AutoScroll = true;
+			this.FTextEditorControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+			this.FTextEditorControl.ConvertTabsToSpaces = true;
 			this.FTextEditorControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.FTextEditorControl.IsReadOnly = false;
 			this.FTextEditorControl.Location = new System.Drawing.Point(0, 0);
 			this.FTextEditorControl.Name = "FTextEditorControl";
 			this.FTextEditorControl.Size = new System.Drawing.Size(632, 453);
 			this.FTextEditorControl.TabIndex = 2;
+			this.FTextEditorControl.Text = "float";
 			// 
 			// CodeEditor
 			// 

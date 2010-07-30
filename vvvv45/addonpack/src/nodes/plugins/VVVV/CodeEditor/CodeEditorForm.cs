@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Xml;
+using System.Reflection;
 using System.Windows.Forms;
 
 using VVVV.Core;
@@ -33,6 +35,9 @@ namespace VVVV.HDE.CodeEditor
 		private Dictionary<ITextDocument, Dom.ParseInformation> FParseInfos;
 		private BackgroundParser FBGParser;
 		private ISolution FSolution;
+		private Dictionary<string, string> FHLSLReference = new Dictionary<string, string>();
+		private Dictionary<string, string> FTypeReference = new Dictionary<string, string>();
+		private ILogger FLogger;
 		
 		public CodeEditorForm(IHDEHost host, ISolution solution, ILogger logger)
 		{
@@ -51,6 +56,7 @@ namespace VVVV.HDE.CodeEditor
 			FImageList.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.NameSpace"));
 			FImageList.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.Event"));
 			
+			FLogger = logger;
 			FSolution = solution;
 			FNodeSelectionListener = new NodeSelectionListener(this);
 			FProjects = new Dictionary<IProject, Dom.DefaultProjectContent>();
@@ -84,6 +90,25 @@ namespace VVVV.HDE.CodeEditor
 
 			foreach (var project in FSolution.Projects)
 				SetupProject(project);
+			
+			ParseHLSLFunctionReference();
+			
+			AddTypeToReference("float");
+            AddTypeToReference("int");
+            AddTypeToReference("bool");
+            FTypeReference.Add("float3x4", "");
+            FTypeReference.Add("float4x3", "");
+		}
+		
+		private void AddTypeToReference(string type)
+		{
+		    for (int i = 0; i <= 4; i++)
+		    {
+		        if (i == 0)
+		            FTypeReference.Add(type, "");
+		        else if (i > 1)
+		            FTypeReference.Add(type + i.ToString(), "");
+		    }
 		}
 		
 		/// <summary>
@@ -94,7 +119,7 @@ namespace VVVV.HDE.CodeEditor
 		{
 			if (!FOpenedDocuments.ContainsKey(doc))
 			{
-				var editor = new CodeEditor(this, doc, FImageList);
+				var editor = new CodeEditor(this, doc, FImageList, FHLSLReference, FTypeReference);
 				var tabPage = new TabPage(GetTabPageName(doc));
 				
 				FTabControl.SuspendLayout();
@@ -131,6 +156,32 @@ namespace VVVV.HDE.CodeEditor
 			else
 				return name;
 		}
+		
+		private void ParseHLSLFunctionReference()
+        {
+            try
+            {
+                var functionReference = new XmlDocument();
+                var filename = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), @"..\effects\hlsl.fnr"));
+                functionReference.Load(filename);
+                foreach (XmlNode function in functionReference.DocumentElement.ChildNodes)
+                {
+                    var item = new List<string>();
+                    foreach (XmlNode cell in function)
+                        item.Add(cell.InnerText);
+                    
+                    //only take functions for shadermodels < 3
+                    int sm = Convert.ToInt32(item[2][0].ToString());
+                    if (sm < 4)
+                        FHLSLReference.Add(item[0], item[1] + "\nMinimum required ShaderModel: " + item[2]);
+                }
+            }
+            catch (Exception e)
+            {
+                FLogger.Log(LogType.Error, @"Error parsing HLSL function reference \effects\hlsl.fnr");
+                FLogger.Log(e);
+            }
+        }
 		
 		void Project_CompileCompleted(IProject project, CompilerResults results)
 		{
@@ -308,5 +359,6 @@ namespace VVVV.HDE.CodeEditor
 			base.Dispose(disposing);
 		}
 		#endregion IDisposable
+
 	}
 }

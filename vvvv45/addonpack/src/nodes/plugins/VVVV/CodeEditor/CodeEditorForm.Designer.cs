@@ -41,7 +41,7 @@ namespace VVVV.HDE.CodeEditor
 			// FStatusLabel
 			// 
 			this.FStatusLabel.Name = "FStatusLabel";
-			this.FStatusLabel.Size = new System.Drawing.Size(38, 17);
+			this.FStatusLabel.Size = new System.Drawing.Size(39, 17);
 			this.FStatusLabel.Text = "Ready";
 			// 
 			// FSplitContainer
@@ -65,6 +65,7 @@ namespace VVVV.HDE.CodeEditor
 			// 
 			// FTabControl
 			// 
+			this.FTabControl.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
 			this.FTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.FTabControl.Location = new System.Drawing.Point(0, 0);
 			this.FTabControl.Name = "FTabControl";

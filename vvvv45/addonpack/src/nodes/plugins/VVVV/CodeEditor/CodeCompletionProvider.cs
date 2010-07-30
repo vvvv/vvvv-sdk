@@ -40,172 +40,204 @@ using NRefactoryResolver = ICSharpCode.SharpDevelop.Dom.NRefactoryResolver.NRefa
 
 namespace VVVV.HDE.CodeEditor
 {
-	class CodeCompletionProvider : ICompletionDataProvider
-	{
-		protected ITextDocument FDocument;
-		protected IParseInfoProvider FParseInfoProvider;
-		
-		public CodeCompletionProvider(IParseInfoProvider parseInfoProvider, ITextDocument document, ImageList imageList)
-		{
-			FParseInfoProvider = parseInfoProvider;
-			FDocument = document;
-			ImageList = imageList;
-		}
-		
-		public ImageList ImageList 
-		{
-			get;
-			private set;
-		}
-		
-		private string FPreSelection = null;
-		public string PreSelection 
-		{ 
-			get
-			{
-				return FPreSelection;
-			}
-			protected set
-			{
-				FPreSelection = value;
-			}
-		}
-		
-		private int FDefaultIndex = -1;
-		public int DefaultIndex 
-		{
-			get 
-			{
-				return FDefaultIndex;
-			}
-			protected set 
-			{
-				FDefaultIndex = value;
-			}
-		}
-		
-		public CompletionDataProviderKeyResult ProcessKey(char key)
-		{
-			if (char.IsLetterOrDigit(key) || key == '_') 
-			{
-				return CompletionDataProviderKeyResult.NormalKey;
-			} 
-			else 
-			{
-				// key triggers insertion of selected items
-				return CompletionDataProviderKeyResult.InsertionKey;
-			}
-		}
-		
-		/// <summary>
-		/// Called when entry should be inserted. Forward to the insertion action of the completion data.
-		/// </summary>
-		public bool InsertAction(ICompletionData data, TextArea textArea, int insertionOffset, char key)
-		{
-			textArea.Caret.Position = textArea.Document.OffsetToPosition(insertionOffset);
-			return data.InsertAction(textArea, key);
-		}
-		
-		public ICompletionData[] GenerateCompletionData(string fileName, TextArea textArea, char charTyped)
-		{
-			// We can return code-completion items like this:
-			
-			//return new ICompletionData[] {
-			//	new DefaultCompletionData("Text", "Description", 1)
-			//};
-			
-			var projectContent = FParseInfoProvider.GetProjectContent(FDocument.Project);
-			var parseInfo = FParseInfoProvider.GetParseInfo(FDocument);
-			
-			var resolver = new NRefactoryResolver(projectContent.Language);
-			
-			var resultList = new List<ICompletionData>();
-			var expressionResult = FindExpression(parseInfo, textArea);
-			
-			Debug.WriteLine(String.Format("Generating completion data for expression result {0}", expressionResult));
+    class CodeCompletionProvider : ICompletionDataProvider
+    {
+        protected ITextDocument FDocument;
+        protected IParseInfoProvider FParseInfoProvider;
+        protected Dictionary<string, string> FHLSLReference;
+        protected Dictionary<string, string> FTypeReference;
+        
+        public CodeCompletionProvider(IParseInfoProvider parseInfoProvider, ITextDocument document, ImageList imageList, Dictionary<string, string> hlslReference, Dictionary<string, string> typeReference)
+        {
+            FParseInfoProvider = parseInfoProvider;
+            FDocument = document;
+            ImageList = imageList;
+            FHLSLReference = hlslReference;
+            FTypeReference = typeReference;
+        }
+        
+        public ImageList ImageList
+        {
+            get;
+            private set;
+        }
+        
+        private string FPreSelection = null;
+        public string PreSelection
+        {
+            get
+            {
+                return FPreSelection;
+            }
+            protected set
+            {
+                FPreSelection = value;
+            }
+        }
+        
+        private int FDefaultIndex = -1;
+        public int DefaultIndex
+        {
+            get
+            {
+                return FDefaultIndex;
+            }
+            protected set
+            {
+                FDefaultIndex = value;
+            }
+        }
+        
+        public CompletionDataProviderKeyResult ProcessKey(char key)
+        {
+            if (char.IsLetterOrDigit(key) || key == '_')
+            {
+                return CompletionDataProviderKeyResult.NormalKey;
+            }
+            else
+            {
+                // key triggers insertion of selected items
+                return CompletionDataProviderKeyResult.InsertionKey;
+            }
+        }
+        
+        /// <summary>
+        /// Called when entry should be inserted. Forward to the insertion action of the completion data.
+        /// </summary>
+        public bool InsertAction(ICompletionData data, TextArea textArea, int insertionOffset, char key)
+        {
+            textArea.Caret.Position = textArea.Document.OffsetToPosition(insertionOffset);
+            return data.InsertAction(textArea, key);
+        }
+        
+        public ICompletionData[] GenerateCompletionData(string fileName, TextArea textArea, char charTyped)
+        {
+            // We can return code-completion items like this:
+            
+            //return new ICompletionData[] {
+            //	new DefaultCompletionData("Text", "Description", 1)
+            //};
+            
+            string ext = System.IO.Path.GetExtension(fileName);
+            if ((ext == ".fx") || (ext == ".fxh"))
+            {
+                //types: everywhere
+                //variable names: only inside of single {}
+                //semantics: only directly after :                
+                //hlsl reference: only inside of single {}
+                ICompletionData[] cData = new ICompletionData[FHLSLReference.Count + FTypeReference.Count];
+                
+                int i = 0;
+                foreach(var function in FHLSLReference)
+                {
+                    cData[i] = new DefaultCompletionData(function.Key, function.Value, 1);
+                    i++;
+                }
+                
+                foreach(var type in FTypeReference)
+                {
+                    cData[i] = new DefaultCompletionData(type.Key, type.Value, 0);
+                    i++;
+                }
+                
+                //set preselection to "" for popup to sort by first character
+                FPreSelection = "";
+                
+                return cData;
+            }
+            
+            var projectContent = FParseInfoProvider.GetProjectContent(FDocument.Project);
+            var parseInfo = FParseInfoProvider.GetParseInfo(FDocument);
+            
+            var resolver = new NRefactoryResolver(projectContent.Language);
+            
+            var resultList = new List<ICompletionData>();
+            var expressionResult = FindExpression(parseInfo, textArea);
+            
+            Debug.WriteLine(String.Format("Generating completion data for expression result {0}", expressionResult));
 
-			ArrayList completionData = null;
-			if (charTyped == '.')
-			{
-				FPreSelection = null;
-				var rr = resolver.Resolve(expressionResult,
-				                          parseInfo,
-				                          textArea.MotherTextEditorControl.Text);
-				
-				if (rr != null)
-					completionData = rr.GetCompletionData(projectContent);
-			}
-			else
-			{
-				FPreSelection = "";
-				completionData = resolver.CtrlSpace(textArea.Caret.Line + 1, 
-				                                    textArea.Caret.Column + 1, 
-				                                    parseInfo, 
-				                                    textArea.Document.TextContent,
-				                                    expressionResult.Context);
-			}
-			
-			if (completionData != null)
-				AddCompletionData(ref resultList, completionData, expressionResult.Context);
-			
-			return resultList.ToArray();
-		}
-		
-		/// <summary>
-		/// Find the expression the cursor is at.
-		/// Also determines the context (using statement, "new"-expression etc.) the
-		/// cursor is at.
-		/// </summary>
-		Dom.ExpressionResult FindExpression(Dom.ParseInformation parseInfo, TextArea textArea)
-		{
-			var document = textArea.Document;
-			var finder = new Dom.CSharp.CSharpExpressionFinder(parseInfo);
+            ArrayList completionData = null;
+            if (charTyped == '.')
+            {
+                FPreSelection = null;
+                var rr = resolver.Resolve(expressionResult,
+                                          parseInfo,
+                                          textArea.MotherTextEditorControl.Text);
+                
+                if (rr != null)
+                    completionData = rr.GetCompletionData(projectContent);
+            }
+            else
+            {
+                FPreSelection = "";
+                completionData = resolver.CtrlSpace(textArea.Caret.Line + 1,
+                                                    textArea.Caret.Column + 1,
+                                                    parseInfo,
+                                                    textArea.Document.TextContent,
+                                                    expressionResult.Context);
+            }
+            
+            if (completionData != null)
+                AddCompletionData(ref resultList, completionData, expressionResult.Context);
+            
+            return resultList.ToArray();
+        }
+        
+        /// <summary>
+        /// Find the expression the cursor is at.
+        /// Also determines the context (using statement, "new"-expression etc.) the
+        /// cursor is at.
+        /// </summary>
+        Dom.ExpressionResult FindExpression(Dom.ParseInformation parseInfo, TextArea textArea)
+        {
+            var document = textArea.Document;
+            var finder = new Dom.CSharp.CSharpExpressionFinder(parseInfo);
 
-			var expression = finder.FindExpression(document.GetText(0, textArea.Caret.Offset), textArea.Caret.Offset);
-			if (expression.Region.IsEmpty) {
-				expression.Region = new Dom.DomRegion(textArea.Caret.Line + 1, textArea.Caret.Column + 1);
-			}
-			return expression;
-		}
+            var expression = finder.FindExpression(document.GetText(0, textArea.Caret.Offset), textArea.Caret.Offset);
+            if (expression.Region.IsEmpty) {
+                expression.Region = new Dom.DomRegion(textArea.Caret.Line + 1, textArea.Caret.Column + 1);
+            }
+            return expression;
+        }
 
-		void AddCompletionData(ref List<ICompletionData> resultList, ArrayList completionData, Dom.ExpressionContext context)
-		{
-			// used to store the method names for grouping overloads
-			Dictionary<string, CodeCompletionData> nameDictionary = new Dictionary<string, CodeCompletionData>();
+        void AddCompletionData(ref List<ICompletionData> resultList, ArrayList completionData, Dom.ExpressionContext context)
+        {
+            // used to store the method names for grouping overloads
+            Dictionary<string, CodeCompletionData> nameDictionary = new Dictionary<string, CodeCompletionData>();
 
-			// Add the completion data as returned by SharpDevelop.Dom to the
-			// list for the text editor
-			foreach (object obj in completionData) {
-				if (!context.ShowEntry(obj))
-					continue;
-				
-				if (obj is string) {
-					// namespace names are returned as string
-					resultList.Add(new DefaultCompletionData((string)obj, "namespace " + obj, 5));
-				} else if (obj is Dom.IClass) {
-					Dom.IClass c = (Dom.IClass)obj;
-					resultList.Add(new CodeCompletionData(c));
-				} else if (obj is Dom.IMember) {
-					Dom.IMember m = (Dom.IMember)obj;
-					if (m is Dom.IMethod && ((m as Dom.IMethod).IsConstructor)) {
-						// Skip constructors
-						continue;
-					}
-					// Group results by name and add "(x Overloads)" to the
-					// description if there are multiple results with the same name.
-					
-					CodeCompletionData data;
-					if (nameDictionary.TryGetValue(m.Name, out data)) {
-						data.AddOverload();
-					} else {
-						nameDictionary[m.Name] = data = new CodeCompletionData(m);
-						resultList.Add(data);
-					}
-				} else {
-					// Current ICSharpCode.SharpDevelop.Dom should never return anything else
-					throw new NotSupportedException();
-				}
-			}
-		}
-	}
+            // Add the completion data as returned by SharpDevelop.Dom to the
+            // list for the text editor
+            foreach (object obj in completionData) {
+                if (!context.ShowEntry(obj))
+                    continue;
+                
+                if (obj is string) {
+                    // namespace names are returned as string
+                    resultList.Add(new DefaultCompletionData((string)obj, "namespace " + obj, 5));
+                } else if (obj is Dom.IClass) {
+                    Dom.IClass c = (Dom.IClass)obj;
+                    resultList.Add(new CodeCompletionData(c));
+                } else if (obj is Dom.IMember) {
+                    Dom.IMember m = (Dom.IMember)obj;
+                    if (m is Dom.IMethod && ((m as Dom.IMethod).IsConstructor)) {
+                        // Skip constructors
+                        continue;
+                    }
+                    // Group results by name and add "(x Overloads)" to the
+                    // description if there are multiple results with the same name.
+                    
+                    CodeCompletionData data;
+                    if (nameDictionary.TryGetValue(m.Name, out data)) {
+                        data.AddOverload();
+                    } else {
+                        nameDictionary[m.Name] = data = new CodeCompletionData(m);
+                        resultList.Add(data);
+                    }
+                } else {
+                    // Current ICSharpCode.SharpDevelop.Dom should never return anything else
+                    throw new NotSupportedException();
+                }
+            }
+        }
+    }
 }
