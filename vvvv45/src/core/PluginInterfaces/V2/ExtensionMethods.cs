@@ -6,6 +6,63 @@ namespace VVVV.PluginInterfaces.V2
 {
 	public static class ExtensionMethods
 	{
+		public static Vector2 ToSlimDXVector(this Vector2D Input)
+		{
+			Vector2 Result;
+			Result.X = (float) Input.x;
+			Result.Y = (float) Input.y;
+			return Result;
+		}
+		
+		public static Vector2D ToVector2D(this Vector2 Input)
+		{
+			Vector2D Result;
+			Result.x = Input.X;
+			Result.y = Input.Y;
+			return Result;
+		}
+		
+		//vector 3d
+		public static Vector3 ToSlimDXVector(this Vector3D Input)
+		{
+			Vector3 Result;
+			Result.X = (float) Input.x;
+			Result.Y = (float) Input.y;
+			Result.Z = (float) Input.z;
+			return Result;
+		}
+		
+		public static Vector3D ToVector3D(this Vector3 Input)
+		{
+			Vector3D Result;
+			Result.x = Input.X;
+			Result.y = Input.Y;
+			Result.z = Input.Z;
+			return Result;
+		}
+		
+		//vector 4d
+		public static Vector4 ToSlimDXVector(this Vector4D Input)
+		{
+			Vector4 Result;
+			Result.X = (float) Input.x;
+			Result.Y = (float) Input.y;
+			Result.Z = (float) Input.z;
+			Result.W = (float) Input.w;
+			return Result;
+		}
+		
+		public static Vector4D ToVector4D(this Vector4 Input)
+		{
+			Vector4D Result;
+			Result.x = Input.X;
+			Result.y = Input.Y;
+			Result.z = Input.Z;
+			Result.w = Input.W;
+			return Result;
+		}
+		
+		//matrix
 		public static Matrix ToSlimDXMatrix(this Matrix4x4 Input)
 		{
 			Matrix Result;
