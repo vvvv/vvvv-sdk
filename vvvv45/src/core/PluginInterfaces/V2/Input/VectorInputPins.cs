@@ -17,7 +17,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector2D*)ptr)[index];
+					return ((Vector2D*)ptr)[index % FSliceCount];
 				}
 			}
 			set
@@ -40,7 +40,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector3D*)ptr)[index];
+					return ((Vector3D*)ptr)[index % FSliceCount];
 				}
 			}
 			set
@@ -63,7 +63,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector4D*)ptr)[index];
+					return ((Vector4D*)ptr)[index % FSliceCount];
 				}
 			}
 			set

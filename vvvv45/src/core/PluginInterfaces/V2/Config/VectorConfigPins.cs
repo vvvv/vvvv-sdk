@@ -17,14 +17,14 @@ namespace VVVV.PluginInterfaces.V2.Config
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector2D*)ptr)[index];
+					return ((Vector2D*)ptr)[index % FSliceCount];
 				}
 			}
 			set
 			{
 				fixed (double* ptr = FData)
 				{
-					((Vector2D*)ptr)[index] = value;
+					((Vector2D*)ptr)[index % FSliceCount] = value;
 				}
 			}
 		}
@@ -43,7 +43,7 @@ namespace VVVV.PluginInterfaces.V2.Config
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector3D*)ptr)[index];
+					return ((Vector3D*)ptr)[index % FSliceCount];
 				}
 			}
 			set
@@ -69,7 +69,7 @@ namespace VVVV.PluginInterfaces.V2.Config
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector4D*)ptr)[index];
+					return ((Vector4D*)ptr)[index % FSliceCount];
 				}
 			}
 			set

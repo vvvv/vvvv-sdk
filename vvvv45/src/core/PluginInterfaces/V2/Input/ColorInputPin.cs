@@ -9,7 +9,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 	{
 		protected IColorIn FColorIn;
 		protected int FSliceCount = 1;
-		protected double[] FData;
+		protected double[] FData; 
 		
 		public ColorInputPin(IPluginHost host, InputAttribute attribute)
 		{
@@ -49,7 +49,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((RGBAColor*)ptr)[index];
+					return ((RGBAColor*)ptr)[index % FSliceCount];
 				}
 				
 //				RGBAColor col;

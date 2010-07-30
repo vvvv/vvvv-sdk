@@ -46,7 +46,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 			{
 				fixed (double* ptr = FData)
 				{
-					((RGBAColor*)ptr)[index] = value;
+					((RGBAColor*)ptr)[index % FSliceCount] = value;
 				}
 			}
 		}
