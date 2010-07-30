@@ -8,6 +8,13 @@ namespace VVVV.PluginInterfaces.V2
 		public InputAttribute(string name)
 			:base(name)
 		{
+			IsFast = false;
+		}
+		
+		public bool IsFast
+		{
+			get;
+			set;
 		}
 	}
 }

@@ -8,6 +8,7 @@ namespace VVVV.PluginInterfaces.V2
 		protected IStringIn FStringIn;
 		
 		public StringInputPin(IPluginHost host, InputAttribute attribute)
+			:base(attribute)
 		{
 			host.CreateStringInput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FStringIn);
 			FStringIn.SetSubType(attribute.DefaultString, attribute.IsFilename);

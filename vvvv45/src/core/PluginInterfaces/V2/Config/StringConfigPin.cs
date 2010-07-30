@@ -8,6 +8,7 @@ namespace VVVV.PluginInterfaces.V2
 		protected IStringConfig FStringConfig;
 		
 		public StringConfigPin(IPluginHost host, ConfigAttribute attribute)
+			:base(attribute)
 		{
 			host.CreateStringConfig(attribute.Name, attribute.SliceMode, attribute.Visibility, out FStringConfig);
 			FStringConfig.SetSubType(attribute.DefaultString, attribute.IsFilename);

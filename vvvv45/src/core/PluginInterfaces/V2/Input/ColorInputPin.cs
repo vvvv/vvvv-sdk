@@ -9,6 +9,7 @@ namespace VVVV.PluginInterfaces.V2
 		protected IColorIn FColorIn;
 		
 		public ColorInputPin(IPluginHost host, InputAttribute attribute)
+			:base(attribute)
 		{
 			host.CreateColorInput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FColorIn);
 			FColorIn.SetSubType(new RGBAColor(attribute.DefaultValues), attribute.HasAlpha);

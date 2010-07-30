@@ -12,10 +12,15 @@ namespace VVVV.PluginInterfaces.V2
 	public abstract class ValueInputPin<T> : InputPin<T> where T: struct
 	{
 		protected IValueIn FValueIn;
+		protected IValueFastIn FValueFastIn;
+		
+		protected int FSliceCount = 1;
+		protected bool FIsFast;
 		protected double[] FData;
 		protected int FDimension;
 		
 		public ValueInputPin(IPluginHost host, InputAttribute attribute)
+			:base(attribute)
 		{
 			var type = typeof(T);
 			
@@ -24,21 +29,45 @@ namespace VVVV.PluginInterfaces.V2
 			
 			LoadDefaultValues(type, attribute, out FDimension, out minValue, out maxValue, out stepSize, out isInteger);
 			
-			host.CreateValueInput(attribute.Name, FDimension, null, attribute.SliceMode, attribute.Visibility, out FValueIn);
-			switch (FDimension)
+			FIsFast = attribute.IsFast;
+			
+			if (FIsFast)
 			{
-				case 2:
-					FValueIn.SetSubType2D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], false, false, isInteger);
-					break;
-				case 3:
-					FValueIn.SetSubType3D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], false, false, isInteger);
-					break;
-				case 4:
-					FValueIn.SetSubType4D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], attribute.DefaultValues[3], false, false, isInteger);
-					break;
-				default:
-					FValueIn.SetSubType(minValue, maxValue, stepSize, attribute.DefaultValue, false, false, isInteger);
-					break;
+				host.CreateValueFastInput(attribute.Name, FDimension, null, attribute.SliceMode, attribute.Visibility, out FValueFastIn);
+				switch (FDimension)
+				{
+					case 2:
+						FValueFastIn.SetSubType2D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], false, false, isInteger);
+						break;
+					case 3:
+						FValueFastIn.SetSubType3D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], false, false, isInteger);
+						break;
+					case 4:
+						FValueFastIn.SetSubType4D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], attribute.DefaultValues[3], false, false, isInteger);
+						break;
+					default:
+						FValueFastIn.SetSubType(minValue, maxValue, stepSize, attribute.DefaultValue, false, false, isInteger);
+						break;
+				}
+			}
+			else
+			{
+				host.CreateValueInput(attribute.Name, FDimension, null, attribute.SliceMode, attribute.Visibility, out FValueIn);
+				switch (FDimension)
+				{
+					case 2:
+						FValueIn.SetSubType2D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], false, false, isInteger);
+						break;
+					case 3:
+						FValueIn.SetSubType3D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], false, false, isInteger);
+						break;
+					case 4:
+						FValueIn.SetSubType4D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], attribute.DefaultValues[3], false, false, isInteger);
+						break;
+					default:
+						FValueIn.SetSubType(minValue, maxValue, stepSize, attribute.DefaultValue, false, false, isInteger);
+						break;
+				}
 			}
 			
 			FData = new double[FDimension * 1];
@@ -52,34 +81,31 @@ namespace VVVV.PluginInterfaces.V2
 			}
 		}
 		
-		public override int SliceCount 
+		public override int SliceCount
 		{
-			get 
+			get
 			{
-				return base.SliceCount;
+				return FSliceCount;
 			}
-			set 
+			set
 			{
-				if (FData.Length != value)
+				if (FSliceCount != value)
 					FData = new double[value * FDimension];
 				
-				base.SliceCount = value;
+				FSliceCount = value;
 			}
 		}
 		
 		unsafe public override void Update()
 		{
-			if (FValueIn.PinIsChanged)
+			if (FIsFast || FValueIn.PinIsChanged)
 			{
 				int sliceCount;
 				double* source;
 				
 				FValueIn.GetValuePointer(out sliceCount, out source);
-				
-				if (sliceCount != FData.Length)
-					FData = new double[sliceCount * FDimension];
-				
-				Marshal.Copy(new IntPtr(source), FData, 0, sliceCount * FDimension);
+				SliceCount = sliceCount;
+				Marshal.Copy(new IntPtr(source), FData, 0, FData.Length);
 			}
 		}
 	}

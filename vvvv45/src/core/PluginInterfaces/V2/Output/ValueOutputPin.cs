@@ -15,6 +15,7 @@ namespace VVVV.PluginInterfaces.V2
 		protected int FDimension;
 		
 		public ValueOutputPin(IPluginHost host, OutputAttribute attribute)
+			:base(attribute)
 		{
 			var type = typeof(T);
 			

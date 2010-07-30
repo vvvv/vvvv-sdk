@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Diagnostics;
 using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2
 {
 	public abstract class ConfigPin<T> : Pin<T>
 	{
+		public ConfigPin(ConfigAttribute attribute)
+		{
+			Debug.WriteLine(string.Format("Creating config pin {0}.", attribute.Name));
+		}
+		
 		public abstract IPluginConfig PluginConfig
 		{
 			get;

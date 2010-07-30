@@ -15,6 +15,7 @@ namespace VVVV.PluginInterfaces.V2
 		protected int FDimension;
 		
 		public ValueConfigPin(IPluginHost host, ConfigAttribute attribute)
+			:base(attribute)
 		{
 			var type = typeof(T);
 			

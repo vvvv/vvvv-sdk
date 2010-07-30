@@ -9,6 +9,7 @@ namespace VVVV.PluginInterfaces.V2
 		protected IColorOut FColorOut;
 		
 		public ColorOutputPin(IPluginHost host, OutputAttribute attribute)
+			:base(attribute)
 		{
 			host.CreateColorOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FColorOut);
 			FColorOut.SetSubType(new RGBAColor(attribute.DefaultValues), attribute.HasAlpha);

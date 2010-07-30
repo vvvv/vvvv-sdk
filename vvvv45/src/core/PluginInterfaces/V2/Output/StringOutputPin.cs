@@ -8,6 +8,7 @@ namespace VVVV.PluginInterfaces.V2
 		protected IStringOut FStringOut;
 		
 		public StringOutputPin(IPluginHost host, OutputAttribute attribute)
+			:base(attribute)
 		{
 			host.CreateStringOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FStringOut);
 			FStringOut.SetSubType(attribute.DefaultString, attribute.IsFilename);
