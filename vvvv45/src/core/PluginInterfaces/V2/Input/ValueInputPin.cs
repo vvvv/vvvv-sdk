@@ -96,6 +96,15 @@ namespace VVVV.PluginInterfaces.V2
 			}
 		}
 		
+		public override bool IsChanged
+		{
+			get
+			{
+				if (FIsFast) return true;
+				else return FValueIn.PinIsChanged;
+			}
+		}
+		
 		unsafe public override void Update()
 		{
 			if (FIsFast || FValueIn.PinIsChanged)

@@ -16,13 +16,14 @@ namespace VVVV.PluginInterfaces.V2
 			get;
 		}
 		
-		public override int SliceCount 
+		public override int SliceCount
 		{
 			get 
 			{
 				return PluginConfig.SliceCount;
 			}
-			set {
+			set 
+			{
 				PluginConfig.SliceCount = value;
 			}
 		}

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using SlimDX;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VMath;
 
@@ -23,6 +24,14 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 			set;
+		}
+		
+		public virtual bool IsChanged
+		{
+			get
+			{
+				return true;
+			}
 		}
 		
 		public virtual void Update()
@@ -111,14 +120,38 @@ namespace VVVV.PluginInterfaces.V2
 			if (stepSize == PinAttribute.DefaultStepSize)
 			{
 				if (type == typeof(float))
-					stepSize = 0.1;
+					stepSize = 0.01;
 				else if (type == typeof(double))
-					stepSize = 0.1;
+					stepSize = 0.01;
+				else if (type == typeof(Vector2D))
+					stepSize = 0.01;
+				else if (type == typeof(Vector3D))
+					stepSize = 0.01;
+				else if (type == typeof(Vector4D))
+					stepSize = 0.01;
+				else if (type == typeof(Vector2))
+					stepSize = 0.01;
+				else if (type == typeof(Vector3))
+					stepSize = 0.01;
+				else if (type == typeof(Vector4))
+					stepSize = 0.01;
 			}
 			
 			if (type == typeof(float))
 				isInteger = false;
 			else if (type == typeof(double))
+				isInteger = false;
+			else if (type == typeof(Vector2D))
+				isInteger = false;
+			else if (type == typeof(Vector3D))
+				isInteger = false;
+			else if (type == typeof(Vector4D))
+				isInteger = false;
+			else if (type == typeof(Vector2))
+				isInteger = false;
+			else if (type == typeof(Vector3))
+				isInteger = false;
+			else if (type == typeof(Vector4))
 				isInteger = false;
 		}
 	}

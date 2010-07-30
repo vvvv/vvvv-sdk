@@ -16,14 +16,23 @@ namespace VVVV.PluginInterfaces.V2
 			get;
 		}
 		
-		public override int SliceCount 
+		public override int SliceCount
 		{
 			get 
 			{
 				return PluginIn.SliceCount;
 			}
-			set {
+			set 
+			{
 				throw new NotImplementedException();
+			}
+		}
+		
+		public override bool IsChanged
+		{
+			get
+			{
+				return PluginIn.PinIsChanged;
 			}
 		}
 	}
