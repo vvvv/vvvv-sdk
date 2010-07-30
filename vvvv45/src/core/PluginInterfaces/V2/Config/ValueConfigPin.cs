@@ -13,9 +13,9 @@ namespace VVVV.PluginInterfaces.V2.Config
 		protected IValueConfig FValueConfig;
 		protected double[] FData;
 		protected int FDimension;
+		protected int FSliceCount;
 		
 		public ValueConfigPin(IPluginHost host, ConfigAttribute attribute)
-			:base(attribute)
 		{
 			var type = typeof(T);
 			
@@ -44,9 +44,9 @@ namespace VVVV.PluginInterfaces.V2.Config
 			FData = new double[FDimension * 1];
 		}
 		
-		public override IPluginConfig PluginConfig
+		protected override IPluginConfig PluginConfig 
 		{
-			get
+			get 
 			{
 				return FValueConfig;
 			}
@@ -56,14 +56,14 @@ namespace VVVV.PluginInterfaces.V2.Config
 		{
 			get 
 			{
-				return base.SliceCount;
+				return FSliceCount;
 			}
 			set 
 			{
 				if (FData.Length != value)
 					FData = new double[value * FDimension];
 				
-				base.SliceCount = value;
+				FSliceCount = value;
 			}
 		}
 		
@@ -78,6 +78,8 @@ namespace VVVV.PluginInterfaces.V2.Config
 				FData = new double[sliceCount * FDimension];
 			
 			Marshal.Copy(new IntPtr(source), FData, 0, sliceCount * FDimension);
+			
+			OnChanged();
 		}
 	}
 }

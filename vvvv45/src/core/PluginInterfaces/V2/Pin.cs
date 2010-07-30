@@ -10,10 +10,6 @@ namespace VVVV.PluginInterfaces.V2
 {
 	public abstract class Pin<T> : ISpread<T>
 	{
-		public Pin()
-		{
-		}
-		
 		public abstract T this[int index]
 		{
 			get;
@@ -24,14 +20,6 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 			set;
-		}
-		
-		public virtual bool IsChanged
-		{
-			get
-			{
-				return true;
-			}
 		}
 		
 		public virtual void Update()

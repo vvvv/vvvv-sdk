@@ -4,22 +4,25 @@ using VVVV.Utils.VColor;
 
 namespace VVVV.PluginInterfaces.V2.Output
 {
-	public class ColorOutputPin : OutputPin<RGBAColor>
+	public class ColorOutputPin : Pin<RGBAColor>
 	{
 		protected IColorOut FColorOut;
 		
 		public ColorOutputPin(IPluginHost host, OutputAttribute attribute)
-			:base(attribute)
 		{
 			host.CreateColorOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FColorOut);
 			FColorOut.SetSubType(new RGBAColor(attribute.DefaultValues), attribute.HasAlpha);
 		}
 		
-		public override IPluginOut PluginOut
+		public override int SliceCount 
 		{
 			get 
 			{
-				return FColorOut;
+				throw new NotImplementedException();
+			}
+			set 
+			{
+				FColorOut.SliceCount = value;
 			}
 		}
 		

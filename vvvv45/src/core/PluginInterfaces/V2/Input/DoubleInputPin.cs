@@ -19,7 +19,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			}
 			set 
 			{
-				if (!FValueIn.IsConnected)
+				if (!FValueFastIn.IsConnected)
 					FData[index % FData.Length] = value;
 			}
 		}

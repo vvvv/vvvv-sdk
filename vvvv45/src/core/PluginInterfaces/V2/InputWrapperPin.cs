@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 using SlimDX;
 using VVVV.PluginInterfaces.V1;
@@ -14,6 +15,8 @@ namespace VVVV.PluginInterfaces.V2
 	{
 		public InputWrapperPin(IPluginHost host, InputAttribute attribute)
 		{
+			Debug.WriteLine(string.Format("Creating input pin '{0}'.", attribute.Name));
+			
 			var type = typeof(T);
 			
 			if (type == typeof(double))

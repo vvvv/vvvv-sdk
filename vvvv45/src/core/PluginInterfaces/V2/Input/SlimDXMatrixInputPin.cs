@@ -5,21 +5,32 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.PluginInterfaces.V2.Input
 {
-	public class SlimDXMatrixInputPin : InputPin<Matrix>
+	public class SlimDXMatrixInputPin : ObservablePin<Matrix>
 	{
 		protected ITransformIn FTransformIn;
 		
 		public SlimDXMatrixInputPin(IPluginHost host, InputAttribute attribute)
-			:base(attribute)
 		{
 			host.CreateTransformInput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FTransformIn);
 		}
 		
-		public override IPluginIn PluginIn 
+		public override bool IsChanged 
 		{
 			get 
 			{
-				return FTransformIn;
+				return FTransformIn.PinIsChanged;
+			}
+		}
+		
+		public override int SliceCount 
+		{
+			get 
+			{
+				return FTransformIn.SliceCount;
+			}
+			set 
+			{
+				throw new NotImplementedException();
 			}
 		}
 		

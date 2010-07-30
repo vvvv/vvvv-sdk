@@ -14,13 +14,11 @@ namespace VVVV.PluginInterfaces.V2.Input
 		{
 			get 
 			{
-				double value;
-				FValueIn.GetValue(index, out value);
-				return value >= 0.5;
+				return FData[index] >= 0.5;
 			}
 			set 
 			{
-				throw new NotImplementedException();
+				FData[index] = value ? 1.0 : 0.0;
 			}
 		}
 	}

@@ -3,22 +3,25 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.Output
 {
-	public class StringOutputPin : OutputPin<string>
+	public class StringOutputPin : Pin<string>
 	{
 		protected IStringOut FStringOut;
 		
 		public StringOutputPin(IPluginHost host, OutputAttribute attribute)
-			:base(attribute)
 		{
 			host.CreateStringOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FStringOut);
 			FStringOut.SetSubType(attribute.DefaultString, attribute.IsFilename);
 		}
 		
-		public override IPluginOut PluginOut
+		public override int SliceCount 
 		{
-			get
+			get 
 			{
-				return FStringOut;
+				throw new NotImplementedException();
+			}
+			set 
+			{
+				FStringOut.SliceCount = value;
 			}
 		}
 		

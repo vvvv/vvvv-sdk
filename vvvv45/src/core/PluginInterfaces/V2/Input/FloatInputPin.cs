@@ -14,13 +14,12 @@ namespace VVVV.PluginInterfaces.V2.Input
 		{
 			get 
 			{
-				double value;
-				FValueIn.GetValue(index, out value);
-				return (float) value;
+				return (float) FData[index % FData.Length];
 			}
 			set 
 			{
-				throw new NotImplementedException();
+				if (!FValueFastIn.IsConnected)
+					FData[index % FData.Length] = (double) value;
 			}
 		}
 	}

@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Diagnostics;
 using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.Config
 {
-	public abstract class ConfigPin<T> : Pin<T>
+	public abstract class ConfigPin<T> : ObservablePin<T>
 	{
-		public ConfigPin(ConfigAttribute attribute)
-		{
-			Debug.WriteLine(string.Format("Creating config pin {0}.", attribute.Name));
-		}
+		protected bool FIsChanged;
 		
-		public abstract IPluginConfig PluginConfig
+		protected abstract IPluginConfig PluginConfig
 		{
 			get;
 		}
 		
-		public override int SliceCount
+		public override int SliceCount 
 		{
 			get 
 			{
@@ -25,6 +21,14 @@ namespace VVVV.PluginInterfaces.V2.Config
 			set 
 			{
 				PluginConfig.SliceCount = value;
+			}
+		}
+		
+		public override bool IsChanged 
+		{
+			get 
+			{
+				return FIsChanged;
 			}
 		}
 	}

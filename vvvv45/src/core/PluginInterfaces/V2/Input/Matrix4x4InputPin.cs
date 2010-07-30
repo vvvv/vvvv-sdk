@@ -5,21 +5,32 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.PluginInterfaces.V2.Input
 {
-	public class Matrix4x4InputPin : InputPin<Matrix4x4>
+	public class Matrix4x4InputPin : ObservablePin<Matrix4x4>
 	{
 		protected ITransformIn FTransformIn;
 		
 		public Matrix4x4InputPin(IPluginHost host, InputAttribute attribute)
-			:base(attribute)
 		{
 			host.CreateTransformInput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FTransformIn);
 		}
 		
-		public override IPluginIn PluginIn 
+		public override bool IsChanged 
 		{
 			get 
 			{
-				return FTransformIn;
+				return FTransformIn.PinIsChanged;
+			}
+		}
+		
+		public override int SliceCount 
+		{
+			get 
+			{
+				return FTransformIn.SliceCount;
+			}
+			set 
+			{
+				throw new NotImplementedException();
 			}
 		}
 		

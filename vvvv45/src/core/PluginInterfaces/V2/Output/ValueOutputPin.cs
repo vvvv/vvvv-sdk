@@ -8,14 +8,14 @@ namespace VVVV.PluginInterfaces.V2.Output
 	/// T is one of:
 	/// bool, byte, sbyte, int, uint, short, ushort, long, ulong, float, double
 	/// </summary>
-	public abstract class ValueOutputPin<T> : OutputPin<T> where T: struct
+	public abstract class ValueOutputPin<T> : Pin<T>, IPinUpdater where T: struct
 	{
 		protected IValueOut FValueOut;
 		protected double[] FData;
 		protected int FDimension;
+		protected int FSliceCount;
 		
 		public ValueOutputPin(IPluginHost host, OutputAttribute attribute)
-			:base(attribute)
 		{
 			var type = typeof(T);
 			
@@ -40,30 +40,23 @@ namespace VVVV.PluginInterfaces.V2.Output
 					FValueOut.SetSubType(minValue, maxValue, stepSize, attribute.DefaultValue, false, false, isInteger);
 					break;
 			}
+			FValueOut.SetPinUpdater(this);
 			
 			FData = new double[FDimension * 1];
-		}
-		
-		public override IPluginOut PluginOut
-		{
-			get
-			{
-				return FValueOut;
-			}
 		}
 		
 		public override int SliceCount 
 		{
 			get 
 			{
-				return base.SliceCount;
+				return FSliceCount;
 			}
 			set 
 			{
 				if (FData.Length != value)
 					FData = new double[value * FDimension];
 				
-				base.SliceCount = value;
+				FSliceCount = value;
 			}
 		}
 		

@@ -4,21 +4,24 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.Output
 {
-	public class SlimDXMatrixOutputPin : OutputPin<Matrix>
+	public class SlimDXMatrixOutputPin : Pin<Matrix>
 	{
 		protected ITransformOut FTransformOut;
 		
 		public SlimDXMatrixOutputPin(IPluginHost host, OutputAttribute attribute)
-			:base(attribute)
 		{
 			host.CreateTransformOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FTransformOut);
 		}
 		
-		public override IPluginOut PluginOut 
+		public override int SliceCount 
 		{
 			get 
 			{
-				return FTransformOut;
+				throw new NotImplementedException();
+			}
+			set 
+			{
+				FTransformOut.SliceCount = value;
 			}
 		}
 		
