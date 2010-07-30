@@ -38,6 +38,12 @@ namespace VVVV.PluginInterfaces.V2
 				FSpread = new Vector3DOutputPin(host, attribute) as ISpread<T>;
 			else if (type == typeof(Vector4D))
 				FSpread = new Vector4DOutputPin(host, attribute) as ISpread<T>;
+			else if (type == typeof(Vector2))
+				FSpread = new Vector2OutputPin(host, attribute) as ISpread<T>;
+			else if (type == typeof(Vector3))
+				FSpread = new Vector3OutputPin(host, attribute) as ISpread<T>;
+			else if (type == typeof(Vector4))
+				FSpread = new Vector4OutputPin(host, attribute) as ISpread<T>;
 			else
 				throw new NotImplementedException(string.Format("OutputPin of type '{0}' not supported.", type));
 		}

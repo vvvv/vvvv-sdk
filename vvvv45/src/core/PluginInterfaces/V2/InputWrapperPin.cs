@@ -38,6 +38,12 @@ namespace VVVV.PluginInterfaces.V2
 				FSpread = new Vector3DInputPin(host, attribute) as ISpread<T>;
 			else if (type == typeof(Vector4D))
 				FSpread = new Vector4DInputPin(host, attribute) as ISpread<T>;
+			else if (type == typeof(Vector2))
+				FSpread = new Vector2InputPin(host, attribute) as ISpread<T>;
+			else if (type == typeof(Vector3))
+				FSpread = new Vector3InputPin(host, attribute) as ISpread<T>;
+			else if (type == typeof(Vector4))
+				FSpread = new Vector4InputPin(host, attribute) as ISpread<T>;
 			else
 				throw new NotImplementedException(string.Format("InputPin of type '{0}' not supported.", type));
 		}
