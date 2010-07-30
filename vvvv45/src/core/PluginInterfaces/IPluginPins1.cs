@@ -23,6 +23,17 @@ namespace VVVV.PluginInterfaces.V1
 {
 	#region basic pins
 	/// <summary>
+	/// Helper interface for having a callback mechanism between host and pin.
+	/// </summary>
+	[Guid("60842D2E-FBA6-456C-A7AE-C3708D06B5C1"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IPinUpdater
+	{
+	    //Called by the host before Evaluate for Inputs and after Evaluate for Outputs.
+	    void Update();
+	}
+	
+	/// <summary>
 	/// Base interface of all pin interfaces. Never used directly.
 	/// </summary>
 	[Guid("D3C5CB5C-C054-4AB6-AC04-6BDB34692B25"),
@@ -41,6 +52,10 @@ namespace VVVV.PluginInterfaces.V1
 		/// Specifies whether the pin is connected in the patch or not.
 		/// </summary>
 		bool IsConnected{get;}
+		/// <summary>
+		/// Called by the plugin to set a callback on the host for the pin to be called to updat before/after Evaluate.
+		/// </summary>
+		void SetPinUpdater(IPinUpdater pinUpdater);
 	}
 	
 	/// <summary>

@@ -41,14 +41,9 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Enumerations1.cs" />
-    <Compile Include="Enumerations2.cs" />
-    <Compile Include="IHDE2.cs" />
     <Compile Include="IPlugin1.cs" />
-    <Compile Include="IPlugin2.cs" />
-    <Compile Include="IPluginFactory1.cs" />
     <Compile Include="IPluginHost1.cs" />
     <Compile Include="IPluginPins1.cs" />
-    <Compile Include="NodeInfo.cs" />
     <Compile Include="PluginInfo.cs" />
     <Compile Include="PluginInfoAttribute.cs" />
     <Compile Include="V2\ConfigAttribute.cs" />
@@ -63,7 +58,9 @@
     <Compile Include="V2\Config\StringConfigPin.cs" />
     <Compile Include="V2\Config\ValueConfigPin.cs" />
     <Compile Include="V2\Config\VectorConfigPins.cs" />
+    <Compile Include="V2\Enumerations2.cs" />
     <Compile Include="V2\ExtensionMethods.cs" />
+    <Compile Include="V2\IHDE2.cs" />
     <Compile Include="V2\InputAttribute.cs" />
     <Compile Include="V2\InputWrapperPin.cs" />
     <Compile Include="V2\Input\BoolInputPin.cs" />
@@ -79,6 +76,9 @@
     <Compile Include="V2\Input\ValueInputPin.cs" />
     <Compile Include="V2\Input\VectorInputPins.cs" />
     <Compile Include="V2\IObservableSpread.cs" />
+    <Compile Include="V2\IPlugin2.cs" />
+    <Compile Include="V2\IPluginFactory2.cs" />
+    <Compile Include="V2\NodeInfo.cs" />
     <Compile Include="V2\OutputWrapperPin.cs" />
     <Compile Include="V2\Output\BoolOutputPin.cs" />
     <Compile Include="V2\Output\ColorOutputPin.cs">
@@ -104,7 +104,9 @@
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\..\vvvv50\lib\Unity\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
-    <Reference Include="SlimDX" />
+    <Reference Include="SlimDX">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition">
       <HintPath>..\..\..\vvvv50\lib\MEF\System.ComponentModel.Composition.dll</HintPath>

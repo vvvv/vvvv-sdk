@@ -18,13 +18,33 @@ using VVVV.Core.Model;
 /// </summary>
 namespace VVVV.PluginInterfaces.V1
 {
+    #region IAddonHost
+    /// <summary>
+    /// The base interface of all addon hosts
+    /// </summary>
+    [Guid("3184506E-67F5-4D17-A2D0-7886548A2FBF"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IAddonHost
+    {}
+    #endregion IAddonHost
+    
+    #region IEffectHost
+    [Guid("5A7B81D4-3548-4E4C-B3F5-44A50E3C8E1B"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IEffectHost : IAddonHost
+	{
+		void SetEffect(string filename, string code);
+	    string GetErrors();
+	}
+	#endregion IEffectHost
+    
 	#region IPluginHost
 	/// <summary>
 	/// The interface to be implemented by a program to host IPlugins.
 	/// </summary>
 	[Guid("E72C5CF0-4738-4F20-948E-83E96D4E7843"), 
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IPluginHost
+	public interface IPluginHost: IAddonHost
 	{
 		/// <summary>
 		/// Creates a ConfigurationPin of type Value.
