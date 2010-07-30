@@ -549,7 +549,7 @@ namespace VVVV.PluginInterfaces.V1
 		void SetMatrix(int Index, Matrix4x4 Value);
 		/// <summary>
 		/// Used to retrieve a Pointer to the Values of the pin, which can be used to write large number of values more efficiently.
-		/// Note thought, that when writing Values to the Pointer the pins dimensions and overall SliceCount have to be taken care of manually.
+		/// Note though, that when writing Values to the Pointer the pins dimensions and overall SliceCount have to be taken care of manually.
 		/// </summary>
 		/// <param name="Value">A Pointer to the pins first Value.</param>
 		void GetValuePointer(out double* Value);
@@ -702,7 +702,7 @@ namespace VVVV.PluginInterfaces.V1
 	/// </summary>
 	[Guid("BAA49637-29FA-426A-9188-86906E660D30"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IColorConfig: IPluginConfig
+	unsafe public interface IColorConfig: IPluginConfig
 	{
 		/// <summary>
 		/// Used to write a Color to the pin at the specified slice.
@@ -716,6 +716,14 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Index">The index of the slice to retrieve the Color from.</param>
 		/// <param name="Color">The retrieved Color.</param>
 		void GetColor(int Index, out RGBAColor Color);
+		/// <summary>
+		/// Used to retrieve a Pointer to the Colors of the pin, which can be used to retrive large Spreads of Colors more efficiently.
+		/// Each Color consists of 4 doubles, one for each of Red, Green, Blue and Alpha.
+		/// Attention: Don't use this Pointer to write Colors to the pin!
+		/// </summary>
+		/// <param name="SliceCount">The pins current SliceCount, specifying the number of colors accessible via the Pointer.</param>
+		/// <param name="Value">A Pointer to the pins first Colors Red channel double.</param>
+		unsafe void GetColorPointer(out int SliceCount, out double* Value);
 		/// <summary>
 		/// Used to set the SubType of a Color pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
 		/// Note though that this does not prevent a user from setting "wrong" Colors on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
@@ -731,7 +739,7 @@ namespace VVVV.PluginInterfaces.V1
 	/// </summary>
 	[Guid("CB6289A8-28BD-4A52-9B7A-BC1092EA2FA5"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IColorIn: IPluginIn
+	unsafe public interface IColorIn: IPluginIn
 	{
 		/// <summary>
 		/// Used to retrieve a Color from the pin at the specified slice.
@@ -739,6 +747,14 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Index">The index of the slice to retrieve the Color from.</param>
 		/// <param name="Color">The retrieved Color.</param>
 		void GetColor(int Index, out RGBAColor Color);
+		/// <summary>
+		/// Used to retrieve a Pointer to the Colors of the pin, which can be used to retrive large Spreads of Colors more efficiently.
+		/// Each Color consists of 4 doubles, one for each of Red, Green, Blue and Alpha.
+		/// Attention: Don't use this Pointer to write Colors to the pin!
+		/// </summary>
+		/// <param name="SliceCount">The pins current SliceCount, specifying the number of colors accessible via the Pointer.</param>
+		/// <param name="Value">A Pointer to the pins first Colors Red channel double.</param>
+		unsafe void GetColorPointer(out int SliceCount, out double* Value);
 		/// <summary>
 		/// Used to set the SubType of a Color pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
 		/// Note though that this does not prevent a user from setting "wrong" Colors on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
@@ -754,7 +770,7 @@ namespace VVVV.PluginInterfaces.V1
 	/// </summary>
 	[Guid("432CE6BA-6F57-4387-A223-D2DAFA8125F0"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IColorOut: IPluginOut
+	unsafe public interface IColorOut: IPluginOut
 	{
 		/// <summary>
 		/// Used to write a Color to the pin at the specified slice.
@@ -762,6 +778,13 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Index">The index of the slice to write the Color to.</param>
 		/// <param name="Color">The Color to write.</param>
 		void SetColor(int Index, RGBAColor Color);
+		/// <summary>
+		/// Used to retrieve a Pointer to the Colors of the pin, which can be used to write large number of Colors more efficiently.
+		/// Each Color consists of 4 doubles, one for each of Red, Green, Blue and Alpha.
+		/// Note though, that when writing Colors to the Pointer the pins SliceCount has to be taken care of manually.
+		/// </summary>
+		/// <param name="Value">A Pointer to the pins first Colors Red channel double.</param>
+		unsafe void GetValuePointer(out double* Value);
 		/// <summary>
 		/// Used to set the SubType of a Color pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
 		/// Note though that this does not prevent a user from setting "wrong" Colors on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
