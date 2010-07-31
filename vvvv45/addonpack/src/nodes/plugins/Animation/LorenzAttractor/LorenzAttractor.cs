@@ -216,16 +216,16 @@ namespace VVVV.Nodes
             FHost.CreateValueInput("Input Z", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueInputZ);
             FValueInputY.SetSubType(double.MinValue, double.MaxValue, 0.01, 3, false, false, false);
 
-            FHost.CreateValueInput("deltaT", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FValueInputDeltaT);
+            FHost.CreateValueInput("DeltaTime", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FValueInputDeltaT);
             FValueInputDeltaT.SetSubType(0, 1, 0.001, 0.01, false, false, false);
 
-            FHost.CreateValueInput("rho", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputRho);
+            FHost.CreateValueInput("Rho", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputRho);
             FValueInputRho.SetSubType(double.MinValue, double.MaxValue, 0.01, 28, false, false, false);
 
-            FHost.CreateValueInput("sigma", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputSigma);
+            FHost.CreateValueInput("Sigma", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputSigma);
             FValueInputSigma.SetSubType(double.MinValue, double.MaxValue, 0.01, 10, false, false, false);
 
-            FHost.CreateValueInput("beta", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputBeta);
+            FHost.CreateValueInput("Beta", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputBeta);
             FValueInputBeta.SetSubType(double.MinValue, double.MaxValue, 0.01, 2.667, false, false, false);
 
             //create outputs
