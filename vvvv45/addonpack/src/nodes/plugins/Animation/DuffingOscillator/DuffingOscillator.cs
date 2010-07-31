@@ -50,6 +50,7 @@ namespace VVVV.Nodes
         private double beta = -1;
         private double gamma = 0.3;
         private double delta = 0.2;
+        private double omega = 1;
         private double deltaT = 0.01;
 
         //input pin declaration
@@ -57,7 +58,6 @@ namespace VVVV.Nodes
         // position vector coordinates.
         private IValueIn FValueInputX;
         private IValueIn FValueInputY;
-        private IValueIn FValueInputZ;
 
         //a kind of fake input needed for feedback.
         private double[] previousValueSliceX;
@@ -71,6 +71,7 @@ namespace VVVV.Nodes
         private IValueIn FValueInputBeta;
         private IValueIn FValueInputGamma;
         private IValueIn FValueInputDelta;
+        private IValueIn FValueInputOmega;
 
         //output pin declaration
         private IValueOut FValueOutputX;
@@ -209,38 +210,38 @@ namespace VVVV.Nodes
             FHost = Host;
 
             //create inputs
-            FHost.CreateValueInput("Input X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueInputX);
+            FHost.CreateValueInput("Position In", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueInputX);
             FValueInputX.SetSubType(double.MinValue, double.MaxValue, 0.01, 1, false, false, false);
 
-            FHost.CreateValueInput("Input Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueInputY);
+            FHost.CreateValueInput("Velocity In", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueInputY);
             FValueInputX.SetSubType(double.MinValue, double.MaxValue, 0.01, 2, false, false, false);
 
-            FHost.CreateValueInput("Input Z", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueInputZ);
-            FValueInputY.SetSubType(double.MinValue, double.MaxValue, 0.01, 3, false, false, false);
-
-            FHost.CreateValueInput("deltaT", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FValueInputDeltaT);
+            FHost.CreateValueInput("DeltaTime", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FValueInputDeltaT);
             FValueInputDeltaT.SetSubType(0, 1, 0.001, 0.01, false, false, false);
 
-            FHost.CreateValueInput("alpha", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputAlpha);
+            FHost.CreateValueInput("Alpha", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputAlpha);
             FValueInputAlpha.SetSubType(double.MinValue, double.MaxValue, 0.01, 1, false, false, false);
 
-            FHost.CreateValueInput("beta", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputBeta);
+            FHost.CreateValueInput("Beta", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputBeta);
             FValueInputBeta.SetSubType(double.MinValue, double.MaxValue, 0.01, -1, false, false, false);
 
-            FHost.CreateValueInput("gamma", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputGamma);
+            FHost.CreateValueInput("Gamma", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputGamma);
             FValueInputGamma.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.3, false, false, false);
 
-            FHost.CreateValueInput("delta", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputDelta);
+            FHost.CreateValueInput("Omega", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputOmega);
+            FValueInputOmega.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.3, false, false, false);
+
+            FHost.CreateValueInput("Delta", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputDelta);
             FValueInputDelta.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.2, false, false, false);
 
             //create outputs
-            FHost.CreateValueOutput("Output X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueOutputX);
+            FHost.CreateValueOutput("Position Out", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueOutputX);
             FValueOutputX.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
 
-            FHost.CreateValueOutput("Output Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueOutputY);
+            FHost.CreateValueOutput("Velocity Out", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueOutputY);
             FValueOutputY.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
 
-            FHost.CreateValueOutput("Cicles", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueOutputCicles);
+            FHost.CreateValueOutput("Cycles", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueOutputCicles);
             FValueOutputCicles.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
         }
 
@@ -278,12 +279,15 @@ namespace VVVV.Nodes
             if (FValueInputGamma.PinIsChanged)
                 FValueInputGamma.GetValue(0, out gamma);
 
+            if (FValueInputOmega.PinIsChanged)
+                FValueInputOmega.GetValue(0, out omega);
+
             if (FValueInputDelta.PinIsChanged)
                 FValueInputDelta.GetValue(0, out delta);
 
             //if any of the inputs has changed
             //recompute the outputs
-            if (FValueInputX.PinIsChanged || FValueInputY.PinIsChanged || FValueInputZ.PinIsChanged)
+            if (FValueInputX.PinIsChanged || FValueInputY.PinIsChanged )
             {
                 //first set slicecounts for all outputs
                 //the incoming int SpreadMax is the maximum slicecount of all input pins, which is a good default
@@ -300,7 +304,6 @@ namespace VVVV.Nodes
                     //read data from inputs
                     FValueInputX.GetValue(i, out previousValueSliceX[i]);
                     FValueInputY.GetValue(i, out previousValueSliceY[i]);
-                    FValueInputZ.GetValue(i, out previousValueSliceZ[i]);
                 }
 
             }
@@ -308,9 +311,9 @@ namespace VVVV.Nodes
             //loop for all slices
             for (int i = 0; i < SpreadMax; i++)
             {
-                //compute Lorentz attractor equation
+                //compute Duffing equation
                 currentValueSliceV1 = previousValueSliceY[i];
-                currentValueSliceV2 = -delta * previousValueSliceY[i] - beta * previousValueSliceX[i] - alpha * previousValueSliceX[i] * previousValueSliceX[i] * previousValueSliceX[i] + gamma * Math.Cos(previousValueSliceZ[i]);
+                currentValueSliceV2 = -delta * previousValueSliceY[i] - beta * previousValueSliceX[i] - alpha * previousValueSliceX[i] * previousValueSliceX[i] * previousValueSliceX[i] + gamma * Math.Cos(previousValueSliceZ[i] * omega);
                 currentValueSliceV3 = 1;
 
                 currentValueSliceV1 *= deltaT;
@@ -333,3 +336,4 @@ namespace VVVV.Nodes
         #endregion mainloop
     }
 }
+
