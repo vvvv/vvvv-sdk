@@ -30,7 +30,7 @@ namespace VVVV.PluginInterfaces.V2.Config
 		}
 	}
 	
-		public class Vector3DConfigPin : ValueConfigPin<Vector3D>
+	public class Vector3DConfigPin : ValueConfigPin<Vector3D>
 	{
 		public Vector3DConfigPin(IPluginHost host, ConfigAttribute attribute)
 			:base(host, attribute)

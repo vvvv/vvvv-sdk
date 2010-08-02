@@ -37,12 +37,7 @@ namespace VVVV.PluginInterfaces.V2
 				FSpread.SliceCount = value;
 			}
 		}
-		
-		public void Update()
-		{
-			FSpread.Update();
-		}
-		
+
 		public IEnumerator<T> GetEnumerator()
 		{
 			return FSpread.GetEnumerator();

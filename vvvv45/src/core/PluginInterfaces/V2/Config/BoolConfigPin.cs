@@ -18,12 +18,9 @@ namespace VVVV.PluginInterfaces.V2.Config
 				FValueConfig.GetValue(index, out value);
 				return value >= 0.5;
 			}
-			set 
+			set
 			{
-				if (value)
-					FValueConfig.SetValue(index, 1.0);
-				else
-					FValueConfig.SetValue(index, 0.0);
+				FValueConfig.SetValue(index, value ? 1 : 0);
 			}
 		}
 	}

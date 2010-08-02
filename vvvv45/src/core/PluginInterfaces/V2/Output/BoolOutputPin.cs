@@ -16,12 +16,9 @@ namespace VVVV.PluginInterfaces.V2.Output
 			{
 				throw new NotImplementedException();
 			}
-			set 
+			set
 			{
-				if (value)
-					FValueOut.SetValue(index, 1.0);
-				else
-					FValueOut.SetValue(index, 0.0);
+				FValueOut.SetValue(index, value ? 1 : 0);
 			}
 		}
 	}
