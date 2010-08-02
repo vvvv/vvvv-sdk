@@ -51,11 +51,6 @@ namespace VVVV.PluginInterfaces.V2.Input
 				{
 					return ((RGBAColor*)ptr)[index % FSliceCount];
 				}
-				
-//				RGBAColor col;
-//				FColorIn.GetColor(index, out col);
-//				return col;
-				
 			}
 			set 
 			{

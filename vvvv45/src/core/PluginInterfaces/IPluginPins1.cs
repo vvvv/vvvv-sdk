@@ -972,7 +972,7 @@ namespace VVVV.PluginInterfaces.V1
 	/// </summary>
 	[Guid("605FD0B2-AD68-40B4-92E5-819599544CF2"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ITransformIn: IPluginIn
+	unsafe public interface ITransformIn: IPluginIn
 	{
 		/// <summary>
 		/// Used to retrieve a Matrix from the pin at the specified slice.
@@ -980,6 +980,13 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Index">The index of the slice to retrieve the Matrix from.</param>
 		/// <param name="Value">The retrieved Matrix.</param>
 		void GetMatrix(int Index, out Matrix4x4 Value);
+		/// <summary>
+		/// Used to retrieve a Pointer to the Values of the pin, which can be used to retrive large Spreads of Values more efficiently.
+		/// Attention: Don't use this Pointer to write Values to the pin!
+		/// </summary>
+		/// <param name="SliceCount">The pins current SliceCount, specifying the number of values accessible via the Pointer.</param>
+		/// <param name="Value">A Pointer to the pins first Value.</param>
+		void GetMatrixPointer(out int SliceCount, out float* Value);
 		/// <summary>
 		/// Used to retrieve a World Matrix from the pin at the specified slice. 
 		/// You should call this method only from within your Render method when supporting the IPluginDXLayer interface.
@@ -999,7 +1006,7 @@ namespace VVVV.PluginInterfaces.V1
 	/// </summary>
 	[Guid("AA8D6410-36E5-4EA2-AF70-66CD6321FF36"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface ITransformOut: IPluginOut
+	unsafe public interface ITransformOut: IPluginOut
 	{
 		/// <summary>
 		/// Used to write a Matrix to the pin at the specified slice.
@@ -1007,6 +1014,12 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Index">The index of the slice to write the Matrix to.</param>
 		/// <param name="Value">The Matrix to write.</param>
 		void SetMatrix(int Index, Matrix4x4 Value);
+		/// <summary>
+		/// Used to retrieve a Pointer to the Values of the pin, which can be used to write large number of values more efficiently.
+		/// Note though, that when writing Values to the Pointer the pins dimensions and overall SliceCount have to be taken care of manually.
+		/// </summary>
+		/// <param name="Value">A Pointer to the pins first Value.</param>
+		void GetMatrixPointer(out float* Value);
 	}
 	#endregion node pins	
 	
