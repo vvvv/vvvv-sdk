@@ -23,6 +23,9 @@ namespace VVVV.PluginInterfaces.V2
 			StepSize = DefaultStepSize;
 			
 			DefaultValues = new double[] { 0.0, 0.0, 0.0, 0.0 };
+			
+			EnumName = "Empty";
+			DefaultEnumEntry = "";
 		}
 		
 		public string Name
@@ -86,6 +89,18 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		public bool HasAlpha
+		{
+			get;
+			set;
+		}
+		
+		public string EnumName
+		{
+			get;
+			set;
+		}
+		
+		public string DefaultEnumEntry
 		{
 			get;
 			set;
