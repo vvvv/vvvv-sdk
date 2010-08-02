@@ -39,8 +39,7 @@ namespace VVVV.PluginInterfaces.V2.Config
 			}
 			set
 			{
-				object o = value;
-				FEnumConfigPin.SetString(index, (string)o);
+				FEnumConfigPin.SetString(index, value.ToString());
 			}
 		}
 	}

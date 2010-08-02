@@ -47,6 +47,8 @@ namespace VVVV.PluginInterfaces.V2
 				FSpread = new Vector3OutputPin(host, attribute) as ISpread<T>;
 			else if (type == typeof(Vector4))
 				FSpread = new Vector4OutputPin(host, attribute) as ISpread<T>;
+			else if (type.BaseType == typeof(Enum))
+				FSpread = new EnumOutputPin<T>(host, attribute) as ISpread<T>;
 			else
 				throw new NotImplementedException(string.Format("OutputPin of type '{0}' not supported.", type));
 		}
