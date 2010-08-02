@@ -12,14 +12,12 @@ namespace VVVV.PluginInterfaces.V2.Config
 		{
 			FEnumType = typeof(T);
 			
+			var entrys = Enum.GetNames(FEnumType);
+			var defEntry = (attribute.DefaultEnumEntry != "") ? attribute.DefaultEnumEntry : entrys[0];
+			host.UpdateEnum(FEnumType.Name, defEntry, entrys);
+			
 			host.CreateEnumConfig(attribute.Name, attribute.SliceMode, attribute.Visibility, out FEnumConfigPin);
 			FEnumConfigPin.SetSubType(FEnumType.Name);
-			
-			var entrys = Enum.GetNames(FEnumType);
-			var defEntry = (attribute.DefaultEnumEntry == "") ? attribute.DefaultEnumEntry : entrys[0];
-				
-			host.UpdateEnum(FEnumType.Name, defEntry, entrys);
-
 		}
 		
 		protected override IPluginConfig PluginConfig 
