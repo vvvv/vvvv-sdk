@@ -1,12 +1,4 @@
-﻿/*
- * Erstellt mit SharpDevelop.
- * Benutzer: TF
- * Datum: 03.08.2010
- * Zeit: 00:03
- * 
- * Sie können diese Vorlage unter Extras > Optionen > Codeerstellung > Standardheader ändern.
- */
-using System;
+﻿using System;
 using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.Output
