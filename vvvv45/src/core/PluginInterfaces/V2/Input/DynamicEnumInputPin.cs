@@ -3,21 +3,17 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.Input
 {
-	public class EnumInputPin<T> : ObservablePin<T>
+	public class DynamicEnumInputPin : ObservablePin<EnumEntry>
 	{
 		protected IEnumIn FEnumInputPin;
-		protected Type FEnumType;
+		protected string FEnumName;
 		
-		public EnumInputPin(IPluginHost host, InputAttribute attribute)
+		public DynamicEnumInputPin(IPluginHost host, InputAttribute attribute)
 		{
-			FEnumType = typeof(T);
-			
-			var entrys = Enum.GetNames(FEnumType);
-			var defEntry = (attribute.DefaultEnumEntry != "") ? attribute.DefaultEnumEntry : entrys[0];	
-			host.UpdateEnum(FEnumType.Name, defEntry, entrys);
+			FEnumName = attribute.EnumName;
 			
 			host.CreateEnumInput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FEnumInputPin);
-			FEnumInputPin.SetSubType(FEnumType.Name);
+			FEnumInputPin.SetSubType(FEnumName);
 		}
 
 		public override int SliceCount 
@@ -40,14 +36,14 @@ namespace VVVV.PluginInterfaces.V2.Input
 			}
 		}
 		
-		public override T this[int index]
+		public override EnumEntry this[int index]
 		{
 			get
 			{
-				string entry;
-				FEnumInputPin.GetString(index, out entry);
+				int ord;
+				FEnumInputPin.GetOrd(index, out ord);
 
-				return (T)Enum.Parse(FEnumType, entry);
+				return new EnumEntry(FEnumName, ord);
 			}
 			set
 			{

@@ -45,6 +45,8 @@ namespace VVVV.PluginInterfaces.V2
 				FSpread = new Vector4ConfigPin(host, attribute) as ISpread<T>;
 			else if (type.BaseType == typeof(Enum))
 				FSpread = new EnumConfigPin<T>(host, attribute) as ISpread<T>;
+			else if (type == typeof(EnumEntry))
+				FSpread = new DynamicEnumConfigPin(host, attribute) as ISpread<T>;
 			else
 				throw new NotImplementedException(string.Format("ConfigPin of type '{0}' not supported.", type));
 		}

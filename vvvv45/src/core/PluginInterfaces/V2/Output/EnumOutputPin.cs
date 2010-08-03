@@ -3,12 +3,9 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.Output
 {
-	/// <summary>
-	/// Description of EnumOutputPin.
-	/// </summary>
 	public class EnumOutputPin<T> : Pin<T>
 	{
-		protected IEnumOut FEnumConfigPin;
+		protected IEnumOut FEnumOutputPin;
 		protected Type FEnumType;
 		
 		public EnumOutputPin(IPluginHost host, OutputAttribute attribute)
@@ -19,19 +16,19 @@ namespace VVVV.PluginInterfaces.V2.Output
 			var defEntry = (attribute.DefaultEnumEntry != "") ? attribute.DefaultEnumEntry : entrys[0];	
 			host.UpdateEnum(FEnumType.Name, defEntry, entrys);
 			
-			host.CreateEnumOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FEnumConfigPin);
-			FEnumConfigPin.SetSubType(FEnumType.Name);
+			host.CreateEnumOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FEnumOutputPin);
+			FEnumOutputPin.SetSubType(FEnumType.Name);
 		}
 
 		public override int SliceCount 
 		{
 			get
 			{
-				return FEnumConfigPin.SliceCount;
+				return FEnumOutputPin.SliceCount;
 			}
 			set
 			{
-				FEnumConfigPin.SliceCount = value;
+				FEnumOutputPin.SliceCount = value;
 			}
 		}
 
@@ -43,7 +40,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 			}
 			set
 			{
-				FEnumConfigPin.SetString(index, value.ToString());
+				FEnumOutputPin.SetString(index, value.ToString());
 			}
 		}
 	}

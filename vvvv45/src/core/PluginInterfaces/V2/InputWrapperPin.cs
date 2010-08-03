@@ -49,6 +49,8 @@ namespace VVVV.PluginInterfaces.V2
 				FSpread = new Vector4InputPin(host, attribute) as ISpread<T>;
 			else if (type.BaseType == typeof(Enum))
 				FSpread = new EnumInputPin<T>(host, attribute) as ISpread<T>;
+			else if (type == typeof(EnumEntry))
+				FSpread = new DynamicEnumInputPin(host, attribute) as ISpread<T>;
 			else
 				throw new NotImplementedException(string.Format("InputPin of type '{0}' not supported.", type));
 		}

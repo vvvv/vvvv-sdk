@@ -15,7 +15,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// </summary>
 	[Guid("2B24AC85-E543-40B3-9090-2828D26978A0"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IHDEHost 
+	public interface IHDEHost
 	{
 		/// <summary>
 		/// Allows a plugin to register IListeners on the host
@@ -28,6 +28,30 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		/// <param name="listener">The listener to unregister. Most likely the plugin itself, implementing an IListener.</param>
 	    void RemoveListener(IListener listener);
+	    
+	    /// <summary>
+		/// Allows a plugin to create/update an Enum with vvvv
+		/// </summary>
+		/// <param name="EnumName">The Enums name.</param>
+		/// <param name="Default">The Enums default value.</param>
+		/// <param name="EnumEntries">An array of strings that specify the enums entries.</param>
+		void UpdateEnum(string EnumName, string Default, string[] EnumEntries);
+		
+		/// <summary>
+		/// Returns the number of entries for a given Enum.
+		/// </summary>
+		/// <param name="EnumName">The name of the Enum to get the EntryCount of.</param>
+		/// <param name="EntryCount">Number of entries in the Enum.</param>
+		void GetEnumEntryCount(string EnumName, out int EntryCount);
+		
+		/// <summary>
+		/// Returns the name of a given EnumEntry of a given Enum.
+		/// </summary>
+		/// <param name="EnumName">The name of the Enum to get the EntryName of.</param>
+		/// <param name="Index">Index of the EnumEntry.</param>
+		/// <param name="EntryName">String representation of the EnumEntry.</param>
+		void GetEnumEntry(string EnumName, int Index, out string EntryName);
+	    
 	}
 	#endregion IHDEHost
 	

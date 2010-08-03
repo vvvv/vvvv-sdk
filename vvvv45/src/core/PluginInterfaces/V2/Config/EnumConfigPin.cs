@@ -15,7 +15,7 @@ namespace VVVV.PluginInterfaces.V2.Config
 			var entrys = Enum.GetNames(FEnumType);
 			var defEntry = (attribute.DefaultEnumEntry != "") ? attribute.DefaultEnumEntry : entrys[0];
 			host.UpdateEnum(FEnumType.Name, defEntry, entrys);
-			
+
 			host.CreateEnumConfig(attribute.Name, attribute.SliceMode, attribute.Visibility, out FEnumConfigPin);
 			FEnumConfigPin.SetSubType(FEnumType.Name);
 		}
