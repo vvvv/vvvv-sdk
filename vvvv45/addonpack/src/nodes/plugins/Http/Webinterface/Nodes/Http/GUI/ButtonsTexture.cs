@@ -233,8 +233,8 @@ namespace VVVV.Nodes.Http.GUI
                         FileInfo InfoDefault = new FileInfo(currentPathDefault);
                         FileInfo InfoPress = new FileInfo(currentPathPress);
 
-                        AddTextureToMemory(InfoDefault.Name);
-                        AddTextureToMemory(InfoPress.Name);
+                        AddTextureToMemory(InfoDefault.FullName);
+                        AddTextureToMemory(InfoPress.FullName);
 
                         Img Image = new Img();
                         HTMLAttribute tSource;

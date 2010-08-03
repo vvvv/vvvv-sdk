@@ -144,7 +144,7 @@ namespace VVVV.Webinterface.HttpServer
                 HttpListenerContext context = listener.EndGetContext(result);
                 HttpListenerRequest Request = context.Request;
 
-                Request tRequest = new Request(FFoldersToServ, Request, mPostMessages);
+                RequestListener tRequest = new RequestListener(FFoldersToServ, Request, mPostMessages);
 
                 HttpListenerResponse response = context.Response;
                 response.AddHeader("Cache-Control", "no-store");

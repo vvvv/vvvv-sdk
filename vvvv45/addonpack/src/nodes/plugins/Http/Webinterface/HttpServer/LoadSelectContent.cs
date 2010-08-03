@@ -36,7 +36,7 @@ namespace VVVV.Webinterface.HttpServer
         /// <param name="pFileLocation">whole file URI which is reqquested by the client</param>
         /// <param name="pPaths">Root Pathes set by VVVV Renderer (HTTP)</param>
         /// <param name="pHtmlPages">Pages to Build by an GET Request</param>
-        public LoadSelectContent( string pFilename,string pFileLocation, List<string> pPaths)
+        public LoadSelectContent( string pFilename,string pFileLocation, List<string> FilePathes)
         {
             if (pFilename == "dummy.html")
             {
@@ -67,7 +67,7 @@ namespace VVVV.Webinterface.HttpServer
             }else
             {
                 //loads file from disc
-                LoadFromDisc(pFilename,pFileLocation,pPaths);
+                LoadFromDisc(pFilename,pFileLocation,FilePathes);
             }
         }
 

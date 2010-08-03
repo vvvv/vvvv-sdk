@@ -16,14 +16,14 @@ namespace VVVV.Webinterface.HttpServer
         
         private Socket mClientSocket;
         private string mSocketIP = String.Empty;
-        private const int mBufferSize = 1024;
+        private const int mBufferSize = 8192;
         private byte[] mDataBuffer = new byte[mBufferSize];
         private StringBuilder FRequest = new StringBuilder();
         private string mResponse;
         private DateTime mTimeStamp;
         private byte[] mResponseAsBytes;
         private SortedList<string, byte[]> mHtmlPages;
-        private Request mRequestObject;
+        private RequestSocket mRequestObject;
         private Stopwatch mStopwatch;
         private int FTotalBytes = 0;
         
@@ -117,7 +117,7 @@ namespace VVVV.Webinterface.HttpServer
             }
         }
 
-        public Request RequestObject
+        public RequestSocket RequestObject
         {
             get
             {

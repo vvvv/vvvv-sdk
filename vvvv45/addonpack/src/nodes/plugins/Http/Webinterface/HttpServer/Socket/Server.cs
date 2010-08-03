@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Collections;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Net;
 using System.Net.Sockets;
 using System.Net.NetworkInformation;
@@ -38,46 +39,48 @@ namespace VVVV.Webinterface.HttpServer {
 
         //Classes
         private bool FDisposed = false;
-        private WebinterfaceSingelton mWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
+        private WebinterfaceSingelton FWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
      
-        // Socket
-        private Socket mMainSocket;
-        IPEndPoint mIpLocal;
-        private int mBacklog;
-        private bool mShuttingDown = false;
-        private Timer mLostTimer;
-        private const int mTimerTimeout = 300000;
-        private const int numThreads = 1;
-        protected Hashtable connectedHT = new Hashtable();
-        protected ArrayList connectedSocks;
-        protected int mPortNumber;
-        protected int maxSockets;
-        protected int sockCount = 0;
-        private bool mInit = false;
-        private List<int> mBlockedPorts = new List<int>();
-        private bool mPortFree = false;
-        private bool mRunning = false;
+
+        //Async Socket Handling
+        private Socket FMainSocket;
+        private TcpListener FTcpListen;
+        IPEndPoint FIpLocal;
+        private int FBacklog;
+        private bool FShuttingDown = false;
+        private Timer FLostTimer;
+        private const int FTimerTimeout = 300000;
+        private const int FNumThreads = 1;
+        protected Hashtable FConnectedHT = new Hashtable();
+        protected ArrayList ConnectedSockets;
+        protected int FPortNumber;
+        protected int FMaxSockets;
+        protected int FSockCount = 0;
+        private bool FInit = false;
+        private List<int> FBlockedPorts = new List<int>();
+        private bool FPortFree = false;
+        private bool FRunning = false;
 
         //Thread signal.
-        private ManualResetEvent allDone = new ManualResetEvent(false);
-        private Thread serverThread;
-        private AutoResetEvent threadEnd;
-        private Object thisLock = new Object();
+        private ManualResetEvent FAllDone = new ManualResetEvent(false);
+        private Thread FServerThread;
+        private AutoResetEvent FThreadEnd;
+        private Object FThisLock = new Object();
 
 
         //Files
-        private List<string> mFoldersToServ;
-        private SortedList<string, string> mPostMessages = new SortedList<string, string>();
+        private List<string> FFoldersToServ;
+        private SortedList<string, string> FPostMessages = new SortedList<string, string>();
 
         
         
       
 
         #region toSort
-        private ArrayList mClientSocketList = new ArrayList();
-        private SortedList<string, Socket> mIndexSocketList = new SortedList<string, Socket>();
-        private SortedList<string, Socket> mDummySocketList = new SortedList<string, Socket>();
-        private List<string> mRequestList = new List<string>();
+        private ArrayList FClientSocketList = new ArrayList();
+        private SortedList<string, Socket> FIndexSocketList = new SortedList<string, Socket>();
+        private SortedList<string, Socket> FDummySocketList = new SortedList<string, Socket>();
+        private List<string> FRequestList = new List<string>();
         
 
         
@@ -90,9 +93,6 @@ namespace VVVV.Webinterface.HttpServer {
         #endregion field Declaration
 
 
-
-
-
         #region properties
 
 
@@ -100,7 +100,7 @@ namespace VVVV.Webinterface.HttpServer {
         {
             set
             {
-                mFoldersToServ = value;
+                FFoldersToServ = value;
             }
         }
 
@@ -109,7 +109,7 @@ namespace VVVV.Webinterface.HttpServer {
         {
             set
             {
-                mShuttingDown = value;
+                FShuttingDown = value;
             }
         }
 
@@ -117,7 +117,7 @@ namespace VVVV.Webinterface.HttpServer {
         {
             set
             {
-                mPostMessages = value;
+                FPostMessages = value;
             }
         }
 
@@ -125,7 +125,7 @@ namespace VVVV.Webinterface.HttpServer {
         {
             get
             {
-                return mInit;
+                return FInit;
             }
         }
 
@@ -133,7 +133,7 @@ namespace VVVV.Webinterface.HttpServer {
         {
             get
             {
-                return mRunning;
+                return FRunning;
             }
         }
 
@@ -141,14 +141,11 @@ namespace VVVV.Webinterface.HttpServer {
         {
             set 
             {
-                mPortNumber = value;
+                FPortNumber = value;
             }
         }
 
         #endregion properties
-
-
-
 
 
         #region constructor /deconstructor
@@ -160,10 +157,10 @@ namespace VVVV.Webinterface.HttpServer {
         /// <param name="Backlog">Backlog </param>
         public Server(int pPort, int Backlog)
         {
-            this.mPortNumber = pPort;
-            this.maxSockets = 10000;
-            this.mBacklog = Backlog;
-            connectedSocks = new ArrayList(this.maxSockets);
+            FPortNumber = pPort;
+            FMaxSockets = 10000;
+            this.FBacklog = Backlog;
+            ConnectedSockets = new ArrayList(FMaxSockets);
         }
 
 
@@ -227,14 +224,14 @@ namespace VVVV.Webinterface.HttpServer {
             // Clear the thread end events
             if (CheckPorts())
             {
-                mRunning = true;
-                mShuttingDown = false;
-                threadEnd = new AutoResetEvent(false);
+                FRunning = true;
+                FShuttingDown = false;
+                FThreadEnd = new AutoResetEvent(false);
 
                 ThreadStart threadStart1 = new ThreadStart(this.StartListening);
-                serverThread = new Thread(threadStart1);
-                serverThread.IsBackground = true;
-                serverThread.Start();
+                FServerThread = new Thread(threadStart1);
+                FServerThread.IsBackground = true;
+                FServerThread.Start();
 
                 
                 int tMaxWorkerThreads;
@@ -244,43 +241,31 @@ namespace VVVV.Webinterface.HttpServer {
                 // Create the delegate that invokes methods for the timer.
                 TimerCallback timerDelegate = new TimerCallback(this.CheckSockets);
                 //Create a timer that waits one minute, then invokes every 5 minutes.
-                mLostTimer = new Timer(timerDelegate, null, Server.mTimerTimeout, Server.mTimerTimeout);
+                FLostTimer = new Timer(timerDelegate, null, Server.FTimerTimeout, Server.FTimerTimeout);
             }
         }
 
         private bool CheckPorts()
         {
-            mPortFree = false;
-            mBlockedPorts.Clear();
+            FPortFree = false;
+            FBlockedPorts.Clear();
 
             IPGlobalProperties GlobalProperties = IPGlobalProperties.GetIPGlobalProperties();
-            //TcpConnectionInformation[] TCPConnections = GlobalProperties.GetActiveTcpConnections();
             IPEndPoint[] TcpEndPoints = GlobalProperties.GetActiveTcpListeners();
-            //IPEndPoint[] UdpEndpoints = GlobalProperties.GetActiveUdpListeners();
-
-            //foreach (TcpConnectionInformation TcpInformation in TCPConnections)
-            //{
-            //    mBlockedPorts.Add(TcpInformation.LocalEndPoint.Port);
-            //}
 
             foreach (IPEndPoint TcpEndPoint in TcpEndPoints)
             {
-                mBlockedPorts.Add(TcpEndPoint.Port);
+                FBlockedPorts.Add(TcpEndPoint.Port);
             }
 
-            //foreach (IPEndPoint UdpEndPoint in UdpEndpoints)
-            //{
-            //    mBlockedPorts.Add(UdpEndPoint.Port);
-            //}
-
-            if (mBlockedPorts.Contains(this.mPortNumber) == false)
+            if (FBlockedPorts.Contains(this.FPortNumber) == false)
             {
-                mPortFree = true;
-                return mPortFree;
+                FPortFree = true;
+                return FPortFree;
             }
 
             
-            return mPortFree;
+            return FPortFree;
         }
 
 
@@ -289,57 +274,60 @@ namespace VVVV.Webinterface.HttpServer {
         {
             try
             {
-                mIpLocal = new IPEndPoint(IPAddress.Any, mPortNumber);
-                mMainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                mMainSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-                //mMainSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
-                mMainSocket.Bind(mIpLocal);
-                // Start listening...<
-                mMainSocket.Listen(100);
+                FIpLocal = new IPEndPoint(IPAddress.Any, FPortNumber);
+                //FMainSocket = new Socket(AddressFamily.InterNetwork,SocketType.Stream, ProtocolType.Tcp);
+                //FMainSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                //FMainSocket.Bind(FIpLocal);
+                //// Start listening...<
+                //FMainSocket.Listen(10000);
                 // Create the call back for any client connections...
+                FTcpListen = new TcpListener(IPAddress .Any,FPortNumber);
+                FTcpListen.Start();
 
-                while (mShuttingDown == false)
+
+                while (FShuttingDown == false)
                 {
-                    allDone.Reset();
-                    mMainSocket.BeginAccept(new AsyncCallback(OnClientConnectCallback), mMainSocket);
-                    allDone.WaitOne();
+                    FAllDone.Reset();
+                    //FMainSocket.BeginAccept(new AsyncCallback(OnClientConnectCallback), FMainSocket);
+                    FTcpListen.BeginAcceptSocket(OnClientConnectCallback, FTcpListen);
+                    FAllDone.WaitOne();
                 }
 
-                if (mMainSocket.Connected == true)
+                if (FMainSocket.Connected == true)
                 {
-                    Debug.WriteLine(String.Format("Socket {0} still alive", mPortNumber));
+                    Debug.WriteLine(String.Format("Socket {0} still alive", FPortNumber));
                 }
 
             }
             catch (SocketException se)
             {
                 string ErrorMessage = se.Message;
-                mInit = false;
+                FInit = false;
             }
             catch (Exception ex)
             {
                 string ErrorMessage = ex.Message;
-                mInit = false;
+                FInit = false;
             }
 
 
-            Debug.WriteLine(serverThread.IsAlive.ToString());
-            mMainSocket.Close();
-            mMainSocket = null;
+            Debug.WriteLine(FServerThread.IsAlive.ToString());
+            FMainSocket.Close();
+            FMainSocket = null;
         }
 
 
 
         public void Stop()
         {
-            mShuttingDown = true;
-            threadEnd.Set();
+            FShuttingDown = true;
+            FThreadEnd.Set();
 
             // Create a connection to the port to unblock the listener thread
             try
             {
                 Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                IPEndPoint endPoint = new IPEndPoint(IPAddress.Loopback, this.mPortNumber);
+                IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, this.FPortNumber);
                 sock.Connect(endPoint);
                 sock = null;
             }
@@ -350,7 +338,7 @@ namespace VVVV.Webinterface.HttpServer {
 
             //mLostTimer.Dispose();
             //mLostTimer = null;
-            mRunning = false;
+            FRunning = false;
 
         }
 
@@ -358,13 +346,13 @@ namespace VVVV.Webinterface.HttpServer {
 
         private void CheckSockets(object eventState)
         {
-            mLostTimer.Change(System.Threading.Timeout.Infinite,
+            FLostTimer.Change(System.Threading.Timeout.Infinite,
                 System.Threading.Timeout.Infinite);
             
-            if ( connectedSocks.Count != 0)
+            if ( ConnectedSockets.Count != 0)
             {
-                Monitor.Enter(connectedSocks);
-                foreach (SocketInformation state in connectedSocks)
+                Monitor.Enter(ConnectedSockets);
+                foreach (SocketInformation state in ConnectedSockets)
                 {
                     //if (state.ClientSocket == null)
                     //{    // Remove invalid state object
@@ -388,10 +376,10 @@ namespace VVVV.Webinterface.HttpServer {
                         //}
                     //}
                 }
-                Monitor.Exit(connectedSocks);
+                Monitor.Exit(ConnectedSockets);
             }
 
-            mLostTimer.Change(Server.mTimerTimeout, Server.mTimerTimeout);
+            FLostTimer.Change(Server.FTimerTimeout, Server.FTimerTimeout);
             
         }
 
@@ -399,39 +387,39 @@ namespace VVVV.Webinterface.HttpServer {
         virtual protected void RemoveSocket(SocketInformation state)
         {
             Socket sock = state.ClientSocket;
-            Monitor.Enter(connectedSocks);
-            if (connectedSocks.Contains(state))
+            Monitor.Enter(ConnectedSockets);
+            if (ConnectedSockets.Contains(state))
             {
-                connectedSocks.Remove(state);
-                Interlocked.Decrement(ref sockCount);
+                ConnectedSockets.Remove(state);
+                Interlocked.Decrement(ref FSockCount);
             }
-            Monitor.Exit(connectedSocks);
-            Monitor.Enter(connectedHT);
+            Monitor.Exit(ConnectedSockets);
+            Monitor.Enter(FConnectedHT);
 
-            if ((sock != null) && (connectedHT.ContainsKey(sock)))
+            if ((sock != null) && (FConnectedHT.ContainsKey(sock)))
             {
-                object sockTemp = connectedHT[sock];
-                if (connectedHT.ContainsKey(sockTemp))
+                object sockTemp = FConnectedHT[sock];
+                if (FConnectedHT.ContainsKey(sockTemp))
                 {
-                    if (connectedHT.ContainsKey(connectedHT[sockTemp]))
+                    if (FConnectedHT.ContainsKey(FConnectedHT[sockTemp]))
                     {
-                        connectedHT.Remove(sock);
-                        if (sock.Equals(connectedHT[sockTemp]))
+                        FConnectedHT.Remove(sock);
+                        if (sock.Equals(FConnectedHT[sockTemp]))
                         {
-                            connectedHT.Remove(sockTemp);
+                            FConnectedHT.Remove(sockTemp);
                         }
                         else
                         {
                             object val, key = sockTemp;
                             while (true)
                             {
-                                val = connectedHT[key];
+                                val = FConnectedHT[key];
                                 if (sock.Equals(val))
                                 {
-                                    connectedHT[key] = sockTemp;
+                                    FConnectedHT[key] = sockTemp;
                                     break;
                                 }
-                                else if (connectedHT.ContainsKey(val))
+                                else if (FConnectedHT.ContainsKey(val))
                                     key = val;
                                 else    // The chain is broken
                                     break;
@@ -444,7 +432,7 @@ namespace VVVV.Webinterface.HttpServer {
                     }
                 }
             }
-            Monitor.Exit(connectedHT);
+            Monitor.Exit(FConnectedHT);
 
             if (sock != null)
             {
@@ -464,9 +452,6 @@ namespace VVVV.Webinterface.HttpServer {
         #endregion Socket Connection
 
 
-
-
-
         #region request handle
 
         /// <summary>
@@ -475,41 +460,41 @@ namespace VVVV.Webinterface.HttpServer {
         /// <param name="asynConnect"> Contains the SocketInformationObjekt</param>
         public void OnClientConnectCallback(IAsyncResult asynConnect)
         {
-                allDone.Set();
+                FAllDone.Set();
 
                 //The Socket witch connects to the Server
-                Socket tClientSocket = mMainSocket.EndAccept(asynConnect);
+                Socket ClientSocket = FTcpListen.EndAcceptSocket(asynConnect);
 
                 //Adding the Socket into the Socketlist of the Server 
-                mClientSocketList.Add(tClientSocket);
+                FClientSocketList.Add(ClientSocket);
                 
                 //Adding Time and Socket to the SocketInformation Object 
-                SocketInformation tSocketInformations = new SocketInformation(tClientSocket, tClientSocket.RemoteEndPoint.ToString());
+                SocketInformation tSocketInformations = new SocketInformation(ClientSocket, ClientSocket.RemoteEndPoint.ToString());
 
 
-                Stopwatch myStop = new Stopwatch();
-                myStop.Start();
+                Stopwatch ProcessingTime = new Stopwatch();
+                ProcessingTime.Start();
 
-                tSocketInformations.StopWatch = myStop;
+                tSocketInformations.StopWatch = ProcessingTime;
                 
 
                 //Shows if the Socket is stille connected and begins to receive data in calling the ReceiveSocketDataCallback function
                 try
                 {
-                    Interlocked.Increment(ref sockCount);
-                    Monitor.Enter(connectedSocks);
-                    connectedSocks.Add(tSocketInformations);
-                    Monitor.Exit(connectedSocks);
+                    Interlocked.Increment(ref FSockCount);
+                    Monitor.Enter(ConnectedSockets);
+                    ConnectedSockets.Add(tSocketInformations);
+                    Monitor.Exit(ConnectedSockets);
 
-                    tClientSocket.BeginReceive(tSocketInformations.Buffer, 0, tSocketInformations.BufferSize, 0, new AsyncCallback(ReceiveSocketDataCallback), tSocketInformations);
+                    ClientSocket.BeginReceive(tSocketInformations.Buffer, 0, tSocketInformations.BufferSize, 0, new AsyncCallback(ReceiveSocketDataCallback), tSocketInformations);
 
 
-                    if (sockCount > this.maxSockets)
+                    if (FSockCount > FMaxSockets)
                     {
                         RemoveSocket(tSocketInformations);
-                        tClientSocket.Shutdown(SocketShutdown.Both);
-                        tClientSocket.Close();
-                        tClientSocket = null;
+                        ClientSocket.Shutdown(SocketShutdown.Both); 
+                        ClientSocket.Close();
+                        ClientSocket = null;
                         tSocketInformations = null;
                     }
 
@@ -537,66 +522,82 @@ namespace VVVV.Webinterface.HttpServer {
         /// <param name="asynReceive">Contains the SocketInformationObjekt</param>
         public void ReceiveSocketDataCallback(IAsyncResult asynReceive)
         {
-            String Content = String.Empty;
-            SocketInformation tSocketInformation = (SocketInformation)asynReceive.AsyncState;
-
+            Debug.WriteLine("-------------ReceiveSocketData----------------" + Environment.NewLine);
+            //gets the SocketInformatinObject form the IAsyncResult Object
+            SocketInformation SocketInformation = (SocketInformation)asynReceive.AsyncState;
             try
             {
-                //////Debug.WriteLine("-------------ReceiveSocketData----------------" + Environment.NewLine);
-                
-                //gets the SocketInformatinObject form the IAsyncResult Object
-                
-
                 //Looks how many bytes are to read from the socket
-                int bytesRead = tSocketInformation.ClientSocket.EndReceive(asynReceive);
+                int bytesToRead = SocketInformation.ClientSocket.EndReceive(asynReceive);
+                //Hold the Received Bytes as string
+                string ReceivedString = Encoding.UTF8.GetString(SocketInformation.Buffer, 0, bytesToRead);
+                SocketInformation.AppendRequest(ReceivedString);
 
-                //Looks if all Data is received from the Socket
-                if (bytesRead > 0)
+                if (bytesToRead > 0 && bytesToRead == SocketInformation.BufferSize)
                 {
-                    //Adding the received data to the SocketInformation Object 
-                    Monitor.Enter(tSocketInformation);
-                    tSocketInformation.AppendRequest(Encoding.UTF8.GetString(tSocketInformation.Buffer, 0, bytesRead));
-                    Monitor.Exit(tSocketInformation);
+
+                    SocketInformation.ClientSocket.BeginReceive( SocketInformation.Buffer, 0, SocketInformation.BufferSize, 0, new AsyncCallback(ReceiveSocketDataCallback), SocketInformation);
+                    
+                }
+                else
+                {
+                    ProccessRequest(SocketInformation);   
+                }
+
+
+                #region Outdated
+
+                ////Looks if all Data is received from the Socket
+                //if (bytesToRead > 0)
+                //{
+                //    //Adding the received data to the SocketInformation Object 
+                //    Monitor.Enter(tSocketInformation);
+                //    tSocketInformation.AppendRequest(Encoding.UTF8.GetString(tSocketInformation.Buffer, 0, bytesToRead));
+                //    Monitor.Exit(tSocketInformation);
 
 
                     
-                    Content = tSocketInformation.Request.ToString();
+                //    Content = tSocketInformation.Request.ToString();
 
-                    //looks if alle data is received from the Socket
-                    // ?? sind damit alle Fälle abgedeckt (//Debuggen);
-                    if ((Content.Length > 0) && ((Content[0] != '<') ||
-                        ((Content[0] == '<') && (Content.IndexOf("</message>") > -1))))
-                    {
+                //    //looks if alle data is received from the Socket
+                //    // ?? sind damit alle Fälle abgedeckt (//Debuggen);
+                //    if ((Content.Length > 0) && ((Content[0] != '<') ||
+                //        ((Content[0] == '<') && (Content.IndexOf("</message>") > -1))))
+                //    {
 
-                        tSocketInformation.TimeStamp = DateTime.Now;
-                        try
-                        {
-                            //Request tRequest = new Request(tSocketInformation.Request.ToString(), mFoldersToServ, tSocketInformation, mPostMessages);
-                            //tSocketInformation.RequestObject = tRequest;
-                            //tSocketInformation.ResponseAsBytes = tRequest.Response.TextInBytes;
+                //        tSocketInformation.TimeStamp = DateTime.Now;
+                //        try
+                //        {
+                //            RequestSocket tRequest = new RequestSocket(FFoldersToServ, tSocketInformation, FPostMessages);
+                //            tSocketInformation.RequestObject = tRequest;
+                //            tSocketInformation.ResponseAsBytes = tRequest.Response.TextInBytes;
 
-                        }
-                        catch (Exception ex)
-                        {
-                            string ErrorMessage = ex.Message;
-                            Response ErrorResponse = new Response("unkown.html", Encoding.UTF8.GetBytes("Error by creating an Response." + Environment.NewLine + ErrorMessage), new HTTPStatusCode("").Code500);
-                            tSocketInformation.ResponseAsBytes = ErrorResponse.TextInBytes;
-                        }
+                //        }
+                //        catch (Exception ex)
+                //        {
+                //            string ErrorMessage = ex.Message;
+                //            Response ErrorResponse = new Response("unkown.html", Encoding.UTF8.GetBytes("Error by creating an Response." + Environment.NewLine + ErrorMessage), new HTTPStatusCode("").Code500);
+                //            tSocketInformation.ResponseAsBytes = ErrorResponse.TextInBytes;
+                //        }
                         
-                        //SendData(tSocketInformation);
-                        tSocketInformation.ClientSocket.BeginSend(tSocketInformation.ResponseAsBytes, 0, tSocketInformation.ResponseAsBytes.Length, 0, new AsyncCallback(SendDataCallback), tSocketInformation);
-                    }
-                    else
-                    {
-                        //if not all Data is received read next block
-                       tSocketInformation.ClientSocket.BeginReceive(tSocketInformation.Buffer, 0, tSocketInformation.BufferSize, 0, 
-                       new AsyncCallback(ReceiveSocketDataCallback), tSocketInformation);
-                    }
-                }
-             }
+                //        //SendData(tSocketInformation);
+                //        tSocketInformation.ClientSocket.BeginSend(tSocketInformation.ResponseAsBytes, 0, tSocketInformation.ResponseAsBytes.Length, 0, new AsyncCallback(SendDataCallback), tSocketInformation);
+                //    }
+                //    else
+                //    {
+                //        //if not all Data is received read next block
+                //       tSocketInformation.ClientSocket.BeginReceive(tSocketInformation.Buffer, 0, tSocketInformation.BufferSize, 0, 
+                //       new AsyncCallback(ReceiveSocketDataCallback), tSocketInformation);
+                //    }
+                //}
+
+                #endregion Outdated
+
+
+            }
             catch (System.Net.Sockets.SocketException es)
             {
-                RemoveSocket(tSocketInformation);
+                RemoveSocket(SocketInformation);
                 if (es.ErrorCode != 64)
                 {
                     ////Debug.WriteLine(string.Format("ReadCallback Socket Exception: {0}, {1}.", es.ErrorCode, es.ToString()));
@@ -605,7 +606,7 @@ namespace VVVV.Webinterface.HttpServer {
             }
             catch (Exception e)
             {
-                RemoveSocket(tSocketInformation);
+                RemoveSocket(SocketInformation);
                 if (e.GetType().FullName != "System.ObjectDisposedException")
                 {
                     Console.WriteLine(string.Format("ReadCallback Exception: {0}.", e.ToString()));
@@ -614,9 +615,32 @@ namespace VVVV.Webinterface.HttpServer {
 
         }
 
-        private void SendData(SocketInformation pSocketInformations)
+        private void ProccessRequest(SocketInformation SocketInformation)
         {
-            
+                                //check if received string is valid HTTP head
+                    Regex HttpHeadRegex = new Regex("\r\n\r\n");
+                    MatchCollection Matches = HttpHeadRegex.Matches(SocketInformation.Request);
+                    if (Matches.Count > 0)
+                    {
+                        string[] HttpParts = HttpHeadRegex.Split(SocketInformation.Request);
+                        string HttpHead = HttpParts[0];
+                        string HttpBody = HttpParts[1];
+
+                        Debug.WriteLine(HttpHead);
+                        Debug.WriteLine(HttpBody);
+
+
+
+
+                        RequestSocket tRequest = new RequestSocket(FFoldersToServ, SocketInformation, FPostMessages);
+                        SocketInformation.RequestObject = tRequest;
+                        SocketInformation.ResponseAsBytes = tRequest.Response.TextInBytes;
+                        SocketInformation.ClientSocket.BeginSend(SocketInformation.ResponseAsBytes, 0, SocketInformation.ResponseAsBytes.Length, 0, new AsyncCallback(SendDataCallback), SocketInformation);
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Error");
+                    }
         }
 
 
@@ -649,13 +673,17 @@ namespace VVVV.Webinterface.HttpServer {
            }
             catch ( Exception ex )
             {
-
                 string ErrorMessage = ex.Message;
             }
         }
 
 
         #endregion request Handle
+
+
+        private void AddErrorMessage(string Message)
+        {
+        }
        
     }
 }

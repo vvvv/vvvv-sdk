@@ -57,7 +57,7 @@ namespace VVVV.Nodes.Http
     /// <summary>
     /// node to put all html nodes to one html page
     /// </summary>
-    public class Renderer : IPlugin, IDisposable, IPluginConnections
+    public class RendererHTTPListener : IPlugin, IDisposable, IPluginConnections
     {
 
 
@@ -124,7 +124,7 @@ namespace VVVV.Nodes.Http
         /// Transformer constructer 
         /// nothing to declar in there
         /// </summary>
-        public Renderer()
+        public RendererHTTPListener()
         {
             //mServer = new VVVV.Webinterface.HttpServer.Server(mPortNumber, mBacklog);
             FServer = new ListenerTest(mPortNumber);
@@ -200,7 +200,7 @@ namespace VVVV.Nodes.Http
         /// It gives your base class the opportunity to finalize.
         /// Do not provide destructors in types derived from this class.
         /// </summary>
-        ~Renderer()
+        ~RendererHTTPListener()
         {
             // Do not re-create Dispose clean-up code here.
             // Calling Dispose(false) is optimal in terms of
@@ -228,7 +228,7 @@ namespace VVVV.Nodes.Http
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "Renderer";							//use CamelCaps and no spaces
                 Info.Category = "HTTP";						    //try to use an existing one
-                Info.Version = "";						//versions are optional. leave blank if not needed
+                Info.Version = "C# Listener";						//versions are optional. leave blank if not needed
                 Info.Help = "";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
