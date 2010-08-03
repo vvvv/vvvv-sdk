@@ -1,0 +1,69 @@
+﻿using System;
+using VVVV.PluginInterfaces.V1;
+
+namespace VVVV.PluginInterfaces.V2.Input
+{
+	/// <summary>
+	/// Description of GenericInputPin.
+	/// </summary>
+	public class GenericInputPin<T> : ObservablePin<T>, IPinUpdater
+	{
+		protected INodeIn FNodeIn;
+		protected IGenericIO<T> FUpstreamInterface;
+		
+		public GenericInputPin(IPluginHost host, InputAttribute attribute)
+		{
+			host.CreateNodeInput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FNodeIn);
+			FNodeIn.SetSubType(GenericNodeIO<T>.GUID, GenericNodeIO<T>.FriendlyName);
+			
+			FNodeIn.SetPinUpdater(this);
+
+		}
+		
+		public override void Connect()
+		{
+			INodeIOBase usI;
+			FNodeIn.GetUpstreamInterface(out usI);
+			FUpstreamInterface = usI as IGenericIO<T>;
+		}
+		
+		public override void Disconnect()
+		{
+			FUpstreamInterface = null;
+		}
+		
+		public override int SliceCount 
+		{
+			get
+			{
+				return FNodeIn.SliceCount;
+			}
+			set
+			{
+				throw new NotImplementedException();
+			}
+		}
+		
+		public override bool IsChanged 
+		{
+			get 
+			{
+				return FNodeIn.PinIsChanged;
+			}
+		}
+		
+		public override T this[int index] 
+		{
+			get 
+			{
+				int usS;
+				FNodeIn.GetUpsreamSlice(index, out usS);
+				return FUpstreamInterface.GetSlice(usS);
+			}
+			set 
+			{
+				throw new NotImplementedException();
+			}
+		}
+	}
+}

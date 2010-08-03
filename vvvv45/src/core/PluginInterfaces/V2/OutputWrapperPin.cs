@@ -52,7 +52,7 @@ namespace VVVV.PluginInterfaces.V2
 			else if (type == typeof(EnumEntry))
 				FSpread = new DynamicEnumOutputPin(host, attribute) as ISpread<T>;
 			else
-				throw new NotImplementedException(string.Format("OutputPin of type '{0}' not supported.", type));
+				FSpread = new GenericOutputPin<T>(host, attribute) as ISpread<T>;
 		}
 	}
 }
