@@ -59,6 +59,18 @@ namespace VVVV.PluginInterfaces.V2
 			else if (type == typeof(Vector4))
 				dimension = 4;
 			
+			//as dimension is set now, check default values
+			if(attribute.DefaultValues.Length < dimension)
+			{
+				var newDefaults = new double[dimension];
+				for (int i=0; i<attribute.DefaultValues.Length; i++) 
+				{
+					newDefaults[i] = attribute.DefaultValues[i];
+				}
+				
+				attribute.DefaultValues = newDefaults;
+			}
+			
 			if (minValue == PinAttribute.DefaultMinValue)
 			{
 				if (type == typeof(bool))
