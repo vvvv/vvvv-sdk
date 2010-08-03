@@ -24,7 +24,17 @@ namespace VVVV.PluginInterfaces.V2
 		
 		public virtual void Update()
 		{
-			// DO nothing
+			// DO nothing, override in subclass if needed
+		}
+		
+		public virtual void Connect()
+		{
+			// DO nothing, override in subclass if needed
+		}
+		
+		public virtual void Disconnect()
+		{
+			// DO nothing, override in subclass is needed
 		}
 		
 		public IEnumerator<T> GetEnumerator()
