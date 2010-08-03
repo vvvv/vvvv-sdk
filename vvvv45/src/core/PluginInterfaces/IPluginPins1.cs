@@ -31,6 +31,10 @@ namespace VVVV.PluginInterfaces.V1
 	{
 	    //Called by the host before Evaluate for Inputs and after Evaluate for Outputs.
 	    void Update();
+	    
+	    void Connect();
+	    
+	    void Disconnect();
 	}
 	
 	/// <summary>
