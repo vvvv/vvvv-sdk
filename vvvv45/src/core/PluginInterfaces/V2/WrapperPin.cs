@@ -12,17 +12,25 @@ namespace VVVV.PluginInterfaces.V2
 {
 	public abstract class WrapperPin<T> : ISpread<T>
 	{
-		protected ISpread<T> FSpread;
+		public Pin<T> FPin;
 		
-		public T this[int index] 
+		public Pin<T> Pin
 		{
-			get 
+			get
 			{
-				return FSpread[index];
+				return FPin;
+			}
+		}
+		
+		public T this[int index]
+		{
+			get
+			{
+				return FPin[index];
 			}
 			set 
 			{
-				FSpread[index] = value;
+				FPin[index] = value;
 			}
 		}
 		
@@ -30,17 +38,17 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get 
 			{
-				return FSpread.SliceCount;
+				return FPin.SliceCount;
 			}
 			set 
 			{
-				FSpread.SliceCount = value;
+				FPin.SliceCount = value;
 			}
 		}
 
 		public IEnumerator<T> GetEnumerator()
 		{
-			return FSpread.GetEnumerator();
+			return FPin.GetEnumerator();
 		}
 		
 		IEnumerator IEnumerable.GetEnumerator()
