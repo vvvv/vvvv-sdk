@@ -4,7 +4,7 @@ using VVVV.PluginInterfaces.V2.Config;
 
 namespace VVVV.PluginInterfaces.V2.Input
 {
-	public class InputSpreadList<T> : SpreadList<T>, IPinUpdater
+	public class InputSpreadList<T> : SpreadList<T>
 	{
 		protected SpreadListConfigPin FConfigPin;
 		
