@@ -20,6 +20,14 @@ namespace VVVV.PluginInterfaces.V2.Output
 			FData = new double[4];
 		}
 		
+		public override IPluginIO PluginIO 
+		{
+			get
+			{
+				return FColorOut;
+			}
+		}
+		
 		public override int SliceCount 
 		{
 			get 

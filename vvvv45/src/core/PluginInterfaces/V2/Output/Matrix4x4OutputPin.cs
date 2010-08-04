@@ -22,6 +22,14 @@ namespace VVVV.PluginInterfaces.V2.Output
 			FData = new float[16];
 		}
 		
+		public override IPluginIO PluginIO 
+		{
+			get
+			{
+				return FTransformOut;
+			}
+		}
+		
 		public override int SliceCount 
 		{
 			get 

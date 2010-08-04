@@ -11,7 +11,7 @@ namespace VVVV.PluginInterfaces.V2
 		T GetSlice(int slice);
 	}
 
-	public class GenericNodeIO<T>
+	public class GenericIOInfo<T>
 	{
 		private static Guid[] FGuid;
 		public static Guid[] GUID

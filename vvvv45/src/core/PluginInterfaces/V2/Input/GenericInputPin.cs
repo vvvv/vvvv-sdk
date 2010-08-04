@@ -3,9 +3,6 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.Input
 {
-	/// <summary>
-	/// Description of GenericInputPin.
-	/// </summary>
 	public class GenericInputPin<T> : ObservablePin<T>, IPinUpdater
 	{
 		protected INodeIn FNodeIn;
@@ -14,10 +11,18 @@ namespace VVVV.PluginInterfaces.V2.Input
 		public GenericInputPin(IPluginHost host, InputAttribute attribute)
 		{
 			host.CreateNodeInput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FNodeIn);
-			FNodeIn.SetSubType(GenericNodeIO<T>.GUID, GenericNodeIO<T>.FriendlyName);
+			FNodeIn.SetSubType(GenericIOInfo<T>.GUID, GenericIOInfo<T>.FriendlyName);
 			
 			FNodeIn.SetPinUpdater(this);
 
+		}
+		
+		public override IPluginIO PluginIO 
+		{
+			get
+			{
+				return FNodeIn;
+			}
 		}
 		
 		public override void Connect()

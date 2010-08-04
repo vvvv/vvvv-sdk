@@ -1,12 +1,4 @@
-﻿/*
- * Erstellt mit SharpDevelop.
- * Benutzer: TF
- * Datum: 04.08.2010
- * Zeit: 00:40
- * 
- * Sie können diese Vorlage unter Extras > Optionen > Codeerstellung > Standardheader ändern.
- */
-using System;
+﻿using System;
 using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.Output
@@ -24,12 +16,20 @@ namespace VVVV.PluginInterfaces.V2.Output
 		public GenericOutputPin(IPluginHost host, OutputAttribute attribute)
 		{
 			host.CreateNodeOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FNodeOut);
-			FNodeOut.SetSubType(GenericNodeIO<T>.GUID, GenericNodeIO<T>.FriendlyName);
+			FNodeOut.SetSubType(GenericIOInfo<T>.GUID, GenericIOInfo<T>.FriendlyName);
 			FNodeOut.SetInterface(this);
 			
 			FNodeOut.SetPinUpdater(this);
 			FData = new T[1];
 
+		}
+		
+		public override IPluginIO PluginIO 
+		{
+			get
+			{
+				return FNodeOut;
+			}
 		}
 		
 		public override int SliceCount 

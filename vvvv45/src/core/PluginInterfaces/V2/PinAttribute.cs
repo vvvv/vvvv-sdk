@@ -31,7 +31,7 @@ namespace VVVV.PluginInterfaces.V2
 		public string Name
 		{
 			get;
-			private set;
+			set;
 		}
 		
 		public TPinVisibility Visibility

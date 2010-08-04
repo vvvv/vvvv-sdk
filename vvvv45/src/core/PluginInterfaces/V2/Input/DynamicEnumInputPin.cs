@@ -15,6 +15,14 @@ namespace VVVV.PluginInterfaces.V2.Input
 			host.CreateEnumInput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FEnumInputPin);
 			FEnumInputPin.SetSubType(FEnumName);
 		}
+		
+		public override IPluginIO PluginIO 
+		{
+			get
+			{
+				return FEnumInputPin;
+			}
+		}
 
 		public override int SliceCount 
 		{

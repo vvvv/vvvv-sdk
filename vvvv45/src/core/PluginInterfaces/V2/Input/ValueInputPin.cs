@@ -48,6 +48,14 @@ namespace VVVV.PluginInterfaces.V2.Input
 			FData = new double[FDimension * 1];
 		}
 		
+		public override IPluginIO PluginIO 
+		{
+			get 
+			{
+				return FValueFastIn;
+			}
+		}
+		
 		public override int SliceCount
 		{
 			get

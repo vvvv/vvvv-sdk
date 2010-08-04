@@ -13,6 +13,14 @@ namespace VVVV.PluginInterfaces.V2.Input
 			FStringIn.SetSubType(attribute.DefaultString, attribute.IsFilename);
 		}
 		
+		public override IPluginIO PluginIO 
+		{
+			get
+			{
+				return FStringIn;
+			}
+		}
+		
 		public override bool IsChanged 
 		{
 			get 

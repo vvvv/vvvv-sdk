@@ -13,6 +13,14 @@ namespace VVVV.PluginInterfaces.V2.Output
 			FStringOut.SetSubType(attribute.DefaultString, attribute.IsFilename);
 		}
 		
+		public override IPluginIO PluginIO 
+		{
+			get
+			{
+				return FStringOut;
+			}
+		}
+		
 		public override int SliceCount 
 		{
 			get 

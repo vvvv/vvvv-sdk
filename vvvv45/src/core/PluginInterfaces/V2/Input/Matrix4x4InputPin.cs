@@ -22,6 +22,14 @@ namespace VVVV.PluginInterfaces.V2.Input
 			FData = new float[16];
 		}
 		
+		public override IPluginIO PluginIO 
+		{
+			get
+			{
+				return FTransformIn;
+			}
+		}
+		
 		public override bool IsChanged 
 		{
 			get 

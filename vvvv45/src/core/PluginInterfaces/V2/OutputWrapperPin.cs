@@ -13,6 +13,14 @@ namespace VVVV.PluginInterfaces.V2
 {
 	public class OutputWrapperPin<T> : WrapperPin<T>
 	{
+		public IPluginIO PluginIO 
+		{ 
+			get
+			{
+				return FPin.PluginIO;
+			}
+		}
+		
 		public OutputWrapperPin(IPluginHost host, OutputAttribute attribute)
 		{
 			Debug.WriteLine(string.Format("Creating output pin '{0}'.", attribute.Name));
@@ -20,39 +28,39 @@ namespace VVVV.PluginInterfaces.V2
 			var type = typeof(T);
 			
 			if (type == typeof(double))
-				FSpread = new DoubleOutputPin(host, attribute) as ISpread<T>;
+				FPin = new DoubleOutputPin(host, attribute) as Pin<T>;
 			else if (type == typeof(float))
-				FSpread = new FloatOutputPin(host, attribute) as ISpread<T>;
+				FPin = new FloatOutputPin(host, attribute) as Pin<T>;
 			else if (type == typeof(int))
-				FSpread = new IntOutputPin(host, attribute) as ISpread<T>;
+				FPin = new IntOutputPin(host, attribute) as Pin<T>;
 			else if (type == typeof(bool))
-				FSpread = new BoolOutputPin(host, attribute) as ISpread<T>;
+				FPin = new BoolOutputPin(host, attribute) as Pin<T>;
 			else if (type == typeof(string))
-				FSpread = new StringOutputPin(host, attribute) as ISpread<T>;
+				FPin = new StringOutputPin(host, attribute) as Pin<T>;
 			else if (type == typeof(RGBAColor))
-				FSpread = new ColorOutputPin(host, attribute) as ISpread<T>;
+				FPin = new ColorOutputPin(host, attribute) as Pin<T>;
 			else if (type == typeof(Matrix4x4))
-				FSpread = new Matrix4x4OutputPin(host, attribute) as ISpread<T>;
+				FPin = new Matrix4x4OutputPin(host, attribute) as Pin<T>;
 			else if (type == typeof(Matrix))
-				FSpread = new SlimDXMatrixOutputPin(host, attribute) as ISpread<T>;
+				FPin = new SlimDXMatrixOutputPin(host, attribute) as Pin<T>;
 			else if (type == typeof(Vector2D))
-				FSpread = new Vector2DOutputPin(host, attribute) as ISpread<T>;
+				FPin = new Vector2DOutputPin(host, attribute) as Pin<T>;
 			else if (type == typeof(Vector3D))
-				FSpread = new Vector3DOutputPin(host, attribute) as ISpread<T>;
+				FPin = new Vector3DOutputPin(host, attribute) as Pin<T>;
 			else if (type == typeof(Vector4D))
-				FSpread = new Vector4DOutputPin(host, attribute) as ISpread<T>;
+				FPin = new Vector4DOutputPin(host, attribute) as Pin<T>;
 			else if (type == typeof(Vector2))
-				FSpread = new Vector2OutputPin(host, attribute) as ISpread<T>;
+				FPin = new Vector2OutputPin(host, attribute) as Pin<T>;
 			else if (type == typeof(Vector3))
-				FSpread = new Vector3OutputPin(host, attribute) as ISpread<T>;
+				FPin = new Vector3OutputPin(host, attribute) as Pin<T>;
 			else if (type == typeof(Vector4))
-				FSpread = new Vector4OutputPin(host, attribute) as ISpread<T>;
+				FPin = new Vector4OutputPin(host, attribute) as Pin<T>;
 			else if (type.BaseType == typeof(Enum))
-				FSpread = new EnumOutputPin<T>(host, attribute) as ISpread<T>;
+				FPin = new EnumOutputPin<T>(host, attribute) as Pin<T>;
 			else if (type == typeof(EnumEntry))
-				FSpread = new DynamicEnumOutputPin(host, attribute) as ISpread<T>;
+				FPin = new DynamicEnumOutputPin(host, attribute) as Pin<T>;
 			else
-				FSpread = new GenericOutputPin<T>(host, attribute) as ISpread<T>;
+				FPin = new GenericOutputPin<T>(host, attribute) as Pin<T>;
 		}
 	}
 }

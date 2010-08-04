@@ -20,6 +20,14 @@ namespace VVVV.PluginInterfaces.V2.Input
 			FEnumInputPin.SetSubType(FEnumType.Name);
 		}
 
+		public override IPluginIO PluginIO 
+		{
+			get
+			{
+				return FEnumInputPin;
+			}
+		}
+		
 		public override int SliceCount 
 		{
 			get

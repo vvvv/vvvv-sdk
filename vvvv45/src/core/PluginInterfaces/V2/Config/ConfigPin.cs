@@ -7,6 +7,14 @@ namespace VVVV.PluginInterfaces.V2.Config
 	{
 		protected bool FIsChanged;
 		
+		public override IPluginIO PluginIO
+		{
+			get
+			{
+				return PluginConfig;
+			}
+		}
+		
 		protected abstract IPluginConfig PluginConfig
 		{
 			get;

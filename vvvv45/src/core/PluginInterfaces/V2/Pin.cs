@@ -10,6 +10,8 @@ namespace VVVV.PluginInterfaces.V2
 {
 	public abstract class Pin<T> : ISpread<T>
 	{
+		public abstract IPluginIO PluginIO { get; }
+		
 		public abstract T this[int index]
 		{
 			get;
@@ -22,6 +24,7 @@ namespace VVVV.PluginInterfaces.V2
 			set;
 		}
 		
+		//prepare for IPinUpdater
 		public virtual void Update()
 		{
 			// DO nothing, override in subclass if needed

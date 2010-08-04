@@ -20,33 +20,33 @@ namespace VVVV.PluginInterfaces.V2
 			var type = typeof(T);
 			
 			if (type == typeof(double))
-				FSpread = new DoubleConfigPin(host, attribute) as ISpread<T>;
+				FPin = new DoubleConfigPin(host, attribute) as Pin<T>;
 			else if (type == typeof(float))
-				FSpread = new FloatConfigPin(host, attribute) as ISpread<T>;
+				FPin = new FloatConfigPin(host, attribute) as Pin<T>;
 			else if (type == typeof(int))
-				FSpread = new IntConfigPin(host, attribute) as ISpread<T>;
+				FPin = new IntConfigPin(host, attribute) as Pin<T>;
 			else if (type == typeof(bool))
-				FSpread = new BoolConfigPin(host, attribute) as ISpread<T>;
+				FPin = new BoolConfigPin(host, attribute) as Pin<T>;
 			else if (type == typeof(string))
-				FSpread = new StringConfigPin(host, attribute) as ISpread<T>;
+				FPin = new StringConfigPin(host, attribute) as Pin<T>;
 			else if (type == typeof(RGBAColor))
-				FSpread = new ColorConfigPin(host, attribute) as ISpread<T>;
+				FPin = new ColorConfigPin(host, attribute) as Pin<T>;
 			else if (type == typeof(Vector2D))
-				FSpread = new Vector2DConfigPin(host, attribute) as ISpread<T>;
+				FPin = new Vector2DConfigPin(host, attribute) as Pin<T>;
 			else if (type == typeof(Vector3D))
-				FSpread = new Vector3DConfigPin(host, attribute) as ISpread<T>;
+				FPin = new Vector3DConfigPin(host, attribute) as Pin<T>;
 			else if (type == typeof(Vector4D))
-				FSpread = new Vector4DConfigPin(host, attribute) as ISpread<T>;
+				FPin = new Vector4DConfigPin(host, attribute) as Pin<T>;
 			else if (type == typeof(Vector2))
-				FSpread = new Vector2ConfigPin(host, attribute) as ISpread<T>;
+				FPin = new Vector2ConfigPin(host, attribute) as Pin<T>;
 			else if (type == typeof(Vector3))
-				FSpread = new Vector3ConfigPin(host, attribute) as ISpread<T>;
+				FPin = new Vector3ConfigPin(host, attribute) as Pin<T>;
 			else if (type == typeof(Vector4))
-				FSpread = new Vector4ConfigPin(host, attribute) as ISpread<T>;
+				FPin = new Vector4ConfigPin(host, attribute) as Pin<T>;
 			else if (type.BaseType == typeof(Enum))
-				FSpread = new EnumConfigPin<T>(host, attribute) as ISpread<T>;
+				FPin = new EnumConfigPin<T>(host, attribute) as Pin<T>;
 			else if (type == typeof(EnumEntry))
-				FSpread = new DynamicEnumConfigPin(host, attribute) as ISpread<T>;
+				FPin = new DynamicEnumConfigPin(host, attribute) as Pin<T>;
 			else
 				throw new NotImplementedException(string.Format("ConfigPin of type '{0}' not supported.", type));
 		}
