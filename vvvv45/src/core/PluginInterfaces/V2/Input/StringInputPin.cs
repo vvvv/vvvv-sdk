@@ -47,7 +47,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			{
 				string value;
 				FStringIn.GetString(index, out value);
-				return value;
+				return value == null ? "" : value;
 			}
 			set 
 			{
