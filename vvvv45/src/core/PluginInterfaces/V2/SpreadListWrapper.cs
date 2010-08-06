@@ -12,9 +12,9 @@ namespace VVVV.PluginInterfaces.V2
 	/// <summary>
 	/// Intermediate type to delegate the pin group creation
 	/// </summary>
-	public class SpreadListWrapper<T, TSub> : ISpread<T>
+	public class SpreadListWrapper<T> : ISpread<ISpread<T>>
 	{
-		protected ISpread<T> FSpreadList;
+		protected ISpread<ISpread<T>> FSpreadList;
 		
 		public SpreadListWrapper(IPluginHost host, PinAttribute attribute)
 		{
@@ -23,7 +23,7 @@ namespace VVVV.PluginInterfaces.V2
 			{
 				Debug.WriteLine(string.Format("Creating input spread list '{0}'.", attribute.Name));
 
-				FSpreadList = new InputSpreadList<T, TSub>(host, attribute as InputAttribute) as ISpread<T>;
+				FSpreadList = new InputSpreadList<T>(host, attribute as InputAttribute) as ISpread<ISpread<T>>;
 			}
 			
 			//output pin group
@@ -31,11 +31,11 @@ namespace VVVV.PluginInterfaces.V2
 			{
 				Debug.WriteLine(string.Format("Creating output spread list '{0}'.", attribute.Name));
 
-				FSpreadList = new OutputSpreadList<T, TSub>(host, attribute as OutputAttribute) as ISpread<T>;
+				FSpreadList = new OutputSpreadList<T>(host, attribute as OutputAttribute) as ISpread<ISpread<T>>;
 			}
 		}
 		
-		public T this[int index]
+		public ISpread<T> this[int index]
 		{
 			get
 			{
@@ -59,7 +59,7 @@ namespace VVVV.PluginInterfaces.V2
 			}
 		}
 		
-		public IEnumerator<T> GetEnumerator()
+		public IEnumerator<ISpread<T>> GetEnumerator()
 		{
 			return FSpreadList.GetEnumerator();
 		}

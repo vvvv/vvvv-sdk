@@ -3,7 +3,7 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.Input
 {
-	public class InputSpreadList<T, TSub> : SpreadList<T, TSub>
+	public class InputSpreadList<T> : SpreadList<T>
 	{
 		public InputSpreadList(IPluginHost host, InputAttribute attribute)
 			: base(host, attribute)
@@ -11,18 +11,18 @@ namespace VVVV.PluginInterfaces.V2.Input
 		}
 		
 		//create a pin at position
-		protected override T CreatePin(int pos)
+		protected override ISpread<T> CreatePin(int pos)
 		{
 			//create pin name
 			var origName = FAttribute.Name;
 			FAttribute.Name = origName + " " + pos;
 			
-			var ret	= new InputWrapperPin<TSub>(FHost, FAttribute as InputAttribute).Pin;
+			var ret	= new InputWrapperPin<T>(FHost, FAttribute as InputAttribute).Pin;
 			
 			//set attribute name back
 			FAttribute.Name = origName;
 			
-			return (T)(object)ret;
+			return ret;
 		}
 		
 	}

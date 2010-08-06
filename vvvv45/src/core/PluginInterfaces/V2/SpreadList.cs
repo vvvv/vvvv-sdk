@@ -9,9 +9,9 @@ namespace VVVV.PluginInterfaces.V2
 	/// <summary>
 	/// base class for spread lists
 	/// </summary>
-	public abstract class SpreadList<T, TSub> : ISpread<T>
+	public abstract class SpreadList<T> : ISpread<ISpread<T>>
 	{
-		protected T[] FPins;
+		protected ISpread<T>[] FPins;
 		protected IPluginHost FHost;
 		protected PinAttribute FAttribute;
 		protected SpreadListConfigPin FConfigPin;
@@ -21,7 +21,7 @@ namespace VVVV.PluginInterfaces.V2
 			//store fields
 			FHost = host;
 			FAttribute = attribute;
-			FPins = new T[0];
+			FPins = new ISpread<T>[0];
 			
 			//create config pin
 			var att = new ConfigAttribute(FAttribute.Name + " Pin Count");
@@ -44,7 +44,7 @@ namespace VVVV.PluginInterfaces.V2
 				var oldPins = FPins;
 				
 				//create new array
-				FPins = new T[count];
+				FPins = new ISpread<T>[count];
 				
 				//copy/create pins
 				for (int i = 0; i<count; i++)
@@ -62,7 +62,7 @@ namespace VVVV.PluginInterfaces.V2
 				var oldPins = FPins;
 				
 				//create new array
-				FPins = new T[count];
+				FPins = new ISpread<T>[count];
 				
 				//copy/delete pins
 				for (int i = 0; i<oldPins.Length; i++)
@@ -76,7 +76,7 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		//the actual pin creation
-		protected abstract T CreatePin(int pos);
+		protected abstract ISpread<T> CreatePin(int pos);
 		
 		//delete a specific pin
 		protected void DeletePin(IPluginIO pin)
@@ -84,7 +84,7 @@ namespace VVVV.PluginInterfaces.V2
 			FHost.DeletePin(pin);
 		}
 		
-		public T this[int index]
+		public ISpread<T> this[int index]
 		{
 			get
 			{
@@ -108,9 +108,9 @@ namespace VVVV.PluginInterfaces.V2
 			}
 		}
 
-		public IEnumerator<T> GetEnumerator()
+		public IEnumerator<ISpread<T>> GetEnumerator()
 		{
-			return (IEnumerator<T>)FPins.GetEnumerator();
+			return (IEnumerator<ISpread<T>>)FPins.GetEnumerator();
 		}
 		
 		IEnumerator IEnumerable.GetEnumerator()
