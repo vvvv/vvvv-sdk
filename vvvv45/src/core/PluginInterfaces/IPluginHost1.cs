@@ -34,7 +34,8 @@ namespace VVVV.PluginInterfaces.V1
 	public interface IEffectHost : IAddonHost
 	{
 		void SetEffect(string filename, string code);
-	    string GetErrors();
+	    string GetParameterDescription();
+		string GetErrors();	    
 	}
 	#endregion IEffectHost
     
