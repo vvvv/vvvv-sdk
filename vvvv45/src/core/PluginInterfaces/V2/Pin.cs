@@ -8,7 +8,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.PluginInterfaces.V2
 {
-	public abstract class Pin<T> : ISpread<T>
+	public abstract class Pin<T> : ISpread<T>, IPluginIOProvider
 	{
 		public abstract IPluginIO PluginIO { get; }
 		

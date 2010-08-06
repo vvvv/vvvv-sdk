@@ -1,30 +1,121 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2.Config;
 
 namespace VVVV.PluginInterfaces.V2
 {
 	/// <summary>
 	/// base class for spread lists
 	/// </summary>
-	public class SpreadList<T> : ISpreadList<T>
+	public abstract class SpreadList<T, TSub> : ISpread<T>
 	{
-		protected Pin<T>[] FPins;
+		protected T[] FPins;
 		protected IPluginHost FHost;
 		protected PinAttribute FAttribute;
+		protected SpreadListConfigPin FConfigPin;
 		
 		public SpreadList(IPluginHost host, PinAttribute attribute)
 		{
+			//store fields
 			FHost = host;
 			FAttribute = attribute;
-			FPins = new Pin<T>[0];
-		}
+			FPins = new T[0];
 			
-		public ISpread<T>[] Spreads 
-		{ 
+			//create config pin
+			var att = new ConfigAttribute(FAttribute.Name + " Pin Count");
+			att.DefaultValue = 2;
+			
+			FConfigPin = new SpreadListConfigPin(FHost, att);
+			FConfigPin.Updated += UpdatePins;
+			
+		}
+		
+		//pin management
+		protected void UpdatePins()
+		{
+			var count = FConfigPin[0];
+			var diff = count - FPins.Length;
+			
+			if (count > FPins.Length)
+			{
+				//store old pins
+				var oldPins = FPins;
+				
+				//create new array
+				FPins = new T[count];
+				
+				//copy/create pins
+				for (int i = 0; i<count; i++)
+				{
+					if (i < oldPins.Length)
+						FPins[i] = oldPins[i];
+					else	
+						FPins[i] = CreatePin(i+1);
+				}
+				
+			}
+			else if (count < FPins.Length)
+			{
+				//store old pins
+				var oldPins = FPins;
+				
+				//create new array
+				FPins = new T[count];
+				
+				//copy/delete pins
+				for (int i = 0; i<oldPins.Length; i++)
+				{
+					if (i < FPins.Length)
+						FPins[i] = oldPins[i];
+					else	
+						DeletePin((oldPins[i] as IPluginIOProvider).PluginIO);
+				}
+			}
+		}
+		
+		//the actual pin creation
+		protected abstract T CreatePin(int pos);
+		
+		//delete a specific pin
+		protected void DeletePin(IPluginIO pin)
+		{
+			FHost.DeletePin(pin);
+		}
+		
+		public T this[int index]
+		{
 			get
 			{
-				return FPins as ISpread<T>[];
+				return FPins[index];
 			}
+			set 
+			{
+				
+			}
+		}
+		
+		public int SliceCount 
+		{
+			get 
+			{
+				return FPins.Length;
+			}
+			set 
+			{
+				
+			}
+		}
+
+		public IEnumerator<T> GetEnumerator()
+		{
+			return (IEnumerator<T>)FPins.GetEnumerator();
+		}
+		
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
 		}
 	}
 }
