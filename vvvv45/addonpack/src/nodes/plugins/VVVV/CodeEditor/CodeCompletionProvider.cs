@@ -35,6 +35,7 @@ using System.Windows.Forms;
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Gui.CompletionWindow;
 using VVVV.Core.Model;
+using VVVV.Core.Model.FX;
 using Dom = ICSharpCode.SharpDevelop.Dom;
 using NRefactoryResolver = ICSharpCode.SharpDevelop.Dom.NRefactoryResolver.NRefactoryResolver;
 
@@ -123,11 +124,32 @@ namespace VVVV.HDE.CodeEditor
             {
                 //types: everywhere
                 //variable names: only inside of single {}
-                //semantics: only directly after :                
                 //hlsl reference: only inside of single {}
-                ICompletionData[] cData = new ICompletionData[FHLSLReference.Count + FTypeReference.Count];
+                //semantics: only directly after :
                 
+                //parse ParameterDescription
+                var inputs = (FDocument.Project as FXProject).ParameterDescription.Split(new char[1]{'|'});
                 int i = 0;
+                ICompletionData[] cData = new ICompletionData[FHLSLReference.Count + FTypeReference.Count + inputs.Length-1];
+                foreach (var input in inputs)
+                {
+                    if (!string.IsNullOrEmpty(input))
+                    {
+                        var desc = input.Split(new char[1]{','});
+                        string name = "";
+                        if (desc[0] != desc[1])
+                            name = desc[1] + "\n";
+                        
+                        string tooltip = name + desc[2] + "\n";
+                        if (Convert.ToInt32(desc[3]) > 1)
+                            tooltip += desc[6].Replace("(Rows)", "") + desc[3] + "x" + desc[4];
+                        else
+                            tooltip += desc[7] + desc[4].Replace("1", "").Replace("0", "");
+                        cData[i] = new DefaultCompletionData(desc[0], tooltip, 3);
+                        i++;
+                    }
+                }                
+                
                 foreach(var function in FHLSLReference)
                 {
                     cData[i] = new DefaultCompletionData(function.Key, function.Value, 1);

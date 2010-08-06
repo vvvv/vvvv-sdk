@@ -43,6 +43,7 @@ using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Utils;
 
+
 using ICSharpCode.TextEditor;
 using SD = ICSharpCode.TextEditor.Document;
 using Dom = ICSharpCode.SharpDevelop.Dom;
@@ -88,7 +89,6 @@ namespace VVVV.HDE.CodeEditor
 			InitializeComponent();
 			
 			FTextEditorControl.TextEditorProperties.MouseWheelTextZoom = false;
-			var dp = FTextEditorControl.ActiveTextAreaControl.TextArea.GutterMargin.DrawingPosition;
 			
 			var path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), @"..\bin"));
 			var provider = new SD.FileSyntaxModeProvider(path);
@@ -102,6 +102,7 @@ namespace VVVV.HDE.CodeEditor
 			FTextEditorControl.TextEditorProperties.SupportReadOnlySegments = true;
 			FTextEditorControl.Document.FoldingManager.FoldingStrategy = new ParserFoldingStrategy();
 			FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown += TextAreaKeyDownCB;
+			FTextEditorControl.ActiveTextAreaControl.TextArea.MouseClick += new MouseEventHandler(FTextEditorControl_ActiveTextAreaControl_TextArea_MouseClick);
 		
 			FProjectContent = ParseInfoProvider.GetProjectContent(Document.Project);
 			FProjectContent.Language = Dom.LanguageProperties.CSharp;
@@ -121,6 +122,28 @@ namespace VVVV.HDE.CodeEditor
 			FTimer = new System.Windows.Forms.Timer();
 			FTimer.Interval = 500;
 			FTimer.Tick += TimerTickCB;
+		}
+
+		void FTextEditorControl_ActiveTextAreaControl_TextArea_MouseClick(object sender, MouseEventArgs e)
+		{
+		   // if (Control.ModifierKeys != Keys.Control)
+		   //     return;
+		    
+		    var line = FTextEditorControl.Document.GetLineSegment(FTextEditorControl.ActiveTextAreaControl.Caret.Line);
+		    if (line.Words.Count > 0 && line.Words[1].Word == "include")
+		    {
+		        var strings = line.Words.ConvertAll<string>(new Converter<SD.TextWord, string>(delegate(SD.TextWord word) {return word.Word;})); 
+		        var text = string.Join("", strings.ToArray());
+		        text = text.Replace("#include\"", "").Trim(new char[1]{'"'});
+		        
+		        //open include document
+		        foreach (var doc in Document.Project.References)
+		            if (doc.Name == text)
+		            {
+		                (ParseInfoProvider as CodeEditorForm).Open(doc as ITextDocument);
+		                break;		                    
+		            }
+		    }
 		}
 		#endregion constructor/destructor
 		
@@ -304,6 +327,13 @@ namespace VVVV.HDE.CodeEditor
 			}
 
 			FTextEditorControl.Document.CommitUpdate();
+		}
+		
+		public void JumpToLine(int Line)
+		{
+		    FTextEditorControl.ActiveTextAreaControl.Caret.Line = Line;
+		    FTextEditorControl.ActiveTextAreaControl.Caret.Column = 0;
+		    FTextEditorControl.Focus();
 		}
 	}
 }

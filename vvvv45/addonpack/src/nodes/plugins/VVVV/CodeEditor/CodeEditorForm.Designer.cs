@@ -72,6 +72,7 @@ namespace VVVV.HDE.CodeEditor
 			this.FTabControl.SelectedIndex = 0;
 			this.FTabControl.Size = new System.Drawing.Size(881, 454);
 			this.FTabControl.TabIndex = 0;
+			this.FTabControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.FTabControlMouseClick);
 			// 
 			// FErrorTableViewer
 			// 
@@ -79,8 +80,9 @@ namespace VVVV.HDE.CodeEditor
 			this.FErrorTableViewer.Location = new System.Drawing.Point(0, 0);
 			this.FErrorTableViewer.Name = "FErrorTableViewer";
 			this.FErrorTableViewer.RowHeight = 16;
-			this.FErrorTableViewer.Size = new System.Drawing.Size(150, 46);
+			this.FErrorTableViewer.Size = new System.Drawing.Size(881, 157);
 			this.FErrorTableViewer.TabIndex = 0;
+			this.FErrorTableViewer.DoubleClick += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FErrorTableViewerDoubleClick);
 			// 
 			// FImageList
 			// 
@@ -113,11 +115,13 @@ namespace VVVV.HDE.CodeEditor
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private VVVV.HDE.Viewer.WinFormsViewer.TableViewer FErrorTableViewer;
 		internal System.Windows.Forms.ToolStripStatusLabel FStatusLabel;
 		private System.Windows.Forms.ImageList FImageList;
 		private System.Windows.Forms.TabControl FTabControl;
-		private VVVV.HDE.Viewer.WinFormsViewer.TableViewer FErrorTableViewer;
 		private System.Windows.Forms.SplitContainer FSplitContainer;
 		private System.Windows.Forms.StatusStrip FStatusStrip;
+		
+
 	}
 }

@@ -90,7 +90,7 @@ namespace VVVV.HDE.CodeEditor
 		/// </summary>
 		bool TextAreaKeyEventHandler(char key)
 		{
-			if (codeCompletionWindow != null && !codeCompletionWindow.IsDisposed) 
+			if (codeCompletionWindow != null && !codeCompletionWindow.IsDisposed && key != ' ') 
 			{
 				// If completion window is open and wants to handle the key, don't let the text area handle it.
 				return codeCompletionWindow.ProcessKeyEvent(key);

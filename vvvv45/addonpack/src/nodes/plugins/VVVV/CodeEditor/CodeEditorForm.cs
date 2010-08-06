@@ -266,6 +266,43 @@ namespace VVVV.HDE.CodeEditor
 			FBGParser.Parse(item.Project);
 		}
 		
+		void FErrorTableViewerDoubleClick(VVVV.Core.IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
+		{
+		    //open affected document
+		    //(sender.Model as CompilerErrorCollection)[0].
+		    var codeEditor = FTabControl.SelectedTab.Controls[0] as CodeEditor;
+		    var errorFile = Path.GetFileName((sender.Model as CompilerErrorCollection)[0].FileName);
+		    
+		    //special case for effects
+		    if (errorFile.EndsWith(".fxh"))
+		    {
+		        foreach (var fxh in codeEditor.Document.Project.References)
+		            if (fxh.Name == errorFile)
+		        {
+		            Open(fxh as ITextDocument);
+		            break;
+		        }
+		    }		        
+		        
+		    //TODO: check which of the errorlines has been clicked
+		    (FTabControl.SelectedTab.Controls[0] as CodeEditor).JumpToLine((sender.Model as CompilerErrorCollection)[0].Line-1);
+		}
+		
+		void FTabControlMouseClick(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Middle)
+			{
+				for (int i=0; i<FTabControl.TabPages.Count; i++)
+				{
+					if (FTabControl.GetTabRect(i).Contains(e.Location))
+					{
+					    Close((FTabControl.TabPages[i].Controls[0] as CodeEditor).Document);
+						break;
+					}
+				}
+			}
+		}
+		
 		#region IParseInfoProvider Members
 		
 		/// <summary>
@@ -292,6 +329,8 @@ namespace VVVV.HDE.CodeEditor
 				var parseInfo = new Dom.ParseInformation();
 				FParseInfos.Add(doc, parseInfo);
 			}
+			
+			
 			
 			return FParseInfos[doc];
 		}
@@ -359,6 +398,5 @@ namespace VVVV.HDE.CodeEditor
 			base.Dispose(disposing);
 		}
 		#endregion IDisposable
-
 	}
 }
