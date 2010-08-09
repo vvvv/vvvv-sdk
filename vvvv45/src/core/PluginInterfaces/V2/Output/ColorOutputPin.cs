@@ -17,7 +17,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 			FColorOut.SetSubType(new RGBAColor(attribute.DefaultValues), attribute.HasAlpha);
 			FColorOut.SetPinUpdater(this);
 			
-			FData = new double[4];
+			SliceCount = 1;
 		}
 		
 		public override IPluginIO PluginIO 
@@ -36,7 +36,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 			}
 			set 
 			{
-				if (FData.Length != value)
+				if (FSliceCount != value)
 					FData = new double[value * 4];
 				
 				FSliceCount = value;

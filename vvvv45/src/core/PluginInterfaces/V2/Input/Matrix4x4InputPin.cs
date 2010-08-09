@@ -10,7 +10,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 	public class Matrix4x4InputPin : ObservablePin<Matrix4x4>, IPinUpdater
 	{
 		protected ITransformIn FTransformIn;
-		protected int FSliceCount = 1;
+		protected int FSliceCount;
 		protected float[] FData; 
 		
 		public Matrix4x4InputPin(IPluginHost host, InputAttribute attribute)

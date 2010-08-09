@@ -9,7 +9,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 	public class SlimDXMatrixInputPin : ObservablePin<Matrix>, IPinUpdater
 	{
 		protected ITransformIn FTransformIn;
-		protected int FSliceCount = 1;
+		protected int FSliceCount;
 		protected float[] FData; 
 		
 		public SlimDXMatrixInputPin(IPluginHost host, InputAttribute attribute)

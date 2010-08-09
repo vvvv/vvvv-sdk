@@ -8,7 +8,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 	public class ColorInputPin : ObservablePin<RGBAColor>, IPinUpdater
 	{
 		protected IColorIn FColorIn;
-		protected int FSliceCount = 1;
+		protected int FSliceCount;
 		protected double[] FData; 
 		
 		public ColorInputPin(IPluginHost host, InputAttribute attribute)
@@ -17,7 +17,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			FColorIn.SetSubType(new RGBAColor(attribute.DefaultValues), attribute.HasAlpha);
 			FColorIn.SetPinUpdater(this);
 			
-			FData = new double[4];
+			SliceCount = 1;
 		}
 		
 		public override IPluginIO PluginIO 

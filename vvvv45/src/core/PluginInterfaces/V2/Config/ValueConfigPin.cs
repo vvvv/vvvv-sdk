@@ -43,7 +43,7 @@ namespace VVVV.PluginInterfaces.V2.Config
 			
 			FValueConfig.SetPinUpdater(this);
 			
-			FData = new double[FDimension * 1];
+			SliceCount = 1;;
 		}
 		
 		protected override IPluginConfig PluginConfig 
@@ -62,7 +62,7 @@ namespace VVVV.PluginInterfaces.V2.Config
 			}
 			set 
 			{
-				if (FData.Length != value)
+				if (FSliceCount != value)
 					FData = new double[value * FDimension];
 				
 				FSliceCount = value;

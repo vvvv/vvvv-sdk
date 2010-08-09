@@ -13,7 +13,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 	{
 		protected IValueFastIn FValueFastIn;
 		
-		protected int FSliceCount = 1;
+		protected int FSliceCount;
 		protected double[] FData;
 		protected int FDimension;
 		
