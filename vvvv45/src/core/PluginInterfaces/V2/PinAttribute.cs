@@ -105,5 +105,11 @@ namespace VVVV.PluginInterfaces.V2
 			get;
 			set;
 		}
+		
+		public bool IsPinGroup
+		{
+			get;
+			set;	
+		}
 	}
 }

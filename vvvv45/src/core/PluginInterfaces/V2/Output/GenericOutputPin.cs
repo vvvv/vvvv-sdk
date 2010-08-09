@@ -15,8 +15,14 @@ namespace VVVV.PluginInterfaces.V2.Output
 		
 		public GenericOutputPin(IPluginHost host, OutputAttribute attribute)
 		{
+			var guid = typeof(IGenericIO<T>).GUID;
+			var type = typeof(T).FullName;
+			
+			var openType = typeof(IGenericIO<>);
+			var closedType = openType.MakeGenericType(typeof(T));
+			
 			host.CreateNodeOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FNodeOut);
-			FNodeOut.SetSubType(GenericIOInfo<T>.GUID, GenericIOInfo<T>.FriendlyName);
+			FNodeOut.SetSubType(new Guid[]{typeof(T).GUID}, type);
 			FNodeOut.SetInterface(this);
 			
 			FNodeOut.SetPinUpdater(this);

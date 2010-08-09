@@ -10,8 +10,12 @@ namespace VVVV.PluginInterfaces.V2.Input
 		
 		public GenericInputPin(IPluginHost host, InputAttribute attribute)
 		{
+			var guid = typeof(IGenericIO<T>).GUID;
+			var type = typeof(T).FullName;
+			
+			
 			host.CreateNodeInput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FNodeIn);
-			FNodeIn.SetSubType(GenericIOInfo<T>.GUID, GenericIOInfo<T>.FriendlyName);
+			FNodeIn.SetSubType(new Guid[]{typeof(T).GUID}, type);
 			
 			FNodeIn.SetPinUpdater(this);
 

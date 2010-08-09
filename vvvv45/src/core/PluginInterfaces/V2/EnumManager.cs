@@ -78,7 +78,8 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		/// <summary>
-		/// Adds an enum entry to the end of an enum.
+		/// Adds an enum entry to the end of an enum. This method is quite slow,
+		/// it copies all old entries, adds the new one and commits it back to the host.
 		/// </summary>
 		/// <param name="enumName">The enums name.</param>
 		/// <param name="entryName">The new enum entry.</param>

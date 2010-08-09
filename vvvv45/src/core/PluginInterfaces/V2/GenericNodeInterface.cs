@@ -23,8 +23,6 @@ namespace VVVV.PluginInterfaces.V2
 				return FGuid;
 			}
 		}
-		
-		public static string FriendlyName = typeof(T).Name;
 	}
 
 }

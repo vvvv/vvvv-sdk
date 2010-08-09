@@ -14,25 +14,47 @@ namespace VVVV.PluginInterfaces.V2
 	/// </summary>
 	public class SpreadListWrapper<T> : ISpread<ISpread<T>>
 	{
-		protected ISpread<ISpread<T>> FSpreadList;
+		protected ISpread<ISpread<T>> FSpreadList; 
 		
 		public SpreadListWrapper(IPluginHost host, PinAttribute attribute)
 		{
-			//input pin group
-			if (attribute is InputAttribute)
+			if(attribute.IsPinGroup)
 			{
-				Debug.WriteLine(string.Format("Creating input spread list '{0}'.", attribute.Name));
+				//input pin group
+				if (attribute is InputAttribute)
+				{
+					Debug.WriteLine(string.Format("Creating input spread list '{0}'.", attribute.Name));
 
-				FSpreadList = new InputSpreadList<T>(host, attribute as InputAttribute) as ISpread<ISpread<T>>;
+					FSpreadList = new InputSpreadList<T>(host, attribute as InputAttribute) as ISpread<ISpread<T>>;
+				}
+				
+				//output pin group
+				else if(attribute is OutputAttribute)
+				{
+					Debug.WriteLine(string.Format("Creating output spread list '{0}'.", attribute.Name));
+
+					FSpreadList = new OutputSpreadList<T>(host, attribute as OutputAttribute) as ISpread<ISpread<T>>;
+				}
+			}
+			else
+			{
+				//input bin spread
+				if (attribute is InputAttribute)
+				{
+					Debug.WriteLine(string.Format("Creating input bin spread '{0}'.", attribute.Name));
+
+					FSpreadList = new InputBinSpread<T>(host, attribute as InputAttribute) as ISpread<ISpread<T>>;
+				}
+				
+//				//output bin spread
+//				else if(attribute is OutputAttribute)
+//				{
+//					Debug.WriteLine(string.Format("Creating output bin spread '{0}'.", attribute.Name));
+//
+//					FSpreadList = new OutputBinSpread<T>(host, attribute as OutputAttribute) as ISpread<ISpread<T>>;
+//				}
 			}
 			
-			//output pin group
-			else if(attribute is OutputAttribute)
-			{
-				Debug.WriteLine(string.Format("Creating output spread list '{0}'.", attribute.Name));
-
-				FSpreadList = new OutputSpreadList<T>(host, attribute as OutputAttribute) as ISpread<ISpread<T>>;
-			}
 		}
 		
 		public ISpread<T> this[int index]
