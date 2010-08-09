@@ -7,9 +7,12 @@ namespace VVVV.PluginInterfaces.V2.Input
 	{
 		protected INodeIn FNodeIn;
 		protected IGenericIO<T> FUpstreamInterface;
+		protected IGenericIO<T> FDefaultInterface;
 		
 		public GenericInputPin(IPluginHost host, InputAttribute attribute)
 		{
+			FDefaultInterface = new GenericIO<T>();
+			
 			var guid = typeof(IGenericIO<T>).GUID;
 			var type = typeof(T).FullName;
 			
@@ -19,6 +22,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			
 			FNodeIn.SetPinUpdater(this);
 
+			FUpstreamInterface = FDefaultInterface;
 		}
 		
 		public override IPluginIO PluginIO 
@@ -38,7 +42,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 		
 		public override void Disconnect()
 		{
-			FUpstreamInterface = null;
+			FUpstreamInterface = FDefaultInterface;
 		}
 		
 		public override int SliceCount 

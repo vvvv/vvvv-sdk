@@ -10,6 +10,14 @@ namespace VVVV.PluginInterfaces.V2
 	{
 		T GetSlice(int slice);
 	}
+	
+	public class GenericIO<T> : IGenericIO<T>
+	{
+		public T GetSlice(int slice)
+		{
+			return default(T);
+		}
+	}
 
 	public class GenericIOInfo<T>
 	{

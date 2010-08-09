@@ -17,7 +17,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 			
 			FTransformOut.SetPinUpdater(this);
 			
-			FData = new float[16];
+			SliceCount = 1;
 		}
 		
 		public override IPluginIO PluginIO 
@@ -36,7 +36,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 			}
 			set 
 			{
-				if (FData.Length != value)
+				if (FSliceCount != value)
 					FData = new float[value * 16];
 				
 				FSliceCount = value;

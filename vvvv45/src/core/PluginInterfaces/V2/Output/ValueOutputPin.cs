@@ -42,7 +42,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 			}
 			FValueOut.SetPinUpdater(this);
 			
-			FData = new double[FDimension * 1];
+			SliceCount = 1;
 		}
 		
 		public override IPluginIO PluginIO 
@@ -61,7 +61,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 			}
 			set 
 			{
-				if (FData.Length != value)
+				if (FSliceCount != value)
 					FData = new double[value * FDimension];
 				
 				FSliceCount = value;

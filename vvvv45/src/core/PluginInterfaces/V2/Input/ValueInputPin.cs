@@ -45,7 +45,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			
 			FValueFastIn.SetPinUpdater(this);
 			
-			FData = new double[FDimension * 1];
+			SliceCount = 1;
 		}
 		
 		public override IPluginIO PluginIO 

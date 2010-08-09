@@ -18,7 +18,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			
 			FTransformIn.SetPinUpdater(this);
 			
-			FData = new float[16];
+			SliceCount = 1;
 		}
 		
 		public override IPluginIO PluginIO 
