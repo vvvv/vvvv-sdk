@@ -162,7 +162,7 @@ namespace VVVV.HDE.CodeEditor
             try
             {
                 var functionReference = new XmlDocument();
-                var filename = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), @"..\effects\hlsl.fnr"));
+                var filename = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), @"..\bin\hlsl.fnr"));
                 functionReference.Load(filename);
                 foreach (XmlNode function in functionReference.DocumentElement.ChildNodes)
                 {
@@ -290,8 +290,15 @@ namespace VVVV.HDE.CodeEditor
 		
 		void FTabControlMouseClick(object sender, MouseEventArgs e)
 		{
+		    if (e.Button == MouseButtons.Left)
+		    {
+		        //focus the textarea for mousescroll to work instantly after changing tabs
+		        FTabControl.SelectedTab.Controls[0].Focus();
+		    }
 			if (e.Button == MouseButtons.Middle)
 			{
+			    //note: on middle click the FTabControl.SelectedTab is not the same as after left-click
+			    //need to find targeted tabpage manually here: 
 				for (int i=0; i<FTabControl.TabPages.Count; i++)
 				{
 					if (FTabControl.GetTabRect(i).Contains(e.Location))
