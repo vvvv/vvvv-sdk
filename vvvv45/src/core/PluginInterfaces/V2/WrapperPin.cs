@@ -12,7 +12,7 @@ namespace VVVV.PluginInterfaces.V2
 {
 	public abstract class WrapperPin<T> : ISpread<T>
 	{
-		public Pin<T> FPin;
+		protected Pin<T> FPin;
 		
 		public Pin<T> Pin
 		{
@@ -28,19 +28,19 @@ namespace VVVV.PluginInterfaces.V2
 			{
 				return FPin[index];
 			}
-			set 
+			set
 			{
 				FPin[index] = value;
 			}
 		}
 		
-		public int SliceCount 
+		public int SliceCount
 		{
-			get 
+			get
 			{
 				return FPin.SliceCount;
 			}
-			set 
+			set
 			{
 				FPin.SliceCount = value;
 			}

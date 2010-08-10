@@ -68,12 +68,17 @@ namespace VVVV.PluginInterfaces.V2.Input
 		
 		unsafe public override void Update()
 		{
-			int sliceCount;
-			double* source;
-			
-			FColorIn.GetColorPointer(out sliceCount, out source);
-			SliceCount = sliceCount;
-			Marshal.Copy(new IntPtr(source), FData, 0, FData.Length);
+			if (IsChanged)
+			{
+				int sliceCount;
+				double* source;
+				
+				FColorIn.GetColorPointer(out sliceCount, out source);
+				SliceCount = sliceCount;
+				Marshal.Copy(new IntPtr(source), FData, 0, FData.Length);
+				
+				OnChanged();
+			}
 		}
 	}
 }

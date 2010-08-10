@@ -10,7 +10,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 	{
 		protected ITransformIn FTransformIn;
 		protected int FSliceCount;
-		protected float[] FData; 
+		protected float[] FData;
 		
 		public SlimDXMatrixInputPin(IPluginHost host, InputAttribute attribute)
 		{
@@ -21,7 +21,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			SliceCount = 1;
 		}
 		
-		public override IPluginIO PluginIO 
+		public override IPluginIO PluginIO
 		{
 			get
 			{
@@ -29,15 +29,15 @@ namespace VVVV.PluginInterfaces.V2.Input
 			}
 		}
 		
-		public override bool IsChanged 
+		public override bool IsChanged
 		{
-			get 
+			get
 			{
 				return FTransformIn.PinIsChanged;
 			}
 		}
 		
-		public override int SliceCount 
+		public override int SliceCount
 		{
 			get
 			{
@@ -52,16 +52,16 @@ namespace VVVV.PluginInterfaces.V2.Input
 			}
 		}
 		
-		unsafe public override Matrix this[int index] 
+		unsafe public override Matrix this[int index]
 		{
-			get 
+			get
 			{
 				fixed (float* ptr = FData)
 				{
 					return ((Matrix*)ptr)[index % FSliceCount];
 				}
 			}
-			set 
+			set
 			{
 				throw new NotImplementedException();
 			}
@@ -69,12 +69,17 @@ namespace VVVV.PluginInterfaces.V2.Input
 		
 		unsafe public override void Update()
 		{
-			int sliceCount;
-			float* source;
-			
-			FTransformIn.GetMatrixPointer(out sliceCount, out source);
-			SliceCount = sliceCount;
-			Marshal.Copy(new IntPtr(source), FData, 0, FData.Length);
+			if (IsChanged)
+			{
+				int sliceCount;
+				float* source;
+				
+				FTransformIn.GetMatrixPointer(out sliceCount, out source);
+				SliceCount = sliceCount;
+				Marshal.Copy(new IntPtr(source), FData, 0, FData.Length);
+				
+				OnChanged();
+			}
 		}
 	}
 }

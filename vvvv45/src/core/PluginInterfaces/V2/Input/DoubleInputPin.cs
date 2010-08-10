@@ -24,4 +24,25 @@ namespace VVVV.PluginInterfaces.V2.Input
 			}
 		}
 	}
+	
+	public class ObservableDoubleInputPin : ObservableValueInputPin<double>
+	{
+		public ObservableDoubleInputPin(IPluginHost host, InputAttribute attribute)
+			:base(host, attribute)
+		{
+		}
+		
+		public override double this[int index] 
+		{
+			get 
+			{
+				return FData[index % FData.Length];
+			}
+			set 
+			{
+				if (!FValueIn.IsConnected)
+					FData[index % FData.Length] = value;
+			}
+		}
+	}
 }

@@ -70,12 +70,17 @@ namespace VVVV.PluginInterfaces.V2.Input
 		
 		unsafe public override void Update()
 		{
-			int sliceCount;
-			float* source;
-			
-			FTransformIn.GetMatrixPointer(out sliceCount, out source);
-			SliceCount = sliceCount;
-			Marshal.Copy(new IntPtr(source), FData, 0, FData.Length);
+			if (IsChanged)
+			{
+				int sliceCount;
+				float* source;
+				
+				FTransformIn.GetMatrixPointer(out sliceCount, out source);
+				SliceCount = sliceCount;
+				Marshal.Copy(new IntPtr(source), FData, 0, FData.Length);
+				
+				OnChanged();
+			}
 		}
 	}
 }

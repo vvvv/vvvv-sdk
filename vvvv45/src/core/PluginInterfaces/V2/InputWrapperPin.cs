@@ -13,14 +13,6 @@ namespace VVVV.PluginInterfaces.V2
 {
 	public class InputWrapperPin<T> : WrapperPin<T>
 	{
-		public IPluginIO PluginIO 
-		{ 
-			get
-			{
-				return FPin.PluginIO;
-			}
-		}
-		
 		public InputWrapperPin(IPluginHost host, InputAttribute attribute)
 		{
 			Debug.WriteLine(string.Format("Creating input pin '{0}'.", attribute.Name));

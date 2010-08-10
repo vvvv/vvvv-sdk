@@ -11,7 +11,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.PluginInterfaces.V2
 {
-	public class ConfigWrapperPin<T> : WrapperPin<T>
+	public class ConfigWrapperPin<T> : ObservableWrapperPin<T>
 	{
 		public ConfigWrapperPin(IPluginHost host, ConfigAttribute attribute)
 		{
@@ -20,33 +20,33 @@ namespace VVVV.PluginInterfaces.V2
 			var type = typeof(T);
 			
 			if (type == typeof(double))
-				FPin = new DoubleConfigPin(host, attribute) as Pin<T>;
+				ObservablePin = new DoubleConfigPin(host, attribute) as ObservablePin<T>;
 			else if (type == typeof(float))
-				FPin = new FloatConfigPin(host, attribute) as Pin<T>;
+				ObservablePin = new FloatConfigPin(host, attribute) as ObservablePin<T>;
 			else if (type == typeof(int))
-				FPin = new IntConfigPin(host, attribute) as Pin<T>;
+				ObservablePin = new IntConfigPin(host, attribute) as ObservablePin<T>;
 			else if (type == typeof(bool))
-				FPin = new BoolConfigPin(host, attribute) as Pin<T>;
+				ObservablePin = new BoolConfigPin(host, attribute) as ObservablePin<T>;
 			else if (type == typeof(string))
-				FPin = new StringConfigPin(host, attribute) as Pin<T>;
+				ObservablePin = new StringConfigPin(host, attribute) as ObservablePin<T>;
 			else if (type == typeof(RGBAColor))
-				FPin = new ColorConfigPin(host, attribute) as Pin<T>;
+				ObservablePin = new ColorConfigPin(host, attribute) as ObservablePin<T>;
 			else if (type == typeof(Vector2D))
-				FPin = new Vector2DConfigPin(host, attribute) as Pin<T>;
+				ObservablePin = new Vector2DConfigPin(host, attribute) as ObservablePin<T>;
 			else if (type == typeof(Vector3D))
-				FPin = new Vector3DConfigPin(host, attribute) as Pin<T>;
+				ObservablePin = new Vector3DConfigPin(host, attribute) as ObservablePin<T>;
 			else if (type == typeof(Vector4D))
-				FPin = new Vector4DConfigPin(host, attribute) as Pin<T>;
+				ObservablePin = new Vector4DConfigPin(host, attribute) as ObservablePin<T>;
 			else if (type == typeof(Vector2))
-				FPin = new Vector2ConfigPin(host, attribute) as Pin<T>;
+				ObservablePin = new Vector2ConfigPin(host, attribute) as ObservablePin<T>;
 			else if (type == typeof(Vector3))
-				FPin = new Vector3ConfigPin(host, attribute) as Pin<T>;
+				ObservablePin = new Vector3ConfigPin(host, attribute) as ObservablePin<T>;
 			else if (type == typeof(Vector4))
-				FPin = new Vector4ConfigPin(host, attribute) as Pin<T>;
+				ObservablePin = new Vector4ConfigPin(host, attribute) as ObservablePin<T>;
 			else if (type.BaseType == typeof(Enum))
-				FPin = new EnumConfigPin<T>(host, attribute) as Pin<T>;
+				ObservablePin = new EnumConfigPin<T>(host, attribute) as ObservablePin<T>;
 			else if (type == typeof(EnumEntry))
-				FPin = new DynamicEnumConfigPin(host, attribute) as Pin<T>;
+				ObservablePin = new DynamicEnumConfigPin(host, attribute) as ObservablePin<T>;
 			else
 				throw new NotImplementedException(string.Format("ConfigPin of type '{0}' not supported.", type));
 		}

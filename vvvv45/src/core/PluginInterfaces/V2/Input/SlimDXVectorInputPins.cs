@@ -12,7 +12,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 		{
 		}
 		
-		unsafe public override Vector2 this[int index] 
+		unsafe public override Vector2 this[int index]
 		{
 			get
 			{
@@ -23,7 +23,13 @@ namespace VVVV.PluginInterfaces.V2.Input
 			}
 			set
 			{
-				throw new NotImplementedException();
+				if (!FValueFastIn.IsConnected)
+				{
+					fixed (double* ptr = FData)
+					{
+						((Vector2D*)ptr)[index % FSliceCount] = value.ToVector2D();
+					}
+				}
 			}
 		}
 	}
@@ -35,7 +41,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 		{
 		}
 		
-		unsafe public override Vector3 this[int index] 
+		unsafe public override Vector3 this[int index]
 		{
 			get
 			{
@@ -46,7 +52,13 @@ namespace VVVV.PluginInterfaces.V2.Input
 			}
 			set
 			{
-				throw new NotImplementedException();
+				if (!FValueFastIn.IsConnected)
+				{
+					fixed (double* ptr = FData)
+					{
+						((Vector3D*)ptr)[index % FSliceCount] = value.ToVector3D();
+					}
+				}
 			}
 		}
 	}
@@ -58,7 +70,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 		{
 		}
 		
-		unsafe public override Vector4 this[int index] 
+		unsafe public override Vector4 this[int index]
 		{
 			get
 			{
@@ -69,7 +81,100 @@ namespace VVVV.PluginInterfaces.V2.Input
 			}
 			set
 			{
-				throw new NotImplementedException();
+				if (!FValueFastIn.IsConnected)
+				{
+					fixed (double* ptr = FData)
+					{
+						((Vector4D*)ptr)[index % FSliceCount] = value.ToVector4D();
+					}
+				}
+			}
+		}
+	}
+	
+	public class ObservableVector2InputPin : ObservableValueInputPin<Vector2>
+	{
+		public ObservableVector2InputPin(IPluginHost host, InputAttribute attribute)
+			:base(host, attribute)
+		{
+		}
+		
+		unsafe public override Vector2 this[int index]
+		{
+			get
+			{
+				fixed (double* ptr = FData)
+				{
+					return ((Vector2D*)ptr)[index].ToSlimDXVector();
+				}
+			}
+			set
+			{
+				if (!FValueIn.IsConnected)
+				{
+					fixed (double* ptr = FData)
+					{
+						((Vector2D*)ptr)[index % FSliceCount] = value.ToVector2D();
+					}
+				}
+			}
+		}
+	}
+	
+	public class ObservableVector3InputPin : ObservableValueInputPin<Vector3>
+	{
+		public ObservableVector3InputPin(IPluginHost host, InputAttribute attribute)
+			:base(host, attribute)
+		{
+		}
+		
+		unsafe public override Vector3 this[int index]
+		{
+			get
+			{
+				fixed (double* ptr = FData)
+				{
+					return ((Vector3D*)ptr)[index].ToSlimDXVector();
+				}
+			}
+			set
+			{
+				if (!FValueIn.IsConnected)
+				{
+					fixed (double* ptr = FData)
+					{
+						((Vector3D*)ptr)[index % FSliceCount] = value.ToVector3D();
+					}
+				}
+			}
+		}
+	}
+	
+	public class ObservableVector4InputPin : ObservableValueInputPin<Vector4>
+	{
+		public ObservableVector4InputPin(IPluginHost host, InputAttribute attribute)
+			:base(host, attribute)
+		{
+		}
+		
+		unsafe public override Vector4 this[int index]
+		{
+			get
+			{
+				fixed (double* ptr = FData)
+				{
+					return ((Vector4D*)ptr)[index].ToSlimDXVector();
+				}
+			}
+			set
+			{
+				if (!FValueIn.IsConnected)
+				{
+					fixed (double* ptr = FData)
+					{
+						((Vector4D*)ptr)[index % FSliceCount] = value.ToVector4D();
+					}
+				}
 			}
 		}
 	}

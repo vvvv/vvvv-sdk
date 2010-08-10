@@ -17,5 +17,11 @@ namespace VVVV.PluginInterfaces.V2
 			if (Changed != null) 
 				Changed(this);
 		}
+		
+		public override void Update()
+		{
+			if (IsChanged)
+				OnChanged();
+		}
 	}
 }

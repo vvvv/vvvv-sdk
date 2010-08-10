@@ -23,4 +23,25 @@ namespace VVVV.PluginInterfaces.V2.Input
 			}
 		}
 	}
+	
+	public class ObservableFloatInputPin : ObservableValueInputPin<float>
+	{
+		public ObservableFloatInputPin(IPluginHost host, InputAttribute attribute)
+			:base(host, attribute)
+		{
+		}
+		
+		public override float this[int index] 
+		{
+			get 
+			{
+				return (float) FData[index % FData.Length];
+			}
+			set 
+			{
+				if (!FValueIn.IsConnected)
+					FData[index % FData.Length] = (double) value;
+			}
+		}
+	}
 }

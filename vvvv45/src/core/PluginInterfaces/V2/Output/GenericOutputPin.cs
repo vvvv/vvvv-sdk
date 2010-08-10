@@ -12,22 +12,17 @@ namespace VVVV.PluginInterfaces.V2.Output
 		protected IGenericIO<T> FUpstreamInterface;
 		protected T[] FData;
 		protected bool FChanged;
+		protected int FSliceCount;
 		
 		public GenericOutputPin(IPluginHost host, OutputAttribute attribute)
 		{
-			var guid = typeof(IGenericIO<T>).GUID;
-			var type = typeof(T).FullName;
-			
-			var openType = typeof(IGenericIO<>);
-			var closedType = openType.MakeGenericType(typeof(T));
-			
 			host.CreateNodeOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FNodeOut);
-			FNodeOut.SetSubType(new Guid[]{typeof(T).GUID}, type);
+			FNodeOut.SetSubType(new Guid[] { typeof(T).GUID }, typeof(T).Name);
 			FNodeOut.SetInterface(this);
 			
 			FNodeOut.SetPinUpdater(this);
-			FData = new T[1];
-
+			
+			SliceCount = 1;
 		}
 		
 		public override IPluginIO PluginIO 
@@ -42,14 +37,15 @@ namespace VVVV.PluginInterfaces.V2.Output
 		{
 			get
 			{
-				return FData.Length;
+				return FSliceCount;
 			}
 			set
 			{
-				if (FData.Length != value)
+				if (FSliceCount != value)
 					FData = new T[value];
 				
 				FNodeOut.SliceCount = value;
+				FSliceCount = value;
 			}
 		}
 		
