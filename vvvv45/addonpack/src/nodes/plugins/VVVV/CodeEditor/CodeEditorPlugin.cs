@@ -44,13 +44,12 @@ namespace VVVV.HDE.CodeEditor
 	public class CodeEditorPlugin : ManagedVCL.TopControl, IPluginHDE, IDisposable
 	{
 		private CodeEditorForm FCodeEditorForm;
-		private ILogger Logger { get; set; }
 		
 		[ImportingConstructor]
 		public CodeEditorPlugin(IHDEHost host, ISolution solution, ILogger logger)
 		{
-			Logger = logger;
 			SuspendLayout();
+			
 			FCodeEditorForm = new CodeEditorForm(host, solution, logger);
 			FCodeEditorForm.Location = new Point(0, 0);
 			FCodeEditorForm.TopLevel = false;
@@ -58,6 +57,7 @@ namespace VVVV.HDE.CodeEditor
 			FCodeEditorForm.Dock = DockStyle.Fill;
 			FCodeEditorForm.Show();
 			Controls.Add(FCodeEditorForm);
+			
 			ResumeLayout(false);
 			PerformLayout();
 		}

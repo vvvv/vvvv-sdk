@@ -134,7 +134,8 @@ namespace VVVV.HDE.CodeEditor
 				doc.ContentChanged += DocumentContentChangedCB;
 				doc.Saved += DocumentSavedCB;
 			}
-			FTabControl.SelectTab(FOpenedDocuments[doc]);
+			
+//			FTabControl.SelectTab(FOpenedDocuments[doc]);
 		}
 		
 		public void Close(ITextDocument doc)

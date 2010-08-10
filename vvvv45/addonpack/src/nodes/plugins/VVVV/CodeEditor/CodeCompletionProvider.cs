@@ -176,12 +176,12 @@ namespace VVVV.HDE.CodeEditor
             var resultList = new List<ICompletionData>();
             var expressionResult = FindExpression(parseInfo, textArea);
             
-            Debug.WriteLine(String.Format("Generating completion data for expression result {0}", expressionResult));
+            Debug.WriteLine(string.Format("Generating completion data for expression result {0}", expressionResult));
 
             ArrayList completionData = null;
             if (charTyped == '.')
             {
-                FPreSelection = null;
+                PreSelection = null;
                 var rr = resolver.Resolve(expressionResult,
                                           parseInfo,
                                           textArea.MotherTextEditorControl.Text);
@@ -191,7 +191,7 @@ namespace VVVV.HDE.CodeEditor
             }
             else
             {
-                FPreSelection = "";
+                PreSelection = "";
                 completionData = resolver.CtrlSpace(textArea.Caret.Line + 1,
                                                     textArea.Caret.Column + 1,
                                                     parseInfo,
