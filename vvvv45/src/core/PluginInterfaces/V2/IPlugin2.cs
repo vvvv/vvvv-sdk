@@ -35,21 +35,5 @@ namespace VVVV.PluginInterfaces.V2
 		/// to adjust the SliceCounts of all outputs accordingly.</param>
 		void Evaluate(int SpreadMax);
 	}
-	
-	/// <summary>
-	/// Optional interface to be implemented on a plugin that deals with Configuration pins
-	/// </summary>
-	[Guid("7D8F77BF-3CF3-487B-89B7-9D203E58A59E"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IPluginConfigurate
-	{
-		/// <summary>
-		/// Called by the PluginHost before the Evaluate function every frame for every ConfigurationPin that has changed. 
-		/// The ConfigurationPin is handed over as the functions input parameter. This is where a plugin would typically 
-		/// create/delete pins as reaction to the changed value of a ConfigurationPin that specifies the number of pins of a specific type.
-		/// </summary>
-		/// <param name="input">Interface to the ConfigurationPin for which the function is called.</param>
-		void Configurate(IPluginConfig input);
-	}
 	#endregion basic interfaces
 }
