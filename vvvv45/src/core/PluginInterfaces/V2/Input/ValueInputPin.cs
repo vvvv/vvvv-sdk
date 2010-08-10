@@ -77,8 +77,17 @@ namespace VVVV.PluginInterfaces.V2.Input
 			double* source;
 			
 			FValueFastIn.GetValuePointer(out sliceCount, out source);
-			SliceCount = sliceCount / FDimension;
-			Marshal.Copy(new IntPtr(source), FData, 0, FData.Length);
+			
+			if (sliceCount % FDimension != 0)
+				SliceCount = sliceCount / FDimension + 1;
+			else
+				SliceCount = sliceCount / FDimension;
+			
+			Marshal.Copy(new IntPtr(source), FData, 0, sliceCount);
+			
+			// Fill end of FData with values from start.
+			for (int i = sliceCount; i < SliceCount * FDimension; i++)
+				FData[i] = FData[i - sliceCount];
 		}
 	}
 }
