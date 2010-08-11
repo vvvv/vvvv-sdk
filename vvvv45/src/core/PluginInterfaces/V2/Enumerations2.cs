@@ -10,9 +10,13 @@
 		/// </summary>
 		Native,
 		/// <summary>
-		/// Specifies a patch node that may be a module or not.
+		/// Specifies a patch node.
 		/// </summary>
 		Patch,
+		/// <summary>
+		/// Specifies a module node.
+		/// </summary>
+		Module,
 		/// <summary>
 		/// Specifies a freeframe node.
 		/// </summary>
