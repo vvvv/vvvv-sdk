@@ -97,10 +97,10 @@ namespace VVVV.PluginInterfaces.V2.Input
 				Marshal.Copy(new IntPtr(source), FData, 0, sliceCount);
 				
 				// Fill end of FData with values from start.
-				Array.Copy(FData, 0, FData, sliceCount, FDimension - moduloResult);
-				
-				OnChanged();
+				Array.Copy(FData, 0, FData, sliceCount, FData.Length - sliceCount);
 			}
+			
+			base.Update();
 		}
 	}
 }

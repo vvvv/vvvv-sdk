@@ -14,7 +14,7 @@ namespace VVVV.PluginInterfaces.V2
 		protected ISpread<T>[] FPins;
 		protected IPluginHost FHost;
 		protected PinAttribute FAttribute;
-		protected SpreadListConfigPin FConfigPin;
+		protected IntConfigPin FConfigPin;
 		
 		public SpreadList(IPluginHost host, PinAttribute attribute)
 		{
@@ -27,13 +27,13 @@ namespace VVVV.PluginInterfaces.V2
 			var att = new ConfigAttribute(FAttribute.Name + " Pin Count");
 			att.DefaultValue = 2;
 			
-			FConfigPin = new SpreadListConfigPin(FHost, att);
-			FConfigPin.Updated += UpdatePins;
+			FConfigPin = new IntConfigPin(FHost, att);
+			FConfigPin.Updated += new PinUpdatedEventHandler<int>(UpdatePins);
 			
 		}
 		
 		//pin management
-		protected void UpdatePins()
+		protected void UpdatePins(ObservablePin<int> pin)
 		{
 			var count = FConfigPin[0];
 			var diff = count - FPins.Length;

@@ -17,7 +17,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// <summary>
 		/// Needs to be set in constructor of extending class.
 		/// </summary>
-		protected ObservablePin<T> ObservablePin
+		public ObservablePin<T> ObservablePin
 		{
 			get
 			{

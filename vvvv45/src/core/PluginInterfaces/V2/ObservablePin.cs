@@ -3,9 +3,20 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2
 {
+	public delegate void PinUpdatedEventHandler<T>(ObservablePin<T> pin);
+	
 	public abstract class ObservablePin<T> : Pin<T>, IObservableSpread<T>
 	{
 		public event SpreadChangedEventHander<T> Changed;
+		public event PinUpdatedEventHandler<T> Updated;
+		
+		protected virtual void OnUpdated()
+		{
+			if (Updated != null) 
+			{
+				Updated(this);
+			}
+		}
 		
 		public abstract bool IsChanged
 		{
@@ -22,6 +33,8 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			if (IsChanged)
 				OnChanged();
+			
+			OnUpdated();
 		}
 	}
 }

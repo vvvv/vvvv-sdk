@@ -7,18 +7,13 @@ using VVVV.PluginInterfaces.V2.Config;
 namespace VVVV.PluginInterfaces.V2
 {
 	/// <summary>
-	/// base class for spread lists
+	/// Base class 2d spreads.
 	/// </summary>
 	public abstract class BinSpread<T> : ISpread<ISpread<T>>
 	{
-		protected IPluginHost FHost;
-		protected PinAttribute FAttribute;
 		
 		public BinSpread(IPluginHost host, PinAttribute attribute)
 		{
-			//store fields
-			FHost = host;
-			FAttribute = attribute; 
 		}
 		
 		public abstract ISpread<T> this[int index]

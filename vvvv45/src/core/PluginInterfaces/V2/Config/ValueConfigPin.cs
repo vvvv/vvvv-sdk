@@ -43,24 +43,24 @@ namespace VVVV.PluginInterfaces.V2.Config
 			
 			FValueConfig.SetPinUpdater(this);
 			
-			SliceCount = 1;;
+			SliceCount = 1;
 		}
 		
-		protected override IPluginConfig PluginConfig 
+		protected override IPluginConfig PluginConfig
 		{
-			get 
+			get
 			{
 				return FValueConfig;
 			}
 		}
 		
-		public override int SliceCount 
+		public override int SliceCount
 		{
-			get 
+			get
 			{
 				return FSliceCount;
 			}
-			set 
+			set
 			{
 				if (FSliceCount != value)
 					FData = new double[value * FDimension];
@@ -76,8 +76,19 @@ namespace VVVV.PluginInterfaces.V2.Config
 			double* source;
 			
 			FValueConfig.GetValuePointer(out sliceCount, out source);
-			SliceCount = sliceCount;
-			Marshal.Copy(new IntPtr(source), FData, 0, FData.Length);
+			
+			var moduloResult = sliceCount % FDimension;
+			if (moduloResult != 0)
+				SliceCount = sliceCount / FDimension + 1;
+			else
+				SliceCount = sliceCount / FDimension;
+			
+			Marshal.Copy(new IntPtr(source), FData, 0, sliceCount);
+			
+			// Fill end of FData with values from start.
+			Array.Copy(FData, 0, FData, sliceCount, FData.Length - sliceCount);
+			
+			base.Update();
 		}
 	}
 }
