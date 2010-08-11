@@ -40,10 +40,11 @@ namespace VVVV.Nodes.NodeBrowser
                 {
                         case TNodeType.Native: {tip = ""; break;}
                         case TNodeType.Plugin: {tip = "P  "; break;}
-                        case TNodeType.Patch: {tip = "M  "; break;}
+                        case TNodeType.Module: {tip = "M  "; break;}
+                        case TNodeType.Patch: {tip = "V4P "; break;}
                         case TNodeType.Effect: {tip = "FX  "; break;}
                         case TNodeType.Freeframe: {tip = "FF  "; break;}
-                        case TNodeType.VST: {tip = "V  "; break;}
+                        case TNodeType.VST: {tip = "VST "; break;}
                 }
                 
                 if (!string.IsNullOrEmpty(NodeInfo.Shortcut))

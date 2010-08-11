@@ -44,10 +44,11 @@ namespace VVVV.Nodes.NodeBrowser
         
         //further fields
         private bool FAllowDragDrop = true;
+        private bool FAllowUpdate = true;
         CategoryList FCategoryList = new CategoryList();
         Dictionary<string, string> FCategoryDict = new Dictionary<string, string>();
         List<string> FNodeList = new List<string>();
-        List<string> FSelectionList;
+        List<string> FSelectionList = new List<string>();
         List<string> FRTFSelectionList = new List<string>();
         private string[] FTags = new string[0];
         Dictionary<string, INodeInfo> FNodeDict = new Dictionary<string, INodeInfo>();
@@ -108,7 +109,7 @@ namespace VVVV.Nodes.NodeBrowser
             
             FToolTip.BackColor = CLabelColor;
             FToolTip.ForeColor = Color.White;
-            FToolTip.ShowAlways = true;
+            FToolTip.ShowAlways = false;
             FToolTip.Popup += new PopupEventHandler(ToolTipPopupHandler);
             
             SelectPage(NodeBrowserPage.ByTags);
@@ -315,7 +316,6 @@ namespace VVVV.Nodes.NodeBrowser
             this.FCategoryTreeViewer.ShowTooltip = true;
             this.FCategoryTreeViewer.Size = new System.Drawing.Size(159, 424);
             this.FCategoryTreeViewer.TabIndex = 1;
-            this.FCategoryTreeViewer.Click += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FCategoryTreeViewerClick);
             // 
             // FTopLabel
             // 
@@ -340,6 +340,8 @@ namespace VVVV.Nodes.NodeBrowser
             this.FCategoryPanel.ResumeLayout(false);
             this.ResumeLayout(false);
         }
+
+        
         private VVVV.HDE.Viewer.WinFormsViewer.TreeViewer FCategoryTreeViewer;
         private VVVV.Nodes.DoubleBufferedPanel FNodeTypePanel;
         private System.Windows.Forms.VScrollBar FScrollBar;
@@ -506,7 +508,10 @@ namespace VVVV.Nodes.NodeBrowser
         {
             FTagsTextBox.Height = Math.Max(20, FTagsTextBox.Lines.Length * CLineHeight + 7);
             
-            if (FHoverLine == -1)
+            FHoverLine = -1;
+            FShowHover = false;
+            
+            if (FAllowUpdate)
             {
                 //saving the last manual entry for recovery when stepping through list and reaching index -1 again
                 FManualEntry = FTagsTextBox.Text;
@@ -689,6 +694,10 @@ namespace VVVV.Nodes.NodeBrowser
         
         void RichTextBoxMouseUp(object sender, MouseEventArgs e)
         {
+            //hack: called only to re-focus active patch
+            //after this mouseup set the focus to the already hidden NodeBrowser window
+            NodeBrowserHost.CreateComment("");
+            
             FTagsTextBox.Focus();
         }
         
@@ -753,213 +762,190 @@ namespace VVVV.Nodes.NodeBrowser
                                      });
         }
         
+        private List<string> GetLocalNodes()
+        {
+            var files = new List<string>();
+            if (FPath != null)
+            {
+                foreach (string p in System.IO.Directory.GetFiles(FPath, "*.dll"))
+                    files.Add(Path.GetFileName(p));
+                foreach (string p in System.IO.Directory.GetFiles(FPath, "*.v4p"))
+                    files.Add(Path.GetFileName(p));
+                foreach (string p in System.IO.Directory.GetFiles(FPath, "*.fx"))
+                    files.Add(Path.GetFileName(p));
+            }
+            return files;
+        }
+        
         private void FilterNodesByTags()
         {
-            bool sort = true;
             string text = FTagsTextBox.Text.ToLower().Trim();
             
-            if (string.IsNullOrEmpty(text))
-                FSelectionList = FNodeList;
-            //show directory
-            else if (text.IndexOf('.') == 0)
-            {
-                FSelectionList = new List<string>();
-                if (FPath != null)
-                {
-                    foreach (string p in System.IO.Directory.GetFiles(FPath, "*.dll"))
-                        FSelectionList.Add(Path.GetFileName(p));
-                    foreach (string p in System.IO.Directory.GetFiles(FPath, "*.v4p"))
-                        FSelectionList.Add(Path.GetFileName(p));
-                    foreach (string p in System.IO.Directory.GetFiles(FPath, "*.fx"))
-                        FSelectionList.Add(Path.GetFileName(p));
-                    
-                    FSelectionList = FSelectionList.FindAll(delegate(string node)
-                                                            {
-                                                                node = node.ToLower();
-                                                                bool containsAll = true;
-                                                                string t;
-                                                                foreach (string tag in FTags)
-                                                                {
-                                                                    t = tag.ToLower();
-                                                                    t = t.Replace(".", "");
-                                                                    if (!node.Contains(t))
-                                                                    {
-                                                                        containsAll = false;
-                                                                        break;
-                                                                    }
-                                                                }
-                                                                
-                                                                if (containsAll)
-                                                                    return true;
-                                                                else
-                                                                    return false;
-                                                            });
-                    
-                    FSelectionList.Sort(delegate(string s1, string s2)
-                                        {return s1.CompareTo(s2);});
-                }
-                sort = false;
-            }
+            FSelectionList.Clear();
+            FSelectionList.AddRange(FNodeList);
+            
+            //add local nodes
+            FSelectionList.AddRange(GetLocalNodes());
+
             //show natives only
-            else if (FNodeFilter == (int) TNodeType.Native)
-            {
+            if (FNodeFilter == (int) TNodeType.Native)
                 FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == TNodeType.Native;});
-                FSelectionList = ExtractSubList(FSelectionList);
-            }
-            //show modules only
+            //show patches only
             else if (FNodeFilter == (int) TNodeType.Patch)
-            {
-                FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == TNodeType.Patch;});
-                FSelectionList = ExtractSubList(FSelectionList);
-            }
+                FSelectionList = GetLocalNodes();
+            //show modules only
+            else if (FNodeFilter == (int) TNodeType.Module)
+                FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == TNodeType.Module;});
             //show effects only
             else if (FNodeFilter == (int) TNodeType.Effect)
-            {
                 FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == TNodeType.Effect;});
-                FSelectionList = ExtractSubList(FSelectionList);
-            }
             //show freeframes only
             else if (FNodeFilter == (int) TNodeType.Freeframe)
-            {
                 FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == TNodeType.Freeframe;});
-                FSelectionList = ExtractSubList(FSelectionList);
-            }
             //show plugins only
             else if (FNodeFilter == (int) TNodeType.Plugin)
-            {
                 FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == TNodeType.Plugin;});
-                FSelectionList = ExtractSubList(FSelectionList);
-            }
             //show dynamics only
             else if (FNodeFilter == (int) TNodeType.Dynamic)
-            {
                 FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == TNodeType.Dynamic;});
-                FSelectionList = ExtractSubList(FSelectionList);
-            }
             //show vsts only
             else if (FNodeFilter == (int) TNodeType.VST)
-            {
                 FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == TNodeType.VST;});
-                FSelectionList = ExtractSubList(FSelectionList);
-            }
-            //default behavior
-            else
-            {
-                FSelectionList = ExtractSubList(FNodeList);
-            }
+
+            FSelectionList = ExtractSubList(FSelectionList);
             
-            if (sort)
-                FSelectionList.Sort(delegate(string s1, string s2)
+            FSelectionList.Sort(delegate(string s1, string s2)
+                                {
+                                    //create a weighting index depending on the indices the tags appear in the nodenames
+                                    //earlier appearance counts more
+                                    int w1 = int.MaxValue, w2 = int.MaxValue;
+                                    foreach (string tag in FTags)
                                     {
-                                        //create a weighting index depending on the indices the tags appear in the nodenames
-                                        //earlier appearance counts more
-                                        int w1 = int.MaxValue, w2 = int.MaxValue;
-                                        foreach (string tag in FTags)
-                                        {
-                                            if (s1.ToLower().IndexOf(tag) > -1)
-                                                w1 = Math.Min(w1, s1.ToLower().IndexOf(tag));
-                                            if (s2.ToLower().IndexOf(tag) > -1)
-                                                w2 = Math.Min(w2, s2.ToLower().IndexOf(tag));
-                                        }
-                                        
-                                        if (w1 != w2)
-                                        {
-                                            if (w1 < w2)
-                                                return -1;
-                                            else
-                                                return 1;
-                                        }
-                                        
-                                        //if weights are equal, compare the nodenames
-                                        
-                                        //compare only the nodenames
-                                        string name1 = s1.Substring(0, s1.IndexOf('('));
-                                        string name2 = s2.Substring(0, s2.IndexOf('('));
-                                        int comp = name1.CompareTo(name2);
-                                        
-                                        //if names are equal
-                                        if (comp == 0)
-                                        {
-                                            //compare categories
-                                            string cat1 = s1.Substring(s1.IndexOf('(')).Trim(new char[2]{'(', ')'});
-                                            string cat2 = s2.Substring(s2.IndexOf('(')).Trim(new char[2]{'(', ')'});
-                                            int v1, v2;
-                                            
-                                            
-                                            //System.Diagnostics.Debug.WriteLine(cat1 + " - " + cat2);
-                                            
-                                            //special sorting for categories
-                                            if (cat1.Contains("Value"))
-                                                v1 = 99;
-                                            else if (cat1.Contains("Spreads"))
-                                                v1 = 98;
-                                            else if (cat1.ToUpper().Contains("2D"))
-                                                v1 = 97;
-                                            else if (cat1.ToUpper().Contains("3D"))
-                                                v1 = 96;
-                                            else if (cat1.ToUpper().Contains("4D"))
-                                                v1 = 95;
-                                            else if (cat1.Contains("Animation"))
-                                                v1 = 94;
-                                            else if (cat1.Contains("EX9"))
-                                                v1 = 93;
-                                            else if (cat1.Contains("TTY"))
-                                                v1 = 92;
-                                            else if (cat1.Contains("GDI"))
-                                                v1 = 91;
-                                            else if (cat1.Contains("Flash"))
-                                                v1 = 90;
-                                            else if (cat1.Contains("String"))
-                                                v1 = 89;
-                                            else if (cat1.Contains("Color"))
-                                                v1 = 88;
-                                            else
-                                                v1 = 0;
-                                            
-                                            if (cat2.Contains("Value"))
-                                                v2 = 99;
-                                            else if (cat2.Contains("Spreads"))
-                                                v2 = 98;
-                                            else if (cat2.ToUpper().Contains("2D"))
-                                                v2 = 97;
-                                            else if (cat2.ToUpper().Contains("3D"))
-                                                v2 = 96;
-                                            else if (cat2.ToUpper().Contains("4D"))
-                                                v2 = 95;
-                                            else if (cat2.Contains("Animation"))
-                                                v2 = 94;
-                                            else if (cat2.Contains("EX9"))
-                                                v2 = 93;
-                                            else if (cat2.Contains("TTY"))
-                                                v2 = 92;
-                                            else if (cat2.Contains("GDI"))
-                                                v2 = 91;
-                                            else if (cat2.Contains("Flash"))
-                                                v2 = 90;
-                                            else if (cat2.Contains("String"))
-                                                v2 = 89;
-                                            else if (cat2.Contains("Color"))
-                                                v2 = 88;
-                                            else
-                                                v2 = 0;
-                                            
-                                            if (v1 > v2)
-                                                return -1;
-                                            else if (v1 < v2)
-                                                return 1;
-                                            else //categories are the same, compare versions
-                                            {
-                                                if ((cat1.Length > cat2.Length) && (cat1.Contains(cat2)))
-                                                    return 1;
-                                                else if ((cat2.Length > cat1.Length) && (cat2.Contains(cat1)))
-                                                    return -1;
-                                                else
-                                                    return cat1.CompareTo(cat2);
-                                            }
-                                        }
+                                        if (s1.ToLower().IndexOf(tag) > -1)
+                                            w1 = Math.Min(w1, s1.ToLower().IndexOf(tag));
+                                        if (s2.ToLower().IndexOf(tag) > -1)
+                                            w2 = Math.Min(w2, s2.ToLower().IndexOf(tag));
+                                    }
+                                    
+                                    if (w1 != w2)
+                                    {
+                                        if (w1 < w2)
+                                            return -1;
                                         else
-                                            return comp;
-                                    });
+                                            return 1;
+                                    }
+                                    
+                                    //if weights are equal, compare the nodenames
+                                    
+                                    //names may be filenames, they always win
+                                    bool s1IsFile = false;
+                                    bool s2IsFile = false;
+                                    
+                                    if ((s1.IndexOf(".v4p") > 0) || (s1.IndexOf(".dll") > 0) || (s1.IndexOf(".fx") > 0))
+                                        s1IsFile = true;
+                                    if ((s2.IndexOf(".v4p") > 0) || (s2.IndexOf(".dll") > 0) || (s2.IndexOf(".fx") > 0))
+                                        s2IsFile = true;
+                                    
+                                    string name1 = s1;
+                                    string name2 = s2;
+                                    
+                                    if (!s1IsFile)
+                                        name1 = s1.Substring(0, s1.IndexOf('('));
+                                    if (!s2IsFile)
+                                        name2 = s2.Substring(0, s2.IndexOf('('));
+                                    
+                                    //compare only the nodenames
+                                    int comp = name1.CompareTo(name2);
+                                    
+                                    //if names are equal
+                                    if (comp == 0)
+                                    {
+                                        //compare categories
+                                        string cat1, cat2;
+                                        if (s1IsFile)
+                                            cat1 = Path.GetExtension(name1);
+                                        else
+                                            cat1 = s1.Substring(s1.IndexOf('(')).Trim(new char[2]{'(', ')'});
+                                        
+                                        if (s2IsFile)
+                                            cat2 = Path.GetExtension(name2);
+                                        else
+                                            cat2 = s2.Substring(s2.IndexOf('(')).Trim(new char[2]{'(', ')'});
+                                        
+                                        int v1, v2;
+                                        
+                                        //special sorting for categories
+                                        if (cat1.Contains("Value"))
+                                            v1 = 99;
+                                        else if (cat1.Contains("Spreads"))
+                                            v1 = 98;
+                                        else if (cat1.ToUpper().Contains("2D"))
+                                            v1 = 97;
+                                        else if (cat1.ToUpper().Contains("3D"))
+                                            v1 = 96;
+                                        else if (cat1.ToUpper().Contains("4D"))
+                                            v1 = 95;
+                                        else if (cat1.Contains("Animation"))
+                                            v1 = 94;
+                                        else if (cat1.Contains("EX9"))
+                                            v1 = 93;
+                                        else if (cat1.Contains("TTY"))
+                                            v1 = 92;
+                                        else if (cat1.Contains("GDI"))
+                                            v1 = 91;
+                                        else if (cat1.Contains("Flash"))
+                                            v1 = 90;
+                                        else if (cat1.Contains("String"))
+                                            v1 = 89;
+                                        else if (cat1.Contains("Color"))
+                                            v1 = 88;
+                                        else
+                                            v1 = 0;
+                                        
+                                        if (cat2.Contains("Value"))
+                                            v2 = 99;
+                                        else if (cat2.Contains("Spreads"))
+                                            v2 = 98;
+                                        else if (cat2.ToUpper().Contains("2D"))
+                                            v2 = 97;
+                                        else if (cat2.ToUpper().Contains("3D"))
+                                            v2 = 96;
+                                        else if (cat2.ToUpper().Contains("4D"))
+                                            v2 = 95;
+                                        else if (cat2.Contains("Animation"))
+                                            v2 = 94;
+                                        else if (cat2.Contains("EX9"))
+                                            v2 = 93;
+                                        else if (cat2.Contains("TTY"))
+                                            v2 = 92;
+                                        else if (cat2.Contains("GDI"))
+                                            v2 = 91;
+                                        else if (cat2.Contains("Flash"))
+                                            v2 = 90;
+                                        else if (cat2.Contains("String"))
+                                            v2 = 89;
+                                        else if (cat2.Contains("Color"))
+                                            v2 = 88;
+                                        else
+                                            v2 = 0;
+                                        
+                                        if (v1 > v2)
+                                            return -1;
+                                        else if (v1 < v2)
+                                            return 1;
+                                        else //categories are the same, compare versions
+                                        {
+                                            if ((cat1.Length > cat2.Length) && (cat1.Contains(cat2)))
+                                                return 1;
+                                            else if ((cat2.Length > cat1.Length) && (cat2.Contains(cat1)))
+                                                return -1;
+                                            else
+                                                return cat1.CompareTo(cat2);
+                                        }
+                                    }
+                                    else
+                                        return comp;
+                                });
             
             FNodeCountLabel.Text = "Matching Nodes: " + FSelectionList.Count.ToString();
         }
@@ -1033,8 +1019,10 @@ namespace VVVV.Nodes.NodeBrowser
             {
                 if (FTags[0] == "N")
                     FNodeFilter = (int) TNodeType.Native;
-                else if (FTags[0] == "M")
+                else if ((FTags[0] == ".") || (FTags[0] == "V") || (FTags[0] == "V4") || (FTags[0] == "V4P"))
                     FNodeFilter = (int) TNodeType.Patch;
+                else if (FTags[0] == "M")
+                    FNodeFilter = (int) TNodeType.Module;
                 else if ((FTags[0] == "F") || (FTags[0] == "FF"))
                     FNodeFilter = (int) TNodeType.Freeframe;
                 else if ((FTags[0] == "X") || (FTags[0] == "FX"))
@@ -1043,7 +1031,7 @@ namespace VVVV.Nodes.NodeBrowser
                     FNodeFilter = (int) TNodeType.Plugin;
                 else if (FTags[0] == "D")
                     FNodeFilter = (int) TNodeType.Dynamic;
-                else if (FTags[0] == "V")
+                else if ((FTags[0] == "VS") || (FTags[0] == "VST"))
                     FNodeFilter = (int) TNodeType.VST;
             }
             
@@ -1079,7 +1067,9 @@ namespace VVVV.Nodes.NodeBrowser
                 FRichTextBox.SelectionBackColor = CHoverColor;
                 if (updateTags)
                 {
+                    FAllowUpdate = false;
                     FTagsTextBox.Text = sel.Trim();
+                    FAllowUpdate = true;
                     FTagsTextBox.SelectionStart = FTagsTextBox.Text.Length;
                 }
             }
@@ -1117,44 +1107,54 @@ namespace VVVV.Nodes.NodeBrowser
             for (int i = 0; i < maxLine; i++)
             {
                 int index = i + ScrolledLine;
-                if (FNodeDict.ContainsKey(FSelectionList[index].Trim()))
-                {
-                    int y = (i * CLineHeight) + 4;
-                    TNodeType nodeType = FNodeDict[FSelectionList[index].Trim()].Type;
-                    
-                    if ((FHoverLine == i) && (FShowHover))
+                int y = (i * CLineHeight) + 4;
+                
+                if ((FHoverLine == i) && (FShowHover))
                         using (SolidBrush b = new SolidBrush(CHoverColor))
                             e.Graphics.FillRectangle(b, new Rectangle(0, y-4, 21, CLineHeight));
+                
+                if (FNodeDict.ContainsKey(FSelectionList[index].Trim()))
+                {
+                    TNodeType nodeType = FNodeDict[FSelectionList[index].Trim()].Type;
                     
-                    switch (nodeType)
+                    using (SolidBrush b = new SolidBrush(Color.Black))
+                        switch (nodeType)
                     {
-                        case TNodeType.Patch:
+                        case TNodeType.Module:
                             {
-                                e.Graphics.DrawString("M", FRichTextBox.Font, new SolidBrush(Color.Black), 5, y-3, StringFormat.GenericDefault);
+                                e.Graphics.DrawString("M", FRichTextBox.Font, b, 5, y-3, StringFormat.GenericDefault);
                                 break;
                             }
                         case TNodeType.Plugin:
                             {
-                                e.Graphics.DrawString("P", FRichTextBox.Font, new SolidBrush(Color.Black), 6, y-3, StringFormat.GenericDefault);
+                                e.Graphics.DrawString("P", FRichTextBox.Font, b, 6, y-3, StringFormat.GenericDefault);
                                 break;
                             }
                         case TNodeType.Dynamic:
                             {
-                                e.Graphics.DrawString("dyn", FRichTextBox.Font, new SolidBrush(Color.Black), 2, y-3, StringFormat.GenericDefault);
+                                e.Graphics.DrawString("D", FRichTextBox.Font, b, 2, y-3, StringFormat.GenericDefault);
                                 break;
                             }
                         case TNodeType.Freeframe:
                             {
-                                e.Graphics.DrawString("FF", FRichTextBox.Font, new SolidBrush(Color.Black), 4, y-3, StringFormat.GenericDefault);
+                                e.Graphics.DrawString("FF", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
                                 break;
                             }
                         case TNodeType.Effect:
                             {
-                                e.Graphics.DrawString("FX", FRichTextBox.Font, new SolidBrush(Color.Black), 4, y-3, StringFormat.GenericDefault);
+                                e.Graphics.DrawString("FX", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
+                                break;
+                            }
+                        case TNodeType.VST:
+                            {
+                                e.Graphics.DrawString("VST", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
                                 break;
                             }
                     }
                 }
+                else
+                    using (SolidBrush b = new SolidBrush(Color.Black))
+                        e.Graphics.DrawString("V", FRichTextBox.Font, b, 5, y-3, StringFormat.GenericDefault);
             }
         }
         
@@ -1166,10 +1166,8 @@ namespace VVVV.Nodes.NodeBrowser
         #endregion RichTextBox
         
         #region CategoryView
-        void FCategoryTreeViewerClick(ModelMapper sender, EventArgs args)
+        void NodeBrowserPluginNode_Click(IModelMapper sender, MouseEventArgs e)
         {
-            MouseEventArgs e = args as MouseEventArgs;
-            
             if (sender.Model is NodeInfoEntry)
             {
                 if (e.Button == MouseButtons.Left)
@@ -1230,5 +1228,7 @@ namespace VVVV.Nodes.NodeBrowser
                     }
             }
         }
+        
+        
     }
 }
