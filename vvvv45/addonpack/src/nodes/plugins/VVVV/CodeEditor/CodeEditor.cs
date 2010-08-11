@@ -69,8 +69,10 @@ namespace VVVV.HDE.CodeEditor
 		
 		public ITextDocument Document { get; private set; }
 		
-		public bool IsDirty 
-		{ 
+		public SD.IDocument SDDocument { get; private set; }
+		
+		public bool IsDirty
+		{
 			get
 			{
 				return Document.IsDirty;
@@ -88,22 +90,24 @@ namespace VVVV.HDE.CodeEditor
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			InitializeComponent();
 			
-			FTextEditorControl.TextEditorProperties.MouseWheelTextZoom = false;
+			SDDocument = FTextEditorControl.Document;
 			
-			var path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), @"..\bin"));
-			var provider = new SD.FileSyntaxModeProvider(path);
-            SD.HighlightingManager.Manager.AddSyntaxModeFileProvider(provider);
-                
-            var highlighter = SD.HighlightingManager.Manager.FindHighlighterForFile(doc.Location.LocalPath);
-            if (highlighter.Name == "HLSL")
-               FTextEditorControl.EnableFolding = false;
+			FTextEditorControl.TextEditorProperties.MouseWheelTextZoom = false;
+			FTextEditorControl.TextEditorProperties.LineViewerStyle = SD.LineViewerStyle.FullRow;
+			FTextEditorControl.TextEditorProperties.ShowMatchingBracket = true;
+			FTextEditorControl.TextEditorProperties.AutoInsertCurlyBracket = true;
+			
+			var highlighter = SD.HighlightingManager.Manager.FindHighlighterForFile(doc.Location.LocalPath);
+			if (highlighter.Name == "HLSL")
+				FTextEditorControl.EnableFolding = false;
 
-            FTextEditorControl.SetHighlighting(highlighter.Name);
-			FTextEditorControl.TextEditorProperties.SupportReadOnlySegments = true;
+			FTextEditorControl.SetHighlighting(highlighter.Name);
+			
+			// Setup code folding
+			var parseInfo = ParseInfoProvider.GetParseInfo(doc);
 			FTextEditorControl.Document.FoldingManager.FoldingStrategy = new ParserFoldingStrategy();
-			FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown += TextAreaKeyDownCB;
-			FTextEditorControl.ActiveTextAreaControl.TextArea.MouseClick += new MouseEventHandler(FTextEditorControl_ActiveTextAreaControl_TextArea_MouseClick);
-		
+			FTextEditorControl.Document.FormattingStrategy = new CSharpFormattingStrategy(parseInfoProvider);
+			
 			FProjectContent = ParseInfoProvider.GetProjectContent(Document.Project);
 			FProjectContent.Language = Dom.LanguageProperties.CSharp;
 			
@@ -113,6 +117,8 @@ namespace VVVV.HDE.CodeEditor
 			
 			FBGCodeParser = new BackgroundCodeParser(parseInfoProvider, doc, FTextEditorControl.Document);
 			
+			FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown += TextAreaKeyDownCB;
+			FTextEditorControl.ActiveTextAreaControl.TextArea.MouseClick += FTextEditorControl_ActiveTextAreaControl_TextArea_MouseClick;
 			FTextEditorControl.TextChanged += TextEditorControlTextChangedCB;
 			
 			// Everytime the project is compiled update the error highlighting.
@@ -126,24 +132,26 @@ namespace VVVV.HDE.CodeEditor
 
 		void FTextEditorControl_ActiveTextAreaControl_TextArea_MouseClick(object sender, MouseEventArgs e)
 		{
-		   // if (Control.ModifierKeys != Keys.Control)
-		   //     return;
-		    
-		    var line = FTextEditorControl.Document.GetLineSegment(FTextEditorControl.ActiveTextAreaControl.Caret.Line);
-		    if (line.Words.Count > 0 && line.Words[1].Word == "include")
-		    {
-		        var strings = line.Words.ConvertAll<string>(new Converter<SD.TextWord, string>(delegate(SD.TextWord word) {return word.Word;})); 
-		        var text = string.Join("", strings.ToArray());
-		        text = text.Replace("#include\"", "").Trim(new char[1]{'"'});
-		        
-		        //open include document
-		        foreach (var doc in Document.Project.References)
-		            if (doc.Name == text)
-		            {
-		                (ParseInfoProvider as CodeEditorForm).Open(doc as ITextDocument);
-		                break;		                    
-		            }
-		    }
+			// if (Control.ModifierKeys != Keys.Control)
+			//     return;
+			
+			var line = FTextEditorControl.Document.GetLineSegment(FTextEditorControl.ActiveTextAreaControl.Caret.Line);
+			if (line.Words.Count > 0 && line.Words[1].Word == "include")
+			{
+				var strings = line.Words.ConvertAll<string>(new Converter<SD.TextWord, string>(delegate(SD.TextWord word) {return word.Word;}));
+				var text = string.Join("", strings.ToArray());
+				text = text.Replace("#include\"", "").Trim(new char[1]{'"'});
+				
+				//open include document
+				foreach (var doc in Document.Project.Documents)
+				{
+					if (doc.Name == text)
+					{
+						(ParseInfoProvider as CodeEditorForm).Open(doc as ITextDocument);
+						break;
+					}
+				}
+			}
 		}
 		#endregion constructor/destructor
 		
@@ -329,11 +337,16 @@ namespace VVVV.HDE.CodeEditor
 			FTextEditorControl.Document.CommitUpdate();
 		}
 		
-		public void JumpToLine(int Line)
+		public void JumpTo(int line)
 		{
-		    FTextEditorControl.ActiveTextAreaControl.Caret.Line = Line;
-		    FTextEditorControl.ActiveTextAreaControl.Caret.Column = 0;
-		    FTextEditorControl.Focus();
+			JumpTo(line, 0);
+		}
+		
+		public void JumpTo(int line, int column)
+		{
+			FTextEditorControl.ActiveTextAreaControl.Caret.Line = line;
+			FTextEditorControl.ActiveTextAreaControl.Caret.Column = column;
+			FTextEditorControl.ActiveTextAreaControl.ScrollTo(line, column);
 		}
 	}
 }

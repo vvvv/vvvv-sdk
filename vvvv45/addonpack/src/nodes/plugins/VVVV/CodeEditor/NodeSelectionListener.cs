@@ -1,6 +1,8 @@
 ﻿using System;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Core.Model;
+using VVVV.Core.Model.CS;
+using ICSharpCode.SharpDevelop.Dom;
 
 namespace VVVV.HDE.CodeEditor
 {
@@ -30,7 +32,41 @@ namespace VVVV.HDE.CodeEditor
 				
 				foreach (var doc in project.Documents)
 				{
-					if (doc is ITextDocument)
+					if (doc is CSDocument)
+					{
+						var csDoc = doc as CSDocument;
+						var parseInfo = FCodeEditorForm.GetParseInfo(csDoc);
+						
+						if (parseInfo.MostRecentCompilationUnit == null)
+						{
+							var parser = new CodeParser(FCodeEditorForm as IParseInfoProvider);
+							parseInfo = parser.Parse(csDoc);
+						}
+					
+						var compilationUnit = parseInfo.MostRecentCompilationUnit;
+						if (compilationUnit != null)
+						{
+							foreach (var clss in compilationUnit.Classes)
+							{
+								foreach (var attribute in clss.Attributes)
+								{
+									var attributeType = attribute.AttributeType;
+									if (attributeType.Name == typeof(PluginInfoAttribute).Name)
+									{
+										if ((string) attribute.NamedArguments["Name"] == nodeInfo.Name &&
+										    (string) attribute.NamedArguments["Category"] == nodeInfo.Category &&
+										    (string) attribute.NamedArguments["Version"] == nodeInfo.Version)
+										{
+											var tabPage = FCodeEditorForm.Open(csDoc);
+											var codeEditor = tabPage.Controls[0] as CodeEditor;
+											codeEditor.JumpTo(attribute.Region.BeginLine - 1);
+										}
+									}
+								}
+							}
+						}
+					}
+					else if (doc is ITextDocument)
 					{
 						// TODO: FCodeEditorPlugin.Open(doc as ITextDocument, nodeInfo);
 						FCodeEditorForm.Open(doc as ITextDocument);

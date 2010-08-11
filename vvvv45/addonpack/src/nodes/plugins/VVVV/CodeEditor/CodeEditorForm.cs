@@ -17,6 +17,8 @@ using VVVV.Core.View;
 using VVVV.Core.View.Table;
 using VVVV.HDE.CodeEditor.ErrorView;
 using VVVV.PluginInterfaces.V2;
+
+using SD = ICSharpCode.TextEditor.Document;
 using Dom = ICSharpCode.SharpDevelop.Dom;
 
 namespace VVVV.HDE.CodeEditor
@@ -33,6 +35,7 @@ namespace VVVV.HDE.CodeEditor
 		private Dom.ProjectContentRegistry FPCRegistry;
 		private Dictionary<IProject, Dom.DefaultProjectContent> FProjects;
 		private Dictionary<ITextDocument, Dom.ParseInformation> FParseInfos;
+		private Dictionary<SD.IDocument, ITextDocument> FSDDocToDocMap;
 		private BackgroundParser FBGParser;
 		private ISolution FSolution;
 		private Dictionary<string, string> FHLSLReference = new Dictionary<string, string>();
@@ -56,11 +59,16 @@ namespace VVVV.HDE.CodeEditor
 			FImageList.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.NameSpace"));
 			FImageList.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.Event"));
 			
+			var path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), @"..\bin"));
+			var provider = new SD.FileSyntaxModeProvider(path);
+			SD.HighlightingManager.Manager.AddSyntaxModeFileProvider(provider);
+			
 			FLogger = logger;
 			FSolution = solution;
 			FNodeSelectionListener = new NodeSelectionListener(this);
 			FProjects = new Dictionary<IProject, Dom.DefaultProjectContent>();
 			FParseInfos = new Dictionary<ITextDocument, Dom.ParseInformation>();
+			FSDDocToDocMap = new Dictionary<SD.IDocument, ITextDocument>();
 			
 			FHDEHost = host;
 			FHDEHost.AddListener(FNodeSelectionListener);
@@ -80,10 +88,10 @@ namespace VVVV.HDE.CodeEditor
 			// future starts are faster.
 			// It also caches XML documentation files in an on-disk hash table, thus
 			// reducing memory usage.
-			FPCRegistry.ActivatePersistence(Path.Combine(Path.GetTempPath(), "VVVVCodeEditor"));
+			FPCRegistry.ActivatePersistence(Shell.TempPath.ConcatPath("CodeEditor"));
 			
 			// Create the background assembly parser
-			FBGParser = new BackgroundParser(FPCRegistry, this, FStatusLabel);
+			FBGParser = new BackgroundParser(FPCRegistry, this);
 			
 			FSolution.Projects.Added += Project_Added;
 			FSolution.Projects.Removed += Project_Removed;
@@ -94,32 +102,34 @@ namespace VVVV.HDE.CodeEditor
 			ParseHLSLFunctionReference();
 			
 			AddTypeToReference("float");
-            AddTypeToReference("int");
-            AddTypeToReference("bool");
-            FTypeReference.Add("float3x4", "");
-            FTypeReference.Add("float4x3", "");
+			AddTypeToReference("int");
+			AddTypeToReference("bool");
+			FTypeReference.Add("float3x4", "");
+			FTypeReference.Add("float4x3", "");
 		}
 		
 		private void AddTypeToReference(string type)
 		{
-		    for (int i = 0; i <= 4; i++)
-		    {
-		        if (i == 0)
-		            FTypeReference.Add(type, "");
-		        else if (i > 1)
-		            FTypeReference.Add(type + i.ToString(), "");
-		    }
+			for (int i = 0; i <= 4; i++)
+			{
+				if (i == 0)
+					FTypeReference.Add(type, "");
+				else if (i > 1)
+					FTypeReference.Add(type + i.ToString(), "");
+			}
 		}
 		
 		/// <summary>
-		/// Opens the specified ITextDocument in a new editor or if already opened brings editor to top.
+		/// Opens the specified ITextDocument in a new editor.
 		/// </summary>
 		/// <param name="doc">The ITextDocument to open.</param>
-		public void Open(ITextDocument doc)
+		/// <returns>The TabPage containing the editor.</returns>
+		public TabPage Open(ITextDocument doc)
 		{
 			if (!FOpenedDocuments.ContainsKey(doc))
 			{
 				var editor = new CodeEditor(this, doc, FImageList, FHLSLReference, FTypeReference);
+				FSDDocToDocMap[editor.SDDocument] = doc;
 				var tabPage = new TabPage(GetTabPageName(doc));
 				
 				FTabControl.SuspendLayout();
@@ -135,7 +145,7 @@ namespace VVVV.HDE.CodeEditor
 				doc.Saved += DocumentSavedCB;
 			}
 			
-//			FTabControl.SelectTab(FOpenedDocuments[doc]);
+			return FOpenedDocuments[doc];
 		}
 		
 		public void Close(ITextDocument doc)
@@ -143,6 +153,8 @@ namespace VVVV.HDE.CodeEditor
 			if (FOpenedDocuments.ContainsKey(doc))
 			{
 				var tabPage = FOpenedDocuments[doc];
+				var codeEditor = tabPage.Controls[0] as CodeEditor;
+				FSDDocToDocMap.Remove(codeEditor.SDDocument);
 				FTabControl.Controls.Remove(tabPage);
 				FOpenedDocuments.Remove(doc);
 			}
@@ -159,30 +171,30 @@ namespace VVVV.HDE.CodeEditor
 		}
 		
 		private void ParseHLSLFunctionReference()
-        {
-            try
-            {
-                var functionReference = new XmlDocument();
-                var filename = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), @"..\bin\hlsl.fnr"));
-                functionReference.Load(filename);
-                foreach (XmlNode function in functionReference.DocumentElement.ChildNodes)
-                {
-                    var item = new List<string>();
-                    foreach (XmlNode cell in function)
-                        item.Add(cell.InnerText);
-                    
-                    //only take functions for shadermodels < 3
-                    int sm = Convert.ToInt32(item[2][0].ToString());
-                    if (sm < 4)
-                        FHLSLReference.Add(item[0], item[1] + "\nMinimum required ShaderModel: " + item[2]);
-                }
-            }
-            catch (Exception e)
-            {
-                FLogger.Log(LogType.Error, @"Error parsing HLSL function reference \effects\hlsl.fnr");
-                FLogger.Log(e);
-            }
-        }
+		{
+			try
+			{
+				var functionReference = new XmlDocument();
+				var filename = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), @"..\bin\hlsl.fnr"));
+				functionReference.Load(filename);
+				foreach (XmlNode function in functionReference.DocumentElement.ChildNodes)
+				{
+					var item = new List<string>();
+					foreach (XmlNode cell in function)
+						item.Add(cell.InnerText);
+					
+					//only take functions for shadermodels < 3
+					int sm = Convert.ToInt32(item[2][0].ToString());
+					if (sm < 4)
+						FHLSLReference.Add(item[0], item[1] + "\nMinimum required ShaderModel: " + item[2]);
+				}
+			}
+			catch (Exception e)
+			{
+				FLogger.Log(LogType.Error, @"Error parsing HLSL function reference \effects\hlsl.fnr");
+				FLogger.Log(e);
+			}
+		}
 		
 		void Project_CompileCompleted(IProject project, CompilerResults results)
 		{
@@ -269,42 +281,43 @@ namespace VVVV.HDE.CodeEditor
 		
 		void FErrorTableViewerDoubleClick(VVVV.Core.IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
 		{
-		    //open affected document
-		    //(sender.Model as CompilerErrorCollection)[0].
-		    var codeEditor = FTabControl.SelectedTab.Controls[0] as CodeEditor;
-		    var errorFile = Path.GetFileName((sender.Model as CompilerErrorCollection)[0].FileName);
-		    
-		    //special case for effects
-		    if (errorFile.EndsWith(".fxh"))
-		    {
-		        foreach (var fxh in codeEditor.Document.Project.References)
-		            if (fxh.Name == errorFile)
-		        {
-		            Open(fxh as ITextDocument);
-		            break;
-		        }
-		    }		        
-		        
-		    //TODO: check which of the errorlines has been clicked
-		    (FTabControl.SelectedTab.Controls[0] as CodeEditor).JumpToLine((sender.Model as CompilerErrorCollection)[0].Line-1);
+			var compilerError = sender.Model as CompilerError;
+			
+			// Find the document which caused the compiler error.
+			var doc = FSolution.FindDocument(compilerError.FileName);
+			
+			if (doc == null || !(doc is ITextDocument))
+				return;
+			
+			// Open the document.
+			var txtDoc = doc as ITextDocument;
+			var tabPage = Open(txtDoc);
+			
+			// Switch to newly created tab.
+			FTabControl.SelectTab(tabPage);
+			
+			// Jump to line of error and focus the editor.
+			var codeEditor = tabPage.Controls[0] as CodeEditor;
+			codeEditor.JumpTo(compilerError.Line - 1);
+			codeEditor.Focus();
 		}
 		
 		void FTabControlMouseClick(object sender, MouseEventArgs e)
 		{
-		    if (e.Button == MouseButtons.Left)
-		    {
-		        //focus the textarea for mousescroll to work instantly after changing tabs
-		        FTabControl.SelectedTab.Controls[0].Focus();
-		    }
+			if (e.Button == MouseButtons.Left)
+			{
+				//focus the textarea for mousescroll to work instantly after changing tabs
+				FTabControl.SelectedTab.Controls[0].Focus();
+			}
 			if (e.Button == MouseButtons.Middle)
 			{
-			    //note: on middle click the FTabControl.SelectedTab is not the same as after left-click
-			    //need to find targeted tabpage manually here: 
+				//note: on middle click the FTabControl.SelectedTab is not the same as after left-click
+				//need to find targeted tabpage manually here:
 				for (int i=0; i<FTabControl.TabPages.Count; i++)
 				{
 					if (FTabControl.GetTabRect(i).Contains(e.Location))
 					{
-					    Close((FTabControl.TabPages[i].Controls[0] as CodeEditor).Document);
+						Close((FTabControl.TabPages[i].Controls[0] as CodeEditor).Document);
 						break;
 					}
 				}
@@ -318,13 +331,16 @@ namespace VVVV.HDE.CodeEditor
 		/// </summary>
 		public Dom.DefaultProjectContent GetProjectContent(IProject project)
 		{
-			if (!FProjects.ContainsKey(project))
+			lock (FProjects)
 			{
-				var projectContent = new Dom.DefaultProjectContent();
-				FProjects.Add(project, projectContent);
+				if (!FProjects.ContainsKey(project))
+				{
+					var projectContent = new Dom.DefaultProjectContent();
+					FProjects.Add(project, projectContent);
+				}
+				
+				return FProjects[project];
 			}
-			
-			return FProjects[project];
 		}
 		
 		/// <summary>
@@ -332,15 +348,24 @@ namespace VVVV.HDE.CodeEditor
 		/// </summary>
 		public Dom.ParseInformation GetParseInfo(ITextDocument doc)
 		{
-			if (!FParseInfos.ContainsKey(doc))
+			lock (FParseInfos)
 			{
-				var parseInfo = new Dom.ParseInformation();
-				FParseInfos.Add(doc, parseInfo);
+				if (!FParseInfos.ContainsKey(doc))
+				{
+					var parseInfo = new Dom.ParseInformation();
+					FParseInfos.Add(doc, parseInfo);
+				}
+				
+				return FParseInfos[doc];
 			}
-			
-			
-			
-			return FParseInfos[doc];
+		}
+		
+		/// <summary>
+		/// Returns parse information for a SharpDevelop document.
+		/// </summary>
+		public Dom.ParseInformation GetParseInfo(SD.IDocument doc)
+		{
+			return GetParseInfo(FSDDocToDocMap[doc]);
 		}
 		
 		#endregion

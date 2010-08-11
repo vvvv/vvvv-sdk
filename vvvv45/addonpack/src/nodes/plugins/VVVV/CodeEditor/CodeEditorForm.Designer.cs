@@ -16,33 +16,14 @@ namespace VVVV.HDE.CodeEditor
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			this.FStatusStrip = new System.Windows.Forms.StatusStrip();
-			this.FStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.FSplitContainer = new System.Windows.Forms.SplitContainer();
 			this.FTabControl = new System.Windows.Forms.TabControl();
 			this.FErrorTableViewer = new VVVV.HDE.Viewer.WinFormsViewer.TableViewer();
 			this.FImageList = new System.Windows.Forms.ImageList(this.components);
-			this.FStatusStrip.SuspendLayout();
 			this.FSplitContainer.Panel1.SuspendLayout();
 			this.FSplitContainer.Panel2.SuspendLayout();
 			this.FSplitContainer.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// FStatusStrip
-			// 
-			this.FStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-									this.FStatusLabel});
-			this.FStatusStrip.Location = new System.Drawing.Point(0, 454);
-			this.FStatusStrip.Name = "FStatusStrip";
-			this.FStatusStrip.Size = new System.Drawing.Size(881, 22);
-			this.FStatusStrip.TabIndex = 0;
-			this.FStatusStrip.Text = "statusStrip1";
-			// 
-			// FStatusLabel
-			// 
-			this.FStatusLabel.Name = "FStatusLabel";
-			this.FStatusLabel.Size = new System.Drawing.Size(39, 17);
-			this.FStatusLabel.Text = "Ready";
 			// 
 			// FSplitContainer
 			// 
@@ -59,7 +40,7 @@ namespace VVVV.HDE.CodeEditor
 			// 
 			this.FSplitContainer.Panel2.Controls.Add(this.FErrorTableViewer);
 			this.FSplitContainer.Panel2Collapsed = true;
-			this.FSplitContainer.Size = new System.Drawing.Size(881, 454);
+			this.FSplitContainer.Size = new System.Drawing.Size(881, 476);
 			this.FSplitContainer.SplitterDistance = 293;
 			this.FSplitContainer.TabIndex = 1;
 			// 
@@ -70,7 +51,7 @@ namespace VVVV.HDE.CodeEditor
 			this.FTabControl.Location = new System.Drawing.Point(0, 0);
 			this.FTabControl.Name = "FTabControl";
 			this.FTabControl.SelectedIndex = 0;
-			this.FTabControl.Size = new System.Drawing.Size(881, 454);
+			this.FTabControl.Size = new System.Drawing.Size(881, 476);
 			this.FTabControl.TabIndex = 0;
 			this.FTabControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.FTabControlMouseClick);
 			// 
@@ -80,7 +61,7 @@ namespace VVVV.HDE.CodeEditor
 			this.FErrorTableViewer.Location = new System.Drawing.Point(0, 0);
 			this.FErrorTableViewer.Name = "FErrorTableViewer";
 			this.FErrorTableViewer.RowHeight = 16;
-			this.FErrorTableViewer.Size = new System.Drawing.Size(881, 157);
+			this.FErrorTableViewer.Size = new System.Drawing.Size(150, 46);
 			this.FErrorTableViewer.TabIndex = 0;
 			this.FErrorTableViewer.DoubleClick += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FErrorTableViewerDoubleClick);
 			// 
@@ -97,7 +78,6 @@ namespace VVVV.HDE.CodeEditor
 			this.ClientSize = new System.Drawing.Size(881, 476);
 			this.ControlBox = false;
 			this.Controls.Add(this.FSplitContainer);
-			this.Controls.Add(this.FStatusStrip);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
@@ -107,20 +87,15 @@ namespace VVVV.HDE.CodeEditor
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.Text = "CodeEditorForm";
 			this.TopMost = true;
-			this.FStatusStrip.ResumeLayout(false);
-			this.FStatusStrip.PerformLayout();
 			this.FSplitContainer.Panel1.ResumeLayout(false);
 			this.FSplitContainer.Panel2.ResumeLayout(false);
 			this.FSplitContainer.ResumeLayout(false);
 			this.ResumeLayout(false);
-			this.PerformLayout();
 		}
 		private VVVV.HDE.Viewer.WinFormsViewer.TableViewer FErrorTableViewer;
-		internal System.Windows.Forms.ToolStripStatusLabel FStatusLabel;
 		private System.Windows.Forms.ImageList FImageList;
 		private System.Windows.Forms.TabControl FTabControl;
 		private System.Windows.Forms.SplitContainer FSplitContainer;
-		private System.Windows.Forms.StatusStrip FStatusStrip;
 		
 
 	}

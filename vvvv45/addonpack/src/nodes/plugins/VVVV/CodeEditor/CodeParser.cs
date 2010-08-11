@@ -1,6 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+
+using ICSharpCode.NRefactory.Parser;
 using VVVV.Core.Model;
 using Dom = ICSharpCode.SharpDevelop.Dom;
 using NRefactory = ICSharpCode.NRefactory;
@@ -38,8 +40,15 @@ namespace VVVV.HDE.CodeEditor
 				AddCommentTags(ref newCompilationUnit, parser);
 				
 				// Remove information from lastCompilationUnit and add information from newCompilationUnit.
-				projectContent.UpdateCompilationUnit(oldCompilationUnit, newCompilationUnit, filename);
-				parseInfo.SetCompilationUnit(newCompilationUnit);
+				lock (projectContent)
+				{
+					projectContent.UpdateCompilationUnit(oldCompilationUnit, newCompilationUnit, filename);
+				}
+				
+				lock (parseInfo)
+				{
+					parseInfo.SetCompilationUnit(newCompilationUnit);
+				}
 			}
 			
 			return parseInfo;

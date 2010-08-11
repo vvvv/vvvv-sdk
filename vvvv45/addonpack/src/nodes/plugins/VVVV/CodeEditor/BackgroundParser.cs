@@ -28,15 +28,13 @@ namespace VVVV.HDE.CodeEditor
 		private Queue<Tuple<BackgroundWorker, ICollection<IProject>>> FWorkerQueue;
 		private Dom.ProjectContentRegistry FPCRegistry;
 		private IParseInfoProvider FParseInfoProvider;
-		private ToolStripStatusLabel FParserLabel;
 		
-		public BackgroundParser(Dom.ProjectContentRegistry pcRegistry, IParseInfoProvider parseInfoProvider, ToolStripStatusLabel parserLabel)
+		public BackgroundParser(Dom.ProjectContentRegistry pcRegistry, IParseInfoProvider parseInfoProvider)
 		{
 			FWorkerQueue = new Queue<Tuple<BackgroundWorker, ICollection<IProject>>>();
 		
 			FPCRegistry = pcRegistry;
 			FParseInfoProvider = parseInfoProvider;
-			FParserLabel = parserLabel;
 		}
 		
 		public void Parse(IProject project)
@@ -49,10 +47,9 @@ namespace VVVV.HDE.CodeEditor
 		public void Parse(IEnumerable<IProject> projects)
 		{
 			var worker = new BackgroundWorker();
-			worker.WorkerReportsProgress = true;
+			worker.WorkerReportsProgress = false;
 			worker.WorkerSupportsCancellation = true;
 			worker.DoWork += DoWorkCB;
-			worker.ProgressChanged += ProgressChangedCB;
 			worker.RunWorkerCompleted += RunWorkerCompletedCB;
 			
 			FWorkerQueue.Enqueue(new Tuple<BackgroundWorker, ICollection<IProject>>(worker, projects.ToList()));
@@ -73,9 +70,6 @@ namespace VVVV.HDE.CodeEditor
 			var worker = sender as BackgroundWorker;
 			var projects = args.Argument as ICollection<IProject>;
 			
-			int i = 0;
-			int percentProgress = 0;
-			
 			foreach (var project in projects)
 			{
 				// Get the IProjectContent for this project
@@ -89,11 +83,6 @@ namespace VVVV.HDE.CodeEditor
 				
 				// Add mscorlib
 				projectContent.AddReferencedContent(FPCRegistry.Mscorlib);
-				
-				percentProgress = (i++) * 100;
-			
-				int j = 0;
-				int percentInnerProgress = 0;
 				
 				// Parse all references
 				foreach (var reference in project.References)
@@ -117,9 +106,6 @@ namespace VVVV.HDE.CodeEditor
 						var referencePC = FPCRegistry.GetProjectContentForReference(assemblyName, assemblyFilename);
 						projectContent.AddReferencedContent(referencePC);
 					}
-					
-					percentInnerProgress = percentProgress + ((j++) * 100) / project.References.Count;
-					worker.ReportProgress(percentInnerProgress / projects.Count, reference.Name);
 				}
 				
 				// Parse the document itself (all documents)
@@ -134,21 +120,11 @@ namespace VVVV.HDE.CodeEditor
 		
 		void RunWorkerCompletedCB(object sender, RunWorkerCompletedEventArgs args)
 		{
-			if (!FParserLabel.IsDisposed)
-				FParserLabel.Text = "Ready";
-			
 			if (FWorkerQueue.Count > 0)
 			{
 				var tuple = FWorkerQueue.Dequeue();
 				tuple.Fst.RunWorkerAsync(tuple.Snd);
 			}
-		}
-		
-		void ProgressChangedCB(object sender, ProgressChangedEventArgs args)
-		{
-			string assemblyName = args.UserState as string;
-			if (!FParserLabel.IsDisposed)
-				FParserLabel.Text = "Loading " + assemblyName + " ...";
 		}
 	}
 }
