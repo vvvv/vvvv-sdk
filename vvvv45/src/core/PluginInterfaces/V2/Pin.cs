@@ -8,9 +8,21 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.PluginInterfaces.V2
 {
+	public delegate void PinUpdatedEventHandler<T>(Pin<T> pin);
+	
 	public abstract class Pin<T> : ISpread<T>, IPluginIOProvider
 	{
 		public abstract IPluginIO PluginIO { get; }
+		
+		public event PinUpdatedEventHandler<T> Updated;
+		
+		protected virtual void OnUpdated()
+		{
+			if (Updated != null) 
+			{
+				Updated(this);
+			}
+		}
 		
 		public abstract T this[int index]
 		{
@@ -27,7 +39,7 @@ namespace VVVV.PluginInterfaces.V2
 		//prepare for IPinUpdater
 		public virtual void Update()
 		{
-			// DO nothing, override in subclass if needed
+			OnUpdated();
 		}
 		
 		public virtual void Connect()
@@ -76,7 +88,7 @@ namespace VVVV.PluginInterfaces.V2
 			if(attribute.DefaultValues.Length < dimension)
 			{
 				var newDefaults = new double[dimension];
-				for (int i=0; i<attribute.DefaultValues.Length; i++) 
+				for (int i=0; i<attribute.DefaultValues.Length; i++)
 				{
 					newDefaults[i] = attribute.DefaultValues[i];
 				}

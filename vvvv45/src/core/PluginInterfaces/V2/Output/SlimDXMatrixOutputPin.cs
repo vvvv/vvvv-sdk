@@ -61,6 +61,8 @@ namespace VVVV.PluginInterfaces.V2.Output
 		
 		unsafe public override void Update()
 		{
+			base.Update();
+			
 			float* destination;
 			FTransformOut.GetMatrixPointer(out destination);
 			

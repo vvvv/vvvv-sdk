@@ -46,13 +46,13 @@ namespace VVVV.PluginInterfaces.V2
 					FSpreadList = new InputBinSpread<T>(host, attribute as InputAttribute) as ISpread<ISpread<T>>;
 				}
 				
-//				//output bin spread
-//				else if(attribute is OutputAttribute)
-//				{
-//					Debug.WriteLine(string.Format("Creating output bin spread '{0}'.", attribute.Name));
-//
-//					FSpreadList = new OutputBinSpread<T>(host, attribute as OutputAttribute) as ISpread<ISpread<T>>;
-//				}
+				//output bin spread
+				else if(attribute is OutputAttribute)
+				{
+					Debug.WriteLine(string.Format("Creating output bin spread '{0}'.", attribute.Name));
+
+					FSpreadList = new OutputBinSpread<T>(host, attribute as OutputAttribute) as ISpread<ISpread<T>>;
+				}
 			}
 			
 		}
@@ -65,7 +65,7 @@ namespace VVVV.PluginInterfaces.V2
 			}
 			set 
 			{
-
+				FSpreadList[index] = value;
 			}
 		}
 		
@@ -77,7 +77,7 @@ namespace VVVV.PluginInterfaces.V2
 			}
 			set 
 			{
-
+				FSpreadList.SliceCount = value;
 			}
 		}
 		

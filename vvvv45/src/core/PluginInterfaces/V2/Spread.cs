@@ -52,6 +52,13 @@ namespace VVVV.PluginInterfaces.V2
 							FData[i] = old[i % old.Length];
 						}
 					}
+					else
+					{
+						for (int i = 0; i < FData.Length; i++)
+						{
+							FData[i] = default(T);
+						}
+					}
 				}
 				
 				FSliceCount = value;

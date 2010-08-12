@@ -33,7 +33,7 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		//pin management
-		protected void UpdatePins(ObservablePin<int> pin)
+		protected void UpdatePins(Pin<int> pin)
 		{
 			var count = FConfigPin[0];
 			var diff = count - FPins.Length;

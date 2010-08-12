@@ -69,6 +69,8 @@ namespace VVVV.PluginInterfaces.V2.Output
 		
 		public override void Update()
 		{
+			base.Update();
+			
 			if(FChanged) FNodeOut.MarkPinAsChanged();
 			FChanged = false;
 		}

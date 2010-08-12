@@ -18,7 +18,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 			}
 			set 
 			{
-				FValueOut.SetValue(index, (double) value);
+				FData[index] = (double) value;
 			}
 		}
 	}

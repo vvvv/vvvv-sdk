@@ -28,7 +28,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			FSpreads = new Spread<ISpread<T>>(0);
 		}
 
-		void FBinSize_Updated(ObservablePin<int> pin)
+		void FBinSize_Updated(Pin<int> pin)
 		{
 			FUpdateCount++;
 			if (FUpdateCount > 1)
@@ -40,7 +40,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			}
 		}
 
-		void FSpreadPin_Updated(ObservablePin<T> pin)
+		void FSpreadPin_Updated(Pin<T> pin)
 		{
 			FUpdateCount++;
 			if (FUpdateCount > 1)
