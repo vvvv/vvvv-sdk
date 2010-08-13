@@ -66,7 +66,7 @@ namespace VVVV.HDE.CodeEditor
 			};
 		}
 		
-		public static void UnRegister(IProjectContent projectContent)
+		public static void UnRegister()
 		{
 			FProjectContent = null;
 		}

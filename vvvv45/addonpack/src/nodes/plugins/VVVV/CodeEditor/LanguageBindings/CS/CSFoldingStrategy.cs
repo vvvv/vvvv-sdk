@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.TextEditor.Document;
 
-namespace VVVV.HDE.CodeEditor
+namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 {
-	public class ParserFoldingStrategy : IFoldingStrategy
+	public class CSFoldingStrategy : IFoldingStrategy
 	{
 		void AddClassMembers(IClass c, List<FoldMarker> foldMarkers, IDocument document)
 		{

@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Dom.CSharp;
 using ICSharpCode.TextEditor.Document;
+using VVVV.Core.Model.CS;
 
-namespace VVVV.HDE.CodeEditor
+namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 {
-	public class CSharpFormattingStrategy : DefaultFormattingStrategy
+	public class CSFormattingStrategy : DefaultFormattingStrategy
 	{
-		protected IParseInfoProvider FParseInfoProvider;
+		protected IDocumentLocator FDocumentLocator;
 		
-		public CSharpFormattingStrategy(IParseInfoProvider parseInfoProvider)
+		public CSFormattingStrategy(IDocumentLocator documentLocator)
 		{
-			FParseInfoProvider = parseInfoProvider;
+			FDocumentLocator = documentLocator;
 		}
 		
 		protected override int SmartIndentLine(ICSharpCode.TextEditor.TextArea textArea, int line)
@@ -155,7 +155,8 @@ namespace VVVV.HDE.CodeEditor
 		
 		bool IsInComment(IDocument document, int offset)
 		{
-			var expressionFinder = new CSharpExpressionFinder(FParseInfoProvider.GetParseInfo(document));
+			var csDocument = FDocumentLocator.GetVDocument(document) as CSDocument;
+			var expressionFinder = new CSharpExpressionFinder(csDocument.ParseInfo);
 			return expressionFinder.FilterComments(document.GetText(0, offset + 1), ref offset) == null;
 		}
 	}

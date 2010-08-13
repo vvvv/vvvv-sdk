@@ -1,8 +1,7 @@
 ﻿using System;
-using VVVV.PluginInterfaces.V2;
 using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
-using ICSharpCode.SharpDevelop.Dom;
+using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.HDE.CodeEditor
 {
@@ -35,15 +34,9 @@ namespace VVVV.HDE.CodeEditor
 					if (doc is CSDocument)
 					{
 						var csDoc = doc as CSDocument;
-						var parseInfo = FCodeEditorForm.GetParseInfo(csDoc);
-						
-						if (parseInfo.MostRecentCompilationUnit == null)
-						{
-							var parser = new CodeParser(FCodeEditorForm as IParseInfoProvider);
-							parseInfo = parser.Parse(csDoc);
-						}
-					
+						var parseInfo = csDoc.ParseInfo;
 						var compilationUnit = parseInfo.MostRecentCompilationUnit;
+						
 						if (compilationUnit != null)
 						{
 							foreach (var clss in compilationUnit.Classes)

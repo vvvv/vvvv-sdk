@@ -26,64 +26,49 @@
 // OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Threading;
-using System.Windows.Forms;
-
 using ICSharpCode.TextEditor;
-using ICSharpCode.TextEditor.Gui;
 using ICSharpCode.TextEditor.Gui.CompletionWindow;
-using ICSharpCode.SharpDevelop.Dom.CSharp;
-using VVVV.Core.Model;
 
 namespace VVVV.HDE.CodeEditor
 {
-	class CodeCompletionKeyHandler
+	/// <summary>
+	/// Triggers the CompletionWindow.
+	/// </summary>
+	internal class CodeCompletionKeyHandler
 	{
 		protected TextEditorControl FEditorControl;
-		protected CodeCompletionWindow codeCompletionWindow;
-		protected IParseInfoProvider FParseInfoProvider;
-		protected ITextDocument FDocument;
-		protected ImageList FImageList;
-		protected Dictionary<string, string> FHLSLReference;
-		protected Dictionary<string, string> FTypeReference;
+		protected ICompletionDataProvider FCompletionDataProvider;
+		protected ICompletionWindowTrigger FCompletionWindowTrigger;
+		protected string FFilename;
+		
+		protected CodeCompletionWindow FCodeCompletionWindow;
 		
 		private CodeCompletionKeyHandler(
-			IParseInfoProvider parseInfoProvider,
-			ITextDocument document,
-			ImageList imageList,
 			TextEditorControl editorControl,
-			Dictionary<string, string> hlslReference,
-			Dictionary<string, string> typeReference)
+			ICompletionDataProvider completionDataProvider,
+			ICompletionWindowTrigger completionWindowTrigger,
+			string filename)
 		{
-			FParseInfoProvider = parseInfoProvider;
-			FDocument = document;
-			FImageList = imageList;
 			FEditorControl = editorControl;
-			FHLSLReference = hlslReference;
-			FTypeReference = typeReference;
+			FCompletionDataProvider = completionDataProvider;
+			FCompletionWindowTrigger = completionWindowTrigger;
+			FFilename = filename;
 		}
 		
 		public static CodeCompletionKeyHandler Attach(
-			IParseInfoProvider parseInfoProvider,
-			ITextDocument document,
-			ImageList imageList,
 			TextEditorControl editorControl,
-			Dictionary<string, string> hlslReference,
-			Dictionary<string, string> typeReference)
+			ICompletionDataProvider completionDataProvider,
+			ICompletionWindowTrigger completionWindowTrigger,
+			string filename)
 		{
-			CodeCompletionKeyHandler h = new CodeCompletionKeyHandler(parseInfoProvider, document, imageList, editorControl, hlslReference, typeReference);
-			
-			editorControl.ActiveTextAreaControl.TextArea.KeyEventHandler += h.TextAreaKeyEventHandler;
+			var handler = new CodeCompletionKeyHandler(editorControl, completionDataProvider, completionWindowTrigger, filename);
+			editorControl.ActiveTextAreaControl.TextArea.KeyEventHandler += handler.TextAreaKeyEventHandler;
 			
 			// When the editor is disposed, close the code completion window
-			editorControl.Disposed += h.CloseCodeCompletionWindow;
-			editorControl.Disposed += h.EditorDisposedCB;
+			editorControl.Disposed += handler.CloseCodeCompletionWindow;
+			editorControl.Disposed += handler.EditorDisposedCB;
 			
-			return h;
+			return handler;
 		}
 
 		/// <summary>
@@ -99,22 +84,19 @@ namespace VVVV.HDE.CodeEditor
 			
 			try
 			{
-				if (codeCompletionWindow != null && !codeCompletionWindow.IsDisposed) {
+				if (FCodeCompletionWindow != null && !FCodeCompletionWindow.IsDisposed) {
 					// If completion window is open and wants to handle the key, don't let the text area handle it.
-					if (codeCompletionWindow.ProcessKeyEvent(key)) {
+					if (FCodeCompletionWindow.ProcessKeyEvent(key)) {
 						return true;
 					}
-					if (codeCompletionWindow != null && !codeCompletionWindow.IsDisposed) {
+					if (FCodeCompletionWindow != null && !FCodeCompletionWindow.IsDisposed) {
 						// code-completion window is still opened but did not want to handle
 						// the keypress -> don't try to restart code-completion
 						return false;
 					}
 				}
 				
-				if (IsInComment(FEditorControl))
-					return false;
-				
-				if (char.IsLetter(key) || key == '.')
+				if (FCompletionWindowTrigger.TriggersCompletionWindow(FEditorControl, key))
 				{
 					// Delete selected text (which will be overwritten anyways) before starting completion.
 					if (FEditorControl.ActiveTextAreaControl.SelectionManager.HasSomethingSelected) {
@@ -128,19 +110,17 @@ namespace VVVV.HDE.CodeEditor
 						FEditorControl.ActiveTextAreaControl.Caret.Position = FEditorControl.Document.OffsetToPosition(cursor);
 					}
 					
-					var completionDataProvider = new CodeCompletionProvider(FParseInfoProvider, FDocument, FImageList, FHLSLReference, FTypeReference);
-
-					codeCompletionWindow = CodeCompletionWindow.ShowCompletionWindow(
+					FCodeCompletionWindow = CodeCompletionWindow.ShowCompletionWindow(
 						FEditorControl.FindForm(),					// The parent window for the completion window
 						FEditorControl, 					// The text editor to show the window for
-						FDocument.Location.AbsolutePath,		// Filename - will be passed back to the provider
-						completionDataProvider,		// Provider to get the list of possible completions
+						FFilename,		// Filename - will be passed back to the provider
+						FCompletionDataProvider,		// Provider to get the list of possible completions
 						key							// Key pressed - will be passed to the provider
 					);
-					if (codeCompletionWindow != null)
+					if (FCodeCompletionWindow != null)
 					{
 						// ShowCompletionWindow can return null when the provider returns an empty list
-						codeCompletionWindow.Closed += CloseCodeCompletionWindow;
+						FCodeCompletionWindow.Closed += CloseCodeCompletionWindow;
 					}
 				}
 			}
@@ -154,11 +134,11 @@ namespace VVVV.HDE.CodeEditor
 		
 		void CloseCodeCompletionWindow(object sender, EventArgs e)
 		{
-			if (codeCompletionWindow != null)
+			if (FCodeCompletionWindow != null)
 			{
-				codeCompletionWindow.Closed -= CloseCodeCompletionWindow;
-				codeCompletionWindow.Dispose();
-				codeCompletionWindow = null;
+				FCodeCompletionWindow.Closed -= CloseCodeCompletionWindow;
+				FCodeCompletionWindow.Dispose();
+				FCodeCompletionWindow = null;
 			}
 		}
 		
@@ -167,13 +147,6 @@ namespace VVVV.HDE.CodeEditor
 			var editor = sender as TextEditorControl;
 			editor.Disposed -= CloseCodeCompletionWindow;
 			editor.ActiveTextAreaControl.TextArea.KeyEventHandler -= TextAreaKeyEventHandler;
-		}
-		
-		bool IsInComment(TextEditorControl editor)
-		{
-			var expressionFinder = new CSharpExpressionFinder(FParseInfoProvider.GetParseInfo(FDocument));
-			int cursor = editor.ActiveTextAreaControl.Caret.Offset - 1;
-			return expressionFinder.FilterComments(editor.Document.GetText(0, cursor + 1), ref cursor) == null;
 		}
 	}
 }

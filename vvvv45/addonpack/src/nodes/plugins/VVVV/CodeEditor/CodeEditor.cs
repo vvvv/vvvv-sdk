@@ -25,28 +25,22 @@
 
 //use what you need
 using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Threading;
-using System.Resources;
-using System.Reflection;
 using System.CodeDom.Compiler;
-using System.IO;
+using System.Collections.Generic;
 using System.Diagnostics;
-
-using VVVV.Core.Model;
-using VVVV.Core.Model.CS;
-using VVVV.PluginInterfaces.V1;
-using VVVV.Utils.VColor;
-using VVVV.Utils.VMath;
-using VVVV.Utils;
-
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
 
 using ICSharpCode.TextEditor;
+using ICSharpCode.TextEditor.Gui.CompletionWindow;
+using VVVV.Core.Model;
+using VVVV.Core.Model.CS;
+using VVVV.Core.Model.FX;
+using VVVV.HDE.CodeEditor.LanguageBindings.CS;
 using SD = ICSharpCode.TextEditor.Document;
 using Dom = ICSharpCode.SharpDevelop.Dom;
+using NRefactory = ICSharpCode.NRefactory;
 
 namespace VVVV.HDE.CodeEditor
 {
@@ -55,18 +49,13 @@ namespace VVVV.HDE.CodeEditor
 	public class CodeEditor: UserControl
 	{
 		#region field declaration
-		internal Dom.DefaultProjectContent FProjectContent;
-		
 		private ICSharpCode.TextEditor.TextEditorControl FTextEditorControl;
-		private BackgroundCodeParser FBGCodeParser;
 		private System.Windows.Forms.Timer FTimer;
+		private CodeEditorForm FCodeEditorForm;
+		private ILinkDataProvider FLinkDataProvider;
 		#endregion field declaration
 		
 		#region Properties
-		public IParseInfoProvider ParseInfoProvider { get; private set; }
-		
-		public ImageList ImageList { get; private set; }
-		
 		public ITextDocument Document { get; private set; }
 		
 		public SD.IDocument SDDocument { get; private set; }
@@ -81,44 +70,68 @@ namespace VVVV.HDE.CodeEditor
 		#endregion
 		
 		#region constructor/destructor
-		public CodeEditor(IParseInfoProvider parseInfoProvider, ITextDocument doc, ImageList imageList, Dictionary<string, string> hlslReference, Dictionary<string, string> typeReference)
+		public CodeEditor(
+			CodeEditorForm codeEditorForm,
+			ITextDocument doc,
+			ICompletionWindowTrigger completionWindowTrigger,
+			ICompletionDataProvider completionDataProvider,
+			SD.IFormattingStrategy formattingStrategy,
+			SD.IFoldingStrategy foldingStrategy,
+			ILinkDataProvider linkDataProvider)
 		{
-			ParseInfoProvider = parseInfoProvider;
-			Document = doc;
-			ImageList = imageList;
-			
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			InitializeComponent();
 			
+			FCodeEditorForm = codeEditorForm;
+			Document = doc;
 			SDDocument = FTextEditorControl.Document;
 			
 			FTextEditorControl.TextEditorProperties.MouseWheelTextZoom = false;
 			FTextEditorControl.TextEditorProperties.LineViewerStyle = SD.LineViewerStyle.FullRow;
 			FTextEditorControl.TextEditorProperties.ShowMatchingBracket = true;
 			FTextEditorControl.TextEditorProperties.AutoInsertCurlyBracket = true;
+			FTextEditorControl.ActiveTextAreaControl.TextArea.Resize += FTextEditorControl_ActiveTextAreaControl_TextArea_Resize;
 			
-			var highlighter = SD.HighlightingManager.Manager.FindHighlighterForFile(doc.Location.LocalPath);
-			if (highlighter.Name == "HLSL")
-				FTextEditorControl.EnableFolding = false;
-
+			var fileName = doc.Location.LocalPath;
+			
+			// Setup code highlighting
+			var highlighter = SD.HighlightingManager.Manager.FindHighlighterForFile(fileName);
 			FTextEditorControl.SetHighlighting(highlighter.Name);
 			
+			// Setup code completion
+			CodeCompletionKeyHandler.Attach(FTextEditorControl, completionDataProvider, completionWindowTrigger, fileName);
+			
+			// Setup code formatting
+			if (formattingStrategy != null)
+				FTextEditorControl.Document.FormattingStrategy = formattingStrategy;
+			
 			// Setup code folding
-			var parseInfo = ParseInfoProvider.GetParseInfo(doc);
-			FTextEditorControl.Document.FoldingManager.FoldingStrategy = new ParserFoldingStrategy();
-			FTextEditorControl.Document.FormattingStrategy = new CSharpFormattingStrategy(parseInfoProvider);
+			if (foldingStrategy != null)
+			{
+				FTextEditorControl.EnableFolding = true;
+				FTextEditorControl.Document.FoldingManager.FoldingStrategy = foldingStrategy;
+			}
+			else
+			{
+				FTextEditorControl.EnableFolding = false;
+			}
 			
-			FProjectContent = ParseInfoProvider.GetProjectContent(Document.Project);
-			FProjectContent.Language = Dom.LanguageProperties.CSharp;
+			// Setup hovering (ILinkDataProvider)
+			if (linkDataProvider != null)
+			{
+				FLinkDataProvider = linkDataProvider;
+				FTextEditorControl.ActiveTextAreaControl.TextArea.MouseMove += Link_MouseMove;
+				FTextEditorControl.ActiveTextAreaControl.TextArea.MouseClick += Link_MouseClick;
+			}
 			
-			HostCallbackImplementation.Register(FProjectContent);
-			CodeCompletionKeyHandler.Attach(parseInfoProvider, doc, imageList, FTextEditorControl, hlslReference, typeReference);
-			ToolTipProvider.Attach(parseInfoProvider, doc, FTextEditorControl);
-			
-			FBGCodeParser = new BackgroundCodeParser(parseInfoProvider, doc, FTextEditorControl.Document);
+			// Setup file specific stuff
+			if (doc is CSDocument)
+			{
+				var csDoc = doc as CSDocument;
+				CSToolTipProvider.Attach(csDoc, FTextEditorControl);
+			}
 			
 			FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown += TextAreaKeyDownCB;
-			FTextEditorControl.ActiveTextAreaControl.TextArea.MouseClick += FTextEditorControl_ActiveTextAreaControl_TextArea_MouseClick;
 			FTextEditorControl.TextChanged += TextEditorControlTextChangedCB;
 			
 			// Everytime the project is compiled update the error highlighting.
@@ -130,27 +143,128 @@ namespace VVVV.HDE.CodeEditor
 			FTimer.Tick += TimerTickCB;
 		}
 
-		void FTextEditorControl_ActiveTextAreaControl_TextArea_MouseClick(object sender, MouseEventArgs e)
+		void FTextEditorControl_ActiveTextAreaControl_TextArea_Resize(object sender, EventArgs e)
 		{
-			// if (Control.ModifierKeys != Keys.Control)
-			//     return;
+			var textAreaControl = FTextEditorControl.ActiveTextAreaControl;
+			var textArea = textAreaControl.TextArea;
+			var document = FTextEditorControl.Document;
 			
-			var line = FTextEditorControl.Document.GetLineSegment(FTextEditorControl.ActiveTextAreaControl.Caret.Line);
-			if (line.Words.Count > 0 && line.Words[1].Word == "include")
-			{
-				var strings = line.Words.ConvertAll<string>(new Converter<SD.TextWord, string>(delegate(SD.TextWord word) {return word.Word;}));
-				var text = string.Join("", strings.ToArray());
-				text = text.Replace("#include\"", "").Trim(new char[1]{'"'});
-				
-				//open include document
-				foreach (var doc in Document.Project.Documents)
-				{
-					if (doc.Name == text)
-					{
-						(ParseInfoProvider as CodeEditorForm).Open(doc as ITextDocument);
+			// At startup this property seems to be invalid.
+			if (textArea.TextView.VisibleColumnCount == -1)
+				textArea.Refresh(textArea.TextView);
+			
+			var visibleColumnCount = textArea.TextView.VisibleColumnCount;
+			
+			int firstLine = textArea.TextView.FirstVisibleLine;
+			int lastLine = document.GetFirstLogicalLine(textArea.TextView.FirstPhysicalLine + textArea.TextView.VisibleLineCount);
+			if (lastLine >= document.TotalNumberOfLines)
+				lastLine = document.TotalNumberOfLines - 1;
+			
+			int max = 1;
+			for (int lineNumber = firstLine; lineNumber <= lastLine; lineNumber++) {
+				if (document.FoldingManager.IsLineVisible(lineNumber)) {
+					var lineSegment = document.GetLineSegment(lineNumber);
+					int visualLength = textArea.TextView.GetVisualColumnFast(lineSegment, lineSegment.Length);
+					max = Math.Max(max, visualLength);
+					
+					if (max >= visibleColumnCount)
 						break;
+				}
+			}
+			
+			if (max < visibleColumnCount)
+			{
+				textAreaControl.HScrollBar.Visible = false;
+				textAreaControl.TextArea.Bounds =
+					new Rectangle(0, 0,
+					              textAreaControl.Width - SystemInformation.HorizontalScrollBarArrowWidth,
+					              textAreaControl.Height);
+				textAreaControl.VScrollBar.Bounds =
+					new Rectangle(textArea.Bounds.Right, 0,
+					              SystemInformation.HorizontalScrollBarArrowWidth,
+					              textAreaControl.Height);
+			}
+			else
+				textAreaControl.HScrollBar.Visible = true;
+		}
+		
+		public TextLocation GetTextLocationAtMousePosition(Point location)
+		{
+			var textView = FTextEditorControl.ActiveTextAreaControl.TextArea.TextView;
+			return textView.GetLogicalPosition(location.X - textView.DrawingPosition.Left, location.Y - textView.DrawingPosition.Top);
+		}
+
+		private SD.TextMarker FUnderlineMarker;
+		private SD.TextMarker FHighlightMarker;
+		private Link FLink = Link.Empty;
+		void Link_MouseMove(object sender, MouseEventArgs e)
+		{
+			try
+			{
+				var doc = FTextEditorControl.Document;
+				
+				if (FUnderlineMarker != null)
+				{
+					doc.MarkerStrategy.RemoveMarker(FUnderlineMarker);
+					doc.MarkerStrategy.RemoveMarker(FHighlightMarker);
+					var lastMarkerLocation = doc.OffsetToPosition(FUnderlineMarker.Offset);
+					doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.PositionToLineEnd, lastMarkerLocation));
+					doc.CommitUpdate();
+					
+					FUnderlineMarker = null;
+					FHighlightMarker = null;
+					FLink = Link.Empty;
+				}
+				
+				if (Control.ModifierKeys == Keys.Control)
+				{
+					var location = GetTextLocationAtMousePosition(e.Location);
+					FLink = FLinkDataProvider.GetLink(doc, location);
+					
+					if (!FLink.IsEmpty)
+					{
+						var hoverRegion = FLink.HoverRegion;
+						int offset = doc.PositionToOffset(hoverRegion.ToTextLocation());
+						int length = hoverRegion.EndColumn - hoverRegion.BeginColumn;
+						
+						FUnderlineMarker = new SD.TextMarker(offset, length, SD.TextMarkerType.Underlined, Color.Blue);
+						doc.MarkerStrategy.AddMarker(FUnderlineMarker);
+						
+						FHighlightMarker = new SD.TextMarker(offset, length, SD.TextMarkerType.SolidBlock, FTextEditorControl.Document.HighlightingStrategy.GetColorFor("Default").BackgroundColor, Color.Blue);
+						doc.MarkerStrategy.AddMarker(FHighlightMarker);
+						
+						doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.PositionToLineEnd, doc.OffsetToPosition(offset)));
+						doc.CommitUpdate();
 					}
 				}
+			}
+			catch (Exception f)
+			{
+				Debug.WriteLine(f.StackTrace);
+			}
+		}
+		
+		void Link_MouseClick(object sender, MouseEventArgs e)
+		{
+			try
+			{
+				if (!FLink.IsEmpty)
+				{
+					var textDocument = FCodeEditorForm.GetVDocument(FLink.FileName) as ITextDocument;
+					
+					if (textDocument != null)
+					{
+						var tabPage = FCodeEditorForm.Open(textDocument);
+						FCodeEditorForm.BringToFront(tabPage);
+						var codeEditor = tabPage.Controls[0] as CodeEditor;
+						codeEditor.FTextEditorControl.ActiveTextAreaControl.TextArea.Focus();
+						codeEditor.JumpTo(FLink.Location.Line, FLink.Location.Column);
+					}
+				}
+			}
+			catch (Exception f)
+			{
+				Debug.WriteLine(f.StackTrace);
 			}
 		}
 		#endregion constructor/destructor
@@ -213,7 +327,7 @@ namespace VVVV.HDE.CodeEditor
 					if (FTimer != null)
 						FTimer.Dispose();
 					
-					HostCallbackImplementation.UnRegister(this.FProjectContent);
+					HostCallbackImplementation.UnRegister();
 					FTextEditorControl.Dispose();
 				}
 				// Release unmanaged resources. If disposing is false,
@@ -237,9 +351,6 @@ namespace VVVV.HDE.CodeEditor
 			base.OnLoad(e);
 
 			FTextEditorControl.Document.TextContent = Document.TextContent;
-			var parserInfo = ParseInfoProvider.GetParseInfo(Document);
-			if (parserInfo != null)
-				FTextEditorControl.Document.FoldingManager.UpdateFoldings(Document.Location.LocalPath, parserInfo);
 			Document.ContentChanged += TextDocumentContentChangedCB;
 		}
 		
@@ -260,9 +371,6 @@ namespace VVVV.HDE.CodeEditor
 			if (Document != null)
 			{
 				SyncControlWithDocument();
-				
-//				EditorPlugin.PluginHost.Log(TLogType.Debug, "Parsing " + Document.Location + " ...");
-				FBGCodeParser.RunParserAsync();
 			}
 		}
 		
@@ -344,9 +452,9 @@ namespace VVVV.HDE.CodeEditor
 		
 		public void JumpTo(int line, int column)
 		{
+			FTextEditorControl.ActiveTextAreaControl.ScrollTo(line, column);
 			FTextEditorControl.ActiveTextAreaControl.Caret.Line = line;
 			FTextEditorControl.ActiveTextAreaControl.Caret.Column = column;
-			FTextEditorControl.ActiveTextAreaControl.ScrollTo(line, column);
 		}
 	}
 }

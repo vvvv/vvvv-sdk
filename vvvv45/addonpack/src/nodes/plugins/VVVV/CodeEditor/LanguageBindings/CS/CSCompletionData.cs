@@ -8,25 +8,25 @@ using ICSharpCode.SharpDevelop.Dom.CSharp;
 using ICSharpCode.SharpDevelop.Dom.VBNet;
 using ICSharpCode.TextEditor.Gui.CompletionWindow;
 
-namespace VVVV.HDE.CodeEditor
+namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 {
 	/// <summary>
 	/// Represents an item in the code completion window.
 	/// </summary>
-	class CodeCompletionData : DefaultCompletionData, ICompletionData
+	class CSCompletionData : DefaultCompletionData, ICompletionData
 	{
 		IMember member;
 		IClass c;
 		static VBNetAmbience vbAmbience = new VBNetAmbience();
 		static CSharpAmbience csharpAmbience = new CSharpAmbience();
 		
-		public CodeCompletionData(IMember member)
+		public CSCompletionData(IMember member)
 			: base(member.Name, null, GetMemberImageIndex(member))
 		{
 			this.member = member;
 		}
 		
-		public CodeCompletionData(IClass c)
+		public CSCompletionData(IClass c)
 			: base(c.Name, null, GetClassImageIndex(c))
 		{
 			this.c = c;

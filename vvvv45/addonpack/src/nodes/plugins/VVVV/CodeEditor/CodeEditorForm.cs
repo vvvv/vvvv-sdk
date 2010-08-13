@@ -2,10 +2,7 @@
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.IO;
-using System.Xml;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -13,13 +10,15 @@ using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
+using VVVV.Core.Model.FX;
 using VVVV.Core.View;
 using VVVV.Core.View.Table;
 using VVVV.HDE.CodeEditor.ErrorView;
+using VVVV.HDE.CodeEditor.LanguageBindings.CS;
+using VVVV.HDE.CodeEditor.LanguageBindings.FX;
 using VVVV.PluginInterfaces.V2;
-
-using SD = ICSharpCode.TextEditor.Document;
 using Dom = ICSharpCode.SharpDevelop.Dom;
+using SD = ICSharpCode.TextEditor.Document;
 
 namespace VVVV.HDE.CodeEditor
 {
@@ -27,19 +26,15 @@ namespace VVVV.HDE.CodeEditor
 	/// Sharpdevelop texteditor needs a Form as one of its parent controls
 	/// in order to work properly.
 	/// </summary>
-	public partial class CodeEditorForm : Form, IParseInfoProvider
+	public partial class CodeEditorForm : Form, IDocumentLocator
 	{
 		private Dictionary<ITextDocument, TabPage> FOpenedDocuments;
 		private IHDEHost FHDEHost;
 		private INodeSelectionListener FNodeSelectionListener;
-		private Dom.ProjectContentRegistry FPCRegistry;
 		private Dictionary<IProject, Dom.DefaultProjectContent> FProjects;
 		private Dictionary<ITextDocument, Dom.ParseInformation> FParseInfos;
 		private Dictionary<SD.IDocument, ITextDocument> FSDDocToDocMap;
-		private BackgroundParser FBGParser;
 		private ISolution FSolution;
-		private Dictionary<string, string> FHLSLReference = new Dictionary<string, string>();
-		private Dictionary<string, string> FTypeReference = new Dictionary<string, string>();
 		private ILogger FLogger;
 		
 		public CodeEditorForm(IHDEHost host, ISolution solution, ILogger logger)
@@ -48,16 +43,6 @@ namespace VVVV.HDE.CodeEditor
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
-			
-			var resources = new ComponentResourceManager(typeof(CodeEditorForm));
-			FImageList.TransparentColor = System.Drawing.Color.Transparent;
-			FImageList.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.Class"));
-			FImageList.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.Method"));
-			FImageList.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.Property"));
-			FImageList.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.Field"));
-			FImageList.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.Enum"));
-			FImageList.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.NameSpace"));
-			FImageList.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.Event"));
 			
 			var path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), @"..\bin"));
 			var provider = new SD.FileSyntaxModeProvider(path);
@@ -82,41 +67,12 @@ namespace VVVV.HDE.CodeEditor
 			
 			FErrorTableViewer.Registry = registry;
 			FErrorTableViewer.Input = Empty.Enumerable;
-			// Start to parse the solution.
-			FPCRegistry = new Dom.ProjectContentRegistry(); // Default .NET 2.0 registry
-			// Persistence lets SharpDevelop.Dom create a cache file on disk so that
-			// future starts are faster.
-			// It also caches XML documentation files in an on-disk hash table, thus
-			// reducing memory usage.
-			FPCRegistry.ActivatePersistence(Shell.TempPath.ConcatPath("CodeEditor"));
-			
-			// Create the background assembly parser
-			FBGParser = new BackgroundParser(FPCRegistry, this);
 			
 			FSolution.Projects.Added += Project_Added;
 			FSolution.Projects.Removed += Project_Removed;
 
 			foreach (var project in FSolution.Projects)
 				SetupProject(project);
-			
-			ParseHLSLFunctionReference();
-			
-			AddTypeToReference("float");
-			AddTypeToReference("int");
-			AddTypeToReference("bool");
-			FTypeReference.Add("float3x4", "");
-			FTypeReference.Add("float4x3", "");
-		}
-		
-		private void AddTypeToReference(string type)
-		{
-			for (int i = 0; i <= 4; i++)
-			{
-				if (i == 0)
-					FTypeReference.Add(type, "");
-				else if (i > 1)
-					FTypeReference.Add(type + i.ToString(), "");
-			}
 		}
 		
 		/// <summary>
@@ -128,7 +84,38 @@ namespace VVVV.HDE.CodeEditor
 		{
 			if (!FOpenedDocuments.ContainsKey(doc))
 			{
-				var editor = new CodeEditor(this, doc, FImageList, FHLSLReference, FTypeReference);
+				var completionWindowTrigger = new DefaultCompletionWindowTrigger();
+				var completionDataProvider = new DefaultCompletionDataProvider();
+				SD.IFormattingStrategy formattingStrategy = new SD.DefaultFormattingStrategy();
+				SD.IFoldingStrategy foldingStrategy = null;
+				ILinkDataProvider linkDataProvider = null;
+				
+				if (doc is CSDocument)
+				{
+					var csDoc = doc as CSDocument;
+					completionWindowTrigger = new CSCompletionWindowTrigger(this);
+					completionDataProvider = new CSCompletionProvider(this);
+					formattingStrategy = new CSFormattingStrategy(this);
+					foldingStrategy = new CSFoldingStrategy();
+					linkDataProvider = new CSLinkDataProvider(this);
+				}
+				else if (doc is FXDocument || doc is FXHDocument)
+				{
+					completionWindowTrigger = new FXCompletionWindowTrigger();
+					completionDataProvider = new FXCompletionProvider(this, FLogger);
+					linkDataProvider = new FXLinkDataProvider();
+				}
+				
+				var editor = new CodeEditor(
+					this, 
+					doc, 
+					completionWindowTrigger, 
+					completionDataProvider,
+					formattingStrategy,
+					foldingStrategy,
+					linkDataProvider
+				);
+				
 				FSDDocToDocMap[editor.SDDocument] = doc;
 				var tabPage = new TabPage(GetTabPageName(doc));
 				
@@ -147,7 +134,7 @@ namespace VVVV.HDE.CodeEditor
 			
 			return FOpenedDocuments[doc];
 		}
-		
+
 		public void Close(ITextDocument doc)
 		{
 			if (FOpenedDocuments.ContainsKey(doc))
@@ -159,6 +146,11 @@ namespace VVVV.HDE.CodeEditor
 				FOpenedDocuments.Remove(doc);
 			}
 		}
+		
+		public void BringToFront(TabPage tabPage)
+		{
+			FTabControl.SelectTab(tabPage);
+		}
 
 		protected string GetTabPageName(ITextDocument document)
 		{
@@ -168,32 +160,6 @@ namespace VVVV.HDE.CodeEditor
 				return name + "*";
 			else
 				return name;
-		}
-		
-		private void ParseHLSLFunctionReference()
-		{
-			try
-			{
-				var functionReference = new XmlDocument();
-				var filename = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), @"..\bin\hlsl.fnr"));
-				functionReference.Load(filename);
-				foreach (XmlNode function in functionReference.DocumentElement.ChildNodes)
-				{
-					var item = new List<string>();
-					foreach (XmlNode cell in function)
-						item.Add(cell.InnerText);
-					
-					//only take functions for shadermodels < 3
-					int sm = Convert.ToInt32(item[2][0].ToString());
-					if (sm < 4)
-						FHLSLReference.Add(item[0], item[1] + "\nMinimum required ShaderModel: " + item[2]);
-				}
-			}
-			catch (Exception e)
-			{
-				FLogger.Log(LogType.Error, @"Error parsing HLSL function reference \effects\hlsl.fnr");
-				FLogger.Log(e);
-			}
 		}
 		
 		void Project_CompileCompleted(IProject project, CompilerResults results)
@@ -235,14 +201,6 @@ namespace VVVV.HDE.CodeEditor
 		{
 			project.CompileCompleted += Project_CompileCompleted;
 			project.Documents.Removed += Document_Removed;
-			
-			if (project is CSProject)
-			{
-				project.References.Added += References_Changed;
-				project.References.Removed += References_Changed;
-			}
-			
-			FBGParser.Parse(project);
 		}
 
 		protected void TearDownProject(IProject project)
@@ -254,12 +212,6 @@ namespace VVVV.HDE.CodeEditor
 				var textDoc = doc as ITextDocument;
 				if (textDoc != null)
 					Close(textDoc);
-			}
-			
-			if (project is CSProject)
-			{
-				project.References.Added += References_Changed;
-				project.References.Removed += References_Changed;
 			}
 		}
 
@@ -273,12 +225,6 @@ namespace VVVV.HDE.CodeEditor
 			TearDownProject(project);
 		}
 
-		void References_Changed(IViewableCollection<IReference> collection, IReference item)
-		{
-			// Tell the background parser to reparse this project
-			FBGParser.Parse(item.Project);
-		}
-		
 		void FErrorTableViewerDoubleClick(VVVV.Core.IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
 		{
 			var compilerError = sender.Model as CompilerError;
@@ -324,48 +270,43 @@ namespace VVVV.HDE.CodeEditor
 			}
 		}
 		
-		#region IParseInfoProvider Members
+		#region IDocumentLocator
 		
-		/// <summary>
-		/// Returns the project content (contains parse information) for an IProject.
-		/// </summary>
-		public Dom.DefaultProjectContent GetProjectContent(IProject project)
+		public ICSharpCode.TextEditor.Document.IDocument GetSDDocument(ITextDocument document)
 		{
-			lock (FProjects)
+			foreach (var entry in FSDDocToDocMap)
 			{
-				if (!FProjects.ContainsKey(project))
-				{
-					var projectContent = new Dom.DefaultProjectContent();
-					FProjects.Add(project, projectContent);
-				}
-				
-				return FProjects[project];
+				if (entry.Value == document)
+					return entry.Key;
 			}
+			
+			return null;
 		}
 		
-		/// <summary>
-		/// Returns parse information for an ITextDocument.
-		/// </summary>
-		public Dom.ParseInformation GetParseInfo(ITextDocument doc)
+		public ICSharpCode.TextEditor.Document.IDocument GetSDDocument(string filename)
 		{
-			lock (FParseInfos)
-			{
-				if (!FParseInfos.ContainsKey(doc))
-				{
-					var parseInfo = new Dom.ParseInformation();
-					FParseInfos.Add(doc, parseInfo);
-				}
-				
-				return FParseInfos[doc];
-			}
+			var doc = FSolution.FindDocument(filename);
+			if (doc != null && doc is ITextDocument)
+				return GetSDDocument(doc as ITextDocument);
+			
+			return null;
 		}
 		
-		/// <summary>
-		/// Returns parse information for a SharpDevelop document.
-		/// </summary>
-		public Dom.ParseInformation GetParseInfo(SD.IDocument doc)
+		public ITextDocument GetVDocument(ICSharpCode.TextEditor.Document.IDocument document)
 		{
-			return GetParseInfo(FSDDocToDocMap[doc]);
+			if (FSDDocToDocMap.ContainsKey(document))
+				return FSDDocToDocMap[document];
+			
+			return null;
+		}
+		
+		public ITextDocument GetVDocument(string filename)
+		{
+			var doc = FSolution.FindDocument(filename);
+			if (doc != null && doc is ITextDocument)
+				return doc as ITextDocument;
+			
+			return null;
 		}
 		
 		#endregion
@@ -391,15 +332,10 @@ namespace VVVV.HDE.CodeEditor
 					{
 						foreach (var project in FProjects.Keys)
 						{
-							project.References.Added -= References_Changed;
-							project.References.Removed -= References_Changed;
 							project.Documents.Removed -= Document_Removed;
 						}
 						FProjects.Clear();
 					}
-					
-					if (FBGParser != null)
-						FBGParser.CancelAsync();
 					
 					if (FHDEHost != null)
 					{

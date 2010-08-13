@@ -80,27 +80,33 @@
     <Compile Include="..\..\_SharedSources\ManagedVCL\ManagedVCLControl.cs">
       <Link>ManagedVCLControl.cs</Link>
     </Compile>
-    <Compile Include="BackgroundCodeParser.cs" />
-    <Compile Include="BackgroundParser.cs" />
-    <Compile Include="CodeCompletionData.cs" />
     <Compile Include="CodeCompletionKeyHandler.cs" />
-    <Compile Include="CodeCompletionProvider.cs" />
     <Compile Include="CodeEditor.cs" />
     <Compile Include="CodeEditorForm.cs" />
     <Compile Include="CodeEditorForm.Designer.cs">
       <DependentUpon>CodeEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CodeEditorPlugin.cs" />
-    <Compile Include="CodeParser.cs" />
-    <Compile Include="CSharpFormattingStrategy.cs" />
+    <Compile Include="DefaultCompletionDataProvider.cs" />
+    <Compile Include="DefaultCompletionWindowTrigger.cs" />
     <Compile Include="ErrorView\ErrorCollectionColumnProvider.cs" />
     <Compile Include="ErrorView\ErrorCellProvider.cs" />
     <Compile Include="HostCallbackImplementation.cs" />
-    <Compile Include="IParseInfoProvider.cs" />
+    <Compile Include="ICompletionWindowTrigger.cs" />
+    <Compile Include="IDocumentLocator.cs" />
+    <Compile Include="ILinkDataProvider.cs" />
+    <Compile Include="LanguageBindings\CS\CSCompletionData.cs" />
+    <Compile Include="LanguageBindings\CS\CSCompletionProvider.cs" />
+    <Compile Include="LanguageBindings\CS\CSCompletionWindowTrigger.cs" />
+    <Compile Include="LanguageBindings\CS\CSFormattingStrategy.cs" />
+    <Compile Include="LanguageBindings\CS\CSLinkDataProvider.cs" />
+    <Compile Include="LanguageBindings\CS\CSToolTipProvider.cs" />
+    <Compile Include="LanguageBindings\CS\CSFoldingStrategy.cs" />
+    <Compile Include="LanguageBindings\FX\FXCompletionWindowTrigger.cs" />
+    <Compile Include="LanguageBindings\FX\FXCompletionProvider.cs" />
+    <Compile Include="LanguageBindings\FX\FXLinkDataProvider.cs" />
     <Compile Include="NodeSelectionListener.cs" />
-    <Compile Include="ParserFoldingStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ToolTipProvider.cs" />
     <EmbeddedResource Include="CodeEditorForm.resx">
       <DependentUpon>CodeEditorForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -126,5 +132,8 @@
       <Private>False</Private>
     </ProjectReference>
     <Folder Include="ErrorView" />
+    <Folder Include="LanguageBindings" />
+    <Folder Include="LanguageBindings\FX" />
+    <Folder Include="LanguageBindings\CS" />
   </ItemGroup>
 </Project>

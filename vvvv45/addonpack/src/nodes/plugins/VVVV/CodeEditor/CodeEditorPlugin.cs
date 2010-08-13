@@ -1,29 +1,14 @@
 ﻿#region usings
 using System;
-using System.CodeDom.Compiler;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 
-using ManagedVCL;
-using Microsoft.Practices.Unity;
-using VVVV.Core;
-using VVVV.Core.Commands;
 using VVVV.Core.Logging;
-using VVVV.Core.Menu;
 using VVVV.Core.Model;
-using VVVV.Core.Model.CS;
-using VVVV.Core.View;
-using VVVV.Core.View.Table;
-using VVVV.Core.Viewer;
-using VVVV.HDE.CodeEditor.ErrorView;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
-using Dom = ICSharpCode.SharpDevelop.Dom;
 
 #endregion usings
 
@@ -45,9 +30,24 @@ namespace VVVV.HDE.CodeEditor
 	{
 		private CodeEditorForm FCodeEditorForm;
 		
+		public static readonly ImageList CompletionIcons = new ImageList();
+		
 		[ImportingConstructor]
 		public CodeEditorPlugin(IHDEHost host, ISolution solution, ILogger logger)
 		{
+			if (CompletionIcons.Images.Count == 0)
+			{
+				var resources = new ComponentResourceManager(typeof(CodeEditorForm));
+				CompletionIcons.TransparentColor = System.Drawing.Color.Transparent;
+				CompletionIcons.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.Class"));
+				CompletionIcons.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.Method"));
+				CompletionIcons.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.Property"));
+				CompletionIcons.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.Field"));
+				CompletionIcons.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.Enum"));
+				CompletionIcons.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.NameSpace"));
+				CompletionIcons.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.Event"));
+			}
+			
 			SuspendLayout();
 			
 			FCodeEditorForm = new CodeEditorForm(host, solution, logger);

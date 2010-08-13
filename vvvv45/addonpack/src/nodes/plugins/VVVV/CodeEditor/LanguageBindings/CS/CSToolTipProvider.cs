@@ -29,29 +29,26 @@ using System;
 using System.Text;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Dom.CSharp;
-using ICSharpCode.SharpDevelop.Dom.VBNet;
-using VVVV.Core.Model;
+using VVVV.Core.Model.CS;
 using NRefactoryResolver = ICSharpCode.SharpDevelop.Dom.NRefactoryResolver.NRefactoryResolver;
 using TextEditor = ICSharpCode.TextEditor;
 
-namespace VVVV.HDE.CodeEditor
+namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 {
-	class ToolTipProvider
+	public class CSToolTipProvider
 	{
-		protected IParseInfoProvider FParseInfoProvider;
-		protected ITextDocument FDocument;
+		protected CSDocument FDocument;
 		protected TextEditor.TextEditorControl FEditor;
 		
-		private ToolTipProvider(IParseInfoProvider parseInfoProvider, ITextDocument document, TextEditor.TextEditorControl editor)
+		private CSToolTipProvider(CSDocument document, TextEditor.TextEditorControl editor)
 		{
-			FParseInfoProvider = parseInfoProvider;
 			FDocument = document;
 			FEditor = editor;
 		}
 		
-		public static void Attach(IParseInfoProvider parseInfoProvider, ITextDocument document, TextEditor.TextEditorControl editor)
+		public static void Attach(CSDocument document, TextEditor.TextEditorControl editor)
 		{
-			ToolTipProvider tp = new ToolTipProvider(parseInfoProvider, document, editor);
+			CSToolTipProvider tp = new CSToolTipProvider(document, editor);
 			editor.ActiveTextAreaControl.TextArea.ToolTipRequest += tp.OnToolTipRequest;
 			editor.Disposed += tp.TextEditorControlDisposedCB;
 		}
@@ -66,25 +63,23 @@ namespace VVVV.HDE.CodeEditor
 		void OnToolTipRequest(object sender, TextEditor.ToolTipRequestEventArgs e)
 		{
 			if (e.InDocument && !e.ToolTipShown) {
-				var projectContent = FParseInfoProvider.GetProjectContent(FDocument.Project);
-				var parseInfo = FParseInfoProvider.GetParseInfo(FDocument);
-				
-				var expressionFinder = new CSharpExpressionFinder(parseInfo);
-				var expression = expressionFinder.FindFullExpression(
-					FEditor.Text,
-					FEditor.Document.PositionToOffset(e.LogicalPosition));
+				var expression = FDocument.FindFullExpression(FEditor.Document.PositionToOffset(e.LogicalPosition));
 				if (expression.Region.IsEmpty) {
 					expression.Region = new DomRegion(e.LogicalPosition.Line + 1, e.LogicalPosition.Column + 1);
 				}
 				
-				TextEditor.TextArea textArea = FEditor.ActiveTextAreaControl.TextArea;
-				NRefactoryResolver resolver = new NRefactoryResolver(projectContent.Language);
-				ResolveResult rr = resolver.Resolve(expression,
-				                                    parseInfo,
-				                                    textArea.MotherTextEditorControl.Text);
-				string toolTipText = GetText(rr);
-				if (toolTipText != null) {
-					e.ShowToolTip(toolTipText);
+				try
+				{
+					var resolveResult = FDocument.Resolve(expression);
+					
+					string toolTipText = GetText(resolveResult);
+					if (toolTipText != null) {
+						e.ShowToolTip(toolTipText);
+					}
+				}
+				catch (Exception)
+				{
+					// Ignore
 				}
 			}
 		}
@@ -151,7 +146,7 @@ namespace VVVV.HDE.CodeEditor
 			string documentation = member.Documentation;
 			if (documentation != null && documentation.Length > 0) {
 				text.Append('\n');
-				text.Append(CodeCompletionData.XmlDocumentationToText(documentation));
+				text.Append(CSCompletionData.XmlDocumentationToText(documentation));
 			}
 			return text.ToString();
 		}

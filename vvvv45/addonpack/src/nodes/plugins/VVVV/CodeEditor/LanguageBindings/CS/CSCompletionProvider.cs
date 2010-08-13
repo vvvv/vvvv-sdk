@@ -29,89 +29,25 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
-using System.Windows.Forms;
 
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Gui.CompletionWindow;
-using VVVV.Core.Model;
-using VVVV.Core.Model.FX;
+using VVVV.Core.Model.CS;
 using Dom = ICSharpCode.SharpDevelop.Dom;
 using NRefactoryResolver = ICSharpCode.SharpDevelop.Dom.NRefactoryResolver.NRefactoryResolver;
 
-namespace VVVV.HDE.CodeEditor
+namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 {
-    class CodeCompletionProvider : ICompletionDataProvider
+    public class CSCompletionProvider : DefaultCompletionDataProvider
     {
-        protected ITextDocument FDocument;
-        protected IParseInfoProvider FParseInfoProvider;
-        protected Dictionary<string, string> FHLSLReference;
-        protected Dictionary<string, string> FTypeReference;
+        protected IDocumentLocator FDocumentLocator;
         
-        public CodeCompletionProvider(IParseInfoProvider parseInfoProvider, ITextDocument document, ImageList imageList, Dictionary<string, string> hlslReference, Dictionary<string, string> typeReference)
+        public CSCompletionProvider(IDocumentLocator documentLocator)
         {
-            FParseInfoProvider = parseInfoProvider;
-            FDocument = document;
-            ImageList = imageList;
-            FHLSLReference = hlslReference;
-            FTypeReference = typeReference;
+            FDocumentLocator = documentLocator;
         }
         
-        public ImageList ImageList
-        {
-            get;
-            private set;
-        }
-        
-        private string FPreSelection = null;
-        public string PreSelection
-        {
-            get
-            {
-                return FPreSelection;
-            }
-            protected set
-            {
-                FPreSelection = value;
-            }
-        }
-        
-        private int FDefaultIndex = -1;
-        public int DefaultIndex
-        {
-            get
-            {
-                return FDefaultIndex;
-            }
-            protected set
-            {
-                FDefaultIndex = value;
-            }
-        }
-        
-        public CompletionDataProviderKeyResult ProcessKey(char key)
-        {
-            if (char.IsLetterOrDigit(key) || key == '_')
-            {
-                return CompletionDataProviderKeyResult.NormalKey;
-            }
-            else
-            {
-                // key triggers insertion of selected items
-                return CompletionDataProviderKeyResult.InsertionKey;
-            }
-        }
-        
-        /// <summary>
-        /// Called when entry should be inserted. Forward to the insertion action of the completion data.
-        /// </summary>
-        public bool InsertAction(ICompletionData data, TextArea textArea, int insertionOffset, char key)
-        {
-            textArea.Caret.Position = textArea.Document.OffsetToPosition(insertionOffset);
-            return data.InsertAction(textArea, key);
-        }
-        
-        public ICompletionData[] GenerateCompletionData(string fileName, TextArea textArea, char charTyped)
+        public override ICompletionData[] GenerateCompletionData(string fileName, TextArea textArea, char charTyped)
         {
             // We can return code-completion items like this:
             
@@ -119,61 +55,16 @@ namespace VVVV.HDE.CodeEditor
             //	new DefaultCompletionData("Text", "Description", 1)
             //};
             
-            string ext = System.IO.Path.GetExtension(fileName);
-            if ((ext == ".fx") || (ext == ".fxh"))
-            {
-                //types: everywhere
-                //variable names: only inside of single {}
-                //hlsl reference: only inside of single {}
-                //semantics: only directly after :
-                
-                //parse ParameterDescription
-                var inputs = (FDocument.Project as FXProject).ParameterDescription.Split(new char[1]{'|'});
-                int i = 0;
-                ICompletionData[] cData = new ICompletionData[FHLSLReference.Count + FTypeReference.Count + inputs.Length-1];
-                foreach (var input in inputs)
-                {
-                    if (!string.IsNullOrEmpty(input))
-                    {
-                        var desc = input.Split(new char[1]{','});
-                        string name = "";
-                        if (desc[0] != desc[1])
-                            name = desc[1] + "\n";
-                        
-                        string tooltip = name + desc[2] + "\n";
-                        if (Convert.ToInt32(desc[3]) > 1)
-                            tooltip += desc[6].Replace("(Rows)", "") + desc[3] + "x" + desc[4];
-                        else
-                            tooltip += desc[7] + desc[4].Replace("1", "").Replace("0", "");
-                        cData[i] = new DefaultCompletionData(desc[0], tooltip, 3);
-                        i++;
-                    }
-                }                
-                
-                foreach(var function in FHLSLReference)
-                {
-                    cData[i] = new DefaultCompletionData(function.Key, function.Value, 1);
-                    i++;
-                }
-                
-                foreach(var type in FTypeReference)
-                {
-                    cData[i] = new DefaultCompletionData(type.Key, type.Value, 0);
-                    i++;
-                }
-                
-                //set preselection to "" for popup to sort by first character
-                FPreSelection = "";
-                
-                return cData;
-            }
+            var resultList = new List<ICompletionData>();
             
-            var projectContent = FParseInfoProvider.GetProjectContent(FDocument.Project);
-            var parseInfo = FParseInfoProvider.GetParseInfo(FDocument);
+            var document = FDocumentLocator.GetVDocument(fileName) as CSDocument;
+            if (document == null)
+            	return resultList.ToArray();
+            
+            var parseInfo = document.ParseInfo;
+            var projectContent = parseInfo.MostRecentCompilationUnit.ProjectContent;
             
             var resolver = new NRefactoryResolver(projectContent.Language);
-            
-            var resultList = new List<ICompletionData>();
             var expressionResult = FindExpression(parseInfo, textArea);
             
             Debug.WriteLine(string.Format("Generating completion data for expression result {0}", expressionResult));
@@ -225,7 +116,7 @@ namespace VVVV.HDE.CodeEditor
         void AddCompletionData(ref List<ICompletionData> resultList, ArrayList completionData, Dom.ExpressionContext context)
         {
             // used to store the method names for grouping overloads
-            Dictionary<string, CodeCompletionData> nameDictionary = new Dictionary<string, CodeCompletionData>();
+            Dictionary<string, CSCompletionData> nameDictionary = new Dictionary<string, CSCompletionData>();
 
             // Add the completion data as returned by SharpDevelop.Dom to the
             // list for the text editor
@@ -238,7 +129,7 @@ namespace VVVV.HDE.CodeEditor
                     resultList.Add(new DefaultCompletionData((string)obj, "namespace " + obj, 5));
                 } else if (obj is Dom.IClass) {
                     Dom.IClass c = (Dom.IClass)obj;
-                    resultList.Add(new CodeCompletionData(c));
+                    resultList.Add(new CSCompletionData(c));
                 } else if (obj is Dom.IMember) {
                     Dom.IMember m = (Dom.IMember)obj;
                     if (m is Dom.IMethod && ((m as Dom.IMethod).IsConstructor)) {
@@ -248,11 +139,11 @@ namespace VVVV.HDE.CodeEditor
                     // Group results by name and add "(x Overloads)" to the
                     // description if there are multiple results with the same name.
                     
-                    CodeCompletionData data;
+                    CSCompletionData data;
                     if (nameDictionary.TryGetValue(m.Name, out data)) {
                         data.AddOverload();
                     } else {
-                        nameDictionary[m.Name] = data = new CodeCompletionData(m);
+                        nameDictionary[m.Name] = data = new CSCompletionData(m);
                         resultList.Add(data);
                     }
                 } else {
