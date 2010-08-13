@@ -523,11 +523,11 @@ namespace VVVV.Nodes.NodeBrowser
         {
             FTagsTextBox.Height = Math.Max(20, FTagsTextBox.Lines.Length * CLineHeight + 7);
             
-            FHoverLine = -1;
-            FShowHover = false;
-            
             if (FAllowUpdate)
             {
+                FHoverLine = -1;
+                FShowHover = false;
+                
                 //saving the last manual entry for recovery when stepping through list and reaching index -1 again
                 FManualEntry = FTagsTextBox.Text;
                 FToolTip.Hide(FRichTextBox);
@@ -1065,6 +1065,8 @@ namespace VVVV.Nodes.NodeBrowser
             PrepareRTF();
             
             FScrollBar.Maximum = Math.Max(0, FSelectionList.Count - FVisibleLines + FScrollBar.LargeChange - 1);
+            
+            //calling UpdateRichTexBox()
             ScrolledLine = 0;
         }
         
