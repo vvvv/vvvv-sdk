@@ -87,7 +87,7 @@ namespace VVVV.Utils.VColor
 			if (colors.Length >= 4)
 				A = colors[3];
 			else
-				A = 0.0;
+				A = 1.0;
 		}
 	
 		/// <summary>
