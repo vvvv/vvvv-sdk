@@ -76,10 +76,9 @@ namespace VVVV.PluginInterfaces.V2
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface INodeBrowserHost
 	{
-		void CreateNode(INodeInfo nodeInfo);
+		void CreateNode(INodeInfo nodeInfo, bool clone);
 		void CreateNodeFromFile(string filePath);
 		void CreateComment(string comment);
-		void CreateDynamicNode(string nodeName);
 		void ShowHelpPatch(INodeInfo nodeInfo);
 		void ShowNodeReference(INodeInfo nodeInfo);
 	}	
