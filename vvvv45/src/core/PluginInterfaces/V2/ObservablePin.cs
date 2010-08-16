@@ -4,7 +4,7 @@ using VVVV.PluginInterfaces.V1;
 namespace VVVV.PluginInterfaces.V2
 {
 
-	public abstract class ObservablePin<T> : Pin<T>, IObservableSpread<T>
+	public abstract class ObservablePin<T> : Pin<T>, IDiffSpread<T>
 	{
 		public event SpreadChangedEventHander<T> Changed;
 		

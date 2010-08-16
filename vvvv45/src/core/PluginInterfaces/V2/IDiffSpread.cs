@@ -2,9 +2,9 @@
 
 namespace VVVV.PluginInterfaces.V2
 {
-	public delegate void SpreadChangedEventHander<T>(IObservableSpread<T> spread);
+	public delegate void SpreadChangedEventHander<T>(IDiffSpread<T> spread);
 	
-	public interface IObservableSpread<T> : ISpread<T>
+	public interface IDiffSpread<T> : ISpread<T>
 	{
 		event SpreadChangedEventHander<T> Changed;
 		

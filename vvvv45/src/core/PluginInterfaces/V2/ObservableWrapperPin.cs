@@ -10,7 +10,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.PluginInterfaces.V2
 {
-	public abstract class ObservableWrapperPin<T> : WrapperPin<T>, IObservableSpread<T>
+	public abstract class ObservableWrapperPin<T> : WrapperPin<T>, IDiffSpread<T>
 	{
 		private ObservablePin<T> FObservablePin;
 		
