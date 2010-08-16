@@ -53,6 +53,7 @@ namespace VVVV.HDE.CodeEditor
 		private System.Windows.Forms.Timer FTimer;
 		private CodeEditorForm FCodeEditorForm;
 		private ILinkDataProvider FLinkDataProvider;
+		private IToolTipProvider FToolTipProvider;
 		#endregion field declaration
 		
 		#region Properties
@@ -77,7 +78,8 @@ namespace VVVV.HDE.CodeEditor
 			ICompletionDataProvider completionDataProvider,
 			SD.IFormattingStrategy formattingStrategy,
 			SD.IFoldingStrategy foldingStrategy,
-			ILinkDataProvider linkDataProvider)
+			ILinkDataProvider linkDataProvider,
+			IToolTipProvider toolTipProvider)
 		{
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			InitializeComponent();
@@ -90,7 +92,6 @@ namespace VVVV.HDE.CodeEditor
 			FTextEditorControl.TextEditorProperties.LineViewerStyle = SD.LineViewerStyle.FullRow;
 			FTextEditorControl.TextEditorProperties.ShowMatchingBracket = true;
 			FTextEditorControl.TextEditorProperties.AutoInsertCurlyBracket = true;
-			FTextEditorControl.ActiveTextAreaControl.TextArea.Resize += FTextEditorControl_ActiveTextAreaControl_TextArea_Resize;
 			
 			var fileName = doc.Location.LocalPath;
 			
@@ -110,6 +111,13 @@ namespace VVVV.HDE.CodeEditor
 			{
 				FTextEditorControl.EnableFolding = true;
 				FTextEditorControl.Document.FoldingManager.FoldingStrategy = foldingStrategy;
+				
+				// TODO: Do this via an interface to avoid asking for concrete implementation.
+				if (Document is CSDocument)
+				{
+					var csDoc = Document as CSDocument;
+					csDoc.ParseCompleted += CSDocument_ParseCompleted;
+				}
 			}
 			else
 			{
@@ -120,17 +128,18 @@ namespace VVVV.HDE.CodeEditor
 			if (linkDataProvider != null)
 			{
 				FLinkDataProvider = linkDataProvider;
-				FTextEditorControl.ActiveTextAreaControl.TextArea.MouseMove += Link_MouseMove;
-				FTextEditorControl.ActiveTextAreaControl.TextArea.MouseClick += Link_MouseClick;
+				FTextEditorControl.ActiveTextAreaControl.TextArea.MouseMove += MouseMoveCB;
+				FTextEditorControl.ActiveTextAreaControl.TextArea.MouseClick += LinkClickCB;
 			}
 			
-			// Setup file specific stuff
-			if (doc is CSDocument)
+			// Setup tool tips
+			if (toolTipProvider != null)
 			{
-				var csDoc = doc as CSDocument;
-				CSToolTipProvider.Attach(csDoc, FTextEditorControl);
+				FToolTipProvider = toolTipProvider;
+				FTextEditorControl.ActiveTextAreaControl.TextArea.ToolTipRequest += OnToolTipRequest;
 			}
 			
+			FTextEditorControl.ActiveTextAreaControl.TextArea.Resize += FTextEditorControl_ActiveTextAreaControl_TextArea_Resize;
 			FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown += TextAreaKeyDownCB;
 			FTextEditorControl.TextChanged += TextEditorControlTextChangedCB;
 			
@@ -143,6 +152,129 @@ namespace VVVV.HDE.CodeEditor
 			FTimer.Tick += TimerTickCB;
 		}
 
+		#endregion constructor/destructor
+
+		#region Windows Forms designer
+		private void InitializeComponent()
+		{
+			this.FTextEditorControl = new ICSharpCode.TextEditor.TextEditorControl();
+			this.SuspendLayout();
+			// 
+			// FTextEditorControl
+			// 
+			this.FTextEditorControl.AutoScroll = true;
+			this.FTextEditorControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+			this.FTextEditorControl.ConvertTabsToSpaces = true;
+			this.FTextEditorControl.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.FTextEditorControl.IsReadOnly = false;
+			this.FTextEditorControl.Location = new System.Drawing.Point(0, 0);
+			this.FTextEditorControl.Name = "FTextEditorControl";
+			this.FTextEditorControl.Size = new System.Drawing.Size(632, 453);
+			this.FTextEditorControl.TabIndex = 2;
+			this.FTextEditorControl.Text = "float";
+			// 
+			// CodeEditor
+			// 
+			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+			this.Controls.Add(this.FTextEditorControl);
+			this.Name = "CodeEditor";
+			this.Size = new System.Drawing.Size(632, 453);
+			this.ResumeLayout(false);
+		}
+		#endregion Windows Forms designer
+		
+		#region IDisposable
+		private bool FDisposed = false;
+		// Dispose(bool disposing) executes in two distinct scenarios.
+		// If disposing equals true, the method has been called directly
+		// or indirectly by a user's code. Managed and unmanaged resources
+		// can be disposed.
+		// If disposing equals false, the method has been called by the
+		// runtime from inside the finalizer and you should not reference
+		// other objects. Only unmanaged resources can be disposed.
+		protected override void Dispose(bool disposing)
+		{
+			// Check to see if Dispose has already been called.
+			if(!FDisposed)
+			{
+				if(disposing)
+				{
+					// Dispose managed resources.
+					if (FTextEditorControl != null)
+					{
+						FTextEditorControl.TextChanged -= TextEditorControlTextChangedCB;
+						FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown -= TextAreaKeyDownCB;
+						FTextEditorControl.ActiveTextAreaControl.TextArea.Resize -= FTextEditorControl_ActiveTextAreaControl_TextArea_Resize;
+						
+						if (FLinkDataProvider != null)
+						{
+							FTextEditorControl.ActiveTextAreaControl.TextArea.MouseMove -= MouseMoveCB;
+							FTextEditorControl.ActiveTextAreaControl.TextArea.MouseClick -= LinkClickCB;
+						}
+						
+						if (FToolTipProvider != null)
+						{
+							FTextEditorControl.ActiveTextAreaControl.TextArea.ToolTipRequest -= OnToolTipRequest;
+						}
+					}
+					
+					if (Document != null)
+					{
+						Document.ContentChanged -= TextDocumentContentChangedCB;
+						Document.Project.CompileCompleted -= CompileCompletedCB;
+						
+						if (Document is CSDocument)
+						{
+							var csDoc = Document as CSDocument;
+							csDoc.ParseCompleted -= CSDocument_ParseCompleted;
+						}
+					}
+					
+					if (FTimer != null)
+					{
+						FTimer.Tick -= TimerTickCB;
+						FTimer.Dispose();
+					}
+					
+					HostCallbackImplementation.UnRegister();
+					FTextEditorControl.Dispose();
+				}
+				// Release unmanaged resources. If disposing is false,
+				// only the following code is executed.
+				
+				// Note that this is not thread safe.
+				// Another thread could start disposing the object
+				// after the managed resources are disposed,
+				// but before the disposed flag is set to true.
+				// If thread safety is necessary, it must be
+				// implemented by the client.
+			}
+			FDisposed = true;
+			
+			base.Dispose(disposing);
+		}
+		#endregion IDisposable
+		
+		protected override void OnLoad(EventArgs e)
+		{
+			base.OnLoad(e);
+
+			FTextEditorControl.Document.TextContent = Document.TextContent;
+			Document.ContentChanged += TextDocumentContentChangedCB;
+			
+			// TODO: Do this via an interface
+			if (Document is CSDocument)
+			{
+				var csDoc = Document as CSDocument;
+				CSDocument_ParseCompleted(csDoc);
+			}
+		}
+		
+		void CSDocument_ParseCompleted(CSDocument document)
+		{
+			FTextEditorControl.Document.FoldingManager.UpdateFoldings(document.Location.LocalPath, document.ParseInfo);
+		}
+		
 		void FTextEditorControl_ActiveTextAreaControl_TextArea_Resize(object sender, EventArgs e)
 		{
 			var textAreaControl = FTextEditorControl.ActiveTextAreaControl;
@@ -197,7 +329,7 @@ namespace VVVV.HDE.CodeEditor
 		private SD.TextMarker FUnderlineMarker;
 		private SD.TextMarker FHighlightMarker;
 		private Link FLink = Link.Empty;
-		void Link_MouseMove(object sender, MouseEventArgs e)
+		void MouseMoveCB(object sender, MouseEventArgs e)
 		{
 			try
 			{
@@ -244,7 +376,7 @@ namespace VVVV.HDE.CodeEditor
 			}
 		}
 		
-		void Link_MouseClick(object sender, MouseEventArgs e)
+		void LinkClickCB(object sender, MouseEventArgs e)
 		{
 			try
 			{
@@ -266,92 +398,6 @@ namespace VVVV.HDE.CodeEditor
 			{
 				Debug.WriteLine(f.StackTrace);
 			}
-		}
-		#endregion constructor/destructor
-		
-		#region Windows Forms designer
-		private void InitializeComponent()
-		{
-			this.FTextEditorControl = new ICSharpCode.TextEditor.TextEditorControl();
-			this.SuspendLayout();
-			// 
-			// FTextEditorControl
-			// 
-			this.FTextEditorControl.AutoScroll = true;
-			this.FTextEditorControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-			this.FTextEditorControl.ConvertTabsToSpaces = true;
-			this.FTextEditorControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.FTextEditorControl.IsReadOnly = false;
-			this.FTextEditorControl.Location = new System.Drawing.Point(0, 0);
-			this.FTextEditorControl.Name = "FTextEditorControl";
-			this.FTextEditorControl.Size = new System.Drawing.Size(632, 453);
-			this.FTextEditorControl.TabIndex = 2;
-			this.FTextEditorControl.Text = "float";
-			// 
-			// CodeEditor
-			// 
-			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-			this.Controls.Add(this.FTextEditorControl);
-			this.Name = "CodeEditor";
-			this.Size = new System.Drawing.Size(632, 453);
-			this.ResumeLayout(false);
-		}
-		#endregion Windows Forms designer
-		
-		#region IDisposable
-		private bool FDisposed = false;
-		// Dispose(bool disposing) executes in two distinct scenarios.
-		// If disposing equals true, the method has been called directly
-		// or indirectly by a user's code. Managed and unmanaged resources
-		// can be disposed.
-		// If disposing equals false, the method has been called by the
-		// runtime from inside the finalizer and you should not reference
-		// other objects. Only unmanaged resources can be disposed.
-		protected override void Dispose(bool disposing)
-		{
-			// Check to see if Dispose has already been called.
-			if(!FDisposed)
-			{
-				if(disposing)
-				{
-					// Dispose managed resources.
-					if (FTextEditorControl != null)
-						FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown -= TextAreaKeyDownCB;
-					
-					if (Document != null)
-					{
-						Document.ContentChanged -= TextDocumentContentChangedCB;
-						Document.Project.CompileCompleted -= CompileCompletedCB;
-					}
-					
-					if (FTimer != null)
-						FTimer.Dispose();
-					
-					HostCallbackImplementation.UnRegister();
-					FTextEditorControl.Dispose();
-				}
-				// Release unmanaged resources. If disposing is false,
-				// only the following code is executed.
-				
-				// Note that this is not thread safe.
-				// Another thread could start disposing the object
-				// after the managed resources are disposed,
-				// but before the disposed flag is set to true.
-				// If thread safety is necessary, it must be
-				// implemented by the client.
-			}
-			FDisposed = true;
-			
-			base.Dispose(disposing);
-		}
-		#endregion IDisposable
-		
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
-
-			FTextEditorControl.Document.TextContent = Document.TextContent;
-			Document.ContentChanged += TextDocumentContentChangedCB;
 		}
 		
 		private void SyncControlWithDocument()
@@ -443,6 +489,22 @@ namespace VVVV.HDE.CodeEditor
 			}
 
 			FTextEditorControl.Document.CommitUpdate();
+		}
+		
+		void OnToolTipRequest(object sender, ToolTipRequestEventArgs e)
+		{
+			if (e.InDocument && !e.ToolTipShown) {
+				try
+				{
+					string toolTipText = FToolTipProvider.GetToolTip(SDDocument, e.LogicalPosition);
+					if (toolTipText != null)
+						e.ShowToolTip(toolTipText);
+				}
+				catch (Exception)
+				{
+					// Ignore
+				}
+			}
 		}
 		
 		public void JumpTo(int line)

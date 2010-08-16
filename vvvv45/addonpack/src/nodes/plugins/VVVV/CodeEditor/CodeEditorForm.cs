@@ -89,6 +89,7 @@ namespace VVVV.HDE.CodeEditor
 				SD.IFormattingStrategy formattingStrategy = new SD.DefaultFormattingStrategy();
 				SD.IFoldingStrategy foldingStrategy = null;
 				ILinkDataProvider linkDataProvider = null;
+				IToolTipProvider toolTipProvider = null;
 				
 				if (doc is CSDocument)
 				{
@@ -98,6 +99,7 @@ namespace VVVV.HDE.CodeEditor
 					formattingStrategy = new CSFormattingStrategy(this);
 					foldingStrategy = new CSFoldingStrategy();
 					linkDataProvider = new CSLinkDataProvider(this);
+					toolTipProvider = new CSToolTipProvider(this);
 				}
 				else if (doc is FXDocument || doc is FXHDocument)
 				{
@@ -113,7 +115,8 @@ namespace VVVV.HDE.CodeEditor
 					completionDataProvider,
 					formattingStrategy,
 					foldingStrategy,
-					linkDataProvider
+					linkDataProvider,
+					toolTipProvider
 				);
 				
 				FSDDocToDocMap[editor.SDDocument] = doc;

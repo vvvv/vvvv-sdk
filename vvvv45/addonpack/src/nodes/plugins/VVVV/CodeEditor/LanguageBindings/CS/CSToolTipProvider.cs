@@ -1,90 +1,35 @@
-// CSharp Editor Example with Code Completion
-// Copyright (c) 2007, Daniel Grunwald
-// All rights reserved.
-// 
-// Redistribution and use in source and binary forms, with or without modification, are
-// permitted provided that the following conditions are met:
-// 
-// - Redistributions of source code must retain the above copyright notice, this list
-//   of conditions and the following disclaimer.
-// 
-// - Redistributions in binary form must reproduce the above copyright notice, this list
-//   of conditions and the following disclaimer in the documentation and/or other materials
-//   provided with the distribution.
-// 
-// - Neither the name of the ICSharpCode team nor the names of its contributors may be used to
-//   endorse or promote products derived from this software without specific prior written
-//   permission.
-// 
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &AS IS& AND ANY EXPRESS
-// OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-// AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
-// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
-// IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
-// OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 using System;
 using System.Text;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Dom.CSharp;
+using ICSharpCode.TextEditor;
+using ICSharpCode.TextEditor.Document;
 using VVVV.Core.Model.CS;
-using NRefactoryResolver = ICSharpCode.SharpDevelop.Dom.NRefactoryResolver.NRefactoryResolver;
-using TextEditor = ICSharpCode.TextEditor;
 
 namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 {
-	public class CSToolTipProvider
+	public class CSToolTipProvider : IToolTipProvider
 	{
-		protected CSDocument FDocument;
-		protected TextEditor.TextEditorControl FEditor;
+		protected IDocumentLocator FDocumentLocator;
 		
-		private CSToolTipProvider(CSDocument document, TextEditor.TextEditorControl editor)
+		public CSToolTipProvider(IDocumentLocator documentLocator)
 		{
-			FDocument = document;
-			FEditor = editor;
+			FDocumentLocator = documentLocator;
 		}
 		
-		public static void Attach(CSDocument document, TextEditor.TextEditorControl editor)
+		public string GetToolTip(IDocument document, TextLocation textLocation)
 		{
-			CSToolTipProvider tp = new CSToolTipProvider(document, editor);
-			editor.ActiveTextAreaControl.TextArea.ToolTipRequest += tp.OnToolTipRequest;
-			editor.Disposed += tp.TextEditorControlDisposedCB;
+			var offset = document.PositionToOffset(textLocation);
+			var csDoc = FDocumentLocator.GetVDocument(document) as CSDocument;
+			var expression = csDoc.FindFullExpression(offset);
+			if (expression.Region.IsEmpty)
+				expression.Region = new DomRegion(textLocation.Line + 1, textLocation.Column + 1);
+			
+			var resolveResult = csDoc.Resolve(expression);
+			return GetText(resolveResult);
 		}
 		
-		void TextEditorControlDisposedCB(object sender, EventArgs e)
-		{
-			var editor = sender as TextEditor.TextEditorControl;
-			editor.ActiveTextAreaControl.TextArea.ToolTipRequest -= OnToolTipRequest;
-			editor.Disposed -= TextEditorControlDisposedCB;
-		}
-		
-		void OnToolTipRequest(object sender, TextEditor.ToolTipRequestEventArgs e)
-		{
-			if (e.InDocument && !e.ToolTipShown) {
-				var expression = FDocument.FindFullExpression(FEditor.Document.PositionToOffset(e.LogicalPosition));
-				if (expression.Region.IsEmpty) {
-					expression.Region = new DomRegion(e.LogicalPosition.Line + 1, e.LogicalPosition.Column + 1);
-				}
-				
-				try
-				{
-					var resolveResult = FDocument.Resolve(expression);
-					
-					string toolTipText = GetText(resolveResult);
-					if (toolTipText != null) {
-						e.ShowToolTip(toolTipText);
-					}
-				}
-				catch (Exception)
-				{
-					// Ignore
-				}
-			}
-		}
-		
-		static string GetText(ResolveResult result)
+		string GetText(ResolveResult result)
 		{
 			if (result == null) {
 				return null;
@@ -126,7 +71,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 			}
 		}
 		
-		static string GetMemberText(IAmbience ambience, IEntity member)
+		string GetMemberText(IAmbience ambience, IEntity member)
 		{
 			StringBuilder text = new StringBuilder();
 			if (member is IField) {

@@ -14,48 +14,6 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 {
 	public class CSFoldingStrategy : IFoldingStrategy
 	{
-		void AddClassMembers(IClass c, List<FoldMarker> foldMarkers, IDocument document)
-		{
-			if (c.ClassType == ClassType.Delegate) {
-				return;
-			}
-			DomRegion cRegion = c.BodyRegion;
-			if (cRegion.IsEmpty) cRegion = c.Region;
-			if (cRegion.BeginLine < cRegion.EndLine) {
-				FoldMarker newFoldMarker = new FoldMarker(document, cRegion.BeginLine - 1, cRegion.BeginColumn - 1,
-				                                          cRegion.EndLine - 1, cRegion.EndColumn, c.ClassType == ClassType.Enum ? FoldType.MemberBody : FoldType.TypeBody);
-				if (newFoldMarker.Length > 0) {
-					foldMarkers.Add(newFoldMarker);
-				}
-			}
-			foreach (IClass innerClass in c.InnerClasses) {
-				AddClassMembers(innerClass, foldMarkers, document);
-			}
-			
-			foreach (IMethod m in c.Methods) {
-				if (m.Region.EndLine < m.BodyRegion.EndLine) {
-					foldMarkers.Add(new FoldMarker(document, m.Region.EndLine - 1, m.Region.EndColumn - 1,
-					                               m.BodyRegion.EndLine - 1, m.BodyRegion.EndColumn - 1, FoldType.MemberBody));
-				}
-			}
-			
-			foreach (IProperty p in c.Properties) {
-				if (p.Region.EndLine < p.BodyRegion.EndLine) {
-					foldMarkers.Add(new FoldMarker(document, p.Region.EndLine - 1, p.Region.EndColumn - 1,
-					                               p.BodyRegion.EndLine- 1, p.BodyRegion.EndColumn - 1, FoldType.MemberBody));
-				}
-			}
-			
-			foreach (IEvent evt in c.Events) {
-				if (evt.Region.EndLine < evt.BodyRegion.EndLine) {
-					if (!evt.BodyRegion.IsEmpty) {
-						foldMarkers.Add(new FoldMarker(document, evt.Region.EndLine - 1, evt.Region.EndColumn - 1,
-						                               evt.BodyRegion.EndLine- 1, evt.BodyRegion.EndColumn - 1, FoldType.MemberBody));
-					}
-				}
-			}
-		}
-		
 		/// <remarks>
 		/// Calculates the fold level of a specific line.
 		/// </remarks>
@@ -99,6 +57,48 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 				}
 			}
 			return foldMarkers;
+		}
+		
+		void AddClassMembers(IClass c, List<FoldMarker> foldMarkers, IDocument document)
+		{
+			if (c.ClassType == ClassType.Delegate) {
+				return;
+			}
+			DomRegion cRegion = c.BodyRegion;
+			if (cRegion.IsEmpty) cRegion = c.Region;
+			if (cRegion.BeginLine < cRegion.EndLine) {
+				FoldMarker newFoldMarker = new FoldMarker(document, cRegion.BeginLine - 1, cRegion.BeginColumn - 1,
+				                                          cRegion.EndLine - 1, cRegion.EndColumn, c.ClassType == ClassType.Enum ? FoldType.MemberBody : FoldType.TypeBody);
+				if (newFoldMarker.Length > 0) {
+					foldMarkers.Add(newFoldMarker);
+				}
+			}
+			foreach (IClass innerClass in c.InnerClasses) {
+				AddClassMembers(innerClass, foldMarkers, document);
+			}
+			
+			foreach (IMethod m in c.Methods) {
+				if (m.Region.EndLine < m.BodyRegion.EndLine) {
+					foldMarkers.Add(new FoldMarker(document, m.Region.EndLine - 1, m.Region.EndColumn - 1,
+					                               m.BodyRegion.EndLine - 1, m.BodyRegion.EndColumn - 1, FoldType.MemberBody));
+				}
+			}
+			
+			foreach (IProperty p in c.Properties) {
+				if (p.Region.EndLine < p.BodyRegion.EndLine) {
+					foldMarkers.Add(new FoldMarker(document, p.Region.EndLine - 1, p.Region.EndColumn - 1,
+					                               p.BodyRegion.EndLine- 1, p.BodyRegion.EndColumn - 1, FoldType.MemberBody));
+				}
+			}
+			
+			foreach (IEvent evt in c.Events) {
+				if (evt.Region.EndLine < evt.BodyRegion.EndLine) {
+					if (!evt.BodyRegion.IsEmpty) {
+						foldMarkers.Add(new FoldMarker(document, evt.Region.EndLine - 1, evt.Region.EndColumn - 1,
+						                               evt.BodyRegion.EndLine- 1, evt.BodyRegion.EndColumn - 1, FoldType.MemberBody));
+					}
+				}
+			}
 		}
 	}
 }
