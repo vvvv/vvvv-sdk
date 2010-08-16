@@ -1,12 +1,4 @@
-﻿/*
- * Erstellt mit SharpDevelop.
- * Benutzer: tgallery
- * Datum: 10.03.2010
- * Zeit: 17:14
- * 
- * Sie können diese Vorlage unter Extras > Optionen > Codeerstellung > Standardheader ändern.
- */
-using System;
+﻿using System;
 using System.Collections.Generic;
 using ColladaSlimDX.ColladaModel;
 using VVVV.Utils.VMath;
