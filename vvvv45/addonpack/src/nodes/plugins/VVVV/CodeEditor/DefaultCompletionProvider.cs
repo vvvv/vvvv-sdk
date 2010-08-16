@@ -8,9 +8,9 @@ namespace VVVV.HDE.CodeEditor
 	/// <summary>
 	/// Used by the CompletionWindow.
 	/// </summary>
-	public class DefaultCompletionDataProvider : ICompletionProvider
+	public class DefaultCompletionProvider : ICompletionProvider
 	{
-		public DefaultCompletionDataProvider()
+		public DefaultCompletionProvider()
 		{
 		}
 		

@@ -11,7 +11,7 @@ using VVVV.Core.Model.FX;
 
 namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
 {
-	public class FXCompletionProvider : DefaultCompletionDataProvider
+	public class FXCompletionProvider : DefaultCompletionProvider
 	{
 		protected IDocumentLocator FDocumentLocator;
 		protected ILogger FLogger;

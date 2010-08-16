@@ -37,10 +37,11 @@ using ICSharpCode.TextEditor.Gui.CompletionWindow;
 using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
 using VVVV.Core.Model.FX;
+using VVVV.HDE.CodeEditor.Gui.SearchBar;
 using VVVV.HDE.CodeEditor.LanguageBindings.CS;
-using SD = ICSharpCode.TextEditor.Document;
 using Dom = ICSharpCode.SharpDevelop.Dom;
 using NRefactory = ICSharpCode.NRefactory;
+using SD = ICSharpCode.TextEditor.Document;
 
 namespace VVVV.HDE.CodeEditor
 {
@@ -53,6 +54,7 @@ namespace VVVV.HDE.CodeEditor
 		private CodeCompletionWindow FCodeCompletionWindow;
 		private System.Windows.Forms.Timer FTimer;
 		private CodeEditorForm FCodeEditorForm;
+		private SearchBar FSearchBar;
 		
 		private ICompletionProvider FCompletionProvider;
 		private ILinkDataProvider FLinkDataProvider;
@@ -87,6 +89,7 @@ namespace VVVV.HDE.CodeEditor
 			InitializeComponent();
 			
 			FCodeEditorForm = codeEditorForm;
+			
 			Document = doc;
 			SDDocument = FTextEditorControl.Document;
 			
@@ -96,6 +99,9 @@ namespace VVVV.HDE.CodeEditor
 			FTextEditorControl.TextEditorProperties.AutoInsertCurlyBracket = true;
 			
 			var fileName = doc.Location.LocalPath;
+			
+			// Setup search bar
+			FSearchBar = new SearchBar(FTextEditorControl);
 			
 			// Setup code highlighting
 			var highlighter = SD.HighlightingManager.Manager.FindHighlighterForFile(fileName);
@@ -314,25 +320,22 @@ namespace VVVV.HDE.CodeEditor
 				
 				for (int lineNumber = 0; lineNumber < doc.TotalNumberOfLines; lineNumber++)
 				{
-					if (doc.FoldingManager.IsLineVisible(lineNumber))
+					var lineSegment = doc.GetLineSegment(lineNumber);
+					// Highlight text which matches the selection
+					foreach (var word in lineSegment.Words)
 					{
-						var lineSegment = doc.GetLineSegment(lineNumber);
-						// Highlight text which matches the selection
-						foreach (var word in lineSegment.Words)
+						var text = word.Word;
+						var start = text.IndexOf(selectedText);
+						if (start >= 0)
 						{
-							var text = word.Word;
-							var start = text.IndexOf(selectedText);
-							if (start >= 0)
-							{
-								var offset = lineSegment.Offset + word.Offset + start;
-								var location = doc.OffsetToPosition(offset);
-								
-								var marker = new SD.TextMarker(offset, selectedText.Length, SD.TextMarkerType.SolidBlock, Color.LightGray);
-								FSelectionMarkers.Add(marker);
-								doc.MarkerStrategy.AddMarker(marker);
-								
-								doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.PositionToLineEnd, location));
-							}
+							var offset = lineSegment.Offset + word.Offset + start;
+							var location = doc.OffsetToPosition(offset);
+							
+							var marker = new SD.TextMarker(offset, selectedText.Length, SD.TextMarkerType.SolidBlock, Color.LightGray);
+							FSelectionMarkers.Add(marker);
+							doc.MarkerStrategy.AddMarker(marker);
+							
+							doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.PositionToLineEnd, location));
 						}
 					}
 				}
@@ -527,6 +530,12 @@ namespace VVVV.HDE.CodeEditor
 			{
 				SyncControlWithDocument();
 				Document.Save();
+				args.Handled = true;
+			}
+			else if (args.Control && args.KeyCode == Keys.F)
+			{
+				// Show search bar
+				FSearchBar.ShowSearchBar();
 				args.Handled = true;
 			}
 			else

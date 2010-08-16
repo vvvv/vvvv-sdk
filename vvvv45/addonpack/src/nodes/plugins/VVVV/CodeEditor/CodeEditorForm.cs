@@ -84,7 +84,7 @@ namespace VVVV.HDE.CodeEditor
 		{
 			if (!FOpenedDocuments.ContainsKey(doc))
 			{
-				var completionDataProvider = new DefaultCompletionDataProvider();
+				var completionDataProvider = new DefaultCompletionProvider();
 				SD.IFormattingStrategy formattingStrategy = new SD.DefaultFormattingStrategy();
 				SD.IFoldingStrategy foldingStrategy = null;
 				ILinkDataProvider linkDataProvider = null;

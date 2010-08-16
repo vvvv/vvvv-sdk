@@ -38,7 +38,7 @@ using NRefactoryResolver = ICSharpCode.SharpDevelop.Dom.NRefactoryResolver.NRefa
 
 namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 {
-    public class CSCompletionProvider : DefaultCompletionDataProvider
+    public class CSCompletionProvider : DefaultCompletionProvider
     {
         protected IDocumentLocator FDocumentLocator;
         
