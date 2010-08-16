@@ -142,6 +142,9 @@ namespace VVVV.HDE.CodeEditor
 				FTextEditorControl.ActiveTextAreaControl.TextArea.ToolTipRequest += OnToolTipRequest;
 			}
 			
+			// Setup selection highlighting
+			FTextEditorControl.ActiveTextAreaControl.SelectionManager.SelectionChanged += FTextEditorControl_ActiveTextAreaControl_SelectionManager_SelectionChanged;
+			
 			FTextEditorControl.ActiveTextAreaControl.TextArea.Resize += FTextEditorControl_ActiveTextAreaControl_TextArea_Resize;
 			FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown += TextAreaKeyDownCB;
 			FTextEditorControl.TextChanged += TextEditorControlTextChangedCB;
@@ -153,6 +156,11 @@ namespace VVVV.HDE.CodeEditor
 			FTimer = new Timer();
 			FTimer.Interval = 500;
 			FTimer.Tick += TimerTickCB;
+		}
+
+		void FTextEditorControl_Scroll(object sender, ScrollEventArgs e)
+		{
+			Debug.WriteLine(string.Format("{0}: {1} -> {2}", e.ScrollOrientation, e.OldValue, e.NewValue));
 		}
 
 		#endregion constructor/destructor
@@ -209,6 +217,7 @@ namespace VVVV.HDE.CodeEditor
 						FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown -= TextAreaKeyDownCB;
 						FTextEditorControl.ActiveTextAreaControl.TextArea.Resize -= FTextEditorControl_ActiveTextAreaControl_TextArea_Resize;
 						FTextEditorControl.ActiveTextAreaControl.TextArea.KeyEventHandler -= TextAreaKeyEventHandler;
+						FTextEditorControl.ActiveTextAreaControl.SelectionManager.SelectionChanged -= FTextEditorControl_ActiveTextAreaControl_SelectionManager_SelectionChanged;
 						
 						if (FLinkDataProvider != null)
 						{
@@ -273,6 +282,65 @@ namespace VVVV.HDE.CodeEditor
 			}
 		}
 		
+		private IList<SD.TextMarker> FSelectionMarkers = new List<SD.TextMarker>();
+		void FTextEditorControl_ActiveTextAreaControl_SelectionManager_SelectionChanged(object sender, EventArgs e)
+		{
+			var textAreaControl = FTextEditorControl.ActiveTextAreaControl;
+			var textArea = textAreaControl.TextArea;
+			var doc = FTextEditorControl.Document;
+			
+			// Clear previous selection markers
+			foreach (var marker in FSelectionMarkers)
+			{
+				var location = doc.OffsetToPosition(marker.Offset);
+				doc.MarkerStrategy.RemoveMarker(marker);
+				doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.PositionToLineEnd, location));
+			}
+			doc.CommitUpdate();
+			FSelectionMarkers.Clear();
+			
+			var selectionManager = textAreaControl.SelectionManager;
+			foreach (var selection in selectionManager.SelectionCollection)
+			{
+				// Ignore selection spanning over multiple lines.
+				if (selection.StartPosition.Line != selection.EndPosition.Line)
+					continue;
+				
+				var selectedText = selection.SelectedText.Trim();
+				
+				// Ignore empty strings
+				if (selectedText == string.Empty)
+					continue;
+				
+				for (int lineNumber = 0; lineNumber < doc.TotalNumberOfLines; lineNumber++)
+				{
+					if (doc.FoldingManager.IsLineVisible(lineNumber))
+					{
+						var lineSegment = doc.GetLineSegment(lineNumber);
+						// Highlight text which matches the selection
+						foreach (var word in lineSegment.Words)
+						{
+							var text = word.Word;
+							var start = text.IndexOf(selectedText);
+							if (start >= 0)
+							{
+								var offset = lineSegment.Offset + word.Offset + start;
+								var location = doc.OffsetToPosition(offset);
+								
+								var marker = new SD.TextMarker(offset, selectedText.Length, SD.TextMarkerType.SolidBlock, Color.LightGray);
+								FSelectionMarkers.Add(marker);
+								doc.MarkerStrategy.AddMarker(marker);
+								
+								doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.PositionToLineEnd, location));
+							}
+						}
+					}
+				}
+			}
+			
+			doc.CommitUpdate();
+		}
+		
 		void CSDocument_ParseCompleted(CSDocument document)
 		{
 			FTextEditorControl.Document.FoldingManager.UpdateFoldings(document.Location.LocalPath, document.ParseInfo);
@@ -280,9 +348,14 @@ namespace VVVV.HDE.CodeEditor
 		
 		void FTextEditorControl_ActiveTextAreaControl_TextArea_Resize(object sender, EventArgs e)
 		{
+			UpdateHScrollBar();
+		}
+		
+		void UpdateHScrollBar()
+		{
 			var textAreaControl = FTextEditorControl.ActiveTextAreaControl;
 			var textArea = textAreaControl.TextArea;
-			var document = FTextEditorControl.Document;
+			var doc = FTextEditorControl.Document;
 			
 			// At startup this property seems to be invalid.
 			if (textArea.TextView.VisibleColumnCount == -1)
@@ -291,14 +364,16 @@ namespace VVVV.HDE.CodeEditor
 			var visibleColumnCount = textArea.TextView.VisibleColumnCount;
 			
 			int firstLine = textArea.TextView.FirstVisibleLine;
-			int lastLine = document.GetFirstLogicalLine(textArea.TextView.FirstPhysicalLine + textArea.TextView.VisibleLineCount);
-			if (lastLine >= document.TotalNumberOfLines)
-				lastLine = document.TotalNumberOfLines - 1;
+			int lastLine = doc.GetFirstLogicalLine(textArea.TextView.FirstPhysicalLine + textArea.TextView.VisibleLineCount);
+			if (lastLine >= doc.TotalNumberOfLines)
+				lastLine = doc.TotalNumberOfLines - 1;
 			
-			int max = 1;
-			for (int lineNumber = firstLine; lineNumber <= lastLine; lineNumber++) {
-				if (document.FoldingManager.IsLineVisible(lineNumber)) {
-					var lineSegment = document.GetLineSegment(lineNumber);
+			int max = textArea.Caret.Column + 20;
+			for (int lineNumber = firstLine; lineNumber <= lastLine; lineNumber++)
+			{
+				if (doc.FoldingManager.IsLineVisible(lineNumber))
+				{
+					var lineSegment = doc.GetLineSegment(lineNumber);
 					int visualLength = textArea.TextView.GetVisualColumnFast(lineSegment, lineSegment.Length);
 					max = Math.Max(max, visualLength);
 					
@@ -309,18 +384,27 @@ namespace VVVV.HDE.CodeEditor
 			
 			if (max < visibleColumnCount)
 			{
-				textAreaControl.HScrollBar.Visible = false;
-				textAreaControl.TextArea.Bounds =
-					new Rectangle(0, 0,
-					              textAreaControl.Width - SystemInformation.HorizontalScrollBarArrowWidth,
-					              textAreaControl.Height);
-				textAreaControl.VScrollBar.Bounds =
-					new Rectangle(textArea.Bounds.Right, 0,
-					              SystemInformation.HorizontalScrollBarArrowWidth,
-					              textAreaControl.Height);
+				if (textAreaControl.HScrollBar.Visible)
+				{
+					textAreaControl.HScrollBar.Hide();
+					textAreaControl.TextArea.Bounds =
+						new Rectangle(0, 0,
+						              textAreaControl.Width - SystemInformation.HorizontalScrollBarArrowWidth,
+						              textAreaControl.Height);
+				}
 			}
 			else
-				textAreaControl.HScrollBar.Visible = true;
+			{
+				if (!textAreaControl.HScrollBar.Visible)
+				{
+					textAreaControl.TextArea.Bounds =
+						new Rectangle(0, 0,
+						              textAreaControl.Width - SystemInformation.HorizontalScrollBarArrowWidth,
+						              textAreaControl.Height - SystemInformation.VerticalScrollBarArrowHeight);
+					textAreaControl.ResizeTextArea();
+					textAreaControl.HScrollBar.Show();
+				}
+			}
 		}
 		
 		public TextLocation GetTextLocationAtMousePosition(Point location)
@@ -428,6 +512,7 @@ namespace VVVV.HDE.CodeEditor
 		/// </summary>
 		void TextEditorControlTextChangedCB(object sender, EventArgs e)
 		{
+			UpdateHScrollBar();
 			FTimer.Stop();
 			FTimer.Start();
 		}
