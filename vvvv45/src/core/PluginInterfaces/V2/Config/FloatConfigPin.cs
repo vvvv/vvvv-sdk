@@ -14,13 +14,11 @@ namespace VVVV.PluginInterfaces.V2.Config
 		{
 			get 
 			{
-				double value;
-				FValueConfig.GetValue(index, out value);
-				return (float) value;
+				return (float)FData[index % FSliceCount];
 			}
 			set 
 			{
-				FValueConfig.SetValue(index, (double) value);
+				FData[index % FSliceCount] = value;
 			}
 		}
 	}

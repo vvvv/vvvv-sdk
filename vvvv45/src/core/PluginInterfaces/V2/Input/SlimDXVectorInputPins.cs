@@ -18,7 +18,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector2D*)ptr)[index].ToSlimDXVector();
+					return ((Vector2D*)ptr)[index % FSliceCount].ToSlimDXVector();
 				}
 			}
 			set
@@ -47,7 +47,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector3D*)ptr)[index].ToSlimDXVector();
+					return ((Vector3D*)ptr)[index % FSliceCount].ToSlimDXVector();
 				}
 			}
 			set
@@ -76,7 +76,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector4D*)ptr)[index].ToSlimDXVector();
+					return ((Vector4D*)ptr)[index % FSliceCount].ToSlimDXVector();
 				}
 			}
 			set
@@ -105,7 +105,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector2D*)ptr)[index].ToSlimDXVector();
+					return ((Vector2D*)ptr)[index % FSliceCount].ToSlimDXVector();
 				}
 			}
 			set
@@ -134,7 +134,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector3D*)ptr)[index].ToSlimDXVector();
+					return ((Vector3D*)ptr)[index % FSliceCount].ToSlimDXVector();
 				}
 			}
 			set
@@ -163,7 +163,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector4D*)ptr)[index].ToSlimDXVector();
+					return ((Vector4D*)ptr)[index % FSliceCount].ToSlimDXVector();
 				}
 			}
 			set

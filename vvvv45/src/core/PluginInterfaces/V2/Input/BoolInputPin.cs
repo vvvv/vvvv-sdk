@@ -14,12 +14,12 @@ namespace VVVV.PluginInterfaces.V2.Input
 		{
 			get 
 			{
-				return FData[index] >= 0.5;
+				return FData[index % FSliceCount] >= 0.5;
 			}
 			set 
 			{
 				if (!FValueFastIn.IsConnected)
-					FData[index] = value ? 1.0 : 0.0;
+					FData[index % FSliceCount] = value ? 1.0 : 0.0;
 			}
 		}
 	}
@@ -35,12 +35,12 @@ namespace VVVV.PluginInterfaces.V2.Input
 		{
 			get 
 			{
-				return FData[index] >= 0.5;
+				return FData[index % FSliceCount] >= 0.5;
 			}
 			set 
 			{
 				if (!FValueIn.IsConnected)
-					FData[index] = value ? 1.0 : 0.0;
+					FData[index % FSliceCount] = value ? 1.0 : 0.0;
 			}
 		}
 	}

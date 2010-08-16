@@ -50,7 +50,7 @@ namespace VVVV.PluginInterfaces.V2.Config
 			{
 				fixed (double* ptr = FData)
 				{
-					((Vector3D*)ptr)[index] = value;
+					((Vector3D*)ptr)[index % FSliceCount] = value;
 				}
 			}
 		}
@@ -76,7 +76,7 @@ namespace VVVV.PluginInterfaces.V2.Config
 			{
 				fixed (double* ptr = FData)
 				{
-					((Vector4D*)ptr)[index] = value;
+					((Vector4D*)ptr)[index % FSliceCount] = value;
 				}
 			}
 		}

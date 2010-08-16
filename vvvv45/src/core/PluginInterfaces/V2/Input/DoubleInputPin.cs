@@ -15,12 +15,12 @@ namespace VVVV.PluginInterfaces.V2.Input
 		{
 			get 
 			{
-				return FData[index % FData.Length];
+				return FData[index % FSliceCount];
 			}
 			set 
 			{
 				if (!FValueFastIn.IsConnected)
-					FData[index % FData.Length] = value;
+					FData[index % FSliceCount] = value;
 			}
 		}
 	}
@@ -36,12 +36,12 @@ namespace VVVV.PluginInterfaces.V2.Input
 		{
 			get 
 			{
-				return FData[index % FData.Length];
+				return FData[index % FSliceCount];
 			}
 			set 
 			{
 				if (!FValueIn.IsConnected)
-					FData[index % FData.Length] = value;
+					FData[index % FSliceCount] = value;
 			}
 		}
 	}

@@ -16,7 +16,10 @@ namespace VVVV.PluginInterfaces.V2.Output
 		{
 			get
 			{
-				throw new NotSupportedException();
+				fixed (double* ptr = FData)
+				{
+					return ((Vector2D*)ptr)[index % FSliceCount];
+				}
 			}
 			set
 			{
@@ -39,7 +42,10 @@ namespace VVVV.PluginInterfaces.V2.Output
 		{
 			get
 			{
-				throw new NotSupportedException();
+				fixed (double* ptr = FData)
+				{
+					return ((Vector3D*)ptr)[index % FSliceCount];
+				}
 			}
 			set
 			{
@@ -62,7 +68,10 @@ namespace VVVV.PluginInterfaces.V2.Output
 		{
 			get
 			{
-				throw new NotSupportedException();
+				fixed (double* ptr = FData)
+				{
+					return ((Vector4D*)ptr)[index % FSliceCount];
+				}
 			}
 			set
 			{

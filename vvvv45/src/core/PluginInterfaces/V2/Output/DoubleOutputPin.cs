@@ -14,11 +14,11 @@ namespace VVVV.PluginInterfaces.V2.Output
 		{
 			get 
 			{
-				return FData[index % FData.Length];
+				return FData[index % FSliceCount];
 			}
 			set 
 			{
-				FData[index % FData.Length] = value;
+				FData[index % FSliceCount] = value;
 			}
 		}
 	}

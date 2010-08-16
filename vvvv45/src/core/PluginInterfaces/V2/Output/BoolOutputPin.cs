@@ -14,11 +14,11 @@ namespace VVVV.PluginInterfaces.V2.Output
 		{
 			get 
 			{
-				throw new NotImplementedException();
+				return FData[index % FSliceCount] >= 0.5;
 			}
 			set
 			{
-				FValueOut.SetValue(index, value ? 1 : 0);
+				FData[index % FSliceCount] = value ? 1 : 0;
 			}
 		}
 	}

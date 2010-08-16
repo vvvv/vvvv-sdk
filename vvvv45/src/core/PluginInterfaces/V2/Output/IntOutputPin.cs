@@ -14,11 +14,11 @@ namespace VVVV.PluginInterfaces.V2.Output
 		{
 			get 
 			{
-				throw new NotImplementedException();
+				return (int)FData[index % FSliceCount];
 			}
 			set 
 			{
-				FData[index] = (double) value;
+				FData[index % FSliceCount] = value;
 			}
 		}
 	}

@@ -18,14 +18,14 @@ namespace VVVV.PluginInterfaces.V2.Config
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector2D*)ptr)[index].ToSlimDXVector();
+					return ((Vector2D*)ptr)[index % FSliceCount].ToSlimDXVector();
 				}
 			}
 			set
 			{
 				fixed (double* ptr = FData)
 				{
-					((Vector2D*)ptr)[index] = value.ToVector2D();
+					((Vector2D*)ptr)[index % FSliceCount] = value.ToVector2D();
 				}
 			}
 		}
@@ -44,14 +44,14 @@ namespace VVVV.PluginInterfaces.V2.Config
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector3D*)ptr)[index].ToSlimDXVector();;
+					return ((Vector3D*)ptr)[index % FSliceCount].ToSlimDXVector();;
 				}
 			}
 			set
 			{
 				fixed (double* ptr = FData)
 				{
-					((Vector3D*)ptr)[index] = value.ToVector3D();
+					((Vector3D*)ptr)[index % FSliceCount] = value.ToVector3D();
 				}
 			}
 		}
@@ -70,14 +70,14 @@ namespace VVVV.PluginInterfaces.V2.Config
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector4D*)ptr)[index].ToSlimDXVector();;
+					return ((Vector4D*)ptr)[index % FSliceCount].ToSlimDXVector();;
 				}
 			}
 			set
 			{
 				fixed (double* ptr = FData)
 				{
-					((Vector4D*)ptr)[index] = value.ToVector4D();
+					((Vector4D*)ptr)[index % FSliceCount] = value.ToVector4D();
 				}
 			}
 		}
