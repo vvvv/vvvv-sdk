@@ -50,8 +50,11 @@ namespace VVVV.HDE.CodeEditor
 	{
 		#region field declaration
 		private ICSharpCode.TextEditor.TextEditorControl FTextEditorControl;
+		private CodeCompletionWindow FCodeCompletionWindow;
 		private System.Windows.Forms.Timer FTimer;
 		private CodeEditorForm FCodeEditorForm;
+		
+		private ICompletionProvider FCompletionProvider;
 		private ILinkDataProvider FLinkDataProvider;
 		private IToolTipProvider FToolTipProvider;
 		#endregion field declaration
@@ -74,8 +77,7 @@ namespace VVVV.HDE.CodeEditor
 		public CodeEditor(
 			CodeEditorForm codeEditorForm,
 			ITextDocument doc,
-			ICompletionWindowTrigger completionWindowTrigger,
-			ICompletionDataProvider completionDataProvider,
+			ICompletionProvider completionProvider,
 			SD.IFormattingStrategy formattingStrategy,
 			SD.IFoldingStrategy foldingStrategy,
 			ILinkDataProvider linkDataProvider,
@@ -100,7 +102,8 @@ namespace VVVV.HDE.CodeEditor
 			FTextEditorControl.SetHighlighting(highlighter.Name);
 			
 			// Setup code completion
-			CodeCompletionKeyHandler.Attach(FTextEditorControl, completionDataProvider, completionWindowTrigger, fileName);
+			FCompletionProvider = completionProvider;
+			FTextEditorControl.ActiveTextAreaControl.TextArea.KeyEventHandler += TextAreaKeyEventHandler;
 			
 			// Setup code formatting
 			if (formattingStrategy != null)
@@ -147,7 +150,7 @@ namespace VVVV.HDE.CodeEditor
 			Document.Project.CompileCompleted += CompileCompletedCB;
 			
 			// Start parsing after 500ms have passed after last key stroke.
-			FTimer = new System.Windows.Forms.Timer();
+			FTimer = new Timer();
 			FTimer.Interval = 500;
 			FTimer.Tick += TimerTickCB;
 		}
@@ -205,6 +208,7 @@ namespace VVVV.HDE.CodeEditor
 						FTextEditorControl.TextChanged -= TextEditorControlTextChangedCB;
 						FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown -= TextAreaKeyDownCB;
 						FTextEditorControl.ActiveTextAreaControl.TextArea.Resize -= FTextEditorControl_ActiveTextAreaControl_TextArea_Resize;
+						FTextEditorControl.ActiveTextAreaControl.TextArea.KeyEventHandler -= TextAreaKeyEventHandler;
 						
 						if (FLinkDataProvider != null)
 						{
@@ -236,7 +240,6 @@ namespace VVVV.HDE.CodeEditor
 						FTimer.Dispose();
 					}
 					
-					HostCallbackImplementation.UnRegister();
 					FTextEditorControl.Dispose();
 				}
 				// Release unmanaged resources. If disposing is false,
@@ -518,5 +521,82 @@ namespace VVVV.HDE.CodeEditor
 			FTextEditorControl.ActiveTextAreaControl.Caret.Line = line;
 			FTextEditorControl.ActiveTextAreaControl.Caret.Column = column;
 		}
+		
+		#region Code completion
+		
+		/// <summary>
+		/// Return true to handle the keypress, return false to let the text area handle the keypress
+		/// </summary>
+		bool inHandleKeyPress;
+		bool TextAreaKeyEventHandler(char key)
+		{
+			if (inHandleKeyPress)
+				return false;
+			
+			inHandleKeyPress = true;
+			
+			try
+			{
+				if (FCodeCompletionWindow != null && !FCodeCompletionWindow.IsDisposed) {
+					// If completion window is open and wants to handle the key, don't let the text area handle it.
+					if (FCodeCompletionWindow.ProcessKeyEvent(key)) {
+						return true;
+					}
+					if (FCodeCompletionWindow != null && !FCodeCompletionWindow.IsDisposed) {
+						// code-completion window is still opened but did not want to handle
+						// the keypress -> don't try to restart code-completion
+						return false;
+					}
+				}
+				
+				if (FCompletionProvider.TriggersCompletionWindow(FTextEditorControl, key))
+				{
+					var textAreaControl = FTextEditorControl.ActiveTextAreaControl;
+					
+					// Delete selected text (which will be overwritten anyways) before starting completion.
+					if (textAreaControl.SelectionManager.HasSomethingSelected) {
+						// allow code completion when overwriting an identifier
+						int cursor = textAreaControl.SelectionManager.SelectionCollection[0].Offset;
+						int endOffset = textAreaControl.SelectionManager.SelectionCollection[0].EndOffset;
+						// but block code completion when overwriting only part of an identifier
+						if (endOffset < SDDocument.TextLength && char.IsLetterOrDigit(SDDocument.GetCharAt(endOffset)))
+							return false;
+						textAreaControl.SelectionManager.RemoveSelectedText();
+						textAreaControl.Caret.Position = SDDocument.OffsetToPosition(cursor);
+					}
+					
+					FCodeCompletionWindow = CodeCompletionWindow.ShowCompletionWindow(
+						FCodeEditorForm,					// The parent window for the completion window
+						FTextEditorControl, 					// The text editor to show the window for
+						Document.Location.LocalPath,		// Filename - will be passed back to the provider
+						FCompletionProvider,		// Provider to get the list of possible completions
+						key							// Key pressed - will be passed to the provider
+					);
+					if (FCodeCompletionWindow != null)
+					{
+						// ShowCompletionWindow can return null when the provider returns an empty list
+						FCodeCompletionWindow.Closed += CloseCodeCompletionWindow;
+					}
+				}
+			}
+			finally
+			{
+				inHandleKeyPress = false;
+			}
+			
+			return false;
+		}
+		
+		void CloseCodeCompletionWindow(object sender, EventArgs e)
+		{
+			if (FCodeCompletionWindow != null)
+			{
+				FCodeCompletionWindow.Closed -= CloseCodeCompletionWindow;
+				FCodeCompletionWindow.Dispose();
+				FCodeCompletionWindow = null;
+			}
+		}
+		
+		#endregion
 	}
 }

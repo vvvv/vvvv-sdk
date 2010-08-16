@@ -8,7 +8,7 @@ namespace VVVV.HDE.CodeEditor
 	/// <summary>
 	/// Used by the CompletionWindow.
 	/// </summary>
-	public class DefaultCompletionDataProvider : ICompletionDataProvider
+	public class DefaultCompletionDataProvider : ICompletionProvider
 	{
 		public DefaultCompletionDataProvider()
 		{
@@ -25,7 +25,7 @@ namespace VVVV.HDE.CodeEditor
 		private string FPreSelection;
 		
 		/// <summary>
-		/// This is controlled using the "PreSelection" property.
+		/// From: http://community.sharpdevelop.net/forums/p/9921/27514.aspx#27514
 		/// The "PreSelection" is the string before the caret that should be included 
 		/// in the 'active word' logic in completion window (without the character typed).
 		/// Returning null from PreSelection disables the feature, so nothing will be 
@@ -83,6 +83,11 @@ namespace VVVV.HDE.CodeEditor
 		public virtual ICompletionData[] GenerateCompletionData(string fileName, TextArea textArea, char charTyped)
 		{
 			return new ICompletionData[0];
+		}
+		
+		public virtual bool TriggersCompletionWindow(TextEditorControl editorControl, char key)
+		{
+			return false;
 		}
 	}
 }

@@ -84,7 +84,6 @@ namespace VVVV.HDE.CodeEditor
 		{
 			if (!FOpenedDocuments.ContainsKey(doc))
 			{
-				var completionWindowTrigger = new DefaultCompletionWindowTrigger();
 				var completionDataProvider = new DefaultCompletionDataProvider();
 				SD.IFormattingStrategy formattingStrategy = new SD.DefaultFormattingStrategy();
 				SD.IFoldingStrategy foldingStrategy = null;
@@ -94,7 +93,6 @@ namespace VVVV.HDE.CodeEditor
 				if (doc is CSDocument)
 				{
 					var csDoc = doc as CSDocument;
-					completionWindowTrigger = new CSCompletionWindowTrigger(this);
 					completionDataProvider = new CSCompletionProvider(this);
 					formattingStrategy = new CSFormattingStrategy(this);
 					foldingStrategy = new CSFoldingStrategy();
@@ -103,7 +101,6 @@ namespace VVVV.HDE.CodeEditor
 				}
 				else if (doc is FXDocument || doc is FXHDocument)
 				{
-					completionWindowTrigger = new FXCompletionWindowTrigger();
 					completionDataProvider = new FXCompletionProvider(this, FLogger);
 					linkDataProvider = new FXLinkDataProvider();
 				}
@@ -111,7 +108,6 @@ namespace VVVV.HDE.CodeEditor
 				var editor = new CodeEditor(
 					this, 
 					doc, 
-					completionWindowTrigger, 
 					completionDataProvider,
 					formattingStrategy,
 					foldingStrategy,

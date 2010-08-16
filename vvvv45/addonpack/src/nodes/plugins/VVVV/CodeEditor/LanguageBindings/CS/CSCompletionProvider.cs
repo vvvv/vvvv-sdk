@@ -47,6 +47,14 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
             FDocumentLocator = documentLocator;
         }
         
+        public override bool TriggersCompletionWindow(TextEditorControl editorControl, char key)
+		{
+			if (IsInComment(editorControl))
+				return false;
+			
+			return char.IsLetter(key) || key == '.';
+		}
+		
         public override ICompletionData[] GenerateCompletionData(string fileName, TextArea textArea, char charTyped)
         {
             // We can return code-completion items like this:
@@ -152,5 +160,14 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
                 }
             }
         }
+        
+        bool IsInComment(TextEditorControl editor)
+		{
+			var sdDoc = editor.Document;
+			var csDoc = FDocumentLocator.GetVDocument(sdDoc) as CSDocument;
+			var expressionFinder = csDoc.ExpressionFinder;
+			int cursor = editor.ActiveTextAreaControl.Caret.Offset - 1;
+			return expressionFinder.FilterComments(sdDoc.GetText(0, cursor + 1), ref cursor) == null;
+		}
     }
 }
