@@ -13,7 +13,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 		{
 			FDefaultInterface = new GenericIO<T>();
 			
-			host.CreateNodeInput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FNodeIn);
+			host.CreateNodeInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FNodeIn);
 			FNodeIn.SetSubType(new Guid[] { typeof(T).GUID }, typeof(T).Name);
 			
 			FNodeIn.SetPinUpdater(this);

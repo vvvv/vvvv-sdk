@@ -13,7 +13,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 		
 		public ColorOutputPin(IPluginHost host, OutputAttribute attribute)
 		{
-			host.CreateColorOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FColorOut);
+			host.CreateColorOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FColorOut);
 			FColorOut.SetSubType(new RGBAColor(attribute.DefaultValues), attribute.HasAlpha);
 			FColorOut.SetPinUpdater(this);
 			

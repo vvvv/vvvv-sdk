@@ -12,7 +12,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 		{
 			FEnumName = attribute.EnumName;
 			
-			host.CreateEnumInput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FEnumInputPin);
+			host.CreateEnumInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FEnumInputPin);
 			FEnumInputPin.SetSubType(FEnumName);
 		}
 		

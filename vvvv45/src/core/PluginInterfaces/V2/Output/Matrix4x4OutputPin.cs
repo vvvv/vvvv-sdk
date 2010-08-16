@@ -15,7 +15,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 		
 		public Matrix4x4OutputPin(IPluginHost host, OutputAttribute attribute)
 		{
-			host.CreateTransformOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FTransformOut);
+			host.CreateTransformOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FTransformOut);
 			
 			FTransformOut.SetPinUpdater(this);
 			

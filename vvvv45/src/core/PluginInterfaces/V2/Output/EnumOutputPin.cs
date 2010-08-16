@@ -16,7 +16,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 			var defEntry = (attribute.DefaultEnumEntry != "") ? attribute.DefaultEnumEntry : entrys[0];	
 			host.UpdateEnum(FEnumType.Name, defEntry, entrys);
 			
-			host.CreateEnumOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FEnumOutputPin);
+			host.CreateEnumOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FEnumOutputPin);
 			FEnumOutputPin.SetSubType(FEnumType.Name);
 		}
 		

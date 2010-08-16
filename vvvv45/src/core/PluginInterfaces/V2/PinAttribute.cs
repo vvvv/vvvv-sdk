@@ -13,39 +13,50 @@ namespace VVVV.PluginInterfaces.V2
 		
 		public PinAttribute(string name)
 		{
+			//pin
 			Name = name;
-			Visibility = TPinVisibility.True;
-			SliceMode = TSliceMode.Dynamic;
+			Visibility = PinVisibility.True;
+			SliceMode = SliceMode.Dynamic;
 			
-			IsFilename = false;
+			//string
+			StringType = StringType.String;
+			FileMask = "*.txt";
+			
+			//value
 			MinValue = DefaultMinValue;
 			MaxValue = DefaultMaxValue;
 			StepSize = DefaultStepSize;
-			
 			DefaultValues = new double[] { 0.0, 0.0, 0.0, 0.0 };
 			
+			//color
+			HasAlpha = true;
+			DefaultColor = new double[] { 0.0, 1.0, 0.0, 1.0 };
+			
+			//enum
 			EnumName = "Empty";
 			DefaultEnumEntry = "";
 		}
 		
+		//pin
 		public string Name
 		{
 			get;
 			set;
 		}
 		
-		public TPinVisibility Visibility
+		public PinVisibility Visibility
 		{
 			get;
 			set;
 		}
 		
-		public TSliceMode SliceMode
+		public SliceMode SliceMode
 		{
 			get;
 			set;
 		}
 		
+		//value
 		public double MinValue
 		{
 			get;
@@ -70,30 +81,45 @@ namespace VVVV.PluginInterfaces.V2
 			set;
 		}
 		
-		public string DefaultString
-		{
-			get;
-			set;
-		}
-		
-		public bool IsFilename
-		{
-			get;
-			set;
-		}
-		
 		public double[] DefaultValues
 		{
 			get;
 			set;
 		}
 		
+		//string
+		public string DefaultString
+		{
+			get;
+			set;
+		}
+		
+		public StringType StringType
+		{
+			get;
+			set;
+		}
+		
+		public string FileMask
+		{
+			get;
+			set;
+		}
+		
+		//color
 		public bool HasAlpha
 		{
 			get;
 			set;
 		}
 		
+		public double[] DefaultColor
+		{
+			get;
+			set;
+		}
+		
+		//enum
 		public string EnumName
 		{
 			get;
@@ -106,6 +132,13 @@ namespace VVVV.PluginInterfaces.V2
 			set;
 		}
 		
+		public Enum DefaultEnum
+		{
+			get;
+			set;
+		}
+		
+		//pin group
 		public bool IsPinGroup
 		{
 			get;

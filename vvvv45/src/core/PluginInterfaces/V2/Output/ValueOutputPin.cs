@@ -24,7 +24,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 			
 			LoadDefaultValues(type, attribute, out FDimension, out minValue, out maxValue, out stepSize, out isInteger);
 			
-			host.CreateValueOutput(attribute.Name, FDimension, null, attribute.SliceMode, attribute.Visibility, out FValueOut);
+			host.CreateValueOutput(attribute.Name, FDimension, null, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FValueOut);
 			switch (FDimension)
 			{
 				case 2:

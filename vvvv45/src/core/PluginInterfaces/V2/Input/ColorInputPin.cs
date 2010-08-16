@@ -13,8 +13,8 @@ namespace VVVV.PluginInterfaces.V2.Input
 		
 		public ColorInputPin(IPluginHost host, InputAttribute attribute)
 		{
-			host.CreateColorInput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FColorIn);
-			FColorIn.SetSubType(new RGBAColor(attribute.DefaultValues), attribute.HasAlpha);
+			host.CreateColorInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FColorIn);
+			FColorIn.SetSubType(new RGBAColor(attribute.DefaultColor), attribute.HasAlpha);
 			FColorIn.SetPinUpdater(this);
 			
 			SliceCount = 1;

@@ -15,7 +15,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 		
 		public Matrix4x4InputPin(IPluginHost host, InputAttribute attribute)
 		{
-			host.CreateTransformInput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FTransformIn);
+			host.CreateTransformInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FTransformIn);
 			
 			FTransformIn.SetPinUpdater(this);
 			

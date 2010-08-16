@@ -9,8 +9,8 @@ namespace VVVV.PluginInterfaces.V2.Config
 		
 		public StringConfigPin(IPluginHost host, ConfigAttribute attribute)
 		{
-			host.CreateStringConfig(attribute.Name, attribute.SliceMode, attribute.Visibility, out FStringConfig);
-			FStringConfig.SetSubType(attribute.DefaultString, attribute.IsFilename);
+			host.CreateStringConfig(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FStringConfig);
+			FStringConfig.SetSubType(attribute.DefaultString, attribute.StringType == StringType.Filename);
 		}
 		
 		protected override IPluginConfig PluginConfig 

@@ -13,7 +13,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 		
 		public SlimDXMatrixOutputPin(IPluginHost host, OutputAttribute attribute)
 		{
-			host.CreateTransformOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FTransformOut);
+			host.CreateTransformOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FTransformOut);
 			
 			FTransformOut.SetPinUpdater(this);
 			

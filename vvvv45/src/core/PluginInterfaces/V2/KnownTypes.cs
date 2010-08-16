@@ -26,7 +26,9 @@ namespace VVVV.PluginInterfaces.V2
 			typeof(Vector2),
 			typeof(Vector3),
 			typeof(Vector4),
-			typeof(Matrix)
+			typeof(Matrix),
+			typeof(Enum),
+			typeof(EnumEntry)
 		};
 		
 		public static bool IsKnown(Type type)

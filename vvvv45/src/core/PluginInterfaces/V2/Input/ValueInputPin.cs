@@ -26,7 +26,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			
 			LoadDefaultValues(type, attribute, out FDimension, out minValue, out maxValue, out stepSize, out isInteger);
 			
-			host.CreateValueFastInput(attribute.Name, FDimension, null, attribute.SliceMode, attribute.Visibility, out FValueFastIn);
+			host.CreateValueFastInput(attribute.Name, FDimension, null, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FValueFastIn);
 			switch (FDimension)
 			{
 				case 2:

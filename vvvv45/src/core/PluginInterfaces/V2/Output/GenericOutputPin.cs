@@ -16,7 +16,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 		
 		public GenericOutputPin(IPluginHost host, OutputAttribute attribute)
 		{
-			host.CreateNodeOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FNodeOut);
+			host.CreateNodeOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FNodeOut);
 			FNodeOut.SetSubType(new Guid[] { typeof(T).GUID }, typeof(T).Name);
 			FNodeOut.SetInterface(this);
 			

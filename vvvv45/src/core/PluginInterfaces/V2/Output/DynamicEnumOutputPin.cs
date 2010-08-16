@@ -9,7 +9,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 		
 		public DynamicEnumOutputPin(IPluginHost host, OutputAttribute attribute)
 		{
-			host.CreateEnumOutput(attribute.Name, attribute.SliceMode, attribute.Visibility, out FEnumOutputPin);
+			host.CreateEnumOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FEnumOutputPin);
 			FEnumOutputPin.SetSubType(attribute.EnumName);
 		}
 		

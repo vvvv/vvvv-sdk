@@ -1,10 +1,12 @@
-﻿namespace VVVV.PluginInterfaces.V2
+﻿using VVVV.PluginInterfaces.V1;
+namespace VVVV.PluginInterfaces.V2
 {
    #region enums
 	/// <summary>
 	/// Used in <see cref="VVVV.PluginInterfaces.V1.INodeInfo">INodeInfo</see> to specify the type of the provided node.
 	/// </summary>
-	public enum TNodeType {
+	public enum TNodeType 
+	{
 		/// <summary>
 		/// Specifies a native node.
 		/// </summary>
@@ -36,12 +38,14 @@
 		/// <summary>
 		/// Specifies a dynamic plugin node.
 		/// </summary>
-		Dynamic};
+		Dynamic
+	};
 	
 	/// <summary>
 	/// Used in the pin creating functions of <see cref="VVVV.PluginInterfaces.V1.IPluginHost">IPluginHost</see> to specifiy possible SliceCounts.
 	/// </summary>
-	public enum TWindowType {
+	public enum TWindowType 
+	{
 		/// <summary>
 		/// A patch editor window.
 		/// </summary>
@@ -65,7 +69,74 @@
 	    /// <summary>
 		/// A HDE window.
 		/// </summary>
-		HDE};
+		HDE
+	};
+	
+	/// <summary>
+	/// Used to define a specific string type for pin creation
+	/// </summary>
+	public enum StringType
+	{
+		/// <summary>
+		/// Default string pin type
+		/// </summary>
+		String,
+		/// <summary>
+		/// Filename pin type, used with the FileMask property
+		/// </summary>
+		Filename,
+		/// <summary>
+		/// Directory pin type
+		/// </summary>
+		Directory,
+		/// <summary>
+		/// URL pin type
+		/// </summary>
+		URL,
+		/// <summary>
+		/// IP string type
+		/// </summary>
+		IP
+	};
+	
+	/// <summary>
+	/// Used in the pin creating functions of <see cref="VVVV.PluginInterfaces.V1.IPluginHost">IPluginHost</see> to specifiy possible SliceCounts.
+	/// </summary>
+	public enum SliceMode 
+	{
+		/// <summary>
+		/// The pin can only have one slice.
+		/// </summary>
+		Single = TSliceMode.Single,
+		/// <summary>
+		/// The pin can have any number of slices.
+		/// </summary>
+		Dynamic = TSliceMode.Dynamic
+	};
+	
+	/// <summary>
+	/// Used in the pin creating functions of <see cref="VVVV.PluginInterfaces.V1.IPluginHost">IPluginHost</see> to specifiy the initial visibility of the pin.
+	/// If this is not set to FALSE then the option can be changed by the user via the Inspektor.
+	/// </summary>
+	public enum PinVisibility 
+	{
+		/// <summary>
+		/// The pin is not visible at all.
+		/// </summary>
+		False = TPinVisibility.False,
+		/// <summary>
+		/// The pin is visible only in the Inspektor
+		/// </summary>
+		OnlyInspector = TPinVisibility.OnlyInspector,
+		/// <summary>
+		/// The pin is not visible on the node, but space is reserved for it and it appears on mouseover.
+		/// </summary>
+		Hidden = TPinVisibility.Hidden,
+		/// <summary>
+		/// Default. The pin is visible on the node.
+		/// </summary>
+		True = TPinVisibility.True
+	};
 	
 	#endregion enums
 }
