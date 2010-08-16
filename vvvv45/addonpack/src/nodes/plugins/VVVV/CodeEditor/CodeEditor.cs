@@ -384,26 +384,20 @@ namespace VVVV.HDE.CodeEditor
 			
 			if (max < visibleColumnCount)
 			{
-				if (textAreaControl.HScrollBar.Visible)
-				{
-					textAreaControl.HScrollBar.Hide();
-					textAreaControl.TextArea.Bounds =
-						new Rectangle(0, 0,
-						              textAreaControl.Width - SystemInformation.HorizontalScrollBarArrowWidth,
-						              textAreaControl.Height);
-				}
+				textAreaControl.HScrollBar.Hide();
+				textAreaControl.TextArea.Bounds =
+					new Rectangle(0, 0,
+					              textAreaControl.Width - SystemInformation.HorizontalScrollBarArrowWidth,
+					              textAreaControl.Height);
 			}
 			else
 			{
-				if (!textAreaControl.HScrollBar.Visible)
-				{
-					textAreaControl.TextArea.Bounds =
-						new Rectangle(0, 0,
-						              textAreaControl.Width - SystemInformation.HorizontalScrollBarArrowWidth,
-						              textAreaControl.Height - SystemInformation.VerticalScrollBarArrowHeight);
-					textAreaControl.ResizeTextArea();
-					textAreaControl.HScrollBar.Show();
-				}
+				textAreaControl.TextArea.Bounds =
+					new Rectangle(0, 0,
+					              textAreaControl.Width - SystemInformation.HorizontalScrollBarArrowWidth,
+					              textAreaControl.Height - SystemInformation.VerticalScrollBarArrowHeight);
+				textAreaControl.ResizeTextArea();
+				textAreaControl.HScrollBar.Show();
 			}
 		}
 		

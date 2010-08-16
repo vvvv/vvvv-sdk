@@ -29,40 +29,91 @@ namespace VVVV.HDE.CodeEditor
 				if (project == null)
 					continue;
 				
-				foreach (var doc in project.Documents)
+				if (project is CSProject)
 				{
-					if (doc is CSDocument)
+					// Try to find file where NodeInfo is defined.
+					bool found = false;
+					foreach (var doc in project.Documents)
 					{
-						var csDoc = doc as CSDocument;
-						var parseInfo = csDoc.ParseInfo;
-						var compilationUnit = parseInfo.MostRecentCompilationUnit;
-						
-						if (compilationUnit != null)
+						if (doc is CSDocument)
 						{
-							foreach (var clss in compilationUnit.Classes)
+							var csDoc = doc as CSDocument;
+							var parseInfo = csDoc.ParseInfo;
+							var compilationUnit = parseInfo.MostRecentCompilationUnit;
+							
+							if (compilationUnit != null)
 							{
-								foreach (var attribute in clss.Attributes)
+								foreach (var clss in compilationUnit.Classes)
 								{
-									var attributeType = attribute.AttributeType;
-									if (attributeType.Name == typeof(PluginInfoAttribute).Name)
+									foreach (var attribute in clss.Attributes)
 									{
-										if ((string) attribute.NamedArguments["Name"] == nodeInfo.Name &&
-										    (string) attribute.NamedArguments["Category"] == nodeInfo.Category &&
-										    (string) attribute.NamedArguments["Version"] == nodeInfo.Version)
+										var attributeType = attribute.AttributeType;
+										if (attributeType.Name == typeof(PluginInfoAttribute).Name)
 										{
-											var tabPage = FCodeEditorForm.Open(csDoc);
-											var codeEditor = tabPage.Controls[0] as CodeEditor;
-											codeEditor.JumpTo(attribute.Region.BeginLine - 1);
+											// Check name
+											string name = null;
+											if (attribute.NamedArguments.ContainsKey("Name"))
+												name = (string) attribute.NamedArguments["Name"];
+											else if (attribute.PositionalArguments.Count >= 0)
+												name = (string) attribute.PositionalArguments[0];
+											
+											if (name != nodeInfo.Name)
+												continue;
+											
+											// Check category
+											string category = null;
+											if (attribute.NamedArguments.ContainsKey("Category"))
+												category = (string) attribute.NamedArguments["Category"];
+											else if (attribute.PositionalArguments.Count >= 1)
+												category = (string) attribute.PositionalArguments[1];
+											
+											if (category != nodeInfo.Category)
+												continue;
+
+											// Possible match
+											bool match = true;
+											
+											// Check version
+											if (nodeInfo.Version != null)
+											{
+												string version = null;
+												if (attribute.NamedArguments.ContainsKey("Version"))
+													version = (string) attribute.NamedArguments["Version"];
+												else if (attribute.PositionalArguments.Count >= 2)
+													version = (string) attribute.PositionalArguments[2];
+												
+												match = version == nodeInfo.Version;
+											}
+											
+											if (match)
+											{
+												found = true;
+												var tabPage = FCodeEditorForm.Open(csDoc);
+												var codeEditor = tabPage.Controls[0] as CodeEditor;
+												codeEditor.JumpTo(attribute.Region.BeginLine - 1);
+												break;
+											}
 										}
 									}
+									
+									if (found) break;
 								}
 							}
 						}
+						
+						if (found) break;
 					}
-					else if (doc is ITextDocument)
+				}
+				else
+				{
+					// Open all documents
+					foreach (var doc in project.Documents)
 					{
-						// TODO: FCodeEditorPlugin.Open(doc as ITextDocument, nodeInfo);
-						FCodeEditorForm.Open(doc as ITextDocument);
+						if (doc is ITextDocument)
+						{
+							// TODO: FCodeEditorPlugin.Open(doc as ITextDocument, nodeInfo);
+							FCodeEditorForm.Open(doc as ITextDocument);
+						}
 					}
 				}
 			}
