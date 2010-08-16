@@ -98,15 +98,18 @@ namespace VVVV.Nodes
         
         private int FSpreadMax;
         private Dictionary<int, DeviceFont> FDeviceFonts = new Dictionary<int, DeviceFont>();
-        #endregion field declaration
+        #endregion field declarationPL
         
         #region constructur
         [ImportingConstructor]
         public DrawText(IPluginHost host)
         {
             host.CreateRenderStateInput(TSliceMode.Single, TPinVisibility.True, out FRenderStatePin);
+            FRenderStatePin.Order = -2;
             host.CreateTransformInput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTransformIn);
+            FTransformIn.Order = -1;
             host.CreateLayerOutput("Layer", TPinVisibility.True, out FLayerOutput);
+            FLayerOutput.Order = -1;
         }
         #endregion constructur
         
