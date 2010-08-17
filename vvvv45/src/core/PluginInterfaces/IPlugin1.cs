@@ -146,7 +146,7 @@ namespace VVVV.PluginInterfaces.V1
 	{
 		/// <summary>
 		/// Called by the PluginHost everytime it needs to update its StateBlock. Here the plugin
-		/// must specify all States it will set during <see cref="VVVV.PluginInterfaces.V1.IPluginDXLayer.Render()">IPluginDXLayer.Render</see>
+		/// must specify all States it will set during <see cref="VVVV.PluginInterfaces.V1.IPluginDXLayer.Render(IDXLayerIO, IPluginDXDevice)">IPluginDXLayer.Render</see>
 		/// via calls to <see cref="VVVV.PluginInterfaces.V1.IDXRenderStateIn">IDXRenderStateIn</see>'s and <see cref="VVVV.PluginInterfaces.V1.IDXSamplerStateIn">IDXSamplerStateIn</see>'s functions.
 		/// </summary>
 		void SetStates();
@@ -156,17 +156,21 @@ namespace VVVV.PluginInterfaces.V1
 		/// therefore the plugin shouldn't be doing much here other than some drawing calls.
 		/// </summary>
 		/// <param name="ForPin">Interface to the pin for which the function is called.</param>
-		/// <param name="OnDevice">Pointer to the device on which the plugin is supposed to render.</param>
+		/// <param name="DXDevice">Pointer to the device on which the plugin is supposed to render.</param>
 		void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice);
 	}  
 	
 	/// <summary>
-	/// Interface to access the hosts current DirectX device. Available as input parameter to any of the IPluginDXResource functions 
+	/// Interface to access the hosts current DirectX device. Available as input parameter to any of the IPluginDXResource functions. 
 	/// </summary>
 	[Guid("765B10CB-4CA9-4927-B1DF-A8FB67692267"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IPluginDXDevice
 	{
+		/// <summary>
+		/// The current DirectX device.
+		/// </summary>
+		/// <returns>Address of current DirectX device.</returns>
 		int DevicePointer();
 	}
 	#endregion PluginDXInterfaces

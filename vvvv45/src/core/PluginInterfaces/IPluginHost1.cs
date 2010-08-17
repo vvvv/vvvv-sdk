@@ -51,14 +51,14 @@ namespace VVVV.PluginInterfaces.V1
 		/// Creates a ConfigurationPin of type Value.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
-		/// <param name="dimension">The pins dimension count. Valid values: 1, 2, 3 or 4</param>
+		/// <param name="Dimension">The pins dimension count. Valid values: 1, 2, 3 or 4</param>
 		/// <param name="DimensionNames">Optional. An individual suffix to the pins Dimensions.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
-		/// <param name="visibility">The pins initial visibility.</param>
-		/// <param name="pin">Pointer to the created IValueConfig interface.</param>
+		/// <param name="Visibility">The pins initial visibility.</param>
+		/// <param name="Pin">Pointer to the created IValueConfig interface.</param>
 		void CreateValueConfig(string Name, int Dimension, string[] DimensionNames, TSliceMode SliceMode, TPinVisibility Visibility, out IValueConfig Pin);
 		/// <summary>
-		/// Creates an InputPin of type Value. Use this as opposed to <see cref="VVVV.PluginInterfaces.V1.IPluginHost.CreateValueFastInput()">CreateValueFastInput</see>
+		/// Creates an InputPin of type Value. Use this as opposed to <see cref="CreateValueFastInput(string, int, string[], TSliceMode, TPinVisibility, out IValueFastIn)">CreateValueFastInput</see>
 		/// if you need to be able to ask for <see cref="VVVV.PluginInterfaces.V1.IPluginIn.PinIsChanged">IPluginIn.PinIsChanged</see>. May be slow with large SpreadCounts.
 		/// </summary>
 		/// <param name="Name">The pins name.</param>
@@ -138,6 +138,7 @@ namespace VVVV.PluginInterfaces.V1
 		void CreateColorOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IColorOut Pin);
 		/// <summary>
 		/// Creates a ConfigurationPin of type Enum.
+		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="Visibility">The pins initial visibility.</param>
@@ -145,6 +146,7 @@ namespace VVVV.PluginInterfaces.V1
 		void CreateEnumConfig(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IEnumConfig Pin);
 		/// <summary>
 		/// Creates a InputPin of type Enum.
+		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="Visibility">The pins initial visibility.</param>
@@ -152,6 +154,7 @@ namespace VVVV.PluginInterfaces.V1
 		void CreateEnumInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IEnumIn Pin);
 		/// <summary>
 		/// Creates a OutputPin of type Enum.
+		/// </summary>
 		/// <param name="Name">The pins name.</param>
 		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="Visibility">The pins initial visibility.</param>
@@ -215,14 +218,14 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Creates an InputPin of type DirectX RenderState.
 		/// </summary>
-		/// <param name="Name">The pins name.</param>
+		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="Visibility">The pins initial visibility.</param>
 		/// <param name="Pin">Pointer to the created IDXRenderStateIO interface.</param>
 		void CreateRenderStateInput(TSliceMode SliceMode, TPinVisibility Visibility, out IDXRenderStateIn Pin);
 		/// <summary>
 		/// Creates an InputPin of type DirectX SamplerState.
 		/// </summary>
-		/// <param name="Name">The pins name.</param>
+		/// <param name="SliceMode">The pins SliceMode.</param>
 		/// <param name="Visibility">The pins initial visibility.</param>
 		/// <param name="Pin">Pointer to the created IDXRenderStateIO interface.</param>
 		void CreateSamplerStateInput(TSliceMode SliceMode, TPinVisibility Visibility, out IDXSamplerStateIn Pin);

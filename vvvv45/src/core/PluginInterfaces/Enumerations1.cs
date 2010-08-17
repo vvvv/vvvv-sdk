@@ -73,7 +73,7 @@
 		Output};
 	
 	/// <summary>
-	/// Used in the <see cref="VVVV.PluginInterfaces.V1.IPluginHost.Log()">IPluginHost.Log</see> function to specify the type of the log message.
+	/// Used in the <see cref="VVVV.PluginInterfaces.V1.IPluginHost.Log(TLogType, string)">IPluginHost.Log</see> function to specify the type of the log message.
 	/// </summary>
 	public enum TLogType {
 		/// <summary>

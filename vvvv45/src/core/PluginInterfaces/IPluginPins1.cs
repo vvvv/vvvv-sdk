@@ -229,7 +229,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a Value pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Min">Minimum of the Values range.</param>
 		/// <param name="Max">Maximum of the Values range.</param>
@@ -242,7 +242,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a 2D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Min">Minimum of the Values range.</param>
 		/// <param name="Max">Maximum of the Values range.</param>
@@ -256,7 +256,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a 3D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Min">Minimum of the Values range.</param>
 		/// <param name="Max">Maximum of the Values range.</param>
@@ -271,7 +271,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a 4D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Min">Minimum of the Values range.</param>
 		/// <param name="Max">Maximum of the Values range.</param>
@@ -340,7 +340,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a Value pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Min">Minimum of the Values range.</param>
 		/// <param name="Max">Maximum of the Values range.</param>
@@ -353,7 +353,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a 2D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Min">Minimum of the Values range.</param>
 		/// <param name="Max">Maximum of the Values range.</param>
@@ -367,7 +367,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a 3D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Min">Minimum of the Values range.</param>
 		/// <param name="Max">Maximum of the Values range.</param>
@@ -382,7 +382,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a 4D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Min">Minimum of the Values range.</param>
 		/// <param name="Max">Maximum of the Values range.</param>
@@ -451,7 +451,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a Value pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Min">Minimum of the Values range.</param>
 		/// <param name="Max">Maximum of the Values range.</param>
@@ -464,7 +464,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a 2D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Min">Minimum of the Values range.</param>
 		/// <param name="Max">Maximum of the Values range.</param>
@@ -478,7 +478,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a 3D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Min">Minimum of the Values range.</param>
 		/// <param name="Max">Maximum of the Values range.</param>
@@ -493,7 +493,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a 4D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Min">Minimum of the Values range.</param>
 		/// <param name="Max">Maximum of the Values range.</param>
@@ -561,7 +561,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a Value pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Min">Minimum of the Values range.</param>
 		/// <param name="Max">Maximum of the Values range.</param>
@@ -574,7 +574,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a 2D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Min">Minimum of the Values range.</param>
 		/// <param name="Max">Maximum of the Values range.</param>
@@ -588,7 +588,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a 3D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Min">Minimum of the Values range.</param>
 		/// <param name="Max">Maximum of the Values range.</param>
@@ -603,7 +603,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a 4D Vector pin, which is a set of limitations to the pins value range, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" values on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Min">Minimum of the Values range.</param>
 		/// <param name="Max">Maximum of the Values range.</param>
@@ -644,7 +644,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a String pin, which is a more detailed specification of the String, used by the GUI to guide the user to insert correct Strings.
 		/// Note though that this does not prevent a user from setting "wrong" Strings on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Default">The String the pin is initialized with and can be reset to at any time.</param>
 		/// <param name="IsFilename">Hint to the GUI that this String is a filename</param>
@@ -667,7 +667,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a String pin, which is a more detailed specification of the String, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" Strings on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Default">The String the pin is initialized with and can be reset to at any time.</param>
 		/// <param name="IsFilename">Hint to the GUI that this String is a filename</param>
@@ -690,7 +690,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a String pin, which is a more detailed specification of the String, used by the GUI to guide the user to insert correct values.
 		/// Note though that this does not prevent a user from setting "wrong" Strings on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Default">The String the pin is initialized with and can be reset to at any time.</param>
 		/// <param name="IsFilename">Hint to the GUI that this String is a filename</param>
@@ -733,7 +733,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a Color pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
 		/// Note though that this does not prevent a user from setting "wrong" Colors on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Default">The Color the pin is initialized with and can be reset to at any time.</param>
 		/// <param name="HasAlpha">Hint to the GUI that this Color has an alpha channel.</param>
@@ -764,7 +764,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a Color pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
 		/// Note though that this does not prevent a user from setting "wrong" Colors on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Default">The Color the pin is initialized with and can be reset to at any time.</param>
 		/// <param name="HasAlpha">Hint to the GUI that this Color has an alpha channel.</param>
@@ -794,7 +794,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a Color pin, which is a more detailed specification of the Color, used by the GUI to guide the user to insert correct Colors.
 		/// Note though that this does not prevent a user from setting "wrong" Colors on a pin. Ultimately each node is responsible for dealing with all possible inputs correctly.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Default">The Color the pin is initialized with and can be reset to at any time.</param>
 		/// <param name="HasAlpha">Hint to the GUI that this Color has an alpha channel.</param>
@@ -837,7 +837,7 @@ namespace VVVV.PluginInterfaces.V1
 		void GetString(int Index, out string Value);
 		/// <summary>
 		/// Used to set the SubType of an Enum pin. Should only be called once immediately 
-		/// after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="EnumName">Name of the Enum type to set to the pin. If the given name 
 		/// is not yet registered with vvvv a new type with this name is created. 
@@ -867,7 +867,7 @@ namespace VVVV.PluginInterfaces.V1
 		void GetString(int Index, out string Value);
 		/// <summary>
 		/// Used to set the SubType of an Enum pin. Should only be called once immediately 
-		/// after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="EnumName">Name of the Enum type to set to the pin. If the given name 
 		/// is not yet registered with vvvv a new type with this name is created. 
@@ -897,7 +897,7 @@ namespace VVVV.PluginInterfaces.V1
 		void SetString(int Index, string Value);
 		/// <summary>
 		/// Used to set the SubType of an Enum pin. Should only be called once immediately 
-		/// after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="EnumName">Name of the Enum type to set to the pin. If the given name 
 		/// is not yet registered with vvvv a new type with this name is created. 
@@ -938,7 +938,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a node pin, which is a more detailed specification of the node type via a set of Guids that identifiy the interfaces accepted on this pin.
 		/// The SubType is used by the GUI to guide the user to make only links between pins that understand the same interfaces.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Guids">An array of Guids (typically only one) that specifies the interfaces that this input accepts.</param>
 		/// <param name="FriendlyName">A user readable name specifying the type of the node connection.</param>
@@ -960,7 +960,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set the SubType of a node pin, which is a more detailed specification of the node type via a set of Guids that identifiy the interfaces offered on this pin.
 		/// The SubType is used by the GUI to guide the user to make only links between pins that understand the same interfaces.
-		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost()">IPlugin.SetPluginHost</see>.
+		/// Should only be called once immediately after the pin has been created in <see cref="VVVV.PluginInterfaces.V1.IPlugin.SetPluginHost(IPluginHost)">IPlugin.SetPluginHost</see>.
 		/// </summary>
 		/// <param name="Guids">An array of Guids (typically only one) that specifies the interfaces that this output accepts.</param>
 		/// <param name="FriendlyName">A user readable name specifying the type of the node connection.</param>
@@ -1071,7 +1071,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// Used to set States connected to this input slicewise during the RenderLoop.
 		/// </summary>
-		/// <param name="Slice">The Index of the currently rendered slice</param>
+		/// <param name="Index">The Index of the currently rendered slice</param>
 		void SetSliceStates(int Index);
 	}
 	

@@ -9,7 +9,7 @@ namespace VVVV.PluginInterfaces.V2
 {
     #region INodeInfo
 	/// <summary>
-	/// Interface for the <see cref="VVVV.PluginInterfaces.V1.INodeInfo">INodeInfo</see>. Also see <a href="http://www.vvvv.org/tiki-index.php?page=Conventions.NodeAndPinNaming" target="_blank">VVVV Naming Conventions</a>.
+	/// Interface for the <see cref="VVVV.PluginInterfaces.V2.INodeInfo">INodeInfo</see>. Also see <a href="http://www.vvvv.org/tiki-index.php?page=Conventions.NodeAndPinNaming" target="_blank">VVVV Naming Conventions</a>.
 	/// </summary>
 	[Guid("581998D6-ED08-4E73-821A-46AFF59C78BD"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -36,7 +36,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		TNodeType Type {get; set;}
 		/// <summary>
-		/// Reference to the <see cref="VVVV.HDE.Interfaces.IExecutable">IExecutable</see> which was used to create this node. Set by the PluginFactory.
+		/// Reference to the <see cref="IExecutable">IExecutable</see> which was used to create this node. Set by the PluginFactory.
 		/// </summary>
 		IExecutable Executable {get; set;}
 	}
@@ -44,7 +44,7 @@ namespace VVVV.PluginInterfaces.V2
 	
 	#region NodeInfo	
 	/// <summary>
-	/// Helper Class that implements the <see cref="VVVV.PluginInterfaces.V1.INodeInfo">INodeInfo</see> interface.
+	/// Helper Class that implements the <see cref="INodeInfo">INodeInfo</see> interface.
 	/// </summary>
 	[Guid("36F845F4-A486-49EC-9A0C-CB254FF2B297")]
 	public class NodeInfo: PluginInfo, INodeInfo
@@ -64,7 +64,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// <summary>
 		/// Creates a new NodeInfo from an existing <see cref="VVVV.PluginInterfaces.V1.IPluginInfo">IPluginInfo</see>.
 		/// </summary>
-		/// <param name="PluginInfo"></param>
+		/// <param name="Info">The existing plugin <see cref="VVVV.PluginInterfaces.V1.IPluginInfo">IPluginInfo</see>.</param>
 		public NodeInfo (IPluginInfo Info)
 		{
 		    this.Name = Info.Name;
@@ -141,7 +141,7 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		/// <summary>
-		/// Reference to the <see cref="VVVV.HDE.Interfaces.IExecutable">IExecutable</see> which was used to create this node. Set by the PluginFactory.
+		/// Reference to the <see cref="IExecutable">IExecutable</see> which was used to create this node. Set by the PluginFactory.
 		/// </summary>
 		public IExecutable Executable 
 		{
@@ -171,6 +171,11 @@ namespace VVVV.PluginInterfaces.V2
                 && (this.Shortcut == ni.Shortcut)
                 && (this.Tags == ni.Tags);*/
         }
+        
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
 	}
 	#endregion NodeInfo
 }
