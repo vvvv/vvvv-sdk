@@ -93,5 +93,32 @@
 		/// </summary>
 		/// 
 		Error};
+	
+	/// <summary>
+	/// Used to define a specific string type for pin creation
+	/// </summary>
+	public enum TStringType
+	{
+		/// <summary>
+		/// Default string pin type
+		/// </summary>
+		String,
+		/// <summary>
+		/// Filename pin type, used with the FileMask property
+		/// </summary>
+		Filename,
+		/// <summary>
+		/// Directory pin type
+		/// </summary>
+		Directory,
+		/// <summary>
+		/// URL pin type
+		/// </summary>
+		URL,
+		/// <summary>
+		/// IP string type
+		/// </summary>
+		IP
+	};
 	#endregion enums
 }
