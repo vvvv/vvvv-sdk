@@ -10,7 +10,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 		public StringInputPin(IPluginHost host, InputAttribute attribute)
 		{
 			host.CreateStringInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FStringIn);
-			FStringIn.SetSubType(attribute.DefaultString, attribute.StringType == StringType.Filename);
+			FStringIn.SetSubType2(attribute.DefaultString, attribute.MaxChar, attribute.FileMask, (TStringType)attribute.StringType);
 		}
 		
 		public override IPluginIO PluginIO 

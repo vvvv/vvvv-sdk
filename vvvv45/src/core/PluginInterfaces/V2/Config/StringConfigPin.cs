@@ -10,7 +10,8 @@ namespace VVVV.PluginInterfaces.V2.Config
 		public StringConfigPin(IPluginHost host, ConfigAttribute attribute)
 		{
 			host.CreateStringConfig(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FStringConfig);
-			FStringConfig.SetSubType(attribute.DefaultString, attribute.StringType == StringType.Filename);
+			FStringConfig.SetSubType2(attribute.DefaultString, attribute.MaxChar, attribute.FileMask, (TStringType)attribute.StringType);
+
 		}
 		
 		protected override IPluginConfig PluginConfig 

@@ -20,8 +20,9 @@ namespace VVVV.PluginInterfaces.V2
 			
 			//string
 			StringType = StringType.String;
-			FileMask = "*.txt";
+			FileMask = "All Files (*.*)|*.*";
 			MaxChar = -1;
+			DefaultString = "";
 			
 			//value
 			MinValue = DefaultMinValue;

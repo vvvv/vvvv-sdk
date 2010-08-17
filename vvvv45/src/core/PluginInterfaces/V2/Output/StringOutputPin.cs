@@ -10,7 +10,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 		public StringOutputPin(IPluginHost host, OutputAttribute attribute)
 		{
 			host.CreateStringOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FStringOut);
-			FStringOut.SetSubType(attribute.DefaultString, attribute.StringType == StringType.Filename);
+			FStringOut.SetSubType2(attribute.DefaultString, attribute.MaxChar, attribute.FileMask, (TStringType)attribute.StringType);
 		}
 		
 		public override IPluginIO PluginIO 

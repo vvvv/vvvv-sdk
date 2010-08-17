@@ -80,23 +80,23 @@ namespace VVVV.PluginInterfaces.V2
 		/// <summary>
 		/// Default string pin type
 		/// </summary>
-		String,
+		String = TStringType.String,
 		/// <summary>
 		/// Filename pin type, used with the FileMask property
 		/// </summary>
-		Filename,
+		Filename = TStringType.Filename,
 		/// <summary>
 		/// Directory pin type
 		/// </summary>
-		Directory,
+		Directory = TStringType.Directory,
 		/// <summary>
 		/// URL pin type
 		/// </summary>
-		URL,
+		URL = TStringType.URL,
 		/// <summary>
 		/// IP string type
 		/// </summary>
-		IP
+		IP = TStringType.IP
 	};
 	
 	/// <summary>
