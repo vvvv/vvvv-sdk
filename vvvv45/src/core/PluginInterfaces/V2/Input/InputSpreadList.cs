@@ -18,6 +18,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			FAttribute.Name = origName + " " + pos;
 			
 			var ret	= new InputWrapperPin<T>(FHost, FAttribute as InputAttribute).Pin;
+			ret.PluginIO.Order = FOffsetCounter * 1000 + pos;
 			
 			//set attribute name back
 			FAttribute.Name = origName;

@@ -6,15 +6,21 @@ using VVVV.PluginInterfaces.V2.Config;
 
 namespace VVVV.PluginInterfaces.V2
 {
+	public abstract class SpreadListBase
+	{
+		protected static int FInstanceCounter = 1;
+	}
+	
 	/// <summary>
 	/// base class for spread lists
 	/// </summary>
-	public abstract class SpreadList<T> : ISpread<ISpread<T>>
+	public abstract class SpreadList<T> : SpreadListBase, ISpread<ISpread<T>>
 	{
 		protected ISpread<T>[] FPins;
 		protected IPluginHost FHost;
 		protected PinAttribute FAttribute;
 		protected IntConfigPin FConfigPin;
+		protected int FOffsetCounter;
 		
 		public SpreadList(IPluginHost host, PinAttribute attribute)
 		{
@@ -30,6 +36,8 @@ namespace VVVV.PluginInterfaces.V2
 			FConfigPin = new IntConfigPin(FHost, att);
 			FConfigPin.Updated += new PinUpdatedEventHandler<int>(UpdatePins);
 			
+			//increment instance Counter and store it as pin offset
+			FOffsetCounter = FInstanceCounter++;
 		}
 		
 		//pin management
