@@ -58,7 +58,6 @@ namespace VVVV.Nodes.NodeBrowser
         private int FHoverLine = -1;
         private Point FLastMouseHoverLocation = new Point(0, 0);
         private string FManualEntry = "";
-        private bool FCtrlPressed = false;
         private int FVisibleLines = 16;
         private string FPath;
         private ToolTip FToolTip = new ToolTip();
@@ -163,8 +162,6 @@ namespace VVVV.Nodes.NodeBrowser
         {
             e.ToolTipSize = new Size(Math.Min(e.ToolTipSize.Width, 300), e.ToolTipSize.Height);
         }
-        
-        
         
         // Dispose(bool disposing) executes in two distinct scenarios.
         // If disposing equals true, the method has been called directly
@@ -294,7 +291,6 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FTagsTextBox.TabStop = false;
         	this.FTagsTextBox.TextChanged += new System.EventHandler(this.TextBoxTagsTextChanged);
         	this.FTagsTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxTagsKeyDown);
-        	this.FTagsTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.TextBoxTagsKeyUp);
         	this.FTagsTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TextBoxTagsMouseDown);
         	this.FTagsTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FTagsTextBoxMouseUp);
         	// 
@@ -407,7 +403,10 @@ namespace VVVV.Nodes.NodeBrowser
             try
             {
                 INodeInfo selNode = FNodeDict[text];
-                NodeBrowserHost.CreateNode(selNode);
+                if (Control.ModifierKeys == Keys.Control)
+                    NodeBrowserHost.CreateNode(selNode, true);
+                else                
+                    NodeBrowserHost.CreateNode(selNode, false);
             }
             catch
             {
@@ -544,7 +543,7 @@ namespace VVVV.Nodes.NodeBrowser
                     CreateNode();
             }
             else if (e.KeyCode == Keys.Escape)
-                NodeBrowserHost.CreateNode(null);
+                NodeBrowserHost.CreateNode(null, false);
             else if ((FTagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Down))
             {
                 FHoverLine += 1;
@@ -595,14 +594,10 @@ namespace VVVV.Nodes.NodeBrowser
                     RedrawAwesomeSelection(true);
                 }
             }
-            else if (e.Control)
-                FCtrlPressed = true;
-        }
-        
-        void TextBoxTagsKeyUp(object sender, KeyEventArgs e)
-        {
-            if ((e.KeyCode == Keys.Control) || (e.KeyCode == Keys.ControlKey))
-                FCtrlPressed = false;
+            else if ((e.Control) && (e.KeyCode == Keys.A))
+            {
+                FTagsTextBox.SelectAll();
+            }
         }
         
         void TextBoxTagsMouseDown(object sender, MouseEventArgs e)
@@ -628,7 +623,7 @@ namespace VVVV.Nodes.NodeBrowser
             FRichTextBox.SelectionBackColor = Color.Silver;
             
             int scrollCount = 1;
-            if (FCtrlPressed)
+            if (Control.ModifierKeys == Keys.Control)
                 scrollCount = 3;
             
             //adjust the line supposed to be in view
