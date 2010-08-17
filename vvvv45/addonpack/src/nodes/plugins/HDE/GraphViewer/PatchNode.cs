@@ -304,6 +304,13 @@ namespace VVVV.Nodes.GraphViewer
         
         public event RenamedHandler Renamed;
         
+		protected virtual void OnRenamed(string newName)
+		{
+			if (Renamed != null) {
+				Renamed(this, newName);
+			}
+		}
+        
         public bool Contains(object item)
         {
             throw new NotImplementedException();

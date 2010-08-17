@@ -38,7 +38,6 @@ namespace VVVV.Nodes.GraphViewer
         private IHDEHost FHDEHost;
         [Import]
         private IGraphViewerHost FGraphViewerHost;
-        private IUnityContainer FChildContainer;
         private IWindow FActiveWindow;
         private PatchNode FActivePatchNode;
         private List<PatchNode> FPlainSearchList = new List<PatchNode>();
@@ -410,13 +409,13 @@ namespace VVVV.Nodes.GraphViewer
         }
         
         #region TreeViewer Events
-        void FTreeViewerClick(ModelMapper sender, MouseEventArgs e)
+        void FTreeViewerClick(IModelMapper sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
                 FGraphViewerHost.SelectNodes(new INode[1]{(sender.Model as PatchNode).Node});
         }
         
-        void FTreeViewerDoubleClick(ModelMapper sender, MouseEventArgs e)
+        void FTreeViewerDoubleClick(IModelMapper sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
