@@ -18,9 +18,9 @@
     <SignAssembly>False</SignAssembly>
     <DelaySign>False</DelaySign>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <OutputPath>..\..\..\vvvv40\plugins\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>..\..\..\vvvv40_DynamicNodes\plugins\</OutputPath>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>Full</DebugType>
     <Optimize>False</Optimize>
@@ -30,7 +30,6 @@
     <StartProgram>..\..\..\vvvv40_DynamicNodes\vvvv.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputPath>bin\Release\</OutputPath>
     <DebugSymbols>False</DebugSymbols>
     <DebugType>None</DebugType>
     <Optimize>True</Optimize>
@@ -59,10 +58,6 @@
       <HintPath>..\..\_lib\Unity\Microsoft.Practices.Unity.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="PluginInterfaces">
-      <HintPath>..\..\..\vvvv40_DynamicNodes\bin\managed\PluginInterfaces.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition">
       <HintPath>..\..\_lib\MEF\System.ComponentModel.Composition.dll</HintPath>
@@ -75,6 +70,10 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="VVVV.PluginInterfaces">
+      <HintPath>..\..\_lib\vvvv\VVVV.PluginInterfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\_SharedSources\ManagedVCL\ManagedVCLControl.cs">
@@ -112,15 +111,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SharpDevelop30\src\Libraries\NRefactory\Project\NRefactory.csproj">
-      <Project>{3A9AE6AA-BC07-4A2F-972C-581E3AE2F195}</Project>
-      <Name>NRefactory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\vvvv40_DynamicNodes\src.net\_Utils\Utils.csproj">
-      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
-      <Name>Utils</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\vvvv50\src\Core\Core.csproj">
       <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
       <Name>Core</Name>
