@@ -7,11 +7,13 @@
 
   <property name="root.dir" value="../.." />
   <include buildfile="${root.dir}/nant-common.xml" />
-  <property name="lib.name" value="_PluginInterfaces.dll" />
+  <property name="lib.name" value="VVVV.PluginInterfaces.dll" />
 
   <assemblyfileset id="project.references">
-    <include name="${root.bin}/_Utils.dll" />
-		<include name="${slimdx.dll}" />
+    <include name="${root.bin}/VVVV.Utils.dll" />
+		<include name="${lib.dir}/**/*.dll" />
+		<exclude name="${lib.dir}/**/VVVV.Utils.dll" />
+		<exclude name="${lib.dir}/**/VVVV.PluginInterfaces.dll" />
   </assemblyfileset>
   
 
