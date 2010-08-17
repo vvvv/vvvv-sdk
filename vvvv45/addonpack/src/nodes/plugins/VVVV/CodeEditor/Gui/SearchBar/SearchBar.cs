@@ -16,32 +16,73 @@ namespace VVVV.HDE.CodeEditor.Gui.SearchBar
 		private TextEditorControl FTextEditorControl;
 		private TextBox FSearchTextBox;
 		private IList<TextMarker> FSearchMarkers;
-		private int FLastSelectedMarkerIndex;
 		
 		public SearchBar(TextEditorControl textEditorControl)
 		{
-			FTextEditorControl  = textEditorControl;
-			
 			// Setup private fiels
+			FTextEditorControl  = textEditorControl;
 			FSearchMarkers = new List<TextMarker>();
 			
 			// Setup GUI
 			FSearchTextBox = new TextBox();
-			FSearchTextBox.Dock = DockStyle.Fill;
 			Controls.Add(FSearchTextBox);
 			
-			SetLocation();
-			
+			// Setup event callbacks
+			FSearchTextBox.Enter += FSearchTextBox_Enter;
 			FSearchTextBox.Leave += FSearchTextBox_Leave;
 			FSearchTextBox.KeyDown += FSearchTextBox_KeyDown;
 			FSearchTextBox.TextChanged += FSearchTextBox_TextChanged;
 			
+			FTextEditorControl.ActiveTextAreaControl.Resize += FTextEditorControl_ActiveTextAreaControl_Resize;
+			
+			// Add ourself to the TextEditorControl
 			FTextEditorControl.Controls.Add(this);
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (!IsDisposed)
+			{
+				if (disposing)
+				{
+					FSearchTextBox.Enter -= FSearchTextBox_Enter;
+					FSearchTextBox.Leave -= FSearchTextBox_Leave;
+					FSearchTextBox.KeyDown -= FSearchTextBox_KeyDown;
+					FSearchTextBox.TextChanged -= FSearchTextBox_TextChanged;
+					FTextEditorControl.ActiveTextAreaControl.Resize -= FTextEditorControl_ActiveTextAreaControl_Resize;
+					FTextEditorControl.Controls.Remove(this);
+				}
+			}
+			
+			base.Dispose(disposing);
+		}
+
+		protected void UpdateControlBounds()
+		{
+			int leftOffset = 0;
+			foreach (var margin in FTextEditorControl.ActiveTextAreaControl.TextArea.LeftMargins)
+			{
+				if (margin.IsVisible)
+					leftOffset += margin.Size.Width;
+			}
+			
+			var maxWidth = FTextEditorControl.Width - leftOffset - SystemInformation.HorizontalScrollBarArrowWidth;
+			var location = new Point(leftOffset + maxWidth / 2, 0);
+			var size = new Size(maxWidth / 2, 20);
+			Bounds = new Rectangle(location, size);
+			
+			FSearchTextBox.Bounds = new Rectangle(0, 0, Width, Height);
+		}
+		
+		public bool CaseSensitive
+		{
+			get;
+			set;
 		}
 
 		public void ShowSearchBar()
 		{
-			SetLocation();
+			UpdateControlBounds();
 			
 			Show();
 			BringToFront();
@@ -54,11 +95,9 @@ namespace VVVV.HDE.CodeEditor.Gui.SearchBar
 			Hide();
 		}
 		
-		protected void SetLocation()
+		void FSearchTextBox_Enter(object sender, EventArgs e)
 		{
-			var location = new Point(0, 0);
-			var size = new Size(FTextEditorControl.Width, 20);
-			Bounds = new Rectangle(location, size);
+			FSearchTextBox.SelectAll();
 		}
 		
 		void FSearchTextBox_Leave(object sender, EventArgs e)
@@ -73,7 +112,7 @@ namespace VVVV.HDE.CodeEditor.Gui.SearchBar
 				CloseSearchBar();
 				e.Handled = true;
 			}
-			else if (e.KeyCode == Keys.Enter)
+			else if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.F3)
 			{
 				// Find marker for current caret
 				var doc = FTextEditorControl.Document;
@@ -96,16 +135,11 @@ namespace VVVV.HDE.CodeEditor.Gui.SearchBar
 					
 					if (result)
 					{
-						var location = doc.OffsetToPosition(marker.Offset);
-						textAreaControl.Caret.Line = location.Line;
-						textAreaControl.Caret.Column = location.Column;
-						textAreaControl.ScrollToCaret();
-						
 						foundNextMarker = true;
+						JumpToOffset(textAreaControl, doc, marker.Offset);
 						break;
 					}
 				}
-				
 				
 				if (!foundNextMarker && FSearchMarkers.Count > 0)
 				{
@@ -114,10 +148,7 @@ namespace VVVV.HDE.CodeEditor.Gui.SearchBar
 					if (backward)
 						marker = FSearchMarkers[FSearchMarkers.Count - 1];
 					
-					var location = doc.OffsetToPosition(marker.Offset);
-					textAreaControl.Caret.Line = location.Line;
-					textAreaControl.Caret.Column = location.Column;
-					textAreaControl.ScrollToCaret();
+					JumpToOffset(textAreaControl, doc, marker.Offset);
 				}
 				
 				e.Handled = true;
@@ -127,6 +158,19 @@ namespace VVVV.HDE.CodeEditor.Gui.SearchBar
 		void FSearchTextBox_TextChanged(object sender, EventArgs e)
 		{
 			HighlightSearchText();
+		}
+		
+		void FTextEditorControl_ActiveTextAreaControl_Resize(object sender, EventArgs e)
+		{
+			UpdateControlBounds();
+		}
+		
+		protected void JumpToOffset(TextAreaControl textAreaControl, IDocument doc, int offset)
+		{
+			var location = doc.OffsetToPosition(offset);
+			textAreaControl.Caret.Line = location.Line;
+			textAreaControl.Caret.Column = location.Column;
+			textAreaControl.ScrollToCaret();
 		}
 		
 		protected void HighlightSearchText()
@@ -148,13 +192,14 @@ namespace VVVV.HDE.CodeEditor.Gui.SearchBar
 			
 			var searchText = FSearchTextBox.Text;
 			var searchTextLength = searchText.Length;
+			var stringComparison = CaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase;
 			
 			if (searchText != string.Empty)
 			{
 				for (int line = 0; line < doc.TotalNumberOfLines; line++)
 				{
 					var lineText = TextUtilities.GetLineAsString(doc, line);
-					var startIndex = lineText.IndexOf(searchText);
+					var startIndex = lineText.IndexOf(searchText, stringComparison);
 					if (startIndex >= 0)
 					{
 						var lineSegment = doc.GetLineSegment(line);
@@ -172,22 +217,6 @@ namespace VVVV.HDE.CodeEditor.Gui.SearchBar
 			}
 			
 			doc.CommitUpdate();
-		}
-		
-		protected override void Dispose(bool disposing)
-		{
-			if (!IsDisposed)
-			{
-				if (disposing)
-				{
-					FSearchTextBox.Leave -= FSearchTextBox_Leave;
-					FSearchTextBox.KeyDown -= FSearchTextBox_KeyDown;
-					FSearchTextBox.TextChanged -= FSearchTextBox_TextChanged;
-					FTextEditorControl.Controls.Remove(this);
-				}
-			}
-			
-			base.Dispose(disposing);
 		}
 	}
 }
