@@ -96,6 +96,23 @@ namespace VVVV.PluginInterfaces.V2
 				attribute.DefaultValues = newDefaults;
 			}
 			
+			if (attribute.DimensionNames != null)
+			{
+				if(attribute.DimensionNames.Length < dimension)
+				{
+					var newNames = new string[dimension];
+					for (int i=0; i<dimension; i++)
+					{
+						if (i < attribute.DimensionNames.Length)
+							newNames[i] = attribute.DimensionNames[i];
+						else
+							newNames[i] = "";
+					}
+					
+					attribute.DimensionNames = newNames;
+				}
+			}
+			
 			if (minValue == PinAttribute.DefaultMinValue)
 			{
 				if (type == typeof(bool))
@@ -166,9 +183,15 @@ namespace VVVV.PluginInterfaces.V2
 					stepSize = 0.01;
 				else if (type == typeof(Vector4))
 					stepSize = 0.01;
+				
+				stepSize = attribute.AsInt ? 1.0 : stepSize;
 			}
 			
-			if (type == typeof(float))
+
+			
+			if (type == typeof(bool))
+				isInteger = false;
+			else if (type == typeof(float))
 				isInteger = false;
 			else if (type == typeof(double))
 				isInteger = false;
@@ -184,6 +207,8 @@ namespace VVVV.PluginInterfaces.V2
 				isInteger = false;
 			else if (type == typeof(Vector4))
 				isInteger = false;
+			
+			isInteger = isInteger || attribute.AsInt;
 		}
 	}
 }

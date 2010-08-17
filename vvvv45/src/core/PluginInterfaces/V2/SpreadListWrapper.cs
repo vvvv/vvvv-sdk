@@ -14,7 +14,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// </summary>
 	public class SpreadListWrapper<T> : ISpread<ISpread<T>>
 	{
-		protected ISpread<ISpread<T>> FSpreadList; 
+		protected ISpread<ISpread<T>> FSpreadList;
 		
 		public SpreadListWrapper(IPluginHost host, PinAttribute attribute)
 		{

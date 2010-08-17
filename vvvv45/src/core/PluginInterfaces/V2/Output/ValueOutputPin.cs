@@ -21,10 +21,11 @@ namespace VVVV.PluginInterfaces.V2.Output
 			
 			double minValue, maxValue, stepSize;
 			bool isInteger = true;
+			bool isBool = type == typeof(bool);
 			
 			LoadDefaultValues(type, attribute, out FDimension, out minValue, out maxValue, out stepSize, out isInteger);
 			
-			host.CreateValueOutput(attribute.Name, FDimension, null, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FValueOut);
+			host.CreateValueOutput(attribute.Name, FDimension, attribute.DimensionNames, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FValueOut);
 			switch (FDimension)
 			{
 				case 2:
@@ -37,7 +38,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 					FValueOut.SetSubType4D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], attribute.DefaultValues[3], false, false, isInteger);
 					break;
 				default:
-					FValueOut.SetSubType(minValue, maxValue, stepSize, attribute.DefaultValue, false, false, isInteger);
+					FValueOut.SetSubType(minValue, maxValue, stepSize, attribute.DefaultValue, isBool && attribute.IsBang, isBool && !attribute.IsBang, isInteger);
 					break;
 			}
 			FValueOut.SetPinUpdater(this);

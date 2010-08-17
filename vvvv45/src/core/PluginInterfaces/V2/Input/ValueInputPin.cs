@@ -23,10 +23,11 @@ namespace VVVV.PluginInterfaces.V2.Input
 			
 			double minValue, maxValue, stepSize;
 			bool isInteger = true;
+			bool isBool = type == typeof(bool);
 			
 			LoadDefaultValues(type, attribute, out FDimension, out minValue, out maxValue, out stepSize, out isInteger);
 			
-			host.CreateValueFastInput(attribute.Name, FDimension, null, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FValueFastIn);
+			host.CreateValueFastInput(attribute.Name, FDimension, attribute.DimensionNames, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FValueFastIn);
 			switch (FDimension)
 			{
 				case 2:
@@ -39,7 +40,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 					FValueFastIn.SetSubType4D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], attribute.DefaultValues[3], false, false, isInteger);
 					break;
 				default:
-					FValueFastIn.SetSubType(minValue, maxValue, stepSize, attribute.DefaultValue, false, false, isInteger);
+					FValueFastIn.SetSubType(minValue, maxValue, stepSize, attribute.DefaultValue, isBool && attribute.IsBang, isBool && !attribute.IsBang, isInteger);
 					break;
 			}
 			

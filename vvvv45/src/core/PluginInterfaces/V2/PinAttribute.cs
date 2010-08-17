@@ -21,6 +21,7 @@ namespace VVVV.PluginInterfaces.V2
 			//string
 			StringType = StringType.String;
 			FileMask = "*.txt";
+			MaxChar = -1;
 			
 			//value
 			MinValue = DefaultMinValue;
@@ -34,7 +35,6 @@ namespace VVVV.PluginInterfaces.V2
 			
 			//enum
 			EnumName = "Empty";
-			DefaultEnumEntry = "";
 		}
 		
 		//pin
@@ -87,6 +87,24 @@ namespace VVVV.PluginInterfaces.V2
 			set;
 		}
 		
+		public string[] DimensionNames
+		{
+			get;
+			set;
+		}
+		
+		public bool IsBang
+		{
+			get;
+			set;
+		}
+		
+		public bool AsInt
+		{
+			get;
+			set;
+		}
+		
 		//string
 		public string DefaultString
 		{
@@ -101,6 +119,12 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		public string FileMask
+		{
+			get;
+			set;
+		}
+		
+		public int MaxChar
 		{
 			get;
 			set;
@@ -127,12 +151,6 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		public string DefaultEnumEntry
-		{
-			get;
-			set;
-		}
-		
-		public Enum DefaultEnum
 		{
 			get;
 			set;
