@@ -4,9 +4,6 @@
 	default="build"
 	xmlns="http://nant.sf.net/release/0.85/nant.xsd"
 >
-  <!-- Root dir must point to vvvv c# repository-->
-  <property name="root.dir" value="../../../" />
-
   <!-- Leave as it is -->
   <include buildfile="${root.dir}/nant-plugins.xml" />
   
@@ -14,8 +11,8 @@
   <property name="lib.name" value="Timeliner.dll" />
 
   <assemblyfileset id="project.references">
-    <include name="${root.bin}/_Utils.dll" />
-    <include name="${root.bin}/_PluginInterfaces.dll" />
+    <include name="${root.bin}/VVVV.Utils.dll" />
+    <include name="${root.bin}/VVVV.PluginInterfaces.dll" />
     <include name="Dependencies/Sanford.Multimedia.Midi.dll" />
   </assemblyfileset>
   
