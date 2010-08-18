@@ -21,7 +21,7 @@ namespace VVVV.PluginInterfaces.V2
 			//string
 			StringType = StringType.String;
 			FileMask = "All Files (*.*)|*.*";
-			MaxChar = -1;
+			MaxChars = -1;
 			DefaultString = "";
 			
 			//value
@@ -125,7 +125,7 @@ namespace VVVV.PluginInterfaces.V2
 			set;
 		}
 		
-		public int MaxChar
+		public int MaxChars
 		{
 			get;
 			set;

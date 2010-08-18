@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 
 using SlimDX;
+using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VMath;
 
@@ -15,6 +17,9 @@ namespace VVVV.PluginInterfaces.V2
 		public abstract IPluginIO PluginIO { get; }
 		
 		public event PinUpdatedEventHandler<T> Updated;
+		
+		[Import]
+		protected ILogger FLogger;
 		
 		protected virtual void OnUpdated()
 		{

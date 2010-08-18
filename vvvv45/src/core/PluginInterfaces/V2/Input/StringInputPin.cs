@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.Input
@@ -6,14 +8,19 @@ namespace VVVV.PluginInterfaces.V2.Input
 	public class StringInputPin : ObservablePin<string>
 	{
 		protected IStringIn FStringIn;
+		protected bool FIsPath;
+		protected IPluginHost FHost;
 		
 		public StringInputPin(IPluginHost host, InputAttribute attribute)
 		{
 			host.CreateStringInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FStringIn);
-			FStringIn.SetSubType2(attribute.DefaultString, attribute.MaxChar, attribute.FileMask, (TStringType)attribute.StringType);
+			FStringIn.SetSubType2(attribute.DefaultString, attribute.MaxChars, attribute.FileMask, (TStringType)attribute.StringType);
+			
+			FIsPath = (attribute.StringType == StringType.Directory) || (attribute.StringType == StringType.Filename);
+			FHost = host;
 		}
 		
-		public override IPluginIO PluginIO 
+		public override IPluginIO PluginIO
 		{
 			get
 			{
@@ -47,12 +54,30 @@ namespace VVVV.PluginInterfaces.V2.Input
 			{
 				string value;
 				FStringIn.GetString(index, out value);
-				return value == null ? "" : value;
+				var s = value == null ? "" : value;
+				return FIsPath ? GetFullPath(s) : s;
 			}
 			set 
 			{
 				throw new NotImplementedException();
 			}
+		}
+		
+		protected string GetFullPath(string path)
+		{
+			string patchPath;
+			FHost.GetHostPath(out patchPath);
+			
+			try 
+			{
+				path = Path.GetFullPath(Path.Combine(patchPath, path));	
+			} 
+			catch (Exception e)
+			{
+				FLogger.Log(LogType.Error, e.Message);
+			}
+			
+			return path;
 		}
 	}
 }
