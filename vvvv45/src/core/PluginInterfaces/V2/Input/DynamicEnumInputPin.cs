@@ -9,6 +9,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 		protected string FEnumName;
 		
 		public DynamicEnumInputPin(IPluginHost host, InputAttribute attribute)
+			: base(host, attribute)
 		{
 			FEnumName = attribute.EnumName;
 			

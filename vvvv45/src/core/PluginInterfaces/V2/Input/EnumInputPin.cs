@@ -9,6 +9,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 		protected Type FEnumType;
 		
 		public EnumInputPin(IPluginHost host, InputAttribute attribute)
+			: base(host, attribute)
 		{
 			FEnumType = typeof(T);
 			

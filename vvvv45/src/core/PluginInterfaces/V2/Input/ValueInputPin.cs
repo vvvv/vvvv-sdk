@@ -18,6 +18,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 		protected int FDimension;
 		
 		public ValueInputPin(IPluginHost host, InputAttribute attribute)
+			: base(host, attribute)
 		{
 			var type = typeof(T);
 			

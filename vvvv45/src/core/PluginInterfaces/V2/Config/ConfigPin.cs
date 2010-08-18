@@ -7,6 +7,12 @@ namespace VVVV.PluginInterfaces.V2.Config
 	{
 		protected bool FIsChanged;
 		
+		public ConfigPin(IPluginHost host, PinAttribute attribute)
+			: base(host, attribute)
+		{
+		}
+			
+		
 		public override IPluginIO PluginIO
 		{
 			get
@@ -28,7 +34,8 @@ namespace VVVV.PluginInterfaces.V2.Config
 			}
 			set 
 			{
-				PluginConfig.SliceCount = value;
+				if (FAttribute.SliceMode != SliceMode.Single)
+					PluginConfig.SliceCount = value;
 			}
 		}
 		

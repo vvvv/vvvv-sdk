@@ -8,6 +8,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 		protected IEnumOut FEnumOutputPin;
 		
 		public DynamicEnumOutputPin(IPluginHost host, OutputAttribute attribute)
+			: base(host, attribute)
 		{
 			host.CreateEnumOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FEnumOutputPin);
 			FEnumOutputPin.SetSubType(attribute.EnumName);
@@ -29,7 +30,8 @@ namespace VVVV.PluginInterfaces.V2.Output
 			}
 			set
 			{
-				FEnumOutputPin.SliceCount = value;
+				if (FAttribute.SliceMode != SliceMode.Single)
+					FEnumOutputPin.SliceCount = value;
 			}
 		}
 

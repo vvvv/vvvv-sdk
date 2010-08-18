@@ -12,6 +12,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 		protected int FSliceCount;
 		
 		public SlimDXMatrixOutputPin(IPluginHost host, OutputAttribute attribute)
+			: base(host, attribute)
 		{
 			host.CreateTransformOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FTransformOut);
 			
@@ -40,7 +41,9 @@ namespace VVVV.PluginInterfaces.V2.Output
 					FData = new float[value * 16];
 				
 				FSliceCount = value;
-				FTransformOut.SliceCount = value;
+				
+				if (FAttribute.SliceMode != SliceMode.Single)
+					FTransformOut.SliceCount = value;
 			}
 		}
 		

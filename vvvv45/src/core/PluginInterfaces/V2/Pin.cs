@@ -20,6 +20,14 @@ namespace VVVV.PluginInterfaces.V2
 		
 		[Import]
 		protected ILogger FLogger;
+		protected IPluginHost FHost;
+		protected PinAttribute FAttribute;
+		
+		public Pin(IPluginHost host, PinAttribute attribute)
+		{
+			FHost = host;
+			FAttribute = attribute;
+		}
 		
 		protected virtual void OnUpdated()
 		{

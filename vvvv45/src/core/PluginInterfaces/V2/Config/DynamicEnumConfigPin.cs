@@ -9,6 +9,7 @@ namespace VVVV.PluginInterfaces.V2.Config
 		protected string FEnumName;
 		
 		public DynamicEnumConfigPin(IPluginHost host, ConfigAttribute attribute)
+			: base(host, attribute)
 		{
 			FEnumName = attribute.EnumName;
 			

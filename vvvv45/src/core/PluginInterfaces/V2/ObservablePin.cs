@@ -8,6 +8,11 @@ namespace VVVV.PluginInterfaces.V2
 	{
 		public event SpreadChangedEventHander<T> Changed;
 		
+		public ObservablePin(IPluginHost host, PinAttribute attribute)
+			: base(host, attribute)
+		{
+		}
+		
 		public abstract bool IsChanged
 		{
 			get;

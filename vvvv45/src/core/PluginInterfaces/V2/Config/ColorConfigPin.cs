@@ -9,6 +9,7 @@ namespace VVVV.PluginInterfaces.V2.Config
 		protected IColorConfig FColorConfig;
 		
 		public ColorConfigPin(IPluginHost host, ConfigAttribute attribute)
+			: base(host, attribute)
 		{
 			host.CreateColorConfig(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FColorConfig);
 			FColorConfig.SetSubType(new RGBAColor(attribute.DefaultValues), attribute.HasAlpha);

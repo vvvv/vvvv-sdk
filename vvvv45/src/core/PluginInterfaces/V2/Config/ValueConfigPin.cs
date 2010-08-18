@@ -14,13 +14,11 @@ namespace VVVV.PluginInterfaces.V2.Config
 		protected double[] FData;
 		protected int FDimension;
 		protected int FSliceCount;
-		protected SliceMode FSliceMode;
 		
 		public ValueConfigPin(IPluginHost host, ConfigAttribute attribute)
+			: base(host, attribute)
 		{
 			var type = typeof(T);
-			
-			FSliceMode = attribute.SliceMode;
 			
 			double minValue, maxValue, stepSize;
 			bool isInteger = true;
@@ -71,7 +69,7 @@ namespace VVVV.PluginInterfaces.V2.Config
 				
 				FSliceCount = value;
 				
-				if (FSliceMode != SliceMode.Single)
+				if (FAttribute.SliceMode != SliceMode.Single)
 					FValueConfig.SliceCount = value;
 			}
 		}

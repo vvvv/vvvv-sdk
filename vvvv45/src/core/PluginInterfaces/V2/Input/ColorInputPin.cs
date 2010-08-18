@@ -12,6 +12,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 		protected double[] FData; 
 		
 		public ColorInputPin(IPluginHost host, InputAttribute attribute)
+			: base(host, attribute)
 		{
 			host.CreateColorInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FColorIn);
 			FColorIn.SetSubType(new RGBAColor(attribute.DefaultColor), attribute.HasAlpha);

@@ -9,15 +9,14 @@ namespace VVVV.PluginInterfaces.V2.Input
 	{
 		protected IStringIn FStringIn;
 		protected bool FIsPath;
-		protected IPluginHost FHost;
 		
 		public StringInputPin(IPluginHost host, InputAttribute attribute)
+			: base(host, attribute)
 		{
 			host.CreateStringInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FStringIn);
 			FStringIn.SetSubType2(attribute.DefaultString, attribute.MaxChars, attribute.FileMask, (TStringType)attribute.StringType);
 			
 			FIsPath = (attribute.StringType == StringType.Directory) || (attribute.StringType == StringType.Filename);
-			FHost = host;
 		}
 		
 		public override IPluginIO PluginIO

@@ -9,6 +9,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 		protected Type FEnumType;
 		
 		public EnumOutputPin(IPluginHost host, OutputAttribute attribute)
+			: base(host, attribute)
 		{
 			FEnumType = typeof(T);
 			
@@ -36,7 +37,8 @@ namespace VVVV.PluginInterfaces.V2.Output
 			}
 			set
 			{
-				FEnumOutputPin.SliceCount = value;
+				if (FAttribute.SliceMode != SliceMode.Single)
+					FEnumOutputPin.SliceCount = value;
 			}
 		}
 

@@ -9,14 +9,13 @@ namespace VVVV.PluginInterfaces.V2.Config
 	{
 		protected IStringConfig FStringConfig;
 		protected bool FIsPath;
-		protected IPluginHost FHost;
 		
 		public StringConfigPin(IPluginHost host, ConfigAttribute attribute)
+			: base(host, attribute)
 		{
 			host.CreateStringConfig(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FStringConfig);
 			FStringConfig.SetSubType2(attribute.DefaultString, attribute.MaxChars, attribute.FileMask, (TStringType)attribute.StringType);
 
-			FHost = host;
 			FIsPath = (attribute.StringType == StringType.Directory) || (attribute.StringType == StringType.Filename);
 		}
 		
@@ -34,7 +33,8 @@ namespace VVVV.PluginInterfaces.V2.Config
 			{
 				string value;
 				FStringConfig.GetString(index, out value);
-				return FIsPath ? GetFullPath(value) : value;
+				var s = value == null ? "" : value;
+				return FIsPath ? GetFullPath(s) : s;
 			}
 			set 
 			{

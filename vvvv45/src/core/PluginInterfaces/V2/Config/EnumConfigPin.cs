@@ -9,6 +9,7 @@ namespace VVVV.PluginInterfaces.V2.Config
 		protected Type FEnumType;
 		
 		public EnumConfigPin(IPluginHost host, ConfigAttribute attribute)
+			: base(host, attribute)
 		{
 			FEnumType = typeof(T);
 			

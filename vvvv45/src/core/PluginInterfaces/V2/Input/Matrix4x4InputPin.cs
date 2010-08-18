@@ -14,6 +14,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 		protected float[] FData; 
 		
 		public Matrix4x4InputPin(IPluginHost host, InputAttribute attribute)
+			: base(host, attribute)
 		{
 			host.CreateTransformInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FTransformIn);
 			

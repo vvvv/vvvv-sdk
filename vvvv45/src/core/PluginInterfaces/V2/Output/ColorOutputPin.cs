@@ -12,6 +12,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 		protected int FSliceCount;
 		
 		public ColorOutputPin(IPluginHost host, OutputAttribute attribute)
+			: base(host, attribute)
 		{
 			host.CreateColorOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FColorOut);
 			FColorOut.SetSubType(new RGBAColor(attribute.DefaultValues), attribute.HasAlpha);
@@ -40,7 +41,9 @@ namespace VVVV.PluginInterfaces.V2.Output
 					FData = new double[value * 4];
 				
 				FSliceCount = value;
-				FColorOut.SliceCount = value;
+				
+				if (FAttribute.SliceMode != SliceMode.Single)
+					FColorOut.SliceCount = value;
 			}
 		}
 		

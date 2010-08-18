@@ -15,9 +15,10 @@ namespace VVVV.PluginInterfaces.V2.Output
 		protected int FSliceCount;
 		
 		public GenericOutputPin(IPluginHost host, OutputAttribute attribute)
+			: base(host, attribute)
 		{
 			host.CreateNodeOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FNodeOut);
-			FNodeOut.SetSubType(new Guid[] { typeof(T).GUID }, typeof(T).Name);
+			FNodeOut.SetSubType(new Guid[] { typeof(T).GUID }, typeof(T).FullName);
 			FNodeOut.SetInterface(this);
 			
 			FNodeOut.SetPinUpdater(this);
@@ -44,8 +45,10 @@ namespace VVVV.PluginInterfaces.V2.Output
 				if (FSliceCount != value)
 					FData = new T[value];
 				
-				FNodeOut.SliceCount = value;
 				FSliceCount = value;
+				
+				if (FAttribute.SliceMode != SliceMode.Single)
+					FNodeOut.SliceCount = value;
 			}
 		}
 		
@@ -57,14 +60,14 @@ namespace VVVV.PluginInterfaces.V2.Output
 			}
 			set 
 			{
-				FData[index % FData.Length] = value;
+				FData[index % FSliceCount] = value;
 				FChanged = true;
 			}
 		}
 		
 		public T GetSlice(int slice)
 		{
-			return FData[slice % FData.Length];
+			return FData[slice % FSliceCount];
 		}
 		
 		public override void Update()

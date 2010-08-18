@@ -8,6 +8,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 		protected IStringOut FStringOut;
 		
 		public StringOutputPin(IPluginHost host, OutputAttribute attribute)
+			: base(host, attribute)
 		{
 			host.CreateStringOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FStringOut);
 			FStringOut.SetSubType2(attribute.DefaultString, attribute.MaxChars, attribute.FileMask, (TStringType)attribute.StringType);
@@ -29,7 +30,8 @@ namespace VVVV.PluginInterfaces.V2.Output
 			}
 			set 
 			{
-				FStringOut.SliceCount = value;
+				if (FAttribute.SliceMode != SliceMode.Single)
+					FStringOut.SliceCount = value;
 			}
 		}
 		

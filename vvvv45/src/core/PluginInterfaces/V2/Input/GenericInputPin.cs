@@ -10,11 +10,12 @@ namespace VVVV.PluginInterfaces.V2.Input
 		protected IGenericIO<T> FDefaultInterface;
 		
 		public GenericInputPin(IPluginHost host, InputAttribute attribute)
+			: base(host, attribute)
 		{
 			FDefaultInterface = new GenericIO<T>();
 			
 			host.CreateNodeInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FNodeIn);
-			FNodeIn.SetSubType(new Guid[] { typeof(T).GUID }, typeof(T).Name);
+			FNodeIn.SetSubType(new Guid[] { typeof(T).GUID }, typeof(T).FullName);
 			
 			FNodeIn.SetPinUpdater(this);
 
