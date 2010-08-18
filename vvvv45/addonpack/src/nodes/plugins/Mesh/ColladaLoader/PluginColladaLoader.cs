@@ -40,7 +40,7 @@ namespace VVVV.Nodes
         #region pins & fields
         public enum Axis {Default, X, Y, Z, MinusX, MinusY, MinusZ};
         
-        [Input ("Filename", SliceMode = TSliceMode.Single)]
+        [Input ("Filename", SliceMode = TSliceMode.Single, StringType = StringType.Filename, FileMask = "COLLADA Files (*.dae)|*.dae")]
         IDiffSpread<string> FFileNameInput;
         
         [Output ("COLLADA Model")]
