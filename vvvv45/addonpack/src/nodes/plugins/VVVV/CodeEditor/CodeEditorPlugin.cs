@@ -22,8 +22,8 @@ namespace VVVV.HDE.CodeEditor
 	            Help = "The Code Editor",
 	            InitialBoxWidth = 200,
 	            InitialBoxHeight = 100,
-	            InitialWindowWidth = 800,
-	            InitialWindowHeight = 600,
+	            InitialWindowWidth = 700,
+	            InitialWindowHeight = 800,
 	            InitialComponentMode = TComponentMode.InAWindow)]
 	#endregion PluginInfo
 	public class CodeEditorPlugin : ManagedVCL.TopControl, IPluginHDE, IDisposable
