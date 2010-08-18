@@ -51,16 +51,16 @@ namespace VVVV.Nodes
         ISpread<EnumEntry> FCharEncoding;
         
         [Input ("Font", EnumName = "SystemFonts")]
-        IObservableSpread<EnumEntry> FFontInput;
+        IDiffSpread<EnumEntry> FFontInput;
         
-        [Input ("Italic", SliceMode = TSliceMode.Single)]
-        IObservableSpread<bool> FItalicInput;
+        [Input ("Italic", SliceMode = SliceMode.Single)]
+        IDiffSpread<bool> FItalicInput;
         
-        [Input ("Bold", SliceMode = TSliceMode.Single)]
-        IObservableSpread<bool> FBoldInput;
+        [Input ("Bold", SliceMode = SliceMode.Single)]
+        IDiffSpread<bool> FBoldInput;
         
-        [Input ("Size", DefaultValue = 150, MinValue = 0, SliceMode = TSliceMode.Single)]
-        IObservableSpread<int> FSizeInput;
+        [Input ("Size", DefaultValue = 150, MinValue = 0, SliceMode = SliceMode.Single)]
+        IDiffSpread<int> FSizeInput;
         
         [Input ("Color", DefaultValues = new double[4]{1, 1, 1, 1})]
         ISpread<RGBAColor> FColorInput;
@@ -80,10 +80,10 @@ namespace VVVV.Nodes
         [Input ("Text Rendering Mode", EnumName = "TextRenderingMode")]
         ISpread<EnumEntry> FTextRenderingModeInput;
         
-        [Input ("Normalize", EnumName = "Normalize", SliceMode = TSliceMode.Single)]
+        [Input ("Normalize", EnumName = "Normalize", SliceMode = SliceMode.Single)]
         ISpread<EnumEntry> FNormalizeInput;
         
-        [Input ("Enabled", DefaultValue = 1, SliceMode = TSliceMode.Single)]
+        [Input ("Enabled", DefaultValue = 1, SliceMode = SliceMode.Single)]
         ISpread<bool> FEnabledInput;
         
         [Output ("Text Size")]
