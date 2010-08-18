@@ -5,6 +5,10 @@ using VVVV.Utils.VColor;
 
 namespace VVVV.PluginInterfaces.V2
 {
+	/// <summary>
+	/// Common class that represents all available pin attributes.
+	/// Note that not all properties make sense for every pin data type.
+	/// </summary>
 	public abstract class PinAttribute : ImportAttribute
 	{
 		public static readonly double DefaultMinValue = double.MinValue;
@@ -39,18 +43,27 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		//pin
+		/// <summary>
+		/// The name of this pin
+		/// </summary>
 		public string Name
 		{
 			get;
 			set;
 		}
 		
+		/// <summary>
+		/// The visibility of the pin in the patch and inspektor.
+		/// </summary>
 		public PinVisibility Visibility
 		{
 			get;
 			set;
 		}
 		
+		/// <summary>
+		/// Slice mode of the pin.
+		/// </summary>
 		public SliceMode SliceMode
 		{
 			get;
@@ -58,48 +71,72 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		//value
+		/// <summary>
+		/// Minimum value for this value pin in the gui.
+		/// </summary>
 		public double MinValue
 		{
 			get;
 			set;
 		}
 		
+		/// <summary>
+		/// Maximum value for this value pin in the gui.
+		/// </summary>
 		public double MaxValue
 		{
 			get;
 			set;
 		}
 		
+		/// <summary>
+		/// Step size when dragging the value of this pin in the gui.
+		/// </summary>
 		public double StepSize
 		{
 			get;
 			set;
 		}
 		
+		/// <summary>
+		/// Default value for this value pin.
+		/// </summary>
 		public double DefaultValue
 		{
 			get;
 			set;
 		}
 		
+		/// <summary>
+		/// Array of default values for vector pins.
+		/// </summary>
 		public double[] DefaultValues
 		{
 			get;
 			set;
 		}
 		
+		/// <summary>
+		/// Array of names shown in the gui for each dimension of vector pins.
+		/// </summary>
 		public string[] DimensionNames
 		{
 			get;
 			set;
 		}
 		
+		/// <summary>
+		/// Converts a bool pin from toggle to bang.
+		/// </summary>
 		public bool IsBang
 		{
 			get;
 			set;
 		}
 		
+		/// <summary>
+		/// Displays the value of this pin as an integer in the gui, regardless of the actual type.
+		/// </summary>
 		public bool AsInt
 		{
 			get;
@@ -107,24 +144,36 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		//string
+		/// <summary>
+		/// Default string for this string pin.
+		/// </summary>
 		public string DefaultString
 		{
 			get;
 			set;
 		}
 		
+		/// <summary>
+		/// Set a special string type for this string pin.
+		/// </summary>
 		public StringType StringType
 		{
 			get;
 			set;
 		}
 		
+		/// <summary>
+		/// Filemask in the form of: "Audio File (*.wav, *.mp3)|*.wav;*.mp3".
+		/// </summary>
 		public string FileMask
 		{
 			get;
 			set;
 		}
 		
+		/// <summary>
+		/// Maximum length of the string for this pin.
+		/// </summary>
 		public int MaxChars
 		{
 			get;
@@ -132,12 +181,18 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		//color
+		/// <summary>
+		/// Use alpha channel for this color pin.
+		/// </summary>
 		public bool HasAlpha
 		{
 			get;
 			set;
 		}
 		
+		/// <summary>
+		/// Array of rgba values in the range [0..1] to define the default color.
+		/// </summary>
 		public double[] DefaultColor
 		{
 			get;
@@ -145,12 +200,18 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		//enum
+		/// <summary>
+		/// Name of the dynamic enum, only needed for EnumEntry type.
+		/// </summary>
 		public string EnumName
 		{
 			get;
 			set;
 		}
 		
+		/// <summary>
+		/// String representation of the default enum entry for this pin.
+		/// </summary>
 		public string DefaultEnumEntry
 		{
 			get;
@@ -158,6 +219,9 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		//pin group
+		/// <summary>
+		/// Converts an ISpread<ISpread<T>> from a bin sized spread to a dynamic pin group.
+		/// </summary>
 		public bool IsPinGroup
 		{
 			get;
