@@ -32,10 +32,21 @@ namespace VVVV.PluginInterfaces.V2
     {        
         public static string ToString<T>(this ISpread<T> spread)
         {
+        	return spread.AsString();
+        }
+        
+        public static string AsString<T>(this ISpread<T> spread)
+        {
             var s = "";
-            
-           	foreach (var slice in spread)
-           		s += String.Format("{0}, ", slice.ToString());
+                        	
+           	for (int i = 0; i < spread.SliceCount-1; i++) 
+           		s += String.Format("{0}, ", spread[i].ToString());
+
+           	if (spread.SliceCount > 0)
+           		s += spread[spread.SliceCount-1].ToString();
+           		
+//           	foreach (int i; islice in spread)
+//           		s += String.Format("{0}, ", slice.ToString());
             	
             return s;	
         }
