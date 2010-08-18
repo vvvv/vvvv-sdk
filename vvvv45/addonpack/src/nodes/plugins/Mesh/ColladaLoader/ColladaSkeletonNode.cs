@@ -33,13 +33,13 @@ namespace VVVV.Nodes
     {		          	
     	#region pins & fields
     	[Input ("COLLADA Model", SliceMode = TSliceMode.Single)]
-        IObservableSpread<Model> FColladaModelIn;
+        IDiffSpread<Model> FColladaModelIn;
 
         [Input ("Time", SliceMode = TSliceMode.Single)]
-        IObservableSpread<float> FTimeInput;
+        IDiffSpread<float> FTimeInput;
         
         [Input ("Index", SliceMode = TSliceMode.Single)]
-        IObservableSpread<int> FIndex;
+        IDiffSpread<int> FIndex;
         
         [Output ("Skeleton", SliceMode = TSliceMode.Single)]
         ISpread<Skeleton> FSkeletonOut;

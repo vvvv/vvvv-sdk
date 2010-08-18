@@ -39,16 +39,16 @@ namespace VVVV.Nodes
     {
         #region pins & fields
         [Input ("COLLADA Model")]
-        IObservableSpread<Model> FColladaModelIn;
+        IDiffSpread<Model> FColladaModelIn;
         
         [Input ("Time")]
-        IObservableSpread<float> FTimeInput;
+        IDiffSpread<float> FTimeInput;
         
         [Input ("Bin Size", SliceMode = TSliceMode.Single, DefaultValue = -1)]
-        IObservableSpread<int> FBinSize;
+        IDiffSpread<int> FBinSize;
         
         [Input ("Index")]
-        IObservableSpread<int> FIndex;
+        IDiffSpread<int> FIndex;
         
         [Output ("TextureFileName")]
         ISpread<string> FTextureFileNameOutput;
@@ -72,7 +72,7 @@ namespace VVVV.Nodes
     	private ILogger FLogger;            
 
         //pin declaration
-        private IObservableSpread<bool> FOpaqueIsOneInput;
+        private IDiffSpread<bool> FOpaqueIsOneInput;
         private IDXMeshOut FMyMeshOutput;
         private ITransformOut FTransformOutput;
         private ITransformOut FSkinningTransformOutput;
@@ -92,7 +92,7 @@ namespace VVVV.Nodes
         public PluginColladaMesh(
             IPluginHost host,
             [Config ("Opaque=1?", SliceMode = TSliceMode.Single, DefaultValue = 1)]
-            IObservableSpread<bool> OpaqueIsOneInput)
+            IDiffSpread<bool> OpaqueIsOneInput)
         {
             //the nodes constructor
             FDeviceMeshes = new Dictionary<int, Mesh>();
@@ -111,7 +111,7 @@ namespace VVVV.Nodes
             FOpaqueIsOneInput.Changed += new SpreadChangedEventHander<bool>(FOpaqueIsOneInput_Changed);
         }
 
-        void FOpaqueIsOneInput_Changed(IObservableSpread<bool> spread)
+        void FOpaqueIsOneInput_Changed(IDiffSpread<bool> spread)
         {
             FOpaqueIsOne = FOpaqueIsOneInput[0];
         }

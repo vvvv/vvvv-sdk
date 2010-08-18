@@ -41,7 +41,7 @@ namespace VVVV.Nodes
         public enum Axis {Default, X, Y, Z, MinusX, MinusY, MinusZ};
         
         [Input ("Filename", SliceMode = TSliceMode.Single)]
-        IObservableSpread<string> FFileNameInput;
+        IDiffSpread<string> FFileNameInput;
         
         [Output ("COLLADA Model")]
         ISpread<Model> FColladaModelOutput;
@@ -52,14 +52,14 @@ namespace VVVV.Nodes
         [Import]
         private ILogger FLogger;
         
-        private IObservableSpread<CoordinateSystemType> FCsSourceTypeConfig;
-        private IObservableSpread<Axis> FUpAxisSourceConfig;
-        private IObservableSpread<Axis> FRightAxisSourceConfig;
-        private IObservableSpread<double> FMeterSourceConfig;
-        private IObservableSpread<CoordinateSystemType> FCsTargetTypeConfig;
-        private IObservableSpread<Axis> FUpAxisTargetConfig;
-        private IObservableSpread<Axis> FRightAxisTargetConfig;
-        private IObservableSpread<double> FMeterTargetConfig;
+        private IDiffSpread<CoordinateSystemType> FCsSourceTypeConfig;
+        private IDiffSpread<Axis> FUpAxisSourceConfig;
+        private IDiffSpread<Axis> FRightAxisSourceConfig;
+        private IDiffSpread<double> FMeterSourceConfig;
+        private IDiffSpread<CoordinateSystemType> FCsTargetTypeConfig;
+        private IDiffSpread<Axis> FUpAxisTargetConfig;
+        private IDiffSpread<Axis> FRightAxisTargetConfig;
+        private IDiffSpread<double> FMeterTargetConfig;
         
         // Track whether Dispose has been called.
         private bool FDisposed = false;
@@ -84,21 +84,21 @@ namespace VVVV.Nodes
         public PluginColladaLoader(
             IPluginHost host,
             [Config ("Coordinate system of source", SliceMode = TSliceMode.Single)]
-            IObservableSpread<CoordinateSystemType> FCsSourceTypeConfig,
+            IDiffSpread<CoordinateSystemType> FCsSourceTypeConfig,
             [Config ("Source up axis", SliceMode = TSliceMode.Single)]
-            IObservableSpread<Axis> FUpAxisSourceConfig,
+            IDiffSpread<Axis> FUpAxisSourceConfig,
             [Config ("Source right axis", SliceMode = TSliceMode.Single)]
-            IObservableSpread<Axis> FRightAxisSourceConfig,
+            IDiffSpread<Axis> FRightAxisSourceConfig,
             [Config ("Source distance unit in meter", SliceMode = TSliceMode.Single, DefaultValue = 0)]
-            IObservableSpread<double> FMeterSourceConfig,
+            IDiffSpread<double> FMeterSourceConfig,
             [Config ("Coordinate system of target",  SliceMode = TSliceMode.Single)]
-            IObservableSpread<CoordinateSystemType> FCsTargetTypeConfig,
+            IDiffSpread<CoordinateSystemType> FCsTargetTypeConfig,
             [Config ("Target up axis", SliceMode = TSliceMode.Single)]
-            IObservableSpread<Axis> FUpAxisTargetConfig,
+            IDiffSpread<Axis> FUpAxisTargetConfig,
             [Config ("Target right axis", SliceMode = TSliceMode.Single)]
-            IObservableSpread<Axis> FRightAxisTargetConfig,
+            IDiffSpread<Axis> FRightAxisTargetConfig,
             [Config ("Target distance unit in meter", SliceMode = TSliceMode.Single, DefaultValue = 0)]
-            IObservableSpread<double> FMeterTargetConfig)
+            IDiffSpread<double> FMeterTargetConfig)
         {
             FInfo = new List<string>();
             
@@ -112,49 +112,49 @@ namespace VVVV.Nodes
             FMeterTargetConfig.Changed += new SpreadChangedEventHander<double>(FMeterTargetConfig_Changed);
         }
 
-        void FCsSourceTypeConfig_Changed(IObservableSpread<CoordinateSystemType> spread)
+        void FCsSourceTypeConfig_Changed(IDiffSpread<CoordinateSystemType> spread)
         {
             FCsTypeSource = FCsSourceTypeConfig[0];
             ConfigurateModel();
         }
         
-        void FUpAxisSourceConfig_Changed(IObservableSpread<Axis> spread)
+        void FUpAxisSourceConfig_Changed(IDiffSpread<Axis> spread)
         {
             FUpAxisSource = FUpAxisSourceConfig[0];
             ConfigurateModel();
         }
         
-        void FRightAxisSourceConfig_Changed(IObservableSpread<Axis> spread)
+        void FRightAxisSourceConfig_Changed(IDiffSpread<Axis> spread)
         {
             FRightAxisSource = FRightAxisSourceConfig[0];
             ConfigurateModel();
         }
         
-        void FMeterSourceConfig_Changed(IObservableSpread<double> spread)
+        void FMeterSourceConfig_Changed(IDiffSpread<double> spread)
         {
             FDistanceUnitTarget = FMeterSourceConfig[0];
             ConfigurateModel();
         }
         
-        void FCsTargetTypeConfig_Changed(IObservableSpread<CoordinateSystemType> spread)
+        void FCsTargetTypeConfig_Changed(IDiffSpread<CoordinateSystemType> spread)
         {
             FCsTypeTarget = FCsTargetTypeConfig[0];
             ConfigurateModel();
         }
         
-        void FUpAxisTargetConfig_Changed(IObservableSpread<Axis> spread)
+        void FUpAxisTargetConfig_Changed(IDiffSpread<Axis> spread)
         {
             FUpAxisTarget = FUpAxisTargetConfig[0];
             ConfigurateModel();
         }
         
-        void FRightAxisTargetConfig_Changed(IObservableSpread<Axis> spread)
+        void FRightAxisTargetConfig_Changed(IDiffSpread<Axis> spread)
         {
             FRightAxisTarget = FRightAxisTargetConfig[0];
             ConfigurateModel();
         }
         
-        void FMeterTargetConfig_Changed(IObservableSpread<double> spread)
+        void FMeterTargetConfig_Changed(IDiffSpread<double> spread)
         {
             FDistanceUnitTarget = FMeterTargetConfig[0];
             ConfigurateModel();
