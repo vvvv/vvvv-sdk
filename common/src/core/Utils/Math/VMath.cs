@@ -145,7 +145,7 @@ namespace VVVV.Utils.VMath
 		
 		/// <summary>
 		/// Modulo function with the property, that the remainder of a division z / d
-		/// and z < 0 is positive. For example: zmod(-2, 30) = 28.
+		/// and z &lt; 0 is positive. For example: zmod(-2, 30) = 28.
 		/// </summary>
 		/// <param name="z"></param>
 		/// <param name="d"></param>
