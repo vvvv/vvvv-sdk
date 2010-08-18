@@ -17,4 +17,17 @@ namespace VVVV.PluginInterfaces.V2
 			set;
 		}
 	}
+
+    public static class SpreadExtensions
+    {        
+        public static string ToString<T>(this ISpread<T> spread)
+        {
+            var s = "";
+            
+           	foreach (var slice in spread)
+           		s += String.Format("{0}, ", slice.ToString());
+            	
+            return s;	
+        }
+     }
 }
