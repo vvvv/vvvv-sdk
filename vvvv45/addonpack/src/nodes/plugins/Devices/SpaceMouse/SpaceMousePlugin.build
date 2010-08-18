@@ -4,14 +4,12 @@
 	default="build"
 	xmlns="http://nant.sf.net/release/0.85/nant.xsd"
 >
-
-  <property name="root.dir" value="../../../" />
   <include buildfile="${root.dir}/nant-plugins.xml" />
   <property name="lib.name" value="SpaceMouse.dll" />
   
   <assemblyfileset id="project.references">
-    <include name="${root.bin}/_Utils.dll" />
-    <include name="${root.bin}/_PluginInterfaces.dll" />
+    <include name="${root.bin}/VVVV.Utils.dll" />
+    <include name="${root.bin}/VVVV.PluginInterfaces.dll" />
     <include name="Dependencies/TDx.TDxInput.dll" />
   </assemblyfileset>
   
