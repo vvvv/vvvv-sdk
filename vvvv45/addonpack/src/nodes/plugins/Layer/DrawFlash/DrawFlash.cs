@@ -1,53 +1,37 @@
-#region licence/info
-
-//////project name
-//vvvv draw flash
-
-//////description
-//Renders the Surface of a SWF File to a Direct3D Texture
-
 //////licence
 //GNU Lesser General Public License (LGPL)
 //english: http://www.gnu.org/licenses/lgpl.html
 //german: http://www.gnu.de/lgpl-ger.html
 
-//////language/ide
-//C# sharpdevelop
-
-//////dependencies
-//VVVV.PluginInterfaces.V1;
-//VVVV.Utils.VColor;
-//VVVV.Utils.VMath;
-//FantastiqUINet
-
-//////initial author
-//vvvv group, chrismo
-
-#endregion licence/info
-
-//use what you need
+#region usings
 using System;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Collections;
+using System.ComponentModel.Composition;
 
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Shared.VSlimDX;
+using VVVV.Core.Logging;
 
 using SlimDX;
 using SlimDX.Direct3D9;
 
 using FantastiqUINet;
 using System.Diagnostics;
+#endregion usings
 
-//the vvvv node namespace
 namespace VVVV.Nodes
 {
-    //class definition
-    public class DrawFlash : IPlugin, IDisposable, IPluginDXLayer
+    [PluginInfo (Name = "Flash",
+                 Category = "EX9",
+                 Author = "chrismo",
+                 Help = "Renders the Surface of a SWF File to a Direct3D Texture")]                 
+    public class DrawFlash : IPluginEvaluate, IDisposable, IPluginDXLayer
     {
     	[DllImport("user32.dll", CharSet=CharSet.Auto)]
 		internal static extern int MapVirtualKey(int uCode, int nMapType);
@@ -57,35 +41,56 @@ namespace VVVV.Nodes
     	//to build your own non-trial version enter your license key here:	
         const string LICENSENAME = "";
         const string LICENSENUMBER = "";
+        
+        #region pins & fields
+        [Input ("Filename", SliceMode = TSliceMode.Single, StringType = StringType.Filename, FileMask = "Shockwave Flash (*.swf)|*.swf")]
+        ISpread<string> FSWFPath;
+        
+        [Input ("Load", SliceMode = TSliceMode.Single)]
+        IObservableSpread<bool> FLoadSWF;
+            
+        [Input ("Mouse X", SliceMode = TSliceMode.Single)]
+        IObservableSpread<double> FMouseX;
+        
+        [Input ("Mouse Y", SliceMode = TSliceMode.Single)]
+        IObservableSpread<double> FMouseY;
+        
+        [Input ("Mouse Left Button", SliceMode = TSliceMode.Single)]
+        IObservableSpread<bool> FMouseLeftButton;
+        
+        [Input ("Key Code")]
+        IObservableSpread<int> FKeyCodeIn;
+        
+        enum BufferMode {Single, Double};
+        [Input ("Buffer Mode", SliceMode = TSliceMode.Single)]//, DefaultEnum = BufferMode.Single)]
+        IObservableSpread<BufferMode> FBufferMode;
+        
+        enum Quality {Low, Medium, High, Best};
+        [Input ("Quality", SliceMode = TSliceMode.Single)]//, DefaultEnum = BufferMode.Best)]
+        IObservableSpread<Quality> FQuality;
+        
+        [Input ("Seek Frame", SliceMode = TSliceMode.Single, MinValue = 0)]
+        IObservableSpread<int> FGoToFrame;
 
-        #region field declaration
+        [Input ("Enabled", SliceMode = TSliceMode.Single, DefaultValue = 1)]
+        ISpread<bool> FEnabledInput;
 
-        //the host (mandatory)
-        public IPluginHost FHost;
+        [Output ("Frame Rate", SliceMode = TSliceMode.Single)]
+        ISpread<int> FFrameRateOutput;
+        
+        [Import]
+    	private ILogger FLogger;
+        
         //Track whether Dispose has been called.
         private bool FDisposed = false;
-
-        private IDXRenderStateIn FRenderStatePin;
-        private IDXSamplerStateIn FSamplerStatePin;
-        private ITransformIn FTranformIn;
-        private IStringIn FSWFPath;
-        private IValueIn FLoadSWF;
-        private IValueIn FMouseX;
-        private IValueIn FMouseY;
-        private IValueIn FMouseLeftButton;
-        private IEnumIn FBufferMode;
-        private IValueIn FEnabledInput;
-        private IValueIn FGoToFrame;
-        private IEnumIn FQuality;
-        
-        private IValueIn FKeyCodeIn;
-		private List<int> FLastKeyState;
-
         private bool _DisposeAllowed = true;
-
-        //a layer output pin
+        
+        private IDXRenderStateIn FRenderStatePin;
+        //private IDXSamplerStateIn FSamplerStatePin;
+        private ITransformIn FTransformIn;
         private IDXLayerIO FLayerOutput;
-        private IValueOut FFrameRateOutput;
+
+        private List<int> FLastKeyState;        
 
         private Dictionary<int, Sprite> FSprites = new Dictionary<int, Sprite>();
         bool _NeedsUpdate;
@@ -101,14 +106,19 @@ namespace VVVV.Nodes
         private int _Frames;
 
         private int _BufferMode = 0;
-
         #endregion field declaration
 
         #region constructor/destructor
-
-        public DrawFlash()
+        [ImportingConstructor]
+        public DrawFlash(IPluginHost host)
         {
-            //the nodes constructorB
+            host.CreateRenderStateInput(TSliceMode.Single, TPinVisibility.True, out FRenderStatePin);
+            FRenderStatePin.Order = -2;
+            host.CreateTransformInput("Transform", TSliceMode.Single, TPinVisibility.True, out FTransformIn);
+            FTransformIn.Order = -1;
+            host.CreateLayerOutput("Layer", TPinVisibility.True, out FLayerOutput);
+            FLayerOutput.Order = -1;
+            
             PresentParameters tPresentParas = new PresentParameters();
             tPresentParas.SwapEffect = SwapEffect.Discard;
             tPresentParas.Windowed = true;
@@ -207,144 +217,8 @@ namespace VVVV.Nodes
         }
 
         #endregion constructor/destructor
-
-        #region node name and info
-
-        //provide node infos
-        private static IPluginInfo FPluginInfo;
-        public static IPluginInfo PluginInfo
-        {
-            get
-            {
-                if (FPluginInfo == null)
-                {
-                    //fill out nodes info
-                    //see: http://www.vvvv.org/tiki-index.php?page=Conventions.NodeAndPinNaming
-                    FPluginInfo = new PluginInfo();
-
-                    //the nodes main name: use CamelCaps and no spaces
-                    FPluginInfo.Name = "Flash";
-                    //the nodes category: try to use an existing one
-                    FPluginInfo.Category = "EX9";
-                    //the nodes version: optional. leave blank if not
-                    //needed to distinguish two nodes of the same name and category
-                    FPluginInfo.Version = "";
-
-                    //the nodes author: your sign
-                    FPluginInfo.Author = "chrismo";
-                    //describe the nodes function
-                    FPluginInfo.Help = "Renders the Surface of a SWF File to a Direct3D Texture";
-                    //specify a comma separated list of tags that describe the node
-                    FPluginInfo.Tags = "";
-
-                    //give credits to thirdparty code used
-                    FPluginInfo.Credits = "";
-                    //any known problems?
-                    FPluginInfo.Bugs = "";
-                    //any known usage of the node that may cause troubles?
-                    FPluginInfo.Warnings = "";
-
-                    //leave below as is
-                    System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
-                    System.Diagnostics.StackFrame sf = st.GetFrame(0);
-                    System.Reflection.MethodBase method = sf.GetMethod();
-                    FPluginInfo.Namespace = method.DeclaringType.Namespace;
-                    FPluginInfo.Class = method.DeclaringType.Name;
-                    //leave above as is
-                }
-                return FPluginInfo;
-            }
-        }
-
-        public bool AutoEvaluate
-        {
-            //return true if this node needs to calculate every frame even if nobody asks for its output
-            get { return false; }
-        }
-
-        #endregion node name and info
-
-        #region pin creation
-
-        //this method is called by vvvv when the node is created
-        public void SetPluginHost(IPluginHost pHost)
-        {
-            //assign host
-            FHost = pHost;
-
-            //create inputs
-            FHost.CreateRenderStateInput(TSliceMode.Single, TPinVisibility.True, out FRenderStatePin);
-            //FHost.CreateSamplerStateInput(TSliceMode.Single, TPinVisibility.True, out FSamplerStatePin);
-            
-            FHost.CreateTransformInput("Transform", TSliceMode.Single, TPinVisibility.True, out FTranformIn);
-
-            FHost.CreateStringInput("Filename", TSliceMode.Single, TPinVisibility.True, out FSWFPath);
-            FSWFPath.SetSubType("", true);
-
-            FHost.CreateValueInput("Load", 1, null, TSliceMode.Single, TPinVisibility.True, out FLoadSWF);
-            FLoadSWF.SetSubType(0, 1, 1, 0, true, false, false);
-
-            FHost.CreateValueInput("Mouse X", 1, null, TSliceMode.Single, TPinVisibility.True, out FMouseX);
-            FHost.CreateValueInput("Mouse Y", 1, null, TSliceMode.Single, TPinVisibility.True, out FMouseY);
-            FHost.CreateValueInput("Mouse Left Button", 1, null, TSliceMode.Single, TPinVisibility.True, out FMouseLeftButton);
-
-            FHost.CreateValueInput("Key Code", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FKeyCodeIn);
-            
-            FHost.UpdateEnum("Buffer Mode", "Single", new string[] { "Single", "Double" });
-            FHost.CreateEnumInput("Buffer Mode", TSliceMode.Single, TPinVisibility.True, out FBufferMode);
-            FBufferMode.SetSubType("Buffer Mode");
-
-            FHost.UpdateEnum("Quality", "Best", new string[] { "Low", "Medium", "High", "Best" });
-            FHost.CreateEnumInput("Quality", TSliceMode.Single, TPinVisibility.True, out FQuality);
-            FQuality.SetSubType("Quality");
-
-            FHost.CreateValueInput("Seek Frame", 1, null, TSliceMode.Single, TPinVisibility.True, out FGoToFrame);
-            FGoToFrame.SetSubType(0, Int32.MaxValue, 1, 0, false, false, true);
-            
-            FHost.CreateValueInput("Enabled", 1, null, TSliceMode.Single, TPinVisibility.True, out FEnabledInput);
-            FEnabledInput.SetSubType(0, 1, 1, 1, false, true, false);
-
-
-            //create outputs
-            FHost.CreateLayerOutput("Layer", TPinVisibility.True, out FLayerOutput);
-
-            FHost.CreateValueOutput("Frame Rate", 1, null, TSliceMode.Single, TPinVisibility.True, out FFrameRateOutput);
-        }
-
-        #endregion pin creation
-
+   
         #region mainloop
-
-        public void Configurate(IPluginConfig pInput)
-        {
-            //nothing to configure in this plugin
-            //only used in conjunction with inputs of type cmpdConfigurate
-        }
-
-        private void GoToFrame(int pOnDevice)
-        {
-            //Debug.WriteLine("GoToFrame");
-
-            double tFrame;
-            FGoToFrame.GetValue(pOnDevice, out tFrame);
-
-            _FNUIFlashPlayer.GotoFrame((int)Math.Floor(tFrame));
-
-        }
-
-        private void SetQuality(int pOnDevice)
-        {
-            //Debug.WriteLine("SetQuality");
-
-            string tQuality = "";
-            FQuality.GetString(pOnDevice, out tQuality);
-
-            _FNUIFlashPlayer.SetQualityString(tQuality);
-        }
-
-
-        //here we go, thats the method called by vvvv each frame
-        //all data handling should be in here
         public void Evaluate(int pSpreadMax)
         {
             if (_FNUIFlashPlayer == null)
@@ -354,30 +228,22 @@ namespace VVVV.Nodes
             {
                 FSpreadCount = pSpreadMax;
 
-                if (FGoToFrame.PinIsChanged)
-                    GoToFrame(0);
+                if (FGoToFrame.IsChanged)
+                    _FNUIFlashPlayer.GotoFrame(FGoToFrame[0]);
 
-                if (FQuality.PinIsChanged)
-                    SetQuality(0);
+                if (FQuality.IsChanged)
+                    _FNUIFlashPlayer.SetQualityString(FQuality[0].ToString());
 
-
-
-
-                double tEnabled;
-                FEnabledInput.GetValue(0, out tEnabled);
-
-                if (tEnabled >= 0.5)
+                if (FEnabledInput[0])
                 {
                     Matrix4x4 world;
 
-                    if (FMouseX.PinIsChanged || FMouseY.PinIsChanged)
+                    if (FMouseX.IsChanged || FMouseY.IsChanged)
                     {
-                        double x, y;
+                        double x = FMouseX[0];
+                        double y = FMouseY[0];
 
-                        FMouseX.GetValue(0, out x);
-                        FMouseY.GetValue(0, out y);
-
-                        FTranformIn.GetRenderWorldMatrix(0, out world);
+                        FTransformIn.GetRenderWorldMatrix(0, out world);
 
                         // getting the transformed stage
                         x = (x - world.m41) / world.m11;
@@ -390,67 +256,52 @@ namespace VVVV.Nodes
                         _FNUIFlashPlayer.UpdateMousePosition((int)x, (int)y);
                     }
 
-                    if (FMouseLeftButton.PinIsChanged)
+                    if (FMouseLeftButton.IsChanged)
                     {
-                    	double tLB;
-
-                    	FMouseLeftButton.GetValue(0, out tLB);
-
-                    	if (tLB == 1.0)
+                    	if (FMouseLeftButton[0])
                     		_FNUIFlashPlayer.UpdateMouseButton(0, true);
                     	else
                     		_FNUIFlashPlayer.UpdateMouseButton(0, false);
                     }
                     
-                    if(FKeyCodeIn.PinIsChanged)
+                    if(FKeyCodeIn.IsChanged)
                     {
-                    	
                     	List<int> currentKeyState = new List<int>();
-                    	
                     	int count = FKeyCodeIn.SliceCount;
                     	
                     	for(int i = 0; i<count; i++)
                     	{
-                    		double v;
-                    		FKeyCodeIn.GetValue(i, out v);
+                    	    int v = FKeyCodeIn[i];
                     		
-                    		if(v > 0) currentKeyState.Add((int)v);
-                    		
+                    		if (v > 0) 
+                    		    currentKeyState.Add(v);
                     	}
                     	
                     	count = FLastKeyState.Count;
                     	for (int i=0; i<count; i++)
                     	{
-                    		
                     		if(currentKeyState.IndexOf(FLastKeyState[i]) < 0)
                     		{
                     			_FNUIFlashPlayer.SendKey(false, FLastKeyState[i], 0);
-                    			
                     		}
                     	}
                     	
                     	count = currentKeyState.Count;
-                    	
                     	bool isShift = currentKeyState.IndexOf(16) >= 0;
                     	
                     	for (int i=0; i<count; i++)
                     	{
-                    		
                     		if(FLastKeyState.IndexOf(currentKeyState[i]) < 0)
                     		{
-                    			
                     			int key = currentKeyState[i];
                     			
                     			_FNUIFlashPlayer.SendKey(true, key, 0);
-                    			
                     
                     			//char
                     			if(!isShift && (key >= 65 && key <= 90))
                     			{
                     				_FNUIFlashPlayer.SendChar(MapVirtualKey(key, 2)+32, 0);
-                    				
                     			}
-   
                     			
                     			//Ä
                     			else if (key == 222)
@@ -461,7 +312,6 @@ namespace VVVV.Nodes
                     				}else{
                     					_FNUIFlashPlayer.SendChar(228, 0);
                     				}
-                    				
                     			}
                     			
                     			//Ö
@@ -473,7 +323,6 @@ namespace VVVV.Nodes
                     				}else{
                     					_FNUIFlashPlayer.SendChar(246, 0);
                     				}
-                    				
                     			}
                     			
                     			//Ü
@@ -485,15 +334,12 @@ namespace VVVV.Nodes
                     				}else{
                     					_FNUIFlashPlayer.SendChar(252, 0);
                     				}
-                    				
                     			}
                     			
                     			//ß
                     			else if (key == 219)
                     			{
-                    				
                     				_FNUIFlashPlayer.SendChar(223, 0);
-                    				
                     			}
                     			
                     			else
@@ -505,33 +351,24 @@ namespace VVVV.Nodes
                     	}
                     	
                     	FLastKeyState = currentKeyState;
-                    	
                     }
-                    
                 }
             }
             catch
             {
             }
         }
-
         #endregion mainloop
 
         #region DXLayer
-
         private void LoadSWF(int pOnDevice)
         {
             if (_FNUIFlashPlayer != null)
             {
-                //Debug.WriteLine("Remove Player");
-
                 int tTimer = 0;
 
                 while (_DisposeAllowed == false && tTimer < Int32.MaxValue)
                     tTimer++;
-
-                //Debug.WriteLine("Timer :: " + tTimer);
-
 
                 //Debug.WriteLine("Remove Player :: DisableFlashRendering");
                 _FNUIFlashPlayer.DisableFlashRendering(true);
@@ -553,9 +390,7 @@ namespace VVVV.Nodes
             //Debug.WriteLine("Create Player :: SetEventNotifier");
             _FNUIFlashPlayer.SetEventNotifier(EventNotifier);
 
-            string tPath = "";
-            FSWFPath.GetString(0, out tPath);
-
+            string tPath = FSWFPath[0];
             if (System.IO.File.Exists(tPath) == false)
             {
                 //System.Windows.Forms.MessageBox.Show("Invalid swf path: " + tPath);
@@ -570,7 +405,7 @@ namespace VVVV.Nodes
             //FHost.Log(TLogType.Debug, "swf Framerate: " + _FrameRate);
             //FHost.Log(TLogType.Debug, "swf Frames: " + _Frames);
 
-            FFrameRateOutput.SetValue(0, (double)_FrameRate);
+            FFrameRateOutput[0] = (int)_FrameRate;
 
             IntPtr tPointer = new IntPtr(pOnDevice);
             Device tDevice = Device.FromPointer(tPointer);
@@ -590,10 +425,10 @@ namespace VVVV.Nodes
             }
             catch (Exception ex)
             {
-                FHost.Log(TLogType.Debug, "Exception in FantastiqUI: " + ex.Message);
+                FLogger.Log(LogType.Debug, "Exception in FantastiqUI: " + ex.Message);
 
                 if (ex.InnerException != null)
-                    FHost.Log(TLogType.Debug, "inner: " + ex.InnerException.Message);
+                    FLogger.Log(LogType.Debug, "inner: " + ex.InnerException.Message);
             }
         }
 
@@ -616,33 +451,26 @@ namespace VVVV.Nodes
         {
             try
             {
-                if (FLoadSWF.PinIsChanged)
+                if (FLoadSWF.IsChanged)
                 {
-                    double tIsOne = 0;
-
-                    FLoadSWF.GetValue(OnDevice, out tIsOne);
-
-                    if (tIsOne == 1.0)
+                    if (FLoadSWF[0])
                     {
                         //Debug.WriteLine("FLoadSWF.PinIsChanged");
                         _NeedsUpdate = true;
                     }
                 }
 
-                if (FBufferMode.PinIsChanged)
+                if (FBufferMode.IsChanged)
                 {
                     //Debug.WriteLine("FBufferMode.PinIsChanged");
 
-                    string tBufferMode = "";
-                    FBufferMode.GetString(OnDevice, out tBufferMode);
-
-                    switch (tBufferMode)
+                    switch (FBufferMode[0])
                     {
-                        case "Single":
+                        case BufferMode.Single:
                             _BufferMode = 0;
                             break;
 
-                        case "Double":
+                        case BufferMode.Double:
                             _BufferMode = 1;
                             break;
                     }
@@ -652,10 +480,10 @@ namespace VVVV.Nodes
             }
             catch (Exception ex)
             {
-                FHost.Log(TLogType.Debug, "Exception in UpdateResource: " + ex.Message);
+                FLogger.Log(LogType.Debug, "Exception in UpdateResource: " + ex.Message);
 
                 if (ex.InnerException != null)
-                    FHost.Log(TLogType.Debug, "inner: " + ex.InnerException.Message);
+                    FLogger.Log(LogType.Debug, "inner: " + ex.InnerException.Message);
 
                 //if resource is not yet created on given Device, create it now
                 _NeedsUpdate = true;
@@ -676,7 +504,7 @@ namespace VVVV.Nodes
 
                 LoadSWF(OnDevice);
 
-                SetQuality(OnDevice);
+                _FNUIFlashPlayer.SetQualityString(FQuality[0].ToString());
 
                 _NeedsUpdate = false;
             }
@@ -708,22 +536,21 @@ namespace VVVV.Nodes
                 return;
 
             double tEnabled;
-            FEnabledInput.GetValue(0, out tEnabled);
 
-            if (tEnabled < 0.5)
+            if (FEnabledInput[0])
+                _FNUIFlashPlayer.DisableFlashRendering(false);            
+            else
             {
                 _FNUIFlashPlayer.DisableFlashRendering(true);
                 return;
             }
-            else
-                _FNUIFlashPlayer.DisableFlashRendering(false);
-
+                
             try
             {
                 Device tDevice = Device.FromPointer(new IntPtr(DXDevice.DevicePointer()));
                 tDevice.SetTransform(TransformState.World, Matrix.Identity);
                 Sprite tSprite = FSprites[DXDevice.DevicePointer()];
-                FTranformIn.SetRenderSpace();
+                FTransformIn.SetRenderSpace();
 
                 FRenderStatePin.SetSliceStates(0);
                 tSprite.Begin(SpriteFlags.DoNotAddRefTexture | SpriteFlags.ObjectSpace);
@@ -732,7 +559,7 @@ namespace VVVV.Nodes
 
                 for (int i = 0; i < FSpreadCount; i++)
                 {
-                    FTranformIn.GetRenderWorldMatrix(i, out tTransformMatrix);
+                    FTransformIn.GetRenderWorldMatrix(i, out tTransformMatrix);
                     tSprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(VMath.Scale(1.0 / _Width, -1.0 / _Height, 1) * tTransformMatrix);
 
                     int t = _FNUIFlashPlayer.GetTexture().ToInt32();
@@ -749,9 +576,7 @@ namespace VVVV.Nodes
                     }
 
                     _FNUIFlashPlayer.ReleaseTexture();
-
                 }
-
                 tSprite.End();
             }
             catch
@@ -762,8 +587,6 @@ namespace VVVV.Nodes
         #endregion
 
         #region FantastiqUI
-
-
         /// <summary>
         /// In case you resize the flash player, this function is called to tell you to
         /// actually resize the textures used, as return value you can provide a new
