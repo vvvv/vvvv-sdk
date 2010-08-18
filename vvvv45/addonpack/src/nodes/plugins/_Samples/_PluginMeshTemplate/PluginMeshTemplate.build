@@ -5,8 +5,6 @@
 	xmlns="http://nant.sf.net/release/0.85/nant.xsd"
 >
   
-  <property name="root.dir" value="../../../" />
-  
   <!-- Build templates only in local dir. -->
   <property name="plugin.path" value="bin/" />
   <property name="help.path" value="bin/" />
@@ -14,11 +12,5 @@
   
   <include buildfile="${root.dir}/nant-plugins.xml" />
   <property name="lib.name" value="PluginMeshTemplate.dll" />
-  
-  <assemblyfileset id="project.references">
-    <include name="${root.bin}/_Utils.dll" />
-    <include name="${root.bin}/_PluginInterfaces.dll" />
-    <include name="${slimdx.dll}" />
-  </assemblyfileset>
 
 </project>
