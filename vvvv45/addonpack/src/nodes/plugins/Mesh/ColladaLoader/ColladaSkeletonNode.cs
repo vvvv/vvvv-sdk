@@ -23,29 +23,29 @@ using ColladaSlimDX.ColladaModel;
 
 namespace VVVV.Nodes
 {
-    [PluginInfo (Name = "Skeleton",
-                 Category = "Skeleton",
-                 Version = "Collada",
-                 Author = "Elias Holzer",
-                 Help = "Loads a skeleton from a COLLADA document.",
-                 Tags = "dae")]
+    [PluginInfo(Name = "Skeleton",
+                Category = "Skeleton",
+                Version = "Collada",
+                Author = "Elias Holzer",
+                Help = "Loads a skeleton from a COLLADA document.",
+                Tags = "dae")]
 	public class ColladaSkeletonNode: IPluginEvaluate
     {		          	
     	#region pins & fields
-    	[Input ("COLLADA Model", SliceMode = TSliceMode.Single)]
-        IDiffSpread<Model> FColladaModelIn;
+    	[Input("COLLADA Model", SliceMode = SliceMode.Single)]
+        protected IDiffSpread<Model> FColladaModelIn;
 
-        [Input ("Time", SliceMode = TSliceMode.Single)]
-        IDiffSpread<float> FTimeInput;
+        [Input("Time", SliceMode = SliceMode.Single)]
+        protected IDiffSpread<float> FTimeInput;
         
-        [Input ("Index", SliceMode = TSliceMode.Single)]
-        IDiffSpread<int> FIndex;
+        [Input("Index", SliceMode = SliceMode.Single)]
+        protected IDiffSpread<int> FIndex;
         
-        [Output ("Skeleton", SliceMode = TSliceMode.Single)]
-        ISpread<Skeleton> FSkeletonOut;
+        [Output("Skeleton", SliceMode = SliceMode.Single)]
+        protected ISpread<Skeleton> FSkeletonOut;
         
         [Import]
-    	private ILogger FLogger;   
+    	protected ILogger FLogger;   
     	    	
     	private ITransformOut FInvBindPoseOut;
         private ITransformOut FBindShapeOut;

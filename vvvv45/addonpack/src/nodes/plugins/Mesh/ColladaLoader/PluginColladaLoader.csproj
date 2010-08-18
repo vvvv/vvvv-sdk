@@ -1,4 +1,4 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.Nodes</RootNamespace>
@@ -15,7 +15,8 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <SourceAnalysisOverrideSettingsFile>C:\Dokumente und Einstellungen\Elias\Anwendungsdaten\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
     <StartArguments>d</StartArguments>
-    <OutputPath>Y:\vake\source\complete\vvvv40_DynamicNodes\plugins\</OutputPath>
+    <OutputPath>bin\</OutputPath>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <Optimize>False</Optimize>
@@ -47,20 +48,29 @@
       <HintPath>dependencies\ColladaSlimDX.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PluginInterfaces">
-      <HintPath>..\..\_lib\vvvv\PluginInterfaces.dll</HintPath>
+    <Reference Include="SkeletonInterfaces">
+      <HintPath>dependencies\SkeletonInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimDX">
+      <HintPath>..\..\_lib\SlimDX\SlimDX.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="SlimDX" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition">
       <HintPath>..\..\_lib\MEF\System.ComponentModel.Composition.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="VVVV.Core">
       <HintPath>..\..\_lib\vvvv\VVVV.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VVVV.PluginInterfaces">
+      <HintPath>..\..\_lib\vvvv\VVVV.PluginInterfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VVVV.Utils">
@@ -77,12 +87,6 @@
     <Compile Include="ColladaSkeletonNode.cs" />
     <Compile Include="PluginColladaLoader.cs" />
     <Compile Include="PluginColladaMesh.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Skeleton\SkeletonInterfaces\SkeletonInterfaces.csproj">
-      <Project>{0813E570-CB1C-49F3-BB7E-7048C115ED05}</Project>
-      <Name>SkeletonInterfaces</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

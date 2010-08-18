@@ -9,15 +9,12 @@
   <property name="lib.name" value="ColladaLoader.dll" />
 
   <assemblyfileset id="project.references">
-	  <include name="${root.bin}/VVVV.PluginInterfaces.dll" />
+		<include name="${root.bin}/VVVV.PluginInterfaces.dll" />
     <include name="${root.bin}/VVVV.Utils.dll" />
 		<include name="${lib.dir}/**/*.dll" />
 		<exclude name="${lib.dir}/**/VVVV.Utils.dll" />
 		<exclude name="${lib.dir}/**/VVVV.PluginInterfaces.dll" />
-        <include name="dependencies/zlib.net.dll" />
-        <include name="dependencies/dnAnalytics.dll" />
-        <include name="dependencies/ColladaSlimDX.dll" />
-        <include name="dependencies/SkeletonInterfaces.dll" />		
+    <include name="dependencies/*.dll" />
   </assemblyfileset>
 
   <fileset id="project.sources" failonempty="true">
@@ -34,7 +31,7 @@
     <copy todir="${plugin.path}">
       <fileset basedir=".">
         <include name="*.tga" />
-	<include name="*.dae" />
+	      <include name="*.dae" />
       </fileset>
     </copy>
   </target>

@@ -39,37 +39,37 @@ namespace VVVV.Nodes
     {
         #region pins & fields
         [Input ("COLLADA Model")]
-        IDiffSpread<Model> FColladaModelIn;
+        protected IDiffSpread<Model> FColladaModelIn;
         
         [Input ("Time")]
-        IDiffSpread<float> FTimeInput;
+        protected IDiffSpread<float> FTimeInput;
         
-        [Input ("Bin Size", SliceMode = TSliceMode.Single, DefaultValue = -1)]
-        IDiffSpread<int> FBinSize;
+        [Input ("Bin Size", SliceMode = SliceMode.Single, DefaultValue = -1)]
+        protected IDiffSpread<int> FBinSize;
         
         [Input ("Index")]
-        IDiffSpread<int> FIndex;
+        protected IDiffSpread<int> FIndex;
         
         [Output ("TextureFileName")]
-        ISpread<string> FTextureFileNameOutput;
+        protected ISpread<string> FTextureFileNameOutput;
         
         [Output ("Emissive Color")]
-        ISpread<RGBAColor> FEmissiveColorOut;
+        protected ISpread<RGBAColor> FEmissiveColorOut;
         
         [Output ("Diffuse Color", DefaultValues = new double[4]{1, 1, 1, 1})]
-        ISpread<RGBAColor> FDiffuseColorOut;
+        protected ISpread<RGBAColor> FDiffuseColorOut;
         
         [Output ("Specular Color")]
-        ISpread<RGBAColor> FSpecularColorOut;
+        protected ISpread<RGBAColor> FSpecularColorOut;
         
         [Output ("Power", MinValue = 0, DefaultValue = 25)]
-        ISpread<double> FShininessOut;
+        protected ISpread<double> FShininessOut;
         
         [Output ("Opaque", DefaultValue = 1)]
-        ISpread<double> FOpaqueOut;
+        protected ISpread<double> FOpaqueOut;
         
         [Import]
-    	private ILogger FLogger;            
+    	protected ILogger FLogger;            
 
         //pin declaration
         private IDiffSpread<bool> FOpaqueIsOneInput;
@@ -91,7 +91,7 @@ namespace VVVV.Nodes
         [ImportingConstructor]
         public PluginColladaMesh(
             IPluginHost host,
-            [Config ("Opaque=1?", SliceMode = TSliceMode.Single, DefaultValue = 1)]
+            [Config ("Opaque=1?", SliceMode = SliceMode.Single, DefaultValue = 1)]
             IDiffSpread<bool> OpaqueIsOneInput)
         {
             //the nodes constructor
@@ -123,7 +123,6 @@ namespace VVVV.Nodes
         {     	
         	try
         	{
-	        	double tmp;
 	        	//if any of the inputs has changed
 	        	//recompute the outputs
 	        	if (FColladaModelIn.IsChanged || FIndex.IsChanged || FBinSize.IsChanged)
