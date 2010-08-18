@@ -14,10 +14,12 @@ namespace VVVV.PluginInterfaces.V2.Output
 		protected double[] FData;
 		protected int FDimension;
 		protected int FSliceCount;
+		protected SliceMode FSliceMode;
 		
 		public ValueOutputPin(IPluginHost host, OutputAttribute attribute)
 		{
 			var type = typeof(T);
+			FSliceMode = attribute.SliceMode;
 			
 			double minValue, maxValue, stepSize;
 			bool isInteger = true;
@@ -66,7 +68,9 @@ namespace VVVV.PluginInterfaces.V2.Output
 					FData = new double[value * FDimension];
 				
 				FSliceCount = value;
-				FValueOut.SliceCount = value;
+				
+				if (FSliceMode != SliceMode.Single)
+					FValueOut.SliceCount = value;
 			}
 		}
 		

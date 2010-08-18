@@ -66,8 +66,15 @@ namespace VVVV.PluginInterfaces.V2.Input
 			get 
 			{
 				int usS;
-				FNodeIn.GetUpsreamSlice(index, out usS);
-				return FUpstreamInterface.GetSlice(usS);
+				if (FUpstreamInterface != null && FNodeIn.SliceCount > 0)
+				{
+					FNodeIn.GetUpsreamSlice(index, out usS);
+					return FUpstreamInterface.GetSlice(usS);
+				}
+				else
+				{
+					return default(T);
+				}
 			}
 			set 
 			{
