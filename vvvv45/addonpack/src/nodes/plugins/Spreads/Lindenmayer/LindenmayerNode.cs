@@ -29,31 +29,31 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Input("Axiom", DefaultString = "F")]
-        IObservableSpread<string> FAxiom;
+        IDiffSpread<string> FAxiom;
         
         [Input("Productions F", DefaultString = "F+F")]
-        IObservableSpread<string> FProductionsF;
+        IDiffSpread<string> FProductionsF;
         
         [Input("Productions G", DefaultString = "")]
-        IObservableSpread<string> FProductionsG;
+        IDiffSpread<string> FProductionsG;
         
         [Input("Depth", DefaultValue = 1, MinValue = 0, MaxValue = 10)]
-        IObservableSpread<int> FDepth;
+        IDiffSpread<int> FDepth;
         
         [Input("Seed", DefaultValue = 1, MinValue = 0)]
-        IObservableSpread<int> FSeed;
+        IDiffSpread<int> FSeed;
         
         [Input("Branch Length", DefaultValue = 0.2, MinValue = 0)]
-        IObservableSpread<double> FBranchLength;
+        IDiffSpread<double> FBranchLength;
         
         [Input("Length Deviation", DefaultValue = 0.5, MinValue = 0)]
-        IObservableSpread<double> FBranchLengthDeviation;
+        IDiffSpread<double> FBranchLengthDeviation;
         
         [Input("Angle", DefaultValue = 0.1, MinValue = 0, MaxValue = 1)]
-        IObservableSpread<double> FAngle;
+        IDiffSpread<double> FAngle;
         
         [Input("Angle Deviation", DefaultValue = 0, MinValue = 0, MaxValue = 1)]
-        IObservableSpread<double> FAngleDeviation;
+        IDiffSpread<double> FAngleDeviation;
         
         [Output("Level")]
         ISpread<int> FLevel;
