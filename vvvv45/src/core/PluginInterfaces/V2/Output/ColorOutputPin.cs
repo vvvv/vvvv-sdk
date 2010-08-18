@@ -69,7 +69,8 @@ namespace VVVV.PluginInterfaces.V2.Output
 			double* destination;
 			FColorOut.GetColorPointer(out destination);
 			
-			Marshal.Copy(FData, 0, new IntPtr(destination), FData.Length);
+			if (FSliceCount > 0)
+				Marshal.Copy(FData, 0, new IntPtr(destination), FData.Length);
 		}
 	}
 }

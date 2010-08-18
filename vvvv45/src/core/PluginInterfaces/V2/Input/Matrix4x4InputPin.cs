@@ -78,7 +78,9 @@ namespace VVVV.PluginInterfaces.V2.Input
 				
 				FTransformIn.GetMatrixPointer(out sliceCount, out source);
 				SliceCount = sliceCount;
-				Marshal.Copy(new IntPtr(source), FData, 0, FData.Length);
+				
+				if (FSliceCount > 0)
+					Marshal.Copy(new IntPtr(source), FData, 0, FData.Length);
 			}
 			
 			base.Update();

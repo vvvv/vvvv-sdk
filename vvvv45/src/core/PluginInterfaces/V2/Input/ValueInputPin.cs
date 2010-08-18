@@ -86,7 +86,8 @@ namespace VVVV.PluginInterfaces.V2.Input
 			else
 				SliceCount = sliceCount / FDimension;
 			
-			Marshal.Copy(new IntPtr(source), FData, 0, sliceCount);
+			if (FSliceCount > 0)
+				Marshal.Copy(new IntPtr(source), FData, 0, sliceCount);
 			
 			// Fill end of FData with values from start.
 			Array.Copy(FData, 0, FData, sliceCount, FData.Length - sliceCount);
