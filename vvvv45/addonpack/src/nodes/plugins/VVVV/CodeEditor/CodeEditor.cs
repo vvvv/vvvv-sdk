@@ -34,6 +34,8 @@ using System.Windows.Forms;
 
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Gui.CompletionWindow;
+using ICSharpCode.TextEditor.Gui.InsightWindow;
+using VVVV.Core.Logging;
 using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
 using VVVV.Core.Model.FX;
@@ -49,19 +51,23 @@ namespace VVVV.HDE.CodeEditor
 	//class definition, inheriting from UserControl for the GUI stuff
 	public class CodeEditor: UserControl
 	{
-		#region field declaration
+		#region Fields
+		
 		private ICSharpCode.TextEditor.TextEditorControl FTextEditorControl;
 		private CodeCompletionWindow FCodeCompletionWindow;
+		private InsightWindow FInsightWindow;
 		private System.Windows.Forms.Timer FTimer;
 		private CodeEditorForm FCodeEditorForm;
 		private SearchBar FSearchBar;
 		
-		private ICompletionProvider FCompletionProvider;
+		private ICompletionBinding FCompletionBinding;
 		private ILinkDataProvider FLinkDataProvider;
 		private IToolTipProvider FToolTipProvider;
-		#endregion field declaration
+		
+		#endregion
 		
 		#region Properties
+		
 		public ITextDocument Document { get; private set; }
 		
 		public SD.IDocument SDDocument { get; private set; }
@@ -73,18 +79,44 @@ namespace VVVV.HDE.CodeEditor
 				return Document.IsDirty;
 			}
 		}
+		
+		public TextEditorControl TextEditorControl
+		{
+			get
+			{
+				return FTextEditorControl;
+			}
+		}
+		
+		public string TextContent
+		{
+			get
+			{
+				return SDDocument.TextContent;
+			}
+		}
+		
+		public ILogger Logger
+		{
+			get;
+			private set;
+		}
+		
 		#endregion
 		
-		#region constructor/destructor
+		#region Constructor/Destructor
 		public CodeEditor(
+			ILogger logger,
 			CodeEditorForm codeEditorForm,
 			ITextDocument doc,
-			ICompletionProvider completionProvider,
+			ICompletionBinding completionBinding,
 			SD.IFormattingStrategy formattingStrategy,
 			SD.IFoldingStrategy foldingStrategy,
 			ILinkDataProvider linkDataProvider,
 			IToolTipProvider toolTipProvider)
 		{
+			Logger = logger;
+			
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			InitializeComponent();
 			
@@ -108,7 +140,7 @@ namespace VVVV.HDE.CodeEditor
 			FTextEditorControl.SetHighlighting(highlighter.Name);
 			
 			// Setup code completion
-			FCompletionProvider = completionProvider;
+			FCompletionBinding = completionBinding;
 			FTextEditorControl.ActiveTextAreaControl.TextArea.KeyEventHandler += TextAreaKeyEventHandler;
 			
 			// Setup code formatting
@@ -612,6 +644,54 @@ namespace VVVV.HDE.CodeEditor
 		
 		#region Code completion
 		
+		public void ShowCompletionWindow(ICompletionDataProvider completionDataProvider, char key)
+		{
+			try
+			{
+				FCodeCompletionWindow = CodeCompletionWindow.ShowCompletionWindow(
+					FCodeEditorForm,					// The parent window for the completion window
+					FTextEditorControl, 				// The text editor to show the window for
+					Document.Location.LocalPath,		// Filename - will be passed back to the provider
+					completionDataProvider,				// Provider to get the list of possible completions
+					key									// Key pressed - will be passed to the provider
+				);
+				if (FCodeCompletionWindow != null)
+				{
+					// ShowCompletionWindow can return null when the provider returns an empty list
+					FCodeCompletionWindow.Closed += CloseCodeCompletionWindow;
+				}
+			}
+			catch (Exception e)
+			{
+				Logger.Log(e);
+			}
+		}
+		
+		public void ShowInsightWindow(IInsightDataProvider insightDataProvider)
+		{
+			try
+			{
+				if (FInsightWindow == null || FInsightWindow.IsDisposed) {
+					FInsightWindow = new InsightWindow(FCodeEditorForm, FTextEditorControl);
+					FInsightWindow.Closed += new EventHandler(CloseInsightWindow);
+				}
+				FInsightWindow.AddInsightDataProvider(insightDataProvider, Document.Location.LocalPath);
+				FInsightWindow.ShowInsightWindow();
+			}
+			catch (Exception e)
+			{
+				Logger.Log(e);
+			}
+		}
+		
+		public void CloseInsightWindow()
+		{
+			if (FInsightWindow != null && !FInsightWindow.IsDisposed)
+			{
+				FInsightWindow.Close();
+			}
+		}
+		
 		/// <summary>
 		/// Return true to handle the keypress, return false to let the text area handle the keypress
 		/// </summary>
@@ -637,35 +717,7 @@ namespace VVVV.HDE.CodeEditor
 					}
 				}
 				
-				if (FCompletionProvider.TriggersCompletionWindow(FTextEditorControl, key))
-				{
-					var textAreaControl = FTextEditorControl.ActiveTextAreaControl;
-					
-					// Delete selected text (which will be overwritten anyways) before starting completion.
-					if (textAreaControl.SelectionManager.HasSomethingSelected) {
-						// allow code completion when overwriting an identifier
-						int cursor = textAreaControl.SelectionManager.SelectionCollection[0].Offset;
-						int endOffset = textAreaControl.SelectionManager.SelectionCollection[0].EndOffset;
-						// but block code completion when overwriting only part of an identifier
-						if (endOffset < SDDocument.TextLength && char.IsLetterOrDigit(SDDocument.GetCharAt(endOffset)))
-							return false;
-						textAreaControl.SelectionManager.RemoveSelectedText();
-						textAreaControl.Caret.Position = SDDocument.OffsetToPosition(cursor);
-					}
-					
-					FCodeCompletionWindow = CodeCompletionWindow.ShowCompletionWindow(
-						FCodeEditorForm,					// The parent window for the completion window
-						FTextEditorControl, 					// The text editor to show the window for
-						Document.Location.LocalPath,		// Filename - will be passed back to the provider
-						FCompletionProvider,		// Provider to get the list of possible completions
-						key							// Key pressed - will be passed to the provider
-					);
-					if (FCodeCompletionWindow != null)
-					{
-						// ShowCompletionWindow can return null when the provider returns an empty list
-						FCodeCompletionWindow.Closed += CloseCodeCompletionWindow;
-					}
-				}
+				FCompletionBinding.HandleKeyPress(this, key);
 			}
 			finally
 			{
@@ -682,6 +734,16 @@ namespace VVVV.HDE.CodeEditor
 				FCodeCompletionWindow.Closed -= CloseCodeCompletionWindow;
 				FCodeCompletionWindow.Dispose();
 				FCodeCompletionWindow = null;
+			}
+		}
+		
+		void CloseInsightWindow(object sender, EventArgs e)
+		{
+			if (FInsightWindow != null)
+			{
+				FInsightWindow.Closed -= CloseInsightWindow;
+				FInsightWindow.Dispose();
+				FInsightWindow = null;
 			}
 		}
 		

@@ -72,11 +72,6 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
 			}
 		}
 		
-		public override bool TriggersCompletionWindow(TextEditorControl editorControl, char key)
-		{
-			return char.IsLetter(key) || key == '.';
-		}
-		
 		public override ICompletionData[] GenerateCompletionData(string fileName, TextArea textArea, char charTyped)
 		{
 			// We can return code-completion items like this:

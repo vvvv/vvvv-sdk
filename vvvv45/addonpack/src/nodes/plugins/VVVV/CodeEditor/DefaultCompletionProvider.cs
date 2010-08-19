@@ -8,7 +8,7 @@ namespace VVVV.HDE.CodeEditor
 	/// <summary>
 	/// Used by the CompletionWindow.
 	/// </summary>
-	public class DefaultCompletionProvider : ICompletionProvider
+	public class DefaultCompletionProvider : ICompletionDataProvider
 	{
 		public DefaultCompletionProvider()
 		{
@@ -83,11 +83,6 @@ namespace VVVV.HDE.CodeEditor
 		public virtual ICompletionData[] GenerateCompletionData(string fileName, TextArea textArea, char charTyped)
 		{
 			return new ICompletionData[0];
-		}
-		
-		public virtual bool TriggersCompletionWindow(TextEditorControl editorControl, char key)
-		{
-			return false;
 		}
 	}
 }
