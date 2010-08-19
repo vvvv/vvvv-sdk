@@ -144,11 +144,12 @@ namespace VVVV.Nodes
 				Info.Category = "Devices";
 				Info.Version = "";
 				Info.Help = "Every ";
-				Info.Bugs = "No Calibration for the Extensions implemented yet.";
+				Info.Bugs = "No Calibration for the Extensions implemented yet. / VVVV Crushes if the Connection to the Controler is lost";
 				Info.Credits = "Plugin Port: velcrome@gmx.net \n" +
 					"Basic Wiimotelib: http://www.brianpeek.com";
 				Info.Warnings = "Not throughly tested yet";
-				
+                Info.Tags = "Wii,Controler";
+
 				//leave below as is
 				System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
 				System.Diagnostics.StackFrame sf = st.GetFrame(0);
@@ -338,9 +339,12 @@ namespace VVVV.Nodes
 
 					FHost.CreateValueOutput("Balance Board Weight (kg)", 1, null, TSliceMode.Single, TPinVisibility.True, out FPinOutputExtButtons);
 					FPinOutputExtButtons.SetSubType(0, double.MaxValue, 1, 0, false, false, false);
-					
-					FHost.CreateValueOutput("Balance Board Corners", 4, new string[4]{"TL", "TR", "BL", "BR"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtAccelleration);
-					FPinOutputExtAccelleration.SetSubType4D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, 0, false, false, false);
+
+                    FHost.CreateValueOutput("Balance Board Corners", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtAccelleration);
+                    FPinOutputExtAccelleration.SetSubType(double.MinValue, double.MaxValue, 0.0001, 0, false, false, false);
+
+					//FHost.CreateValueOutput("Balance Board Corners", 4, new string[4]{"TL", "TR", "BL", "BR"}, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtAccelleration);
+					//FPinOutputExtAccelleration.SetSubType4D(double.MinValue, double.MaxValue, 0.0001, 0, 0, 0, 0, false, false, false);
 					
 					FHost.CreateValueOutput("Balance Board Center Of Gravity", 2, null, TSliceMode.Dynamic, TPinVisibility.True, out FPinOutputExtJoystickLeft);
 					FPinOutputExtJoystickLeft.SetSubType2D(-1, 1, 0.0001, 0, 0, false, false, false);
@@ -637,11 +641,16 @@ namespace VVVV.Nodes
 		}
 		
 		private void BalanceBoard () {
-			FPinOutputExtButtons.SliceCount = 1;
 			FPinOutputExtButtons.SetValue(0, FRemote.WiimoteState.BalanceBoardState.WeightKg);
 
-			FPinOutputExtAccelleration.SliceCount = 1;
-			FPinOutputExtAccelleration.SetValue4D(0, FRemote.WiimoteState.BalanceBoardState.SensorValuesKg.TopLeft, FRemote.WiimoteState.BalanceBoardState.SensorValuesKg.TopRight, FRemote.WiimoteState.BalanceBoardState.SensorValuesKg.BottomLeft, FRemote.WiimoteState.BalanceBoardState.SensorValuesKg.BottomRight);
+            FPinOutputExtAccelleration.SliceCount = 4;
+            FPinOutputExtAccelleration.SetValue(0, FRemote.WiimoteState.BalanceBoardState.SensorValuesKg.TopLeft);
+            FPinOutputExtAccelleration.SetValue(1, FRemote.WiimoteState.BalanceBoardState.SensorValuesKg.TopRight);
+            FPinOutputExtAccelleration.SetValue(2, FRemote.WiimoteState.BalanceBoardState.SensorValuesKg.BottomLeft);
+            FPinOutputExtAccelleration.SetValue(3, FRemote.WiimoteState.BalanceBoardState.SensorValuesKg.BottomRight);
+
+			//FPinOutputExtAccelleration.SliceCount = 1;
+			//FPinOutputExtAccelleration.SetValue4D(0, FRemote.WiimoteState.BalanceBoardState.SensorValuesKg.TopLeft, FRemote.WiimoteState.BalanceBoardState.SensorValuesKg.TopRight, FRemote.WiimoteState.BalanceBoardState.SensorValuesKg.BottomLeft, FRemote.WiimoteState.BalanceBoardState.SensorValuesKg.BottomRight);
 			
 			FPinOutputExtJoystickLeft.SliceCount = 1;
 			FPinOutputExtJoystickLeft.SetValue2D(0, FRemote.WiimoteState.BalanceBoardState.CenterOfGravity.X*2, FRemote.WiimoteState.BalanceBoardState.CenterOfGravity.Y*2);
