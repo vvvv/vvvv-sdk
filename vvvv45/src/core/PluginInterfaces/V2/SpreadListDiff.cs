@@ -3,31 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2.Config;
-
 namespace VVVV.PluginInterfaces.V2
 {
-	public abstract class SpreadListBase
-	{
-		protected static int FInstanceCounter = 1;
-	}
-	
 	/// <summary>
-	/// base class for spread lists
+	/// base class for diff spread lists
 	/// </summary>
-	public abstract class SpreadList<T> : SpreadListBase, ISpread<ISpread<T>>
+	public abstract class SpreadListDiff<T> : SpreadListBase, IDiffSpread<ISpread<T>>
 	{
-		protected ISpread<T>[] FPins;
+		protected IDiffSpread<T>[] FPins;
 		protected IPluginHost FHost;
 		protected PinAttribute FAttribute;
 		protected IntConfigPin FConfigPin;
 		protected int FOffsetCounter;
+		protected int FUpdateCounter;
 		
-		public SpreadList(IPluginHost host, PinAttribute attribute)
+		public SpreadListDiff(IPluginHost host, PinAttribute attribute)
 		{
 			//store fields
 			FHost = host;
 			FAttribute = attribute;
-			FPins = new ISpread<T>[0];
+			FPins = new IDiffSpread<T>[0];
 			
 			//create config pin
 			var att = new ConfigAttribute(FAttribute.Name + " Pin Count");
@@ -54,7 +49,7 @@ namespace VVVV.PluginInterfaces.V2
 				var oldPins = FPins;
 				
 				//create new array
-				FPins = new ISpread<T>[count];
+				FPins = new IDiffSpread<T>[count];
 				
 				//copy/create pins
 				for (int i = 0; i<count; i++)
@@ -72,7 +67,7 @@ namespace VVVV.PluginInterfaces.V2
 				var oldPins = FPins;
 				
 				//create new array
-				FPins = new ISpread<T>[count];
+				FPins = new IDiffSpread<T>[count];
 				
 				//copy/delete pins
 				for (int i = 0; i<oldPins.Length; i++)
@@ -80,18 +75,32 @@ namespace VVVV.PluginInterfaces.V2
 					if (i < FPins.Length)
 						FPins[i] = oldPins[i];
 					else	
-						DeletePin((oldPins[i] as IPluginIOProvider).PluginIO);
+						DeletePin((oldPins[i] as ObservablePin<T>));
 				}
 			}
 		}
+
+		protected void SpreadListDiff_Changed(ISpread<T> spread)
+		{
+			FUpdateCounter++;
+			if(FUpdateCounter >= FPins.Length)
+			{
+				if (IsChanged && Changed != null) 
+					Changed(this);
+				
+				FUpdateCounter = 0;
+			}
+			
+		}
 		
 		//the actual pin creation
-		protected abstract ISpread<T> CreatePin(int pos);
+		protected abstract IDiffSpread<T> CreatePin(int pos);
 		
 		//delete a specific pin
-		protected void DeletePin(IPluginIO pin)
+		protected void DeletePin(ObservablePin<T> pin)
 		{
-			FHost.DeletePin(pin);
+			pin.Updated -= SpreadListDiff_Changed;
+			FHost.DeletePin(pin.PluginIO);
 		}
 		
 		public ISpread<T> this[int index]
@@ -126,6 +135,21 @@ namespace VVVV.PluginInterfaces.V2
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
+		}
+		
+		public event SpreadChangedEventHander<ISpread<T>> Changed;
+		
+		public bool IsChanged 
+		{
+			get 
+			{
+				for (int i = 0; i<FPins.Length; i++)
+				{
+					if (FPins[i].IsChanged) return true;
+				}
+				
+				return false;
+			}
 		}
 	}
 }

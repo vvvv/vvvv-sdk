@@ -24,6 +24,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			
 			double minValue, maxValue, stepSize;
 			bool isInteger = true;
+			bool isBool = type == typeof(bool);
 			
 			LoadDefaultValues(type, attribute, out FDimension, out minValue, out maxValue, out stepSize, out isInteger);
 			
@@ -40,7 +41,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 					FValueIn.SetSubType4D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], attribute.DefaultValues[3], false, false, isInteger);
 					break;
 				default:
-					FValueIn.SetSubType(minValue, maxValue, stepSize, attribute.DefaultValue, false, false, isInteger);
+					FValueIn.SetSubType(minValue, maxValue, stepSize, attribute.DefaultValue, isBool && attribute.IsBang, isBool && !attribute.IsBang, isInteger);
 					break;
 			}
 			
