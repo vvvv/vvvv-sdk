@@ -33,11 +33,13 @@ namespace VVVV.PluginInterfaces.V2
 			var att = new ConfigAttribute(FAttribute.Name + " Pin Count");
 			att.DefaultValue = 2;
 			
+			//increment instance Counter and store it as pin offset
+			FOffsetCounter = FInstanceCounter++;
+			
 			FConfigPin = new IntConfigPin(FHost, att);
 			FConfigPin.Updated += new PinUpdatedEventHandler<int>(UpdatePins);
 			
-			//increment instance Counter and store it as pin offset
-			FOffsetCounter = FInstanceCounter++;
+			FConfigPin.Update();	
 		}
 		
 		//pin management
