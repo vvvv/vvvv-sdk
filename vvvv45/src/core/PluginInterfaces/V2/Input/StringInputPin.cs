@@ -5,7 +5,7 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.Input
 {
-	public class StringInputPin : DiffPin<string>
+	public class StringInputPin : DiffPin<string>, IPinUpdater
 	{
 		protected IStringIn FStringIn;
 		protected bool FIsPath;
@@ -17,6 +17,8 @@ namespace VVVV.PluginInterfaces.V2.Input
 			FStringIn.SetSubType2(attribute.DefaultString, attribute.MaxChars, attribute.FileMask, (TStringType)attribute.StringType);
 			
 			FIsPath = (attribute.StringType == StringType.Directory) || (attribute.StringType == StringType.Filename);
+			
+			FStringIn.SetPinUpdater(this);
 		}
 		
 		public override IPluginIO PluginIO
