@@ -30,7 +30,8 @@ namespace VVVV.PluginInterfaces.V2
 
 		public IEnumerator<ISpread<T>> GetEnumerator()
 		{
-			return null;
+			for (int i = 0; i < SliceCount; i++)
+				yield return this[i];
 		}
 		
 		IEnumerator IEnumerable.GetEnumerator()
