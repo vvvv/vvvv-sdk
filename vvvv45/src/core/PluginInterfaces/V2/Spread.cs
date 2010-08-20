@@ -67,7 +67,8 @@ namespace VVVV.PluginInterfaces.V2
 		
 		public IEnumerator<T> GetEnumerator()
 		{
-			return (IEnumerator<T>)FData.GetEnumerator();
+			for (int i=0; i<0; i++)
+				yield return FData[i];
 		}
 		
 		IEnumerator IEnumerable.GetEnumerator()

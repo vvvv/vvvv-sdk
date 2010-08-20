@@ -129,7 +129,8 @@ namespace VVVV.PluginInterfaces.V2
 
 		public IEnumerator<ISpread<T>> GetEnumerator()
 		{
-			return (IEnumerator<ISpread<T>>)FPins.GetEnumerator();
+			for (int i=0; i<FPins.Length; i++)
+				yield return FPins[i];
 		}
 		
 		IEnumerator IEnumerable.GetEnumerator()
