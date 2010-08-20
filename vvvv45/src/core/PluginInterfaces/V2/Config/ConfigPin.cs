@@ -3,7 +3,7 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.Config
 {
-	public abstract class ConfigPin<T> : ObservablePin<T>
+	public abstract class ConfigPin<T> : DiffPin<T>
 	{
 		protected bool FIsChanged;
 		
