@@ -22,7 +22,7 @@ namespace VVVV.PluginInterfaces.V2
 			{
 				Debug.WriteLine(string.Format("Creating input diff spread list '{0}'.", attribute.Name));
 
-				FSpreadListDiff = new InputSpreadListDiff<T>(host, attribute as InputAttribute) as IDiffSpread<ISpread<T>>;
+				FSpreadListDiff = new DiffInputSpreadList<T>(host, attribute as InputAttribute) as IDiffSpread<ISpread<T>>;
 				
 			}
 			else
