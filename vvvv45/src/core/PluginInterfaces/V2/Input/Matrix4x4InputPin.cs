@@ -7,7 +7,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.PluginInterfaces.V2.Input
 {
-	public class Matrix4x4InputPin : ObservablePin<Matrix4x4>, IPinUpdater
+	public class Matrix4x4InputPin : DiffPin<Matrix4x4>, IPinUpdater
 	{
 		protected ITransformIn FTransformIn;
 		protected int FSliceCount;

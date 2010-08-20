@@ -6,8 +6,8 @@ namespace VVVV.PluginInterfaces.V2.Input
 {
 	public class InputBinSpread<T> : BinSpread<T>
 	{
-		protected ObservablePin<int> FBinSize;
-		protected ObservableInputWrapperPin<T> FSpreadPin;
+		protected DiffPin<int> FBinSize;
+		protected DiffInputWrapperPin<T> FSpreadPin;
 		protected ISpread<ISpread<T>> FSpreads;
 		protected bool FSpreadsBuilt;
 		protected int FUpdateCount;
@@ -16,13 +16,13 @@ namespace VVVV.PluginInterfaces.V2.Input
 			: base(host, attribute)
 		{
 			//data pin
-			FSpreadPin = new ObservableInputWrapperPin<T>(host, attribute);
-			FSpreadPin.ObservablePin.Updated += new PinUpdatedEventHandler<T>(FSpreadPin_Updated);
+			FSpreadPin = new DiffInputWrapperPin<T>(host, attribute);
+			FSpreadPin.Pin.Updated += new PinUpdatedEventHandler<T>(FSpreadPin_Updated);
 			
 			//bin size pin
 			var att = new InputAttribute(attribute.Name + " Bin Size");
 			att.DefaultValue = -1;
-			FBinSize = new ObservableIntInputPin(host, att);
+			FBinSize = new DiffIntInputPin(host, att);
 			FBinSize.Updated += new PinUpdatedEventHandler<int>(FBinSize_Updated);
 			
 			FSpreads = new Spread<ISpread<T>>(0);

@@ -91,9 +91,9 @@ namespace VVVV.PluginInterfaces.V2.Input
 		}
 	}
 	
-	public class ObservableVector2DInputPin : ObservableValueInputPin<Vector2D>
+	public class DiffVector2DInputPin : DiffValueInputPin<Vector2D>
 	{
-		public ObservableVector2DInputPin(IPluginHost host, InputAttribute attribute)
+		public DiffVector2DInputPin(IPluginHost host, InputAttribute attribute)
 			:base(host, attribute)
 		{
 		}
@@ -120,9 +120,9 @@ namespace VVVV.PluginInterfaces.V2.Input
 		}
 	}
 	
-	public class ObservableVector3DInputPin : ObservableValueInputPin<Vector3D>
+	public class DiffVector3DInputPin : DiffValueInputPin<Vector3D>
 	{
-		public ObservableVector3DInputPin(IPluginHost host, InputAttribute attribute)
+		public DiffVector3DInputPin(IPluginHost host, InputAttribute attribute)
 			:base(host, attribute)
 		{
 		}
@@ -149,9 +149,9 @@ namespace VVVV.PluginInterfaces.V2.Input
 		}
 	}
 	
-	public class ObservableVector4DInputPin : ObservableValueInputPin<Vector4D>
+	public class DiffVector4DInputPin : DiffValueInputPin<Vector4D>
 	{
-		public ObservableVector4DInputPin(IPluginHost host, InputAttribute attribute)
+		public DiffVector4DInputPin(IPluginHost host, InputAttribute attribute)
 			:base(host, attribute)
 		{
 		}

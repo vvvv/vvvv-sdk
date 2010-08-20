@@ -3,7 +3,7 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.Input
 {
-	public class EnumInputPin<T> : ObservablePin<T>
+	public class EnumInputPin<T> : DiffPin<T>
 	{
 		protected IEnumIn FEnumInputPin;
 		protected Type FEnumType;

@@ -5,7 +5,7 @@ using VVVV.Utils.VColor;
 
 namespace VVVV.PluginInterfaces.V2.Input
 {
-	public class ColorInputPin : ObservablePin<RGBAColor>, IPinUpdater
+	public class ColorInputPin : DiffPin<RGBAColor>, IPinUpdater
 	{
 		protected IColorIn FColorIn;
 		protected int FSliceCount;

@@ -24,9 +24,9 @@ namespace VVVV.PluginInterfaces.V2.Input
 		}
 	}
 	
-	public class ObservableIntInputPin : ObservableValueInputPin<int>
+	public class DiffIntInputPin : DiffValueInputPin<int>
 	{
-		public ObservableIntInputPin(IPluginHost host, InputAttribute attribute)
+		public DiffIntInputPin(IPluginHost host, InputAttribute attribute)
 			:base(host, attribute)
 		{
 		}

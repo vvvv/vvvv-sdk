@@ -6,7 +6,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.PluginInterfaces.V2.Input
 {
-	public class SlimDXMatrixInputPin : ObservablePin<Matrix>, IPinUpdater
+	public class SlimDXMatrixInputPin : DiffPin<Matrix>, IPinUpdater
 	{
 		protected ITransformIn FTransformIn;
 		protected int FSliceCount;

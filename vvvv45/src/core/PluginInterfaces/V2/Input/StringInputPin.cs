@@ -5,7 +5,7 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.Input
 {
-	public class StringInputPin : ObservablePin<string>
+	public class StringInputPin : DiffPin<string>
 	{
 		protected IStringIn FStringIn;
 		protected bool FIsPath;

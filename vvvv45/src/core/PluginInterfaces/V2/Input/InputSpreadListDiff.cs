@@ -3,7 +3,7 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.Input
 {
-	public class InputSpreadListDiff<T> : SpreadListDiff<T>
+	public class InputSpreadListDiff<T> : DiffSpreadList<T>
 	{
 		public InputSpreadListDiff(IPluginHost host, InputAttribute attribute)
 			: base(host, attribute)
@@ -17,7 +17,7 @@ namespace VVVV.PluginInterfaces.V2.Input
 			var origName = FAttribute.Name;
 			FAttribute.Name = origName + " " + pos;
 			
-			var ret	= new ObservableInputWrapperPin<T>(FHost, FAttribute as InputAttribute).ObservablePin;
+			var ret	= new DiffInputWrapperPin<T>(FHost, FAttribute as InputAttribute).DiffPin;
 			ret.PluginIO.Order = FOffsetCounter * 1000 + pos;
 			ret.Updated += SpreadListDiff_Changed;
 			

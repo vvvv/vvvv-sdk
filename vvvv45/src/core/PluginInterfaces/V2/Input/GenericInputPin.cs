@@ -3,7 +3,7 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.Input
 {
-	public class GenericInputPin<T> : ObservablePin<T>, IPinUpdater
+	public class GenericInputPin<T> : DiffPin<T>, IPinUpdater
 	{
 		protected INodeIn FNodeIn;
 		protected IGenericIO<T> FUpstreamInterface;
