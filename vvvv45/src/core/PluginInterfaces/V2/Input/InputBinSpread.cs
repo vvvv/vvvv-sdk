@@ -88,9 +88,8 @@ namespace VVVV.PluginInterfaces.V2.Input
 		protected void DivideByConst(int size)
 		{
 			int slices;
-			var mod = FSpreadPin.SliceCount % size;
 			
-			if (mod == 0)
+			if (FSpreadPin.SliceCount % size == 0)
 			{
 				slices = FSpreadPin.SliceCount / size;
 			}
@@ -119,9 +118,8 @@ namespace VVVV.PluginInterfaces.V2.Input
 			size = (int)VMath.Abs(size);
 			
 			int slices;
-			var mod = FSpreadPin.SliceCount % size;
-			
-			if (mod == 0)
+
+			if (FSpreadPin.SliceCount % size == 0)
 			{
 				slices = FSpreadPin.SliceCount / size;
 			}

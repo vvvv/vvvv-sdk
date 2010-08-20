@@ -29,25 +29,25 @@ namespace VVVV.PluginInterfaces.V2.Output
 			FSpreads[0] = new Spread<T>(1);
 		}
 
+		void Any_Updated()
+		{
+			if (FUpdateCount == 0)			
+				BuildSpreads();
+			
+			FUpdateCount++;
+
+			if (FUpdateCount >= 2)
+				FUpdateCount = 0;			
+		}
+
 		void FBinSize_Updated(Pin<int> pin)
 		{
-			FUpdateCount++;
-			if (FUpdateCount > 1)
-			{
-				FUpdateCount = 0;
-				BuildSpreads();
-				
-			}
+			Any_Updated();
 		}
 
 		void FSpreadPin_Updated(Pin<T> pin)
 		{
-			FUpdateCount++;
-			if (FUpdateCount > 1)
-			{
-				FUpdateCount = 0;
-				BuildSpreads();
-			}
+			Any_Updated();
 		}
 
 		void BuildSpreads()
@@ -100,7 +100,7 @@ namespace VVVV.PluginInterfaces.V2.Output
 				{
 					FSpreads.SliceCount = value;
 					
-					for (int i =0; i<FSpreads.SliceCount; i++) 
+					for (int i = 0; i<FSpreads.SliceCount; i++) 
 					{
 						FSpreads[i] = new Spread<T>(0);
 					}
