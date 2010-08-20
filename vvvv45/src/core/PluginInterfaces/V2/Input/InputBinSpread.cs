@@ -154,15 +154,13 @@ namespace VVVV.PluginInterfaces.V2.Input
 				binSum += bins[i];
 			}
 			
-			var slices = 0;
-			if (binSum > 0)
-			{
-				binSum = 0;
-				while (binSum < FSpreadPin.SliceCount)
-				{
-					binSum += bins[slices++];
-				}
-			}
+			int binTimes = 1;
+			if(FSpreadPin.SliceCount % binSum == 0)
+				binTimes = FSpreadPin.SliceCount / binSum;
+			else
+				binTimes = FSpreadPin.SliceCount / binSum + 1;
+				
+			var slices = binTimes * bins.SliceCount;
 			
 			FSpreads.SliceCount = slices;
 			
