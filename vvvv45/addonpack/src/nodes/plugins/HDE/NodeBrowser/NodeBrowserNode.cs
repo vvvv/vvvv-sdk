@@ -45,7 +45,6 @@ namespace VVVV.Nodes.NodeBrowser
         //further fields
         private bool FNeedsUpdate = true;
         private bool FAllowDragDrop = true;
-        private bool FAllowUpdate = true;
         CategoryList FCategoryList = new CategoryList();
         Dictionary<string, string> FCategoryDict = new Dictionary<string, string>();
         List<string> FNodeList = new List<string>();
@@ -54,15 +53,12 @@ namespace VVVV.Nodes.NodeBrowser
         private string[] FTags = new string[0];
         Dictionary<string, INodeInfo> FNodeDict = new Dictionary<string, INodeInfo>();
         private bool FAndTags = true;
-        private int FSelectedLine = -1;
-        private int FHoverLine = -1;
+        private int FHoverLine;
         private Point FLastMouseHoverLocation = new Point(0, 0);
-        private string FManualEntry = "";
         private int FVisibleLines = 16;
         private string FPath;
         private string FPathDir;
         private ToolTip FToolTip = new ToolTip();
-        private bool FShowHover = false;
         private int FNodeFilter;
         
         private Color CLabelColor = Color.FromArgb(255, 154, 154, 154);
@@ -367,14 +363,13 @@ namespace VVVV.Nodes.NodeBrowser
             FPath = path;
             FPathDir = Path.GetDirectoryName(path);
 
-            if (!string.IsNullOrEmpty(text))
-                FManualEntry = text.Trim();
-            else
-                FManualEntry = "";
-            FTagsTextBox.Text = FManualEntry;
+            if (string.IsNullOrEmpty(text))
+                FTagsTextBox.Text = "";
+            else 
+                FTagsTextBox.Text = text.Trim();
+
             FTagsTextBox.SelectAll();
             
-            FSelectedLine = -1;
             FHoverLine = -1;
             
             //init view
@@ -384,6 +379,8 @@ namespace VVVV.Nodes.NodeBrowser
                 FCategoryTreeViewer.Reload();
                 FNeedsUpdate = false;
             }
+            
+            RedrawAwesomeSelection();
         }
         
         public void AfterShow()
@@ -403,9 +400,11 @@ namespace VVVV.Nodes.NodeBrowser
         
         private void CreateNode()
         {
-            string text = FTagsTextBox.Text.Trim();
+            string text = ""; 
             try
             {
+                text = FRichTextBox.Lines[FHoverLine].Trim();
+            
                 INodeInfo selNode = FNodeDict[text];
                 if (Control.ModifierKeys == Keys.Control)
                     NodeBrowserHost.CreateNode(selNode, true);
@@ -414,10 +413,10 @@ namespace VVVV.Nodes.NodeBrowser
             }
             catch
             {
-                if ((text.Contains(".v4p")) || (text.Contains(".fx")) || (text.Contains(".dll")))
+                if ((text.EndsWith(".v4p")) || (text.EndsWith(".fx")) || (text.EndsWith(".dll")))
                     NodeBrowserHost.CreateNodeFromFile(Path.Combine(FPathDir, text));
-                else
-                    NodeBrowserHost.CreateComment(FTagsTextBox.Text);
+                else      
+                    NodeBrowserHost.CreateComment(FTagsTextBox.Text.Trim());
             }
         }
         #endregion INodeBrowser
@@ -526,17 +525,17 @@ namespace VVVV.Nodes.NodeBrowser
         {
             FTagsTextBox.Height = Math.Max(20, FTagsTextBox.Lines.Length * CLineHeight + 7);
             
-            if (FAllowUpdate)
-            {
+            //saving the last manual entry for recovery when stepping through list and reaching index -1 again
+            FToolTip.Hide(FRichTextBox);
+            
+            UpdateOutput();
+            
+            if (FRichTextBox.Lines.Length > 0)
+                FHoverLine = 0;
+            else
                 FHoverLine = -1;
-                FShowHover = false;
-                
-                //saving the last manual entry for recovery when stepping through list and reaching index -1 again
-                FManualEntry = FTagsTextBox.Text;
-                FToolTip.Hide(FRichTextBox);
-                
-                UpdateOutput();
-            }
+            
+            RedrawAwesomeSelection();
         }
 
         void TextBoxTagsKeyDown(object sender, KeyEventArgs e)
@@ -551,9 +550,12 @@ namespace VVVV.Nodes.NodeBrowser
             else if ((FTagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Down))
             {
                 FHoverLine += 1;
-                //if this is exceeding the FSelectionList.Count -> reset to manually entered tags
+                //if this is exceeding the FSelectionList.Count -> jump to line 0
                 if (FHoverLine + ScrolledLine >= FSelectionList.Count)
-                    ResetToManualEntry();
+                {
+                    FHoverLine = 0;
+                    ScrolledLine = 0;
+                }
                 //if this is exceeding the currently visible lines -> scroll down a line
                 else if (FHoverLine >= FVisibleLines)
                 {
@@ -561,41 +563,35 @@ namespace VVVV.Nodes.NodeBrowser
                     FHoverLine = FVisibleLines - 1;
                 }
                 
-                FShowHover = true;
-                RedrawAwesomeSelection(true);
+                RedrawAwesomeSelection();
                 ShowToolTip();
             }
             else if ((FTagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Up))
             {
                 FHoverLine -= 1;
-                //if we are now < -1 -> jump to last entry
-                if (FHoverLine < -1)
-                {
-                    FHoverLine = Math.Min(FSelectionList.Count, FVisibleLines) - 1;
-                    ScrolledLine = FSelectionList.Count;
-                }
-                //if we are now at -1 -> reset to manually entered tags
-                else if ((FHoverLine == -1) && (ScrolledLine == 0))
-                    ResetToManualEntry();
                 //if this is exceeding the currently visible lines -> scroll up a line
-                else if ((FHoverLine == -1) && (ScrolledLine > 0))
+                if ((FHoverLine == -1) && (ScrolledLine > 0))
                 {
                     ScrolledLine -= 1;
                     FHoverLine = 0;
                 }
+                //if we are now < 0 -> jump to last entry
+                else if (FHoverLine < 0)
+                {
+                    FHoverLine = Math.Min(FSelectionList.Count, FVisibleLines) - 1;
+                    ScrolledLine = FSelectionList.Count;
+                }
                 
-                FShowHover = true;
-                RedrawAwesomeSelection(true);
+                RedrawAwesomeSelection();
                 ShowToolTip();
             }
             else if ((e.KeyCode == Keys.Left) || (e.KeyCode == Keys.Right))
             {
                 if (FHoverLine != -1)
                 {
-                    FSelectedLine = -1;
                     FHoverLine = -1;
                     FTagsTextBox.SelectionStart = FTagsTextBox.Text.Length;
-                    RedrawAwesomeSelection(true);
+                    RedrawAwesomeSelection();
                 }
             }
             else if ((e.Control) && (e.KeyCode == Keys.A))
@@ -606,11 +602,7 @@ namespace VVVV.Nodes.NodeBrowser
         
         void TextBoxTagsMouseDown(object sender, MouseEventArgs e)
         {
-            FSelectedLine = -1;
-            FHoverLine = -1;
-            FShowHover = false;
-            
-            RedrawAwesomeSelection(true);
+            RedrawAwesomeSelection();
         }
         
         void FTagsTextBoxMouseUp(object sender, MouseEventArgs e)
@@ -639,25 +631,12 @@ namespace VVVV.Nodes.NodeBrowser
             if (ScrolledLine < 0)
                 return;
             
-            FShowHover = true;
-            RedrawAwesomeSelection(false);
-        }
-        
-        private void ResetToManualEntry()
-        {
-            FTagsTextBox.Text = FManualEntry;
-            FTagsTextBox.SelectionStart = FManualEntry.Length;
-            FHoverLine = -1;
-            ScrolledLine = 0;
-            
+            RedrawAwesomeSelection();
         }
         #endregion TextBoxTags
         
         void RichTextBoxMouseDown(object sender, MouseEventArgs e)
         {
-            if (FHoverLine < 0)
-                return;
-            
             string username = FRichTextBox.Lines[FHoverLine].Trim();
             FRichTextBox.SelectionStart = FRichTextBox.GetFirstCharIndexFromLine(FHoverLine)+1;
             FTagsTextBox.Focus();
@@ -673,7 +652,6 @@ namespace VVVV.Nodes.NodeBrowser
             //popped up on doubleclick
             if (e.Button == MouseButtons.Left)
             {
-                FSelectedLine = FHoverLine;
                 FTagsTextBox.Text = username;
                 CreateNode();
             }
@@ -700,10 +678,8 @@ namespace VVVV.Nodes.NodeBrowser
                 FLastMouseHoverLocation = e.Location;
                 FHoverLine = newHoverLine;
                 ShowToolTip();
-                RedrawAwesomeSelection(false);
+                RedrawAwesomeSelection();
             }
-            
-            FShowHover = true;
         }
         
         void RichTextBoxMouseUp(object sender, MouseEventArgs e)
@@ -1079,7 +1055,7 @@ namespace VVVV.Nodes.NodeBrowser
             ScrolledLine = 0;
         }
         
-        private void RedrawAwesomeSelection(bool updateTags)
+        private void RedrawAwesomeSelection()
         {
             //clear old selection
             FRichTextBox.SelectionBackColor = Color.Silver;
@@ -1091,13 +1067,6 @@ namespace VVVV.Nodes.NodeBrowser
                 FRichTextBox.SelectionStart = FRichTextBox.Text.IndexOf(sel);
                 FRichTextBox.SelectionLength = sel.Length;
                 FRichTextBox.SelectionBackColor = CHoverColor;
-                if (updateTags)
-                {
-                    FAllowUpdate = false;
-                    FTagsTextBox.Text = sel.Trim();
-                    FAllowUpdate = true;
-                    FTagsTextBox.SelectionStart = FTagsTextBox.Text.Length;
-                }
             }
             
             //make sure the selection is also drawn in the NodeTypePanel
@@ -1122,7 +1091,6 @@ namespace VVVV.Nodes.NodeBrowser
             FScrolledLine = FScrollBar.Value;
             UpdateRichTextBox();
             FToolTip.Hide(FRichTextBox);
-            FShowHover = false;
         }
         
         void FNodeTypePanelPaint(object sender, PaintEventArgs e)
@@ -1135,7 +1103,7 @@ namespace VVVV.Nodes.NodeBrowser
                 int index = i + ScrolledLine;
                 int y = (i * CLineHeight) + 4;
                 
-                if ((FHoverLine == i) && (FShowHover))
+                if (FHoverLine == i)
                     using (SolidBrush b = new SolidBrush(CHoverColor))
                         e.Graphics.FillRectangle(b, new Rectangle(0, y-4, 21, CLineHeight));
                 
