@@ -496,7 +496,7 @@ namespace VVVV.Nodes.Kommunikator
             NameValueCollection nvc = new NameValueCollection();
             nvc.Add("name", UsernameTextBox.Text);
             nvc.Add("pass", FStringHasher.ToMD5(PasswordTextBox.Text));
-            nvc.Add("header", (UseAsHeaderCheckBox.Enabled && UseAsHeaderCheckBox.Checked).ToString());
+            nvc.Add("header", (UseAsHeaderCheckBox.Enabled && UseAsHeaderCheckBox.Checked).ToString().ToLower());
             nvc.Add("title", ScreenshotTitleTextBox.Text);
             nvc.Add("description", ScreenshotDescriptionTextBox.Text);
 
