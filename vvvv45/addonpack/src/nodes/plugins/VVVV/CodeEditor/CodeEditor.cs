@@ -249,6 +249,15 @@ namespace VVVV.HDE.CodeEditor
 				if(disposing)
 				{
 					// Dispose managed resources.
+					CloseCodeCompletionWindow(this, EventArgs.Empty);
+					CloseInsightWindow(this, EventArgs.Empty);
+					
+					if (FSearchBar != null)
+					{
+						FSearchBar.Dispose();
+						FSearchBar = null;
+					}
+					
 					if (FTextEditorControl != null)
 					{
 						FTextEditorControl.TextChanged -= TextEditorControlTextChangedCB;
@@ -267,6 +276,9 @@ namespace VVVV.HDE.CodeEditor
 						{
 							FTextEditorControl.ActiveTextAreaControl.TextArea.ToolTipRequest -= OnToolTipRequest;
 						}
+						
+						FTextEditorControl.Dispose();
+						FTextEditorControl = null;
 					}
 					
 					if (Document != null)
@@ -279,15 +291,16 @@ namespace VVVV.HDE.CodeEditor
 							var csDoc = Document as CSDocument;
 							csDoc.ParseCompleted -= CSDocument_ParseCompleted;
 						}
+						
+						Document = null;
 					}
 					
 					if (FTimer != null)
 					{
 						FTimer.Tick -= TimerTickCB;
 						FTimer.Dispose();
+						FTimer = null;
 					}
-					
-					FTextEditorControl.Dispose();
 				}
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.

@@ -47,6 +47,11 @@
   <ItemGroup>
     <Reference Include="ICSharpCode.NRefactory">
       <HintPath>Dependencies\ICSharpCode.NRefactory.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpDevelop.Dom">
+      <HintPath>Dependencies\ICSharpCode.SharpDevelop.Dom.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ICSharpCode.TextEditor">
       <HintPath>Dependencies\ICSharpCode.TextEditor.dll</HintPath>
@@ -67,8 +72,13 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="VVVV.Core">
+      <HintPath>..\..\_lib\vvvv\VVVV.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="VVVV.HDE.Viewer.WinFormsViewer">
       <HintPath>..\..\_lib\vvvv\VVVV.HDE.Viewer.WinFormsViewer.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="VVVV.PluginInterfaces">
       <HintPath>..\..\_lib\vvvv\VVVV.PluginInterfaces.dll</HintPath>
@@ -88,6 +98,10 @@
     <Compile Include="DefaultCompletionProvider.cs" />
     <Compile Include="ErrorView\ErrorCollectionColumnProvider.cs" />
     <Compile Include="ErrorView\ErrorCellProvider.cs" />
+    <Compile Include="Gui\Dialogs\SaveDialog.cs" />
+    <Compile Include="Gui\Dialogs\SaveDialog.Designer.cs">
+      <DependentUpon>SaveDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\SearchBar\SearchBar.cs" />
     <Compile Include="ICompletionBinding.cs" />
     <Compile Include="IDocumentLocator.cs" />
@@ -113,18 +127,13 @@
     <EmbeddedResource Include="CodeEditorForm.resx">
       <DependentUpon>CodeEditorForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Dialogs\SaveDialog.resx">
+      <DependentUpon>SaveDialog.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\SharpDevelop30\src\Main\ICSharpCode.SharpDevelop.Dom\Project\ICSharpCode.SharpDevelop.Dom.csproj">
-      <Project>{924EE450-603D-49C1-A8E5-4AFAA31CE6F3}</Project>
-      <Name>ICSharpCode.SharpDevelop.Dom</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\vvvv50\src\Core\Core.csproj">
-      <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
-      <Name>Core</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <Folder Include="ErrorView" />
+    <Folder Include="Gui\Dialogs" />
     <Folder Include="Gui\SearchBar" />
     <Folder Include="LanguageBindings" />
     <Folder Include="LanguageBindings\FX" />

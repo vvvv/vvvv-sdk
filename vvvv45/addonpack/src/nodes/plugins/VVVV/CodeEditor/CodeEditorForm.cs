@@ -75,6 +75,17 @@ namespace VVVV.HDE.CodeEditor
 				SetupProject(project);
 		}
 		
+		public IEnumerable<ITextDocument> OpenDocuments
+		{
+			get
+			{
+				foreach (var entry in FOpenedDocuments)
+				{
+					yield return entry.Key;
+				}
+			}
+		}
+		
 		/// <summary>
 		/// Opens the specified ITextDocument in a new editor.
 		/// </summary>
