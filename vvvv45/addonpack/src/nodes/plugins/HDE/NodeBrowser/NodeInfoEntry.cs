@@ -15,52 +15,57 @@ namespace VVVV.Nodes.NodeBrowser
         public INodeInfo NodeInfo;
         
         public event RenamedHandler Renamed;
+        string FCategory;
+        string FUsername;
+        string FSystemname;
+        string FTooltip;
         
         public NodeInfoEntry(INodeInfo nodeInfo): base()
         {
             NodeInfo = nodeInfo;
+            FCategory = nodeInfo.Category;
+            FUsername = nodeInfo.Username;
+            FSystemname = nodeInfo.Systemname;
+            
+            FTooltip = "";
+            switch (NodeInfo.Type)
+            {
+                    case TNodeType.Native: {FTooltip = ""; break;}
+                    case TNodeType.Plugin: {FTooltip = "P  "; break;}
+                    case TNodeType.Module: {FTooltip = "M  "; break;}
+                    case TNodeType.Patch: {FTooltip = "V4P "; break;}
+                    case TNodeType.Effect: {FTooltip = "FX  "; break;}
+                    case TNodeType.Freeframe: {FTooltip = "FF  "; break;}
+                    case TNodeType.VST: {FTooltip = "VST "; break;}
+            }
+            
+            if (!string.IsNullOrEmpty(NodeInfo.Shortcut))
+                FTooltip += "(" + NodeInfo.Shortcut + ") " ;
+            if (!string.IsNullOrEmpty(NodeInfo.Help))
+                FTooltip += NodeInfo.Help;
+            if (!string.IsNullOrEmpty(NodeInfo.Warnings))
+                FTooltip += "\n WARNINGS: " + NodeInfo.Warnings;
+            if (!string.IsNullOrEmpty(NodeInfo.Bugs))
+                FTooltip += "\n BUGS: " + NodeInfo.Bugs;
+            if ((!string.IsNullOrEmpty(NodeInfo.Author)) && (NodeInfo.Author != "vvvv group"))
+                FTooltip += "\n AUTHOR: " + NodeInfo.Author;
+            if (!string.IsNullOrEmpty(NodeInfo.Credits))
+                FTooltip += "\n CREDITS: " + NodeInfo.Credits;
         }
         
         public string Category
         {
-            get {return NodeInfo.Category;}
+            get {return FCategory;}
         }
         
         public string Name
         {
-            get {return NodeInfo.Username;}
+            get {return FUsername;}
         }
         
         public string Description
         {
-            get
-            {
-                string tip = "";
-                switch (NodeInfo.Type)
-                {
-                        case TNodeType.Native: {tip = ""; break;}
-                        case TNodeType.Plugin: {tip = "P  "; break;}
-                        case TNodeType.Module: {tip = "M  "; break;}
-                        case TNodeType.Patch: {tip = "V4P "; break;}
-                        case TNodeType.Effect: {tip = "FX  "; break;}
-                        case TNodeType.Freeframe: {tip = "FF  "; break;}
-                        case TNodeType.VST: {tip = "VST "; break;}
-                }
-                
-                if (!string.IsNullOrEmpty(NodeInfo.Shortcut))
-                    tip += "(" + NodeInfo.Shortcut + ") " ;
-                if (!string.IsNullOrEmpty(NodeInfo.Help))
-                    tip += NodeInfo.Help;
-                if (!string.IsNullOrEmpty(NodeInfo.Warnings))
-                    tip += "\n WARNINGS: " + NodeInfo.Warnings;
-                if (!string.IsNullOrEmpty(NodeInfo.Bugs))
-                    tip += "\n BUGS: " + NodeInfo.Bugs;
-                if ((!string.IsNullOrEmpty(NodeInfo.Author)) && (NodeInfo.Author != "vvvv group"))
-                    tip += "\n AUTHOR: " + NodeInfo.Author;
-                if (!string.IsNullOrEmpty(NodeInfo.Credits))
-                    tip += "\n CREDITS: " + NodeInfo.Credits;
-                return tip;
-            }
+            get{return FTooltip;}
         }
         
         public bool AllowDrag()
@@ -70,7 +75,7 @@ namespace VVVV.Nodes.NodeBrowser
         
         public object ItemToDrag()
         {
-            return NodeInfo.Systemname;
+            return FSystemname;
         }
     }
 }

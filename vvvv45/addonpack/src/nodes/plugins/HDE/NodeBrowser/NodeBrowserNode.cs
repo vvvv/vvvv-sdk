@@ -60,6 +60,7 @@ namespace VVVV.Nodes.NodeBrowser
         private string FManualEntry = "";
         private int FVisibleLines = 16;
         private string FPath;
+        private string FPathDir;
         private ToolTip FToolTip = new ToolTip();
         private bool FShowHover = false;
         private int FNodeFilter;
@@ -97,6 +98,10 @@ namespace VVVV.Nodes.NodeBrowser
             //register nodeinfolisteners at hdehost
             FHDEHost = host;
             FHDEHost.AddListener(this);
+            
+            //no need to call UpdateOutput here since it is called via RichTextBox.Resize
+            //but still call:
+            FCategoryTreeViewer.Reload();
         }
         
         private void DefaultConstructor()
@@ -154,8 +159,6 @@ namespace VVVV.Nodes.NodeBrowser
             
             FCategoryTreeViewer.Registry = mappingRegistry;
             FCategoryTreeViewer.Input = FCategoryList;
-            
-            UpdateOutput();
         }
         
         private void ToolTipPopupHandler(object sender, PopupEventArgs e)
@@ -197,153 +200,152 @@ namespace VVVV.Nodes.NodeBrowser
         
         private void InitializeComponent()
         {
-        	this.FTagPanel = new VVVV.Nodes.DoubleBufferedPanel();
-        	this.FRichTextBox = new System.Windows.Forms.RichTextBox();
-        	this.FNodeTypePanel = new VVVV.Nodes.DoubleBufferedPanel();
-        	this.FNodeCountLabel = new System.Windows.Forms.Label();
-        	this.FScrollBar = new System.Windows.Forms.VScrollBar();
-        	this.FTagsTextBox = new System.Windows.Forms.TextBox();
-        	this.FCategoryPanel = new System.Windows.Forms.Panel();
-        	this.FCategoryTreeViewer = new VVVV.HDE.Viewer.WinFormsViewer.TreeViewer();
-        	this.FTopLabel = new System.Windows.Forms.Label();
-        	this.FTagPanel.SuspendLayout();
-        	this.FCategoryPanel.SuspendLayout();
-        	this.SuspendLayout();
-        	// 
-        	// FTagPanel
-        	// 
-        	this.FTagPanel.Controls.Add(this.FRichTextBox);
-        	this.FTagPanel.Controls.Add(this.FNodeTypePanel);
-        	this.FTagPanel.Controls.Add(this.FNodeCountLabel);
-        	this.FTagPanel.Controls.Add(this.FScrollBar);
-        	this.FTagPanel.Controls.Add(this.FTagsTextBox);
-        	this.FTagPanel.Location = new System.Drawing.Point(3, 33);
-        	this.FTagPanel.Name = "FTagPanel";
-        	this.FTagPanel.Size = new System.Drawing.Size(144, 440);
-        	this.FTagPanel.TabIndex = 4;
-        	// 
-        	// FRichTextBox
-        	// 
-        	this.FRichTextBox.BackColor = System.Drawing.Color.Silver;
-        	this.FRichTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-        	this.FRichTextBox.Cursor = System.Windows.Forms.Cursors.Arrow;
-        	this.FRichTextBox.DetectUrls = false;
-        	this.FRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.FRichTextBox.Font = new System.Drawing.Font("Verdana", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        	this.FRichTextBox.Location = new System.Drawing.Point(20, 20);
-        	this.FRichTextBox.Name = "FRichTextBox";
-        	this.FRichTextBox.ReadOnly = true;
-        	this.FRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-        	this.FRichTextBox.Size = new System.Drawing.Size(107, 405);
-        	this.FRichTextBox.TabIndex = 2;
-        	this.FRichTextBox.TabStop = false;
-        	this.FRichTextBox.Text = "";
-        	this.FRichTextBox.WordWrap = false;
-        	this.FRichTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseUp);
-        	this.FRichTextBox.Resize += new System.EventHandler(this.FRichTextBoxResize);
-        	this.FRichTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseMove);
-        	this.FRichTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseDown);
-        	// 
-        	// FNodeTypePanel
-        	// 
-        	this.FNodeTypePanel.Dock = System.Windows.Forms.DockStyle.Left;
-        	this.FNodeTypePanel.Location = new System.Drawing.Point(0, 20);
-        	this.FNodeTypePanel.Name = "FNodeTypePanel";
-        	this.FNodeTypePanel.Size = new System.Drawing.Size(20, 405);
-        	this.FNodeTypePanel.TabIndex = 4;
-        	this.FNodeTypePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.FNodeTypePanelPaint);
-        	this.FNodeTypePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseMove);
-        	this.FNodeTypePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseDown);
-        	this.FNodeTypePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseUp);
-        	// 
-        	// FNodeCountLabel
-        	// 
-        	this.FNodeCountLabel.BackColor = System.Drawing.Color.Silver;
-        	this.FNodeCountLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-        	this.FNodeCountLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
-        	this.FNodeCountLabel.Location = new System.Drawing.Point(0, 425);
-        	this.FNodeCountLabel.Name = "FNodeCountLabel";
-        	this.FNodeCountLabel.Size = new System.Drawing.Size(127, 15);
-        	this.FNodeCountLabel.TabIndex = 5;
-        	// 
-        	// FScrollBar
-        	// 
-        	this.FScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
-        	this.FScrollBar.Location = new System.Drawing.Point(127, 20);
-        	this.FScrollBar.Name = "FScrollBar";
-        	this.FScrollBar.Size = new System.Drawing.Size(17, 420);
-        	this.FScrollBar.TabIndex = 3;
-        	this.FScrollBar.Value = 100;
-        	this.FScrollBar.ValueChanged += new System.EventHandler(this.FScrollBarValueChanged);
-        	// 
-        	// FTagsTextBox
-        	// 
-        	this.FTagsTextBox.AcceptsTab = true;
-        	this.FTagsTextBox.BackColor = System.Drawing.Color.Silver;
-        	this.FTagsTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-        	this.FTagsTextBox.Dock = System.Windows.Forms.DockStyle.Top;
-        	this.FTagsTextBox.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        	this.FTagsTextBox.Location = new System.Drawing.Point(0, 0);
-        	this.FTagsTextBox.Multiline = true;
-        	this.FTagsTextBox.Name = "FTagsTextBox";
-        	this.FTagsTextBox.Size = new System.Drawing.Size(144, 20);
-        	this.FTagsTextBox.TabIndex = 1;
-        	this.FTagsTextBox.TabStop = false;
-        	this.FTagsTextBox.TextChanged += new System.EventHandler(this.TextBoxTagsTextChanged);
-        	this.FTagsTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxTagsKeyDown);
-        	this.FTagsTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TextBoxTagsMouseDown);
-        	this.FTagsTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FTagsTextBoxMouseUp);
-        	// 
-        	// FCategoryPanel
-        	// 
-        	this.FCategoryPanel.Controls.Add(this.FCategoryTreeViewer);
-        	this.FCategoryPanel.Controls.Add(this.FTopLabel);
-        	this.FCategoryPanel.Location = new System.Drawing.Point(165, 33);
-        	this.FCategoryPanel.Name = "FCategoryPanel";
-        	this.FCategoryPanel.Size = new System.Drawing.Size(159, 439);
-        	this.FCategoryPanel.TabIndex = 5;
-        	// 
-        	// FCategoryTreeViewer
-        	// 
-        	this.FCategoryTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.FCategoryTreeViewer.FlatStyle = true;
-        	this.FCategoryTreeViewer.Location = new System.Drawing.Point(0, 15);
-        	this.FCategoryTreeViewer.Name = "FCategoryTreeViewer";
-        	this.FCategoryTreeViewer.ShowLines = false;
-        	this.FCategoryTreeViewer.ShowPlusMinus = false;
-        	this.FCategoryTreeViewer.ShowRoot = false;
-        	this.FCategoryTreeViewer.ShowRootLines = false;
-        	this.FCategoryTreeViewer.ShowTooltip = true;
-        	this.FCategoryTreeViewer.Size = new System.Drawing.Size(159, 424);
-        	this.FCategoryTreeViewer.TabIndex = 1;
-        	this.FCategoryTreeViewer.Click += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.NodeBrowserPluginNode_Click);
-        	// 
-        	// FTopLabel
-        	// 
-        	this.FTopLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(154)))), ((int)(((byte)(154)))), ((int)(((byte)(154)))));
-        	this.FTopLabel.Dock = System.Windows.Forms.DockStyle.Top;
-        	this.FTopLabel.Location = new System.Drawing.Point(0, 0);
-        	this.FTopLabel.Name = "FTopLabel";
-        	this.FTopLabel.Size = new System.Drawing.Size(159, 15);
-        	this.FTopLabel.TabIndex = 7;
-        	this.FTopLabel.Text = "Click here to browse by tags";
-        	this.FTopLabel.Click += new System.EventHandler(this.FTopLabelClick);
-        	// 
-        	// NodeBrowserPluginNode
-        	// 
-        	this.BackColor = System.Drawing.Color.Silver;
-        	this.Controls.Add(this.FCategoryPanel);
-        	this.Controls.Add(this.FTagPanel);
-        	this.DoubleBuffered = true;
-        	this.Name = "NodeBrowserPluginNode";
-        	this.Size = new System.Drawing.Size(325, 520);
-        	this.FTagPanel.ResumeLayout(false);
-        	this.FTagPanel.PerformLayout();
-        	this.FCategoryPanel.ResumeLayout(false);
-        	this.ResumeLayout(false);
+            this.FTagPanel = new VVVV.Nodes.DoubleBufferedPanel();
+            this.FRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.FNodeTypePanel = new VVVV.Nodes.DoubleBufferedPanel();
+            this.FNodeCountLabel = new System.Windows.Forms.Label();
+            this.FScrollBar = new System.Windows.Forms.VScrollBar();
+            this.FTagsTextBox = new System.Windows.Forms.TextBox();
+            this.FCategoryPanel = new System.Windows.Forms.Panel();
+            this.FCategoryTreeViewer = new VVVV.HDE.Viewer.WinFormsViewer.TreeViewer();
+            this.FTopLabel = new System.Windows.Forms.Label();
+            this.FTagPanel.SuspendLayout();
+            this.FCategoryPanel.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // FTagPanel
+            // 
+            this.FTagPanel.Controls.Add(this.FRichTextBox);
+            this.FTagPanel.Controls.Add(this.FNodeTypePanel);
+            this.FTagPanel.Controls.Add(this.FNodeCountLabel);
+            this.FTagPanel.Controls.Add(this.FScrollBar);
+            this.FTagPanel.Controls.Add(this.FTagsTextBox);
+            this.FTagPanel.Location = new System.Drawing.Point(3, 33);
+            this.FTagPanel.Name = "FTagPanel";
+            this.FTagPanel.Size = new System.Drawing.Size(144, 440);
+            this.FTagPanel.TabIndex = 4;
+            // 
+            // FRichTextBox
+            // 
+            this.FRichTextBox.BackColor = System.Drawing.Color.Silver;
+            this.FRichTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.FRichTextBox.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.FRichTextBox.DetectUrls = false;
+            this.FRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FRichTextBox.Font = new System.Drawing.Font("Verdana", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FRichTextBox.Location = new System.Drawing.Point(20, 20);
+            this.FRichTextBox.Name = "FRichTextBox";
+            this.FRichTextBox.ReadOnly = true;
+            this.FRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.FRichTextBox.Size = new System.Drawing.Size(107, 405);
+            this.FRichTextBox.TabIndex = 2;
+            this.FRichTextBox.TabStop = false;
+            this.FRichTextBox.Text = "";
+            this.FRichTextBox.WordWrap = false;
+            this.FRichTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseUp);
+            this.FRichTextBox.Resize += new System.EventHandler(this.FRichTextBoxResize);
+            this.FRichTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseMove);
+            this.FRichTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseDown);
+            // 
+            // FNodeTypePanel
+            // 
+            this.FNodeTypePanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.FNodeTypePanel.Location = new System.Drawing.Point(0, 20);
+            this.FNodeTypePanel.Name = "FNodeTypePanel";
+            this.FNodeTypePanel.Size = new System.Drawing.Size(20, 405);
+            this.FNodeTypePanel.TabIndex = 4;
+            this.FNodeTypePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.FNodeTypePanelPaint);
+            this.FNodeTypePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseMove);
+            this.FNodeTypePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseDown);
+            this.FNodeTypePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseUp);
+            // 
+            // FNodeCountLabel
+            // 
+            this.FNodeCountLabel.BackColor = System.Drawing.Color.Silver;
+            this.FNodeCountLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.FNodeCountLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.FNodeCountLabel.Location = new System.Drawing.Point(0, 425);
+            this.FNodeCountLabel.Name = "FNodeCountLabel";
+            this.FNodeCountLabel.Size = new System.Drawing.Size(127, 15);
+            this.FNodeCountLabel.TabIndex = 5;
+            // 
+            // FScrollBar
+            // 
+            this.FScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
+            this.FScrollBar.Location = new System.Drawing.Point(127, 20);
+            this.FScrollBar.Name = "FScrollBar";
+            this.FScrollBar.Size = new System.Drawing.Size(17, 420);
+            this.FScrollBar.TabIndex = 3;
+            this.FScrollBar.Value = 100;
+            this.FScrollBar.ValueChanged += new System.EventHandler(this.FScrollBarValueChanged);
+            // 
+            // FTagsTextBox
+            // 
+            this.FTagsTextBox.AcceptsTab = true;
+            this.FTagsTextBox.BackColor = System.Drawing.Color.Silver;
+            this.FTagsTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.FTagsTextBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.FTagsTextBox.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FTagsTextBox.Location = new System.Drawing.Point(0, 0);
+            this.FTagsTextBox.Multiline = true;
+            this.FTagsTextBox.Name = "FTagsTextBox";
+            this.FTagsTextBox.Size = new System.Drawing.Size(144, 20);
+            this.FTagsTextBox.TabIndex = 1;
+            this.FTagsTextBox.TabStop = false;
+            this.FTagsTextBox.TextChanged += new System.EventHandler(this.TextBoxTagsTextChanged);
+            this.FTagsTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBoxTagsKeyDown);
+            this.FTagsTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TextBoxTagsMouseDown);
+            this.FTagsTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FTagsTextBoxMouseUp);
+            // 
+            // FCategoryPanel
+            // 
+            this.FCategoryPanel.Controls.Add(this.FCategoryTreeViewer);
+            this.FCategoryPanel.Controls.Add(this.FTopLabel);
+            this.FCategoryPanel.Location = new System.Drawing.Point(165, 33);
+            this.FCategoryPanel.Name = "FCategoryPanel";
+            this.FCategoryPanel.Size = new System.Drawing.Size(159, 439);
+            this.FCategoryPanel.TabIndex = 5;
+            // 
+            // FCategoryTreeViewer
+            // 
+            this.FCategoryTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FCategoryTreeViewer.FlatStyle = true;
+            this.FCategoryTreeViewer.Location = new System.Drawing.Point(0, 15);
+            this.FCategoryTreeViewer.Name = "FCategoryTreeViewer";
+            this.FCategoryTreeViewer.ShowLines = false;
+            this.FCategoryTreeViewer.ShowPlusMinus = false;
+            this.FCategoryTreeViewer.ShowRoot = false;
+            this.FCategoryTreeViewer.ShowRootLines = false;
+            this.FCategoryTreeViewer.ShowTooltip = true;
+            this.FCategoryTreeViewer.Size = new System.Drawing.Size(159, 424);
+            this.FCategoryTreeViewer.TabIndex = 1;
+            this.FCategoryTreeViewer.Click += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.NodeBrowserPluginNode_Click);
+            // 
+            // FTopLabel
+            // 
+            this.FTopLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(154)))), ((int)(((byte)(154)))), ((int)(((byte)(154)))));
+            this.FTopLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.FTopLabel.Location = new System.Drawing.Point(0, 0);
+            this.FTopLabel.Name = "FTopLabel";
+            this.FTopLabel.Size = new System.Drawing.Size(159, 15);
+            this.FTopLabel.TabIndex = 7;
+            this.FTopLabel.Text = "Click here to browse by tags";
+            this.FTopLabel.Click += new System.EventHandler(this.FTopLabelClick);
+            // 
+            // NodeBrowserPluginNode
+            // 
+            this.BackColor = System.Drawing.Color.Silver;
+            this.Controls.Add(this.FCategoryPanel);
+            this.Controls.Add(this.FTagPanel);
+            this.DoubleBuffered = true;
+            this.Name = "NodeBrowserPluginNode";
+            this.Size = new System.Drawing.Size(325, 520);
+            this.FTagPanel.ResumeLayout(false);
+            this.FTagPanel.PerformLayout();
+            this.FCategoryPanel.ResumeLayout(false);
+            this.ResumeLayout(false);
         }
 
-        
         private VVVV.HDE.Viewer.WinFormsViewer.TreeViewer FCategoryTreeViewer;
         private VVVV.Nodes.DoubleBufferedPanel FNodeTypePanel;
         private System.Windows.Forms.VScrollBar FScrollBar;
@@ -359,10 +361,12 @@ namespace VVVV.Nodes.NodeBrowser
         #region INodeBrowser
         public void Initialize(string path, string text)
         {
-            FNeedsUpdate |= FPath != path;
+            if (Path.IsPathRooted(path))
+                FNeedsUpdate |= FPath != path;
             
             FPath = path;
-            
+            FPathDir = Path.GetDirectoryName(path);
+
             if (!string.IsNullOrEmpty(text))
                 FManualEntry = text.Trim();
             else
@@ -405,13 +409,13 @@ namespace VVVV.Nodes.NodeBrowser
                 INodeInfo selNode = FNodeDict[text];
                 if (Control.ModifierKeys == Keys.Control)
                     NodeBrowserHost.CreateNode(selNode, true);
-                else                
+                else
                     NodeBrowserHost.CreateNode(selNode, false);
             }
             catch
             {
                 if ((text.Contains(".v4p")) || (text.Contains(".fx")) || (text.Contains(".dll")))
-                    NodeBrowserHost.CreateNodeFromFile(FPath + text);
+                    NodeBrowserHost.CreateNodeFromFile(Path.Combine(FPathDir, text));
                 else
                     NodeBrowserHost.CreateComment(FTagsTextBox.Text);
             }
@@ -753,6 +757,7 @@ namespace VVVV.Nodes.NodeBrowser
                                          foreach (string tag in FTags)
                                          {
                                              t = tag.ToLower();
+                                             t = t.TrimStart(new char[1]{'.'});
                                              if (node.Contains(t))
                                              {
                                                  if (!FAndTags)
@@ -775,13 +780,17 @@ namespace VVVV.Nodes.NodeBrowser
         private List<string> GetLocalNodes()
         {
             var files = new List<string>();
-            if (FPath != null)
+            if (Path.IsPathRooted(FPathDir))
             {
-                foreach (string p in System.IO.Directory.GetFiles(FPath, "*.dll"))
+                foreach (string p in System.IO.Directory.GetFiles(FPathDir, "*.v4p"))
+                {
+                    //prevent patches from being created recursively
+                    if (p != FPath)
+                        files.Add(Path.GetFileName(p));
+                }
+                foreach (string p in System.IO.Directory.GetFiles(FPathDir, "*.dll"))
                     files.Add(Path.GetFileName(p));
-                foreach (string p in System.IO.Directory.GetFiles(FPath, "*.v4p"))
-                    files.Add(Path.GetFileName(p));
-                foreach (string p in System.IO.Directory.GetFiles(FPath, "*.fx"))
+                foreach (string p in System.IO.Directory.GetFiles(FPathDir, "*.fx"))
                     files.Add(Path.GetFileName(p));
             }
             return files;
@@ -829,12 +838,14 @@ namespace VVVV.Nodes.NodeBrowser
                                     //create a weighting index depending on the indices the tags appear in the nodenames
                                     //earlier appearance counts more
                                     int w1 = int.MaxValue, w2 = int.MaxValue;
+                                    string t = "";
                                     foreach (string tag in FTags)
                                     {
-                                        if (s1.ToLower().IndexOf(tag) > -1)
-                                            w1 = Math.Min(w1, s1.ToLower().IndexOf(tag));
-                                        if (s2.ToLower().IndexOf(tag) > -1)
-                                            w2 = Math.Min(w2, s2.ToLower().IndexOf(tag));
+                                        t = tag.TrimStart(new char[1]{'.'});
+                                        if (s1.ToLower().IndexOf(t) > -1)
+                                            w1 = Math.Min(w1, s1.ToLower().IndexOf(t));
+                                        if (s2.ToLower().IndexOf(t) > -1)
+                                            w2 = Math.Min(w2, s2.ToLower().IndexOf(t));
                                     }
                                     
                                     if (w1 != w2)
@@ -1029,7 +1040,7 @@ namespace VVVV.Nodes.NodeBrowser
             {
                 if (FTags[0] == "N")
                     FNodeFilter = (int) TNodeType.Native;
-                else if ((FTags[0] == ".") || (FTags[0] == "V") || (FTags[0] == "V4") || (FTags[0] == "V4P"))
+                else if ((FTags[0].StartsWith(".")) || (FTags[0] == "V") || (FTags[0] == "V4") || (FTags[0] == "V4P"))
                     FNodeFilter = (int) TNodeType.Patch;
                 else if (FTags[0] == "M")
                     FNodeFilter = (int) TNodeType.Module;
@@ -1047,13 +1058,16 @@ namespace VVVV.Nodes.NodeBrowser
             
             if (FNodeFilter >= 0)
             {
-                //remove first entry from FTags
-                string[] restTags = new string[Math.Max(0, FTags.Length-1)];
-                for (int i = 1; i < FTags.Length; i++)
+                //remove first entry from FTags if it doesn't start with .
+                if (!FTags[0].StartsWith("."))
                 {
-                    restTags[i - 1] = FTags[i];
+                    string[] restTags = new string[Math.Max(0, FTags.Length-1)];
+                    for (int i = 1; i < FTags.Length; i++)
+                    {
+                        restTags[i - 1] = FTags[i];
+                    }
+                    FTags = restTags;
                 }
-                FTags = restTags;
             }
             
             FilterNodesByTags();
@@ -1122,8 +1136,8 @@ namespace VVVV.Nodes.NodeBrowser
                 int y = (i * CLineHeight) + 4;
                 
                 if ((FHoverLine == i) && (FShowHover))
-                        using (SolidBrush b = new SolidBrush(CHoverColor))
-                            e.Graphics.FillRectangle(b, new Rectangle(0, y-4, 21, CLineHeight));
+                    using (SolidBrush b = new SolidBrush(CHoverColor))
+                        e.Graphics.FillRectangle(b, new Rectangle(0, y-4, 21, CLineHeight));
                 
                 if (FNodeDict.ContainsKey(FSelectionList[index].Trim()))
                 {
@@ -1199,11 +1213,23 @@ namespace VVVV.Nodes.NodeBrowser
             else
             {
                 if (FCategoryTreeViewer.IsExpanded(sender.Model))
-                    FCategoryTreeViewer.Collapse(sender.Model, false);
-                else if (e.Button == MouseButtons.Left)
-                    FCategoryTreeViewer.Solo(sender.Model);
-                else if (e.Button == MouseButtons.Right)
-                    FCategoryTreeViewer.Expand(sender.Model, false);
+                {
+                    switch (e.Button)
+                    {
+                            case MouseButtons.Left: FCategoryTreeViewer.Collapse(sender.Model, false); break;
+                            case MouseButtons.Right: FCategoryTreeViewer.Collapse(sender.Model, false); break;
+                            case MouseButtons.Middle: FCategoryTreeViewer.Collapse(FCategoryTreeViewer.Input, true); break;
+                    }
+                }
+                else
+                {
+                    switch (e.Button)
+                    {
+                            case MouseButtons.Left: FCategoryTreeViewer.Solo(sender.Model); break;
+                            case MouseButtons.Right: FCategoryTreeViewer.Expand(sender.Model, false); break;
+                            case MouseButtons.Middle: FCategoryTreeViewer.Expand(FCategoryTreeViewer.Input, true); break;
+                    }
+                }
             }
         }
         
