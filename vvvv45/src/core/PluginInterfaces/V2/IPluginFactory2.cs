@@ -19,6 +19,8 @@ namespace VVVV.PluginInterfaces.V2
 	    IEnumerable<INodeInfo> ExtractNodeInfos(string filename);
 	    void StartWatching();
 	    bool Create(INodeInfo nodeInfo, IAddonHost host);
+	    bool Delete(IAddonHost host);
+	    bool Clone(INodeInfo nodeInfo, string path, out INodeInfo newNodeInfo);
 	}
 	
 	/// <summary>
