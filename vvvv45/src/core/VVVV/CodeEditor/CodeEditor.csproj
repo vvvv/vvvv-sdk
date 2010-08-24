@@ -18,7 +18,7 @@
     <SignAssembly>False</SignAssembly>
     <DelaySign>False</DelaySign>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <OutputPath>..\..\..\vvvv40\plugins\</OutputPath>
+    <OutputPath>..\..\..\vvvv45\plugins\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,23 +46,23 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="ICSharpCode.NRefactory">
-      <HintPath>..\..\_lib\ICSharpCode\ICSharpCode.NRefactory.dll</HintPath>
+      <HintPath>..\..\..\vvvv50\lib\SharpDevelop\ICSharpCode.NRefactory.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ICSharpCode.SharpDevelop.Dom">
-      <HintPath>..\..\_lib\ICSharpCode\ICSharpCode.SharpDevelop.Dom.dll</HintPath>
+      <HintPath>..\..\..\vvvv50\lib\SharpDevelop\ICSharpCode.SharpDevelop.Dom.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ICSharpCode.TextEditor">
       <HintPath>Dependencies\ICSharpCode.TextEditor.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity">
-      <HintPath>..\..\_lib\Unity\Microsoft.Practices.Unity.dll</HintPath>
+      <HintPath>..\..\..\vvvv50\lib\Unity\Microsoft.Practices.Unity.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition">
-      <HintPath>..\..\_lib\MEF\System.ComponentModel.Composition.dll</HintPath>
+      <HintPath>..\..\..\vvvv50\lib\MEF\System.ComponentModel.Composition.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Core">
@@ -72,21 +72,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="VVVV.Core">
-      <HintPath>..\..\_lib\vvvv\VVVV.Core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="VVVV.HDE.Viewer.WinFormsViewer">
-      <HintPath>..\..\_lib\vvvv\VVVV.HDE.Viewer.WinFormsViewer.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="VVVV.PluginInterfaces">
-      <HintPath>..\..\_lib\vvvv\VVVV.PluginInterfaces.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\_SharedSources\ManagedVCL\ManagedVCLControl.cs">
+    <Compile Include="..\..\..\plugins\_SharedSources\ManagedVCL\ManagedVCLControl.cs">
       <Link>ManagedVCLControl.cs</Link>
     </Compile>
     <Compile Include="CodeEditor.cs" />
@@ -139,5 +127,20 @@
     <Folder Include="LanguageBindings\FX" />
     <Folder Include="LanguageBindings\CS" />
     <Folder Include="Gui" />
+    <ProjectReference Include="..\..\..\vvvv50\src\Core\Core.csproj">
+      <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
+      <Name>Core</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\vvvv50\src\HDE\Viewer\WinFormsViewer\WinFormsViewer.csproj">
+      <Project>{98936436-EA28-437E-A2A4-CC7CAA532658}</Project>
+      <Name>WinFormsViewer</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PluginInterfaces\PluginInterfaces.csproj">
+      <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
+      <Name>PluginInterfaces</Name>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
 </Project>

@@ -17,7 +17,7 @@
     <FileAlignment>4096</FileAlignment>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <OutputPath>..\..\..\vvvv40\bin\managed\hde\</OutputPath>
+    <OutputPath>..\..\..\vvvv45\bin\managed\hde\</OutputPath>
     <SourceAnalysisOverrideSettingsFile>C:\Users\joreg\AppData\Roaming\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartArguments>s</StartArguments>
@@ -41,15 +41,11 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition">
-      <HintPath>..\..\_lib\MEF\System.ComponentModel.Composition.dll</HintPath>
+      <HintPath>..\..\..\vvvv50\lib\MEF\System.ComponentModel.Composition.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="VVVV.PluginInterfaces">
-      <HintPath>..\..\_lib\vvvv\VVVV.PluginInterfaces.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -71,6 +67,13 @@
     <EmbeddedResource Include="WindowSwitcherNode.resx">
       <DependentUpon>WindowSwitcherNode.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\PluginInterfaces\PluginInterfaces.csproj">
+      <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
+      <Name>PluginInterfaces</Name>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
