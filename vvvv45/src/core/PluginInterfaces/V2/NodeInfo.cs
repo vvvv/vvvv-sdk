@@ -39,6 +39,10 @@ namespace VVVV.PluginInterfaces.V2
 		/// Reference to the <see cref="IExecutable">IExecutable</see> which was used to create this node. Set by the PluginFactory.
 		/// </summary>
 		IExecutable Executable {get; set;}
+		/// <summary>
+		/// Define if this node should be evaluated every frame, even if no outpur is read.
+		/// </summary>
+		bool AutoEvaluate {get; set;}
 	}
 	#endregion INodeInfo
 	
@@ -147,6 +151,12 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get {return FExcecutable;}
 			set {FExcecutable = value;}
+		}
+		
+		public bool AutoEvaluate
+		{
+			get;
+			set;
 		}
 		
         public override bool Equals(object obj)
