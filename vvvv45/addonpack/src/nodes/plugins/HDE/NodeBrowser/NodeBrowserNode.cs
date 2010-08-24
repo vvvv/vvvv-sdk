@@ -371,6 +371,7 @@ namespace VVVV.Nodes.NodeBrowser
             FTagsTextBox.SelectAll();
             
             FHoverLine = -1;
+            ScrolledLine = 0;
             
             //init view
             if (FNeedsUpdate)
@@ -651,18 +652,11 @@ namespace VVVV.Nodes.NodeBrowser
             
             //popped up on doubleclick
             if (e.Button == MouseButtons.Left)
-            {
-                FTagsTextBox.Text = username;
                 CreateNode();
-            }
             else if (e.Button == MouseButtons.Middle)
-            {
                 NodeBrowserHost.ShowNodeReference(FNodeDict[username]);
-            }
             else
-            {
                 NodeBrowserHost.ShowHelpPatch(FNodeDict[username]);
-            }
         }
         
         void RichTextBoxMouseMove(object sender, MouseEventArgs e)
