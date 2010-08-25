@@ -165,5 +165,13 @@ namespace VVVV.Hosting.Factories
 
             return true;
         }
+        
+        public override bool Delete(IAddonHost host)
+		{
+			if (host is IEffectHost)
+			    return true;
+			
+			return base.Delete(host);
+		}
     }
 }
