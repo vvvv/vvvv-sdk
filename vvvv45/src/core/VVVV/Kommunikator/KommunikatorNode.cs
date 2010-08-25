@@ -19,7 +19,8 @@ using VVVV.Utils.Crypto;
 namespace VVVV.Nodes.Kommunikator
 {
     [PluginInfo(Name = "Kommunikator",
-                Category = "HDE",
+                Category = "VVVV",
+                Ignore = true,
                 Author = "vvvv group",
                 Help = "Communicator to vvvv.org",
                 InitialBoxWidth = 400,

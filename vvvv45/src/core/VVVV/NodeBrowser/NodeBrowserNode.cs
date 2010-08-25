@@ -22,7 +22,7 @@ namespace VVVV.Nodes.NodeBrowser
     enum NodeBrowserPage {ByCategory, ByTags};
     
     [PluginInfo(Name = "NodeBrowser",
-                Category = "HDE",
+                Category = "VVVV",
                 Shortcut = "Ctrl+N",
                 Author = "vvvv group",
                 Help = "The NodeInfo Browser",
@@ -365,7 +365,7 @@ namespace VVVV.Nodes.NodeBrowser
 
             if (string.IsNullOrEmpty(text))
                 FTagsTextBox.Text = "";
-            else 
+            else
                 FTagsTextBox.Text = text.Trim();
 
             FTagsTextBox.SelectAll();
@@ -401,11 +401,11 @@ namespace VVVV.Nodes.NodeBrowser
         
         private void CreateNode()
         {
-            string text = ""; 
+            string text = "";
             try
             {
                 text = FRichTextBox.Lines[FHoverLine].Trim();
-            
+                
                 INodeInfo selNode = FNodeDict[text];
                 if (Control.ModifierKeys == Keys.Control)
                     NodeBrowserHost.CreateNode(selNode, true);
@@ -416,7 +416,7 @@ namespace VVVV.Nodes.NodeBrowser
             {
                 if ((text.EndsWith(".v4p")) || (text.EndsWith(".fx")) || (text.EndsWith(".dll")))
                     NodeBrowserHost.CreateNodeFromFile(Path.Combine(FPathDir, text));
-                else      
+                else
                     NodeBrowserHost.CreateComment(FTagsTextBox.Text.Trim());
             }
         }
@@ -439,40 +439,40 @@ namespace VVVV.Nodes.NodeBrowser
         {
             string nodeVersion = nodeInfo.Version;
 
-            //don't include legacy nodes in the list
-            if ((string.IsNullOrEmpty(nodeVersion)) || (!nodeVersion.ToLower().Contains("legacy")))
+            //don't include legacy or ignored nodes in the list
+            if (((!string.IsNullOrEmpty(nodeVersion)) && (nodeVersion.ToLower().Contains("legacy"))) || (nodeInfo.Ignore))
+                return;
+            
+            string key = NodeInfoToKey(nodeInfo);
+            
+            FNodeList.Add(key);
+            FNodeDict[key] = nodeInfo;
+            
+            //insert nodeInfo to FCategoryList
+            bool added = false;
+            foreach (CategoryEntry ce in FCategoryList)
+                if (ce.Name == nodeInfo.Category)
             {
-                string key = NodeInfoToKey(nodeInfo);
-                
-                FNodeList.Add(key);
-                FNodeDict[key] = nodeInfo;
-                
-                //insert nodeInfo to FCategoryList
-                bool added = false;
-                foreach (CategoryEntry ce in FCategoryList)
-                    if (ce.Name == nodeInfo.Category)
-                {
-                    ce.Add(nodeInfo);
-                    added = true;
-                    break;
-                }
-                
-                //category not yet present. create a new one
-                if (!added)
-                {
-                    string description;
-                    if (FCategoryDict.ContainsKey(nodeInfo.Category))
-                        description = FCategoryDict[nodeInfo.Category];
-                    else
-                        description = "";
-                    
-                    var catEntry = new CategoryEntry(nodeInfo.Category, description);
-                    catEntry.Add(nodeInfo);
-                    FCategoryList.Add(catEntry);
-                }
-                
-                FNeedsUpdate = true;
+                ce.Add(nodeInfo);
+                added = true;
+                break;
             }
+            
+            //category not yet present. create a new one
+            if (!added)
+            {
+                string description;
+                if (FCategoryDict.ContainsKey(nodeInfo.Category))
+                    description = FCategoryDict[nodeInfo.Category];
+                else
+                    description = "";
+                
+                var catEntry = new CategoryEntry(nodeInfo.Category, description);
+                catEntry.Add(nodeInfo);
+                FCategoryList.Add(catEntry);
+            }
+            
+            FNeedsUpdate = true;
         }
         
         public void NodeInfoUpdatedCB(INodeInfo nodeInfo)

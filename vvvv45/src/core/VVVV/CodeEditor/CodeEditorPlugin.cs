@@ -18,7 +18,7 @@ namespace VVVV.HDE.CodeEditor
 {
 	#region PluginInfo
 	[PluginInfo(Name = "CodeEditor",
-	            Category = "HDE",
+	            Category = "VVVV",
 	            Shortcut = "Ctrl+K",
 	            Author = "vvvv group",
 	            Help = "The Code Editor",

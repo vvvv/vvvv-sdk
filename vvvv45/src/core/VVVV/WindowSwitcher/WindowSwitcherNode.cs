@@ -13,7 +13,8 @@ using VVVV.PluginInterfaces.V2;
 namespace VVVV.Nodes.WindowSwitcher
 {
     [PluginInfo(Name = "WindowSwitcher",
-                Category = "HDE",
+                Category = "VVVV",
+                Ignore = true,
                 Author = "vvvv group",
                 Help = "The Window Switcher")]
     public class WindowSwitcherPluginNode: UserControl, IWindowSwitcher, IWindowListener
