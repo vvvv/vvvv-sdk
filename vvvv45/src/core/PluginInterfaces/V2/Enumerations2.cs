@@ -5,7 +5,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// <summary>
 	/// Used in <see cref="VVVV.PluginInterfaces.V2.INodeInfo">INodeInfo</see> to specify the type of the provided node.
 	/// </summary>
-	public enum TNodeType 
+	public enum NodeType 
 	{
 		/// <summary>
 		/// Specifies a native node.
@@ -44,7 +44,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// <summary>
 	/// Used in the pin creating functions of <see cref="VVVV.PluginInterfaces.V1.IPluginHost">IPluginHost</see> to specifiy possible SliceCounts.
 	/// </summary>
-	public enum TWindowType 
+	public enum WindowType 
 	{
 		/// <summary>
 		/// A patch editor window.

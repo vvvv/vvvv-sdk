@@ -238,7 +238,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// Get the windows type.
 		/// </summary>
 		/// <returns>Returns this windows type.</returns>
-		TWindowType GetWindowType();
+		WindowType GetWindowType();
 		/// <summary>
 		/// Get the windows associated INode
 		/// </summary>
@@ -250,7 +250,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// <returns>Returns true if this window is visible, false if not.</returns>
 		bool IsVisible();
 	}	
-	#endregion INode
+	#endregion IWindow
 	
 	#region Listener
 	/// <summary>

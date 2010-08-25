@@ -34,7 +34,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// <summary>
 		/// The node type. Set by the PluginFactory.
 		/// </summary>
-		TNodeType Type {get; set;}
+		NodeType Type {get; set;}
 		/// <summary>
 		/// Reference to the <see cref="IExecutable">IExecutable</see> which was used to create this node. Set by the PluginFactory.
 		/// </summary>
@@ -59,7 +59,7 @@ namespace VVVV.PluginInterfaces.V2
 	{
 		private string FArguments = "";
 		private string FFilename = "";
-		private TNodeType FType = TNodeType.Plugin;
+		private NodeType FType = NodeType.Plugin;
 		private IExecutable FExcecutable = null;
 		
 		/// <summary>
@@ -143,7 +143,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// <summary>
 		/// The node type. Set by the PluginFactory.
 		/// </summary>
-		public TNodeType Type 
+		public NodeType Type 
 		{
 			get {return FType;}
 			set {FType = value;}
