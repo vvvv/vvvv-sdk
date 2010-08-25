@@ -37,13 +37,13 @@ namespace VVVV.Nodes.NodeBrowser
             FTooltip = "";
             switch (NodeInfo.Type)
             {
-                    case TNodeType.Native: {FTooltip = ""; break;}
-                    case TNodeType.Plugin: {FTooltip = "P  "; break;}
-                    case TNodeType.Module: {FTooltip = "M  "; break;}
-                    case TNodeType.Patch: {FTooltip = "V4P "; break;}
-                    case TNodeType.Effect: {FTooltip = "FX  "; break;}
-                    case TNodeType.Freeframe: {FTooltip = "FF  "; break;}
-                    case TNodeType.VST: {FTooltip = "VST "; break;}
+                    case NodeType.Native: {FTooltip = ""; break;}
+                    case NodeType.Plugin: {FTooltip = "P  "; break;}
+                    case NodeType.Module: {FTooltip = "M  "; break;}
+                    case NodeType.Patch: {FTooltip = "V4P "; break;}
+                    case NodeType.Effect: {FTooltip = "FX  "; break;}
+                    case NodeType.Freeframe: {FTooltip = "FF  "; break;}
+                    case NodeType.VST: {FTooltip = "VST "; break;}
             }
             
             if (!string.IsNullOrEmpty(NodeInfo.Shortcut))

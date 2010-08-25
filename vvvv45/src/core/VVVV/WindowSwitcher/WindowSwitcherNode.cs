@@ -103,7 +103,6 @@ namespace VVVV.Nodes.WindowSwitcher
         #region IWindowListener
         public void WindowAddedCB(IWindow window)
         {
-            TWindowType t = window.GetWindowType();
             WindowListControl wlc = new WindowListControl(window);
             wlc.Click += new EventHandler(WindowListControlClick);
             wlc.MouseEnter += new EventHandler(WindowListControlMouseEnter);
@@ -130,19 +129,20 @@ namespace VVVV.Nodes.WindowSwitcher
         #region IWindowSwitcher
         public void Initialize(IWindow window, out int width, out int height)
         {
+            UpdateList();
+
+            //unmark current window
+            WindowListControl currentWindow = FCurrentWindowList.Find(delegate (WindowListControl wlc){return wlc.Window == window;});
+            FCurrentWindowList[FSelectedWindowIndex].Selected = false;
             //mark current window
-            WindowListControl currentWindow = FFullWindowList.Find(delegate (WindowListControl wlc) {return wlc.Window == window;});
-            FFullWindowList[FSelectedWindowIndex].Selected = false;
-            FSelectedWindowIndex = FFullWindowList.IndexOf(currentWindow);
-            FFullWindowList[FSelectedWindowIndex].Selected = true;
+            FSelectedWindowIndex = FCurrentWindowList.IndexOf(currentWindow);
+            FCurrentWindowList[FSelectedWindowIndex].Selected = true;
             
-            foreach(WindowListControl wlc in FFullWindowList)
+            foreach(WindowListControl wlc in FCurrentWindowList)
             {
                 wlc.UpdateCaption();
                 FWindowWidth = Math.Max(FWindowWidth, wlc.CaptionWidth);
-            }
-            
-            UpdateList();
+            }          
             
             //return dimensions of this listing
             width = FWindowWidth;
@@ -185,7 +185,7 @@ namespace VVVV.Nodes.WindowSwitcher
             
             CaptionControl title;
             //add patches
-            List<WindowListControl> patches = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.Patch;});
+            List<WindowListControl> patches = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == WindowType.Patch;});
             if (patches.Count > 0)
             {
                 title = new CaptionControl("Patches");
@@ -202,7 +202,7 @@ namespace VVVV.Nodes.WindowSwitcher
             }
             
             //add modules
-            List<WindowListControl> modules = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.Module;});
+            List<WindowListControl> modules = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == WindowType.Module;});
             if (modules.Count > 0)
             {
                 title = new CaptionControl("Modules");
@@ -219,7 +219,7 @@ namespace VVVV.Nodes.WindowSwitcher
             }
             
             //add editors
-            List<WindowListControl> editors = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.Editor;});
+            List<WindowListControl> editors = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == WindowType.Editor;});
             if (editors.Count > 0)
             {
                 title = new CaptionControl("Editors");
@@ -236,7 +236,7 @@ namespace VVVV.Nodes.WindowSwitcher
             }
             
             //add renderer
-            List<WindowListControl> renderer = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.Renderer;});
+            List<WindowListControl> renderer = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == WindowType.Renderer;});
             if (renderer.Count > 0)
             {
                 title = new CaptionControl("Renderer");
@@ -253,7 +253,7 @@ namespace VVVV.Nodes.WindowSwitcher
             }
             
             //add plugins
-            List<WindowListControl> plugins = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == TWindowType.Plugin;});
+            List<WindowListControl> plugins = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == WindowType.Plugin;});
             if (plugins.Count > 0)
             {
                 title = new CaptionControl("Plugin");
@@ -270,7 +270,7 @@ namespace VVVV.Nodes.WindowSwitcher
             }
             
             //add HDEs
-            List<WindowListControl> hdes = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return (wlc.Window.GetWindowType() == TWindowType.HDE) && wlc.Window.IsVisible();});
+            List<WindowListControl> hdes = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return (wlc.Window.GetWindowType() == WindowType.HDE) && wlc.Window.IsVisible();});
             if (hdes.Count > 0)
             {
                 title = new CaptionControl("vvvv");

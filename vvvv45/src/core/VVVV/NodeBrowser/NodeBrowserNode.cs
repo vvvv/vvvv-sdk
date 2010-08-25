@@ -777,29 +777,29 @@ namespace VVVV.Nodes.NodeBrowser
             FSelectionList.AddRange(GetLocalNodes());
 
             //show natives only
-            if (FNodeFilter == (int) TNodeType.Native)
-                FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == TNodeType.Native;});
+            if (FNodeFilter == (int) NodeType.Native)
+                FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == NodeType.Native;});
             //show patches only
-            else if (FNodeFilter == (int) TNodeType.Patch)
+            else if (FNodeFilter == (int) NodeType.Patch)
                 FSelectionList = GetLocalNodes();
             //show modules only
-            else if (FNodeFilter == (int) TNodeType.Module)
-                FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == TNodeType.Module;});
+            else if (FNodeFilter == (int) NodeType.Module)
+                FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == NodeType.Module;});
             //show effects only
-            else if (FNodeFilter == (int) TNodeType.Effect)
-                FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == TNodeType.Effect;});
+            else if (FNodeFilter == (int) NodeType.Effect)
+                FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == NodeType.Effect;});
             //show freeframes only
-            else if (FNodeFilter == (int) TNodeType.Freeframe)
-                FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == TNodeType.Freeframe;});
+            else if (FNodeFilter == (int) NodeType.Freeframe)
+                FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == NodeType.Freeframe;});
             //show plugins only
-            else if (FNodeFilter == (int) TNodeType.Plugin)
-                FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == TNodeType.Plugin;});
+            else if (FNodeFilter == (int) NodeType.Plugin)
+                FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == NodeType.Plugin;});
             //show dynamics only
-            else if (FNodeFilter == (int) TNodeType.Dynamic)
-                FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == TNodeType.Dynamic;});
+            else if (FNodeFilter == (int) NodeType.Dynamic)
+                FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == NodeType.Dynamic;});
             //show vsts only
-            else if (FNodeFilter == (int) TNodeType.VST)
-                FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == TNodeType.VST;});
+            else if (FNodeFilter == (int) NodeType.VST)
+                FSelectionList = FNodeList.FindAll(delegate(string node){return FNodeDict[node].Type == NodeType.VST;});
 
             FSelectionList = ExtractSubList(FSelectionList);
             
@@ -1009,21 +1009,21 @@ namespace VVVV.Nodes.NodeBrowser
             if (FTags.Length > 0)
             {
                 if (FTags[0] == "N")
-                    FNodeFilter = (int) TNodeType.Native;
+                    FNodeFilter = (int) NodeType.Native;
                 else if ((FTags[0].StartsWith(".")) || (FTags[0] == "V") || (FTags[0] == "V4") || (FTags[0] == "V4P"))
-                    FNodeFilter = (int) TNodeType.Patch;
+                    FNodeFilter = (int) NodeType.Patch;
                 else if (FTags[0] == "M")
-                    FNodeFilter = (int) TNodeType.Module;
+                    FNodeFilter = (int) NodeType.Module;
                 else if ((FTags[0] == "F") || (FTags[0] == "FF"))
-                    FNodeFilter = (int) TNodeType.Freeframe;
+                    FNodeFilter = (int) NodeType.Freeframe;
                 else if ((FTags[0] == "X") || (FTags[0] == "FX"))
-                    FNodeFilter = (int) TNodeType.Effect;
+                    FNodeFilter = (int) NodeType.Effect;
                 else if (FTags[0] == "P")
-                    FNodeFilter = (int) TNodeType.Plugin;
+                    FNodeFilter = (int) NodeType.Plugin;
                 else if (FTags[0] == "D")
-                    FNodeFilter = (int) TNodeType.Dynamic;
+                    FNodeFilter = (int) NodeType.Dynamic;
                 else if ((FTags[0] == "VS") || (FTags[0] == "VST"))
-                    FNodeFilter = (int) TNodeType.VST;
+                    FNodeFilter = (int) NodeType.VST;
             }
             
             if (FNodeFilter >= 0)
@@ -1103,37 +1103,37 @@ namespace VVVV.Nodes.NodeBrowser
                 
                 if (FNodeDict.ContainsKey(FSelectionList[index].Trim()))
                 {
-                    TNodeType nodeType = FNodeDict[FSelectionList[index].Trim()].Type;
+                    NodeType nodeType = FNodeDict[FSelectionList[index].Trim()].Type;
                     
                     using (SolidBrush b = new SolidBrush(Color.Black))
                         switch (nodeType)
                     {
-                        case TNodeType.Module:
+                        case NodeType.Module:
                             {
                                 e.Graphics.DrawString("M", FRichTextBox.Font, b, 5, y-3, StringFormat.GenericDefault);
                                 break;
                             }
-                        case TNodeType.Plugin:
+                        case NodeType.Plugin:
                             {
                                 e.Graphics.DrawString("P", FRichTextBox.Font, b, 6, y-3, StringFormat.GenericDefault);
                                 break;
                             }
-                        case TNodeType.Dynamic:
+                        case NodeType.Dynamic:
                             {
                                 e.Graphics.DrawString("D", FRichTextBox.Font, b, 6, y-3, StringFormat.GenericDefault);
                                 break;
                             }
-                        case TNodeType.Freeframe:
+                        case NodeType.Freeframe:
                             {
                                 e.Graphics.DrawString("FF", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
                                 break;
                             }
-                        case TNodeType.Effect:
+                        case NodeType.Effect:
                             {
                                 e.Graphics.DrawString("FX", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
                                 break;
                             }
-                        case TNodeType.VST:
+                        case NodeType.VST:
                             {
                                 e.Graphics.DrawString("VST", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
                                 break;
