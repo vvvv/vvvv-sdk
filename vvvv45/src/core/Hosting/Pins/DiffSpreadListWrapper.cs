@@ -30,8 +30,7 @@ namespace VVVV.Hosting.Pins
 				Debug.WriteLine(string.Format("Creating input diff bin spread '{0}'.", attribute.Name));
 
 				FSpreadListDiff = new DiffInputBinSpread<T>(host, attribute as InputAttribute) as IDiffSpread<ISpread<T>>;
-			}
-				
+			}								
 		}
 		
 		public ISpread<T> this[int index]
