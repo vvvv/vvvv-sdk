@@ -43,6 +43,10 @@ namespace VVVV.PluginInterfaces.V2
 		/// Define if this node should be evaluated every frame, even if no outpur is read.
 		/// </summary>
 		bool AutoEvaluate {get; set;}
+		/// <summary>
+		/// Define if this node should be ignored in a NodeBrowser or not.
+		/// </summary>
+		bool Ignore {get; set;}
 	}
 	#endregion INodeInfo
 	
@@ -87,6 +91,7 @@ namespace VVVV.PluginInterfaces.V2
 			this.InitialBoxSize = Info.InitialBoxSize;
 			this.InitialComponentMode = Info.InitialComponentMode;
 			this.InitialWindowSize = Info.InitialWindowSize;
+			this.Ignore = false;
 		}
 		
 		/// <summary>
@@ -153,7 +158,19 @@ namespace VVVV.PluginInterfaces.V2
 			set {FExcecutable = value;}
 		}
 		
+		/// <summary>
+		/// Define if this node should be evaluated every frame, even if no outpur is read.
+		/// </summary>
 		public bool AutoEvaluate
+		{
+			get;
+			set;
+		}
+		
+		/// <summary>
+		/// Define if this node should be ignored in a NodeBrowser or not.
+		/// </summary>
+		public bool Ignore
 		{
 			get;
 			set;

@@ -26,6 +26,7 @@ public class PluginInfoAttribute: ExportAttribute
 	public int InitialBoxHeight { get; set; }
 	public TComponentMode InitialComponentMode { get; set; }
 	public bool AutoEvaluate { get; set; }
+	public bool Ignore { get; set; }
 	
 	/// <summary>
 	/// The nodes unique username in the form of: Name (Category Version)
