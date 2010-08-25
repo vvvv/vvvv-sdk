@@ -87,7 +87,7 @@ namespace VVVV.Hosting.Factories
 					foreach (var info in ExtractNodeInfosFromAssembly(assembly))
 					{
 						info.Executable = executable;
-						info.Type = TNodeType.Dynamic;
+						info.Type = NodeType.Dynamic;
 						info.Filename = project.Location.LocalPath;
 						
 						// Notify listeners about the new extracted node info.
@@ -104,7 +104,7 @@ namespace VVVV.Hosting.Factories
 						foreach (var info in ExtractNodeInfosFromCatalog(new AssemblyCatalog(assembly)))
 						{
 							info.Executable = executable;
-							info.Type = TNodeType.Dynamic;
+							info.Type = NodeType.Dynamic;
 							info.Filename = project.Location.LocalPath;
 							
 							// Ignore the node info if it is aready registered statically.
@@ -183,7 +183,7 @@ namespace VVVV.Hosting.Factories
 		
 		public override bool Create(INodeInfo nodeInfo, IAddonHost host)
 		{
-			if ((nodeInfo.Type != TNodeType.Plugin) && (nodeInfo.Type != TNodeType.Dynamic))
+			if ((nodeInfo.Type != NodeType.Plugin) && (nodeInfo.Type != NodeType.Dynamic))
 				return false;
 			
 			try
@@ -200,7 +200,7 @@ namespace VVVV.Hosting.Factories
 					plugin = InstantiateV2Plugin(nodeInfo.Systemname);
 					
 					//Create a wrapper around dynamic plugins in order to catch all exceptions properly.
-					if (nodeInfo.Type == TNodeType.Dynamic && plugin is IPluginEvaluate)
+					if (nodeInfo.Type == NodeType.Dynamic && plugin is IPluginEvaluate)
 						plugin = new DynamicPluginWrapperV2(plugin as IPluginEvaluate, host as IPluginHost);
 				}
 				//V1 plugin
@@ -210,7 +210,7 @@ namespace VVVV.Hosting.Factories
 					plugin = (IPluginBase) assembly.CreateInstance(nodeInfo.Arguments);
 					
 					//Create a wrapper around dynamic plugins in order to catch all exceptions properly.
-					if (nodeInfo.Type == TNodeType.Dynamic && plugin is IPlugin)
+					if (nodeInfo.Type == NodeType.Dynamic && plugin is IPlugin)
 						plugin = new DynamicPluginWrapperV1(plugin as IPlugin);
 					
 					(plugin as IPlugin).SetPluginHost(host as IPluginHost);
@@ -279,7 +279,7 @@ namespace VVVV.Hosting.Factories
 				{
 					nodeInfo.Executable = new DotNetExecutable(null, new Lazy<Assembly>(() => Assembly.LoadFrom(filename)));
 					nodeInfo.Filename = filename;
-					nodeInfo.Type = TNodeType.Plugin;
+					nodeInfo.Type = NodeType.Plugin;
 					nodeInfos.Add(nodeInfo);
 				}
 				
@@ -292,7 +292,7 @@ namespace VVVV.Hosting.Factories
 					{
 						nodeInfo.Executable = new DotNetExecutable(null, assembly);
 						nodeInfo.Filename = filename;
-						nodeInfo.Type = TNodeType.Plugin;
+						nodeInfo.Type = NodeType.Plugin;
 						nodeInfos.Add(nodeInfo);
 					}
 				}

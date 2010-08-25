@@ -69,7 +69,7 @@ namespace VVVV.Hosting.Factories
 			nodeInfo.Name = Path.GetFileNameWithoutExtension(filename);
             nodeInfo.Category = "EX9.Effect";
             nodeInfo.Filename = filename;
-            nodeInfo.Type = TNodeType.Effect;
+            nodeInfo.Type = NodeType.Effect;
             nodeInfo.Executable = project.Exectuable;
             
             var includes = new List<string>();
@@ -145,7 +145,7 @@ namespace VVVV.Hosting.Factories
         
         public override bool Create(INodeInfo nodeInfo, IAddonHost host)
 		{
-            if (nodeInfo.Type != TNodeType.Effect)
+            if (nodeInfo.Type != NodeType.Effect)
 		        return false;
             
             //get the code of the FXProject associated with the nodeinfos filename

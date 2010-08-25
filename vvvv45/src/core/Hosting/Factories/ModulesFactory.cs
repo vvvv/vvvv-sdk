@@ -56,7 +56,7 @@ namespace VVVV.Hosting.Factories
             else if (nodeInfo.Category == "4D") nodeInfo.Category = "4d";
                 
             nodeInfo.Filename = filename;
-            nodeInfo.Type = TNodeType.Module;
+            nodeInfo.Type = NodeType.Module;
             nodeInfo.InitialBoxSize = new System.Drawing.Size(4800, 3600);
             nodeInfo.InitialWindowSize = new System.Drawing.Size(9000, 6000);
             
