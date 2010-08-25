@@ -134,9 +134,9 @@ namespace VVVV.Hosting
             //now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
             try
             {
-                FWindowSwitcher = PluginFactory.InstantiateV2Plugin("WindowSwitcher (HDE)");
-                FKommunikator = PluginFactory.InstantiateV2Plugin("Kommunikator (HDE)");
-                FNodeBrowser = PluginFactory.InstantiateV2Plugin("NodeBrowser (HDE)");
+                FWindowSwitcher = PluginFactory.InstantiateV2Plugin("WindowSwitcher (VVVV)");
+                FKommunikator = PluginFactory.InstantiateV2Plugin("Kommunikator (VVVV)");
+                FNodeBrowser = PluginFactory.InstantiateV2Plugin("NodeBrowser (VVVV)");
                 (FNodeBrowser as INodeBrowser).DragDrop(false);
             }
             catch (Exception e)

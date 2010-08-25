@@ -59,8 +59,8 @@ namespace VVVV.Hosting.Factories
 			FCatalog = new AggregateCatalog();
 			FContainer = new CompositionContainer(FCatalog, exportProviders);
 			
-			foreach (var file in Directory.GetFiles(FDirectory.ConcatPath("hde")))
-				AddFile(file);
+			//foreach (var file in Directory.GetFiles(FDirectory.ConcatPath("hde")))
+			//	AddFile(file);
 			
 			FDirectory = Path.GetFullPath(Path.Combine(FDirectory, @"..\..\plugins"));
 		}
@@ -414,6 +414,7 @@ namespace VVVV.Hosting.Factories
 				info.InitialBoxSize = new Size(pluginExport.Metadata.InitialBoxWidth, pluginExport.Metadata.InitialBoxHeight);
 				info.InitialComponentMode = pluginExport.Metadata.InitialComponentMode;
 				info.AutoEvaluate = pluginExport.Metadata.AutoEvaluate;
+				info.Ignore = pluginExport.Metadata.Ignore;
 				
 				//a dynamic plugin may register the the same info with a new export
 				//so remove an existing info
@@ -483,5 +484,6 @@ namespace VVVV.Hosting.Factories
 		int InitialBoxHeight { get; }
 		TComponentMode InitialComponentMode { get; }
 		bool AutoEvaluate { get; }
+		bool Ignore { get; }
 	}
 }
