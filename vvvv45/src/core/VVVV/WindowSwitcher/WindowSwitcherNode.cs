@@ -21,7 +21,7 @@ namespace VVVV.Nodes.WindowSwitcher
         #region field declaration
         private IHDEHost FHDEHost;
         [Import]
-        private IWindowSwitcherHost FWindowSwitcherHost;
+        protected IWindowSwitcherHost FWindowSwitcherHost;
         // Track whether Dispose has been called.
         private bool FDisposed = false;
         

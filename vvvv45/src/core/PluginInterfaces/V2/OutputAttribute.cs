@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.Composition;
 
-namespace VVVV.Hosting.Pins
+namespace VVVV.PluginInterfaces.V2
 {
 	public class OutputAttribute : PinAttribute
 	{

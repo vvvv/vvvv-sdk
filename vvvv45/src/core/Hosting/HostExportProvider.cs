@@ -9,10 +9,11 @@ using System.Reflection;
 
 using MefContrib.Hosting.Generics;
 using VVVV.Core;
+using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.HDE
+namespace VVVV.Hosting
 {
 	public class HostExportProvider: ExportProvider
 	{

@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using VVVV.PluginInterfaces.V1;
-using VVVV.PluginInterfaces.V2.Config;
+using VVVV.PluginInterfaces.V2;
+using VVVV.Hosting.Pins.Config;
 
-namespace VVVV.PluginInterfaces.V2
+namespace VVVV.Hosting.Pins
 {
 	public abstract class SpreadListBase
 	{

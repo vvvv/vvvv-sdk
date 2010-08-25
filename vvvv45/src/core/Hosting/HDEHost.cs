@@ -14,12 +14,13 @@ using VVVV.Core;
 using VVVV.Core.Commands;
 using VVVV.Core.Logging;
 using VVVV.Core.Model;
-using VVVV.HDE.PluginFactories;
 using VVVV.Hosting;
+using VVVV.Hosting.Factories;
+using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.HDE
+namespace VVVV.Hosting
 {
     [PartCreationPolicy(CreationPolicy.Shared)]
     [Export(typeof(IHDEHost))]

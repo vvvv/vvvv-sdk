@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 
 namespace VVVV.PluginInterfaces.V2
@@ -199,7 +200,6 @@ namespace VVVV.PluginInterfaces.V2
 			set;
 		}
 		
-		//enum
 		/// <summary>
 		/// Name of the dynamic enum, only needed for EnumEntry type.
 		/// </summary>
@@ -218,7 +218,6 @@ namespace VVVV.PluginInterfaces.V2
 			set;
 		}
 		
-		//pin group
 		/// <summary>
 		/// Converts an ISpread<ISpread<T>> from a bin sized spread to a dynamic pin group.
 		/// </summary>

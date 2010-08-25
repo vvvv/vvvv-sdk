@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 
 namespace VVVV.PluginInterfaces.V2
 {

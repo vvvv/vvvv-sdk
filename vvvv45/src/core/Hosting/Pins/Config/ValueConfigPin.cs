@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.PluginInterfaces.V2.Config
+namespace VVVV.Hosting.Pins.Config
 {
 	/// <summary>
 	/// T is one of:

@@ -6,9 +6,10 @@ using System.ComponentModel.Composition;
 using SlimDX;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
-namespace VVVV.PluginInterfaces.V2
+namespace VVVV.Hosting.Pins
 {
 	public delegate void PinUpdatedEventHandler<T>(Pin<T> pin);
 	

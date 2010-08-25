@@ -1,7 +1,8 @@
 ﻿using System;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.PluginInterfaces.V2.Input
+namespace VVVV.Hosting.Pins.Input
 {
 	public class DiffInputSpreadList<T> : DiffSpreadList<T>
 	{

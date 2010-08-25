@@ -10,7 +10,7 @@ using VVVV.Core;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.HDE
+namespace VVVV.Hosting.Factories
 {
 	/// <summary>
 	/// Superclass for factories which watch files in a directory

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
 namespace VVVV.PluginInterfaces.V2

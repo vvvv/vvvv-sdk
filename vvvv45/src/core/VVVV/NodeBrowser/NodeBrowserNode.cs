@@ -394,7 +394,7 @@ namespace VVVV.Nodes.NodeBrowser
             FToolTip.Hide(FRichTextBox);
         }
         
-        public void DragDrop(bool allow)
+        public new void DragDrop(bool allow)
         {
             FAllowDragDrop = allow;
         }

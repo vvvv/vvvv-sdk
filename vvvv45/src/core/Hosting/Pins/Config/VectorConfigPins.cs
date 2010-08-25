@@ -1,8 +1,9 @@
 ﻿using System;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
-namespace VVVV.PluginInterfaces.V2.Config
+namespace VVVV.Hosting.Pins.Config
 {
 	public class Vector2DConfigPin : ValueConfigPin<Vector2D>
 	{

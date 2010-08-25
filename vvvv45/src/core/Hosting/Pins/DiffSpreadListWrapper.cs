@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 
 using VVVV.PluginInterfaces.V1;
-using VVVV.PluginInterfaces.V2.Input;
-using VVVV.PluginInterfaces.V2.Output;
+using VVVV.PluginInterfaces.V2;
+using VVVV.Hosting.Pins.Input;
 
-namespace VVVV.PluginInterfaces.V2
+namespace VVVV.Hosting.Pins
 {
 	/// <summary>
 	/// Intermediate type to delegate the pin group creation

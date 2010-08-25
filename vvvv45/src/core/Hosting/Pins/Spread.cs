@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
-namespace VVVV.PluginInterfaces.V2
+namespace VVVV.Hosting.Pins
 {
 	/// <summary>
 	/// The spread data type

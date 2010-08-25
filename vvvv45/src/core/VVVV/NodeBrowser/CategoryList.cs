@@ -38,7 +38,21 @@ namespace VVVV.Nodes.NodeBrowser
         
         public event CollectionDelegate Added;
         
+		protected virtual void OnAdded(IViewableCollection collection, object item)
+		{
+			if (Added != null) {
+				Added(collection, item);
+			}
+		}
+        
         public event CollectionDelegate Removed;
+        
+		protected virtual void OnRemoved(IViewableCollection collection, object item)
+		{
+			if (Removed != null) {
+				Removed(collection, item);
+			}
+		}
         
         public int Count 
         {

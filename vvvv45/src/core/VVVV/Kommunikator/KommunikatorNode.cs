@@ -33,7 +33,7 @@ namespace VVVV.Nodes.Kommunikator
         
         //the host (mandatory)
         [Import]
-        private IKommunikatorHost FKommunikatorHost;
+        protected IKommunikatorHost FKommunikatorHost;
         // Track whether Dispose has been called.
         private bool FDisposed = false;
         

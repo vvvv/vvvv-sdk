@@ -8,10 +8,9 @@ using System.IO;
 using VVVV.Core.Logging;
 using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
-using VVVV.HDE.PluginFactories;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.HDE
+namespace VVVV.Hosting.Factories
 {
 	[Export(typeof(IAddonFactory))]
 	public class DotNetProjectFactory : AbstractFileFactory

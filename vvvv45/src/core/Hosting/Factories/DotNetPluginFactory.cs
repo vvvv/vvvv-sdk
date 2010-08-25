@@ -18,7 +18,7 @@ using VVVV.Hosting;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.HDE.PluginFactories
+namespace VVVV.Hosting.Factories
 {
 	/// <summary>
 	/// DotNetPluginFactory for V1 and V2 style plugins.

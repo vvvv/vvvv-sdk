@@ -4,7 +4,7 @@ using VVVV.Hosting;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Core.Logging;
 
-namespace VVVV.HDE
+namespace VVVV.Hosting
 {
 	/// <summary>
 	/// Logs messages to the IVVVVHost.

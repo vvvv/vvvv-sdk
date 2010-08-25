@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 
 using SlimDX;
+using VVVV.Hosting.Pins.Input;
 using VVVV.PluginInterfaces.V1;
-using VVVV.PluginInterfaces.V2.Input;
+using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
-namespace VVVV.PluginInterfaces.V2
+namespace VVVV.Hosting.Pins
 {
 	public class InputWrapperPin<T> : WrapperPin<T>
 	{

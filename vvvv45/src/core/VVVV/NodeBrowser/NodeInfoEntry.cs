@@ -15,6 +15,13 @@ namespace VVVV.Nodes.NodeBrowser
         public INodeInfo NodeInfo;
         
         public event RenamedHandler Renamed;
+        
+		protected virtual void OnRenamed(string newName)
+		{
+			if (Renamed != null) {
+				Renamed(this, newName);
+			}
+		}
         string FCategory;
         string FUsername;
         string FSystemname;

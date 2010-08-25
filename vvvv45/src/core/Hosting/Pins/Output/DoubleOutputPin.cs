@@ -1,7 +1,8 @@
 ﻿using System;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.PluginInterfaces.V2.Output
+namespace VVVV.Hosting.Pins.Output
 {
 	public class DoubleOutputPin : ValueOutputPin<double>
 	{

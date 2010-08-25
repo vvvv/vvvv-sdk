@@ -11,7 +11,7 @@ using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.HDE
+namespace VVVV.Hosting.Factories
 {
     /// <summary>
     /// Effects factory, parses and watches the effect directory

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 
-namespace VVVV.PluginInterfaces.V2.Output
+namespace VVVV.Hosting.Pins.Output
 {
 	public class ColorOutputPin : Pin<RGBAColor>, IPinUpdater
 	{

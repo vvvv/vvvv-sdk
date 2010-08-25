@@ -2,8 +2,9 @@
 using System.IO;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.PluginInterfaces.V2.Config
+namespace VVVV.Hosting.Pins.Config
 {
 	public class StringConfigPin : ConfigPin<string>
 	{

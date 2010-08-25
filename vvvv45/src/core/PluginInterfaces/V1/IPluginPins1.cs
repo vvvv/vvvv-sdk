@@ -650,7 +650,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="IsFilename">Hint to the GUI that this String is a filename</param>
 		void SetSubType(string Default, bool IsFilename);
 		/// <summary>
-		/// Alternative version to <see cref="VVVV.PluginInterfaces.V1.IStringConfig.SetSubType()">IStringConfig.SetSubType()</see> with more options.
+		/// Alternative version to <see cref="SetSubType(string, bool)">IStringConfig.SetSubType()</see> with more options.
 		/// </summary>
 		/// <param name="Default">The String the pin is initialized with and can be reset to at any time</param>
 		/// <param name="MaxCharacters">Constrains the string to a given number of characters</param>
@@ -681,7 +681,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="IsFilename">Hint to the GUI that this String is a filename</param>
 		void SetSubType(string Default, bool IsFilename);
 		/// <summary>
-		/// Alternative version to <see cref="VVVV.PluginInterfaces.V1.IStringIn.SetSubType()">IStringIn.SetSubType()</see> with more options.
+		/// Alternative version to <see cref="SetSubType(string, bool)">IStringIn.SetSubType()</see> with more options.
 		/// </summary>
 		/// <param name="Default">The String the pin is initialized with and can be reset to at any time</param>
 		/// <param name="MaxCharacters">Constrains the string to a given number of characters</param>
@@ -712,7 +712,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="IsFilename">Hint to the GUI that this String is a filename</param>
 		void SetSubType(string Default, bool IsFilename);
 		/// <summary>
-		/// Alternative version to <see cref="VVVV.PluginInterfaces.V1.IStringOut.SetSubType()">IStringOut.SetSubType()</see> with more options.
+		/// Alternative version to <see cref="SetSubType(string, bool)">IStringOut.SetSubType()</see> with more options.
 		/// </summary>
 		/// <param name="Default">The String the pin is initialized with and can be reset to at any time</param>
 		/// <param name="MaxCharacters">Constrains the string to a given number of characters</param>
