@@ -19,7 +19,7 @@ using VVVV.PluginInterfaces.V2;
 //the vvvv node namespace
 namespace VVVV.Nodes.NodeBrowser
 {
-    enum NodeBrowserPage {ByCategory, ByTags};
+    enum NodeBrowserPage {ByCategory, ByTags, CloneInfo};
     
     [PluginInfo(Name = "NodeBrowser",
                 Category = "VVVV",
@@ -51,6 +51,7 @@ namespace VVVV.Nodes.NodeBrowser
         List<string> FRTFSelectionList = new List<string>();
         private string[] FTags = new string[0];
         Dictionary<string, INodeInfo> FNodeDict = new Dictionary<string, INodeInfo>();
+        Dictionary<string, INodeInfo> FSystemNameDict = new Dictionary<string, INodeInfo>();
         private bool FAndTags = true;
         private int FHoverLine;
         private Point FLastMouseHoverLocation = new Point(0, 0);
@@ -154,6 +155,17 @@ namespace VVVV.Nodes.NodeBrowser
             
             FCategoryTreeViewer.Registry = mappingRegistry;
             FCategoryTreeViewer.Input = FCategoryList;
+            
+            FCloneInfo.NodeDict = FSystemNameDict;
+            FCloneInfo.Closed += new CloneInfoEventHandler(FCloneInfo_Closed); 
+        }
+
+        void FCloneInfo_Closed(INodeInfo nodeInfo, string Name, string Category, string Version)
+        {
+            if (nodeInfo != null)
+                NodeBrowserHost.CloneNode(nodeInfo, Name, Category, Version);
+            
+            SelectPage(NodeBrowserPage.ByTags);
         }
         
         private void ToolTipPopupHandler(object sender, PopupEventArgs e)
@@ -201,6 +213,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FNodeCountLabel = new System.Windows.Forms.Label();
         	this.FScrollBar = new System.Windows.Forms.VScrollBar();
         	this.FTagsTextBox = new System.Windows.Forms.TextBox();
+        	this.FCloneInfo = new VVVV.Nodes.CloneInfo();
         	this.FCategoryPanel = new System.Windows.Forms.Panel();
         	this.FCategoryTreeViewer = new VVVV.HDE.Viewer.WinFormsViewer.TreeViewer();
         	this.FTopLabel = new System.Windows.Forms.Label();
@@ -218,7 +231,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FTagPanel.Controls.Add(this.FTagsTextBox);
         	this.FTagPanel.Location = new System.Drawing.Point(3, 33);
         	this.FTagPanel.Name = "FTagPanel";
-        	this.FTagPanel.Size = new System.Drawing.Size(144, 440);
+        	this.FTagPanel.Size = new System.Drawing.Size(144, 273);
         	this.FTagPanel.TabIndex = 4;
         	// 
         	// FRichTextBox
@@ -233,7 +246,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FRichTextBox.Name = "FRichTextBox";
         	this.FRichTextBox.ReadOnly = true;
         	this.FRichTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-        	this.FRichTextBox.Size = new System.Drawing.Size(107, 405);
+        	this.FRichTextBox.Size = new System.Drawing.Size(107, 238);
         	this.FRichTextBox.TabIndex = 2;
         	this.FRichTextBox.TabStop = false;
         	this.FRichTextBox.Text = "";
@@ -248,7 +261,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FNodeTypePanel.Dock = System.Windows.Forms.DockStyle.Left;
         	this.FNodeTypePanel.Location = new System.Drawing.Point(0, 20);
         	this.FNodeTypePanel.Name = "FNodeTypePanel";
-        	this.FNodeTypePanel.Size = new System.Drawing.Size(20, 405);
+        	this.FNodeTypePanel.Size = new System.Drawing.Size(20, 238);
         	this.FNodeTypePanel.TabIndex = 4;
         	this.FNodeTypePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.FNodeTypePanelPaint);
         	this.FNodeTypePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseMove);
@@ -260,7 +273,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FNodeCountLabel.BackColor = System.Drawing.Color.Silver;
         	this.FNodeCountLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
         	this.FNodeCountLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
-        	this.FNodeCountLabel.Location = new System.Drawing.Point(0, 425);
+        	this.FNodeCountLabel.Location = new System.Drawing.Point(0, 258);
         	this.FNodeCountLabel.Name = "FNodeCountLabel";
         	this.FNodeCountLabel.Size = new System.Drawing.Size(127, 15);
         	this.FNodeCountLabel.TabIndex = 5;
@@ -270,7 +283,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
         	this.FScrollBar.Location = new System.Drawing.Point(127, 20);
         	this.FScrollBar.Name = "FScrollBar";
-        	this.FScrollBar.Size = new System.Drawing.Size(17, 420);
+        	this.FScrollBar.Size = new System.Drawing.Size(17, 253);
         	this.FScrollBar.TabIndex = 3;
         	this.FScrollBar.Value = 100;
         	this.FScrollBar.ValueChanged += new System.EventHandler(this.FScrollBarValueChanged);
@@ -293,13 +306,22 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FTagsTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TextBoxTagsMouseDown);
         	this.FTagsTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FTagsTextBoxMouseUp);
         	// 
+        	// FCloneInfo
+        	// 
+        	this.FCloneInfo.BackColor = System.Drawing.Color.Silver;
+        	this.FCloneInfo.Location = new System.Drawing.Point(60, 312);
+        	this.FCloneInfo.Name = "FCloneInfo";
+        	this.FCloneInfo.NodeDict = null;
+        	this.FCloneInfo.Size = new System.Drawing.Size(218, 247);
+        	this.FCloneInfo.TabIndex = 6;
+        	// 
         	// FCategoryPanel
         	// 
         	this.FCategoryPanel.Controls.Add(this.FCategoryTreeViewer);
         	this.FCategoryPanel.Controls.Add(this.FTopLabel);
         	this.FCategoryPanel.Location = new System.Drawing.Point(165, 33);
         	this.FCategoryPanel.Name = "FCategoryPanel";
-        	this.FCategoryPanel.Size = new System.Drawing.Size(159, 439);
+        	this.FCategoryPanel.Size = new System.Drawing.Size(159, 273);
         	this.FCategoryPanel.TabIndex = 5;
         	// 
         	// FCategoryTreeViewer
@@ -313,7 +335,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FCategoryTreeViewer.ShowRoot = false;
         	this.FCategoryTreeViewer.ShowRootLines = false;
         	this.FCategoryTreeViewer.ShowTooltip = true;
-        	this.FCategoryTreeViewer.Size = new System.Drawing.Size(159, 424);
+        	this.FCategoryTreeViewer.Size = new System.Drawing.Size(159, 258);
         	this.FCategoryTreeViewer.TabIndex = 1;
         	this.FCategoryTreeViewer.Click += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.NodeBrowserPluginNode_Click);
         	// 
@@ -335,6 +357,7 @@ namespace VVVV.Nodes.NodeBrowser
         	// NodeBrowserPluginNode
         	// 
         	this.BackColor = System.Drawing.Color.Silver;
+        	this.Controls.Add(this.FCloneInfo);
         	this.Controls.Add(this.FCategoryPanel);
         	this.Controls.Add(this.FTagPanel);
         	this.DoubleBuffered = true;
@@ -345,6 +368,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FCategoryPanel.ResumeLayout(false);
         	this.ResumeLayout(false);
         }
+        private VVVV.Nodes.CloneInfo FCloneInfo;
         private System.ComponentModel.BackgroundWorker FBackgroundWorker;
 
         private VVVV.HDE.Viewer.WinFormsViewer.TreeViewer FCategoryTreeViewer;
@@ -383,6 +407,7 @@ namespace VVVV.Nodes.NodeBrowser
         public void BeforeHide()
         {
             FToolTip.Hide(FRichTextBox);
+            FCategoryTreeViewer.HideToolTip();
         }
         
         public new void DragDrop(bool allow)
@@ -398,10 +423,13 @@ namespace VVVV.Nodes.NodeBrowser
                 text = FRichTextBox.Lines[FHoverLine].Trim();
                 
                 INodeInfo selNode = FNodeDict[text];
-                if (Control.ModifierKeys == Keys.Control)
-                    NodeBrowserHost.CreateNode(selNode, true);
+                if ((Control.ModifierKeys == Keys.Control) && (selNode.Type == NodeType.Dynamic))
+                {
+                    FCloneInfo.Initialize(selNode);
+                    SelectPage(NodeBrowserPage.CloneInfo);
+                }
                 else
-                    NodeBrowserHost.CreateNode(selNode, false);
+                    NodeBrowserHost.CreateNode(selNode);
             }
             catch
             {
@@ -437,6 +465,7 @@ namespace VVVV.Nodes.NodeBrowser
             string key = NodeInfoToKey(nodeInfo);
             
             FNodeList.Add(key);
+            FSystemNameDict[nodeInfo.Systemname] = nodeInfo;
             FNodeDict[key] = nodeInfo;
             
             //insert nodeInfo to FCategoryList
@@ -469,6 +498,7 @@ namespace VVVV.Nodes.NodeBrowser
         public void NodeInfoUpdatedCB(INodeInfo nodeInfo)
         {
             string oldkey = "";
+            string oldSysKey = "";               
             string newkey = NodeInfoToKey(nodeInfo);
             //find the old key that is associated with this nodeinfo
             foreach(var infokey in FNodeDict)
@@ -478,10 +508,20 @@ namespace VVVV.Nodes.NodeBrowser
                 break;
             }
             
+            foreach(var infokey in FSystemNameDict)
+                if (infokey.Value == nodeInfo)
+            {
+                oldSysKey = infokey.Key;
+                break;
+            }
+            
             //re-add the same nodeinfo with the new key
             var ni = FNodeDict[oldkey];
             FNodeDict.Remove(oldkey);
             FNodeDict.Add(newkey, ni);
+            
+            FSystemNameDict.Remove(oldSysKey);
+            FSystemNameDict.Add(ni.Systemname, ni);
             
             FNodeList.Remove(oldkey);
             FNodeList.Add(newkey);
@@ -493,6 +533,7 @@ namespace VVVV.Nodes.NodeBrowser
         {
             string key = NodeInfoToKey(nodeInfo);
             FNodeDict.Remove(key);
+            FSystemNameDict.Remove(nodeInfo.Systemname);
             FNodeList.Remove(key);
 
             CategoryEntry catEntry = null;
@@ -558,7 +599,7 @@ namespace VVVV.Nodes.NodeBrowser
                     CreateNode();
             }
             else if (e.KeyCode == Keys.Escape)
-                NodeBrowserHost.CreateNode(null, false);
+                NodeBrowserHost.CreateNode(null);
             else if ((FTagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Down))
             {
                 FHoverLine += 1;
@@ -1220,6 +1261,8 @@ namespace VVVV.Nodes.NodeBrowser
                     {
                         FToolTip.Hide(FRichTextBox);
                         FTagPanel.Hide();
+                        FCloneInfo.Hide();
+                        
                         FCategoryPanel.Dock = DockStyle.Fill;
                         FCategoryPanel.BringToFront();
                         FCategoryPanel.Show();
@@ -1231,11 +1274,24 @@ namespace VVVV.Nodes.NodeBrowser
                     {
                         FCategoryPanel.Hide();
                         FCategoryTreeViewer.HideToolTip();
+                        FCloneInfo.Hide();
+                        
                         FTagPanel.Dock = DockStyle.Fill;
                         FTagPanel.BringToFront();
                         FTagPanel.Show();
                         FTagsTextBox.Focus();
                         FTopLabel.Text = "-> Browse by Categories";
+                        break;
+                    }
+                case NodeBrowserPage.CloneInfo:
+                    {
+                        FCategoryPanel.Hide();
+                        FCategoryTreeViewer.HideToolTip();
+                        FTagPanel.Hide();
+                        
+                        FCloneInfo.Dock = DockStyle.Fill;
+                        FCloneInfo.BringToFront();
+                        FCloneInfo.Show();
                         break;
                     }
             }
