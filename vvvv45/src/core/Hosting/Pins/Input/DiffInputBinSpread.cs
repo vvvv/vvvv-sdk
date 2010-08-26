@@ -32,7 +32,7 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 
-		protected virtual void CreateWrapperPin(IPluginHost host, InputAttribute attribute)
+		protected override void CreateWrapperPin(IPluginHost host, InputAttribute attribute)
 		{
 			FSpreadPin = new DiffInputWrapperPin<T>(host, attribute);
 		}
