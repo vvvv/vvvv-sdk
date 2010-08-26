@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug24.dtd" >
    <PATCH nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\vvvv group\EX9\Line (EX9).v4p">
-   <BOUNDS height="6885" left="11445" top="8850" type="Window" width="11820">
+   <BOUNDS height="7140" left="1455" top="8415" type="Window" width="12045">
    </BOUNDS>
    <NODE id="39" nodename="Grid (EX9.Geometry)">
    <BOUNDS height="0" left="2955" top="3765" type="Node" width="0">
@@ -96,6 +96,10 @@
    <PIN pinname="Output aXYZ" visible="1">
    </PIN>
    <PIN pinname="Output bXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Output 1XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Output 2XYZ" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="33" dstpinname="InputXYZ" srcnodeid="34" srcpinname="Y Output Value">
@@ -472,10 +476,6 @@
    </LINK>
    <LINK dstnodeid="10" dstpinname="Switch" srcnodeid="12" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="11" dstpinname="Input 2" srcnodeid="33" srcpinname="Output aXYZ">
-   </LINK>
-   <LINK dstnodeid="10" dstpinname="Input 2" srcnodeid="33" srcpinname="Output bXYZ">
-   </LINK>
    <LINK dstnodeid="31" dstpinname="Input" srcnodeid="11" srcpinname="Output">
    </LINK>
    <NODE componentmode="Hidden" id="9" nodename="Max (Value)">
@@ -693,5 +693,9 @@
    <LINK dstnodeid="26" dstpinname="Input 3" srcnodeid="29" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="26" dstpinname="Input 2" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="Output 1XYZ" dstnodeid="11" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="Output 2XYZ" dstnodeid="10" dstpinname="Input 2">
    </LINK>
    </PATCH>
