@@ -253,20 +253,6 @@ namespace VVVV.Hosting
 			return currentTime;
 		}
 		
-		public string GetHostPath()
-		{
-			string path;
-			FVVVVHost.GetHostPath(out path);
-			return path;
-		}
-		
-		public string GetNodePath(bool UseDescriptiveNames)
-		{
-			string path;
-			FVVVVHost.GetNodePath(UseDescriptiveNames, out path);
-			return path;
-		}
-        
         #endregion
         
         #region helper methods
