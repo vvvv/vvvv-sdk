@@ -57,19 +57,6 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		/// <returns>The hosts current time.</returns>
 		double GetCurrentTime();
-		
-		/// <summary>
-		/// Returns the absolut file path to the plugins host.
-		/// </summary>
-		/// <returns>Absolut file path to the plugins host (i.e path to the patch the plugin is placed in, in vvvv).</returns>
-		string GetHostPath();
-		
-		/// <summary>
-		/// Returns a slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.
-		/// </summary>
-		/// <param name="UseDescriptiveNames">If TRUE descriptive node names are used where available instead of the node ID.</param>
-		/// <returns>Slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.</returns>
-		string GetNodePath(bool UseDescriptiveNames);
 	    
 	}
 	#endregion IHDEHost
