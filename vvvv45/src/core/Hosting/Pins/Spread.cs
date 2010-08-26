@@ -21,6 +21,13 @@ namespace VVVV.Hosting.Pins
 			SliceCount = size;
 		}
 		
+		public Spread(List<T> original)
+		{
+			FData = new T[original.Count];
+			original.CopyTo(FData);	
+			FSliceCount = original.Count;
+		}
+		
 		public T this[int index] 
 		{
 			get 
@@ -77,4 +84,12 @@ namespace VVVV.Hosting.Pins
 			return GetEnumerator();
 		}
 	}
+
+    public static class SpreadExtensions_
+    {                       
+        public static ISpread<T> ToSpread<T>(this List<T> list)
+        {
+        	return new Spread<T>(list);
+        }
+     }
 }

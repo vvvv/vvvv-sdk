@@ -50,5 +50,23 @@ namespace VVVV.PluginInterfaces.V2
             	
             return s;	
         }
-     }
+        
+        public static int CombineSpreads(this int c1, int c2)
+        {        	
+        	if (c1 == 0 || c2 == 0)
+        		return 0;
+        	else
+        		return Math.Max(c1, c2);
+        }
+        
+        public static int CombineWith<V>(this int c1, ISpread<V> spread2)
+        {
+        	return CombineSpreads(c1, spread2.SliceCount);
+		}
+        
+        public static int CombineWith<U, V>(this ISpread<U> spread1, ISpread<V> spread2)
+        {
+        	return CombineSpreads(spread1.SliceCount, spread2.SliceCount);
+        }
+	}
 }
