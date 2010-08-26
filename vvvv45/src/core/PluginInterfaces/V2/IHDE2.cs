@@ -41,7 +41,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// Returns the number of entries for a given Enum.
 		/// </summary>
 		/// <param name="EnumName">The name of the Enum to get the EntryCount of.</param>
-		/// <param name="EntryCount">Number of entries in the Enum.</param>
+		/// <returns>Number of entries in the Enum.</returns>
 		int GetEnumEntryCount(string EnumName);
 		
 		/// <summary>
@@ -49,26 +49,26 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		/// <param name="EnumName">The name of the Enum to get the EntryName of.</param>
 		/// <param name="Index">Index of the EnumEntry.</param>
-		/// <param name="EntryName">String representation of the EnumEntry.</param>
+		/// <returns>String representation of the EnumEntry.</returns>
 		string GetEnumEntry(string EnumName, int Index);
 		
 		/// <summary>
 		/// Returns the current time which the plugin should use if it does timebased calculations.
 		/// </summary>
-		/// <param name="CurrentTime">The hosts current time.</param>
+		/// <returns>The hosts current time.</returns>
 		double GetCurrentTime();
 		
 		/// <summary>
 		/// Returns the absolut file path to the plugins host.
 		/// </summary>
-		/// <param name="Path">Absolut file path to the plugins host (i.e path to the patch the plugin is placed in, in vvvv).</param>
+		/// <returns>Absolut file path to the plugins host (i.e path to the patch the plugin is placed in, in vvvv).</returns>
 		string GetHostPath();
 		
 		/// <summary>
 		/// Returns a slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.
 		/// </summary>
 		/// <param name="UseDescriptiveNames">If TRUE descriptive node names are used where available instead of the node ID.</param>
-		/// <param name="Path">Slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.</param>
+		/// <returns>Slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.</returns>
 		string GetNodePath(bool UseDescriptiveNames);
 	    
 	}
