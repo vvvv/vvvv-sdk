@@ -70,7 +70,6 @@ namespace VVVV.Hosting.Factories
 					FDirectoryWatcher = new FileSystemWatcher(FDirectory, @"*" + FFileExtension);
 					FDirectoryWatcher.SynchronizingObject = FSyncContext;
 					FDirectoryWatcher.IncludeSubdirectories = true;
-					FDirectoryWatcher.NotifyFilter = NotifyFilters.LastWrite;
 					FDirectoryWatcher.EnableRaisingEvents = true;
 					FDirectoryWatcher.Changed += new FileSystemEventHandler(FDirectoryWatcher_Changed);
 					FDirectoryWatcher.Created += new FileSystemEventHandler(FDirectoryWatcher_Created);
@@ -136,7 +135,15 @@ namespace VVVV.Hosting.Factories
 		//remove all addons included with this filename
 		private void RemoveFile(string filename)
 		{
-			foreach(var ni in ExtractNodeInfos(filename))
+			List<INodeInfo> toDeleteList = new List<INodeInfo>();
+			
+			foreach(var k in FNodeInfos.Keys)
+			{
+				if(FNodeInfos[k] == filename)
+					toDeleteList.Add(k);
+			}
+			
+			foreach(var ni in toDeleteList)
 			{
 				FNodeInfos.Remove(ni);
 				OnNodeInfoRemoved(ni);
