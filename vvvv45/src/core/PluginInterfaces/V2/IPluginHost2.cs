@@ -14,4 +14,15 @@ namespace VVVV.PluginInterfaces.V2
 			set;
 		}
 	}
+	
+	#region IEffectHost
+    [Guid("5A7B81D4-3548-4E4C-B3F5-44A50E3C8E1B"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IEffectHost : IAddonHost
+	{
+		void SetEffect(string filename, string code);
+	    string GetParameterDescription();
+		string GetErrors();	    
+	}
+	#endregion IEffectHost
 }
