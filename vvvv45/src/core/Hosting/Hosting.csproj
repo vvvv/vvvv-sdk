@@ -44,6 +44,12 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>..\..\vvvv50\lib\SharpDevelop\ICSharpCode.NRefactory.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpDevelop.Dom">
+      <HintPath>..\..\vvvv50\lib\SharpDevelop\ICSharpCode.SharpDevelop.Dom.dll</HintPath>
+    </Reference>
     <Reference Include="MefContrib.Hosting.Generics">
       <HintPath>..\..\vvvv50\lib\MEF\MefContrib.Hosting.Generics.dll</HintPath>
     </Reference>
@@ -72,7 +78,7 @@
     <Compile Include="DynamicPluginWrapper.cs" />
     <Compile Include="Factories\AbstractFileFactory.cs" />
     <Compile Include="Factories\DotNetPluginFactory.cs" />
-    <Compile Include="Factories\DotNetProjectFactory.cs" />
+    <Compile Include="Factories\CSProjectFactory.cs" />
     <Compile Include="Factories\EffectsFactory.cs" />
     <Compile Include="Factories\ModulesFactory.cs" />
     <Compile Include="HDEHost.cs" />

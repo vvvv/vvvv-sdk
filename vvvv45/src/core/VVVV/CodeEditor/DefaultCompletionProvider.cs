@@ -60,7 +60,7 @@ namespace VVVV.HDE.CodeEditor
 		
 		public virtual CompletionDataProviderKeyResult ProcessKey(char key)
         {
-            if (char.IsLetterOrDigit(key) || key == '_')
+			if (char.IsLetterOrDigit(key) || key == '_')
             {
                 return CompletionDataProviderKeyResult.NormalKey;
             }
@@ -76,7 +76,7 @@ namespace VVVV.HDE.CodeEditor
         /// </summary>
         public virtual bool InsertAction(ICompletionData data, TextArea textArea, int insertionOffset, char key)
         {
-            textArea.Caret.Position = textArea.Document.OffsetToPosition(insertionOffset);
+        	textArea.Caret.Position = textArea.Document.OffsetToPosition(insertionOffset);
             return data.InsertAction(textArea, key);
         }
 		

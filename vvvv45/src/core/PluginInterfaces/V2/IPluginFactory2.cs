@@ -20,7 +20,7 @@ namespace VVVV.PluginInterfaces.V2
 	    void StartWatching();
 	    bool Create(INodeInfo nodeInfo, IAddonHost host);
 	    bool Delete(IAddonHost host);
-	    bool Clone(INodeInfo nodeInfo, string path, out INodeInfo newNodeInfo);
+	    bool Clone(INodeInfo nodeInfo, string path, string name, string category, string version);
 	}
 	
 	/// <summary>

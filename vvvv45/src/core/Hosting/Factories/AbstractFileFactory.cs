@@ -23,8 +23,8 @@ namespace VVVV.Hosting.Factories
 		//directory to watch
 		protected string FDirectory;
 		protected string FFileExtension;
+		protected Dictionary<INodeInfo, string> FNodeInfos = new Dictionary<INodeInfo, string>();
 		private FileSystemWatcher FDirectoryWatcher;
-		private Dictionary<INodeInfo, string> FNodeInfos = new Dictionary<INodeInfo, string>();
 		private GenericSynchronizingObject FSyncContext;
 		
 		public AbstractFileFactory()
@@ -96,9 +96,8 @@ namespace VVVV.Hosting.Factories
 		}
 		
 		// TODO: Make this abstract
-		public virtual bool Clone(INodeInfo nodeInfo, string path, out INodeInfo newNodeInfo)
+		public virtual bool Clone(INodeInfo nodeInfo, string path, string Name, string Category, string Version)
 		{
-			newNodeInfo = null;
 			return false;
 		}
 		#endregion IAddonFactory

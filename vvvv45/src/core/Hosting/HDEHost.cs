@@ -210,10 +210,22 @@ namespace VVVV.Hosting
         	}
         }
         
-        public void Clone(INodeInfo nodeInfo, string path, string Name, string Category, string Version)
+        public void Clone(INodeInfo nodeInfo, string path, string name, string category, string version)
         {
-            throw new NotImplementedException();
+            try
+        	{
+        		foreach (var factory in AddonFactories)
+                {
+        			if (factory.Clone(nodeInfo, path, name, category, version))
+                        break;
+                }
+        	}
+        	catch (Exception e)
+        	{
+        		Logger.Log(e);
+        	}
         }
+        
         #endregion IInternalHDEHost
         
         #region implementation of IHDEHost
