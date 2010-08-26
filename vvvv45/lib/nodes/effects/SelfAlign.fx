@@ -1,6 +1,7 @@
-//shading:         phong
-//lighting model:  blinn
-//lighting type:   directional
+//@author: vvvv group
+//@help: aligns the orientation of a geometry to the camera
+//@tags: billboard, view space
+//@credits:
 
 // --------------------------------------------------------------------------------------------------
 // PARAMETERS:

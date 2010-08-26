@@ -1,3 +1,7 @@
+//@author: tonfilm
+//@help: high quality texture scaling filter
+//@tags: texture, high quality, scale, filter
+//@credits: Christian Sigg, ETH Zurich and Markus Hadwiger, VRVis Research Center 
 // --------------------------------------------------------------------------------------------------
 // PARAMETERS:
 // --------------------------------------------------------------------------------------------------
@@ -38,7 +42,7 @@ float Alpha <float uimin=0.0; float uimax=1.0;> = 1;
 //include the bicubic texture lookup
 #include "Bicubic.fxh"
 
-//the data structure: "vertexshader to pixelshader"
+//the data structure: vertexshader to pixelshader
 //used as output data with the VS function
 //and as input data with the PS function
 struct vs2ps

@@ -1,5 +1,8 @@
-//credits go to Rubicon (of gamedev.net) for the trick of packing normals + depth into one RGBA texture which i took from his implementation:
-//http://www.rubicondev.com/?page_id=116
+//@author: vvvv group
+//@help: renders normals and depth information of a scene into a texture
+//@tags: texture, screen space
+//@credits: Rubicon (of gamedev.net) for the trick of packing normals + depth into one RGBA texture: http://www.rubicondev.com/?page_id=116
+
 // --------------------------------------------------------------------------------------------------
 // PARAMETERS:
 // --------------------------------------------------------------------------------------------------

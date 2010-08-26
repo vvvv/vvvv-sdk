@@ -1,3 +1,8 @@
+//@author: vvvv group
+//@help: uses the lens undistort alorithm from OpenCV to undistort a texture by the calculated values from the Undistort node
+//@tags: lens, camera, calibration, openCV
+//@credits:
+
 #include "undistort.fxh"
 
 // --------------------------------------------------------------------------------------------------

@@ -1,6 +1,7 @@
-//shading:         gouraud
-//lighting model:  blinn
-//lighting type:   directional
+//@author: vvvv group
+//@help: basic vertex based lightning with directional light
+//@tags: shading, blinn
+//@credits:
 
 // --------------------------------------------------------------------------------------------------
 // PARAMETERS:

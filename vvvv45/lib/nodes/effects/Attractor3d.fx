@@ -1,6 +1,6 @@
 //@author: fibo
-//@description: example shader using Attractor3d.fxh
-//@tags: attractor
+//@help: example shader using Attractor3d.fxh
+//@tags: attractor, 3d
 //@credits: kalle for the help patch
 // -------------------------------------------------------------------------------------------------------------------------------------
 // PARAMETERS:

@@ -1,5 +1,7 @@
-// this is a very basic template. use it to start writing your own effects.
-// if you want effects with lighting start from one of the GouraudXXXX or PhongXXXX effects
+//@author: vvvv group
+//@help: this is a very basic template. which uses a 3x3 texture matrix. if you want effects with lighting start from one of the GouraudXXXX or PhongXXXX effects
+//@tags:
+//@credits:
 
 // --------------------------------------------------------------------------------------------------
 // PARAMETERS:

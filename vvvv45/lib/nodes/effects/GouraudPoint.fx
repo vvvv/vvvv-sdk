@@ -1,6 +1,7 @@
-//shading:         gouraud
-//lighting model:  blinn
-//lighting type:   point
+//@author: vvvv group
+//@help: basic vertex based lightning with point light
+//@tags: shading, blinn
+//@credits:
 
 // --------------------------------------------------------------------------------------------------
 // PARAMETERS:

@@ -1,6 +1,7 @@
-//shading:         phong
-//lighting model:  blinn
-//lighting type:   directional
+//@author: vvvv group
+//@help: basic pixel based lightning with directional light
+//@tags: shading, blinn
+//@credits:
 
 // --------------------------------------------------------------------------------------------------
 // PARAMETERS:
@@ -67,6 +68,7 @@ vs2ps VS(
 // --------------------------------------------------------------------------------------------------
 
 float Alpha <float uimin=0.0; float uimax=1.0;> = 1;
+float4 Hans;
 
 float4 PS(vs2ps In): COLOR
 {
@@ -75,7 +77,8 @@ float4 PS(vs2ps In): COLOR
     float4 col = tex2D(Samp, In.TexCd);
 
     col.rgb *= PhongDirectional(In.NormV, In.ViewDirV, In.LightDirV);
-    col.a *= Alpha;
+    col.a *= Alpha * Hans;
+    
 
     return mul(col, tColor);
 }

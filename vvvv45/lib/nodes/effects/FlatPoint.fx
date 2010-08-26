@@ -1,6 +1,7 @@
-//shading:         flat
-//lighting model:  blinn
-//lighting type:   point
+//@author: vvvv group
+//@help: basic vertex based flat lightning with point light
+//@tags: shading
+//@credits:
 
 // --------------------------------------------------------------------------------------------------
 // PARAMETERS:

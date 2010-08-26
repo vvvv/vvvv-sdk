@@ -1,5 +1,7 @@
-// this is a very basic template. use it to start writing your own effects.
-// if you want effects with lighting start from one of the GouraudXXXX or PhongXXXX effects
+//@author: vvvv group
+//@help: creates a dot in the center of the texture coordinates with adjustable edge fading
+//@tags: dot
+//@credits:
 
 // --------------------------------------------------------------------------------------------------
 // PARAMETERS:

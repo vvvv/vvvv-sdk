@@ -1,3 +1,8 @@
+//@author: vvvv group
+//@help: draws a mesh with environment cube map. like a reflection
+//@tags: reflection, metal, mirror
+//@credits:
+
 // -----------------------------------------------------------------------------
 // PARAMETERS:
 // -----------------------------------------------------------------------------

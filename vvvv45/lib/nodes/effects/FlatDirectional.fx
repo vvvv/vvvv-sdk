@@ -1,6 +1,7 @@
-//shading:         flat
-//lighting model:  blinn
-//lighting type:   directional
+//@author: vvvv group
+//@help: basic vertex based flat lightning with directional light
+//@tags: shading
+//@credits:
 
 // --------------------------------------------------------------------------------------------------
 // PARAMETERS:

@@ -1,6 +1,7 @@
-//shading:         phong
-//lighting model:  blinn
-//lighting type:   point
+//@author: vvvv group
+//@help: basic pixel based lightning with point light
+//@tags: shading, blinn
+//@credits:
 
 // --------------------------------------------------------------------------------------------------
 // PARAMETERS:
@@ -69,6 +70,11 @@ vs2ps VS(
 // --------------------------------------------------------------------------------------------------
 // PIXELSHADERS:
 // --------------------------------------------------------------------------------------------------
+
+float foo(float bar)
+{
+    return bar;
+}
 
 float Alpha <float uimin=0.0; float uimax=1.0;> = 1;
 

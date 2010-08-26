@@ -1,6 +1,7 @@
-// SkinnedMesh.fx
-// Effect processing for skinned mesh
-// from SlimDX
+//@author: vvvv group
+//@help: Effect processing for skinned mesh with directional light.
+//@tags: skeleton, bones, collada, shading
+//@credits: SlimDX
 
 float4 LightDirection	= {0.0f, 0.0f, -1.0f, 1.0f};
 float4 LightDiffuse	= {0.6f, 0.6f, 0.6f, 1.0f};

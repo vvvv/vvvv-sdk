@@ -1,6 +1,7 @@
-//shading:         constant color
-//lighting model:  none
-//lighting type:   none
+//@author: vvvv group
+//@help: draws a mesh with a constant color
+//@tags: simple, template, basic
+//@credits:
 
 // --------------------------------------------------------------------------------------------------
 // PARAMETERS:
@@ -32,7 +33,7 @@ float4x4 tTex: TEXTUREMATRIX <string uiname="Texture Transform";>;
 
 float4x4 tCol <string uiname="Color Transform";>;
 
-//the data structure: "vertexshader to pixelshader"
+//the data structure: vertexshader to pixelshader
 //used as output data with the VS function
 //and as input data with the PS function
 struct vs2ps

@@ -1,5 +1,7 @@
-// this is a very basic template. use it to start writing your own effects.
-// if you want effects with lighting start from one of the GouraudXXXX or PhongXXXX effects
+//@author: vvvv group
+//@help: creates a checkerboard pattern
+//@tags: checkerboard, black and white, pattern, calibration
+//@credits:
 
 // --------------------------------------------------------------------------------------------------
 // PARAMETERS:
@@ -29,7 +31,7 @@ int Vertical = 8;
 float4 Black: COLOR <String uiname="Black";>  = {0, 0, 0, 1};
 float4 White: COLOR <String uiname="White";>  = {1, 1, 1, 1};
 
-//the data structure: "vertexshader to pixelshader"
+//the data structure: vertexshader to pixelshader
 //used as output data with the VS function
 //and as input data with the PS function
 struct vs2ps
