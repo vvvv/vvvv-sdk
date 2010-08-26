@@ -210,7 +210,7 @@ namespace VVVV.Hosting
         	}
         }
         
-        public void Clone(INodeInfo nodeInfo, string path, out INodeInfo newNodeInfo)
+        public void Clone(INodeInfo nodeInfo, string path, string Name, string Category, string Version)
         {
             throw new NotImplementedException();
         }
@@ -252,7 +252,6 @@ namespace VVVV.Hosting
 			FVVVVHost.GetCurrentTime(out currentTime);
 			return currentTime;
 		}
-		
         #endregion
         
         #region helper methods
