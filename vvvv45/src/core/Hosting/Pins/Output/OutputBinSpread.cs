@@ -30,7 +30,17 @@ namespace VVVV.Hosting.Pins.Output
 			FSpreads[0] = new Spread<T>(1);
 		}
 
-		void Any_Updated()
+		void FBinSize_Updated(Pin<int> pin)
+		{
+			AnyUpdated();
+		}
+
+		void FSpreadPin_Updated(Pin<T> pin)
+		{
+			AnyUpdated();
+		}
+		
+		private void AnyUpdated()
 		{
 			if (FUpdateCount == 0)			
 				BuildSpreads();
@@ -39,16 +49,6 @@ namespace VVVV.Hosting.Pins.Output
 
 			if (FUpdateCount >= 2)
 				FUpdateCount = 0;			
-		}
-
-		void FBinSize_Updated(Pin<int> pin)
-		{
-			Any_Updated();
-		}
-
-		void FSpreadPin_Updated(Pin<T> pin)
-		{
-			Any_Updated();
 		}
 
 		void BuildSpreads()

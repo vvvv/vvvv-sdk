@@ -41,17 +41,15 @@ namespace VVVV.Hosting.Pins.Input
 		
 		void FBinSize_Updated(Pin<int> pin)
 		{
-			FUpdateCount++;
-			if (FUpdateCount > 1)
-			{
-				FUpdateCount = 0;
-				if (NeedToBuildSpread())
-					BuildSpreads();
-				
-			}
+			AnyUpdated();
 		}
 
 		void FSpreadPin_Updated(Pin<T> pin)
+		{
+			AnyUpdated();
+		}
+		
+		private void AnyUpdated()
 		{
 			FUpdateCount++;
 			if (FUpdateCount > 1)
@@ -60,8 +58,9 @@ namespace VVVV.Hosting.Pins.Input
 				if (NeedToBuildSpread())
 					BuildSpreads();
 			}
+			
 		}
-
+		
 		void BuildSpreads()
 		{
 			var binCount = FBinSize.SliceCount;
