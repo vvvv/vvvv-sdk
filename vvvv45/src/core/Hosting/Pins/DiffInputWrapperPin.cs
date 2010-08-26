@@ -37,17 +37,17 @@ namespace VVVV.Hosting.Pins
 			else if (type == typeof(Matrix))
 				DiffPin = new SlimDXMatrixInputPin(host, attribute) as DiffPin<T>;
 			else if (type == typeof(Vector2D))
-				DiffPin = new Vector2DInputPin(host, attribute) as DiffPin<T>;
+				DiffPin = new DiffVector2DInputPin(host, attribute) as DiffPin<T>;
 			else if (type == typeof(Vector3D))
-				DiffPin = new Vector3DInputPin(host, attribute) as DiffPin<T>;
+				DiffPin = new DiffVector3DInputPin(host, attribute) as DiffPin<T>;
 			else if (type == typeof(Vector4D))
-				DiffPin = new Vector4DInputPin(host, attribute) as DiffPin<T>;
+				DiffPin = new DiffVector4DInputPin(host, attribute) as DiffPin<T>;
 			else if (type == typeof(Vector2))
-				DiffPin = new Vector2InputPin(host, attribute) as DiffPin<T>;
+				DiffPin = new DiffVector2InputPin(host, attribute) as DiffPin<T>;
 			else if (type == typeof(Vector3))
-				DiffPin = new Vector3InputPin(host, attribute) as DiffPin<T>;
+				DiffPin = new DiffVector3InputPin(host, attribute) as DiffPin<T>;
 			else if (type == typeof(Vector4))
-				DiffPin = new Vector4InputPin(host, attribute) as DiffPin<T>;
+				DiffPin = new DiffVector4InputPin(host, attribute) as DiffPin<T>;
 			else if (type.BaseType == typeof(Enum))
 				DiffPin = new EnumInputPin<T>(host, attribute) as DiffPin<T>;
 			else if (type == typeof(EnumEntry))
