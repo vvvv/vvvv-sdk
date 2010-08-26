@@ -232,14 +232,39 @@ namespace VVVV.Hosting
         	FVVVVHost.UpdateEnum(EnumName, Default, EnumEntries);
 		}
     	
-		public void GetEnumEntryCount(string EnumName, out int EntryCount)
+		public int GetEnumEntryCount(string EnumName)
 		{
-			FVVVVHost.GetEnumEntryCount(EnumName, out EntryCount);
+			int entryCount;
+			FVVVVHost.GetEnumEntryCount(EnumName, out entryCount);
+			return entryCount;
 		}
     	
-		public void GetEnumEntry(string EnumName, int Index, out string EntryName)
+		public string GetEnumEntry(string EnumName, int Index)
 		{
-			FVVVVHost.GetEnumEntry(EnumName, Index, out EntryName);
+			string entryName;
+			FVVVVHost.GetEnumEntry(EnumName, Index, out entryName);
+			return entryName;
+		}
+		
+		public double GetCurrentTime()
+		{
+			double currentTime;
+			FVVVVHost.GetCurrentTime(out currentTime);
+			return currentTime;
+		}
+		
+		public string GetHostPath()
+		{
+			string path;
+			FVVVVHost.GetHostPath(out path);
+			return path;
+		}
+		
+		public string GetNodePath(bool UseDescriptiveNames)
+		{
+			string path;
+			FVVVVHost.GetNodePath(UseDescriptiveNames, out path);
+			return path;
 		}
         
         #endregion
@@ -392,5 +417,6 @@ namespace VVVV.Hosting
             return null;
         }
         #endregion
+    	
     }
 }

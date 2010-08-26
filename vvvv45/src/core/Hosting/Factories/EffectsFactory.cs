@@ -82,7 +82,7 @@ namespace VVVV.Hosting.Factories
                 {
                     string line;
                     string author = @"//@author:";
-                    string desc = @"//@description:";
+                    string desc = @"//@help:";
                     string tags = @"//@tags:";
                     string credits = @"//@credits:";
                     string include = @"#include ";

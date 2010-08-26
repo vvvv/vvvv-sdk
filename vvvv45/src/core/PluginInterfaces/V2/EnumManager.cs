@@ -131,9 +131,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// <returns>Number of entries in the Enum.</returns>
 		public static int GetEnumEntryCount(string enumName)
 		{
-			int count;
-			FHost.GetEnumEntryCount(enumName, out count);
-			return count;
+			return FHost.GetEnumEntryCount(enumName);
 		}
 
 		/// <summary>
@@ -144,9 +142,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// <returns>String representation of the EnumEntry.</returns>
 		public static string GetEnumEntryString(string enumName, int index)
 		{
-			string entry;
-			FHost.GetEnumEntry(enumName, index, out entry);
-			return entry;
+			return FHost.GetEnumEntry(enumName, index);
 		}
 
 		/// <summary>

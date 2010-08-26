@@ -56,5 +56,24 @@ namespace VVVV.Hosting
 		/// <param name="Type">The type of message. Depending on the setting of this parameter the console can handle messages differently.</param>
 		/// <param name="Message">The message to be logged.</param>
 		void Log(TLogType Type, string Message);
+		
+		/// <summary>
+		/// Returns the current time which the plugin should use if it does timebased calculations.
+		/// </summary>
+		/// <param name="CurrentTime">The hosts current time.</param>
+		void GetCurrentTime(out double CurrentTime);
+		
+		/// <summary>
+		/// Returns the absolut file path to the plugins host.
+		/// </summary>
+		/// <param name="Path">Absolut file path to the plugins host (i.e path to the patch the plugin is placed in, in vvvv).</param>
+		void GetHostPath(out string Path);
+		
+		/// <summary>
+		/// Returns a slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.
+		/// </summary>
+		/// <param name="UseDescriptiveNames">If TRUE descriptive node names are used where available instead of the node ID.</param>
+		/// <param name="Path">Slash-separated path of node IDs that uniquely identifies this node in the vvvv graph.</param>
+		void GetNodePath(bool UseDescriptiveNames, out string Path);
 	}
 }
