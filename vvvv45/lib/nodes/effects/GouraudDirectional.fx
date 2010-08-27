@@ -3,9 +3,9 @@
 //@tags: shading, blinn
 //@credits:
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // PARAMETERS:
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 //transforms
 float4x4 tW: WORLD;        //the models world matrix
@@ -14,11 +14,13 @@ float4x4 tWV: WORLDVIEW;
 float4x4 tP: PROJECTION;   //projection matrix as set via Renderer (EX9)
 
 //light properties
-float3 lDir <string uiname="Light Direction";> = {0, -5, 2};       //light direction in world space
+//direction in world space
+float3 lDir <string uiname="Light Direction";> = {0, -5, 2}; 
 float4 lAmb  : COLOR <String uiname="Ambient Color";>  = {0.15, 0.15, 0.15, 1};
 float4 lDiff : COLOR <String uiname="Diffuse Color";>  = {0.85, 0.85, 0.85, 1};
 float4 lSpec : COLOR <String uiname="Specular Color";> = {0.35, 0.35, 0.35, 1};
-float lPower <String uiname="Power"; float uimin=0.0;> = 25.0;     //shininess of specular highlight
+//shininess of specular highlight
+float lPower <String uiname="Power"; float uimin=0.0;> = 25.0;     
 
 
 float Alpha <float uimin=0.0; float uimax=1.0;> = 1;
@@ -44,9 +46,9 @@ struct vs2ps
     float4 Specular: COLOR1;
 };
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // VERTEXSHADERS
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 vs2ps VS(
     float4 PosO  : POSITION,
@@ -86,14 +88,15 @@ vs2ps VS(
     return Out;
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // PIXELSHADERS:
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 float4 PS(vs2ps In): COLOR
 {
-    //In.TexCd = In.TexCd / In.TexCd.w; // for perpective texture projections (e.g. shadow maps) ps_2_0
-
+    //for perpective texture projections (e.g. shadow maps) ps_2_0
+    //In.TexCd = In.TexCd / In.TexCd.w; 
+    
     float4 col = tex2D(Samp, In.TexCd);
     col.rgb *= In.Diffuse + In.Specular;
     col = mul(col, tColor);
@@ -102,9 +105,9 @@ float4 PS(vs2ps In): COLOR
     return col;
 }
 
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // TECHNIQUES:
-// --------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 technique TGouraudDirectional
 {
