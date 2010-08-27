@@ -47,6 +47,8 @@ namespace VVVV.Nodes
             FVersionTextBox.Text = FCloneInfo.Version;
             FNameTextBox.SelectAll();
             FNameTextBox.Focus();
+            
+            CheckNodeName();
         }
         
         private void CheckNodeName()
@@ -71,6 +73,18 @@ namespace VVVV.Nodes
         void FCancelButtonClick(object sender, EventArgs e)
         {
         	Closed(null, "", "", "");
+        }
+        
+        void FCancelButtonKeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char) Keys.Enter)
+                Closed(null, "", "", "");
+        }
+        
+        void FCloneButtonKeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char) Keys.Enter)
+        	    Closed(FCloneInfo, FNameTextBox.Text.Trim(), FCategoryTextBox.Text.Trim(), FVersionTextBox.Text.Trim());
         }
     }
 }

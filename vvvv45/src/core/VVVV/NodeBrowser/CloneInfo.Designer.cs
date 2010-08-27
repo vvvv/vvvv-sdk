@@ -87,6 +87,7 @@ namespace VVVV.Nodes
         	this.FCloneButton.Text = "Clone";
         	this.FCloneButton.UseVisualStyleBackColor = true;
         	this.FCloneButton.Click += new System.EventHandler(this.FCloneButtonClick);
+        	this.FCloneButton.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FCloneButtonKeyPress);
         	// 
         	// label2
         	// 
@@ -122,6 +123,7 @@ namespace VVVV.Nodes
         	this.FCancelButton.Text = "Cancel";
         	this.FCancelButton.UseVisualStyleBackColor = true;
         	this.FCancelButton.Click += new System.EventHandler(this.FCancelButtonClick);
+        	this.FCancelButton.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FCancelButtonKeyPress);
         	// 
         	// CloneInfo
         	// 

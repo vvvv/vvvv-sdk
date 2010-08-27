@@ -162,9 +162,11 @@ namespace VVVV.Nodes.NodeBrowser
 
         void FCloneInfo_Closed(INodeInfo nodeInfo, string Name, string Category, string Version)
         {
-            if (nodeInfo != null)
+            if (nodeInfo == null)
+                FTagsTextBox.Text = FTagsTextBox.Text.Trim();
+            else                
                 NodeBrowserHost.CloneNode(nodeInfo, Name, Category, Version);
-            
+                        
             SelectPage(NodeBrowserPage.ByTags);
         }
         
