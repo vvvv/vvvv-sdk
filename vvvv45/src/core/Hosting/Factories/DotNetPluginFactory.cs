@@ -240,7 +240,11 @@ namespace VVVV.Hosting.Factories
 				
 				if (plugin != null)
 				{
-					DisposeV2Plugin(plugin);
+					if (plugin is DynamicPluginWrapperV2)
+						DisposeV2Plugin(((DynamicPluginWrapperV2) plugin).WrappedPlugin);
+					else
+						DisposeV2Plugin(plugin);
+					
 					return true;
 				}
 			}
@@ -271,6 +275,13 @@ namespace VVVV.Hosting.Factories
 			}
 			
 			if (Path.GetExtension(filename) != FFileExtension) return nodeInfos;
+			
+			// See if it's a .net assembly
+			if (!IsDotNetAssembly(filename)) 
+			{
+				Logger.Log(LogType.Debug, "{0} is not a CLR assembly.", filename);
+				return nodeInfos;
+			}
 			
 			try
 			{
@@ -461,6 +472,54 @@ namespace VVVV.Hosting.Factories
 						}
 					}
 				}
+			}
+		}
+		
+		// From http://www.anastasiosyal.com/archive/2007/04/17/3.aspx
+		private bool IsDotNetAssembly(string fileName)
+		{
+			using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+			{
+				try
+				{
+					using (BinaryReader binReader = new BinaryReader(fs))
+					{
+						try
+						{
+							fs.Position = 0x3C; //PE Header start offset
+							uint headerOffset = binReader.ReadUInt32();
+
+							fs.Position = headerOffset + 0x18;
+							UInt16 magicNumber = binReader.ReadUInt16();
+
+							int dictionaryOffset;
+							switch (magicNumber)
+							{
+									case 0x010B: dictionaryOffset = 0x60; break;
+									case 0x020B: dictionaryOffset = 0x70; break;
+								default:
+									throw new Exception("Invalid Image Format");
+							}
+
+							//position to RVA 15
+							fs.Position = headerOffset + 0x18 + dictionaryOffset + 0x70;
+
+
+							//Read the value
+							uint rva15value = binReader.ReadUInt32();
+							return rva15value != 0;
+						}
+						finally
+						{
+							binReader.Close();
+						}
+					}
+				}
+				finally
+				{
+					fs.Close();
+				}
+
 			}
 		}
 		#endregion

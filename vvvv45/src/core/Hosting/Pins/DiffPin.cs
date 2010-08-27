@@ -32,5 +32,11 @@ namespace VVVV.Hosting.Pins
 			
 			base.Update();
 		}
+		
+		protected override void DisposeManaged()
+		{
+			Changed = null;
+			base.DisposeManaged();
+		}
 	}
 }

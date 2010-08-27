@@ -9,6 +9,14 @@ namespace VVVV.Hosting
 		IPlugin FWrappedPlugin;
 		IPluginHost FPluginHost;
 		
+		public IPlugin WrappedPlugin
+		{
+			get
+			{
+				return FWrappedPlugin;
+			}
+		}
+		
 		public DynamicPluginWrapperV1(IPlugin wrappedPlugin)
 		{
 			FWrappedPlugin = wrappedPlugin;
@@ -67,6 +75,14 @@ namespace VVVV.Hosting
 	{
 		IPluginEvaluate FWrappedPlugin;
 		IPluginHost FPluginHost;
+		
+		public IPluginEvaluate WrappedPlugin
+		{
+			get
+			{
+				return FWrappedPlugin;
+			}
+		}
 		
 		public DynamicPluginWrapperV2(IPluginEvaluate wrappedPlugin, IPluginHost pluginHost)
 		{
