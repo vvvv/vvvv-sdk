@@ -1,6 +1,7 @@
 ﻿using System;
 using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
+using VVVV.Core.Model.FX;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.HDE.CodeEditor
@@ -102,6 +103,17 @@ namespace VVVV.HDE.CodeEditor
 						}
 						
 						if (found) break;
+					}
+				}
+				else if (project is FXProject)
+				{
+					// Open FX file only
+					foreach (var doc in project.Documents)
+					{
+						if (doc is FXDocument)
+						{
+							FCodeEditorForm.Open(doc as ITextDocument);
+						}
 					}
 				}
 				else
