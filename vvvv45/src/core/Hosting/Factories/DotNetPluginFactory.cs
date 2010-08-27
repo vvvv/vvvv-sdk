@@ -362,11 +362,13 @@ namespace VVVV.Hosting.Factories
 			}
 			catch (ReflectionTypeLoadException e)
 			{
+				Logger.Log(LogType.Error, "Extracting node infos from {0} caused the following expection:", filename);
 				foreach (var f in e.LoaderExceptions)
 					Logger.Log(f);
 			}
 			catch (Exception e)
 			{
+				Logger.Log(LogType.Error, "Extracting node infos from {0} caused the following expection:", filename);
 				Logger.Log(e);
 			}
 			
