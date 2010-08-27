@@ -138,5 +138,43 @@ namespace VVVV.PluginInterfaces.V2
 		True = TPinVisibility.True
 	};
 	
+	/// <summary>
+	/// The MouseButtons
+	/// </summary>
+	public enum Mouse_Buttons 
+	{
+		/// <summary>
+		/// The Left MouseButton
+		/// </summary>
+		Left,
+		/// <summary>
+		/// The Middle MouseButton
+		/// </summary>
+		Middle,
+		/// <summary>
+		/// The Right MouseButton
+		/// </summary>
+		Right
+	};
+	
+	/// <summary>
+	/// The ModifierKeys Alt, Control and Shift
+	/// </summary>
+	public enum Modifier_Keys 
+	{
+		/// <summary>
+		/// The Alt Key
+		/// </summary>
+		Alt = 1,
+		/// <summary>
+		/// The Control Key
+		/// </summary>
+		Control = 2,
+		/// <summary>
+		/// The Shift MouseButton
+		/// </summary>
+		Shift = 4
+	};
+	
 	#endregion enums
 }

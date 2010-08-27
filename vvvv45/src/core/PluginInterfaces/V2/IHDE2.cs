@@ -291,6 +291,17 @@ namespace VVVV.PluginInterfaces.V2
     }
     
     /// <summary>
+    /// Listener interface to be informed of a mouseclicks in a patch.
+    /// </summary>
+    [Guid("2E1F9CF2-9D98-43DC-B3D9-F67FCA4ACED4"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMouseClickListener: IListener
+    {
+        void MouseDownCB(INode node, Mouse_Buttons button, Modifier_Keys keys);
+        void MouseUpCB(INode node, Mouse_Buttons button, Modifier_Keys keys);
+    }
+    
+    /// <summary>
     /// Listener interface to be informed of added/removed windows.
     /// </summary>
     [Guid("804F060E-5770-4D5E-82F0-A0655321EBE3"),
