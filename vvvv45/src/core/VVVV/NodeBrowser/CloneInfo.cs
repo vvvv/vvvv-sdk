@@ -45,6 +45,8 @@ namespace VVVV.Nodes
             FNameTextBox.Text = FCloneInfo.Name;
             FCategoryTextBox.Text = FCloneInfo.Category;
             FVersionTextBox.Text = FCloneInfo.Version;
+            FNameTextBox.SelectAll();
+            FNameTextBox.Focus();
         }
         
         private void CheckNodeName()
