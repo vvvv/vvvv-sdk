@@ -25,25 +25,31 @@ namespace VVVV.Nodes
             Output.SliceCount = Input.SliceCount;
 
             for (var i = 0; i < Input.SliceCount; i++)
-            {
             	Output[i] = Input[i];
-            }
         }
     }
 
     [PluginInfo(Name = "Cons",
                 Category = "Spreads",
-                Version = "Generic",
+                Version = "",
                 Tags = ""
                 )]
     public class ValueCons : Cons<double>
     {
     }
-    
+        
+    [PluginInfo(Name = "Cons",
+                Category = "Color",
+                Version = "",
+                Tags = ""
+                )]
+    public class ColorCons : Cons<RGBAColor>
+    {
+    }        
     
     [PluginInfo(Name = "Cons",
                 Category = "String",
-                Version = "Generic",
+                Version = "",
                 Tags = ""
                 )]
     public class StringCons : Cons<string>
@@ -56,6 +62,15 @@ namespace VVVV.Nodes
                 Tags = ""
                 )]
     public class TransformCons : Cons<Matrix4x4>
+    {
+    }        
+    
+    [PluginInfo(Name = "Cons",
+                Category = "Enumerations",
+                Version = "",
+                Tags = ""
+                )]
+    public class EnumCons : Cons<EnumEntry>
     {
     }        
 }

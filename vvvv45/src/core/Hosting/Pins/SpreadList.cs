@@ -31,7 +31,7 @@ namespace VVVV.Hosting.Pins
 			FPins = new ISpread<T>[0];
 			
 			//create config pin
-			var att = new ConfigAttribute(FAttribute.Name + " Pin Count");
+			var att = new ConfigAttribute(FAttribute.Name + " Count");
 			att.DefaultValue = 2;
 			
 			//increment instance Counter and store it as pin offset

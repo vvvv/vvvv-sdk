@@ -15,49 +15,6 @@ namespace VVVV.Nodes
     public class Pairwise<T> : IPluginEvaluate
     {
         [Input("Input")]
-        ISpread<T> Input;
-
-        [Output("Output")]
-        ISpread<ISpread<T>> Output;
-
-        public void Evaluate(int SpreadMax)
-        {
-            var pairs = SeqModule.Pairwise(Input).ToArray();
-
-            Output.SliceCount = pairs.Length;
-
-            for (var i = 0; i < pairs.Length; i++)
-            {
-                Output[i].SliceCount = 2;
-                var pair = pairs[i];
-                Output[i][0] = pair.Item1;
-                Output[i][1] = pair.Item2;
-            }
-        }
-    }
-
-    [PluginInfo(Name = "Pairwise",
-                Category = "Spreads",
-                Version = "",
-                Tags = ""
-                )]
-    public class PairwiseValue : Pairwise<double>
-    {
-    }
-    
-    [PluginInfo(Name = "Pairwise",
-                Category = "3D",
-                Version = "",
-                Tags = ""
-                )]
-    public class PairwiseVector3D : Pairwise<Vector3D>
-    {
-    }
-    
-    
-    public class PairwiseSpreads<T> : IPluginEvaluate
-    {
-        [Input("Input")]
         ISpread<ISpread<T>> Input;
 
         [Output("Output 1")]
@@ -93,39 +50,93 @@ namespace VVVV.Nodes
     
     [PluginInfo(Name = "Pairwise",
                 Category = "Spreads",
-                Version = "Bins",
+                Version = "",
                 Tags = ""
                 )]
-    public class ValuePairwiseSpreads : PairwiseSpreads<double>
+    public class ValuePairwise : Pairwise<double>
     {
     }
-    
+        
     [PluginInfo(Name = "Pairwise",
-                Category = "3D",
-                Version = "Bins",
+                Category = "Color",
+                Version = "",
                 Tags = ""
                 )]
-    public class Vector3DPairwiseSpreads : PairwiseSpreads<Vector3D>
+    public class ColorPairwise : Pairwise<RGBAColor>
     {
-    }
-    
-    [PluginInfo(Name = "Pairwise",
-                Category = "2D",
-                Version = "Bins",
-                Tags = ""
-                )]
-    public class Vector2DPairwiseSpreads : PairwiseSpreads<Vector2D>
-    {
-    }
+    }        
     
     [PluginInfo(Name = "Pairwise",
                 Category = "String",
-                Version = "Bins",
+                Version = "",
                 Tags = ""
                 )]
-    public class StringPairwiseSpreads : PairwiseSpreads<string>
+    public class StringPairwise : Pairwise<string>
     {
-    }
+    }        
+    
+    [PluginInfo(Name = "Pairwise",
+                Category = "Transform",
+                Version = "",
+                Tags = ""
+                )]
+    public class TransformPairwise : Pairwise<Matrix4x4>
+    {
+    }        
+    
+    [PluginInfo(Name = "Pairwise",
+                Category = "Enumerations",
+                Version = "",
+                Tags = ""
+                )]
+    public class EnumPairwise : Pairwise<EnumEntry>
+    {
+    }        
+    
+    
+    
+    
+//    public class Pairwise<T> : IPluginEvaluate
+//    {
+//        [Input("Input")]
+//        ISpread<T> Input;
+//
+//        [Output("Output")]
+//        ISpread<ISpread<T>> Output;
+//
+//        public void Evaluate(int SpreadMax)
+//        {
+//            var pairs = SeqModule.Pairwise(Input).ToArray();
+//
+//            Output.SliceCount = pairs.Length;
+//
+//            for (var i = 0; i < pairs.Length; i++)
+//            {
+//                Output[i].SliceCount = 2;
+//                var pair = pairs[i];
+//                Output[i][0] = pair.Item1;
+//                Output[i][1] = pair.Item2;
+//            }
+//        }
+//    }
+//
+//    [PluginInfo(Name = "Pairwise",
+//                Category = "Spreads",
+//                Version = "",
+//                Tags = ""
+//                )]
+//    public class PairwiseValue : Pairwise<double>
+//    {
+//    }
+//    
+//    [PluginInfo(Name = "Pairwise",
+//                Category = "3D",
+//                Version = "",
+//                Tags = ""
+//                )]
+//    public class PairwiseVector3D : Pairwise<Vector3D>
+//    {
+//    }
     
     
     

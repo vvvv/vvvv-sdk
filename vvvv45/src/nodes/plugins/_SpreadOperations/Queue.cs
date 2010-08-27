@@ -28,9 +28,6 @@ namespace VVVV.Nodes
         [Output("Output")]
         ISpread<ISpread<T>> Output;
 
-        [Output("Frames")]
-        ISpread<int> FrameSlices;
-        
         List<List<T>> FBuffer = new List<List<T>>();        
         
         public void Evaluate(int SpreadMax)
@@ -43,16 +40,9 @@ namespace VVVV.Nodes
         		FBuffer.RemoveRange(frameCount, FBuffer.Count-frameCount);
         	        	
         	Output.SliceCount = FBuffer.Count;
-        	FrameSlices.SliceCount = FBuffer.Count+1;
         	
-        	var k = 0;
-        	FrameSlices[0] = 0;
             for (var i = 0; i < FBuffer.Count; i++)
-            {
 				Output[i] = FBuffer[i].ToSpread();
-            	k += FBuffer[i].Count;
-	        	FrameSlices[i+1] = k;
-            }
         }
     }
 
