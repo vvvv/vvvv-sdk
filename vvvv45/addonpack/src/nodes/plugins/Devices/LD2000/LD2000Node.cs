@@ -626,32 +626,39 @@ namespace LD2000
         
         private void RunLD() 
         {
-        	if (ldRunning) return;
+        	try
+        	{
+        		if (ldRunning) return;
 
-        	LD.InitialQMCheck(ref ldStatus);
-        	if (ldStatus != LD.LDSTATUS_OK) 
-        	{
-        		PrintStatusMessage("QMCheck failed.");
-        		return;
+        		LD.InitialQMCheck(ref ldStatus);
+        		if (ldStatus != LD.LDSTATUS_OK)
+        		{
+        			PrintStatusMessage("QMCheck failed.");
+        			return;
+        		}
+        		
+        		LD.BeginSessionEx(ref ldVersion,
+        		                  ref ldMaxFrames,
+        		                  ref ldMaxPoints,
+        		                  ref ldMaxBuffer,
+        		                  ref ldUndoFrames,
+        		                  ref ldStatus);
+        		if (ldStatus != LD.LDSTATUS_OK)
+        		{
+        			PrintStatusMessage("BeginSessionEx failed.");
+        			return;
+        		}
+        		
+        		LD.SetWorkingScanners(-1);
+        		LD.SetWorkingTracks(1);
+        		LD.SetWorkingFrame(1);
+        		
+        		ldRunning = true;
         	}
-        	
-        	LD.BeginSessionEx(ref ldVersion, 
-        	                  ref ldMaxFrames, 
-        	                  ref ldMaxPoints, 
-        	                  ref ldMaxBuffer, 
-        	                  ref ldUndoFrames, 
-        	                  ref ldStatus);
-        	if (ldStatus != LD.LDSTATUS_OK) 
+        	catch (Exception)
         	{
-        		PrintStatusMessage("BeginSessionEx failed.");
-        		return;
+        		ldRunning = false;
         	}
-        	
-        	LD.SetWorkingScanners(-1);
-  			LD.SetWorkingTracks(1);
-  			LD.SetWorkingFrame(1);
-  			
-  			ldRunning = true;
         }
         
         private void StopLD() 
