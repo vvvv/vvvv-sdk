@@ -17,8 +17,11 @@
     <FileAlignment>4096</FileAlignment>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>$(VVVV)\plugins\</OutputPath>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <SourceAnalysisOverrideSettingsFile>C:\Dokumente und Einstellungen\tgallery\Anwendungsdaten\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
+    <ReferencePath>%24%28VVVV%29</ReferencePath>
+    <StartArguments>d</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <Optimize>False</Optimize>
@@ -26,6 +29,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>Full</DebugType>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(VVVV)\vvvv.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <Optimize>True</Optimize>
@@ -39,10 +44,10 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="VVVV.PluginInterfaces">
-      <HintPath>..\..\_lib\vvvv\VVVV.PluginInterfaces.dll</HintPath>
+      <HintPath>..\..\..\vvvv45\bin\managed\VVVV.PluginInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="VVVV.Utils">
-      <HintPath>..\..\_lib\vvvv\VVVV.Utils.dll</HintPath>
+      <HintPath>..\..\..\vvvv45\bin\managed\VVVV.Utils.dll</HintPath>
     </Reference>
     <Reference Include="WiimoteLib">
       <HintPath>WiimoteLib\WiimoteLib.dll</HintPath>

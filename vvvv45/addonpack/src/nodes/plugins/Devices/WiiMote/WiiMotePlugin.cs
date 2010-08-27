@@ -39,7 +39,7 @@ namespace VVVV.Nodes
 {
 	
 	//class definition
-	public class PluginWiiMote: IPlugin
+	public class PluginWiiMote: IPlugin, IDisposable
 	{
 		#region field declaration
 		
@@ -122,11 +122,30 @@ namespace VVVV.Nodes
 			//nothing to declare for this node
 		}
 		
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+		
+		private bool FDisposed;
+		private void Dispose(bool disposing)
+		{
+			if (!FDisposed)
+			{
+				if (disposing)
+				{
+					FRemote.Dispose();
+					FRemote = null;
+				}
+				
+				FDisposed = true;
+			}
+		}
+		
 		~PluginWiiMote()
 		{
-			FRemote.Dispose();
-			//the nodes destructor
-			//nothing to destruct
+			Dispose(false);
 		}
 
 		#endregion constructor/destructor
