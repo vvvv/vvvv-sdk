@@ -17,6 +17,14 @@
   <assemblyfileset id="project.references">
     <include name="${lib.dir}/**/*.dll" />
     <!-- this one is custom built, so we go get it there -->
-    <include name="WiiMoteLib/WiimoteLib.dll" />
+    <include name="WiimoteLib/*.dll" />
   </assemblyfileset>
+  
+  <target name="post-build">
+    <copy todir="${plugin.path}">
+      <fileset basedir="WiimoteLib">
+        <include name="*.dll" />
+      </fileset>
+    </copy>
+  </target>
 </project>
