@@ -58,6 +58,15 @@ namespace VVVV.Nodes
     }
         
     [PluginInfo(Name = "Pairwise",
+                Category = "3D",
+                Version = "",
+                Tags = ""
+                )]
+    public class Vector3DPairwise : Pairwise<Vector3D>
+    {
+    }
+        
+    [PluginInfo(Name = "Pairwise",
                 Category = "Color",
                 Version = "",
                 Tags = ""
