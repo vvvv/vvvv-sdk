@@ -1,0 +1,157 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug24.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\plugins\Queue (String) help.v4p">
+   <BOUNDS height="7650" left="4440" top="2235" type="Window" width="4590">
+   </BOUNDS>
+   <NODE id="7" nodename="CurrentTime (Astronomy)">
+   <BOUNDS height="0" left="3030" top="375" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Current Time" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="TimeToString (String)">
+   <BOUNDS height="0" left="3015" top="1125" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Time" visible="1">
+   </PIN>
+   <PIN pinname="String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Time" srcnodeid="7" srcpinname="Current Time">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="0" left="750" top="1635" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8715" top="4680" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="390" left="750" top="1635" type="Box" width="2310">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input String" srcnodeid="6" srcpinname="String">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="0" left="750" top="4185" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9015" top="4980" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2640" left="750" top="4185" type="Box" width="2145">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1005" top="2205" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8340" top="4770" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="480" left="1005" top="2205" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|do Insert|">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1770" top="2445" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6600" top="4980" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1770" top="2445" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Frame Count|">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="510" left="15" top="390" type="Box" width="2700">
+   </BOUNDS>
+   <BOUNDS height="160" left="2820" top="39720" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Inserts the Input in the queue and return the whole queue as a spread|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="2430">
+   </BOUNDS>
+   <BOUNDS height="160" left="2820" top="39720" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Queue - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Queue (String)" componentmode="Hidden">
+   <BOUNDS height="100" left="750" top="3435" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="do Insert" visible="1">
+   </PIN>
+   <PIN pinname="Frame Count" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="750" top="3435" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6690" top="6570" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="5" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Input String" linkstyle="VHV" srcnodeid="9" srcpinname="Output">
+   <LINKPOINT x="780" y="3885">
+   </LINKPOINT>
+   <LINKPOINT x="2865" y="3885">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="do Insert" linkstyle="PolyLine" srcnodeid="3" srcpinname="Y Output Value">
+   <LINKPOINT x="1425" y="3105">
+   </LINKPOINT>
+   <LINKPOINT x="1065" y="3105">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Frame Count" linkstyle="PolyLine" srcnodeid="2" srcpinname="Y Output Value">
+   <LINKPOINT x="2535" y="3300">
+   </LINKPOINT>
+   <LINKPOINT x="1335" y="3300">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>
