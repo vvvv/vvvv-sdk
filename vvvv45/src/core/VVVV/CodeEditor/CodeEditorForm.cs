@@ -30,7 +30,7 @@ namespace VVVV.HDE.CodeEditor
 	{
 		private Dictionary<ITextDocument, TabPage> FOpenedDocuments;
 		private IHDEHost FHDEHost;
-		private INodeSelectionListener FNodeSelectionListener;
+		private IMouseClickListener FNodeSelectionListener;
 		private Dictionary<IProject, Dom.DefaultProjectContent> FProjects;
 		private Dictionary<ITextDocument, Dom.ParseInformation> FParseInfos;
 		private Dictionary<SD.IDocument, ITextDocument> FSDDocToDocMap;
@@ -50,7 +50,7 @@ namespace VVVV.HDE.CodeEditor
 			
 			FLogger = logger;
 			FSolution = solution;
-			FNodeSelectionListener = new NodeSelectionListener(this);
+			FNodeSelectionListener = new MouseClickListener(this);
 			FProjects = new Dictionary<IProject, Dom.DefaultProjectContent>();
 			FParseInfos = new Dictionary<ITextDocument, Dom.ParseInformation>();
 			FSDDocToDocMap = new Dictionary<SD.IDocument, ITextDocument>();
@@ -143,6 +143,7 @@ namespace VVVV.HDE.CodeEditor
 				doc.Saved += DocumentSavedCB;
 			}
 			
+			FTabControl.SelectedTab = FOpenedDocuments[doc];			
 			return FOpenedDocuments[doc];
 		}
 
