@@ -105,6 +105,17 @@ namespace VVVV.HDE.CodeEditor
                         if (found) break;
                     }
                 }
+                else if (project is FXProject)
+				{
+					// Open FX file only
+					foreach (var doc in project.Documents)
+					{
+						if (doc is FXDocument)
+						{
+							FCodeEditorForm.Open(doc as ITextDocument);
+						}
+					}
+				}
                 else
                 {
                     // Open all documents
