@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
-   <PATCH nodename="C:\SVN_ROOT\vvvv\plugins\c#\Animation\_Tamari\TamariAttractor (Animation) help.v4p">
-   <BOUNDS height="6735" left="11475" top="2910" type="Window" width="6195">
+   <PATCH nodename="C:\SVN_ROOT\vvvv\plugins\c#\Animation\TamariAttractor\TamariAttractor (Animation) help.v4p">
+   <BOUNDS height="6735" left="8610" top="1275" type="Window" width="6195">
    </BOUNDS>
    <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
    <BOUNDS height="270" left="15" top="15" type="Node" width="3660">
@@ -37,7 +37,7 @@
    </BOUNDS>
    <BOUNDS height="5445" left="495" top="5985" type="Box" width="5970">
    </BOUNDS>
-   <BOUNDS height="6885" left="1965" top="1635" type="Window" width="7995">
+   <BOUNDS height="6885" left="600" top="1275" type="Window" width="7995">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -181,7 +181,7 @@
    </PIN>
    <PIN pinname="Inital Distance" slicecount="1" values="70">
    </PIN>
-   <PIN pinname="Far Plane" slicecount="1" values="400">
+   <PIN pinname="Far Plane" slicecount="1" values="10000">
    </PIN>
    </NODE>
    <LINK dstnodeid="15" dstpinname="Projection Transform" srcnodeid="5" srcpinname="Projection">
@@ -226,6 +226,20 @@
    </NODE>
    <LINK dstnodeid="3" dstpinname="Y" srcnodeid="2" srcpinname="Output">
    </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="3660" top="4530" type="Node" width="2055">
+   </BOUNDS>
+   <BOUNDS height="270" left="3660" top="4530" type="Box" width="2055">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Not &quot;Tamarri&quot; , Tamari :)))))|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
    <NODE componentmode="Hidden" id="0" nodename=":PLUGINS:\TamariAttractor.dll|VVVV.Nodes.TamariAttractor">
    <BOUNDS height="0" left="1005" top="2040" type="Node" width="0">
    </BOUNDS>
@@ -233,23 +247,11 @@
    </BOUNDS>
    <BOUNDS height="0" left="2115" top="3195" type="Window" width="0">
    </BOUNDS>
-   <PIN pinname="CountryOutput In " slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Money In " slicecount="1" values="1">
-   </PIN>
    <PIN pinname="Pricing In " slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Printing " slicecount="1" values="0.02">
+   <PIN pinname="Productivity " slicecount="1" values="0.01">
    </PIN>
-   <PIN pinname="Exchange " slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Indexation " slicecount="1" values="0.01">
-   </PIN>
-   <PIN pinname="Expectations " slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Unemployment " slicecount="1" values="0.05">
-   </PIN>
-   <PIN pinname="Interest " slicecount="1" values="0.05">
+   <PIN pinname="Exchange " slicecount="1" values="0.0400000000000028">
    </PIN>
    </NODE>
    <LINK dstnodeid="8" dstpinname="Input" srcnodeid="0" srcpinname="CountryOutput Out ">
@@ -264,18 +266,4 @@
    </LINK>
    <LINK dstnodeid="11" dstpinname="Input" srcnodeid="0" srcpinname="CountryOutput Out ">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="18">
-   <BOUNDS type="Node" left="3660" top="4530" width="2055" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="3660" top="4530" width="2055" height="270">
-   </BOUNDS>
-   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Not &quot;Tamarri&quot; , Tamari :)))))|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   </NODE>
    </PATCH>
