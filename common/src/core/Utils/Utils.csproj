@@ -10,7 +10,6 @@
     <NoStdLib>False</NoStdLib>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <OutputPath>$(VVVV45)\bin\managed\</OutputPath>
     <SourceAnalysisOverrideSettingsFile>C:\Documents and Settings\joreg\Application Data\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -18,7 +17,7 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <DocumentationFile>bin\VVVV.Utils.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\VVVV.Utils.xml</DocumentationFile>
     <NoWarn>1591 1587</NoWarn>
     <ReferencePath>$(VVVV50)\lib\</ReferencePath>
   </PropertyGroup>
@@ -28,6 +27,7 @@
     <Optimize>False</Optimize>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>false</DebugSymbols>
@@ -35,6 +35,7 @@
     <Optimize>True</Optimize>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
     <DefineConstants>TRACE</DefineConstants>
+    <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <RegisterForComInterop>False</RegisterForComInterop>
@@ -49,6 +50,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +61,7 @@
     <Compile Include="Concurrent\BlockingQueue.cs" />
     <Compile Include="Crypto\StringHasher.cs" />
     <Compile Include="Disposable.cs" />
+    <Compile Include="ManagedVCL\ManagedVCLControl.cs" />
     <Compile Include="Math\Matrix4x4.cs" />
     <Compile Include="Math\Tweener.cs" />
     <Compile Include="Math\Vector2D.cs" />
@@ -84,6 +87,7 @@
     <Folder Include="Color" />
     <Folder Include="Network" />
     <Folder Include="Application" />
+    <Folder Include="ManagedVCL" />
     <Folder Include="OSC" />
     <Folder Include="SharedMemory" />
   </ItemGroup>

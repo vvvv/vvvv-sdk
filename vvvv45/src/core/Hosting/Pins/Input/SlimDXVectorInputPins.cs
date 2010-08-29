@@ -3,6 +3,7 @@ using SlimDX;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
+using VVVV.Utils.SlimDX;
 
 namespace VVVV.Hosting.Pins.Input
 {
