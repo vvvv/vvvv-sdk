@@ -562,14 +562,20 @@ namespace VVVV.Nodes.NodeBrowser
             if ((windowtype == WindowType.Patch) || (windowtype == WindowType.Module))
             {
                 string path = window.GetNode().GetNodeInfo().Filename;
-                if ((Path.IsPathRooted(path)) && (FPath != path))
+                if (Path.IsPathRooted(path))
                 {
-                    FPath = path;
+                	FPath = path;
                     FPathDir = Path.GetDirectoryName(path);
-                    
+                }
+                else //seems to be on an unsaved patch
+                {
+                    FPath = "";
+                    FPathDir = "";
+                }
+                
+                if (FPath != path)
                     //init view
                     FBackgroundWorker.RunWorkerAsync();
-                }
             }
         }
         #endregion IWindowSelectionListener
@@ -806,7 +812,7 @@ namespace VVVV.Nodes.NodeBrowser
             var files = new List<string>();
             if (Path.IsPathRooted(FPathDir))
             {
-                foreach (string p in System.IO.Directory.GetFiles(FPathDir, "*.v4p"))
+                foreach (string p in System.IO.Directory.GetFiles(FPathDir, "*.v4p", SearchOption.TopDirectoryOnly))
                 {
                     //prevent patches from being created recursively
                     if (p != FPath)
