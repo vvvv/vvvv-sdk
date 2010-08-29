@@ -29,10 +29,8 @@ namespace VVVV.Hosting.Factories
 		private Dictionary<FXProject, INodeInfo> FProjectNodeInfo;
 		
 		public EffectsFactory()
+			: base(Shell.CallerPath.ConcatPath(@"..\..\effects"), ".fx")
 		{
-			FFileExtension = ".fx";
-			FDirectory = Path.GetFullPath(Path.Combine(FDirectory, @"..\..\effects"));
-			
 			FProjects = new Dictionary<string, FXProject>();
 			FProjectNodeInfo = new Dictionary<FXProject, INodeInfo>();
 		}
@@ -40,7 +38,7 @@ namespace VVVV.Hosting.Factories
 		//create a node info from a filename
 		public override IEnumerable<INodeInfo> ExtractNodeInfos(string filename)
 		{
-			if (Path.GetExtension(filename) != FFileExtension) yield break;
+			if (Path.GetExtension(filename) != FileExtension) yield break;
 			
 			FXProject project;
 			

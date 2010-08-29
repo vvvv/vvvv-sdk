@@ -21,19 +21,36 @@ namespace VVVV.Hosting.Factories
 		#region fields and constructor
 		
 		//directory to watch
-		protected string FDirectory;
-		protected string FFileExtension;
+		private string FDirectory;
+		private string FFileExtension;
 		protected Dictionary<INodeInfo, string> FNodeInfos = new Dictionary<INodeInfo, string>();
 		private FileSystemWatcher FDirectoryWatcher;
 		private GenericSynchronizingObject FSyncContext;
 		
-		public AbstractFileFactory()
+		public AbstractFileFactory(string directoryToWatch, string fileExtension)
 		{
-			FDirectory = Shell.CallerPath;
+			FDirectory = Path.GetFullPath(directoryToWatch);
+			FFileExtension = fileExtension;
 			FSyncContext = new GenericSynchronizingObject();
 		}
 		
 		#endregion fields and constructor
+		
+		public string DirectoryToWatch
+		{
+			get
+			{
+				return FDirectory;
+			}
+		}
+		
+		public string FileExtension
+		{
+			get
+			{
+				return FFileExtension;
+			}
+		}
 		
 		#region IAddonFactory
 		public event NodeInfoEventHandler NodeInfoAdded;

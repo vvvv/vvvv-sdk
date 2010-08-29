@@ -48,9 +48,9 @@ namespace VVVV.Hosting.Factories
 		#region Constructor
 		[ImportingConstructor]
 		public DotNetPluginFactory(CompositionContainer parentContainer)
+			: base(Shell.CallerPath.ConcatPath(@"..\..\plugins"), ".dll")
 		{
 			FStaticPlugins = new Dictionary<string, INodeInfo>();
-			FFileExtension = ".dll";
 
 			FParentContainer = parentContainer;
 			
@@ -58,11 +58,6 @@ namespace VVVV.Hosting.Factories
 			var exportProviders = new ExportProvider[] { FParentContainer, FHostExportProvider };
 			FCatalog = new AggregateCatalog();
 			FContainer = new CompositionContainer(FCatalog, exportProviders);
-			
-			//foreach (var file in Directory.GetFiles(FDirectory.ConcatPath("hde")))
-			//	AddFile(file);
-			
-			FDirectory = Path.GetFullPath(Path.Combine(FDirectory, @"..\..\plugins"));
 		}
 		#endregion
 		
@@ -274,7 +269,7 @@ namespace VVVV.Hosting.Factories
 				arguments = systemname.Substring(pipeIndex + 1);
 			}
 			
-			if (Path.GetExtension(filename) != FFileExtension) return nodeInfos;
+			if (Path.GetExtension(filename) != FileExtension) return nodeInfos;
 			
 			// See if it's a .net assembly
 			if (!IsDotNetAssembly(filename)) 

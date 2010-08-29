@@ -23,9 +23,8 @@ namespace VVVV.Hosting.Factories
     	protected ILogger Logger { get; set; }
         
         public ModulesFactory()
+        	: base(Shell.CallerPath.ConcatPath(@"..\..\modules"), ".v4p")
         {
-            FFileExtension = ".v4p";
-            FDirectory = Path.GetFullPath(Path.Combine(FDirectory, @"..\..\modules"));
         }
 
         //create a node info from a filename
@@ -34,7 +33,7 @@ namespace VVVV.Hosting.Factories
             if (FDTD == "") LoadDTD();
 
             //check extension
-            if (Path.GetExtension(filename) != FFileExtension) yield break;
+            if (Path.GetExtension(filename) != FileExtension) yield break;
             
             //check filename structure
             string fn = Path.GetFileNameWithoutExtension(filename);
@@ -96,7 +95,7 @@ namespace VVVV.Hosting.Factories
         //get the dtd string
         private void LoadDTD()
         {
-            var path = Path.GetFullPath(FDirectory + @"\..\bin");
+            var path = Path.GetFullPath(DirectoryToWatch + @"\..\bin");
             var files = Directory.GetFiles(path, "*.dtd");
             
             using (StreamReader sr = new StreamReader(files[0]))

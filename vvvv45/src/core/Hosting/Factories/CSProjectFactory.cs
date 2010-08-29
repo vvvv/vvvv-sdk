@@ -34,16 +34,14 @@ namespace VVVV.Hosting.Factories
 		private Dictionary<string, CSProject> FProjects;
 		
 		public CSProjectFactory()
+			: base(Shell.CallerPath.ConcatPath(@"..\..\dynamic"), ".csproj")
 		{
-			FFileExtension = ".csproj";
-			FDirectory = Path.Combine(FDirectory, @"..\..\dynamic");
-			
 			FProjects = new Dictionary<string, CSProject>();
 		}
 		
 		public override IEnumerable<INodeInfo> ExtractNodeInfos(string filename)
 		{
-			if (Path.GetExtension(filename) != FFileExtension) yield break;
+			if (Path.GetExtension(filename) != FileExtension) yield break;
 			
 			// Normalize the filename
 			filename = new Uri(filename).LocalPath;
