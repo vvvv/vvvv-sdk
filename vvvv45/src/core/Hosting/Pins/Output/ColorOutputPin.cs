@@ -52,7 +52,10 @@ namespace VVVV.Hosting.Pins.Output
 		{
 			get 
 			{
-				throw new NotImplementedException();
+				fixed (double* ptr = FData)
+				{
+					return ((RGBAColor*)ptr)[index % FSliceCount];
+				}
 			}
 			set 
 			{
