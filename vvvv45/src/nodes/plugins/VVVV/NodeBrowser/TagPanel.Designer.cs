@@ -32,7 +32,7 @@
 			this.FNodeCountLabel = new System.Windows.Forms.Label();
 			this.FScrollBar = new System.Windows.Forms.VScrollBar();
 			this.FNodeTypePanel = new VVVV.Nodes.DoubleBufferedPanel();
-			this.FRichTextBox = new System.Windows.Forms.RichTextBox();
+			this.FRichTextBox = new VVVV.Nodes.NodeBrowser.RichTextBoxEx();
 			this.SuspendLayout();
 			// 
 			// FTagsTextBox
@@ -119,7 +119,7 @@
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
-		private System.Windows.Forms.RichTextBox FRichTextBox;
+		private VVVV.Nodes.NodeBrowser.RichTextBoxEx FRichTextBox;
 		private VVVV.Nodes.DoubleBufferedPanel FNodeTypePanel;
 		private System.Windows.Forms.VScrollBar FScrollBar;
 		private System.Windows.Forms.Label FNodeCountLabel;

@@ -77,7 +77,7 @@ namespace VVVV.Nodes.NodeBrowser
 			
 			FTagsTextBox.ContextMenu = new ContextMenu();
 			FTagsTextBox.MouseWheel += new MouseEventHandler(FTagsTextBoxMouseWheel);
-			
+			FRichTextBox.MouseWheel += new MouseEventHandler(FTagsTextBoxMouseWheel);
 			AndTags = true;
 		}
 		

@@ -175,5 +175,10 @@ namespace VVVV.Nodes.NodeBrowser
         {
             OnPanelChange(NodeBrowserPage.ByTags, null);
         }
+		
+		void CategoryPanelVisibleChanged(object sender, EventArgs e)
+		{
+			FCategoryTreeViewer.HideToolTip();
+		}
 	}
 }

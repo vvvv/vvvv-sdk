@@ -66,6 +66,7 @@
 			this.Controls.Add(this.FTopLabel);
 			this.Name = "CategoryPanel";
 			this.Size = new System.Drawing.Size(368, 398);
+			this.VisibleChanged += new System.EventHandler(this.CategoryPanelVisibleChanged);
 			this.ResumeLayout(false);
 		}
 		private VVVV.HDE.Viewer.WinFormsViewer.TreeViewer FCategoryTreeViewer;
