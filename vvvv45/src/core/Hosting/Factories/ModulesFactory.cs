@@ -7,6 +7,7 @@ using System.Xml;
 
 using VVVV.Core;
 using VVVV.Core.Logging;
+using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.Factories
@@ -15,7 +16,7 @@ namespace VVVV.Hosting.Factories
     /// Effects factory, parses and watches the effect directory
     /// </summary>
     [Export(typeof(IAddonFactory))]
-    public class ModulesFactory : AbstractFileFactory
+    public class ModulesFactory : AbstractFileFactory<IAddonHost>
     {
         private string FDTD = "";
         
@@ -90,6 +91,18 @@ namespace VVVV.Hosting.Factories
             }
             
             yield return nodeInfo;
+        }
+        
+        protected override bool CreateNode(INodeInfo nodeInfo, IAddonHost nodeHost)
+        {
+        	// Will never get called.
+        	return true;
+        }
+        
+        protected override bool DeleteNode(IAddonHost nodeHost)
+        {
+        	// Will never get called.
+        	return true;
         }
         
         //get the dtd string

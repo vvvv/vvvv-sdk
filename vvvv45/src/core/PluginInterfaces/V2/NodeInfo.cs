@@ -38,7 +38,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// <summary>
 		/// Reference to the <see cref="IExecutable">IExecutable</see> which was used to create this node. Set by the PluginFactory.
 		/// </summary>
-		IExecutable Executable {get; set;}
+//		IExecutable Executable {get; set;}
 		/// <summary>
 		/// Define if this node should be evaluated every frame, even if no outpur is read.
 		/// </summary>
@@ -55,11 +55,13 @@ namespace VVVV.PluginInterfaces.V2
 	/// Helper Class that implements the <see cref="INodeInfo">INodeInfo</see> interface.
 	/// </summary>
 	[Guid("36F845F4-A486-49EC-9A0C-CB254FF2B297")]
+	[Serializable]
 	public class NodeInfo: PluginInfo, INodeInfo
 	{
 		private string FArguments = "";
 		private string FFilename = "";
 		private NodeType FType = NodeType.Plugin;
+		[NonSerialized]
 		private IExecutable FExcecutable = null;
 		
 		/// <summary>
@@ -152,11 +154,11 @@ namespace VVVV.PluginInterfaces.V2
 		/// <summary>
 		/// Reference to the <see cref="IExecutable">IExecutable</see> which was used to create this node. Set by the PluginFactory.
 		/// </summary>
-		public IExecutable Executable 
-		{
-			get {return FExcecutable;}
-			set {FExcecutable = value;}
-		}
+//		public IExecutable Executable 
+//		{
+//			get {return FExcecutable;}
+//			set {FExcecutable = value;}
+//		}
 		
 		/// <summary>
 		/// Define if this node should be evaluated every frame, even if no outpur is read.

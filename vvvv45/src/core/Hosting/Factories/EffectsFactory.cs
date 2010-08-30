@@ -17,7 +17,7 @@ namespace VVVV.Hosting.Factories
 	/// Effects factory, parses and watches the effect directory
 	/// </summary>
 	[Export(typeof(IAddonFactory))]
-	public class EffectsFactory : AbstractFileFactory
+	public class EffectsFactory : AbstractFileFactory<IEffectHost>
 	{
 		[Import]
 		protected ISolution FSolution;
@@ -66,7 +66,7 @@ namespace VVVV.Hosting.Factories
 			nodeInfo.Category = "EX9.Effect";
 			nodeInfo.Filename = filename;
 			nodeInfo.Type = NodeType.Effect;
-			nodeInfo.Executable = project.Exectuable;
+//			nodeInfo.Executable = project.Exectuable;
 			
 			var includes = new List<string>();
 			
@@ -145,22 +145,22 @@ namespace VVVV.Hosting.Factories
 			OnNodeInfoAdded(nodeInfo);
 		}
 		
-		public override bool Create(INodeInfo nodeInfo, IAddonHost host)
+		protected override bool CreateNode(INodeInfo nodeInfo, IEffectHost effectHost)
 		{
 			if (nodeInfo.Type != NodeType.Effect)
 				return false;
 			
 			//get the code of the FXProject associated with the nodeinfos filename
-			(host as IEffectHost).SetEffect(nodeInfo.Filename, FProjects[nodeInfo.Filename].Code);
+			effectHost.SetEffect(nodeInfo.Filename, FProjects[nodeInfo.Filename].Code);
 
 			//now the effect is compiled in vvvv and we can access the errors
-			string e = (host as IEffectHost).GetErrors();
+			string e = effectHost.GetErrors();
 			if (string.IsNullOrEmpty(e))
 				e = "";
 			FProjects[nodeInfo.Filename].Errors = e;
 			
 			//and the input pins
-			string f = (host as IEffectHost).GetParameterDescription();
+			string f = effectHost.GetParameterDescription();
 			if (string.IsNullOrEmpty(f))
 				f = "";
 			FProjects[nodeInfo.Filename].ParameterDescription = f;
@@ -168,12 +168,9 @@ namespace VVVV.Hosting.Factories
 			return true;
 		}
 		
-		public override bool Delete(IAddonHost host)
+		protected override bool DeleteNode(IEffectHost host)
 		{
-			if (host is IEffectHost)
-				return true;
-			
-			return base.Delete(host);
+			return true;
 		}
 	}
 }

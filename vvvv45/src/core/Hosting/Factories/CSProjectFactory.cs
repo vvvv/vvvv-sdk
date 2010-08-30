@@ -64,7 +64,7 @@ namespace VVVV.Hosting.Factories
 			{
 				nodeInfo.Type = NodeType.Dynamic;
 				nodeInfo.Filename = filename;
-				nodeInfo.Executable.Project = project;
+//				nodeInfo.Executable.Project = project;
 			}
 			
 			return nodeInfos;

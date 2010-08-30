@@ -281,34 +281,11 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		public void NodeInfoUpdatedCB(INodeInfo nodeInfo)
 		{
-			/*	FTagPanel.Update(nodeInfo);
+			FTagPanel.Update(nodeInfo);
         	FClonePanel.Update(nodeInfo);
         	FCategoryPanel.Update(nodeInfo);
-        	
-            string oldkey = "";
-            string oldSysKey = "";
-            string newkey = NodeInfoToKey(nodeInfo);
-            //find the old key that is associated with this nodeinfo
-            foreach(var infokey in FNodeDict)
-                if (infokey.Value == nodeInfo)
-            {
-                oldkey = infokey.Key;
-                break;
-            }
-            
-            
-            
-            //re-add the same nodeinfo with the new key
-            var ni = FNodeDict[oldkey];
-            FNodeDict.Remove(oldkey);
-            FNodeDict.Add(newkey, ni);
-            
-           
-            
-            FNodeList.Remove(oldkey);
-            FNodeList.Add(newkey);
-			 */
-			FNeedsRedraw = true;
+
+        	FNeedsRedraw = true;
 		}
 		
 		public void NodeInfoRemovedCB(INodeInfo nodeInfo)

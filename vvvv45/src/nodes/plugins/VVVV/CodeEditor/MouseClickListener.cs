@@ -20,12 +20,12 @@ namespace VVVV.HDE.CodeEditor
             if ((node != null) && (button == Mouse_Buttons.Right))
             {
                 var nodeInfo = node.GetNodeInfo();
-                var executable = nodeInfo.Executable;
+//                var executable = nodeInfo.Executable;
+//                
+//                if (executable == null)
+//                    return;
                 
-                if (executable == null)
-                    return;
-                
-                var project = executable.Project;
+				var project = FCodeEditorForm.Solution.FindProject(nodeInfo.Filename);
                 
                 if (project == null)
                     return;

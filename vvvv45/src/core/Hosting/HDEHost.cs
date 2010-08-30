@@ -26,6 +26,10 @@ namespace VVVV.Hosting
     [Export(typeof(IHDEHost))]
     public class HDEHost : IInternalHDEHost, IHDEHost
     {
+    	const string WINDOW_SWITCHER = "WindowSwitcher (VVVV)";
+    	const string KOMMUNIKATOR = "Kommunikator (VVVV)";
+    	const string NODE_BROWSER = "NodeBrowser (VVVV)";
+    	
         private IVVVVHost FVVVVHost;
         private Dictionary<INodeInfo, List<IAddonHost>> FRunningPluginHostsMap;
         private Dictionary<string, INodeInfo> FRegisteredNodeInfos;
@@ -134,9 +138,9 @@ namespace VVVV.Hosting
             //now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
             try
             {
-                FWindowSwitcher = PluginFactory.InstantiateV2Plugin("WindowSwitcher (VVVV)");
-                FKommunikator = PluginFactory.InstantiateV2Plugin("Kommunikator (VVVV)");
-                FNodeBrowser = PluginFactory.InstantiateV2Plugin("NodeBrowser (VVVV)");
+            	FWindowSwitcher = PluginFactory.CreatePlugin(GetNodeInfo(WINDOW_SWITCHER), null);
+            	FKommunikator = PluginFactory.CreatePlugin(GetNodeInfo(KOMMUNIKATOR), null);
+            	FNodeBrowser = PluginFactory.CreatePlugin(GetNodeInfo(NODE_BROWSER), null);
                 (FNodeBrowser as INodeBrowser).DragDrop(false);
             }
             catch (Exception e)

@@ -83,6 +83,7 @@ namespace VVVV.PluginInterfaces.V1
 	/// Helper Class that implements the <see cref="VVVV.PluginInterfaces.V1.IPluginInfo">IPluginInfo</see> interface.
 	/// </summary>
 	[Guid("FE1216D6-5439-416D-8FB7-16E9A29EF67B")]
+	[Serializable]
 	public class PluginInfo: MarshalByRefObject, IPluginInfo
 	{
 		private string FName = "";
