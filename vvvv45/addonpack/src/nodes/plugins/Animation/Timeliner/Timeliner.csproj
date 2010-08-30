@@ -19,7 +19,8 @@
     <OutputPath>bin\</OutputPath>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartAction>Project</StartAction>
-    <StartProgram>Y:\vvvv33_plugintest01\vvvv.exe</StartProgram>
+    <ReferencePath>$(VVVV45)\bin\managed\</ReferencePath>
+    <StartProgram>$(VVVV45)\vvvv.exe</StartProgram>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
@@ -51,7 +52,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PluginInterfaces">
+    <Reference Include="VVVV.PluginInterfaces">
       <HintPath>..\..\_lib\vvvv\PluginInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -68,9 +69,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\_SharedSources\ManagedVCL\ManagedVCLControl.cs">
-      <Link>ManagedVCLControl.cs</Link>
-    </Compile>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="GUI\TLEditorColor.cs" />
     <Compile Include="GUI\TLEditorState.cs" />

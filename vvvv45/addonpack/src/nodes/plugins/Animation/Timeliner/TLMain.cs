@@ -38,10 +38,11 @@ using System.Xml;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.Nodes.Timeliner;
+using VVVV.Utils.ManagedVCL;
 
 namespace VVVV.Nodes
 {
-	public class TimelinerPlugin: ManagedVCL.TopControl, IPlugin
+	public class TimelinerPlugin: TopControl, IPlugin
 	{
 		#region field declaration
 		
