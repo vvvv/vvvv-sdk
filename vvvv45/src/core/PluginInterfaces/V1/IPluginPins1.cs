@@ -77,6 +77,11 @@ namespace VVVV.PluginInterfaces.V1
 		/// Returns a String of the pins concatenated Values. Typcally used internally only to save a pins state to disk.
 		/// </summary>
 		string SpreadAsString{get;}
+		/// <summary>
+		/// Returns whether any slice of this pin has been changed in the current frame. This information is typically used to determine if
+		/// further processing is needed or can be ommited.
+		/// </summary>
+		bool PinIsChanged{get;}
 	}
 	
 	/// <summary>

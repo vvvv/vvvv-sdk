@@ -44,7 +44,7 @@ namespace VVVV.Hosting.Pins.Config
 		{
 			get 
 			{
-				return FIsChanged;
+				return PluginConfig.PinIsChanged;
 			}
 		}
 	}
