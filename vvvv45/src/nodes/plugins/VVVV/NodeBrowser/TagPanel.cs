@@ -78,7 +78,6 @@ namespace VVVV.Nodes.NodeBrowser
 			FTagsTextBox.ContextMenu = new ContextMenu();
 			FTagsTextBox.MouseWheel += new MouseEventHandler(FTagsTextBoxMouseWheel);
 			FRichTextBox.MouseWheel += new MouseEventHandler(FTagsTextBoxMouseWheel);
-			AndTags = true;
 		}
 		
 		private void ToolTipPopupHandler(object sender, PopupEventArgs e)
@@ -778,8 +777,7 @@ namespace VVVV.Nodes.NodeBrowser
 		void TagPanelVisibleChanged(object sender, EventArgs e)
 		{
 			FTagsTextBox.Text = FTagsTextBox.Text.Trim();
+			FToolTip.Hide(FRichTextBox);
 		}
-		
-		
 	}
 }

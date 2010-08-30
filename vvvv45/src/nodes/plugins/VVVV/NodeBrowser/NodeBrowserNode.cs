@@ -135,7 +135,7 @@ namespace VVVV.Nodes.NodeBrowser
 			// 
 			// FTagPanel
 			// 
-			this.FTagPanel.AllowDragDrop = false;
+			this.FTagPanel.AllowDragDrop = true;
 			this.FTagPanel.AndTags = true;
 			this.FTagPanel.Location = new System.Drawing.Point(17, 24);
 			this.FTagPanel.Name = "FTagPanel";
