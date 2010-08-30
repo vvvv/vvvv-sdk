@@ -58,7 +58,7 @@ namespace VVVV.Nodes
     }
         
     [PluginInfo(Name = "Pairwise",
-                Category = "2D",
+                Category = "2d",
                 Version = "",
                 Tags = ""
                 )]
@@ -67,7 +67,7 @@ namespace VVVV.Nodes
     }
         
     [PluginInfo(Name = "Pairwise",
-                Category = "3D",
+                Category = "3d",
                 Version = "",
                 Tags = ""
                 )]
@@ -76,7 +76,7 @@ namespace VVVV.Nodes
     }
         
     [PluginInfo(Name = "Pairwise",
-                Category = "4D",
+                Category = "4d",
                 Version = "",
                 Tags = ""
                 )]
