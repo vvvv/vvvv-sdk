@@ -6,17 +6,20 @@ using System.Collections.Generic;
 
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.Nodes
+namespace VVVV.Nodes.NodeBrowser
 {
-    public delegate void CloneInfoEventHandler(INodeInfo nodeInfo, string Name, string Category, string Version);
+    public delegate void ClonePanelEventHandler(INodeInfo nodeInfo, string Name, string Category, string Version);
     
-    public partial class CloneInfo : UserControl
+    public partial class ClonePanel : UserControl
     {
-        public Dictionary<string, INodeInfo> NodeDict {get; set;}
-        public event CloneInfoEventHandler Closed;
+    	public event PanelChangeHandler OnPanelChange;
+    	
+        Dictionary<string, INodeInfo> FSystemNameDict = new Dictionary<string, INodeInfo>();
+        
+        public event ClonePanelEventHandler Closed;
         private INodeInfo FCloneInfo;
         
-        public CloneInfo()
+        public ClonePanel()
         {
             //
             // The InitializeComponent() call is required for Windows Forms designer support.
@@ -39,6 +42,30 @@ namespace VVVV.Nodes
         	CheckNodeName();
         }
         
+        public void Add(INodeInfo nodeInfo)
+		{
+			FSystemNameDict[nodeInfo.Systemname] = nodeInfo;
+		}
+		
+        public void Update(INodeInfo nodeInfo)
+        {
+        /*	string oldSysKey = "";
+        	foreach(var infokey in FSystemNameDict)
+                if (infokey.Value == nodeInfo)
+            {
+                oldSysKey = infokey.Key;
+                break;
+            }
+            
+            FSystemNameDict.Remove(oldSysKey);
+            FSystemNameDict.Add(ni.Systemname, ni);
+        */}
+        
+		public void Remove(INodeInfo nodeInfo)
+		{
+            FSystemNameDict.Remove(nodeInfo.Systemname);
+		}
+        
         public void Initialize(INodeInfo nodeInfo)
         {
             FCloneInfo = nodeInfo;
@@ -59,7 +86,7 @@ namespace VVVV.Nodes
             else
                 systemName += FCategoryTextBox.Text.Trim() + " " + FVersionTextBox.Text.Trim() + ")";
             
-            if (NodeDict.ContainsKey(systemName))
+            if (FSystemNameDict.ContainsKey(systemName))
                 FCloneButton.Enabled = false;
             else
                 FCloneButton.Enabled = true;
