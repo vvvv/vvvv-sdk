@@ -22,13 +22,4 @@ namespace VVVV.PluginInterfaces.V2
 	    bool Delete(IAddonHost host);
 	    bool Clone(INodeInfo nodeInfo, string path, string name, string category, string version);
 	}
-	
-	/// <summary>
-	/// A factory which handles plugin nodes
-	/// </summary>
-	public interface IPluginFactory : IAddonFactory
-	{		
-	    bool Register(IExecutable executable);
-	    bool UnRegister(IExecutable executable);
-	}
 }

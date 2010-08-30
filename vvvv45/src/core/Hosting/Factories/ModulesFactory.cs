@@ -28,7 +28,7 @@ namespace VVVV.Hosting.Factories
         }
 
         //create a node info from a filename
-        public override IEnumerable<INodeInfo> ExtractNodeInfos(string filename)
+        protected override IEnumerable<INodeInfo> GetNodeInfos(string filename)
         {
             if (FDTD == "") LoadDTD();
 

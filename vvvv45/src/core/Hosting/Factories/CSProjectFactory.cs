@@ -3,6 +3,7 @@ using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
 using System.IO;
 
@@ -20,28 +21,20 @@ using VVVV.PluginInterfaces.V2;
 namespace VVVV.Hosting.Factories
 {
 	[Export(typeof(IAddonFactory))]
-	public class CSProjectFactory : AbstractFileFactory
+	public class CSProjectFactory : DotNetPluginFactory
 	{
-		[Import]
-		protected DotNetPluginFactory FPluginFactory;
-		
-		[Import]
-		protected ISolution FSolution;
-		
-		[Import]
-		protected ILogger FLogger;
-		
 		private Dictionary<string, CSProject> FProjects;
 		
-		public CSProjectFactory()
-			: base(Shell.CallerPath.ConcatPath(@"..\..\dynamic"), ".csproj")
+		[ImportingConstructor]
+		public CSProjectFactory(CompositionContainer parentContainer)
+			: base(parentContainer, ".csproj")
 		{
 			FProjects = new Dictionary<string, CSProject>();
 		}
 		
-		public override IEnumerable<INodeInfo> ExtractNodeInfos(string filename)
+		protected override IEnumerable<INodeInfo> GetNodeInfos(string filename)
 		{
-			if (Path.GetExtension(filename) != FileExtension) yield break;
+			var nodeInfos = new List<INodeInfo>();
 			
 			// Normalize the filename
 			filename = new Uri(filename).LocalPath;
@@ -55,15 +48,92 @@ namespace VVVV.Hosting.Factories
 					FSolution.Projects.Add(project);
 				project.Load();
 				project.CompileCompleted += new CompileCompletedHandler(project_CompileCompleted);
-				project.ProjectCompiled += project_ProjectCompiled;
 				FProjects[filename] = project;
-				
-				project.Compile();
 			}
-			else
-				project.CompileAsync();
 			
-			yield break;
+			if (project == null)
+				return nodeInfos;
+			
+			// Do we need to compile it?
+			if (!IsAssemblyUpToDate(project))
+				project.Compile();
+			
+			LoadNodeInfosFromFile(project.AssemblyLocation, ref nodeInfos);
+			
+			foreach (var nodeInfo in nodeInfos)
+			{
+				nodeInfo.Type = NodeType.Dynamic;
+				nodeInfo.Filename = filename;
+				nodeInfo.Executable.Project = project;
+			}
+			
+			return nodeInfos;
+		}
+		
+		protected override void FileChanged(string filename)
+		{
+			// Normalize the filename
+			filename = new Uri(filename).LocalPath;
+			
+			if (!FProjects.ContainsKey(filename)) return;
+			
+			var project = FProjects[filename];
+			// Do we need to compile it?
+			if (!IsAssemblyUpToDate(project))
+				project.CompileAsync();
+		}
+		
+		private bool IsAssemblyUpToDate(IProject project)
+		{
+			return File.Exists(project.AssemblyLocation) && (File.GetLastWriteTime(project.Location.LocalPath) <= File.GetLastWriteTime(project.AssemblyLocation));
+		}
+
+		protected override void DeleteArtefacts(string dir)
+		{
+			// Dynamic plugins generate a new assembly everytime they are compiled.
+			// Cleanup old assemblies.
+			var mostRecentFiles = new Dictionary<string, Tuple<string, DateTime>>();
+			
+			foreach (var file in Directory.GetFiles(dir, "*.dll"))
+			{
+				try
+				{
+					var match = FDynamicRegExp.Match(file);
+					if (match.Success)
+					{
+						var fileName = match.Groups[1].Value;
+						
+						var currentFileTupe = new Tuple<string, DateTime>(file, File.GetLastWriteTime(file));
+						if (mostRecentFiles.ContainsKey(fileName))
+						{
+							// We've seen this file before.
+							var mostRecentFileTuple = mostRecentFiles[fileName];
+							
+							if (currentFileTupe.Item2 > mostRecentFileTuple.Item2)
+							{
+								// Current file is newer than most recent -> delete most recent and set current as new most recent.
+								mostRecentFiles[fileName] = currentFileTupe;
+								File.Delete(mostRecentFileTuple.Item1);
+								File.Delete(mostRecentFileTuple.Item1.Replace(".dll", ".pdb"));
+							}
+							else
+							{
+								// Current file is older than most recent -> delete it.
+								File.Delete(currentFileTupe.Item1);
+								File.Delete(currentFileTupe.Item1.Replace(".dll", ".pdb"));
+							}
+						}
+						else
+							mostRecentFiles.Add(fileName, currentFileTupe);
+					}
+				}
+				catch (Exception e)
+				{
+					FLogger.Log(e);
+				}
+			}
+			
+			base.DeleteArtefacts(dir);
 		}
 
 		void project_CompileCompleted(IProject project, CompilerResults results)
@@ -80,11 +150,8 @@ namespace VVVV.Hosting.Factories
 					}
 				}
 			}
-		}
-
-		void project_ProjectCompiled(IProject project, IExecutable executable)
-		{
-			FPluginFactory.Register(executable);
+			else
+				base.FileChanged(project.Location.LocalPath);
 		}
 		
 		#region IAddonFactory

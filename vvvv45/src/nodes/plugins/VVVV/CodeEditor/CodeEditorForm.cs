@@ -75,6 +75,14 @@ namespace VVVV.HDE.CodeEditor
 				SetupProject(project);
 		}
 		
+		public ISolution Solution
+		{
+			get
+			{
+				return FSolution;
+			}
+		}
+		
 		public IEnumerable<ITextDocument> OpenDocuments
 		{
 			get

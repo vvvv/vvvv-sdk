@@ -501,7 +501,7 @@ namespace VVVV.HDE.CodeEditor
 			}
 			catch (Exception f)
 			{
-				Debug.WriteLine(f.StackTrace);
+				Logger.Log(f);
 			}
 		}
 		

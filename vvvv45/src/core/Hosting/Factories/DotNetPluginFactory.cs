@@ -9,6 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 using VVVV.Core;
 using VVVV.Core.Logging;
@@ -27,13 +28,19 @@ namespace VVVV.Hosting.Factories
 	/// </summary>
 	[Export(typeof(IAddonFactory))]
 	[Export(typeof(DotNetPluginFactory))]
-	public class DotNetPluginFactory : AbstractFileFactory, IPluginFactory
+	public class DotNetPluginFactory : AbstractFileFactory
 	{
 		[ImportMany(typeof(IPluginBase), AllowRecomposition=true)]
 		private List<ExportFactory<IPluginBase, INodeInfoStuff>> FNodeInfoExports { get; set; }
 		
 		[Import]
-		private ILogger Logger { get; set; }
+		protected ILogger FLogger;
+		
+		[Import]
+		protected IHDEHost FHost;
+		
+		[Import]
+		protected ISolution FSolution;
 		
 		private AggregateCatalog FCatalog;
 		private CompositionContainer FContainer;
@@ -41,17 +48,21 @@ namespace VVVV.Hosting.Factories
 		private Dictionary<string, ExportFactory<IPluginBase, INodeInfoStuff>> FMEFPlugins = new Dictionary<string, ExportFactory<IPluginBase, INodeInfoStuff>>();
 		private Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>> FPluginLifetimeContexts = new Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>>();
 		private CompositionContainer FParentContainer;
-		private Dictionary<string, INodeInfo> FStaticPlugins;
+		protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
 		
 		protected HostExportProvider FHostExportProvider;
 		
 		#region Constructor
 		[ImportingConstructor]
 		public DotNetPluginFactory(CompositionContainer parentContainer)
-			: base(Shell.CallerPath.ConcatPath(@"..\..\plugins"), ".dll")
+			: this(parentContainer, ".dll")
 		{
-			FStaticPlugins = new Dictionary<string, INodeInfo>();
-
+			
+		}
+		
+		protected DotNetPluginFactory(CompositionContainer parentContainer, string fileExtension)
+			: base(Shell.CallerPath.ConcatPath(@"..\..\plugins"), fileExtension)
+		{
 			FParentContainer = parentContainer;
 			
 			FHostExportProvider = new HostExportProvider();
@@ -62,123 +73,10 @@ namespace VVVV.Hosting.Factories
 		#endregion
 		
 		#region IPluginFactory
-		/// <summary>
-		/// Called by ProjectFactory. Registers dynamic plugins.
-		/// </summary>
-		public bool Register(IExecutable executable)
-		{
-			if (executable is DotNetExecutable)
-			{
-				DotNetExecutable dotNetExec = (DotNetExecutable) executable;
-				
-				var project = dotNetExec.Project;
-				var assembly = dotNetExec.Assembly;
-				
-				try
-				{
-					bool foundPlugin = false;
-					
-					//check for V1 style plugin
-					foreach (var info in ExtractNodeInfosFromAssembly(assembly))
-					{
-						info.Executable = executable;
-						info.Type = NodeType.Dynamic;
-						info.Filename = project.Location.LocalPath;
-						
-						// Notify listeners about the new extracted node info.
-						// Ignore the node info if it is aready registered statically.
-						if (!FStaticPlugins.ContainsKey(info.Systemname))
-							OnNodeInfoAdded(info);
-						
-						foundPlugin = true;
-					}
-					
-					//maybe V2 style plugin
-					if (!foundPlugin)
-					{
-						foreach (var info in ExtractNodeInfosFromCatalog(new AssemblyCatalog(assembly)))
-						{
-							info.Executable = executable;
-							info.Type = NodeType.Dynamic;
-							info.Filename = project.Location.LocalPath;
-							
-							// Ignore the node info if it is aready registered statically.
-							if (!FStaticPlugins.ContainsKey(info.Systemname))
-								OnNodeInfoAdded(info);
-							
-							foundPlugin = true;
-						}
-					}
-					
-					return foundPlugin;
-				}
-				catch (ReflectionTypeLoadException e)
-				{
-					foreach (var f in e.LoaderExceptions)
-						Logger.Log(f);
-					return false;
-				}
-				catch (Exception e)
-				{
-					Logger.Log(e);
-					return false;
-				}
-			}
-			
-			return false;
-		}
-		
-		// TODO: Should be called by ProjectFactory ...
-		public bool UnRegister(IExecutable executable)
-		{
-//			if (executable is DotNetExecutable)
-//			{
-//				DotNetExecutable dotNetExec = (DotNetExecutable) executable;
-//
-//				bool foundPlugin = false;
-//
-//				IProject project = dotNetExec.Project;
-//				Assembly assembly = dotNetExec.Assembly;
-//
-//				try {
-//					foreach (Type type in assembly.GetTypes())
-//					{
-//						// if type implements IPlugin
-//						if (typeof(IPluginBase).IsAssignableFrom(type))
-//						{
-//							INodeInfo info = GetNodeInfo(type);
-//							if (info != null)
-//							{
-//								// Add ourselfs to the NodeInfo.
-//								info.Filename = assembly.Location;
-//								info.Arguments = type.Namespace + "." + type.Name;
-//								info.Executable = executable;
-//								info.Class = type.Name;
-//								info.Namespace = type.Namespace;
-//								info.Type = TNodeType.Plugin;
-//
-//								// Notify listeners about the to be removed node info.
-//								OnNodeInfoRemoved(info);
-//
-//								foundPlugin = true;
-//							}
-//						}
-//					}
-//				} catch (Exception e)
-//				{
-//					FLogger.Log(e);
-//					return false;
-//				}
-//
-//				return foundPlugin;
-//			}
-			
-			return false;
-		}
 		
 		public override bool Create(INodeInfo nodeInfo, IAddonHost host)
 		{
-			if ((nodeInfo.Type != NodeType.Plugin) && (nodeInfo.Type != NodeType.Dynamic))
+			if (Path.GetExtension(nodeInfo.Filename) != FileExtension)
 				return false;
 			
 			try
@@ -217,11 +115,11 @@ namespace VVVV.Hosting.Factories
 			catch (ReflectionTypeLoadException e)
 			{
 				foreach (var f in e.LoaderExceptions)
-					Logger.Log(f);
+					FLogger.Log(f);
 			}
 			catch (Exception e)
 			{
-				Logger.Log(e);
+				FLogger.Log(e);
 			}
 
 			return false;
@@ -247,35 +145,28 @@ namespace VVVV.Hosting.Factories
 		}
 		
 		/// <summary>
-		/// Called either by AbstractFileFactory to extract all node infos in given file or
-		/// vvvv to get the node info for one specific node.
+		/// Called by AbstractFileFactory to extract all node infos in given file.
 		/// </summary>
-		public override IEnumerable<INodeInfo> ExtractNodeInfos(string systemname)
+		protected override IEnumerable<INodeInfo> GetNodeInfos(string filename)
 		{
-			IList<INodeInfo> nodeInfos = new List<INodeInfo>();
+			var nodeInfos = new List<INodeInfo>();
 			
-			// systemname is of form FILENAME[|ARGUMENTS], for example:
-			// - C:\Path\To\Assembly.dll
-			// or
-			// - C:\Path\To\Assembly.dll|Namespace.Class
-			
-			string filename = systemname;
-			string arguments = null;
-			
-			int pipeIndex = systemname.IndexOf('|');
-			if (pipeIndex >= 0)
-			{
-				filename = systemname.Substring(0, pipeIndex);
-				arguments = systemname.Substring(pipeIndex + 1);
-			}
-			
-			if (Path.GetExtension(filename) != FileExtension) return nodeInfos;
-			
-			// See if it's a .net assembly
-			if (!IsDotNetAssembly(filename)) 
-			{
-				Logger.Log(LogType.Debug, "{0} is not a CLR assembly.", filename);
+			// We can't handle dynamic plugins
+			if (IsDynamicAssembly(filename))
 				return nodeInfos;
+			
+			LoadNodeInfosFromFile(filename, ref nodeInfos);
+			
+			return nodeInfos;
+		}
+		
+		protected void LoadNodeInfosFromFile(string filename, ref List<INodeInfo> nodeInfos)
+		{
+			// See if it's a .net assembly
+			if (!IsDotNetAssembly(filename))
+			{
+				FLogger.Log(LogType.Debug, "{0} is not a CLR assembly.", filename);
+				return;
 			}
 			
 			try
@@ -283,10 +174,13 @@ namespace VVVV.Hosting.Factories
 				// Check for V2 style plugins
 				foreach (var nodeInfo in ExtractNodeInfosFromCatalog(new AssemblyCatalog(filename)))
 				{
-					nodeInfo.Executable = new DotNetExecutable(null, new Lazy<Assembly>(() => Assembly.LoadFrom(filename)));
-					nodeInfo.Filename = filename;
-					nodeInfo.Type = NodeType.Plugin;
-					nodeInfos.Add(nodeInfo);
+					if (IsValidNodeInfo(nodeInfo))
+					{
+						nodeInfo.Executable = new DotNetExecutable(null, new Lazy<Assembly>(() => Assembly.LoadFrom(filename)));
+						nodeInfo.Filename = filename;
+						nodeInfo.Type = NodeType.Plugin;
+						nodeInfos.Add(nodeInfo);
+					}
 				}
 				
 				if (nodeInfos.Count == 0)
@@ -296,80 +190,86 @@ namespace VVVV.Hosting.Factories
 					// Check for V1 style plugins
 					foreach (var nodeInfo in ExtractNodeInfosFromAssembly(assembly))
 					{
-						nodeInfo.Executable = new DotNetExecutable(null, assembly);
-						nodeInfo.Filename = filename;
-						nodeInfo.Type = NodeType.Plugin;
-						nodeInfos.Add(nodeInfo);
-					}
-				}
-				
-				// Add the node infos to a local dictionary in order to look them up
-				// quickly in Register method called later by project factory.
-				foreach (var nodeInfo in nodeInfos)
-					FStaticPlugins[nodeInfo.Systemname] = nodeInfo;
-				
-				// If additional arguments are present vvvv is only interested in one specific
-				// NodeInfo -> look for it.
-				if (arguments != null)
-				{
-					// This is easy in case of V1 plugins. Arguments are already set. We just need to
-					// look it up.
-					foreach (var nodeInfo in nodeInfos)
-					{
-						if (nodeInfo.Arguments != null && nodeInfo.Arguments == arguments)
-							return new INodeInfo[] { nodeInfo };
-					}
-					
-					// In case of V2 plugins it's harder. Arguments are not set, because MEF doesn't provide
-					// this information.
-					foreach (var part in FCatalog.Parts)
-					{
-						var lazyPartType = ReflectionModelServices.GetPartType(part);
-						
-						foreach (var exportDefinition in part.ExportDefinitions)
+						if (IsValidNodeInfo(nodeInfo))
 						{
-							var lazyMemberInfo = ReflectionModelServices.GetExportingMember(exportDefinition);
-							if (lazyMemberInfo.MemberType == MemberTypes.TypeInfo)
-							{
-								var exportedPluginTypes = lazyMemberInfo.GetAccessors()
-									.Where(memberInfo => typeof(IPluginBase).IsAssignableFrom(memberInfo as Type))
-									.Select(memberInfo => memberInfo as Type);
-								foreach (var exportedPluginType in exportedPluginTypes)
-								{
-									var fullName = exportedPluginType.FullName;
-									
-									// We found the demaned type -> lookup associated and already created node info.
-									if (fullName == arguments)
-									{
-										var pluginInfoAttribute = Attribute.GetCustomAttribute(exportedPluginType, typeof(PluginInfoAttribute)) as PluginInfoAttribute;
-										
-										foreach (var nodeInfo in nodeInfos)
-										{
-											if (nodeInfo.Systemname == pluginInfoAttribute.Systemname)
-												return new INodeInfo[] { nodeInfo };
-										}
-									}
-								}
-							}
+							nodeInfo.Executable = new DotNetExecutable(null, assembly);
+							nodeInfo.Filename = filename;
+							nodeInfo.Type = NodeType.Plugin;
+							nodeInfos.Add(nodeInfo);
 						}
 					}
 				}
 			}
 			catch (ReflectionTypeLoadException e)
 			{
-				Logger.Log(LogType.Error, "Extracting node infos from {0} caused the following exception:", filename);
+				FLogger.Log(LogType.Error, "Extracting node infos from {0} caused the following exception:", filename);
 				foreach (var f in e.LoaderExceptions)
-					Logger.Log(f);
+					FLogger.Log(f);
 			}
 			catch (Exception e)
 			{
-				Logger.Log(LogType.Error, "Extracting node infos from {0} caused the following exception:", filename);
-				Logger.Log(e);
+				FLogger.Log(LogType.Error, "Extracting node infos from {0} caused the following exception:", filename);
+				FLogger.Log(e);
+			}
+		}
+		
+		/// <summary>
+		/// Called by AbstractFileFactory to extract one node info out of nodeInfos which matches given arguments.
+		/// </summary>
+		protected override INodeInfo GetNodeInfo(IEnumerable<INodeInfo> nodeInfos, string arguments)
+		{
+			// This is easy in case of V1 plugins. Arguments are already set. We just need to
+			// look it up.
+			foreach (var nodeInfo in nodeInfos)
+			{
+				if (nodeInfo.Arguments != null && nodeInfo.Arguments == arguments)
+					return nodeInfo;
 			}
 			
-			return nodeInfos;
+			// In case of V2 plugins it's harder. Arguments are not set, because MEF doesn't provide
+			// this information.
+			foreach (var part in FCatalog.Parts)
+			{
+				var lazyPartType = ReflectionModelServices.GetPartType(part);
+				
+				foreach (var exportDefinition in part.ExportDefinitions)
+				{
+					var lazyMemberInfo = ReflectionModelServices.GetExportingMember(exportDefinition);
+					if (lazyMemberInfo.MemberType == MemberTypes.TypeInfo)
+					{
+						var exportedPluginTypes = lazyMemberInfo.GetAccessors()
+							.Where(memberInfo => typeof(IPluginBase).IsAssignableFrom(memberInfo as Type))
+							.Select(memberInfo => memberInfo as Type);
+						foreach (var exportedPluginType in exportedPluginTypes)
+						{
+							var fullName = exportedPluginType.FullName;
+							
+							// We found the demaned type -> lookup associated and already created node info.
+							if (fullName == arguments)
+							{
+								var pluginInfoAttribute = Attribute.GetCustomAttribute(exportedPluginType, typeof(PluginInfoAttribute)) as PluginInfoAttribute;
+								
+								foreach (var nodeInfo in nodeInfos)
+								{
+									if (nodeInfo.Systemname == pluginInfoAttribute.Systemname)
+										return nodeInfo;
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			return base.GetNodeInfo(nodeInfos, arguments);
 		}
+		
 		#endregion
+		
+		private bool IsValidNodeInfo(INodeInfo nodeInfo)
+		{
+			var registeredInfo = FHost.GetNodeInfo(nodeInfo.Systemname);
+			return registeredInfo == null || registeredInfo.Type == NodeType.Dynamic;
+		}
 		
 		public IPluginBase InstantiateV2Plugin(string systemName)
 		{
@@ -518,6 +418,11 @@ namespace VVVV.Hosting.Factories
 				}
 
 			}
+		}
+		
+		private bool IsDynamicAssembly(string filename)
+		{
+			return FDynamicRegExp.IsMatch(filename);
 		}
 		#endregion
 	}

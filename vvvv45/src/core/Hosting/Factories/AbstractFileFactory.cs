@@ -74,13 +74,64 @@ namespace VVVV.Hosting.Factories
 				NodeInfoRemoved(this, nodeInfo);
 		}
 		
-		//return nodeinfos from filename
-		public abstract IEnumerable<INodeInfo> ExtractNodeInfos(string filename);
+		//return nodeinfos from systemname
+		public IEnumerable<INodeInfo> ExtractNodeInfos(string systemname)
+		{
+			IList<INodeInfo> nodeInfos = new List<INodeInfo>();
+			
+			// systemname is of form FILENAME[|ARGUMENTS], for example:
+			// - C:\Path\To\Assembly.dll
+			// or
+			// - C:\Path\To\Assembly.dll|Namespace.Class
+			
+			string filename = systemname;
+			string arguments = null;
+			
+			int pipeIndex = systemname.IndexOf('|');
+			if (pipeIndex >= 0)
+			{
+				filename = systemname.Substring(0, pipeIndex);
+				arguments = systemname.Substring(pipeIndex + 1);
+			}
+			
+			if (Path.GetExtension(filename) != FileExtension) return nodeInfos;
+			
+			foreach (var nodeInfo in GetNodeInfos(filename))
+				nodeInfos.Add(nodeInfo);
+			
+			// If additional arguments are present vvvv is only interested in one specific
+			// NodeInfo -> look for it.
+			if (arguments != null)
+			{
+				var nodeInfo = GetNodeInfo(nodeInfos, arguments);
+				if (nodeInfo != null)
+					return new INodeInfo[] { nodeInfo };
+				else
+					return new INodeInfo[0];
+			}
+			else
+			{
+				return nodeInfos;
+			}
+		}
+		
+		protected abstract IEnumerable<INodeInfo> GetNodeInfos(string filename);
+		protected virtual INodeInfo GetNodeInfo(IEnumerable<INodeInfo> nodeInfos, string arguments)
+		{
+			foreach (var nodeInfo in nodeInfos)
+				return nodeInfo;
+			
+			return null;
+		}
 		
 		public virtual void StartWatching()
 		{
 			if (Directory.Exists(FDirectory))
 			{
+				//give subclasses a chance to cleanup before we start to scan.
+				DeleteArtefacts(FDirectory);
+				ScanForFiles(FDirectory);
+				
 				//watch this directory
 				if (FDirectoryWatcher == null)
 				{
@@ -97,8 +148,6 @@ namespace VVVV.Hosting.Factories
 				{
 					FDirectoryWatcher.Path = FDirectory;
 				}
-				
-				ScanForFiles(FDirectory);
 			}
 		}
 		
@@ -149,7 +198,7 @@ namespace VVVV.Hosting.Factories
 		
 		#region file handling
 		//remove all addons included with this filename
-		private void RemoveFile(string filename)
+		protected virtual void RemoveFile(string filename)
 		{
 			List<INodeInfo> toDeleteList = new List<INodeInfo>();
 			
@@ -167,7 +216,7 @@ namespace VVVV.Hosting.Factories
 		}
 		
 		//add all addons included with this filename
-		protected void AddFile(string filename)
+		protected virtual void AddFile(string filename)
 		{
 			foreach(var ni in ExtractNodeInfos(filename))
 			{
@@ -177,7 +226,7 @@ namespace VVVV.Hosting.Factories
 		}
 		
 		//allow subclasses to react to a filechange
-		private void FileChanged(string filename)
+		protected virtual void FileChanged(string filename)
 		{
 			//compare those new nodeinfos
 			//with nodeinfos so far associated with this filename
@@ -230,6 +279,13 @@ namespace VVVV.Hosting.Factories
 		protected virtual void DirectoryChanged(string path)
 		{
 			//nothing to do here
+		}
+		
+		//allow subclasses to cleanup before directory scan.
+		protected virtual void DeleteArtefacts(string dir)
+		{
+			foreach (string subDir in Directory.GetDirectories(dir))
+				DeleteArtefacts(subDir);
 		}
 		
 		//register all files in a directory

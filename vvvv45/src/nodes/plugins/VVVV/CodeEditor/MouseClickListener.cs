@@ -49,7 +49,9 @@ namespace VVVV.HDE.CodeEditor
                                     foreach (var attribute in clss.Attributes)
                                     {
                                         var attributeType = attribute.AttributeType;
-                                        if (attributeType.Name == typeof(PluginInfoAttribute).Name)
+                                        var pluginInfoName = typeof(PluginInfoAttribute).Name;
+                                        var pluginInfoShortName = pluginInfoName.Replace("Attribute", "");
+                                        if (attributeType.Name == pluginInfoName || attributeType.Name == pluginInfoShortName)
                                         {
                                             // Check name
                                             string name = null;

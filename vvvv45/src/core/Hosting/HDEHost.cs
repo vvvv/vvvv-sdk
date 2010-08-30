@@ -77,7 +77,7 @@ namespace VVVV.Hosting
             var mappingRegistry = new MappingRegistry();
             mappingRegistry.RegisterMapping<ISolution, ICommandHistory, CommandHistory>(MapInstantiation.PerInstanceAndItsChilds);
             
-            var location = new Uri(Shell.CallerPath.ConcatPath(@"..\..\dynamic").ConcatPath("Solution.sln"));
+            var location = new Uri(Shell.CallerPath.ConcatPath(@"..\..\plugins").ConcatPath("Solution.sln"));
             Solution = new Solution(location, mappingRegistry);
             
             EnumManager.SetHDEHost(this);
@@ -264,6 +264,21 @@ namespace VVVV.Hosting
 			FVVVVHost.GetCurrentTime(out currentTime);
 			return currentTime;
 		}
+		
+		public IEnumerable<INodeInfo> NodeInfos 
+		{
+			get 
+			{
+				return FRegisteredNodeInfos.Values;
+			}
+		}
+    	
+		public INodeInfo GetNodeInfo(string systemname)
+		{
+			INodeInfo result = null;
+			FRegisteredNodeInfos.TryGetValue(systemname, out result);
+			return result;
+		}
         #endregion
         
         #region helper methods
@@ -414,6 +429,5 @@ namespace VVVV.Hosting
             return null;
         }
         #endregion
-    	
     }
 }

@@ -17,6 +17,9 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 		
 		public Link GetLink(IDocument doc, TextLocation location)
 		{
+			if (location.Line >= doc.TotalNumberOfLines)
+				return Link.Empty;
+			
 			var lineSegment = doc.GetLineSegment(location.Line);
 			var word = lineSegment.GetWord(location.Column);
 			

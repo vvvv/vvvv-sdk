@@ -36,10 +36,8 @@ namespace VVVV.Hosting.Factories
 		}
 
 		//create a node info from a filename
-		public override IEnumerable<INodeInfo> ExtractNodeInfos(string filename)
+		protected override IEnumerable<INodeInfo> GetNodeInfos(string filename)
 		{
-			if (Path.GetExtension(filename) != FileExtension) yield break;
-			
 			FXProject project;
 			
 			if (!FProjects.TryGetValue(filename, out project))
@@ -57,7 +55,7 @@ namespace VVVV.Hosting.Factories
 			
 			yield return FProjectNodeInfo[project];
 		}
-
+		
 		void project_DoCompile(object sender, EventArgs e)
 		{
 			//parse nodeinfo of project
