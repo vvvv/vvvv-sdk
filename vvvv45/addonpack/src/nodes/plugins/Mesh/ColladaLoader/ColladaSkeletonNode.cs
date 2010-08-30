@@ -14,8 +14,8 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.SkeletonInterfaces;
-using VVVV.Shared.VSlimDX;
 using VVVV.Core.Logging;
+using VVVV.Utils.SlimDX;
 
 using ColladaSlimDX.Utils;
 using ColladaSlimDX.ColladaModel;
@@ -130,7 +130,7 @@ namespace VVVV.Nodes
         		{
         			foreach (Model.Bone bone in FSelectedMesh.Bones)
         			{
-        				FSkeleton.JointTable[bone.Name].BaseTransform = VSlimDXUtils.SlimDXMatrixToMatrix4x4(bone.TransformMatrix);
+        				FSkeleton.JointTable[bone.Name].BaseTransform = bone.TransformMatrix.ToMatrix4x4();
         			}
         		}
         	}

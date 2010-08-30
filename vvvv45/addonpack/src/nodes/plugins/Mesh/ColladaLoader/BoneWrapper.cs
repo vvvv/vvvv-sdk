@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ColladaSlimDX.ColladaModel;
 using VVVV.Utils.VMath;
 using VVVV.SkeletonInterfaces;
-using VVVV.Shared.VSlimDX;
+using VVVV.Utils.SlimDX;
 
 namespace VVVV.Nodes
 {
@@ -43,7 +43,7 @@ namespace VVVV.Nodes
 		
 		public BoneWrapper(Model.Bone bone) : this(bone.Index, bone.Name)
 		{
-			FBaseTransform = VSlimDXUtils.SlimDXMatrixToMatrix4x4(bone.TransformMatrix);
+			FBaseTransform = bone.TransformMatrix.ToMatrix4x4();
 		}
 		
 		public string Name
@@ -218,7 +218,7 @@ namespace VVVV.Nodes
 		{
 			if (IsDirty())
 			{
-				VSlimDXUtils.Decompose(AnimationTransform, out FCachedScale, out FCachedRotation, out FCachedTranslation);
+				AnimationTransform.Decompose(out FCachedScale, out FCachedRotation, out FCachedTranslation);
 				if (Parent != null)
 					FCachedCombinedTransform = AnimationTransform * BaseTransform * Parent.CombinedTransform;
 				else

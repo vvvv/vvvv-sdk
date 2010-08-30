@@ -15,8 +15,8 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using VVVV.Shared.VSlimDX;
 using VVVV.Core.Logging;
+using VVVV.Utils.SlimDX;
 
 using ColladaSlimDX.ColladaModel;
 using ColladaSlimDX.ColladaDocument;
@@ -92,7 +92,7 @@ namespace VVVV.Nodes
         public PluginColladaMesh(
             IPluginHost host,
             [Config ("Opaque=1?", SliceMode = SliceMode.Single, DefaultValue = 1)]
-            IDiffSpread<bool> OpaqueIsOneInput)
+            IDiffSpread<bool> opaqueIsOneInput)
         {
             //the nodes constructor
             FDeviceMeshes = new Dictionary<int, Mesh>();
@@ -107,7 +107,7 @@ namespace VVVV.Nodes
             host.CreateTransformOutput("Inverse Bind Pose Transforms", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FInvBindPoseTransformOutput);
 			host.CreateTransformOutput("Bind Shape Transform", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FBindShapeTransformOutput);
             
-            FOpaqueIsOneInput = OpaqueIsOneInput;
+            FOpaqueIsOneInput = opaqueIsOneInput;
             FOpaqueIsOneInput.Changed += new SpreadChangedEventHander<bool>(FOpaqueIsOneInput_Changed);
         }
 
@@ -253,7 +253,7 @@ namespace VVVV.Nodes
 							FInvBindPoseTransformOutput.SliceCount = skinnedInstanceMesh.InvBindMatrixList.Count;
 							for (int j=0; j<skinnedInstanceMesh.InvBindMatrixList.Count; j++)
 							{
-								FInvBindPoseTransformOutput.SetMatrix(j, VSlimDXUtils.SlimDXMatrixToMatrix4x4(skinnedInstanceMesh.InvBindMatrixList[j]));
+								FInvBindPoseTransformOutput.SetMatrix(j, skinnedInstanceMesh.InvBindMatrixList[j].ToMatrix4x4());
 							}
 							
 						}
@@ -261,21 +261,20 @@ namespace VVVV.Nodes
 					
 					FTransformOutput.SliceCount = transforms.Count;
 					for (int j = 0; j < transforms.Count; j++)
-						FTransformOutput.SetMatrix(j, VSlimDXUtils.SlimDXMatrixToMatrix4x4(transforms[j]));
+						FTransformOutput.SetMatrix(j, transforms[j].ToMatrix4x4());
 					
 					FSkinningTransformOutput.SliceCount = skinningTransforms.Count;
 					for (int j = 0; j < skinningTransforms.Count; j++)
-						FSkinningTransformOutput.SetMatrix(j, VSlimDXUtils.SlimDXMatrixToMatrix4x4(skinningTransforms[j]));
+						FSkinningTransformOutput.SetMatrix(j, skinningTransforms[j].ToMatrix4x4());
 					
 					FBindShapeTransformOutput.SliceCount = bindShapeTransforms.Count;
 					for (int j = 0; j < bindShapeTransforms.Count; j++)
-						FBindShapeTransformOutput.SetMatrix(j, VSlimDXUtils.SlimDXMatrixToMatrix4x4(bindShapeTransforms[j]));
+						FBindShapeTransformOutput.SetMatrix(j, bindShapeTransforms[j].ToMatrix4x4());
 	        	}
         	}
         	catch (Exception e)
         	{
-        		FLogger.Log(LogType.Error, e.Message);
-        		FLogger.Log(LogType.Error, e.StackTrace);
+        		FLogger.Log(e);
         	}
         }
              

@@ -15,7 +15,8 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <SourceAnalysisOverrideSettingsFile>C:\Dokumente und Einstellungen\Elias\Anwendungsdaten\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
     <StartArguments>d</StartArguments>
-    <OutputPath>..\..\..\vvvv40\plugins\</OutputPath>
+    <ReferencePath>$(VVVV45)\bin\managed\</ReferencePath>
+    <OutputPath>$(VVVV45)\plugins\</OutputPath>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -25,7 +26,7 @@
     <DebugType>Full</DebugType>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <StartAction>Program</StartAction>
-    <StartProgram>..\..\..\vvvv40\vvvv.exe</StartProgram>
+    <StartProgram>$(VVVV45)\vvvv.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <Optimize>True</Optimize>
@@ -34,7 +35,7 @@
     <DebugType>None</DebugType>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
     <StartAction>Program</StartAction>
-    <StartProgram>..\..\..\..\..\output\core\vvvv\vvvv.exe</StartProgram>
+    <StartProgram>$(VVVV45)\vvvv.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <RegisterForComInterop>False</RegisterForComInterop>
@@ -77,11 +78,11 @@
       <HintPath>..\..\_lib\vvvv\VVVV.Utils.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="VVVV.Utils3rdParty">
+      <HintPath>..\..\..\vvvv45\bin\managed\VVVV.Utils3rdParty.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\_SharedSources\SlimDX\SlimDXUtils.cs">
-      <Link>SlimDXUtils.cs</Link>
-    </Compile>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="BoneWrapper.cs" />
     <Compile Include="ColladaSkeletonNode.cs" />
