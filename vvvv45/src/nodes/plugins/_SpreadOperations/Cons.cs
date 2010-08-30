@@ -15,10 +15,10 @@ namespace VVVV.Nodes
     public class Cons<T> : IPluginEvaluate
     {
         [Input("Input", IsPinGroup = true)]
-        ISpread<ISpread<T>> Input;
+        protected ISpread<ISpread<T>> Input;
 
         [Output("Output")]
-        ISpread<ISpread<T>> Output;
+        protected ISpread<ISpread<T>> Output;
 
         public void Evaluate(int SpreadMax)
         {

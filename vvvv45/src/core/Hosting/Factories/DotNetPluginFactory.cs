@@ -42,15 +42,14 @@ namespace VVVV.Hosting.Factories
 		[Import]
 		protected ISolution FSolution;
 		
-		private AggregateCatalog FCatalog;
-		private CompositionContainer FContainer;
-		
 		private Dictionary<string, ExportFactory<IPluginBase, INodeInfoStuff>> FMEFPlugins = new Dictionary<string, ExportFactory<IPluginBase, INodeInfoStuff>>();
 		private Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>> FPluginLifetimeContexts = new Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>>();
-		private CompositionContainer FParentContainer;
+		private Dictionary<string, List<INodeInfo>> FNodeInfoCache = new Dictionary<string, List<INodeInfo>>();
+		private Dictionary<string, ComposablePartCatalog> FCatalogCache = new Dictionary<string, ComposablePartCatalog>();
 		protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
 		
 		protected HostExportProvider FHostExportProvider;
+		private ExportProvider[] FExportProviders;
 		
 		#region Constructor
 		[ImportingConstructor]
@@ -63,16 +62,12 @@ namespace VVVV.Hosting.Factories
 		protected DotNetPluginFactory(CompositionContainer parentContainer, string fileExtension)
 			: base(Shell.CallerPath.ConcatPath(@"..\..\plugins"), fileExtension)
 		{
-			FParentContainer = parentContainer;
-			
 			FHostExportProvider = new HostExportProvider();
-			var exportProviders = new ExportProvider[] { FParentContainer, FHostExportProvider };
-			FCatalog = new AggregateCatalog();
-			FContainer = new CompositionContainer(FCatalog, exportProviders);
+			FExportProviders = new ExportProvider[] { parentContainer, FHostExportProvider };
 		}
 		#endregion
 		
-		#region IPluginFactory
+		#region IAddonFactory
 		
 		public override bool Create(INodeInfo nodeInfo, IAddonHost host)
 		{
@@ -149,15 +144,20 @@ namespace VVVV.Hosting.Factories
 		/// </summary>
 		protected override IEnumerable<INodeInfo> GetNodeInfos(string filename)
 		{
-			var nodeInfos = new List<INodeInfo>();
+			// See if we know this file an can load from cache.
+			if (!FNodeInfoCache.ContainsKey(filename))
+			{
+				var nodeInfos = new List<INodeInfo>();
+				
+				// We can't handle dynamic plugins
+				if (!IsDynamicAssembly(filename))
+					LoadNodeInfosFromFile(filename, ref nodeInfos);
+				
+				// Cache the result
+				FNodeInfoCache[filename] = nodeInfos;
+			}
 			
-			// We can't handle dynamic plugins
-			if (IsDynamicAssembly(filename))
-				return nodeInfos;
-			
-			LoadNodeInfosFromFile(filename, ref nodeInfos);
-			
-			return nodeInfos;
+			return FNodeInfoCache[filename];
 		}
 		
 		protected void LoadNodeInfosFromFile(string filename, ref List<INodeInfo> nodeInfos)
@@ -172,7 +172,10 @@ namespace VVVV.Hosting.Factories
 			try
 			{
 				// Check for V2 style plugins
-				foreach (var nodeInfo in ExtractNodeInfosFromCatalog(new AssemblyCatalog(filename)))
+				if (!FCatalogCache.ContainsKey(filename))
+					FCatalogCache[filename] = new AssemblyCatalog(filename);
+				
+				foreach (var nodeInfo in ExtractNodeInfosFromCatalog(FCatalogCache[filename]))
 				{
 					if (IsValidNodeInfo(nodeInfo))
 					{
@@ -216,8 +219,10 @@ namespace VVVV.Hosting.Factories
 		/// <summary>
 		/// Called by AbstractFileFactory to extract one node info out of nodeInfos which matches given arguments.
 		/// </summary>
-		protected override INodeInfo GetNodeInfo(IEnumerable<INodeInfo> nodeInfos, string arguments)
+		protected override INodeInfo GetNodeInfo(string filename, string arguments)
 		{
+			var nodeInfos = GetNodeInfos(filename);
+			
 			// This is easy in case of V1 plugins. Arguments are already set. We just need to
 			// look it up.
 			foreach (var nodeInfo in nodeInfos)
@@ -228,7 +233,7 @@ namespace VVVV.Hosting.Factories
 			
 			// In case of V2 plugins it's harder. Arguments are not set, because MEF doesn't provide
 			// this information.
-			foreach (var part in FCatalog.Parts)
+			foreach (var part in FCatalogCache[filename].Parts)
 			{
 				var lazyPartType = ReflectionModelServices.GetPartType(part);
 				
@@ -260,7 +265,7 @@ namespace VVVV.Hosting.Factories
 				}
 			}
 			
-			return base.GetNodeInfo(nodeInfos, arguments);
+			return base.GetNodeInfo(filename, arguments);
 		}
 		
 		#endregion
@@ -299,11 +304,13 @@ namespace VVVV.Hosting.Factories
 		
 		#region Helper functions
 		
-		protected IEnumerable<INodeInfo> ExtractNodeInfosFromCatalog(AssemblyCatalog catalog)
+		protected IEnumerable<INodeInfo> ExtractNodeInfosFromCatalog(ComposablePartCatalog catalog)
 		{
-			FCatalog.Catalogs.Clear();
-			FCatalog.Catalogs.Add(catalog);
-			FContainer.ComposeParts(this);
+//			FCatalog.Catalogs.Clear();
+//			FCatalog.Catalogs.Add(catalog);
+//			FContainer.ComposeParts(this);
+			var container = new CompositionContainer(catalog, FExportProviders);
+			container.ComposeParts(this);
 			
 			foreach (var pluginExport in FNodeInfoExports)
 			{

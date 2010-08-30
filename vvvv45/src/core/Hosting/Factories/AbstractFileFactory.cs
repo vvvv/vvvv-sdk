@@ -77,8 +77,6 @@ namespace VVVV.Hosting.Factories
 		//return nodeinfos from systemname
 		public IEnumerable<INodeInfo> ExtractNodeInfos(string systemname)
 		{
-			IList<INodeInfo> nodeInfos = new List<INodeInfo>();
-			
 			// systemname is of form FILENAME[|ARGUMENTS], for example:
 			// - C:\Path\To\Assembly.dll
 			// or
@@ -94,16 +92,13 @@ namespace VVVV.Hosting.Factories
 				arguments = systemname.Substring(pipeIndex + 1);
 			}
 			
-			if (Path.GetExtension(filename) != FileExtension) return nodeInfos;
-			
-			foreach (var nodeInfo in GetNodeInfos(filename))
-				nodeInfos.Add(nodeInfo);
+			if (Path.GetExtension(filename) != FileExtension) return new INodeInfo[0];
 			
 			// If additional arguments are present vvvv is only interested in one specific
 			// NodeInfo -> look for it.
 			if (arguments != null)
 			{
-				var nodeInfo = GetNodeInfo(nodeInfos, arguments);
+				var nodeInfo = GetNodeInfo(filename, arguments);
 				if (nodeInfo != null)
 					return new INodeInfo[] { nodeInfo };
 				else
@@ -111,16 +106,13 @@ namespace VVVV.Hosting.Factories
 			}
 			else
 			{
-				return nodeInfos;
+				return GetNodeInfos(filename);
 			}
 		}
 		
 		protected abstract IEnumerable<INodeInfo> GetNodeInfos(string filename);
-		protected virtual INodeInfo GetNodeInfo(IEnumerable<INodeInfo> nodeInfos, string arguments)
+		protected virtual INodeInfo GetNodeInfo(string filename, string arguments)
 		{
-			foreach (var nodeInfo in nodeInfos)
-				return nodeInfo;
-			
 			return null;
 		}
 		

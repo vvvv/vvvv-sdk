@@ -15,13 +15,13 @@ namespace VVVV.Nodes
     public class Pairwise<T> : IPluginEvaluate
     {
         [Input("Input")]
-        ISpread<ISpread<T>> Input;
+        protected ISpread<ISpread<T>> Input;
 
         [Output("Output 1")]
-        ISpread<ISpread<T>> Output1;
+        protected ISpread<ISpread<T>> Output1;
 
 		[Output("Output 2")]
-        ISpread<ISpread<T>> Output2;
+        protected ISpread<ISpread<T>> Output2;
         
         public void Evaluate(int SpreadMax)
         {

@@ -5,6 +5,7 @@ using SlimDX;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
+using VVVV.Utils.SlimDX;
 
 namespace VVVV.Hosting.Pins.Output
 {
@@ -54,7 +55,10 @@ namespace VVVV.Hosting.Pins.Output
 		{
 			get 
 			{
-				throw new NotImplementedException();
+				fixed (float* ptr = FData)
+				{
+					return ((Matrix*)ptr)[index % FSliceCount].ToMatrix4x4();
+				}
 			}
 			set 
 			{

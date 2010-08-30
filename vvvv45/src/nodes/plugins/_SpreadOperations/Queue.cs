@@ -16,17 +16,17 @@ namespace VVVV.Nodes
     public class Queue<T> : IPluginEvaluate
     {
         [Input("Input")]
-        ISpread<T> Input;
+        protected ISpread<T> Input;
         
         [Input("do Insert", SliceMode = SliceMode.Single)]
-        ISpread<bool> DoInsert;
+        protected ISpread<bool> DoInsert;
       
         [Input("Frame Count", SliceMode = SliceMode.Single, MinValue = 0, DefaultValue = 1)]
-        ISpread<int> FrameCount;
+        protected ISpread<int> FrameCount;
 
         
         [Output("Output")]
-        ISpread<ISpread<T>> Output;
+        protected ISpread<ISpread<T>> Output;
 
         List<List<T>> FBuffer = new List<List<T>>();        
         
