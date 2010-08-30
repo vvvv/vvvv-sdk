@@ -47,7 +47,10 @@ namespace VVVV.Nodes.NodeBrowser
 			set
 			{
 				FPath = value;
-				FPathDir = System.IO.Path.GetDirectoryName(FPath);
+				if (string.IsNullOrEmpty(FPath))
+					FPathDir = "";
+				else
+					FPathDir = System.IO.Path.GetDirectoryName(FPath);
 			}
 		}
 	
@@ -179,7 +182,10 @@ namespace VVVV.Nodes.NodeBrowser
 					}
 					catch
 					{
-						OnCreateNodeFromString(FTagsTextBox.Text.Trim());
+						if ((text.EndsWith(".v4p")) || (text.EndsWith(".fx")) || (text.EndsWith(".dll")))
+							OnCreateNodeFromString(text);
+						else
+							OnCreateNodeFromString(FTagsTextBox.Text.Trim());
 					}
 				}
 			}

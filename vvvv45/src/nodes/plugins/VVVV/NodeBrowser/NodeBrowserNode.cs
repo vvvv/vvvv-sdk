@@ -337,10 +337,8 @@ namespace VVVV.Nodes.NodeBrowser
 				if ((FTagPanel.Path != FPath) || (FNeedsRedraw))
 				{
 					//init view
-					FTagPanel.Redraw();
-					FCategoryPanel.Redraw();
-				}
-				// FBackgroundWorker.RunWorkerAsync();
+					FBackgroundWorker.RunWorkerAsync();
+				}				 
 			}
 		}
 		#endregion IWindowSelectionListener
