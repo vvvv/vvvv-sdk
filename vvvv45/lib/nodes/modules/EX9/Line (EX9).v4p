@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug24.dtd" >
    <PATCH nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\vvvv group\EX9\Line (EX9).v4p">
-   <BOUNDS height="7140" left="1455" top="8415" type="Window" width="12045">
+   <BOUNDS height="9045" left="5520" top="5490" type="Window" width="14310">
    </BOUNDS>
    <NODE id="39" nodename="Grid (EX9.Geometry)">
    <BOUNDS height="0" left="2955" top="3765" type="Node" width="0">
@@ -53,7 +53,7 @@
    </PIN>
    <PIN pinname="Color Output" visible="1">
    </PIN>
-   <PIN pinname="Color Input" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   <PIN pinname="Color Input" slicecount="1" values="|1.00000,0.00000,0.34201,1.00000|">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="35" nodename="IOBox (Node)">
@@ -82,7 +82,7 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="33" nodename="Pairwise (3D)">
+   <NODE componentmode="Hidden" id="33" nodename="Pairwise (3d)">
    <BOUNDS height="100" left="3465" top="1140" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="0" left="3465" top="1140" type="Box" width="0">
@@ -115,7 +115,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="2">
+   <PIN pinname="Y Input Value" slicecount="1" values="-1">
    </PIN>
    </NODE>
    <LINK dstnodeid="33" dstpinname="Input Bin Size" srcnodeid="32" srcpinname="Y Output Value">
@@ -301,7 +301,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="5025" top="2310" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="32" visible="1" values="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -517,7 +517,7 @@
    </PIN>
    <PIN pinname="Color" visible="1">
    </PIN>
-   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="Transform" slicecount="122" visible="1" values=",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,">
    </PIN>
    <PIN pinname="Width" visible="1">
    </PIN>
@@ -547,7 +547,7 @@
    </PIN>
    <PIN pinname="maxdepth">
    </PIN>
-   <PIN pinname="Enabled" slicecount="1" values="1">
+   <PIN pinname="Enabled" visible="1">
    </PIN>
    <PIN pinname="Fog Color">
    </PIN>
@@ -694,8 +694,36 @@
    </LINK>
    <LINK dstnodeid="26" dstpinname="Input 2" srcnodeid="3" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="33" srcpinname="Output 1XYZ" dstnodeid="11" dstpinname="Input 2">
+   <LINK dstnodeid="11" dstpinname="Input 2" srcnodeid="33" srcpinname="Output 1XYZ">
    </LINK>
-   <LINK srcnodeid="33" srcpinname="Output 2XYZ" dstnodeid="10" dstpinname="Input 2">
+   <LINK dstnodeid="10" dstpinname="Input 2" srcnodeid="33" srcpinname="Output 2XYZ">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="40">
+   <BOUNDS type="Node" left="11520" top="4485" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11520" top="4485" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Window" left="17685" top="9195" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Enabled">
    </LINK>
    </PATCH>
