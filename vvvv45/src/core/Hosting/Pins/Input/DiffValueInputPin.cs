@@ -13,9 +13,7 @@ namespace VVVV.Hosting.Pins.Input
 	public abstract class DiffValueInputPin<T> : DiffPin<T>, IPinUpdater where T: struct
 	{
 		protected IValueIn FValueIn;
-		
-		protected int FSliceCount;
-		protected double[] FData;
+		new protected double[] FData;
 		protected int FDimension;
 		
 		public DiffValueInputPin(IPluginHost host, InputAttribute attribute)
@@ -46,17 +44,7 @@ namespace VVVV.Hosting.Pins.Input
 					break;
 			}
 			
-			FValueIn.SetPinUpdater(this);
-			
-			SliceCount = 1;
-		}
-		
-		public override IPluginIO PluginIO
-		{
-			get
-			{
-				return FValueIn;
-			}
+			base.Initialize(FValueIn);
 		}
 		
 		public override int SliceCount
@@ -68,9 +56,11 @@ namespace VVVV.Hosting.Pins.Input
 			set
 			{
 				if (FSliceCount != value)
+				{
 					FData = new double[value * FDimension];
-				
-				FSliceCount = value;
+					
+					FSliceCount = value;
+				}
 			}
 		}
 		

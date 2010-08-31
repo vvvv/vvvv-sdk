@@ -34,9 +34,6 @@ namespace VVVV.Hosting.Factories
 		private List<ExportFactory<IPluginBase, INodeInfoStuff>> FNodeInfoExports { get; set; }
 		
 		[Import]
-		protected ILogger FLogger;
-		
-		[Import]
 		protected IHDEHost FHost;
 		
 		[Import]

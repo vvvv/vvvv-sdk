@@ -14,21 +14,17 @@ namespace VVVV.Hosting.Pins.Config
 		{
 		}
 		
-		unsafe public override Vector2 this[int index] 
+		public override Vector2 this[int index] 
 		{
 			get
 			{
-				fixed (double* ptr = FData)
-				{
-					return ((Vector2D*)ptr)[index % FSliceCount].ToSlimDXVector();
-				}
+				double value1, value2;
+				FValueConfig.GetValue2D(index, out value1, out value2);
+				return new Vector2((float) value1, (float) value2);
 			}
 			set
 			{
-				fixed (double* ptr = FData)
-				{
-					((Vector2D*)ptr)[index % FSliceCount] = value.ToVector2D();
-				}
+				FValueConfig.SetValue2D(index, (double) value.X, (double) value.Y);
 			}
 		}
 	}
@@ -40,21 +36,17 @@ namespace VVVV.Hosting.Pins.Config
 		{
 		}
 		
-		unsafe public override Vector3 this[int index] 
+		public override Vector3 this[int index] 
 		{
 			get
 			{
-				fixed (double* ptr = FData)
-				{
-					return ((Vector3D*)ptr)[index % FSliceCount].ToSlimDXVector();;
-				}
+				double value1, value2, value3;
+				FValueConfig.GetValue3D(index, out value1, out value2, out value3);
+				return new Vector3((float) value1, (float) value2, (float) value3);
 			}
 			set
 			{
-				fixed (double* ptr = FData)
-				{
-					((Vector3D*)ptr)[index % FSliceCount] = value.ToVector3D();
-				}
+				FValueConfig.SetValue3D(index, (double) value.X, (double) value.Y, (double) value.Z);
 			}
 		}
 	}
@@ -66,25 +58,18 @@ namespace VVVV.Hosting.Pins.Config
 		{
 		}
 		
-		unsafe public override Vector4 this[int index] 
+		public override Vector4 this[int index] 
 		{
 			get
 			{
-				fixed (double* ptr = FData)
-				{
-					return ((Vector4D*)ptr)[index % FSliceCount].ToSlimDXVector();;
-				}
+				double value1, value2, value3, value4;
+				FValueConfig.GetValue4D(index, out value1, out value2, out value3, out value4);
+				return new Vector4((float) value1, (float) value2, (float) value3, (float) value4);
 			}
 			set
 			{
-				fixed (double* ptr = FData)
-				{
-					((Vector4D*)ptr)[index % FSliceCount] = value.ToVector4D();
-				}
+				FValueConfig.SetValue4D(index, (double) value.X, (double) value.Y, (double) value.Z, (double) value.W);
 			}
 		}
 	}
-	
-	
-	
 }

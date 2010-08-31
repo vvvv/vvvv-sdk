@@ -13,39 +13,21 @@ namespace VVVV.Hosting.Pins.Output
 		{
 			host.CreateEnumOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FEnumOutputPin);
 			FEnumOutputPin.SetSubType(attribute.EnumName);
+			
+			base.Initialize(FEnumOutputPin);
 		}
 		
-		public override IPluginIO PluginIO 
+		public override void Update()
 		{
-			get
+			if (FAttribute.SliceMode != SliceMode.Single)
+				FEnumOutputPin.SliceCount = FSliceCount;
+			
+			for (int i = 0; i < FSliceCount; i++)
 			{
-				return FEnumOutputPin;
+				FEnumOutputPin.SetOrd(i, FData[i].Index);
 			}
-		}
-
-		public override int SliceCount
-		{
-			get
-			{
-				return FEnumOutputPin.SliceCount;
-			}
-			set
-			{
-				if (FAttribute.SliceMode != SliceMode.Single)
-					FEnumOutputPin.SliceCount = value;
-			}
-		}
-
-		public override EnumEntry this[int index]
-		{
-			get
-			{
-				throw new NotSupportedException();
-			}
-			set
-			{
-				FEnumOutputPin.SetOrd(index, value.Index);
-			}
+			
+			base.Update();
 		}
 	}
 }

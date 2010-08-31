@@ -18,17 +18,9 @@ namespace VVVV.Hosting.Pins.Input
 			host.CreateNodeInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FNodeIn);
 			FNodeIn.SetSubType(new Guid[] { typeof(T).GUID }, typeof(T).FullName);
 			
-			FNodeIn.SetPinUpdater(this);
-
 			FUpstreamInterface = FDefaultInterface;
-		}
-		
-		public override IPluginIO PluginIO 
-		{
-			get
-			{
-				return FNodeIn;
-			}
+			
+			base.Initialize(FNodeIn);
 		}
 		
 		public override void Connect()
@@ -43,45 +35,36 @@ namespace VVVV.Hosting.Pins.Input
 			FUpstreamInterface = FDefaultInterface;
 		}
 		
-		public override int SliceCount 
+		public override bool IsChanged
 		{
 			get
-			{
-				return FNodeIn.SliceCount;
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-		
-		public override bool IsChanged 
-		{
-			get 
 			{
 				return FNodeIn.PinIsChanged;
 			}
 		}
 		
-		public override T this[int index] 
+		public override void Update()
 		{
-			get 
+			if (IsChanged)
 			{
-				int usS;
-				if (FUpstreamInterface != null && FNodeIn.SliceCount > 0)
+				SliceCount = FNodeIn.SliceCount;
+				
+				for (int i = 0; i < FSliceCount; i++)
 				{
-					FNodeIn.GetUpsreamSlice(index, out usS);
-					return FUpstreamInterface.GetSlice(usS);
-				}
-				else
-				{
-					return default(T);
+					int usS;
+					if (FUpstreamInterface != null)
+					{
+						FNodeIn.GetUpsreamSlice(i, out usS);
+						FData[i] = FUpstreamInterface.GetSlice(usS);
+					}
+					else
+					{
+						FData[i] = default(T);
+					}
 				}
 			}
-			set 
-			{
-				throw new NotImplementedException();
-			}
+			
+			base.Update();
 		}
 	}
 }

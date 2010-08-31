@@ -15,14 +15,14 @@ namespace VVVV.Hosting.Pins
 	
 	public abstract class Pin<T> : ISpread<T>, IPluginIOProvider, IDisposable, IPinUpdater
 	{
-		public abstract IPluginIO PluginIO { get; }
-		
-		public event PinUpdatedEventHandler<T> Updated;
-		
 		[Import]
 		protected ILogger FLogger;
 		protected IPluginHost FHost;
 		protected PinAttribute FAttribute;
+		protected T[] FData;
+		protected int FSliceCount;
+		
+		public event PinUpdatedEventHandler<T> Updated;
 		
 		public Pin(IPluginHost host, PinAttribute attribute)
 		{
@@ -30,24 +30,58 @@ namespace VVVV.Hosting.Pins
 			FAttribute = attribute;
 		}
 		
+		/// <summary>
+		/// Must be called by subclass at end of constructor.
+		/// </summary>
+		protected void Initialize(IPluginIO pluginIO)
+		{
+			PluginIO = pluginIO;
+			PluginIO.SetPinUpdater(this);
+			PluginIO.Order = FAttribute.Order;
+			SliceCount = 1;
+		}
+		
+		public IPluginIO PluginIO
+		{
+			get;
+			private set;
+		}
+		
 		protected virtual void OnUpdated()
 		{
-			if (Updated != null) 
+			if (Updated != null)
 			{
 				Updated(this);
 			}
 		}
 		
-		public abstract T this[int index]
+		public virtual T this[int index]
 		{
-			get;
-			set;
+			get
+			{
+				return FData[index % FSliceCount];
+			}
+			set
+			{
+				FData[index % FSliceCount] = value;
+			}
 		}
 		
-		public abstract int SliceCount
+		public virtual int SliceCount
 		{
-			get;
-			set;
+			get
+			{
+				return FSliceCount;
+			}
+			set
+			{
+				if (FSliceCount != value)
+				{
+					FData = new T[value];
+					
+					FSliceCount = value;
+				}
+			}
 		}
 		
 		//prepare for IPinUpdater
@@ -228,61 +262,61 @@ namespace VVVV.Hosting.Pins
 		#region IDisposable
 		
 		// Implement IDisposable.
-        // Do not make this method virtual.
-        // A derived class should not be able to override this method.
-        public void Dispose()
-        {
-            Dispose(true);
-            // This object will be cleaned up by the Dispose method.
-            // Therefore, you should call GC.SupressFinalize to
-            // take this object off the finalization queue
-            // and prevent finalization code for this object
-            // from executing a second time.
-            GC.SuppressFinalize(this);
-        }
+		// Do not make this method virtual.
+		// A derived class should not be able to override this method.
+		public void Dispose()
+		{
+			Dispose(true);
+			// This object will be cleaned up by the Dispose method.
+			// Therefore, you should call GC.SupressFinalize to
+			// take this object off the finalization queue
+			// and prevent finalization code for this object
+			// from executing a second time.
+			GC.SuppressFinalize(this);
+		}
 
-        // Dispose(bool disposing) executes in two distinct scenarios.
-        // If disposing equals true, the method has been called directly
-        // or indirectly by a user's code. Managed and unmanaged resources
-        // can be disposed.
-        // If disposing equals false, the method has been called by the
-        // runtime from inside the finalizer and you should not reference
-        // other objects. Only unmanaged resources can be disposed.
-        private bool FDisposed;
-        private void Dispose(bool disposing)
-        {
-            // Check to see if Dispose has already been called.
-            if(!FDisposed)
-            {
-                // If disposing equals true, dispose all managed
-                // and unmanaged resources.
-                if(disposing)
-                {
-                    // Dispose managed resources.
-                    DisposeManaged();
-                }
+		// Dispose(bool disposing) executes in two distinct scenarios.
+		// If disposing equals true, the method has been called directly
+		// or indirectly by a user's code. Managed and unmanaged resources
+		// can be disposed.
+		// If disposing equals false, the method has been called by the
+		// runtime from inside the finalizer and you should not reference
+		// other objects. Only unmanaged resources can be disposed.
+		private bool FDisposed;
+		private void Dispose(bool disposing)
+		{
+			// Check to see if Dispose has already been called.
+			if(!FDisposed)
+			{
+				// If disposing equals true, dispose all managed
+				// and unmanaged resources.
+				if(disposing)
+				{
+					// Dispose managed resources.
+					DisposeManaged();
+				}
 
-                // Call the appropriate methods to clean up
-                // unmanaged resources here.
-                // If disposing is false,
-                // only the following code is executed.
-                DisposeUnmanaged();
+				// Call the appropriate methods to clean up
+				// unmanaged resources here.
+				// If disposing is false,
+				// only the following code is executed.
+				DisposeUnmanaged();
 
-                // Note disposing has been done.
-                FDisposed = true;
-            }
-        }
-        
-        protected virtual void DisposeManaged()
-        {
-        	Updated = null;
-        }
-        
-        protected virtual void DisposeUnmanaged()
-        {
-        	
-        }
-        
-        #endregion
+				// Note disposing has been done.
+				FDisposed = true;
+			}
+		}
+		
+		protected virtual void DisposeManaged()
+		{
+			Updated = null;
+		}
+		
+		protected virtual void DisposeUnmanaged()
+		{
+			
+		}
+		
+		#endregion
 	}
 }

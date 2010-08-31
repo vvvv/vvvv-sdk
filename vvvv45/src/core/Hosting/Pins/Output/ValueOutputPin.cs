@@ -12,9 +12,8 @@ namespace VVVV.Hosting.Pins.Output
 	public abstract class ValueOutputPin<T> : Pin<T>, IPinUpdater where T: struct
 	{
 		protected IValueOut FValueOut;
-		protected double[] FData;
+		new protected double[] FData;
 		protected int FDimension;
-		protected int FSliceCount;
 		
 		public ValueOutputPin(IPluginHost host, OutputAttribute attribute)
 			: base(host, attribute)
@@ -43,17 +42,8 @@ namespace VVVV.Hosting.Pins.Output
 					FValueOut.SetSubType(minValue, maxValue, stepSize, attribute.DefaultValue, isBool && attribute.IsBang, isBool && !attribute.IsBang, isInteger);
 					break;
 			}
-			FValueOut.SetPinUpdater(this);
 			
-			SliceCount = 1;
-		}
-		
-		public override IPluginIO PluginIO 
-		{
-			get
-			{
-				return FValueOut;
-			}
+			base.Initialize(FValueOut);
 		}
 		
 		public override int SliceCount 
@@ -65,24 +55,26 @@ namespace VVVV.Hosting.Pins.Output
 			set 
 			{
 				if (FSliceCount != value)
+				{
 					FData = new double[value * FDimension];
 				
-				FSliceCount = value;
+					FSliceCount = value;
 				
-				if (FAttribute.SliceMode != SliceMode.Single)
-					FValueOut.SliceCount = value;
+					if (FAttribute.SliceMode != SliceMode.Single)
+						FValueOut.SliceCount = value;
+				}
 			}
 		}
 		
 		unsafe public override void Update()
 		{
-			base.Update();
-			
 			double* destination;
 			FValueOut.GetValuePointer(out destination);
 			
 			if (FSliceCount > 0)
 				Marshal.Copy(FData, 0, new IntPtr(destination), FData.Length);
+			
+			base.Update();
 		}
 	}
 }

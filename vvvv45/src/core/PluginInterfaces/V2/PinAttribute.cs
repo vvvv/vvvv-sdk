@@ -226,5 +226,14 @@ namespace VVVV.PluginInterfaces.V2
 			get;
 			set;	
 		}
+		
+		/// <summary>
+		/// The order property helps the node to arrange its pins visually. The higher the order, the more right the pin appears on the node.
+		/// </summary>
+		public int Order
+		{
+			get;
+			set;
+		}
 	}
 }

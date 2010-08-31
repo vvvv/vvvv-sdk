@@ -13,18 +13,19 @@ namespace VVVV.Hosting.Pins.Config
 		{
 		}
 			
-		
-		public override IPluginIO PluginIO
+		/// <summary>
+		/// Must be called by subclass at end of constructor.
+		/// </summary>
+		protected void Initialize(IPluginConfig pluginConfig)
 		{
-			get
-			{
-				return PluginConfig;
-			}
+			PluginConfig = pluginConfig;
+			base.Initialize(pluginConfig);
 		}
 		
-		protected abstract IPluginConfig PluginConfig
+		protected IPluginConfig PluginConfig
 		{
 			get;
+			private set;
 		}
 		
 		public override int SliceCount 

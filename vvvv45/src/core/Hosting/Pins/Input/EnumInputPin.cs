@@ -15,33 +15,15 @@ namespace VVVV.Hosting.Pins.Input
 			FEnumType = typeof(T);
 			
 			var entrys = Enum.GetNames(FEnumType);
-			var defEntry = (attribute.DefaultEnumEntry != "") ? attribute.DefaultEnumEntry : entrys[0];	
+			var defEntry = (attribute.DefaultEnumEntry != "") ? attribute.DefaultEnumEntry : entrys[0];
 			host.UpdateEnum(FEnumType.Name, defEntry, entrys);
 			
 			host.CreateEnumInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FEnumInputPin);
 			FEnumInputPin.SetSubType(FEnumType.Name);
+			
+			base.Initialize(FEnumInputPin);
 		}
 
-		public override IPluginIO PluginIO 
-		{
-			get
-			{
-				return FEnumInputPin;
-			}
-		}
-		
-		public override int SliceCount 
-		{
-			get
-			{
-				return FEnumInputPin.SliceCount;
-			}
-			set
-			{
-				throw new NotSupportedException();
-			}
-		}
-		
 		public override bool IsChanged
 		{
 			get
@@ -50,19 +32,19 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 		
-		public override T this[int index]
+		public override void Update()
 		{
-			get
+			if (IsChanged)
 			{
-				string entry;
-				FEnumInputPin.GetString(index, out entry);
-
-				return (T)Enum.Parse(FEnumType, entry);
+				for (int i = 0; i < FSliceCount; i++)
+				{
+					string entry;
+					FEnumInputPin.GetString(i, out entry);
+					FData[i] = (T)Enum.Parse(FEnumType, entry);
+				}
 			}
-			set
-			{
-				throw new NotSupportedException();
-			}
+			
+			base.Update();
 		}
 	}
 }

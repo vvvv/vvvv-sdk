@@ -13,9 +13,7 @@ namespace VVVV.Hosting.Pins.Input
 	public abstract class ValueInputPin<T> : Pin<T>, IPinUpdater where T: struct
 	{
 		protected IValueFastIn FValueFastIn;
-		
-		protected int FSliceCount;
-		protected double[] FData;
+		protected new double[] FData;
 		protected int FDimension;
 		
 		public ValueInputPin(IPluginHost host, InputAttribute attribute)
@@ -46,17 +44,7 @@ namespace VVVV.Hosting.Pins.Input
 					break;
 			}
 			
-			FValueFastIn.SetPinUpdater(this);
-			
-			SliceCount = 1;
-		}
-		
-		public override IPluginIO PluginIO 
-		{
-			get 
-			{
-				return FValueFastIn;
-			}
+			base.Initialize(FValueFastIn);
 		}
 		
 		public override int SliceCount

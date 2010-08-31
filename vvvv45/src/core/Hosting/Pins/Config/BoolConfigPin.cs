@@ -15,11 +15,13 @@ namespace VVVV.Hosting.Pins.Config
 		{
 			get 
 			{
-				return FData[index % FSliceCount] >= 0.5;
+				double value;
+				FValueConfig.GetValue(index, out value);
+				return value >= 0.5;
 			}
 			set 
 			{
-				FData[index % FSliceCount] = value ? 1 : 0;
+				FValueConfig.SetValue(index, value ? 1.0 : 0.0);
 			}
 		}
 	}

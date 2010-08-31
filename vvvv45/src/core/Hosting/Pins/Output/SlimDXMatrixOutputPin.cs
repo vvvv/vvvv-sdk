@@ -9,52 +9,46 @@ namespace VVVV.Hosting.Pins.Output
 	public class SlimDXMatrixOutputPin : Pin<Matrix>, IPinUpdater
 	{
 		protected ITransformOut FTransformOut;
-		protected float[] FData;
-		protected int FSliceCount;
+		protected new float[] FData;
 		
 		public SlimDXMatrixOutputPin(IPluginHost host, OutputAttribute attribute)
 			: base(host, attribute)
 		{
 			host.CreateTransformOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FTransformOut);
 			
-			FTransformOut.SetPinUpdater(this);
-			
-			SliceCount = 1;
+			base.Initialize(FTransformOut);
 		}
 		
-		public override IPluginIO PluginIO 
+		public override int SliceCount
 		{
 			get
 			{
-				return FTransformOut;
-			}
-		}
-		
-		public override int SliceCount 
-		{
-			get 
-			{
 				return FSliceCount;
 			}
-			set 
+			set
 			{
 				if (FSliceCount != value)
+				{
 					FData = new float[value * 16];
-				
-				FSliceCount = value;
-				
-				if (FAttribute.SliceMode != SliceMode.Single)
-					FTransformOut.SliceCount = value;
+					
+					FSliceCount = value;
+					
+					if (FAttribute.SliceMode != SliceMode.Single)
+						FTransformOut.SliceCount = value;
+				}
 			}
 		}
 		
-		unsafe public override Matrix this[int index] 
+		unsafe public override Matrix this[int index]
 		{
-			get 
+			get
 			{
-				throw new NotImplementedException();
+				fixed (float* ptr = FData)
+				{
+					return ((Matrix*)ptr)[index % FSliceCount];
+				}
 			}
-			set 
+			set
 			{
 				fixed (float* ptr = FData)
 				{
@@ -65,13 +59,13 @@ namespace VVVV.Hosting.Pins.Output
 		
 		unsafe public override void Update()
 		{
-			base.Update();
-			
 			float* destination;
 			FTransformOut.GetMatrixPointer(out destination);
 			
 			if (FSliceCount > 0)
 				Marshal.Copy(FData, 0, new IntPtr(destination), FData.Length);
+			
+			base.Update();
 		}
 	}
 }

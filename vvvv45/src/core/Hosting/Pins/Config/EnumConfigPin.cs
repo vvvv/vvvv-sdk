@@ -20,15 +20,8 @@ namespace VVVV.Hosting.Pins.Config
 
 			host.CreateEnumConfig(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FEnumConfigPin);
 			FEnumConfigPin.SetSubType(FEnumType.Name);
-			FEnumConfigPin.SetPinUpdater(this);
-		}
-		
-		protected override IPluginConfig PluginConfig 
-		{
-			get 
-			{
-				return FEnumConfigPin;
-			}
+			
+			base.Initialize(FEnumConfigPin);
 		}
 		
 		public override T this[int index]

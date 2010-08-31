@@ -10,25 +10,14 @@ namespace VVVV.Hosting.Pins.Input
 	public class SlimDXMatrixInputPin : DiffPin<Matrix>, IPinUpdater
 	{
 		protected ITransformIn FTransformIn;
-		protected int FSliceCount;
-		protected float[] FData;
+		protected new float[] FData;
 		
 		public SlimDXMatrixInputPin(IPluginHost host, InputAttribute attribute)
 			: base(host, attribute)
 		{
 			host.CreateTransformInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FTransformIn);
 			
-			FTransformIn.SetPinUpdater(this);
-			
-			SliceCount = 1;
-		}
-		
-		public override IPluginIO PluginIO
-		{
-			get
-			{
-				return FTransformIn;
-			}
+			base.Initialize(FTransformIn);
 		}
 		
 		public override bool IsChanged
@@ -48,9 +37,11 @@ namespace VVVV.Hosting.Pins.Input
 			set
 			{
 				if (FSliceCount != value)
+				{
 					FData = new float[value * 16];
-				
-				FSliceCount = value;
+					
+					FSliceCount = value;
+				}
 			}
 		}
 		
@@ -65,7 +56,10 @@ namespace VVVV.Hosting.Pins.Input
 			}
 			set
 			{
-				throw new NotImplementedException();
+				fixed (float* ptr = FData)
+				{
+					((Matrix*)ptr)[index % FSliceCount] = value;
+				}
 			}
 		}
 		

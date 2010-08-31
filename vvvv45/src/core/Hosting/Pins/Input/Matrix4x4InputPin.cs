@@ -12,36 +12,25 @@ namespace VVVV.Hosting.Pins.Input
 	public class Matrix4x4InputPin : DiffPin<Matrix4x4>, IPinUpdater
 	{
 		protected ITransformIn FTransformIn;
-		protected int FSliceCount;
-		protected float[] FData; 
+		new protected float[] FData;
 		
 		public Matrix4x4InputPin(IPluginHost host, InputAttribute attribute)
 			: base(host, attribute)
 		{
 			host.CreateTransformInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FTransformIn);
 			
-			FTransformIn.SetPinUpdater(this);
-			
-			SliceCount = 1;
+			base.Initialize(FTransformIn);
 		}
 		
-		public override IPluginIO PluginIO 
+		public override bool IsChanged
 		{
 			get
-			{
-				return FTransformIn;
-			}
-		}
-		
-		public override bool IsChanged 
-		{
-			get 
 			{
 				return FTransformIn.PinIsChanged;
 			}
 		}
 		
-		public override int SliceCount 
+		public override int SliceCount
 		{
 			get
 			{
@@ -50,24 +39,29 @@ namespace VVVV.Hosting.Pins.Input
 			set
 			{
 				if (FSliceCount != value)
+				{
 					FData = new float[value * 16];
-				
-				FSliceCount = value;
+					
+					FSliceCount = value;
+				}
 			}
 		}
 		
-		unsafe public override Matrix4x4 this[int index] 
+		unsafe public override Matrix4x4 this[int index]
 		{
-			get 
+			get
 			{
 				fixed (float* ptr = FData)
 				{
 					return ((Matrix*)ptr)[index % FSliceCount].ToMatrix4x4();
 				}
 			}
-			set 
+			set
 			{
-				throw new NotImplementedException();
+				fixed (float* ptr = FData)
+				{
+					((Matrix*)ptr)[index % FSliceCount] = value.ToSlimDXMatrix();
+				}
 			}
 		}
 		

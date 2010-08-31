@@ -13,40 +13,21 @@ namespace VVVV.Hosting.Pins.Output
 		{
 			host.CreateStringOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FStringOut);
 			FStringOut.SetSubType2(attribute.DefaultString, attribute.MaxChars, attribute.FileMask, (TStringType)attribute.StringType);
+			
+			base.Initialize(FStringOut);
 		}
 		
-		public override IPluginIO PluginIO 
+		public override void Update()
 		{
-			get
+			if (FAttribute.SliceMode != SliceMode.Single)
+				FStringOut.SliceCount = FSliceCount;
+			
+			for (int i = 0; i < FSliceCount; i++)
 			{
-				return FStringOut;
+				FStringOut.SetString(i, FData[i]);
 			}
-		}
-		
-		public override int SliceCount 
-		{
-			get 
-			{
-				throw new NotImplementedException();
-			}
-			set 
-			{
-				if (FAttribute.SliceMode != SliceMode.Single)
-					FStringOut.SliceCount = value;
-			}
-		}
-		
-		public override string this[int index] 
-		{
-			get 
-			{
-				throw new NotImplementedException();
-			}
-			set 
-			{
-				
-				FStringOut.SetString(index, value);
-			}
+			
+			base.Update();
 		}
 	}
 }

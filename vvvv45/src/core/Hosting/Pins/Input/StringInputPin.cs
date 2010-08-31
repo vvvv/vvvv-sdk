@@ -6,7 +6,7 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.Pins.Input
 {
-	public class StringInputPin : DiffPin<string>, IPinUpdater
+	public class StringInputPin : DiffPin<string>
 	{
 		protected IStringIn FStringIn;
 		protected bool FIsPath;
@@ -19,15 +19,7 @@ namespace VVVV.Hosting.Pins.Input
 			
 			FIsPath = (attribute.StringType == StringType.Directory) || (attribute.StringType == StringType.Filename);
 			
-			FStringIn.SetPinUpdater(this);
-		}
-		
-		public override IPluginIO PluginIO
-		{
-			get
-			{
-				return FStringIn;
-			}
+			base.Initialize(FStringIn);
 		}
 		
 		public override bool IsChanged 
@@ -35,33 +27,6 @@ namespace VVVV.Hosting.Pins.Input
 			get 
 			{
 				return FStringIn.PinIsChanged;
-			}
-		}
-		
-		public override int SliceCount 
-		{
-			get 
-			{
-				return FStringIn.SliceCount;
-			}
-			set 
-			{
-				throw new NotImplementedException();
-			}
-		}
-		
-		public override string this[int index] 
-		{
-			get 
-			{
-				string value;
-				FStringIn.GetString(index, out value);
-				var s = value == null ? "" : value;
-				return FIsPath ? GetFullPath(s) : s;
-			}
-			set 
-			{
-				throw new NotImplementedException();
 			}
 		}
 		
@@ -80,6 +45,24 @@ namespace VVVV.Hosting.Pins.Input
 			}
 			
 			return path;
+		}
+		
+		public override void Update()
+		{
+			if (IsChanged)
+			{
+				SliceCount = FStringIn.SliceCount;
+				
+				for (int i = 0; i < FSliceCount; i++)
+				{
+					string value;
+					FStringIn.GetString(i, out value);
+					var s = value == null ? "" : value;
+					FData[i] = FIsPath ? GetFullPath(s) : s;
+				}
+			}
+			
+			base.Update();
 		}
 	}
 }

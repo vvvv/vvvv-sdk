@@ -16,26 +16,8 @@ namespace VVVV.Hosting.Pins.Input
 			
 			host.CreateEnumInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FEnumInputPin);
 			FEnumInputPin.SetSubType(FEnumName);
-		}
-		
-		public override IPluginIO PluginIO 
-		{
-			get
-			{
-				return FEnumInputPin;
-			}
-		}
-
-		public override int SliceCount 
-		{
-			get
-			{
-				return FEnumInputPin.SliceCount;
-			}
-			set
-			{
-				throw new NotSupportedException();
-			}
+			
+			base.Initialize(FEnumInputPin);
 		}
 		
 		public override bool IsChanged
@@ -46,19 +28,19 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 		
-		public override EnumEntry this[int index]
+		public override void Update()
 		{
-			get
+			if (IsChanged)
 			{
-				int ord;
-				FEnumInputPin.GetOrd(index, out ord);
-
-				return new EnumEntry(FEnumName, ord);
+				for (int i = 0; i < FSliceCount; i++)
+				{
+					int ord;
+					FEnumInputPin.GetOrd(i, out ord);
+					FData[i] = new EnumEntry(FEnumName, ord);
+				}
 			}
-			set
-			{
-				throw new NotSupportedException();
-			}
+			
+			base.Update();
 		}
 	}
 }

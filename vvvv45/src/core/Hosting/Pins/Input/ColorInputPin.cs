@@ -9,25 +9,15 @@ namespace VVVV.Hosting.Pins.Input
 	public class ColorInputPin : DiffPin<RGBAColor>, IPinUpdater
 	{
 		protected IColorIn FColorIn;
-		protected int FSliceCount;
-		protected double[] FData; 
+		new protected double[] FData; 
 		
 		public ColorInputPin(IPluginHost host, InputAttribute attribute)
 			: base(host, attribute)
 		{
 			host.CreateColorInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FColorIn);
 			FColorIn.SetSubType(new RGBAColor(attribute.DefaultColor), attribute.HasAlpha);
-			FColorIn.SetPinUpdater(this);
 			
-			SliceCount = 1;
-		}
-		
-		public override IPluginIO PluginIO 
-		{
-			get
-			{
-				return FColorIn;
-			}
+			base.Initialize(FColorIn);
 		}
 		
 		public override int SliceCount 
@@ -64,7 +54,10 @@ namespace VVVV.Hosting.Pins.Input
 			}
 			set 
 			{
-				throw new NotImplementedException();
+				fixed (double* ptr = FData)
+				{
+					((RGBAColor*)ptr)[index % FSliceCount] = value;
+				}
 			}
 		}
 		

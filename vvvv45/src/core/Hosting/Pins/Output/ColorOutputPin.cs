@@ -9,55 +9,47 @@ namespace VVVV.Hosting.Pins.Output
 	public class ColorOutputPin : Pin<RGBAColor>, IPinUpdater
 	{
 		protected IColorOut FColorOut;
-		protected double[] FData;
-		protected int FSliceCount;
+		protected new double[] FData;
 		
 		public ColorOutputPin(IPluginHost host, OutputAttribute attribute)
 			: base(host, attribute)
 		{
 			host.CreateColorOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FColorOut);
 			FColorOut.SetSubType(new RGBAColor(attribute.DefaultValues), attribute.HasAlpha);
-			FColorOut.SetPinUpdater(this);
 			
-			SliceCount = 1;
+			base.Initialize(FColorOut);
 		}
 		
-		public override IPluginIO PluginIO 
+		public override int SliceCount
 		{
 			get
 			{
-				return FColorOut;
-			}
-		}
-		
-		public override int SliceCount 
-		{
-			get 
-			{
 				return FSliceCount;
 			}
-			set 
+			set
 			{
 				if (FSliceCount != value)
+				{
 					FData = new double[value * 4];
-				
-				FSliceCount = value;
-				
-				if (FAttribute.SliceMode != SliceMode.Single)
-					FColorOut.SliceCount = value;
+					
+					FSliceCount = value;
+					
+					if (FAttribute.SliceMode != SliceMode.Single)
+						FColorOut.SliceCount = value;
+				}
 			}
 		}
 		
-		unsafe public override RGBAColor this[int index] 
+		unsafe public override RGBAColor this[int index]
 		{
-			get 
+			get
 			{
 				fixed (double* ptr = FData)
 				{
 					return ((RGBAColor*)ptr)[index % FSliceCount];
 				}
 			}
-			set 
+			set
 			{
 				fixed (double* ptr = FData)
 				{

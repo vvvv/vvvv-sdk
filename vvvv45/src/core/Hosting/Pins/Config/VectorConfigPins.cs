@@ -12,21 +12,17 @@ namespace VVVV.Hosting.Pins.Config
 		{
 		}
 		
-		unsafe public override Vector2D this[int index] 
+		public override Vector2D this[int index] 
 		{
 			get
 			{
-				fixed (double* ptr = FData)
-				{
-					return ((Vector2D*)ptr)[index % FSliceCount];
-				}
+				double value1, value2;
+				FValueConfig.GetValue2D(index, out value1, out value2);
+				return new Vector2D(value1, value2);
 			}
 			set
 			{
-				fixed (double* ptr = FData)
-				{
-					((Vector2D*)ptr)[index % FSliceCount] = value;
-				}
+				FValueConfig.SetValue2D(index, value.x, value.y);
 			}
 		}
 	}
@@ -38,21 +34,17 @@ namespace VVVV.Hosting.Pins.Config
 		{
 		}
 		
-		unsafe public override Vector3D this[int index] 
+		public override Vector3D this[int index] 
 		{
 			get
 			{
-				fixed (double* ptr = FData)
-				{
-					return ((Vector3D*)ptr)[index % FSliceCount];
-				}
+				double value1, value2, value3;
+				FValueConfig.GetValue3D(index, out value1, out value2, out value3);
+				return new Vector3D(value1, value2, value3);
 			}
 			set
 			{
-				fixed (double* ptr = FData)
-				{
-					((Vector3D*)ptr)[index % FSliceCount] = value;
-				}
+				FValueConfig.SetValue3D(index, value.x, value.y, value.z);
 			}
 		}
 	}
@@ -64,25 +56,18 @@ namespace VVVV.Hosting.Pins.Config
 		{
 		}
 		
-		unsafe public override Vector4D this[int index] 
+		public override Vector4D this[int index] 
 		{
 			get
 			{
-				fixed (double* ptr = FData)
-				{
-					return ((Vector4D*)ptr)[index % FSliceCount];
-				}
+				double value1, value2, value3, value4;
+				FValueConfig.GetValue4D(index, out value1, out value2, out value3, out value4);
+				return new Vector4D(value1, value2, value3, value4);
 			}
 			set
 			{
-				fixed (double* ptr = FData)
-				{
-					((Vector4D*)ptr)[index % FSliceCount] = value;
-				}
+				FValueConfig.SetValue4D(index, value.x, value.y, value.z, value.w);
 			}
 		}
 	}
-	
-	
-	
 }
