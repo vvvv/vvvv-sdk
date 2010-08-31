@@ -1,69 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33beta12.dtd" >
-   <PATCH componentmode="InAWindow" nodename="D:\Program Files\vvvv_33beta12\modules\tonfilms_geos\SphereStatic (ODE) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug24.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\tonfilms\ODEGeos\SphereStatic (ODE) help.v4p" componentmode="InAWindow">
    <BOUNDS height="11565" left="60" top="60" type="Window" width="12720">
    </BOUNDS>
-   <NODE componentmode="Hidden" id="36" nodename="SphereStatic (ODE).v4p">
-   <BOUNDS height="0" left="270" top="4620" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="6000" left="8205" top="2940" type="Window" width="9000">
-   </BOUNDS>
-   <BOUNDS height="3600" left="270" top="4620" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="Mesh" visible="1">
-   </PIN>
-   <PIN pinname="ODETransform In" visible="1">
-   </PIN>
-   <PIN pinname="Display Resolution" slicecount="1" values="12">
-   </PIN>
-   <PIN pinname="Radius" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Density" slicecount="1" values="0.1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="35" nodename="SphereDynamic (ODE).v4p">
-   <BOUNDS height="0" left="3330" top="4665" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="6000" left="8175" top="1245" type="Window" width="9000">
-   </BOUNDS>
-   <BOUNDS height="3600" left="3330" top="4665" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="Mesh" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="Init ODETransform In" visible="1">
-   </PIN>
-   <PIN pinname="Reset" visible="1">
-   </PIN>
-   <PIN pinname="Auto Set" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Influenced By World Gravity" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Density" slicecount="1" values="0.1">
-   </PIN>
-   <PIN pinname="Display Resolution" slicecount="1" values="12">
-   </PIN>
-   <PIN pinname="Radius" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Current Transform" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="34" nodename="PlaneStatic (ODE).v4p">
-   <BOUNDS height="0" left="7200" top="4860" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="6000" left="11205" top="2865" type="Window" width="9000">
-   </BOUNDS>
-   <BOUNDS height="3600" left="7200" top="4860" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="ODETransform In" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="Density" slicecount="1" values="0.1">
-   </PIN>
-   </NODE>
    <NODE id="33" nodename="World (ODE)">
    <BOUNDS height="0" left="10485" top="4425" type="Node" width="0">
    </BOUNDS>
@@ -90,22 +28,6 @@
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
    <PIN pinname="Layers" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="31" nodename=":MODULES:\Camera (Transform Softimage).v4p">
-   <BOUNDS height="270" left="7785" top="7005" type="Node" width="1560">
-   </BOUNDS>
-   <BOUNDS height="6000" left="6600" top="4425" type="Window" width="9000">
-   </BOUNDS>
-   <BOUNDS height="3600" left="7785" top="7005" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="View Projection" visible="1">
-   </PIN>
-   <PIN pinname="Far Plane" slicecount="1" values="1000">
-   </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="15">
-   </PIN>
-   <PIN pinname="Distortion" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
    <NODE componentmode="InAWindow" id="30" nodename="Inspektor (VVVV)">
@@ -144,12 +66,6 @@
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="28" dstpinname="Mesh" srcnodeid="35" srcpinname="Mesh">
-   </LINK>
-   <LINK dstnodeid="29" dstpinname="Transform" srcnodeid="36" srcpinname="Transform">
-   </LINK>
-   <LINK dstnodeid="29" dstpinname="Mesh" srcnodeid="36" srcpinname="Mesh">
-   </LINK>
    <NODE componentmode="InABox" id="27" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="5505" top="3810" type="Node" width="0">
    </BOUNDS>
@@ -230,8 +146,6 @@
    </NODE>
    <LINK dstnodeid="33" dstpinname="Gravity XYZ" srcnodeid="26" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="35" dstpinname="Reset" srcnodeid="27" srcpinname="Y Output Value">
-   </LINK>
    <NODE id="25" nodename="Grid (DX9)">
    <BOUNDS height="0" left="7050" top="5475" type="Node" width="0">
    </BOUNDS>
@@ -248,8 +162,6 @@
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="25" dstpinname="Transform" srcnodeid="34" srcpinname="Transform">
-   </LINK>
    <NODE id="24" nodename="GlobalRenderState (EX9)">
    <BOUNDS height="270" left="7785" top="8910" type="Node" width="1455">
    </BOUNDS>
@@ -516,77 +428,7 @@
    <PIN pinname="Y" slicecount="1" values="-18.86">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Transform In" srcnodeid="31" srcpinname="View Projection">
-   </LINK>
    <LINK dstnodeid="32" dstpinname="View Transform" srcnodeid="4" srcpinname="Transform Out">
-   </LINK>
-   <NODE componentmode="Hidden" id="3" nodename="TransformODE (Transform).v4p">
-   <BOUNDS height="270" left="270" top="3810" type="Node" width="1815">
-   </BOUNDS>
-   <BOUNDS left="270" top="3810" type="Box">
-   </BOUNDS>
-   <PIN pinname="ODETransform Out" visible="1">
-   </PIN>
-   <BOUNDS height="9090" left="7125" top="1260" type="Window" width="11025">
-   </BOUNDS>
-   <PIN pinname="TranslateX" visible="1">
-   </PIN>
-   <PIN pinname="TranslateY" slicecount="1" values="15.2">
-   </PIN>
-   <PIN pinname="TranslateZ" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="ScaleZ" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Pitch" slicecount="1" visible="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="36" dstpinname="ODETransform In" srcnodeid="3" srcpinname="ODETransform Out">
-   </LINK>
-   <LINK dstnodeid="3" dstpinname="TranslateX" srcnodeid="16" srcpinname="Output">
-   </LINK>
-   <NODE componentmode="Hidden" id="2" nodename="TransformODE (Transform).v4p">
-   <BOUNDS height="270" left="3345" top="3870" type="Node" width="1815">
-   </BOUNDS>
-   <BOUNDS left="3345" top="3870" type="Box">
-   </BOUNDS>
-   <PIN pinname="ODETransform Out" visible="1">
-   </PIN>
-   <BOUNDS height="9090" left="9000" top="1260" type="Window" width="11025">
-   </BOUNDS>
-   <PIN pinname="TranslateY" slicecount="1" values="23.59">
-   </PIN>
-   <PIN pinname="TranslateX" visible="1">
-   </PIN>
-   <PIN pinname="TranslateZ" slicecount="1" values="1.5">
-   </PIN>
-   <PIN pinname="CenterX" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="CenterY" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="CenterZ" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="35" dstpinname="Init ODETransform In" srcnodeid="2" srcpinname="ODETransform Out">
-   </LINK>
-   <LINK dstnodeid="2" dstpinname="TranslateX" srcnodeid="15" srcpinname="Output">
-   </LINK>
-   <NODE id="1" nodename="TransformODE (Transform).v4p">
-   <BOUNDS height="0" left="7200" top="4260" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="6000" left="7755" top="7125" type="Window" width="9000">
-   </BOUNDS>
-   <BOUNDS height="3600" left="7200" top="4260" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="ODETransform Out" visible="1">
-   </PIN>
-   <PIN pinname="TranslateY" slicecount="1" values="5">
-   </PIN>
-   <PIN pinname="Pitch" slicecount="1" values="0.01">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="34" dstpinname="ODETransform In" srcnodeid="1" srcpinname="ODETransform Out">
-   </LINK>
-   <LINK dstnodeid="28" dstpinname="Transform" srcnodeid="35" srcpinname="Current Transform">
    </LINK>
    <NODE id="37" nodename="Group (EX9)">
    <BOUNDS height="270" left="120" top="5865" type="Node" width="6990">
@@ -601,7 +443,7 @@
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Enabled" visible="-1" pintype="Input" slicecount="1" values="1">
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="-1" values="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="37" dstpinname="Layer 1" srcnodeid="29" srcpinname="Layer">
@@ -611,5 +453,163 @@
    <LINK dstnodeid="37" dstpinname="Layer 3" srcnodeid="25" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="32" dstpinname="Layers" srcnodeid="37" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="38" nodename="TransformODE (Transform)" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\tonfilms\ODEGeos\">
+   <BOUNDS height="100" left="270" top="3810" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="270" top="3810" type="Box" width="4800" height="3600">
+   </BOUNDS>
+   <PIN pinname="ODETransform Out" visible="1">
+   </PIN>
+   <BOUNDS height="6000" left="975" top="4500" type="Window" width="9000">
+   </BOUNDS>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="15.2">
+   </PIN>
+   <PIN pinname="TranslateZ" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="ScaleZ" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pitch" slicecount="1" visible="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="38" dstpinname="TranslateX" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="39" nodename="SphereStatic (ODE)" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\tonfilms\ODEGeos\">
+   <BOUNDS height="100" left="270" top="4620" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6000" left="1035" top="5235" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="270" top="4620" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="ODETransform In" visible="1">
+   </PIN>
+   <PIN pinname="Display Resolution" slicecount="1" values="12">
+   </PIN>
+   <PIN pinname="Radius" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Density" slicecount="1" values="0.1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="29" dstpinname="Transform" srcnodeid="39" srcpinname="Transform">
+   </LINK>
+   <LINK dstnodeid="29" dstpinname="Mesh" srcnodeid="39" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="39" dstpinname="ODETransform In" srcnodeid="38" srcpinname="ODETransform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="40" nodename="TransformODE (Transform)" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\tonfilms\ODEGeos\">
+   <BOUNDS height="100" left="3345" top="3870" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="3345" top="3870" type="Box" width="4800" height="3600">
+   </BOUNDS>
+   <PIN pinname="ODETransform Out" visible="1">
+   </PIN>
+   <BOUNDS height="6000" left="4485" top="4650" type="Window" width="9000">
+   </BOUNDS>
+   <PIN pinname="TranslateY" slicecount="1" values="23.59">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="TranslateZ" slicecount="1" values="1.5">
+   </PIN>
+   <PIN pinname="CenterX" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="CenterY" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="CenterZ" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="40" dstpinname="TranslateX" srcnodeid="15" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="41" nodename="SphereDynamic (ODE)" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\tonfilms\ODEGeos\">
+   <BOUNDS height="100" left="3330" top="4665" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6000" left="3750" top="5310" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="3330" top="4665" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Init ODETransform In" visible="1">
+   </PIN>
+   <PIN pinname="Reset" visible="1">
+   </PIN>
+   <PIN pinname="Auto Set" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Influenced By World Gravity" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Density" slicecount="1" values="0.1">
+   </PIN>
+   <PIN pinname="Display Resolution" slicecount="1" values="12">
+   </PIN>
+   <PIN pinname="Radius" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Current Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="28" dstpinname="Mesh" srcnodeid="41" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="41" dstpinname="Reset" srcnodeid="27" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="28" dstpinname="Transform" srcnodeid="41" srcpinname="Current Transform">
+   </LINK>
+   <LINK dstnodeid="41" dstpinname="Init ODETransform In" srcnodeid="40" srcpinname="ODETransform Out">
+   </LINK>
+   <NODE id="42" nodename="TransformODE (Transform)" componentmode="Hidden" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\tonfilms\ODEGeos\">
+   <BOUNDS height="100" left="7200" top="4260" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6000" left="8040" top="5130" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="7200" top="4260" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="ODETransform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Pitch" slicecount="1" values="0.01">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="43" nodename="PlaneStatic (ODE)" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\tonfilms\ODEGeos\">
+   <BOUNDS height="100" left="7200" top="4860" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6000" left="8100" top="5505" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="7200" top="4860" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="ODETransform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Density" slicecount="1" values="0.1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="25" dstpinname="Transform" srcnodeid="43" srcpinname="Transform">
+   </LINK>
+   <LINK dstnodeid="43" dstpinname="ODETransform In" srcnodeid="42" srcpinname="ODETransform Out">
+   </LINK>
+   <NODE id="44" nodename="Camera (Transform Softimage)" componentmode="Hidden" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\vvvv group\Transform\">
+   <BOUNDS height="100" left="7785" top="7005" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6000" left="9075" top="7560" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="7785" top="7005" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1" values="1000">
+   </PIN>
+   <PIN pinname="Inital Distance" slicecount="1" values="15">
+   </PIN>
+   <PIN pinname="Distortion" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Transform In" srcnodeid="44" srcpinname="View Projection">
    </LINK>
    </PATCH>

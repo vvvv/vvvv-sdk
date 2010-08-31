@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha21.1.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\modules\vvvv group\EX9\GridEditor (EX9) help.v4p" componentmode="InAWindow">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug24.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\vvvv group\EX9\GridEditor (EX9) help.v4p" componentmode="InAWindow">
    <BOUNDS height="8325" left="330" top="1635" type="Window" width="9015">
    </BOUNDS>
    <NODE componentmode="InAWindow" hiddenwhenlocked="1" id="58" nodename="Renderer (EX9)">
@@ -118,16 +118,10 @@
    </NODE>
    <LINK dstnodeid="54" dstpinname="Enabled" hiddenwhenlocked="1" srcnodeid="53" srcpinname="Y Output Value">
    </LINK>
-   <NODE id="-13" nodename="Keyboard (System Global)">
-   <BOUNDS height="0" left="1635" top="2640" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Keyboard Output" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="52" nodename="KeyMatch (String)">
    <BOUNDS height="0" left="1635" top="3075" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Key Match" slicecount="1" values="|&lt;F2&gt; &lt;F8&gt;|">
    </PIN>
@@ -136,8 +130,6 @@
    <PIN pinname="&lt;F8&gt; Output" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="52" dstpinname="Input" srcnodeid="-13" srcpinname="Keyboard Output">
-   </LINK>
    <NODE componentmode="InABox" id="51" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="2895" top="2070" type="Node" width="0">
    </BOUNDS>
@@ -234,7 +226,7 @@
    </NODE>
    <LINK dstnodeid="46" dstpinname="Source" hiddenwhenlocked="1" srcnodeid="45" srcpinname="EX9 Out">
    </LINK>
-   <NODE id="44" nodename=":EFFECTS:\PhongDirectional.fx">
+   <NODE id="44" nodename="PhongDirectional (EX9.Effect)">
    <BOUNDS height="0" left="1320" top="6000" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6000" left="7590" top="9795" type="Window" width="9000">
@@ -268,7 +260,7 @@
    <LINKPOINT x="4080" y="5265">
    </LINKPOINT>
    </LINK>
-   <NODE id="43" nodename="Cons (Spreads)">
+   <NODE id="43" nodename="Cons (Spreads Legacy)">
    <BOUNDS height="0" left="3045" top="3900" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -308,7 +300,7 @@
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
    </NODE>
-   <NODE id="40" nodename="Cons (Spreads)">
+   <NODE id="40" nodename="Cons (Spreads Legacy)">
    <BOUNDS height="0" left="3960" top="3915" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -374,10 +366,10 @@
    <PIN pinname="Aspect Height" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="34" nodename=":MODULES:\vvvv group\EX9\GridEditor (EX9).v4p" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Projects\telekom\t online\vvvv\modules\vvvv group\EX9\">
-   <BOUNDS height="0" left="1470" top="5145" type="Node" width="0">
+   <NODE componentmode="Hidden" id="59" nodename="GridEditor (EX9)" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\vvvv group\EX9\">
+   <BOUNDS height="100" left="1470" top="5145" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="14025" left="12225" top="3000" type="Window" width="15450">
+   <BOUNDS height="6000" left="2745" top="7350" type="Window" width="9000">
    </BOUNDS>
    <BOUNDS height="3600" left="1470" top="5145" type="Box" width="4800">
    </BOUNDS>
@@ -410,28 +402,28 @@
    <PIN pinname="Degree V" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="34" dstpinname="Init" srcnodeid="56" srcpinname="Y Output Value">
+   <LINK dstnodeid="59" dstpinname="Init" srcnodeid="56" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="54" dstpinname="Layer 1" hiddenwhenlocked="1" srcnodeid="34" srcpinname="Layer">
+   <LINK dstnodeid="54" dstpinname="Layer 1" hiddenwhenlocked="1" srcnodeid="59" srcpinname="Layer">
    </LINK>
-   <LINK dstnodeid="34" dstpinname="Save" srcnodeid="52" srcpinname="&lt;F2&gt; Output">
+   <LINK dstnodeid="59" dstpinname="Save" srcnodeid="52" srcpinname="&lt;F2&gt; Output">
    </LINK>
-   <LINK dstnodeid="34" dstpinname="Load" srcnodeid="49" srcpinname="Output">
+   <LINK dstnodeid="59" dstpinname="Load" srcnodeid="49" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="44" dstpinname="Mesh" srcnodeid="34" srcpinname="Mesh">
+   <LINK dstnodeid="44" dstpinname="Mesh" srcnodeid="59" srcpinname="Mesh">
    </LINK>
-   <LINK dstnodeid="34" dstpinname="Init Spacings U" srcnodeid="43" srcpinname="Output">
+   <LINK dstnodeid="59" dstpinname="Init Spacings U" srcnodeid="43" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="34" dstpinname="Init Spacings V" srcnodeid="40" srcpinname="Output">
+   <LINK dstnodeid="59" dstpinname="Init Spacings V" srcnodeid="40" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="34" dstpinname="Degree U" srcnodeid="37" srcpinname="Y Output Value">
+   <LINK dstnodeid="59" dstpinname="Degree U" srcnodeid="37" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="34" dstpinname="Degree V" srcnodeid="36" srcpinname="Y Output Value">
+   <LINK dstnodeid="59" dstpinname="Degree V" srcnodeid="36" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="Hidden" hiddenwhenlocked="1" id="33" nodename=":MODULES:\vvvv group\EX9\Grid (EX9 Test legacy).v4p" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Projects\telekom\t online\vvvv\modules\vvvv group\EX9\">
-   <BOUNDS height="0" left="6300" top="465" type="Node" width="0">
+   <NODE componentmode="Hidden" hiddenwhenlocked="1" id="60" nodename="Grid (EX9 Test)" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\vvvv group\EX9\">
+   <BOUNDS height="100" left="6300" top="465" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="6000" left="5835" top="3975" type="Window" width="9000">
+   <BOUNDS height="6000" left="7905" top="3465" type="Window" width="9000">
    </BOUNDS>
    <BOUNDS height="3600" left="6300" top="465" type="Box" width="4800">
    </BOUNDS>
@@ -443,15 +435,45 @@
    </PIN>
    <PIN pinname="Aspect Y" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Line Width" slicecount="1" values="0.017">
+   <PIN pinname="Line Width" slicecount="1" values="0.007">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="45" dstpinname="Layers" hiddenwhenlocked="1" srcnodeid="33" srcpinname="Layer">
+   <LINK dstnodeid="45" dstpinname="Layers" hiddenwhenlocked="1" srcnodeid="60" srcpinname="Layer">
    </LINK>
-   <NODE hiddenwhenlocked="1" id="32" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Projects\telekom\t online\vvvv\modules\vvvv group\Transform\">
-   <BOUNDS height="0" left="4395" top="4650" type="Node" width="0">
+   <NODE componentmode="Hidden" hiddenwhenlocked="1" id="61" nodename="Scale (Transform Vector)">
+   <BOUNDS height="100" left="6465" top="90" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="6000" left="10560" top="8895" type="Window" width="9000">
+   <BOUNDS height="0" left="6465" top="90" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="7230" top="2700" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="2,2,2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="60" dstpinname="Transform" hiddenwhenlocked="1" srcnodeid="61" srcpinname="Transform Out">
+   </LINK>
+   <NODE hiddenwhenlocked="1" id="62" nodename="AxisAndGrid (DX9)" componentmode="Hidden" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\vvvv group\EX9\">
+   <BOUNDS height="100" left="4710" top="6150" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6000" left="5355" top="8250" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="4710" top="6150" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="54" dstpinname="Layer 2" hiddenwhenlocked="1" srcnodeid="62" srcpinname="Layer">
+   </LINK>
+   <NODE hiddenwhenlocked="1" id="63" nodename="Camera (Transform Softimage)" componentmode="Hidden" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\vvvv group\Transform\">
+   <BOUNDS height="100" left="4395" top="4650" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6000" left="5130" top="6885" type="Window" width="9000">
    </BOUNDS>
    <BOUNDS height="3600" left="4395" top="4650" type="Box" width="4800">
    </BOUNDS>
@@ -474,26 +496,14 @@
    <PIN pinname="Distortion" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="58" dstpinname="View Transform" hiddenwhenlocked="1" srcnodeid="32" srcpinname="View">
+   <LINK dstnodeid="58" dstpinname="View Transform" hiddenwhenlocked="1" srcnodeid="63" srcpinname="View">
    </LINK>
-   <LINK dstnodeid="58" dstpinname="Projection Transform" hiddenwhenlocked="1" srcnodeid="32" srcpinname="Projection">
+   <LINK dstnodeid="58" dstpinname="Projection Transform" hiddenwhenlocked="1" srcnodeid="63" srcpinname="Projection">
    </LINK>
-   <LINK dstnodeid="32" dstpinname="Initial Yaw" srcnodeid="38" srcpinname="Output">
+   <LINK dstnodeid="63" dstpinname="Initial Yaw" srcnodeid="38" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="32" dstpinname="Distortion" hiddenwhenlocked="1" srcnodeid="35" srcpinname="Transform Out">
+   <LINK dstnodeid="63" dstpinname="Distortion" hiddenwhenlocked="1" srcnodeid="35" srcpinname="Transform Out">
    </LINK>
-   <LINK dstnodeid="34" dstpinname="View Projection" hiddenwhenlocked="1" srcnodeid="32" srcpinname="View Projection">
-   </LINK>
-   <NODE hiddenwhenlocked="1" id="31" nodename=":MODULES:\vvvv group\EX9\AxisAndGrid (DX9).v4p" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Projects\telekom\t online\vvvv\modules\vvvv group\EX9\">
-   <BOUNDS height="0" left="4710" top="6150" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="6000" left="5130" top="5835" type="Window" width="9000">
-   </BOUNDS>
-   <BOUNDS height="3600" left="4710" top="6150" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="54" dstpinname="Layer 2" hiddenwhenlocked="1" srcnodeid="31" srcpinname="Layer">
+   <LINK dstnodeid="59" dstpinname="View Projection" hiddenwhenlocked="1" srcnodeid="63" srcpinname="View Projection">
    </LINK>
    </PATCH>
