@@ -13,7 +13,7 @@ namespace VVVV.Hosting.Pins
 {
 	public delegate void PinUpdatedEventHandler<T>(Pin<T> pin);
 	
-	public abstract class Pin<T> : ISpread<T>, IPluginIOProvider, IDisposable
+	public abstract class Pin<T> : ISpread<T>, IPluginIOProvider, IDisposable, IPinUpdater
 	{
 		public abstract IPluginIO PluginIO { get; }
 		

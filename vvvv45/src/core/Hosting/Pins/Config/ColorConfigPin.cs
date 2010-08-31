@@ -14,6 +14,7 @@ namespace VVVV.Hosting.Pins.Config
 		{
 			host.CreateColorConfig(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FColorConfig);
 			FColorConfig.SetSubType(new RGBAColor(attribute.DefaultValues), attribute.HasAlpha);
+			FColorConfig.SetPinUpdater(this);
 		}
 		
 		protected override IPluginConfig PluginConfig 

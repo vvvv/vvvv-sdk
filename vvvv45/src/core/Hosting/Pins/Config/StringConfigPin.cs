@@ -16,6 +16,7 @@ namespace VVVV.Hosting.Pins.Config
 		{
 			host.CreateStringConfig(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FStringConfig);
 			FStringConfig.SetSubType2(attribute.DefaultString, attribute.MaxChars, attribute.FileMask, (TStringType)attribute.StringType);
+			FStringConfig.SetPinUpdater(this);
 
 			FIsPath = (attribute.StringType == StringType.Directory) || (attribute.StringType == StringType.Filename);
 		}

@@ -39,20 +39,10 @@ namespace VVVV.Hosting.Factories
 			// Normalize the filename
 			filename = new Uri(filename).LocalPath;
 			
-			CSProject project;
-			
-			if (!FProjects.TryGetValue(filename, out project))
-			{
-				project = new CSProject(new Uri(filename));
-				if (FSolution.Projects.CanAdd(project))
-					FSolution.Projects.Add(project);
-				project.Load();
-				project.CompileCompleted += new CompileCompletedHandler(project_CompileCompleted);
-				FProjects[filename] = project;
-			}
-			
-			if (project == null)
+			if (!FProjects.ContainsKey(filename))
 				return nodeInfos;
+			
+			var project = FProjects[filename];
 			
 			// Do we need to compile it?
 			if (!IsAssemblyUpToDate(project))
@@ -68,6 +58,23 @@ namespace VVVV.Hosting.Factories
 			}
 			
 			return nodeInfos;
+		}
+		
+		protected override void AddFile(string filename)
+		{
+			if (!FProjects.ContainsKey(filename))
+			{
+				var project = new CSProject(new Uri(filename));
+				if (FSolution.Projects.CanAdd(project))
+					FSolution.Projects.Add(project);
+				
+				project.Load();
+				
+				project.CompileCompleted += new CompileCompletedHandler(project_CompileCompleted);
+				FProjects[filename] = project;
+			}
+			
+			base.AddFile(filename);
 		}
 		
 		protected override void FileChanged(string filename)
@@ -166,89 +173,105 @@ namespace VVVV.Hosting.Factories
 			{
 				var project = FProjects[filename];
 				
-				// Create a new project by generating a new name first.
-				var solutionDir = FSolution.Location.GetLocalDir();
-				
-				// Find a suitable project name
-				var newProjectName = className;
-				var newProjectPath = solutionDir.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
-				
-				if (File.Exists(newProjectPath))
-				{
-					newProjectName = className + category;
-					newProjectPath = solutionDir.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
-				}
-				
-				if (File.Exists(newProjectPath))
-				{
-					newProjectName = className + category + version;
-					newProjectPath = solutionDir.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
-				}
-				
-				int i = 1;
-				while (File.Exists(newProjectPath))
-				{
-					newProjectName = className + category + version + i++;
-					newProjectPath = solutionDir.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
-				}
-				
-				var newLocation = new Uri(newProjectPath);
-				var newProject = project.Clone() as CSProject;
-				
-				// Move the cloned project and all its documents to the new location.
-				newProject.Location = newLocation;
-				
-				var newLocationDir = newLocation.GetLocalDir();
-				foreach (var doc in newProject.Documents)
-				{
-					// The documents are cloned but their location still refers to the old one.
-					var relativeDir = doc.GetRelativePath(project);
-					newLocation = new Uri(newLocationDir.ConcatPath(relativeDir));
-					doc.Location = newLocation;
-					
-					// Now scan the document for possible plugin infos.
-					// If we find one, update its properties and rename the class and document.
-					if (doc is CSDocument)
-					{
-						var csDoc = doc as CSDocument;
-						
-						// Rename the CSDocument
-						var docName = Path.GetFileNameWithoutExtension(csDoc.Name);
-						if (docName == project.Name)
-							csDoc.Name = string.Format("{0}.cs", newProject.Name);
-						
-						// We need to parse the method bodies.
-						csDoc.Parse(true);
-						var parserResults = csDoc.ParserResults;
-						var compilationUnit = parserResults.CompilationUnit;
-						
-						// Write new values to plugin info and remove all other plugin infos.
-						var pluginInfoTransformer = new PluginClassTransformer(nodeInfo, name, category, version, className);
-						compilationUnit.AcceptVisitor(pluginInfoTransformer, null);
-						
-						var outputVisitor = new CSharpOutputVisitor();
-						var specials = parserResults.Specials;
-						
-						using (SpecialNodesInserter.Install(specials, outputVisitor))
-						{
-							outputVisitor.VisitCompilationUnit(compilationUnit, null);
-						}
-						
-						csDoc.TextContent = outputVisitor.Text;
-					}
-				}
-				
-				// Save all the documents.
-				foreach (var doc in newProject.Documents)
-					doc.Save();
-				
-				// Save the project.
-				newProject.Save();
+				// Can take a while so do it in background. Once the project is saved,
+				// we'll pick it up via the AddFile method.
+				var dlgt = new CloneDelegate(CloneInternal);
+				dlgt.BeginInvoke(project, nodeInfo, path, name, category, version, null, null);
 				
 				return true;
 			}
 			
 			return base.Clone(nodeInfo, path, name, category, version);
+		}
+		
+		#endregion
+		
+		#region Clone
+		
+		delegate void CloneDelegate(CSProject project, INodeInfo nodeInfo, string path, string name, string category, string version);
+		
+		private void CloneInternal(CSProject project, INodeInfo nodeInfo, string path, string name, string category, string version)
+		{
+			string className = name.Replace(" ", "");
+			
+			// Create a new project by generating a new name first.
+			var solutionDir = FSolution.Location.GetLocalDir();
+			
+			// Find a suitable project name
+			var newProjectName = className;
+			var newProjectPath = solutionDir.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
+			
+			if (File.Exists(newProjectPath))
+			{
+				newProjectName = className + category;
+				newProjectPath = solutionDir.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
+			}
+			
+			if (File.Exists(newProjectPath))
+			{
+				newProjectName = className + category + version;
+				newProjectPath = solutionDir.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
+			}
+			
+			int i = 1;
+			while (File.Exists(newProjectPath))
+			{
+				newProjectName = className + category + version + i++;
+				newProjectPath = solutionDir.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
+			}
+			
+			var newLocation = new Uri(newProjectPath);
+			var newProject = project.Clone() as CSProject;
+			
+			// Move the cloned project and all its documents to the new location.
+			newProject.Location = newLocation;
+			
+			var newLocationDir = newLocation.GetLocalDir();
+			foreach (var doc in newProject.Documents)
+			{
+				// The documents are cloned but their location still refers to the old one.
+				var relativeDir = doc.GetRelativePath(project);
+				newLocation = new Uri(newLocationDir.ConcatPath(relativeDir));
+				doc.Location = newLocation;
+				
+				// Now scan the document for possible plugin infos.
+				// If we find one, update its properties and rename the class and document.
+				if (doc is CSDocument)
+				{
+					var csDoc = doc as CSDocument;
+					
+					// Rename the CSDocument
+					var docName = Path.GetFileNameWithoutExtension(csDoc.Name);
+					if (docName == project.Name)
+						csDoc.Name = string.Format("{0}.cs", newProject.Name);
+					
+					// We need to parse the method bodies.
+					csDoc.Parse(true);
+					var parserResults = csDoc.ParserResults;
+					var compilationUnit = parserResults.CompilationUnit;
+					
+					// Write new values to plugin info and remove all other plugin infos.
+					var pluginInfoTransformer = new PluginClassTransformer(nodeInfo, name, category, version, className);
+					compilationUnit.AcceptVisitor(pluginInfoTransformer, null);
+					
+					var outputVisitor = new CSharpOutputVisitor();
+					var specials = parserResults.Specials;
+					
+					using (SpecialNodesInserter.Install(specials, outputVisitor))
+					{
+						outputVisitor.VisitCompilationUnit(compilationUnit, null);
+					}
+					
+					csDoc.TextContent = outputVisitor.Text;
+				}
+			}
+			
+			// Save all the documents.
+			foreach (var doc in newProject.Documents)
+				doc.Save();
+			
+			// Save the project.
+			newProject.Save();
 		}
 		
 		#endregion
