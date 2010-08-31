@@ -315,7 +315,13 @@ namespace VVVV.Nodes.NodeBrowser
 				{
 					//init view
 					FBackgroundWorker.RunWorkerAsync();
-				}				 
+					
+					//cant do in thread. would not update outside IDE
+					if (FNeedsRedraw) //as doesn't show localfiles needs no redraw on pathchange
+						FCategoryPanel.Redraw();
+					
+					FNeedsRedraw = false;
+				}
 			}
 		}
 		#endregion IWindowSelectionListener
@@ -345,7 +351,8 @@ namespace VVVV.Nodes.NodeBrowser
 		void FBackgroundWorkerDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
 		{
 			FTagPanel.Redraw();
-			FCategoryPanel.Redraw();
+			//cant do in thread. would not update outside IDE
+//			FCategoryPanel.Redraw();
 		}
 	}
 

@@ -594,6 +594,13 @@ namespace VVVV.Nodes.NodeBrowser
                                         return comp;
                                 });
             
+            if (FNodeCountLabel.InvokeRequired)
+				FNodeCountLabel.Invoke(new MethodInvoker(() => 
+            	                                             { 
+            	                                             	FNodeCountLabel.Text = "Matching Nodes: " + FSelectionList.Count.ToString();
+            	                                             }));
+			else
+				//FCategoryTreeViewer.Reload();
             FNodeCountLabel.Text = "Matching Nodes: " + FSelectionList.Count.ToString();
 		}
 		
@@ -650,7 +657,10 @@ namespace VVVV.Nodes.NodeBrowser
 				rtf += FRTFSelectionList[i];
 			}
 			
-			FRichTextBox.Rtf = rtf + "}";
+			if (FRichTextBox.InvokeRequired)
+				FRichTextBox.Invoke(new MethodInvoker(() => { FRichTextBox.Rtf = rtf + "}"; }));
+			else
+				FRichTextBox.Rtf = rtf + "}";
 			
 			FNodeTypePanel.Invalidate();
 		}
@@ -699,7 +709,13 @@ namespace VVVV.Nodes.NodeBrowser
 			FilterNodesByTags();
 			PrepareRTF();
 			
-			FScrollBar.Maximum = Math.Max(0, FSelectionList.Count - FVisibleLines + FScrollBar.LargeChange - 1);
+			if (FScrollBar.InvokeRequired)
+				FScrollBar.Invoke(new MethodInvoker(() => 
+				                                    { 
+				                                    	FScrollBar.Maximum = Math.Max(0, FSelectionList.Count - FVisibleLines + FScrollBar.LargeChange - 1);
+				                                    }));
+			else
+				FScrollBar.Maximum = Math.Max(0, FSelectionList.Count - FVisibleLines + FScrollBar.LargeChange - 1);
 			
 			//calling UpdateRichTexBox()
 			ScrolledLine = 0;
@@ -799,6 +815,7 @@ namespace VVVV.Nodes.NodeBrowser
 		void TagPanelVisibleChanged(object sender, EventArgs e)
 		{
 			FTagsTextBox.Text = FTagsTextBox.Text.Trim();
+			FTagsTextBox.Focus();
 			FToolTip.Hide(FRichTextBox);
 		}
 	}
