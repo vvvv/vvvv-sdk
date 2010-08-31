@@ -575,6 +575,8 @@ namespace VVVV.HDE.CodeEditor
 			{
 				SyncControlWithDocument();
 				Document.Save();
+				// Trigger a recompile
+				Document.Project.Save();
 				args.Handled = true;
 			}
 			else if (args.Control && args.KeyCode == Keys.F)

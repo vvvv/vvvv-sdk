@@ -187,11 +187,24 @@ namespace VVVV.Hosting.Factories
 		
 		protected abstract bool DeleteNode(TNodeHost nodeHost);
 		
-		// TODO: Make this abstract
-		public virtual bool Clone(INodeInfo nodeInfo, string path, string Name, string Category, string Version)
+		public bool Clone(INodeInfo nodeInfo, string path, string name, string category, string version)
+		{
+			if (Path.GetExtension(nodeInfo.Filename) == FileExtension)
+			{
+				if (!FLoadedFiles.ContainsKey(nodeInfo.Filename))
+					LoadAndCacheNodeInfos(nodeInfo.Filename);
+				
+				return CloneNode(nodeInfo, path, name, category, version);
+			}
+			
+			return false;
+		}
+		
+		protected virtual bool CloneNode(INodeInfo nodeInfo, string path, string name, string category, string version)
 		{
 			return false;
 		}
+		
 		#endregion IAddonFactory
 		
 		#region directory and watcher

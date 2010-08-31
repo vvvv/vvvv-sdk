@@ -150,20 +150,22 @@ namespace VVVV.Hosting.Factories
 			if (nodeInfo.Type != NodeType.Effect)
 				return false;
 			
+			var project = FProjects[nodeInfo.Filename];
+			
 			//get the code of the FXProject associated with the nodeinfos filename
-			effectHost.SetEffect(nodeInfo.Filename, FProjects[nodeInfo.Filename].Code);
+			effectHost.SetEffect(nodeInfo.Filename, project.Code);
 
 			//now the effect is compiled in vvvv and we can access the errors
 			string e = effectHost.GetErrors();
 			if (string.IsNullOrEmpty(e))
 				e = "";
-			FProjects[nodeInfo.Filename].Errors = e;
+			project.Errors = e;
 			
 			//and the input pins
 			string f = effectHost.GetParameterDescription();
 			if (string.IsNullOrEmpty(f))
 				f = "";
-			FProjects[nodeInfo.Filename].ParameterDescription = f;
+			project.ParameterDescription = f;
 
 			return true;
 		}
@@ -171,6 +173,41 @@ namespace VVVV.Hosting.Factories
 		protected override bool DeleteNode(IEffectHost host)
 		{
 			return true;
+		}
+		
+		protected override bool CloneNode(INodeInfo nodeInfo, string path, string name, string category, string version)
+		{
+			if (nodeInfo.Type == NodeType.Effect)
+			{
+				var project = FProjects[nodeInfo.Filename];
+				var newProject = project.Clone() as FXProject;
+				
+				var projectDir = project.Location.GetLocalDir();
+				var newProjectName = name + ".fx";
+				var newLocation = new Uri(projectDir.ConcatPath(newProjectName));
+				newProject.Location = newLocation;
+				
+				var newLocationDir = newLocation.GetLocalDir();
+				foreach (var doc in newProject.Documents)
+				{
+					// The documents are cloned but their location still refers to the old one.
+					// Only clone FX files, not FXH.
+					// FXProjects are saved as one FXDocument.
+					if (doc is FXDocument)
+					{
+						doc.Location = newLocation;
+						doc.Save();
+						break;
+					}
+				}
+				
+				// Save the project.
+				newProject.Save();
+				
+				return true;
+			}
+			
+			return base.CloneNode(nodeInfo, path, name, category, version);
 		}
 	}
 }

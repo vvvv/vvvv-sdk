@@ -72,6 +72,13 @@ namespace VVVV.Nodes.NodeBrowser
             FNameTextBox.Text = FCloneInfo.Name;
             FCategoryTextBox.Text = FCloneInfo.Category;
             FVersionTextBox.Text = FCloneInfo.Version;
+            
+            if (nodeInfo.Type == NodeType.Effect)
+            {
+            	FCategoryTextBox.Enabled = false;
+            	FVersionTextBox.Enabled = false;
+            }
+            
             FNameTextBox.SelectAll();
             FNameTextBox.Focus();
             

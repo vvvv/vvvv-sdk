@@ -191,7 +191,7 @@ namespace VVVV.Nodes.NodeBrowser
 						text = FRichTextBox.Lines[FHoverLine].Trim();
 						
 						INodeInfo selNode = FNodeDict[text];
-						if ((Control.ModifierKeys == Keys.Control) && (selNode.Type == NodeType.Dynamic))
+						if ((Control.ModifierKeys == Keys.Control) && ((selNode.Type == NodeType.Dynamic) || (selNode.Type == NodeType.Effect)))
 							OnPanelChange(NodeBrowserPage.Clone, selNode);
 						else
 							OnCreateNode(selNode);

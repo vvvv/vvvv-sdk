@@ -11,6 +11,9 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
 	{
 		public Link GetLink(IDocument document, TextLocation location)
 		{
+			if (location.Line >= document.TotalNumberOfLines)
+				return Link.Empty;
+			
 			var line = TextUtilities.GetLineAsString(document, location.Line);
 			if (line.StartsWith("#include"))
 			{
