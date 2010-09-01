@@ -336,6 +336,12 @@ namespace PinTests
 			Assert.True(spread.SliceCount == 1);
 			
 			TestSpread(spread, sampleData);
+			
+//			ISpread<ISpread<T>> spreadedSpread = new ConfigWrapperPin<ISpread<T>>(FPluginHost, attribute);
+//			
+//			Assert.True(spreadedSpread.SliceCount == 1);
+//			
+//			TestSpread(spreadedSpread, new ISpread<T>[] { new Spread<T>(sampleData.ToList()), new Spread<T>(sampleData.ToList()) });
 		}
 		
 		protected void TestOutputPin<T>(T[] sampleData)
@@ -348,6 +354,12 @@ namespace PinTests
 			Assert.True(spread.SliceCount == 1);
 			
 			TestSpread(spread, sampleData);
+			
+			ISpread<ISpread<T>> spreadedSpread = new OutputWrapperPin<ISpread<T>>(FPluginHost, attribute);
+			
+			Assert.True(spreadedSpread.SliceCount == 1);
+			
+			TestSpread(spreadedSpread, new ISpread<T>[] { new Spread<T>(sampleData.ToList()), new Spread<T>(sampleData.ToList()) });
 		}
 		
 		protected void TestSpread<T>(ISpread<T> spread, T[] sampleData)
