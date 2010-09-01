@@ -18,7 +18,6 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using VVVV.Shared.VSlimDX;
 using VVVV.Core.Logging;
 
 using SlimDX;
@@ -300,7 +299,7 @@ namespace VVVV.Nodes
                         //"on" means that the particle will always be a unit quad. independant of texture size
                 }
                 
-                df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(preScale * world);
+                df.Sprite.Transform = (preScale * world).ToSlimDXMatrix();
 
                 if (FShowBrush[i])
                 {
