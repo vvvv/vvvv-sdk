@@ -35,7 +35,6 @@ using System.Collections;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using VVVV.Shared.VSlimDX;
 
 using SlimDX;
 using SlimDX.Direct3D9;
@@ -320,7 +319,7 @@ namespace VVVV.Nodes
 				FMyStringInput.GetString(i, out text);
 				
 				FWorldTransform.GetRenderWorldMatrix(i, out world);
-				df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(world);
+				df.Sprite.Transform = world.ToSlimDXMatrix();
 				
 				df.Font.DrawString(df.Sprite, text, 0, i*10, new SlimDX.Color4(1, 1, 1, 1));
 			}
