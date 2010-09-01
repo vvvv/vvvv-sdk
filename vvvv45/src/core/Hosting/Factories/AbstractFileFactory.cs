@@ -274,13 +274,21 @@ namespace VVVV.Hosting.Factories
 		
 		protected IEnumerable<INodeInfo> LoadAndCacheNodeInfos(string filename)
 		{
-			var nodeInfos = GetNodeInfos(filename);
-			FLogger.Log(LogType.Debug, "Loaded node infos from {0}.", filename);
-			
-			FLoadedFiles[filename] = true;
-			CacheNodeInfos(filename, nodeInfos.ToList());
-			
-			return nodeInfos;
+			try 
+			{
+				var nodeInfos = GetNodeInfos(filename);
+				FLogger.Log(LogType.Debug, "Loaded node infos from {0}.", filename);
+				
+				FLoadedFiles[filename] = true;
+				CacheNodeInfos(filename, nodeInfos.ToList());
+				
+				return nodeInfos;
+			} 
+			catch (Exception e) 
+			{
+				FLogger.Log(e);
+				return new INodeInfo[0];
+			}
 		}
 		
 		protected void CacheNodeInfos(string filename, List<INodeInfo> nodeInfos)
@@ -415,17 +423,35 @@ namespace VVVV.Hosting.Factories
 		protected virtual void DeleteArtefacts(string dir)
 		{
 			foreach (string subDir in Directory.GetDirectories(dir))
-				DeleteArtefacts(subDir);
+			{
+				try {
+					DeleteArtefacts(subDir);
+				} catch (Exception e) {
+					FLogger.Log(e);
+				}
+			}
 		}
 		
 		//register all files in a directory
 		protected virtual void ScanForFiles(string dir)
 		{
 			foreach (string filename in Directory.GetFiles(dir, @"*" + FFileExtension))
-				AddFile(filename);
+			{
+				try {
+					AddFile(filename);
+				} catch (Exception e) {
+					FLogger.Log(e);
+				}
+			}
 			
 			foreach (string subDir in Directory.GetDirectories(dir))
-				ScanForFiles(subDir);
+			{
+				try {
+					ScanForFiles(subDir);
+				} catch (Exception e) {
+					FLogger.Log(e);
+				}
+			}
 		}
 		#endregion file handling
 	}

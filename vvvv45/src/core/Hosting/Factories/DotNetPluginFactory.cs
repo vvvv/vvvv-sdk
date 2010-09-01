@@ -202,7 +202,11 @@ namespace VVVV.Hosting.Factories
 				
 				//Create a wrapper around dynamic plugins in order to catch all exceptions properly.
 				if (nodeInfo.Type == NodeType.Dynamic && plugin is IPluginEvaluate)
-					plugin = new DynamicPluginWrapperV2(plugin as IPluginEvaluate, pluginHost);
+				{
+					//TODO: Handle these cases with a wrapper.
+					if (!(plugin is IPluginDXResource || plugin is IPluginDXDevice || plugin is IPluginConnections))
+						plugin = new DynamicPluginWrapperV2(plugin as IPluginEvaluate, pluginHost);
+				}
 				
 				return plugin;
 			}
@@ -214,7 +218,11 @@ namespace VVVV.Hosting.Factories
 				
 				//Create a wrapper around dynamic plugins in order to catch all exceptions properly.
 				if (nodeInfo.Type == NodeType.Dynamic && plugin is IPlugin)
-					plugin = new DynamicPluginWrapperV1(plugin as IPlugin);
+				{
+					//TODO: Handle these cases with a wrapper.
+					if (!(plugin is IPluginDXResource || plugin is IPluginDXDevice || plugin is IPluginConnections))
+						plugin = new DynamicPluginWrapperV1(plugin as IPlugin);
+				}
 				
 				plugin.SetPluginHost(pluginHost);
 				

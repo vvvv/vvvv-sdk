@@ -6,6 +6,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Ast;
@@ -46,7 +47,14 @@ namespace VVVV.Hosting.Factories
 			
 			// Do we need to compile it?
 			if (!IsAssemblyUpToDate(project))
-				project.Compile();
+			{
+				var results = project.Compile();
+				if (results.Errors.HasErrors)
+				{
+					var errorLog = GetCompileErrorsLog(project, results);
+					throw new Exception(errorLog);
+				}
+			}
 			
 			LoadNodeInfosFromFile(project.AssemblyLocation, ref nodeInfos);
 			
@@ -146,19 +154,25 @@ namespace VVVV.Hosting.Factories
 		void project_CompileCompleted(IProject project, CompilerResults results)
 		{
 			if (results.Errors.HasErrors)
-			{
-				FLogger.Log(LogType.Warning, "Compilation of {0} failed. See errors below:", project);
-				
-				foreach (CompilerError error in results.Errors)
-				{
-					if (!error.IsWarning)
-					{
-						FLogger.Log(LogType.Warning, "{0} in {1}:{2}", error.ErrorText, error.FileName, error.Line);
-					}
-				}
-			}
+				FLogger.Log(LogType.Error, GetCompileErrorsLog(project, results));
 			else
 				base.FileChanged(project.Location.LocalPath);
+		}
+		
+		string GetCompileErrorsLog(IProject project, CompilerResults results)
+		{
+			var stringBuilder = new StringBuilder();
+			stringBuilder.Append(string.Format("Compilation of {0} failed. See errors below:\n", project));
+				
+			foreach (CompilerError error in results.Errors)
+			{
+				if (!error.IsWarning)
+				{
+					stringBuilder.Append(string.Format("{0} in {1}:{2}\n", error.ErrorText, error.FileName, error.Line));
+				}
+			}
+			
+			return stringBuilder.ToString();
 		}
 		
 		#region IAddonFactory
