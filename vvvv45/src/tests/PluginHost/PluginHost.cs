@@ -19,6 +19,8 @@ namespace Hoster
 		private Timer FTimer = new Timer();
 		private bool FPinCountChanged;
 		private double FStartTime;
+		private Dictionary<string, List<string>> FEnums = new Dictionary<string, List<string>>();
+		private Dictionary<string, int> FEnumDefaults = new Dictionary<string, int>();
 		
 		private List<TBasePin> FInputs;
 		public List<TBasePin> Inputs
@@ -174,17 +176,34 @@ namespace Hoster
 		
 		public void UpdateEnum(string EnumName, string Default, string[] EnumEntries)
 		{
-			
+			var entries = new List<string>(EnumEntries);
+			FEnums[EnumName] = entries;
+			FEnumDefaults[EnumName] = entries.IndexOf(Default);
 		}
 		
 		public void GetEnumEntryCount(string EnumName, out int EntryCount)
 		{
-			EntryCount = 0;	
+			if (FEnums.ContainsKey(EnumName))
+				EntryCount = FEnums[EnumName].Count;
+			else
+				EntryCount = 0;
 		}
 		
 		public void GetEnumEntry(string EnumName, int Index, out string EntryName)
 		{
-			EntryName = "";
+			EntryName = string.Empty;
+			if (FEnums.ContainsKey(EnumName))
+			{
+				if (FEnums[EnumName].Count > Index)
+					EntryName = FEnums[EnumName][Index];
+			}
+		}
+		
+		public List<string> GetEnumEntries(string EnumName)
+		{
+			if (FEnums.ContainsKey(EnumName))
+				return FEnums[EnumName];
+			return new List<string>();
 		}
 		
 		private void AddPin(TBasePin Pin)

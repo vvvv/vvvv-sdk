@@ -14,7 +14,9 @@ namespace Hoster
 		
 		public TColorPin(IPluginHost Parent, string PinName, TPinDirection PinDirection, TOnConfigurate Callback, TSliceMode SliceMode, TPinVisibility Visibility)
 		: base(Parent, PinName, 1, PinDirection, Callback, SliceMode, Visibility)
-		{}
+		{
+			base.Initialize();
+		}
 
 		
 		public void GetColor(int Index, out RGBAColor Value)
@@ -26,7 +28,7 @@ namespace Hoster
 		{
 			//if (Value != FValues[Index])
 			{
-				FValues[Index] = Value;
+				FValues[Index % FSliceCount] = Value;
 				FPinIsChanged = true;
 			}		
 			

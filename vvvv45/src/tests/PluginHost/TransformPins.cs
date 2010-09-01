@@ -15,6 +15,7 @@ namespace Hoster
 		public TTransformInPin(IPluginHost Parent, string PinName, TSliceMode SliceMode, TPinVisibility Visibility)
 		: base(Parent, PinName, 1, TPinDirection.Input, null, SliceMode, Visibility)
 		{
+			base.Initialize();
 		}
 		
 		public void GetMatrix(int Index, out Matrix4x4 Value)

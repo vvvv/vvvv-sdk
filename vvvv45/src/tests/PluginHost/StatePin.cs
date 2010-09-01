@@ -11,6 +11,7 @@ namespace Hoster
 		public TStatePin(IPluginHost Parent, TPinDirection PinDirection, TSliceMode SliceMode, TPinVisibility Visibility)
 		: base(Parent, "State", 1, PinDirection, null, SliceMode, Visibility)
 		{
+			base.Initialize();
 		}
 		
 		override protected void ChangeSliceCount()

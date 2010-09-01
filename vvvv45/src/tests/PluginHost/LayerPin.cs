@@ -10,6 +10,7 @@ namespace Hoster
 		public TLayerPin(IPluginHost Parent, string PinName, TPinDirection PinDirection, TSliceMode SliceMode, TPinVisibility Visibility)
 		: base(Parent, PinName, 1, TPinDirection.Output, null, SliceMode, Visibility)
 		{
+			base.Initialize();
 		}
 		
 		override protected void ChangeSliceCount()

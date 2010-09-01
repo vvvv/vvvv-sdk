@@ -13,7 +13,9 @@ namespace Hoster
   
 		public TStringPin(IPluginHost Parent, string PinName, TPinDirection PinDirection, TOnConfigurate Callback, TSliceMode SliceMode, TPinVisibility Visibility)
 		: base(Parent, PinName, 1, PinDirection, Callback, SliceMode, Visibility)
-		{}
+		{
+			base.Initialize();
+		}
 		/*		
 		public string this[int i]
 		{
@@ -35,9 +37,9 @@ namespace Hoster
 		
 		public void SetString(int Index, string Value)
 		{
-			if (Value != FValues[Index])
+			if (Value != FValues[Index % FSliceCount])
 			{
-				FValues[Index] = Value;
+				FValues[Index % FSliceCount] = Value;
 				FPinIsChanged = true;
 			}	
 			

@@ -15,7 +15,9 @@ namespace Hoster
 		
 		public TNodePin(IPluginHost Parent, string PinName, TPinDirection Direction, TSliceMode SliceMode, TPinVisibility Visibility)
 		: base(Parent, PinName, 1, Direction, null, SliceMode, Visibility)
-		{}
+		{
+			base.Initialize();
+		}
 		
 		public void GetUpsreamSlice(int Slice, out int UpstreamSlice)
 		{

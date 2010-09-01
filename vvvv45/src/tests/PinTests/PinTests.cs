@@ -7,12 +7,17 @@ using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
+using System.Linq;
 
 namespace PinTests
 {
 	[TestFixture]
 	public class PinTests
 	{
+		static double[] SampleDataDouble = new double[] { 0.0, -1.0, 1.0 };
+		static float[] SampleDataFloat = new float[] { 0.0f, -1.0f, 1.0f };
+		static string[] SampleDataString = new string[] { "bar", "", "foo" };
+		
 		protected IPluginHost2 FPluginHost;
 		
 		[SetUp]
@@ -26,13 +31,13 @@ namespace PinTests
 		[Test]
 		public void TestInputPinDouble()
 		{
-			TestInputPin<double>(new double[] { 0.0, -1.0, 1.0 });
+			TestInputPin<double>(SampleDataDouble);
 		}
 		
 		[Test]
 		public void TestInputPinFloat()
 		{
-			TestInputPin<float>(new float[] { 0.0f, -1.0f, 1.0f });
+			TestInputPin<float>(SampleDataFloat);
 		}
 		
 		[Test]
@@ -50,7 +55,7 @@ namespace PinTests
 		[Test]
 		public void TestInputPinString()
 		{
-			TestInputPin<string>(new string[] { null, "", "foo" });
+			TestInputPin<string>(SampleDataString);
 		}
 		
 		[Test]
@@ -120,13 +125,13 @@ namespace PinTests
 		[Test]
 		public void TestOutputPinDouble()
 		{
-			TestOutputPin<double>(new double[] { 0.0, -1.0, 1.0 });
+			TestOutputPin<double>(SampleDataDouble);
 		}
 		
 		[Test]
 		public void TestOutputPinFloat()
 		{
-			TestOutputPin<float>(new float[] { 0.0f, -1.0f, 1.0f });
+			TestOutputPin<float>(SampleDataFloat);
 		}
 		
 		[Test]
@@ -144,7 +149,7 @@ namespace PinTests
 		[Test]
 		public void TestOutputPinString()
 		{
-			TestOutputPin<string>(new string[] { null, "", "foo" });
+			TestOutputPin<string>(SampleDataString);
 		}
 		
 		[Test]
@@ -214,13 +219,13 @@ namespace PinTests
 		[Test]
 		public void TestConfigPinDouble()
 		{
-			TestConfigPin<double>(new double[] { 0.0, -1.0, 1.0 });
+			TestConfigPin<double>(SampleDataDouble);
 		}
 		
 		[Test]
 		public void TestConfigPinFloat()
 		{
-			TestConfigPin<float>(new float[] { 0.0f, -1.0f, 1.0f });
+			TestConfigPin<float>(SampleDataFloat);
 		}
 		
 		[Test]
@@ -238,7 +243,7 @@ namespace PinTests
 		[Test]
 		public void TestConfigPinString()
 		{
-			TestConfigPin<string>(new string[] { null, "", "foo" });
+			TestConfigPin<string>(SampleDataString);
 		}
 		
 		[Test]
@@ -313,6 +318,12 @@ namespace PinTests
 			Assert.True(spread.SliceCount == 1);
 			
 			TestSpread(spread, sampleData);
+			
+			ISpread<ISpread<T>> spreadedSpread = new InputWrapperPin<ISpread<T>>(FPluginHost, attribute);
+			
+			Assert.True(spreadedSpread.SliceCount == 1);
+			
+			TestSpread(spreadedSpread, new ISpread<T>[] { new Spread<T>(sampleData.ToList()), new Spread<T>(sampleData.ToList()) });
 		}
 		
 		protected void TestConfigPin<T>(T[] sampleData)
@@ -341,16 +352,20 @@ namespace PinTests
 		
 		protected void TestSpread<T>(ISpread<T> spread, T[] sampleData)
 		{
-			spread.SliceCount = 10;
-			Assert.True(spread.SliceCount == 10);
+			spread.SliceCount = sampleData.Length;
+			Assert.True(spread.SliceCount == sampleData.Length);
 			
+			// Test writing
+			for (int i = 0; i < sampleData.Length; i++)
+				spread[i] = sampleData[i];
+			
+			// Test writing with index above SliceCount
+			for (int i = 0; i < sampleData.Length; i++)
+				spread[spread.SliceCount + i] = sampleData[i];
+			
+			// Test reading
 			for (int i = 0; i < spread.SliceCount; i++)
-			{
-				var value = spread[i];
-				// Test modulo
-				spread[i] = spread[spread.SliceCount];
-				Assert.True(spread[i].Equals(value));
-			}
+				Assert.True(spread[i].Equals(spread[spread.SliceCount + i]));
 			
 			spread.SliceCount = 1;
 			Assert.True(spread.SliceCount == 1);

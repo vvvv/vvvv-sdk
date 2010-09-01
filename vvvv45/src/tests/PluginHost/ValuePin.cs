@@ -18,6 +18,8 @@ namespace Hoster
 		{
 			FDimension = Dimension; 
 			FDimensionNames = DimensionNames; 
+			
+			base.Initialize();
 		}
 		
 		/* //indexed properties don't seem to work without overhead to native code
@@ -65,9 +67,10 @@ namespace Hoster
 		
 		public void SetValue(int Index, double Value)
 		{
-			if (Value != FValues[Index])
+			int idx = Index % FSliceCount;
+			if (Value != FValues[idx])
 			{
-				FValues[Index] = Math.Max(FMin, Math.Min(FMax, Value));
+				FValues[idx] = Math.Max(FMin, Math.Min(FMax, Value));
 				FPinIsChanged = true;
 			}		
 			
@@ -77,9 +80,9 @@ namespace Hoster
 		
 		public void SetValue2D(int Index, double Value1, double Value2)
 		{
-			if ((Value1 != FValues[Index]) || (Value2 != FValues[Index+1]))
+			int idx = (Index % FSliceCount) * 2;
+			if ((Value1 != FValues[idx]) || (Value2 != FValues[idx+1]))
 			{
-				int idx = Index*2;
 				FValues[idx] = Math.Max(FMin, Math.Min(FMax, Value1));
 				FValues[idx+1] = Math.Max(FMin, Math.Min(FMax, Value2));
 				FPinIsChanged = true;
@@ -91,9 +94,9 @@ namespace Hoster
 		
 		public void SetValue3D(int Index, double Value1, double Value2, double Value3)
 		{
-			if ((Value1 != FValues[Index]) || (Value2 != FValues[Index+1]) || (Value3 != FValues[Index+2]))
+			int idx = (Index % FSliceCount) * 3;
+			if ((Value1 != FValues[idx]) || (Value2 != FValues[idx+1]) || (Value3 != FValues[idx+2]))
 			{
-				int idx = Index*3;
 				FValues[idx] = Math.Max(FMin, Math.Min(FMax, Value1));
 				FValues[idx+1] = Math.Max(FMin, Math.Min(FMax, Value2));
 				FValues[idx+2] = Math.Max(FMin, Math.Min(FMax, Value3));
@@ -106,9 +109,9 @@ namespace Hoster
 		
 		public void SetValue4D(int Index, double Value1, double Value2, double Value3, double Value4)
 		{
-			if ((Value1 != FValues[Index]) || (Value2 != FValues[Index+1]) || (Value3 != FValues[Index+2]) || (Value4 != FValues[Index+3]))
+			int idx = (Index % FSliceCount) * 4;
+			if ((Value1 != FValues[idx]) || (Value2 != FValues[idx+1]) || (Value3 != FValues[idx+2]) || (Value4 != FValues[idx+3]))
 			{
-				int idx = Index*4;
 				FValues[idx] = Math.Max(FMin, Math.Min(FMax, Value1));
 				FValues[idx+1] = Math.Max(FMin, Math.Min(FMax, Value2));
 				FValues[idx+2] = Math.Max(FMin, Math.Min(FMax, Value3));

@@ -62,12 +62,15 @@ namespace Hoster
 			FOnConfigurate = Callback;
 			FPinIsChanged = true;
 			
-			SliceCount = 1;
-			
 			//initialize with an arbitrary order so that the sortby-order in the gui is not flickering
 			FOrder = GlobalPinCount++;
 			
 			SetPinUpdater(new BasicPinUpdater());
+		}
+		
+		protected virtual void Initialize()
+		{
+			SliceCount = 1;
 		}
 
 		public string Name
