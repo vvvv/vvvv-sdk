@@ -166,7 +166,7 @@ namespace VVVV.Hosting.Factories
 		{
 			if (host is TNodeHost && Path.GetExtension(nodeInfo.Filename) == FileExtension)
 			{
-				if (!FLoadedFiles.ContainsKey(nodeInfo.Filename))
+				if (!IsLoaded(nodeInfo.Filename))
 					LoadAndCacheNodeInfos(nodeInfo.Filename);
 				
 				return CreateNode(nodeInfo, (TNodeHost) host);
@@ -191,7 +191,7 @@ namespace VVVV.Hosting.Factories
 		{
 			if (Path.GetExtension(nodeInfo.Filename) == FileExtension)
 			{
-				if (!FLoadedFiles.ContainsKey(nodeInfo.Filename))
+				if (!IsLoaded(nodeInfo.Filename))
 					LoadAndCacheNodeInfos(nodeInfo.Filename);
 				
 				return CloneNode(nodeInfo, path, name, category, version);
@@ -254,11 +254,19 @@ namespace VVVV.Hosting.Factories
 			if (!FNodeInfoCache.ContainsKey(filename))
 			{
 				// Load node infos from cache file into memory.
-				var cacheFile = GetCacheFile(filename);
-				var formatter = new BinaryFormatter();
-				using (var stream = new FileStream(cacheFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+				try 
 				{
-					FNodeInfoCache[filename] = (List<INodeInfo>) formatter.Deserialize(stream);
+					var cacheFile = GetCacheFile(filename);
+					var formatter = new BinaryFormatter();
+					using (var stream = new FileStream(cacheFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+					{
+						FNodeInfoCache[filename] = (List<INodeInfo>) formatter.Deserialize(stream);
+					}
+				} 
+				catch (Exception) 
+				{
+					FLogger.Log(LogType.Warning, "Cache file for {0} missing or not valid.", filename);
+					LoadAndCacheNodeInfos(filename);
 				}
 			}
 			return FNodeInfoCache[filename];

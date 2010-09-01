@@ -13,7 +13,7 @@ namespace VVVV.Hosting.Pins.Input
 	public abstract class DiffValueInputPin<T> : DiffPin<T>, IPinUpdater where T: struct
 	{
 		protected IValueIn FValueIn;
-		new protected double[] FData;
+		protected new double[] FData;
 		protected int FDimension;
 		
 		public DiffValueInputPin(IPluginHost host, InputAttribute attribute)

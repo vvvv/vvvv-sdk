@@ -11,16 +11,15 @@ namespace VVVV.Hosting.Pins.Input
 		{
 		}
 		
-		public override int this[int index] 
+		public override int this[int index]
 		{
-			get 
+			get
 			{
 				return (int) FData[index % FSliceCount];
 			}
-			set 
+			set
 			{
-				if (!FValueFastIn.IsConnected)
-					FData[index % FSliceCount] = (double) value;
+				FData[index % FSliceCount] = (double) value;
 			}
 		}
 	}
@@ -32,16 +31,15 @@ namespace VVVV.Hosting.Pins.Input
 		{
 		}
 		
-		public override int this[int index] 
+		public override int this[int index]
 		{
-			get 
+			get
 			{
 				return (int) FData[index % FSliceCount];
 			}
-			set 
+			set
 			{
-				if (!FValueIn.IsConnected)
-					FData[index % FSliceCount] = (double) value;
+				FData[index % FSliceCount] = (double) value;
 			}
 		}
 	}

@@ -44,11 +44,5 @@ namespace VVVV.Hosting.Pins.Config
 			
 			base.Initialize(FValueConfig);
 		}
-		
-		public new abstract T this[int index] 
-		{
-			get;
-			set;
-		}
 	}
 }

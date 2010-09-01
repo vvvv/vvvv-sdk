@@ -8,7 +8,7 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
-namespace SpreadTests
+namespace PinTests
 {
 	[TestFixture]
 	public class PinTests
@@ -21,65 +21,289 @@ namespace SpreadTests
 			FPluginHost = new PluginHost();
 		}
 		
+		#region Input
+		
 		[Test]
-		public void TestInputPins()
+		public void TestInputPinDouble()
 		{
-			TestInputPin<double>();
-			TestInputPin<float>();
-			TestInputPin<int>();
-			TestInputPin<bool>();
-			TestInputPin<string>();
-			TestInputPin<RGBAColor>();
-			TestInputPin<SliceMode>();
-			TestInputPin<Matrix4x4>();
-			TestInputPin<Vector2D>();
-			TestInputPin<Vector3D>();
-			TestInputPin<Vector4D>();
-			TestInputPin<Matrix>();
-			TestInputPin<Vector2>();
-			TestInputPin<Vector3>();
-			TestInputPin<Vector4>();
+			TestInputPin<double>(new double[] { 0.0, -1.0, 1.0 });
 		}
 		
 		[Test]
-		public void TestConfigPins()
+		public void TestInputPinFloat()
 		{
-			TestConfigPin<double>();
-			TestConfigPin<float>();
-			TestConfigPin<int>();
-			TestConfigPin<bool>();
-			TestConfigPin<string>();
-			TestConfigPin<RGBAColor>();
-			TestConfigPin<SliceMode>();
-			TestConfigPin<Vector2D>();
-			TestConfigPin<Vector3D>();
-			TestConfigPin<Vector4D>();
-			TestConfigPin<Vector2>();
-			TestConfigPin<Vector3>();
-			TestConfigPin<Vector4>();
+			TestInputPin<float>(new float[] { 0.0f, -1.0f, 1.0f });
 		}
 		
 		[Test]
-		public void TestOutputPins()
+		public void TestInputPinInt()
 		{
-			TestOutputPin<double>();
-			TestOutputPin<float>();
-			TestOutputPin<int>();
-			TestOutputPin<bool>();
-			TestOutputPin<string>();
-			TestOutputPin<RGBAColor>();
-			TestOutputPin<SliceMode>();
-			TestOutputPin<Matrix4x4>();
-			TestOutputPin<Vector2D>();
-			TestOutputPin<Vector3D>();
-			TestOutputPin<Vector4D>();
-			TestOutputPin<Matrix>();
-			TestOutputPin<Vector2>();
-			TestOutputPin<Vector3>();
-			TestOutputPin<Vector4>();
+			TestInputPin<int>(new int[] { 0, -1, 1 });
 		}
-
-		protected void TestInputPin<T>()
+		
+		[Test]
+		public void TestInputPinBool()
+		{
+			TestInputPin<bool>(new bool[] { false, true, false });
+		}
+		
+		[Test]
+		public void TestInputPinString()
+		{
+			TestInputPin<string>(new string[] { null, "", "foo" });
+		}
+		
+		[Test]
+		public void TestInputPinColor()
+		{
+			TestInputPin<RGBAColor>(new RGBAColor[] { new RGBAColor() });
+		}
+		
+		[Test]
+		public void TestInputPinEnum()
+		{
+			TestInputPin<SliceMode>(new SliceMode[] { SliceMode.Dynamic, SliceMode.Single });
+		}
+		
+		[Test]
+		public void TestInputPinMatrix4x4()
+		{
+			TestInputPin<Matrix4x4>(new Matrix4x4[] { new Matrix4x4() });
+		}
+		
+		[Test]
+		public void TestInputPinVector2D()
+		{
+			TestInputPin<Vector2D>(new Vector2D[] { new Vector2D() });
+		}
+		
+		[Test]
+		public void TestInputPinVector3D()
+		{
+			TestInputPin<Vector3D>(new Vector3D[] { new Vector3D() });
+		}
+		
+		[Test]
+		public void TestInputPinVector4D()
+		{
+			TestInputPin<Vector4D>(new Vector4D[] { new Vector4D() });
+		}
+		
+		[Test]
+		public void TestInputPinMatrix()
+		{
+			TestInputPin<Matrix>(new Matrix[] { new Matrix() });
+		}
+		
+		[Test]
+		public void TestInputPinVector2()
+		{
+			TestInputPin<Vector2>(new Vector2[] { new Vector2() });
+		}
+		
+		[Test]
+		public void TestInputPinVector3()
+		{
+			TestInputPin<Vector3>(new Vector3[] { new Vector3() });
+		}
+		
+		[Test]
+		public void TestInputPinVector4()
+		{
+			TestInputPin<Vector4>(new Vector4[] { new Vector4() });
+		}
+		
+		#endregion
+		
+		#region Output
+		
+		[Test]
+		public void TestOutputPinDouble()
+		{
+			TestOutputPin<double>(new double[] { 0.0, -1.0, 1.0 });
+		}
+		
+		[Test]
+		public void TestOutputPinFloat()
+		{
+			TestOutputPin<float>(new float[] { 0.0f, -1.0f, 1.0f });
+		}
+		
+		[Test]
+		public void TestOutputPinInt()
+		{
+			TestOutputPin<int>(new int[] { 0, -1, 1 });
+		}
+		
+		[Test]
+		public void TestOutputPinBool()
+		{
+			TestOutputPin<bool>(new bool[] { false, true, false });
+		}
+		
+		[Test]
+		public void TestOutputPinString()
+		{
+			TestOutputPin<string>(new string[] { null, "", "foo" });
+		}
+		
+		[Test]
+		public void TestOutputPinColor()
+		{
+			TestOutputPin<RGBAColor>(new RGBAColor[] { new RGBAColor() });
+		}
+		
+		[Test]
+		public void TestOutputPinEnum()
+		{
+			TestOutputPin<SliceMode>(new SliceMode[] { SliceMode.Dynamic, SliceMode.Single });
+		}
+		
+		[Test]
+		public void TestOutputPinMatrix4x4()
+		{
+			TestOutputPin<Matrix4x4>(new Matrix4x4[] { new Matrix4x4() });
+		}
+		
+		[Test]
+		public void TestOutputPinVector2D()
+		{
+			TestOutputPin<Vector2D>(new Vector2D[] { new Vector2D() });
+		}
+		
+		[Test]
+		public void TestOutputPinVector3D()
+		{
+			TestOutputPin<Vector3D>(new Vector3D[] { new Vector3D() });
+		}
+		
+		[Test]
+		public void TestOutputPinVector4D()
+		{
+			TestOutputPin<Vector4D>(new Vector4D[] { new Vector4D() });
+		}
+		
+		[Test]
+		public void TestOutputPinMatrix()
+		{
+			TestOutputPin<Matrix>(new Matrix[] { new Matrix() });
+		}
+		
+		[Test]
+		public void TestOutputPinVector2()
+		{
+			TestOutputPin<Vector2>(new Vector2[] { new Vector2() });
+		}
+		
+		[Test]
+		public void TestOutputPinVector3()
+		{
+			TestOutputPin<Vector3>(new Vector3[] { new Vector3() });
+		}
+		
+		[Test]
+		public void TestOutputPinVector4()
+		{
+			TestOutputPin<Vector4>(new Vector4[] { new Vector4() });
+		}
+		
+		#endregion
+		
+		#region Config
+		
+		[Test]
+		public void TestConfigPinDouble()
+		{
+			TestConfigPin<double>(new double[] { 0.0, -1.0, 1.0 });
+		}
+		
+		[Test]
+		public void TestConfigPinFloat()
+		{
+			TestConfigPin<float>(new float[] { 0.0f, -1.0f, 1.0f });
+		}
+		
+		[Test]
+		public void TestConfigPinInt()
+		{
+			TestConfigPin<int>(new int[] { 0, -1, 1 });
+		}
+		
+		[Test]
+		public void TestConfigPinBool()
+		{
+			TestConfigPin<bool>(new bool[] { false, true, false });
+		}
+		
+		[Test]
+		public void TestConfigPinString()
+		{
+			TestConfigPin<string>(new string[] { null, "", "foo" });
+		}
+		
+		[Test]
+		public void TestConfigPinColor()
+		{
+			TestConfigPin<RGBAColor>(new RGBAColor[] { new RGBAColor() });
+		}
+		
+		[Test]
+		public void TestConfigPinEnum()
+		{
+			TestConfigPin<SliceMode>(new SliceMode[] { SliceMode.Dynamic, SliceMode.Single });
+		}
+		
+		[Test]
+		public void TestConfigPinMatrix4x4()
+		{
+			TestConfigPin<Matrix4x4>(new Matrix4x4[] { new Matrix4x4() });
+		}
+		
+		[Test]
+		public void TestConfigPinVector2D()
+		{
+			TestConfigPin<Vector2D>(new Vector2D[] { new Vector2D() });
+		}
+		
+		[Test]
+		public void TestConfigPinVector3D()
+		{
+			TestConfigPin<Vector3D>(new Vector3D[] { new Vector3D() });
+		}
+		
+		[Test]
+		public void TestConfigPinVector4D()
+		{
+			TestConfigPin<Vector4D>(new Vector4D[] { new Vector4D() });
+		}
+		
+		[Test]
+		public void TestConfigPinMatrix()
+		{
+			TestConfigPin<Matrix>(new Matrix[] { new Matrix() });
+		}
+		
+		[Test]
+		public void TestConfigPinVector2()
+		{
+			TestConfigPin<Vector2>(new Vector2[] { new Vector2() });
+		}
+		
+		[Test]
+		public void TestConfigPinVector3()
+		{
+			TestConfigPin<Vector3>(new Vector3[] { new Vector3() });
+		}
+		
+		[Test]
+		public void TestConfigPinVector4()
+		{
+			TestConfigPin<Vector4>(new Vector4[] { new Vector4() });
+		}
+		
+		#endregion
+		
+		protected void TestInputPin<T>(T[] sampleData)
 		{
 			var pinName = string.Format("{0} Input", typeof(T));
 			var attribute = new InputAttribute(pinName);
@@ -88,10 +312,10 @@ namespace SpreadTests
 			
 			Assert.True(spread.SliceCount == 1);
 			
-			TestSpread(spread);
+			TestSpread(spread, sampleData);
 		}
 		
-		protected void TestConfigPin<T>()
+		protected void TestConfigPin<T>(T[] sampleData)
 		{
 			var pinName = string.Format("{0} Input", typeof(T));
 			var attribute = new ConfigAttribute(pinName);
@@ -100,10 +324,10 @@ namespace SpreadTests
 			
 			Assert.True(spread.SliceCount == 1);
 			
-			TestSpread(spread);
+			TestSpread(spread, sampleData);
 		}
 		
-		protected void TestOutputPin<T>()
+		protected void TestOutputPin<T>(T[] sampleData)
 		{
 			var pinName = string.Format("{0} Input", typeof(T));
 			var attribute = new OutputAttribute(pinName);
@@ -112,17 +336,20 @@ namespace SpreadTests
 			
 			Assert.True(spread.SliceCount == 1);
 			
-			TestSpread(spread);
+			TestSpread(spread, sampleData);
 		}
 		
-		protected void TestSpread<T>(ISpread<T> spread)
+		protected void TestSpread<T>(ISpread<T> spread, T[] sampleData)
 		{
 			spread.SliceCount = 10;
 			Assert.True(spread.SliceCount == 10);
 			
-			foreach (var slice in spread)
+			for (int i = 0; i < spread.SliceCount; i++)
 			{
-				Assert.IsAssignableFrom(typeof(T), slice);
+				var value = spread[i];
+				// Test modulo
+				spread[i] = spread[spread.SliceCount];
+				Assert.True(spread[i].Equals(value));
 			}
 			
 			spread.SliceCount = 1;

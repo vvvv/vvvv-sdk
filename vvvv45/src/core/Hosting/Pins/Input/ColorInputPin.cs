@@ -9,7 +9,7 @@ namespace VVVV.Hosting.Pins.Input
 	public class ColorInputPin : DiffPin<RGBAColor>, IPinUpdater
 	{
 		protected IColorIn FColorIn;
-		new protected double[] FData; 
+		new protected double[] FData;
 		
 		public ColorInputPin(IPluginHost host, InputAttribute attribute)
 			: base(host, attribute)
@@ -20,7 +20,7 @@ namespace VVVV.Hosting.Pins.Input
 			base.Initialize(FColorIn);
 		}
 		
-		public override int SliceCount 
+		public override int SliceCount
 		{
 			get
 			{
@@ -35,28 +35,31 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 		
-		public override bool IsChanged 
+		public override bool IsChanged
 		{
-			get 
+			get
 			{
 				return FColorIn.PinIsChanged;
 			}
 		}
 		
-		unsafe public override RGBAColor this[int index] 
+		unsafe public override RGBAColor this[int index]
 		{
-			get 
+			get
 			{
 				fixed (double* ptr = FData)
 				{
 					return ((RGBAColor*)ptr)[index % FSliceCount];
 				}
 			}
-			set 
+			set
 			{
-				fixed (double* ptr = FData)
+				if (!FColorIn.IsConnected)
 				{
-					((RGBAColor*)ptr)[index % FSliceCount] = value;
+					fixed (double* ptr = FData)
+					{
+						((RGBAColor*)ptr)[index % FSliceCount] = value;
+					}
 				}
 			}
 		}

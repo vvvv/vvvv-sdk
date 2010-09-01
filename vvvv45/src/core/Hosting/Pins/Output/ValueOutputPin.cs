@@ -12,7 +12,7 @@ namespace VVVV.Hosting.Pins.Output
 	public abstract class ValueOutputPin<T> : Pin<T>, IPinUpdater where T: struct
 	{
 		protected IValueOut FValueOut;
-		new protected double[] FData;
+		protected new double[] FData;
 		protected int FDimension;
 		
 		public ValueOutputPin(IPluginHost host, OutputAttribute attribute)
