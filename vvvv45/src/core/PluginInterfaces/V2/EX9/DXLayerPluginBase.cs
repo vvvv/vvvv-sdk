@@ -8,13 +8,19 @@ namespace VVVV.PluginInterfaces.V2.EX9
 	/// <summary>
 	/// Base class for plugins with layer out.
 	/// </summary>
-	public abstract class DXLayerPluginBase<T> : DXResourcePluginBase<T>, IPluginDXLayer where T : DeviceData
+	public abstract class DXLayerOutPluginBase<T> : DXResourcePluginBase<T>, IPluginDXLayer where T : DeviceData
 	{
 		protected IDXRenderStateIn FRenderStatePin;
 		protected IDXSamplerStateIn FSamplerStatePin;
 		protected IDXLayerIO FLayerOut;
 		
-		public DXLayerPluginBase(IPluginHost host, bool createRenderState, bool createSamplerState)
+		/// <summary>
+		/// Constructor to create the DX pins.
+		/// </summary>
+		/// <param name="host">The plugin host to create the pins on.</param>
+		/// <param name="createRenderState">Create a render state pin?</param>
+		/// <param name="createSamplerState">Create a sampler state pin?</param>
+		public DXLayerOutPluginBase(IPluginHost host, bool createRenderState, bool createSamplerState)
 		{
 			if(createRenderState)
 			{
@@ -32,7 +38,6 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		}
 		
 		protected abstract void Render(Device device, T deviceData);
-		
 		public abstract void SetStates();
 		
 		public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)

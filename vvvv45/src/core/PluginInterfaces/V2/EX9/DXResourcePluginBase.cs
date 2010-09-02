@@ -19,17 +19,17 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		}
 		
 		/// <summary>
-		/// Set all device data to update.
+		/// Set all device data to update in this frame.
 		/// </summary>
-		protected void SetUpdate()
+		protected void Update()
 		{
 			foreach (var dd in FDeviceData.Values) dd.Update = true;
 		}
 		
 		/// <summary>
-		/// Set all device data to recreate.
+		/// Set all device data to recreate in this frame.
 		/// </summary>
-		protected void SetRecreate()
+		protected void Reinitialize()
 		{
 			foreach (var dd in FDeviceData.Values) dd.Recreate = true;
 		}

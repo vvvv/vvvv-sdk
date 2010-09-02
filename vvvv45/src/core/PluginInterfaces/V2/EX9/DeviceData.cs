@@ -7,6 +7,7 @@
  * Sie können diese Vorlage unter Extras > Optionen > Codeerstellung > Standardheader ändern.
  */
 using System;
+using SlimDX.Direct3D9;
 
 namespace VVVV.PluginInterfaces.V2.EX9
 {
@@ -34,4 +35,36 @@ namespace VVVV.PluginInterfaces.V2.EX9
 			Recreate = false;
 		}
 	}
+	
+	//generic spreaded device data
+	public class GenericDeviceData<T> : DeviceData
+	{
+		//texture for this device
+		public T Data { get; set; }
+		
+		public GenericDeviceData(T data)
+			: base()
+		{
+			Data = data;
+		}
+	}
+	
+	//texture data per graphics device
+	public class TextureDeviceData : GenericDeviceData<Texture>
+	{
+		public TextureDeviceData(Texture texture)
+			: base(texture)
+		{
+		}
+	}
+	
+	//texture data per graphics device
+	public class MeshDeviceData : GenericDeviceData<Mesh>
+	{
+		public MeshDeviceData(Mesh mesh)
+			: base(mesh)
+		{
+		}
+	}
+	
 }
