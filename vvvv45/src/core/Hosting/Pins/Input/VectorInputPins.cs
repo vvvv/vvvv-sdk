@@ -18,7 +18,7 @@ namespace VVVV.Hosting.Pins.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector2D*)ptr)[index % FSliceCount];
+					return ((Vector2D*)ptr)[VMath.Zmod(index, FSliceCount)];
 				}
 			}
 			set
@@ -27,7 +27,7 @@ namespace VVVV.Hosting.Pins.Input
 				{
 					fixed (double* ptr = FData)
 					{
-						((Vector2D*)ptr)[index % FSliceCount] = value;
+						((Vector2D*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
 					}
 				}
 			}
@@ -47,7 +47,7 @@ namespace VVVV.Hosting.Pins.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector3D*)ptr)[index % FSliceCount];
+					return ((Vector3D*)ptr)[VMath.Zmod(index, FSliceCount)];
 				}
 			}
 			set
@@ -56,7 +56,7 @@ namespace VVVV.Hosting.Pins.Input
 				{
 					fixed (double* ptr = FData)
 					{
-						((Vector3D*)ptr)[index % FSliceCount] = value;
+						((Vector3D*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
 					}
 				}
 			}
@@ -76,7 +76,7 @@ namespace VVVV.Hosting.Pins.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector4D*)ptr)[index % FSliceCount];
+					return ((Vector4D*)ptr)[VMath.Zmod(index, FSliceCount)];
 				}
 			}
 			set
@@ -85,7 +85,7 @@ namespace VVVV.Hosting.Pins.Input
 				{
 					fixed (double* ptr = FData)
 					{
-						((Vector4D*)ptr)[index % FSliceCount] = value;
+						((Vector4D*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
 					}
 				}
 			}
@@ -105,7 +105,7 @@ namespace VVVV.Hosting.Pins.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector2D*)ptr)[index % FSliceCount];
+					return ((Vector2D*)ptr)[VMath.Zmod(index, FSliceCount)];
 				}
 			}
 			set
@@ -114,7 +114,7 @@ namespace VVVV.Hosting.Pins.Input
 				{
 					fixed (double* ptr = FData)
 					{
-						((Vector2D*)ptr)[index % FSliceCount] = value;
+						((Vector2D*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
 					}
 				}
 			}
@@ -134,7 +134,7 @@ namespace VVVV.Hosting.Pins.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector3D*)ptr)[index % FSliceCount];
+					return ((Vector3D*)ptr)[VMath.Zmod(index, FSliceCount)];
 				}
 			}
 			set
@@ -143,7 +143,7 @@ namespace VVVV.Hosting.Pins.Input
 				{
 					fixed (double* ptr = FData)
 					{
-						((Vector3D*)ptr)[index % FSliceCount] = value;
+						((Vector3D*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
 					}
 				}
 			}
@@ -163,7 +163,7 @@ namespace VVVV.Hosting.Pins.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((Vector4D*)ptr)[index % FSliceCount];
+					return ((Vector4D*)ptr)[VMath.Zmod(index, FSliceCount)];
 				}
 			}
 			set
@@ -172,7 +172,7 @@ namespace VVVV.Hosting.Pins.Input
 				{
 					fixed (double* ptr = FData)
 					{
-						((Vector4D*)ptr)[index % FSliceCount] = value;
+						((Vector4D*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
 					}
 				}
 			}

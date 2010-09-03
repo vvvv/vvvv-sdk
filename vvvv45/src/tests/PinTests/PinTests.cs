@@ -17,6 +17,11 @@ namespace PinTests
 		static double[] SampleDataDouble = new double[] { 0.0, -1.0, 1.0 };
 		static float[] SampleDataFloat = new float[] { 0.0f, -1.0f, 1.0f };
 		static string[] SampleDataString = new string[] { "bar", "", "foo" };
+		static RGBAColor[] SampleDataColor = new RGBAColor[] { new RGBAColor(), new RGBAColor(), new RGBAColor() };
+		static SliceMode[] SampleDataEnum = new SliceMode[] { SliceMode.Dynamic, SliceMode.Single, SliceMode.Single };
+		static Matrix4x4[] SampleDataMatrix4x4 = new Matrix4x4[] { new Matrix4x4(), new Matrix4x4(), new Matrix4x4() };
+		static Matrix[] SampleDataMatrix = new Matrix[] { new Matrix(), new Matrix(), new Matrix() };
+		static Vector2[] SampleDataVector2 = new Vector2[] { new Vector2(), new Vector2(), new Vector2() };
 		
 		protected IPluginHost2 FPluginHost;
 		
@@ -61,19 +66,19 @@ namespace PinTests
 		[Test]
 		public void TestInputPinColor()
 		{
-			TestInputPin<RGBAColor>(new RGBAColor[] { new RGBAColor() });
+			TestInputPin<RGBAColor>(SampleDataColor);
 		}
 		
 		[Test]
 		public void TestInputPinEnum()
 		{
-			TestInputPin<SliceMode>(new SliceMode[] { SliceMode.Dynamic, SliceMode.Single });
+			TestInputPin<SliceMode>(SampleDataEnum);
 		}
 		
 		[Test]
 		public void TestInputPinMatrix4x4()
 		{
-			TestInputPin<Matrix4x4>(new Matrix4x4[] { new Matrix4x4() });
+			TestInputPin<Matrix4x4>(SampleDataMatrix4x4);
 		}
 		
 		[Test]
@@ -97,13 +102,13 @@ namespace PinTests
 		[Test]
 		public void TestInputPinMatrix()
 		{
-			TestInputPin<Matrix>(new Matrix[] { new Matrix() });
+			TestInputPin<Matrix>(SampleDataMatrix);
 		}
 		
 		[Test]
 		public void TestInputPinVector2()
 		{
-			TestInputPin<Vector2>(new Vector2[] { new Vector2() });
+			TestInputPin<Vector2>(SampleDataVector2);
 		}
 		
 		[Test]
@@ -155,19 +160,19 @@ namespace PinTests
 		[Test]
 		public void TestOutputPinColor()
 		{
-			TestOutputPin<RGBAColor>(new RGBAColor[] { new RGBAColor() });
+			TestOutputPin<RGBAColor>(SampleDataColor);
 		}
 		
 		[Test]
 		public void TestOutputPinEnum()
 		{
-			TestOutputPin<SliceMode>(new SliceMode[] { SliceMode.Dynamic, SliceMode.Single });
+			TestOutputPin<SliceMode>(SampleDataEnum);
 		}
 		
 		[Test]
 		public void TestOutputPinMatrix4x4()
 		{
-			TestOutputPin<Matrix4x4>(new Matrix4x4[] { new Matrix4x4() });
+			TestOutputPin<Matrix4x4>(SampleDataMatrix4x4);
 		}
 		
 		[Test]
@@ -191,13 +196,13 @@ namespace PinTests
 		[Test]
 		public void TestOutputPinMatrix()
 		{
-			TestOutputPin<Matrix>(new Matrix[] { new Matrix() });
+			TestOutputPin<Matrix>(SampleDataMatrix);
 		}
 		
 		[Test]
 		public void TestOutputPinVector2()
 		{
-			TestOutputPin<Vector2>(new Vector2[] { new Vector2() });
+			TestOutputPin<Vector2>(SampleDataVector2);
 		}
 		
 		[Test]
@@ -249,19 +254,19 @@ namespace PinTests
 		[Test]
 		public void TestConfigPinColor()
 		{
-			TestConfigPin<RGBAColor>(new RGBAColor[] { new RGBAColor() });
+			TestConfigPin<RGBAColor>(SampleDataColor);
 		}
 		
 		[Test]
 		public void TestConfigPinEnum()
 		{
-			TestConfigPin<SliceMode>(new SliceMode[] { SliceMode.Dynamic, SliceMode.Single });
+			TestConfigPin<SliceMode>(SampleDataEnum);
 		}
 		
 		[Test]
 		public void TestConfigPinMatrix4x4()
 		{
-			TestConfigPin<Matrix4x4>(new Matrix4x4[] { new Matrix4x4() });
+			TestConfigPin<Matrix4x4>(SampleDataMatrix4x4);
 		}
 		
 		[Test]
@@ -285,13 +290,13 @@ namespace PinTests
 		[Test]
 		public void TestConfigPinMatrix()
 		{
-			TestConfigPin<Matrix>(new Matrix[] { new Matrix() });
+			TestConfigPin<Matrix>(SampleDataMatrix);
 		}
 		
 		[Test]
 		public void TestConfigPinVector2()
 		{
-			TestConfigPin<Vector2>(new Vector2[] { new Vector2() });
+			TestConfigPin<Vector2>(SampleDataVector2);
 		}
 		
 		[Test]
@@ -375,9 +380,16 @@ namespace PinTests
 			for (int i = 0; i < sampleData.Length; i++)
 				spread[spread.SliceCount + i] = sampleData[i];
 			
+			// Test writing with index below SliceCount
+			for (int i = 0; i < sampleData.Length; i++)
+				spread[i - spread.SliceCount] = sampleData[i];
+			
 			// Test reading
 			for (int i = 0; i < spread.SliceCount; i++)
+			{
+				Assert.True(spread[i].Equals(sampleData[i]));
 				Assert.True(spread[i].Equals(spread[spread.SliceCount + i]));
+			}
 			
 			spread.SliceCount = 1;
 			Assert.True(spread.SliceCount == 1);

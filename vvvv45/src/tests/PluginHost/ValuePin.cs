@@ -38,19 +38,19 @@ namespace Hoster
 		
 		public void GetValue(int Index, out double Value)
 		{
-			Value = FValues[Index % FSliceCount]; 
+			Value = FValues[VMath.Zmod(Index, FSliceCount)];
 		}
 		
 		public void GetValue2D(int Index, out double Value1, out double Value2)
 		{
-			int idx = (Index % FSliceCount) * 2;
+			int idx = VMath.Zmod(Index, FSliceCount) * 2;
 			Value1 = FValues[idx]; 
 			Value2 = FValues[idx+1]; 
 		}
 
 		public void GetValue3D(int Index, out double Value1, out double Value2, out double Value3)
 		{
-			int idx = (Index % FSliceCount) * 3;
+			int idx = VMath.Zmod(Index, FSliceCount) * 3;
 			Value1 = FValues[idx]; 
 			Value2 = FValues[idx+1]; 
 			Value3 = FValues[idx+2]; 
@@ -58,7 +58,7 @@ namespace Hoster
 		
 		public void GetValue4D(int Index, out double Value1, out double Value2, out double Value3, out double Value4)
 		{
-			int idx = (Index % FSliceCount) * 4;
+			int idx = VMath.Zmod(Index, FSliceCount) * 4;
 			Value1 = FValues[idx]; 
 			Value2 = FValues[idx+1]; 
 			Value3 = FValues[idx+2]; 
@@ -67,7 +67,7 @@ namespace Hoster
 		
 		public void SetValue(int Index, double Value)
 		{
-			int idx = Index % FSliceCount;
+			int idx = VMath.Zmod(Index, FSliceCount);
 			if (Value != FValues[idx])
 			{
 				FValues[idx] = Math.Max(FMin, Math.Min(FMax, Value));
@@ -80,7 +80,7 @@ namespace Hoster
 		
 		public void SetValue2D(int Index, double Value1, double Value2)
 		{
-			int idx = (Index % FSliceCount) * 2;
+			int idx = VMath.Zmod(Index, FSliceCount) * 2;
 			if ((Value1 != FValues[idx]) || (Value2 != FValues[idx+1]))
 			{
 				FValues[idx] = Math.Max(FMin, Math.Min(FMax, Value1));
@@ -94,7 +94,7 @@ namespace Hoster
 		
 		public void SetValue3D(int Index, double Value1, double Value2, double Value3)
 		{
-			int idx = (Index % FSliceCount) * 3;
+			int idx = VMath.Zmod(Index, FSliceCount) * 3;
 			if ((Value1 != FValues[idx]) || (Value2 != FValues[idx+1]) || (Value3 != FValues[idx+2]))
 			{
 				FValues[idx] = Math.Max(FMin, Math.Min(FMax, Value1));
@@ -109,7 +109,7 @@ namespace Hoster
 		
 		public void SetValue4D(int Index, double Value1, double Value2, double Value3, double Value4)
 		{
-			int idx = (Index % FSliceCount) * 4;
+			int idx = VMath.Zmod(Index, FSliceCount) * 4;
 			if ((Value1 != FValues[idx]) || (Value2 != FValues[idx+1]) || (Value3 != FValues[idx+2]) || (Value4 != FValues[idx+3]))
 			{
 				FValues[idx] = Math.Max(FMin, Math.Min(FMax, Value1));

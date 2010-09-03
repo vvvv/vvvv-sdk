@@ -1,6 +1,7 @@
 ﻿using System;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Output
 {
@@ -15,11 +16,11 @@ namespace VVVV.Hosting.Pins.Output
 		{
 			get 
 			{
-				return FData[index % FSliceCount] >= 0.5;
+				return FData[VMath.Zmod(index, FSliceCount)] >= 0.5;
 			}
 			set
 			{
-				FData[index % FSliceCount] = value ? 1 : 0;
+				FData[VMath.Zmod(index, FSliceCount)] = value ? 1 : 0;
 			}
 		}
 	}

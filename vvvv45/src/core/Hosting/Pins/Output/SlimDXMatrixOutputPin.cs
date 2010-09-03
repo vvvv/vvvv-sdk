@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using SlimDX;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Output
 {
@@ -45,14 +46,14 @@ namespace VVVV.Hosting.Pins.Output
 			{
 				fixed (float* ptr = FData)
 				{
-					return ((Matrix*)ptr)[index % FSliceCount];
+					return ((Matrix*)ptr)[VMath.Zmod(index, FSliceCount)];
 				}
 			}
 			set
 			{
 				fixed (float* ptr = FData)
 				{
-					((Matrix*)ptr)[index % FSliceCount] = value;
+					((Matrix*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
 				}
 			}
 		}

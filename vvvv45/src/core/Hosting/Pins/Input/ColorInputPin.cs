@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
+using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Input
 {
@@ -49,7 +50,7 @@ namespace VVVV.Hosting.Pins.Input
 			{
 				fixed (double* ptr = FData)
 				{
-					return ((RGBAColor*)ptr)[index % FSliceCount];
+					return ((RGBAColor*)ptr)[VMath.Zmod(index, FSliceCount)];
 				}
 			}
 			set
@@ -58,7 +59,7 @@ namespace VVVV.Hosting.Pins.Input
 				{
 					fixed (double* ptr = FData)
 					{
-						((RGBAColor*)ptr)[index % FSliceCount] = value;
+						((RGBAColor*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
 					}
 				}
 			}

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+
+using VVVV.Hosting.Pins.Config;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
-using VVVV.Hosting.Pins.Config;
+using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins
 {
@@ -99,7 +101,7 @@ namespace VVVV.Hosting.Pins
 		{
 			get
 			{
-				return FPins[index];
+				return FPins[VMath.Zmod(index, FPins.Length)];
 			}
 			set 
 			{

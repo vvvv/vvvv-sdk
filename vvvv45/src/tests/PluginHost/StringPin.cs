@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
-
 using VVVV.PluginInterfaces.V1;
+using VVVV.Utils.VMath;
 
 namespace Hoster
 {
@@ -32,14 +32,14 @@ namespace Hoster
 		
 		public void GetString(int Index, out string Value)
 		{
-			Value = FValues[Index % FSliceCount];
+			Value = FValues[VMath.Zmod(Index, FSliceCount)];
 		}
 		
 		public void SetString(int Index, string Value)
 		{
-			if (Value != FValues[Index % FSliceCount])
+			if (Value != FValues[VMath.Zmod(Index, FSliceCount)])
 			{
-				FValues[Index % FSliceCount] = Value;
+				FValues[VMath.Zmod(Index, FSliceCount)] = Value;
 				FPinIsChanged = true;
 			}	
 			

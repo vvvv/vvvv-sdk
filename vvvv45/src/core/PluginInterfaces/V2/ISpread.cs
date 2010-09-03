@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace VVVV.PluginInterfaces.V2
 {
 	/// <summary>
-	/// Common interface to the underlaying input/output/config pins.
+	/// Common interface to the underlying input/output/config pins.
 	/// Set/Get, Read/Write methods are only implemented when it makes sense.
 	/// </summary>
 	public interface ISpread<T> : IEnumerable<T>

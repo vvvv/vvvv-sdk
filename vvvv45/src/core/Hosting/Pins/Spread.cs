@@ -32,11 +32,11 @@ namespace VVVV.Hosting.Pins
 		{
 			get 
 			{
-				return FData[index % FSliceCount];
+				return FData[VMath.Zmod(index, FSliceCount)];
 			}
 			set 
 			{
-				FData[index % FSliceCount] = value;
+				FData[VMath.Zmod(index, FSliceCount)] = value;
 			}
 		}
 		

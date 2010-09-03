@@ -59,11 +59,11 @@ namespace VVVV.Hosting.Pins
 		{
 			get
 			{
-				return FData[index % FSliceCount];
+				return FData[VMath.Zmod(index, FSliceCount)];
 			}
 			set
 			{
-				FData[index % FSliceCount] = value;
+				FData[VMath.Zmod(index, FSliceCount)] = value;
 			}
 		}
 		
@@ -319,4 +319,109 @@ namespace VVVV.Hosting.Pins
 		
 		#endregion
 	}
+	
+	#region Optimize
+    
+    public static class Optimize
+    {
+        /// <summary>
+        /// FindMulShift finds the multiply and shift to replace a division for a range of
+        /// positive integers defined by min and max.
+        ///  
+        ///   a / n == a * mul >> shift
+        /// 
+        /// As we know 1/n = 1 * mul >> shift, we can solve mul = (1 << shift) / n
+        /// 
+        /// </summary>
+        /// <param name="max">positive integer, upper limit</param>
+        /// <param name="div">divider to replace</param>
+        /// <param name="mul">multiply factor</param>
+        /// <param name="shift">shift factor (0..63)</param>
+        /// <returns>
+        /// True if a valid mul and shift value are found. 
+        /// If invald both mul and shift are -1
+        /// </returns>
+        public static bool FindMulShift(long max, long div, out long mul, out int shift)
+        {
+        	max = Math.Abs(max);
+        	div = Math.Abs(div);
+        	
+            bool found = false;
+            mul = -1;
+            shift = -1;
+
+            // zero divider error
+            if (div == 0) return false;
+            
+  			// this division would always return 0 from 0..max
+  			if (max < div) 
+  			{
+  				mul = 0;
+  				shift = 0;
+  				return true;
+  			}
+
+            // catch powers of 2
+            for (int s = 0; s <= 63; s++)
+            {
+                if (div == (1L << s))
+                {
+                    mul = 1;
+                    shift = s;
+                    return true;
+                }
+            }
+
+            // start searching for a valid mul/shift pair
+            for (shift = 1; shift <= 62; shift++)
+            {
+            	// shift factor is at least 2log(div), skip others
+            	if ((1L << shift) <= div) continue;
+            	
+                // we calculate a candidate for mul
+                mul = (1L << shift) / div + 1;
+
+                // assume it is a good one
+                found = true;
+
+                // test if it works for the range 0 .. max
+                // Note: takes too much time for large values of max. 
+                if (max < 1000000)
+                {
+	                for (long i = max; i >=1; i--)		// testing large values first fails faster 
+	                {
+	                	if ((i / div) != ((i * mul) >> shift))
+	                    {
+	                        found = false;
+	                        break;
+	                    }
+	                }
+                }
+                else
+                {
+					// very fast test, no mathematical proof yet but it seems to work well
+					// test highest number-pair for which the division must 'jump' correctly
+					// test max, to be sure;
+					long t = (max/div +1) * div;
+					if ((((t-1) / div) != (((t-1) * mul) >> shift)) ||
+					    ((t / div) != ((t * mul) >> shift)) ||
+					    ((max / div) != ((max * mul) >> shift))
+					   )
+	                {
+	                	found = false;
+	                }
+                }
+
+                // are we ready?
+                if (found)
+                {
+                	break;
+                }
+            }
+            return found;
+        }
+
+    }
+    
+    #endregion
 }

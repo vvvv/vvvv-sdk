@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Input
 {
@@ -12,15 +13,15 @@ namespace VVVV.Hosting.Pins.Input
 		{
 		}
 		
-		public override double this[int index]
+		public override double this[int index] 
 		{
-			get
+			get 
 			{
-				return FData[index % FSliceCount];
+				return FData[VMath.Zmod(index, FSliceCount)];
 			}
-			set
+			set 
 			{
-				FData[index % FSliceCount] = value;
+				FData[VMath.Zmod(index, FSliceCount)] = value;
 			}
 		}
 	}
@@ -36,11 +37,11 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			get
 			{
-				return FData[index % FSliceCount];
+				return FData[VMath.Zmod(index, FSliceCount)];
 			}
 			set
 			{
-				FData[index % FSliceCount] = value;
+				FData[VMath.Zmod(index, FSliceCount)] = value;
 			}
 		}
 	}

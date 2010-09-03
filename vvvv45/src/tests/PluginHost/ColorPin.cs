@@ -4,6 +4,7 @@ using System.Drawing;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
+using VVVV.Utils.VMath;
 
 namespace Hoster
 {
@@ -21,14 +22,14 @@ namespace Hoster
 		
 		public void GetColor(int Index, out RGBAColor Value)
 		{
-			Value = FValues[Index % FSliceCount];
+			Value = FValues[VMath.Zmod(Index, FSliceCount)];
 		}
 		
 		public void SetColor(int Index, RGBAColor Value)
 		{
 			//if (Value != FValues[Index])
 			{
-				FValues[Index % FSliceCount] = Value;
+				FValues[VMath.Zmod(Index, FSliceCount)] = Value;
 				FPinIsChanged = true;
 			}		
 			

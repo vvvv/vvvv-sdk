@@ -1,6 +1,7 @@
 ﻿using System;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Input
 {
@@ -15,11 +16,11 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			get
 			{
-				return (int) FData[index % FSliceCount];
+				return (int) FData[VMath.Zmod(index, FSliceCount)];
 			}
 			set
 			{
-				FData[index % FSliceCount] = (double) value;
+				FData[VMath.Zmod(index, FSliceCount)] = (double) value;
 			}
 		}
 	}
@@ -35,11 +36,11 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			get
 			{
-				return (int) FData[index % FSliceCount];
+				return (int) FData[VMath.Zmod(index, FSliceCount)];
 			}
 			set
 			{
-				FData[index % FSliceCount] = (double) value;
+				FData[VMath.Zmod(index, FSliceCount)] = (double) value;
 			}
 		}
 	}

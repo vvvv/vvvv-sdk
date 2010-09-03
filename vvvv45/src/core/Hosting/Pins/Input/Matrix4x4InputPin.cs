@@ -53,14 +53,14 @@ namespace VVVV.Hosting.Pins.Input
 			{
 				fixed (float* ptr = FData)
 				{
-					return ((Matrix*)ptr)[index % FSliceCount].ToMatrix4x4();
+					return ((Matrix*)ptr)[VMath.Zmod(index, FSliceCount)].ToMatrix4x4();
 				}
 			}
 			set
 			{
 				fixed (float* ptr = FData)
 				{
-					((Matrix*)ptr)[index % FSliceCount] = value.ToSlimDXMatrix();
+					((Matrix*)ptr)[VMath.Zmod(index, FSliceCount)] = value.ToSlimDXMatrix();
 				}
 			}
 		}

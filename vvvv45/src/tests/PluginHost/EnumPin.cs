@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
-
 using VVVV.PluginInterfaces.V1;
+using VVVV.Utils.VMath;
 
 namespace Hoster
 {
@@ -34,27 +34,27 @@ namespace Hoster
 		
 		public void GetString(int Index, out string Value)
 		{
-			Value = FValues[Index % FSliceCount];
+			Value = FValues[VMath.Zmod(Index, FSliceCount)];
 		}
 		
 		public void SetString(int Index, string Value)
 		{
 			var entries = FPluginHost.GetEnumEntries(FDefault);
 			if (entries.Contains(Value))
-				FValues[Index % FSliceCount] = Value;
+				FValues[VMath.Zmod(Index, FSliceCount)] = Value;
 		}
 		
 		public void SetOrd(int Index, int Value)
 		{
 			var entries = FPluginHost.GetEnumEntries(FDefault);
 			if (entries.Count > Value)
-				FValues[Index % FSliceCount] = entries[Value];
+				FValues[VMath.Zmod(Index, FSliceCount)] = entries[Value];
 		}
 		
 		public void GetOrd(int Index, out int Value)
 		{
 			var entries = FPluginHost.GetEnumEntries(FDefault);
-			Value = entries.IndexOf(FValues[Index % FSliceCount]);
+			Value = entries.IndexOf(FValues[VMath.Zmod(Index, FSliceCount)]);
 		}
 
 		public void SetSubType(string Default)
