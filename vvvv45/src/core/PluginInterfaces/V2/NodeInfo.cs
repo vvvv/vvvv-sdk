@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 
 using VVVV.Core.Model;
+using VVVV.Core.Runtime;
 using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2
@@ -36,9 +37,9 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		NodeType Type {get; set;}
 		/// <summary>
-		/// Reference to the <see cref="IExecutable">IExecutable</see> which was used to create this node. Set by the PluginFactory.
+		/// Reference to the <see cref="IExecutable">IExecutable</see> which was used to create this node. Set by the AddonFactory.
 		/// </summary>
-//		IExecutable Executable {get; set;}
+		IExecutable Executable {get; set;}
 		/// <summary>
 		/// Define if this node should be evaluated every frame, even if no outpur is read.
 		/// </summary>
@@ -154,11 +155,11 @@ namespace VVVV.PluginInterfaces.V2
 		/// <summary>
 		/// Reference to the <see cref="IExecutable">IExecutable</see> which was used to create this node. Set by the PluginFactory.
 		/// </summary>
-//		public IExecutable Executable 
-//		{
-//			get {return FExcecutable;}
-//			set {FExcecutable = value;}
-//		}
+		public IExecutable Executable 
+		{
+			get {return FExcecutable;}
+			set {FExcecutable = value;}
+		}
 		
 		/// <summary>
 		/// Define if this node should be evaluated every frame, even if no outpur is read.

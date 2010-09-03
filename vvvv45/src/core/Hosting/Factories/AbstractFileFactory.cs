@@ -26,6 +26,9 @@ namespace VVVV.Hosting.Factories
 		[Import]
 		protected ILogger FLogger;
 		
+		[Import]
+		protected IHDEHost FHDEHost;
+		
 		//directory to watch
 		private string FDirectory;
 		private string FFileExtension;
@@ -162,12 +165,24 @@ namespace VVVV.Hosting.Factories
 			}
 		}
 		
+		protected void UpdateNodeInfos(string filename)
+		{
+			if (!IsLoaded(filename))
+			{
+				foreach (var nodeInfo in LoadAndCacheNodeInfos(filename))
+				{
+					OnNodeInfoAdded(nodeInfo);
+				}
+			}
+		}
+		
 		public bool Create(INodeInfo nodeInfo, IAddonHost host)
 		{
 			if (host is TNodeHost && Path.GetExtension(nodeInfo.Filename) == FileExtension)
 			{
-				if (!IsLoaded(nodeInfo.Filename))
-					LoadAndCacheNodeInfos(nodeInfo.Filename);
+				// We don't know if nodeInfo was cached. Some properties like Executable
+				// might be not set -> Update the nodeInfo.
+				UpdateNodeInfos(nodeInfo.Filename);
 				
 				return CreateNode(nodeInfo, (TNodeHost) host);
 			}
@@ -191,8 +206,9 @@ namespace VVVV.Hosting.Factories
 		{
 			if (Path.GetExtension(nodeInfo.Filename) == FileExtension)
 			{
-				if (!IsLoaded(nodeInfo.Filename))
-					LoadAndCacheNodeInfos(nodeInfo.Filename);
+				// We don't know if nodeInfo was cached. Some properties like Executable
+				// might be not set -> Update the nodeInfo.
+				UpdateNodeInfos(nodeInfo.Filename);
 				
 				return CloneNode(nodeInfo, path, name, category, version);
 			}
@@ -254,7 +270,7 @@ namespace VVVV.Hosting.Factories
 			if (!FNodeInfoCache.ContainsKey(filename))
 			{
 				// Load node infos from cache file into memory.
-				try 
+				try
 				{
 					var cacheFile = GetCacheFile(filename);
 					var formatter = new BinaryFormatter();
@@ -262,19 +278,23 @@ namespace VVVV.Hosting.Factories
 					{
 						FNodeInfoCache[filename] = (List<INodeInfo>) formatter.Deserialize(stream);
 					}
-				} 
-				catch (Exception) 
+				}
+				catch (Exception)
 				{
 					FLogger.Log(LogType.Warning, "Cache file for {0} missing or not valid.", filename);
 					LoadAndCacheNodeInfos(filename);
 				}
 			}
+			
+//			if (FNodeInfoCache[filename].Count == 0)
+//				FLogger.Log(LogType.Warning, "Empty cache for {0}.", filename);
+			
 			return FNodeInfoCache[filename];
 		}
 		
 		protected IEnumerable<INodeInfo> LoadAndCacheNodeInfos(string filename)
 		{
-			try 
+			try
 			{
 				var nodeInfos = GetNodeInfos(filename);
 				FLogger.Log(LogType.Debug, "Loaded node infos from {0}.", filename);
@@ -283,8 +303,8 @@ namespace VVVV.Hosting.Factories
 				CacheNodeInfos(filename, nodeInfos.ToList());
 				
 				return nodeInfos;
-			} 
-			catch (Exception e) 
+			}
+			catch (Exception e)
 			{
 				FLogger.Log(e);
 				return new INodeInfo[0];
@@ -293,28 +313,33 @@ namespace VVVV.Hosting.Factories
 		
 		protected void CacheNodeInfos(string filename, List<INodeInfo> nodeInfos)
 		{
-			FNodeInfoCache[filename] = nodeInfos;
-			
-			var cacheFile = GetCacheFile(filename);
-			var cacheDir = Path.GetDirectoryName(cacheFile);
-			if (!Directory.Exists(cacheDir))
-			{
-				// Create hidden cache dir.
-				var directoryInfo = Directory.CreateDirectory(cacheDir);
-				directoryInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+			try {
+				FNodeInfoCache[filename] = nodeInfos;
+				
+				var cacheFile = GetCacheFile(filename);
+				var cacheDir = Path.GetDirectoryName(cacheFile);
+				if (!Directory.Exists(cacheDir))
+				{
+					// Create hidden cache dir.
+					var directoryInfo = Directory.CreateDirectory(cacheDir);
+					directoryInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+				}
+				
+				// Write nodeInfoList to cache file.
+				var formatter = new BinaryFormatter();
+				using (var stream = new FileStream(cacheFile, FileMode.Create, FileAccess.Write, FileShare.None))
+				{
+					formatter.Serialize(stream, nodeInfos);
+				}
+				
+				// Set last write time of cache file to time of filename.
+				File.SetLastWriteTime(cacheFile, File.GetLastWriteTime(filename));
+				
+				FLogger.Log(LogType.Debug, "Cached node infos of {0}.", filename);
+			} catch (Exception e) {
+				FLogger.Log(LogType.Error, "Caching node infos of {0} failed:", filename);
+				FLogger.Log(e);
 			}
-			
-			// Write nodeInfoList to cache file.
-			var formatter = new BinaryFormatter();
-			using (var stream = new FileStream(cacheFile, FileMode.Create, FileAccess.Write, FileShare.None))
-			{
-				formatter.Serialize(stream, nodeInfos);
-			}
-			
-			// Set last write time of cache file to time of filename.
-			File.SetLastWriteTime(cacheFile, File.GetLastWriteTime(filename));
-			
-			FLogger.Log(LogType.Debug, "Cached node infos of {0}.", filename);
 		}
 		
 		protected void ClearCachedNodeInfos(string filename)

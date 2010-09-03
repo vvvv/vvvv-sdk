@@ -14,7 +14,8 @@ namespace VVVV.Nodes
       
     
     public class ThroughPutTest<T>: IPluginEvaluate
-    {        
+    {    
+    	#pragma warning disable 649
         [Input("Values")] ISpread<T> Values;        
         [Input("DiffValues")] IDiffSpread<T> DiffValues;
 
@@ -35,6 +36,7 @@ namespace VVVV.Nodes
 
         [Output("Spreads As String")] ISpread<string> SpreadsAsString;
 //        [Output("Spreadss Copy")] ISpread<ISpread<ISpread<T>>> SpreadssCopy;
+		#pragma warning restore
         
         
         protected void PutThrough<U>(ISpread<U> output, ISpread<U> input)        

@@ -136,9 +136,13 @@ namespace VVVV.Hosting.Factories
 				
 				foreach (var nodeInfo in ExtractNodeInfosFromCatalog(FCatalogCache[filename]))
 				{
-					if (IsValidNodeInfo(nodeInfo))
+//					if (IsValidNodeInfo(nodeInfo))
 					{
-//						nodeInfo.Executable = new DotNetExecutable(null, new Lazy<Assembly>(() => Assembly.LoadFrom(filename)));
+						var executable = new DotNetExecutable(null, new Lazy<Assembly>(() => Assembly.LoadFrom(filename)));
+						if (nodeInfo.Executable == null)
+							nodeInfo.Executable = executable;
+						else
+							nodeInfo.Executable.UpdateFrom(executable);
 						nodeInfo.Filename = filename;
 						nodeInfo.Type = NodeType.Plugin;
 						nodeInfos.Add(nodeInfo);
@@ -152,9 +156,13 @@ namespace VVVV.Hosting.Factories
 					// Check for V1 style plugins
 					foreach (var nodeInfo in ExtractNodeInfosFromAssembly(assembly))
 					{
-						if (IsValidNodeInfo(nodeInfo))
+//						if (IsValidNodeInfo(nodeInfo))
 						{
-//							nodeInfo.Executable = new DotNetExecutable(null, assembly);
+							var executable = new DotNetExecutable(null, assembly);
+							if (nodeInfo.Executable == null)
+								nodeInfo.Executable = executable;
+							else
+								nodeInfo.Executable.UpdateFrom(executable);
 							nodeInfo.Filename = filename;
 							nodeInfo.Type = NodeType.Plugin;
 							nodeInfos.Add(nodeInfo);
@@ -180,7 +188,7 @@ namespace VVVV.Hosting.Factories
 		private bool IsValidNodeInfo(INodeInfo nodeInfo)
 		{
 			var registeredInfo = FHost.GetNodeInfo(nodeInfo.Systemname);
-			return registeredInfo == null || !IsLoaded(nodeInfo.Filename) || registeredInfo.Type == NodeType.Dynamic;
+			return registeredInfo == null || registeredInfo.Type == NodeType.Dynamic;
 		}
 		
 		public IPluginBase CreatePlugin(INodeInfo nodeInfo, IPluginHost2 pluginHost)
@@ -205,7 +213,7 @@ namespace VVVV.Hosting.Factories
 				{
 					//TODO: Handle these cases with a wrapper.
 					if (!(plugin is IPluginDXResource || plugin is IPluginDXDevice || plugin is IPluginConnections))
-						plugin = new DynamicPluginWrapperV2(plugin as IPluginEvaluate, pluginHost);
+						plugin = new DynamicPluginWrapperV2(plugin as IPluginEvaluate, pluginHost, nodeInfo.Executable);
 				}
 				
 				return plugin;
@@ -221,7 +229,7 @@ namespace VVVV.Hosting.Factories
 				{
 					//TODO: Handle these cases with a wrapper.
 					if (!(plugin is IPluginDXResource || plugin is IPluginDXDevice || plugin is IPluginConnections))
-						plugin = new DynamicPluginWrapperV1(plugin as IPlugin);
+						plugin = new DynamicPluginWrapperV1(plugin as IPlugin, nodeInfo.Executable);
 				}
 				
 				plugin.SetPluginHost(pluginHost);
@@ -255,7 +263,12 @@ namespace VVVV.Hosting.Factories
 			
 			foreach (var pluginExport in FNodeInfoExports)
 			{
-				var info = new NodeInfo();
+				var systemName = pluginExport.Metadata.GetSystemName();
+				
+				var info = FHDEHost.GetNodeInfo(systemName);
+				if (info == null)
+					info = new NodeInfo();
+				
 				info.Name = pluginExport.Metadata.Name;
 				info.Category = pluginExport.Metadata.Category;
 				info.Version = pluginExport.Metadata.Version;
@@ -274,12 +287,11 @@ namespace VVVV.Hosting.Factories
 				
 				//a dynamic plugin may register the the same info with a new export
 				//so remove an existing info
-				var systemname = info.Systemname;
-				if (FMEFPlugins.ContainsKey(systemname))
-					FMEFPlugins.Remove(systemname);
+				if (FMEFPlugins.ContainsKey(systemName))
+					FMEFPlugins.Remove(systemName);
 				
-				FMEFPlugins.Add(systemname, pluginExport);
-				nodeInfos.Add(systemname, info);
+				FMEFPlugins.Add(systemName, pluginExport);
+				nodeInfos.Add(systemName, info);
 			}
 			
 			// Set Arguments property on each INodeInfo.
@@ -321,7 +333,9 @@ namespace VVVV.Hosting.Factories
 					{
 						if (info.PropertyType == typeof(INodeInfo))
 						{
-							var nodeInfo = (INodeInfo) info.GetValue(null, null);
+							INodeInfo nodeInfo = (INodeInfo) info.GetValue(null, null);
+							if (FHDEHost.GetNodeInfo(nodeInfo.Systemname) != null)
+								nodeInfo = FHDEHost.GetNodeInfo(nodeInfo.Systemname);
 							
 							nodeInfo.Arguments = type.Namespace + "." + type.Name;
 							nodeInfo.Class = type.Name;
@@ -334,7 +348,9 @@ namespace VVVV.Hosting.Factories
 						else if (info.PropertyType == typeof(IPluginInfo))
 						{
 							var pluginInfo = (IPluginInfo) info.GetValue(null, null);
-							var nodeInfo = new NodeInfo(pluginInfo);
+							INodeInfo nodeInfo = new NodeInfo(pluginInfo);
+							if (FHDEHost.GetNodeInfo(nodeInfo.Systemname) != null)
+								nodeInfo = FHDEHost.GetNodeInfo(nodeInfo.Systemname);
 							
 							nodeInfo.Arguments = type.Namespace + "." + type.Name;
 							nodeInfo.Class = type.Name;
@@ -421,5 +437,16 @@ namespace VVVV.Hosting.Factories
 		TComponentMode InitialComponentMode { get; }
 		bool AutoEvaluate { get; }
 		bool Ignore { get; }
+	}
+	
+	public static class NodeInfoStuffExtensions
+	{
+		public static string GetSystemName(this INodeInfoStuff nodeInfo)
+		{
+			if (!string.IsNullOrEmpty(nodeInfo.Version))
+				return string.Format("{0} ({1} {2})", nodeInfo.Name, nodeInfo.Category, nodeInfo.Version);
+			else
+				return string.Format("{0} ({1})", nodeInfo.Name, nodeInfo.Category);
+		}
 	}
 }

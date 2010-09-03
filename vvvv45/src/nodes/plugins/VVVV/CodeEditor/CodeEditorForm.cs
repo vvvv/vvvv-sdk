@@ -11,6 +11,7 @@ using VVVV.Core.Logging;
 using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
 using VVVV.Core.Model.FX;
+using VVVV.Core.Runtime;
 using VVVV.Core.View;
 using VVVV.Core.View.Table;
 using VVVV.HDE.CodeEditor.ErrorView;
@@ -34,6 +35,8 @@ namespace VVVV.HDE.CodeEditor
 		private Dictionary<IProject, Dom.DefaultProjectContent> FProjects;
 		private Dictionary<ITextDocument, Dom.ParseInformation> FParseInfos;
 		private Dictionary<SD.IDocument, ITextDocument> FSDDocToDocMap;
+		private Dictionary<IProject, IExecutable> FExecutables;
+		private Dictionary<IProject, int> FProjectDocCount;
 		private ISolution FSolution;
 		private ILogger FLogger;
 		
@@ -54,6 +57,8 @@ namespace VVVV.HDE.CodeEditor
 			FProjects = new Dictionary<IProject, Dom.DefaultProjectContent>();
 			FParseInfos = new Dictionary<ITextDocument, Dom.ParseInformation>();
 			FSDDocToDocMap = new Dictionary<SD.IDocument, ITextDocument>();
+			FExecutables = new Dictionary<IProject, IExecutable>();
+			FProjectDocCount = new Dictionary<IProject, int>();
 			
 			FHDEHost = host;
 			FHDEHost.AddListener(FNodeSelectionListener);
@@ -63,6 +68,7 @@ namespace VVVV.HDE.CodeEditor
 			var registry = new MappingRegistry();
 			registry.RegisterDefaultMapping<IEnumerable<IColumn>, ErrorCollectionColumnProvider>();
 			registry.RegisterMapping<CompilerError, IEnumerable<ICell>, ErrorCellProvider>();
+			registry.RegisterMapping<RuntimeError, IEnumerable<ICell>, RuntimeErrorCellProvider>();
 			registry.RegisterMapping<IEditableIDList<IReference>, ReferencesViewProvider>();
 			
 			FErrorTableViewer.Registry = registry;
@@ -92,6 +98,18 @@ namespace VVVV.HDE.CodeEditor
 					yield return entry.Key;
 				}
 			}
+		}
+		
+		public void AddExecutable(IProject project, IExecutable executable)
+		{
+			FExecutables[project] = executable;
+		}
+		
+		public IExecutable GetExecutable(IProject project)
+		{
+			IExecutable executable = null;
+			FExecutables.TryGetValue(project, out executable);
+			return executable;
 		}
 		
 		/// <summary>
@@ -124,10 +142,24 @@ namespace VVVV.HDE.CodeEditor
 					linkDataProvider = new FXLinkDataProvider();
 				}
 				
+				var project = doc.Project;
+				if (!FProjectDocCount.ContainsKey(project))
+					FProjectDocCount[project] = 0;
+				
+				var executable = GetExecutable(project);
+				if (executable != null && FProjectDocCount[project] == 0)
+				{
+					executable.RuntimeErrors.Added += executable_RuntimeErrors_Added;
+					executable.RuntimeErrors.Removed += executable_RuntimeErrors_Removed;
+					if (executable.RuntimeErrors.Count > 0)
+						ShowErrorTable(executable.RuntimeErrors);
+				}
+				FProjectDocCount[project]++;
+				
 				var editor = new CodeEditor(
 					FLogger,
-					this, 
-					doc, 
+					this,
+					doc,
 					completionBinding,
 					formattingStrategy,
 					foldingStrategy,
@@ -151,7 +183,7 @@ namespace VVVV.HDE.CodeEditor
 				doc.Saved += DocumentSavedCB;
 			}
 			
-			FTabControl.SelectedTab = FOpenedDocuments[doc];			
+			FTabControl.SelectedTab = FOpenedDocuments[doc];
 			return FOpenedDocuments[doc];
 		}
 
@@ -164,6 +196,15 @@ namespace VVVV.HDE.CodeEditor
 				FSDDocToDocMap.Remove(codeEditor.SDDocument);
 				FTabControl.Controls.Remove(tabPage);
 				FOpenedDocuments.Remove(doc);
+				
+				var project = doc.Project;
+				FProjectDocCount[project]--;
+				var executable = GetExecutable(project);
+				if (executable != null && FProjectDocCount[project] == 0)
+				{
+					executable.RuntimeErrors.Added -= executable_RuntimeErrors_Added;
+					executable.RuntimeErrors.Removed -= executable_RuntimeErrors_Removed;
+				}
 			}
 		}
 		
@@ -185,16 +226,35 @@ namespace VVVV.HDE.CodeEditor
 		void Project_CompileCompleted(IProject project, CompilerResults results)
 		{
 			if (results.Errors.Count > 0)
-			{
-				FErrorTableViewer.Input = results.Errors;
-				// TODO: Find better way to calculate splitter distance
-				FSplitContainer.SplitterDistance = FSplitContainer.Height - (FErrorTableViewer.RowCount + 2) * (FErrorTableViewer.RowHeight + 2);
-				FSplitContainer.Panel2Collapsed = false;
-			}
+				ShowErrorTable(results.Errors);
 			else
-			{
-				FSplitContainer.Panel2Collapsed = true;
-			}
+				HideErrorTable();
+		}
+		
+		void executable_RuntimeErrors_Added(IViewableCollection<RuntimeError> collection, RuntimeError item)
+		{
+			ShowErrorTable(collection);
+		}
+		
+		void executable_RuntimeErrors_Removed(IViewableCollection<RuntimeError> collection, RuntimeError item)
+		{
+			if (collection.Count > 0)
+				ShowErrorTable(collection);
+			else
+				HideErrorTable();
+		}
+		
+		void ShowErrorTable(object input)
+		{
+			FErrorTableViewer.Input = input;
+			// TODO: Find better way to calculate splitter distance
+			FSplitContainer.SplitterDistance = FSplitContainer.Height - (FErrorTableViewer.RowCount + 2) * (FErrorTableViewer.RowHeight + 2);
+			FSplitContainer.Panel2Collapsed = false;
+		}
+		
+		void HideErrorTable()
+		{
+			FSplitContainer.Panel2Collapsed = true;
 		}
 		
 		void DocumentContentChangedCB(ITextDocument document, string content)
@@ -226,6 +286,7 @@ namespace VVVV.HDE.CodeEditor
 		protected void TearDownProject(IProject project)
 		{
 			project.CompileCompleted -= Project_CompileCompleted;
+			project.Documents.Removed -= Document_Removed;
 			
 			foreach (var doc in project.Documents)
 			{
@@ -247,10 +308,25 @@ namespace VVVV.HDE.CodeEditor
 
 		void FErrorTableViewerDoubleClick(VVVV.Core.IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
 		{
-			var compilerError = sender.Model as CompilerError;
+			var fileName = string.Empty;
+			var line = 0;
+			
+			if (sender.Model is CompilerError)
+			{
+				var compilerError = sender.Model as CompilerError;
+				fileName = compilerError.FileName;
+				line = compilerError.Line;
+			}
+			else
+			{
+				var runtimeError = sender.Model as RuntimeError;
+				fileName = runtimeError.FileName;
+				line = runtimeError.Line;
+			}
+			
 			
 			// Find the document which caused the compiler error.
-			var doc = FSolution.FindDocument(compilerError.FileName);
+			var doc = FSolution.FindDocument(fileName);
 			
 			if (doc == null || !(doc is ITextDocument))
 				return;
@@ -264,7 +340,7 @@ namespace VVVV.HDE.CodeEditor
 			
 			// Jump to line of error and focus the editor.
 			var codeEditor = tabPage.Controls[0] as CodeEditor;
-			codeEditor.JumpTo(compilerError.Line - 1);
+			codeEditor.JumpTo(line - 1);
 			codeEditor.Focus();
 		}
 		

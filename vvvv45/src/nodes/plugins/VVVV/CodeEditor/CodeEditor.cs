@@ -35,10 +35,12 @@ using System.Windows.Forms;
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Gui.CompletionWindow;
 using ICSharpCode.TextEditor.Gui.InsightWindow;
+using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
 using VVVV.Core.Model.FX;
+using VVVV.Core.Runtime;
 using VVVV.HDE.CodeEditor.Gui.SearchBar;
 using VVVV.HDE.CodeEditor.LanguageBindings.CS;
 using Dom = ICSharpCode.SharpDevelop.Dom;
@@ -187,9 +189,6 @@ namespace VVVV.HDE.CodeEditor
 			FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown += TextAreaKeyDownCB;
 			FTextEditorControl.TextChanged += TextEditorControlTextChangedCB;
 			
-			// Everytime the project is compiled update the error highlighting.
-			Document.Project.CompileCompleted += CompileCompletedCB;
-			
 			// Start parsing after 500ms have passed after last key stroke.
 			FTimer = new Timer();
 			FTimer.Interval = 500;
@@ -286,6 +285,13 @@ namespace VVVV.HDE.CodeEditor
 						Document.ContentChanged -= TextDocumentContentChangedCB;
 						Document.Project.CompileCompleted -= CompileCompletedCB;
 						
+						var executable = FCodeEditorForm.GetExecutable(Document.Project);
+						if (executable != null)
+						{
+							executable.RuntimeErrors.Added -= executable_RuntimeErrors_Added;
+							executable.RuntimeErrors.Removed -= executable_RuntimeErrors_Removed;
+						}
+						
 						if (Document is CSDocument)
 						{
 							var csDoc = Document as CSDocument;
@@ -330,6 +336,18 @@ namespace VVVV.HDE.CodeEditor
 			{
 				var csDoc = Document as CSDocument;
 				CSDocument_ParseCompleted(csDoc);
+			}
+			
+			// Everytime the project is compiled update the error highlighting.
+			Document.Project.CompileCompleted += CompileCompletedCB;
+			
+			// We're also interested in runtime errors.
+			var executable = FCodeEditorForm.GetExecutable(Document.Project);
+			if (executable != null)
+			{
+				executable.RuntimeErrors.Added += executable_RuntimeErrors_Added;
+				executable.RuntimeErrors.Removed += executable_RuntimeErrors_Removed;
+				ShowRuntimeErrors(executable.RuntimeErrors);
 			}
 		}
 		
@@ -592,15 +610,8 @@ namespace VVVV.HDE.CodeEditor
 		List<SD.TextMarker> FErrorMarkers = new List<SD.TextMarker>();
 		void CompileCompletedCB(IProject project, CompilerResults results)
 		{
-			var doc = FTextEditorControl.Document;
-			
 			// Clear all previous error markers.
-			foreach (var marker in FErrorMarkers)
-			{
-				doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, doc.GetLineNumberForOffset(marker.Offset)));
-				doc.MarkerStrategy.RemoveMarker(marker);
-			}
-			FErrorMarkers.Clear();
+			ClearErrorMarkers();
 			
 			if (results.Errors.HasErrors)
 			{
@@ -612,16 +623,7 @@ namespace VVVV.HDE.CodeEditor
 						var path = Path.GetFullPath(compilerError.FileName);
 
 						if (path.ToLower() == Document.Location.LocalPath.ToLower())
-						{
-							var location = new TextLocation(compilerError.Column - 1, compilerError.Line - 1);
-							var offset = doc.PositionToOffset(location);
-							var segment = doc.GetLineSegment(location.Line);
-							var length = segment.Length - offset + segment.Offset;
-							var marker = new SD.TextMarker(offset, length, SD.TextMarkerType.WaveLine);
-							doc.MarkerStrategy.AddMarker(marker);
-							doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, segment.LineNumber));
-							FErrorMarkers.Add(marker);
-						}
+							AddErrorMarker(compilerError.Column - 1, compilerError.Line - 1);
 					}
 				}
 			}
@@ -629,6 +631,56 @@ namespace VVVV.HDE.CodeEditor
 			FTextEditorControl.Document.CommitUpdate();
 		}
 		
+		void AddErrorMarker(int column, int line)
+		{
+			var doc = FTextEditorControl.Document;
+			var location = new TextLocation(column, line);
+			var offset = doc.PositionToOffset(location);
+			var segment = doc.GetLineSegment(location.Line);
+			var length = segment.Length - offset + segment.Offset;
+			var marker = new SD.TextMarker(offset, length, SD.TextMarkerType.WaveLine);
+			doc.MarkerStrategy.AddMarker(marker);
+			doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, segment.LineNumber));
+			FErrorMarkers.Add(marker);
+		}
+		
+		void ClearErrorMarkers()
+		{
+			var doc = FTextEditorControl.Document;
+			foreach (var marker in FErrorMarkers)
+			{
+				doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, doc.GetLineNumberForOffset(marker.Offset)));
+				doc.MarkerStrategy.RemoveMarker(marker);
+			}
+			FErrorMarkers.Clear();
+		}
+		
+		void executable_RuntimeErrors_Added(IViewableCollection<RuntimeError> collection, RuntimeError item)
+		{
+			ShowRuntimeErrors(collection);
+		}
+		
+		void executable_RuntimeErrors_Removed(IViewableCollection<RuntimeError> collection, RuntimeError item)
+		{
+			ShowRuntimeErrors(collection);
+		}
+		
+		void ShowRuntimeErrors(IViewableCollection<RuntimeError> runtimeErros)
+		{
+			// Clear all previous error markers.
+			ClearErrorMarkers();
+			
+			foreach (var runtimeError in runtimeErros)
+			{
+				var path = Path.GetFullPath(runtimeError.FileName);
+
+				if (path.ToLower() == Document.Location.LocalPath.ToLower())
+					AddErrorMarker(0, runtimeError.Line - 1);
+			}
+
+			FTextEditorControl.Document.CommitUpdate();
+		}
+
 		void OnToolTipRequest(object sender, ToolTipRequestEventArgs e)
 		{
 			if (e.InDocument && !e.ToolTipShown) {

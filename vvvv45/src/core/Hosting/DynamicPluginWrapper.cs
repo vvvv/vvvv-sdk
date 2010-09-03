@@ -1,4 +1,6 @@
 ﻿using System;
+using VVVV.Core;
+using VVVV.Core.Runtime;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
@@ -8,6 +10,7 @@ namespace VVVV.Hosting
 	{
 		IPlugin FWrappedPlugin;
 		IPluginHost FPluginHost;
+		IExecutable FExecutable;
 		
 		public IPlugin WrappedPlugin
 		{
@@ -17,9 +20,10 @@ namespace VVVV.Hosting
 			}
 		}
 		
-		public DynamicPluginWrapperV1(IPlugin wrappedPlugin)
+		public DynamicPluginWrapperV1(IPlugin wrappedPlugin, IExecutable executable)
 		{
 			FWrappedPlugin = wrappedPlugin;
+			FExecutable = executable;
 		}
 		
 		public bool AutoEvaluate 
@@ -36,10 +40,13 @@ namespace VVVV.Hosting
 			try
 			{
 				FWrappedPlugin.SetPluginHost(Host);
+				FExecutable.RuntimeErrors.Clear();
 			}
 			catch (Exception e)
 			{
 				FPluginHost.Log(TLogType.Error, string.Format("{0}\n{1}", e.Message, e.StackTrace));
+				if (FExecutable.RuntimeErrors.Count == 0)
+					FExecutable.RuntimeErrors.Add(new RuntimeError(e));
 				throw e;
 			}
 		}
@@ -49,10 +56,13 @@ namespace VVVV.Hosting
 			try
 			{
 				FWrappedPlugin.Configurate(input);
+				FExecutable.RuntimeErrors.Clear();
 			}
 			catch (Exception e)
 			{
 				FPluginHost.Log(TLogType.Error, string.Format("{0}\n{1}", e.Message, e.StackTrace));
+				if (FExecutable.RuntimeErrors.Count == 0)
+					FExecutable.RuntimeErrors.Add(new RuntimeError(e));
 				throw e;
 			}
 		}
@@ -62,10 +72,13 @@ namespace VVVV.Hosting
 			try
 			{
 				FWrappedPlugin.Evaluate(SpreadMax);
+				FExecutable.RuntimeErrors.Clear();
 			}
 			catch (Exception e)
 			{
 				FPluginHost.Log(TLogType.Error, string.Format("{0}\n{1}", e.Message, e.StackTrace));
+				if (FExecutable.RuntimeErrors.Count == 0)
+					FExecutable.RuntimeErrors.Add(new RuntimeError(e));
 				throw e;
 			}
 		}
@@ -75,6 +88,7 @@ namespace VVVV.Hosting
 	{
 		IPluginEvaluate FWrappedPlugin;
 		IPluginHost FPluginHost;
+		IExecutable FExecutable;
 		
 		public IPluginEvaluate WrappedPlugin
 		{
@@ -84,10 +98,11 @@ namespace VVVV.Hosting
 			}
 		}
 		
-		public DynamicPluginWrapperV2(IPluginEvaluate wrappedPlugin, IPluginHost pluginHost)
+		public DynamicPluginWrapperV2(IPluginEvaluate wrappedPlugin, IPluginHost pluginHost, IExecutable executable)
 		{
 			FWrappedPlugin = wrappedPlugin;
 			FPluginHost = pluginHost;
+			FExecutable = executable;
 		}
 		
 		public void Evaluate(int SpreadMax)
@@ -95,10 +110,13 @@ namespace VVVV.Hosting
 			try
 			{
 				FWrappedPlugin.Evaluate(SpreadMax);
+				FExecutable.RuntimeErrors.Clear();
 			}
 			catch (Exception e)
 			{
 				FPluginHost.Log(TLogType.Error, string.Format("{0}\n{1}", e.Message, e.StackTrace));
+				if (FExecutable.RuntimeErrors.Count == 0)
+					FExecutable.RuntimeErrors.Add(new RuntimeError(e));
 				throw e;
 			}
 		}
