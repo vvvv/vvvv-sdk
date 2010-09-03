@@ -38,7 +38,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		}
 		
 		protected abstract void Render(Device device, T deviceData);
-		public abstract void SetStates();
+		public virtual void SetStates(){}
 		
 		public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
 		{
