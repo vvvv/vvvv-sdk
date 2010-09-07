@@ -129,24 +129,27 @@ namespace VVVV.Nodes.NodeBrowser
         {
             FCategoryTreeViewer.HideToolTip();
         }
-		
-        void FCategoryTreeViewer_Click(IModelMapper sender, MouseEventArgs e)
+        
+        void FTopLabelClick(object sender, EventArgs e)
         {
-            if (sender.Model is NodeInfoEntry)
+            OnPanelChange(NodeBrowserPage.ByTags, null);
+        }
+		
+		void CategoryPanelVisibleChanged(object sender, EventArgs e)
+		{
+			FCategoryTreeViewer.HideToolTip();
+		}
+		
+		void FCategoryTreeViewerMouseDown(IModelMapper sender, MouseEventArgs e)
+		{
+			if (sender.Model is NodeInfoEntry)
             {
                 if (e.Button == MouseButtons.Left)
-                {
-                    //FTagsTextBox.Text = NodeInfoToKey((sender.Model as NodeInfoEntry).NodeInfo);
                     OnCreateNode((sender.Model as NodeInfoEntry).NodeInfo);
-                }
                 else if (e.Button == MouseButtons.Middle)
-                {
                     OnShowNodeReference((sender.Model as NodeInfoEntry).NodeInfo);
-                }
                 else
-                {
                     OnShowHelpPatch((sender.Model as NodeInfoEntry).NodeInfo);
-                }
             }
             else
             {
@@ -169,16 +172,6 @@ namespace VVVV.Nodes.NodeBrowser
                     }
                 }
             }
-        }
-        
-        void FTopLabelClick(object sender, EventArgs e)
-        {
-            OnPanelChange(NodeBrowserPage.ByTags, null);
-        }
-		
-		void CategoryPanelVisibleChanged(object sender, EventArgs e)
-		{
-			FCategoryTreeViewer.HideToolTip();
 		}
 	}
 }

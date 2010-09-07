@@ -56,7 +56,7 @@
 			this.FCategoryTreeViewer.ShowTooltip = true;
 			this.FCategoryTreeViewer.Size = new System.Drawing.Size(368, 383);
 			this.FCategoryTreeViewer.TabIndex = 9;
-			this.FCategoryTreeViewer.Click += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FCategoryTreeViewer_Click);
+			this.FCategoryTreeViewer.MouseDown += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FCategoryTreeViewerMouseDown);
 			// 
 			// CategoryPanel
 			// 
