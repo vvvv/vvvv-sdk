@@ -27,7 +27,6 @@ namespace VVVV.Nodes.WindowSwitcher
         private bool FDisposed = false;
         
         private List<WindowListControl> FFullWindowList = new List<WindowListControl>();
-        private List<WindowListControl> FCurrentWindowList = new List<WindowListControl>();
         private int FWindowWidth;
         private int FSelectedWindowIndex;
         
@@ -103,25 +102,23 @@ namespace VVVV.Nodes.WindowSwitcher
         #region IWindowListener
         public void WindowAddedCB(IWindow window)
         {
+        	//deselect current index
+        	if (FFullWindowList.Count > FSelectedWindowIndex)
+        		FFullWindowList[FSelectedWindowIndex].Selected = false;
+        	//add new window
             WindowListControl wlc = new WindowListControl(window);
             wlc.Click += new EventHandler(WindowListControlClick);
             wlc.MouseEnter += new EventHandler(WindowListControlMouseEnter);
             wlc.MouseLeave += new EventHandler(WindowListControlMouseLeave);
             FFullWindowList.Add(wlc);
-            FFullWindowList.Sort(delegate(WindowListControl w1, WindowListControl w2)
-                             {
-                                 if (w1.Window.GetWindowType() > w2.Window.GetWindowType())
-                                     return 1;
-                                 else if (w1.Window.GetWindowType() < w2.Window.GetWindowType())
-                                     return -1;
-                                 else
-                                     return string.Compare(w1.Window.GetCaption(), w2.Window.GetCaption());
-                             });
         }
         
         public void WindowRemovedCB(IWindow window)
         {
-            WindowListControl windowToRemove = FFullWindowList.Find(delegate (WindowListControl wlc) {return wlc.Window == window;});
+        	//deselect current index
+        	FFullWindowList[FSelectedWindowIndex].Selected = false;
+            //remove window from list
+        	WindowListControl windowToRemove = FFullWindowList.Find(delegate (WindowListControl wlc) {return wlc.Window == window;});
             FFullWindowList.Remove(windowToRemove);
         }
         #endregion IWindowListener
@@ -132,13 +129,13 @@ namespace VVVV.Nodes.WindowSwitcher
             UpdateList();
 
             //unmark current window
-            WindowListControl currentWindow = FCurrentWindowList.Find(delegate (WindowListControl wlc){return wlc.Window == window;});
-            FCurrentWindowList[FSelectedWindowIndex].Selected = false;
+            WindowListControl currentWindow = FFullWindowList.Find(delegate (WindowListControl wlc){return wlc.Window == window;});
+            FFullWindowList[FSelectedWindowIndex].Selected = false;
             //mark current window
-            FSelectedWindowIndex = FCurrentWindowList.IndexOf(currentWindow);
-            FCurrentWindowList[FSelectedWindowIndex].Selected = true;
+            FSelectedWindowIndex = FFullWindowList.IndexOf(currentWindow);
+            FFullWindowList[FSelectedWindowIndex].Selected = true;
             
-            foreach(WindowListControl wlc in FCurrentWindowList)
+            foreach(WindowListControl wlc in FFullWindowList)
             {
                 wlc.UpdateCaption();
                 FWindowWidth = Math.Max(FWindowWidth, wlc.CaptionWidth);
@@ -157,27 +154,46 @@ namespace VVVV.Nodes.WindowSwitcher
         
         public void Up()
         {
-            FCurrentWindowList[FSelectedWindowIndex].Selected = false;
+            FFullWindowList[FSelectedWindowIndex].Selected = false;
             FSelectedWindowIndex -= 1;
+            
+            WindowListControl kommunikator = FFullWindowList.Find(delegate (WindowListControl wlc) {return wlc.Window.GetCaption() == "Kommunikator";});
+            
             if (FSelectedWindowIndex == -1)
-                FSelectedWindowIndex = FCurrentWindowList.Count - 1;
-            FCurrentWindowList[FSelectedWindowIndex].Selected = true;
+            	if (kommunikator.Window.IsVisible())
+	                FSelectedWindowIndex = FFullWindowList.Count - 1;
+            	else
+            		FSelectedWindowIndex = FFullWindowList.Count - 2;
+            
+            FFullWindowList[FSelectedWindowIndex].Selected = true;
         }
         
         public void Down()
         {
-            FCurrentWindowList[FSelectedWindowIndex].Selected = false;
-            FSelectedWindowIndex = (FSelectedWindowIndex + 1) % FCurrentWindowList.Count;
-            FCurrentWindowList[FSelectedWindowIndex].Selected = true;
+            FFullWindowList[FSelectedWindowIndex].Selected = false;
+            WindowListControl kommunikator = FFullWindowList.Find(delegate (WindowListControl wlc) {return wlc.Window.GetCaption() == "Kommunikator";});
+            if (kommunikator.Window.IsVisible())
+	            FSelectedWindowIndex = (FSelectedWindowIndex + 1) % FFullWindowList.Count;
+            else
+            	FSelectedWindowIndex = (FSelectedWindowIndex + 1) % (FFullWindowList.Count - 1);
+            FFullWindowList[FSelectedWindowIndex].Selected = true;
         }
         #endregion IWindowSwitcher
         
         private void UpdateList()
         {
-            //the Kommunikator window is always there
-            //exclude it from the list if it is not visible
-            FCurrentWindowList = FFullWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.IsVisible();});
-            
+        	//sort them windows
+        	FFullWindowList.Sort(delegate(WindowListControl w1, WindowListControl w2)
+                             {
+                                 if (w1.Window.GetWindowType() > w2.Window.GetWindowType())
+                                     return 1;
+                                 else if (w1.Window.GetWindowType() < w2.Window.GetWindowType())
+                                     return -1;
+                                 else
+                                     return string.Compare(w1.Window.GetCaption(), w2.Window.GetCaption());
+                             });
+        	
+        	//redraw the list
             this.SuspendLayout();
             this.Controls.Clear();
             //the dummy has keyboardfocus and triggers on CTRL key up
@@ -185,7 +201,7 @@ namespace VVVV.Nodes.WindowSwitcher
             
             CaptionControl title;
             //add patches
-            List<WindowListControl> patches = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == WindowType.Patch;});
+            List<WindowListControl> patches = FFullWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == WindowType.Patch;});
             if (patches.Count > 0)
             {
                 title = new CaptionControl("Patches");
@@ -202,7 +218,7 @@ namespace VVVV.Nodes.WindowSwitcher
             }
             
             //add modules
-            List<WindowListControl> modules = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == WindowType.Module;});
+            List<WindowListControl> modules = FFullWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == WindowType.Module;});
             if (modules.Count > 0)
             {
                 title = new CaptionControl("Modules");
@@ -219,7 +235,7 @@ namespace VVVV.Nodes.WindowSwitcher
             }
             
             //add editors
-            List<WindowListControl> editors = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == WindowType.Editor;});
+            List<WindowListControl> editors = FFullWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == WindowType.Editor;});
             if (editors.Count > 0)
             {
                 title = new CaptionControl("Editors");
@@ -236,7 +252,7 @@ namespace VVVV.Nodes.WindowSwitcher
             }
             
             //add renderer
-            List<WindowListControl> renderer = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == WindowType.Renderer;});
+            List<WindowListControl> renderer = FFullWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == WindowType.Renderer;});
             if (renderer.Count > 0)
             {
                 title = new CaptionControl("Renderer");
@@ -253,7 +269,7 @@ namespace VVVV.Nodes.WindowSwitcher
             }
             
             //add plugins
-            List<WindowListControl> plugins = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == WindowType.Plugin;});
+            List<WindowListControl> plugins = FFullWindowList.FindAll(delegate (WindowListControl wlc) {return wlc.Window.GetWindowType() == WindowType.Plugin;});
             if (plugins.Count > 0)
             {
                 title = new CaptionControl("Plugin");
@@ -270,7 +286,7 @@ namespace VVVV.Nodes.WindowSwitcher
             }
             
             //add HDEs
-            List<WindowListControl> hdes = FCurrentWindowList.FindAll(delegate (WindowListControl wlc) {return (wlc.Window.GetWindowType() == WindowType.HDE) && wlc.Window.IsVisible();});
+            List<WindowListControl> hdes = FFullWindowList.FindAll(delegate (WindowListControl wlc) {return ((wlc.Window.GetWindowType() == WindowType.HDE) && (wlc.Window.GetCaption() != "Kommunikator")) || ((wlc.Window.GetCaption() == "Kommunikator") && (wlc.Window.IsVisible()));});
             if (hdes.Count > 0)
             {
                 title = new CaptionControl("vvvv");
@@ -297,11 +313,11 @@ namespace VVVV.Nodes.WindowSwitcher
         void WindowListControlMouseEnter(object sender, EventArgs e)
         {
             //deselect previously selected
-            FCurrentWindowList[FSelectedWindowIndex].Selected = false;
+            FFullWindowList[FSelectedWindowIndex].Selected = false;
             
             //select sender
             (sender as WindowListControl).Selected = true;
-            FSelectedWindowIndex = FCurrentWindowList.IndexOf(sender as WindowListControl);
+            FSelectedWindowIndex = FFullWindowList.IndexOf(sender as WindowListControl);
         }
         
         void WindowListControlMouseLeave(object sender, EventArgs e)
@@ -313,7 +329,7 @@ namespace VVVV.Nodes.WindowSwitcher
         void FDummyTextBoxKeyUp(object sender, KeyEventArgs e)
         {
             if ((e.KeyData == Keys.ControlKey) || (e.KeyData == Keys.Control))
-                FWindowSwitcherHost.HideMe(FCurrentWindowList[FSelectedWindowIndex].Window);
+                FWindowSwitcherHost.HideMe(FFullWindowList[FSelectedWindowIndex].Window);
         }
     }
 }
