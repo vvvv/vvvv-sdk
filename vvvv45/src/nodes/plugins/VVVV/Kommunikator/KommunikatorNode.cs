@@ -68,7 +68,7 @@ namespace VVVV.Nodes.Kommunikator
         private void InitializeComponent()
         {
         	this.panelScreenshot = new System.Windows.Forms.Panel();
-        	this.ScreenshotPictureBox = new System.Windows.Forms.PictureBox();
+        	this.FPictureBox = new System.Windows.Forms.PictureBox();
         	this.ScreenshotInfoLabel = new System.Windows.Forms.Label();
         	this.panel2 = new System.Windows.Forms.Panel();
         	this.ScreenshotDescriptionTextBox = new System.Windows.Forms.TextBox();
@@ -84,7 +84,7 @@ namespace VVVV.Nodes.Kommunikator
         	this.ConsoleTextBox = new System.Windows.Forms.TextBox();
         	this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
         	this.panelScreenshot.SuspendLayout();
-        	((System.ComponentModel.ISupportInitialize)(this.ScreenshotPictureBox)).BeginInit();
+        	((System.ComponentModel.ISupportInitialize)(this.FPictureBox)).BeginInit();
         	this.panel2.SuspendLayout();
         	this.panel1.SuspendLayout();
         	this.panel3.SuspendLayout();
@@ -92,7 +92,7 @@ namespace VVVV.Nodes.Kommunikator
         	// 
         	// panelScreenshot
         	// 
-        	this.panelScreenshot.Controls.Add(this.ScreenshotPictureBox);
+        	this.panelScreenshot.Controls.Add(this.FPictureBox);
         	this.panelScreenshot.Controls.Add(this.ScreenshotInfoLabel);
         	this.panelScreenshot.Controls.Add(this.panel2);
         	this.panelScreenshot.Controls.Add(this.ConsoleTextBox);
@@ -102,23 +102,23 @@ namespace VVVV.Nodes.Kommunikator
         	this.panelScreenshot.Size = new System.Drawing.Size(489, 402);
         	this.panelScreenshot.TabIndex = 2;
         	// 
-        	// ScreenshotPictureBox
+        	// FPictureBox
         	// 
-        	this.ScreenshotPictureBox.BackColor = System.Drawing.Color.Black;
-        	this.ScreenshotPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-        	this.ScreenshotPictureBox.Cursor = System.Windows.Forms.Cursors.Cross;
-        	this.ScreenshotPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.ScreenshotPictureBox.InitialImage = null;
-        	this.ScreenshotPictureBox.Location = new System.Drawing.Point(0, 0);
-        	this.ScreenshotPictureBox.Name = "ScreenshotPictureBox";
-        	this.ScreenshotPictureBox.Size = new System.Drawing.Size(489, 279);
-        	this.ScreenshotPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-        	this.ScreenshotPictureBox.TabIndex = 3;
-        	this.ScreenshotPictureBox.TabStop = false;
-        	this.ScreenshotPictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBoxScreenshotMouseMove);
-        	this.ScreenshotPictureBox.Resize += new System.EventHandler(this.PictureBoxScreenshotResize);
-        	this.ScreenshotPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBoxScreenshotMouseDown);
-        	this.ScreenshotPictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBoxScreenshotMouseUp);
+        	this.FPictureBox.BackColor = System.Drawing.Color.Black;
+        	this.FPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+        	this.FPictureBox.Cursor = System.Windows.Forms.Cursors.Cross;
+        	this.FPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+        	this.FPictureBox.InitialImage = null;
+        	this.FPictureBox.Location = new System.Drawing.Point(0, 0);
+        	this.FPictureBox.Name = "FPictureBox";
+        	this.FPictureBox.Size = new System.Drawing.Size(489, 279);
+        	this.FPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+        	this.FPictureBox.TabIndex = 3;
+        	this.FPictureBox.TabStop = false;
+        	this.FPictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBoxMouseMove);
+        	this.FPictureBox.Resize += new System.EventHandler(this.PictureBoxResize);
+        	this.FPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBoxMouseDown);
+        	this.FPictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBoxMouseUp);
         	// 
         	// ScreenshotInfoLabel
         	// 
@@ -276,7 +276,7 @@ namespace VVVV.Nodes.Kommunikator
         	this.Size = new System.Drawing.Size(489, 402);
         	this.panelScreenshot.ResumeLayout(false);
         	this.panelScreenshot.PerformLayout();
-        	((System.ComponentModel.ISupportInitialize)(this.ScreenshotPictureBox)).EndInit();
+        	((System.ComponentModel.ISupportInitialize)(this.FPictureBox)).EndInit();
         	this.panel2.ResumeLayout(false);
         	this.panel2.PerformLayout();
         	this.panel1.ResumeLayout(false);
@@ -284,7 +284,7 @@ namespace VVVV.Nodes.Kommunikator
         	this.panel3.ResumeLayout(false);
         	this.ResumeLayout(false);
         }
-        private System.Windows.Forms.PictureBox ScreenshotPictureBox;
+        private System.Windows.Forms.PictureBox FPictureBox;
         private System.Windows.Forms.TextBox ScreenshotDescriptionTextBox;
         private System.Windows.Forms.TextBox PasswordTextBox;
         private System.Windows.Forms.TextBox UsernameTextBox;
@@ -339,12 +339,12 @@ namespace VVVV.Nodes.Kommunikator
             ScreenshotDescriptionTextBox.Text = description;
             
             FOriginal = Clipboard.GetImage();
-            ScreenshotPictureBox.BackgroundImage = FOriginal;
+            FPictureBox.BackgroundImage = FOriginal;
             
             //create overlay image that holds the crop selection
             Image img = new Bitmap(FOriginal.Width, FOriginal.Height, PixelFormat.Format32bppArgb);
             FOverlay = Graphics.FromImage(img);
-            ScreenshotPictureBox.Image = img;
+            FPictureBox.Image = img;
             
             if ((FOriginal.Width >= CHeaderWidth) && (FOriginal.Height >= CHeaderHeight))
                 UseAsHeaderCheckBox.Enabled = true;
@@ -366,7 +366,7 @@ namespace VVVV.Nodes.Kommunikator
         #endregion IKommunikator
         
         #region PictureBox
-        void PictureBoxScreenshotMouseDown(object sender, MouseEventArgs e)
+        void PictureBoxMouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -375,58 +375,66 @@ namespace VVVV.Nodes.Kommunikator
             }
             else
             {
+            	FDrawRect = false; 
+            	
+                UpdateScreenshotInfo();
+                UpdateOverlay();
+                
                 FCropRect = new Rectangle(0, 0, FOriginal.Width, FOriginal.Height);
+            }
+        }
+        
+        void PictureBoxMouseMove(object sender, MouseEventArgs e)
+        {
+            if (FDrawRect)
+            {
+                FMouseCurrentPoint = e.Location;
                 UpdateScreenshotInfo();
                 UpdateOverlay();
             }
         }
         
-        void PictureBoxScreenshotMouseMove(object sender, MouseEventArgs e)
-        {
-            if (FDrawRect)
-            {
-                FMouseCurrentPoint = e.Location;
-                UpdateOverlay();
-            }
-        }
-        
-        void PictureBoxScreenshotMouseUp(object sender, MouseEventArgs e)
+        void PictureBoxMouseUp(object sender, MouseEventArgs e)
         {
             FDrawRect = false;
         }
         
-        void PictureBoxScreenshotResize(object sender, EventArgs e)
+        void PictureBoxResize(object sender, EventArgs e)
         {
             UpdateZoomedImageRect();
         }
         
         private void UpdateScreenshotInfo()
         {
-            ScreenshotInfoLabel.Text = "Original: " + FOriginal.Width.ToString() + " x " + FOriginal.Height.ToString() + " Cropped: " + FCropRect.Width.ToString() + " x " + FCropRect.Height.ToString();
+        	if (FDrawRect)
+            	ScreenshotInfoLabel.Text = "Original: " + FOriginal.Width.ToString() + " x " + FOriginal.Height.ToString() + " Cropped: " + FCropRect.Width.ToString() + " x " + FCropRect.Height.ToString();
+        	else
+        		ScreenshotInfoLabel.Text = "Original: " + FOriginal.Width.ToString() + " x " + FOriginal.Height.ToString();
+        		
             ScreenshotInfoLabel.Invalidate();
         }
         
         private void UpdateZoomedImageRect()
         {
             int left, top, width, height;
-            FPictureBoxAspect = ScreenshotPictureBox.Width / (double) ScreenshotPictureBox.Height;
+            FPictureBoxAspect = FPictureBox.Width / (double) FPictureBox.Height;
             
             //aspect > 1 is landscape
             //aspect <= 1 is portrait
             
             if (FPictureBoxAspect > FOriginalAspect)
             {
-                height = ScreenshotPictureBox.Height;
+                height = FPictureBox.Height;
                 width = (int)Math.Round(height * FOriginalAspect);
             }
             else
             {
-                width = ScreenshotPictureBox.Width;
+                width = FPictureBox.Width;
                 height = (int)Math.Round(width / FOriginalAspect);
             }
             
-            left = ScreenshotPictureBox.Width / 2 - width / 2;
-            top = ScreenshotPictureBox.Height / 2 - height / 2;
+            left = FPictureBox.Width / 2 - width / 2;
+            top = FPictureBox.Height / 2 - height / 2;
             
             FZoomedImage = new Rectangle(left, top, width, height);
         }
@@ -459,9 +467,9 @@ namespace VVVV.Nodes.Kommunikator
             
             FCropRect = new Rectangle(left, top, width, height);
             
-            FOverlay.DrawRectangle(FRectPen, FCropRect);
-            UpdateScreenshotInfo();
-            ScreenshotPictureBox.Invalidate();
+            if (FDrawRect)
+            	FOverlay.DrawRectangle(FRectPen, FCropRect);
+            FPictureBox.Invalidate();
         }
         #endregion PictureBox
         
@@ -543,7 +551,7 @@ namespace VVVV.Nodes.Kommunikator
         {
         	if (UseAsHeaderCheckBox.Checked)
             {
-                FMouseCurrentPoint = new Point(ScreenshotPictureBox.Width/2, ScreenshotPictureBox.Height/2);
+                FMouseCurrentPoint = new Point(FPictureBox.Width/2, FPictureBox.Height/2);
                 UpdateOverlay();
             }
         }
