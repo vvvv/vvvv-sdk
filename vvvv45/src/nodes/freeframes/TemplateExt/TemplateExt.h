@@ -5,7 +5,7 @@
 //freeframe plugin.
 //simple template using freeframe 1.0 extended functionality
 //for spreaded in- and outputs
-//see: http://vvvv.org/tiki-index.php?page=FreeFrameExtendedSpecification
+//see: http://vvvv.org/documentation/freeframeextendedspecification
 
 //////licence
 //GNU Lesser General Public License (LGPL)
@@ -24,14 +24,15 @@
 //freeframe includes
 #include "FreeFrame.h"
 
-//for calloc():
-#include <string>
+//for calloc(), free() and sprintf():
+#include <stdio.h>
+#include <stdlib.h>
 
 
 //pin constants
 #define NUM_INPUTS 1  //number of video inputs
 
-#define NUM_PARAMS 3  //number of input pins
+#define NUM_PARAMS 1  //number of input pins
 #define NUM_OUTPUTS 1 //number of output pins
 
 

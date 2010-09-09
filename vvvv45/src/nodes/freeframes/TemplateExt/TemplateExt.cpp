@@ -5,7 +5,7 @@
 //freeframe plugin.
 //simple template using freeframe 1.0 extended functionality
 //for spreaded in- and outputs
-//see: http://vvvv.org/tiki-index.php?page=FreeFrameExtendedSpecification
+//see: http://vvvv.org/documentation/freeframeextendedspecification
 
 //////licence
 //GNU Lesser General Public License (LGPL)
@@ -103,13 +103,12 @@ DWORD initialise()
 	GParamConstants[0].Default = 0.0f;
 
 	char tempName0[17] = "Dummy Spread";
-
 	memcpy(GParamConstants[0].Name, tempName0, 16);
 
     // populate the output structs
-    GOutputConstants[0].Type = 20;
+    GOutputConstants[0].Type = 10;
 
-	char outName0[17] = "Dummy Out";
+	char outName0[17] = "Dummy Spread Out";
 	memcpy(GOutputConstants[0].Name, outName0, 16);
 
 	return FF_SUCCESS;
@@ -122,7 +121,6 @@ DWORD deInitialise()
 
 LPVOID instantiate(VideoInfoStruct* pVideoInfo)
 {
-
 	// Create local pointer to plugObject
 	plugClass *pPlugObj;
 	// create new instance of plugClass
@@ -141,9 +139,7 @@ LPVOID instantiate(VideoInfoStruct* pVideoInfo)
 
 	pPlugObj->init();
 
-	// Russell - return pointer to the plugin instance object we have created
-
-	// return pointer to object cast as LPVOID
+	// return pointer to the plugin instance object we have created
 	return (LPVOID) pPlugObj;
 }
 
@@ -269,6 +265,7 @@ float* plugClass::getOutput(DWORD index)
 {
     switch(index)
     {
+        //compute the return values for the given index
         //case 0: memcpy(FOutputs[0].Spread, FPixelCount, 256 * sizeof(float));
     }
     return FOutputs[index].Spread;
