@@ -83,7 +83,7 @@ namespace VVVV.PluginInterfaces.V2
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface INodeBrowser: IPluginHDE
 	{
-		void Initialize(string path, string text);
+		void Initialize(string text);
 		void DragDrop(bool allow);
 		void AfterShow();
 		void BeforeHide();

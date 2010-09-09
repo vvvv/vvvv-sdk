@@ -241,9 +241,10 @@ namespace VVVV.Nodes.NodeBrowser
 		}
 		
 		#region INodeBrowser
-		public void Initialize(string path, string text)
+		public void Initialize(string text)
 		{
 			FTagPanel.Initialize(text);
+			FNodeBrowser_OnPanelChange(NodeBrowserPage.ByTags, null);
 		}
 		
 		public new void DragDrop(bool allow)
@@ -334,7 +335,7 @@ namespace VVVV.Nodes.NodeBrowser
 					FClonePanel.SelectNextControl(FClonePanel.ActiveControl, true, true, false, true);
 				else
 				{
-					FTagPanel.AndTags = !FTagPanel.AndTags; //!FAndTags = !FAndTags;
+					FTagPanel.AndTags = !FTagPanel.AndTags; 
 					FTagPanel.Redraw();
 				}
 				return true;
