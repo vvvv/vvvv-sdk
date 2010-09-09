@@ -50,11 +50,6 @@ namespace VVVV.Hosting.Factories
             nodeInfo.Category = match.Groups[2].Value;
             nodeInfo.Version = match.Groups[3].Value;
             
-            //fix possible convention errors
-            if (nodeInfo.Category == "2D") nodeInfo.Category = "2d";
-            else if (nodeInfo.Category == "3D") nodeInfo.Category = "3d";
-            else if (nodeInfo.Category == "4D") nodeInfo.Category = "4d";
-                
             nodeInfo.Filename = filename;
             nodeInfo.Type = NodeType.Module;
             nodeInfo.InitialBoxSize = new System.Drawing.Size(4800, 3600);

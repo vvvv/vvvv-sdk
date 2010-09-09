@@ -13,7 +13,17 @@ namespace VVVV.PluginInterfaces.V2
 	{
 		public PluginInfoAttribute() : base(typeof(IPluginBase)) { }
 		public string Name { get; set; }
-		public string Category { get; set; }
+		private string FCategory;
+		public string Category 
+		{
+			get {return FCategory;}
+			set 
+			{
+				if ((value == "2D") || (value == "3D") || (value == "4D"))
+					value = value.ToLower();
+				FCategory = value;
+			}
+		}
 		public string Version { get; set; }
 		public string Shortcut { get; set; }
 		public string Author { get; set; }
