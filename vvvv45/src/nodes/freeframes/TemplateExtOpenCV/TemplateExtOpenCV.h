@@ -5,7 +5,7 @@
 //freeframe plugin.
 //simple template using freeframe 1.0 extended functionality
 //for spreaded in- and outputs
-//see: http://vvvv.org/tiki-index.php?page=FreeFrameExtendedSpecification
+//see: http://vvvv.org/documentation/freeframeextendedspecification
 //and OpenCV
 
 //////licence

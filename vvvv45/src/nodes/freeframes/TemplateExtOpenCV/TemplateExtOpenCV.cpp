@@ -5,7 +5,7 @@
 //freeframe plugin.
 //simple template using freeframe 1.0 extended functionality
 //for spreaded in- and outputs
-//see: http://vvvv.org/tiki-index.php?page=FreeFrameExtendedSpecification
+//see: http://vvvv.org/documentation/freeframeextendedspecification
 //and OpenCV
 
 //////licence
@@ -114,7 +114,6 @@ DWORD initialise()
 	GParamConstants[0].Default = 0.0f;
 
 	char tempName0[17] = "Dummy Spread";
-
 	memcpy(GParamConstants[0].Name, tempName0, 16);
 
     // populate the output structs
@@ -133,7 +132,6 @@ DWORD deInitialise()
 
 LPVOID instantiate(VideoInfoStruct* pVideoInfo)
 {
-
 	// Create local pointer to plugObject
 	plugClass *pPlugObj;
 	// create new instance of plugClass
@@ -152,9 +150,7 @@ LPVOID instantiate(VideoInfoStruct* pVideoInfo)
 
 	pPlugObj->init();
 
-	// Russell - return pointer to the plugin instance object we have created
-
-	// return pointer to object cast as LPVOID
+	// return pointer to the plugin instance object we have created
 	return (LPVOID) pPlugObj;
 }
 
@@ -220,16 +216,17 @@ plugClass::plugClass()
 
 void plugClass::init()
 {
-/*    FImageSize.width = FVideoInfo.frameWidth;
+    FImageSize.width = FVideoInfo.frameWidth;
     FImageSize.height = FVideoInfo.frameHeight;
 
     // -> setting defaults for input values //
-    for (int in=0; in<NUM_PARAMS; in++) FParams[in].Value=GParamConstants[in].Default;
+    for (int in=0; in<NUM_PARAMS; in++)
+        FParams[in].Value=GParamConstants[in].Default;
 
     // -> allocating image buffers  //
     FCurrentImage = cvCreateImageHeader(FImageSize, IPL_DEPTH_8U, 3);
     FGrayImage = cvCreateImage(FImageSize, IPL_DEPTH_8U, 1);
-*/
+
    /*
     char buffer[100];
     sprintf(buffer, "%i x %i", FImageSize.width, FImageSize.height);
@@ -293,6 +290,7 @@ float* plugClass::getOutput(DWORD index)
 {
     switch(index)
     {
+       //compute the return values for the given index
        // case 0: memcpy(FOutputs[0].Spread, FPixelCount, 256 * sizeof(float));
     }
     return FOutputs[index].Spread;

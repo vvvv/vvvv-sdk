@@ -145,7 +145,7 @@ typedef char BYTE;
 #define FF_TYPE_STANDARD			10
 #define FF_TYPE_TEXT				100
 
-//freeframe 1.0 extended. see: http://vvvv.org/tiki-index.php?page=FreeFrameExtendedSpecification
+//freeframe 1.0 extended. see: http://vvvv.org/documentation/freeframeextendedspecification
 #define FF_TYPE_VALUESPREAD			20
 #define FF_TYPE_COLORSPREAD			21
 #define FF_TYPE_STRINGESPREAD		22
