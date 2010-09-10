@@ -366,6 +366,24 @@ namespace VVVV.HDE.CodeEditor
 			}
 		}
 		
+		protected override bool ProcessKeyPreview(ref Message m)
+		{
+			KeyEventArgs ke = new KeyEventArgs((Keys)m.WParam.ToInt32() | ModifierKeys);
+			//bug: this is only called if W is pressed before Ctrl
+			if (ke.Control && ke.KeyCode == Keys.W)
+			{
+				if (FTabControl.TabCount > 1)
+				{
+					Close((FTabControl.SelectedTab.Controls[0] as CodeEditor).Document);
+					return true;
+				}
+				else 
+					return false;
+			}
+			else
+				return base.ProcessKeyPreview(ref m);
+		}
+		
 		#region IDocumentLocator
 		
 		public ICSharpCode.TextEditor.Document.IDocument GetSDDocument(ITextDocument document)
