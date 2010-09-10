@@ -46,11 +46,12 @@ namespace VVVV.HDE.CodeEditor.Gui.Dialogs
 			// 
 			// FMessageLabel
 			// 
-			this.FMessageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.FMessageLabel.AutoSize = true;
+			this.FMessageLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FMessageLabel.Location = new System.Drawing.Point(12, 16);
 			this.FMessageLabel.Margin = new System.Windows.Forms.Padding(0);
 			this.FMessageLabel.Name = "FMessageLabel";
-			this.FMessageLabel.Size = new System.Drawing.Size(400, 20);
+			this.FMessageLabel.Size = new System.Drawing.Size(74, 20);
 			this.FMessageLabel.TabIndex = 1;
 			this.FMessageLabel.Text = "Filename";
 			this.FMessageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -130,6 +131,7 @@ namespace VVVV.HDE.CodeEditor.Gui.Dialogs
 			this.Load += new System.EventHandler(this.SaveDialogLoad);
 			this.panel1.ResumeLayout(false);
 			this.ResumeLayout(false);
+			this.PerformLayout();
 		}
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Button FCloseButton;

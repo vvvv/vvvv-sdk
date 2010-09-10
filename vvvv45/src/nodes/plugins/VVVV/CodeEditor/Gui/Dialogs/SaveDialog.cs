@@ -38,6 +38,7 @@ namespace VVVV.HDE.CodeEditor.Gui.Dialogs
 			set
 			{
 				FMessageLabel.Text = value;
+				Width = Math.Min(800, Math.Max(panel1.Width, 24 + FMessageLabel.Width));
 			}
 		}
 		
