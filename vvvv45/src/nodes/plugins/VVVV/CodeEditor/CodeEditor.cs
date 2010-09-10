@@ -186,7 +186,6 @@ namespace VVVV.HDE.CodeEditor
 			FTextEditorControl.ActiveTextAreaControl.SelectionManager.SelectionChanged += FTextEditorControl_ActiveTextAreaControl_SelectionManager_SelectionChanged;
 			
 			FTextEditorControl.ActiveTextAreaControl.TextArea.Resize += FTextEditorControl_ActiveTextAreaControl_TextArea_Resize;
-			FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown += TextAreaKeyDownCB;
 			FTextEditorControl.TextChanged += TextEditorControlTextChangedCB;
 			
 			// Start parsing after 500ms have passed after last key stroke.
@@ -260,7 +259,6 @@ namespace VVVV.HDE.CodeEditor
 					if (FTextEditorControl != null)
 					{
 						FTextEditorControl.TextChanged -= TextEditorControlTextChangedCB;
-						FTextEditorControl.ActiveTextAreaControl.TextArea.KeyDown -= TextAreaKeyDownCB;
 						FTextEditorControl.ActiveTextAreaControl.TextArea.Resize -= FTextEditorControl_ActiveTextAreaControl_TextArea_Resize;
 						FTextEditorControl.ActiveTextAreaControl.TextArea.KeyEventHandler -= TextAreaKeyEventHandler;
 						FTextEditorControl.ActiveTextAreaControl.SelectionManager.SelectionChanged -= FTextEditorControl_ActiveTextAreaControl_SelectionManager_SelectionChanged;
@@ -587,24 +585,25 @@ namespace VVVV.HDE.CodeEditor
 			FTextEditorControl.Refresh();
 		}
 		
-		void TextAreaKeyDownCB(object sender, KeyEventArgs args)
+		protected override bool ProcessKeyPreview(ref Message m)
 		{
-			if (args.Control && args.KeyCode == Keys.S)
+			KeyEventArgs ke = new KeyEventArgs((Keys)m.WParam.ToInt32() | ModifierKeys);
+			if (ke.Control && ke.KeyCode == Keys.S)
 			{
 				SyncControlWithDocument();
 				Document.Save();
 				// Trigger a recompile
 				Document.Project.Save();
-				args.Handled = true;
+				return true;
 			}
-			else if (args.Control && args.KeyCode == Keys.F)
+			else if (ke.Control && ke.KeyCode == Keys.F)
 			{
 				// Show search bar
 				FSearchBar.ShowSearchBar();
-				args.Handled = true;
+				return true;
 			}
 			else
-				args.Handled = false;
+				return base.ProcessKeyPreview(ref m);
 		}
 		
 		List<SD.TextMarker> FErrorMarkers = new List<SD.TextMarker>();
