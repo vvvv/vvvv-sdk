@@ -195,6 +195,8 @@ namespace VVVV.HDE.CodeEditor
 				var codeEditor = tabPage.Controls[0] as CodeEditor;
 				FSDDocToDocMap.Remove(codeEditor.SDDocument);
 				FTabControl.Controls.Remove(tabPage);
+				tabPage.Dispose();
+
 				FOpenedDocuments.Remove(doc);
 				
 				var project = doc.Project;
@@ -216,6 +218,12 @@ namespace VVVV.HDE.CodeEditor
 		protected string GetTabPageName(ITextDocument document)
 		{
 			var name = document.Mapper.Map<INamed>().Name;
+			
+			var fileName = document.Location.LocalPath;
+			var isReadOnly = (File.GetAttributes(fileName) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
+			
+			if (isReadOnly)
+				name = name + "+";
 			
 			if (document.IsDirty)
 				return name + "*";

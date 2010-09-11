@@ -56,7 +56,7 @@ namespace VVVV.HDE.CodeEditor
 		#region Fields
 		
 		private ICSharpCode.TextEditor.TextEditorControl FTextEditorControl;
-		private CodeCompletionWindow FCodeCompletionWindow;
+		private CodeCompletionWindow FCompletionWindow;
 		private InsightWindow FInsightWindow;
 		private System.Windows.Forms.Timer FTimer;
 		private CodeEditorForm FCodeEditorForm;
@@ -133,6 +133,9 @@ namespace VVVV.HDE.CodeEditor
 			FTextEditorControl.TextEditorProperties.AutoInsertCurlyBracket = true;
 			
 			var fileName = doc.Location.LocalPath;
+			
+			var isReadOnly = (File.GetAttributes(fileName) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
+			FTextEditorControl.Document.ReadOnly = isReadOnly;
 			
 			// Setup search bar
 			FSearchBar = new SearchBar(FTextEditorControl);
@@ -714,22 +717,30 @@ namespace VVVV.HDE.CodeEditor
 		{
 			try
 			{
-				FCodeCompletionWindow = CodeCompletionWindow.ShowCompletionWindow(
+				FCompletionWindow = CodeCompletionWindow.ShowCompletionWindow(
 					FCodeEditorForm,					// The parent window for the completion window
 					FTextEditorControl, 				// The text editor to show the window for
 					Document.Location.LocalPath,		// Filename - will be passed back to the provider
 					completionDataProvider,				// Provider to get the list of possible completions
 					key									// Key pressed - will be passed to the provider
 				);
-				if (FCodeCompletionWindow != null)
+				if (FCompletionWindow != null)
 				{
 					// ShowCompletionWindow can return null when the provider returns an empty list
-					FCodeCompletionWindow.Closed += CloseCodeCompletionWindow;
+					FCompletionWindow.Closed += CloseCodeCompletionWindow;
 				}
 			}
 			catch (Exception e)
 			{
 				Logger.Log(e);
+			}
+		}
+		
+		public void CloseCompletionWindow()
+		{
+			if (FCompletionWindow != null && !FCompletionWindow.IsDisposed)
+			{
+				FCompletionWindow.Close();
 			}
 		}
 		
@@ -771,12 +782,12 @@ namespace VVVV.HDE.CodeEditor
 			
 			try
 			{
-				if (FCodeCompletionWindow != null && !FCodeCompletionWindow.IsDisposed) {
+				if (FCompletionWindow != null && !FCompletionWindow.IsDisposed) {
 					// If completion window is open and wants to handle the key, don't let the text area handle it.
-					if (FCodeCompletionWindow.ProcessKeyEvent(key)) {
+					if (FCompletionWindow.ProcessKeyEvent(key)) {
 						return true;
 					}
-					if (FCodeCompletionWindow != null && !FCodeCompletionWindow.IsDisposed) {
+					if (FCompletionWindow != null && !FCompletionWindow.IsDisposed) {
 						// code-completion window is still opened but did not want to handle
 						// the keypress -> don't try to restart code-completion
 						return false;
@@ -795,11 +806,11 @@ namespace VVVV.HDE.CodeEditor
 		
 		void CloseCodeCompletionWindow(object sender, EventArgs e)
 		{
-			if (FCodeCompletionWindow != null)
+			if (FCompletionWindow != null)
 			{
-				FCodeCompletionWindow.Closed -= CloseCodeCompletionWindow;
-				FCodeCompletionWindow.Dispose();
-				FCodeCompletionWindow = null;
+				FCompletionWindow.Closed -= CloseCodeCompletionWindow;
+				FCompletionWindow.Dispose();
+				FCompletionWindow = null;
 			}
 		}
 		
