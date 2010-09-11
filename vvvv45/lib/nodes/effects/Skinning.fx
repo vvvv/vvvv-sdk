@@ -46,7 +46,7 @@ float3 Diffuse(float3 normal)
 {
 	float cosTheta;
 
-	cosTheta = max(0.0f, dot(normal, LightDirection.xyz));
+	cosTheta = max(0.0f, dot(normal, -LightDirection.xyz));
 
 	return (cosTheta);
 }
