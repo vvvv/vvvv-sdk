@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta22.dtd" >
-   <PATCH nodename="C:\Users\joreg\Desktop\vvvvs\vvvv_40beta22_\plugins\Mesh (EX9.Geometry Collada) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha24.dtd" >
+   <PATCH nodename="C:\Users\Joreg\Desktop\vvvvs\vvvv_45alpha24\plugins\Mesh (EX9.Geometry Collada) help.v4p">
    <BOUNDS height="13800" left="6270" top="495" type="Window" width="10875">
    </BOUNDS>
    <NODE componentmode="InABox" id="35" nodename="IOBox (String)">
@@ -32,30 +32,6 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="33" nodename=":EFFECTS:\GouraudDirectional.fx">
-   <BOUNDS height="0" left="4815" top="4395" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="6000" left="4815" top="4395" type="Box" width="6000">
-   </BOUNDS>
-   <BOUNDS height="12000" left="9075" top="11205" type="Window" width="12000">
-   </BOUNDS>
-   <PIN pinname="Mesh" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="Texture" visible="1">
-   </PIN>
-   <PIN pinname="Ambient Color" slicecount="1" visible="1" values="|0.25271,0.25271,0.25271,1.00000|">
-   </PIN>
-   <PIN pinname="Diffuse Color" slicecount="1" values="|0.68224,0.68224,0.68224,1.00000|">
-   </PIN>
-   <PIN pinname="Specular Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
-   </PIN>
-   <PIN pinname="Light Direction XYZ" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="32" nodename="IOBox (String)">
    <BOUNDS height="270" left="4875" top="180" type="Node" width="1905">
    </BOUNDS>
@@ -70,7 +46,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="31" nodename="FILETEXTURE (EX9.TEXTURE)">
+   <NODE componentmode="Hidden" id="31" nodename="FileTexture (EX9.Texture)">
    <BOUNDS height="0" left="5445" top="3270" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Filename" visible="1">
@@ -262,7 +238,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="17" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" path="C:\Users\joreg\Desktop\vvvvs\vvvv_40beta22_\modules\vvvv group\Transform\">
+   <NODE componentmode="Hidden" id="17" nodename="..\modules\vvvv group\Transform\Camera (Transform Softimage).v4p" path="C:\Users\Joreg\Desktop\vvvvs\vvvv_45alpha24\modules\vvvv group\Transform\">
    <BOUNDS height="0" left="1170" top="4200" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="3600" left="1170" top="4200" type="Box" width="4800">
@@ -275,18 +251,20 @@
    </PIN>
    <PIN pinname="Inital Distance" slicecount="1" values="0.2">
    </PIN>
-   <PIN pinname="Initial Yaw" slicecount="1" values="0">
+   <PIN pinname="Initial Yaw" slicecount="1" values="-0.5">
    </PIN>
    <PIN pinname="Initial FOV" slicecount="1" values="0.2">
    </PIN>
    <PIN pinname="Initial Interest" visible="1">
+   </PIN>
+   <PIN pinname="Initial Pitch" slicecount="1" values="-3.46944695195361E-018">
    </PIN>
    </NODE>
    <LINK dstnodeid="20" dstpinname="View Transform" srcnodeid="17" srcpinname="View">
    </LINK>
    <LINK dstnodeid="20" dstpinname="Projection Transform" srcnodeid="17" srcpinname="Projection">
    </LINK>
-   <NODE componentmode="Hidden" id="16" nodename=":EFFECTS:\Skinning.fx">
+   <NODE componentmode="Hidden" id="16" nodename="Skinning (EX9.Effect)">
    <BOUNDS height="0" left="4815" top="12090" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6000" left="4815" top="12090" type="Box" width="6000">
@@ -314,7 +292,7 @@
    <PIN pinname="LightDirection " visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="15" nodename=":PLUGINS:\ColladaLoader.dll|VVVV.Nodes.PluginColladaMesh">
+   <NODE componentmode="Hidden" id="15" nodename="Mesh (EX9.Geometry Collada)">
    <BOUNDS height="0" left="4980" top="2730" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="4980" top="2730" type="Box" width="0">
@@ -336,9 +314,7 @@
    <PIN pinname="Transforms" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="33" dstpinname="Mesh" srcnodeid="15" srcpinname="Mesh">
-   </LINK>
-   <NODE componentmode="Hidden" id="14" nodename=":PLUGINS:\ColladaLoader.dll|VVVV.Nodes.PluginColladaLoader">
+   <NODE componentmode="Hidden" id="14" nodename="ColladaFile (EX9.Geometry)">
    <BOUNDS height="0" left="4980" top="1815" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="4980" top="1815" type="Box" width="0">
@@ -374,14 +350,6 @@
    </LINK>
    <LINK dstnodeid="31" dstpinname="Filename" srcnodeid="15" srcpinname="TextureFileName">
    </LINK>
-   <LINK dstnodeid="33" dstpinname="Texture" linkstyle="VHV" srcnodeid="31" srcpinname="Texture Out">
-   <LINKPOINT x="5475" y="4230">
-   </LINKPOINT>
-   <LINKPOINT x="6285" y="4230">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="33" dstpinname="Transform" srcnodeid="15" srcpinname="Transforms">
-   </LINK>
    <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
    <BOUNDS height="270" left="4860" top="6840" type="Node" width="1905">
    </BOUNDS>
@@ -396,7 +364,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="12" nodename="FILETEXTURE (EX9.TEXTURE)">
+   <NODE componentmode="Hidden" id="12" nodename="FileTexture (EX9.Texture)">
    <BOUNDS height="0" left="5430" top="10290" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Filename" visible="1">
@@ -494,7 +462,7 @@
    <PIN pinname="Input String" slicecount="1" values="astroBoy_walk.dae">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="4" nodename=":PLUGINS:\ColladaLoader.dll|VVVV.Nodes.PluginColladaMesh">
+   <NODE componentmode="Hidden" id="4" nodename="Mesh (EX9.Geometry Collada)">
    <BOUNDS height="0" left="4965" top="9450" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="4965" top="9450" type="Box" width="0">
@@ -518,7 +486,7 @@
    <PIN pinname="Skinning Transforms" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="3" nodename=":PLUGINS:\ColladaLoader.dll|VVVV.Nodes.PluginColladaLoader">
+   <NODE componentmode="Hidden" id="3" nodename="ColladaFile (EX9.Geometry)">
    <BOUNDS height="0" left="4965" top="8535" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="4965" top="8535" type="Box" width="0">
@@ -568,21 +536,7 @@
    <LINKPOINT x="5940" y="11880">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="23" dstpinname="Layers" linkstyle="VHV" srcnodeid="33" srcpinname="Layer">
-   <LINKPOINT x="4815" y="4793">
-   </LINKPOINT>
-   <LINKPOINT x="270" y="4793">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="20" dstpinname="Layers" linkstyle="VHV" srcnodeid="16" srcpinname="Layer">
-   <LINKPOINT x="4650" y="12315">
-   </LINKPOINT>
-   <LINKPOINT x="4650" y="10785">
-   </LINKPOINT>
-   <LINKPOINT x="225" y="10770">
-   </LINKPOINT>
-   </LINK>
-   <NODE componentmode="Hidden" id="2" nodename=":MODULES:\vvvv group\EX9\Light (EX9 Direction).v4p" path="C:\Users\joreg\Desktop\vvvvs\vvvv_40beta22_\modules\vvvv group\EX9\">
+   <NODE componentmode="Hidden" id="2" nodename="..\modules\vvvv group\EX9\Light (EX9 Direction).v4p" path="C:\Users\Joreg\Desktop\vvvvs\vvvv_45alpha24\modules\vvvv group\EX9\">
    <BOUNDS height="0" left="5280" top="3720" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="3600" left="5280" top="3720" type="Box" width="4800">
@@ -593,7 +547,7 @@
    </PIN>
    <PIN pinname="Pitch" slicecount="1" values="0.490000000000001">
    </PIN>
-   <PIN pinname="Yaw" slicecount="1" values="-3.60822483003176E-015">
+   <PIN pinname="Yaw" slicecount="1" values="-0.44">
    </PIN>
    </NODE>
    <LINK dstnodeid="16" dstpinname="LightDirection " srcnodeid="2" srcpinname="Light Direction Out">
@@ -608,17 +562,9 @@
    </NODE>
    <LINK dstnodeid="17" dstpinname="Initial Interest" srcnodeid="1" srcpinname="XYZ">
    </LINK>
-   <LINK dstnodeid="4" dstpinname="Time" linkstyle="VHV" srcnodeid="6" srcpinname="Output">
-   <LINKPOINT x="6285" y="9105">
-   </LINKPOINT>
-   <LINKPOINT x="5430" y="9105">
-   </LINKPOINT>
-   </LINK>
    <LINK dstnodeid="23" dstpinname="View Transform" srcnodeid="17" srcpinname="View">
    </LINK>
    <LINK dstnodeid="23" dstpinname="Projection Transform" srcnodeid="17" srcpinname="Projection">
-   </LINK>
-   <LINK dstnodeid="33" dstpinname="Light Direction XYZ" srcnodeid="2" srcpinname="Light Direction Out">
    </LINK>
    <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
    <BOUNDS height="1110" left="6810" top="2715" type="Node" width="6315">
@@ -634,4 +580,58 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
+   <LINK srcnodeid="16" srcpinname="Layer" dstnodeid="20" dstpinname="Layers" linkstyle="VHV">
+   <LINKPOINT x="4815" y="12398">
+   </LINKPOINT>
+   <LINKPOINT x="270" y="12398">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="37" nodename="GouraudDirectional (EX9.Effect)">
+   <BOUNDS height="100" left="4815" top="4395" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="0" left="4815" top="4395" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="12195" top="5340" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Ambient Color" slicecount="1" visible="1" values="|0.25271,0.25271,0.25271,1.00000|">
+   </PIN>
+   <PIN pinname="Diffuse Color" slicecount="1" values="|0.68224,0.68224,0.68224,1.00000|">
+   </PIN>
+   <PIN pinname="Specular Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Light Direction XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="37" dstpinname="Mesh" srcnodeid="15" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="37" dstpinname="Texture" linkstyle="VHV" srcnodeid="31" srcpinname="Texture Out">
+   <LINKPOINT x="5475" y="4230">
+   </LINKPOINT>
+   <LINKPOINT x="6285" y="4230">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="37" dstpinname="Transform" srcnodeid="15" srcpinname="Transforms">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Layers" linkstyle="VHV" srcnodeid="37" srcpinname="Layer">
+   <LINKPOINT x="4815" y="4793">
+   </LINKPOINT>
+   <LINKPOINT x="270" y="4793">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="37" dstpinname="Light Direction XYZ" srcnodeid="2" srcpinname="Light Direction Out">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Output" dstnodeid="4" dstpinname="Time" linkstyle="VHV">
+   <LINKPOINT x="6255" y="9113">
+   </LINKPOINT>
+   <LINKPOINT x="5460" y="9113">
+   </LINKPOINT>
+   </LINK>
    </PATCH>
