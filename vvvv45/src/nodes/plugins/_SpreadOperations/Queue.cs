@@ -50,7 +50,8 @@ namespace VVVV.Nodes
     [PluginInfo(Name = "Queue",
                 Category = "Spreads",
                 Version = "",
-                Tags = ""
+                Tags = "",
+                AutoEvaluate = true
                 )]
     public class ValueQueue : Queue<double>
     {
@@ -59,7 +60,8 @@ namespace VVVV.Nodes
     [PluginInfo(Name = "Queue",
                 Category = "Color",
                 Version = "",
-                Tags = ""
+                Tags = "",
+                AutoEvaluate = true
                 )]
     public class ColorQueue : Queue<RGBAColor>
     {
@@ -68,7 +70,8 @@ namespace VVVV.Nodes
     [PluginInfo(Name = "Queue",
                 Category = "String",
                 Version = "",
-                Tags = ""
+                Tags = "",
+                AutoEvaluate = true
                 )]
     public class StringQueue : Queue<string>
     {
@@ -77,7 +80,8 @@ namespace VVVV.Nodes
     [PluginInfo(Name = "Queue",
                 Category = "Transform",
                 Version = "",
-                Tags = ""
+                Tags = "",
+                AutoEvaluate = true
                 )]
     public class TransformQueue : Queue<Matrix4x4>
     {
@@ -86,7 +90,8 @@ namespace VVVV.Nodes
     [PluginInfo(Name = "Queue",
                 Category = "Enumerations",
                 Version = "",
-                Tags = ""
+                Tags = "",
+                AutoEvaluate = true
                 )]
     public class EnumQueue : Queue<EnumEntry>
     {
