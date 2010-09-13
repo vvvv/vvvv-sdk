@@ -56,7 +56,7 @@ namespace VVVV.Utils.Animation
 			Size = size;
 		}
 		
-		public Particle(double time, double lifeTime, Vector3D pos, Vector3D vel, double size)
+		public Particle(double time, double lifeTime, Vector3D pos, Vector3D vel, double size, double mass)
 			: this(time, lifeTime, pos, vel, size)
 		{
 			Mass = mass;
