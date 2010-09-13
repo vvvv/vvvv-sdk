@@ -353,6 +353,8 @@ namespace VVVV.Nodes.NodeBrowser
 
                 int y = FRichTextBox.GetPositionFromCharIndex(FRichTextBox.GetFirstCharIndexFromLine(FHoverLine)).Y;
                 string tip = "";
+                if (ni.Type == NodeType.Dynamic || ni.Type == NodeType.Effect)
+                    tip = "Press CTRL + Enter to clone this node.\n";
                 if (!string.IsNullOrEmpty(ni.Shortcut))
                     tip = "(" + ni.Shortcut + ") " ;
                 if (!string.IsNullOrEmpty(ni.Help))

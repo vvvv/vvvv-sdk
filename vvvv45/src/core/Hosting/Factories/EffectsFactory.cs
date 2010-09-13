@@ -182,7 +182,7 @@ namespace VVVV.Hosting.Factories
 				var project = FProjects[nodeInfo.Filename];
 				var newProject = project.Clone() as FXProject;
 				
-				var projectDir = project.Location.GetLocalDir();
+				var projectDir = path; //project.Location.GetLocalDir();
 				var newProjectName = name + ".fx";
 				var newLocation = new Uri(projectDir.ConcatPath(newProjectName));
 				newProject.Location = newLocation;

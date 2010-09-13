@@ -30,9 +30,9 @@ namespace VVVV.Nodes.NodeBrowser
         public NodeInfoEntry(INodeInfo nodeInfo): base()
         {
             NodeInfo = nodeInfo;
-            FCategory = nodeInfo.Category;
-            FUsername = nodeInfo.Username;
-            FSystemname = nodeInfo.Systemname;
+            FCategory = NodeInfo.Category;
+            FUsername = NodeInfo.Username;
+            FSystemname = NodeInfo.Systemname;
             
             FTooltip = "";
             switch (NodeInfo.Type)
@@ -40,6 +40,7 @@ namespace VVVV.Nodes.NodeBrowser
                     case NodeType.Native: {FTooltip = ""; break;}
                     case NodeType.Plugin: {FTooltip = "P  "; break;}
                     case NodeType.Module: {FTooltip = "M  "; break;}
+                    case NodeType.Dynamic: {FTooltip = "D  "; break;}
                     case NodeType.Patch: {FTooltip = "V4P "; break;}
                     case NodeType.Effect: {FTooltip = "FX  "; break;}
                     case NodeType.Freeframe: {FTooltip = "FF  "; break;}
