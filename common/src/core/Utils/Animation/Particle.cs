@@ -5,7 +5,8 @@ using VVVV.Utils.VMath;
 namespace VVVV.Utils.Animation
 {
 	/// <summary>
-	/// Description of Particle.
+	/// A particle class with common data fields.
+	/// The Update method is virtual, so it can be overwritten in sub classes.
 	/// </summary>
 	public class Particle
 	{
@@ -14,7 +15,7 @@ namespace VVVV.Utils.Animation
 		public Vector3D Acceleration;
 		public double Size;
 		public double Mass;
-		public double Age { get; private set; }
+		public double Age { get; protected set; }
 		public double StartTime;
 		public double LifeTime;
 		protected double FCurrentTime;
