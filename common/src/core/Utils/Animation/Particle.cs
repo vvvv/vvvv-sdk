@@ -19,6 +19,8 @@ namespace VVVV.Utils.Animation
 		public double LifeTime;
 		protected double FCurrentTime;
 		
+		#region constructors
+		
 		/// <summary>
 		/// Creates a new Particle instance and sets the time.
 		/// </summary>
@@ -68,6 +70,8 @@ namespace VVVV.Utils.Animation
 			Mass = mass;
 		}
 		
+		#endregion constructors
+		
 		/// <summary>
 		/// Updates the paticle age and position.
 		/// </summary>
@@ -80,9 +84,11 @@ namespace VVVV.Utils.Animation
 			FCurrentTime = time;
 			Age = VMath.VMath.Clamp((FCurrentTime - StartTime)/LifeTime, 0, 1);
 			
+			//cal position
 			Velocity += Acceleration * dt;
 			Position += Velocity * dt;
 			
+			//is dead?
 			return Age == 1.0;
 		}
 	}
