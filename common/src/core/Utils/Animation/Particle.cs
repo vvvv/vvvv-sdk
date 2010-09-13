@@ -81,11 +81,11 @@ namespace VVVV.Utils.Animation
 		public virtual bool Update(double time)
 		{
 			//calc timings
-			var dt = FCurrentTime - time;
+			var dt = time - FCurrentTime;
 			FCurrentTime = time;
 			Age = VMath.VMath.Clamp((FCurrentTime - StartTime)/LifeTime, 0, 1);
 			
-			//cal position
+			//calc position
 			Velocity += Acceleration * dt;
 			Position += Velocity * dt;
 			
