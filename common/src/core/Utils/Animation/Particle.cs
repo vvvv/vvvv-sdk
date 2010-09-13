@@ -20,8 +20,10 @@ namespace VVVV.Utils.Animation
 		protected double FCurrentTime;
 		
 		/// <summary>
-		/// Creates a new Particle instance and sets the time
+		/// Creates a new Particle instance and sets the time.
 		/// </summary>
+		/// <param name="time">Current system time in seconds.</param>
+		/// <param name="lifeTime">Max life time in seconds.</param>
 		public Particle(double time, double lifeTime)
 		{
 			StartTime = time;
@@ -54,12 +56,17 @@ namespace VVVV.Utils.Animation
 			Size = size;
 		}
 		
+		/// <summary>
+		/// Updates the paticle age and position.
+		/// </summary>
+		/// <param name="time">Current time in seconds.</param>
+		/// <returns>False if the particle is dead.</returns>
 		public virtual bool Update(double time)
 		{
 			//calc timings
 			var dt = FCurrentTime - time;
 			FCurrentTime = time;
-			Age = VMath.Clamp((FCurrentTime - StartTime)/LifeTime, 0, 1);
+			Age = VMath.VMath.Clamp((FCurrentTime - StartTime)/LifeTime, 0, 1);
 			
 			Velocity += Acceleration * dt;
 			Position += Velocity * dt;
