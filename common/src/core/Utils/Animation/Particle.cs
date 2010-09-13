@@ -19,6 +19,7 @@ namespace VVVV.Utils.Animation
 		public double StartTime;
 		public double LifeTime;
 		protected double FCurrentTime;
+		protected double Fdt;
 		
 		#region constructors
 		
@@ -74,20 +75,29 @@ namespace VVVV.Utils.Animation
 		#endregion constructors
 		
 		/// <summary>
+		/// Updates the time variables dt and age.
+		/// </summary>
+		/// <param name="time">Current system time in seconds</param>
+		protected virtual void UpdateTime(double time)
+		{
+			Fdt = time - FCurrentTime;
+			FCurrentTime = time;
+			Age = VMath.VMath.Clamp((FCurrentTime - StartTime)/LifeTime, 0, 1);
+		}
+		
+		/// <summary>
 		/// Updates the paticle age and position.
 		/// </summary>
-		/// <param name="time">Current time in seconds.</param>
+		/// <param name="time">Current system time in seconds.</param>
 		/// <returns>False if the particle is dead.</returns>
 		public virtual bool Update(double time)
 		{
 			//calc timings
-			var dt = time - FCurrentTime;
-			FCurrentTime = time;
-			Age = VMath.VMath.Clamp((FCurrentTime - StartTime)/LifeTime, 0, 1);
+			UpdateTime(time);
 			
 			//calc position
-			Velocity += Acceleration * dt;
-			Position += Velocity * dt;
+			Velocity += Acceleration * Fdt;
+			Position += Velocity * Fdt;
 			
 			//is dead?
 			return Age != 1.0;
