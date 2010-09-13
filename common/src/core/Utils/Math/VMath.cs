@@ -157,10 +157,7 @@ namespace VVVV.Utils.VMath
 			else if (z < 0)
 			{
 				int remainder = z % d;
-				if (remainder == 0)
-					return 0;
-				else
-					return remainder + d;
+				return remainder == 0 ? 0 : remainder + d;
 			}
 			else
 				return z;
