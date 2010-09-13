@@ -90,7 +90,7 @@ namespace VVVV.Utils.Animation
 			Position += Velocity * dt;
 			
 			//is dead?
-			return Age == 1.0;
+			return Age != 1.0;
 		}
 	}
 }
