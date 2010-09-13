@@ -56,6 +56,18 @@ namespace VVVV.Utils.Animation
 			Size = size;
 		}
 		
+		public Particle(double time, double lifeTime, Vector3D pos, Vector3D vel, double size)
+			: this(time, lifeTime, pos, vel, size)
+		{
+			Mass = mass;
+		}
+		
+		public Particle(double time, double lifeTime, Vector3D pos, Vector3D vel, Vector3D acc, double size, double mass)
+			: this(time, lifeTime, pos, vel, acc, size)
+		{
+			Mass = mass;
+		}
+		
 		/// <summary>
 		/// Updates the paticle age and position.
 		/// </summary>
