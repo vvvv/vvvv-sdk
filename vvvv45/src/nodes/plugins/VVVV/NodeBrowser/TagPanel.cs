@@ -297,22 +297,28 @@ namespace VVVV.Nodes.NodeBrowser
 			string username = FRichTextBox.Lines[FHoverLine].Trim();
             FRichTextBox.SelectionStart = FRichTextBox.GetFirstCharIndexFromLine(FHoverLine)+1;
             FTagsTextBox.Focus();
+            var selNode = FNodeDict[username];
             
             //as plugin in its own window
             if (AllowDragDrop)
             {
-                string systemname = FNodeDict[username].Systemname;
+                string systemname = selNode.Systemname;
                 FTagsTextBox.DoDragDrop(systemname, DragDropEffects.All);
                 return;
             }
             
-            //popped up on doubleclick
+            //else popped up on doubleclick
             if (e.Button == MouseButtons.Left)
-                OnCreateNode(FNodeDict[username]);
+            {
+                if ((Control.ModifierKeys == Keys.Control) && ((selNode.Type == NodeType.Dynamic) || (selNode.Type == NodeType.Effect)))
+					OnPanelChange(NodeBrowserPage.Clone, selNode);
+                else
+                    OnCreateNode(selNode);
+            }
             else if (e.Button == MouseButtons.Middle)
-                OnShowNodeReference(FNodeDict[username]);
+                OnShowNodeReference(selNode);
             else
-                OnShowHelpPatch(FNodeDict[username]);
+                OnShowHelpPatch(selNode);
 		}
 		
 		void RichTextBoxMouseMove(object sender, MouseEventArgs e)
@@ -334,11 +340,16 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		void RichTextBoxMouseUp(object sender, MouseEventArgs e)
 		{
-			//hack: called only to re-focus active patch
-			//after this mouseup set the focus to the already hidden NodeBrowser window
-			     OnCreateNodeFromString("");
-			
-			FTagsTextBox.Focus();
+		    //if cloned via ctrl+click the self is now hidden
+		    //and we don't want the nodebrowser to vanish yet
+		    if (Visible)
+		    {
+		        //hack: called only to re-focus active patch
+		        //after this mouseup set the focus to the already hidden NodeBrowser window
+		            OnCreateNodeFromString("");
+		        
+		        FTagsTextBox.Focus();
+		    }
 		}
 		
 		private void ShowToolTip()
@@ -354,7 +365,7 @@ namespace VVVV.Nodes.NodeBrowser
                 int y = FRichTextBox.GetPositionFromCharIndex(FRichTextBox.GetFirstCharIndexFromLine(FHoverLine)).Y;
                 string tip = "";
                 if (ni.Type == NodeType.Dynamic || ni.Type == NodeType.Effect)
-                    tip = "Press CTRL + Enter to clone this node.\n";
+                    tip = "Use CTRL + Enter or Click to clone this node.\n";
                 if (!string.IsNullOrEmpty(ni.Shortcut))
                     tip = "(" + ni.Shortcut + ") " ;
                 if (!string.IsNullOrEmpty(ni.Help))

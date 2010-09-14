@@ -117,6 +117,7 @@ namespace VVVV.Nodes.NodeBrowser
 			this.FClonePanel = new VVVV.Nodes.NodeBrowser.ClonePanel();
 			this.FTagPanel = new VVVV.Nodes.NodeBrowser.TagPanel();
 			this.FCategoryPanel = new VVVV.Nodes.NodeBrowser.CategoryPanel();
+			this.FFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.SuspendLayout();
 			// 
 			// FBackgroundWorker
@@ -160,6 +161,10 @@ namespace VVVV.Nodes.NodeBrowser
 			this.FCategoryPanel.OnShowHelpPatch += new VVVV.Nodes.NodeBrowser.CreateNodeHandler(this.FNodeBrowser_ShowHelpPatch);
 			this.FCategoryPanel.OnShowNodeReference += new VVVV.Nodes.NodeBrowser.CreateNodeHandler(this.FNodeBrowser_ShowNodeReference);
 			// 
+			// FFolderBrowserDialog
+			// 
+			this.FFolderBrowserDialog.Description = "Clone Effect To..";
+			// 
 			// NodeBrowserPluginNode
 			// 
 			this.BackColor = System.Drawing.Color.Silver;
@@ -171,6 +176,7 @@ namespace VVVV.Nodes.NodeBrowser
 			this.Size = new System.Drawing.Size(373, 379);
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.FolderBrowserDialog FFolderBrowserDialog;
 		private VVVV.Nodes.NodeBrowser.CategoryPanel FCategoryPanel;
 		private VVVV.Nodes.NodeBrowser.TagPanel FTagPanel;
 		private VVVV.Nodes.NodeBrowser.ClonePanel FClonePanel;
@@ -235,7 +241,17 @@ namespace VVVV.Nodes.NodeBrowser
 		void FClonePanel_Closed(INodeInfo nodeInfo, string Name, string Category, string Version)
 		{
 			if (nodeInfo != null)
-				NodeBrowserHost.CloneNode(nodeInfo, Name, Category, Version);
+			{
+			    var path = Path.GetDirectoryName(FPath);
+			    if (nodeInfo.Type == NodeType.Effect && !Path.IsPathRooted(FPath))
+			        if (FFolderBrowserDialog.ShowDialog() == DialogResult.OK)
+			            path = FFolderBrowserDialog.SelectedPath;
+			        else
+			            path = "";
+			    
+			    if (path != "")
+			        NodeBrowserHost.CloneNode(nodeInfo, path, Name, Category, Version);
+			}
 			
 			FNodeBrowser_OnPanelChange(NodeBrowserPage.ByTags, null);
 		}

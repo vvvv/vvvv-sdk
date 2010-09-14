@@ -152,6 +152,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.Controls.Add(this.label3);
         	this.Name = "ClonePanel";
         	this.Size = new System.Drawing.Size(230, 249);
+        	this.VisibleChanged += new System.EventHandler(this.ClonePanelVisibleChanged);
         	this.ResumeLayout(false);
         	this.PerformLayout();
         }

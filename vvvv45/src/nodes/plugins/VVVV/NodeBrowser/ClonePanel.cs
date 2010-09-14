@@ -120,5 +120,10 @@ namespace VVVV.Nodes.NodeBrowser
             if (e.KeyChar == (char) Keys.Enter)
         	    Closed(FCloneInfo, FNameTextBox.Text.Trim(), FCategoryTextBox.Text.Trim(), FVersionTextBox.Text.Trim());
         }
+        
+        void ClonePanelVisibleChanged(object sender, EventArgs e)
+        {
+            FNameTextBox.Focus();
+        }
     }
 }

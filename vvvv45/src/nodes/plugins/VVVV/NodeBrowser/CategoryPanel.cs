@@ -138,6 +138,7 @@ namespace VVVV.Nodes.NodeBrowser
 		void CategoryPanelVisibleChanged(object sender, EventArgs e)
 		{
 			FCategoryTreeViewer.HideToolTip();
+			FCategoryTreeViewer.Focus();
 		}
 		
 		void FCategoryTreeViewerMouseDown(IModelMapper sender, MouseEventArgs e)
