@@ -12,6 +12,9 @@ namespace VVVV.Utils
 		/// </summary>
 		public static string MakeRelativePath(string fromPath, string toPath)
 		{
+			if (!fromPath.EndsWith(@"\"))
+				fromPath = fromPath + @"\";
+			
 			var fromUri = new Uri(fromPath);
 			var toUri = new Uri(toPath);
 			
