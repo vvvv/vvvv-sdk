@@ -27,7 +27,7 @@ namespace VVVV.Utils.Animation
 		/// Creates a new Particle instance and sets the time.
 		/// </summary>
 		/// <param name="time">Current system time in seconds.</param>
-		/// <param name="lifeTime">Max life time in seconds.</param>
+		/// <param name="lifeTime">Max life time in seconds, -1 is infinite lifetime</param>
 		public Particle(double time, double lifeTime)
 		{
 			StartTime = time;
