@@ -167,7 +167,7 @@ namespace VVVV.HDE.CodeEditor
 					toolTipProvider
 				);
 				
-				FSDDocToDocMap[editor.SDDocument] = doc;
+				FSDDocToDocMap[editor.Document] = doc;
 				var tabPage = new TabPage(GetTabPageName(doc));
 				
 				FTabControl.SuspendLayout();
@@ -193,7 +193,7 @@ namespace VVVV.HDE.CodeEditor
 			{
 				var tabPage = FOpenedDocuments[doc];
 				var codeEditor = tabPage.Controls[0] as CodeEditor;
-				FSDDocToDocMap.Remove(codeEditor.SDDocument);
+				FSDDocToDocMap.Remove(codeEditor.Document);
 				FTabControl.Controls.Remove(tabPage);
 				tabPage.Dispose();
 
@@ -367,7 +367,7 @@ namespace VVVV.HDE.CodeEditor
 				{
 					if (FTabControl.GetTabRect(i).Contains(e.Location))
 					{
-						Close((FTabControl.TabPages[i].Controls[0] as CodeEditor).Document);
+						Close((FTabControl.TabPages[i].Controls[0] as CodeEditor).TextDocument);
 						break;
 					}
 				}
@@ -382,7 +382,7 @@ namespace VVVV.HDE.CodeEditor
 			{
 				if (FTabControl.TabCount > 1)
 				{
-					Close((FTabControl.SelectedTab.Controls[0] as CodeEditor).Document);
+					Close((FTabControl.SelectedTab.Controls[0] as CodeEditor).TextDocument);
 					return true;
 				}
 				else 

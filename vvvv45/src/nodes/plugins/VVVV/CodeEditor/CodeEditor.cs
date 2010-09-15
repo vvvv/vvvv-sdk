@@ -51,11 +51,10 @@ namespace VVVV.HDE.CodeEditor
 {
 	
 	//class definition, inheriting from UserControl for the GUI stuff
-	public class CodeEditor: UserControl
+	public class CodeEditor: TextEditorControl
 	{
 		#region Fields
 		
-		private ICSharpCode.TextEditor.TextEditorControl FTextEditorControl;
 		private CodeCompletionWindow FCompletionWindow;
 		private InsightWindow FInsightWindow;
 		private System.Windows.Forms.Timer FTimer;
@@ -70,31 +69,13 @@ namespace VVVV.HDE.CodeEditor
 		
 		#region Properties
 		
-		public ITextDocument Document { get; private set; }
-		
-		public SD.IDocument SDDocument { get; private set; }
+		public ITextDocument TextDocument { get; private set; }
 		
 		public bool IsDirty
 		{
 			get
 			{
-				return Document.IsDirty;
-			}
-		}
-		
-		public TextEditorControl TextEditorControl
-		{
-			get
-			{
-				return FTextEditorControl;
-			}
-		}
-		
-		public string TextContent
-		{
-			get
-			{
-				return SDDocument.TextContent;
+				return TextDocument.IsDirty;
 			}
 		}
 		
@@ -124,77 +105,81 @@ namespace VVVV.HDE.CodeEditor
 			
 			FCodeEditorForm = codeEditorForm;
 			
-			Document = doc;
-			SDDocument = FTextEditorControl.Document;
+			TextDocument = doc;
 			
-			FTextEditorControl.TextEditorProperties.MouseWheelTextZoom = false;
-			FTextEditorControl.TextEditorProperties.LineViewerStyle = SD.LineViewerStyle.FullRow;
-			FTextEditorControl.TextEditorProperties.ShowMatchingBracket = true;
-			FTextEditorControl.TextEditorProperties.AutoInsertCurlyBracket = true;
+			TextEditorProperties.MouseWheelTextZoom = false;
+			TextEditorProperties.LineViewerStyle = SD.LineViewerStyle.FullRow;
+			TextEditorProperties.ShowMatchingBracket = true;
+			TextEditorProperties.AutoInsertCurlyBracket = true;
 			
 			var fileName = doc.Location.LocalPath;
 			
 			var isReadOnly = (File.GetAttributes(fileName) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
-			FTextEditorControl.Document.ReadOnly = isReadOnly;
+			Document.ReadOnly = isReadOnly;
 			
 			// Setup search bar
-			FSearchBar = new SearchBar(FTextEditorControl);
+			FSearchBar = new SearchBar(this);
 			
 			// Setup code highlighting
 			var highlighter = SD.HighlightingManager.Manager.FindHighlighterForFile(fileName);
-			FTextEditorControl.SetHighlighting(highlighter.Name);
+			SetHighlighting(highlighter.Name);
 			
 			// Setup code completion
 			FCompletionBinding = completionBinding;
-			FTextEditorControl.ActiveTextAreaControl.TextArea.KeyEventHandler += TextAreaKeyEventHandler;
+			ActiveTextAreaControl.TextArea.KeyEventHandler += TextAreaKeyEventHandler;
 			
 			// Setup code formatting
 			if (formattingStrategy != null)
-				FTextEditorControl.Document.FormattingStrategy = formattingStrategy;
+				Document.FormattingStrategy = formattingStrategy;
 			
 			// Setup code folding
 			if (foldingStrategy != null)
 			{
-				FTextEditorControl.EnableFolding = true;
-				FTextEditorControl.Document.FoldingManager.FoldingStrategy = foldingStrategy;
+				EnableFolding = true;
+				Document.FoldingManager.FoldingStrategy = foldingStrategy;
 				
 				// TODO: Do this via an interface to avoid asking for concrete implementation.
-				if (Document is CSDocument)
+				if (TextDocument is CSDocument)
 				{
-					var csDoc = Document as CSDocument;
+					var csDoc = TextDocument as CSDocument;
 					csDoc.ParseCompleted += CSDocument_ParseCompleted;
 				}
 			}
 			else
 			{
-				FTextEditorControl.EnableFolding = false;
+				EnableFolding = false;
 			}
 			
 			// Setup hovering (ILinkDataProvider)
 			if (linkDataProvider != null)
 			{
 				FLinkDataProvider = linkDataProvider;
-				FTextEditorControl.ActiveTextAreaControl.TextArea.MouseMove += MouseMoveCB;
-				FTextEditorControl.ActiveTextAreaControl.TextArea.MouseClick += LinkClickCB;
+				ActiveTextAreaControl.TextArea.MouseMove += MouseMoveCB;
+				ActiveTextAreaControl.TextArea.MouseClick += LinkClickCB;
 			}
 			
 			// Setup tool tips
 			if (toolTipProvider != null)
 			{
 				FToolTipProvider = toolTipProvider;
-				FTextEditorControl.ActiveTextAreaControl.TextArea.ToolTipRequest += OnToolTipRequest;
+				ActiveTextAreaControl.TextArea.ToolTipRequest += OnToolTipRequest;
 			}
 			
 			// Setup selection highlighting
-			FTextEditorControl.ActiveTextAreaControl.SelectionManager.SelectionChanged += FTextEditorControl_ActiveTextAreaControl_SelectionManager_SelectionChanged;
+			ActiveTextAreaControl.SelectionManager.SelectionChanged += FTextEditorControl_ActiveTextAreaControl_SelectionManager_SelectionChanged;
 			
-			FTextEditorControl.ActiveTextAreaControl.TextArea.Resize += FTextEditorControl_ActiveTextAreaControl_TextArea_Resize;
-			FTextEditorControl.TextChanged += TextEditorControlTextChangedCB;
+			ActiveTextAreaControl.TextArea.Resize += FTextEditorControl_ActiveTextAreaControl_TextArea_Resize;
+			TextChanged += TextEditorControlTextChangedCB;
 			
 			// Start parsing after 500ms have passed after last key stroke.
 			FTimer = new Timer();
 			FTimer.Interval = 500;
 			FTimer.Tick += TimerTickCB;
+			
+			// Setup actions
+			var redo = editactions[Keys.Control | Keys.Y];
+			editactions[Keys.Control | Keys.Shift | Keys.Z] = redo;
+			editactions.Remove(Keys.Control | Keys.Y);
 		}
 
 		void FTextEditorControl_Scroll(object sender, ScrollEventArgs e)
@@ -207,26 +192,11 @@ namespace VVVV.HDE.CodeEditor
 		#region Windows Forms designer
 		private void InitializeComponent()
 		{
-			this.FTextEditorControl = new ICSharpCode.TextEditor.TextEditorControl();
 			this.SuspendLayout();
-			// 
-			// FTextEditorControl
-			// 
-			this.FTextEditorControl.AutoScroll = true;
-			this.FTextEditorControl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-			this.FTextEditorControl.ConvertTabsToSpaces = true;
-			this.FTextEditorControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.FTextEditorControl.IsReadOnly = false;
-			this.FTextEditorControl.Location = new System.Drawing.Point(0, 0);
-			this.FTextEditorControl.Name = "FTextEditorControl";
-			this.FTextEditorControl.Size = new System.Drawing.Size(632, 453);
-			this.FTextEditorControl.TabIndex = 2;
-			this.FTextEditorControl.Text = "float";
 			// 
 			// CodeEditor
 			// 
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-			this.Controls.Add(this.FTextEditorControl);
 			this.Name = "CodeEditor";
 			this.Size = new System.Drawing.Size(632, 453);
 			this.ResumeLayout(false);
@@ -259,47 +229,41 @@ namespace VVVV.HDE.CodeEditor
 						FSearchBar = null;
 					}
 					
-					if (FTextEditorControl != null)
+					TextChanged -= TextEditorControlTextChangedCB;
+					ActiveTextAreaControl.TextArea.Resize -= FTextEditorControl_ActiveTextAreaControl_TextArea_Resize;
+					ActiveTextAreaControl.TextArea.KeyEventHandler -= TextAreaKeyEventHandler;
+					ActiveTextAreaControl.SelectionManager.SelectionChanged -= FTextEditorControl_ActiveTextAreaControl_SelectionManager_SelectionChanged;
+					
+					if (FLinkDataProvider != null)
 					{
-						FTextEditorControl.TextChanged -= TextEditorControlTextChangedCB;
-						FTextEditorControl.ActiveTextAreaControl.TextArea.Resize -= FTextEditorControl_ActiveTextAreaControl_TextArea_Resize;
-						FTextEditorControl.ActiveTextAreaControl.TextArea.KeyEventHandler -= TextAreaKeyEventHandler;
-						FTextEditorControl.ActiveTextAreaControl.SelectionManager.SelectionChanged -= FTextEditorControl_ActiveTextAreaControl_SelectionManager_SelectionChanged;
-						
-						if (FLinkDataProvider != null)
-						{
-							FTextEditorControl.ActiveTextAreaControl.TextArea.MouseMove -= MouseMoveCB;
-							FTextEditorControl.ActiveTextAreaControl.TextArea.MouseClick -= LinkClickCB;
-						}
-						
-						if (FToolTipProvider != null)
-						{
-							FTextEditorControl.ActiveTextAreaControl.TextArea.ToolTipRequest -= OnToolTipRequest;
-						}
-						
-						FTextEditorControl.Dispose();
-						FTextEditorControl = null;
+						ActiveTextAreaControl.TextArea.MouseMove -= MouseMoveCB;
+						ActiveTextAreaControl.TextArea.MouseClick -= LinkClickCB;
 					}
 					
-					if (Document != null)
+					if (FToolTipProvider != null)
 					{
-						Document.ContentChanged -= TextDocumentContentChangedCB;
-						Document.Project.CompileCompleted -= CompileCompletedCB;
+						ActiveTextAreaControl.TextArea.ToolTipRequest -= OnToolTipRequest;
+					}
+					
+					if (TextDocument != null)
+					{
+						TextDocument.ContentChanged -= TextDocumentContentChangedCB;
+						TextDocument.Project.CompileCompleted -= CompileCompletedCB;
 						
-						var executable = FCodeEditorForm.GetExecutable(Document.Project);
+						var executable = FCodeEditorForm.GetExecutable(TextDocument.Project);
 						if (executable != null)
 						{
 							executable.RuntimeErrors.Added -= executable_RuntimeErrors_Added;
 							executable.RuntimeErrors.Removed -= executable_RuntimeErrors_Removed;
 						}
 						
-						if (Document is CSDocument)
+						if (TextDocument is CSDocument)
 						{
-							var csDoc = Document as CSDocument;
+							var csDoc = TextDocument as CSDocument;
 							csDoc.ParseCompleted -= CSDocument_ParseCompleted;
 						}
 						
-						Document = null;
+						TextDocument = null;
 					}
 					
 					if (FTimer != null)
@@ -329,21 +293,21 @@ namespace VVVV.HDE.CodeEditor
 		{
 			base.OnLoad(e);
 
-			FTextEditorControl.Document.TextContent = Document.TextContent;
-			Document.ContentChanged += TextDocumentContentChangedCB;
+			Document.TextContent = TextDocument.TextContent;
+			TextDocument.ContentChanged += TextDocumentContentChangedCB;
 			
 			// TODO: Do this via an interface
-			if (Document is CSDocument)
+			if (TextDocument is CSDocument)
 			{
-				var csDoc = Document as CSDocument;
+				var csDoc = TextDocument as CSDocument;
 				CSDocument_ParseCompleted(csDoc);
 			}
 			
 			// Everytime the project is compiled update the error highlighting.
-			Document.Project.CompileCompleted += CompileCompletedCB;
+			TextDocument.Project.CompileCompleted += CompileCompletedCB;
 			
 			// We're also interested in runtime errors.
-			var executable = FCodeEditorForm.GetExecutable(Document.Project);
+			var executable = FCodeEditorForm.GetExecutable(TextDocument.Project);
 			if (executable != null)
 			{
 				executable.RuntimeErrors.Added += executable_RuntimeErrors_Added;
@@ -355,9 +319,9 @@ namespace VVVV.HDE.CodeEditor
 		private IList<SD.TextMarker> FSelectionMarkers = new List<SD.TextMarker>();
 		void FTextEditorControl_ActiveTextAreaControl_SelectionManager_SelectionChanged(object sender, EventArgs e)
 		{
-			var textAreaControl = FTextEditorControl.ActiveTextAreaControl;
+			var textAreaControl = ActiveTextAreaControl;
 			var textArea = textAreaControl.TextArea;
-			var doc = FTextEditorControl.Document;
+			var doc = Document;
 			
 			// Clear previous selection markers
 			foreach (var marker in FSelectionMarkers)
@@ -410,7 +374,7 @@ namespace VVVV.HDE.CodeEditor
 		
 		void CSDocument_ParseCompleted(CSDocument document)
 		{
-			FTextEditorControl.Document.FoldingManager.UpdateFoldings(document.Location.LocalPath, document.ParseInfo);
+			Document.FoldingManager.UpdateFoldings(document.Location.LocalPath, document.ParseInfo);
 		}
 		
 		void FTextEditorControl_ActiveTextAreaControl_TextArea_Resize(object sender, EventArgs e)
@@ -420,9 +384,9 @@ namespace VVVV.HDE.CodeEditor
 		
 		void UpdateHScrollBar()
 		{
-			var textAreaControl = FTextEditorControl.ActiveTextAreaControl;
+			var textAreaControl = ActiveTextAreaControl;
 			var textArea = textAreaControl.TextArea;
-			var doc = FTextEditorControl.Document;
+			var doc = Document;
 			
 			// At startup this property seems to be invalid.
 			if (textArea.TextView.VisibleColumnCount == -1)
@@ -470,7 +434,7 @@ namespace VVVV.HDE.CodeEditor
 		
 		public TextLocation GetTextLocationAtMousePosition(Point location)
 		{
-			var textView = FTextEditorControl.ActiveTextAreaControl.TextArea.TextView;
+			var textView = ActiveTextAreaControl.TextArea.TextView;
 			return textView.GetLogicalPosition(location.X - textView.DrawingPosition.Left, location.Y - textView.DrawingPosition.Top);
 		}
 
@@ -481,7 +445,7 @@ namespace VVVV.HDE.CodeEditor
 		{
 			try
 			{
-				var doc = FTextEditorControl.Document;
+				var doc = Document;
 				
 				if (FUnderlineMarker != null)
 				{
@@ -510,7 +474,7 @@ namespace VVVV.HDE.CodeEditor
 						FUnderlineMarker = new SD.TextMarker(offset, length, SD.TextMarkerType.Underlined, Color.Blue);
 						doc.MarkerStrategy.AddMarker(FUnderlineMarker);
 						
-						FHighlightMarker = new SD.TextMarker(offset, length, SD.TextMarkerType.SolidBlock, FTextEditorControl.Document.HighlightingStrategy.GetColorFor("Default").BackgroundColor, Color.Blue);
+						FHighlightMarker = new SD.TextMarker(offset, length, SD.TextMarkerType.SolidBlock, Document.HighlightingStrategy.GetColorFor("Default").BackgroundColor, Color.Blue);
 						doc.MarkerStrategy.AddMarker(FHighlightMarker);
 						
 						doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.PositionToLineEnd, doc.OffsetToPosition(offset)));
@@ -537,7 +501,7 @@ namespace VVVV.HDE.CodeEditor
 						var tabPage = FCodeEditorForm.Open(textDocument);
 						FCodeEditorForm.BringToFront(tabPage);
 						var codeEditor = tabPage.Controls[0] as CodeEditor;
-						codeEditor.FTextEditorControl.ActiveTextAreaControl.TextArea.Focus();
+						codeEditor.ActiveTextAreaControl.TextArea.Focus();
 						codeEditor.JumpTo(FLink.Location.Line, FLink.Location.Column);
 					}
 				}
@@ -550,9 +514,9 @@ namespace VVVV.HDE.CodeEditor
 		
 		private void SyncControlWithDocument()
 		{
-			Document.ContentChanged -= TextDocumentContentChangedCB;
-			Document.TextContent = FTextEditorControl.Document.TextContent;
-			Document.ContentChanged += TextDocumentContentChangedCB;
+			TextDocument.ContentChanged -= TextDocumentContentChangedCB;
+			TextDocument.TextContent = Document.TextContent;
+			TextDocument.ContentChanged += TextDocumentContentChangedCB;
 		}
 
 		/// <summary>
@@ -562,7 +526,7 @@ namespace VVVV.HDE.CodeEditor
 		void TimerTickCB(object sender, EventArgs args)
 		{
 			FTimer.Stop();
-			if (Document != null)
+			if (TextDocument != null)
 			{
 				SyncControlWithDocument();
 			}
@@ -583,9 +547,9 @@ namespace VVVV.HDE.CodeEditor
 		/// </summary>
 		void TextDocumentContentChangedCB(IDocument doc, string content)
 		{
-			int length = FTextEditorControl.Document.TextContent.Length;
-			FTextEditorControl.Document.Replace(0, length, content);
-			FTextEditorControl.Refresh();
+			int length = Document.TextContent.Length;
+			Document.Replace(0, length, content);
+			Refresh();
 		}
 		
 		protected override bool ProcessKeyPreview(ref Message m)
@@ -594,9 +558,9 @@ namespace VVVV.HDE.CodeEditor
 			if (ke.Control && ke.KeyCode == Keys.S)
 			{
 				SyncControlWithDocument();
-				Document.Save();
+				TextDocument.Save();
 				// Trigger a recompile
-				Document.Project.Save();
+				TextDocument.Project.Save();
 				return true;
 			}
 			else if (ke.Control && ke.KeyCode == Keys.F)
@@ -624,18 +588,18 @@ namespace VVVV.HDE.CodeEditor
 						var compilerError = error as CompilerError;
 						var path = Path.GetFullPath(compilerError.FileName);
 
-						if (path.ToLower() == Document.Location.LocalPath.ToLower())
+						if (path.ToLower() == TextDocument.Location.LocalPath.ToLower())
 							AddErrorMarker(compilerError.Column - 1, compilerError.Line - 1);
 					}
 				}
 			}
 
-			FTextEditorControl.Document.CommitUpdate();
+			Document.CommitUpdate();
 		}
 		
 		void AddErrorMarker(int column, int line)
 		{
-			var doc = FTextEditorControl.Document;
+			var doc = Document;
 			var location = new TextLocation(column, line);
 			var offset = doc.PositionToOffset(location);
 			var segment = doc.GetLineSegment(location.Line);
@@ -648,7 +612,7 @@ namespace VVVV.HDE.CodeEditor
 		
 		void ClearErrorMarkers()
 		{
-			var doc = FTextEditorControl.Document;
+			var doc = Document;
 			foreach (var marker in FErrorMarkers)
 			{
 				doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, doc.GetLineNumberForOffset(marker.Offset)));
@@ -676,11 +640,11 @@ namespace VVVV.HDE.CodeEditor
 			{
 				var path = Path.GetFullPath(runtimeError.FileName);
 
-				if (path.ToLower() == Document.Location.LocalPath.ToLower())
+				if (path.ToLower() == TextDocument.Location.LocalPath.ToLower())
 					AddErrorMarker(0, runtimeError.Line - 1);
 			}
 
-			FTextEditorControl.Document.CommitUpdate();
+			Document.CommitUpdate();
 		}
 
 		void OnToolTipRequest(object sender, ToolTipRequestEventArgs e)
@@ -688,7 +652,7 @@ namespace VVVV.HDE.CodeEditor
 			if (e.InDocument && !e.ToolTipShown) {
 				try
 				{
-					string toolTipText = FToolTipProvider.GetToolTip(SDDocument, e.LogicalPosition);
+					string toolTipText = FToolTipProvider.GetToolTip(Document, e.LogicalPosition);
 					if (toolTipText != null)
 						e.ShowToolTip(toolTipText);
 				}
@@ -706,9 +670,9 @@ namespace VVVV.HDE.CodeEditor
 		
 		public void JumpTo(int line, int column)
 		{
-			FTextEditorControl.ActiveTextAreaControl.ScrollTo(line, column);
-			FTextEditorControl.ActiveTextAreaControl.Caret.Line = line;
-			FTextEditorControl.ActiveTextAreaControl.Caret.Column = column;
+			ActiveTextAreaControl.ScrollTo(line, column);
+			ActiveTextAreaControl.Caret.Line = line;
+			ActiveTextAreaControl.Caret.Column = column;
 		}
 		
 		#region Code completion
@@ -719,8 +683,8 @@ namespace VVVV.HDE.CodeEditor
 			{
 				FCompletionWindow = CodeCompletionWindow.ShowCompletionWindow(
 					FCodeEditorForm,					// The parent window for the completion window
-					FTextEditorControl, 				// The text editor to show the window for
-					Document.Location.LocalPath,		// Filename - will be passed back to the provider
+					this, 				// The text editor to show the window for
+					TextDocument.Location.LocalPath,		// Filename - will be passed back to the provider
 					completionDataProvider,				// Provider to get the list of possible completions
 					key									// Key pressed - will be passed to the provider
 				);
@@ -749,10 +713,10 @@ namespace VVVV.HDE.CodeEditor
 			try
 			{
 				if (FInsightWindow == null || FInsightWindow.IsDisposed) {
-					FInsightWindow = new InsightWindow(FCodeEditorForm, FTextEditorControl);
+					FInsightWindow = new InsightWindow(FCodeEditorForm, this);
 					FInsightWindow.Closed += new EventHandler(CloseInsightWindow);
 				}
-				FInsightWindow.AddInsightDataProvider(insightDataProvider, Document.Location.LocalPath);
+				FInsightWindow.AddInsightDataProvider(insightDataProvider, TextDocument.Location.LocalPath);
 				FInsightWindow.ShowInsightWindow();
 			}
 			catch (Exception e)

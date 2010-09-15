@@ -23,13 +23,12 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 		
 		public void HandleKeyPress(CodeEditor editor, char key)
 		{
-			var sdDocument = editor.SDDocument;
-			var editorControl = editor.TextEditorControl;
-			var textAreaControl = editor.TextEditorControl.ActiveTextAreaControl;
+			var sdDocument = editor.Document;
+			var textAreaControl = editor.ActiveTextAreaControl;
 			var textArea = textAreaControl.TextArea;
 			
 			// Do not show completion window for now if we're in a comment.
-			if (IsInComment(editorControl))
+			if (IsInComment(editor))
 				return;
 			
 			if (key == '(')
@@ -43,7 +42,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 			}
 			else if (key == ',')
 			{
-				var parseInfo = ((CSDocument) editor.Document).ParseInfo;
+				var parseInfo = ((CSDocument) editor.TextDocument).ParseInfo;
 				var resolver = new NRefactoryResolver(LanguageProperties.CSharp);
 				if (resolver.Initialize(parseInfo, textArea.Caret.Line + 1, textArea.Caret.Column + 1))
 				{
@@ -95,9 +94,9 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 					textAreaControl.Caret.Position = sdDocument.OffsetToPosition(cursor);
 				}
 				
-				var document = editor.Document as CSDocument;
+				var document = editor.TextDocument as CSDocument;
 				var finder = document.ExpressionFinder;
-				var expressionResult = finder.FindExpression(editor.TextContent, editor.TextEditorControl.ActiveTextAreaControl.Caret.Offset);
+				var expressionResult = finder.FindExpression(editor.Document.TextContent, editor.ActiveTextAreaControl.Caret.Offset);
 				
 				if (expressionResult.Context != ExpressionContext.IdentifierExpected)
 				{
