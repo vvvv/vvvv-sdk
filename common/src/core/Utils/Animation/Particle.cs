@@ -82,7 +82,7 @@ namespace VVVV.Utils.Animation
 		{
 			Fdt = time - FCurrentTime;
 			FCurrentTime = time;
-			Age = VMath.VMath.Clamp((FCurrentTime - StartTime)/LifeTime, 0, 1);
+			Age = LifeTime == -1 ? 0 : VMath.VMath.Clamp((FCurrentTime - StartTime)/LifeTime, 0, 1);
 		}
 		
 		/// <summary>

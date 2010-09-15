@@ -85,6 +85,47 @@ namespace VVVV.Utils.VMath
 		                                                                0, 0, 0, 1);
 		
 		#endregion constants
+		
+		#region random
+		/// <summary>
+		/// A random object for conveninece
+		/// </summary>
+		public static Random Random = new Random(4444);
+		
+		/// <summary>
+		/// Creates a random 2d vector.
+		/// </summary>
+		/// <returns>Random vector with its components in the range [-1..1].</returns>
+		public static Vector2D RandomVector2D()
+		{
+			return new Vector2D(VMath.Random.NextDouble() * 2 - 1,
+			                    VMath.Random.NextDouble() * 2 - 1);
+		}
+		
+		/// <summary>
+		/// Creates a random 3d vector.
+		/// </summary>
+		/// <returns>Random vector with its components in the range [-1..1].</returns>
+		public static Vector3D RandomVector3D()
+		{
+			return new Vector3D(VMath.Random.NextDouble() * 2 - 1,
+			                    VMath.Random.NextDouble() * 2 - 1,
+			                    VMath.Random.NextDouble() * 2 - 1);
+		}
+		
+		/// <summary>
+		/// Creates a random 4d vector.
+		/// </summary>
+		/// <returns>Random vector with its components in the range [-1..1].</returns>
+		public static Vector4D RandomVector4D()
+		{
+			return new Vector4D(VMath.Random.NextDouble() * 2 - 1,
+			                    VMath.Random.NextDouble() * 2 - 1,
+			                    VMath.Random.NextDouble() * 2 - 1,
+			                    VMath.Random.NextDouble() * 2 - 1);
+		}
+		
+		#endregion random
 
         #region numeric functions
 
