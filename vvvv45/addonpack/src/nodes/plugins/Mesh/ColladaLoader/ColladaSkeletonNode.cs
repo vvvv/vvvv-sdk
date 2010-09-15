@@ -32,16 +32,16 @@ namespace VVVV.Nodes
 	public class ColladaSkeletonNode: IPluginEvaluate
     {		          	
     	#region pins & fields
-    	[Input("COLLADA Model", SliceMode = SliceMode.Single)]
+    	[Input("COLLADA Model", IsSingle = true)]
         protected IDiffSpread<Model> FColladaModelIn;
 
-        [Input("Time", SliceMode = SliceMode.Single)]
+        [Input("Time", IsSingle = true)]
         protected IDiffSpread<float> FTimeInput;
         
-        [Input("Index", SliceMode = SliceMode.Single)]
+        [Input("Index", IsSingle = true)]
         protected IDiffSpread<int> FIndex;
         
-        [Output("Skeleton", SliceMode = SliceMode.Single)]
+        [Output("Skeleton", IsSingle = true)]
         protected ISpread<Skeleton> FSkeletonOut;
         
         [Import]

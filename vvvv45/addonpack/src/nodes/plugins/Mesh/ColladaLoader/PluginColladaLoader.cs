@@ -41,7 +41,7 @@ namespace VVVV.Nodes
 		
 		public enum Axis {Default, X, Y, Z, MinusX, MinusY, MinusZ};
 		
-		[Input("Filename", SliceMode = SliceMode.Single, StringType = StringType.Filename, FileMask = "COLLADA Files (*.dae)|*.dae")]
+		[Input("Filename", IsSingle = true, StringType = StringType.Filename, FileMask = "COLLADA Files (*.dae)|*.dae")]
 		protected IDiffSpread<string> FFileNameInput;
 		
 		[Output("COLLADA Model")]
@@ -85,21 +85,21 @@ namespace VVVV.Nodes
 		[ImportingConstructor]
 		public PluginColladaLoader(
 			IPluginHost host,
-			[Config ("Coordinate system of source", SliceMode = SliceMode.Single)]
+			[Config ("Coordinate system of source", IsSingle = true)]
 			IDiffSpread<CoordinateSystemType> csSourceTypeConfig,
-			[Config ("Source up axis", SliceMode = SliceMode.Single)]
+			[Config ("Source up axis", IsSingle = true)]
 			IDiffSpread<Axis> upAxisSourceConfig,
-			[Config ("Source right axis", SliceMode = SliceMode.Single)]
+			[Config ("Source right axis", IsSingle = true)]
 			IDiffSpread<Axis> rightAxisSourceConfig,
-			[Config ("Source distance unit in meter", SliceMode = SliceMode.Single, DefaultValue = 0)]
+			[Config ("Source distance unit in meter", IsSingle = true, DefaultValue = 0)]
 			IDiffSpread<double> meterSourceConfig,
-			[Config ("Coordinate system of target",  SliceMode = SliceMode.Single)]
+			[Config ("Coordinate system of target",  IsSingle = true)]
 			IDiffSpread<CoordinateSystemType> csTargetTypeConfig,
-			[Config ("Target up axis", SliceMode = SliceMode.Single)]
+			[Config ("Target up axis", IsSingle = true)]
 			IDiffSpread<Axis> upAxisTargetConfig,
-			[Config ("Target right axis", SliceMode = SliceMode.Single)]
+			[Config ("Target right axis", IsSingle = true)]
 			IDiffSpread<Axis> rightAxisTargetConfig,
-			[Config ("Target distance unit in meter", SliceMode = SliceMode.Single, DefaultValue = 0)]
+			[Config ("Target distance unit in meter", IsSingle = true, DefaultValue = 0)]
 			IDiffSpread<double> meterTargetConfig)
 		{
 			FInfo = new List<string>();

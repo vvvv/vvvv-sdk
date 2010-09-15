@@ -44,7 +44,7 @@ namespace VVVV.Nodes
         [Input ("Time")]
         protected IDiffSpread<float> FTimeInput;
         
-        [Input ("Bin Size", SliceMode = SliceMode.Single, DefaultValue = -1)]
+        [Input ("Bin Size", IsSingle = true, DefaultValue = -1)]
         protected IDiffSpread<int> FBinSize;
         
         [Input ("Index")]
@@ -91,7 +91,7 @@ namespace VVVV.Nodes
         [ImportingConstructor]
         public PluginColladaMesh(
             IPluginHost host,
-            [Config ("Opaque=1?", SliceMode = SliceMode.Single, DefaultValue = 1)]
+            [Config ("Opaque=1?", IsSingle = true, DefaultValue = 1)]
             IDiffSpread<bool> opaqueIsOneInput)
         {
             //the nodes constructor
