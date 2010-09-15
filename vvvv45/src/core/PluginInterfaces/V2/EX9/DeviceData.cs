@@ -24,15 +24,15 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		/// <summary>
 		/// Recreate the device data this frame?
 		/// </summary>
-		public bool Recreate { get; set; }
+		public bool Reinitialize { get; set; }
 		
 		/// <summary>
-		/// Create a DeviceData instance with 'Update = true' and 'Recreate = false'.
+		/// Create a DeviceData instance with 'Update = true' and 'Reinitialize = false'.
 		/// </summary>
 		public DeviceData()
 		{
 			Update = true;
-			Recreate = false;
+			Reinitialize = false;
 		}
 	}
 	
@@ -58,7 +58,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		}
 	}
 	
-	//texture data per graphics device
+	//mesh data per graphics device
 	public class MeshDeviceData : GenericDeviceData<Mesh>
 	{
 		public MeshDeviceData(Mesh mesh)

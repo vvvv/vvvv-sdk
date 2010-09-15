@@ -32,6 +32,20 @@ namespace VVVV.Utils.SlimDX
 			return new Texture(device, width, height, 1, Usage.None, Format.X8R8G8B8, Pool.Managed);
 		}
 		
+		public static Texture CreateColoredTexture(Device device, int width, int height, uint argbColor)
+		{
+			var t = new Texture(device, width, height, 1, Usage.None, Format.A8R8G8B8, Pool.Managed);
+			var rect = t.LockRectangle(0, LockFlags.None);
+			
+			for (int i=0; i<(width*height); i++)
+			{
+				rect.Data.Write(argbColor);
+			}
+			
+			t.UnlockRectangle(0);
+			return t;
+		}
+		
 		//pixel access via pointers
 		public unsafe static uint GetPtrVal2D(uint* data, int row, int col, int width)
 		{

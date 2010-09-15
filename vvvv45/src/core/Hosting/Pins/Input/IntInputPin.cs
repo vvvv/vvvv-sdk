@@ -36,7 +36,7 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			get
 			{
-				return (int) FData[VMath.Zmod(index, FSliceCount)];
+				return (int) Math.Round(FData[VMath.Zmod(index, FSliceCount)]);
 			}
 			set
 			{

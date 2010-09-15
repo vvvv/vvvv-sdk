@@ -27,11 +27,11 @@ namespace VVVV.PluginInterfaces.V2.EX9
 		}
 		
 		/// <summary>
-		/// Set all device data to recreate in this frame.
+		/// Set all device data to reinitialize in this frame.
 		/// </summary>
 		protected void Reinitialize()
 		{
-			foreach (var dd in FDeviceData.Values) dd.Recreate = true;
+			foreach (var dd in FDeviceData.Values) dd.Reinitialize = true;
 		}
 		
 		protected abstract T CreateDeviceData(Device device);
@@ -59,7 +59,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
 			else
 			{
 				//recreate data?
-				if (FDeviceData[OnDevice].Recreate) CreateResource(ForPin, OnDevice);
+				if (FDeviceData[OnDevice].Reinitialize) CreateResource(ForPin, OnDevice);
 				
 				//update data?
 				var dd = FDeviceData[OnDevice];
