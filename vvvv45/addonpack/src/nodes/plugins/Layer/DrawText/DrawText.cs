@@ -52,13 +52,13 @@ namespace VVVV.Nodes
         [Input ("Font", EnumName = "SystemFonts")]
         IDiffSpread<EnumEntry> FFontInput;
         
-        [Input ("Italic", SliceMode = SliceMode.Single)]
+        [Input ("Italic", IsSingle = true)]
         IDiffSpread<bool> FItalicInput;
         
-        [Input ("Bold", SliceMode = SliceMode.Single)]
+        [Input ("Bold", IsSingle = true)]
         IDiffSpread<bool> FBoldInput;
         
-        [Input ("Size", DefaultValue = 150, MinValue = 0, SliceMode = SliceMode.Single)]
+        [Input ("Size", DefaultValue = 150, MinValue = 0, IsSingle = true)]
         IDiffSpread<int> FSizeInput;
         
         [Input ("Color", DefaultValues = new double[4]{1, 1, 1, 1})]
@@ -79,10 +79,10 @@ namespace VVVV.Nodes
         [Input ("Text Rendering Mode", EnumName = "TextRenderingMode")]
         ISpread<EnumEntry> FTextRenderingModeInput;
         
-        [Input ("Normalize", EnumName = "Normalize", SliceMode = SliceMode.Single)]
+        [Input ("Normalize", EnumName = "Normalize", IsSingle = true)]
         ISpread<EnumEntry> FNormalizeInput;
         
-        [Input ("Enabled", DefaultValue = 1, SliceMode = SliceMode.Single)]
+        [Input ("Enabled", DefaultValue = 1, IsSingle = true)]
         ISpread<bool> FEnabledInput;
         
         [Output ("Text Size")]
