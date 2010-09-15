@@ -78,6 +78,11 @@ namespace VVVV.Nodes.NodeBrowser
             	FCategoryTextBox.Enabled = false;
             	FVersionTextBox.Enabled = false;
             }
+            else
+            {
+            	FCategoryTextBox.Enabled = true;
+            	FVersionTextBox.Enabled = true;
+            }
             
             FNameTextBox.SelectAll();
             FNameTextBox.Focus();
