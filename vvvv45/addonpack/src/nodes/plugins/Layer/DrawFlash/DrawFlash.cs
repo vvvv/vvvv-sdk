@@ -43,39 +43,39 @@ namespace VVVV.Nodes
         const string LICENSENUMBER = "";
         
         #region pins & fields
-        [Input ("Filename", SliceMode = TSliceMode.Single, StringType = StringType.Filename, FileMask = "Shockwave Flash (*.swf)|*.swf")]
+        [Input ("Filename", IsSingle = true, StringType = StringType.Filename, FileMask = "Shockwave Flash (*.swf)|*.swf")]
         ISpread<string> FSWFPath;
         
-        [Input ("Load", SliceMode = TSliceMode.Single)]
+        [Input ("Load", IsSingle = true)]
         IObservableSpread<bool> FLoadSWF;
             
-        [Input ("Mouse X", SliceMode = TSliceMode.Single)]
+        [Input ("Mouse X", IsSingle = true)]
         IObservableSpread<double> FMouseX;
         
-        [Input ("Mouse Y", SliceMode = TSliceMode.Single)]
+        [Input ("Mouse Y", IsSingle = true)]
         IObservableSpread<double> FMouseY;
         
-        [Input ("Mouse Left Button", SliceMode = TSliceMode.Single)]
+        [Input ("Mouse Left Button", IsSingle = true)]
         IObservableSpread<bool> FMouseLeftButton;
         
         [Input ("Key Code")]
         IObservableSpread<int> FKeyCodeIn;
         
         enum BufferMode {Single, Double};
-        [Input ("Buffer Mode", SliceMode = TSliceMode.Single)]//, DefaultEnum = BufferMode.Single)]
+        [Input ("Buffer Mode", IsSingle = true)]//, DefaultEnum = BufferMode.Single)]
         IObservableSpread<BufferMode> FBufferMode;
         
         enum Quality {Low, Medium, High, Best};
-        [Input ("Quality", SliceMode = TSliceMode.Single)]//, DefaultEnum = BufferMode.Best)]
+        [Input ("Quality", IsSingle = true)]//, DefaultEnum = BufferMode.Best)]
         IObservableSpread<Quality> FQuality;
         
-        [Input ("Seek Frame", SliceMode = TSliceMode.Single, MinValue = 0)]
+        [Input ("Seek Frame", IsSingle = true, MinValue = 0)]
         IObservableSpread<int> FGoToFrame;
 
-        [Input ("Enabled", SliceMode = TSliceMode.Single, DefaultValue = 1)]
+        [Input ("Enabled", IsSingle = true, DefaultValue = 1)]
         ISpread<bool> FEnabledInput;
 
-        [Output ("Frame Rate", SliceMode = TSliceMode.Single)]
+        [Output ("Frame Rate", IsSingle = true)]
         ISpread<int> FFrameRateOutput;
         
         [Import]
