@@ -18,10 +18,10 @@ namespace VVVV.Nodes
         [Input("Input")]
         protected ISpread<T> Input;
         
-        [Input("do Insert", SliceMode = SliceMode.Single)]
+        [Input("do Insert", IsSingle = true)]
         protected ISpread<bool> DoInsert;
       
-        [Input("Frame Count", SliceMode = SliceMode.Single, MinValue = 0, DefaultValue = 1)]
+        [Input("Frame Count", IsSingle = true, MinValue = 0, DefaultValue = 1)]
         protected ISpread<int> FrameCount;
 
         

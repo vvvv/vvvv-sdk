@@ -21,7 +21,7 @@ namespace VVVV.PluginInterfaces.V2
 			//pin
 			Name = name;
 			Visibility = PinVisibility.True;
-			SliceMode = SliceMode.Dynamic;
+			IsSingle = false;
 			
 			//string
 			StringType = StringType.String;
@@ -63,12 +63,26 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		/// <summary>
+		/// Determines whether the pin supports only one slice.
+		/// </summary>
+		public bool IsSingle
+		{
+			get;
+			set;
+		}
+		
+		/// <summary>
 		/// Slice mode of the pin.
 		/// </summary>
 		public SliceMode SliceMode
 		{
-			get;
-			set;
+			get
+			{
+				if (IsSingle)
+					return SliceMode.Single;
+				else
+					return SliceMode.Dynamic;
+			}
 		}
 		
 		//value
