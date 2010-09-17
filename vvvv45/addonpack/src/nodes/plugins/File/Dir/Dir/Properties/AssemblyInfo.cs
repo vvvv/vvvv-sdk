@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Dir")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("MESO")]
+[assembly: AssemblyCompany("Phlegma")]
 [assembly: AssemblyProduct("Dir")]
-[assembly: AssemblyCopyright("Copyright © MESO 2010")]
+[assembly: AssemblyCopyright("LGPL")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
