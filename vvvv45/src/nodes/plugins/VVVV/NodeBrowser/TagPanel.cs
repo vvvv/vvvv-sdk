@@ -9,108 +9,108 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.NodeBrowser
 {
-	public partial class TagPanel : UserControl
-	{
-		public event PanelChangeHandler OnPanelChange;
-		public event CreateNodeHandler OnCreateNode;
-		public event CreateNodeHandler OnShowNodeReference;
-		public event CreateNodeHandler OnShowHelpPatch;
-		public event CreateNodeFromStringHandler OnCreateNodeFromString;
-		
-		private int FVisibleLines = 16;
-		private Color CLabelColor = Color.FromArgb(255, 154, 154, 154);
-		private Color CHoverColor = Color.FromArgb(255, 216, 216, 216);
-		private const string CRTFHeader = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fnil\fcharset0 Verdana;}}\viewkind4\uc1\pard\f0\fs17 ";
-		private const int CLineHeight = 13;
-		private int FHoverLine;
-		private ToolTip FToolTip = new ToolTip();
-		private string[] FTags = new string[0];
-		private Point FLastMouseHoverLocation = new Point(0, 0);
-		private int FNodeFilter;
-		List<string> FSelectionList = new List<string>();
-		List<string> FRTFSelectionList = new List<string>();
-		List<string> FNodeList = new List<string>();
+    public partial class TagPanel : UserControl
+    {
+        public event PanelChangeHandler OnPanelChange;
+        public event CreateNodeHandler OnCreateNode;
+        public event CreateNodeHandler OnShowNodeReference;
+        public event CreateNodeHandler OnShowHelpPatch;
+        public event CreateNodeFromStringHandler OnCreateNodeFromString;
+        
+        private int FVisibleLines = 16;
+        private Color CLabelColor = Color.FromArgb(255, 154, 154, 154);
+        private Color CHoverColor = Color.FromArgb(255, 216, 216, 216);
+        private const string CRTFHeader = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fnil\fcharset0 Verdana;}}\viewkind4\uc1\pard\f0\fs17 ";
+        private const int CLineHeight = 13;
+        private int FHoverLine;
+        private ToolTip FToolTip = new ToolTip();
+        private string[] FTags = new string[0];
+        private Point FLastMouseHoverLocation = new Point(0, 0);
+        private int FNodeFilter;
+        List<string> FSelectionList = new List<string>();
+        List<string> FRTFSelectionList = new List<string>();
+        List<string> FNodeList = new List<string>();
         Dictionary<string, INodeInfo> FNodeDict = new Dictionary<string, INodeInfo>();
-		
+        
         public bool AndTags {get; set;}
         public bool AllowDragDrop {get; set;}
         
         private string FPathDir;
-		private string FPath;
-		public string Path
-		{
-			get
-			{
-				return FPath;
-			}
-			
-			set
-			{
-				FPath = value;
-				if (string.IsNullOrEmpty(FPath))
-					FPathDir = "";
-				else
-					FPathDir = System.IO.Path.GetDirectoryName(FPath);
-			}
-		}
-	
-		private int FScrolledLine;
-		private int ScrolledLine
-		{
-			get {return FScrolledLine;}
-			set
-			{
-				FScrolledLine = Math.Max(0, Math.Min(FScrollBar.Maximum - FVisibleLines + FScrollBar.LargeChange - 3, value));
-				FScrollBar.Value = FScrolledLine;
-				UpdateRichTextBox();
-			}
-		}
-		
-		public TagPanel()
-		{
-			//
-			// The InitializeComponent() call is required for Windows Forms designer support.
-			//
-			InitializeComponent();
-			
-			FToolTip.BackColor = CLabelColor;
-			FToolTip.ForeColor = Color.White;
-			FToolTip.ShowAlways = false;
-			FToolTip.Popup += new PopupEventHandler(ToolTipPopupHandler);
-			
-			FTagsTextBox.ContextMenu = new ContextMenu();
-			FTagsTextBox.MouseWheel += new MouseEventHandler(FTagsTextBoxMouseWheel);
-			FRichTextBox.MouseWheel += new MouseEventHandler(FTagsTextBoxMouseWheel);
-		}
-		
-		private void ToolTipPopupHandler(object sender, PopupEventArgs e)
-		{
-			e.ToolTipSize = new Size(Math.Min(e.ToolTipSize.Width, 300), e.ToolTipSize.Height);
-		}
-		
-		private string NodeInfoToKey(INodeInfo nodeInfo)
-		{
-			string tags = nodeInfo.Tags;
-			if ((!string.IsNullOrEmpty(nodeInfo.Author)) && (nodeInfo.Author != "vvvv group"))
-				tags += ", " + nodeInfo.Author;
+        private string FPath;
+        public string Path
+        {
+            get
+            {
+                return FPath;
+            }
+            
+            set
+            {
+                FPath = value;
+                if (string.IsNullOrEmpty(FPath))
+                    FPathDir = "";
+                else
+                    FPathDir = System.IO.Path.GetDirectoryName(FPath);
+            }
+        }
+        
+        private int FScrolledLine;
+        private int ScrolledLine
+        {
+            get {return FScrolledLine;}
+            set
+            {
+                FScrolledLine = Math.Max(0, Math.Min(FScrollBar.Maximum - FVisibleLines + FScrollBar.LargeChange - 3, value));
+                FScrollBar.Value = FScrolledLine;
+                UpdateRichTextBox();
+            }
+        }
+        
+        public TagPanel()
+        {
+            //
+            // The InitializeComponent() call is required for Windows Forms designer support.
+            //
+            InitializeComponent();
+            
+            FToolTip.BackColor = CLabelColor;
+            FToolTip.ForeColor = Color.White;
+            FToolTip.ShowAlways = false;
+            FToolTip.Popup += new PopupEventHandler(ToolTipPopupHandler);
+            
+            FTagsTextBox.ContextMenu = new ContextMenu();
+            FTagsTextBox.MouseWheel += new MouseEventHandler(FTagsTextBoxMouseWheel);
+            FRichTextBox.MouseWheel += new MouseEventHandler(FTagsTextBoxMouseWheel);
+        }
+        
+        private void ToolTipPopupHandler(object sender, PopupEventArgs e)
+        {
+            e.ToolTipSize = new Size(Math.Min(e.ToolTipSize.Width, 300), e.ToolTipSize.Height);
+        }
+        
+        private string NodeInfoToKey(INodeInfo nodeInfo)
+        {
+            string tags = nodeInfo.Tags;
+            if ((!string.IsNullOrEmpty(nodeInfo.Author)) && (nodeInfo.Author != "vvvv group"))
+                tags += ", " + nodeInfo.Author;
 
-			if (!string.IsNullOrEmpty(nodeInfo.Tags))
-				return nodeInfo.Username + " [" + tags + "]";
-			else
-				return nodeInfo.Username;
-		}
-		
-		public void Add(INodeInfo nodeInfo)
-		{
-			string key = NodeInfoToKey(nodeInfo);
-			
-			FNodeList.Add(key);
-			FNodeDict[key] = nodeInfo;
-		}
-		
-		public void Update(INodeInfo nodeInfo)
-		{
-			string oldkey = "";
+            if (!string.IsNullOrEmpty(nodeInfo.Tags))
+                return nodeInfo.Username + " [" + tags + "]";
+            else
+                return nodeInfo.Username;
+        }
+        
+        public void Add(INodeInfo nodeInfo)
+        {
+            string key = NodeInfoToKey(nodeInfo);
+            
+            FNodeList.Add(key);
+            FNodeDict[key] = nodeInfo;
+        }
+        
+        public void Update(INodeInfo nodeInfo)
+        {
+            string oldkey = "";
             string newkey = NodeInfoToKey(nodeInfo);
             //find the old key that is associated with this nodeinfo
             foreach(var infokey in FNodeDict)
@@ -127,237 +127,242 @@ namespace VVVV.Nodes.NodeBrowser
             
             FNodeList.Remove(oldkey);
             FNodeList.Add(newkey);
-		}
-		
-		public void Remove(INodeInfo nodeInfo)
-		{
-			string key = NodeInfoToKey(nodeInfo);
-			FNodeDict.Remove(key);
-			FNodeList.Remove(key);
-		}
-		
-		public void Initialize(string text)
-		{
-			if (string.IsNullOrEmpty(text))
-				FTagsTextBox.Text = "";
-			else
-				FTagsTextBox.Text = text.Trim();
+        }
+        
+        public void Remove(INodeInfo nodeInfo)
+        {
+            string key = NodeInfoToKey(nodeInfo);
+            FNodeDict.Remove(key);
+            FNodeList.Remove(key);
+        }
+        
+        public void Initialize(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                FTagsTextBox.Text = "";
+            else
+                FTagsTextBox.Text = text.Trim();
 
-			FTagsTextBox.SelectAll();
-			
-			FHoverLine = -1;
-			ScrolledLine = 0;
-			
-			RedrawSelection();
-		}
-		
-		public void AfterShow()
-		{
-			FTagsTextBox.Focus();
-		}
-		
-		public void BeforeHide()
-		{
-			FToolTip.Hide(FRichTextBox);
-		}
-		
-		#region TagsTextBox
-		void FTagsTextBoxTextChanged(object sender, EventArgs e)
-		{
-			FTagsTextBox.Height = Math.Max(20, FTagsTextBox.Lines.Length * CLineHeight + 7);
-			
-			//saving the last manual entry for recovery when stepping through list and reaching index -1 again
-			FToolTip.Hide(FRichTextBox);
-			
-			Redraw();
-			
-			if (FRichTextBox.Lines.Length > 0)
-				FHoverLine = 0;
-			else
-				FHoverLine = -1;
-			
-			RedrawSelection();
-		}
+            FTagsTextBox.SelectAll();
+            
+            FHoverLine = -1;
+            ScrolledLine = 0;
+            
+            RedrawSelection();
+        }
+        
+        public void AfterShow()
+        {
+            FTagsTextBox.Focus();
+        }
+        
+        public void BeforeHide()
+        {
+            FToolTip.Hide(FRichTextBox);
+        }
+        
+        void CreateNodeFromHoverLine()
+        {
+            string text = "";
+            try
+            {
+                text = FRichTextBox.Lines[FHoverLine].Trim();
+                
+                INodeInfo selNode = FNodeDict[text];
+                if ((Control.ModifierKeys == Keys.Control) && ((selNode.Type == NodeType.Dynamic) || (selNode.Type == NodeType.Effect)))
+                    OnPanelChange(NodeBrowserPage.Clone, selNode);
+                else
+                    OnCreateNode(selNode);
+            }
+            catch
+            {
+                if ((text.EndsWith(".v4p")) || (text.EndsWith(".fx")) || (text.EndsWith(".dll")))
+                    OnCreateNodeFromString(text);
+                else
+                    OnCreateNodeFromString(FTagsTextBox.Text.Trim());
+            }
+        }
+        #region TagsTextBox
+        void FTagsTextBoxTextChanged(object sender, EventArgs e)
+        {
+            FTagsTextBox.Height = Math.Max(20, FTagsTextBox.Lines.Length * CLineHeight + 7);
+            
+            //saving the last manual entry for recovery when stepping through list and reaching index -1 again
+            FToolTip.Hide(FRichTextBox);
+            
+            Redraw();
+            
+            if (FRichTextBox.Lines.Length > 0)
+                FHoverLine = 0;
+            else
+                FHoverLine = -1;
+            
+            RedrawSelection();
+        }
 
-		void FTagsTextBoxKeyDown(object sender, KeyEventArgs e)
-		{
-			if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return))
-			{
-				if (!e.Shift)
-				{
-					string text = "";
-					try
-					{
-						text = FRichTextBox.Lines[FHoverLine].Trim();
-						
-						INodeInfo selNode = FNodeDict[text];
-						if ((Control.ModifierKeys == Keys.Control) && ((selNode.Type == NodeType.Dynamic) || (selNode.Type == NodeType.Effect)))
-							OnPanelChange(NodeBrowserPage.Clone, selNode);
-						else
-							OnCreateNode(selNode);
-					}
-					catch
-					{
-						if ((text.EndsWith(".v4p")) || (text.EndsWith(".fx")) || (text.EndsWith(".dll")))
-							OnCreateNodeFromString(text);
-						else
-							OnCreateNodeFromString(FTagsTextBox.Text.Trim());
-					}
-				}
-			}
-			else if (e.KeyCode == Keys.Escape)
-				OnCreateNode(null);
-			else if ((FTagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Down))
-			{
-				FHoverLine += 1;
-				//if this is exceeding the FSelectionList.Count -> jump to line 0
-				if (FHoverLine + ScrolledLine >= FSelectionList.Count)
-				{
-					FHoverLine = 0;
-					ScrolledLine = 0;
-				}
-				//if this is exceeding the currently visible lines -> scroll down a line
-				else if (FHoverLine >= FVisibleLines)
-				{
-					ScrolledLine += 1;
-					FHoverLine = FVisibleLines - 1;
-				}
-				
-				RedrawSelection();
-				ShowToolTip();
-			}
-			else if ((FTagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Up))
-			{
-				FHoverLine -= 1;
-				//if this is exceeding the currently visible lines -> scroll up a line
-				if ((FHoverLine == -1) && (ScrolledLine > 0))
-				{
-					ScrolledLine -= 1;
-					FHoverLine = 0;
-				}
-				//if we are now < 0 -> jump to last entry
-				else if (FHoverLine < 0)
-				{
-					FHoverLine = Math.Min(FSelectionList.Count, FVisibleLines) - 1;
-					ScrolledLine = FSelectionList.Count;
-				}
-				
-				RedrawSelection();
-				ShowToolTip();
-			}
-			else if ((e.KeyCode == Keys.Left) || (e.KeyCode == Keys.Right))
-			{
-				if (FHoverLine != -1)
-				{
-					FHoverLine = -1;
-					FTagsTextBox.SelectionStart = FTagsTextBox.Text.Length;
-					RedrawSelection();
-				}
-			}
-			else if ((e.Control) && (e.KeyCode == Keys.A))
-			{
-				FTagsTextBox.SelectAll();
-			}
-		}
-		
-		void FTagsTextBoxMouseUp(object sender, MouseEventArgs e)
-		{
-			//do this in mouseup (not mousedown) for ContextMenu not throwing error
-			if (e.Button == MouseButtons.Right)
-			{
-				OnPanelChange(NodeBrowserPage.ByCategory, null);
-			}
-		}
-		
-		void FTagsTextBoxMouseWheel(object sender, MouseEventArgs e)
-		{
-			//clear old selection
-			FRichTextBox.SelectionBackColor = Color.Silver;
-			
-			int scrollCount = 1;
-			if (Control.ModifierKeys == Keys.Control)
-				scrollCount = 3;
-			
-			//adjust the line supposed to be in view
-			if (e.Delta < 0)
-				ScrolledLine = Math.Min(FScrollBar.Maximum - FVisibleLines + FScrollBar.LargeChange - 3, ScrolledLine + scrollCount);
-			else if (e.Delta > 0)
-				ScrolledLine = Math.Max(0, ScrolledLine - scrollCount);
-			
-			if (ScrolledLine < 0)
-				return;
-			
-			RedrawSelection();
-		}
-		#endregion TextBoxTags
-		
-		#region RichTextBox
-		void RichTextBoxMouseDown(object sender, MouseEventArgs e)
-		{
-			string username = FRichTextBox.Lines[FHoverLine].Trim();
+        void FTagsTextBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return))
+            {
+                if (!e.Shift)
+                    CreateNodeFromHoverLine();
+            }
+            else if (e.KeyCode == Keys.Escape)
+                OnCreateNode(null);
+            else if ((FTagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Down))
+            {
+                FHoverLine += 1;
+                //if this is exceeding the FSelectionList.Count -> jump to line 0
+                if (FHoverLine + ScrolledLine >= FSelectionList.Count)
+                {
+                    FHoverLine = 0;
+                    ScrolledLine = 0;
+                }
+                //if this is exceeding the currently visible lines -> scroll down a line
+                else if (FHoverLine >= FVisibleLines)
+                {
+                    ScrolledLine += 1;
+                    FHoverLine = FVisibleLines - 1;
+                }
+                
+                RedrawSelection();
+                ShowToolTip();
+            }
+            else if ((FTagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Up))
+            {
+                FHoverLine -= 1;
+                //if this is exceeding the currently visible lines -> scroll up a line
+                if ((FHoverLine == -1) && (ScrolledLine > 0))
+                {
+                    ScrolledLine -= 1;
+                    FHoverLine = 0;
+                }
+                //if we are now < 0 -> jump to last entry
+                else if (FHoverLine < 0)
+                {
+                    FHoverLine = Math.Min(FSelectionList.Count, FVisibleLines) - 1;
+                    ScrolledLine = FSelectionList.Count;
+                }
+                
+                RedrawSelection();
+                ShowToolTip();
+            }
+            else if ((e.KeyCode == Keys.Left) || (e.KeyCode == Keys.Right))
+            {
+                if (FHoverLine != -1)
+                {
+                    FHoverLine = -1;
+                    FTagsTextBox.SelectionStart = FTagsTextBox.Text.Length;
+                    RedrawSelection();
+                }
+            }
+            else if ((e.Control) && (e.KeyCode == Keys.A))
+            {
+                FTagsTextBox.SelectAll();
+            }
+        }
+        
+        void FTagsTextBoxMouseUp(object sender, MouseEventArgs e)
+        {
+            //do this in mouseup (not mousedown) for ContextMenu not throwing error
+            if (e.Button == MouseButtons.Right)
+            {
+                OnPanelChange(NodeBrowserPage.ByCategory, null);
+            }
+        }
+        
+        void FTagsTextBoxMouseWheel(object sender, MouseEventArgs e)
+        {
+            //clear old selection
+            FRichTextBox.SelectionBackColor = Color.Silver;
+            
+            int scrollCount = 1;
+            if (Control.ModifierKeys == Keys.Control)
+                scrollCount = 3;
+            
+            //adjust the line supposed to be in view
+            if (e.Delta < 0)
+                ScrolledLine = Math.Min(FScrollBar.Maximum - FVisibleLines + FScrollBar.LargeChange - 3, ScrolledLine + scrollCount);
+            else if (e.Delta > 0)
+                ScrolledLine = Math.Max(0, ScrolledLine - scrollCount);
+            
+            if (ScrolledLine < 0)
+                return;
+            
+            RedrawSelection();
+        }
+        #endregion TextBoxTags
+        
+        #region RichTextBox
+        void RichTextBoxMouseDown(object sender, MouseEventArgs e)
+        {
+            string username = FRichTextBox.Lines[FHoverLine].Trim();
             FRichTextBox.SelectionStart = FRichTextBox.GetFirstCharIndexFromLine(FHoverLine)+1;
             FTagsTextBox.Focus();
-            var selNode = FNodeDict[username];
             
             //as plugin in its own window
             if (AllowDragDrop)
             {
+                var selNode = FNodeDict[username];
                 string systemname = selNode.Systemname;
                 FTagsTextBox.DoDragDrop(systemname, DragDropEffects.All);
                 return;
             }
-            
             //else popped up on doubleclick
-            if (e.Button == MouseButtons.Left)
-            {
-                if ((Control.ModifierKeys == Keys.Control) && ((selNode.Type == NodeType.Dynamic) || (selNode.Type == NodeType.Effect)))
-					OnPanelChange(NodeBrowserPage.Clone, selNode);
-                else
-                    OnCreateNode(selNode);
-            }
-            else if (e.Button == MouseButtons.Middle)
-                OnShowNodeReference(selNode);
+            else if (e.Button == MouseButtons.Left)
+                CreateNodeFromHoverLine();
             else
-                OnShowHelpPatch(selNode);
-		}
-		
-		void RichTextBoxMouseMove(object sender, MouseEventArgs e)
-		{
-			if (FRichTextBox.Lines.Length == 0)
-				return;
-			
-			int newHoverLine = FRichTextBox.GetLineFromCharIndex(FRichTextBox.GetCharIndexFromPosition(e.Location));
-			
-			//avoid some flicker
-			if ((e.Location.X != FLastMouseHoverLocation.X) || (e.Location.Y != FLastMouseHoverLocation.Y))
-			{
-				FLastMouseHoverLocation = e.Location;
-				FHoverLine = newHoverLine;
-				ShowToolTip();
-				RedrawSelection();
-			}
-		}
-		
-		void RichTextBoxMouseUp(object sender, MouseEventArgs e)
-		{
-		    //if cloned via ctrl+click the self is now hidden
-		    //and we don't want the nodebrowser to vanish yet
-		    if (Visible)
-		    {
-		        //hack: called only to re-focus active patch
-		        //after this mouseup set the focus to the already hidden NodeBrowser window
-		            OnCreateNodeFromString("");
-		        
-		        FTagsTextBox.Focus();
-		    }
-		}
-		
-		private void ShowToolTip()
-		{
-			if (FHoverLine == -1)
-				return;
-			
-			string key = FRichTextBox.Lines[FHoverLine].Trim();
+            {
+                try
+                {
+                    var selNode = FNodeDict[username];
+                    if (e.Button == MouseButtons.Middle)
+                        OnShowNodeReference(selNode);
+                    else
+                        OnShowHelpPatch(selNode);
+                }
+                catch //username is a filename..do nothing
+                {}
+            }
+        }
+        
+        void RichTextBoxMouseMove(object sender, MouseEventArgs e)
+        {
+            if (FRichTextBox.Lines.Length == 0)
+                return;
+            
+            int newHoverLine = FRichTextBox.GetLineFromCharIndex(FRichTextBox.GetCharIndexFromPosition(e.Location));
+            
+            //avoid some flicker
+            if ((e.Location.X != FLastMouseHoverLocation.X) || (e.Location.Y != FLastMouseHoverLocation.Y))
+            {
+                FLastMouseHoverLocation = e.Location;
+                FHoverLine = newHoverLine;
+                ShowToolTip();
+                RedrawSelection();
+            }
+        }
+        
+        void RichTextBoxMouseUp(object sender, MouseEventArgs e)
+        {
+            //if cloned via ctrl+click the self is now hidden
+            //and we don't want the nodebrowser to vanish yet
+            if (Visible)
+            {
+                //hack: called only to re-focus active patch
+                //after this mouseup set the focus to the already hidden NodeBrowser window
+                OnCreateNodeFromString("");
+                
+                FTagsTextBox.Focus();
+            }
+        }
+        
+        private void ShowToolTip()
+        {
+            if (FHoverLine == -1)
+                return;
+            
+            string key = FRichTextBox.Lines[FHoverLine].Trim();
             if (FNodeDict.ContainsKey(key))
             {
                 INodeInfo ni = FNodeDict[key];
@@ -365,7 +370,7 @@ namespace VVVV.Nodes.NodeBrowser
                 int y = FRichTextBox.GetPositionFromCharIndex(FRichTextBox.GetFirstCharIndexFromLine(FHoverLine)).Y;
                 string tip = "";
                 if (ni.Type == NodeType.Dynamic || ni.Type == NodeType.Effect)
-                    tip = "Use CTRL + Enter or Click to clone this node.\n";
+                    tip = "Use CTRL+Enter or CTRL+Click to clone this node.\n";
                 if (!string.IsNullOrEmpty(ni.Shortcut))
                     tip = "(" + ni.Shortcut + ") " ;
                 if (!string.IsNullOrEmpty(ni.Help))
@@ -383,43 +388,43 @@ namespace VVVV.Nodes.NodeBrowser
                 else
                     FToolTip.Hide(FRichTextBox);
             }
-		}
-		
-		private List<string> ExtractSubList(List<string> InputList)
-		{
-			return InputList.FindAll(delegate(string node)
-			                         {
-			                         	node = node.ToLower();
-			                         	node = node.Replace('é', 'e');
-			                         	bool containsAll = true;
-			                         	string t = "";
-			                         	foreach (string tag in FTags)
-			                         	{
-			                         		t = tag.ToLower();
-			                         		t = t.TrimStart(new char[1]{'.'});
-			                         		if (node.Contains(t))
-			                         		{
-			                         			if (!AndTags)
-			                         				break;
-			                         		}
-			                         		else
-			                         		{
-			                         			containsAll = false;
-			                         			break;
-			                         		}
-			                         	}
-			                         	
-			                         	if (((AndTags) && (containsAll)) || ((!AndTags) && (node.Contains(t))))
-			                         		return true;
-			                         	else
-			                         		return false;
-			                         });
-		}
-		
-		private List<string> GetLocalNodes()
-		{
-			var files = new List<string>();
-			if (System.IO.Path.IsPathRooted(FPathDir))
+        }
+        
+        private List<string> ExtractSubList(List<string> InputList)
+        {
+            return InputList.FindAll(delegate(string node)
+                                     {
+                                         node = node.ToLower();
+                                         node = node.Replace('é', 'e');
+                                         bool containsAll = true;
+                                         string t = "";
+                                         foreach (string tag in FTags)
+                                         {
+                                             t = tag.ToLower();
+                                             t = t.TrimStart(new char[1]{'.'});
+                                             if (node.Contains(t))
+                                             {
+                                                 if (!AndTags)
+                                                     break;
+                                             }
+                                             else
+                                             {
+                                                 containsAll = false;
+                                                 break;
+                                             }
+                                         }
+                                         
+                                         if (((AndTags) && (containsAll)) || ((!AndTags) && (node.Contains(t))))
+                                             return true;
+                                         else
+                                             return false;
+                                     });
+        }
+        
+        private List<string> GetLocalNodes()
+        {
+            var files = new List<string>();
+            if (System.IO.Path.IsPathRooted(FPathDir))
             {
                 foreach (string p in System.IO.Directory.GetFiles(FPathDir, "*.v4p", SearchOption.TopDirectoryOnly))
                 {
@@ -432,12 +437,12 @@ namespace VVVV.Nodes.NodeBrowser
                 foreach (string p in System.IO.Directory.GetFiles(FPathDir, "*.fx"))
                     files.Add(System.IO.Path.GetFileName(p));
             }
-			return files;
-		}
-		
-		private void FilterNodesByTags()
-		{
-			string text = FTagsTextBox.Text.ToLower().Trim();
+            return files;
+        }
+        
+        private void FilterNodesByTags()
+        {
+            string text = FTagsTextBox.Text.ToLower().Trim();
             
             FSelectionList.Clear();
             FSelectionList.AddRange(FNodeList);
@@ -608,172 +613,172 @@ namespace VVVV.Nodes.NodeBrowser
                                 });
             
             if (FNodeCountLabel.InvokeRequired)
-				FNodeCountLabel.Invoke(new MethodInvoker(() => 
-            	                                             { 
-            	                                             	FNodeCountLabel.Text = "Matching Nodes: " + FSelectionList.Count.ToString();
-            	                                             }));
-			else
-				//FCategoryTreeViewer.Reload();
-            FNodeCountLabel.Text = "Matching Nodes: " + FSelectionList.Count.ToString();
-		}
-		
-		private void PrepareRTF()
-		{
-			string n;
-			char[] bolded;
-			
-			System.Text.StringBuilder sb = new System.Text.StringBuilder();
-			FRTFSelectionList.Clear();
-			foreach (string s in FSelectionList)
-			{
-				//all comparison is case-in-sensitive
-				n = s.ToLower();
-				bolded = n.ToCharArray();
-				foreach (string tag in FTags)
-				{
-					string t = tag.Replace(".", "");
-					t = t.ToLower();
-					if (!string.IsNullOrEmpty(t))
-					{
-						//in the bolded char[] mark all matching characters as ° for later being rendered as bold
-						int start = 0;
-						while (n.IndexOf(t, start) >= 0)
-						{
-							int pos = n.IndexOf(t, start);
-							for (int i=pos; i<pos + t.Length; i++)
-								bolded[i] = '°';
-							start = pos+1;
-						}
-					}
-				}
-				
-				//now recreate the string including bold markups
-				sb.Remove(0, sb.Length);
-				for (int i=0; i<s.Length; i++)
-					if (bolded[i] == '°')
-						sb.Append("\\b " + s[i] + "\\b0 ");
-					else
-						sb.Append(s[i]);
-				
-				n = sb.ToString();
-				FRTFSelectionList.Add(n.PadRight(200) + "\\par ");
-			}
-		}
-		
-		private void UpdateRichTextBox()
-		{
-			string rtf = CRTFHeader;
-			int maxLine = Math.Min(ScrolledLine + FVisibleLines, FRTFSelectionList.Count);
-			
-			for (int i = ScrolledLine; i < maxLine; i++)
-			{
-				rtf += FRTFSelectionList[i];
-			}
-			
-			if (FRichTextBox.InvokeRequired)
-				FRichTextBox.Invoke(new MethodInvoker(() => { FRichTextBox.Rtf = rtf + "}"; }));
-			else
-				FRichTextBox.Rtf = rtf + "}";
-			
-			FNodeTypePanel.Invalidate();
-		}
-		
-		public void Redraw()
-		{
-			string text = FTagsTextBox.Text.Trim();
-			FTags = text.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
-			
-			FNodeFilter = -1;
-			
-			if (FTags.Length > 0)
-			{
-				if (FTags[0] == "N")
-					FNodeFilter = (int) NodeType.Native;
-				else if ((FTags[0].StartsWith(".")) || (FTags[0] == "V") || (FTags[0] == "V4") || (FTags[0] == "V4P"))
-					FNodeFilter = (int) NodeType.Patch;
-				else if (FTags[0] == "M")
-					FNodeFilter = (int) NodeType.Module;
-				else if ((FTags[0] == "F") || (FTags[0] == "FF"))
-					FNodeFilter = (int) NodeType.Freeframe;
-				else if ((FTags[0] == "X") || (FTags[0] == "FX"))
-					FNodeFilter = (int) NodeType.Effect;
-				else if (FTags[0] == "P")
-					FNodeFilter = (int) NodeType.Plugin;
-				else if (FTags[0] == "D")
-					FNodeFilter = (int) NodeType.Dynamic;
-				else if ((FTags[0] == "VS") || (FTags[0] == "VST"))
-					FNodeFilter = (int) NodeType.VST;
-			}
-			
-			if (FNodeFilter >= 0)
-			{
-				//remove first entry from FTags if it doesn't start with .
-				if (!FTags[0].StartsWith("."))
-				{
-					string[] restTags = new string[Math.Max(0, FTags.Length-1)];
-					for (int i = 1; i < FTags.Length; i++)
-					{
-						restTags[i - 1] = FTags[i];
-					}
-					FTags = restTags;
-				}
-			}
-			
-			FilterNodesByTags();
-			PrepareRTF();
-			
-			if (FScrollBar.InvokeRequired)
-				FScrollBar.Invoke(new MethodInvoker(() => 
-				                                    { 
-				                                    	FScrollBar.Maximum = Math.Max(0, FSelectionList.Count - FVisibleLines + FScrollBar.LargeChange - 1);
-				                                    }));
-			else
-				FScrollBar.Maximum = Math.Max(0, FSelectionList.Count - FVisibleLines + FScrollBar.LargeChange - 1);
-			
-			//calling UpdateRichTexBox()
-			ScrolledLine = 0;
-		}
-		
-		private void RedrawSelection()
-		{
-			//clear old selection
-			FRichTextBox.SelectionBackColor = Color.Silver;
+                FNodeCountLabel.Invoke(new MethodInvoker(() =>
+                                                         {
+                                                             FNodeCountLabel.Text = "Matching Nodes: " + FSelectionList.Count.ToString();
+                                                         }));
+            else
+                //FCategoryTreeViewer.Reload();
+                FNodeCountLabel.Text = "Matching Nodes: " + FSelectionList.Count.ToString();
+        }
+        
+        private void PrepareRTF()
+        {
+            string n;
+            char[] bolded;
+            
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            FRTFSelectionList.Clear();
+            foreach (string s in FSelectionList)
+            {
+                //all comparison is case-in-sensitive
+                n = s.ToLower();
+                bolded = n.ToCharArray();
+                foreach (string tag in FTags)
+                {
+                    string t = tag.Replace(".", "");
+                    t = t.ToLower();
+                    if (!string.IsNullOrEmpty(t))
+                    {
+                        //in the bolded char[] mark all matching characters as ° for later being rendered as bold
+                        int start = 0;
+                        while (n.IndexOf(t, start) >= 0)
+                        {
+                            int pos = n.IndexOf(t, start);
+                            for (int i=pos; i<pos + t.Length; i++)
+                                bolded[i] = '°';
+                            start = pos+1;
+                        }
+                    }
+                }
+                
+                //now recreate the string including bold markups
+                sb.Remove(0, sb.Length);
+                for (int i=0; i<s.Length; i++)
+                    if (bolded[i] == '°')
+                        sb.Append("\\b " + s[i] + "\\b0 ");
+                    else
+                        sb.Append(s[i]);
+                
+                n = sb.ToString();
+                FRTFSelectionList.Add(n.PadRight(200) + "\\par ");
+            }
+        }
+        
+        private void UpdateRichTextBox()
+        {
+            string rtf = CRTFHeader;
+            int maxLine = Math.Min(ScrolledLine + FVisibleLines, FRTFSelectionList.Count);
+            
+            for (int i = ScrolledLine; i < maxLine; i++)
+            {
+                rtf += FRTFSelectionList[i];
+            }
+            
+            if (FRichTextBox.InvokeRequired)
+                FRichTextBox.Invoke(new MethodInvoker(() => { FRichTextBox.Rtf = rtf + "}"; }));
+            else
+                FRichTextBox.Rtf = rtf + "}";
+            
+            FNodeTypePanel.Invalidate();
+        }
+        
+        public void Redraw()
+        {
+            string text = FTagsTextBox.Text.Trim();
+            FTags = text.Split(new char[]{' '}, StringSplitOptions.RemoveEmptyEntries);
+            
+            FNodeFilter = -1;
+            
+            if (FTags.Length > 0)
+            {
+                if (FTags[0] == "N")
+                    FNodeFilter = (int) NodeType.Native;
+                else if ((FTags[0].StartsWith(".")) || (FTags[0] == "V") || (FTags[0] == "V4") || (FTags[0] == "V4P"))
+                    FNodeFilter = (int) NodeType.Patch;
+                else if (FTags[0] == "M")
+                    FNodeFilter = (int) NodeType.Module;
+                else if ((FTags[0] == "F") || (FTags[0] == "FF"))
+                    FNodeFilter = (int) NodeType.Freeframe;
+                else if ((FTags[0] == "X") || (FTags[0] == "FX"))
+                    FNodeFilter = (int) NodeType.Effect;
+                else if (FTags[0] == "P")
+                    FNodeFilter = (int) NodeType.Plugin;
+                else if (FTags[0] == "D")
+                    FNodeFilter = (int) NodeType.Dynamic;
+                else if ((FTags[0] == "VS") || (FTags[0] == "VST"))
+                    FNodeFilter = (int) NodeType.VST;
+            }
+            
+            if (FNodeFilter >= 0)
+            {
+                //remove first entry from FTags if it doesn't start with .
+                if (!FTags[0].StartsWith("."))
+                {
+                    string[] restTags = new string[Math.Max(0, FTags.Length-1)];
+                    for (int i = 1; i < FTags.Length; i++)
+                    {
+                        restTags[i - 1] = FTags[i];
+                    }
+                    FTags = restTags;
+                }
+            }
+            
+            FilterNodesByTags();
+            PrepareRTF();
+            
+            if (FScrollBar.InvokeRequired)
+                FScrollBar.Invoke(new MethodInvoker(() =>
+                                                    {
+                                                        FScrollBar.Maximum = Math.Max(0, FSelectionList.Count - FVisibleLines + FScrollBar.LargeChange - 1);
+                                                    }));
+            else
+                FScrollBar.Maximum = Math.Max(0, FSelectionList.Count - FVisibleLines + FScrollBar.LargeChange - 1);
+            
+            //calling UpdateRichTexBox()
+            ScrolledLine = 0;
+        }
+        
+        private void RedrawSelection()
+        {
+            //clear old selection
+            FRichTextBox.SelectionBackColor = Color.Silver;
 
-			if (FHoverLine > -1)
-			{
-				//draw current selection
-				string sel = FRichTextBox.Lines[FHoverLine];
-				FRichTextBox.SelectionStart = FRichTextBox.Text.IndexOf(sel);
-				FRichTextBox.SelectionLength = sel.Length;
-				FRichTextBox.SelectionBackColor = CHoverColor;
-			}
-			
-			//make sure the selection is also drawn in the NodeTypePanel
-			FNodeTypePanel.Invalidate();
-		}
-		
-		void FScrollBarValueChanged(object sender, EventArgs e)
-		{
-			FScrolledLine = FScrollBar.Value;
-			UpdateRichTextBox();
-			FToolTip.Hide(FRichTextBox);
-		}
-		
-		void FNodeTypePanelPaint(object sender, PaintEventArgs e)
-		{
-			e.Graphics.Clear(Color.Silver);
-			
-			int maxLine = Math.Min(FVisibleLines, FSelectionList.Count);
-			for (int i = 0; i < maxLine; i++)
-			{
-				int index = i + ScrolledLine;
-				int y = (i * CLineHeight) + 4;
-				
-				if (FHoverLine == i)
-					using (SolidBrush b = new SolidBrush(CHoverColor))
-						e.Graphics.FillRectangle(b, new Rectangle(0, y-4, 21, CLineHeight));
-				
-				if (FNodeDict.ContainsKey(FSelectionList[index].Trim()))
+            if (FHoverLine > -1)
+            {
+                //draw current selection
+                string sel = FRichTextBox.Lines[FHoverLine];
+                FRichTextBox.SelectionStart = FRichTextBox.Text.IndexOf(sel);
+                FRichTextBox.SelectionLength = sel.Length;
+                FRichTextBox.SelectionBackColor = CHoverColor;
+            }
+            
+            //make sure the selection is also drawn in the NodeTypePanel
+            FNodeTypePanel.Invalidate();
+        }
+        
+        void FScrollBarValueChanged(object sender, EventArgs e)
+        {
+            FScrolledLine = FScrollBar.Value;
+            UpdateRichTextBox();
+            FToolTip.Hide(FRichTextBox);
+        }
+        
+        void FNodeTypePanelPaint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.Silver);
+            
+            int maxLine = Math.Min(FVisibleLines, FSelectionList.Count);
+            for (int i = 0; i < maxLine; i++)
+            {
+                int index = i + ScrolledLine;
+                int y = (i * CLineHeight) + 4;
+                
+                if (FHoverLine == i)
+                    using (SolidBrush b = new SolidBrush(CHoverColor))
+                        e.Graphics.FillRectangle(b, new Rectangle(0, y-4, 21, CLineHeight));
+                
+                if (FNodeDict.ContainsKey(FSelectionList[index].Trim()))
                 {
                     NodeType nodeType = FNodeDict[FSelectionList[index].Trim()].Type;
                     
@@ -815,21 +820,21 @@ namespace VVVV.Nodes.NodeBrowser
                 else
                     using (SolidBrush b = new SolidBrush(Color.Black))
                         e.Graphics.DrawString("V", FRichTextBox.Font, b, 5, y-3, StringFormat.GenericDefault);
-			}
-		}
-		
-		void FRichTextBoxResize(object sender, EventArgs e)
-		{
-			FVisibleLines = FRichTextBox.Height / CLineHeight;
-			Redraw();
-		}
-		#endregion RichTextBox
-		
-		void TagPanelVisibleChanged(object sender, EventArgs e)
-		{
-			FTagsTextBox.Text = FTagsTextBox.Text.Trim();
-			FTagsTextBox.Focus();
-			FToolTip.Hide(FRichTextBox);
-		}
-	}
+            }
+        }
+        
+        void FRichTextBoxResize(object sender, EventArgs e)
+        {
+            FVisibleLines = FRichTextBox.Height / CLineHeight;
+            Redraw();
+        }
+        #endregion RichTextBox
+        
+        void TagPanelVisibleChanged(object sender, EventArgs e)
+        {
+            FTagsTextBox.Text = FTagsTextBox.Text.Trim();
+            FTagsTextBox.Focus();
+            FToolTip.Hide(FRichTextBox);
+        }
+    }
 }
