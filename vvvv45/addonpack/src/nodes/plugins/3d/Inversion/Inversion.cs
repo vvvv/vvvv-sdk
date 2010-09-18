@@ -146,9 +146,9 @@ namespace VVVV.Nodes
 					//the nodes author: your sign
 					FPluginInfo.Author = "fibo";
 					//describe the nodes function
-					FPluginInfo.Help = "";
+                    FPluginInfo.Help = "Inversion transform by a sphere";
 					//specify a comma separated list of tags that describe the node
-					FPluginInfo.Tags = "";
+					FPluginInfo.Tags = "3d,geometry,transform";
 					
 					//give credits to thirdparty code used
 					FPluginInfo.Credits = "";
