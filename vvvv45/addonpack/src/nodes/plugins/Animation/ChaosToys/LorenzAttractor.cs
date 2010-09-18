@@ -207,13 +207,13 @@ namespace VVVV.Nodes
             FHost = Host;
 
             //create inputs
-            FHost.CreateValueInput("Input X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueInputX);
+            FHost.CreateValueInput("Convective Flow In ", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueInputX);
             FValueInputX.SetSubType(double.MinValue, double.MaxValue, 0.01, 1, false, false, false);
 
-            FHost.CreateValueInput("Input Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueInputY);
+            FHost.CreateValueInput("Horizontal Temperature Distribution In ", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueInputY);
             FValueInputX.SetSubType(double.MinValue, double.MaxValue, 0.01, 2, false, false, false);
 
-            FHost.CreateValueInput("Input Z", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueInputZ);
+            FHost.CreateValueInput("Vertical Temperature Distribution In ", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueInputZ);
             FValueInputY.SetSubType(double.MinValue, double.MaxValue, 0.01, 3, false, false, false);
 
             FHost.CreateValueInput("DeltaTime", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FValueInputDeltaT);
@@ -224,18 +224,18 @@ namespace VVVV.Nodes
 
             FHost.CreateValueInput("Sigma", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputSigma);
             FValueInputSigma.SetSubType(double.MinValue, double.MaxValue, 0.01, 10, false, false, false);
-
+            
             FHost.CreateValueInput("Beta", 1, null, TSliceMode.Single, TPinVisibility.True, out FValueInputBeta);
             FValueInputBeta.SetSubType(double.MinValue, double.MaxValue, 0.01, 2.667, false, false, false);
 
             //create outputs
-            FHost.CreateValueOutput("Output X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueOutputX);
+            FHost.CreateValueOutput("Convective Flow Out ", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueOutputX);
             FValueOutputX.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
 
-            FHost.CreateValueOutput("Output Y", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueOutputY);
+            FHost.CreateValueOutput("Horizontal Temperature Distribution Out ", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueOutputY);
             FValueOutputY.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
 
-            FHost.CreateValueOutput("Output Z", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueOutputZ);
+            FHost.CreateValueOutput("Vertical Temperature Distribution Out ", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FValueOutputZ);
             FValueOutputZ.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
         }
 
