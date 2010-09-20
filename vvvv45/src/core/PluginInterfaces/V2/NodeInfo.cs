@@ -129,6 +129,30 @@ namespace VVVV.PluginInterfaces.V2
 			}
 		}
 		
+		private string NameToDosName(string name)
+		{
+			if (name == "*")
+				return "Multiply";
+			else if (name == "+")
+				return "Add";
+			else if (name == "-")
+				return "Substract";
+			else if (name == "/")
+				return "Divide";
+			else if (name == "=")
+				return "EQ";
+			else if (name == "<")
+				return "LT";
+			else if (name == ">")
+				return "GT";
+			else if (name == "<=")
+				return "LE";
+			else if (name == ">=")
+				return "GE";
+			else 
+				return name;
+		}
+		
 		/// <summary>
 		/// The nodes unique username in the form of: Name (Category Version)
 		/// </summary>
@@ -137,9 +161,9 @@ namespace VVVV.PluginInterfaces.V2
 			get 
 			{
 			    if (string.IsNullOrEmpty(this.Version))
-					return this.Name + " (" + this.Category + ")";
+			    	return NameToDosName(this.Name) + " (" + this.Category + ")";
 				else
-					return this.Name + " (" + this.Category + " " + this.Version + ")";
+					return NameToDosName(this.Name) + " (" + this.Category + " " + this.Version + ")";
 			}
 		}
 		
