@@ -154,7 +154,7 @@ namespace VVVV.Nodes
 					//describe the nodes function
 					FPluginInfo.Help = "The quaternion exponential function";
 					//specify a comma separated list of tags that describe the node
-					FPluginInfo.Tags = "";
+					FPluginInfo.Tags = "4d,exp,map";
 					
 					//give credits to thirdparty code used
 					FPluginInfo.Credits = "";
