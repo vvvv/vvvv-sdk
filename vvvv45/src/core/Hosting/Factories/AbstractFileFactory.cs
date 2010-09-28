@@ -276,7 +276,14 @@ namespace VVVV.Hosting.Factories
 					var formatter = new BinaryFormatter();
 					using (var stream = new FileStream(cacheFile, FileMode.Open, FileAccess.Read, FileShare.Read))
 					{
-						FNodeInfoCache[filename] = (List<INodeInfo>) formatter.Deserialize(stream);
+						var nodeInfos = (List<INodeInfo>) formatter.Deserialize(stream);
+						if (ValidateNodeInfos(filename, nodeInfos))
+							FNodeInfoCache[filename] = nodeInfos;
+						else
+						{
+							stream.Close();
+							LoadAndCacheNodeInfos(filename);
+						}
 					}
 				}
 				catch (Exception)
@@ -290,6 +297,15 @@ namespace VVVV.Hosting.Factories
 //				FLogger.Log(LogType.Warning, "Empty cache for {0}.", filename);
 			
 			return FNodeInfoCache[filename];
+		}
+		
+		protected bool ValidateNodeInfos(string fileName, List<INodeInfo> nodeInfos)
+		{
+			var path = Path.GetDirectoryName(fileName);
+			foreach(var n in nodeInfos) 
+				if (Path.GetDirectoryName(n.Filename) != path) return false;
+			
+			return true;
 		}
 		
 		protected IEnumerable<INodeInfo> LoadAndCacheNodeInfos(string filename)
