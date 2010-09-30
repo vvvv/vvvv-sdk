@@ -46,12 +46,11 @@ namespace VVVV.Hosting.Factories
 				if (FSolution.Projects.CanAdd(project))
 					FSolution.Projects.Add(project);
 				project.Load();
-				//project.CompileCompleted += new CompileCompletedHandler(project_CompileCompleted);
 				project.DoCompile += new EventHandler(project_DoCompile);
 				FProjects[filename] = project;
 			}
 			
-			project.Compile();
+			project.CompileAsync();
 			
 			yield return FProjectNodeInfo[project];
 		}
@@ -105,7 +104,7 @@ namespace VVVV.Hosting.Factories
 							inc = Path.Combine(Path.GetDirectoryName(filename), inc.Trim(new char[1]{'"'}));
 							includes.Add(inc);
 						}
-					}
+				    }
 				}
 				
 				//remove all references that are not in the includes

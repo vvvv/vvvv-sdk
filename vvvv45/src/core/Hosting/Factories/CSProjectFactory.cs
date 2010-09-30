@@ -17,6 +17,7 @@ using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
+using VVVV.Core.Runtime;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.Factories
@@ -78,24 +79,16 @@ namespace VVVV.Hosting.Factories
 				
 				project.Load();
 				
-				project.CompileCompleted += new CompileCompletedHandler(project_CompileCompleted);
+				project.ProjectCompiled += new ProjectCompiledHandler(project_ProjectCompiled);
 				FProjects[filename] = project;
 			}
 			
 			base.AddFile(filename);
 		}
-		
-		protected override void FileChanged(string filename)
+
+		void project_ProjectCompiled(IProject project, IExecutable executable)
 		{
-			// Normalize the filename
-			filename = new Uri(filename).LocalPath;
-			
-			if (!FProjects.ContainsKey(filename)) return;
-			
-			var project = FProjects[filename];
-			// Do we need to compile it?
-			if (!IsAssemblyUpToDate(project))
-				project.CompileAsync();
+    		base.FileChanged(project.Location.LocalPath);
 		}
 		
 		private bool IsAssemblyUpToDate(IProject project)
@@ -149,14 +142,6 @@ namespace VVVV.Hosting.Factories
 			}
 			
 			base.DeleteArtefacts(dir);
-		}
-
-		void project_CompileCompleted(IProject project, CompilerResults results)
-		{
-			if (results.Errors.HasErrors)
-				FLogger.Log(LogType.Error, GetCompileErrorsLog(project, results));
-			else
-				base.FileChanged(project.Location.LocalPath);
 		}
 		
 		string GetCompileErrorsLog(IProject project, CompilerResults results)
