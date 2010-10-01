@@ -50,7 +50,7 @@ namespace VVVV.Hosting.Factories
 				FProjects[filename] = project;
 			}
 			
-			project.CompileAsync();
+			project.Compile();
 			
 			yield return FProjectNodeInfo[project];
 		}
