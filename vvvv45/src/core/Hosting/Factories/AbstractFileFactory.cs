@@ -227,10 +227,10 @@ namespace VVVV.Hosting.Factories
 		
 		void FDirectoryWatcher_Changed(object sender, FileSystemEventArgs e)
 		{
-			if (System.IO.Path.HasExtension(e.FullPath))
+		/*	if (System.IO.Path.HasExtension(e.FullPath))
 				FileChanged(e.FullPath);
 			else
-				DirectoryChanged(e.FullPath);
+				DirectoryChanged(e.FullPath);*/
 		}
 		
 		void FDirectoryWatcher_Created(object sender, FileSystemEventArgs e)
