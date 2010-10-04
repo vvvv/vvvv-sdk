@@ -60,13 +60,13 @@ namespace VVVV.Hosting.Pins.Output
 		
 		unsafe public override void Update()
 		{
+			base.Update();
+			
 			float* destination;
 			FTransformOut.GetMatrixPointer(out destination);
 			
 			if (FSliceCount > 0)
 				Marshal.Copy(FData, 0, new IntPtr(destination), FData.Length);
-			
-			base.Update();
 		}
 	}
 }

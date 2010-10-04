@@ -80,6 +80,8 @@ namespace VVVV.Hosting.Pins.Input
 			
 			// Fill end of FData with values from start.
 			Array.Copy(FData, 0, FData, sliceCount, FData.Length - sliceCount);
+			
+			base.Update();
 		}
 	}
 }

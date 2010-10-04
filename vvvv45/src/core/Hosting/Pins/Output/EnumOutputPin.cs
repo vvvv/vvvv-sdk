@@ -26,6 +26,8 @@ namespace VVVV.Hosting.Pins.Output
 		
 		public override void Update()
 		{
+			base.Update();
+			
 			if (FAttribute.SliceMode != SliceMode.Single)
 				FEnumOutputPin.SliceCount = FSliceCount;
 			
@@ -33,8 +35,6 @@ namespace VVVV.Hosting.Pins.Output
 			{
 				FEnumOutputPin.SetString(i, FData[i].ToString());
 			}
-			
-			base.Update();
 		}
 	}
 }

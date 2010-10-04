@@ -39,6 +39,8 @@ namespace VVVV.Hosting.Pins.Output
 		
 		public override void Update()
 		{
+			base.Update();
+			
 			if (FChanged) 
 			{
 				if (FAttribute.SliceMode != SliceMode.Single)
@@ -48,8 +50,6 @@ namespace VVVV.Hosting.Pins.Output
 			}
 			
 			FChanged = false;
-			
-			base.Update();
 		}
 	}
 }
