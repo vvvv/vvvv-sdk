@@ -238,7 +238,7 @@ namespace VVVV.Nodes
             RGBAColor textColor, brushColor;
             Rectangle tmpRect = new Rectangle(0, 0, 0, 0);
             
-            int hAlign, wi, hi;
+            int hAlign, wAlign;
             double showBrush, w, h;
             float x, y;
             
@@ -265,7 +265,8 @@ namespace VVVV.Nodes
                         case 2: dtf |= DrawTextFormat.Right; break;
                 }
                 
-                switch (FVerticalAlignInput[i].Index)
+                wAlign = FVerticalAlignInput[i].Index;
+                switch (wAlign)
                 {
                         case 0: dtf |= DrawTextFormat.Top; break;
                         case 1: dtf |= DrawTextFormat.VerticalCenter; break;
@@ -305,10 +306,16 @@ namespace VVVV.Nodes
                 {
                     x = tmpRect.Width/2;
                     y = tmpRect.Height/2;
+                    
                     if (hAlign == 0)
                         x -= x;
                     else if (hAlign == 2)
                         x += x;
+                        
+   					if (wAlign == 0)
+   						y -= y;
+ 					else if(wAlign == 2)
+ 						y += y;
                     
                     /*workaround for slimdx(august09)
 					Matrix4x4 spriteBugWorkaround = VMath.Translate(-x, -y, 0.001);
@@ -320,7 +327,7 @@ namespace VVVV.Nodes
                     df.Sprite.Draw(df.Texture, new Rectangle(0, 0, tmpRect.Width, tmpRect.Height), new Vector3(x, y, -0.001f), null, new Color4(FBrushColor[i].Color.ToArgb()));
                 }
                 
-                df.Font.DrawString(df.Sprite, text, new Rectangle(-tmpRect.Width/2, -tmpRect.Height/2, tmpRect.Width, tmpRect.Height), dtf, (Color) FColorInput[i]);
+                df.Font.DrawString(df.Sprite, text, new Rectangle((int)-rect.x/2, (int)-rect.y/2, (int)rect.x, (int)rect.y), dtf, (Color) FColorInput[i]);
             }
             
             df.Sprite.End();
