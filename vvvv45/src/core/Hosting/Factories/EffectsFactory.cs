@@ -38,21 +38,29 @@ namespace VVVV.Hosting.Factories
 		//create a node info from a filename
 		protected override IEnumerable<INodeInfo> GetNodeInfos(string filename)
 		{
-			FXProject project;
+			if (!FProjects.ContainsKey(filename))
+				yield break;
 			
-			if (!FProjects.TryGetValue(filename, out project))
-			{
-				project = new FXProject(new Uri(filename));
-				if (FSolution.Projects.CanAdd(project))
-					FSolution.Projects.Add(project);
-				project.Load();
-				project.DoCompile += new EventHandler(project_DoCompile);
-				FProjects[filename] = project;
-			}
+			var project = FProjects[filename];
 			
 			project.Compile();
 			
 			yield return FProjectNodeInfo[project];
+		}
+		
+		protected override void AddFile(string filename)
+		{
+			if (!FProjects.ContainsKey(filename))
+			{
+				var project = new FXProject(new Uri(filename));
+				if (FSolution.Projects.CanAdd(project))
+					FSolution.Projects.Add(project);
+				project.Load();
+				project.DoCompileEvent += new EventHandler(project_DoCompile);
+				FProjects[filename] = project;
+			}
+			
+			base.AddFile(filename);
 		}
 		
 		void project_DoCompile(object sender, EventArgs e)
@@ -158,7 +166,42 @@ namespace VVVV.Hosting.Factories
 			string e = effectHost.GetErrors();
 			if (string.IsNullOrEmpty(e))
 				e = "";
-			project.Errors = e;
+			
+			var compilerResults = new CompilerResults(null);
+			//now parse errors to CompilerResults
+            //split errorstring linewise
+            var errorlines = e.Split(new char[1]{'\n'});
+            foreach (var line in errorlines)
+            {
+                string filename = project.Location.LocalPath;
+                int eLine;
+                string eNumber;
+                string eText = "";
+                
+                //split the line at :
+                var eItems = line.Split(new char[1]{':'});
+                int start = eItems[0].IndexOf('(');
+                int end = eItems[0].IndexOf(')');
+                
+                //if there is no linenumber in braces continue with the next error
+                //this may be a warning
+                if (start == -1)
+                    continue;
+                
+                if (start > 0)
+                    filename = Path.Combine(Path.GetDirectoryName(project.Location.LocalPath), eItems[0].Substring(0, start));
+                
+                eLine = Convert.ToInt32(eItems[0].Substring(start+1, end-start-1));
+                
+                eNumber = eItems[1].Substring(7, 5);
+                
+                for (int i = 2; i < eItems.Length; i++)
+                    eText += eItems[i];
+                                    
+                compilerResults.Errors.Add(new CompilerError(filename, eLine, 0, eNumber, eText));
+            }
+            
+            project.CompilerResults = compilerResults;
 			
 			//and the input pins
 			string f = effectHost.GetParameterDescription();

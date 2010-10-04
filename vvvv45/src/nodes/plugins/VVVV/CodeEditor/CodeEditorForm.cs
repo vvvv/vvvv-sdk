@@ -181,6 +181,9 @@ namespace VVVV.HDE.CodeEditor
 				FOpenedDocuments[doc] = tabPage;
 				doc.ContentChanged += DocumentContentChangedCB;
 				doc.Saved += DocumentSavedCB;
+				
+				// Fake a compilation in order to show error messages on startup.
+				Project_CompileCompleted(doc.Project);
 			}
 			
 			FTabControl.SelectedTab = FOpenedDocuments[doc];
@@ -231,8 +234,9 @@ namespace VVVV.HDE.CodeEditor
 				return name;
 		}
 		
-		void Project_CompileCompleted(IProject project, CompilerResults results)
+		void Project_CompileCompleted(IProject project)
 		{
+			var results = project.CompilerResults;
 			if (results.Errors.Count > 0)
 				ShowErrorTable(results.Errors);
 			else

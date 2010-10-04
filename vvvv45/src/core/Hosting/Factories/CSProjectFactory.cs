@@ -49,10 +49,10 @@ namespace VVVV.Hosting.Factories
 			// Do we need to compile it?
 			if (!IsAssemblyUpToDate(project))
 			{
-				var results = project.Compile();
-				if (results.Errors.HasErrors)
+				project.Compile();
+				if (project.CompilerResults.Errors.HasErrors)
 				{
-					var errorLog = GetCompileErrorsLog(project, results);
+					var errorLog = GetCompileErrorsLog(project, project.CompilerResults);
 					throw new Exception(errorLog);
 				}
 			}
@@ -79,7 +79,7 @@ namespace VVVV.Hosting.Factories
 				
 				project.Load();
 				
-				project.ProjectCompiled += new ProjectCompiledHandler(project_ProjectCompiled);
+				project.ProjectCompiledSuccessfully += new ProjectCompiledHandler(project_ProjectCompiled);
 				FProjects[filename] = project;
 			}
 			

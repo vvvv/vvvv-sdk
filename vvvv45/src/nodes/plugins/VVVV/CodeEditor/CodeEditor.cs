@@ -574,11 +574,12 @@ namespace VVVV.HDE.CodeEditor
 		}
 		
 		List<SD.TextMarker> FErrorMarkers = new List<SD.TextMarker>();
-		void CompileCompletedCB(IProject project, CompilerResults results)
+		void CompileCompletedCB(IProject project)
 		{
 			// Clear all previous error markers.
 			ClearErrorMarkers();
 			
+			var results = project.CompilerResults;
 			if (results.Errors.HasErrors)
 			{
 				foreach (var error in results.Errors)
