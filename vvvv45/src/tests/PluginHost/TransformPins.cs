@@ -121,7 +121,15 @@ namespace Hoster
 		
 		unsafe public void GetMatrixPointer(out int SliceCount, out float* Value)
 		{
-			throw new NotImplementedException();
+			var values = new float[FValues.Length];
+			for (int i = 0; i < values.Length; i++)
+				values[i] = (float) FValues[i];
+			
+			fixed (float* fp = values)
+			{
+				Value = fp;
+			}
+			SliceCount = this.SliceCount;
 		}
 	}	
 	
@@ -235,7 +243,14 @@ namespace Hoster
 		
 		unsafe public void GetMatrixPointer(out float* Value)
 		{
-			throw new NotImplementedException();
+			var values = new float[FValues.Length];
+			for (int i = 0; i < values.Length; i++)
+				values[i] = (float) FValues[i];
+			
+			fixed (float* fp = values)
+			{
+				Value = fp;
+			}
 		}
 	}	
 }

@@ -141,12 +141,19 @@ namespace Hoster
 		
 		unsafe public void GetColorPointer(out int SliceCount, out double* Value)
 		{
-			throw new NotImplementedException();
+			fixed(double* p = &(FValues[0].R))
+			{
+				Value = p;
+			}
+			SliceCount = this.SliceCount;
 		}
 		
 		unsafe public void GetColorPointer(out double* Value)
 		{
-			throw new NotImplementedException();
+			fixed(double* p = &(FValues[0].R))
+			{
+				Value = p;
+			}
 		}
 	}	
 }

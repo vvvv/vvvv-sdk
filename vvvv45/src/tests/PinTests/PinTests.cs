@@ -22,6 +22,11 @@ namespace PinTests
 		static Matrix4x4[] SampleDataMatrix4x4 = new Matrix4x4[] { new Matrix4x4(), new Matrix4x4(), new Matrix4x4() };
 		static Matrix[] SampleDataMatrix = new Matrix[] { new Matrix(), new Matrix(), new Matrix() };
 		static Vector2[] SampleDataVector2 = new Vector2[] { new Vector2(), new Vector2(), new Vector2() };
+		static Vector3[] SampleDataVector3 = new Vector3[] { new Vector3(), new Vector3(), new Vector3() };
+		static Vector4[] SampleDataVector4 = new Vector4[] { new Vector4(), new Vector4(), new Vector4() };
+		static Vector2D[] SampleDataVector2D = new Vector2D[] { new Vector2D(), new Vector2D(), new Vector2D() };
+		static Vector3D[] SampleDataVector3D = new Vector3D[] { new Vector3D(), new Vector3D(), new Vector3D() };
+		static Vector4D[] SampleDataVector4D = new Vector4D[] { new Vector4D(), new Vector4D(), new Vector4D() };
 		
 		protected IPluginHost2 FPluginHost;
 		
@@ -84,19 +89,19 @@ namespace PinTests
 		[Test]
 		public void TestInputPinVector2D()
 		{
-			TestInputPin<Vector2D>(new Vector2D[] { new Vector2D() });
+			TestInputPin<Vector2D>(SampleDataVector2D);
 		}
 		
 		[Test]
 		public void TestInputPinVector3D()
 		{
-			TestInputPin<Vector3D>(new Vector3D[] { new Vector3D() });
+			TestInputPin<Vector3D>(SampleDataVector3D);
 		}
 		
 		[Test]
 		public void TestInputPinVector4D()
 		{
-			TestInputPin<Vector4D>(new Vector4D[] { new Vector4D() });
+			TestInputPin<Vector4D>(SampleDataVector4D);
 		}
 		
 		[Test]
@@ -114,13 +119,107 @@ namespace PinTests
 		[Test]
 		public void TestInputPinVector3()
 		{
-			TestInputPin<Vector3>(new Vector3[] { new Vector3() });
+			TestInputPin<Vector3>(SampleDataVector3);
 		}
 		
 		[Test]
 		public void TestInputPinVector4()
 		{
-			TestInputPin<Vector4>(new Vector4[] { new Vector4() });
+			TestInputPin<Vector4>(SampleDataVector4);
+		}
+		
+		#endregion
+		
+		#region DiffInput
+		
+		[Test]
+		public void TestDiffInputPinDouble()
+		{
+			TestDiffInputPin<double>(SampleDataDouble);
+		}
+		
+		[Test]
+		public void TestDiffInputPinFloat()
+		{
+			TestDiffInputPin<float>(SampleDataFloat);
+		}
+		
+		[Test]
+		public void TestDiffInputPinInt()
+		{
+			TestDiffInputPin<int>(new int[] { 0, -1, 1 });
+		}
+		
+		[Test]
+		public void TestDiffInputPinBool()
+		{
+			TestDiffInputPin<bool>(new bool[] { false, true, false });
+		}
+		
+		[Test]
+		public void TestDiffInputPinString()
+		{
+			TestDiffInputPin<string>(SampleDataString);
+		}
+		
+		[Test]
+		public void TestDiffInputPinColor()
+		{
+			TestDiffInputPin<RGBAColor>(SampleDataColor);
+		}
+		
+		[Test]
+		public void TestDiffInputPinEnum()
+		{
+			TestDiffInputPin<SliceMode>(SampleDataEnum);
+		}
+		
+//		[Test]
+//		public void TestDiffInputPinMatrix4x4()
+//		{
+//			TestDiffInputPin<Matrix4x4>(SampleDataMatrix4x4);
+//		}
+		
+		[Test]
+		public void TestDiffInputPinVector2D()
+		{
+			TestDiffInputPin<Vector2D>(SampleDataVector2D);
+		}
+		
+		[Test]
+		public void TestDiffInputPinVector3D()
+		{
+			TestDiffInputPin<Vector3D>(SampleDataVector3D);
+		}
+		
+		[Test]
+		public void TestDiffInputPinVector4D()
+		{
+			TestDiffInputPin<Vector4D>(SampleDataVector4D);
+		}
+		
+//		[Test]
+//		public void TestDiffInputPinMatrix()
+//		{
+//			TestDiffInputPin<Matrix>(SampleDataMatrix);
+//		}
+		
+		[Test]
+		public void TestDiffInputPinVector2()
+		{
+			TestDiffInputPin<Vector2>(SampleDataVector2);
+		}
+		
+		[Test]
+		public void TestDiffInputPinVector3()
+		{
+			TestDiffInputPin<Vector3>(SampleDataVector3);
+		}
+		
+		[Test]
+		public void TestDiffInputPinVector4()
+		{
+			TestDiffInputPin<Vector4>(SampleDataVector4);
 		}
 		
 		#endregion
@@ -178,19 +277,19 @@ namespace PinTests
 		[Test]
 		public void TestOutputPinVector2D()
 		{
-			TestOutputPin<Vector2D>(new Vector2D[] { new Vector2D() });
+			TestOutputPin<Vector2D>(SampleDataVector2D);
 		}
 		
 		[Test]
 		public void TestOutputPinVector3D()
 		{
-			TestOutputPin<Vector3D>(new Vector3D[] { new Vector3D() });
+			TestOutputPin<Vector3D>(SampleDataVector3D);
 		}
 		
 		[Test]
 		public void TestOutputPinVector4D()
 		{
-			TestOutputPin<Vector4D>(new Vector4D[] { new Vector4D() });
+			TestOutputPin<Vector4D>(SampleDataVector4D);
 		}
 		
 		[Test]
@@ -208,13 +307,13 @@ namespace PinTests
 		[Test]
 		public void TestOutputPinVector3()
 		{
-			TestOutputPin<Vector3>(new Vector3[] { new Vector3() });
+			TestOutputPin<Vector3>(SampleDataVector3);
 		}
 		
 		[Test]
 		public void TestOutputPinVector4()
 		{
-			TestOutputPin<Vector4>(new Vector4[] { new Vector4() });
+			TestOutputPin<Vector4>(SampleDataVector4);
 		}
 		
 		#endregion
@@ -272,19 +371,19 @@ namespace PinTests
 		[Test]
 		public void TestConfigPinVector2D()
 		{
-			TestConfigPin<Vector2D>(new Vector2D[] { new Vector2D() });
+			TestConfigPin<Vector2D>(SampleDataVector2D);
 		}
 		
 		[Test]
 		public void TestConfigPinVector3D()
 		{
-			TestConfigPin<Vector3D>(new Vector3D[] { new Vector3D() });
+			TestConfigPin<Vector3D>(SampleDataVector3D);
 		}
 		
 		[Test]
 		public void TestConfigPinVector4D()
 		{
-			TestConfigPin<Vector4D>(new Vector4D[] { new Vector4D() });
+			TestConfigPin<Vector4D>(SampleDataVector4D);
 		}
 		
 		[Test]
@@ -302,13 +401,13 @@ namespace PinTests
 		[Test]
 		public void TestConfigPinVector3()
 		{
-			TestConfigPin<Vector3>(new Vector3[] { new Vector3() });
+			TestConfigPin<Vector3>(SampleDataVector3);
 		}
 		
 		[Test]
 		public void TestConfigPinVector4()
 		{
-			TestConfigPin<Vector4>(new Vector4[] { new Vector4() });
+			TestConfigPin<Vector4>(SampleDataVector4);
 		}
 		
 		#endregion
@@ -329,6 +428,27 @@ namespace PinTests
 			Assert.True(spreadedSpread.SliceCount == 1);
 			
 			TestSpread(spreadedSpread, new ISpread<T>[] { new Spread<T>(sampleData.ToList()), new Spread<T>(sampleData.ToList()) });
+		}
+		
+		protected void TestDiffInputPin<T>(T[] sampleData)
+		{
+			var pinName = string.Format("{0} Input", typeof(T));
+			var attribute = new InputAttribute(pinName);
+			
+			IDiffSpread<T> spread = new DiffInputWrapperPin<T>(FPluginHost, attribute);
+			
+			Assert.True(spread.SliceCount == 1);
+			
+			TestSpread(spread, sampleData);
+			TestDiffSpread(spread, sampleData);
+			
+			IDiffSpread<ISpread<T>> spreadedSpread = new DiffInputWrapperPin<ISpread<T>>(FPluginHost, attribute);
+			
+			Assert.True(spreadedSpread.SliceCount == 1);
+			
+			var spreadedSampleData = new ISpread<T>[] { new Spread<T>(sampleData.ToList()), new Spread<T>(sampleData.ToList()) };
+			TestSpread(spreadedSpread, spreadedSampleData);
+			TestDiffSpread(spreadedSpread, spreadedSampleData);
 		}
 		
 		protected void TestConfigPin<T>(T[] sampleData)
@@ -393,6 +513,56 @@ namespace PinTests
 			
 			spread.SliceCount = 1;
 			Assert.True(spread.SliceCount == 1);
+			
+			bool eventRaised = false;
+			
+			
+			var wrapperPin = spread as WrapperPin<T>;
+			if (wrapperPin != null)
+			{
+				var pin = wrapperPin.Pin;
+				
+				pin.Updated +=
+				delegate(Pin<T> s) 
+				{
+					eventRaised = true;
+				};
+				
+				pin[0] = sampleData[0];
+				pin.Update();
+				pin[0] = default(T);
+				pin.Update();
+				pin[0] = sampleData[1];
+				pin.Update();
+			
+				Assert.IsTrue(eventRaised, "Update event was not raised");
+			}
+		}
+		
+		protected void TestDiffSpread<T>(IDiffSpread<T> spread, T[] sampleData)
+		{
+			bool eventRaised = false;
+			
+			spread.Changed += 
+				delegate(IDiffSpread<T> s) 
+				{
+					eventRaised = true;
+				};
+			
+			var wrapperPin = spread as DiffInputWrapperPin<T>;
+			if (wrapperPin != null)
+			{
+				var pin = wrapperPin.Pin;
+				
+				pin[0] = sampleData[0];
+				pin.Update();
+				pin[0] = default(T);
+				pin.Update();
+				pin[0] = sampleData[1];
+				pin.Update();
+			
+				Assert.IsTrue(eventRaised, "Changed event was not raised");
+			}
 		}
 	}
 }
