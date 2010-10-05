@@ -561,6 +561,7 @@ namespace VVVV.HDE.CodeEditor
 				TextDocument.Save();
 				// Trigger a recompile
 				TextDocument.Project.Save();
+				TextDocument.Project.CompileAsync();
 				return true;
 			}
 			else if (ke.Control && ke.KeyCode == Keys.F)

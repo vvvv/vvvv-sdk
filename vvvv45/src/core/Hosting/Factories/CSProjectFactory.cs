@@ -93,7 +93,16 @@ namespace VVVV.Hosting.Factories
 		
 		private bool IsAssemblyUpToDate(IProject project)
 		{
-			return File.Exists(project.AssemblyLocation) && (File.GetLastWriteTime(project.Location.LocalPath) <= File.GetLastWriteTime(project.AssemblyLocation));
+			var now = DateTime.Now;
+			var projectTime = File.GetLastWriteTime(project.Location.LocalPath);
+			var assemblyTime = File.GetLastWriteTime(project.AssemblyLocation);
+			
+			if (now < projectTime)
+			{
+				projectTime = now - TimeSpan.FromSeconds(10.0);
+			}
+			
+			return File.Exists(project.AssemblyLocation) && (projectTime <= assemblyTime);
 		}
 
 		protected override void DeleteArtefacts(string dir)
