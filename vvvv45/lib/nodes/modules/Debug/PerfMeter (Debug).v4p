@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.1.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv_45beta24.1_\vvvv_45beta24.1\modules\catweasel\Debug\PerfMeter (Debug).v4p">
-   <BOUNDS height="8385" left="16455" top="6285" type="Window" width="10830">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug24.1.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\catweasel\Debug\PerfMeter (Debug).v4p">
+   <BOUNDS height="8685" left="6225" top="8340" type="Window" width="11760">
    </BOUNDS>
    <NODE componentmode="InABox" id="30" nodename="IOBox (Node)">
    <BOUNDS height="0" left="240" top="330" type="Node" width="0">
@@ -96,54 +96,16 @@
    <PIN pinname="Input 9" visible="1">
    </PIN>
    </NODE>
-   <NODE id="23" nodename="LinearSpread (Spreads)">
-   <BOUNDS height="0" left="2130" top="3585" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Spread Count" slicecount="1" visible="1" values="9.00000">
-   </PIN>
-   <PIN pinname="Input" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Width" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="Alignment" slicecount="1" values="Centered">
-   </PIN>
-   </NODE>
-   <NODE id="22" nodename="Divide (Value)">
-   <BOUNDS height="0" left="2190" top="2385" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input 2" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="21" nodename="Multiply (Value)">
-   <BOUNDS height="270" left="2310" top="1875" type="Node" width="300">
+   <BOUNDS height="270" left="2310" top="3570" type="Node" width="300">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input 2" slicecount="1" values="20">
+   <PIN pinname="Input 2" slicecount="1" values="1000">
    </PIN>
    </NODE>
-   <LINK dstnodeid="22" dstpinname="Input" srcnodeid="21" srcpinname="Output">
-   </LINK>
-   <NODE id="20" nodename="Add (Value)">
-   <BOUNDS height="0" left="1950" top="2850" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Input 1" slicecount="1" values="-0.04">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="20" dstpinname="Input 2" srcnodeid="22" srcpinname="Output">
-   </LINK>
    <NODE id="19" nodename="Blend (EX9.RenderState)">
    <BOUNDS height="0" left="6780" top="5610" type="Node" width="0">
    </BOUNDS>
@@ -195,7 +157,7 @@
    <LINK dstnodeid="21" dstpinname="Input 1" srcnodeid="24" srcpinname="Output">
    </LINK>
    <NODE id="16" nodename="Count (Value)">
-   <BOUNDS height="0" left="3090" top="3105" type="Node" width="0">
+   <BOUNDS height="0" left="2340" top="1665" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -203,8 +165,6 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="16" dstpinname="Input" srcnodeid="24" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="23" dstpinname="Spread Count" srcnodeid="16" srcpinname="Count">
    </LINK>
    <NODE id="15" nodename="Quad (DX9)">
    <BOUNDS height="0" left="1635" top="5835" type="Node" width="0">
@@ -217,7 +177,7 @@
    </PIN>
    <PIN pinname="Render State" visible="1">
    </PIN>
-   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
+   <PIN pinname="Enabled" slicecount="1" visible="1" values="1">
    </PIN>
    <PIN pinname="Priority" slicecount="1" values="-9999.00000">
    </PIN>
@@ -232,36 +192,8 @@
    </LINK>
    <LINK dstnodeid="15" dstpinname="Color" srcnodeid="18" srcpinname="Output">
    </LINK>
-   <NODE id="14" nodename="Quad (DX9)">
-   <BOUNDS height="0" left="90" top="5835" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Priority" slicecount="1" values="-10000.00000">
-   </PIN>
-   <PIN pinname="Render State" visible="1">
-   </PIN>
-   <PIN pinname="Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.57630|">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" slicecount="1" visible="1" values="1">
-   </PIN>
-   <PIN pinname="Fade Color">
-   </PIN>
-   <PIN pinname="Fade Amount">
-   </PIN>
-   <PIN pinname="Render Pass" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Space" pintype="Input" slicecount="1" visible="1" values="World">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="backdrop">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="14" dstpinname="Render State" srcnodeid="19" srcpinname="Render State Out">
-   </LINK>
    <NODE id="13" nodename="Add (Value)">
-   <BOUNDS height="270" left="6060" top="1575" type="Node" width="300">
+   <BOUNDS height="270" left="5760" top="1575" type="Node" width="300">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -275,7 +207,7 @@
    <LINK dstnodeid="13" dstpinname="Input 2" srcnodeid="29" srcpinname="Present Time">
    </LINK>
    <NODE id="12" nodename="GE (Value)">
-   <BOUNDS height="270" left="6075" top="2160" type="Node" width="360">
+   <BOUNDS height="270" left="6075" top="2325" type="Node" width="360">
    </BOUNDS>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -309,17 +241,17 @@
    <LINK dstnodeid="10" dstpinname="Index" srcnodeid="12" srcpinname="Output">
    </LINK>
    <NODE id="9" nodename="Transform (Transform 2d)">
-   <BOUNDS height="0" left="255" top="4380" type="Node" width="0">
+   <BOUNDS height="0" left="255" top="4650" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="ScaleX" slicecount="1" visible="1" values="220">
+   <PIN pinname="ScaleX" slicecount="1" visible="1" values="200">
    </PIN>
    <PIN pinname="ScaleY" slicecount="1" visible="1" values="100">
    </PIN>
-   <PIN pinname="TranslateX" slicecount="1" visible="-1" pintype="Input" values="0">
+   <PIN pinname="TranslateX" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
-   <PIN pinname="TranslateY" slicecount="1" visible="-1" pintype="Input" values="0">
+   <PIN pinname="TranslateY" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
    <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
    </PIN>
@@ -327,11 +259,9 @@
    </PIN>
    <PIN pinname="CenterY" slicecount="1" values="0.5">
    </PIN>
-   <PIN pinname="Rotate" visible="-1" pintype="Input" slicecount="1" values="0">
+   <PIN pinname="Rotate" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="14" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
-   </LINK>
    <NODE id="8" nodename="Switch (String Input)">
    <BOUNDS height="0" left="5100" top="3315" type="Node" width="0">
    </BOUNDS>
@@ -390,8 +320,6 @@
    <PIN pinname="Enabled" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="5" dstpinname="Layer 1" srcnodeid="14" srcpinname="Layer">
-   </LINK>
    <LINK dstnodeid="5" dstpinname="Layer 2" srcnodeid="15" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="6" dstpinname="Input Node" srcnodeid="5" srcpinname="Layer">
@@ -437,13 +365,13 @@
    </PIN>
    <PIN pinname="Transform" visible="1">
    </PIN>
-   <PIN pinname="Horizontal Align" slicecount="1" values="Center">
+   <PIN pinname="Horizontal Align" slicecount="1" values="Left">
    </PIN>
    <PIN pinname="Text Rendering Mode" slicecount="1" values="MultiLine">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="40">
+   <PIN pinname="Size" slicecount="1" values="28">
    </PIN>
-   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
+   <PIN pinname="Enabled" slicecount="1" visible="1" values="1">
    </PIN>
    <PIN pinname="Render State" visible="1">
    </PIN>
@@ -495,9 +423,9 @@
    </PIN>
    <PIN pinname="ScaleY" slicecount="1" visible="1" values="1">
    </PIN>
-   <PIN pinname="TranslateY" slicecount="1" values="-10.37">
+   <PIN pinname="TranslateY" slicecount="1" values="-5">
    </PIN>
-   <PIN pinname="TranslateX" slicecount="1" values="50">
+   <PIN pinname="TranslateX" slicecount="1" values="5">
    </PIN>
    <PIN pinname="Rotate" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
@@ -507,7 +435,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="32" nodename="Multiply (Transform)">
-   <BOUNDS height="0" left="240" top="2655" type="Node" width="0">
+   <BOUNDS height="0" left="240" top="2055" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform In 1" slicecount="1" visible="1" values="||">
    </PIN>
@@ -546,21 +474,21 @@
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <NODE nodename="WithinViewport (Transform)" componentmode="Hidden" id="37">
-   <BOUNDS type="Node" left="480" top="2085" width="100" height="100">
+   <NODE componentmode="Hidden" id="37" nodename="WithinViewport (Transform)">
+   <BOUNDS height="100" left="480" top="1485" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="480" top="2085" width="0" height="0">
+   <BOUNDS height="0" left="480" top="1485" type="Box" width="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="18375" top="13275" width="0" height="0">
+   <BOUNDS height="0" left="18375" top="13275" type="Window" width="0">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="37" srcpinname="Transform Out" dstnodeid="32" dstpinname="Transform In 2">
+   <LINK dstnodeid="32" dstpinname="Transform In 2" srcnodeid="37" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Enabled">
+   <LINK dstnodeid="5" dstpinname="Enabled" srcnodeid="33" srcpinname="Y Output Value">
    </LINK>
-   <NODE id="38" nodename="Transform (Transform 2d)" componentmode="Hidden">
+   <NODE componentmode="Hidden" id="38" nodename="Transform (Transform 2d)">
    <BOUNDS height="270" left="1800" top="4665" type="Node" width="900">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
@@ -569,41 +497,35 @@
    </PIN>
    <PIN pinname="TranslateY" visible="1">
    </PIN>
-   <PIN pinname="ScaleY" slicecount="1" visible="1" values="0.1">
+   <PIN pinname="ScaleY" slicecount="1" visible="1" values="6">
    </PIN>
-   <PIN pinname="TranslateX" visible="1">
+   <PIN pinname="TranslateX" visible="1" slicecount="1" values="80">
    </PIN>
    <PIN pinname="TranslateZ" visible="1">
    </PIN>
    <PIN pinname="Transform In" visible="1">
    </PIN>
-   <PIN pinname="CenterZ" visible="-1" pintype="Input">
+   <PIN pinname="CenterZ" pintype="Input" visible="-1">
    </PIN>
-   <PIN pinname="CenterY" visible="-1" pintype="Input" slicecount="1" values="0">
+   <PIN pinname="CenterY" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
-   <PIN pinname="CenterX" visible="-1" pintype="Input" slicecount="1" values="0">
+   <PIN pinname="CenterX" pintype="Input" slicecount="1" visible="0" values="-0.5">
    </PIN>
-   <PIN pinname="Roll" visible="-1" pintype="Input">
+   <PIN pinname="Roll" pintype="Input" visible="-1">
    </PIN>
-   <PIN pinname="Yaw" visible="-1" pintype="Input">
+   <PIN pinname="Yaw" pintype="Input" visible="-1">
    </PIN>
-   <PIN pinname="Pitch" visible="-1" pintype="Input">
+   <PIN pinname="Pitch" pintype="Input" visible="-1">
    </PIN>
-   <BOUNDS type="Box" left="1800" top="4665" width="0" height="0">
+   <BOUNDS height="0" left="1800" top="4665" type="Box" width="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="13560" top="12915" width="0" height="0">
+   <BOUNDS height="0" left="13560" top="12915" type="Window" width="0">
    </BOUNDS>
    </NODE>
-   <LINK dstnodeid="38" dstpinname="TranslateY" srcnodeid="23" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="38" dstpinname="ScaleX" srcnodeid="21" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="38" dstpinname="TranslateX" srcnodeid="20" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="15" dstpinname="Transform" srcnodeid="38" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="Hidden" id="41" nodename="Transform (Transform 2d)">
-   <BOUNDS height="270" left="240" top="3060" type="Node" width="870">
+   <BOUNDS height="270" left="240" top="2460" type="Node" width="870">
    </BOUNDS>
    <PIN pinname="Transform In" visible="1">
    </PIN>
@@ -613,73 +535,159 @@
    </PIN>
    <PIN pinname="TranslateX" slicecount="1" values="-1">
    </PIN>
-   <PIN pinname="ScaleX" visible="-1" pintype="Input" slicecount="1" values="1">
+   <PIN pinname="ScaleX" pintype="Input" slicecount="1" visible="-1" values="1">
    </PIN>
-   <PIN pinname="ScaleY" visible="-1" pintype="Input" slicecount="1" values="1">
+   <PIN pinname="ScaleY" pintype="Input" slicecount="1" visible="-1" values="1">
    </PIN>
-   <PIN pinname="Rotate" visible="-1" pintype="Input" slicecount="1" values="0">
+   <PIN pinname="Rotate" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
-   <PIN pinname="CenterX" visible="-1" pintype="Input" slicecount="1" values="0">
+   <PIN pinname="CenterX" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
-   <PIN pinname="CenterY" visible="-1" pintype="Input" slicecount="1" values="0">
+   <PIN pinname="CenterY" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="32" srcpinname="Transform Out" dstnodeid="41" dstpinname="Transform In">
+   <LINK dstnodeid="41" dstpinname="Transform In" srcnodeid="32" srcpinname="Transform Out">
    </LINK>
-   <NODE id="42" componentmode="Hidden" nodename="Billboard (Transform)" hiddenwhenlocked="0" managers="">
-   <PIN pinname="Transform In" visible="1" pintype="Input">
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="42" managers="" nodename="Billboard (Transform)">
+   <PIN pinname="Transform In" pintype="Input" visible="1">
    </PIN>
-   <BOUNDS type="Node" height="0" left="240" top="3450" width="0">
+   <BOUNDS height="0" left="240" top="2850" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Transform Out" visible="1" pintype="Output">
+   <PIN pinname="Transform Out" pintype="Output" visible="1">
    </PIN>
-   <PIN pinname="Object Space" slicecount="1" pintype="Input" visible="1" values="Pixel">
+   <PIN pinname="Object Space" pintype="Input" slicecount="1" visible="1" values="Pixel">
    </PIN>
    <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
    </PIN>
    <PIN pinname="nix" pintype="Input" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Billboard Mode" pintype="Input" visible="-1" slicecount="1" values="KeepTranslation">
+   <PIN pinname="Billboard Mode" pintype="Input" slicecount="1" visible="-1" values="KeepTranslation">
    </PIN>
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="41" srcpinname="Transform Out" dstnodeid="42" dstpinname="Transform In">
+   <LINK dstnodeid="42" dstpinname="Transform In" srcnodeid="41" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="9" srcpinname="Transform Out" dstnodeid="38" dstpinname="Transform In">
+   <LINK dstnodeid="2" dstpinname="Transform" srcnodeid="0" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="0" srcpinname="Transform Out" dstnodeid="2" dstpinname="Transform">
-   </LINK>
-   <NODE nodename="Transform (Transform 2d)" componentmode="Hidden" id="46">
-   <BOUNDS type="Node" left="240" top="3900" width="100" height="100">
+   <NODE componentmode="Hidden" id="46" nodename="Transform (Transform 2d)">
+   <BOUNDS height="100" left="240" top="3300" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="240" top="3900" width="0" height="0">
+   <BOUNDS height="0" left="240" top="3300" type="Box" width="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="17265" top="11355" width="0" height="0">
+   <BOUNDS height="0" left="17265" top="11355" type="Window" width="0">
    </BOUNDS>
    <PIN pinname="Transform In" visible="1">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="ScaleX" visible="-1" pintype="Input" slicecount="1" values="1">
+   <PIN pinname="ScaleX" pintype="Input" slicecount="1" visible="-1" values="1">
    </PIN>
-   <PIN pinname="ScaleY" visible="-1" pintype="Input" slicecount="1" values="1">
+   <PIN pinname="ScaleY" pintype="Input" slicecount="1" visible="-1" values="1">
    </PIN>
-   <PIN pinname="Rotate" visible="-1" pintype="Input" slicecount="1" values="0">
+   <PIN pinname="Rotate" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
-   <PIN pinname="CenterY" visible="-1" pintype="Input" slicecount="1" values="0">
+   <PIN pinname="CenterY" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
-   <PIN pinname="CenterX" visible="-1" pintype="Input" slicecount="1" values="0">
+   <PIN pinname="CenterX" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
    <PIN pinname="TranslateX" slicecount="1" values="15">
    </PIN>
    <PIN pinname="TranslateY" slicecount="1" values="-15">
    </PIN>
    </NODE>
-   <LINK srcnodeid="42" srcpinname="Transform Out" dstnodeid="46" dstpinname="Transform In">
+   <LINK dstnodeid="46" dstpinname="Transform In" srcnodeid="42" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="46" srcpinname="Transform Out" dstnodeid="9" dstpinname="Transform In">
+   <LINK dstnodeid="9" dstpinname="Transform In" srcnodeid="46" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="46" srcpinname="Transform Out" dstnodeid="0" dstpinname="Transform In">
+   <LINK dstnodeid="0" dstpinname="Transform In" srcnodeid="46" srcpinname="Transform Out">
+   </LINK>
+   <LINK srcnodeid="46" srcpinname="Transform Out" dstnodeid="38" dstpinname="Transform In">
+   </LINK>
+   <NODE nodename="I (Spreads)" componentmode="Hidden" id="48">
+   <BOUNDS type="Node" left="2145" top="2115" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2145" top="2115" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="8925" top="11940" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname=".. To [" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="Multiply (Value)" componentmode="Hidden" id="50">
+   <BOUNDS type="Node" left="2145" top="2550" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2145" top="2550" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="8985" top="12135" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="-8">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="48" srcpinname="Output" dstnodeid="50" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Count" dstnodeid="48" dstpinname=".. To [">
+   </LINK>
+   <NODE nodename="Add (Value)" componentmode="Hidden" id="51">
+   <BOUNDS type="Node" left="2145" top="2955" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2130" top="2955" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="8835" top="12570" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="-5">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="50" srcpinname="Output" dstnodeid="51" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="51" srcpinname="Output" dstnodeid="38" dstpinname="TranslateY">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="38" dstpinname="ScaleX">
+   </LINK>
+   <NODE id="52" nodename="Pillow (DX9)" componentmode="Hidden">
+   <BOUNDS height="100" left="90" top="5835" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Priority">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.57630|">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Fade Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Fade Amount" slicecount="1" values="0.97">
+   </PIN>
+   <PIN pinname="Render Pass" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Space" pintype="Input" slicecount="1" visible="1" values="World">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="backdrop">
+   </PIN>
+   <BOUNDS type="Box" left="90" top="5835" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7140" top="14715" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="52" dstpinname="Render State" srcnodeid="19" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="52" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Layer 1" srcnodeid="52" srcpinname="Layer">
    </LINK>
    </PATCH>
