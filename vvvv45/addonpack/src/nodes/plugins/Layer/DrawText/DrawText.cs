@@ -61,10 +61,10 @@ namespace VVVV.Nodes
         [Input ("Size", DefaultValue = 150, MinValue = 0, IsSingle = true)]
         IDiffSpread<int> FSizeInput;
         
-        [Input ("Color", DefaultValues = new double[4]{1, 1, 1, 1})]
+        [Input ("Color", DefaultColor = new double[4]{1, 1, 1, 1})]
         ISpread<RGBAColor> FColorInput;
         
-        [Input ("Brush Color", DefaultValues = new double[4]{0, 0, 0, 1})]
+        [Input ("Brush Color", DefaultColor = new double[4]{0, 0, 0, 1})]
         ISpread<RGBAColor> FBrushColor;
         
         [Input ("Show Brush")]
