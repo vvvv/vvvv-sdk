@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug24.1.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\catweasel\Debug\PerfMeter (Debug).v4p">
-   <BOUNDS height="8685" left="6225" top="8340" type="Window" width="11760">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.1.dtd" >
+   <PATCH nodename="C:\Users\TF\Desktop\vvvv_45beta24.1\modules\catweasel\Debug\PerfMeter (Debug).v4p">
+   <BOUNDS height="8685" left="6810" top="7065" type="Window" width="11760">
    </BOUNDS>
    <NODE componentmode="InABox" id="30" nodename="IOBox (Node)">
    <BOUNDS height="0" left="240" top="330" type="Node" width="0">
@@ -319,6 +319,8 @@
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>
+   <PIN pinname="Layer 4" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="5" dstpinname="Layer 2" srcnodeid="15" srcpinname="Layer">
    </LINK>
@@ -369,7 +371,7 @@
    </PIN>
    <PIN pinname="Text Rendering Mode" slicecount="1" values="MultiLine">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="28">
+   <PIN pinname="Size" slicecount="1" values="27">
    </PIN>
    <PIN pinname="Enabled" slicecount="1" visible="1" values="1">
    </PIN>
@@ -499,7 +501,7 @@
    </PIN>
    <PIN pinname="ScaleY" slicecount="1" visible="1" values="6">
    </PIN>
-   <PIN pinname="TranslateX" visible="1" slicecount="1" values="80">
+   <PIN pinname="TranslateX" slicecount="1" visible="1" values="80">
    </PIN>
    <PIN pinname="TranslateZ" visible="1">
    </PIN>
@@ -591,9 +593,9 @@
    </PIN>
    <PIN pinname="CenterX" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
-   <PIN pinname="TranslateX" slicecount="1" values="15">
+   <PIN pinname="TranslateX" slicecount="1" values="10">
    </PIN>
-   <PIN pinname="TranslateY" slicecount="1" values="-15">
+   <PIN pinname="TranslateY" slicecount="1" values="-10">
    </PIN>
    </NODE>
    <LINK dstnodeid="46" dstpinname="Transform In" srcnodeid="42" srcpinname="Transform Out">
@@ -602,44 +604,44 @@
    </LINK>
    <LINK dstnodeid="0" dstpinname="Transform In" srcnodeid="46" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="46" srcpinname="Transform Out" dstnodeid="38" dstpinname="Transform In">
+   <LINK dstnodeid="38" dstpinname="Transform In" srcnodeid="46" srcpinname="Transform Out">
    </LINK>
-   <NODE nodename="I (Spreads)" componentmode="Hidden" id="48">
-   <BOUNDS type="Node" left="2145" top="2115" width="100" height="100">
+   <NODE componentmode="Hidden" id="48" nodename="I (Spreads)">
+   <BOUNDS height="100" left="2145" top="2115" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="2145" top="2115" width="0" height="0">
+   <BOUNDS height="0" left="2145" top="2115" type="Box" width="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="8925" top="11940" width="0" height="0">
+   <BOUNDS height="0" left="8925" top="11940" type="Window" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
    <PIN pinname=".. To [" visible="1">
    </PIN>
    </NODE>
-   <NODE nodename="Multiply (Value)" componentmode="Hidden" id="50">
-   <BOUNDS type="Node" left="2145" top="2550" width="100" height="100">
+   <NODE componentmode="Hidden" id="50" nodename="Multiply (Value)">
+   <BOUNDS height="100" left="2145" top="2550" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="2145" top="2550" width="0" height="0">
+   <BOUNDS height="0" left="2145" top="2550" type="Box" width="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="8985" top="12135" width="0" height="0">
+   <BOUNDS height="0" left="8985" top="12135" type="Window" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input 2" slicecount="1" values="-8">
+   <PIN pinname="Input 2" slicecount="1" values="-7">
    </PIN>
    </NODE>
-   <LINK srcnodeid="48" srcpinname="Output" dstnodeid="50" dstpinname="Input 1">
+   <LINK dstnodeid="50" dstpinname="Input 1" srcnodeid="48" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="16" srcpinname="Count" dstnodeid="48" dstpinname=".. To [">
+   <LINK dstnodeid="48" dstpinname=".. To [" srcnodeid="16" srcpinname="Count">
    </LINK>
-   <NODE nodename="Add (Value)" componentmode="Hidden" id="51">
-   <BOUNDS type="Node" left="2145" top="2955" width="100" height="100">
+   <NODE componentmode="Hidden" id="51" nodename="Add (Value)">
+   <BOUNDS height="100" left="2145" top="2955" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="2130" top="2955" width="0" height="0">
+   <BOUNDS height="0" left="2130" top="2955" type="Box" width="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="8835" top="12570" width="0" height="0">
+   <BOUNDS height="0" left="8835" top="12570" type="Window" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -648,13 +650,89 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="50" srcpinname="Output" dstnodeid="51" dstpinname="Input 1">
+   <LINK dstnodeid="51" dstpinname="Input 1" srcnodeid="50" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="51" srcpinname="Output" dstnodeid="38" dstpinname="TranslateY">
+   <LINK dstnodeid="38" dstpinname="TranslateY" srcnodeid="51" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="38" dstpinname="ScaleX">
+   <NODE nodename="Queue (Spreads)" componentmode="Hidden" id="53">
+   <BOUNDS type="Node" left="6795" top="3300" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6795" top="3300" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="13935" top="11940" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Frame Count" slicecount="1" values="50">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="do Insert" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="29" srcpinname="frames per second" dstnodeid="53" dstpinname="Input">
    </LINK>
-   <NODE id="52" nodename="Pillow (DX9)" componentmode="Hidden">
+   <NODE nodename="Quad (DX9)" componentmode="Hidden" id="54">
+   <BOUNDS type="Node" left="5685" top="4785" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5685" top="4785" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="12960" top="12060" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="54" srcpinname="Layer" dstnodeid="5" dstpinname="Layer 4">
+   </LINK>
+   <NODE nodename="Transform (Transform 2d)" componentmode="Hidden" id="56">
+   <BOUNDS type="Node" left="5850" top="4425" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5850" top="4425" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="13650" top="12315" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1" slicecount="50" values="2,6,10,14,18,22,26,30,34,38,42,46,50,54,58,62,66,70,74,78,82,86,90,94,98,102,106,110,114,118,122,126,130,134,138,142,146,150,154,158,162,166,170,174,178,182,186,190,194,198">
+   </PIN>
+   <PIN pinname="TranslateY" visible="1">
+   </PIN>
+   <PIN pinname="ScaleX" visible="1" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="ScaleY" visible="1" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="56" srcpinname="Transform Out" dstnodeid="54" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="46" srcpinname="Transform Out" dstnodeid="56" dstpinname="Transform In">
+   </LINK>
+   <NODE nodename="Map (Value)" componentmode="Hidden" id="58">
+   <BOUNDS type="Node" left="6810" top="3720" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6810" top="3720" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="14220" top="11400" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Source Maximum" slicecount="1" values="60">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="-100">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="-70">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="53" srcpinname="Output" dstnodeid="58" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="58" srcpinname="Output" dstnodeid="56" dstpinname="TranslateY">
+   </LINK>
+   <NODE componentmode="Hidden" id="60" nodename="Quad (DX9)">
    <BOUNDS height="100" left="90" top="5835" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Priority">
@@ -667,9 +745,9 @@
    </PIN>
    <PIN pinname="Enabled" slicecount="1" visible="1" values="1">
    </PIN>
-   <PIN pinname="Fade Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   <PIN pinname="Fade Color">
    </PIN>
-   <PIN pinname="Fade Amount" slicecount="1" values="0.97">
+   <PIN pinname="Fade Amount">
    </PIN>
    <PIN pinname="Render Pass" visible="1">
    </PIN>
@@ -679,15 +757,17 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="backdrop">
    </PIN>
-   <BOUNDS type="Box" left="90" top="5835" width="0" height="0">
+   <BOUNDS height="0" left="90" top="5835" type="Box" width="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="7140" top="14715" width="0" height="0">
+   <BOUNDS height="0" left="7815" top="13230" type="Window" width="0">
    </BOUNDS>
    </NODE>
-   <LINK dstnodeid="52" dstpinname="Render State" srcnodeid="19" srcpinname="Render State Out">
+   <LINK dstnodeid="60" dstpinname="Render State" srcnodeid="19" srcpinname="Render State Out">
    </LINK>
-   <LINK dstnodeid="52" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
+   <LINK dstnodeid="60" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
    </LINK>
-   <LINK dstnodeid="5" dstpinname="Layer 1" srcnodeid="52" srcpinname="Layer">
+   <LINK dstnodeid="5" dstpinname="Layer 1" srcnodeid="60" srcpinname="Layer">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="38" dstpinname="ScaleX">
    </LINK>
    </PATCH>
