@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
-   <PATCH nodename="C:\SVN_ROOT\vvvv\plugins\c#\Animation\LorenzAttractor\LorenzAttractor (Animation) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\Desktop\vvvvs\vvvv_45beta24.1\plugins\LorenzAttractor (Animation) help.v4p">
    <BOUNDS height="6735" left="1110" top="840" type="Window" width="6195">
    </BOUNDS>
    <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
@@ -69,6 +69,8 @@
    </PIN>
    <PIN pinname="OnChange" visible="1">
    </PIN>
+   <PIN pinname="Bang On Create" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="11" nodename="Change (Animation)">
    <BOUNDS height="0" left="2040" top="2835" type="Node" width="0">
@@ -76,6 +78,8 @@
    <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="OnChange" visible="1">
+   </PIN>
+   <PIN pinname="Bang On Create" slicecount="1" values="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="10" nodename="Change (Animation)">
@@ -85,8 +89,10 @@
    </PIN>
    <PIN pinname="OnChange" visible="1">
    </PIN>
+   <PIN pinname="Bang On Create" slicecount="1" values="1">
+   </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="9" nodename="Queue (Spreads)">
+   <NODE componentmode="Hidden" id="9" nodename="Queue (Spreads Legacy)">
    <BOUNDS height="0" left="1755" top="3630" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -102,7 +108,7 @@
    </LINK>
    <LINK dstnodeid="9" dstpinname="do Insert" srcnodeid="11" srcpinname="OnChange">
    </LINK>
-   <NODE componentmode="Hidden" id="8" nodename="Queue (Spreads)">
+   <NODE componentmode="Hidden" id="8" nodename="Queue (Spreads Legacy)">
    <BOUNDS height="0" left="2805" top="3645" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -114,7 +120,7 @@
    </NODE>
    <LINK dstnodeid="8" dstpinname="do Insert" srcnodeid="12" srcpinname="OnChange">
    </LINK>
-   <NODE componentmode="Hidden" id="7" nodename="Queue (Spreads)">
+   <NODE componentmode="Hidden" id="7" nodename="Queue (Spreads Legacy)">
    <BOUNDS height="0" left="675" top="3630" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -170,7 +176,7 @@
    <LINKPOINT x="3100" y="3308">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="Hidden" id="4" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" path="C:\Program Files\vvvv\vvvv_40beta23\modules\vvvv group\Transform\">
+   <NODE componentmode="Hidden" id="4" nodename="Camera (Transform Softimage)" path="C:\Users\joreg\Desktop\vvvvs\vvvv_45beta24.1\modules\vvvv group\Transform\">
    <BOUNDS height="0" left="1470" top="5550" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="3600" left="1470" top="5550" type="Box" width="4800">
@@ -226,24 +232,36 @@
    </NODE>
    <LINK dstnodeid="2" dstpinname="Y" srcnodeid="1" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" id="0" nodename=":PLUGINS:\LorenzAttractor.dll|VVVV.Nodes.PluginTemplate">
-   <BOUNDS height="270" left="675" top="2310" type="Node" width="2190">
+   <NODE componentmode="Hidden" id="17" nodename="LorenzAttractor (Animation)">
+   <BOUNDS height="270" left="675" top="2025" type="Node" width="2190">
    </BOUNDS>
-   <BOUNDS height="0" left="675" top="2310" type="Box" width="0">
+   <BOUNDS height="0" left="675" top="2025" type="Box" width="0">
    </BOUNDS>
-   <BOUNDS height="0" left="3315" top="3465" type="Window" width="0">
+   <BOUNDS height="0" left="2205" top="3210" type="Window" width="0">
    </BOUNDS>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Output Z" visible="1">
+   </PIN>
+   <PIN pinname="Convective Flow Out " visible="1">
+   </PIN>
+   <PIN pinname="Horizontal Temperature Distribution Out " visible="1">
+   </PIN>
+   <PIN pinname="Vertical Temperature Distribution Out " visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="0" srcpinname="Output X">
+   <LINK srcnodeid="17" srcpinname="Convective Flow Out " dstnodeid="10" dstpinname="Input">
    </LINK>
-   <LINK dstnodeid="10" dstpinname="Input" srcnodeid="0" srcpinname="Output X">
+   <LINK srcnodeid="17" srcpinname="Horizontal Temperature Distribution Out " dstnodeid="11" dstpinname="Input">
    </LINK>
-   <LINK dstnodeid="11" dstpinname="Input" srcnodeid="0" srcpinname="Output Y">
+   <LINK srcnodeid="17" srcpinname="Vertical Temperature Distribution Out " dstnodeid="12" dstpinname="Input">
    </LINK>
-   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="0" srcpinname="Output Y">
+   <LINK srcnodeid="17" srcpinname="Convective Flow Out " dstnodeid="7" dstpinname="Input">
    </LINK>
-   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="0" srcpinname="Output Z">
+   <LINK srcnodeid="17" srcpinname="Horizontal Temperature Distribution Out " dstnodeid="9" dstpinname="Input">
    </LINK>
-   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="0" srcpinname="Output Z">
+   <LINK srcnodeid="17" srcpinname="Vertical Temperature Distribution Out " dstnodeid="8" dstpinname="Input">
    </LINK>
    </PATCH>
