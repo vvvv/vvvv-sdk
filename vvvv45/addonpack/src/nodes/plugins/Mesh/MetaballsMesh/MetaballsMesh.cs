@@ -73,7 +73,8 @@ namespace VVVV.Nodes
 		public PluginMeshTemplate()
 		{
 			//the nodes constructor
-			//nothing to declare for this node
+			OpenVoxels = new int[MaxOpenVoxels * 3];
+			PreComputed = new int[MaxOpenVoxels * 12];
 		}
 		
 		// Implementing IDisposable's Dispose method.
@@ -258,6 +259,12 @@ namespace VVVV.Nodes
 				gsize.GetValue(1, out dSize);
 				GridSize = (int) dSize;
 				VoxelSize = 2 / (float) dSize;
+				
+				GridEnergy = new float[(GridSize+1)*(GridSize+1)*(GridSize+1)];
+				GridPointStatus = new bool[(GridSize+1)*(GridSize+1)*(GridSize+1)];
+				GridVoxelStatus = new byte[GridSize*GridSize*GridSize];
+				GridVoxelSeek = new int[GridSize*GridSize*GridSize];
+				
 				update = true;
 			}
 			
@@ -301,10 +308,10 @@ namespace VVVV.Nodes
 			
 			if (update) //initialize all tables
 			{
-				GridEnergy = new float[(GridSize+1)*(GridSize+1)*(GridSize+1)];
-				GridPointStatus = new bool[(GridSize+1)*(GridSize+1)*(GridSize+1)];
-				GridVoxelStatus = new byte[GridSize*GridSize*GridSize];
-				GridVoxelSeek = new int[GridSize*GridSize*GridSize];
+				Array.Clear(GridEnergy, 0, GridEnergy.Length);
+				Array.Clear(GridPointStatus, 0, GridPointStatus.Length);
+				Array.Clear(GridVoxelStatus, 0, GridVoxelStatus.Length);
+				Array.Clear(GridVoxelSeek, 0, GridVoxelSeek.Length);
 				
 				Render();
 				
@@ -449,12 +456,7 @@ namespace VVVV.Nodes
 			int x, y, z;
 			bool bComputed;
 			
-			MaxOpenVoxels = 1024;
-			
 			NumOpenVoxels = 0;
-			OpenVoxels = new int[MaxOpenVoxels * 3];
-			PreComputed = new int[MaxOpenVoxels * 12];
-			
 			NumIndices = 0;
 			NumVertices = 0;
 			
@@ -608,12 +610,9 @@ namespace VVVV.Nodes
 			return Energy;
 		}
 		
-		
+		private float[] b = new float[8];
 		protected int ComputeGridVoxel(int x, int y, int z)
 		{
-			
-			float[] b = new float[8];
-
 			b[0] = ComputeGridPointEnergy(x  , y  , z  );
 			b[1] = ComputeGridPointEnergy(x+1, y  , z  );
 			b[2] = ComputeGridPointEnergy(x+1, y  , z+1);
@@ -696,18 +695,9 @@ namespace VVVV.Nodes
 					NumVertices++;
 					if (NumVertices == MaxVertices)
 					{
-						MaxVertices += 4096;
-						sVxBuffer[] TmpVx = new sVxBuffer[MaxVertices];
-
-						int j = 0;
-						foreach (sVxBuffer element in VxBuffer)
-						{
-							TmpVx[j] = element;
-							j++;
-						}
-						j = 0;
-
-						VxBuffer = TmpVx;
+						MaxVertices *= 2;
+						
+						Array.Resize(ref VxBuffer, MaxVertices);
 					}
 				}
 
@@ -718,15 +708,9 @@ namespace VVVV.Nodes
 				NumIndices++;
 				if (NumIndices == MaxIndices)
 				{
-					MaxIndices += 8192;
-					int[] TmpIx = new int[MaxIndices];
-					int j = 0;
-					foreach (int element in Indices)
-					{
-						TmpIx[j] = element;
-						j++;
-					}
-					Indices = TmpIx;
+					MaxIndices *= 2;
+					
+					Array.Resize(ref Indices, MaxIndices);
 				}
 				
 				i++;
@@ -836,27 +820,10 @@ namespace VVVV.Nodes
 			
 			if( MaxOpenVoxels == NumOpenVoxels )
 			{
-				MaxOpenVoxels += 1024;
-				int[] OVTmp = new int[MaxOpenVoxels * 3];
-				int[] PCTmp = new int[MaxOpenVoxels * 12];
-				int j = 0;
-				foreach (int element in OpenVoxels)
-				{
-					OVTmp[j] = element;
-					j++;
-				}
-				j = 0;
-				foreach (int element in PreComputed)
-				{
-					PCTmp[j] = element;
-					j++;
-				}
-				//***** enlarge arrays
+				MaxOpenVoxels *= 2;
 				
-				OpenVoxels = OVTmp;
-				PreComputed = PCTmp;
-				
-				
+				Array.Resize(ref OpenVoxels, MaxOpenVoxels * 3);
+				Array.Resize(ref PreComputed, MaxOpenVoxels * 12);
 			}
 
 			OpenVoxels[NumOpenVoxels * 3] = x;
