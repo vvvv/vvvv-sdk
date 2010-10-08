@@ -61,11 +61,11 @@ namespace VVVV.Utils.SlimDX
 		public static Texture CreateColoredTexture(Device device, int width, int height, uint argbColor)
 		{
 			var t = new Texture(device, width, height, 1, Usage.None, Format.A8R8G8B8, Pool.Managed);
-			var rect = t.LockRectangle(0, LockFlags.None);
+			var rect = t.LockRectangle(0, LockFlags.None).Data;
 			
 			for (int i=0; i<(width*height); i++)
 			{
-				rect.Data.Write(argbColor);
+				rect.Write(argbColor);
 			}
 			
 			t.UnlockRectangle(0);
@@ -132,21 +132,20 @@ namespace VVVV.Utils.SlimDX
 		/// Copy texture pixels to an array.
 		/// </summary>
 		/// <param name="src">Pointer to the texture.</param>
+		/// <param name="dest">Array to fill with the pixel data</param>
 		/// <param name="size">The size of the resulting array.</param>
-		/// <returns>An array of length size filled with values from texture src.</returns>
-		public static uint[] Copy32BitTexToArray(IntPtr src, int size)
+		public static void Copy32BitTexToArray(IntPtr src, uint[] dest, int size)
 		{
-			var ret = new uint[size];
-			Marshal.Copy(src, (int[])((object)ret), 0, size);
-			return ret;
+			Marshal.Copy(src, (int[])((object)dest), 0, size);
 		}
 		
 		/// <summary>
 		/// Fill a 32 bit texture with values retrieved from the function fillFunc.
 		/// </summary>
 		/// <param name="tex">The texture to fill.</param>
+		/// <param name="oldData">Array to fill with the old data</param>
 		/// <param name="fillFunc">The function used to fill the texture.</param>
-		public unsafe static void Fill32BitTex(Texture tex, TextureFillFunction fillFunc)
+		public unsafe static void Fill32BitTex(Texture tex, uint[] oldData, TextureFillFunction fillFunc)
 		{
 			//lock the texture pixel data
 			var rect = tex.LockRectangle(0, LockFlags.None);
@@ -161,7 +160,7 @@ namespace VVVV.Utils.SlimDX
 			var data = (uint*)rect.Data.DataPointer.ToPointer();
 
 			//copy data to array, that we can replace the data
-			var oldData = Copy32BitTexToArray(rect.Data.DataPointer, pixelCount);
+			Copy32BitTexToArray(rect.Data.DataPointer, oldData, pixelCount);
 
 			//call the given function for each pixel
 			for(int i=0; i<height; i++)
@@ -176,8 +175,9 @@ namespace VVVV.Utils.SlimDX
 		/// Fill a 32 bit texture in parallel with values retrieved from the function fillFunc.
 		/// </summary>
 		/// <param name="tex">The texture to fill.</param>
+		/// <param name="oldData">Array to fill with the old data</param>
 		/// <param name="fillFunc">The function used to fill the texture.</param>
-		public unsafe static void Fill32BitTexParallel(Texture tex, TextureFillFunction fillFunc)
+		public unsafe static void Fill32BitTexParallel(Texture tex, uint[] oldData, TextureFillFunction fillFunc)
 		{
 			//lock the texture pixel data
 			var rect = tex.LockRectangle(0, LockFlags.None);
@@ -192,7 +192,7 @@ namespace VVVV.Utils.SlimDX
 			var data = (uint*)rect.Data.DataPointer.ToPointer();
 
 			//copy data to array, that we can replace the data
-			var oldData = Copy32BitTexToArray(rect.Data.DataPointer, pixelCount);
+			Copy32BitTexToArray(rect.Data.DataPointer, oldData, pixelCount);
 
 			//call the given function for each pixel
 			Parallel.For(0, height, i =>
@@ -228,6 +228,36 @@ namespace VVVV.Utils.SlimDX
 			for(int i=0; i<height; i++)
 				for(int j=0; j<width; j++)
 					fillFunc(data, i, j, width, height);
+			
+			//unlock texture
+			tex.UnlockRectangle(0);
+			
+		}
+		
+		/// <summary>
+		/// Fill a 32 bit texture parallel in place with values retrieved from the function fillFunc.
+		/// </summary>
+		/// <param name="tex">The texture to fill.</param>
+		/// <param name="fillFunc">The function used to fill the texture.</param>
+		public unsafe static void Fill32BitTexInPlaceParallel(Texture tex, TextureFillFunctionInPlace fillFunc)
+		{
+			//lock the texture pixel data
+			var rect = tex.LockRectangle(0, LockFlags.None);
+			
+			//calculate sizes
+			var byteLenght = (int)rect.Data.Length;
+			var width = rect.Pitch/4;
+			var height = byteLenght/rect.Pitch;
+
+			//get the pointer to the data
+			var data = (uint*)rect.Data.DataPointer.ToPointer();
+
+			//call the given function for each pixel
+			Parallel.For(0, height, i =>
+            {
+				for(int j=0; j<width; j++)
+					fillFunc(data, i, j, width, height);
+			});
 			
 			//unlock texture
 			tex.UnlockRectangle(0);

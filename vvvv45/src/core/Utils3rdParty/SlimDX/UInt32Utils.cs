@@ -3,9 +3,9 @@
 namespace VVVV.Utils.SlimDX
 {
 	/// <summary>
-	/// low level utils to use uint as 32bit color
+	/// Low level utils to use uint as 32bit color
 	/// </summary>
-	public static class UInt32Extensions
+	public static class UInt32Utils
 	{
 		/// <summary>
 		/// Converts a color stored as uint to a color of type int.
@@ -42,7 +42,7 @@ namespace VVVV.Utils.SlimDX
 		/// <param name="g">Green.</param>
 		/// <param name="b">Blue.</param>
 		/// <returns>The color as uint.</returns>
-		public static uint setARGB(this uint col, byte a, byte r, byte g, byte b)
+		public static uint fromARGB(byte a, byte r, byte g, byte b)
 		{
 			return ((uint)a << 24) | ((uint)r << 16) | ((uint)g << 8) | ((uint)b);
 		}
