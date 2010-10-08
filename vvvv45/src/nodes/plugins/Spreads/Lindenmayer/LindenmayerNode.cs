@@ -29,49 +29,49 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Input("Axiom", DefaultString = "F")]
-        IDiffSpread<string> FAxiom;
+        protected IDiffSpread<string> FAxiom;
         
         [Input("Productions F", DefaultString = "F+F")]
-        IDiffSpread<string> FProductionsF;
+        protected IDiffSpread<string> FProductionsF;
         
         [Input("Productions G", DefaultString = "")]
-        IDiffSpread<string> FProductionsG;
+        protected IDiffSpread<string> FProductionsG;
         
         [Input("Depth", DefaultValue = 1, MinValue = 0, MaxValue = 10)]
-        IDiffSpread<int> FDepth;
+        protected IDiffSpread<int> FDepth;
         
         [Input("Seed", DefaultValue = 1, MinValue = 0)]
-        IDiffSpread<int> FSeed;
+        protected IDiffSpread<int> FSeed;
         
         [Input("Branch Length", DefaultValue = 0.2, MinValue = 0)]
-        IDiffSpread<double> FBranchLength;
+        protected IDiffSpread<double> FBranchLength;
         
         [Input("Length Deviation", DefaultValue = 0.5, MinValue = 0)]
-        IDiffSpread<double> FBranchLengthDeviation;
+        protected IDiffSpread<double> FBranchLengthDeviation;
         
         [Input("Angle", DefaultValue = 0.1, MinValue = 0, MaxValue = 1)]
-        IDiffSpread<double> FAngle;
+        protected IDiffSpread<double> FAngle;
         
         [Input("Angle Deviation", DefaultValue = 0, MinValue = 0, MaxValue = 1)]
-        IDiffSpread<double> FAngleDeviation;
+        protected IDiffSpread<double> FAngleDeviation;
         
         [Output("Level")]
-        ISpread<int> FLevel;
+        protected ISpread<int> FLevel;
         
         [Output("G at F Slice")]
-        ISpread<int> FGAtFSlice;
+        protected ISpread<int> FGAtFSlice;
         
         [Output("Bin Sizes")]
-        ISpread<int> FBinSizes;
+        protected ISpread<int> FBinSizes;
         
         [Output("Bin Sizes G")]
-        ISpread<int> FBinSizesG;
+        protected ISpread<int> FBinSizesG;
         
         [Output("Transform")]
-        ISpread<Matrix4x4> FTransform;
+        protected ISpread<Matrix4x4> FTransform;
         
         [Output("Transform G")]
-        ISpread<Matrix4x4> FTransformG;
+        protected ISpread<Matrix4x4> FTransformG;
 
 		private List<TLindenmayer> FLindenmayers = new List<TLindenmayer>();
 		private int FOldSpreadMax = 0;

@@ -233,7 +233,7 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		/// <summary>
-		/// Converts an ISpread<ISpread<T>> from a bin sized spread to a dynamic pin group.
+		/// Converts an ISpread&lt;ISpread&lt;T&gt;&gt; from a bin sized spread to a dynamic pin group.
 		/// </summary>
 		public bool IsPinGroup
 		{

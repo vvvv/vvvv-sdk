@@ -43,9 +43,9 @@ namespace VVVV.Nodes
         {
         	switch (ThroughPutStyle.CopySlices)//(Style[0])
             {
-                case ThroughPutStyle.Copy:
-                    output = input;
-                    break;
+//                case ThroughPutStyle.Copy:
+//                    output = input;
+//                    break;
                     
                 case ThroughPutStyle.CopySlices:
                     output.SliceCount = input.SliceCount;

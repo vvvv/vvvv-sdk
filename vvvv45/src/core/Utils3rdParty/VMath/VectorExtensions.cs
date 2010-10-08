@@ -3,6 +3,10 @@ using SlimDX;
 
 namespace VVVV.Utils.VMath
 {
+	/// <summary>
+	/// Extension methods for <see cref="Vector2D">Vector2D</see>, <see cref="Vector3D">Vector3D</see>
+	/// and <see cref="Vector4D">Vector4D</see>.
+	/// </summary>
 	public static class VectorExtensions
 	{
 		/// <summary>

@@ -4,6 +4,10 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Utils.SlimDX
 {
+	/// <summary>
+	/// Extension methods for <see cref="Vector2">Vector2</see>, <see cref="Vector3">Vector3</see>
+	/// and <see cref="Vector4">Vector4</see>.
+	/// </summary>
 	public static class VectorExtensions
 	{
 		/// <summary>

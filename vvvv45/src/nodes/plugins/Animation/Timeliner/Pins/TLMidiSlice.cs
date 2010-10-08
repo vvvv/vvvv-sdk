@@ -20,12 +20,13 @@ namespace VVVV.Nodes.Timeliner
 		private IValueIO FReset;
 		private IValueIO FMaxWindowNotes;
 		 */
-		
+		/*
 		private string FOutput;
 		public string Output
 		{
 			get {return FOutput;}
 		}
+		*/
 		
 		public TMidiScore MidiScore
 		{

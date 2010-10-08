@@ -41,52 +41,52 @@ namespace VVVV.Nodes
     {
         #region fields & pins
         [Input ("Rectangle")]
-        ISpread<Vector2D> FRectInput;
+        protected ISpread<Vector2D> FRectInput;
         
         [Input ("Text", DefaultString = "vvvv")]
-        ISpread<string> FTextInput;
+        protected ISpread<string> FTextInput;
         
         [Input ("Character Encoding", EnumName = "CharEncoding")]
-        ISpread<EnumEntry> FCharEncoding;
+        protected ISpread<EnumEntry> FCharEncoding;
         
         [Input ("Font", EnumName = "SystemFonts")]
-        IDiffSpread<EnumEntry> FFontInput;
+        protected IDiffSpread<EnumEntry> FFontInput;
         
         [Input ("Italic", IsSingle = true)]
-        IDiffSpread<bool> FItalicInput;
+        protected IDiffSpread<bool> FItalicInput;
         
         [Input ("Bold", IsSingle = true)]
-        IDiffSpread<bool> FBoldInput;
+        protected IDiffSpread<bool> FBoldInput;
         
         [Input ("Size", DefaultValue = 150, MinValue = 0, IsSingle = true)]
-        IDiffSpread<int> FSizeInput;
+        protected IDiffSpread<int> FSizeInput;
         
         [Input ("Color", DefaultValues = new double[4]{1, 1, 1, 1})]
-        ISpread<RGBAColor> FColorInput;
+        protected ISpread<RGBAColor> FColorInput;
         
         [Input ("Brush Color", DefaultValues = new double[4]{0, 0, 0, 1})]
-        ISpread<RGBAColor> FBrushColor;
+        protected ISpread<RGBAColor> FBrushColor;
         
         [Input ("Show Brush")]
-        ISpread<bool> FShowBrush;
+        protected ISpread<bool> FShowBrush;
         
         [Input ("Horizontal Align", EnumName = "HorizontalAlign")]
-        ISpread<EnumEntry> FHorizontalAlignInput;
+        protected ISpread<EnumEntry> FHorizontalAlignInput;
         
         [Input ("Vertical Align", EnumName = "VerticalAlign")]
-        ISpread<EnumEntry> FVerticalAlignInput;
+        protected ISpread<EnumEntry> FVerticalAlignInput;
         
         [Input ("Text Rendering Mode", EnumName = "TextRenderingMode")]
-        ISpread<EnumEntry> FTextRenderingModeInput;
+        protected ISpread<EnumEntry> FTextRenderingModeInput;
         
         [Input ("Normalize", EnumName = "Normalize", IsSingle = true)]
-        ISpread<EnumEntry> FNormalizeInput;
+        protected ISpread<EnumEntry> FNormalizeInput;
         
         [Input ("Enabled", DefaultValue = 1, IsSingle = true)]
-        ISpread<bool> FEnabledInput;
+        protected ISpread<bool> FEnabledInput;
         
         [Output ("Text Size")]
-        ISpread<Vector2D> FSizeOutput;
+        protected ISpread<Vector2D> FSizeOutput;
         
         [Import]
     	protected ILogger Logger { get; set; }
@@ -235,11 +235,11 @@ namespace VVVV.Nodes
             
             Matrix4x4 world;
             string text;
-            RGBAColor textColor, brushColor;
+//            RGBAColor textColor, brushColor;
             Rectangle tmpRect = new Rectangle(0, 0, 0, 0);
             
             int hAlign, wAlign;
-            double showBrush, w, h;
+//            double showBrush, w, h;
             float x, y;
             
             for (int i=0; i<FSpreadMax; i++)

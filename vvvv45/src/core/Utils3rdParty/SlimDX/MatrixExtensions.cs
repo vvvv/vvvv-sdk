@@ -4,6 +4,9 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Utils.SlimDX
 {
+	/// <summary>
+	/// Extension methods for type <see cref="Matrix">Matrix</see>.
+	/// </summary>
 	public static class MatrixExtensions
 	{
 		/// <summary>

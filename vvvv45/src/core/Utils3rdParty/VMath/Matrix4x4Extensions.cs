@@ -3,6 +3,9 @@ using SlimDX;
 
 namespace VVVV.Utils.VMath
 {
+	/// <summary>
+	/// Extension methods for type <see cref="Matrix4x4">Matrix4x4</see>.
+	/// </summary>
 	public static class Matrix4x4Extensions
 	{
 		/// <summary>

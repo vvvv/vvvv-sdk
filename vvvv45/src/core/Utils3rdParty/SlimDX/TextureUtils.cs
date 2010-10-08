@@ -22,16 +22,42 @@ namespace VVVV.Utils.SlimDX
 	/// </summary>
 	public static class TextureUtils
 	{
+		/// <summary>
+		/// Create a <see cref="Texture">texture</see> of <paramref name="width" />
+		/// and <paramref name="height" /> on <paramref name="device" />.
+		/// </summary>
+		/// <param name="device">The device to create the texture on.</param>
+		/// <param name="width">The width of the texture.</param>
+		/// <param name="height">The height of the texture.</param>
+		/// <returns>The newly created <see cref="Texture">texture</see>.</returns>
 		public static Texture CreateTexture(Device device, int width, int height)
 		{
 			return new Texture(device, width, height, 1, Usage.None, Format.A8R8G8B8, Pool.Managed);
 		}
 		
+		/// <summary>
+		/// Create a <see cref="Texture">texture</see> without an alpha channel of <paramref name="width" />
+		/// and <paramref name="height" /> on <paramref name="device" />.
+		/// </summary>
+		/// <param name="device">The device to create the texture on.</param>
+		/// <param name="width">The width of the texture.</param>
+		/// <param name="height">The height of the texture.</param>
+		/// <returns>The newly created <see cref="Texture">texture</see>.</returns>
 		public static Texture CreateTextureNoAlpha(Device device, int width, int height)
 		{
 			return new Texture(device, width, height, 1, Usage.None, Format.X8R8G8B8, Pool.Managed);
 		}
 		
+		/// <summary>
+		/// Create a <see cref="Texture">texture</see> of <paramref name="width" />
+		/// and <paramref name="height" /> on <paramref name="device" />
+		/// and fill it with <paramref name="argbColor" />.
+		/// </summary>
+		/// <param name="device">The device to create the texture on.</param>
+		/// <param name="width">The width of the texture.</param>
+		/// <param name="height">The height of the texture.</param>
+		/// <param name="argbColor">The color to fill the texture with.</param>
+		/// <returns>The newly created <see cref="Texture">texture</see>.</returns>
 		public static Texture CreateColoredTexture(Device device, int width, int height, uint argbColor)
 		{
 			var t = new Texture(device, width, height, 1, Usage.None, Format.A8R8G8B8, Pool.Managed);
@@ -46,28 +72,68 @@ namespace VVVV.Utils.SlimDX
 			return t;
 		}
 		
-		//pixel access via pointers
+		/// <summary>
+		/// Retrievies the value at position <paramref name="row" />, <paramref name="col" />
+		/// from a data buffer of width <paramref name="width" />.
+		/// </summary>
+		/// <param name="data">The pointer to the data buffer to retrieve the value from.</param>
+		/// <param name="row">The row.</param>
+		/// <param name="col">The column.</param>
+		/// <param name="width">The width of the data buffer.</param>
+		/// <returns>The value at position row, col.</returns>
 		public unsafe static uint GetPtrVal2D(uint* data, int row, int col, int width)
 		{
 			return data[row * width + col];
 		}
 		
+		/// <summary>
+		/// Sets the value at position <paramref name="row" />, <paramref name="col" />
+		/// in a data buffer of width <paramref name="width" />.
+		/// </summary>
+		/// <param name="data">The pointer to the data buffer.</param>
+		/// <param name="value">The value to set at position row, col.</param>
+		/// <param name="row">The row.</param>
+		/// <param name="col">The column.</param>
+		/// <param name="width">The width of the data buffer.</param>
 		public unsafe static void SetPtrVal2D(uint* data, uint value, int row, int col, int width)
 		{
 			data[row * width + col] = value;
 		}
 		
+		/// <summary>
+		/// Retrievies the value at position <paramref name="row" />, <paramref name="col" />
+		/// from a data array of width <paramref name="width" />.
+		/// </summary>
+		/// <param name="data">The data array to retrieve the value from.</param>
+		/// <param name="row">The row.</param>
+		/// <param name="col">The column.</param>
+		/// <param name="width">The width of the data array.</param>
+		/// <returns>The value at position row, col.</returns>
 		public unsafe static uint GetArrayVal2D(this uint[] data, int row, int col, int width)
 		{
 			return data[row * width + col];
 		}
 		
+		/// <summary>
+		/// Sets the value at position <paramref name="row" />, <paramref name="col" /> in a data array of 
+		/// width <paramref name="width" />.
+		/// </summary>
+		/// <param name="data">The data array.</param>
+		/// <param name="value">The value to set at position row, col.</param>
+		/// <param name="row">The row.</param>
+		/// <param name="col">The column.</param>
+		/// <param name="width">The width of the data array.</param>
 		public unsafe static void SetArrayVal2D(this uint[] data, uint value, int row, int col, int width)
 		{
 			data[row * width + col] = value;
 		}
 		
-		//copy texture pixels to an array
+		/// <summary>
+		/// Copy texture pixels to an array.
+		/// </summary>
+		/// <param name="src">Pointer to the texture.</param>
+		/// <param name="size">The size of the resulting array.</param>
+		/// <returns>An array of length size filled with values from texture src.</returns>
 		public static uint[] Copy32BitTexToArray(IntPtr src, int size)
 		{
 			var ret = new uint[size];
@@ -75,6 +141,11 @@ namespace VVVV.Utils.SlimDX
 			return ret;
 		}
 		
+		/// <summary>
+		/// Fill a 32 bit texture with values retrieved from the function fillFunc.
+		/// </summary>
+		/// <param name="tex">The texture to fill.</param>
+		/// <param name="fillFunc">The function used to fill the texture.</param>
 		public unsafe static void Fill32BitTex(Texture tex, TextureFillFunction fillFunc)
 		{
 			//lock the texture pixel data
@@ -101,6 +172,11 @@ namespace VVVV.Utils.SlimDX
 			tex.UnlockRectangle(0);
 		}
 		
+		/// <summary>
+		/// Fill a 32 bit texture in parallel with values retrieved from the function fillFunc.
+		/// </summary>
+		/// <param name="tex">The texture to fill.</param>
+		/// <param name="fillFunc">The function used to fill the texture.</param>
 		public unsafe static void Fill32BitTexParallel(Texture tex, TextureFillFunction fillFunc)
 		{
 			//lock the texture pixel data
@@ -130,6 +206,11 @@ namespace VVVV.Utils.SlimDX
 			
 		}
 		
+		/// <summary>
+		/// Fill a 32 bit texture in place with values retrieved from the function fillFunc.
+		/// </summary>
+		/// <param name="tex">The texture to fill.</param>
+		/// <param name="fillFunc">The function used to fill the texture.</param>
 		public unsafe static void Fill32BitTexInPlace(Texture tex, TextureFillFunctionInPlace fillFunc)
 		{
 			//lock the texture pixel data
