@@ -67,10 +67,12 @@ namespace VVVV.Hosting.Factories
 		
 		protected override bool CreateNode(INodeInfo nodeInfo, IPluginHost2 pluginHost)
 		{
-			if (Path.GetExtension(nodeInfo.Filename) != FileExtension) return false;
-			
 			try
 			{
+				//dispose previous plugin
+				var plugin = pluginHost.Plugin;
+				if (plugin != null) DisposePlugin(plugin);
+				
 				//make the host mark all its pins for possible deletion
 				pluginHost.Plugin = null;
 				
@@ -91,7 +93,7 @@ namespace VVVV.Hosting.Factories
 			return false;
 		}
 		
-		protected override bool DeleteNode(IPluginHost2 pluginHost)
+		protected override bool DeleteNode(INodeInfo nodeInfo, IPluginHost2 pluginHost)
 		{
 			var plugin = pluginHost.Plugin;
 			
@@ -249,6 +251,10 @@ namespace VVVV.Hosting.Factories
 			{
 				FPluginLifetimeContexts[plugin].Dispose();
 				FPluginLifetimeContexts.Remove(plugin);
+			}
+			else if (plugin is IDisposable)
+			{
+				((IDisposable) plugin).Dispose();
 			}
 		}
 		

@@ -94,7 +94,7 @@ namespace VVVV.Hosting.Factories
         	return true;
         }
         
-        protected override bool DeleteNode(IAddonHost nodeHost)
+        protected override bool DeleteNode(INodeInfo nodeInfo, IAddonHost nodeHost)
         {
         	// Will never get called.
         	return true;

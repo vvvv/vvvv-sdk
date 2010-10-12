@@ -199,7 +199,7 @@ namespace VVVV.Hosting
 			{
 				foreach (var factory in AddonFactories)
 				{
-					if (factory.Delete(host))
+					if (factory.Delete(nodeInfo, host))
 						break;
 				}
 				

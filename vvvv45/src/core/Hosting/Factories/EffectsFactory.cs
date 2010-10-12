@@ -217,7 +217,7 @@ namespace VVVV.Hosting.Factories
 			return true;
 		}
 		
-		protected override bool DeleteNode(IEffectHost host)
+		protected override bool DeleteNode(INodeInfo nodeInfo, IEffectHost host)
 		{
 			return true;
 		}

@@ -192,15 +192,15 @@ namespace VVVV.Hosting.Factories
 		
 		protected abstract bool CreateNode(INodeInfo nodeInfo, TNodeHost nodeHost);
 		
-		public bool Delete(IAddonHost host)
+		public bool Delete(INodeInfo nodeInfo, IAddonHost host)
 		{
-			if (host is TNodeHost)
-				return DeleteNode((TNodeHost) host);
+			if (host is TNodeHost && Path.GetExtension(nodeInfo.Filename) == FileExtension)
+				return DeleteNode(nodeInfo, (TNodeHost) host);
 			
 			return false;
 		}
 		
-		protected abstract bool DeleteNode(TNodeHost nodeHost);
+		protected abstract bool DeleteNode(INodeInfo nodeInfo, TNodeHost nodeHost);
 		
 		public bool Clone(INodeInfo nodeInfo, string path, string name, string category, string version)
 		{
