@@ -36,7 +36,6 @@ namespace VVVV.Utils.SlimDX
 		/// <summary>
 		/// Set up uint color.
 		/// </summary>
-		/// <param name="col">The color as uint.</param>
 		/// <param name="a">Alpha.</param>
 		/// <param name="r">Red.</param>
 		/// <param name="g">Green.</param>

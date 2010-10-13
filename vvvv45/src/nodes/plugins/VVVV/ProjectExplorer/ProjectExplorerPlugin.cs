@@ -3,8 +3,10 @@ using System.Collections;
 using System.ComponentModel.Composition;
 
 using VVVV.Core;
+using VVVV.Core.Logging;
 using VVVV.Core.Menu;
 using VVVV.Core.Model;
+using VVVV.Core.Model.FX;
 using VVVV.Core.View;
 using VVVV.HDE.Viewer.WinFormsViewer;
 using VVVV.PluginInterfaces.V1;
@@ -36,34 +38,48 @@ namespace VVVV.HDE.ProjectExplorer
 		TreeViewer FTreeViewer;
 		
 		[ImportingConstructor]
-		public ProjectExplorerPlugin(ISolution solution)
+		public ProjectExplorerPlugin(ISolution solution, ILogger logger)
 		{
-			Solution = solution;
-			
-			var mappingRegistry = new MappingRegistry();
-			mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
-			mappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
-            mappingRegistry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();
-            mappingRegistry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
-            mappingRegistry.RegisterDefaultMapping<AddMenuEntry, DefaultAddMenuEntry>();
-            
-			mappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
-			mappingRegistry.RegisterMapping<IProject, ProjectViewProvider>();
-			// Do not enumerate IDocument
-			mappingRegistry.RegisterMapping<IDocument, IEnumerable>(Empty.Enumerable);
-			mappingRegistry.RegisterMapping<IEditableIDList<IReference>, ReferencesViewProvider>();
-			
-			SuspendLayout();
-			
-			FTreeViewer = new TreeViewer();
-			FTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
-			FTreeViewer.Registry = mappingRegistry;
-			FTreeViewer.Input = Solution;
-			
-			Controls.Add(FTreeViewer);
-			
-			ResumeLayout(false);
-			PerformLayout();
+			try
+			{
+				Solution = solution;
+				
+				var mappingRegistry = new MappingRegistry();
+				mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
+				mappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
+				mappingRegistry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();
+				mappingRegistry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
+				mappingRegistry.RegisterDefaultMapping<AddMenuEntry, DefaultAddMenuEntry>();
+				mappingRegistry.RegisterDefaultMapping(logger);
+				
+				mappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
+				mappingRegistry.RegisterMapping<IProject, ProjectViewProvider>();
+				// Do not enumerate IDocument
+				mappingRegistry.RegisterMapping<IDocument, IEnumerable>(Empty.Enumerable);
+				mappingRegistry.RegisterMapping<MsBuildProject, MsBuildProjectViewProvider>();
+				mappingRegistry.RegisterMapping<FXProject, FXProjectViewProvider>();
+				
+				SuspendLayout();
+				
+				BackColor = System.Drawing.Color.Silver;
+				
+				FTreeViewer = new TreeViewer();
+				FTreeViewer.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+				FTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+				FTreeViewer.Registry = mappingRegistry;
+				FTreeViewer.Input = Solution;
+				FTreeViewer.BackColor = System.Drawing.Color.Silver;
+				
+				Controls.Add(FTreeViewer);
+				
+				ResumeLayout(false);
+				PerformLayout();
+			}
+			catch (Exception e)
+			{
+				logger.Log(e);
+				throw e;
+			}
 		}
 		
 		public void Evaluate(int spreadMax)

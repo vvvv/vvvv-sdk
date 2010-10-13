@@ -77,7 +77,7 @@ namespace VVVV.Hosting.Factories
 				if (FSolution.Projects.CanAdd(project))
 					FSolution.Projects.Add(project);
 				
-				project.Load();
+//				project.Load();
 				
 				project.ProjectCompiledSuccessfully += new ProjectCompiledHandler(project_ProjectCompiled);
 				FProjects[filename] = project;
