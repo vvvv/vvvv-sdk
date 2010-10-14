@@ -144,6 +144,25 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Texture">The retrieved texture</param>
 		void GetTexture(IDXTextureOut ForPin, int OnDevice, out int Texture);
 	}
+	
+	/// <summary>
+	/// Same as IPluginDXTexture but with additional parameter to allow for spreadable outputs
+	/// </summary>
+	[Guid("848007F9-9180-4A28-9CAD-F8E0968D88AD"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	public interface IPluginDXTexture2: IPluginDXResource
+	{
+		/// <summary>
+		/// Called by the PluginHost everytime a texture is accessed via a pin on the plugin.
+		/// This is called from the PluginHost from within DirectX BeginScene/EndScene,
+		/// therefore the plugin shouldn't be doing much here other than handing back the right texture.
+		/// </summary>
+		/// <param name="ForPin">Interface to the pin via which the texture is accessed.</param>
+		/// <param name="OnDevice">Pointer to the device for which the texture is accessed.</param>
+		/// /// <param name="Slice">Slice Index of the texture to be accessed.</param>
+		/// <param name="Texture">The retrieved texture</param>
+		void GetTexture(IDXTextureOut ForPin, int OnDevice, int Slice, out int Texture);
+	}
 
 	/// <summary>
 	/// Optional interface to be implemented on a plugin that deals with DirectX Layers
