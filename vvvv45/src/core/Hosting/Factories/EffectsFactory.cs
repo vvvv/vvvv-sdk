@@ -38,19 +38,14 @@ namespace VVVV.Hosting.Factories
 		//create a node info from a filename
 		protected override IEnumerable<INodeInfo> GetNodeInfos(string filename)
 		{
-//		    if (!FProjects.ContainsKey(filename))
-//			{
-//				var project = new FXProject(new Uri(filename));
-//				if (FSolution.Projects.CanAdd(project))
-//					FSolution.Projects.Add(project);
-//				project.Load();
-//				project.DoCompileEvent += new EventHandler(project_DoCompile);
-//				FProjects[filename] = project;
-//			}
+			var project = FProjects[filename];
+			
+			if (!project.IsLoaded)
+				project.Load();
+			
+			project.Compile();
 
-			FProjects[filename].Compile();
-
-			yield return FProjectNodeInfo[FProjects[filename]];
+			yield return FProjectNodeInfo[project];
 		}
 		
 		protected override void AddFile(string filename)
@@ -227,6 +222,9 @@ namespace VVVV.Hosting.Factories
 			if (nodeInfo.Type == NodeType.Effect)
 			{
 				var project = FProjects[nodeInfo.Filename];
+				if (!project.IsLoaded)
+					project.Load();
+				
 				var newProject = project.Clone() as FXProject;
 				
 				var projectDir = path; //project.Location.GetLocalDir();

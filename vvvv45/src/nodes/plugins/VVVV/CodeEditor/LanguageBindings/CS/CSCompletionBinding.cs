@@ -10,15 +10,13 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 {
 	public class CSCompletionBinding : ICompletionBinding
 	{
-		private IDocumentLocator FDocumentLocator;
 		private CSCompletionProvider FCSCompletionProvider;
 		private CtrlSpaceCompletionProvider FCtrlSpaceCompletionProvider;
 		
-		public CSCompletionBinding(IDocumentLocator documentLocator)
+		public CSCompletionBinding(CodeEditor editor)
 		{
-			FDocumentLocator = documentLocator;
-			FCSCompletionProvider = new CSCompletionProvider(documentLocator);
-			FCtrlSpaceCompletionProvider = new CtrlSpaceCompletionProvider(documentLocator);
+			FCSCompletionProvider = new CSCompletionProvider(editor);
+			FCtrlSpaceCompletionProvider = new CtrlSpaceCompletionProvider(editor);
 		}
 		
 		public void HandleKeyPress(CodeEditor editor, char key)
@@ -34,7 +32,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 			if (key == '(')
 			{
 				// Show MethodInsight window
-				editor.ShowInsightWindow(new CSMethodInsightProvider(FDocumentLocator, textArea.Caret.Offset));
+				editor.ShowInsightWindow(new CSMethodInsightProvider(editor, textArea.Caret.Offset));
 			}
 			else if (key == ')')
 			{
@@ -73,7 +71,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 					}
 					
 					// Show MethodInsight window
-					editor.ShowInsightWindow(new CSMethodInsightProvider(FDocumentLocator, offset, commaOffsets));
+					editor.ShowInsightWindow(new CSMethodInsightProvider(editor, offset, commaOffsets));
 				}
 			}
 			else if (key == '.')
@@ -105,10 +103,10 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 			}
 		}
 		
-		bool IsInComment(TextEditorControl editor)
+		bool IsInComment(CodeEditor editor)
 		{
 			var sdDoc = editor.Document;
-			var csDoc = FDocumentLocator.GetVDocument(sdDoc) as CSDocument;
+			var csDoc = editor.TextDocument as CSDocument;
 			var expressionFinder = csDoc.ExpressionFinder;
 			int cursor = editor.ActiveTextAreaControl.Caret.Offset - 1;
 			return expressionFinder.FilterComments(sdDoc.GetText(0, cursor + 1), ref cursor) == null;

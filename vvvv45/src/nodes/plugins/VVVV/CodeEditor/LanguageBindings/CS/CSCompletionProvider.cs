@@ -15,11 +15,11 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 {
 	public class CSCompletionProvider : DefaultCompletionProvider
 	{
-		private IDocumentLocator FDocumentLocator;
+		private CodeEditor FEditor;
 		
-		public CSCompletionProvider(IDocumentLocator documentLocator)
+		public CSCompletionProvider(CodeEditor editor)
 		{
-			FDocumentLocator = documentLocator;
+			FEditor = editor;
 		}
 		
 		public override ICompletionData[] GenerateCompletionData(string fileName, TextArea textArea, char charTyped)
@@ -32,10 +32,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 			
 			var resultList = new List<ICompletionData>();
 			
-			var document = FDocumentLocator.GetVDocument(fileName) as CSDocument;
-			if (document == null)
-				return resultList.ToArray();
-			
+			var document = FEditor.TextDocument as CSDocument;
 			var parseInfo = document.ParseInfo;
 			var projectContent = parseInfo.MostRecentCompilationUnit.ProjectContent;
 			
@@ -102,15 +99,6 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 					throw new NotSupportedException();
 				}
 			}
-		}
-		
-		bool IsInComment(TextEditorControl editor)
-		{
-			var sdDoc = editor.Document;
-			var csDoc = FDocumentLocator.GetVDocument(sdDoc) as CSDocument;
-			var expressionFinder = csDoc.ExpressionFinder;
-			int cursor = editor.ActiveTextAreaControl.Caret.Offset - 1;
-			return expressionFinder.FilterComments(sdDoc.GetText(0, cursor + 1), ref cursor) == null;
 		}
 	}
 }

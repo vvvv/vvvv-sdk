@@ -11,9 +11,9 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
 	{
 		private FXCompletionProvider FCompletionProvider;
 		
-		public FXCompletionBinding(IDocumentLocator documentLocator, ILogger logger)
+		public FXCompletionBinding(CodeEditor editor)
 		{
-			FCompletionProvider = new FXCompletionProvider(documentLocator, logger);
+			FCompletionProvider = new FXCompletionProvider(editor);
 		}
 		
 		public void HandleKeyPress(CodeEditor editor, char key)

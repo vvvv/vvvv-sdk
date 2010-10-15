@@ -49,6 +49,9 @@ namespace VVVV.Hosting.Factories
 			// Do we need to compile it?
 			if (!IsAssemblyUpToDate(project))
 			{
+				if (!project.IsLoaded)
+					project.Load();
+				
 				project.Compile();
 				if (project.CompilerResults.Errors.HasErrors)
 				{
@@ -178,6 +181,9 @@ namespace VVVV.Hosting.Factories
 			if (FProjects.ContainsKey(filename))
 			{
 				var project = FProjects[filename];
+				
+				if (!project.IsLoaded)
+					project.Load();
 				
 				string className = name.Replace(" ", "");
 				

@@ -38,7 +38,11 @@ namespace VVVV.PluginInterfaces.V2
 		/// <summary>
 		/// Specifies a dynamic plugin node.
 		/// </summary>
-		Dynamic
+		Dynamic,
+		/// <summary>
+		/// Specifies a node with some text in it (like source code for example).
+		/// </summary>
+		Text
 	};
 	
 	/// <summary>

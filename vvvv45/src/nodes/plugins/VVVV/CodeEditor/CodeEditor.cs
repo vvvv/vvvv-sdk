@@ -85,25 +85,115 @@ namespace VVVV.HDE.CodeEditor
 			private set;
 		}
 		
+		public ICompletionBinding CompletionBinding
+		{
+			get
+			{
+				return FCompletionBinding;
+			}
+			set
+			{
+				FCompletionBinding = value;
+				
+				if (FCompletionBinding != null)
+					ActiveTextAreaControl.TextArea.KeyEventHandler += TextAreaKeyEventHandler;
+				else
+					ActiveTextAreaControl.TextArea.KeyEventHandler -= TextAreaKeyEventHandler;
+			}
+		}
+		
+		public SD.IFormattingStrategy FormattingStrategy
+		{
+			get
+			{
+				return Document.FormattingStrategy;
+			}
+			set
+			{
+				Document.FormattingStrategy = value;
+			}
+		}
+		
+		public SD.IFoldingStrategy FoldingStrategy
+		{
+			get
+			{
+				return Document.FoldingManager.FoldingStrategy;
+			}
+			set
+			{
+				Document.FoldingManager.FoldingStrategy = value;
+				
+				if (value != null)
+				{
+					EnableFolding = true;
+					
+					// TODO: Do this via an interface to avoid asking for concrete implementation.
+					if (TextDocument is CSDocument)
+					{
+						var csDoc = TextDocument as CSDocument;
+						csDoc.ParseCompleted += CSDocument_ParseCompleted;
+					}
+				}
+				else
+				{
+					EnableFolding = false;
+				}
+			}
+		}
+		
+		public ILinkDataProvider LinkDataProvider
+		{
+			get
+			{
+				return FLinkDataProvider;
+			}
+			set
+			{
+				FLinkDataProvider = value;
+				
+				if (FLinkDataProvider != null)
+				{
+					ActiveTextAreaControl.TextArea.MouseMove += MouseMoveCB;
+					ActiveTextAreaControl.TextArea.MouseClick += LinkClickCB;
+				}
+				else
+				{
+					ActiveTextAreaControl.TextArea.MouseMove -= MouseMoveCB;
+					ActiveTextAreaControl.TextArea.MouseClick -= LinkClickCB;
+				}
+			}
+		}
+		
+		public IToolTipProvider ToolTipProvider
+		{
+			get
+			{
+				return FToolTipProvider;
+			}
+			set
+			{
+				FToolTipProvider = value;
+				
+				if (FToolTipProvider != null)
+					ActiveTextAreaControl.TextArea.ToolTipRequest += OnToolTipRequest;
+				else
+					ActiveTextAreaControl.TextArea.ToolTipRequest -= OnToolTipRequest;
+			}
+		}
+		
 		#endregion
 		
 		#region Constructor/Destructor
 		public CodeEditor(
-			ILogger logger,
 			CodeEditorForm codeEditorForm,
-			ITextDocument doc,
-			ICompletionBinding completionBinding,
-			SD.IFormattingStrategy formattingStrategy,
-			SD.IFoldingStrategy foldingStrategy,
-			ILinkDataProvider linkDataProvider,
-			IToolTipProvider toolTipProvider)
+			ITextDocument doc)
 		{
-			Logger = logger;
-			
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			InitializeComponent();
 			
 			FCodeEditorForm = codeEditorForm;
+			Logger = codeEditorForm.Logger;
 			
 			TextDocument = doc;
 			
@@ -123,47 +213,6 @@ namespace VVVV.HDE.CodeEditor
 			// Setup code highlighting
 			var highlighter = SD.HighlightingManager.Manager.FindHighlighterForFile(fileName);
 			SetHighlighting(highlighter.Name);
-			
-			// Setup code completion
-			FCompletionBinding = completionBinding;
-			ActiveTextAreaControl.TextArea.KeyEventHandler += TextAreaKeyEventHandler;
-			
-			// Setup code formatting
-			if (formattingStrategy != null)
-				Document.FormattingStrategy = formattingStrategy;
-			
-			// Setup code folding
-			if (foldingStrategy != null)
-			{
-				EnableFolding = true;
-				Document.FoldingManager.FoldingStrategy = foldingStrategy;
-				
-				// TODO: Do this via an interface to avoid asking for concrete implementation.
-				if (TextDocument is CSDocument)
-				{
-					var csDoc = TextDocument as CSDocument;
-					csDoc.ParseCompleted += CSDocument_ParseCompleted;
-				}
-			}
-			else
-			{
-				EnableFolding = false;
-			}
-			
-			// Setup hovering (ILinkDataProvider)
-			if (linkDataProvider != null)
-			{
-				FLinkDataProvider = linkDataProvider;
-				ActiveTextAreaControl.TextArea.MouseMove += MouseMoveCB;
-				ActiveTextAreaControl.TextArea.MouseClick += LinkClickCB;
-			}
-			
-			// Setup tool tips
-			if (toolTipProvider != null)
-			{
-				FToolTipProvider = toolTipProvider;
-				ActiveTextAreaControl.TextArea.ToolTipRequest += OnToolTipRequest;
-			}
 			
 			// Setup selection highlighting
 			ActiveTextAreaControl.SelectionManager.SelectionChanged += FTextEditorControl_ActiveTextAreaControl_SelectionManager_SelectionChanged;
@@ -248,19 +297,24 @@ namespace VVVV.HDE.CodeEditor
 					if (TextDocument != null)
 					{
 						TextDocument.ContentChanged -= TextDocumentContentChangedCB;
-						TextDocument.Project.CompileCompleted -= CompileCompletedCB;
-						
-						var executable = FCodeEditorForm.GetExecutable(TextDocument.Project);
-						if (executable != null)
-						{
-							executable.RuntimeErrors.Added -= executable_RuntimeErrors_Added;
-							executable.RuntimeErrors.Removed -= executable_RuntimeErrors_Removed;
-						}
 						
 						if (TextDocument is CSDocument)
 						{
 							var csDoc = TextDocument as CSDocument;
 							csDoc.ParseCompleted -= CSDocument_ParseCompleted;
+						}
+						
+						var project = TextDocument.Project;
+						if (project != null)
+						{
+							project.CompileCompleted -= CompileCompletedCB;
+							
+							var executable = FCodeEditorForm.GetExecutable(project);
+							if (executable != null)
+							{
+								executable.RuntimeErrors.Added -= executable_RuntimeErrors_Added;
+								executable.RuntimeErrors.Removed -= executable_RuntimeErrors_Removed;
+							}
 						}
 						
 						TextDocument = null;
@@ -303,16 +357,21 @@ namespace VVVV.HDE.CodeEditor
 				CSDocument_ParseCompleted(csDoc);
 			}
 			
-			// Everytime the project is compiled update the error highlighting.
-			TextDocument.Project.CompileCompleted += CompileCompletedCB;
+			var project = TextDocument.Project;
 			
-			// We're also interested in runtime errors.
-			var executable = FCodeEditorForm.GetExecutable(TextDocument.Project);
-			if (executable != null)
+			if (project != null)
 			{
-				executable.RuntimeErrors.Added += executable_RuntimeErrors_Added;
-				executable.RuntimeErrors.Removed += executable_RuntimeErrors_Removed;
-				ShowRuntimeErrors(executable.RuntimeErrors);
+				// Everytime the project is compiled update the error highlighting.
+				project.CompileCompleted += CompileCompletedCB;
+				
+				// We're also interested in runtime errors.
+				var executable = FCodeEditorForm.GetExecutable(project);
+				if (executable != null)
+				{
+					executable.RuntimeErrors.Added += executable_RuntimeErrors_Added;
+					executable.RuntimeErrors.Removed += executable_RuntimeErrors_Removed;
+					ShowRuntimeErrors(executable.RuntimeErrors);
+				}
 			}
 		}
 		
@@ -490,26 +549,26 @@ namespace VVVV.HDE.CodeEditor
 		
 		void LinkClickCB(object sender, MouseEventArgs e)
 		{
-			try
-			{
-				if (!FLink.IsEmpty)
-				{
-					var textDocument = FCodeEditorForm.GetVDocument(FLink.FileName) as ITextDocument;
-					
-					if (textDocument != null)
-					{
-						var tabPage = FCodeEditorForm.Open(textDocument);
-						FCodeEditorForm.BringToFront(tabPage);
-						var codeEditor = tabPage.Controls[0] as CodeEditor;
-						codeEditor.ActiveTextAreaControl.TextArea.Focus();
-						codeEditor.JumpTo(FLink.Location.Line, FLink.Location.Column);
-					}
-				}
-			}
-			catch (Exception f)
-			{
-				Debug.WriteLine(f.StackTrace);
-			}
+//			try
+//			{
+//				if (!FLink.IsEmpty)
+//				{
+//					var textDocument = FCodeEditorForm.GetVDocument(FLink.FileName) as ITextDocument;
+//
+//					if (textDocument != null)
+//					{
+//						var tabPage = FCodeEditorForm.Open(textDocument);
+//						FCodeEditorForm.BringToFront(tabPage);
+//						var codeEditor = tabPage.Controls[0] as CodeEditor;
+//						codeEditor.ActiveTextAreaControl.TextArea.Focus();
+//						codeEditor.JumpTo(FLink.Location.Line, FLink.Location.Column);
+//					}
+//				}
+//			}
+//			catch (Exception f)
+//			{
+//				Debug.WriteLine(f.StackTrace);
+//			}
 		}
 		
 		private void SyncControlWithDocument()
@@ -560,8 +619,12 @@ namespace VVVV.HDE.CodeEditor
 				SyncControlWithDocument();
 				TextDocument.Save();
 				// Trigger a recompile
-				TextDocument.Project.Save();
-				TextDocument.Project.CompileAsync();
+				var project = TextDocument.Project;
+				if (project != null)
+				{
+					project.Save();
+					project.CompileAsync();
+				}
 				return true;
 			}
 			else if (ke.Control && ke.KeyCode == Keys.F)

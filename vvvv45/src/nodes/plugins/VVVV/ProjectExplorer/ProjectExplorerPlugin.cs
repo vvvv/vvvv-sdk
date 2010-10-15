@@ -36,6 +36,7 @@ namespace VVVV.HDE.ProjectExplorer
 		}
 		
 		TreeViewer FTreeViewer;
+		ILogger FLogger;
 		
 		[ImportingConstructor]
 		public ProjectExplorerPlugin(ISolution solution, ILogger logger)
@@ -43,6 +44,7 @@ namespace VVVV.HDE.ProjectExplorer
 			try
 			{
 				Solution = solution;
+				FLogger = logger;
 				
 				var mappingRegistry = new MappingRegistry();
 				mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
@@ -58,6 +60,7 @@ namespace VVVV.HDE.ProjectExplorer
 				mappingRegistry.RegisterMapping<IDocument, IEnumerable>(Empty.Enumerable);
 				mappingRegistry.RegisterMapping<MsBuildProject, MsBuildProjectViewProvider>();
 				mappingRegistry.RegisterMapping<FXProject, FXProjectViewProvider>();
+				mappingRegistry.RegisterMapping<IProject, IDescripted, DescriptedProjectViewProvider>();
 				
 				SuspendLayout();
 				
@@ -66,9 +69,11 @@ namespace VVVV.HDE.ProjectExplorer
 				FTreeViewer = new TreeViewer();
 				FTreeViewer.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 				FTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+				FTreeViewer.BackColor = System.Drawing.Color.Silver;
+				FTreeViewer.ShowTooltip = true;
+				
 				FTreeViewer.Registry = mappingRegistry;
 				FTreeViewer.Input = Solution;
-				FTreeViewer.BackColor = System.Drawing.Color.Silver;
 				
 				Controls.Add(FTreeViewer);
 				

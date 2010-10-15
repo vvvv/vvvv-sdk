@@ -10,17 +10,17 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 {
 	public class CSToolTipProvider : IToolTipProvider
 	{
-		protected IDocumentLocator FDocumentLocator;
+		protected CodeEditor FEditor;
 		
-		public CSToolTipProvider(IDocumentLocator documentLocator)
+		public CSToolTipProvider(CodeEditor editor)
 		{
-			FDocumentLocator = documentLocator;
+			FEditor = editor;
 		}
 		
 		public string GetToolTip(IDocument document, TextLocation textLocation)
 		{
 			var offset = document.PositionToOffset(textLocation);
-			var csDoc = FDocumentLocator.GetVDocument(document) as CSDocument;
+			var csDoc = FEditor.TextDocument as CSDocument;
 			var expression = csDoc.FindFullExpression(offset);
 			if (expression.Region.IsEmpty)
 				expression.Region = new DomRegion(textLocation.Line + 1, textLocation.Column + 1);

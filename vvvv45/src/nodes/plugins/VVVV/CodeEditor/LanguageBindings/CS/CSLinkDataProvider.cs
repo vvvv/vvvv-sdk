@@ -8,11 +8,11 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 {
 	public class CSLinkDataProvider : ILinkDataProvider
 	{
-		protected IDocumentLocator FDocumentLocator;
+		protected CodeEditor FEditor;
 		
-		public CSLinkDataProvider(IDocumentLocator documentLocator)
+		public CSLinkDataProvider(CodeEditor editor)
 		{
-			FDocumentLocator = documentLocator;
+			FEditor = editor;
 		}
 		
 		public Link GetLink(IDocument doc, TextLocation location)
@@ -25,7 +25,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 			
 			if (word != null && !word.IsWhiteSpace)
 			{
-				var csDoc = FDocumentLocator.GetVDocument(doc) as CSDocument;
+				var csDoc = FEditor.TextDocument as CSDocument;
 				
 				int offset = lineSegment.Offset + word.Offset + word.Length;
 				var expression = csDoc.FindExpression(offset);

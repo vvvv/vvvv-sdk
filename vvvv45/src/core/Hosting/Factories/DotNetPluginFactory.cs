@@ -138,17 +138,14 @@ namespace VVVV.Hosting.Factories
 				
 				foreach (var nodeInfo in ExtractNodeInfosFromCatalog(FCatalogCache[filename]))
 				{
-//					if (IsValidNodeInfo(nodeInfo))
-					{
-						var executable = new DotNetExecutable(null, new Lazy<Assembly>(() => Assembly.LoadFrom(filename)));
-						if (nodeInfo.Executable == null)
-							nodeInfo.Executable = executable;
-						else
-							nodeInfo.Executable.UpdateFrom(executable);
-						nodeInfo.Filename = filename;
-						nodeInfo.Type = NodeType.Plugin;
-						nodeInfos.Add(nodeInfo);
-					}
+					var executable = new DotNetExecutable(null, new Lazy<Assembly>(() => Assembly.LoadFrom(filename)));
+					if (nodeInfo.Executable == null)
+						nodeInfo.Executable = executable;
+					else
+						nodeInfo.Executable.UpdateFrom(executable);
+					nodeInfo.Filename = filename;
+					nodeInfo.Type = NodeType.Plugin;
+					nodeInfos.Add(nodeInfo);
 				}
 				
 				if (nodeInfos.Count == 0)
@@ -158,17 +155,14 @@ namespace VVVV.Hosting.Factories
 					// Check for V1 style plugins
 					foreach (var nodeInfo in ExtractNodeInfosFromAssembly(assembly))
 					{
-//						if (IsValidNodeInfo(nodeInfo))
-						{
-							var executable = new DotNetExecutable(null, assembly);
-							if (nodeInfo.Executable == null)
-								nodeInfo.Executable = executable;
-							else
-								nodeInfo.Executable.UpdateFrom(executable);
-							nodeInfo.Filename = filename;
-							nodeInfo.Type = NodeType.Plugin;
-							nodeInfos.Add(nodeInfo);
-						}
+						var executable = new DotNetExecutable(null, assembly);
+						if (nodeInfo.Executable == null)
+							nodeInfo.Executable = executable;
+						else
+							nodeInfo.Executable.UpdateFrom(executable);
+						nodeInfo.Filename = filename;
+						nodeInfo.Type = NodeType.Plugin;
+						nodeInfos.Add(nodeInfo);
 					}
 				}
 			}
@@ -186,12 +180,6 @@ namespace VVVV.Hosting.Factories
 		}
 		
 		#endregion
-		
-		private bool IsValidNodeInfo(INodeInfo nodeInfo)
-		{
-			var registeredInfo = FHost.GetNodeInfo(nodeInfo.Systemname);
-			return registeredInfo == null || registeredInfo.Type == NodeType.Dynamic;
-		}
 		
 		public IPluginBase CreatePlugin(INodeInfo nodeInfo, IPluginHost2 pluginHost)
 		{

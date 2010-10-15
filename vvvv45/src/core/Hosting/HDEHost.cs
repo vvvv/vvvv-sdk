@@ -127,7 +127,7 @@ namespace VVVV.Hosting
 				{
 					factory.NodeInfoAdded += AddonFactory_NodeInfoAdded;
 					factory.NodeInfoRemoved += AddonFactory_NodeInfoRemoved;
-					factory.StartWatching();
+					factory.Initialize();
 				}
 			}
 			catch (Exception e)

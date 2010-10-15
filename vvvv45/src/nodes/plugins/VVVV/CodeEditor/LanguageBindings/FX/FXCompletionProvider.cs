@@ -13,15 +13,15 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
 {
 	public class FXCompletionProvider : DefaultCompletionProvider
 	{
-		protected IDocumentLocator FDocumentLocator;
+		protected CodeEditor FEditor;
 		protected ILogger FLogger;
 		protected Dictionary<string, string> FHLSLReference;
 		protected Dictionary<string, string> FTypeReference;
 		
-		public FXCompletionProvider(IDocumentLocator documentLocator, ILogger logger)
+		public FXCompletionProvider(CodeEditor editor)
 		{
-			FDocumentLocator = documentLocator;
-			FLogger = logger;
+			FEditor = editor;
+			FLogger = editor.Logger;
 			
 			FHLSLReference = new Dictionary<string, string>();
 			FTypeReference = new Dictionary<string, string>();
@@ -86,11 +86,12 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
 			//semantics: only directly after :
 			
 			//parse ParameterDescription
-			var doc = FDocumentLocator.GetVDocument(fileName);
-			if (doc == null)
+			var doc = FEditor.TextDocument;
+			var project = doc.Project as FXProject;
+			if (project == null)
 				return new ICompletionData[0];
 			
-			var inputs = (doc.Project as FXProject).ParameterDescription.Split(new char[1]{'|'});
+			var inputs = project.ParameterDescription.Split(new char[1]{'|'});
 			int i = 0;
 			ICompletionData[] cData = new ICompletionData[FHLSLReference.Count + FTypeReference.Count + inputs.Length-1];
 			foreach (var input in inputs)

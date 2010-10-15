@@ -8,11 +8,11 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 {
 	public class CSFormattingStrategy : DefaultFormattingStrategy
 	{
-		protected IDocumentLocator FDocumentLocator;
+		protected CodeEditor FEditor;
 		
-		public CSFormattingStrategy(IDocumentLocator documentLocator)
+		public CSFormattingStrategy(CodeEditor editor)
 		{
-			FDocumentLocator = documentLocator;
+			FEditor = editor;
 		}
 		
 		protected override int SmartIndentLine(ICSharpCode.TextEditor.TextArea textArea, int line)
@@ -155,7 +155,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 		
 		bool IsInComment(IDocument document, int offset)
 		{
-			var csDocument = FDocumentLocator.GetVDocument(document) as CSDocument;
+			var csDocument = FEditor.TextDocument as CSDocument;
 			var expressionFinder = new CSharpExpressionFinder(csDocument.ParseInfo);
 			return expressionFinder.FilterComments(document.GetText(0, offset + 1), ref offset) == null;
 		}

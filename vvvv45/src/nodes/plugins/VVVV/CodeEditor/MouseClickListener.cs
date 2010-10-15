@@ -89,15 +89,15 @@ namespace VVVV.HDE.CodeEditor
 												
 												match = version == nodeInfo.Version;
 											}
-											
-											if (match)
-											{
-												found = true;
-												var tabPage = FCodeEditorForm.Open(csDoc);
-												var codeEditor = tabPage.Controls[0] as CodeEditor;
-												codeEditor.JumpTo(attribute.Region.BeginLine - 1);
-												break;
-											}
+//TODO											
+//											if (match)
+//											{
+//												found = true;
+//												var tabPage = FCodeEditorForm.Open(csDoc);
+//												var codeEditor = tabPage.Controls[0] as CodeEditor;
+//												codeEditor.JumpTo(attribute.Region.BeginLine - 1);
+//												break;
+//											}
 										}
 									}
 									

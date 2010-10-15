@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
@@ -13,7 +14,22 @@ namespace VVVV.Hosting.Pins.Output
 			: base(host, attribute)
 		{
 			host.CreateNodeOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FNodeOut);
-			FNodeOut.SetSubType(new Guid[] { typeof(T).GUID }, typeof(T).FullName);
+			
+			// Register all implemented interfaces and inherited classes of T
+			// to support the assignment of ISpread<Apple> output to ISpread<Fruit> input.
+			var guids = new List<Guid>();
+			var typeT = typeof(T);
+			
+			foreach (var interf in typeT.GetInterfaces())
+				guids.Add(interf.GUID);
+			
+			while (typeT != null)
+			{
+				guids.Add(typeT.GUID);
+				typeT = typeT.BaseType;
+			}
+			
+			FNodeOut.SetSubType(guids.ToArray(), typeof(T).FullName);
 			FNodeOut.SetInterface(this);
 			
 			base.Initialize(FNodeOut);

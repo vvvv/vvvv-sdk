@@ -4,11 +4,14 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Drawing;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
 using VVVV.Core.Logging;
 using VVVV.Core.Model;
+using VVVV.Core.Model.CS;
+using VVVV.Core.Model.FX;
 using VVVV.HDE.CodeEditor.Gui.Dialogs;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -18,28 +21,19 @@ using VVVV.Utils.ManagedVCL;
 
 namespace VVVV.HDE.CodeEditor
 {
-	#region PluginInfo
-	[PluginInfo(Name = "CodeEditor",
-	            Category = "VVVV",
-	            Shortcut = "Ctrl+K",
-	            Author = "vvvv group",
-	            Help = "The Code Editor",
-	            InitialBoxWidth = 200,
-	            InitialBoxHeight = 100,
-	            InitialWindowWidth = 700,
-	            InitialWindowHeight = 800,
-	            InitialComponentMode = TComponentMode.InAWindow)]
-	#endregion PluginInfo
-	public class CodeEditorPlugin : TopControl, IPluginHDE, IDisposable, IQueryDelete
+	[EditorInfo(".cs", ".fx", ".fxh")]
+	public class CodeEditorPlugin : TopControl, IEditor, IDisposable, IQueryDelete
 	{
 		private CodeEditorForm FCodeEditorForm;
 		private ILogger FLogger;
+		private ISolution FSolution;
 		
 		public static readonly ImageList CompletionIcons = new ImageList();
 		
 		[ImportingConstructor]
 		public CodeEditorPlugin(IHDEHost host, ISolution solution, ILogger logger)
 		{
+			FSolution = solution;
 			FLogger = logger;
 			
 			if (CompletionIcons.Images.Count == 0)
@@ -134,6 +128,52 @@ namespace VVVV.HDE.CodeEditor
 			}
 			
 			return true;
+		}
+		
+		public void Open(string filename)
+		{
+			var document = FSolution.FindDocument(filename) as ITextDocument;
+			if (document == null)
+			{
+				var location = new Uri(filename);
+				
+				var fileExtension = Path.GetExtension(filename);
+				switch (fileExtension)
+				{
+					case ".cs":
+						document = new CSDocument(location);
+						break;
+					case ".fx":
+						document = new FXDocument(location);
+						break;
+					case ".fxh":
+						document = new FXHDocument(location);
+						break;
+					default:
+						document = new TextDocument(location);
+						break;
+				}
+			}
+			
+			if (!document.IsLoaded) 
+				document.Load();
+			
+			FCodeEditorForm.Open(document);
+		}
+		
+		public void Close()
+		{
+			throw new NotImplementedException();
+		}
+		
+		public void Save()
+		{
+			throw new NotImplementedException();
+		}
+		
+		public void SaveAs(string filename)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

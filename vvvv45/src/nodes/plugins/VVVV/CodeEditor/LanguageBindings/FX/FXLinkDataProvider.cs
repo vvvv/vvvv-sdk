@@ -4,9 +4,6 @@ using ICSharpCode.TextEditor.Document;
 
 namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
 {
-	/// <summary>
-	/// Description of FXLinkDataProvider.
-	/// </summary>
 	public class FXLinkDataProvider : ILinkDataProvider
 	{
 		public Link GetLink(IDocument document, TextLocation location)

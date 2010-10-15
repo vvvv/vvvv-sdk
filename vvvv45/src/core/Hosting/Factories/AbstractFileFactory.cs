@@ -138,7 +138,7 @@ namespace VVVV.Hosting.Factories
 		
 		protected abstract IEnumerable<INodeInfo> GetNodeInfos(string filename);
 		
-		public virtual void StartWatching()
+		public virtual void Initialize()
 		{
 			if (Directory.Exists(FDirectory))
 			{

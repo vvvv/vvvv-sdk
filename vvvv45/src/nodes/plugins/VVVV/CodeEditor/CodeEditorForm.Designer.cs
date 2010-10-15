@@ -17,7 +17,6 @@ namespace VVVV.HDE.CodeEditor
 		{
 			this.components = new System.ComponentModel.Container();
 			this.FSplitContainer = new System.Windows.Forms.SplitContainer();
-			this.FTabControl = new System.Windows.Forms.TabControl();
 			this.FErrorTableViewer = new VVVV.HDE.Viewer.WinFormsViewer.TableViewer();
 			this.FImageList = new System.Windows.Forms.ImageList(this.components);
 			this.FSplitContainer.Panel1.SuspendLayout();
@@ -32,10 +31,6 @@ namespace VVVV.HDE.CodeEditor
 			this.FSplitContainer.Name = "FSplitContainer";
 			this.FSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
 			// 
-			// FSplitContainer.Panel1
-			// 
-			this.FSplitContainer.Panel1.Controls.Add(this.FTabControl);
-			// 
 			// FSplitContainer.Panel2
 			// 
 			this.FSplitContainer.Panel2.Controls.Add(this.FErrorTableViewer);
@@ -43,17 +38,6 @@ namespace VVVV.HDE.CodeEditor
 			this.FSplitContainer.Size = new System.Drawing.Size(881, 476);
 			this.FSplitContainer.SplitterDistance = 293;
 			this.FSplitContainer.TabIndex = 1;
-			// 
-			// FTabControl
-			// 
-			this.FTabControl.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-			this.FTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.FTabControl.Location = new System.Drawing.Point(0, 0);
-			this.FTabControl.Name = "FTabControl";
-			this.FTabControl.SelectedIndex = 0;
-			this.FTabControl.Size = new System.Drawing.Size(881, 476);
-			this.FTabControl.TabIndex = 0;
-			this.FTabControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.FTabControlMouseClick);
 			// 
 			// FErrorTableViewer
 			// 
@@ -95,7 +79,6 @@ namespace VVVV.HDE.CodeEditor
 		}
 		private VVVV.HDE.Viewer.WinFormsViewer.TableViewer FErrorTableViewer;
 		private System.Windows.Forms.ImageList FImageList;
-		private System.Windows.Forms.TabControl FTabControl;
 		private System.Windows.Forms.SplitContainer FSplitContainer;
 		
 

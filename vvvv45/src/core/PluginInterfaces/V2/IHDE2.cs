@@ -336,4 +336,39 @@ namespace VVVV.PluginInterfaces.V2
         void WindowSelectionChangeCB(IWindow window);
     }
     #endregion Listener
+    
+    #region IEditor
+    /// <summary>
+    /// Interface for all document editors. Use in combination with the
+    /// <see cref="EditorAttribute">EditorAttribute</see> 
+    /// to define with which file extensions this editor works with.
+    /// </summary>
+    [Guid("ECC649C2-01B7-454E-9E22-E848D4AABAEC"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IEditor : IPluginBase
+    {
+    	/// <summary>
+    	/// Informs the editor to open a file located at filename.
+    	/// </summary>
+    	/// <param name="filename">The path to the file to open.</param>
+    	void Open(string filename);
+    	
+    	/// <summary>
+    	/// Informs the editor to close the currently opened file.
+    	/// </summary>
+    	void Close();
+    	
+    	/// <summary>
+    	/// Tells the editor to save the currently opened file.
+    	/// </summary>
+    	void Save();
+    	
+    	/// <summary>
+    	/// Tells the editor to save the currently opened file under 
+    	/// the new filename.
+    	/// </summary>
+    	/// <param name="filename">The new path to save the currently opened file to.</param>
+    	void SaveAs(string filename);
+    }
+    #endregion
 }

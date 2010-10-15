@@ -27,7 +27,7 @@ namespace VVVV.HDE.CodeEditor
 	/// Sharpdevelop texteditor needs a Form as one of its parent controls
 	/// in order to work properly.
 	/// </summary>
-	public partial class CodeEditorForm : Form, IDocumentLocator
+	public partial class CodeEditorForm : Form//, IDocumentLocator
 	{
 		private Dictionary<ITextDocument, TabPage> FOpenedDocuments;
 		private IHDEHost FHDEHost;
@@ -38,7 +38,11 @@ namespace VVVV.HDE.CodeEditor
 		private Dictionary<IProject, IExecutable> FExecutables;
 		private Dictionary<IProject, int> FProjectDocCount;
 		private ISolution FSolution;
-		private ILogger FLogger;
+		public ILogger Logger
+		{
+			get;
+			private set;
+		}
 		
 		public CodeEditorForm(IHDEHost host, ISolution solution, ILogger logger)
 		{
@@ -51,7 +55,7 @@ namespace VVVV.HDE.CodeEditor
 			var provider = new SD.FileSyntaxModeProvider(path);
 			SD.HighlightingManager.Manager.AddSyntaxModeFileProvider(provider);
 			
-			FLogger = logger;
+			Logger = logger;
 			FSolution = solution;
 			FNodeSelectionListener = new MouseClickListener(this);
 			FProjects = new Dictionary<IProject, Dom.DefaultProjectContent>();
@@ -113,126 +117,96 @@ namespace VVVV.HDE.CodeEditor
 		}
 		
 		/// <summary>
-		/// Opens the specified ITextDocument in a new editor.
+		/// Opens the specified ITextDocument.
 		/// </summary>
 		/// <param name="doc">The ITextDocument to open.</param>
-		/// <returns>The TabPage containing the editor.</returns>
-		public TabPage Open(ITextDocument doc)
+		public void Open(ITextDocument doc)
 		{
-			if (!FOpenedDocuments.ContainsKey(doc))
+			var editor = new CodeEditor(this, doc);
+			editor.Dock = DockStyle.Fill;
+			
+			if (doc is CSDocument)
 			{
-				ICompletionBinding completionBinding = null;
-				SD.IFormattingStrategy formattingStrategy = new SD.DefaultFormattingStrategy();
-				SD.IFoldingStrategy foldingStrategy = null;
-				ILinkDataProvider linkDataProvider = null;
-				IToolTipProvider toolTipProvider = null;
-				
-				if (doc is CSDocument)
-				{
-					var csDoc = doc as CSDocument;
-					completionBinding = new CSCompletionBinding(this);
-					formattingStrategy = new CSFormattingStrategy(this);
-					foldingStrategy = new CSFoldingStrategy();
-					linkDataProvider = new CSLinkDataProvider(this);
-					toolTipProvider = new CSToolTipProvider(this);
-				}
-				else if (doc is FXDocument || doc is FXHDocument)
-				{
-					completionBinding = new FXCompletionBinding(this, FLogger);
-					linkDataProvider = new FXLinkDataProvider();
-				}
-				
-				var project = doc.Project;
-				if (!FProjectDocCount.ContainsKey(project))
-					FProjectDocCount[project] = 0;
-				
+				var csDoc = doc as CSDocument;
+				editor.CompletionBinding = new CSCompletionBinding(editor);
+				editor.FormattingStrategy = new CSFormattingStrategy(editor);
+				editor.FoldingStrategy = new CSFoldingStrategy();
+				editor.LinkDataProvider = new CSLinkDataProvider(editor);
+				editor.ToolTipProvider = new CSToolTipProvider(editor);
+			}
+			else if (doc is FXDocument || doc is FXHDocument)
+			{
+				editor.CompletionBinding = new FXCompletionBinding(editor);
+				editor.FormattingStrategy = new SD.DefaultFormattingStrategy();
+				editor.LinkDataProvider = new FXLinkDataProvider();
+			}
+			
+			FSplitContainer.Panel1.Controls.Add(editor);
+			
+			doc.ContentChanged += DocumentContentChangedCB;
+			doc.Saved += DocumentSavedCB;
+			
+			var project = doc.Project;
+			if (project != null)
+			{
 				var executable = GetExecutable(project);
-				if (executable != null && FProjectDocCount[project] == 0)
+				if (executable != null)
 				{
 					executable.RuntimeErrors.Added += executable_RuntimeErrors_Added;
 					executable.RuntimeErrors.Removed += executable_RuntimeErrors_Removed;
 					if (executable.RuntimeErrors.Count > 0)
 						ShowErrorTable(executable.RuntimeErrors);
 				}
-				FProjectDocCount[project]++;
-				
-				var editor = new CodeEditor(
-					FLogger,
-					this,
-					doc,
-					completionBinding,
-					formattingStrategy,
-					foldingStrategy,
-					linkDataProvider,
-					toolTipProvider
-				);
-				
-				FSDDocToDocMap[editor.Document] = doc;
-				var tabPage = new TabPage(GetTabPageName(doc));
-				
-				FTabControl.SuspendLayout();
-				
-				editor.Dock = DockStyle.Fill;
-				FTabControl.Controls.Add(tabPage);
-				tabPage.Controls.Add(editor);
-				
-				FTabControl.ResumeLayout();
-				
-				FOpenedDocuments[doc] = tabPage;
-				doc.ContentChanged += DocumentContentChangedCB;
-				doc.Saved += DocumentSavedCB;
 				
 				// Fake a compilation in order to show error messages on startup.
-				Project_CompileCompleted(doc.Project);
+				Project_CompileCompleted(project);
 			}
-			
-			FTabControl.SelectedTab = FOpenedDocuments[doc];
-			return FOpenedDocuments[doc];
 		}
 
 		public void Close(ITextDocument doc)
 		{
-			if (FOpenedDocuments.ContainsKey(doc))
-			{
-				var tabPage = FOpenedDocuments[doc];
-				var codeEditor = tabPage.Controls[0] as CodeEditor;
-				FSDDocToDocMap.Remove(codeEditor.Document);
-				FTabControl.Controls.Remove(tabPage);
-				tabPage.Dispose();
-
-				FOpenedDocuments.Remove(doc);
-				
-				var project = doc.Project;
-				FProjectDocCount[project]--;
-				var executable = GetExecutable(project);
-				if (executable != null && FProjectDocCount[project] == 0)
-				{
-					executable.RuntimeErrors.Added -= executable_RuntimeErrors_Added;
-					executable.RuntimeErrors.Removed -= executable_RuntimeErrors_Removed;
-				}
-			}
+			// TODO
+//			if (FOpenedDocuments.ContainsKey(doc))
+//			{
+//				var tabPage = FOpenedDocuments[doc];
+//				var codeEditor = tabPage.Controls[0] as CodeEditor;
+//				FSDDocToDocMap.Remove(codeEditor.Document);
+//				FTabControl.Controls.Remove(tabPage);
+//				tabPage.Dispose();
+//
+//				FOpenedDocuments.Remove(doc);
+//				
+//				var project = doc.Project;
+//				FProjectDocCount[project]--;
+//				var executable = GetExecutable(project);
+//				if (executable != null && FProjectDocCount[project] == 0)
+//				{
+//					executable.RuntimeErrors.Added -= executable_RuntimeErrors_Added;
+//					executable.RuntimeErrors.Removed -= executable_RuntimeErrors_Removed;
+//				}
+//			}
 		}
 		
-		public void BringToFront(TabPage tabPage)
-		{
-			FTabControl.SelectTab(tabPage);
-		}
-
-		protected string GetTabPageName(ITextDocument document)
-		{
-			var name = document.Mapper.Map<INamed>().Name;
-			
-			var fileName = document.Location.LocalPath;
-			var isReadOnly = (File.GetAttributes(fileName) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
-			
-			if (isReadOnly)
-				name = name + "+";
-			
-			if (document.IsDirty)
-				return name + "*";
-			else
-				return name;
-		}
+//		public void BringToFront(TabPage tabPage)
+//		{
+//			FTabControl.SelectTab(tabPage);
+//		}
+//TODO
+//		protected string GetTabPageName(ITextDocument document)
+//		{
+//			var name = document.Mapper.Map<INamed>().Name;
+//			
+//			var fileName = document.Location.LocalPath;
+//			var isReadOnly = (File.GetAttributes(fileName) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
+//			
+//			if (isReadOnly)
+//				name = name + "+";
+//			
+//			if (document.IsDirty)
+//				return name + "*";
+//			else
+//				return name;
+//		}
 		
 		void Project_CompileCompleted(IProject project)
 		{
@@ -271,13 +245,15 @@ namespace VVVV.HDE.CodeEditor
 		
 		void DocumentContentChangedCB(ITextDocument document, string content)
 		{
-			FOpenedDocuments[document].Text = GetTabPageName(document);
+			// TODO
+//			FOpenedDocuments[document].Text = GetTabPageName(document);
 		}
 		
 		void DocumentSavedCB(object sender, EventArgs args)
 		{
-			var document = sender as ITextDocument;
-			FOpenedDocuments[document].Text = GetTabPageName(document);
+			// TODO
+//			var document = sender as ITextDocument;
+//			FOpenedDocuments[document].Text = GetTabPageName(document);
 		}
 		
 		void Document_Removed(IViewableCollection<IDocument> collection, IDocument item)
@@ -338,102 +314,101 @@ namespace VVVV.HDE.CodeEditor
 			
 			
 			// Find the document which caused the compiler error.
-			var doc = FSolution.FindDocument(fileName);
+			var doc = FSolution.FindDocument(fileName) as ITextDocument;
 			
-			if (doc == null || !(doc is ITextDocument))
-				return;
-			
+			if (doc == null) return;
+
+			// TODO
 			// Open the document.
-			var txtDoc = doc as ITextDocument;
-			var tabPage = Open(txtDoc);
-			
-			// Switch to newly created tab.
-			FTabControl.SelectTab(tabPage);
-			
-			// Jump to line of error and focus the editor.
-			var codeEditor = tabPage.Controls[0] as CodeEditor;
-			codeEditor.JumpTo(line - 1);
-			codeEditor.Focus();
+//			Open(txtDoc);
+//			
+//			// Switch to newly created tab.
+//			FTabControl.SelectTab(tabPage);
+//			
+//			// Jump to line of error and focus the editor.
+//			var codeEditor = tabPage.Controls[0] as CodeEditor;
+//			codeEditor.JumpTo(line - 1);
+//			codeEditor.Focus();
 		}
 		
-		void FTabControlMouseClick(object sender, MouseEventArgs e)
-		{
-			if (e.Button == MouseButtons.Left)
-			{
-				//focus the textarea for mousescroll to work instantly after changing tabs
-				FTabControl.SelectedTab.Controls[0].Focus();
-			}
-			if (e.Button == MouseButtons.Middle)
-			{
-				//note: on middle click the FTabControl.SelectedTab is not the same as after left-click
-				//need to find targeted tabpage manually here:
-				for (int i=0; i<FTabControl.TabPages.Count; i++)
-				{
-					if (FTabControl.GetTabRect(i).Contains(e.Location))
-					{
-						Close((FTabControl.TabPages[i].Controls[0] as CodeEditor).TextDocument);
-						break;
-					}
-				}
-			}
-		}
+//		void FTabControlMouseClick(object sender, MouseEventArgs e)
+//		{
+//			if (e.Button == MouseButtons.Left)
+//			{
+//				//focus the textarea for mousescroll to work instantly after changing tabs
+//				FTabControl.SelectedTab.Controls[0].Focus();
+//			}
+//			if (e.Button == MouseButtons.Middle)
+//			{
+//				//note: on middle click the FTabControl.SelectedTab is not the same as after left-click
+//				//need to find targeted tabpage manually here:
+//				for (int i=0; i<FTabControl.TabPages.Count; i++)
+//				{
+//					if (FTabControl.GetTabRect(i).Contains(e.Location))
+//					{
+//						Close((FTabControl.TabPages[i].Controls[0] as CodeEditor).TextDocument);
+//						break;
+//					}
+//				}
+//			}
+//		}
 		
-		protected override bool ProcessKeyPreview(ref Message m)
-		{
-			KeyEventArgs ke = new KeyEventArgs((Keys)m.WParam.ToInt32() | ModifierKeys);
-			//bug: this is only called if W is pressed before Ctrl
-			if (ke.Control && ke.KeyCode == Keys.W)
-			{
-				if (FTabControl.TabCount > 1)
-				{
-					Close((FTabControl.SelectedTab.Controls[0] as CodeEditor).TextDocument);
-					return true;
-				}
-				else 
-					return false;
-			}
-			else
-				return base.ProcessKeyPreview(ref m);
-		}
+//		protected override bool ProcessKeyPreview(ref Message m)
+//		{
+//			KeyEventArgs ke = new KeyEventArgs((Keys)m.WParam.ToInt32() | ModifierKeys);
+//			//bug: this is only called if W is pressed before Ctrl
+//			if (ke.Control && ke.KeyCode == Keys.W)
+//			{
+//				if (FTabControl.TabCount > 1)
+//				{
+//					Close((FTabControl.SelectedTab.Controls[0] as CodeEditor).TextDocument);
+//					return true;
+//				}
+//				else
+//					return false;
+//			}
+//			else
+//				return base.ProcessKeyPreview(ref m);
+//		}
 		
 		#region IDocumentLocator
 		
-		public ICSharpCode.TextEditor.Document.IDocument GetSDDocument(ITextDocument document)
-		{
-			foreach (var entry in FSDDocToDocMap)
-			{
-				if (entry.Value == document)
-					return entry.Key;
-			}
-			
-			return null;
-		}
-		
-		public ICSharpCode.TextEditor.Document.IDocument GetSDDocument(string filename)
-		{
-			var doc = FSolution.FindDocument(filename);
-			if (doc != null && doc is ITextDocument)
-				return GetSDDocument(doc as ITextDocument);
-			
-			return null;
-		}
-		
-		public ITextDocument GetVDocument(ICSharpCode.TextEditor.Document.IDocument document)
-		{
-			if (FSDDocToDocMap.ContainsKey(document))
-				return FSDDocToDocMap[document];
-			
-			return null;
-		}
-		
-		public ITextDocument GetVDocument(string filename)
-		{
-			var doc = FSolution.FindDocument(filename);
-			if (doc != null && doc is ITextDocument)
-				return doc as ITextDocument;
-			
-			return null;
-		}
+//		public ICSharpCode.TextEditor.Document.IDocument GetSDDocument(ITextDocument document)
+//		{
+//			foreach (var entry in FSDDocToDocMap)
+//			{
+//				if (entry.Value == document)
+//					return entry.Key;
+//			}
+//			
+//			return null;
+//		}
+//		
+//		public ICSharpCode.TextEditor.Document.IDocument GetSDDocument(string filename)
+//		{
+//			var doc = FSolution.FindDocument(filename);
+//			if (doc != null && doc is ITextDocument)
+//				return GetSDDocument(doc as ITextDocument);
+//			
+//			return null;
+//		}
+//		
+//		public ITextDocument GetVDocument(ICSharpCode.TextEditor.Document.IDocument document)
+//		{
+//			if (FSDDocToDocMap.ContainsKey(document))
+//				return FSDDocToDocMap[document];
+//			
+//			return null;
+//		}
+//		
+//		public ITextDocument GetVDocument(string filename)
+//		{
+//			var doc = FSolution.FindDocument(filename);
+//			if (doc != null && doc is ITextDocument)
+//				return doc as ITextDocument;
+//			
+//			return null;
+//		}
 		
 		#endregion
 		

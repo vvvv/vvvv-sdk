@@ -13,21 +13,21 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 {
 	public class CSMethodInsightProvider : IInsightDataProvider
 	{
-		private IDocumentLocator FDocumentLocator;
+		private CodeEditor FEditor;
 		private List<IMethodOrProperty> FMethods;
 		private IAmbience FAmbience;
 		private int FOffset;
 		private List<int> FCommaOffsets;
 		private TextArea FActiveTextArea;
 		
-		public CSMethodInsightProvider(IDocumentLocator documentLocator, int offset)
-			: this(documentLocator, offset, new List<int>())
+		public CSMethodInsightProvider(CodeEditor editor, int offset)
+			: this(editor, offset, new List<int>())
 		{
 		}
 		
-		public CSMethodInsightProvider(IDocumentLocator documentLocator, int offset, List<int> commaOffsets)
+		public CSMethodInsightProvider(CodeEditor editor, int offset, List<int> commaOffsets)
 		{
-			FDocumentLocator = documentLocator;
+			FEditor = editor;
 			FOffset = offset;
 			FCommaOffsets = commaOffsets;
 			
@@ -53,7 +53,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 			FMethods.Clear();
 			
 			var document = textArea.Document;
-			var csDoc = FDocumentLocator.GetVDocument(fileName) as CSDocument;
+			var csDoc = FEditor.TextDocument as CSDocument;
 			var parseInfo = csDoc.ParseInfo;
 			var finder = csDoc.ExpressionFinder;
 			var compilationUnit = parseInfo.MostRecentCompilationUnit;

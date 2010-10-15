@@ -14,21 +14,18 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 {
 	public class CtrlSpaceCompletionProvider : DefaultCompletionProvider
 	{
-		private IDocumentLocator FDocumentLocator;
+		private CodeEditor FEditor;
 		
-		public CtrlSpaceCompletionProvider(IDocumentLocator documentLocator)
+		public CtrlSpaceCompletionProvider(CodeEditor editor)
 		{
-			FDocumentLocator = documentLocator;
+			FEditor = editor;
 		}
 		
 		public override ICompletionData[] GenerateCompletionData(string fileName, TextArea textArea, char charTyped)
 		{
 			var resultList = new List<ICompletionData>();
 			
-			var document = FDocumentLocator.GetVDocument(fileName) as CSDocument;
-            if (document == null)
-            	return resultList.ToArray();
-            
+			var document = FEditor.TextDocument as CSDocument;
             var parseInfo = document.ParseInfo;
             var finder = document.ExpressionFinder;
             var text = textArea.Document.GetText(0, textArea.Caret.Offset);
