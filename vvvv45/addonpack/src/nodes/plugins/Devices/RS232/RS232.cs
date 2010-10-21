@@ -153,7 +153,7 @@ namespace VVVV.Nodes
             FEnableIn.SetSubType(0, 1, 1, 0, false, false, true);
 
 			FHost.CreateValueInput("ComPort", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPortNumberIn);
-            FPortNumberIn.SetSubType(1, 15, 1, 1, false, false, true);
+            FPortNumberIn.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
 
            
             // OUTPUT-PINS
