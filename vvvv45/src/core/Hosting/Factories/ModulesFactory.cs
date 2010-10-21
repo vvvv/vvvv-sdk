@@ -24,9 +24,15 @@ namespace VVVV.Hosting.Factories
     	protected ILogger Logger { get; set; }
         
         public ModulesFactory()
-        	: base(Shell.CallerPath.ConcatPath(@"..\..\modules"), ".v4p")
+        	: base(".v4p")
         {
         }
+        
+        public override string JobStdSubPath {
+			get {
+				return "modules";
+			}
+		}
 
         //create a node info from a filename
         protected override IEnumerable<INodeInfo> GetNodeInfos(string filename)
@@ -103,17 +109,19 @@ namespace VVVV.Hosting.Factories
         //get the dtd string
         private void LoadDTD()
         {
-            var path = Path.GetFullPath(DirectoryToWatch + @"\..\bin");
+        	var path = Shell.CallerPath.ConcatPath(@"..");
+        	path = Path.GetFullPath(path);
             var files = Directory.GetFiles(path, "*.dtd");
             
-            using (StreamReader sr = new StreamReader(files[0]))
-            {
-                //add the DOCTYPE definition to place the DTD inline
-                FDTD = sr.ReadLine();
-                FDTD += @"<!DOCTYPE PATCH [";
-                FDTD += sr.ReadToEnd();
-                FDTD += @"]>";
-            }
+            if (files.Length>0)
+	            using (StreamReader sr = new StreamReader(files[0]))
+	            {
+	                //add the DOCTYPE definition to place the DTD inline
+	                FDTD = sr.ReadLine();
+	                FDTD += @"<!DOCTYPE PATCH [";
+	                FDTD += sr.ReadToEnd();
+	                FDTD += @"]>";
+	            }
         }
     }
 }

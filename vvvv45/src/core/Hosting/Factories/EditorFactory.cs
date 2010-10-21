@@ -36,27 +36,6 @@ namespace VVVV.Hosting.Factories
 			FLogger = logger;
 		}
 		
-		public void Initialize()
-		{
-			try
-			{
-				var catalog = new DirectoryCatalog(Shell.CallerPath.ConcatPath(@"..\..\editor"));
-				FContainer = new CompositionContainer(catalog, FExportProviders);
-				FContainer.ComposeParts(this);
-			}
-			catch (ReflectionTypeLoadException e)
-			{
-				foreach (var f in e.LoaderExceptions)
-					FLogger.Log(f);
-				return;
-			}
-			catch (Exception e)
-			{
-				FLogger.Log(e);
-				return;
-			}
-		}
-		
 		public IEnumerable<INodeInfo> ExtractNodeInfos(string filename)
 		{
 			var fileExtension = Path.GetExtension(filename);
@@ -137,6 +116,38 @@ namespace VVVV.Hosting.Factories
 		{
 			if (NodeInfoRemoved != null)
 				NodeInfoRemoved(this, nodeInfo);
+		}
+		
+		public string JobStdSubPath {
+			get {
+				return "editors";
+			}
+		}
+		
+		public void AddDir(string dir)
+		{
+			try
+			{
+				var catalog = new DirectoryCatalog(Shell.CallerPath.ConcatPath(@"..\..\editor"));
+				FContainer = new CompositionContainer(catalog, FExportProviders);
+				FContainer.ComposeParts(this);
+			}
+			catch (ReflectionTypeLoadException e)
+			{
+				foreach (var f in e.LoaderExceptions)
+					FLogger.Log(f);
+				return;
+			}
+			catch (Exception e)
+			{
+				FLogger.Log(e);
+				return;
+			}
+		}
+		
+		public void RemoveDir(string dir)
+		{
+			throw new NotImplementedException();
 		}
 	}
 	

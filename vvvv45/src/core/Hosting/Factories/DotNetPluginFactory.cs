@@ -52,11 +52,11 @@ namespace VVVV.Hosting.Factories
 		public DotNetPluginFactory(CompositionContainer parentContainer)
 			: this(parentContainer, ".dll")
 		{
-			
+
 		}
 		
 		protected DotNetPluginFactory(CompositionContainer parentContainer, string fileExtension)
-			: base(Shell.CallerPath.ConcatPath(@"..\..\plugins"), fileExtension)
+			: base(fileExtension)
 		{
 			FHostExportProvider = new HostExportProvider();
 			FExportProviders = new ExportProvider[] { parentContainer, FHostExportProvider };
@@ -64,6 +64,12 @@ namespace VVVV.Hosting.Factories
 		#endregion
 		
 		#region IAddonFactory
+		
+		public override string JobStdSubPath {
+			get {
+				return "plugins";
+			}
+		}
 		
 		protected override bool CreateNode(INodeInfo nodeInfo, IPluginHost2 pluginHost)
 		{

@@ -24,6 +24,7 @@ namespace VVVV.Hosting
 {
 	[PartCreationPolicy(CreationPolicy.Shared)]
 	[Export(typeof(IHDEHost))]
+	[Export(typeof(HDEHost))]
 	public class HDEHost : IInternalHDEHost, IHDEHost
 	{
 		const string WINDOW_SWITCHER = "WindowSwitcher (VVVV)";
@@ -57,11 +58,14 @@ namespace VVVV.Hosting
 		public ISolution Solution { get; set; }
 		
 		[ImportMany]
-		public List<IAddonFactory> AddonFactories { get; private set; }
+		public List<IAddonFactory> AddonFactories;
 		
 		[Import]
 		private DotNetPluginFactory PluginFactory { get; set; }
 
+		[Import]
+		public NodeCollection NodeCollection {get; protected set;}		
+		
 		public HDEHost()
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssemblyCB;
@@ -87,6 +91,7 @@ namespace VVVV.Hosting
 			EnumManager.SetHDEHost(this);
 			
 			Logger = new DefaultLogger();
+			
 		}
 		
 		#region IInternalHDEHost
@@ -121,19 +126,10 @@ namespace VVVV.Hosting
 			}
 
 			//initialize the addonfactories
-			try
-			{
-				foreach (var factory in AddonFactories)
-				{
-					factory.NodeInfoAdded += AddonFactory_NodeInfoAdded;
-					factory.NodeInfoRemoved += AddonFactory_NodeInfoRemoved;
-					factory.Initialize();
-				}
-			}
-			catch (Exception e)
-			{
-				Logger.Log(e);
-			}
+			foreach (var factory in AddonFactories)
+				AddFactory(factory);
+			
+			NodeCollection.AddJob(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
 			
 			//now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
 			try
@@ -147,6 +143,19 @@ namespace VVVV.Hosting
 			{
 				Logger.Log(e);
 			}
+		}
+		
+		public void AddFactory(IAddonFactory factory)
+		{
+			try
+			{
+				factory.NodeInfoAdded += AddonFactory_NodeInfoAdded;
+				factory.NodeInfoRemoved += AddonFactory_NodeInfoRemoved;
+			}
+			catch (Exception e)
+			{
+				Logger.Log(e);
+			}			
 		}
 		
 		public void GetHDEPlugins(out IPluginBase nodeBrowser, out IPluginBase windowSwitcher, out IPluginBase kommunikator)

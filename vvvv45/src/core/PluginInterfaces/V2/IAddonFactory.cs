@@ -17,9 +17,11 @@ namespace VVVV.PluginInterfaces.V2
 	    event NodeInfoEventHandler NodeInfoAdded;
 	    event NodeInfoEventHandler NodeInfoRemoved;
 	    IEnumerable<INodeInfo> ExtractNodeInfos(string filename);
-	    void Initialize();
 	    bool Create(INodeInfo nodeInfo, IAddonHost host);
 	    bool Delete(INodeInfo nodeInfo, IAddonHost host);
 	    bool Clone(INodeInfo nodeInfo, string path, string name, string category, string version);
+	    string JobStdSubPath {get;}
+	    void AddDir(string dir);
+	    void RemoveDir(string dir);
 	}
 }

@@ -29,12 +29,18 @@ namespace VVVV.Hosting.Factories
 		private Dictionary<FXProject, INodeInfo> FProjectNodeInfo;
 		
 		public EffectsFactory()
-			: base(Shell.CallerPath.ConcatPath(@"..\..\effects"), ".fx")
+			: base(".fx")
 		{
 			FProjects = new Dictionary<string, FXProject>();
 			FProjectNodeInfo = new Dictionary<FXProject, INodeInfo>();
 		}
-
+		
+		public override string JobStdSubPath {
+			get {
+				return "effects";
+			}
+		}
+		
 		//create a node info from a filename
 		protected override IEnumerable<INodeInfo> GetNodeInfos(string filename)
 		{

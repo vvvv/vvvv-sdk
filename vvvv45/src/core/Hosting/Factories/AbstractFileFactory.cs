@@ -19,7 +19,7 @@ namespace VVVV.Hosting.Factories
 	/// <summary>
 	/// Superclass for factories which watch files in a directory
 	/// </summary>
-	public abstract class AbstractFileFactory<TNodeHost> : IAddonFactory where TNodeHost: IAddonHost
+	public abstract class AbstractFileFactory<TNodeHost> : IDisposable, IAddonFactory where TNodeHost: IAddonHost
 	{
 		#region fields and constructor
 		
@@ -34,24 +34,24 @@ namespace VVVV.Hosting.Factories
 		private string FFileExtension;
 		protected Dictionary<string, List<INodeInfo>> FNodeInfoCache = new Dictionary<string, List<INodeInfo>>();
 		private Dictionary<string, bool> FLoadedFiles = new Dictionary<string, bool>();
-		private FileSystemWatcher FDirectoryWatcher;
+		private List<FileSystemWatcher> FDirectoryWatcher = new List<FileSystemWatcher>();
 		private GenericSynchronizingObject FSyncContext;
 		
-		public AbstractFileFactory(string directoryToWatch, string fileExtension)
+		public AbstractFileFactory(string fileExtension)
 		{
-			FDirectory = Path.GetFullPath(directoryToWatch);
 			FFileExtension = fileExtension;
 			FSyncContext = new GenericSynchronizingObject();
 		}
 		
 		#endregion fields and constructor
-		
-		public string DirectoryToWatch
+		public abstract string JobStdSubPath
 		{
-			get
-			{
-				return FDirectory;
-			}
+			get;
+		}
+		
+		public List<string> DirectoriesToWatch
+		{
+			get; private set;
 		}
 		
 		public string FileExtension
@@ -138,33 +138,6 @@ namespace VVVV.Hosting.Factories
 		
 		protected abstract IEnumerable<INodeInfo> GetNodeInfos(string filename);
 		
-		public virtual void Initialize()
-		{
-			if (Directory.Exists(FDirectory))
-			{
-				//give subclasses a chance to cleanup before we start to scan.
-				DeleteArtefacts(FDirectory);
-				ScanForFiles(FDirectory);
-				
-				//watch this directory
-				if (FDirectoryWatcher == null)
-				{
-					FDirectoryWatcher = new FileSystemWatcher(FDirectory, @"*" + FFileExtension);
-					FDirectoryWatcher.SynchronizingObject = FSyncContext;
-					FDirectoryWatcher.IncludeSubdirectories = true;
-					FDirectoryWatcher.EnableRaisingEvents = true;
-					FDirectoryWatcher.Changed += new FileSystemEventHandler(FDirectoryWatcher_Changed);
-					FDirectoryWatcher.Created += new FileSystemEventHandler(FDirectoryWatcher_Created);
-					FDirectoryWatcher.Deleted += new FileSystemEventHandler(FDirectoryWatcher_Deleted);
-					FDirectoryWatcher.Renamed += new RenamedEventHandler(FDirectoryWatcher_Renamed);
-				}
-				else
-				{
-					FDirectoryWatcher.Path = FDirectory;
-				}
-			}
-		}
-		
 		protected void UpdateNodeInfos(string filename)
 		{
 			if (!IsLoaded(filename))
@@ -225,9 +198,75 @@ namespace VVVV.Hosting.Factories
 		
 		#region directory and watcher
 		
+		//register all files in a directory		
+		public virtual void AddDir(string dir)
+		{
+			//give subclasses a chance to cleanup before we start to scan.
+			DeleteArtefacts(dir);
+
+			try {
+				foreach (string filename in Directory.GetFiles(dir, @"*" + FFileExtension))
+				{
+					try {
+						AddFile(filename);
+					} catch (Exception e) {
+						FLogger.Log(e);
+					}
+				}
+			} catch (Exception e) {
+					FLogger.Log(e);
+			}
+			
+			foreach (string subDir in Directory.GetDirectories(dir))
+			{
+				if (!(subDir.EndsWith(".svn") || subDir.EndsWith(".cache")))
+					try {
+						AddDir(subDir);
+					} catch (Exception e) {
+						FLogger.Log(e);
+					}
+			}
+			
+			var dirWatcher = new FileSystemWatcher(dir, @"*" + FFileExtension);
+			dirWatcher.SynchronizingObject = FSyncContext;
+			dirWatcher.IncludeSubdirectories = false;
+			dirWatcher.EnableRaisingEvents = true;
+			dirWatcher.Changed += new FileSystemEventHandler(FDirectoryWatcher_Changed);
+			dirWatcher.Created += new FileSystemEventHandler(FDirectoryWatcher_Created);
+			dirWatcher.Deleted += new FileSystemEventHandler(FDirectoryWatcher_Deleted);
+			dirWatcher.Renamed += new RenamedEventHandler(FDirectoryWatcher_Renamed);
+			
+			FDirectoryWatcher.Add(dirWatcher);
+		}
+		
+		public void RemoveDir(string dir)
+		{
+			for (int i=FDirectoryWatcher.Count-1; i>=0; i--)
+			{
+				var dirWatcher = FDirectoryWatcher[i];
+				if (dirWatcher.Path.StartsWith(dir))
+				{
+					dirWatcher.Changed -= new FileSystemEventHandler(FDirectoryWatcher_Changed);
+					dirWatcher.Created -= new FileSystemEventHandler(FDirectoryWatcher_Created);
+					dirWatcher.Deleted -= new FileSystemEventHandler(FDirectoryWatcher_Deleted);
+					dirWatcher.Renamed -= new RenamedEventHandler(FDirectoryWatcher_Renamed);
+					FDirectoryWatcher.RemoveAt(i);
+				}
+			}
+			
+			foreach (string filename in Directory.GetFiles(dir, @"*" + FFileExtension))
+			{
+				try {
+					RemoveFile(filename);
+				} catch (Exception e) {
+					FLogger.Log(e);
+				}
+			}			
+		}
+		
 		void FDirectoryWatcher_Changed(object sender, FileSystemEventArgs e)
 		{
-		/*	if (System.IO.Path.HasExtension(e.FullPath))
+			/*	if (System.IO.Path.HasExtension(e.FullPath))
 				FileChanged(e.FullPath);
 			else
 				DirectoryChanged(e.FullPath);*/
@@ -302,7 +341,7 @@ namespace VVVV.Hosting.Factories
 		protected bool ValidateNodeInfos(string fileName, List<INodeInfo> nodeInfos)
 		{
 			var path = Path.GetDirectoryName(fileName);
-			foreach(var n in nodeInfos) 
+			foreach(var n in nodeInfos)
 				if (Path.GetDirectoryName(n.Filename) != path) return false;
 			
 			return true;
@@ -473,27 +512,11 @@ namespace VVVV.Hosting.Factories
 			}
 		}
 		
-		//register all files in a directory
-		protected virtual void ScanForFiles(string dir)
-		{
-			foreach (string filename in Directory.GetFiles(dir, @"*" + FFileExtension))
-			{
-				try {
-					AddFile(filename);
-				} catch (Exception e) {
-					FLogger.Log(e);
-				}
-			}
-			
-			foreach (string subDir in Directory.GetDirectories(dir))
-			{
-				try {
-					ScanForFiles(subDir);
-				} catch (Exception e) {
-					FLogger.Log(e);
-				}
-			}
-		}
 		#endregion file handling
+		
+		public void Dispose()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
