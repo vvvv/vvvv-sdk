@@ -50,9 +50,9 @@ namespace VVVV.PluginInterfaces.V2.EX9
 	}
 	
 	//texture data per graphics device
-	public class TextureDeviceData : GenericDeviceData<Texture>
+	public class TextureDeviceData : GenericDeviceData<ISpread<Texture>>
 	{
-		public TextureDeviceData(Texture texture)
+		public TextureDeviceData(ISpread<Texture> texture)
 			: base(texture)
 		{
 		}
