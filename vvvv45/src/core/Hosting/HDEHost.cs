@@ -130,6 +130,7 @@ namespace VVVV.Hosting
 				AddFactory(factory);
 			
 			NodeCollection.AddJob(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
+			NodeCollection.Collect();
 			
 			//now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
 			try

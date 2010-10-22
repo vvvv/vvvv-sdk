@@ -13,6 +13,7 @@ namespace VVVV.Hosting.Factories
 {	
 	public class SearchPath
 	{
+		public bool IsInitialized {get; private set;}
 		public string Path {get; private set;}
 		public int RefCount {get; private set;}
 		public bool IsGarbage{ get{ return RefCount <= 0; }}
@@ -31,6 +32,10 @@ namespace VVVV.Hosting.Factories
 		public void Dec()
 		{
 			RefCount--;
+		}
+		public void Init()
+		{
+			IsInitialized = true;
 		}
 	}
 	
@@ -60,8 +65,16 @@ namespace VVVV.Hosting.Factories
 				{
 					var p = FPaths[i];
 					FPaths.RemoveAt(i);					
-					Flogger.Log(LogType.Debug, "removing " + p.Path + " to available " + p.Factory.JobStdSubPath);				
+					Flogger.Log(LogType.Debug, "removing " + p.Path + " from available " + p.Factory.JobStdSubPath);				
 					p.Factory.RemoveDir(p.Path);
+				}
+			
+			foreach (var path in FPaths)
+				if (!path.IsInitialized)
+				{
+					path.Init();	
+					Flogger.Log(LogType.Debug, "adding " + path.Path + " to available " + path.Factory.JobStdSubPath);				
+					path.Factory.AddDir(path.Path);						
 				}
 		}
 			
@@ -74,14 +87,11 @@ namespace VVVV.Hosting.Factories
 				{
 					p.Inc();
 					found = true;
+					break;
 				}
 			
 			if (!found)
-			{
 				FPaths.Add(path);
-				Flogger.Log(LogType.Debug, "adding " + path.Path + " to available " + path.Factory.JobStdSubPath);				
-				path.Factory.AddDir(path.Path);						
-			}
 		}
 		
 		private void Add(string path, IAddonFactory factory)
