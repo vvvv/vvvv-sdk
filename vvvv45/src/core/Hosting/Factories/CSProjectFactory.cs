@@ -219,6 +219,17 @@ namespace VVVV.Hosting.Factories
 				// Move the cloned project and all its documents to the new location.
 				newProject.Location = newLocation;
 				
+				// Start parsing all C# documents.
+				foreach (var doc in newProject.Documents)
+				{
+					var csDoc = doc as CSDocument;
+					if (csDoc != null)
+					{
+						// We need to parse the method bodies.
+						csDoc.ParseAsync(true);
+					}
+				}
+				
 				var newLocationDir = newLocation.GetLocalDir();
 				foreach (var doc in newProject.Documents)
 				{
@@ -238,8 +249,7 @@ namespace VVVV.Hosting.Factories
 						if (docName == project.Name)
 							csDoc.Name = string.Format("{0}.cs", newProject.Name);
 						
-						// We need to parse the method bodies.
-						csDoc.Parse(true);
+						csDoc.WaitParseCompleted();
 						var parserResults = csDoc.ParserResults;
 						var compilationUnit = parserResults.CompilationUnit;
 						

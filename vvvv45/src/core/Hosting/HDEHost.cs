@@ -173,9 +173,6 @@ namespace VVVV.Hosting
 			{
 				foreach (var nodeInfo in factory.ExtractNodeInfos(filename))
 					nodeInfos.Add(nodeInfo);
-				
-				if (nodeInfos.Count > 0)
-					break;
 			}
 			
 			result = nodeInfos.ToArray();
@@ -241,7 +238,7 @@ namespace VVVV.Hosting
 		
 		#endregion IInternalHDEHost
 		
-		#region implementation of IHDEHost
+		#region IHDEHost
 		public void AddListener(IListener listener)
 		{
 			FVVVVHost.AddListener(listener);
@@ -291,6 +288,11 @@ namespace VVVV.Hosting
 			INodeInfo result = null;
 			FRegisteredNodeInfos.TryGetValue(systemname, out result);
 			return result;
+		}
+		
+		public void Open(string file, bool inActivePatch)
+		{
+			FVVVVHost.Open(file, inActivePatch);
 		}
 		#endregion
 		

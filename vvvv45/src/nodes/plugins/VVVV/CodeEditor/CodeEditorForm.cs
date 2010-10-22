@@ -122,7 +122,7 @@ namespace VVVV.HDE.CodeEditor
 		/// <param name="doc">The ITextDocument to open.</param>
 		public void Open(ITextDocument doc)
 		{
-			var editor = new CodeEditor(this, doc);
+			var editor = new CodeEditor(FHDEHost, this, doc);
 			editor.Dock = DockStyle.Fill;
 			
 			if (doc is CSDocument)
@@ -134,7 +134,7 @@ namespace VVVV.HDE.CodeEditor
 				editor.LinkDataProvider = new CSLinkDataProvider(editor);
 				editor.ToolTipProvider = new CSToolTipProvider(editor);
 			}
-			else if (doc is FXDocument || doc is FXHDocument)
+			else if (doc is FXDocument)
 			{
 				editor.CompletionBinding = new FXCompletionBinding(editor);
 				editor.FormattingStrategy = new SD.DefaultFormattingStrategy();
@@ -211,7 +211,7 @@ namespace VVVV.HDE.CodeEditor
 		void Project_CompileCompleted(IProject project)
 		{
 			var results = project.CompilerResults;
-			if (results.Errors.Count > 0)
+			if (results != null && results.Errors.Count > 0)
 				ShowErrorTable(results.Errors);
 			else
 				HideErrorTable();

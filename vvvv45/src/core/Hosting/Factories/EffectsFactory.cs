@@ -81,8 +81,6 @@ namespace VVVV.Hosting.Factories
 			nodeInfo.Type = NodeType.Effect;
 //			nodeInfo.Executable = project.Exectuable;
 			
-			var includes = new List<string>();
-			
 			try
 			{
 				// Create an instance of StreamReader to read from a file.
@@ -94,7 +92,6 @@ namespace VVVV.Hosting.Factories
 					string desc = @"//@help:";
 					string tags = @"//@tags:";
 					string credits = @"//@credits:";
-					string include = @"#include ";
 					
 					// Parse lines from the file until the end of
 					// the file is reached.
@@ -111,37 +108,7 @@ namespace VVVV.Hosting.Factories
 						
 						else if (line.StartsWith(credits))
 							nodeInfo.Credits = line.Replace(credits, "").Trim();
-						
-						else if (line.StartsWith(include))
-						{
-							var inc = line.Replace(include, "").Trim();
-							inc = Path.Combine(Path.GetDirectoryName(filename), inc.Trim(new char[1]{'"'}));
-							includes.Add(inc);
-						}
 				    }
-				}
-				
-				//remove all references that are not in the includes
-				for (int i = project.Documents.Count - 1; i >= 0; i--)
-				{
-					var r = includes.Find(delegate(string includePath) {return includePath == project.Documents[i].Location.LocalPath;});
-					if ((r == null) && (!(project.Documents[i] is FXDocument)))
-						project.Documents.Remove(project.Documents[i]);
-				}
-				
-				//add all includes that are not yet in the references
-				foreach(var include in includes)
-				{
-					var name = Path.GetFileName(include);
-					if (!project.Documents.Contains(name))
-					{
-						if (File.Exists(include))
-						{
-							var doc = new FXHDocument(new Uri(include));
-							doc.Load();
-							project.Documents.Add(doc);
-						}
-					}
 				}
 			}
 			catch (Exception ex)

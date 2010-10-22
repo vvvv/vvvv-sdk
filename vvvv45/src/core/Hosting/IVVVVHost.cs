@@ -62,5 +62,12 @@ namespace VVVV.Hosting
 		/// </summary>
 		/// <param name="CurrentTime">The hosts current time.</param>
 		void GetCurrentTime(out double CurrentTime);
+		
+		/// <summary>
+		/// Opens the given file.
+		/// </summary>
+		/// <param name="file">The file to open by vvvv.</param>
+		/// <param name="inActivePatch">Whether it should be openend in the active patch or in the root patch.</param>
+		void Open(string file, bool inActivePatch);
 	}
 }

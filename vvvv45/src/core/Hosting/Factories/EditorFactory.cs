@@ -8,16 +8,23 @@ using System.Reflection;
 
 using VVVV.Core;
 using VVVV.Core.Logging;
+using VVVV.Core.Model;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.Factories
 {
 	[Export(typeof(IAddonFactory))]
-	public class EditorFactory : IAddonFactory
+	public class EditorFactory : IAddonFactory, IMouseClickListener
 	{
 		[ImportMany(typeof(IEditor))]
-		List<ExportFactory<IEditor, IEditorInfo>> FNodeInfoExports { get; set; }
+		protected List<ExportFactory<IEditor, IEditorInfo>> FNodeInfoExports;
+		
+		[Import]
+		protected IHDEHost FHDEHost;
+		
+		[Import]
+		protected ISolution FSolution;
 		
 		ILogger FLogger;
 		CompositionContainer FContainer;
@@ -38,6 +45,34 @@ namespace VVVV.Hosting.Factories
 		
 		public IEnumerable<INodeInfo> ExtractNodeInfos(string filename)
 		{
+			// Present the user with all files associated with this filename.
+			var nodeInfo = CreateNodeInfo(filename);
+			if (nodeInfo != null)
+				yield return nodeInfo;
+			
+			// Do we have a project file?
+			var project = FSolution.FindProject(filename);
+			if (project != null)
+			{
+				if (!project.IsLoaded)
+					project.Load();
+				
+				foreach (var doc in project.Documents)
+				{
+					var docFilename = doc.Location.LocalPath;
+					
+					if (docFilename != filename)
+					{
+						nodeInfo = CreateNodeInfo(doc.Location.LocalPath);
+						if (nodeInfo != null)
+							yield return nodeInfo;
+					}
+				}
+			}
+		}
+		
+		private INodeInfo CreateNodeInfo(string filename)
+		{
 			var fileExtension = Path.GetExtension(filename);
 			
 			foreach (var nodeInfoExport in FNodeInfoExports)
@@ -55,10 +90,11 @@ namespace VVVV.Hosting.Factories
 					
 					FNodeInfos[nodeInfo] = nodeInfoExport;
 					
-					yield return nodeInfo;
-					yield break;
+					return nodeInfo;
 				}
 			}
+			
+			return null;
 		}
 		
 		public bool Create(INodeInfo nodeInfo, IAddonHost host)
@@ -128,7 +164,7 @@ namespace VVVV.Hosting.Factories
 		{
 			try
 			{
-				var catalog = new DirectoryCatalog(Shell.CallerPath.ConcatPath(@"..\..\editor"));
+				var catalog = new DirectoryCatalog(Shell.CallerPath.ConcatPath(@"..\..\editors"));
 				FContainer = new CompositionContainer(catalog, FExportProviders);
 				FContainer.ComposeParts(this);
 			}
@@ -148,6 +184,19 @@ namespace VVVV.Hosting.Factories
 		public void RemoveDir(string dir)
 		{
 			throw new NotImplementedException();
+		}
+
+		public void MouseDownCB(INode node, Mouse_Buttons button, Modifier_Keys keys)
+		{
+			if ((node != null) && (button == Mouse_Buttons.Left) && (keys == Modifier_Keys.Control))
+			{
+				var nodeInfo = node.GetNodeInfo();
+				FHDEHost.Open(nodeInfo.Filename, false);
+			}
+		}
+		
+		public void MouseUpCB(INode node, Mouse_Buttons button, Modifier_Keys keys)
+		{
 		}
 	}
 	

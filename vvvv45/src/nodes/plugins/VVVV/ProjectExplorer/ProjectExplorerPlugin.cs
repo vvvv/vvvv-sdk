@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.ComponentModel.Composition;
+using System.Windows.Forms;
 
 using VVVV.Core;
 using VVVV.Core.Logging;
@@ -35,8 +36,10 @@ namespace VVVV.HDE.ProjectExplorer
 			private set;
 		}
 		
-		TreeViewer FTreeViewer;
-		ILogger FLogger;
+		protected TreeViewer FTreeViewer;
+		protected ILogger FLogger;
+		[Import]
+		protected IHDEHost FHDEHost;
 		
 		[ImportingConstructor]
 		public ProjectExplorerPlugin(ISolution solution, ILogger logger)
@@ -72,6 +75,8 @@ namespace VVVV.HDE.ProjectExplorer
 				FTreeViewer.BackColor = System.Drawing.Color.Silver;
 				FTreeViewer.ShowTooltip = true;
 				
+				FTreeViewer.DoubleClick += FTreeViewer_DoubleClick;
+				
 				FTreeViewer.Registry = mappingRegistry;
 				FTreeViewer.Input = Solution;
 				
@@ -84,6 +89,15 @@ namespace VVVV.HDE.ProjectExplorer
 			{
 				logger.Log(e);
 				throw e;
+			}
+		}
+
+		void FTreeViewer_DoubleClick(IModelMapper sender, MouseEventArgs e)
+		{
+			var doc = sender.Model as IDocument;
+			if (doc != null)
+			{
+				FHDEHost.Open(doc.Location.LocalPath, false);
 			}
 		}
 		

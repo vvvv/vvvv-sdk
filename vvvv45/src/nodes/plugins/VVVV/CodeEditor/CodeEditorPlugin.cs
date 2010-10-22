@@ -134,31 +134,19 @@ namespace VVVV.HDE.CodeEditor
 		{
 			var document = FSolution.FindDocument(filename) as ITextDocument;
 			if (document == null)
+				document = DocumentFactory.CreateDocumentFromFile(filename) as ITextDocument;
+			
+			if (document != null)
 			{
-				var location = new Uri(filename);
+				if (!document.IsLoaded)
+					document.Load();
 				
-				var fileExtension = Path.GetExtension(filename);
-				switch (fileExtension)
-				{
-					case ".cs":
-						document = new CSDocument(location);
-						break;
-					case ".fx":
-						document = new FXDocument(location);
-						break;
-					case ".fxh":
-						document = new FXHDocument(location);
-						break;
-					default:
-						document = new TextDocument(location);
-						break;
-				}
+				FCodeEditorForm.Open(document);
 			}
-			
-			if (!document.IsLoaded) 
-				document.Load();
-			
-			FCodeEditorForm.Open(document);
+			else
+			{
+				FLogger.Log(LogType.Warning, "Can't open \0", filename);
+			}
 		}
 		
 		public void Close()

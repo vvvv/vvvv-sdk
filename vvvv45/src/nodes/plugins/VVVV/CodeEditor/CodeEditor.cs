@@ -43,6 +43,7 @@ using VVVV.Core.Model.FX;
 using VVVV.Core.Runtime;
 using VVVV.HDE.CodeEditor.Gui.SearchBar;
 using VVVV.HDE.CodeEditor.LanguageBindings.CS;
+using VVVV.PluginInterfaces.V2;
 using Dom = ICSharpCode.SharpDevelop.Dom;
 using NRefactory = ICSharpCode.NRefactory;
 using SD = ICSharpCode.TextEditor.Document;
@@ -55,6 +56,7 @@ namespace VVVV.HDE.CodeEditor
 	{
 		#region Fields
 		
+		private IHDEHost FHDEHost;
 		private CodeCompletionWindow FCompletionWindow;
 		private InsightWindow FInsightWindow;
 		private System.Windows.Forms.Timer FTimer;
@@ -129,14 +131,16 @@ namespace VVVV.HDE.CodeEditor
 					EnableFolding = true;
 					
 					// TODO: Do this via an interface to avoid asking for concrete implementation.
-					if (TextDocument is CSDocument)
-					{
-						var csDoc = TextDocument as CSDocument;
+					var csDoc = TextDocument as CSDocument;
+					if (csDoc != null)
 						csDoc.ParseCompleted += CSDocument_ParseCompleted;
-					}
 				}
 				else
 				{
+					var csDoc = TextDocument as CSDocument;
+					if (csDoc != null)
+						csDoc.ParseCompleted -= CSDocument_ParseCompleted;
+					
 					EnableFolding = false;
 				}
 			}
@@ -186,6 +190,7 @@ namespace VVVV.HDE.CodeEditor
 		
 		#region Constructor/Destructor
 		public CodeEditor(
+			IHDEHost hdeHost,
 			CodeEditorForm codeEditorForm,
 			ITextDocument doc)
 		{
@@ -549,26 +554,17 @@ namespace VVVV.HDE.CodeEditor
 		
 		void LinkClickCB(object sender, MouseEventArgs e)
 		{
-//			try
-//			{
-//				if (!FLink.IsEmpty)
-//				{
-//					var textDocument = FCodeEditorForm.GetVDocument(FLink.FileName) as ITextDocument;
-//
-//					if (textDocument != null)
-//					{
-//						var tabPage = FCodeEditorForm.Open(textDocument);
-//						FCodeEditorForm.BringToFront(tabPage);
-//						var codeEditor = tabPage.Controls[0] as CodeEditor;
-//						codeEditor.ActiveTextAreaControl.TextArea.Focus();
-//						codeEditor.JumpTo(FLink.Location.Line, FLink.Location.Column);
-//					}
-//				}
-//			}
-//			catch (Exception f)
-//			{
-//				Debug.WriteLine(f.StackTrace);
-//			}
+			try
+			{
+				if (!FLink.IsEmpty)
+				{
+					FHDEHost.Open(FLink.FileName, false);
+				}
+			}
+			catch (Exception f)
+			{
+				Debug.WriteLine(f.StackTrace);
+			}
 		}
 		
 		private void SyncControlWithDocument()
