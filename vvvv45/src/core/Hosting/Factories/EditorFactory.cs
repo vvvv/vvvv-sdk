@@ -186,6 +186,8 @@ namespace VVVV.Hosting.Factories
 			throw new NotImplementedException();
 		}
 
+		public event NodeInfoEventHandler NodeInfoUpdated;
+
 		public void MouseDownCB(INode node, Mouse_Buttons button, Modifier_Keys keys)
 		{
 			if ((node != null) && (button == Mouse_Buttons.Left) && (keys == Modifier_Keys.Control))

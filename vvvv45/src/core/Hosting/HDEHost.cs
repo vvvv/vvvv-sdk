@@ -149,15 +149,16 @@ namespace VVVV.Hosting
 		{
 			try
 			{
-				factory.NodeInfoAdded += AddonFactory_NodeInfoAdded;
-				factory.NodeInfoRemoved += AddonFactory_NodeInfoRemoved;
+				factory.NodeInfoAdded += factory_NodeInfoAdded;
+				factory.NodeInfoRemoved += factory_NodeInfoRemoved;
+				factory.NodeInfoUpdated += factory_NodeInfoUpdated;
 			}
 			catch (Exception e)
 			{
 				Logger.Log(e);
 			}			
 		}
-		
+
 		public void GetHDEPlugins(out IPluginBase nodeBrowser, out IPluginBase windowSwitcher, out IPluginBase kommunikator)
 		{
 			nodeBrowser = FNodeBrowser;
@@ -286,7 +287,7 @@ namespace VVVV.Hosting
 		public INodeInfo GetNodeInfo(string systemname)
 		{
 			INodeInfo result = null;
-			FRegisteredNodeInfos.TryGetValue(systemname, out result);
+			FRegisteredNodeInfos.TryGetValue(systemname.ToUpper(), out result);
 			return result;
 		}
 		
@@ -307,20 +308,6 @@ namespace VVVV.Hosting
 			else
 			{
 				return new IPluginHost2[0];
-			}
-		}
-		
-		protected void UpdateNodeInfo(ref INodeInfo oldInfo, ref INodeInfo newInfo)
-		{
-			Type infoType = oldInfo.GetType();
-			
-			foreach (PropertyInfo p in GetAllProperties(infoType))
-			{
-				if (p.CanWrite && p.CanRead)
-				{
-					object val = infoType.InvokeMember(p.Name, BindingFlags.GetProperty, null, newInfo, new object[0]);
-					infoType.InvokeMember(p.Name, BindingFlags.SetProperty, null, oldInfo, new object[] { val });
-				}
 			}
 		}
 		
@@ -351,14 +338,68 @@ namespace VVVV.Hosting
 			
 			return propertyList.ToArray();
 		}
+		
+		protected void UpdateNodeInfo(ref INodeInfo oldInfo, ref INodeInfo newInfo)
+		{
+			Type infoType = oldInfo.GetType();
+			
+			foreach (PropertyInfo p in GetAllProperties(infoType))
+			{
+				if (p.CanWrite && p.CanRead)
+				{
+					object val = infoType.InvokeMember(p.Name, BindingFlags.GetProperty, null, newInfo, new object[0]);
+					infoType.InvokeMember(p.Name, BindingFlags.SetProperty, null, oldInfo, new object[] { val });
+				}
+			}
+		}				
 		#endregion helper methods
 		
-		#region event handler
-		protected void AddonFactory_NodeInfoAdded(IAddonFactory factory, INodeInfo info)
+		
+		public static void NormalizeNodeInfo(ref INodeInfo info)
 		{
+//			info.Name = info.Name.ToUpper();
+//			info.Category = info.Category.ToUpper();
+//			info.Version = info.Version.ToUpper();
+		}
+		
+		
+		#region event handler
+		protected void factory_NodeInfoAdded(IAddonFactory factory, INodeInfo info)
+		{
+			NormalizeNodeInfo(ref info);
+			
 			// Check if already registered.
 			INodeInfo registeredInfo = null;
-			if (FRegisteredNodeInfos.TryGetValue(info.Systemname, out registeredInfo))
+			if (!FRegisteredNodeInfos.TryGetValue(info.Systemname.ToUpper(), out registeredInfo))
+			{
+				// Register the NodeInfo in the NodeRegistry and add it to our local list.
+				FVVVVHost.Add(info);
+				FRegisteredNodeInfos.Add(info.Systemname.ToUpper(), info);
+			}
+		}
+		
+		protected void factory_NodeInfoRemoved(IAddonFactory factory, INodeInfo info)
+		{
+			NormalizeNodeInfo(ref info);
+			
+			INodeInfo registeredInfo = null;
+			if (FRegisteredNodeInfos.TryGetValue(info.Systemname.ToUpper(), out registeredInfo))
+			{
+				if (info.Filename == registeredInfo.Filename)
+				{
+					FVVVVHost.Remove(registeredInfo);
+					FRegisteredNodeInfos.Remove(registeredInfo.Systemname.ToUpper());
+				}
+			}
+		}
+		
+		public void factory_NodeInfoUpdated(IAddonFactory factory, INodeInfo info)
+		{
+			NormalizeNodeInfo(ref info);
+			
+			// Check if already registered.
+			INodeInfo registeredInfo = null;
+			if (FRegisteredNodeInfos.TryGetValue(info.Systemname.ToUpper(), out registeredInfo))
 			{
 				// Do not overwrite plugins with dynamic plugins.
 				if (registeredInfo.Type == NodeType.Plugin && info.Type == NodeType.Dynamic)
@@ -381,23 +422,9 @@ namespace VVVV.Hosting
 				FVVVVHost.Update(registeredInfo);
 			}
 			else
-			{
-				// Register the NodeInfo in the NodeRegistry and add it to our local list.
-				FVVVVHost.Add(info);
-				FRegisteredNodeInfos.Add(info.Systemname, info);
-			}
+				factory_NodeInfoAdded(factory, info);
 		}
-		
-		protected void AddonFactory_NodeInfoRemoved(IAddonFactory factory, INodeInfo info)
-		{
-			INodeInfo registeredInfo = null;
-			if (FRegisteredNodeInfos.TryGetValue(info.Systemname, out registeredInfo))
-			{
-				FVVVVHost.Remove(registeredInfo);
-				FRegisteredNodeInfos.Remove(registeredInfo.Systemname);
-			}
-		}
-		
+				
 		protected Assembly ResolveAssemblyCB(object sender, ResolveEventArgs args)
 		{
 			AppDomain domain = AppDomain.CurrentDomain;

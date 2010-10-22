@@ -122,7 +122,7 @@ namespace VVVV.Hosting.Factories
 				FProjectNodeInfo.Add(project, nodeInfo);
 			
 			//re-register nodeinfo with vvvv
-			OnNodeInfoAdded(nodeInfo);
+			OnNodeInfoUpdated(nodeInfo);
 		}
 		
 		protected override bool CreateNode(INodeInfo nodeInfo, IEffectHost effectHost)

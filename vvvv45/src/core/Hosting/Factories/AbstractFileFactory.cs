@@ -144,7 +144,7 @@ namespace VVVV.Hosting.Factories
 			{
 				foreach (var nodeInfo in LoadAndCacheNodeInfos(filename))
 				{
-					OnNodeInfoAdded(nodeInfo);
+					OnNodeInfoUpdated(nodeInfo);
 				}
 			}
 		}
@@ -198,38 +198,40 @@ namespace VVVV.Hosting.Factories
 		
 		#region directory and watcher
 		
-		//register all files in a directory		
-		public virtual void AddDir(string dir)
+		private void AddSubDir(string dir)
 		{
-			//give subclasses a chance to cleanup before we start to scan.
-			DeleteArtefacts(dir);
-
-			try {
-				foreach (string filename in Directory.GetFiles(dir, @"*" + FFileExtension))
-				{
-					try {
-						AddFile(filename);
-					} catch (Exception e) {
-						FLogger.Log(e);
-					}
-				}
-			} catch (Exception e) {
+			foreach (string filename in Directory.GetFiles(dir, @"*" + FFileExtension))
+			{
+				try {
+					AddFile(filename);
+				} catch (Exception e) {
 					FLogger.Log(e);
+				}
 			}
 			
 			foreach (string subDir in Directory.GetDirectories(dir))
 			{
 				if (!(subDir.EndsWith(".svn") || subDir.EndsWith(".cache")))
 					try {
-						AddDir(subDir);
+						AddSubDir(subDir);
 					} catch (Exception e) {
 						FLogger.Log(e);
 					}
-			}
+			}						
+		}
+		
+		
+		//register all files in a directory		
+		public void AddDir(string dir)
+		{		
+			//give subclasses a chance to cleanup before we start to scan.
+			DeleteArtefacts(dir);
+
+			AddSubDir(dir);
 			
 			var dirWatcher = new FileSystemWatcher(dir, @"*" + FFileExtension);
 			dirWatcher.SynchronizingObject = FSyncContext;
-			dirWatcher.IncludeSubdirectories = false;
+			dirWatcher.IncludeSubdirectories = true;
 			dirWatcher.EnableRaisingEvents = true;
 			dirWatcher.Changed += new FileSystemEventHandler(FDirectoryWatcher_Changed);
 			dirWatcher.Created += new FileSystemEventHandler(FDirectoryWatcher_Created);
@@ -239,21 +241,8 @@ namespace VVVV.Hosting.Factories
 			FDirectoryWatcher.Add(dirWatcher);
 		}
 		
-		public void RemoveDir(string dir)
+		private void RemoveSubDir(string dir)
 		{
-			for (int i=FDirectoryWatcher.Count-1; i>=0; i--)
-			{
-				var dirWatcher = FDirectoryWatcher[i];
-				if (dirWatcher.Path.StartsWith(dir))
-				{
-					dirWatcher.Changed -= new FileSystemEventHandler(FDirectoryWatcher_Changed);
-					dirWatcher.Created -= new FileSystemEventHandler(FDirectoryWatcher_Created);
-					dirWatcher.Deleted -= new FileSystemEventHandler(FDirectoryWatcher_Deleted);
-					dirWatcher.Renamed -= new RenamedEventHandler(FDirectoryWatcher_Renamed);
-					FDirectoryWatcher.RemoveAt(i);
-				}
-			}
-			
 			foreach (string filename in Directory.GetFiles(dir, @"*" + FFileExtension))
 			{
 				try {
@@ -262,6 +251,34 @@ namespace VVVV.Hosting.Factories
 					FLogger.Log(e);
 				}
 			}			
+
+			foreach (string subDir in Directory.GetDirectories(dir))
+			{
+				if (!(subDir.EndsWith(".svn") || subDir.EndsWith(".cache")))
+					try {
+						RemoveSubDir(subDir);
+					} catch (Exception e) {
+						FLogger.Log(e);
+					}
+			}			
+		}
+		
+		public void RemoveDir(string dir)
+		{
+			RemoveSubDir(dir);
+			
+			for (int i=FDirectoryWatcher.Count-1; i>=0; i--)
+			{
+				var dirWatcher = FDirectoryWatcher[i];
+				if (dirWatcher.Path == dir)
+				{
+					dirWatcher.Changed -= new FileSystemEventHandler(FDirectoryWatcher_Changed);
+					dirWatcher.Created -= new FileSystemEventHandler(FDirectoryWatcher_Created);
+					dirWatcher.Deleted -= new FileSystemEventHandler(FDirectoryWatcher_Deleted);
+					dirWatcher.Renamed -= new RenamedEventHandler(FDirectoryWatcher_Renamed);
+					FDirectoryWatcher.RemoveAt(i);
+				}
+			}
 		}
 		
 		void FDirectoryWatcher_Changed(object sender, FileSystemEventArgs e)
@@ -429,14 +446,18 @@ namespace VVVV.Hosting.Factories
 			var nodeInfoCache = GetCachedNodeInfos(filename);
 			
 			foreach (var nodeInfo in nodeInfoCache)
-				OnNodeInfoRemoved(nodeInfo);
+				if (nodeInfo.Filename == filename)
+					OnNodeInfoRemoved(nodeInfo);
 		}
 		
 		//add all addons included with this filename
 		protected virtual void AddFile(string filename)
 		{
 			foreach(var nodeInfo in ExtractNodeInfos(filename))
-				OnNodeInfoAdded(nodeInfo);
+				if (nodeInfo.Filename == filename)
+					OnNodeInfoAdded(nodeInfo);
+				else
+					throw new Exception(filename + " wants to add a nodeinfo with incorrect filename property: " + nodeInfo.Filename);
 		}
 		
 		//allow subclasses to react to a filechange
@@ -474,13 +495,13 @@ namespace VVVV.Hosting.Factories
 					{
 						oldInfos[oldNodeInfo] = true; //mark as used
 						//adding a nodeinfo with the same username will trigger a nodeinfo.update
-						OnNodeInfoAdded(newNodeInfo);
+						OnNodeInfoUpdated(newNodeInfo);
 						present = true;
 						break;
 					}
 				}
 				if (!present)
-					OnNodeInfoAdded(newNodeInfo);
+					OnNodeInfoUpdated(newNodeInfo);
 			}
 			
 			//remove old nodeinfos that have no new compatible
