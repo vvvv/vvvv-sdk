@@ -463,9 +463,9 @@ namespace PinTests
 			TestSpread(spread, sampleData);
 			
 //			ISpread<ISpread<T>> spreadedSpread = new ConfigWrapperPin<ISpread<T>>(FPluginHost, attribute);
-//			
+//
 //			Assert.True(spreadedSpread.SliceCount == 1);
-//			
+//
 //			TestSpread(spreadedSpread, new ISpread<T>[] { new Spread<T>(sampleData.ToList()), new Spread<T>(sampleData.ToList()) });
 		}
 		
@@ -511,8 +511,15 @@ namespace PinTests
 				Assert.True(spread[i].Equals(spread[spread.SliceCount + i]));
 			}
 			
+			// Data should not get lost by increasing SliceCount
+			spread.SliceCount++;
+			for (int i = 0; i < sampleData.Length; i++)
+				Assert.AreEqual(sampleData[i], spread[i]);
+			
+			// Data should not get lost by decreasing SliceCount
 			spread.SliceCount = 1;
 			Assert.True(spread.SliceCount == 1);
+			Assert.AreEqual(sampleData[0], spread[0]);
 			
 			bool eventRaised = false;
 			
@@ -523,7 +530,7 @@ namespace PinTests
 				var pin = wrapperPin.Pin;
 				
 				pin.Updated +=
-				delegate(Pin<T> s) 
+					delegate(Pin<T> s)
 				{
 					eventRaised = true;
 				};
@@ -534,7 +541,7 @@ namespace PinTests
 				pin.Update();
 				pin[0] = sampleData[1];
 				pin.Update();
-			
+				
 				Assert.IsTrue(eventRaised, "Update event was not raised");
 			}
 		}
@@ -543,11 +550,11 @@ namespace PinTests
 		{
 			bool eventRaised = false;
 			
-			spread.Changed += 
-				delegate(IDiffSpread<T> s) 
-				{
-					eventRaised = true;
-				};
+			spread.Changed +=
+				delegate(IDiffSpread<T> s)
+			{
+				eventRaised = true;
+			};
 			
 			var wrapperPin = spread as DiffInputWrapperPin<T>;
 			if (wrapperPin != null)
@@ -560,7 +567,7 @@ namespace PinTests
 				pin.Update();
 				pin[0] = sampleData[1];
 				pin.Update();
-			
+				
 				Assert.IsTrue(eventRaised, "Changed event was not raised");
 			}
 		}
