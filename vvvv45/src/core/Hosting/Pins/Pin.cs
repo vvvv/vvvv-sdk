@@ -77,7 +77,16 @@ namespace VVVV.Hosting.Pins
 			{
 				if (FSliceCount != value)
 				{
+					var old = FData;
 					FData = new T[value];
+					
+					if (old != null && old.Length > 0)
+					{
+						for (int i = 0; i < FData.Length; i++)
+						{
+							FData[i] = old[i % old.Length];
+						}
+					}
 					
 					FSliceCount = value;
 				}

@@ -56,7 +56,16 @@ namespace VVVV.Hosting.Pins.Output
 			{
 				if (FSliceCount != value)
 				{
+					var old = FData;
 					FData = new double[value * FDimension];
+					
+					if (old != null && old.Length > 0)
+					{
+						for (int i = 0; i < FData.Length; i++)
+						{
+							FData[i] = old[i % old.Length];
+						}
+					}
 				
 					FSliceCount = value;
 				

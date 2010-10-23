@@ -56,9 +56,20 @@ namespace VVVV.Hosting.Pins.Input
 			set
 			{
 				if (FSliceCount != value)
+				{
+					var old = FData;
 					FData = new double[value * FDimension];
-				
-				FSliceCount = value;
+					
+					if (old != null && old.Length > 0)
+					{
+						for (int i = 0; i < FData.Length; i++)
+						{
+							FData[i] = old[i % old.Length];
+						}
+					}
+					
+					FSliceCount = value;
+				}
 			}
 		}
 		
