@@ -147,7 +147,7 @@ namespace VVVV.Nodes
 			JointInfo child;
 			for (int i=0; i<this.children.Count; i++)
 			{
-				child = ((JointInfo)this.children[i]).clone(this);
+				child = ((JointInfo)this.children[i]).clone(ret);
 				ret.children.Add(child);
 			}
 			
@@ -285,8 +285,10 @@ namespace VVVV.Nodes
 		
 		public IJoint DeepCopy()
 		{
-			return this.clone();
+			IJoint copy = this.clone();
+			return copy;
 		}
+		
 		
 		/*public Matrix4x4 ConstrainedRotation
 		{
