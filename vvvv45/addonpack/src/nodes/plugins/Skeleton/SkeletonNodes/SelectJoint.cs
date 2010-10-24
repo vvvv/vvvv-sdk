@@ -404,6 +404,8 @@ namespace VVVV.Nodes
 		
 		private bool hasHovered(IJoint currJoint, Vector3D mousePos)
 		{
+			if (!jointPositions.ContainsKey(currJoint.Name))
+				return false;
 			if (VMath.Dist(mousePos, jointPositions[currJoint.Name])<5) {
 				
 				hoveredJoint = currJoint;
