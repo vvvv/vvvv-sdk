@@ -385,7 +385,8 @@ namespace VVVV.Hosting.Factories
 		
 		protected void CacheNodeInfos(string filename, List<INodeInfo> nodeInfos)
 		{
-			try {
+			try
+			{
 				FNodeInfoCache[filename] = nodeInfos;
 				
 				var cacheFile = GetCacheFile(filename);
@@ -408,7 +409,9 @@ namespace VVVV.Hosting.Factories
 				File.SetLastWriteTime(cacheFile, File.GetLastWriteTime(filename));
 				
 				FLogger.Log(LogType.Debug, "Cached node infos of {0}.", filename);
-			} catch (Exception e) {
+			} 
+			catch (Exception e) 
+			{
 				FLogger.Log(LogType.Error, "Caching node infos of {0} failed:", filename);
 				FLogger.Log(e);
 			}

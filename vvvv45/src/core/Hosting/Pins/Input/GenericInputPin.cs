@@ -7,13 +7,13 @@ namespace VVVV.Hosting.Pins.Input
 	public class GenericInputPin<T> : DiffPin<T>, IPinUpdater
 	{
 		protected INodeIn FNodeIn;
-		protected IGenericIO<T> FUpstreamInterface;
-		protected IGenericIO<T> FDefaultInterface;
+		protected IGenericIO FUpstreamInterface;
+		protected IGenericIO FDefaultInterface;
 		
 		public GenericInputPin(IPluginHost host, InputAttribute attribute)
 			: base(host, attribute)
 		{
-			FDefaultInterface = new GenericIO<T>();
+			FDefaultInterface = new GenericIO();
 			
 			host.CreateNodeInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FNodeIn);
 			FNodeIn.SetSubType(new Guid[] { typeof(T).GUID }, typeof(T).FullName);
@@ -27,7 +27,7 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			INodeIOBase usI;
 			FNodeIn.GetUpstreamInterface(out usI);
-			FUpstreamInterface = usI as IGenericIO<T>;
+			FUpstreamInterface = usI as IGenericIO;
 		}
 		
 		public override void Disconnect()
@@ -55,7 +55,7 @@ namespace VVVV.Hosting.Pins.Input
 					if (FUpstreamInterface != null)
 					{
 						FNodeIn.GetUpsreamSlice(i, out usS);
-						FData[i] = FUpstreamInterface.GetSlice(usS);
+						FData[i] = (T) FUpstreamInterface.GetSlice(usS);
 					}
 					else
 					{

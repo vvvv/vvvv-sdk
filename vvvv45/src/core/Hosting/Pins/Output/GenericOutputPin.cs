@@ -5,7 +5,7 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.Pins.Output
 {
-	public class GenericOutputPin<T> : Pin<T>, IPinUpdater, IGenericIO<T>
+	public class GenericOutputPin<T> : Pin<T>, IPinUpdater, IGenericIO
 	{
 		protected INodeOut FNodeOut;
 		protected bool FChanged;
@@ -48,7 +48,7 @@ namespace VVVV.Hosting.Pins.Output
 			}
 		}
 		
-		public T GetSlice(int slice)
+		public object GetSlice(int slice)
 		{
 			return this[slice];
 		}

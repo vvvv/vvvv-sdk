@@ -6,16 +6,16 @@ namespace VVVV.Hosting.Pins
 {
 	[Guid("31B5051D-09D5-45E7-BF67-4FEC1E28BF35"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IGenericIO<T>: INodeIOBase
+	public interface IGenericIO: INodeIOBase
 	{
-		T GetSlice(int slice);
+		object GetSlice(int slice);
 	}
 	
-	public class GenericIO<T> : IGenericIO<T>
+	public class GenericIO : IGenericIO
 	{
-		public T GetSlice(int slice)
+		public object GetSlice(int slice)
 		{
-			return default(T);
+			return null;
 		}
 	}
 
