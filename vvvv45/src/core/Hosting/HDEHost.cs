@@ -34,6 +34,7 @@ namespace VVVV.Hosting
 		private IVVVVHost FVVVVHost;
 		private Dictionary<INodeInfo, List<IAddonHost>> FRunningPluginHostsMap;
 		private Dictionary<string, INodeInfo> FRegisteredNodeInfos;
+		private Dictionary<INodeInfo, IAddonFactory> FNodeInfoFactoryMap;
 		private IPluginBase FNodeBrowser, FWindowSwitcher, FKommunikator;
 		
 		[Export]
@@ -64,7 +65,7 @@ namespace VVVV.Hosting
 		private DotNetPluginFactory PluginFactory { get; set; }
 
 		[Import]
-		public NodeCollection NodeCollection {get; protected set;}		
+		public NodeCollection NodeCollection {get; protected set;}
 		
 		public HDEHost()
 		{
@@ -80,6 +81,7 @@ namespace VVVV.Hosting
 			
 			FRunningPluginHostsMap = new Dictionary<INodeInfo, List<IAddonHost>>();
 			FRegisteredNodeInfos = new Dictionary<string, INodeInfo>();
+			FNodeInfoFactoryMap = new Dictionary<INodeInfo, IAddonFactory>();
 			
 			// Register at least one ICommandHistory for top level element ISolution
 			var mappingRegistry = new MappingRegistry();
@@ -157,7 +159,7 @@ namespace VVVV.Hosting
 			catch (Exception e)
 			{
 				Logger.Log(e);
-			}			
+			}
 		}
 
 		public void GetHDEPlugins(out IPluginBase nodeBrowser, out IPluginBase windowSwitcher, out IPluginBase kommunikator)
@@ -184,10 +186,21 @@ namespace VVVV.Hosting
 		{
 			try
 			{
-				foreach (var factory in AddonFactories)
+				if (!FNodeInfoFactoryMap.ContainsKey(nodeInfo))
 				{
-					if (factory.Create(nodeInfo, host))
-						break;
+					foreach (var factory in AddonFactories)
+					{
+						if (factory.Create(nodeInfo, host))
+						{
+							FNodeInfoFactoryMap[nodeInfo] = factory;
+							break;
+						}
+					}
+				}
+				else
+				{
+					var factory = FNodeInfoFactoryMap[nodeInfo];
+					factory.Create(nodeInfo, host);
 				}
 				
 				if (!FRunningPluginHostsMap.ContainsKey(nodeInfo))
@@ -205,10 +218,21 @@ namespace VVVV.Hosting
 		{
 			try
 			{
-				foreach (var factory in AddonFactories)
+				if (!FNodeInfoFactoryMap.ContainsKey(nodeInfo))
 				{
-					if (factory.Delete(nodeInfo, host))
-						break;
+					foreach (var factory in AddonFactories)
+					{
+						if (factory.Delete(nodeInfo, host))
+						{
+							FNodeInfoFactoryMap[nodeInfo] = factory;
+							break;
+						}
+					}
+				}
+				else
+				{
+					var factory = FNodeInfoFactoryMap[nodeInfo];
+					factory.Delete(nodeInfo, host);
 				}
 				
 				FRunningPluginHostsMap[nodeInfo].Remove(host);
@@ -352,23 +376,12 @@ namespace VVVV.Hosting
 					infoType.InvokeMember(p.Name, BindingFlags.SetProperty, null, oldInfo, new object[] { val });
 				}
 			}
-		}				
-		#endregion helper methods
-		
-		
-		public static void NormalizeNodeInfo(ref INodeInfo info)
-		{
-//			info.Name = info.Name.ToUpper();
-//			info.Category = info.Category.ToUpper();
-//			info.Version = info.Version.ToUpper();
 		}
-		
+		#endregion helper methods
 		
 		#region event handler
 		protected void factory_NodeInfoAdded(IAddonFactory factory, INodeInfo info)
 		{
-			NormalizeNodeInfo(ref info);
-			
 			// Check if already registered.
 			INodeInfo registeredInfo = null;
 			if (!FRegisteredNodeInfos.TryGetValue(info.Systemname.ToUpper(), out registeredInfo))
@@ -376,13 +389,12 @@ namespace VVVV.Hosting
 				// Register the NodeInfo in the NodeRegistry and add it to our local list.
 				FVVVVHost.Add(info);
 				FRegisteredNodeInfos.Add(info.Systemname.ToUpper(), info);
+				FNodeInfoFactoryMap[info] = factory;
 			}
 		}
 		
 		protected void factory_NodeInfoRemoved(IAddonFactory factory, INodeInfo info)
 		{
-			NormalizeNodeInfo(ref info);
-			
 			INodeInfo registeredInfo = null;
 			if (FRegisteredNodeInfos.TryGetValue(info.Systemname.ToUpper(), out registeredInfo))
 			{
@@ -390,14 +402,13 @@ namespace VVVV.Hosting
 				{
 					FVVVVHost.Remove(registeredInfo);
 					FRegisteredNodeInfos.Remove(registeredInfo.Systemname.ToUpper());
+					FNodeInfoFactoryMap.Remove(registeredInfo);
 				}
 			}
 		}
 		
 		public void factory_NodeInfoUpdated(IAddonFactory factory, INodeInfo info)
 		{
-			NormalizeNodeInfo(ref info);
-			
 			// Check if already registered.
 			INodeInfo registeredInfo = null;
 			if (FRegisteredNodeInfos.TryGetValue(info.Systemname.ToUpper(), out registeredInfo))
@@ -425,7 +436,7 @@ namespace VVVV.Hosting
 			else
 				factory_NodeInfoAdded(factory, info);
 		}
-				
+		
 		protected Assembly ResolveAssemblyCB(object sender, ResolveEventArgs args)
 		{
 			AppDomain domain = AppDomain.CurrentDomain;

@@ -98,6 +98,21 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		/// <summary>
+		/// Creates a new NodeInfo from an existing <see cref="INodeInfo">INodeInfo</see>.
+		/// </summary>
+		/// <param name="Info">The existing <see cref="INodeInfo">INodeInfo</see>.</param>
+		public NodeInfo (INodeInfo Info)
+			: this(Info as IPluginInfo)
+		{
+			this.Arguments = Info.Arguments;
+			this.Filename = Info.Filename;
+			this.Type = Info.Type;
+			this.Executable = Info.Executable;
+			this.AutoEvaluate = Info.AutoEvaluate;
+			this.Ignore = Info.Ignore;
+		}
+		
+		/// <summary>
 		/// Arguments used by the PluginFactory to create this node.
 		/// </summary>
 		public string Arguments
