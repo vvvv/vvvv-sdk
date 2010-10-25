@@ -213,8 +213,6 @@ namespace VVVV.PluginInterfaces.V2
 		IPin[] GetPins();
 		IPin GetPin(string Name);
 		
-		INode GetParent();
-		
 		/// <summary>
 		/// Allows a plugin to register an IListener on a specific vvvv node.
 		/// </summary>
