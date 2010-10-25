@@ -158,20 +158,20 @@ namespace VVVV.Webinterface.Utilities
 
         #region HtmlSnippets
 
-        public static string ErrorMessage(string pFilename)
+        public static string ErrorMessage(string pFilename, string ErrorMessage)
         {
 
             return
             String.Format(@"
             <!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.01 Transitional//EN"" ""http://www.w3.org/TR/html4/loose.dtd"">
             <html><head>
-            <title>404 Not Found</title>
+            <title>{1}</title>
             </head><body>
             <h1>Not Found</h1>
             <p>The requested File /{0} was not found on this server.</p>
             <hr>
             </body></html>
-            ", pFilename);
+            ", pFilename, ErrorMessage);
         }
 
 

@@ -44,13 +44,12 @@ namespace VVVV.Webinterface.HttpServer
                 string tPageToSend = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">";
                 mContentAsByte = Encoding.UTF8.GetBytes(tPageToSend);
             }
-            else if(mWebinterfaceSingelton.ServerFilesUrl.Contains(pFilename))
+            else if(mWebinterfaceSingelton.ServerFilesUrl.Contains(pFilename) )
             {
                 // if the file name is set by VVVV Build all Files from an Requested Page and Encode it as Bytes
                 SortedList<string, string> tServerFiles;
                 if (mWebinterfaceSingelton.GuiLists.ContainsKey(pFilename))
                 {
-
                     tServerFiles = mWebinterfaceSingelton.BuildPages(pFilename);
                 }
                 else
@@ -128,7 +127,7 @@ namespace VVVV.Webinterface.HttpServer
                     mContentAsByte = RessourceFile;
                 }else
                 {
-                    mContentAsByte = Encoding.UTF8.GetBytes(HTMLToolkit.ErrorMessage(pFilename));
+                    mContentAsByte = Encoding.UTF8.GetBytes(HTMLToolkit.ErrorMessage(pFilename, "404 File not found"));
                 }
 
                 r = null;

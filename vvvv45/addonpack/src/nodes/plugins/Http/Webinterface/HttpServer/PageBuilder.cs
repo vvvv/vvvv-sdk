@@ -28,6 +28,7 @@ namespace VVVV.Webinterface.HttpServer
         List<GuiDataObject> mGuiElemente  =new List<GuiDataObject>();
         bool mBuildFlag = false;
         private Object _updatelock = new Object();
+        private string FBodyExtension = "";
 
         public Page Page
         {
@@ -108,6 +109,7 @@ namespace VVVV.Webinterface.HttpServer
                         mJsFileList.Clear();
                         mCssBuilder.Reset();
                         mTags.Clear();
+                        FBodyExtension = "";
 
                         //Build
                         mGuiElemente = new List<GuiDataObject>(pGuiElemente);
@@ -133,6 +135,7 @@ namespace VVVV.Webinterface.HttpServer
 
             mPage.Body.ClearTagsInside();
             mPage.Body = (Body)BuildHtmlFrame(new List<GuiDataObject>(mGuiElemente), mPage.Body);
+            mPage.Body.Insert(FBodyExtension);
             mTags.Clear();
             //Debug.WriteLine("Ende Build Vorgang");
             mCssBuilder.Build();
@@ -163,32 +166,38 @@ namespace VVVV.Webinterface.HttpServer
                     AddJavaScript(javaScript);
                 }
 
-                Tag mtTag = pElement.Tag;
-
-                if (mTags.ContainsKey(pElement.SliceId) == false)
+                if (pElement.Tag == null)
                 {
-                    mTags.Add(pElement.SliceId,pElement.Tag);
-                    AddCssProperties(pElement);
-
-                    if (pElement.GuiUpstreamList != null)
-                    {
-                        AddCssProperties(pElement);
-                       
-                        tTag.Insert(BuildHtmlFrame(pElement.GuiUpstreamList, pElement.Tag));
-                    }
-                    else
-                    {
-                            tTag.Insert(pElement.Tag);
-                    }
+                    FBodyExtension += pElement.Body + Environment.NewLine;
+                    
                 }
                 else
                 {
-                    Tag tDummyTag;
-                    mTags.TryGetValue(pElement.SliceId, out tDummyTag);
+                    if (mTags.ContainsKey(pElement.SliceId) == false)
+                    {
+                        mTags.Add(pElement.SliceId, pElement.Tag);
+                        AddCssProperties(pElement);
 
+                        if (pElement.GuiUpstreamList != null)
+                        {
+                            AddCssProperties(pElement);
+
+                            tTag.Insert(BuildHtmlFrame(pElement.GuiUpstreamList, pElement.Tag));
+                        }
+                        else
+                        {
+                            tTag.Insert(pElement.Tag);
+                        }
+                    }
+                    else
+                    {
+                        Tag tDummyTag;
+                        mTags.TryGetValue(pElement.SliceId, out tDummyTag);
                         tTag.Insert(tDummyTag);
-                    
+                    }
                 }
+
+
             }
 
             //Debug.WriteLine("---------------- Exit foreachSchleife-----------------");

@@ -5,6 +5,7 @@ using System.Text;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Nodes.HttpGUI;
 using VVVV.Utils.VMath;
+using VVVV.Utils.VColor;
 using VVVV.Webinterface.Utilities;
 using VVVV.Webinterface.jQuery;
 using VVVV.Webinterface;
@@ -37,6 +38,7 @@ namespace VVVV.Nodes.Http.BaseNodes
 
 		private IEnumIn FPositionType;
 		private IEnumIn FBasingPoint;
+        private IEnumIn FUnit;
 
         public INodeIn FHttpStyleIn;
         public IHttpGUIStyleIO FUpstreamStyle;
@@ -96,19 +98,23 @@ namespace VVVV.Nodes.Http.BaseNodes
             FHost.CreateValueInput("Send", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FSendPolling);
             FSendPolling.SetSubType(0, 1, 1, 0, true, false, true);
 
-			FHost.UpdateEnum("PositionType", "absolute", new string[] { "absolute", "fixed ", "relative ", "static " });
-            FHost.CreateEnumInput("Positiontype", TSliceMode.Single, TPinVisibility.OnlyInspector, out FPositionType);
-            FPositionType.SetSubType("PositionType");
-
-            FHost.UpdateEnum("BasingPoint", "Center", new string[] { "Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight" });
-            FHost.CreateEnumInput("Basing Point", TSliceMode.Single, TPinVisibility.OnlyInspector, out FBasingPoint);
-            FBasingPoint.SetSubType("BasingPoint");
-
             FHost.CreateNodeInput("CSS", TSliceMode.Dynamic, TPinVisibility.True, out FHttpStyleIn);
             FHttpStyleIn.SetSubType(new Guid[1] { HttpGUIStyleIO.GUID }, HttpGUIStyleIO.FriendlyName);
 
 			FHost.CreateNodeInput("JQuery", TSliceMode.Single, TPinVisibility.True, out FJQueryNodeInput);
 			FJQueryNodeInput.SetSubType(new Guid[1] { JQueryIO.GUID }, JQueryIO.FriendlyName);
+
+            FHost.UpdateEnum("PositionType", "absolute", new string[] { "absolute", "fixed ", "relative ", "static " });
+            FHost.CreateEnumInput("Positiontype", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FPositionType);
+            FPositionType.SetSubType("PositionType");
+
+            FHost.UpdateEnum("BasingPoint", "Center", new string[] { "Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight" });
+            FHost.CreateEnumInput("Basing Point", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FBasingPoint);
+            FBasingPoint.SetSubType("BasingPoint");
+
+            FHost.UpdateEnum("Unit", "Percent", new string[] { "Percent", "Pixel"});
+            FHost.CreateEnumInput("Unit", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FUnit);
+            FUnit.SetSubType("Unit");
 
 			FHost.CreateValueInput("Save Posted Properties", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FSavePostedPropertiesValueInput);
 			FSavePostedPropertiesValueInput.SetSubType(0.0, 1.0, 1.0, 1.0, false, true, false);
@@ -331,82 +337,141 @@ namespace VVVV.Nodes.Http.BaseNodes
 
             #region Transform Pin
 
-            if (FTransformIn.PinIsChanged || FBasingPoint.PinIsChanged || FPositionType.PinIsChanged || FSavePostedPropertiesValueInput.PinIsChanged || FChangedSpreadSize)
+            if (FTransformIn.PinIsChanged || FBasingPoint.PinIsChanged || FPositionType.PinIsChanged|| FUnit.PinIsChanged || FSavePostedPropertiesValueInput.PinIsChanged || FChangedSpreadSize)
             {
-				FGuiListModified = true;
-				string tBasingPoint;
-                FBasingPoint.GetString(0, out tBasingPoint);
-
-                string tPositionType;
-                FPositionType.GetString(0, out tPositionType);
-
                 for (int i = 0; i < SpreadMax; i++)
                 {
+                    FGuiListModified = true;
+                    string tBasingPoint;
+                    FBasingPoint.GetString(i, out tBasingPoint);
+
+                    string tPositionType;
+                    FPositionType.GetString(i, out tPositionType);
+
+                    string Unit;
+                    FUnit.GetString(i, out Unit);
+
                     Matrix4x4 tMatrix;
-
                     FTransformIn.GetMatrix(i, out tMatrix);
-
 
                     // Position Type
                     SortedList<string, string> tTransformSlice = new SortedList<string, string>();
                     tTransformSlice.Add("position", tPositionType);
 
-
-                    //Scale
-                    double tWidth = HTMLToolkit.MapScale(tMatrix.m11, 0, 2, 0, 100);
-                    double tHeight = HTMLToolkit.MapScale(tMatrix.m22, 0, 2, 0, 100);
-
-                    tTransformSlice.Add("width", ReplaceComma(string.Format("{0:0.0}", Math.Round(tWidth, 1)) + "%"));
-                    tTransformSlice.Add("height", ReplaceComma(string.Format("{0:0.0}", Math.Round(tHeight, 1)) + "%"));
-
-                    //X / Y Position
-                    double tX;
-                    double tY;
-
-                    if (tBasingPoint == "BottomRight")
+                    if (Unit == "Percent")
                     {
-                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, 2, 0, 100, tHeight);
-                        tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, -2, 0, 100, tWidth);
 
-                        tTransformSlice.Add("bottom", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
-                        tTransformSlice.Add("right", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
-                    }
-                    else if (tBasingPoint == "TopRight")
-                    {
-                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, -2, 0, 100, tHeight);
-                        tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, -2, 0, 100, tWidth);
+                        //Scale
+                        double tWidth = HTMLToolkit.MapScale(tMatrix.m11, 0, 2, 0, 100);
+                        double tHeight = HTMLToolkit.MapScale(tMatrix.m22, 0, 2, 0, 100);
 
-                        tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
-                        tTransformSlice.Add("right", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
-                    }
-                    else if (tBasingPoint == "BottomLeft")
-                    {
-                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, 2, 0, 100, tHeight);
-                        tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, 2, 0, 100, tWidth);
+                        tTransformSlice.Add("width", ReplaceComma(string.Format("{0:0.0}", Math.Round(tWidth, 1)) + "%"));
+                        tTransformSlice.Add("height", ReplaceComma(string.Format("{0:0.0}", Math.Round(tHeight, 1)) + "%"));
 
-                        tTransformSlice.Add("bottom", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
-                        tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
-                    }
-                    else if (tBasingPoint == "TopLeft")
-                    {
-                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, -2, 0, 100, tHeight);
-                        tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, 2, 0, 100, tWidth);
+                        //X / Y Position
+                        double tX;
+                        double tY;
 
-                        tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
-                        tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                        if (tBasingPoint == "BottomRight")
+                        {
+                            tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, 2, 0, 100, tHeight);
+                            tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, -2, 0, 100, tWidth);
+
+                            tTransformSlice.Add("bottom", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                            tTransformSlice.Add("right", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                        }
+                        else if (tBasingPoint == "TopRight")
+                        {
+                            tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, -2, 0, 100, tHeight);
+                            tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, -2, 0, 100, tWidth);
+
+                            tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                            tTransformSlice.Add("right", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                        }
+                        else if (tBasingPoint == "BottomLeft")
+                        {
+                            tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, 2, 0, 100, tHeight);
+                            tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, 2, 0, 100, tWidth);
+
+                            tTransformSlice.Add("bottom", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                            tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                        }
+                        else if (tBasingPoint == "TopLeft")
+                        {
+                            tX = HTMLToolkit.MapTransform(tMatrix.m42, 0, -2, 0, 100, tHeight);
+                            tY = HTMLToolkit.MapTransform(tMatrix.m41, 0, 2, 0, 100, tWidth);
+
+                            tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                            tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                        }
+                        else
+                        {
+                            tX = HTMLToolkit.MapTransform(tMatrix.m42, 1, -1, 0, 100, tHeight);
+                            tY = HTMLToolkit.MapTransform(tMatrix.m41, -1, 1, 0, 100, tWidth);
+
+                            tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
+                            tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                        }
+
+                        tTransformSlice.Add("z-index", Convert.ToString(Math.Round(tMatrix.m43)));
+
+                        FGuiDataList[i].Transform = new SortedList<string, string>(tTransformSlice);
                     }
                     else
                     {
-                        tX = HTMLToolkit.MapTransform(tMatrix.m42, 1, -1, 0, 100, tHeight);
-                        tY = HTMLToolkit.MapTransform(tMatrix.m41, -1, 1, 0, 100, tWidth);
+                        //Scale
+                        int tWidth = (int) tMatrix.m11;
+                        int tHeight = (int) tMatrix.m22;
 
-                        tTransformSlice.Add("top", ReplaceComma(string.Format("{0:0.0}", Math.Round(tX, 1)) + "%"));
-                        tTransformSlice.Add("left", ReplaceComma(string.Format("{0:0.0}", Math.Round(tY, 1)) + "%"));
+                        tTransformSlice.Add("width", tWidth.ToString() + "px");
+                        tTransformSlice.Add("height", tHeight.ToString() + "px");
+
+                        //X / Y Position
+                        int tX;
+                        int tY;
+
+                        if (tBasingPoint == "BottomRight")
+                        {
+                            tX = (int) tMatrix.m42 - (tHeight/2);
+                            tY = (int) tMatrix.m41 - (tWidth/2);
+
+                            tTransformSlice.Add("bottom",  tX.ToString() + "px");
+                            tTransformSlice.Add("right",  tY.ToString() + "px");
+                        }
+                        else if (tBasingPoint == "TopRight")
+                        {
+                            tX = (int)tMatrix.m42 - (tHeight / 2);
+                            tY = (int)tMatrix.m41 - (tWidth / 2);
+
+                            tTransformSlice.Add("top", tX.ToString() + "px");
+                            tTransformSlice.Add("right", tY.ToString() + "px");
+                        }
+                        else if (tBasingPoint == "BottomLeft")
+                        {
+                            tX = (int)tMatrix.m42 - (tHeight / 2);
+                            tY = (int)tMatrix.m41 - (tWidth / 2);
+
+                            tTransformSlice.Add("bottom", tX.ToString() + "px");
+                            tTransformSlice.Add("left", tY.ToString() + "px");
+                        }
+                        else if (tBasingPoint == "TopLeft")
+                        {
+                            tX = (int)tMatrix.m42 - (tHeight / 2);
+                            tY = (int)tMatrix.m41 - (tWidth / 2);
+
+                            tTransformSlice.Add("top", tX.ToString() + "px");
+                            tTransformSlice.Add("left", tY.ToString() + "px");
+                        }
+                        else
+                        {
+                            FHost.Log(TLogType.Message, "CenterTransform is not implementet yet. Please use BottomRight/TopRight/BottomLeft or TopLeft");
+                        }
+
+                        tTransformSlice.Add("z-index", Convert.ToString(Math.Round(tMatrix.m43)));
+
+                        FGuiDataList[i].Transform = new SortedList<string, string>(tTransformSlice);
+
                     }
-
-                    tTransformSlice.Add("z-index", Convert.ToString(Math.Round(tMatrix.m43)));
-
-                    FGuiDataList[i].Transform = new SortedList<string, string>(tTransformSlice);
                 }
             }
 

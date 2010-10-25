@@ -105,6 +105,7 @@ namespace VVVV.Nodes.Http
         private bool FConnectPin = false;
         private bool FDisconnectPin = false;
         private bool FUpdateToWebinterface = false;
+        private bool CreationFlag = true;
 
 
         #endregion field declaration
@@ -304,8 +305,8 @@ namespace VVVV.Nodes.Http
                 FHost.CreateStringInput("HTML Body", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FHtmlBody);
                 FHtmlBody.SetSubType("", false);
 
-                FHost.CreateStringInput("File Path", TSliceMode.Single, TPinVisibility.OnlyInspector, out FPath);
-                FPath.SetSubType(Application.StartupPath + "\\plugins\\webinterface", true);
+                //FHost.CreateStringInput("File Path", TSliceMode.Single, TPinVisibility.OnlyInspector, out FPath);
+                //FPath.SetSubType(Application.StartupPath + "\\plugins\\webinterface", true);
 
 
 
@@ -433,7 +434,6 @@ namespace VVVV.Nodes.Http
 
 
 
-
                 #region Reload Page
 
                 if (FReload.PinIsChanged)
@@ -442,11 +442,10 @@ namespace VVVV.Nodes.Http
                     FReload.GetValue(0, out currentReloadSlice);
                     if (currentReloadSlice > 0.5)
                     {
-                        mWebinterfaceSingelton.setPollingMessage("Reload", "Lade mich neu", true);
+                        mWebinterfaceSingelton.setPollingMessage("reload", "Lade mich neu", true);
                     }
                 }
                 #endregion Reload Page
-
 
 
 
@@ -457,19 +456,13 @@ namespace VVVV.Nodes.Http
                     FUpdateToWebinterface = true;
                     string tContentBody = "";
                     string tContentHead = "";
-                    double tReload;
-                    FUpdateToWebinterface = true;
-
-                    FReload.GetValue(0, out tReload);
 
                     // Get HTML Body string
                     for (int i = 0; i < FHtmlBody.SliceCount; i++)
                     {
-
                         string currentHtmlBodySlice = "";
                         FHtmlBody.GetString(i, out currentHtmlBodySlice);
                         tContentBody += currentHtmlBodySlice + Environment.NewLine;
-
                     }
 
                     mPageBodyString = tContentBody;
@@ -530,7 +523,6 @@ namespace VVVV.Nodes.Http
 
 
 
-
                 #region Build Page
 
        
@@ -559,7 +551,7 @@ namespace VVVV.Nodes.Http
                     mPage.Head.Insert(new HeaderLink("checkbox.css", "stylesheet", "text/css"));
                     mPage.Head.Insert(new HeaderLink("safaricheck.css", "stylesheet", "text/css"));
  
-                    mPage.Head.Insert(new JavaScript("jquery.js", true));
+                    mPage.Head.Insert(new JavaScript("jquery_1_4_2.js", true));
                     mPage.Head.Insert(new JavaScript("jquerytimer.js", true));
                     mPage.Head.Insert(new JavaScript("utils.js", true));
                     mPage.Head.Insert(new JavaScript("jqueryUI.js", true));
@@ -585,8 +577,6 @@ namespace VVVV.Nodes.Http
                     
 
                     //Browser Window
-
-
                     double currentWidthSlice;
                     double currentHeightSlice;
                     FPageWidth.GetValue(0, out currentWidthSlice);
@@ -602,44 +592,31 @@ namespace VVVV.Nodes.Http
 
                     }
 
-                    
-
                     //body Css
                     CSSStyle tCssStyle = new CSSStyle();
                     tCssStyle.Insert(mBodyRule.Text);
-
-
                     mPage.Head.Insert(tCssStyle);
 
 
-
-                    //Insert Input Strings
-                    mPage.Body.Insert(mPageBodyString);
+                    //Insert Input String                
                     mPage.Head.Insert(mPageHeadString);
 
                     if (FUpstreamInterface != null)
                     {
-                        if (FUpstreamInterface.PinIsChanged() || FConnectPin || FDisconnectPin)
+                        if (FUpstreamInterface.PinIsChanged() || FConnectPin || FDisconnectPin || FUpdateToWebinterface)
                         {
-
                             FUpstreamInterface.GetDataObject(0, out mGuiDatenListe);
+                            GuiDataObject BodyObject = new GuiDataObject();
+                            BodyObject.AddString(mPageBodyString, GuiDataObject.Position.Body, false);
+                            mGuiDatenListe.Add(BodyObject);       
                             mWebinterfaceSingelton.setHtmlPageData(mPageName, mUrl, mPage, mGuiDatenListe);
-
                         }
                     }
-                
-
-                    
-                    
                 }
-
-
                 #endregion Build Page
-
 
                 FConnectPin = false;
                 FDisconnectPin = false;
-
             }
             catch (Exception ex)
             {

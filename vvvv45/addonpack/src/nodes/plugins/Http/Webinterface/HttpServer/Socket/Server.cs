@@ -275,21 +275,20 @@ namespace VVVV.Webinterface.HttpServer {
             try
             {
                 FIpLocal = new IPEndPoint(IPAddress.Any, FPortNumber);
-                //FMainSocket = new Socket(AddressFamily.InterNetwork,SocketType.Stream, ProtocolType.Tcp);
-                //FMainSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-                //FMainSocket.Bind(FIpLocal);
-                //// Start listening...<
-                //FMainSocket.Listen(10000);
+                FMainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                FMainSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                FMainSocket.Bind(FIpLocal);
+                // Start listening...<
+                FMainSocket.Listen(10000);
                 // Create the call back for any client connections...
-                FTcpListen = new TcpListener(IPAddress .Any,FPortNumber);
-                FTcpListen.Start();
+                //FTcpListen = new TcpListener(IPAddress .Any,FPortNumber);
+                //FTcpListen.Start();
 
 
                 while (FShuttingDown == false)
                 {
                     FAllDone.Reset();
-                    //FMainSocket.BeginAccept(new AsyncCallback(OnClientConnectCallback), FMainSocket);
-                    FTcpListen.BeginAcceptSocket(OnClientConnectCallback, FTcpListen);
+                    FMainSocket.BeginAccept(new AsyncCallback(OnClientConnectCallback), FMainSocket);
                     FAllDone.WaitOne();
                 }
 
@@ -317,7 +316,6 @@ namespace VVVV.Webinterface.HttpServer {
         }
 
 
-
         public void Stop()
         {
             FShuttingDown = true;
@@ -341,8 +339,6 @@ namespace VVVV.Webinterface.HttpServer {
             FRunning = false;
 
         }
-
-
 
         private void CheckSockets(object eventState)
         {
@@ -463,7 +459,7 @@ namespace VVVV.Webinterface.HttpServer {
                 FAllDone.Set();
 
                 //The Socket witch connects to the Server
-                Socket ClientSocket = FTcpListen.EndAcceptSocket(asynConnect);
+                Socket ClientSocket = FMainSocket.EndAccept(asynConnect);
 
                 //Adding the Socket into the Socketlist of the Server 
                 FClientSocketList.Add(ClientSocket);

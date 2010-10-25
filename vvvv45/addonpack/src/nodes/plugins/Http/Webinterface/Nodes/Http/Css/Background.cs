@@ -49,8 +49,6 @@ namespace VVVV.Nodes.Http.CSS
 
 
 
-
-
     /// <summary>
     /// css node class definition. 
     /// generates css code for the backgroundcolor for a html element
@@ -330,7 +328,7 @@ namespace VVVV.Nodes.Http.CSS
 
         protected override bool DynamicPinIsChanged()
         {
-            return FColorInput.PinIsChanged || FPath.PinIsChanged || FRepeat.PinIsChanged;
+            return FColorInput.PinIsChanged || FPath.PinIsChanged || FRepeat.PinIsChanged || FPosition.PinIsChanged;
         }
     }
 }

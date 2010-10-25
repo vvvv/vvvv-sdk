@@ -232,7 +232,7 @@ namespace VVVV.Nodes.Http.GUI
                         SetTag(i, tImage);
                     }
 
-                    CreatePollingMessage(i, SliceId[i], "attr","src",tFilename);
+                    CreatePollingMessage(i, SliceId[i], "attr","src",tFilename+ "?timestamp=" + DateTime.Now.ToString());
                 }
             }
         }

@@ -37,6 +37,7 @@ namespace VVVV.Webinterface.HttpServer
         private SortedList<string, byte[]> mHtmlPages;
         List<string> mFolderToServ;
         private SortedList<string, string> mPostMessages = new SortedList<string, string>();
+        private bool FAddPage = false;
 
         # region public properties
 
@@ -130,7 +131,6 @@ namespace VVVV.Webinterface.HttpServer
             int SegementLength = pRequest.Url.Segments.Length;
             this.mFilename = pRequest.Url.Segments[SegementLength - 1];
             this.mRequestType = pRequest.HttpMethod;
-            //mMessageHead = pRequest.Substring(0,pRequest.IndexOf("\r\n\r\n"));
             mMessageBody = ReadRequestContent(pRequest);
             //mMessageBody = mMessageBody.TrimStart(new Char[] { '\n', '\r', '?' });
             //string[] tHeadLines = mMessageHead.Split('\n');
@@ -141,15 +141,20 @@ namespace VVVV.Webinterface.HttpServer
 
 
 
-            if (FRequest.HttpMethod == "GET" || FRequest.HttpMethod == "OPTIONS")
+            if (FRequest.HttpMethod == "GET")
             {
                 GetRequest();
             }
-
             else if (FRequest.HttpMethod == "POST")
             {
-
                 PostRequest();
+            }
+            else if (FRequest.HttpMethod == "OPTIONS")
+            {
+                if (mMessageBody == null)
+                    GetRequest();
+                else
+                    PostRequest();
             }
             else
             {
@@ -158,35 +163,22 @@ namespace VVVV.Webinterface.HttpServer
         }
 
 
-        private string ReadRequestContent(HttpListenerRequest request)
+        private string ReadRequestContent(HttpListenerRequest Request)
         {
 
 
-            if (!request.HasEntityBody)
+            if (!Request.HasEntityBody)
             {
                 //Debug.WriteLine("No client data was sent with the request.");
-                return "No client data was sent with the request.";
+                return null;
             }
-            System.IO.Stream body = request.InputStream;
-            System.Text.Encoding encoding = request.ContentEncoding;
-            System.IO.StreamReader reader = new System.IO.StreamReader(body, encoding);
-            if (request.ContentType != null)
+
+            if (Request.ContentType != null)
             {
                 //Debug.WriteLine("Client data content type {0}", request.ContentType);
             }
             //Debug.WriteLine(String.Format("Client data content length {0}", request.ContentLength64));
-
-            //Debug.WriteLine("Start of client data:");
-            // Convert the data to a string and display it on the Debug.
-            string RequestContent = reader.ReadToEnd();
-            //Debug.WriteLine(RequestContent);
-            //Debug.WriteLine("End of client data:");
-            body.Close();
-            reader.Close();
-
-
-
-
+            string RequestContent = new StreamReader(Request.InputStream).ReadToEnd();
             return RequestContent;
             // If you are finished with the request, it should be closed also.
         }

@@ -288,26 +288,26 @@ namespace VVVV.Nodes.Http
                 FHost.CreateStringInput("Directories", TSliceMode.Dynamic, TPinVisibility.True, out FDirectories);
                 FDirectories.SetSubType("", false);
 
-                FHost.CreateValueInput("Save", 1, null, TSliceMode.Single, TPinVisibility.True, out FSaveState);
-                FSaveState.SetSubType(0, 1, 1, 0, true, false, true);
+                //FHost.CreateValueInput("Save", 1, null, TSliceMode.Single, TPinVisibility.True, out FSaveState);
+                //FSaveState.SetSubType(0, 1, 1, 0, true, false, true);
 
                 FHost.CreateValueInput("Enable", 1, null, TSliceMode.Single, TPinVisibility.True, out FEnableServer);
                 FEnableServer.SetSubType(0, 1, 1, 1, false, true, true);
 
-                FHost.CreateStringInput("POST Filename", TSliceMode.Dynamic, TPinVisibility.False, out FPostFilename);
+                FHost.CreateStringInput("POST Filename", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FPostFilename);
                 FPostFilename.SetSubType("", false);
 
-                FHost.CreateStringInput("POST Message", TSliceMode.Dynamic, TPinVisibility.False, out FPostMessage);
+                FHost.CreateStringInput("POST Message", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FPostMessage);
                 FPostMessage.SetSubType("", false);
 
                 FHost.CreateValueInput("Open Browser", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FOpenBrowser);
                 FOpenBrowser.SetSubType(0, 1, 1, 0, true, false, true);
 
                 FHost.CreateStringInput("Link", TSliceMode.Single, TPinVisibility.OnlyInspector, out FLink);
-                FLink.SetSubType("http://localhost/index.html", false);
+                FLink.SetSubType("http://127.0.0.1/index.html", false);
 
-                FHost.CreateValueInput("TimeOut", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FTimeOut);
-                FTimeOut.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
+                //FHost.CreateValueInput("TimeOut", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FTimeOut);
+                //FTimeOut.SetSubType(0, double.MaxValue, 1, 0, false, false, true);
 
                 FHost.CreateNodeInput("Input1", TSliceMode.Dynamic, TPinVisibility.True, out FHttpPageIn);
                 FHttpPageIn.SetSubType(new Guid[1] { HttpPageIO.GUID }, HttpPageIO.FriendlyName);
@@ -517,17 +517,17 @@ namespace VVVV.Nodes.Http
 
 
             #region SaveState
+            //if (FSaveState.PinIsChanged)
+            //{
+            //    double Save;
+            //    FSaveState.GetValue(0, out Save);
+            //    if (Save > 0.5)
+            //    {
+            //        mWebinterfaceSingelton.SaveDataToFile();
+            //    }
 
-            if (FSaveState.PinIsChanged)
-            {
-                double Save;
-                FSaveState.GetValue(0, out Save);
-                if (Save > 0.5)
-                {
-                    mWebinterfaceSingelton.SaveDataToFile();
-                }
+            //}
 
-            }
 
             #endregion SaveState
 
@@ -642,12 +642,12 @@ namespace VVVV.Nodes.Http
 
 
             #region TimeOut
-            if (FTimeOut.PinIsChanged)
-            {
-               double TimeOut = 0;
-               FTimeOut.GetValue(0,out TimeOut);
-               mWebinterfaceSingelton.TimeOut = (int)TimeOut;
-            }
+            //if (FTimeOut.PinIsChanged)
+            //{
+            //   double TimeOut = 0;
+            //   FTimeOut.GetValue(0,out TimeOut);
+            //   mWebinterfaceSingelton.TimeOut = (int)TimeOut;
+            //}
 
 
             #endregion TimeOut

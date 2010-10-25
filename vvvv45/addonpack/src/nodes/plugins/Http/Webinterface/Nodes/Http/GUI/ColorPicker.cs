@@ -235,7 +235,10 @@ namespace VVVV.Nodes.HttpGUI
 					
 					if (validColorReceived)
 					{
-						responseColorSlice = new RGBAColor(double.Parse(rgb[0]), double.Parse(rgb[1]), double.Parse(rgb[2]), double.Parse(rgb[3]));
+
+                        double[] colors = new double[] { double.Parse(rgb[0],System.Globalization.NumberFormatInfo.InvariantInfo), Convert.ToDouble(rgb[1],System.Globalization.NumberFormatInfo.InvariantInfo), double.Parse(rgb[2], System.Globalization.NumberFormatInfo.InvariantInfo), Convert.ToDouble(rgb[3]) };
+						responseColorSlice = new RGBAColor(colors);
+                        
 					}
 					else
 					{

@@ -5,16 +5,9 @@
            $.ajax({
             type: "POST",
             url: "polling.xml",
-            data: 'Gib mir neue Daten',
+            data: 'Pull new data',
             success: function(xml)
-            {
-                
-				// checks if the page should be reloaded
-//                if($(xml).find('Reload'))
-//                {
-//                    location.reload(true);
-//                }
-				
+            {			
 				// runs through the received xml to change the specific elements
 				$(xml).find('node').each(function()
 					{
@@ -53,6 +46,17 @@
 						}
 
 					});
+					
+					
+									// checks if the page should be reloaded
+                $(xml).find('browser').each(function()
+                {
+                        var ActualNode = $(this);
+                        $(ActualNode).find("reload").each(function()
+						{                      
+                            location.reload(true);						
+						});
+                });
             }
         });
         

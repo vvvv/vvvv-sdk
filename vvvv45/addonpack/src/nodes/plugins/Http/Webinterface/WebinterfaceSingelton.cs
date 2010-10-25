@@ -106,6 +106,8 @@ namespace VVVV.Webinterface
         SortedList<string, SortedList<int, string>> mLoadedValues = new SortedList<string, SortedList<int, string>>();
         List<string> mNodeReceivedValues = new List<string>();
         SortedList<string, byte[]> FDataStorage = new SortedList<string,byte[]>();
+        
+       
 
 
         #endregion field declaration
@@ -164,6 +166,15 @@ namespace VVVV.Webinterface
             get
             {
                 return mUrls;
+            }
+        }
+
+
+        public List<string> ConnectedPages
+        {
+            get
+            {
+                return mConnectedPages;
             }
         }
 
@@ -342,7 +353,6 @@ namespace VVVV.Webinterface
             if (mConnectedPages.Contains(pPageName))
             {
                 mConnectedPages.Remove(pPageName);
-                mUrls.Remove(pUrl);
             }
         }
 
@@ -396,17 +406,26 @@ namespace VVVV.Webinterface
                     mGuiLists.TryGetValue(pUrl, out tPageValues);
                     //Monitor.Exit(mGuiLists);
 
-                    PageBuilder tPageBuilder = new PageBuilder();
-                    tPageBuilder.UpdateGuiList(tPageValues.GuiList, tPageValues.Page);
-                    tPageBuilder.Build();
+                    if (mConnectedPages.Contains(tPageValues.PageName))
+                    {
 
-                    //Monitor.Enter(mServerFiles);
-                    mServerFiles.Remove(pUrl);
-                    mServerFiles.Remove(tPageValues.PageName + ".css");
-                    mServerFiles.Remove(tPageValues.PageName + ".js");
-                    mServerFiles.Add(pUrl, tPageBuilder.HtmlFile);
-                    mServerFiles.Add(tPageValues.PageName + ".css", tPageBuilder.CssFile.ToString());
-                    mServerFiles.Add(tPageValues.PageName + ".js", tPageBuilder.JsFile.ToString());
+                        PageBuilder tPageBuilder = new PageBuilder();
+                        tPageBuilder.UpdateGuiList(tPageValues.GuiList, tPageValues.Page);
+                        tPageBuilder.Build();
+
+                        //Monitor.Enter(mServerFiles);
+                        mServerFiles.Remove(pUrl);
+                        mServerFiles.Remove(tPageValues.PageName + ".css");
+                        mServerFiles.Remove(tPageValues.PageName + ".js");
+                        mServerFiles.Add(pUrl, tPageBuilder.HtmlFile);
+                        mServerFiles.Add(tPageValues.PageName + ".css", tPageBuilder.CssFile.ToString());
+                        mServerFiles.Add(tPageValues.PageName + ".js", tPageBuilder.JsFile.ToString());
+                    }
+                    else
+                    {
+                        mServerFiles.Remove(pUrl);
+                        mServerFiles.Add(pUrl, HTMLToolkit.ErrorMessage(pUrl,"Page not Connected"));
+                    }
 
                     //Monitor.Exit(mServerFiles);
                 }   

@@ -23,7 +23,7 @@ namespace VVVV.Webinterface.HttpServer
         private static System.Threading.AutoResetEvent FListenForNextRequest = new System.Threading.AutoResetEvent(false);
 
         //Listener
-        HttpListener FHttpListener = new HttpListener();
+        HttpListener FHttpListener = null;
         private static IAsyncResult FResult;
         private WebinterfaceSingelton FWebinterfaceSingelton = WebinterfaceSingelton.getInstance();
         private List<string> FFoldersToServ;
@@ -83,35 +83,35 @@ namespace VVVV.Webinterface.HttpServer
 
         public void Start()
         {
-            
-            if (FHttpListener.IsListening)
+            if (FHttpListener == null)
             {
-                Debug.WriteLine("WHY? ...");
-            }
-            if(HttpListener.IsSupported)
-            {
-                try
+                FHttpListener = new HttpListener();
+                if (HttpListener.IsSupported)
                 {
-                    FRunning = true;
-                    FHttpListener.Prefixes.Add(String.Format("http://*:{0}/", FPortNumber));
-                    FHttpListener.Prefixes.Add(String.Format("http://localhost:{0}/", FPortNumber));
-                    FHttpListener.Start();
+                    try
+                    {
+                        FRunning = true;
+                        FHttpListener.Prefixes.Add(String.Format("http://*:{0}/", FPortNumber));
+                        FHttpListener.Prefixes.Add(String.Format("http://localhost:{0}/", FPortNumber));
+                        FHttpListener.Start();
 
+                        ThreadStart threadStart1 = new ThreadStart(StartListening);
+                        FServerThread = new Thread(threadStart1);
+                        FServerThread.Start();
 
-                    ThreadStart threadStart1 = new ThreadStart(StartListening);
-                    FServerThread = new Thread(threadStart1);
-                    FServerThread.Start();
+                    }
+                    catch (HttpListenerException ex)
+                    {
+                        //Debug.WriteLine(ex.Message);
+                    }
+
                 }
-                catch (HttpListenerException ex)
+                else
                 {
-                    //Debug.WriteLine(ex.Message);
+
                 }
-                
-            }else
-            {
-
+                FRunning = true;
             }
-
         }
 
         private void StartListening()
@@ -147,7 +147,7 @@ namespace VVVV.Webinterface.HttpServer
                 RequestListener tRequest = new RequestListener(FFoldersToServ, Request, mPostMessages);
 
                 HttpListenerResponse response = context.Response;
-                response.AddHeader("Cache-Control", "no-store");
+                //response.AddHeader("Cache-Control", "no-store");
                 response.ContentType = tRequest.Response.ContentType;
                 
                 // Construct a response.
@@ -170,9 +170,13 @@ namespace VVVV.Webinterface.HttpServer
         {
             try
             {
+
+                if (FHttpListener != null)
+                    if (FHttpListener.IsListening)
+                        FHttpListener.Stop();
+                        
+
                 FRunning = false;
-                FHttpListener.Prefixes.Clear();
-                FHttpListener.Stop();
             }
             catch (Exception ex)
             {
@@ -184,7 +188,18 @@ namespace VVVV.Webinterface.HttpServer
 
         public void Close()
         {
-            FHttpListener.Abort();
+            if (FHttpListener != null)
+            {
+                //FHttpListener.Stop();
+                FHttpListener.Close();
+                if (FHttpListener.IsListening)
+                {
+                    FHttpListener.Abort();
+                }
+
+                FHttpListener = null;
+                FRunning = false;
+            }
         }
     }
 }
