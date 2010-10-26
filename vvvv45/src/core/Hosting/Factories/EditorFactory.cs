@@ -17,30 +17,31 @@ namespace VVVV.Hosting.Factories
 	[Export(typeof(IAddonFactory))]
 	public class EditorFactory : IAddonFactory, IMouseClickListener
 	{
-		[ImportMany(typeof(IEditor))]
+		[ImportMany(typeof(IEditor), AllowRecomposition = true)]
 		protected List<ExportFactory<IEditor, IEditorInfo>> FNodeInfoExports;
-		
-		[Import]
-		protected IHDEHost FHDEHost;
 		
 		[Import]
 		protected ISolution FSolution;
 		
-		ILogger FLogger;
-		CompositionContainer FContainer;
-		HostExportProvider FHostExportProvider;
-		ExportProvider[] FExportProviders;
-		Dictionary<INodeInfo, ExportFactory<IEditor, IEditorInfo>> FNodeInfos;
-		Dictionary<IPluginHost2, ExportLifetimeContext<IEditor>> FExportLifetimeContexts;
+		private ILogger FLogger;
+		private IHDEHost FHDEHost;
+		private CompositionContainer FContainer;
+		private HostExportProvider FHostExportProvider;
+		private ExportProvider[] FExportProviders;
+		private Dictionary<INodeInfo, ExportFactory<IEditor, IEditorInfo>> FNodeInfos;
+		private Dictionary<IPluginHost2, ExportLifetimeContext<IEditor>> FExportLifetimeContexts;
 		
 		[ImportingConstructor]
-		public EditorFactory(CompositionContainer parentContainer, ILogger logger)
+		public EditorFactory(CompositionContainer parentContainer, ILogger logger, IHDEHost hdeHost)
 		{
 			FHostExportProvider = new HostExportProvider();
 			FExportProviders = new ExportProvider[] { parentContainer, FHostExportProvider };
 			FNodeInfos = new Dictionary<INodeInfo, ExportFactory<IEditor, IEditorInfo>>();
 			FExportLifetimeContexts = new Dictionary<IPluginHost2, ExportLifetimeContext<IEditor>>();
 			FLogger = logger;
+			FHDEHost = hdeHost;
+			
+			FHDEHost.AddListener(this);
 		}
 		
 		public IEnumerable<INodeInfo> ExtractNodeInfos(string filename)
@@ -164,7 +165,7 @@ namespace VVVV.Hosting.Factories
 		{
 			try
 			{
-				var catalog = new DirectoryCatalog(Shell.CallerPath.ConcatPath(@"..\..\editors"));
+				var catalog = new DirectoryCatalog(dir);
 				FContainer = new CompositionContainer(catalog, FExportProviders);
 				FContainer.ComposeParts(this);
 			}
@@ -183,17 +184,40 @@ namespace VVVV.Hosting.Factories
 		
 		public void RemoveDir(string dir)
 		{
-			throw new NotImplementedException();
+			// Nothing todo. We didn't emit any new node info.
 		}
 
 		public event NodeInfoEventHandler NodeInfoUpdated;
+		
+		protected virtual void OnNodeInfoUpdated(IAddonFactory factory, INodeInfo nodeInfo)
+		{
+			if (NodeInfoUpdated != null) {
+				NodeInfoUpdated(factory, nodeInfo);
+			}
+		}
 
 		public void MouseDownCB(INode node, Mouse_Buttons button, Modifier_Keys keys)
 		{
-			if ((node != null) && (button == Mouse_Buttons.Left) && (keys == Modifier_Keys.Control))
+			if (node == null) return;
+			
+			if (((button == Mouse_Buttons.Left) && (keys == Modifier_Keys.Control)) || (button == Mouse_Buttons.Right))
 			{
 				var nodeInfo = node.GetNodeInfo();
-				FHDEHost.Open(nodeInfo.Filename, false);
+				
+				// The following Open will trigger a call by vvvv to IInternalHDEHost.ExtractNodeInfos()
+				// Force the hde host to collect node info only from us.
+				var addonFactories = new List<IAddonFactory>(FHDEHost.AddonFactories);
+				try
+				{
+					FHDEHost.AddonFactories.Clear();
+					FHDEHost.AddonFactories.Add(this);
+					FHDEHost.Open(nodeInfo.Filename, false);
+				}
+				finally
+				{
+					FHDEHost.AddonFactories.Clear();
+					FHDEHost.AddonFactories.AddRange(addonFactories);
+				}
 			}
 		}
 		

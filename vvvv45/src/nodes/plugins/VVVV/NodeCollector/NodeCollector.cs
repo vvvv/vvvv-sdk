@@ -24,20 +24,19 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Input("Job Directories", StringType = StringType.Directory, DefaultString = ".")]
-		ISpread<string> FJobDirs;		
-		List<string> FLastJobs = new List<string>();
+		protected ISpread<string> FJobDirs;		
 
 		[Input("Unsorted Directories", StringType = StringType.Directory)]
-		ISpread<string> FUnsortedDirs;
+		protected ISpread<string> FUnsortedDirs;
 		
-		[Import()]
-		NodeCollection NodeCollection;
+		[Import]
+		protected NodeCollection NodeCollection;
 		
-		[Import()]
-		ILogger Flogger;
+		[Import]
+		protected ILogger Flogger;
+		
+		List<string> FLastJobs = new List<string>();
 		#endregion fields & pins
-
-		List<string> FDirs;
 			
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)

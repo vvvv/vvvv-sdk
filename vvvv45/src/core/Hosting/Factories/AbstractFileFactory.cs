@@ -30,7 +30,6 @@ namespace VVVV.Hosting.Factories
 		protected IHDEHost FHDEHost;
 		
 		//directory to watch
-		private string FDirectory;
 		private string FFileExtension;
 		protected Dictionary<string, List<INodeInfo>> FNodeInfoCache = new Dictionary<string, List<INodeInfo>>();
 		private Dictionary<string, bool> FLoadedFiles = new Dictionary<string, bool>();

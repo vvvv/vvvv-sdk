@@ -59,7 +59,11 @@ namespace VVVV.Hosting
 		public ISolution Solution { get; set; }
 		
 		[ImportMany]
-		public List<IAddonFactory> AddonFactories;
+		public List<IAddonFactory> AddonFactories
+		{
+			get;
+			private set;
+		}
 		
 		[Import]
 		private DotNetPluginFactory PluginFactory { get; set; }

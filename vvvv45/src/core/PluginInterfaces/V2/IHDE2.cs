@@ -79,6 +79,14 @@ namespace VVVV.PluginInterfaces.V2
 		/// <param name="file">The file to open by vvvv.</param>
 		/// <param name="inActivePatch">Whether it should be openend in the active patch or in the root patch.</param>
 		void Open(string file, bool inActivePatch);
+		
+		/// <summary>
+		/// The addon factories used to collect node infos and create nodes.
+		/// </summary>
+		List<IAddonFactory> AddonFactories
+		{
+			get;
+		}
 	}
 	#endregion IHDEHost
 	

@@ -48,8 +48,8 @@ namespace VVVV.Hosting.Factories
 	{
 		List<SearchPath> FPaths = new List<SearchPath>();
 		
-		[Import()]
-		ILogger Flogger;
+		[Import]
+		protected ILogger Flogger;
 
 		[Import]
 		public HDEHost HDEHost{get; protected set;}

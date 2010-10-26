@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Windows.Forms;
 
@@ -13,6 +14,7 @@ using VVVV.HDE.Viewer.WinFormsViewer;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.ManagedVCL;
+using VVVV.Hosting.Factories;
 
 namespace VVVV.HDE.ProjectExplorer
 {
@@ -97,7 +99,21 @@ namespace VVVV.HDE.ProjectExplorer
 			var doc = sender.Model as IDocument;
 			if (doc != null)
 			{
-				FHDEHost.Open(doc.Location.LocalPath, false);
+				// We only want the EffectFactory to answer.
+				var addonFactories = new List<IAddonFactory>(FHDEHost.AddonFactories);
+				var editorFactory = addonFactories.Find(factory => factory is EditorFactory);
+				
+				try
+				{
+					FHDEHost.AddonFactories.Clear();
+					FHDEHost.AddonFactories.Add(editorFactory);
+					FHDEHost.Open(doc.Location.LocalPath, false);
+				}
+				finally
+				{
+					FHDEHost.AddonFactories.Clear();
+					FHDEHost.AddonFactories.AddRange(addonFactories);
+				}
 			}
 		}
 		
