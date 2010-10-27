@@ -30,26 +30,27 @@ namespace VVVV.HDE.ProjectExplorer
 	            InitialWindowHeight = 500,
 	            InitialComponentMode = TComponentMode.InAWindow)]
 	#endregion PluginInfo
-	public class ProjectExplorerPlugin : TopControl, IPluginEvaluate
+	public class ProjectExplorerPlugin : TopControl, IPluginBase
 	{
-		public ISolution Solution
-		{
-			get;
-			private set;
-		}
-		
 		protected TreeViewer FTreeViewer;
 		protected ILogger FLogger;
+		protected IDiffSpread<bool> FShowUnloadedProjectsIn;
+		
 		[Import]
 		protected IHDEHost FHDEHost;
 		
 		[ImportingConstructor]
-		public ProjectExplorerPlugin(ISolution solution, ILogger logger)
+		public ProjectExplorerPlugin(
+			[Input("Show Unloaded Projects", IsSingle = true)] IDiffSpread<bool> showUnloadedProjectsIn,
+			ISolution solution, 
+			ILogger logger)
 		{
 			try
 			{
 				Solution = solution;
 				FLogger = logger;
+				FShowUnloadedProjectsIn = showUnloadedProjectsIn;
+				FShowUnloadedProjectsIn.Changed += new SpreadChangedEventHander<bool>(FShowUnloadedProjectsIn_Changed);
 				
 				var mappingRegistry = new MappingRegistry();
 				mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
@@ -94,6 +95,17 @@ namespace VVVV.HDE.ProjectExplorer
 			}
 		}
 
+		void FShowUnloadedProjectsIn_Changed(IDiffSpread<bool> spread)
+		{
+			FTreeViewer.Reload();
+		}
+		
+		public ISolution Solution
+		{
+			get;
+			private set;
+		}
+
 		void FTreeViewer_DoubleClick(IModelMapper sender, MouseEventArgs e)
 		{
 			var doc = sender.Model as IDocument;
@@ -117,9 +129,17 @@ namespace VVVV.HDE.ProjectExplorer
 			}
 		}
 		
-		public void Evaluate(int spreadMax)
+		protected override void Dispose(bool disposing)
 		{
+			if (disposing)
+			{
+				if (!IsDisposed)
+				{
+					FShowUnloadedProjectsIn.Changed -= FShowUnloadedProjectsIn_Changed;
+				}
+			}
 			
+			base.Dispose(disposing);
 		}
 	}
 }

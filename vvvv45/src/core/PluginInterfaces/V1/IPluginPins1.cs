@@ -1,14 +1,14 @@
 using System;
-using System.Runtime.InteropServices;
-using System.IO;
 using System.Drawing;
+using System.IO;
+using System.Runtime.InteropServices;
 
 using SlimDX;
 using SlimDX.Direct3D9;
-
-using VVVV.Utils.VMath;
-using VVVV.Utils.VColor;
 using VVVV.Core.Model;
+using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.VColor;
+using VVVV.Utils.VMath;
 
 /// <summary>
 /// Version 1 of the VVVV PluginInterface.
@@ -32,9 +32,9 @@ namespace VVVV.PluginInterfaces.V1
 	    //Called by the host before Evaluate for Inputs and after Evaluate for Outputs.
 	    void Update();
 	    
-	    void Connect();
+	    void Connect(IPin otherPin);
 	    
-	    void Disconnect();
+	    void Disconnect(IPin otherPin);
 	}
 	
 	/// <summary>

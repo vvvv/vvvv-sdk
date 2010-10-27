@@ -45,7 +45,11 @@ namespace VVVV.Hosting.Factories
 		protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
 		
 		protected HostExportProvider FHostExportProvider;
-		private ExportProvider[] FExportProviders;
+		public List<ExportProvider> ExportProviders
+		{
+			get;
+			private set;
+		}
 		
 		#region Constructor
 		[ImportingConstructor]
@@ -59,7 +63,7 @@ namespace VVVV.Hosting.Factories
 			: base(fileExtension)
 		{
 			FHostExportProvider = new HostExportProvider();
-			FExportProviders = new ExportProvider[] { parentContainer, FHostExportProvider };
+			ExportProviders = new List<ExportProvider>() { parentContainer, FHostExportProvider };
 		}
 		#endregion
 		
@@ -258,7 +262,7 @@ namespace VVVV.Hosting.Factories
 		{
 			var nodeInfos = new Dictionary<string, INodeInfo>();
 			
-			var container = new CompositionContainer(catalog, FExportProviders);
+			var container = new CompositionContainer(catalog, ExportProviders.ToArray());
 			container.ComposeParts(this);
 			
 			foreach (var pluginExport in FNodeInfoExports)

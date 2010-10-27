@@ -23,14 +23,14 @@ namespace VVVV.Hosting.Pins.Input
 			base.Initialize(FNodeIn);
 		}
 		
-		public override void Connect()
+		public override void Connect(IPin otherPin)
 		{
 			INodeIOBase usI;
 			FNodeIn.GetUpstreamInterface(out usI);
 			FUpstreamInterface = usI as IGenericIO;
 		}
 		
-		public override void Disconnect()
+		public override void Disconnect(IPin otherPin)
 		{
 			FUpstreamInterface = FDefaultInterface;
 		}

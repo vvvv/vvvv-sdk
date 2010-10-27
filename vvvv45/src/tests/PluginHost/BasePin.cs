@@ -3,6 +3,7 @@ using System.Collections;
 using System.Drawing;
 
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 
 namespace Hoster
 {
@@ -14,11 +15,11 @@ namespace Hoster
 		{
 		}
 		
-		public void Connect()
+		public void Connect(IPin otherPin)
 		{
 		}
 		
-		public void Disconnect()
+		public void Disconnect(IPin otherPin)
 		{
 		}
 		

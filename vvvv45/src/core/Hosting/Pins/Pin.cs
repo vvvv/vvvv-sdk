@@ -99,12 +99,12 @@ namespace VVVV.Hosting.Pins
 			OnUpdated();
 		}
 		
-		public virtual void Connect()
+		public virtual void Connect(IPin otherPin)
 		{
 			// DO nothing, override in subclass if needed
 		}
 		
-		public virtual void Disconnect()
+		public virtual void Disconnect(IPin otherPin)
 		{
 			// DO nothing, override in subclass is needed
 		}
