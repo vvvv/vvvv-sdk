@@ -21,6 +21,9 @@ namespace VVVV.Hosting.Factories
         private string FDTD = "";
         
         [Import]
+		protected INodeInfoFactory FNodeInfoFactory;
+        
+        [Import]
     	protected ILogger Logger { get; set; }
         
         public ModulesFactory()
@@ -46,17 +49,17 @@ namespace VVVV.Hosting.Factories
             string fn = Path.GetFileNameWithoutExtension(filename);
             if (!Regex.IsMatch(fn, @"^.+\s\(.+\)$")) yield break;
             
-            var nodeInfo = new NodeInfo();
-            
             //match the filename
             var match = Regex.Match(fn, @"(\S+) \((\S+)(?: ([^)]*))?\)");
             
-            //read matches
-            nodeInfo.Name = match.Groups[1].Value;
-            nodeInfo.Category = match.Groups[2].Value;
-            nodeInfo.Version = match.Groups[3].Value;
+            //create node info and read matches
+            var nodeInfo = FNodeInfoFactory.CreateNodeInfo(
+            	match.Groups[1].Value,
+            	match.Groups[2].Value,
+            	match.Groups[3].Value,
+            	filename);
             
-            nodeInfo.Filename = filename;
+            nodeInfo.BeginUpdate();
             nodeInfo.Type = NodeType.Module;
             nodeInfo.InitialBoxSize = new System.Drawing.Size(4800, 3600);
             nodeInfo.InitialWindowSize = new System.Drawing.Size(9000, 6000);
@@ -67,7 +70,6 @@ namespace VVVV.Hosting.Factories
                 // The using statement also closes the StreamReader.
                 using (StreamReader sr = new StreamReader(filename))
                 {
-                    
                     //skip first line
                     var s = sr.ReadLine();
                     
@@ -89,6 +91,10 @@ namespace VVVV.Hosting.Factories
                 Logger.Log(LogType.Error, "Could not extract module info of " + nodeInfo.Systemname);
                 Logger.Log(e);
                 yield break;
+            }
+            finally
+            {
+            	nodeInfo.CommitUpdate();
             }
             
             yield return nodeInfo;

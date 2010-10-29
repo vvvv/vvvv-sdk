@@ -37,11 +37,14 @@ namespace VVVV.Hosting.Factories
 		protected IHDEHost FHost;
 		
 		[Import]
+		protected INodeInfoFactory FNodeInfoFactory;
+		
+		[Import]
 		protected ISolution FSolution;
 		
-		private Dictionary<string, ExportFactory<IPluginBase, INodeInfoStuff>> FMEFPlugins = new Dictionary<string, ExportFactory<IPluginBase, INodeInfoStuff>>();
-		private Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>> FPluginLifetimeContexts = new Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>>();
-		private Dictionary<string, ComposablePartCatalog> FCatalogCache = new Dictionary<string, ComposablePartCatalog>();
+		private Dictionary<INodeInfo, ExportFactory<IPluginBase, INodeInfoStuff>> FMEFPlugins;
+		private Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>> FPluginLifetimeContexts;
+		private Dictionary<string, ComposablePartCatalog> FCatalogCache;
 		protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
 		
 		protected HostExportProvider FHostExportProvider;
@@ -62,6 +65,9 @@ namespace VVVV.Hosting.Factories
 		protected DotNetPluginFactory(CompositionContainer parentContainer, string fileExtension)
 			: base(fileExtension)
 		{
+			FMEFPlugins = new Dictionary<INodeInfo, ExportFactory<IPluginBase, INodeInfoStuff>>();
+			FPluginLifetimeContexts = new Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>>();
+			FCatalogCache = new Dictionary<string, ComposablePartCatalog>();
 			FHostExportProvider = new HostExportProvider();
 			ExportProviders = new List<ExportProvider>() { parentContainer, FHostExportProvider };
 		}
@@ -146,14 +152,13 @@ namespace VVVV.Hosting.Factories
 				if (!FCatalogCache.ContainsKey(filename))
 					FCatalogCache[filename] = new AssemblyCatalog(filename);
 				
-				foreach (var nodeInfo in ExtractNodeInfosFromCatalog(FCatalogCache[filename]))
+				foreach (var nodeInfo in ExtractNodeInfosFromCatalog(FCatalogCache[filename], filename))
 				{
 					var executable = new DotNetExecutable(null, new Lazy<Assembly>(() => Assembly.LoadFrom(filename)));
 					if (nodeInfo.Executable == null)
 						nodeInfo.Executable = executable;
 					else
 						nodeInfo.Executable.UpdateFrom(executable);
-					nodeInfo.Filename = filename;
 					nodeInfo.Type = NodeType.Plugin;
 					nodeInfos.Add(nodeInfo);
 				}
@@ -163,14 +168,14 @@ namespace VVVV.Hosting.Factories
 					var assembly = Assembly.LoadFrom(filename);
 					
 					// Check for V1 style plugins
-					foreach (var nodeInfo in ExtractNodeInfosFromAssembly(assembly))
+					foreach (var nodeInfo in ExtractNodeInfosFromAssembly(assembly, filename))
 					{
 						var executable = new DotNetExecutable(null, assembly);
 						if (nodeInfo.Executable == null)
 							nodeInfo.Executable = executable;
 						else
 							nodeInfo.Executable.UpdateFrom(executable);
-						nodeInfo.Filename = filename;
+						// TODO: Fix this
 						nodeInfo.Type = NodeType.Plugin;
 						nodeInfos.Add(nodeInfo);
 					}
@@ -196,14 +201,12 @@ namespace VVVV.Hosting.Factories
 			if (!IsLoaded(nodeInfo.Filename))
 				LoadAndCacheNodeInfos(nodeInfo.Filename);
 			
-			var systemName = nodeInfo.Systemname;
-			
 			//V2 plugin
-			if (FMEFPlugins.ContainsKey(systemName))
+			if (FMEFPlugins.ContainsKey(nodeInfo))
 			{
 				FHostExportProvider.PluginHost = pluginHost;
 				
-				var lifetimeContext = FMEFPlugins[systemName].CreateExport();
+				var lifetimeContext = FMEFPlugins[nodeInfo].CreateExport();
 				var plugin = lifetimeContext.Value;
 				
 				FPluginLifetimeContexts[plugin] = lifetimeContext;
@@ -237,7 +240,7 @@ namespace VVVV.Hosting.Factories
 				return plugin;
 			}
 			
-			throw new InvalidOperationException(string.Format("Can't create plugin '{0}'.", systemName));
+			throw new InvalidOperationException(string.Format("Can't create plugin '{0}'.", nodeInfo.Systemname));
 		}
 		
 		public void DisposePlugin(IPluginBase plugin)
@@ -258,7 +261,7 @@ namespace VVVV.Hosting.Factories
 		
 		#region Helper functions
 		
-		protected IEnumerable<INodeInfo> ExtractNodeInfosFromCatalog(ComposablePartCatalog catalog)
+		protected IEnumerable<INodeInfo> ExtractNodeInfosFromCatalog(ComposablePartCatalog catalog, string filename)
 		{
 			var nodeInfos = new Dictionary<string, INodeInfo>();
 			
@@ -267,35 +270,30 @@ namespace VVVV.Hosting.Factories
 			
 			foreach (var pluginExport in FNodeInfoExports)
 			{
-				var systemName = pluginExport.Metadata.GetSystemName();
+				var metadata = pluginExport.Metadata;
+				var nodeInfo = FNodeInfoFactory.CreateNodeInfo(
+					metadata.Name, 
+					metadata.Category, 
+					metadata.Version, 
+					filename);
 				
-				var info = FHDEHost.GetNodeInfo(systemName);
-				if (info == null)
-					info = new NodeInfo();
+				nodeInfo.BeginUpdate();
+				nodeInfo.Shortcut = metadata.Shortcut;
+				nodeInfo.Author = metadata.Author;
+				nodeInfo.Help = metadata.Help;
+				nodeInfo.Tags = metadata.Tags;
+				nodeInfo.Bugs = metadata.Bugs;
+				nodeInfo.Credits = metadata.Credits;
+				nodeInfo.Warnings = metadata.Warnings;
+				nodeInfo.InitialWindowSize = new Size(metadata.InitialWindowWidth, metadata.InitialWindowHeight);
+				nodeInfo.InitialBoxSize = new Size(metadata.InitialBoxWidth, metadata.InitialBoxHeight);
+				nodeInfo.InitialComponentMode = metadata.InitialComponentMode;
+				nodeInfo.AutoEvaluate = metadata.AutoEvaluate;
+				nodeInfo.Ignore = metadata.Ignore;
+				nodeInfo.CommitUpdate();
 				
-				info.Name = pluginExport.Metadata.Name;
-				info.Category = pluginExport.Metadata.Category;
-				info.Version = pluginExport.Metadata.Version;
-				info.Shortcut = pluginExport.Metadata.Shortcut;
-				info.Author = pluginExport.Metadata.Author;
-				info.Help = pluginExport.Metadata.Help;
-				info.Tags = pluginExport.Metadata.Tags;
-				info.Bugs = pluginExport.Metadata.Bugs;
-				info.Credits = pluginExport.Metadata.Credits;
-				info.Warnings = pluginExport.Metadata.Warnings;
-				info.InitialWindowSize = new Size(pluginExport.Metadata.InitialWindowWidth, pluginExport.Metadata.InitialWindowHeight);
-				info.InitialBoxSize = new Size(pluginExport.Metadata.InitialBoxWidth, pluginExport.Metadata.InitialBoxHeight);
-				info.InitialComponentMode = pluginExport.Metadata.InitialComponentMode;
-				info.AutoEvaluate = pluginExport.Metadata.AutoEvaluate;
-				info.Ignore = pluginExport.Metadata.Ignore;
-				
-				//a dynamic plugin may register the the same info with a new export
-				//so remove an existing info
-				if (FMEFPlugins.ContainsKey(systemName))
-					FMEFPlugins.Remove(systemName);
-				
-				FMEFPlugins.Add(systemName, pluginExport);
-				nodeInfos.Add(systemName, info);
+				FMEFPlugins[nodeInfo] = pluginExport;
+				nodeInfos.Add(nodeInfo.Systemname, nodeInfo);
 			}
 			
 			// Set Arguments property on each INodeInfo.
@@ -326,7 +324,7 @@ namespace VVVV.Hosting.Factories
 			return nodeInfos.Values;
 		}
 		
-		protected IEnumerable<INodeInfo> ExtractNodeInfosFromAssembly(Assembly assembly)
+		protected IEnumerable<INodeInfo> ExtractNodeInfosFromAssembly(Assembly assembly, string filename)
 		{
 			foreach (Type type in assembly.GetTypes())
 			{
@@ -337,13 +335,20 @@ namespace VVVV.Hosting.Factories
 					{
 						if (info.PropertyType == typeof(INodeInfo))
 						{
-							INodeInfo nodeInfo = (INodeInfo) info.GetValue(null, null);
-							if (FHDEHost.GetNodeInfo(nodeInfo.Systemname) != null)
-								nodeInfo = FHDEHost.GetNodeInfo(nodeInfo.Systemname);
+							var pluginNodeInfo = (INodeInfo) info.GetValue(null, null);
 							
+							var nodeInfo = FNodeInfoFactory.CreateNodeInfo(
+								pluginNodeInfo.Name, 
+								pluginNodeInfo.Category, 
+								pluginNodeInfo.Version,
+								filename);
+							
+							nodeInfo.BeginUpdate();
+							nodeInfo.UpdateFromNodeInfo(pluginNodeInfo);
 							nodeInfo.Arguments = type.Namespace + "." + type.Name;
 							nodeInfo.Class = type.Name;
 							nodeInfo.Namespace = type.Namespace;
+							nodeInfo.CommitUpdate();
 							
 							yield return nodeInfo;
 							break;
@@ -352,13 +357,19 @@ namespace VVVV.Hosting.Factories
 						else if (info.PropertyType == typeof(IPluginInfo))
 						{
 							var pluginInfo = (IPluginInfo) info.GetValue(null, null);
-							INodeInfo nodeInfo = new NodeInfo(pluginInfo);
-							if (FHDEHost.GetNodeInfo(nodeInfo.Systemname) != null)
-								nodeInfo = FHDEHost.GetNodeInfo(nodeInfo.Systemname);
 							
+							var nodeInfo = FNodeInfoFactory.CreateNodeInfo(
+								pluginInfo.Name, 
+								pluginInfo.Category, 
+								pluginInfo.Version,
+								filename);
+							
+							nodeInfo.BeginUpdate();
+							nodeInfo.UpdateFromPluginInfo(pluginInfo);
 							nodeInfo.Arguments = type.Namespace + "." + type.Name;
 							nodeInfo.Class = type.Name;
 							nodeInfo.Namespace = type.Namespace;
+							nodeInfo.CommitUpdate();
 							
 							yield return nodeInfo;
 						}
@@ -441,16 +452,5 @@ namespace VVVV.Hosting.Factories
 		TComponentMode InitialComponentMode { get; }
 		bool AutoEvaluate { get; }
 		bool Ignore { get; }
-	}
-	
-	public static class NodeInfoStuffExtensions
-	{
-		public static string GetSystemName(this INodeInfoStuff nodeInfo)
-		{
-			if (!string.IsNullOrEmpty(nodeInfo.Version))
-				return string.Format("{0} ({1} {2})", nodeInfo.Name, nodeInfo.Category, nodeInfo.Version);
-			else
-				return string.Format("{0} ({1})", nodeInfo.Name, nodeInfo.Category);
-		}
 	}
 }

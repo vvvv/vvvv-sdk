@@ -20,6 +20,9 @@ namespace VVVV.Hosting.Factories
 	public class EffectsFactory : AbstractFileFactory<IEffectHost>
 	{
 		[Import]
+		protected INodeInfoFactory FNodeInfoFactory;
+		
+		[Import]
 		protected ISolution FSolution;
 		
 		[Import]
@@ -72,12 +75,16 @@ namespace VVVV.Hosting.Factories
 		void project_DoCompile(object sender, EventArgs e)
 		{
 			//parse nodeinfo of project
-			var nodeInfo = new NodeInfo();
 			var project = (sender as FXProject);
 			string filename = project.Location.LocalPath;
-			nodeInfo.Name = Path.GetFileNameWithoutExtension(filename);
-			nodeInfo.Category = "EX9.Effect";
-			nodeInfo.Filename = filename;
+			
+			var nodeInfo = FNodeInfoFactory.CreateNodeInfo(
+				Path.GetFileNameWithoutExtension(filename),
+				"EX9.Effect",
+				string.Empty,
+				filename);
+			
+			nodeInfo.BeginUpdate();
 			nodeInfo.Type = NodeType.Effect;
 //			nodeInfo.Executable = project.Exectuable;
 			
@@ -120,6 +127,8 @@ namespace VVVV.Hosting.Factories
 			//for being available in the ExtractNodeInfo call
 			if (!FProjectNodeInfo.ContainsKey(project))
 				FProjectNodeInfo.Add(project, nodeInfo);
+			
+			nodeInfo.CommitUpdate();
 			
 			//re-register nodeinfo with vvvv
 			OnNodeInfoUpdated(nodeInfo);

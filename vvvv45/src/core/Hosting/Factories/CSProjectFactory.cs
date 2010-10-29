@@ -65,7 +65,8 @@ namespace VVVV.Hosting.Factories
 			foreach (var nodeInfo in nodeInfos)
 			{
 				nodeInfo.Type = NodeType.Dynamic;
-				nodeInfo.Filename = filename;
+				// TODO: Fix this
+//				nodeInfo.Filename = filename;
 				nodeInfo.Executable.Project = project;
 			}
 			
@@ -100,6 +101,8 @@ namespace VVVV.Hosting.Factories
 			var projectTime = File.GetLastWriteTime(project.Location.LocalPath);
 			var assemblyTime = File.GetLastWriteTime(project.AssemblyLocation);
 			
+			// This can happen in case the computer time is wrong or
+			// in a different time zone than the project was created in.
 			if (now < projectTime)
 			{
 				projectTime = now - TimeSpan.FromSeconds(10.0);

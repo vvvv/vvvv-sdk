@@ -12,17 +12,6 @@ namespace VVVV.Hosting
 	/// </summary>
 	public interface IVVVVHost 
 	{
-		INodeInfo[] NodeInfos
-		{
-			get;
-		}
-	
-	    void Add(INodeInfo NodeInfo);
-	    
-	    void Update(INodeInfo NodeInfo);
-	
-	    void Remove(INodeInfo NodeInfo);
-	    
 	    void AddListener(IListener listener);
 	    
 	    void RemoveListener(IListener listener);
@@ -69,5 +58,13 @@ namespace VVVV.Hosting
 		/// <param name="file">The file to open by vvvv.</param>
 		/// <param name="inActivePatch">Whether it should be openend in the active patch or in the root patch.</param>
 		void Open(string file, bool inActivePatch);
+		
+		/// <summary>
+		/// The <see cref="INodeInfoFactory">node info factory</see> used to create <see cref="INodeInfo">node infos</see>.
+		/// </summary>
+		INodeInfoFactory NodeInfoFactory
+		{
+			get;
+		}
 	}
 }

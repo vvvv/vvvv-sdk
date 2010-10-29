@@ -371,7 +371,7 @@ namespace VVVV.Hosting.Factories
 				FLogger.Log(LogType.Debug, "Loaded node infos from {0}.", filename);
 				
 				FLoadedFiles[filename] = true;
-				CacheNodeInfos(filename, nodeInfos.ToList());
+//				CacheNodeInfos(filename, nodeInfos.ToList());
 				
 				return nodeInfos;
 			}
@@ -539,7 +539,7 @@ namespace VVVV.Hosting.Factories
 		
 		public void Dispose()
 		{
-			throw new NotImplementedException();
+
 		}
 	}
 }

@@ -35,13 +35,14 @@ namespace VVVV.HDE.ProjectExplorer
 		protected TreeViewer FTreeViewer;
 		protected ILogger FLogger;
 		protected IDiffSpread<bool> FShowUnloadedProjectsIn;
+		protected MappingRegistry FMappingRegistry;
 		
 		[Import]
 		protected IHDEHost FHDEHost;
 		
 		[ImportingConstructor]
 		public ProjectExplorerPlugin(
-			[Input("Show Unloaded Projects", IsSingle = true)] IDiffSpread<bool> showUnloadedProjectsIn,
+			[Config("Show Unloaded Projects", IsSingle = true)] IDiffSpread<bool> showUnloadedProjectsIn,
 			ISolution solution, 
 			ILogger logger)
 		{
@@ -52,21 +53,21 @@ namespace VVVV.HDE.ProjectExplorer
 				FShowUnloadedProjectsIn = showUnloadedProjectsIn;
 				FShowUnloadedProjectsIn.Changed += new SpreadChangedEventHander<bool>(FShowUnloadedProjectsIn_Changed);
 				
-				var mappingRegistry = new MappingRegistry();
-				mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
-				mappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
-				mappingRegistry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();
-				mappingRegistry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
-				mappingRegistry.RegisterDefaultMapping<AddMenuEntry, DefaultAddMenuEntry>();
-				mappingRegistry.RegisterDefaultMapping(logger);
+				FMappingRegistry = new MappingRegistry();
+				FMappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
+				FMappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
+				FMappingRegistry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();
+				FMappingRegistry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
+				FMappingRegistry.RegisterDefaultMapping<AddMenuEntry, DefaultAddMenuEntry>();
+				FMappingRegistry.RegisterDefaultMapping(logger);
 				
-				mappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
-				mappingRegistry.RegisterMapping<IProject, ProjectViewProvider>();
+				FMappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
+				FMappingRegistry.RegisterMapping<IProject, ProjectViewProvider>();
 				// Do not enumerate IDocument
-				mappingRegistry.RegisterMapping<IDocument, IEnumerable>(Empty.Enumerable);
-				mappingRegistry.RegisterMapping<MsBuildProject, MsBuildProjectViewProvider>();
-				mappingRegistry.RegisterMapping<FXProject, FXProjectViewProvider>();
-				mappingRegistry.RegisterMapping<IProject, IDescripted, DescriptedProjectViewProvider>();
+				FMappingRegistry.RegisterMapping<IDocument, IEnumerable>(Empty.Enumerable);
+				FMappingRegistry.RegisterMapping<MsBuildProject, MsBuildProjectViewProvider>();
+				FMappingRegistry.RegisterMapping<FXProject, FXProjectViewProvider>();
+				FMappingRegistry.RegisterMapping<IProject, IDescripted, DescriptedProjectViewProvider>();
 				
 				SuspendLayout();
 				
@@ -80,7 +81,7 @@ namespace VVVV.HDE.ProjectExplorer
 				
 				FTreeViewer.DoubleClick += FTreeViewer_DoubleClick;
 				
-				FTreeViewer.Registry = mappingRegistry;
+				FTreeViewer.Registry = FMappingRegistry;
 				FTreeViewer.Input = Solution;
 				
 				Controls.Add(FTreeViewer);
@@ -97,6 +98,14 @@ namespace VVVV.HDE.ProjectExplorer
 
 		void FShowUnloadedProjectsIn_Changed(IDiffSpread<bool> spread)
 		{
+			if (spread[0])
+			{
+				FMappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
+			}
+			else
+			{
+				FMappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
+			}
 			FTreeViewer.Reload();
 		}
 		

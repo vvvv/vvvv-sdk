@@ -84,7 +84,7 @@ namespace VVVV.Nodes
 			get
 			{
 				//fill out nodes info
-				IPluginInfo Info = new PluginInfo();
+				PluginInfo Info = new PluginInfo();
 				Info.Name = "Particles";
 				Info.Category = "Spreads";
 				Info.Version = "";

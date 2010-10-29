@@ -59,21 +59,6 @@ namespace VVVV.PluginInterfaces.V2
 		double GetCurrentTime();
 	    
 		/// <summary>
-		/// Returns all registered node infos.
-		/// </summary>
-		IEnumerable<INodeInfo> NodeInfos
-		{
-			get;
-		}
-		
-		/// <summary>
-		/// Returns the INodeInfo for given systemname or null if not found.
-		/// </summary>
-		/// <param name="systemname">The unique systemname of the INodeInfo to look for.</param>
-		/// <returns>The INodeInfo with given systemname or null if not found.</returns>
-		INodeInfo GetNodeInfo(string systemname);
-		
-		/// <summary>
 		/// Opens the given file.
 		/// </summary>
 		/// <param name="file">The file to open by vvvv.</param>

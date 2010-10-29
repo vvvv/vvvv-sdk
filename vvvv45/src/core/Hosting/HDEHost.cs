@@ -31,9 +31,13 @@ namespace VVVV.Hosting
 		const string KOMMUNIKATOR = "Kommunikator (VVVV)";
 		const string NODE_BROWSER = "NodeBrowser (VVVV)";
 		
+		private INodeInfo FWinSwNodeInfo;
+		private INodeInfo FKomNodeInfo;
+		private INodeInfo FNodeBrowserNodeInfo;
+		
 		private IVVVVHost FVVVVHost;
 		private Dictionary<INodeInfo, List<IAddonHost>> FRunningPluginHostsMap;
-		private Dictionary<string, INodeInfo> FRegisteredNodeInfos;
+//		private Dictionary<string, INodeInfo> FRegisteredNodeInfos;
 		private Dictionary<INodeInfo, IAddonFactory> FNodeInfoFactoryMap;
 		private IPluginBase FNodeBrowser, FWindowSwitcher, FKommunikator;
 		
@@ -57,6 +61,9 @@ namespace VVVV.Hosting
 		
 		[Export]
 		public ISolution Solution { get; set; }
+		
+		[Export]
+		public INodeInfoFactory NodeInfoFactory { get; set; }
 		
 		[ImportMany]
 		public List<IAddonFactory> AddonFactories
@@ -84,7 +91,7 @@ namespace VVVV.Hosting
 				SynchronizationContext.SetSynchronizationContext(new WindowsFormsSynchronizationContext());
 			
 			FRunningPluginHostsMap = new Dictionary<INodeInfo, List<IAddonHost>>();
-			FRegisteredNodeInfos = new Dictionary<string, INodeInfo>();
+//			FRegisteredNodeInfos = new Dictionary<string, INodeInfo>();
 			FNodeInfoFactoryMap = new Dictionary<INodeInfo, IAddonFactory>();
 			
 			// Register at least one ICommandHistory for top level element ISolution
@@ -104,6 +111,7 @@ namespace VVVV.Hosting
 		public void Initialize(IVVVVHost vvvvHost, INodeBrowserHost nodeBrowserHost, IWindowSwitcherHost windowSwitcherHost, IKommunikatorHost kommunikatorHost)
 		{
 			FVVVVHost = vvvvHost;
+			NodeInfoFactory = vvvvHost.NodeInfoFactory;
 			
 			// Route log messages to vvvv
 			Logger.AddLogger(new VVVVLogger(FVVVVHost));
@@ -139,11 +147,12 @@ namespace VVVV.Hosting
 			NodeCollection.Collect();
 			
 			//now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
+			var nodeInfoFactory = FVVVVHost.NodeInfoFactory;
 			try
 			{
-				FWindowSwitcher = PluginFactory.CreatePlugin(GetNodeInfo(WINDOW_SWITCHER), null);
-				FKommunikator = PluginFactory.CreatePlugin(GetNodeInfo(KOMMUNIKATOR), null);
-				FNodeBrowser = PluginFactory.CreatePlugin(GetNodeInfo(NODE_BROWSER), null);
+				FWindowSwitcher = PluginFactory.CreatePlugin(FWinSwNodeInfo, null);
+				FKommunikator = PluginFactory.CreatePlugin(FKomNodeInfo, null);
+				FNodeBrowser = PluginFactory.CreatePlugin(FNodeBrowserNodeInfo, null);
 				(FNodeBrowser as INodeBrowser).DragDrop(false);
 			}
 			catch (Exception e)
@@ -305,21 +314,6 @@ namespace VVVV.Hosting
 			return currentTime;
 		}
 		
-		public IEnumerable<INodeInfo> NodeInfos
-		{
-			get
-			{
-				return FRegisteredNodeInfos.Values;
-			}
-		}
-		
-		public INodeInfo GetNodeInfo(string systemname)
-		{
-			INodeInfo result = null;
-			FRegisteredNodeInfos.TryGetValue(systemname.ToUpper(), out result);
-			return result;
-		}
-		
 		public void Open(string file, bool inActivePatch)
 		{
 			FVVVVHost.Open(file, inActivePatch);
@@ -367,78 +361,39 @@ namespace VVVV.Hosting
 			
 			return propertyList.ToArray();
 		}
-		
-		protected void UpdateNodeInfo(ref INodeInfo oldInfo, ref INodeInfo newInfo)
-		{
-			Type infoType = oldInfo.GetType();
-			
-			foreach (PropertyInfo p in GetAllProperties(infoType))
-			{
-				if (p.CanWrite && p.CanRead)
-				{
-					object val = infoType.InvokeMember(p.Name, BindingFlags.GetProperty, null, newInfo, new object[0]);
-					infoType.InvokeMember(p.Name, BindingFlags.SetProperty, null, oldInfo, new object[] { val });
-				}
-			}
-		}
 		#endregion helper methods
 		
 		#region event handler
 		protected void factory_NodeInfoAdded(IAddonFactory factory, INodeInfo info)
 		{
-			// Check if already registered.
-			INodeInfo registeredInfo = null;
-			if (!FRegisteredNodeInfos.TryGetValue(info.Systemname.ToUpper(), out registeredInfo))
-			{
-				// Register the NodeInfo in the NodeRegistry and add it to our local list.
-				FVVVVHost.Add(info);
-				FRegisteredNodeInfos.Add(info.Systemname.ToUpper(), info);
-				FNodeInfoFactoryMap[info] = factory;
-			}
+			if (info.Systemname == WINDOW_SWITCHER)
+				FWinSwNodeInfo = info;
+			else if (info.Systemname == KOMMUNIKATOR)
+				FKomNodeInfo = info;
+			else if (info.Systemname == NODE_BROWSER)
+				FNodeBrowserNodeInfo = info;
+			
+			FNodeInfoFactoryMap.Add(info, factory);
 		}
 		
 		protected void factory_NodeInfoRemoved(IAddonFactory factory, INodeInfo info)
 		{
-			INodeInfo registeredInfo = null;
-			if (FRegisteredNodeInfos.TryGetValue(info.Systemname.ToUpper(), out registeredInfo))
-			{
-				if (info.Filename == registeredInfo.Filename)
-				{
-					FVVVVHost.Remove(registeredInfo);
-					FRegisteredNodeInfos.Remove(registeredInfo.Systemname.ToUpper());
-					FNodeInfoFactoryMap.Remove(registeredInfo);
-				}
-			}
+			FNodeInfoFactoryMap.Remove(info);
 		}
 		
 		public void factory_NodeInfoUpdated(IAddonFactory factory, INodeInfo info)
 		{
-			// Check if already registered.
-			INodeInfo registeredInfo = null;
-			if (FRegisteredNodeInfos.TryGetValue(info.Systemname.ToUpper(), out registeredInfo))
+			// Go through all the running hosts using this changed node info
+			// and create a new plugin for them.
+			foreach (IAddonHost host in GetAffectedHosts(info))
 			{
-				// Do not overwrite plugins with dynamic plugins.
-				if (registeredInfo.Type == NodeType.Plugin && info.Type == NodeType.Dynamic)
-					return;
+				factory.Create(info, host);
 				
-				UpdateNodeInfo(ref registeredInfo, ref info);
-				
-				// Go through all the running hosts using this changed node info
-				// and create a new plugin for them.
-				foreach (IAddonHost host in GetAffectedHosts(registeredInfo))
-				{
-					factory.Create(info, host);
-					
-					//for effects need to update only one affected host
-					//others will be updated vvvv internally
-					if (factory is EffectsFactory)
-						break;
-				}
-				
-				FVVVVHost.Update(registeredInfo);
+				//for effects need to update only one affected host
+				//others will be updated vvvv internally
+				if (factory is EffectsFactory)
+					break;
 			}
-			else
-				factory_NodeInfoAdded(factory, info);
 		}
 		
 		protected Assembly ResolveAssemblyCB(object sender, ResolveEventArgs args)

@@ -14,16 +14,16 @@ namespace VVVV.PluginInterfaces.V2
 	/// </summary>
 	[Guid("581998D6-ED08-4E73-821A-46AFF59C78BD"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface INodeInfo : IPluginInfo
+	public interface INodeInfo : IPluginInfo, IDisposable
 	{
 		/// <summary>
-		/// Arguments used by the PluginFactory to create this node.
+		/// Arguments used by the IAddonFactory to create this node.
 		/// </summary>
 		string Arguments {get; set;}
 		/// <summary>
-		/// Name of the file used by the PluginFactory to create this node.
+		/// Name of the file used by the IAddonFactory to create this node.
 		/// </summary>
-		string Filename {get; set;}
+		string Filename {get;}
 		/// <summary>
 		/// The nodes unique username in the form of: Name (Category Version) where the Name can be a symbol
 		/// </summary>
@@ -48,204 +48,58 @@ namespace VVVV.PluginInterfaces.V2
 		/// Define if this node should be ignored in a NodeBrowser or not.
 		/// </summary>
 		bool Ignore {get; set;}
+		/// <summary>
+		/// Disables events. Call this function if bunch of properties will get changed.
+		/// </summary>
+		void BeginUpdate();
+		/// <summary>
+		/// Enables events. Call this function after a BeginUpdate(). Will trigger a NodeInfoUpdated event.
+		/// </summary>
+		void CommitUpdate();
+	}
+	
+	public static class NodeInfoExtensionMethods
+	{
+		public static void UpdateFromNodeInfo(this INodeInfo nodeInfo, INodeInfo otherNodeInfo)
+		{
+		    nodeInfo.Shortcut = otherNodeInfo.Shortcut;
+			nodeInfo.Author = otherNodeInfo.Author;
+			nodeInfo.Help = otherNodeInfo.Help;
+			nodeInfo.Tags = otherNodeInfo.Tags;
+			nodeInfo.Bugs = otherNodeInfo.Bugs;
+			nodeInfo.Credits = otherNodeInfo.Credits;
+			nodeInfo.Warnings = otherNodeInfo.Warnings;
+
+			nodeInfo.Namespace = otherNodeInfo.Namespace;
+			nodeInfo.Class = otherNodeInfo.Class;
+			nodeInfo.InitialBoxSize = otherNodeInfo.InitialBoxSize;
+			nodeInfo.InitialComponentMode = otherNodeInfo.InitialComponentMode;
+			nodeInfo.InitialWindowSize = otherNodeInfo.InitialWindowSize;
+		
+			nodeInfo.Arguments = otherNodeInfo.Arguments;
+			nodeInfo.Type = otherNodeInfo.Type;
+			nodeInfo.Executable = otherNodeInfo.Executable;
+			nodeInfo.AutoEvaluate = otherNodeInfo.AutoEvaluate;
+			nodeInfo.Ignore = otherNodeInfo.Ignore;
+		}
+		
+		public static void UpdateFromPluginInfo(this INodeInfo nodeInfo, IPluginInfo pluginInfo)
+		{
+		    nodeInfo.Shortcut = pluginInfo.Shortcut;
+			nodeInfo.Author = pluginInfo.Author;
+			nodeInfo.Help = pluginInfo.Help;
+			nodeInfo.Tags = pluginInfo.Tags;
+			nodeInfo.Bugs = pluginInfo.Bugs;
+			nodeInfo.Credits = pluginInfo.Credits;
+			nodeInfo.Warnings = pluginInfo.Warnings;
+
+			nodeInfo.Namespace = pluginInfo.Namespace;
+			nodeInfo.Class = pluginInfo.Class;
+			nodeInfo.InitialBoxSize = pluginInfo.InitialBoxSize;
+			nodeInfo.InitialComponentMode = pluginInfo.InitialComponentMode;
+			nodeInfo.InitialWindowSize = pluginInfo.InitialWindowSize;
+		}
 	}
 	#endregion INodeInfo
-	
-	#region NodeInfo	
-	/// <summary>
-	/// Helper Class that implements the <see cref="INodeInfo">INodeInfo</see> interface.
-	/// </summary>
-	[Guid("36F845F4-A486-49EC-9A0C-CB254FF2B297")]
-	[Serializable]
-	public class NodeInfo: PluginInfo, INodeInfo
-	{
-		private string FArguments = "";
-		private string FFilename = "";
-		private NodeType FType = NodeType.Plugin;
-		[NonSerialized]
-		private IExecutable FExcecutable = null;
-		
-		/// <summary>
-		/// Default constructor.
-		/// </summary>
-		public NodeInfo ()
-		{  
-		}
-		
-		/// <summary>
-		/// Creates a new NodeInfo from an existing <see cref="VVVV.PluginInterfaces.V1.IPluginInfo">IPluginInfo</see>.
-		/// </summary>
-		/// <param name="Info">The existing plugin <see cref="VVVV.PluginInterfaces.V1.IPluginInfo">IPluginInfo</see>.</param>
-		public NodeInfo (IPluginInfo Info)
-		{
-		    this.Name = Info.Name;
-		    this.Category = Info.Category;
-		    this.Version = Info.Version;
-		    this.Shortcut = Info.Shortcut;
-			this.Author = Info.Author;
-			this.Help = Info.Help;
-			this.Tags = Info.Tags;
-			this.Bugs = Info.Bugs;
-			this.Credits = Info.Credits;
-			this.Warnings = Info.Warnings;
-
-			this.Namespace = Info.Namespace;
-			this.Class = Info.Class;
-			this.InitialBoxSize = Info.InitialBoxSize;
-			this.InitialComponentMode = Info.InitialComponentMode;
-			this.InitialWindowSize = Info.InitialWindowSize;
-			this.Ignore = false;
-		}
-		
-		/// <summary>
-		/// Creates a new NodeInfo from an existing <see cref="INodeInfo">INodeInfo</see>.
-		/// </summary>
-		/// <param name="Info">The existing <see cref="INodeInfo">INodeInfo</see>.</param>
-		public NodeInfo (INodeInfo Info)
-			: this(Info as IPluginInfo)
-		{
-			this.Arguments = Info.Arguments;
-			this.Filename = Info.Filename;
-			this.Type = Info.Type;
-			this.Executable = Info.Executable;
-			this.AutoEvaluate = Info.AutoEvaluate;
-			this.Ignore = Info.Ignore;
-		}
-		
-		/// <summary>
-		/// Arguments used by the PluginFactory to create this node.
-		/// </summary>
-		public string Arguments
-		{
-			get {return FArguments;}
-			set {FArguments = value;}
-		}
-		
-		/// <summary>
-		/// Name of the file used by the PluginFactory to create this node.
-		/// </summary>
-		public string Filename 
-		{
-			get {return FFilename;}
-			set {FFilename = value;}
-		}
-		
-		/// <summary>
-		/// The nodes unique username in the form of: Name (Category Version) where the Name can be a symbol
-		/// </summary>
-		public string Username 
-		{
-			get 
-			{
-			    if (string.IsNullOrEmpty(this.Version))
-					return this.Name + " (" + this.Category + ")";
-				else
-					return this.Name + " (" + this.Category + " " + this.Version + ")";
-			}
-		}
-		
-		private string NameToDosName(string name)
-		{
-			if (name == "*")
-				return "Multiply";
-			else if (name == "+")
-				return "Add";
-			else if (name == "-")
-				return "Substract";
-			else if (name == "/")
-				return "Divide";
-			else if (name == "=")
-				return "EQ";
-			else if (name == "<")
-				return "LT";
-			else if (name == ">")
-				return "GT";
-			else if (name == "<=")
-				return "LE";
-			else if (name == ">=")
-				return "GE";
-			else 
-				return name;
-		}
-		
-		/// <summary>
-		/// The nodes unique username in the form of: Name (Category Version)
-		/// </summary>
-		public string Systemname 
-		{
-			get 
-			{
-			    if (string.IsNullOrEmpty(this.Version))
-			    	return NameToDosName(this.Name) + " (" + this.Category + ")";
-				else
-					return NameToDosName(this.Name) + " (" + this.Category + " " + this.Version + ")";
-			}
-		}
-		
-		/// <summary>
-		/// The node type. Set by the PluginFactory.
-		/// </summary>
-		public NodeType Type 
-		{
-			get {return FType;}
-			set {FType = value;}
-		}
-		
-		/// <summary>
-		/// Reference to the <see cref="IExecutable">IExecutable</see> which was used to create this node. Set by the PluginFactory.
-		/// </summary>
-		public IExecutable Executable 
-		{
-			get {return FExcecutable;}
-			set {FExcecutable = value;}
-		}
-		
-		/// <summary>
-		/// Define if this node should be evaluated every frame, even if no outpur is read.
-		/// </summary>
-		public bool AutoEvaluate
-		{
-			get;
-			set;
-		}
-		
-		/// <summary>
-		/// Define if this node should be ignored in a NodeBrowser or not.
-		/// </summary>
-		public bool Ignore
-		{
-			get;
-			set;
-		}
-		
-        public override bool Equals(object obj)
-        {
-            INodeInfo ni = null;
-            if (obj is INodeInfo)
-                ni = obj as INodeInfo;    
-            else
-                return false;
-            
-            return (this.Systemname == ni.Systemname); 
-            /*    && (this.Author == ni.Author) 
-                && (this.Warnings == ni.Warnings)
-                && (this.Class == ni.Class)
-                && (this.Credits == ni.Credits)
-                && (this.Filename == ni.Filename)
-                && (this.Help == ni.Help)
-                && (this.InitialBoxSize == ni.InitialBoxSize)
-                && (this.InitialComponentMode == ni.InitialComponentMode)
-                && (this.InitialWindowSize == ni.InitialWindowSize)
-                && (this.Namespace == ni.Namespace)
-                && (this.Shortcut == ni.Shortcut)
-                && (this.Tags == ni.Tags);*/
-        }
-        
-		public override int GetHashCode()
-		{
-			return base.GetHashCode();
-		}
-	}
-	#endregion NodeInfo
 }
 

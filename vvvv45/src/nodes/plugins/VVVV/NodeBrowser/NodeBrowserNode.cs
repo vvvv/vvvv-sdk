@@ -38,6 +38,8 @@ namespace VVVV.Nodes.NodeBrowser
 		private IHDEHost FHDEHost;
 		[Import]
 		public INodeBrowserHost NodeBrowserHost {get; set;}
+		
+		public INodeInfoFactory FNodeInfoFactory;
 		// Track whether Dispose has been called.
 		private bool FDisposed = false;
 		
@@ -55,13 +57,17 @@ namespace VVVV.Nodes.NodeBrowser
 		}
 		
 		[ImportingConstructor]
-		public NodeBrowserPluginNode(IHDEHost host)
+		public NodeBrowserPluginNode(IHDEHost host, INodeInfoFactory nodeInfoFactory)
 		{
 			DefaultConstructor();
 			
 			//register as nodeinfolistener at hdehost
 			FHDEHost = host;
 			FHDEHost.AddListener(this);
+			
+			FNodeInfoFactory = nodeInfoFactory;
+			foreach (var nodeInfo in FNodeInfoFactory.NodeInfos)
+				NodeInfoAddedCB(nodeInfo);
 			
 			//init category view
 			FCategoryPanel.Redraw();
@@ -222,6 +228,7 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		void FNodeBrowser_CreateNodeFromString(string text)
 		{
+			// TODO: Ask factories about file extensions.
 			if ((text.EndsWith(".v4p")) || (text.EndsWith(".fx")) || (text.EndsWith(".dll")))
 				NodeBrowserHost.CreateNodeFromFile(Path.Combine(Path.GetDirectoryName(FPath), text));
 			else

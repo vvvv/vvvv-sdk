@@ -21,6 +21,9 @@ namespace VVVV.Hosting.Factories
 		protected List<ExportFactory<IEditor, IEditorInfo>> FNodeInfoExports;
 		
 		[Import]
+		protected INodeInfoFactory FNodeInfoFactory;
+		
+		[Import]
 		protected ISolution FSolution;
 		
 		private ILogger FLogger;
@@ -80,14 +83,19 @@ namespace VVVV.Hosting.Factories
 			{
 				if (nodeInfoExport.Metadata.FileExtensions.Contains(fileExtension))
 				{
-					var nodeInfo = new NodeInfo();
-					nodeInfo.Name = Path.GetFileName(filename);
+					var nodeInfo = FNodeInfoFactory.CreateNodeInfo(
+						Path.GetFileName(filename),
+						"Editor",
+						string.Empty,
+						filename);
+					
+					nodeInfo.BeginUpdate();
 					nodeInfo.Type = NodeType.Text;
-					nodeInfo.Filename = filename;
 					nodeInfo.Ignore = true;
 					nodeInfo.InitialBoxSize = new System.Drawing.Size(200, 100);
 					nodeInfo.InitialWindowSize = new System.Drawing.Size(700, 800);
 					nodeInfo.InitialComponentMode = TComponentMode.InAWindow;
+					nodeInfo.CommitUpdate();
 					
 					FNodeInfos[nodeInfo] = nodeInfoExport;
 					
@@ -204,19 +212,24 @@ namespace VVVV.Hosting.Factories
 			{
 				var nodeInfo = node.GetNodeInfo();
 				
-				// The following Open will trigger a call by vvvv to IInternalHDEHost.ExtractNodeInfos()
-				// Force the hde host to collect node info only from us.
-				var addonFactories = new List<IAddonFactory>(FHDEHost.AddonFactories);
-				try
+				switch (nodeInfo.Type)
 				{
-					FHDEHost.AddonFactories.Clear();
-					FHDEHost.AddonFactories.Add(this);
-					FHDEHost.Open(nodeInfo.Filename, false);
-				}
-				finally
-				{
-					FHDEHost.AddonFactories.Clear();
-					FHDEHost.AddonFactories.AddRange(addonFactories);
+					case NodeType.Text:
+						// The following Open will trigger a call by vvvv to IInternalHDEHost.ExtractNodeInfos()
+						// Force the hde host to collect node info only from us.
+						var addonFactories = new List<IAddonFactory>(FHDEHost.AddonFactories);
+						try
+						{
+							FHDEHost.AddonFactories.Clear();
+							FHDEHost.AddonFactories.Add(this);
+							FHDEHost.Open(nodeInfo.Filename, false);
+						}
+						finally
+						{
+							FHDEHost.AddonFactories.Clear();
+							FHDEHost.AddonFactories.AddRange(addonFactories);
+						}
+						break;
 				}
 			}
 		}

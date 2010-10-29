@@ -418,7 +418,7 @@ namespace VVVV.Nodes
 		#endregion constructor/destructor
 		
 		#region node name and infos
-		private static IPluginInfo FPluginInfo;
+		private static PluginInfo FPluginInfo;
 		public static IPluginInfo PluginInfo
 		{
 			get
