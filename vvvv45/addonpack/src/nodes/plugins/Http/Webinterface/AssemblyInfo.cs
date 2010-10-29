@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("WebInterface")]
 [assembly: AssemblyDescription("Allows you to build a Webinterface with an for VVVV")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("VVVV group")]
+[assembly: AssemblyCompany("phlegma")]
 [assembly: AssemblyProduct("")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 
 // This sets the default COM visibility of types in the assembly to invisible.
 // If you need to expose a type to COM, use [ComVisible(true)] on that type.
-[assembly: ComVisible(false)]
+[assembly: ComVisible(true)]
 
 // The assembly version has following format :
 //
@@ -28,4 +28,4 @@ using System.Runtime.InteropServices;
 // You can specify all values by your own or you can build default build and revision
 // numbers with the '*' character (the default):
 
-[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.0.0.0")]

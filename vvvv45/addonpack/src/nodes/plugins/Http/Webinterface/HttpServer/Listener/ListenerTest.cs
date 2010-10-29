@@ -102,14 +102,20 @@ namespace VVVV.Webinterface.HttpServer
                     }
                     catch (HttpListenerException ex)
                     {
+                        FHttpListener = null;
                         //Debug.WriteLine(ex.Message);
                     }
 
                 }
-                else
-                {
+                FRunning = true;
+            }
+            else
+            {
+                FHttpListener.Start();
 
-                }
+                ThreadStart threadStart1 = new ThreadStart(StartListening);
+                FServerThread = new Thread(threadStart1);
+                FServerThread.Start();
                 FRunning = true;
             }
         }
@@ -147,8 +153,8 @@ namespace VVVV.Webinterface.HttpServer
                 RequestListener tRequest = new RequestListener(FFoldersToServ, Request, mPostMessages);
 
                 HttpListenerResponse response = context.Response;
-                //response.AddHeader("Cache-Control", "no-store");
-                response.ContentType = tRequest.Response.ContentType;
+                //response.AddHeader("Cache-Control", "public");
+                //response.ContentType = tRequest.Response.ContentType;
                 
                 // Construct a response.
                 byte[] buffer = tRequest.Response.TextInBytes;

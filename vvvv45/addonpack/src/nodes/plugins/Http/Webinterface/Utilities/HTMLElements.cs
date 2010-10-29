@@ -269,7 +269,6 @@ namespace VVVV.Webinterface.Utilities
         }
         
         
-        
         public Button(string pID, string pName, string pButtonText, string pButtonAction)
         {
             Name = "button";
@@ -707,6 +706,11 @@ namespace VVVV.Webinterface.Utilities
 
     class Link : Tag
     {
+        public Link()
+        {
+            Name = "a";
+        }
+
         public Link(string href)
         {
             Name = "a";

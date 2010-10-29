@@ -184,11 +184,11 @@ namespace VVVV.Nodes.Http.BaseNodes
             {
                 this.OnEvaluate(SpreadMax);
                 FPinIsChanged = false;   
-                int usS;
+                //int usS;
 
                 if (FUpstreamStyleIn != null)
                 {
-                    if (FUpstreamStyleIn.PinIsChanged() || FConnectPin || FDisconnectPin || PinIsChanged())
+                    if (FCssPropertiesIn.IsConnected && (FUpstreamStyleIn.PinIsChanged() || FConnectPin || FDisconnectPin || PinIsChanged()))
                     {
                         mCssPropertiesCombined.Clear();
                         int SliceOffsetCounter = 0;
@@ -198,7 +198,7 @@ namespace VVVV.Nodes.Http.BaseNodes
                         {
                             //get upstream slice index
 
-                            FCssPropertiesIn.GetUpsreamSlice(i, out usS);
+                            //FCssPropertiesIn.GetUpsreamSlice(i, out usS);
 
 
                             SortedList<string, string> tStylePropertyIn;

@@ -30,8 +30,6 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VColor;
@@ -43,17 +41,17 @@ using VVVV.Nodes.Http.BaseNodes;
 
 
 
+
 //the vvvv node namespace
-namespace VVVV.Nodes.Http.CSS
+namespace VVVV.Nodes.HttpGUI.CSS
 {
 
-
-
+    
     /// <summary>
-    /// css node class definition. 
-    /// generates css code for the backgroundcolor for a html element
+    /// css node class definition
+    /// generates css code for the padding values
     /// </summary>
-    public class Background : BaseCssNode,IDisposable, IPlugin
+    public class Margin: BaseCssNode, IPlugin, IDisposable
     {
 
 
@@ -62,17 +60,19 @@ namespace VVVV.Nodes.Http.CSS
 
         #region field declaration
 
-
+        //the host (mandatory)
         // Track whether Dispose has been called.
         private bool FDisposed = false;
 
         //input pin declaration
-		private IColorIn FColorInput;
-        private IStringIn FPath;
-        private IEnumIn FRepeat;
-        private IStringIn FPosition;
+        private IValueIn FTop;
+        private IValueIn FLeft;
+        private IValueIn FRight;
+        private IValueIn FBottom;
+        private IEnumIn FUnit;
 
         #endregion field declaration
+
 
 
 
@@ -84,9 +84,9 @@ namespace VVVV.Nodes.Http.CSS
         /// the nodes constructor
         /// nothing to declare for this node
         /// </summary>
-        public Background()
+        public Margin()
         {
-            
+
         }
 
         /// <summary>
@@ -103,6 +103,7 @@ namespace VVVV.Nodes.Http.CSS
             GC.SuppressFinalize(this);
         }
 
+        
 
         /// <summary>
         /// Dispose(bool disposing) executes in two distinct scenarios.
@@ -110,7 +111,6 @@ namespace VVVV.Nodes.Http.CSS
         /// or indirectly by a user's code. Managed and unmanaged resources
         /// can be disposed.
         /// If disposing equals false, the method has been called by the
-        /// runtime from inside the finalizer and you should not reference
         /// other objects. Only unmanaged resources can be disposed.
         /// </summary>
         /// <param name="disposing"></param>
@@ -126,7 +126,7 @@ namespace VVVV.Nodes.Http.CSS
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
 
-                FHost.Log(TLogType.Message, "Backgroud (HTTP CSS) Node is being deleted");
+                FHost.Log(TLogType.Message, "Margin (HTTP CSS) Node is being deleted");
 
                 // Note that this is not thread safe.
                 // Another thread could start disposing the object
@@ -139,7 +139,7 @@ namespace VVVV.Nodes.Http.CSS
             FDisposed = true;
         }
 
-
+        
         /// <summary>
         /// Use C# destructor syntax for finalization code.
         /// This destructor will run only if the Dispose method
@@ -147,7 +147,7 @@ namespace VVVV.Nodes.Http.CSS
         /// It gives your base class the opportunity to finalize.
         /// Do not provide destructors in WebTypes derived from this class.
         /// </summary>
-        ~Background()
+        ~Margin()
         {
             // Do not re-create Dispose clean-up code here.
             // Calling Dispose(false) is optimal in terms of
@@ -167,6 +167,9 @@ namespace VVVV.Nodes.Http.CSS
 
         private static IPluginInfo FPluginInfo;
 
+        /// <summary>
+        /// provide node infos 
+        /// </summary>
         public static IPluginInfo PluginInfo
         {
             get
@@ -177,9 +180,8 @@ namespace VVVV.Nodes.Http.CSS
                     // see: http://www.vvvv.org/tiki-index.php?page=vvvv+naming+conventions
                     FPluginInfo = new PluginInfo();
 
-                    FPluginInfo.Name = "Background";
                     // the nodes main name: use CamelCaps and no spaces
-
+                    FPluginInfo.Name = "Margin";
                     // the nodes category: try to use an existing one
                     FPluginInfo.Category = "HTTP";
                     // the nodes version: optional. leave blank if not
@@ -191,7 +193,7 @@ namespace VVVV.Nodes.Http.CSS
                     // describe the nodes function
                     FPluginInfo.Help = "node for html page creation";
                     // specify a comma separated list of tags that describe the node
-                    FPluginInfo.Tags = "Css";
+                    FPluginInfo.Tags = "";
 
                     // give credits to thirdparty code used
                     FPluginInfo.Credits = "";
@@ -207,13 +209,11 @@ namespace VVVV.Nodes.Http.CSS
                     FPluginInfo.Namespace = method.DeclaringType.Namespace;
                     FPluginInfo.Class = method.DeclaringType.Name;
                     // leave above as is
-
                 }
 
                 return FPluginInfo;
             }
         }
-
 
 
 
@@ -224,32 +224,36 @@ namespace VVVV.Nodes.Http.CSS
 
 
 
-        #region pin creation
 
+        #region pin creation
 
         /// <summary>
         /// this method is called by vvvv when the node is created
         /// </summary>
-        /// <param name="Host">vvvv instance</param>
+        /// <param name="Host"></param>
         protected override void OnPluginHostSet()
         {
-            //Inputs
+            // create inputs
+            FHost.CreateValueInput("Top", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FLeft);
+            FLeft.SetSubType(-1,1, 0.01, 1, false, false, false);
 
-            FHost.CreateColorInput("Color", TSliceMode.Dynamic, TPinVisibility.True, out FColorInput);
-            FColorInput.SetSubType(VColor.Green, false);
+			FHost.CreateValueInput("Left", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FTop);
+			FTop.SetSubType(-1,1, 0.01, 1, false, false, false);
 
-            FHost.CreateStringInput("Path", TSliceMode.Dynamic, TPinVisibility.True, out FPath);
-            FPath.SetSubType("", true);
+            FHost.CreateValueInput("Right", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FRight);
+            FTop.SetSubType(-1, 1, 0.01, 1, false, false, false);
 
-            FHost.CreateEnumInput("Repeat", TSliceMode.Dynamic, TPinVisibility.True, out FRepeat);
-            FRepeat.SetSubType("BackgroundRepeat");
-            FHost.UpdateEnum("BackgroundRepeat", "no-repeat", new string[] { "no-repeat", "repeat" ,"repeat-x", "repeat-y" ,"space" , "round" });
+            FHost.CreateValueInput("Bottom", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBottom);
+            FTop.SetSubType(-1, 1, 0.01, 1, false, false, false);
 
-            FHost.CreateStringInput("Position", TSliceMode.Dynamic, TPinVisibility.True, out FPosition);
-            FPosition.SetSubType("center", false);
+            FHost.UpdateEnum("Unit", "Percent", new string[] { "Percent", "Pixel" });
+            FHost.CreateEnumInput("Unit", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FUnit);
+            FUnit.SetSubType("Unit");
+           
         }
 
         #endregion pin creation
+
 
 
 
@@ -267,68 +271,66 @@ namespace VVVV.Nodes.Http.CSS
             
         }
 
-
+        
         /// <summary>
         /// here we go, thats the method called by vvvv each frame
         /// all data handling should be in here
         /// </summary>
-        /// <param name="SpreadMax">number of Slices</param>
+        /// <param name="SpreadMax">max number of slices</param>
         protected override void OnEvaluate(int SpreadMax)
         {
-                if (DynamicPinIsChanged())
+
+			if (FLeft.PinIsChanged || FTop.PinIsChanged || FRight.PinIsChanged || FBottom.PinIsChanged)
+            {
+
+                IPluginIn[] tInputs = { FLeft, FTop};
+                int tSliceCount = GetSliceCount(tInputs);
+                
+                mCssPropertiesOwn.Clear();
+
+                for (int i = 0; i < tSliceCount; i++)
                 {
-                    // set slices count
-                    IPluginIn[] tInputs = { FColorInput };
-                    int tSliceCount = GetSliceCount(tInputs);
 
-                    mCssPropertiesOwn.Clear();
+                    double currentLeftSlice;
+                    double currentTopSlice;
+                    double currentRightSlice;
+                    double currentBottomSlice;
+                    string currentUnit;
 
-                    for (int i = 0; i < tSliceCount; i++)
+                    SortedList<string, string> tCssProperty = new SortedList<string, string>();
+                    // get current values
+                    FLeft.GetValue(i, out currentTopSlice);
+                    FTop.GetValue(i, out currentLeftSlice);
+                    FRight.GetValue(i, out currentRightSlice);
+                    FBottom.GetValue(i, out currentBottomSlice);
+                    FUnit.GetString(i, out currentUnit);
+
+					// add css webattributes
+                    if (currentUnit == "Percent")
                     {
-                        SortedList<string, string> tCssProperty = new SortedList<string, string>();
-                        // get current values
-                        RGBAColor currentColorSlice;
-                        string currentPath;
-                        string currentRepeat;
-                        string currentPositon;
-
-
-                        FColorInput.GetColor(i, out currentColorSlice);
-                        FPath.GetString(i, out currentPath);
-                        FRepeat.GetString(i, out currentRepeat);
-                        FPosition.GetString(i, out currentPositon);
-
-                        FileInfo Info = new FileInfo(currentPath);
-
-                        if (Info != null  && Info.Name != "")
-                        {
-                            tCssProperty.Add("background-image", String.Format(@" url({0})", Info.Name));
-                            tCssProperty.Add("background-repeat", currentRepeat);
-                            tCssProperty.Add("background-position", currentPositon);
-
-                            FWebinterfaceSingelton.SetFileToStorage(Info.Name, File.ReadAllBytes(currentPath));
-                        }
-                        else
-                        {
-                            tCssProperty.Add("background-color", "rgb(" + Math.Round(currentColorSlice.R * 100) + "%," + Math.Round(currentColorSlice.G * 100) + "%," + Math.Round(currentColorSlice.B * 100) + "%)");
-                           
-                        }
-
+                        tCssProperty.Add("margin-top", (((double)Math.Round(HTMLToolkit.MapScale(currentTopSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
+                        tCssProperty.Add("margin-left", (((double)Math.Round(HTMLToolkit.MapScale(currentLeftSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
+                        tCssProperty.Add("margin-right", (((double)Math.Round(HTMLToolkit.MapScale(currentRightSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
+                        tCssProperty.Add("margin-bottom", (((double)Math.Round(HTMLToolkit.MapScale(currentBottomSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
                         mCssPropertiesOwn.Add(i, tCssProperty);
-                        // add css webattributes
-                        
+                    }
+                    else
+                    {
+                        tCssProperty.Add("margin-top", Convert.ToString((int)currentTopSlice) + "px");
+                        tCssProperty.Add("margin-left", Convert.ToString((int)currentLeftSlice) + "px");
+                        tCssProperty.Add("margin-right", Convert.ToString((int)currentRightSlice) + "px");
+                        tCssProperty.Add("margin-bottom", Convert.ToString((int) currentBottomSlice) + "px");
+                        mCssPropertiesOwn.Add(i, tCssProperty);
                     }
                 }
-        }
+            }
+        }	
 
         #endregion mainloop
 
-
-
-
         protected override bool DynamicPinIsChanged()
         {
-            return FColorInput.PinIsChanged || FPath.PinIsChanged || FRepeat.PinIsChanged || FPosition.PinIsChanged;
+            return (FLeft.PinIsChanged || FTop.PinIsChanged || FRight.PinIsChanged || FBottom.PinIsChanged || FUnit.PinIsChanged);
         }
     }
 }

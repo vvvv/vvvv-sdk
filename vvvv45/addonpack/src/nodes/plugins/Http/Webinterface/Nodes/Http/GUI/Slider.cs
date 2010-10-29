@@ -132,7 +132,7 @@ namespace VVVV.Nodes.Http.GUI
                     FPluginInfo.Category = "HTTP";
                     //the nodes version: optional. leave blank if not
                     //needed to distinguish two nodes of the same name and category
-                    FPluginInfo.Version = "";
+                    FPluginInfo.Version = "JQuery";
 
                     //the nodes author: your sign
                     FPluginInfo.Author = "phlegma";
@@ -253,7 +253,10 @@ namespace VVVV.Nodes.Http.GUI
 
                     if (ReceivedNewString)
                     {
-                        FResponse.SetValue(i, Convert.ToDouble(tResponse));
+                        if(!String.IsNullOrEmpty(tResponse))
+                        {
+                            FResponse.SetValue(i, Convert.ToDouble(tResponse));
+                        }
                     }
 
                     double currentSliderValue = Convert.ToDouble(tResponse) * 10000;  
@@ -328,6 +331,7 @@ namespace VVVV.Nodes.Http.GUI
                     SliderParams.Set("value", currentSliderValue);
                     JQueryExpression SliderDocumentReadyHandler = new JQueryExpression(SelectorSlider);
                     SliderDocumentReadyHandler.ApplyMethodCall("slider", SliderParams);
+                    //SliderDocumentReadyHandler.Css("position", "absolute");
                     JQuery SliderDocumentReady = JQuery.GenerateDocumentReady(SliderDocumentReadyHandler);
 
 

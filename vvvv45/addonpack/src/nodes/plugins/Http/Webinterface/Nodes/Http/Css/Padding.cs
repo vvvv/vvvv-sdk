@@ -41,6 +41,7 @@ using VVVV.Nodes.Http.BaseNodes;
 
 
 
+
 //the vvvv node namespace
 namespace VVVV.Nodes.HttpGUI.CSS
 {
@@ -68,6 +69,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
         private IValueIn FLeft;
         private IValueIn FRight;
         private IValueIn FBottom;
+        private IEnumIn FUnit;
 
         #endregion field declaration
 
@@ -124,7 +126,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
 
-                FHost.Log(TLogType.Message, "Transform (CSS) Node is being deleted");
+                FHost.Log(TLogType.Message, "Padding (HTTP CSS) Node is being deleted");
 
                 // Note that this is not thread safe.
                 // Another thread could start disposing the object
@@ -243,6 +245,10 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
             FHost.CreateValueInput("Bottom", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBottom);
             FTop.SetSubType(-1, 1, 0.01, 1, false, false, false);
+
+            FHost.UpdateEnum("Unit", "Percent", new string[] { "Percent", "Pixel" });
+            FHost.CreateEnumInput("Unit", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FUnit);
+            FUnit.SetSubType("Unit");
            
         }
 
@@ -289,6 +295,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
                     double currentTopSlice;
                     double currentRightSlice;
                     double currentBottomSlice;
+                    string currentUnitSlice;
 
                     SortedList<string, string> tCssProperty = new SortedList<string, string>();
                     // get current values
@@ -296,14 +303,26 @@ namespace VVVV.Nodes.HttpGUI.CSS
                     FTop.GetValue(i, out currentLeftSlice);
                     FRight.GetValue(i, out currentRightSlice);
                     FBottom.GetValue(i, out currentBottomSlice);
+                    FUnit.GetString(i, out currentUnitSlice);
 
 					// add css webattributes
-                    tCssProperty.Add("padding-top", (((double)Math.Round(HTMLToolkit.MapScale(currentTopSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
-                    tCssProperty.Add("padding-left", (((double)Math.Round(HTMLToolkit.MapScale(currentLeftSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
-                    tCssProperty.Add("padding-right", (((double)Math.Round(HTMLToolkit.MapScale(currentRightSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
-                    tCssProperty.Add("padding-bottom", (((double)Math.Round(HTMLToolkit.MapScale(currentBottomSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
-                    
-                    mCssPropertiesOwn.Add(i, tCssProperty);
+                    if (currentUnitSlice == "Percent")
+                    {
+                        tCssProperty.Add("padding-top", (((double)Math.Round(HTMLToolkit.MapScale(currentTopSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
+                        tCssProperty.Add("padding-left", (((double)Math.Round(HTMLToolkit.MapScale(currentLeftSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
+                        tCssProperty.Add("padding-right", (((double)Math.Round(HTMLToolkit.MapScale(currentRightSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
+                        tCssProperty.Add("padding-bottom", (((double)Math.Round(HTMLToolkit.MapScale(currentBottomSlice, 0, 2, 0, 100), 1)).ToString() + "%").Replace(",", "."));
+
+                        mCssPropertiesOwn.Add(i, tCssProperty);
+                    }
+                    else
+                    {
+                        tCssProperty.Add("padding-top", Convert.ToString((int)currentTopSlice) + "px");
+                        tCssProperty.Add("padding-left", Convert.ToString((int)currentLeftSlice) + "px");
+                        tCssProperty.Add("padding-right", Convert.ToString((int)currentRightSlice) + "px");
+                        tCssProperty.Add("padding-bottom", Convert.ToString((int)currentBottomSlice) + "px");
+                        mCssPropertiesOwn.Add(i, tCssProperty);
+                    }
                 }
             }
         }	
@@ -312,7 +331,7 @@ namespace VVVV.Nodes.HttpGUI.CSS
 
         protected override bool DynamicPinIsChanged()
         {
-            return (FLeft.PinIsChanged || FTop.PinIsChanged || FRight.PinIsChanged || FBottom.PinIsChanged);
+            return (FLeft.PinIsChanged || FTop.PinIsChanged || FRight.PinIsChanged || FBottom.PinIsChanged || FUnit.PinIsChanged);
         }
     }
 }

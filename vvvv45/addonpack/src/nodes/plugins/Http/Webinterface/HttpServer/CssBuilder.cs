@@ -94,6 +94,7 @@ namespace VVVV.Webinterface.HttpServer
 
             mCssRules.Add(BuildFirstSlice());
             mCssRules.Add(BuildNodeRule());
+            mNodeCss.Clear();
             foreach (string pPair in mCssRules)
             {
                 mCssFile.Append(pPair + Environment.NewLine);
@@ -118,6 +119,7 @@ namespace VVVV.Webinterface.HttpServer
                 else
                 {
                     mCssRules.Add(BuildNodeRule());
+                    mNodeCss.Clear();
                     mCssRules.Add(BuildFirstSlice());
                     mActuallNodeId = pNodeId;
                     mFirstSlice = pProperties;

@@ -115,7 +115,7 @@ namespace VVVV.Nodes.Http.CSS
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
 
-                FHost.Log(TLogType.Message, "Properties (Http CSS) Node is being deleted");
+                FHost.Log(TLogType.Message, "Properties (HTTP CSS) Node is being deleted");
 
                 // Note that this is not thread safe.
                 // Another thread could start disposing the object
@@ -371,6 +371,7 @@ namespace VVVV.Nodes.Http.CSS
         }
 
         #endregion mainloop
+
 
         protected override bool DynamicPinIsChanged()
         {

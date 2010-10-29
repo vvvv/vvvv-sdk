@@ -33,7 +33,6 @@ namespace VVVV.Nodes.Http.BaseNodes
         public IHttpGUIIO FUpstreamHttpGuiIn;
 
 		public ITransformIn FTransformIn;
-
         private IValueIn FSendPolling;
 
 		private IEnumIn FPositionType;
@@ -45,7 +44,6 @@ namespace VVVV.Nodes.Http.BaseNodes
 
 		public INodeIn FJQueryNodeInput;
 		protected IJQueryIO FUpstreamJQueryNodeInterface;
-
 		protected IValueIn FSavePostedPropertiesValueInput;
 
 		public INodeOut FHttpGuiOut;
@@ -61,6 +59,9 @@ namespace VVVV.Nodes.Http.BaseNodes
         private bool FDisconnectStyle = false;
 
         private SortedList<int, SortedList<string, XmlDocument>> FPollingMessages = new SortedList<int, SortedList<string, XmlDocument>>();
+
+        private IStringOut FNodeIdOut;
+        private IStringOut FSliceIdOut;
 	
 
         #endregion field Definition
@@ -123,6 +124,12 @@ namespace VVVV.Nodes.Http.BaseNodes
             FHttpGuiOut.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
             FHttpGuiOut.SetInterface(this);
             FHttpGuiOut.Order = -1;
+
+            FHost.CreateStringOutput("NodeId", TSliceMode.Single, TPinVisibility.Hidden, out FNodeIdOut);
+            FNodeIdOut.SetSubType("",false);
+
+            FHost.CreateStringOutput("SliceIds", TSliceMode.Dynamic, TPinVisibility.Hidden, out FSliceIdOut);
+            FSliceIdOut.SetSubType("", false);
 
 			
         }
@@ -271,6 +278,8 @@ namespace VVVV.Nodes.Http.BaseNodes
                 }
                 else
                 {
+                    FSliceIdOut.SliceCount = SpreadMax;
+
                     for (int i = FSpreadMax; i < SpreadMax; i++)
                     {
                         GuiDataObject tObject = new GuiDataObject();
@@ -278,7 +287,12 @@ namespace VVVV.Nodes.Http.BaseNodes
 
                         FGuiDataList[i].NodeId = FNodeId;
                         FGuiDataList[i].SliceId = FSliceId[i];
+
+                        FSliceIdOut.SetString(i, FSliceId[i]);
                     }
+
+
+                    FNodeIdOut.SetString(0, FNodeId);
                 }
             }
 
@@ -480,7 +494,7 @@ namespace VVVV.Nodes.Http.BaseNodes
 
             # region Upstream Css Properties
 
-            int usSStyle;
+            //int usSStyle;
             if (FUpstreamStyle != null)
             {
                 if (FHttpStyleIn.IsConnected && (FHttpStyleIn.PinIsChanged || FUpstreamStyle.PinIsChanged() || FChangedSpreadSize))
@@ -495,7 +509,7 @@ namespace VVVV.Nodes.Http.BaseNodes
                     {
                         //get upstream slice index
 
-                        FHttpStyleIn.GetUpsreamSlice(i, out usSStyle);
+                        //FHttpStyleIn.GetUpsreamSlice(i, out usSStyle);
 
                         SortedList<string, string> tSliceCssPropertie;
                         FUpstreamStyle.GetCssProperties(i, out tSliceCssPropertie);

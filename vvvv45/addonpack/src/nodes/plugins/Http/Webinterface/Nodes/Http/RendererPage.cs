@@ -544,22 +544,29 @@ namespace VVVV.Nodes.Http
                     FTitel.GetString(0, out currentSliceTitel);
                     mPage.Head.Insert(new Title(currentSliceTitel));
 
-                    // Css File
+                    //Jquery Files
+                    mPage.Head.Insert(new HeaderLink("jquery-ui-1.8.5.custom.css", "stylesheet", "text/css"));
+                    mPage.Head.Insert(new JavaScript("jquery-1.4.2.min.js", true));
+                    mPage.Head.Insert(new JavaScript("jquery-ui-1.8.5.custom.min.js", true));
+
+                    //VVVV Files
+                    mPage.Head.Insert(new JavaScript(mPageName + ".js", true));
                     mPage.Head.Insert(new HeaderLink(mPageName + ".css", "stylesheet", "text/css"));
-                    mPage.Head.Insert(new HeaderLink("jquery.css", "stylesheet", "text/css"));
-                    mPage.Head.Insert(new HeaderLink("colorpicker.css", "stylesheet", "text/css"));
-                    mPage.Head.Insert(new HeaderLink("checkbox.css", "stylesheet", "text/css"));
-                    mPage.Head.Insert(new HeaderLink("safaricheck.css", "stylesheet", "text/css"));
- 
-                    mPage.Head.Insert(new JavaScript("jquery_1_4_2.js", true));
+
+                    //Timer und untiles
                     mPage.Head.Insert(new JavaScript("jquerytimer.js", true));
                     mPage.Head.Insert(new JavaScript("utils.js", true));
-                    mPage.Head.Insert(new JavaScript("jqueryUI.js", true));
+                    
+                    //ColorpickerFiles
                     mPage.Head.Insert(new JavaScript("colorpicker.js", true));
-                    mPage.Head.Insert(new JavaScript("XMLHttpRequest.js", true));
+                    mPage.Head.Insert(new HeaderLink("colorpicker.css", "stylesheet", "text/css"));
+                    
+                    //Checkboxfiles
                     mPage.Head.Insert(new JavaScript("checkbox.js", true));
+                    //mPage.Head.Insert(new HeaderLink("checkbox.css", "stylesheet", "text/css"));
+                    //mPage.Head.Insert(new HeaderLink("safaricheck.css", "stylesheet", "text/css"));
 
-                    mPage.Head.Insert(new JavaScript(mPageName + ".js", true));
+                    
   
 
                     FUpdateToWebinterface = true;

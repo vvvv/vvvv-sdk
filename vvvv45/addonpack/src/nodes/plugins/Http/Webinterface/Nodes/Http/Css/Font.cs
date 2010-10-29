@@ -75,6 +75,7 @@ namespace VVVV.Nodes.Http.CSS
         private IValueIn FLetterSpacingIn;
         private IStringIn FFontStretchIn;
         private IEnumIn FTextDecortationIn;
+        private IEnumIn FFontUnit;
 
 
         #endregion field declaration
@@ -139,7 +140,7 @@ namespace VVVV.Nodes.Http.CSS
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
 
-                FHost.Log(TLogType.Message, "Padding(CSS) Node is being deleted");
+                FHost.Log(TLogType.Message, "Font (HTTP CSS) Node is being deleted");
 
                 // Note that this is not thread safe.
                 // Another thread could start disposing the object
@@ -276,6 +277,10 @@ namespace VVVV.Nodes.Http.CSS
             FHost.CreateStringInput("Stretch", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FFontStretchIn);
             FFontStretchIn.SetSubType("normal", false);
 
+            FHost.UpdateEnum("FontUnit", "Percent", new string[] { "Percent", "Pixel", "Point", "Pica" });
+            FHost.CreateEnumInput("FontUnit", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FFontUnit);
+            FFontUnit.SetSubType("FontUnit");
+
             
         }
 
@@ -328,6 +333,7 @@ namespace VVVV.Nodes.Http.CSS
                     double currentWordSpacing;
                     double currentLetterSpacing;
                     string currentFontStretch;
+                    string currentFontUnit;
                     SortedList<string, string> tCssProperty = new SortedList<string,string>();
                     
                     // get current values
@@ -340,10 +346,26 @@ namespace VVVV.Nodes.Http.CSS
                     FWordSpacingIn.GetValue(i,out currentWordSpacing);
                     FLetterSpacingIn.GetValue(i,out currentLetterSpacing);
                     FFontStretchIn.GetString(i,out currentFontStretch);
-
+                    FFontUnit.GetString(i, out currentFontUnit);
 					// add css webattributes
 
-                    tCssProperty.Add("font-size",(double)Math.Round(currentFontSizeSlice * 100)+ "%");
+                    if (currentFontUnit == "Point")
+                    {
+                        tCssProperty.Add("font-size", Convert.ToString((int)currentFontSizeSlice) + "pt");
+                    }
+                    else if (currentFontUnit == "Pixel")
+                    {
+                        tCssProperty.Add("font-size", Convert.ToString((int)currentFontSizeSlice) + "px");
+                    }
+                    else if (currentFontUnit == "Pica")
+                    {
+                        tCssProperty.Add("font-size", Convert.ToString((int)currentFontSizeSlice) + "pc");
+                    }
+                    else
+                    {
+                        tCssProperty.Add("font-size", (double)Math.Round(currentFontSizeSlice * 100) + "%");
+                    }
+
                     tCssProperty.Add("color", "rgb(" + Math.Round(currentColorSlice.R * 100) + "%," + Math.Round(currentColorSlice.G * 100) + "%," + Math.Round(currentColorSlice.B * 100) + "%)");
                     tCssProperty.Add("font-family", currentFontFamily);
                     tCssProperty.Add("font-weight", currentFontWeight.ToString());

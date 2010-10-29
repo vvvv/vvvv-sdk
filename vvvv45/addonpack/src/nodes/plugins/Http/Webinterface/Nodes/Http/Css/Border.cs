@@ -131,7 +131,7 @@ namespace VVVV.Nodes.Http.CSS
                     // Release unmanaged resources. If disposing is false,
                     // only the following code is executed.
 
-                    FHost.Log(TLogType.Message, "Border(Http CSS) Node is being deleted");
+                    FHost.Log(TLogType.Message, "Border(HTTP CSS) Node is being deleted");
 
                     // Note that this is not thread safe.
                     // Another thread could start disposing the object
