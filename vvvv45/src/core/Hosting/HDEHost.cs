@@ -289,6 +289,11 @@ namespace VVVV.Hosting
 			FVVVVHost.RemoveListener(listener);
 		}
 		
+		public void GetRoot(out INode root)
+		{
+			FVVVVHost.GetRoot(out root);
+		}
+		
 		public void UpdateEnum(string EnumName, string Default, string[] EnumEntries)
 		{
 			FVVVVHost.UpdateEnum(EnumName, Default, EnumEntries);
@@ -318,6 +323,11 @@ namespace VVVV.Hosting
 		public void Open(string file, bool inActivePatch)
 		{
 			FVVVVHost.Open(file, inActivePatch);
+		}
+		
+		public void SetComponentMode(INode node, ComponentMode componentMode)
+		{
+		    FVVVVHost.SetComponentMode(node, componentMode);
 		}
 		#endregion
 		

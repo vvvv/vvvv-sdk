@@ -17,6 +17,12 @@ namespace VVVV.Hosting
 	    void RemoveListener(IListener listener);
 	    
 	    /// <summary>
+	    /// Returns an interface to the graphs root node
+	    /// </summary>
+	    /// <param name="root">The graphs root node.</param>
+	    void GetRoot(out INode root);
+	    
+	    /// <summary>
 		/// Allows a plugin to create/update an Enum with vvvv
 		/// </summary>
 		/// <param name="EnumName">The Enums name.</param>
@@ -58,6 +64,13 @@ namespace VVVV.Hosting
 		/// <param name="file">The file to open by vvvv.</param>
 		/// <param name="inActivePatch">Whether it should be openend in the active patch or in the root patch.</param>
 		void Open(string file, bool inActivePatch);
+		
+		/// <summary>
+		/// Sets the component mode of the given nodes associated GUI.
+		/// </summary>
+		/// <param name="node">The node whose GUIs ComponentMode is to be changed.</param>
+		/// <param name="componentMode">The new ComponentMode.</param>
+		void SetComponentMode(INode node, ComponentMode componentMode);
 		
 		/// <summary>
 		/// The <see cref="INodeInfoFactory">node info factory</see> used to create <see cref="INodeInfo">node infos</see>.
