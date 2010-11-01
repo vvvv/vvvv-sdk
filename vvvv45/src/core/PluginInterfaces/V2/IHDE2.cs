@@ -17,6 +17,11 @@ namespace VVVV.PluginInterfaces.V2
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IHDEHost
 	{
+	    /// <summary>
+	    /// Returns an interface to the graphs root node
+	    /// </summary>
+	    /// <param name="root">The graphs root node.</param>
+	    void GetRoot(out INode root);
 		/// <summary>
 		/// Allows a plugin to register IListeners on the host
 		/// </summary>
@@ -66,6 +71,13 @@ namespace VVVV.PluginInterfaces.V2
 		void Open(string file, bool inActivePatch);
 		
 		/// <summary>
+		/// Sets the component mode of the given nodes associated GUI.
+		/// </summary>
+		/// <param name="node">The node whose GUIs ComponentMode is to be changed.</param>
+		/// <param name="componentMode">The new ComponentMode.</param>
+		void SetComponentMode(INode node, ComponentMode componentMode);
+		
+		/// <summary>
 		/// The addon factories used to collect node infos and create nodes.
 		/// </summary>
 		List<IAddonFactory> AddonFactories
@@ -113,7 +125,7 @@ namespace VVVV.PluginInterfaces.V2
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IWindowSwitcher: IPluginHDE
 	{
-		void Initialize(IWindow currentWindow, out int width, out int height);
+	    void Initialize();
 		void AfterShow();
 		void Up();
 		void Down();
@@ -126,7 +138,7 @@ namespace VVVV.PluginInterfaces.V2
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IWindowSwitcherHost
 	{
-		void HideMe(IWindow window);
+		void HideMe();		
 	}	
 	#endregion WindowSwitcher
 	
@@ -196,6 +208,13 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		/// <returns>Returns this nodes INodeInfo.</returns>
 		INodeInfo GetNodeInfo();
+		/// <summary>
+		/// Check if the node can offer a GUI window
+		/// </summary>
+		/// <returns>Returns true if this node can offer a GUI window.</returns>
+		bool HasGUI();
+		bool HasPatch();
+		bool HasCode();
 		
 		//todo: check GetChildren mem leak?!
 		int GetChildCount();

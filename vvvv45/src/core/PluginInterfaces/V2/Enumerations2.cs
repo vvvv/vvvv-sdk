@@ -77,6 +77,30 @@ namespace VVVV.PluginInterfaces.V2
 	};
 	
 	/// <summary>
+	/// Used to set the <see cref="VVVV.PluginInterfaces.V1.PluginInfo.InitialComponentMode">InitialComponentMode</see>
+	/// in <see cref="VVVV.PluginInterfaces.V1.PluginInfo">IPluginInfo</see> which specifies the ComponentMode
+	/// for a plugin when it is being created.
+	/// </summary>
+	public enum ComponentMode {
+		/// <summary>
+		/// The plugins GUI will be hidden, only its node is visible.
+		/// </summary>
+		Hidden,
+		/// <summary>
+		/// The plugins GUI will be showing in a box in the patch.
+		/// </summary>
+		InABox,
+		/// <summary>
+		/// The plugins GUI will be showing in its own window.
+		/// </summary>
+		InAWindow,
+		/// <summary>
+		/// The plugins GUI will be showing fullscreen.
+		/// </summary>
+	    Fullscreen
+	};
+	
+	/// <summary>
 	/// Used to define a specific string type for pin creation
 	/// </summary>
 	public enum StringType
