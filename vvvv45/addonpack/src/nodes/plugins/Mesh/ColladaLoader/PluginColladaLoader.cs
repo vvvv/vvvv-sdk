@@ -105,6 +105,8 @@ namespace VVVV.Nodes
 			FInfo = new List<string>();
 			
 			FCsSourceTypeConfig = csSourceTypeConfig;
+			// COLLADA is right handed by default.
+			FCsSourceTypeConfig[0] = CoordinateSystemType.RightHanded;
 			FUpAxisSourceConfig = upAxisSourceConfig;
 			FRightAxisSourceConfig = rightAxisSourceConfig;
 			FMeterSourceConfig = meterSourceConfig;
@@ -270,6 +272,9 @@ namespace VVVV.Nodes
 			FColladaModel.CoordinateSystemSource = csSource;
 			FColladaModel.CoordinateSystemTarget = csTarget;
 			
+			// Ensure pin is changed.
+			FColladaModelOutput[0] = FColladaModel;
+			
 			GenerateInfoStrings();
 		}
 		
@@ -348,8 +353,7 @@ namespace VVVV.Nodes
 				}
 				catch (Exception e)
 				{
-					FLogger.Log(LogType.Error, e.Message);
-					FLogger.Log(LogType.Debug, e.StackTrace);
+					FLogger.Log(e);
 				}
 			}
 			

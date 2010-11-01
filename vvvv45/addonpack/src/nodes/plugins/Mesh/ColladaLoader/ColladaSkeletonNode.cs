@@ -26,7 +26,7 @@ namespace VVVV.Nodes
     [PluginInfo(Name = "Skeleton",
                 Category = "Skeleton",
                 Version = "Collada",
-                Author = "Elias Holzer",
+                Author = "vvvv group",
                 Help = "Loads a skeleton from a COLLADA document.",
                 Tags = "dae")]
 	public class ColladaSkeletonNode: IPluginEvaluate
@@ -50,7 +50,7 @@ namespace VVVV.Nodes
     	private ITransformOut FInvBindPoseOut;
         private ITransformOut FBindShapeOut;
         
-   		private ISkeleton FSkeleton;
+   		private Skeleton FSkeleton;
    		private Model FColladaModel;
    		private Model.SkinnedInstanceMesh FSelectedMesh;
     	#endregion pins & fields
@@ -133,13 +133,15 @@ namespace VVVV.Nodes
         				FSkeleton.JointTable[bone.Name].BaseTransform = bone.TransformMatrix.ToMatrix4x4();
         			}
         		}
+        		
+        		FSkeletonOut[0] = FSkeleton;
         	}
         }
              
         #endregion mainloop  
         
         #region helper
-        private void CreateSkeleton(ref ISkeleton skeleton, Model.Bone bone)
+        private void CreateSkeleton(ref Skeleton skeleton, Model.Bone bone)
         {
         	IJoint joint = new BoneWrapper(bone);
         	joint.Id = -1;

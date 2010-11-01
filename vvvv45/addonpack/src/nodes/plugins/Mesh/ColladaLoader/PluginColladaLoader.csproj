@@ -45,10 +45,6 @@
     <FileAlignment>4096</FileAlignment>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ColladaSlimDX">
-      <HintPath>dependencies\ColladaSlimDX.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="SkeletonInterfaces">
       <HintPath>dependencies\SkeletonInterfaces.dll</HintPath>
     </Reference>
@@ -97,6 +93,12 @@
     <None Include="Mesh %28EX9.Geometry Collada%29 help.v4p">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\misc\ColladaSlimDX\ColladaSlimDX.csproj">
+      <Project>{2C3DD320-A532-11DD-AD8B-0800200C9A66}</Project>
+      <Name>ColladaSlimDX</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

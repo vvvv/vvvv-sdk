@@ -81,7 +81,7 @@ namespace VVVV.Nodes
 		
 		private Dictionary<int, Mesh> FDeviceMeshes;
     	private Model FColladaModel;
-    	private List<Model.InstanceMesh> selectedInstanceMeshes;
+    	private List<Model.InstanceMesh> FSelectedInstanceMeshes;
     	private static Model.BasicMaterial FNoMaterial = new Model.BasicMaterial();
 		//how transparency tag is treated
 		private bool FOpaqueIsOne = true;
@@ -96,7 +96,7 @@ namespace VVVV.Nodes
         {
             //the nodes constructor
             FDeviceMeshes = new Dictionary<int, Mesh>();
-            selectedInstanceMeshes = new List<Model.InstanceMesh>();
+            FSelectedInstanceMeshes = new List<Model.InstanceMesh>();
             
             host.CreateMeshOutput("Mesh", TSliceMode.Dynamic, TPinVisibility.True, out FMyMeshOutput);
             FMyMeshOutput.Order = int.MinValue;
@@ -127,7 +127,7 @@ namespace VVVV.Nodes
 	        	//recompute the outputs
 	        	if (FColladaModelIn.IsChanged || FIndex.IsChanged || FBinSize.IsChanged)
 				{
-	        		selectedInstanceMeshes.Clear();
+	        		FSelectedInstanceMeshes.Clear();
 	        		
 	        		FColladaModel = FColladaModelIn[0];
 	        		
@@ -157,7 +157,7 @@ namespace VVVV.Nodes
 							for (int j = index; j < index + binSize; j++)
 							{
 								Model.InstanceMesh instanceMesh = FColladaModel.InstanceMeshes[j % FColladaModel.InstanceMeshes.Count];
-								selectedInstanceMeshes.Add(instanceMesh);
+								FSelectedInstanceMeshes.Add(instanceMesh);
 								
 								FLogger.Log(LogType.Debug, "Instance of mesh '" + instanceMesh + "' loaded.");
 								
@@ -228,14 +228,15 @@ namespace VVVV.Nodes
 	        	
 	        	if (FColladaModelIn.IsChanged || FIndex.IsChanged || FBinSize.IsChanged || FTimeInput.IsChanged)
 	        	{
-	        		int maxCount = Math.Max(FTimeInput.SliceCount, selectedInstanceMeshes.Count);
+	        		int maxCount = Math.Max(FTimeInput.SliceCount, FSelectedInstanceMeshes.Count);
 					List<Matrix> transforms = new List<Matrix>();
 					List<Matrix> skinningTransforms = new List<Matrix>();
 					List<Matrix> bindShapeTransforms = new List<Matrix>();
-					for (int i = 0; i < maxCount && selectedInstanceMeshes.Count > 0; i++)
+					List<Matrix> invBindPoseTransforms = new List<Matrix>();
+					for (int i = 0; i < maxCount && FSelectedInstanceMeshes.Count > 0; i++)
 					{
-						int meshIndex = i % selectedInstanceMeshes.Count;
-						Model.InstanceMesh instanceMesh = selectedInstanceMeshes[meshIndex];
+						int meshIndex = i % FSelectedInstanceMeshes.Count;
+						Model.InstanceMesh instanceMesh = FSelectedInstanceMeshes[meshIndex];
 						
 						float time = FTimeInput[i];
 						Matrix m = FColladaModel.GetAbsoluteTransformMatrix(instanceMesh, time);
@@ -248,14 +249,11 @@ namespace VVVV.Nodes
 						if (instanceMesh is Model.SkinnedInstanceMesh) {
 							Model.SkinnedInstanceMesh skinnedInstanceMesh = (Model.SkinnedInstanceMesh) instanceMesh;							
 							skinnedInstanceMesh.ApplyAnimations(time);
-							skinningTransforms = skinnedInstanceMesh.GetSkinningMatrices();  // am i right, that this whole thing will only work with 1 selected mesh?
+							skinningTransforms.AddRange(skinnedInstanceMesh.GetSkinningMatrices());  // am i right, that this whole thing will only work with 1 selected mesh?
 							bindShapeTransforms.Add(skinnedInstanceMesh.BindShapeMatrix);
 							FInvBindPoseTransformOutput.SliceCount = skinnedInstanceMesh.InvBindMatrixList.Count;
-							for (int j=0; j<skinnedInstanceMesh.InvBindMatrixList.Count; j++)
-							{
-								FInvBindPoseTransformOutput.SetMatrix(j, skinnedInstanceMesh.InvBindMatrixList[j].ToMatrix4x4());
-							}
-							
+							for (int j = 0; j<skinnedInstanceMesh.InvBindMatrixList.Count; j++)
+								invBindPoseTransforms.Add(skinnedInstanceMesh.InvBindMatrixList[j]);
 						}
 					}
 					
@@ -270,6 +268,10 @@ namespace VVVV.Nodes
 					FBindShapeTransformOutput.SliceCount = bindShapeTransforms.Count;
 					for (int j = 0; j < bindShapeTransforms.Count; j++)
 						FBindShapeTransformOutput.SetMatrix(j, bindShapeTransforms[j].ToMatrix4x4());
+					
+					FInvBindPoseTransformOutput.SliceCount = invBindPoseTransforms.Count;
+					for (int j = 0; j<invBindPoseTransforms.Count; j++)
+						FInvBindPoseTransformOutput.SetMatrix(j, invBindPoseTransforms[j].ToMatrix4x4());
 	        	}
         	}
         	catch (Exception e)
@@ -292,13 +294,13 @@ namespace VVVV.Nodes
 				if (!FDeviceMeshes.TryGetValue(OnDevice, out m))
 				{
 					//if resource is not yet created on given Device, create it now
-					if (selectedInstanceMeshes.Count > 0)
+					if (FSelectedInstanceMeshes.Count > 0)
 					{
 						FLogger.Log(LogType.Debug, "Creating Resource...");
 						Device dev = Device.FromPointer(new IntPtr(OnDevice));
 						try
 						{
-							m = CreateUnion3D9Mesh(dev, selectedInstanceMeshes);
+							m = CreateUnion3D9Mesh(dev, FSelectedInstanceMeshes);
 							FDeviceMeshes.Add(OnDevice, m);
 						}
 						catch (Exception e)
