@@ -143,8 +143,8 @@ namespace VVVV.Hosting
 			foreach (var factory in AddonFactories)
 				AddFactory(factory);
 			
-			//NodeCollection.AddJob(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
-			NodeCollection.AddUnsorted(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed"))+ "plugins");
+			NodeCollection.AddJob(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
+			//NodeCollection.AddUnsorted(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed"))+ "plugins");
 			NodeCollection.Collect();
 			
 			//now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
