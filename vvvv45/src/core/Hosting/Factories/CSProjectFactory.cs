@@ -60,13 +60,13 @@ namespace VVVV.Hosting.Factories
 				}
 			}
 			
-			LoadNodeInfosFromFile(project.AssemblyLocation, ref nodeInfos);
+			LoadNodeInfosFromFile(project.AssemblyLocation, filename, ref nodeInfos);
 			
 			foreach (var nodeInfo in nodeInfos)
 			{
 				nodeInfo.Type = NodeType.Dynamic;
 				// TODO: Fix this
-//				nodeInfo.Filename = filename;
+				//nodeInfo.Filename = filename;
 				nodeInfo.Executable.Project = project;
 			}
 			

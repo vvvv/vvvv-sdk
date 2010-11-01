@@ -132,12 +132,12 @@ namespace VVVV.Hosting.Factories
 			
 			// We can't handle dynamic plugins
 			if (!IsDynamicAssembly(filename))
-				LoadNodeInfosFromFile(filename, ref nodeInfos);
+				LoadNodeInfosFromFile(filename, filename, ref nodeInfos);
 			
 			return nodeInfos;
 		}
 		
-		protected void LoadNodeInfosFromFile(string filename, ref List<INodeInfo> nodeInfos)
+		protected void LoadNodeInfosFromFile(string filename, string sourcefilename, ref List<INodeInfo> nodeInfos)
 		{
 			// See if it's a .net assembly
 			if (!IsDotNetAssembly(filename))
@@ -152,7 +152,7 @@ namespace VVVV.Hosting.Factories
 				if (!FCatalogCache.ContainsKey(filename))
 					FCatalogCache[filename] = new AssemblyCatalog(filename);
 				
-				foreach (var nodeInfo in ExtractNodeInfosFromCatalog(FCatalogCache[filename], filename))
+				foreach (var nodeInfo in ExtractNodeInfosFromCatalog(FCatalogCache[filename], filename, sourcefilename))
 				{
 					var executable = new DotNetExecutable(null, new Lazy<Assembly>(() => Assembly.LoadFrom(filename)));
 					if (nodeInfo.Executable == null)
@@ -168,7 +168,7 @@ namespace VVVV.Hosting.Factories
 					var assembly = Assembly.LoadFrom(filename);
 					
 					// Check for V1 style plugins
-					foreach (var nodeInfo in ExtractNodeInfosFromAssembly(assembly, filename))
+					foreach (var nodeInfo in ExtractNodeInfosFromAssembly(assembly, sourcefilename))
 					{
 						var executable = new DotNetExecutable(null, assembly);
 						if (nodeInfo.Executable == null)
@@ -261,7 +261,7 @@ namespace VVVV.Hosting.Factories
 		
 		#region Helper functions
 		
-		protected IEnumerable<INodeInfo> ExtractNodeInfosFromCatalog(ComposablePartCatalog catalog, string filename)
+		protected IEnumerable<INodeInfo> ExtractNodeInfosFromCatalog(ComposablePartCatalog catalog, string filename, string sourcefilename)
 		{
 			var nodeInfos = new Dictionary<string, INodeInfo>();
 			
@@ -275,7 +275,7 @@ namespace VVVV.Hosting.Factories
 					metadata.Name, 
 					metadata.Category, 
 					metadata.Version, 
-					filename);
+					sourcefilename);
 				
 				nodeInfo.BeginUpdate();
 				nodeInfo.Shortcut = metadata.Shortcut;
@@ -324,7 +324,7 @@ namespace VVVV.Hosting.Factories
 			return nodeInfos.Values;
 		}
 		
-		protected IEnumerable<INodeInfo> ExtractNodeInfosFromAssembly(Assembly assembly, string filename)
+		protected IEnumerable<INodeInfo> ExtractNodeInfosFromAssembly(Assembly assembly, string sourcefilename)
 		{
 			foreach (Type type in assembly.GetTypes())
 			{
@@ -341,7 +341,7 @@ namespace VVVV.Hosting.Factories
 								pluginNodeInfo.Name, 
 								pluginNodeInfo.Category, 
 								pluginNodeInfo.Version,
-								filename);
+								sourcefilename);
 							
 							nodeInfo.BeginUpdate();
 							nodeInfo.UpdateFromNodeInfo(pluginNodeInfo);
@@ -362,7 +362,7 @@ namespace VVVV.Hosting.Factories
 								pluginInfo.Name, 
 								pluginInfo.Category, 
 								pluginInfo.Version,
-								filename);
+								sourcefilename);
 							
 							nodeInfo.BeginUpdate();
 							nodeInfo.UpdateFromPluginInfo(pluginInfo);
