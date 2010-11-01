@@ -47,7 +47,7 @@ namespace VVVV.Hosting.Factories
 			FHDEHost.AddListener(this);
 		}
 		
-		public IEnumerable<INodeInfo> ExtractNodeInfos(string filename)
+		public IEnumerable<INodeInfo> ExtractNodeInfos(string filename, string arguments)
 		{
 			// Present the user with all files associated with this filename.
 			var nodeInfo = CreateNodeInfo(filename);

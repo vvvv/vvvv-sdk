@@ -18,7 +18,7 @@ namespace VVVV.Hosting
 		
 		void GetHDEPlugins(out IPluginBase nodeBrowser, out IPluginBase windowSwitcher, out IPluginBase kommunikator);
 	
-	    void ExtractNodeInfos(string filename, out INodeInfo[] nodeInfos);
+	    void ExtractNodeInfos(string filename, string arguments, out INodeInfo[] nodeInfos);
 	
 	    void Add(IAddonHost host, INodeInfo nodeInfo);
 	

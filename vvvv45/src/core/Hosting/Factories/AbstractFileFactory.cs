@@ -89,24 +89,10 @@ namespace VVVV.Hosting.Factories
 		}
 		
 		//return nodeinfos from systemname
-		public IEnumerable<INodeInfo> ExtractNodeInfos(string systemname)
-		{
-			// systemname is of form FILENAME[|ARGUMENTS], for example:
-			// - C:\Path\To\Assembly.dll
-			// or
-			// - C:\Path\To\Assembly.dll|Namespace.Class
-			
-			string filename = systemname;
-			string arguments = null;
-			
-			int pipeIndex = systemname.IndexOf('|');
-			if (pipeIndex >= 0)
-			{
-				filename = systemname.Substring(0, pipeIndex);
-				arguments = systemname.Substring(pipeIndex + 1);
-			}
-			
-			if (Path.GetExtension(filename) != FileExtension) return new INodeInfo[0];
+		public IEnumerable<INodeInfo> ExtractNodeInfos(string filename, string arguments)
+		{			
+			if (Path.GetExtension(filename) != FileExtension) 
+				return new INodeInfo[0];
 			
 			IEnumerable<INodeInfo> nodeInfos;
 			
@@ -121,7 +107,7 @@ namespace VVVV.Hosting.Factories
 			
 			// If additional arguments are present vvvv is only interested in one specific
 			// NodeInfo -> look for it.
-			if (arguments != null)
+			if ((arguments != null) && (arguments != ""))
 			{
 				foreach (var nodeInfo in nodeInfos)
 				{
@@ -129,6 +115,7 @@ namespace VVVV.Hosting.Factories
 						return new INodeInfo[] { nodeInfo };
 				}
 				
+				// give back nothing if not found
 				return new INodeInfo[0];
 			}
 			
@@ -455,7 +442,7 @@ namespace VVVV.Hosting.Factories
 		//add all addons included with this filename
 		protected virtual void AddFile(string filename)
 		{
-			foreach(var nodeInfo in ExtractNodeInfos(filename))
+			foreach(var nodeInfo in ExtractNodeInfos(filename, null))
 				if (nodeInfo.Filename == filename)
 					OnNodeInfoAdded(nodeInfo);
 				else
@@ -487,7 +474,7 @@ namespace VVVV.Hosting.Factories
 			//if a newly extracted one is present in the old ones do nothing
 			//if a newly extracted one is not present in the old ones add it
 			
-			foreach(var newNodeInfo in ExtractNodeInfos(filename))
+			foreach(var newNodeInfo in ExtractNodeInfos(filename, null))
 			{
 				bool present = false;
 				foreach(var entry in oldInfos)
