@@ -64,9 +64,6 @@ namespace VVVV.Nodes.Finder
             FHDEHost.GetRoot(out FRoot);
             var mappingRegistry = new MappingRegistry();
             mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
-            mappingRegistry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
-            mappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
-            mappingRegistry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();
             
             FHierarchyViewer.Registry = mappingRegistry;
             FHierarchyViewer.Input = new PatchNode(FRoot, this);
