@@ -59,10 +59,14 @@ namespace VVVV.Hosting.Factories
 				}
 			}
 			
-			if (!project.IsLoaded)
+			var isLoaded = project.IsLoaded;
+			if (!isLoaded)
 				project.Load();
 			
 			project.Compile();
+			
+			if (!isLoaded)
+				project.Unload();
 
 			yield return FProjectNodeInfo[project];
 		}
@@ -135,6 +139,8 @@ namespace VVVV.Hosting.Factories
 				return false;
 			
 			var project = FProjects[nodeInfo.Filename];
+			if (!project.IsLoaded)
+				project.Load();
 			
 			//get the code of the FXProject associated with the nodeinfos filename
 			effectHost.SetEffect(nodeInfo.Filename, project.Code);
@@ -194,7 +200,7 @@ namespace VVVV.Hosting.Factories
 			return true;
 		}
 		
-		protected override bool CloneNode(INodeInfo nodeInfo, string path, string name, string category, string version)
+		protected override bool CloneNode(INodeInfo nodeInfo, string path, string name, string category, string version, out string filename)
 		{
 			if (nodeInfo.Type == NodeType.Effect)
 			{
@@ -226,10 +232,11 @@ namespace VVVV.Hosting.Factories
 				// Save the project.
 				newProject.Save();
 				
+				filename = newProject.Location.LocalPath;
 				return true;
 			}
 			
-			return base.CloneNode(nodeInfo, path, name, category, version);
+			return base.CloneNode(nodeInfo, path, name, category, version, out filename);
 		}
 	}
 }

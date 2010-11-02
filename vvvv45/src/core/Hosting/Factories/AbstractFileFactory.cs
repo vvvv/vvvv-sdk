@@ -161,7 +161,7 @@ namespace VVVV.Hosting.Factories
 		
 		protected abstract bool DeleteNode(INodeInfo nodeInfo, TNodeHost nodeHost);
 		
-		public bool Clone(INodeInfo nodeInfo, string path, string name, string category, string version)
+		public bool Clone(INodeInfo nodeInfo, string path, string name, string category, string version, out INodeInfo newNodeInfo)
 		{
 			if (Path.GetExtension(nodeInfo.Filename) == FileExtension)
 			{
@@ -169,14 +169,27 @@ namespace VVVV.Hosting.Factories
 				// might be not set -> Update the nodeInfo.
 				UpdateNodeInfos(nodeInfo.Filename);
 				
-				return CloneNode(nodeInfo, path, name, category, version);
+				string filename;
+				if (CloneNode(nodeInfo, path, name, category, version, out filename))
+				{
+					foreach (var possibleNodeInfo in GetNodeInfos(filename))
+					{
+						if (possibleNodeInfo.Name == name && possibleNodeInfo.Category == category && possibleNodeInfo.Version == version)
+						{
+							newNodeInfo = possibleNodeInfo;
+							return true;
+						}
+					}
+				}
 			}
 			
+			newNodeInfo = null;
 			return false;
 		}
 		
-		protected virtual bool CloneNode(INodeInfo nodeInfo, string path, string name, string category, string version)
+		protected virtual bool CloneNode(INodeInfo nodeInfo, string path, string name, string category, string version, out string filename)
 		{
+			filename = null;
 			return false;
 		}
 		

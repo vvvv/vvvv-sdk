@@ -197,7 +197,8 @@ namespace VVVV.Hosting
 		
 		public void Add(IAddonHost host, INodeInfo nodeInfo)
 		{
-			nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
+			if (!(nodeInfo is ProxyNodeInfoFactory.ProxyNodeInfo))
+				nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
 			
 			try
 			{
@@ -231,7 +232,8 @@ namespace VVVV.Hosting
 		
 		public void Remove(IAddonHost host, INodeInfo nodeInfo)
 		{
-			nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
+			if (!(nodeInfo is ProxyNodeInfoFactory.ProxyNodeInfo))
+				nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
 			
 			try
 			{
@@ -263,22 +265,28 @@ namespace VVVV.Hosting
 			}
 		}
 		
-		public void Clone(INodeInfo nodeInfo, string path, string name, string category, string version)
+		public INodeInfo Clone(INodeInfo nodeInfo, string path, string name, string category, string version)
 		{
-			nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
+			if (!(nodeInfo is ProxyNodeInfoFactory.ProxyNodeInfo))
+				nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
 			
 			try
 			{
 				foreach (var factory in AddonFactories)
 				{
-					if (factory.Clone(nodeInfo, path, name, category, version))
-						break;
+					INodeInfo newNodeInfo;
+					if (factory.Clone(nodeInfo, path, name, category, version, out newNodeInfo))
+					{
+						return NodeInfoFactory.ToInternal(newNodeInfo);
+					}
 				}
 			}
 			catch (Exception e)
 			{
 				Logger.Log(e);
 			}
+			
+			return null;
 		}
 		
 		#endregion IInternalHDEHost

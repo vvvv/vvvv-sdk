@@ -11,7 +11,7 @@ namespace VVVV.Hosting
 	{
 		#region ProxyNodeInfo
 		
-		private class ProxyNodeInfo : INodeInfo
+		internal class ProxyNodeInfo : INodeInfo
 		{
 			private INodeInfo FNodeInfo;
 			private bool FInUpdate;

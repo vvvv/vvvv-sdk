@@ -141,9 +141,10 @@ namespace VVVV.Hosting.Factories
 			return false;
 		}
 		
-		public bool Clone(INodeInfo nodeInfo, string path, string name, string category, string version)
+		public bool Clone(INodeInfo nodeInfo, string path, string name, string category, string version, out INodeInfo newNodeInfo)
 		{
 			// TODO: What to do here?
+			newNodeInfo = null;
 			return false;
 		}
 		

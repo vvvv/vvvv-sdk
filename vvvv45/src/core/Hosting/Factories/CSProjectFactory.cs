@@ -48,7 +48,7 @@ namespace VVVV.Hosting.Factories
 				if (FSolution.Projects.CanAdd(project))
 				{
 					FSolution.Projects.Add(project);
-					project.ProjectCompiledSuccessfully += new ProjectCompiledHandler(project_ProjectCompiled);
+					project.ProjectCompiledSuccessfully += project_ProjectCompiled;
 				}
 				FProjects[filename] = project;
 			}
@@ -72,8 +72,6 @@ namespace VVVV.Hosting.Factories
 			foreach (var nodeInfo in nodeInfos)
 			{
 				nodeInfo.Type = NodeType.Dynamic;
-				// TODO: Fix this
-				//nodeInfo.Filename = filename;
 				nodeInfo.Executable.Project = project;
 			}
 			
@@ -167,7 +165,7 @@ namespace VVVV.Hosting.Factories
 		
 		#region IAddonFactory
 		
-		protected override bool CloneNode(INodeInfo nodeInfo, string path, string name, string category, string version)
+		protected override bool CloneNode(INodeInfo nodeInfo, string path, string name, string category, string version, out string newFilename)
 		{
 			// See if this nodeInfo belongs to us.
 			var filename = nodeInfo.Filename;
@@ -269,10 +267,11 @@ namespace VVVV.Hosting.Factories
 				// Save the project.
 				newProject.Save();
 				
+				newFilename = newProject.Location.LocalPath;
 				return true;
 			}
 			
-			return base.CloneNode(nodeInfo, path, name, category, version);
+			return base.CloneNode(nodeInfo, path, name, category, version, out newFilename);
 		}
 		
 		#endregion
