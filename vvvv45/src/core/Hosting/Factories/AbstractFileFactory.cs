@@ -98,9 +98,9 @@ namespace VVVV.Hosting.Factories
 			
 			// Regardless of the arguments, we need to load the node infos first.
 			// Do we have the required node infos cached?
-			if (HasCachedNodeInfos(filename))
-				nodeInfos = GetCachedNodeInfos(filename);
-			else
+//			if (HasCachedNodeInfos(filename))
+//				nodeInfos = GetCachedNodeInfos(filename);
+//			else
 			{
 				nodeInfos = LoadAndCacheNodeInfos(filename);
 			}
