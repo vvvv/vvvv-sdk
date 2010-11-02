@@ -216,6 +216,8 @@ namespace VVVV.Hosting.Factories
 				switch (nodeInfo.Type)
 				{
 					case NodeType.Text:
+					case NodeType.Dynamic:
+					case NodeType.Effect:
 						// The following Open will trigger a call by vvvv to IInternalHDEHost.ExtractNodeInfos()
 						// Force the hde host to collect node info only from us.
 						var addonFactories = new List<IAddonFactory>(FHDEHost.AddonFactories);
