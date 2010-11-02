@@ -41,10 +41,17 @@ namespace VVVV.Hosting.Factories
 			// Normalize the filename
 			filename = new Uri(filename).LocalPath;
 			
-			if (!FProjects.ContainsKey(filename))
-				return nodeInfos;
-			
-			var project = FProjects[filename];
+			CSProject project;
+			if (!FProjects.TryGetValue(filename, out project))
+			{
+				project = new CSProject(new Uri(filename));
+				if (FSolution.Projects.CanAdd(project))
+				{
+					FSolution.Projects.Add(project);
+					project.ProjectCompiledSuccessfully += new ProjectCompiledHandler(project_ProjectCompiled);
+				}
+				FProjects[filename] = project;
+			}
 			
 			// Do we need to compile it?
 			if (!IsAssemblyUpToDate(project))
@@ -73,26 +80,9 @@ namespace VVVV.Hosting.Factories
 			return nodeInfos;
 		}
 		
-		protected override void AddFile(string filename)
-		{
-			if (!FProjects.ContainsKey(filename))
-			{
-				var project = new CSProject(new Uri(filename));
-				if (FSolution.Projects.CanAdd(project))
-					FSolution.Projects.Add(project);
-				
-//				project.Load();
-				
-				project.ProjectCompiledSuccessfully += new ProjectCompiledHandler(project_ProjectCompiled);
-				FProjects[filename] = project;
-			}
-			
-			base.AddFile(filename);
-		}
-
 		void project_ProjectCompiled(IProject project, IExecutable executable)
 		{
-    		base.FileChanged(project.Location.LocalPath);
+			base.FileChanged(project.Location.LocalPath);
 		}
 		
 		private bool IsAssemblyUpToDate(IProject project)
@@ -163,7 +153,7 @@ namespace VVVV.Hosting.Factories
 		{
 			var stringBuilder = new StringBuilder();
 			stringBuilder.Append(string.Format("Compilation of {0} failed. See errors below:\n", project));
-				
+			
 			foreach (CompilerError error in results.Errors)
 			{
 				if (!error.IsWarning)

@@ -24,8 +24,7 @@ namespace VVVV.Hosting
 {
 	[PartCreationPolicy(CreationPolicy.Shared)]
 	[Export(typeof(IHDEHost))]
-	[Export(typeof(HDEHost))]
-	public class HDEHost : IInternalHDEHost, IHDEHost
+	class HDEHost : IInternalHDEHost, IHDEHost
 	{
 		const string WINDOW_SWITCHER = "WindowSwitcher (VVVV)";
 		const string KOMMUNIKATOR = "Kommunikator (VVVV)";
@@ -62,8 +61,8 @@ namespace VVVV.Hosting
 		[Export]
 		public ISolution Solution { get; set; }
 		
-		[Export]
-		public INodeInfoFactory NodeInfoFactory { get; set; }
+		[Export(typeof(INodeInfoFactory))]
+		public ProxyNodeInfoFactory NodeInfoFactory { get; set; }
 		
 		[ImportMany]
 		public List<IAddonFactory> AddonFactories
@@ -111,8 +110,8 @@ namespace VVVV.Hosting
 		public void Initialize(IVVVVHost vvvvHost, INodeBrowserHost nodeBrowserHost, IWindowSwitcherHost windowSwitcherHost, IKommunikatorHost kommunikatorHost)
 		{
 			FVVVVHost = vvvvHost;
-			NodeInfoFactory = vvvvHost.NodeInfoFactory;
-			
+			NodeInfoFactory = new ProxyNodeInfoFactory(vvvvHost.NodeInfoFactory);
+
 			// Route log messages to vvvv
 			Logger.AddLogger(new VVVVLogger(FVVVVHost));
 			
@@ -144,7 +143,7 @@ namespace VVVV.Hosting
 				AddFactory(factory);
 			
 			NodeCollection.AddJob(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
-			//NodeCollection.AddUnsorted(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed"))+ "plugins");
+//			NodeCollection.AddUnsorted(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed"))+ "plugins");
 			NodeCollection.Collect();
 			
 			//now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
@@ -190,7 +189,7 @@ namespace VVVV.Hosting
 			foreach(IAddonFactory factory in AddonFactories)
 			{
 				foreach (var nodeInfo in factory.ExtractNodeInfos(filename, arguments))
-					nodeInfos.Add(nodeInfo);
+					nodeInfos.Add(NodeInfoFactory.ToInternal(nodeInfo));
 			}
 			
 			result = nodeInfos.ToArray();
@@ -198,6 +197,8 @@ namespace VVVV.Hosting
 		
 		public void Add(IAddonHost host, INodeInfo nodeInfo)
 		{
+			nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
+			
 			try
 			{
 				if (!FNodeInfoFactoryMap.ContainsKey(nodeInfo))
@@ -230,6 +231,8 @@ namespace VVVV.Hosting
 		
 		public void Remove(IAddonHost host, INodeInfo nodeInfo)
 		{
+			nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
+			
 			try
 			{
 				if (!FNodeInfoFactoryMap.ContainsKey(nodeInfo))
@@ -262,6 +265,8 @@ namespace VVVV.Hosting
 		
 		public void Clone(INodeInfo nodeInfo, string path, string name, string category, string version)
 		{
+			nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
+			
 			try
 			{
 				foreach (var factory in AddonFactories)
@@ -375,8 +380,10 @@ namespace VVVV.Hosting
 		#endregion helper methods
 		
 		#region event handler
-		protected void factory_NodeInfoAdded(IAddonFactory factory, INodeInfo info)
+		protected void factory_NodeInfoAdded(object sender, INodeInfo info)
 		{
+			var factory = sender as IAddonFactory;
+			
 			if (info.Systemname == WINDOW_SWITCHER)
 				FWinSwNodeInfo = info;
 			else if (info.Systemname == KOMMUNIKATOR)
@@ -387,13 +394,17 @@ namespace VVVV.Hosting
 			FNodeInfoFactoryMap.Add(info, factory);
 		}
 		
-		protected void factory_NodeInfoRemoved(IAddonFactory factory, INodeInfo info)
+		protected void factory_NodeInfoRemoved(object sender, INodeInfo info)
 		{
+			var factory = sender as IAddonFactory;
+			
 			FNodeInfoFactoryMap.Remove(info);
 		}
 		
-		public void factory_NodeInfoUpdated(IAddonFactory factory, INodeInfo info)
+		public void factory_NodeInfoUpdated(object sender, INodeInfo info)
 		{
+			var factory = sender as IAddonFactory;
+			
 			// Go through all the running hosts using this changed node info
 			// and create a new plugin for them.
 			foreach (IAddonHost host in GetAffectedHosts(info))

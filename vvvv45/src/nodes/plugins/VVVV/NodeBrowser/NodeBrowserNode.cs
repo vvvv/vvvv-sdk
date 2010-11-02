@@ -30,7 +30,7 @@ namespace VVVV.Nodes.NodeBrowser
 	            InitialWindowWidth = 300,
 	            InitialWindowHeight = 500,
 	            InitialComponentMode = TComponentMode.InAWindow)]
-	public class NodeBrowserPluginNode: UserControl, INodeBrowser, INodeInfoListener, IWindowSelectionListener
+	public class NodeBrowserPluginNode: UserControl, INodeBrowser, IWindowSelectionListener
 	{
 		#region field declaration
 		
@@ -61,13 +61,17 @@ namespace VVVV.Nodes.NodeBrowser
 		{
 			DefaultConstructor();
 			
-			//register as nodeinfolistener at hdehost
+			//register as IWindowSelectionListener at hdehost
 			FHDEHost = host;
 			FHDEHost.AddListener(this);
 			
 			FNodeInfoFactory = nodeInfoFactory;
 			foreach (var nodeInfo in FNodeInfoFactory.NodeInfos)
-				NodeInfoAddedCB(nodeInfo);
+				NodeInfoAddedCB(FNodeInfoFactory, nodeInfo);
+			
+			FNodeInfoFactory.NodeInfoAdded += NodeInfoAddedCB;
+			FNodeInfoFactory.NodeInfoUpdated += NodeInfoUpdatedCB;
+			FNodeInfoFactory.NodeInfoRemoved += NodeInfoRemovedCB;
 			
 			//init category view
 			FCategoryPanel.Redraw();
@@ -287,8 +291,8 @@ namespace VVVV.Nodes.NodeBrowser
 		}
 		#endregion INodeBrowser
 		
-		#region INodeInfoListener
-		public void NodeInfoAddedCB(INodeInfo nodeInfo)
+		#region INodeInfoFactory events
+		public void NodeInfoAddedCB(object sender, INodeInfo nodeInfo)
 		{
 			string nodeVersion = nodeInfo.Version;
 
@@ -303,7 +307,7 @@ namespace VVVV.Nodes.NodeBrowser
 			FNeedsRedraw = true;
 		}
 		
-		public void NodeInfoUpdatedCB(INodeInfo nodeInfo)
+		public void NodeInfoUpdatedCB(object sender, INodeInfo nodeInfo)
 		{
 			FTagPanel.Update(nodeInfo);
         	FClonePanel.Update(nodeInfo);
@@ -312,7 +316,7 @@ namespace VVVV.Nodes.NodeBrowser
         	FNeedsRedraw = true;
 		}
 		
-		public void NodeInfoRemovedCB(INodeInfo nodeInfo)
+		public void NodeInfoRemovedCB(object sender, INodeInfo nodeInfo)
 		{
 			FTagPanel.Remove(nodeInfo);
 			FClonePanel.Remove(nodeInfo);
@@ -320,7 +324,7 @@ namespace VVVV.Nodes.NodeBrowser
 			
 			FNeedsRedraw = true;
 		}
-		#endregion INodeInfoListener
+		#endregion INodeInfoFactory events
 		
 		#region IWindowSelectionListener
 		public void WindowSelectionChangeCB(IWindow window)

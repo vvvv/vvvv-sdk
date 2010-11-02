@@ -52,7 +52,7 @@ namespace VVVV.Hosting.Factories
 		protected ILogger Flogger;
 
 		[Import]
-		public HDEHost HDEHost{get; protected set;}
+		public IHDEHost HDEHost{get; protected set;}
 		
 		public NodeCollection()
 		{

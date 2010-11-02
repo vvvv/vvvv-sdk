@@ -302,18 +302,6 @@ namespace VVVV.PluginInterfaces.V2
     {}
     
     /// <summary>
-    /// Listener interface to be informed of added/removed NodeInfos.
-    /// </summary>
-    [Guid("8FF7C831-8E22-4D72-BCE7-E726C326BF24"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface INodeInfoListener: IListener
-    {
-        void NodeInfoAddedCB(INodeInfo nodeInfo);
-        void NodeInfoUpdatedCB(INodeInfo nodeInfo);
-        void NodeInfoRemovedCB(INodeInfo nodeInfo);
-    }
-    
-    /// <summary>
     /// Listener interface to be informed of a changed node-selection.
     /// </summary>
     [Guid("C9ACADDA-1D3F-410D-B23C-E8D576F4F361"),

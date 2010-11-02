@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
 namespace VVVV.PluginInterfaces.V2
 {
+	public delegate void NodeInfoEventHandler(object sender, INodeInfo nodeInfo);
+	
 	/// <summary>
 	/// Factory to create a <see cref="INodeInfo">nodeInfo</see>.
 	/// </summary>
-	[Guid("26606872-475F-4DDF-AB51-9BCD5BE2532B"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface INodeInfoFactory
 	{
 		/// <summary>
@@ -45,5 +44,9 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
+		
+		event NodeInfoEventHandler NodeInfoAdded;
+		event NodeInfoEventHandler NodeInfoUpdated;
+		event NodeInfoEventHandler NodeInfoRemoved;
 	}
 }

@@ -64,7 +64,7 @@ namespace VVVV.Hosting
 		/// <param name="file">The file to open by vvvv.</param>
 		/// <param name="inActivePatch">Whether it should be openend in the active patch or in the root patch.</param>
 		void Open(string file, bool inActivePatch);
-		
+
 		/// <summary>
 		/// Sets the component mode of the given nodes associated GUI.
 		/// </summary>
@@ -73,9 +73,9 @@ namespace VVVV.Hosting
 		void SetComponentMode(INode node, ComponentMode componentMode);
 		
 		/// <summary>
-		/// The <see cref="INodeInfoFactory">node info factory</see> used to create <see cref="INodeInfo">node infos</see>.
+		/// The <see cref="IInternalNodeInfoFactory">node info factory</see> used to create <see cref="INodeInfo">node infos</see>.
 		/// </summary>
-		INodeInfoFactory NodeInfoFactory
+		IInternalNodeInfoFactory NodeInfoFactory
 		{
 			get;
 		}

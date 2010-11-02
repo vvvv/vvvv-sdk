@@ -192,6 +192,11 @@ namespace VVVV.Hosting.Factories
 				FLogger.Log(LogType.Error, "Extracting node infos from {0} caused the following exception:", filename);
 				FLogger.Log(e);
 			}
+			finally
+			{
+				foreach (var nodeInfo in nodeInfos)
+					nodeInfo.CommitUpdate();
+			}
 		}
 		
 		#endregion
@@ -290,7 +295,6 @@ namespace VVVV.Hosting.Factories
 				nodeInfo.InitialComponentMode = metadata.InitialComponentMode;
 				nodeInfo.AutoEvaluate = metadata.AutoEvaluate;
 				nodeInfo.Ignore = metadata.Ignore;
-				nodeInfo.CommitUpdate();
 				
 				FMEFPlugins[nodeInfo] = pluginExport;
 				nodeInfos.Add(nodeInfo.Systemname, nodeInfo);
@@ -348,7 +352,6 @@ namespace VVVV.Hosting.Factories
 							nodeInfo.Arguments = type.Namespace + "." + type.Name;
 							nodeInfo.Class = type.Name;
 							nodeInfo.Namespace = type.Namespace;
-							nodeInfo.CommitUpdate();
 							
 							yield return nodeInfo;
 							break;
@@ -369,7 +372,6 @@ namespace VVVV.Hosting.Factories
 							nodeInfo.Arguments = type.Namespace + "." + type.Name;
 							nodeInfo.Class = type.Name;
 							nodeInfo.Namespace = type.Namespace;
-							nodeInfo.CommitUpdate();
 							
 							yield return nodeInfo;
 						}

@@ -7,8 +7,6 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2
 {
-	public delegate void NodeInfoEventHandler(IAddonFactory factory, INodeInfo nodeInfo);
-	
 	/// <summary>
 	/// General addon factory
 	/// </summary>
