@@ -61,7 +61,11 @@ namespace VVVV.HDE.ProjectExplorer
 				FMappingRegistry.RegisterDefaultMapping<AddMenuEntry, DefaultAddMenuEntry>();
 				FMappingRegistry.RegisterDefaultMapping(logger);
 				
-				FMappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
+				if (showUnloadedProjectsIn[0])
+					FMappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
+				else
+					FMappingRegistry.RegisterMapping<ISolution, LoadedProjectsSolutionViewProvider>();
+				
 				FMappingRegistry.RegisterMapping<IProject, ProjectViewProvider>();
 				// Do not enumerate IDocument
 				FMappingRegistry.RegisterMapping<IDocument, IEnumerable>(Empty.Enumerable);
@@ -104,8 +108,9 @@ namespace VVVV.HDE.ProjectExplorer
 			}
 			else
 			{
-				FMappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
+				FMappingRegistry.RegisterMapping<ISolution, LoadedProjectsSolutionViewProvider>();
 			}
+			
 			FTreeViewer.Reload();
 		}
 		

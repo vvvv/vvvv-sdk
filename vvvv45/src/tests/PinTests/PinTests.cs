@@ -489,6 +489,9 @@ namespace PinTests
 		
 		protected void TestSpread<T>(ISpread<T> spread, T[] sampleData)
 		{
+			spread.SliceCount = 0;
+			Assert.True(spread.SliceCount == 0);
+			
 			spread.SliceCount = sampleData.Length;
 			Assert.True(spread.SliceCount == sampleData.Length);
 			

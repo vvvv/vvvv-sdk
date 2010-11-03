@@ -98,6 +98,18 @@ namespace VVVV.Hosting.Factories
 			
 			return File.Exists(project.AssemblyLocation) && (projectTime <= assemblyTime);
 		}
+		
+		protected override bool CreateNode(INodeInfo nodeInfo, IPluginHost2 pluginHost)
+		{
+			var executable = nodeInfo.Executable as DotNetExecutable;
+			if (executable != null)
+			{
+				var project = executable.Project;
+				if (!project.IsLoaded)
+					project.Load();
+			}
+			return base.CreateNode(nodeInfo, pluginHost);
+		}
 
 		protected override void DeleteArtefacts(string dir)
 		{
