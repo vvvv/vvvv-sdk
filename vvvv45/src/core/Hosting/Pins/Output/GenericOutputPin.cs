@@ -48,6 +48,21 @@ namespace VVVV.Hosting.Pins.Output
 			}
 		}
 		
+		public override int SliceCount 
+		{
+			get 
+			{ 
+				return base.SliceCount; 
+			}
+			set 
+			{ 
+				if (value != SliceCount)
+					FChanged = true;
+				
+				base.SliceCount = value; 
+			}
+		}
+		
 		public object GetSlice(int slice)
 		{
 			return this[slice];
