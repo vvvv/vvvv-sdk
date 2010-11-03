@@ -39,7 +39,23 @@ namespace VVVV.Nodes.NodeBrowser
 		[Import]
 		public INodeBrowserHost NodeBrowserHost {get; set;}
 		
-		public INodeInfoFactory FNodeInfoFactory;
+		private INodeInfoFactory FNodeInfoFactory;
+        public INodeInfoFactory NodeInfoFactory
+        {
+            get { return FNodeInfoFactory; }
+            set
+            {
+                FNodeInfoFactory = value;
+
+                foreach (var nodeInfo in FNodeInfoFactory.NodeInfos)
+                    NodeInfoAddedCB(FNodeInfoFactory, nodeInfo);
+
+                FNodeInfoFactory.NodeInfoAdded += NodeInfoAddedCB;
+                FNodeInfoFactory.NodeInfoUpdated += NodeInfoUpdatedCB;
+                FNodeInfoFactory.NodeInfoRemoved += NodeInfoRemovedCB;
+            }
+        }
+
 		// Track whether Dispose has been called.
 		private bool FDisposed = false;
 		
@@ -65,13 +81,7 @@ namespace VVVV.Nodes.NodeBrowser
 			FHDEHost = host;
 			FHDEHost.AddListener(this);
 			
-			FNodeInfoFactory = nodeInfoFactory;
-			foreach (var nodeInfo in FNodeInfoFactory.NodeInfos)
-				NodeInfoAddedCB(FNodeInfoFactory, nodeInfo);
-			
-			FNodeInfoFactory.NodeInfoAdded += NodeInfoAddedCB;
-			FNodeInfoFactory.NodeInfoUpdated += NodeInfoUpdatedCB;
-			FNodeInfoFactory.NodeInfoRemoved += NodeInfoRemovedCB;
+            NodeInfoFactory = nodeInfoFactory;
 			
 			//init category view
 			FCategoryPanel.Redraw();
