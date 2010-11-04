@@ -354,7 +354,7 @@ namespace VVVV.Hosting
 			}
 			else
 			{
-				return new IPluginHost2[0];
+				return new IInternalPluginHost[0];
 			}
 		}
 		

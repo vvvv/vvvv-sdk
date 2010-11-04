@@ -244,6 +244,15 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
+		
+		/// <summary>
+		/// Gets the <see cref="IWindow">window</see> of this node. Or null if
+		/// this node doesn't have a window.
+		/// </summary>
+		IWindow Window
+		{
+			get;
+		}
 	}	
 	
 	/// <summary>
@@ -278,10 +287,13 @@ namespace VVVV.PluginInterfaces.V2
 	public interface IWindow
 	{
 		/// <summary>
-		/// Get the windows caption.
+		/// Get/set the windows caption.
 		/// </summary>
-		/// <returns>Returns this windows caption.</returns>
-		string GetCaption();
+		string Caption
+		{
+			get;
+			set;
+		}
 		/// <summary>
 		/// Get the windows type.
 		/// </summary>

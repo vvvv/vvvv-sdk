@@ -33,7 +33,7 @@ namespace VVVV.Hosting.Factories
 		private HostExportProvider FHostExportProvider;
 		private ExportProvider[] FExportProviders;
 		private Dictionary<INodeInfo, ExportFactory<IEditor, IEditorInfo>> FNodeInfos;
-		private Dictionary<IPluginHost2, ExportLifetimeContext<IEditor>> FExportLifetimeContexts;
+		private Dictionary<IInternalPluginHost, ExportLifetimeContext<IEditor>> FExportLifetimeContexts;
 		private int FMoveToLine;
 		private INode FObservedNode;
 		
@@ -43,7 +43,7 @@ namespace VVVV.Hosting.Factories
 			FHostExportProvider = new HostExportProvider();
 			FExportProviders = new ExportProvider[] { parentContainer, FHostExportProvider };
 			FNodeInfos = new Dictionary<INodeInfo, ExportFactory<IEditor, IEditorInfo>>();
-			FExportLifetimeContexts = new Dictionary<IPluginHost2, ExportLifetimeContext<IEditor>>();
+			FExportLifetimeContexts = new Dictionary<IInternalPluginHost, ExportLifetimeContext<IEditor>>();
 			FLogger = logger;
 			FHDEHost = hdeHost;
 			FMoveToLine = -1;
@@ -113,7 +113,7 @@ namespace VVVV.Hosting.Factories
 		
 		public bool Create(INodeInfo nodeInfo, IAddonHost host)
 		{
-			var editorHost = host as IPluginHost2;
+			var editorHost = host as IInternalPluginHost;
 			
 			if (editorHost != null && FNodeInfos.ContainsKey(nodeInfo))
 			{
@@ -140,7 +140,7 @@ namespace VVVV.Hosting.Factories
 		
 		public bool Delete(INodeInfo nodeInfo, IAddonHost host)
 		{
-			var editorHost = host as IPluginHost2;
+			var editorHost = host as IInternalPluginHost;
 			
 			if (editorHost != null && FNodeInfos.ContainsKey(nodeInfo))
 			{

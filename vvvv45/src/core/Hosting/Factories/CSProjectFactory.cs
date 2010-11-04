@@ -104,7 +104,7 @@ namespace VVVV.Hosting.Factories
 			return File.Exists(project.AssemblyLocation) && (projectTime <= assemblyTime);
 		}
 		
-		protected override bool CreateNode(INodeInfo nodeInfo, IPluginHost2 pluginHost)
+		protected override bool CreateNode(INodeInfo nodeInfo, IInternalPluginHost pluginHost)
 		{
 			var executable = nodeInfo.Executable as DotNetExecutable;
 			if (executable != null)

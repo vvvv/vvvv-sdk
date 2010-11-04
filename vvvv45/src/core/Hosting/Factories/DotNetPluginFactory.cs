@@ -28,7 +28,7 @@ namespace VVVV.Hosting.Factories
 	/// </summary>
 	[Export(typeof(IAddonFactory))]
 	[Export(typeof(DotNetPluginFactory))]
-	public class DotNetPluginFactory : AbstractFileFactory<IPluginHost2>
+	public class DotNetPluginFactory : AbstractFileFactory<IInternalPluginHost>
 	{
 		[ImportMany(typeof(IPluginBase), AllowRecomposition=true)]
 		private List<ExportFactory<IPluginBase, INodeInfoStuff>> FNodeInfoExports { get; set; }
@@ -81,7 +81,7 @@ namespace VVVV.Hosting.Factories
 			}
 		}
 		
-		protected override bool CreateNode(INodeInfo nodeInfo, IPluginHost2 pluginHost)
+		protected override bool CreateNode(INodeInfo nodeInfo, IInternalPluginHost pluginHost)
 		{
 			try
 			{
@@ -93,7 +93,7 @@ namespace VVVV.Hosting.Factories
 				pluginHost.Plugin = null;
 				
 				//create the plugin
-				pluginHost.Plugin = CreatePlugin(nodeInfo, pluginHost);
+				pluginHost.Plugin = CreatePlugin(nodeInfo, pluginHost as IPluginHost2);
 				return true;
 			}
 			catch (ReflectionTypeLoadException e)
@@ -109,7 +109,7 @@ namespace VVVV.Hosting.Factories
 			return false;
 		}
 		
-		protected override bool DeleteNode(INodeInfo nodeInfo, IPluginHost2 pluginHost)
+		protected override bool DeleteNode(INodeInfo nodeInfo, IInternalPluginHost pluginHost)
 		{
 			var plugin = pluginHost.Plugin;
 			

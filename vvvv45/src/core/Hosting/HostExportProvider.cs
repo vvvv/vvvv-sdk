@@ -17,7 +17,7 @@ namespace VVVV.Hosting
 {
 	public class HostExportProvider: ExportProvider
 	{
-		public IPluginHost PluginHost { get; set; }
+		public IPluginHost2 PluginHost { get; set; }
 		
 		protected override System.Collections.Generic.IEnumerable<Export> GetExportsCore(ImportDefinition definition, AtomicComposition atomicComposition)
 		{
@@ -73,6 +73,8 @@ namespace VVVV.Hosting
 			}
 			else if (contractName == typeof(IPluginHost).FullName)
 				yield return new Export(typeof(IPluginHost).FullName, () => PluginHost);
+			else if (contractName == typeof(IPluginHost2).FullName)
+				yield return new Export(typeof(IPluginHost2).FullName, () => PluginHost);
 			else if (contractName.StartsWith("VVVV.PluginInterfaces.V1"))
 			{
 				var attributes = GetImportDefinitionAttributes(definition);

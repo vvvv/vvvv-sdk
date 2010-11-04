@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
 
+using VVVV.Hosting;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using HighPerfTimer = MLib.Timer;
@@ -14,7 +15,7 @@ namespace Hoster
 	public delegate void EvaluateHandler();
 	public delegate void LogHandler(string LogMessage);
 	
-	public class PluginHost: IPluginHost2
+	public class PluginHost: IPluginHost2, IInternalPluginHost
 	{
 		private Timer FTimer = new Timer();
 		private bool FPinCountChanged;
@@ -439,13 +440,85 @@ namespace Hoster
 			OnAfterEvaluate();
 		}
 		
-		IPluginBase IPluginHost2.Plugin {
+		IPluginBase IInternalPluginHost.Plugin {
 			get {
 				throw new NotImplementedException();
 			}
 			set {
 				throw new NotImplementedException();
 			}
+		}
+		
+		public IWindow Window {
+			get {
+				throw new NotImplementedException();
+			}
+		}
+		
+		public string LastRuntimeError {
+			get {
+				throw new NotImplementedException();
+			}
+		}
+		
+		public int GetID()
+		{
+			throw new NotImplementedException();
+		}
+		
+		public INodeInfo GetNodeInfo()
+		{
+			throw new NotImplementedException();
+		}
+		
+		public bool HasGUI()
+		{
+			throw new NotImplementedException();
+		}
+		
+		public bool HasPatch()
+		{
+			throw new NotImplementedException();
+		}
+		
+		public bool HasCode()
+		{
+			throw new NotImplementedException();
+		}
+		
+		public int GetChildCount()
+		{
+			throw new NotImplementedException();
+		}
+		
+		public INode GetChild(int index)
+		{
+			throw new NotImplementedException();
+		}
+		
+		public INode[] GetChildren()
+		{
+			throw new NotImplementedException();
+		}
+		
+		public IPin[] GetPins()
+		{
+			throw new NotImplementedException();
+		}
+		
+		public IPin GetPin(string Name)
+		{
+			throw new NotImplementedException();
+		}
+		
+		public void AddListener(IListener listener)
+		{
+			throw new NotImplementedException();
+		}
+		
+		public void RemoveListener(IListener listener)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
