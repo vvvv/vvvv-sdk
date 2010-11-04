@@ -216,14 +216,6 @@ namespace VVVV.Hosting.Factories
 				
 				FPluginLifetimeContexts[plugin] = lifetimeContext;
 				
-				//Create a wrapper around dynamic plugins in order to catch all exceptions properly.
-				if (nodeInfo.Type == NodeType.Dynamic && plugin is IPluginEvaluate)
-				{
-					//TODO: Handle these cases with a wrapper.
-					if (!(plugin is IPluginDXResource || plugin is IPluginDXDevice || plugin is IPluginConnections))
-						plugin = new DynamicPluginWrapperV2(plugin as IPluginEvaluate, pluginHost, nodeInfo.Executable);
-				}
-				
 				return plugin;
 			}
 			//V1 plugin
@@ -231,14 +223,6 @@ namespace VVVV.Hosting.Factories
 			{
 				var assembly = Assembly.LoadFrom(nodeInfo.Filename);
 				var plugin = (IPlugin) assembly.CreateInstance(nodeInfo.Arguments);
-				
-				//Create a wrapper around dynamic plugins in order to catch all exceptions properly.
-				if (nodeInfo.Type == NodeType.Dynamic && plugin is IPlugin)
-				{
-					//TODO: Handle these cases with a wrapper.
-					if (!(plugin is IPluginDXResource || plugin is IPluginDXDevice || plugin is IPluginConnections))
-						plugin = new DynamicPluginWrapperV1(plugin as IPlugin, nodeInfo.Executable);
-				}
 				
 				plugin.SetPluginHost(pluginHost);
 				
@@ -250,9 +234,6 @@ namespace VVVV.Hosting.Factories
 		
 		public void DisposePlugin(IPluginBase plugin)
 		{
-			if (plugin is DynamicPluginWrapperV2)
-				plugin = ((DynamicPluginWrapperV2) plugin).WrappedPlugin;
-			
 			if (FPluginLifetimeContexts.ContainsKey(plugin))
 			{
 				FPluginLifetimeContexts[plugin].Dispose();

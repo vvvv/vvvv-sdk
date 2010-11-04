@@ -19,7 +19,6 @@ namespace VVVV.HDE.CodeEditor.Gui.Dialogs
 					components.Dispose();
 				}
 				
-				FSaveAllButton.Click -= FSaveAllButtonClick;
 				FSaveButton.Click -= FSaveButtonClick;
 				FCloseButton.Click -= FCloseButtonClick;
 				FCancelButton.Click -= FCancelButtonClick;
@@ -40,7 +39,6 @@ namespace VVVV.HDE.CodeEditor.Gui.Dialogs
 			this.FCancelButton = new System.Windows.Forms.Button();
 			this.FCloseButton = new System.Windows.Forms.Button();
 			this.FSaveButton = new System.Windows.Forms.Button();
-			this.FSaveAllButton = new System.Windows.Forms.Button();
 			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -61,17 +59,17 @@ namespace VVVV.HDE.CodeEditor.Gui.Dialogs
 			this.panel1.Controls.Add(this.FCancelButton);
 			this.panel1.Controls.Add(this.FCloseButton);
 			this.panel1.Controls.Add(this.FSaveButton);
-			this.panel1.Controls.Add(this.FSaveAllButton);
 			this.panel1.Location = new System.Drawing.Point(0, 55);
+			this.panel1.Margin = new System.Windows.Forms.Padding(0);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(424, 101);
+			this.panel1.Size = new System.Drawing.Size(324, 101);
 			this.panel1.TabIndex = 2;
 			// 
 			// FCancelButton
 			// 
 			this.FCancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.FCancelButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.FCancelButton.Location = new System.Drawing.Point(312, 0);
+			this.FCancelButton.Location = new System.Drawing.Point(212, 0);
 			this.FCancelButton.Name = "FCancelButton";
 			this.FCancelButton.Size = new System.Drawing.Size(100, 90);
 			this.FCancelButton.TabIndex = 3;
@@ -83,7 +81,7 @@ namespace VVVV.HDE.CodeEditor.Gui.Dialogs
 			// 
 			this.FCloseButton.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.FCloseButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.FCloseButton.Location = new System.Drawing.Point(212, 0);
+			this.FCloseButton.Location = new System.Drawing.Point(112, 0);
 			this.FCloseButton.Name = "FCloseButton";
 			this.FCloseButton.Size = new System.Drawing.Size(100, 90);
 			this.FCloseButton.TabIndex = 2;
@@ -95,7 +93,7 @@ namespace VVVV.HDE.CodeEditor.Gui.Dialogs
 			// 
 			this.FSaveButton.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.FSaveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.FSaveButton.Location = new System.Drawing.Point(112, 0);
+			this.FSaveButton.Location = new System.Drawing.Point(12, 0);
 			this.FSaveButton.Name = "FSaveButton";
 			this.FSaveButton.Size = new System.Drawing.Size(100, 90);
 			this.FSaveButton.TabIndex = 1;
@@ -103,23 +101,11 @@ namespace VVVV.HDE.CodeEditor.Gui.Dialogs
 			this.FSaveButton.UseVisualStyleBackColor = true;
 			this.FSaveButton.Click += new System.EventHandler(this.FSaveButtonClick);
 			// 
-			// FSaveAllButton
-			// 
-			this.FSaveAllButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.FSaveAllButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.FSaveAllButton.Location = new System.Drawing.Point(12, 0);
-			this.FSaveAllButton.Name = "FSaveAllButton";
-			this.FSaveAllButton.Size = new System.Drawing.Size(100, 90);
-			this.FSaveAllButton.TabIndex = 0;
-			this.FSaveAllButton.Text = "Save A&ll && Close";
-			this.FSaveAllButton.UseVisualStyleBackColor = true;
-			this.FSaveAllButton.Click += new System.EventHandler(this.FSaveAllButtonClick);
-			// 
 			// SaveDialog
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(424, 156);
+			this.ClientSize = new System.Drawing.Size(324, 156);
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.FMessageLabel);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -137,7 +123,6 @@ namespace VVVV.HDE.CodeEditor.Gui.Dialogs
 		private System.Windows.Forms.Button FCloseButton;
 		private System.Windows.Forms.Button FCancelButton;
 		private System.Windows.Forms.Label FMessageLabel;
-		private System.Windows.Forms.Button FSaveAllButton;
 		private System.Windows.Forms.Button FSaveButton;
 	}
 }

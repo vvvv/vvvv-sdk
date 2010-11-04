@@ -9,6 +9,7 @@ using System.Reflection;
 using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.Core.Model;
+using VVVV.Core.Model.CS;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
@@ -33,6 +34,8 @@ namespace VVVV.Hosting.Factories
 		private ExportProvider[] FExportProviders;
 		private Dictionary<INodeInfo, ExportFactory<IEditor, IEditorInfo>> FNodeInfos;
 		private Dictionary<IPluginHost2, ExportLifetimeContext<IEditor>> FExportLifetimeContexts;
+		private int FMoveToLine;
+		private INode FObservedNode;
 		
 		[ImportingConstructor]
 		public EditorFactory(CompositionContainer parentContainer, ILogger logger, IHDEHost hdeHost)
@@ -43,6 +46,7 @@ namespace VVVV.Hosting.Factories
 			FExportLifetimeContexts = new Dictionary<IPluginHost2, ExportLifetimeContext<IEditor>>();
 			FLogger = logger;
 			FHDEHost = hdeHost;
+			FMoveToLine = -1;
 			
 			FHDEHost.AddListener(this);
 		}
@@ -92,8 +96,9 @@ namespace VVVV.Hosting.Factories
 					nodeInfo.BeginUpdate();
 					nodeInfo.Type = NodeType.Text;
 					nodeInfo.Ignore = true;
-					nodeInfo.InitialBoxSize = new System.Drawing.Size(200, 100);
-					nodeInfo.InitialWindowSize = new System.Drawing.Size(700, 800);
+					nodeInfo.AutoEvaluate = true;
+					nodeInfo.InitialBoxSize = new System.Drawing.Size(400, 300);
+					nodeInfo.InitialWindowSize = new System.Drawing.Size(800, 600);
 					nodeInfo.InitialComponentMode = TComponentMode.InAWindow;
 					nodeInfo.CommitUpdate();
 					
@@ -120,6 +125,12 @@ namespace VVVV.Hosting.Factories
 				editorHost.Plugin = editor;
 				
 				editor.Open(nodeInfo.Filename);
+				
+				if (FMoveToLine >= 0)
+					editor.MoveTo(FMoveToLine);
+				
+				if (FObservedNode != null)
+					editor.LinkedNode = FObservedNode;
 				
 				return true;
 			}
@@ -209,8 +220,10 @@ namespace VVVV.Hosting.Factories
 		{
 			if (node == null) return;
 			
-			if (((button == Mouse_Buttons.Left) && (keys == Modifier_Keys.Control)) || (button == Mouse_Buttons.Right))
+			if ((button == Mouse_Buttons.Left) && (keys == Modifier_Keys.Control))
 			{
+				// Let the user choose which file to open.
+				
 				var nodeInfo = node.GetNodeInfo();
 				
 				switch (nodeInfo.Type)
@@ -235,10 +248,130 @@ namespace VVVV.Hosting.Factories
 						break;
 				}
 			}
+			else if (button == Mouse_Buttons.Right)
+			{
+				// Try to locate exact file based on nodeinfo and navigate to its definition.
+				
+				var nodeInfo = node.GetNodeInfo();
+				
+				switch (nodeInfo.Type)
+				{
+					case NodeType.Text:
+					case NodeType.Dynamic:
+					case NodeType.Effect:
+						var filename = nodeInfo.Filename;
+						
+						// Do we have a project file?
+						var project = FSolution.FindProject(filename);
+						if (project != null && project is CSProject)
+						{
+							// Find the document where this nodeinfo is defined.
+							var doc = FindDefiningDocument(project as CSProject, nodeInfo);
+							if (doc != null)
+							{
+								filename = doc.Location.LocalPath;
+								FMoveToLine = FindDefiningLine(doc, nodeInfo);
+								FObservedNode = node;
+							}
+						}
+						
+						// The following Open will trigger a call by vvvv to IInternalHDEHost.ExtractNodeInfos()
+						// Force the hde host to collect node info only from us.
+						var addonFactories = new List<IAddonFactory>(FHDEHost.AddonFactories);
+						try
+						{
+							FHDEHost.AddonFactories.Clear();
+							FHDEHost.AddonFactories.Add(this);
+							FHDEHost.Open(filename, false);
+						}
+						finally
+						{
+							FMoveToLine = -1;
+							FObservedNode = null;
+							
+							FHDEHost.AddonFactories.Clear();
+							FHDEHost.AddonFactories.AddRange(addonFactories);
+						}
+						break;
+				}
+			}
 		}
 		
 		public void MouseUpCB(INode node, Mouse_Buttons button, Modifier_Keys keys)
 		{
+		}
+		
+		protected CSDocument FindDefiningDocument(CSProject project, INodeInfo nodeInfo)
+		{
+			foreach (var doc in project.Documents)
+			{
+				var csDoc = doc as CSDocument;
+				if (csDoc == null) continue;
+				
+				if (FindDefiningLine(csDoc, nodeInfo) >= 0)
+					return csDoc;
+			}
+			
+			return null;
+		}
+		
+		protected int FindDefiningLine(CSDocument document, INodeInfo nodeInfo)
+		{
+			var parseInfo = document.ParseInfo;
+			var compilationUnit = parseInfo.MostRecentCompilationUnit;
+			if (compilationUnit == null) return -1;
+			
+			foreach (var clss in compilationUnit.Classes)
+			{
+				foreach (var attribute in clss.Attributes)
+				{
+					var attributeType = attribute.AttributeType;
+					var pluginInfoName = typeof(PluginInfoAttribute).Name;
+					var pluginInfoShortName = pluginInfoName.Replace("Attribute", "");
+					if (attributeType.Name == pluginInfoName || attributeType.Name == pluginInfoShortName)
+					{
+						// Check name
+						string name = null;
+						if (attribute.NamedArguments.ContainsKey("Name"))
+							name = (string) attribute.NamedArguments["Name"];
+						else if (attribute.PositionalArguments.Count >= 0)
+							name = (string) attribute.PositionalArguments[0];
+						
+						if (name != nodeInfo.Name)
+							continue;
+						
+						// Check category
+						string category = null;
+						if (attribute.NamedArguments.ContainsKey("Category"))
+							category = (string) attribute.NamedArguments["Category"];
+						else if (attribute.PositionalArguments.Count >= 1)
+							category = (string) attribute.PositionalArguments[1];
+						
+						if (category != nodeInfo.Category)
+							continue;
+
+						// Possible match
+						bool match = true;
+						
+						// Check version
+						if (nodeInfo.Version != null)
+						{
+							string version = null;
+							if (attribute.NamedArguments.ContainsKey("Version"))
+								version = (string) attribute.NamedArguments["Version"];
+							else if (attribute.PositionalArguments.Count >= 2)
+								version = (string) attribute.PositionalArguments[2];
+							
+							match = version == nodeInfo.Version;
+						}
+						
+						if (match)
+							return attribute.Region.BeginLine - 1;
+					}
+				}
+			}
+			
+			return -1;
 		}
 	}
 	

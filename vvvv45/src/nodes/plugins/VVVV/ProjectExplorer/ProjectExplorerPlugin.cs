@@ -103,13 +103,9 @@ namespace VVVV.HDE.ProjectExplorer
 		void FShowUnloadedProjectsIn_Changed(IDiffSpread<bool> spread)
 		{
 			if (spread[0])
-			{
 				FMappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
-			}
 			else
-			{
 				FMappingRegistry.RegisterMapping<ISolution, LoadedProjectsSolutionViewProvider>();
-			}
 			
 			FTreeViewer.Reload();
 		}

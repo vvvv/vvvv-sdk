@@ -50,19 +50,20 @@ using SD = ICSharpCode.TextEditor.Document;
 
 namespace VVVV.HDE.CodeEditor
 {
+	public delegate void LinkEventHandler(object sender, Link link);
 	
 	//class definition, inheriting from UserControl for the GUI stuff
 	public class CodeEditor: TextEditorControl
 	{
 		#region Fields
 		
-		private IHDEHost FHDEHost;
 		private CodeCompletionWindow FCompletionWindow;
 		private InsightWindow FInsightWindow;
 		private System.Windows.Forms.Timer FTimer;
 		private CodeEditorForm FCodeEditorForm;
 		private SearchBar FSearchBar;
 		
+		private ITextDocument FTextDocument;
 		private ICompletionBinding FCompletionBinding;
 		private ILinkDataProvider FLinkDataProvider;
 		private IToolTipProvider FToolTipProvider;
@@ -71,7 +72,23 @@ namespace VVVV.HDE.CodeEditor
 		
 		#region Properties
 		
-		public ITextDocument TextDocument { get; private set; }
+		public ITextDocument TextDocument
+		{
+			get
+			{
+				return FTextDocument;
+			}
+			set
+			{
+				if (FTextDocument != null)
+					ShutdownTextDocument(FTextDocument);
+				
+				FTextDocument = value;
+				
+				if (FTextDocument != null)
+					InitializeTextDocument(FTextDocument);
+			}
+		}
 		
 		public bool IsDirty
 		{
@@ -124,24 +141,27 @@ namespace VVVV.HDE.CodeEditor
 			}
 			set
 			{
+				if (FoldingStrategy != null)
+				{
+					var csDoc = TextDocument as CSDocument;
+					if (csDoc != null)
+						csDoc.ParseCompleted -= CSDocument_ParseCompleted;
+					EnableFolding = false;
+				}
+				
 				Document.FoldingManager.FoldingStrategy = value;
 				
-				if (value != null)
+				if (FoldingStrategy != null)
 				{
 					EnableFolding = true;
 					
 					// TODO: Do this via an interface to avoid asking for concrete implementation.
 					var csDoc = TextDocument as CSDocument;
 					if (csDoc != null)
+					{
 						csDoc.ParseCompleted += CSDocument_ParseCompleted;
-				}
-				else
-				{
-					var csDoc = TextDocument as CSDocument;
-					if (csDoc != null)
-						csDoc.ParseCompleted -= CSDocument_ParseCompleted;
-					
-					EnableFolding = false;
+						CSDocument_ParseCompleted(csDoc);
+					}
 				}
 			}
 		}
@@ -188,11 +208,21 @@ namespace VVVV.HDE.CodeEditor
 		
 		#endregion
 		
+		#region events
+		
+		public event LinkEventHandler LinkClicked;
+		
+		protected virtual void OnLinkClicked(Link link)
+		{
+			if (LinkClicked != null) {
+				LinkClicked(this, link);
+			}
+		}
+		
+		#endregion
+		
 		#region Constructor/Destructor
-		public CodeEditor(
-			IHDEHost hdeHost,
-			CodeEditorForm codeEditorForm,
-			ITextDocument doc)
+		public CodeEditor(CodeEditorForm codeEditorForm)
 		{
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			InitializeComponent();
@@ -200,24 +230,13 @@ namespace VVVV.HDE.CodeEditor
 			FCodeEditorForm = codeEditorForm;
 			Logger = codeEditorForm.Logger;
 			
-			TextDocument = doc;
-			
 			TextEditorProperties.MouseWheelTextZoom = false;
 			TextEditorProperties.LineViewerStyle = SD.LineViewerStyle.FullRow;
 			TextEditorProperties.ShowMatchingBracket = true;
 			TextEditorProperties.AutoInsertCurlyBracket = true;
 			
-			var fileName = doc.Location.LocalPath;
-			
-			var isReadOnly = (File.GetAttributes(fileName) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
-			Document.ReadOnly = isReadOnly;
-			
 			// Setup search bar
 			FSearchBar = new SearchBar(this);
-			
-			// Setup code highlighting
-			var highlighter = SD.HighlightingManager.Manager.FindHighlighterForFile(fileName);
-			SetHighlighting(highlighter.Name);
 			
 			// Setup selection highlighting
 			ActiveTextAreaControl.SelectionManager.SelectionChanged += FTextEditorControl_ActiveTextAreaControl_SelectionManager_SelectionChanged;
@@ -258,24 +277,22 @@ namespace VVVV.HDE.CodeEditor
 		#endregion Windows Forms designer
 		
 		#region IDisposable
-		private bool FDisposed = false;
-		// Dispose(bool disposing) executes in two distinct scenarios.
-		// If disposing equals true, the method has been called directly
-		// or indirectly by a user's code. Managed and unmanaged resources
-		// can be disposed.
-		// If disposing equals false, the method has been called by the
-		// runtime from inside the finalizer and you should not reference
-		// other objects. Only unmanaged resources can be disposed.
+
 		protected override void Dispose(bool disposing)
 		{
-			// Check to see if Dispose has already been called.
-			if(!FDisposed)
+			if(!IsDisposed)
 			{
 				if(disposing)
 				{
-					// Dispose managed resources.
 					CloseCodeCompletionWindow(this, EventArgs.Empty);
 					CloseInsightWindow(this, EventArgs.Empty);
+					
+					if (FTimer != null)
+					{
+						FTimer.Tick -= TimerTickCB;
+						FTimer.Dispose();
+						FTimer = null;
+					}
 					
 					if (FSearchBar != null)
 					{
@@ -285,100 +302,21 @@ namespace VVVV.HDE.CodeEditor
 					
 					TextChanged -= TextEditorControlTextChangedCB;
 					ActiveTextAreaControl.TextArea.Resize -= FTextEditorControl_ActiveTextAreaControl_TextArea_Resize;
-					ActiveTextAreaControl.TextArea.KeyEventHandler -= TextAreaKeyEventHandler;
 					ActiveTextAreaControl.SelectionManager.SelectionChanged -= FTextEditorControl_ActiveTextAreaControl_SelectionManager_SelectionChanged;
 					
-					if (FLinkDataProvider != null)
-					{
-						ActiveTextAreaControl.TextArea.MouseMove -= MouseMoveCB;
-						ActiveTextAreaControl.TextArea.MouseClick -= LinkClickCB;
-					}
-					
-					if (FToolTipProvider != null)
-					{
-						ActiveTextAreaControl.TextArea.ToolTipRequest -= OnToolTipRequest;
-					}
-					
-					if (TextDocument != null)
-					{
-						TextDocument.ContentChanged -= TextDocumentContentChangedCB;
-						
-						if (TextDocument is CSDocument)
-						{
-							var csDoc = TextDocument as CSDocument;
-							csDoc.ParseCompleted -= CSDocument_ParseCompleted;
-						}
-						
-						var project = TextDocument.Project;
-						if (project != null)
-						{
-							project.CompileCompleted -= CompileCompletedCB;
-							
-							var executable = FCodeEditorForm.GetExecutable(project);
-							if (executable != null)
-							{
-								executable.RuntimeErrors.Added -= executable_RuntimeErrors_Added;
-								executable.RuntimeErrors.Removed -= executable_RuntimeErrors_Removed;
-							}
-						}
-						
-						TextDocument = null;
-					}
-					
-					if (FTimer != null)
-					{
-						FTimer.Tick -= TimerTickCB;
-						FTimer.Dispose();
-						FTimer = null;
-					}
+					CompletionBinding = null;
+					FoldingStrategy = null;
+					FormattingStrategy = null;
+					LinkDataProvider = null;
+					ToolTipProvider = null;
+					TextDocument = null;
 				}
-				// Release unmanaged resources. If disposing is false,
-				// only the following code is executed.
-				
-				// Note that this is not thread safe.
-				// Another thread could start disposing the object
-				// after the managed resources are disposed,
-				// but before the disposed flag is set to true.
-				// If thread safety is necessary, it must be
-				// implemented by the client.
 			}
-			FDisposed = true;
 			
 			base.Dispose(disposing);
 		}
-		#endregion IDisposable
 		
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
-
-			Document.TextContent = TextDocument.TextContent;
-			TextDocument.ContentChanged += TextDocumentContentChangedCB;
-			
-			// TODO: Do this via an interface
-			if (TextDocument is CSDocument)
-			{
-				var csDoc = TextDocument as CSDocument;
-				CSDocument_ParseCompleted(csDoc);
-			}
-			
-			var project = TextDocument.Project;
-			
-			if (project != null)
-			{
-				// Everytime the project is compiled update the error highlighting.
-				project.CompileCompleted += CompileCompletedCB;
-				
-				// We're also interested in runtime errors.
-				var executable = FCodeEditorForm.GetExecutable(project);
-				if (executable != null)
-				{
-					executable.RuntimeErrors.Added += executable_RuntimeErrors_Added;
-					executable.RuntimeErrors.Removed += executable_RuntimeErrors_Removed;
-					ShowRuntimeErrors(executable.RuntimeErrors);
-				}
-			}
-		}
+		#endregion IDisposable
 		
 		private IList<SD.TextMarker> FSelectionMarkers = new List<SD.TextMarker>();
 		void FTextEditorControl_ActiveTextAreaControl_SelectionManager_SelectionChanged(object sender, EventArgs e)
@@ -558,12 +496,12 @@ namespace VVVV.HDE.CodeEditor
 			{
 				if (!FLink.IsEmpty)
 				{
-					FHDEHost.Open(FLink.FileName, false);
+					OnLinkClicked(FLink);
 				}
 			}
 			catch (Exception f)
 			{
-				Debug.WriteLine(f.StackTrace);
+				Logger.Log(f);
 			}
 		}
 		
@@ -640,7 +578,7 @@ namespace VVVV.HDE.CodeEditor
 			ClearErrorMarkers();
 			
 			var results = project.CompilerResults;
-			if (results.Errors.HasErrors)
+			if (results != null && results.Errors.HasErrors)
 			{
 				foreach (var error in results.Errors)
 				{
@@ -682,17 +620,7 @@ namespace VVVV.HDE.CodeEditor
 			FErrorMarkers.Clear();
 		}
 		
-		void executable_RuntimeErrors_Added(IViewableCollection<RuntimeError> collection, RuntimeError item)
-		{
-			ShowRuntimeErrors(collection);
-		}
-		
-		void executable_RuntimeErrors_Removed(IViewableCollection<RuntimeError> collection, RuntimeError item)
-		{
-			ShowRuntimeErrors(collection);
-		}
-		
-		void ShowRuntimeErrors(IViewableCollection<RuntimeError> runtimeErros)
+		internal void ShowRuntimeErrors(IEnumerable<RuntimeError> runtimeErros)
 		{
 			// Clear all previous error markers.
 			ClearErrorMarkers();
@@ -705,6 +633,12 @@ namespace VVVV.HDE.CodeEditor
 					AddErrorMarker(0, runtimeError.Line - 1);
 			}
 
+			Document.CommitUpdate();
+		}
+		
+		internal void ClearRuntimeErrors()
+		{
+			ClearErrorMarkers();
 			Document.CommitUpdate();
 		}
 
@@ -846,6 +780,48 @@ namespace VVVV.HDE.CodeEditor
 				FInsightWindow.Closed -= CloseInsightWindow;
 				FInsightWindow.Dispose();
 				FInsightWindow = null;
+			}
+		}
+		
+		#endregion
+		
+		#region Initialization
+		
+		private void InitializeTextDocument(ITextDocument doc)
+		{
+			var fileName = doc.Location.LocalPath;
+			var isReadOnly = (File.GetAttributes(fileName) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
+			Document.ReadOnly = isReadOnly;
+			
+			// Setup code highlighting
+			var highlighter = SD.HighlightingManager.Manager.FindHighlighterForFile(fileName);
+			SetHighlighting(highlighter.Name);
+			
+			Document.TextContent = doc.TextContent;
+			doc.ContentChanged += TextDocumentContentChangedCB;
+			
+			var project = doc.Project;
+			
+			if (project != null)
+			{
+				// Everytime the project is compiled update the error highlighting.
+				project.CompileCompleted += CompileCompletedCB;
+				
+				// Fake a compilation in order to show errors on startup.
+				CompileCompletedCB(project);
+			}
+		}
+		
+		private void ShutdownTextDocument(ITextDocument doc)
+		{
+			doc.ContentChanged -= TextDocumentContentChangedCB;
+			Document.TextContent = string.Empty;
+			
+			var project = doc.Project;
+			
+			if (project != null)
+			{
+				project.CompileCompleted -= CompileCompletedCB;
 			}
 		}
 		

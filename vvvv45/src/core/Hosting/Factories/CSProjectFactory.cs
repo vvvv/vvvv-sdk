@@ -56,10 +56,15 @@ namespace VVVV.Hosting.Factories
 			// Do we need to compile it?
 			if (!IsAssemblyUpToDate(project))
 			{
-				if (!project.IsLoaded)
+				var isLoaded = project.IsLoaded;
+				if (!isLoaded)
 					project.Load();
 				
 				project.Compile();
+				
+				if (!isLoaded)
+					project.Unload();
+				
 				if (project.CompilerResults.Errors.HasErrors)
 				{
 					var errorLog = GetCompileErrorsLog(project, project.CompilerResults);

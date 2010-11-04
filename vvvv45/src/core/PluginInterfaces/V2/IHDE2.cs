@@ -236,6 +236,14 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		/// <param name="listener">The listener to unregister.</param>
 		void RemoveListener(IListener listener);
+		
+		/// <summary>
+		/// Gets the last runtime error that occured or null if there were no errors.
+		/// </summary>
+		string LastRuntimeError
+		{
+			get;
+		}
 	}	
 	
 	/// <summary>
@@ -361,6 +369,12 @@ namespace VVVV.PluginInterfaces.V2
     	void Open(string filename);
     	
     	/// <summary>
+    	/// Informs the editor to move to the line number lineNumber.
+    	/// <param name="lineNumber">The line number to move to.</param>
+    	/// </summary>
+    	void MoveTo(int lineNumber);
+    	
+    	/// <summary>
     	/// Informs the editor to close the currently opened file.
     	/// </summary>
     	void Close();
@@ -376,6 +390,12 @@ namespace VVVV.PluginInterfaces.V2
     	/// </summary>
     	/// <param name="filename">The new path to save the currently opened file to.</param>
     	void SaveAs(string filename);
+    	
+    	INode LinkedNode
+    	{
+    		get;
+    		set;
+    	}
     }
     #endregion
 }

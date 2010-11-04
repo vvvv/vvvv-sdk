@@ -7,7 +7,6 @@ namespace VVVV.HDE.CodeEditor.Gui.Dialogs
 {
 	public enum SaveOption
 	{
-		SaveAll,
 		Save,
 		SaveAs,
 		DontSave,
@@ -61,11 +60,6 @@ namespace VVVV.HDE.CodeEditor.Gui.Dialogs
 		void FSaveButtonClick(object sender, EventArgs e)
 		{
 			SaveOptionResult = SaveOption.Save;
-		}
-		
-		void FSaveAllButtonClick(object sender, EventArgs e)
-		{
-			SaveOptionResult = SaveOption.SaveAll;
 		}
 		
 		void SaveDialogLoad(object sender, EventArgs e)
