@@ -130,7 +130,7 @@ namespace VVVV.Hosting.Factories
 					editor.MoveTo(FMoveToLine);
 				
 				if (FObservedNode != null)
-					editor.LinkedNode = FObservedNode;
+					editor.AttachedNode = FObservedNode;
 				
 				return true;
 			}

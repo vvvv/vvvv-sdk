@@ -60,7 +60,7 @@ namespace VVVV.HDE.CodeEditor
 		private CodeCompletionWindow FCompletionWindow;
 		private InsightWindow FInsightWindow;
 		private System.Windows.Forms.Timer FTimer;
-		private CodeEditorForm FCodeEditorForm;
+		private Form FParentForm;
 		private SearchBar FSearchBar;
 		
 		private ITextDocument FTextDocument;
@@ -222,13 +222,13 @@ namespace VVVV.HDE.CodeEditor
 		#endregion
 		
 		#region Constructor/Destructor
-		public CodeEditor(CodeEditorForm codeEditorForm)
+		public CodeEditor(Form parentForm, ILogger logger)
 		{
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			InitializeComponent();
 			
-			FCodeEditorForm = codeEditorForm;
-			Logger = codeEditorForm.Logger;
+			FParentForm = parentForm;
+			Logger = logger;
 			
 			TextEditorProperties.MouseWheelTextZoom = false;
 			TextEditorProperties.LineViewerStyle = SD.LineViewerStyle.FullRow;
@@ -571,11 +571,11 @@ namespace VVVV.HDE.CodeEditor
 				return base.ProcessKeyPreview(ref m);
 		}
 		
-		List<SD.TextMarker> FErrorMarkers = new List<SD.TextMarker>();
+		List<SD.TextMarker> FCompilerErrorMarkers = new List<SD.TextMarker>();
 		void CompileCompletedCB(IProject project)
 		{
 			// Clear all previous error markers.
-			ClearErrorMarkers();
+			ClearErrorMarkers(FCompilerErrorMarkers);
 			
 			var results = project.CompilerResults;
 			if (results != null && results.Errors.HasErrors)
@@ -588,7 +588,7 @@ namespace VVVV.HDE.CodeEditor
 						var path = Path.GetFullPath(compilerError.FileName);
 
 						if (path.ToLower() == TextDocument.Location.LocalPath.ToLower())
-							AddErrorMarker(compilerError.Column - 1, compilerError.Line - 1);
+							AddErrorMarker(FCompilerErrorMarkers, compilerError.Column - 1, compilerError.Line - 1);
 					}
 				}
 			}
@@ -596,7 +596,7 @@ namespace VVVV.HDE.CodeEditor
 			Document.CommitUpdate();
 		}
 		
-		void AddErrorMarker(int column, int line)
+		void AddErrorMarker(List<SD.TextMarker> errorMarkers, int column, int line)
 		{
 			var doc = Document;
 			var location = new TextLocation(column, line);
@@ -606,31 +606,32 @@ namespace VVVV.HDE.CodeEditor
 			var marker = new SD.TextMarker(offset, length, SD.TextMarkerType.WaveLine);
 			doc.MarkerStrategy.AddMarker(marker);
 			doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, segment.LineNumber));
-			FErrorMarkers.Add(marker);
+			errorMarkers.Add(marker);
 		}
 		
-		void ClearErrorMarkers()
+		void ClearErrorMarkers(List<SD.TextMarker> errorMarkers)
 		{
 			var doc = Document;
-			foreach (var marker in FErrorMarkers)
+			foreach (var marker in errorMarkers)
 			{
 				doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, doc.GetLineNumberForOffset(marker.Offset)));
 				doc.MarkerStrategy.RemoveMarker(marker);
 			}
-			FErrorMarkers.Clear();
+			errorMarkers.Clear();
 		}
 		
+		List<SD.TextMarker> FRuntimeErrorMarkers = new List<SD.TextMarker>();
 		internal void ShowRuntimeErrors(IEnumerable<RuntimeError> runtimeErros)
 		{
 			// Clear all previous error markers.
-			ClearErrorMarkers();
+			ClearErrorMarkers(FRuntimeErrorMarkers);
 			
 			foreach (var runtimeError in runtimeErros)
 			{
 				var path = Path.GetFullPath(runtimeError.FileName);
 
 				if (path.ToLower() == TextDocument.Location.LocalPath.ToLower())
-					AddErrorMarker(0, runtimeError.Line - 1);
+					AddErrorMarker(FRuntimeErrorMarkers, 0, runtimeError.Line - 1);
 			}
 
 			Document.CommitUpdate();
@@ -638,7 +639,7 @@ namespace VVVV.HDE.CodeEditor
 		
 		internal void ClearRuntimeErrors()
 		{
-			ClearErrorMarkers();
+			ClearErrorMarkers(FRuntimeErrorMarkers);
 			Document.CommitUpdate();
 		}
 
@@ -677,7 +678,7 @@ namespace VVVV.HDE.CodeEditor
 			try
 			{
 				FCompletionWindow = CodeCompletionWindow.ShowCompletionWindow(
-					FCodeEditorForm,					// The parent window for the completion window
+					FParentForm,					// The parent window for the completion window
 					this, 				// The text editor to show the window for
 					TextDocument.Location.LocalPath,		// Filename - will be passed back to the provider
 					completionDataProvider,				// Provider to get the list of possible completions
@@ -708,7 +709,7 @@ namespace VVVV.HDE.CodeEditor
 			try
 			{
 				if (FInsightWindow == null || FInsightWindow.IsDisposed) {
-					FInsightWindow = new InsightWindow(FCodeEditorForm, this);
+					FInsightWindow = new InsightWindow(FParentForm, this);
 					FInsightWindow.Closed += new EventHandler(CloseInsightWindow);
 				}
 				FInsightWindow.AddInsightDataProvider(insightDataProvider, TextDocument.Location.LocalPath);

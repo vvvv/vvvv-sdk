@@ -391,7 +391,7 @@ namespace VVVV.PluginInterfaces.V2
     	/// <param name="filename">The new path to save the currently opened file to.</param>
     	void SaveAs(string filename);
     	
-    	INode LinkedNode
+    	INode AttachedNode
     	{
     		get;
     		set;

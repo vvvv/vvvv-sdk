@@ -38,6 +38,10 @@ namespace VVVV.HDE.CodeEditor.Gui.Dialogs
 			{
 				FMessageLabel.Text = value;
 				Width = Math.Min(800, Math.Max(panel1.Width, 24 + FMessageLabel.Width));
+				panel1.Width = Width;
+				FSaveButton.Location = new Point((Width - panel1.Controls.Count * FSaveButton.Width) / 2, 0);
+				FCloseButton.Location = new Point(FSaveButton.Location.X + FSaveButton.Width, 0);
+				FCancelButton.Location = new Point(FCloseButton.Location.X + FCloseButton.Width, 0);
 			}
 		}
 		

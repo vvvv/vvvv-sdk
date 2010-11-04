@@ -86,7 +86,7 @@ namespace VVVV.Hosting.Pins.Input
 					else
 					{
 						FSpreads.SliceCount = 0;
-					}	
+					}
 				}
 				else
 				{
@@ -110,11 +110,11 @@ namespace VVVV.Hosting.Pins.Input
 			
 			FSpreads.SliceCount = slices;
 			
-			for (int i = 0; i<slices; i++) 
+			for (int i = 0; i<slices; i++)
 			{
 				var s = new Spread<T>(size);
 				
-				for (int j = 0; j<size; j++) 
+				for (int j = 0; j<size; j++)
 				{
 					s[j] = FSpreadPin[i*size + j];
 				}
@@ -136,15 +136,15 @@ namespace VVVV.Hosting.Pins.Input
 			else
 			{
 				slices = FSpreadPin.SliceCount / size + 1;
-			} 
+			}
 			
 			FSpreads.SliceCount = size;
 			
-			for (int i = 0; i<size; i++) 
+			for (int i = 0; i<size; i++)
 			{
 				var s = new Spread<T>(slices);
 				
-				for (int j = 0; j<slices; j++) 
+				for (int j = 0; j<slices; j++)
 				{
 					s[j] = FSpreadPin[i*slices + j];
 				}
@@ -157,17 +157,20 @@ namespace VVVV.Hosting.Pins.Input
 		protected void DivideByBins(ISpread<int> bins)
 		{
 			var binSum = 0;
-			for (int i = 0; i < bins.SliceCount; i++) 
+			for (int i = 0; i < bins.SliceCount; i++)
 			{
 				binSum += bins[i];
 			}
 			
 			int binTimes = 1;
-			if(FSpreadPin.SliceCount % binSum == 0)
-				binTimes = FSpreadPin.SliceCount / binSum;
-			else
-				binTimes = FSpreadPin.SliceCount / binSum + 1;
-				
+			if (binSum > 0)
+			{
+				if (FSpreadPin.SliceCount % binSum == 0)
+					binTimes = FSpreadPin.SliceCount / binSum;
+				else
+					binTimes = FSpreadPin.SliceCount / binSum + 1;
+			}
+			
 			var slices = binTimes * bins.SliceCount;
 			
 			FSpreads.SliceCount = slices;
@@ -179,7 +182,7 @@ namespace VVVV.Hosting.Pins.Input
 				var size = bins[i];
 				var s = new Spread<T>(size);
 				
-				for (int j = 0; j<size; j++) 
+				for (int j = 0; j<size; j++)
 				{
 					s[j] = FSpreadPin[indexSum + j];
 				}
