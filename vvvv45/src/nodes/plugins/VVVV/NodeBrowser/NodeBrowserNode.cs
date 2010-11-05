@@ -251,12 +251,12 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		void FNodeBrowser_ShowNodeReference(INodeInfo nodeInfo)
 		{
-			NodeBrowserHost.ShowNodeReference(nodeInfo);
+			FHDEHost.ShowNodeReference(nodeInfo);
 		}
 		
 		void FNodeBrowser_ShowHelpPatch(INodeInfo nodeInfo)
 		{
-			NodeBrowserHost.ShowHelpPatch(nodeInfo);
+			FHDEHost.ShowHelpPatch(nodeInfo);
 		}
 		
 		void FClonePanel_Closed(INodeInfo nodeInfo, string Name, string Category, string Version)

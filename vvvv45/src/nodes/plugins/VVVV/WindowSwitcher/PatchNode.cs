@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Collections.Generic;
 
 using VVVV.Core;
@@ -12,6 +13,28 @@ namespace VVVV.Nodes.WindowSwitcher
     {
         List<PatchNode> FChildNodes = new List<PatchNode>();
         
+        static SolidBrush SSelectionColor = new SolidBrush(Color.FromArgb(216, 216, 216));
+        static SolidBrush SDarkGray = new SolidBrush(Color.FromArgb(154, 154, 154));
+        static SolidBrush SLightGray = new SolidBrush(Color.FromArgb(192, 192, 192));
+
+        public bool MarkedForDelete{get;set;}
+
+        public string SRChannel {get; private set;}
+        public string Comment {get; private set;}
+        public string DescriptiveName {get; private set;}
+        
+        public bool IsIONode {get; private set;}
+        
+        public NodeType NodeType {get; private set;}
+        
+        public PatchNode(INode self)
+        {
+            Node = self;
+            
+            if (Node != null)
+                UpdateChildren();
+        }
+        
         private INode FNode;
         public INode Node
         {
@@ -24,8 +47,74 @@ namespace VVVV.Nodes.WindowSwitcher
                 FNode = value;
                 if (FNode != null)
                 {
-                    IsBranch = FNode.HasPatch();
-                    IsLeaf = FNode.HasGUI();
+                    Name = "????";
+                    
+                    var ni = FNode.GetNodeInfo();
+                    if (ni != null)
+                    {
+                        NodeType = ni.Type;
+                        
+                        DescriptiveName = Node.GetPin("Descriptive Name").GetValue(0);
+                        string hyphen = "";
+                        if (!string.IsNullOrEmpty(DescriptiveName))
+                            hyphen = " -- ";
+                        
+                        //subpatches
+                        if (string.IsNullOrEmpty(ni.Name))
+                        {
+                            string file = System.IO.Path.GetFileNameWithoutExtension(ni.Filename);
+                            
+                            //unsaved patch
+                            if (string.IsNullOrEmpty(file))
+                                Name = ni.Filename + hyphen + DescriptiveName;
+                            //patch with valid filename
+                            else
+                                Name = file + hyphen + DescriptiveName;
+                        }
+                        else if ((ni.Username == "IOBox (Value Advanced)") || (ni.Username == "IOBox (Color)") || (ni.Username == "IOBox (Enumerations)") || (ni.Username == "IOBox (Node)"))
+                        {
+                            if (string.IsNullOrEmpty(DescriptiveName))
+                                Name = ni.Username + hyphen + DescriptiveName;
+                            else
+                                IsIONode = true;
+                        }
+                        else if (ni.Username == "IOBox (String)")
+                        {
+                            if (string.IsNullOrEmpty(DescriptiveName))
+                                if ((!Node.GetPin("Input String").IsConnected()) && (!Node.GetPin("Output String").IsConnected()))
+                            {
+                                Comment = Node.GetPin("Input String").GetValue(0);
+                                var cmt = Comment;
+                                var maxChar = 30;
+                                var linebreak = cmt.IndexOf("\n");
+                                if (linebreak > 0 && linebreak < maxChar)
+                                    cmt = cmt.Substring(0, linebreak) + "...";
+                                else if (cmt.Length > maxChar)
+                                    cmt = cmt.Substring(0, maxChar) + "...";
+                                Name = "// " + cmt;
+                            }
+                            else
+                                Name = ni.Username + hyphen + DescriptiveName;
+                            else
+                                IsIONode = true;
+                        }
+                        else if (ni.Name == "S")
+                        {
+                            SRChannel = FNode.GetPin("SendString").GetValue(0);
+                            Name = ni.Username + ": " + SRChannel;
+                        }
+                        else if (ni.Name == "R")
+                        {
+                            SRChannel = FNode.GetPin("ReceiveString").GetValue(0);
+                            Name = ni.Username + ": " + SRChannel;
+                        }
+                        else
+                            Name = ni.Username + hyphen + DescriptiveName;
+                        
+                        if (IsIONode)
+                            Name = "IO: " + DescriptiveName;
+                    }
+                    
                     Node.AddListener(this);
                 }
             }
@@ -39,37 +128,6 @@ namespace VVVV.Nodes.WindowSwitcher
                 FSelected = value;
                 OnSelectionChanged(null);
             }
-        }
-        public bool MarkedForDelete{get;set;}
-        
-        public bool IsBranch{get; private set;}
-        public bool IsVisibleBranch{get; private set;}
-
-        public bool IsLeaf{get; private set;}
-        public bool IsVisibleLeaf{get; private set;}
-        
-        public bool HasVisibleGUI
-        {
-            set
-            {
-                IsVisibleLeaf = value;
-            }
-        }
-        
-        public bool HasVisiblePatch
-        {
-            set
-            {
-                IsVisibleBranch = value;
-            }
-        }
-        
-        public PatchNode(INode self)
-        {
-            Node = self;
-            
-            if (Node != null)
-                UpdateChildren();
         }
         
         #region IViewableCollection
@@ -108,100 +166,7 @@ namespace VVVV.Nodes.WindowSwitcher
         #endregion IViewableCollection
         
         #region INamed
-        public string Name
-        {
-            get
-            {
-                if ((Node != null) && (Node.GetNodeInfo() != null))
-                {
-                    string descriptiveName = Node.GetPin("Descriptive Name").GetValue(0);
-                    string hyphen = "";
-                    if (!string.IsNullOrEmpty(descriptiveName))
-                        hyphen = " -- ";
-                    
-                    var ni = Node.GetNodeInfo();
-                    
-                    //subpatches
-                    if (string.IsNullOrEmpty(ni.Name))
-                    {
-                        string file = System.IO.Path.GetFileNameWithoutExtension(ni.Filename);
-                        
-                        //unsaved patch
-                        if (string.IsNullOrEmpty(file))
-                            return ni.Filename + hyphen + descriptiveName;
-                        //patch with valid filename
-                        else
-                            return file + hyphen + descriptiveName;
-                    }
-                    else if (ni.Username == "IOBox (Value Advanced)")
-                    {
-                        //inlets
-                        if ((!Node.GetPin("Y Input Value").IsConnected()) && (Node.GetPin("Y Output Value").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "I: " + descriptiveName;
-                        //outlets
-                        else if ((Node.GetPin("Y Input Value").IsConnected()) && (!Node.GetPin("Y Output Value").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "O: " + descriptiveName;
-                        else
-                            return ni.Username + hyphen + descriptiveName;
-                    }
-                    else if (ni.Username == "IOBox (String)")
-                    {
-                        //inlets
-                        if ((!Node.GetPin("Input String").IsConnected()) && (Node.GetPin("Output String").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "I: " + descriptiveName;
-                        //outlets
-                        else if ((Node.GetPin("Input String").IsConnected()) && (!Node.GetPin("Output String").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "O: " + descriptiveName;
-                        //comments
-                        else if ((!Node.GetPin("Input String").IsConnected()) && (!Node.GetPin("Output String").IsConnected()))
-                            return "// " + Node.GetPin("Input String").GetValue(0);
-                        else
-                            return ni.Username + hyphen + descriptiveName;
-                    }
-                    else if (ni.Username == "IOBox (Color)")
-                    {
-                        //inlets
-                        if ((!Node.GetPin("Input Color").IsConnected()) && (Node.GetPin("Output Color").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "I: " + descriptiveName;
-                        //outlets
-                        else if ((Node.GetPin("Input Color").IsConnected()) && (!Node.GetPin("Output Color").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "O: " + descriptiveName;
-                        else
-                            return ni.Username + hyphen + descriptiveName;
-                    }
-                    else if (ni.Username == "IOBox (Enumerations)")
-                    {
-                        //inlets
-                        if ((!Node.GetPin("Input Enum").IsConnected()) && (Node.GetPin("Output Enum").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "I: " + descriptiveName;
-                        //outlets
-                        else if ((Node.GetPin("Input Enum").IsConnected()) && (!Node.GetPin("Output Enum").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "O: " + descriptiveName;
-                        else
-                            return ni.Username + hyphen + descriptiveName;
-                    }
-                    else if (ni.Username == "IOBox (Node)")
-                    {
-                        //inlets
-                        if ((!Node.GetPin("Input Node").IsConnected()) && (Node.GetPin("Output Node").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "I: " + descriptiveName;
-                        //outlets
-                        else if ((Node.GetPin("Input Node").IsConnected()) && (!Node.GetPin("Output Node").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "O: " + descriptiveName;
-                        else
-                            return ni.Username + hyphen + descriptiveName;
-                    }
-                    else if (ni.Name == "S")
-                        return ni.Username + ": " + Node.GetPin("SendString").GetValue(0);
-                    else if (ni.Name == "R")
-                        return ni.Username + ": " + Node.GetPin("ReceiveString").GetValue(0);
-                    else
-                        return ni.Username + hyphen + descriptiveName;
-                }
-                else
-                    return "..";
-            }
-        }
+        public string Name{get; private set;}
         
         public event RenamedHandler Renamed;
         
@@ -284,32 +249,28 @@ namespace VVVV.Nodes.WindowSwitcher
                                      //comments
                                      //other nodes
                                      
-                                     /*     int w1 = 0, w2 = 0;
-                                     if (p1.Count > 0)
+                                     int w1 = 0, w2 = 0;
+                                     if (p1.NodeType == NodeType.Patch)
                                          w1 = 100;
-                                     else if (p1.Name.StartsWith("I: "))
-                                         w1 = 91;
-                                     else if (p1.Name.StartsWith("O: "))
+                                     else if (p1.Name.StartsWith("IO: "))
                                          w1 = 90;
                                      else if (p1.Name.StartsWith("S "))
                                          w1 = 81;
                                      else if (p1.Name.StartsWith("R "))
                                          w1 = 80;
                                      else if (p1.Name.StartsWith("// "))
-                                         w1 = 70;
+                                         w1 = 200;
                                      
-                                     if (p2.Count > 0)
+                                     if (p2.NodeType == NodeType.Patch)
                                          w2 = 100;
-                                     else if (p2.Name.StartsWith("I: "))
-                                         w2 = 91;
-                                     else if (p2.Name.StartsWith("O: "))
+                                     else if (p2.Name.StartsWith("IO: "))
                                          w2 = 90;
                                      else if (p2.Name.StartsWith("S "))
                                          w2 = 81;
                                      else if (p2.Name.StartsWith("R "))
                                          w2 = 80;
                                      else if (p2.Name.StartsWith("// "))
-                                         w2 = 70;
+                                         w2 = 200;
                                      
                                      if ((w1 > 0) || (w2 > 0))
                                      {
@@ -318,18 +279,11 @@ namespace VVVV.Nodes.WindowSwitcher
                                          else if (w1 < w2)
                                              return 1;
                                          else
-                                             return 0;
+                                             return p1.Name.CompareTo(p2.Name);
                                      }
-                                     else */
-                                     return p1.Name.CompareTo(p2.Name);
+                                     else
+                                         return p1.Name.CompareTo(p2.Name);
                                  });
-                
-                //insert an .. (up) node as first element
-                /*      if (FUpNode == null)
-                {
-                    FUpNode = new PatchNode(null);
-                    FChildNodes.Insert(0, FUpNode);
-                }*/
             }
         }
         
@@ -372,6 +326,61 @@ namespace VVVV.Nodes.WindowSwitcher
         {
             if (SelectionChanged != null) {
                 SelectionChanged(this, args);
+            }
+        }
+        
+        public System.Drawing.Pen TextColor
+        {
+            get
+            {
+                return Pens.Black;
+            }
+        }
+        
+        public System.Drawing.Pen TextHoverColor
+        {
+            get
+            {
+                return Pens.Black;
+            }
+        }
+
+        public System.Drawing.Brush BackColor
+        {
+            get
+            {
+                if (FNode.HasPatch())
+                    return SDarkGray;
+                else
+                    return SLightGray;
+            }
+        }
+        
+        public System.Drawing.Brush BackHoverColor
+        {
+            get
+            {
+                return SSelectionColor;
+            }
+        }
+        
+        public System.Drawing.Pen OutlineColor
+        {
+            get
+            {
+                return Pens.Black;
+            }
+        }
+        
+        public string Text {
+            get {
+                throw new NotImplementedException();
+            }
+        }
+        
+        public NodeIcon Icon {
+            get {
+                throw new NotImplementedException();
             }
         }
     }

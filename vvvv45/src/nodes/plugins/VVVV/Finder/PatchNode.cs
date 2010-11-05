@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Collections.Generic;
 
 using VVVV.Core;
@@ -8,153 +9,151 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.Finder
 {
-    public class PatchNode: IViewableCollection, INamed, IDescripted, INodeChangedListener
+    public class PatchNode: IViewableCollection, INamed, IDescripted, INodeChangedListener, ISelectable, IDecoratable
     {
         List<PatchNode> FChildNodes = new List<PatchNode>();
         
-        private FinderPluginNode FFinder;
-        public INode Node{get;set;}
-        public bool Selected{get;set;}
-        public bool MarkedForDelete{get;set;}
+        static SolidBrush SDarkGray = new SolidBrush(Color.FromArgb(154, 154, 154));
+        static SolidBrush SLightGray = new SolidBrush(Color.FromArgb(192, 192, 192));
+        static SolidBrush SHoverGray = new SolidBrush(Color.FromArgb(216, 216, 216));
         
-        public PatchNode(INode self, FinderPluginNode finder)
+        static SolidBrush SDarkRed = new SolidBrush(Color.FromArgb(168, 82, 82));
+        static SolidBrush SLightRed = new SolidBrush(Color.FromArgb(229, 162, 162));
+        static SolidBrush SHoverRed = new SolidBrush(Color.FromArgb(233, 158, 158));
+        
+        static SolidBrush SDarkBlue = new SolidBrush(Color.FromArgb(82, 112, 168));
+        static SolidBrush SLightBlue = new SolidBrush(Color.FromArgb(162, 174, 229));
+        static SolidBrush SHoverBlue = new SolidBrush(Color.FromArgb(158, 193, 233));
+        
+        public bool MarkedForDelete{get;set;}
+
+        public string SRChannel {get; private set;}
+        public string Comment {get; private set;}
+        public string DescriptiveName {get; private set;}
+        
+        public bool IsIONode {get; private set;}
+        public bool IsBoygrouped {get; private set;}
+        public bool IsMissing {get; private set;}
+        
+        private string FDecoratedName;
+        
+        public NodeType NodeType {get; private set;}
+        
+        public PatchNode(INode self)
         {
             Node = self;
-            FFinder = finder;
             
-            if (Node != null)
-            {
+            if (Node != null && NodeType != NodeType.Module)
                 UpdateChildren();
-                Node.AddListener(this);
-            }
         }
         
-        private void UpdateChildren()
+        private INode FNode;
+        public INode Node
         {
-            INode[] children = Node.GetChildren();
-            if (children != null)
+            get
             {
-                //mark all children for being deleted
-                foreach(var child in FChildNodes)
-                    child.MarkedForDelete = true;
-                
-                //unmark existing children from being deleted and add new ones
-              //  if (FUpNode != null)
-                //    FUpNode.MarkedForDelete = false;
-                
-                foreach(INode child in children)
+                return FNode;
+            }
+            set
+            {
+                FNode = value;
+                if (FNode != null)
                 {
-                    bool found = false;
-                    foreach(var c in FChildNodes)
-                        if (c.Node == child)
+                    IsBoygrouped = FNode.IsBoygrouped();
+                    IsMissing = FNode.IsMissing();
+                    
+                    DescriptiveName = Node.GetPin("Descriptive Name").GetValue(0);
+                    string hyphen = "";
+                    if (!string.IsNullOrEmpty(DescriptiveName))
+                        hyphen = " -- ";
+                    
+                    Name = "????";
+                    
+                    var ni = FNode.GetNodeInfo();
+                    if (ni != null)
                     {
-                        c.MarkedForDelete = false;
-                        found = true;
-                        break;
+                        NodeType = ni.Type;
+                        
+                        //subpatches
+                        if (string.IsNullOrEmpty(ni.Name))
+                        {
+                            string file = System.IO.Path.GetFileNameWithoutExtension(ni.Filename);
+                            
+                            //unsaved patch
+                            if (string.IsNullOrEmpty(file))
+                                Name = ni.Filename + hyphen + DescriptiveName;
+                            //patch with valid filename
+                            else
+                                Name = file + hyphen + DescriptiveName;
+                        }
+                        else if ((ni.Username == "IOBox (Value Advanced)") || (ni.Username == "IOBox (Color)") || (ni.Username == "IOBox (Enumerations)") || (ni.Username == "IOBox (Node)"))
+                        {
+                            if (string.IsNullOrEmpty(DescriptiveName))
+                                Name = ni.Username + hyphen + DescriptiveName;
+                            else
+                                IsIONode = true;
+                        }
+                        else if (ni.Username == "IOBox (String)")
+                        {
+                            if (string.IsNullOrEmpty(DescriptiveName))
+                                if ((!Node.GetPin("Input String").IsConnected()) && (!Node.GetPin("Output String").IsConnected()))
+                            {
+                                Comment = Node.GetPin("Input String").GetValue(0);
+                                var cmt = Comment;
+                                var maxChar = 30;
+                                var linebreak = cmt.IndexOf("\n");
+                                if (linebreak > 0 && linebreak < maxChar)
+                                    cmt = cmt.Substring(0, linebreak) + "...";
+                                else if (cmt.Length > maxChar)
+                                    cmt = cmt.Substring(0, maxChar) + "...";
+                                Name = "// " + cmt;
+                            }
+                            else
+                                Name = ni.Username + hyphen + DescriptiveName;
+                            else
+                                IsIONode = true;
+                        }
+                        else if (ni.Name == "S")
+                        {
+                            SRChannel = FNode.GetPin("SendString").GetValue(0);
+                            Name = ni.Username + ": " + SRChannel;
+                        }
+                        else if (ni.Name == "R")
+                        {
+                            SRChannel = FNode.GetPin("ReceiveString").GetValue(0);
+                            Name = ni.Username + ": " + SRChannel;
+                        }
+                        else
+                            Name = ni.Username + hyphen + DescriptiveName;
+                        
+                        if (IsIONode)
+                            Name = "IO: " + DescriptiveName;
                     }
-
-                    if (!found && (child.GetChildCount() > 0) && (child.GetNodeInfo().Type != NodeType.Module))
-                        Add(new PatchNode(child, FFinder));
+                    
+                    Node.AddListener(this);
                 }
-                
-                //remove all children still marked for delete
-                for (int i=FChildNodes.Count-1; i>=0; i--)
-                {
-                    if (FChildNodes[i].MarkedForDelete)
-                        Remove(FChildNodes[i]);
-                }
-                
-                FChildNodes.Sort(delegate(PatchNode p1, PatchNode p2)
-                                 {
-                                     //order:
-                                     //subpatches
-                                     //inlets
-                                     //outlets
-                                     //Sends
-                                     //Receives
-                                     //comments
-                                     //other nodes
-                                     
-                                /*     int w1 = 0, w2 = 0;
-                                     if (p1.Count > 0)
-                                         w1 = 100;
-                                     else if (p1.Name.StartsWith("I: "))
-                                         w1 = 91;
-                                     else if (p1.Name.StartsWith("O: "))
-                                         w1 = 90;
-                                     else if (p1.Name.StartsWith("S "))
-                                         w1 = 81;
-                                     else if (p1.Name.StartsWith("R "))
-                                         w1 = 80;
-                                     else if (p1.Name.StartsWith("// "))
-                                         w1 = 70;
-                                     
-                                     if (p2.Count > 0)
-                                         w2 = 100;
-                                     else if (p2.Name.StartsWith("I: "))
-                                         w2 = 91;
-                                     else if (p2.Name.StartsWith("O: "))
-                                         w2 = 90;
-                                     else if (p2.Name.StartsWith("S "))
-                                         w2 = 81;
-                                     else if (p2.Name.StartsWith("R "))
-                                         w2 = 80;
-                                     else if (p2.Name.StartsWith("// "))
-                                         w2 = 70;
-                                     
-                                     if ((w1 > 0) || (w2 > 0))
-                                     {
-                                         if (w1 > w2)
-                                             return -1;
-                                         else if (w1 < w2)
-                                             return 1;
-                                         else
-                                             return 0;
-                                     }
-                                     else */
-                                        return p1.Name.CompareTo(p2.Name);
-                                 });
-                
-                //insert an .. (up) node as first element
-          /*      if (FUpNode == null)
-                {
-                    FUpNode = new PatchNode(null);
-                    FChildNodes.Insert(0, FUpNode);
-                }*/
             }
         }
-        
-        public void UnSubscribe()
+        private bool FSelected;
+        public bool Selected
         {
-            Node.RemoveListener(this);
-        }
-        
-        public void SelectNodes(INode[] nodes)
-        {
-            //deselect all
-            foreach(PatchNode pn in FChildNodes)
-                pn.Selected = false;
-            
-            if (nodes != null)
-                //reselect selected
-                foreach(INode node in nodes)
+            get {return FSelected;}
+            set
             {
-                PatchNode pn = FChildNodes.Find(delegate (PatchNode p) {return p.Node == node;});
-                if (pn != null)
-                    pn.Selected = true;
+                FSelected = value;
+                OnSelectionChanged(null);
             }
         }
         
-        public void Add(PatchNode patchNode)
+        #region IViewableCollection
+        public int Count
         {
-            FChildNodes.Add(patchNode);
-            OnAdded(patchNode);
+            get{return FChildNodes.Count;}
         }
         
-        public void Remove(PatchNode patchNode)
+        public bool Contains(object item)
         {
-            FChildNodes.Remove(patchNode);
-            OnRemoved(patchNode);
+            throw new NotImplementedException();
         }
         
         public event CollectionDelegate Added;
@@ -175,111 +174,26 @@ namespace VVVV.Nodes.Finder
             }
         }
         
-        public int Count
-        {
-            get{return FChildNodes.Count;}
-        }
-        
         public System.Collections.IEnumerator GetEnumerator()
         {
             return FChildNodes.GetEnumerator();
         }
+        #endregion IViewableCollection
         
-        public string Name
+        #region INamed
+        public string Name{get; private set;}
+        
+        public event RenamedHandler Renamed;
+        
+        protected virtual void OnRenamed(string newName)
         {
-            get
-            {
-                if ((Node != null) && (Node.GetNodeInfo() != null))
-                {
-                    string descriptiveName = Node.GetPin("Descriptive Name").GetValue(0);
-                    string hyphen = "";
-                    if (!string.IsNullOrEmpty(descriptiveName))
-                       hyphen = " -- ";
-                    
-                    var ni = Node.GetNodeInfo();
-                    
-                    //subpatches
-                    if (string.IsNullOrEmpty(ni.Name))
-                    {
-                        string file = System.IO.Path.GetFileNameWithoutExtension(ni.Filename);
-                        
-                        //unsaved patch
-                        if (string.IsNullOrEmpty(file))
-                            return ni.Filename + hyphen + descriptiveName;
-                        //patch with valid filename
-                        else
-                            return file + hyphen + descriptiveName;
-                    }
-                    else if (ni.Username == "IOBox (Value Advanced)")
-                    {
-                        //inlets
-                        if ((!Node.GetPin("Y Input Value").IsConnected()) && (Node.GetPin("Y Output Value").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "I: " + descriptiveName;
-                        //outlets
-                        else if ((Node.GetPin("Y Input Value").IsConnected()) && (!Node.GetPin("Y Output Value").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "O: " + descriptiveName;
-                        else
-                            return ni.Username + hyphen + descriptiveName;
-                    }
-                    else if (ni.Username == "IOBox (String)")
-                    {
-                        //inlets
-                        if ((!Node.GetPin("Input String").IsConnected()) && (Node.GetPin("Output String").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "I: " + descriptiveName;
-                        //outlets
-                        else if ((Node.GetPin("Input String").IsConnected()) && (!Node.GetPin("Output String").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "O: " + descriptiveName;
-                        //comments
-                        else if ((!Node.GetPin("Input String").IsConnected()) && (!Node.GetPin("Output String").IsConnected()))
-                            return "// " + Node.GetPin("Input String").GetValue(0);
-                        else
-                            return ni.Username + hyphen + descriptiveName;
-                    }
-                    else if (ni.Username == "IOBox (Color)")
-                    {
-                        //inlets
-                        if ((!Node.GetPin("Input Color").IsConnected()) && (Node.GetPin("Output Color").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "I: " + descriptiveName;
-                        //outlets
-                        else if ((Node.GetPin("Input Color").IsConnected()) && (!Node.GetPin("Output Color").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "O: " + descriptiveName;
-                        else
-                            return ni.Username + hyphen + descriptiveName;
-                    }
-                    else if (ni.Username == "IOBox (Enumerations)")
-                    {
-                        //inlets
-                        if ((!Node.GetPin("Input Enum").IsConnected()) && (Node.GetPin("Output Enum").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "I: " + descriptiveName;
-                        //outlets
-                        else if ((Node.GetPin("Input Enum").IsConnected()) && (!Node.GetPin("Output Enum").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "O: " + descriptiveName;
-                        else
-                            return ni.Username + hyphen + descriptiveName;
-                    }
-                    else if (ni.Username == "IOBox (Node)")
-                    {
-                        //inlets
-                        if ((!Node.GetPin("Input Node").IsConnected()) && (Node.GetPin("Output Node").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "I: " + descriptiveName;
-                        //outlets
-                        else if ((Node.GetPin("Input Node").IsConnected()) && (!Node.GetPin("Output Node").IsConnected()) && (!string.IsNullOrEmpty(descriptiveName)))
-                            return "O: " + descriptiveName;
-                        else
-                            return ni.Username + hyphen + descriptiveName;
-                    }
-                    else if (ni.Name == "S")
-                        return ni.Username + ": " + Node.GetPin("SendString").GetValue(0);
-                    else if (ni.Name == "R")
-                        return ni.Username + ": " + Node.GetPin("ReceiveString").GetValue(0);
-                    else
-                        return ni.Username + hyphen + descriptiveName;
-                }
-                else
-                    return "..";
+            if (Renamed != null) {
+                Renamed(this, newName);
             }
         }
+        #endregion INamed
         
+        #region IDescription
         public string Description
         {
             get
@@ -298,26 +212,298 @@ namespace VVVV.Nodes.Finder
                 }
             }
         }
+        #endregion IDescription
         
+        #region INodeChangedListener
         public void NodeChangedCB()
         {
             UpdateChildren();
-            FFinder.UpdateView();
-            
         }
+        #endregion INodeChangedListener
         
-        public event RenamedHandler Renamed;
-        
-		protected virtual void OnRenamed(string newName)
-		{
-			if (Renamed != null) {
-				Renamed(this, newName);
-			}
-		}
-        
-        public bool Contains(object item)
+        private void UpdateChildren()
         {
-            throw new NotImplementedException();
+            INode[] children = Node.GetChildren();
+            if (children != null)
+            {
+                //mark all children for being deleted
+                foreach(var child in FChildNodes)
+                    child.MarkedForDelete = true;
+                
+                //unmark existing children from being deleted and add new ones
+                foreach(INode child in children)
+                {
+                    bool found = false;
+                    foreach(var c in FChildNodes)
+                        if (c.Node == child)
+                    {
+                        c.MarkedForDelete = false;
+                        found = true;
+                        break;
+                    }
+
+                    if (!found)
+                        Add(new PatchNode(child));
+                }
+                
+                //remove all children still marked for delete
+                for (int i=FChildNodes.Count-1; i>=0; i--)
+                {
+                    if (FChildNodes[i].MarkedForDelete)
+                        Remove(FChildNodes[i]);
+                }
+                
+                FChildNodes.Sort(delegate(PatchNode p1, PatchNode p2)
+                                 {
+                                     //order:
+                                     //subpatches
+                                     //inlets
+                                     //outlets
+                                     //Sends
+                                     //Receives
+                                     //comments
+                                     //other nodes
+                                     
+                                     int w1 = 0, w2 = 0;
+                                     if (p1.NodeType == NodeType.Patch)
+                                         w1 = 100;
+                                     else if (p1.Name.StartsWith("IO: "))
+                                         w1 = 90;
+                                     else if (p1.Name.StartsWith("S "))
+                                         w1 = 81;
+                                     else if (p1.Name.StartsWith("R "))
+                                         w1 = 80;
+                                     else if (p1.Name.StartsWith("// "))
+                                         w1 = 200;
+                                     
+                                     if (p2.NodeType == NodeType.Patch)
+                                         w2 = 100;
+                                     else if (p2.Name.StartsWith("IO: "))
+                                         w2 = 90;
+                                     else if (p2.Name.StartsWith("S "))
+                                         w2 = 81;
+                                     else if (p2.Name.StartsWith("R "))
+                                         w2 = 80;
+                                     else if (p2.Name.StartsWith("// "))
+                                         w2 = 200;
+                                     
+                                     if ((w1 > 0) || (w2 > 0))
+                                     {
+                                         if (w1 > w2)
+                                             return -1;
+                                         else if (w1 < w2)
+                                             return 1;
+                                         else
+                                             return p1.Name.CompareTo(p2.Name);
+                                     }
+                                     else
+                                         return p1.Name.CompareTo(p2.Name);
+                                 });
+            }
         }
+        
+        public void SetTags(List<string> tags)
+        {
+            FDecoratedName = BoldenString(Name, tags, "@@", "@@");
+        }
+        
+        private string BoldenString(string input, List<string> tags, string startTag, string endTag)
+        {
+            var loweredInput = input.ToLower();
+            var tagged = loweredInput.ToCharArray();
+            foreach (string tag in tags)
+            {
+                //in the tagged char[] mark all matching characters as ° for later being surrounded by start and endTags.
+                int start = 0;
+                while (loweredInput.IndexOf(tag, start) >= 0)
+                {
+                    int pos = loweredInput.IndexOf(tag, start);
+                    for (int i=pos; i<pos + tag.Length; i++)
+                        tagged[i] = '°';
+                    start = pos+1;
+                }
+            }
+            
+            //now create the outputstring based on the tagged char[]
+            string output = "";
+            var inTag = false;
+            int j = 0;
+            foreach (var c in tagged)
+            {
+                if (c == '°')
+                {
+                    if (!inTag)
+                    {
+                        inTag = true;
+                        output += startTag + input[j];
+                    }
+                    else
+                        output += input[j];
+                }
+                else
+                {
+                    if (inTag)
+                    {
+                        inTag = false;
+                        output += endTag + input[j];
+                    }
+                    else
+                        output += input[j];
+                }
+                j++;
+            }
+            
+            return output;
+        }
+        
+        public void UnSubscribe()
+        {
+            Node.RemoveListener(this);
+        }
+        /*
+        public void SelectNodes(INode[] nodes)
+        {
+            //deselect all
+            foreach(PatchNode pn in FChildNodes)
+                pn.Selected = false;
+            
+            if (nodes != null)
+                //reselect selected
+                foreach(INode node in nodes)
+            {
+                PatchNode pn = FChildNodes.Find(delegate (PatchNode p) {return p.Node == node;});
+                if (pn != null)
+                    pn.Selected = true;
+            }
+        }
+         */
+        public void Add(PatchNode patchNode)
+        {
+            FChildNodes.Add(patchNode);
+            OnAdded(patchNode);
+        }
+        
+        public void Remove(PatchNode patchNode)
+        {
+            FChildNodes.Remove(patchNode);
+            OnRemoved(patchNode);
+        }
+        
+        public event SelectionChangedHandler SelectionChanged;
+        
+        protected virtual void OnSelectionChanged(EventArgs args)
+        {
+            if (SelectionChanged != null) {
+                SelectionChanged(this, args);
+            }
+        }
+        
+        #region IDecoratable
+        public System.Drawing.Pen TextColor
+        {
+            get
+            {
+                return Pens.Black;
+            }
+        }
+        
+        public System.Drawing.Pen TextHoverColor
+        {
+            get
+            {
+                return Pens.Black;
+            }
+        }
+
+        public System.Drawing.Brush BackColor
+        {
+            get
+            {
+                if (FNode == null)
+                    return Brushes.AliceBlue;
+                
+                if (FNode.HasPatch())
+                {    if (FNode.ContainsMissingNodes())
+                        return SDarkRed;
+                    else if (FNode.ContainsBoygroupedNodes())
+                        return SDarkBlue;
+                    else
+                        return SDarkGray;
+                }
+                else if (FNode.IsMissing())
+                    return SLightRed;
+                else if (FNode.IsBoygrouped())
+                    return SLightBlue;
+                else
+                    return SLightGray;
+            }
+        }
+        
+        public System.Drawing.Brush BackHoverColor
+        {
+            get
+            {
+                if (FNode == null)
+                    return Brushes.AliceBlue;
+                
+                if (FNode.HasPatch())
+                {   if (FNode.ContainsMissingNodes())
+                        return SHoverRed;
+                    else if (FNode.ContainsBoygroupedNodes())
+                        return SHoverBlue;
+                    else
+                        return SHoverGray;
+                }
+                else if (FNode.IsMissing())
+                    return SHoverRed;
+                else if (FNode.IsBoygrouped())
+                    return SHoverBlue;
+                else
+                    return SHoverGray;
+            }
+        }
+        
+        public System.Drawing.Pen OutlineColor
+        {
+            get
+            {
+                return Pens.Black;
+            }
+        }
+        
+        public string Text {
+            get
+            {
+                return FDecoratedName;
+            }
+        }
+        
+        public NodeIcon Icon
+        {
+            get
+            {
+                if (Node != null)
+                {
+                    if (Node.HasGUI())
+                    {
+                        if (Node.HasCode())
+                            return NodeIcon.GUICode;
+                        else if (Node.HasPatch())
+                            return NodeIcon.GUIPatch;
+                        else
+                            return NodeIcon.GUI;
+                    }
+                    else if (Node.HasCode())
+                        return NodeIcon.Code;
+                    else if (Node.HasPatch())
+                        return NodeIcon.Patch;
+                    else
+                        return NodeIcon.None;
+                }
+                else
+                    return NodeIcon.None;
+            }
+        }
+        #endregion IDecoratable
     }
 }

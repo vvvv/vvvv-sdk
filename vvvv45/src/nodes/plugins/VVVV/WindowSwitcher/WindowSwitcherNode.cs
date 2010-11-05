@@ -36,10 +36,7 @@ namespace VVVV.Nodes.WindowSwitcher
         
         private List<IWindow> FWindowLIFO = new List<IWindow>();
         private Dictionary<INode, IWindow> FWindowNodes = new Dictionary<INode, IWindow>();
-        private int FWindowWidth;
         private int FSelectedWindowIndex = 0;
-        [Import]
-        private ILogger FLogger;
         
         #endregion field declaration
         
@@ -217,16 +214,16 @@ namespace VVVV.Nodes.WindowSwitcher
                 var hasGUI = temp.Node.HasGUI();
                 if (hasGUI)
                 {
-                    if (FWindowNodes.ContainsKey(temp.Node))
-                        temp.HasVisibleGUI = true;
+//                    if (FWindowNodes.ContainsKey(temp.Node))
+//                        temp.HasVisibleGUI = true;
                 }
                 else
                 {
                     hasPatch = temp.Node.HasPatch();
                     if (hasPatch)
                     {
-                        if (FWindowNodes.ContainsKey(temp.Node))
-                            temp.HasVisiblePatch = true;
+//                        if (FWindowNodes.ContainsKey(temp.Node))
+//                            temp.HasVisiblePatch = true;
                     }
                 }
                 AddWindowNodes(temp, pn);
