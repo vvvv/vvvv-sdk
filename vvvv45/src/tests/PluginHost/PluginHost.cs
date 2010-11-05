@@ -520,5 +520,25 @@ namespace Hoster
 		{
 			throw new NotImplementedException();
 		}
+	    
+        public bool IsBoygrouped()
+        {
+            throw new NotImplementedException();
+        }
+	    
+        public bool ContainsBoygroupedNodes()
+        {
+            throw new NotImplementedException();
+        }
+	    
+        public bool IsMissing()
+        {
+            throw new NotImplementedException();
+        }
+	    
+        public bool ContainsMissingNodes()
+        {
+            throw new NotImplementedException();
+        }
 	}
 }
