@@ -73,6 +73,30 @@ namespace VVVV.Hosting
 		void SetComponentMode(INode node, ComponentMode componentMode);
 		
 		/// <summary>
+		/// Selects the given nodes in their patch.
+		/// </summary>
+		/// <param name="nodes">The nodes to be selected.</param>
+		void SelectNodes(INode[] nodes);
+		
+		/// <summary>
+		/// Opens the patch of the given node.
+		/// </summary>
+		/// <param name="node">The node whose patch to open.</param>
+		void ShowPatchOfNode(INode node);
+		
+		/// <summary>
+		/// Opens the help-patch of the given nodeinfo.
+		/// </summary>
+		/// <param name="nodeInfo">The nodeinfo to open the help-patch for.</param>
+		void ShowHelpPatch(INodeInfo nodeInfo);
+		
+		/// <summary>
+		/// Opens the online-reference page on vvvv.org for the given nodeinfo.
+		/// </summary>
+		/// <param name="nodeInfo">The nodeinfo to show the online-reference for.</param>
+		void ShowNodeReference(INodeInfo nodeInfo);
+		
+		/// <summary>
 		/// The <see cref="IInternalNodeInfoFactory">node info factory</see> used to create <see cref="INodeInfo">node infos</see>.
 		/// </summary>
 		IInternalNodeInfoFactory NodeInfoFactory

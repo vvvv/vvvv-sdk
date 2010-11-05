@@ -56,9 +56,6 @@ namespace VVVV.Hosting
 		public IKommunikatorHost KommunikatorHost { get; protected set; }
 		
 		[Export]
-		public IGraphViewerHost GraphViewerHost { get; protected set; }
-		
-		[Export]
 		public ISolution Solution { get; set; }
 		
 		[Export(typeof(INodeInfoFactory))]
@@ -118,7 +115,6 @@ namespace VVVV.Hosting
 			NodeBrowserHost = nodeBrowserHost;
 			WindowSwitcherHost = windowSwitcherHost;
 			KommunikatorHost = kommunikatorHost;
-			GraphViewerHost = vvvvHost as IGraphViewerHost;
 			
 			try
 			{
@@ -338,10 +334,30 @@ namespace VVVV.Hosting
 			FVVVVHost.Open(file, inActivePatch);
 		}
 		
+		public void SelectNodes(INode[] nodes)
+        {
+            FVVVVHost.SelectNodes(nodes);
+        }
+	    
+        public void ShowPatchOfNode(INode node)
+        {
+            FVVVVHost.ShowPatchOfNode(node);
+        }
+	    
+        public void ShowHelpPatch(INodeInfo nodeInfo)
+        {
+            FVVVVHost.ShowHelpPatch(nodeInfo);
+        }
+	    
+        public void ShowNodeReference(INodeInfo nodeInfo)
+        {
+            FVVVVHost.ShowNodeReference(nodeInfo);
+        }
+		
 		public void SetComponentMode(INode node, ComponentMode componentMode)
 		{
 		    FVVVVHost.SetComponentMode(node, componentMode);
-		}
+		}		
 		#endregion
 		
 		#region helper methods
