@@ -42,7 +42,11 @@ namespace VVVV.PluginInterfaces.V2
 		/// <summary>
 		/// Specifies a node with some text in it (like source code for example).
 		/// </summary>
-		Text
+		Text,
+		/// <summary>
+		/// Specifies a node with an unknown type.
+		/// </summary>
+		Unknown		    
 	};
 	
 	/// <summary>

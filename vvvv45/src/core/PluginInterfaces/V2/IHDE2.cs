@@ -78,6 +78,30 @@ namespace VVVV.PluginInterfaces.V2
 		void SetComponentMode(INode node, ComponentMode componentMode);
 		
 		/// <summary>
+		/// Selects the given nodes in their patch.
+		/// </summary>
+		/// <param name="nodes">The nodes to be selected.</param>
+		void SelectNodes(INode[] nodes);
+		
+		/// <summary>
+		/// Opens the patch of the given node.
+		/// </summary>
+		/// <param name="node">The node whose patch to open.</param>
+		void ShowPatchOfNode(INode node);
+		
+		/// <summary>
+		/// Opens the help-patch of the given nodeinfo.
+		/// </summary>
+		/// <param name="nodeInfo">The nodeinfo to open the help-patch for.</param>
+		void ShowHelpPatch(INodeInfo nodeInfo);
+		
+		/// <summary>
+		/// Opens the online-reference page on vvvv.org for the given nodeinfo.
+		/// </summary>
+		/// <param name="nodeInfo">The nodeinfo to show the online-reference for.</param>
+		void ShowNodeReference(INodeInfo nodeInfo);
+		
+		/// <summary>
 		/// The addon factories used to collect node infos and create nodes.
 		/// </summary>
 		List<IAddonFactory> AddonFactories
@@ -112,8 +136,8 @@ namespace VVVV.PluginInterfaces.V2
 		void CloneNode(INodeInfo nodeInfo, string path, string Name, string Category, string Version);
 		void CreateNodeFromFile(string filePath);
 		void CreateComment(string comment);
-		void ShowHelpPatch(INodeInfo nodeInfo);
-		void ShowNodeReference(INodeInfo nodeInfo);
+		//void ShowHelpPatch(INodeInfo nodeInfo);
+		//void ShowNodeReference(INodeInfo nodeInfo);
 	}	
 	#endregion NodeBrowser
 	
@@ -165,31 +189,6 @@ namespace VVVV.PluginInterfaces.V2
 	}	
 	#endregion Kommunikator
 	
-	#region GraphViewer
-	/// <summary>
-	/// Allows the GraphViewer to be contacted by the host
-	/// </summary>
-	[Guid("B226EE83-3C06-45E2-9B03-F4105DFDB27D"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IGraphViewer: IPluginHDE
-	{
-		void Initialize(INode root);
-	}
-	
-	/// <summary>
-	/// Allows the GraphViewer to communicate back to the host
-	/// </summary>
-	[Guid("CD119190-E089-4AC6-9EC0-FC03DA11B895"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IGraphViewerHost
-	{
-	    void SelectNodes(INode[] node);
-		void ShowPatchOfNode(INode node);
-		void ShowHelpPatch(INodeInfo nodeInfo);
-		void ShowNodeReference(INodeInfo nodeInfo);
-	}	
-	#endregion GraphViewer
-	
 	#region INode
 	/// <summary>
 	/// Gives access to vvvv nodes
@@ -215,6 +214,11 @@ namespace VVVV.PluginInterfaces.V2
 		bool HasGUI();
 		bool HasPatch();
 		bool HasCode();
+		
+		bool IsBoygrouped();
+        bool ContainsBoygroupedNodes();
+        bool IsMissing();
+        bool ContainsMissingNodes();
 		
 		//todo: check GetChildren mem leak?!
 		int GetChildCount();
