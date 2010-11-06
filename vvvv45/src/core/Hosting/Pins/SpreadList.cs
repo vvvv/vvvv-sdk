@@ -40,13 +40,13 @@ namespace VVVV.Hosting.Pins
 			FOffsetCounter = FInstanceCounter++;
 			
 			FConfigPin = new IntConfigPin(FHost, att);
-			FConfigPin.Updated += new PinUpdatedEventHandler<int>(UpdatePins);
+			FConfigPin.Updated += UpdatePins;
 			
 			FConfigPin.Update();
 		}
 		
 		//pin management
-		protected void UpdatePins(Pin<int> pin)
+		protected void UpdatePins(object sender, EventArgs args)
 		{
 			var count = FConfigPin[0];
 			var diff = count - FPins.Length;

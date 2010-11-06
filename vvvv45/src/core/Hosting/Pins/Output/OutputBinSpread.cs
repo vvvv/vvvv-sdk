@@ -18,24 +18,24 @@ namespace VVVV.Hosting.Pins.Output
 		{
 			//data pin
 			FSpreadPin = PinFactory.CreatePin<T>(host, attribute);
-			FSpreadPin.Updated += new PinUpdatedEventHandler<T>(FSpreadPin_Updated);
+			FSpreadPin.Updated += FSpreadPin_Updated;
 			
 			//bin size pin
 			var att = new OutputAttribute(attribute.Name + " Bin Size");
 			att.DefaultValue = 1;
 			FBinSize = new IntOutputPin(host, att);
-			FBinSize.Updated += new PinUpdatedEventHandler<int>(FBinSize_Updated);
+			FBinSize.Updated += FBinSize_Updated;
 			
 			FSpreads = new Spread<ISpread<T>>(1);
 			FSpreads[0] = new Spread<T>(1);
 		}
 
-		void FBinSize_Updated(Pin<int> pin)
+		void FBinSize_Updated(object sender, EventArgs args)
 		{
 			AnyUpdated();
 		}
 
-		void FSpreadPin_Updated(Pin<T> pin)
+		void FSpreadPin_Updated(object sender, EventArgs args)
 		{
 			AnyUpdated();
 		}

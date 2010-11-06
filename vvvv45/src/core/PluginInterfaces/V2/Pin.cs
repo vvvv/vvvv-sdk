@@ -9,9 +9,24 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
-namespace VVVV.Hosting.Pins
+namespace VVVV.PluginInterfaces.V2
 {
-	public delegate void PinUpdatedEventHandler<T>(Pin<T> pin);
+	public delegate void PinUpdatedEventHandler(object sender, EventArgs args);
+	public delegate void PinConnectionEventHandler(object sender, PinConnectionEventArgs args);
+	
+	public class PinConnectionEventArgs : EventArgs
+	{
+		public IPin OtherPin
+		{
+			get;
+			private set;
+		}
+		
+		public PinConnectionEventArgs(IPin otherPin)
+		{
+			OtherPin = otherPin;
+		}
+	}
 	
 	public abstract class Pin<T> : ISpread<T>, IDisposable, IPinUpdater
 	{
@@ -21,8 +36,6 @@ namespace VVVV.Hosting.Pins
 		protected PinAttribute FAttribute;
 		protected T[] FData;
 		protected int FSliceCount;
-		
-		public event PinUpdatedEventHandler<T> Updated;
 		
 		public Pin(IPluginHost host, PinAttribute attribute)
 		{
@@ -47,11 +60,31 @@ namespace VVVV.Hosting.Pins
 			private set;
 		}
 		
+		public event PinUpdatedEventHandler Updated;
+		
 		protected virtual void OnUpdated()
 		{
 			if (Updated != null)
 			{
-				Updated(this);
+				Updated(this, EventArgs.Empty);
+			}
+		}
+		
+		public event PinConnectionEventHandler Connected;
+		
+		protected virtual void OnConnected(PinConnectionEventArgs args)
+		{
+			if (Connected != null) {
+				Connected(this, args);
+			}
+		}
+		
+		public event PinConnectionEventHandler Disconnected;
+		
+		protected virtual void OnDisconnected(PinConnectionEventArgs args)
+		{
+			if (Disconnected != null) {
+				Disconnected(this, args);
 			}
 		}
 		
@@ -101,12 +134,12 @@ namespace VVVV.Hosting.Pins
 		
 		public virtual void Connect(IPin otherPin)
 		{
-			// DO nothing, override in subclass if needed
+			OnConnected(new PinConnectionEventArgs(otherPin));
 		}
 		
 		public virtual void Disconnect(IPin otherPin)
 		{
-			// DO nothing, override in subclass is needed
+			OnDisconnected(new PinConnectionEventArgs(otherPin));
 		}
 		
 		public IEnumerator<T> GetEnumerator()

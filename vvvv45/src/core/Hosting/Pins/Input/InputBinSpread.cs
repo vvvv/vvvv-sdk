@@ -18,13 +18,13 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			//data pin
 			CreateDataPin(host, attribute);
-			FSpreadPin.Updated += new PinUpdatedEventHandler<T>(FSpreadPin_Updated);
+			FSpreadPin.Updated += FSpreadPin_Updated;
 			
 			//bin size pin
 			var att = new InputAttribute(attribute.Name + " Bin Size");
 			att.DefaultValue = -1;
 			FBinSize = new DiffIntInputPin(host, att);
-			FBinSize.Updated += new PinUpdatedEventHandler<int>(FBinSize_Updated);
+			FBinSize.Updated += FBinSize_Updated;
 			
 			FSpreads = new Spread<ISpread<T>>(1);
 		}
@@ -39,12 +39,12 @@ namespace VVVV.Hosting.Pins.Input
 			FSpreadPin = PinFactory.CreatePin<T>(host, attribute);
 		}
 		
-		void FBinSize_Updated(Pin<int> pin)
+		void FBinSize_Updated(object sender, EventArgs args)
 		{
 			AnyUpdated();
 		}
 
-		void FSpreadPin_Updated(Pin<T> pin)
+		void FSpreadPin_Updated(object sender, EventArgs args)
 		{
 			AnyUpdated();
 		}

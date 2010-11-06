@@ -36,13 +36,13 @@ namespace VVVV.Hosting.Pins
 			FOffsetCounter = FInstanceCounter++;
 			
 			FConfigPin = new IntConfigPin(FHost, att);
-			FConfigPin.Updated += new PinUpdatedEventHandler<int>(UpdatePins);
+			FConfigPin.Updated += UpdatePins;
 			
 			FConfigPin.Update();
 		}
 		
 		//pin management
-		protected void UpdatePins(Pin<int> pin)
+		protected void UpdatePins(object sender, EventArgs args)
 		{
 			var count = FConfigPin[0];
 			var diff = count - FPins.Length;
@@ -84,7 +84,7 @@ namespace VVVV.Hosting.Pins
 			}
 		}
 
-		protected void SpreadListDiff_Changed(ISpread<T> spread)
+		protected void Pin_Updated(object sender, EventArgs args)
 		{
 			FUpdateCounter++;
 			if(FUpdateCounter >= FPins.Length)
@@ -103,7 +103,7 @@ namespace VVVV.Hosting.Pins
 		//delete a specific pin
 		protected void DeletePin(DiffPin<T> pin)
 		{
-			pin.Updated -= SpreadListDiff_Changed;
+			pin.Updated -= Pin_Updated;
 			FHost.DeletePin(pin.PluginIO);
 		}
 		

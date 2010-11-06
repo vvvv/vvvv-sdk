@@ -1,8 +1,7 @@
 ﻿using System;
 using VVVV.PluginInterfaces.V1;
-using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.Hosting.Pins
+namespace VVVV.PluginInterfaces.V2
 {
 
 	public abstract class DiffPin<T> : Pin<T>, IDiffSpread<T>

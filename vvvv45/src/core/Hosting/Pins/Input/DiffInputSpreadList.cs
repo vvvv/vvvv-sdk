@@ -20,7 +20,7 @@ namespace VVVV.Hosting.Pins.Input
 			
 			var ret	= PinFactory.CreateDiffPin<T>(FHost, FAttribute as InputAttribute);
 			ret.PluginIO.Order = FOffsetCounter * 1000 + pos;
-			ret.Updated += SpreadListDiff_Changed;
+			ret.Updated += Pin_Updated;
 			
 			//set attribute name back
 			FAttribute.Name = origName;
