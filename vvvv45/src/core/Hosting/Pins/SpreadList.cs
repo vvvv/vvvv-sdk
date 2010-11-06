@@ -19,7 +19,7 @@ namespace VVVV.Hosting.Pins
 	/// </summary>
 	public abstract class SpreadList<T> : SpreadListBase, ISpread<ISpread<T>>
 	{
-		protected ISpread<T>[] FPins;
+		protected Pin<T>[] FPins;
 		protected IPluginHost FHost;
 		protected PinAttribute FAttribute;
 		protected IntConfigPin FConfigPin;
@@ -30,7 +30,7 @@ namespace VVVV.Hosting.Pins
 			//store fields
 			FHost = host;
 			FAttribute = attribute;
-			FPins = new ISpread<T>[0];
+			FPins = new Pin<T>[0];
 			
 			//create config pin
 			var att = new ConfigAttribute(FAttribute.Name + " Count");
@@ -57,7 +57,7 @@ namespace VVVV.Hosting.Pins
 				var oldPins = FPins;
 				
 				//create new array
-				FPins = new ISpread<T>[count];
+				FPins = new Pin<T>[count];
 				
 				//copy/create pins
 				for (int i = 0; i<count; i++)
@@ -75,7 +75,7 @@ namespace VVVV.Hosting.Pins
 				var oldPins = FPins;
 				
 				//create new array
-				FPins = new ISpread<T>[count];
+				FPins = new Pin<T>[count];
 				
 				//copy/delete pins
 				for (int i = 0; i<oldPins.Length; i++)
@@ -83,13 +83,13 @@ namespace VVVV.Hosting.Pins
 					if (i < FPins.Length)
 						FPins[i] = oldPins[i];
 					else	
-						DeletePin((oldPins[i] as IPluginIOProvider).PluginIO);
+						DeletePin(oldPins[i].PluginIO);
 				}
 			}
 		}
 		
 		//the actual pin creation
-		protected abstract ISpread<T> CreatePin(int pos);
+		protected abstract Pin<T> CreatePin(int pos);
 		
 		//delete a specific pin
 		protected void DeletePin(IPluginIO pin)

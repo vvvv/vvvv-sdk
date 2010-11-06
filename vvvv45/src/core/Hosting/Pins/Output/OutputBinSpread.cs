@@ -8,7 +8,7 @@ namespace VVVV.Hosting.Pins.Output
 	public class OutputBinSpread<T> : BinSpread<T>
 	{
 		protected Pin<int> FBinSize;
-		protected OutputWrapperPin<T> FSpreadPin;
+		protected Pin<T> FSpreadPin;
 		protected ISpread<ISpread<T>> FSpreads;
 		protected bool FSpreadsBuilt;
 		protected int FUpdateCount;
@@ -17,8 +17,8 @@ namespace VVVV.Hosting.Pins.Output
 			: base(host, attribute)
 		{
 			//data pin
-			FSpreadPin = new OutputWrapperPin<T>(host, attribute);
-			FSpreadPin.Pin.Updated += new PinUpdatedEventHandler<T>(FSpreadPin_Updated);
+			FSpreadPin = PinFactory.CreatePin<T>(host, attribute);
+			FSpreadPin.Updated += new PinUpdatedEventHandler<T>(FSpreadPin_Updated);
 			
 			//bin size pin
 			var att = new OutputAttribute(attribute.Name + " Bin Size");
@@ -97,15 +97,7 @@ namespace VVVV.Hosting.Pins.Output
 			}
 			set
 			{
-				if (FSpreads.SliceCount != value)
-				{
-					FSpreads.SliceCount = value;
-					
-					for (int i = 0; i<FSpreads.SliceCount; i++) 
-					{
-						FSpreads[i] = new Spread<T>(0);
-					}
-				}
+				FSpreads.SliceCount = value;
 			}
 		}
 	}

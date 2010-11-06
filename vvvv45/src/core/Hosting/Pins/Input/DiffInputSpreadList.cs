@@ -18,7 +18,7 @@ namespace VVVV.Hosting.Pins.Input
 			var origName = FAttribute.Name;
 			FAttribute.Name = origName + " " + pos;
 			
-			var ret	= new DiffInputWrapperPin<T>(FHost, FAttribute as InputAttribute).DiffPin;
+			var ret	= PinFactory.CreateDiffPin<T>(FHost, FAttribute as InputAttribute);
 			ret.PluginIO.Order = FOffsetCounter * 1000 + pos;
 			ret.Updated += SpreadListDiff_Changed;
 			

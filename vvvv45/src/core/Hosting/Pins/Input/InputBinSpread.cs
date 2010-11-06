@@ -8,7 +8,7 @@ namespace VVVV.Hosting.Pins.Input
 	public class InputBinSpread<T> : BinSpread<T>
 	{
 		protected DiffPin<int> FBinSize;
-		protected WrapperPin<T> FSpreadPin;
+		protected Pin<T> FSpreadPin;
 		protected ISpread<ISpread<T>> FSpreads;
 		protected bool FSpreadsBuilt;
 		protected int FUpdateCount;
@@ -17,8 +17,8 @@ namespace VVVV.Hosting.Pins.Input
 			: base(host, attribute)
 		{
 			//data pin
-			CreateWrapperPin(host, attribute);
-			FSpreadPin.Pin.Updated += new PinUpdatedEventHandler<T>(FSpreadPin_Updated);
+			CreateDataPin(host, attribute);
+			FSpreadPin.Updated += new PinUpdatedEventHandler<T>(FSpreadPin_Updated);
 			
 			//bin size pin
 			var att = new InputAttribute(attribute.Name + " Bin Size");
@@ -26,7 +26,7 @@ namespace VVVV.Hosting.Pins.Input
 			FBinSize = new DiffIntInputPin(host, att);
 			FBinSize.Updated += new PinUpdatedEventHandler<int>(FBinSize_Updated);
 			
-			FSpreads = new Spread<ISpread<T>>(0);
+			FSpreads = new Spread<ISpread<T>>(1);
 		}
 
 		protected virtual bool NeedToBuildSpread()
@@ -34,9 +34,9 @@ namespace VVVV.Hosting.Pins.Input
 			return true;
 		}
 		
-		protected virtual void CreateWrapperPin(IPluginHost host, InputAttribute attribute)
+		protected virtual void CreateDataPin(IPluginHost host, InputAttribute attribute)
 		{
-			FSpreadPin = new InputWrapperPin<T>(host, attribute);
+			FSpreadPin = PinFactory.CreatePin<T>(host, attribute);
 		}
 		
 		void FBinSize_Updated(Pin<int> pin)
@@ -200,6 +200,7 @@ namespace VVVV.Hosting.Pins.Input
 			}
 			set
 			{
+				FSpreads[index] = value;
 			}
 		}
 		
@@ -211,6 +212,7 @@ namespace VVVV.Hosting.Pins.Input
 			}
 			set
 			{
+				FSpreads.SliceCount = value;
 			}
 		}
 	}

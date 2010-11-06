@@ -12,13 +12,13 @@ namespace VVVV.Hosting.Pins.Output
 		}
 		
 		//create a pin at position
-		protected override ISpread<T> CreatePin(int pos)
+		protected override Pin<T> CreatePin(int pos)
 		{
 			//create pin name
 			var origName = FAttribute.Name;
 			FAttribute.Name = origName + " " + pos;
 			
-			var ret	= new OutputWrapperPin<T>(FHost, FAttribute as OutputAttribute).Pin;
+			var ret	= PinFactory.CreatePin<T>(FHost, FAttribute as OutputAttribute);
 			ret.PluginIO.Order = FOffsetCounter * 1000 + pos;
 			
 			//set attribute name back

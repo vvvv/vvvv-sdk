@@ -7,12 +7,12 @@ namespace VVVV.Hosting.Pins.Input
 {
 	public class DiffInputBinSpread<T> : InputBinSpread<T>, IDiffSpread<ISpread<T>>
 	{
-		protected DiffInputWrapperPin<T> FDiffSpreadPin;
+		protected DiffPin<T> FDiffSpreadPin;
 
 		public DiffInputBinSpread(IPluginHost host, InputAttribute attribute)
 			: base(host, attribute)
 		{
-			FDiffSpreadPin = (DiffInputWrapperPin<T>)FSpreadPin;
+			FDiffSpreadPin = (DiffPin<T>) FSpreadPin;
 			FDiffSpreadPin.Changed += new SpreadChangedEventHander<T>(FSpreadPin_Changed);
 		}
 
@@ -32,9 +32,9 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 
-		protected override void CreateWrapperPin(IPluginHost host, InputAttribute attribute)
+		protected override void CreateDataPin(IPluginHost host, InputAttribute attribute)
 		{
-			FSpreadPin = new DiffInputWrapperPin<T>(host, attribute);
+			FSpreadPin = PinFactory.CreateDiffPin<T>(host, attribute);
 		}
 		
 		protected override bool NeedToBuildSpread()

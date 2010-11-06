@@ -17,117 +17,108 @@ namespace VVVV.Hosting
 {
 	public class HostExportProvider: ExportProvider
 	{
+		static Assembly PluginInterfaceAssembly = typeof(IPluginHost).Assembly;
+		
 		public IPluginHost2 PluginHost { get; set; }
 		
-		protected override System.Collections.Generic.IEnumerable<Export> GetExportsCore(ImportDefinition definition, AtomicComposition atomicComposition)
+		protected override IEnumerable<Export> GetExportsCore(ImportDefinition definition, AtomicComposition atomicComposition)
 		{
 			var contractName = definition.ContractName;
 			
-			//pins
-			if (contractName.StartsWith("VVVV.PluginInterfaces.V2.ISpread") || contractName.StartsWith("VVVV.PluginInterfaces.V2.IDiffSpread"))
+			if (contractName.StartsWith("VVVV.PluginInterfaces"))
 			{
-				var type = TypeHelper.GetImportDefinitionType(definition);
-				var spreadType = type.GetGenericArguments()[0];
-				Type subSpreadType = null;
-				if (spreadType.IsGenericType) subSpreadType = spreadType.GetGenericArguments()[0];
-				var attributes = GetImportDefinitionAttributes(definition);
+				var typeToExport = TypeHelper.GetImportDefinitionType(definition);
 				
-				var spreadTypeName = spreadType.Name;
-				
-				foreach (var attribute in attributes)
+				if (typeof(IPluginHost).IsAssignableFrom(typeToExport) ||
+				    typeof(IPluginHost2).IsAssignableFrom(typeToExport) ||
+				    typeof(INode).IsAssignableFrom(typeToExport))
 				{
-					if (attribute is PinAttribute)
+					yield return new Export(contractName, () => PluginHost);
+					yield break;
+				}
+				
+				foreach (var attribute in GetImportDefinitionAttributes(definition))
+				{
+					if (!(attribute is PinAttribute)) continue;
+					
+					if (typeToExport.IsGenericType)
 					{
-						Type pinType = null;
+						var genericArgumentType = typeToExport.GetGenericArguments()[0];
 						
-						if (spreadTypeName.StartsWith("ISpread`1"))
+						// ISpread<T>
+						if (typeof(IDiffSpread<>).MakeGenericType(genericArgumentType).IsAssignableFrom(typeToExport))
 						{
-							if (type.Name.StartsWith("ISpread"))
-								pinType = typeof(SpreadListWrapper<>).MakeGenericType(subSpreadType);
-							else if (type.Name.StartsWith("IDiffSpread"))
-								pinType = typeof(DiffSpreadListWrapper<>).MakeGenericType(subSpreadType);
+							yield return new Export(contractName, () => PinFactory.CreateDiffPin(PluginHost, attribute, genericArgumentType));
 						}
-						else
+						else if (typeof(ISpread<>).MakeGenericType(genericArgumentType).IsAssignableFrom(typeToExport))
 						{
-							if (attribute is InputAttribute)
-							{
-								if (contractName.StartsWith("VVVV.PluginInterfaces.V2.ISpread"))
-									pinType = typeof(InputWrapperPin<>).MakeGenericType(spreadType);
-								else
-									pinType = typeof(DiffInputWrapperPin<>).MakeGenericType(spreadType);
-							}
-							else if (attribute is OutputAttribute)
-							{
-								pinType = typeof(OutputWrapperPin<>).MakeGenericType(spreadType);
-							}
-							else if (attribute is ConfigAttribute)
-							{
-								pinType = typeof(ConfigWrapperPin<>).MakeGenericType(spreadType);
-							}
+							yield return new Export(contractName, () => PinFactory.CreatePin(PluginHost, attribute, genericArgumentType));
 						}
 						
-						if (pinType != null)
-							yield return new Export(definition.ContractName, () => Activator.CreateInstance(pinType, new object[] { PluginHost, attribute }));
+						yield break;
+					}
+					else
+					{
+						var outputAttribute = attribute as OutputAttribute;
+						if (outputAttribute != null)
+						{
+							if (typeof(IDXLayerIO).IsAssignableFrom(typeToExport))
+								yield return new Export(
+									contractName,
+									() =>
+									{
+										IDXLayerIO pin;
+										PluginHost.CreateLayerOutput(outputAttribute.Name, (TPinVisibility)outputAttribute.Visibility, out pin);
+										return pin;
+									});
+							else if (typeof(IDXMeshOut).IsAssignableFrom(typeToExport))
+								yield return new Export(
+									contractName,
+									() =>
+									{
+										IDXMeshOut pin;
+										PluginHost.CreateMeshOutput(outputAttribute.Name, (TSliceMode)outputAttribute.SliceMode, (TPinVisibility)outputAttribute.Visibility, out pin);
+										return pin;
+									});
+							else if (typeof(IDXTextureOut).IsAssignableFrom(typeToExport))
+								yield return new Export(
+									contractName,
+									() =>
+									{
+										IDXTextureOut pin;
+										PluginHost.CreateTextureOutput(outputAttribute.Name, (TSliceMode)outputAttribute.SliceMode, (TPinVisibility)outputAttribute.Visibility, out pin);
+										return pin;
+									});
+							
+							yield break;
+						}
+						
+						var inputAttribute = attribute as InputAttribute;
+						if (inputAttribute != null)
+						{
+							if (typeof(IDXRenderStateIn).IsAssignableFrom(typeToExport))
+								yield return new Export(
+									contractName,
+									() =>
+									{
+										IDXRenderStateIn pin;
+										PluginHost.CreateRenderStateInput((TSliceMode)inputAttribute.SliceMode, (TPinVisibility)inputAttribute.Visibility, out pin);
+										return pin;
+									});
+							else if (typeof(IDXSamplerStateIn).IsAssignableFrom(typeToExport))
+								yield return new Export(
+									contractName,
+									() =>
+									{
+										IDXSamplerStateIn pin;
+										PluginHost.CreateSamplerStateInput((TSliceMode)inputAttribute.SliceMode, (TPinVisibility)inputAttribute.Visibility, out pin);
+										return pin;
+									});
+							
+							yield break;
+						}
 					}
 				}
-			}
-			else if (contractName == typeof(IPluginHost).FullName)
-				yield return new Export(typeof(IPluginHost).FullName, () => PluginHost);
-			else if (contractName == typeof(IPluginHost2).FullName)
-				yield return new Export(typeof(IPluginHost2).FullName, () => PluginHost);
-			else if (contractName.StartsWith("VVVV.PluginInterfaces.V1"))
-			{
-				var attributes = GetImportDefinitionAttributes(definition);
-				
-				InputAttribute inputAttribute = null;
-				OutputAttribute outputAttribute = null;
-				ConfigAttribute configAttribute = null;
-				
-				foreach (var attribute in attributes)
-				{
-					if (attribute is InputAttribute)
-						inputAttribute = attribute as InputAttribute;
-					else if (attribute is OutputAttribute)
-						outputAttribute = attribute as OutputAttribute;
-					else if (attribute is ConfigAttribute)
-						configAttribute = attribute as ConfigAttribute;
-				}
-				
-				if (contractName == typeof(IDXLayerIO).FullName && outputAttribute != null)
-					yield return new Export(definition.ContractName, () =>
-					                        {
-					                        	IDXLayerIO pin;
-					                        	PluginHost.CreateLayerOutput(outputAttribute.Name, (TPinVisibility)outputAttribute.Visibility, out pin);
-					                        	return pin;
-					                        });
-				else if (contractName == typeof(IDXMeshOut).FullName && outputAttribute != null)
-					yield return new Export(definition.ContractName, () =>
-					                        {
-					                        	IDXMeshOut pin;
-					                        	PluginHost.CreateMeshOutput(outputAttribute.Name, (TSliceMode)outputAttribute.SliceMode, (TPinVisibility)outputAttribute.Visibility, out pin);
-					                        	return pin;
-					                        });
-				else if (contractName == typeof(IDXTextureOut).FullName && outputAttribute != null)
-					yield return new Export(definition.ContractName, () =>
-					                        {
-					                        	IDXTextureOut pin;
-					                        	PluginHost.CreateTextureOutput(outputAttribute.Name, (TSliceMode)outputAttribute.SliceMode, (TPinVisibility)outputAttribute.Visibility, out pin);
-					                        	return pin;
-					                        });
-				else if (contractName == typeof(IDXRenderStateIn).FullName && inputAttribute != null)
-					yield return new Export(definition.ContractName, () =>
-					                        {
-					                        	IDXRenderStateIn pin;
-					                        	PluginHost.CreateRenderStateInput((TSliceMode)inputAttribute.SliceMode, (TPinVisibility)inputAttribute.Visibility, out pin);
-					                        	return pin;
-					                        });
-				else if (contractName == typeof(IDXSamplerStateIn).FullName && inputAttribute != null)
-					yield return new Export(definition.ContractName, () =>
-					                        {
-					                        	IDXSamplerStateIn pin;
-					                        	PluginHost.CreateSamplerStateInput((TSliceMode)inputAttribute.SliceMode, (TPinVisibility)inputAttribute.Visibility, out pin);
-					                        	return pin;
-					                        });
 			}
 		}
 		

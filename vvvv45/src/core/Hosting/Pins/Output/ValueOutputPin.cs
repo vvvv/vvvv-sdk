@@ -24,7 +24,7 @@ namespace VVVV.Hosting.Pins.Output
 			bool isInteger = true;
 			bool isBool = type == typeof(bool);
 			
-			LoadDefaultValues(type, attribute, out FDimension, out minValue, out maxValue, out stepSize, out isInteger);
+			PinUtils.LoadDefaultValues(type, attribute, out FDimension, out minValue, out maxValue, out stepSize, out isInteger);
 			
 			host.CreateValueOutput(attribute.Name, FDimension, attribute.DimensionNames, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FValueOut);
 			switch (FDimension)
