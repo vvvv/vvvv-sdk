@@ -84,10 +84,10 @@ namespace VVVV.PluginInterfaces.V2
 		void SelectNodes(INode[] nodes);
 		
 		/// <summary>
-		/// Opens the patch of the given node.
+		/// Opens the patch of the given node if this node is a patch.
 		/// </summary>
 		/// <param name="node">The node whose patch to open.</param>
-		void ShowPatchOfNode(INode node);
+		void ShowPatch(INode node);
 		
 		/// <summary>
 		/// Opens the help-patch of the given nodeinfo.
