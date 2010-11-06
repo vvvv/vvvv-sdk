@@ -68,6 +68,19 @@ namespace VVVV.Nodes.Finder
                         hyphen = " -- ";
                     
                     Name = "????";
+                    if (Node.HasGUI())
+                    {
+                        if (Node.HasCode())
+                            Icon = NodeIcon.GUICode;
+                        else if (Node.HasPatch())
+                            Icon = NodeIcon.GUIPatch;
+                        else
+                            Icon = NodeIcon.GUI;
+                    }
+                    else if (Node.HasCode())
+                        Icon = NodeIcon.Code;
+                    else if (Node.HasPatch())
+                        Icon = NodeIcon.Patch;
                     
                     var ni = FNode.GetNodeInfo();
                     if (ni != null)
@@ -106,7 +119,8 @@ namespace VVVV.Nodes.Finder
                                     cmt = cmt.Substring(0, linebreak) + "...";
                                 else if (cmt.Length > maxChar)
                                     cmt = cmt.Substring(0, maxChar) + "...";
-                                Name = "// " + cmt;
+                                Name = cmt;
+                                Icon = NodeIcon.Comment;
                             }
                             else
                                 Name = ni.Username + hyphen + DescriptiveName;
@@ -117,17 +131,22 @@ namespace VVVV.Nodes.Finder
                         {
                             SRChannel = FNode.GetPin("SendString").GetValue(0);
                             Name = ni.Username + ": " + SRChannel;
+                            Icon = NodeIcon.SRNode;
                         }
                         else if (ni.Name == "R")
                         {
                             SRChannel = FNode.GetPin("ReceiveString").GetValue(0);
                             Name = ni.Username + ": " + SRChannel;
+                            Icon = NodeIcon.SRNode;
                         }
                         else
                             Name = ni.Username + hyphen + DescriptiveName;
                         
                         if (IsIONode)
-                            Name = "IO: " + DescriptiveName;
+                        {
+                            Name = DescriptiveName;
+                            Icon = NodeIcon.IONode;
+                        }
                     }
                     
                     Node.AddListener(this);
@@ -267,24 +286,24 @@ namespace VVVV.Nodes.Finder
                                      int w1 = 0, w2 = 0;
                                      if (p1.NodeType == NodeType.Patch)
                                          w1 = 100;
-                                     else if (p1.Name.StartsWith("IO: "))
+                                     else if (p1.IsIONode)
                                          w1 = 90;
                                      else if (p1.Name.StartsWith("S "))
                                          w1 = 81;
                                      else if (p1.Name.StartsWith("R "))
                                          w1 = 80;
-                                     else if (p1.Name.StartsWith("// "))
+                                     else if (!string.IsNullOrEmpty(p1.Comment))
                                          w1 = 200;
                                      
                                      if (p2.NodeType == NodeType.Patch)
                                          w2 = 100;
-                                     else if (p2.Name.StartsWith("IO: "))
+                                     else if (p1.IsIONode)
                                          w2 = 90;
                                      else if (p2.Name.StartsWith("S "))
                                          w2 = 81;
                                      else if (p2.Name.StartsWith("R "))
                                          w2 = 80;
-                                     else if (p2.Name.StartsWith("// "))
+                                     else if (!string.IsNullOrEmpty(p1.Comment))
                                          w2 = 200;
                                      
                                      if ((w1 > 0) || (w2 > 0))
@@ -478,32 +497,7 @@ namespace VVVV.Nodes.Finder
             }
         }
         
-        public NodeIcon Icon
-        {
-            get
-            {
-                if (Node != null)
-                {
-                    if (Node.HasGUI())
-                    {
-                        if (Node.HasCode())
-                            return NodeIcon.GUICode;
-                        else if (Node.HasPatch())
-                            return NodeIcon.GUIPatch;
-                        else
-                            return NodeIcon.GUI;
-                    }
-                    else if (Node.HasCode())
-                        return NodeIcon.Code;
-                    else if (Node.HasPatch())
-                        return NodeIcon.Patch;
-                    else
-                        return NodeIcon.None;
-                }
-                else
-                    return NodeIcon.None;
-            }
-        }
+        public NodeIcon Icon {get; private set;}
         #endregion IDecoratable
     }
 }
