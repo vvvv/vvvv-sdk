@@ -339,9 +339,9 @@ namespace VVVV.Hosting
             FVVVVHost.SelectNodes(nodes);
         }
 	    
-        public void ShowPatchOfNode(INode node)
+        public void ShowPatch(INode node)
         {
-            FVVVVHost.ShowPatchOfNode(node);
+            FVVVVHost.ShowPatch(node);
         }
 	    
         public void ShowHelpPatch(INodeInfo nodeInfo)
