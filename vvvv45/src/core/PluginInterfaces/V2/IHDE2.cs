@@ -313,6 +313,23 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		/// <returns>Returns true if this window is visible, false if not.</returns>
 		bool IsVisible();
+		
+		int Left
+		{
+			get;
+		}
+		int Top
+		{
+			get;
+		}
+		int Width
+		{
+			get;
+		}
+		int Height
+		{
+			get;
+		}
 	}	
 	#endregion IWindow
 	
