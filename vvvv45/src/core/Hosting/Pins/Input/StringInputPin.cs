@@ -34,10 +34,11 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			string patchPath;
 			FHost.GetHostPath(out patchPath);
-			
+		
 			try 
 			{
-				path = Path.GetFullPath(Path.Combine(patchPath, path));	
+				patchPath = Path.GetDirectoryName(patchPath);
+				path = Path.GetFullPath(Path.Combine(patchPath, path));
 			} 
 			catch (Exception e)
 			{
@@ -49,7 +50,7 @@ namespace VVVV.Hosting.Pins.Input
 		
 		public override void Update()
 		{
-			if (IsChanged)
+			if (IsChanged) 
 			{
 				SliceCount = FStringIn.SliceCount;
 				
