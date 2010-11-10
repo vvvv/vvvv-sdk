@@ -251,8 +251,7 @@ namespace VVVV.Nodes.Finder
                     if (FActivePatchNode != null)
                         FActivePatchNode.UnSubscribe();
                     
-                    //var w = FPluginHost.Window;
-                    //w.Caption = "Finder " + window.Caption;
+                    FPluginHost.Window.Caption = window.Caption;
                     FActivePatchNode = new PatchNode(window.GetNode());
                     UpdateSearch();
                     
