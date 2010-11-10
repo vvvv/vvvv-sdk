@@ -27,15 +27,15 @@ namespace Hoster
 		{
 		}
 		
-		public void SetRenderState<T>(RenderState State, T Value)
+		public void SetRenderState(RenderState State, int Value)
 		{
 		}
 		
-		public void SetSamplerState<T>(int Sampler, SamplerState State, T Value)
+		public void SetSamplerState(int Sampler, SamplerState State, int Value)
 		{
 		}
 		
-		public void SetTextureStageState<T>(int Stage, TextureStage State, T Value)
+		public void SetTextureStageState(int Stage, TextureStage State, int Value)
 		{
 		}
 		

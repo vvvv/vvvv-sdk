@@ -77,14 +77,15 @@ namespace VVVV.Hosting.Factories
 			foreach (var nodeInfo in nodeInfos)
 			{
 				nodeInfo.Type = NodeType.Dynamic;
-				nodeInfo.Executable.Project = project;
+				nodeInfo.UserData = project;
 			}
 			
 			return nodeInfos;
 		}
 		
-		void project_ProjectCompiled(IProject project, IExecutable executable)
+		void project_ProjectCompiled(object sender, CompilerEventArgs args)
 		{
+			var project = sender as IProject;
 			base.FileChanged(project.Location.LocalPath);
 		}
 		
@@ -106,10 +107,9 @@ namespace VVVV.Hosting.Factories
 		
 		protected override bool CreateNode(INodeInfo nodeInfo, IInternalPluginHost pluginHost)
 		{
-			var executable = nodeInfo.Executable as DotNetExecutable;
-			if (executable != null)
+			var project = nodeInfo.UserData as IProject;
+			if (project != null)
 			{
-				var project = executable.Project;
 				if (!project.IsLoaded)
 					project.Load();
 			}
@@ -180,8 +180,6 @@ namespace VVVV.Hosting.Factories
 			return stringBuilder.ToString();
 		}
 		
-		#region IAddonFactory
-		
 		protected override bool CloneNode(INodeInfo nodeInfo, string path, string name, string category, string version, out string newFilename)
 		{
 			// See if this nodeInfo belongs to us.
@@ -222,30 +220,14 @@ namespace VVVV.Hosting.Factories
 				}
 				
 				var newLocation = new Uri(newProjectPath);
-				var newProject = project.Clone() as CSProject;
+				project.SaveTo(newLocation);
 				
-				// Move the cloned project and all its documents to the new location.
-				newProject.Location = newLocation;
-				
-				// Start parsing all C# documents.
-				foreach (var doc in newProject.Documents)
-				{
-					var csDoc = doc as CSDocument;
-					if (csDoc != null)
-					{
-						// We need to parse the method bodies.
-						csDoc.ParseAsync(true);
-					}
-				}
+				var newProject = new CSProject(newLocation);
+				newProject.Load();
 				
 				var newLocationDir = newLocation.GetLocalDir();
 				foreach (var doc in newProject.Documents)
 				{
-					// The documents are cloned but their location still refers to the old one.
-					var relativeDir = doc.GetRelativePath(project);
-					newLocation = new Uri(newLocationDir.ConcatPath(relativeDir));
-					doc.Location = newLocation;
-					
 					// Now scan the document for possible plugin infos.
 					// If we find one, update its properties and rename the class and document.
 					if (doc is CSDocument)
@@ -258,6 +240,7 @@ namespace VVVV.Hosting.Factories
 							csDoc.Name = string.Format("{0}.cs", newProject.Name);
 						
 						csDoc.WaitParseCompleted();
+						
 						var parserResults = csDoc.ParserResults;
 						var compilationUnit = parserResults.CompilationUnit;
 						
@@ -284,14 +267,18 @@ namespace VVVV.Hosting.Factories
 				// Save the project.
 				newProject.Save();
 				
-				newFilename = newProject.Location.LocalPath;
+				// Unload it.
+				newProject.Unload();
+				
+				// Dispose it.
+				newProject.Dispose();
+				
+				newFilename = newLocation.LocalPath;
 				return true;
 			}
 			
 			return base.CloneNode(nodeInfo, path, name, category, version, out newFilename);
 		}
-		
-		#endregion
 	}
 
 	internal class PluginClassTransformer : AbstractAstTransformer

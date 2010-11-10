@@ -18,6 +18,8 @@ namespace VVVV.Hosting.Pins.Input
 			host.CreateColorInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FColorIn);
 			FColorIn.SetSubType(new RGBAColor(attribute.DefaultColor), attribute.HasAlpha);
 			
+			FData = new double[4];
+			
 			base.Initialize(FColorIn);
 		}
 		

@@ -26,6 +26,8 @@ namespace VVVV.Hosting
 	[Export(typeof(IHDEHost))]
 	class HDEHost : IInternalHDEHost, IHDEHost
 	{
+		public const string ENV_VVVV = "VVVV45";
+		
 		const string WINDOW_SWITCHER = "WindowSwitcher (VVVV)";
 		const string KOMMUNIKATOR = "Kommunikator (VVVV)";
 		const string NODE_BROWSER = "NodeBrowser (VVVV)";
@@ -106,6 +108,9 @@ namespace VVVV.Hosting
 		#region IInternalHDEHost
 		public void Initialize(IVVVVHost vvvvHost, INodeBrowserHost nodeBrowserHost, IWindowSwitcherHost windowSwitcherHost, IKommunikatorHost kommunikatorHost)
 		{
+			// Set VVVV45 to this running vvvv.exe
+			Environment.SetEnvironmentVariable(ENV_VVVV, Path.GetFullPath(Shell.CallerPath.ConcatPath("..").ConcatPath("..")));
+			
 			FVVVVHost = vvvvHost;
 			NodeInfoFactory = new ProxyNodeInfoFactory(vvvvHost.NodeInfoFactory);
 

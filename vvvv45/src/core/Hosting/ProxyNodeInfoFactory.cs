@@ -38,7 +38,6 @@ namespace VVVV.Hosting
 					FNodeInfo.Bugs = FBugs;
 					FNodeInfo.Class = FClass;
 					FNodeInfo.Credits = FCredits;
-					FNodeInfo.Executable = FExecutable;
 					FNodeInfo.Help = FHelp;
 					FNodeInfo.Ignore = FIgnore;
 					FNodeInfo.InitialBoxSize = FInitialBoxSize;
@@ -48,6 +47,7 @@ namespace VVVV.Hosting
 					FNodeInfo.Shortcut = FShortcut;
 					FNodeInfo.Tags = FTags;
 					FNodeInfo.Type = FType;
+					FNodeInfo.UserData = FUserData;
 					FNodeInfo.Warnings = FWarnings;
 				}
 				finally
@@ -75,7 +75,6 @@ namespace VVVV.Hosting
 					Category = FNodeInfo.Category;
 					Class = FNodeInfo.Class;
 					Credits = FNodeInfo.Credits;
-					Executable = FNodeInfo.Executable;
 					Filename = FNodeInfo.Filename;
 					Help = FNodeInfo.Help;
 					Ignore = FNodeInfo.Ignore;
@@ -88,6 +87,7 @@ namespace VVVV.Hosting
 					Systemname = FNodeInfo.Systemname;
 					Tags = FNodeInfo.Tags;
 					Type = FNodeInfo.Type;
+					UserData = FNodeInfo.UserData;
 					Username = FNodeInfo.Username;
 					Version = FNodeInfo.Version;
 					Warnings = FNodeInfo.Warnings;
@@ -167,16 +167,16 @@ namespace VVVV.Hosting
 				}
 			}
 			
-			private IExecutable FExecutable;
-			public IExecutable Executable {
+			private object FUserData;
+			public object UserData {
 				get {
-					return FExecutable;
+					return FUserData;
 				}
 				set {
-					FExecutable = value;
+					FUserData = value;
 					
 					if (!FInUpdate)
-						FNodeInfo.Executable = Executable;
+						FNodeInfo.UserData = UserData;
 				}
 			}
 			

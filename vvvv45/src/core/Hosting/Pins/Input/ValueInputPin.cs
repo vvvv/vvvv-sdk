@@ -44,6 +44,8 @@ namespace VVVV.Hosting.Pins.Input
 					break;
 			}
 			
+			FData = new double[FDimension];
+			
 			base.Initialize(FValueFastIn);
 		}
 		
@@ -60,7 +62,7 @@ namespace VVVV.Hosting.Pins.Input
 					var old = FData;
 					FData = new double[value * FDimension];
 					
-					if (old != null && old.Length > 0)
+					if (old.Length > 0)
 					{
 						for (int i = 0; i < FData.Length; i++)
 						{

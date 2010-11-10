@@ -5,7 +5,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Input
 {
-	public class DiffInputBinSpread<T> : InputBinSpread<T>, IDiffSpread<ISpread<T>>
+	public class DiffInputBinSpread<T> : InputBinSpread<T>, IDiffSpread<ISpread<T>>, IDisposable
 	{
 		protected DiffPin<T> FDiffSpreadPin;
 
@@ -13,7 +13,7 @@ namespace VVVV.Hosting.Pins.Input
 			: base(host, attribute)
 		{
 			FDiffSpreadPin = (DiffPin<T>) FSpreadPin;
-			FDiffSpreadPin.Changed += new SpreadChangedEventHander<T>(FSpreadPin_Changed);
+			FDiffSpreadPin.Changed += FSpreadPin_Changed;
 		}
 
 		void FSpreadPin_Changed(IDiffSpread<T> spread)
@@ -41,5 +41,29 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			return (FBinSize.IsChanged || FDiffSpreadPin.IsChanged);
 		}			
+		
+		#region IDisposable
+		
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		private bool FDisposed;
+		private void Dispose(bool disposing)
+		{
+			if(!FDisposed)
+			{
+				if(disposing)
+				{
+					FDiffSpreadPin.Changed -= FSpreadPin_Changed;
+				}
+
+				FDisposed = true;
+			}
+		}
+		
+		#endregion IDisposable
 	}
 }

@@ -117,6 +117,8 @@ namespace VVVV.Hosting.Factories
 			
 			if (editorHost != null && FNodeInfos.ContainsKey(nodeInfo))
 			{
+				FHostExportProvider.PluginHost = host as IPluginHost2;
+				
 				var nodeInfoExport = FNodeInfos[nodeInfo];
 				var exportLifetimeContext = nodeInfoExport.CreateExport();
 				FExportLifetimeContexts[editorHost] = exportLifetimeContext;

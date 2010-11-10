@@ -28,16 +28,15 @@ namespace VVVV.PluginInterfaces.V2
 		}
 	}
 	
-	public abstract class Pin<T> : ISpread<T>, IDisposable, IPinUpdater
+	public abstract class Pin<T> : Spread<T>, IDisposable, IPinUpdater
 	{
 		[Import]
 		protected ILogger FLogger;
 		protected IPluginHost FHost;
 		protected PinAttribute FAttribute;
-		protected T[] FData;
-		protected int FSliceCount;
 		
 		public Pin(IPluginHost host, PinAttribute attribute)
+			: base(1)
 		{
 			FHost = host;
 			FAttribute = attribute;
@@ -88,44 +87,6 @@ namespace VVVV.PluginInterfaces.V2
 			}
 		}
 		
-		public virtual T this[int index]
-		{
-			get
-			{
-				return FData[VMath.Zmod(index, FSliceCount)];
-			}
-			set
-			{
-				FData[VMath.Zmod(index, FSliceCount)] = value;
-			}
-		}
-		
-		public virtual int SliceCount
-		{
-			get
-			{
-				return FSliceCount;
-			}
-			set
-			{
-				if (FSliceCount != value)
-				{
-					var old = FData;
-					FData = new T[value];
-					
-					if (old != null && old.Length > 0)
-					{
-						for (int i = 0; i < FData.Length; i++)
-						{
-							FData[i] = old[i % old.Length];
-						}
-					}
-					
-					FSliceCount = value;
-				}
-			}
-		}
-		
 		//prepare for IPinUpdater
 		public virtual void Update()
 		{
@@ -140,17 +101,6 @@ namespace VVVV.PluginInterfaces.V2
 		public virtual void Disconnect(IPin otherPin)
 		{
 			OnDisconnected(new PinConnectionEventArgs(otherPin));
-		}
-		
-		public IEnumerator<T> GetEnumerator()
-		{
-			for (int i = 0; i < SliceCount; i++)
-				yield return this[i];
-		}
-		
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
 		}
 		
 		#region IDisposable

@@ -572,12 +572,12 @@ namespace VVVV.HDE.CodeEditor
 		}
 		
 		List<SD.TextMarker> FCompilerErrorMarkers = new List<SD.TextMarker>();
-		void CompileCompletedCB(IProject project)
+		void CompileCompletedCB(object sender, CompilerEventArgs args)
 		{
 			// Clear all previous error markers.
 			ClearErrorMarkers(FCompilerErrorMarkers);
 			
-			var results = project.CompilerResults;
+			var results = args.CompilerResults;
 			if (results != null && results.Errors.HasErrors)
 			{
 				foreach (var error in results.Errors)
@@ -790,6 +790,9 @@ namespace VVVV.HDE.CodeEditor
 		
 		private void InitializeTextDocument(ITextDocument doc)
 		{
+			if (!doc.IsLoaded)
+				doc.Load();
+			
 			var fileName = doc.Location.LocalPath;
 			var isReadOnly = (File.GetAttributes(fileName) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
 			Document.ReadOnly = isReadOnly;
@@ -809,7 +812,7 @@ namespace VVVV.HDE.CodeEditor
 				project.CompileCompleted += CompileCompletedCB;
 				
 				// Fake a compilation in order to show errors on startup.
-				CompileCompletedCB(project);
+				CompileCompletedCB(project, new CompilerEventArgs(project.CompilerResults));
 			}
 		}
 		

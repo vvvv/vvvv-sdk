@@ -16,6 +16,18 @@ namespace VVVV.PluginInterfaces.V2
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface INodeInfo : IPluginInfo, IDisposable
 	{
+//		/// <summary>
+//		/// The nodes main visible name. Use CamelCaps and no spaces.
+//		/// </summary>
+//		string Name {get;}
+//		/// <summary>
+//		/// The category in which the plugin can be found. Try to use an existing one.
+//		/// </summary>
+//		string Category {get;}
+//		/// <summary>
+//		/// Optional. Leave blank if not needed to distinguish two nodes of the same name and category.
+//		/// </summary>
+//		string Version {get;}
 		/// <summary>
 		/// Arguments used by the IAddonFactory to create this node.
 		/// </summary>
@@ -37,9 +49,9 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		NodeType Type {get; set;}
 		/// <summary>
-		/// Reference to the <see cref="IExecutable">IExecutable</see> which was used to create this node. Set by the AddonFactory.
+		/// Arbritary user data. Can be used by factories to store additional data.
 		/// </summary>
-		IExecutable Executable {get; set;}
+		object UserData { get; set; }
 		/// <summary>
 		/// Define if this node should be evaluated every frame, even if no outpur is read.
 		/// </summary>
@@ -78,7 +90,7 @@ namespace VVVV.PluginInterfaces.V2
 		
 			nodeInfo.Arguments = otherNodeInfo.Arguments;
 			nodeInfo.Type = otherNodeInfo.Type;
-			nodeInfo.Executable = otherNodeInfo.Executable;
+			nodeInfo.UserData = otherNodeInfo.UserData;
 			nodeInfo.AutoEvaluate = otherNodeInfo.AutoEvaluate;
 			nodeInfo.Ignore = otherNodeInfo.Ignore;
 		}

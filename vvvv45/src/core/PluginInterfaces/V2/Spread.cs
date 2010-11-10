@@ -16,8 +16,8 @@ namespace VVVV.PluginInterfaces.V2
 		
 		public Spread(int size)
 		{
-			FData = new T[0];
-			SliceCount = size;
+			FData = new T[size];
+			FSliceCount = size;
 		}
 		
 		public Spread(List<T> original)
@@ -27,7 +27,7 @@ namespace VVVV.PluginInterfaces.V2
 			FSliceCount = original.Count;
 		}
 		
-		public T this[int index] 
+		public virtual T this[int index] 
 		{
 			get 
 			{
@@ -39,7 +39,7 @@ namespace VVVV.PluginInterfaces.V2
 			}
 		}
 		
-		public int SliceCount 
+		public virtual int SliceCount 
 		{
 			get
 			{
@@ -59,16 +59,9 @@ namespace VVVV.PluginInterfaces.V2
 							FData[i] = old[i % old.Length];
 						}
 					}
-					else
-					{
-						for (int i = 0; i < FData.Length; i++)
-						{
-							FData[i] = default(T);
-						}
-					}
+					
+					FSliceCount = value;
 				}
-				
-				FSliceCount = value;
 			}
 		}
 		

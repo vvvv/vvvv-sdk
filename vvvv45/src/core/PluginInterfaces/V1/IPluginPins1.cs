@@ -1116,7 +1116,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="State">The RenderState</param>
 		/// <param name="Value">The RenderStates value</param>
-		void SetRenderState<T>(RenderState State, T Value);
+		void SetRenderState(RenderState State, int Value);
 	}
 	
 	/// <summary>
@@ -1132,14 +1132,14 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Sampler">The sampler index to apply the SamplerState to</param>
 		/// <param name="State">The SamplerState</param>
 		/// <param name="Value">The SamplerStates value</param>
-		void SetSamplerState<T>(int Sampler, SamplerState State, T Value);
+		void SetSamplerState(int Sampler, SamplerState State, int Value);
 		/// <summary>
 		/// Used to set TextureStageStates from within <see cref="VVVV.PluginInterfaces.V1.IPluginDXLayer.SetStates()">IPluginDXLayer.SetStates</see>.
 		/// </summary>
 		/// <param name="Sampler"></param>
 		/// <param name="State"></param>
 		/// <param name="Value"></param>
-		void SetTextureStageState<T>(int Sampler, TextureStage State, T Value);
+		void SetTextureStageState(int Sampler, TextureStage State, int Value);
 	}
 	#endregion DXPins
 }

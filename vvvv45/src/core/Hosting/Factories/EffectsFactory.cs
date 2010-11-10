@@ -208,31 +208,13 @@ namespace VVVV.Hosting.Factories
 				if (!project.IsLoaded)
 					project.Load();
 				
-				var newProject = project.Clone() as FXProject;
-				
-				var projectDir = path; //project.Location.GetLocalDir();
+				var projectDir = path;
 				var newProjectName = name + ".fx";
 				var newLocation = new Uri(projectDir.ConcatPath(newProjectName));
-				newProject.Location = newLocation;
 				
-				var newLocationDir = newLocation.GetLocalDir();
-				foreach (var doc in newProject.Documents)
-				{
-					// The documents are cloned but their location still refers to the old one.
-					// Only clone FX files, not FXH.
-					// FXProjects are saved as one FXDocument.
-					if (doc is FXDocument)
-					{
-						doc.Location = newLocation;
-						doc.Save();
-						break;
-					}
-				}
+				project.SaveTo(newLocation);
 				
-				// Save the project.
-				newProject.Save();
-				
-				filename = newProject.Location.LocalPath;
+				filename = newLocation.LocalPath;
 				return true;
 			}
 			

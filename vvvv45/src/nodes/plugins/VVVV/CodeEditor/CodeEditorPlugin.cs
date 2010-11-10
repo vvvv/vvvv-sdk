@@ -47,13 +47,15 @@ namespace VVVV.HDE.CodeEditor
 		private ViewableCollection<object> FErrorList;
 		private Dictionary<string, RuntimeError> FRuntimeErrors;
 		private IHDEHost FHDEHost;
+		private INode FNode;
 		
 		public static readonly ImageList CompletionIcons = new ImageList();
 		
 		[ImportingConstructor]
-		public CodeEditorPlugin(IHDEHost host, ISolution solution, ILogger logger)
+		public CodeEditorPlugin(IHDEHost host, INode node, ISolution solution, ILogger logger)
 		{
 			FHDEHost = host;
+			FNode = node;
 			FSolution = solution;
 			FLogger = logger;
 			FErrorList = new ViewableCollection<object>();
@@ -225,12 +227,32 @@ namespace VVVV.HDE.CodeEditor
 					project.CompileCompleted += Project_CompileCompleted;
 					
 					// Fake a compilation in order to show error messages on startup.
-					Project_CompileCompleted(project);
+					Project_CompileCompleted(project, new CompilerEventArgs(project.CompilerResults));
 				}
+				
+				document.ContentChanged += document_ContentChanged;
+				document.Saved += document_Saved;
 			}
 			else
 			{
 				FLogger.Log(LogType.Warning, "Can't open \0", filename);
+			}
+		}
+
+		void document_Saved(object sender, EventArgs e)
+		{
+			document_ContentChanged(sender as ITextDocument, string.Empty);
+		}
+
+		void document_ContentChanged(ITextDocument doc, string content)
+		{
+			var window = FNode.Window;
+			if (window != null)
+			{
+				if (doc.IsDirty)
+					FNode.Window.Caption = doc.Name + "*";
+				else
+					FNode.Window.Caption = doc.Name;
 			}
 		}
 		
@@ -240,6 +262,9 @@ namespace VVVV.HDE.CodeEditor
 			
 			if (document != null)
 			{
+				document.ContentChanged -= document_ContentChanged;
+				document.Saved -= document_Saved;
+				
 				FEditor.TextDocument = null;
 				FEditor.CompletionBinding = null;
 				FEditor.FormattingStrategy = null;
@@ -351,20 +376,15 @@ namespace VVVV.HDE.CodeEditor
 				line = runtimeError.Line;
 			}
 			
-			
-			// Find the document which caused the compiler error.
-			var doc = FSolution.FindDocument(fileName) as ITextDocument;
-			
-			if (doc == null) return;
-
-			FHDEHost.Open(doc.Location.LocalPath, false);
+			if (File.Exists(fileName))
+				FHDEHost.Open(fileName, false);
 		}
 		
-		private void Project_CompileCompleted(IProject project)
+		private void Project_CompileCompleted(object sender, CompilerEventArgs args)
 		{
 			ClearCompilerErrors();
 			
-			var results = project.CompilerResults;
+			var results = args.CompilerResults;
 			if (results != null)
 				FErrorList.AddRange(results.Errors);
 			

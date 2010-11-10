@@ -43,6 +43,8 @@ namespace VVVV.Hosting.Pins.Output
 					break;
 			}
 			
+			FData = new double[FDimension];
+			
 			base.Initialize(FValueOut);
 		}
 		
@@ -59,7 +61,7 @@ namespace VVVV.Hosting.Pins.Output
 					var old = FData;
 					FData = new double[value * FDimension];
 					
-					if (old != null && old.Length > 0)
+					if (old.Length > 0)
 					{
 						for (int i = 0; i < FData.Length; i++)
 						{

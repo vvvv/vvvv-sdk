@@ -154,11 +154,6 @@ namespace VVVV.Hosting.Factories
 				
 				foreach (var nodeInfo in ExtractNodeInfosFromCatalog(FCatalogCache[filename], filename, sourcefilename))
 				{
-					var executable = new DotNetExecutable(null, new Lazy<Assembly>(() => Assembly.LoadFrom(filename)));
-					if (nodeInfo.Executable == null)
-						nodeInfo.Executable = executable;
-					else
-						nodeInfo.Executable.UpdateFrom(executable);
 					nodeInfo.Type = NodeType.Plugin;
 					nodeInfos.Add(nodeInfo);
 				}
@@ -170,12 +165,6 @@ namespace VVVV.Hosting.Factories
 					// Check for V1 style plugins
 					foreach (var nodeInfo in ExtractNodeInfosFromAssembly(assembly, sourcefilename))
 					{
-						var executable = new DotNetExecutable(null, assembly);
-						if (nodeInfo.Executable == null)
-							nodeInfo.Executable = executable;
-						else
-							nodeInfo.Executable.UpdateFrom(executable);
-						// TODO: Fix this
 						nodeInfo.Type = NodeType.Plugin;
 						nodeInfos.Add(nodeInfo);
 					}

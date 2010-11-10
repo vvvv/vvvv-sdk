@@ -44,6 +44,8 @@ namespace VVVV.Hosting.Pins.Input
 					break;
 			}
 			
+			FData = new double[FDimension];
+			
 			base.Initialize(FValueIn);
 		}
 		

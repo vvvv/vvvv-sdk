@@ -43,7 +43,7 @@ namespace VVVV.HDE.ProjectExplorer
 		[ImportingConstructor]
 		public ProjectExplorerPlugin(
 			[Config("Show Unloaded Projects", IsSingle = true)] IDiffSpread<bool> showUnloadedProjectsIn,
-			ISolution solution, 
+			ISolution solution,
 			ILogger logger)
 		{
 			try
@@ -118,8 +118,27 @@ namespace VVVV.HDE.ProjectExplorer
 
 		void FTreeViewer_DoubleClick(IModelMapper sender, MouseEventArgs e)
 		{
+			string file = null;
+			
 			var doc = sender.Model as IDocument;
 			if (doc != null)
+			{
+				file = doc.Location.LocalPath;
+			}
+			else
+			{
+				var reference = sender.Model as IReference;
+				if (reference != null)
+				{
+					var fxReference = reference as FXReference;
+					if (fxReference != null)
+					{
+						file = fxReference.ReferencedDocument.Location.LocalPath;
+					}
+				}
+			}
+			
+			if (file != null)
 			{
 				// We only want the EffectFactory to answer.
 				var addonFactories = new List<IAddonFactory>(FHDEHost.AddonFactories);
@@ -129,7 +148,7 @@ namespace VVVV.HDE.ProjectExplorer
 				{
 					FHDEHost.AddonFactories.Clear();
 					FHDEHost.AddonFactories.Add(editorFactory);
-					FHDEHost.Open(doc.Location.LocalPath, false);
+					FHDEHost.Open(file, false);
 				}
 				finally
 				{

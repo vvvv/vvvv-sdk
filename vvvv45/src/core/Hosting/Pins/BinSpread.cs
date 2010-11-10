@@ -11,21 +11,46 @@ namespace VVVV.Hosting.Pins
 	/// </summary>
 	public abstract class BinSpread<T> : ISpread<ISpread<T>>
 	{
+		private ISpread<ISpread<T>> FSpreads;
 		
 		public BinSpread(IPluginHost host, PinAttribute attribute)
 		{
+			FSpreads = new Spread<ISpread<T>>(1);
+			FSpreads[0] = new Spread<T>(0);
 		}
 		
-		public abstract ISpread<T> this[int index]
+		public ISpread<T> this[int index]
 		{
-			get;
-			set;
+			get
+			{
+				return FSpreads[index];
+			}
+			set
+			{
+				FSpreads[index] = value;
+			}
 		}
 		
-		public abstract int SliceCount
+		public int SliceCount
 		{
-			get;
-			set;
+			get
+			{
+				return FSpreads.SliceCount;
+			}
+			set
+			{
+				if (FSpreads.SliceCount != value)
+				{
+					int oldSliceCount = FSpreads.SliceCount;
+					
+					FSpreads.SliceCount = value;
+					
+					for (int i = oldSliceCount; i < FSpreads.SliceCount; i++)
+					{
+						FSpreads[i] = new Spread<T>(0);
+					}
+				}
+			}
 		}
 
 		public IEnumerator<ISpread<T>> GetEnumerator()

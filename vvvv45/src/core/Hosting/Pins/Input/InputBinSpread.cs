@@ -9,7 +9,6 @@ namespace VVVV.Hosting.Pins.Input
 	{
 		protected DiffPin<int> FBinSize;
 		protected Pin<T> FSpreadPin;
-		protected ISpread<ISpread<T>> FSpreads;
 		protected bool FSpreadsBuilt;
 		protected int FUpdateCount;
 		
@@ -25,8 +24,6 @@ namespace VVVV.Hosting.Pins.Input
 			att.DefaultValue = -1;
 			FBinSize = new DiffIntInputPin(host, att);
 			FBinSize.Updated += FBinSize_Updated;
-			
-			FSpreads = new Spread<ISpread<T>>(1);
 		}
 
 		protected virtual bool NeedToBuildSpread()
@@ -67,7 +64,7 @@ namespace VVVV.Hosting.Pins.Input
 
 			if (binCount == 0)
 			{
-				FSpreads.SliceCount = 0;
+				SliceCount = 0;
 			}
 			else
 			{
@@ -85,7 +82,7 @@ namespace VVVV.Hosting.Pins.Input
 					}
 					else
 					{
-						FSpreads.SliceCount = 0;
+						SliceCount = 0;
 					}
 				}
 				else
@@ -108,7 +105,7 @@ namespace VVVV.Hosting.Pins.Input
 				slices = FSpreadPin.SliceCount / size + 1;
 			}
 			
-			FSpreads.SliceCount = slices;
+			SliceCount = slices;
 			
 			for (int i = 0; i<slices; i++)
 			{
@@ -119,7 +116,7 @@ namespace VVVV.Hosting.Pins.Input
 					s[j] = FSpreadPin[i*size + j];
 				}
 				
-				FSpreads[i] = s;
+				this[i] = s;
 			}
 		}
 		
@@ -138,7 +135,7 @@ namespace VVVV.Hosting.Pins.Input
 				slices = FSpreadPin.SliceCount / size + 1;
 			}
 			
-			FSpreads.SliceCount = size;
+			SliceCount = size;
 			
 			for (int i = 0; i<size; i++)
 			{
@@ -149,7 +146,7 @@ namespace VVVV.Hosting.Pins.Input
 					s[j] = FSpreadPin[i*slices + j];
 				}
 				
-				FSpreads[i] = s;
+				this[i] = s;
 			}
 
 		}
@@ -173,7 +170,7 @@ namespace VVVV.Hosting.Pins.Input
 			
 			var slices = binTimes * bins.SliceCount;
 			
-			FSpreads.SliceCount = slices;
+			SliceCount = slices;
 			
 			var indexSum = 0;
 			
@@ -188,31 +185,7 @@ namespace VVVV.Hosting.Pins.Input
 				}
 				
 				indexSum += size;
-				FSpreads[i] = s;
-			}
-		}
-		
-		public override ISpread<T> this[int index]
-		{
-			get
-			{
-				return FSpreads[index];
-			}
-			set
-			{
-				FSpreads[index] = value;
-			}
-		}
-		
-		public override int SliceCount
-		{
-			get
-			{
-				return FSpreads.SliceCount;
-			}
-			set
-			{
-				FSpreads.SliceCount = value;
+				this[i] = s;
 			}
 		}
 	}
