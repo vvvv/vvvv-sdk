@@ -388,7 +388,9 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		void FBackgroundWorkerDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
 		{
-			FTagPanel.Redraw();
+		    //TODO: fix background drawing at all
+		    //would crash in a nodebrowser created standalone
+			//FTagPanel.Redraw();
 			//cant do in thread. would not update outside IDE
 //			FCategoryPanel.Redraw();
 		}
