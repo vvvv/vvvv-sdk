@@ -12,12 +12,14 @@ namespace VVVV.Hosting.Pins.Input
 	public class Matrix4x4InputPin : DiffPin<Matrix4x4>, IPinUpdater
 	{
 		protected ITransformIn FTransformIn;
-		new protected float[] FData;
+		protected new float[] FData;
 		
 		public Matrix4x4InputPin(IPluginHost host, InputAttribute attribute)
 			: base(host, attribute)
 		{
 			host.CreateTransformInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FTransformIn);
+			
+			FData = new float[16];
 			
 			base.Initialize(FTransformIn);
 		}

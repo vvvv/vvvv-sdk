@@ -19,6 +19,8 @@ namespace VVVV.Hosting.Pins.Output
 		{
 			host.CreateTransformOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FTransformOut);
 			
+			FData = new float[16];
+			
 			base.Initialize(FTransformOut);
 		}
 		
