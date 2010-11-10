@@ -1,22 +1,22 @@
 #region usings
 using System;
-using System.Windows.Forms;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Threading;
+using System.Windows.Forms;
 
 using Microsoft.Practices.Unity;
-
 using VVVV.Core;
 using VVVV.Core.Menu;
 using VVVV.Core.View;
 using VVVV.HDE.Viewer;
+using VVVV.HDE.Viewer.WinFormsViewer;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
-using VVVV.HDE.Viewer.WinFormsViewer;
 #endregion usings
 
 namespace VVVV.Nodes.Finder
@@ -36,7 +36,6 @@ namespace VVVV.Nodes.Finder
     public class FinderPluginNode: UserControl, IPluginHDE, IWindowSelectionListener
     {
         #region field declaration
-        [Import]
         private IPluginHost2 FPluginHost;
         private IHDEHost FHDEHost;
         private List<PatchNode> FPlainResultList = new List<PatchNode>();
@@ -75,16 +74,16 @@ namespace VVVV.Nodes.Finder
         
         #region constructor/destructor
         [ImportingConstructor]
-        public FinderPluginNode(IHDEHost host)
+        public FinderPluginNode(IHDEHost host, IPluginHost2 pluginHost)
         {
             // The InitializeComponent() call is required for Windows Forms designer support.
             InitializeComponent();
             
             FHDEHost = host;
+            FPluginHost = pluginHost;
             
             FSearchTextBox.ContextMenu = new ContextMenu();
             FSearchTextBox.ContextMenu.Popup += new EventHandler(FSearchTextBox_ContextMenu_Popup);
-            
             
             INode root;
             FHDEHost.GetRoot(out root);
@@ -94,10 +93,11 @@ namespace VVVV.Nodes.Finder
             FHierarchyViewer.Registry = mappingRegistry;
             FRoot = new PatchNode(root);
             FRoot.Added += new CollectionDelegate(root_Added);
-            //FHierarchyViewer.Input = FRoot;
             
+            //defer adding this as listener as 
             //this will trigger the initial WindowSelectionChangeCB
-            FHDEHost.AddListener(this);
+            //which will want to access this windows caption which is not yet available 
+            SynchronizationContext.Current.Post((object state) => FHDEHost.AddListener(this), null);
         }
 
         void FSearchTextBox_ContextMenu_Popup(object sender, EventArgs e)
@@ -251,8 +251,9 @@ namespace VVVV.Nodes.Finder
                     if (FActivePatchNode != null)
                         FActivePatchNode.UnSubscribe();
                     
-                    FPluginHost.Window.Caption = window.Caption;
+                    FPluginHost.Window.Caption =  window.Caption;
                     FActivePatchNode = new PatchNode(window.GetNode());
+                    
                     UpdateSearch();
                     
                     FActiveWindow = window;
@@ -581,6 +582,9 @@ namespace VVVV.Nodes.Finder
         
         void FSearchTextBoxKeyDown(object sender, KeyEventArgs e)
         {
+            if (FPlainResultList.Count == 0)
+                return;
+            
             if (e.KeyCode == Keys.F3 || e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
             {
                 FPlainResultList[FSearchIndex].Selected = false;
@@ -618,6 +622,7 @@ namespace VVVV.Nodes.Finder
                 FHDEHost.SelectNodes(new INode[1]{node});
             }
         }
+        
         void FHierarchyViewerClick(IModelMapper sender, MouseEventArgs e)
         {
             if (e.Button == 0)
