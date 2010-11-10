@@ -251,7 +251,8 @@ namespace VVVV.Nodes.Finder
                     if (FActivePatchNode != null)
                         FActivePatchNode.UnSubscribe();
                     
-                    //                    FPluginHost.Window.Caption = "Finder " + window.Caption;
+                    //var w = FPluginHost.Window;
+                    //w.Caption = "Finder " + window.Caption;
                     FActivePatchNode = new PatchNode(window.GetNode());
                     UpdateSearch();
                     
@@ -432,6 +433,7 @@ namespace VVVV.Nodes.Finder
             var searchResult = new PatchNode(null);
             FPlainResultList.Clear();
             FSearchIndex = 0;
+            FHierarchyViewer.ShowLinks = false;
             
             //check for tags in query:
             //g: global
@@ -459,6 +461,7 @@ namespace VVVV.Nodes.Finder
             {
                 FSendReceive = true;
                 FTags.Remove("s");
+                FHierarchyViewer.ShowLinks = true;
             }
             if (FTags.Contains("/"))
             {
@@ -579,10 +582,10 @@ namespace VVVV.Nodes.Finder
         
         void FSearchTextBoxKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F3)
+            if (e.KeyCode == Keys.F3 || e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
             {
                 FPlainResultList[FSearchIndex].Selected = false;
-                if (e.Shift)
+                if (e.Shift || e.KeyCode == Keys.Up)
                 {
                     FSearchIndex -= 1;
                     if (FSearchIndex < 0)

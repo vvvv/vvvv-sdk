@@ -9,7 +9,7 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.Finder
 {
-    public class PatchNode: IViewableCollection, INamed, IDescripted, INodeChangedListener, ISelectable, IDecoratable
+    public class PatchNode: IViewableCollection, INamed, IDescripted, INodeChangedListener, ISelectable, IDecoratable, ILinkable
     {
         List<PatchNode> FChildNodes = new List<PatchNode>();
         
@@ -130,6 +130,7 @@ namespace VVVV.Nodes.Finder
                         else if (ni.Name == "S")
                         {
                             SRChannel = FNode.GetPin("SendString").GetValue(0);
+                            FIsSource = true;
                             Name = ni.Username + ": " + SRChannel;
                             Icon = NodeIcon.SRNode;
                         }
@@ -222,12 +223,18 @@ namespace VVVV.Nodes.Finder
                 else
                 {
                     var ni = Node.GetNodeInfo();
-                    if (string.IsNullOrEmpty(ni.Name))
-                        return "[id " + Node.GetID().ToString() + "] " + System.IO.Path.GetDirectoryName(ni.Filename);
+                    //                    if (string.IsNullOrEmpty(ni.Name))
+                    //                        return "[id " + Node.GetID().ToString() + "] " + System.IO.Path.GetDirectoryName(ni.Filename);
+                    if (!string.IsNullOrEmpty(SRChannel))
+                        return ni.Username + " [id " + Node.GetID().ToString() + "]\nChannel: " + SRChannel;
+                    else if (!string.IsNullOrEmpty(Comment))
+                        return Comment;
+                    else if (IsIONode)
+                        return "IO " + Node.GetNodeInfo().Category + "\n" + DescriptiveName;
                     else if (ni.Type == NodeType.Native)
-                        return "[id " + Node.GetID().ToString() + "]";
+                        return ni.Username + " [id " + Node.GetID().ToString() + "]";
                     else
-                        return ni.Filename + " [id " + Node.GetID().ToString() + "]";
+                        return ni.Username + " [id " + Node.GetID().ToString() + "]\n" + ni.Filename;
                 }
             }
         }
@@ -499,5 +506,25 @@ namespace VVVV.Nodes.Finder
         
         public NodeIcon Icon {get; private set;}
         #endregion IDecoratable
+        
+        #region ILinkable
+        private bool FIsSource;
+        public bool IsSource {
+            get
+            {
+                return FIsSource;
+            }
+        }
+        
+        public string Channel {
+            get
+            {
+                if (FNode != null)
+                    return SRChannel + " - " + FNode.GetNodeInfo().Category;
+                else
+                    return null;
+            }
+        }
+        #endregion ILinkable
     }
 }
