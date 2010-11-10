@@ -14,20 +14,60 @@ namespace VVVV.PluginInterfaces.V2
 	/// </summary>
 	[Guid("581998D6-ED08-4E73-821A-46AFF59C78BD"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface INodeInfo : IPluginInfo, IDisposable
+	public interface INodeInfo : IDisposable
 	{
-//		/// <summary>
-//		/// The nodes main visible name. Use CamelCaps and no spaces.
-//		/// </summary>
-//		string Name {get;}
-//		/// <summary>
-//		/// The category in which the plugin can be found. Try to use an existing one.
-//		/// </summary>
-//		string Category {get;}
-//		/// <summary>
-//		/// Optional. Leave blank if not needed to distinguish two nodes of the same name and category.
-//		/// </summary>
-//		string Version {get;}
+		/// <summary>
+		/// The nodes main visible name. Use CamelCaps and no spaces.
+		/// </summary>
+		string Name {get;}
+		/// <summary>
+		/// The category in which the plugin can be found. Try to use an existing one.
+		/// </summary>
+		string Category {get;}
+		/// <summary>
+		/// Optional. Leave blank if not needed to distinguish two nodes of the same name and category.
+		/// </summary>
+		string Version {get;}
+		/// <summary>
+		/// Optional. Shortcut to create an instance of this node.
+		/// </summary>
+		string Shortcut {get; set;}
+		/// <summary>
+		/// Describe the nodes function in a few words.
+		/// </summary>
+		string Help {get; set;}
+		/// <summary>
+		/// Specify a comma separated list of tags that describe the node. Name, category and Version don't need to be duplicated here.
+		/// </summary>
+		string Tags {get; set;}
+		/// <summary>
+		/// Specify the plugins author.
+		/// </summary>
+		string Author {get; set;}
+		/// <summary>
+		/// Give credits to thirdparty code used.
+		/// </summary>
+		string Credits {get; set;}
+		/// <summary>
+		/// Specify known problems.
+		/// </summary>
+		string Bugs {get; set;}
+		/// <summary>
+		/// Specify any usage of the node that may cause troubles.
+		/// </summary>
+		string Warnings {get; set;}
+		/// <summary>
+		/// Only for GUI plugins. Defines the nodes initial size in window-mode.
+		/// </summary>
+		Size InitialWindowSize {get; set;}
+		/// <summary>
+		/// Only for GUI plugins. Defines the nodes initial size in box-mode.
+		/// </summary>
+		Size InitialBoxSize {get; set;}
+		/// <summary>
+		/// Only for GUI plugins. Defines the nodes initial component mode.
+		/// </summary>
+		TComponentMode InitialComponentMode {get; set;}
 		/// <summary>
 		/// Arguments used by the IAddonFactory to create this node.
 		/// </summary>
@@ -82,8 +122,6 @@ namespace VVVV.PluginInterfaces.V2
 			nodeInfo.Credits = otherNodeInfo.Credits;
 			nodeInfo.Warnings = otherNodeInfo.Warnings;
 
-			nodeInfo.Namespace = otherNodeInfo.Namespace;
-			nodeInfo.Class = otherNodeInfo.Class;
 			nodeInfo.InitialBoxSize = otherNodeInfo.InitialBoxSize;
 			nodeInfo.InitialComponentMode = otherNodeInfo.InitialComponentMode;
 			nodeInfo.InitialWindowSize = otherNodeInfo.InitialWindowSize;
@@ -105,8 +143,6 @@ namespace VVVV.PluginInterfaces.V2
 			nodeInfo.Credits = pluginInfo.Credits;
 			nodeInfo.Warnings = pluginInfo.Warnings;
 
-			nodeInfo.Namespace = pluginInfo.Namespace;
-			nodeInfo.Class = pluginInfo.Class;
 			nodeInfo.InitialBoxSize = pluginInfo.InitialBoxSize;
 			nodeInfo.InitialComponentMode = pluginInfo.InitialComponentMode;
 			nodeInfo.InitialWindowSize = pluginInfo.InitialWindowSize;

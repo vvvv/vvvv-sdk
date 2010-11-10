@@ -320,8 +320,6 @@ namespace VVVV.Hosting.Factories
 							nodeInfo.BeginUpdate();
 							nodeInfo.UpdateFromNodeInfo(pluginNodeInfo);
 							nodeInfo.Arguments = type.Namespace + "." + type.Name;
-							nodeInfo.Class = type.Name;
-							nodeInfo.Namespace = type.Namespace;
 							
 							yield return nodeInfo;
 							break;
@@ -340,8 +338,6 @@ namespace VVVV.Hosting.Factories
 							nodeInfo.BeginUpdate();
 							nodeInfo.UpdateFromPluginInfo(pluginInfo);
 							nodeInfo.Arguments = type.Namespace + "." + type.Name;
-							nodeInfo.Class = type.Name;
-							nodeInfo.Namespace = type.Namespace;
 							
 							yield return nodeInfo;
 						}

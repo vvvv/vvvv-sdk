@@ -32,23 +32,7 @@ namespace VVVV.Hosting
 				
 				try
 				{
-					FNodeInfo.Arguments = FArguments;
-					FNodeInfo.Author = FAuthor;
-					FNodeInfo.AutoEvaluate = FAutoEvaluate;
-					FNodeInfo.Bugs = FBugs;
-					FNodeInfo.Class = FClass;
-					FNodeInfo.Credits = FCredits;
-					FNodeInfo.Help = FHelp;
-					FNodeInfo.Ignore = FIgnore;
-					FNodeInfo.InitialBoxSize = FInitialBoxSize;
-					FNodeInfo.InitialComponentMode = FInitialComponentMode;
-					FNodeInfo.InitialWindowSize = FInitialWindowSize;
-					FNodeInfo.Namespace = FNamespace;
-					FNodeInfo.Shortcut = FShortcut;
-					FNodeInfo.Tags = FTags;
-					FNodeInfo.Type = FType;
-					FNodeInfo.UserData = FUserData;
-					FNodeInfo.Warnings = FWarnings;
+					FNodeInfo.UpdateFromNodeInfo(this);
 				}
 				finally
 				{
@@ -73,7 +57,6 @@ namespace VVVV.Hosting
 					AutoEvaluate = FNodeInfo.AutoEvaluate;
 					Bugs = FNodeInfo.Bugs;
 					Category = FNodeInfo.Category;
-					Class = FNodeInfo.Class;
 					Credits = FNodeInfo.Credits;
 					Filename = FNodeInfo.Filename;
 					Help = FNodeInfo.Help;
@@ -82,7 +65,6 @@ namespace VVVV.Hosting
 					InitialComponentMode = FNodeInfo.InitialComponentMode;
 					InitialWindowSize = FNodeInfo.InitialWindowSize;
 					Name = FNodeInfo.Name;
-					Namespace = FNodeInfo.Namespace;
 					Shortcut = FNodeInfo.Shortcut;
 					Systemname = FNodeInfo.Systemname;
 					Tags = FNodeInfo.Tags;
@@ -393,38 +375,6 @@ namespace VVVV.Hosting
 					
 					if (!FInUpdate)
 						FNodeInfo.InitialComponentMode = InitialComponentMode;
-				}
-			}
-			
-			private string FNamespace;
-			public string Namespace {
-				get {
-					return FNamespace;
-				}
-				set {
-					if (string.IsNullOrEmpty(value))
-						FNamespace = string.Empty;
-					else
-						FNamespace = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.Namespace = Namespace;
-				}
-			}
-			
-			private string FClass;
-			public string Class {
-				get {
-					return FClass;
-				}
-				set {
-					if (string.IsNullOrEmpty(value))
-						FClass = string.Empty;
-					else
-						FClass = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.Class = Class;
 				}
 			}
 			

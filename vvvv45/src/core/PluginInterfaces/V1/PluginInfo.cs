@@ -17,15 +17,15 @@ namespace VVVV.PluginInterfaces.V1
 		/// <summary>
 		/// The nodes main visible name. Use CamelCaps and no spaces.
 		/// </summary>
-		string Name {get; }
+		string Name {get; set;}
 		/// <summary>
 		/// The category in which the plugin can be found. Try to use an existing one.
 		/// </summary>
-		string Category {get; }
+		string Category {get; set;}
 		/// <summary>
 		/// Optional. Leave blank if not needed to distinguish two nodes of the same name and category.
 		/// </summary>
-		string Version {get; }
+		string Version {get; set;}
 		/// <summary>
 		/// Optional. Shortcut to create an instance of this node.
 		/// </summary>
