@@ -25,7 +25,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// paths in <paramref name="val"/>.
 		/// </param>
 		/// <returns>The deserialized <see cref="INodeInfo">node info</see>.</returns>
-		INodeInfo StringToNodeInfo(string val, string path);
+		//INodeInfo StringToNodeInfo(string val, string path);
 		
 		/// <summary>
 		/// Creates a new <see cref="INodeInfo">node info</see>.

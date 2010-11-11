@@ -453,7 +453,7 @@ namespace VVVV.Hosting.Factories
 		}
 		
 		//add all addons included with this filename
-		protected virtual void AddFile(string filename)
+		public virtual void AddFile(string filename)
 		{
 			foreach(var nodeInfo in ExtractNodeInfos(filename, null))
 				if (nodeInfo.Filename == filename)

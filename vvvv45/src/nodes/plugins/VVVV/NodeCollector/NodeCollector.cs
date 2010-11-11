@@ -16,18 +16,21 @@ using VVVV.Hosting.Factories;
 namespace VVVV.Nodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "NodeCollector", Category = "VVVV", 
-	            Help = "Scans the specified directories for nodes and makes them available. Job directories are expected to have nodes sorted in subdirectories by type (effects, plugins, modules...)", 
+	[PluginInfo(Name = "NodeList", Category = "VVVV", 
+	            Help = "Collects nodes in Search Paths and returns the list of all known nodes. For now Search Paths are expected to have nodes sorted in subdirectories by type (effects, plugins, modules...)", 
 	            Tags = "", AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class NodeCollector : IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Job Directories", StringType = StringType.Directory, DefaultString = ".")]
-		protected ISpread<string> FJobDirs;		
+		[Input("Search Paths", StringType = StringType.Directory, DefaultString = ".")]
+		protected ISpread<string> FSearchPaths;		
 
-		[Input("Unsorted Directories", StringType = StringType.Directory)]
-		protected ISpread<string> FUnsortedDirs;
+		//[Input("Unsorted Directories", StringType = StringType.Directory)]
+		//protected ISpread<string> FUnsortedDirs;
+		
+		[Output("Nodes")]
+		protected ISpread<string> FNodes;
 		
 		[Import]
 		protected NodeCollection NodeCollection;
@@ -35,24 +38,32 @@ namespace VVVV.Nodes
 		[Import]
 		protected ILogger Flogger;
 		
-		List<string> FLastJobs = new List<string>();
+		[Import]
+		protected INodeInfoFactory FNodesInfos;
+		
+		List<string> FLastPaths = new List<string>();
+		List<bool> FWasRepository = new List<bool>();
 		#endregion fields & pins
 			
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			foreach (var p in FLastJobs)
+			foreach (var p in FLastPaths)
 				NodeCollection.RemoveJob(p);				
 
-			FLastJobs.Clear();
+			FLastPaths.Clear();
 			
-			foreach (var p in FJobDirs)
+			foreach (var p in FSearchPaths)
 			{
 				NodeCollection.AddJob(p);
-				FLastJobs.Add(p);
+				FLastPaths.Add(p);
 			}
 
 			NodeCollection.Collect();
+			
+			FNodes.SliceCount = FNodesInfos.NodeInfos.Length;
+			for (int i=0; i < FNodesInfos.NodeInfos.Length; i++)
+				FNodes[i] = FNodesInfos.NodeInfos[i].Systemname;
 		}
 	}	
 }

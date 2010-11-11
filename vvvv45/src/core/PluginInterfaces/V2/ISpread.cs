@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VVVV.PluginInterfaces.V2
 {
@@ -68,5 +69,17 @@ namespace VVVV.PluginInterfaces.V2
         {
         	return CombineSpreads(spread1.SliceCount, spread2.SliceCount);
         }
+        
+        public static void AssignFrom<T>(this ISpread<T> spread, IEnumerable<T> enumerable)
+        {
+        	spread.SliceCount = enumerable.Count();
+        	int i=0;
+        	foreach	(var entry in enumerable)
+        	{
+        		spread[i] = entry;
+        		i++;
+        	}
+        }
+        	
 	}
 }

@@ -143,9 +143,14 @@ namespace VVVV.Hosting
 			foreach (var factory in AddonFactories)
 				AddFactory(factory);
 			
-			NodeCollection.AddJob(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
-//			NodeCollection.AddUnsorted(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed"))+ "plugins");
-			NodeCollection.Collect();
+//			NodeCollection.AddJob(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
+			PluginFactory.AddFile(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed"))+ @"plugins\Finder.dll");
+			PluginFactory.AddFile(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed"))+ @"plugins\Kommunikator.dll");
+			PluginFactory.AddFile(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed"))+ @"plugins\NodeBrowser.dll");
+			PluginFactory.AddFile(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed"))+ @"plugins\NodeCollector.dll");
+			PluginFactory.AddFile(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed"))+ @"plugins\WindowSwitcher.dll");
+			//NodeCollection.AddUnsorted(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed"))+ "plugins");
+			//NodeCollection.Collect();
 			
 			//now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
 			var nodeInfoFactory = FVVVVHost.NodeInfoFactory;

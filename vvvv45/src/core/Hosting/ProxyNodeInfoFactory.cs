@@ -446,13 +446,7 @@ namespace VVVV.Hosting
 		{
 			return FProxyToInternalMap[nodeInfo];
 		}
-		
-		public INodeInfo StringToNodeInfo(string val, string path)
-		{
-			var nodeInfo = FFactory.StringToNodeInfo(val, path);
-			return FInternalToProxyMap[nodeInfo];
-		}
-		
+				
 		public INodeInfo CreateNodeInfo(string name, string category, string version, string filename)
 		{
 			var nodeInfo = FFactory.CreateNodeInfo(name, category, version, filename);
