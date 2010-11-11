@@ -41,6 +41,7 @@ namespace VVVV.Nodes.Finder
         private List<PatchNode> FPlainResultList = new List<PatchNode>();
         private SearchScope FSearchScope = SearchScope.Local;
         
+        private IWindow FActivePatchWindow;
         private IWindow FActiveWindow;
         private PatchNode FActivePatchNode;
         private PatchNode FRoot;
@@ -94,10 +95,17 @@ namespace VVVV.Nodes.Finder
             FRoot = new PatchNode(root);
             FRoot.Added += new CollectionDelegate(root_Added);
             
+            FSearchTextBox.MouseWheel += new MouseEventHandler(FSearchTextBox_MouseWheel);
+            
             //defer adding this as listener as 
             //this will trigger the initial WindowSelectionChangeCB
             //which will want to access this windows caption which is not yet available 
             SynchronizationContext.Current.Post((object state) => FHDEHost.AddListener(this), null);
+        }
+
+        void FSearchTextBox_MouseWheel(object sender, MouseEventArgs e)
+        {
+            FHierarchyViewer.Focus();
         }
 
         void FSearchTextBox_ContextMenu_Popup(object sender, EventArgs e)
@@ -180,11 +188,13 @@ namespace VVVV.Nodes.Finder
         	this.FHierarchyViewer.Dock = System.Windows.Forms.DockStyle.Fill;
         	this.FHierarchyViewer.Location = new System.Drawing.Point(0, 17);
         	this.FHierarchyViewer.Name = "FHierarchyViewer";
+        	this.FHierarchyViewer.ShowLinks = false;
         	this.FHierarchyViewer.Size = new System.Drawing.Size(252, 239);
         	this.FHierarchyViewer.TabIndex = 9;
         	this.FHierarchyViewer.DoubleClick += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerDoubleClick);
         	this.FHierarchyViewer.Click += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerClick);
-        	this.FHierarchyViewer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FSearchTextBoxKeyDown);
+        	this.FHierarchyViewer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FHierarchyViewerKeyPress);
+        	this.FHierarchyViewer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FHierarchyViewerKeyDown);
         	// 
         	// FinderPluginNode
         	// 
@@ -242,11 +252,12 @@ namespace VVVV.Nodes.Finder
         #region IWindowSelectionListener
         public void WindowSelectionChangeCB(IWindow window)
         {
+            FActiveWindow = window;
             var windowType = window.GetWindowType();
             
             if (windowType == WindowType.Module || windowType == WindowType.Patch)
             {
-                if (window != FActiveWindow)
+                if (window != FActivePatchWindow)
                 {
                     if (FActivePatchNode != null)
                         FActivePatchNode.UnSubscribe();
@@ -256,7 +267,7 @@ namespace VVVV.Nodes.Finder
                     
                     UpdateSearch();
                     
-                    FActiveWindow = window;
+                    FActivePatchWindow = window;
                 }
             }
             //todo: mark current patch like "you are here"
@@ -570,6 +581,8 @@ namespace VVVV.Nodes.Finder
                     }
             }
             
+            searchResult.SetActiveWindow(FActiveWindow);
+            
             var mappingRegistry = new MappingRegistry();
             mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
             
@@ -652,6 +665,18 @@ namespace VVVV.Nodes.Finder
         void FHierarchyViewerDoubleClick(IModelMapper sender, MouseEventArgs e)
         {
             OpenPatch((sender.Model as PatchNode).Node);
+        }
+        
+        void FHierarchyViewerKeyDown(object sender, KeyEventArgs e)
+        {
+            
+        }
+        
+        void FHierarchyViewerKeyPress(object sender, KeyPressEventArgs e)
+        {
+        	FSearchTextBox.Focus();
+            FSearchTextBox.Text += (e.KeyChar).ToString();
+            FSearchTextBox.Select(FSearchTextBox.Text.Length, 1);
         }
     }
 }

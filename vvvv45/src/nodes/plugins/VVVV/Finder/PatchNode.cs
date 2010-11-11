@@ -35,6 +35,18 @@ namespace VVVV.Nodes.Finder
         public bool IsBoygrouped {get; private set;}
         public bool IsMissing {get; private set;}
         
+        public bool IsActiveWindow {get; private set;}
+        public void SetActiveWindow(IWindow window)
+        {
+            //hand this downtree until someone finds itself in the window
+            if (FWindow == window)
+                IsActiveWindow = true;
+            else
+                foreach(var child in FChildNodes)
+                    child.SetActiveWindow(window);
+        }
+        
+        private IWindow FWindow;
         private string FDecoratedName;
         
         public NodeType NodeType {get; private set;}
@@ -81,6 +93,8 @@ namespace VVVV.Nodes.Finder
                         Icon = NodeIcon.Code;
                     else if (Node.HasPatch())
                         Icon = NodeIcon.Patch;
+                    
+                    FWindow = FNode.Window;
                     
                     var ni = FNode.GetNodeInfo();
                     if (ni != null)
@@ -447,6 +461,9 @@ namespace VVVV.Nodes.Finder
             {
                 if (FNode == null)
                     return Brushes.AliceBlue;
+                
+                if (IsActiveWindow)
+                    return Brushes.White;
                 
                 if (FNode.HasPatch())
                 {    if (FNode.ContainsMissingNodes())

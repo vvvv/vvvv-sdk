@@ -9,14 +9,22 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.WindowSwitcher
 {
-    public class PatchNode: IViewableCollection, INamed, IDescripted, INodeChangedListener, ISelectable, IDecoratable
+    public class PatchNode: IViewableCollection, INamed, IDescripted, INodeChangedListener, ISelectable, IDecoratable, ILinkable
     {
         List<PatchNode> FChildNodes = new List<PatchNode>();
         
-        static SolidBrush SSelectionColor = new SolidBrush(Color.FromArgb(216, 216, 216));
         static SolidBrush SDarkGray = new SolidBrush(Color.FromArgb(154, 154, 154));
         static SolidBrush SLightGray = new SolidBrush(Color.FromArgb(192, 192, 192));
-
+        static SolidBrush SHoverGray = new SolidBrush(Color.FromArgb(216, 216, 216));
+        
+        static SolidBrush SDarkRed = new SolidBrush(Color.FromArgb(168, 82, 82));
+        static SolidBrush SLightRed = new SolidBrush(Color.FromArgb(229, 162, 162));
+        static SolidBrush SHoverRed = new SolidBrush(Color.FromArgb(233, 158, 158));
+        
+        static SolidBrush SDarkBlue = new SolidBrush(Color.FromArgb(82, 112, 168));
+        static SolidBrush SLightBlue = new SolidBrush(Color.FromArgb(162, 174, 229));
+        static SolidBrush SHoverBlue = new SolidBrush(Color.FromArgb(158, 193, 233));
+        
         public bool MarkedForDelete{get;set;}
 
         public string SRChannel {get; private set;}
@@ -24,6 +32,22 @@ namespace VVVV.Nodes.WindowSwitcher
         public string DescriptiveName {get; private set;}
         
         public bool IsIONode {get; private set;}
+        public bool IsBoygrouped {get; private set;}
+        public bool IsMissing {get; private set;}
+        
+        public bool IsActiveWindow {get; private set;}
+        public void SetActiveWindow(IWindow window)
+        {
+            //hand this downtree until someone finds itself in the window
+            if (FWindow == window)
+                IsActiveWindow = true;
+            else
+                foreach(var child in FChildNodes)
+                    child.SetActiveWindow(window);
+        }
+        
+        private IWindow FWindow;
+        private string FDecoratedName;
         
         public NodeType NodeType {get; private set;}
         
@@ -31,7 +55,7 @@ namespace VVVV.Nodes.WindowSwitcher
         {
             Node = self;
             
-            if (Node != null)
+            if (Node != null && NodeType != NodeType.Module)
                 UpdateChildren();
         }
         
@@ -47,17 +71,35 @@ namespace VVVV.Nodes.WindowSwitcher
                 FNode = value;
                 if (FNode != null)
                 {
+                    IsBoygrouped = FNode.IsBoygrouped();
+                    IsMissing = FNode.IsMissing();
+                    
+                    DescriptiveName = Node.GetPin("Descriptive Name").GetValue(0);
+                    string hyphen = "";
+                    if (!string.IsNullOrEmpty(DescriptiveName))
+                        hyphen = " -- ";
+                    
                     Name = "????";
+                    if (Node.HasGUI())
+                    {
+                        if (Node.HasCode())
+                            Icon = NodeIcon.GUICode;
+                        else if (Node.HasPatch())
+                            Icon = NodeIcon.GUIPatch;
+                        else
+                            Icon = NodeIcon.GUI;
+                    }
+                    else if (Node.HasCode())
+                        Icon = NodeIcon.Code;
+                    else if (Node.HasPatch())
+                        Icon = NodeIcon.Patch;
+                    
+                    FWindow = FNode.Window;
                     
                     var ni = FNode.GetNodeInfo();
                     if (ni != null)
                     {
                         NodeType = ni.Type;
-                        
-                        DescriptiveName = Node.GetPin("Descriptive Name").GetValue(0);
-                        string hyphen = "";
-                        if (!string.IsNullOrEmpty(DescriptiveName))
-                            hyphen = " -- ";
                         
                         //subpatches
                         if (string.IsNullOrEmpty(ni.Name))
@@ -91,7 +133,8 @@ namespace VVVV.Nodes.WindowSwitcher
                                     cmt = cmt.Substring(0, linebreak) + "...";
                                 else if (cmt.Length > maxChar)
                                     cmt = cmt.Substring(0, maxChar) + "...";
-                                Name = "// " + cmt;
+                                Name = cmt;
+                                Icon = NodeIcon.Comment;
                             }
                             else
                                 Name = ni.Username + hyphen + DescriptiveName;
@@ -101,18 +144,24 @@ namespace VVVV.Nodes.WindowSwitcher
                         else if (ni.Name == "S")
                         {
                             SRChannel = FNode.GetPin("SendString").GetValue(0);
+                            FIsSource = true;
                             Name = ni.Username + ": " + SRChannel;
+                            Icon = NodeIcon.SRNode;
                         }
                         else if (ni.Name == "R")
                         {
                             SRChannel = FNode.GetPin("ReceiveString").GetValue(0);
                             Name = ni.Username + ": " + SRChannel;
+                            Icon = NodeIcon.SRNode;
                         }
                         else
                             Name = ni.Username + hyphen + DescriptiveName;
                         
                         if (IsIONode)
-                            Name = "IO: " + DescriptiveName;
+                        {
+                            Name = DescriptiveName;
+                            Icon = NodeIcon.IONode;
+                        }
                     }
                     
                     Node.AddListener(this);
@@ -188,12 +237,18 @@ namespace VVVV.Nodes.WindowSwitcher
                 else
                 {
                     var ni = Node.GetNodeInfo();
-                    if (string.IsNullOrEmpty(ni.Name))
-                        return "[id " + Node.GetID().ToString() + "] " + System.IO.Path.GetDirectoryName(ni.Filename);
+                    //                    if (string.IsNullOrEmpty(ni.Name))
+                    //                        return "[id " + Node.GetID().ToString() + "] " + System.IO.Path.GetDirectoryName(ni.Filename);
+                    if (!string.IsNullOrEmpty(SRChannel))
+                        return ni.Username + " [id " + Node.GetID().ToString() + "]\nChannel: " + SRChannel;
+                    else if (!string.IsNullOrEmpty(Comment))
+                        return Comment;
+                    else if (IsIONode)
+                        return "IO " + Node.GetNodeInfo().Category + "\n" + DescriptiveName;
                     else if (ni.Type == NodeType.Native)
-                        return "[id " + Node.GetID().ToString() + "]";
+                        return ni.Username + " [id " + Node.GetID().ToString() + "]";
                     else
-                        return ni.Filename + " [id " + Node.GetID().ToString() + "]";
+                        return ni.Username + " [id " + Node.GetID().ToString() + "]\n" + ni.Filename;
                 }
             }
         }
@@ -252,24 +307,24 @@ namespace VVVV.Nodes.WindowSwitcher
                                      int w1 = 0, w2 = 0;
                                      if (p1.NodeType == NodeType.Patch)
                                          w1 = 100;
-                                     else if (p1.Name.StartsWith("IO: "))
+                                     else if (p1.IsIONode)
                                          w1 = 90;
                                      else if (p1.Name.StartsWith("S "))
                                          w1 = 81;
                                      else if (p1.Name.StartsWith("R "))
                                          w1 = 80;
-                                     else if (p1.Name.StartsWith("// "))
+                                     else if (!string.IsNullOrEmpty(p1.Comment))
                                          w1 = 200;
                                      
                                      if (p2.NodeType == NodeType.Patch)
                                          w2 = 100;
-                                     else if (p2.Name.StartsWith("IO: "))
+                                     else if (p1.IsIONode)
                                          w2 = 90;
                                      else if (p2.Name.StartsWith("S "))
                                          w2 = 81;
                                      else if (p2.Name.StartsWith("R "))
                                          w2 = 80;
-                                     else if (p2.Name.StartsWith("// "))
+                                     else if (!string.IsNullOrEmpty(p1.Comment))
                                          w2 = 200;
                                      
                                      if ((w1 > 0) || (w2 > 0))
@@ -285,6 +340,60 @@ namespace VVVV.Nodes.WindowSwitcher
                                          return p1.Name.CompareTo(p2.Name);
                                  });
             }
+        }
+        
+        public void SetTags(List<string> tags)
+        {
+            FDecoratedName = BoldenString(Name, tags, "@@", "@@");
+        }
+        
+        private string BoldenString(string input, List<string> tags, string startTag, string endTag)
+        {
+            var loweredInput = input.ToLower();
+            var tagged = loweredInput.ToCharArray();
+            foreach (string tag in tags)
+            {
+                //in the tagged char[] mark all matching characters as ° for later being surrounded by start and endTags.
+                int start = 0;
+                while (loweredInput.IndexOf(tag, start) >= 0)
+                {
+                    int pos = loweredInput.IndexOf(tag, start);
+                    for (int i=pos; i<pos + tag.Length; i++)
+                        tagged[i] = '°';
+                    start = pos+1;
+                }
+            }
+            
+            //now create the outputstring based on the tagged char[]
+            string output = "";
+            var inTag = false;
+            int j = 0;
+            foreach (var c in tagged)
+            {
+                if (c == '°')
+                {
+                    if (!inTag)
+                    {
+                        inTag = true;
+                        output += startTag + input[j];
+                    }
+                    else
+                        output += input[j];
+                }
+                else
+                {
+                    if (inTag)
+                    {
+                        inTag = false;
+                        output += endTag + input[j];
+                    }
+                    else
+                        output += input[j];
+                }
+                j++;
+            }
+            
+            return output;
         }
         
         public void UnSubscribe()
@@ -329,6 +438,7 @@ namespace VVVV.Nodes.WindowSwitcher
             }
         }
         
+        #region IDecoratable
         public System.Drawing.Pen TextColor
         {
             get
@@ -349,8 +459,24 @@ namespace VVVV.Nodes.WindowSwitcher
         {
             get
             {
+                if (FNode == null)
+                    return Brushes.AliceBlue;
+                
+                if (IsActiveWindow)
+                    return Brushes.White;
+                
                 if (FNode.HasPatch())
-                    return SDarkGray;
+                {    if (FNode.ContainsMissingNodes())
+                        return SDarkRed;
+                    else if (FNode.ContainsBoygroupedNodes())
+                        return SDarkBlue;
+                    else
+                        return SDarkGray;
+                }
+                else if (FNode.IsMissing())
+                    return SLightRed;
+                else if (FNode.IsBoygrouped())
+                    return SLightBlue;
                 else
                     return SLightGray;
             }
@@ -360,7 +486,23 @@ namespace VVVV.Nodes.WindowSwitcher
         {
             get
             {
-                return SSelectionColor;
+                if (FNode == null)
+                    return Brushes.AliceBlue;
+                
+                if (FNode.HasPatch())
+                {   if (FNode.ContainsMissingNodes())
+                        return SHoverRed;
+                    else if (FNode.ContainsBoygroupedNodes())
+                        return SHoverBlue;
+                    else
+                        return SHoverGray;
+                }
+                else if (FNode.IsMissing())
+                    return SHoverRed;
+                else if (FNode.IsBoygrouped())
+                    return SHoverBlue;
+                else
+                    return SHoverGray;
             }
         }
         
@@ -373,15 +515,33 @@ namespace VVVV.Nodes.WindowSwitcher
         }
         
         public string Text {
-            get {
-                throw new NotImplementedException();
+            get
+            {
+                return FDecoratedName;
             }
         }
         
-        public NodeIcon Icon {
-            get {
-                throw new NotImplementedException();
+        public NodeIcon Icon {get; private set;}
+        #endregion IDecoratable
+        
+        #region ILinkable
+        private bool FIsSource;
+        public bool IsSource {
+            get
+            {
+                return FIsSource;
             }
         }
+        
+        public string Channel {
+            get
+            {
+                if (FNode != null)
+                    return SRChannel + " - " + FNode.GetNodeInfo().Category;
+                else
+                    return null;
+            }
+        }
+        #endregion ILinkable
     }
 }

@@ -30,6 +30,7 @@ namespace VVVV.Nodes.WindowSwitcher
         private INode FRoot;
         private PatchNode FFullTree;
         private PatchNode FWindowTree;
+        private IWindow FActiveWindow;
         private PatchNode FSelectedPatchNode;
         // Track whether Dispose has been called.
         private bool FDisposed = false;
@@ -138,6 +139,8 @@ namespace VVVV.Nodes.WindowSwitcher
             FWindowTree = new PatchNode(null);
             FWindowTree.Node = FRoot;
             AddWindowNodes(FWindowTree, FFullTree);
+            
+            FWindowTree.SetActiveWindow(FActiveWindow);
             
             //mark the incoming window as selected
             FHierarchyViewer.Input = FWindowTree;
@@ -250,6 +253,8 @@ namespace VVVV.Nodes.WindowSwitcher
         #region IWindowSelectionListener
         public void WindowSelectionChangeCB(IWindow window)
         {
+            FActiveWindow = window;
+            
             //remove it from the index it is now
             FWindowLIFO.Remove(window);
             
@@ -267,8 +272,9 @@ namespace VVVV.Nodes.WindowSwitcher
         
         void FDummyTextBoxKeyUp(object sender, KeyEventArgs e)
         {
-            if ((e.KeyData == Keys.ControlKey) || (e.KeyData == Keys.Control))
+            if (!e.Control)
             {
+                FHierarchyViewer.HideToolTip();
                 FWindowSwitcherHost.HideMe();
                 FHDEHost.SetComponentMode(FWindowLIFO[FSelectedWindowIndex].GetNode(), ComponentMode.InAWindow);
             }
