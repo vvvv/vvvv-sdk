@@ -266,6 +266,7 @@ namespace VVVV.Nodes.WindowSwitcher
         #region events
         void FHierarchyViewerClick(IModelMapper sender, MouseEventArgs e)
         {
+            FHierarchyViewer.HideToolTip();
             FWindowSwitcherHost.HideMe();
             FHDEHost.SetComponentMode((sender.Model as PatchNode).Node, ComponentMode.InAWindow);
         }
@@ -285,7 +286,8 @@ namespace VVVV.Nodes.WindowSwitcher
         {
             if ((e.KeyData == Keys.ControlKey) || (e.KeyData == Keys.Control))
             {
-                FWindowSwitcherHost.HideMe();
+                FHierarchyViewer.HideToolTip();
+                FWindowSwitcherHost.HideMe();                
                 FHDEHost.SetComponentMode(FWindowLIFO[FSelectedWindowIndex].GetNode(), ComponentMode.InAWindow);
             }
         }

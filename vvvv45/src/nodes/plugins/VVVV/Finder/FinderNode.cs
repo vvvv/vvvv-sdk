@@ -93,7 +93,8 @@ namespace VVVV.Nodes.Finder
             
             FHierarchyViewer.Registry = mappingRegistry;
             FRoot = new PatchNode(root);
-            FRoot.Added += new CollectionDelegate(root_Added);
+            FRoot.Added += new CollectionDelegate(UpdateViewer);
+            FRoot.Removed += new CollectionDelegate(UpdateViewer);
             
             FSearchTextBox.MouseWheel += new MouseEventHandler(FSearchTextBox_MouseWheel);
             
@@ -101,6 +102,11 @@ namespace VVVV.Nodes.Finder
             //this will trigger the initial WindowSelectionChangeCB
             //which will want to access this windows caption which is not yet available 
             SynchronizationContext.Current.Post((object state) => FHDEHost.AddListener(this), null);
+        }
+
+        void UpdateViewer(IViewableCollection collection, object item)
+        {
+            FHierarchyViewer.Reload();
         }
 
         void FSearchTextBox_MouseWheel(object sender, MouseEventArgs e)
@@ -111,11 +117,6 @@ namespace VVVV.Nodes.Finder
         void FSearchTextBox_ContextMenu_Popup(object sender, EventArgs e)
         {
             FSearchTextBox.Text = "";
-        }
-
-        void root_Added(IViewableCollection collection, object item)
-        {
-            FHierarchyViewer.Reload();
         }
         
         private void InitializeComponent()
@@ -264,13 +265,14 @@ namespace VVVV.Nodes.Finder
                     
                     FPluginHost.Window.Caption =  window.Caption;
                     FActivePatchNode = new PatchNode(window.GetNode());
+                    FActivePatchNode.Added += UpdateViewer;
+                    FActivePatchNode.Removed += UpdateViewer;
                     
                     UpdateSearch();
                     
                     FActivePatchWindow = window;
                 }
             }
-            //todo: mark current patch like "you are here"
         }
         #endregion IWindowSelectionListener
         
@@ -582,6 +584,8 @@ namespace VVVV.Nodes.Finder
             }
             
             searchResult.SetActiveWindow(FActiveWindow);
+            searchResult.Added += UpdateViewer;
+            searchResult.Removed += UpdateViewer;
             
             var mappingRegistry = new MappingRegistry();
             mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
