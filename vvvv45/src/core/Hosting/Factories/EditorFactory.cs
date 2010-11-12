@@ -183,7 +183,7 @@ namespace VVVV.Hosting.Factories
 			}
 		}
 		
-		public void AddDir(string dir)
+		public void AddDir(string dir, bool recursive)
 		{
 			try
 			{

@@ -18,11 +18,15 @@ namespace VVVV.Hosting.Factories
 		public int RefCount {get; private set;}
 		public bool IsGarbage{ get{ return RefCount <= 0; }}
 		public IAddonFactory Factory;
-		public SearchPath(string path, IAddonFactory factory)
-		{			
+		public bool Disabled;
+		public bool NeedsToBeDisabled;
+		public bool Recursive {get; set;}
+		public SearchPath(string path, IAddonFactory factory, bool recursive)
+		{	
 			Path = path;
 			Factory = factory;
 			RefCount = 1;
+			Recursive = recursive;
 		}	
 		
 		public void Inc()
@@ -61,11 +65,19 @@ namespace VVVV.Hosting.Factories
 		public void Collect()
 		{
 			for (int i = FPaths.Count-1; i >= 0; i--) 
-				if (FPaths[i].IsGarbage)
+				if (FPaths[i].IsGarbage) 
 				{
 					var p = FPaths[i];
 					FPaths.RemoveAt(i);					
 					Flogger.Log(LogType.Debug, "removing " + p.Path + " from available " + p.Factory.JobStdSubPath);				
+					p.Factory.RemoveDir(p.Path);
+				}
+			
+			for (int i = FPaths.Count-1; i >= 0; i--) 
+				if (FPaths[i].NeedsToBeDisabled)
+				{
+					var p = FPaths[i];
+					p.Disabled = true;   
 					p.Factory.RemoveDir(p.Path);
 				}
 			
@@ -74,16 +86,15 @@ namespace VVVV.Hosting.Factories
 				{
 					path.Init();	
 					Flogger.Log(LogType.Debug, "adding " + path.Path + " to available " + path.Factory.JobStdSubPath);				
-					path.Factory.AddDir(path.Path);						
+					path.Factory.AddDir(path.Path, path.Recursive);						
 				}
 		}
 			
-		
 		private void Add(SearchPath path)
 		{
 			bool found = false;
 			foreach (var p in FPaths) 
-				if ((p.Factory == path.Factory) && (p.Path == path.Path))
+				if ((p.Factory == path.Factory) && (String.Compare(p.Path, path.Path, true)==0))
 				{
 					p.Inc();
 					found = true;
@@ -91,12 +102,41 @@ namespace VVVV.Hosting.Factories
 				}
 			
 			if (!found)
+			{
+				foreach (var p in FPaths) 
+					if ((p.Factory == path.Factory) && p.Path.StartsWith(path.Path, true, null))
+					{
+						if (path.Recursive)
+						{
+						 	Flogger.Log(LogType.Debug, "error adding recursive path " + path.Path + " to available " + p.Factory.JobStdSubPath + ". conflicting with already added path: " + p.Path);
+						 	Flogger.Log(LogType.Debug, "adding path as nonrecursive.");	
+						 	path.Recursive = false;
+						}
+  						FPaths.Add(path);
+						//p.NeedsToBeDisabled = true;						
+						return;
+					}
+					    
+				foreach (var p in FPaths) 
+					if ((p.Factory == path.Factory) && path.Path.StartsWith(p.Path, true, null))
+					{
+						FPaths.Add(path);
+						if (p.Recursive)
+						{
+							path.Init();
+							path.Disabled = true;
+						 	Flogger.Log(LogType.Debug, "adding disabled path " + path.Path + " to available " + p.Factory.JobStdSubPath + ". already wathced by: " + p.Path);
+						}
+						return;
+					}				
+				
 				FPaths.Add(path);
+			}
 		}
 		
-		private void Add(string path, IAddonFactory factory)
+		private void Add(string path, IAddonFactory factory, bool recursive)
 		{
-			Add(new SearchPath(path, factory));
+			Add(new SearchPath(path, factory, recursive));
 		}
 		
 		private void Remove(SearchPath path)
@@ -108,7 +148,7 @@ namespace VVVV.Hosting.Factories
 		
 		private void Remove(string path, IAddonFactory factory)
 		{
-			Remove(new SearchPath(path, factory));
+			Remove(new SearchPath(path, factory, false));
 		}
 				
 		public void AddJob(string dir)
@@ -118,15 +158,15 @@ namespace VVVV.Hosting.Factories
 				{
 					var subDir = dir.ConcatPath(factory.JobStdSubPath);
 					if (Directory.Exists(subDir))
-						Add(subDir, factory);
+						Add(subDir, factory, true);
 				}
 		}
 		
-		public void AddUnsorted(string dir)
+		public void AddUnsorted(string dir, bool recursive)
 		{
 			if (Directory.Exists(dir))
 				foreach (var factory in HDEHost.AddonFactories)
-					Add(dir, factory);
+					Add(dir, factory, recursive);
 		}
 		
 		public void RemoveJob(string dir)
@@ -147,6 +187,17 @@ namespace VVVV.Hosting.Factories
 					Remove(dir, factory);
 		}
 		
+		public void AddCombined(string dir)
+		{
+			AddJob(dir);
+			AddUnsorted(dir, false);
+		}
+		
+		public void RemoveCombined(string dir)
+		{
+			RemoveJob(dir);
+			RemoveUnsorted(dir);
+		}
 		
 	}
 }

@@ -25,5 +25,7 @@ namespace VVVV.Hosting
 	    void Remove(IAddonHost host, INodeInfo nodeInfo);
 	    
 	    INodeInfo Clone(INodeInfo nodeInfo, string path, string Name, string Category, string Version);
+
+		void AddSearchPath(string path);
 	}
 }

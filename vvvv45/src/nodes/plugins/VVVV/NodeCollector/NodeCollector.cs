@@ -49,18 +49,18 @@ namespace VVVV.Nodes
 		public void Evaluate(int SpreadMax)
 		{
 			foreach (var p in FLastPaths)
-				NodeCollection.RemoveJob(p);				
+				NodeCollection.RemoveCombined(p);				
 
 			FLastPaths.Clear();
 			
 			foreach (var p in FSearchPaths)
 			{
-				NodeCollection.AddJob(p);
+				NodeCollection.AddCombined(p);
 				FLastPaths.Add(p);
 			}
 
 			NodeCollection.Collect();
-			
+						
 			FNodes.SliceCount = FNodesInfos.NodeInfos.Length;
 			for (int i=0; i < FNodesInfos.NodeInfos.Length; i++)
 				FNodes[i] = FNodesInfos.NodeInfos[i].Systemname;

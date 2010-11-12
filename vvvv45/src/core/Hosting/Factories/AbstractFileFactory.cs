@@ -32,8 +32,11 @@ namespace VVVV.Hosting.Factories
 		//directory to watch
 		private string FFileExtension;
 		protected Dictionary<string, List<INodeInfo>> FNodeInfoCache = new Dictionary<string, List<INodeInfo>>();
+		private List<string> FFiles = new List<string>();
 		private Dictionary<string, bool> FLoadedFiles = new Dictionary<string, bool>();
+		
 		private List<FileSystemWatcher> FDirectoryWatcher = new List<FileSystemWatcher>();
+			
 		private GenericSynchronizingObject FSyncContext;
 		
 		public AbstractFileFactory(string fileExtension)
@@ -197,7 +200,7 @@ namespace VVVV.Hosting.Factories
 		
 		#region directory and watcher
 		
-		private void AddSubDir(string dir)
+		private void AddSubDir(string dir, bool recursive)
 		{
 			foreach (string filename in Directory.GetFiles(dir, @"*" + FFileExtension))
 			{
@@ -208,25 +211,26 @@ namespace VVVV.Hosting.Factories
 				}
 			}
 			
-			foreach (string subDir in Directory.GetDirectories(dir))
-			{
-				if (!(subDir.EndsWith(".svn") || subDir.EndsWith(".cache")))
-					try {
-						AddSubDir(subDir);
-					} catch (Exception e) {
-						FLogger.Log(e);
-					}
-			}						
+			if (recursive)
+				foreach (string subDir in Directory.GetDirectories(dir))
+				{
+					if (!(subDir.EndsWith(".svn") || subDir.EndsWith(".cache")))
+						try {
+							AddSubDir(subDir, recursive);
+						} catch (Exception e) {
+							FLogger.Log(e);
+						}
+				}						
 		}
 		
 		
 		//register all files in a directory		
-		public void AddDir(string dir)
+		public void AddDir(string dir, bool recursive)
 		{		
 			//give subclasses a chance to cleanup before we start to scan.
-			DeleteArtefacts(dir);
+			DeleteArtefacts(dir, recursive);
 
-			AddSubDir(dir);
+			AddSubDir(dir, recursive);
 			
 			var dirWatcher = new FileSystemWatcher(dir, @"*" + FFileExtension);
 			dirWatcher.SynchronizingObject = FSyncContext;
@@ -240,7 +244,7 @@ namespace VVVV.Hosting.Factories
 			FDirectoryWatcher.Add(dirWatcher);
 		}
 		
-		private void RemoveSubDir(string dir)
+		private void RemoveSubDir(string dir, bool recursive)
 		{
 			foreach (string filename in Directory.GetFiles(dir, @"*" + FFileExtension))
 			{
@@ -251,33 +255,35 @@ namespace VVVV.Hosting.Factories
 				}
 			}			
 
-			foreach (string subDir in Directory.GetDirectories(dir))
-			{
-				if (!(subDir.EndsWith(".svn") || subDir.EndsWith(".cache")))
-					try {
-						RemoveSubDir(subDir);
-					} catch (Exception e) {
-						FLogger.Log(e);
-					}
-			}			
+			if (recursive)
+				foreach (string subDir in Directory.GetDirectories(dir))
+				{
+					if (!(subDir.EndsWith(".svn") || subDir.EndsWith(".cache")))
+						try {
+							RemoveSubDir(subDir, recursive);
+						} catch (Exception e) {
+							FLogger.Log(e);
+						}
+				}			
 		}
 		
 		public void RemoveDir(string dir)
-		{
-			RemoveSubDir(dir);
-			
+		{			
 			for (int i=FDirectoryWatcher.Count-1; i>=0; i--)
 			{
 				var dirWatcher = FDirectoryWatcher[i];
 				if (dirWatcher.Path == dir)
 				{
+					RemoveSubDir(dir, dirWatcher.IncludeSubdirectories);
 					dirWatcher.Changed -= new FileSystemEventHandler(FDirectoryWatcher_Changed);
 					dirWatcher.Created -= new FileSystemEventHandler(FDirectoryWatcher_Created);
 					dirWatcher.Deleted -= new FileSystemEventHandler(FDirectoryWatcher_Deleted);
 					dirWatcher.Renamed -= new RenamedEventHandler(FDirectoryWatcher_Renamed);
 					FDirectoryWatcher.RemoveAt(i);
+					return;
 				}
 			}
+			RemoveSubDir(dir, false);
 		}
 		
 		void FDirectoryWatcher_Changed(object sender, FileSystemEventArgs e)
@@ -443,27 +449,35 @@ namespace VVVV.Hosting.Factories
 		
 		#region file handling
 		//remove all addons included with this filename
-		protected virtual void RemoveFile(string filename)
+		protected void RemoveFile(string filename)
 		{
-			var nodeInfoCache = GetCachedNodeInfos(filename);
-			
-			foreach (var nodeInfo in nodeInfoCache)
-				if (nodeInfo.Filename == filename)
-					OnNodeInfoRemoved(nodeInfo);
+			if (FFiles.Contains(filename))
+			{
+				FFiles.Remove(filename);
+				var nodeInfoCache = GetCachedNodeInfos(filename);
+				
+				foreach (var nodeInfo in nodeInfoCache)
+					if (nodeInfo.Filename == filename)
+						OnNodeInfoRemoved(nodeInfo);
+			}
 		}
 		
 		//add all addons included with this filename
-		public virtual void AddFile(string filename)
+		public void AddFile(string filename)
 		{
-			foreach(var nodeInfo in ExtractNodeInfos(filename, null))
-				if (nodeInfo.Filename == filename)
-					OnNodeInfoAdded(nodeInfo);
-				else
-					throw new Exception(filename + " wants to add a nodeinfo with incorrect filename property: " + nodeInfo.Filename);
+			if (!FFiles.Contains(filename))
+			{
+				FFiles.Add(filename);
+				foreach(var nodeInfo in ExtractNodeInfos(filename, null))
+					if (nodeInfo.Filename == filename)
+						OnNodeInfoAdded(nodeInfo);
+					else
+						throw new Exception(filename + " wants to add a nodeinfo with incorrect filename property: " + nodeInfo.Filename);
+			}
 		}
 		
 		//allow subclasses to react to a filechange
-		protected virtual void FileChanged(string filename)
+		protected void FileChanged(string filename)
 		{
 			//compare those new nodeinfos
 			//with nodeinfos so far associated with this filename
@@ -523,16 +537,17 @@ namespace VVVV.Hosting.Factories
 		}
 		
 		//allow subclasses to cleanup before directory scan.
-		protected virtual void DeleteArtefacts(string dir)
+		protected virtual void DeleteArtefacts(string dir, bool recursive)
 		{
-			foreach (string subDir in Directory.GetDirectories(dir))
-			{
-				try {
-					DeleteArtefacts(subDir);
-				} catch (Exception e) {
-					FLogger.Log(e);
+			if (recursive)
+				foreach (string subDir in Directory.GetDirectories(dir))
+				{
+					try {
+						DeleteArtefacts(subDir, recursive);
+					} catch (Exception e) {
+						FLogger.Log(e);
+					}
 				}
-			}
 		}
 		
 		#endregion file handling

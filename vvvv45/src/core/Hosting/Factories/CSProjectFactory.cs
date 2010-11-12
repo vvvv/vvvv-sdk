@@ -116,7 +116,7 @@ namespace VVVV.Hosting.Factories
 			return base.CreateNode(nodeInfo, pluginHost);
 		}
 
-		protected override void DeleteArtefacts(string dir)
+		protected override void DeleteArtefacts(string dir, bool recursive)
 		{
 			// Dynamic plugins generate a new assembly everytime they are compiled.
 			// Cleanup old assemblies.
@@ -161,7 +161,7 @@ namespace VVVV.Hosting.Factories
 				}
 			}
 			
-			base.DeleteArtefacts(dir);
+			base.DeleteArtefacts(dir, recursive);
 		}
 		
 		string GetCompileErrorsLog(IProject project, CompilerResults results)
