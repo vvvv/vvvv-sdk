@@ -7,407 +7,411 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting
 {
-	class ProxyNodeInfoFactory : INodeInfoFactory, INodeInfoListener, IDisposable
+	#region ProxyNodeInfo
+	
+	[Serializable]
+	internal class ProxyNodeInfo : INodeInfo
 	{
-		#region ProxyNodeInfo
+		[NonSerialized]
+		private INodeInfo FNodeInfo;
+		private bool FInUpdate;
 		
-		internal class ProxyNodeInfo : INodeInfo
+		public ProxyNodeInfo(INodeInfo nodeInfo)
 		{
-			private INodeInfo FNodeInfo;
-			private bool FInUpdate;
+			FNodeInfo = nodeInfo;
 			
-			public ProxyNodeInfo(INodeInfo nodeInfo)
+			Reload();
+		}
+		
+		private bool FInInternalUpdate;
+		void UpdateInternal()
+		{
+			if (FInInternalUpdate) return;
+			
+			FInInternalUpdate = true;
+			
+			try
 			{
-				FNodeInfo = nodeInfo;
-				
-				Reload();
+				FNodeInfo.UpdateFromNodeInfo(this);
 			}
-			
-			private bool FInInternalUpdate;
-			void UpdateInternal()
+			finally
 			{
-				if (FInInternalUpdate) return;
-				
-				FInInternalUpdate = true;
-				
-				try
-				{
-					FNodeInfo.UpdateFromNodeInfo(this);
-				}
-				finally
-				{
-					FInInternalUpdate = false;
-				}
-			}
-			
-			private bool FInReload;
-			public void Reload()
-			{
-				if (FInReload) return;
-				
-				FInReload = true;
-				
-				bool inUpdate = FInUpdate;
-				FInUpdate = true;
-				
-				try
-				{
-					Arguments = FNodeInfo.Arguments;
-					Author = FNodeInfo.Author;
-					AutoEvaluate = FNodeInfo.AutoEvaluate;
-					Bugs = FNodeInfo.Bugs;
-					Category = FNodeInfo.Category;
-					Credits = FNodeInfo.Credits;
-					Filename = FNodeInfo.Filename;
-					Help = FNodeInfo.Help;
-					Ignore = FNodeInfo.Ignore;
-					InitialBoxSize = FNodeInfo.InitialBoxSize;
-					InitialComponentMode = FNodeInfo.InitialComponentMode;
-					InitialWindowSize = FNodeInfo.InitialWindowSize;
-					Name = FNodeInfo.Name;
-					Shortcut = FNodeInfo.Shortcut;
-					Systemname = FNodeInfo.Systemname;
-					Tags = FNodeInfo.Tags;
-					Type = FNodeInfo.Type;
-					UserData = FNodeInfo.UserData;
-					Username = FNodeInfo.Username;
-					Version = FNodeInfo.Version;
-					Warnings = FNodeInfo.Warnings;
-				}
-				finally
-				{
-					FInUpdate = inUpdate;
-					FInReload = false;
-				}
-			}
-			
-			private string FArguments;
-			public string Arguments {
-				get {
-					return FArguments;
-				}
-				set {
-					if (string.IsNullOrEmpty(value))
-						FArguments = string.Empty;
-					else
-						FArguments = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.Arguments = Arguments;
-				}
-			}
-			
-			private string FFilename;
-			public string Filename {
-				get {
-					return FFilename;
-				}
-				private set {
-					if (string.IsNullOrEmpty(value))
-						FFilename = string.Empty;
-					else
-						FFilename = value;
-				}
-			}
-			
-			private string FUsername;
-			public string Username {
-				get {
-					return FUsername;
-				}
-				private set {
-					if (string.IsNullOrEmpty(value))
-						FUsername = string.Empty;
-					else
-						FUsername = value;
-				}
-			}
-			
-			private string FSystemname;
-			public string Systemname {
-				get {
-					return FSystemname;
-				}
-				private set {
-					if (string.IsNullOrEmpty(value))
-						FSystemname = string.Empty;
-					else
-						FSystemname = value;
-				}
-			}
-			
-			private NodeType FType;
-			public NodeType Type {
-				get {
-					return FType;
-				}
-				set {
-					FType = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.Type = Type;
-				}
-			}
-			
-			private object FUserData;
-			public object UserData {
-				get {
-					return FUserData;
-				}
-				set {
-					FUserData = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.UserData = UserData;
-				}
-			}
-			
-			private bool FAutoEvaluate;
-			public bool AutoEvaluate {
-				get {
-					return FAutoEvaluate;
-				}
-				set {
-					FAutoEvaluate = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.AutoEvaluate = AutoEvaluate;
-				}
-			}
-			
-			private bool FIgnore;
-			public bool Ignore {
-				get {
-					return FIgnore;
-				}
-				set {
-					FIgnore = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.Ignore = Ignore;
-				}
-			}
-			
-			private string FName;
-			public string Name {
-				get {
-					return FName;
-				}
-				private set {
-					if (string.IsNullOrEmpty(value))
-						FName = string.Empty;
-					else
-						FName = value;
-				}
-			}
-			
-			private string FCategory;
-			public string Category {
-				get {
-					return FCategory;
-				}
-				private set {
-					if (string.IsNullOrEmpty(value))
-						FCategory = string.Empty;
-					else
-						FCategory = value;
-				}
-			}
-			
-			private string FVersion;
-			public string Version {
-				get {
-					return FVersion;
-				}
-				private set {
-					if (string.IsNullOrEmpty(value))
-						FVersion = string.Empty;
-					else
-						FVersion = value;
-				}
-			}
-			
-			private string FShortcut;
-			public string Shortcut {
-				get {
-					return FShortcut;
-				}
-				set {
-					if (string.IsNullOrEmpty(value))
-						FShortcut = string.Empty;
-					else
-						FShortcut = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.Shortcut = Shortcut;
-				}
-			}
-			
-			private string FHelp;
-			public string Help {
-				get {
-					return FHelp;
-				}
-				set {
-					if (string.IsNullOrEmpty(value))
-						FHelp = string.Empty;
-					else
-						FHelp = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.Help = Help;
-				}
-			}
-			
-			private string FTags;
-			public string Tags {
-				get {
-					return FTags;
-				}
-				set {
-					if (string.IsNullOrEmpty(value))
-						FTags = string.Empty;
-					else
-						FTags = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.Tags = Tags;
-				}
-			}
-			
-			private string FAuthor;
-			public string Author {
-				get {
-					return FAuthor;
-				}
-				set {
-					if (string.IsNullOrEmpty(value))
-						FAuthor = string.Empty;
-					else
-						FAuthor = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.Author = Author;
-				}
-			}
-			
-			private string FCredits;
-			public string Credits {
-				get {
-					return FCredits;
-				}
-				set {
-					if (string.IsNullOrEmpty(value))
-						FCredits = string.Empty;
-					else
-						FCredits = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.Credits = Credits;
-				}
-			}
-			
-			private string FBugs;
-			public string Bugs {
-				get {
-					return FBugs;
-				}
-				set {
-					if (string.IsNullOrEmpty(value))
-						FBugs = string.Empty;
-					else
-						FBugs = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.Bugs = Bugs;
-				}
-			}
-			
-			private string FWarnings;
-			public string Warnings {
-				get {
-					return FWarnings;
-				}
-				set {
-					if (string.IsNullOrEmpty(value))
-						FWarnings = string.Empty;
-					else
-						FWarnings = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.Warnings = Warnings;
-				}
-			}
-			
-			private System.Drawing.Size FInitialWindowSize;
-			public System.Drawing.Size InitialWindowSize {
-				get {
-					return FInitialWindowSize;
-				}
-				set {
-					FInitialWindowSize = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.InitialWindowSize = InitialWindowSize;
-				}
-			}
-			
-			private System.Drawing.Size FInitialBoxSize;
-			public System.Drawing.Size InitialBoxSize {
-				get {
-					return FInitialBoxSize;
-				}
-				set {
-					FInitialBoxSize = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.InitialBoxSize = InitialBoxSize;
-				}
-			}
-			
-			private TComponentMode FInitialComponentMode;
-			public TComponentMode InitialComponentMode {
-				get {
-					return FInitialComponentMode;
-				}
-				set {
-					FInitialComponentMode = value;
-					
-					if (!FInUpdate)
-						FNodeInfo.InitialComponentMode = InitialComponentMode;
-				}
-			}
-			
-			public void BeginUpdate()
-			{
-				FInUpdate = true;
-			}
-			
-			public void CommitUpdate()
-			{
-				try
-				{
-					if (FInUpdate)
-					{
-						FNodeInfo.BeginUpdate();
-						UpdateInternal();
-						FNodeInfo.CommitUpdate();
-					}
-				}
-				finally
-				{
-					FInUpdate = false;
-				}
-			}
-			
-			public void Dispose()
-			{
-				FNodeInfo = null;
+				FInInternalUpdate = false;
 			}
 		}
 		
-		#endregion
+		private bool FInReload;
+		public void Reload()
+		{
+			if (FInReload) return;
+			
+			FInReload = true;
+			
+			bool inUpdate = FInUpdate;
+			FInUpdate = true;
+			
+			try
+			{
+				Arguments = FNodeInfo.Arguments;
+				Author = FNodeInfo.Author;
+				AutoEvaluate = FNodeInfo.AutoEvaluate;
+				Bugs = FNodeInfo.Bugs;
+				Category = FNodeInfo.Category;
+				Credits = FNodeInfo.Credits;
+				Filename = FNodeInfo.Filename;
+				Help = FNodeInfo.Help;
+				Ignore = FNodeInfo.Ignore;
+				InitialBoxSize = FNodeInfo.InitialBoxSize;
+				InitialComponentMode = FNodeInfo.InitialComponentMode;
+				InitialWindowSize = FNodeInfo.InitialWindowSize;
+				Name = FNodeInfo.Name;
+				Shortcut = FNodeInfo.Shortcut;
+				Systemname = FNodeInfo.Systemname;
+				Tags = FNodeInfo.Tags;
+				Type = FNodeInfo.Type;
+				UserData = FNodeInfo.UserData;
+				Username = FNodeInfo.Username;
+				Version = FNodeInfo.Version;
+				Warnings = FNodeInfo.Warnings;
+			}
+			finally
+			{
+				FInUpdate = inUpdate;
+				FInReload = false;
+			}
+		}
 		
+		private string FArguments;
+		public string Arguments {
+			get {
+				return FArguments;
+			}
+			set {
+				if (string.IsNullOrEmpty(value))
+					FArguments = string.Empty;
+				else
+					FArguments = value;
+				
+				if (!FInUpdate)
+					FNodeInfo.Arguments = Arguments;
+			}
+		}
+		
+		private string FFilename;
+		public string Filename {
+			get {
+				return FFilename;
+			}
+			private set {
+				if (string.IsNullOrEmpty(value))
+					FFilename = string.Empty;
+				else
+					FFilename = value;
+			}
+		}
+		
+		private string FUsername;
+		public string Username {
+			get {
+				return FUsername;
+			}
+			private set {
+				if (string.IsNullOrEmpty(value))
+					FUsername = string.Empty;
+				else
+					FUsername = value;
+			}
+		}
+		
+		private string FSystemname;
+		public string Systemname {
+			get {
+				return FSystemname;
+			}
+			private set {
+				if (string.IsNullOrEmpty(value))
+					FSystemname = string.Empty;
+				else
+					FSystemname = value;
+			}
+		}
+		
+		private NodeType FType;
+		public NodeType Type {
+			get {
+				return FType;
+			}
+			set {
+				FType = value;
+				
+				if (!FInUpdate)
+					FNodeInfo.Type = Type;
+			}
+		}
+		
+		[NonSerialized]
+		private object FUserData;
+		public object UserData {
+			get {
+				return FUserData;
+			}
+			set {
+				FUserData = value;
+				
+				if (!FInUpdate)
+					FNodeInfo.UserData = UserData;
+			}
+		}
+		
+		private bool FAutoEvaluate;
+		public bool AutoEvaluate {
+			get {
+				return FAutoEvaluate;
+			}
+			set {
+				FAutoEvaluate = value;
+				
+				if (!FInUpdate)
+					FNodeInfo.AutoEvaluate = AutoEvaluate;
+			}
+		}
+		
+		private bool FIgnore;
+		public bool Ignore {
+			get {
+				return FIgnore;
+			}
+			set {
+				FIgnore = value;
+				
+				if (!FInUpdate)
+					FNodeInfo.Ignore = Ignore;
+			}
+		}
+		
+		private string FName;
+		public string Name {
+			get {
+				return FName;
+			}
+			private set {
+				if (string.IsNullOrEmpty(value))
+					FName = string.Empty;
+				else
+					FName = value;
+			}
+		}
+		
+		private string FCategory;
+		public string Category {
+			get {
+				return FCategory;
+			}
+			private set {
+				if (string.IsNullOrEmpty(value))
+					FCategory = string.Empty;
+				else
+					FCategory = value;
+			}
+		}
+		
+		private string FVersion;
+		public string Version {
+			get {
+				return FVersion;
+			}
+			private set {
+				if (string.IsNullOrEmpty(value))
+					FVersion = string.Empty;
+				else
+					FVersion = value;
+			}
+		}
+		
+		private string FShortcut;
+		public string Shortcut {
+			get {
+				return FShortcut;
+			}
+			set {
+				if (string.IsNullOrEmpty(value))
+					FShortcut = string.Empty;
+				else
+					FShortcut = value;
+				
+				if (!FInUpdate)
+					FNodeInfo.Shortcut = Shortcut;
+			}
+		}
+		
+		private string FHelp;
+		public string Help {
+			get {
+				return FHelp;
+			}
+			set {
+				if (string.IsNullOrEmpty(value))
+					FHelp = string.Empty;
+				else
+					FHelp = value;
+				
+				if (!FInUpdate)
+					FNodeInfo.Help = Help;
+			}
+		}
+		
+		private string FTags;
+		public string Tags {
+			get {
+				return FTags;
+			}
+			set {
+				if (string.IsNullOrEmpty(value))
+					FTags = string.Empty;
+				else
+					FTags = value;
+				
+				if (!FInUpdate)
+					FNodeInfo.Tags = Tags;
+			}
+		}
+		
+		private string FAuthor;
+		public string Author {
+			get {
+				return FAuthor;
+			}
+			set {
+				if (string.IsNullOrEmpty(value))
+					FAuthor = string.Empty;
+				else
+					FAuthor = value;
+				
+				if (!FInUpdate)
+					FNodeInfo.Author = Author;
+			}
+		}
+		
+		private string FCredits;
+		public string Credits {
+			get {
+				return FCredits;
+			}
+			set {
+				if (string.IsNullOrEmpty(value))
+					FCredits = string.Empty;
+				else
+					FCredits = value;
+				
+				if (!FInUpdate)
+					FNodeInfo.Credits = Credits;
+			}
+		}
+		
+		private string FBugs;
+		public string Bugs {
+			get {
+				return FBugs;
+			}
+			set {
+				if (string.IsNullOrEmpty(value))
+					FBugs = string.Empty;
+				else
+					FBugs = value;
+				
+				if (!FInUpdate)
+					FNodeInfo.Bugs = Bugs;
+			}
+		}
+		
+		private string FWarnings;
+		public string Warnings {
+			get {
+				return FWarnings;
+			}
+			set {
+				if (string.IsNullOrEmpty(value))
+					FWarnings = string.Empty;
+				else
+					FWarnings = value;
+				
+				if (!FInUpdate)
+					FNodeInfo.Warnings = Warnings;
+			}
+		}
+		
+		private System.Drawing.Size FInitialWindowSize;
+		public System.Drawing.Size InitialWindowSize {
+			get {
+				return FInitialWindowSize;
+			}
+			set {
+				FInitialWindowSize = value;
+				
+				if (!FInUpdate)
+					FNodeInfo.InitialWindowSize = InitialWindowSize;
+			}
+		}
+		
+		private System.Drawing.Size FInitialBoxSize;
+		public System.Drawing.Size InitialBoxSize {
+			get {
+				return FInitialBoxSize;
+			}
+			set {
+				FInitialBoxSize = value;
+				
+				if (!FInUpdate)
+					FNodeInfo.InitialBoxSize = InitialBoxSize;
+			}
+		}
+		
+		private TComponentMode FInitialComponentMode;
+		public TComponentMode InitialComponentMode {
+			get {
+				return FInitialComponentMode;
+			}
+			set {
+				FInitialComponentMode = value;
+				
+				if (!FInUpdate)
+					FNodeInfo.InitialComponentMode = InitialComponentMode;
+			}
+		}
+		
+		public void BeginUpdate()
+		{
+			FInUpdate = true;
+		}
+		
+		public void CommitUpdate()
+		{
+			try
+			{
+				if (FInUpdate)
+				{
+					FNodeInfo.BeginUpdate();
+					UpdateInternal();
+					FNodeInfo.CommitUpdate();
+				}
+			}
+			finally
+			{
+				FInUpdate = false;
+			}
+		}
+		
+		public void Dispose()
+		{
+			FNodeInfo = null;
+		}
+	}
+	
+	#endregion
+		
+	
+	class ProxyNodeInfoFactory : INodeInfoFactory, INodeInfoListener, IDisposable
+	{
 		private IInternalNodeInfoFactory FFactory;
 		private Dictionary<INodeInfo, ProxyNodeInfo> FInternalToProxyMap;
 		private Dictionary<INodeInfo, INodeInfo> FProxyToInternalMap;
@@ -415,7 +419,7 @@ namespace VVVV.Hosting
 		public ProxyNodeInfoFactory(IInternalNodeInfoFactory nodeInfoFactory)
 		{
 			FFactory = nodeInfoFactory;
-			FInternalToProxyMap = new Dictionary<INodeInfo, ProxyNodeInfoFactory.ProxyNodeInfo>();
+			FInternalToProxyMap = new Dictionary<INodeInfo, ProxyNodeInfo>();
 			FProxyToInternalMap = new Dictionary<INodeInfo, INodeInfo>();
 			
 			foreach (var nodeInfo in nodeInfoFactory.NodeInfos)

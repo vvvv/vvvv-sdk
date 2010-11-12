@@ -6,8 +6,10 @@ using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
+using System.Linq;
 
 using Microsoft.Practices.Unity;
 using VVVV.Core;
@@ -24,7 +26,7 @@ namespace VVVV.Hosting
 {
 	[PartCreationPolicy(CreationPolicy.Shared)]
 	[Export(typeof(IHDEHost))]
-	class HDEHost : IInternalHDEHost, IHDEHost
+	class HDEHost : IInternalHDEHost, IHDEHost, IDisposable
 	{
 		public const string ENV_VVVV = "VVVV45";
 		
@@ -40,6 +42,7 @@ namespace VVVV.Hosting
 		private Dictionary<INodeInfo, List<IAddonHost>> FRunningPluginHostsMap;
 		private Dictionary<INodeInfo, IAddonFactory> FNodeInfoFactoryMap;
 		private IPluginBase FNodeBrowser, FWindowSwitcher, FKommunikator;
+		protected Dictionary<string, Dictionary<string, ProxyNodeInfo>> FNodeInfoCache;
 		
 		[Export]
 		public CompositionContainer Container { get; protected set; }
@@ -79,6 +82,11 @@ namespace VVVV.Hosting
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssemblyCB;
 			
+			ExePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName((typeof(HDEHost).Assembly.Location)), @"..\.."));
+			FCacheTimer = new System.Windows.Forms.Timer();
+			FCacheTimer.Interval = 3000;
+			FCacheTimer.Tick += new EventHandler(FCacheTimer_Tick);
+			
 			// Set name to vvvv thread for easier debugging.
 			Thread.CurrentThread.Name = "vvvv";
 			
@@ -102,6 +110,13 @@ namespace VVVV.Hosting
 			Logger = new DefaultLogger();
 			
 		}
+
+		//serialize cache when timer has ended
+		void FCacheTimer_Tick(object sender, EventArgs e)
+		{
+			FCacheTimer.Stop();
+			SerializeNodeInfoCache();
+		}
 		
 		#region IInternalHDEHost
 		public void Initialize(IVVVVHost vvvvHost, INodeBrowserHost nodeBrowserHost, IWindowSwitcherHost windowSwitcherHost, IKommunikatorHost kommunikatorHost)
@@ -118,6 +133,9 @@ namespace VVVV.Hosting
 			NodeBrowserHost = nodeBrowserHost;
 			WindowSwitcherHost = windowSwitcherHost;
 			KommunikatorHost = kommunikatorHost;
+			
+			//deserialize node info cache dict
+			DeserializeNodeInfoCache();
 			
 			try
 			{
@@ -188,22 +206,41 @@ namespace VVVV.Hosting
 		
 		public void ExtractNodeInfos(string filename, string arguments, out INodeInfo[] result)
 		{
-			var nodeInfos = new List<INodeInfo>();
+			var nodeInfos = new Dictionary<string, ProxyNodeInfo>();
 			
-			foreach(IAddonFactory factory in AddonFactories)
+			//check dictionary
+			if(HasCachedNodeInfos(filename))
 			{
-				foreach (var nodeInfo in factory.ExtractNodeInfos(filename, arguments))
-					nodeInfos.Add(NodeInfoFactory.ToInternal(nodeInfo));
+				nodeInfos = FNodeInfoCache[filename];
+			}
+			else
+			{
+				//not in cache, so load from file
+				foreach(IAddonFactory factory in AddonFactories)
+				{
+					foreach (var nodeInfo in factory.ExtractNodeInfos(filename, arguments))
+					{
+						nodeInfos.Add(nodeInfo.Systemname, (ProxyNodeInfo)nodeInfo);
+					}
+				}
+				
+				FNodeInfoCache[filename] = nodeInfos;
 			}
 			
-			result = nodeInfos.ToArray();
+			//convert to internal and write into result
+			result = new INodeInfo[nodeInfos.Count];
+			var i = 0;
+			foreach(var info in nodeInfos.Values)
+			{
+				result[i++] =  NodeInfoFactory.ToInternal(info);
+			}
 		}
 		
 		public bool CreateNode(IAddonHost host, INodeInfo nodeInfo)
 		{
 			bool result = false;
 			
-			if (!(nodeInfo is ProxyNodeInfoFactory.ProxyNodeInfo))
+			if (!(nodeInfo is ProxyNodeInfo))
 				nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
 			
 			try
@@ -247,7 +284,7 @@ namespace VVVV.Hosting
 		{
 			bool result = false;
 			
-			if (!(nodeInfo is ProxyNodeInfoFactory.ProxyNodeInfo))
+			if (!(nodeInfo is ProxyNodeInfo))
 				nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
 			
 			try
@@ -289,7 +326,7 @@ namespace VVVV.Hosting
 		
 		public INodeInfo Clone(INodeInfo nodeInfo, string path, string name, string category, string version)
 		{
-			if (!(nodeInfo is ProxyNodeInfoFactory.ProxyNodeInfo))
+			if (!(nodeInfo is ProxyNodeInfo))
 				nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
 			
 			try
@@ -393,8 +430,15 @@ namespace VVVV.Hosting
 		
 		public void SetComponentMode(INode node, ComponentMode componentMode)
 		{
-			FVVVVHost.SetComponentMode(node, componentMode);
+		    FVVVVHost.SetComponentMode(node, componentMode);
+		}	
+		
+		public string ExePath
+		{
+			get;
+			private set;
 		}
+		
 		#endregion
 		
 		#region helper methods
@@ -453,6 +497,24 @@ namespace VVVV.Hosting
 				FNodeBrowserNodeInfo = info;
 			
 			FNodeInfoFactoryMap[info] = factory;
+			
+			//add to cache
+			var filename = info.Filename;
+			if (FNodeInfoCache.ContainsKey(filename))
+			{
+				FNodeInfoCache[filename][info.Systemname] = (ProxyNodeInfo)info;
+			}
+			else
+			{
+				FNodeInfoCache.Add(filename,  new Dictionary<string, ProxyNodeInfo>());
+				FNodeInfoCache[filename].Add(info.Systemname, (ProxyNodeInfo)info);
+			}
+			
+			if(FCacheTimer.Enabled)
+			{
+				FCacheTimer.Stop();
+			}
+			FCacheTimer.Start();
 		}
 		
 		protected void factory_NodeInfoRemoved(object sender, INodeInfo info)
@@ -460,6 +522,20 @@ namespace VVVV.Hosting
 			var factory = sender as IAddonFactory;
 			
 			FNodeInfoFactoryMap.Remove(info);
+			
+			//remove from cache
+			var filename = info.Filename;
+			if (FNodeInfoCache.ContainsKey(filename))
+			{
+				//remove from info list
+				if (FNodeInfoCache[filename].ContainsKey(info.Systemname))
+					FNodeInfoCache[filename].Remove(info.Systemname);
+
+				//also remove list if empty now
+				if(FNodeInfoCache[filename].Count == 0) 
+					FNodeInfoCache.Remove(filename);
+			}
+			
 		}
 		
 		public void factory_NodeInfoUpdated(object sender, INodeInfo info)
@@ -477,6 +553,9 @@ namespace VVVV.Hosting
 				if (factory is EffectsFactory)
 					break;
 			}
+			
+			//update cache
+			FNodeInfoCache[info.Filename][info.Systemname] = (ProxyNodeInfo)info;
 		}
 		
 		protected Assembly ResolveAssemblyCB(object sender, ResolveEventArgs args)
@@ -530,5 +609,105 @@ namespace VVVV.Hosting
 		}
 		#endregion
 		
+		#region Caching
+		
+		//check if there is a valid node info in cache
+		public bool HasCachedNodeInfos(string filename)
+		{
+			return FNodeInfoCache.ContainsKey(filename) && 
+				File.GetLastWriteTime(filename) < File.GetLastWriteTime(GetCacheFileName());
+		}
+		
+		//return nodeinfos from cache
+		public IEnumerable<INodeInfo> GetCachedNodeInfos(string filename)
+		{
+			var result = new List<INodeInfo>();
+			var nodeInfos = FNodeInfoCache[filename].Values;
+			foreach (var nodeInfo in nodeInfos)
+				result.Add(nodeInfo);
+			Logger.Log(LogType.Debug, "Loaded node infos from cache for: " + filename);
+			return result;
+		}
+		
+		//path to cache file
+		protected string GetCacheFileName()
+		{
+			var filepath = Path.Combine(Path.GetTempPath(), "vvvv_cache");
+			return Path.Combine(filepath, "" + ExePath.GetHashCode() + ".cache");
+		}
+		
+		//load cache from disk
+		protected void DeserializeNodeInfoCache()
+		{
+			
+			FNodeInfoCache = new Dictionary<string, Dictionary<string, ProxyNodeInfo>>();
+			try
+			{
+				Dictionary<string, Dictionary<string, ProxyNodeInfo>> tempCache;
+				var formatter = new BinaryFormatter();
+				using (var stream = new FileStream(GetCacheFileName(), FileMode.Open, FileAccess.Read, FileShare.Read))
+				{
+					tempCache = (Dictionary<string, Dictionary<string, ProxyNodeInfo>>) formatter.Deserialize(stream);
+				}
+				
+				foreach (var entry in tempCache)
+				{
+					var filename = entry.Key;
+					var dict = entry.Value;
+					FNodeInfoCache[filename] = new Dictionary<string, ProxyNodeInfo>();
+					
+					foreach (var key in dict.Keys)
+					{
+						var cachedInfo = dict[key];
+						var newInfo = NodeInfoFactory.CreateNodeInfo(cachedInfo.Name, cachedInfo.Category, cachedInfo.Version, filename);
+						newInfo.BeginUpdate();
+						newInfo.UpdateFromNodeInfo(cachedInfo);
+						newInfo.CommitUpdate();
+						
+						FNodeInfoCache[filename][key] = (ProxyNodeInfo) newInfo;
+					}
+				}
+			}
+			catch
+			{
+				FNodeInfoCache = new Dictionary<string, Dictionary<string, ProxyNodeInfo>>();
+			}
+		}
+		
+		//save cache to temp dir
+		private System.Windows.Forms.Timer FCacheTimer;
+		protected void SerializeNodeInfoCache()
+		{
+			try
+			{
+				// Write nodeInfoList to cache file.
+				var filename = GetCacheFileName();
+				
+				if (!Directory.Exists(Path.GetDirectoryName(filename)))
+				{
+					Directory.CreateDirectory(Path.GetDirectoryName(filename));
+				}
+				
+				var formatter = new BinaryFormatter();
+				using (var stream = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None))
+				{
+					formatter.Serialize(stream, FNodeInfoCache);
+				}
+				
+				Logger.Log(LogType.Debug, "Node infos serialized");
+			} 
+			catch (Exception e)
+			{
+				Logger.Log(LogType.Error, "Serialization of node infos failed:");
+				Logger.Log(e);
+			}
+		}
+		
+		public void Dispose()
+		{
+			//write dict to temp
+		}
+		
+		#endregion Caching
 	}
 }

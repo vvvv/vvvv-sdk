@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -29,9 +28,11 @@ namespace VVVV.Hosting.Factories
 		[Import]
 		protected IHDEHost FHDEHost;
 		
+		[Import]
+		protected INodeInfoFactory FNodeInfoFactory;
+		
 		//directory to watch
 		private string FFileExtension;
-		protected Dictionary<string, List<INodeInfo>> FNodeInfoCache = new Dictionary<string, List<INodeInfo>>();
 		private List<string> FFiles = new List<string>();
 		private Dictionary<string, bool> FLoadedFiles = new Dictionary<string, bool>();
 		
@@ -101,11 +102,11 @@ namespace VVVV.Hosting.Factories
 			
 			// Regardless of the arguments, we need to load the node infos first.
 			// Do we have the required node infos cached?
-//			if (HasCachedNodeInfos(filename))
-//				nodeInfos = GetCachedNodeInfos(filename);
-//			else
+			if (((HDEHost)FHDEHost).HasCachedNodeInfos(filename))
+				nodeInfos = ((HDEHost)FHDEHost).GetCachedNodeInfos(filename);
+			else
 			{
-				nodeInfos = LoadAndCacheNodeInfos(filename);
+				nodeInfos = LoadNodeInfos(filename);
 			}
 			
 			// If additional arguments are present vvvv is only interested in one specific
@@ -131,7 +132,7 @@ namespace VVVV.Hosting.Factories
 		{
 			if (!IsLoaded(filename))
 			{
-				foreach (var nodeInfo in LoadAndCacheNodeInfos(filename))
+				foreach (var nodeInfo in LoadNodeInfos(filename))
 				{
 					OnNodeInfoUpdated(nodeInfo);
 				}
@@ -314,71 +315,17 @@ namespace VVVV.Hosting.Factories
 		
 		#region caching
 		
-		protected bool HasCachedNodeInfos(string filename)
-		{
-			if (FNodeInfoCache.ContainsKey(filename))
-				return true;
-			else
-			{
-				// See if node info is cached on disk.
-				var cacheFile = GetCacheFile(filename);
-				return File.Exists(cacheFile) && IsCacheFileUpToDate(filename, cacheFile);
-			}
-		}
 		
-		protected List<INodeInfo> GetCachedNodeInfos(string filename)
-		{
-			if (!FNodeInfoCache.ContainsKey(filename))
-			{
-				// Load node infos from cache file into memory.
-				try
-				{
-					var cacheFile = GetCacheFile(filename);
-					var formatter = new BinaryFormatter();
-					using (var stream = new FileStream(cacheFile, FileMode.Open, FileAccess.Read, FileShare.Read))
-					{
-						var nodeInfos = (List<INodeInfo>) formatter.Deserialize(stream);
-						if (ValidateNodeInfos(filename, nodeInfos))
-							FNodeInfoCache[filename] = nodeInfos;
-						else
-						{
-							stream.Close();
-							LoadAndCacheNodeInfos(filename);
-						}
-					}
-				}
-				catch (Exception)
-				{
-					FLogger.Log(LogType.Warning, "Cache file for {0} missing or not valid.", filename);
-					LoadAndCacheNodeInfos(filename);
-				}
-			}
-			
-//			if (FNodeInfoCache[filename].Count == 0)
-//				FLogger.Log(LogType.Warning, "Empty cache for {0}.", filename);
-			
-			return FNodeInfoCache[filename];
-		}
-		
-		protected bool ValidateNodeInfos(string fileName, List<INodeInfo> nodeInfos)
-		{
-			var path = Path.GetDirectoryName(fileName);
-			foreach(var n in nodeInfos)
-				if (Path.GetDirectoryName(n.Filename) != path) return false;
-			
-			return true;
-		}
-		
-		protected IEnumerable<INodeInfo> LoadAndCacheNodeInfos(string filename)
+		protected IEnumerable<INodeInfo> LoadNodeInfos(string filename)
 		{
 			try
 			{
 				var nodeInfos = GetNodeInfos(filename);
-				FLogger.Log(LogType.Debug, "Loaded node infos from {0}.", filename);
+				
+				if(nodeInfos.Any())
+					FLogger.Log(LogType.Debug, "Loaded node infos from {0}.", filename);
 				
 				FLoadedFiles[filename] = true;
-//				CacheNodeInfos(filename, nodeInfos.ToList());
-				
 				return nodeInfos;
 			}
 			catch (Exception e)
@@ -388,77 +335,20 @@ namespace VVVV.Hosting.Factories
 			}
 		}
 		
-		protected void CacheNodeInfos(string filename, List<INodeInfo> nodeInfos)
-		{
-			try
-			{
-				FNodeInfoCache[filename] = nodeInfos;
-				
-				var cacheFile = GetCacheFile(filename);
-				var cacheDir = Path.GetDirectoryName(cacheFile);
-				if (!Directory.Exists(cacheDir))
-				{
-					// Create hidden cache dir.
-					var directoryInfo = Directory.CreateDirectory(cacheDir);
-					directoryInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
-				}
-				
-				// Write nodeInfoList to cache file.
-				var formatter = new BinaryFormatter();
-				using (var stream = new FileStream(cacheFile, FileMode.Create, FileAccess.Write, FileShare.None))
-				{
-					formatter.Serialize(stream, nodeInfos);
-				}
-				
-				// Set last write time of cache file to time of filename.
-				File.SetLastWriteTime(cacheFile, File.GetLastWriteTime(filename));
-				
-				FLogger.Log(LogType.Debug, "Cached node infos of {0}.", filename);
-			} 
-			catch (Exception e) 
-			{
-				FLogger.Log(LogType.Error, "Caching node infos of {0} failed:", filename);
-				FLogger.Log(e);
-			}
-		}
-		
-		protected void ClearCachedNodeInfos(string filename)
-		{
-			var cacheFile = GetCacheFile(filename);
-			if (File.Exists(cacheFile))
-				File.Delete(cacheFile);
-			
-			FNodeInfoCache.Remove(filename);
-			
-			FLogger.Log(LogType.Debug, "Cleared node info cache of {0}.", filename);
-		}
-		
-		private string GetCacheFile(string filename)
-		{
-			var cacheDir = Path.GetDirectoryName(filename).ConcatPath(".cache");
-			var cacheFilename = Path.GetFileName(filename) + ".cache";
-			return cacheDir.ConcatPath(cacheFilename);
-		}
-		
-		private bool IsCacheFileUpToDate(string file, string cacheFile)
-		{
-			return File.GetLastWriteTime(cacheFile) == File.GetLastWriteTime(file);
-		}
-		
 		#endregion
 		
 		#region file handling
+		
 		//remove all addons included with this filename
 		protected void RemoveFile(string filename)
 		{
-			if (FFiles.Contains(filename))
-			{
+			if(FFiles.Contains(filename))
 				FFiles.Remove(filename);
-				var nodeInfoCache = GetCachedNodeInfos(filename);
-				
-				foreach (var nodeInfo in nodeInfoCache)
-					if (nodeInfo.Filename == filename)
-						OnNodeInfoRemoved(nodeInfo);
+			
+			foreach (var nodeInfo in FNodeInfoFactory.NodeInfos)
+			{
+				if (new Uri(nodeInfo.Filename) == new Uri(filename))
+					OnNodeInfoRemoved(nodeInfo);
 			}
 		}
 		
@@ -479,23 +369,21 @@ namespace VVVV.Hosting.Factories
 		//allow subclasses to react to a filechange
 		protected void FileChanged(string filename)
 		{
+			if (!FFiles.Contains(filename))
+			{
+				AddFile(filename);
+				return;
+			}
+			
 			//compare those new nodeinfos
 			//with nodeinfos so far associated with this filename
 			//add nodeinfos that are new in this filename
 			//remove nodeinfos that are no longer with this filename
 			
 			//get all old nodeinfos associated with this filename
-			var oldInfos = new Dictionary<INodeInfo, bool>();
+			var oldInfos = ((HDEHost) FHDEHost).GetCachedNodeInfos(filename);
+			var nodeInfoUsedMap = new Dictionary<INodeInfo, bool>();
 			
-			if (HasCachedNodeInfos(filename))
-			{
-				var nodeInfoCache = GetCachedNodeInfos(filename);
-				foreach(var nodeInfo in nodeInfoCache)
-					oldInfos.Add(nodeInfo, false);
-				
-				// Clear the cache.
-				ClearCachedNodeInfos(filename);
-			}
 			
 			//compare those oldInfos with the newly extracted ones
 			//if a newly extracted one is present in the old ones do nothing
@@ -503,29 +391,22 @@ namespace VVVV.Hosting.Factories
 			
 			foreach(var newNodeInfo in ExtractNodeInfos(filename, null))
 			{
-				bool present = false;
-				foreach(var entry in oldInfos)
+				foreach(var oldNodeInfo in oldInfos)
 				{
-					var oldNodeInfo = entry.Key;
-					if (oldNodeInfo.Equals(newNodeInfo))
+					if (oldNodeInfo == newNodeInfo)
 					{
-						oldInfos[oldNodeInfo] = true; //mark as used
-						//adding a nodeinfo with the same username will trigger a nodeinfo.update
-						OnNodeInfoUpdated(newNodeInfo);
-						present = true;
+						nodeInfoUsedMap[oldNodeInfo] = true; //mark as used
 						break;
 					}
 				}
-				if (!present)
-					OnNodeInfoUpdated(newNodeInfo);
+				
+				OnNodeInfoUpdated(newNodeInfo);
 			}
 			
 			//remove old nodeinfos that have no new compatible
-			foreach(var entry in oldInfos)
+			foreach(var oldNodeInfo in oldInfos)
 			{
-				var oldNodeInfo = entry.Key;
-				var present = entry.Value;
-				if (!present)
+				if (!nodeInfoUsedMap[oldNodeInfo])
 					OnNodeInfoRemoved(oldNodeInfo);
 			}
 		}

@@ -37,9 +37,6 @@ namespace VVVV.Hosting.Factories
 		protected IHDEHost FHost;
 		
 		[Import]
-		protected INodeInfoFactory FNodeInfoFactory;
-		
-		[Import]
 		protected ISolution FSolution;
 		
 		private Dictionary<INodeInfo, ExportFactory<IPluginBase, INodeInfoStuff>> FMEFPlugins;
@@ -193,7 +190,7 @@ namespace VVVV.Hosting.Factories
 		public IPluginBase CreatePlugin(INodeInfo nodeInfo, IPluginHost2 pluginHost)
 		{
 			if (!IsLoaded(nodeInfo.Filename))
-				LoadAndCacheNodeInfos(nodeInfo.Filename);
+				LoadNodeInfos(nodeInfo.Filename);
 			
 			//V2 plugin
 			if (FMEFPlugins.ContainsKey(nodeInfo))

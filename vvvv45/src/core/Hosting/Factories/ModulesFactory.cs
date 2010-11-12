@@ -21,9 +21,6 @@ namespace VVVV.Hosting.Factories
         private string FDTD = "";
         
         [Import]
-		protected INodeInfoFactory FNodeInfoFactory;
-        
-        [Import]
     	protected ILogger Logger { get; set; }
         
         public ModulesFactory()

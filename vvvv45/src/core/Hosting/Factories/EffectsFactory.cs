@@ -19,9 +19,7 @@ namespace VVVV.Hosting.Factories
 	[Export(typeof(IAddonFactory))]
 	public class EffectsFactory : AbstractFileFactory<IEffectHost>
 	{
-		[Import]
-		protected INodeInfoFactory FNodeInfoFactory;
-		
+
 		[Import]
 		protected ISolution FSolution;
 		

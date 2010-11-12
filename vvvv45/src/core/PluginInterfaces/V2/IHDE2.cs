@@ -115,6 +115,14 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
+		
+		/// <summary>
+		/// Get the full path to the vvvv.exe
+		/// </summary>
+		string ExePath
+		{
+			get;
+		}
 	}
 	#endregion IHDEHost
 	
