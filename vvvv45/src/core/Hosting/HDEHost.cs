@@ -43,6 +43,7 @@ namespace VVVV.Hosting
 		private Dictionary<INodeInfo, IAddonFactory> FNodeInfoFactoryMap;
 		private IPluginBase FNodeBrowser, FWindowSwitcher, FKommunikator;
 		protected Dictionary<string, Dictionary<string, ProxyNodeInfo>> FNodeInfoCache;
+		protected Dictionary<string, Dictionary<string, ProxyNodeInfo>> FDeserializedNodeInfoCache;
 		
 		[Export]
 		public CompositionContainer Container { get; protected set; }
@@ -621,18 +622,36 @@ namespace VVVV.Hosting
 		//check if there is a valid node info in cache
 		public bool HasCachedNodeInfos(string filename)
 		{
-			return FNodeInfoCache.ContainsKey(filename) && 
+			return (FDeserializedNodeInfoCache.ContainsKey(filename) || FNodeInfoCache.ContainsKey(filename)) &&
 				File.GetLastWriteTime(filename) < File.GetLastWriteTime(CacheFileName);
 		}
 		
-		//return nodeinfos from cache
+		//return node infos from cache
 		public IEnumerable<INodeInfo> GetCachedNodeInfos(string filename)
 		{
+			if(!FNodeInfoCache.ContainsKey(filename))
+			{
+				FNodeInfoCache[filename] = new Dictionary<string, ProxyNodeInfo>();
+				foreach (var key in FDeserializedNodeInfoCache[filename].Keys)
+				{
+					var cachedInfo = FDeserializedNodeInfoCache[filename][key];
+					var newInfo = NodeInfoFactory.CreateNodeInfo(cachedInfo.Name, cachedInfo.Category, cachedInfo.Version, filename);
+					newInfo.BeginUpdate();
+					newInfo.UpdateFromNodeInfo(cachedInfo);
+					newInfo.CommitUpdate();
+					
+					FNodeInfoCache[filename].Add(key, (ProxyNodeInfo)newInfo);
+				}
+			}
+			
 			var result = new List<INodeInfo>();
+			
 			var nodeInfos = FNodeInfoCache[filename].Values;
 			foreach (var nodeInfo in nodeInfos)
 				result.Add(nodeInfo);
+			
 			Logger.Log(LogType.Debug, "Loaded node infos from cache for: " + filename);
+			
 			return result;
 		}
 		
@@ -640,6 +659,9 @@ namespace VVVV.Hosting
 		{
 			if (FNodeInfoCache.ContainsKey(filename))
 				FNodeInfoCache.Remove(filename);
+			
+			if (FDeserializedNodeInfoCache.ContainsKey(filename))
+				FDeserializedNodeInfoCache.Remove(filename);
 		}
 		
 		//path to cache file
@@ -652,38 +674,20 @@ namespace VVVV.Hosting
 		//load cache from disk
 		protected void DeserializeNodeInfoCache()
 		{
-			
 			FNodeInfoCache = new Dictionary<string, Dictionary<string, ProxyNodeInfo>>();
+
 			try
 			{
-				Dictionary<string, Dictionary<string, ProxyNodeInfo>> tempCache;
 				var formatter = new BinaryFormatter();
 				using (var stream = new FileStream(CacheFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					tempCache = (Dictionary<string, Dictionary<string, ProxyNodeInfo>>) formatter.Deserialize(stream);
+					FDeserializedNodeInfoCache = (Dictionary<string, Dictionary<string, ProxyNodeInfo>>) formatter.Deserialize(stream);
 				}
 				
-				foreach (var entry in tempCache)
-				{
-					var filename = entry.Key;
-					var dict = entry.Value;
-					FNodeInfoCache[filename] = new Dictionary<string, ProxyNodeInfo>();
-					
-					foreach (var key in dict.Keys)
-					{
-						var cachedInfo = dict[key];
-						var newInfo = NodeInfoFactory.CreateNodeInfo(cachedInfo.Name, cachedInfo.Category, cachedInfo.Version, filename);
-						newInfo.BeginUpdate();
-						newInfo.UpdateFromNodeInfo(cachedInfo);
-						newInfo.CommitUpdate();
-						
-						FNodeInfoCache[filename][key] = (ProxyNodeInfo) newInfo;
-					}
-				}
 			}
 			catch
 			{
-				FNodeInfoCache = new Dictionary<string, Dictionary<string, ProxyNodeInfo>>();
+				FDeserializedNodeInfoCache = new Dictionary<string, Dictionary<string, ProxyNodeInfo>>();
 			}
 		}
 		
