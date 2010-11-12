@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding='iso-8859-1' ?>
+<project
+	name="VVVV.Plugin"
+	default="build"
+	xmlns="http://nant.sf.net/release/0.85/nant.xsd"
+>
+  <!-- Leave as it is -->
+  <include buildfile="${root.dir}/nant-plugins.xml" />
+
+  <!-- Set your ddl name here -->
+  <property name="lib.name" value="Shortcut.dll" />
+	
+  <assemblyfileset id="project.references">
+	<include name="${lib.dir}/**/*.dll" />
+	<include name="Dependencies/Interop.IWshRuntimeLibrary.dll" />
+  </assemblyfileset>
+
+</project>
