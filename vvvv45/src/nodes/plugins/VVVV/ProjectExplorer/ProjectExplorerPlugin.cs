@@ -38,7 +38,7 @@ namespace VVVV.HDE.ProjectExplorer
 		protected MappingRegistry FMappingRegistry;
 		
 		[Import]
-		protected IHDEHost FHDEHost;
+		protected EditorFactory FEditorFactory;
 		
 		[ImportingConstructor]
 		public ProjectExplorerPlugin(
@@ -140,21 +140,7 @@ namespace VVVV.HDE.ProjectExplorer
 			
 			if (file != null)
 			{
-				// We only want the EffectFactory to answer.
-				var addonFactories = new List<IAddonFactory>(FHDEHost.AddonFactories);
-				var editorFactory = addonFactories.Find(factory => factory is EditorFactory);
-				
-				try
-				{
-					FHDEHost.AddonFactories.Clear();
-					FHDEHost.AddonFactories.Add(editorFactory);
-					FHDEHost.Open(file, false);
-				}
-				finally
-				{
-					FHDEHost.AddonFactories.Clear();
-					FHDEHost.AddonFactories.AddRange(addonFactories);
-				}
+				FEditorFactory.Open(file);
 			}
 		}
 		

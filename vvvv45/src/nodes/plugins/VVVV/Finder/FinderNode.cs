@@ -626,12 +626,12 @@ namespace VVVV.Nodes.Finder
         private void OpenPatch(INode node)
         {
             if (node == null)
-                FHDEHost.ShowPatch(FindParent(FRoot.Node, FActivePatchNode.Node));
+                FHDEHost.ShowEditor(FindParent(FRoot.Node, FActivePatchNode.Node));
             else if (node.HasPatch())
-                FHDEHost.ShowPatch(node);
+                FHDEHost.ShowEditor(node);
             else
             {
-                FHDEHost.ShowPatch(FindParent(FRoot.Node, node));
+                FHDEHost.ShowEditor(FindParent(FRoot.Node, node));
                 FHDEHost.SelectNodes(new INode[1]{node});
             }
         }

@@ -16,9 +16,11 @@ using VVVV.PluginInterfaces.V2;
 namespace VVVV.Hosting.Factories
 {
 	[Export(typeof(IAddonFactory))]
+	[Export(typeof(EditorFactory))]
 	public class EditorFactory : IAddonFactory, IMouseClickListener
 	{
 		[ImportMany(typeof(IEditor), AllowRecomposition = true)]
+		protected List<ExportFactory<IEditor, IEditorInfo>> FChangingNodeInfoExports;
 		protected List<ExportFactory<IEditor, IEditorInfo>> FNodeInfoExports;
 		
 		[Import]
@@ -35,7 +37,7 @@ namespace VVVV.Hosting.Factories
 		private Dictionary<INodeInfo, ExportFactory<IEditor, IEditorInfo>> FNodeInfos;
 		private Dictionary<IInternalPluginHost, ExportLifetimeContext<IEditor>> FExportLifetimeContexts;
 		private int FMoveToLine;
-		private INode FObservedNode;
+		private INode FNodeToAttach;
 		
 		[ImportingConstructor]
 		public EditorFactory(CompositionContainer parentContainer, ILogger logger, IHDEHost hdeHost)
@@ -44,6 +46,7 @@ namespace VVVV.Hosting.Factories
 			FExportProviders = new ExportProvider[] { parentContainer, FHostExportProvider };
 			FNodeInfos = new Dictionary<INodeInfo, ExportFactory<IEditor, IEditorInfo>>();
 			FExportLifetimeContexts = new Dictionary<IInternalPluginHost, ExportLifetimeContext<IEditor>>();
+			FNodeInfoExports = new List<ExportFactory<IEditor, IEditorInfo>>();
 			FLogger = logger;
 			FHDEHost = hdeHost;
 			FMoveToLine = -1;
@@ -59,21 +62,25 @@ namespace VVVV.Hosting.Factories
 				yield return nodeInfo;
 			
 			// Do we have a project file?
-			var project = FSolution.FindProject(filename);
-			if (project != null)
+			// TODO: Do not hardcode project extension.
+			if (Path.GetExtension(filename) == ".csproj")
 			{
-				if (!project.IsLoaded)
-					project.Load();
-				
-				foreach (var doc in project.Documents)
+				var project = FSolution.FindProject(filename);
+				if (project != null)
 				{
-					var docFilename = doc.Location.LocalPath;
+					if (!project.IsLoaded)
+						project.Load();
 					
-					if (docFilename != filename)
+					foreach (var doc in project.Documents)
 					{
-						nodeInfo = CreateNodeInfo(doc.Location.LocalPath);
-						if (nodeInfo != null)
-							yield return nodeInfo;
+						var docFilename = doc.Location.LocalPath;
+						
+						if (docFilename != filename)
+						{
+							nodeInfo = CreateNodeInfo(doc.Location.LocalPath);
+							if (nodeInfo != null)
+								yield return nodeInfo;
+						}
 					}
 				}
 			}
@@ -113,10 +120,42 @@ namespace VVVV.Hosting.Factories
 		
 		public bool Create(INodeInfo nodeInfo, IAddonHost host)
 		{
+			bool result = false;
+			
 			var editorHost = host as IInternalPluginHost;
 			
 			if (editorHost != null && FNodeInfos.ContainsKey(nodeInfo))
 			{
+				IEnumerable<KeyValuePair<IInternalPluginHost, ExportLifetimeContext<IEditor>>> entries = null;
+				if (FNodeToAttach != null)
+				{
+					// Try to find an existing editor which is already attached to this node
+					// and has this file openend.
+					entries =
+						from entry in FExportLifetimeContexts
+						let e = entry.Value.Value
+						where new Uri(e.OpenedFile) == new Uri(nodeInfo.Filename)
+						where e.AttachedNode == FNodeToAttach
+						select entry;
+				}
+				else
+				{
+					// Try to find an existing editor which has opened this file and is not
+					// attached to any node.
+					entries =
+						from entry in FExportLifetimeContexts
+						let e = entry.Value.Value
+						where new Uri(e.OpenedFile) == new Uri(nodeInfo.Filename)
+						where e.AttachedNode == null
+						select entry;
+				}
+				
+				if (entries.Any())
+				{
+					return ShowEditor(entries.FirstOrDefault());
+				}
+				
+				// We didn't find a suitable editor, create a new one.
 				FHostExportProvider.PluginHost = host as IPluginHost2;
 				
 				var nodeInfoExport = FNodeInfos[nodeInfo];
@@ -125,26 +164,43 @@ namespace VVVV.Hosting.Factories
 				
 				var editor = exportLifetimeContext.Value;
 				editorHost.Plugin = editor;
-				
 				editor.Open(nodeInfo.Filename);
+				
+				if (FNodeToAttach != null)
+					editor.AttachedNode = FNodeToAttach;
 				
 				if (FMoveToLine >= 0)
 					editor.MoveTo(FMoveToLine);
 				
-				if (FObservedNode != null)
-					editor.AttachedNode = FObservedNode;
+				result = true;
 				
-				return true;
+				FMoveToLine = -1;
+				FNodeToAttach = null;
 			}
 			
-			return false;
+			return result;
+		}
+		
+		private bool ShowEditor(KeyValuePair<IInternalPluginHost, ExportLifetimeContext<IEditor>> entry)
+		{
+			var editor = entry.Value.Value;
+			var editorNode = entry.Key as INode;
+			
+			if (FNodeToAttach != null)
+				editor.AttachedNode = FNodeToAttach;
+			
+			if (FMoveToLine >= 0)
+				editor.MoveTo(FMoveToLine);
+			
+			FHDEHost.ShowGUI(editorNode);
+			return true;
 		}
 		
 		public bool Delete(INodeInfo nodeInfo, IAddonHost host)
 		{
 			var editorHost = host as IInternalPluginHost;
 			
-			if (editorHost != null && FNodeInfos.ContainsKey(nodeInfo))
+			if (editorHost != null && FNodeInfos.ContainsKey(nodeInfo) && FExportLifetimeContexts.ContainsKey(editorHost))
 			{
 				var exportLifetimeContext = FExportLifetimeContexts[editorHost];
 				exportLifetimeContext.Dispose();
@@ -190,6 +246,8 @@ namespace VVVV.Hosting.Factories
 				var catalog = new DirectoryCatalog(dir);
 				FContainer = new CompositionContainer(catalog, FExportProviders);
 				FContainer.ComposeParts(this);
+				
+				FNodeInfoExports.AddRange(FChangingNodeInfoExports);
 			}
 			catch (ReflectionTypeLoadException e)
 			{
@@ -233,20 +291,7 @@ namespace VVVV.Hosting.Factories
 					case NodeType.Text:
 					case NodeType.Dynamic:
 					case NodeType.Effect:
-						// The following Open will trigger a call by vvvv to IInternalHDEHost.ExtractNodeInfos()
-						// Force the hde host to collect node info only from us.
-						var addonFactories = new List<IAddonFactory>(FHDEHost.AddonFactories);
-						try
-						{
-							FHDEHost.AddonFactories.Clear();
-							FHDEHost.AddonFactories.Add(this);
-							FHDEHost.Open(nodeInfo.Filename, false);
-						}
-						finally
-						{
-							FHDEHost.AddonFactories.Clear();
-							FHDEHost.AddonFactories.AddRange(addonFactories);
-						}
+						Open(nodeInfo.Filename, -1, node);
 						break;
 				}
 			}
@@ -262,6 +307,7 @@ namespace VVVV.Hosting.Factories
 					case NodeType.Dynamic:
 					case NodeType.Effect:
 						var filename = nodeInfo.Filename;
+						var line = -1;
 						
 						// Do we have a project file?
 						var project = FSolution.FindProject(filename);
@@ -272,30 +318,113 @@ namespace VVVV.Hosting.Factories
 							if (doc != null)
 							{
 								filename = doc.Location.LocalPath;
-								FMoveToLine = FindDefiningLine(doc, nodeInfo);
-								FObservedNode = node;
+								line = FindDefiningLine(doc, nodeInfo);
 							}
 						}
 						
-						// The following Open will trigger a call by vvvv to IInternalHDEHost.ExtractNodeInfos()
-						// Force the hde host to collect node info only from us.
-						var addonFactories = new List<IAddonFactory>(FHDEHost.AddonFactories);
-						try
-						{
-							FHDEHost.AddonFactories.Clear();
-							FHDEHost.AddonFactories.Add(this);
-							FHDEHost.Open(filename, false);
-						}
-						finally
-						{
-							FMoveToLine = -1;
-							FObservedNode = null;
-							
-							FHDEHost.AddonFactories.Clear();
-							FHDEHost.AddonFactories.AddRange(addonFactories);
-						}
+						Open(filename, line, node);
 						break;
 				}
+			}
+		}
+		
+		public void Open(string filename)
+		{
+			Open(filename, -1);
+		}
+		
+		public void Open(string filename, int line)
+		{
+			Open(filename, line, null);
+		}
+		
+		public void Open(string filename, int line, INode nodeToAttach)
+		{
+			Open(filename, line, nodeToAttach, null);
+		}
+		
+		public void Open(string filename, int line, INode nodeToAttach, IWindow window)
+		{
+			// See if we can find an editor already attached to this node.
+			if (nodeToAttach != null)
+			{
+				var entries =
+					from entry in FExportLifetimeContexts
+					let e = entry.Value.Value
+					where e.AttachedNode == nodeToAttach
+					select entry;
+				
+				if (entries.Any())
+				{
+					foreach (var entry in entries)
+					{
+						var editorNode = entry.Key as INode;
+						var editor = entry.Value.Value;
+						
+						if (new Uri(editor.OpenedFile) == new Uri(filename))
+						{
+							if (line >= 0)
+								editor.MoveTo(line);
+							
+							FHDEHost.ShowGUI(editorNode);
+							return;
+						}
+					}
+					
+					if (window == null)
+					{
+						// Take the Window of any attached editor and open it there.
+						var editorNode = entries.First().Key as INode;
+						window = editorNode.Window;
+					}
+				}
+			}
+			
+//			if (window == null)
+//			{
+//				// Before we open the editor in a new window, see if the file to
+//				// open is a project file and search for an editor already
+//				// editing this project.
+//				// If we find one, open the editor there.
+//				var project = FSolution.FindProject(filename);
+//				if (project != null && project.IsLoaded)
+//				{
+//					foreach (var doc in project.Documents)
+//					{
+//						var docFilename = doc.Location.LocalPath;
+//
+//						var editorNodes =
+//							from entry in FExportLifetimeContexts
+//							let e = entry.Value.Value
+//							where new Uri(e.OpenedFile) == new Uri(docFilename)
+//							select entry.Key as INode;
+//
+//						var editorNode = editorNodes.First();
+//						if (editorNode != null)
+//						{
+//							window = editorNode.Window;
+//							break;
+//						}
+//					}
+//				}
+//			}
+			
+			// The following Open will trigger a call by vvvv to IInternalHDEHost.ExtractNodeInfos()
+			// Force the hde host to collect node infos from us only.
+			var addonFactories = new List<IAddonFactory>(FHDEHost.AddonFactories);
+			try
+			{
+				FMoveToLine = line;
+				FNodeToAttach = nodeToAttach;
+				
+				FHDEHost.AddonFactories.Clear();
+				FHDEHost.AddonFactories.Add(this);
+				FHDEHost.Open(filename, false, window);
+			}
+			finally
+			{
+				FHDEHost.AddonFactories.Clear();
+				FHDEHost.AddonFactories.AddRange(addonFactories);
 			}
 		}
 		
@@ -368,7 +497,7 @@ namespace VVVV.Hosting.Factories
 						}
 						
 						if (match)
-							return attribute.Region.BeginLine - 1;
+							return attribute.Region.BeginLine;
 					}
 				}
 			}
@@ -376,7 +505,7 @@ namespace VVVV.Hosting.Factories
 			return -1;
 		}
 	}
-	
+
 	public interface IEditorInfo
 	{
 		string[] FileExtensions { get; }

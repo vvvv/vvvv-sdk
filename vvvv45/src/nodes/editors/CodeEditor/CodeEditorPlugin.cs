@@ -25,6 +25,7 @@ using VVVV.HDE.CodeEditor.Gui.Dialogs;
 using VVVV.HDE.CodeEditor.LanguageBindings.CS;
 using VVVV.HDE.CodeEditor.LanguageBindings.FX;
 using VVVV.HDE.Viewer.WinFormsViewer;
+using VVVV.Hosting.Factories;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.ManagedVCL;
@@ -48,6 +49,9 @@ namespace VVVV.HDE.CodeEditor
 		private Dictionary<string, RuntimeError> FRuntimeErrors;
 		private IHDEHost FHDEHost;
 		private INode FNode;
+		
+		[Import]
+		protected EditorFactory FEditorFactory;
 		
 		public static readonly ImageList CompletionIcons = new ImageList();
 		
@@ -136,8 +140,7 @@ namespace VVVV.HDE.CodeEditor
 
 		void FEditor_LinkClicked(object sender, Link link)
 		{
-			// TODO: implement this
-			FLogger.Log(LogType.Debug, "Implement this!");
+			FEditorFactory.Open(link.FileName, link.Location.Line + 1);
 		}
 		
 		protected override void Dispose(bool disposing)
@@ -195,6 +198,12 @@ namespace VVVV.HDE.CodeEditor
 			return true;
 		}
 		
+		public string OpenedFile 
+		{
+			get;
+			private set;
+		}
+		
 		public void Open(string filename)
 		{
 			var document = FSolution.FindDocument(filename) as ITextDocument;
@@ -203,6 +212,7 @@ namespace VVVV.HDE.CodeEditor
 			
 			if (document != null)
 			{
+				OpenedFile = filename;
 				FEditor.TextDocument = document;
 				
 				if (document is CSDocument)
@@ -262,6 +272,8 @@ namespace VVVV.HDE.CodeEditor
 			
 			if (document != null)
 			{
+				OpenedFile = null;
+				
 				document.ContentChanged -= document_ContentChanged;
 				document.Saved -= document_Saved;
 				
@@ -288,9 +300,14 @@ namespace VVVV.HDE.CodeEditor
 			throw new NotImplementedException();
 		}
 		
+		/// <summary>
+		/// Moves the editor to line <paramref name="lineNumber"/>.
+		/// </summary>
+		/// <param name="lineNumber">The line number to move the editor to.</param>
+		/// <remarks>Line counting starts with 1.</remarks>
 		public void MoveTo(int lineNumber)
 		{
-			FEditor.JumpTo(lineNumber);
+			FEditor.JumpTo(lineNumber - 1);
 		}
 		
 		public INode AttachedNode
@@ -377,7 +394,12 @@ namespace VVVV.HDE.CodeEditor
 			}
 			
 			if (File.Exists(fileName))
-				FHDEHost.Open(fileName, false);
+			{
+				if (new Uri(fileName) == FEditor.TextDocument.Location)
+					MoveTo(line);
+				else
+					FEditorFactory.Open(fileName, line, FAttachedNode, FNode.Window);
+			}
 		}
 		
 		private void Project_CompileCompleted(object sender, CompilerEventArgs args)

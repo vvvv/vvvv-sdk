@@ -38,7 +38,6 @@ namespace VVVV.Hosting
 		
 		private IVVVVHost FVVVVHost;
 		private Dictionary<INodeInfo, List<IAddonHost>> FRunningPluginHostsMap;
-//		private Dictionary<string, INodeInfo> FRegisteredNodeInfos;
 		private Dictionary<INodeInfo, IAddonFactory> FNodeInfoFactoryMap;
 		private IPluginBase FNodeBrowser, FWindowSwitcher, FKommunikator;
 		
@@ -89,7 +88,6 @@ namespace VVVV.Hosting
 				SynchronizationContext.SetSynchronizationContext(new WindowsFormsSynchronizationContext());
 			
 			FRunningPluginHostsMap = new Dictionary<INodeInfo, List<IAddonHost>>();
-//			FRegisteredNodeInfos = new Dictionary<string, INodeInfo>();
 			FNodeInfoFactoryMap = new Dictionary<INodeInfo, IAddonFactory>();
 			
 			// Register at least one ICommandHistory for top level element ISolution
@@ -201,8 +199,10 @@ namespace VVVV.Hosting
 			result = nodeInfos.ToArray();
 		}
 		
-		public void Add(IAddonHost host, INodeInfo nodeInfo)
+		public bool CreateNode(IAddonHost host, INodeInfo nodeInfo)
 		{
+			bool result = false;
+			
 			if (!(nodeInfo is ProxyNodeInfoFactory.ProxyNodeInfo))
 				nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
 			
@@ -215,6 +215,7 @@ namespace VVVV.Hosting
 						if (factory.Create(nodeInfo, host))
 						{
 							FNodeInfoFactoryMap[nodeInfo] = factory;
+							result = true;
 							break;
 						}
 					}
@@ -222,22 +223,30 @@ namespace VVVV.Hosting
 				else
 				{
 					var factory = FNodeInfoFactoryMap[nodeInfo];
-					factory.Create(nodeInfo, host);
+					result = factory.Create(nodeInfo, host);
 				}
 				
-				if (!FRunningPluginHostsMap.ContainsKey(nodeInfo))
-					FRunningPluginHostsMap[nodeInfo] = new List<IAddonHost>();
+				if (result)
+				{
+					if (!FRunningPluginHostsMap.ContainsKey(nodeInfo))
+						FRunningPluginHostsMap[nodeInfo] = new List<IAddonHost>();
 
-				FRunningPluginHostsMap[nodeInfo].Add(host);
+					FRunningPluginHostsMap[nodeInfo].Add(host);
+				}
 			}
 			catch (Exception e)
 			{
 				Logger.Log(e);
+				throw e;
 			}
+			
+			return result;
 		}
 		
-		public void Remove(IAddonHost host, INodeInfo nodeInfo)
+		public bool DestroyNode(IAddonHost host, INodeInfo nodeInfo)
 		{
+			bool result = false;
+			
 			if (!(nodeInfo is ProxyNodeInfoFactory.ProxyNodeInfo))
 				nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
 			
@@ -250,6 +259,7 @@ namespace VVVV.Hosting
 						if (factory.Delete(nodeInfo, host))
 						{
 							FNodeInfoFactoryMap[nodeInfo] = factory;
+							result = true;
 							break;
 						}
 					}
@@ -257,18 +267,24 @@ namespace VVVV.Hosting
 				else
 				{
 					var factory = FNodeInfoFactoryMap[nodeInfo];
-					factory.Delete(nodeInfo, host);
+					result = factory.Delete(nodeInfo, host);
 				}
 				
-				FRunningPluginHostsMap[nodeInfo].Remove(host);
-				
-				if (FRunningPluginHostsMap[nodeInfo].Count == 0)
-					FRunningPluginHostsMap.Remove(nodeInfo);
+				if (result)
+				{
+					FRunningPluginHostsMap[nodeInfo].Remove(host);
+					
+					if (FRunningPluginHostsMap[nodeInfo].Count == 0)
+						FRunningPluginHostsMap.Remove(nodeInfo);
+				}
 			}
 			catch (Exception e)
 			{
 				Logger.Log(e);
+				throw e;
 			}
+			
+			return result;
 		}
 		
 		public INodeInfo Clone(INodeInfo nodeInfo, string path, string name, string category, string version)
@@ -345,35 +361,40 @@ namespace VVVV.Hosting
 			return currentTime;
 		}
 		
-		public void Open(string file, bool inActivePatch)
+		public void Open(string file, bool inActivePatch, IWindow window)
 		{
-			FVVVVHost.Open(file, inActivePatch);
+			FVVVVHost.Open(file, inActivePatch, window);
 		}
 		
 		public void SelectNodes(INode[] nodes)
-        {
-            FVVVVHost.SelectNodes(nodes);
-        }
-	    
-        public void ShowPatch(INode node)
-        {
-            FVVVVHost.ShowPatch(node);
-        }
-	    
-        public void ShowHelpPatch(INodeInfo nodeInfo)
-        {
-            FVVVVHost.ShowHelpPatch(nodeInfo);
-        }
-	    
-        public void ShowNodeReference(INodeInfo nodeInfo)
-        {
-            FVVVVHost.ShowNodeReference(nodeInfo);
-        }
+		{
+			FVVVVHost.SelectNodes(nodes);
+		}
+		
+		public void ShowEditor(INode node)
+		{
+			FVVVVHost.ShowEditor(node);
+		}
+		
+		public void ShowGUI(INode node)
+		{
+			FVVVVHost.ShowGUI(node);
+		}
+		
+		public void ShowHelpPatch(INodeInfo nodeInfo)
+		{
+			FVVVVHost.ShowHelpPatch(nodeInfo);
+		}
+		
+		public void ShowNodeReference(INodeInfo nodeInfo)
+		{
+			FVVVVHost.ShowNodeReference(nodeInfo);
+		}
 		
 		public void SetComponentMode(INode node, ComponentMode componentMode)
 		{
-		    FVVVVHost.SetComponentMode(node, componentMode);
-		}		
+			FVVVVHost.SetComponentMode(node, componentMode);
+		}
 		#endregion
 		
 		#region helper methods
@@ -431,7 +452,7 @@ namespace VVVV.Hosting
 			else if (info.Systemname == NODE_BROWSER)
 				FNodeBrowserNodeInfo = info;
 			
-			FNodeInfoFactoryMap.Add(info, factory);
+			FNodeInfoFactoryMap[info] = factory;
 		}
 		
 		protected void factory_NodeInfoRemoved(object sender, INodeInfo info)

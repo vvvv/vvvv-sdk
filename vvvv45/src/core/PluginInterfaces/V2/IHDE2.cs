@@ -68,7 +68,8 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		/// <param name="file">The file to open by vvvv.</param>
 		/// <param name="inActivePatch">Whether it should be openend in the active patch or in the root patch.</param>
-		void Open(string file, bool inActivePatch);
+		/// <param name="window">If the created node has a GUI it will tabbed with this window.</param>
+		void Open(string file, bool inActivePatch, IWindow window);
 		
 		/// <summary>
 		/// Sets the component mode of the given nodes associated GUI.
@@ -84,10 +85,16 @@ namespace VVVV.PluginInterfaces.V2
 		void SelectNodes(INode[] nodes);
 		
 		/// <summary>
-		/// Opens the patch of the given node if this node is a patch.
+		/// Opens the editor of the given node.
 		/// </summary>
-		/// <param name="node">The node whose patch to open.</param>
-		void ShowPatch(INode node);
+		/// <param name="node">The node whose editor to open.</param>
+		void ShowEditor(INode node);
+		
+		/// <summary>
+		/// Opens the GUI of the given node.
+		/// </summary>
+		/// <param name="node">The node whose GUI to open.</param>
+		void ShowGUI(INode node);
 		
 		/// <summary>
 		/// Opens the help-patch of the given nodeinfo.
@@ -424,10 +431,21 @@ namespace VVVV.PluginInterfaces.V2
     	/// <param name="filename">The new path to save the currently opened file to.</param>
     	void SaveAs(string filename);
     	
+    	/// <summary>
+    	/// The node this editor is attached to. Shows runtime errors of this node.
+    	/// </summary>
     	INode AttachedNode
     	{
     		get;
     		set;
+    	}
+    	
+    	/// <summary>
+    	/// The absolute path to file currently opened.
+    	/// </summary>
+    	string OpenedFile
+    	{
+    		get;
     	}
     }
     #endregion
