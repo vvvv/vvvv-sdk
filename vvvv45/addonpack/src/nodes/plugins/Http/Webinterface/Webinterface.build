@@ -5,24 +5,15 @@
 	xmlns="http://nant.sf.net/release/0.85/nant.xsd"
 >
   
-  <property name="root.dir" value="../../../" />
   <include buildfile="${root.dir}/nant-plugins.xml" />
   <property name="lib.name" value="Webinterface.dll" />
-  
-  <property name="plugin.ignore" value="true" />
-  
-  <assemblyfileset id="project.references">
-    <include name="${root.bin}/_Utils.dll" />
-    <include name="${root.bin}/_PluginInterfaces.dll" />
-  </assemblyfileset>
-
-
-  <target name="copy-help-custom">
-    <copy todir="${plugin.path}">
-      <fileset basedir="HelpPatches">
-        <include name="*.v4p" />
-      </fileset>
-    </copy>
-  </target>
  
+  <assemblyfileset id="project.references">
+	  <include name="${root.bin}/VVVV.PluginInterfaces.dll" />
+      <include name="${root.bin}/VVVV.Utils.dll" />
+		<include name="${lib.dir}/**/*.dll" />
+		<exclude name="${lib.dir}/**/VVVV.Utils.dll" />
+		<exclude name="${lib.dir}/**/VVVV.PluginInterfaces.dll" />s
+  </assemblyfileset>
+  
 </project>
