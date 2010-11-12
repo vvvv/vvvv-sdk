@@ -45,36 +45,34 @@ namespace VVVV.Hosting.Factories
 		//create a node info from a filename
 		protected override IEnumerable<INodeInfo> GetNodeInfos(string filename)
 		{
-			FXProject project;
-			if (!FProjects.TryGetValue(filename, out project))
+			if (!FProjects.ContainsKey(filename))
 			{
-				project = new FXProject(new Uri(filename));
+				var project = new FXProject(new Uri(filename));
 				if (FSolution.Projects.CanAdd(project))
 				{
 					FSolution.Projects.Add(project);
-					project.DoCompileEvent += new EventHandler(project_DoCompile);
 					FProjects[filename] = project;
+					project.ProjectCompiledSuccessfully += project_ProjectCompiledSuccessfully;
+				}
+				else
+				{
+					project.Dispose();
 				}
 			}
 			
-			var isLoaded = project.IsLoaded;
-			if (!isLoaded)
-				project.Load();
-			
-			project.Compile();
-			
-			if (!isLoaded)
-				project.Unload();
+			yield return LoadNodeInfoFromEffect(filename);
+		}
 
-			yield return FProjectNodeInfo[project];
+		void project_ProjectCompiledSuccessfully(object sender, CompilerEventArgs args)
+		{
+			var project = sender as FXProject;
+			var filename = project.Location.LocalPath;
+			var nodeInfo = LoadNodeInfoFromEffect(filename);
+			OnNodeInfoUpdated(nodeInfo);
 		}
 		
-		void project_DoCompile(object sender, EventArgs e)
+		private INodeInfo LoadNodeInfoFromEffect(string filename)
 		{
-			//parse nodeinfo of project
-			var project = (sender as FXProject);
-			string filename = project.Location.LocalPath;
-			
 			var nodeInfo = FNodeInfoFactory.CreateNodeInfo(
 				Path.GetFileNameWithoutExtension(filename),
 				"EX9.Effect",
@@ -83,7 +81,6 @@ namespace VVVV.Hosting.Factories
 			
 			nodeInfo.BeginUpdate();
 			nodeInfo.Type = NodeType.Effect;
-//			nodeInfo.Executable = project.Exectuable;
 			
 			try
 			{
@@ -121,14 +118,9 @@ namespace VVVV.Hosting.Factories
 				Logger.Log(ex);
 			}
 
-			//for being available in the ExtractNodeInfo call
-			if (!FProjectNodeInfo.ContainsKey(project))
-				FProjectNodeInfo.Add(project, nodeInfo);
-			
 			nodeInfo.CommitUpdate();
 			
-			//re-register nodeinfo with vvvv
-			OnNodeInfoUpdated(nodeInfo);
+			return nodeInfo;
 		}
 		
 		protected override bool CreateNode(INodeInfo nodeInfo, IEffectHost effectHost)
@@ -213,6 +205,7 @@ namespace VVVV.Hosting.Factories
 				project.SaveTo(newLocation);
 				
 				filename = newLocation.LocalPath;
+				
 				return true;
 			}
 			

@@ -134,12 +134,20 @@ namespace VVVV.Hosting.Factories
 			return nodeInfos;
 		}
 		
+		private INodeInfo CreateDummyNodeInfo(string filename)
+		{
+			var nodeInfo = FNodeInfoFactory.CreateNodeInfo("Dummy", "Assembly", "", filename);
+			nodeInfo.Ignore = true;
+			return nodeInfo;
+		}
+		
 		protected void LoadNodeInfosFromFile(string filename, string sourcefilename, ref List<INodeInfo> nodeInfos)
 		{
 			// See if it's a .net assembly
 			if (!IsDotNetAssembly(filename))
 			{
 				FLogger.Log(LogType.Debug, "{0} is not a CLR assembly.", filename);
+				nodeInfos.Add(CreateDummyNodeInfo(filename));
 				return;
 			}
 			
@@ -165,6 +173,11 @@ namespace VVVV.Hosting.Factories
 						nodeInfo.Type = NodeType.Plugin;
 						nodeInfos.Add(nodeInfo);
 					}
+				}
+				
+				if (nodeInfos.Count == 0)
+				{
+					nodeInfos.Add(CreateDummyNodeInfo(filename));
 				}
 			}
 			catch (ReflectionTypeLoadException e)

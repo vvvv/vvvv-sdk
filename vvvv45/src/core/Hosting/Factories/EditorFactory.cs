@@ -417,6 +417,7 @@ namespace VVVV.Hosting.Factories
 				FMoveToLine = line;
 				FNodeToAttach = nodeToAttach;
 				
+				((HDEHost) FHDEHost).InvalidateCache(filename);
 				FHDEHost.AddonFactories.Clear();
 				FHDEHost.AddonFactories.Add(this);
 				FHDEHost.Open(filename, false, window);

@@ -176,7 +176,9 @@ namespace VVVV.Hosting.Factories
 				string filename;
 				if (CloneNode(nodeInfo, path, name, category, version, out filename))
 				{
-					foreach (var possibleNodeInfo in GetNodeInfos(filename))
+					AddFile(filename);
+					
+					foreach (var possibleNodeInfo in ((HDEHost) FHDEHost).GetCachedNodeInfos(filename))
 					{
 						if (possibleNodeInfo.Name == name && possibleNodeInfo.Category == category && possibleNodeInfo.Version == version)
 						{
@@ -320,9 +322,9 @@ namespace VVVV.Hosting.Factories
 		{
 			try
 			{
-				var nodeInfos = GetNodeInfos(filename);
+				var nodeInfos = GetNodeInfos(filename).ToList();
 				
-				if(nodeInfos.Any())
+				if (nodeInfos.Count > 0)
 					FLogger.Log(LogType.Debug, "Loaded node infos from {0}.", filename);
 				
 				FLoadedFiles[filename] = true;

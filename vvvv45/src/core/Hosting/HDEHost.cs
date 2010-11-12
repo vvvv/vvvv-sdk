@@ -83,6 +83,10 @@ namespace VVVV.Hosting
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssemblyCB;
 			
 			ExePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName((typeof(HDEHost).Assembly.Location)), @"..\.."));
+			
+			var filepath = Path.Combine(Path.GetTempPath(), "vvvv_cache");
+			CacheFileName = Path.Combine(filepath, "node_info_" + ExePath.GetHashCode() + ".cache");
+			
 			FCacheTimer = new System.Windows.Forms.Timer();
 			FCacheTimer.Interval = 3000;
 			FCacheTimer.Tick += new EventHandler(FCacheTimer_Tick);
@@ -498,6 +502,9 @@ namespace VVVV.Hosting
 			
 			FNodeInfoFactoryMap[info] = factory;
 			
+			// do not cache node of type text.
+			if (info.Type == NodeType.Text) return;
+			
 			//add to cache
 			var filename = info.Filename;
 			if (FNodeInfoCache.ContainsKey(filename))
@@ -615,7 +622,7 @@ namespace VVVV.Hosting
 		public bool HasCachedNodeInfos(string filename)
 		{
 			return FNodeInfoCache.ContainsKey(filename) && 
-				File.GetLastWriteTime(filename) < File.GetLastWriteTime(GetCacheFileName());
+				File.GetLastWriteTime(filename) < File.GetLastWriteTime(CacheFileName);
 		}
 		
 		//return nodeinfos from cache
@@ -629,11 +636,17 @@ namespace VVVV.Hosting
 			return result;
 		}
 		
-		//path to cache file
-		protected string GetCacheFileName()
+		public void InvalidateCache(string filename)
 		{
-			var filepath = Path.Combine(Path.GetTempPath(), "vvvv_cache");
-			return Path.Combine(filepath, "" + ExePath.GetHashCode() + ".cache");
+			if (FNodeInfoCache.ContainsKey(filename))
+				FNodeInfoCache.Remove(filename);
+		}
+		
+		//path to cache file
+		protected string CacheFileName
+		{
+			get;
+			private set;
 		}
 		
 		//load cache from disk
@@ -645,7 +658,7 @@ namespace VVVV.Hosting
 			{
 				Dictionary<string, Dictionary<string, ProxyNodeInfo>> tempCache;
 				var formatter = new BinaryFormatter();
-				using (var stream = new FileStream(GetCacheFileName(), FileMode.Open, FileAccess.Read, FileShare.Read))
+				using (var stream = new FileStream(CacheFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
 					tempCache = (Dictionary<string, Dictionary<string, ProxyNodeInfo>>) formatter.Deserialize(stream);
 				}
@@ -681,7 +694,7 @@ namespace VVVV.Hosting
 			try
 			{
 				// Write nodeInfoList to cache file.
-				var filename = GetCacheFileName();
+				var filename = CacheFileName;
 				
 				if (!Directory.Exists(Path.GetDirectoryName(filename)))
 				{

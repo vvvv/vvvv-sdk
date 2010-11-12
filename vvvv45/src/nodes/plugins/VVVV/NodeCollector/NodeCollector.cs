@@ -1,5 +1,6 @@
 #region usings
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 
@@ -24,7 +25,7 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Input("Search Paths", StringType = StringType.Directory, DefaultString = ".")]
-		protected ISpread<string> FSearchPaths;		
+		protected IDiffSpread<string> FSearchPaths;		
 
 		//[Input("Unsorted Directories", StringType = StringType.Directory)]
 		//protected ISpread<string> FUnsortedDirs;
@@ -39,7 +40,7 @@ namespace VVVV.Nodes
 		protected ILogger Flogger;
 		
 		[Import]
-		protected INodeInfoFactory FNodesInfos;
+		protected INodeInfoFactory FNodesInfoFactory;
 		
 		List<string> FLastPaths = new List<string>();
 		List<bool> FWasRepository = new List<bool>();
@@ -48,6 +49,8 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
+			if (!FSearchPaths.IsChanged) return;
+			
 			foreach (var p in FLastPaths)
 				NodeCollection.RemoveCombined(p);				
 
@@ -61,9 +64,12 @@ namespace VVVV.Nodes
 
 			NodeCollection.Collect();
 						
-			FNodes.SliceCount = FNodesInfos.NodeInfos.Length;
-			for (int i=0; i < FNodesInfos.NodeInfos.Length; i++)
-				FNodes[i] = FNodesInfos.NodeInfos[i].Systemname;
+			var nodeInfos =
+				from nodeInfo in FNodesInfoFactory.NodeInfos
+				where !nodeInfo.Ignore
+				select nodeInfo.Systemname;
+			
+			FNodes.AssignFrom(nodeInfos);
 		}
 	}	
 }
