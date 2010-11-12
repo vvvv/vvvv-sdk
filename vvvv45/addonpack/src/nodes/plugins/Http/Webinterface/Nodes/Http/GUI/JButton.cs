@@ -19,7 +19,7 @@ namespace VVVV.Nodes.Http.GUI
         private IValueIn FDefault;
         private IStringIn FLabel;
         private IEnumIn FMode;
-
+        private IValueIn FButtonCount;
 
 
 
@@ -181,9 +181,13 @@ namespace VVVV.Nodes.Http.GUI
             FHost.CreateValueInput("Default", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDefault);
             FDefault.SetSubType(0, 1, 1, 0, false, true, true);
 
+            FHost.CreateValueInput("Count", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FButtonCount);
+            FButtonCount.SetSubType(0,double.MaxValue,1,1,false,false,true);
+
             FHost.UpdateEnum("ButtonMode", "Toggle", new string[] { "Toggle", "Bang" });
             FHost.CreateEnumInput("Mode", TSliceMode.Single, TPinVisibility.True, out FMode);
             FMode.SetSubType("ButtonMode");
+
 
             //output
             FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
@@ -201,51 +205,124 @@ namespace VVVV.Nodes.Http.GUI
 
             FResponse.SliceCount = SpreadMax;
 
+ 
             for (int i = 0; i < SpreadMax; i++)
             {
+                string CurrentMode;
+                FMode.GetString(i, out CurrentMode);
 
-                FResponse.SetValue(i, 0);
+                if(CurrentMode == "Bang" && ReceivedNewString == false)
+                {
+                    FResponse.SetValue(i, 0);
+                }
 
                 if (changedSpreadSize || ReceivedNewString || DynamicPinsAreChanged())
                 {
-
-                    string CurrentMode;
-                    FMode.GetString(i, out CurrentMode);
 
                     double CurrentDefaultSlice;
                     FDefault.GetValue(i, out CurrentDefaultSlice);
 
                     string Label;
                     FLabel.GetString(i, out Label);
-
-                    string tResponse = ReceivedString[i];
                     
-                    if (tResponse == null)
+                    double ButtonCountSlice;
+                    FButtonCount.GetValue(i, out ButtonCountSlice);
+
+
+                    
+                    if (CurrentMode == "Toggle")
                     {
-                        tResponse = CurrentDefaultSlice.ToString();
+                        //Response Handling
+                        FSaveLastResponse = true;
+                        string tResponse = ReceivedString[i];
+                        if (tResponse == null)
+                            tResponse = CurrentDefaultSlice.ToString();
+                     
+
+                        FResponse.SliceCount = SpreadMax;
+                        if (tResponse == "true")
+                            FResponse.SetValue(i, 1);
+                        else
+                            FResponse.SetValue(i, 0);
+
+
+                        //Create Html Tags
+                        HtmlDiv HtmlContainer = new HtmlDiv();
+                        
+                        string CheckID = "check" + SliceId[i];
+                        CheckBox Input = new CheckBox(CheckID);
+                        Label InputLabel = new Label(CheckID);
+                        InputLabel.Insert(Label);
+
+                        HtmlContainer.Insert(Input);
+                        HtmlContainer.Insert(InputLabel);
+                        SetTag(i, HtmlContainer);
+
+                        //Create Javascript
+                        JQueryExpression GetState = new JQueryExpression(new BlankSelector("this"));
+                        GetState.Children(new BlankSelector("'label'"));
+                        GetState.Attr("aria-pressed");
+
+                        JQueryExpression postTrueToServer = new JQueryExpression();
+                        postTrueToServer.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"this.id + '=' + ") + GetState.GenerateScript(1,true,true)), null, null);
+
+
+                        JavaScriptAnonymousFunction func = new JavaScriptAnonymousFunction(postTrueToServer, null);
+                       
+                        IDSelector NodeIDSelector = new IDSelector(SliceId[i]);
+                        JQueryExpression Click = new JQueryExpression(NodeIDSelector);
+                        Click.ApplyMethodCall("click", func);
+                        
+                        //Click.ApplyMethodCall("onmouseup", func2);
+
+                        JQuery JQuerySend = JQuery.GenerateDocumentReady(Click);
+
+                        JQueryExpression Expr = new JQueryExpression(NodeIDSelector);
+                        Expr.AddChainedMethodCall("buttonset", null);
+                        //Expr.Css("Position", "absolute");
+                        JQuery JQueryCreate = JQuery.GenerateDocumentReady(Expr);
+
+                        AddJavaScript(i, JQueryCreate.GenerateScript(0, true, true) + JQuerySend.GenerateScript(0, true, true), true);
+
                     }
+                    else
+                    {
+                        //Response Handling
+                        FSaveLastResponse = false;
+                        string tResponse = ReceivedString[i];
+                        if (tResponse == null)
+                            tResponse = CurrentDefaultSlice.ToString();
 
-                    FResponse.SliceCount = SpreadMax;
-                    FResponse.SetValue(i, Convert.ToInt16(tResponse));
-
-
-                    Webinterface.Utilities.Button Button = new Webinterface.Utilities.Button(false);
-                    Button.Insert(Label);
-                    SetTag(i, Button);
-
-                    JQueryExpression postToServer = new JQueryExpression();
-                    postToServer.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"this.id + '=1'")), null, null);
-                    JavaScriptAnonymousFunction func = new JavaScriptAnonymousFunction(postToServer, null);
-                    JQueryExpression Click = new JQueryExpression(new IDSelector(SliceId[i])).ApplyMethodCall("click", func);
-                    JQuery JQuerySend = JQuery.GenerateDocumentReady(Click);
-
-                    JQueryExpression Expr = new JQueryExpression(new IDSelector(SliceId[i]));
-                    Expr.AddChainedMethodCall("button", null);
-                    Expr.Css("Position", "absolute");
-                    JQuery JQueryCreate = JQuery.GenerateDocumentReady(Expr);
+                        FResponse.SliceCount = SpreadMax;
+                        FResponse.SetValue(i, Convert.ToInt16(tResponse));
 
 
-                    AddJavaScript(i, JQueryCreate.GenerateScript(0, true, true) + JQuerySend.GenerateScript(0, true, true), true);
+                        Webinterface.Utilities.Button Button = new Webinterface.Utilities.Button(false);
+                        Button.Insert(Label);
+                        SetTag(i, Button);
+
+                        JQueryExpression postTrueToServer = new JQueryExpression();
+                        postTrueToServer.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"this.id + '=1'")), null, null);
+
+                        JQueryExpression postFalseToServer = new JQueryExpression();
+                        postFalseToServer.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"this.id + '=0'")), null, null);
+
+                        JavaScriptAnonymousFunction func = new JavaScriptAnonymousFunction(postTrueToServer, null);
+                        JavaScriptAnonymousFunction func2 = new JavaScriptAnonymousFunction(postFalseToServer, null);
+
+                        IDSelector NodeIDSelector = new IDSelector(SliceId[i]);
+                        JQueryExpression Click = new JQueryExpression(NodeIDSelector);
+                        Click.ApplyMethodCall("click", func);
+                        //Click.ApplyMethodCall("onmouseup", func2);
+
+                        JQuery JQuerySend = JQuery.GenerateDocumentReady(Click);
+                        JQueryExpression Expr = new JQueryExpression(NodeIDSelector);
+                        Expr.AddChainedMethodCall("button", null);
+                        Expr.Css("Position", "absolute");
+                        JQuery JQueryCreate = JQuery.GenerateDocumentReady(Expr);
+
+                        AddJavaScript(i, JQueryCreate.GenerateScript(0, true, true) + JQuerySend.GenerateScript(0, true, true), true);
+                    }
                 }
             }
             
@@ -253,7 +330,7 @@ namespace VVVV.Nodes.Http.GUI
 
         protected override bool DynamicPinsAreChanged()
         {
-            return (FMode.PinIsChanged || FDefault.PinIsChanged || FLabel.PinIsChanged);
+            return (FMode.PinIsChanged || FDefault.PinIsChanged || FLabel.PinIsChanged || FButtonCount.PinIsChanged || FMode.PinIsChanged);
         }
 
         #endregion Main Loop

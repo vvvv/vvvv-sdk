@@ -141,7 +141,6 @@ namespace VVVV.Webinterface.HttpServer
 
         private void ListenerCallback(IAsyncResult result)
         {
-
             try
             {
                 FAllDone.Set();
@@ -154,7 +153,7 @@ namespace VVVV.Webinterface.HttpServer
 
                 HttpListenerResponse response = context.Response;
                 //response.AddHeader("Cache-Control", "public");
-                //response.ContentType = tRequest.Response.ContentType;
+                //response.ContentType = tRequest.Response.ContentType; 
                 
                 // Construct a response.
                 byte[] buffer = tRequest.Response.TextInBytes;

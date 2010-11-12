@@ -170,14 +170,15 @@ namespace VVVV.Nodes.Http.GUI
 
         protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString, List<bool> SendToBrowser)
         {
-            for (int i = 0; i < SpreadMax; i++)
+            if (changedSpreadSize || ReceivedNewString || DynamicPinsAreChanged())
             {
-                HtmlDiv tDiv = new HtmlDiv();
+                for (int i = 0; i < SpreadMax; i++)
+                {
+                    HtmlDiv tDiv = new HtmlDiv();
+                    tDiv.Insert("  ");
+                    SetTag(i, tDiv);
 
-                tDiv.Insert("  ");
-
-                SetTag(i, tDiv);
-
+                }
             }
         }
 

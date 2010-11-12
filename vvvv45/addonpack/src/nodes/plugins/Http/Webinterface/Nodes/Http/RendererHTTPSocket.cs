@@ -565,6 +565,9 @@ namespace VVVV.Nodes.Http
                     }
                 }
 
+                Ressources Ressource = new Ressources();
+                tFiles.AddRange(Ressource.Files);
+
                 FServer.FoldersToServ = tDirectories;
                 
 

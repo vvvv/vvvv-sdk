@@ -478,6 +478,21 @@ namespace VVVV.Webinterface.Utilities
         }
     }
 
+    class Label : Tag
+    {
+
+        public Label()
+        {
+            Name = "label";
+        }
+
+        public Label(string For)
+        {
+            Name = "label";
+            AddAttribute(new HTMLAttribute("for", For));
+        }
+    }
+
     class Img : Tag
     {
 

@@ -26,8 +26,6 @@ namespace VVVV.Nodes.Http.BaseNodes
         #region field Definition
 
 
-        
-
         // Input Pins
         public INodeIn FHttpGuiIn;
         public IHttpGUIIO FUpstreamHttpGuiIn;
@@ -123,13 +121,15 @@ namespace VVVV.Nodes.Http.BaseNodes
             FHost.CreateNodeOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FHttpGuiOut);
             FHttpGuiOut.SetSubType(new Guid[1] { HttpGUIIO.GUID }, HttpGUIIO.FriendlyName);
             FHttpGuiOut.SetInterface(this);
-            FHttpGuiOut.Order = -1;
+            FHttpGuiOut.Order = -3;
 
             FHost.CreateStringOutput("NodeId", TSliceMode.Single, TPinVisibility.Hidden, out FNodeIdOut);
             FNodeIdOut.SetSubType("",false);
+            FNodeIdOut.Order = -2;
 
             FHost.CreateStringOutput("SliceIds", TSliceMode.Dynamic, TPinVisibility.Hidden, out FSliceIdOut);
             FSliceIdOut.SetSubType("", false);
+            FSliceIdOut.Order = -1;
 
 			
         }
@@ -273,6 +273,8 @@ namespace VVVV.Nodes.Http.BaseNodes
             {
 				if (FGuiDataList.Count > SpreadMax)
                 {
+                    FSliceIdOut.SliceCount = SpreadMax;
+
                     FGuiDataList.RemoveRange(SpreadMax, FGuiDataList.Count - SpreadMax);
                     FGuiDataList.Capacity = SpreadMax;
                 }
@@ -745,6 +747,11 @@ namespace VVVV.Nodes.Http.BaseNodes
         {
             string tSource = new FileInfo(Path).Name;
             FWebinterfaceSingelton.SetFileToStorage(tSource, File.ReadAllBytes(Path));
+        }
+
+        public void SetSaveLastResponse(bool State)
+        {
+            FSaveLastResponse = State;
         }
 
 

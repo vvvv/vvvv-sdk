@@ -17,7 +17,9 @@ namespace VVVV.Nodes.HttpGUI
         private IStringOut FResponse;
         private IStringIn FDefault;
         private IValueIn FPasswort;
-
+        private IValueIn FMultiline;
+        private IValueIn FUpdateContinuousValueInput;
+             
         #endregion field declaration
 
 
@@ -174,10 +176,18 @@ namespace VVVV.Nodes.HttpGUI
 
             FHost.CreateStringOutput("Response", TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
             FResponse.SetSubType("", false);
+
+            FHost.CreateValueInput("Mulitline", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMultiline);
+            FMultiline.SetSubType(0, 1, 1, 0, false, true, true);
             
             FHost.CreateValueInput("Password" ,1,null, TSliceMode.Dynamic, TPinVisibility.True, out FPasswort);
             FPasswort.SetSubType(0,1,1,0,false,true,true);
+
+            FHost.CreateValueInput("UpdateContinuous", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FUpdateContinuousValueInput);
+            FUpdateContinuousValueInput.SetSubType(0, 1, 1, 1, false, true, true);
         }
+
+
 
         #endregion pin creation
 
@@ -190,9 +200,6 @@ namespace VVVV.Nodes.HttpGUI
         protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString, List<bool> SendToBrowser)
         {
 
-
-
-
             if (changedSpreadSize || ReceivedNewString || DynamicPinsAreChanged())
             {
                 for (int i = 0; i < SpreadMax; i++)
@@ -202,54 +209,111 @@ namespace VVVV.Nodes.HttpGUI
 
                     double currentPassword;
                     string currentDefault;
+                    double currentMulitline;
+                    double currentUpdateContinouse;
 
                     FDefault.GetString(i,out currentDefault);
                     FPasswort.GetValue(i, out currentPassword);
+                    FMultiline.GetValue(i, out currentMulitline);
+                    FUpdateContinuousValueInput.GetValue(i, out currentUpdateContinouse);
 
+
+                    //Response Handling
+                    FResponse.SliceCount = SpreadMax;
                     if (tResponse == null)
                     {
-                        tResponse = currentDefault;
+                        if(!String.IsNullOrEmpty(currentDefault))
+                            tResponse = currentDefault;
                     }
 
                     FResponse.SetString(i, tResponse);
 
 
-                    TextField tTextfield = new TextField();
+                    // Create HTML Tags and Attributes
+                    HtmlDiv Container = new HtmlDiv();
 
-                    if (currentPassword > 0.5)
+                    if (currentMulitline == 0)
                     {
-                        tTextfield.AddAttribute(new HTMLAttribute("type", "password"));
+                        TextField tTextfield = new TextField();
+                        tTextfield.AddAttribute(new HTMLAttribute("id", SliceId[i] + "Textfield"));
+
+                        if (currentPassword > 0.5)
+                        {
+                            tTextfield.AddAttribute(new HTMLAttribute("type", "password"));
+                        }
+                        tTextfield.AddAttribute(new HTMLAttribute("Value", tResponse));
+                        tTextfield.AddAttribute(new HTMLAttribute("style", "width:100%;height:100%"));
+
+                        Container.Insert(tTextfield);
+
+                        if (currentUpdateContinouse < 0.5)
+                        {
+                            Button SubmitButtons = new Button(true);
+                            SubmitButtons.AddAttribute(new HTMLAttribute("id", SliceId[i] + "Submit"));
+                            SubmitButtons.AddAttribute(new HTMLAttribute("type", "submit"));
+                            SubmitButtons.AddAttribute(new HTMLAttribute("Value", "Submit"));
+                            SubmitButtons.AddAttribute(new HTMLAttribute("style", "bottom:-20px"));
+                            Container.Insert(SubmitButtons);
+                        }
+                    }
+                    else
+                    {
+                        TextArea tTextfield = new TextArea();
+                        tTextfield.AddAttribute(new HTMLAttribute("id", SliceId[i] + "Textfield"));
+
+                        if (currentPassword > 0.5)
+                        {
+                            tTextfield.AddAttribute(new HTMLAttribute("type", "password"));
+                        }
+                        tTextfield.AddAttribute(new HTMLAttribute("Value", tResponse));
+                        tTextfield.AddAttribute(new HTMLAttribute("style", "width:100%;height:100%"));
+
+                        Container.Insert(tTextfield);
+
+                        if (currentUpdateContinouse < 0.5)
+                        {
+                            Button SubmitButtons = new Button(true);
+                            SubmitButtons.AddAttribute(new HTMLAttribute("id",SliceId[i] + "Submit"));
+                            SubmitButtons.AddAttribute(new HTMLAttribute("type", "submit"));
+                            SubmitButtons.AddAttribute(new HTMLAttribute("Value", "Submit"));
+                            SubmitButtons.AddAttribute(new HTMLAttribute("style", "bottom:-20px"));
+                            Container.Insert(SubmitButtons);
+                        }
                     }
 
+                    SetTag(i, Container);
 
                     
-
-                    tTextfield.AddAttribute(new HTMLAttribute("Value", tResponse));
-
-
-                    SetTag(i, tTextfield);
-
-                    FResponse.SliceCount = SpreadMax;
-
                     CreatePollingMessage(i, SliceId[i], "val", currentDefault);
 
+                    //Generate the JavaScript an add it to the GUIDataObject
+                    if (currentUpdateContinouse > 0.5)
+                    {
+                        JQueryExpression postToServer = new JQueryExpression();
+                        postToServer.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"event.currentTarget.parentElement.id + '=' + this.value")), null, null);
+
+                        JavaScriptCodeBlock Block = new JavaScriptCodeBlock(postToServer);
+                        JavaScriptAnonymousFunction Function = new JavaScriptAnonymousFunction(Block, new string[] { "event" });
+                        JQueryExpression DocumentReadyHandler = new JQueryExpression(new IDSelector(SliceId[i] + "Textfield"));
+                        DocumentReadyHandler.ApplyMethodCall("keyup", Function);
+                        JQuery DocumentReady = JQuery.GenerateDocumentReady(DocumentReadyHandler);
+
+                        AddJavaScript(i, DocumentReady.GenerateScript(0, true, true), true);
+                    }
+                    else
+                    {
+                        JQueryExpression postToServer = new JQueryExpression();
+                        postToServer.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"event.currentTarget.parentElement.id + '=' + ") + new JQueryExpression(new IDSelector(SliceId[i]+"Textfield")).Attr("value").GenerateScript(1,true,true)),null,null);
+
+                        JavaScriptCodeBlock Block = new JavaScriptCodeBlock(postToServer);
+                        JavaScriptAnonymousFunction Function = new JavaScriptAnonymousFunction(Block, new string[] { "event" });
+                        JQueryExpression DocumentReadyHandler = new JQueryExpression(new IDSelector(SliceId[i] + "Submit"));
+                        DocumentReadyHandler.ApplyMethodCall("click", Function);
+                        JQuery DocumentReady = JQuery.GenerateDocumentReady(DocumentReadyHandler);
+
+                        AddJavaScript(i, DocumentReady.GenerateScript(0, true, true), true);
+                    }
                 }
-
-
-                //Generate the JavaScript an add it to the GUIDataObject
-
-                JQueryExpression postToServer = new JQueryExpression();
-                postToServer.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"$(this).attr('id') + '=' + $(this).val()")), null, null);
-
-                JavaScriptCodeBlock Block = new JavaScriptCodeBlock(postToServer);
-
-                JavaScriptAnonymousFunction Function = new JavaScriptAnonymousFunction(Block, new string[] { "event" });
-                JQueryExpression DocumentReadyHandler = new JQueryExpression(new ClassSelector(GetNodeId(0)));
-                DocumentReadyHandler.ApplyMethodCall("keyup", Function);
-                JQuery DocumentReady = JQuery.GenerateDocumentReady(DocumentReadyHandler);
-
-                AddJavaScript(0, DocumentReady.GenerateScript(0,true,true), true);
-               
             }
         }
 
@@ -258,7 +322,7 @@ namespace VVVV.Nodes.HttpGUI
 
 		protected override bool DynamicPinsAreChanged()
 		{
-			return FDefault.PinIsChanged || FPasswort.PinIsChanged;
+			return FDefault.PinIsChanged || FPasswort.PinIsChanged || FMultiline.PinIsChanged || FUpdateContinuousValueInput.PinIsChanged;
 		}
 	}
 }

@@ -570,7 +570,7 @@ namespace VVVV.Nodes.Http
                 {
                     string tCurrentDirectories;
                     FDirectories.GetString(i, out tCurrentDirectories);
-                    if (tCurrentDirectories != null && tCurrentDirectories != "")
+                    if (!String.IsNullOrEmpty(tCurrentDirectories))
                     {
                         if (Directory.Exists(tCurrentDirectories))
                         {
@@ -591,6 +591,11 @@ namespace VVVV.Nodes.Http
                         }
                     }
                 }
+
+                Ressources Ressource = new Ressources();
+                tFiles.AddRange(Ressource.Files);
+
+
 
                 FServer.FoldersToServ = tDirectories;
                 

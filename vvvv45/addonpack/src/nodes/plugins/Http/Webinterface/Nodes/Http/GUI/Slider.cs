@@ -23,6 +23,7 @@ namespace VVVV.Nodes.Http.GUI
         private IValueIn FDefault;
         private IValueIn FStepSize;
         private IValueIn FUpdateContinuousValueInput;
+        private IValueIn FShowTextfield;
 
 
         #endregion field declaration
@@ -193,8 +194,11 @@ namespace VVVV.Nodes.Http.GUI
             FHost.CreateValueInput("Update Continuous", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FUpdateContinuousValueInput);
             FUpdateContinuousValueInput.SetSubType(0.0, 1.0, 1.0, 1, false, true, false);
 
+            FHost.CreateValueInput("Textfield", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FShowTextfield);
+            FShowTextfield.SetSubType(0, 1, 1, 0, false, true, true);
+
             FHost.CreateValueOutput("Response", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
-            FResponse.SetSubType(0, 1, 1, 0, false, false, false);
+            FResponse.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.5, false, false, false);
         }
 
         #endregion pin creation
@@ -217,6 +221,7 @@ namespace VVVV.Nodes.Http.GUI
                     double currentDefaultSlice;
                     double currentStepSize;
                     double updateContinuousSlice;
+                    double currentShowTextfield;
 
                     
 
@@ -235,6 +240,7 @@ namespace VVVV.Nodes.Http.GUI
                     FName.GetString(i, out currentName);
                     FOrientation.GetString(i, out currentOrientation);
                     FUpdateContinuousValueInput.GetValue(i, out updateContinuousSlice);
+                    FShowTextfield.GetValue(i, out currentShowTextfield);
 
                     currentStepSize *= 10000;
                     currentMinSlice *= 10000;
@@ -246,18 +252,13 @@ namespace VVVV.Nodes.Http.GUI
 
                     if (tResponse == null)
                     {
-                        tResponse = currentDefaultSlice.ToString();
-                        FSavedResponses[i] = currentDefaultSlice.ToString();
-                        FResponse.SetValue(i, Convert.ToDouble(tResponse));
+                        FSavedResponses[i] = tResponse = Convert.ToString(currentDefaultSlice).Replace(',','.');
+                        FResponse.SetValue(i, double.Parse(tResponse, System.Globalization.NumberFormatInfo.InvariantInfo));
                     }
 
                     if (ReceivedNewString)
-                    {
                         if(!String.IsNullOrEmpty(tResponse))
-                        {
-                            FResponse.SetValue(i, Convert.ToDouble(tResponse));
-                        }
-                    }
+                            FResponse.SetValue(i, double.Parse(tResponse, System.Globalization.NumberFormatInfo.InvariantInfo));
 
                     double currentSliderValue = Convert.ToDouble(tResponse) * 10000;  
 
@@ -268,17 +269,46 @@ namespace VVVV.Nodes.Http.GUI
                     HTMLText tText = new HTMLText(currentName, true);
 
                     
-                    TextField tSliderValueText = new TextField(SliderTextfieldId, tResponse);
 
-                    string AttributeTextValue = "position:absolute; right:0%; top:10%; border: hidden;";
+                    //tSliderValueText.AddAttribute(new HTMLAttribute("position","absolute"));
+                    //tSliderValueText.AddAttribute(new HTMLAttribute("right", "0%"));
+                    //tSliderValueText.AddAttribute(new HTMLAttribute("top", "10%"));
+                    //tSliderValueText.AddAttribute(new HTMLAttribute("border", "hidden"));
+
+
+                    TextField tSliderValueText = new TextField(SliderTextfieldId, tResponse);
+                    string AttributeTextValue,AttributeText,AttributeSlider = String.Empty;
+
+                    if (currentOrientation == "horizontal")
+                    {
+                        if (currentShowTextfield == 0)
+                            AttributeTextValue = "display:none; position:absolute; right:0%; top:10%; border: hidden; width:80%";
+                        else
+                            AttributeTextValue = "position:absolute; right:0%; top:10%; border: hidden; width:80%";
+
+                        AttributeText = "position:absolute; top:10%; width:80%";
+                        AttributeSlider = "postion:absolute; top:50%; width:100%";
+                    }
+                    else
+                    {
+                        if (currentShowTextfield == 0)
+                            AttributeTextValue = "display:none; position:absolute;  top:110%; border: hidden; width:20%";
+                        else
+                            AttributeTextValue = "position:absolute;  bottom:-30px; border: hidden; width:20%";
+
+                        AttributeText = "position:absolute; left:0%; top:-35px; width:100%";
+                        AttributeSlider = "postion:absolute; left:0%; height:100%";
+                    }
+                    //string AttributeTextValue = "position:absolute; right:0%; top:10%; border: hidden;";
                     HTMLAttribute tTextAttributeValue = new HTMLAttribute("style", AttributeTextValue);
                     tSliderValueText.AddAttribute(tTextAttributeValue);
+    
 
-                    string AttributeText = "position:absolute; top:10%; width:80%";
+                    
                     HTMLAttribute tTextAttribute = new HTMLAttribute("style", AttributeText);
                     tText.AddAttribute(tTextAttribute);
 
-                    string AttributeSlider = "postion:absolute; top:50%";
+                    
                     HTMLAttribute tSliderAttribute = new HTMLAttribute("style", AttributeSlider);
                     tSlider.AddAttribute(tSliderAttribute);
 
@@ -378,7 +408,7 @@ namespace VVVV.Nodes.Http.GUI
 
 		protected override bool DynamicPinsAreChanged()
 		{
-			return (FName.PinIsChanged || FOrientation.PinIsChanged || FMin.PinIsChanged || FMax.PinIsChanged || FDefault.PinIsChanged || FStepSize.PinIsChanged);
+			return (FName.PinIsChanged || FOrientation.PinIsChanged || FMin.PinIsChanged || FMax.PinIsChanged || FDefault.PinIsChanged || FStepSize.PinIsChanged || FShowTextfield.PinIsChanged);
 		}
 	}
 }

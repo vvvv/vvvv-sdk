@@ -331,7 +331,7 @@ namespace VVVV.Webinterface.Utilities
 
             for (int i = 0; i < m_AttributesAsStrings.Count; i++)
             {
-                tText.Append(m_AttributesAsStrings[i]);
+                tText.Append(" " + m_AttributesAsStrings[i]);
             }
 
             for (int i = 0; i < m_Attributes.Count; i++)

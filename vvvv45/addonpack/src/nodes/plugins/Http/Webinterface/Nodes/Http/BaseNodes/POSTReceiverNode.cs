@@ -24,6 +24,7 @@ namespace VVVV.Nodes.Http.BaseNodes
 		protected bool FReceivedNewString = false;
 		protected List<string> FReceivedString = new List<string>();
 		protected bool FInitFlag = true;
+        protected bool FSaveLastResponse = true;
 
 		//this method is called by vvvv when the node is created
 		public void SetPluginHost(IPluginHost Host)
@@ -141,7 +142,7 @@ namespace VVVV.Nodes.Http.BaseNodes
 
 			FWebinterfaceSingelton.getNewBrowserData(FSliceId[SliceNumber], FNodePath, SliceNumber, out tContent, FInitFlag);
 
-			if (tContent == null && FSavedResponses.ContainsKey(SliceNumber))
+            if (tContent == null && FSavedResponses.ContainsKey(SliceNumber) && FSaveLastResponse)
 			{
 				FSavedResponses.TryGetValue(SliceNumber, out tContent);
 			}

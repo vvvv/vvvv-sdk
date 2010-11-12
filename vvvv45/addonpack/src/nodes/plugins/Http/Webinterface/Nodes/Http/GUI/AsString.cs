@@ -280,6 +280,7 @@ namespace VVVV.Nodes.Http.GUI
             {
                 if (FUpstreamInterface != null)
                 {
+                    FGuiDataList.Clear();
                     List<GuiDataObject> tGuiData;
                     FUpstreamInterface.GetDataObject(0, out tGuiData);
                     FGuiDataList.AddRange(tGuiData);

@@ -191,8 +191,6 @@ namespace VVVV.Nodes.Http.GUI
 
         protected override void OnEvaluate(int SpreadMax, bool changedSpreadSize, string NodeId, List<string> SliceId, bool ReceivedNewString, List<string> ReceivedString, List<bool> SendToBrowser)
         {
-
-
             if (changedSpreadSize || ReceivedNewString || DynamicPinsAreChanged())
             {
                 for (int i = 0; i < SpreadMax; i++)

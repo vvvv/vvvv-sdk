@@ -15,20 +15,43 @@ namespace VVVV.Webinterface.HttpServer
 
         
         Assembly ExecutingProjekt = Assembly.GetExecutingAssembly();
-        private string[] Files;
+        private string[] FFiles;
+
+
+        public List<string> Files 
+        {
+            get 
+            {
+                List<string> FileNames = new List<string>();
+
+                //foreach (string File in FFiles)
+                //{
+                //    ManifestResourceInfo Info = ExecutingProjekt.GetManifestResourceInfo(File);
+                //    FileNames.Add(Info.FileName);
+                //}
+
+                foreach (string File in FFiles)
+                {
+                    FileNames.Add(File);
+                }
+
+                return FileNames; 
+            }
+        }
         
 
         public Ressources()
         {
-
+            FFiles = ExecutingProjekt.GetManifestResourceNames();
+            
         }
 
         public Byte[] SearchFile(string Filename)
         {
-            Files = ExecutingProjekt.GetManifestResourceNames();
+            
             Byte[] RequestedFile = null;
 
-            foreach (string File in Files)
+            foreach (string File in FFiles)
             {
                 if (File.Contains(Filename))
                 {
@@ -52,6 +75,5 @@ namespace VVVV.Webinterface.HttpServer
 
             return RequestedFile;
         }
-
     }
 }

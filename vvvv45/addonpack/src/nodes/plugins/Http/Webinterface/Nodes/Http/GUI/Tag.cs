@@ -9,16 +9,15 @@ using VVVV.Webinterface.jQuery;
 
 namespace VVVV.Nodes.Http.GUI
 {
-    class DatePicker : GuiNodeDynamic, IPlugin, IDisposable
+    class HtmlTag : GuiNodeDynamic, IPlugin, IDisposable
     {
 
         #region field declaration
 
         private bool FDisposed = false;
-        private IStringOut FResponse;
-        private IStringIn FDefault;
-        private IStringIn FDateFormat;
-
+        private IStringIn FTagName;
+        private IStringIn FAttribute;
+        private IStringOut FTag;
 
         #endregion field declaration
 
@@ -29,7 +28,7 @@ namespace VVVV.Nodes.Http.GUI
         /// the nodes constructor
         /// nothing to declare for this node
         /// </summary>
-        public DatePicker()
+        public HtmlTag()
         {
         }
 
@@ -94,7 +93,7 @@ namespace VVVV.Nodes.Http.GUI
         /// It gives your base class the opportunity to finalize.
         /// Do not provide destructors in WebTypes derived from this class.
         /// </summary>
-        ~DatePicker()
+        ~HtmlTag()
         {
             // Do not re-create Dispose clean-up code here.
             // Calling Dispose(false) is optimal in terms of
@@ -122,17 +121,17 @@ namespace VVVV.Nodes.Http.GUI
                     FPluginInfo = new PluginInfo();
 
                     //the nodes main name: use CamelCaps and no spaces
-                    FPluginInfo.Name = "DatePicker";
+                    FPluginInfo.Name = "Tag";
                     //the nodes category: try to use an existing one
                     FPluginInfo.Category = "HTTP";
                     //the nodes version: optional. leave blank if not
                     //needed to distinguish two nodes of the same name and category
-                    FPluginInfo.Version = "JQuery";
+                    FPluginInfo.Version = "HTML";
 
                     //the nodes author: your sign
                     FPluginInfo.Author = "phlegma";
                     //describe the nodes function
-                    FPluginInfo.Help = "Datepicker node for the Renderer (HTTP)";
+                    FPluginInfo.Help = "Tag node for the Renderer (HTTP)";
                     //specify a comma separated list of tags that describe the node
                     FPluginInfo.Tags = "";
 
@@ -167,14 +166,14 @@ namespace VVVV.Nodes.Http.GUI
         protected override void OnSetPluginHost()
         {
 
-            FHost.CreateStringInput("Default", TSliceMode.Dynamic, TPinVisibility.True, out FDefault);
-            FDefault.SetSubType("",false);
+            FHost.CreateStringInput("Name", TSliceMode.Dynamic, TPinVisibility.True, out FTagName);
+            FTagName.SetSubType("", false);
 
-            FHost.CreateStringInput("Format", TSliceMode.Dynamic, TPinVisibility.True, out FDateFormat);
-            FDateFormat.SetSubType("yy-mm-dd", false);
+            FHost.CreateStringInput("Attribute", TSliceMode.Dynamic, TPinVisibility.True, out FAttribute);
+            FAttribute.SetSubType("", false);
 
-            FHost.CreateStringOutput("Response", TSliceMode.Dynamic, TPinVisibility.True, out FResponse);
-            FResponse.SetSubType("", false);
+            FHost.CreateStringOutput("Output", TSliceMode.Dynamic, TPinVisibility.True, out FTag);
+            FTag.SetSubType("", false);
         }
 
         #endregion pin creation
@@ -189,64 +188,40 @@ namespace VVVV.Nodes.Http.GUI
         {
             if (changedSpreadSize || ReceivedNewString || DynamicPinsAreChanged())
             {
+                FTag.SliceCount = SpreadMax;
+
                 for (int i = 0; i < SpreadMax; i++)
                 {
-                    string currentDefaultSlice;
-                    string currentDateFormat;
-                    FDefault.GetString(i, out currentDefaultSlice);
-                    FDateFormat.GetString(i, out currentDateFormat);
-
-
-                    FResponse.SliceCount = SpreadMax;
-                    string tResponse = ReceivedString[i];
-
-                    if (tResponse == null)
+                    string currentTagName;
+                    string currentAttribute;
+                    FTagName.GetString(i, out currentTagName);
+                    FAttribute.GetString(i, out currentAttribute);
+                    
+                    if(!String.IsNullOrEmpty(currentTagName))
                     {
-                        FSavedResponses[i] = tResponse = currentDefaultSlice;
-                        FResponse.SetString(i, tResponse);
+                        EmptyTag HtmlTag = new EmptyTag(currentTagName);
+                        if(!String.IsNullOrEmpty(currentAttribute))
+                            HtmlTag.AddAttribute(currentAttribute);
+                        SetTag(i, HtmlTag);
+                        FTag.SetString(i, HtmlTag.Text);
                     }
-
-                    if (ReceivedNewString)
-                        if (!String.IsNullOrEmpty(tResponse))
-                            FResponse.SetString(i,tResponse);
-
-                    TextField Textfield = new TextField(SliceId[i], tResponse);
-                    SetTag(i, Textfield);
-
-                    ////Generates an document.ready block and lsiten for the keyup event of the texzfield
-                    ////Slecetors for Sliders and Textfield
-                    IDSelector SelectorSlider = new IDSelector(SliceId[i]);
- 
-                    ////send the value to vvvv
-                    JQueryExpression postToServer = new JQueryExpression();
-                    postToServer.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"'{0}=' + {1}",SliceId[i],"dateText")),null,null);
-
-                    JavaScriptAnonymousFunction Function = new JavaScriptAnonymousFunction(postToServer, new string[] { "dateText", "inst" });
-
-                    ////Generates an document.ready block to initialise the datepicker with there option object
-                    JavaScriptGenericObject SliderParams = new JavaScriptGenericObject();
-                    SliderParams.Set("autoSize", true);
-                    SliderParams.Set("onSelect",Function);
-                    SliderParams.Set("dateFormat", currentDateFormat);
-                    //SliderParams.Set("orientation", currentOrientation);
-                    //SliderParams.Set("step", currentStepSize);
-                    //SliderParams.Set("value", currentSliderValue);
-                    JQueryExpression SliderDocumentReadyHandler = new JQueryExpression(SelectorSlider);
-                    SliderDocumentReadyHandler.ApplyMethodCall("datepicker", SliderParams);
-                    JQuery SliderDocumentReady = JQuery.GenerateDocumentReady(SliderDocumentReadyHandler);
-                    AddJavaScript(i,SliderDocumentReady.GenerateScript(1, true, true), true);
-
-                    if (FDefault.PinIsChanged)
+                    else
                     {
-                        string[] DefaultValue = new string[3] { "option", "setdate", currentDefaultSlice };
-                        CreatePollingMessage(i, SliceId[i], "datepicker", DefaultValue);
+                        FHost.Log(TLogType.Message, "Tag needs a name");
                     }
+                    
 
-                    if (FDateFormat.PinIsChanged)
-                    {
-                        string[] DateFormat = new string[3] { "option", "dateFormat", currentDateFormat };
-                        CreatePollingMessage(i, SliceId[i], "datepicker", DateFormat);
-                    }
+                    //if (FDefault.PinIsChanged)
+                    //{
+                    //    string[] DefaultValue = new string[3] { "option", "setdate", currentDefaultSlice };
+                    //    CreatePollingMessage(i, SliceId[i], "datepicker", DefaultValue);
+                    //}
+
+                    //if (FDateFormat.PinIsChanged)
+                    //{
+                    //    string[] DateFormat = new string[3] { "option", "dateFormat", currentDateFormat };
+                    //    CreatePollingMessage(i, SliceId[i], "datepicker", DateFormat);
+                    //}
 
 
                 }
@@ -258,7 +233,7 @@ namespace VVVV.Nodes.Http.GUI
 
         protected override bool DynamicPinsAreChanged()
         {
-            return (FDefault.PinIsChanged || FDateFormat.PinIsChanged);
+            return (FTagName.PinIsChanged || FAttribute.PinIsChanged);
         }
     }
 }

@@ -273,6 +273,8 @@ namespace VVVV.Nodes.Http.GUI
 
                         if (CurrentMode == "Toggle")
                         {
+                            FSaveLastResponse = true;
+
                             if (ReceivedString[i] == null)
                             {
                                 ReceivedString[i] = CurrentDefaultSlice.ToString();
@@ -301,6 +303,8 @@ namespace VVVV.Nodes.Http.GUI
                         }
                         else
                         {
+                            FSaveLastResponse = false;
+
                             FResponse.SliceCount = SpreadMax;
                             if (ReceivedString[i] != null)
                             {
