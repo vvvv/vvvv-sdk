@@ -97,7 +97,7 @@ namespace VVVV.Nodes
         		// Release unmanaged resources. If disposing is false,
         		// only the following code is executed.
 	        	
-        		FHost.Log(TLogType.Debug, "CombinePath is being deleted");
+        		FHost.Log(TLogType.Debug, "Combine (File Path) is being deleted");
         		
         		// Note that this is not thread safe.
         		// Another thread could start disposing the object
@@ -140,7 +140,7 @@ namespace VVVV.Nodes
 					//the nodes main name: use CamelCaps and no spaces
 					FPluginInfo.Name = "Combine";
 					//the nodes category: try to use an existing one
-					FPluginInfo.Category = "String";
+					FPluginInfo.Category = "File";
 					//the nodes version: optional. leave blank if not
 					//needed to distinguish two nodes of the same name and category
 					FPluginInfo.Version = "Path";

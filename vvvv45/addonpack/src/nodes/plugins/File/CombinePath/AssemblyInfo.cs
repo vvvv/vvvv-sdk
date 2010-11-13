@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 // you compile.
 
 [assembly: AssemblyTitle("CombinePath")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("combines strings to a path")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("woei")]
 [assembly: AssemblyProduct("CombinePath")]
