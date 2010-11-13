@@ -68,7 +68,7 @@ namespace VVVV.PluginInterfaces.V2
 		public IEnumerator<T> GetEnumerator()
 		{
 			for (int i=0; i<FSliceCount; i++)
-				yield return FData[i];
+				yield return this[i];
 		}
 		
 		IEnumerator IEnumerable.GetEnumerator()
