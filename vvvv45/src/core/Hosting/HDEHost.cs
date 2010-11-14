@@ -614,7 +614,7 @@ namespace VVVV.Hosting
 			foreach (var nodeInfo in nodeInfos)
 				result.Add(nodeInfo);
 			
-			Logger.Log(LogType.Debug, "Loaded node infos from cache for: " + filename);
+			Logger.Log(LogType.Debug, "Loaded cached node infos for: " + filename);
 			
 			return result;
 		}
