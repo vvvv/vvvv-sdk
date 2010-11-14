@@ -67,8 +67,8 @@ namespace VVVV.Hosting.Factories
 		{
 			var project = sender as FXProject;
 			var filename = project.Location.LocalPath;
-			var nodeInfo = LoadNodeInfoFromEffect(filename);
-			OnNodeInfoUpdated(nodeInfo);
+			
+			LoadNodeInfoFromEffect(filename);
 		}
 		
 		private INodeInfo LoadNodeInfoFromEffect(string filename)

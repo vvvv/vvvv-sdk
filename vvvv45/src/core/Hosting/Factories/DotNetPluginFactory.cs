@@ -205,9 +205,6 @@ namespace VVVV.Hosting.Factories
 		
 		public IPluginBase CreatePlugin(INodeInfo nodeInfo, IPluginHost2 pluginHost)
 		{
-			if (!IsLoaded(nodeInfo.Filename))
-				LoadNodeInfos(nodeInfo.Filename);
-			
 			//V2 plugin
 			if (FMEFPlugins.ContainsKey(nodeInfo))
 			{

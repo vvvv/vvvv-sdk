@@ -472,6 +472,12 @@ namespace VVVV.Hosting
 			return FInternalToProxyMap[nodeInfo];
 		}
 		
+		public void DestroyNodeInfo(INodeInfo nodeInfo)
+		{
+			nodeInfo = ToInternal(nodeInfo);
+			FFactory.DestroyNodeInfo(nodeInfo);
+		}
+		
 		public void NodeInfoAddedCB(INodeInfo nodeInfo)
 		{
 			var proxyNodeInfo = new ProxyNodeInfo(nodeInfo);

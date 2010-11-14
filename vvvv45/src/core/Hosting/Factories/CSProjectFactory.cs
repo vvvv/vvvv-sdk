@@ -193,30 +193,27 @@ namespace VVVV.Hosting.Factories
 				
 				string className = name.Replace(" ", "");
 				
-				// Create a new project by generating a new name first.
-				var solutionDir = FSolution.Location.GetLocalDir();
-				
 				// Find a suitable project name
 				var newProjectName = className;
-				var newProjectPath = solutionDir.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
+				var newProjectPath = path.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
 				
 				if (File.Exists(newProjectPath))
 				{
 					newProjectName = className + category;
-					newProjectPath = solutionDir.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
+					newProjectPath = path.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
 				}
 				
 				if (File.Exists(newProjectPath))
 				{
 					newProjectName = className + category + version;
-					newProjectPath = solutionDir.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
+					newProjectPath = path.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
 				}
 				
 				int i = 1;
 				while (File.Exists(newProjectPath))
 				{
 					newProjectName = className + category + version + i++;
-					newProjectPath = solutionDir.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
+					newProjectPath = path.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
 				}
 				
 				var newLocation = new Uri(newProjectPath);

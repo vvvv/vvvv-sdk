@@ -12,9 +12,6 @@ namespace VVVV.PluginInterfaces.V2
 	/// </summary>
 	public interface IAddonFactory
 	{
-	    event NodeInfoEventHandler NodeInfoAdded;
-	    event NodeInfoEventHandler NodeInfoRemoved;
-	    event NodeInfoEventHandler NodeInfoUpdated;
 	    IEnumerable<INodeInfo> ExtractNodeInfos(string filename, string arguments);
 	    bool Create(INodeInfo nodeInfo, IAddonHost host);
 	    bool Delete(INodeInfo nodeInfo, IAddonHost host);

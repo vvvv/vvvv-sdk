@@ -41,8 +41,9 @@ namespace VVVV.Hosting
 		private IVVVVHost FVVVVHost;
 		private Dictionary<INodeInfo, List<IAddonHost>> FRunningPluginHostsMap;
 		private IPluginBase FNodeBrowser, FWindowSwitcher, FKommunikator;
-		protected Dictionary<string, Dictionary<string, ProxyNodeInfo>> FNodeInfoCache;
-		protected Dictionary<string, Dictionary<string, ProxyNodeInfo>> FDeserializedNodeInfoCache;
+		protected Dictionary<string, HashSet<ProxyNodeInfo>> FNodeInfoCache;
+		protected Dictionary<string, HashSet<ProxyNodeInfo>> FDeserializedNodeInfoCache;
+		private Dictionary<string, bool> FLoadedFiles = new Dictionary<string, bool>();
 		
 		[Export]
 		public CompositionContainer Container { get; protected set; }
@@ -121,6 +122,35 @@ namespace VVVV.Hosting
 			SerializeNodeInfoCache();
 		}
 		
+		private bool IsLoaded(string filename)
+		{
+			return FLoadedFiles.ContainsKey(filename) && FLoadedFiles[filename];
+		}
+		
+		private void UpdateNodeInfos(string filename)
+		{
+			if (!IsLoaded(filename))
+			{
+				LoadNodeInfos(filename, string.Empty);
+				FLoadedFiles[filename] = true;
+			}
+		}
+		
+		private List<ProxyNodeInfo> LoadNodeInfos(string filename, string arguments)
+		{
+			var nodeInfos = new List<ProxyNodeInfo>();
+			
+			foreach(IAddonFactory factory in AddonFactories)
+			{
+				foreach (var nodeInfo in factory.ExtractNodeInfos(filename, arguments))
+				{
+					nodeInfos.Add((ProxyNodeInfo) nodeInfo);
+				}
+			}
+			
+			return nodeInfos;
+		}
+		
 		#region IInternalHDEHost
 		public void Initialize(IVVVVHost vvvvHost, INodeBrowserHost nodeBrowserHost, IWindowSwitcherHost windowSwitcherHost, IKommunikatorHost kommunikatorHost)
 		{
@@ -128,7 +158,11 @@ namespace VVVV.Hosting
 			Environment.SetEnvironmentVariable(ENV_VVVV, Path.GetFullPath(Shell.CallerPath.ConcatPath("..").ConcatPath("..")));
 			
 			FVVVVHost = vvvvHost;
+			
 			NodeInfoFactory = new ProxyNodeInfoFactory(vvvvHost.NodeInfoFactory);
+			NodeInfoFactory.NodeInfoAdded += factory_NodeInfoAdded;
+			NodeInfoFactory.NodeInfoRemoved += factory_NodeInfoRemoved;
+			NodeInfoFactory.NodeInfoUpdated += factory_NodeInfoUpdated;
 
 			// Route log messages to vvvv
 			Logger.AddLogger(new VVVVLogger(FVVVVHost));
@@ -158,16 +192,12 @@ namespace VVVV.Hosting
 				return;
 			}
 
-			//initialize the addonfactories
-			foreach (var factory in AddonFactories)
-				AddFactory(factory);
-			
 			//NodeCollection.AddJob(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
-			PluginFactory.AddFile(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed"))+ @"plugins\Finder.dll");
-			PluginFactory.AddFile(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed"))+ @"plugins\Kommunikator.dll");
-			PluginFactory.AddFile(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed"))+ @"plugins\NodeBrowser.dll");
-			PluginFactory.AddFile(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed"))+ @"plugins\NodeCollector.dll");
-			PluginFactory.AddFile(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed"))+ @"plugins\WindowSwitcher.dll");
+			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\Finder.dll"));
+			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\Kommunikator.dll"));
+			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\NodeBrowser.dll"));
+			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\NodeCollector.dll"));
+			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\WindowSwitcher.dll"));
 //			NodeCollection.AddUnsorted(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
 //			NodeCollection.Collect();
 			
@@ -175,8 +205,11 @@ namespace VVVV.Hosting
 			var nodeInfoFactory = FVVVVHost.NodeInfoFactory;
 			try
 			{
+				UpdateNodeInfos(FWinSwNodeInfo.Filename);
 				FWindowSwitcher = PluginFactory.CreatePlugin(FWinSwNodeInfo, null);
+				UpdateNodeInfos(FKomNodeInfo.Filename);
 				FKommunikator = PluginFactory.CreatePlugin(FKomNodeInfo, null);
+				UpdateNodeInfos(FNodeBrowserNodeInfo.Filename);
 				FNodeBrowser = PluginFactory.CreatePlugin(FNodeBrowserNodeInfo, null);
 				(FNodeBrowser as INodeBrowser).DragDrop(false);
 			}
@@ -186,20 +219,6 @@ namespace VVVV.Hosting
 			}
 		}
 		
-		public void AddFactory(IAddonFactory factory)
-		{
-			try
-			{
-				factory.NodeInfoAdded += factory_NodeInfoAdded;
-				factory.NodeInfoRemoved += factory_NodeInfoRemoved;
-				factory.NodeInfoUpdated += factory_NodeInfoUpdated;
-			}
-			catch (Exception e)
-			{
-				Logger.Log(e);
-			}
-		}
-
 		public void GetHDEPlugins(out IPluginBase nodeBrowser, out IPluginBase windowSwitcher, out IPluginBase kommunikator)
 		{
 			nodeBrowser = FNodeBrowser;
@@ -209,33 +228,24 @@ namespace VVVV.Hosting
 		
 		public void ExtractNodeInfos(string filename, string arguments, out INodeInfo[] result)
 		{
-			var nodeInfos = new Dictionary<string, ProxyNodeInfo>();
+			List<ProxyNodeInfo> nodeInfos = null;
 			
 			if(HasCachedNodeInfos(filename))
 			{
-				result = GetCachedNodeInfos(filename).ToArray();
-				return;
+				nodeInfos = GetCachedNodeInfos(filename).ToList();
 			}
 			else
 			{
 				//not in cache, so load from file
-				foreach(IAddonFactory factory in AddonFactories)
-				{
-					foreach (var nodeInfo in factory.ExtractNodeInfos(filename, arguments))
-					{
-						nodeInfos.Add(nodeInfo.Systemname, (ProxyNodeInfo)nodeInfo);
-					}
-				}
-				
-				FNodeInfoCache[filename] = nodeInfos;
+				nodeInfos = LoadNodeInfos(filename, arguments);
 			}
 			
 			//convert to internal and write into result
 			result = new INodeInfo[nodeInfos.Count];
 			var i = 0;
-			foreach(var info in nodeInfos.Values)
+			foreach(var info in nodeInfos)
 			{
-				result[i++] =  NodeInfoFactory.ToInternal(info);
+				result[i++] = NodeInfoFactory.ToInternal(info);
 			}
 		}
 		
@@ -246,6 +256,10 @@ namespace VVVV.Hosting
 			
 			try
 			{
+				// We don't know if nodeInfo was cached. Some properties like UserData, Factory
+				// might be not set -> Update the nodeInfo.
+				UpdateNodeInfos(nodeInfo.Filename);
+				
 				var factory = nodeInfo.Factory;
 				if (factory.Create(nodeInfo, host))
 				{
@@ -300,6 +314,10 @@ namespace VVVV.Hosting
 			
 			try
 			{
+				// We don't know if nodeInfo was cached. Some properties like UserData, Factory
+				// might be not set -> Update the nodeInfo.
+				UpdateNodeInfos(nodeInfo.Filename);
+				
 				foreach (var factory in AddonFactories)
 				{
 					INodeInfo newNodeInfo;
@@ -456,8 +474,6 @@ namespace VVVV.Hosting
 		#region event handler
 		protected void factory_NodeInfoAdded(object sender, INodeInfo info)
 		{
-			var factory = sender as IAddonFactory;
-			
 			if (info.Systemname == WINDOW_SWITCHER)
 				FWinSwNodeInfo = info;
 			else if (info.Systemname == KOMMUNIKATOR)
@@ -470,15 +486,14 @@ namespace VVVV.Hosting
 			
 			//add to cache
 			var filename = info.Filename;
-			if (FNodeInfoCache.ContainsKey(filename))
-			{
-				FNodeInfoCache[filename][info.Systemname] = (ProxyNodeInfo)info;
-			}
-			else
-			{
-				FNodeInfoCache.Add(filename,  new Dictionary<string, ProxyNodeInfo>());
-				FNodeInfoCache[filename].Add(info.Systemname, (ProxyNodeInfo)info);
-			}
+			if (!FNodeInfoCache.ContainsKey(filename))
+				FNodeInfoCache[filename] = new HashSet<ProxyNodeInfo>();
+			
+			var nodeInfos = FNodeInfoCache[filename];
+			var nodeInfo = (ProxyNodeInfo) info;
+			
+			if (!nodeInfos.Contains(nodeInfo))
+				nodeInfos.Add(nodeInfo);
 			
 			if(FCacheTimer.Enabled)
 			{
@@ -489,15 +504,12 @@ namespace VVVV.Hosting
 		
 		protected void factory_NodeInfoRemoved(object sender, INodeInfo info)
 		{
-			var factory = sender as IAddonFactory;
-			
 			//remove from cache
 			var filename = info.Filename;
 			if (FNodeInfoCache.ContainsKey(filename))
 			{
 				//remove from info list
-				if (FNodeInfoCache[filename].ContainsKey(info.Systemname))
-					FNodeInfoCache[filename].Remove(info.Systemname);
+				FNodeInfoCache[filename].Remove((ProxyNodeInfo) info);
 
 				//also remove list if empty now
 				if(FNodeInfoCache[filename].Count == 0)
@@ -508,7 +520,7 @@ namespace VVVV.Hosting
 		
 		public void factory_NodeInfoUpdated(object sender, INodeInfo info)
 		{
-			var factory = sender as IAddonFactory;
+			var factory = info.Factory;
 			
 			// Go through all the running hosts using this changed node info
 			// and create a new plugin for them.
@@ -521,9 +533,6 @@ namespace VVVV.Hosting
 				if (factory is EffectsFactory)
 					break;
 			}
-			
-			//update cache
-			FNodeInfoCache[info.Filename][info.Systemname] = (ProxyNodeInfo)info;
 		}
 		
 		protected Assembly ResolveAssemblyCB(object sender, ResolveEventArgs args)
@@ -587,36 +596,34 @@ namespace VVVV.Hosting
 		}
 		
 		//return node infos from cache
-		public IEnumerable<INodeInfo> GetCachedNodeInfos(string filename)
+		public IEnumerable<ProxyNodeInfo> GetCachedNodeInfos(string filename)
 		{
 			if(!FNodeInfoCache.ContainsKey(filename))
 			{
-				FNodeInfoCache[filename] = new Dictionary<string, ProxyNodeInfo>();
+				var cache = new HashSet<ProxyNodeInfo>();
 				
 				if (FDeserializedNodeInfoCache.ContainsKey(filename))
 				{
-					foreach (var key in FDeserializedNodeInfoCache[filename].Keys)
+					foreach (var cachedInfo in FDeserializedNodeInfoCache[filename])
 					{
-						var cachedInfo = FDeserializedNodeInfoCache[filename][key];
-						var newInfo = NodeInfoFactory.CreateNodeInfo(cachedInfo.Name, cachedInfo.Category, cachedInfo.Version, filename);
-						newInfo.BeginUpdate();
-						newInfo.UpdateFromNodeInfo(cachedInfo);
-						newInfo.CommitUpdate();
-						
-						FNodeInfoCache[filename].Add(key, (ProxyNodeInfo)newInfo);
+						var newInfo = NodeInfoFactory.CreateNodeInfo(cachedInfo.Name, cachedInfo.Category, cachedInfo.Version, filename) as ProxyNodeInfo;
+						if (!cache.Contains(newInfo))
+						{
+							newInfo.BeginUpdate();
+							newInfo.UpdateFromNodeInfo(cachedInfo);
+							newInfo.CommitUpdate();
+							
+							cache.Add(newInfo);
+						}
 					}
 				}
+				
+				FNodeInfoCache[filename] = cache;
 			}
-			
-			var result = new List<INodeInfo>();
-			
-			var nodeInfos = FNodeInfoCache[filename].Values;
-			foreach (var nodeInfo in nodeInfos)
-				result.Add(nodeInfo);
 			
 			Logger.Log(LogType.Debug, "Loaded cached node infos for: " + filename);
 			
-			return result;
+			return FNodeInfoCache[filename];
 		}
 		
 		public void InvalidateCache(string filename)
@@ -640,20 +647,20 @@ namespace VVVV.Hosting
 		//load cache from disk
 		protected void DeserializeNodeInfoCache()
 		{
-			FNodeInfoCache = new Dictionary<string, Dictionary<string, ProxyNodeInfo>>();
+			FNodeInfoCache = new Dictionary<string, HashSet<ProxyNodeInfo>>();
 
 			try
 			{
 				var formatter = new BinaryFormatter();
 				using (var stream = new FileStream(CacheFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					FDeserializedNodeInfoCache = (Dictionary<string, Dictionary<string, ProxyNodeInfo>>) formatter.Deserialize(stream);
+					FDeserializedNodeInfoCache = (Dictionary<string, HashSet<ProxyNodeInfo>>) formatter.Deserialize(stream);
 				}
 				
 			}
 			catch
 			{
-				FDeserializedNodeInfoCache = new Dictionary<string, Dictionary<string, ProxyNodeInfo>>();
+				FDeserializedNodeInfoCache = new Dictionary<string, HashSet<ProxyNodeInfo>>();
 			}
 		}
 		

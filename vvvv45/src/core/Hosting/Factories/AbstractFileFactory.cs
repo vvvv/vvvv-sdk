@@ -34,10 +34,9 @@ namespace VVVV.Hosting.Factories
 		//directory to watch
 		private string FFileExtension;
 		private List<string> FFiles = new List<string>();
-		private Dictionary<string, bool> FLoadedFiles = new Dictionary<string, bool>();
 		
 		private List<FileSystemWatcher> FDirectoryWatcher = new List<FileSystemWatcher>();
-			
+		
 		private GenericSynchronizingObject FSyncContext;
 		
 		public AbstractFileFactory(string fileExtension)
@@ -65,53 +64,15 @@ namespace VVVV.Hosting.Factories
 			}
 		}
 		
-		protected bool IsLoaded(string filename)
-		{
-			return FLoadedFiles.ContainsKey(filename) && FLoadedFiles[filename];
-		}
-		
 		#region IAddonFactory
-		public event NodeInfoEventHandler NodeInfoAdded;
-		protected virtual void OnNodeInfoAdded(INodeInfo nodeInfo)
-		{
-			if (NodeInfoAdded != null)
-				NodeInfoAdded(this, nodeInfo);
-		}
-		
-		public event NodeInfoEventHandler NodeInfoUpdated;
-		protected virtual void OnNodeInfoUpdated(INodeInfo nodeInfo)
-		{
-			if (NodeInfoUpdated != null)
-				NodeInfoUpdated(this, nodeInfo);
-		}
-		
-		public event NodeInfoEventHandler NodeInfoRemoved;
-		protected virtual void OnNodeInfoRemoved(INodeInfo nodeInfo)
-		{
-			if (NodeInfoRemoved != null)
-				NodeInfoRemoved(this, nodeInfo);
-		}
-		
 		//return nodeinfos from systemname
 		public IEnumerable<INodeInfo> ExtractNodeInfos(string filename, string arguments)
-		{			
-			if (Path.GetExtension(filename) != FileExtension) 
+		{
+			if (Path.GetExtension(filename) != FileExtension)
 				return new INodeInfo[0];
 			
-			IEnumerable<INodeInfo> nodeInfos;
-			
 			// Regardless of the arguments, we need to load the node infos first.
-			// Do we have the required node infos cached?
-			if (((HDEHost)FHDEHost).HasCachedNodeInfos(filename))
-			{
-				nodeInfos = ((HDEHost)FHDEHost).GetCachedNodeInfos(filename);
-				foreach (var nodeInfo in nodeInfos)
-					nodeInfo.Factory = this;
-			}
-			else
-			{
-				nodeInfos = LoadNodeInfos(filename);
-			}
+			var nodeInfos = LoadNodeInfos(filename);
 			
 			// If additional arguments are present vvvv is only interested in one specific
 			// NodeInfo -> look for it.
@@ -132,25 +93,10 @@ namespace VVVV.Hosting.Factories
 		
 		protected abstract IEnumerable<INodeInfo> GetNodeInfos(string filename);
 		
-		protected void UpdateNodeInfos(string filename)
-		{
-			if (!IsLoaded(filename))
-			{
-				foreach (var nodeInfo in LoadNodeInfos(filename))
-				{
-					OnNodeInfoUpdated(nodeInfo);
-				}
-			}
-		}
-		
 		public bool Create(INodeInfo nodeInfo, IAddonHost host)
 		{
 			if (host is TNodeHost && Path.GetExtension(nodeInfo.Filename) == FileExtension)
 			{
-				// We don't know if nodeInfo was cached. Some properties like Executable
-				// might be not set -> Update the nodeInfo.
-				UpdateNodeInfos(nodeInfo.Filename);
-				
 				return CreateNode(nodeInfo, (TNodeHost) host);
 			}
 			
@@ -173,10 +119,6 @@ namespace VVVV.Hosting.Factories
 		{
 			if (Path.GetExtension(nodeInfo.Filename) == FileExtension)
 			{
-				// We don't know if nodeInfo was cached. Some properties like Executable
-				// might be not set -> Update the nodeInfo.
-				UpdateNodeInfos(nodeInfo.Filename);
-				
 				string filename;
 				if (CloneNode(nodeInfo, path, name, category, version, out filename))
 				{
@@ -220,20 +162,20 @@ namespace VVVV.Hosting.Factories
 			
 			if (recursive)
 				foreach (string subDir in Directory.GetDirectories(dir))
-				{
-					if (!(subDir.EndsWith(".svn") || subDir.EndsWith(".cache")))
-						try {
-							AddSubDir(subDir, recursive);
-						} catch (Exception e) {
-							FLogger.Log(e);
-						}
-				}						
+			{
+				if (!(subDir.EndsWith(".svn") || subDir.EndsWith(".cache")))
+					try {
+					AddSubDir(subDir, recursive);
+				} catch (Exception e) {
+					FLogger.Log(e);
+				}
+			}
 		}
 		
 		
-		//register all files in a directory		
+		//register all files in a directory
 		public void AddDir(string dir, bool recursive)
-		{		
+		{
 			//give subclasses a chance to cleanup before we start to scan.
 			DeleteArtefacts(dir, recursive);
 
@@ -260,22 +202,22 @@ namespace VVVV.Hosting.Factories
 				} catch (Exception e) {
 					FLogger.Log(e);
 				}
-			}			
+			}
 
 			if (recursive)
 				foreach (string subDir in Directory.GetDirectories(dir))
-				{
-					if (!(subDir.EndsWith(".svn") || subDir.EndsWith(".cache")))
-						try {
-							RemoveSubDir(subDir, recursive);
-						} catch (Exception e) {
-							FLogger.Log(e);
-						}
-				}			
+			{
+				if (!(subDir.EndsWith(".svn") || subDir.EndsWith(".cache")))
+					try {
+					RemoveSubDir(subDir, recursive);
+				} catch (Exception e) {
+					FLogger.Log(e);
+				}
+			}
 		}
 		
 		public void RemoveDir(string dir)
-		{			
+		{
 			for (int i=FDirectoryWatcher.Count-1; i>=0; i--)
 			{
 				var dirWatcher = FDirectoryWatcher[i];
@@ -331,7 +273,6 @@ namespace VVVV.Hosting.Factories
 				if (nodeInfos.Count > 0)
 					FLogger.Log(LogType.Debug, "Loaded node infos from {0}.", filename);
 				
-				FLoadedFiles[filename] = true;
 				return nodeInfos;
 			}
 			catch (Exception e)
@@ -353,8 +294,15 @@ namespace VVVV.Hosting.Factories
 			
 			foreach (var nodeInfo in FNodeInfoFactory.NodeInfos)
 			{
-				if (new Uri(nodeInfo.Filename) == new Uri(filename))
-					OnNodeInfoRemoved(nodeInfo);
+				if (!string.IsNullOrEmpty(nodeInfo.Filename))
+				{
+					try {
+						if (new Uri(nodeInfo.Filename) == new Uri(filename))
+							FNodeInfoFactory.DestroyNodeInfo(nodeInfo);
+					} catch (UriFormatException) {
+						// Ignore wrong uris like 0.v4p ////
+					}
+				}
 			}
 		}
 		
@@ -364,11 +312,18 @@ namespace VVVV.Hosting.Factories
 			if (!FFiles.Contains(filename))
 			{
 				FFiles.Add(filename);
-				foreach(var nodeInfo in ExtractNodeInfos(filename, null))
-					if (nodeInfo.Filename == filename)
-						OnNodeInfoAdded(nodeInfo);
-					else
-						throw new Exception(filename + " wants to add a nodeinfo with incorrect filename property: " + nodeInfo.Filename);
+				
+				var host = (HDEHost) FHDEHost;
+				if (host.HasCachedNodeInfos(filename))
+				{
+					var cachedNodeInfos = host.GetCachedNodeInfos(filename);
+					foreach (var nodeInfo in cachedNodeInfos)
+						nodeInfo.Factory = this;
+				}
+				else
+				{
+					ExtractNodeInfos(filename, null);
+				}
 			}
 		}
 		
@@ -405,15 +360,15 @@ namespace VVVV.Hosting.Factories
 						break;
 					}
 				}
-				
-				OnNodeInfoUpdated(newNodeInfo);
 			}
 			
 			//remove old nodeinfos that have no new compatible
 			foreach(var oldNodeInfo in oldInfos)
 			{
 				if (!nodeInfoUsedMap[oldNodeInfo])
-					OnNodeInfoRemoved(oldNodeInfo);
+				{
+					FNodeInfoFactory.DestroyNodeInfo(oldNodeInfo);
+				}
 			}
 		}
 		
@@ -428,13 +383,13 @@ namespace VVVV.Hosting.Factories
 		{
 			if (recursive)
 				foreach (string subDir in Directory.GetDirectories(dir))
-				{
-					try {
-						DeleteArtefacts(subDir, recursive);
-					} catch (Exception e) {
-						FLogger.Log(e);
-					}
+			{
+				try {
+					DeleteArtefacts(subDir, recursive);
+				} catch (Exception e) {
+					FLogger.Log(e);
 				}
+			}
 		}
 		
 		#endregion file handling

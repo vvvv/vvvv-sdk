@@ -38,6 +38,12 @@ namespace VVVV.PluginInterfaces.V2
 		INodeInfo CreateNodeInfo(string name, string category, string version, string filename);
 		
 		/// <summary>
+		/// Destroy given node info.
+		/// </summary>
+		/// <param name="nodeInfo">The node info to destroy.</param>
+		void DestroyNodeInfo(INodeInfo nodeInfo);
+		
+		/// <summary>
 		/// Array of all registered <see cref="INodeInfo">node infos</see>.
 		/// </summary>
 		INodeInfo[] NodeInfos

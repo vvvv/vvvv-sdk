@@ -246,8 +246,6 @@ namespace VVVV.Nodes.NodeBrowser
 						if (!string.IsNullOrEmpty(CurrentPath))
 							path = Path.GetDirectoryName(CurrentPath);
 						
-						// Property Factory might be null due to caching.
-//						((HDEHost) FHDEHost).
 						if (nodeInfo.Factory != null)
 							path = path.ConcatPath(nodeInfo.Factory.JobStdSubPath);
 						FClonePanel.Initialize(nodeInfo, path);
