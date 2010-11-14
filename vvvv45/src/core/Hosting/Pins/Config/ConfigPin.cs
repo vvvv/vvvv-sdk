@@ -36,6 +36,8 @@ namespace VVVV.Hosting.Pins.Config
 			}
 			set 
 			{
+				base.SliceCount = value;
+				
 				if (FAttribute.SliceMode != SliceMode.Single)
 					PluginConfig.SliceCount = value;
 			}
