@@ -492,6 +492,20 @@ namespace PinTests
 			spread.SliceCount = 0;
 			Assert.True(spread.SliceCount == 0);
 			
+			spread.AssignFrom(sampleData);
+			Assert.True(spread.SliceCount == sampleData.Length);
+			for (int i = 0; i < spread.SliceCount; i++)
+			{
+				Assert.True(spread[i].Equals(sampleData[i]));
+				Assert.True(spread[i].Equals(spread[spread.SliceCount + i]));
+			}
+			
+			var spreadAsList = spread.ToList();
+			for (int i = 0; i < sampleData.Length; i++)
+			{
+				Assert.True(sampleData[i].Equals(spreadAsList[i]));
+			}
+			
 			spread.SliceCount = sampleData.Length;
 			Assert.True(spread.SliceCount == sampleData.Length);
 			
