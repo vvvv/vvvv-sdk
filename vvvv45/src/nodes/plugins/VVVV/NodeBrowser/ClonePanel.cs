@@ -8,12 +8,10 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.NodeBrowser
 {
-    public delegate void ClonePanelEventHandler(INodeInfo nodeInfo, string Name, string Category, string Version);
+    public delegate void ClonePanelEventHandler(INodeInfo nodeInfo, string Name, string Category, string Version, string path);
     
     public partial class ClonePanel : UserControl
     {
-    	public event PanelChangeHandler OnPanelChange;
-    	
         Dictionary<string, INodeInfo> FSystemNameDict = new Dictionary<string, INodeInfo>();
         
         public event ClonePanelEventHandler Closed;
@@ -66,12 +64,13 @@ namespace VVVV.Nodes.NodeBrowser
             FSystemNameDict.Remove(nodeInfo.Systemname);
 		}
         
-        public void Initialize(INodeInfo nodeInfo)
+        public void Initialize(INodeInfo nodeInfo, string path)
         {
             FCloneInfo = nodeInfo;
             FNameTextBox.Text = FCloneInfo.Name;
             FCategoryTextBox.Text = FCloneInfo.Category;
             FVersionTextBox.Text = FCloneInfo.Version;
+            FPathTextBox.Text = path;
             
             if (nodeInfo.Type == NodeType.Effect)
             {
@@ -106,29 +105,39 @@ namespace VVVV.Nodes.NodeBrowser
         
         void FCloneButtonClick(object sender, EventArgs e)
         {
-            Closed(FCloneInfo, FNameTextBox.Text.Trim(), FCategoryTextBox.Text.Trim(), FVersionTextBox.Text.Trim());
+        	Closed(FCloneInfo, FNameTextBox.Text.Trim(), FCategoryTextBox.Text.Trim(), FVersionTextBox.Text.Trim(), FPathTextBox.Text.Trim());
         }
         
         void FCancelButtonClick(object sender, EventArgs e)
         {
-        	Closed(null, "", "", "");
+        	Closed(null, string.Empty, string.Empty, string.Empty, string.Empty);
         }
         
         void FCancelButtonKeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char) Keys.Enter)
-                Closed(null, "", "", "");
+                Closed(null, string.Empty, string.Empty, string.Empty, string.Empty);
         }
         
         void FCloneButtonKeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char) Keys.Enter)
-        	    Closed(FCloneInfo, FNameTextBox.Text.Trim(), FCategoryTextBox.Text.Trim(), FVersionTextBox.Text.Trim());
+        	    Closed(FCloneInfo, FNameTextBox.Text.Trim(), FCategoryTextBox.Text.Trim(), FVersionTextBox.Text.Trim(), FPathTextBox.Text.Trim());
         }
         
         void ClonePanelVisibleChanged(object sender, EventArgs e)
         {
             FNameTextBox.Focus();
+        }
+        
+        void FPathButtonClick(object sender, EventArgs e)
+        {
+        	FFolderBrowserDialog.SelectedPath = FPathTextBox.Text;
+        	var result = FFolderBrowserDialog.ShowDialog();
+        	if (result == DialogResult.OK)
+        	{
+        		FPathTextBox.Text = FFolderBrowserDialog.SelectedPath;
+        	}
         }
     }
 }

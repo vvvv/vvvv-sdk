@@ -103,7 +103,11 @@ namespace VVVV.Hosting.Factories
 			// Regardless of the arguments, we need to load the node infos first.
 			// Do we have the required node infos cached?
 			if (((HDEHost)FHDEHost).HasCachedNodeInfos(filename))
+			{
 				nodeInfos = ((HDEHost)FHDEHost).GetCachedNodeInfos(filename);
+				foreach (var nodeInfo in nodeInfos)
+					nodeInfo.Factory = this;
+			}
 			else
 			{
 				nodeInfos = LoadNodeInfos(filename);

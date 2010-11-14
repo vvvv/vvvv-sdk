@@ -194,7 +194,10 @@ namespace VVVV.Hosting.Factories
 			finally
 			{
 				foreach (var nodeInfo in nodeInfos)
+				{
+					nodeInfo.Factory = this;
 					nodeInfo.CommitUpdate();
+				}
 			}
 		}
 		

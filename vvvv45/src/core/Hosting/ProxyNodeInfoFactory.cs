@@ -70,6 +70,7 @@ namespace VVVV.Hosting
 				Tags = FNodeInfo.Tags;
 				Type = FNodeInfo.Type;
 				UserData = FNodeInfo.UserData;
+				Factory = FNodeInfo.Factory;
 				Username = FNodeInfo.Username;
 				Version = FNodeInfo.Version;
 				Warnings = FNodeInfo.Warnings;
@@ -160,6 +161,20 @@ namespace VVVV.Hosting
 				
 				if (!FInUpdate)
 					FNodeInfo.UserData = UserData;
+			}
+		}
+		
+		[NonSerialized]
+		private IAddonFactory FFactory;
+		public IAddonFactory Factory {
+			get {
+				return FFactory;
+			}
+			set {
+				FFactory = value;
+				
+				if (!FInUpdate)
+					FNodeInfo.Factory = Factory;
 			}
 		}
 		

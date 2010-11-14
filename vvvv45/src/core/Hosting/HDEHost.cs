@@ -40,7 +40,6 @@ namespace VVVV.Hosting
 		
 		private IVVVVHost FVVVVHost;
 		private Dictionary<INodeInfo, List<IAddonHost>> FRunningPluginHostsMap;
-		private Dictionary<INodeInfo, IAddonFactory> FNodeInfoFactoryMap;
 		private IPluginBase FNodeBrowser, FWindowSwitcher, FKommunikator;
 		protected Dictionary<string, Dictionary<string, ProxyNodeInfo>> FNodeInfoCache;
 		protected Dictionary<string, Dictionary<string, ProxyNodeInfo>> FDeserializedNodeInfoCache;
@@ -101,7 +100,6 @@ namespace VVVV.Hosting
 				SynchronizationContext.SetSynchronizationContext(new WindowsFormsSynchronizationContext());
 			
 			FRunningPluginHostsMap = new Dictionary<INodeInfo, List<IAddonHost>>();
-			FNodeInfoFactoryMap = new Dictionary<INodeInfo, IAddonFactory>();
 			
 			// Register at least one ICommandHistory for top level element ISolution
 			var mappingRegistry = new MappingRegistry();
@@ -213,7 +211,6 @@ namespace VVVV.Hosting
 		{
 			var nodeInfos = new Dictionary<string, ProxyNodeInfo>();
 			
-			//check dictionary
 			if(HasCachedNodeInfos(filename))
 			{
 				result = GetCachedNodeInfos(filename).ToArray();
@@ -244,37 +241,20 @@ namespace VVVV.Hosting
 		
 		public bool CreateNode(IAddonHost host, INodeInfo nodeInfo)
 		{
-			bool result = false;
-			
 			if (!(nodeInfo is ProxyNodeInfo))
 				nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
 			
 			try
 			{
-				if (!FNodeInfoFactoryMap.ContainsKey(nodeInfo))
-				{
-					foreach (var factory in AddonFactories)
-					{
-						if (factory.Create(nodeInfo, host))
-						{
-							FNodeInfoFactoryMap[nodeInfo] = factory;
-							result = true;
-							break;
-						}
-					}
-				}
-				else
-				{
-					var factory = FNodeInfoFactoryMap[nodeInfo];
-					result = factory.Create(nodeInfo, host);
-				}
-				
-				if (result)
+				var factory = nodeInfo.Factory;
+				if (factory.Create(nodeInfo, host))
 				{
 					if (!FRunningPluginHostsMap.ContainsKey(nodeInfo))
 						FRunningPluginHostsMap[nodeInfo] = new List<IAddonHost>();
 
 					FRunningPluginHostsMap[nodeInfo].Add(host);
+					
+					return true;
 				}
 			}
 			catch (Exception e)
@@ -283,42 +263,25 @@ namespace VVVV.Hosting
 				throw e;
 			}
 			
-			return result;
+			return false;
 		}
 		
 		public bool DestroyNode(IAddonHost host, INodeInfo nodeInfo)
 		{
-			bool result = false;
-			
 			if (!(nodeInfo is ProxyNodeInfo))
 				nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
 			
 			try
 			{
-				if (!FNodeInfoFactoryMap.ContainsKey(nodeInfo))
-				{
-					foreach (var factory in AddonFactories)
-					{
-						if (factory.Delete(nodeInfo, host))
-						{
-							FNodeInfoFactoryMap[nodeInfo] = factory;
-							result = true;
-							break;
-						}
-					}
-				}
-				else
-				{
-					var factory = FNodeInfoFactoryMap[nodeInfo];
-					result = factory.Delete(nodeInfo, host);
-				}
-				
-				if (result)
+				var factory = nodeInfo.Factory;
+				if (factory.Delete(nodeInfo, host))
 				{
 					FRunningPluginHostsMap[nodeInfo].Remove(host);
 					
 					if (FRunningPluginHostsMap[nodeInfo].Count == 0)
 						FRunningPluginHostsMap.Remove(nodeInfo);
+					
+					return true;
 				}
 			}
 			catch (Exception e)
@@ -327,7 +290,7 @@ namespace VVVV.Hosting
 				throw e;
 			}
 			
-			return result;
+			return false;
 		}
 		
 		public INodeInfo Clone(INodeInfo nodeInfo, string path, string name, string category, string version)
@@ -436,8 +399,8 @@ namespace VVVV.Hosting
 		
 		public void SetComponentMode(INode node, ComponentMode componentMode)
 		{
-		    FVVVVHost.SetComponentMode(node, componentMode);
-		}	
+			FVVVVHost.SetComponentMode(node, componentMode);
+		}
 		
 		public string ExePath
 		{
@@ -502,8 +465,6 @@ namespace VVVV.Hosting
 			else if (info.Systemname == NODE_BROWSER)
 				FNodeBrowserNodeInfo = info;
 			
-			FNodeInfoFactoryMap[info] = factory;
-			
 			// do not cache node of type text.
 			if (info.Type == NodeType.Text) return;
 			
@@ -530,8 +491,6 @@ namespace VVVV.Hosting
 		{
 			var factory = sender as IAddonFactory;
 			
-			FNodeInfoFactoryMap.Remove(info);
-			
 			//remove from cache
 			var filename = info.Filename;
 			if (FNodeInfoCache.ContainsKey(filename))
@@ -541,7 +500,7 @@ namespace VVVV.Hosting
 					FNodeInfoCache[filename].Remove(info.Systemname);
 
 				//also remove list if empty now
-				if(FNodeInfoCache[filename].Count == 0) 
+				if(FNodeInfoCache[filename].Count == 0)
 					FNodeInfoCache.Remove(filename);
 			}
 			
@@ -633,15 +592,19 @@ namespace VVVV.Hosting
 			if(!FNodeInfoCache.ContainsKey(filename))
 			{
 				FNodeInfoCache[filename] = new Dictionary<string, ProxyNodeInfo>();
-				foreach (var key in FDeserializedNodeInfoCache[filename].Keys)
+				
+				if (FDeserializedNodeInfoCache.ContainsKey(filename))
 				{
-					var cachedInfo = FDeserializedNodeInfoCache[filename][key];
-					var newInfo = NodeInfoFactory.CreateNodeInfo(cachedInfo.Name, cachedInfo.Category, cachedInfo.Version, filename);
-					newInfo.BeginUpdate();
-					newInfo.UpdateFromNodeInfo(cachedInfo);
-					newInfo.CommitUpdate();
-					
-					FNodeInfoCache[filename].Add(key, (ProxyNodeInfo)newInfo);
+					foreach (var key in FDeserializedNodeInfoCache[filename].Keys)
+					{
+						var cachedInfo = FDeserializedNodeInfoCache[filename][key];
+						var newInfo = NodeInfoFactory.CreateNodeInfo(cachedInfo.Name, cachedInfo.Category, cachedInfo.Version, filename);
+						newInfo.BeginUpdate();
+						newInfo.UpdateFromNodeInfo(cachedInfo);
+						newInfo.CommitUpdate();
+						
+						FNodeInfoCache[filename].Add(key, (ProxyNodeInfo)newInfo);
+					}
 				}
 			}
 			
@@ -663,6 +626,8 @@ namespace VVVV.Hosting
 			
 			if (FDeserializedNodeInfoCache.ContainsKey(filename))
 				FDeserializedNodeInfoCache.Remove(filename);
+			
+			Logger.Log(LogType.Debug, "Invalidated cache for {0}.", filename);
 		}
 		
 		//path to cache file
@@ -713,7 +678,7 @@ namespace VVVV.Hosting
 				}
 				
 				Logger.Log(LogType.Debug, "Node infos serialized");
-			} 
+			}
 			catch (Exception e)
 			{
 				Logger.Log(LogType.Error, "Serialization of node infos failed:");

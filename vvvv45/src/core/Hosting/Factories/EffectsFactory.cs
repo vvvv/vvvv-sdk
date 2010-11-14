@@ -81,6 +81,7 @@ namespace VVVV.Hosting.Factories
 			
 			nodeInfo.BeginUpdate();
 			nodeInfo.Type = NodeType.Effect;
+			nodeInfo.Factory = this;
 			
 			try
 			{

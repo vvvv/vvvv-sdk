@@ -40,28 +40,46 @@ namespace VVVV.Nodes.NodeBrowser
 		public INodeBrowserHost NodeBrowserHost {get; set;}
 		
 		private INodeInfoFactory FNodeInfoFactory;
-        public INodeInfoFactory NodeInfoFactory
-        {
-            get { return FNodeInfoFactory; }
-            set
-            {
-                FNodeInfoFactory = value;
+		public INodeInfoFactory NodeInfoFactory
+		{
+			get { return FNodeInfoFactory; }
+			set
+			{
+				FNodeInfoFactory = value;
 
-                foreach (var nodeInfo in FNodeInfoFactory.NodeInfos)
-                    NodeInfoAddedCB(FNodeInfoFactory, nodeInfo);
+				foreach (var nodeInfo in FNodeInfoFactory.NodeInfos)
+					NodeInfoAddedCB(FNodeInfoFactory, nodeInfo);
 
-                FNodeInfoFactory.NodeInfoAdded += NodeInfoAddedCB;
-                FNodeInfoFactory.NodeInfoUpdated += NodeInfoUpdatedCB;
-                FNodeInfoFactory.NodeInfoRemoved += NodeInfoRemovedCB;
-            }
-        }
+				FNodeInfoFactory.NodeInfoAdded += NodeInfoAddedCB;
+				FNodeInfoFactory.NodeInfoUpdated += NodeInfoUpdatedCB;
+				FNodeInfoFactory.NodeInfoRemoved += NodeInfoRemovedCB;
+			}
+		}
+		
+		private INode FCurrentPatchNode;
 
 		// Track whether Dispose has been called.
 		private bool FDisposed = false;
 		
 		//further fields
 		private bool FNeedsRedraw = false;
-		private string FPath;
+		private string CurrentPath
+		{
+			get
+			{
+				if (FCurrentPatchNode != null)
+				{
+					var filename = FCurrentPatchNode.GetNodeInfo().Filename;
+					
+					if (Path.IsPathRooted(filename))
+						return filename;
+					else
+						return string.Empty;
+				}
+				else
+					return string.Empty;
+			}
+		}
 
 		#endregion field declaration
 		
@@ -81,7 +99,7 @@ namespace VVVV.Nodes.NodeBrowser
 			FHDEHost = host;
 			FHDEHost.AddListener(this);
 			
-            NodeInfoFactory = nodeInfoFactory;
+			NodeInfoFactory = nodeInfoFactory;
 			
 			//init category view
 			FCategoryPanel.Redraw();
@@ -137,7 +155,6 @@ namespace VVVV.Nodes.NodeBrowser
 			this.FClonePanel = new VVVV.Nodes.NodeBrowser.ClonePanel();
 			this.FTagPanel = new VVVV.Nodes.NodeBrowser.TagPanel();
 			this.FCategoryPanel = new VVVV.Nodes.NodeBrowser.CategoryPanel();
-			this.FFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.SuspendLayout();
 			// 
 			// FBackgroundWorker
@@ -149,10 +166,10 @@ namespace VVVV.Nodes.NodeBrowser
 			this.FClonePanel.BackColor = System.Drawing.Color.Silver;
 			this.FClonePanel.Location = new System.Drawing.Point(187, 148);
 			this.FClonePanel.Name = "FClonePanel";
-			this.FClonePanel.Size = new System.Drawing.Size(100, 108);
+			this.FClonePanel.Padding = new System.Windows.Forms.Padding(8);
+			this.FClonePanel.Size = new System.Drawing.Size(250, 300);
 			this.FClonePanel.TabIndex = 0;
 			this.FClonePanel.Visible = false;
-			this.FClonePanel.OnPanelChange += new VVVV.Nodes.NodeBrowser.PanelChangeHandler(this.FNodeBrowser_OnPanelChange);
 			// 
 			// FTagPanel
 			// 
@@ -181,10 +198,6 @@ namespace VVVV.Nodes.NodeBrowser
 			this.FCategoryPanel.OnShowHelpPatch += new VVVV.Nodes.NodeBrowser.CreateNodeHandler(this.FNodeBrowser_ShowHelpPatch);
 			this.FCategoryPanel.OnShowNodeReference += new VVVV.Nodes.NodeBrowser.CreateNodeHandler(this.FNodeBrowser_ShowNodeReference);
 			// 
-			// FFolderBrowserDialog
-			// 
-			this.FFolderBrowserDialog.Description = "Clone Effect To..";
-			// 
 			// NodeBrowserPluginNode
 			// 
 			this.BackColor = System.Drawing.Color.Silver;
@@ -193,10 +206,9 @@ namespace VVVV.Nodes.NodeBrowser
 			this.Controls.Add(this.FClonePanel);
 			this.DoubleBuffered = true;
 			this.Name = "NodeBrowserPluginNode";
-			this.Size = new System.Drawing.Size(373, 379);
+			this.Size = new System.Drawing.Size(599, 479);
 			this.ResumeLayout(false);
 		}
-		private System.Windows.Forms.FolderBrowserDialog FFolderBrowserDialog;
 		private VVVV.Nodes.NodeBrowser.CategoryPanel FCategoryPanel;
 		private VVVV.Nodes.NodeBrowser.TagPanel FTagPanel;
 		private VVVV.Nodes.NodeBrowser.ClonePanel FClonePanel;
@@ -229,7 +241,16 @@ namespace VVVV.Nodes.NodeBrowser
 						FCategoryPanel.Visible = false;
 						
 						FClonePanel.Visible = true;
-						FClonePanel.Initialize(nodeInfo);
+						
+						var path = FHDEHost.ExePath;
+						if (!string.IsNullOrEmpty(CurrentPath))
+							path = Path.GetDirectoryName(CurrentPath);
+						
+						// Property Factory might be null due to caching.
+//						((HDEHost) FHDEHost).
+						if (nodeInfo.Factory != null)
+							path = path.ConcatPath(nodeInfo.Factory.JobStdSubPath);
+						FClonePanel.Initialize(nodeInfo, path);
 						break;
 					}
 			}
@@ -244,7 +265,7 @@ namespace VVVV.Nodes.NodeBrowser
 		{
 			// TODO: Ask factories about file extensions.
 			if ((text.EndsWith(".v4p")) || (text.EndsWith(".fx")) || (text.EndsWith(".dll")))
-				NodeBrowserHost.CreateNodeFromFile(Path.Combine(Path.GetDirectoryName(FPath), text));
+				NodeBrowserHost.CreateNodeFromFile(Path.Combine(Path.GetDirectoryName(CurrentPath), text));
 			else
 				NodeBrowserHost.CreateComment(text);
 		}
@@ -259,20 +280,10 @@ namespace VVVV.Nodes.NodeBrowser
 			FHDEHost.ShowHelpPatch(nodeInfo);
 		}
 		
-		void FClonePanel_Closed(INodeInfo nodeInfo, string Name, string Category, string Version)
+		void FClonePanel_Closed(INodeInfo nodeInfo, string Name, string Category, string Version, string path)
 		{
 			if (nodeInfo != null)
-			{
-			    var path = Path.GetDirectoryName(FPath);
-			    if (nodeInfo.Type == NodeType.Effect && !Path.IsPathRooted(FPath))
-			        if (FFolderBrowserDialog.ShowDialog() == DialogResult.OK)
-			            path = FFolderBrowserDialog.SelectedPath;
-			        else
-			            path = "";
-			    
-			    if (path != "")
-			        NodeBrowserHost.CloneNode(nodeInfo, path, Name, Category, Version);
-			}
+				NodeBrowserHost.CloneNode(nodeInfo, path, Name, Category, Version);
 			
 			FNodeBrowser_OnPanelChange(NodeBrowserPage.ByTags, null);
 		}
@@ -320,10 +331,10 @@ namespace VVVV.Nodes.NodeBrowser
 		public void NodeInfoUpdatedCB(object sender, INodeInfo nodeInfo)
 		{
 			FTagPanel.Update(nodeInfo);
-        	FClonePanel.Update(nodeInfo);
-        	FCategoryPanel.Update(nodeInfo);
+			FClonePanel.Update(nodeInfo);
+			FCategoryPanel.Update(nodeInfo);
 
-        	FNeedsRedraw = true;
+			FNeedsRedraw = true;
 		}
 		
 		public void NodeInfoRemovedCB(object sender, INodeInfo nodeInfo)
@@ -343,13 +354,12 @@ namespace VVVV.Nodes.NodeBrowser
 			
 			if ((windowtype == WindowType.Patch) || (windowtype == WindowType.Module))
 			{
-				FPath = window.GetNode().GetNodeInfo().Filename;
-				if (Path.IsPathRooted(FPath))
-					FTagPanel.Path = FPath;
-				else //seems to be on an unsaved patch
-					FTagPanel.Path = "";
+				var oldPath = CurrentPath;
 				
-				if ((FTagPanel.Path != FPath) || (FNeedsRedraw))
+				FCurrentPatchNode = window.GetNode();
+				FTagPanel.Path = CurrentPath;
+				
+				if ((oldPath != CurrentPath) || (FNeedsRedraw))
 				{
 					//init view
 					FBackgroundWorker.RunWorkerAsync();
@@ -372,7 +382,7 @@ namespace VVVV.Nodes.NodeBrowser
 					FClonePanel.SelectNextControl(FClonePanel.ActiveControl, true, true, false, true);
 				else
 				{
-					FTagPanel.AndTags = !FTagPanel.AndTags; 
+					FTagPanel.AndTags = !FTagPanel.AndTags;
 					FTagPanel.Redraw();
 				}
 				return true;
@@ -382,14 +392,19 @@ namespace VVVV.Nodes.NodeBrowser
 				FClonePanel.SelectNextControl(FClonePanel.ActiveControl, false, true, false, true);
 				return true;
 			}
+			else if (keyData == Keys.Escape && FClonePanel.Visible)
+			{
+				FNodeBrowser_OnPanelChange(NodeBrowserPage.ByTags, null);
+				return true;
+			}
 			else
 				return base.ProcessDialogKey(keyData);
 		}
 		
 		void FBackgroundWorkerDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
 		{
-		    //TODO: fix background drawing at all
-		    //would crash in a nodebrowser created standalone
+			//TODO: fix background drawing at all
+			//would crash in a nodebrowser created standalone
 			//FTagPanel.Redraw();
 			//cant do in thread. would not update outside IDE
 //			FCategoryPanel.Redraw();

@@ -102,6 +102,7 @@ namespace VVVV.Hosting.Factories
 					
 					nodeInfo.BeginUpdate();
 					nodeInfo.Type = NodeType.Text;
+					nodeInfo.Factory = this;
 					nodeInfo.Ignore = true;
 					nodeInfo.AutoEvaluate = true;
 					nodeInfo.InitialBoxSize = new System.Drawing.Size(400, 300);

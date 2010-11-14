@@ -93,6 +93,10 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		object UserData { get; set; }
 		/// <summary>
+		/// The factory which created this node info.
+		/// </summary>
+		IAddonFactory Factory { get; set; }
+		/// <summary>
 		/// Define if this node should be evaluated every frame, even if no outpur is read.
 		/// </summary>
 		bool AutoEvaluate {get; set;}
@@ -129,6 +133,7 @@ namespace VVVV.PluginInterfaces.V2
 			nodeInfo.Arguments = otherNodeInfo.Arguments;
 			nodeInfo.Type = otherNodeInfo.Type;
 			nodeInfo.UserData = otherNodeInfo.UserData;
+			nodeInfo.Factory = otherNodeInfo.Factory;
 			nodeInfo.AutoEvaluate = otherNodeInfo.AutoEvaluate;
 			nodeInfo.Ignore = otherNodeInfo.Ignore;
 		}
