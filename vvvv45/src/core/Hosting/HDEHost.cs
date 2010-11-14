@@ -216,7 +216,8 @@ namespace VVVV.Hosting
 			//check dictionary
 			if(HasCachedNodeInfos(filename))
 			{
-				nodeInfos = FNodeInfoCache[filename];
+				result = GetCachedNodeInfos(filename).ToArray();
+				return;
 			}
 			else
 			{
