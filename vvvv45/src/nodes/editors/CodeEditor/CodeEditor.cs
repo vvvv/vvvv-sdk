@@ -567,6 +567,27 @@ namespace VVVV.HDE.CodeEditor
 				FSearchBar.ShowSearchBar();
 				return true;
 			}
+			else if (ke.Control && (ke.KeyCode == Keys.Add || ke.KeyCode == Keys.Oemplus))
+			{
+			    var f = this.Font; 
+			    var newf = new Font(f.FontFamily, f.Size+1);
+			    this.Font = newf;
+			    return true;
+			}
+			else if (ke.Control && (ke.KeyCode == Keys.Subtract || ke.KeyCode == Keys.OemMinus))
+			{
+			    var f = this.Font; 
+			    var newf = new Font(f.FontFamily, f.Size-1);
+			    this.Font = newf;
+			    return true;
+			}
+			else if (ke.Control && (ke.KeyCode == Keys.NumPad0 || ke.KeyCode == Keys.D0))
+			{
+			    var f = this.Font; 
+			    var newf = new Font(f.FontFamily, 10);
+			    this.Font = newf;
+			    return true;
+			}
 			else
 				return base.ProcessKeyPreview(ref m);
 		}
