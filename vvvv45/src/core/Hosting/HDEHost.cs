@@ -167,7 +167,7 @@ namespace VVVV.Hosting
 			// Route log messages to vvvv
 			Logger.AddLogger(new VVVVLogger(FVVVVHost));
 			
-			NodeBrowserHost = nodeBrowserHost;
+			NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
 			WindowSwitcherHost = windowSwitcherHost;
 			KommunikatorHost = kommunikatorHost;
 			

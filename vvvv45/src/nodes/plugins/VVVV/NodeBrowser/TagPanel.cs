@@ -36,6 +36,7 @@ namespace VVVV.Nodes.NodeBrowser
 //		List<string> FNodeList = new List<string>();
 		Dictionary<INodeInfo, string> FNodeDict = new Dictionary<INodeInfo, string>();
 		Dictionary<string, INodeInfo> FSystemNameToNodeDict = new Dictionary<string, INodeInfo>();
+		NodeBrowserPluginNode FNodeBrowserNode;
 		
 		public bool AndTags {get; set;}
 		public bool AllowDragDrop {get; set;}
@@ -173,8 +174,10 @@ namespace VVVV.Nodes.NodeBrowser
 			FNodeDict.Remove(nodeInfo);
 		}
 		
-		public void Initialize(string text)
+		public void Initialize(NodeBrowserPluginNode nodeBrowserNode, string text)
 		{
+			FNodeBrowserNode = nodeBrowserNode;
+			
 			if (string.IsNullOrEmpty(text))
 				FTagsTextBox.Text = "";
 			else
@@ -580,8 +583,9 @@ namespace VVVV.Nodes.NodeBrowser
 			//show patches only
 			else if (FNodeFilter == (int) NodeType.Patch)
 			{
-				Debug.WriteLine(FPathDir);
 				bool isPathRooted = System.IO.Path.IsPathRooted(FPathDir);
+				var currentNodeInfo = FNodeBrowserNode.CurrentPatchNode.GetNodeInfo();
+				
 				FSelectionList = FSelectionList.FindAll(
 					delegate(INodeInfo nodeInfo)
 					{
@@ -589,6 +593,9 @@ namespace VVVV.Nodes.NodeBrowser
 						{
 							if (!string.IsNullOrEmpty(nodeInfo.Filename))
 							{
+								if (currentNodeInfo.Filename == nodeInfo.Filename)
+									return false;
+								
 								var directory = System.IO.Path.GetDirectoryName(nodeInfo.Filename);
 								return directory == FPathDir;
 							}

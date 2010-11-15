@@ -35,7 +35,12 @@ namespace VVVV.Nodes.NodeBrowser
 		#region field declaration
 		
 		//the hosts
-		private IHDEHost FHDEHost;
+		public IHDEHost HDEHost
+		{
+			get;
+			private set;
+		}
+		
 		[Import]
 		public INodeBrowserHost NodeBrowserHost {get; set;}
 		
@@ -56,7 +61,11 @@ namespace VVVV.Nodes.NodeBrowser
 			}
 		}
 		
-		private INode FCurrentPatchNode;
+		public INode CurrentPatchNode
+		{
+			get;
+			private set;
+		}
 
 		// Track whether Dispose has been called.
 		private bool FDisposed = false;
@@ -67,9 +76,9 @@ namespace VVVV.Nodes.NodeBrowser
 		{
 			get
 			{
-				if (FCurrentPatchNode != null)
+				if (CurrentPatchNode != null)
 				{
-					var filename = FCurrentPatchNode.GetNodeInfo().Filename;
+					var filename = CurrentPatchNode.GetNodeInfo().Filename;
 					
 					if (Path.IsPathRooted(filename))
 						return filename;
@@ -96,8 +105,8 @@ namespace VVVV.Nodes.NodeBrowser
 			DefaultConstructor();
 			
 			//register as IWindowSelectionListener at hdehost
-			FHDEHost = host;
-			FHDEHost.AddListener(this);
+			HDEHost = host;
+			HDEHost.AddListener(this);
 			
 			NodeInfoFactory = nodeInfoFactory;
 			
@@ -132,7 +141,7 @@ namespace VVVV.Nodes.NodeBrowser
 				if(disposing)
 				{
 					// Dispose managed resources.
-					FHDEHost.RemoveListener(this);
+					HDEHost.RemoveListener(this);
 				}
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.
@@ -151,15 +160,10 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		private void InitializeComponent()
 		{
-			this.FBackgroundWorker = new System.ComponentModel.BackgroundWorker();
 			this.FClonePanel = new VVVV.Nodes.NodeBrowser.ClonePanel();
 			this.FTagPanel = new VVVV.Nodes.NodeBrowser.TagPanel();
 			this.FCategoryPanel = new VVVV.Nodes.NodeBrowser.CategoryPanel();
 			this.SuspendLayout();
-			// 
-			// FBackgroundWorker
-			// 
-			this.FBackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.FBackgroundWorkerDoWork);
 			// 
 			// FClonePanel
 			// 
@@ -212,7 +216,6 @@ namespace VVVV.Nodes.NodeBrowser
 		private VVVV.Nodes.NodeBrowser.CategoryPanel FCategoryPanel;
 		private VVVV.Nodes.NodeBrowser.TagPanel FTagPanel;
 		private VVVV.Nodes.NodeBrowser.ClonePanel FClonePanel;
-		private System.ComponentModel.BackgroundWorker FBackgroundWorker;
 		#endregion constructor/destructor
 		
 		void FNodeBrowser_OnPanelChange(NodeBrowserPage page, INodeInfo nodeInfo)
@@ -242,7 +245,7 @@ namespace VVVV.Nodes.NodeBrowser
 						
 						FClonePanel.Visible = true;
 						
-						var path = FHDEHost.ExePath;
+						var path = HDEHost.ExePath;
 						if (!string.IsNullOrEmpty(CurrentPath))
 							path = Path.GetDirectoryName(CurrentPath);
 						
@@ -270,12 +273,12 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		void FNodeBrowser_ShowNodeReference(INodeInfo nodeInfo)
 		{
-			FHDEHost.ShowNodeReference(nodeInfo);
+			HDEHost.ShowNodeReference(nodeInfo);
 		}
 		
 		void FNodeBrowser_ShowHelpPatch(INodeInfo nodeInfo)
 		{
-			FHDEHost.ShowHelpPatch(nodeInfo);
+			HDEHost.ShowHelpPatch(nodeInfo);
 		}
 		
 		void FClonePanel_Closed(INodeInfo nodeInfo, string Name, string Category, string Version, string path)
@@ -289,7 +292,7 @@ namespace VVVV.Nodes.NodeBrowser
 		#region INodeBrowser
 		public void Initialize(string text)
 		{
-			FTagPanel.Initialize(text);
+			FTagPanel.Initialize(this, text);
 			FNodeBrowser_OnPanelChange(NodeBrowserPage.ByTags, null);
 		}
 		
@@ -352,22 +355,14 @@ namespace VVVV.Nodes.NodeBrowser
 			
 			if ((windowtype == WindowType.Patch) || (windowtype == WindowType.Module))
 			{
-				var oldPath = CurrentPath;
-				
-				FCurrentPatchNode = window.GetNode();
+				CurrentPatchNode = window.GetNode();
 				FTagPanel.Path = CurrentPath;
 				
-				if ((oldPath != CurrentPath) || (FNeedsRedraw))
-				{
-					//init view
-					FBackgroundWorker.RunWorkerAsync();
-					
-					//cant do in thread. would not update outside IDE
-					if (FNeedsRedraw) //as doesn't show localfiles needs no redraw on pathchange
-						FCategoryPanel.Redraw();
-					
-					FNeedsRedraw = false;
-				}
+				//cant do in thread. would not update outside IDE
+				if (FNeedsRedraw) //as doesn't show localfiles needs no redraw on pathchange
+					FCategoryPanel.Redraw();
+				
+				FNeedsRedraw = false;
 			}
 		}
 		#endregion IWindowSelectionListener
@@ -397,15 +392,6 @@ namespace VVVV.Nodes.NodeBrowser
 			}
 			else
 				return base.ProcessDialogKey(keyData);
-		}
-		
-		void FBackgroundWorkerDoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-		{
-			//TODO: fix background drawing at all
-			//would crash in a nodebrowser created standalone
-			//FTagPanel.Redraw();
-			//cant do in thread. would not update outside IDE
-//			FCategoryPanel.Redraw();
 		}
 	}
 
