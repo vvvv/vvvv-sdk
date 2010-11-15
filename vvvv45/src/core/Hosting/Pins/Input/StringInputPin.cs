@@ -19,6 +19,8 @@ namespace VVVV.Hosting.Pins.Input
 			
 			FIsPath = (attribute.StringType == StringType.Directory) || (attribute.StringType == StringType.Filename);
 			
+			FData = new string[1];
+			
 			base.Initialize(FStringIn);
 		}
 		
@@ -32,6 +34,8 @@ namespace VVVV.Hosting.Pins.Input
 		
 		protected string GetFullPath(string path)
 		{
+			if(Path.IsPathRooted(path)) return path;
+			
 			string patchPath;
 			FHost.GetHostPath(out patchPath);
 		

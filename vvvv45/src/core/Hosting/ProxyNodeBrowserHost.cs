@@ -19,7 +19,10 @@ namespace VVVV.Hosting
 		
 		public void CreateNode(INodeInfo nodeInfo)
 		{
-			nodeInfo = FNodeInfoFactory.ToInternal(nodeInfo);
+			if (nodeInfo != null)
+			{
+				nodeInfo = FNodeInfoFactory.ToInternal(nodeInfo);
+			}
 			FNodeBrowserHost.CreateNode(nodeInfo);
 		}
 		
