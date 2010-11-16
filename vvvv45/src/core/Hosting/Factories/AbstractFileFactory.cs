@@ -96,9 +96,7 @@ namespace VVVV.Hosting.Factories
 		public bool Create(INodeInfo nodeInfo, IAddonHost host)
 		{
 			if (host is TNodeHost && Path.GetExtension(nodeInfo.Filename) == FileExtension)
-			{
 				return CreateNode(nodeInfo, (TNodeHost) host);
-			}
 			
 			return false;
 		}
@@ -289,18 +287,20 @@ namespace VVVV.Hosting.Factories
 		//remove all addons included with this filename
 		protected void RemoveFile(string filename)
 		{
-			if(FFiles.Contains(filename))
-				FFiles.Remove(filename);
-			
-			foreach (var nodeInfo in FNodeInfoFactory.NodeInfos)
+			if (FFiles.Contains(filename))
 			{
-				if (!string.IsNullOrEmpty(nodeInfo.Filename))
+				FFiles.Remove(filename);
+				
+				foreach (var nodeInfo in FNodeInfoFactory.NodeInfos)
 				{
-					try {
-						if (new Uri(nodeInfo.Filename) == new Uri(filename))
-							FNodeInfoFactory.DestroyNodeInfo(nodeInfo);
-					} catch (UriFormatException) {
-						// Ignore wrong uris like 0.v4p ////
+					if (!string.IsNullOrEmpty(nodeInfo.Filename))
+					{
+						try {
+							if (new Uri(nodeInfo.Filename) == new Uri(filename))
+								FNodeInfoFactory.DestroyNodeInfo(nodeInfo);
+						} catch (UriFormatException) {
+							// Ignore wrong uris like 0.v4p ////
+						}
 					}
 				}
 			}
@@ -342,7 +342,7 @@ namespace VVVV.Hosting.Factories
 			//remove nodeinfos that are no longer with this filename
 			
 			//get all old nodeinfos associated with this filename
-			var oldInfos = ((HDEHost) FHDEHost).GetCachedNodeInfos(filename);
+			var oldInfos = ((HDEHost) FHDEHost).GetCachedNodeInfos(filename).ToList();
 			var nodeInfoUsedMap = new Dictionary<INodeInfo, bool>();
 			
 			
@@ -365,7 +365,7 @@ namespace VVVV.Hosting.Factories
 			//remove old nodeinfos that have no new compatible
 			foreach(var oldNodeInfo in oldInfos)
 			{
-				if (!nodeInfoUsedMap[oldNodeInfo])
+				if (!(nodeInfoUsedMap.ContainsKey(oldNodeInfo) && nodeInfoUsedMap[oldNodeInfo]))
 				{
 					FNodeInfoFactory.DestroyNodeInfo(oldNodeInfo);
 				}

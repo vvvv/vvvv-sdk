@@ -249,6 +249,24 @@ namespace VVVV.Hosting
 			}
 		}
 		
+		public event NodeEventHandler NodeAdded;
+		
+		protected virtual void OnNodeAdded(NodeEventArgs args)
+		{
+			if (NodeAdded != null) {
+				NodeAdded(this, args);
+			}
+		}
+		
+		public event NodeEventHandler NodeRemoved;
+		
+		protected virtual void OnNodeRemoved(NodeEventArgs args)
+		{
+			if (NodeRemoved != null) {
+				NodeRemoved(this, args);
+			}
+		}
+		
 		public bool CreateNode(IAddonHost host, INodeInfo nodeInfo)
 		{
 			if (!(nodeInfo is ProxyNodeInfo))
@@ -267,6 +285,8 @@ namespace VVVV.Hosting
 						FRunningPluginHostsMap[nodeInfo] = new List<IAddonHost>();
 
 					FRunningPluginHostsMap[nodeInfo].Add(host);
+					
+					OnNodeAdded(new NodeEventArgs(host as INode));
 					
 					return true;
 				}
@@ -294,6 +314,8 @@ namespace VVVV.Hosting
 					
 					if (FRunningPluginHostsMap[nodeInfo].Count == 0)
 						FRunningPluginHostsMap.Remove(nodeInfo);
+					
+					OnNodeRemoved(new NodeEventArgs(host as INode));
 					
 					return true;
 				}
@@ -521,6 +543,10 @@ namespace VVVV.Hosting
 		public void factory_NodeInfoUpdated(object sender, INodeInfo info)
 		{
 			var factory = info.Factory;
+
+			// More of a hack. Find cleaner solution: EditorFactory shouldn't update node infos
+			// every time.
+			if (factory is EditorFactory) return;
 			
 			// Go through all the running hosts using this changed node info
 			// and create a new plugin for them.

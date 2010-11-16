@@ -51,13 +51,15 @@ namespace VVVV.Hosting.Factories
 				if (FSolution.Projects.CanAdd(project))
 				{
 					FSolution.Projects.Add(project);
-					FProjects[filename] = project;
 					project.ProjectCompiledSuccessfully += project_ProjectCompiledSuccessfully;
 				}
 				else
 				{
-					project.Dispose();
+					// Project was renamed
+					project = FSolution.Projects[project.Name] as FXProject;
 				}
+				
+				FProjects[filename] = project;
 			}
 			
 			yield return LoadNodeInfoFromEffect(filename);

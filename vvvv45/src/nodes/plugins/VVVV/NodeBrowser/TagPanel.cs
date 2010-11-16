@@ -41,25 +41,6 @@ namespace VVVV.Nodes.NodeBrowser
 		public bool AndTags {get; set;}
 		public bool AllowDragDrop {get; set;}
 		
-		private string FPathDir;
-		private string FPath;
-		public string Path
-		{
-			get
-			{
-				return FPath;
-			}
-			
-			set
-			{
-				FPath = value;
-				if (string.IsNullOrEmpty(FPath))
-					FPathDir = "";
-				else
-					FPathDir = System.IO.Path.GetDirectoryName(FPath);
-			}
-		}
-		
 		private int FScrolledLine;
 		private int ScrolledLine
 		{
@@ -516,24 +497,24 @@ namespace VVVV.Nodes.NodeBrowser
 			                         });
 		}
 		
-		private List<string> GetLocalNodes()
-		{
-			var files = new List<string>();
-			if (System.IO.Path.IsPathRooted(FPathDir))
-			{
-				foreach (string p in System.IO.Directory.GetFiles(FPathDir, "*.v4p", SearchOption.TopDirectoryOnly))
-				{
-					//prevent patches from being created recursively
-					if (p != FPath)
-						files.Add(System.IO.Path.GetFileName(p));
-				}
-				foreach (string p in System.IO.Directory.GetFiles(FPathDir, "*.dll"))
-					files.Add(System.IO.Path.GetFileName(p));
-				foreach (string p in System.IO.Directory.GetFiles(FPathDir, "*.fx"))
-					files.Add(System.IO.Path.GetFileName(p));
-			}
-			return files;
-		}
+//		private List<string> GetLocalNodes()
+//		{
+//			var files = new List<string>();
+//			if (System.IO.Path.IsPathRooted(FPathDir))
+//			{
+//				foreach (string p in System.IO.Directory.GetFiles(FPathDir, "*.v4p", SearchOption.TopDirectoryOnly))
+//				{
+//					//prevent patches from being created recursively
+//					if (p != FPath)
+//						files.Add(System.IO.Path.GetFileName(p));
+//				}
+//				foreach (string p in System.IO.Directory.GetFiles(FPathDir, "*.dll"))
+//					files.Add(System.IO.Path.GetFileName(p));
+//				foreach (string p in System.IO.Directory.GetFiles(FPathDir, "*.fx"))
+//					files.Add(System.IO.Path.GetFileName(p));
+//			}
+//			return files;
+//		}
 		
 		private void FilterNodesByTags()
 		{
@@ -583,13 +564,14 @@ namespace VVVV.Nodes.NodeBrowser
 			//show patches only
 			else if (FNodeFilter == (int) NodeType.Patch)
 			{
-				bool isPathRooted = System.IO.Path.IsPathRooted(FPathDir);
-				var currentNodeInfo = FNodeBrowserNode.CurrentPatchNode.GetNodeInfo();
+				var currentDir = FNodeBrowserNode.CurrentDir;
+				var currentNode = FNodeBrowserNode.CurrentPatchWindow.GetNode();
+				var currentNodeInfo = currentNode.GetNodeInfo();
 				
 				FSelectionList = FSelectionList.FindAll(
 					delegate(INodeInfo nodeInfo)
 					{
-						if (isPathRooted)
+						if (!string.IsNullOrEmpty(currentDir))
 						{
 							if (!string.IsNullOrEmpty(nodeInfo.Filename))
 							{
@@ -597,7 +579,7 @@ namespace VVVV.Nodes.NodeBrowser
 									return false;
 								
 								var directory = System.IO.Path.GetDirectoryName(nodeInfo.Filename);
-								return directory == FPathDir;
+								return directory == currentDir;
 							}
 						}
 						

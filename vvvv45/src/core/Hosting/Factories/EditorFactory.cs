@@ -52,6 +52,23 @@ namespace VVVV.Hosting.Factories
 			FMoveToLine = -1;
 			
 			FHDEHost.AddListener(this);
+			FHDEHost.NodeRemoved += FPluginFactory_NodeRemoved;
+		}
+
+		void FPluginFactory_NodeRemoved(object sender, NodeEventArgs args)
+		{
+			var node = args.Node;
+			
+			var attachedEditors =
+				from entry in FExportLifetimeContexts
+				let editor = entry.Value.Value
+				where editor.AttachedNode == node
+				select editor;
+			
+			foreach (var editor in attachedEditors)
+			{
+				editor.AttachedNode = null;
+			}
 		}
 		
 		public IEnumerable<INodeInfo> ExtractNodeInfos(string filename, string arguments)

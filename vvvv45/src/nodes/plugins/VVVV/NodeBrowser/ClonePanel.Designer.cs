@@ -216,7 +216,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FPathTextBox.Location = new System.Drawing.Point(58, 81);
         	this.FPathTextBox.Name = "FPathTextBox";
         	this.FPathTextBox.Size = new System.Drawing.Size(240, 20);
-        	this.FPathTextBox.TabIndex = 9;
+        	this.FPathTextBox.TabIndex = 3;
         	// 
         	// FPathButton
         	// 

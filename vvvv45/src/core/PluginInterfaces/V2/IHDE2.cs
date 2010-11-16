@@ -10,6 +10,22 @@ using VVVV.PluginInterfaces.V1;
 namespace VVVV.PluginInterfaces.V2
 {
     #region IHDEHost
+    public class NodeEventArgs : EventArgs
+	{
+		public INode Node
+		{
+			get;
+			private set;
+		}
+		
+		public NodeEventArgs(INode node)
+		{
+			Node = node;
+		}
+	}
+	
+	public delegate void NodeEventHandler(object sender, NodeEventArgs args);
+    
     /// <summary>
 	/// The interface to be implemented by a program to host IHDEPlugins.
 	/// </summary>
@@ -123,6 +139,17 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
+		
+		/// <summary>
+		/// Raised if a node was created.
+		/// </summary>
+		/// 
+		event NodeEventHandler NodeAdded;
+		
+		/// <summary>
+		/// Raised if a node was destroyed.
+		/// </summary>
+	    event NodeEventHandler NodeRemoved;
 	}
 	#endregion IHDEHost
 	

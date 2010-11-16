@@ -198,7 +198,7 @@ namespace VVVV.HDE.CodeEditor
 			return true;
 		}
 		
-		public string OpenedFile 
+		public string OpenedFile
 		{
 			get;
 			private set;
@@ -242,11 +242,19 @@ namespace VVVV.HDE.CodeEditor
 				
 				document.ContentChanged += document_ContentChanged;
 				document.Saved += document_Saved;
+				document.Renamed += document_Renamed;
+				
+				SynchronizationContext.Current.Post((o) => UpdateWindowCaption(document, document.Name), null);
 			}
 			else
 			{
 				FLogger.Log(LogType.Warning, "Can't open \0", filename);
 			}
+		}
+
+		void document_Renamed(INamed sender, string newName)
+		{
+			UpdateWindowCaption(sender as ITextDocument, newName);
 		}
 
 		void document_Saved(object sender, EventArgs e)
@@ -256,13 +264,28 @@ namespace VVVV.HDE.CodeEditor
 
 		void document_ContentChanged(ITextDocument doc, string content)
 		{
+			UpdateWindowCaption(doc, doc.Name);
+		}
+		
+		void UpdateWindowCaption(ITextDocument doc, string name)
+		{
 			var window = FNode.Window;
 			if (window != null)
 			{
+				var caption = name;
 				if (doc.IsDirty)
-					FNode.Window.Caption = doc.Name + "*";
+					caption = name + "*";
+				else if (doc.IsReadOnly)
+					caption = name + "+";
 				else
-					FNode.Window.Caption = doc.Name;
+					caption = name;
+				
+				if (FAttachedNode != null)
+				{
+					caption += string.Format(" - attached to {1} [id: {0}]", FAttachedNode.GetID(), FAttachedNode.GetNodeInfo().Username);
+				}
+				
+				window.Caption = caption;
 			}
 		}
 		
@@ -276,6 +299,7 @@ namespace VVVV.HDE.CodeEditor
 				
 				document.ContentChanged -= document_ContentChanged;
 				document.Saved -= document_Saved;
+				document.Renamed -= document_Renamed;
 				
 				FEditor.TextDocument = null;
 				FEditor.CompletionBinding = null;
@@ -319,6 +343,12 @@ namespace VVVV.HDE.CodeEditor
 			set
 			{
 				FAttachedNode = value;
+				
+				var doc = FEditor.TextDocument;
+				if (doc != null)
+				{
+					UpdateWindowCaption(doc, doc.Name);
+				}
 			}
 		}
 		

@@ -50,6 +50,11 @@ namespace VVVV.Hosting.Factories
 					FSolution.Projects.Add(project);
 					project.ProjectCompiledSuccessfully += project_ProjectCompiled;
 				}
+				else
+				{
+					// Project was renamed
+					project = FSolution.Projects[project.Name] as CSProject;
+				}
 				FProjects[filename] = project;
 			}
 			
@@ -233,8 +238,9 @@ namespace VVVV.Hosting.Factories
 						
 						// Rename the CSDocument
 						var docName = Path.GetFileNameWithoutExtension(csDoc.Name);
-						if (docName == project.Name)
-							csDoc.Name = string.Format("{0}.cs", newProject.Name);
+						var oldProjName = Path.GetFileNameWithoutExtension(project.Name);
+						if (docName == oldProjName)
+							csDoc.Name = string.Format("{0}.cs", Path.GetFileNameWithoutExtension(newProject.Name));
 						
 						csDoc.WaitParseCompleted();
 						

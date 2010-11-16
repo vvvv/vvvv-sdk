@@ -61,7 +61,7 @@ namespace VVVV.Nodes.NodeBrowser
 			}
 		}
 		
-		public INode CurrentPatchNode
+		public IWindow CurrentPatchWindow
 		{
 			get;
 			private set;
@@ -72,16 +72,19 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		//further fields
 		private bool FNeedsRedraw = false;
-		private string CurrentPath
+		public string CurrentDir
 		{
 			get
 			{
-				if (CurrentPatchNode != null)
+				if (CurrentPatchWindow != null)
 				{
-					var filename = CurrentPatchNode.GetNodeInfo().Filename;
+					var node = CurrentPatchWindow.GetNode();
+					var nodeInfo = node.GetNodeInfo();
+					var systemname = nodeInfo.Systemname;
+					var filename = nodeInfo.Filename;
 					
 					if (Path.IsPathRooted(filename))
-						return filename;
+						return Path.GetDirectoryName(filename);
 					else
 						return string.Empty;
 				}
@@ -181,7 +184,6 @@ namespace VVVV.Nodes.NodeBrowser
 			this.FTagPanel.AndTags = true;
 			this.FTagPanel.Location = new System.Drawing.Point(17, 24);
 			this.FTagPanel.Name = "FTagPanel";
-			this.FTagPanel.Path = null;
 			this.FTagPanel.Size = new System.Drawing.Size(120, 115);
 			this.FTagPanel.TabIndex = 1;
 			this.FTagPanel.OnCreateNode += new VVVV.Nodes.NodeBrowser.CreateNodeHandler(this.FNodeBrowser_CreateNode);
@@ -246,8 +248,8 @@ namespace VVVV.Nodes.NodeBrowser
 						FClonePanel.Visible = true;
 						
 						var path = HDEHost.ExePath;
-						if (!string.IsNullOrEmpty(CurrentPath))
-							path = Path.GetDirectoryName(CurrentPath);
+						if (!string.IsNullOrEmpty(CurrentDir))
+							path = CurrentDir;
 						
 						if (nodeInfo.Factory != null)
 							path = path.ConcatPath(nodeInfo.Factory.JobStdSubPath);
@@ -266,7 +268,7 @@ namespace VVVV.Nodes.NodeBrowser
 		{
 			// TODO: Ask factories about file extensions.
 			if ((text.EndsWith(".v4p")) || (text.EndsWith(".fx")) || (text.EndsWith(".dll")))
-				NodeBrowserHost.CreateNodeFromFile(Path.Combine(Path.GetDirectoryName(CurrentPath), text));
+				NodeBrowserHost.CreateNodeFromFile(Path.Combine(CurrentDir, text));
 			else
 				NodeBrowserHost.CreateComment(text);
 		}
@@ -355,8 +357,7 @@ namespace VVVV.Nodes.NodeBrowser
 			
 			if ((windowtype == WindowType.Patch) || (windowtype == WindowType.Module))
 			{
-				CurrentPatchNode = window.GetNode();
-				FTagPanel.Path = CurrentPath;
+				CurrentPatchWindow = window;
 				
 				//cant do in thread. would not update outside IDE
 				if (FNeedsRedraw) //as doesn't show localfiles needs no redraw on pathchange
@@ -372,7 +373,7 @@ namespace VVVV.Nodes.NodeBrowser
 			if (keyData == Keys.Tab)
 			{
 				if (FClonePanel.Visible)
-					FClonePanel.SelectNextControl(FClonePanel.ActiveControl, true, true, false, true);
+					FClonePanel.SelectNextControl(FClonePanel.ActiveControl, true, true, true, true);
 				else
 				{
 					FTagPanel.AndTags = !FTagPanel.AndTags;
@@ -382,7 +383,7 @@ namespace VVVV.Nodes.NodeBrowser
 			}
 			else if ((keyData == (Keys.Tab | Keys.Shift)) && (FClonePanel.Visible))
 			{
-				FClonePanel.SelectNextControl(FClonePanel.ActiveControl, false, true, false, true);
+				FClonePanel.SelectNextControl(FClonePanel.ActiveControl, false, true, true, true);
 				return true;
 			}
 			else if (keyData == Keys.Escape && FClonePanel.Visible)
