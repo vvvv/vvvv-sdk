@@ -83,11 +83,21 @@ namespace VVVV.Hosting
 		{
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssemblyCB;
 			
+			//set vvvv.exe path
 			ExePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName((typeof(HDEHost).Assembly.Location)), @"..\.."));
 			
+			//set cache file name
 			var filepath = Path.Combine(Path.GetTempPath(), "vvvv_cache");
-			CacheFileName = Path.Combine(filepath, "node_info_" + ExePath.GetHashCode() + ".cache");
 			
+			uint hash;
+			unchecked
+			{
+				hash = (uint)ExePath.GetHashCode();
+			}
+			
+			CacheFileName = Path.Combine(filepath, "node_info_" + hash + ".cache");
+			
+			//setup cache save timer
 			FCacheTimer = new System.Windows.Forms.Timer();
 			FCacheTimer.Interval = 3000;
 			FCacheTimer.Tick += new EventHandler(FCacheTimer_Tick);
@@ -710,7 +720,7 @@ namespace VVVV.Hosting
 					formatter.Serialize(stream, FNodeInfoCache);
 				}
 				
-				Logger.Log(LogType.Debug, "Node infos serialized");
+				Logger.Log(LogType.Debug, "Saved node info cache to Temp: " + filename);
 			}
 			catch (Exception e)
 			{
