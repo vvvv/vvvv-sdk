@@ -251,7 +251,6 @@ namespace VVVV.Nodes
 							skinnedInstanceMesh.ApplyAnimations(time);
 							skinningTransforms.AddRange(skinnedInstanceMesh.GetSkinningMatrices());  // am i right, that this whole thing will only work with 1 selected mesh?
 							bindShapeTransforms.Add(skinnedInstanceMesh.BindShapeMatrix);
-							FInvBindPoseTransformOutput.SliceCount = skinnedInstanceMesh.InvBindMatrixList.Count;
 							for (int j = 0; j<skinnedInstanceMesh.InvBindMatrixList.Count; j++)
 								invBindPoseTransforms.Add(skinnedInstanceMesh.InvBindMatrixList[j]);
 						}

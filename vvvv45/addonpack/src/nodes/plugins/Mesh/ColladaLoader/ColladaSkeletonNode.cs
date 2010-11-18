@@ -41,15 +41,13 @@ namespace VVVV.Nodes
         [Input("Index", IsSingle = true)]
         protected IDiffSpread<int> FIndex;
         
-        [Output("Skeleton", IsSingle = true)]
-        protected ISpread<Skeleton> FSkeletonOut;
+//        [Output("Skeleton", IsSingle = true)]
+//        protected ISpread<Skeleton> FSkeletonOut;
+		private INodeOut FSkeletonOutput;
         
         [Import]
     	protected ILogger FLogger;   
     	    	
-    	private ITransformOut FInvBindPoseOut;
-        private ITransformOut FBindShapeOut;
-        
    		private Skeleton FSkeleton;
    		private Model FColladaModel;
    		private Model.SkinnedInstanceMesh FSelectedMesh;
@@ -60,11 +58,12 @@ namespace VVVV.Nodes
         public ColladaSkeletonNode(IPluginHost host)
         {
 			FSkeleton = new Skeleton();
-		    
-			host.CreateTransformOutput("Bind Shape Matrix", TSliceMode.Single, TPinVisibility.True, out FBindShapeOut);
-	    	FBindShapeOut.Order = 1;
-	    	host.CreateTransformOutput("Inverse Bind Pose Matrix", TSliceMode.Dynamic, TPinVisibility.True, out FInvBindPoseOut);
-	    	FInvBindPoseOut.Order = 2;
+	    	
+	    	System.Guid[] guids = new System.Guid[1];
+	    	guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
+	    	
+	    	host.CreateNodeOutput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonOutput);
+	    	FSkeletonOutput.SetSubType(guids, "Skeleton");
 		}
         #endregion constructor
         
@@ -134,7 +133,9 @@ namespace VVVV.Nodes
         			}
         		}
         		
-        		FSkeletonOut[0] = FSkeleton;
+//        		FSkeletonOut[0] = FSkeleton;
+				FSkeletonOutput.SetInterface(FSkeleton);
+				FSkeletonOutput.MarkPinAsChanged();
         	}
         }
              
