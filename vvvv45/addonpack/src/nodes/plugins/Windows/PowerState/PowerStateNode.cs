@@ -143,7 +143,7 @@ namespace VVVV.Nodes
 					FPluginInfo.Category = "Windows";
 					//the nodes version: optional. leave blank if not
 					//needed to distinguish two nodes of the same name and category
-					FPluginInfo.Version = "0.1";
+					FPluginInfo.Version = "";
 					
 					//the nodes author: your sign
 					FPluginInfo.Author = "wirmachenbunt";
