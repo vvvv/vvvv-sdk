@@ -59,8 +59,8 @@ namespace VVVV.Hosting.Factories
             nodeInfo.BeginUpdate();
             nodeInfo.Type = NodeType.Module;
             nodeInfo.Factory = this;
-            nodeInfo.InitialBoxSize = new System.Drawing.Size(4800, 3600);
-            nodeInfo.InitialWindowSize = new System.Drawing.Size(9000, 6000);
+            nodeInfo.InitialBoxSize = new System.Drawing.Size(320, 240);
+            nodeInfo.InitialWindowSize = new System.Drawing.Size(600, 400);
             
             try
             {
