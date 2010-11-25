@@ -56,7 +56,6 @@ namespace VVVV.HDE.CodeEditor
 	public class CodeEditor: TextEditorControl
 	{
 		#region Fields
-		
 		private CodeCompletionWindow FCompletionWindow;
 		private InsightWindow FInsightWindow;
 		private System.Windows.Forms.Timer FTimer;
@@ -68,6 +67,7 @@ namespace VVVV.HDE.CodeEditor
 		private ILinkDataProvider FLinkDataProvider;
 		private IToolTipProvider FToolTipProvider;
 		
+		private bool FNeedsKeyUp;
 		#endregion
 		
 		#region Properties
@@ -548,6 +548,8 @@ namespace VVVV.HDE.CodeEditor
 		protected override bool ProcessKeyPreview(ref Message m)
 		{
 			KeyEventArgs ke = new KeyEventArgs((Keys)m.WParam.ToInt32() | ModifierKeys);
+			FNeedsKeyUp = !(m.Msg == 0x101);
+			    
 			if (ke.Control && ke.KeyCode == Keys.S)
 			{
 				SyncControlWithDocument();
@@ -569,23 +571,25 @@ namespace VVVV.HDE.CodeEditor
 			}
 			else if (ke.Control && (ke.KeyCode == Keys.Add || ke.KeyCode == Keys.Oemplus))
 			{
-			    var f = this.Font; 
-			    var newf = new Font(f.FontFamily, f.Size+1);
-			    this.Font = newf;
+			    if (!FNeedsKeyUp)
+			    {
+			        FNeedsKeyUp = true;
+			        this.Font = new Font(this.Font.Name, this.Font.Size + 1);
+			    }
 			    return true;
 			}
 			else if (ke.Control && (ke.KeyCode == Keys.Subtract || ke.KeyCode == Keys.OemMinus))
 			{
-			    var f = this.Font; 
-			    var newf = new Font(f.FontFamily, f.Size-1);
-			    this.Font = newf;
+			    if (!FNeedsKeyUp)
+			    {
+			        FNeedsKeyUp = true;
+			        this.Font = new Font(this.Font.Name, this.Font.Size - 1);
+			    }
 			    return true;
 			}
 			else if (ke.Control && (ke.KeyCode == Keys.NumPad0 || ke.KeyCode == Keys.D0))
 			{
-			    var f = this.Font; 
-			    var newf = new Font(f.FontFamily, 10);
-			    this.Font = newf;
+			    this.Font = new Font(this.Font.Name, 10);
 			    return true;
 			}
 			else
