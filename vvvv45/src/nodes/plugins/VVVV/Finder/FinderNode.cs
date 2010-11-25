@@ -439,9 +439,7 @@ namespace VVVV.Nodes.Finder
         private void UpdateSearch()
         {
             string query = FSearchTextBox.Text.ToLower();
-            
             query += (char) 160;
-            //if the last character
             
             var searchResult = new PatchNode(null);
             FPlainResultList.Clear();
@@ -547,8 +545,8 @@ namespace VVVV.Nodes.Finder
                 FTags.Remove("w");
             }
             
+            //clean up the list
             FTags[FTags.Count-1] = FTags[FTags.Count-1].Trim((char) 160);
-            
             while (FTags.Contains(" "))
                 FTags.Remove(" ");
             if (FTags.Contains(""))
