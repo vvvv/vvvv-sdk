@@ -123,7 +123,7 @@ namespace VVVV.Hosting.Factories
 		/// <summary>
 		/// Called by AbstractFileFactory to extract all node infos in given file.
 		/// </summary>
-		protected override IEnumerable<INodeInfo> GetNodeInfos(string filename)
+		protected override IEnumerable<INodeInfo> LoadNodeInfos(string filename)
 		{
 			var nodeInfos = new List<INodeInfo>();
 			

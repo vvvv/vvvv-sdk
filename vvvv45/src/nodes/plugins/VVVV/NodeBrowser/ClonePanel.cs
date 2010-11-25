@@ -91,11 +91,33 @@ namespace VVVV.Nodes.NodeBrowser
         
         private void CheckNodeName()
         {
-            string systemName = FNameTextBox.Text.Trim() + " (";
-            if (string.IsNullOrEmpty(FVersionTextBox.Text.Trim()))
-                systemName += FCategoryTextBox.Text.Trim() + ")";
+        	var name = FNameTextBox.Text.Trim();
+        	var category = FCategoryTextBox.Text.Trim();
+        	var version = FVersionTextBox.Text.Trim();
+        	
+        	if (string.IsNullOrEmpty(name) || name.Contains(" "))
+        	{
+        		FCloneButton.Enabled = false;
+        		return;
+        	}
+        	
+        	if (string.IsNullOrEmpty(category) || category.Contains(" "))
+        	{
+        		FCloneButton.Enabled = false;
+        		return;
+        	}
+        	
+        	if (!string.IsNullOrEmpty(version) && version.Contains(" "))
+        	{
+        		FCloneButton.Enabled = false;
+        		return;
+        	}
+        	
+            string systemName = name + " (";
+            if (string.IsNullOrEmpty(version))
+                systemName += category + ")";
             else
-                systemName += FCategoryTextBox.Text.Trim() + " " + FVersionTextBox.Text.Trim() + ")";
+                systemName += category + " " + version + ")";
             
             if (FSystemNameDict.ContainsKey(systemName))
                 FCloneButton.Enabled = false;

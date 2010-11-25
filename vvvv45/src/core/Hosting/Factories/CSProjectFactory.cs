@@ -7,6 +7,7 @@ using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Ast;
@@ -34,7 +35,7 @@ namespace VVVV.Hosting.Factories
 			FProjects = new Dictionary<string, CSProject>();
 		}
 		
-		protected override IEnumerable<INodeInfo> GetNodeInfos(string filename)
+		protected override IEnumerable<INodeInfo> LoadNodeInfos(string filename)
 		{
 			var nodeInfos = new List<INodeInfo>();
 			
@@ -196,28 +197,22 @@ namespace VVVV.Hosting.Factories
 				if (!project.IsLoaded)
 					project.Load();
 				
-				string className = name.Replace(" ", "");
+				string className = string.Format("{0}{1}{2}Node", version, category, name);
+				var regexp = new Regex(@"^[0-9]+");
+				if (regexp.IsMatch(className))
+					className = string.Format("C{0}", className);
 				
 				// Find a suitable project name
-				var newProjectName = className;
+				var newProjectName = name + category + version;
 				var newProjectPath = path.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
 				
-				if (File.Exists(newProjectPath))
-				{
-					newProjectName = className + category;
-					newProjectPath = path.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
-				}
-				
-				if (File.Exists(newProjectPath))
-				{
-					newProjectName = className + category + version;
-					newProjectPath = path.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
-				}
-				
 				int i = 1;
+				string tmpNewProjectName = newProjectName;
+				string tmpClassName = className;
 				while (File.Exists(newProjectPath))
 				{
-					newProjectName = className + category + version + i++;
+					newProjectName = tmpNewProjectName + i;
+					className = tmpClassName + i++;
 					newProjectPath = path.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
 				}
 				

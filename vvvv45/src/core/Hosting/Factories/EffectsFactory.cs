@@ -43,7 +43,7 @@ namespace VVVV.Hosting.Factories
 		}
 		
 		//create a node info from a filename
-		protected override IEnumerable<INodeInfo> GetNodeInfos(string filename)
+		protected override IEnumerable<INodeInfo> LoadNodeInfos(string filename)
 		{
 			if (!FProjects.ContainsKey(filename))
 			{

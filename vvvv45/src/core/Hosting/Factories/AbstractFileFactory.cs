@@ -72,7 +72,10 @@ namespace VVVV.Hosting.Factories
 				return new INodeInfo[0];
 			
 			// Regardless of the arguments, we need to load the node infos first.
-			var nodeInfos = LoadNodeInfos(filename);
+			var nodeInfos = LoadNodeInfos(filename).ToList();
+			
+			if (nodeInfos.Count > 0)
+				FLogger.Log(LogType.Debug, "Loaded node infos from {0}.", filename);
 			
 			// If additional arguments are present vvvv is only interested in one specific
 			// NodeInfo -> look for it.
@@ -91,7 +94,7 @@ namespace VVVV.Hosting.Factories
 			return nodeInfos;
 		}
 		
-		protected abstract IEnumerable<INodeInfo> GetNodeInfos(string filename);
+		protected abstract IEnumerable<INodeInfo> LoadNodeInfos(string filename);
 		
 		public bool Create(INodeInfo nodeInfo, IAddonHost host)
 		{
@@ -258,29 +261,6 @@ namespace VVVV.Hosting.Factories
 		}
 		
 		#endregion directory and watcher
-		
-		#region caching
-		
-		
-		protected IEnumerable<INodeInfo> LoadNodeInfos(string filename)
-		{
-			try
-			{
-				var nodeInfos = GetNodeInfos(filename).ToList();
-				
-				if (nodeInfos.Count > 0)
-					FLogger.Log(LogType.Debug, "Loaded node infos from {0}.", filename);
-				
-				return nodeInfos;
-			}
-			catch (Exception e)
-			{
-				FLogger.Log(e);
-				return new INodeInfo[0];
-			}
-		}
-		
-		#endregion
 		
 		#region file handling
 		
