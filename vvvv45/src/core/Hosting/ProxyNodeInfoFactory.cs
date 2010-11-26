@@ -423,7 +423,7 @@ namespace VVVV.Hosting
 	}
 	
 	#endregion
-		
+	
 	
 	class ProxyNodeInfoFactory : INodeInfoFactory, INodeInfoListener, IDisposable
 	{
@@ -465,17 +465,30 @@ namespace VVVV.Hosting
 		{
 			return FProxyToInternalMap[nodeInfo];
 		}
-				
+		
 		public INodeInfo CreateNodeInfo(string name, string category, string version, string filename)
 		{
 			var nodeInfo = FFactory.CreateNodeInfo(name, category, version, filename);
 			return FInternalToProxyMap[nodeInfo];
 		}
 		
+		// This is more of a hack. It ensures that the cache of HDEHost
+		// gets updated before vvvv gets a chance to call ExtractNodeInfos
+		// on HDEHost. Better way would be to move the caching stuff here...
+		private bool FInDestroyNodeInfo;
 		public void DestroyNodeInfo(INodeInfo nodeInfo)
 		{
-			nodeInfo = ToInternal(nodeInfo);
-			FFactory.DestroyNodeInfo(nodeInfo);
+			try
+			{
+				FInDestroyNodeInfo = true;
+				OnNodeInfoRemoved(nodeInfo);
+				nodeInfo = ToInternal(nodeInfo);
+				FFactory.DestroyNodeInfo(nodeInfo);
+			}
+			finally
+			{
+				FInDestroyNodeInfo = false;
+			}
 		}
 		
 		public void NodeInfoAddedCB(INodeInfo nodeInfo)
@@ -495,10 +508,13 @@ namespace VVVV.Hosting
 		
 		public void NodeInfoRemovedCB(INodeInfo nodeInfo)
 		{
-			var proxyNodeInfo = FInternalToProxyMap[nodeInfo];
-			FInternalToProxyMap.Remove(nodeInfo);
-			FProxyToInternalMap.Remove(proxyNodeInfo);
-			OnNodeInfoRemoved(proxyNodeInfo);
+			if (!FInDestroyNodeInfo)
+			{
+				var proxyNodeInfo = FInternalToProxyMap[nodeInfo];
+				FInternalToProxyMap.Remove(nodeInfo);
+				FProxyToInternalMap.Remove(proxyNodeInfo);
+				OnNodeInfoRemoved(proxyNodeInfo);
+			}
 		}
 		
 		public event NodeInfoEventHandler NodeInfoAdded;

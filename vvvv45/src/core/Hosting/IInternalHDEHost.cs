@@ -20,9 +20,9 @@ namespace VVVV.Hosting
 	
 	    void ExtractNodeInfos(string filename, string arguments, out INodeInfo[] nodeInfos);
 	
-	    bool CreateNode(IAddonHost host, INodeInfo nodeInfo);
+	    bool CreateNode(INode node);
 	
-	    bool DestroyNode(IAddonHost host, INodeInfo nodeInfo);
+	    bool DestroyNode(INode node);
 	    
 	    INodeInfo Clone(INodeInfo nodeInfo, string path, string Name, string Category, string Version);
 

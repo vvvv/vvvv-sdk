@@ -16,7 +16,7 @@ namespace VVVV.Hosting.Factories
     /// Effects factory, parses and watches the effect directory
     /// </summary>
     [Export(typeof(IAddonFactory))]
-    public class ModulesFactory : AbstractFileFactory<IAddonHost>
+    public class ModulesFactory : AbstractFileFactory<INode>
     {
         private string FDTD = "";
         
@@ -98,13 +98,13 @@ namespace VVVV.Hosting.Factories
             yield return nodeInfo;
         }
         
-        protected override bool CreateNode(INodeInfo nodeInfo, IAddonHost nodeHost)
+        protected override bool CreateNode(INodeInfo nodeInfo, INode nodeHost)
         {
         	// Will never get called.
         	return true;
         }
         
-        protected override bool DeleteNode(INodeInfo nodeInfo, IAddonHost nodeHost)
+        protected override bool DeleteNode(INodeInfo nodeInfo, INode nodeHost)
         {
         	// Will never get called.
         	return true;

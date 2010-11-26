@@ -13,8 +13,8 @@ namespace VVVV.PluginInterfaces.V2
 	public interface IAddonFactory
 	{
 	    IEnumerable<INodeInfo> ExtractNodeInfos(string filename, string arguments);
-	    bool Create(INodeInfo nodeInfo, IAddonHost host);
-	    bool Delete(INodeInfo nodeInfo, IAddonHost host);
+	    bool Create(INodeInfo nodeInfo, INode host);
+	    bool Delete(INodeInfo nodeInfo, INode host);
 	    bool Clone(INodeInfo nodeInfo, string path, string name, string category, string version, out INodeInfo newNodeInfo);
 	    string JobStdSubPath {get;}
 	    void AddDir(string dir, bool recursive);

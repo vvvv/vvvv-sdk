@@ -136,7 +136,7 @@ namespace VVVV.Hosting.Factories
 			return null;
 		}
 		
-		public bool Create(INodeInfo nodeInfo, IAddonHost host)
+		public bool Create(INodeInfo nodeInfo, INode host)
 		{
 			bool result = false;
 			
@@ -214,7 +214,7 @@ namespace VVVV.Hosting.Factories
 			return true;
 		}
 		
-		public bool Delete(INodeInfo nodeInfo, IAddonHost host)
+		public bool Delete(INodeInfo nodeInfo, INode host)
 		{
 			var editorHost = host as IInternalPluginHost;
 			

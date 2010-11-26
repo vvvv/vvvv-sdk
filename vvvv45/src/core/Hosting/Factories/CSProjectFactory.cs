@@ -78,12 +78,13 @@ namespace VVVV.Hosting.Factories
 				}
 			}
 			
-			LoadNodeInfosFromFile(project.AssemblyLocation, filename, ref nodeInfos);
+			LoadNodeInfosFromFile(project.AssemblyLocation, filename, ref nodeInfos, false);
 			
 			foreach (var nodeInfo in nodeInfos)
 			{
 				nodeInfo.Type = NodeType.Dynamic;
 				nodeInfo.UserData = project;
+				nodeInfo.CommitUpdate();
 			}
 			
 			return nodeInfos;

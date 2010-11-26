@@ -39,7 +39,8 @@ namespace VVVV.Hosting
 		private INodeInfo FNodeBrowserNodeInfo;
 		
 		private IVVVVHost FVVVVHost;
-		private Dictionary<INodeInfo, List<IAddonHost>> FRunningPluginHostsMap;
+//		private Dictionary<INodeInfo, List<IAddonHost>> FRunningPluginHostsMap;
+		private List<INode> FCreatedNodes;
 		private IPluginBase FNodeBrowser, FWindowSwitcher, FKommunikator;
 		protected Dictionary<string, HashSet<ProxyNodeInfo>> FNodeInfoCache;
 		protected Dictionary<string, HashSet<ProxyNodeInfo>> FDeserializedNodeInfoCache;
@@ -110,7 +111,8 @@ namespace VVVV.Hosting
 			if (context == null)
 				SynchronizationContext.SetSynchronizationContext(new WindowsFormsSynchronizationContext());
 			
-			FRunningPluginHostsMap = new Dictionary<INodeInfo, List<IAddonHost>>();
+//			FRunningPluginHostsMap = new Dictionary<INodeInfo, List<IAddonHost>>();
+			FCreatedNodes = new List<INode>();
 			
 			// Register at least one ICommandHistory for top level element ISolution
 			var mappingRegistry = new MappingRegistry();
@@ -146,9 +148,9 @@ namespace VVVV.Hosting
 			}
 		}
 		
-		private List<ProxyNodeInfo> LoadNodeInfos(string filename, string arguments)
+		private HashSet<ProxyNodeInfo> LoadNodeInfos(string filename, string arguments)
 		{
-			var nodeInfos = new List<ProxyNodeInfo>();
+			var nodeInfos = new HashSet<ProxyNodeInfo>();
 			
 			foreach(IAddonFactory factory in AddonFactories)
 			{
@@ -238,16 +240,17 @@ namespace VVVV.Hosting
 		
 		public void ExtractNodeInfos(string filename, string arguments, out INodeInfo[] result)
 		{
-			List<ProxyNodeInfo> nodeInfos = null;
+			HashSet<ProxyNodeInfo> nodeInfos = null;
 			
 			if(HasCachedNodeInfos(filename))
 			{
-				nodeInfos = GetCachedNodeInfos(filename).ToList();
+				nodeInfos = GetCachedNodeInfos(filename);
 			}
 			else
 			{
 				//not in cache, so load from file
 				nodeInfos = LoadNodeInfos(filename, arguments);
+				FNodeInfoCache[filename] = nodeInfos;
 			}
 			
 			//convert to internal and write into result
@@ -277,8 +280,10 @@ namespace VVVV.Hosting
 			}
 		}
 		
-		public bool CreateNode(IAddonHost host, INodeInfo nodeInfo)
+		public bool CreateNode(INode node)
 		{
+			var nodeInfo = node.GetNodeInfo();
+			
 			if (!(nodeInfo is ProxyNodeInfo))
 				nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
 			
@@ -289,14 +294,17 @@ namespace VVVV.Hosting
 				UpdateNodeInfos(nodeInfo.Filename);
 				
 				var factory = nodeInfo.Factory;
-				if (factory.Create(nodeInfo, host))
+				if (factory.Create(nodeInfo, node))
 				{
+					/*
 					if (!FRunningPluginHostsMap.ContainsKey(nodeInfo))
 						FRunningPluginHostsMap[nodeInfo] = new List<IAddonHost>();
 
 					FRunningPluginHostsMap[nodeInfo].Add(host);
+					 */
+					FCreatedNodes.Add(node);
 					
-					OnNodeAdded(new NodeEventArgs(host as INode));
+					OnNodeAdded(new NodeEventArgs(node));
 					
 					return true;
 				}
@@ -310,22 +318,24 @@ namespace VVVV.Hosting
 			return false;
 		}
 		
-		public bool DestroyNode(IAddonHost host, INodeInfo nodeInfo)
+		public bool DestroyNode(INode node)
 		{
+			var nodeInfo = node.GetNodeInfo();
+			
 			if (!(nodeInfo is ProxyNodeInfo))
 				nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
+			
+			if (nodeInfo.Factory == null)
+				return false;
 			
 			try
 			{
 				var factory = nodeInfo.Factory;
-				if (factory.Delete(nodeInfo, host))
+				if (factory.Delete(nodeInfo, node))
 				{
-					FRunningPluginHostsMap[nodeInfo].Remove(host);
+					FCreatedNodes.Remove(node);
 					
-					if (FRunningPluginHostsMap[nodeInfo].Count == 0)
-						FRunningPluginHostsMap.Remove(nodeInfo);
-					
-					OnNodeRemoved(new NodeEventArgs(host as INode));
+					OnNodeRemoved(new NodeEventArgs(node));
 					
 					return true;
 				}
@@ -461,17 +471,13 @@ namespace VVVV.Hosting
 		#endregion
 		
 		#region helper methods
-		protected IAddonHost[] GetAffectedHosts(INodeInfo nodeInfo)
+		protected IEnumerable<INode> GetAffectedNodes(INodeInfo nodeInfo)
 		{
-			List<IAddonHost> affectedHosts;
-			if (FRunningPluginHostsMap.TryGetValue(nodeInfo, out affectedHosts))
-			{
-				return affectedHosts.ToArray();
-			}
-			else
-			{
-				return new IInternalPluginHost[0];
-			}
+			return
+				from node in FCreatedNodes
+				let ni = NodeInfoFactory.ToProxy(node.GetNodeInfo())
+				where ni == nodeInfo
+				select node;
 		}
 		
 		/// <summary>
@@ -540,8 +546,10 @@ namespace VVVV.Hosting
 			var filename = info.Filename;
 			if (FNodeInfoCache.ContainsKey(filename))
 			{
+				var cache = FNodeInfoCache[filename];
+				
 				//remove from info list
-				FNodeInfoCache[filename].Remove((ProxyNodeInfo) info);
+				var result = cache.Remove((ProxyNodeInfo) info);
 
 				//also remove list if empty now
 				if(FNodeInfoCache[filename].Count == 0)
@@ -560,9 +568,9 @@ namespace VVVV.Hosting
 			
 			// Go through all the running hosts using this changed node info
 			// and create a new plugin for them.
-			foreach (IAddonHost host in GetAffectedHosts(info))
+			foreach (var node in GetAffectedNodes(info))
 			{
-				factory.Create(info, host);
+				factory.Create(info, node);
 				
 				//for effects need to update only one affected host
 				//others will be updated vvvv internally
@@ -627,12 +635,14 @@ namespace VVVV.Hosting
 		//check if there is a valid node info in cache
 		public bool HasCachedNodeInfos(string filename)
 		{
-			return (FDeserializedNodeInfoCache.ContainsKey(filename) || FNodeInfoCache.ContainsKey(filename)) &&
-				File.GetLastWriteTime(filename) < File.GetLastWriteTime(CacheFileName);
+			return
+				FNodeInfoCache.ContainsKey(filename) ||
+				(FDeserializedNodeInfoCache.ContainsKey(filename) &&
+				 (File.GetLastWriteTime(filename) < File.GetLastWriteTime(CacheFileName)));
 		}
 		
 		//return node infos from cache
-		public IEnumerable<ProxyNodeInfo> GetCachedNodeInfos(string filename)
+		public HashSet<ProxyNodeInfo> GetCachedNodeInfos(string filename)
 		{
 			if(!FNodeInfoCache.ContainsKey(filename))
 			{

@@ -18,7 +18,7 @@ namespace VVVV.Hosting.Factories
 	/// <summary>
 	/// Superclass for factories which watch files in a directory
 	/// </summary>
-	public abstract class AbstractFileFactory<TNodeHost> : IDisposable, IAddonFactory where TNodeHost: IAddonHost
+	public abstract class AbstractFileFactory<TNodeHost> : IDisposable, IAddonFactory where TNodeHost: INode
 	{
 		#region fields and constructor
 		
@@ -96,7 +96,7 @@ namespace VVVV.Hosting.Factories
 		
 		protected abstract IEnumerable<INodeInfo> LoadNodeInfos(string filename);
 		
-		public bool Create(INodeInfo nodeInfo, IAddonHost host)
+		public bool Create(INodeInfo nodeInfo, INode host)
 		{
 			if (host is TNodeHost && Path.GetExtension(nodeInfo.Filename) == FileExtension)
 				return CreateNode(nodeInfo, (TNodeHost) host);
@@ -106,7 +106,7 @@ namespace VVVV.Hosting.Factories
 		
 		protected abstract bool CreateNode(INodeInfo nodeInfo, TNodeHost nodeHost);
 		
-		public bool Delete(INodeInfo nodeInfo, IAddonHost host)
+		public bool Delete(INodeInfo nodeInfo, INode host)
 		{
 			if (host is TNodeHost && Path.GetExtension(nodeInfo.Filename) == FileExtension)
 				return DeleteNode(nodeInfo, (TNodeHost) host);

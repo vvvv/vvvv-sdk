@@ -129,7 +129,7 @@ namespace VVVV.Hosting.Factories
 			
 			// We can't handle dynamic plugins
 			if (!IsDynamicAssembly(filename))
-				LoadNodeInfosFromFile(filename, filename, ref nodeInfos);
+				LoadNodeInfosFromFile(filename, filename, ref nodeInfos, true);
 			
 			return nodeInfos;
 		}
@@ -141,7 +141,7 @@ namespace VVVV.Hosting.Factories
 			return nodeInfo;
 		}
 		
-		protected void LoadNodeInfosFromFile(string filename, string sourcefilename, ref List<INodeInfo> nodeInfos)
+		protected void LoadNodeInfosFromFile(string filename, string sourcefilename, ref List<INodeInfo> nodeInfos, bool commitUpdates)
 		{
 			// See if it's a .net assembly
 			if (!IsDotNetAssembly(filename))
@@ -196,7 +196,8 @@ namespace VVVV.Hosting.Factories
 				foreach (var nodeInfo in nodeInfos)
 				{
 					nodeInfo.Factory = this;
-					nodeInfo.CommitUpdate();
+					if (commitUpdates)
+						nodeInfo.CommitUpdate();
 				}
 			}
 		}
