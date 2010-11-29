@@ -51,7 +51,11 @@ namespace VVVV.Hosting.Factories
 				if (FSolution.Projects.CanAdd(project))
 				{
 					FSolution.Projects.Add(project);
-					project.ProjectCompiledSuccessfully += project_ProjectCompiledSuccessfully;
+					//effects are actually being compiled by vvvv when nodeinfo is update
+					//so we need to intervere with the doCompile
+					project.DoCompileEvent += new EventHandler(project_DoCompileEvent);
+				    //in turn not longer needs the following:
+					//project.ProjectCompiledSuccessfully += project_ProjectCompiledSuccessfully;
 				}
 				else
 				{
@@ -63,6 +67,14 @@ namespace VVVV.Hosting.Factories
 			}
 			
 			yield return LoadNodeInfoFromEffect(filename);
+		}
+
+		void project_DoCompileEvent(object sender, EventArgs e)
+		{
+		    var project = sender as FXProject;
+			var filename = project.Location.LocalPath;
+			
+			LoadNodeInfoFromEffect(filename);
 		}
 
 		void project_ProjectCompiledSuccessfully(object sender, CompilerEventArgs args)
