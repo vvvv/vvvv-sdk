@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Xml;
+using System.Linq;
 
 using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Gui.CompletionWindow;
@@ -145,10 +146,11 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
                 }
             }
             
-            //add a, r, g, b, x, y, z, w manually
-            var components = new string[8] {"a", "r", "g", "b", "x", "y", "z", "w"};
+            //add all letters of the alphabet
+            char[] components = Enumerable.Range('a', 'z' - 'a' + 1).Select(i => (char)i).ToArray();
+
             for(int i = 0; i < components.Length; i++)
-                tempDict.Add(components[i], new DefaultCompletionData(components[i], "", 2));
+                tempDict.Add(components[i].ToString(), new DefaultCompletionData(components[i].ToString(), "", 2));
 
             //move all completion data to the output array
             ICompletionData[] cData = new ICompletionData[tempDict.Count];
