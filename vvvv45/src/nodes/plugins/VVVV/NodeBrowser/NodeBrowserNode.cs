@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.ComponentModel.Composition;
 
 using VVVV.Core;
+using VVVV.Core.Logging;
 using VVVV.Core.Collections;
 
 using VVVV.Core.View;
@@ -43,6 +44,8 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		[Import]
 		public INodeBrowserHost NodeBrowserHost {get; set;}
+		[Import]
+		public ILogger FLogger {get; set;}
 		
 		private INodeInfoFactory FNodeInfoFactory;
 		public INodeInfoFactory NodeInfoFactory
@@ -333,6 +336,12 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		public void NodeInfoUpdatedCB(object sender, INodeInfo nodeInfo)
 		{
+		    string nodeVersion = nodeInfo.Version;
+
+			//don't include legacy or ignored nodes in the list
+			if (((!string.IsNullOrEmpty(nodeVersion)) && (nodeVersion.ToLower().Contains("legacy"))) || (nodeInfo.Ignore))
+				return;
+			
 			FTagPanel.Update(nodeInfo);
 			FClonePanel.Update(nodeInfo);
 			FCategoryPanel.Update(nodeInfo);

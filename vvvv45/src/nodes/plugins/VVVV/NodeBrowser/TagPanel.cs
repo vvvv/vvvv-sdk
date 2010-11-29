@@ -1086,10 +1086,6 @@ namespace VVVV.Nodes.NodeBrowser
             if (FHoverLine > -1)
             {
                 //draw current selection
-                /*string sel = FRichTextBox.Lines[FHoverLine];
-				FRichTextBox.SelectionStart = FRichTextBox.Text.IndexOf(sel);
-				FRichTextBox.SelectionLength = sel.Length;
-                 */
                 int offset = 0;
                 for (int i = 0; i < FHoverLine; i++)
                     offset += FRichTextBox.Lines[i].Length;
@@ -1124,11 +1120,6 @@ namespace VVVV.Nodes.NodeBrowser
                     using (SolidBrush b = new SolidBrush(CHoverColor))
                         e.Graphics.FillRectangle(b, new Rectangle(0, y-4, 21, CLineHeight));
                 
-                /*
-				if (FNodeDict.ContainsKey(FSelectionList[index].Trim()))
-				{
-					NodeType nodeType = FNodeDict[FSelectionList[index].Trim()].Type;
-                 */
                 var nodeType = FSelectionList[index].Type;
                 {
                     using (SolidBrush b = new SolidBrush(Color.Black))
@@ -1176,11 +1167,6 @@ namespace VVVV.Nodes.NodeBrowser
                             }
                     }
                 }
-                /*
-				else
-					using (SolidBrush b = new SolidBrush(Color.Black))
-						e.Graphics.DrawString("V", FRichTextBox.Font, b, 5, y-3, StringFormat.GenericDefault);
-                 */
             }
         }
         
