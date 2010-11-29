@@ -635,10 +635,8 @@ namespace VVVV.Hosting
 		//check if there is a valid node info in cache
 		public bool HasCachedNodeInfos(string filename)
 		{
-			return
-				FNodeInfoCache.ContainsKey(filename) ||
-				(FDeserializedNodeInfoCache.ContainsKey(filename) &&
-				 (File.GetLastWriteTime(filename) < File.GetLastWriteTime(CacheFileName)));
+			return (FNodeInfoCache.ContainsKey(filename) || FDeserializedNodeInfoCache.ContainsKey(filename)) &&
+				   (File.GetLastWriteTime(filename) < File.GetLastWriteTime(CacheFileName));
 		}
 		
 		//return node infos from cache
