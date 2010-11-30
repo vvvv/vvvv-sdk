@@ -429,13 +429,14 @@ namespace VVVV.Hosting.Factories
 			
 			// The following Open will trigger a call by vvvv to IInternalHDEHost.ExtractNodeInfos()
 			// Force the hde host to collect node infos from us only.
+			var hdeHost = FHDEHost as HDEHost;
 			var addonFactories = new List<IAddonFactory>(FHDEHost.AddonFactories);
 			try
 			{
 				FMoveToLine = line;
 				FNodeToAttach = nodeToAttach;
 				
-				((HDEHost) FHDEHost).InvalidateCache(filename);
+				hdeHost.InvalidateCache(filename);
 				FHDEHost.AddonFactories.Clear();
 				FHDEHost.AddonFactories.Add(this);
 				FHDEHost.Open(filename, false, window);
@@ -444,6 +445,8 @@ namespace VVVV.Hosting.Factories
 			{
 				FHDEHost.AddonFactories.Clear();
 				FHDEHost.AddonFactories.AddRange(addonFactories);
+				foreach (var factory in addonFactories)
+					factory.ExtractNodeInfos(filename, null).ToList();
 			}
 		}
 		

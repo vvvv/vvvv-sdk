@@ -577,6 +577,8 @@ namespace VVVV.Hosting
 				if (factory is EffectsFactory)
 					break;
 			}
+			
+			factory_NodeInfoAdded(sender, info);
 		}
 		
 		protected Assembly ResolveAssemblyCB(object sender, ResolveEventArgs args)
@@ -635,8 +637,8 @@ namespace VVVV.Hosting
 		//check if there is a valid node info in cache
 		public bool HasCachedNodeInfos(string filename)
 		{
-			return (FNodeInfoCache.ContainsKey(filename) || FDeserializedNodeInfoCache.ContainsKey(filename)) &&
-				   (File.GetLastWriteTime(filename) < File.GetLastWriteTime(CacheFileName));
+			return FNodeInfoCache.ContainsKey(filename) || (FDeserializedNodeInfoCache.ContainsKey(filename) &&
+			      (File.GetLastWriteTime(filename) < File.GetLastWriteTime(CacheFileName)));
 		}
 		
 		//return node infos from cache
