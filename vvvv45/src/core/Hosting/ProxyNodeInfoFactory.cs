@@ -472,6 +472,17 @@ namespace VVVV.Hosting
 			return FInternalToProxyMap[nodeInfo];
 		}
 		
+		public bool UpdateNodeInfo(INodeInfo nodeInfo, string name, string category, string version, string filename)
+		{
+			nodeInfo = ToInternal(nodeInfo);
+			return FFactory.UpdateNodeInfo(nodeInfo, name, category, version, filename);
+		}
+		
+		public bool ContainsKey(string name, string category, string version, string filename)
+		{
+			return FFactory.ContainsKey(name, category, version, filename);
+		}
+		
 		// This is more of a hack. It ensures that the cache of HDEHost
 		// gets updated before vvvv gets a chance to call ExtractNodeInfos
 		// on HDEHost. Better way would be to move the caching stuff here...
