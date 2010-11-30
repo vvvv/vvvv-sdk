@@ -88,6 +88,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
             //hlsl reference: only inside of single {}
             //semantics: only directly after :
             
+            //hold a tempDict to prevent from double entries
             var tempDict = new Dictionary<string, DefaultCompletionData>();
             
             //parse ParameterDescription
@@ -96,6 +97,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
             if (project == null)
                 return new ICompletionData[0];
             
+            //add all input pins names
             var inputs = project.ParameterDescription.Split(new char[1]{'|'});
             foreach (var input in inputs)
             {
@@ -115,6 +117,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
                 }
             }
             
+            //add all intrinsic hlsl functions
             foreach(var function in FHLSLReference)
             {
                 var pos = function.Key.IndexOf("(");
@@ -125,8 +128,10 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
                     tempDict.Add(text.ToLower(), new DefaultCompletionData(text, function.Key + "\n" + function.Value, 1));
             }
             
+            //add all types
             foreach(var type in FTypeReference)
-                tempDict.Add(type.Key.ToLower(), new DefaultCompletionData(type.Key, type.Value, 0));
+                if (!tempDict.ContainsKey(type.Key.ToLower()))
+                    tempDict.Add(type.Key.ToLower(), new DefaultCompletionData(type.Key, type.Value, 0));
             
             //add all words of the text not part of a comment and not yet in the dict                             
             Regex rx = new Regex(@"^[A-Za-z_]\w+$");
@@ -148,9 +153,9 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
             
             //add all letters of the alphabet
             char[] components = Enumerable.Range('a', 'z' - 'a' + 1).Select(i => (char)i).ToArray();
-
             for(int i = 0; i < components.Length; i++)
-                tempDict.Add(components[i].ToString(), new DefaultCompletionData(components[i].ToString(), "", 2));
+                if (!tempDict.ContainsKey(components[i].ToString()))
+                    tempDict.Add(components[i].ToString(), new DefaultCompletionData(components[i].ToString(), "", 2));
 
             //move all completion data to the output array
             ICompletionData[] cData = new ICompletionData[tempDict.Count];
