@@ -32,6 +32,8 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			if (IsChanged)
 			{
+				SliceCount = FEnumInputPin.SliceCount;
+				
 				for (int i = 0; i < FSliceCount; i++)
 				{
 					int ord;
