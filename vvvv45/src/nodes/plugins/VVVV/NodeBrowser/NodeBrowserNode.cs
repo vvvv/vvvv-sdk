@@ -321,11 +321,8 @@ namespace VVVV.Nodes.NodeBrowser
 		#region INodeInfoFactory events
 		public void NodeInfoAddedCB(object sender, INodeInfo nodeInfo)
 		{
-			string nodeVersion = nodeInfo.Version;
-
-			//don't include legacy or ignored nodes in the list
-			if (((!string.IsNullOrEmpty(nodeVersion)) && (nodeVersion.ToLower().Contains("legacy"))) || (nodeInfo.Ignore))
-				return;
+			//don't include ignored nodes in the list
+			if (nodeInfo.Ignore) return;
 			
 			FTagPanel.Add(nodeInfo);
 			FClonePanel.Add(nodeInfo);
@@ -336,12 +333,6 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		public void NodeInfoUpdatedCB(object sender, INodeInfo nodeInfo)
 		{
-		    string nodeVersion = nodeInfo.Version;
-
-			//don't include legacy or ignored nodes in the list
-			if (((!string.IsNullOrEmpty(nodeVersion)) && (nodeVersion.ToLower().Contains("legacy"))) || (nodeInfo.Ignore))
-				return;
-			
 			FTagPanel.Update(nodeInfo);
 			FClonePanel.Update(nodeInfo);
 			FCategoryPanel.Update(nodeInfo);
