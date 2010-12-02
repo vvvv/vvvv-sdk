@@ -61,19 +61,19 @@ namespace VVVV.Hosting.Factories
                 
                 nodeInfo.BeginUpdate();
                 nodeInfo.Type = NodeType.Module;
+                nodeInfo.InitialComponentMode = TComponentMode.Hidden;                    
             }
-            else
+            else //patch
             {
                 //create node info and read matches
                 nodeInfo = FNodeInfoFactory.CreateNodeInfo(Path.GetFileName(filename), "", "", filename);
                 
                 nodeInfo.BeginUpdate();
                 nodeInfo.Type = NodeType.Patch;
+                nodeInfo.InitialComponentMode = TComponentMode.InAWindow;
             }
                 
             nodeInfo.Factory = this;
-            nodeInfo.InitialBoxSize = new System.Drawing.Size(320, 240);
-            nodeInfo.InitialWindowSize = new System.Drawing.Size(600, 400);
             
             try
             {
