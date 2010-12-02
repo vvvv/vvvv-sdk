@@ -16,23 +16,23 @@ namespace VVVV.Hosting.Factories
     /// Effects factory, parses and watches the effect directory
     /// </summary>
     [Export(typeof(IAddonFactory))]
-    public class ModulesFactory : AbstractFileFactory<INode>
+    public class PatchFactory : AbstractFileFactory<INode>
     {
         private string FDTD = "";
         
         [Import]
-    	protected ILogger Logger { get; set; }
+        protected ILogger Logger { get; set; }
         
-        public ModulesFactory()
-        	: base(".v4p")
+        public PatchFactory()
+            : base(".v4p")
         {
         }
         
         public override string JobStdSubPath {
-			get {
-				return "modules";
-			}
-		}
+            get {
+                return "modules";
+            }
+        }
 
         //create a node info from a filename
         protected override IEnumerable<INodeInfo> LoadNodeInfos(string filename)
@@ -44,20 +44,33 @@ namespace VVVV.Hosting.Factories
             
             //check filename structure
             string fn = Path.GetFileNameWithoutExtension(filename);
-            if (!Regex.IsMatch(fn, @"^.+\s\(.+\)$")) yield break;
             
-            //match the filename
-            var match = Regex.Match(fn, @"(\S+) \((\S+)(?: ([^)]*))?\)");
-            
-            //create node info and read matches
-            var nodeInfo = FNodeInfoFactory.CreateNodeInfo(
-            	match.Groups[1].Value,
-            	match.Groups[2].Value,
-            	match.Groups[3].Value,
-            	filename);
-            
-            nodeInfo.BeginUpdate();
-            nodeInfo.Type = NodeType.Module;
+            INodeInfo nodeInfo;
+            //check filename structure to see if this is a module or an ordinary patch
+            if (Regex.IsMatch(fn, @"^.+\s\(.+\)$"))
+            {
+                //match the filename
+                var match = Regex.Match(fn, @"(\S+) \((\S+)(?: ([^)]*))?\)");
+                
+                //create node info and read matches
+                nodeInfo = FNodeInfoFactory.CreateNodeInfo(
+                    match.Groups[1].Value,
+                    match.Groups[2].Value,
+                    match.Groups[3].Value,
+                    filename);
+                
+                nodeInfo.BeginUpdate();
+                nodeInfo.Type = NodeType.Module;
+            }
+            else
+            {
+                //create node info and read matches
+                nodeInfo = FNodeInfoFactory.CreateNodeInfo(Path.GetFileName(filename), "", "", filename);
+                
+                nodeInfo.BeginUpdate();
+                nodeInfo.Type = NodeType.Patch;
+            }
+                
             nodeInfo.Factory = this;
             nodeInfo.InitialBoxSize = new System.Drawing.Size(320, 240);
             nodeInfo.InitialWindowSize = new System.Drawing.Size(600, 400);
@@ -92,7 +105,7 @@ namespace VVVV.Hosting.Factories
             }
             finally
             {
-            	nodeInfo.CommitUpdate();
+                nodeInfo.CommitUpdate();
             }
             
             yield return nodeInfo;
@@ -100,32 +113,32 @@ namespace VVVV.Hosting.Factories
         
         protected override bool CreateNode(INodeInfo nodeInfo, INode nodeHost)
         {
-        	// Will never get called.
-        	return true;
+            // Will never get called.
+            return true;
         }
         
         protected override bool DeleteNode(INodeInfo nodeInfo, INode nodeHost)
         {
-        	// Will never get called.
-        	return true;
+            // Will never get called.
+            return true;
         }
         
         //get the dtd string
         private void LoadDTD()
         {
-        	var path = Shell.CallerPath.ConcatPath(@"..");
-        	path = Path.GetFullPath(path);
+            var path = Shell.CallerPath.ConcatPath(@"..");
+            path = Path.GetFullPath(path);
             var files = Directory.GetFiles(path, "*.dtd");
             
             if (files.Length>0)
-	            using (StreamReader sr = new StreamReader(files[0]))
-	            {
-	                //add the DOCTYPE definition to place the DTD inline
-	                FDTD = sr.ReadLine();
-	                FDTD += @"<!DOCTYPE PATCH [";
-	                FDTD += sr.ReadToEnd();
-	                FDTD += @"]>";
-	            }
+                using (StreamReader sr = new StreamReader(files[0]))
+            {
+                //add the DOCTYPE definition to place the DTD inline
+                FDTD = sr.ReadLine();
+                FDTD += @"<!DOCTYPE PATCH [";
+                FDTD += sr.ReadToEnd();
+                FDTD += @"]>";
+            }
         }
     }
 }

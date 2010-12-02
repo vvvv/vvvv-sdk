@@ -51,7 +51,13 @@ namespace VVVV.Hosting.Factories
 	public class NodeCollection
 	{
 		List<SearchPath> FPaths = new List<SearchPath>();
-		
+		public List<SearchPath> Paths
+		{
+		    get
+		    {
+		        return FPaths;
+		    }
+		}
 		[Import]
 		protected ILogger Flogger;
 
