@@ -27,6 +27,13 @@ namespace VVVV.PluginInterfaces.V2
 			FSliceCount = original.Count;
 		}
 		
+		public Spread(ISpread<T> original)
+			: this(original.SliceCount)
+		{
+			for (int i = 0; i < SliceCount; i++)
+				FData[i] = original[i];
+		}
+		
 		public virtual T this[int index] 
 		{
 			get 

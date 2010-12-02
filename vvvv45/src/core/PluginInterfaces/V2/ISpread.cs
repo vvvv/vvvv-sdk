@@ -72,14 +72,24 @@ namespace VVVV.PluginInterfaces.V2
         
         public static void AssignFrom<T>(this ISpread<T> spread, IEnumerable<T> enumerable)
         {
-        	spread.SliceCount = enumerable.Count();
-        	int i=0;
-        	foreach	(var entry in enumerable)
-        	{
-        		spread[i] = entry;
-        		i++;
-        	}
-        }
+    		spread.SliceCount = enumerable.Count();
         	
+        	int i = 0;
+        	foreach	(var entry in enumerable)
+        		spread[i++] = entry;
+        }
+        
+        public static void AssignFrom<T>(this ISpread<T> spread, IList<T> list)
+        {
+    		spread.SliceCount = list.Count;
+        	
+    		for (int i = 0; i < list.Count; i++)
+    			spread[i] = list[i];
+        }
+        
+        public static ISpread<T> Clone<T>(this ISpread<T> spread)
+        {
+        	return new Spread<T>(spread);
+        }
 	}
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.ComponentModel.Composition;
+using System.Collections;
 using System.Collections.Generic;
 
 using VVVV.PluginInterfaces.V1;
@@ -13,147 +14,83 @@ using VVVV.Hosting.Pins;
 
 namespace VVVV.Nodes
 {
-    public class Queue<T> : IPluginEvaluate
-    {
-        [Input("Input")]
-        protected ISpread<T> Input;
-        
-        [Input("do Insert", IsSingle = true)]
-        protected ISpread<bool> DoInsert;
-      
-        [Input("Frame Count", IsSingle = true, MinValue = 0, DefaultValue = 1)]
-        protected ISpread<int> FrameCount;
+	public class QueueNode<T> : IPluginEvaluate
+	{
+		[Input("Input")]
+		protected ISpread<T> FInput;
+		
+		[Input("do Insert", IsSingle = true)]
+		protected ISpread<bool> FDoInsert;
+		
+		[Input("Frame Count", IsSingle = true, MinValue = 0, DefaultValue = 1)]
+		protected ISpread<int> FFrameCount;
 
-        
-        [Output("Output")]
-        protected ISpread<ISpread<T>> Output;
+		[Output("Output")]
+		protected ISpread<ISpread<T>> FOutput;
 
-        List<List<T>> FBuffer = new List<List<T>>();        
-        
-        public void Evaluate(int SpreadMax)
-        {
-        	if (DoInsert[0])
-        		FBuffer.Insert(0, Input.ToList());
+		List<ISpread<T>> FBuffer = new List<ISpread<T>>();
+		
+		public void Evaluate(int SpreadMax)
+		{
+        	if (FDoInsert[0])
+        		FBuffer.Insert(0, FInput.Clone());
 			
-        	var frameCount = FrameCount[0];        	
+        	var frameCount = FFrameCount[0];
         	if (FBuffer.Count > frameCount)
-        		FBuffer.RemoveRange(frameCount, FBuffer.Count-frameCount);
-        	        	
-        	Output.SliceCount = FBuffer.Count;
-        	
-            for (var i = 0; i < FBuffer.Count; i++)
-				Output[i] = FBuffer[i].ToSpread();
-        }
-    }
-
-    
-    [PluginInfo(Name = "Queue",
-                Category = "Spreads",
-                Version = "",
-                Tags = "",
-                AutoEvaluate = true
-                )]
-    public class ValueQueue : Queue<double>
-    {
-    }
-        
-    [PluginInfo(Name = "Queue",
-                Category = "Color",
-                Version = "",
-                Tags = "",
-                AutoEvaluate = true
-                )]
-    public class ColorQueue : Queue<RGBAColor>
-    {
-    }        
-    
-    [PluginInfo(Name = "Queue",
-                Category = "String",
-                Version = "",
-                Tags = "",
-                AutoEvaluate = true
-                )]
-    public class StringQueue : Queue<string>
-    {
-    }        
-    
-    [PluginInfo(Name = "Queue",
-                Category = "Transform",
-                Version = "",
-                Tags = "",
-                AutoEvaluate = true
-                )]
-    public class TransformQueue : Queue<Matrix4x4>
-    {
-    }        
-    
-    [PluginInfo(Name = "Queue",
-                Category = "Enumerations",
-                Version = "",
-                Tags = "",
-                AutoEvaluate = true
-                )]
-    public class EnumQueue : Queue<EnumEntry>
-    {
-    }        
-        
-    
-    
-    
-//    public class Buffer<T> : IPluginEvaluate
-//    {
-//        [Input("Input")]
-//        ISpread<ISpread<T>> Input;
-//        
-//        [Input("do Insert")]
-//        ISpread<bool> DoInsert;
-//
-//        [Input("Position")]
-//        ISpread<int> Position;
-//
-//        
-//        [Input("Frame Count", SliceMode = SliceMode.Single)]
-//        ISpread<int> FrameCount;
-//
-//        [Output("Output")]
-//        ISpread<ISpread<T>> Output;
-//
-//        [Output("Frames")]
-//        ISpread<int> FrameSlices;
-//        
-//        List<T> FBuffer = new List<T>();        
-//        
-//        public void Evaluate(int SpreadMax)
-//        {
-//        	SpreadMax = Input.CombineWith(DoInsert.CombineWith(Position));
-//        		
-//        	for (var i = 0; i<SpreadMax; i++)
-//        	{
-//	        	if (DoInsert[i])
-//	        	{
-//	        		FBuffer.InsertRange(Position[i], Input[i]);
-//	        	
-//	        		// adjust positions of still to be added spreads, 
-//	        		// since user specified index refers to original spread
-//		        	for (var j = i+1; i<SpreadMax; j++)
-//		        	{
-//		        		if (Position[j] >= Position[i])
-//		        			Position[j] += Input[i].SliceCount;
-//		        	}
-//	        	}
-//        	}
-//        	
-//        	
-//        	FBuffer.Count = FrameCount
-//        	
-//        	
-//        	Output.SliceCount = Input.SliceCount;
-//
-//            for (var i = 0; i < Input.SliceCount; i++)
-//            {
-//            	Output[i] = Input[i];
-//            }
-//        }
-//    }
-
+        		FBuffer.RemoveRange(frameCount, FBuffer.Count - frameCount);
+			
+			FOutput.AssignFrom(FBuffer);
+		}
+	}
+	
+	
+	[PluginInfo(Name = "Queue",
+	            Category = "Spreads",
+	            Version = "",
+	            Tags = "",
+	            AutoEvaluate = true
+	           )]
+	public class ValueQueueNode : QueueNode<double>
+	{
+	}
+	
+	[PluginInfo(Name = "Queue",
+	            Category = "Color",
+	            Version = "",
+	            Tags = "",
+	            AutoEvaluate = true
+	           )]
+	public class ColorQueueNode : QueueNode<RGBAColor>
+	{
+	}
+	
+	[PluginInfo(Name = "Queue",
+	            Category = "String",
+	            Version = "",
+	            Tags = "",
+	            AutoEvaluate = true
+	           )]
+	public class StringQueueNode : QueueNode<string>
+	{
+	}
+	
+	[PluginInfo(Name = "Queue",
+	            Category = "Transform",
+	            Version = "",
+	            Tags = "",
+	            AutoEvaluate = true
+	           )]
+	public class TransformQueueNode : QueueNode<Matrix4x4>
+	{
+	}
+	
+	[PluginInfo(Name = "Queue",
+	            Category = "Enumerations",
+	            Version = "",
+	            Tags = "",
+	            AutoEvaluate = true
+	           )]
+	public class EnumQueueNode : QueueNode<EnumEntry>
+	{
+	}
 }
