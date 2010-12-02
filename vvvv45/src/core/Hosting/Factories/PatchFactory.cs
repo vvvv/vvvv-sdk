@@ -66,7 +66,7 @@ namespace VVVV.Hosting.Factories
             else //patch
             {
                 //create node info and read matches
-                nodeInfo = FNodeInfoFactory.CreateNodeInfo(Path.GetFileName(filename), "", "", filename);
+                nodeInfo = FNodeInfoFactory.CreateNodeInfo(Path.GetFileNameWithoutExtension(filename), "", "", filename);
                 
                 nodeInfo.BeginUpdate();
                 nodeInfo.Type = NodeType.Patch;
