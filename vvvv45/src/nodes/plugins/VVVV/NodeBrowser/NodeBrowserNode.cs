@@ -11,8 +11,8 @@ using System.ComponentModel.Composition;
 using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.Core.Collections;
-
 using VVVV.Core.View;
+using VVVV.Hosting.Factories;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -46,6 +46,8 @@ namespace VVVV.Nodes.NodeBrowser
 		public INodeBrowserHost NodeBrowserHost {get; set;}
 		[Import]
 		public ILogger FLogger {get; set;}
+		[Import]
+		public NodeCollection NodeCollection;
 		
 		private INodeInfoFactory FNodeInfoFactory;
 		public INodeInfoFactory NodeInfoFactory
@@ -55,12 +57,13 @@ namespace VVVV.Nodes.NodeBrowser
 			{
 				FNodeInfoFactory = value;
 
-				foreach (var nodeInfo in FNodeInfoFactory.NodeInfos)
-					NodeInfoAddedCB(FNodeInfoFactory, nodeInfo);
-
 				FNodeInfoFactory.NodeInfoAdded += NodeInfoAddedCB;
 				FNodeInfoFactory.NodeInfoUpdated += NodeInfoUpdatedCB;
 				FNodeInfoFactory.NodeInfoRemoved += NodeInfoRemovedCB;
+				
+				foreach (var nodeInfo in FNodeInfoFactory.NodeInfos)
+			        if (!nodeInfo.Ignore)
+			            FCategoryPanel.Add(nodeInfo);
 			}
 		}
 		
@@ -74,7 +77,6 @@ namespace VVVV.Nodes.NodeBrowser
 		private bool FDisposed = false;
 		
 		//further fields
-		private bool FNeedsRedraw = false;
 		public string CurrentDir
 		{
 			get
@@ -95,7 +97,6 @@ namespace VVVV.Nodes.NodeBrowser
 					return string.Empty;
 			}
 		}
-
 		#endregion field declaration
 		
 		#region constructor/destructor
@@ -110,13 +111,12 @@ namespace VVVV.Nodes.NodeBrowser
 		{
 			DefaultConstructor();
 			
+			NodeInfoFactory = nodeInfoFactory;
+			
 			//register as IWindowSelectionListener at hdehost
 			HDEHost = host;
 			HDEHost.AddListener(this);
 			
-			NodeInfoFactory = nodeInfoFactory;
-			
-			//init category view
 			FCategoryPanel.Redraw();
 		}
 		
@@ -130,6 +130,9 @@ namespace VVVV.Nodes.NodeBrowser
 			FClonePanel.Dock = DockStyle.Fill;
 			FCategoryPanel.Dock = DockStyle.Fill;
 			FTagPanel.Dock = DockStyle.Fill;
+			
+			FClonePanel.NodeBrowser = this;
+			FTagPanel.NodeBrowser = this;
 		}
 		
 		// Dispose(bool disposing) executes in two distinct scenarios.
@@ -250,12 +253,12 @@ namespace VVVV.Nodes.NodeBrowser
 						
 						FClonePanel.Visible = true;
 						
-						var path = HDEHost.ExePath;
-						if (!string.IsNullOrEmpty(CurrentDir))
-							path = CurrentDir;
+						var path = CurrentDir;
 						
-						if (nodeInfo.Factory != null)
+						if (nodeInfo.Factory != null && !string.IsNullOrEmpty(path))
 							path = path.ConcatPath(nodeInfo.Factory.JobStdSubPath);
+						else
+						    path = "choose a directory to clone to...";
 						FClonePanel.Initialize(nodeInfo, path);
 						break;
 					}
@@ -297,7 +300,7 @@ namespace VVVV.Nodes.NodeBrowser
 		#region INodeBrowser
 		public void Initialize(string text)
 		{
-			FTagPanel.Initialize(this, text);
+			FTagPanel.Initialize(text);
 			FNodeBrowser_OnPanelChange(NodeBrowserPage.ByTags, null);
 		}
 		
@@ -324,29 +327,23 @@ namespace VVVV.Nodes.NodeBrowser
 			//don't include ignored nodes in the list
 			if (nodeInfo.Ignore) return;
 			
-			FTagPanel.Add(nodeInfo);
-			FClonePanel.Add(nodeInfo);
+			FTagPanel.NeedsUpdate = true;
 			FCategoryPanel.Add(nodeInfo);
-			
-			FNeedsRedraw = true;
 		}
 		
 		public void NodeInfoUpdatedCB(object sender, INodeInfo nodeInfo)
 		{
-			FTagPanel.Update(nodeInfo);
-			FClonePanel.Update(nodeInfo);
+			FTagPanel.NeedsUpdate = true;
 			FCategoryPanel.Update(nodeInfo);
-
-			FNeedsRedraw = true;
 		}
 		
 		public void NodeInfoRemovedCB(object sender, INodeInfo nodeInfo)
 		{
-			FTagPanel.Remove(nodeInfo);
-			FClonePanel.Remove(nodeInfo);
-			FCategoryPanel.Remove(nodeInfo);
+		    //nothing todo if nodeinfo is ignored anyway
+			if (nodeInfo.Ignore) return;
 			
-			FNeedsRedraw = true;
+			FTagPanel.NeedsUpdate = true;
+			FCategoryPanel.Remove(nodeInfo);
 		}
 		#endregion INodeInfoFactory events
 		
@@ -355,16 +352,8 @@ namespace VVVV.Nodes.NodeBrowser
 		{
 			var windowtype = window.GetWindowType();
 			
-			if ((windowtype == WindowType.Patch) || (windowtype == WindowType.Module))
-			{
+			if ((windowtype == WindowType.Patch || windowtype == WindowType.Module) && CurrentPatchWindow != window)
 				CurrentPatchWindow = window;
-				
-				//cant do in thread. would not update outside IDE
-				if (FNeedsRedraw) //as doesn't show localfiles needs no redraw on pathchange
-					FCategoryPanel.Redraw();
-				
-				FNeedsRedraw = false;
-			}
 		}
 		#endregion IWindowSelectionListener
 		

@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region usings
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Linq;
+using System.IO;
 
 using VVVV.PluginInterfaces.V2;
+#endregion usings
 
 namespace VVVV.Nodes.NodeBrowser
 {
@@ -16,6 +20,8 @@ namespace VVVV.Nodes.NodeBrowser
         
         public event ClonePanelEventHandler Closed;
         private INodeInfo FCloneInfo;
+        
+        public NodeBrowserPluginNode NodeBrowser {get; set;}
         
         public ClonePanel()
         {
@@ -113,13 +119,21 @@ namespace VVVV.Nodes.NodeBrowser
         		return;
         	}
         	
+        	if (!Path.IsPathRooted(FPathTextBox.Text))
+        	{
+        		FCloneButton.Enabled = false;
+        		return;
+        	}
+        	    
             string systemName = name + " (";
             if (string.IsNullOrEmpty(version))
                 systemName += category + ")";
             else
                 systemName += category + " " + version + ")";
             
-            if (FSystemNameDict.ContainsKey(systemName))
+            var nodeinfos = NodeBrowser.NodeInfoFactory.NodeInfos.ToList();
+            var nodeinfo = nodeinfos.Find(delegate(INodeInfo ni) {return ni.Systemname == systemName;});
+            if (nodeinfo != null)
                 FCloneButton.Enabled = false;
             else
                 FCloneButton.Enabled = true;
@@ -159,6 +173,7 @@ namespace VVVV.Nodes.NodeBrowser
         	if (result == DialogResult.OK)
         	{
         		FPathTextBox.Text = FFolderBrowserDialog.SelectedPath;
+        		CheckNodeName();
         	}
         }
     }

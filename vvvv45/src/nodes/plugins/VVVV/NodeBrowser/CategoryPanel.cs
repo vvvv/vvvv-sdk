@@ -22,7 +22,9 @@ namespace VVVV.Nodes.NodeBrowser
 		public event CreateNodeHandler OnShowHelpPatch;
 		
 		Dictionary<string, string> FCategoryDict = new Dictionary<string, string>();
-        CategoryList FCategoryList = new CategoryList();    
+        CategoryList FCategoryList = new CategoryList();  
+        
+        public bool NeedsUpdate {get; set;}
 		
 		public CategoryPanel()
 		{
@@ -72,8 +74,16 @@ namespace VVVV.Nodes.NodeBrowser
             FCategoryTreeViewer.Input = FCategoryList;
 		}
 		
+		public void Redraw()
+		{
+		    FCategoryTreeViewer.Reload();
+		}
+		
 		public void Add(INodeInfo nodeInfo)
 		{
+		    if (nodeInfo.Type == NodeType.Patch || nodeInfo.Type == NodeType.Text)
+		        return;
+		    
 			//insert nodeInfo to FCategoryList
             bool added = false;
             foreach (CategoryEntry ce in FCategoryList)
@@ -97,11 +107,13 @@ namespace VVVV.Nodes.NodeBrowser
                 catEntry.Add(nodeInfo);
                 FCategoryList.Add(catEntry);
             }
+            
+            NeedsUpdate = true;
 		}
 		
 		public void Update(INodeInfo nodeInfo)
 		{
-			
+			NeedsUpdate = true;
 		}
 		
 		public void Remove(INodeInfo nodeInfo)
@@ -117,11 +129,8 @@ namespace VVVV.Nodes.NodeBrowser
             
             if ((catEntry != null) && (catEntry.Count == 0))
                 FCategoryList.Remove(catEntry);
-		}
-		
-		public void Redraw()
-		{
-			FCategoryTreeViewer.Reload();
+            
+            NeedsUpdate = true;
 		}
 
         public void BeforeHide()
@@ -138,6 +147,11 @@ namespace VVVV.Nodes.NodeBrowser
 		{
 			FCategoryTreeViewer.HideToolTip();
 			FCategoryTreeViewer.Focus();
+			if (Visible && NeedsUpdate)
+			{
+			    FCategoryTreeViewer.Reload();
+			    NeedsUpdate = false;
+			}
 		}
 		
 		void FCategoryTreeViewerMouseDown(IModelMapper sender, MouseEventArgs e)
