@@ -244,17 +244,17 @@ namespace VVVV.Hosting.Factories
 				DirectoryChanged(e.FullPath);*/
 		}
 		
-		void FDirectoryWatcher_Created(object sender, FileSystemEventArgs e)
-		{
+		protected virtual void FDirectoryWatcher_Created(object sender, FileSystemEventArgs e)
+		{			
 			AddFile(e.FullPath);
 		}
 		
-		void FDirectoryWatcher_Deleted(object sender, FileSystemEventArgs e)
+		protected virtual void FDirectoryWatcher_Deleted(object sender, FileSystemEventArgs e)
 		{
 			RemoveFile(e.FullPath);
 		}
 		
-		void FDirectoryWatcher_Renamed(object sender, RenamedEventArgs e)
+		protected virtual void FDirectoryWatcher_Renamed(object sender, RenamedEventArgs e)
 		{
 			RemoveFile(e.OldFullPath);
 			AddFile(e.FullPath);
