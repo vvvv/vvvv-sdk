@@ -115,9 +115,9 @@ namespace VVVV.Hosting.Factories
 						Path.GetFileName(filename),
 						"Editor",
 						string.Empty,
-						filename);
+						filename,
+						true);
 					
-					nodeInfo.BeginUpdate();
 					nodeInfo.Type = NodeType.Text;
 					nodeInfo.Factory = this;
 					nodeInfo.Ignore = true;

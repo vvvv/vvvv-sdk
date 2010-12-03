@@ -136,8 +136,9 @@ namespace VVVV.Hosting.Factories
 		
 		private INodeInfo CreateDummyNodeInfo(string filename)
 		{
-			var nodeInfo = FNodeInfoFactory.CreateNodeInfo("Dummy", "Assembly", "", filename);
+			var nodeInfo = FNodeInfoFactory.CreateNodeInfo("Dummy", "Assembly", "", filename, true);
 			nodeInfo.Ignore = true;
+			nodeInfo.CommitUpdate();
 			return nodeInfo;
 		}
 		
@@ -258,12 +259,12 @@ namespace VVVV.Hosting.Factories
 			{
 				var metadata = pluginExport.Metadata;
 				var nodeInfo = FNodeInfoFactory.CreateNodeInfo(
-					metadata.Name, 
-					metadata.Category, 
-					metadata.Version, 
-					sourcefilename);
+					metadata.Name,
+					metadata.Category,
+					metadata.Version,
+					sourcefilename,
+					true);
 				
-				nodeInfo.BeginUpdate();
 				nodeInfo.Shortcut = metadata.Shortcut;
 				nodeInfo.Author = metadata.Author;
 				nodeInfo.Help = metadata.Help;
@@ -323,12 +324,12 @@ namespace VVVV.Hosting.Factories
 							var pluginNodeInfo = (INodeInfo) info.GetValue(null, null);
 							
 							var nodeInfo = FNodeInfoFactory.CreateNodeInfo(
-								pluginNodeInfo.Name, 
-								pluginNodeInfo.Category, 
+								pluginNodeInfo.Name,
+								pluginNodeInfo.Category,
 								pluginNodeInfo.Version,
-								sourcefilename);
+								sourcefilename,
+								true);
 							
-							nodeInfo.BeginUpdate();
 							nodeInfo.UpdateFromNodeInfo(pluginNodeInfo);
 							nodeInfo.Arguments = type.Namespace + "." + type.Name;
 							
@@ -341,12 +342,12 @@ namespace VVVV.Hosting.Factories
 							var pluginInfo = (IPluginInfo) info.GetValue(null, null);
 							
 							var nodeInfo = FNodeInfoFactory.CreateNodeInfo(
-								pluginInfo.Name, 
-								pluginInfo.Category, 
+								pluginInfo.Name,
+								pluginInfo.Category,
 								pluginInfo.Version,
-								sourcefilename);
+								sourcefilename,
+								true);
 							
-							nodeInfo.BeginUpdate();
 							nodeInfo.UpdateFromPluginInfo(pluginInfo);
 							nodeInfo.Arguments = type.Namespace + "." + type.Name;
 							

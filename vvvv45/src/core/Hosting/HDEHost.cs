@@ -652,15 +652,14 @@ namespace VVVV.Hosting
 				{
 					foreach (var cachedInfo in FDeserializedNodeInfoCache[filename])
 					{
-						var newInfo = NodeInfoFactory.CreateNodeInfo(cachedInfo.Name, cachedInfo.Category, cachedInfo.Version, filename) as ProxyNodeInfo;
+						var newInfo = NodeInfoFactory.CreateNodeInfo(cachedInfo.Name, cachedInfo.Category, cachedInfo.Version, filename, true) as ProxyNodeInfo;
 						if (!cache.Contains(newInfo))
 						{
-							newInfo.BeginUpdate();
 							newInfo.UpdateFromNodeInfo(cachedInfo);
-							newInfo.CommitUpdate();
 							
 							cache.Add(newInfo);
 						}
+						newInfo.CommitUpdate();
 					}
 				}
 				

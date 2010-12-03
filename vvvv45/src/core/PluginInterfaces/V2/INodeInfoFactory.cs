@@ -16,8 +16,9 @@ namespace VVVV.PluginInterfaces.V2
 		/// <param name="category">The category of the node.</param>
 		/// <param name="version">The version of the node.</param>
 		/// <param name="filename">The absolute path to source file which contains this <see cref="INodeInfo">node info</see>.</param>
+		/// <param name="beginUpdate">Whether the NodeInfoAdded event should be supressed till CommitUpdate on node info is called.</param>
 		/// <returns>The newly created <see cref="INodeInfo">node info</see>.</returns>
-		INodeInfo CreateNodeInfo(string name, string category, string version, string filename);
+		INodeInfo CreateNodeInfo(string name, string category, string version, string filename, bool beginUpdate);
 		
 		/// <summary>
 		/// Updates the key of an existing <see cref="INodeInfo">node info</see>.

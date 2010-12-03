@@ -82,7 +82,6 @@ namespace VVVV.Hosting.Factories
 			
 			foreach (var nodeInfo in nodeInfos)
 			{
-				nodeInfo.BeginUpdate();
 				nodeInfo.Type = NodeType.Dynamic;
 				nodeInfo.UserData = project;
 				nodeInfo.CommitUpdate();

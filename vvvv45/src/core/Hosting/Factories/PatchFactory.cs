@@ -57,18 +57,17 @@ namespace VVVV.Hosting.Factories
                     match.Groups[1].Value,
                     match.Groups[2].Value,
                     match.Groups[3].Value,
-                    filename);
+                    filename,
+					true);
                 
-                nodeInfo.BeginUpdate();
                 nodeInfo.Type = NodeType.Module;
                 nodeInfo.InitialComponentMode = TComponentMode.Hidden;                    
             }
             else //patch
             {
                 //create node info and read matches
-                nodeInfo = FNodeInfoFactory.CreateNodeInfo(Path.GetFileNameWithoutExtension(filename), "", "", filename);
+                nodeInfo = FNodeInfoFactory.CreateNodeInfo(Path.GetFileNameWithoutExtension(filename), "", "", filename, true);
                 
-                nodeInfo.BeginUpdate();
                 nodeInfo.Type = NodeType.Patch;
                 nodeInfo.InitialComponentMode = TComponentMode.InAWindow;
             }

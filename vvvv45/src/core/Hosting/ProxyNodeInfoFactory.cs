@@ -16,9 +16,10 @@ namespace VVVV.Hosting
 		private INodeInfo FNodeInfo;
 		private bool FInUpdate;
 		
-		public ProxyNodeInfo(INodeInfo nodeInfo)
+		public ProxyNodeInfo(INodeInfo nodeInfo, bool beginUpdate)
 		{
 			FNodeInfo = nodeInfo;
+			FInUpdate = beginUpdate;
 			
 			Reload();
 		}
@@ -52,28 +53,16 @@ namespace VVVV.Hosting
 			
 			try
 			{
-				Arguments = FNodeInfo.Arguments;
-				Author = FNodeInfo.Author;
-				AutoEvaluate = FNodeInfo.AutoEvaluate;
-				Bugs = FNodeInfo.Bugs;
-				Category = FNodeInfo.Category;
-				Credits = FNodeInfo.Credits;
-				Filename = FNodeInfo.Filename;
-				Help = FNodeInfo.Help;
-				Ignore = FNodeInfo.Ignore;
-				InitialBoxSize = FNodeInfo.InitialBoxSize;
-				InitialComponentMode = FNodeInfo.InitialComponentMode;
-				InitialWindowSize = FNodeInfo.InitialWindowSize;
+				// Update all internal fields (private setter)
 				Name = FNodeInfo.Name;
-				Shortcut = FNodeInfo.Shortcut;
-				Systemname = FNodeInfo.Systemname;
-				Tags = FNodeInfo.Tags;
-				Type = FNodeInfo.Type;
-				UserData = FNodeInfo.UserData;
-				Factory = FNodeInfo.Factory;
-				Username = FNodeInfo.Username;
+				Category = FNodeInfo.Category;
 				Version = FNodeInfo.Version;
-				Warnings = FNodeInfo.Warnings;
+				Filename = FNodeInfo.Filename;
+				Systemname = FNodeInfo.Systemname;
+				Username = FNodeInfo.Username;
+				
+				// Use extension method to update all public fields
+				this.UpdateFromNodeInfo(FNodeInfo);
 			}
 			finally
 			{
@@ -466,9 +455,22 @@ namespace VVVV.Hosting
 			return FProxyToInternalMap[nodeInfo];
 		}
 		
-		public INodeInfo CreateNodeInfo(string name, string category, string version, string filename)
+		public INodeInfo CreateNodeInfo(string name, string category, string version, string filename, bool beginUpdate)
 		{
-			var nodeInfo = FFactory.CreateNodeInfo(name, category, version, filename);
+			var nodeInfo = FFactory.CreateNodeInfo(name, category, version, filename, beginUpdate);
+			
+			if (beginUpdate)
+			{
+				if (FInternalToProxyMap.ContainsKey(nodeInfo))
+					FInternalToProxyMap[nodeInfo].BeginUpdate();
+				else
+				{
+					var proxyNodeInfo = new ProxyNodeInfo(nodeInfo, beginUpdate);
+					FInternalToProxyMap[nodeInfo] = proxyNodeInfo;
+					FProxyToInternalMap[proxyNodeInfo] = nodeInfo;
+				}
+			}
+			
 			return FInternalToProxyMap[nodeInfo];
 		}
 		
@@ -504,10 +506,15 @@ namespace VVVV.Hosting
 		
 		public void NodeInfoAddedCB(INodeInfo nodeInfo)
 		{
-			var proxyNodeInfo = new ProxyNodeInfo(nodeInfo);
-			FInternalToProxyMap[nodeInfo] = proxyNodeInfo;
-			FProxyToInternalMap[proxyNodeInfo] = nodeInfo;
-			OnNodeInfoAdded(proxyNodeInfo);
+			if (FInternalToProxyMap.ContainsKey(nodeInfo))
+				OnNodeInfoAdded(FInternalToProxyMap[nodeInfo]);
+			else
+			{
+				var proxyNodeInfo = new ProxyNodeInfo(nodeInfo, false);
+				FInternalToProxyMap[nodeInfo] = proxyNodeInfo;
+				FProxyToInternalMap[proxyNodeInfo] = nodeInfo;
+				OnNodeInfoAdded(proxyNodeInfo);
+			}
 		}
 		
 		public void NodeInfoUpdatedCB(INodeInfo nodeInfo)
@@ -519,13 +526,12 @@ namespace VVVV.Hosting
 		
 		public void NodeInfoRemovedCB(INodeInfo nodeInfo)
 		{
+			var proxyNodeInfo = FInternalToProxyMap[nodeInfo];
+			FInternalToProxyMap.Remove(nodeInfo);
+			FProxyToInternalMap.Remove(proxyNodeInfo);
+			
 			if (!FInDestroyNodeInfo)
-			{
-				var proxyNodeInfo = FInternalToProxyMap[nodeInfo];
-				FInternalToProxyMap.Remove(nodeInfo);
-				FProxyToInternalMap.Remove(proxyNodeInfo);
 				OnNodeInfoRemoved(proxyNodeInfo);
-			}
 		}
 		
 		public event NodeInfoEventHandler NodeInfoAdded;

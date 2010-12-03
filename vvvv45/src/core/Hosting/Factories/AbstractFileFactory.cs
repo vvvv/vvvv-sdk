@@ -246,7 +246,8 @@ namespace VVVV.Hosting.Factories
 		
 		protected virtual void FDirectoryWatcher_Created(object sender, FileSystemEventArgs e)
 		{			
-			AddFile(e.FullPath);
+			if (File.Exists(e.FullPath))
+				AddFile(e.FullPath);
 		}
 		
 		protected virtual void FDirectoryWatcher_Deleted(object sender, FileSystemEventArgs e)
@@ -257,7 +258,8 @@ namespace VVVV.Hosting.Factories
 		protected virtual void FDirectoryWatcher_Renamed(object sender, RenamedEventArgs e)
 		{
 			RemoveFile(e.OldFullPath);
-			AddFile(e.FullPath);
+			if (File.Exists(e.FullPath))
+				AddFile(e.FullPath);
 		}
 		
 		#endregion directory and watcher

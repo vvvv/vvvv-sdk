@@ -91,9 +91,9 @@ namespace VVVV.Hosting.Factories
 				Path.GetFileNameWithoutExtension(filename),
 				"EX9.Effect",
 				string.Empty,
-				filename);
+				filename,
+				true);
 			
-			nodeInfo.BeginUpdate();
 			nodeInfo.Type = NodeType.Effect;
 			nodeInfo.Factory = this;
 			
