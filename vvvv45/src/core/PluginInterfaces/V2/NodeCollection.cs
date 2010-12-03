@@ -5,11 +5,9 @@ using System.ComponentModel.Composition;
 
 using VVVV.Core;
 using VVVV.Core.Logging;
-using VVVV.Hosting;
 using VVVV.PluginInterfaces.V1;
-using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.Hosting.Factories
+namespace VVVV.PluginInterfaces.V2
 {	
 	public class SearchPath
 	{
