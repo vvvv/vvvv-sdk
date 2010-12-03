@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta19.1.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\modules\vvvv group\Transform\NoSymTex (Transform).v4p">
-   <BOUNDS height="9765" left="11370" top="930" type="Window" width="10200">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\modules\vvvv group\Transform\NoSymTex (Transform).v4p">
+   <BOUNDS height="6000" left="5640" top="5145" type="Window" width="9000">
    </BOUNDS>
-   <NODE componentmode="InABox" id="9" nodename="IOBox (Node)">
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="4905" top="5955" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="9930" top="6570" type="Window" width="215">
@@ -14,7 +14,7 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Transform In|">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (Node)">
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="4710" top="7650" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="10110" top="8700" type="Window" width="215">
@@ -26,7 +26,7 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Transform Out|">
    </PIN>
    </NODE>
-   <NODE id="7" nodename="Multiply (Transform)">
+   <NODE id="7" nodename="Multiply (Transform)" systemname="Multiply (Transform)">
    <BOUNDS height="0" left="4710" top="6960" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform In Count" slicecount="1" values="3">
@@ -40,7 +40,7 @@
    <PIN pinname="Transform In 3" visible="1">
    </PIN>
    </NODE>
-   <NODE id="6" nodename="SetMatrix (Transform)">
+   <NODE id="6" nodename="SetMatrix (Transform)" systemname="SetMatrix (Transform)">
    <BOUNDS height="0" left="3075" top="5955" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Matrix In" visible="1">
@@ -48,7 +48,7 @@
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="705" top="3540" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7883" top="6468" type="Window" width="215">
@@ -70,7 +70,7 @@
    </LINK>
    <LINK dstnodeid="8" dstpinname="Input Node" srcnodeid="7" srcpinname="Transform Out">
    </LINK>
-   <NODE id="4" nodename="SetMatrix (Transform)">
+   <NODE id="4" nodename="SetMatrix (Transform)" systemname="SetMatrix (Transform)">
    <BOUNDS height="0" left="8895" top="5955" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Matrix In" visible="1">
@@ -78,7 +78,7 @@
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="6525" top="3540" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7583" top="6168" type="Window" width="215">
@@ -100,7 +100,7 @@
    </LINK>
    <LINK dstnodeid="7" dstpinname="Transform In 2" srcnodeid="9" srcpinname="Output Node">
    </LINK>
-   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="1905" left="750" top="525" type="Node" width="2850">
    </BOUNDS>
    <BOUNDS height="2940" left="750" top="525" type="Box" width="3105">
@@ -114,7 +114,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="1905" left="6540" top="525" type="Node" width="2850">
    </BOUNDS>
    <BOUNDS height="2925" left="6540" top="525" type="Box" width="3165">
@@ -128,7 +128,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="255" left="4320" top="4890" type="Node" width="3405">
    </BOUNDS>
    <BOUNDS height="1005" left="4320" top="4890" type="Box" width="1725">
@@ -144,8 +144,8 @@
    </NODE>
    <INFO author="vvvv group" description="Explicitely does a vvvv style symmetric texture transformation in case you don&apos;t want to change an existing effect that doesn&apos;t use the TEXTUREMATRIX semantics." tags="symetric, texcoords, texture, spaces, 2d, effect, ex9">
    </INFO>
-   <LINK srcnodeid="6" srcpinname="Transform Out" dstnodeid="7" dstpinname="Transform In 3">
+   <LINK dstnodeid="7" dstpinname="Transform In 3" srcnodeid="6" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="4" srcpinname="Transform Out" dstnodeid="7" dstpinname="Transform In 1">
+   <LINK dstnodeid="7" dstpinname="Transform In 1" srcnodeid="4" srcpinname="Transform Out">
    </LINK>
    </PATCH>
