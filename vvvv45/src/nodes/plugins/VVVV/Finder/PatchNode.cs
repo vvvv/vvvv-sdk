@@ -237,8 +237,6 @@ namespace VVVV.Nodes.Finder
                 else
                 {
                     var ni = Node.GetNodeInfo();
-                    //                    if (string.IsNullOrEmpty(ni.Name))
-                    //                        return "[id " + Node.GetID().ToString() + "] " + System.IO.Path.GetDirectoryName(ni.Filename);
                     if (!string.IsNullOrEmpty(SRChannel))
                         return ni.Username + " [id " + Node.GetID().ToString() + "]\nChannel: " + SRChannel;
                     else if (!string.IsNullOrEmpty(Comment))
