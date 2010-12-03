@@ -13,8 +13,14 @@
 		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing) {
-				if (components != null) {
+			if (disposing) 
+			{
+				FToolTip.Popup -= ToolTipPopupHandler;
+	            FTagsTextBox.MouseWheel -= FTagsTextBoxMouseWheel;
+	            FRichTextBox.MouseWheel -= FTagsTextBoxMouseWheel;
+	            
+				if (components != null) 
+				{
 					components.Dispose();
 				}
 			}

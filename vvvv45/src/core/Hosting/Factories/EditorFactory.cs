@@ -17,7 +17,7 @@ namespace VVVV.Hosting.Factories
 {
 	[Export(typeof(IAddonFactory))]
 	[Export(typeof(EditorFactory))]
-	public class EditorFactory : IAddonFactory, IMouseClickListener
+	public class EditorFactory : IAddonFactory
 	{
 		[ImportMany(typeof(IEditor), AllowRecomposition = true)]
 		protected List<ExportFactory<IEditor, IEditorInfo>> FChangingNodeInfoExports;
@@ -51,7 +51,7 @@ namespace VVVV.Hosting.Factories
 			FHDEHost = hdeHost;
 			FMoveToLine = -1;
 			
-			FHDEHost.AddListener(this);
+			FHDEHost.MouseDown += FHDEHost_MouseDown;
 			FHDEHost.NodeRemoved += FPluginFactory_NodeRemoved;
 		}
 
@@ -293,10 +293,14 @@ namespace VVVV.Hosting.Factories
 				NodeInfoUpdated(factory, nodeInfo);
 			}
 		}
-
-		public void MouseDownCB(INode node, Mouse_Buttons button, Modifier_Keys keys)
+		
+		void FHDEHost_MouseDown(object sender, MouseEventArgs args)
 		{
+			var node = args.Node;
 			if (node == null) return;
+			
+			var button = args.Button;
+			var keys = args.ModifierKey;
 			
 			if ((button == Mouse_Buttons.Left) && (keys == Modifier_Keys.Control))
 			{

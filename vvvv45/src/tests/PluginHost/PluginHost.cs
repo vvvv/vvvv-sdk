@@ -511,16 +511,6 @@ namespace Hoster
 			throw new NotImplementedException();
 		}
 		
-		public void AddListener(IListener listener)
-		{
-			throw new NotImplementedException();
-		}
-		
-		public void RemoveListener(IListener listener)
-		{
-			throw new NotImplementedException();
-		}
-	    
         public bool IsBoygrouped()
         {
             throw new NotImplementedException();
@@ -540,5 +530,15 @@ namespace Hoster
         {
             throw new NotImplementedException();
         }
+		
+		public void AddListener(INodeChangedListener listener)
+		{
+			throw new NotImplementedException();
+		}
+		
+		public void RemoveListener(INodeChangedListener listener)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

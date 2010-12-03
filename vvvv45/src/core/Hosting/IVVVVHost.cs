@@ -12,9 +12,14 @@ namespace VVVV.Hosting
 	/// </summary>
 	public interface IVVVVHost 
 	{
-	    void AddListener(IListener listener);
-	    
-	    void RemoveListener(IListener listener);
+	    void AddNodeSelectionListener(INodeSelectionListener listener);
+	    void RemoveNodeSelectionListener(INodeSelectionListener listener);
+	    void AddMouseClickListener(IMouseClickListener listener);
+	    void RemoveMouseClickListener(IMouseClickListener listener);
+	    void AddWindowSelectionListener(IWindowSelectionListener listener);
+	    void RemoveWindowSelectionListener(IWindowSelectionListener listener);
+	    void AddWindowListener(IWindowListener listener);
+	    void RemoveWindowListener(IWindowListener listener);
 	    
 	    /// <summary>
 	    /// Returns an interface to the graphs root node
@@ -110,5 +115,59 @@ namespace VVVV.Hosting
 		{
 			get;
 		}
+		
+		/// <summary>
+		/// The currently selected patch window.
+		/// </summary>
+		IWindow SelectedPatchWindow
+		{
+			get;
+		}
 	}
+	
+	#region Listeners
+	
+    /// <summary>
+    /// Listener interface to be informed of a changed node-selection.
+    /// </summary>
+    [Guid("C9ACADDA-1D3F-410D-B23C-E8D576F4F361"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface INodeSelectionListener
+    {
+        void NodeSelectionChangedCB(INode[] nodes);
+    }
+    
+    /// <summary>
+    /// Listener interface to be informed of a mouseclicks in a patch.
+    /// </summary>
+    [Guid("2E1F9CF2-9D98-43DC-B3D9-F67FCA4ACED4"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMouseClickListener
+    {
+        void MouseDownCB(INode node, Mouse_Buttons button, Modifier_Keys keys);
+        void MouseUpCB(INode node, Mouse_Buttons button, Modifier_Keys keys);
+    }
+    
+    /// <summary>
+    /// Listener interface to be informed of added/removed windows.
+    /// </summary>
+    [Guid("804F060E-5770-4D5E-82F0-A0655321EBE3"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IWindowListener
+    {
+        void WindowAddedCB(IWindow window);
+        void WindowRemovedCB(IWindow window);
+    }
+    
+    /// <summary>
+    /// Listener interface to be informed of the active window.
+    /// </summary>
+    [Guid("9FB8F749-E2FF-4E6A-A0A6-A9BE74F989A1"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IWindowSelectionListener
+    {
+        void WindowSelectionChangeCB(IWindow window);
+    }
+    
+    #endregion Listeners
 }

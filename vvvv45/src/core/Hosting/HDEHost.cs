@@ -26,7 +26,8 @@ namespace VVVV.Hosting
 {
 	[PartCreationPolicy(CreationPolicy.Shared)]
 	[Export(typeof(IHDEHost))]
-	class HDEHost : IInternalHDEHost, IHDEHost, IDisposable
+	class HDEHost : IInternalHDEHost, IHDEHost, IDisposable, 
+		IMouseClickListener, INodeSelectionListener, IWindowListener, IWindowSelectionListener
 	{
 		public const string ENV_VVVV = "VVVV45";
 		
@@ -164,12 +165,17 @@ namespace VVVV.Hosting
 		}
 		
 		#region IInternalHDEHost
+		
 		public void Initialize(IVVVVHost vvvvHost, INodeBrowserHost nodeBrowserHost, IWindowSwitcherHost windowSwitcherHost, IKommunikatorHost kommunikatorHost)
 		{
 			// Set VVVV45 to this running vvvv.exe
 			Environment.SetEnvironmentVariable(ENV_VVVV, Path.GetFullPath(Shell.CallerPath.ConcatPath("..").ConcatPath("..")));
 			
 			FVVVVHost = vvvvHost;
+			FVVVVHost.AddMouseClickListener(this);
+			FVVVVHost.AddNodeSelectionListener(this);
+			FVVVVHost.AddWindowListener(this);
+			FVVVVHost.AddWindowSelectionListener(this);
 			
 			NodeInfoFactory = new ProxyNodeInfoFactory(vvvvHost.NodeInfoFactory);
 			NodeInfoFactory.NodeInfoAdded += factory_NodeInfoAdded;
@@ -188,7 +194,10 @@ namespace VVVV.Hosting
 			
 			try
 			{
-				var catalog = new DirectoryCatalog(Shell.CallerPath);
+				//do not add the entire directory for faster startup
+				var catalog = new AggregateCatalog();
+				catalog.Catalogs.Add(new AssemblyCatalog(typeof(HDEHost).Assembly.Location));
+				catalog.Catalogs.Add(new AssemblyCatalog(typeof(NodeCollection).Assembly.Location));
 				Container = new CompositionContainer(catalog);
 				Container.ComposeParts(this);
 			}
@@ -259,24 +268,6 @@ namespace VVVV.Hosting
 			foreach(var info in nodeInfos)
 			{
 				result[i++] = NodeInfoFactory.ToInternal(info);
-			}
-		}
-		
-		public event NodeEventHandler NodeAdded;
-		
-		protected virtual void OnNodeAdded(NodeEventArgs args)
-		{
-			if (NodeAdded != null) {
-				NodeAdded(this, args);
-			}
-		}
-		
-		public event NodeEventHandler NodeRemoved;
-		
-		protected virtual void OnNodeRemoved(NodeEventArgs args)
-		{
-			if (NodeRemoved != null) {
-				NodeRemoved(this, args);
 			}
 		}
 		
@@ -386,14 +377,90 @@ namespace VVVV.Hosting
 		#endregion IInternalHDEHost
 		
 		#region IHDEHost
-		public void AddListener(IListener listener)
+		
+		public event NodeSelectionEventHandler NodeSelectionChanged;
+		
+		protected virtual void OnNodeSelectionChanged(NodeSelectionEventArgs args)
 		{
-			FVVVVHost.AddListener(listener);
+			if (NodeSelectionChanged != null) {
+				NodeSelectionChanged(this, args);
+			}
 		}
 		
-		public void RemoveListener(IListener listener)
+		public event VVVV.PluginInterfaces.V2.MouseEventHandler MouseUp;
+		
+		protected virtual void OnMouseUp(VVVV.PluginInterfaces.V2.MouseEventArgs args)
 		{
-			FVVVVHost.RemoveListener(listener);
+			if (MouseUp != null) {
+				MouseUp(this, args);
+			}
+		}
+		
+		public event VVVV.PluginInterfaces.V2.MouseEventHandler MouseDown;
+		
+		protected virtual void OnMouseDown(VVVV.PluginInterfaces.V2.MouseEventArgs args)
+		{
+			if (MouseDown != null) {
+				MouseDown(this, args);
+			}
+		}
+		
+		public event WindowEventHandler WindowSelectionChanged;
+		
+		protected virtual void OnWindowSelectionChanged(WindowEventArgs args)
+		{
+			if (WindowSelectionChanged != null) {
+				WindowSelectionChanged(this, args);
+			}
+		}
+		
+		private event WindowEventHandler FWindowAdded;
+		public event WindowEventHandler WindowAdded
+		{
+			add
+			{
+				FWindowAdded += value;
+				foreach (var window in FWindows)
+					value.Invoke(this, new WindowEventArgs(window));
+			}
+			remove
+			{
+				FWindowAdded -= value;
+			}
+		}
+		
+		protected virtual void OnWindowAdded(WindowEventArgs args)
+		{
+			if (FWindowAdded != null) {
+				FWindowAdded(this, args);
+			}
+		}
+		
+		public event WindowEventHandler WindowRemoved;
+		
+		protected virtual void OnWindowRemoved(WindowEventArgs args)
+		{
+			if (WindowRemoved != null) {
+				WindowRemoved(this, args);
+			}
+		}
+		
+		public event NodeEventHandler NodeAdded;
+		
+		protected virtual void OnNodeAdded(NodeEventArgs args)
+		{
+			if (NodeAdded != null) {
+				NodeAdded(this, args);
+			}
+		}
+		
+		public event NodeEventHandler NodeRemoved;
+		
+		protected virtual void OnNodeRemoved(NodeEventArgs args)
+		{
+			if (NodeRemoved != null) {
+				NodeRemoved(this, args);
+			}
 		}
 		
 		public void GetRoot(out INode root)
@@ -466,6 +533,14 @@ namespace VVVV.Hosting
 		{
 			get;
 			private set;
+		}
+		
+		public IWindow SelectedPatchWindow 
+		{
+			get 
+			{
+				return FVVVVHost.SelectedPatchWindow;
+			}
 		}
 		
 		#endregion
@@ -744,5 +819,42 @@ namespace VVVV.Hosting
 		}
 		
 		#endregion Caching
+		
+		#region Listeners
+		
+		public void MouseDownCB(INode node, Mouse_Buttons button, Modifier_Keys keys)
+		{
+			OnMouseDown(new VVVV.PluginInterfaces.V2.MouseEventArgs(node, button, keys));
+		}
+		
+		public void MouseUpCB(INode node, Mouse_Buttons button, Modifier_Keys keys)
+		{
+			OnMouseUp(new VVVV.PluginInterfaces.V2.MouseEventArgs(node, button, keys));
+		}
+		
+		public void NodeSelectionChangedCB(INode[] nodes)
+		{
+			OnNodeSelectionChanged(new NodeSelectionEventArgs(nodes));
+		}
+		
+		private List<IWindow> FWindows = new List<IWindow>();
+		public void WindowAddedCB(IWindow window)
+		{
+			FWindows.Add(window);
+			OnWindowAdded(new WindowEventArgs(window));
+		}
+		
+		public void WindowRemovedCB(IWindow window)
+		{
+			FWindows.Remove(window);
+			OnWindowRemoved(new WindowEventArgs(window));
+		}
+		
+		public void WindowSelectionChangeCB(IWindow window)
+		{
+			OnWindowSelectionChanged(new WindowEventArgs(window));
+		}
+		
+		#endregion
 	}
 }

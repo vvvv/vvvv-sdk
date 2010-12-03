@@ -451,7 +451,7 @@ namespace VVVV.HDE.CodeEditor
 		private SD.TextMarker FUnderlineMarker;
 		private SD.TextMarker FHighlightMarker;
 		private Link FLink = Link.Empty;
-		void MouseMoveCB(object sender, MouseEventArgs e)
+		void MouseMoveCB(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
 			try
 			{
@@ -498,7 +498,7 @@ namespace VVVV.HDE.CodeEditor
 			}
 		}
 		
-		void LinkClickCB(object sender, MouseEventArgs e)
+		void LinkClickCB(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
 			try
 			{

@@ -154,7 +154,7 @@ namespace VVVV.Nodes.NodeBrowser
 			}
 		}
 		
-		void FCategoryTreeViewerMouseDown(IModelMapper sender, MouseEventArgs e)
+		void FCategoryTreeViewerMouseDown(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
 		{
 			if (sender.Model is NodeInfoEntry)
             {

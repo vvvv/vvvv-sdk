@@ -20,7 +20,7 @@ namespace VVVV.Nodes.WindowSwitcher
                 Ignore = true,
                 Author = "vvvv group",
                 Help = "The Window Switcher")]
-    public class WindowSwitcherNode: UserControl, IWindowSwitcher, IWindowListener, IWindowSelectionListener
+    public class WindowSwitcherNode: UserControl, IWindowSwitcher
     {
         #region field declaration
         [Import]
@@ -36,7 +36,6 @@ namespace VVVV.Nodes.WindowSwitcher
         private bool FDisposed = false;
         
         private List<IWindow> FWindowLIFO = new List<IWindow>();
-        private Dictionary<INode, IWindow> FWindowNodes = new Dictionary<INode, IWindow>();
         private int FSelectedWindowIndex = 0;
         
         #endregion field declaration
@@ -49,9 +48,12 @@ namespace VVVV.Nodes.WindowSwitcher
             InitializeComponent();
             
             FHDEHost = host;
-            FHDEHost.AddListener(this);
+            FHDEHost.WindowAdded += FHDEHost_WindowAdded;
+            FHDEHost.WindowRemoved += FHDEHost_WindowRemoved;
+            FHDEHost.WindowSelectionChanged += FHDEHost_WindowSelectionChanged;
+            FActiveWindow = FHDEHost.SelectedPatchWindow;
         }
-        
+
         // Dispose(bool disposing) executes in two distinct scenarios.
         // If disposing equals true, the method has been called directly
         // or indirectly by a user's code. Managed and unmanaged resources
@@ -67,7 +69,9 @@ namespace VVVV.Nodes.WindowSwitcher
                 if(disposing)
                 {
                     // Dispose managed resources.
-                    FHDEHost.RemoveListener(this);
+                    FHDEHost.WindowAdded -= FHDEHost_WindowAdded;
+		            FHDEHost.WindowRemoved -= FHDEHost_WindowRemoved;
+		            FHDEHost.WindowSelectionChanged -= FHDEHost_WindowSelectionChanged;
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
@@ -236,35 +240,29 @@ namespace VVVV.Nodes.WindowSwitcher
             }
         }
         
-        #region IWindowListener
-        public void WindowAddedCB(IWindow window)
+        void FHDEHost_WindowAdded(object sender, WindowEventArgs args)
         {
-            FWindowLIFO.Add(window);
-            FWindowNodes.Add(window.GetNode(), window);
+        	FWindowLIFO.Add(args.Window);
         }
         
-        public void WindowRemovedCB(IWindow window)
+        void FHDEHost_WindowRemoved(object sender, WindowEventArgs args)
         {
-            FWindowLIFO.Remove(window);
-            FWindowNodes.Remove(window.GetNode());
+        	FWindowLIFO.Remove(args.Window);
         }
-        #endregion IWindowListener
         
-        #region IWindowSelectionListener
-        public void WindowSelectionChangeCB(IWindow window)
+        void FHDEHost_WindowSelectionChanged(object sender, WindowEventArgs args)
         {
-            FActiveWindow = window;
+        	FActiveWindow = args.Window;
             
             //remove it from the index it is now
-            FWindowLIFO.Remove(window);
+            FWindowLIFO.Remove(FActiveWindow);
             
             //insert it at index 0
-            FWindowLIFO.Insert(0, window);
+            FWindowLIFO.Insert(0, FActiveWindow);
         }
-        #endregion
         
         #region events
-        void FHierarchyViewerClick(IModelMapper sender, MouseEventArgs e)
+        void FHierarchyViewerClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
             FHierarchyViewer.HideToolTip();
             FWindowSwitcherHost.HideMe();

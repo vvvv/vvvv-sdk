@@ -73,11 +73,11 @@ namespace VVVV.Nodes.NodeBrowser
             FToolTip.BackColor = CLabelColor;
             FToolTip.ForeColor = Color.White;
             FToolTip.ShowAlways = false;
-            FToolTip.Popup += new PopupEventHandler(ToolTipPopupHandler);
+            FToolTip.Popup += ToolTipPopupHandler;
             
             FTagsTextBox.ContextMenu = new ContextMenu();
-            FTagsTextBox.MouseWheel += new MouseEventHandler(FTagsTextBoxMouseWheel);
-            FRichTextBox.MouseWheel += new MouseEventHandler(FTagsTextBoxMouseWheel);
+            FTagsTextBox.MouseWheel += FTagsTextBoxMouseWheel;
+            FRichTextBox.MouseWheel += FTagsTextBoxMouseWheel;
         }
         
         private void ToolTipPopupHandler(object sender, PopupEventArgs e)
@@ -221,7 +221,7 @@ namespace VVVV.Nodes.NodeBrowser
             }
         }
         
-        void FTagsTextBoxMouseUp(object sender, MouseEventArgs e)
+        void FTagsTextBoxMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             //do this in mouseup (not mousedown) for ContextMenu not throwing error
             if (e.Button == MouseButtons.Right)
@@ -230,7 +230,7 @@ namespace VVVV.Nodes.NodeBrowser
             }
         }
         
-        void FTagsTextBoxMouseWheel(object sender, MouseEventArgs e)
+        void FTagsTextBoxMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             //clear old selection
             FRichTextBox.SelectionBackColor = Color.Silver;
@@ -253,7 +253,7 @@ namespace VVVV.Nodes.NodeBrowser
         #endregion TextBoxTags
         
         #region RichTextBox
-        void RichTextBoxMouseDown(object sender, MouseEventArgs e)
+        void RichTextBoxMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             string username = FRichTextBox.Lines[FHoverLine].Trim();
             FRichTextBox.SelectionStart = FRichTextBox.GetFirstCharIndexFromLine(FHoverLine)+1;
@@ -284,7 +284,7 @@ namespace VVVV.Nodes.NodeBrowser
             }
         }
         
-        void RichTextBoxMouseMove(object sender, MouseEventArgs e)
+        void RichTextBoxMouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (FRichTextBox.Lines.Length == 0)
                 return;
@@ -301,7 +301,7 @@ namespace VVVV.Nodes.NodeBrowser
             }
         }
         
-        void RichTextBoxMouseUp(object sender, MouseEventArgs e)
+        void RichTextBoxMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             //if cloned via ctrl+click the self is now hidden
             //and we don't want the nodebrowser to vanish yet

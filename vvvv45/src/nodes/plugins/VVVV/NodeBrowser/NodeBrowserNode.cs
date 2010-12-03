@@ -31,7 +31,7 @@ namespace VVVV.Nodes.NodeBrowser
 	            InitialWindowWidth = 300,
 	            InitialWindowHeight = 500,
 	            InitialComponentMode = TComponentMode.InAWindow)]
-	public class NodeBrowserPluginNode: UserControl, INodeBrowser, IWindowSelectionListener
+	public class NodeBrowserPluginNode: UserControl, INodeBrowser
 	{
 		#region field declaration
 		
@@ -115,11 +115,12 @@ namespace VVVV.Nodes.NodeBrowser
 			
 			//register as IWindowSelectionListener at hdehost
 			HDEHost = host;
-			HDEHost.AddListener(this);
+			HDEHost.WindowSelectionChanged += HDEHost_WindowSelectionChanged;
+			CurrentPatchWindow = HDEHost.SelectedPatchWindow;
 			
 			FCategoryPanel.Redraw();
 		}
-		
+
 		private void DefaultConstructor()
 		{
 			// The InitializeComponent() call is required for Windows Forms designer support.
@@ -150,7 +151,7 @@ namespace VVVV.Nodes.NodeBrowser
 				if(disposing)
 				{
 					// Dispose managed resources.
-					HDEHost.RemoveListener(this);
+					HDEHost.WindowSelectionChanged -= HDEHost_WindowSelectionChanged;
 				}
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.
@@ -347,15 +348,14 @@ namespace VVVV.Nodes.NodeBrowser
 		}
 		#endregion INodeInfoFactory events
 		
-		#region IWindowSelectionListener
-		public void WindowSelectionChangeCB(IWindow window)
+		void HDEHost_WindowSelectionChanged(object sender, WindowEventArgs args)
 		{
+			var window = args.Window;
 			var windowtype = window.GetWindowType();
 			
 			if ((windowtype == WindowType.Patch || windowtype == WindowType.Module) && CurrentPatchWindow != window)
 				CurrentPatchWindow = window;
 		}
-		#endregion IWindowSelectionListener
 		
 		protected override bool ProcessDialogKey(Keys keyData)
 		{

@@ -23,8 +23,67 @@ namespace VVVV.PluginInterfaces.V2
 			Node = node;
 		}
 	}
+    
+    public class NodeSelectionEventArgs : EventArgs
+	{
+    	public INode[] Nodes
+		{
+			get;
+			private set;
+		}
+		
+    	public NodeSelectionEventArgs(INode[] nodes)
+		{
+			Nodes = nodes;
+		}
+	}
+    
+    public class WindowEventArgs : EventArgs
+    {
+    	public IWindow Window
+    	{
+    		get;
+    		private set;
+    	}
+    	
+    	public WindowEventArgs(IWindow window)
+    	{
+    		Window = window;
+    	}
+    }
+    
+    public class MouseEventArgs : EventArgs
+    {
+    	public INode Node
+    	{
+    		get;
+    		private set;
+    	}
+    	
+    	public Mouse_Buttons Button
+    	{
+    		get;
+    		private set;
+    	}
+    	
+    	public Modifier_Keys ModifierKey
+    	{
+    		get;
+    		private set;
+    	}
+    	
+    	public MouseEventArgs(INode node, Mouse_Buttons button, Modifier_Keys key)
+    	{
+    		Node = node;
+    		Button = button;
+    		ModifierKey = key;
+    	}
+    }
 	
 	public delegate void NodeEventHandler(object sender, NodeEventArgs args);
+	public delegate void MouseEventHandler(object sender, MouseEventArgs args);
+	public delegate void NodeSelectionEventHandler(object sender, NodeSelectionEventArgs args);
+	public delegate void WindowEventHandler(object sender, WindowEventArgs args);
     
     /// <summary>
 	/// The interface to be implemented by a program to host IHDEPlugins.
@@ -38,17 +97,21 @@ namespace VVVV.PluginInterfaces.V2
 	    /// </summary>
 	    /// <param name="root">The graphs root node.</param>
 	    void GetRoot(out INode root);
-		/// <summary>
-		/// Allows a plugin to register IListeners on the host
-		/// </summary>
-		/// <param name="listener">The listener to register. Most likely the plugin itself, implementing an IListener.</param>
-		void AddListener(IListener listener);
 	    
-		/// <summary>
-		/// Allows a plugin to unregister ILiseners from the host
-		/// </summary>
-		/// <param name="listener">The listener to unregister. Most likely the plugin itself, implementing an IListener.</param>
-	    void RemoveListener(IListener listener);
+	    event NodeSelectionEventHandler NodeSelectionChanged;
+	    event MouseEventHandler MouseUp;
+	    event MouseEventHandler MouseDown;
+	    event WindowEventHandler WindowSelectionChanged;
+	    event WindowEventHandler WindowAdded;
+	    event WindowEventHandler WindowRemoved;
+	    
+	    /// <summary>
+	    /// The currently selected patch window.
+	    /// </summary>
+	    IWindow SelectedPatchWindow
+	    {
+	    	get;
+	    }
 	    
 	    /// <summary>
 		/// Allows a plugin to create/update an Enum with vvvv
@@ -143,7 +206,6 @@ namespace VVVV.PluginInterfaces.V2
 		/// <summary>
 		/// Raised if a node was created.
 		/// </summary>
-		/// 
 		event NodeEventHandler NodeAdded;
 		
 		/// <summary>
@@ -272,16 +334,16 @@ namespace VVVV.PluginInterfaces.V2
 		IPin GetPin(string Name);
 		
 		/// <summary>
-		/// Allows a plugin to register an IListener on a specific vvvv node.
+		/// Allows a plugin to register an INodeChangedListener on a specific vvvv node.
 		/// </summary>
 		/// <param name="listener">The listener to register.</param>
-		void AddListener(IListener listener);
+		void AddListener(INodeChangedListener listener);
 		
 		/// <summary>
-		/// Allows a plugin to unregister an IListener from a specific vvvv node.
+		/// Allows a plugin to unregister an INodeChangedListener from a specific vvvv node.
 		/// </summary>
 		/// <param name="listener">The listener to unregister.</param>
-		void RemoveListener(IListener listener);
+		void RemoveListener(INodeChangedListener listener);
 		
 		/// <summary>
 		/// Gets the last runtime error that occured or null if there were no errors.
@@ -318,7 +380,7 @@ namespace VVVV.PluginInterfaces.V2
 	
 	[Guid("1ABB290D-9A96-4944-80CC-F544C8CDD14B"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface INodeChangedListener: IListener
+    public interface INodeChangedListener
     {
         void NodeChangedCB();
     }
@@ -375,58 +437,6 @@ namespace VVVV.PluginInterfaces.V2
 	}	
 	#endregion IWindow
 	
-	#region Listener
-	/// <summary>
-	/// Base interface for all listeners.
-	/// </summary>
-    [Guid("167FCD7A-CD13-4462-8BD0-CE496236AEE4"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IListener
-    {}
-    
-    /// <summary>
-    /// Listener interface to be informed of a changed node-selection.
-    /// </summary>
-    [Guid("C9ACADDA-1D3F-410D-B23C-E8D576F4F361"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface INodeSelectionListener: IListener
-    {
-        void NodeSelectionChangedCB(INode[] nodes);
-    }
-    
-    /// <summary>
-    /// Listener interface to be informed of a mouseclicks in a patch.
-    /// </summary>
-    [Guid("2E1F9CF2-9D98-43DC-B3D9-F67FCA4ACED4"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IMouseClickListener: IListener
-    {
-        void MouseDownCB(INode node, Mouse_Buttons button, Modifier_Keys keys);
-        void MouseUpCB(INode node, Mouse_Buttons button, Modifier_Keys keys);
-    }
-    
-    /// <summary>
-    /// Listener interface to be informed of added/removed windows.
-    /// </summary>
-    [Guid("804F060E-5770-4D5E-82F0-A0655321EBE3"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWindowListener: IListener
-    {
-        void WindowAddedCB(IWindow window);
-        void WindowRemovedCB(IWindow window);
-    }
-    
-    /// <summary>
-    /// Listener interface to be informed of the active window.
-    /// </summary>
-    [Guid("9FB8F749-E2FF-4E6A-A0A6-A9BE74F989A1"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWindowSelectionListener: IListener
-    {
-        void WindowSelectionChangeCB(IWindow window);
-    }
-    #endregion Listener
-    
     #region IEditor
     /// <summary>
     /// Interface for all document editors. Use in combination with the

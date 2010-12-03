@@ -33,7 +33,7 @@ namespace VVVV.Nodes.Finder
                 InitialWindowWidth = 420,
                 InitialWindowHeight = 630,
                 InitialComponentMode = TComponentMode.InAWindow)]
-    public class FinderPluginNode: UserControl, IPluginHDE, IWindowSelectionListener
+    public class FinderPluginNode: UserControl, IPluginHDE
     {
         #region field declaration
         private IPluginHost2 FPluginHost;
@@ -84,7 +84,7 @@ namespace VVVV.Nodes.Finder
             FPluginHost = pluginHost;
             
             FSearchTextBox.ContextMenu = new ContextMenu();
-            FSearchTextBox.ContextMenu.Popup += new EventHandler(FSearchTextBox_ContextMenu_Popup);
+            FSearchTextBox.ContextMenu.Popup += FSearchTextBox_ContextMenu_Popup;
             
             INode root;
             FHDEHost.GetRoot(out root);
@@ -93,15 +93,16 @@ namespace VVVV.Nodes.Finder
             
             FHierarchyViewer.Registry = mappingRegistry;
             FRoot = new PatchNode(root);
-            FRoot.Added += new CollectionDelegate(UpdateViewer);
-            FRoot.Removed += new CollectionDelegate(UpdateViewer);
+            FRoot.Added += UpdateViewer;
+            FRoot.Removed += UpdateViewer;
             
-            FSearchTextBox.MouseWheel += new MouseEventHandler(FSearchTextBox_MouseWheel);
+            FSearchTextBox.MouseWheel += FSearchTextBox_MouseWheel;
             
-            //defer adding this as listener as 
+            FHDEHost.WindowSelectionChanged += FHDEHost_WindowSelectionChanged;
+            //defer setting the active patch window as
             //this will trigger the initial WindowSelectionChangeCB
             //which will want to access this windows caption which is not yet available 
-            SynchronizationContext.Current.Post((object state) => FHDEHost.AddListener(this), null);
+            SynchronizationContext.Current.Post((object state) => FHDEHost_WindowSelectionChanged(FHDEHost, new WindowEventArgs(FHDEHost.SelectedPatchWindow)), null);
         }
 
         void UpdateViewer(IViewableCollection collection, object item)
@@ -109,7 +110,7 @@ namespace VVVV.Nodes.Finder
             FHierarchyViewer.Reload();
         }
 
-        void FSearchTextBox_MouseWheel(object sender, MouseEventArgs e)
+        void FSearchTextBox_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             FHierarchyViewer.Focus();
         }
@@ -233,7 +234,19 @@ namespace VVVV.Nodes.Finder
                 if(disposing)
                 {
                     // Dispose managed resources.
-                    FHDEHost.RemoveListener(this);
+                    FSearchTextBox.ContextMenu.Popup -= FSearchTextBox_ContextMenu_Popup;
+                    FRoot.Added -= UpdateViewer;
+            		FRoot.Removed -= UpdateViewer;
+            		FSearchTextBox.MouseWheel -= FSearchTextBox_MouseWheel;
+                    FHDEHost.WindowSelectionChanged -= FHDEHost_WindowSelectionChanged;
+                    
+                    this.FSearchTextBox.TextChanged -= this.FFindTextBoxTextChanged;
+        			this.FSearchTextBox.KeyDown -= this.FSearchTextBoxKeyDown;
+                    
+                    this.FHierarchyViewer.DoubleClick -= this.FHierarchyViewerDoubleClick;
+		        	this.FHierarchyViewer.Click -= this.FHierarchyViewerClick;
+		        	this.FHierarchyViewer.KeyPress -= this.FHierarchyViewerKeyPress;
+		        	this.FHierarchyViewer.KeyDown -= this.FHierarchyViewerKeyDown;
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
@@ -250,10 +263,11 @@ namespace VVVV.Nodes.Finder
         
         #endregion constructor/destructor
         
-        #region IWindowSelectionListener
-        public void WindowSelectionChangeCB(IWindow window)
+        void FHDEHost_WindowSelectionChanged(object sender, WindowEventArgs args)
         {
-            FActiveWindow = window;
+        	var window = args.Window;
+        	
+        	FActiveWindow = window;
             var windowType = window.GetWindowType();
             
             if (windowType == WindowType.Module || windowType == WindowType.Patch)
@@ -274,7 +288,6 @@ namespace VVVV.Nodes.Finder
                 }
             }
         }
-        #endregion IWindowSelectionListener
         
         public void UpdateView()
         {
@@ -638,7 +651,7 @@ namespace VVVV.Nodes.Finder
             }
         }
         
-        void FHierarchyViewerClick(IModelMapper sender, MouseEventArgs e)
+        void FHierarchyViewerClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (e.Button == 0)
             {
@@ -664,7 +677,7 @@ namespace VVVV.Nodes.Finder
             }
         }
         
-        void FHierarchyViewerDoubleClick(IModelMapper sender, MouseEventArgs e)
+        void FHierarchyViewerDoubleClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
             OpenPatch((sender.Model as PatchNode).Node);
         }

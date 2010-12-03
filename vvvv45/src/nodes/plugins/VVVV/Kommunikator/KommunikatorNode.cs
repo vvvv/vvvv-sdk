@@ -366,7 +366,7 @@ namespace VVVV.Nodes.Kommunikator
         #endregion IKommunikator
         
         #region PictureBox
-        void PictureBoxMouseDown(object sender, MouseEventArgs e)
+        void PictureBoxMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -384,7 +384,7 @@ namespace VVVV.Nodes.Kommunikator
             }
         }
         
-        void PictureBoxMouseMove(object sender, MouseEventArgs e)
+        void PictureBoxMouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (FDrawRect)
             {
@@ -394,7 +394,7 @@ namespace VVVV.Nodes.Kommunikator
             }
         }
         
-        void PictureBoxMouseUp(object sender, MouseEventArgs e)
+        void PictureBoxMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             FDrawRect = false;
         }

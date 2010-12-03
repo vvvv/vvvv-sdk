@@ -405,7 +405,7 @@ namespace VVVV.HDE.CodeEditor
 			return !FSplitContainer.Panel2Collapsed;
 		}
 		
-		private void FErrorTableViewerDoubleClick(IModelMapper sender, MouseEventArgs e)
+		private void FErrorTableViewerDoubleClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
 		{
 			var fileName = string.Empty;
 			var line = 0;
