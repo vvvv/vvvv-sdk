@@ -124,27 +124,17 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		void CreateNodeFromHoverLine()
 		{
-			string text = "";
 			try
 			{
-				var id = FHoverLine + ScrolledLine;
-				if (id >= 1)
-				{
-					var selNode = FSelectionList[FHoverLine + ScrolledLine];
-					if ((Control.ModifierKeys == Keys.Control) && ((selNode.Type == NodeType.Dynamic) || (selNode.Type == NodeType.Effect)))
-						OnPanelChange(NodeBrowserPage.Clone, selNode);
-					else
-						OnCreateNode(selNode);
-				}
-				else //cancel
-					OnCreateNode(null);
+				var selNode = FSelectionList[FHoverLine + ScrolledLine];
+				if ((Control.ModifierKeys == Keys.Control) && ((selNode.Type == NodeType.Dynamic) || (selNode.Type == NodeType.Effect)))
+					OnPanelChange(NodeBrowserPage.Clone, selNode);
+				else
+					OnCreateNode(selNode);
 			}
 			catch
 			{
-				if ((text.EndsWith(".v4p")) || (text.EndsWith(".fx")) || (text.EndsWith(".dll")))
-					OnCreateNodeFromString(text);
-				else
-					OnCreateNodeFromString(FTagsTextBox.Text.Trim());
+				OnCreateNodeFromString(FTagsTextBox.Text.Trim());
 			}
 		}
 		#region TagsTextBox
@@ -487,23 +477,8 @@ namespace VVVV.Nodes.NodeBrowser
 			                    	}
 			                    	
 			                    	//if weights are equal, compare the nodenames
-			                    	
-			                    	//names may be filenames, they always win
-			                    	bool s1IsFile = false;
-			                    	bool s2IsFile = false;
-			                    	
-			                    	if ((s1.IndexOf(".v4p") > 0) || (s1.IndexOf(".dll") > 0) || (s1.IndexOf(".fx") > 0))
-			                    		s1IsFile = true;
-			                    	if ((s2.IndexOf(".v4p") > 0) || (s2.IndexOf(".dll") > 0) || (s2.IndexOf(".fx") > 0))
-			                    		s2IsFile = true;
-			                    	
-			                    	string name1 = s1;
-			                    	string name2 = s2;
-			                    	
-			                    	if (!s1IsFile)
-			                    		name1 = s1.Substring(0, s1.IndexOf('('));
-			                    	if (!s2IsFile)
-			                    		name2 = s2.Substring(0, s2.IndexOf('('));
+			                    	string name1 = s1.Substring(0, s1.IndexOf('('));
+			                    	string name2 = name2 = s2.Substring(0, s2.IndexOf('('));
 			                    	
 			                    	//compare only the nodenames
 			                    	int comp = name1.CompareTo(name2);
@@ -512,16 +487,8 @@ namespace VVVV.Nodes.NodeBrowser
 			                    	if (comp == 0)
 			                    	{
 			                    		//compare categories
-			                    		string cat1, cat2;
-			                    		if (s1IsFile)
-			                    			cat1 = System.IO.Path.GetExtension(name1);
-			                    		else
-			                    			cat1 = s1.Substring(s1.IndexOf('(')).Trim(new char[2]{'(', ')'});
-			                    		
-			                    		if (s2IsFile)
-			                    			cat2 = System.IO.Path.GetExtension(name2);
-			                    		else
-			                    			cat2 = s2.Substring(s2.IndexOf('(')).Trim(new char[2]{'(', ')'});
+			                    		string cat1 = s1.Substring(s1.IndexOf('(')).Trim(new char[2]{'(', ')'});
+			                    		string cat2 = s2.Substring(s2.IndexOf('(')).Trim(new char[2]{'(', ')'});
 			                    		
 			                    		int v1, v2;
 			                    		

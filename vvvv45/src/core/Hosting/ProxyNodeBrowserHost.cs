@@ -32,11 +32,6 @@ namespace VVVV.Hosting
 			FNodeBrowserHost.CloneNode(nodeInfo, path, Name, Category, Version);
 		}
 		
-		public void CreateNodeFromFile(string filePath)
-		{
-			FNodeBrowserHost.CreateNodeFromFile(filePath);
-		}
-		
 		public void CreateComment(string comment)
 		{
 			FNodeBrowserHost.CreateComment(comment);

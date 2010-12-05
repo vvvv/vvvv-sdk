@@ -97,6 +97,7 @@ namespace VVVV.Nodes.NodeBrowser
 					return string.Empty;
 			}
 		}
+		private string FInitialText;
 		#endregion field declaration
 		
 		#region constructor/destructor
@@ -273,11 +274,10 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		void FNodeBrowser_CreateNodeFromString(string text)
 		{
-			// TODO: Ask factories about file extensions.
-			if ((text.EndsWith(".v4p")) || (text.EndsWith(".fx")) || (text.EndsWith(".dll")))
-				NodeBrowserHost.CreateNodeFromFile(Path.Combine(CurrentDir, text));
-			else
+			if (FInitialText != text)
 				NodeBrowserHost.CreateComment(text);
+			else
+				NodeBrowserHost.CreateNode(null);
 		}
 		
 		void FNodeBrowser_ShowNodeReference(INodeInfo nodeInfo)
@@ -301,7 +301,8 @@ namespace VVVV.Nodes.NodeBrowser
 		#region INodeBrowser
 		public void Initialize(string text)
 		{
-			FTagPanel.Initialize(text);
+			FInitialText = text;
+			FTagPanel.Initialize(FInitialText);
 			FNodeBrowser_OnPanelChange(NodeBrowserPage.ByTags, null);
 		}
 		
