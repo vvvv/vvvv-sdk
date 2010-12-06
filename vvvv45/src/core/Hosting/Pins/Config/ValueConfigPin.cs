@@ -36,7 +36,12 @@ namespace VVVV.Hosting.Pins.Config
 			}
 		}
 		
-		public override bool IsChanged 
+		protected override void DoUpdate()
+		{
+			// Config pins read from internal pin directly
+		}
+		
+		protected override bool IsInternalPinChanged
 		{
 			get 
 			{

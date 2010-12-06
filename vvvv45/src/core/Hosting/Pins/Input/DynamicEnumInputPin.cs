@@ -20,7 +20,7 @@ namespace VVVV.Hosting.Pins.Input
 			base.InitializeInternalPin(FEnumInputPin);
 		}
 		
-		public override bool IsChanged
+		protected override bool IsInternalPinChanged
 		{
 			get
 			{
@@ -28,21 +28,16 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 		
-		public override void Update()
+		unsafe protected override void DoUpdate()
 		{
-			if (IsChanged)
-			{
-				SliceCount = FEnumInputPin.SliceCount;
-				
-				for (int i = 0; i < FSliceCount; i++)
-				{
-					int ord;
-					FEnumInputPin.GetOrd(i, out ord);
-					FBuffer[i] = new EnumEntry(FEnumName, ord);
-				}
-			}
+			SliceCount = FEnumInputPin.SliceCount;
 			
-			base.Update();
+			for (int i = 0; i < FSliceCount; i++)
+			{
+				int ord;
+				FEnumInputPin.GetOrd(i, out ord);
+				FBuffer[i] = new EnumEntry(FEnumName, ord);
+			}
 		}
 	}
 }

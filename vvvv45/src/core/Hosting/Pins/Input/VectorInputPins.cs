@@ -78,31 +78,24 @@ namespace VVVV.Hosting.Pins.Input
 		
 		unsafe protected abstract void CopyToBuffer(T[] buffer, double* source, int length, int underFlow);
 		
-		unsafe public override void Update()
+		unsafe protected override void DoUpdate()
 		{
-			if (IsChanged)
-			{
-				int length;
-				double* source;
-				
-				FValueIn.GetValuePointer(out length, out source);
-				
-				var underFlow = length % FDimension;
-				if (underFlow != 0)
-					SliceCount = length / FDimension + 1;
-				else
-					SliceCount = length / FDimension;
-				
-				if (FSliceCount > 0)
-					CopyToBuffer(FBuffer, source, length, underFlow);
-				
-				OnChanged();
-			}
+			int length;
+			double* source;
 			
-			base.Update();
+			FValueIn.GetValuePointer(out length, out source);
+			
+			var underFlow = length % FDimension;
+			if (underFlow != 0)
+				SliceCount = length / FDimension + 1;
+			else
+				SliceCount = length / FDimension;
+			
+			if (FSliceCount > 0)
+				CopyToBuffer(FBuffer, source, length, underFlow);
 		}
 		
-		public override bool IsChanged
+		protected override bool IsInternalPinChanged
 		{
 			get
 			{

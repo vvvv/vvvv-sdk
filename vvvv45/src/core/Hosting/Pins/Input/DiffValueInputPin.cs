@@ -25,21 +25,16 @@ namespace VVVV.Hosting.Pins.Input
 		
 		unsafe protected abstract void CopyToBuffer(T[] buffer, double* source, int startingIndex, int length);
 		
-		unsafe public override void Update()
+		unsafe protected override void DoUpdate()
 		{
-			if (IsChanged)
-			{
-				int length;
-				
-				FValueIn.GetValuePointer(out length, out FSource);
-				
-				SliceCount = length;
-				
-				if (!FLazy && FSliceCount > 0)
-					CopyToBuffer(FBuffer, FSource, 0, length);
-			}
+			int length;
 			
-			base.Update();
+			FValueIn.GetValuePointer(out length, out FSource);
+			
+			SliceCount = length;
+			
+			if (!FLazy && FSliceCount > 0)
+				CopyToBuffer(FBuffer, FSource, 0, length);
 		}
 		
 		unsafe protected override void DoLoad(int index, int length)
@@ -47,7 +42,7 @@ namespace VVVV.Hosting.Pins.Input
 			CopyToBuffer(FBuffer, FSource, index, length);
 		}
 		
-		public override bool IsChanged
+		protected override bool IsInternalPinChanged
 		{
 			get
 			{

@@ -14,6 +14,7 @@ namespace VVVV.Hosting.Pins.Output
 		protected int FUpdateCount;
 		
 		public OutputBinSpread(IPluginHost host, OutputAttribute attribute)
+			: base(attribute)
 		{
 			//data pin
 			FSpreadPin = PinFactory.CreatePin<T>(host, attribute);

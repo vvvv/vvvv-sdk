@@ -19,7 +19,7 @@ namespace VVVV.Hosting.Pins.Input
 			base.InitializeInternalPin(FColorIn);
 		}
 		
-		public override bool IsChanged
+		protected override bool IsInternalPinChanged
 		{
 			get
 			{
@@ -27,26 +27,21 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 		
-		unsafe public override void Update()
+		unsafe protected override void DoUpdate()
 		{
-			if (IsChanged)
-			{
-				int length;
-				double* source;
-				
-				FColorIn.GetColorPointer(out length, out source);
-					
-				var underFlow = length % 4;
-				if (underFlow != 0)
-					SliceCount = length / 4 + 1;
-				else
-					SliceCount = length / 4;
-				
-				if (FSliceCount > 0)
-					CopyToBuffer(FBuffer, source, length, underFlow);
-			}
+			int length;
+			double* source;
 			
-			base.Update();
+			FColorIn.GetColorPointer(out length, out source);
+			
+			var underFlow = length % 4;
+			if (underFlow != 0)
+				SliceCount = length / 4 + 1;
+			else
+				SliceCount = length / 4;
+			
+			if (FSliceCount > 0)
+				CopyToBuffer(FBuffer, source, length, underFlow);
 		}
 		
 		unsafe protected void CopyToBuffer(RGBAColor[] buffer, double* source, int length, int underFlow)

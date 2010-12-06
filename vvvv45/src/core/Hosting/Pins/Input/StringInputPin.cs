@@ -24,9 +24,9 @@ namespace VVVV.Hosting.Pins.Input
 			base.InitializeInternalPin(FStringIn);
 		}
 		
-		public override bool IsChanged 
+		protected override bool IsInternalPinChanged
 		{
-			get 
+			get
 			{
 				return FStringIn.PinIsChanged;
 			}
@@ -38,12 +38,12 @@ namespace VVVV.Hosting.Pins.Input
 			
 			string patchPath;
 			FHost.GetHostPath(out patchPath);
-		
-			try 
+			
+			try
 			{
 				patchPath = Path.GetDirectoryName(patchPath);
 				path = Path.GetFullPath(Path.Combine(patchPath, path));
-			} 
+			}
 			catch (Exception e)
 			{
 				FLogger.Log(LogType.Error, e.Message);
@@ -52,22 +52,17 @@ namespace VVVV.Hosting.Pins.Input
 			return path;
 		}
 		
-		public override void Update()
+		unsafe protected override void DoUpdate()
 		{
-			if (IsChanged) 
-			{
-				SliceCount = FStringIn.SliceCount;
-				
-				for (int i = 0; i < FSliceCount; i++)
-				{
-					string value;
-					FStringIn.GetString(i, out value);
-					var s = value == null ? "" : value;
-					FBuffer[i] = FIsPath ? GetFullPath(s) : s;
-				}
-			}
+			SliceCount = FStringIn.SliceCount;
 			
-			base.Update();
+			for (int i = 0; i < FSliceCount; i++)
+			{
+				string value;
+				FStringIn.GetString(i, out value);
+				var s = value == null ? "" : value;
+				FBuffer[i] = FIsPath ? GetFullPath(s) : s;
+			}
 		}
 	}
 }

@@ -35,7 +35,7 @@ namespace VVVV.Hosting.Pins.Input
 			FUpstreamInterface = FDefaultInterface;
 		}
 		
-		public override bool IsChanged
+		protected override bool IsInternalPinChanged
 		{
 			get
 			{
@@ -43,28 +43,23 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 		
-		public override void Update()
+		unsafe protected override void DoUpdate()
 		{
-			if (IsChanged)
+			SliceCount = FNodeIn.SliceCount;
+			
+			for (int i = 0; i < FSliceCount; i++)
 			{
-				SliceCount = FNodeIn.SliceCount;
-				
-				for (int i = 0; i < FSliceCount; i++)
+				int usS;
+				if (FUpstreamInterface != null)
 				{
-					int usS;
-					if (FUpstreamInterface != null)
-					{
-						FNodeIn.GetUpsreamSlice(i, out usS);
-						FBuffer[i] = (T) FUpstreamInterface.GetSlice(usS);
-					}
-					else
-					{
-						FBuffer[i] = default(T);
-					}
+					FNodeIn.GetUpsreamSlice(i, out usS);
+					FBuffer[i] = (T) FUpstreamInterface.GetSlice(usS);
+				}
+				else
+				{
+					FBuffer[i] = default(T);
 				}
 			}
-			
-			base.Update();
 		}
 	}
 }

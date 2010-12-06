@@ -11,9 +11,12 @@ namespace VVVV.Hosting.Pins
 	/// </summary>
 	public abstract class BinSpread<T> : Spread<ISpread<T>>
 	{
-		public BinSpread()
+		protected bool FLazy;
+		
+		public BinSpread(PinAttribute attribute)
 			: base(1)
 		{
+			FLazy = attribute.Lazy;
 			BufferIncreased(new ISpread<T>[0], FBuffer);
 		}
 		

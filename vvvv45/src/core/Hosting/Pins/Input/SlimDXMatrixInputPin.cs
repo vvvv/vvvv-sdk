@@ -18,7 +18,7 @@ namespace VVVV.Hosting.Pins.Input
 			base.InitializeInternalPin(FTransformIn);
 		}
 		
-		public override bool IsChanged
+		protected override bool IsInternalPinChanged
 		{
 			get
 			{
@@ -38,21 +38,16 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 		
-		unsafe public override void Update()
+		unsafe protected override void DoUpdate()
 		{
-			if (IsChanged)
-			{
-				int length;
-				float* source;
-				
-				FTransformIn.GetMatrixPointer(out length, out source);
-				SliceCount = length;
-				
-				if (FSliceCount > 0)
-					CopyToBuffer(FBuffer, source, length);
-			}
+			int length;
+			float* source;
 			
-			base.Update();
+			FTransformIn.GetMatrixPointer(out length, out source);
+			SliceCount = length;
+			
+			if (FSliceCount > 0)
+				CopyToBuffer(FBuffer, source, length);
 		}
 	}
 }

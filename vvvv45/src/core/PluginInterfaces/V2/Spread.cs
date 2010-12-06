@@ -57,6 +57,11 @@ namespace VVVV.PluginInterfaces.V2
 				newBuffer[i] = oldBuffer[i % oldBuffer.Length];
 		}
 		
+		protected virtual void BufferDecreased(T[] oldBuffer, T[] newBuffer)
+		{
+			Array.Copy(oldBuffer, newBuffer, newBuffer.Length);
+		}
+		
 		public virtual T this[int index]
 		{
 			get
@@ -108,7 +113,8 @@ namespace VVVV.PluginInterfaces.V2
 						
 						var oldBuffer = FBuffer;
 						FBuffer = new T[FUpperThreshold];
-						Array.Copy(oldBuffer, FBuffer, FBuffer.Length);
+						
+						BufferDecreased(oldBuffer, FBuffer);
 					}
 				}
 				else

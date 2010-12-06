@@ -6,6 +6,8 @@ namespace VVVV.PluginInterfaces.V2
 
 	public abstract class DiffPin<T> : Pin<T>, IDiffSpread<T>
 	{
+		private bool IsReconnected;
+		
 		public DiffPin(IPluginHost host, PinAttribute attribute)
 			: base(host, attribute)
 		{
@@ -15,21 +17,53 @@ namespace VVVV.PluginInterfaces.V2
 		
 		protected virtual void OnChanged()
 		{
-			if (Changed != null) 
+			if (Changed != null)
 				Changed(this);
 		}
 		
-		public abstract bool IsChanged
+		public bool IsChanged
+		{
+			get;
+			private set;
+		}
+		
+		protected abstract bool IsInternalPinChanged
 		{
 			get;
 		}
 		
-		public override void Update()
+		protected abstract void DoUpdate();
+		
+		public override void Connect(IPin otherPin)
 		{
-			if (IsChanged)
-				OnChanged();
+			IsReconnected = true;
+			base.Connect(otherPin);
+		}
+		
+		public override void Disconnect(IPin otherPin)
+		{
+			IsReconnected = true;
+			base.Disconnect(otherPin);
+		}
+		
+		public override sealed void Update()
+		{
+			IsChanged = IsReconnected || IsInternalPinChanged;
 			
-			base.Update();
+			try
+			{
+				if (IsChanged)
+				{
+					DoUpdate();
+					OnChanged();
+				}
+				
+				base.Update();
+			}
+			finally
+			{
+				IsReconnected = false;
+			}
 		}
 		
 		protected override void DisposeManaged()

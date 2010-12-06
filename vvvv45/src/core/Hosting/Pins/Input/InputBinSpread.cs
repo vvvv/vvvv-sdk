@@ -13,14 +13,12 @@ namespace VVVV.Hosting.Pins.Input
 		protected int FUpdateCount;
 		protected int FBinSizeSum;
 		
-		protected bool FLazy;
-		private bool[] FCache;
-		private int[] FOffset;
+		private bool[] FCache = new bool[0];
+		private int[] FOffset = new int[0];
 		
 		public InputBinSpread(IPluginHost host, InputAttribute attribute)
+			: base(attribute)
 		{
-			FLazy = attribute.Lazy;
-			
 			//data pin
 			CreateDataPin(host, attribute);
 			FSpreadPin.Updated += AnyPin_Updated;
@@ -33,11 +31,7 @@ namespace VVVV.Hosting.Pins.Input
 			
 			//lazy loading
 			if (FLazy)
-			{
-				FCache = new bool[0];
-				FOffset = new int[0];
 				FBinSize.Changed += FBinSize_Changed;
-			}
 		}
 		
 		void FBinSize_Changed(IDiffSpread<int> spread)
@@ -62,6 +56,18 @@ namespace VVVV.Hosting.Pins.Input
 				var oldCache = FCache;
 				FCache = new bool[newBuffer.Length];
 				Array.Copy(oldCache, FCache, oldCache.Length);
+			}
+		}
+		
+		protected override void BufferDecreased(ISpread<T>[] oldBuffer, ISpread<T>[] newBuffer)
+		{
+			base.BufferDecreased(oldBuffer, newBuffer);
+			
+			if (FLazy)
+			{
+				var oldCache = FCache;
+				FCache = new bool[newBuffer.Length];
+				Array.Copy(oldCache, FCache, FCache.Length);
 			}
 		}
 
@@ -157,6 +163,7 @@ namespace VVVV.Hosting.Pins.Input
 						int offset = FOffset[offsetIndex] + ((index / FBinSize.SliceCount) * FBinSizeSum);
 						
 						spread.SliceCount = sliceCount;
+						FSpreadPin.Load(offset, sliceCount);
 						for (int i = 0; i < sliceCount; i++)
 							spread[i] = FSpreadPin[offset + i];
 						

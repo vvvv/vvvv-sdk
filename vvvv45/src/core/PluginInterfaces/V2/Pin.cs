@@ -51,6 +51,11 @@ namespace VVVV.PluginInterfaces.V2
 			FLazy = attribute.Lazy;
 		}
 		
+		public override string ToString()
+		{
+			return base.ToString() + ": " + FName;
+		}
+		
 		/// <summary>
 		/// Must be called by subclass at end of constructor.
 		/// </summary>
@@ -93,7 +98,8 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			index = VMath.Zmod(index, SliceCount);
 			length = Math.Min(length, SliceCount - index);
-			DoLoad(index, length);
+			if (length > 0)
+				DoLoad(index, length);
 		}
 		
 		protected virtual void DoLoad(int index, int length)

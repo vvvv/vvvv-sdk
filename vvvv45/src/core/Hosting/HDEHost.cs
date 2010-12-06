@@ -41,7 +41,7 @@ namespace VVVV.Hosting
 		
 		private IVVVVHost FVVVVHost;
 //		private Dictionary<INodeInfo, List<IAddonHost>> FRunningPluginHostsMap;
-		private List<INode> FCreatedNodes;
+		private List<INode> FNodes;
 		private IPluginBase FNodeBrowser, FWindowSwitcher, FKommunikator;
 		protected Dictionary<string, HashSet<ProxyNodeInfo>> FNodeInfoCache;
 		protected Dictionary<string, HashSet<ProxyNodeInfo>> FDeserializedNodeInfoCache;
@@ -113,7 +113,7 @@ namespace VVVV.Hosting
 				SynchronizationContext.SetSynchronizationContext(new WindowsFormsSynchronizationContext());
 			
 //			FRunningPluginHostsMap = new Dictionary<INodeInfo, List<IAddonHost>>();
-			FCreatedNodes = new List<INode>();
+			FNodes = new List<INode>();
 			
 			// Register at least one ICommandHistory for top level element ISolution
 			var mappingRegistry = new MappingRegistry();
@@ -273,10 +273,7 @@ namespace VVVV.Hosting
 		
 		public bool CreateNode(INode node)
 		{
-			var nodeInfo = node.GetNodeInfo();
-			
-			if (!(nodeInfo is ProxyNodeInfo))
-				nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
+			var nodeInfo = NodeInfoFactory.ToProxy(node.GetNodeInfo());
 			
 			try
 			{
@@ -286,24 +283,17 @@ namespace VVVV.Hosting
 				
 				var factory = nodeInfo.Factory;
 				if (factory.Create(nodeInfo, node))
-				{
-					/*
-					if (!FRunningPluginHostsMap.ContainsKey(nodeInfo))
-						FRunningPluginHostsMap[nodeInfo] = new List<IAddonHost>();
-
-					FRunningPluginHostsMap[nodeInfo].Add(host);
-					 */
-					FCreatedNodes.Add(node);
-					
-					OnNodeAdded(new NodeEventArgs(node));
-					
 					return true;
-				}
 			}
 			catch (Exception e)
 			{
 				Logger.Log(e);
 				throw e;
+			}
+			finally
+			{
+				FNodes.Add(node);
+				OnNodeAdded(new NodeEventArgs(node));
 			}
 			
 			return false;
@@ -311,30 +301,23 @@ namespace VVVV.Hosting
 		
 		public bool DestroyNode(INode node)
 		{
-			var nodeInfo = node.GetNodeInfo();
-			
-			if (!(nodeInfo is ProxyNodeInfo))
-				nodeInfo = NodeInfoFactory.ToProxy(nodeInfo);
-			
-			if (nodeInfo.Factory == null)
-				return false;
+			var nodeInfo = NodeInfoFactory.ToProxy(node.GetNodeInfo());
 			
 			try
 			{
 				var factory = nodeInfo.Factory;
 				if (factory.Delete(nodeInfo, node))
-				{
-					FCreatedNodes.Remove(node);
-					
-					OnNodeRemoved(new NodeEventArgs(node));
-					
 					return true;
-				}
 			}
 			catch (Exception e)
 			{
 				Logger.Log(e);
 				throw e;
+			}
+			finally
+			{
+				FNodes.Remove(node);
+				OnNodeRemoved(new NodeEventArgs(node));
 			}
 			
 			return false;
@@ -549,7 +532,7 @@ namespace VVVV.Hosting
 		protected IEnumerable<INode> GetAffectedNodes(INodeInfo nodeInfo)
 		{
 			return
-				from node in FCreatedNodes
+				from node in FNodes
 				let ni = NodeInfoFactory.ToProxy(node.GetNodeInfo())
 				where ni == nodeInfo
 				select node;
@@ -635,25 +618,32 @@ namespace VVVV.Hosting
 		
 		public void factory_NodeInfoUpdated(object sender, INodeInfo info)
 		{
-			var factory = info.Factory;
-
-			// More of a hack. Find cleaner solution: EditorFactory shouldn't update node infos
-			// every time.
-			if (factory is EditorFactory) return;
-			
-			// Go through all the running hosts using this changed node info
-			// and create a new plugin for them.
-			foreach (var node in GetAffectedNodes(info))
+			try
 			{
-				factory.Create(info, node);
+				var factory = info.Factory;
+
+				// More of a hack. Find cleaner solution: EditorFactory shouldn't update node infos
+				// every time.
+				if (factory is EditorFactory) return;
 				
-				//for effects need to update only one affected host
-				//others will be updated vvvv internally
-				if (factory is EffectsFactory)
-					break;
+				// Go through all the running hosts using this changed node info
+				// and create a new plugin for them.
+				foreach (var node in GetAffectedNodes(info))
+				{
+					factory.Create(info, node);
+					
+					//for effects need to update only one affected host
+					//others will be updated vvvv internally
+					if (factory is EffectsFactory)
+						break;
+				}
+				
+				factory_NodeInfoAdded(sender, info);
 			}
-			
-			factory_NodeInfoAdded(sender, info);
+			catch (Exception e)
+			{
+				Logger.Log(e);
+			}
 		}
 		
 		protected Assembly ResolveAssemblyCB(object sender, ResolveEventArgs args)
