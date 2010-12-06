@@ -38,6 +38,7 @@ namespace VVVV.Nodes.Finder
         #region field declaration
         private IPluginHost2 FPluginHost;
         private IHDEHost FHDEHost;
+        private MappingRegistry FMappingRegistry;
         private List<PatchNode> FPlainResultList = new List<PatchNode>();
         private SearchScope FSearchScope = SearchScope.Local;
         
@@ -88,10 +89,10 @@ namespace VVVV.Nodes.Finder
             
             INode root;
             FHDEHost.GetRoot(out root);
-            var mappingRegistry = new MappingRegistry();
-            mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
+            FMappingRegistry = new MappingRegistry();
+            FMappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
             
-            FHierarchyViewer.Registry = mappingRegistry;
+            FHierarchyViewer.Registry = FMappingRegistry;
             FRoot = new PatchNode(root);
             FRoot.Added += UpdateViewer;
             FRoot.Removed += UpdateViewer;
@@ -240,6 +241,12 @@ namespace VVVV.Nodes.Finder
             		FSearchTextBox.MouseWheel -= FSearchTextBox_MouseWheel;
                     FHDEHost.WindowSelectionChanged -= FHDEHost_WindowSelectionChanged;
                     
+                    if (FRoot != FActivePatchNode)
+                    	FRoot.UnSubscribe();
+                    
+                    if (FActivePatchNode != null)
+                        FActivePatchNode.UnSubscribe();
+                    
                     this.FSearchTextBox.TextChanged -= this.FFindTextBoxTextChanged;
         			this.FSearchTextBox.KeyDown -= this.FSearchTextBoxKeyDown;
                     
@@ -247,6 +254,10 @@ namespace VVVV.Nodes.Finder
 		        	this.FHierarchyViewer.Click -= this.FHierarchyViewerClick;
 		        	this.FHierarchyViewer.KeyPress -= this.FHierarchyViewerKeyPress;
 		        	this.FHierarchyViewer.KeyDown -= this.FHierarchyViewerKeyDown;
+		        	this.FHierarchyViewer.Dispose();
+		        	this.FHierarchyViewer = null;
+		        	
+		        	FMappingRegistry.Container.Dispose();
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
@@ -275,7 +286,11 @@ namespace VVVV.Nodes.Finder
                 if (window != FActivePatchWindow)
                 {
                     if (FActivePatchNode != null)
+                    {
+                    	FActivePatchNode.Added -= UpdateViewer;
+                    	FActivePatchNode.Removed -= UpdateViewer;
                         FActivePatchNode.UnSubscribe();
+                    }
                     
                     FPluginHost.Window.Caption =  window.Caption;
                     FActivePatchNode = new PatchNode(window.GetNode());

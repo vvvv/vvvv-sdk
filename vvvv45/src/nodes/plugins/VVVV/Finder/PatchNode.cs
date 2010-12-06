@@ -396,7 +396,10 @@ namespace VVVV.Nodes.Finder
         
         public void UnSubscribe()
         {
-            Node.RemoveListener(this);
+        	if (Node != null)
+            	Node.RemoveListener(this);
+            foreach (var node in FChildNodes)
+            	node.UnSubscribe();
         }
         /*
         public void SelectNodes(INode[] nodes)
