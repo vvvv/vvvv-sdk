@@ -376,8 +376,15 @@ namespace VVVV.HDE.CodeEditor
 		
 		void CSDocument_ParseCompleted(CSDocument document)
 		{
-			if (document.ParseInfo != null && document.ParseInfo.MostRecentCompilationUnit != null)
-				Document.FoldingManager.UpdateFoldings(document.Location.LocalPath, document.ParseInfo);
+			try
+			{
+				if (document.ParseInfo != null && document.ParseInfo.MostRecentCompilationUnit != null)
+					Document.FoldingManager.UpdateFoldings(document.Location.LocalPath, document.ParseInfo);
+			}
+			catch (Exception)
+			{
+				// Ignore
+			}
 		}
 		
 		void FTextEditorControl_ActiveTextAreaControl_TextArea_Resize(object sender, EventArgs e)

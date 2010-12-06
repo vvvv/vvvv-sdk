@@ -485,12 +485,16 @@ namespace VVVV.Hosting
 		
 		public bool UpdateNodeInfo(INodeInfo nodeInfo, string name, string category, string version, string filename)
 		{
+			Debug.Assert(FVVVVThread == Thread.CurrentThread);
+			
 			nodeInfo = ToInternal(nodeInfo);
 			return FFactory.UpdateNodeInfo(nodeInfo, name, category, version, filename);
 		}
 		
 		public bool ContainsKey(string name, string category, string version, string filename)
 		{
+			Debug.Assert(FVVVVThread == Thread.CurrentThread);
+			
 			return FFactory.ContainsKey(name, category, version, filename);
 		}
 		
@@ -500,6 +504,8 @@ namespace VVVV.Hosting
 		private bool FInDestroyNodeInfo;
 		public void DestroyNodeInfo(INodeInfo nodeInfo)
 		{
+			Debug.Assert(FVVVVThread == Thread.CurrentThread);
+			
 			try
 			{
 				FInDestroyNodeInfo = true;
