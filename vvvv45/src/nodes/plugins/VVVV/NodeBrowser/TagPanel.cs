@@ -109,6 +109,8 @@ namespace VVVV.Nodes.NodeBrowser
 			FHoverLine = -1;
 			ScrolledLine = 0;
 			
+			if (NeedsUpdate)
+                Redraw();
 			RedrawSelection();
 		}
 		

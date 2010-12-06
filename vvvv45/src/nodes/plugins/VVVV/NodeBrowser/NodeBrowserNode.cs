@@ -354,7 +354,11 @@ namespace VVVV.Nodes.NodeBrowser
 			var windowtype = window.GetWindowType();
 			
 			if ((windowtype == WindowType.Patch || windowtype == WindowType.Module) && CurrentPatchWindow != window)
-				CurrentPatchWindow = window;
+			{
+			    CurrentPatchWindow = window;
+			    FTagPanel.NeedsUpdate = true;
+			    FCategoryPanel.NeedsUpdate = true;
+			}
 		}
 		
 		protected override bool ProcessDialogKey(Keys keyData)
