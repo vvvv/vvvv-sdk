@@ -8,19 +8,19 @@ namespace VVVV.Hosting.Pins.Input
 	public class BoolInputPin : ValueInputPin<bool>
 	{
 		public BoolInputPin(IPluginHost host, InputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 0.0, 1.0, 1.0)
 		{
 		}
 		
-		public override bool this[int index]
+		unsafe protected override void CopyToBuffer(bool[] buffer, double* source, int startingIndex, int length)
 		{
-			get
+			fixed (bool* destination = buffer)
 			{
-				return FData[VMath.Zmod(index, FSliceCount)] >= 0.5;
-			}
-			set
-			{
-				FData[VMath.Zmod(index, FSliceCount)] = value ? 1.0 : 0.0;
+				bool* dst = destination + startingIndex;
+				double* src = source + startingIndex;
+				
+				for (int i = 0; i < length; i++)
+					*(dst++) = *(src++) >= 0.5;
 			}
 		}
 	}
@@ -28,19 +28,19 @@ namespace VVVV.Hosting.Pins.Input
 	public class DiffBoolInputPin : DiffValueInputPin<bool>
 	{
 		public DiffBoolInputPin(IPluginHost host, InputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 0.0, 1.0, 1.0)
 		{
 		}
 		
-		public override bool this[int index]
+		unsafe protected override void CopyToBuffer(bool[] buffer, double* source, int startingIndex, int length)
 		{
-			get
+			fixed (bool* destination = buffer)
 			{
-				return FData[VMath.Zmod(index, FSliceCount)] >= 0.5;
-			}
-			set
-			{
-				FData[VMath.Zmod(index, FSliceCount)] = value ? 1.0 : 0.0;
+				bool* dst = destination + startingIndex;
+				double* src = source + startingIndex;
+				
+				for (int i = 0; i < length; i++)
+					*(dst++) = *(src++) >= 0.5;
 			}
 		}
 	}

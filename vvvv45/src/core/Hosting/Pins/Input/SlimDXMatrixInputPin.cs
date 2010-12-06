@@ -10,16 +10,12 @@ namespace VVVV.Hosting.Pins.Input
 	public class SlimDXMatrixInputPin : DiffPin<Matrix>, IPinUpdater
 	{
 		protected ITransformIn FTransformIn;
-		protected new float[] FData;
 		
 		public SlimDXMatrixInputPin(IPluginHost host, InputAttribute attribute)
 			: base(host, attribute)
 		{
-			host.CreateTransformInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FTransformIn);
-			
-			FData = new float[16];
-			
-			base.Initialize(FTransformIn);
+			host.CreateTransformInput(FName, FSliceMode, FVisibility, out FTransformIn);
+			base.InitializeInternalPin(FTransformIn);
 		}
 		
 		public override bool IsChanged
@@ -30,38 +26,15 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 		
-		public override int SliceCount
+		unsafe protected void CopyToBuffer(Matrix[] buffer, float* source, int length)
 		{
-			get
+			fixed (Matrix* destination = buffer)
 			{
-				return FSliceCount;
-			}
-			set
-			{
-				if (FSliceCount != value)
-				{
-					FData = new float[value * 16];
-					
-					FSliceCount = value;
-				}
-			}
-		}
-		
-		unsafe public override Matrix this[int index]
-		{
-			get
-			{
-				fixed (float* ptr = FData)
-				{
-					return ((Matrix*)ptr)[VMath.Zmod(index, FSliceCount)];
-				}
-			}
-			set
-			{
-				fixed (float* ptr = FData)
-				{
-					((Matrix*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
-				}
+				Matrix* dst = destination;
+				Matrix* src = (Matrix*) source;
+				
+				for (int i = 0; i < length; i++)
+					*(dst++) = *(src++);
 			}
 		}
 		
@@ -69,14 +42,14 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			if (IsChanged)
 			{
-				int sliceCount;
+				int length;
 				float* source;
 				
-				FTransformIn.GetMatrixPointer(out sliceCount, out source);
-				SliceCount = sliceCount;
+				FTransformIn.GetMatrixPointer(out length, out source);
+				SliceCount = length;
 				
 				if (FSliceCount > 0)
-					Marshal.Copy(new IntPtr(source), FData, 0, FData.Length);
+					CopyToBuffer(FBuffer, source, length);
 			}
 			
 			base.Update();

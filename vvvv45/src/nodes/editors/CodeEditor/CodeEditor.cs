@@ -376,15 +376,8 @@ namespace VVVV.HDE.CodeEditor
 		
 		void CSDocument_ParseCompleted(CSDocument document)
 		{
-			try
-			{
+			if (document.ParseInfo != null && document.ParseInfo.MostRecentCompilationUnit != null)
 				Document.FoldingManager.UpdateFoldings(document.Location.LocalPath, document.ParseInfo);
-			}
-			catch (Exception e)
-			{
-				Logger.Log(e);
-				// Ignore
-			}
 		}
 		
 		void FTextEditorControl_ActiveTextAreaControl_TextArea_Resize(object sender, EventArgs e)
@@ -473,28 +466,32 @@ namespace VVVV.HDE.CodeEditor
 				if (Control.ModifierKeys == Keys.Control)
 				{
 					var location = GetTextLocationAtMousePosition(e.Location);
-					FLink = FLinkDataProvider.GetLink(doc, location);
 					
-					if (!FLink.IsEmpty)
+					if (!location.IsEmpty)
 					{
-						var hoverRegion = FLink.HoverRegion;
-						int offset = doc.PositionToOffset(hoverRegion.ToTextLocation());
-						int length = hoverRegion.EndColumn - hoverRegion.BeginColumn;
+						FLink = FLinkDataProvider.GetLink(doc, location);
 						
-						FUnderlineMarker = new SD.TextMarker(offset, length, SD.TextMarkerType.Underlined, Color.Blue);
-						doc.MarkerStrategy.AddMarker(FUnderlineMarker);
-						
-						FHighlightMarker = new SD.TextMarker(offset, length, SD.TextMarkerType.SolidBlock, Document.HighlightingStrategy.GetColorFor("Default").BackgroundColor, Color.Blue);
-						doc.MarkerStrategy.AddMarker(FHighlightMarker);
-						
-						doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.PositionToLineEnd, doc.OffsetToPosition(offset)));
-						doc.CommitUpdate();
+						if (!FLink.IsEmpty)
+						{
+							var hoverRegion = FLink.HoverRegion;
+							int offset = doc.PositionToOffset(hoverRegion.ToTextLocation());
+							int length = hoverRegion.EndColumn - hoverRegion.BeginColumn;
+							
+							FUnderlineMarker = new SD.TextMarker(offset, length, SD.TextMarkerType.Underlined, Color.Blue);
+							doc.MarkerStrategy.AddMarker(FUnderlineMarker);
+							
+							FHighlightMarker = new SD.TextMarker(offset, length, SD.TextMarkerType.SolidBlock, Document.HighlightingStrategy.GetColorFor("Default").BackgroundColor, Color.Blue);
+							doc.MarkerStrategy.AddMarker(FHighlightMarker);
+							
+							doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.PositionToLineEnd, doc.OffsetToPosition(offset)));
+							doc.CommitUpdate();
+						}
 					}
 				}
 			}
-			catch (Exception f)
+			catch (Exception)
 			{
-				Logger.Log(f);
+				// Ignore				
 			}
 		}
 		
@@ -661,9 +658,7 @@ namespace VVVV.HDE.CodeEditor
 			
 			foreach (var runtimeError in runtimeErros)
 			{
-				var path = Path.GetFullPath(runtimeError.FileName);
-
-				if (path.ToLower() == TextDocument.Location.LocalPath.ToLower())
+				if (new Uri(runtimeError.FileName) == TextDocument.Location)
 					AddErrorMarker(FRuntimeErrorMarkers, 0, runtimeError.Line - 1);
 			}
 

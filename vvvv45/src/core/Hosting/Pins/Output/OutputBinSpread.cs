@@ -14,30 +14,19 @@ namespace VVVV.Hosting.Pins.Output
 		protected int FUpdateCount;
 		
 		public OutputBinSpread(IPluginHost host, OutputAttribute attribute)
-			: base(host, attribute)
 		{
 			//data pin
 			FSpreadPin = PinFactory.CreatePin<T>(host, attribute);
-			FSpreadPin.Updated += FSpreadPin_Updated;
+			FSpreadPin.Updated += AnyUpdated;
 			
 			//bin size pin
 			var att = new OutputAttribute(attribute.Name + " Bin Size");
 			att.DefaultValue = 1;
 			FBinSize = new IntOutputPin(host, att);
-			FBinSize.Updated += FBinSize_Updated;
-		}
-
-		void FBinSize_Updated(object sender, EventArgs args)
-		{
-			AnyUpdated();
-		}
-
-		void FSpreadPin_Updated(object sender, EventArgs args)
-		{
-			AnyUpdated();
+			FBinSize.Updated += AnyUpdated;
 		}
 		
-		private void AnyUpdated()
+		void AnyUpdated(object sender, EventArgs args)
 		{
 			if (FUpdateCount == 0)
 				BuildSpreads();
@@ -62,15 +51,16 @@ namespace VVVV.Hosting.Pins.Output
 			
 			FSpreadPin.SliceCount = count;
 			
-			count = 0;
+			var outputBuffer = FSpreadPin.Buffer;
+			int offset = 0;
 			for(int i = 0; i < SliceCount; i++)
 			{
-				for(int j = 0; j < this[i].SliceCount; j++)
-				{
-					FSpreadPin[count + j] = this[i][j];
-				}
+				var spread = this[i];
 				
-				count += this[i].SliceCount;
+				for(int j = 0; j < spread.SliceCount; j++)
+					outputBuffer[offset + j] = spread[j];
+				
+				offset += spread.SliceCount;
 			}
 		}
 	}

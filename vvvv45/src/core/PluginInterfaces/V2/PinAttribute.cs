@@ -249,5 +249,16 @@ namespace VVVV.PluginInterfaces.V2
 			get;
 			set;
 		}
+		
+		/// <summary>
+		/// Whether to do lazy loading. The user is responsible to call Load(). This is not
+		/// supported by all classes, so you might get a NotImplementedException.
+		/// Note: Classes of type ISpread&lt;ISpread&lt;T&gt;&gt; do the lazy loading automatically if enabled.
+		/// </summary>
+		public bool Lazy
+		{
+			get;
+			set;
+		}
 	}
 }

@@ -34,18 +34,27 @@ namespace VVVV.PluginInterfaces.V2
 		protected ILogger FLogger;
 		protected IPluginHost FHost;
 		protected PinAttribute FAttribute;
+		protected string FName;
+		protected TSliceMode FSliceMode;
+		protected TPinVisibility FVisibility;
+		protected bool FLazy;
 		
 		public Pin(IPluginHost host, PinAttribute attribute)
 			: base(1)
 		{
 			FHost = host;
 			FAttribute = attribute;
+			
+			FName = FAttribute.Name;
+			FSliceMode = (TSliceMode) FAttribute.SliceMode;
+			FVisibility = (TPinVisibility) FAttribute.Visibility;
+			FLazy = attribute.Lazy;
 		}
 		
 		/// <summary>
 		/// Must be called by subclass at end of constructor.
 		/// </summary>
-		protected void Initialize(IPluginIO pluginIO)
+		protected void InitializeInternalPin(IPluginIO pluginIO)
 		{
 			PluginIO = pluginIO;
 			PluginIO.SetPinUpdater(this);
@@ -57,6 +66,39 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 			private set;
+		}
+		
+		public override int SliceCount 
+		{
+			get 
+			{
+				return base.SliceCount;
+			}
+			set 
+			{
+				if (value != 1 && FSliceMode == TSliceMode.Single)
+					value = 1;
+				
+				base.SliceCount = value; 
+			}
+		}
+		
+		/// <summary>
+		/// Used by some subclasses which allow to load values from internal pin lazily.
+		/// The user is responsible to call this function.
+		/// </summary>
+		/// <param name="index">The starting index.</param>
+		/// <param name="length">The number of values to load.</param>
+		public virtual void Load(int index, int length)
+		{
+			index = VMath.Zmod(index, SliceCount);
+			length = Math.Min(length, SliceCount - index);
+			DoLoad(index, length);
+		}
+		
+		protected virtual void DoLoad(int index, int length)
+		{
+			throw new NotImplementedException("Lazy loading is not supported.");
 		}
 		
 		public event PinUpdatedEventHandler Updated;

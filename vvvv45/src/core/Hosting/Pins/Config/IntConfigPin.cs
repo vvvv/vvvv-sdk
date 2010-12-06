@@ -7,7 +7,7 @@ namespace VVVV.Hosting.Pins.Config
 	public class IntConfigPin : ValueConfigPin<int>
 	{
 		public IntConfigPin(IPluginHost host, ConfigAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, int.MinValue, int.MaxValue, 1)
 		{
 		}
 		

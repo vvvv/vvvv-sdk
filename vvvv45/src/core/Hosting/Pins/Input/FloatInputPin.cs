@@ -8,19 +8,19 @@ namespace VVVV.Hosting.Pins.Input
 	public class FloatInputPin : ValueInputPin<float>
 	{
 		public FloatInputPin(IPluginHost host, InputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, float.MinValue, float.MaxValue, 0.01)
 		{
 		}
 		
-		public override float this[int index]
+		unsafe protected override void CopyToBuffer(float[] buffer, double* source, int startingIndex, int length)
 		{
-			get
+			fixed (float* destination = buffer)
 			{
-				return (float) FData[VMath.Zmod(index, FSliceCount)];
-			}
-			set
-			{
-				FData[VMath.Zmod(index, FSliceCount)] = (double) value;
+				float* dst = destination + startingIndex;
+				double* src = source + startingIndex;
+				
+				for (int i = 0; i < length; i++)
+					*(dst++) = (float) *(src++);
 			}
 		}
 	}
@@ -28,19 +28,19 @@ namespace VVVV.Hosting.Pins.Input
 	public class DiffFloatInputPin : DiffValueInputPin<float>
 	{
 		public DiffFloatInputPin(IPluginHost host, InputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, float.MinValue, float.MaxValue, 0.01)
 		{
 		}
 		
-		public override float this[int index]
+		unsafe protected override void CopyToBuffer(float[] buffer, double* source, int startingIndex, int length)
 		{
-			get
+			fixed (float* destination = buffer)
 			{
-				return (float) FData[VMath.Zmod(index, FSliceCount)];
-			}
-			set
-			{
-				FData[VMath.Zmod(index, FSliceCount)] = (double) value;
+				float* dst = destination + startingIndex;
+				double* src = source + startingIndex;
+				
+				for (int i = 0; i < length; i++)
+					*(dst++) = (float) *(src++);
 			}
 		}
 	}

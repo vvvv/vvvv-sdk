@@ -7,175 +7,217 @@ using VVVV.Utils.SlimDX;
 
 namespace VVVV.Hosting.Pins.Input
 {
-	public class Vector2InputPin : ValueInputPin<Vector2>
+	public class Vector2InputPin : VectorInputPin<Vector2>
 	{
 		public Vector2InputPin(IPluginHost host, InputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 2, float.MinValue, float.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector2 this[int index]
+		unsafe protected override void CopyToBuffer(Vector2[] buffer, double* source, int length, int underFlow)
 		{
-			get
+			fixed (Vector2* destination = buffer)
 			{
-				fixed (double* ptr = FData)
+				Vector2* dst = destination;
+				double* src = source;
+				
+				for (int i = 0; i < length / FDimension; i++)
 				{
-					return ((Vector2D*)ptr)[VMath.Zmod(index, FSliceCount)].ToSlimDXVector();
+					dst->X = (float) *src;
+					src++;
+					dst->Y = (float) *src;
+					src++;
+					dst++;
 				}
-			}
-			set
-			{
-				if (!FValueFastIn.IsConnected)
+				
+				if (underFlow > 0)
 				{
-					fixed (double* ptr = FData)
-					{
-						((Vector2D*)ptr)[VMath.Zmod(index, FSliceCount)] = value.ToVector2D();
-					}
+					int i = length - underFlow;
+					dst->X = (float) *(source + i++ % length);
+					dst->Y = (float) *(source + i++ % length);
 				}
 			}
 		}
 	}
 	
-	public class Vector3InputPin : ValueInputPin<Vector3>
+	public class Vector3InputPin : VectorInputPin<Vector3>
 	{
 		public Vector3InputPin(IPluginHost host, InputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 3, float.MinValue, float.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector3 this[int index]
+		unsafe protected override void CopyToBuffer(Vector3[] buffer, double* source, int length, int underFlow)
 		{
-			get
+			fixed (Vector3* destination = buffer)
 			{
-				fixed (double* ptr = FData)
+				Vector3* dst = destination;
+				double* src = source;
+				
+				for (int i = 0; i < length / FDimension; i++)
 				{
-					return ((Vector3D*)ptr)[VMath.Zmod(index, FSliceCount)].ToSlimDXVector();
+					dst->X = (float) *src;
+					src++;
+					dst->Y = (float) *src;
+					src++;
+					dst->Z = (float) *src;
+					src++;
+					dst++;
 				}
-			}
-			set
-			{
-				if (!FValueFastIn.IsConnected)
+				
+				if (underFlow > 0)
 				{
-					fixed (double* ptr = FData)
-					{
-						((Vector3D*)ptr)[VMath.Zmod(index, FSliceCount)] = value.ToVector3D();
-					}
+					int i = length - underFlow;
+					dst->X = (float) *(source + i++ % length);
+					dst->Y = (float) *(source + i++ % length);
+					dst->Z = (float) *(source + i++ % length);
 				}
 			}
 		}
 	}
 	
-	public class Vector4InputPin : ValueInputPin<Vector4>
+	public class Vector4InputPin : VectorInputPin<Vector4>
 	{
 		public Vector4InputPin(IPluginHost host, InputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 4, float.MinValue, float.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector4 this[int index]
+		unsafe protected override void CopyToBuffer(Vector4[] buffer, double* source, int length, int underFlow)
 		{
-			get
+			fixed (Vector4* destination = buffer)
 			{
-				fixed (double* ptr = FData)
+				Vector4* dst = destination;
+				double* src = source;
+				
+				for (int i = 0; i < length / FDimension; i++)
 				{
-					return ((Vector4D*)ptr)[VMath.Zmod(index, FSliceCount)].ToSlimDXVector();
+					dst->X = (float) *src;
+					src++;
+					dst->Y = (float) *src;
+					src++;
+					dst->Z = (float) *src;
+					src++;
+					dst->W = (float) *src;
+					src++;
+					dst++;
 				}
-			}
-			set
-			{
-				if (!FValueFastIn.IsConnected)
+				
+				if (underFlow > 0)
 				{
-					fixed (double* ptr = FData)
-					{
-						((Vector4D*)ptr)[VMath.Zmod(index, FSliceCount)] = value.ToVector4D();
-					}
+					int i = length - underFlow;
+					dst->X = (float) *(source + i++ % length);
+					dst->Y = (float) *(source + i++ % length);
+					dst->Z = (float) *(source + i++ % length);
+					dst->W = (float) *(source + i++ % length);
 				}
 			}
 		}
 	}
 	
-	public class DiffVector2InputPin : DiffValueInputPin<Vector2>
+	public class DiffVector2InputPin : DiffVectorInputPin<Vector2>
 	{
 		public DiffVector2InputPin(IPluginHost host, InputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 2, float.MinValue, float.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector2 this[int index]
+		unsafe protected override void CopyToBuffer(Vector2[] buffer, double* source, int length, int underFlow)
 		{
-			get
+			fixed (Vector2* destination = buffer)
 			{
-				fixed (double* ptr = FData)
+				Vector2* dst = destination;
+				double* src = source;
+				
+				for (int i = 0; i < length / FDimension; i++)
 				{
-					return ((Vector2D*)ptr)[VMath.Zmod(index, FSliceCount)].ToSlimDXVector();
+					dst->X = (float) *src;
+					src++;
+					dst->Y = (float) *src;
+					src++;
+					dst++;
 				}
-			}
-			set
-			{
-				if (!FValueIn.IsConnected)
+				
+				if (underFlow > 0)
 				{
-					fixed (double* ptr = FData)
-					{
-						((Vector2D*)ptr)[VMath.Zmod(index, FSliceCount)] = value.ToVector2D();
-					}
+					int i = length - underFlow;
+					dst->X = (float) *(source + i++ % length);
+					dst->Y = (float) *(source + i++ % length);
 				}
 			}
 		}
 	}
 	
-	public class DiffVector3InputPin : DiffValueInputPin<Vector3>
+	public class DiffVector3InputPin : DiffVectorInputPin<Vector3>
 	{
 		public DiffVector3InputPin(IPluginHost host, InputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 3, float.MinValue, float.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector3 this[int index]
+		unsafe protected override void CopyToBuffer(Vector3[] buffer, double* source, int length, int underFlow)
 		{
-			get
+			fixed (Vector3* destination = buffer)
 			{
-				fixed (double* ptr = FData)
+				Vector3* dst = destination;
+				double* src = source;
+				
+				for (int i = 0; i < length / FDimension; i++)
 				{
-					return ((Vector3D*)ptr)[VMath.Zmod(index, FSliceCount)].ToSlimDXVector();
+					dst->X = (float) *src;
+					src++;
+					dst->Y = (float) *src;
+					src++;
+					dst->Z = (float) *src;
+					src++;
+					dst++;
 				}
-			}
-			set
-			{
-				if (!FValueIn.IsConnected)
+				
+				if (underFlow > 0)
 				{
-					fixed (double* ptr = FData)
-					{
-						((Vector3D*)ptr)[VMath.Zmod(index, FSliceCount)] = value.ToVector3D();
-					}
+					int i = length - underFlow;
+					dst->X = (float) *(source + i++ % length);
+					dst->Y = (float) *(source + i++ % length);
+					dst->Z = (float) *(source + i++ % length);
 				}
 			}
 		}
 	}
 	
-	public class DiffVector4InputPin : DiffValueInputPin<Vector4>
+	public class DiffVector4InputPin : DiffVectorInputPin<Vector4>
 	{
 		public DiffVector4InputPin(IPluginHost host, InputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 4, float.MinValue, float.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector4 this[int index]
+		unsafe protected override void CopyToBuffer(Vector4[] buffer, double* source, int length, int underFlow)
 		{
-			get
+			fixed (Vector4* destination = buffer)
 			{
-				fixed (double* ptr = FData)
+				Vector4* dst = destination;
+				double* src = source;
+				
+				for (int i = 0; i < length / FDimension; i++)
 				{
-					return ((Vector4D*)ptr)[VMath.Zmod(index, FSliceCount)].ToSlimDXVector();
+					dst->X = (float) *src;
+					src++;
+					dst->Y = (float) *src;
+					src++;
+					dst->Z = (float) *src;
+					src++;
+					dst->W = (float) *src;
+					src++;
+					dst++;
 				}
-			}
-			set
-			{
-				if (!FValueIn.IsConnected)
+				
+				if (underFlow > 0)
 				{
-					fixed (double* ptr = FData)
-					{
-						((Vector4D*)ptr)[VMath.Zmod(index, FSliceCount)] = value.ToVector4D();
-					}
+					int i = length - underFlow;
+					dst->X = (float) *(source + i++ % length);
+					dst->Y = (float) *(source + i++ % length);
+					dst->Z = (float) *(source + i++ % length);
+					dst->W = (float) *(source + i++ % length);
 				}
 			}
 		}

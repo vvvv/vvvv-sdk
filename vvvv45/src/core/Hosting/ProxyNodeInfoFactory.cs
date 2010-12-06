@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+
 using VVVV.Core.Runtime;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -420,6 +423,8 @@ namespace VVVV.Hosting
 		private Dictionary<INodeInfo, ProxyNodeInfo> FInternalToProxyMap;
 		private Dictionary<INodeInfo, INodeInfo> FProxyToInternalMap;
 		
+		private Thread FVVVVThread;
+		
 		public ProxyNodeInfoFactory(IInternalNodeInfoFactory nodeInfoFactory)
 		{
 			FFactory = nodeInfoFactory;
@@ -430,6 +435,8 @@ namespace VVVV.Hosting
 				NodeInfoAddedCB(nodeInfo);
 			
 			nodeInfoFactory.AddListener(this);
+			
+			FVVVVThread = Thread.CurrentThread;
 		}
 		
 		public void Dispose()
@@ -457,6 +464,8 @@ namespace VVVV.Hosting
 		
 		public INodeInfo CreateNodeInfo(string name, string category, string version, string filename, bool beginUpdate)
 		{
+			Debug.Assert(FVVVVThread == Thread.CurrentThread);
+			
 			var nodeInfo = FFactory.CreateNodeInfo(name, category, version, filename, beginUpdate);
 			
 			if (beginUpdate)

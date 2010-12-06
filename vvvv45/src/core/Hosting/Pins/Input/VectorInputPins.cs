@@ -1,179 +1,279 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Input
 {
-	public class Vector2DInputPin : ValueInputPin<Vector2D>
+	public abstract class VectorInputPin<T> : VectorPin<T> where T: struct
+	{
+		protected IValueFastIn FValueFastIn;
+		
+		public VectorInputPin(IPluginHost host, InputAttribute attribute, int dimension, double minValue, double maxValue, double stepSize)
+			: base(host, attribute, dimension, minValue, maxValue, stepSize)
+		{
+			host.CreateValueFastInput(FName, FDimension, FDimensionNames, FSliceMode, FVisibility, out FValueFastIn);
+			switch (FDimension)
+			{
+				case 2:
+					FValueFastIn.SetSubType2D(FMinValue, FMaxValue, FStepSize, FDefaultValues[0], FDefaultValues[1], FIsBang, FIsToggle, FIsInteger);
+					break;
+				case 3:
+					FValueFastIn.SetSubType3D(FMinValue, FMaxValue, FStepSize, FDefaultValues[0], FDefaultValues[1], FDefaultValues[2], FIsBang, FIsToggle, FIsInteger);
+					break;
+				case 4:
+					FValueFastIn.SetSubType4D(FMinValue, FMaxValue, FStepSize, FDefaultValues[0], FDefaultValues[1], FDefaultValues[2], FDefaultValues[3], FIsBang, FIsToggle, FIsInteger);
+					break;
+			}
+			
+			base.InitializeInternalPin(FValueFastIn);
+		}
+		
+		unsafe protected abstract void CopyToBuffer(T[] buffer, double* source, int length, int underFlow);
+		
+		unsafe public override void Update()
+		{
+			int length;
+			double* source;
+			
+			FValueFastIn.GetValuePointer(out length, out source);
+			
+			var underFlow = length % FDimension;
+			if (underFlow != 0)
+				SliceCount = length / FDimension + 1;
+			else
+				SliceCount = length / FDimension;
+			
+			if (FSliceCount > 0)
+				CopyToBuffer(FBuffer, source, length, underFlow);
+			
+			base.Update();
+		}
+	}
+	
+	public abstract class DiffVectorInputPin<T> : DiffVectorPin<T> where T: struct
+	{
+		protected IValueIn FValueIn;
+		
+		public DiffVectorInputPin(IPluginHost host, InputAttribute attribute, int dimension, double minValue, double maxValue, double stepSize)
+			: base(host, attribute, dimension, minValue, maxValue, stepSize)
+		{
+			host.CreateValueInput(FName, FDimension, FDimensionNames, FSliceMode, FVisibility, out FValueIn);
+			switch (FDimension)
+			{
+				case 2:
+					FValueIn.SetSubType2D(FMinValue, FMaxValue, FStepSize, FDefaultValues[0], FDefaultValues[1], FIsBang, FIsToggle, FIsInteger);
+					break;
+				case 3:
+					FValueIn.SetSubType3D(FMinValue, FMaxValue, FStepSize, FDefaultValues[0], FDefaultValues[1], FDefaultValues[2], FIsBang, FIsToggle, FIsInteger);
+					break;
+				case 4:
+					FValueIn.SetSubType4D(FMinValue, FMaxValue, FStepSize, FDefaultValues[0], FDefaultValues[1], FDefaultValues[2], FDefaultValues[3], FIsBang, FIsToggle, FIsInteger);
+					break;
+			}
+			
+			base.InitializeInternalPin(FValueIn);
+		}
+		
+		unsafe protected abstract void CopyToBuffer(T[] buffer, double* source, int length, int underFlow);
+		
+		unsafe public override void Update()
+		{
+			if (IsChanged)
+			{
+				int length;
+				double* source;
+				
+				FValueIn.GetValuePointer(out length, out source);
+				
+				var underFlow = length % FDimension;
+				if (underFlow != 0)
+					SliceCount = length / FDimension + 1;
+				else
+					SliceCount = length / FDimension;
+				
+				if (FSliceCount > 0)
+					CopyToBuffer(FBuffer, source, length, underFlow);
+				
+				OnChanged();
+			}
+			
+			base.Update();
+		}
+		
+		public override bool IsChanged
+		{
+			get
+			{
+				return FValueIn.PinIsChanged;
+			}
+		}
+	}
+	
+	public class Vector2DInputPin : VectorInputPin<Vector2D>
 	{
 		public Vector2DInputPin(IPluginHost host, InputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 2, double.MinValue, double.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector2D this[int index]
+		unsafe protected override void CopyToBuffer(Vector2D[] buffer, double* source, int length, int underFlow)
 		{
-			get
+			fixed (Vector2D* destination = buffer)
 			{
-				fixed (double* ptr = FData)
+				Vector2D* dst = destination;
+				Vector2D* src = (Vector2D*) source;
+				
+				for (int i = 0; i < length / FDimension; i++)
+					*(dst++) = *(src++);
+				
+				if (underFlow > 0)
 				{
-					return ((Vector2D*)ptr)[VMath.Zmod(index, FSliceCount)];
-				}
-			}
-			set
-			{
-				if (!FValueFastIn.IsConnected)
-				{
-					fixed (double* ptr = FData)
-					{
-						((Vector2D*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
-					}
+					int i = length - underFlow;
+					dst->x = *(source + i++ % length);
+					dst->y = *(source + i++ % length);
 				}
 			}
 		}
 	}
 	
-	public class Vector3DInputPin : ValueInputPin<Vector3D>
+	public class Vector3DInputPin : VectorInputPin<Vector3D>
 	{
 		public Vector3DInputPin(IPluginHost host, InputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 3, double.MinValue, double.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector3D this[int index]
+		unsafe protected override void CopyToBuffer(Vector3D[] buffer, double* source, int length, int underFlow)
 		{
-			get
+			fixed (Vector3D* destination = buffer)
 			{
-				fixed (double* ptr = FData)
+				Vector3D* dst = destination;
+				Vector3D* src = (Vector3D*) source;
+				
+				for (int i = 0; i < length / FDimension; i++)
+					*(dst++) = *(src++);
+				
+				if (underFlow > 0)
 				{
-					return ((Vector3D*)ptr)[VMath.Zmod(index, FSliceCount)];
-				}
-			}
-			set
-			{
-				if (!FValueFastIn.IsConnected)
-				{
-					fixed (double* ptr = FData)
-					{
-						((Vector3D*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
-					}
+					int i = length - underFlow;
+					dst->x = *(source + i++ % length);
+					dst->y = *(source + i++ % length);
+					dst->z = *(source + i++ % length);
 				}
 			}
 		}
 	}
 	
-	public class Vector4DInputPin : ValueInputPin<Vector4D>
+	public class Vector4DInputPin : VectorInputPin<Vector4D>
 	{
 		public Vector4DInputPin(IPluginHost host, InputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 4, double.MinValue, double.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector4D this[int index]
+		unsafe protected override void CopyToBuffer(Vector4D[] buffer, double* source, int length, int underFlow)
 		{
-			get
+			fixed (Vector4D* destination = buffer)
 			{
-				fixed (double* ptr = FData)
+				Vector4D* dst = destination;
+				Vector4D* src = (Vector4D*) source;
+				
+				for (int i = 0; i < length / FDimension; i++)
+					*(dst++) = *(src++);
+				
+				if (underFlow > 0)
 				{
-					return ((Vector4D*)ptr)[VMath.Zmod(index, FSliceCount)];
-				}
-			}
-			set
-			{
-				if (!FValueFastIn.IsConnected)
-				{
-					fixed (double* ptr = FData)
-					{
-						((Vector4D*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
-					}
+					int i = length - underFlow;
+					dst->x = *(source + i++ % length);
+					dst->y = *(source + i++ % length);
+					dst->z = *(source + i++ % length);
+					dst->w = *(source + i++ % length);
 				}
 			}
 		}
 	}
 	
-	public class DiffVector2DInputPin : DiffValueInputPin<Vector2D>
+	public class DiffVector2DInputPin : DiffVectorInputPin<Vector2D>
 	{
 		public DiffVector2DInputPin(IPluginHost host, InputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 2, double.MinValue, double.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector2D this[int index]
+		unsafe protected override void CopyToBuffer(Vector2D[] buffer, double* source, int length, int underFlow)
 		{
-			get
+			fixed (Vector2D* destination = buffer)
 			{
-				fixed (double* ptr = FData)
+				Vector2D* dst = destination;
+				Vector2D* src = (Vector2D*) source;
+				
+				for (int i = 0; i < length / FDimension; i++)
+					*(dst++) = *(src++);
+				
+				if (underFlow > 0)
 				{
-					return ((Vector2D*)ptr)[VMath.Zmod(index, FSliceCount)];
-				}
-			}
-			set
-			{
-				if (!FValueIn.IsConnected)
-				{
-					fixed (double* ptr = FData)
-					{
-						((Vector2D*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
-					}
+					int i = length - underFlow;
+					dst->x = *(source + i++ % length);
+					dst->y = *(source + i++ % length);
 				}
 			}
 		}
 	}
 	
-	public class DiffVector3DInputPin : DiffValueInputPin<Vector3D>
+	public class DiffVector3DInputPin : DiffVectorInputPin<Vector3D>
 	{
 		public DiffVector3DInputPin(IPluginHost host, InputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 3, double.MinValue, double.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector3D this[int index]
+		unsafe protected override void CopyToBuffer(Vector3D[] buffer, double* source, int length, int underFlow)
 		{
-			get
+			fixed (Vector3D* destination = buffer)
 			{
-				fixed (double* ptr = FData)
+				Vector3D* dst = destination;
+				Vector3D* src = (Vector3D*) source;
+				
+				for (int i = 0; i < length / FDimension; i++)
+					*(dst++) = *(src++);
+				
+				if (underFlow > 0)
 				{
-					return ((Vector3D*)ptr)[VMath.Zmod(index, FSliceCount)];
-				}
-			}
-			set
-			{
-				if (!FValueIn.IsConnected)
-				{
-					fixed (double* ptr = FData)
-					{
-						((Vector3D*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
-					}
+					int i = length - underFlow;
+					dst->x = *(source + i++ % length);
+					dst->y = *(source + i++ % length);
+					dst->z = *(source + i++ % length);
 				}
 			}
 		}
 	}
 	
-	public class DiffVector4DInputPin : DiffValueInputPin<Vector4D>
+	public class DiffVector4DInputPin : DiffVectorInputPin<Vector4D>
 	{
 		public DiffVector4DInputPin(IPluginHost host, InputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 4, double.MinValue, double.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector4D this[int index]
+		unsafe protected override void CopyToBuffer(Vector4D[] buffer, double* source, int length, int underFlow)
 		{
-			get
+			fixed (Vector4D* destination = buffer)
 			{
-				fixed (double* ptr = FData)
+				Vector4D* dst = destination;
+				Vector4D* src = (Vector4D*) source;
+				
+				for (int i = 0; i < length / FDimension; i++)
+					*(dst++) = *(src++);
+				
+				if (underFlow > 0)
 				{
-					return ((Vector4D*)ptr)[VMath.Zmod(index, FSliceCount)];
-				}
-			}
-			set
-			{
-				if (!FValueIn.IsConnected)
-				{
-					fixed (double* ptr = FData)
-					{
-						((Vector4D*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
-					}
+					int i = length - underFlow;
+					dst->x = *(source + i++ % length);
+					dst->y = *(source + i++ % length);
+					dst->z = *(source + i++ % length);
+					dst->w = *(source + i++ % length);
 				}
 			}
 		}

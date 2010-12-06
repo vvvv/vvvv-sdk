@@ -7,56 +7,26 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Output
 {
-	public class SlimDXMatrixOutputPin : Pin<Matrix>, IPinUpdater
+	public class SlimDXMatrixOutputPin : Pin<Matrix>
 	{
 		protected ITransformOut FTransformOut;
-		protected new float[] FData;
 		
 		public SlimDXMatrixOutputPin(IPluginHost host, OutputAttribute attribute)
 			: base(host, attribute)
 		{
-			host.CreateTransformOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FTransformOut);
-			
-			FData = new float[16];
-			
-			base.Initialize(FTransformOut);
+			host.CreateTransformOutput(FName, FSliceMode, FVisibility, out FTransformOut);
+			base.InitializeInternalPin(FTransformOut);
 		}
 		
-		public override int SliceCount
+		unsafe protected void CopyFromBuffer(Matrix[] buffer, float* destination, int length)
 		{
-			get
+			fixed (Matrix* source = buffer)
 			{
-				return FSliceCount;
-			}
-			set
-			{
-				if (FSliceCount != value)
-				{
-					FData = new float[value * 16];
-					
-					FSliceCount = value;
-					
-					if (FAttribute.SliceMode != SliceMode.Single)
-						FTransformOut.SliceCount = value;
-				}
-			}
-		}
-		
-		unsafe public override Matrix this[int index]
-		{
-			get
-			{
-				fixed (float* ptr = FData)
-				{
-					return ((Matrix*)ptr)[VMath.Zmod(index, FSliceCount)];
-				}
-			}
-			set
-			{
-				fixed (float* ptr = FData)
-				{
-					((Matrix*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
-				}
+				Matrix* src = source;
+				Matrix* dst = (Matrix*) destination;
+				
+				for (int i = 0; i < length; i++)
+					*(dst++) = *(src++);
 			}
 		}
 		
@@ -64,11 +34,14 @@ namespace VVVV.Hosting.Pins.Output
 		{
 			base.Update();
 			
+			if (FAttribute.SliceMode != SliceMode.Single)
+				FTransformOut.SliceCount = SliceCount;
+			
 			float* destination;
 			FTransformOut.GetMatrixPointer(out destination);
 			
 			if (FSliceCount > 0)
-				Marshal.Copy(FData, 0, new IntPtr(destination), FData.Length);
+				CopyFromBuffer(FBuffer, destination, SliceCount);
 		}
 	}
 }

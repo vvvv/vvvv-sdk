@@ -9,83 +9,33 @@ namespace VVVV.Hosting.Pins.Output
 	/// T is one of:
 	/// bool, byte, sbyte, int, uint, short, ushort, long, ulong, float, double
 	/// </summary>
-	public abstract class ValueOutputPin<T> : Pin<T>, IPinUpdater where T: struct
+	public abstract class ValueOutputPin<T> : ValuePin<T> where T: struct
 	{
 		protected IValueOut FValueOut;
-		protected new double[] FData;
-		protected int FDimension;
 		
-		public ValueOutputPin(IPluginHost host, OutputAttribute attribute)
-			: base(host, attribute)
+		public ValueOutputPin(IPluginHost host, OutputAttribute attribute, double minValue, double maxValue, double stepSize)
+			: base(host, attribute, minValue, maxValue, stepSize)
 		{
-			var type = typeof(T);
-			
-			double minValue, maxValue, stepSize;
-			bool isInteger = true;
-			bool isBool = type == typeof(bool);
-			
-			PinUtils.LoadDefaultValues(type, attribute, out FDimension, out minValue, out maxValue, out stepSize, out isInteger);
-			
-			host.CreateValueOutput(attribute.Name, FDimension, attribute.DimensionNames, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FValueOut);
-			switch (FDimension)
-			{
-				case 2:
-					FValueOut.SetSubType2D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], false, false, isInteger);
-					break;
-				case 3:
-					FValueOut.SetSubType3D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], false, false, isInteger);
-					break;
-				case 4:
-					FValueOut.SetSubType4D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], attribute.DefaultValues[3], false, false, isInteger);
-					break;
-				default:
-					FValueOut.SetSubType(minValue, maxValue, stepSize, attribute.DefaultValue, isBool && attribute.IsBang, isBool && !attribute.IsBang, isInteger);
-					break;
-			}
-			
-			FData = new double[FDimension];
-			
-			base.Initialize(FValueOut);
+			host.CreateValueOutput(FName, 1, null, FSliceMode, FVisibility, out FValueOut);
+			FValueOut.SetSubType(FMinValue, FMaxValue, FStepSize, FDefaultValue, FIsBang, FIsToggle, FIsInteger);
+			base.InitializeInternalPin(FValueOut);
 		}
 		
-		public override int SliceCount 
-		{
-			get 
-			{
-				return FSliceCount;
-			}
-			set 
-			{
-				if (FSliceCount != value)
-				{
-					var old = FData;
-					FData = new double[value * FDimension];
-					
-					if (old.Length > 0)
-					{
-						for (int i = 0; i < FData.Length; i++)
-						{
-							FData[i] = old[i % old.Length];
-						}
-					}
-				
-					FSliceCount = value;
-				
-					if (FAttribute.SliceMode != SliceMode.Single)
-						FValueOut.SliceCount = value;
-				}
-			}
-		}
+		unsafe protected abstract void CopyFromBuffer(T[] buffer, double* destination, int length);
 		
 		unsafe public override void Update()
 		{
 			base.Update();
 			
-			double* destination;
-			FValueOut.GetValuePointer(out destination);
+			if (FAttribute.SliceMode != SliceMode.Single)
+				FValueOut.SliceCount = FSliceCount;
 			
 			if (FSliceCount > 0)
-				Marshal.Copy(FData, 0, new IntPtr(destination), FData.Length);
+			{
+				double* destination;
+				FValueOut.GetValuePointer(out destination);
+				CopyFromBuffer(FBuffer, destination, FSliceCount);
+			}
 		}
 	}
 }

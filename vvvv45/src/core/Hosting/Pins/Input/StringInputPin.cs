@@ -19,9 +19,9 @@ namespace VVVV.Hosting.Pins.Input
 			
 			FIsPath = (attribute.StringType == StringType.Directory) || (attribute.StringType == StringType.Filename);
 			
-			FData = new string[1];
+			FBuffer = new string[1];
 			
-			base.Initialize(FStringIn);
+			base.InitializeInternalPin(FStringIn);
 		}
 		
 		public override bool IsChanged 
@@ -63,7 +63,7 @@ namespace VVVV.Hosting.Pins.Input
 					string value;
 					FStringIn.GetString(i, out value);
 					var s = value == null ? "" : value;
-					FData[i] = FIsPath ? GetFullPath(s) : s;
+					FBuffer[i] = FIsPath ? GetFullPath(s) : s;
 				}
 			}
 			

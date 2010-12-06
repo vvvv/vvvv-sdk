@@ -7,7 +7,7 @@ namespace VVVV.Hosting.Pins.Config
 	public class FloatConfigPin : ValueConfigPin<float>
 	{
 		public FloatConfigPin(IPluginHost host, ConfigAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, float.MinValue, float.MaxValue, 0.01)
 		{
 		}
 		

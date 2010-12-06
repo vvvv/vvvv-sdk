@@ -21,7 +21,7 @@ namespace VVVV.Hosting.Pins.Input
 			host.CreateEnumInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FEnumInputPin);
 			FEnumInputPin.SetSubType(FEnumType.Name);
 			
-			base.Initialize(FEnumInputPin);
+			base.InitializeInternalPin(FEnumInputPin);
 		}
 
 		public override bool IsChanged
@@ -42,7 +42,7 @@ namespace VVVV.Hosting.Pins.Input
 				{
 					string entry;
 					FEnumInputPin.GetString(i, out entry);
-					FData[i] = (T)Enum.Parse(FEnumType, entry);
+					FBuffer[i] = (T)Enum.Parse(FEnumType, entry);
 				}
 			}
 			

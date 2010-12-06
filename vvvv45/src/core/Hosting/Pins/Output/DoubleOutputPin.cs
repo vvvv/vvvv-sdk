@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
@@ -8,20 +9,13 @@ namespace VVVV.Hosting.Pins.Output
 	public class DoubleOutputPin : ValueOutputPin<double>
 	{
 		public DoubleOutputPin(IPluginHost host, OutputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, double.MinValue, double.MaxValue, 0.01)
 		{
 		}
 		
-		public override double this[int index] 
+		unsafe protected override void CopyFromBuffer(double[] buffer, double* destination, int length)
 		{
-			get 
-			{
-				return FData[VMath.Zmod(index, FSliceCount)];
-			}
-			set 
-			{
-				FData[VMath.Zmod(index, FSliceCount)] = value;
-			}
+			Marshal.Copy(buffer, 0, (IntPtr) destination, length);
 		}
 	}
 }

@@ -20,7 +20,7 @@ namespace VVVV.Hosting.Pins.Input
 			
 			FUpstreamInterface = FDefaultInterface;
 			
-			base.Initialize(FNodeIn);
+			base.InitializeInternalPin(FNodeIn);
 		}
 		
 		public override void Connect(IPin otherPin)
@@ -55,11 +55,11 @@ namespace VVVV.Hosting.Pins.Input
 					if (FUpstreamInterface != null)
 					{
 						FNodeIn.GetUpsreamSlice(i, out usS);
-						FData[i] = (T) FUpstreamInterface.GetSlice(usS);
+						FBuffer[i] = (T) FUpstreamInterface.GetSlice(usS);
 					}
 					else
 					{
-						FData[i] = default(T);
+						FBuffer[i] = default(T);
 					}
 				}
 			}

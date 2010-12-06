@@ -19,7 +19,7 @@ namespace VVVV.Hosting.Pins.Config
 		protected void Initialize(IPluginConfig pluginConfig)
 		{
 			PluginConfig = pluginConfig;
-			base.Initialize(pluginConfig);
+			base.InitializeInternalPin(pluginConfig);
 		}
 		
 		protected IPluginConfig PluginConfig
@@ -39,7 +39,7 @@ namespace VVVV.Hosting.Pins.Config
 				base.SliceCount = value;
 				
 				if (FAttribute.SliceMode != SliceMode.Single)
-					PluginConfig.SliceCount = value;
+					PluginConfig.SliceCount = FSliceCount;
 			}
 		}
 		

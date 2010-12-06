@@ -7,69 +7,51 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Output
 {
-	public class ColorOutputPin : Pin<RGBAColor>, IPinUpdater
+	public class ColorOutputPin : Pin<RGBAColor>
 	{
 		protected IColorOut FColorOut;
-		protected new double[] FData;
 		
 		public ColorOutputPin(IPluginHost host, OutputAttribute attribute)
 			: base(host, attribute)
 		{
-			host.CreateColorOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FColorOut);
+			host.CreateColorOutput(FName, FSliceMode, FVisibility, out FColorOut);
 			FColorOut.SetSubType(new RGBAColor(attribute.DefaultValues), attribute.HasAlpha);
-			
-			FData = new double[4];
-			
-			base.Initialize(FColorOut);
-		}
-		
-		public override int SliceCount
-		{
-			get
-			{
-				return FSliceCount;
-			}
-			set
-			{
-				if (FSliceCount != value)
-				{
-					FData = new double[value * 4];
-					
-					FSliceCount = value;
-					
-					if (FAttribute.SliceMode != SliceMode.Single)
-						FColorOut.SliceCount = value;
-				}
-			}
-		}
-		
-		unsafe public override RGBAColor this[int index]
-		{
-			get
-			{
-				fixed (double* ptr = FData)
-				{
-					return ((RGBAColor*)ptr)[VMath.Zmod(index, FSliceCount)];
-				}
-			}
-			set
-			{
-				fixed (double* ptr = FData)
-				{
-					((RGBAColor*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
-				}
-			}
+			base.InitializeInternalPin(FColorOut);
 		}
 		
 		unsafe public override void Update()
 		{
 			base.Update();
 			
-			double* destination;
-			FColorOut.GetColorPointer(out destination);
+			if (FAttribute.SliceMode != SliceMode.Single)
+				FColorOut.SliceCount = FSliceCount;
 			
 			if (FSliceCount > 0)
-				Marshal.Copy(FData, 0, new IntPtr(destination), FData.Length);
+			{
+				double* dst;
+				FColorOut.GetColorPointer(out dst);
+				CopyFromBuffer(FBuffer, dst, FSliceCount * 4);
+			}
+		}
+		
+		unsafe protected void CopyFromBuffer(RGBAColor[] buffer, double* dst, int length)
+		{
+			fixed (RGBAColor* source = buffer)
+			{
+				RGBAColor* src = source;
+				for (int i = 0; i < length / 4; i++)
+				{
+					*dst = src->R;
+					dst++;
+					*dst = src->G;
+					dst++;
+					*dst = src->B;
+					dst++;
+					*dst = src->A;
+					dst++;
+					src++;
+				}
+			}
 		}
 	}
 }

@@ -9,19 +9,15 @@ using VVVV.Utils.SlimDX;
 
 namespace VVVV.Hosting.Pins.Input
 {
-	public class Matrix4x4InputPin : DiffPin<Matrix4x4>, IPinUpdater
+	public class Matrix4x4InputPin : DiffPin<Matrix4x4>
 	{
 		protected ITransformIn FTransformIn;
-		protected new float[] FData;
 		
 		public Matrix4x4InputPin(IPluginHost host, InputAttribute attribute)
 			: base(host, attribute)
 		{
-			host.CreateTransformInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FTransformIn);
-			
-			FData = new float[16];
-			
-			base.Initialize(FTransformIn);
+			host.CreateTransformInput(FName, FSliceMode, FVisibility, out FTransformIn);
+			base.InitializeInternalPin(FTransformIn);
 		}
 		
 		public override bool IsChanged
@@ -32,38 +28,15 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 		
-		public override int SliceCount
+		unsafe protected void CopyToBuffer(Matrix4x4[] buffer, float* source, int length)
 		{
-			get
+			fixed (Matrix4x4* destination = buffer)
 			{
-				return FSliceCount;
-			}
-			set
-			{
-				if (FSliceCount != value)
-				{
-					FData = new float[value * 16];
-					
-					FSliceCount = value;
-				}
-			}
-		}
-		
-		unsafe public override Matrix4x4 this[int index]
-		{
-			get
-			{
-				fixed (float* ptr = FData)
-				{
-					return ((Matrix*)ptr)[VMath.Zmod(index, FSliceCount)].ToMatrix4x4();
-				}
-			}
-			set
-			{
-				fixed (float* ptr = FData)
-				{
-					((Matrix*)ptr)[VMath.Zmod(index, FSliceCount)] = value.ToSlimDXMatrix();
-				}
+				Matrix4x4* dst = destination;
+				Matrix* src = (Matrix*) source;
+				
+				for (int i = 0; i < length; i++)
+					*(dst++) = (*(src++)).ToMatrix4x4();
 			}
 		}
 		
@@ -71,14 +44,14 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			if (IsChanged)
 			{
-				int sliceCount;
+				int length;
 				float* source;
 				
-				FTransformIn.GetMatrixPointer(out sliceCount, out source);
-				SliceCount = sliceCount;
+				FTransformIn.GetMatrixPointer(out length, out source);
+				SliceCount = length;
 				
 				if (FSliceCount > 0)
-					Marshal.Copy(new IntPtr(source), FData, 0, FData.Length);
+					CopyToBuffer(FBuffer, source, length);
 			}
 			
 			base.Update();

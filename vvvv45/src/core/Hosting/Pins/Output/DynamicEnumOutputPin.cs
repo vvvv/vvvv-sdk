@@ -14,7 +14,7 @@ namespace VVVV.Hosting.Pins.Output
 			host.CreateEnumOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FEnumOutputPin);
 			FEnumOutputPin.SetSubType(attribute.EnumName);
 			
-			base.Initialize(FEnumOutputPin);
+			base.InitializeInternalPin(FEnumOutputPin);
 		}
 		
 		public override void Update()
@@ -26,7 +26,7 @@ namespace VVVV.Hosting.Pins.Output
 			
 			for (int i = 0; i < FSliceCount; i++)
 			{
-				FEnumOutputPin.SetOrd(i, FData[i].Index);
+				FEnumOutputPin.SetOrd(i, FBuffer[i].Index);
 			}
 		}
 	}

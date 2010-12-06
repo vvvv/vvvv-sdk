@@ -8,20 +8,14 @@ namespace VVVV.Hosting.Pins.Output
 	public class BoolOutputPin : ValueOutputPin<bool>
 	{
 		public BoolOutputPin(IPluginHost host, OutputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 0, 1, 1)
 		{
 		}
 		
-		public override bool this[int index] 
+		unsafe protected override void CopyFromBuffer(bool[] buffer, double* destination, int length)
 		{
-			get 
-			{
-				return FData[VMath.Zmod(index, FSliceCount)] >= 0.5;
-			}
-			set
-			{
-				FData[VMath.Zmod(index, FSliceCount)] = value ? 1 : 0;
-			}
+			for (int i = 0; i < length; i++)
+				destination[i] = buffer[i] ? 1.0 : 0.0;
 		}
 	}
 }

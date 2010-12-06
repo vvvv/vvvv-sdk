@@ -7,72 +7,44 @@ namespace VVVV.Hosting.Pins.Input
 {
 	/// <summary>
 	/// T is one of:
-	/// bool, byte, sbyte, int, uint, short, ushort, long, ulong, float, double,
-	/// Vector2D, Vector3D, Vector4D
+	/// bool, byte, sbyte, int, uint, short, ushort, long, ulong, float, double
 	/// </summary>
-	public abstract class DiffValueInputPin<T> : DiffPin<T>, IPinUpdater where T: struct
+	public abstract class DiffValueInputPin<T> : DiffValuePin<T>, IDiffSpread<T> where T: struct
 	{
 		protected IValueIn FValueIn;
-		protected new double[] FData;
-		protected int FDimension;
 		
-		public DiffValueInputPin(IPluginHost host, InputAttribute attribute)
-			: base(host, attribute)
+		unsafe private double* FSource;
+		
+		public DiffValueInputPin(IPluginHost host, InputAttribute attribute, double minValue, double maxValue, double stepSize)
+			: base(host, attribute, minValue, maxValue, stepSize)
 		{
-			var type = typeof(T);
-			
-			double minValue, maxValue, stepSize;
-			bool isInteger = true;
-			bool isBool = type == typeof(bool);
-			
-			PinUtils.LoadDefaultValues(type, attribute, out FDimension, out minValue, out maxValue, out stepSize, out isInteger);
-			
-			host.CreateValueInput(attribute.Name, FDimension, null, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FValueIn);
-			switch (FDimension)
-			{
-				case 2:
-					FValueIn.SetSubType2D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], false, false, isInteger);
-					break;
-				case 3:
-					FValueIn.SetSubType3D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], false, false, isInteger);
-					break;
-				case 4:
-					FValueIn.SetSubType4D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], attribute.DefaultValues[3], false, false, isInteger);
-					break;
-				default:
-					FValueIn.SetSubType(minValue, maxValue, stepSize, attribute.DefaultValue, isBool && attribute.IsBang, isBool && !attribute.IsBang, isInteger);
-					break;
-			}
-			
-			FData = new double[FDimension];
-			
-			base.Initialize(FValueIn);
+			host.CreateValueInput(FName, 1, null, FSliceMode, FVisibility, out FValueIn);
+			FValueIn.SetSubType(FMinValue, FMaxValue, FStepSize, FDefaultValue, FIsBang, FIsToggle, FIsInteger);
+			base.InitializeInternalPin(FValueIn);
 		}
 		
-		public override int SliceCount
+		unsafe protected abstract void CopyToBuffer(T[] buffer, double* source, int startingIndex, int length);
+		
+		unsafe public override void Update()
 		{
-			get
+			if (IsChanged)
 			{
-				return FSliceCount;
+				int length;
+				
+				FValueIn.GetValuePointer(out length, out FSource);
+				
+				SliceCount = length;
+				
+				if (!FLazy && FSliceCount > 0)
+					CopyToBuffer(FBuffer, FSource, 0, length);
 			}
-			set
-			{
-				if (FSliceCount != value)
-				{
-					var old = FData;
-					FData = new double[value * FDimension];
-					
-					if (old != null && old.Length > 0)
-					{
-						for (int i = 0; i < FData.Length; i++)
-						{
-							FData[i] = old[i % old.Length];
-						}
-					}
-					
-					FSliceCount = value;
-				}
-			}
+			
+			base.Update();
+		}
+		
+		unsafe protected override void DoLoad(int index, int length)
+		{
+			CopyToBuffer(FBuffer, FSource, index, length);
 		}
 		
 		public override bool IsChanged
@@ -81,31 +53,6 @@ namespace VVVV.Hosting.Pins.Input
 			{
 				return FValueIn.PinIsChanged;
 			}
-		}
-		
-		unsafe public override void Update()
-		{
-			if (IsChanged)
-			{
-				int sliceCount;
-				double* source;
-				
-				FValueIn.GetValuePointer(out sliceCount, out source);
-				
-				var moduloResult = sliceCount % FDimension;
-				if (moduloResult != 0)
-					SliceCount = sliceCount / FDimension + 1;
-				else
-					SliceCount = sliceCount / FDimension;
-				
-				if (FSliceCount > 0)
-					Marshal.Copy(new IntPtr(source), FData, 0, sliceCount);
-				
-				// Fill end of FData with values from start.
-				Array.Copy(FData, 0, FData, sliceCount, FData.Length - sliceCount);
-			}
-			
-			base.Update();
 		}
 	}
 }

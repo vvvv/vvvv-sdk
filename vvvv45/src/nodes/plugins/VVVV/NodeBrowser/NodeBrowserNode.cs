@@ -12,7 +12,6 @@ using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.Core.Collections;
 using VVVV.Core.View;
-using VVVV.Hosting.Factories;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;

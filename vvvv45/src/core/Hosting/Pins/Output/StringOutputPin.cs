@@ -14,7 +14,7 @@ namespace VVVV.Hosting.Pins.Output
 			host.CreateStringOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FStringOut);
 			FStringOut.SetSubType2(attribute.DefaultString, attribute.MaxChars, attribute.FileMask, (TStringType)attribute.StringType);
 			
-			base.Initialize(FStringOut);
+			base.InitializeInternalPin(FStringOut);
 		}
 		
 		public override void Update()
@@ -26,7 +26,7 @@ namespace VVVV.Hosting.Pins.Output
 			
 			for (int i = 0; i < FSliceCount; i++)
 			{
-				FStringOut.SetString(i, FData[i]);
+				FStringOut.SetString(i, FBuffer[i]);
 			}
 		}
 	}

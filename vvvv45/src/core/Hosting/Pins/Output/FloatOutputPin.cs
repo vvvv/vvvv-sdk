@@ -8,20 +8,14 @@ namespace VVVV.Hosting.Pins.Output
 	public class FloatOutputPin : ValueOutputPin<float>
 	{
 		public FloatOutputPin(IPluginHost host, OutputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, float.MinValue, float.MaxValue, 0.01)
 		{
 		}
 		
-		public override float this[int index] 
+		unsafe protected override void CopyFromBuffer(float[] buffer, double* destination, int length)
 		{
-			get 
-			{
-				return (float)FData[VMath.Zmod(index, FSliceCount)];
-			}
-			set 
-			{
-				FData[VMath.Zmod(index, FSliceCount)] = value;
-			}
+			for (int i = 0; i < length; i++)
+				destination[i] = (double) buffer[i];
 		}
 	}
 }

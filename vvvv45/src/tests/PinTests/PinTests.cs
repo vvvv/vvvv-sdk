@@ -17,16 +17,16 @@ namespace PinTests
 		static double[] SampleDataDouble = new double[] { 0.0, -1.0, 1.0 };
 		static float[] SampleDataFloat = new float[] { 0.0f, -1.0f, 1.0f };
 		static string[] SampleDataString = new string[] { "bar", "", "foo" };
-		static RGBAColor[] SampleDataColor = new RGBAColor[] { new RGBAColor(), new RGBAColor(), new RGBAColor() };
+		static RGBAColor[] SampleDataColor = new RGBAColor[] { new RGBAColor(0.2, 0.5, 0.7, 0.6), new RGBAColor(), new RGBAColor() };
 		static SliceMode[] SampleDataEnum = new SliceMode[] { SliceMode.Dynamic, SliceMode.Single, SliceMode.Single };
 		static Matrix4x4[] SampleDataMatrix4x4 = new Matrix4x4[] { new Matrix4x4(), new Matrix4x4(), new Matrix4x4() };
 		static Matrix[] SampleDataMatrix = new Matrix[] { new Matrix(), new Matrix(), new Matrix() };
-		static Vector2[] SampleDataVector2 = new Vector2[] { new Vector2(), new Vector2(), new Vector2() };
-		static Vector3[] SampleDataVector3 = new Vector3[] { new Vector3(), new Vector3(), new Vector3() };
-		static Vector4[] SampleDataVector4 = new Vector4[] { new Vector4(), new Vector4(), new Vector4() };
-		static Vector2D[] SampleDataVector2D = new Vector2D[] { new Vector2D(), new Vector2D(), new Vector2D() };
-		static Vector3D[] SampleDataVector3D = new Vector3D[] { new Vector3D(), new Vector3D(), new Vector3D() };
-		static Vector4D[] SampleDataVector4D = new Vector4D[] { new Vector4D(), new Vector4D(), new Vector4D() };
+		static Vector2[] SampleDataVector2 = new Vector2[] { new Vector2(0.1f, 0.2f), new Vector2(0.3f, 0.4f), new Vector2(0.5f, 0.6f) };
+		static Vector3[] SampleDataVector3 = new Vector3[] { new Vector3(0.32f, 0.43f, 0.54f), new Vector3(0.63f, 0.44f, 0.45f), new Vector3(0.3f, 0.4f, 0.5f) };
+		static Vector4[] SampleDataVector4 = new Vector4[] { new Vector4(0.13f, 0.24f, 0.35f, 0.49f), new Vector4(0.53f, 0.64f, 0.75f, 0.89f), new Vector4(0.3f, 0.4f, 0.5f, 0.9f) };
+		static Vector2D[] SampleDataVector2D = new Vector2D[] { new Vector2D(0.1, 0.2), new Vector2D(0.3, 0.4), new Vector2D(0.5, 0.6) };
+		static Vector3D[] SampleDataVector3D = new Vector3D[] { new Vector3D(0.1, 0.2, 0.3), new Vector3D(0.2, 0.3, 0.4), new Vector3D(0.9, 0.10, 0.11) };
+		static Vector4D[] SampleDataVector4D = new Vector4D[] { new Vector4D(0.1, 0.2, 0.3, 0.4), new Vector4D(0.5, 0.6, 0.7, 0.8), new Vector4D(0.9, 0.10, 0.11, 0.12) };
 		
 		protected IPluginHost2 FPluginHost;
 		

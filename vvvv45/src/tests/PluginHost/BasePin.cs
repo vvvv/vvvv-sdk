@@ -130,6 +130,7 @@ namespace Hoster
 					FSliceCountIsChanged = true;
 					FPinIsChanged = true;
 					
+					FPinUpdater.Update();
 					//don't call configurate here for vvvv doesn't do it either
 					//if (FOnConfigurate != null)
 					//	FOnConfigurate(this);

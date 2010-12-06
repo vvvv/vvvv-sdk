@@ -7,7 +7,7 @@ namespace VVVV.Hosting.Pins.Config
 	public class BoolConfigPin : ValueConfigPin<bool>
 	{
 		public BoolConfigPin(IPluginHost host, ConfigAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 0, 1, 1)
 		{
 		}
 		

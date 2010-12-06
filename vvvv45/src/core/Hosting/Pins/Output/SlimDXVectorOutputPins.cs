@@ -7,83 +7,81 @@ using VVVV.Utils.SlimDX;
 
 namespace VVVV.Hosting.Pins.Output
 {
-
-	public class Vector2OutputPin : ValueOutputPin<Vector2>
+	public class Vector2OutputPin : VectorOutputPin<Vector2>
 	{
 		public Vector2OutputPin(IPluginHost host, OutputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 2, float.MinValue, float.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector2 this[int index] 
+		unsafe protected override void CopyFromBuffer(Vector2[] buffer, double* dst, int length)
 		{
-			get
+			fixed (Vector2* source = buffer)
 			{
-				fixed (double* ptr = FData)
+				Vector2* src = source;
+				for (int i = 0; i < length / FDimension; i++)
 				{
-					return ((Vector2D*)ptr)[VMath.Zmod(index, FSliceCount)].ToSlimDXVector();
-				}
-			}
-			set
-			{
-				fixed (double* ptr = FData)
-				{
-					((Vector2D*)ptr)[VMath.Zmod(index, FSliceCount)] = value.ToVector2D();
+					*dst = (double) src->X;
+					dst++;
+					*dst = (double) src->Y;
+					dst++;
+					src++;
 				}
 			}
 		}
 	}
 	
-	public class Vector3OutputPin : ValueOutputPin<Vector3>
+	public class Vector3OutputPin : VectorOutputPin<Vector3>
 	{
 		public Vector3OutputPin(IPluginHost host, OutputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 3, float.MinValue, float.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector3 this[int index] 
+		unsafe protected override void CopyFromBuffer(Vector3[] buffer, double* dst, int length)
 		{
-			get
+			fixed (Vector3* source = buffer)
 			{
-				fixed (double* ptr = FData)
+				Vector3* src = source;
+				for (int i = 0; i < length / FDimension; i++)
 				{
-					return ((Vector3D*)ptr)[VMath.Zmod(index, FSliceCount)].ToSlimDXVector();
-				}
-			}
-			set
-			{
-				fixed (double* ptr = FData)
-				{
-					((Vector3D*)ptr)[VMath.Zmod(index, FSliceCount)] = value.ToVector3D();
+					*dst = (double) src->X;
+					dst++;
+					*dst = (double) src->Y;
+					dst++;
+					*dst = (double) src->Z;
+					dst++;
+					src++;
 				}
 			}
 		}
 	}
 	
-	public class Vector4OutputPin : ValueOutputPin<Vector4>
+	public class Vector4OutputPin : VectorOutputPin<Vector4>
 	{
 		public Vector4OutputPin(IPluginHost host, OutputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 4, float.MinValue, float.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector4 this[int index] 
+		unsafe protected override void CopyFromBuffer(Vector4[] buffer, double* dst, int length)
 		{
-			get
+			fixed (Vector4* source = buffer)
 			{
-				fixed (double* ptr = FData)
+				Vector4* src = source;
+				for (int i = 0; i < length / FDimension; i++)
 				{
-					return ((Vector4D*)ptr)[VMath.Zmod(index, FSliceCount)].ToSlimDXVector();
-				}
-			}
-			set
-			{
-				fixed (double* ptr = FData)
-				{
-					((Vector4D*)ptr)[VMath.Zmod(index, FSliceCount)] = value.ToVector4D();
+					*dst = (double) src->X;
+					dst++;
+					*dst = (double) src->Y;
+					dst++;
+					*dst = (double) src->Z;
+					dst++;
+					*dst = (double) src->W;
+					dst++;
+					src++;
 				}
 			}
 		}
 	}
-
 }

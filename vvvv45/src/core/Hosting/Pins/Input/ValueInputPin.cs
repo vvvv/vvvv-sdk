@@ -2,99 +2,47 @@
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Input
 {
 	/// <summary>
 	/// T is one of:
-	/// bool, byte, sbyte, int, uint, short, ushort, long, ulong, float, double,
-	/// Vector2D, Vector3D, Vector4D
+	/// bool, byte, sbyte, int, uint, short, ushort, long, ulong, float, double
 	/// </summary>
-	public abstract class ValueInputPin<T> : Pin<T>, IPinUpdater where T: struct
+	public abstract class ValueInputPin<T> : ValuePin<T> where T: struct
 	{
 		protected IValueFastIn FValueFastIn;
-		protected new double[] FData;
-		protected int FDimension;
 		
-		public ValueInputPin(IPluginHost host, InputAttribute attribute)
-			: base(host, attribute)
+		unsafe private double* FSource;
+		
+		public ValueInputPin(IPluginHost host, InputAttribute attribute, double minValue, double maxValue, double stepSize)
+			: base(host, attribute, minValue, maxValue, stepSize)
 		{
-			var type = typeof(T);
-			
-			double minValue, maxValue, stepSize;
-			bool isInteger = true;
-			bool isBool = type == typeof(bool);
-			
-			PinUtils.LoadDefaultValues(type, attribute, out FDimension, out minValue, out maxValue, out stepSize, out isInteger);
-			
-			host.CreateValueFastInput(attribute.Name, FDimension, attribute.DimensionNames, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FValueFastIn);
-			switch (FDimension)
-			{
-				case 2:
-					FValueFastIn.SetSubType2D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], false, false, isInteger);
-					break;
-				case 3:
-					FValueFastIn.SetSubType3D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], false, false, isInteger);
-					break;
-				case 4:
-					FValueFastIn.SetSubType4D(minValue, maxValue, stepSize, attribute.DefaultValues[0], attribute.DefaultValues[1], attribute.DefaultValues[2], attribute.DefaultValues[3], false, false, isInteger);
-					break;
-				default:
-					FValueFastIn.SetSubType(minValue, maxValue, stepSize, attribute.DefaultValue, isBool && attribute.IsBang, isBool && !attribute.IsBang, isInteger);
-					break;
-			}
-			
-			FData = new double[FDimension];
-			
-			base.Initialize(FValueFastIn);
+			host.CreateValueFastInput(FName, 1, null, FSliceMode, FVisibility, out FValueFastIn);
+			FValueFastIn.SetSubType(FMinValue, FMaxValue, FStepSize, FDefaultValue, FIsBang, FIsToggle, FIsInteger);
+			base.InitializeInternalPin(FValueFastIn);
 		}
 		
-		public override int SliceCount
-		{
-			get
-			{
-				return FSliceCount;
-			}
-			set
-			{
-				if (FSliceCount != value)
-				{
-					var old = FData;
-					FData = new double[value * FDimension];
-					
-					if (old.Length > 0)
-					{
-						for (int i = 0; i < FData.Length; i++)
-						{
-							FData[i] = old[i % old.Length];
-						}
-					}
-					
-					FSliceCount = value;
-				}
-			}
-		}
+		unsafe protected abstract void CopyToBuffer(T[] buffer, double* source, int startingIndex, int length);
 		
 		unsafe public override void Update()
 		{
-			int sliceCount;
-			double* source;
+			int length;
 			
-			FValueFastIn.GetValuePointer(out sliceCount, out source);
+			FValueFastIn.GetValuePointer(out length, out FSource);
 			
-			var moduloResult = sliceCount % FDimension;
-			if (moduloResult != 0)
-				SliceCount = sliceCount / FDimension + 1;
-			else
-				SliceCount = sliceCount / FDimension;
+			SliceCount = length;
 			
-			if (FSliceCount > 0)
-				Marshal.Copy(new IntPtr(source), FData, 0, sliceCount);
-			
-			// Fill end of FData with values from start.
-			Array.Copy(FData, 0, FData, sliceCount, FData.Length - sliceCount);
+			if (!FLazy && FSliceCount > 0)
+				CopyToBuffer(FBuffer, FSource, 0, length);
 			
 			base.Update();
+		}
+		
+		unsafe protected override void DoLoad(int index, int length)
+		{
+			CopyToBuffer(FBuffer, FSource, index, length);
 		}
 	}
 }

@@ -7,61 +7,23 @@ using VVVV.PluginInterfaces.V2;
 namespace VVVV.Hosting.Pins
 {
 	/// <summary>
-	/// Base class 2d spreads.
+	/// Base class of 2d spreads.
 	/// </summary>
-	public abstract class BinSpread<T> : ISpread<ISpread<T>>
+	public abstract class BinSpread<T> : Spread<ISpread<T>>
 	{
-		private ISpread<ISpread<T>> FSpreads;
-		
-		public BinSpread(IPluginHost host, PinAttribute attribute)
+		public BinSpread()
+			: base(1)
 		{
-			FSpreads = new Spread<ISpread<T>>(1);
-			FSpreads[0] = new Spread<T>(0);
+			BufferIncreased(new ISpread<T>[0], FBuffer);
 		}
 		
-		public ISpread<T> this[int index]
+		protected override void BufferIncreased(ISpread<T>[] oldBuffer, ISpread<T>[] newBuffer)
 		{
-			get
-			{
-				return FSpreads[index];
-			}
-			set
-			{
-				FSpreads[index] = value;
-			}
-		}
-		
-		public int SliceCount
-		{
-			get
-			{
-				return FSpreads.SliceCount;
-			}
-			set
-			{
-				if (FSpreads.SliceCount != value)
-				{
-					int oldSliceCount = FSpreads.SliceCount;
-					
-					FSpreads.SliceCount = value;
-					
-					for (int i = oldSliceCount; i < FSpreads.SliceCount; i++)
-					{
-						FSpreads[i] = new Spread<T>(0);
-					}
-				}
-			}
-		}
-
-		public IEnumerator<ISpread<T>> GetEnumerator()
-		{
-			for (int i = 0; i < SliceCount; i++)
-				yield return this[i];
-		}
-		
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
+			for (int i = 0; i < oldBuffer.Length; i++)
+				newBuffer[i] = oldBuffer[i];
+			
+			for (int i = oldBuffer.Length; i < newBuffer.Length; i++)
+				newBuffer[i] = new Spread<T>(0);
 		}
 	}
 }

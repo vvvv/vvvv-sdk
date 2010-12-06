@@ -1,87 +1,110 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Output
 {
-
-	public class Vector2DOutputPin : ValueOutputPin<Vector2D>
+	public abstract class VectorOutputPin<T> : VectorPin<T> where T: struct
+	{
+		protected IValueOut FValueOut;
+		
+		public VectorOutputPin(IPluginHost host, OutputAttribute attribute, int dimension, double minValue, double maxValue, double stepSize)
+			: base(host, attribute, dimension, minValue, maxValue, stepSize)
+		{
+			host.CreateValueOutput(FName, FDimension, FDimensionNames, FSliceMode, FVisibility, out FValueOut);
+			switch (FDimension)
+			{
+				case 2:
+					FValueOut.SetSubType2D(FMinValue, FMaxValue, FStepSize, FDefaultValues[0], FDefaultValues[1], FIsBang, FIsToggle, FIsInteger);
+					break;
+				case 3:
+					FValueOut.SetSubType3D(FMinValue, FMaxValue, FStepSize, FDefaultValues[0], FDefaultValues[1], FDefaultValues[2], FIsBang, FIsToggle, FIsInteger);
+					break;
+				case 4:
+					FValueOut.SetSubType4D(FMinValue, FMaxValue, FStepSize, FDefaultValues[0], FDefaultValues[1], FDefaultValues[2], FDefaultValues[3], FIsBang, FIsToggle, FIsInteger);
+					break;
+			}
+			
+			base.InitializeInternalPin(FValueOut);
+		}
+		
+		unsafe protected abstract void CopyFromBuffer(T[] buffer, double* destination, int length);
+		
+		unsafe public override void Update()
+		{
+			base.Update();
+			
+			if (FAttribute.SliceMode != SliceMode.Single)
+				FValueOut.SliceCount = FSliceCount;
+			
+			if (FSliceCount > 0)
+			{
+				double* destination;
+				FValueOut.GetValuePointer(out destination);
+				CopyFromBuffer(FBuffer, destination, FSliceCount * FDimension);
+			}
+		}
+	}
+	
+	public class Vector2DOutputPin : VectorOutputPin<Vector2D>
 	{
 		public Vector2DOutputPin(IPluginHost host, OutputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 2, double.MinValue, double.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector2D this[int index] 
+		unsafe protected override void CopyFromBuffer(Vector2D[] buffer, double* destination, int length)
 		{
-			get
+			fixed (Vector2D* source = buffer)
 			{
-				fixed (double* ptr = FData)
-				{
-					return ((Vector2D*)ptr)[VMath.Zmod(index, FSliceCount)];
-				}
-			}
-			set
-			{
-				fixed (double* ptr = FData)
-				{
-					((Vector2D*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
-				}
+				Vector2D* src = source;
+				Vector2D* dst = (Vector2D*) destination;
+				
+				for (int i = 0; i < length / FDimension; i++)
+					*(dst++) = *(src++);
 			}
 		}
 	}
 	
-	public class Vector3DOutputPin : ValueOutputPin<Vector3D>
+	public class Vector3DOutputPin : VectorOutputPin<Vector3D>
 	{
 		public Vector3DOutputPin(IPluginHost host, OutputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 3, double.MinValue, double.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector3D this[int index] 
+		unsafe protected override void CopyFromBuffer(Vector3D[] buffer, double* destination, int length)
 		{
-			get
+			fixed (Vector3D* source = buffer)
 			{
-				fixed (double* ptr = FData)
-				{
-					return ((Vector3D*)ptr)[VMath.Zmod(index, FSliceCount)];
-				}
-			}
-			set
-			{
-				fixed (double* ptr = FData)
-				{
-					((Vector3D*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
-				}
+				Vector3D* src = source;
+				Vector3D* dst = (Vector3D*) destination;
+				
+				for (int i = 0; i < length / FDimension; i++)
+					*(dst++) = *(src++);
 			}
 		}
 	}
 	
-	public class Vector4DOutputPin : ValueOutputPin<Vector4D>
+	public class Vector4DOutputPin : VectorOutputPin<Vector4D>
 	{
 		public Vector4DOutputPin(IPluginHost host, OutputAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 4, double.MinValue, double.MaxValue, 0.01)
 		{
 		}
 		
-		unsafe public override Vector4D this[int index] 
+		unsafe protected override void CopyFromBuffer(Vector4D[] buffer, double* destination, int length)
 		{
-			get
+			fixed (Vector4D* source = buffer)
 			{
-				fixed (double* ptr = FData)
-				{
-					return ((Vector4D*)ptr)[VMath.Zmod(index, FSliceCount)];
-				}
-			}
-			set
-			{
-				fixed (double* ptr = FData)
-				{
-					((Vector4D*)ptr)[VMath.Zmod(index, FSliceCount)] = value;
-				}
+				Vector4D* src = source;
+				Vector4D* dst = (Vector4D*) destination;
+				
+				for (int i = 0; i < length / FDimension; i++)
+					*(dst++) = *(src++);
 			}
 		}
 	}
-
 }

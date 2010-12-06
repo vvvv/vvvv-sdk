@@ -7,14 +7,14 @@ using VVVV.Utils.SlimDX;
 
 namespace VVVV.Hosting.Pins.Config
 {
-	public class Vector2ConfigPin : ValueConfigPin<Vector2>
+	public class Vector2ConfigPin : VectorConfigPin<Vector2>
 	{
 		public Vector2ConfigPin(IPluginHost host, ConfigAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 2, float.MinValue, float.MaxValue, 0.01)
 		{
 		}
 		
-		public override Vector2 this[int index] 
+		public override Vector2 this[int index]
 		{
 			get
 			{
@@ -29,14 +29,14 @@ namespace VVVV.Hosting.Pins.Config
 		}
 	}
 	
-		public class Vector3ConfigPin : ValueConfigPin<Vector3>
+	public class Vector3ConfigPin : VectorConfigPin<Vector3>
 	{
 		public Vector3ConfigPin(IPluginHost host, ConfigAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 3, float.MinValue, float.MaxValue, 0.01)
 		{
 		}
 		
-		public override Vector3 this[int index] 
+		public override Vector3 this[int index]
 		{
 			get
 			{
@@ -50,15 +50,15 @@ namespace VVVV.Hosting.Pins.Config
 			}
 		}
 	}
-		
-	public class Vector4ConfigPin : ValueConfigPin<Vector4>
+	
+	public class Vector4ConfigPin : VectorConfigPin<Vector4>
 	{
 		public Vector4ConfigPin(IPluginHost host, ConfigAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 4, float.MinValue, float.MaxValue, 0.01)
 		{
 		}
 		
-		public override Vector4 this[int index] 
+		public override Vector4 this[int index]
 		{
 			get
 			{

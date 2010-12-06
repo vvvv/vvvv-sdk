@@ -5,10 +5,58 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Config
 {
-	public class Vector2DConfigPin : ValueConfigPin<Vector2D>
+	public abstract class VectorConfigPin<T> : DiffVectorPin<T> where T: struct
+	{
+		protected IValueConfig FValueConfig;
+		
+		public VectorConfigPin(IPluginHost host, ConfigAttribute attribute, int dimension, double minValue, double maxValue, double stepSize)
+			: base(host, attribute, dimension, minValue, maxValue, stepSize)
+		{
+			host.CreateValueConfig(FName, FDimension, FDimensionNames, FSliceMode, FVisibility, out FValueConfig);
+			switch (FDimension)
+			{
+				case 2:
+					FValueConfig.SetSubType2D(FMinValue, FMaxValue, FStepSize, FDefaultValues[0], FDefaultValues[1], FIsBang, FIsToggle, FIsInteger);
+					break;
+				case 3:
+					FValueConfig.SetSubType3D(FMinValue, FMaxValue, FStepSize, FDefaultValues[0], FDefaultValues[1], FDefaultValues[2], FIsBang, FIsToggle, FIsInteger);
+					break;
+				case 4:
+					FValueConfig.SetSubType4D(FMinValue, FMaxValue, FStepSize, FDefaultValues[0], FDefaultValues[1], FDefaultValues[2], FDefaultValues[3], FIsBang, FIsToggle, FIsInteger);
+					break;
+			}
+			
+			base.InitializeInternalPin(FValueConfig);
+		}
+		
+		public override int SliceCount 
+		{
+			get 
+			{
+				return FValueConfig.SliceCount;
+			}
+			set 
+			{
+				base.SliceCount = value;
+				
+				if (FAttribute.SliceMode != SliceMode.Single)
+					FValueConfig.SliceCount = FSliceCount;
+			}
+		}
+		
+		public override bool IsChanged 
+		{
+			get 
+			{
+				return FValueConfig.PinIsChanged;
+			}
+		}
+	}
+	
+	public class Vector2DConfigPin : VectorConfigPin<Vector2D>
 	{
 		public Vector2DConfigPin(IPluginHost host, ConfigAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 2, double.MinValue, double.MaxValue, 0.01)
 		{
 		}
 		
@@ -27,10 +75,10 @@ namespace VVVV.Hosting.Pins.Config
 		}
 	}
 	
-	public class Vector3DConfigPin : ValueConfigPin<Vector3D>
+	public class Vector3DConfigPin : VectorConfigPin<Vector3D>
 	{
 		public Vector3DConfigPin(IPluginHost host, ConfigAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 3, double.MinValue, double.MaxValue, 0.01)
 		{
 		}
 		
@@ -49,10 +97,10 @@ namespace VVVV.Hosting.Pins.Config
 		}
 	}
 		
-	public class Vector4DConfigPin : ValueConfigPin<Vector4D>
+	public class Vector4DConfigPin : VectorConfigPin<Vector4D>
 	{
 		public Vector4DConfigPin(IPluginHost host, ConfigAttribute attribute)
-			:base(host, attribute)
+			:base(host, attribute, 4, double.MinValue, double.MaxValue, 0.01)
 		{
 		}
 		

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 using VVVV.Utils.VMath;
 
@@ -11,42 +12,64 @@ namespace VVVV.PluginInterfaces.V2
 	/// </summary>
 	public class Spread<T> : ISpread<T>
 	{
-		protected T[] FData;
+		protected T[] FBuffer;
 		protected int FSliceCount;
+		private int FUpperThreshold;
+		private int FLowerThreshold;
+		private int FDecreaseRequests;
 		
 		public Spread(int size)
 		{
-			FData = new T[size];
+			FBuffer = new T[Math.Max(1, size)];
 			FSliceCount = size;
+			FUpperThreshold = FBuffer.Length;
+			FLowerThreshold = 0;
 		}
 		
-		public Spread(List<T> original)
+		public Spread(IList<T> original)
+			: this(original.Count)
 		{
-			FData = new T[original.Count];
-			original.CopyTo(FData);	
-			FSliceCount = original.Count;
+			original.CopyTo(FBuffer, 0);
 		}
 		
 		public Spread(ISpread<T> original)
 			: this(original.SliceCount)
 		{
 			for (int i = 0; i < SliceCount; i++)
-				FData[i] = original[i];
+				FBuffer[i] = original[i];
 		}
 		
-		public virtual T this[int index] 
+		/// <summary>
+		/// Gives direct access to the internal data buffer.
+		/// Use with caution. Size of internal buffer != SliceCount.
+		/// </summary>
+		public T[] Buffer
 		{
-			get 
+			get
 			{
-				return FData[VMath.Zmod(index, FSliceCount)];
-			}
-			set 
-			{
-				FData[VMath.Zmod(index, FSliceCount)] = value;
+				return FBuffer;
 			}
 		}
 		
-		public virtual int SliceCount 
+		protected virtual void BufferIncreased(T[] oldBuffer, T[] newBuffer)
+		{
+			for (int i = 0; i < newBuffer.Length; i++)
+				newBuffer[i] = oldBuffer[i % oldBuffer.Length];
+		}
+		
+		public virtual T this[int index]
+		{
+			get
+			{
+				return FBuffer[VMath.Zmod(index, FSliceCount)];
+			}
+			set
+			{
+				FBuffer[VMath.Zmod(index, FSliceCount)] = value;
+			}
+		}
+		
+		public virtual int SliceCount
 		{
 			get
 			{
@@ -54,27 +77,48 @@ namespace VVVV.PluginInterfaces.V2
 			}
 			set
 			{
-				if (FSliceCount != value)
+				if (value < 0)
+					value = 0;
+				
+				FSliceCount = value;
+				
+				if (FSliceCount > FUpperThreshold)
 				{
-					var old = FData;
-					FData = new T[value];
+					FUpperThreshold = FSliceCount * 2;
+					FLowerThreshold = FUpperThreshold / 4;
+					FDecreaseRequests = FUpperThreshold;
 					
-					if (old.Length > 0)
-					{
-						for (int i = 0; i < FData.Length; i++)
-						{
-							FData[i] = old[i % old.Length];
-						}
-					}
+//					Debug.WriteLine(string.Format("Up: {0} Low: {1}", FUpperThreshold, FLowerThreshold));
 					
-					FSliceCount = value;
+					var oldBuffer = FBuffer;
+					FBuffer = new T[FUpperThreshold];
+					
+					BufferIncreased(oldBuffer, FBuffer);
 				}
+				else if (FSliceCount < FLowerThreshold)
+				{
+					FDecreaseRequests--;
+					
+					if (FDecreaseRequests == 0)
+					{
+						FUpperThreshold = FUpperThreshold / 2;
+						FLowerThreshold = FUpperThreshold / 4;
+						
+//						Debug.WriteLine(string.Format("Up: {0} Low: {1}", FUpperThreshold, FLowerThreshold));
+						
+						var oldBuffer = FBuffer;
+						FBuffer = new T[FUpperThreshold];
+						Array.Copy(oldBuffer, FBuffer, FBuffer.Length);
+					}
+				}
+				else
+					FDecreaseRequests = FUpperThreshold;
 			}
 		}
 		
 		public IEnumerator<T> GetEnumerator()
 		{
-			for (int i=0; i<FSliceCount; i++)
+			for (int i = 0; i < FSliceCount; i++)
 				yield return this[i];
 		}
 		
@@ -84,11 +128,11 @@ namespace VVVV.PluginInterfaces.V2
 		}
 	}
 
-    public static class SpreadExtensions_
-    {                       
-        public static ISpread<T> ToSpread<T>(this List<T> list)
-        {
-        	return new Spread<T>(list);
-        }
-     }
+	public static class SpreadExtensions_
+	{
+		public static ISpread<T> ToSpread<T>(this List<T> list)
+		{
+			return new Spread<T>(list);
+		}
+	}
 }

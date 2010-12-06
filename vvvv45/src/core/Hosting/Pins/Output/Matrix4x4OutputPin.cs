@@ -12,53 +12,23 @@ namespace VVVV.Hosting.Pins.Output
 	public class Matrix4x4OutputPin : Pin<Matrix4x4>, IPinUpdater
 	{
 		protected ITransformOut FTransformOut;
-		protected new float[] FData;
 		
 		public Matrix4x4OutputPin(IPluginHost host, OutputAttribute attribute)
 			: base(host, attribute)
 		{
-			host.CreateTransformOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FTransformOut);
-			
-			FData = new float[16];
-			
-			base.Initialize(FTransformOut);
+			host.CreateTransformOutput(FName, FSliceMode, FVisibility, out FTransformOut);
+			base.InitializeInternalPin(FTransformOut);
 		}
 		
-		public override int SliceCount
+		unsafe protected void CopyFromBuffer(Matrix4x4[] buffer, float* destination, int length)
 		{
-			get
+			fixed (Matrix4x4* source = buffer)
 			{
-				return FSliceCount;
-			}
-			set
-			{
-				if (FSliceCount != value)
-				{
-					FData = new float[value * 16];
-					
-					FSliceCount = value;
-					
-					if (FAttribute.SliceMode != SliceMode.Single)
-						FTransformOut.SliceCount = value;
-				}
-			}
-		}
-		
-		unsafe public override Matrix4x4 this[int index]
-		{
-			get
-			{
-				fixed (float* ptr = FData)
-				{
-					return ((Matrix*)ptr)[VMath.Zmod(index, FSliceCount)].ToMatrix4x4();
-				}
-			}
-			set
-			{
-				fixed (float* ptr = FData)
-				{
-					((Matrix*)ptr)[VMath.Zmod(index, FSliceCount)] = value.ToSlimDXMatrix();
-				}
+				Matrix4x4* src = source;
+				Matrix* dst = (Matrix*) destination;
+				
+				for (int i = 0; i < length; i++)
+					*(dst++) = (*(src++)).ToSlimDXMatrix();
 			}
 		}
 		
@@ -66,11 +36,14 @@ namespace VVVV.Hosting.Pins.Output
 		{
 			base.Update();
 			
+			if (FAttribute.SliceMode != SliceMode.Single)
+				FTransformOut.SliceCount = SliceCount;
+			
 			float* destination;
 			FTransformOut.GetMatrixPointer(out destination);
 			
 			if (FSliceCount > 0)
-				Marshal.Copy(FData, 0, new IntPtr(destination), FData.Length);
+				CopyFromBuffer(FBuffer, destination, SliceCount);
 		}
 	}
 }

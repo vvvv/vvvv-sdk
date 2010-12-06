@@ -5,7 +5,7 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.Pins.Output
 {
-	public class GenericOutputPin<T> : Pin<T>, IPinUpdater, IGenericIO
+	public class GenericOutputPin<T> : Pin<T>, IGenericIO
 	{
 		protected INodeOut FNodeOut;
 		protected bool FChanged;
@@ -32,7 +32,7 @@ namespace VVVV.Hosting.Pins.Output
 			FNodeOut.SetSubType(guids.ToArray(), typeof(T).FullName);
 			FNodeOut.SetInterface(this);
 			
-			base.Initialize(FNodeOut);
+			base.InitializeInternalPin(FNodeOut);
 		}
 		
 		public override T this[int index]
@@ -56,7 +56,7 @@ namespace VVVV.Hosting.Pins.Output
 			}
 			set 
 			{ 
-				if (value != SliceCount)
+				if (value != FSliceCount)
 					FChanged = true;
 				
 				base.SliceCount = value; 
