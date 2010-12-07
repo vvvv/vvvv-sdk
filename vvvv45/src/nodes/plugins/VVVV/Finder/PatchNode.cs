@@ -396,10 +396,16 @@ namespace VVVV.Nodes.Finder
         
         public void UnSubscribe()
         {
-        	if (Node != null)
-            	Node.RemoveListener(this);
+            if (Node != null)
+                Node.RemoveListener(this);
+            
             foreach (var node in FChildNodes)
-            	node.UnSubscribe();
+            {
+                node.UnSubscribe();
+                node.Added -= childNode_Added;
+                node.Removed -= childNode_Removed;
+            }
+            
         }
         /*
         public void SelectNodes(INode[] nodes)
@@ -418,16 +424,30 @@ namespace VVVV.Nodes.Finder
             }
         }
          */
-        public void Add(PatchNode patchNode)
+        public void Add(PatchNode childNode)
         {
-            FChildNodes.Add(patchNode);
-            OnAdded(patchNode);
+            FChildNodes.Add(childNode);
+            childNode.Added += childNode_Added;
+            childNode.Removed += childNode_Removed;
+            OnAdded(childNode);
+        }
+
+        void childNode_Removed(IViewableCollection collection, object item)
+        {
+            OnRemoved(item);
+        }
+
+        void childNode_Added(IViewableCollection collection, object item)
+        {
+            OnAdded(item);
         }
         
-        public void Remove(PatchNode patchNode)
+        public void Remove(PatchNode childNode)
         {
-            FChildNodes.Remove(patchNode);
-            OnRemoved(patchNode);
+            FChildNodes.Remove(childNode);
+            childNode.Added -= childNode_Added;
+            childNode.Removed -= childNode_Removed;
+            OnRemoved(childNode);
         }
         
         public event SelectionChangedHandler SelectionChanged;

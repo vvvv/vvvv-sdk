@@ -27,11 +27,11 @@ namespace VVVV.Nodes.Finder
                 Category = "HDE",
                 Shortcut = "Ctrl+F",
                 Author = "vvvv group",
-                Help = "Finds Nodes, Comments and Send/Receive channels.",
+                Help = "Finds Nodes, Comments and Send/Receive channels and more.",
                 InitialBoxWidth = 200,
-                InitialBoxHeight = 100,
-                InitialWindowWidth = 420,
-                InitialWindowHeight = 630,
+                InitialBoxHeight = 250,
+                InitialWindowWidth = 320,
+                InitialWindowHeight = 500,
                 InitialComponentMode = TComponentMode.InAWindow)]
     public class FinderPluginNode: UserControl, IPluginHDE
     {
@@ -44,6 +44,7 @@ namespace VVVV.Nodes.Finder
         
         private IWindow FActivePatchWindow;
         private IWindow FActiveWindow;
+        private PatchNode FSearchResult;
         private PatchNode FActivePatchNode;
         private PatchNode FRoot;
         
@@ -94,15 +95,13 @@ namespace VVVV.Nodes.Finder
             
             FHierarchyViewer.Registry = FMappingRegistry;
             FRoot = new PatchNode(root);
-            FRoot.Added += UpdateViewer;
-            FRoot.Removed += UpdateViewer;
             
             FSearchTextBox.MouseWheel += FSearchTextBox_MouseWheel;
             
             FHDEHost.WindowSelectionChanged += FHDEHost_WindowSelectionChanged;
             //defer setting the active patch window as
             //this will trigger the initial WindowSelectionChangeCB
-            //which will want to access this windows caption which is not yet available 
+            //which will want to access this windows caption which is not yet available
             SynchronizationContext.Current.Post((object state) => FHDEHost_WindowSelectionChanged(FHDEHost, new WindowEventArgs(FHDEHost.SelectedPatchWindow)), null);
         }
 
@@ -123,95 +122,95 @@ namespace VVVV.Nodes.Finder
         
         private void InitializeComponent()
         {
-        	this.panel1 = new System.Windows.Forms.Panel();
-        	this.panel3 = new System.Windows.Forms.Panel();
-        	this.FSearchTextBox = new System.Windows.Forms.TextBox();
-        	this.panel2 = new System.Windows.Forms.Panel();
-        	this.FNodeCountLabel = new System.Windows.Forms.Label();
-        	this.FHierarchyViewer = new VVVV.HDE.Viewer.WinFormsViewer.HierarchyViewer();
-        	this.panel1.SuspendLayout();
-        	this.panel3.SuspendLayout();
-        	this.SuspendLayout();
-        	// 
-        	// panel1
-        	// 
-        	this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-        	this.panel1.Controls.Add(this.panel3);
-        	this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-        	this.panel1.Location = new System.Drawing.Point(0, 0);
-        	this.panel1.Name = "panel1";
-        	this.panel1.Size = new System.Drawing.Size(252, 17);
-        	this.panel1.TabIndex = 7;
-        	// 
-        	// panel3
-        	// 
-        	this.panel3.Controls.Add(this.FSearchTextBox);
-        	this.panel3.Controls.Add(this.panel2);
-        	this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.panel3.Location = new System.Drawing.Point(0, 0);
-        	this.panel3.Name = "panel3";
-        	this.panel3.Size = new System.Drawing.Size(250, 15);
-        	this.panel3.TabIndex = 11;
-        	// 
-        	// FSearchTextBox
-        	// 
-        	this.FSearchTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-        	this.FSearchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-        	this.FSearchTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.FSearchTextBox.Location = new System.Drawing.Point(2, 0);
-        	this.FSearchTextBox.MinimumSize = new System.Drawing.Size(0, 17);
-        	this.FSearchTextBox.Name = "FSearchTextBox";
-        	this.FSearchTextBox.Size = new System.Drawing.Size(248, 17);
-        	this.FSearchTextBox.TabIndex = 13;
-        	this.FSearchTextBox.TextChanged += new System.EventHandler(this.FFindTextBoxTextChanged);
-        	this.FSearchTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FSearchTextBoxKeyDown);
-        	// 
-        	// panel2
-        	// 
-        	this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-        	this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
-        	this.panel2.Location = new System.Drawing.Point(0, 0);
-        	this.panel2.Name = "panel2";
-        	this.panel2.Size = new System.Drawing.Size(2, 15);
-        	this.panel2.TabIndex = 11;
-        	// 
-        	// FNodeCountLabel
-        	// 
-        	this.FNodeCountLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-        	this.FNodeCountLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-        	this.FNodeCountLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
-        	this.FNodeCountLabel.Location = new System.Drawing.Point(0, 256);
-        	this.FNodeCountLabel.Name = "FNodeCountLabel";
-        	this.FNodeCountLabel.Size = new System.Drawing.Size(252, 17);
-        	this.FNodeCountLabel.TabIndex = 8;
-        	this.FNodeCountLabel.Text = "Matching Nodes: ";
-        	// 
-        	// FHierarchyViewer
-        	// 
-        	this.FHierarchyViewer.Dock = System.Windows.Forms.DockStyle.Fill;
-        	this.FHierarchyViewer.Location = new System.Drawing.Point(0, 17);
-        	this.FHierarchyViewer.Name = "FHierarchyViewer";
-        	this.FHierarchyViewer.ShowLinks = false;
-        	this.FHierarchyViewer.Size = new System.Drawing.Size(252, 239);
-        	this.FHierarchyViewer.TabIndex = 9;
-        	this.FHierarchyViewer.DoubleClick += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerDoubleClick);
-        	this.FHierarchyViewer.Click += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerClick);
-        	this.FHierarchyViewer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FHierarchyViewerKeyPress);
-        	this.FHierarchyViewer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FHierarchyViewerKeyDown);
-        	// 
-        	// FinderPluginNode
-        	// 
-        	this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-        	this.Controls.Add(this.FHierarchyViewer);
-        	this.Controls.Add(this.FNodeCountLabel);
-        	this.Controls.Add(this.panel1);
-        	this.DoubleBuffered = true;
-        	this.Name = "FinderPluginNode";
-        	this.Size = new System.Drawing.Size(252, 273);
-        	this.panel1.ResumeLayout(false);
-        	this.panel3.ResumeLayout(false);
-        	this.panel3.PerformLayout();
-        	this.ResumeLayout(false);
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.FSearchTextBox = new System.Windows.Forms.TextBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.FNodeCountLabel = new System.Windows.Forms.Label();
+            this.FHierarchyViewer = new VVVV.HDE.Viewer.WinFormsViewer.HierarchyViewer();
+            this.panel1.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.panel3);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(252, 17);
+            this.panel1.TabIndex = 7;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.FSearchTextBox);
+            this.panel3.Controls.Add(this.panel2);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(250, 15);
+            this.panel3.TabIndex = 11;
+            // 
+            // FSearchTextBox
+            // 
+            this.FSearchTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.FSearchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.FSearchTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FSearchTextBox.Location = new System.Drawing.Point(2, 0);
+            this.FSearchTextBox.MinimumSize = new System.Drawing.Size(0, 17);
+            this.FSearchTextBox.Name = "FSearchTextBox";
+            this.FSearchTextBox.Size = new System.Drawing.Size(248, 17);
+            this.FSearchTextBox.TabIndex = 13;
+            this.FSearchTextBox.TextChanged += new System.EventHandler(this.FFindTextBoxTextChanged);
+            this.FSearchTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FSearchTextBoxKeyDown);
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(2, 15);
+            this.panel2.TabIndex = 11;
+            // 
+            // FNodeCountLabel
+            // 
+            this.FNodeCountLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+            this.FNodeCountLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.FNodeCountLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.FNodeCountLabel.Location = new System.Drawing.Point(0, 256);
+            this.FNodeCountLabel.Name = "FNodeCountLabel";
+            this.FNodeCountLabel.Size = new System.Drawing.Size(252, 17);
+            this.FNodeCountLabel.TabIndex = 8;
+            this.FNodeCountLabel.Text = "Matching Nodes: ";
+            // 
+            // FHierarchyViewer
+            // 
+            this.FHierarchyViewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FHierarchyViewer.Location = new System.Drawing.Point(0, 17);
+            this.FHierarchyViewer.Name = "FHierarchyViewer";
+            this.FHierarchyViewer.ShowLinks = false;
+            this.FHierarchyViewer.Size = new System.Drawing.Size(252, 239);
+            this.FHierarchyViewer.TabIndex = 9;
+            this.FHierarchyViewer.DoubleClick += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerDoubleClick);
+            this.FHierarchyViewer.Click += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerClick);
+            this.FHierarchyViewer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FHierarchyViewerKeyPress);
+            this.FHierarchyViewer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FHierarchyViewerKeyDown);
+            // 
+            // FinderPluginNode
+            // 
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.Controls.Add(this.FHierarchyViewer);
+            this.Controls.Add(this.FNodeCountLabel);
+            this.Controls.Add(this.panel1);
+            this.DoubleBuffered = true;
+            this.Name = "FinderPluginNode";
+            this.Size = new System.Drawing.Size(252, 273);
+            this.panel1.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            this.ResumeLayout(false);
         }
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
@@ -236,28 +235,33 @@ namespace VVVV.Nodes.Finder
                 {
                     // Dispose managed resources.
                     FSearchTextBox.ContextMenu.Popup -= FSearchTextBox_ContextMenu_Popup;
-                    FRoot.Added -= UpdateViewer;
-            		FRoot.Removed -= UpdateViewer;
-            		FSearchTextBox.MouseWheel -= FSearchTextBox_MouseWheel;
+                    FSearchTextBox.MouseWheel -= FSearchTextBox_MouseWheel;
                     FHDEHost.WindowSelectionChanged -= FHDEHost_WindowSelectionChanged;
                     
                     if (FRoot != FActivePatchNode)
-                    	FRoot.UnSubscribe();
+                        FRoot.UnSubscribe();
                     
                     if (FActivePatchNode != null)
                         FActivePatchNode.UnSubscribe();
                     
+                    if (FSearchResult != null)
+                    {
+                        FSearchResult.UnSubscribe();
+                        FSearchResult.Added -= UpdateViewer;
+                        FSearchResult.Removed -= UpdateViewer;
+                    }
+                    
                     this.FSearchTextBox.TextChanged -= this.FFindTextBoxTextChanged;
-        			this.FSearchTextBox.KeyDown -= this.FSearchTextBoxKeyDown;
+                    this.FSearchTextBox.KeyDown -= this.FSearchTextBoxKeyDown;
                     
                     this.FHierarchyViewer.DoubleClick -= this.FHierarchyViewerDoubleClick;
-		        	this.FHierarchyViewer.Click -= this.FHierarchyViewerClick;
-		        	this.FHierarchyViewer.KeyPress -= this.FHierarchyViewerKeyPress;
-		        	this.FHierarchyViewer.KeyDown -= this.FHierarchyViewerKeyDown;
-		        	this.FHierarchyViewer.Dispose();
-		        	this.FHierarchyViewer = null;
-		        	
-		        	FMappingRegistry.Container.Dispose();
+                    this.FHierarchyViewer.Click -= this.FHierarchyViewerClick;
+                    this.FHierarchyViewer.KeyPress -= this.FHierarchyViewerKeyPress;
+                    this.FHierarchyViewer.KeyDown -= this.FHierarchyViewerKeyDown;
+                    this.FHierarchyViewer.Dispose();
+                    this.FHierarchyViewer = null;
+                    
+                    FMappingRegistry.Container.Dispose();
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
@@ -276,9 +280,9 @@ namespace VVVV.Nodes.Finder
         
         void FHDEHost_WindowSelectionChanged(object sender, WindowEventArgs args)
         {
-        	var window = args.Window;
-        	
-        	FActiveWindow = window;
+            var window = args.Window;
+            
+            FActiveWindow = window;
             var windowType = window.GetWindowType();
             
             if (windowType == WindowType.Module || windowType == WindowType.Patch)
@@ -286,27 +290,16 @@ namespace VVVV.Nodes.Finder
                 if (window != FActivePatchWindow)
                 {
                     if (FActivePatchNode != null)
-                    {
-                    	FActivePatchNode.Added -= UpdateViewer;
-                    	FActivePatchNode.Removed -= UpdateViewer;
                         FActivePatchNode.UnSubscribe();
-                    }
                     
                     FPluginHost.Window.Caption =  window.Caption;
                     FActivePatchNode = new PatchNode(window.GetNode());
-                    FActivePatchNode.Added += UpdateViewer;
-                    FActivePatchNode.Removed += UpdateViewer;
                     
                     UpdateSearch();
                     
                     FActivePatchWindow = window;
                 }
             }
-        }
-        
-        public void UpdateView()
-        {
-            FHierarchyViewer.Reload();
         }
         
         private INode FindParent(INode sourceTree, INode node)
@@ -469,7 +462,14 @@ namespace VVVV.Nodes.Finder
             string query = FSearchTextBox.Text.ToLower();
             query += (char) 160;
             
-            var searchResult = new PatchNode(null);
+            if (FSearchResult != null)
+            {
+                FSearchResult.UnSubscribe();
+                FSearchResult.Added -= UpdateViewer;
+                FSearchResult.Removed -= UpdateViewer;
+            }
+            
+            FSearchResult = new PatchNode(null);
             FPlainResultList.Clear();
             FSearchIndex = 0;
             FHierarchyViewer.ShowLinks = false;
@@ -585,18 +585,22 @@ namespace VVVV.Nodes.Finder
                 case SearchScope.Global:
                     {
                         //go through child nodes of FRoot recursively and see if any contains the tag
-                        AddNodesByTag(searchResult, FRoot);
+                        FSearchResult.Node = FRoot.Node;
+                        AddNodesByTag(FSearchResult, FRoot);
                         break;
                     }
                 case SearchScope.Local:
                     {
+                        FSearchResult.Node = FActivePatchNode.Node;
+                        
                         //go through child nodes of FActivePatch and see if any contains the tag
                         foreach (PatchNode pn in FActivePatchNode)
                             if (CheckForInclusion(pn))
                         {
                             var node = new PatchNode(null);
                             node.Node = pn.Node;
-                            searchResult.Add(node);
+                            FSearchResult.Add(node);
+                            
                             FPlainResultList.Add(node);
                         }
                         break;
@@ -604,20 +608,21 @@ namespace VVVV.Nodes.Finder
                 case SearchScope.Downstream:
                     {
                         //go through child nodes of FActivePatch recursively and see if any contains the tag
-                        AddNodesByTag(searchResult, FActivePatchNode);
+                        FSearchResult.Node = FActivePatchNode.Node;
+                        AddNodesByTag(FSearchResult, FActivePatchNode);
                         break;
                     }
             }
             
-            searchResult.SetActiveWindow(FActiveWindow);
-            searchResult.Added += UpdateViewer;
-            searchResult.Removed += UpdateViewer;
+            FSearchResult.SetActiveWindow(FActiveWindow);
+            FSearchResult.Added += UpdateViewer;
+            FSearchResult.Removed += UpdateViewer;
             
             var mappingRegistry = new MappingRegistry();
             mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
             
             FHierarchyViewer.Registry = mappingRegistry;
-            FHierarchyViewer.Input = searchResult;
+            FHierarchyViewer.Input = FSearchResult;
 
             FNodeCountLabel.Text = "Matching Nodes: " + FPlainResultList.Count.ToString();
         }
@@ -704,7 +709,7 @@ namespace VVVV.Nodes.Finder
         
         void FHierarchyViewerKeyPress(object sender, KeyPressEventArgs e)
         {
-        	FSearchTextBox.Focus();
+            FSearchTextBox.Focus();
             FSearchTextBox.Text += (e.KeyChar).ToString();
             FSearchTextBox.Select(FSearchTextBox.Text.Length, 1);
         }
