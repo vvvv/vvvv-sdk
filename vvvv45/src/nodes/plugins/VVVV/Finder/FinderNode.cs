@@ -87,16 +87,11 @@ namespace VVVV.Nodes.Finder
             
             FSearchTextBox.ContextMenu = new ContextMenu();
             FSearchTextBox.ContextMenu.Popup += FSearchTextBox_ContextMenu_Popup;
+            FSearchTextBox.MouseWheel += FSearchTextBox_MouseWheel;
             
-            INode root;
-            FHDEHost.GetRoot(out root);
             FMappingRegistry = new MappingRegistry();
             FMappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
-            
             FHierarchyViewer.Registry = FMappingRegistry;
-            FRoot = new PatchNode(root);
-            
-            FSearchTextBox.MouseWheel += FSearchTextBox_MouseWheel;
             
             FHDEHost.WindowSelectionChanged += FHDEHost_WindowSelectionChanged;
             //defer setting the active patch window as
@@ -291,6 +286,16 @@ namespace VVVV.Nodes.Finder
                 {
                     if (FActivePatchNode != null)
                         FActivePatchNode.UnSubscribe();
+                    
+                    //we only need to get the root once
+                    //in the constructor it is too early since finder might be placed in root
+                    //and constructor of finder would be called before root was available
+                    if (FRoot == null)
+                    {
+                        INode root;
+                        FHDEHost.GetRoot(out root);
+                        FRoot = new PatchNode(root);
+                    }                   
                     
                     FPluginHost.Window.Caption =  window.Caption;
                     FActivePatchNode = new PatchNode(window.GetNode());
