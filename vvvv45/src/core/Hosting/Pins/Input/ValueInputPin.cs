@@ -20,7 +20,7 @@ namespace VVVV.Hosting.Pins.Input
 			: base(host, attribute, minValue, maxValue, stepSize)
 		{
 			host.CreateValueFastInput(FName, 1, null, FSliceMode, FVisibility, out FValueFastIn);
-			FValueFastIn.SetSubType(FMinValue, FMaxValue, FStepSize, FDefaultValue, FIsBang, FIsToggle, FIsInteger);
+			FValueFastIn.SetSubType(FMinValue, FMaxValue, FStepSize, attribute.DefaultValue, FIsBang, FIsToggle, FIsInteger);
 			base.InitializeInternalPin(FValueFastIn);
 		}
 		

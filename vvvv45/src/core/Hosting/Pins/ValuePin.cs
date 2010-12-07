@@ -12,7 +12,6 @@ namespace VVVV.Hosting.Pins
 		protected double FMinValue;
 		protected double FMaxValue;
 		protected double FStepSize;
-		protected double FDefaultValue;
 		protected bool FIsBang;
 		protected bool FIsToggle;
 		protected bool FIsInteger;
@@ -51,7 +50,6 @@ namespace VVVV.Hosting.Pins
 		protected double FMinValue;
 		protected double FMaxValue;
 		protected double FStepSize;
-		protected double FDefaultValue;
 		protected bool FIsBang;
 		protected bool FIsToggle;
 		protected bool FIsInteger;

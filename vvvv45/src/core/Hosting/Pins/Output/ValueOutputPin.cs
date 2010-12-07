@@ -17,7 +17,7 @@ namespace VVVV.Hosting.Pins.Output
 			: base(host, attribute, minValue, maxValue, stepSize)
 		{
 			host.CreateValueOutput(FName, 1, null, FSliceMode, FVisibility, out FValueOut);
-			FValueOut.SetSubType(FMinValue, FMaxValue, FStepSize, FDefaultValue, FIsBang, FIsToggle, FIsInteger);
+			FValueOut.SetSubType(FMinValue, FMaxValue, FStepSize, attribute.DefaultValue, FIsBang, FIsToggle, FIsInteger);
 			base.InitializeInternalPin(FValueOut);
 		}
 		
