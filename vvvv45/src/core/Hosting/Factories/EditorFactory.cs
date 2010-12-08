@@ -37,6 +37,7 @@ namespace VVVV.Hosting.Factories
 		private Dictionary<INodeInfo, ExportFactory<IEditor, IEditorInfo>> FNodeInfos;
 		private Dictionary<IInternalPluginHost, ExportLifetimeContext<IEditor>> FExportLifetimeContexts;
 		private int FMoveToLine;
+		private int FMoveToColumn;
 		private INode FNodeToAttach;
 		
 		[ImportingConstructor]
@@ -50,6 +51,7 @@ namespace VVVV.Hosting.Factories
 			FLogger = logger;
 			FHDEHost = hdeHost;
 			FMoveToLine = -1;
+			FMoveToColumn = -1;
 			
 			FHDEHost.MouseDown += FHDEHost_MouseDown;
 			FHDEHost.NodeRemoved += FPluginFactory_NodeRemoved;
@@ -187,8 +189,7 @@ namespace VVVV.Hosting.Factories
 				if (FNodeToAttach != null)
 					editor.AttachedNode = FNodeToAttach;
 				
-				if (FMoveToLine >= 0)
-					editor.MoveTo(FMoveToLine);
+				editor.MoveTo(FMoveToLine, FMoveToColumn);
 				
 				result = true;
 				
@@ -207,8 +208,7 @@ namespace VVVV.Hosting.Factories
 			if (FNodeToAttach != null)
 				editor.AttachedNode = FNodeToAttach;
 			
-			if (FMoveToLine >= 0)
-				editor.MoveTo(FMoveToLine);
+			editor.MoveTo(FMoveToLine, FMoveToColumn);
 			
 			FHDEHost.ShowGUI(editorNode);
 			return true;
@@ -225,7 +225,7 @@ namespace VVVV.Hosting.Factories
 				FExportLifetimeContexts.Remove(editorHost);
 			}
 			
-			return false;
+			return true;
 		}
 		
 		public bool Clone(INodeInfo nodeInfo, string path, string name, string category, string version, out INodeInfo newNodeInfo)
@@ -313,7 +313,7 @@ namespace VVVV.Hosting.Factories
 					case NodeType.Text:
 					case NodeType.Dynamic:
 					case NodeType.Effect:
-						Open(nodeInfo.Filename, -1, node);
+						Open(nodeInfo.Filename, -1, -1, node);
 						break;
 				}
 			}
@@ -344,7 +344,7 @@ namespace VVVV.Hosting.Factories
 							}
 						}
 						
-						Open(filename, line, node);
+						Open(filename, line, 0, node);
 						break;
 				}
 			}
@@ -357,15 +357,20 @@ namespace VVVV.Hosting.Factories
 		
 		public void Open(string filename, int line)
 		{
-			Open(filename, line, null);
+			Open(filename, line, -1);
 		}
 		
-		public void Open(string filename, int line, INode nodeToAttach)
+		public void Open(string filename, int line, int column)
 		{
-			Open(filename, line, nodeToAttach, null);
+			Open(filename, line, column, null);
 		}
 		
-		public void Open(string filename, int line, INode nodeToAttach, IWindow window)
+		public void Open(string filename, int line, int column, INode nodeToAttach)
+		{
+			Open(filename, line, column, nodeToAttach, null);
+		}
+		
+		public void Open(string filename, int line, int column, INode nodeToAttach, IWindow window)
 		{
 			// See if we can find an editor already attached to this node.
 			if (nodeToAttach != null)
@@ -385,9 +390,7 @@ namespace VVVV.Hosting.Factories
 						
 						if (new Uri(editor.OpenedFile) == new Uri(filename))
 						{
-							if (line >= 0)
-								editor.MoveTo(line);
-							
+							editor.MoveTo(line, column);
 							FHDEHost.ShowGUI(editorNode);
 							return;
 						}
@@ -438,6 +441,7 @@ namespace VVVV.Hosting.Factories
 			try
 			{
 				FMoveToLine = line;
+				FMoveToColumn = column;
 				FNodeToAttach = nodeToAttach;
 				
 				hdeHost.InvalidateCache(filename);

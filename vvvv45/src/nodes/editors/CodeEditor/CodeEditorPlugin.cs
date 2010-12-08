@@ -128,9 +128,9 @@ namespace VVVV.HDE.CodeEditor
 			PerformLayout();
 			
 			var registry = new MappingRegistry();
-			registry.RegisterDefaultMapping<IEnumerable<IColumn>, ErrorCollectionColumnProvider>();
-			registry.RegisterMapping<CompilerError, IEnumerable<ICell>, ErrorCellProvider>();
-			registry.RegisterMapping<RuntimeError, IEnumerable<ICell>, RuntimeErrorCellProvider>();
+			registry.RegisterDefaultMapping<IEnumerable<Column>, ErrorCollectionColumnProvider>();
+			registry.RegisterMapping<CompilerError, IEnumerable<Cell>, ErrorCellProvider>();
+			registry.RegisterMapping<RuntimeError, IEnumerable<Cell>, RuntimeErrorCellProvider>();
 			
 			FErrorTableViewer.Registry = registry;
 			FErrorTableViewer.Input = FErrorList;
@@ -140,7 +140,15 @@ namespace VVVV.HDE.CodeEditor
 
 		void FEditor_LinkClicked(object sender, Link link)
 		{
-			FEditorFactory.Open(link.FileName, link.Location.Line + 1);
+			var fileName = link.FileName;
+			
+			if (File.Exists(fileName))
+			{
+				if (new Uri(fileName) == FEditor.TextDocument.Location)
+					MoveTo(link.Location.Line + 1, link.Location.Column + 1);
+				else
+					FEditorFactory.Open(fileName, link.Location.Line + 1, link.Location.Column + 1, FAttachedNode, FNode.Window);
+			}
 		}
 		
 		protected override void Dispose(bool disposing)
@@ -324,14 +332,17 @@ namespace VVVV.HDE.CodeEditor
 			throw new NotImplementedException();
 		}
 		
-		/// <summary>
-		/// Moves the editor to line <paramref name="lineNumber"/>.
-		/// </summary>
-		/// <param name="lineNumber">The line number to move the editor to.</param>
-		/// <remarks>Line counting starts with 1.</remarks>
-		public void MoveTo(int lineNumber)
+		/// <remarks>Line counting and coloumn count starts at 1.</remarks>
+		public void MoveTo(int lineNumber, int column)
 		{
-			FEditor.JumpTo(lineNumber - 1);
+			if (lineNumber < 1)
+				lineNumber = 1;
+			
+			if (column < 1)
+				column = 1;
+			
+			FEditor.JumpTo(lineNumber - 1, column - 1);
+			FEditor.Focus();
 		}
 		
 		public INode AttachedNode
@@ -360,6 +371,8 @@ namespace VVVV.HDE.CodeEditor
 				
 				if (lastRuntimeErrorString != null)
 				{
+					int runtimeErrorsCount = FRuntimeErrors.Count;
+					
 					if (!FRuntimeErrors.ContainsKey(lastRuntimeErrorString))
 					{
 						var runtimeError = new RuntimeError(lastRuntimeErrorString);
@@ -367,29 +380,41 @@ namespace VVVV.HDE.CodeEditor
 						FErrorList.Add(runtimeError);
 					}
 					
-					if (!IsErrorTableVisible())
-					{
+					if (runtimeErrorsCount != FRuntimeErrors.Count)
 						FEditor.ShowRuntimeErrors(FRuntimeErrors.Values);
-						ShowErrorTable();
-					}
 				}
 				else
-				{
-					if (IsErrorTableVisible())
-					{
-						FErrorList.RemoveRange(FRuntimeErrors.Values);
-						FRuntimeErrors.Clear();
-						FEditor.ClearRuntimeErrors();
-						
-						if (FErrorList.Count == 0)
-							HideErrorTable();
-					}
-				}
+					ClearRuntimeErrors();
+			}
+			else
+				ClearRuntimeErrors();
+			
+			// Show or hide error table
+			if (IsErrorTableVisible)
+			{
+				if (FErrorList.Count == 0)
+					HideErrorTable();
+			}
+			else if (FErrorList.Count > 0)
+				ShowErrorTable();
+		}
+		
+		private void ClearRuntimeErrors()
+		{
+			if (FRuntimeErrors.Count > 0)
+			{
+				FErrorList.RemoveRange(FRuntimeErrors.Values);
+				FRuntimeErrors.Clear();
+				FEditor.ClearRuntimeErrors();
 			}
 		}
 		
 		private void ShowErrorTable()
 		{
+			FErrorTableViewer.AutoSize = true;
+			FErrorTableViewer.PerformLayout();
+			var bounds = FErrorTableViewer.Bounds;
+			
 			// TODO: Find better way to calculate splitter distance
 			FSplitContainer.SplitterDistance = FSplitContainer.Height - (FErrorTableViewer.RowCount + 2) * (FErrorTableViewer.RowHeight + 2);
 			FSplitContainer.Panel2Collapsed = false;
@@ -400,9 +425,12 @@ namespace VVVV.HDE.CodeEditor
 			FSplitContainer.Panel2Collapsed = true;
 		}
 		
-		private bool IsErrorTableVisible()
+		private bool IsErrorTableVisible
 		{
-			return !FSplitContainer.Panel2Collapsed;
+			get
+			{
+				return !FSplitContainer.Panel2Collapsed;
+			}
 		}
 		
 		private void FErrorTableViewerDoubleClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
@@ -426,9 +454,9 @@ namespace VVVV.HDE.CodeEditor
 			if (File.Exists(fileName))
 			{
 				if (new Uri(fileName) == FEditor.TextDocument.Location)
-					MoveTo(line);
+					MoveTo(line, 1);
 				else
-					FEditorFactory.Open(fileName, line, FAttachedNode, FNode.Window);
+					FEditorFactory.Open(fileName, line, 1, FAttachedNode, FNode.Window);
 			}
 		}
 		

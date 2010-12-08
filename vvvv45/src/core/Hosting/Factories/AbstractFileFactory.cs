@@ -194,46 +194,26 @@ namespace VVVV.Hosting.Factories
 			FDirectoryWatcher.Add(dirWatcher);
 		}
 		
-		private void RemoveSubDir(string dir, bool recursive)
-		{
-			foreach (string filename in Directory.GetFiles(dir, @"*" + FFileExtension))
-			{
-				try {
-					RemoveFile(filename);
-				} catch (Exception e) {
-					FLogger.Log(e);
-				}
-			}
-
-			if (recursive)
-				foreach (string subDir in Directory.GetDirectories(dir))
-			{
-				if (!(subDir.EndsWith(".svn") || subDir.EndsWith(".cache")))
-					try {
-					RemoveSubDir(subDir, recursive);
-				} catch (Exception e) {
-					FLogger.Log(e);
-				}
-			}
-		}
-		
 		public void RemoveDir(string dir)
 		{
+			// Simply dispose the file watcher. Keep the node infos alive,
+			// the files still exist and therefor patches still work.
+			// The node infos will be gone on next start of vvvv (not in nodebrowser
+			// anymore), but patches will still work.
 			for (int i=FDirectoryWatcher.Count-1; i>=0; i--)
 			{
 				var dirWatcher = FDirectoryWatcher[i];
 				if (dirWatcher.Path == dir)
 				{
-					RemoveSubDir(dir, dirWatcher.IncludeSubdirectories);
+					FDirectoryWatcher.RemoveAt(i);
 					dirWatcher.Changed -= new FileSystemEventHandler(FDirectoryWatcher_Changed);
 					dirWatcher.Created -= new FileSystemEventHandler(FDirectoryWatcher_Created);
 					dirWatcher.Deleted -= new FileSystemEventHandler(FDirectoryWatcher_Deleted);
 					dirWatcher.Renamed -= new RenamedEventHandler(FDirectoryWatcher_Renamed);
-					FDirectoryWatcher.RemoveAt(i);
+					dirWatcher.Dispose();
 					return;
 				}
 			}
-			RemoveSubDir(dir, false);
 		}
 		
 		void FDirectoryWatcher_Changed(object sender, FileSystemEventArgs e)

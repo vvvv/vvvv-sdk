@@ -26,8 +26,8 @@ namespace VVVV.Hosting
 {
 	[PartCreationPolicy(CreationPolicy.Shared)]
 	[Export(typeof(IHDEHost))]
-	class HDEHost : IInternalHDEHost, IHDEHost, IDisposable, 
-		IMouseClickListener, INodeSelectionListener, IWindowListener, IWindowSelectionListener
+	class HDEHost : IInternalHDEHost, IHDEHost, IDisposable,
+	IMouseClickListener, INodeSelectionListener, IWindowListener, IWindowSelectionListener
 	{
 		public const string ENV_VVVV = "VVVV45";
 		
@@ -40,7 +40,6 @@ namespace VVVV.Hosting
 		private INodeInfo FNodeBrowserNodeInfo;
 		
 		private IVVVVHost FVVVVHost;
-//		private Dictionary<INodeInfo, List<IAddonHost>> FRunningPluginHostsMap;
 		private List<INode> FNodes;
 		private IPluginBase FNodeBrowser, FWindowSwitcher, FKommunikator;
 		protected Dictionary<string, HashSet<ProxyNodeInfo>> FNodeInfoCache;
@@ -212,7 +211,7 @@ namespace VVVV.Hosting
 				Logger.Log(e);
 				return;
 			}
-
+			
 			//NodeCollection.AddJob(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
 			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\Finder.dll"));
 			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\Kommunikator.dll"));
@@ -221,6 +220,16 @@ namespace VVVV.Hosting
 			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\WindowSwitcher.dll"));
 //			NodeCollection.AddUnsorted(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
 //			NodeCollection.Collect();
+			
+			foreach (var nodeInfo in NodeInfoFactory.NodeInfos)
+			{
+				if (nodeInfo.Systemname == WINDOW_SWITCHER)
+					FWinSwNodeInfo = nodeInfo;
+				else if (nodeInfo.Systemname == KOMMUNIKATOR)
+					FKomNodeInfo = nodeInfo;
+				else if (nodeInfo.Systemname == NODE_BROWSER)
+					FNodeBrowserNodeInfo = nodeInfo;
+			}
 			
 			//now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
 			var nodeInfoFactory = FVVVVHost.NodeInfoFactory;
@@ -239,7 +248,7 @@ namespace VVVV.Hosting
 				Logger.Log(e);
 			}
 		}
-		
+
 		public void GetHDEPlugins(out IPluginBase nodeBrowser, out IPluginBase windowSwitcher, out IPluginBase kommunikator)
 		{
 			nodeBrowser = FNodeBrowser;
@@ -518,9 +527,9 @@ namespace VVVV.Hosting
 			private set;
 		}
 		
-		public IWindow SelectedPatchWindow 
+		public IWindow SelectedPatchWindow
 		{
-			get 
+			get
 			{
 				return FVVVVHost.SelectedPatchWindow;
 			}
@@ -570,15 +579,9 @@ namespace VVVV.Hosting
 		#region event handler
 		protected void factory_NodeInfoAdded(object sender, INodeInfo info)
 		{
-			if (info.Systemname == WINDOW_SWITCHER)
-				FWinSwNodeInfo = info;
-			else if (info.Systemname == KOMMUNIKATOR)
-				FKomNodeInfo = info;
-			else if (info.Systemname == NODE_BROWSER)
-				FNodeBrowserNodeInfo = info;
-			
-			// do not cache node of type text.
+			// do not cache node of type text and unknown.
 			if (info.Type == NodeType.Text) return;
+			if (info.Type == NodeType.Unknown) return;
 			
 			//add to cache
 			var filename = info.Filename;
@@ -592,9 +595,8 @@ namespace VVVV.Hosting
 				nodeInfos.Add(nodeInfo);
 			
 			if(FCacheTimer.Enabled)
-			{
 				FCacheTimer.Stop();
-			}
+			
 			FCacheTimer.Start();
 		}
 		
@@ -610,10 +612,11 @@ namespace VVVV.Hosting
 				var result = cache.Remove((ProxyNodeInfo) info);
 
 				//also remove list if empty now
-				if(FNodeInfoCache[filename].Count == 0)
+				if(cache.Count == 0)
 					FNodeInfoCache.Remove(filename);
 			}
 			
+			FLoadedFiles[filename] = false;
 		}
 		
 		public void factory_NodeInfoUpdated(object sender, INodeInfo info)
@@ -703,7 +706,7 @@ namespace VVVV.Hosting
 		public bool HasCachedNodeInfos(string filename)
 		{
 			return FNodeInfoCache.ContainsKey(filename) || (FDeserializedNodeInfoCache.ContainsKey(filename) &&
-			      (File.GetLastWriteTime(filename) < File.GetLastWriteTime(CacheFileName)));
+			                                                (File.GetLastWriteTime(filename) < File.GetLastWriteTime(CacheFileName)));
 		}
 		
 		//return node infos from cache

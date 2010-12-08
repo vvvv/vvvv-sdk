@@ -453,8 +453,9 @@ namespace VVVV.PluginInterfaces.V2
     	/// <summary>
     	/// Informs the editor to move to the line number lineNumber.
     	/// <param name="lineNumber">The line number to move to.</param>
+    	/// <param name="column">The column number to move to.</param>
     	/// </summary>
-    	void MoveTo(int lineNumber);
+    	void MoveTo(int lineNumber, int column);
     	
     	/// <summary>
     	/// Informs the editor to close the currently opened file.
