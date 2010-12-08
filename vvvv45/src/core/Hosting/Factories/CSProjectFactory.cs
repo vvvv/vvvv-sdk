@@ -199,6 +199,7 @@ namespace VVVV.Hosting.Factories
 					project.Load();
 				
 				string className = string.Format("{0}{1}{2}Node", version, category, name);
+				className = Regex.Replace(className, @"[^a-zA-Z0-9]+", "_");
 				var regexp = new Regex(@"^[0-9]+");
 				if (regexp.IsMatch(className))
 					className = string.Format("C{0}", className);
