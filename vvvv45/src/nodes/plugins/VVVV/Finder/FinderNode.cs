@@ -36,6 +36,8 @@ namespace VVVV.Nodes.Finder
     public class FinderPluginNode: UserControl, IPluginHDE
     {
         #region field declaration
+        private IDiffSpread<string> FTagsPin;
+        
         private IPluginHost2 FPluginHost;
         private IHDEHost FHDEHost;
         private MappingRegistry FMappingRegistry;
@@ -66,18 +68,15 @@ namespace VVVV.Nodes.Finder
         
         private List<string> FTags;
         private int FSearchIndex;
+        private List<INode> FNodes = new List<INode>();
         
         // Track whether Dispose has been called.
         private bool FDisposed = false;
-
-        //further fields
-        System.Collections.Generic.List<INode> FNodes = new List<INode>();
-        
         #endregion field declaration
         
         #region constructor/destructor
         [ImportingConstructor]
-        public FinderPluginNode(IHDEHost host, IPluginHost2 pluginHost)
+        public FinderPluginNode(IHDEHost host, IPluginHost2 pluginHost, [Config("Tags")] IDiffSpread<string> tagsPin)
         {
             // The InitializeComponent() call is required for Windows Forms designer support.
             InitializeComponent();
@@ -98,6 +97,14 @@ namespace VVVV.Nodes.Finder
             //this will trigger the initial WindowSelectionChangeCB
             //which will want to access this windows caption which is not yet available
             SynchronizationContext.Current.Post((object state) => FHDEHost_WindowSelectionChanged(FHDEHost, new WindowEventArgs(FHDEHost.SelectedPatchWindow)), null);
+            
+            FTagsPin = tagsPin;
+            FTagsPin.Changed += FTagsPin_Changed;
+        }
+
+        void FTagsPin_Changed(IDiffSpread<string> spread)
+        {
+            FSearchTextBox.Text = spread[0];
         }
 
         void UpdateViewer(IViewableCollection collection, object item)
@@ -157,7 +164,7 @@ namespace VVVV.Nodes.Finder
             this.FSearchTextBox.Name = "FSearchTextBox";
             this.FSearchTextBox.Size = new System.Drawing.Size(248, 17);
             this.FSearchTextBox.TabIndex = 13;
-            this.FSearchTextBox.TextChanged += new System.EventHandler(this.FFindTextBoxTextChanged);
+            this.FSearchTextBox.TextChanged += new System.EventHandler(this.FSearchTextBoxTextChanged);
             this.FSearchTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FSearchTextBoxKeyDown);
             // 
             // panel2
@@ -232,6 +239,7 @@ namespace VVVV.Nodes.Finder
                     FSearchTextBox.ContextMenu.Popup -= FSearchTextBox_ContextMenu_Popup;
                     FSearchTextBox.MouseWheel -= FSearchTextBox_MouseWheel;
                     FHDEHost.WindowSelectionChanged -= FHDEHost_WindowSelectionChanged;
+                    FTagsPin.Changed -= FTagsPin_Changed;
                     
                     if (FRoot != FActivePatchNode)
                         FRoot.UnSubscribe();
@@ -246,7 +254,7 @@ namespace VVVV.Nodes.Finder
                         FSearchResult.Removed -= UpdateViewer;
                     }
                     
-                    this.FSearchTextBox.TextChanged -= this.FFindTextBoxTextChanged;
+                    this.FSearchTextBox.TextChanged -= this.FSearchTextBoxTextChanged;
                     this.FSearchTextBox.KeyDown -= this.FSearchTextBoxKeyDown;
                     
                     this.FHierarchyViewer.DoubleClick -= this.FHierarchyViewerDoubleClick;
@@ -287,16 +295,6 @@ namespace VVVV.Nodes.Finder
                     if (FActivePatchNode != null)
                         FActivePatchNode.UnSubscribe();
                     
-                    //we only need to get the root once
-                    //in the constructor it is too early since finder might be placed in root
-                    //and constructor of finder would be called before root was available
-                    if (FRoot == null)
-                    {
-                        INode root;
-                        FHDEHost.GetRoot(out root);
-                        FRoot = new PatchNode(root);
-                    }                   
-                    
                     FPluginHost.Window.Caption =  window.Caption;
                     FActivePatchNode = new PatchNode(window.GetNode());
                     
@@ -331,9 +329,42 @@ namespace VVVV.Nodes.Finder
         }
         
         #region Search
-        void FFindTextBoxTextChanged(object sender, EventArgs e)
+        void FSearchTextBoxTextChanged(object sender, EventArgs e)
         {
             UpdateSearch();
+            
+            //save tags in config pin
+            FTagsPin[0] = FSearchTextBox.Text;
+        }
+        
+        void FSearchTextBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (FPlainResultList.Count == 0)
+                return;
+            
+            if (e.KeyCode == Keys.F3 || e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
+            {
+                FPlainResultList[FSearchIndex].Selected = false;
+                if (e.Shift || e.KeyCode == Keys.Up)
+                {
+                    FSearchIndex -= 1;
+                    if (FSearchIndex < 0)
+                        FSearchIndex = FPlainResultList.Count - 1;
+                }
+                else
+                    FSearchIndex = (FSearchIndex + 1) % FPlainResultList.Count;
+                
+                FPlainResultList[FSearchIndex].Selected = true;
+                
+                //select the node
+                FHDEHost.SelectNodes(new INode[1]{FPlainResultList[FSearchIndex].Node});
+                
+                FHierarchyViewer.Redraw();
+            }
+            else if (e.KeyCode == Keys.Return || e.KeyCode == Keys.Enter)
+            {
+                OpenPatch(FPlainResultList[FSearchIndex].Node);
+            }
         }
         
         private void AddNodesByTag(PatchNode searchResult, PatchNode sourceTree)
@@ -464,6 +495,17 @@ namespace VVVV.Nodes.Finder
         
         private void UpdateSearch()
         {
+            //we only need to get the root once
+            //in the constructor it is too early since finder might be placed in root
+            //and constructor of finder would be called before root was available
+            if (FRoot == null)
+            {
+                INode root;
+                FHDEHost.GetRoot(out root);
+                if (root != null)
+                    FRoot = new PatchNode(root);
+            }
+            
             string query = FSearchTextBox.Text.ToLower();
             query += (char) 160;
             
@@ -632,36 +674,6 @@ namespace VVVV.Nodes.Finder
             FNodeCountLabel.Text = "Matching Nodes: " + FPlainResultList.Count.ToString();
         }
         #endregion Search
-        
-        void FSearchTextBoxKeyDown(object sender, KeyEventArgs e)
-        {
-            if (FPlainResultList.Count == 0)
-                return;
-            
-            if (e.KeyCode == Keys.F3 || e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
-            {
-                FPlainResultList[FSearchIndex].Selected = false;
-                if (e.Shift || e.KeyCode == Keys.Up)
-                {
-                    FSearchIndex -= 1;
-                    if (FSearchIndex < 0)
-                        FSearchIndex = FPlainResultList.Count - 1;
-                }
-                else
-                    FSearchIndex = (FSearchIndex + 1) % FPlainResultList.Count;
-                
-                FPlainResultList[FSearchIndex].Selected = true;
-                
-                //select the node
-                FHDEHost.SelectNodes(new INode[1]{FPlainResultList[FSearchIndex].Node});
-                
-                FHierarchyViewer.Redraw();
-            }
-            else if (e.KeyCode == Keys.Return || e.KeyCode == Keys.Enter)
-            {
-                OpenPatch(FPlainResultList[FSearchIndex].Node);
-            }
-        }
         
         private void OpenPatch(INode node)
         {
