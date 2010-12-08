@@ -9,9 +9,9 @@ namespace VVVV.Hosting
 	/// <summary>
 	/// Logs messages to the IVVVVHost.
 	/// </summary>
-	public class VVVVLogger : ILogger
+	class VVVVLogger : ILogger
 	{
-		protected IVVVVHost FHost;
+		private readonly IVVVVHost FHost;
 		
 		public VVVVLogger(IVVVVHost host)
 		{
@@ -20,24 +20,7 @@ namespace VVVV.Hosting
 		
 		public void Log(LogType logType, string message)
 		{
-			TLogType vvvvLogType;
-			switch (logType)
-			{
-				case LogType.Debug:
-					vvvvLogType = TLogType.Debug;
-					break;
-				case LogType.Warning:
-					vvvvLogType = TLogType.Warning;
-					break;
-				case LogType.Error:
-					vvvvLogType = TLogType.Error;
-					break;
-				default:
-					vvvvLogType = TLogType.Message;
-					break;
-			}
-			
-			FHost.Log(vvvvLogType, message);
+			FHost.Log((TLogType) logType, message);
 		}
 	}
 }

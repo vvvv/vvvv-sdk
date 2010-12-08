@@ -437,7 +437,7 @@ namespace VVVV.PluginInterfaces.V2
     #region IEditor
     /// <summary>
     /// Interface for all document editors. Use in combination with the
-    /// <see cref="EditorAttribute">EditorAttribute</see> 
+    /// <see cref="EditorInfoAttribute">EditorInfoAttribute</see> 
     /// to define with which file extensions this editor works with.
     /// </summary>
     [Guid("ECC649C2-01B7-454E-9E22-E848D4AABAEC"),

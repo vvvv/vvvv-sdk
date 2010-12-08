@@ -9,6 +9,7 @@ using System.Reflection;
 
 using MefContrib.Hosting.Generics;
 using VVVV.Core;
+using VVVV.Core.Logging;
 using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -25,7 +26,11 @@ namespace VVVV.Hosting
 		{
 			var contractName = definition.ContractName;
 			
-			if (contractName.StartsWith("VVVV.PluginInterfaces"))
+			if (contractName == typeof(ILogger).FullName && PluginHost != null)
+			{
+				yield return new Export(contractName, () => new PluginLogger(PluginHost));
+			}
+			else if (contractName.StartsWith("VVVV.PluginInterfaces"))
 			{
 				var typeToExport = TypeHelper.GetImportDefinitionType(definition);
 				

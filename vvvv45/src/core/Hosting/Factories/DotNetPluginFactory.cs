@@ -30,8 +30,11 @@ namespace VVVV.Hosting.Factories
 	[Export(typeof(DotNetPluginFactory))]
 	public class DotNetPluginFactory : AbstractFileFactory<IInternalPluginHost>
 	{
-		[ImportMany(typeof(IPluginBase), AllowRecomposition=true)]
-		private List<ExportFactory<IPluginBase, INodeInfoStuff>> FNodeInfoExports { get; set; }
+		class PluginImporter
+		{
+			[ImportMany(typeof(IPluginBase), AllowRecomposition=true)]
+			public List<ExportFactory<IPluginBase, INodeInfoStuff>> NodeInfoExports { get; set; }
+		}
 		
 		[Import]
 		protected IHDEHost FHost;
@@ -39,6 +42,7 @@ namespace VVVV.Hosting.Factories
 		[Import]
 		protected ISolution FSolution;
 		
+		private PluginImporter FPluginImporter = new PluginImporter();
 		private Dictionary<INodeInfo, ExportFactory<IPluginBase, INodeInfoStuff>> FMEFPlugins;
 		private Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>> FPluginLifetimeContexts;
 		private Dictionary<string, ComposablePartCatalog> FCatalogCache;
@@ -66,7 +70,7 @@ namespace VVVV.Hosting.Factories
 			FPluginLifetimeContexts = new Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>>();
 			FCatalogCache = new Dictionary<string, ComposablePartCatalog>();
 			FHostExportProvider = new HostExportProvider();
-			ExportProviders = new List<ExportProvider>() { parentContainer, FHostExportProvider };
+			ExportProviders = new List<ExportProvider>() { FHostExportProvider, parentContainer };
 		}
 		#endregion
 		
@@ -253,9 +257,9 @@ namespace VVVV.Hosting.Factories
 			var nodeInfos = new Dictionary<string, INodeInfo>();
 			
 			var container = new CompositionContainer(catalog, ExportProviders.ToArray());
-			container.ComposeParts(this);
+			container.ComposeParts(FPluginImporter);
 			
-			foreach (var pluginExport in FNodeInfoExports)
+			foreach (var pluginExport in FPluginImporter.NodeInfoExports)
 			{
 				var metadata = pluginExport.Metadata;
 				var nodeInfo = FNodeInfoFactory.CreateNodeInfo(

@@ -23,6 +23,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// <summary>
 		/// Updates the key of an existing <see cref="INodeInfo">node info</see>.
 		/// </summary>
+		/// <param name="nodeInfo">The node info to update.</param>
 		/// <param name="name">The new name.</param>
 		/// <param name="category">The new category.</param>
 		/// <param name="version">The new version.</param>
