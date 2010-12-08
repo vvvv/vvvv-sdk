@@ -114,11 +114,13 @@ namespace VVVV.HDE.CodeEditor
 			FCodeEditorForm.Controls.Add(FEditor);
 			
 			FErrorTableViewer = new TableViewer();
-			FErrorTableViewer.Dock = DockStyle.Fill;
+			FErrorTableViewer.Dock = DockStyle.Top;
 			FErrorTableViewer.Location = new System.Drawing.Point(0, 0);
-			FErrorTableViewer.RowHeight = 16;
 			FErrorTableViewer.TabIndex = 0;
 			FErrorTableViewer.DoubleClick += FErrorTableViewerDoubleClick;
+			FErrorTableViewer.Resize += FErrorTableViewer_Resize;
+			FErrorTableViewer.AutoSize = true;
+			FErrorTableViewer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 			
 			FSplitContainer.Panel1.Controls.Add(FCodeEditorForm);
 			FSplitContainer.Panel2.Controls.Add(FErrorTableViewer);
@@ -138,6 +140,11 @@ namespace VVVV.HDE.CodeEditor
 			FEditor.LinkClicked += new LinkEventHandler(FEditor_LinkClicked);
 		}
 
+		void FErrorTableViewer_Resize(object sender, EventArgs e)
+		{
+			FSplitContainer.SplitterDistance = Math.Max(FSplitContainer.ClientSize.Height - FErrorTableViewer.ClientSize.Height - FSplitContainer.SplitterWidth, 0);
+		}
+		
 		void FEditor_LinkClicked(object sender, Link link)
 		{
 			var fileName = link.FileName;
@@ -411,12 +418,6 @@ namespace VVVV.HDE.CodeEditor
 		
 		private void ShowErrorTable()
 		{
-			FErrorTableViewer.AutoSize = true;
-			FErrorTableViewer.PerformLayout();
-			var bounds = FErrorTableViewer.Bounds;
-			
-			// TODO: Find better way to calculate splitter distance
-			FSplitContainer.SplitterDistance = FSplitContainer.Height - (FErrorTableViewer.RowCount + 2) * (FErrorTableViewer.RowHeight + 2);
 			FSplitContainer.Panel2Collapsed = false;
 		}
 		

@@ -651,7 +651,14 @@ namespace VVVV.HDE.CodeEditor
 			var doc = Document;
 			foreach (var marker in errorMarkers)
 			{
-				doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, doc.GetLineNumberForOffset(marker.Offset)));
+				try
+				{
+					doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.SingleLine, doc.GetLineNumberForOffset(marker.Offset)));
+				}
+				catch (Exception)
+				{
+					doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.WholeTextArea));
+				}
 				doc.MarkerStrategy.RemoveMarker(marker);
 			}
 			errorMarkers.Clear();
