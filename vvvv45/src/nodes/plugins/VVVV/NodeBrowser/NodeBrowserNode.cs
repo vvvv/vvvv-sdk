@@ -25,8 +25,8 @@ namespace VVVV.Nodes.NodeBrowser
 	            Shortcut = "Ctrl+N",
 	            Author = "vvvv group",
 	            Help = "The NodeInfo Browser",
-	            InitialBoxWidth = 100,
-	            InitialBoxHeight = 200,
+	            InitialBoxWidth = 200,
+	            InitialBoxHeight = 250,
 	            InitialWindowWidth = 300,
 	            InitialWindowHeight = 500,
 	            InitialComponentMode = TComponentMode.InAWindow)]

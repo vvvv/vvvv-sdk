@@ -295,7 +295,9 @@ namespace VVVV.Nodes.Finder
                     if (FActivePatchNode != null)
                         FActivePatchNode.UnSubscribe();
                     
-                    FPluginHost.Window.Caption =  window.Caption;
+                    //the hosts window may be null if the plugin is created hidden on startup
+                    if (FPluginHost.Window != null)
+                        FPluginHost.Window.Caption = window.Caption;
                     FActivePatchNode = new PatchNode(window.GetNode());
                     
                     UpdateSearch();
