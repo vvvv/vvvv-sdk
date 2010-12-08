@@ -71,7 +71,8 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 					}
 					
 					// Show MethodInsight window
-					editor.ShowInsightWindow(new CSMethodInsightProvider(editor, offset, commaOffsets));
+					if (offset >= 0)
+						editor.ShowInsightWindow(new CSMethodInsightProvider(editor, offset, commaOffsets));
 				}
 			}
 			else if (key == '.')

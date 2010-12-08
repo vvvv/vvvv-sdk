@@ -238,8 +238,6 @@ namespace VVVV.Hosting.Factories
 						if (docName == oldProjName)
 							csDoc.Name = string.Format("{0}.cs", Path.GetFileNameWithoutExtension(newProject.Name));
 						
-						csDoc.WaitParseCompleted();
-						
 						var parserResults = csDoc.ParserResults;
 						var compilationUnit = parserResults.CompilationUnit;
 						
