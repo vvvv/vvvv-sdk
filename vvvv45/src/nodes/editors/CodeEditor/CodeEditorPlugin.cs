@@ -35,7 +35,7 @@ using SD = ICSharpCode.TextEditor.Document;
 
 namespace VVVV.HDE.CodeEditor
 {
-	[EditorInfo(".cs", ".fx", ".fxh")]
+	[EditorInfo(".cs", ".fx", ".fxh", ".txt")]
 	public class CodeEditorPlugin : TopControl, IEditor, IDisposable, IQueryDelete, IPluginEvaluate
 	{
 		private SplitContainer FSplitContainer;
