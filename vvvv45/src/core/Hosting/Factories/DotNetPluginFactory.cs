@@ -82,6 +82,15 @@ namespace VVVV.Hosting.Factories
 			}
 		}
 		
+		protected override void AddSubDir(string dir, bool recursive)
+		{
+			// Ignore obj directories used by C# IDEs
+			if (dir.EndsWith(@"\obj\x86") || dir.EndsWith(@"\obj\x64"))
+				return;
+			
+			base.AddSubDir(dir, recursive);
+		}
+		
 		protected override bool CreateNode(INodeInfo nodeInfo, IInternalPluginHost pluginHost)
 		{
 			try
@@ -286,26 +295,29 @@ namespace VVVV.Hosting.Factories
 				nodeInfos.Add(nodeInfo.Systemname, nodeInfo);
 			}
 			
-			// Set Arguments property on each INodeInfo.
-			foreach (var part in catalog.Parts)
+			if (nodeInfos.Count > 0)
 			{
-				var lazyPartType = ReflectionModelServices.GetPartType(part);
-				
-				foreach (var exportDefinition in part.ExportDefinitions)
+				// Set Arguments property on each INodeInfo.
+				foreach (var part in catalog.Parts)
 				{
-					var lazyMemberInfo = ReflectionModelServices.GetExportingMember(exportDefinition);
-					if (lazyMemberInfo.MemberType == MemberTypes.TypeInfo)
+					var lazyPartType = ReflectionModelServices.GetPartType(part);
+					
+					foreach (var exportDefinition in part.ExportDefinitions)
 					{
-						var exportedPluginTypes = lazyMemberInfo.GetAccessors()
-							.Where(memberInfo => typeof(IPluginBase).IsAssignableFrom(memberInfo as Type))
-							.Select(memberInfo => memberInfo as Type);
-						foreach (var exportedPluginType in exportedPluginTypes)
+						var lazyMemberInfo = ReflectionModelServices.GetExportingMember(exportDefinition);
+						if (lazyMemberInfo.MemberType == MemberTypes.TypeInfo)
 						{
-							var arguments = exportedPluginType.FullName;
-							
-							var pluginInfoAttribute = Attribute.GetCustomAttribute(exportedPluginType, typeof(PluginInfoAttribute)) as PluginInfoAttribute;
-							if (pluginInfoAttribute != null)
-								nodeInfos[pluginInfoAttribute.Systemname].Arguments = arguments;
+							var exportedPluginTypes = lazyMemberInfo.GetAccessors()
+								.Where(memberInfo => typeof(IPluginBase).IsAssignableFrom(memberInfo as Type))
+								.Select(memberInfo => memberInfo as Type);
+							foreach (var exportedPluginType in exportedPluginTypes)
+							{
+								var arguments = exportedPluginType.FullName;
+								
+								var pluginInfoAttribute = Attribute.GetCustomAttribute(exportedPluginType, typeof(PluginInfoAttribute)) as PluginInfoAttribute;
+								if (pluginInfoAttribute != null)
+									nodeInfos[pluginInfoAttribute.Systemname].Arguments = arguments;
+							}
 						}
 					}
 				}

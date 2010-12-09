@@ -150,7 +150,7 @@ namespace VVVV.Hosting.Factories
 		
 		#region directory and watcher
 		
-		private void AddSubDir(string dir, bool recursive)
+		protected virtual void AddSubDir(string dir, bool recursive)
 		{
 			foreach (string filename in Directory.GetFiles(dir, @"*" + FFileExtension))
 			{
@@ -225,7 +225,7 @@ namespace VVVV.Hosting.Factories
 		}
 		
 		protected virtual void FDirectoryWatcher_Created(object sender, FileSystemEventArgs e)
-		{			
+		{
 			if (File.Exists(e.FullPath))
 				AddFile(e.FullPath);
 		}
@@ -252,17 +252,21 @@ namespace VVVV.Hosting.Factories
 			if (FFiles.Contains(filename))
 			{
 				FFiles.Remove(filename);
-				
-				foreach (var nodeInfo in FNodeInfoFactory.NodeInfos)
+				DoRemoveFile(filename);
+			}
+		}
+		
+		protected virtual void DoRemoveFile(string filename)
+		{
+			foreach (var nodeInfo in FNodeInfoFactory.NodeInfos)
+			{
+				if (!string.IsNullOrEmpty(nodeInfo.Filename))
 				{
-					if (!string.IsNullOrEmpty(nodeInfo.Filename))
-					{
-						try {
-							if (new Uri(nodeInfo.Filename) == new Uri(filename))
-								FNodeInfoFactory.DestroyNodeInfo(nodeInfo);
-						} catch (UriFormatException) {
-							// Ignore wrong uris like 0.v4p ////
-						}
+					try {
+						if (new Uri(nodeInfo.Filename) == new Uri(filename))
+							FNodeInfoFactory.DestroyNodeInfo(nodeInfo);
+					} catch (UriFormatException) {
+						// Ignore wrong uris like 0.v4p ////
 					}
 				}
 			}
@@ -274,18 +278,22 @@ namespace VVVV.Hosting.Factories
 			if (!FFiles.Contains(filename))
 			{
 				FFiles.Add(filename);
-				
-				var host = (HDEHost) FHDEHost;
-				if (host.HasCachedNodeInfos(filename))
-				{
-					var cachedNodeInfos = host.GetCachedNodeInfos(filename);
-					foreach (var nodeInfo in cachedNodeInfos)
-						nodeInfo.Factory = this;
-				}
-				else
-				{
-					ExtractNodeInfos(filename, null);
-				}
+				DoAddFile(filename);
+			}
+		}
+		
+		protected virtual void DoAddFile(string filename)
+		{
+			var host = (HDEHost) FHDEHost;
+			if (host.HasCachedNodeInfos(filename))
+			{
+				var cachedNodeInfos = host.GetCachedNodeInfos(filename);
+				foreach (var nodeInfo in cachedNodeInfos)
+					nodeInfo.Factory = this;
+			}
+			else
+			{
+				ExtractNodeInfos(filename, null);
 			}
 		}
 		
