@@ -379,8 +379,17 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		private bool IsAvailableInActivePatch(INodeInfo nodeInfo, bool localOnly)
 		{
-			var fn = Path.GetDirectoryName(nodeInfo.Filename);
-			if (NodeBrowser.CurrentPatchWindow == null || fn != NodeBrowser.CurrentPatchWindow.GetNode().GetNodeInfo().Filename)
+            var fn = "";
+            try
+            {
+                fn = Path.GetDirectoryName(nodeInfo.Filename);
+            }
+            catch
+            {
+
+            }
+            
+            if (NodeBrowser.CurrentPatchWindow == null || nodeInfo != NodeBrowser.CurrentPatchWindow.GetNode().GetNodeInfo())
 			{
 				if (!string.IsNullOrEmpty(NodeBrowser.CurrentDir))
 					//available if local

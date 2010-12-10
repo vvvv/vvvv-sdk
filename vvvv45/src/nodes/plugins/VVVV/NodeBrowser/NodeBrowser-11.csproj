@@ -7,7 +7,6 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BE8F0188-A22A-4ED6-B94D-963F37F114AD}</ProjectGuid>
-    <SignAssembly>False</SignAssembly>
     <DelaySign>False</DelaySign>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <NoStdLib>False</NoStdLib>
@@ -42,6 +41,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <Optimize>False</Optimize>
@@ -60,6 +61,19 @@
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
     <StartAction>Project</StartAction>
     <StartProgram>..\..\..\vvvv40_DynamicNodes\vvvv.exe</StartProgram>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.Unity">
@@ -137,7 +151,6 @@
     <ProjectReference Include="..\..\..\..\vvvv50\src\HDE\Viewer\WinFormsViewer\WinFormsViewer-11.csproj">
       <Project>{98936436-EA28-437E-A2A4-CC7CAA532658}</Project>
       <Name>WinFormsViewer-11</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\PluginInterfaces\PluginInterfaces-11.csproj">
       <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
@@ -162,4 +175,5 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
