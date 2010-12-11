@@ -456,7 +456,7 @@ namespace VVVV.Nodes.Finder
          */
         public void Add(PatchNode childNode)
         {
-            OnUpdateBegun(this);
+          //  OnUpdateBegun(this);
             try
             {
                 FChildNodes.Add(childNode);
@@ -466,7 +466,7 @@ namespace VVVV.Nodes.Finder
                 OnAdded(childNode);
             } catch (Exception)
             {
-                OnUpdated(this);
+           //     OnUpdated(this);
             }
         }
 
