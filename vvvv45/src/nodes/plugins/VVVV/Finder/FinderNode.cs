@@ -33,7 +33,7 @@ namespace VVVV.Nodes.Finder
                 InitialWindowWidth = 320,
                 InitialWindowHeight = 500,
                 InitialComponentMode = TComponentMode.InAWindow)]
-    public class FinderPluginNode: UserControl, IPluginHDE
+    public class FinderPluginNode: UserControl, IPluginHDE, INodeListener
     {
         #region field declaration
         private IDiffSpread<string> FTagsPin;
@@ -60,12 +60,13 @@ namespace VVVV.Nodes.Finder
         private bool FIONodes;
         private bool FNatives;
         private bool FVSTs;
-        private bool FTexts;
+        private bool FPatches;
         private bool FUnknowns;
         private bool FBoygrouped;
         private bool FAddons;
         private bool FWindows;
         
+        private INode FActivePatchParent;        
         private List<string> FTags;
         private int FSearchIndex;
         private List<INode> FNodes = new List<INode>();
@@ -102,26 +103,6 @@ namespace VVVV.Nodes.Finder
             FTagsPin.Changed += FTagsPin_Changed;
         }
 
-        void FTagsPin_Changed(IDiffSpread<string> spread)
-        {
-            FSearchTextBox.Text = spread[0];
-        }
-
-        void UpdateViewer(IViewableCollection collection, object item)
-        {
-            FHierarchyViewer.Reload();
-        }
-
-        void FSearchTextBox_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
-        {
-            FHierarchyViewer.Focus();
-        }
-
-        void FSearchTextBox_ContextMenu_Popup(object sender, EventArgs e)
-        {
-            FSearchTextBox.Text = "";
-        }
-        
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
@@ -198,7 +179,6 @@ namespace VVVV.Nodes.Finder
             this.FHierarchyViewer.DoubleClick += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerDoubleClick);
             this.FHierarchyViewer.Click += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerClick);
             this.FHierarchyViewer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FHierarchyViewerKeyPress);
-            this.FHierarchyViewer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FHierarchyViewerKeyDown);
             // 
             // FinderPluginNode
             // 
@@ -242,17 +222,13 @@ namespace VVVV.Nodes.Finder
                     FTagsPin.Changed -= FTagsPin_Changed;
                     
                     if (FRoot != FActivePatchNode)
-                        FRoot.UnSubscribe();
+                        FRoot.TearDown();
                     
                     if (FActivePatchNode != null)
-                        FActivePatchNode.UnSubscribe();
+                        FActivePatchNode.TearDown();
                     
                     if (FSearchResult != null)
-                    {
-                        FSearchResult.UnSubscribe();
-                        FSearchResult.Added -= UpdateViewer;
-                        FSearchResult.Removed -= UpdateViewer;
-                    }
+                        FSearchResult.TearDown();
                     
                     this.FSearchTextBox.TextChanged -= this.FSearchTextBoxTextChanged;
                     this.FSearchTextBox.KeyDown -= this.FSearchTextBoxKeyDown;
@@ -260,7 +236,6 @@ namespace VVVV.Nodes.Finder
                     this.FHierarchyViewer.DoubleClick -= this.FHierarchyViewerDoubleClick;
                     this.FHierarchyViewer.Click -= this.FHierarchyViewerClick;
                     this.FHierarchyViewer.KeyPress -= this.FHierarchyViewerKeyPress;
-                    this.FHierarchyViewer.KeyDown -= this.FHierarchyViewerKeyDown;
                     this.FHierarchyViewer.Dispose();
                     this.FHierarchyViewer = null;
                     
@@ -281,6 +256,12 @@ namespace VVVV.Nodes.Finder
         
         #endregion constructor/destructor
         
+        void FTagsPin_Changed(IDiffSpread<string> spread)
+        {
+            FSearchTextBox.Text = spread[0];
+        }
+        
+        #region IWindowSelectionListener
         void FHDEHost_WindowSelectionChanged(object sender, WindowEventArgs args)
         {
             var window = args.Window;
@@ -293,12 +274,20 @@ namespace VVVV.Nodes.Finder
                 if (window != FActivePatchWindow)
                 {
                     if (FActivePatchNode != null)
-                        FActivePatchNode.UnSubscribe();
+                        FActivePatchNode.TearDown();
+                    if (FActivePatchParent != null)
+                        FActivePatchParent.RemoveListener(this);
                     
                     //the hosts window may be null if the plugin is created hidden on startup
                     if (FPluginHost.Window != null)
                         FPluginHost.Window.Caption = window.Caption;
+                    
                     FActivePatchNode = new PatchNode(window.GetNode());
+                    
+                    FActivePatchParent = FindParent(FHDEHost.Root, window.GetNode());
+                    //if this is not the root
+                    if (FActivePatchParent != null)
+                       FActivePatchParent.AddListener(this);
                     
                     UpdateSearch();
                     
@@ -306,29 +295,34 @@ namespace VVVV.Nodes.Finder
                 }
             }
         }
+        #endregion IWindowSelectionListener
         
-        private INode FindParent(INode sourceTree, INode node)
+        #region INodeListener
+        public void AddedCB(INode childNode)
         {
-            INode[] children = sourceTree.GetChildren();
-            
-            if (children != null)
-            {
-                foreach(INode child in children)
-                {
-                    if (child == node)
-                        return sourceTree;
-                    else
-                    {
-                        INode p = FindParent(child, node);
-                        if (p != null)
-                            return p;
-                    }
-                }
-                return null;
-            }
-            else
-                return null;
+            //do nothing;
         }
+        
+        public void RemovedCB(INode childNode)
+        {
+            //if active patch is being deleted
+            //detach view
+            if (childNode == FActivePatchNode.Node)
+            {
+                FActivePatchNode.TearDown();
+                FActivePatchNode = null;
+                FActivePatchWindow = null;
+                FActiveWindow = null;
+                
+                UpdateSearch();
+            }
+        }
+        
+        public void LabelChangedCB()
+        {
+            //do nothing
+        }
+        #endregion INodeListener
         
         #region Search
         void FSearchTextBoxTextChanged(object sender, EventArgs e)
@@ -377,7 +371,7 @@ namespace VVVV.Nodes.Finder
                 //now first go downstream recursively
                 //to see if this pn is needed in the hierarchy to hold any matching downstream nodes
                 //create a dummy to attach possible matching downstream nodes
-                var parent = new PatchNode(null);
+                var parent = new PatchNode();
                 parent.Node = node.Node;
                 AddNodesByTag(parent, node);
                 
@@ -394,7 +388,7 @@ namespace VVVV.Nodes.Finder
         private bool CheckForInclusion(PatchNode node)
         {
             bool include = false;
-            var quickTagsUsed = FSendReceive || FComments || FLabels || FIONodes || FNatives || FModules || FEffects || FFreeframes || FVSTs || FPlugins || FTexts || FUnknowns || FAddons || FBoygrouped || FWindows;
+            var quickTagsUsed = FSendReceive || FComments || FLabels || FIONodes || FNatives || FModules || FEffects || FFreeframes || FVSTs || FPlugins || FPatches || FUnknowns || FAddons || FBoygrouped || FWindows;
             
             if (FTags.Count == 0)
             {
@@ -410,7 +404,7 @@ namespace VVVV.Nodes.Finder
                     include |= FFreeframes && node.NodeType == NodeType.Freeframe;
                     include |= FVSTs && node.NodeType == NodeType.VST;
                     include |= FPlugins && (node.NodeType == NodeType.Plugin || node.NodeType == NodeType.Dynamic);
-                    include |= FTexts && node.NodeType == NodeType.Text;
+                    include |= FPatches && node.NodeType == NodeType.Patch;
                     include |= FUnknowns && node.IsMissing;
                     include |= FBoygrouped && node.IsBoygrouped;
                     include |= FAddons && (node.NodeType != NodeType.Native && node.NodeType != NodeType.Text && node.NodeType != NodeType.Patch);
@@ -463,7 +457,7 @@ namespace VVVV.Nodes.Finder
                     || (FFreeframes && node.NodeType == NodeType.Freeframe)
                     || (FNatives && node.NodeType == NodeType.Native)
                     || (FVSTs && node.NodeType == NodeType.VST)
-                    || (FTexts && node.NodeType == NodeType.Text)
+                    || (FPatches && node.NodeType == NodeType.Patch)
                     || (FUnknowns && node.IsMissing)
                     || (FBoygrouped && node.IsBoygrouped)
                     || (FAddons && (node.NodeType != NodeType.Native && node.NodeType != NodeType.Text && node.NodeType != NodeType.Patch))
@@ -500,32 +494,26 @@ namespace VVVV.Nodes.Finder
             //we only need to get the root once
             //in the constructor it is too early since finder might be placed in root
             //and constructor of finder would be called before root was available
+            if (FRoot == null && FHDEHost.Root != null) 
+                FRoot = new PatchNode(FHDEHost.Root);
+            
             if (FRoot == null)
-            {
-                INode root;
-                FHDEHost.GetRoot(out root);
-                if (root != null)
-                    FRoot = new PatchNode(root);
-            }
+                return;
             
             string query = FSearchTextBox.Text.ToLower();
             query += (char) 160;
             
             if (FSearchResult != null)
-            {
-                FSearchResult.UnSubscribe();
-                FSearchResult.Added -= UpdateViewer;
-                FSearchResult.Removed -= UpdateViewer;
-            }
+                FSearchResult.TearDown();
             
-            FSearchResult = new PatchNode(null);
+            FSearchResult = new PatchNode();
             FPlainResultList.Clear();
             FSearchIndex = 0;
             FHierarchyViewer.ShowLinks = false;
             
             //check for tags in query:
             //g: global
-            //b: below local
+            //d: downstream
             //default scope: local
             FSearchScope = SearchScope.Local;
             FTags = query.Split(new char[1]{' '}).ToList();
@@ -541,10 +529,7 @@ namespace VVVV.Nodes.Finder
                 FTags.Remove("d");
             }
             
-            FSendReceive = FComments = FLabels = FEffects = FFreeframes = FModules = FPlugins = FIONodes = FNatives = FVSTs = FAddons = FUnknowns = FTexts = FBoygrouped = FWindows = false;
-            //s: send/receive channels
-            //c: comments
-            //d: descriptive names
+            FSendReceive = FComments = FLabels = FEffects = FFreeframes = FModules = FPlugins = FIONodes = FNatives = FVSTs = FAddons = FUnknowns = FPatches = FBoygrouped = FWindows = false;
             if (FTags.Contains("s"))
             {
                 FSendReceive = true;
@@ -598,7 +583,7 @@ namespace VVVV.Nodes.Finder
             }
             if (FTags.Contains("t"))
             {
-                FTexts = true;
+                FPatches = true;
                 FTags.Remove("t");
             }
             if (FTags.Contains("r"))
@@ -640,13 +625,17 @@ namespace VVVV.Nodes.Finder
                     }
                 case SearchScope.Local:
                     {
+                        //if there is no active patch, break out
+                        if (FActivePatchNode == null)
+                            break;
+                        
                         FSearchResult.Node = FActivePatchNode.Node;
                         
                         //go through child nodes of FActivePatch and see if any contains the tag
                         foreach (PatchNode pn in FActivePatchNode)
                             if (CheckForInclusion(pn))
                         {
-                            var node = new PatchNode(null);
+                            var node = new PatchNode();
                             node.Node = pn.Node;
                             FSearchResult.Add(node);
                             
@@ -664,8 +653,8 @@ namespace VVVV.Nodes.Finder
             }
             
             FSearchResult.SetActiveWindow(FActiveWindow);
-            FSearchResult.Added += UpdateViewer;
-            FSearchResult.Removed += UpdateViewer;
+            //FSearchResult.Added += UpdateViewer;
+            //FSearchResult.Removed += UpdateViewer;
             
             var mappingRegistry = new MappingRegistry();
             mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
@@ -677,17 +666,15 @@ namespace VVVV.Nodes.Finder
         }
         #endregion Search
         
-        private void OpenPatch(INode node)
+        #region GUI events
+        void FSearchTextBox_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (node == null)
-                FHDEHost.ShowEditor(FindParent(FRoot.Node, FActivePatchNode.Node));
-            else if (node.HasPatch())
-                FHDEHost.ShowEditor(node);
-            else
-            {
-                FHDEHost.ShowEditor(FindParent(FRoot.Node, node));
-                FHDEHost.SelectNodes(new INode[1]{node});
-            }
+            FHierarchyViewer.Focus();
+        }
+
+        void FSearchTextBox_ContextMenu_Popup(object sender, EventArgs e)
+        {
+            FSearchTextBox.Text = "";
         }
         
         void FHierarchyViewerClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
@@ -721,16 +708,48 @@ namespace VVVV.Nodes.Finder
             OpenPatch((sender.Model as PatchNode).Node);
         }
         
-        void FHierarchyViewerKeyDown(object sender, KeyEventArgs e)
-        {
-            
-        }
-        
         void FHierarchyViewerKeyPress(object sender, KeyPressEventArgs e)
         {
             FSearchTextBox.Focus();
             FSearchTextBox.Text += (e.KeyChar).ToString();
             FSearchTextBox.Select(FSearchTextBox.Text.Length, 1);
+        }
+        #endregion GUI events
+        
+        private void OpenPatch(INode node)
+        {
+            if (node == null)
+                FHDEHost.ShowEditor(FindParent(FRoot.Node, FActivePatchNode.Node));
+            else if (node.HasPatch())
+                FHDEHost.ShowEditor(node);
+            else
+            {
+                FHDEHost.ShowEditor(FindParent(FRoot.Node, node));
+                FHDEHost.SelectNodes(new INode[1]{node});
+            }
+        }
+        
+        private INode FindParent(INode sourceTree, INode node)
+        {
+            INode[] children = sourceTree.GetChildren();
+            
+            if (children != null)
+            {
+                foreach(INode child in children)
+                {
+                    if (child == node)
+                        return sourceTree;
+                    else
+                    {
+                        INode p = FindParent(child, node);
+                        if (p != null)
+                            return p;
+                    }
+                }
+                return null;
+            }
+            else
+                return null;
         }
     }
 }

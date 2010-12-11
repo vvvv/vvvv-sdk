@@ -130,7 +130,7 @@ namespace VVVV.Nodes.WindowSwitcher
         {
             if (FRoot == null)
             {
-                FHDEHost.GetRoot(out FRoot);
+                FRoot = FHDEHost.Root;
                 var mappingRegistry = new MappingRegistry();
                 mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
                 FHierarchyViewer.Registry = mappingRegistry;

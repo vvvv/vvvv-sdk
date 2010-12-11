@@ -95,8 +95,11 @@ namespace VVVV.PluginInterfaces.V2
 	    /// <summary>
 	    /// Returns an interface to the graphs root node
 	    /// </summary>
-	    /// <param name="root">The graphs root node.</param>
-	    void GetRoot(out INode root);
+	    /// <returns>The graphs root node.</returns>
+	    INode Root
+	    {
+	        get;
+	    }
 	    
 	    event NodeSelectionEventHandler NodeSelectionChanged;
 	    event MouseEventHandler MouseUp;
@@ -331,16 +334,16 @@ namespace VVVV.PluginInterfaces.V2
 		IPin GetPin(string Name);
 		
 		/// <summary>
-		/// Allows a plugin to register an INodeChangedListener on a specific vvvv node.
+		/// Allows a plugin to register an INodeListener on a specific vvvv node.
 		/// </summary>
 		/// <param name="listener">The listener to register.</param>
-		void AddListener(INodeChangedListener listener);
+		void AddListener(INodeListener listener);
 		
 		/// <summary>
-		/// Allows a plugin to unregister an INodeChangedListener from a specific vvvv node.
+		/// Allows a plugin to unregister an INodeListener from a specific vvvv node.
 		/// </summary>
 		/// <param name="listener">The listener to unregister.</param>
-		void RemoveListener(INodeChangedListener listener);
+		void RemoveListener(INodeListener listener);
 		
 		/// <summary>
 		/// Gets the last runtime error that occured or null if there were no errors.
@@ -377,9 +380,11 @@ namespace VVVV.PluginInterfaces.V2
 	
 	[Guid("1ABB290D-9A96-4944-80CC-F544C8CDD14B"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface INodeChangedListener
+    public interface INodeListener
     {
-        void NodeChangedCB();
+        void AddedCB(INode childNode);
+        void RemovedCB(INode childNode);
+        void LabelChangedCB();
     }
 	#endregion INode
 	

@@ -9,7 +9,7 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.Finder
 {
-    public class PatchNode: IViewableCollection, INamed, IDescripted, INodeChangedListener, ISelectable, IDecoratable, ILinkable
+    public class PatchNode: IViewableCollection, INamed, IDescripted, INodeListener, ISelectable, IDecoratable, ILinkable
     {
         List<PatchNode> FChildNodes = new List<PatchNode>();
         
@@ -51,12 +51,15 @@ namespace VVVV.Nodes.Finder
         
         public NodeType NodeType {get; private set;}
         
+        public PatchNode()
+        {}
+        
         public PatchNode(INode self)
         {
             Node = self;
             
-            if (Node != null && NodeType != NodeType.Module)
-                UpdateChildren();
+            if (NodeType != NodeType.Module)
+                InitChildren();
         }
         
         private INode FNode;
@@ -73,11 +76,6 @@ namespace VVVV.Nodes.Finder
                 {
                     IsBoygrouped = FNode.IsBoygrouped();
                     IsMissing = FNode.IsMissing();
-                    
-                    DescriptiveName = Node.GetPin("Descriptive Name").GetValue(0);
-                    string hyphen = "";
-                    if (!string.IsNullOrEmpty(DescriptiveName))
-                        hyphen = " -- ";
                     
                     Name = "????";
                     if (Node.HasGUI())
@@ -96,73 +94,7 @@ namespace VVVV.Nodes.Finder
                     
                     FWindow = FNode.Window;
                     
-                    var ni = FNode.GetNodeInfo();
-                    if (ni != null)
-                    {
-                        NodeType = ni.Type;
-                        
-                        //subpatches
-                        if (string.IsNullOrEmpty(ni.Name))
-                        {
-                            string file = System.IO.Path.GetFileNameWithoutExtension(ni.Filename);
-                            
-                            //unsaved patch
-                            if (string.IsNullOrEmpty(file))
-                                Name = ni.Filename + hyphen + DescriptiveName;
-                            //patch with valid filename
-                            else
-                                Name = file + hyphen + DescriptiveName;
-                        }
-                        else if ((ni.Username == "IOBox (Value Advanced)") || (ni.Username == "IOBox (Color)") || (ni.Username == "IOBox (Enumerations)") || (ni.Username == "IOBox (Node)"))
-                        {
-                            if (string.IsNullOrEmpty(DescriptiveName))
-                                Name = ni.Username + hyphen + DescriptiveName;
-                            else
-                                IsIONode = true;
-                        }
-                        else if (ni.Username == "IOBox (String)")
-                        {
-                            if (string.IsNullOrEmpty(DescriptiveName))
-                                if ((!Node.GetPin("Input String").IsConnected()) && (!Node.GetPin("Output String").IsConnected()))
-                            {
-                                Comment = Node.GetPin("Input String").GetValue(0);
-                                var cmt = Comment;
-                                var maxChar = 30;
-                                var linebreak = cmt.IndexOf("\n");
-                                if (linebreak > 0 && linebreak < maxChar)
-                                    cmt = cmt.Substring(0, linebreak) + "...";
-                                else if (cmt.Length > maxChar)
-                                    cmt = cmt.Substring(0, maxChar) + "...";
-                                Name = cmt;
-                                Icon = NodeIcon.Comment;
-                            }
-                            else
-                                Name = ni.Username + hyphen + DescriptiveName;
-                            else
-                                IsIONode = true;
-                        }
-                        else if (ni.Name == "S")
-                        {
-                            SRChannel = FNode.GetPin("SendString").GetValue(0);
-                            FIsSource = true;
-                            Name = ni.Username + ": " + SRChannel;
-                            Icon = NodeIcon.SRNode;
-                        }
-                        else if (ni.Name == "R")
-                        {
-                            SRChannel = FNode.GetPin("ReceiveString").GetValue(0);
-                            Name = ni.Username + ": " + SRChannel;
-                            Icon = NodeIcon.SRNode;
-                        }
-                        else
-                            Name = ni.Username + hyphen + DescriptiveName;
-                        
-                        if (IsIONode)
-                        {
-                            Name = DescriptiveName;
-                            Icon = NodeIcon.IONode;
-                        }
-                    }
+                    UpdateName();
                     
                     Node.AddListener(this);
                 }
@@ -212,6 +144,24 @@ namespace VVVV.Nodes.Finder
         {
             return FChildNodes.GetEnumerator();
         }
+        
+        public event CollectionUpdateDelegate UpdateBegun;
+        
+        protected virtual void OnUpdateBegun(IViewableCollection collection)
+        {
+            if (UpdateBegun != null) {
+                UpdateBegun(collection);
+            }
+        }
+        
+        public event CollectionUpdateDelegate Updated;
+        
+        protected virtual void OnUpdated(IViewableCollection collection)
+        {
+            if (Updated != null) {
+                Updated(collection);
+            }
+        }
         #endregion IViewableCollection
         
         #region INamed
@@ -252,92 +202,177 @@ namespace VVVV.Nodes.Finder
         }
         #endregion IDescription
         
-        #region INodeChangedListener
-        public void NodeChangedCB()
+        #region INodeListener
+        public void AddedCB(INode childNode)
         {
-            UpdateChildren();
+            bool found = false;
+            foreach(var child in FChildNodes)
+                if (child.Node == childNode)
+            {
+                found = true;
+                break;
+            }
+            
+            if (!found)
+                Add(new PatchNode(childNode));
         }
-        #endregion INodeChangedListener
         
-        private void UpdateChildren()
+        public void RemovedCB(INode childNode)
         {
+            foreach(var child in FChildNodes)
+                if (child.Node == childNode)
+            {
+                Remove(child);
+                break;
+            }
+        }
+        
+        public void LabelChangedCB()
+        {
+            UpdateName();
+            OnRenamed(Name);
+        }
+        #endregion INodeListener
+        
+        private void UpdateName()
+        {
+            DescriptiveName = Node.GetPin("Descriptive Name").GetValue(0);
+            string hyphen = "";
+            if (!string.IsNullOrEmpty(DescriptiveName))
+                hyphen = " -- ";
+            
+            var ni = FNode.GetNodeInfo();
+            if (ni != null)
+            {
+                NodeType = ni.Type;
+                
+                //subpatches
+                if (string.IsNullOrEmpty(ni.Name))
+                {
+                    string file = System.IO.Path.GetFileNameWithoutExtension(ni.Filename);
+                    
+                    //unsaved patch
+                    if (string.IsNullOrEmpty(file))
+                        Name = ni.Filename + hyphen + DescriptiveName;
+                    //patch with valid filename
+                    else
+                        Name = file + hyphen + DescriptiveName;
+                }
+                else if ((ni.Username == "IOBox (Value Advanced)") || (ni.Username == "IOBox (Color)") || (ni.Username == "IOBox (Enumerations)") || (ni.Username == "IOBox (Node)"))
+                {
+                    if (string.IsNullOrEmpty(DescriptiveName))
+                        Name = ni.Username + hyphen + DescriptiveName;
+                    else
+                        IsIONode = true;
+                }
+                else if (ni.Username == "IOBox (String)")
+                {
+                    if (string.IsNullOrEmpty(DescriptiveName))
+                        if ((!Node.GetPin("Input String").IsConnected()) && (!Node.GetPin("Output String").IsConnected()))
+                    {
+                        Comment = Node.GetPin("Input String").GetValue(0);
+                        var cmt = Comment;
+                        var maxChar = 30;
+                        var linebreak = cmt.IndexOf("\n");
+                        if (linebreak > 0 && linebreak < maxChar)
+                            cmt = cmt.Substring(0, linebreak) + "...";
+                        else if (cmt.Length > maxChar)
+                            cmt = cmt.Substring(0, maxChar) + "...";
+                        Name = cmt;
+                        Icon = NodeIcon.Comment;
+                    }
+                    else
+                        Name = ni.Username + hyphen + DescriptiveName;
+                    else
+                        IsIONode = true;
+                }
+                else if (ni.Name == "S")
+                {
+                    SRChannel = FNode.GetPin("SendString").GetValue(0);
+                    FIsSource = true;
+                    Name = ni.Username + ": " + SRChannel;
+                    Icon = NodeIcon.SRNode;
+                }
+                else if (ni.Name == "R")
+                {
+                    SRChannel = FNode.GetPin("ReceiveString").GetValue(0);
+                    Name = ni.Username + ": " + SRChannel;
+                    Icon = NodeIcon.SRNode;
+                }
+                else
+                    Name = ni.Username + hyphen + DescriptiveName;
+                
+                if (IsIONode)
+                {
+                    Name = DescriptiveName;
+                    Icon = NodeIcon.IONode;
+                }
+            }
+        }
+        
+        private void InitChildren()
+        {
+            if (Node == null)
+                return;
+            
             INode[] children = Node.GetChildren();
             if (children != null)
             {
-                //mark all children for being deleted
-                foreach(var child in FChildNodes)
-                    child.MarkedForDelete = true;
-                
-                //unmark existing children from being deleted and add new ones
                 foreach(INode child in children)
-                {
-                    bool found = false;
-                    foreach(var c in FChildNodes)
-                        if (c.Node == child)
-                    {
-                        c.MarkedForDelete = false;
-                        found = true;
-                        break;
-                    }
-
-                    if (!found)
-                        Add(new PatchNode(child));
-                }
-                
-                //remove all children still marked for delete
-                for (int i=FChildNodes.Count-1; i>=0; i--)
-                {
-                    if (FChildNodes[i].MarkedForDelete)
-                        Remove(FChildNodes[i]);
-                }
-                
-                FChildNodes.Sort(delegate(PatchNode p1, PatchNode p2)
+                    Add(new PatchNode(child));
+            }
+            
+            SortChildren();
+        }
+        
+        private void SortChildren()
+        {
+            FChildNodes.Sort(delegate(PatchNode p1, PatchNode p2)
+                             {
+                                 //order:
+                                 //subpatches
+                                 //inlets
+                                 //outlets
+                                 //Sends
+                                 //Receives
+                                 //comments
+                                 //other nodes
+                                 
+                                 int w1 = 0, w2 = 0;
+                                 if (p1.NodeType == NodeType.Patch)
+                                     w1 = 100;
+                                 else if (p1.IsIONode)
+                                     w1 = 90;
+                                 else if (p1.Name.StartsWith("S "))
+                                     w1 = 81;
+                                 else if (p1.Name.StartsWith("R "))
+                                     w1 = 80;
+                                 else if (!string.IsNullOrEmpty(p1.Comment))
+                                     w1 = 200;
+                                 
+                                 if (p2.NodeType == NodeType.Patch)
+                                     w2 = 100;
+                                 else if (p1.IsIONode)
+                                     w2 = 90;
+                                 else if (p2.Name.StartsWith("S "))
+                                     w2 = 81;
+                                 else if (p2.Name.StartsWith("R "))
+                                     w2 = 80;
+                                 else if (!string.IsNullOrEmpty(p1.Comment))
+                                     w2 = 200;
+                                 
+                                 if ((w1 > 0) || (w2 > 0))
                                  {
-                                     //order:
-                                     //subpatches
-                                     //inlets
-                                     //outlets
-                                     //Sends
-                                     //Receives
-                                     //comments
-                                     //other nodes
-                                     
-                                     int w1 = 0, w2 = 0;
-                                     if (p1.NodeType == NodeType.Patch)
-                                         w1 = 100;
-                                     else if (p1.IsIONode)
-                                         w1 = 90;
-                                     else if (p1.Name.StartsWith("S "))
-                                         w1 = 81;
-                                     else if (p1.Name.StartsWith("R "))
-                                         w1 = 80;
-                                     else if (!string.IsNullOrEmpty(p1.Comment))
-                                         w1 = 200;
-                                     
-                                     if (p2.NodeType == NodeType.Patch)
-                                         w2 = 100;
-                                     else if (p1.IsIONode)
-                                         w2 = 90;
-                                     else if (p2.Name.StartsWith("S "))
-                                         w2 = 81;
-                                     else if (p2.Name.StartsWith("R "))
-                                         w2 = 80;
-                                     else if (!string.IsNullOrEmpty(p1.Comment))
-                                         w2 = 200;
-                                     
-                                     if ((w1 > 0) || (w2 > 0))
-                                     {
-                                         if (w1 > w2)
-                                             return -1;
-                                         else if (w1 < w2)
-                                             return 1;
-                                         else
-                                             return p1.Name.CompareTo(p2.Name);
-                                     }
+                                     if (w1 > w2)
+                                         return -1;
+                                     else if (w1 < w2)
+                                         return 1;
                                      else
                                          return p1.Name.CompareTo(p2.Name);
-                                 });
-            }
+                                 }
+                                 else
+                                     return p1.Name.CompareTo(p2.Name);
+                             });
         }
         
         public void SetTags(List<string> tags)
@@ -394,18 +429,13 @@ namespace VVVV.Nodes.Finder
             return output;
         }
         
-        public void UnSubscribe()
+        public void TearDown()
         {
             if (Node != null)
                 Node.RemoveListener(this);
             
-            foreach (var node in FChildNodes)
-            {
-                node.UnSubscribe();
-                node.Added -= childNode_Added;
-                node.Removed -= childNode_Removed;
-            }
-            
+            for (int i = FChildNodes.Count - 1; i >= 0; i--)
+                Remove(FChildNodes[i]);
         }
         /*
         public void SelectNodes(INode[] nodes)
@@ -426,28 +456,34 @@ namespace VVVV.Nodes.Finder
          */
         public void Add(PatchNode childNode)
         {
-            FChildNodes.Add(childNode);
-            childNode.Added += childNode_Added;
-            childNode.Removed += childNode_Removed;
-            OnAdded(childNode);
+            OnUpdateBegun(this);
+            try
+            {
+                FChildNodes.Add(childNode);
+                SortChildren();
+                
+                //sync with viewer
+                OnAdded(childNode);
+            } catch (Exception)
+            {
+                OnUpdated(this);
+            }
         }
 
-        void childNode_Removed(IViewableCollection collection, object item)
+        private void Remove(PatchNode childNode)
         {
-            OnRemoved(item);
-        }
-
-        void childNode_Added(IViewableCollection collection, object item)
-        {
-            OnAdded(item);
-        }
-        
-        public void Remove(PatchNode childNode)
-        {
-            FChildNodes.Remove(childNode);
-            childNode.Added -= childNode_Added;
-            childNode.Removed -= childNode_Removed;
-            OnRemoved(childNode);
+            OnUpdateBegun(this);
+            try
+            {
+                childNode.TearDown();
+                FChildNodes.Remove(childNode);
+                
+                //sync with viewer
+                OnRemoved(childNode);
+            } catch (Exception)
+            {
+                OnUpdated(this);
+            }
         }
         
         public event SelectionChangedHandler SelectionChanged;

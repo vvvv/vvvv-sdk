@@ -455,9 +455,12 @@ namespace VVVV.Hosting
 			}
 		}
 		
-		public void GetRoot(out INode root)
+		public INode Root
 		{
-			FVVVVHost.GetRoot(out root);
+		    get
+			{
+		        return FVVVVHost.Root;
+			}
 		}
 		
 		public void UpdateEnum(string EnumName, string Default, string[] EnumEntries)

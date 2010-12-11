@@ -9,7 +9,7 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.WindowSwitcher
 {
-    public class PatchNode: IViewableCollection, INamed, IDescripted, INodeChangedListener, ISelectable, IDecoratable, ILinkable
+    public class PatchNode: IViewableCollection, INamed, IDescripted, INodeListener, ISelectable, IDecoratable, ILinkable
     {
         List<PatchNode> FChildNodes = new List<PatchNode>();
         
@@ -254,12 +254,22 @@ namespace VVVV.Nodes.WindowSwitcher
         }
         #endregion IDescription
         
-        #region INodeChangedListener
-        public void NodeChangedCB()
+        #region INodeListener
+        public void AddedCB(INode childNode)
         {
             UpdateChildren();
         }
-        #endregion INodeChangedListener
+        
+        public void RemovedCB(INode childNode)
+        {
+            UpdateChildren();
+        }
+        
+        public void LabelChangedCB()
+        {
+            UpdateChildren();
+        }
+        #endregion INodeListener
         
         private void UpdateChildren()
         {
@@ -543,5 +553,9 @@ namespace VVVV.Nodes.WindowSwitcher
             }
         }
         #endregion ILinkable
+        
+        public event CollectionUpdateDelegate UpdateBegun;
+        
+        public event CollectionUpdateDelegate Updated;
     }
 }

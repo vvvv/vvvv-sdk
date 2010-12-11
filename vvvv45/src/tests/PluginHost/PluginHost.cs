@@ -531,12 +531,12 @@ namespace Hoster
             throw new NotImplementedException();
         }
 		
-		public void AddListener(INodeChangedListener listener)
+		public void AddListener(INodeListener listener)
 		{
 			throw new NotImplementedException();
 		}
 		
-		public void RemoveListener(INodeChangedListener listener)
+		public void RemoveListener(INodeListener listener)
 		{
 			throw new NotImplementedException();
 		}
