@@ -472,7 +472,7 @@ namespace VVVV.Nodes.Finder
 
         private void Remove(PatchNode childNode)
         {
-            OnUpdateBegun(this);
+            //OnUpdateBegun(this);
             try
             {
                 childNode.TearDown();
@@ -482,7 +482,7 @@ namespace VVVV.Nodes.Finder
                 OnRemoved(childNode);
             } catch (Exception)
             {
-                OnUpdated(this);
+              //  OnUpdated(this);
             }
         }
         
