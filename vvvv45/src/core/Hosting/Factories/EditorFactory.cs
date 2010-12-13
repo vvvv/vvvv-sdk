@@ -125,7 +125,7 @@ namespace VVVV.Hosting.Factories
 					nodeInfo.Ignore = true;
 					nodeInfo.AutoEvaluate = true;
 					nodeInfo.InitialBoxSize = new System.Drawing.Size(400, 300);
-					nodeInfo.InitialWindowSize = new System.Drawing.Size(800, 600);
+					nodeInfo.InitialWindowSize = new System.Drawing.Size(600, 700);
 					nodeInfo.InitialComponentMode = TComponentMode.InAWindow;
 					nodeInfo.CommitUpdate();
 					
