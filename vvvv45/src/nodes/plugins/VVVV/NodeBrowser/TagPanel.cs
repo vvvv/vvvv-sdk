@@ -25,7 +25,6 @@ namespace VVVV.Nodes.NodeBrowser
 		private const string CRTFHeader = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fnil\fcharset0 Verdana;}}\viewkind4\uc1\pard\f0\fs17 ";
 		private const int CLineHeight = 13;
 		private int FHoverLine;
-		private ToolTip FToolTip = new ToolTip();
 		private List<string> FTags;
 		private Point FLastMouseHoverLocation = new Point(0, 0);
 		private int FNodeFilter;
@@ -294,7 +293,8 @@ namespace VVVV.Nodes.NodeBrowser
 			{
 				FLastMouseHoverLocation = e.Location;
 				FHoverLine = newHoverLine;
-				ShowToolTip();
+				if (sender != FNodeTypePanel)
+				    ShowToolTip();
 				RedrawSelection();
 			}
 		}
@@ -826,6 +826,11 @@ namespace VVVV.Nodes.NodeBrowser
 			
 			if (Visible && NeedsUpdate)
 				FilterNodesByTags();
+		}
+		
+		void FRichTextBoxMouseLeave(object sender, EventArgs e)
+		{
+		    FToolTip.Hide(this);
 		}
 	}
 }

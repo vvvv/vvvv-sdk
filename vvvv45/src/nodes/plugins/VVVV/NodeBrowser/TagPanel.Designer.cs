@@ -34,11 +34,13 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.FTagsTextBox = new System.Windows.Forms.TextBox();
 			this.FNodeCountLabel = new System.Windows.Forms.Label();
 			this.FScrollBar = new System.Windows.Forms.VScrollBar();
 			this.FNodeTypePanel = new VVVV.Nodes.DoubleBufferedPanel();
 			this.FRichTextBox = new VVVV.Nodes.NodeBrowser.RichTextBoxEx();
+			this.FToolTip = new System.Windows.Forms.ToolTip(this.components);
 			this.SuspendLayout();
 			// 
 			// FTagsTextBox
@@ -109,6 +111,12 @@
 			this.FRichTextBox.Resize += new System.EventHandler(this.FRichTextBoxResize);
 			this.FRichTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseMove);
 			this.FRichTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseDown);
+			this.FRichTextBox.MouseLeave += new System.EventHandler(this.FRichTextBoxMouseLeave);
+			// 
+			// FToolTip
+			// 
+			this.FToolTip.UseAnimation = false;
+			this.FToolTip.UseFading = false;
 			// 
 			// TagPanel
 			// 
@@ -125,6 +133,7 @@
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
+		private System.Windows.Forms.ToolTip FToolTip;
 		private VVVV.Nodes.NodeBrowser.RichTextBoxEx FRichTextBox;
 		private VVVV.Nodes.DoubleBufferedPanel FNodeTypePanel;
 		private System.Windows.Forms.VScrollBar FScrollBar;
