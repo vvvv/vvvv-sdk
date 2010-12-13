@@ -38,7 +38,6 @@ namespace VVVV.HDE.CodeEditor
 	[EditorInfo(".cs", ".fx", ".fxh", ".txt")]
 	public class CodeEditorPlugin : TopControl, IEditor, IDisposable, IQueryDelete, IPluginEvaluate
 	{
-		private SplitContainer FSplitContainer;
 		private Form FCodeEditorForm;
 		private TableViewer FErrorTableViewer;
 		private ILogger FLogger;
@@ -85,12 +84,6 @@ namespace VVVV.HDE.CodeEditor
 			
 			SuspendLayout();
 			
-			FSplitContainer = new SplitContainer();
-			FSplitContainer.Location = new Point(0, 0);
-			FSplitContainer.Dock = DockStyle.Fill;
-			FSplitContainer.Orientation = Orientation.Horizontal;
-			FSplitContainer.Panel2Collapsed = true;
-			
 			FCodeEditorForm = new Form();
 			FCodeEditorForm.Location = new Point(0, 0);
 			FCodeEditorForm.TopLevel = false;
@@ -115,17 +108,15 @@ namespace VVVV.HDE.CodeEditor
 			FCodeEditorForm.Controls.Add(FEditor);
 			
 			FErrorTableViewer = new TableViewer();
-			FErrorTableViewer.Dock = DockStyle.Top;
-			FErrorTableViewer.Location = new System.Drawing.Point(0, 0);
+			FErrorTableViewer.Dock = DockStyle.Bottom;
 			FErrorTableViewer.TabIndex = 0;
 			FErrorTableViewer.DoubleClick += FErrorTableViewerDoubleClick;
-			FErrorTableViewer.Resize += FErrorTableViewer_Resize;
 			FErrorTableViewer.AutoSize = true;
 			FErrorTableViewer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+			FErrorTableViewer.MaximumSize = new Size(0, 100);
 			
-			FSplitContainer.Panel1.Controls.Add(FCodeEditorForm);
-			FSplitContainer.Panel2.Controls.Add(FErrorTableViewer);
-			Controls.Add(FSplitContainer);
+			Controls.Add(FCodeEditorForm);
+			Controls.Add(FErrorTableViewer);
 			
 			ResumeLayout(false);
 			PerformLayout();
@@ -141,11 +132,6 @@ namespace VVVV.HDE.CodeEditor
 			FEditor.LinkClicked += new LinkEventHandler(FEditor_LinkClicked);
 		}
 
-		void FErrorTableViewer_Resize(object sender, EventArgs e)
-		{
-			FSplitContainer.SplitterDistance = Math.Max(FSplitContainer.ClientSize.Height - FErrorTableViewer.ClientSize.Height - FSplitContainer.SplitterWidth, 0);
-		}
-		
 		void FEditor_LinkClicked(object sender, Link link)
 		{
 			var fileName = link.FileName;
@@ -443,19 +429,19 @@ namespace VVVV.HDE.CodeEditor
 		
 		private void ShowErrorTable()
 		{
-			FSplitContainer.Panel2Collapsed = false;
+			FErrorTableViewer.Visible = true;
 		}
 		
 		private void HideErrorTable()
 		{
-			FSplitContainer.Panel2Collapsed = true;
+			FErrorTableViewer.Visible = false;
 		}
 		
 		private bool IsErrorTableVisible
 		{
 			get
 			{
-				return !FSplitContainer.Panel2Collapsed;
+				return FErrorTableViewer.Visible;
 			}
 		}
 		
