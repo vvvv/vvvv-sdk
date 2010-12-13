@@ -66,7 +66,7 @@ namespace VVVV.Hosting.Factories
 				FProjects[filename] = project;
 			}
 			
-			yield return LoadNodeInfoFromEffect(filename);
+			yield return LoadNodeInfoFromEffect(filename, FProjects[filename]);
 		}
 
 		void project_DoCompileEvent(object sender, EventArgs e)
@@ -74,18 +74,18 @@ namespace VVVV.Hosting.Factories
 		    var project = sender as FXProject;
 			var filename = project.Location.LocalPath;
 			
-			LoadNodeInfoFromEffect(filename);
+			LoadNodeInfoFromEffect(filename, project);
 		}
 
-		void project_ProjectCompiledSuccessfully(object sender, CompilerEventArgs args)
-		{
-			var project = sender as FXProject;
-			var filename = project.Location.LocalPath;
-			
-			LoadNodeInfoFromEffect(filename);
-		}
+//		void project_ProjectCompiledSuccessfully(object sender, CompilerEventArgs args)
+//		{
+//			var project = sender as FXProject;
+//			var filename = project.Location.LocalPath;
+//			
+//			LoadNodeInfoFromEffect(filename);
+//		}
 		
-		private INodeInfo LoadNodeInfoFromEffect(string filename)
+		private INodeInfo LoadNodeInfoFromEffect(string filename, FXProject project)
 		{
 			var nodeInfo = FNodeInfoFactory.CreateNodeInfo(
 				Path.GetFileNameWithoutExtension(filename),
@@ -96,6 +96,7 @@ namespace VVVV.Hosting.Factories
 			
 			nodeInfo.Type = NodeType.Effect;
 			nodeInfo.Factory = this;
+			nodeInfo.UserData = project;
 			
 			try
 			{

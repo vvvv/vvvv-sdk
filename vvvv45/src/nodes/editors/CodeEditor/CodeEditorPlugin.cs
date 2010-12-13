@@ -44,6 +44,7 @@ namespace VVVV.HDE.CodeEditor
 		private ILogger FLogger;
 		private ISolution FSolution;
 		private INode FAttachedNode;
+		private IProject FAttachedProject;
 		private CodeEditor FEditor;
 		private ViewableCollection<object> FErrorList;
 		private Dictionary<string, RuntimeError> FRuntimeErrors;
@@ -234,6 +235,7 @@ namespace VVVV.HDE.CodeEditor
 			if (document != null)
 			{
 				OpenedFile = filename;
+				AttachedProject = document.Project;
 				FEditor.TextDocument = document;
 				
 				if (document is CSDocument)
@@ -252,15 +254,6 @@ namespace VVVV.HDE.CodeEditor
 					FEditor.LinkDataProvider = new FXLinkDataProvider();
 				}
 				
-				var project = document.Project;
-				if (project != null)
-				{
-					project.CompileCompleted += Project_CompileCompleted;
-					
-					// Fake a compilation in order to show error messages on startup.
-					Project_CompileCompleted(project, new CompilerEventArgs(project.CompilerResults));
-				}
-				
 				document.ContentChanged += document_ContentChanged;
 				document.Saved += document_Saved;
 				document.Renamed += document_Renamed;
@@ -272,7 +265,7 @@ namespace VVVV.HDE.CodeEditor
 				FLogger.Log(LogType.Warning, "Can't open \0", filename);
 			}
 		}
-
+		
 		void document_Renamed(INamed sender, string newName)
 		{
 			UpdateWindowCaption(sender as ITextDocument, newName);
@@ -317,6 +310,7 @@ namespace VVVV.HDE.CodeEditor
 			if (document != null)
 			{
 				OpenedFile = null;
+				AttachedProject = null;
 				
 				document.ContentChanged -= document_ContentChanged;
 				document.Saved -= document_Saved;
@@ -328,10 +322,6 @@ namespace VVVV.HDE.CodeEditor
 				FEditor.FoldingStrategy = null;
 				FEditor.LinkDataProvider = null;
 				FEditor.ToolTipProvider = null;
-				
-				var project = document.Project;
-				if (project != null)
-					project.CompileCompleted -= Project_CompileCompleted;
 			}
 		}
 		
@@ -358,6 +348,7 @@ namespace VVVV.HDE.CodeEditor
 			FEditor.Focus();
 		}
 		
+		// where we get the runtime errors from
 		public INode AttachedNode
 		{
 			get
@@ -372,6 +363,34 @@ namespace VVVV.HDE.CodeEditor
 				if (doc != null)
 				{
 					UpdateWindowCaption(doc, doc.Name);
+				}
+				
+				var nodeInfo = FAttachedNode.GetNodeInfo();
+				var project = nodeInfo.UserData as IProject;
+				if (project != null)
+					AttachedProject = project;
+			}
+		}
+		
+		// where we get the compile errors from
+		public IProject AttachedProject
+		{
+			get
+			{
+				return FAttachedProject;
+			}
+			set
+			{
+				if (FAttachedProject != null)
+					FAttachedProject.CompileCompleted -= Project_CompileCompleted;
+				
+				FAttachedProject = value;
+				
+				if (FAttachedProject != null)
+				{
+					FAttachedProject.CompileCompleted += Project_CompileCompleted;
+					// Fake a compilation in order to show error messages on startup.
+					Project_CompileCompleted(FAttachedProject, new CompilerEventArgs(FAttachedProject.CompilerResults));
 				}
 			}
 		}
