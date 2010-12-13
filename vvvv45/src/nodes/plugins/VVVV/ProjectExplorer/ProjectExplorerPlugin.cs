@@ -33,6 +33,7 @@ namespace VVVV.HDE.ProjectExplorer
 	public class ProjectExplorerPlugin : TopControl, IPluginBase
 	{
 		protected TreeViewer FTreeViewer;
+		protected CheckBox FCheckBox;
 		protected ILogger FLogger;
 		protected IDiffSpread<bool> FShowUnloadedProjectsIn;
 		protected MappingRegistry FMappingRegistry;
@@ -55,8 +56,9 @@ namespace VVVV.HDE.ProjectExplorer
 				
 				FMappingRegistry = new MappingRegistry();
 				FMappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
-				FMappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
-				FMappingRegistry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();
+				// Do not allow drag'n drop except for references.
+//				FMappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
+//				FMappingRegistry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();
 				FMappingRegistry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
 				FMappingRegistry.RegisterDefaultMapping<AddMenuEntry, DefaultAddMenuEntry>();
 				FMappingRegistry.RegisterDefaultMapping(logger);
@@ -65,6 +67,7 @@ namespace VVVV.HDE.ProjectExplorer
 					FMappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
 				else
 					FMappingRegistry.RegisterMapping<ISolution, LoadedProjectsSolutionViewProvider>();
+				FMappingRegistry.RegisterMapping<IEditableIDList<IReference>, DefaultDragDropProvider>();
 				
 				FMappingRegistry.RegisterMapping<IProject, ProjectViewProvider>();
 				// Do not enumerate IDocument
@@ -77,18 +80,30 @@ namespace VVVV.HDE.ProjectExplorer
 				
 				BackColor = System.Drawing.Color.Silver;
 				
+				FCheckBox = new CheckBox();
+				FCheckBox.Text = "Show all projects";
+				FCheckBox.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+				FCheckBox.Dock = DockStyle.Top;
+				FCheckBox.FlatStyle = FlatStyle.Flat;
+				FCheckBox.BackColor = System.Drawing.Color.DarkGray;
+				FCheckBox.ForeColor = System.Drawing.Color.White;
+				FCheckBox.Padding = new Padding(3, 0, 0, 0);
+				FCheckBox.AutoSize = true;
+				FCheckBox.CheckedChanged += new EventHandler(FCheckBox_CheckedChanged);
+				
 				FTreeViewer = new TreeViewer();
 				FTreeViewer.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 				FTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
 				FTreeViewer.BackColor = System.Drawing.Color.Silver;
 				FTreeViewer.ShowTooltip = true;
-				
 				FTreeViewer.DoubleClick += FTreeViewer_DoubleClick;
 				
 				FTreeViewer.Registry = FMappingRegistry;
 				FTreeViewer.Input = Solution;
 				
 				Controls.Add(FTreeViewer);
+				Controls.Add(FCheckBox);
+				
 				
 				ResumeLayout(false);
 				PerformLayout();
@@ -98,6 +113,11 @@ namespace VVVV.HDE.ProjectExplorer
 				logger.Log(e);
 				throw e;
 			}
+		}
+
+		void FCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			this.FShowUnloadedProjectsIn[0] = FCheckBox.Checked;
 		}
 
 		void FShowUnloadedProjectsIn_Changed(IDiffSpread<bool> spread)

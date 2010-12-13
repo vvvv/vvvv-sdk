@@ -211,7 +211,7 @@ namespace VVVV.Hosting.Factories
 			editor.MoveTo(FMoveToLine, FMoveToColumn);
 			
 			FHDEHost.ShowGUI(editorNode);
-			return true;
+			return false;
 		}
 		
 		public bool Delete(INodeInfo nodeInfo, INode host)
@@ -372,6 +372,12 @@ namespace VVVV.Hosting.Factories
 		
 		public void Open(string filename, int line, int column, INode nodeToAttach, IWindow window)
 		{
+			if (!File.Exists(filename))
+			{
+				FLogger.Log(LogType.Error, "File {0} doesn't exist!", filename);
+				return;
+			}
+			
 			// See if we can find an editor already attached to this node.
 			if (nodeToAttach != null)
 			{

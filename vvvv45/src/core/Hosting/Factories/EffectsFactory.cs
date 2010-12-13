@@ -45,15 +45,44 @@ namespace VVVV.Hosting.Factories
 		//create a node info from a filename
 		protected override IEnumerable<INodeInfo> LoadNodeInfos(string filename)
 		{
-			if (!FProjects.ContainsKey(filename))
+			var project = CreateProject(filename);
+			yield return LoadNodeInfoFromEffect(filename, project);
+		}
+		
+		protected override void DoAddFile(string filename)
+		{
+			CreateProject(filename);
+			base.DoAddFile(filename);
+		}
+		
+		protected override void DoRemoveFile(string filename)
+		{
+			FXProject project;
+			if (FProjects.TryGetValue(filename, out project))
 			{
-				var project = new FXProject(new Uri(filename));
+				if (FSolution.Projects.CanRemove(project))
+				{
+					FSolution.Projects.Remove(project);
+					project.DoCompileEvent -= project_DoCompileEvent;
+				}
+				FProjects.Remove(filename);
+			}
+			
+			base.DoRemoveFile(filename);
+		}
+		
+		private FXProject CreateProject(string filename)
+		{
+			FXProject project;
+			if (!FProjects.TryGetValue(filename, out project))
+			{
+				project = new FXProject(new Uri(filename));
 				if (FSolution.Projects.CanAdd(project))
 				{
 					FSolution.Projects.Add(project);
 					//effects are actually being compiled by vvvv when nodeinfo is update
 					//so we need to intervere with the doCompile
-					project.DoCompileEvent += new EventHandler(project_DoCompileEvent);
+					project.DoCompileEvent += project_DoCompileEvent;
 				    //in turn not longer needs the following:
 					//project.ProjectCompiledSuccessfully += project_ProjectCompiledSuccessfully;
 				}
@@ -66,7 +95,7 @@ namespace VVVV.Hosting.Factories
 				FProjects[filename] = project;
 			}
 			
-			yield return LoadNodeInfoFromEffect(filename, FProjects[filename]);
+			return project;
 		}
 
 		void project_DoCompileEvent(object sender, EventArgs e)

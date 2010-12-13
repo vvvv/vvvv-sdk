@@ -42,22 +42,7 @@ namespace VVVV.Hosting.Factories
 			// Normalize the filename
 			filename = new Uri(filename).LocalPath;
 			
-			CSProject project;
-			if (!FProjects.TryGetValue(filename, out project))
-			{
-				project = new CSProject(new Uri(filename));
-				if (FSolution.Projects.CanAdd(project))
-				{
-					FSolution.Projects.Add(project);
-					project.ProjectCompiledSuccessfully += project_ProjectCompiled;
-				}
-				else
-				{
-					// Project was renamed
-					project = FSolution.Projects[project.Name] as CSProject;
-				}
-				FProjects[filename] = project;
-			}
+			var project = CreateProject(filename);
 			
 			// Do we need to compile it?
 			if (!IsAssemblyUpToDate(project))
@@ -88,6 +73,49 @@ namespace VVVV.Hosting.Factories
 			}
 			
 			return nodeInfos;
+		}
+		
+		private CSProject CreateProject(string filename)
+		{
+			CSProject project;
+			if (!FProjects.TryGetValue(filename, out project))
+			{
+				project = new CSProject(new Uri(filename));
+				if (FSolution.Projects.CanAdd(project))
+				{
+					FSolution.Projects.Add(project);
+					project.ProjectCompiledSuccessfully += project_ProjectCompiled;
+				}
+				else
+				{
+					// Project was renamed
+					project = FSolution.Projects[project.Name] as CSProject;
+				}
+				FProjects[filename] = project;
+			}
+			return project;
+		}
+		
+		protected override void DoAddFile(string filename)
+		{
+			CreateProject(filename);
+			base.DoAddFile(filename);
+		}
+		
+		protected override void DoRemoveFile(string filename)
+		{
+			CSProject project;
+			if (FProjects.TryGetValue(filename, out project))
+			{
+				if (FSolution.Projects.CanRemove(project))
+				{
+					FSolution.Projects.Remove(project);
+					project.ProjectCompiledSuccessfully -= project_ProjectCompiled;
+				}
+				FProjects.Remove(filename);
+			}
+			
+			base.DoRemoveFile(filename);
 		}
 		
 		void project_ProjectCompiled(object sender, CompilerEventArgs args)
