@@ -149,6 +149,12 @@ namespace VVVV.HDE.CodeEditor
 		{
 			var fileName = link.FileName;
 			
+			if (!File.Exists(fileName))
+			{
+				var dir = Path.GetDirectoryName(FEditor.TextDocument.Location.LocalPath);
+				fileName = dir.ConcatPath(fileName);
+			}
+			
 			if (File.Exists(fileName))
 			{
 				if (new Uri(fileName) == FEditor.TextDocument.Location)
