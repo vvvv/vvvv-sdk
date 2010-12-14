@@ -12,11 +12,21 @@ namespace VVVV.HDE.ProjectExplorer
 		public LoadedProjectsSolutionViewProvider(ISolution solution, ModelMapper mapper)
 			: base(solution, mapper)
 		{
-			foreach (var project in solution.Projects)
+			foreach (var project in FSolution.Projects)
 			{
 				project.Loaded += project_Loaded;
 				project.Unloaded += project_Unloaded;
 			}
+		}
+		
+		public override void Dispose()
+		{
+			foreach (var project in FSolution.Projects)
+			{
+				project.Loaded -= project_Loaded;
+				project.Unloaded -= project_Unloaded;
+			}
+			base.Dispose();
 		}
 
 		void project_Unloaded(object sender, EventArgs e)
