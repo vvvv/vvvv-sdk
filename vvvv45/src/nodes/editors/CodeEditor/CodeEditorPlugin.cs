@@ -351,10 +351,13 @@ namespace VVVV.HDE.CodeEditor
 					UpdateWindowCaption(doc, doc.Name);
 				}
 				
-				var nodeInfo = FAttachedNode.GetNodeInfo();
-				var project = nodeInfo.UserData as IProject;
-				if (project != null)
-					AttachedProject = project;
+				if (FAttachedNode != null)
+				{
+					var nodeInfo = FAttachedNode.GetNodeInfo();
+					var project = nodeInfo.UserData as IProject;
+					if (project != null)
+						AttachedProject = project;
+				}
 			}
 		}
 		

@@ -332,11 +332,14 @@ namespace VVVV.Hosting.Factories
 						var line = -1;
 						
 						// Do we have a project file?
-						var project = FSolution.FindProject(filename);
-						if (project != null && project is CSProject)
+						var project = FSolution.FindProject(filename) as CSProject;
+						if (project != null)
 						{
+							if (!project.IsLoaded)
+								project.Load();
+							
 							// Find the document where this nodeinfo is defined.
-							var doc = FindDefiningDocument(project as CSProject, nodeInfo);
+							var doc = FindDefiningDocument(project, nodeInfo);
 							if (doc != null)
 							{
 								filename = doc.Location.LocalPath;
