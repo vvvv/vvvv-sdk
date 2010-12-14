@@ -35,7 +35,7 @@ namespace VVVV.HDE.ProjectExplorer
 		protected TreeViewer FTreeViewer;
 		protected CheckBox FCheckBox;
 		protected ILogger FLogger;
-		protected IDiffSpread<bool> FShowUnloadedProjectsIn;
+		protected IDiffSpread<bool> FHideUnusedProjectsIn;
 		protected MappingRegistry FMappingRegistry;
 		
 		[Import]
@@ -43,7 +43,7 @@ namespace VVVV.HDE.ProjectExplorer
 		
 		[ImportingConstructor]
 		public ProjectExplorerPlugin(
-			[Config("Show Unloaded Projects", IsSingle = true)] IDiffSpread<bool> showUnloadedProjectsIn,
+			[Config("Hide unused projects", IsSingle = true, DefaultValue = 1.0)] IDiffSpread<bool> showUnloadedProjectsIn,
 			ISolution solution,
 			ILogger logger)
 		{
@@ -51,8 +51,8 @@ namespace VVVV.HDE.ProjectExplorer
 			{
 				Solution = solution;
 				FLogger = logger;
-				FShowUnloadedProjectsIn = showUnloadedProjectsIn;
-				FShowUnloadedProjectsIn.Changed += new SpreadChangedEventHander<bool>(FShowUnloadedProjectsIn_Changed);
+				FHideUnusedProjectsIn = showUnloadedProjectsIn;
+				FHideUnusedProjectsIn.Changed += new SpreadChangedEventHander<bool>(FHideUnusedProjectsIn_Changed);
 				
 				FMappingRegistry = new MappingRegistry();
 				FMappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
@@ -74,6 +74,7 @@ namespace VVVV.HDE.ProjectExplorer
 				FMappingRegistry.RegisterMapping<IDocument, IEnumerable>(Empty.Enumerable);
 				FMappingRegistry.RegisterMapping<MsBuildProject, MsBuildProjectViewProvider>();
 				FMappingRegistry.RegisterMapping<FXProject, FXProjectViewProvider>();
+				FMappingRegistry.RegisterMapping<FXProject, IMenuEntry, FXProjectMenuProvider>();
 				FMappingRegistry.RegisterMapping<IProject, IDescripted, DescriptedProjectViewProvider>();
 				
 				SuspendLayout();
@@ -81,7 +82,7 @@ namespace VVVV.HDE.ProjectExplorer
 				BackColor = System.Drawing.Color.Silver;
 				
 				FCheckBox = new CheckBox();
-				FCheckBox.Text = "Show all projects";
+				FCheckBox.Text = "Hide unused projects";
 				FCheckBox.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 				FCheckBox.Dock = DockStyle.Top;
 				FCheckBox.FlatStyle = FlatStyle.Flat;
@@ -107,6 +108,9 @@ namespace VVVV.HDE.ProjectExplorer
 				
 				ResumeLayout(false);
 				PerformLayout();
+				
+				// Workaround because config pins do not send changed on reload :/
+				FCheckBox.Checked = true;
 			}
 			catch (Exception e)
 			{
@@ -117,12 +121,14 @@ namespace VVVV.HDE.ProjectExplorer
 
 		void FCheckBox_CheckedChanged(object sender, EventArgs e)
 		{
-			this.FShowUnloadedProjectsIn[0] = FCheckBox.Checked;
+			this.FHideUnusedProjectsIn[0] = FCheckBox.Checked;
 		}
 
-		void FShowUnloadedProjectsIn_Changed(IDiffSpread<bool> spread)
+		void FHideUnusedProjectsIn_Changed(IDiffSpread<bool> spread)
 		{
-			if (spread[0])
+			FCheckBox.Checked = FHideUnusedProjectsIn[0];
+			
+			if (!spread[0])
 				FMappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
 			else
 				FMappingRegistry.RegisterMapping<ISolution, LoadedProjectsSolutionViewProvider>();
@@ -170,7 +176,7 @@ namespace VVVV.HDE.ProjectExplorer
 			{
 				if (!IsDisposed)
 				{
-					FShowUnloadedProjectsIn.Changed -= FShowUnloadedProjectsIn_Changed;
+					FHideUnusedProjectsIn.Changed -= FHideUnusedProjectsIn_Changed;
 				}
 			}
 			
