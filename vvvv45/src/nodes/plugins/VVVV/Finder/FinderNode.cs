@@ -222,13 +222,13 @@ namespace VVVV.Nodes.Finder
                     FTagsPin.Changed -= FTagsPin_Changed;
                     
                     if (FRoot != FActivePatchNode)
-                        FRoot.TearDown();
+                        FRoot.Dispose();
                     
                     if (FActivePatchNode != null)
-                        FActivePatchNode.TearDown();
+                        FActivePatchNode.Dispose();
                     
                     if (FSearchResult != null)
-                        FSearchResult.TearDown();
+                        FSearchResult.Dispose();
                     
                     this.FSearchTextBox.TextChanged -= this.FSearchTextBoxTextChanged;
                     this.FSearchTextBox.KeyDown -= this.FSearchTextBoxKeyDown;
@@ -274,7 +274,7 @@ namespace VVVV.Nodes.Finder
                 if (window != FActivePatchWindow)
                 {
                     if (FActivePatchNode != null)
-                        FActivePatchNode.TearDown();
+                        FActivePatchNode.Dispose();
                     if (FActivePatchParent != null)
                         FActivePatchParent.RemoveListener(this);
                     
@@ -309,7 +309,7 @@ namespace VVVV.Nodes.Finder
             //detach view
             if (childNode == FActivePatchNode.Node)
             {
-                FActivePatchNode.TearDown();
+                FActivePatchNode.Dispose();
                 FActivePatchNode = null;
                 FActivePatchWindow = null;
                 FActiveWindow = null;
@@ -366,7 +366,7 @@ namespace VVVV.Nodes.Finder
         private void AddNodesByTag(PatchNode searchResult, PatchNode sourceTree)
         {
             //go through child nodes of sourceTree recursively and see if any contains the tag
-            foreach (PatchNode node in sourceTree)
+            foreach (PatchNode node in sourceTree.ChildNodes)
             {
                 //now first go downstream recursively
                 //to see if this pn is needed in the hierarchy to hold any matching downstream nodes
@@ -376,9 +376,9 @@ namespace VVVV.Nodes.Finder
                 AddNodesByTag(parent, node);
                 
                 var include = CheckForInclusion(parent);
-                if (parent.Count > 0 || include)
+                if (parent.ChildNodes.Count > 0 || include)
                 {
-                    searchResult.Add(parent);
+                    searchResult.ChildNodes.Add(parent);
                     if (include)
                         FPlainResultList.Add(parent);
                 }
@@ -504,7 +504,7 @@ namespace VVVV.Nodes.Finder
             query += (char) 160;
             
             if (FSearchResult != null)
-                FSearchResult.TearDown();
+                FSearchResult.Dispose();
             
             FSearchResult = new PatchNode();
             FPlainResultList.Clear();
@@ -632,12 +632,12 @@ namespace VVVV.Nodes.Finder
                         FSearchResult.Node = FActivePatchNode.Node;
                         
                         //go through child nodes of FActivePatch and see if any contains the tag
-                        foreach (PatchNode pn in FActivePatchNode)
+                        foreach (PatchNode pn in FActivePatchNode.ChildNodes)
                             if (CheckForInclusion(pn))
                         {
                             var node = new PatchNode();
                             node.Node = pn.Node;
-                            FSearchResult.Add(node);
+                            FSearchResult.ChildNodes.Add(node);
                             
                             FPlainResultList.Add(node);
                         }

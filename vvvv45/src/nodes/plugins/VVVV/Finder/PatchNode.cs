@@ -4,14 +4,17 @@ using System.Collections.Generic;
 
 using VVVV.Core;
 using VVVV.Core.View;
+using VVVV.Core.Collections;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.Finder
 {
-    public class PatchNode: IViewableCollection, INamed, IDescripted, INodeListener, ISelectable, IDecoratable, ILinkable
+    public class PatchNode: IParent, INamed, IDescripted, INodeListener, ISelectable, IDecoratable, ILinkable, IDisposable
     {
-        List<PatchNode> FChildNodes = new List<PatchNode>();
+    	public IViewableCollection Childs { get; private set; }
+        EditableList<PatchNode> FChildNodes = new EditableList<PatchNode>();
+    	public IEditableList<PatchNode> ChildNodes { get {return FChildNodes;} }
         
         static SolidBrush SDarkGray = new SolidBrush(Color.FromArgb(154, 154, 154));
         static SolidBrush SLightGray = new SolidBrush(Color.FromArgb(192, 192, 192));
@@ -52,9 +55,11 @@ namespace VVVV.Nodes.Finder
         public NodeType NodeType {get; private set;}
         
         public PatchNode()
-        {}
-        
-        public PatchNode(INode self)
+        {        
+        	Childs = FChildNodes.AsViewableList();
+        }
+                
+        public PatchNode(INode self) : this()        	
         {
             Node = self;
             
@@ -112,56 +117,56 @@ namespace VVVV.Nodes.Finder
         }
         
         #region IViewableCollection
-        public int Count
-        {
-            get{return FChildNodes.Count;}
-        }
-        
-        public bool Contains(object item)
-        {
-            throw new NotImplementedException();
-        }
-        
-        public event CollectionDelegate Added;
-        
-        protected virtual void OnAdded(object item)
-        {
-            if (Added != null) {
-                Added(this, item);
-            }
-        }
-        
-        public event CollectionDelegate Removed;
-        
-        protected virtual void OnRemoved(object item)
-        {
-            if (Removed != null) {
-                Removed(this, item);
-            }
-        }
-        
-        public System.Collections.IEnumerator GetEnumerator()
-        {
-            return FChildNodes.GetEnumerator();
-        }
-        
-        public event CollectionUpdateDelegate UpdateBegun;
-        
-        protected virtual void OnUpdateBegun(IViewableCollection collection)
-        {
-            if (UpdateBegun != null) {
-                UpdateBegun(collection);
-            }
-        }
-        
-        public event CollectionUpdateDelegate Updated;
-        
-        protected virtual void OnUpdated(IViewableCollection collection)
-        {
-            if (Updated != null) {
-                Updated(collection);
-            }
-        }
+//        public int Count
+//        {
+//            get{return FChildNodes.Count;}
+//        }
+//        
+//        public bool Contains(object item)
+//        {
+//            throw new NotImplementedException();
+//        }
+//        
+//        public event CollectionDelegate Added;
+//        
+//        protected virtual void OnAdded(object item)
+//        {
+//            if (Added != null) {
+//                Added(this, item);
+//            }
+//        }
+//        
+//        public event CollectionDelegate Removed;
+//        
+//        protected virtual void OnRemoved(object item)
+//        {
+//            if (Removed != null) {
+//                Removed(this, item);
+//            }
+//        }
+//        
+//        public System.Collections.IEnumerator GetEnumerator()
+//        {
+//            return FChildNodes.GetEnumerator();
+//        }
+//        
+//        public event CollectionUpdateDelegate UpdateBegun;
+//        
+//        protected virtual void OnUpdateBegun(IViewableCollection collection)
+//        {
+//            if (UpdateBegun != null) {
+//                UpdateBegun(collection);
+//            }
+//        }
+//        
+//        public event CollectionUpdateDelegate Updated;
+//        
+//        protected virtual void OnUpdated(IViewableCollection collection)
+//        {
+//            if (Updated != null) {
+//                Updated(collection);
+//            }
+//        }
         #endregion IViewableCollection
         
         #region INamed
@@ -214,17 +219,28 @@ namespace VVVV.Nodes.Finder
             }
             
             if (!found)
-                Add(new PatchNode(childNode));
+            {
+            	FChildNodes.BeginUpdate();
+            	try
+            	{
+                	FChildNodes.Add(new PatchNode(childNode));
+                	SortChildren();
+            	}
+            	finally
+            	{
+            		FChildNodes.EndUpdate();
+            	}
+            }          
         }
         
         public void RemovedCB(INode childNode)
         {
             foreach(var child in FChildNodes)
                 if (child.Node == childNode)
-            {
-                Remove(child);
-                break;
-            }
+	            {
+	                FChildNodes.Remove(child);
+	                break;
+	            }
         }
         
         public void LabelChangedCB()
@@ -316,13 +332,22 @@ namespace VVVV.Nodes.Finder
                 return;
             
             INode[] children = Node.GetChildren();
-            if (children != null)
-            {
-                foreach(INode child in children)
-                    Add(new PatchNode(child));
-            }
-            
-            SortChildren();
+                        
+           	if (children != null)
+           	{
+	            FChildNodes.BeginUpdate();
+	            try
+	            {
+	            	foreach(INode child in children)
+	                    FChildNodes.Add(new PatchNode(child));
+	        
+	            	SortChildren();
+	            }
+			    finally
+			    {
+		            FChildNodes.EndUpdate();
+			    }
+           	}
         }
         
         private void SortChildren()
@@ -429,14 +454,22 @@ namespace VVVV.Nodes.Finder
             return output;
         }
         
-        public void TearDown()
-        {
-            if (Node != null)
-                Node.RemoveListener(this);
-            
-            for (int i = FChildNodes.Count - 1; i >= 0; i--)
-                Remove(FChildNodes[i]);
-        }
+//        public void TearDown()
+//        {
+//            OnUpdateBegun();
+//            try
+//            {
+//                if (Node != null)
+//                	Node.RemoveListener(this);
+//            
+//	            for (int i = FChildNodes.Count - 1; i >= 0; i--)
+//    	            Remove(FChildNodes[i]);
+//            } 
+//            finally
+//            {
+//                OnUpdated();
+//            }
+//        }
         /*
         public void SelectNodes(INode[] nodes)
         {
@@ -454,37 +487,52 @@ namespace VVVV.Nodes.Finder
             }
         }
          */
-        public void Add(PatchNode childNode)
-        {
-          //  OnUpdateBegun(this);
-            try
-            {
-                FChildNodes.Add(childNode);
-                SortChildren();
-                
-                //sync with viewer
-                OnAdded(childNode);
-            } catch (Exception)
-            {
-           //     OnUpdated(this);
-            }
-        }
-
-        private void Remove(PatchNode childNode)
-        {
-            //OnUpdateBegun(this);
-            try
-            {
-                childNode.TearDown();
-                FChildNodes.Remove(childNode);
-                
-                //sync with viewer
-                OnRemoved(childNode);
-            } catch (Exception)
-            {
-              //  OnUpdated(this);
-            }
-        }
+        
+//        public void OnUpdateBegun()
+//        {
+//        	if (UpdateBegun!=null)
+//        		UpdateBegun(this);
+//        }
+//        
+//        public void OnUpdated()
+//        {
+//        	if (Updated!=null)
+//        		Updated(this);
+//        }
+        
+//        public void Add(PatchNode childNode)
+//        {
+//            OnUpdateBegun();
+//            try
+//            {
+//                FChildNodes.Add(childNode);
+//                SortChildren();
+//                
+//                //sync with viewer
+//                OnAdded(childNode);
+//            } 
+//            finally
+//            {
+//                OnUpdated();
+//            }
+//        }
+//
+//        private void Remove(PatchNode childNode)
+//        {
+//            OnUpdateBegun(this);
+//            try
+//            {
+//                childNode.TearDown();
+//                FChildNodes.Remove(childNode);
+//                
+//                //sync with viewer
+//                OnRemoved(childNode);
+//            } 
+//            finally
+//            {
+//                OnUpdated(this);
+//            }
+//        }
         
         public event SelectionChangedHandler SelectionChanged;
         
@@ -600,5 +648,16 @@ namespace VVVV.Nodes.Finder
             }
         }
         #endregion ILinkable
+    	
+		public void Dispose()
+		{
+	        if (Node != null)
+               	Node.RemoveListener(this);
+	        Node = null;
+	        foreach (var child in FChildNodes)
+	        	child.Dispose();
+	        FChildNodes.Clear();
+	        FChildNodes.Dispose();
+		}
     }
 }
