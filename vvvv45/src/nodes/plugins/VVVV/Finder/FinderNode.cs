@@ -65,8 +65,9 @@ namespace VVVV.Nodes.Finder
         private bool FBoygrouped;
         private bool FAddons;
         private bool FWindows;
+        private bool FIDs;
         
-        private INode FActivePatchParent;        
+        private INode FActivePatchParent;
         private List<string> FTags;
         private int FSearchIndex;
         private List<INode> FNodes = new List<INode>();
@@ -287,7 +288,7 @@ namespace VVVV.Nodes.Finder
                     FActivePatchParent = FindParent(FHDEHost.Root, window.GetNode());
                     //if this is not the root
                     if (FActivePatchParent != null)
-                       FActivePatchParent.AddListener(this);
+                        FActivePatchParent.AddListener(this);
                     
                     UpdateSearch();
                     
@@ -388,7 +389,7 @@ namespace VVVV.Nodes.Finder
         private bool CheckForInclusion(PatchNode node)
         {
             bool include = false;
-            var quickTagsUsed = FSendReceive || FComments || FLabels || FIONodes || FNatives || FModules || FEffects || FFreeframes || FVSTs || FPlugins || FPatches || FUnknowns || FAddons || FBoygrouped || FWindows;
+            var quickTagsUsed = FSendReceive || FComments || FLabels || FIONodes || FNatives || FModules || FEffects || FFreeframes || FVSTs || FPlugins || FPatches || FUnknowns || FAddons || FBoygrouped || FWindows || FIDs;
             
             if (FTags.Count == 0)
             {
@@ -422,6 +423,15 @@ namespace VVVV.Nodes.Finder
                     
                     foreach (string tag in FTags)
                         inc = inc && channel.Contains(tag);
+                    include |= inc;
+                }
+                if (FIDs)
+                {
+                    var inc = true;
+                    var id = node.ID;
+                    
+                    foreach (string tag in FTags)
+                        inc = inc && int.Parse(tag) == id;
                     include |= inc;
                 }
                 if (FComments && !string.IsNullOrEmpty(node.Comment))
@@ -494,7 +504,7 @@ namespace VVVV.Nodes.Finder
             //we only need to get the root once
             //in the constructor it is too early since finder might be placed in root
             //and constructor of finder would be called before root was available
-            if (FRoot == null && FHDEHost.Root != null) 
+            if (FRoot == null && FHDEHost.Root != null)
                 FRoot = new PatchNode(FHDEHost.Root);
             
             if (FRoot == null)
@@ -503,12 +513,6 @@ namespace VVVV.Nodes.Finder
             string query = FSearchTextBox.Text.ToLower();
             query += (char) 160;
             
-            if (FSearchResult != null)
-                FSearchResult.Dispose();
-            
-            FSearchResult = new PatchNode();
-            FPlainResultList.Clear();
-            FSearchIndex = 0;
             FHierarchyViewer.ShowLinks = false;
             
             //check for tags in query:
@@ -529,7 +533,7 @@ namespace VVVV.Nodes.Finder
                 FTags.Remove("d");
             }
             
-            FSendReceive = FComments = FLabels = FEffects = FFreeframes = FModules = FPlugins = FIONodes = FNatives = FVSTs = FAddons = FUnknowns = FPatches = FBoygrouped = FWindows = false;
+            FSendReceive = FComments = FLabels = FEffects = FFreeframes = FModules = FPlugins = FIONodes = FNatives = FVSTs = FAddons = FUnknowns = FPatches = FBoygrouped = FWindows = FIDs = false;
             if (FTags.Contains("s"))
             {
                 FSendReceive = true;
@@ -606,6 +610,11 @@ namespace VVVV.Nodes.Finder
                 FWindows = true;
                 FTags.Remove("w");
             }
+            if (FTags.Contains("#"))
+            {
+                FIDs = true;
+                FTags.Remove("#");
+            }
             
             //clean up the list
             FTags[FTags.Count-1] = FTags[FTags.Count-1].Trim((char) 160);
@@ -614,55 +623,70 @@ namespace VVVV.Nodes.Finder
             if (FTags.Contains(""))
                 FTags.Remove("");
             
-            switch (FSearchScope)
+            FHierarchyViewer.BeginUpdate();
+            try
             {
-                case SearchScope.Global:
-                    {
-                        //go through child nodes of FRoot recursively and see if any contains the tag
-                        FSearchResult.Node = FRoot.Node;
-                        AddNodesByTag(FSearchResult, FRoot);
-                        break;
-                    }
-                case SearchScope.Local:
-                    {
-                        //if there is no active patch, break out
-                        if (FActivePatchNode == null)
-                            break;
-                        
-                        FSearchResult.Node = FActivePatchNode.Node;
-                        
-                        //go through child nodes of FActivePatch and see if any contains the tag
-                        foreach (PatchNode pn in FActivePatchNode.ChildNodes)
-                            if (CheckForInclusion(pn))
+                if (FSearchResult != null)
+                    FSearchResult.Dispose();
+                
+                FSearchResult = new PatchNode();
+                FPlainResultList.Clear();
+                FSearchIndex = 0;
+                
+                switch (FSearchScope)
+                {
+                    case SearchScope.Global:
                         {
-                            var node = new PatchNode();
-                            node.Node = pn.Node;
-                            FSearchResult.ChildNodes.Add(node);
-                            
-                            FPlainResultList.Add(node);
+                            //go through child nodes of FRoot recursively and see if any contains the tag
+                            FSearchResult.Node = FRoot.Node;
+                            AddNodesByTag(FSearchResult, FRoot);
+                            break;
                         }
-                        break;
-                    }
-                case SearchScope.Downstream:
-                    {
-                        //go through child nodes of FActivePatch recursively and see if any contains the tag
-                        FSearchResult.Node = FActivePatchNode.Node;
-                        AddNodesByTag(FSearchResult, FActivePatchNode);
-                        break;
-                    }
-            }
-            
-            FSearchResult.SetActiveWindow(FActiveWindow);
-            //FSearchResult.Added += UpdateViewer;
-            //FSearchResult.Removed += UpdateViewer;
-            
-            var mappingRegistry = new MappingRegistry();
-            mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
-            
-            FHierarchyViewer.Registry = mappingRegistry;
-            FHierarchyViewer.Input = FSearchResult;
+                    case SearchScope.Local:
+                        {
+                            //if there is no active patch, break out
+                            if (FActivePatchNode == null)
+                                break;
+                            
+                            FSearchResult.Node = FActivePatchNode.Node;
+                            
+                            //go through child nodes of FActivePatch and see if any contains the tag
+                            foreach (PatchNode pn in FActivePatchNode.ChildNodes)
+                                if (CheckForInclusion(pn))
+                            {
+                                var node = new PatchNode();
+                                node.Node = pn.Node;
+                                FSearchResult.ChildNodes.Add(node);
+                                
+                                FPlainResultList.Add(node);
+                            }
+                            break;
+                        }
+                    case SearchScope.Downstream:
+                        {
+                            //go through child nodes of FActivePatch recursively and see if any contains the tag
+                            FSearchResult.Node = FActivePatchNode.Node;
+                            AddNodesByTag(FSearchResult, FActivePatchNode);
+                            break;
+                        }
+                }
+                
+                FSearchResult.SetActiveWindow(FActiveWindow);
+                //FSearchResult.Added += UpdateViewer;
+                //FSearchResult.Removed += UpdateViewer;
+                
+                var mappingRegistry = new MappingRegistry();
+                mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
+                
+                FHierarchyViewer.Registry = mappingRegistry;
+                FHierarchyViewer.Input = FSearchResult;
 
-            FNodeCountLabel.Text = "Matching Nodes: " + FPlainResultList.Count.ToString();
+                FNodeCountLabel.Text = "Matching Nodes: " + FPlainResultList.Count.ToString();
+            }
+            finally
+            {
+                FHierarchyViewer.EndUpdate();
+            }
         }
         #endregion Search
         

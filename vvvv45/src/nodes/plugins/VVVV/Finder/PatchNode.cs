@@ -28,8 +28,10 @@ namespace VVVV.Nodes.Finder
         static SolidBrush SLightBlue = new SolidBrush(Color.FromArgb(162, 174, 229));
         static SolidBrush SHoverBlue = new SolidBrush(Color.FromArgb(158, 193, 233));
         
-        public bool MarkedForDelete{get;set;}
+        private IWindow FWindow;
+        private string FDecoratedName;
 
+        public int ID {get; private set;}
         public string SRChannel {get; private set;}
         public string Comment {get; private set;}
         public string DescriptiveName {get; private set;}
@@ -37,8 +39,9 @@ namespace VVVV.Nodes.Finder
         public bool IsIONode {get; private set;}
         public bool IsBoygrouped {get; private set;}
         public bool IsMissing {get; private set;}
-        
+        public NodeType NodeType {get; private set;}
         public bool IsActiveWindow {get; private set;}
+        
         public void SetActiveWindow(IWindow window)
         {
             //hand this downtree until someone finds itself in the window
@@ -48,11 +51,6 @@ namespace VVVV.Nodes.Finder
                 foreach(var child in FChildNodes)
                     child.SetActiveWindow(window);
         }
-        
-        private IWindow FWindow;
-        private string FDecoratedName;
-        
-        public NodeType NodeType {get; private set;}
         
         public PatchNode()
         {        
@@ -79,6 +77,7 @@ namespace VVVV.Nodes.Finder
                 FNode = value;
                 if (FNode != null)
                 {
+                    ID = FNode.GetID();
                     IsBoygrouped = FNode.IsBoygrouped();
                     IsMissing = FNode.IsMissing();
                     
@@ -98,7 +97,7 @@ namespace VVVV.Nodes.Finder
                         Icon = NodeIcon.Patch;
                     
                     FWindow = FNode.Window;
-                    
+                                        
                     UpdateName();
                     
                     Node.AddListener(this);
@@ -193,15 +192,15 @@ namespace VVVV.Nodes.Finder
                 {
                     var ni = Node.GetNodeInfo();
                     if (!string.IsNullOrEmpty(SRChannel))
-                        return ni.Username + " [id " + Node.GetID().ToString() + "]\nChannel: " + SRChannel;
+                        return ni.Username + " [id " + ID.ToString() + "]\nChannel: " + SRChannel;
                     else if (!string.IsNullOrEmpty(Comment))
                         return Comment;
                     else if (IsIONode)
-                        return "IO " + Node.GetNodeInfo().Category + "\n" + DescriptiveName;
+                        return "IO " + Node.GetNodeInfo().Category + " [id " + ID.ToString() + "]\n" + DescriptiveName;
                     else if (ni.Type == NodeType.Native)
-                        return ni.Username + " [id " + Node.GetID().ToString() + "]";
+                        return ni.Username + " [id " + ID.ToString() + "]";
                     else
-                        return ni.Username + " [id " + Node.GetID().ToString() + "]\n" + ni.Filename;
+                        return ni.Username + " [id " + ID.ToString() + "]\n" + ni.Filename;
                 }
             }
         }
@@ -453,23 +452,7 @@ namespace VVVV.Nodes.Finder
             
             return output;
         }
-        
-//        public void TearDown()
-//        {
-//            OnUpdateBegun();
-//            try
-//            {
-//                if (Node != null)
-//                	Node.RemoveListener(this);
-//            
-//	            for (int i = FChildNodes.Count - 1; i >= 0; i--)
-//    	            Remove(FChildNodes[i]);
-//            } 
-//            finally
-//            {
-//                OnUpdated();
-//            }
-//        }
+       
         /*
         public void SelectNodes(INode[] nodes)
         {
@@ -486,54 +469,7 @@ namespace VVVV.Nodes.Finder
                     pn.Selected = true;
             }
         }
-         */
-        
-//        public void OnUpdateBegun()
-//        {
-//        	if (UpdateBegun!=null)
-//        		UpdateBegun(this);
-//        }
-//        
-//        public void OnUpdated()
-//        {
-//        	if (Updated!=null)
-//        		Updated(this);
-//        }
-        
-//        public void Add(PatchNode childNode)
-//        {
-//            OnUpdateBegun();
-//            try
-//            {
-//                FChildNodes.Add(childNode);
-//                SortChildren();
-//                
-//                //sync with viewer
-//                OnAdded(childNode);
-//            } 
-//            finally
-//            {
-//                OnUpdated();
-//            }
-//        }
-//
-//        private void Remove(PatchNode childNode)
-//        {
-//            OnUpdateBegun(this);
-//            try
-//            {
-//                childNode.TearDown();
-//                FChildNodes.Remove(childNode);
-//                
-//                //sync with viewer
-//                OnRemoved(childNode);
-//            } 
-//            finally
-//            {
-//                OnUpdated(this);
-//            }
-//        }
-        
+        */
         public event SelectionChangedHandler SelectionChanged;
         
         protected virtual void OnSelectionChanged(EventArgs args)
