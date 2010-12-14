@@ -115,59 +115,6 @@ namespace VVVV.Nodes.Finder
             }
         }
         
-        #region IViewableCollection
-//        public int Count
-//        {
-//            get{return FChildNodes.Count;}
-//        }
-//        
-//        public bool Contains(object item)
-//        {
-//            throw new NotImplementedException();
-//        }
-//        
-//        public event CollectionDelegate Added;
-//        
-//        protected virtual void OnAdded(object item)
-//        {
-//            if (Added != null) {
-//                Added(this, item);
-//            }
-//        }
-//        
-//        public event CollectionDelegate Removed;
-//        
-//        protected virtual void OnRemoved(object item)
-//        {
-//            if (Removed != null) {
-//                Removed(this, item);
-//            }
-//        }
-//        
-//        public System.Collections.IEnumerator GetEnumerator()
-//        {
-//            return FChildNodes.GetEnumerator();
-//        }
-//        
-//        public event CollectionUpdateDelegate UpdateBegun;
-//        
-//        protected virtual void OnUpdateBegun(IViewableCollection collection)
-//        {
-//            if (UpdateBegun != null) {
-//                UpdateBegun(collection);
-//            }
-//        }
-//        
-//        public event CollectionUpdateDelegate Updated;
-//        
-//        protected virtual void OnUpdated(IViewableCollection collection)
-//        {
-//            if (Updated != null) {
-//                Updated(collection);
-//            }
-//        }
-        #endregion IViewableCollection
-        
         #region INamed
         public string Name{get; private set;}
         
@@ -349,6 +296,23 @@ namespace VVVV.Nodes.Finder
            	}
         }
         
+        private static int SortPos(PatchNode n)
+        {        	
+        	int pos = 0;
+			if (n.NodeType == NodeType.Patch)
+			  pos = 100;
+			else if (n.IsIONode)
+			  pos = 90;
+			else if (n.Name.StartsWith("S "))
+			  pos = 81;
+			else if (n.Name.StartsWith("R "))
+			  pos = 80;
+			else if (!string.IsNullOrEmpty(n.Comment))
+			  pos = 200;
+			
+ 			return pos;
+        }
+        
         private void SortChildren()
         {
             FChildNodes.Sort(delegate(PatchNode p1, PatchNode p2)
@@ -362,28 +326,8 @@ namespace VVVV.Nodes.Finder
                                  //comments
                                  //other nodes
                                  
-                                 int w1 = 0, w2 = 0;
-                                 if (p1.NodeType == NodeType.Patch)
-                                     w1 = 100;
-                                 else if (p1.IsIONode)
-                                     w1 = 90;
-                                 else if (p1.Name.StartsWith("S "))
-                                     w1 = 81;
-                                 else if (p1.Name.StartsWith("R "))
-                                     w1 = 80;
-                                 else if (!string.IsNullOrEmpty(p1.Comment))
-                                     w1 = 200;
-                                 
-                                 if (p2.NodeType == NodeType.Patch)
-                                     w2 = 100;
-                                 else if (p1.IsIONode)
-                                     w2 = 90;
-                                 else if (p2.Name.StartsWith("S "))
-                                     w2 = 81;
-                                 else if (p2.Name.StartsWith("R "))
-                                     w2 = 80;
-                                 else if (!string.IsNullOrEmpty(p1.Comment))
-                                     w2 = 200;
+                                 int w1 = SortPos(p1);
+                                 int w2 = SortPos(p2);
                                  
                                  if ((w1 > 0) || (w2 > 0))
                                  {
@@ -452,7 +396,7 @@ namespace VVVV.Nodes.Finder
             
             return output;
         }
-       
+        
         /*
         public void SelectNodes(INode[] nodes)
         {
@@ -469,7 +413,9 @@ namespace VVVV.Nodes.Finder
                     pn.Selected = true;
             }
         }
-        */
+         */
+        
+        
         public event SelectionChangedHandler SelectionChanged;
         
         protected virtual void OnSelectionChanged(EventArgs args)
