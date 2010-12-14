@@ -169,7 +169,9 @@ namespace VVVV.Nodes.Finder
             	FChildNodes.BeginUpdate();
             	try
             	{
-                	FChildNodes.Add(new PatchNode(childNode));
+            	    var pn = new PatchNode(childNode);
+                	FChildNodes.Add(pn);
+                	pn.Renamed += child_Renamed;
                 	SortChildren();
             	}
             	finally
@@ -179,12 +181,18 @@ namespace VVVV.Nodes.Finder
             }          
         }
         
+        void child_Renamed(INamed sender, string newName)
+        {
+            SortChildren();
+        }
+        
         public void RemovedCB(INode childNode)
         {
             foreach(var child in FChildNodes)
                 if (child.Node == childNode)
 	            {
 	                FChildNodes.Remove(child);
+	                child.Renamed -= child_Renamed;
 	                break;
 	            }
         }
@@ -223,7 +231,10 @@ namespace VVVV.Nodes.Finder
                 else if ((ni.Username == "IOBox (Value Advanced)") || (ni.Username == "IOBox (Color)") || (ni.Username == "IOBox (Enumerations)") || (ni.Username == "IOBox (Node)"))
                 {
                     if (string.IsNullOrEmpty(DescriptiveName))
+                    {
+                        IsIONode = false;
                         Name = ni.Username + hyphen + DescriptiveName;
+                    }
                     else
                         IsIONode = true;
                 }
