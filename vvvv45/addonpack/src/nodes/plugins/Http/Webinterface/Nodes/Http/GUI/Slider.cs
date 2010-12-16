@@ -260,7 +260,7 @@ namespace VVVV.Nodes.Http.GUI
                         if(!String.IsNullOrEmpty(tResponse))
                             FResponse.SetValue(i, double.Parse(tResponse, System.Globalization.NumberFormatInfo.InvariantInfo));
 
-                    double currentSliderValue = Convert.ToDouble(tResponse) * 10000;  
+                    double currentSliderValue = currentDefaultSlice * 10000;  
 
 
 
@@ -282,22 +282,22 @@ namespace VVVV.Nodes.Http.GUI
                     if (currentOrientation == "horizontal")
                     {
                         if (currentShowTextfield == 0)
-                            AttributeTextValue = "display:none; position:absolute; right:0%; top:10%; border: hidden; width:80%";
+                            AttributeTextValue = "display:none; position:absolute; right:0%; top:10%; border: hidden; width:60px";
                         else
-                            AttributeTextValue = "position:absolute; right:0%; top:10%; border: hidden; width:80%";
+                            AttributeTextValue = "position:absolute; right:0%; top:10%; border: hidden; width:60px";
 
-                        AttributeText = "position:absolute; top:10%; width:80%";
-                        AttributeSlider = "postion:absolute; top:50%; width:100%";
+                        AttributeText = "position:absolute; top:10%; width:60px";
+                        AttributeSlider = "postion:absolute; top:50%; width:100%;";
                     }
                     else
                     {
                         if (currentShowTextfield == 0)
-                            AttributeTextValue = "display:none; position:absolute;  top:110%; border: hidden; width:20%";
+                            AttributeTextValue = "display:none; position:absolute;  top:110%; border: hidden; width:60px";
                         else
-                            AttributeTextValue = "position:absolute;  bottom:-30px; border: hidden; width:20%";
+                            AttributeTextValue = "position:absolute;  bottom:-30px; border: hidden; width:60px";
 
-                        AttributeText = "position:absolute; left:0%; top:-35px; width:100%";
-                        AttributeSlider = "postion:absolute; left:0%; height:100%";
+                        AttributeText = "position:absolute; left:0%; top:-45px; width:60px";
+                        AttributeSlider = "postion:absolute; left:0%; height:100%;";
                     }
                     //string AttributeTextValue = "position:absolute; right:0%; top:10%; border: hidden;";
                     HTMLAttribute tTextAttributeValue = new HTMLAttribute("style", AttributeTextValue);

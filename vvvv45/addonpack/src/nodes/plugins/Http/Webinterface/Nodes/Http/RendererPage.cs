@@ -295,7 +295,7 @@ namespace VVVV.Nodes.Http
                 FHost.CreateValueInput("Reload Browser", 1, null, TSliceMode.Single, TPinVisibility.True, out FReload);
                 FReload.SetSubType(0, 1, 1, 0, true, false, true);
 
-                FHost.UpdateEnum("Communication", "Manual", new string[] { "Manual", "Polling", "Comet" });
+                FHost.UpdateEnum("Communication", "Manual", new string[] { "Manual", "Polling"});
                 FHost.CreateEnumInput("Communication", TSliceMode.Single, TPinVisibility.True, out FCommunication);
                 FCommunication.SetSubType("Communication");
 
@@ -338,6 +338,7 @@ namespace VVVV.Nodes.Http
         {
             PageName = mPageName;
             FileName = mUrl;
+            FConnectPin = true;
         }
 
 

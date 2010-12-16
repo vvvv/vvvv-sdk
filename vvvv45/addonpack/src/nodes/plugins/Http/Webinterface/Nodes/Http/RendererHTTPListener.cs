@@ -500,8 +500,6 @@ namespace VVVV.Nodes.Http
 
             if (FEnableServer.PinIsChanged)
             {
-                
-
                 if (pState > 0.5)
                 {
                     FServer.Start();
@@ -720,6 +718,20 @@ namespace VVVV.Nodes.Http
             }
             #endregion POST Input
 
+            #region ReadErrorMessages
+            if (FServer != null)
+            {
+                List<string> Messages = FServer.ErrorMessages;
+                if (Messages.Count > 0)
+                {
+                    foreach (string Message in Messages)
+                        FHost.Log(TLogType.Error, Message);
+                }
+            }
+            
+
+            #endregion ReadErrorMessages
+
         }
 
         #endregion mainloop
@@ -748,6 +760,8 @@ namespace VVVV.Nodes.Http
                 PageName = null;
                 pUrl = null;
             }
+
+
         }
 
 

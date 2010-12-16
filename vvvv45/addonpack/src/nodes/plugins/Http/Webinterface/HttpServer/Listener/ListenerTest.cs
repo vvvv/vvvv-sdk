@@ -29,7 +29,7 @@ namespace VVVV.Webinterface.HttpServer
         private List<string> FFoldersToServ;
         private SortedList<string, string> mPostMessages = new SortedList<string, string>();
         private int FPortNumber;
-
+        private List<string> FErrorMessages = new List<string>();
 
         #region Properties
 
@@ -65,6 +65,29 @@ namespace VVVV.Webinterface.HttpServer
             }
         }
 
+        public List<string> ErrorMessages
+        {
+            get
+            {
+                if (Monitor.TryEnter(FErrorMessages))
+                {
+                    try
+                    {
+                        List<string> TempErrorMessages = new List<string>(FErrorMessages);
+                        FErrorMessages.Clear();
+                        return TempErrorMessages;
+                    }
+                    finally
+                    {
+                        Monitor.Exit(FErrorMessages);
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
 
         #endregion
 
@@ -90,7 +113,6 @@ namespace VVVV.Webinterface.HttpServer
                 {
                     try
                     {
-                        FRunning = true;
                         FHttpListener.Prefixes.Add(String.Format("http://*:{0}/", FPortNumber));
                         FHttpListener.Prefixes.Add(String.Format("http://localhost:{0}/", FPortNumber));
                         FHttpListener.Start();
@@ -98,16 +120,17 @@ namespace VVVV.Webinterface.HttpServer
                         ThreadStart threadStart1 = new ThreadStart(StartListening);
                         FServerThread = new Thread(threadStart1);
                         FServerThread.Start();
+                        FRunning = true;
 
                     }
                     catch (HttpListenerException ex)
                     {
+                        AddErrorMessage(ex.Message);
                         FHttpListener = null;
+                        FRunning = false;
                         //Debug.WriteLine(ex.Message);
                     }
-
                 }
-                FRunning = true;
             }
             else
             {
@@ -132,6 +155,7 @@ namespace VVVV.Webinterface.HttpServer
                 }
                 catch(Exception ex)
                 {
+                    AddErrorMessage(ex.Message);
                     //Debug.WriteLine(ex.Message);
                 }
             }
@@ -166,6 +190,7 @@ namespace VVVV.Webinterface.HttpServer
             }
             catch (Exception Ex)
             {
+                AddErrorMessage(Ex.Message);
                 //Debug.WriteLine(Ex.Message);
             }
      
@@ -185,6 +210,7 @@ namespace VVVV.Webinterface.HttpServer
             }
             catch (Exception ex)
             {
+                AddErrorMessage(ex.Message);
                 //Debug.WriteLine(ex.Message);
             }
 
@@ -204,6 +230,19 @@ namespace VVVV.Webinterface.HttpServer
 
                 FHttpListener = null;
                 FRunning = false;
+            }
+        }
+
+        private void AddErrorMessage(string Message)
+        {
+            Monitor.Enter(FErrorMessages);
+            try
+            {
+                FErrorMessages.Add(Message);
+            }
+            finally
+            {
+                Monitor.Exit(FErrorMessages);
             }
         }
     }

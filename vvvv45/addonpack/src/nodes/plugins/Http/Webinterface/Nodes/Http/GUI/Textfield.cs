@@ -284,13 +284,13 @@ namespace VVVV.Nodes.HttpGUI
                     SetTag(i, Container);
 
                     
-                    CreatePollingMessage(i, SliceId[i], "val", currentDefault);
+                   
 
                     //Generate the JavaScript an add it to the GUIDataObject
                     if (currentUpdateContinouse > 0.5)
                     {
                         JQueryExpression postToServer = new JQueryExpression();
-                        postToServer.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"event.currentTarget.parentElement.id + '=' + this.value")), null, null);
+                        postToServer.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format("'{0}=' + ", SliceId[i]) + new JQueryExpression(new IDSelector(SliceId[i] + "Textfield")).Attr("value").GenerateScript(1, true, true)), null, null);
 
                         JavaScriptCodeBlock Block = new JavaScriptCodeBlock(postToServer);
                         JavaScriptAnonymousFunction Function = new JavaScriptAnonymousFunction(Block, new string[] { "event" });
@@ -303,7 +303,7 @@ namespace VVVV.Nodes.HttpGUI
                     else
                     {
                         JQueryExpression postToServer = new JQueryExpression();
-                        postToServer.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format(@"event.currentTarget.parentElement.id + '=' + ") + new JQueryExpression(new IDSelector(SliceId[i]+"Textfield")).Attr("value").GenerateScript(1,true,true)),null,null);
+                        postToServer.Post("ToVVVV.xml", new JavaScriptSnippet(String.Format("'{0}=' + ", SliceId[i]) + new JQueryExpression(new IDSelector(SliceId[i] + "Textfield")).Attr("value").GenerateScript(1, true, true)), null, null);
 
                         JavaScriptCodeBlock Block = new JavaScriptCodeBlock(postToServer);
                         JavaScriptAnonymousFunction Function = new JavaScriptAnonymousFunction(Block, new string[] { "event" });
@@ -322,7 +322,7 @@ namespace VVVV.Nodes.HttpGUI
 
 		protected override bool DynamicPinsAreChanged()
 		{
-			return FDefault.PinIsChanged || FPasswort.PinIsChanged || FMultiline.PinIsChanged || FUpdateContinuousValueInput.PinIsChanged;
+			return FDefault.PinIsChanged || FPasswort.PinIsChanged || FMultiline.PinIsChanged || FUpdateContinuousValueInput.PinIsChanged ;
 		}
 	}
 }
