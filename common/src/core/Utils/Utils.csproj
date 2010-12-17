@@ -47,6 +47,9 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Security" />
@@ -62,6 +65,7 @@
     <Compile Include="Concurrent\BlockingQueue.cs" />
     <Compile Include="Crypto\StringHasher.cs" />
     <Compile Include="Disposable.cs" />
+    <Compile Include="Linq\LinqExtensions.cs" />
     <Compile Include="ManagedVCL\ManagedVCLControl.cs" />
     <Compile Include="Math\Matrix4x4.cs" />
     <Compile Include="Math\Tweener.cs" />
@@ -94,6 +98,7 @@
     <Folder Include="Application" />
     <Folder Include="ManagedVCL" />
     <Folder Include="Animation" />
+    <Folder Include="Linq" />
     <Folder Include="OSC" />
     <Folder Include="SharedMemory" />
   </ItemGroup>

@@ -98,10 +98,10 @@ namespace VVVV.Utils.VColor
 		{
 			get
 			{
-			    byte a = (byte) (A*255);
-			    byte r = (byte) (R*255);
-			    byte g = (byte) (G*255);
-			    byte b = (byte) (B*255);
+				byte a = (byte) (VMath.VMath.Clamp(A, 0, 1) * 255);
+			    byte r = (byte) (VMath.VMath.Clamp(R, 0, 1) * 255);
+			    byte g = (byte) (VMath.VMath.Clamp(G, 0, 1) * 255);
+			    byte b = (byte) (VMath.VMath.Clamp(B, 0, 1) * 255);
 			    
 			    int argb = ((int) a << 24) | ((int) r << 16) | ((int) g << 8) | ((int) b);
 			        

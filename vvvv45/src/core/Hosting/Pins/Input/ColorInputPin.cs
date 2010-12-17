@@ -34,17 +34,13 @@ namespace VVVV.Hosting.Pins.Input
 			
 			FColorIn.GetColorPointer(out length, out source);
 			
-			var underFlow = length % 4;
-			if (underFlow != 0)
-				SliceCount = length / 4 + 1;
-			else
-				SliceCount = length / 4;
+			SliceCount = length;
 			
 			if (FSliceCount > 0)
-				CopyToBuffer(FBuffer, source, length, underFlow);
+				CopyToBuffer(FBuffer, source, length * 4);
 		}
 		
-		unsafe protected void CopyToBuffer(RGBAColor[] buffer, double* source, int length, int underFlow)
+		unsafe protected void CopyToBuffer(RGBAColor[] buffer, double* source, int length)
 		{
 			fixed (RGBAColor* destination = buffer)
 			{
@@ -62,15 +58,6 @@ namespace VVVV.Hosting.Pins.Input
 					dst->A = *src;
 					src++;
 					dst++;
-				}
-				
-				if (underFlow > 0)
-				{
-					int i = length - underFlow;
-					dst->R = *(source + i++ % length);
-					dst->G = *(source + i++ % length);
-					dst->B = *(source + i++ % length);
-					dst->A = *(source + i++ % length);
 				}
 			}
 		}
