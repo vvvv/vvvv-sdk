@@ -11,6 +11,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using System.Linq;
 
 using VVVV.Core;
 using VVVV.Core.Collections;
@@ -420,6 +421,22 @@ namespace VVVV.HDE.CodeEditor
 				ShowErrorTable();
 		}
 		
+		private void ClearCompilerErrors()
+		{
+			FEditor.ClearCompilerErrors();
+			
+			var compilerErrors = new List<CompilerError>();
+			foreach (var error in FErrorList)
+			{
+				var compilerError = error as CompilerError;
+				if (compilerError != null)
+					compilerErrors.Add(compilerError);
+			}
+			
+			foreach (var compilerError in compilerErrors)
+				FErrorList.Remove(compilerError);
+		}
+		
 		private void ClearRuntimeErrors()
 		{
 			if (FRuntimeErrors.Count > 0)
@@ -480,27 +497,20 @@ namespace VVVV.HDE.CodeEditor
 			ClearCompilerErrors();
 			
 			var results = args.CompilerResults;
-			if (results != null)
+			if (results != null && results.Errors.HasErrors)
+			{
+				var compilerErrors =
+					from CompilerError error in results.Errors
+					select error as CompilerError;
+				
+				FEditor.ShowCompilerErrors(compilerErrors);
 				FErrorList.AddRange(results.Errors);
+			}
 			
 			if (FErrorList.Count > 0)
 				ShowErrorTable();
 			else
 				HideErrorTable();
-		}
-		
-		private void ClearCompilerErrors()
-		{
-			var compilerErrors = new List<CompilerError>();
-			foreach (var error in FErrorList)
-			{
-				var compilerError = error as CompilerError;
-				if (compilerError != null)
-					compilerErrors.Add(compilerError);
-			}
-			
-			foreach (var compilerError in compilerErrors)
-				FErrorList.Remove(compilerError);
 		}
 	}
 }

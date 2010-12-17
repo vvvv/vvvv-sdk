@@ -608,39 +608,6 @@ namespace VVVV.HDE.CodeEditor
 				return base.ProcessKeyPreview(ref m);
 		}
 		
-		List<SD.TextMarker> FCompilerErrorMarkers = new List<SD.TextMarker>();
-		void CompileCompletedCB(object sender, CompilerEventArgs args)
-		{
-			// Clear all previous error markers.
-			ClearErrorMarkers(FCompilerErrorMarkers);
-			
-			var results = args.CompilerResults;
-			if (results != null && results.Errors.HasErrors)
-			{
-				foreach (var error in results.Errors)
-				{
-					var compilerError = error as CompilerError;
-					if (compilerError != null)
-					{
-						try
-						{
-							var path = Path.GetFullPath(compilerError.FileName);
-
-							if (path.ToLower() == TextDocument.Location.LocalPath.ToLower())
-								AddErrorMarker(FCompilerErrorMarkers, compilerError.Column - 1, compilerError.Line - 1);
-						}
-						catch (Exception)
-						{
-							// Better show an error than not.
-							AddErrorMarker(FCompilerErrorMarkers, compilerError.Column - 1, compilerError.Line - 1);
-						}
-					}
-				}
-			}
-
-			Document.CommitUpdate();
-		}
-		
 		void AddErrorMarker(List<SD.TextMarker> errorMarkers, int column, int line)
 		{
 			var doc = Document;
@@ -672,13 +639,34 @@ namespace VVVV.HDE.CodeEditor
 			errorMarkers.Clear();
 		}
 		
-		List<SD.TextMarker> FRuntimeErrorMarkers = new List<SD.TextMarker>();
-		internal void ShowRuntimeErrors(IEnumerable<RuntimeError> runtimeErros)
+		List<SD.TextMarker> FCompilerErrorMarkers = new List<SD.TextMarker>();
+		internal void ShowCompilerErrors(IEnumerable<CompilerError> compilerErrors)
 		{
 			// Clear all previous error markers.
 			ClearErrorMarkers(FRuntimeErrorMarkers);
 			
-			foreach (var runtimeError in runtimeErros)
+			foreach (var compilerError in compilerErrors)
+			{
+				if (new Uri(compilerError.FileName) == TextDocument.Location)
+					AddErrorMarker(FCompilerErrorMarkers, compilerError.Column - 1, compilerError.Line - 1);
+			}
+
+			Document.CommitUpdate();
+		}
+		
+		internal void ClearCompilerErrors()
+		{
+			ClearErrorMarkers(FCompilerErrorMarkers);
+			Document.CommitUpdate();
+		}
+		
+		List<SD.TextMarker> FRuntimeErrorMarkers = new List<SD.TextMarker>();
+		internal void ShowRuntimeErrors(IEnumerable<RuntimeError> runtimeErrors)
+		{
+			// Clear all previous error markers.
+			ClearErrorMarkers(FRuntimeErrorMarkers);
+			
+			foreach (var runtimeError in runtimeErrors)
 			{
 				if (new Uri(runtimeError.FileName) == TextDocument.Location)
 					AddErrorMarker(FRuntimeErrorMarkers, 0, runtimeError.Line - 1);
@@ -853,30 +841,12 @@ namespace VVVV.HDE.CodeEditor
 			
 			Document.TextContent = doc.TextContent;
 			doc.ContentChanged += TextDocumentContentChangedCB;
-			
-			var project = doc.Project;
-			
-			if (project != null)
-			{
-				// Everytime the project is compiled update the error highlighting.
-				project.CompileCompleted += CompileCompletedCB;
-				
-				// Fake a compilation in order to show errors on startup.
-				CompileCompletedCB(project, new CompilerEventArgs(project.CompilerResults));
-			}
 		}
 		
 		private void ShutdownTextDocument(ITextDocument doc)
 		{
 			doc.ContentChanged -= TextDocumentContentChangedCB;
 			Document.TextContent = string.Empty;
-			
-			var project = doc.Project;
-			
-			if (project != null)
-			{
-				project.CompileCompleted -= CompileCompletedCB;
-			}
 		}
 		
 		#endregion
