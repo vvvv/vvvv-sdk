@@ -243,19 +243,20 @@ namespace VVVV.Hosting.Factories
 				newProject.Load();
 				
 				var newLocationDir = newLocation.GetLocalDir();
+				var foundContainingDocument = false;
 				foreach (var doc in newProject.Documents)
 				{
 					// Now scan the document for possible plugin infos.
 					// If we find one, update its properties and rename the class and document.
-					if (doc is CSDocument)
+					var csDoc = doc as CSDocument;
+					if (csDoc != null)
 					{
-						var csDoc = doc as CSDocument;
-						
 						// Rename the CSDocument
-						var docName = Path.GetFileNameWithoutExtension(csDoc.Name);
-						var oldProjName = Path.GetFileNameWithoutExtension(project.Name);
-						if (docName == oldProjName)
-							csDoc.Name = string.Format("{0}.cs", Path.GetFileNameWithoutExtension(newProject.Name));
+						if (!foundContainingDocument && ContainsNodeInfo(csDoc, nodeInfo))
+						{
+							foundContainingDocument = true;
+							csDoc.Name = string.Format("{0}.cs", Path.GetFileNameWithoutExtension(className));
+						}
 						
 						var parserResults = csDoc.ParserResults;
 						var compilationUnit = parserResults.CompilationUnit;
@@ -294,6 +295,65 @@ namespace VVVV.Hosting.Factories
 			}
 			
 			return base.CloneNode(nodeInfo, path, name, category, version, out newFilename);
+		}
+		
+		private bool ContainsNodeInfo(CSDocument document, INodeInfo nodeInfo)
+		{
+			var parseInfo = document.ParseInfo;
+			var compilationUnit = parseInfo.MostRecentCompilationUnit;
+			if (compilationUnit == null) return false;
+			
+			foreach (var clss in compilationUnit.Classes)
+			{
+				foreach (var attribute in clss.Attributes)
+				{
+					var attributeType = attribute.AttributeType;
+					var pluginInfoName = typeof(PluginInfoAttribute).Name;
+					var pluginInfoShortName = pluginInfoName.Replace("Attribute", "");
+					if (attributeType.Name == pluginInfoName || attributeType.Name == pluginInfoShortName)
+					{
+						// Check name
+						string name = null;
+						if (attribute.NamedArguments.ContainsKey("Name"))
+							name = (string) attribute.NamedArguments["Name"];
+						else if (attribute.PositionalArguments.Count >= 0)
+							name = (string) attribute.PositionalArguments[0];
+						
+						if (name != nodeInfo.Name)
+							continue;
+						
+						// Check category
+						string category = null;
+						if (attribute.NamedArguments.ContainsKey("Category"))
+							category = (string) attribute.NamedArguments["Category"];
+						else if (attribute.PositionalArguments.Count >= 1)
+							category = (string) attribute.PositionalArguments[1];
+						
+						if (category != nodeInfo.Category)
+							continue;
+
+						// Possible match
+						bool match = true;
+						
+						// Check version
+						if (!string.IsNullOrEmpty(nodeInfo.Version))
+						{
+							string version = null;
+							if (attribute.NamedArguments.ContainsKey("Version"))
+								version = (string) attribute.NamedArguments["Version"];
+							else if (attribute.PositionalArguments.Count >= 2)
+								version = (string) attribute.PositionalArguments[2];
+							
+							match = version == nodeInfo.Version;
+						}
+						
+						if (match)
+							return true;
+					}
+				}
+			}
+			
+			return false;
 		}
 	}
 
