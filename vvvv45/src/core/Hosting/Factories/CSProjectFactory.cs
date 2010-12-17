@@ -223,7 +223,7 @@ namespace VVVV.Hosting.Factories
 					className = string.Format("C{0}", className);
 				
 				// Find a suitable project name
-				var newProjectName = className;
+				var newProjectName = string.Format("{0}{1}{2}", version, category, name);;
 				var newProjectPath = path.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
 				
 				int i = 1;

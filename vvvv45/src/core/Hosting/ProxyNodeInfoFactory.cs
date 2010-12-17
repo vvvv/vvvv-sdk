@@ -17,6 +17,7 @@ namespace VVVV.Hosting
 	{
 		[NonSerialized]
 		private INodeInfo FNodeInfo;
+		[NonSerialized]
 		private bool FInUpdate;
 		
 		public ProxyNodeInfo(INodeInfo nodeInfo, bool beginUpdate)
@@ -27,6 +28,7 @@ namespace VVVV.Hosting
 			Reload();
 		}
 		
+		[NonSerialized]
 		private bool FInInternalUpdate;
 		void UpdateInternal()
 		{
@@ -44,6 +46,7 @@ namespace VVVV.Hosting
 			}
 		}
 		
+		[NonSerialized]
 		private bool FInReload;
 		public void Reload()
 		{
