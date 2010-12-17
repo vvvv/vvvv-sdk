@@ -10,5 +10,17 @@
   <!-- Set your ddl name here -->
   <property name="lib.name" value="Webinterface.dll" />
 
+    <assemblyfileset id="project.references">
+		<include name="${root.bin}/VVVV.PluginInterfaces.dll" />
+		<include name="${root.bin}/VVVV.Utils.dll" />
+		<include name="${lib.dir}/**/*.dll" />
+		<exclude name="${lib.dir}/**/VVVV.Utils.dll" />
+		<exclude name="${lib.dir}/**/VVVV.PluginInterfaces.dll" />
+  </assemblyfileset>
+  
+   <fileset id="project.sources" failonempty="true">
+    <include name="**/*.cs" />
+  </fileset>
+  
 </project>
   
