@@ -1,5 +1,6 @@
 #region usings
 using System;
+using System.IO;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -10,6 +11,8 @@ using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.Core.View;
 using VVVV.PluginInterfaces.V2;
+
+using VVVV.Nodes.Finder;
 #endregion usings
 
 //the vvvv node namespace
@@ -37,6 +40,9 @@ namespace VVVV.Nodes.WindowSwitcher
         
         private List<IWindow> FWindowLIFO = new List<IWindow>();
         private int FSelectedWindowIndex = 0;
+        
+        [Import]
+        ILogger FLogger;
         
         #endregion field declaration
         
@@ -140,6 +146,9 @@ namespace VVVV.Nodes.WindowSwitcher
             
             //make a tree that only contains nodes that have a window
             //mark nodes with hidden windows as inactive
+            if (FWindowTree != null)
+                FWindowTree.Dispose();
+            
             FWindowTree = new PatchNode(null);
             FWindowTree.Node = FRoot;
             AddWindowNodes(FWindowTree, FFullTree);
@@ -197,7 +206,7 @@ namespace VVVV.Nodes.WindowSwitcher
             if (patchNode.Node == node)
                 result = patchNode;
             else
-                foreach (PatchNode pn in patchNode)
+                foreach (PatchNode pn in patchNode.ChildNodes)
             {
                 result = SelectNodeOfTree(pn, node);
                 if (result != null)
@@ -212,31 +221,27 @@ namespace VVVV.Nodes.WindowSwitcher
         private void AddWindowNodes(PatchNode result, PatchNode sourceTree)
         {
             //go through childnodes of sourceTree recursively and copy nodes that have a window
-            foreach (PatchNode pn in sourceTree)
+            foreach (PatchNode pn in sourceTree.ChildNodes)
             {
                 var temp = new PatchNode(null);
                 temp.Node = pn.Node;
                 
-                var hasPatch = false;
-                var hasGUI = temp.Node.HasGUI();
-                if (hasGUI)
-                {
-//                    if (FWindowNodes.ContainsKey(temp.Node))
-//                        temp.HasVisibleGUI = true;
-                }
-                else
-                {
-                    hasPatch = temp.Node.HasPatch();
-                    if (hasPatch)
-                    {
-//                        if (FWindowNodes.ContainsKey(temp.Node))
-//                            temp.HasVisiblePatch = true;
-                    }
-                }
                 AddWindowNodes(temp, pn);
                 
-                if ((hasPatch && temp.Node.GetNodeInfo().Type != NodeType.Module) || hasGUI)
-                    result.Add(temp);
+               if (temp.Node.GetNodeInfo().Type == NodeType.Patch || temp.Node.Window != null)
+                   result.ChildNodes.Add(temp);
+               /*
+               else if (temp.Node.HasCode()) //has code, but editors node is actually in root
+               {
+                   //this is only half a workaround. will be removed once editors are truly windows of their actual nodes again
+                   var title = Path.GetFileNameWithoutExtension(temp.Node.GetNodeInfo().Filename);
+                   FLogger.Log(LogType.Debug, title);
+                   var window = FWindowLIFO.Find(delegate (IWindow w) {return w.Caption.StartsWith(title);});
+                   if (window != null)
+                      result.ChildNodes.Add(temp); 
+               }
+               else if (temp.Node.Window != null && temp.Node.GetNodeInfo().Type != NodeType.Text) //has window but is not editor
+                  result.ChildNodes.Add(temp);   */
             }
         }
         

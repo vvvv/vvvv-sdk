@@ -363,6 +363,17 @@ namespace VVVV.PluginInterfaces.V2
 		}
 	}	
 	
+	[Guid("1ABB290D-9A96-4944-80CC-F544C8CDD14B"),
+	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface INodeListener
+    {
+        void AddedCB(INode childNode);
+        void RemovedCB(INode childNode);
+        void LabelChangedCB();
+    }
+	#endregion INode
+	
+	#region IPin
 	/// <summary>
 	/// Gives access to a vvvv nodes pins
 	/// </summary>
@@ -373,20 +384,31 @@ namespace VVVV.PluginInterfaces.V2
 	    string GetName();
 	    string GetValue(int index);
 	    bool IsConnected();
+	    
+	    /// <summary>
+		/// Allows a plugin to register an IPinListener on a specific pin.
+		/// </summary>
+		/// <param name="listener">The listener to register.</param>
+		void AddListener(IPinListener listener);
+		
+		/// <summary>
+		/// Allows a plugin to unregister an IPinListener from a specific pin.
+		/// </summary>
+		/// <param name="listener">The listener to unregister.</param>
+		void RemoveListener(IPinListener listener);
+	    
 	    //int GetSliceCount();
 	    //enum GetDirection();
-	    //Enum GetType();
+	    //Enum GetType();*/
 	}
-	
-	[Guid("1ABB290D-9A96-4944-80CC-F544C8CDD14B"),
+
+	[Guid("F8D09D3D-D988-434D-9AD4-8AD4C94001E7"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface INodeListener
+    public interface IPinListener
     {
-        void AddedCB(INode childNode);
-        void RemovedCB(INode childNode);
-        void LabelChangedCB();
+        void ChangedCB();
     }
-	#endregion INode
+	#endregion IPin
 	
 	#region IWindow
 	/// <summary>

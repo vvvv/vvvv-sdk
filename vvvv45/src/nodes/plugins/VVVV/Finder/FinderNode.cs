@@ -267,8 +267,12 @@ namespace VVVV.Nodes.Finder
         {
             var window = args.Window;
             
+            if (window == FActiveWindow)
+                return;
+            
             FActiveWindow = window;
             var windowType = window.GetWindowType();
+            var updateActiveWindow = false;
             
             if (windowType == WindowType.Module || windowType == WindowType.Patch)
             {
@@ -294,6 +298,16 @@ namespace VVVV.Nodes.Finder
                     
                     FActivePatchWindow = window;
                 }
+                else
+                    updateActiveWindow = true;
+            }
+            else
+                updateActiveWindow = true;
+            
+            if (updateActiveWindow && FSearchResult != null)
+            {
+                FSearchResult.SetActiveWindow(FActiveWindow);
+                FHierarchyViewer.Redraw();
             }
         }
         #endregion IWindowSelectionListener
@@ -672,8 +686,6 @@ namespace VVVV.Nodes.Finder
                 }
                 
                 FSearchResult.SetActiveWindow(FActiveWindow);
-                //FSearchResult.Added += UpdateViewer;
-                //FSearchResult.Removed += UpdateViewer;
                 
                 var mappingRegistry = new MappingRegistry();
                 mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
