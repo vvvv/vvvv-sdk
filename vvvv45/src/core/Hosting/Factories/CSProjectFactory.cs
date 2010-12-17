@@ -24,9 +24,10 @@ using VVVV.PluginInterfaces.V2;
 namespace VVVV.Hosting.Factories
 {
 	[Export(typeof(IAddonFactory))]
+	[Export(typeof(CSProjectFactory))]
 	public class CSProjectFactory : DotNetPluginFactory
 	{
-		private Dictionary<string, CSProject> FProjects;
+		private readonly Dictionary<string, CSProject> FProjects;
 		
 		[ImportingConstructor]
 		public CSProjectFactory(CompositionContainer parentContainer)
@@ -140,17 +141,6 @@ namespace VVVV.Hosting.Factories
 			return File.Exists(project.AssemblyLocation) && (projectTime <= assemblyTime);
 		}
 		
-		protected override bool CreateNode(INodeInfo nodeInfo, IInternalPluginHost pluginHost)
-		{
-			var project = nodeInfo.UserData as IProject;
-			if (project != null)
-			{
-				if (!project.IsLoaded)
-					project.Load();
-			}
-			return base.CreateNode(nodeInfo, pluginHost);
-		}
-
 		protected override void DeleteArtefacts(string dir, bool recursive)
 		{
 			// Dynamic plugins generate a new assembly everytime they are compiled.

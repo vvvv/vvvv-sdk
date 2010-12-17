@@ -1,63 +1,88 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using VVVV.Core;
 using VVVV.Core.Model;
 using VVVV.Core.View;
+using VVVV.HDE.ProjectExplorer.NodeModel;
+using VVVV.Utils.Linq;
 
 namespace VVVV.HDE.ProjectExplorer
 {
 	public class LoadedProjectsSolutionViewProvider : SolutionViewProvider
 	{
-		public LoadedProjectsSolutionViewProvider(ISolution solution, ModelMapper mapper)
+		private Node FRootNode;
+		
+		public LoadedProjectsSolutionViewProvider(ISolution solution, Node rootNode, ModelMapper mapper)
 			: base(solution, mapper)
 		{
-			foreach (var project in FSolution.Projects)
+			FRootNode = rootNode;
+			
+			foreach (var node in FRootNode.AsDepthFirstEnumerable())
 			{
-				project.Loaded += project_Loaded;
-				project.Unloaded += project_Unloaded;
+				node.Added += node_Added;
+				node.Removed += node_Removed;
 			}
 		}
 		
+		void node_Added(IViewableCollection<Node> collection, Node item)
+		{
+			item.Added += node_Added;
+			item.Removed += node_Removed;
+			
+			foreach (var node in item)
+				node_Added(item, node);
+			
+			var project = item.NodeInfo.UserData as IProject;
+			if (project != null)
+				OnOrderChanged();
+		}
+
+		void node_Removed(IViewableCollection<Node> collection, Node item)
+		{
+			item.Added -= node_Added;
+			item.Removed -= node_Removed;
+			
+			foreach (var node in item)
+				node_Removed(item, node);
+			
+			var project = item.NodeInfo.UserData as IProject;
+			if (project != null)
+				OnOrderChanged();
+		}
+
 		public override void Dispose()
 		{
-			foreach (var project in FSolution.Projects)
+			foreach (var node in FRootNode.AsDepthFirstEnumerable())
 			{
-				project.Loaded -= project_Loaded;
-				project.Unloaded -= project_Unloaded;
+				node.Added -= node_Added;
+				node.Removed -= node_Removed;
 			}
 			base.Dispose();
 		}
+		
+		public override void Add(IProject item)
+		{
+			if (IsProjectInUse(item))
+				base.Add(item);
+		}
+		
+		protected bool IsProjectInUse(IProject project)
+		{
+			var query =
+				from node in FRootNode.AsDepthFirstEnumerable()
+				where node.NodeInfo.UserData == project
+				select node;
+			
+			return query.Any();
+		}
 
-		void project_Unloaded(object sender, EventArgs e)
-		{
-			OnOrderChanged();
-		}
-
-		void project_Loaded(object sender, EventArgs e)
-		{
-			OnOrderChanged();
-		}
-		
-		protected override void OnAdded(IProject item)
-		{
-			item.Loaded += project_Loaded;
-			item.Unloaded += project_Unloaded;
-			base.OnAdded(item);
-		}
-		
-		protected override void OnRemoved(IProject item)
-		{
-			item.Loaded -= project_Loaded;
-			item.Unloaded -= project_Unloaded;
-			base.OnRemoved(item);
-		}
-		
 		public override IEnumerator<IProject> GetEnumerator()
 		{
 			foreach (var project in FSolution.Projects)
 			{
-				if (project.IsLoaded)
+				if (IsProjectInUse(project))
 					yield return project;
 			}
 		}
@@ -66,7 +91,7 @@ namespace VVVV.HDE.ProjectExplorer
 		{
 			get 
 			{
-				return FSolution.Projects.Where(project => project.IsLoaded).ToList()[index];
+				return FSolution.Projects.Where(project => IsProjectInUse(project)).ToList()[index];
 			}
 		}
 		
@@ -74,7 +99,7 @@ namespace VVVV.HDE.ProjectExplorer
 		{
 			get 
 			{ 
-				return FSolution.Projects.Count(project => project.IsLoaded);
+				return FSolution.Projects.Count(project => IsProjectInUse(project));
 			}
 		}
 	}

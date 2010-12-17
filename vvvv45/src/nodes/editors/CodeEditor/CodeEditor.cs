@@ -619,13 +619,21 @@ namespace VVVV.HDE.CodeEditor
 			{
 				foreach (var error in results.Errors)
 				{
-					if (error is CompilerError)
+					var compilerError = error as CompilerError;
+					if (compilerError != null)
 					{
-						var compilerError = error as CompilerError;
-						var path = Path.GetFullPath(compilerError.FileName);
+						try
+						{
+							var path = Path.GetFullPath(compilerError.FileName);
 
-						if (path.ToLower() == TextDocument.Location.LocalPath.ToLower())
+							if (path.ToLower() == TextDocument.Location.LocalPath.ToLower())
+								AddErrorMarker(FCompilerErrorMarkers, compilerError.Column - 1, compilerError.Line - 1);
+						}
+						catch (Exception)
+						{
+							// Better show an error than not.
 							AddErrorMarker(FCompilerErrorMarkers, compilerError.Column - 1, compilerError.Line - 1);
+						}
 					}
 				}
 			}

@@ -39,6 +39,7 @@ namespace VVVV.Hosting.Factories
 		private int FMoveToLine;
 		private int FMoveToColumn;
 		private INode FNodeToAttach;
+		private bool FInOpen;
 		
 		[ImportingConstructor]
 		public EditorFactory(CompositionContainer parentContainer, ILogger logger, IHDEHost hdeHost)
@@ -80,25 +81,28 @@ namespace VVVV.Hosting.Factories
 			if (nodeInfo != null)
 				yield return nodeInfo;
 			
-			// Do we have a project file?
-			// TODO: Do not hardcode project extension.
-			if (Path.GetExtension(filename) == ".csproj")
+			if (FInOpen)
 			{
-				var project = FSolution.FindProject(filename);
-				if (project != null)
+				// Do we have a project file?
+				// TODO: Do not hardcode project extension.
+				if (Path.GetExtension(filename) == ".csproj")
 				{
-					if (!project.IsLoaded)
-						project.Load();
-					
-					foreach (var doc in project.Documents)
+					var project = FSolution.FindProject(filename);
+					if (project != null)
 					{
-						var docFilename = doc.Location.LocalPath;
+						if (!project.IsLoaded)
+							project.Load();
 						
-						if (docFilename != filename)
+						foreach (var doc in project.Documents)
 						{
-							nodeInfo = CreateNodeInfo(doc.Location.LocalPath);
-							if (nodeInfo != null)
-								yield return nodeInfo;
+							var docFilename = doc.Location.LocalPath;
+							
+							if (docFilename != filename)
+							{
+								nodeInfo = CreateNodeInfo(doc.Location.LocalPath);
+								if (nodeInfo != null)
+									yield return nodeInfo;
+							}
 						}
 					}
 				}
@@ -325,7 +329,6 @@ namespace VVVV.Hosting.Factories
 				
 				switch (nodeInfo.Type)
 				{
-					case NodeType.Text:
 					case NodeType.Dynamic:
 					case NodeType.Effect:
 						var filename = nodeInfo.Filename;
@@ -452,6 +455,7 @@ namespace VVVV.Hosting.Factories
 				FMoveToLine = line;
 				FMoveToColumn = column;
 				FNodeToAttach = nodeToAttach;
+				FInOpen = true;
 				
 				hdeHost.InvalidateCache(filename);
 				FHDEHost.AddonFactories.Clear();
@@ -460,6 +464,7 @@ namespace VVVV.Hosting.Factories
 			}
 			finally
 			{
+				FInOpen = false;
 				FHDEHost.AddonFactories.Clear();
 				FHDEHost.AddonFactories.AddRange(addonFactories);
 				foreach (var factory in addonFactories)

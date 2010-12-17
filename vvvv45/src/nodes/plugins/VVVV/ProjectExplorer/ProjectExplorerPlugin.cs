@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Windows.Forms;
 
 using VVVV.Core;
@@ -10,11 +11,13 @@ using VVVV.Core.Menu;
 using VVVV.Core.Model;
 using VVVV.Core.Model.FX;
 using VVVV.Core.View;
+using VVVV.HDE.ProjectExplorer.NodeModel;
 using VVVV.HDE.Viewer.WinFormsViewer;
+using VVVV.Hosting.Factories;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.ManagedVCL;
-using VVVV.Hosting.Factories;
+using VVVV.Utils.Linq;
 
 namespace VVVV.HDE.ProjectExplorer
 {
@@ -30,12 +33,13 @@ namespace VVVV.HDE.ProjectExplorer
 	            InitialWindowHeight = 500,
 	            InitialComponentMode = TComponentMode.InAWindow)]
 	#endregion PluginInfo
-	public class ProjectExplorerPlugin : TopControl, IPluginBase
+	public partial class ProjectExplorerPlugin : TopControl, IPluginBase
 	{
-		protected TreeViewer FTreeViewer;
-		protected CheckBox FCheckBox;
+		private readonly Node FRootNode;
+		
 		protected ILogger FLogger;
 		protected IDiffSpread<bool> FHideUnusedProjectsIn;
+		protected IDiffSpread<BuildConfiguration> FBuildConfigIn;
 		protected MappingRegistry FMappingRegistry;
 		
 		[Import]
@@ -44,15 +48,22 @@ namespace VVVV.HDE.ProjectExplorer
 		[ImportingConstructor]
 		public ProjectExplorerPlugin(
 			[Config("Hide unused projects", IsSingle = true, DefaultValue = 1.0)] IDiffSpread<bool> showUnloadedProjectsIn,
+			[Config("Build configuration", IsSingle = true)] IDiffSpread<BuildConfiguration> buildConfigIn,
 			ISolution solution,
-			ILogger logger)
+			ILogger logger,
+			IHDEHost hdeHost)
 		{
 			try
 			{
+				FRootNode = new Node(hdeHost.Root);
+				
 				Solution = solution;
 				FLogger = logger;
+				
 				FHideUnusedProjectsIn = showUnloadedProjectsIn;
 				FHideUnusedProjectsIn.Changed += new SpreadChangedEventHander<bool>(FHideUnusedProjectsIn_Changed);
+				FBuildConfigIn = buildConfigIn;
+				FBuildConfigIn.Changed += FBuildConfigIn_Changed;
 				
 				FMappingRegistry = new MappingRegistry();
 				FMappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
@@ -62,6 +73,7 @@ namespace VVVV.HDE.ProjectExplorer
 				FMappingRegistry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
 				FMappingRegistry.RegisterDefaultMapping<AddMenuEntry, DefaultAddMenuEntry>();
 				FMappingRegistry.RegisterDefaultMapping(logger);
+				FMappingRegistry.RegisterDefaultMapping(FRootNode);
 				
 				if (showUnloadedProjectsIn[0])
 					FMappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
@@ -77,40 +89,19 @@ namespace VVVV.HDE.ProjectExplorer
 				FMappingRegistry.RegisterMapping<FXProject, IMenuEntry, FXProjectMenuProvider>();
 				FMappingRegistry.RegisterMapping<IProject, IDescripted, DescriptedProjectViewProvider>();
 				
-				SuspendLayout();
+				InitializeComponent();
 				
-				BackColor = System.Drawing.Color.Silver;
+				FBuildConfigComboBox.Items.AddRange((object[]) Enum.GetNames(typeof(BuildConfiguration)));
+				FBuildConfigComboBox.SelectedIndex = 0;
 				
-				FCheckBox = new CheckBox();
-				FCheckBox.Text = "Hide unused projects";
-				FCheckBox.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-				FCheckBox.Dock = DockStyle.Top;
-				FCheckBox.FlatStyle = FlatStyle.Flat;
-				FCheckBox.BackColor = System.Drawing.Color.DarkGray;
-				FCheckBox.ForeColor = System.Drawing.Color.White;
-				FCheckBox.Padding = new Padding(3, 0, 0, 0);
-				FCheckBox.AutoSize = true;
-				FCheckBox.CheckedChanged += new EventHandler(FCheckBox_CheckedChanged);
-				
-				FTreeViewer = new TreeViewer();
-				FTreeViewer.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-				FTreeViewer.Dock = System.Windows.Forms.DockStyle.Fill;
-				FTreeViewer.BackColor = System.Drawing.Color.Silver;
-				FTreeViewer.ShowTooltip = true;
+				FHideUnusedProjectsCheckBox.CheckedChanged += FHideUnusedProjectsCheckBox_CheckedChanged;
 				FTreeViewer.DoubleClick += FTreeViewer_DoubleClick;
+				
+				// Workaround because config pins do not send changed on reload :/
+				FHideUnusedProjectsCheckBox.Checked = true;
 				
 				FTreeViewer.Registry = FMappingRegistry;
 				FTreeViewer.Input = Solution;
-				
-				Controls.Add(FTreeViewer);
-				Controls.Add(FCheckBox);
-				
-				
-				ResumeLayout(false);
-				PerformLayout();
-				
-				// Workaround because config pins do not send changed on reload :/
-				FCheckBox.Checked = true;
 			}
 			catch (Exception e)
 			{
@@ -118,15 +109,42 @@ namespace VVVV.HDE.ProjectExplorer
 				throw e;
 			}
 		}
-
-		void FCheckBox_CheckedChanged(object sender, EventArgs e)
+		
+		protected bool IsProjectInUse(IProject project)
 		{
-			this.FHideUnusedProjectsIn[0] = FCheckBox.Checked;
+			var query =
+				from node in FRootNode.AsDepthFirstEnumerable()
+				where node.NodeInfo.UserData == project
+				select node;
+			
+			return query.Any();
+		}
+
+		void FBuildConfigIn_Changed(IDiffSpread<BuildConfiguration> spread)
+		{
+			FBuildConfigComboBox.SelectedIndex = (int) spread[0];
+			
+			var projects =
+				from p in Solution.Projects
+				where p is MsBuildProject
+				select p as MsBuildProject;
+			
+			foreach (var project in projects)
+			{
+				project.BuildConfiguration = spread[0];
+				if (IsProjectInUse(project))
+					project.CompileAsync();
+			}
+		}
+
+		void FHideUnusedProjectsCheckBox_CheckedChanged(object sender, EventArgs e)
+		{
+			this.FHideUnusedProjectsIn[0] = FHideUnusedProjectsCheckBox.Checked;
 		}
 
 		void FHideUnusedProjectsIn_Changed(IDiffSpread<bool> spread)
 		{
-			FCheckBox.Checked = FHideUnusedProjectsIn[0];
+			FHideUnusedProjectsCheckBox.Checked = FHideUnusedProjectsIn[0];
 			
 			if (!spread[0])
 				FMappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
@@ -170,17 +188,10 @@ namespace VVVV.HDE.ProjectExplorer
 			}
 		}
 		
-		protected override void Dispose(bool disposing)
+		void FBuildConfigComboBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (disposing)
-			{
-				if (!IsDisposed)
-				{
-					FHideUnusedProjectsIn.Changed -= FHideUnusedProjectsIn_Changed;
-				}
-			}
-			
-			base.Dispose(disposing);
+			var buildConfig = (BuildConfiguration) FBuildConfigComboBox.SelectedIndex;
+			FBuildConfigIn[0] = buildConfig;
 		}
 	}
 }

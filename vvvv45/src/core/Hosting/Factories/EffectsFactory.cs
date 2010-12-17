@@ -17,6 +17,7 @@ namespace VVVV.Hosting.Factories
 	/// Effects factory, parses and watches the effect directory
 	/// </summary>
 	[Export(typeof(IAddonFactory))]
+	[Export(typeof(EffectsFactory))]
 	public class EffectsFactory : AbstractFileFactory<IEffectHost>
 	{
 
@@ -26,8 +27,8 @@ namespace VVVV.Hosting.Factories
 		[Import]
 		protected ILogger Logger { get; set; }
 		
-		private Dictionary<string, FXProject> FProjects;
-		private Dictionary<FXProject, INodeInfo> FProjectNodeInfo;
+		private readonly Dictionary<string, FXProject> FProjects;
+		private readonly Dictionary<FXProject, INodeInfo> FProjectNodeInfo;
 		
 		public EffectsFactory()
 			: base(".fx")
@@ -173,7 +174,7 @@ namespace VVVV.Hosting.Factories
 			if (nodeInfo.Type != NodeType.Effect)
 				return false;
 			
-			var project = FProjects[nodeInfo.Filename];
+			var project = nodeInfo.UserData as FXProject;
 			if (!project.IsLoaded)
 				project.Load();
 			
@@ -226,7 +227,7 @@ namespace VVVV.Hosting.Factories
 			if (string.IsNullOrEmpty(f))
 				f = "";
 			project.ParameterDescription = f;
-
+			
 			return true;
 		}
 		
@@ -239,7 +240,7 @@ namespace VVVV.Hosting.Factories
 		{
 			if (nodeInfo.Type == NodeType.Effect)
 			{
-				var project = FProjects[nodeInfo.Filename];
+				var project = nodeInfo.UserData as FXProject;
 				if (!project.IsLoaded)
 					project.Load();
 				
