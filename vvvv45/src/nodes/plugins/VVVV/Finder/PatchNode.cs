@@ -41,9 +41,13 @@ namespace VVVV.Nodes.Finder
         private IWindow FWindow;
         private string FDecoratedName;
         private IPin FChannelPin;
+        private IPin FLabelPin;
+        private IPin FCommentPin;
+        private INodeInfo FNodeInfo;
         
         public PatchNode()
         {
+            Name = "????";
             Childs = FChildNodes.AsViewableList();
         }
         
@@ -57,15 +61,41 @@ namespace VVVV.Nodes.Finder
         
         public void Dispose()
         {
+            //remove pinlisteners
+            if (FCommentPin != null)
+            {
+                FLabelPin.RemoveListener(this);
+                FLabelPin = null;
+            }
+            
+            if (FCommentPin != null)
+            {
+                FCommentPin.RemoveListener(this);
+                FCommentPin = null;
+            }
+            
             if (FChannelPin != null)
+            {
                 FChannelPin.RemoveListener(this);
+                FChannelPin = null;
+            }
             
+            //remove nodelistener
             if (Node != null)
+            {
                 Node.RemoveListener(this);
+                Node = null;
+            }
             
-            Node = null;
+            //free window
+            FWindow = null;
+            
+            //free children
             foreach (var child in FChildNodes)
+            {
+                child.Renamed -= child_Renamed;
                 child.Dispose();
+            }
             FChildNodes.Clear();
             FChildNodes.Dispose();
         }
@@ -82,30 +112,33 @@ namespace VVVV.Nodes.Finder
                 FNode = value;
                 if (FNode != null)
                 {
-                    ID = FNode.GetID();
-                    IsBoygrouped = FNode.IsBoygrouped();
-                    IsMissing = FNode.IsMissing();
-                    
-                    Name = "????";
-                    if (Node.HasGUI())
-                    {
-                        if (Node.HasCode())
-                            Icon = NodeIcon.GUICode;
-                        else if (Node.HasPatch())
-                            Icon = NodeIcon.GUIPatch;
-                        else
-                            Icon = NodeIcon.GUI;
-                    }
-                    else if (Node.HasCode())
-                        Icon = NodeIcon.Code;
-                    else if (Node.HasPatch())
-                        Icon = NodeIcon.Patch;
-                    
-                    FWindow = FNode.Window;
-                    
-                    UpdateName();
-                    
                     Node.AddListener(this);
+                    
+                    //init static properties via INode
+                    ID = FNode.GetID();
+                    FNodeInfo = FNode.GetNodeInfo();
+                    NodeType = FNodeInfo.Type;
+                    
+                    FLabelPin = Node.GetPin("Descriptive Name");
+                    FLabelPin.AddListener(this);
+                    
+                    if (FNodeInfo.Name == "S")
+                    {
+                        FChannelPin = FNode.GetPin("SendString");
+                        FIsSource = true;
+                    }
+                    else if (FNodeInfo.Name == "R")
+                        FChannelPin = FNode.GetPin("ReceiveString");
+                    
+                    if (FChannelPin != null)
+                    {
+                        FChannelPin.AddListener(this);
+                        Icon = NodeIcon.SRNode;
+                    }
+                    
+                    //init dynamic properties via INode
+                    UpdateProperties();
+                    UpdateName();
                 }
             }
         }
@@ -169,17 +202,16 @@ namespace VVVV.Nodes.Finder
                     return "";
                 else
                 {
-                    var ni = Node.GetNodeInfo();
                     if (!string.IsNullOrEmpty(SRChannel))
-                        return ni.Username + " [id " + ID.ToString() + "]\nChannel: " + SRChannel;
+                        return FNodeInfo.Username + " [id " + ID.ToString() + "]\nChannel: " + SRChannel;
                     else if (!string.IsNullOrEmpty(Comment))
                         return Comment;
                     else if (IsIONode)
-                        return "IO " + Node.GetNodeInfo().Category + " [id " + ID.ToString() + "]\n" + DescriptiveName;
-                    else if (ni.Type == NodeType.Native)
-                        return ni.Username + " [id " + ID.ToString() + "]";
+                        return "IO " + FNodeInfo.Category + " [id " + ID.ToString() + "]\n" + DescriptiveName;
+                    else if (FNodeInfo.Type == NodeType.Native)
+                        return FNodeInfo.Username + " [id " + ID.ToString() + "]";
                     else
-                        return ni.Username + " [id " + ID.ToString() + "]\n" + ni.Filename;
+                        return FNodeInfo.Username + " [id " + ID.ToString() + "]\n" + FNodeInfo.Filename;
                 }
             }
         }
@@ -269,6 +301,14 @@ namespace VVVV.Nodes.Finder
         }
         
         public NodeIcon Icon {get; private set;}
+        
+        public event DecorationChangedHandler DecorationChanged;
+        protected virtual void OnDecorationChanged()
+        {
+            if (DecorationChanged != null) {
+                DecorationChanged();
+            }
+        }
         #endregion IDecoratable
         
         #region ILinkable
@@ -319,11 +359,6 @@ namespace VVVV.Nodes.Finder
             }
         }
         
-        void child_Renamed(INamed sender, string newName)
-        {
-            SortChildren();
-        }
-        
         public void RemovedCB(INode childNode)
         {
             foreach(var child in FChildNodes)
@@ -335,17 +370,26 @@ namespace VVVV.Nodes.Finder
             }
         }
         
+        void child_Renamed(INamed sender, string newName)
+        {
+            SortChildren();
+        }
+        
         public void LabelChangedCB()
         {
-            UpdateName();
-            OnRenamed(Name);
+            //now via ordinary pinlistener
+           // UpdateName();
+           // OnRenamed(Name);
         }
         #endregion INodeListener
         
         #region IPinListener
         public void ChangedCB()
         {
+            //may be called via FCommentPin, FLabelPin, FChannelPin
+            //in all cases do:
             UpdateName();
+            
             OnRenamed(Name);
         }
         #endregion IPinListener
@@ -421,98 +465,107 @@ namespace VVVV.Nodes.Finder
             return pos;
         }
         
+        private void UpdateProperties()
+        {
+            IsBoygrouped = FNode.IsBoygrouped();
+            IsMissing = FNode.IsMissing();
+            
+            if (Node.HasGUI())
+            {
+                if (Node.HasCode())
+                    Icon = NodeIcon.GUICode;
+                else if (Node.HasPatch())
+                    Icon = NodeIcon.GUIPatch;
+                else
+                    Icon = NodeIcon.GUI;
+            }
+            else if (Node.HasCode())
+                Icon = NodeIcon.Code;
+            else if (Node.HasPatch())
+                Icon = NodeIcon.Patch;
+            
+            FWindow = FNode.Window;
+        }
+        
         private void UpdateName()
         {
-            DescriptiveName = Node.GetPin("Descriptive Name").GetValue(0);
+            DescriptiveName = FLabelPin.GetValue(0);
             string hyphen = "";
             if (!string.IsNullOrEmpty(DescriptiveName))
                 hyphen = " -- ";
             
-            var ni = FNode.GetNodeInfo();
-            if (ni != null)
+            //subpatches
+            if (string.IsNullOrEmpty(FNodeInfo.Name))
             {
-                NodeType = ni.Type;
+                string file = System.IO.Path.GetFileNameWithoutExtension(FNodeInfo.Filename);
                 
-                //subpatches
-                if (string.IsNullOrEmpty(ni.Name))
-                {
-                    string file = System.IO.Path.GetFileNameWithoutExtension(ni.Filename);
-                    
-                    //unsaved patch
-                    if (string.IsNullOrEmpty(file))
-                        Name = ni.Filename + hyphen + DescriptiveName;
-                    //patch with valid filename
-                    else
-                        Name = file + hyphen + DescriptiveName;
-                }
-                else if ((ni.Username == "IOBox (Value Advanced)") || (ni.Username == "IOBox (Color)") || (ni.Username == "IOBox (Enumerations)") || (ni.Username == "IOBox (Node)"))
-                {
-                    if (string.IsNullOrEmpty(DescriptiveName))
-                    {
-                        IsIONode = false;
-                        Name = ni.Username + hyphen + DescriptiveName;
-                    }
-                    else
-                        IsIONode = true;
-                }
-                else if (ni.Username == "IOBox (String)")
-                {
-                    if (string.IsNullOrEmpty(DescriptiveName))
-                        if ((!Node.GetPin("Input String").IsConnected()) && (!Node.GetPin("Output String").IsConnected()))
-                    {
-                        Comment = Node.GetPin("Input String").GetValue(0);
-                        var cmt = Comment;
-                        if (!string.IsNullOrEmpty(cmt))
-                        {
-                            var maxChar = 30;
-                            var linebreak = cmt.IndexOf("\n");
-                            if (linebreak > 0 && linebreak < maxChar)
-                                cmt = cmt.Substring(0, linebreak) + "...";
-                            else if (cmt.Length > maxChar)
-                                cmt = cmt.Substring(0, maxChar) + "...";
-                            Name = cmt;
-                        }
-                        Icon = NodeIcon.Comment;
-                    }
-                    else
-                        Name = ni.Username + hyphen + DescriptiveName;
-                    else
-                        IsIONode = true;
-                }
-                else if (ni.Name == "S")
-                {
-                    if (FChannelPin == null)
-                    {
-                        FChannelPin = FNode.GetPin("SendString");
-                        FChannelPin.AddListener(this);
-                    }
-                    SRChannel = FChannelPin.GetValue(0);
-                    
-                    FIsSource = true;
-                    Name = ni.Username + ": " + SRChannel;
-                    Icon = NodeIcon.SRNode;
-                }
-                else if (ni.Name == "R")
-                {
-                    if (FChannelPin == null)
-                    {
-                        FChannelPin = FNode.GetPin("ReceiveString");
-                        FChannelPin.AddListener(this);
-                    }
-                    SRChannel = FChannelPin.GetValue(0);
-
-                    Name = ni.Username + ": " + SRChannel;
-                    Icon = NodeIcon.SRNode;
-                }
+                //unsaved patch
+                if (string.IsNullOrEmpty(file))
+                    Name = FNodeInfo.Filename + hyphen + DescriptiveName;
+                //patch with valid filename
                 else
-                    Name = ni.Username + hyphen + DescriptiveName;
-                
-                if (IsIONode)
+                    Name = file + hyphen + DescriptiveName;
+            }
+            else if (FNodeInfo.Name == "IOBox")
+            {
+                //ioboxes with descriptive names are IOs
+                if (!string.IsNullOrEmpty(DescriptiveName))
                 {
+                    IsIONode = true;
                     Name = DescriptiveName;
                     Icon = NodeIcon.IONode;
+                    
+                    //this is no longer a comment iobox
+                    if (FCommentPin != null)
+                    {
+                        FCommentPin.RemoveListener(this);
+                        FCommentPin = null;
+                    }
+                }
+                //string ioboxes may be comments if they have no connection
+                else if (FNodeInfo.Category == "String" && !Node.GetPin("Input String").IsConnected() && !Node.GetPin("Output String").IsConnected())
+                {
+                    if (FCommentPin == null)
+                    {
+                        FCommentPin = Node.GetPin("Input String");
+                        FCommentPin.AddListener(this);
+                    }
+                    
+                    Comment = FCommentPin.GetValue(0);
+                    var cmt = Comment;
+                    if (!string.IsNullOrEmpty(cmt))
+                    {
+                        var maxChar = 30;
+                        var linebreak = cmt.IndexOf("\n");
+                        if (linebreak > 0 && linebreak < maxChar)
+                            cmt = cmt.Substring(0, linebreak) + "...";
+                        else if (cmt.Length > maxChar)
+                            cmt = cmt.Substring(0, maxChar) + "...";
+                        Name = cmt;
+                    }
+                    Icon = NodeIcon.Comment;
+                }
+                //ordinary display IOBox
+                else
+                {
+                    IsIONode = false;
+                    Name = FNodeInfo.Username + hyphen + DescriptiveName;
+                    
+                    //this is no longer a comment iobox
+                    if (FCommentPin != null)
+                    {
+                        FCommentPin.RemoveListener(this);
+                        FCommentPin = null;
+                    }
                 }
             }
+            else if (FNodeInfo.Name == "S" || FNodeInfo.Name == "R")
+            {
+                SRChannel = FChannelPin.GetValue(0);
+                Name = FNodeInfo.Username + ": " + SRChannel;
+            }
+            else
+                Name = FNodeInfo.Username + hyphen + DescriptiveName;
         }
         
         public void SetTags(List<string> tags)
@@ -586,14 +639,5 @@ namespace VVVV.Nodes.Finder
             }
         }
          */
-        
-        public event DecorationChangedHandler DecorationChanged;
-        
-        protected virtual void OnDecorationChanged()
-        {
-            if (DecorationChanged != null) {
-                DecorationChanged();
-            }
-        }
     }
 }
