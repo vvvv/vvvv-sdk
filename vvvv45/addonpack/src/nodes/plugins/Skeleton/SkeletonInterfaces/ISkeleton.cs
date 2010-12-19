@@ -97,6 +97,12 @@ namespace VVVV.SkeletonInterfaces
 			set;
 		}
 		
+		Guid Uid
+		{
+			get;
+			set;
+		}
+		
 		Dictionary<string, IJoint> JointTable
 		{
 			get;
@@ -155,6 +161,25 @@ namespace VVVV.SkeletonInterfaces
 			}
 		}
 		
+		private Guid uid;
+		public Guid Uid
+		{
+			get
+			{
+				return uid;
+			}
+			set
+			{
+				uid = value;
+			}
+		}
+		
+		public void RenewUid()
+		{
+			uid = System.Guid.NewGuid();
+		}
+			
+			
 		private IJoint selectedJoint;
 		public IJoint Selected
 		{
@@ -184,11 +209,13 @@ namespace VVVV.SkeletonInterfaces
 		{
 			this.Root = root;
 			jointTable = new Dictionary<string, IJoint>();
+			this.RenewUid();
 		}
 		
 		public Skeleton()
 		{
 			jointTable = new Dictionary<string, IJoint>();
+			this.RenewUid();
 		}
 		
 		public void InsertJoint(string parentName, IJoint joint)
@@ -233,6 +260,7 @@ namespace VVVV.SkeletonInterfaces
 		public ISkeleton DeepCopy()
 		{
 			ISkeleton skeleton = new Skeleton(this.Root.DeepCopy());
+			skeleton.Uid = this.Uid;
 			AddToJointTable(skeleton.JointTable, skeleton.Root);
 			if (this.Selected!=null && skeleton.JointTable[this.Selected.Name]!=null)
 				skeleton.Selected = skeleton.JointTable[this.Selected.Name];
@@ -251,6 +279,7 @@ namespace VVVV.SkeletonInterfaces
 			Root = null;
 			this.jointTable = new Dictionary<string, IJoint>();
 			this.BuildJointTable();
+			this.RenewUid();
 		}
 		
 		public void BuildJointTable()
