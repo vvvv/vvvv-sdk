@@ -272,6 +272,11 @@ namespace VVVV.Nodes
 			this.calculatePreTransform(VMath.IdentityMatrix);
 		}
 		
+		public void CalculateCombinedTransforms(Matrix4x4 pre)
+		{
+			this.calculatePreTransform(pre);
+		}
+		
 		
 		public void AddChild(IJoint joint)
 		{

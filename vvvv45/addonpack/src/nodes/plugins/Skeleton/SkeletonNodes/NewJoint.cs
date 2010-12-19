@@ -216,7 +216,7 @@ namespace VVVV.Nodes
 	    	String[] dimensions = new String[2];
 	    	dimensions[0] = "Min";
 	    	dimensions[1] = "Max";
-	    	FHost.CreateValueInput("Rotation Constraints", 2, dimensions, TSliceMode.Dynamic, TPinVisibility.False, out FRotationConstraintsInput);
+	    	FHost.CreateValueInput("Rotation Constraints", 2, dimensions, TSliceMode.Dynamic, TPinVisibility.True, out FRotationConstraintsInput);
 	    	FRotationConstraintsInput.SetSubType2D(-1.0, 1.0, 0.1, -1.0, 1.0, false, false, false);
 	    	
 	    	
@@ -345,6 +345,7 @@ namespace VVVV.Nodes
 	        		FRotationConstraintsInput.GetValue2D(i, out from, out to);
 	        		rootJoint.Constraints.Add(new Vector2D(from, to));
 	        	}
+	        	FSkeletonOutput.MarkPinAsChanged();
         	}
         
         	FSkeletonOutput.SetInterface(outputSkeleton);

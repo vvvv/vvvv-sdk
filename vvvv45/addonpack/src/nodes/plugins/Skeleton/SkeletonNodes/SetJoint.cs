@@ -35,7 +35,6 @@ using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.SkeletonInterfaces;
 using SlimDX;
-using VVVV.Shared.VSlimDX;
 
 //the vvvv node namespace
 namespace VVVV.Nodes
@@ -62,6 +61,7 @@ namespace VVVV.Nodes
     	private INodeOut FSkeletonOutput;
     	
     	private Skeleton inputSkeleton;
+    	private Skeleton s;
     	private List<string> jointNames;
     	
     	#endregion field declaration
@@ -205,7 +205,7 @@ namespace VVVV.Nodes
 	    	
 	    	FHost.CreateStringInput("Parent Name", TSliceMode.Dynamic, TPinVisibility.True, out FParentNameInput);
 	    	
-	    	FHost.CreateValueInput("Constraints", 2, null, TSliceMode.Dynamic, TPinVisibility.True, out FConstraintsInput);
+	    	FHost.CreateValueInput("Constraints", 2, null, TSliceMode.Dynamic, TPinVisibility.False, out FConstraintsInput);
 	    	FConstraintsInput.SetSubType2D(-1.0, 1.0, 0.01, -1.0, 1.0, false, false, false);
 	    	
 	    	FHost.CreateTransformInput("Base Transform", TSliceMode.Dynamic, TPinVisibility.True, out FBaseTransformInput);
@@ -257,19 +257,36 @@ namespace VVVV.Nodes
         		recalculate = true;
         	}
         	
-        	if (FSkeletonInput.PinIsChanged || FAnimationTransformInput.PinIsChanged || FBaseTransformInput.PinIsChanged || FParentNameInput.PinIsChanged || FConstraintsInput.PinIsChanged || recalculate)
+        	if (FSkeletonInput.PinIsChanged || recalculate)
         	{
-        		
         		if (FSkeletonInput.IsConnected)
         		{
 	        		INodeIOBase currInterface;
 	        		FSkeletonInput.GetUpstreamInterface(out currInterface);
-	        		
-	        		inputSkeleton = (Skeleton)((Skeleton)currInterface).DeepCopy();
+	        		s = (Skeleton)currInterface;
+	        		if (inputSkeleton==null || !s.Uid.Equals(inputSkeleton.Uid))
+	        		{
+	        			inputSkeleton = (Skeleton)s.DeepCopy();
+	        		}
+	        		else
+	        		{
+	        			foreach (KeyValuePair<string, IJoint> pair in s.JointTable)
+	        			{
+	        				if (!jointNames.Exists(delegate(string name) {return name==pair.Key;}))
+	        				{
+		        				inputSkeleton.JointTable[pair.Key].BaseTransform = pair.Value.BaseTransform;
+		        				inputSkeleton.JointTable[pair.Key].AnimationTransform = pair.Value.AnimationTransform;
+	        				}
+	        				inputSkeleton.JointTable[pair.Key].Constraints = pair.Value.Constraints;
+	        			}
+	        		}
         		}
         		else
         			inputSkeleton = null;
-        		
+        	}
+        	
+        	if (FSkeletonInput.PinIsChanged || FAnimationTransformInput.PinIsChanged || FBaseTransformInput.PinIsChanged || FParentNameInput.PinIsChanged || FConstraintsInput.PinIsChanged || recalculate)
+        	{
         		
         		if (inputSkeleton!=null)
         		{
@@ -280,7 +297,6 @@ namespace VVVV.Nodes
 	        			currJoint = inputSkeleton.JointTable[jointNames[i]];
 	        			Matrix4x4 currAnimationT;
 	        			Matrix4x4 currBaseT;
-	        			List<Vector2D> currConstraints;
 	        			string currParentName;
 	        			if (currJoint!=null)
 	        			{
@@ -288,14 +304,17 @@ namespace VVVV.Nodes
 	        				{
 		        				FAnimationTransformInput.GetMatrix(i, out currAnimationT);
 		        				currJoint.AnimationTransform = currAnimationT;
-	
 	        				}
+	        				else
+	        					currJoint.AnimationTransform = s.JointTable[currJoint.Name].AnimationTransform;
 	        				
 	        				if (FBaseTransformInput.IsConnected)
 	        				{
 		        				FBaseTransformInput.GetMatrix(i, out currBaseT);
 		        				currJoint.BaseTransform = currBaseT;
 	        				}
+	        				else
+	        					currJoint.BaseTransform = s.JointTable[currJoint.Name].BaseTransform;
 	        				
 	        				/*if (FRotationInput.IsConnected)
 	        				{
@@ -306,7 +325,7 @@ namespace VVVV.Nodes
 	        				}
 	        				*/
 	        				
-	        				if (FConstraintsInput.IsConnected)
+	        				/*if (FConstraintsInput.IsConnected)
 	        				{
 	        					currConstraints = new List<Vector2D>();
 	        					Vector2D currConstraint;
@@ -318,6 +337,7 @@ namespace VVVV.Nodes
 	        					}
 	        					currJoint.Constraints = currConstraints;
 	        				}
+	        				*/
 	        				
 	        				FParentNameInput.GetString(i, out currParentName);
 	        				if (currParentName!=null && (FParentNameInput.SliceCount>1 || !string.IsNullOrEmpty(currParentName)))

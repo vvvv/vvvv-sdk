@@ -38,7 +38,6 @@ using System.Globalization;
 using VVVV.Utils.SharedMemory;
 using VVVV.SkeletonInterfaces;
 using SlimDX;
-using VVVV.Shared.VSlimDX;
 
 //the vvvv node namespace
 namespace VVVV.Nodes
@@ -66,6 +65,7 @@ namespace VVVV.Nodes
     	private List<IJoint> poses;
     	private double input;
 		double poseCount = 2;
+		private int passthrough = -1; // if an input pose is just passed through, its index is saved here, -1 if there's no passthrough
 		
     	
     	#endregion field declaration
@@ -76,8 +76,7 @@ namespace VVVV.Nodes
         {
 			//the nodes constructor
 			//nothing to declare for this node
-			outputJoint = new JointInfo();
-			outputSkeleton = new Skeleton(outputJoint);
+			outputSkeleton = new Skeleton();
 			
 			poses = new List<IJoint>();
 			poseNodes = new List<INodeIn>();
@@ -298,7 +297,11 @@ namespace VVVV.Nodes
 	            		poses[i] = currPose;
             		}
             		else
+            		{
             			poses[i] = null;
+            			if (i==0)
+            				outputJoint = null;
+            		}
             		recalculate = true;
             	}
             	
@@ -312,19 +315,41 @@ namespace VVVV.Nodes
         		double amount1 = (input - index2)*-1;
 				
         		if (amount2==0)
+        		{
         			outputJoint = poses[index1];
+        			if (passthrough!=index1)
+        			{
+        				outputSkeleton.Root = outputJoint;
+        				outputSkeleton.BuildJointTable();
+        			}
+        			passthrough = index1;
+        		}
         		else if (amount1==0)
+        		{
         			outputJoint = poses[index2];
+        			if (passthrough!=-1)
+        			{
+        				outputSkeleton.Root = outputJoint;
+        				outputSkeleton.BuildJointTable();
+        			}
+        			passthrough = index2;
+        		}
         		else
         		{
-	        		outputJoint = poses[index1].DeepCopy();
+        			if (outputJoint==null || passthrough>=0)
+        			{
+	        			outputJoint = poses[index1].DeepCopy();
+	        			outputSkeleton.Root = outputJoint;
+						outputSkeleton.BuildJointTable();
+        			}
+        			else
+        				copyAttributes(poses[index1], outputJoint);
 	        		mixJoints(outputJoint, poses[index1], amount1, poses[index2], amount2);
+	        		passthrough = -1;
         		}
    
 				outputSkeleton.Root = outputJoint;
-				outputSkeleton.BuildJointTable();
         		FPoseOutput.MarkPinAsChanged();
-        		
         	}
         
 			
@@ -349,13 +374,25 @@ namespace VVVV.Nodes
         		enableJoint2 = 0;
 
         	Matrix4x4 resultAnimationT = result.AnimationTransform;
-        	VSlimDXUtils.Blend(joint1.AnimationTransform, joint2.AnimationTransform, amount1 * enableJoint1, amount2 * enableJoint2, out resultAnimationT);
+        	Matrix4x4Utils.Blend(joint1.AnimationTransform, joint2.AnimationTransform, amount1 * enableJoint1, amount2 * enableJoint2, out resultAnimationT);
    
         	result.AnimationTransform = resultAnimationT;
         	
         	for (int i=0; i<result.Children.Count; i++)
         	{
         		mixJoints(result.Children[i], joint1.Children[i], amount1, joint2.Children[i], amount2);
+        	}
+        }
+        
+        private void copyAttributes(IJoint fromJoint, IJoint toJoint)
+        {
+        	toJoint.AnimationTransform = fromJoint.AnimationTransform;
+        	toJoint.BaseTransform = fromJoint.BaseTransform;
+        	toJoint.Constraints = fromJoint.Constraints;
+        	
+        	for (int i=0; i<fromJoint.Children.Count; i++)
+        	{
+        		copyAttributes(fromJoint.Children[i], toJoint.Children[i]);
         	}
         }
         

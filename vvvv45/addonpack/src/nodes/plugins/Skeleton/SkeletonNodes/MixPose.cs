@@ -38,7 +38,6 @@ using System.Globalization;
 using VVVV.Utils.SharedMemory;
 using VVVV.SkeletonInterfaces;
 using SlimDX;
-using VVVV.Shared.VSlimDX;
 
 //the vvvv node namespace
 namespace VVVV.Nodes
@@ -75,7 +74,6 @@ namespace VVVV.Nodes
         {
 			//the nodes constructor
 			//nothing to declare for this node
-			outputJoint = new JointInfo();
 			outputSkeleton = new Skeleton(outputJoint);
 			
 			poses = new List<IJoint>();
@@ -307,7 +305,11 @@ namespace VVVV.Nodes
 	            		poses[i] = currPose;
             		}
             		else
+            		{
             			poses[i] = null;
+            			if (i==0)
+            				outputJoint = null;
+            		}
             		recalculate = true;
             	}
             	if (amountNodes[i].PinIsChanged)
@@ -323,19 +325,25 @@ namespace VVVV.Nodes
         	if (recalculate)
         	{
         		// the following would be much nicer, if mixJoints() would take a dynamic number of poses and amounts
-        		outputJoint = poses[0].DeepCopy();
+        		if (outputJoint==null)
+        		{
+        			outputJoint = poses[0].DeepCopy();
+        			outputSkeleton.Root = outputJoint;
+					outputSkeleton.BuildJointTable();
+        		}
+        		else
+        			copyAttributes(poses[0], outputJoint);
         		double amount = amounts[0];
         		IJoint interimPose;
         		for (int i=0; i<poses.Count-1; i++)
         		{
         			if (poses[i+1]==null)
         				continue;
-        			interimPose = outputJoint; //.DeepCopy();
+        			interimPose = outputJoint;
         			mixJoints(outputJoint, interimPose, amount, poses[i+1], amounts[i+1]);
         			amount = 1.0;
         		}
 				outputSkeleton.Root = outputJoint;
-				outputSkeleton.BuildJointTable();
         		FPoseOutput.MarkPinAsChanged();
         	}
         
@@ -361,13 +369,25 @@ namespace VVVV.Nodes
         		enableJoint2 = 0;
 
         	Matrix4x4 resultAnimationT = result.AnimationTransform;
-        	VSlimDXUtils.Blend(joint1.AnimationTransform, joint2.AnimationTransform, amount1 * enableJoint1, amount2 * enableJoint2, out resultAnimationT);
+        	Matrix4x4Utils.Blend(joint1.AnimationTransform, joint2.AnimationTransform, amount1 * enableJoint1, amount2 * enableJoint2, out resultAnimationT);
    
         	result.AnimationTransform = resultAnimationT;
         	
         	for (int i=0; i<result.Children.Count; i++)
         	{
         		mixJoints(result.Children[i], joint1.Children[i], amount1, joint2.Children[i], amount2);
+        	}
+        }
+        
+        private void copyAttributes(IJoint fromJoint, IJoint toJoint)
+        {
+        	toJoint.AnimationTransform = fromJoint.AnimationTransform;
+        	toJoint.BaseTransform = fromJoint.BaseTransform;
+        	toJoint.Constraints = fromJoint.Constraints;
+        	
+        	for (int i=0; i<fromJoint.Children.Count; i++)
+        	{
+        		copyAttributes(fromJoint.Children[i], toJoint.Children[i]);
         	}
         }
         
