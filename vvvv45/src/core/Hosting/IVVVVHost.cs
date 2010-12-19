@@ -121,7 +121,7 @@ namespace VVVV.Hosting
         /// <summary>
         /// The currently selected patch window.
         /// </summary>
-        IWindow SelectedPatchWindow
+        IWindow ActivePatchWindow
         {
             get;
         }

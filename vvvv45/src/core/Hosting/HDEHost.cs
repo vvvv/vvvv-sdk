@@ -594,11 +594,11 @@ namespace VVVV.Hosting
 			private set;
 		}
 		
-		public IWindow SelectedPatchWindow
+		public IWindow ActivePatchWindow
 		{
 			get
 			{
-				return FVVVVHost.SelectedPatchWindow;
+				return FVVVVHost.ActivePatchWindow;
 			}
 		}
 		

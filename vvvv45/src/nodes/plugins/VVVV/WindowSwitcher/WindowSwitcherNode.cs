@@ -57,7 +57,7 @@ namespace VVVV.Nodes.WindowSwitcher
             FHDEHost.WindowAdded += FHDEHost_WindowAdded;
             FHDEHost.WindowRemoved += FHDEHost_WindowRemoved;
             FHDEHost.WindowSelectionChanged += FHDEHost_WindowSelectionChanged;
-            FActiveWindow = FHDEHost.SelectedPatchWindow;
+            FActiveWindow = FHDEHost.ActivePatchWindow;
         }
 
         // Dispose(bool disposing) executes in two distinct scenarios.

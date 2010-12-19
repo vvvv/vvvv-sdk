@@ -116,7 +116,7 @@ namespace VVVV.Nodes.NodeBrowser
 			//register as IWindowSelectionListener at hdehost
 			HDEHost = host;
 			HDEHost.WindowSelectionChanged += HDEHost_WindowSelectionChanged;
-			CurrentPatchWindow = HDEHost.SelectedPatchWindow;
+			CurrentPatchWindow = HDEHost.ActivePatchWindow;
 			
 			FCategoryPanel.Redraw();
 		}
@@ -351,6 +351,7 @@ namespace VVVV.Nodes.NodeBrowser
 		void HDEHost_WindowSelectionChanged(object sender, WindowEventArgs args)
 		{
 			var window = args.Window;
+			
 			var windowtype = window.GetWindowType();
 			
 			if ((windowtype == WindowType.Patch || windowtype == WindowType.Module) && CurrentPatchWindow != window)

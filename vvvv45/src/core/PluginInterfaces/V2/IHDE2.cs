@@ -111,7 +111,7 @@ namespace VVVV.PluginInterfaces.V2
 	    /// <summary>
 	    /// The currently selected patch window.
 	    /// </summary>
-	    IWindow SelectedPatchWindow
+	    IWindow ActivePatchWindow
 	    {
 	    	get;
 	    }

@@ -98,7 +98,7 @@ namespace VVVV.Nodes.Finder
 			//defer setting the active patch window as
 			//this will trigger the initial WindowSelectionChangeCB
 			//which will want to access this windows caption which is not yet available
-			SynchronizationContext.Current.Post((object state) => FHDEHost_WindowSelectionChanged(FHDEHost, new WindowEventArgs(FHDEHost.SelectedPatchWindow)), null);
+			SynchronizationContext.Current.Post((object state) => FHDEHost_WindowSelectionChanged(FHDEHost, new WindowEventArgs(FHDEHost.ActivePatchWindow)), null);
 			
 			FTagsPin = tagsPin;
 			FTagsPin.Changed += FTagsPin_Changed;
@@ -305,8 +305,9 @@ namespace VVVV.Nodes.Finder
 			{
 				//activepatchwindow may no longer exist when a window other than a patch is activated
 				//this may be due to all patches have been deleted
-				if (FActivePatchWindow != FHDEHost.SelectedPatchWindow)
+				if (FActivePatchWindow != FHDEHost.ActivePatchWindow)
 				{
+					ClearSearch();
 					if (FActivePatchNode != null)
 						FActivePatchNode.Dispose();
 					if (FActivePatchParent != null)
@@ -542,7 +543,6 @@ namespace VVVV.Nodes.Finder
 			FSearchIndex = 0;
 			
 			FSearchResult = new PatchNode();
-			
 		}
 		
 		private void UpdateSearch()
