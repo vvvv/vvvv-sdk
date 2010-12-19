@@ -8,13 +8,21 @@
     <AssemblyName>SkeletonInterfaces</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <SourceAnalysisOverrideSettingsFile>C:\Dokumente und Einstellungen\tgallery\Anwendungsdaten\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <NoStdLib>False</NoStdLib>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
     <PlatformTarget>x86</PlatformTarget>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <BaseAddress>4194304</BaseAddress>
+    <FileAlignment>4096</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>bin\Debug\</OutputPath>
-    <DebugSymbols>True</DebugSymbols>
+    <OutputPath>$(VVVV45)\plugins\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>Full</DebugType>
     <Optimize>False</Optimize>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
@@ -33,10 +41,10 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="VVVV.PluginInterfaces">
-      <HintPath>..\..\_lib\vvvv\VVVV.PluginInterfaces.dll</HintPath>
+      <HintPath>$(VVVV45)\bin\managed\VVVV.PluginInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="VVVV.Utils">
-      <HintPath>..\..\_lib\vvvv\VVVV.Utils.dll</HintPath>
+      <HintPath>$(VVVV45)\bin\managed\VVVV.Utils.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
