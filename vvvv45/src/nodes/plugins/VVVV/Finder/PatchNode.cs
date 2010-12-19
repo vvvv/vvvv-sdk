@@ -366,6 +366,7 @@ namespace VVVV.Nodes.Finder
             {
                 FChildNodes.Remove(child);
                 child.Renamed -= child_Renamed;
+                child.Dispose();
                 break;
             }
         }

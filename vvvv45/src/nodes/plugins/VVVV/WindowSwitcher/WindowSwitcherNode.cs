@@ -230,6 +230,8 @@ namespace VVVV.Nodes.WindowSwitcher
                 
                if (temp.Node.GetNodeInfo().Type == NodeType.Patch || temp.Node.Window != null)
                    result.ChildNodes.Add(temp);
+               else
+                   temp.Dispose();
                /*
                else if (temp.Node.HasCode()) //has code, but editors node is actually in root
                {
