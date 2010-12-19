@@ -19,11 +19,7 @@ namespace VVVV.HDE.ProjectExplorer
 		{
 			FRootNode = rootNode;
 			
-			foreach (var node in FRootNode.AsDepthFirstEnumerable())
-			{
-				node.Added += node_Added;
-				node.Removed += node_Removed;
-			}
+			node_Added(null, FRootNode);
 		}
 		
 		void node_Added(IViewableCollection<Node> collection, Node item)
