@@ -588,7 +588,13 @@ namespace VVVV.Nodes.Finder
 				//only fit view to selected node if not in local scope
 				if (FFilter.Scope != SearchScope.Local)
 					if (sender.CanMap<ICamera>())
-						sender.Map<ICamera>().View(sender.Model);
+				{
+				    var parent = FindParent(FHDEHost.Root, (sender.Model as PatchNode).Node);
+				    if (parent == null)
+				        parent = FHDEHost.Root;
+    				
+				    sender.Map<ICamera>().View(FSearchResult.FindNode(parent));
+				}
 			}
 			else if ((int)e.Button == 1)
 			{
@@ -597,16 +603,13 @@ namespace VVVV.Nodes.Finder
 			}
 			else if ((int)e.Button == 2)
 			{
-				//only fit view to selected nodes parent if not in local scope
-				if (FFilter.Scope != SearchScope.Local)
-					if (sender.CanMap<ICamera>())
-						sender.Map<ICamera>().ViewParent(sender.Model);
+			    OpenPatch((sender.Model as PatchNode).Node);
 			}
 		}
 		
 		void FHierarchyViewerDoubleClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
 		{
-			OpenPatch((sender.Model as PatchNode).Node);
+			//OpenPatch((sender.Model as PatchNode).Node);
 		}
 		
 		void FHierarchyViewerKeyPress(object sender, KeyPressEventArgs e)
