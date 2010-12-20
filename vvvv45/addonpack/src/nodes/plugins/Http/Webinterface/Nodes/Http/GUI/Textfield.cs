@@ -265,7 +265,7 @@ namespace VVVV.Nodes.HttpGUI
                         {
                             tTextfield.AddAttribute(new HTMLAttribute("type", "password"));
                         }
-                        tTextfield.AddAttribute(new HTMLAttribute("Value", tResponse));
+                        tTextfield.Insert(tResponse);
                         tTextfield.AddAttribute(new HTMLAttribute("style", "width:100%;height:100%"));
 
                         Container.Insert(tTextfield);
