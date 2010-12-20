@@ -80,7 +80,7 @@ namespace VVVV.Hosting.Graph
 			var children = internalCOMInterf.GetChildren();
 			if (children != null)
 			{
-				foreach (var internalChildNode in internalCOMInterf.GetChildren())
+				foreach (var internalChildNode in children)
 				{
 					var childNode = new Node(internalChildNode, nodeInfoFactory);
 					Add(childNode);
