@@ -144,15 +144,21 @@ namespace VVVV.Nodes.NodeBrowser
             OnPanelChange(NodeBrowserPage.ByTags, null);
         }
 		
-		void CategoryPanelVisibleChanged(object sender, EventArgs e)
+        public void Update()
 		{
 			FCategoryTreeViewer.HideToolTip();
 			FCategoryTreeViewer.Focus();
-			if (Visible && NeedsUpdate)
+			if (NeedsUpdate)
 			{
 			    FCategoryTreeViewer.Reload();
 			    NeedsUpdate = false;
 			}
+		}
+        
+		void CategoryPanelVisibleChanged(object sender, EventArgs e)
+		{
+			FCategoryTreeViewer.HideToolTip();
+			FCategoryTreeViewer.Focus();
 		}
 		
 		void FCategoryTreeViewerMouseDown(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)

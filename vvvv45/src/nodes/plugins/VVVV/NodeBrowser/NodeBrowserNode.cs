@@ -117,8 +117,6 @@ namespace VVVV.Nodes.NodeBrowser
 			HDEHost = host;
 			HDEHost.WindowSelectionChanged += HDEHost_WindowSelectionChanged;
 			CurrentPatchWindow = HDEHost.ActivePatchWindow;
-			
-			FCategoryPanel.Redraw();
 		}
 
 		private void DefaultConstructor()
@@ -178,8 +176,9 @@ namespace VVVV.Nodes.NodeBrowser
 			// FClonePanel
 			// 
 			this.FClonePanel.BackColor = System.Drawing.Color.Silver;
-			this.FClonePanel.Location = new System.Drawing.Point(187, 148);
+			this.FClonePanel.Location = new System.Drawing.Point(241, 82);
 			this.FClonePanel.Name = "FClonePanel";
+			this.FClonePanel.NodeBrowser = null;
 			this.FClonePanel.Padding = new System.Windows.Forms.Padding(8);
 			this.FClonePanel.Size = new System.Drawing.Size(250, 300);
 			this.FClonePanel.TabIndex = 0;
@@ -191,6 +190,8 @@ namespace VVVV.Nodes.NodeBrowser
 			this.FTagPanel.AndTags = true;
 			this.FTagPanel.Location = new System.Drawing.Point(17, 24);
 			this.FTagPanel.Name = "FTagPanel";
+			this.FTagPanel.NeedsUpdate = false;
+			this.FTagPanel.NodeBrowser = null;
 			this.FTagPanel.Size = new System.Drawing.Size(120, 115);
 			this.FTagPanel.TabIndex = 1;
 			this.FTagPanel.OnCreateNode += new VVVV.Nodes.NodeBrowser.CreateNodeHandler(this.FNodeBrowser_CreateNode);
@@ -203,6 +204,7 @@ namespace VVVV.Nodes.NodeBrowser
 			// 
 			this.FCategoryPanel.Location = new System.Drawing.Point(17, 161);
 			this.FCategoryPanel.Name = "FCategoryPanel";
+			this.FCategoryPanel.NeedsUpdate = false;
 			this.FCategoryPanel.Size = new System.Drawing.Size(119, 85);
 			this.FCategoryPanel.TabIndex = 2;
 			this.FCategoryPanel.Visible = false;
@@ -236,6 +238,7 @@ namespace VVVV.Nodes.NodeBrowser
 						FClonePanel.Visible = false;
 						FTagPanel.Visible = false;
 						
+						FCategoryPanel.Update();
 						FCategoryPanel.Visible = true;
 						break;
 					}

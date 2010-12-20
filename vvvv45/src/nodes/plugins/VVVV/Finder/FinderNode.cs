@@ -404,7 +404,7 @@ namespace VVVV.Nodes.Finder
 					if (FActivePatchParent != null)
 						FActivePatchParent.RemoveListener(this);
 				}
-				else
+				else if (FActivePatchWindow != FHDEHost.ActivePatchWindow)
 					SetActivePatch(FHDEHost.ActivePatchWindow);
 					
 				updateActiveWindow = true;
@@ -580,8 +580,9 @@ namespace VVVV.Nodes.Finder
 		
 		void FHierarchyViewerClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
 		{
-			if (e.Button == 0)
+		    if (e.Button == 0 && sender.Model != null)
 			{
+			    
 				(sender.Model as PatchNode).Selected = true;
 				FHDEHost.SelectNodes(new INode[1]{(sender.Model as PatchNode).Node});
 				
@@ -601,7 +602,7 @@ namespace VVVV.Nodes.Finder
 				if (sender.CanMap<ICamera>())
 					sender.Map<ICamera>().ViewAll();
 			}
-			else if ((int)e.Button == 2)
+			else if ((int)e.Button == 2 && sender.Model != null)
 			{
 			    OpenPatch((sender.Model as PatchNode).Node);
 			}
