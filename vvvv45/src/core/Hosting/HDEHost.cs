@@ -23,6 +23,7 @@ using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.Graph;
+using VVVV.Utils.Linq;
 
 namespace VVVV.Hosting
 {
@@ -42,7 +43,6 @@ namespace VVVV.Hosting
 		private INodeInfo FNodeBrowserNodeInfo;
 		
 		private IVVVVHost FVVVVHost;
-		private List<INode> FNodes;
 		private IPluginBase FNodeBrowser, FWindowSwitcher, FKommunikator;
 		protected Dictionary<string, HashSet<ProxyNodeInfo>> FNodeInfoCache;
 		protected Dictionary<string, HashSet<ProxyNodeInfo>> FDeserializedNodeInfoCache;
@@ -112,9 +112,6 @@ namespace VVVV.Hosting
 			var context = SynchronizationContext.Current;
 			if (context == null)
 				SynchronizationContext.SetSynchronizationContext(new WindowsFormsSynchronizationContext());
-			
-//			FRunningPluginHostsMap = new Dictionary<INodeInfo, List<IAddonHost>>();
-			FNodes = new List<INode>();
 			
 			// Register at least one ICommandHistory for top level element ISolution
 			var mappingRegistry = new MappingRegistry();
@@ -214,6 +211,8 @@ namespace VVVV.Hosting
 				return;
 			}
 			
+			NodeInfoFactory.NodeInfoAdded += NodeInfoFactory_NodeInfoAdded;
+			
 			//NodeCollection.AddJob(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
 			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\Finder.dll"));
 			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\Kommunikator.dll"));
@@ -223,15 +222,7 @@ namespace VVVV.Hosting
 //			NodeCollection.AddUnsorted(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
 //			NodeCollection.Collect();
 			
-			foreach (var nodeInfo in NodeInfoFactory.NodeInfos)
-			{
-				if (nodeInfo.Systemname == WINDOW_SWITCHER)
-					FWinSwNodeInfo = nodeInfo;
-				else if (nodeInfo.Systemname == KOMMUNIKATOR)
-					FKomNodeInfo = nodeInfo;
-				else if (nodeInfo.Systemname == NODE_BROWSER)
-					FNodeBrowserNodeInfo = nodeInfo;
-			}
+			NodeInfoFactory.NodeInfoAdded -= NodeInfoFactory_NodeInfoAdded;
 			
 			//now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
 			var nodeInfoFactory = FVVVVHost.NodeInfoFactory;
@@ -249,6 +240,16 @@ namespace VVVV.Hosting
 			{
 				Logger.Log(e);
 			}
+		}
+
+		void NodeInfoFactory_NodeInfoAdded(object sender, INodeInfo nodeInfo)
+		{
+			if (nodeInfo.Systemname == WINDOW_SWITCHER)
+				FWinSwNodeInfo = nodeInfo;
+			else if (nodeInfo.Systemname == KOMMUNIKATOR)
+				FKomNodeInfo = nodeInfo;
+			else if (nodeInfo.Systemname == NODE_BROWSER)
+				FNodeBrowserNodeInfo = nodeInfo;
 		}
 
 		public void GetHDEPlugins(out IPluginBase nodeBrowser, out IPluginBase windowSwitcher, out IPluginBase kommunikator)
@@ -303,7 +304,6 @@ namespace VVVV.Hosting
 			}
 			finally
 			{
-				FNodes.Add(node);
 				OnNodeAdded(new NodeEventArgs(node));
 			}
 			
@@ -327,7 +327,6 @@ namespace VVVV.Hosting
 			}
 			finally
 			{
-				FNodes.Remove(node);
 				OnNodeRemoved(new NodeEventArgs(node));
 			}
 			
@@ -523,20 +522,20 @@ namespace VVVV.Hosting
 		
 		public INode Root
 		{
-		    get
+			get
 			{
-		        return FVVVVHost.Root;
+				return FVVVVHost.Root;
 			}
 		}
 		
 		private INode2 FRootNode;
 		public INode2 RootNode
 		{
-		    get
+			get
 			{
-		        if (FRootNode == null)
-		            FRootNode = new Node(FVVVVHost.Root, NodeInfoFactory);
-		        return FRootNode;
+				if (FRootNode == null)
+					FRootNode = new Node(FVVVVHost.Root, NodeInfoFactory);
+				return FRootNode;
 			}
 		}
 		
@@ -621,10 +620,9 @@ namespace VVVV.Hosting
 		protected IEnumerable<INode> GetAffectedNodes(INodeInfo nodeInfo)
 		{
 			return
-				from node in FNodes
-				let ni = NodeInfoFactory.ToProxy(node.GetNodeInfo())
-				where ni == nodeInfo
-				select node;
+				from node in RootNode.AsDepthFirstEnumerable()
+				where nodeInfo == node.NodeInfo
+				select node.InternalCOMInterf;
 		}
 		
 		/// <summary>

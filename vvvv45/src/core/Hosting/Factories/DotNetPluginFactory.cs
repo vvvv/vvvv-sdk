@@ -49,7 +49,7 @@ namespace VVVV.Hosting.Factories
 		protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
 		
 		protected HostExportProvider FHostExportProvider;
-		public List<ExportProvider> ExportProviders
+		public ExportProvider[] ExportProviders
 		{
 			get;
 			private set;
@@ -70,7 +70,7 @@ namespace VVVV.Hosting.Factories
 			FPluginLifetimeContexts = new Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>>();
 			FCatalogCache = new Dictionary<string, ComposablePartCatalog>();
 			FHostExportProvider = new HostExportProvider();
-			ExportProviders = new List<ExportProvider>() { FHostExportProvider, parentContainer };
+			ExportProviders = new ExportProvider[] { FHostExportProvider, parentContainer };
 		}
 		#endregion
 		
@@ -247,7 +247,7 @@ namespace VVVV.Hosting.Factories
 		{
 			var nodeInfos = new Dictionary<string, INodeInfo>();
 			
-			var container = new CompositionContainer(catalog, ExportProviders.ToArray());
+			var container = new CompositionContainer(catalog, ExportProviders);
 			container.ComposeParts(FPluginImporter);
 			
 			foreach (var pluginExport in FPluginImporter.NodeInfoExports)

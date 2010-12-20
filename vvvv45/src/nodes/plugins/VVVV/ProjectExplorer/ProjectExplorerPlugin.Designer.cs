@@ -113,7 +113,7 @@ namespace VVVV.HDE.ProjectExplorer
 			this.FTreeViewer.ShowPlusMinus = true;
 			this.FTreeViewer.ShowRoot = false;
 			this.FTreeViewer.ShowRootLines = true;
-			this.FTreeViewer.ShowTooltip = false;
+			this.FTreeViewer.ShowTooltip = true;
 			this.FTreeViewer.Size = new System.Drawing.Size(422, 309);
 			this.FTreeViewer.TabIndex = 1;
 			// 
