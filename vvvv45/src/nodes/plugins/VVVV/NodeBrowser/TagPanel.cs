@@ -384,10 +384,9 @@ namespace VVVV.Nodes.NodeBrowser
             {
                 fn = Path.GetDirectoryName(nodeInfo.Filename);
             }
-            catch
-            {
-
-            }
+            catch {}
+            if (fn == null)
+            	fn = "";
             
             if (NodeBrowser.CurrentPatchWindow == null || nodeInfo != NodeBrowser.CurrentPatchWindow.GetNode().GetNodeInfo())
 			{

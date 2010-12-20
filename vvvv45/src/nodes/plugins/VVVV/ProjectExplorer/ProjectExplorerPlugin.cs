@@ -67,6 +67,7 @@ namespace VVVV.HDE.ProjectExplorer
 				
 				FMappingRegistry = new MappingRegistry();
 				FMappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
+				FMappingRegistry.RegisterDefaultMapping<IParent, DefaultParentProvider>();
 				// Do not allow drag'n drop except for references.
 //				FMappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
 //				FMappingRegistry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();

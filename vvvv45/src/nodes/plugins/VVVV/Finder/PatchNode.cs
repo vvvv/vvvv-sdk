@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Collections;
 
 using VVVV.Core;
 using VVVV.Core.View;
@@ -24,7 +25,7 @@ namespace VVVV.Nodes.Finder
         static SolidBrush SLightBlue = new SolidBrush(Color.FromArgb(162, 174, 229));
         static SolidBrush SHoverBlue = new SolidBrush(Color.FromArgb(158, 193, 233));
         
-        public IViewableCollection Childs { get; private set; }
+        public IEnumerable Childs { get; private set; }
         EditableList<PatchNode> FChildNodes = new EditableList<PatchNode>();
         public IEditableList<PatchNode> ChildNodes { get {return FChildNodes;} }
         
