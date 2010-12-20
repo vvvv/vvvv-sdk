@@ -5,16 +5,17 @@ using System.Linq;
 using VVVV.Core;
 using VVVV.Core.Model;
 using VVVV.Core.View;
-using VVVV.HDE.ProjectExplorer.NodeModel;
+using VVVV.Hosting.Graph;
+using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.Linq;
 
 namespace VVVV.HDE.ProjectExplorer
 {
 	public class LoadedProjectsSolutionViewProvider : SolutionViewProvider
 	{
-		private Node FRootNode;
+		private INode2 FRootNode;
 		
-		public LoadedProjectsSolutionViewProvider(ISolution solution, Node rootNode, ModelMapper mapper)
+		public LoadedProjectsSolutionViewProvider(ISolution solution, INode2 rootNode, ModelMapper mapper)
 			: base(solution, mapper)
 		{
 			FRootNode = rootNode;
@@ -22,7 +23,7 @@ namespace VVVV.HDE.ProjectExplorer
 			node_Added(null, FRootNode);
 		}
 		
-		void node_Added(IViewableCollection<Node> collection, Node item)
+		void node_Added(IViewableCollection<INode2> collection, INode2 item)
 		{
 			item.Added += node_Added;
 			item.Removed += node_Removed;
@@ -35,7 +36,7 @@ namespace VVVV.HDE.ProjectExplorer
 				OnOrderChanged();
 		}
 
-		void node_Removed(IViewableCollection<Node> collection, Node item)
+		void node_Removed(IViewableCollection<INode2> collection, INode2 item)
 		{
 			item.Added -= node_Added;
 			item.Removed -= node_Removed;

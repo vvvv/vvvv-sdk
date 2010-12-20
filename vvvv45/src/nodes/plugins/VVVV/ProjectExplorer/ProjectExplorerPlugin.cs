@@ -11,13 +11,13 @@ using VVVV.Core.Menu;
 using VVVV.Core.Model;
 using VVVV.Core.Model.FX;
 using VVVV.Core.View;
-using VVVV.HDE.ProjectExplorer.NodeModel;
 using VVVV.HDE.Viewer.WinFormsViewer;
 using VVVV.Hosting.Factories;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.ManagedVCL;
+using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.Linq;
+using VVVV.Utils.ManagedVCL;
 
 namespace VVVV.HDE.ProjectExplorer
 {
@@ -35,7 +35,7 @@ namespace VVVV.HDE.ProjectExplorer
 	#endregion PluginInfo
 	public partial class ProjectExplorerPlugin : TopControl, IPluginBase
 	{
-		private readonly Node FRootNode;
+		private readonly INode2 FRootNode;
 		
 		protected ILogger FLogger;
 		protected IDiffSpread<bool> FHideUnusedProjectsIn;
@@ -55,7 +55,7 @@ namespace VVVV.HDE.ProjectExplorer
 		{
 			try
 			{
-				FRootNode = new Node(hdeHost.Root);
+				FRootNode = hdeHost.RootNode;
 				
 				Solution = solution;
 				FLogger = logger;

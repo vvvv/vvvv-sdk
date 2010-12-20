@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Microsoft.Practices.Unity;
 
+using Microsoft.Practices.Unity;
 using VVVV.Core;
 using VVVV.Core.Model;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2.Graph;
 
 namespace VVVV.PluginInterfaces.V2
 {
@@ -97,6 +98,11 @@ namespace VVVV.PluginInterfaces.V2
 	    /// </summary>
 	    /// <returns>The graphs root node.</returns>
 	    INode Root
+	    {
+	        get;
+	    }
+	    
+	    INode2 RootNode
 	    {
 	        get;
 	    }

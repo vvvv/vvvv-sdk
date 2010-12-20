@@ -5,11 +5,11 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
-using System.Linq;
 
 using Microsoft.Practices.Unity;
 using VVVV.Core;
@@ -18,9 +18,11 @@ using VVVV.Core.Logging;
 using VVVV.Core.Model;
 using VVVV.Hosting;
 using VVVV.Hosting.Factories;
+using VVVV.Hosting.Graph;
 using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.Graph;
 
 namespace VVVV.Hosting
 {
@@ -524,6 +526,17 @@ namespace VVVV.Hosting
 		    get
 			{
 		        return FVVVVHost.Root;
+			}
+		}
+		
+		private INode2 FRootNode;
+		public INode2 RootNode
+		{
+		    get
+			{
+		        if (FRootNode == null)
+		            FRootNode = new Node(FVVVVHost.Root, NodeInfoFactory);
+		        return FRootNode;
 			}
 		}
 		
