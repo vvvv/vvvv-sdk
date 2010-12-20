@@ -67,6 +67,7 @@ namespace VVVV.Nodes.NodeBrowser
             
             var mappingRegistry = new MappingRegistry();
             mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
+            mappingRegistry.RegisterDefaultMapping<IParent, DefaultParentProvider>();
             mappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
             mappingRegistry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();
             
