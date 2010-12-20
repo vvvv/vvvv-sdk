@@ -222,8 +222,8 @@ namespace VVVV.HDE.CodeEditor
 			if (document != null)
 			{
 				OpenedFile = filename;
-				AttachedProject = document.Project;
 				FEditor.TextDocument = document;
+				AttachedProject = document.Project;
 				
 				if (document is CSDocument)
 				{
