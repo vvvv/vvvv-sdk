@@ -44,6 +44,7 @@ namespace VVVV.Nodes.Finder
         private IPin FLabelPin;
         private IPin FCommentPin;
         private INodeInfo FNodeInfo;
+        private Filter FFilter;
         
         public PatchNode()
         {
@@ -51,12 +52,21 @@ namespace VVVV.Nodes.Finder
             Childs = FChildNodes.AsViewableList();
         }
         
+        public PatchNode(INode self, Filter filter, bool includeChildren, bool recursively) : this()
+        {
+        	Node = self;
+        	FFilter = filter;
+        	
+        	if (NodeType == NodeType.Patch && includeChildren)
+                InitChildren(recursively);
+        }
+        
         public PatchNode(INode self) : this()
         {
             Node = self;
             
-            if (NodeType != NodeType.Module)
-                InitChildren();
+            if (NodeType == NodeType.Patch)
+                InitChildren(true);
         }
         
         public void Dispose()
@@ -152,6 +162,138 @@ namespace VVVV.Nodes.Finder
                 FSelected = value;
                 OnSelectionChanged(null);
             }
+        }
+        
+        private bool CheckForInclusion(PatchNode node)
+		{
+        	if (FFilter.Tags == null)
+        		return true;
+        	
+			bool include = false;
+			
+			if (FFilter.Tags.Count == 0)
+			{
+				if (FFilter.QuickTagsUsed())
+				{
+					include = FFilter.SendReceive && !string.IsNullOrEmpty(node.SRChannel);
+					include |= FFilter.Comments && !string.IsNullOrEmpty(node.Comment);
+					include |= FFilter.Labels && !string.IsNullOrEmpty(node.DescriptiveName);
+					include |= FFilter.IONodes && node.IsIONode;
+					include |= FFilter.Natives && node.NodeType == NodeType.Native;
+					include |= FFilter.Modules && node.NodeType == NodeType.Module;
+					include |= FFilter.Effects && node.NodeType == NodeType.Effect;
+					include |= FFilter.Freeframes && node.NodeType == NodeType.Freeframe;
+					include |= FFilter.VSTs && node.NodeType == NodeType.VST;
+					include |= FFilter.Plugins && (node.NodeType == NodeType.Plugin || node.NodeType == NodeType.Dynamic);
+					include |= FFilter.Patches && node.NodeType == NodeType.Patch;
+					include |= FFilter.Unknowns && node.IsMissing;
+					include |= FFilter.Boygrouped && node.IsBoygrouped;
+					include |= FFilter.Addons && (node.NodeType != NodeType.Native && node.NodeType != NodeType.Text && node.NodeType != NodeType.Patch);
+					include |= FFilter.Windows && (node.Node.HasGUI() || (node.Node.HasPatch() && node.NodeType != NodeType.Module));
+				}
+				else
+					include = true;
+			}
+			else
+			{
+				if (FFilter.SendReceive && !string.IsNullOrEmpty(node.SRChannel))
+				{
+					var inc = true;
+					var channel = node.SRChannel.ToLower();
+					
+					foreach (string tag in FFilter.Tags)
+						inc = inc && channel.Contains(tag);
+					include |= inc;
+				}
+				if (FFilter.IDs)
+				{
+					var inc = true;
+					var id = node.ID;
+					
+					foreach (string tag in FFilter.Tags)
+						inc = inc && int.Parse(tag) == id;
+					include |= inc;
+				}
+				if (FFilter.Comments && !string.IsNullOrEmpty(node.Comment))
+				{
+					var inc = true;
+					var comment = node.Comment.ToLower();
+					
+					foreach (string tag in FFilter.Tags)
+						inc = inc && comment.Contains(tag);
+					include |= inc;
+				}
+				if (FFilter.IONodes && node.IsIONode)
+				{
+					var inc = true;
+					var dname = node.DescriptiveName.ToLower();
+					
+					foreach (string tag in FFilter.Tags)
+						inc = inc && dname.Contains(tag);
+					include |= inc;
+				}
+				if (FFilter.Labels && !string.IsNullOrEmpty(node.DescriptiveName))
+				{
+					var inc = true;
+					var dname = node.DescriptiveName.ToLower();
+					
+					foreach (string tag in FFilter.Tags)
+						inc = inc && dname.Contains(tag);
+					include |= inc;
+				}
+				if ((FFilter.Effects && node.NodeType == NodeType.Effect)
+				    || (FFilter.Modules && node.NodeType == NodeType.Module)
+				    || (FFilter.Plugins && (node.NodeType == NodeType.Plugin || node.NodeType == NodeType.Dynamic))
+				    || (FFilter.Freeframes && node.NodeType == NodeType.Freeframe)
+				    || (FFilter.Natives && node.NodeType == NodeType.Native)
+				    || (FFilter.VSTs && node.NodeType == NodeType.VST)
+				    || (FFilter.Patches && node.NodeType == NodeType.Patch)
+				    || (FFilter.Unknowns && node.IsMissing)
+				    || (FFilter.Boygrouped && node.IsBoygrouped)
+				    || (FFilter.Addons && (node.NodeType != NodeType.Native && node.NodeType != NodeType.Text && node.NodeType != NodeType.Patch))
+				    || (FFilter.Windows && (node.Node.HasGUI() || (node.Node.HasPatch() && node.NodeType != NodeType.Module))))
+				{
+					var inc = true;
+					var name = node.Name.ToLower();
+					
+					foreach (string tag in FFilter.Tags)
+						inc = inc && name.Contains(tag);
+					include |= inc;
+				}
+				
+				//if non of the one-character tags is chosen
+				if (!FFilter.QuickTagsUsed())
+				{
+					var inc = true;
+					var name = node.Name.ToLower();
+					
+					foreach (string tag in FFilter.Tags)
+						inc = inc && name.Contains(tag);
+					include |= inc;
+				}
+			}
+			
+			if (include)
+				node.SetTags(FFilter.Tags);
+			
+			return include;
+		}
+        
+        public PatchNode FindNode(INode node)
+        {
+            if (FNode == node)
+            	return this;
+            else
+            {
+                foreach(var child in FChildNodes)
+                {
+                	var n = child.FindNode(node);
+                	if (n != null)
+                		return n;
+                }
+            }
+            
+            return null;
         }
         
         public void SetActiveWindow(IWindow window)
@@ -347,10 +489,13 @@ namespace VVVV.Nodes.Finder
                 FChildNodes.BeginUpdate();
                 try
                 {
-                    var pn = new PatchNode(childNode);
-                    FChildNodes.Add(pn);
-                    pn.Renamed += child_Renamed;
-                    SortChildren();
+                    var pn = new PatchNode(childNode, FFilter, false, false);
+                    if (CheckForInclusion(pn))
+                    {
+                    	FChildNodes.Add(pn);
+                    	pn.Renamed += child_Renamed;
+                    	SortChildren();
+                    }
                 }
                 finally
                 {
@@ -395,7 +540,7 @@ namespace VVVV.Nodes.Finder
         }
         #endregion IPinListener
         
-        private void InitChildren()
+        private void InitChildren(bool recursively)
         {
             if (Node == null)
                 return;
@@ -408,7 +553,11 @@ namespace VVVV.Nodes.Finder
                 try
                 {
                     foreach(INode child in children)
-                        FChildNodes.Add(new PatchNode(child));
+                    {
+                    	var pn = new PatchNode(child, FFilter, recursively, recursively);
+                    	if (pn.ChildNodes.Count > 0 || CheckForInclusion(pn))
+                    		FChildNodes.Add(pn);
+                    }
                     
                     SortChildren();
                 }

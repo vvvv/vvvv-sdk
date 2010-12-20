@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using Microsoft.Practices.Unity;
 using VVVV.Core;
+using VVVV.Core.Logging;
 using VVVV.Core.Menu;
 using VVVV.Core.View;
 using VVVV.HDE.Viewer;
@@ -21,7 +22,141 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.Finder
 {
-	public enum SearchScope {Global, Local, Downstream};
+	public enum SearchScope {Local, Downstream, Global};
+	
+	public struct Filter
+	{
+		public SearchScope Scope;
+		public bool SendReceive;
+		public bool Comments;
+		public bool Labels;
+		public bool Effects;
+		public bool Freeframes;
+		public bool Modules;
+		public bool Plugins;
+		public bool IONodes;
+		public bool Natives;
+		public bool VSTs;
+		public bool Patches;
+		public bool Unknowns;
+		public bool Boygrouped;
+		public bool Addons;
+		public bool Windows;
+		public bool IDs;
+		private List<string> FTags;
+		public List<string> Tags
+		{
+			get {return FTags;}
+			set
+			{
+				FTags = value;
+				
+				if (FTags .Contains("g"))
+				{
+					Scope = SearchScope.Global;
+					FTags .Remove("g");
+				}
+				else if (FTags .Contains("d"))
+				{
+					Scope = SearchScope.Downstream;
+					FTags .Remove("d");
+				}
+				
+				if (FTags.Contains("s"))
+				{
+					SendReceive = true;
+					FTags.Remove("s");
+				}
+				if (FTags.Contains("/"))
+				{
+					Comments = true;
+					FTags.Remove("/");
+				}
+				if (FTags.Contains("l"))
+				{
+					Labels = true;
+					FTags.Remove("l");
+				}
+				if (FTags.Contains("x"))
+				{
+					Effects = true;
+					FTags.Remove("x");
+				}
+				if (FTags.Contains("f"))
+				{
+					Freeframes = true;
+					FTags.Remove("f");
+				}
+				if (FTags.Contains("m"))
+				{
+					Modules = true;
+					FTags.Remove("m");
+				}
+				if (FTags.Contains("p"))
+				{
+					Plugins = true;
+					FTags.Remove("p");
+				}
+				if (FTags.Contains("i"))
+				{
+					IONodes = true;
+					FTags.Remove("i");
+				}
+				if (FTags.Contains("n"))
+				{
+					Natives = true;
+					FTags.Remove("n");
+				}
+				if (FTags.Contains("v"))
+				{
+					VSTs = true;
+					FTags.Remove("v");
+				}
+				if (FTags.Contains("t"))
+				{
+					Patches = true;
+					FTags.Remove("t");
+				}
+				if (FTags.Contains("r"))
+				{
+					Unknowns = true;
+					FTags.Remove("r");
+				}
+				if (FTags.Contains("a"))
+				{
+					Addons = true;
+					FTags.Remove("a");
+				}
+				if (FTags.Contains("b"))
+				{
+					Boygrouped = true;
+					FTags.Remove("b");
+				}
+				if (FTags.Contains("w"))
+				{
+					Windows = true;
+					FTags.Remove("w");
+				}
+				if (FTags.Contains("#"))
+				{
+					IDs = true;
+					FTags.Remove("#");
+				}
+				
+				//clean up the list
+				FTags[FTags.Count-1] = FTags[FTags.Count-1].Trim((char) 160);
+				while (FTags.Contains(" "))
+					FTags.Remove(" ");
+				if (FTags.Contains(""))
+					FTags.Remove("");
+			}
+		}
+		
+		public bool QuickTagsUsed()
+		{
+			return SendReceive || Comments || Labels || IONodes || Natives || Modules || Effects || Freeframes || VSTs || Plugins || Patches || Unknowns || Addons || Boygrouped || Windows || IDs;
+		}
+	}
 	
 	[PluginInfo(Name = "Finder",
 	            Category = "HDE",
@@ -42,38 +177,21 @@ namespace VVVV.Nodes.Finder
 		private IHDEHost FHDEHost;
 		private MappingRegistry FMappingRegistry;
 		private List<PatchNode> FPlainResultList = new List<PatchNode>();
-		private SearchScope FSearchScope = SearchScope.Local;
 		
 		private IWindow FActivePatchWindow;
 		private IWindow FActiveWindow;
-		private PatchNode FSearchResult;
-		private PatchNode FActivePatchNode;
-		private PatchNode FRoot;
-		
-		private bool FSendReceive;
-		private bool FComments;
-		private bool FLabels;
-		private bool FEffects;
-		private bool FFreeframes;
-		private bool FModules;
-		private bool FPlugins;
-		private bool FIONodes;
-		private bool FNatives;
-		private bool FVSTs;
-		private bool FPatches;
-		private bool FUnknowns;
-		private bool FBoygrouped;
-		private bool FAddons;
-		private bool FWindows;
-		private bool FIDs;
-		
+		private INode FActivePatchNode;
 		private INode FActivePatchParent;
-		private List<string> FTags;
+		private PatchNode FSearchResult;
+		
+		private Filter FFilter;
 		private int FSearchIndex;
-		private List<INode> FNodes = new List<INode>();
 		
 		// Track whether Dispose has been called.
 		private bool FDisposed = false;
+		
+		[Import]
+		ILogger FLogger;
 		#endregion field declaration
 		
 		#region constructor/destructor
@@ -222,14 +340,10 @@ namespace VVVV.Nodes.Finder
 					FHDEHost.WindowSelectionChanged -= FHDEHost_WindowSelectionChanged;
 					FTagsPin.Changed -= FTagsPin_Changed;
 					
-					if (FRoot != FActivePatchNode)
-						FRoot.Dispose();
-					
-					if (FActivePatchNode != null)
-						FActivePatchNode.Dispose();
-					
 					if (FSearchResult != null)
 						FSearchResult.Dispose();
+					
+					FActivePatchNode = null;
 					
 					this.FSearchTextBox.TextChanged -= this.FSearchTextBoxTextChanged;
 					this.FSearchTextBox.KeyDown -= this.FSearchTextBoxKeyDown;
@@ -277,42 +391,22 @@ namespace VVVV.Nodes.Finder
 			if (windowType == WindowType.Module || windowType == WindowType.Patch)
 			{
 				if (window != FActivePatchWindow)
-				{
-					if (FActivePatchNode != null)
-						FActivePatchNode.Dispose();
-					if (FActivePatchParent != null)
-						FActivePatchParent.RemoveListener(this);
-					
-					FActivePatchNode = new PatchNode(window.GetNode());
-					
-					//the hosts window may be null if the plugin is created hidden on startup
-					if (FPluginHost.Window != null)
-						FPluginHost.Window.Caption = FActivePatchNode.Name;
-					
-					FActivePatchParent = FindParent(FHDEHost.Root, window.GetNode());
-					//if this is not the root
-					if (FActivePatchParent != null)
-						FActivePatchParent.AddListener(this);
-					
-					UpdateSearch();
-					
-					FActivePatchWindow = window;
-				}
+					SetActivePatch(window);
 				else
 					updateActiveWindow = true;
 			}
 			else
 			{
-				//activepatchwindow may no longer exist when a window other than a patch is activated
-				//this may be due to all patches have been deleted
-				if (FActivePatchWindow != FHDEHost.ActivePatchWindow)
+				if (FHDEHost.ActivePatchWindow == null)
 				{
 					ClearSearch();
-					if (FActivePatchNode != null)
-						FActivePatchNode.Dispose();
+					FActivePatchNode = null;
 					if (FActivePatchParent != null)
 						FActivePatchParent.RemoveListener(this);
 				}
+				else
+					SetActivePatch(FHDEHost.ActivePatchWindow);
+					
 				updateActiveWindow = true;
 			}
 			
@@ -321,6 +415,26 @@ namespace VVVV.Nodes.Finder
 				FSearchResult.SetActiveWindow(FActiveWindow);
 				FHierarchyViewer.Redraw();
 			}
+		}
+		
+		private void SetActivePatch(IWindow patch)
+		{
+			if (FActivePatchParent != null)
+				FActivePatchParent.RemoveListener(this);
+			
+			FActivePatchNode = patch.GetNode();
+			FActivePatchWindow = patch;
+			
+			//the hosts window may be null if the plugin is created hidden on startup
+			if (FPluginHost.Window != null)
+				FPluginHost.Window.Caption = FActivePatchNode.GetNodeInfo().Systemname;
+			
+			FActivePatchParent = FindParent(FHDEHost.Root, FActivePatchNode);
+			//if this is not the root
+			if (FActivePatchParent != null)
+				FActivePatchParent.AddListener(this);
+			
+			UpdateSearch();
 		}
 		#endregion IWindowSelectionListener
 		
@@ -334,9 +448,8 @@ namespace VVVV.Nodes.Finder
 		{
 			//if active patch is being deleted
 			//detach view
-			if (childNode == FActivePatchNode.Node)
+			if (childNode == FActivePatchNode)
 			{
-				FActivePatchNode.Dispose();
 				FActivePatchNode = null;
 				FActivePatchWindow = null;
 				FActiveWindow = null;
@@ -347,9 +460,8 @@ namespace VVVV.Nodes.Finder
 					FActivePatchParent = null;
 				}
 				
-				if (FSearchScope != SearchScope.Global)
+				if (FFilter.Scope != SearchScope.Global)
 					ClearSearch();
-				//FHierarchyViewer.UpdateView();
 			}
 		}
 		
@@ -398,316 +510,46 @@ namespace VVVV.Nodes.Finder
 			}
 		}
 		
-		private void AddNodesByTag(PatchNode searchResult, PatchNode sourceTree)
-		{
-			//go through child nodes of sourceTree recursively and see if any contains the tag
-			foreach (PatchNode node in sourceTree.ChildNodes)
-			{
-				//now first go downstream recursively
-				//to see if this pn is needed in the hierarchy to hold any matching downstream nodes
-				//create a dummy to attach possible matching downstream nodes
-				var parent = new PatchNode();
-				parent.Node = node.Node;
-				AddNodesByTag(parent, node);
-				
-				var include = CheckForInclusion(parent);
-				if (parent.ChildNodes.Count > 0 || include)
-				{
-					searchResult.ChildNodes.Add(parent);
-					if (include)
-						FPlainResultList.Add(parent);
-				}
-				else
-					parent.Dispose();
-			}
-		}
-		
-		private bool CheckForInclusion(PatchNode node)
-		{
-			bool include = false;
-			var quickTagsUsed = FSendReceive || FComments || FLabels || FIONodes || FNatives || FModules || FEffects || FFreeframes || FVSTs || FPlugins || FPatches || FUnknowns || FAddons || FBoygrouped || FWindows || FIDs;
-			
-			if (FTags.Count == 0)
-			{
-				if (quickTagsUsed)
-				{
-					include = FSendReceive && !string.IsNullOrEmpty(node.SRChannel);
-					include |= FComments && !string.IsNullOrEmpty(node.Comment);
-					include |= FLabels && !string.IsNullOrEmpty(node.DescriptiveName);
-					include |= FIONodes && node.IsIONode;
-					include |= FNatives && node.NodeType == NodeType.Native;
-					include |= FModules && node.NodeType == NodeType.Module;
-					include |= FEffects && node.NodeType == NodeType.Effect;
-					include |= FFreeframes && node.NodeType == NodeType.Freeframe;
-					include |= FVSTs && node.NodeType == NodeType.VST;
-					include |= FPlugins && (node.NodeType == NodeType.Plugin || node.NodeType == NodeType.Dynamic);
-					include |= FPatches && node.NodeType == NodeType.Patch;
-					include |= FUnknowns && node.IsMissing;
-					include |= FBoygrouped && node.IsBoygrouped;
-					include |= FAddons && (node.NodeType != NodeType.Native && node.NodeType != NodeType.Text && node.NodeType != NodeType.Patch);
-					include |= FWindows && (node.Node.HasGUI() || (node.Node.HasPatch() && node.NodeType != NodeType.Module));
-				}
-				else
-					include = true;
-			}
-			else
-			{
-				if (FSendReceive && !string.IsNullOrEmpty(node.SRChannel))
-				{
-					var inc = true;
-					var channel = node.SRChannel.ToLower();
-					
-					foreach (string tag in FTags)
-						inc = inc && channel.Contains(tag);
-					include |= inc;
-				}
-				if (FIDs)
-				{
-					var inc = true;
-					var id = node.ID;
-					
-					foreach (string tag in FTags)
-						inc = inc && int.Parse(tag) == id;
-					include |= inc;
-				}
-				if (FComments && !string.IsNullOrEmpty(node.Comment))
-				{
-					var inc = true;
-					var comment = node.Comment.ToLower();
-					
-					foreach (string tag in FTags)
-						inc = inc && comment.Contains(tag);
-					include |= inc;
-				}
-				if (FIONodes && node.IsIONode)
-				{
-					var inc = true;
-					var dname = node.DescriptiveName.ToLower();
-					
-					foreach (string tag in FTags)
-						inc = inc && dname.Contains(tag);
-					include |= inc;
-				}
-				if (FLabels && !string.IsNullOrEmpty(node.DescriptiveName))
-				{
-					var inc = true;
-					var dname = node.DescriptiveName.ToLower();
-					
-					foreach (string tag in FTags)
-						inc = inc && dname.Contains(tag);
-					include |= inc;
-				}
-				if ((FEffects && node.NodeType == NodeType.Effect)
-				    || (FModules && node.NodeType == NodeType.Module)
-				    || (FPlugins && (node.NodeType == NodeType.Plugin || node.NodeType == NodeType.Dynamic))
-				    || (FFreeframes && node.NodeType == NodeType.Freeframe)
-				    || (FNatives && node.NodeType == NodeType.Native)
-				    || (FVSTs && node.NodeType == NodeType.VST)
-				    || (FPatches && node.NodeType == NodeType.Patch)
-				    || (FUnknowns && node.IsMissing)
-				    || (FBoygrouped && node.IsBoygrouped)
-				    || (FAddons && (node.NodeType != NodeType.Native && node.NodeType != NodeType.Text && node.NodeType != NodeType.Patch))
-				    || (FWindows && (node.Node.HasGUI() || (node.Node.HasPatch() && node.NodeType != NodeType.Module))))
-				{
-					var inc = true;
-					var name = node.Name.ToLower();
-					
-					foreach (string tag in FTags)
-						inc = inc && name.Contains(tag);
-					include |= inc;
-				}
-				
-				//if non of the one-character tags is chosen
-				if (!quickTagsUsed)
-				{
-					var inc = true;
-					var name = node.Name.ToLower();
-					
-					foreach (string tag in FTags)
-						inc = inc && name.Contains(tag);
-					include |= inc;
-				}
-			}
-			
-			if (include)
-				node.SetTags(FTags);
-			
-			return include;
-		}
-		
 		private void ClearSearch()
 		{
 			if (FSearchResult != null)
 				FSearchResult.Dispose();
 			FPlainResultList.Clear();
 			FSearchIndex = 0;
-			
-			FSearchResult = new PatchNode();
 		}
 		
 		private void UpdateSearch()
 		{
-			//we only need to get the root once
-			//in the constructor it is too early since finder might be placed in root
-			//and constructor of finder would be called before root was available
-			if (FRoot == null && FHDEHost.Root != null)
-				FRoot = new PatchNode(FHDEHost.Root);
-			
-			if (FRoot == null)
+			if (FHDEHost.Root == null)
 				return;
 			
 			string query = FSearchTextBox.Text.ToLower();
 			query += (char) 160;
 			
-			FHierarchyViewer.ShowLinks = false;
-			
-			//check for tags in query:
-			//g: global
-			//d: downstream
-			//default scope: local
-			FSearchScope = SearchScope.Local;
-			FTags = query.Split(new char[1]{' '}).ToList();
-			
-			if (FTags.Contains("g"))
-			{
-				FSearchScope = SearchScope.Global;
-				FTags.Remove("g");
-			}
-			else if (FTags.Contains("d"))
-			{
-				FSearchScope = SearchScope.Downstream;
-				FTags.Remove("d");
-			}
-			
-			FSendReceive = FComments = FLabels = FEffects = FFreeframes = FModules = FPlugins = FIONodes = FNatives = FVSTs = FAddons = FUnknowns = FPatches = FBoygrouped = FWindows = FIDs = false;
-			if (FTags.Contains("s"))
-			{
-				FSendReceive = true;
-				FTags.Remove("s");
-				FHierarchyViewer.ShowLinks = true;
-			}
-			if (FTags.Contains("/"))
-			{
-				FComments = true;
-				FTags.Remove("/");
-			}
-			if (FTags.Contains("l"))
-			{
-				FLabels = true;
-				FTags.Remove("l");
-			}
-			if (FTags.Contains("x"))
-			{
-				FEffects = true;
-				FTags.Remove("x");
-			}
-			if (FTags.Contains("f"))
-			{
-				FFreeframes = true;
-				FTags.Remove("f");
-			}
-			if (FTags.Contains("m"))
-			{
-				FModules = true;
-				FTags.Remove("m");
-			}
-			if (FTags.Contains("p"))
-			{
-				FPlugins = true;
-				FTags.Remove("p");
-			}
-			if (FTags.Contains("i"))
-			{
-				FIONodes = true;
-				FTags.Remove("i");
-			}
-			if (FTags.Contains("n"))
-			{
-				FNatives = true;
-				FTags.Remove("n");
-			}
-			if (FTags.Contains("v"))
-			{
-				FVSTs = true;
-				FTags.Remove("v");
-			}
-			if (FTags.Contains("t"))
-			{
-				FPatches = true;
-				FTags.Remove("t");
-			}
-			if (FTags.Contains("r"))
-			{
-				FUnknowns = true;
-				FTags.Remove("r");
-			}
-			if (FTags.Contains("a"))
-			{
-				FAddons = true;
-				FTags.Remove("a");
-			}
-			if (FTags.Contains("b"))
-			{
-				FBoygrouped = true;
-				FTags.Remove("b");
-			}
-			if (FTags.Contains("w"))
-			{
-				FWindows = true;
-				FTags.Remove("w");
-			}
-			if (FTags.Contains("#"))
-			{
-				FIDs = true;
-				FTags.Remove("#");
-			}
-			
-			//clean up the list
-			FTags[FTags.Count-1] = FTags[FTags.Count-1].Trim((char) 160);
-			while (FTags.Contains(" "))
-				FTags.Remove(" ");
-			if (FTags.Contains(""))
-				FTags.Remove("");
+			FFilter = new Filter();
+			FFilter.Tags = query.Split(new char[1]{' '}).ToList();
+			FHierarchyViewer.ShowLinks = FFilter.SendReceive;
 			
 			FHierarchyViewer.BeginUpdate();
 			try
 			{
 				ClearSearch();
 				
-				switch (FSearchScope)
+				switch (FFilter.Scope)
 				{
 					case SearchScope.Global:
 						{
-							//go through child nodes of FRoot recursively and see if any contains the tag
-							FSearchResult.Node = FRoot.Node;
-							AddNodesByTag(FSearchResult, FRoot);
+							FSearchResult = new PatchNode(FHDEHost.Root, FFilter, true, true);
 							break;
 						}
 					case SearchScope.Local:
 						{
-							//if there is no active patch, break out
-							if (FActivePatchNode == null)
-								break;
-							
-							FSearchResult.Node = FActivePatchNode.Node;
-							
-							//go through child nodes of FActivePatch and see if any contains the tag
-							foreach (PatchNode pn in FActivePatchNode.ChildNodes)
-								if (CheckForInclusion(pn))
-							{
-								var node = new PatchNode();
-								node.Node = pn.Node;
-								FSearchResult.ChildNodes.Add(node);
-								
-								FPlainResultList.Add(node);
-							}
+							FSearchResult = new PatchNode(FActivePatchNode, FFilter, true, false);
 							break;
 						}
 					case SearchScope.Downstream:
 						{
-							//go through child nodes of FActivePatch recursively and see if any contains the tag
-							FSearchResult.Node = FActivePatchNode.Node;
-							AddNodesByTag(FSearchResult, FActivePatchNode);
+							FSearchResult = new PatchNode(FActivePatchNode, FFilter, true, true);
 							break;
 						}
 				}
@@ -744,7 +586,7 @@ namespace VVVV.Nodes.Finder
 				FHDEHost.SelectNodes(new INode[1]{(sender.Model as PatchNode).Node});
 				
 				//only fit view to selected node if not in local scope
-				if (FSearchScope != SearchScope.Local)
+				if (FFilter.Scope != SearchScope.Local)
 					if (sender.CanMap<ICamera>())
 						sender.Map<ICamera>().View(sender.Model);
 			}
@@ -756,7 +598,7 @@ namespace VVVV.Nodes.Finder
 			else if ((int)e.Button == 2)
 			{
 				//only fit view to selected nodes parent if not in local scope
-				if (FSearchScope != SearchScope.Local)
+				if (FFilter.Scope != SearchScope.Local)
 					if (sender.CanMap<ICamera>())
 						sender.Map<ICamera>().ViewParent(sender.Model);
 			}
@@ -778,12 +620,12 @@ namespace VVVV.Nodes.Finder
 		private void OpenPatch(INode node)
 		{
 			if (node == null)
-				FHDEHost.ShowEditor(FindParent(FRoot.Node, FActivePatchNode.Node));
+				FHDEHost.ShowEditor(FindParent(FHDEHost.Root, FActivePatchNode));
 			else if (node.HasPatch())
 				FHDEHost.ShowEditor(node);
 			else
 			{
-				FHDEHost.ShowEditor(FindParent(FRoot.Node, node));
+				FHDEHost.ShowEditor(FindParent(FHDEHost.Root, node));
 				FHDEHost.SelectNodes(new INode[1]{node});
 			}
 		}
