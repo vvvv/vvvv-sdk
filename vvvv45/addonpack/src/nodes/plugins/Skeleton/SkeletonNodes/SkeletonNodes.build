@@ -8,21 +8,17 @@
   <include buildfile="${root.dir}/nant-plugins.xml" />
   <property name="lib.name" value="SkeletonNodes.dll" />
   
-  <!-- Do not build for now -->
-  <!-- <property name="plugin.ignore" value="true" /> -->
 
   <assemblyfileset id="project.references">
-	  <include name="${root.bin}/VVVV.PluginInterfaces.dll" />
-    <include name="${root.bin}/VVVV.Utils.dll" />
-		<include name="${lib.dir}/**/*.dll" />
-		<exclude name="${lib.dir}/**/VVVV.Utils.dll" />
-		<exclude name="${lib.dir}/**/VVVV.PluginInterfaces.dll" />
+    <include name="${lib.dir}/VVVV.PluginInterfaces.dll" />
+    <include name="${lib.dir}/VVVV.Utils.dll" />
+    <include name="${lib.dir}/VVVV.Utils3rdParty.dll" />
+    <include name="${lib.dir}/SlimDX.dll" />
     <include name="dependencies/SkeletonInterfaces.dll" />
   </assemblyfileset>
   
   <fileset id="project.sources" failonempty="true">
     <include name="**/*.cs" />
-    <include name="${shared.src}/SlimDX/SlimDXUtils.cs" />
   </fileset>
   
   <target name="post-build">
