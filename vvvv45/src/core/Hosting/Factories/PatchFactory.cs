@@ -39,9 +39,6 @@ namespace VVVV.Hosting.Factories
         {
             if (FDTD == "") LoadDTD();
 
-            //check extension
-            if (Path.GetExtension(filename) != FileExtension) yield break;
-            
             //check filename structure
             string fn = Path.GetFileNameWithoutExtension(filename);
             
