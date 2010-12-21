@@ -44,7 +44,7 @@ namespace VVVV.Nodes
 {
 	
 	//class definition
-	public class SpaceMousePlugin: IPlugin
+	public class SpaceMousePlugin: IPlugin, IDisposable
 	{
 		#region field declaration
 		
