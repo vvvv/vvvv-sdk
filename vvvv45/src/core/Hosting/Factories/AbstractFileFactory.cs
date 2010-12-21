@@ -76,6 +76,8 @@ namespace VVVV.Hosting.Factories
 			
 			if (nodeInfos.Count > 0)
 				FLogger.Log(LogType.Debug, "Loaded node infos from {0}.", filename);
+			else
+				((HDEHost) FHDEHost).MarkFileAsEmpty(filename);
 			
 			// If additional arguments are present vvvv is only interested in one specific
 			// NodeInfo -> look for it.

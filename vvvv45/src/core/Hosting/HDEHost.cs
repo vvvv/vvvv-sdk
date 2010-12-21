@@ -817,6 +817,11 @@ namespace VVVV.Hosting
 			return FNodeInfoCache[filename];
 		}
 		
+		public void MarkFileAsEmpty(string filename)
+		{
+			FNodeInfoCache[filename] = new HashSet<ProxyNodeInfo>();
+		}
+		
 		public void InvalidateCache(string filename)
 		{
 			if (FNodeInfoCache.ContainsKey(filename))
