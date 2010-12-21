@@ -138,7 +138,7 @@ namespace VVVV.PluginInterfaces.V2
 			}
 		}
 		
-		private void Add(string path, IAddonFactory factory, bool recursive)
+		public void Add(string path, IAddonFactory factory, bool recursive)
 		{
 			Add(new SearchPath(path, factory, recursive));
 		}

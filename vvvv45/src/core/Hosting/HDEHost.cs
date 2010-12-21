@@ -219,7 +219,9 @@ namespace VVVV.Hosting
 			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\NodeBrowser.dll"));
 			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\NodeCollector.dll"));
 			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\WindowSwitcher.dll"));
-//			NodeCollection.AddUnsorted(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
+			foreach (var factory in AddonFactories) 
+				if (factory is PatchFactory)
+				    NodeCollection.Add(ExePath.ConcatPath(@"help\"), factory, true);
 //			NodeCollection.Collect();
 			
 			NodeInfoFactory.NodeInfoAdded -= NodeInfoFactory_NodeInfoAdded;
