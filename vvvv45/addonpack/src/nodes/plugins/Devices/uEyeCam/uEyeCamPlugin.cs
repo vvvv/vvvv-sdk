@@ -126,7 +126,8 @@ namespace VVVV.Nodes
 			{
 				if(disposing)
 				{
-					FSegment.Dispose();
+					if (FSegment != null)
+						FSegment.Dispose();
 				}
 				
 				// Release unmanaged resources. If disposing is false,
