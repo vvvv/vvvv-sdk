@@ -103,7 +103,23 @@ namespace VVVV.Hosting.Factories
 				pluginHost.Plugin = null;
 				
 				//create the plugin
-				pluginHost.Plugin = CreatePlugin(nodeInfo, pluginHost as IPluginHost2);
+				plugin = CreatePlugin(nodeInfo, pluginHost as IPluginHost2);
+				
+				var pluginV1 = plugin as IPlugin;
+				if (pluginV1 != null)
+				{
+					try
+					{
+						pluginV1.SetPluginHost(pluginHost);
+					}
+					catch (Exception e)
+					{
+						FLogger.Log(e);
+					}
+				}
+				
+				pluginHost.Plugin = plugin;
+				
 				return true;
 			}
 			catch (ReflectionTypeLoadException e)
@@ -218,9 +234,7 @@ namespace VVVV.Hosting.Factories
 			else
 			{
 				var assembly = Assembly.LoadFrom(nodeInfo.Filename);
-				var plugin = (IPlugin) assembly.CreateInstance(nodeInfo.Arguments);
-				
-				plugin.SetPluginHost(pluginHost);
+				var plugin = (IPluginBase) assembly.CreateInstance(nodeInfo.Arguments);
 				
 				return plugin;
 			}
