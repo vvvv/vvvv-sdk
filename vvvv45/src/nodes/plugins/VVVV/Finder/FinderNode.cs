@@ -540,16 +540,19 @@ namespace VVVV.Nodes.Finder
 					case SearchScope.Global:
 						{
 							FSearchResult = new PatchNode(FHDEHost.Root, FFilter, true, true);
+							FHierarchyViewer.ShowRoot = false;
 							break;
 						}
 					case SearchScope.Local:
 						{
 							FSearchResult = new PatchNode(FActivePatchNode, FFilter, true, false);
+							FHierarchyViewer.ShowRoot = true;
 							break;
 						}
 					case SearchScope.Downstream:
 						{
 							FSearchResult = new PatchNode(FActivePatchNode, FFilter, true, true);
+							FHierarchyViewer.ShowRoot = true;
 							break;
 						}
 				}
