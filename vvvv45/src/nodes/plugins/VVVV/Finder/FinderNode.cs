@@ -224,12 +224,14 @@ namespace VVVV.Nodes.Finder
 
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.panel3 = new System.Windows.Forms.Panel();
 			this.FSearchTextBox = new System.Windows.Forms.TextBox();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.FNodeCountLabel = new System.Windows.Forms.Label();
 			this.FHierarchyViewer = new VVVV.HDE.Viewer.WinFormsViewer.HierarchyViewer();
+			this.FTooltip = new System.Windows.Forms.ToolTip(this.components);
 			this.panel1.SuspendLayout();
 			this.panel3.SuspendLayout();
 			this.SuspendLayout();
@@ -265,7 +267,9 @@ namespace VVVV.Nodes.Finder
 			this.FSearchTextBox.Size = new System.Drawing.Size(248, 17);
 			this.FSearchTextBox.TabIndex = 13;
 			this.FSearchTextBox.TextChanged += new System.EventHandler(this.FSearchTextBoxTextChanged);
+			this.FSearchTextBox.MouseLeave += new System.EventHandler(this.FSearchTextBoxMouseLeave);
 			this.FSearchTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FSearchTextBoxKeyDown);
+			this.FSearchTextBox.MouseEnter += new System.EventHandler(this.FSearchTextBoxMouseEnter);
 			// 
 			// panel2
 			// 
@@ -293,11 +297,17 @@ namespace VVVV.Nodes.Finder
 			this.FHierarchyViewer.Location = new System.Drawing.Point(0, 17);
 			this.FHierarchyViewer.Name = "FHierarchyViewer";
 			this.FHierarchyViewer.ShowLinks = false;
+			this.FHierarchyViewer.ShowRoot = false;
 			this.FHierarchyViewer.Size = new System.Drawing.Size(252, 239);
 			this.FHierarchyViewer.TabIndex = 9;
 			this.FHierarchyViewer.DoubleClick += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerDoubleClick);
 			this.FHierarchyViewer.Click += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerClick);
 			this.FHierarchyViewer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FHierarchyViewerKeyPress);
+			// 
+			// FTooltip
+			// 
+			this.FTooltip.BackColor = System.Drawing.Color.Gray;
+			this.FTooltip.ForeColor = System.Drawing.Color.White;
 			// 
 			// FinderPluginNode
 			// 
@@ -313,6 +323,8 @@ namespace VVVV.Nodes.Finder
 			this.panel3.PerformLayout();
 			this.ResumeLayout(false);
 		}
+		private System.ComponentModel.IContainer components;
+		private System.Windows.Forms.ToolTip FTooltip;
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.Panel panel3;
 		private VVVV.HDE.Viewer.WinFormsViewer.HierarchyViewer FHierarchyViewer;
@@ -658,6 +670,38 @@ namespace VVVV.Nodes.Finder
 			}
 			else
 				return null;
+		}
+		
+		void FSearchTextBoxMouseEnter(object sender, EventArgs e)
+		{
+		    string tip = "Use the tags followed by <space>:\n\n";
+		    
+		    tip += "g\t Search globally in the whole node graph\n";
+            tip += "d\t Search in patches downstream of the active patch\n";
+            tip += "----\n";
+            tip += "n\t Nativ nodes\n";
+            tip += "m\t Modules\n";
+            tip += "p\t vvvv Plugins\n";
+            tip += "x\t Effects (shaders)\n";
+            tip += "f\t Freeframes Plugins\n";
+            tip += "v\t VST Plugins\n";
+            tip += "s\t all Addons\n";
+            tip += "i\t IOBoxes (Pins of Patches/Modules)\n";
+            tip += "s\t Send/Receive Nodes\n";
+            tip += "/\t Comments\n";
+            tip += "l\t Labels (descriptive names)\n";
+            tip += "t\t Patches\n";
+            tip += "r\t Red (missing) Nodes\n";
+            tip += "b\t Boygrouped Nodes\n";
+            tip += "#\t Node IDs\n";
+            tip += "w\t Windows";
+
+            FTooltip.Show(tip, FSearchTextBox, new Point(0, FSearchTextBox.Height));
+		}
+		
+		void FSearchTextBoxMouseLeave(object sender, EventArgs e)
+		{
+		    FTooltip.Hide(FSearchTextBox);
 		}
 	}
 }
