@@ -6,6 +6,7 @@ namespace VVVV.Hosting.Pins.Output
 {
 	public class StringOutputPin : Pin<string>
 	{
+		private bool FIsChanged = true;
 		protected IStringOut FStringOut;
 		
 		public StringOutputPin(IPluginHost host, OutputAttribute attribute)
@@ -17,17 +18,49 @@ namespace VVVV.Hosting.Pins.Output
 			base.InitializeInternalPin(FStringOut);
 		}
 		
+		public override string this[int index]
+		{
+			get
+			{
+				return base[index];
+			}
+			set
+			{
+				FIsChanged = true;
+				base[index] = value;
+			}
+		}
+		
+		public override int SliceCount
+		{
+			get
+			{
+				return base.SliceCount;
+			}
+			set
+			{
+				FIsChanged = true;
+				base.SliceCount = value;
+			}
+		}
+		
 		public override void Update()
 		{
 			base.Update();
 			
-			if (FAttribute.SliceMode != SliceMode.Single)
-				FStringOut.SliceCount = FSliceCount;
-			
-			for (int i = 0; i < FSliceCount; i++)
+			// String marshaling is very expensive. So avoid it.
+			if (FIsChanged)
 			{
-				FStringOut.SetString(i, FBuffer[i]);
+				if (FAttribute.SliceMode != SliceMode.Single)
+					FStringOut.SliceCount = FSliceCount;
+				
+				for (int i = 0; i < FSliceCount; i++)
+				{
+					FStringOut.SetString(i, FBuffer[i]);
+				}
 			}
+			
+			FIsChanged = false;
 		}
 	}
 }
