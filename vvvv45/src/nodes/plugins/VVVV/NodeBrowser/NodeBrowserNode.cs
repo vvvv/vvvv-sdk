@@ -117,6 +117,14 @@ namespace VVVV.Nodes.NodeBrowser
 			HDEHost = host;
 			HDEHost.WindowSelectionChanged += HDEHost_WindowSelectionChanged;
 			CurrentPatchWindow = HDEHost.ActivePatchWindow;
+			
+			//grande hakc: this is only true for a nodebrowser started standalone
+			//which needs its TagPanel set visible manually 
+			//so that we have it visible=false for the default nodebrowser on startup 
+			//to prevent a redraw for every nodeinfo added
+			//TODO: improve
+			if (CurrentPatchWindow != null)
+			    FTagPanel.Visible = true;
 		}
 
 		private void DefaultConstructor()
