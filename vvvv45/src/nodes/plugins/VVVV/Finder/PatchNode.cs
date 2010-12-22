@@ -58,7 +58,7 @@ namespace VVVV.Nodes.Finder
             Node = self;
             FFilter = filter;
             
-            if (NodeType == NodeType.Patch && includeChildren)
+            if ((NodeType == NodeType.Patch || (NodeType == NodeType.Module && FFilter.Scope == SearchScope.Local)) && includeChildren)
                 InitChildren(recursively);
         }
         
