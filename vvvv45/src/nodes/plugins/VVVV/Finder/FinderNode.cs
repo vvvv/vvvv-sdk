@@ -51,17 +51,16 @@ namespace VVVV.Nodes.Finder
             {
                 FTags = value;
                 
-                if (FTags .Contains("g"))
+                if (FTags.Contains("g"))
                 {
                     Scope = SearchScope.Global;
-                    FTags .Remove("g");
+                    FTags.Remove("g");
                 }
-                else if (FTags .Contains("d"))
+                else if (FTags.Contains("d"))
                 {
                     Scope = SearchScope.Downstream;
-                    FTags .Remove("d");
+                    FTags.Remove("d");
                 }
-                
                 if (FTags.Contains("s"))
                 {
                     SendReceive = true;
@@ -143,12 +142,8 @@ namespace VVVV.Nodes.Finder
                     FTags.Remove("#");
                 }
                 
-                //clean up the list
-                FTags[FTags.Count-1] = FTags[FTags.Count-1].Trim((char) 160);
-                while (FTags.Contains(" "))
-                    FTags.Remove(" ");
-                if (FTags.Contains(""))
-                    FTags.Remove("");
+                for (int i = 0; i < FTags.Count; i++)
+                    FTags[i] = FTags[i].Trim((char) 160);
             }
         }
         
@@ -537,7 +532,13 @@ namespace VVVV.Nodes.Finder
             query += (char) 160;
             
             FFilter = new Filter();
-            FFilter.Tags = query.Split(new char[1]{' '}).ToList();
+            var tags = query.Split(new char[1]{' '}).ToList();
+            for (int i = tags.Count-1; i >= 0; i--)
+            {
+                if (string.IsNullOrEmpty(tags[i].Trim()))
+                    tags.RemoveAt(i);
+            }
+            FFilter.Tags = tags;
             FHierarchyViewer.ShowLinks = FFilter.SendReceive;
             
             FHierarchyViewer.BeginUpdate();
@@ -629,8 +630,13 @@ namespace VVVV.Nodes.Finder
         void FHierarchyViewerKeyPress(object sender, KeyPressEventArgs e)
         {
             FSearchTextBox.Focus();
-            FSearchTextBox.Text += (e.KeyChar).ToString();
-            FSearchTextBox.Select(FSearchTextBox.Text.Length, 1);
+            if (e.KeyChar == (char) Keys.Back)
+                FSearchTextBox.Text = "";
+            else
+            {
+                FSearchTextBox.Text += (e.KeyChar).ToString();
+                FSearchTextBox.Select(FSearchTextBox.Text.Length, 1);
+            }
         }
         #endregion GUI events
         
@@ -688,7 +694,7 @@ namespace VVVV.Nodes.Finder
             tip += "x\t Effects\n";
             tip += "f\t Freeframes Plugins\n";
             tip += "v\t VST Plugins\n";
-            tip += "s\t all Addons\n";
+            tip += "a\t all Addons\n";
             tip += "i\t IOBoxes (Pins of Patches/Modules)\n";
             tip += "s\t Send/Receive Nodes\n";
             tip += "/\t Comments\n";
