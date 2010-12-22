@@ -197,7 +197,6 @@ namespace VVVV.Nodes.WindowSwitcher
                 FSelectedPatchNode.Selected = false;
             
             FSelectedPatchNode = SelectNodeOfTree(FWindowTree, node);
-            FHierarchyViewer.Redraw();
         }
         
         private PatchNode SelectNodeOfTree(PatchNode patchNode, INode node)
