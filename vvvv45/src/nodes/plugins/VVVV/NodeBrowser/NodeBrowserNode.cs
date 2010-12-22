@@ -194,6 +194,7 @@ namespace VVVV.Nodes.NodeBrowser
 			this.FTagPanel.NodeBrowser = null;
 			this.FTagPanel.Size = new System.Drawing.Size(120, 115);
 			this.FTagPanel.TabIndex = 1;
+			this.FTagPanel.Visible = false;
 			this.FTagPanel.OnCreateNode += new VVVV.Nodes.NodeBrowser.CreateNodeHandler(this.FNodeBrowser_CreateNode);
 			this.FTagPanel.OnPanelChange += new VVVV.Nodes.NodeBrowser.PanelChangeHandler(this.FNodeBrowser_OnPanelChange);
 			this.FTagPanel.OnShowHelpPatch += new VVVV.Nodes.NodeBrowser.CreateNodeHandler(this.FNodeBrowser_ShowHelpPatch);
