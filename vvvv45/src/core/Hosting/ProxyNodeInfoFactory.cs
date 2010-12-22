@@ -415,6 +415,11 @@ namespace VVVV.Hosting
 		{
 			FNodeInfo = null;
 		}
+		
+		public override string ToString()
+		{
+			return Systemname;
+		}
 	}
 	
 	#endregion
