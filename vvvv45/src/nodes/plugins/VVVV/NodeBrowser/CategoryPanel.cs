@@ -11,29 +11,42 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.NodeBrowser
 {
-	/// <summary>
-	/// Description of CategoryPanel.
-	/// </summary>
-	public partial class CategoryPanel : UserControl
-	{
-		public event PanelChangeHandler OnPanelChange;
-		public event CreateNodeHandler OnCreateNode;
-		public event CreateNodeHandler OnShowNodeReference;
-		public event CreateNodeHandler OnShowHelpPatch;
-		
-		Dictionary<string, string> FCategoryDict = new Dictionary<string, string>();
-        CategoryList FCategoryList = new CategoryList();  
+    /// <summary>
+    /// Description of CategoryPanel.
+    /// </summary>
+    public partial class CategoryPanel : UserControl
+    {
+        public event PanelChangeHandler OnPanelChange;
+        public event CreateNodeHandler OnCreateNode;
+        public event CreateNodeHandler OnShowNodeReference;
+        public event CreateNodeHandler OnShowHelpPatch;
         
-        public bool NeedsUpdate {get; set;}
-		
-		public CategoryPanel()
-		{
-			//
-			// The InitializeComponent() call is required for Windows Forms designer support.
-			//
-			InitializeComponent();
-			
-			FCategoryDict.Add("2d", "Geometry in 2d, like connecting lines, calculating coordinates etc.");
+        Dictionary<string, string> FCategoryDict = new Dictionary<string, string>();
+        CategoryList FCategoryList = new CategoryList();
+        
+        private bool FNeedsUpdate;
+        public bool NeedsUpdate
+        {
+            get {return FNeedsUpdate;}
+            set
+            {
+                if (FNeedsUpdate != value)
+                {
+                    FNeedsUpdate = value;
+                    if (Visible)
+                        Redraw();
+                }
+            }
+        }
+        
+        public CategoryPanel()
+        {
+            //
+            // The InitializeComponent() call is required for Windows Forms designer support.
+            //
+            InitializeComponent();
+            
+            FCategoryDict.Add("2d", "Geometry in 2d, like connecting lines, calculating coordinates etc.");
             FCategoryDict.Add("3d", "Geometry in 3d.");
             FCategoryDict.Add("4d", "");
             FCategoryDict.Add("Animation", "Things which will animate over time and therefore have an internal state; Generate motion, smooth and filter motion, record and store values. FlipFlops and other Logic nodes.");
@@ -73,19 +86,20 @@ namespace VVVV.Nodes.NodeBrowser
             
             FCategoryTreeViewer.Registry = mappingRegistry;
             FCategoryTreeViewer.Input = FCategoryList;
-		}
-		
-		public void Redraw()
-		{
-		    FCategoryTreeViewer.Reload();
-		}
-		
-		public void Add(INodeInfo nodeInfo)
-		{
-		    if (nodeInfo.Type == NodeType.Patch || nodeInfo.Type == NodeType.Text)
-		        return;
-		    
-			//insert nodeInfo to FCategoryList
+        }
+        
+        public void Redraw()
+        {
+            FCategoryTreeViewer.Reload();
+            FNeedsUpdate = false;
+        }
+        
+        public void Add(INodeInfo nodeInfo)
+        {
+            if (nodeInfo.Type == NodeType.Patch || nodeInfo.Type == NodeType.Text)
+                return;
+            
+            //insert nodeInfo to FCategoryList
             bool added = false;
             foreach (CategoryEntry ce in FCategoryList)
                 if (ce.Name == nodeInfo.Category)
@@ -110,16 +124,16 @@ namespace VVVV.Nodes.NodeBrowser
             }
             
             NeedsUpdate = true;
-		}
-		
-		public void Update(INodeInfo nodeInfo)
-		{
-			NeedsUpdate = true;
-		}
-		
-		public void Remove(INodeInfo nodeInfo)
-		{
-			CategoryEntry catEntry = null;
+        }
+        
+        public void Update(INodeInfo nodeInfo)
+        {
+            NeedsUpdate = true;
+        }
+        
+        public void Remove(INodeInfo nodeInfo)
+        {
+            CategoryEntry catEntry = null;
             foreach (CategoryEntry ce in FCategoryList)
                 if (ce.Name == nodeInfo.Category)
             {
@@ -132,7 +146,7 @@ namespace VVVV.Nodes.NodeBrowser
                 FCategoryList.Remove(catEntry);
             
             NeedsUpdate = true;
-		}
+        }
 
         public void BeforeHide()
         {
@@ -143,27 +157,30 @@ namespace VVVV.Nodes.NodeBrowser
         {
             OnPanelChange(NodeBrowserPage.ByTags, null);
         }
-		
-        public void Update()
-		{
-			FCategoryTreeViewer.HideToolTip();
-			FCategoryTreeViewer.Focus();
-			if (NeedsUpdate)
-			{
-			    FCategoryTreeViewer.Reload();
-			    NeedsUpdate = false;
-			}
-		}
         
-		void CategoryPanelVisibleChanged(object sender, EventArgs e)
-		{
-			FCategoryTreeViewer.HideToolTip();
-			FCategoryTreeViewer.Focus();
-		}
-		
-		void FCategoryTreeViewerMouseDown(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
-		{
-			if (sender.Model is NodeInfoEntry)
+        public void Update()
+        {
+            FCategoryTreeViewer.HideToolTip();
+            FCategoryTreeViewer.Focus();
+            if (NeedsUpdate)
+            {
+                FCategoryTreeViewer.Reload();
+                FNeedsUpdate = false;
+            }
+        }
+        
+        void CategoryPanelVisibleChanged(object sender, EventArgs e)
+        {
+            FCategoryTreeViewer.HideToolTip();
+            FCategoryTreeViewer.Focus();
+            
+            if (Visible && NeedsUpdate)
+                Redraw();
+        }
+        
+        void FCategoryTreeViewerMouseDown(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (sender.Model is NodeInfoEntry)
             {
                 if (e.Button == MouseButtons.Left)
                     OnCreateNode((sender.Model as NodeInfoEntry).NodeInfo);
@@ -193,6 +210,6 @@ namespace VVVV.Nodes.NodeBrowser
                     }
                 }
             }
-		}
-	}
+        }
+    }
 }

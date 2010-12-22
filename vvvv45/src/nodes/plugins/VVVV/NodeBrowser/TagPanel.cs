@@ -43,9 +43,9 @@ namespace VVVV.Nodes.NodeBrowser
 			{
 				if (FNeedsUpdate != value)
 				{
+				    FNeedsUpdate = value;
 					if (Visible)
-						FilterNodesByTags();
-					FNeedsUpdate = value;
+						Redraw();
 				}
 			}
 		}
@@ -824,7 +824,7 @@ namespace VVVV.Nodes.NodeBrowser
 			FToolTip.Hide(FRichTextBox);
 			
 			if (Visible && NeedsUpdate)
-				FilterNodesByTags();
+				Redraw();
 		}
 		
 		void FRichTextBoxMouseLeave(object sender, EventArgs e)
