@@ -583,7 +583,7 @@ namespace VVVV.Nodes.Finder
                                  int w1 = SortPos(p1);
                                  int w2 = SortPos(p2);
                                  
-                                 if ((w1 > 0) || (w2 > 0))
+                                 if ((w1 != 0) || (w2 != 0))
                                  {
                                      if (w1 > w2)
                                          return -1;
@@ -609,7 +609,7 @@ namespace VVVV.Nodes.Finder
             else if (n.Name.StartsWith("R "))
                 pos = 80;
             else if (!string.IsNullOrEmpty(n.Comment))
-                pos = 200;
+                pos = -100;
             
             return pos;
         }

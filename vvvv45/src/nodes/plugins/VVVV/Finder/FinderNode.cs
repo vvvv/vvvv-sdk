@@ -296,8 +296,8 @@ namespace VVVV.Nodes.Finder
             this.FHierarchyViewer.ShowRoot = false;
             this.FHierarchyViewer.Size = new System.Drawing.Size(252, 239);
             this.FHierarchyViewer.TabIndex = 9;
-            this.FHierarchyViewer.DoubleClick += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerDoubleClick);
-            this.FHierarchyViewer.Click += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerClick);
+            this.FHierarchyViewer.MouseDoubleClick += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerDoubleClick);
+            this.FHierarchyViewer.MouseClick += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerClick);
             this.FHierarchyViewer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FHierarchyViewerKeyPress);
             // 
             // FTooltip
@@ -356,8 +356,8 @@ namespace VVVV.Nodes.Finder
                     this.FSearchTextBox.TextChanged -= this.FSearchTextBoxTextChanged;
                     this.FSearchTextBox.KeyDown -= this.FSearchTextBoxKeyDown;
                     
-                    this.FHierarchyViewer.DoubleClick -= this.FHierarchyViewerDoubleClick;
-                    this.FHierarchyViewer.Click -= this.FHierarchyViewerClick;
+                    this.FHierarchyViewer.MouseDoubleClick -= this.FHierarchyViewerDoubleClick;
+                    this.FHierarchyViewer.MouseClick -= this.FHierarchyViewerClick;
                     this.FHierarchyViewer.KeyPress -= this.FHierarchyViewerKeyPress;
                     this.FHierarchyViewer.Dispose();
                     this.FHierarchyViewer = null;
@@ -479,42 +479,6 @@ namespace VVVV.Nodes.Finder
         #endregion INodeListener
         
         #region Search
-        void FSearchTextBoxTextChanged(object sender, EventArgs e)
-        {
-            UpdateSearch();
-            
-            //save tags in config pin
-            FTagsPin[0] = FSearchTextBox.Text;
-        }
-        
-        void FSearchTextBoxKeyDown(object sender, KeyEventArgs e)
-        {
-            if (FPlainResultList.Count == 0)
-                return;
-            
-            if (e.KeyCode == Keys.F3 || e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
-            {
-                FPlainResultList[FSearchIndex].Selected = false;
-                if (e.Shift || e.KeyCode == Keys.Up)
-                {
-                    FSearchIndex -= 1;
-                    if (FSearchIndex < 0)
-                        FSearchIndex = FPlainResultList.Count - 1;
-                }
-                else
-                    FSearchIndex = (FSearchIndex + 1) % FPlainResultList.Count;
-                
-                FPlainResultList[FSearchIndex].Selected = true;
-                
-                //select the node
-                FHDEHost.SelectNodes(new INode[1]{FPlainResultList[FSearchIndex].Node});
-            }
-            else if (e.KeyCode == Keys.Return || e.KeyCode == Keys.Enter)
-            {
-                OpenPatch(FPlainResultList[FSearchIndex].Node);
-            }
-        }
-        
         private void ClearSearch()
         {
             if (FSearchResult != null)
@@ -582,6 +546,42 @@ namespace VVVV.Nodes.Finder
         #endregion Search
         
         #region GUI events
+        void FSearchTextBoxTextChanged(object sender, EventArgs e)
+        {
+            UpdateSearch();
+            
+            //save tags in config pin
+            FTagsPin[0] = FSearchTextBox.Text;
+        }
+        
+        void FSearchTextBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (FPlainResultList.Count == 0)
+                return;
+            
+            if (e.KeyCode == Keys.F3 || e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
+            {
+                FPlainResultList[FSearchIndex].Selected = false;
+                if (e.Shift || e.KeyCode == Keys.Up)
+                {
+                    FSearchIndex -= 1;
+                    if (FSearchIndex < 0)
+                        FSearchIndex = FPlainResultList.Count - 1;
+                }
+                else
+                    FSearchIndex = (FSearchIndex + 1) % FPlainResultList.Count;
+                
+                FPlainResultList[FSearchIndex].Selected = true;
+                
+                //select the node
+                FHDEHost.SelectNodes(new INode[1]{FPlainResultList[FSearchIndex].Node});
+            }
+            else if (e.KeyCode == Keys.Return || e.KeyCode == Keys.Enter)
+            {
+                OpenPatch(FPlainResultList[FSearchIndex].Node);
+            }
+        }
+        
         void FSearchTextBox_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             FHierarchyViewer.Focus();
@@ -592,11 +592,42 @@ namespace VVVV.Nodes.Finder
             FSearchTextBox.Text = "";
         }
         
+        void FSearchTextBoxMouseEnter(object sender, EventArgs e)
+        {
+            string tip = "Separate tags by <space>:\n\n";
+            
+            tip += "g\t Search globally in the whole node graph\n";
+            tip += "d\t Search in patches downstream of the active patch\n";
+            tip += "----\n";
+            tip += "n\t Nativ nodes\n";
+            tip += "m\t Modules\n";
+            tip += "p\t vvvv Plugins\n";
+            tip += "x\t Effects\n";
+            tip += "f\t Freeframes Plugins\n";
+            tip += "v\t VST Plugins\n";
+            tip += "a\t all Addons\n";
+            tip += "i\t IOBoxes (Pins of Patches/Modules)\n";
+            tip += "s\t Send/Receive Nodes\n";
+            tip += "/\t Comments\n";
+            tip += "l\t Labels (descriptive names)\n";
+            tip += "t\t Patches\n";
+            tip += "r\t Red (missing) Nodes\n";
+            tip += "b\t Boygrouped Nodes\n";
+            tip += "#\t Node IDs\n";
+            tip += "w\t Windows";
+
+            FTooltip.Show(tip, FSearchTextBox, new Point(0, FSearchTextBox.Height));
+        }
+        
+        void FSearchTextBoxMouseLeave(object sender, EventArgs e)
+        {
+            FTooltip.Hide(FSearchTextBox);
+        }
+        
         void FHierarchyViewerClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (e.Button == 0 && sender.Model != null)
+            if (e.Button == MouseButtons.Left && sender.Model != null)
             {
-                
                 (sender.Model as PatchNode).Selected = true;
                 FHDEHost.SelectNodes(new INode[1]{(sender.Model as PatchNode).Node});
                 
@@ -611,20 +642,24 @@ namespace VVVV.Nodes.Finder
                     sender.Map<ICamera>().View(FSearchResult.FindNode(parent));
                 }
             }
-            else if ((int)e.Button == 1)
+            else if (e.Button == MouseButtons.Middle)
             {
                 if (sender.CanMap<ICamera>())
                     sender.Map<ICamera>().ViewAll();
             }
-            else if ((int)e.Button == 2 && sender.Model != null)
+            else if (e.Button == MouseButtons.Right && sender.Model != null)
             {
-                OpenPatch((sender.Model as PatchNode).Node);
+                if ((sender.Model as PatchNode).Node == FActivePatchNode)
+                    FHDEHost.ShowEditor(FindParent(FHDEHost.Root, FActivePatchNode));
+                else
+                    OpenPatch((sender.Model as PatchNode).Node);
             }
         }
         
         void FHierarchyViewerDoubleClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
-            OpenParentAndSelectNode((sender.Model as PatchNode).Node);
+            if (e.Button == 0)
+                OpenParentAndSelectNode((sender.Model as PatchNode).Node);
         }
         
         void FHierarchyViewerKeyPress(object sender, KeyPressEventArgs e)
@@ -644,12 +679,12 @@ namespace VVVV.Nodes.Finder
         {
             if (node == null)
                 FHDEHost.ShowEditor(FindParent(FHDEHost.Root, FActivePatchNode));
-            else if (node.HasPatch())
+            else if (node.HasPatch() || node.HasCode())
                 FHDEHost.ShowEditor(node);
             else if (node.HasGUI())
                 FHDEHost.ShowGUI(node);
-            else
-                OpenParentAndSelectNode(node);
+            //else
+            //    OpenParentAndSelectNode(node);
         }
         
         private void OpenParentAndSelectNode(INode node)
@@ -679,38 +714,6 @@ namespace VVVV.Nodes.Finder
             }
             else
                 return null;
-        }
-        
-        void FSearchTextBoxMouseEnter(object sender, EventArgs e)
-        {
-            string tip = "Use the tags followed by <space>:\n\n";
-            
-            tip += "g\t Search globally in the whole node graph\n";
-            tip += "d\t Search in patches downstream of the active patch\n";
-            tip += "----\n";
-            tip += "n\t Nativ nodes\n";
-            tip += "m\t Modules\n";
-            tip += "p\t vvvv Plugins\n";
-            tip += "x\t Effects\n";
-            tip += "f\t Freeframes Plugins\n";
-            tip += "v\t VST Plugins\n";
-            tip += "a\t all Addons\n";
-            tip += "i\t IOBoxes (Pins of Patches/Modules)\n";
-            tip += "s\t Send/Receive Nodes\n";
-            tip += "/\t Comments\n";
-            tip += "l\t Labels (descriptive names)\n";
-            tip += "t\t Patches\n";
-            tip += "r\t Red (missing) Nodes\n";
-            tip += "b\t Boygrouped Nodes\n";
-            tip += "#\t Node IDs\n";
-            tip += "w\t Windows";
-
-            FTooltip.Show(tip, FSearchTextBox, new Point(0, FSearchTextBox.Height));
-        }
-        
-        void FSearchTextBoxMouseLeave(object sender, EventArgs e)
-        {
-            FTooltip.Hide(FSearchTextBox);
         }
     }
 }

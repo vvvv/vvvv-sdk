@@ -113,7 +113,7 @@ namespace VVVV.Nodes.WindowSwitcher
             this.FHierarchyViewer.Name = "FHierarchyViewer";
             this.FHierarchyViewer.Size = new System.Drawing.Size(402, 278);
             this.FHierarchyViewer.TabIndex = 1;
-            this.FHierarchyViewer.Click += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerClick);
+            this.FHierarchyViewer.MouseClick += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerClick);
             this.FHierarchyViewer.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FHierarchyViewerKeyUp);
             // 
             // WindowSwitcherNode
