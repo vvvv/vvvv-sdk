@@ -323,36 +323,40 @@ namespace VVVV.Hosting.Factories
 			}
 			else if (button == Mouse_Buttons.Right)
 			{
-				// Try to locate exact file based on nodeinfo and navigate to its definition.
-				
-				var nodeInfo = node.GetNodeInfo();
-				
-				switch (nodeInfo.Type)
-				{
-					case NodeType.Dynamic:
-					case NodeType.Effect:
-						var filename = nodeInfo.Filename;
-						var line = -1;
+				OpenEditor(node);
+			}
+		}
+		
+		public void OpenEditor(INode node)
+		{
+			// Try to locate exact file based on nodeinfo and navigate to its definition.
+			var nodeInfo = node.GetNodeInfo();
+			
+			switch (nodeInfo.Type)
+			{
+				case NodeType.Dynamic:
+				case NodeType.Effect:
+					var filename = nodeInfo.Filename;
+					var line = -1;
+					
+					// Do we have a project file?
+					var project = FSolution.FindProject(filename) as CSProject;
+					if (project != null)
+					{
+						if (!project.IsLoaded)
+							project.Load();
 						
-						// Do we have a project file?
-						var project = FSolution.FindProject(filename) as CSProject;
-						if (project != null)
+						// Find the document where this nodeinfo is defined.
+						var doc = FindDefiningDocument(project, nodeInfo);
+						if (doc != null)
 						{
-							if (!project.IsLoaded)
-								project.Load();
-							
-							// Find the document where this nodeinfo is defined.
-							var doc = FindDefiningDocument(project, nodeInfo);
-							if (doc != null)
-							{
-								filename = doc.Location.LocalPath;
-								line = FindDefiningLine(doc, nodeInfo);
-							}
+							filename = doc.Location.LocalPath;
+							line = FindDefiningLine(doc, nodeInfo);
 						}
-						
-						Open(filename, line, 0, node);
-						break;
-				}
+					}
+					
+					Open(filename, line, 0, node);
+					break;
 			}
 		}
 		

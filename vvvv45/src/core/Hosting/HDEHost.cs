@@ -78,6 +78,9 @@ namespace VVVV.Hosting
 		
 		[Import]
 		private DotNetPluginFactory PluginFactory { get; set; }
+		
+		[Import]
+		private EditorFactory FEditorFactory;
 
 		[Import]
 		public NodeCollection NodeCollection {get; protected set;}
@@ -579,7 +582,17 @@ namespace VVVV.Hosting
 		
 		public void ShowEditor(INode node)
 		{
-			FVVVVHost.ShowEditor(node);
+			// TODO: Kind of a hack
+			switch (node.GetNodeInfo().Type)
+			{
+				case NodeType.Dynamic:
+				case NodeType.Effect:
+					FEditorFactory.OpenEditor(node);
+					break;
+				default:
+					FVVVVHost.ShowEditor(node);
+					break;
+			}
 		}
 		
 		public void ShowGUI(INode node)
