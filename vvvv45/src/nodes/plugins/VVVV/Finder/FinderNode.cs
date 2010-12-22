@@ -426,7 +426,6 @@ namespace VVVV.Nodes.Finder
             if (updateActiveWindow && FSearchResult != null)
             {
                 FSearchResult.SetActiveWindow(FActiveWindow);
-                FHierarchyViewer.Redraw();
             }
         }
         
@@ -514,8 +513,6 @@ namespace VVVV.Nodes.Finder
                 
                 //select the node
                 FHDEHost.SelectNodes(new INode[1]{FPlainResultList[FSearchIndex].Node});
-                
-                FHierarchyViewer.Redraw();
             }
             else if (e.KeyCode == Keys.Return || e.KeyCode == Keys.Enter)
             {
