@@ -7,6 +7,17 @@
   <!-- Leave as it is -->
   <include buildfile="${root.dir}/nant-plugins.xml" />
 
+  <!-- fix helppatches before include in pack -->
+  <property name="plugin.ignore" value="true" />
+  
+  <target name="copy-help-custom">
+    <copy todir="${plugin.path}">
+      <fileset basedir="HelpPatches">
+        <include name="*.v4p" />
+      </fileset>
+    </copy>
+  </target>
+  
   <!-- Set your ddl name here -->
   <property name="lib.name" value="Webinterface.dll" />
   
