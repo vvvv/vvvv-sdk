@@ -24,7 +24,7 @@ namespace VVVV.Hosting.Graph
 			
 			public void AddedCB(INode internalChildNode)
 			{
-				var childNode = new Node(internalChildNode, FObservedNode.FNodeInfoFactory);
+				var childNode = new Node(FObservedNode, internalChildNode, FObservedNode.FNodeInfoFactory);
 				
 				FObservedNode.Add(childNode);
 			}
@@ -61,8 +61,9 @@ namespace VVVV.Hosting.Graph
 		private readonly ViewableCollection<IPin2> FPins;
 		private readonly IWindow2 FWindow;
 		
-		internal Node(INode internalCOMInterf, ProxyNodeInfoFactory nodeInfoFactory)
+		internal Node(INode2 parent, INode internalCOMInterf, ProxyNodeInfoFactory nodeInfoFactory)
 		{
+			Parent = parent;
 			FInternalCOMInterf = internalCOMInterf;
 			FNodeInfoFactory = nodeInfoFactory;
 			
@@ -82,7 +83,7 @@ namespace VVVV.Hosting.Graph
 			{
 				foreach (var internalChildNode in children)
 				{
-					var childNode = new Node(internalChildNode, nodeInfoFactory);
+					var childNode = new Node(this, internalChildNode, nodeInfoFactory);
 					Add(childNode);
 				}
 			}
@@ -180,5 +181,10 @@ namespace VVVV.Hosting.Graph
                 return FInternalCOMInterf.LastRuntimeError;
             }
         }
+		
+		public INode2 Parent {
+			get;
+			private set;
+		}
 	}
 }

@@ -80,7 +80,7 @@ namespace VVVV.Hosting
 		private DotNetPluginFactory PluginFactory { get; set; }
 		
 		[Import]
-		private EditorFactory FEditorFactory;
+		private EditorFactory EditorFactory { get; set; }
 
 		[Import]
 		public NodeCollection NodeCollection {get; protected set;}
@@ -307,10 +307,6 @@ namespace VVVV.Hosting
 				Logger.Log(e);
 				throw e;
 			}
-			finally
-			{
-				OnNodeAdded(new NodeEventArgs(node));
-			}
 			
 			return false;
 		}
@@ -329,10 +325,6 @@ namespace VVVV.Hosting
 			{
 				Logger.Log(e);
 				throw e;
-			}
-			finally
-			{
-				OnNodeRemoved(new NodeEventArgs(node));
 			}
 			
 			return false;
@@ -491,40 +483,6 @@ namespace VVVV.Hosting
 			}
 		}
 		
-		public event NodeEventHandler NodeAdded;
-		
-		protected virtual void OnNodeAdded(NodeEventArgs args)
-		{
-			try
-			{
-				if (NodeAdded != null) {
-					NodeAdded(this, args);
-				}
-			}
-			catch (Exception e)
-			{
-				Logger.Log(e);
-				throw e;
-			}
-		}
-		
-		public event NodeEventHandler NodeRemoved;
-		
-		protected virtual void OnNodeRemoved(NodeEventArgs args)
-		{
-			try
-			{
-				if (NodeRemoved != null) {
-					NodeRemoved(this, args);
-				}
-			}
-			catch (Exception e)
-			{
-				Logger.Log(e);
-				throw e;
-			}
-		}
-		
 		public INode Root
 		{
 			get
@@ -539,7 +497,7 @@ namespace VVVV.Hosting
 			get
 			{
 				if (FRootNode == null)
-					FRootNode = new Node(FVVVVHost.Root, NodeInfoFactory);
+					FRootNode = new Node(null, FVVVVHost.Root, NodeInfoFactory);
 				return FRootNode;
 			}
 		}
@@ -587,7 +545,7 @@ namespace VVVV.Hosting
 			{
 				case NodeType.Dynamic:
 				case NodeType.Effect:
-					FEditorFactory.OpenEditor(node);
+					EditorFactory.OpenEditor(node);
 					break;
 				default:
 					FVVVVHost.ShowEditor(node);

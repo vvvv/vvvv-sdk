@@ -8,10 +8,10 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using System.Linq;
 
 using VVVV.Core;
 using VVVV.Core.Collections;
@@ -29,6 +29,7 @@ using VVVV.HDE.Viewer.WinFormsViewer;
 using VVVV.Hosting.Factories;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.ManagedVCL;
 using SD = ICSharpCode.TextEditor.Document;
 
@@ -43,7 +44,7 @@ namespace VVVV.HDE.CodeEditor
 		private TableViewer FErrorTableViewer;
 		private ILogger FLogger;
 		private ISolution FSolution;
-		private INode FAttachedNode;
+		private INode2 FAttachedNode;
 		private IProject FAttachedProject;
 		private CodeEditor FEditor;
 		private ViewableCollection<object> FErrorList;
@@ -283,7 +284,7 @@ namespace VVVV.HDE.CodeEditor
 				
 				if (FAttachedNode != null)
 				{
-					caption += string.Format(" - attached to {1} [id: {0}]", FAttachedNode.GetID(), FAttachedNode.GetNodeInfo().Username);
+					caption += string.Format(" - attached to {1} [id: {0}]", FAttachedNode.ID, FAttachedNode.NodeInfo.Username);
 				}
 				
 				window.Caption = caption;
@@ -336,7 +337,7 @@ namespace VVVV.HDE.CodeEditor
 		}
 		
 		// where we get the runtime errors from
-		public INode AttachedNode
+		public INode2 AttachedNode
 		{
 			get
 			{
@@ -344,6 +345,11 @@ namespace VVVV.HDE.CodeEditor
 			}
 			set
 			{
+				if (FAttachedNode != null)
+				{
+					FAttachedNode.Parent.Removed -= FAttachedNode_Parent_Removed;
+				}
+				
 				FAttachedNode = value;
 				
 				var doc = FEditor.TextDocument;
@@ -354,12 +360,19 @@ namespace VVVV.HDE.CodeEditor
 				
 				if (FAttachedNode != null)
 				{
-					var nodeInfo = FAttachedNode.GetNodeInfo();
+					FAttachedNode.Parent.Removed += FAttachedNode_Parent_Removed;
+					
+					var nodeInfo = FAttachedNode.NodeInfo;
 					var project = nodeInfo.UserData as IProject;
 					if (project != null)
 						AttachedProject = project;
 				}
 			}
+		}
+
+		void FAttachedNode_Parent_Removed(IViewableCollection<INode2> collection, INode2 item)
+		{
+			AttachedNode = null;
 		}
 		
 		// where we get the compile errors from

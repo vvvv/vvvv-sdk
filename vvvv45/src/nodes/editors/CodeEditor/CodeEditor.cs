@@ -610,6 +610,9 @@ namespace VVVV.HDE.CodeEditor
 		
 		void AddErrorMarker(List<SD.TextMarker> errorMarkers, int column, int line)
 		{
+			column = Math.Max(column, 0);
+			line = Math.Max(line, 0);
+			
 			var doc = Document;
 			var location = new TextLocation(column, line);
 			var offset = doc.PositionToOffset(location);
@@ -647,8 +650,16 @@ namespace VVVV.HDE.CodeEditor
 			
 			foreach (var compilerError in compilerErrors)
 			{
-				if (new Uri(compilerError.FileName) == TextDocument.Location)
+				try
+				{
+					if (new Uri(compilerError.FileName) == TextDocument.Location)
+						AddErrorMarker(FCompilerErrorMarkers, compilerError.Column - 1, compilerError.Line - 1);
+				}
+				catch (Exception)
+				{
+					// Better show the error with illegal filename than crash
 					AddErrorMarker(FCompilerErrorMarkers, compilerError.Column - 1, compilerError.Line - 1);
+				}
 			}
 
 			Document.CommitUpdate();

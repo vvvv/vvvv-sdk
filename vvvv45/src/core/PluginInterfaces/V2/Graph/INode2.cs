@@ -44,5 +44,13 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		{
 			get;
 		}
+		
+		/// <summary>
+		/// Provides access to the parent node.
+		/// </summary>
+		INode2 Parent
+		{
+			get;
+		}
     }
 }

@@ -11,20 +11,6 @@ using VVVV.PluginInterfaces.V2.Graph;
 namespace VVVV.PluginInterfaces.V2
 {
     #region IHDEHost
-    public class NodeEventArgs : EventArgs
-	{
-		public INode Node
-		{
-			get;
-			private set;
-		}
-		
-		public NodeEventArgs(INode node)
-		{
-			Node = node;
-		}
-	}
-    
     public class NodeSelectionEventArgs : EventArgs
 	{
     	public INode[] Nodes
@@ -81,7 +67,6 @@ namespace VVVV.PluginInterfaces.V2
     	}
     }
 	
-	public delegate void NodeEventHandler(object sender, NodeEventArgs args);
 	public delegate void MouseEventHandler(object sender, MouseEventArgs args);
 	public delegate void NodeSelectionEventHandler(object sender, NodeSelectionEventArgs args);
 	public delegate void WindowEventHandler(object sender, WindowEventArgs args);
@@ -211,16 +196,6 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
-		
-		/// <summary>
-		/// Raised if a node was created.
-		/// </summary>
-		event NodeEventHandler NodeAdded;
-		
-		/// <summary>
-		/// Raised if a node was destroyed.
-		/// </summary>
-	    event NodeEventHandler NodeRemoved;
 	}
 	#endregion IHDEHost
 	
@@ -510,7 +485,7 @@ namespace VVVV.PluginInterfaces.V2
     	/// <summary>
     	/// The node this editor is attached to. Shows runtime errors of this node.
     	/// </summary>
-    	INode AttachedNode
+    	INode2 AttachedNode
     	{
     		get;
     		set;

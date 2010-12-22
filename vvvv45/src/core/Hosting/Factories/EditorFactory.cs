@@ -12,6 +12,8 @@ using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.Graph;
+using VVVV.Utils.Linq;
 
 namespace VVVV.Hosting.Factories
 {
@@ -38,7 +40,7 @@ namespace VVVV.Hosting.Factories
 		private Dictionary<IInternalPluginHost, ExportLifetimeContext<IEditor>> FExportLifetimeContexts;
 		private int FMoveToLine;
 		private int FMoveToColumn;
-		private INode FNodeToAttach;
+		private INode2 FNodeToAttach;
 		private bool FInOpen;
 		
 		[ImportingConstructor]
@@ -55,25 +57,8 @@ namespace VVVV.Hosting.Factories
 			FMoveToColumn = -1;
 			
 			FHDEHost.MouseDown += FHDEHost_MouseDown;
-			FHDEHost.NodeRemoved += FPluginFactory_NodeRemoved;
 		}
 
-		void FPluginFactory_NodeRemoved(object sender, NodeEventArgs args)
-		{
-			var node = args.Node;
-			
-			var attachedEditors =
-				from entry in FExportLifetimeContexts
-				let editor = entry.Value.Value
-				where editor.AttachedNode == node
-				select editor;
-			
-			foreach (var editor in attachedEditors)
-			{
-				editor.AttachedNode = null;
-			}
-		}
-		
 		public IEnumerable<INodeInfo> ExtractNodeInfos(string filename, string arguments)
 		{
 			// Present the user with all files associated with this filename.
@@ -300,7 +285,10 @@ namespace VVVV.Hosting.Factories
 		
 		void FHDEHost_MouseDown(object sender, MouseEventArgs args)
 		{
-			var node = args.Node;
+			var internalNode = args.Node;
+			if (internalNode == null) return;
+			
+			var node = FindNodeFromInternal(internalNode);
 			if (node == null) return;
 			
 			var button = args.Button;
@@ -310,7 +298,7 @@ namespace VVVV.Hosting.Factories
 			{
 				// Let the user choose which file to open.
 				
-				var nodeInfo = node.GetNodeInfo();
+				var nodeInfo = node.NodeInfo;
 				
 				switch (nodeInfo.Type)
 				{
@@ -327,15 +315,32 @@ namespace VVVV.Hosting.Factories
 			}
 		}
 		
-		public void OpenEditor(INode node)
+		private INode2 FindNodeFromInternal(INode internalNode)
 		{
-			// Try to locate exact file based on nodeinfo and navigate to its definition.
-			var nodeInfo = node.GetNodeInfo();
-			
+			return
+				(
+					from n in FHDEHost.RootNode.AsDepthFirstEnumerable()
+					where n.InternalCOMInterf == internalNode
+					select n
+				).FirstOrDefault();
+		}
+		
+		public void OpenEditor(INode internalNode)
+		{
+			var node = FindNodeFromInternal(internalNode);
+			if (node == null) return;
+			OpenEditor(node);
+		}
+				
+		public void OpenEditor(INode2 node)
+		{
+			var nodeInfo = node.NodeInfo;
 			switch (nodeInfo.Type)
 			{
+				case NodeType.Unknown:
 				case NodeType.Dynamic:
 				case NodeType.Effect:
+					// Try to locate exact file based on nodeinfo and navigate to its definition.
 					var filename = nodeInfo.Filename;
 					var line = -1;
 					
@@ -354,6 +359,16 @@ namespace VVVV.Hosting.Factories
 							line = FindDefiningLine(doc, nodeInfo);
 						}
 					}
+					
+					var fileExtension = Path.GetExtension(filename);
+					
+					var editorFindQuery =
+						from editorExport in FNodeInfoExports
+						let editorInfo = editorExport.Metadata
+						where editorInfo.FileExtensions.Contains(fileExtension)
+						select editorExport.Metadata;
+					
+					if (!editorFindQuery.Any()) return;
 					
 					Open(filename, line, 0, node);
 					break;
@@ -375,12 +390,12 @@ namespace VVVV.Hosting.Factories
 			Open(filename, line, column, null);
 		}
 		
-		public void Open(string filename, int line, int column, INode nodeToAttach)
+		public void Open(string filename, int line, int column, INode2 nodeToAttach)
 		{
 			Open(filename, line, column, nodeToAttach, null);
 		}
 		
-		public void Open(string filename, int line, int column, INode nodeToAttach, IWindow window)
+		public void Open(string filename, int line, int column, INode2 nodeToAttach, IWindow window)
 		{
 			if (!File.Exists(filename))
 			{
