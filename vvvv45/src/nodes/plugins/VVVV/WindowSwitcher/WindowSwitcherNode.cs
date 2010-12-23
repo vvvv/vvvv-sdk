@@ -167,7 +167,7 @@ namespace VVVV.Nodes.WindowSwitcher
             //the dummy textbox gets the focus to trigger on CTRL key up
             FDummyTextBox.Focus();
             //focus the viewer to be able to zoom instantly
-            //FHierarchyViewer.Focus();
+            FHierarchyViewer.Focus();
         }
         
         public void Up()
@@ -270,9 +270,12 @@ namespace VVVV.Nodes.WindowSwitcher
         #region events
         void FHierarchyViewerClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
-            FHierarchyViewer.HideToolTip();
-            FWindowSwitcherHost.HideMe();
-            FHDEHost.SetComponentMode((sender.Model as PatchNode).Node, ComponentMode.InAWindow);
+            if (sender != null)
+            {
+                FHDEHost.SetComponentMode((sender.Model as PatchNode).Node, ComponentMode.InAWindow);
+                FHierarchyViewer.HideToolTip();
+                FWindowSwitcherHost.HideMe();
+            }
         }
         
         void FDummyTextBoxKeyUp(object sender, KeyEventArgs e)
