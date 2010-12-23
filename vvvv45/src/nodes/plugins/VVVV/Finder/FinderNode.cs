@@ -658,7 +658,7 @@ namespace VVVV.Nodes.Finder
         
         void FHierarchyViewerDoubleClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (e.Button == 0)
+            if (e.Button == MouseButtons.Left)
                 OpenParentAndSelectNode((sender.Model as PatchNode).Node);
         }
         
