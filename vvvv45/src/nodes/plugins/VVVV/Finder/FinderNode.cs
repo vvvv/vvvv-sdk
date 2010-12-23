@@ -626,7 +626,12 @@ namespace VVVV.Nodes.Finder
         
         void FHierarchyViewerClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && sender.Model != null)
+            if (sender == null)
+            {    
+                if (e.Button == MouseButtons.Middle)
+                    FHierarchyViewer.ViewAll();
+            }
+            else if (e.Button == MouseButtons.Left && sender.Model != null)
             {
                 (sender.Model as PatchNode).Selected = true;
                 FHDEHost.SelectNodes(new INode[1]{(sender.Model as PatchNode).Node});
@@ -641,11 +646,6 @@ namespace VVVV.Nodes.Finder
                     
                     sender.Map<ICamera>().View(FSearchResult.FindNode(parent));
                 }
-            }
-            else if (e.Button == MouseButtons.Middle)
-            {
-                if (sender.CanMap<ICamera>())
-                    sender.Map<ICamera>().ViewAll();
             }
             else if (e.Button == MouseButtons.Right && sender.Model != null)
             {
