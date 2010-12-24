@@ -428,14 +428,16 @@ namespace VVVV.Hosting
 	class ProxyNodeInfoFactory : INodeInfoFactory, INodeInfoListener, IDisposable
 	{
 		private IInternalNodeInfoFactory FFactory;
+		private HDEHost FHDEHost;
 		private Dictionary<INodeInfo, ProxyNodeInfo> FInternalToProxyMap;
 		private Dictionary<INodeInfo, INodeInfo> FProxyToInternalMap;
 		
 		private Thread FVVVVThread;
 		
-		public ProxyNodeInfoFactory(IInternalNodeInfoFactory nodeInfoFactory)
+		public ProxyNodeInfoFactory(IInternalNodeInfoFactory nodeInfoFactory, HDEHost hdeHost)
 		{
 			FFactory = nodeInfoFactory;
+			FHDEHost = hdeHost;
 			FInternalToProxyMap = new Dictionary<INodeInfo, ProxyNodeInfo>();
 			FProxyToInternalMap = new Dictionary<INodeInfo, INodeInfo>();
 			
@@ -543,6 +545,16 @@ namespace VVVV.Hosting
 		public void NodeInfoUpdatedCB(INodeInfo nodeInfo)
 		{
 			var proxyNodeInfo = FInternalToProxyMap[nodeInfo];
+			
+			// Again a hack. We should really consider moving the cache here.
+			// Problem is a SaveAs operation:
+			// A nodeinfo gets updated with a new filename by this operation and
+			// therefor the cache gets corrupted, since the old filename (which still
+			// exists) points to the updated nodeinfo.
+			// We have to invalidate the cache for the old filename.
+			if (nodeInfo.Filename != proxyNodeInfo.Filename)
+				FHDEHost.InvalidateCache(proxyNodeInfo.Filename);
+			
 			proxyNodeInfo.Reload();
 			OnNodeInfoUpdated(proxyNodeInfo);
 		}

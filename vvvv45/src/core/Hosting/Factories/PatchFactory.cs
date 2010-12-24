@@ -136,27 +136,17 @@ namespace VVVV.Hosting.Factories
                 FDTD += @"]>";
             }
         }
-
         
-        protected override void FDirectoryWatcher_Created(object sender, FileSystemEventArgs e)
-		{	
-        	if (!e.FullPath.Contains("~temp"))
-				AddFile(e.FullPath);
-		}
-		
-		protected override void FDirectoryWatcher_Deleted(object sender, FileSystemEventArgs e)
+		protected override void DoAddFile(string filename)
 		{
-			RemoveFile(e.FullPath);
+			if (!filename.Contains("~temp"))
+				base.DoAddFile(filename);
 		}
 		
-		protected override void FDirectoryWatcher_Renamed(object sender, RenamedEventArgs e)
+		protected override void DoRemoveFile(string filename)
 		{
-			if (!(e.OldFullPath.Contains("~temp") || (e.FullPath.EndsWith(".xml", true, null))))
-            {
-				RemoveFile(e.OldFullPath);
-				AddFile(e.FullPath);
-		    }
+			if (!filename.Contains("~temp"))
+				base.DoRemoveFile(filename);
 		}
-		
     }
 }

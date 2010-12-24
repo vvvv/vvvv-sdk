@@ -178,7 +178,7 @@ namespace VVVV.Hosting
 			FVVVVHost.AddWindowListener(this);
 			FVVVVHost.AddWindowSelectionListener(this);
 			
-			NodeInfoFactory = new ProxyNodeInfoFactory(vvvvHost.NodeInfoFactory);
+			NodeInfoFactory = new ProxyNodeInfoFactory(vvvvHost.NodeInfoFactory, this);
 			NodeInfoFactory.NodeInfoAdded += factory_NodeInfoAdded;
 			NodeInfoFactory.NodeInfoRemoved += factory_NodeInfoRemoved;
 			NodeInfoFactory.NodeInfoUpdated += factory_NodeInfoUpdated;
@@ -784,8 +784,6 @@ namespace VVVV.Hosting
 				
 				FNodeInfoCache[filename] = cache;
 			}
-			
-			Logger.Log(LogType.Debug, "Loaded cached node infos for: " + filename);
 			
 			return FNodeInfoCache[filename];
 		}

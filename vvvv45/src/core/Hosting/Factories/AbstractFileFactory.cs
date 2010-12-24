@@ -226,21 +226,23 @@ namespace VVVV.Hosting.Factories
 				DirectoryChanged(e.FullPath);*/
 		}
 		
-		protected virtual void FDirectoryWatcher_Created(object sender, FileSystemEventArgs e)
+		protected void FDirectoryWatcher_Created(object sender, FileSystemEventArgs e)
 		{
 			if (File.Exists(e.FullPath))
 				AddFile(e.FullPath);
 		}
 		
-		protected virtual void FDirectoryWatcher_Deleted(object sender, FileSystemEventArgs e)
+		protected void FDirectoryWatcher_Deleted(object sender, FileSystemEventArgs e)
 		{
-			RemoveFile(e.FullPath);
+			if (!File.Exists(e.FullPath))
+				RemoveFile(e.FullPath);
 		}
 		
-		protected virtual void FDirectoryWatcher_Renamed(object sender, RenamedEventArgs e)
+		protected void FDirectoryWatcher_Renamed(object sender, RenamedEventArgs e)
 		{
-			RemoveFile(e.OldFullPath);
-			if (File.Exists(e.FullPath))
+			if (!File.Exists(e.OldFullPath))
+				RemoveFile(e.OldFullPath);
+			if (e.FullPath.EndsWith(FFileExtension, true, null) && File.Exists(e.FullPath))
 				AddFile(e.FullPath);
 		}
 		

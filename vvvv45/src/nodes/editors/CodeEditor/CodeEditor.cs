@@ -498,7 +498,7 @@ namespace VVVV.HDE.CodeEditor
 			}
 			catch (Exception)
 			{
-				// Ignore				
+				// Ignore
 			}
 		}
 		
@@ -561,17 +561,20 @@ namespace VVVV.HDE.CodeEditor
 		{
 			KeyEventArgs ke = new KeyEventArgs((Keys)m.WParam.ToInt32() | ModifierKeys);
 			FNeedsKeyUp = !(m.Msg == 0x101);
-			    
+			
 			if (ke.Control && ke.KeyCode == Keys.S)
 			{
-				SyncControlWithDocument();
-				TextDocument.Save();
-				// Trigger a recompile
-				var project = TextDocument.Project;
-				if (project != null)
+				if (!TextDocument.IsReadOnly)
 				{
-					project.Save();
-					project.CompileAsync();
+					SyncControlWithDocument();
+					TextDocument.Save();
+					// Trigger a recompile
+					var project = TextDocument.Project;
+					if (project != null)
+					{
+						project.Save();
+						project.CompileAsync();
+					}
 				}
 				return true;
 			}
@@ -583,26 +586,26 @@ namespace VVVV.HDE.CodeEditor
 			}
 			else if (ke.Control && (ke.KeyCode == Keys.Add || ke.KeyCode == Keys.Oemplus))
 			{
-			    if (!FNeedsKeyUp)
-			    {
-			        FNeedsKeyUp = true;
-			        this.Font = new Font(this.Font.Name, this.Font.Size + 1);
-			    }
-			    return true;
+				if (!FNeedsKeyUp)
+				{
+					FNeedsKeyUp = true;
+					this.Font = new Font(this.Font.Name, this.Font.Size + 1);
+				}
+				return true;
 			}
 			else if (ke.Control && (ke.KeyCode == Keys.Subtract || ke.KeyCode == Keys.OemMinus))
 			{
-			    if (!FNeedsKeyUp)
-			    {
-			        FNeedsKeyUp = true;
-			        this.Font = new Font(this.Font.Name, this.Font.Size - 1);
-			    }
-			    return true;
+				if (!FNeedsKeyUp)
+				{
+					FNeedsKeyUp = true;
+					this.Font = new Font(this.Font.Name, this.Font.Size - 1);
+				}
+				return true;
 			}
 			else if (ke.Control && (ke.KeyCode == Keys.NumPad0 || ke.KeyCode == Keys.D0))
 			{
-			    this.Font = new Font(this.Font.Name, 10);
-			    return true;
+				this.Font = new Font(this.Font.Name, 10);
+				return true;
 			}
 			else
 				return base.ProcessKeyPreview(ref m);

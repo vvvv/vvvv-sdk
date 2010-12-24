@@ -359,16 +359,20 @@ namespace VVVV.Hosting.Factories
 							line = FindDefiningLine(doc, nodeInfo);
 						}
 					}
+					else
+					{
+						// Do not try to open the file if there's no editor
+						// registered for this file extension.
+						var fileExtension = Path.GetExtension(filename);
 					
-					var fileExtension = Path.GetExtension(filename);
-					
-					var editorFindQuery =
-						from editorExport in FNodeInfoExports
-						let editorInfo = editorExport.Metadata
-						where editorInfo.FileExtensions.Contains(fileExtension)
-						select editorExport.Metadata;
-					
-					if (!editorFindQuery.Any()) return;
+						var editorFindQuery =
+							from editorExport in FNodeInfoExports
+							let editorInfo = editorExport.Metadata
+							where editorInfo.FileExtensions.Contains(fileExtension)
+							select editorExport.Metadata;
+						
+						if (!editorFindQuery.Any()) return;
+					}
 					
 					Open(filename, line, 0, node);
 					break;
@@ -548,7 +552,7 @@ namespace VVVV.Hosting.Factories
 						bool match = true;
 						
 						// Check version
-						if (nodeInfo.Version != null)
+						if (!string.IsNullOrEmpty(nodeInfo.Version))
 						{
 							string version = null;
 							if (attribute.NamedArguments.ContainsKey("Version"))
