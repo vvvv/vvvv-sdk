@@ -114,7 +114,14 @@ namespace VVVV.Hosting
 			// Create a windows forms sync context (FileSystemWatcher runs asynchronously).
 			var context = SynchronizationContext.Current;
 			if (context == null)
-				SynchronizationContext.SetSynchronizationContext(new WindowsFormsSynchronizationContext());
+			{
+				// We need to create a user control to get a sync context.
+				var control = new UserControl();
+				context = SynchronizationContext.Current;
+				control.Dispose();
+				
+				Debug.Assert(context != null, "SynchronizationContext not set.");
+			}
 			
 			// Register at least one ICommandHistory for top level element ISolution
 			var mappingRegistry = new MappingRegistry();

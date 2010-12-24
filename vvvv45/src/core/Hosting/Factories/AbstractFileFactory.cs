@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -42,6 +43,7 @@ namespace VVVV.Hosting.Factories
 		public AbstractFileFactory(string fileExtension)
 		{
 			FFileExtension = fileExtension;
+			Debug.Assert(SynchronizationContext.Current != null, "SynchronizationContext not set.");
 			FSyncContext = new GenericSynchronizingObject();
 		}
 		
