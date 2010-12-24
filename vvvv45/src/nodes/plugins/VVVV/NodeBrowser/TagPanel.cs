@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
+using Microsoft.Practices.Unity;
+using VVVV.Core;
+using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.NodeBrowser
@@ -61,6 +65,9 @@ namespace VVVV.Nodes.NodeBrowser
 				UpdateRichTextBox();
 			}
 		}
+		
+		[Import]
+		ILogger FLogger;
 		
 		public TagPanel()
 		{
@@ -388,7 +395,8 @@ namespace VVVV.Nodes.NodeBrowser
             if (fn == null)
             	fn = "";
             
-            if (NodeBrowser.CurrentPatchWindow == null || nodeInfo != NodeBrowser.CurrentPatchWindow.GetNode().GetNodeInfo())
+            var ni = NodeBrowser.CurrentPatchWindow.GetNode().GetNodeInfo();
+            if (NodeBrowser.CurrentPatchWindow == null || nodeInfo.Filename != ni.Filename)
 			{
 				if (!string.IsNullOrEmpty(NodeBrowser.CurrentDir))
 					//available if local
