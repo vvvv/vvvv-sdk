@@ -4,7 +4,7 @@
 //DropDown (String)
 
 //////description
-//DropDown Menu for Strings
+//DropDown Menu for strings
 
 //////licence
 //GNU Lesser General Public License (LGPL)
@@ -136,7 +136,7 @@ namespace VVVV.Nodes
 					//the nodes author: your sign
 					FPluginInfo.Author = "woei";
 					//describe the nodes function
-					FPluginInfo.Help = "DropDown Menu for colors";
+					FPluginInfo.Help = "DropDown Menu for strings";
 					//specify a comma separated list of tags that describe the node
 					FPluginInfo.Tags = "";
 					
