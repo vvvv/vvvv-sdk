@@ -10,13 +10,4 @@ namespace VVVV.Hosting.Pins
 	{
 		object GetSlice(int slice);
 	}
-	
-	public class GenericIO : IGenericIO
-	{
-		public object GetSlice(int slice)
-		{
-			return null;
-		}
-	}
-
 }
