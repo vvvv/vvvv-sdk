@@ -135,11 +135,11 @@ namespace VVVV.Nodes.Finder
                     
                     if (FNodeInfo.Name == "S")
                     {
-                        FChannelPin = FNode.GetPin("SendString");
+                        FChannelPin = FNode.GetPin("Send String");
                         FIsSource = true;
                     }
                     else if (FNodeInfo.Name == "R")
-                        FChannelPin = FNode.GetPin("ReceiveString");
+                        FChannelPin = FNode.GetPin("Receive String");
                     
                     if (FChannelPin != null)
                     {
