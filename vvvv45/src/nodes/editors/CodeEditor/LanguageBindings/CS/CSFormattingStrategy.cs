@@ -1,7 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+
+using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Dom.CSharp;
+using ICSharpCode.TextEditor.Actions;
 using ICSharpCode.TextEditor.Document;
+using VVVV.Core.Logging;
 using VVVV.Core.Model.CS;
 
 namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
@@ -15,9 +21,75 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 			FEditor = editor;
 		}
 		
+		protected override int AutoIndentLine(ICSharpCode.TextEditor.TextArea textArea, int lineNumber)
+		{
+			return base.AutoIndentLine(textArea, lineNumber);
+		}
+		
 		protected override int SmartIndentLine(ICSharpCode.TextEditor.TextArea textArea, int line)
 		{
-			return base.SmartIndentLine(textArea, line);
+			var doc = textArea.Document;
+			var lineSegment = doc.GetLineSegment(line);
+			
+			int bracketOffset = SearchBracketBackward(doc, lineSegment.Offset - 1, '{', '}');
+			int bracketLine = bracketOffset >= 0 ? doc.GetLineNumberForOffset(bracketOffset) : 0;
+			
+			string indentationString = Tab.GetIndentationString(doc);
+			if (LineStartsWithClosingBracket(textArea, line))
+				indentationString = "";
+			
+			string indentation = bracketLine != 0 ? GetIndentation(textArea, bracketLine) + indentationString : "";
+			string newLineText = indentation + TextUtilities.GetLineAsString(doc, line).Trim();
+			
+			SmartReplaceLine(doc, lineSegment, newLineText);
+			
+			return indentation.Length;
+		}
+		
+		public override void FormatLine(ICSharpCode.TextEditor.TextArea textArea, int line, int cursorOffset, char ch)
+		{
+			try {
+				if (ch == '\n')
+				{
+					int offset = Math.Min(textArea.Document.TextLength - 1, cursorOffset);
+					int backwardBracketOffset = SearchBracketBackward(textArea.Document, offset, '{', '}');
+					int forwardBracketOffset = SearchBracketForward(textArea.Document, offset, '{', '}');
+					
+					if (backwardBracketOffset >= 0)
+					{
+						bool needClosingBracket = false;
+						if (forwardBracketOffset >= 0)
+						{
+							// See if indentations of brackets match
+							var backwardIndent = GetIndentation(textArea, textArea.Document.GetLineNumberForOffset(backwardBracketOffset)).Length;
+							var forwardIndent = GetIndentation(textArea, textArea.Document.GetLineNumberForOffset(forwardBracketOffset)).Length;
+							needClosingBracket = backwardIndent > forwardIndent;
+						}
+						else
+							needClosingBracket = true;
+						
+						if (needClosingBracket)
+						{
+							textArea.Document.Insert(cursorOffset, "\n}");
+							IndentLine(textArea, line + 1);
+						}
+					}
+					
+					textArea.Caret.Column = IndentLine(textArea, line);
+				}
+			} catch (Exception e) {
+				FEditor.Logger.Log(e);
+			}
+		}
+		
+		protected bool LineStartsWithClosingBracket(ICSharpCode.TextEditor.TextArea textArea, int line)
+		{
+			return TextUtilities.GetLineAsString(textArea.Document, line).Trim().StartsWith("}");
+		}
+		
+		protected bool LineEndsWithOpeningBracket(ICSharpCode.TextEditor.TextArea textArea, int line)
+		{
+			return TextUtilities.GetLineAsString(textArea.Document, line).Trim().EndsWith("{");
 		}
 		
 		public override int SearchBracketBackward(IDocument document, int offset, char openBracket, char closingBracket)
@@ -103,7 +175,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 			bool inBlockComment = false;
 			
 			int brackets = 1;
-		
+			
 			for (int i = offset; i < document.TextLength; i++)
 			{
 				char ch = document.GetCharAt(i);
@@ -157,7 +229,13 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 		{
 			var csDocument = FEditor.TextDocument as CSDocument;
 			var expressionFinder = new CSharpExpressionFinder(csDocument.ParseInfo);
-			return expressionFinder.FilterComments(document.GetText(0, offset + 1), ref offset) == null;
+			int length = offset + 1;
+			if (length <= document.TextLength)
+				return expressionFinder.FilterComments(document.GetText(0, length), ref offset) == null;
+			else
+			{
+				return false;
+			}
 		}
 	}
 }

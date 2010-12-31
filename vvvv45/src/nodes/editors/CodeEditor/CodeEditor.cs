@@ -41,6 +41,7 @@ using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
 using VVVV.Core.Model.FX;
 using VVVV.Core.Runtime;
+using VVVV.HDE.CodeEditor.Actions;
 using VVVV.HDE.CodeEditor.Gui.SearchBar;
 using VVVV.HDE.CodeEditor.LanguageBindings.CS;
 using VVVV.PluginInterfaces.V2;
@@ -253,6 +254,10 @@ namespace VVVV.HDE.CodeEditor
 			var redo = editactions[Keys.Control | Keys.Y];
 			editactions[Keys.Control | Keys.Shift | Keys.Z] = redo;
 			editactions.Remove(Keys.Control | Keys.Y);
+			
+			var indentSelectionAction = new IndentSelectionAction();
+			indentSelectionAction.Keys = new Keys[] { Keys.Control | Keys.Alt | Keys.I };
+			editactions[indentSelectionAction.Keys[0]] = indentSelectionAction;
 		}
 
 		void FTextEditorControl_Scroll(object sender, ScrollEventArgs e)
