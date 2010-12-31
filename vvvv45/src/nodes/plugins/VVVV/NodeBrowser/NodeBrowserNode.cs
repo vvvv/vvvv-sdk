@@ -104,6 +104,7 @@ namespace VVVV.Nodes.NodeBrowser
 		public NodeBrowserPluginNode()
 		{
 			DefaultConstructor();
+			FTagPanel.Visible = true;
 		}
 		
 		[ImportingConstructor]

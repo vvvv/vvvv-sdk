@@ -395,8 +395,7 @@ namespace VVVV.Nodes.NodeBrowser
             if (fn == null)
             	fn = "";
             
-            var ni = NodeBrowser.CurrentPatchWindow.GetNode().GetNodeInfo();
-            if (NodeBrowser.CurrentPatchWindow == null || nodeInfo.Filename != ni.Filename)
+            if (NodeBrowser.CurrentPatchWindow == null || nodeInfo.Filename != NodeBrowser.CurrentPatchWindow.GetNode().GetNodeInfo().Filename)
 			{
 				if (!string.IsNullOrEmpty(NodeBrowser.CurrentDir))
 					//available if local

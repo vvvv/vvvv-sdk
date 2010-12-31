@@ -39,7 +39,7 @@ namespace VVVV.Hosting.Pins.Input
 		
 		protected override bool NeedToBuildSpread()
 		{
-			return (FBinSize.IsChanged || FDiffSpreadPin.IsChanged);
+			return (FBinSizePin.IsChanged || FDiffSpreadPin.IsChanged);
 		}			
 		
 		#region IDisposable

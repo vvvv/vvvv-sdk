@@ -7,11 +7,12 @@ namespace VVVV.Hosting.Pins.Input
 {
 	public class InputBinSpread<T> : BinSpread<T>
 	{
-		protected DiffPin<int> FBinSize;
+		protected DiffPin<int> FBinSizePin;
 		protected Pin<T> FSpreadPin;
 		protected bool FSpreadsBuilt;
 		protected int FUpdateCount;
 		protected int FBinSizeSum;
+		protected int FBinSize;
 		
 		private bool[] FCache = new bool[0];
 		private int[] FOffset = new int[0];
@@ -21,15 +22,17 @@ namespace VVVV.Hosting.Pins.Input
 		public InputBinSpread(IPluginHost host, InputAttribute attribute)
 			: base(attribute)
 		{
+			FBinSize = attribute.BinSize;
+			
 			//data pin
 			CreateDataPin(host, attribute);
 			FSpreadPin.Updated += AnyPin_Updated;
 			
 			//bin size pin
 			var att = new InputAttribute(attribute.Name + " Bin Size");
-			att.DefaultValue = -1;
-			FBinSize = new DiffIntInputPin(host, att);
-			FBinSize.Updated += AnyPin_Updated;
+			att.DefaultValue = FBinSize;
+			FBinSizePin = new DiffIntInputPin(host, att);
+			FBinSizePin.Updated += AnyPin_Updated;
 		}
 		
 		protected override void BufferIncreased(ISpread<T>[] oldBuffer, ISpread<T>[] newBuffer)
@@ -80,14 +83,14 @@ namespace VVVV.Hosting.Pins.Input
 		void BuildSpreads()
 		{
 			// Normalize bin sizes and calculate offsets for lazy loading.
-			if (FOldSliceCount != FSpreadPin.SliceCount || FBinSize.IsChanged)
+			if (FOldSliceCount != FSpreadPin.SliceCount || FBinSizePin.IsChanged)
 			{
-				FNormalizedBinSize.SliceCount = FBinSize.SliceCount;
+				FNormalizedBinSize.SliceCount = FBinSizePin.SliceCount;
 				FBinSizeSum = 0;
 				
-				var binSizeBuffer = FBinSize.Buffer;
+				var binSizeBuffer = FBinSizePin.Buffer;
 				var normalizedBinSizeBuffer = FNormalizedBinSize.Buffer;
-				for (int i = 0; i < FBinSize.SliceCount; i++)
+				for (int i = 0; i < FBinSizePin.SliceCount; i++)
 				{
 					normalizedBinSizeBuffer[i] = NormalizeBinSize(binSizeBuffer[i], FSpreadPin.SliceCount);
 					FBinSizeSum += normalizedBinSizeBuffer[i];
@@ -95,11 +98,11 @@ namespace VVVV.Hosting.Pins.Input
 				
 				if (FLazy)
 				{
-					if (FBinSize.SliceCount > FOffset.Length)
-						FOffset = new int[FBinSize.SliceCount];
+					if (FBinSizePin.SliceCount > FOffset.Length)
+						FOffset = new int[FBinSizePin.SliceCount];
 					
 					int offset = 0;
-					for (int i = 0; i < FBinSize.SliceCount; i++)
+					for (int i = 0; i < FBinSizePin.SliceCount; i++)
 					{
 						FOffset[i] = offset;
 						offset += normalizedBinSizeBuffer[i];
@@ -116,7 +119,7 @@ namespace VVVV.Hosting.Pins.Input
 				if (remainder > 0)
 					binTimes = FSpreadPin.SliceCount / FBinSizeSum + 1;
 				
-				SliceCount = binTimes * FBinSize.SliceCount;
+				SliceCount = binTimes * FBinSizePin.SliceCount;
 				
 				CopyToBuffer(FBuffer, FSpreadPin, FNormalizedBinSize);
 			}
@@ -163,7 +166,7 @@ namespace VVVV.Hosting.Pins.Input
 						int sliceCount = FNormalizedBinSize[index];
 						
 						int offsetIndex = 0;
-						int quotient = Math.DivRem(index, FBinSize.SliceCount, out offsetIndex);
+						int quotient = Math.DivRem(index, FBinSizePin.SliceCount, out offsetIndex);
 						int offset = FOffset[offsetIndex] + (quotient * FBinSizeSum);
 						
 						spread.SliceCount = sliceCount;
