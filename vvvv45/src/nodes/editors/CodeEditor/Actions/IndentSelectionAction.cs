@@ -5,7 +5,7 @@ using ICSharpCode.TextEditor.Actions;
 namespace VVVV.HDE.CodeEditor.Actions
 {
 	/// <summary>
-	/// Indents selected lines.
+	/// Indents selected lines or all lines if nothing is selected.
 	/// </summary>
 	public class IndentSelectionAction : AbstractEditAction
 	{
@@ -16,7 +16,7 @@ namespace VVVV.HDE.CodeEditor.Actions
 			{
 				foreach (var selection in selectionManager.SelectionCollection)
 				{
-					textArea.Document.FormattingStrategy.IndentLine(textArea, selection.StartPosition.Line);
+					textArea.Document.FormattingStrategy.IndentLines(textArea, selection.StartPosition.Line, selection.EndPosition.Line);
 				}
 			}
 			else
