@@ -356,7 +356,7 @@ namespace VVVV.Nodes.NodeBrowser
 			else
 				return InputList.FindAll(delegate(INodeInfo nodeInfo)
 				                         {
-				                         	var displayName = nodeInfo.Username;
+				                         	var displayName = NodeInfoToDisplayName(nodeInfo);
 				                         	displayName = displayName.ToLower();
 				                         	displayName = displayName.Replace('é', 'e');
 				                         	bool containsAll = true;
@@ -364,7 +364,6 @@ namespace VVVV.Nodes.NodeBrowser
 				                         	foreach (string tag in FTags)
 				                         	{
 				                         		t = tag.ToLower();
-				                         		t = t.TrimStart(new char[1]{'.'});
 				                         		if (displayName.Contains(t))
 				                         		{
 				                         			if (!AndTags)
