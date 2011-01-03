@@ -394,6 +394,10 @@ namespace VVVV.Nodes.NodeBrowser
             if (fn == null)
             	fn = "";
             
+            // Hack to make it work again 50
+            if (NodeBrowser.NodeCollection == null)
+            	return true;
+            
             if (NodeBrowser.CurrentPatchWindow == null || nodeInfo.Filename != NodeBrowser.CurrentPatchWindow.GetNode().GetNodeInfo().Filename)
 			{
 				if (!string.IsNullOrEmpty(NodeBrowser.CurrentDir))
