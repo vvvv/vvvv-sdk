@@ -3,7 +3,7 @@
   <PropertyGroup>
     <ProjectGuid>{F9A754A6-EEA5-4761-9446-C2AAF9CF8B31}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.Hosting</RootNamespace>
     <AssemblyName>VVVV.Hosting</AssemblyName>
@@ -19,12 +19,12 @@
     <ReferencePath>$(VVVV50)\lib\</ReferencePath>
     <StartAction>Program</StartAction>
     <StartProgram>$(VVVV45)\vvvv.exe</StartProgram>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
     <RegisterForComInterop>False</RegisterForComInterop>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <BaseAddress>4194304</BaseAddress>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <FileAlignment>4096</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -41,37 +41,52 @@
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="ICSharpCode.NRefactory">
-      <HintPath>..\..\vvvv50\lib\SharpDevelop\ICSharpCode.NRefactory.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpDevelop.Dom">
-      <HintPath>..\..\vvvv50\lib\SharpDevelop\ICSharpCode.SharpDevelop.Dom.dll</HintPath>
-    </Reference>
-    <Reference Include="MefContrib.Hosting.Generics">
-      <HintPath>..\..\vvvv50\lib\MEF\MefContrib.Hosting.Generics.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity">
-      <HintPath>..\..\vvvv50\lib\Unity\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="Nito.Async">
-      <HintPath>..\..\vvvv50\lib\NitoAsync\Nito.Async.dll</HintPath>
-    </Reference>
-    <Reference Include="SlimDX">
-      <HintPath>..\..\vvvv50\lib\SlimDX\SlimDX.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition">
-      <HintPath>..\..\vvvv50\lib\MEF\System.ComponentModel.Composition.dll</HintPath>
-    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="ICSharpCode.NRefactory, Version=3.2.1.6466, Culture=neutral, PublicKeyToken=efe927acf176eea2">
+      <HintPath>..\..\vvvv50\lib\ICSharpCode.NRefactory.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpDevelop.Dom, Version=3.2.1.6466, Culture=neutral, PublicKeyToken=f829da5c02be14ee">
+      <HintPath>..\..\vvvv50\lib\ICSharpCode.SharpDevelop.Dom.dll</HintPath>
+    </Reference>
+    <Reference Include="MefContrib.Hosting.Generics, Version=0.9.2.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\vvvv50\lib\MefContrib.Hosting.Generics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\..\vvvv50\lib\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.Async, Version=1.4.0.0, Culture=neutral, PublicKeyToken=3206e950277c1912">
+      <HintPath>..\..\vvvv50\lib\Nito.Async.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimDX, Version=2.0.10.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9">
+      <HintPath>..\..\vvvv50\lib\SlimDX.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\..\vvvv50\lib\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Factories\AbstractFileFactory.cs" />
@@ -149,12 +164,6 @@
     <Compile Include="VVVVLogger.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Factories" />
-    <Folder Include="Graph" />
-    <Folder Include="Pins" />
-    <Folder Include="Pins\Config" />
-    <Folder Include="Pins\Input" />
-    <Folder Include="Pins\Output" />
     <ProjectReference Include="..\..\vvvv50\src\Core\Core.csproj">
       <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
       <Name>Core</Name>
@@ -175,5 +184,8 @@
       <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
       <Name>Utils</Name>
     </ProjectReference>
+    <Folder Include="Pins\" />
+    <Folder Include="Pins\" />
+    <Folder Include="Pins\" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <ProjectGuid>{EEC563FD-E3DA-45F5-8F70-AF72CD0BCBAE}</ProjectGuid>
@@ -45,14 +45,12 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
     <WarningLevel>4</WarningLevel>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
@@ -90,14 +88,14 @@
       <Name>PluginInterfaces</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Utils3rdParty\Utils3rdParty.csproj">
+      <Project>{87863121-C124-4585-B3BB-7706F03ECC64}</Project>
+      <Name>Utils3rdParty</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Utils\Utils.csproj">
       <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
       <Name>Utils</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Utils3rdParty\VVVV.Utils3rdParty.csproj">
-      <Project>{87863121-C124-4585-B3BB-7706F03ECC64}</Project>
-      <Name>VVVV.Utils3rdParty</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

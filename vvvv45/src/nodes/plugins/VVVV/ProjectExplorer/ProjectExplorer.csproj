@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectGuid>{503A106A-2137-48B3-9614-9BA745765741}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.HDE.ProjectExplorer</RootNamespace>
-    <AssemblyName>ProjectExplorer</AssemblyName>
+    <AssemblyName>VVVV.ProjectExplorer</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SourceAnalysisOverrideSettingsFile>C:\Dokumente und Einstellungen\tgallery\Anwendungsdaten\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
@@ -36,21 +36,20 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
     <WarningLevel>4</WarningLevel>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <DebugType>none</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\x86\Debug</OutputPath>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
@@ -95,6 +94,11 @@
       <Name>WinFormsViewer</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Hosting\Hosting.csproj">
+      <Project>{F9A754A6-EEA5-4761-9446-C2AAF9CF8B31}</Project>
+      <Name>Hosting</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\PluginInterfaces\PluginInterfaces.csproj">
       <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
       <Name>PluginInterfaces</Name>
@@ -103,11 +107,6 @@
     <ProjectReference Include="..\..\..\Utils\Utils.csproj">
       <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
       <Name>Utils</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Hosting\VVVV.Hosting.csproj">
-      <Project>{F9A754A6-EEA5-4761-9446-C2AAF9CF8B31}</Project>
-      <Name>VVVV.Hosting</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
