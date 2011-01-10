@@ -1,14 +1,17 @@
-﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectGuid>{5998EFEE-ED5A-4266-AD9E-A1A63E7A8D41}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <RootNamespace>PinTests</RootNamespace>
     <AssemblyName>PinTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <ReferencePath>$(VVVV45)\bin\managed\</ReferencePath>
     <SourceAnalysisOverrideSettingsFile>C:\Users\elias\AppData\Roaming\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -29,31 +32,39 @@
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <WarningLevel>4</WarningLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="NUnit.Framework">
       <HintPath>$(SharpDevelopBinPath)\Tools\NUnit\NUnit.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="SlimDX">
-      <HintPath>..\..\..\vvvv50\lib\SlimDX.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition">
-      <HintPath>..\..\..\vvvv50\lib\System.ComponentModel.Composition.dll</HintPath>
-    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="SlimDX, Version=2.0.10.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9">
+      <HintPath>..\..\..\vvvv50\lib\SlimDX.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\..\..\vvvv50\lib\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PinTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Hosting\Hosting.csproj">
-      <Project>{F9A754A6-EEA5-4761-9446-C2AAF9CF8B31}</Project>
-      <Name>Hosting</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\PluginInterfaces\PluginInterfaces.csproj">
       <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
       <Name>PluginInterfaces</Name>
@@ -65,6 +76,10 @@
     <ProjectReference Include="..\PluginHost\PluginHost.csproj">
       <Project>{28A80D79-9679-41B0-9060-5F076E0E6DFD}</Project>
       <Name>PluginHost</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Hosting\VVVV.Hosting.csproj">
+      <Project>{F9A754A6-EEA5-4761-9446-C2AAF9CF8B31}</Project>
+      <Name>VVVV.Hosting</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

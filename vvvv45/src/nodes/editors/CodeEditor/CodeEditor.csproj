@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectGuid>{A63D2EA4-D87C-459B-B57F-19A76A7ADAF0}</ProjectGuid>
@@ -14,11 +14,12 @@
     <NoStdLib>False</NoStdLib>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <SignAssembly>False</SignAssembly>
     <DelaySign>False</DelaySign>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <OutputPath>$(VVVV45)\editors\</OutputPath>
     <ReferencePath>$(VVVV50)\lib\</ReferencePath>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,28 +44,22 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <FileAlignment>4096</FileAlignment>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
-    <Reference Include="ICSharpCode.NRefactory">
-      <HintPath>..\..\..\vvvv50\lib\ICSharpCode.NRefactory.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpDevelop.Dom">
-      <HintPath>..\..\..\vvvv50\lib\ICSharpCode.SharpDevelop.Dom.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ICSharpCode.TextEditor">
-      <HintPath>Dependencies\ICSharpCode.TextEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity">
-      <HintPath>..\..\..\vvvv50\lib\Unity\Microsoft.Practices.Unity.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition">
-      <HintPath>..\..\..\vvvv50\lib\MEF\System.ComponentModel.Composition.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -72,6 +67,25 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="ICSharpCode.NRefactory, Version=3.2.1.6466, Culture=neutral, PublicKeyToken=efe927acf176eea2">
+      <HintPath>..\..\..\vvvv50\lib\ICSharpCode.NRefactory.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpDevelop.Dom, Version=3.2.1.6466, Culture=neutral, PublicKeyToken=f829da5c02be14ee">
+      <HintPath>..\..\..\vvvv50\lib\ICSharpCode.SharpDevelop.Dom.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.TextEditor, Version=3.2.1.6466, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a">
+      <HintPath>Dependencies\ICSharpCode.TextEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\..\..\vvvv50\lib\Microsoft.Practices.Unity.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\..\..\vvvv50\lib\System.ComponentModel.Composition.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\IndentSelectionAction.cs" />
@@ -114,14 +128,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ErrorView" />
-    <Folder Include="Gui\Dialogs" />
-    <Folder Include="Gui\SearchBar" />
-    <Folder Include="LanguageBindings" />
-    <Folder Include="LanguageBindings\FX" />
-    <Folder Include="LanguageBindings\CS" />
-    <Folder Include="Gui" />
-    <Folder Include="Actions" />
     <ProjectReference Include="..\..\..\vvvv50\src\Core\Core.csproj">
       <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
       <Name>Core</Name>
@@ -132,11 +138,6 @@
       <Name>WinFormsViewer</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\Hosting\Hosting.csproj">
-      <Project>{F9A754A6-EEA5-4761-9446-C2AAF9CF8B31}</Project>
-      <Name>Hosting</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\PluginInterfaces\PluginInterfaces.csproj">
       <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
       <Name>PluginInterfaces</Name>
@@ -145,6 +146,15 @@
     <ProjectReference Include="..\..\Utils\Utils.csproj">
       <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
       <Name>Utils</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <Folder Include="Gui\" />
+    <Folder Include="Gui\" />
+    <Folder Include="LanguageBindings\" />
+    <Folder Include="LanguageBindings\" />
+    <ProjectReference Include="..\..\Hosting\VVVV.Hosting.csproj">
+      <Project>{F9A754A6-EEA5-4761-9446-C2AAF9CF8B31}</Project>
+      <Name>VVVV.Hosting</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
