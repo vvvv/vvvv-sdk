@@ -180,6 +180,10 @@ namespace VVVV.Hosting.Graph
             {
                 return FInternalCOMInterf.LastRuntimeError;
             }
+            set
+            {
+            	FInternalCOMInterf.LastRuntimeError = value;
+            }
         }
 		
 		public INode2 Parent {

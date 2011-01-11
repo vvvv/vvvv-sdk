@@ -229,9 +229,9 @@ namespace VVVV.Hosting
 			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\NodeBrowser.dll"));
 			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\NodeCollector.dll"));
 			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\WindowSwitcher.dll"));
-			foreach (var factory in AddonFactories) 
+			foreach (var factory in AddonFactories)
 				if (factory is PatchFactory)
-				    NodeCollection.Add(ExePath.ConcatPath(@"help\"), factory, true);
+					NodeCollection.Add(ExePath.ConcatPath(@"help\"), factory, true);
 //			NodeCollection.Collect();
 			
 			NodeInfoFactory.NodeInfoAdded -= NodeInfoFactory_NodeInfoAdded;
@@ -597,12 +597,12 @@ namespace VVVV.Hosting
 		#endregion
 		
 		#region helper methods
-		protected IEnumerable<INode> GetAffectedNodes(INodeInfo nodeInfo)
+		protected IEnumerable<INode2> GetAffectedNodes(INodeInfo nodeInfo)
 		{
 			return
 				from node in RootNode.AsDepthFirstEnumerable()
 				where nodeInfo == node.NodeInfo
-				select node.InternalCOMInterf;
+				select node;
 		}
 		
 		/// <summary>
@@ -679,32 +679,32 @@ namespace VVVV.Hosting
 		
 		public void factory_NodeInfoUpdated(object sender, INodeInfo info)
 		{
-			try
-			{
-				var factory = info.Factory;
+			var factory = info.Factory;
 
-				// More of a hack. Find cleaner solution: EditorFactory shouldn't update node infos
-				// every time.
-				if (factory is EditorFactory) return;
-				
-				// Go through all the running hosts using this changed node info
-				// and create a new plugin for them.
-				foreach (var node in GetAffectedNodes(info))
+			// More of a hack. Find cleaner solution: EditorFactory shouldn't update node infos
+			// every time.
+			if (factory is EditorFactory) return;
+			
+			// Go through all the running hosts using this changed node info
+			// and create a new plugin for them.
+			foreach (var node in GetAffectedNodes(info))
+			{
+				try
 				{
-					factory.Create(info, node);
+					factory.Create(info, node.InternalCOMInterf);
 					
 					//for effects need to update only one affected host
 					//others will be updated vvvv internally
 					if (factory is EffectsFactory)
 						break;
 				}
-				
-				factory_NodeInfoAdded(sender, info);
+				catch (Exception e)
+				{
+					node.LastRuntimeError = e.ToString();
+				}
 			}
-			catch (Exception e)
-			{
-				Logger.Log(e);
-			}
+			
+			factory_NodeInfoAdded(sender, info);
 		}
 		
 		protected Assembly ResolveAssemblyCB(object sender, ResolveEventArgs args)

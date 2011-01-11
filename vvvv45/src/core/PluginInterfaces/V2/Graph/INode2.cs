@@ -38,11 +38,12 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		}
         
         /// <summary>
-		/// Gets the last runtime error that occured or null if there were no errors.
+		/// Gets or sets the last runtime error that occured or null if there were no errors.
 		/// </summary>
 		string LastRuntimeError
 		{
 			get;
+			set;
 		}
 		
 		/// <summary>

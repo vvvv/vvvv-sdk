@@ -332,6 +332,7 @@ namespace VVVV.PluginInterfaces.V2
 		string LastRuntimeError
 		{
 			get;
+			set;
 		}
 		
 		/// <summary>

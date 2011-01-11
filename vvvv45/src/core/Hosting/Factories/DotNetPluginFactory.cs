@@ -93,46 +93,23 @@ namespace VVVV.Hosting.Factories
 		
 		protected override bool CreateNode(INodeInfo nodeInfo, IInternalPluginHost pluginHost)
 		{
-			try
-			{
-				//dispose previous plugin
-				var plugin = pluginHost.Plugin;
-				if (plugin != null) DisposePlugin(plugin);
-				
-				//make the host mark all its pins for possible deletion
-				pluginHost.Plugin = null;
-				
-				//create the plugin
-				plugin = CreatePlugin(nodeInfo, pluginHost as IPluginHost2);
-				
-				var pluginV1 = plugin as IPlugin;
-				if (pluginV1 != null)
-				{
-					try
-					{
-						pluginV1.SetPluginHost(pluginHost);
-					}
-					catch (Exception e)
-					{
-						FLogger.Log(e);
-					}
-				}
-				
-				pluginHost.Plugin = plugin;
-				
-				return true;
-			}
-			catch (ReflectionTypeLoadException e)
-			{
-				foreach (var f in e.LoaderExceptions)
-					FLogger.Log(f);
-			}
-			catch (Exception e)
-			{
-				FLogger.Log(e);
-			}
-
-			return false;
+			//dispose previous plugin
+			var plugin = pluginHost.Plugin;
+			if (plugin != null) DisposePlugin(plugin);
+			
+			//make the host mark all its pins for possible deletion
+			pluginHost.Plugin = null;
+			
+			//create the plugin
+			plugin = CreatePlugin(nodeInfo, pluginHost as IPluginHost2);
+			
+			var pluginV1 = plugin as IPlugin;
+			if (pluginV1 != null)
+				pluginV1.SetPluginHost(pluginHost);
+			
+			pluginHost.Plugin = plugin;
+			
+			return true;
 		}
 		
 		protected override bool DeleteNode(INodeInfo nodeInfo, IInternalPluginHost pluginHost)
