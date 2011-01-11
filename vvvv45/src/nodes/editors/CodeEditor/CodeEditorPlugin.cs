@@ -48,7 +48,8 @@ namespace VVVV.HDE.CodeEditor
 		private IProject FAttachedProject;
 		private CodeEditor FEditor;
 		private ViewableCollection<object> FErrorList;
-		private Dictionary<string, RuntimeError> FRuntimeErrors;
+		private RuntimeError FLastRuntimeError;
+		private string FLastRuntimeErrorString;
 		private IHDEHost FHDEHost;
 		private INode FNode;
 		
@@ -65,7 +66,6 @@ namespace VVVV.HDE.CodeEditor
 			FSolution = solution;
 			FLogger = logger;
 			FErrorList = new ViewableCollection<object>();
-			FRuntimeErrors = new Dictionary<string, RuntimeError>();
 			
 			if (CompletionIcons.Images.Count == 0)
 			{
@@ -404,25 +404,25 @@ namespace VVVV.HDE.CodeEditor
 			{
 				var lastRuntimeErrorString = FAttachedNode.LastRuntimeError;
 				
-				if (lastRuntimeErrorString != null)
+				if (!string.IsNullOrEmpty(lastRuntimeErrorString))
 				{
-					int runtimeErrorsCount = FRuntimeErrors.Count;
-					
-					if (!FRuntimeErrors.ContainsKey(lastRuntimeErrorString))
+					if (lastRuntimeErrorString != FLastRuntimeErrorString)
 					{
-						var runtimeError = new RuntimeError(lastRuntimeErrorString);
-						FRuntimeErrors.Add(lastRuntimeErrorString, runtimeError);
-						FErrorList.Add(runtimeError);
+						if (FLastRuntimeError != null)
+							FErrorList.Remove(FLastRuntimeError);
+						
+						FLastRuntimeError = new RuntimeError(lastRuntimeErrorString);
+						FErrorList.Add(FLastRuntimeError);
+						
+						FEditor.ShowRuntimeErrors(new RuntimeError[] { FLastRuntimeError });
 					}
-					
-					if (runtimeErrorsCount != FRuntimeErrors.Count)
-						FEditor.ShowRuntimeErrors(FRuntimeErrors.Values);
+					FLastRuntimeErrorString = lastRuntimeErrorString;
 				}
 				else
-					ClearRuntimeErrors();
+					ClearRuntimeError();
 			}
 			else
-				ClearRuntimeErrors();
+				ClearRuntimeError();
 			
 			// Show or hide error table
 			if (IsErrorTableVisible)
@@ -450,12 +450,13 @@ namespace VVVV.HDE.CodeEditor
 				FErrorList.Remove(compilerError);
 		}
 		
-		private void ClearRuntimeErrors()
+		private void ClearRuntimeError()
 		{
-			if (FRuntimeErrors.Count > 0)
+			if (FLastRuntimeError != null)
 			{
-				FErrorList.RemoveRange(FRuntimeErrors.Values);
-				FRuntimeErrors.Clear();
+				FErrorList.Remove(FLastRuntimeError);
+				FLastRuntimeError = null;
+				FLastRuntimeErrorString = null;
 				FEditor.ClearRuntimeErrors();
 			}
 		}
@@ -508,6 +509,7 @@ namespace VVVV.HDE.CodeEditor
 		private void Project_CompileCompleted(object sender, CompilerEventArgs args)
 		{
 			ClearCompilerErrors();
+			ClearRuntimeError();
 			
 			var results = args.CompilerResults;
 			if (results != null && results.Errors.HasErrors)
