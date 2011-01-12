@@ -153,7 +153,7 @@ namespace VVVV.Utils.Network
             var sinkProvider = new BinaryServerFormatterSinkProvider();
             sinkProvider.TypeFilterLevel = TypeFilterLevel.Full;
 
-            var channel = new HttpServerChannel(name, port, sinkProvider);
+            var channel = new System.Runtime.Remoting.Channels.Http.HttpServerChannel(name, port, sinkProvider);
 
             ChannelServices.RegisterChannel(channel, enableSecurity);
         }

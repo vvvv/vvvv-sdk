@@ -7,7 +7,6 @@ using System.ComponentModel.Composition.ReflectionModel;
 using System.Diagnostics;
 using System.Reflection;
 
-using MefContrib.Hosting.Generics;
 using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.Hosting.Pins;
@@ -32,7 +31,7 @@ namespace VVVV.Hosting
 			}
 			else if (contractName.StartsWith("VVVV.PluginInterfaces"))
 			{
-				var typeToExport = TypeHelper.GetImportDefinitionType(definition);
+				var typeToExport = GetImportDefinitionType(definition);
 				
 				if (typeof(IPluginHost).IsAssignableFrom(typeToExport) ||
 				    typeof(IPluginHost2).IsAssignableFrom(typeToExport) ||
@@ -180,5 +179,43 @@ namespace VVVV.Hosting
 			
 			return null;
 		}
+		
+		public static Type GetImportDefinitionType(ImportDefinition definition)
+        {
+            Type importDefinitionType = null;
+            if (ReflectionModelServices.IsImportingParameter(definition))
+                importDefinitionType = GetParameterType(definition);
+            else
+                importDefinitionType = GetMethodType(definition, importDefinitionType);
+            return importDefinitionType;
+        }
+
+        private static Type GetMethodType(ImportDefinition definition, Type importDefinitionType)
+        {
+            var memberInfos = ReflectionModelServices.GetImportingMember(definition).GetAccessors();
+            var memberInfo = memberInfos[0];
+
+            if (memberInfo.MemberType == MemberTypes.Method)
+            {
+                var methodInfo = (MethodInfo) memberInfo;
+                importDefinitionType = methodInfo.ReturnType;
+            }
+            else if (memberInfo.MemberType == MemberTypes.Field)
+            {
+                var fieldInfo = (FieldInfo) memberInfo;
+                importDefinitionType = fieldInfo.FieldType;
+            }
+            return importDefinitionType;
+        }
+
+        private static Type GetParameterType(ImportDefinition definition)
+        {
+            Type importDefinitionType;
+            var importingParameter = ReflectionModelServices.GetImportingParameter(definition);
+            var parameterInfo = importingParameter.Value;
+            importDefinitionType = parameterInfo.ParameterType;
+            return importDefinitionType;
+        }
+
 	}
 }
