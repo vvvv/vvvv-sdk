@@ -408,7 +408,7 @@ namespace VVVV.Nodes.NodeBrowser
 				if (!localOnly && NodeBrowser.NodeCollection != null)
 					//available if from any of the global paths
 					foreach (var sp in NodeBrowser.NodeCollection.Paths)
-						if (fn.StartsWith(sp.Path))
+				        if (sp.Factory == nodeInfo.Factory && fn.StartsWith(Path.Combine(sp.Path, sp.Factory.JobStdSubPath)))
 							return true;
 			}
 			return false;
