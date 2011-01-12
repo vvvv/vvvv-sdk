@@ -87,17 +87,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\IndentSelectionAction.cs" />
-    <Compile Include="CodeEditor.cs" />
-    <Compile Include="CodeEditorPlugin.cs" />
+    <Compile Include="CodeEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CodeEditorPlugin.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="DefaultCompletionProvider.cs" />
     <Compile Include="ErrorView\ErrorCollectionColumnProvider.cs" />
     <Compile Include="ErrorView\ErrorCellProvider.cs" />
     <Compile Include="ErrorView\RuntimeErrorCellProvider.cs" />
-    <Compile Include="Gui\Dialogs\SaveDialog.cs" />
+    <Compile Include="Gui\Dialogs\SaveDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Gui\Dialogs\SaveDialog.Designer.cs">
       <DependentUpon>SaveDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\SearchBar\SearchBar.cs" />
+    <Compile Include="Gui\SearchBar\SearchBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ICompletionBinding.cs" />
     <Compile Include="IDocumentLocator.cs" />
     <Compile Include="ILinkDataProvider.cs" />
@@ -151,9 +159,5 @@
       <Name>Utils</Name>
       <Private>False</Private>
     </ProjectReference>
-    <Folder Include="Gui\" />
-    <Folder Include="Gui\" />
-    <Folder Include="LanguageBindings\" />
-    <Folder Include="LanguageBindings\" />
   </ItemGroup>
 </Project>
