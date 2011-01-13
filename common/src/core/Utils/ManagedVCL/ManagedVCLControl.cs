@@ -10,6 +10,9 @@ using System.Reflection;
 
 #endregion
 
+/// <summary>
+/// Utils with handle Delphi ManagedVCL tasks.
+/// </summary>
 namespace VVVV.Utils.ManagedVCL
 {
 	/// <summary>

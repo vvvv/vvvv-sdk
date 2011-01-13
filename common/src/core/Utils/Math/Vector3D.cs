@@ -97,6 +97,22 @@ namespace VVVV.Utils.VMath
 		#endregion constructors
 		
 		#region properties, indexer
+
+        /// <summary>
+        /// Get or Set the Length of this vector
+        /// </summary>
+        public double Length
+        {
+            get
+            {
+                return !this;
+            }
+
+            set
+            {
+                this = ~this * value;
+            }
+        }
 		
 		/// <summary>
 		/// Get/set x and y components as 2d-vector

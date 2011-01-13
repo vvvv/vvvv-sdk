@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 
+/// <summary>
+/// Utils to work with Linq.
+/// </summary>
 namespace VVVV.Utils.Linq
 {
 	public static class LinqExtensions

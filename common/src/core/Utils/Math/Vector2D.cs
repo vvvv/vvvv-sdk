@@ -65,9 +65,25 @@ namespace VVVV.Utils.VMath
 		
 		#endregion constructors
 		
-		#region indexer
-		
-		//indexer
+        #region properties, indexer
+
+        /// <summary>
+        /// Get or Set the Length of this vector
+        /// </summary>
+        public double Length
+        {
+            get
+            {
+                return !this;
+            }
+
+            set
+            {
+                this = ~this * value;
+            }
+        }
+
+        //indexer
 		/// <summary>
 		/// Unsafe but very fast indexer for 2d-vector, [0..1]
 		/// </summary>
@@ -88,12 +104,12 @@ namespace VVVV.Utils.VMath
 				}
 			}
 		}
-		
-		#endregion indexer
-		
-		#region unary operators
-		
-		/// <summary>
+
+        #endregion properties, indexer
+
+        #region unary operators
+
+        /// <summary>
 		/// + vector, makes no changes to a vector
 		/// </summary>
 		/// <param name="v"></param>

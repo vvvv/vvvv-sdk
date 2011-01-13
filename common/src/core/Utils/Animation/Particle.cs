@@ -2,6 +2,9 @@
 using System.Diagnostics;
 using VVVV.Utils.VMath;
 
+/// <summary>
+/// Namespace for animation specific classes and methods.
+/// </summary>
 namespace VVVV.Utils.Animation
 {
 	/// <summary>

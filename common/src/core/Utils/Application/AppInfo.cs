@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Reflection;
 
+/// <summary>
+/// Namespace for tools which handle the current executing application.
+/// </summary>
 namespace VVVV.Utils.Application
 {
     /// <summary>

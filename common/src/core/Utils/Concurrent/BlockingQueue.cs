@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
+/// <summary>
+/// Contains helper tools for multithreaded developement.
+/// </summary>
 namespace VVVV.Utils.Concurrent
 {
 	/// <summary>

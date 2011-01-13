@@ -3,6 +3,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
+/// <summary>
+/// Utils for network programming.
+/// </summary>
 namespace VVVV.Utils.Network
 {
     public static class Network

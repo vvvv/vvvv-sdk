@@ -2,10 +2,13 @@
 using System.Text;
 using System.Security.Cryptography;
 
+/// <summary>
+/// Utils for cryptography.
+/// </summary>
 namespace VVVV.Utils.Crypto
 {
     /// <summary>
-    /// Description of StringHasher.
+    /// StringHasher.
     /// </summary>
     public class StringHasher
     {
