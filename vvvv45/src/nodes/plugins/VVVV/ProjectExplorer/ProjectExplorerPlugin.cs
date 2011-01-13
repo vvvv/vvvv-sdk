@@ -97,12 +97,12 @@ namespace VVVV.HDE.ProjectExplorer
 				
 				FHideUnusedProjectsCheckBox.CheckedChanged += FHideUnusedProjectsCheckBox_CheckedChanged;
 				FTreeViewer.DoubleClick += FTreeViewer_DoubleClick;
-				
-				// Workaround because config pins do not send changed on reload :/
+
+                FTreeViewer.Registry = FMappingRegistry;
+                FTreeViewer.Input = Solution;
+                
+                // Workaround because config pins do not send changed on reload :/
 				FHideUnusedProjectsCheckBox.Checked = true;
-				
-				FTreeViewer.Registry = FMappingRegistry;
-				FTreeViewer.Input = Solution;
 			}
 			catch (Exception e)
 			{
