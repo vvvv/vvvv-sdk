@@ -397,6 +397,7 @@ namespace VVVV.Nodes.NodeBrowser
             if (NodeBrowser.NodeCollection == null)
             	return true;
             
+            var s = NodeBrowser.CurrentPatchWindow.GetNode().GetNodeInfo().Filename;
             if (NodeBrowser.CurrentPatchWindow == null || nodeInfo.Filename != NodeBrowser.CurrentPatchWindow.GetNode().GetNodeInfo().Filename)
 			{
 				if (!string.IsNullOrEmpty(NodeBrowser.CurrentDir))
@@ -839,6 +840,12 @@ namespace VVVV.Nodes.NodeBrowser
 		void FRichTextBoxMouseLeave(object sender, EventArgs e)
 		{
 		    FToolTip.Hide(this);
+		}
+		
+		void FNodeTypePanelMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+		{
+			//also trigger nodeinsert with click on nodetypepanel
+			RichTextBoxMouseDown(sender, e);
 		}
 	}
 }

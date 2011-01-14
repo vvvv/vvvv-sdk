@@ -88,6 +88,7 @@
 			this.FNodeTypePanel.Size = new System.Drawing.Size(20, 320);
 			this.FNodeTypePanel.TabIndex = 9;
 			this.FNodeTypePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.FNodeTypePanelPaint);
+			this.FNodeTypePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FNodeTypePanelMouseDown);
 			this.FNodeTypePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseMove);
 			// 
 			// FRichTextBox
@@ -107,11 +108,11 @@
 			this.FRichTextBox.TabStop = false;
 			this.FRichTextBox.Text = "";
 			this.FRichTextBox.WordWrap = false;
-			this.FRichTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseUp);
-			this.FRichTextBox.Resize += new System.EventHandler(this.FRichTextBoxResize);
-			this.FRichTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseMove);
 			this.FRichTextBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseDown);
 			this.FRichTextBox.MouseLeave += new System.EventHandler(this.FRichTextBoxMouseLeave);
+			this.FRichTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseMove);
+			this.FRichTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseUp);
+			this.FRichTextBox.Resize += new System.EventHandler(this.FRichTextBoxResize);
 			// 
 			// FToolTip
 			// 
