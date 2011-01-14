@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-using Microsoft.Practices.Unity;
 using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2;

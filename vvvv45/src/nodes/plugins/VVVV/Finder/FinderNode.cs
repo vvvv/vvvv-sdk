@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
-using Microsoft.Practices.Unity;
 using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.Core.Menu;
@@ -361,8 +360,6 @@ namespace VVVV.Nodes.Finder
                     this.FHierarchyViewer.KeyPress -= this.FHierarchyViewerKeyPress;
                     this.FHierarchyViewer.Dispose();
                     this.FHierarchyViewer = null;
-                    
-                    FMappingRegistry.Container.Dispose();
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
