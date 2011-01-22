@@ -266,7 +266,7 @@ namespace VVVV.Nodes.NodeBrowser
 			if (AllowDragDrop)
 			{
 				var selNode = FSelectionList[FHoverLine + ScrolledLine];
-				FTagsTextBox.DoDragDrop(selNode.Systemname, DragDropEffects.All);
+				FTagsTextBox.DoDragDrop(string.Format("{0}||{1}", selNode.Systemname, selNode.Filename), DragDropEffects.All);
 				return;
 			}
 			//else popped up on doubleclick
