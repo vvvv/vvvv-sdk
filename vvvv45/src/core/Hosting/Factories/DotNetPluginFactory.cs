@@ -159,13 +159,15 @@ namespace VVVV.Hosting.Factories
                         // V2
                         var attribute = attributes[0] as PluginInfoAttribute;
                         nodeInfo = ExtractNodeInfoFromAttribute(attribute, sourcefilename);
-                        FPluginVersion[nodeInfo] = PluginVersion.V2;
+						if (nodeInfo != null)
+                        	FPluginVersion[nodeInfo] = PluginVersion.V2;
                     }
                     else
                     {
                         // V1
                         nodeInfo = ExtractNodeInfoFromType(type, sourcefilename);
-                        FPluginVersion[nodeInfo] = PluginVersion.V1;
+						if (nodeInfo != null)
+                        	FPluginVersion[nodeInfo] = PluginVersion.V1;
                     }
                     
                     if (nodeInfo != null)
