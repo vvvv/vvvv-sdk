@@ -250,35 +250,35 @@ namespace VVVV.Hosting.Factories
         public IPluginBase CreatePlugin(INodeInfo nodeInfo, IPluginHost2 pluginHost)
         {
 			var assemblyLocation = GetAssemblyLocation(nodeInfo);
-            switch (FPluginVersion[nodeInfo])
-            {
-                case PluginVersion.V2:
-                    {
-                        var assembly = Assembly.LoadFrom(assemblyLocation);
-                        var type = assembly.GetType(nodeInfo.Arguments);
-                        var catalog = new TypeCatalog(type);
-                        var container = new CompositionContainer(catalog, ExportProviders);
-                        container.ComposeParts(FPluginImporter);
-                            
-                        FHostExportProvider.PluginHost = pluginHost;
-                        
-                        var lifetimeContext = FPluginImporter.PluginExportFactory.CreateExport();
-                        var plugin = lifetimeContext.Value;
-                        
-                        FPluginLifetimeContexts[plugin] = lifetimeContext;
-                        
-                        return plugin;
-                    }
-                case PluginVersion.V1:
-                    {
-                        var assembly = Assembly.LoadFrom(assemblyLocation);
-                        var plugin = (IPlugin) assembly.CreateInstance(nodeInfo.Arguments);
-                        
-                        plugin.SetPluginHost(pluginHost);
-                        
-                        return plugin;
-                    }
-            }
+			switch (FPluginVersion[nodeInfo])
+			{
+				case PluginVersion.V2:
+				{
+					var assembly = Assembly.LoadFrom (assemblyLocation);
+					var type = assembly.GetType (nodeInfo.Arguments);
+					var catalog = new TypeCatalog (type);
+					var container = new CompositionContainer (catalog, ExportProviders);
+					container.ComposeParts (FPluginImporter);
+				
+					FHostExportProvider.PluginHost = pluginHost;
+			
+					var lifetimeContext = FPluginImporter.PluginExportFactory.CreateExport ();
+					var plugin = lifetimeContext.Value;
+			
+					FPluginLifetimeContexts [plugin] = lifetimeContext;
+			
+					return plugin;
+				}
+				case PluginVersion.V1:
+				{
+					var assembly = Assembly.LoadFrom (assemblyLocation);
+					var plugin = (IPlugin)assembly.CreateInstance (nodeInfo.Arguments);
+			
+					plugin.SetPluginHost (pluginHost);
+			
+					return plugin;
+				}
+			}
             
             throw new InvalidOperationException(string.Format("Can't create plugin '{0}'.", nodeInfo.Systemname));
         }
