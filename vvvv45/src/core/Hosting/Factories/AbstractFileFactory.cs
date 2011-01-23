@@ -70,32 +70,41 @@ namespace VVVV.Hosting.Factories
 		//return nodeinfos from systemname
 		public IEnumerable<INodeInfo> ExtractNodeInfos(string filename, string arguments)
 		{
-			if (Path.GetExtension(filename) != FileExtension)
-				return new INodeInfo[0];
-			
-			// Regardless of the arguments, we need to load the node infos first.
-			var nodeInfos = LoadNodeInfos(filename).ToList();
-			
-			if (nodeInfos.Count > 0)
-				FLogger.Log(LogType.Debug, "Loaded node infos from {0}.", filename);
-			else
-				((HDEHost) FHDEHost).MarkFileAsEmpty(filename);
-			
-			// If additional arguments are present vvvv is only interested in one specific
-			// NodeInfo -> look for it.
-			if ((arguments != null) && (arguments != ""))
+			try 
 			{
-				foreach (var nodeInfo in nodeInfos)
+				if (Path.GetExtension(filename) != FileExtension)
+					return new INodeInfo[0];
+				
+				// Regardless of the arguments, we need to load the node infos first.
+				var nodeInfos = LoadNodeInfos(filename).ToList();
+				
+				if (nodeInfos.Count > 0)
+					FLogger.Log(LogType.Debug, "Loaded node infos from {0}.", filename);
+				else
+					((HDEHost) FHDEHost).MarkFileAsEmpty(filename);
+				
+				// If additional arguments are present vvvv is only interested in one specific
+				// NodeInfo -> look for it.
+				if ((arguments != null) && (arguments != ""))
 				{
-					if (nodeInfo.Arguments != null && nodeInfo.Arguments == arguments)
-						return new INodeInfo[] { nodeInfo };
+					foreach (var nodeInfo in nodeInfos)
+					{
+						if (nodeInfo.Arguments != null && nodeInfo.Arguments == arguments)
+							return new INodeInfo[] { nodeInfo };
+					}
+					
+					// give back nothing if not found
+					return new INodeInfo[0];
 				}
 				
-				// give back nothing if not found
-				return new INodeInfo[0];
+				return nodeInfos;
+			} 
+			catch (Exception ex) 
+			{
+				FLogger.Log(ex);
+				// Rethrow
+				throw ex;
 			}
-			
-			return nodeInfos;
 		}
 		
 		protected abstract IEnumerable<INodeInfo> LoadNodeInfos(string filename);
@@ -264,16 +273,15 @@ namespace VVVV.Hosting.Factories
 		
 		protected virtual void DoRemoveFile(string filename)
 		{
+			var fnUri = new Uri(filename);
 			foreach (var nodeInfo in FNodeInfoFactory.NodeInfos)
 			{
 				if (!string.IsNullOrEmpty(nodeInfo.Filename))
 				{
-					try {
-						if (new Uri(nodeInfo.Filename) == new Uri(filename))
+					Uri niUri = null;
+					if (Uri.TryCreate(nodeInfo.Filename, UriKind.RelativeOrAbsolute, out niUri))
+						if (niUri == fnUri)
 							FNodeInfoFactory.DestroyNodeInfo(nodeInfo);
-					} catch (UriFormatException) {
-						// Ignore wrong uris like 0.v4p ////
-					}
 				}
 			}
 		}

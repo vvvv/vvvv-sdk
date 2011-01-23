@@ -680,27 +680,30 @@ namespace VVVV.Hosting
 		public void factory_NodeInfoUpdated(object sender, INodeInfo info)
 		{
 			var factory = info.Factory;
-
-			// More of a hack. Find cleaner solution: EditorFactory shouldn't update node infos
-			// every time.
-			if (factory is EditorFactory) return;
 			
-			// Go through all the running hosts using this changed node info
-			// and create a new plugin for them.
-			foreach (var node in GetAffectedNodes(info))
+			if (factory != null)
 			{
-				try
+				// More of a hack. Find cleaner solution: EditorFactory shouldn't update node infos
+				// every time.
+				if (factory is EditorFactory) return;
+				
+				// Go through all the running hosts using this changed node info
+				// and create a new plugin for them.
+				foreach (var node in GetAffectedNodes(info))
 				{
-					factory.Create(info, node.InternalCOMInterf);
-					
-					//for effects need to update only one affected host
-					//others will be updated vvvv internally
-					if (factory is EffectsFactory)
-						break;
-				}
-				catch (Exception e)
-				{
-					node.LastRuntimeError = e.ToString();
+					try
+					{
+						factory.Create(info, node.InternalCOMInterf);
+						
+						//for effects need to update only one affected host
+						//others will be updated vvvv internally
+						if (factory is EffectsFactory)
+							break;
+					}
+					catch (Exception e)
+					{
+						node.LastRuntimeError = e.ToString();
+					}
 				}
 			}
 			

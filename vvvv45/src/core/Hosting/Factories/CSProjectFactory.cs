@@ -27,6 +27,9 @@ namespace VVVV.Hosting.Factories
 	[Export(typeof(CSProjectFactory))]
 	public class CSProjectFactory : DotNetPluginFactory
 	{
+		[Import]
+        protected ISolution FSolution;
+		
 		private readonly Dictionary<string, CSProject> FProjects;
 		
 		[ImportingConstructor]
@@ -203,6 +206,15 @@ namespace VVVV.Hosting.Factories
 			}
 			
 			return stringBuilder.ToString();
+		}
+		
+		protected override string GetAssemblyLocation (INodeInfo nodeInfo)
+		{
+			CSProject project;
+			if (FProjects.TryGetValue(nodeInfo.Filename, out project))
+				return project.AssemblyLocation;
+			else
+				return base.GetAssemblyLocation (nodeInfo);
 		}
 		
 		protected override bool CloneNode(INodeInfo nodeInfo, string path, string name, string category, string version, out string newFilename)
