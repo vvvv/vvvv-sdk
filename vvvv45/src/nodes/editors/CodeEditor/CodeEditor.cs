@@ -256,7 +256,7 @@ namespace VVVV.HDE.CodeEditor
 			editactions.Remove(Keys.Control | Keys.Y);
 			
 			var indentSelectionAction = new IndentSelectionAction();
-			indentSelectionAction.Keys = new Keys[] { Keys.Control | Keys.Alt | Keys.I };
+			indentSelectionAction.Keys = new Keys[] { Keys.Control | Keys.I };
 			editactions[indentSelectionAction.Keys[0]] = indentSelectionAction;
 		}
 
