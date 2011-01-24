@@ -53,5 +53,40 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		{
 			get;
 		}
+		
+		bool HasPatch
+		{
+			get;
+		}
+		
+		bool HasCode
+		{
+			get;
+		}
+		
+		bool HasGUI
+		{
+			get;
+		}
+		
+		bool ContainsMissingNodes
+		{
+			get;
+		}
+		
+		bool ContainsBoygroupedNodes
+		{
+			get;
+		}
+		
+		bool IsMissing
+		{
+			get;
+		}
+		
+		bool IsBoygrouped
+		{
+			get;
+		}
     }
 }

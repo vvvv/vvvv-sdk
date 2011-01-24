@@ -2,19 +2,39 @@
 using System.Drawing;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.Graph;
+using System.Collections.Generic;
+using VVVV.Utils;
 
 namespace VVVV.Hosting.Graph
 {
-    internal class Window : IWindow2
+    internal class Window : Disposable, IWindow2
     {
-        private readonly INode2 FOwnerNode;
+		#region factory methods
+		static private Dictionary<IWindow, Window> FWindows = new Dictionary<IWindow, Window>();
+		static internal Window Create(IWindow internalCOMInterf)
+		{
+			Window window = null;
+			if (!FWindows.TryGetValue(internalCOMInterf, out window))
+			{
+				window = new Window(internalCOMInterf);
+				FWindows.Add(internalCOMInterf, window);
+			}
+			return window;
+		}
+		#endregion
+		
+        private INode2 FOwnerNode;
         private readonly IWindow FInternalCOMInterf;
-        
-        internal Window(INode2 ownerNode, IWindow internalCOMInterf)
+		
+        private Window(IWindow internalCOMInterf)
         {
-            FOwnerNode = ownerNode;
-            FInternalCOMInterf = internalCOMInterf;
+			FInternalCOMInterf = internalCOMInterf;
         }
+		
+		protected override void DisposeManaged ()
+		{
+			FWindows.Remove(FInternalCOMInterf);
+		}
         
         public string Caption 
         {
@@ -40,6 +60,8 @@ namespace VVVV.Hosting.Graph
         {
             get 
             {
+				if (FOwnerNode == null)
+					FOwnerNode = VVVV.Hosting.Graph.Node.Create(null, FInternalCOMInterf.GetNode(), ProxyNodeInfoFactory.Instance);
                 return FOwnerNode;
             }
         }
@@ -57,6 +79,14 @@ namespace VVVV.Hosting.Graph
             get 
             {
                 return new Rectangle(FInternalCOMInterf.Left, FInternalCOMInterf.Top, FInternalCOMInterf.Width, FInternalCOMInterf.Height);
+            }
+        }
+		
+		public IWindow InternalCOMInterf
+		{
+            get 
+            {
+                return FInternalCOMInterf;
             }
         }
     }

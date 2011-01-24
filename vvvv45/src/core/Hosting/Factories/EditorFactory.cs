@@ -199,7 +199,7 @@ namespace VVVV.Hosting.Factories
 			
 			editor.MoveTo(FMoveToLine, FMoveToColumn);
 			
-			FHDEHost.ShowGUI(editorNode);
+			FHDEHost.ShowGUI(FindNodeFromInternal(editorNode));
 			return false;
 		}
 		
@@ -285,10 +285,7 @@ namespace VVVV.Hosting.Factories
 		
 		void FHDEHost_MouseDown(object sender, MouseEventArgs args)
 		{
-			var internalNode = args.Node;
-			if (internalNode == null) return;
-			
-			var node = FindNodeFromInternal(internalNode);
+			var node = args.Node;
 			if (node == null) return;
 			
 			var button = args.Button;
@@ -426,7 +423,7 @@ namespace VVVV.Hosting.Factories
 						if (new Uri(editor.OpenedFile) == new Uri(filename))
 						{
 							editor.MoveTo(line, column);
-							FHDEHost.ShowGUI(editorNode);
+							FHDEHost.ShowGUI(FindNodeFromInternal(editorNode));
 							return;
 						}
 					}

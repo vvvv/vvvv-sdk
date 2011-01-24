@@ -54,14 +54,32 @@ namespace VVVV.Hosting.Graph
 		}
 		#endregion
 		
+		#region factory methods
+		static private Dictionary<INode, Node> FNodes = new Dictionary<INode, Node>();
+		static internal Node Create(INode2 parent, INode internalCOMInterf, ProxyNodeInfoFactory nodeInfoFactory)
+		{
+			Node node = null;
+			if (!FNodes.TryGetValue(internalCOMInterf, out node))
+			{
+				node = new Node(parent, internalCOMInterf, nodeInfoFactory);
+				FNodes.Add(internalCOMInterf, node);
+			}
+			
+			if (node.Parent == null && parent != null)
+				node.Parent = parent;
+			
+			return node;
+		}
+		#endregion
+		
 		private readonly INode FInternalCOMInterf;
 		private readonly INodeInfo FNodeInfo;
 		private readonly InternalNodeListener FInternalNodeListener;
 		private readonly ProxyNodeInfoFactory FNodeInfoFactory;
 		private readonly ViewableCollection<IPin2> FPins;
-		private readonly IWindow2 FWindow;
+		private Window FWindow;
 		
-		internal Node(INode2 parent, INode internalCOMInterf, ProxyNodeInfoFactory nodeInfoFactory)
+		private Node(INode2 parent, INode internalCOMInterf, ProxyNodeInfoFactory nodeInfoFactory)
 		{
 			Parent = parent;
 			FInternalCOMInterf = internalCOMInterf;
@@ -69,10 +87,6 @@ namespace VVVV.Hosting.Graph
 			
 			FNodeInfo = nodeInfoFactory.ToProxy(internalCOMInterf.GetNodeInfo());
 			FName = FNodeInfo.Username;
-			
-			var internalWindow = internalCOMInterf.Window;
-			if (internalWindow != null)
-			    FWindow = new Window(this, internalWindow);
 			
 			FPins = new ViewableCollection<IPin2>();
 			foreach (var internalPin in internalCOMInterf.GetPins())
@@ -83,7 +97,7 @@ namespace VVVV.Hosting.Graph
 			{
 				foreach (var internalChildNode in children)
 				{
-					var childNode = new Node(this, internalChildNode, nodeInfoFactory);
+					var childNode = Node.Create(this, internalChildNode, nodeInfoFactory);
 					Add(childNode);
 				}
 			}
@@ -94,9 +108,13 @@ namespace VVVV.Hosting.Graph
 		public override void Dispose()
 		{
 			FInternalNodeListener.Dispose();
+			if (FWindow != null)
+				FWindow.Dispose();
 			
 			foreach (var childNode in this)
 				childNode.Dispose();
+			
+			FNodes.Remove(FInternalCOMInterf);
 			
 			base.Dispose();
 		}
@@ -170,6 +188,13 @@ namespace VVVV.Hosting.Graph
         {
             get
             {
+				if (FWindow == null)
+				{
+					var internalWindow = FInternalCOMInterf.Window;
+					if (internalWindow != null)
+				    	FWindow = VVVV.Hosting.Graph.Window.Create(internalWindow);
+				}
+				
                 return FWindow;
             }
         }
@@ -189,6 +214,62 @@ namespace VVVV.Hosting.Graph
 		public INode2 Parent {
 			get;
 			private set;
+		}
+		
+		public bool HasPatch
+		{
+			get
+			{
+				return FInternalCOMInterf.HasPatch();
+			}
+		}
+		
+		public bool HasCode
+		{
+			get
+			{
+				return FInternalCOMInterf.HasCode();
+			}
+		}
+		
+		public bool HasGUI
+		{
+			get
+			{
+				return FInternalCOMInterf.HasGUI();
+			}
+		}
+		
+		public bool ContainsMissingNodes
+		{
+			get
+			{
+				return FInternalCOMInterf.ContainsMissingNodes();
+			}
+		}
+		
+		public bool ContainsBoygroupedNodes
+		{
+			get
+			{
+				return FInternalCOMInterf.ContainsBoygroupedNodes();
+			}
+		}
+		
+		public bool IsMissing
+		{
+			get
+			{
+				return FInternalCOMInterf.IsMissing();
+			}
+		}
+		
+		public bool IsBoygrouped
+		{
+			get
+			{
+				return FInternalCOMInterf.IsBoygrouped();
+			}
 		}
 	}
 }

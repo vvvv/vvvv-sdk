@@ -13,6 +13,7 @@ using VVVV.Core.View;
 using VVVV.PluginInterfaces.V2;
 
 using VVVV.Nodes.Finder;
+using VVVV.PluginInterfaces.V2.Graph;
 #endregion usings
 
 //the vvvv node namespace
@@ -30,15 +31,15 @@ namespace VVVV.Nodes.WindowSwitcher
         protected IWindowSwitcherHost FWindowSwitcherHost;
         
         private IHDEHost FHDEHost;
-        private INode FRoot;
+        private INode2 FRoot;
         private PatchNode FFullTree;
         private PatchNode FWindowTree;
-        private IWindow FActiveWindow;
+        private IWindow2 FActiveWindow;
         private PatchNode FSelectedPatchNode;
         // Track whether Dispose has been called.
         private bool FDisposed = false;
         
-        private List<IWindow> FWindowLIFO = new List<IWindow>();
+        private List<IWindow2> FWindowLIFO = new List<IWindow2>();
         private int FSelectedWindowIndex = 0;
         
         [Import]
@@ -136,7 +137,7 @@ namespace VVVV.Nodes.WindowSwitcher
         {
             if (FRoot == null)
             {
-                FRoot = FHDEHost.Root;
+                FRoot = FHDEHost.RootNode;
                 var mappingRegistry = new MappingRegistry();
                 mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
                 FHierarchyViewer.Registry = mappingRegistry;
@@ -177,7 +178,7 @@ namespace VVVV.Nodes.WindowSwitcher
             if (FWindowLIFO[FSelectedWindowIndex].Caption == "Kommunikator")
                 Up();
             else
-                SelectNode(FWindowLIFO[FSelectedWindowIndex].GetNode());
+                SelectNode(FWindowLIFO[FSelectedWindowIndex].Node);
         }
         
         public void Down()
@@ -187,11 +188,11 @@ namespace VVVV.Nodes.WindowSwitcher
             if (FWindowLIFO[FSelectedWindowIndex].Caption == "Kommunikator")
                 Down();
             else
-                SelectNode(FWindowLIFO[FSelectedWindowIndex].GetNode());
+                SelectNode(FWindowLIFO[FSelectedWindowIndex].Node);
         }
         #endregion IWindowSwitcher
         
-        private void SelectNode(INode node)
+        private void SelectNode(INode2 node)
         {
             if (FSelectedPatchNode != null)
                 FSelectedPatchNode.Selected = false;
@@ -199,18 +200,20 @@ namespace VVVV.Nodes.WindowSwitcher
             FSelectedPatchNode = SelectNodeOfTree(FWindowTree, node);
         }
         
-        private PatchNode SelectNodeOfTree(PatchNode patchNode, INode node)
+        private PatchNode SelectNodeOfTree(PatchNode patchNode, INode2 node)
         {
             PatchNode result = null;
             if (patchNode.Node == node)
                 result = patchNode;
             else
+			{
                 foreach (PatchNode pn in patchNode.ChildNodes)
-            {
-                result = SelectNodeOfTree(pn, node);
-                if (result != null)
-                    break;
-            }
+	            {
+	                result = SelectNodeOfTree(pn, node);
+	                if (result != null)
+	                    break;
+	            }
+			}
             
             if (result != null)
                 result.Selected = true;
@@ -227,7 +230,7 @@ namespace VVVV.Nodes.WindowSwitcher
                 
                 AddWindowNodes(temp, pn);
                 
-               if (temp.Node.GetNodeInfo().Type == NodeType.Patch || temp.Node.Window != null)
+               if (temp.Node.NodeInfo.Type == NodeType.Patch || temp.Node.Window != null)
                    result.ChildNodes.Add(temp);
                else
                    temp.Dispose();
@@ -284,7 +287,7 @@ namespace VVVV.Nodes.WindowSwitcher
             {
                 FHierarchyViewer.HideToolTip();
                 FWindowSwitcherHost.HideMe();
-                FHDEHost.SetComponentMode(FWindowLIFO[FSelectedWindowIndex].GetNode(), ComponentMode.InAWindow);
+                FHDEHost.SetComponentMode(FWindowLIFO[FSelectedWindowIndex].Node, ComponentMode.InAWindow);
             }
         }
         #endregion events
@@ -295,7 +298,7 @@ namespace VVVV.Nodes.WindowSwitcher
             {
                 FHierarchyViewer.HideToolTip();
                 FWindowSwitcherHost.HideMe();                
-                FHDEHost.SetComponentMode(FWindowLIFO[FSelectedWindowIndex].GetNode(), ComponentMode.InAWindow);
+                FHDEHost.SetComponentMode(FWindowLIFO[FSelectedWindowIndex].Node, ComponentMode.InAWindow);
             }
         }
     }

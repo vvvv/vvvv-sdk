@@ -434,6 +434,12 @@ namespace VVVV.Hosting
 		
 		private Thread FVVVVThread;
 		
+		public static ProxyNodeInfoFactory Instance
+		{
+			get;
+			private set;
+		}
+		
 		public ProxyNodeInfoFactory(IInternalNodeInfoFactory nodeInfoFactory, HDEHost hdeHost)
 		{
 			FFactory = nodeInfoFactory;
@@ -447,6 +453,8 @@ namespace VVVV.Hosting
 			nodeInfoFactory.AddListener(this);
 			
 			FVVVVThread = Thread.CurrentThread;
+			
+			Instance = this;
 		}
 		
 		public void Dispose()

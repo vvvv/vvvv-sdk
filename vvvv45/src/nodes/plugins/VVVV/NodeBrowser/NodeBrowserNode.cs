@@ -15,6 +15,7 @@ using VVVV.Core.View;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.Graph;
 #endregion usings
 
 //the vvvv node namespace
@@ -66,7 +67,7 @@ namespace VVVV.Nodes.NodeBrowser
 			}
 		}
 		
-		public IWindow CurrentPatchWindow
+		public IWindow2 CurrentPatchWindow
 		{
 			get;
 			private set;
@@ -82,8 +83,8 @@ namespace VVVV.Nodes.NodeBrowser
 			{
 				if (CurrentPatchWindow != null)
 				{
-					var node = CurrentPatchWindow.GetNode();
-					var nodeInfo = node.GetNodeInfo();
+					var node = CurrentPatchWindow.Node;
+					var nodeInfo = node.NodeInfo;
 					var systemname = nodeInfo.Systemname;
 					var filename = nodeInfo.Filename;
 					
@@ -365,7 +366,7 @@ namespace VVVV.Nodes.NodeBrowser
 		{
 			var window = args.Window;
 			
-			var windowtype = window.GetWindowType();
+			var windowtype = window.WindowType;
 			
 			if ((windowtype == WindowType.Patch || windowtype == WindowType.Module) && CurrentPatchWindow != window)
 			{

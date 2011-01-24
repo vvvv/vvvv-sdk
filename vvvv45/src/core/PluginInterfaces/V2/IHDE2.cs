@@ -13,13 +13,13 @@ namespace VVVV.PluginInterfaces.V2
     #region IHDEHost
     public class NodeSelectionEventArgs : EventArgs
 	{
-    	public INode[] Nodes
+    	public INode2[] Nodes
 		{
 			get;
 			private set;
 		}
 		
-    	public NodeSelectionEventArgs(INode[] nodes)
+    	public NodeSelectionEventArgs(INode2[] nodes)
 		{
 			Nodes = nodes;
 		}
@@ -27,13 +27,13 @@ namespace VVVV.PluginInterfaces.V2
     
     public class WindowEventArgs : EventArgs
     {
-    	public IWindow Window
+    	public IWindow2 Window
     	{
     		get;
     		private set;
     	}
     	
-    	public WindowEventArgs(IWindow window)
+    	public WindowEventArgs(IWindow2 window)
     	{
     		Window = window;
     	}
@@ -41,7 +41,7 @@ namespace VVVV.PluginInterfaces.V2
     
     public class MouseEventArgs : EventArgs
     {
-    	public INode Node
+    	public INode2 Node
     	{
     		get;
     		private set;
@@ -59,7 +59,7 @@ namespace VVVV.PluginInterfaces.V2
     		private set;
     	}
     	
-    	public MouseEventArgs(INode node, Mouse_Buttons button, Modifier_Keys key)
+    	public MouseEventArgs(INode2 node, Mouse_Buttons button, Modifier_Keys key)
     	{
     		Node = node;
     		Button = button;
@@ -81,12 +81,17 @@ namespace VVVV.PluginInterfaces.V2
 	    /// <summary>
 	    /// Returns an interface to the graphs root node
 	    /// </summary>
+	    /// <remarks>Deprecated: Use RootNode instead.</remarks>
 	    /// <returns>The graphs root node.</returns>
 	    INode Root
 	    {
 	        get;
 	    }
 	    
+		/// <summary>
+	    /// Returns an interface to the graphs root node
+	    /// </summary>
+	    /// <returns>The graphs root node.</returns>
 	    INode2 RootNode
 	    {
 	        get;
@@ -102,7 +107,7 @@ namespace VVVV.PluginInterfaces.V2
 	    /// <summary>
 	    /// The currently selected patch window.
 	    /// </summary>
-	    IWindow ActivePatchWindow
+	    IWindow2 ActivePatchWindow
 	    {
 	    	get;
 	    }
@@ -149,25 +154,25 @@ namespace VVVV.PluginInterfaces.V2
 		/// </summary>
 		/// <param name="node">The node whose GUIs ComponentMode is to be changed.</param>
 		/// <param name="componentMode">The new ComponentMode.</param>
-		void SetComponentMode(INode node, ComponentMode componentMode);
+		void SetComponentMode(INode2 node, ComponentMode componentMode);
 		
 		/// <summary>
 		/// Selects the given nodes in their patch.
 		/// </summary>
 		/// <param name="nodes">The nodes to be selected.</param>
-		void SelectNodes(INode[] nodes);
+		void SelectNodes(INode2[] nodes);
 		
 		/// <summary>
 		/// Opens the editor of the given node.
 		/// </summary>
 		/// <param name="node">The node whose editor to open.</param>
-		void ShowEditor(INode node);
+		void ShowEditor(INode2 node);
 		
 		/// <summary>
 		/// Opens the GUI of the given node.
 		/// </summary>
 		/// <param name="node">The node whose GUI to open.</param>
-		void ShowGUI(INode node);
+		void ShowGUI(INode2 node);
 		
 		/// <summary>
 		/// Opens the help-patch of the given nodeinfo.
@@ -278,6 +283,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// <summary>
 	/// Gives access to vvvv nodes
 	/// </summary>
+	/// <remarks>Deprecated: Use <see cref="INode2"/> instead.</remarks>
 	[Guid("98D74C3D-8E8B-4203-A03B-92BDECAF7BDF"), 
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface INode
@@ -396,6 +402,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// <summary>
 	/// Gives access to vvvv windows
 	/// </summary>
+	/// /// <remarks>Deprecated: Use <see cref="IWindow2"/> instead.</remarks>
 	[Guid("1DF0E66D-EDE7-49C4-B0DF-DE789D741480"), 
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IWindow

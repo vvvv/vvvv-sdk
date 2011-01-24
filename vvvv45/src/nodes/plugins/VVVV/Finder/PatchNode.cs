@@ -2,16 +2,18 @@
 using System.Drawing;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 using VVVV.Core;
 using VVVV.Core.View;
 using VVVV.Core.Collections;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.Graph;
 
 namespace VVVV.Nodes.Finder
 {
-    public class PatchNode: IParent, INamed, IDescripted, INodeListener, ISelectable, IDecoratable, ILinkable, IDisposable, IPinListener
+    public class PatchNode: IParent, INamed, IDescripted, ISelectable, IDecoratable, ILinkable, IDisposable
     {
         static SolidBrush SDarkGray = new SolidBrush(Color.FromArgb(154, 154, 154));
         static SolidBrush SLightGray = new SolidBrush(Color.FromArgb(192, 192, 192));
@@ -39,11 +41,10 @@ namespace VVVV.Nodes.Finder
         public bool IsMissing {get; private set;}
         public NodeType NodeType {get; private set;}
         public bool IsActiveWindow {get; private set;}
-        private IWindow FWindow;
         private string FDecoratedName;
-        private IPin FChannelPin;
-        private IPin FLabelPin;
-        private IPin FCommentPin;
+        private IPin2 FChannelPin;
+        private IPin2 FLabelPin;
+        private IPin2 FCommentPin;
         private INodeInfo FNodeInfo;
         private Filter FFilter;
         
@@ -53,7 +54,7 @@ namespace VVVV.Nodes.Finder
             Childs = FChildNodes.AsViewableList();
         }
         
-        public PatchNode(INode self, Filter filter, bool includeChildren, bool recursively) : this()
+        public PatchNode(INode2 self, Filter filter, bool includeChildren, bool recursively) : this()
         {
             Node = self;
             FFilter = filter;
@@ -62,7 +63,7 @@ namespace VVVV.Nodes.Finder
                 InitChildren(recursively);
         }
         
-        public PatchNode(INode self) : this()
+        public PatchNode(INode2 self) : this()
         {
             Node = self;
             
@@ -75,31 +76,29 @@ namespace VVVV.Nodes.Finder
             //remove pinlisteners
             if (FCommentPin != null)
             {
-                FLabelPin.RemoveListener(this);
+				FLabelPin.Changed -= HandlePinChanged;;
                 FLabelPin = null;
             }
             
             if (FCommentPin != null)
             {
-                FCommentPin.RemoveListener(this);
+				FCommentPin.Changed -= HandlePinChanged;;
                 FCommentPin = null;
             }
             
             if (FChannelPin != null)
             {
-                FChannelPin.RemoveListener(this);
+				FChannelPin.Changed -= HandlePinChanged;
                 FChannelPin = null;
             }
             
             //remove nodelistener
             if (Node != null)
             {
-                Node.RemoveListener(this);
+                Node.Added -= HandleNodeAdded;
+				Node.Removed -= HandleNodeRemoved;
                 Node = null;
             }
-            
-            //free window
-            FWindow = null;
             
             //free children
             foreach (var child in FChildNodes)
@@ -111,8 +110,8 @@ namespace VVVV.Nodes.Finder
             FChildNodes.Dispose();
         }
         
-        private INode FNode;
-        public INode Node
+        private INode2 FNode;
+        public INode2 Node
         {
             get
             {
@@ -123,27 +122,28 @@ namespace VVVV.Nodes.Finder
                 FNode = value;
                 if (FNode != null)
                 {
-                    Node.AddListener(this);
+					Node.Added += HandleNodeAdded;
+					Node.Removed += HandleNodeRemoved;
                     
                     //init static properties via INode
-                    ID = FNode.GetID();
-                    FNodeInfo = FNode.GetNodeInfo();
+                    ID = FNode.ID;
+                    FNodeInfo = FNode.NodeInfo;
                     NodeType = FNodeInfo.Type;
                     
-                    FLabelPin = Node.GetPin("Descriptive Name");
-                    FLabelPin.AddListener(this);
+                    FLabelPin = FindPin(Node, "Descriptive Name");
+					FLabelPin.Changed += HandlePinChanged;
                     
                     if (FNodeInfo.Name == "S")
                     {
-                        FChannelPin = FNode.GetPin("Send String");
+                        FChannelPin = FindPin(Node, "Send String");
                         FIsSource = true;
                     }
                     else if (FNodeInfo.Name == "R")
-                        FChannelPin = FNode.GetPin("Receive String");
+                        FChannelPin = FindPin(Node, "Receive String");
                     
                     if (FChannelPin != null)
                     {
-                        FChannelPin.AddListener(this);
+						FChannelPin.Changed += HandlePinChanged;
                         Icon = NodeIcon.SRNode;
                     }
                     
@@ -152,6 +152,24 @@ namespace VVVV.Nodes.Finder
                     UpdateName();
                 }
             }
+        }
+		
+		IPin2 FindPin(INode2 node, string name)
+		{
+			var query =
+				from pin in node.Pins
+				where pin.Name == name
+				select pin;
+            return query.FirstOrDefault();
+		}
+
+        void HandlePinChanged (object sender, EventArgs e)
+        {
+        	//may be called via FCommentPin, FLabelPin, FChannelPin
+            //in all cases do:
+            UpdateName();
+            
+            OnRenamed(Name);
         }
         
         private bool FSelected;
@@ -190,7 +208,7 @@ namespace VVVV.Nodes.Finder
                     include |= FFilter.Unknowns && node.IsMissing;
                     include |= FFilter.Boygrouped && node.IsBoygrouped;
                     include |= FFilter.Addons && (node.NodeType != NodeType.Native && node.NodeType != NodeType.Text && node.NodeType != NodeType.Patch);
-                    include |= FFilter.Windows && (node.Node.HasGUI() || (node.Node.HasPatch() && node.NodeType != NodeType.Module));
+                    include |= FFilter.Windows && (node.Node.HasGUI || (node.Node.HasPatch && node.NodeType != NodeType.Module));
                 }
                 else
                     include = true;
@@ -252,7 +270,7 @@ namespace VVVV.Nodes.Finder
                     || (FFilter.Unknowns && node.IsMissing)
                     || (FFilter.Boygrouped && node.IsBoygrouped)
                     || (FFilter.Addons && (node.NodeType != NodeType.Native && node.NodeType != NodeType.Text && node.NodeType != NodeType.Patch))
-                    || (FFilter.Windows && (node.Node.HasGUI() || (node.Node.HasPatch() && node.NodeType != NodeType.Module))))
+                    || (FFilter.Windows && (node.Node.HasGUI || (node.Node.HasPatch && node.NodeType != NodeType.Module))))
                 {
                     var inc = true;
                     var name = node.Name.ToLower();
@@ -280,27 +298,27 @@ namespace VVVV.Nodes.Finder
             return include;
         }
         
-        public PatchNode FindNode(INode node)
+        public PatchNode FindNode(INode2 node)
         {
             if (FNode == node)
                 return this;
             else
                 foreach(var child in FChildNodes)
-            {
-                var n = child.FindNode(node);
-                if (n != null)
-                    return n;
-            }
+	            {
+	                var n = child.FindNode(node);
+	                if (n != null)
+	                    return n;
+	            }
             
             return null;
         }
         
-        public void SetActiveWindow(IWindow window)
+        public void SetActiveWindow(IWindow2 window)
         {
             var windowState = IsActiveWindow;
             
             //hand window downtree until someone finds itself in the window
-            if (FWindow == window)
+            if (FNode.Window == window)
                 IsActiveWindow = true;
             else
             {
@@ -385,17 +403,17 @@ namespace VVVV.Nodes.Finder
                 if (IsActiveWindow)
                     return Brushes.White;
                 
-                if (FNode.HasPatch())
-                {    if (FNode.ContainsMissingNodes())
+                if (FNode.HasPatch)
+                {    if (FNode.ContainsMissingNodes)
                         return SDarkRed;
-                    else if (FNode.ContainsBoygroupedNodes())
+                    else if (FNode.ContainsBoygroupedNodes)
                         return SDarkBlue;
                     else
                         return SDarkGray;
                 }
-                else if (FNode.IsMissing())
+                else if (FNode.IsMissing)
                     return SLightRed;
-                else if (FNode.IsBoygrouped())
+                else if (FNode.IsBoygrouped)
                     return SLightBlue;
                 else
                     return SLightGray;
@@ -409,17 +427,17 @@ namespace VVVV.Nodes.Finder
                 if (FNode == null)
                     return Brushes.AliceBlue;
                 
-                if (FNode.HasPatch())
-                {   if (FNode.ContainsMissingNodes())
+                if (FNode.HasPatch)
+                {   if (FNode.ContainsMissingNodes)
                         return SHoverRed;
-                    else if (FNode.ContainsBoygroupedNodes())
+                    else if (FNode.ContainsBoygroupedNodes)
                         return SHoverBlue;
                     else
                         return SHoverGray;
                 }
-                else if (FNode.IsMissing())
+                else if (FNode.IsMissing)
                     return SHoverRed;
-                else if (FNode.IsBoygrouped())
+                else if (FNode.IsBoygrouped)
                     return SHoverBlue;
                 else
                     return SHoverGray;
@@ -465,23 +483,26 @@ namespace VVVV.Nodes.Finder
             get
             {
                 if (FNode != null)
-                    return SRChannel + " - " + FNode.GetNodeInfo().Category;
+                    return SRChannel + " - " + FNode.NodeInfo.Category;
                 else
                     return null;
             }
         }
         #endregion ILinkable
-        
-        #region INodeListener
-        public void AddedCB(INode childNode)
+		
+		void HandleNodeAdded (IViewableCollection collection, object item)
         {
-            bool found = false;
+			var childNode = item as INode2;
+			
+			bool found = false;
             foreach(var child in FChildNodes)
+			{
                 if (child.Node == childNode)
-            {
-                found = true;
-                break;
-            }
+	            {
+	                found = true;
+	                break;
+	            }
+			}
             
             if (!found)
             {
@@ -502,56 +523,39 @@ namespace VVVV.Nodes.Finder
                 }
             }
         }
-        
-        public void RemovedCB(INode childNode)
+		
+		void HandleNodeRemoved (IViewableCollection collection, object item)
         {
-            foreach(var child in FChildNodes)
+        	var childNode = item as INode2;
+			
+			foreach(var child in FChildNodes)
+			{
                 if (child.Node == childNode)
-            {
-                FChildNodes.Remove(child);
-                child.Renamed -= child_Renamed;
-                child.Dispose();
-                break;
-            }
+	            {
+	                FChildNodes.Remove(child);
+	                child.Renamed -= child_Renamed;
+	                child.Dispose();
+	                break;
+	            }
+			}
         }
-        
-        void child_Renamed(INamed sender, string newName)
+		
+		void child_Renamed(INamed sender, string newName)
         {
             SortChildren();
         }
-        
-        public void LabelChangedCB()
-        {
-            //now via ordinary pinlistener
-            // UpdateName();
-            // OnRenamed(Name);
-        }
-        #endregion INodeListener
-        
-        #region IPinListener
-        public void ChangedCB()
-        {
-            //may be called via FCommentPin, FLabelPin, FChannelPin
-            //in all cases do:
-            UpdateName();
-            
-            OnRenamed(Name);
-        }
-        #endregion IPinListener
         
         private void InitChildren(bool recursively)
         {
             if (Node == null)
                 return;
             
-            INode[] children = Node.GetChildren();
-            
-            if (children != null)
+            if (Node.Count > 0)
             {
                 FChildNodes.BeginUpdate();
                 try
                 {
-                    foreach(INode child in children)
+                    foreach(var child in Node)
                     {
                         var pn = new PatchNode(child, FFilter, recursively, recursively);
                         if (pn.ChildNodes.Count > 0 || CheckForInclusion(pn))
@@ -616,29 +620,27 @@ namespace VVVV.Nodes.Finder
         
         private void UpdateProperties()
         {
-            IsBoygrouped = FNode.IsBoygrouped();
-            IsMissing = FNode.IsMissing();
+            IsBoygrouped = FNode.IsBoygrouped;
+            IsMissing = FNode.IsMissing;
             
-            if (Node.HasGUI())
+            if (Node.HasGUI)
             {
-                if (Node.HasCode())
+                if (Node.HasCode)
                     Icon = NodeIcon.GUICode;
-                else if (Node.HasPatch())
+                else if (Node.HasPatch)
                     Icon = NodeIcon.GUIPatch;
                 else
                     Icon = NodeIcon.GUI;
             }
-            else if (Node.HasCode())
+            else if (Node.HasCode)
                 Icon = NodeIcon.Code;
-            else if (Node.HasPatch())
+            else if (Node.HasPatch)
                 Icon = NodeIcon.Patch;
-            
-            FWindow = FNode.Window;
         }
         
         private void UpdateName()
         {
-            DescriptiveName = FLabelPin.GetValue(0);
+            DescriptiveName = FLabelPin[0];
             string hyphen = "";
             if (!string.IsNullOrEmpty(DescriptiveName))
                 hyphen = " -- ";
@@ -667,20 +669,20 @@ namespace VVVV.Nodes.Finder
                     //this is no longer a comment iobox
                     if (FCommentPin != null)
                     {
-                        FCommentPin.RemoveListener(this);
+                        FCommentPin.Changed -= HandlePinChanged;
                         FCommentPin = null;
                     }
                 }
                 //string ioboxes may be comments if they have no connection
-                else if (FNodeInfo.Category == "String" && !Node.GetPin("Input String").IsConnected() && !Node.GetPin("Output String").IsConnected())
+                else if (FNodeInfo.Category == "String" && !FindPin(Node, "Input String").IsConnected && !FindPin(Node, "Output String").IsConnected)
                 {
                     if (FCommentPin == null)
                     {
-                        FCommentPin = Node.GetPin("Input String");
-                        FCommentPin.AddListener(this);
+                        FCommentPin = FindPin(Node, "Input String");
+                        FCommentPin.Changed += HandlePinChanged;
                     }
                     
-                    Comment = FCommentPin.GetValue(0);
+                    Comment = FCommentPin[0];
                     var cmt = Comment;
                     if (!string.IsNullOrEmpty(cmt))
                     {
@@ -703,14 +705,14 @@ namespace VVVV.Nodes.Finder
                     //this is no longer a comment iobox
                     if (FCommentPin != null)
                     {
-                        FCommentPin.RemoveListener(this);
+                        FCommentPin.Changed -= HandlePinChanged;
                         FCommentPin = null;
                     }
                 }
             }
             else if (FNodeInfo.Name == "S" || FNodeInfo.Name == "R")
             {
-                SRChannel = FChannelPin.GetValue(0);
+                SRChannel = FChannelPin[0];
                 Name = FNodeInfo.Username + ": " + SRChannel;
             }
             else

@@ -16,6 +16,7 @@ using VVVV.HDE.Viewer;
 using VVVV.HDE.Viewer.WinFormsViewer;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.Graph;
 
 #endregion usings
 
@@ -162,7 +163,7 @@ namespace VVVV.Nodes.Finder
                 InitialWindowWidth = 320,
                 InitialWindowHeight = 500,
                 InitialComponentMode = TComponentMode.InAWindow)]
-    public class FinderPluginNode: UserControl, IPluginHDE, INodeListener
+    public class FinderPluginNode: UserControl, IPluginHDE
     {
         #region field declaration
         private IDiffSpread<string> FTagsPin;
@@ -172,10 +173,10 @@ namespace VVVV.Nodes.Finder
         private MappingRegistry FMappingRegistry;
         private List<PatchNode> FPlainResultList = new List<PatchNode>();
         
-        private IWindow FActivePatchWindow;
-        private IWindow FActiveWindow;
-        private INode FActivePatchNode;
-        private INode FActivePatchParent;
+        private IWindow2 FActivePatchWindow;
+        private IWindow2 FActiveWindow;
+        private INode2 FActivePatchNode;
+        private INode2 FActivePatchParent;
         private PatchNode FSearchResult;
         
         private Filter FFilter;
@@ -390,7 +391,7 @@ namespace VVVV.Nodes.Finder
                 return;
             
             FActiveWindow = window;
-            var windowType = window.GetWindowType();
+            var windowType = window.WindowType;
             var updateActiveWindow = false;
             
             if (windowType == WindowType.Module || windowType == WindowType.Patch)
@@ -407,7 +408,7 @@ namespace VVVV.Nodes.Finder
                     ClearSearch();
                     FActivePatchNode = null;
                     if (FActivePatchParent != null)
-                        FActivePatchParent.RemoveListener(this);
+						FActivePatchParent.Removed -= HandleFActivePatchParentRemoved;
                 }
                 else if (FActivePatchWindow != FHDEHost.ActivePatchWindow)
                     SetActivePatch(FHDEHost.ActivePatchWindow);
@@ -421,37 +422,30 @@ namespace VVVV.Nodes.Finder
             }
         }
         
-        private void SetActivePatch(IWindow patch)
+        private void SetActivePatch(IWindow2 patch)
         {
             if (FActivePatchParent != null)
-                FActivePatchParent.RemoveListener(this);
+                FActivePatchParent.Removed -= HandleFActivePatchParentRemoved;
             
-            FActivePatchNode = patch.GetNode();
+            FActivePatchNode = patch.Node;
             FActivePatchWindow = patch;
             
             //the hosts window may be null if the plugin is created hidden on startup
             if (FPluginHost.Window != null)
-                FPluginHost.Window.Caption = FActivePatchNode.GetNodeInfo().Systemname;
+                FPluginHost.Window.Caption = FActivePatchNode.NodeInfo.Systemname;
             
-            FActivePatchParent = FindParent(FHDEHost.Root, FActivePatchNode);
+            FActivePatchParent = FindParent(FHDEHost.RootNode, FActivePatchNode);
             //if this is not the root
             if (FActivePatchParent != null)
-                FActivePatchParent.AddListener(this);
+				FActivePatchParent.Removed += HandleFActivePatchParentRemoved;
             
             UpdateSearch();
         }
-        #endregion IWindowSelectionListener
-        
-        #region INodeListener
-        public void AddedCB(INode childNode)
+
+        void HandleFActivePatchParentRemoved (IViewableCollection collection, object item)
         {
-            //do nothing;
-        }
-        
-        public void RemovedCB(INode childNode)
-        {
-            //if active patch is being deleted
-            //detach view
+        	var childNode = item as INode2;
+			//if active patch is being deleted detach view
             if (childNode == FActivePatchNode)
             {
                 FActivePatchNode = null;
@@ -460,7 +454,7 @@ namespace VVVV.Nodes.Finder
                 
                 if (FActivePatchParent != null)
                 {
-                    FActivePatchParent.RemoveListener(this);
+                    FActivePatchParent.Removed -= HandleFActivePatchParentRemoved;
                     FActivePatchParent = null;
                 }
                 
@@ -468,12 +462,7 @@ namespace VVVV.Nodes.Finder
                     ClearSearch();
             }
         }
-        
-        public void LabelChangedCB()
-        {
-            //do nothing
-        }
-        #endregion INodeListener
+        #endregion IWindowSelectionListener
         
         #region Search
         private void ClearSearch()
@@ -511,7 +500,7 @@ namespace VVVV.Nodes.Finder
                 {
                     case SearchScope.Global:
                         {
-                            FSearchResult = new PatchNode(FHDEHost.Root, FFilter, true, true);
+                            FSearchResult = new PatchNode(FHDEHost.RootNode, FFilter, true, true);
                             FHierarchyViewer.ShowRoot = false;
                             break;
                         }
@@ -571,7 +560,7 @@ namespace VVVV.Nodes.Finder
                 FPlainResultList[FSearchIndex].Selected = true;
                 
                 //select the node
-                FHDEHost.SelectNodes(new INode[1]{FPlainResultList[FSearchIndex].Node});
+                FHDEHost.SelectNodes(new INode2[1]{FPlainResultList[FSearchIndex].Node});
             }
             else if (e.KeyCode == Keys.Return || e.KeyCode == Keys.Enter)
             {
@@ -631,15 +620,15 @@ namespace VVVV.Nodes.Finder
             else if (e.Button == MouseButtons.Left && sender.Model != null)
             {
                 (sender.Model as PatchNode).Selected = true;
-                FHDEHost.SelectNodes(new INode[1]{(sender.Model as PatchNode).Node});
+                FHDEHost.SelectNodes(new INode2[1]{(sender.Model as PatchNode).Node});
                 
                 //only fit view to selected node if not in local scope
                 if (FFilter.Scope != SearchScope.Local)
                     if (sender.CanMap<ICamera>())
                 {
-                    var parent = FindParent(FHDEHost.Root, (sender.Model as PatchNode).Node);
+                    var parent = FindParent(FHDEHost.RootNode, (sender.Model as PatchNode).Node);
                     if (parent == null)
-                        parent = FHDEHost.Root;
+                        parent = FHDEHost.RootNode;
                     
                     sender.Map<ICamera>().View(FSearchResult.FindNode(parent));
                 }
@@ -647,7 +636,7 @@ namespace VVVV.Nodes.Finder
             else if (e.Button == MouseButtons.Right && sender.Model != null)
             {
                 if ((sender.Model as PatchNode).Node == FActivePatchNode)
-                    FHDEHost.ShowEditor(FindParent(FHDEHost.Root, FActivePatchNode));
+                    FHDEHost.ShowEditor(FindParent(FHDEHost.RootNode, FActivePatchNode));
                 else
                     OpenPatch((sender.Model as PatchNode).Node);
             }
@@ -672,45 +661,38 @@ namespace VVVV.Nodes.Finder
         }
         #endregion GUI events
         
-        private void OpenPatch(INode node)
+        private void OpenPatch(INode2 node)
         {
             if (node == null)
-                FHDEHost.ShowEditor(FindParent(FHDEHost.Root, FActivePatchNode));
-            else if (node.HasPatch() || node.HasCode())
+                FHDEHost.ShowEditor(FindParent(FHDEHost.RootNode, FActivePatchNode));
+            else if (node.HasPatch || node.HasCode)
                 FHDEHost.ShowEditor(node);
-            else if (node.HasGUI())
+            else if (node.HasGUI)
                 FHDEHost.ShowGUI(node);
             //else
             //    OpenParentAndSelectNode(node);
         }
         
-        private void OpenParentAndSelectNode(INode node)
+        private void OpenParentAndSelectNode(INode2 node)
         {
-            FHDEHost.ShowEditor(FindParent(FHDEHost.Root, node));
-            FHDEHost.SelectNodes(new INode[1]{node});
+            FHDEHost.ShowEditor(FindParent(FHDEHost.RootNode, node));
+            FHDEHost.SelectNodes(new INode2[1]{node});
         }
         
-        private INode FindParent(INode sourceTree, INode node)
+        private INode2 FindParent(INode2 sourceTree, INode2 node)
         {
-            INode[] children = sourceTree.GetChildren();
-            
-            if (children != null)
+            foreach (var child in sourceTree)
             {
-                foreach(INode child in children)
+                if (child == node)
+                    return sourceTree;
+                else
                 {
-                    if (child == node)
-                        return sourceTree;
-                    else
-                    {
-                        INode p = FindParent(child, node);
-                        if (p != null)
-                            return p;
-                    }
+                    var p = FindParent(child, node);
+                    if (p != null)
+                        return p;
                 }
-                return null;
             }
-            else
-                return null;
+            return null;
         }
     }
 }

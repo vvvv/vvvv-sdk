@@ -133,7 +133,6 @@ namespace VVVV.Hosting
 			EnumManager.SetHDEHost(this);
 			
 			Logger = new DefaultLogger();
-			
 		}
 
 		//serialize cache when timer has ended
@@ -180,12 +179,13 @@ namespace VVVV.Hosting
 			Environment.SetEnvironmentVariable(ENV_VVVV, Path.GetFullPath(Shell.CallerPath.ConcatPath("..").ConcatPath("..")));
 			
 			FVVVVHost = vvvvHost;
+			NodeInfoFactory = new ProxyNodeInfoFactory(vvvvHost.NodeInfoFactory, this);
+			
 			FVVVVHost.AddMouseClickListener(this);
 			FVVVVHost.AddNodeSelectionListener(this);
 			FVVVVHost.AddWindowListener(this);
 			FVVVVHost.AddWindowSelectionListener(this);
 			
-			NodeInfoFactory = new ProxyNodeInfoFactory(vvvvHost.NodeInfoFactory, this);
 			NodeInfoFactory.NodeInfoAdded += factory_NodeInfoAdded;
 			NodeInfoFactory.NodeInfoRemoved += factory_NodeInfoRemoved;
 			NodeInfoFactory.NodeInfoUpdated += factory_NodeInfoUpdated;
@@ -200,26 +200,12 @@ namespace VVVV.Hosting
 			//deserialize node info cache dict
 			DeserializeNodeInfoCache();
 			
-			try
-			{
-				//do not add the entire directory for faster startup
-				var catalog = new AggregateCatalog();
-				catalog.Catalogs.Add(new AssemblyCatalog(typeof(HDEHost).Assembly.Location));
-				catalog.Catalogs.Add(new AssemblyCatalog(typeof(NodeCollection).Assembly.Location));
-				Container = new CompositionContainer(catalog);
-				Container.ComposeParts(this);
-			}
-			catch (ReflectionTypeLoadException e)
-			{
-				foreach (var f in e.LoaderExceptions)
-					Logger.Log(f);
-				return;
-			}
-			catch (Exception e)
-			{
-				Logger.Log(e);
-				return;
-			}
+			//do not add the entire directory for faster startup
+			var catalog = new AggregateCatalog();
+			catalog.Catalogs.Add(new AssemblyCatalog(typeof(HDEHost).Assembly.Location));
+			catalog.Catalogs.Add(new AssemblyCatalog(typeof(NodeCollection).Assembly.Location));
+			Container = new CompositionContainer(catalog);
+			Container.ComposeParts(this);
 			
 			NodeInfoFactory.NodeInfoAdded += NodeInfoFactory_NodeInfoAdded;
 			
@@ -238,20 +224,13 @@ namespace VVVV.Hosting
 			
 			//now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
 			var nodeInfoFactory = FVVVVHost.NodeInfoFactory;
-			try
-			{
-				UpdateNodeInfos(FWinSwNodeInfo.Filename);
-				FWindowSwitcher = PluginFactory.CreatePlugin(FWinSwNodeInfo, null);
-				UpdateNodeInfos(FKomNodeInfo.Filename);
-				FKommunikator = PluginFactory.CreatePlugin(FKomNodeInfo, null);
-				UpdateNodeInfos(FNodeBrowserNodeInfo.Filename);
-				FNodeBrowser = PluginFactory.CreatePlugin(FNodeBrowserNodeInfo, null);
-				(FNodeBrowser as INodeBrowser).DragDrop(false);
-			}
-			catch (Exception e)
-			{
-				Logger.Log(e);
-			}
+			UpdateNodeInfos(FWinSwNodeInfo.Filename);
+			FWindowSwitcher = PluginFactory.CreatePlugin(FWinSwNodeInfo, null);
+			UpdateNodeInfos(FKomNodeInfo.Filename);
+			FKommunikator = PluginFactory.CreatePlugin(FKomNodeInfo, null);
+			UpdateNodeInfos(FNodeBrowserNodeInfo.Filename);
+			FNodeBrowser = PluginFactory.CreatePlugin(FNodeBrowserNodeInfo, null);
+			(FNodeBrowser as INodeBrowser).DragDrop(false);
 		}
 
 		void NodeInfoFactory_NodeInfoAdded(object sender, INodeInfo nodeInfo)
@@ -504,7 +483,7 @@ namespace VVVV.Hosting
 			get
 			{
 				if (FRootNode == null)
-					FRootNode = new Node(null, FVVVVHost.Root, NodeInfoFactory);
+					FRootNode = Node.Create(null, FVVVVHost.Root, NodeInfoFactory);
 				return FRootNode;
 			}
 		}
@@ -540,29 +519,32 @@ namespace VVVV.Hosting
 			FVVVVHost.Open(file, inActivePatch, window);
 		}
 		
-		public void SelectNodes(INode[] nodes)
+		public void SelectNodes(INode2[] nodes)
 		{
-			FVVVVHost.SelectNodes(nodes);
+			var query =
+				from node in nodes
+				select node.InternalCOMInterf;
+			FVVVVHost.SelectNodes(query.ToArray());
 		}
 		
-		public void ShowEditor(INode node)
+		public void ShowEditor(INode2 node)
 		{
 			// TODO: Kind of a hack
-			switch (node.GetNodeInfo().Type)
+			switch (node.NodeInfo.Type)
 			{
 				case NodeType.Dynamic:
 				case NodeType.Effect:
-					EditorFactory.OpenEditor(node);
+					EditorFactory.OpenEditor(node.InternalCOMInterf);
 					break;
 				default:
-					FVVVVHost.ShowEditor(node);
+					FVVVVHost.ShowEditor(node.InternalCOMInterf);
 					break;
 			}
 		}
 		
-		public void ShowGUI(INode node)
+		public void ShowGUI(INode2 node)
 		{
-			FVVVVHost.ShowGUI(node);
+			FVVVVHost.ShowGUI(node.InternalCOMInterf);
 		}
 		
 		public void ShowHelpPatch(INodeInfo nodeInfo)
@@ -575,9 +557,9 @@ namespace VVVV.Hosting
 			FVVVVHost.ShowNodeReference(nodeInfo);
 		}
 		
-		public void SetComponentMode(INode node, ComponentMode componentMode)
+		public void SetComponentMode(INode2 node, ComponentMode componentMode)
 		{
-			FVVVVHost.SetComponentMode(node, componentMode);
+			FVVVVHost.SetComponentMode(node.InternalCOMInterf, componentMode);
 		}
 		
 		public string ExePath
@@ -586,11 +568,23 @@ namespace VVVV.Hosting
 			private set;
 		}
 		
-		public IWindow ActivePatchWindow
+		private Window FActivePatchWindow;
+		public IWindow2 ActivePatchWindow
 		{
 			get
 			{
-				return FVVVVHost.ActivePatchWindow;
+				var internalWindow = FVVVVHost.ActivePatchWindow;
+				if (internalWindow != null)
+				{
+					if (FActivePatchWindow == null)
+						FActivePatchWindow = FindWindow(internalWindow);
+					else if (FActivePatchWindow.InternalCOMInterf != FVVVVHost.ActivePatchWindow)
+						FActivePatchWindow = FindWindow(internalWindow);
+				}
+				else
+					FActivePatchWindow = null;
+				
+				return FActivePatchWindow;
 			}
 		}
 		
@@ -631,6 +625,35 @@ namespace VVVV.Hosting
 			}
 			
 			return propertyList.ToArray();
+		}
+					
+		protected INode2 FindNode(IWindow internalWindow)
+		{
+			var query =
+				from node in RootNode.AsDepthFirstEnumerable()
+				let window = node.Window as Window
+				where window != null && window.InternalCOMInterf == internalWindow
+				select node;
+			return query.First();
+		}
+		
+		protected INode2 FindNode(INode internalNode)
+		{
+			var query =
+				from node in RootNode.AsDepthFirstEnumerable()
+				where node.InternalCOMInterf == internalNode
+				select node;
+			return query.First();
+		}
+		
+		protected Window FindWindow(IWindow internalWindow)
+		{
+			var query =
+				from w in FWindows
+				let window = w as Window
+				where window.InternalCOMInterf == internalWindow
+				select window;
+			return query.First();
 		}
 		#endregion helper methods
 		
@@ -879,37 +902,53 @@ namespace VVVV.Hosting
 		
 		#region Listeners
 		
-		public void MouseDownCB(INode node, Mouse_Buttons button, Modifier_Keys keys)
+		public void MouseDownCB(INode internalNode, Mouse_Buttons button, Modifier_Keys keys)
 		{
-			OnMouseDown(new VVVV.PluginInterfaces.V2.MouseEventArgs(node, button, keys));
+			if (internalNode != null)
+				OnMouseDown(new VVVV.PluginInterfaces.V2.MouseEventArgs(FindNode(internalNode), button, keys));
+			else
+				OnMouseDown(new VVVV.PluginInterfaces.V2.MouseEventArgs(null, button, keys));
 		}
 		
-		public void MouseUpCB(INode node, Mouse_Buttons button, Modifier_Keys keys)
+		public void MouseUpCB(INode internalNode, Mouse_Buttons button, Modifier_Keys keys)
 		{
-			OnMouseUp(new VVVV.PluginInterfaces.V2.MouseEventArgs(node, button, keys));
+			if (internalNode != null)
+				OnMouseUp(new VVVV.PluginInterfaces.V2.MouseEventArgs(FindNode(internalNode), button, keys));
+			else
+				OnMouseUp(new VVVV.PluginInterfaces.V2.MouseEventArgs(null, button, keys));
 		}
 		
-		public void NodeSelectionChangedCB(INode[] nodes)
+		public void NodeSelectionChangedCB(INode[] internalNodes)
 		{
-			OnNodeSelectionChanged(new NodeSelectionEventArgs(nodes));
+			if (internalNodes != null)
+			{
+				INode2[] nodes = new INode2[internalNodes.Length];
+				for (int i = 0; i < nodes.Length; i++)
+					nodes[i] = FindNode(internalNodes[i]);
+				OnNodeSelectionChanged(new NodeSelectionEventArgs(nodes));
+			}
+			else
+				OnNodeSelectionChanged(new NodeSelectionEventArgs(new INode2[0]));
 		}
 		
-		private List<IWindow> FWindows = new List<IWindow>();
-		public void WindowAddedCB(IWindow window)
+		private List<IWindow2> FWindows = new List<IWindow2>();
+		public void WindowAddedCB(IWindow internalWindow)
 		{
+			var window = Window.Create(internalWindow);
 			FWindows.Add(window);
 			OnWindowAdded(new WindowEventArgs(window));
 		}
 		
-		public void WindowRemovedCB(IWindow window)
+		public void WindowRemovedCB(IWindow internalWindow)
 		{
+			var window = FindWindow(internalWindow);
 			FWindows.Remove(window);
 			OnWindowRemoved(new WindowEventArgs(window));
 		}
 		
-		public void WindowSelectionChangeCB(IWindow window)
+		public void WindowSelectionChangeCB(IWindow internalWindow)
 		{
-			OnWindowSelectionChanged(new WindowEventArgs(window));
+			OnWindowSelectionChanged(new WindowEventArgs(FindWindow(internalWindow)));
 		}
 		
 		#endregion
