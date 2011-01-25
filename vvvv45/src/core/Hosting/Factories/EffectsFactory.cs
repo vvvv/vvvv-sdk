@@ -31,7 +31,7 @@ namespace VVVV.Hosting.Factories
 		private readonly Dictionary<FXProject, INodeInfo> FProjectNodeInfo;
 		
 		public EffectsFactory()
-			: base(".fx")
+			: base(".fx;.xx")
 		{
 			FProjects = new Dictionary<string, FXProject>();
 			FProjectNodeInfo = new Dictionary<FXProject, INodeInfo>();
@@ -160,7 +160,7 @@ namespace VVVV.Hosting.Factories
 			}
 			catch (Exception ex)
 			{
-				Logger.Log(LogType.Error, "Could not extract effect info");
+				Logger.Log(LogType.Error, "Effect does not contain detailed info");
 				Logger.Log(ex);
 			}
 

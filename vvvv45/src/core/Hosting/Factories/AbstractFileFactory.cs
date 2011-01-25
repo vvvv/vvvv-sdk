@@ -33,7 +33,7 @@ namespace VVVV.Hosting.Factories
 		protected INodeInfoFactory FNodeInfoFactory;
 		
 		//directory to watch
-		private string FFileExtension;
+        private List<string> FFileExtension;
 		private List<string> FFiles = new List<string>();
 		
 		private List<FileSystemWatcher> FDirectoryWatcher = new List<FileSystemWatcher>();
@@ -42,7 +42,8 @@ namespace VVVV.Hosting.Factories
 		
 		public AbstractFileFactory(string fileExtension)
 		{
-			FFileExtension = fileExtension;
+            FFileExtension = new List<string>();
+			FFileExtension.AddRange(fileExtension.Split(new char[]{';'}, StringSplitOptions.None));
 			Debug.Assert(SynchronizationContext.Current != null, "SynchronizationContext not set.");
 			FSyncContext = new GenericSynchronizingObject();
 		}
@@ -58,7 +59,7 @@ namespace VVVV.Hosting.Factories
 			get; private set;
 		}
 		
-		public string FileExtension
+		public List<string> FileExtension
 		{
 			get
 			{
@@ -72,7 +73,7 @@ namespace VVVV.Hosting.Factories
 		{
 			try 
 			{
-				if (Path.GetExtension(filename) != FileExtension)
+                if (!FileExtension.Contains(Path.GetExtension(filename)))
 					return new INodeInfo[0];
 				
 				// Regardless of the arguments, we need to load the node infos first.
@@ -111,7 +112,7 @@ namespace VVVV.Hosting.Factories
 		
 		public bool Create(INodeInfo nodeInfo, INode host)
 		{
-			if (host is TNodeHost && Path.GetExtension(nodeInfo.Filename) == FileExtension)
+			if (host is TNodeHost && FileExtension.Contains(Path.GetExtension(nodeInfo.Filename)))
 				return CreateNode(nodeInfo, (TNodeHost) host);
 			
 			return false;
@@ -121,7 +122,7 @@ namespace VVVV.Hosting.Factories
 		
 		public bool Delete(INodeInfo nodeInfo, INode host)
 		{
-			if (host is TNodeHost && Path.GetExtension(nodeInfo.Filename) == FileExtension)
+			if (host is TNodeHost && FileExtension.Contains(Path.GetExtension(nodeInfo.Filename)))
 				return DeleteNode(nodeInfo, (TNodeHost) host);
 			
 			return false;
@@ -131,7 +132,7 @@ namespace VVVV.Hosting.Factories
 		
 		public bool Clone(INodeInfo nodeInfo, string path, string name, string category, string version, out INodeInfo newNodeInfo)
 		{
-			if (Path.GetExtension(nodeInfo.Filename) == FileExtension)
+			if (FileExtension.Contains(Path.GetExtension(nodeInfo.Filename)))
 			{
 				string filename;
 				if (CloneNode(nodeInfo, path, name, category, version, out filename))
@@ -253,7 +254,7 @@ namespace VVVV.Hosting.Factories
 		{
 			if (!File.Exists(e.OldFullPath))
 				RemoveFile(e.OldFullPath);
-			if (e.FullPath.EndsWith(FFileExtension, true, null) && File.Exists(e.FullPath))
+			if (File.Exists(e.FullPath) && FileExtension.Contains(Path.GetExtension(e.FullPath)))
 				AddFile(e.FullPath);
 		}
 		

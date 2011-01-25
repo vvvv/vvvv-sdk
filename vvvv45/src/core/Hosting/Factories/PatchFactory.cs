@@ -24,7 +24,7 @@ namespace VVVV.Hosting.Factories
         protected ILogger Logger { get; set; }
         
         public PatchFactory()
-            : base(".v4p")
+            : base(".v4p;.v4x")
         {
         }
         
@@ -95,9 +95,8 @@ namespace VVVV.Hosting.Factories
             }
             catch (Exception e)
             {
-                Logger.Log(LogType.Error, "Could not extract module info of " + nodeInfo.Systemname);
+                Logger.Log(LogType.Error, "Could not extract detailed module info from XML of " + nodeInfo.Systemname);
                 Logger.Log(e);
-                yield break;
             }
             finally
             {
