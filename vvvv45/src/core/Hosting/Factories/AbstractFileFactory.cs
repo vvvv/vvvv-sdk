@@ -43,7 +43,7 @@ namespace VVVV.Hosting.Factories
 		public AbstractFileFactory(string fileExtension)
 		{
             FFileExtension = new List<string>();
-			FFileExtension.AddRange(fileExtension.Split(new char[]{';'}, StringSplitOptions.None));
+			FFileExtension.AddRange(fileExtension.Split(new char[]{';'}, StringSplitOptions.RemoveEmptyEntries));
 			Debug.Assert(SynchronizationContext.Current != null, "SynchronizationContext not set.");
 			FSyncContext = new GenericSynchronizingObject();
 		}
