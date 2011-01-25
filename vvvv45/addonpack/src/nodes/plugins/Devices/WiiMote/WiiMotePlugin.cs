@@ -546,14 +546,12 @@ namespace VVVV.Nodes
 				
 				FPinOutputBattery.SetValue(0, (double)FRemote.WiimoteState.Battery/0xFF);
 				
-
-//			InfraRed
+				int irCount = 0;
+				if (FIRMode == 0) irCount = 4; // Full
+				if (FIRMode == 1) irCount = 4; // Extended
+				if (FIRMode == 2) irCount = 2; // Basic
+				if (FIRMode == 3) irCount = 0; // Of
 				
-				int irCount = FRemote.WiimoteState.IRState.IRSensors.Length;
-				if (FIRMode == 2 && irCount>4) irCount = 4;
-				if (FIRMode == 1 && irCount>2) irCount = 2;
-				if (FIRMode == 0 && irCount>0) irCount = 0;
-
 				FPinOutputInfraredBlobs.SliceCount = irCount;
 
 				for (int i = 0;i<irCount;i++) {
