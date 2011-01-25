@@ -39,10 +39,6 @@ namespace VVVV.Nodes.WindowSwitcher
         
         private List<IWindow2> FWindowLIFO = new List<IWindow2>();
         private int FSelectedWindowIndex = 0;
-        
-        [Import]
-        ILogger FLogger;
-        
         #endregion field declaration
         
         #region constructor/destructor

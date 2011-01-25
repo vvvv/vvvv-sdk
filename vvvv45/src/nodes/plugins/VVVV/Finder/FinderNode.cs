@@ -183,9 +183,6 @@ namespace VVVV.Nodes.Finder
         
         // Track whether Dispose has been called.
         private bool FDisposed = false;
-        
-        [Import]
-        ILogger FLogger;
         #endregion field declaration
         
         #region constructor/destructor

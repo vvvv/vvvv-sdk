@@ -97,10 +97,8 @@ namespace VVVV.Nodes.Finder
         {
         }
         
-		private bool FIsDisposed;
         public void Dispose()
         {
-			FIsDisposed = true;
             //remove pinlisteners
             if (FLabelPin != null)
             {
