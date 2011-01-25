@@ -3,7 +3,7 @@ using VVVV.Core;
 
 namespace VVVV.PluginInterfaces.V2.Graph
 {
-    public interface INode2 : IViewableList<INode2>, INamed, IDisposable
+    public interface INode2 : IViewableList<INode2>, INamed
     {
         /// <summary>
         /// Reference to the internal COM interface. Use with caution.

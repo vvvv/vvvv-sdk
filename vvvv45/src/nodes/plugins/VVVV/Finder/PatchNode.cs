@@ -10,6 +10,7 @@ using VVVV.Core.Collections;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.Graph;
+using System.Diagnostics;
 
 namespace VVVV.Nodes.Finder
 {
@@ -48,33 +49,60 @@ namespace VVVV.Nodes.Finder
         private INodeInfo FNodeInfo;
         private Filter FFilter;
         
-        public PatchNode()
+        public PatchNode(INode2 self, Filter filter, bool includeChildren, bool recursively)
         {
-            Name = "????";
-            Childs = FChildNodes.AsViewableList();
-        }
-        
-        public PatchNode(INode2 self, Filter filter, bool includeChildren, bool recursively) : this()
-        {
-            Node = self;
+            FNode = self;
+			Debug.Assert(Node != null);
+			
             FFilter = filter;
+			
+			Name = Node.Name;
+            Childs = FChildNodes.AsViewableList();
+			
+			Node.Added += HandleNodeAdded;
+			Node.Removed += HandleNodeRemoved;
+            
+            //init static properties via INode
+            ID = FNode.ID;
+            FNodeInfo = FNode.NodeInfo;
+            NodeType = FNodeInfo.Type;
+            
+            FLabelPin = FindPin(Node, "Descriptive Name");
+			FLabelPin.Changed += HandlePinChanged;
+            
+            if (FNodeInfo.Name == "S")
+            {
+                FChannelPin = FindPin(Node, "Send String");
+                FIsSource = true;
+            }
+            else if (FNodeInfo.Name == "R")
+                FChannelPin = FindPin(Node, "Receive String");
+            
+            if (FChannelPin != null)
+            {
+				FChannelPin.Changed += HandlePinChanged;
+                Icon = NodeIcon.SRNode;
+            }
+            
+            //init dynamic properties via INode
+            UpdateProperties();
+            UpdateName();
             
             if ((NodeType == NodeType.Patch || (NodeType == NodeType.Module && FFilter.Scope == SearchScope.Local)) && includeChildren)
                 InitChildren(recursively);
         }
         
-        public PatchNode(INode2 self) : this()
+        public PatchNode(INode2 self) 
+			: this(self, new Filter(), true, true)
         {
-            Node = self;
-            
-            if (NodeType == NodeType.Patch)
-                InitChildren(true);
         }
         
+		private bool FIsDisposed;
         public void Dispose()
         {
+			FIsDisposed = true;
             //remove pinlisteners
-            if (FCommentPin != null)
+            if (FLabelPin != null)
             {
 				FLabelPin.Changed -= HandlePinChanged;;
                 FLabelPin = null;
@@ -93,11 +121,10 @@ namespace VVVV.Nodes.Finder
             }
             
             //remove nodelistener
-            if (Node != null)
+            if (FNode != null)
             {
-                Node.Added -= HandleNodeAdded;
-				Node.Removed -= HandleNodeRemoved;
-                Node = null;
+                FNode.Added -= HandleNodeAdded;
+				FNode.Removed -= HandleNodeRemoved;
             }
             
             //free children
@@ -106,51 +133,21 @@ namespace VVVV.Nodes.Finder
                 child.Renamed -= child_Renamed;
                 child.Dispose();
             }
-            FChildNodes.Clear();
+
             FChildNodes.Dispose();
         }
+		
+		public override string ToString ()
+		{
+			return string.Format ("[PatchNode: Childs={0}, ChildNodes={1}, ID={2}, SRChannel={3}, Comment={4}, DescriptiveName={5}, IsIONode={6}, IsBoygrouped={7}, IsMissing={8}, NodeType={9}, IsActiveWindow={10}, Node={11}, Selected={12}, Name={13}, Description={14}, TextColor={15}, TextHoverColor={16}, BackColor={17}, BackHoverColor={18}, OutlineColor={19}, Text={20}, Icon={21}, IsSource={22}, Channel={23}]", Childs, ChildNodes, ID, SRChannel, Comment, DescriptiveName, IsIONode, IsBoygrouped, IsMissing, NodeType, IsActiveWindow, Node, Selected, Name, Description, TextColor, TextHoverColor, BackColor, BackHoverColor, OutlineColor, Text, Icon, IsSource, Channel);
+		}
         
-        private INode2 FNode;
+        private readonly INode2 FNode;
         public INode2 Node
         {
             get
             {
                 return FNode;
-            }
-            set
-            {
-                FNode = value;
-                if (FNode != null)
-                {
-					Node.Added += HandleNodeAdded;
-					Node.Removed += HandleNodeRemoved;
-                    
-                    //init static properties via INode
-                    ID = FNode.ID;
-                    FNodeInfo = FNode.NodeInfo;
-                    NodeType = FNodeInfo.Type;
-                    
-                    FLabelPin = FindPin(Node, "Descriptive Name");
-					FLabelPin.Changed += HandlePinChanged;
-                    
-                    if (FNodeInfo.Name == "S")
-                    {
-                        FChannelPin = FindPin(Node, "Send String");
-                        FIsSource = true;
-                    }
-                    else if (FNodeInfo.Name == "R")
-                        FChannelPin = FindPin(Node, "Receive String");
-                    
-                    if (FChannelPin != null)
-                    {
-						FChannelPin.Changed += HandlePinChanged;
-                        Icon = NodeIcon.SRNode;
-                    }
-                    
-                    //init dynamic properties via INode
-                    UpdateProperties();
-                    UpdateName();
-                }
             }
         }
 		
@@ -516,6 +513,8 @@ namespace VVVV.Nodes.Finder
                         pn.Renamed += child_Renamed;
                         SortChildren();
                     }
+					else
+						pn.Dispose();
                 }
                 finally
                 {
@@ -547,19 +546,18 @@ namespace VVVV.Nodes.Finder
         
         private void InitChildren(bool recursively)
         {
-            if (Node == null)
-                return;
-            
-            if (Node.Count > 0)
+            if (FNode.Count > 0)
             {
                 FChildNodes.BeginUpdate();
                 try
                 {
-                    foreach(var child in Node)
+                    foreach(var child in FNode)
                     {
                         var pn = new PatchNode(child, FFilter, recursively, recursively);
                         if (pn.ChildNodes.Count > 0 || CheckForInclusion(pn))
                             FChildNodes.Add(pn);
+						else
+							pn.Dispose();
                     }
                     
                     SortChildren();

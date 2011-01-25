@@ -23,7 +23,6 @@ namespace VVVV.Hosting.Graph
 		}
 		#endregion
 		
-        private INode2 FOwnerNode;
         private readonly IWindow FInternalCOMInterf;
 		
         private Window(IWindow internalCOMInterf)
@@ -60,9 +59,7 @@ namespace VVVV.Hosting.Graph
         {
             get 
             {
-				if (FOwnerNode == null)
-					FOwnerNode = VVVV.Hosting.Graph.Node.Create(null, FInternalCOMInterf.GetNode(), ProxyNodeInfoFactory.Instance);
-                return FOwnerNode;
+                return VVVV.Hosting.Graph.Node.Create(null, FInternalCOMInterf.GetNode(), ProxyNodeInfoFactory.Instance);
             }
         }
         

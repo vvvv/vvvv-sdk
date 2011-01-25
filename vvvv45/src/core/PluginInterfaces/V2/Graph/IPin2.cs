@@ -3,7 +3,7 @@ using VVVV.Core;
 
 namespace VVVV.PluginInterfaces.V2.Graph
 {
-    public interface IPin2 : INamed, IDisposable
+    public interface IPin2 : INamed
     {
         /// <summary>
         /// Gets the value at specified slice in a string representation.

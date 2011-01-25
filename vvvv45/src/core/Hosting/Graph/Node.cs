@@ -24,7 +24,7 @@ namespace VVVV.Hosting.Graph
 			
 			public void AddedCB(INode internalChildNode)
 			{
-				var childNode = new Node(FObservedNode, internalChildNode, FObservedNode.FNodeInfoFactory);
+				var childNode = Node.Create(FObservedNode, internalChildNode, FObservedNode.FNodeInfoFactory);
 				
 				FObservedNode.Add(childNode);
 			}
@@ -36,7 +36,7 @@ namespace VVVV.Hosting.Graph
 					where node.InternalCOMInterf == internalChildNode
 					select node;
 				
-				var childNode = query.First();
+				var childNode = query.First() as Node;
 				FObservedNode.Remove(childNode);
 				childNode.Dispose();
 			}
@@ -111,7 +111,7 @@ namespace VVVV.Hosting.Graph
 			if (FWindow != null)
 				FWindow.Dispose();
 			
-			foreach (var childNode in this)
+			foreach (Node childNode in this)
 				childNode.Dispose();
 			
 			FNodes.Remove(FInternalCOMInterf);

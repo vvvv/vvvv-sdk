@@ -31,8 +31,6 @@ namespace VVVV.Nodes.WindowSwitcher
         protected IWindowSwitcherHost FWindowSwitcherHost;
         
         private IHDEHost FHDEHost;
-        private INode2 FRoot;
-        private PatchNode FFullTree;
         private PatchNode FWindowTree;
         private IWindow2 FActiveWindow;
         private PatchNode FSelectedPatchNode;
@@ -59,6 +57,10 @@ namespace VVVV.Nodes.WindowSwitcher
             FHDEHost.WindowRemoved += FHDEHost_WindowRemoved;
             FHDEHost.WindowSelectionChanged += FHDEHost_WindowSelectionChanged;
             FActiveWindow = FHDEHost.ActivePatchWindow;
+			
+			var mappingRegistry = new MappingRegistry();
+            mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
+            FHierarchyViewer.Registry = mappingRegistry;
         }
 
         // Dispose(bool disposing) executes in two distinct scenarios.
@@ -135,25 +137,13 @@ namespace VVVV.Nodes.WindowSwitcher
         #region IWindowSwitcher
         public void Initialize()
         {
-            if (FRoot == null)
-            {
-                FRoot = FHDEHost.RootNode;
-                var mappingRegistry = new MappingRegistry();
-                mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
-                FHierarchyViewer.Registry = mappingRegistry;
-                
-                FFullTree = new PatchNode(FRoot);
-            }
-            
             //make a tree that only contains nodes that have a window
             //mark nodes with hidden windows as inactive
             if (FWindowTree != null)
                 FWindowTree.Dispose();
             
-            FWindowTree = new PatchNode(null);
-            FWindowTree.Node = FRoot;
-            AddWindowNodes(FWindowTree, FFullTree);
-            
+            FWindowTree = new PatchNode(FHDEHost.RootNode, new Filter(), false, false);
+            AddWindowNodes(FWindowTree, FHDEHost.RootNode);
             FWindowTree.SetActiveWindow(FActiveWindow);
             
             //mark the incoming window as selected
@@ -220,20 +210,25 @@ namespace VVVV.Nodes.WindowSwitcher
             return result;
         }
         
-        private void AddWindowNodes(PatchNode result, PatchNode sourceTree)
+        private void AddWindowNodes(PatchNode result, INode2 sourceTree)
         {
             //go through childnodes of sourceTree recursively and copy nodes that have a window
-            foreach (PatchNode pn in sourceTree.ChildNodes)
+            foreach (var node in sourceTree)
             {
-                var temp = new PatchNode(null);
-                temp.Node = pn.Node;
-                
+				if (node.NodeInfo.Type == NodeType.Patch || node.Window != null)
+				{
+					var patchNode = new PatchNode(node, new Filter(), false, false);
+					AddWindowNodes(patchNode, node);
+					result.ChildNodes.Add(patchNode);
+				}
+                /*
                 AddWindowNodes(temp, pn);
                 
                if (temp.Node.NodeInfo.Type == NodeType.Patch || temp.Node.Window != null)
                    result.ChildNodes.Add(temp);
                else
                    temp.Dispose();
+                   */
                /*
                else if (temp.Node.HasCode()) //has code, but editors node is actually in root
                {
