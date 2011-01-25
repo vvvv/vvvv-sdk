@@ -70,7 +70,6 @@ namespace VVVV.HDE.ProjectExplorer
 				FMappingRegistry.RegisterDefaultMapping<IParent, DefaultParentProvider>();
 				// Do not allow drag'n drop except for references.
 //				FMappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
-				FMappingRegistry.RegisterDefaultMapping<IDroppable, DefaultDragDropProvider>();
 				FMappingRegistry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
 				FMappingRegistry.RegisterDefaultMapping<AddMenuEntry, DefaultAddMenuEntry>();
 				FMappingRegistry.RegisterDefaultMapping(logger);
@@ -89,6 +88,8 @@ namespace VVVV.HDE.ProjectExplorer
 				FMappingRegistry.RegisterMapping<FXProject, FXProjectViewProvider>();
 				FMappingRegistry.RegisterMapping<FXProject, IMenuEntry, FXProjectMenuProvider>();
 				FMappingRegistry.RegisterMapping<IProject, IDescripted, DescriptedProjectViewProvider>();
+				// Allow drag drop only in MsBuildProject
+				FMappingRegistry.RegisterMapping<MsBuildProject, IDroppable, DefaultDragDropProvider>();
 				
 				InitializeComponent();
 				
