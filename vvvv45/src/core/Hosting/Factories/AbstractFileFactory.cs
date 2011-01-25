@@ -166,14 +166,20 @@ namespace VVVV.Hosting.Factories
 		
 		protected virtual void AddSubDir(string dir, bool recursive)
 		{
-			foreach (string filename in Directory.GetFiles(dir, @"*" + FFileExtension))
-			{
-				try {
-					AddFile(filename);
-				} catch (Exception e) {
-					FLogger.Log(e);
-				}
-			}
+            foreach (var ext in FFileExtension)
+            {
+                foreach (string filename in Directory.GetFiles(dir, @"*" + ext))
+                {
+                    try
+                    {
+                        AddFile(filename);
+                    }
+                    catch (Exception e)
+                    {
+                        FLogger.Log(e);
+                    }
+                }
+            }
 			
 			if (recursive)
 				foreach (string subDir in Directory.GetDirectories(dir))
@@ -195,8 +201,8 @@ namespace VVVV.Hosting.Factories
 			DeleteArtefacts(dir, recursive);
 
 			AddSubDir(dir, recursive);
-			
-			var dirWatcher = new FileSystemWatcher(dir, @"*" + FFileExtension);
+
+			var dirWatcher = new FileSystemWatcher(dir, @"*" + FFileExtension[0]);
 			dirWatcher.SynchronizingObject = FSyncContext;
 			dirWatcher.IncludeSubdirectories = true;
 			dirWatcher.EnableRaisingEvents = true;
