@@ -65,9 +65,6 @@ namespace VVVV.Nodes.NodeBrowser
 			}
 		}
 		
-		[Import]
-		ILogger FLogger;
-		
 		public TagPanel()
 		{
 			//
@@ -394,7 +391,7 @@ namespace VVVV.Nodes.NodeBrowser
             	fn = "";
             
             // Hack to make it work again 50
-            if (NodeBrowser.NodeCollection == null)
+            if (NodeBrowser.FNodeCollection == null)
             	return true;
             
             if (NodeBrowser.CurrentPatchWindow == null || nodeInfo != NodeBrowser.CurrentPatchWindow.Node.NodeInfo)
@@ -404,9 +401,9 @@ namespace VVVV.Nodes.NodeBrowser
 					if (fn.StartsWith(NodeBrowser.CurrentDir))
 						return true;
 				
-				if (!localOnly && NodeBrowser.NodeCollection != null)
+				if (!localOnly && NodeBrowser.FNodeCollection != null)
 					//available if from any of the global paths
-					foreach (var sp in NodeBrowser.NodeCollection.Paths)
+					foreach (var sp in NodeBrowser.FNodeCollection.Paths)
 				        if (sp.Factory == nodeInfo.Factory && fn.StartsWith(Path.Combine(sp.Path, sp.Factory.JobStdSubPath)))
 							return true;
 			}

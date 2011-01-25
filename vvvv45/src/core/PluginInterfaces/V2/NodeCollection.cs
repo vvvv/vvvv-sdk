@@ -68,30 +68,47 @@ namespace VVVV.PluginInterfaces.V2
 
 		public void Collect()
 		{
-			for (int i = FPaths.Count-1; i >= 0; i--) 
-				if (FPaths[i].IsGarbage) 
-				{
-					var p = FPaths[i];
-					FPaths.RemoveAt(i);					
-					Flogger.Log(LogType.Debug, "removing " + p.Path + " from available " + p.Factory.JobStdSubPath);				
-					p.Factory.RemoveDir(p.Path);
-				}
+			IsCollecting = true;
 			
-			for (int i = FPaths.Count-1; i >= 0; i--) 
-				if (FPaths[i].NeedsToBeDisabled)
+			try
+			{
+				for (int i = FPaths.Count-1; i >= 0; i--)
 				{
-					var p = FPaths[i];
-					p.Disabled = true;   
-					p.Factory.RemoveDir(p.Path);
+					if (FPaths[i].IsGarbage) 
+					{
+						var p = FPaths[i];
+						FPaths.RemoveAt(i);					
+						Flogger.Log(LogType.Debug, "removing " + p.Path + " from available " + p.Factory.JobStdSubPath);				
+						p.Factory.RemoveDir(p.Path);
+					}
 				}
-			
-			foreach (var path in FPaths)
-				if (!path.IsInitialized)
+				
+				for (int i = FPaths.Count-1; i >= 0; i--) 
 				{
-					path.Init();	
-					Flogger.Log(LogType.Debug, "adding " + path.Path + " to available " + path.Factory.JobStdSubPath);				
-					path.Factory.AddDir(path.Path, path.Recursive);						
+					if (FPaths[i].NeedsToBeDisabled)
+					{
+						var p = FPaths[i];
+						p.Disabled = true;   
+						p.Factory.RemoveDir(p.Path);
+					}
 				}
+				
+				foreach (var path in FPaths)
+				{
+					if (!path.IsInitialized)
+					{
+						path.Init();	
+						Flogger.Log(LogType.Debug, "adding " + path.Path + " to available " + path.Factory.JobStdSubPath);				
+						path.Factory.AddDir(path.Path, path.Recursive);						
+					}
+				}
+			}
+			finally
+			{
+				IsCollecting = false;
+				if (Collected != null)
+					Collected(this, EventArgs.Empty);
+			}
 		}
 			
 		private void Add(SearchPath path)
@@ -203,5 +220,12 @@ namespace VVVV.PluginInterfaces.V2
 			RemoveUnsorted(dir);
 		}
 		
+		public bool IsCollecting
+		{
+			get;
+			private set;
+		}
+		
+		public event EventHandler Collected;
 	}
 }

@@ -46,8 +46,9 @@ namespace VVVV.Nodes.NodeBrowser
 		public INodeBrowserHost NodeBrowserHost {get; set;}
 		[Import]
 		public ILogger FLogger {get; set;}
-		[Import]
-		public NodeCollection NodeCollection;
+		
+		// Used also by TagPanel. Therefor internal.
+		internal NodeCollection FNodeCollection;
 		
 		private INodeInfoFactory FNodeInfoFactory;
 		public INodeInfoFactory NodeInfoFactory
@@ -105,11 +106,10 @@ namespace VVVV.Nodes.NodeBrowser
 		public NodeBrowserPluginNode()
 		{
 			DefaultConstructor();
-			FTagPanel.Visible = true;
 		}
 		
 		[ImportingConstructor]
-		public NodeBrowserPluginNode(IHDEHost host, INodeInfoFactory nodeInfoFactory)
+		public NodeBrowserPluginNode(IHDEHost host, INodeInfoFactory nodeInfoFactory, NodeCollection nodeCollection)
 		{
 			DefaultConstructor();
 			
@@ -120,13 +120,8 @@ namespace VVVV.Nodes.NodeBrowser
 			HDEHost.WindowSelectionChanged += HDEHost_WindowSelectionChanged;
 			CurrentPatchWindow = HDEHost.ActivePatchWindow;
 			
-			//grande hakc: this is only true for a nodebrowser started standalone
-			//which needs its TagPanel set visible manually 
-			//so that we have it visible=false for the default nodebrowser on startup 
-			//to prevent a redraw for every nodeinfo added
-			//TODO: improve
-			if (CurrentPatchWindow != null)
-			    FTagPanel.Visible = true;
+			FNodeCollection = nodeCollection;
+			FNodeCollection.Collected += HandleFNodeCollectionCollected;
 		}
 
 		private void DefaultConstructor()
@@ -160,6 +155,8 @@ namespace VVVV.Nodes.NodeBrowser
 				{
 					// Dispose managed resources.
 					HDEHost.WindowSelectionChanged -= HDEHost_WindowSelectionChanged;
+					if (FNodeCollection != null)
+						FNodeCollection.Collected -= HandleFNodeCollectionCollected;
 				}
 				// Release unmanaged resources. If disposing is false,
 				// only the following code is executed.
@@ -204,7 +201,6 @@ namespace VVVV.Nodes.NodeBrowser
 			this.FTagPanel.NodeBrowser = null;
 			this.FTagPanel.Size = new System.Drawing.Size(120, 115);
 			this.FTagPanel.TabIndex = 1;
-			this.FTagPanel.Visible = false;
 			this.FTagPanel.OnCreateNode += new VVVV.Nodes.NodeBrowser.CreateNodeHandler(this.FNodeBrowser_CreateNode);
 			this.FTagPanel.OnPanelChange += new VVVV.Nodes.NodeBrowser.PanelChangeHandler(this.FNodeBrowser_OnPanelChange);
 			this.FTagPanel.OnShowHelpPatch += new VVVV.Nodes.NodeBrowser.CreateNodeHandler(this.FNodeBrowser_ShowHelpPatch);
@@ -239,6 +235,11 @@ namespace VVVV.Nodes.NodeBrowser
 		private VVVV.Nodes.NodeBrowser.TagPanel FTagPanel;
 		private VVVV.Nodes.NodeBrowser.ClonePanel FClonePanel;
 		#endregion constructor/destructor
+		
+		void HandleFNodeCollectionCollected (object sender, EventArgs e)
+		{
+			FTagPanel.NeedsUpdate = true;
+		}
 		
 		void FNodeBrowser_OnPanelChange(NodeBrowserPage page, INodeInfo nodeInfo)
 		{
@@ -342,13 +343,15 @@ namespace VVVV.Nodes.NodeBrowser
 			//don't include ignored nodes in the list
 			if (nodeInfo.Ignore) return;
 			
-			FTagPanel.NeedsUpdate = true;
+			if (!FNodeCollection.IsCollecting)
+				FTagPanel.NeedsUpdate = true;
 			FCategoryPanel.Add(nodeInfo);
 		}
 		
 		public void NodeInfoUpdatedCB(object sender, INodeInfo nodeInfo)
 		{
-			FTagPanel.NeedsUpdate = true;
+			if (!FNodeCollection.IsCollecting)
+				FTagPanel.NeedsUpdate = true;
 			FCategoryPanel.Update(nodeInfo);
 		}
 		
@@ -357,7 +360,8 @@ namespace VVVV.Nodes.NodeBrowser
 		    //nothing todo if nodeinfo is ignored anyway
 			if (nodeInfo.Ignore) return;
 			
-			FTagPanel.NeedsUpdate = true;
+			if (!FNodeCollection.IsCollecting)
+				FTagPanel.NeedsUpdate = true;
 			FCategoryPanel.Remove(nodeInfo);
 		}
 		#endregion INodeInfoFactory events
