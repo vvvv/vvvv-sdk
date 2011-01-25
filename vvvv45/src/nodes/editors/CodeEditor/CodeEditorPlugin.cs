@@ -238,7 +238,7 @@ namespace VVVV.HDE.CodeEditor
 				else if (document is FXDocument)
 				{
 					FEditor.CompletionBinding = new FXCompletionBinding(FEditor);
-					FEditor.FormattingStrategy = new SD.DefaultFormattingStrategy();
+					FEditor.FormattingStrategy = new FXFormattingStrategy(FEditor);
 					FEditor.LinkDataProvider = new FXLinkDataProvider();
 				}
 				

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectGuid>{A63D2EA4-D87C-459B-B57F-19A76A7ADAF0}</ProjectGuid>
@@ -55,19 +55,17 @@
     <Optimize>false</Optimize>
     <WarningLevel>4</WarningLevel>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <OutputPath>..\..\..\vvvv45\editors</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <WarningLevel>4</WarningLevel>
+    <OutputPath>..\..\..\vvvv45\editors</OutputPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition">
-      <HintPath>..\..\..\vvvv50\lib\System.ComponentModel.Composition.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -84,10 +82,13 @@
     </Reference>
     <Reference Include="ICSharpCode.TextEditor, Version=3.2.1.6466, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a">
       <HintPath>Dependencies\ICSharpCode.TextEditor.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <HintPath>..\..\..\vvvv50\lib\Microsoft.Practices.Unity.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\..\..\vvvv50\lib\System.ComponentModel.Composition.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -138,6 +139,8 @@
     <EmbeddedResource Include="Gui\Dialogs\SaveDialog.resx">
       <DependentUpon>SaveDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <Compile Include="DefaultFormattingStrategy.cs" />
+    <Compile Include="LanguageBindings\FX\FXFormattingStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\vvvv50\src\Core\Core.csproj">
