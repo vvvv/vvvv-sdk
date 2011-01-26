@@ -83,6 +83,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
             //	new DefaultCompletionData("Text", "Description", 1)
             //};
             
+			//include: only files
             //types: everywhere
             //variable names: only inside of single {}
             //hlsl reference: only inside of single {}
@@ -98,24 +99,27 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
                 return new ICompletionData[0];
             
             //add all input pins names
-            var inputs = project.ParameterDescription.Split(new char[1]{'|'});
-            foreach (var input in inputs)
-            {
-                if (!string.IsNullOrEmpty(input))
-                {
-                    var desc = input.Split(new char[1]{','});
-                    string name = "";
-                    if (desc[0] != desc[1])
-                        name = desc[1] + "\n";
-                    
-                    string tooltip = name + desc[2] + "\n";
-                    if (Convert.ToInt32(desc[3]) > 1)
-                        tooltip += desc[6].Replace("(Rows)", "") + desc[3] + "x" + desc[4];
-                    else
-                        tooltip += desc[7] + desc[4].Replace("1", "").Replace("0", "");
-                    tempDict.Add(desc[0].ToLower(), new DefaultCompletionData(desc[0], tooltip, 3));
-                }
-            }
+			if (project.ParameterDescription != null)
+			{
+	            var inputs = project.ParameterDescription.Split(new char[1]{'|'});
+	            foreach (var input in inputs)
+	            {
+	                if (!string.IsNullOrEmpty(input))
+	                {
+	                    var desc = input.Split(new char[1]{','});
+	                    string name = "";
+	                    if (desc[0] != desc[1])
+	                        name = desc[1] + "\n";
+	                    
+	                    string tooltip = name + desc[2] + "\n";
+	                    if (Convert.ToInt32(desc[3]) > 1)
+	                        tooltip += desc[6].Replace("(Rows)", "") + desc[3] + "x" + desc[4];
+	                    else
+	                        tooltip += desc[7] + desc[4].Replace("1", "").Replace("0", "");
+	                    tempDict.Add(desc[0].ToLower(), new DefaultCompletionData(desc[0], tooltip, 3));
+	                }
+	            }
+			}
             
             //add all intrinsic hlsl functions
             foreach(var function in FHLSLReference)

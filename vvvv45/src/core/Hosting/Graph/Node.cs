@@ -36,9 +36,13 @@ namespace VVVV.Hosting.Graph
 					where node.InternalCOMInterf == internalChildNode
 					select node;
 				
-				var childNode = query.First() as Node;
-				FObservedNode.Remove(childNode);
-				childNode.Dispose();
+				// TODO: Sometimes RemovedCB is called with out an AddedCB before.
+				var childNode = query.FirstOrDefault() as Node;
+				if (childNode != null)
+				{
+					FObservedNode.Remove(childNode);
+					childNode.Dispose();
+				}
 			}
 			
 			public void LabelChangedCB()
