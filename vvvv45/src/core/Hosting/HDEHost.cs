@@ -93,7 +93,7 @@ namespace VVVV.Hosting
 			ExePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName((typeof(HDEHost).Assembly.Location)), @"..\.."));
 			
 			//set cache file name
-			var filepath = Path.Combine(Path.GetTempPath(), "vvvv_cache");
+			var filepath = Path.Combine(Path.GetTempPath(), "vvvv");
 			
 			uint hash;
 			unchecked
