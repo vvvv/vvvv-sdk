@@ -77,7 +77,7 @@ namespace VVVV.Hosting.Factories
 			FXProject project;
 			if (!FProjects.TryGetValue(filename, out project))
 			{
-				project = new FXProject(new Uri(filename));
+				project = new FXProject(new Uri(filename), FHDEHost.ExePath);
 				if (FSolution.Projects.CanAdd(project))
 				{
 					FSolution.Projects.Add(project);

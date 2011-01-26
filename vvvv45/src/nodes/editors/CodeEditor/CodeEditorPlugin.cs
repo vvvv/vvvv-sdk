@@ -239,7 +239,7 @@ namespace VVVV.HDE.CodeEditor
 				{
 					FEditor.CompletionBinding = new FXCompletionBinding(FEditor);
 					FEditor.FormattingStrategy = new FXFormattingStrategy(FEditor);
-					FEditor.LinkDataProvider = new FXLinkDataProvider();
+					FEditor.LinkDataProvider = new FXLinkDataProvider(Path.GetDirectoryName(filename), FHDEHost.ExePath);
 				}
 				
 				document.ContentChanged += document_ContentChanged;
