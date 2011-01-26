@@ -172,7 +172,16 @@ namespace VVVV.Nodes.NodeBrowser
         	var result = FFolderBrowserDialog.ShowDialog();
         	if (result == DialogResult.OK)
         	{
-        		FPathTextBox.Text = FFolderBrowserDialog.SelectedPath;
+        		var path = FFolderBrowserDialog.SelectedPath;
+        		if (FCloneInfo.Type == NodeType.Effect)
+        		{
+        			if (!path.EndsWith("effects"))
+        				path = Path.Combine(path, "effects");
+        		}
+        		else if (!path.EndsWith("plugins"))
+        			path = Path.Combine(path, "plugins");
+        			
+        		FPathTextBox.Text = path;
         		CheckNodeName();
         	}
         }
