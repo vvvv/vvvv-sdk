@@ -14,7 +14,7 @@ float4x4 tWV: WORLDVIEW;
 float4x4 tWVP: WORLDVIEWPROJECTION;
 float4x4 tP: PROJECTION;   //projection matrix as set via Renderer (DX9)
 
-#include "PhongPoint.fxh"
+#include <effects\PhongPoint.fxh>
 
 //texture
 texture Tex <string uiname="Texture";>;

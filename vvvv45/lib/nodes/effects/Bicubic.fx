@@ -40,7 +40,7 @@ float4x4 tTex: TEXTUREMATRIX <string uiname="Texture Transform";>;
 float Alpha <float uimin=0.0; float uimax=1.0;> = 1;
 
 //include the bicubic texture lookup
-#include "Bicubic.fxh"
+#include <effects\Bicubic.fxh>
 
 //the data structure: vertexshader to pixelshader
 //used as output data with the VS function

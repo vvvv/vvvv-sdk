@@ -18,7 +18,7 @@ float Radius;
 float Power;
 float Strength;
 
-#include "Attractor3d.fxh"
+#include <effects\Attractor3d.fxh>
 
 // -------------------------------------------------------------------------------------------------------------------------------------
 // VERTEXSHADERS

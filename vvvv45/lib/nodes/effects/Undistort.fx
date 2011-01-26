@@ -3,7 +3,7 @@
 //@tags: lens, camera, calibration, openCV
 //@credits:
 
-#include "undistort.fxh"
+#include <effects\undistort.fxh>
 
 // --------------------------------------------------------------------------------------------------
 // PARAMETERS:
