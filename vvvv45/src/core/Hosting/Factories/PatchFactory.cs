@@ -58,7 +58,7 @@ namespace VVVV.Hosting.Factories
 					true);
                 
                 nodeInfo.Type = NodeType.Module;
-                nodeInfo.InitialComponentMode = TComponentMode.Hidden;                    
+                nodeInfo.InitialComponentMode = TComponentMode.InAWindow; // Hidden;                    
             }
             else //patch
             {
