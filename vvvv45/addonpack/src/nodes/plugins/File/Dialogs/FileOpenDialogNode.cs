@@ -119,6 +119,7 @@ namespace VVVV.Nodes
                 this.OnSelect += new EventHandler(FileDialogNode_OnSelect);
                 this.FOpened = true;
                 this.FThread = new Thread(new ThreadStart(this.DoOpen));
+                this.FThread.SetApartmentState(ApartmentState.STA);
                 this.FThread.Start();
             }
 
