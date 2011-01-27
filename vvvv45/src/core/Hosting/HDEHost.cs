@@ -204,6 +204,10 @@ namespace VVVV.Hosting
 			var catalog = new AggregateCatalog();
 			catalog.Catalogs.Add(new AssemblyCatalog(typeof(HDEHost).Assembly.Location));
 			catalog.Catalogs.Add(new AssemblyCatalog(typeof(NodeCollection).Assembly.Location));
+			//allow plugin writers to add their own factories
+			var factoriesPath = typeof(HDEHost).Assembly.Location.ConcatPath("factories");
+			if (Directory.Exists(factoriesPath))
+				catalog.Catalogs.Add(new DirectoryCatalog(factoriesPath));
 			Container = new CompositionContainer(catalog);
 			Container.ComposeParts(this);
 			
