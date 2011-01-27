@@ -48,6 +48,7 @@ namespace VVVV.Nodes.Finder
         private IPin2 FCommentPin;
         private INodeInfo FNodeInfo;
         private Filter FFilter;
+        private readonly bool FRecursively;
         
         public PatchNode(INode2 self, Filter filter, bool includeChildren, bool recursively)
         {
@@ -55,6 +56,7 @@ namespace VVVV.Nodes.Finder
 			Debug.Assert(Node != null);
 			
             FFilter = filter;
+            FRecursively = recursively;
 			
 			Name = Node.Name;
             Childs = FChildNodes.AsViewableList();
@@ -504,7 +506,7 @@ namespace VVVV.Nodes.Finder
                 FChildNodes.BeginUpdate();
                 try
                 {
-                    var pn = new PatchNode(childNode, FFilter, false, false);
+                    var pn = new PatchNode(childNode, FFilter, FRecursively, FRecursively);
                     if (CheckForInclusion(pn))
                     {
                         FChildNodes.Add(pn);
