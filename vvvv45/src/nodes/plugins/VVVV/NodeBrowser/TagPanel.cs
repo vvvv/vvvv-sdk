@@ -46,7 +46,7 @@ namespace VVVV.Nodes.NodeBrowser
 			{
 				if (FNeedsUpdate != value)
 				{
-				    FNeedsUpdate = value;
+					FNeedsUpdate = value;
 					if (Visible)
 						Redraw();
 				}
@@ -89,11 +89,15 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		private string NodeInfoToDisplayName(INodeInfo nodeInfo)
 		{
+			
 			string tags = nodeInfo.Tags;
 			if ((!string.IsNullOrEmpty(nodeInfo.Author)) && (nodeInfo.Author != "vvvv group"))
-				tags += ", " + nodeInfo.Author;
+				if (string.IsNullOrEmpty(tags))
+					tags = nodeInfo.Author;
+				else
+					tags += ", " + nodeInfo.Author;
 
-			if (!string.IsNullOrEmpty(nodeInfo.Tags))
+			if (!string.IsNullOrEmpty(tags))
 				return nodeInfo.Username + " [" + tags + "]";
 			else
 				return nodeInfo.Username;
@@ -112,7 +116,7 @@ namespace VVVV.Nodes.NodeBrowser
 			ScrolledLine = 0;
 			
 			if (NeedsUpdate)
-                Redraw();
+				Redraw();
 			RedrawSelection();
 		}
 		
@@ -297,7 +301,7 @@ namespace VVVV.Nodes.NodeBrowser
 				FLastMouseHoverLocation = e.Location;
 				FHoverLine = newHoverLine;
 				if (sender != FNodeTypePanel)
-				    ShowToolTip();
+					ShowToolTip();
 				RedrawSelection();
 			}
 		}
@@ -381,20 +385,20 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		private bool IsAvailableInActivePatch(INodeInfo nodeInfo, bool localOnly)
 		{
-            var fn = "";
-            try
-            {
-                fn = Path.GetDirectoryName(nodeInfo.Filename);
-            }
-            catch {}
-            if (fn == null)
-            	fn = "";
-            
-            // Hack to make it work again 50
-            if (NodeBrowser.FNodeCollection == null)
-            	return true;
-            
-            if (NodeBrowser.CurrentPatchWindow == null || nodeInfo != NodeBrowser.CurrentPatchWindow.Node.NodeInfo)
+			var fn = "";
+			try
+			{
+				fn = Path.GetDirectoryName(nodeInfo.Filename);
+			}
+			catch {}
+			if (fn == null)
+				fn = "";
+			
+			// Hack to make it work again 50
+			if (NodeBrowser.FNodeCollection == null)
+				return true;
+			
+			if (NodeBrowser.CurrentPatchWindow == null || nodeInfo != NodeBrowser.CurrentPatchWindow.Node.NodeInfo)
 			{
 				if (!string.IsNullOrEmpty(NodeBrowser.CurrentDir))
 					//available if local
@@ -404,7 +408,7 @@ namespace VVVV.Nodes.NodeBrowser
 				if (!localOnly && NodeBrowser.FNodeCollection != null)
 					//available if from any of the global paths
 					foreach (var sp in NodeBrowser.FNodeCollection.Paths)
-				        if (sp.Factory == nodeInfo.Factory && fn.StartsWith(Path.Combine(sp.Path, sp.Factory.JobStdSubPath)))
+						if (sp.Factory == nodeInfo.Factory && fn.StartsWith(Path.Combine(sp.Path, sp.Factory.JobStdSubPath)))
 							return true;
 			}
 			return false;
@@ -835,7 +839,7 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		void FRichTextBoxMouseLeave(object sender, EventArgs e)
 		{
-		    FToolTip.Hide(this);
+			FToolTip.Hide(this);
 		}
 		
 		void FNodeTypePanelMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
