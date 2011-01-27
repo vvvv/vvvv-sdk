@@ -231,7 +231,7 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.45">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="zoom">
    </PIN>
@@ -298,7 +298,7 @@
    <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="60" nodename="TopLeftPix (Transform)" systemname="TopLeftPix (Transform)" filename="%VVVV%\modules\vvvv group\Transform\TopLeftPix (Transform).v4p">
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\Transform\TopLeftPix (Transform).v4p" id="60" nodename="TopLeftPix (Transform)" systemname="TopLeftPix (Transform)">
    <BOUNDS height="100" left="7920" top="1815" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="3600" left="7920" top="1815" type="Box" width="4800">
@@ -316,7 +316,7 @@
    </NODE>
    <LINK dstnodeid="60" dstpinname="Transform In" srcnodeid="57" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="Hidden" id="61" nodename="TopLeftPix (Transform)" systemname="TopLeftPix (Transform)" filename="%VVVV%\modules\vvvv group\Transform\TopLeftPix (Transform).v4p">
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\Transform\TopLeftPix (Transform).v4p" id="61" nodename="TopLeftPix (Transform)" systemname="TopLeftPix (Transform)">
    <BOUNDS height="100" left="2595" top="2355" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="3600" left="2595" top="2355" type="Box" width="4800">
@@ -331,14 +331,14 @@
    </PIN>
    <PIN pinname="Transform In" visible="1">
    </PIN>
+   <PIN pinname="Normalize" slicecount="1" values="None">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="45" dstpinname="Transform" srcnodeid="61" srcpinname="Transform Out">
-   </LINK>
    <LINK dstnodeid="61" dstpinname="Texture" srcnodeid="44" srcpinname="Texture Out">
    </LINK>
    <LINK dstnodeid="61" dstpinname="Transform In" srcnodeid="47" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="Hidden" id="62" nodename="Grid (EX9 Test)" systemname="Grid (EX9 Test)" filename="%VVVV%\modules\vvvv group\EX9\Grid (EX9 Test).v4p">
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\EX9\Grid (EX9 Test).v4p" id="62" nodename="Grid (EX9 Test)" systemname="Grid (EX9 Test)">
    <BOUNDS height="100" left="7770" top="2460" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="3600" left="7770" top="2460" type="Box" width="4800">
@@ -355,7 +355,7 @@
    </PIN>
    <PIN pinname="Render State" visible="1">
    </PIN>
-   <PIN pinname="Color" slicecount="1" values="|0.23353,0.23353,0.23353,0.29691|">
+   <PIN pinname="Color" slicecount="1" values="|0.99166,0.99166,0.99166,0.29691|">
    </PIN>
    <PIN pinname="Aspect X" slicecount="1" values="8">
    </PIN>
@@ -366,7 +366,7 @@
    </LINK>
    <LINK dstnodeid="62" dstpinname="Transform" srcnodeid="60" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="Hidden" id="63" nodename="Grid (EX9 Test)" systemname="Grid (EX9 Test)" filename="%VVVV%\modules\vvvv group\EX9\Grid (EX9 Test).v4p">
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\EX9\Grid (EX9 Test).v4p" id="63" nodename="Grid (EX9 Test)" systemname="Grid (EX9 Test)">
    <PIN pinname="Render State" visible="1">
    </PIN>
    <PIN pinname="Transform" visible="1">
@@ -387,11 +387,15 @@
    </PIN>
    <PIN pinname="Aspect X" slicecount="1" values="8">
    </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="63" dstpinname="Transform" srcnodeid="60" srcpinname="Transform Out">
    </LINK>
    <LINK dstnodeid="63" dstpinname="Render State" srcnodeid="58" srcpinname="Render State Out">
    </LINK>
    <LINK dstnodeid="54" dstpinname="Layer 3" srcnodeid="63" srcpinname="Layer">
+   </LINK>
+   <LINK srcnodeid="61" srcpinname="Transform Out" dstnodeid="45" dstpinname="Transform">
    </LINK>
    </PATCH>
