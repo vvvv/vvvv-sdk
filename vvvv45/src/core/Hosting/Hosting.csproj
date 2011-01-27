@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ProjectGuid>{F9A754A6-EEA5-4761-9446-C2AAF9CF8B31}</ProjectGuid>
@@ -27,7 +27,6 @@
     <FileAlignment>4096</FileAlignment>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
-    <StartArguments>d</StartArguments>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -54,6 +53,11 @@
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <OutputPath>bin\Debug\</OutputPath>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="Execute" command="..\..\vvvv45\vvvv.exe" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -65,9 +69,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition">
-      <HintPath>..\..\vvvv50\lib\System.ComponentModel.Composition.dll</HintPath>
-    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -88,7 +89,9 @@
     </Reference>
     <Reference Include="SlimDX, Version=2.0.10.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9">
       <HintPath>..\..\vvvv50\lib\SlimDX.dll</HintPath>
-      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\..\vvvv50\lib\System.ComponentModel.Composition.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +168,8 @@
     <Compile Include="ProxyNodeBrowserHost.cs" />
     <Compile Include="ProxyNodeInfoFactory.cs" />
     <Compile Include="VVVVLogger.cs" />
+    <Compile Include="Factories\FreeFrameFactory.cs" />
+    <Compile Include="Factories\VSTFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\vvvv50\src\Core\Core.csproj">

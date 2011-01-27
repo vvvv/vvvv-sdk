@@ -390,14 +390,9 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		private bool IsAvailableInActivePatch(INodeInfo nodeInfo, bool lookInSearchPaths)
 		{
-			string dir = string.Empty;
-			try
-			{
-				dir = Path.GetDirectoryName(nodeInfo.Filename);
-			}
-			catch {}
-			if (dir == null)
-				dir = "";
+		    string dir = Path.GetDirectoryName(nodeInfo.Filename);
+			if (string.IsNullOrEmpty(dir))
+			    return true;
 			
 			// Hack to make it work again 50
 			if (NodeBrowser.FNodeCollection == null)
