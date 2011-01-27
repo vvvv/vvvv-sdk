@@ -49,12 +49,14 @@ namespace VVVV.PluginInterfaces.V2
 
         public bool IsGarbage { get { return RefCount <= 0; } }
         
-        public void Inc()
+        internal void Inc(bool isuserdefined)
 		{
 			RefCount++;
+			
+			IsUserDefined = IsUserDefined || isuserdefined;
 		}
 
-        public void Dec()
+        internal void Dec()
 		{
 			RefCount--;
 		}
@@ -98,6 +100,14 @@ namespace VVVV.PluginInterfaces.V2
             if (State == SearchPathState.AddPending)
                 State = SearchPathState.Disabled;
         }
+		
+		public bool Contains(string dir)
+		{
+			if (Recursive)
+				return dir.StartsWith(this.Path);
+			else
+				return this.Path == dir;
+		}
     }
 	
 	/// <summary>
@@ -123,6 +133,8 @@ namespace VVVV.PluginInterfaces.V2
 		
 		public NodeCollection()
 		{
+			// To simulate vvvv startup.
+			IsCollecting = true;
 		}
 
 		public void Collect()
@@ -164,7 +176,7 @@ namespace VVVV.PluginInterfaces.V2
 			foreach (var p in FPaths) 
 				if ((p.Factory == path.Factory) && (String.Compare(p.Path, path.Path, true)==0))
 				{
-					p.Inc();
+					p.Inc(path.IsUserDefined);
 					found = true;
 					break;
 				}
@@ -191,10 +203,8 @@ namespace VVVV.PluginInterfaces.V2
                         {
                             Flogger.Log(LogType.Debug, "adding recursive path " + path.Path + " to available " + p.Factory.JobStdSubPath + ". conflicting with already added path: " + p.Path);
                             Flogger.Log(LogType.Debug, "adding path as nonrecursive.");
-                            //p.DisableLater();						                                                      
-                            path.Recursive = false;
-                            FPaths.Add(path);
-                            return;
+                            p.DisableLater();						                                                      
+                            //path.Recursive = false;
                         }
 					}
 					    				
@@ -274,5 +284,15 @@ namespace VVVV.PluginInterfaces.V2
 		}
 		
 		public event EventHandler Collected;
+		
+		public bool IsInUserDefinedSearchPath(IAddonFactory factory, string dir)
+		{
+			foreach (var sp in Paths)
+			{
+				if (sp.State == SearchPathState.Added && sp.Factory == factory && sp.IsUserDefined && sp.Contains(dir))
+					return true;
+			}
+			return false;
+		}
 	}
 }

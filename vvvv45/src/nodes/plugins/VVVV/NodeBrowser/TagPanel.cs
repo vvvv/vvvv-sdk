@@ -383,16 +383,21 @@ namespace VVVV.Nodes.NodeBrowser
 				                         });
 		}
 		
-		private bool IsAvailableInActivePatch(INodeInfo nodeInfo, bool localOnly)
+		private bool IsAvailableInActivePatch(INodeInfo nodeInfo)
 		{
-			var fn = "";
+			return IsAvailableInActivePatch(nodeInfo, true);
+		}
+		
+		private bool IsAvailableInActivePatch(INodeInfo nodeInfo, bool lookInSearchPaths)
+		{
+			string dir = string.Empty;
 			try
 			{
-				fn = Path.GetDirectoryName(nodeInfo.Filename);
+				dir = Path.GetDirectoryName(nodeInfo.Filename);
 			}
 			catch {}
-			if (fn == null)
-				fn = "";
+			if (dir == null)
+				dir = "";
 			
 			// Hack to make it work again 50
 			if (NodeBrowser.FNodeCollection == null)
@@ -402,14 +407,14 @@ namespace VVVV.Nodes.NodeBrowser
 			{
 				if (!string.IsNullOrEmpty(NodeBrowser.CurrentDir))
 					//available if local
-					if (fn.StartsWith(NodeBrowser.CurrentDir))
+					if (dir.StartsWith(NodeBrowser.CurrentDir))
 						return true;
 				
-				if (!localOnly && NodeBrowser.FNodeCollection != null)
+				if (lookInSearchPaths && nodeInfo.Type != NodeType.Patch)
+				{
 					//available if from any of the global paths
-					foreach (var sp in NodeBrowser.FNodeCollection.Paths)
-						if (sp.Factory == nodeInfo.Factory && fn.StartsWith(Path.Combine(sp.Path, sp.Factory.JobStdSubPath)))
-							return true;
+					return NodeBrowser.FNodeCollection.IsInUserDefinedSearchPath(nodeInfo.Factory, dir);
+				}
 			}
 			return false;
 		}
@@ -423,41 +428,18 @@ namespace VVVV.Nodes.NodeBrowser
 			
 			FSelectionList.Clear();
 
-			var nodeinfos = NodeBrowser.NodeInfoFactory.NodeInfos.ToList().FindAll(delegate(INodeInfo nodeInfo){return nodeInfo.Ignore == false;});
-
-			//show natives only
-			if (FNodeFilter == (int) NodeType.Native)
-				FSelectionList = nodeinfos.FindAll(delegate(INodeInfo nodeInfo){return nodeInfo.Type == NodeType.Native;});
-			//show patches only
-			else if (FNodeFilter == (int) NodeType.Patch)
-				FSelectionList = nodeinfos.FindAll(delegate(INodeInfo nodeInfo){return nodeInfo.Type == NodeType.Patch && IsAvailableInActivePatch(nodeInfo, true);});
-			//show modules only
-			else if (FNodeFilter == (int) NodeType.Module)
-				FSelectionList = nodeinfos.FindAll(delegate(INodeInfo nodeInfo){return nodeInfo.Type == NodeType.Module && IsAvailableInActivePatch(nodeInfo, false);});
-			//show effects only
-			else if (FNodeFilter == (int) NodeType.Effect)
-				FSelectionList = nodeinfos.FindAll(delegate(INodeInfo nodeInfo){return nodeInfo.Type == NodeType.Effect && IsAvailableInActivePatch(nodeInfo, false);});
-			//show freeframes only
-			else if (FNodeFilter == (int) NodeType.Freeframe)
-				FSelectionList = nodeinfos.FindAll(delegate(INodeInfo nodeInfo){return nodeInfo.Type == NodeType.Freeframe && IsAvailableInActivePatch(nodeInfo, false);});
-			//show plugins only
-			else if (FNodeFilter == (int) NodeType.Plugin)
-				FSelectionList = nodeinfos.FindAll(delegate(INodeInfo nodeInfo){return nodeInfo.Type == NodeType.Plugin && IsAvailableInActivePatch(nodeInfo, false);});
-			//show dynamics only
-			else if (FNodeFilter == (int) NodeType.Dynamic)
-				FSelectionList = nodeinfos.FindAll(delegate(INodeInfo nodeInfo){return nodeInfo.Type == NodeType.Dynamic && IsAvailableInActivePatch(nodeInfo, false);});
-			//show vsts only
-			else if (FNodeFilter == (int) NodeType.VST)
-				FSelectionList = nodeinfos.FindAll(delegate(INodeInfo nodeInfo){return nodeInfo.Type == NodeType.VST && IsAvailableInActivePatch(nodeInfo, false);});
-			//show all but local addons not local to CurrentDir
+			var nodeinfos = NodeBrowser.NodeInfoFactory.NodeInfos.ToList().FindAll((nodeInfo) => nodeInfo.Ignore == false);
+			
+			if (FNodeFilter == -1)
+				FSelectionList = nodeinfos.FindAll((nodeInfo) => nodeInfo.Type == NodeType.Native || IsAvailableInActivePatch(nodeInfo));
+			else if (FNodeFilter == -2)
+				FSelectionList = nodeinfos.FindAll((nodeInfo) => nodeInfo.Type != NodeType.Native && IsAvailableInActivePatch(nodeInfo, false));
+			else if (FNodeFilter == (int) NodeType.Native)
+				FSelectionList = nodeinfos.FindAll((nodeInfo) => nodeInfo.Type == NodeType.Native);
 			else
 			{
-				FSelectionList = nodeinfos.FindAll(delegate(INodeInfo nodeInfo)
-				                                   {
-				                                   	return (nodeInfo.Type == NodeType.Native)
-				                                   		|| (nodeInfo.Type == NodeType.Patch && IsAvailableInActivePatch(nodeInfo, true))
-				                                   		|| (nodeInfo.Type != NodeType.Native && nodeInfo.Type != NodeType.Patch && IsAvailableInActivePatch(nodeInfo, false));
-				                                   });
+				NodeType nodeType = (NodeType) FNodeFilter;
+				FSelectionList = nodeinfos.FindAll((nodeInfo) => nodeInfo.Type == nodeType && IsAvailableInActivePatch(nodeInfo));
 			}
 			
 			FSelectionList = ExtractSubList(FSelectionList);
@@ -670,10 +652,10 @@ namespace VVVV.Nodes.NodeBrowser
 				FNodeFilter = (int) NodeType.Native;
 				FTags.Remove("n");
 			}
-			else if (FTags.Contains("."))
+			else if (FTags.Contains("t"))
 			{
 				FNodeFilter = (int) NodeType.Patch;
-				FTags.Remove(".");
+				FTags.Remove("t");
 			}
 			else if (FTags.Contains("m"))
 			{
@@ -704,6 +686,11 @@ namespace VVVV.Nodes.NodeBrowser
 			{
 				FNodeFilter = (int) NodeType.VST;
 				FTags.Remove("v");
+			}
+			else if (FTags.Contains("."))
+			{
+				FNodeFilter = -2;
+				FTags.Remove(".");
 			}
 			
 			//clean up the list
@@ -781,38 +768,38 @@ namespace VVVV.Nodes.NodeBrowser
 							}
 						case NodeType.Module:
 							{
-								e.Graphics.DrawString("M", FRichTextBox.Font, b, 5, y-3, StringFormat.GenericDefault);
+								e.Graphics.DrawString("m", FRichTextBox.Font, b, 5, y-3, StringFormat.GenericDefault);
 								break;
 							}
 						case NodeType.Plugin:
 							{
-								e.Graphics.DrawString("P", FRichTextBox.Font, b, 6, y-3, StringFormat.GenericDefault);
+								e.Graphics.DrawString("p", FRichTextBox.Font, b, 6, y-3, StringFormat.GenericDefault);
 								break;
 							}
 						case NodeType.Dynamic:
 							{
-								e.Graphics.DrawString("D", FRichTextBox.Font, b, 6, y-3, StringFormat.GenericDefault);
+								e.Graphics.DrawString("d", FRichTextBox.Font, b, 6, y-3, StringFormat.GenericDefault);
 								break;
 							}
 						case NodeType.Freeframe:
 							{
-								e.Graphics.DrawString("FF", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
+								e.Graphics.DrawString("f", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
 								break;
 							}
 						case NodeType.Effect:
 							{
-								e.Graphics.DrawString("FX", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
+								e.Graphics.DrawString("x", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
 								break;
 							}
 						case NodeType.VST:
 							{
-								e.Graphics.DrawString("V", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
+								e.Graphics.DrawString("v", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
 								break;
 							}
 							// Added code:
 						default:
 							{
-								e.Graphics.DrawString(".", FRichTextBox.Font, b, 5, y-3, StringFormat.GenericDefault);
+								e.Graphics.DrawString("t", FRichTextBox.Font, b, 5, y-3, StringFormat.GenericDefault);
 								break;
 							}
 					}

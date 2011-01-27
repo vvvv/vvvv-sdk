@@ -5,6 +5,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// <summary>
 	/// Used in <see cref="VVVV.PluginInterfaces.V2.INodeInfo">INodeInfo</see> to specify the type of the provided node.
 	/// </summary>
+	/// 
 	public enum NodeType 
 	{
 		/// <summary>
