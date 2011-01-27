@@ -58,7 +58,7 @@ namespace VVVV.Nodes
 			
 			foreach (var p in FSearchPaths)
 			{
-				NodeCollection.AddCombined(p);
+				NodeCollection.AddCombined(p, true);
 				FLastPaths.Add(p);
 			}
 

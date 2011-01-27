@@ -8,38 +8,97 @@ using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2
-{	
+{
+    public enum SearchPathState { AddPending, DisablePending, Added, Disabled };
+
 	public class SearchPath
 	{
-		public bool IsInitialized {get; private set;}
+        public SearchPathState State {get; private set;}
 		public string Path {get; private set;}
 		public int RefCount {get; private set;}
-		public bool IsGarbage{ get{ return RefCount <= 0; }}
-		public IAddonFactory Factory;
-		public bool Disabled;
-		public bool NeedsToBeDisabled;
-		public bool Recursive {get; set;}
-		public SearchPath(string path, IAddonFactory factory, bool recursive)
+        public IAddonFactory Factory { get; private set; }
+        public bool IsUserDefined { get; private set; }
+		protected ILogger Flogger { get; private set; }
+
+        protected bool FRecursive;
+        public bool Recursive 
+        { 
+            get
+            {
+                return FRecursive;
+            }
+            set
+            {
+                if (State == SearchPathState.AddPending)
+                {
+                    FRecursive = value;
+                }
+            } 
+        }
+        
+        internal SearchPath(string path, IAddonFactory factory, bool recursive, bool isuserdefined, ILogger logger)
 		{	
 			Path = path;
 			Factory = factory;
 			RefCount = 1;
 			Recursive = recursive;
-		}	
-		
-		public void Inc()
+            IsUserDefined = isuserdefined;
+
+            Flogger = logger;
+		}
+
+        public bool IsGarbage { get { return RefCount <= 0; } }
+        
+        public void Inc()
 		{
 			RefCount++;
 		}
-		public void Dec()
+
+        public void Dec()
 		{
 			RefCount--;
 		}
-		public void Init()
-		{
-			IsInitialized = true;
-		}
-	}
+
+        public bool AddToFactory()
+        {
+            if (State == SearchPathState.AddPending)
+            {
+                Flogger.Log(LogType.Debug, "adding " + Path + " to available " + Factory.JobStdSubPath);
+                Factory.AddDir(Path, Recursive);
+                State = SearchPathState.Added;
+                return true;
+            }
+            return false;
+        }
+
+        public bool RemoveFromFactory()
+        {
+            if ((State == SearchPathState.DisablePending) || (IsGarbage))
+            {
+                Flogger.Log(LogType.Debug, "removing " + Path + " from available " + Factory.JobStdSubPath);
+                Factory.RemoveDir(Path);
+                State = SearchPathState.Disabled;
+                return true;
+            }
+            return false;
+        }
+
+        public void AddLater()
+        {            
+            if (State == SearchPathState.Disabled)
+                State = SearchPathState.AddPending;
+            if (State == SearchPathState.DisablePending)
+                State = SearchPathState.Added;
+        }
+
+        public void DisableLater()
+        {
+            if (State == SearchPathState.Added)
+                State = SearchPathState.DisablePending;
+            if (State == SearchPathState.AddPending)
+                State = SearchPathState.Disabled;
+        }
+    }
 	
 	/// <summary>
 	/// Description of NodeCollection.
@@ -72,36 +131,24 @@ namespace VVVV.PluginInterfaces.V2
 			
 			try
 			{
+                // 
 				for (int i = FPaths.Count-1; i >= 0; i--)
 				{
 					if (FPaths[i].IsGarbage) 
-					{
+                    {
 						var p = FPaths[i];
-						FPaths.RemoveAt(i);					
-						Flogger.Log(LogType.Debug, "removing " + p.Path + " from available " + p.Factory.JobStdSubPath);				
-						p.Factory.RemoveDir(p.Path);
+						FPaths.RemoveAt(i);
+                        p.RemoveFromFactory();
 					}
 				}
 				
+                // remove paths that need to be removed
 				for (int i = FPaths.Count-1; i >= 0; i--) 
-				{
-					if (FPaths[i].NeedsToBeDisabled)
-					{
-						var p = FPaths[i];
-						p.Disabled = true;   
-						p.Factory.RemoveDir(p.Path);
-					}
-				}
+                    FPaths[i].RemoveFromFactory();                
 				
+                // add paths that need to be added
 				foreach (var path in FPaths)
-				{
-					if (!path.IsInitialized)
-					{
-						path.Init();	
-						Flogger.Log(LogType.Debug, "adding " + path.Path + " to available " + path.Factory.JobStdSubPath);				
-						path.Factory.AddDir(path.Path, path.Recursive);						
-					}
-				}
+                    path.AddToFactory();			
 			}
 			finally
 			{
@@ -124,40 +171,40 @@ namespace VVVV.PluginInterfaces.V2
 			
 			if (!found)
 			{
-				foreach (var p in FPaths) 
-					if ((p.Factory == path.Factory) && p.Path.StartsWith(path.Path, true, null))
-					{
-						if (path.Recursive)
-						{
-						 	Flogger.Log(LogType.Debug, "error adding recursive path " + path.Path + " to available " + p.Factory.JobStdSubPath + ". conflicting with already added path: " + p.Path);
-						 	Flogger.Log(LogType.Debug, "adding path as nonrecursive.");	
-						 	path.Recursive = false;
-						}
-  						FPaths.Add(path);
-						//p.NeedsToBeDisabled = true;						
-						return;
+                foreach (var p in FPaths)
+                    // check for any parent path that is already covering the new subpath
+                    // if found then disable the new path
+                    if ((p.Recursive) && (p.Factory == path.Factory) && path.Path.StartsWith(p.Path, true, null))
+                    {
+                        path.DisableLater();
+                        Flogger.Log(LogType.Debug, "adding disabled path " + path.Path + " to available " + p.Factory.JobStdSubPath + ". already watched by: " + p.Path);
+                        FPaths.Add(path);
+                        return;
+                    }
+                
+                if (path.Recursive)
+                    // new folder is set recursive, thus covering all its subfolders
+                    // we need to check if any subfolders were already added and either disable them or add the new parent folder as not recursive
+                    foreach (var p in FPaths)
+                    {
+                        if ((p.Factory == path.Factory) && p.Path.StartsWith(path.Path, true, null))
+                        {
+                            Flogger.Log(LogType.Debug, "adding recursive path " + path.Path + " to available " + p.Factory.JobStdSubPath + ". conflicting with already added path: " + p.Path);
+                            Flogger.Log(LogType.Debug, "adding path as nonrecursive.");
+                            //p.DisableLater();						                                                      
+                            path.Recursive = false;
+                            FPaths.Add(path);
+                            return;
+                        }
 					}
-					    
-				foreach (var p in FPaths) 
-					if ((p.Factory == path.Factory) && path.Path.StartsWith(p.Path, true, null))
-					{
-						FPaths.Add(path);
-						if (p.Recursive)
-						{
-							path.Init();
-							path.Disabled = true;
-						 	Flogger.Log(LogType.Debug, "adding disabled path " + path.Path + " to available " + p.Factory.JobStdSubPath + ". already wathced by: " + p.Path);
-						}
-						return;
-					}				
-				
+					    				
 				FPaths.Add(path);
 			}
 		}
 		
-		public void Add(string path, IAddonFactory factory, bool recursive)
+		public void Add(string path, IAddonFactory factory, bool recursive, bool isuserdefined)
 		{
-			Add(new SearchPath(path, factory, recursive));
+            Add(new SearchPath(path, factory, recursive, isuserdefined, Flogger));
 		}
 		
 		private void Remove(SearchPath path)
@@ -169,25 +216,25 @@ namespace VVVV.PluginInterfaces.V2
 		
 		private void Remove(string path, IAddonFactory factory)
 		{
-			Remove(new SearchPath(path, factory, false));
+			Remove(new SearchPath(path, factory, false, false, Flogger));
 		}
 				
-		public void AddJob(string dir)
+		public void AddJob(string dir, bool isuserdefined)
 		{
 			if (Directory.Exists(dir))
 				foreach (var factory in HDEHost.AddonFactories)
 				{
 					var subDir = dir.ConcatPath(factory.JobStdSubPath);
 					if (Directory.Exists(subDir))
-						Add(subDir, factory, true);
+                        Add(subDir, factory, true, isuserdefined);
 				}
 		}
-		
-		public void AddUnsorted(string dir, bool recursive)
+
+        public void AddUnsorted(string dir, bool recursive, bool isuserdefined)
 		{
 			if (Directory.Exists(dir))
 				foreach (var factory in HDEHost.AddonFactories)
-					Add(dir, factory, recursive);
+                    Add(dir, factory, recursive, isuserdefined);
 		}
 		
 		public void RemoveJob(string dir)
@@ -207,11 +254,11 @@ namespace VVVV.PluginInterfaces.V2
 				foreach (var factory in HDEHost.AddonFactories)
 					Remove(dir, factory);
 		}
-		
-		public void AddCombined(string dir)
+
+        public void AddCombined(string dir, bool isuserdefined)
 		{
-			AddJob(dir);
-			AddUnsorted(dir, false);
+            AddJob(dir, isuserdefined);
+            AddUnsorted(dir, false, isuserdefined);
 		}
 		
 		public void RemoveCombined(string dir)

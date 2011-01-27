@@ -221,7 +221,7 @@ namespace VVVV.Hosting
 			PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\WindowSwitcher.dll"));
 			foreach (var factory in AddonFactories)
 				if (factory is PatchFactory)
-					NodeCollection.Add(ExePath.ConcatPath(@"help\"), factory, true);
+					NodeCollection.Add(ExePath.ConcatPath(@"help\"), factory, true, false);
 //			NodeCollection.Collect();
 			
 			NodeInfoFactory.NodeInfoAdded -= NodeInfoFactory_NodeInfoAdded;
@@ -350,7 +350,7 @@ namespace VVVV.Hosting
 		
 		public void AddSearchPath(string path)
 		{
-			NodeCollection.AddCombined(path);
+			NodeCollection.AddCombined(path, false);
 			NodeCollection.Collect();
 		}
 
