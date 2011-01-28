@@ -210,7 +210,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// </summary>
 	[Guid("A0C810DA-E0CC-4A2E-BC3F-8139766945F1"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface INodeBrowser: IPluginHDE
+	public interface INodeBrowser: IPluginBase
 	{
 		void Initialize(string text);
 		void DragDrop(bool allow);
@@ -237,7 +237,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// </summary>
 	[Guid("41CC97F3-106E-4DC9-AA74-E50C0B5694DD"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IWindowSwitcher: IPluginHDE
+	public interface IWindowSwitcher: IPluginBase
 	{
 	    void Initialize();
 		void AfterShow();
@@ -262,7 +262,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// </summary>
 	[Guid("CF40CDDD-55BE-42D5-B6BB-1A05AE8FF9A8"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IKommunikator: IPluginHDE
+	public interface IKommunikator: IPluginBase
 	{
 		void Initialize(string path, string description);
 		void SaveCurrentImage(string filename);

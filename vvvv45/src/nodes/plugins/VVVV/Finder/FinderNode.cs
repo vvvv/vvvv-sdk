@@ -163,7 +163,7 @@ namespace VVVV.Nodes.Finder
                 InitialWindowWidth = 320,
                 InitialWindowHeight = 500,
                 InitialComponentMode = TComponentMode.InAWindow)]
-    public class FinderPluginNode: UserControl, IPluginHDE
+    public class FinderPluginNode: UserControl, IPluginBase
     {
         #region field declaration
         private IDiffSpread<string> FTagsPin;

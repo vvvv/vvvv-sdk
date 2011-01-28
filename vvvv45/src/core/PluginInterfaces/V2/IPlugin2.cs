@@ -21,14 +21,6 @@ namespace VVVV.PluginInterfaces.V2
 {
 	#region basic interfaces
 	/// <summary>
-	/// Interface that identifies HDE plugins. 
-	/// </summary>
-	[Guid("69BD2770-3E93-4088-8622-0D39DE2DB013"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IPluginHDE: IPluginBase
-	{}
-	
-	/// <summary>
 	/// Basic interface to provide a plugin with an Evaluate function.
 	/// </summary>
 	[Guid("5BDEF445-5734-427C-BD9C-A69809277799"),

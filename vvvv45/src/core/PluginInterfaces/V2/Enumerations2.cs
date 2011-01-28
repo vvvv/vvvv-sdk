@@ -74,11 +74,7 @@ namespace VVVV.PluginInterfaces.V2
 	    /// <summary>
 		/// A plugins window.
 		/// </summary>
-		Plugin,
-	    /// <summary>
-		/// A HDE window.
-		/// </summary>
-		HDE
+		Plugin
 	};
 	
 	/// <summary>
