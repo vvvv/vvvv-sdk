@@ -52,7 +52,7 @@ namespace VVVV.HDE.CodeEditor
 				if (ch == '\n')
 				{
 					int offset = Math.Min(textArea.Document.TextLength - 1, cursorOffset);
-					int backwardBracketOffset = SearchBracketBackward(textArea.Document, offset, '{', '}');
+					int backwardBracketOffset = SearchBracketBackward(textArea.Document, offset - 1, '{', '}');
 					int forwardBracketOffset = SearchBracketForward(textArea.Document, offset, '{', '}');
 					
 					if (backwardBracketOffset >= 0)
