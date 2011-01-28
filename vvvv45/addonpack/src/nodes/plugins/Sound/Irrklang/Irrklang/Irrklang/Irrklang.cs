@@ -59,19 +59,19 @@ namespace VVVV.Nodes
         string[] FPlayModeArray = { "3D", "2D" };
         [Input("PlayMode", EnumName = "PlayMode")]
         IDiffSpread<EnumEntry> FPlayMode;
-        [Input("Play", AsInt = true)]
+        [Input("Play")]
         IDiffSpread<bool> FPlay;
-        [Input("Pause", AsInt = true)]
+        [Input("Pause")]
         IDiffSpread<bool> FPause;
-        [Input("Loop", AsInt = true)]
+        [Input("Loop")]
         IDiffSpread<bool> FLoop;
         [Input("Seek Position", DefaultValue = 0.0, MinValue = 0.0)]
         IDiffSpread<float> FSeekPos;
-        [Input("Seek", IsBang = true, AsInt = true)]
+        [Input("Seek", IsBang = true)]
         IDiffSpread<bool> FSeek;
-        [Input("Stop All", IsSingle = true, IsBang = true, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Stop All", IsSingle = true, IsBang = true, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<bool> FStopAll;
-        [Input("Pause All", IsSingle = true, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Pause All", IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<bool> FPauseAll;
 
         //Sound Control
@@ -113,73 +113,76 @@ namespace VVVV.Nodes
         [Input("Doppler Distance Factor", DefaultValue = 4.0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FDoplerDistanceFactor;
 
+        //Effects
+        [Input("Enabel Effects")]
+        ISpread<bool> FEnableEffekts;
 
         //Chorus
-        [Input("Enable Chorus", DefaultValue = 0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Enable Chorus", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<bool> FEnableChorus;
-        [Input("Chorus WetDryMix", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Chorus DryWetMix", DefaultValue = 50.0, MaxValue=100.0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FChoruspWetDryMix;
-        [Input("Chorus Depth", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Chorus Depth", DefaultValue = 100, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FChoruspDepth;
-        [Input("Chorus Feedback", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Chorus Feedback", DefaultValue = 10, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FChoruspFeedback;
-        [Input("Chorus Frequency", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Chorus Frequency", DefaultValue = 10, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FChorusFrequency;
-        [Input("Chorus SinusWaveForm", DefaultValue = 0.0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Chorus SinusWaveForm", DefaultValue = 0,AsInt=true, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<bool> FChorusSinusWaveForm;
-        [Input("Chorus Delay", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Chorus Delay", DefaultValue = 100, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FChorusDelay;
         [Input("Chorus Phase", DefaultValue = 0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<int> FChorusPhase;
 
         //Compressor
-        [Input("Enable Compressor", DefaultValue = 0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Enable Compressor", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<bool> FEnableComp;
-        [Input("Comp Gain", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Comp Gain", DefaultValue = 6.0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FCompGain;
-        [Input("Comp Attack", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Comp Attack", DefaultValue = 10.0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FCompAttack;
-        [Input("Comp Release", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Comp Release", DefaultValue = 50.0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FCompRelease;
-        [Input("Comp Threshold", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Comp Threshold", DefaultValue = -10.0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FCompThreshold;
-        [Input("Comp Ratio", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Comp Ratio", DefaultValue = 2, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FCompRatio;
-        [Input("Comp Predelay", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Comp Predelay", DefaultValue = 2, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FCompPredelay;
 
         //Distort
-        [Input("Enable Distortion", DefaultValue = 0.0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Enable Distortion", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<bool> FEnableDistortion;
         [Input("Dist Gain", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FDistortionGain;
         [Input("Dist Edge", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FDistortionEdge;
-        [Input("Dist EQCenterFrequenz", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Dist Post EQCenterFrequenz", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FDistortionEQCenterFrequenz;
-        [Input("Dist Bandwidth", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Dist Post Bandwidth", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FDistortionBandwidth;
-        [Input("Dist Lowpass Cutoff", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Dist Pre Lowpass Cutoff", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FDistortionLowpassCutoff;
 
 
         //Echo
-        [Input("Enable Echo", DefaultValue = 0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Enable Echo", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<bool> FEnableEcho;
-        [Input("Echo WetDryMix", DefaultValue = 0.5, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Echo DryWetMix", DefaultValue = 50, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FEchoWetDryMix;
-        [Input("Echo Feedback", DefaultValue = 1.0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Echo Feedback", DefaultValue = 10, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FEchoFeedback;
-        [Input("Echo LeftDelay", DefaultValue = 1.0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Echo LeftDelay", DefaultValue = -100, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FEchoLeftDelay;
-        [Input("Echo RightDelay", DefaultValue = 1.0, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Echo RightDelay", DefaultValue = 50, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FEchoRightDelay;
         [Input("Echo PanDelay", DefaultValue = 0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<int> FEchoPanDelay;
 
 
         //Flanger
-        [Input("Enable Flanger", DefaultValue = 0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Enable Flanger", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<bool> FEnableFlanger;
         [Input("Flanger WetDryMix", DefaultValue = 0.5, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FFlangerWetDryMix;
@@ -193,20 +196,20 @@ namespace VVVV.Nodes
         IDiffSpread<bool> FFlangerTriangleWaveForm;
         [Input("Flanger Delay", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FFlangerDelay;
-        [Input("Flanger Phase", DefaultValue = 0.0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Flanger Phase", DefaultValue = 0.0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<int> FFlangerPhase;
 
         //Gargle
-        [Input("Enable Gargle", DefaultValue = 0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Enable Gargle", DefaultValue = 0,  Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<bool> FEnableGargle;
         [Input("Gargle Rate Hz", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<int> FGargleRateHz;
-        [Input("Gargle SinusWaveForm", DefaultValue = 0.0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Gargle SinusWaveForm", DefaultValue = 0.0,  Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<bool> FGargleSinusWaveForm;
 
 
         //I3DL2 Reverb
-        [Input("Enable I3DL2 Reverb", DefaultValue = 0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Enable I3DL2 Reverb", DefaultValue = 0,  Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<bool> FEnableI3DL2;
         [Input("I3DL2 Room", DefaultValue = 0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<int> FI3DL2Room;
@@ -235,7 +238,7 @@ namespace VVVV.Nodes
 
 
         //Param EQ
-        [Input("Enable EQ", DefaultValue = 0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Enable EQ", DefaultValue = 0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<bool> FEnableEq;
         [Input("EQ Center", DefaultValue = 1.0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FEqCenter;
@@ -246,7 +249,7 @@ namespace VVVV.Nodes
 
 
         //wave Reverb
-        [Input("Enable Wave Reverb", DefaultValue = 0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Enable Wave Reverb", DefaultValue = 0,  Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<bool> FEnableWaveReverb;
         [Input("Reverb InGain", DefaultValue = 1.0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FWaveReverbInGain;
@@ -257,7 +260,7 @@ namespace VVVV.Nodes
         [Input("Reverb HighFreqRTRatio", DefaultValue = 1.0, Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<float> FWaveReverbFreq;
 
-        [Input("Disable All Effekts", IsBang = true, DefaultValue = 0.0, AsInt = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Disable All Effekts", IsBang = true, DefaultValue = 0.0,  Visibility = PinVisibility.OnlyInspector)]
         IDiffSpread<bool> FDisableAllEffekt;
 
 
@@ -335,6 +338,10 @@ namespace VVVV.Nodes
         public void Evaluate(int SpreadMax)
         {
             bool ChangedSpreadSize = FPreviousSpreadMax == SpreadMax ? false : true;
+            bool Reload = false;
+            if (FPlay.IsChanged || ChangedSpreadSize || FFile.IsChanged)
+                Reload = true;
+
             FLength.SliceCount = SpreadMax;
 
             //tells the Irrklang engine which System Audio Output to use
@@ -498,7 +505,7 @@ namespace VVVV.Nodes
             //Start and stops the laoded files
             //if a file is started the ISound Object is created
             #region Start / Stop Sounds
-            if (FPlay.IsChanged || FFile.IsChanged || ChangedSpreadSize)
+            if (FPlay.IsChanged || Reload)
             {
                 List<ISound> NewSounds = new List<ISound>();
 
@@ -593,7 +600,7 @@ namespace VVVV.Nodes
             //set the Loop Propertie of a ISound Object
             #region Loop
 
-            if (FLoop.IsChanged)
+            if (FLoop.IsChanged || Reload)
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -635,7 +642,7 @@ namespace VVVV.Nodes
             ////set the Pause Propertie of a ISound Object
             #region Pause
 
-            if (FPause.IsChanged)
+            if (FPause.IsChanged || Reload)
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -654,7 +661,7 @@ namespace VVVV.Nodes
             //set the PlaybackSpeed Propertie of a ISound Object
             #region Speed
 
-            if (FPlaybackSpeed.IsChanged)
+            if (FPlaybackSpeed.IsChanged || Reload)
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -694,7 +701,7 @@ namespace VVVV.Nodes
             //sets the Volume Property of a ISound Object
             #region Volume
 
-            if (FVolume.IsChanged)
+            if (FVolume.IsChanged || Reload)
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -708,7 +715,7 @@ namespace VVVV.Nodes
             //sets the Pan Property of a ISound Object, only works if the sound is plyed pack in 2D Mode
             #region Pan
 
-            if (FPan.IsChanged)
+            if (FPan.IsChanged || Reload)
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -724,7 +731,7 @@ namespace VVVV.Nodes
             //Sets the Postion Property of a ISound Object, only works in the 3D Playback mode
             #region Position
 
-            if (FSoundPosition.IsChanged || FPlay.IsChanged)
+            if (FSoundPosition.IsChanged || Reload)
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -742,7 +749,7 @@ namespace VVVV.Nodes
             //Sets the Velocity Property of a ISound Object, only works in the 3D Playback mode
             #region Sound Velocity
 
-            if (FSoundVelocity.IsChanged || FPlay.IsChanged)
+            if (FSoundVelocity.IsChanged || Reload)
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -762,7 +769,7 @@ namespace VVVV.Nodes
             //sets the MinDistance Propertie of a ISound Object
             #region MinDistance
 
-            if (FMinDist.IsChanged || FPlay.IsChanged)
+            if (FMinDist.IsChanged || Reload)
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -778,7 +785,7 @@ namespace VVVV.Nodes
             //sets the MaxDistance Propertie of a ISound Object
             #region MaxDistance
 
-            if (FMaxDist.IsChanged || FPlay.IsChanged)
+            if (FMaxDist.IsChanged || Reload)
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
@@ -824,284 +831,226 @@ namespace VVVV.Nodes
 
             #endregion DopplerEffekt
 
-            //Sets the Chorus Effekt of a ISound Object
-            #region Chorus
+            #region Effekts 
 
-            if (FEnableChorus.IsChanged || FChorusDelay.IsChanged || FChorusFrequency.IsChanged || FChoruspDepth.IsChanged || FChoruspFeedback.IsChanged || FChorusPhase.IsChanged || FChoruspWetDryMix.IsChanged || FChorusSinusWaveForm.IsChanged)
+            if (FEnableEffekts[0] == true)
             {
-                for (int i = 0; i < SpreadMax; i++)
+
+                //Sets the Chorus Effekt of a ISound Object
+                #region Chorus
+
+                if (Reload || FEnableChorus.IsChanged || FChorusDelay.IsChanged || FChorusFrequency.IsChanged || FChoruspDepth.IsChanged || FChoruspFeedback.IsChanged || FChorusPhase.IsChanged || FChoruspWetDryMix.IsChanged || FChorusSinusWaveForm.IsChanged)
                 {
-                    if (FPlayedSounds[i] != null)
+                    for (int i = 0; i < SpreadMax; i++)
                     {
-                        ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
-
-                        if (FEnableChorus[i])
-                            Fx.EnableChorusSoundEffect(FChoruspWetDryMix[i], FChoruspDepth[i], FChoruspFeedback[i], FChorusFrequency[i], FChorusSinusWaveForm[i], FChorusDelay[i], FChorusPhase[i]);
-                        else
-                            Fx.DisableChorusSoundEffect();
-                    }
-                }
-            }
-
-            #endregion Chorus
-
-            //Sets the Compresser Effekt of a ISound Object
-            #region Compressor
-
-            if (FEnableComp.IsChanged || FCompAttack.IsChanged || FCompGain.IsChanged || FCompPredelay.IsChanged || FCompRatio.IsChanged || FCompRelease.IsChanged || FCompThreshold.IsChanged)
-            {
-                for (int i = 0; i < SpreadMax; i++)
-                {
-                    if (FPlayedSounds[i] != null)
-                    {
-                        ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
-
-                        if (FEnableComp[i])
-                            Fx.EnableCompressorSoundEffect(FCompGain[i], FCompAttack[i], FCompRelease[i], FCompThreshold[i], FCompRatio[i], FCompPredelay[i]);
-                        else
-                            Fx.DisableCompressorSoundEffect();
-                    }
-                }
-            }
-
-            #endregion Compressor
-
-            //Sets the Distortion Effekt of a ISound Object
-            #region Disortion
-
-            if (FEnableDistortion.IsChanged || FDistortionGain.IsChanged || FDistortionBandwidth.IsChanged || FDistortionEdge.IsChanged || FDistortionEQCenterFrequenz.IsChanged || FDistortionLowpassCutoff.IsChanged)
-            {
-                for (int i = 0; i < SpreadMax; i++)
-                {
-                    if (FPlayedSounds[i] != null)
-                    {
-                        ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
-
-                        if (FEnableDistortion[i])
-                            Fx.EnableDistortionSoundEffect(FDistortionGain[i], FDistortionEdge[i], FDistortionEQCenterFrequenz[i], FDistortionBandwidth[i], FDistortionLowpassCutoff[i]);
-                        else
-                            Fx.DisableDistortionSoundEffect();
-                    }
-                }
-            }
-
-            #endregion Distortion
-
-            //Sets the Echo Effekt of a ISound Object
-            #region Echo
-
-            if (FEnableEcho.IsChanged || FEchoFeedback.IsChanged || FEchoLeftDelay.IsChanged || FEchoPanDelay.IsChanged || FEchoRightDelay.IsChanged || FEchoWetDryMix.IsChanged)
-            {
-                for (int i = 0; i < SpreadMax; i++)
-                {
-                    if (FPlayedSounds[i] != null)
-                    {
-                        ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
-
-                        if (FEnableEcho[i])
-                            Fx.EnableEchoSoundEffect(FEchoWetDryMix[i], FEchoFeedback[i], FEchoLeftDelay[i], FEchoRightDelay[i], FEchoPanDelay[i]);
-                        else
-                            Fx.DisableEchoSoundEffect();
-                    }
-                }
-            }
-
-            #endregion Echo
-
-            //Sets the Flanger Effekt of a ISound Object
-            #region Flanger
-
-            if (FEnableFlanger.IsChanged || FFlangerDelay.IsChanged || FFlangerDepth.IsChanged || FFlangerFeedback.IsChanged || FFlangerFrequency.IsChanged || FFlangerPhase.IsChanged || FFlangerTriangleWaveForm.IsChanged || FFlangerWetDryMix.IsChanged)
-            {
-                for (int i = 0; i < SpreadMax; i++)
-                {
-                    if (FPlayedSounds[i] != null)
-                    {
-                        ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
-
-                        if (FEnableFlanger[i])
-                            Fx.EnableFlangerSoundEffect(FFlangerWetDryMix[i], FFlangerDepth[i], FFlangerFeedback[i], FFlangerFrequency[i], FFlangerTriangleWaveForm[i], FFlangerDelay[i], FFlangerPhase[i]);
-                        else
-                            Fx.DisableFlangerSoundEffect();
-                    }
-                }
-            }
-
-            #endregion Flanger
-
-            //Sets the Gargle Effekt of a ISound Object
-            #region Gargle
-
-            if (FEnableGargle.IsChanged || FGargleRateHz.IsChanged || FGargleSinusWaveForm.IsChanged)
-            {
-                for (int i = 0; i < SpreadMax; i++)
-                {
-                    if (FPlayedSounds[i] != null)
-                    {
-                        ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
-                        if (FEnableGargle[i])
-                            Fx.EnableGargleSoundEffect(FGargleRateHz[i], FGargleSinusWaveForm[i]);
-                        else
-                            Fx.DisableGargleSoundEffect();
-                    }
-                }
-            }
-
-            #endregion Gargle
-
-            //Sets the I3Dl2 Reverb Effekt of a ISound Object
-            #region I3Dl2 Reverb
-
-            if (FEnableI3DL2.IsChanged || FI3DL2DecayHFRatio.IsChanged || FI3DL2DecayTime.IsChanged || FI3DL2Density.IsChanged || FI3DL2Diffusion.IsChanged || FI3DL2HfReference.IsChanged || FI3DL2ReflectionDelay.IsChanged || FI3DL2Reflections.IsChanged || FI3DL2Reverb.IsChanged || FI3DL2ReverbDelay.IsChanged || FI3DL2Room.IsChanged || FI3DL2RoomHF.IsChanged || FI3DL2RoomRollOffFactor.IsChanged)
-            {
-                for (int i = 0; i < SpreadMax; i++)
-                {
-                    if (FPlayedSounds[i] != null)
-                    {
-                        ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
-
-                        if (FEnableI3DL2[i])
-                            Fx.EnableI3DL2ReverbSoundEffect(FI3DL2Room[i], FI3DL2RoomHF[i], FI3DL2RoomRollOffFactor[i], FI3DL2DecayTime[i], FI3DL2DecayHFRatio[i], FI3DL2Reflections[i], FI3DL2ReflectionDelay[i], FI3DL2Reverb[i], FI3DL2ReverbDelay[i], FI3DL2Diffusion[i], FI3DL2Density[i], FI3DL2HfReference[i]);
-                        else
-                            Fx.DisableI3DL2ReverbSoundEffect();
-                    }
-                }
-            }
-
-            #endregion I3Dl2 Reverb
-
-            //Sets the Param EQ Effekt of a ISound Objec
-            #region Param EQ
-
-            if (FEnableEq.IsChanged || FEqBandwidth.IsChanged || FEqCenter.IsChanged || FEqGain.IsChanged)
-            {
-                for (int i = 0; i < SpreadMax; i++)
-                {
-                    if (FPlayedSounds[i] != null)
-                    {
-                        ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
-
-                        if (FEnableEq[i])
-                            Fx.EnableParamEqSoundEffect(FEqCenter[i], FEqBandwidth[i], FEqGain[i]);
-                        else
-                            Fx.DisableParamEqSoundEffect();
-                    }
-                }
-            }
-
-            #endregion param EQ
-
-            //Sets the Wave Effekt of a ISound Object
-            #region Wave Reverb
-
-            if (FEnableWaveReverb.IsChanged || FWaveReverbFreq.IsChanged || FWaveReverbInGain.IsChanged || FWaveReverbMix.IsChanged || FWaveReverbTime.IsChanged)
-            {
-                for (int i = 0; i < SpreadMax; i++)
-                {
-                    if (FPlayedSounds[i] != null)
-                    {
-                        ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
-
-                        if (FEnableWaveReverb[i])
+                        if (FPlayedSounds[i] != null)
                         {
-                            Fx.EnableWavesReverbSoundEffect(FWaveReverbInGain[i], FWaveReverbMix[i], FWaveReverbTime[i], FWaveReverbFreq[i]);
-                        }
-                        else
-                        {
-                            Fx.DisableWavesReverbSoundEffect();
+                            ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
+
+                            if (FEnableChorus[i])
+                                Fx.EnableChorusSoundEffect(FChoruspWetDryMix[i], FChoruspDepth[i], FChoruspFeedback[i], FChorusFrequency[i], FChorusSinusWaveForm[i], FChorusDelay[i], FChorusPhase[i]);
+                            else
+                                Fx.DisableChorusSoundEffect();
                         }
                     }
                 }
-            }
 
-            #endregion Wave Reverb
+                #endregion Chorus
 
-            //Disables all Effekts
-            #region Disable All Effekts
+                //Sets the Compresser Effekt of a ISound Object
+                #region Compressor
 
-            if (FDisableAllEffekt.IsChanged)
-            {
-                for (int i = 0; i < SpreadMax; i++)
+                if (Reload || FEnableComp.IsChanged || FCompAttack.IsChanged || FCompGain.IsChanged || FCompPredelay.IsChanged || FCompRatio.IsChanged || FCompRelease.IsChanged || FCompThreshold.IsChanged)
                 {
-                    if (FPlayedSounds[i] != null)
+                    for (int i = 0; i < SpreadMax; i++)
                     {
-                        ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
-                        if (FDisableAllEffekt[i])
-                            Fx.DisableAllEffects();
+                        if (FPlayedSounds[i] != null)
+                        {
+                            ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
 
+                            if (FEnableComp[i])
+                                Fx.EnableCompressorSoundEffect(FCompGain[i], FCompAttack[i], FCompRelease[i], FCompThreshold[i], FCompRatio[i], FCompPredelay[i]);
+                            else
+                                Fx.DisableCompressorSoundEffect();
+                        }
                     }
                 }
+
+                #endregion Compressor
+
+                //Sets the Distortion Effekt of a ISound Object
+                #region Disortion
+
+                if (Reload || FEnableDistortion.IsChanged || FDistortionGain.IsChanged || FDistortionBandwidth.IsChanged || FDistortionEdge.IsChanged || FDistortionEQCenterFrequenz.IsChanged || FDistortionLowpassCutoff.IsChanged)
+                {
+                    for (int i = 0; i < SpreadMax; i++)
+                    {
+                        if (FPlayedSounds[i] != null)
+                        {
+                            ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
+
+                            if (FEnableDistortion[i])
+                                Fx.EnableDistortionSoundEffect(FDistortionGain[i], FDistortionEdge[i], FDistortionEQCenterFrequenz[i], FDistortionBandwidth[i], FDistortionLowpassCutoff[i]);
+                            else
+                                Fx.DisableDistortionSoundEffect();
+                        }
+                    }
+                }
+
+                #endregion Distortion
+
+                //Sets the Echo Effekt of a ISound Object
+                #region Echo
+
+                if (Reload || FEnableEcho.IsChanged || FEchoFeedback.IsChanged || FEchoLeftDelay.IsChanged || FEchoPanDelay.IsChanged || FEchoRightDelay.IsChanged || FEchoWetDryMix.IsChanged)
+                {
+                    for (int i = 0; i < SpreadMax; i++)
+                    {
+                        if (FPlayedSounds[i] != null)
+                        {
+                            ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
+
+                            if (FEnableEcho[i])
+                                Fx.EnableEchoSoundEffect(FEchoWetDryMix[i], FEchoFeedback[i], FEchoLeftDelay[i], FEchoRightDelay[i], FEchoPanDelay[i]);
+                            else
+                                Fx.DisableEchoSoundEffect();
+                        }
+                    }
+                }
+
+                #endregion Echo
+
+                //Sets the Flanger Effekt of a ISound Object
+                #region Flanger
+
+                if (Reload || FEnableFlanger.IsChanged || FFlangerDelay.IsChanged || FFlangerDepth.IsChanged || FFlangerFeedback.IsChanged || FFlangerFrequency.IsChanged || FFlangerPhase.IsChanged || FFlangerTriangleWaveForm.IsChanged || FFlangerWetDryMix.IsChanged)
+                {
+                    for (int i = 0; i < SpreadMax; i++)
+                    {
+                        if (FPlayedSounds[i] != null)
+                        {
+                            ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
+
+                            if (FEnableFlanger[i])
+                                Fx.EnableFlangerSoundEffect(FFlangerWetDryMix[i], FFlangerDepth[i], FFlangerFeedback[i], FFlangerFrequency[i], FFlangerTriangleWaveForm[i], FFlangerDelay[i], FFlangerPhase[i]);
+                            else
+                                Fx.DisableFlangerSoundEffect();
+                        }
+                    }
+                }
+
+                #endregion Flanger
+
+                //Sets the Gargle Effekt of a ISound Object
+                #region Gargle
+
+                if (Reload || FEnableGargle.IsChanged || FGargleRateHz.IsChanged || FGargleSinusWaveForm.IsChanged)
+                {
+                    for (int i = 0; i < SpreadMax; i++)
+                    {
+                        if (FPlayedSounds[i] != null)
+                        {
+                            ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
+                            if (FEnableGargle[i])
+                                Fx.EnableGargleSoundEffect(FGargleRateHz[i], FGargleSinusWaveForm[i]);
+                            else
+                                Fx.DisableGargleSoundEffect();
+                        }
+                    }
+                }
+
+                #endregion Gargle
+
+                //Sets the I3Dl2 Reverb Effekt of a ISound Object
+                #region I3Dl2 Reverb
+
+                if (Reload || FEnableI3DL2.IsChanged || FI3DL2DecayHFRatio.IsChanged || FI3DL2DecayTime.IsChanged || FI3DL2Density.IsChanged || FI3DL2Diffusion.IsChanged || FI3DL2HfReference.IsChanged || FI3DL2ReflectionDelay.IsChanged || FI3DL2Reflections.IsChanged || FI3DL2Reverb.IsChanged || FI3DL2ReverbDelay.IsChanged || FI3DL2Room.IsChanged || FI3DL2RoomHF.IsChanged || FI3DL2RoomRollOffFactor.IsChanged)
+                {
+                    for (int i = 0; i < SpreadMax; i++)
+                    {
+                        if (FPlayedSounds[i] != null)
+                        {
+                            ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
+
+                            if (FEnableI3DL2[i])
+                                Fx.EnableI3DL2ReverbSoundEffect(FI3DL2Room[i], FI3DL2RoomHF[i], FI3DL2RoomRollOffFactor[i], FI3DL2DecayTime[i], FI3DL2DecayHFRatio[i], FI3DL2Reflections[i], FI3DL2ReflectionDelay[i], FI3DL2Reverb[i], FI3DL2ReverbDelay[i], FI3DL2Diffusion[i], FI3DL2Density[i], FI3DL2HfReference[i]);
+                            else
+                                Fx.DisableI3DL2ReverbSoundEffect();
+                        }
+                    }
+                }
+
+                #endregion I3Dl2 Reverb
+
+                //Sets the Param EQ Effekt of a ISound Objec
+                #region Param EQ
+
+                if (Reload || FEnableEq.IsChanged || FEqBandwidth.IsChanged || FEqCenter.IsChanged || FEqGain.IsChanged)
+                {
+                    for (int i = 0; i < SpreadMax; i++)
+                    {
+                        if (FPlayedSounds[i] != null)
+                        {
+                            ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
+
+                            if (FEnableEq[i])
+                                Fx.EnableParamEqSoundEffect(FEqCenter[i], FEqBandwidth[i], FEqGain[i]);
+                            else
+                                Fx.DisableParamEqSoundEffect();
+                        }
+                    }
+                }
+
+                #endregion param EQ
+
+                //Sets the Wave Effekt of a ISound Object
+                #region Wave Reverb
+
+                if (Reload || FEnableWaveReverb.IsChanged || FWaveReverbFreq.IsChanged || FWaveReverbInGain.IsChanged || FWaveReverbMix.IsChanged || FWaveReverbTime.IsChanged)
+                {
+                    for (int i = 0; i < SpreadMax; i++)
+                    {
+                        if (FPlayedSounds[i] != null)
+                        {
+                            ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
+
+                            if (FEnableWaveReverb[i])
+                            {
+                                Fx.EnableWavesReverbSoundEffect(FWaveReverbInGain[i], FWaveReverbMix[i], FWaveReverbTime[i], FWaveReverbFreq[i]);
+                            }
+                            else
+                            {
+                                Fx.DisableWavesReverbSoundEffect();
+                            }
+                        }
+                    }
+                }
+
+                #endregion Wave Reverb
+
+                //Disables all Effekts
+                #region Disable All Effekts
+
+                if (FDisableAllEffekt.IsChanged)
+                {
+                    for (int i = 0; i < SpreadMax; i++)
+                    {
+                        if (FPlayedSounds[i] != null)
+                        {
+                            ISoundEffectControl Fx = FPlayedSounds[i].SoundEffectControl;
+                            if (FDisableAllEffekt[i])
+                                Fx.DisableAllEffects();
+
+                        }
+                    }
+                }
+
+                #endregion Disabel All Effects
+
             }
 
-            #endregion Disabel All Effects
+            #endregion Effekts
 
-            #region outdated Fx
-
-            //why doing all this stuff every frame??
-            //for (int i = 0; i < SpreadMax; i++)
-            //{
-            //    //Add the Effetkts to an speific sound.
-            //    #region Effekts 
-
-            //    if (FSounds.ContainsKey(i))
-            //    {
-            //        Fx = FSounds[i].SoundEffectControl;
-            //        //if (FEnableReverb[i])
-            //        //{
-            //        //    Fx.EnableWavesReverbSoundEffect(FReverbInGain[i], FReverbMix[i], FReverbTime[i], FReverbFreq[i]);
-            //        //}
-            //        //if (!FEnableReverb[i] & Fx.IsWavesReverbSoundEffectEnabled)
-            //        //{
-            //        //    Fx.DisableWavesReverbSoundEffect();
-            //        //}
-            //        ///////////////////////////////////////////////////////////////////////////////////////////////////// 
-
-            //        //if (FEnableEq[i])
-            //        //{
-            //        //    Fx.EnableParamEqSoundEffect(FEqCenter[i], FEqBandwidth[i], FEqGain[i]);
-            //        //}
-            //        //if (!FEnableEq[i] & Fx.IsParamEqSoundEffectEnabled)
-            //        //{
-            //        //    Fx.DisableParamEqSoundEffect();
-            //        //}
-            //        /////////////////////////////////////////////////////////////////////////////////////////////////////
-            //        //if (FEnableEcho[i])
-            //        //{
-            //        //    Fx.EnableEchoSoundEffect(FEchoWetDryMix[i], FEchoFeedback[i], FEchoLeftDelay[i], FEchoRightDelay[i], FEchoPanDelay[i]);
-            //        //}
-            //        //if (!FEnableEcho[i] & Fx.IsEchoSoundEffectEnabled)
-            //        //{
-            //        //    Fx.DisableEchoSoundEffect();
-            //        //}
-            //        /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            //        //if (FEnableComp[i])
-            //        //{
-            //        //    Fx.EnableCompressorSoundEffect(FCompGain[i], FCompAttack[i], FCompRelease[i], FCompThreshold[i], FCompRatio[i], FCompPredelay[i]);
-            //        //}
-            //        //if (!FEnableComp[i] & Fx.IsCompressorSoundEffectEnabled)
-            //        //{
-            //        //    Fx.DisableCompressorSoundEffect();
-            //        //}
-            //        /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            //        //if (FEnableChorus[i])
-            //        //{
-            //        //    Fx.EnableChorusSoundEffect(FChoruspWetDryMix[i], FChoruspDepth[i], FChoruspFeedback[i], FChorusFrequency[i], FChorusSinusWaveForm[i], FChorusDelay[i], FChorusPhase[i]);
-            //        //}
-            //        //if (!FEnableChorus[i] & Fx.IsChorusSoundEffectEnabled)
-            //        //{
-            //        //    Fx.DisableChorusSoundEffect();
-            //        //}
-
-            //        ///////////////////////////////////////////////////////////////////////////////////////////////////
-            //    }
-
-            //    #endregion Effektsounds outdated
-            //}
-
-
-            #endregion outdated Fx
 
             //Reads the Output values form the ISound Object
             #region Node Output
