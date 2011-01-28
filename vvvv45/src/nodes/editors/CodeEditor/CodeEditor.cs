@@ -687,8 +687,16 @@ namespace VVVV.HDE.CodeEditor
 			
 			foreach (var runtimeError in runtimeErrors)
 			{
-				if (new Uri(runtimeError.FileName) == TextDocument.Location)
-					AddErrorMarker(FRuntimeErrorMarkers, 0, runtimeError.Line - 1);
+			    if (!string.IsNullOrEmpty(runtimeError.FileName))
+			    {
+				    if (new Uri(runtimeError.FileName) == TextDocument.Location)
+					   AddErrorMarker(FRuntimeErrorMarkers, 0, runtimeError.Line - 1);
+			    }
+			    else
+			    {
+			        // Showing the error in wrong editor is better than not to.
+			        AddErrorMarker(FRuntimeErrorMarkers, 0, 0);
+			    }
 			}
 
 			Document.CommitUpdate();
