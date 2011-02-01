@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace VVVV.Utils
 {
@@ -10,16 +11,20 @@ namespace VVVV.Utils
 		/// <summary>
 		/// Returns the relative path to reach toPath from fromPath.
 		/// </summary>
-		public static string MakeRelativePath(string fromPath, string toPath)
+		public static string MakeRelativePath(string basePath, string absolutePath)
 		{
-			if (!fromPath.EndsWith(@"\"))
-				fromPath = fromPath + @"\";
+			var fromPath = Path.GetDirectoryName(basePath) + @"\";
+			var toPath = Path.GetDirectoryName(absolutePath) + @"\";
+			
+//			if (!fromPath.EndsWith(@"\"))
+//				fromPath = fromPath + @"\";
 			
 			var fromUri = new Uri(fromPath);
 			var toUri = new Uri(toPath);
 			
 			var relativeUri = fromUri.MakeRelativeUri(toUri);
-			return relativeUri.ToString().Replace('/', '\\');
+			var relativePath = Path.Combine(relativeUri.ToString().Replace('/', '\\'), Path.GetFileName(absolutePath));
+			return System.Web.HttpUtility.UrlDecode(relativePath);
 		}
 	}
 }
