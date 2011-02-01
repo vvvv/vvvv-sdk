@@ -90,7 +90,8 @@ namespace VVVV.HDE.ProjectExplorer
 				FMappingRegistry.RegisterMapping<IProject, IDescripted, DescriptedProjectViewProvider>();
 				// Allow drag drop only in MsBuildProject
 				FMappingRegistry.RegisterMapping<MsBuildProject, IDroppable, DefaultDragDropProvider>();
-				FMappingRegistry.RegisterMapping<IReference, INamed, ReferenceViewProvider>();
+				FMappingRegistry.RegisterMapping<IReference, ReferenceViewProvider>();
+				FMappingRegistry.RegisterMapping<PersistentIDContainer, PersistentNameProvider>();
 				
 				InitializeComponent();
 				

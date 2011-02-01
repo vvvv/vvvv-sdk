@@ -27,12 +27,12 @@ namespace CoreTests
 		
 		protected override IProject CreateTemplateProject(string baseDir)
 		{
-			return new CSProject(new Uri(baseDir + "/Template/Template.csproj"));
+			return new CSProject("cs_project", new Uri(baseDir + "/Template/Template.csproj"));
 		}
 		
 		protected override IProject CreateProject(Uri location)
 		{
-			return new CSProject(location);
+			return new CSProject("cs_project", location);
 		}
 	}
 }

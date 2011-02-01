@@ -84,7 +84,7 @@ namespace VVVV.Hosting.Factories
 			CSProject project;
 			if (!FProjects.TryGetValue(filename, out project))
 			{
-				project = new CSProject(new Uri(filename));
+				project = new CSProject(filename, new Uri(filename));
 				if (FSolution.Projects.CanAdd(project))
 				{
 					FSolution.Projects.Add(project);
@@ -115,6 +115,7 @@ namespace VVVV.Hosting.Factories
 				{
 					FSolution.Projects.Remove(project);
 					project.ProjectCompiledSuccessfully -= project_ProjectCompiled;
+					project.Dispose();
 				}
 				FProjects.Remove(filename);
 			}
@@ -251,7 +252,7 @@ namespace VVVV.Hosting.Factories
 				var newLocation = new Uri(newProjectPath);
 				project.SaveTo(newLocation);
 				
-				var newProject = new CSProject(newLocation);
+				var newProject = new CSProject(newProjectPath, newLocation);
 				newProject.Load();
 				
 				var newLocationDir = newLocation.GetLocalDir();

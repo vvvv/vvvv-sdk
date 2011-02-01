@@ -245,6 +245,7 @@ namespace VVVV.HDE.CodeEditor
 				document.ContentChanged += document_ContentChanged;
 				document.Saved += document_Saved;
 				document.Renamed += document_Renamed;
+				document.Disposed += document_Disposed;
 				
 				SynchronizationContext.Current.Post((o) => UpdateWindowCaption(document, document.Name), null);
 			}
@@ -252,6 +253,11 @@ namespace VVVV.HDE.CodeEditor
 			{
 				FLogger.Log(LogType.Warning, "Can't open \0", filename);
 			}
+		}
+
+		void document_Disposed(object sender, EventArgs e)
+		{
+		    Close();
 		}
 		
 		void document_Renamed(INamed sender, string newName)
@@ -303,6 +309,7 @@ namespace VVVV.HDE.CodeEditor
 				document.ContentChanged -= document_ContentChanged;
 				document.Saved -= document_Saved;
 				document.Renamed -= document_Renamed;
+				document.Disposed -= document_Disposed;
 				
 				FEditor.TextDocument = null;
 				FEditor.CompletionBinding = null;

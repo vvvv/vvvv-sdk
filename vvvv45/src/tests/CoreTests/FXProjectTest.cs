@@ -27,12 +27,12 @@ namespace CoreTests
 		
 		protected override IProject CreateTemplateProject(string baseDir)
 		{
-			return new FXProject(new Uri(baseDir + "/EffectTemplate/Attractor3d.fx"), string.Empty);
+			return new FXProject("fx_project", new Uri(baseDir + "/EffectTemplate/Attractor3d.fx"), string.Empty);
 		}
 		
 		protected override IProject CreateProject(Uri location)
 		{
-			return new FXProject(location, string.Empty);
+			return new FXProject("fx_project", location, string.Empty);
 		}
 	}
 }
