@@ -278,27 +278,27 @@ namespace VVVV.Hosting
 			}
 		}
 		
+		// Return false if the wrapper should be deleted by vvvv. Used for example
+		// by the EditorFactory if an editor is already opened.
 		public bool CreateNode(INode node)
 		{
 			var nodeInfo = NodeInfoFactory.ToProxy(node.GetNodeInfo());
 			
+			// We don't know if nodeInfo was cached. Some properties like UserData, Factory
+			// might be not set -> Update the nodeInfo.
+			// If this call throws an exception, vvvv will create a red node.
+			UpdateNodeInfos(nodeInfo.Filename);
+			
 			try
 			{
-				// We don't know if nodeInfo was cached. Some properties like UserData, Factory
-				// might be not set -> Update the nodeInfo.
-				UpdateNodeInfos(nodeInfo.Filename);
-				
-				var factory = nodeInfo.Factory;
-				if (factory.Create(nodeInfo, node))
-					return true;
+				return nodeInfo.Factory.Create(nodeInfo, node);
 			}
 			catch (Exception e)
 			{
 				Logger.Log(e);
-				throw e;
+				node.LastRuntimeError = e.Message;
+				return true;
 			}
-			
-			return false;
 		}
 		
 		public bool DestroyNode(INode node)
@@ -687,21 +687,7 @@ namespace VVVV.Hosting
 		
 		protected void factory_NodeInfoRemoved(object sender, INodeInfo info)
 		{
-			//remove from cache
-			var filename = info.Filename;
-			if (FNodeInfoCache.ContainsKey(filename))
-			{
-				var cache = FNodeInfoCache[filename];
-				
-				//remove from info list
-				var result = cache.Remove((ProxyNodeInfo) info);
-
-				//also remove list if empty now
-				if(cache.Count == 0)
-					FNodeInfoCache.Remove(filename);
-			}
-			
-			FLoadedFiles[filename] = false;
+			InvalidateCache(info.Filename);
 		}
 		
 		public void factory_NodeInfoUpdated(object sender, INodeInfo info)
@@ -837,6 +823,8 @@ namespace VVVV.Hosting
 			
 			if (FDeserializedNodeInfoCache.ContainsKey(filename))
 				FDeserializedNodeInfoCache.Remove(filename);
+			
+			FLoadedFiles[filename] = false;
 			
 			Logger.Log(LogType.Debug, "Invalidated cache for {0}.", filename);
 		}

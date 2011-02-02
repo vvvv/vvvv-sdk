@@ -488,7 +488,16 @@ namespace VVVV.Hosting.Factories
 				FHDEHost.AddonFactories.Clear();
 				FHDEHost.AddonFactories.AddRange(addonFactories);
 				foreach (var factory in addonFactories)
-					factory.ExtractNodeInfos(filename, null).ToList();
+				{
+					try
+					{
+						factory.ExtractNodeInfos(filename, null).ToList();
+					}
+					catch (Exception ex)
+					{
+						// Swallow exceptions
+					}
+				}
 			}
 		}
 		
