@@ -104,10 +104,6 @@ namespace VVVV.Hosting.Factories
             //create the plugin
 			plugin = CreatePlugin(nodeInfo, pluginHost as IPluginHost2);
 			
-			var pluginV1 = plugin as IPlugin;
-			if (pluginV1 != null)
-				pluginV1.SetPluginHost(pluginHost);
-			
 			pluginHost.Plugin = plugin;
 			
 			return true;
