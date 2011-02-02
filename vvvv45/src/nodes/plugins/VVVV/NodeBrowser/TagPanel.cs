@@ -484,8 +484,10 @@ namespace VVVV.Nodes.NodeBrowser
 			                    	if (comp == 0)
 			                    	{
 			                    		//compare categories
-			                    		string cat1 = s1.Substring(s1.IndexOf('(')).Trim(new char[2]{'(', ')'});
-			                    		string cat2 = s2.Substring(s2.IndexOf('(')).Trim(new char[2]{'(', ')'});
+			                    		var start = s1.IndexOf('(') + 1;
+			                    		string cat1 = s1.Substring(start, s1.IndexOf(')') - start);
+			                    		start = s2.IndexOf('(') + 1;
+			                    		string cat2 = s2.Substring(start, s2.IndexOf(')') - start);
 			                    		
 			                    		int v1, v2;
 			                    		
