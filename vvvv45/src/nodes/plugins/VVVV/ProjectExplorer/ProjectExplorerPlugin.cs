@@ -92,6 +92,7 @@ namespace VVVV.HDE.ProjectExplorer
 				FMappingRegistry.RegisterMapping<MsBuildProject, IDroppable, DefaultDragDropProvider>();
 				FMappingRegistry.RegisterMapping<IReference, ReferenceViewProvider>();
 				FMappingRegistry.RegisterMapping<PersistentIDContainer, PersistentNameProvider>();
+				FMappingRegistry.RegisterMapping<IReference, IDescripted, ReferenceViewProvider>();
 				
 				InitializeComponent();
 				
