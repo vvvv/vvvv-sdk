@@ -61,8 +61,12 @@ namespace VVVV.Nodes.Finder
 			Name = Node.Name;
             Childs = FChildNodes.AsViewableList();
 			
-			Node.Added += HandleNodeAdded;
-			Node.Removed += HandleNodeRemoved;
+			FNode.Added += HandleNodeAdded;
+			FNode.Removed += HandleNodeRemoved;
+			FNode.StatusChanged += HandleNodeStatusChanged;
+			
+			if (FRecursively)
+				FNode.InnerStatusChanged += HandleNodeInnerStatusChanged;
             
             //init static properties via INode
             ID = FNode.ID;
@@ -119,13 +123,14 @@ namespace VVVV.Nodes.Finder
 				FChannelPin.Changed -= HandlePinChanged;
                 FChannelPin = null;
             }
-            
-            //remove nodelistener
-            if (FNode != null)
-            {
-                FNode.Added -= HandleNodeAdded;
-				FNode.Removed -= HandleNodeRemoved;
-            }
+			
+			//remove nodelistener
+            FNode.Added -= HandleNodeAdded;
+			FNode.Removed -= HandleNodeRemoved;
+			FNode.StatusChanged -= HandleNodeStatusChanged;
+			
+			if (FRecursively)
+				FNode.InnerStatusChanged -= HandleNodeInnerStatusChanged;
             
             //free children
             foreach (var child in FChildNodes)
@@ -167,6 +172,16 @@ namespace VVVV.Nodes.Finder
             UpdateName();
             
             OnRenamed(Name);
+        }
+		
+		void HandleNodeStatusChanged (object sender, EventArgs e)
+        {
+			OnDecorationChanged();
+        }
+		
+		void HandleNodeInnerStatusChanged (object sender, EventArgs e)
+        {
+        	OnDecorationChanged();
         }
         
         private bool FSelected;
