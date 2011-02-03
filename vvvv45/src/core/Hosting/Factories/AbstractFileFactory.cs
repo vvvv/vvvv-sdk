@@ -333,7 +333,7 @@ namespace VVVV.Hosting.Factories
 			//remove nodeinfos that are no longer with this filename
 			
 			//get all old nodeinfos associated with this filename
-			var oldInfos = ((HDEHost) FHDEHost).GetCachedNodeInfos(filename).ToList();
+			var oldInfos = FNodeInfoFactory.NodeInfos.Where((ni) => ni.Filename == filename && ni.Factory == this).ToList();
 			var nodeInfoUsedMap = new Dictionary<INodeInfo, bool>();
 			
 			
