@@ -401,16 +401,16 @@ namespace VVVV.Nodes.Finder
                     return Brushes.White;
                 
                 if (FNode.HasPatch)
-                {    if (FNode.ContainsMissingNodes)
+                {    if (FNode.ContainsMissingNodes())
                         return SDarkRed;
-                    else if (FNode.ContainsBoygroupedNodes)
+                    else if (FNode.ContainsBoygroupedNodes())
                         return SDarkBlue;
                     else
                         return SDarkGray;
                 }
-                else if (FNode.IsMissing)
+                else if (FNode.IsMissing())
                     return SLightRed;
-                else if (FNode.IsBoygrouped)
+                else if (FNode.IsBoygrouped())
                     return SLightBlue;
                 else
                     return SLightGray;
@@ -425,16 +425,16 @@ namespace VVVV.Nodes.Finder
                     return Brushes.AliceBlue;
                 
                 if (FNode.HasPatch)
-                {   if (FNode.ContainsMissingNodes)
+                {   if (FNode.ContainsMissingNodes())
                         return SHoverRed;
-                    else if (FNode.ContainsBoygroupedNodes)
+                    else if (FNode.ContainsBoygroupedNodes())
                         return SHoverBlue;
                     else
                         return SHoverGray;
                 }
-                else if (FNode.IsMissing)
+                else if (FNode.IsMissing())
                     return SHoverRed;
-                else if (FNode.IsBoygrouped)
+                else if (FNode.IsBoygrouped())
                     return SHoverBlue;
                 else
                     return SHoverGray;
@@ -618,8 +618,8 @@ namespace VVVV.Nodes.Finder
         
         private void UpdateProperties()
         {
-            IsBoygrouped = FNode.IsBoygrouped;
-            IsMissing = FNode.IsMissing;
+            IsBoygrouped = FNode.IsBoygrouped();
+            IsMissing = FNode.IsMissing();
             
             if (Node.HasGUI)
             {
@@ -672,7 +672,7 @@ namespace VVVV.Nodes.Finder
                     }
                 }
                 //string ioboxes may be comments if they have no connection
-                else if (FNodeInfo.Category == "String" && !FindPin(Node, "Input String").IsConnected && !FindPin(Node, "Output String").IsConnected)
+                else if (FNodeInfo.Category == "String" && !FindPin(Node, "Input String").IsConnected() && !FindPin(Node, "Output String").IsConnected())
                 {
                     if (FCommentPin == null)
                     {

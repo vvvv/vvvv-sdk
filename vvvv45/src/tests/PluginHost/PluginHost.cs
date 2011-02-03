@@ -489,6 +489,22 @@ namespace Hoster
 			throw new NotImplementedException();
 		}
 		
+		public StatusCode Status
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+		
+		public StatusCode InnerStatus
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+		
 		public int GetChildCount()
 		{
 			throw new NotImplementedException();
@@ -513,26 +529,6 @@ namespace Hoster
 		{
 			throw new NotImplementedException();
 		}
-		
-        public bool IsBoygrouped()
-        {
-            throw new NotImplementedException();
-        }
-	    
-        public bool ContainsBoygroupedNodes()
-        {
-            throw new NotImplementedException();
-        }
-	    
-        public bool IsMissing()
-        {
-            throw new NotImplementedException();
-        }
-	    
-        public bool ContainsMissingNodes()
-        {
-            throw new NotImplementedException();
-        }
 		
 		public void AddListener(INodeListener listener)
 		{

@@ -306,10 +306,15 @@ namespace VVVV.PluginInterfaces.V2
 		bool HasPatch();
 		bool HasCode();
 		
-		bool IsBoygrouped();
-        bool ContainsBoygroupedNodes();
-        bool IsMissing();
-        bool ContainsMissingNodes();
+		StatusCode Status
+		{
+			get;
+		}
+		
+		StatusCode InnerStatus
+		{
+			get;
+		}
 		
 		//todo: check GetChildren mem leak?!
 		int GetChildCount();
@@ -358,6 +363,8 @@ namespace VVVV.PluginInterfaces.V2
         void AddedCB(INode childNode);
         void RemovedCB(INode childNode);
         void LabelChangedCB();
+		void StatusChangedCB();
+		void InnerStatusChangedCB();
     }
 	#endregion INode
 	
@@ -371,7 +378,11 @@ namespace VVVV.PluginInterfaces.V2
 	{
 	    string GetName();
 	    string GetValue(int index);
-	    bool IsConnected();
+		
+		StatusCode Status
+		{
+			get;
+		}
 	    
 	    /// <summary>
 		/// Allows a plugin to register an IPinListener on a specific pin.
@@ -395,6 +406,7 @@ namespace VVVV.PluginInterfaces.V2
     public interface IPinListener
     {
         void ChangedCB();
+		void StatusChangedCB();
     }
 	#endregion IPin
 	

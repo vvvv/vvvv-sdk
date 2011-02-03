@@ -69,24 +69,41 @@ namespace VVVV.PluginInterfaces.V2.Graph
 			get;
 		}
 		
-		bool ContainsMissingNodes
+		StatusCode Status
 		{
 			get;
 		}
 		
-		bool ContainsBoygroupedNodes
+		StatusCode InnerStatus
 		{
 			get;
 		}
 		
-		bool IsMissing
-		{
-			get;
-		}
+		event EventHandler StatusChanged;
 		
-		bool IsBoygrouped
-		{
-			get;
-		}
+		event EventHandler InnerStatusChanged;
     }
+	
+	public static class Node2ExtensionMethods
+	{
+		public static bool ContainsMissingNodes(this INode2 node)
+		{
+			return (node.InnerStatus & StatusCode.IsMissing) == StatusCode.IsMissing;
+		}
+		
+		public static bool ContainsBoygroupedNodes(this INode2 node)
+		{
+			return (node.InnerStatus & StatusCode.IsBoygrouped) == StatusCode.IsBoygrouped;
+		}
+		
+		public static bool IsMissing(this INode2 node)
+		{
+			return (node.Status & StatusCode.IsMissing) == StatusCode.IsMissing;
+		}
+		
+		public static bool IsBoygrouped(this INode2 node)
+		{
+			return (node.Status & StatusCode.IsBoygrouped) == StatusCode.IsBoygrouped;
+		}
+	}
 }

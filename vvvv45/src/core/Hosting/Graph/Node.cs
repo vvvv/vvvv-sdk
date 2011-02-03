@@ -50,7 +50,17 @@ namespace VVVV.Hosting.Graph
 				// TODO: Handle this case properly. See for e.g. Finder/PatchNode or even implement it in delphi code.
 				//FObservedNode.Name = FObservedNode.FInternalNode.GetPin("Descriptive Name").GetValue(0);
 			}
-			
+
+			public void StatusChangedCB ()
+			{
+				FObservedNode.OnStatusChanged();
+			}
+
+			public void InnerStatusChangedCB ()
+			{
+				FObservedNode.OnInnerStatusChanged();
+			}
+
 			public void Dispose()
 			{
 				FObservedNode.FInternalCOMInterf.RemoveListener(this);
@@ -244,36 +254,36 @@ namespace VVVV.Hosting.Graph
 			}
 		}
 		
-		public bool ContainsMissingNodes
+		public StatusCode Status
 		{
 			get
 			{
-				return FInternalCOMInterf.ContainsMissingNodes();
+				return FInternalCOMInterf.Status;
 			}
 		}
 		
-		public bool ContainsBoygroupedNodes
+		public StatusCode InnerStatus
 		{
 			get
 			{
-				return FInternalCOMInterf.ContainsBoygroupedNodes();
+				return FInternalCOMInterf.InnerStatus;
 			}
 		}
 		
-		public bool IsMissing
+		public event EventHandler StatusChanged;
+		
+		protected virtual void OnStatusChanged()
 		{
-			get
-			{
-				return FInternalCOMInterf.IsMissing();
-			}
+			if (StatusChanged != null)
+				StatusChanged(this, EventArgs.Empty);
 		}
 		
-		public bool IsBoygrouped
+		public event EventHandler InnerStatusChanged;
+		
+		protected virtual void OnInnerStatusChanged()
 		{
-			get
-			{
-				return FInternalCOMInterf.IsBoygrouped();
-			}
+			if (InnerStatusChanged != null)
+				InnerStatusChanged(this, EventArgs.Empty);
 		}
 	}
 }

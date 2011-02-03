@@ -31,6 +31,11 @@ namespace VVVV.Hosting.Graph
             {
                 FPin.OnChanged(EventArgs.Empty);
             }
+			
+			public void StatusChangedCB()
+			{
+				FPin.OnStatusChanged();
+			}
         }
         
         #endregion
@@ -83,20 +88,28 @@ namespace VVVV.Hosting.Graph
             }
         }
         
-        public bool IsConnected 
-        {
-            get 
-            {
-                return FInternalCOMInterf.IsConnected();
-            }
-        }
-        
         public string Name
         {
             get
             {
                 return FName;
             }
+        }
+		
+		public StatusCode Status
+		{
+			get
+			{
+				return FInternalCOMInterf.Status;
+			}
+		}
+		
+		public event EventHandler StatusChanged;
+        
+        protected virtual void OnStatusChanged()
+        {
+            if (StatusChanged != null)
+                StatusChanged(this, EventArgs.Empty);
         }
     }
 }

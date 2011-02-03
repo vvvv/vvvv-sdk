@@ -12,18 +12,29 @@ namespace VVVV.PluginInterfaces.V2.Graph
         {
             get;
         }
-        
-        /// <summary>
-        /// Whether the pin is connected or not.
-        /// </summary>
-        bool IsConnected
-        {
-            get;
-        }
+		
+		/// <summary>
+		/// Gets the status of the pin.
+		/// </summary>
+		/// <value>
+		/// The status.
+		/// </value>
+		StatusCode Status
+		{
+			get;
+		}
         
         /// <summary>
         /// The changed event occurs when the pin's data changed.
         /// </summary>
         event EventHandler Changed;
     }
+	
+	public static class Pin2ExtensionMethods
+	{
+		public static bool IsConnected(this IPin2 pin)
+		{
+			return (pin.Status & StatusCode.IsConnected) == StatusCode.IsConnected;
+		}
+	}
 }
