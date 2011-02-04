@@ -512,10 +512,16 @@ namespace VVVV.Nodes.NodeBrowser
 			                    			v1 = 91;
 			                    		else if (cat1.Contains("Flash"))
 			                    			v1 = 90;
-			                    		else if (cat1.Contains("String"))
+			                    		else if (cat1.Contains("Transform"))
 			                    			v1 = 89;
-			                    		else if (cat1.Contains("Color"))
+			                    		else if (cat1.Contains("Quaternion"))
 			                    			v1 = 88;
+			                    		else if (cat1.Contains("Octonion"))
+			                    			v1 = 87;
+			                    		else if (cat1.Contains("String"))
+			                    			v1 = 86;
+			                    		else if (cat1.Contains("Color"))
+			                    			v1 = 85;
 			                    		else
 			                    			v1 = 0;
 			                    		
@@ -539,10 +545,16 @@ namespace VVVV.Nodes.NodeBrowser
 			                    			v2 = 91;
 			                    		else if (cat2.Contains("Flash"))
 			                    			v2 = 90;
-			                    		else if (cat2.Contains("String"))
+			                    		else if (cat2.Contains("Transform"))
 			                    			v2 = 89;
-			                    		else if (cat2.Contains("Color"))
+			                    		else if (cat2.Contains("Quaternion"))
 			                    			v2 = 88;
+			                    		else if (cat2.Contains("Octonion"))
+			                    			v2 = 87;
+			                    		else if (cat2.Contains("String"))
+			                    			v2 = 86;
+			                    		else if (cat2.Contains("Color"))
+			                    			v2 = 85;
 			                    		else
 			                    			v2 = 0;
 			                    		
@@ -780,17 +792,17 @@ namespace VVVV.Nodes.NodeBrowser
 							}
 						case NodeType.Freeframe:
 							{
-								e.Graphics.DrawString("f", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
+								e.Graphics.DrawString(" f", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
 								break;
 							}
 						case NodeType.Effect:
 							{
-								e.Graphics.DrawString("x", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
+								e.Graphics.DrawString(" x", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
 								break;
 							}
 						case NodeType.VST:
 							{
-								e.Graphics.DrawString("v", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
+								e.Graphics.DrawString(" v", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
 								break;
 							}
 							// Added code:
