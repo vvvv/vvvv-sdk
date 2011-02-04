@@ -53,7 +53,8 @@ namespace VVVV.Hosting.Graph
         
         protected override void DisposeManaged()
         {
-            FPinListener.Dispose();
+			if (FPinListener != null)
+            	FPinListener.Dispose();
             base.DisposeManaged();
         }
         
