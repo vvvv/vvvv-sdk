@@ -42,13 +42,13 @@ namespace VVVV.Hosting.Graph
         
         private readonly IPin FInternalCOMInterf;
         private readonly string FName;
-        private readonly PinListener FPinListener;
+        private PinListener FPinListener;
+        private int FObserverCount;
         
         internal Pin(IPin internalCOMInterf)
         {
             FInternalCOMInterf = internalCOMInterf;
             FName = FInternalCOMInterf.GetName();
-            FPinListener = new PinListener(this);
         }
         
         protected override void DisposeManaged()
@@ -62,12 +62,42 @@ namespace VVVV.Hosting.Graph
             return FName;
         }
         
-        public event EventHandler Changed;
+        private void IncObserverCount()
+        {
+        	FObserverCount++;
+        	if (FPinListener == null)
+        		FPinListener = new PinListener(this);
+        }
+        
+        private void DecObserverCount()
+        {
+        	FObserverCount--;
+        	if (FObserverCount == 0)
+        	{
+        		FPinListener.Dispose();
+        		FPinListener = null;
+        	}
+        }
+        
+        private event EventHandler FChanged;
+        public event EventHandler Changed
+        {
+        	add
+        	{
+        		IncObserverCount();
+        		FChanged += value;
+        	}
+        	remove
+        	{
+        		FChanged -= value;
+        		DecObserverCount();
+        	}
+        }
         
         protected virtual void OnChanged(EventArgs e)
         {
-            if (Changed != null) {
-                Changed(this, e);
+            if (FChanged != null) {
+                FChanged(this, e);
             }
         }
         
@@ -104,12 +134,25 @@ namespace VVVV.Hosting.Graph
 			}
 		}
 		
-		public event EventHandler StatusChanged;
+		private event EventHandler FStatusChanged;
+		public event EventHandler StatusChanged
+		{
+			add
+			{
+				IncObserverCount();
+				FStatusChanged += value;
+			}
+			remove
+			{
+				FStatusChanged -= value;
+				DecObserverCount();
+			}
+		}
         
         protected virtual void OnStatusChanged()
         {
-            if (StatusChanged != null)
-                StatusChanged(this, EventArgs.Empty);
+            if (FStatusChanged != null)
+                FStatusChanged(this, EventArgs.Empty);
         }
     }
 }

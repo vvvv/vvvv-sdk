@@ -90,7 +90,7 @@ namespace VVVV.Hosting.Graph
 		private readonly INodeInfo FNodeInfo;
 		private readonly InternalNodeListener FInternalNodeListener;
 		private readonly ProxyNodeInfoFactory FNodeInfoFactory;
-		private readonly ViewableCollection<IPin2> FPins;
+		private readonly Lazy<ViewableCollection<IPin2>> FPins;
 		private Window FWindow;
 		
 		private Node(INode2 parent, INode internalCOMInterf, ProxyNodeInfoFactory nodeInfoFactory)
@@ -102,9 +102,7 @@ namespace VVVV.Hosting.Graph
 			FNodeInfo = nodeInfoFactory.ToProxy(internalCOMInterf.GetNodeInfo());
 			FName = FNodeInfo.Username;
 			
-			FPins = new ViewableCollection<IPin2>();
-			foreach (var internalPin in internalCOMInterf.GetPins())
-			    FPins.Add(new Pin(internalPin));
+			FPins = new Lazy<ViewableCollection<IPin2>>(InitPins);
 
 			var children = internalCOMInterf.GetChildren();
 			if (children != null)
@@ -125,12 +123,28 @@ namespace VVVV.Hosting.Graph
 			if (FWindow != null)
 				FWindow.Dispose();
 			
+			if (FPins.IsValueCreated)
+			{
+				foreach (Pin pin in Pins)
+					pin.Dispose();
+				
+				FPins.Value.Dispose();
+			}
+			
 			foreach (Node childNode in this)
 				childNode.Dispose();
 			
 			FNodes.Remove(FInternalCOMInterf);
 			
 			base.Dispose();
+		}
+		
+		private ViewableCollection<IPin2> InitPins()
+		{
+			var pins = new ViewableCollection<IPin2>();
+			foreach (var internalPin in FInternalCOMInterf.GetPins())
+			    pins.Add(new Pin(internalPin));
+			return pins;
 		}
 		
         public override string ToString()
@@ -194,7 +208,7 @@ namespace VVVV.Hosting.Graph
         {
             get
             {
-                return FPins;
+                return FPins.Value;
             }
         }
 	    
