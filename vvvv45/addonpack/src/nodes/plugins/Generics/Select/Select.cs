@@ -87,15 +87,15 @@ namespace VVVV.Nodes
 	}
 	#endregion Transform Node
 	
-//	#region Enumerations Node
-//	[PluginInfo(Name = "Select", 
-//				Category = "Enumerations", 
-//				Help = "select the slices which form the new spread", 
-//				Tags = "select, repeat",
-//				Author = "woei")]
-//	
-//	public class SelectEnum : Select<EnumEntry>
-//	{	
-//	}
-//	#endregion Enumerations Node
+	#region Enumerations Node
+	[PluginInfo(Name = "Select", 
+				Category = "Enumerations", 
+				Help = "select the slices which form the new spread", 
+				Tags = "select, repeat",
+				Author = "woei")]
+	
+	public class SelectEnum : Select<EnumEntry>
+	{	
+	}
+	#endregion Enumerations Node
 }
