@@ -720,7 +720,6 @@ namespace VVVV.Nodes
 					(pin as TLPin).UpdateSliceSpecificSettings();
 			}
 		}
-		
 		#endregion mainloop
 
 		private void GUISettingsChanged()
@@ -938,15 +937,18 @@ namespace VVVV.Nodes
 		
 		private void RemovePinCB(TLBasePin Pin)
 		{
-			if (Pin is TLRulerPin)
+			if (MessageBox.Show("You sure?", "Deleting Pin: " + Pin.Name, MessageBoxButtons.YesNo) == DialogResult.Yes)
 			{
-				List<TLBasePin> rp = FOutputPins.FindAll(delegate(TLBasePin p) {return p is TLRulerPin;});
-				if (rp.Count == 1)
-					return;
-			}
+				if (Pin is TLRulerPin)
+				{
+					List<TLBasePin> rp = FOutputPins.FindAll(delegate(TLBasePin p) { return p is TLRulerPin; });
+					if (rp.Count == 1)
+						return;
+				}
 			
-			int pinID = FOutputPins.IndexOf(Pin);
-			MovePin(pinID, -1);
+				int pinID = FOutputPins.IndexOf(Pin);
+					MovePin (pinID, -1);
+			}
 		}
 		
 		private void UpdatePinSettingsFromActualPinLayout()
@@ -1204,22 +1206,30 @@ namespace VVVV.Nodes
 				
 				if (FAutomata == null)
 				{
-					AddPin(TLPinType.Automata);
+					AddPin (TLPinType.Automata);
 					//pinsettings are added as lastslice
 					//calling a movepin now to move the pinsettings of automatapin to its default position=1;
-					MovePin(FOutputPins.Count-1, PinHeaderPanel0.Controls.Count-1);
+					MovePin (FOutputPins.Count - 1, PinHeaderPanel0.Controls.Count - 1);
 					if (SplitContainer.SplitterDistance < FAutomata.Top + FAutomata.Height)
 						SplitContainer.SplitterDistance += FAutomata.Height;
 				}
 			}
 			else
 			{
-				if (SplitContainer.SplitterDistance >= FAutomata.Top + FAutomata.Height)
-					SplitContainer.SplitterDistance -= FAutomata.Height;
-				
-				GTimer.Automata = null;
+				var tempTop = FAutomata.Top;
+				var tempHeight = FAutomata.Height;
 				RemovePinCB(FAutomata);
-				FAutomata = null;
+				
+				if (FOutputPins.IndexOf(FAutomata) == -1)
+				{
+					FAutomata = null;
+					GTimer.Automata = null;	
+					
+					if (SplitContainer.SplitterDistance >= tempTop + tempHeight)
+						SplitContainer.SplitterDistance -= tempHeight;
+				}
+				else
+					AutomataCheckBox.CheckState = CheckState.Checked;
 			}
 		}
 
@@ -1347,8 +1357,10 @@ namespace VVVV.Nodes
 				attr.Value = SplitContainer.SplitterDistance.ToString();
 				splitter.Attributes.Append(attr);
 				
+				FBlockConfigurate = true;
 				FGUISettings.SliceCount = 1;
 				FGUISettings.SetString(0, splitter.OuterXml);
+				FBlockConfigurate = false;
 			}
 			
 			SliceArea.SplitterPosition = SplitContainer.SplitterDistance;
@@ -1368,4 +1380,3 @@ namespace VVVV.Nodes
 		}
 	}
 }
-

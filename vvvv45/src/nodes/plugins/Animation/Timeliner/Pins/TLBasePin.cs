@@ -178,9 +178,12 @@ namespace VVVV.Nodes.Timeliner
 		
 		public virtual void RemoveSlice(TLSlice Slice)
 		{
-			Slice.DestroyPins();
-			FOutputSlices.Remove(Slice);
-			PinChanged();
+			if (MessageBox.Show("You sure?", "Deleting Slice of Pin: " + Name, MessageBoxButtons.YesNo) == DialogResult.Yes)
+			{
+				Slice.DestroyPins();
+				FOutputSlices.Remove(Slice);
+				PinChanged();
+			}
 		}
 		
 		protected void RemovePin()
