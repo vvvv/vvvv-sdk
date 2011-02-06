@@ -29,6 +29,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Diagnostics;
 
 namespace VVVV.Utils.OSC
 {
@@ -70,12 +71,11 @@ namespace VVVV.Utils.OSC
 			}
 			catch (Exception e)
 			{
-				Console.Error.WriteLine(e.Message);
-				Console.Error.WriteLine(e.StackTrace);
+			    Debug.WriteLine(e.Message);
+				Debug.WriteLine(e.StackTrace);
 			}
 
 			return byteNum;
 		}
-
 	}
 }
