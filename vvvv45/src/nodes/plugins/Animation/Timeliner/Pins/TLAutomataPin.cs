@@ -12,6 +12,7 @@ namespace VVVV.Nodes.Timeliner
 	public class TLAutomataPin: TLPin
 	{
 		private IStringOut FCurrentStateOut;
+		private IStringOut FStates;
 		private IValueOut FStateTimes;
 		
 		public TLStateKeyFrame CurrentState
@@ -67,7 +68,11 @@ namespace VVVV.Nodes.Timeliner
         	FCurrentStateOut.SetSubType("", false);
 	    	FCurrentStateOut.Order = Order;
 	    	
-	    	FHost.CreateValueOutput(Name + "-StateTime", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FStateTimes);
+			FHost.CreateStringOutput(Name + "-State", TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FStates);
+	    	FStates.SetSubType("", false);
+	    	FStates.Order = Order;
+			
+	    	FHost.CreateValueOutput(Name + "-StateTime", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out FStateTimes);
 	    	FStateTimes.SetSubType(double.MinValue, double.MaxValue, 0.0001, 0, false, false, false);
 	    	FStateTimes.Order = Order;
 		}
@@ -78,6 +83,9 @@ namespace VVVV.Nodes.Timeliner
 			///////////////////////
 			FHost.DeletePin(FCurrentStateOut);
 			FCurrentStateOut = null;
+			
+			FHost.DeletePin(FStates);
+			FStates = null;
 			
 			FHost.DeletePin(FStateTimes);
 			FStateTimes = null;
@@ -122,6 +130,10 @@ namespace VVVV.Nodes.Timeliner
 			FStateTimes.SliceCount = (FOutputSlices[0] as TLAutomataSlice).KeyFrames.Count-1;
 			for (int i=0; i<(FOutputSlices[0] as TLAutomataSlice).KeyFrames.Count-1; i++)
 				FStateTimes.SetValue(i, (FOutputSlices[0] as TLAutomataSlice).KeyFrames[i].Time);
+			
+			FStates.SliceCount = FStateTimes.SliceCount;
+			for (int i=0; i<(FOutputSlices[0] as TLAutomataSlice).KeyFrames.Count-1; i++)
+				FStates.SetString(i, ((FOutputSlices[0] as TLAutomataSlice).KeyFrames[i] as TLStateKeyFrame).Name);
 		}
 	}
 }
