@@ -695,27 +695,40 @@ namespace VVVV.Nodes.Timeliner
 								FMouseState = TLMouseState.msDragging;
 							else if (e.Button == MouseButtons.Right)	//mouse is hovering a keyframe -> go drag Y only
 							{
-								if ((Control.ModifierKeys & Keys.Alt) == Keys.Alt)
-									FExpandToRight = CheckExpansionToRight(e.Location);
+								//if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+								//	FExpandToRight = CheckExpansionToRight(e.Location);
 								FMouseState = TLMouseState.msDraggingYOnly;
 							}
 							else if (e.Button == MouseButtons.Middle)	//mouse is hovering a keyframe -> go drag X only
 							{
-								if ((Control.ModifierKeys & Keys.Alt) == Keys.Alt)
-									FExpandToRight = CheckExpansionToRight(e.Location);
+								//if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+								//	FExpandToRight = CheckExpansionToRight(e.Location);
 								FMouseState = TLMouseState.msDraggingXOnly;
 							}
 							
-							if (!FMouseDownKeyFrame.Selected) //deselect all other keyframes and start dragging the one the mouse is over
+							if (!FMouseDownKeyFrame.Selected)
 							{
-								SelectAll(false);
+								//if ctrl is not pressed deselect all other keyframes
+								if ((Control.ModifierKeys & Keys.Control) != Keys.Control)
+									SelectAll(false);
+						
 								FMouseDownKeyFrame.Selected = true;
 								FPinsWithSelectedKeyframes.Add(pin);
-								if (FMouseDownKeyFrame is TLStateKeyFrame)
-									this.Invalidate(GetUpdateRegion(pin, pin.OutputSlices[0], FMouseDownKeyFrame));
-								else
-									this.Invalidate(FMouseDownKeyFrame.RedrawArea);
 							}
+							else
+							{
+								//if alt is pressed deselect keyframes
+								if ((Control.ModifierKeys & Keys.Alt) == Keys.Alt)
+								{
+									FMouseDownKeyFrame.Selected = false;
+									FMouseState = TLMouseState.msIdle;
+								}
+							}
+					
+							if (FMouseDownKeyFrame is TLStateKeyFrame)
+								this.Invalidate(GetUpdateRegion(pin, pin.OutputSlices[0], FMouseDownKeyFrame));
+							else
+								this.Invalidate(FMouseDownKeyFrame.RedrawArea);
 						}
 						
 						break;
