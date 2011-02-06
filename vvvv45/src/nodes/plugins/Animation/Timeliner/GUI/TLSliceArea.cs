@@ -812,14 +812,6 @@ namespace VVVV.Nodes.Timeliner
 				FLastMousePoint = new Point(pt.X - ptDelta, FLastMousePoint.Y);
 			}
 			
-			TLBasePin automata = null;
-			for (int i=0; i<FOutputPins.Count; i++)
-				if (FOutputPins[i] is TLAutomataPin)
-			{
-				automata = FOutputPins[i];
-				break;
-			}
-			
 			switch(FMouseState)
 			{
 				case TLMouseState.msIdle:
@@ -1012,6 +1004,10 @@ namespace VVVV.Nodes.Timeliner
 						}
 						else
 						{
+							//check for snap
+							double snapDelta = 0;
+							var snapping = CheckForSnap(pt, out snapDelta);
+					
 							foreach (TLBasePin p in FOutputPins)
 								foreach (TLSlice s in p.OutputSlices)
 							{
@@ -1035,23 +1031,20 @@ namespace VVVV.Nodes.Timeliner
 									
 									double nextsTime = GetNextTime(s.KeyFrames, k);
 									double prevsTime = GetPrevTime(s.KeyFrames, k);
-									if ((Control.ModifierKeys == Keys.Alt) && (span > 0))
-										k.MoveTime(delta * (k.Time-target.Time)/span, prevsTime, nextsTime);
-									else
-										k.MoveTime(delta, prevsTime, nextsTime);
-									
-									//snap to state
-									if ((automata != null) && (Control.ModifierKeys == Keys.Control))
-									{
-										TLBaseKeyFrame nextState = automata.OutputSlices[0].KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return Math.Abs(kf.GetTimeAsX() - pt.X) < 15;});
-										
-										if (nextState != null)
-										{
-											double snapTime = nextState.Time + TLTime.MinTimeStep;
-											if ((snapTime > prevsTime) && (snapTime < nextsTime))
-												k.Time = snapTime;
-										}
+							
+									//move keyframe
+									if (snapping)
+									{	
+										if (k != FMouseDownKeyFrame)
+											k.MoveTime(snapDelta, prevsTime, nextsTime);
 									}
+									else
+									{
+										if ((Control.ModifierKeys == Keys.Alt) && (span > 0))
+												k.MoveTime(delta * (k.Time-target.Time)/span, prevsTime, nextsTime);
+											else
+												k.MoveTime(delta, prevsTime, nextsTime);
+									}	
 									
 									update.Union(GetUpdateRegion(p, s, k));
 								}
@@ -1073,34 +1066,31 @@ namespace VVVV.Nodes.Timeliner
 							deltaY /= 10;
 						}
 						
+						//check for snap
+						double snapDelta = 0;
+						var snapping = CheckForSnap(pt, out snapDelta);
+						
 						foreach (TLBasePin p in FOutputPins)
 							foreach (TLSlice s in p.OutputSlices)
 							foreach (TLBaseKeyFrame k in s.KeyFrames)
 							if (k.Selected)
 						{
 							update.Union(k.RedrawArea);
+								
+							var nextsTime = GetNextTime(s.KeyFrames, k);
+							var prevsTime = GetPrevTime(s.KeyFrames, k);
 							
-							//may use a linked list of keyframes for faster access to neighbours?
-							//TLBaseKeyFrame next = s.KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return kf.Time > k.Time;});
-							//TLBaseKeyFrame last = s.KeyFrames.FindLast(delegate(TLBaseKeyFrame kf) {return kf.Time < k.Time;});
+							//move keyframe
+							if (snapping)
+							{	
+								if (k != FMouseDownKeyFrame)
+									k.MoveTime(snapDelta, prevsTime, nextsTime);
+							}
+							else
+								k.MoveTime(deltaX, prevsTime, nextsTime);
 							
-							double nextsTime = GetNextTime(s.KeyFrames, k);
-							double prevsTime = GetPrevTime(s.KeyFrames, k);
-							k.MoveTime(deltaX, prevsTime, nextsTime);
 							if (!p.Collapsed)
 								k.MoveY(deltaY);
-							//snap to state
-							if ((automata != null) && (Control.ModifierKeys == Keys.Control))
-							{
-								TLBaseKeyFrame nextState = automata.OutputSlices[0].KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return Math.Abs(kf.GetTimeAsX() - pt.X) < 15;});
-								
-								if (nextState != null)
-								{
-									double snapTime = nextState.Time + TLTime.MinTimeStep;
-									if ((snapTime > prevsTime) && (snapTime < nextsTime))
-										k.Time = snapTime;
-								}
-							}
 							
 							update.Union(GetUpdateRegion(p, s, k));
 						}
@@ -1112,9 +1102,9 @@ namespace VVVV.Nodes.Timeliner
 					{
 						double targetTime = FTransformer.XPosToTime(pt.X);
 						//snap to state
-						if ((automata != null) && (Control.ModifierKeys == Keys.Control))
+						if ((FTimer.Automata != null) && (Control.ModifierKeys == Keys.Control))
 						{
-							TLBaseKeyFrame nextState = automata.OutputSlices[0].KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return Math.Abs(kf.GetTimeAsX() - pt.X) < 15;});
+							TLBaseKeyFrame nextState = FTimer.Automata.OutputSlices[0].KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return Math.Abs(kf.GetTimeAsX() - pt.X) < 15;});
 							if (nextState != null)
 								targetTime = nextState.Time;
 						}
@@ -1143,6 +1133,44 @@ namespace VVVV.Nodes.Timeliner
 			}
 			
 			FLastMousePoint = pt;
+		}
+		
+		private bool CheckForSnap(Point pt, out double snapDelta)
+		{
+			var result = false;
+			snapDelta = 0;
+			
+			if ((FTimer.Automata != null) && (Control.ModifierKeys == Keys.Control))
+			{
+				double snapTime = 0;
+				var snapDist = 15;
+				var timeBarX = FTransformer.TransformPoint(new PointF((float) FTimer.GetTime(0), 0)).X;
+				//if timebar is closest snaptarget
+				if (Math.Abs(timeBarX - pt.X) < snapDist)
+					snapTime = FTimer.GetTime(0);
+				else
+				{
+					var nextState = FTimer.Automata.OutputSlices[0].KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return Math.Abs(kf.GetTimeAsX() - pt.X) < snapDist;});
+					if (nextState == null)
+						return result;
+					
+					snapTime = nextState.Time; // + TLTime.MinTimeStep; //not sure what this was for..
+				}
+								
+				var slice = PosPinToSlice(pt, PosToPin(pt));
+				var nextsTime = GetNextTime(slice.KeyFrames, FMouseDownKeyFrame);
+				var prevsTime = GetPrevTime(slice.KeyFrames, FMouseDownKeyFrame);
+				if ((snapTime > prevsTime) && (snapTime < nextsTime))
+				{
+					snapDelta = snapTime - FMouseDownKeyFrame.Time;
+					snapDelta *= FTransformer.GTimeScale;
+					
+					FMouseDownKeyFrame.Time = snapTime;
+					result = true;
+				}
+			}
+			
+			return result;
 		}
 
 		protected override void OnMouseUp(MouseEventArgs e)
