@@ -681,7 +681,9 @@ namespace VVVV.Nodes.Timeliner
 								FMouseState = TLMouseState.msSelecting;
 								FSelectionArea.Location = e.Location;
 								
-								if ((Control.ModifierKeys & Keys.Shift) != Keys.Shift && (Control.ModifierKeys & Keys.Alt) != Keys.Alt)
+								if ((Control.ModifierKeys & Keys.Shift) != Keys.Shift 
+								    && (Control.ModifierKeys & Keys.Control) != Keys.Control
+								    && (Control.ModifierKeys & Keys.Alt) != Keys.Alt)
 								{
 									SelectAll(false);
 								}
@@ -706,11 +708,32 @@ namespace VVVV.Nodes.Timeliner
 								FMouseState = TLMouseState.msDraggingXOnly;
 							}
 							
+							//if ctrl is pressed toggle selection of only this keyframe
+							if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+							{
+								FMouseDownKeyFrame.Selected = !FMouseDownKeyFrame.Selected;
+								if (FMouseDownKeyFrame.Selected)
+									FPinsWithSelectedKeyframes.Add(pin);
+							}
+							//else deselect all before selecting only this keyframe
+							else
+							{
+								if (!FMouseDownKeyFrame.Selected)
+									SelectAll(false);
+
+								FMouseDownKeyFrame.Selected = true;
+								FPinsWithSelectedKeyframes.Add(pin);
+							}
+					/*		
 							if (!FMouseDownKeyFrame.Selected)
 							{
+								//if ctrl is pressed toggle selection of keyframe
+								
+								//else deselect only this keyframe
+							}
 								//if ctrl is not pressed deselect all other keyframes
 								if ((Control.ModifierKeys & Keys.Control) != Keys.Control)
-									SelectAll(false);
+								{	
 						
 								FMouseDownKeyFrame.Selected = true;
 								FPinsWithSelectedKeyframes.Add(pin);
@@ -723,7 +746,7 @@ namespace VVVV.Nodes.Timeliner
 									FMouseDownKeyFrame.Selected = false;
 									FMouseState = TLMouseState.msIdle;
 								}
-							}
+							}*/
 					
 							if (FMouseDownKeyFrame is TLStateKeyFrame)
 								this.Invalidate(GetUpdateRegion(pin, pin.OutputSlices[0], FMouseDownKeyFrame));
@@ -1140,7 +1163,7 @@ namespace VVVV.Nodes.Timeliner
 			var result = false;
 			snapDelta = 0;
 			
-			if ((FTimer.Automata != null) && (Control.ModifierKeys == Keys.Control))
+			if ((Control.ModifierKeys == Keys.Control))
 			{
 				double snapTime = 0;
 				var snapDist = 15;
@@ -1148,7 +1171,7 @@ namespace VVVV.Nodes.Timeliner
 				//if timebar is closest snaptarget
 				if (Math.Abs(timeBarX - pt.X) < snapDist)
 					snapTime = FTimer.GetTime(0);
-				else
+				else if (FTimer.Automata != null) 
 				{
 					var nextState = FTimer.Automata.OutputSlices[0].KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return Math.Abs(kf.GetTimeAsX() - pt.X) < snapDist;});
 					if (nextState == null)
