@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 
 namespace VVVV.Nodes.Timeliner
 {
@@ -15,12 +16,8 @@ namespace VVVV.Nodes.Timeliner
 		private bool FIsRunning;
 		private bool FForceCurrentTime = false;
 		
-		private TLAutomataPin FAutomata;
-		public TLAutomataPin Automata
-		{
-			set{FAutomata = value;}
-			get{return FAutomata;}
-		}
+		public TLAutomataPin Automata {get; set;}
+		public TLTransformer Transformer {get; set;}
 		
 		public TLTime()
 		{
@@ -47,6 +44,11 @@ namespace VVVV.Nodes.Timeliner
 		public double GetTime(int Index)
 		{
 			return FCurrentTimes[Index % FCurrentTimes.Length];
+		}
+		
+		public double GetTimeAsX(int Index)
+		{
+			return Transformer.TransformPoint(new PointF((float) GetTime(Index), 0)).X;
 		}
 		
 		public void SetTime(int Index, double Time)
@@ -103,10 +105,10 @@ namespace VVVV.Nodes.Timeliner
 			if (FIsRunning)
 				FCurrentTimes[0] = FHostTime - FStartTime + FOffset;
 			
-			if (FAutomata != null)
+			if (Automata != null)
 			{
 				if (FForceCurrentTime)
-					FAutomata.ForceStateFromCurrentTime(FCurrentTimes[0]);
+					Automata.ForceStateFromCurrentTime(FCurrentTimes[0]);
 				
 				EvaluateAutomata();
 				
@@ -118,10 +120,10 @@ namespace VVVV.Nodes.Timeliner
 		
 		private void EvaluateAutomata()
 		{
-			FAutomata.Evaluate(FCurrentTimes[0]);
+			Automata.Evaluate(FCurrentTimes[0]);
 
 			//now check the automatas command to see what to do:
-			switch (FAutomata.Command)
+			switch (Automata.Command)
 			{
 				case TLAutomataCommand.NoChange:
 					{
@@ -140,14 +142,14 @@ namespace VVVV.Nodes.Timeliner
 					}
 				case TLAutomataCommand.Pause:
 					{
-						FCurrentTimes[0] = FAutomata.PauseTime;
+						FCurrentTimes[0] = Automata.PauseTime;
 						FForceCurrentTime = true;
 						IsRunning = false;
 						break;
 					}
 				case TLAutomataCommand.Jump:
 					{
-						FCurrentTimes[0] = FAutomata.TimeToJumpTo;
+						FCurrentTimes[0] = Automata.TimeToJumpTo;
 						FForceCurrentTime = true;
 						break;
 					}

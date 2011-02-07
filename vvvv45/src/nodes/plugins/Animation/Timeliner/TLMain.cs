@@ -88,14 +88,15 @@ namespace VVVV.Nodes
 
 		// CLASSES
 		///////////////////////
-		private TLRulerPin GTopRuler;
+		private TLRulerPin FTopRuler;
 		private TLAutomataPin FAutomata;
-		private TLTransformer GTransformer = new TLTransformer();
-		private TLTime GTimer = new TLTime();		
+		private TLTransformer FTransformer = new TLTransformer();
+		private TLTime FTimer = new TLTime();
 		
 		private void InitializeComponent()
 		{
 			this.MainMenu = new System.Windows.Forms.Panel();
+			this.TimeBarModeBox = new System.Windows.Forms.ComboBox();
 			this.ToggleCollapseButton = new System.Windows.Forms.Button();
 			this.MidiButton = new System.Windows.Forms.Button();
 			this.WavButton = new System.Windows.Forms.Button();
@@ -122,6 +123,7 @@ namespace VVVV.Nodes
 			// MainMenu
 			// 
 			this.MainMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+			this.MainMenu.Controls.Add(this.TimeBarModeBox);
 			this.MainMenu.Controls.Add(this.ToggleCollapseButton);
 			this.MainMenu.Controls.Add(this.MidiButton);
 			this.MainMenu.Controls.Add(this.WavButton);
@@ -138,13 +140,28 @@ namespace VVVV.Nodes
 			this.MainMenu.Size = new System.Drawing.Size(688, 25);
 			this.MainMenu.TabIndex = 0;
 			// 
+			// TimeBarModeBox
+			// 
+			this.TimeBarModeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.TimeBarModeBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.TimeBarModeBox.FormattingEnabled = true;
+			this.TimeBarModeBox.Items.AddRange(new object[] {
+									"Manual",
+									"Jump",
+									"Follow"});
+			this.TimeBarModeBox.Location = new System.Drawing.Point(454, 2);
+			this.TimeBarModeBox.Name = "TimeBarModeBox";
+			this.TimeBarModeBox.Size = new System.Drawing.Size(93, 21);
+			this.TimeBarModeBox.TabIndex = 10;
+			this.TimeBarModeBox.SelectionChangeCommitted += new System.EventHandler(this.TimeBarModeBoxSelectionChangeCommitted);
+			// 
 			// ToggleCollapseButton
 			// 
 			this.ToggleCollapseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.ToggleCollapseButton.Location = new System.Drawing.Point(113, 0);
+			this.ToggleCollapseButton.Location = new System.Drawing.Point(110, 0);
 			this.ToggleCollapseButton.Name = "ToggleCollapseButton";
 			this.ToggleCollapseButton.Size = new System.Drawing.Size(40, 23);
-			this.ToggleCollapseButton.TabIndex = 11;
+			this.ToggleCollapseButton.TabIndex = 2;
 			this.ToggleCollapseButton.Text = "v | >";
 			this.ToggleCollapseButton.UseVisualStyleBackColor = true;
 			this.ToggleCollapseButton.Click += new System.EventHandler(this.ToggleCollapseButtonClick);
@@ -152,10 +169,10 @@ namespace VVVV.Nodes
 			// MidiButton
 			// 
 			this.MidiButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.MidiButton.Location = new System.Drawing.Point(442, 0);
+			this.MidiButton.Location = new System.Drawing.Point(374, 0);
 			this.MidiButton.Name = "MidiButton";
 			this.MidiButton.Size = new System.Drawing.Size(34, 23);
-			this.MidiButton.TabIndex = 10;
+			this.MidiButton.TabIndex = 8;
 			this.MidiButton.Text = "+M";
 			this.MidiButton.UseVisualStyleBackColor = true;
 			this.MidiButton.Click += new System.EventHandler(this.PinButtonClick);
@@ -164,7 +181,7 @@ namespace VVVV.Nodes
 			// 
 			this.WavButton.Enabled = false;
 			this.WavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.WavButton.Location = new System.Drawing.Point(482, 0);
+			this.WavButton.Location = new System.Drawing.Point(414, 0);
 			this.WavButton.Name = "WavButton";
 			this.WavButton.Size = new System.Drawing.Size(34, 23);
 			this.WavButton.TabIndex = 9;
@@ -176,10 +193,10 @@ namespace VVVV.Nodes
 			// AutomataCheckBox
 			// 
 			this.AutomataCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.AutomataCheckBox.Location = new System.Drawing.Point(237, 0);
+			this.AutomataCheckBox.Location = new System.Drawing.Point(185, -1);
 			this.AutomataCheckBox.Name = "AutomataCheckBox";
 			this.AutomataCheckBox.Size = new System.Drawing.Size(34, 24);
-			this.AutomataCheckBox.TabIndex = 8;
+			this.AutomataCheckBox.TabIndex = 3;
 			this.AutomataCheckBox.Text = "A";
 			this.AutomataCheckBox.UseVisualStyleBackColor = true;
 			this.AutomataCheckBox.CheckedChanged += new System.EventHandler(this.AutomataCheckBoxCheckedChanged);
@@ -187,7 +204,7 @@ namespace VVVV.Nodes
 			// ColorButton
 			// 
 			this.ColorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.ColorButton.Location = new System.Drawing.Point(389, 0);
+			this.ColorButton.Location = new System.Drawing.Point(337, 0);
 			this.ColorButton.Name = "ColorButton";
 			this.ColorButton.Size = new System.Drawing.Size(31, 23);
 			this.ColorButton.TabIndex = 7;
@@ -198,10 +215,10 @@ namespace VVVV.Nodes
 			// RulerButton
 			// 
 			this.RulerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.RulerButton.Location = new System.Drawing.Point(277, 0);
+			this.RulerButton.Location = new System.Drawing.Point(225, 0);
 			this.RulerButton.Name = "RulerButton";
 			this.RulerButton.Size = new System.Drawing.Size(31, 23);
-			this.RulerButton.TabIndex = 6;
+			this.RulerButton.TabIndex = 4;
 			this.RulerButton.Text = "+R";
 			this.RulerButton.UseVisualStyleBackColor = true;
 			this.RulerButton.Click += new System.EventHandler(this.PinButtonClick);
@@ -209,10 +226,10 @@ namespace VVVV.Nodes
 			// StringButton
 			// 
 			this.StringButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.StringButton.Location = new System.Drawing.Point(351, 0);
+			this.StringButton.Location = new System.Drawing.Point(299, 0);
 			this.StringButton.Name = "StringButton";
 			this.StringButton.Size = new System.Drawing.Size(32, 23);
-			this.StringButton.TabIndex = 4;
+			this.StringButton.TabIndex = 6;
 			this.StringButton.Text = "+S";
 			this.StringButton.UseVisualStyleBackColor = true;
 			this.StringButton.Click += new System.EventHandler(this.PinButtonClick);
@@ -220,10 +237,10 @@ namespace VVVV.Nodes
 			// ValueButton
 			// 
 			this.ValueButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.ValueButton.Location = new System.Drawing.Point(314, 0);
+			this.ValueButton.Location = new System.Drawing.Point(262, 0);
 			this.ValueButton.Name = "ValueButton";
 			this.ValueButton.Size = new System.Drawing.Size(31, 23);
-			this.ValueButton.TabIndex = 3;
+			this.ValueButton.TabIndex = 5;
 			this.ValueButton.Text = "+V";
 			this.ValueButton.UseVisualStyleBackColor = true;
 			this.ValueButton.Click += new System.EventHandler(this.PinButtonClick);
@@ -318,9 +335,9 @@ namespace VVVV.Nodes
 			this.PinHeaderPanel0.Size = new System.Drawing.Size(150, 20);
 			this.PinHeaderPanel0.TabIndex = 0;
 			this.PinHeaderPanel0.Tag = "0";
-			this.PinHeaderPanel0.DragOver += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragOver);
 			this.PinHeaderPanel0.DragDrop += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragDrop);
 			this.PinHeaderPanel0.DragEnter += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragEnter);
+			this.PinHeaderPanel0.DragOver += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragOver);
 			// 
 			// PinHeaderPanel1
 			// 
@@ -333,9 +350,9 @@ namespace VVVV.Nodes
 			this.PinHeaderPanel1.Size = new System.Drawing.Size(150, 305);
 			this.PinHeaderPanel1.TabIndex = 1;
 			this.PinHeaderPanel1.Tag = "1";
-			this.PinHeaderPanel1.DragOver += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragOver);
 			this.PinHeaderPanel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragDrop);
 			this.PinHeaderPanel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragEnter);
+			this.PinHeaderPanel1.DragOver += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragOver);
 			// 
 			// TimelinerPlugin
 			// 
@@ -350,6 +367,7 @@ namespace VVVV.Nodes
 			this.SplitContainer.ResumeLayout(false);
 			this.ResumeLayout(false);
 		}
+		private System.Windows.Forms.ComboBox TimeBarModeBox;
 		private System.Windows.Forms.Button ToggleCollapseButton;
 		private System.Windows.Forms.SplitContainer SplitContainer;
 		private System.Windows.Forms.Button MidiButton;
@@ -383,15 +401,18 @@ namespace VVVV.Nodes
 			PinPanel.BringToFront();
 			
 			//PinHeaderPanel0.MouseWheel += new MouseEventHandler(OnMouseWheel);
-			GTransformer.OnTransformationChanged += new TransformationChangedHandler(TransformationChangedCB);
+			FTransformer.OnTransformationChanged += new TransformationChangedHandler(TransformationChangedCB);
 			
 			GNumberFormat.NumberDecimalSeparator = ".";
 			SliceArea.OutputPins = FOutputPins;
-			SliceArea.Transformer = GTransformer;
-			SliceArea.Timer = GTimer;
+			SliceArea.Transformer = FTransformer;
+			SliceArea.Timer = FTimer;
 			SliceArea.SplitterPosition = 20;
 			
 			FSettings = new XmlDocument();
+			
+			FTimer.Transformer = FTransformer;
+			TimeBarModeBox.SelectedIndex = 0;
 		}
 		
 		protected override void Dispose(bool disposing)
@@ -403,9 +424,9 @@ namespace VVVV.Nodes
 				{
 					// Dispose managed resources.
 					FAutomata = null;
-					GTopRuler = null;
-					GTimer = null;
-					GTransformer = null;
+					FTopRuler = null;
+					FTimer = null;
+					FTransformer = null;
 
 				}
 				// Release unmanaged resources. If disposing is false,
@@ -564,8 +585,8 @@ namespace VVVV.Nodes
 			//only needed because vvvv calls configcallback after setting of every slice while SettingSpreadAsString onload
 			//should better fill whole spread with saved values and then call configcallback
 			//so here we check that all pinsettings refer to a different PinName
-			//if there are doublepinnames, the current call seems to be triggered before all slices have been 
-			//used to compare whole settings string before (now comparing only pinnames) which failed, 
+			//if there are doublepinnames, the current call seems to be triggered before all slices have been
+			//used to compare whole settings string before (now comparing only pinnames) which failed,
 			//as settings can include optional attributes..
 
 			string s;
@@ -635,9 +656,9 @@ namespace VVVV.Nodes
 				FPlayInput.GetValue(0, out dval);
 				
 				if(dval == 0)
-					GTimer.IsRunning = false;
+					FTimer.IsRunning = false;
 				else
-					GTimer.IsRunning = true;
+					FTimer.IsRunning = true;
 			}
 			
 			//lookat
@@ -645,11 +666,11 @@ namespace VVVV.Nodes
 			if (FTransformationChanged)
 			{
 				FTranslateInput.GetValue(0, out dval);
-				GTransformer.GTimeTranslate = dval;
+				FTransformer.GTimeTranslate = dval;
 				FScaleInput.GetValue(0, out dval);
-				GTransformer.GTimeScale = dval;
+				FTransformer.GTimeScale = dval;
 				
-				GTransformer.ApplyTransformation();
+				FTransformer.ApplyTransformation();
 				
 				FTransformationChanged = false;
 				SliceArea.Invalidate();
@@ -664,39 +685,74 @@ namespace VVVV.Nodes
 			
 			if (FDoSetTime)
 			{
-				GTimer.TimeCount = Math.Min(FOutputPins.Count, FTimeInput.SliceCount);
+				FTimer.TimeCount = Math.Min(FOutputPins.Count, FTimeInput.SliceCount);
 				for (int i=0; i<FTimeInput.SliceCount; i++)
 				{
 					FTimeInput.GetValue(i, out dval);
-					GTimer.SetTime(i, dval);
+					FTimer.SetTime(i, dval);
 				}
 			}
 			else
 			{
 				double hosttime;
-				GTimer.TimeCount = 1;
+				FTimer.TimeCount = 1;
 				FHost.GetCurrentTime(out hosttime);
-				GTimer.HostTime = hosttime;
+				FTimer.HostTime = hosttime;
 			}
 			
 			//update time
-			FSeekingOut.SetValue(0, System.Convert.ToDouble(GTimer.IsSeeking));
-			GTimer.Evaluate();
-			FTimeOut.SliceCount = GTimer.TimeCount;
-			for (int i=0; i<GTimer.TimeCount; i++)
+			FSeekingOut.SetValue(0, System.Convert.ToDouble(FTimer.IsSeeking));
+			FTimer.Evaluate();
+			FTimeOut.SliceCount = FTimer.TimeCount;
+			for (int i=0; i<FTimer.TimeCount; i++)
+				FTimeOut.SetValue(0, FTimer.GetTime(i));
+
+			if (FTimer.IsRunning)
 			{
-				FTimeOut.SetValue(0, GTimer.GetTime(i));
+				var pixThresh = SliceArea.Width / 20;
+				if (TimeBarModeBox.Text == "Jump")
+				{
+					var timeAsX = FTimer.GetTimeAsX(0);
+					
+					//if timebar not in view, bring into view
+					if ((timeAsX < pixThresh) || (timeAsX > SliceArea.Width - pixThresh))
+					{
+						//compute timeoffset
+						var currentStart = FTransformer.XPosToTime(0);
+						var targetStart = FTimer.GetTime(0);
+						var offTime = targetStart - currentStart;
+						//convert to pixels
+						var offX = offTime * FTransformer.GTimeScale - pixThresh;
+						FTransformer.TranslateTime(-offX);
+						
+						FTransformer.ApplyTransformation();
+						SliceArea.Invalidate();
+					}
+				}
+				else if (TimeBarModeBox.Text == "Follow")
+				{
+					//scroll so that timebar is in center
+					//compute timeoffset
+					var currentStart = FTransformer.XPosToTime(0);
+					var targetStart = FTimer.GetTime(0) - (FTopRuler.VisibleTimeRange / 2) / FTransformer.GTimeScale;
+					var offTime = targetStart - currentStart;
+					//convert to pixels
+					var offX = offTime * FTransformer.GTimeScale;
+					FTransformer.TranslateTime(-offX);
+					
+					FTransformer.ApplyTransformation();
+					SliceArea.Invalidate();
+				}
 			}
-			
-			FPlayingOut.SetValue(0, System.Convert.ToDouble(GTimer.IsRunning));
+			FPlayingOut.SetValue(0, System.Convert.ToDouble(FTimer.IsRunning));
 			
 			int index = 0;
 			foreach (TLBasePin p in FOutputPins)
 			{
 				if (p is TLRulerPin)
-					p.Evaluate(GTimer.GetTime(0));
+					p.Evaluate(FTimer.GetTime(0));
 				else if (!(p is TLAutomataPin)) //as automata is already evaluated above
-					p.Evaluate(GTimer.GetTime(index++));
+					p.Evaluate(FTimer.GetTime(index++));
 			}
 			/*	for (int i = 0; i<FOutputPins.Count;i++)
 			{
@@ -705,7 +761,7 @@ namespace VVVV.Nodes
 
 			SliceArea.Evaluate();
 
-			GTimer.InvalidateTimes();
+			FTimer.InvalidateTimes();
 			if (FFirstFrame)
 			{
 				//draw whole slicearea after all keyframes have been loaded
@@ -717,7 +773,7 @@ namespace VVVV.Nodes
 				
 				foreach (TLBasePin pin in FOutputPins)
 					if (pin is TLPin)
-					(pin as TLPin).UpdateSliceSpecificSettings();
+						(pin as TLPin).UpdateSliceSpecificSettings();
 			}
 		}
 		#endregion mainloop
@@ -727,20 +783,8 @@ namespace VVVV.Nodes
 			if (FGUISettings.SliceCount == 0)
 				return;
 			
-			string settings;
-			XmlNode guiSettings;
-			XmlAttribute attr;
-			
-			FGUISettings.GetString(0, out settings);
-			
-			settings = settings.TrimEnd();
-			if (settings == "")
-				return;
-			
-			FSettings.LoadXml(settings);
-			guiSettings = FSettings.SelectSingleNode(@"//SPLITTER");
-			attr = guiSettings.Attributes.GetNamedItem("Position") as XmlAttribute;
-			SplitContainer.SplitterDistance = Convert.ToInt32(attr.Value);
+			TimeBarModeBox.SelectedItem = GetGUIParameter("TIMEBAR", "Mode", "Manual");
+			SplitContainer.SplitterDistance = int.Parse(GetGUIParameter("SPLITTER", "Position", "20"));
 		}
 		
 		private void PinSettingsChanged()
@@ -799,9 +843,9 @@ namespace VVVV.Nodes
 					{
 						case TLPinType.Automata:
 							{
-								newPin = new TLAutomataPin(FHost, GTransformer, FOutputPins.Count, pinSettings);
+								newPin = new TLAutomataPin(FHost, FTransformer, FOutputPins.Count, pinSettings);
 								FAutomata = (TLAutomataPin) newPin;
-								GTimer.Automata = FAutomata;
+								FTimer.Automata = FAutomata;
 								
 								if (FAutomataCreatedViaGUI)
 									FAutomata.InitializeWithLoop();
@@ -811,31 +855,31 @@ namespace VVVV.Nodes
 							}
 						case TLPinType.Ruler:
 							{
-								newPin = new TLRulerPin(GTransformer, FOutputPins.Count, pinSettings, GTopRuler != null);
-								if (GTopRuler == null)
-									GTopRuler = (TLRulerPin) newPin;
+								newPin = new TLRulerPin(FTransformer, FOutputPins.Count, pinSettings, FTopRuler != null);
+								if (FTopRuler == null)
+									FTopRuler = (TLRulerPin) newPin;
 								
-								(newPin as TLRulerPin).Timer = GTimer;
+								(newPin as TLRulerPin).Timer = FTimer;
 								break;
 							}
 						case TLPinType.Value:
 							{
-								newPin = new TLValuePin(FHost, GTransformer, FOutputPins.Count, pinSettings);
+								newPin = new TLValuePin(FHost, FTransformer, FOutputPins.Count, pinSettings);
 								break;
 							}
 						case TLPinType.String:
 							{
-								newPin = new TLStringPin(FHost, GTransformer, FOutputPins.Count, pinSettings);
+								newPin = new TLStringPin(FHost, FTransformer, FOutputPins.Count, pinSettings);
 								break;
 							}
 						case TLPinType.Color:
 							{
-								newPin = new TLColorPin(FHost, GTransformer, FOutputPins.Count, pinSettings);
+								newPin = new TLColorPin(FHost, FTransformer, FOutputPins.Count, pinSettings);
 								break;
 							}
 						case TLPinType.Midi:
 							{
-								newPin = new TLMidiPin(FHost, GTransformer, FOutputPins.Count, pinSettings);
+								newPin = new TLMidiPin(FHost, FTransformer, FOutputPins.Count, pinSettings);
 								break;
 							}
 						case TLPinType.Wave:
@@ -945,9 +989,9 @@ namespace VVVV.Nodes
 					if (rp.Count == 1)
 						return;
 				}
-			
+				
 				int pinID = FOutputPins.IndexOf(Pin);
-					MovePin (pinID, -1);
+				MovePin (pinID, -1);
 			}
 		}
 		
@@ -957,7 +1001,7 @@ namespace VVVV.Nodes
 			FPinSettingsList.Clear();
 			for (int i=0; i<FOutputPins.Count; i++)
 				FPinSettingsList.Add(FOutputPins[i].Settings.OuterXml);
-		
+			
 			UpdatePinSettings();
 		}
 		
@@ -1077,40 +1121,40 @@ namespace VVVV.Nodes
 				
 				if (ke.KeyCode == Keys.Space)
 				{
-					GTimer.IsRunning = !GTimer.IsRunning;
+					FTimer.IsRunning = !FTimer.IsRunning;
 					UpdatePlayButton();
 					return true;
 				}
 				else if (ke.KeyCode == Keys.Back)
 				{
-					GTimer.IsRunning = false;
-					GTimer.SetTime(0, 0);
+					FTimer.IsRunning = false;
+					FTimer.SetTime(0, 0);
 					return true;
 				}
 				else if (ke.KeyCode == Keys.Home)
 				{
 					if (FAutomata != null)
-						GTimer.SetTime(0, FAutomata.OutputSlices[0].KeyFrames[0].Time);
+						FTimer.SetTime(0, FAutomata.OutputSlices[0].KeyFrames[0].Time);
 					else
-						GTimer.SetTime(0, 0);
+						FTimer.SetTime(0, 0);
 					return true;
 				}
 				else if (ke.KeyCode == Keys.End)
 				{
 					if (FAutomata != null)
-						GTimer.SetTime(0, FAutomata.OutputSlices[0].KeyFrames[FAutomata.OutputSlices[0].KeyFrames.Count-2].Time);
+						FTimer.SetTime(0, FAutomata.OutputSlices[0].KeyFrames[FAutomata.OutputSlices[0].KeyFrames.Count-2].Time);
 					return true;
 				}
 				else if (ke.KeyCode == Keys.PageUp)
 				{
 					if (FAutomata != null)
-						GTimer.SetTime(0, FAutomata.NextState.Time-TLTime.MinTimeStep);
+						FTimer.SetTime(0, FAutomata.NextState.Time-TLTime.MinTimeStep);
 					return true;
 				}
 				else if (ke.KeyCode == Keys.PageDown)
 				{
 					if (FAutomata != null)
-						GTimer.SetTime(0, FAutomata.PreviousState.Time-TLTime.MinTimeStep);
+						FTimer.SetTime(0, FAutomata.PreviousState.Time-TLTime.MinTimeStep);
 					return true;
 				}
 				else if (ke.KeyCode == Keys.Delete)
@@ -1163,20 +1207,20 @@ namespace VVVV.Nodes
 
 		void StopButtonClick(object sender, EventArgs e)
 		{
-			GTimer.IsRunning = false;
-			GTimer.SetTime(0, 0);
+			FTimer.IsRunning = false;
+			FTimer.SetTime(0, 0);
 			UpdatePlayButton();
 		}
 		
 		void PlayButtonClick(object sender, EventArgs e)
 		{
-			GTimer.IsRunning = !GTimer.IsRunning;
+			FTimer.IsRunning = !FTimer.IsRunning;
 			UpdatePlayButton();
 		}
 		
 		void UpdatePlayButton()
 		{
-			if (GTimer.IsRunning)
+			if (FTimer.IsRunning)
 				PlayButton.Text = "| |";
 			else
 				PlayButton.Text = "Play";
@@ -1223,7 +1267,7 @@ namespace VVVV.Nodes
 				if (FOutputPins.IndexOf(FAutomata) == -1)
 				{
 					FAutomata = null;
-					GTimer.Automata = null;	
+					FTimer.Automata = null;
 					
 					if (SplitContainer.SplitterDistance >= tempTop + tempHeight)
 						SplitContainer.SplitterDistance -= tempHeight;
@@ -1347,22 +1391,66 @@ namespace VVVV.Nodes
 			this.ResumeLayout(true);
 		}
 		
-		void SplitContainerSplitterMoved(object sender, SplitterEventArgs e)
+		private void SetGUIParameter(string tag, string attribute, string value)
 		{
-			//save splitter position
-			if (FSettings != null)
+			//load current settings
+			string s;
+			FGUISettings.GetString(0, out s);
+			if (s == null)
+				FSettings.RemoveAll();
+			else 
+				FSettings.LoadXml(s);
+			
+			//create element if it doesn't exist
+			var guiSettings = FSettings.SelectSingleNode(@"//GUI");
+			if (guiSettings == null)
 			{
-				XmlNode splitter = FSettings.CreateElement("SPLITTER");
-				XmlAttribute attr = FSettings.CreateAttribute("Position");
-				attr.Value = SplitContainer.SplitterDistance.ToString();
-				splitter.Attributes.Append(attr);
-				
-				FBlockConfigurate = true;
-				FGUISettings.SliceCount = 1;
-				FGUISettings.SetString(0, splitter.OuterXml);
-				FBlockConfigurate = false;
+				guiSettings = FSettings.CreateElement("GUI");
+				FSettings.AppendChild(guiSettings);
 			}
 			
+			var element = guiSettings.SelectSingleNode(tag);
+			if (element == null)
+			{
+				element = FSettings.CreateElement(tag);
+				guiSettings.AppendChild(element);
+			}
+			
+			//set given attribute
+			var attr = FSettings.CreateAttribute(attribute);
+			attr.Value = value;
+			element.Attributes.SetNamedItem(attr);
+			
+			//write settings back to pin
+			FBlockConfigurate = true;
+			FGUISettings.SliceCount = 1;
+			FGUISettings.SetString(0, guiSettings.OuterXml);
+			FBlockConfigurate = false;
+		}
+		
+		private string GetGUIParameter(string tag, string attribute, string defaultValue)
+		{
+			//load current settings
+			string s;
+			FGUISettings.GetString(0, out s);
+			if (s == null)
+				return defaultValue;
+			else 
+				FSettings.LoadXml(s);
+			
+			//select element
+			var element = FSettings.SelectSingleNode(@"/GUI/" + tag);
+			if (element == null)
+				return defaultValue;
+			
+			var attr = element.Attributes.GetNamedItem(attribute) as XmlAttribute;
+			return attr.Value;
+		}
+		
+		void SplitContainerSplitterMoved(object sender, SplitterEventArgs e)
+		{
+			SetGUIParameter("SPLITTER", "Position", SplitContainer.SplitterDistance.ToString());
+
 			SliceArea.SplitterPosition = SplitContainer.SplitterDistance;
 			SliceArea.Refresh();
 		}
@@ -1377,6 +1465,11 @@ namespace VVVV.Nodes
 			bool collapsed = count > FOutputPins.Count/2;
 			foreach(TLBasePin pin in FOutputPins)
 				pin.Collapsed = !collapsed;
+		}
+		
+		void TimeBarModeBoxSelectionChangeCommitted(object sender, EventArgs e)
+		{
+			SetGUIParameter("TIMEBAR", "Mode", TimeBarModeBox.SelectedItem.ToString());
 		}
 	}
 }
