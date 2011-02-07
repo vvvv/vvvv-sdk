@@ -127,11 +127,13 @@ namespace VVVV.Nodes.Timeliner
 			
 			FCurrentStateOut.SetString(0, CurrentState.Name);
 			
-			FStateTimes.SliceCount = (FOutputSlices[0] as TLAutomataSlice).KeyFrames.Count-1;
+			var stateCount = (FOutputSlices[0] as TLAutomataSlice).KeyFrames.Count-1;
+			
+			FStateTimes.SliceCount = stateCount;
 			for (int i=0; i<(FOutputSlices[0] as TLAutomataSlice).KeyFrames.Count-1; i++)
 				FStateTimes.SetValue(i, (FOutputSlices[0] as TLAutomataSlice).KeyFrames[i].Time);
 			
-			FStates.SliceCount = FStateTimes.SliceCount;
+			FStates.SliceCount = stateCount;
 			for (int i=0; i<(FOutputSlices[0] as TLAutomataSlice).KeyFrames.Count-1; i++)
 				FStates.SetString(i, ((FOutputSlices[0] as TLAutomataSlice).KeyFrames[i] as TLStateKeyFrame).Name);
 		}
