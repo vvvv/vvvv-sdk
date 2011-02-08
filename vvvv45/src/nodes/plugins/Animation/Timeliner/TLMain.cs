@@ -1453,6 +1453,9 @@ namespace VVVV.Nodes
 
 			SliceArea.SplitterPosition = SplitContainer.SplitterDistance;
 			SliceArea.Refresh();
+			
+			foreach (var p in PinHeaderPanel1.Controls)
+				(p as TLPin).UpdateKeyFrameAreas();
 		}
 		
 		void ToggleCollapseButtonClick(object sender, EventArgs e)
