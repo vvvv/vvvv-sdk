@@ -330,8 +330,10 @@ namespace VVVV.Nodes.NodeBrowser
 			FTagPanel.AfterShow();
 		}
 		
-		public void BeforeHide()
+		public void BeforeHide(out string comment)
 		{
+			comment = FTagPanel.CommentText;
+			
 			FTagPanel.BeforeHide();
 			FCategoryPanel.BeforeHide();
 		}

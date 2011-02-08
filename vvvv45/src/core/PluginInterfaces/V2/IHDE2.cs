@@ -215,7 +215,7 @@ namespace VVVV.PluginInterfaces.V2
 		void Initialize(string text);
 		void DragDrop(bool allow);
 		void AfterShow();
-		void BeforeHide();
+		void BeforeHide(out string comment);
 	}
 	
 	/// <summary>

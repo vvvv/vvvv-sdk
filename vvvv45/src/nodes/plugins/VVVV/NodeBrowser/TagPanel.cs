@@ -65,6 +65,14 @@ namespace VVVV.Nodes.NodeBrowser
 			}
 		}
 		
+		public string CommentText
+		{
+			get
+			{
+				return FTagsTextBox.Text.Trim();
+			}
+		}
+		
 		public TagPanel()
 		{
 			//
@@ -127,6 +135,7 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		public void BeforeHide()
 		{
+			FTagsTextBox.Text = "";
 			FToolTip.Hide(FRichTextBox);
 		}
 		
