@@ -162,7 +162,7 @@ namespace VVVV.Nodes.Timeliner
 			//draw state times
 			if (FTimer.Automata != null)
 				using(Pen p = new Pen(Color.FromArgb(255, 240, 240, 240)))
-				foreach (TLStateKeyFrame state in FTimer.Automata.OutputSlices[0].KeyFrames)
+					foreach (TLStateKeyFrame state in FTimer.Automata.OutputSlices[0].KeyFrames)
 			{
 				time = FTransformer.TransformPoint(new PointF((float) state.Time, 0)).X;
 				if (time < float.MaxValue)
@@ -306,8 +306,8 @@ namespace VVVV.Nodes.Timeliner
 			double newtime = 0;
 			foreach (TLBasePin p in FOutputPins)
 				foreach (TLSlice s in p.OutputSlices)
-				foreach (TLBaseKeyFrame k in s.KeyFrames)
-				if (k.Selected)
+					foreach (TLBaseKeyFrame k in s.KeyFrames)
+						if (k.Selected)
 			{
 				if (first)
 				{
@@ -333,7 +333,7 @@ namespace VVVV.Nodes.Timeliner
 		{
 			foreach(TLSlice s in Pin.OutputSlices)
 				for (int i=s.KeyFrames.Count-1; i>-1; i--)
-				if (s.KeyFrames[i].Selected)
+					if (s.KeyFrames[i].Selected)
 			{
 				DeleteKeyFrame(Pin, s, s.KeyFrames[i]);
 			}
@@ -448,8 +448,8 @@ namespace VVVV.Nodes.Timeliner
 		{
 			foreach (TLBasePin p in FOutputPins)
 				foreach (TLSlice s in p.OutputSlices)
-				foreach (TLBaseKeyFrame k in s.KeyFrames)
-				if ((k.Selected && !Select) || (!k.Selected && Select))
+					foreach (TLBaseKeyFrame k in s.KeyFrames)
+						if ((k.Selected && !Select) || (!k.Selected && Select))
 			{
 				k.Selected = Select;
 				this.Invalidate(this.GetUpdateRegion(p, s, k));
@@ -465,7 +465,7 @@ namespace VVVV.Nodes.Timeliner
 			
 			foreach (TLSlice s in p.OutputSlices)
 				foreach (TLBaseKeyFrame k in s.KeyFrames)
-				if (!k.Selected)
+					if (!k.Selected)
 			{
 				k.Selected = true;
 				this.Invalidate(k.RedrawArea);
@@ -540,7 +540,7 @@ namespace VVVV.Nodes.Timeliner
 							{
 								foreach(TLSlice s in pin.OutputSlices)
 									for (int i=s.KeyFrames.Count-1; i>-1; i--)
-									if (s.KeyFrames[i].HitByPoint(e.Location, pin.Collapsed) && s.KeyFrames[i].Selected)
+										if (s.KeyFrames[i].HitByPoint(e.Location, pin.Collapsed) && s.KeyFrames[i].Selected)
 								{
 									DeleteKeyFrame(pin, s, s.KeyFrames[i]);
 								}
@@ -554,7 +554,7 @@ namespace VVVV.Nodes.Timeliner
 						{
 							foreach (TLBasePin p in FOutputPins)
 								if (p is TLStringPin)
-								foreach (TLSlice s in p.OutputSlices)
+									foreach (TLSlice s in p.OutputSlices)
 							{
 								List<TLBaseKeyFrame> keys = s.KeyFrames.FindAll(delegate(TLBaseKeyFrame k) {return k.Selected;});
 								allkeys.AddRange(keys);
@@ -564,7 +564,7 @@ namespace VVVV.Nodes.Timeliner
 						{
 							foreach (TLBasePin p in FOutputPins)
 								if (p is TLValuePin)
-								foreach (TLSlice s in p.OutputSlices)
+									foreach (TLSlice s in p.OutputSlices)
 							{
 								List<TLBaseKeyFrame> keys = s.KeyFrames.FindAll(delegate(TLBaseKeyFrame k) {return k.Selected;});
 								allkeys.AddRange(keys);
@@ -574,7 +574,7 @@ namespace VVVV.Nodes.Timeliner
 						{
 							foreach (TLBasePin p in FOutputPins)
 								if (p is TLColorPin)
-								foreach (TLSlice s in p.OutputSlices)
+									foreach (TLSlice s in p.OutputSlices)
 							{
 								List<TLBaseKeyFrame> keys = s.KeyFrames.FindAll(delegate(TLBaseKeyFrame k) {return k.Selected;});
 								allkeys.AddRange(keys);
@@ -584,7 +584,7 @@ namespace VVVV.Nodes.Timeliner
 						{
 							foreach (TLBasePin p in FOutputPins)
 								if (p is TLAutomataPin)
-								foreach (TLSlice s in p.OutputSlices)
+									foreach (TLSlice s in p.OutputSlices)
 							{
 								List<TLBaseKeyFrame> keys = s.KeyFrames.FindAll(delegate(TLBaseKeyFrame k) {return k.Selected;});
 								allkeys.AddRange(keys);
@@ -625,7 +625,7 @@ namespace VVVV.Nodes.Timeliner
 							{
 								foreach(TLSlice s in pin.OutputSlices)
 									for (int i=s.KeyFrames.Count-1; i>-1; i--)
-									if (s.KeyFrames[i].HitByPoint(e.Location, pin.Collapsed) && s.KeyFrames[i].Selected)
+										if (s.KeyFrames[i].HitByPoint(e.Location, pin.Collapsed) && s.KeyFrames[i].Selected)
 								{
 									DeleteKeyFrame(pin, s, s.KeyFrames[i]);
 								}
@@ -681,7 +681,7 @@ namespace VVVV.Nodes.Timeliner
 								FMouseState = TLMouseState.msSelecting;
 								FSelectionArea.Location = e.Location;
 								
-								if ((Control.ModifierKeys & Keys.Shift) != Keys.Shift 
+								if ((Control.ModifierKeys & Keys.Shift) != Keys.Shift
 								    && (Control.ModifierKeys & Keys.Control) != Keys.Control
 								    && (Control.ModifierKeys & Keys.Alt) != Keys.Alt)
 								{
@@ -724,7 +724,7 @@ namespace VVVV.Nodes.Timeliner
 								FMouseDownKeyFrame.Selected = true;
 								FPinsWithSelectedKeyframes.Add(pin);
 							}
-					/*		
+							/*
 							if (!FMouseDownKeyFrame.Selected)
 							{
 								//if ctrl is pressed toggle selection of keyframe
@@ -733,7 +733,7 @@ namespace VVVV.Nodes.Timeliner
 							}
 								//if ctrl is not pressed deselect all other keyframes
 								if ((Control.ModifierKeys & Keys.Control) != Keys.Control)
-								{	
+								{
 						
 								FMouseDownKeyFrame.Selected = true;
 								FPinsWithSelectedKeyframes.Add(pin);
@@ -747,7 +747,7 @@ namespace VVVV.Nodes.Timeliner
 									FMouseState = TLMouseState.msIdle;
 								}
 							}*/
-					
+							
 							if (FMouseDownKeyFrame is TLStateKeyFrame)
 								this.Invalidate(GetUpdateRegion(pin, pin.OutputSlices[0], FMouseDownKeyFrame));
 							else
@@ -874,7 +874,7 @@ namespace VVVV.Nodes.Timeliner
 						//check if any of the keyframes is within the SelectionArea
 						foreach (TLBasePin p in FOutputPins)
 							foreach (TLSlice s in p.OutputSlices)
-							foreach (TLBaseKeyFrame k in s.KeyFrames)
+								foreach (TLBaseKeyFrame k in s.KeyFrames)
 						{
 							bool wasSelected = k.Selected;
 							if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
@@ -915,7 +915,7 @@ namespace VVVV.Nodes.Timeliner
 							
 							foreach (TLBasePin p in FOutputPins)
 								foreach (TLSlice s in p.OutputSlices)
-								foreach (TLBaseKeyFrame kf in s.KeyFrames)
+									foreach (TLBaseKeyFrame kf in s.KeyFrames)
 							{
 								if (kf.Time > FMouseDownKeyFrame.Time)
 								{
@@ -947,7 +947,7 @@ namespace VVVV.Nodes.Timeliner
 								
 								if ((!p.Collapsed) || (Control.ModifierKeys == Keys.Shift))
 									foreach (TLBaseKeyFrame k in s.KeyFrames)
-									if (k.Selected)
+										if (k.Selected)
 								{
 									if (k is TLColorKeyFrame)
 									{
@@ -1011,7 +1011,7 @@ namespace VVVV.Nodes.Timeliner
 							
 							foreach (TLBasePin p in FOutputPins)
 								foreach (TLSlice s in p.OutputSlices)
-								foreach (TLBaseKeyFrame kf in s.KeyFrames)
+									foreach (TLBaseKeyFrame kf in s.KeyFrames)
 							{
 								if (kf.Time < FMouseDownKeyFrame.Time)
 								{
@@ -1030,7 +1030,7 @@ namespace VVVV.Nodes.Timeliner
 							//check for snap
 							double snapDelta = 0;
 							var snapping = CheckForSnap(pt, out snapDelta);
-					
+							
 							foreach (TLBasePin p in FOutputPins)
 								foreach (TLSlice s in p.OutputSlices)
 							{
@@ -1054,20 +1054,20 @@ namespace VVVV.Nodes.Timeliner
 									
 									double nextsTime = GetNextTime(s.KeyFrames, k);
 									double prevsTime = GetPrevTime(s.KeyFrames, k);
-							
+									
 									//move keyframe
 									if (snapping)
-									{	
+									{
 										if (k != FMouseDownKeyFrame)
 											k.MoveTime(snapDelta, prevsTime, nextsTime);
 									}
 									else
 									{
 										if ((Control.ModifierKeys == Keys.Alt) && (span > 0))
-												k.MoveTime(delta * (k.Time-target.Time)/span, prevsTime, nextsTime);
-											else
-												k.MoveTime(delta, prevsTime, nextsTime);
-									}	
+											k.MoveTime(delta * (k.Time-target.Time)/span, prevsTime, nextsTime);
+										else
+											k.MoveTime(delta, prevsTime, nextsTime);
+									}
 									
 									update.Union(GetUpdateRegion(p, s, k));
 								}
@@ -1095,17 +1095,17 @@ namespace VVVV.Nodes.Timeliner
 						
 						foreach (TLBasePin p in FOutputPins)
 							foreach (TLSlice s in p.OutputSlices)
-							foreach (TLBaseKeyFrame k in s.KeyFrames)
-							if (k.Selected)
+								foreach (TLBaseKeyFrame k in s.KeyFrames)
+									if (k.Selected)
 						{
 							update.Union(k.RedrawArea);
-								
+							
 							var nextsTime = GetNextTime(s.KeyFrames, k);
 							var prevsTime = GetPrevTime(s.KeyFrames, k);
 							
 							//move keyframe
 							if (snapping)
-							{	
+							{
 								if (k != FMouseDownKeyFrame)
 									k.MoveTime(snapDelta, prevsTime, nextsTime);
 							}
@@ -1138,15 +1138,21 @@ namespace VVVV.Nodes.Timeliner
 					
 				case TLMouseState.msPanning:
 					{
-						FTransformer.TranslateTime(pt.X - FLastMousePoint.X);
+						var dX = pt.X - FLastMousePoint.X;
+						var dY = pt.Y - FLastMousePoint.Y;
 						
-						double scale = 1;
-						if(pt.Y - FLastMousePoint.Y > 1)
-							scale = 1.1f;
-						else if (pt.Y - FLastMousePoint.Y < -1)
-							scale = 0.9f;
-						
-						FTransformer.ScaleTime(scale, pt.X + TimelinerPlugin.FHeaderWidth);
+						if (Math.Abs(dY) > Math.Abs(dX))
+						{
+							double scale = 1;
+							if(dY > 0)
+								scale = 1.1f;
+							else if (dY < 0)
+								scale = 0.9f;
+							
+							FTransformer.ScaleTime(scale, pt.X + TimelinerPlugin.FHeaderWidth);
+						}
+						else 
+							FTransformer.TranslateTime(dX);
 						
 						FTransformer.ApplyTransformation();
 						
@@ -1171,7 +1177,7 @@ namespace VVVV.Nodes.Timeliner
 				//if timebar is closest snaptarget
 				if (Math.Abs(timeBarX - pt.X) < snapDist)
 					snapTime = FTimer.GetTime(0);
-				else if (FTimer.Automata != null) 
+				else if (FTimer.Automata != null)
 				{
 					var nextState = FTimer.Automata.OutputSlices[0].KeyFrames.Find(delegate(TLBaseKeyFrame kf) {return Math.Abs(kf.GetTimeAsX() - pt.X) < snapDist;});
 					if (nextState == null)
@@ -1179,7 +1185,7 @@ namespace VVVV.Nodes.Timeliner
 					
 					snapTime = nextState.Time; // + TLTime.MinTimeStep; //not sure what this was for..
 				}
-								
+				
 				var slice = PosPinToSlice(pt, PosToPin(pt));
 				var nextsTime = GetNextTime(slice.KeyFrames, FMouseDownKeyFrame);
 				var prevsTime = GetPrevTime(slice.KeyFrames, FMouseDownKeyFrame);
