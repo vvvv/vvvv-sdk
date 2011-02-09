@@ -98,15 +98,26 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		{
 			return (node.InnerStatus & StatusCode.IsBoygrouped) == StatusCode.IsBoygrouped;
 		}
-		
-		public static bool IsMissing(this INode2 node)
-		{
-			return (node.Status & StatusCode.IsMissing) == StatusCode.IsMissing;
-		}
-		
-		public static bool IsBoygrouped(this INode2 node)
+
+        public static bool ContainsProblem(this INode2 node)
+        {
+			return (node.InnerStatus & (StatusCode.IsMissing | StatusCode.HasInvalidData | StatusCode.HasRuntimeError)) > 0;
+        }
+
+
+        public static bool IsMissing(this INode2 node)
+        {
+            return (node.Status & StatusCode.IsMissing) == StatusCode.IsMissing;
+        }
+
+        public static bool IsBoygrouped(this INode2 node)
 		{
 			return (node.Status & StatusCode.IsBoygrouped) == StatusCode.IsBoygrouped;
 		}
-	}
+        
+        public static bool HasProblem(this INode2 node)
+        {
+            return (node.Status & (StatusCode.IsMissing | StatusCode.HasInvalidData | StatusCode.HasRuntimeError)) > 0;
+        }
+    }
 }

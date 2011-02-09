@@ -416,14 +416,14 @@ namespace VVVV.Nodes.Finder
                     return Brushes.White;
                 
                 if (FNode.HasPatch)
-                {    if (FNode.ContainsMissingNodes())
+                {    if (FNode.ContainsProblem())
                         return SDarkRed;
                     else if (FNode.ContainsBoygroupedNodes())
                         return SDarkBlue;
                     else
                         return SDarkGray;
                 }
-                else if (FNode.IsMissing())
+                else if (FNode.HasProblem())
                     return SLightRed;
                 else if (FNode.IsBoygrouped())
                     return SLightBlue;
