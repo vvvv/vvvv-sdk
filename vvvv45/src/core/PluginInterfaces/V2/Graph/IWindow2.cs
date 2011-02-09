@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace VVVV.PluginInterfaces.V2.Graph
 {
+    [ComVisible(false)]
     public interface IWindow2
     {
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.ComponentModel.Composition;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -9,6 +10,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// <summary>
 	/// Represents a Key/Value Pair of an enum.
 	/// </summary>
+	[ComVisible(false)]
 	public class EnumEntry
 	{
 		/// <summary>
@@ -58,6 +60,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// <summary>
 	/// Manages the global Enums of the HDEHost.
 	/// </summary>
+	[ComVisible(false)]
 	public static class EnumManager
 	{
 		//the host

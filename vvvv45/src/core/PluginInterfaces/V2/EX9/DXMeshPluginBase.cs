@@ -1,9 +1,11 @@
 ﻿using System;
 using SlimDX.Direct3D9;
 using VVVV.PluginInterfaces.V1;
+using System.Runtime.InteropServices;
 
 namespace VVVV.PluginInterfaces.V2.EX9
 {	
+    [ComVisible(false)]
 	public abstract class DXMeshOutPluginBase : DXResourcePluginBase<MeshDeviceData>, IPluginDXMesh
 	{
 		protected IDXMeshOut FMeshOut;

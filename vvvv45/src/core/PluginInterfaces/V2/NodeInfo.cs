@@ -114,6 +114,7 @@ namespace VVVV.PluginInterfaces.V2
 		void CommitUpdate();
 	}
 	
+	[ComVisible(false)]
 	public static class NodeInfoExtensionMethods
 	{
 		public static void UpdateFromNodeInfo(this INodeInfo nodeInfo, INodeInfo otherNodeInfo)

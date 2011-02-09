@@ -6,7 +6,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Output
 {
-	public class OutputBinSpread<T> : BinSpread<T>
+	public class OutputBinSpread<T> : BinSpread<T>, IDisposable
 	{
 		protected Pin<int> FBinSize;
 		protected Pin<T> FSpreadPin;
@@ -25,6 +25,12 @@ namespace VVVV.Hosting.Pins.Output
 			att.DefaultValue = 1;
 			FBinSize = new IntOutputPin(host, att);
 			FBinSize.Updated += AnyUpdated;
+		}
+		
+		public virtual void Dispose()
+		{
+		    FSpreadPin.Updated -= AnyUpdated;
+		    FBinSize.Updated -= AnyUpdated;
 		}
 		
 		void AnyUpdated(object sender, EventArgs args)

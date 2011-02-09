@@ -1,7 +1,8 @@
-﻿using VVVV.PluginInterfaces.V1;
+﻿using System;
+using VVVV.PluginInterfaces.V1;
+
 namespace VVVV.PluginInterfaces.V2
 {
-   #region enums
 	/// <summary>
 	/// Used in <see cref="VVVV.PluginInterfaces.V2.INodeInfo">INodeInfo</see> to specify the type of the provided node.
 	/// </summary>
@@ -205,5 +206,14 @@ namespace VVVV.PluginInterfaces.V2
 		Shift = 4
 	};
 	
-	#endregion enums
+	[Flags]
+	public enum StatusCode
+	{
+		None = 0,
+		IsMissing = 1,
+		IsBoygrouped = 2,
+		IsConnected = 4,
+		HasInvalidData = 8,
+		HasRuntimeError = 16
+	}
 }

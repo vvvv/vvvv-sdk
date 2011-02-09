@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using SlimDX.Direct3D9;
 
@@ -8,6 +9,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
 	/// <summary>
 	/// Base class for plugins which handle DX resources.
 	/// </summary>
+	[ComVisible(false)]
 	public abstract class DXResourcePluginBase<T> : IPluginDXResource where T : DeviceData
 	{
 		//the device datas per device

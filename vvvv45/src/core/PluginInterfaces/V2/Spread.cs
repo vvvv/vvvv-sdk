@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,6 +11,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// <summary>
 	/// The spread data type
 	/// </summary>
+	[ComVisible(false)]
 	public class Spread<T> : ISpread<T>
 	{
 		protected T[] FBuffer;
@@ -134,6 +136,7 @@ namespace VVVV.PluginInterfaces.V2
 		}
 	}
 
+	[ComVisible(false)]
 	public static class SpreadExtensions_
 	{
 		public static ISpread<T> ToSpread<T>(this List<T> list)

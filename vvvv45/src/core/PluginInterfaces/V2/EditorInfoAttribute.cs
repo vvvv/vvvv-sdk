@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.Runtime.InteropServices;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -9,6 +10,7 @@ namespace VVVV.PluginInterfaces.V2
 {
 	[MetadataAttribute]
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false)]
+	[ComVisible(false)]
 	public class EditorInfoAttribute: ExportAttribute
 	{
 		public EditorInfoAttribute(params string[] fileExtensions)

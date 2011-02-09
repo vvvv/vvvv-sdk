@@ -15,6 +15,12 @@ namespace VVVV.Hosting.Pins.Input
 			FDiffSpreadPin = (DiffPin<T>) FSpreadPin;
 			FDiffSpreadPin.Changed += FSpreadPin_Changed;
 		}
+		
+        public override void Dispose()
+        {
+            FDiffSpreadPin.Changed -= FSpreadPin_Changed;
+            base.Dispose();
+        }
 
 		void FSpreadPin_Changed(IDiffSpread<T> spread)
 		{
@@ -41,29 +47,5 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			return (FBinSizePin.IsChanged || FDiffSpreadPin.IsChanged);
 		}			
-		
-		#region IDisposable
-		
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		private bool FDisposed;
-		private void Dispose(bool disposing)
-		{
-			if(!FDisposed)
-			{
-				if(disposing)
-				{
-					FDiffSpreadPin.Changed -= FSpreadPin_Changed;
-				}
-
-				FDisposed = true;
-			}
-		}
-		
-		#endregion IDisposable
 	}
 }

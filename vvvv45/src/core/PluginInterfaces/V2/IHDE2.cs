@@ -11,6 +11,7 @@ using VVVV.PluginInterfaces.V2.Graph;
 namespace VVVV.PluginInterfaces.V2
 {
     #region IHDEHost
+    [ComVisible(false)]
     public class NodeSelectionEventArgs : EventArgs
 	{
     	public INode2[] Nodes
@@ -25,6 +26,7 @@ namespace VVVV.PluginInterfaces.V2
 		}
 	}
     
+    [ComVisible(false)]
     public class WindowEventArgs : EventArgs
     {
     	public IWindow2 Window
@@ -39,6 +41,7 @@ namespace VVVV.PluginInterfaces.V2
     	}
     }
     
+    [ComVisible(false)]
     public class MouseEventArgs : EventArgs
     {
     	public INode2 Node
@@ -67,15 +70,19 @@ namespace VVVV.PluginInterfaces.V2
     	}
     }
 	
+    [ComVisible(false)]
 	public delegate void MouseEventHandler(object sender, MouseEventArgs args);
+	
+	[ComVisible(false)]
 	public delegate void NodeSelectionEventHandler(object sender, NodeSelectionEventArgs args);
+	
+	[ComVisible(false)]
 	public delegate void WindowEventHandler(object sender, WindowEventArgs args);
     
     /// <summary>
 	/// The interface to be implemented by a program to host IHDEPlugins.
 	/// </summary>
-	[Guid("2B24AC85-E543-40B3-9090-2828D26978A0"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[ComVisible(false)]
 	public interface IHDEHost
 	{
 	    /// <summary>
@@ -302,9 +309,20 @@ namespace VVVV.PluginInterfaces.V2
 		/// Check if the node can offer a GUI window
 		/// </summary>
 		/// <returns>Returns true if this node can offer a GUI window.</returns>
-		bool HasGUI();
-		bool HasPatch();
-		bool HasCode();
+		bool HasGUI
+		{
+		    get;
+		}
+		
+		bool HasPatch
+		{
+		    get;
+		}
+		
+		bool HasCode
+		{
+		    get;
+		}
 		
 		StatusCode Status
 		{
@@ -468,8 +486,6 @@ namespace VVVV.PluginInterfaces.V2
     /// <see cref="EditorInfoAttribute">EditorInfoAttribute</see> 
     /// to define with which file extensions this editor works with.
     /// </summary>
-    [Guid("ECC649C2-01B7-454E-9E22-E848D4AABAEC"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IEditor : IPluginBase
     {
     	/// <summary>
@@ -505,6 +521,7 @@ namespace VVVV.PluginInterfaces.V2
     	/// <summary>
     	/// The node this editor is attached to. Shows runtime errors of this node.
     	/// </summary>
+    	[ComVisible(false)]
     	INode2 AttachedNode
     	{
     		get;

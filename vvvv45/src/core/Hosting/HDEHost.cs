@@ -936,6 +936,7 @@ namespace VVVV.Hosting
 			var window = FindWindow(internalWindow);
 			FWindows.Remove(window);
 			OnWindowRemoved(new WindowEventArgs(window));
+			window.Dispose();
 		}
 		
 		public void WindowSelectionChangeCB(IWindow internalWindow)

@@ -1,12 +1,5 @@
-﻿/*
- * Erstellt mit SharpDevelop.
- * Benutzer: TF
- * Datum: 29.08.2010
- * Zeit: 11:09
- * 
- * Sie können diese Vorlage unter Extras > Optionen > Codeerstellung > Standardheader ändern.
- */
-using System;
+﻿using System;
+using System.Runtime.InteropServices;
 using SlimDX.Direct3D9;
 
 namespace VVVV.PluginInterfaces.V2.EX9
@@ -14,6 +7,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
 	/// <summary>
 	/// Base Class for custom data per graphics device.
 	/// </summary>
+	[ComVisible(false)]
 	public class DeviceData
 	{
 		/// <summary>
@@ -37,6 +31,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
 	}
 	
 	//generic spreaded device data
+	[ComVisible(false)]
 	public class GenericDeviceData<T> : DeviceData
 	{
 		//texture for this device
@@ -50,6 +45,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
 	}
 	
 	//texture data per graphics device
+	[ComVisible(false)]
 	public class TextureDeviceData : GenericDeviceData<ISpread<Texture>>
 	{
 		public TextureDeviceData(ISpread<Texture> texture)
@@ -59,6 +55,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
 	}
 	
 	//mesh data per graphics device
+	[ComVisible(false)]
 	public class MeshDeviceData : GenericDeviceData<Mesh>
 	{
 		public MeshDeviceData(Mesh mesh)

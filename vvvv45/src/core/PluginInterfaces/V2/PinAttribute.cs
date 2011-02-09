@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
@@ -10,6 +11,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// Common class that represents all available pin attributes.
 	/// Note that not all properties make sense for every pin data type.
 	/// </summary>
+	[ComVisible(false)]
 	public abstract class PinAttribute : ImportAttribute
 	{
 		public static readonly double DefaultMinValue = double.MinValue;

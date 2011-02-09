@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using SlimDX.Direct3D9;
 using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2.EX9
 {
+    [ComVisible(false)]
 	public abstract class DXTextureOutPluginBase : DXResourcePluginBase<TextureDeviceData>, IPluginDXTexture2
 	{
 		protected IDXTextureOut FTextureOut;

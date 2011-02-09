@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -11,9 +12,13 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.PluginInterfaces.V2
 {
+    [ComVisible(false)]
 	public delegate void PinUpdatedEventHandler(object sender, EventArgs args);
+	
+	[ComVisible(false)]
 	public delegate void PinConnectionEventHandler(object sender, PinConnectionEventArgs args);
 	
+	[ComVisible(false)]
 	public class PinConnectionEventArgs : EventArgs
 	{
 		public IPin OtherPin
@@ -28,6 +33,7 @@ namespace VVVV.PluginInterfaces.V2
 		}
 	}
 	
+	[ComVisible(false)]
 	public abstract class Pin<T> : Spread<T>, IDisposable, IPinUpdater
 	{
 		[Import]

@@ -5,7 +5,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Input
 {
-	public class InputBinSpread<T> : BinSpread<T>
+	public class InputBinSpread<T> : BinSpread<T>, IDisposable
 	{
 		protected DiffPin<int> FBinSizePin;
 		protected Pin<T> FSpreadPin;
@@ -33,6 +33,12 @@ namespace VVVV.Hosting.Pins.Input
 			att.DefaultValue = FBinSize;
 			FBinSizePin = new DiffIntInputPin(host, att);
 			FBinSizePin.Updated += AnyPin_Updated;
+		}
+		
+		public virtual void Dispose()
+		{
+		    FSpreadPin.Updated -= AnyPin_Updated;
+		    FBinSizePin.Updated -= AnyPin_Updated;
 		}
 		
 		protected override void BufferIncreased(ISpread<T>[] oldBuffer, ISpread<T>[] newBuffer)

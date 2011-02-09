@@ -396,6 +396,11 @@ namespace VVVV.Hosting
 		
 		public void CommitUpdate()
 		{
+			string name = FSystemname;
+			if (FDisposed)
+			{
+				
+			}
 			try
 			{
 				if (FInUpdate)
@@ -411,8 +416,10 @@ namespace VVVV.Hosting
 			}
 		}
 		
+		private bool FDisposed;
 		public void Dispose()
 		{
+			FDisposed = true;
 			FNodeInfo = null;
 		}
 		
@@ -575,6 +582,8 @@ namespace VVVV.Hosting
 			
 			if (!FInDestroyNodeInfo)
 				OnNodeInfoRemoved(proxyNodeInfo);
+			
+			proxyNodeInfo.Dispose();
 		}
 		
 		public event NodeInfoEventHandler NodeInfoAdded;

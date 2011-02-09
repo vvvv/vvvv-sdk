@@ -474,19 +474,28 @@ namespace Hoster
 			throw new NotImplementedException();
 		}
 		
-		public bool HasGUI()
+		public bool HasGUI
 		{
-			throw new NotImplementedException();
+		    get
+		    {
+			 throw new NotImplementedException();
+		    }
 		}
 		
-		public bool HasPatch()
+		public bool HasPatch
 		{
-			throw new NotImplementedException();
+			get
+		    {
+			 throw new NotImplementedException();
+		    }
 		}
 		
-		public bool HasCode()
+		public bool HasCode
 		{
-			throw new NotImplementedException();
+			get
+		    {
+			 throw new NotImplementedException();
+		    }
 		}
 		
 		public StatusCode Status

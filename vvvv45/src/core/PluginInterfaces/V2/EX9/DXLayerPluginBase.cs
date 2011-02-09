@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using SlimDX.Direct3D9;
 
@@ -8,6 +9,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
 	/// <summary>
 	/// Base class for plugins with layer out.
 	/// </summary>
+	[ComVisible(false)]
 	public abstract class DXLayerOutPluginBase<T> : DXResourcePluginBase<T>, IPluginDXLayer where T : DeviceData
 	{
 		protected IDXRenderStateIn FRenderStatePin;

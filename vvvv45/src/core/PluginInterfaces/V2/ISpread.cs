@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,6 +9,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// Common interface to the underlying input/output/config pins.
 	/// Set/Get, Read/Write methods are only implemented when it makes sense.
 	/// </summary>
+	[ComVisible(false)]
 	public interface ISpread<T> : IEnumerable<T>
 	{
 		/// <summary>
@@ -29,6 +31,7 @@ namespace VVVV.PluginInterfaces.V2
 		}
 	}
 
+	[ComVisible(false)]
     public static class SpreadExtensions
     {        
         public static string ToString<T>(this ISpread<T> spread)

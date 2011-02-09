@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -9,8 +10,10 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2
 {
+    [ComVisible(false)]
     public enum SearchPathState { AddPending, DisablePending, Added, Disabled };
 
+    [ComVisible(false)]
 	public class SearchPath
 	{
         public SearchPathState State {get; private set;}
@@ -115,6 +118,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// </summary>
 	[PartCreationPolicy(CreationPolicy.Shared)]
 	[Export(typeof(NodeCollection))]
+	[ComVisible(false)]
 	public class NodeCollection
 	{
 		List<SearchPath> FPaths = new List<SearchPath>();

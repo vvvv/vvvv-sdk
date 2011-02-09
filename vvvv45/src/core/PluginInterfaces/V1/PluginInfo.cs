@@ -84,6 +84,7 @@ namespace VVVV.PluginInterfaces.V1
 	/// </summary>
 	[Guid("FE1216D6-5439-416D-8FB7-16E9A29EF67B")]
 	[Serializable]
+	[ComVisible(false)]
 	public class PluginInfo: MarshalByRefObject, IPluginInfo
 	{
 		private string FName = "";

@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace VVVV.PluginInterfaces.V2
 {
+    [ComVisible(false)]
 	public delegate void NodeInfoEventHandler(object sender, INodeInfo nodeInfo);
 	
 	/// <summary>
 	/// Factory to create a <see cref="INodeInfo">nodeInfo</see>.
 	/// </summary>
+	[ComVisible(false)]
 	public interface INodeInfoFactory
 	{
 		/// <summary>

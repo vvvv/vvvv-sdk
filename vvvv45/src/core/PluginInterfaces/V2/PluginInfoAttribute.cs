@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 
@@ -9,6 +10,7 @@ namespace VVVV.PluginInterfaces.V2
 {
 	[MetadataAttribute]
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false)]
+	[ComVisible(false)]
 	public class PluginInfoAttribute: ExportAttribute
 	{
 		public PluginInfoAttribute() : base(typeof(IPluginBase)) { }

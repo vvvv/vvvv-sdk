@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.PluginInterfaces.V2
 {
-
+    [ComVisible(false)]
 	public abstract class DiffPin<T> : Pin<T>, IDiffSpread<T>
 	{
 		private bool IsReconnected;

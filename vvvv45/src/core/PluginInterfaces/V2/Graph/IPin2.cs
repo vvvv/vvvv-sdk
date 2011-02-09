@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.Core;
 
 namespace VVVV.PluginInterfaces.V2.Graph
 {
+    [ComVisible(false)]
     public interface IPin2 : INamed
     {
         /// <summary>
@@ -30,6 +32,7 @@ namespace VVVV.PluginInterfaces.V2.Graph
         event EventHandler Changed;
     }
 	
+    [ComVisible(false)]
 	public static class Pin2ExtensionMethods
 	{
 		public static bool IsConnected(this IPin2 pin)

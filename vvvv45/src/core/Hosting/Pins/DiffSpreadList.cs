@@ -12,7 +12,7 @@ namespace VVVV.Hosting.Pins
 	/// <summary>
 	/// base class for diff spread lists
 	/// </summary>
-	public abstract class DiffSpreadList<T> : SpreadListBase, IDiffSpread<ISpread<T>>
+	public abstract class DiffSpreadList<T> : SpreadListBase, IDiffSpread<ISpread<T>>, IDisposable
 	{
 		protected IDiffSpread<T>[] FPins;
 		protected IPluginHost FHost;
@@ -39,6 +39,11 @@ namespace VVVV.Hosting.Pins
 			FConfigPin.Updated += UpdatePins;
 			
 			FConfigPin.Update();
+		}
+		
+		public virtual void Dispose()
+		{
+		    FConfigPin.Updated -= UpdatePins;
 		}
 		
 		//pin management

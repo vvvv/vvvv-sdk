@@ -131,8 +131,13 @@ namespace VVVV.Hosting.Graph
 				FPins.Value.Dispose();
 			}
 			
-			foreach (Node childNode in this)
+			var childNodes = this.ToList();
+			foreach (Node childNode in childNodes)
+			{
+			    this.Remove(childNode);
 				childNode.Dispose();
+			}
+			childNodes.Clear();
 			
 			FNodes.Remove(FInternalCOMInterf);
 			
@@ -248,7 +253,7 @@ namespace VVVV.Hosting.Graph
 		{
 			get
 			{
-				return FInternalCOMInterf.HasPatch();
+				return FInternalCOMInterf.HasPatch;
 			}
 		}
 		
@@ -256,7 +261,7 @@ namespace VVVV.Hosting.Graph
 		{
 			get
 			{
-				return FInternalCOMInterf.HasCode();
+				return FInternalCOMInterf.HasCode;
 			}
 		}
 		
@@ -264,7 +269,7 @@ namespace VVVV.Hosting.Graph
 		{
 			get
 			{
-				return FInternalCOMInterf.HasGUI();
+				return FInternalCOMInterf.HasGUI;
 			}
 		}
 		

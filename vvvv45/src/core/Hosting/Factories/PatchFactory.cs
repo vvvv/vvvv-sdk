@@ -55,10 +55,10 @@ namespace VVVV.Hosting.Factories
                     match.Groups[2].Value,
                     match.Groups[3].Value,
                     filename,
-					true);
+                    true);
                 
                 nodeInfo.Type = NodeType.Module;
-                nodeInfo.InitialComponentMode = TComponentMode.InAWindow; // Hidden;                    
+                nodeInfo.InitialComponentMode = TComponentMode.InAWindow; // Hidden;
             }
             else //patch
             {
@@ -68,7 +68,7 @@ namespace VVVV.Hosting.Factories
                 nodeInfo.Type = NodeType.Patch;
                 nodeInfo.InitialComponentMode = TComponentMode.InAWindow;
             }
-                
+            
             nodeInfo.Factory = this;
             
             try
@@ -83,13 +83,16 @@ namespace VVVV.Hosting.Factories
                     var settings = new XmlReaderSettings();
                     settings.ProhibitDtd = false;
                     
-                    var xmlReader = XmlReader.Create((new StringReader(FDTD + sr.ReadToEnd())), settings);
-                    //xmlReader.Settings
-                    if(xmlReader.ReadToFollowing("INFO"))
+                    using (StringReader stringReader = new StringReader(FDTD + sr.ReadToEnd()))
                     {
-                        nodeInfo.Author = xmlReader.GetAttribute("author");
-                        nodeInfo.Help = xmlReader.GetAttribute("description");
-                        nodeInfo.Tags = xmlReader.GetAttribute("tags");
+                        var xmlReader = XmlReader.Create(stringReader, settings);
+                        //xmlReader.Settings
+                        if(xmlReader.ReadToFollowing("INFO"))
+                        {
+                            nodeInfo.Author = xmlReader.GetAttribute("author");
+                            nodeInfo.Help = xmlReader.GetAttribute("description");
+                            nodeInfo.Tags = xmlReader.GetAttribute("tags");
+                        }
                     }
                 }
             }
@@ -136,16 +139,16 @@ namespace VVVV.Hosting.Factories
             }
         }
         
-		protected override void DoAddFile(string filename)
-		{
-			if (!filename.Contains("~temp"))
-				base.DoAddFile(filename);
-		}
-		
-		protected override void DoRemoveFile(string filename)
-		{
-			if (!filename.Contains("~temp"))
-				base.DoRemoveFile(filename);
-		}
+        protected override void DoAddFile(string filename)
+        {
+            if (!filename.Contains("~temp"))
+                base.DoAddFile(filename);
+        }
+        
+        protected override void DoRemoveFile(string filename)
+        {
+            if (!filename.Contains("~temp"))
+                base.DoRemoveFile(filename);
+        }
     }
 }

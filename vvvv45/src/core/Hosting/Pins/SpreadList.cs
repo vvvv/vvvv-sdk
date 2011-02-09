@@ -17,7 +17,7 @@ namespace VVVV.Hosting.Pins
 	/// <summary>
 	/// base class for spread lists
 	/// </summary>
-	public abstract class SpreadList<T> : SpreadListBase, ISpread<ISpread<T>>
+	public abstract class SpreadList<T> : SpreadListBase, ISpread<ISpread<T>>, IDisposable
 	{
 		protected Pin<T>[] FPins;
 		protected IPluginHost FHost;
@@ -43,6 +43,11 @@ namespace VVVV.Hosting.Pins
 			FConfigPin.Updated += UpdatePins;
 			
 			FConfigPin.Update();
+		}
+		
+		public virtual void Dispose()
+		{
+		    FConfigPin.Updated -= UpdatePins;
 		}
 		
 		//pin management

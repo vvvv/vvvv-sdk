@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.Core;
 
 namespace VVVV.PluginInterfaces.V2.Graph
 {
+    [ComVisible(false)]
     public interface INode2 : IViewableList<INode2>, INamed
     {
         /// <summary>
@@ -84,6 +86,7 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		event EventHandler InnerStatusChanged;
     }
 	
+    [ComVisible(false)]
 	public static class Node2ExtensionMethods
 	{
 		public static bool ContainsMissingNodes(this INode2 node)
