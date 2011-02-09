@@ -118,9 +118,7 @@ namespace VVVV.PluginInterfaces.V2
 		protected virtual void OnUpdated()
 		{
 			if (Updated != null)
-			{
 				Updated(this, EventArgs.Empty);
-			}
 		}
 		
 		public event PinConnectionEventHandler Connected;

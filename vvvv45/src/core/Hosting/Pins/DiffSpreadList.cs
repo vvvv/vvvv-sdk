@@ -79,7 +79,7 @@ namespace VVVV.Hosting.Pins
 				FPins = new IDiffSpread<T>[count];
 				
 				//copy/delete pins
-				for (int i = 0; i<oldPins.Length; i++)
+				for (int i = 0; i < oldPins.Length; i++)
 				{
 					if (i < FPins.Length)
 						FPins[i] = oldPins[i];
@@ -138,7 +138,7 @@ namespace VVVV.Hosting.Pins
 
 		public IEnumerator<ISpread<T>> GetEnumerator()
 		{
-			for (int i=0; i<FPins.Length; i++)
+			for (int i = 0; i < FPins.Length; i++)
 				yield return FPins[i];
 		}
 		
@@ -153,7 +153,7 @@ namespace VVVV.Hosting.Pins
 		{
 			get 
 			{
-				for (int i = 0; i<FPins.Length; i++)
+				for (int i = 0; i < FPins.Length; i++)
 				{
 					if (FPins[i].IsChanged) return true;
 				}

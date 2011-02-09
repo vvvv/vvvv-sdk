@@ -14,18 +14,30 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			FDiffSpreadPin = (DiffPin<T>) FSpreadPin;
 			FDiffSpreadPin.Changed += FSpreadPin_Changed;
+			FBinSizePin.Changed += FBinSizePin_Changed;
 		}
 		
         public override void Dispose()
         {
             FDiffSpreadPin.Changed -= FSpreadPin_Changed;
+            FBinSizePin.Changed -= FBinSizePin_Changed;
             base.Dispose();
         }
 
 		void FSpreadPin_Changed(IDiffSpread<T> spread)
 		{
-			if (Changed != null) 
-				Changed(this);
+			OnChanged();
+		}
+		
+		void FBinSizePin_Changed(IDiffSpread<int> spread)
+		{
+		    OnChanged();
+		}
+		
+		protected virtual void OnChanged()
+		{
+		    if (Changed != null)
+		        Changed(this);
 		}
 
 		public event SpreadChangedEventHander<ISpread<T>> Changed;
@@ -34,7 +46,7 @@ namespace VVVV.Hosting.Pins.Input
 		{
 			get 
 			{
-				return FDiffSpreadPin.IsChanged;
+				return FDiffSpreadPin.IsChanged || FBinSizePin.IsChanged;
 			}
 		}
 
@@ -45,7 +57,7 @@ namespace VVVV.Hosting.Pins.Input
 		
 		protected override bool NeedToBuildSpread()
 		{
-			return (FBinSizePin.IsChanged || FDiffSpreadPin.IsChanged);
+			return IsChanged;
 		}			
 	}
 }
