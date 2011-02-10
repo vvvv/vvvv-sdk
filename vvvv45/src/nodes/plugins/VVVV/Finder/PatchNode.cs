@@ -414,19 +414,17 @@ namespace VVVV.Nodes.Finder
                 
                 if (IsActiveWindow)
                     return Brushes.White;
-                
-                if (FNode.HasPatch)
-                {    if (FNode.ContainsProblem())
-                        return SDarkRed;
-                    else if (FNode.ContainsBoygroupedNodes())
-                        return SDarkBlue;
-                    else
-                        return SDarkGray;
-                }
+
+                if (FNode.ContainsProblem())
+                    return SDarkRed;
+                else if (FNode.ContainsBoygroupedNodes())
+                    return SDarkBlue;
                 else if (FNode.HasProblem())
                     return SLightRed;
                 else if (FNode.IsBoygrouped())
                     return SLightBlue;
+                else if (FNode.HasPatch)
+                    return SDarkGray;
                 else
                     return SLightGray;
             }
