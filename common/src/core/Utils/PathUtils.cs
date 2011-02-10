@@ -16,15 +16,12 @@ namespace VVVV.Utils
 			var fromPath = Path.GetDirectoryName(basePath) + @"\";
 			var toPath = Path.GetDirectoryName(absolutePath) + @"\";
 			
-//			if (!fromPath.EndsWith(@"\"))
-//				fromPath = fromPath + @"\";
-			
 			var fromUri = new Uri(fromPath);
 			var toUri = new Uri(toPath);
 			
 			var relativeUri = fromUri.MakeRelativeUri(toUri);
 			var relativePath = Path.Combine(relativeUri.ToString().Replace('/', '\\'), Path.GetFileName(absolutePath));
-			return System.Web.HttpUtility.UrlDecode(relativePath);
+			return Uri.UnescapeDataString(relativePath);
 		}
 	}
 }
