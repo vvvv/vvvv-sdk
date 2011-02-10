@@ -70,8 +70,10 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		public IWindow2 CurrentPatchWindow
 		{
-			get;
-			private set;
+			get
+			{
+				return HDEHost.ActivePatchWindow;
+			}
 		}
 
 		// Track whether Dispose has been called.
@@ -118,7 +120,6 @@ namespace VVVV.Nodes.NodeBrowser
 			//register as IWindowSelectionListener at hdehost
 			HDEHost = host;
 			HDEHost.WindowSelectionChanged += HDEHost_WindowSelectionChanged;
-			CurrentPatchWindow = HDEHost.ActivePatchWindow;
 			
 			FNodeCollection = nodeCollection;
 			FNodeCollection.Collected += HandleFNodeCollectionCollected;
@@ -371,12 +372,10 @@ namespace VVVV.Nodes.NodeBrowser
 		void HDEHost_WindowSelectionChanged(object sender, WindowEventArgs args)
 		{
 			var window = args.Window;
-			
 			var windowtype = window.WindowType;
 			
-			if ((windowtype == WindowType.Patch || windowtype == WindowType.Module) && CurrentPatchWindow != window)
+			if (windowtype == WindowType.Patch || windowtype == WindowType.Module)
 			{
-			    CurrentPatchWindow = window;
 			    FTagPanel.NeedsUpdate = true;
 			    FCategoryPanel.NeedsUpdate = true;
 			}
