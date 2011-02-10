@@ -458,7 +458,7 @@ namespace PinTests
 			
 			ISpread<T> spread = PinFactory.CreateSpread<T>(FPluginHost, attribute);
 			
-			Assert.True(spread.SliceCount == 1);
+			Assert.True(spread.SliceCount == 1, "Initial SliceCount not correct.");
 			
 			TestSpread(spread, sampleData);
 			
@@ -490,20 +490,20 @@ namespace PinTests
 		protected void TestSpread<T>(ISpread<T> spread, T[] sampleData)
 		{
 			spread.SliceCount = 0;
-			Assert.True(spread.SliceCount == 0);
+			Assert.True(spread.SliceCount == 0, "SliceCount can't be set to 0.");
 			
 			spread.AssignFrom(sampleData);
-			Assert.True(spread.SliceCount == sampleData.Length);
+			Assert.AreEqual(sampleData.Length, spread.SliceCount, "SliceCount differs from Length of sample data.");
 			for (int i = 0; i < spread.SliceCount; i++)
 			{
-				Assert.True(spread[i].Equals(sampleData[i]));
-				Assert.True(spread[i].Equals(spread[spread.SliceCount + i]));
+				Assert.AreEqual(sampleData[i], spread[i], "Spread data differs from sample data.");
+				Assert.AreEqual(spread[i], spread[spread.SliceCount + i], "Modulo property doesn't hold in spread.");
 			}
 			
 			var spreadAsList = spread.ToList();
 			for (int i = 0; i < sampleData.Length; i++)
 			{
-				Assert.True(sampleData[i].Equals(spreadAsList[i]));
+				Assert.AreEqual(sampleData[i], spreadAsList[i], "List created with spread.ToList() differs from sample data.");
 			}
 			
 			spread.SliceCount = sampleData.Length;

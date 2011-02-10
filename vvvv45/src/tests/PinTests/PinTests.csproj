@@ -52,6 +52,9 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
+    <Reference Include="NUnit.Framework">
+      <HintPath>$(SharpDevelopBinPath)\Tools\NUnit\NUnit.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="System">
     </Reference>
     <Reference Include="System.Core">
@@ -65,13 +68,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\vvvv50\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="System.ComponentModel.Composition">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="System.ComponentModel.Composition, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <HintPath>..\..\..\vvvv50\lib\System.ComponentModel.Composition.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PinTests.cs" />
+    <Compile Include="SpreadTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Hosting\Hosting.csproj">
