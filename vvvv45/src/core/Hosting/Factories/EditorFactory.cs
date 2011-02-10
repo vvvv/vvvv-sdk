@@ -475,8 +475,10 @@ namespace VVVV.Hosting.Factories
 				FMoveToLine = line;
 				FMoveToColumn = column;
 				// Very important! Dummy nodes might get replaced during ExtractNodeInfo calls.
-				if (!nodeToAttach.IsMissing())
+				if (nodeToAttach != null && !nodeToAttach.IsMissing())
 				    FNodeToAttach = nodeToAttach;
+				else
+				    FNodeToAttach = null;
 				FInOpen = true;
 				
 				hdeHost.InvalidateCache(filename);
