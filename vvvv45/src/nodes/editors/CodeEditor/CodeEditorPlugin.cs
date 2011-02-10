@@ -305,18 +305,19 @@ namespace VVVV.HDE.CodeEditor
 			{
 				OpenedFile = null;
 				AttachedProject = null;
+				AttachedNode = null;
 				
 				document.ContentChanged -= document_ContentChanged;
 				document.Saved -= document_Saved;
 				document.Renamed -= document_Renamed;
 				document.Disposed -= document_Disposed;
 				
-				FEditor.TextDocument = null;
 				FEditor.CompletionBinding = null;
 				FEditor.FormattingStrategy = null;
 				FEditor.FoldingStrategy = null;
 				FEditor.LinkDataProvider = null;
 				FEditor.ToolTipProvider = null;
+				FEditor.TextDocument = null;
 			}
 		}
 		
