@@ -16,10 +16,10 @@ namespace VVVV.Hosting.Pins.Config
 			
 			var entrys = Enum.GetNames(FEnumType);
 			var defEntry = !string.IsNullOrEmpty(attribute.DefaultEnumEntry) ? attribute.DefaultEnumEntry : entrys[0];
-			host.UpdateEnum(FEnumType.Name, defEntry, entrys);
+			host.UpdateEnum(FEnumType.FullName, defEntry, entrys);
 
 			host.CreateEnumConfig(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FEnumConfigPin);
-			FEnumConfigPin.SetSubType(FEnumType.Name);
+			FEnumConfigPin.SetSubType(FEnumType.FullName);
 			
 			base.Initialize(FEnumConfigPin);
 		}
