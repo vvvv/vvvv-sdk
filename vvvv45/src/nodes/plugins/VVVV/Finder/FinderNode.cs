@@ -343,6 +343,8 @@ namespace VVVV.Nodes.Finder
                     FSearchTextBox.MouseWheel -= FSearchTextBox_MouseWheel;
                     FHDEHost.WindowSelectionChanged -= FHDEHost_WindowSelectionChanged;
                     FTagsPin.Changed -= FTagsPin_Changed;
+					if (FActivePatchNode.Parent != null)
+						FActivePatchNode.Parent.Removed -= HandleFActivePatchParentRemoved;
                     
                     if (FSearchResult != null)
                         FSearchResult.Dispose();

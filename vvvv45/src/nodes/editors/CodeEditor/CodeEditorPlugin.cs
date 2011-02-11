@@ -131,7 +131,7 @@ namespace VVVV.HDE.CodeEditor
 			FErrorTableViewer.Registry = registry;
 			FErrorTableViewer.Input = FErrorList;
 			
-			FEditor.LinkClicked += new LinkEventHandler(FEditor_LinkClicked);
+			FEditor.LinkClicked += FEditor_LinkClicked;
 		}
 
 		void FEditor_LinkClicked(object sender, Link link)
@@ -155,15 +155,10 @@ namespace VVVV.HDE.CodeEditor
 		
 		protected override void Dispose(bool disposing)
 		{
-			try
-			{
-				Close();
-				base.Dispose(disposing);
-			}
-			catch (Exception e)
-			{
-				FLogger.Log(e);
-			}
+			Close();
+			FEditor.LinkClicked -= FEditor_LinkClicked;
+			
+			base.Dispose(disposing);
 		}
 		
 		public bool DeleteMe()

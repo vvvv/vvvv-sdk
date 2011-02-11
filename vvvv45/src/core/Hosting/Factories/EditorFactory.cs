@@ -143,6 +143,7 @@ namespace VVVV.Hosting.Factories
 					entries =
 						from entry in FExportLifetimeContexts
 						let e = entry.Value.Value
+						where !(string.IsNullOrEmpty(e.OpenedFile) || string.IsNullOrEmpty(nodeInfo.Filename))
 						where new Uri(e.OpenedFile) == new Uri(nodeInfo.Filename)
 						where e.AttachedNode == FNodeToAttach
 						select entry;
@@ -154,6 +155,7 @@ namespace VVVV.Hosting.Factories
 					entries =
 						from entry in FExportLifetimeContexts
 						let e = entry.Value.Value
+						where !(string.IsNullOrEmpty(e.OpenedFile) || string.IsNullOrEmpty(nodeInfo.Filename))
 						where new Uri(e.OpenedFile) == new Uri(nodeInfo.Filename)
 						where e.AttachedNode == null
 						select entry;
