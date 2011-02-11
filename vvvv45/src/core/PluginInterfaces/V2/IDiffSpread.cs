@@ -15,6 +15,10 @@ namespace VVVV.PluginInterfaces.V2
 		/// <summary>
 		/// Subscribe to this event to get noticed when the data changes.
 		/// </summary>
+		/// <remarks>
+		/// Only data from this spread is valid in an event handler.
+		/// If you access data from another spread, don't expect it to be valid.
+		/// </remarks>
 		event SpreadChangedEventHander<T> Changed;
 		
 		/// <summary>
