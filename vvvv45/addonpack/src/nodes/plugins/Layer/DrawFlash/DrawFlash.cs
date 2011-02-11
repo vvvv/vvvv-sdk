@@ -15,7 +15,7 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using VVVV.Shared.VSlimDX;
+using VVVV.Utils.SlimDX;
 using VVVV.Core.Logging;
 
 using SlimDX;
@@ -47,30 +47,30 @@ namespace VVVV.Nodes
         ISpread<string> FSWFPath;
         
         [Input ("Load", IsSingle = true)]
-        IObservableSpread<bool> FLoadSWF;
+        IDiffSpread<bool> FLoadSWF;
             
         [Input ("Mouse X", IsSingle = true)]
-        IObservableSpread<double> FMouseX;
+        IDiffSpread<double> FMouseX;
         
         [Input ("Mouse Y", IsSingle = true)]
-        IObservableSpread<double> FMouseY;
+        IDiffSpread<double> FMouseY;
         
         [Input ("Mouse Left Button", IsSingle = true)]
-        IObservableSpread<bool> FMouseLeftButton;
+        IDiffSpread<bool> FMouseLeftButton;
         
         [Input ("Key Code")]
-        IObservableSpread<int> FKeyCodeIn;
+        IDiffSpread<int> FKeyCodeIn;
         
         enum BufferMode {Single, Double};
         [Input ("Buffer Mode", IsSingle = true)]//, DefaultEnum = BufferMode.Single)]
-        IObservableSpread<BufferMode> FBufferMode;
+        IDiffSpread<BufferMode> FBufferMode;
         
         enum Quality {Low, Medium, High, Best};
         [Input ("Quality", IsSingle = true)]//, DefaultEnum = BufferMode.Best)]
-        IObservableSpread<Quality> FQuality;
+        IDiffSpread<Quality> FQuality;
         
         [Input ("Seek Frame", IsSingle = true, MinValue = 0)]
-        IObservableSpread<int> FGoToFrame;
+        IDiffSpread<int> FGoToFrame;
 
         [Input ("Enabled", IsSingle = true, DefaultValue = 1)]
         ISpread<bool> FEnabledInput;
@@ -522,8 +522,8 @@ namespace VVVV.Nodes
 		public void SetStates()
 		{
 			FRenderStatePin.SetRenderState(RenderState.AlphaTestEnable, 1);
-			FRenderStatePin.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
-    		FRenderStatePin.SetRenderState(RenderState.DestinationBlend, Blend.InverseSourceAlpha);
+			FRenderStatePin.SetRenderState(RenderState.SourceBlend, (int) Blend.SourceAlpha);
+			FRenderStatePin.SetRenderState(RenderState.DestinationBlend, (int) Blend.InverseSourceAlpha);
 		}
 
         public void Render(IDXLayerIO ForPin, IPluginDXDevice DXDevice)
@@ -560,7 +560,7 @@ namespace VVVV.Nodes
                 for (int i = 0; i < FSpreadCount; i++)
                 {
                     FTransformIn.GetRenderWorldMatrix(i, out tTransformMatrix);
-                    tSprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(VMath.Scale(1.0 / _Width, -1.0 / _Height, 1) * tTransformMatrix);
+                    tSprite.Transform = (VMath.Scale(1.0 / _Width, -1.0 / _Height, 1) * tTransformMatrix).ToSlimDXMatrix();
 
                     int t = _FNUIFlashPlayer.GetTexture().ToInt32();
 

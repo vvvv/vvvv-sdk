@@ -1,4 +1,5 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup Condition=" '$(Configuration)' == 'vvvv' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\..\..\..\vvvv_40beta21\plugins\</OutputPath>
@@ -26,6 +27,7 @@
     <FileAlignment>4096</FileAlignment>
     <SourceAnalysisOverrideSettingsFile>C:\Users\joreg\AppData\Roaming\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <ReferencePath>%28%24VVVV45%29</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <OutputPath>\bin</OutputPath>
@@ -49,14 +51,12 @@
     <Reference Include="FantastiqUInet">
       <HintPath>Dependencies\FantastiqUInet.dll</HintPath>
     </Reference>
-    <Reference Include="PluginInterfaces">
-      <HintPath>..\..\_lib\vvvv\PluginInterfaces.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="SlimDX">
+      <HintPath>..\..\..\vvvv45\bin\managed\SlimDX.dll</HintPath>
     </Reference>
-    <Reference Include="SlimDX" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition">
-      <HintPath>..\..\_lib\MEF\System.ComponentModel.Composition.dll</HintPath>
+      <HintPath>..\..\..\vvvv45\bin\managed\System.ComponentModel.Composition.dll</HintPath>
     </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -72,18 +72,19 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="VVVV.Core">
-      <HintPath>..\..\_lib\vvvv\VVVV.Core.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\vvvv45\bin\managed\VVVV.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.PluginInterfaces">
+      <HintPath>..\..\..\vvvv45\bin\managed\VVVV.PluginInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="VVVV.Utils">
-      <HintPath>..\..\_lib\vvvv\VVVV.Utils.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\vvvv45\bin\managed\VVVV.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.Utils3rdParty">
+      <HintPath>..\..\..\vvvv45\bin\managed\VVVV.Utils3rdParty.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\_SharedSources\SlimDX\SlimDXUtils.cs">
-      <Link>SlimDXUtils.cs</Link>
-    </Compile>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="DrawFlash.cs" />
   </ItemGroup>
