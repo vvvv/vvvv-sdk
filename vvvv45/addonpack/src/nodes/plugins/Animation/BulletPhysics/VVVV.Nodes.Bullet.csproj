@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{220F0ECF-6A3B-4DEF-9C34-95ED87DFE439}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VVVV.Bullet</RootNamespace>
+    <AssemblyName>VVVV.Nodes.Bullet</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BulletSharp, Version=0.10.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\BulletSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SlimDX, Version=2.0.10.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\vvvv\beta25\bin\managed\SlimDX.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="VVVV.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\VVVV.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.Hosting, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\vvvv\beta25\bin\managed\VVVV.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.PluginInterfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\VVVV.PluginInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.Utils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\VVVV.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.Utils3rdParty, Version=1.0.4010.34603, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\vvvv\beta25\bin\managed\VVVV.Utils3rdParty.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataTypes\Constraints\AbstractConstraintDefinition.cs" />
+    <Compile Include="DataTypes\Constraints\AbstractSingleBodyConstraintDef.cs" />
+    <Compile Include="DataTypes\Constraints\P2PSingleConstraintDefinition.cs" />
+    <Compile Include="DataTypes\Shapes\Rigid\CompoundShapeDefinition.cs" />
+    <Compile Include="DataTypes\Shapes\Soft\ConvexHullSoftShapeDefinition.cs" />
+    <Compile Include="DataTypes\Shapes\Soft\TriMeshSoftShapeDefinition.cs" />
+    <Compile Include="Internals\Bodies\BodyCustomData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Internals\Bodies\SoftBodyCustomData.cs" />
+    <Compile Include="Internals\Constraints\ConstraintCustomData.cs" />
+    <Compile Include="Internals\ObjectCustomData.cs" />
+    <Compile Include="Internals\Meshes\BulletMesh.cs" />
+    <Compile Include="DataTypes\Shapes\Rigid\AbstractRigidShapeDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataTypes\Shapes\Rigid\BoxShapeDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataTypes\Shapes\Rigid\ConvexHullShapeDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataTypes\Shapes\Rigid\CylinderShapeDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataTypes\Shapes\Rigid\HeightFieldShapeDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Internals\Shapes\ShapeCustomData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataTypes\Shapes\Rigid\SphereShapeDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataTypes\Shapes\Soft\AbstractSoftShapeDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataTypes\Shapes\Soft\EllipsoidSoftShapeDefnition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataTypes\Shapes\Soft\PatchSoftShapeDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataTypes\Shapes\Soft\RopeSoftShapeDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataTypes\Shapes\Soft\TetGenSoftShapeDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataTypes\World\SoftWorldHolder.cs" />
+    <Compile Include="Internals\Shapes\SoftShapeCustomData.cs" />
+    <Compile Include="Nodes\Bodies\Interactions\AbstractBodyInteractionNode.cs" />
+    <Compile Include="Nodes\Bodies\Interactions\BulletDestroyBodyNode.cs" />
+    <Compile Include="Nodes\Bodies\Interactions\Rigid\AbstractBodyForceNode.cs" />
+    <Compile Include="Nodes\Bodies\Interactions\Rigid\BulletAppendAnchorNode.cs" />
+    <Compile Include="Nodes\Bodies\Interactions\Rigid\BulletApplyForceNode.cs" />
+    <Compile Include="Nodes\Bodies\Interactions\Rigid\BulletApplyImpulseNode.cs" />
+    <Compile Include="Nodes\Bodies\Interactions\Rigid\BulletApplyTorqueNode.cs" />
+    <Compile Include="Nodes\Bodies\Interactions\Rigid\BulletUpdateRigidBodyNode.cs" />
+    <Compile Include="Nodes\Bodies\Interactions\Soft\BulletSoftApplyForceNode.cs" />
+    <Compile Include="Nodes\Bodies\Interactions\Soft\BulletSoftSetNodeMassNode.cs" />
+    <Compile Include="Nodes\Bodies\Interactions\Soft\BulletUpdateSoftBodyNode.cs" />
+    <Compile Include="Nodes\Bodies\Rigid\AbstractRigidBodyCreator.cs" />
+    <Compile Include="Nodes\Bodies\Rigid\BulletCreateRigidBodyNode.cs" />
+    <Compile Include="Nodes\Bodies\Rigid\BulletGetRigidBodyDetailsNode.cs" />
+    <Compile Include="Nodes\Bodies\Rigid\BulletGetRigidBodyMesh.cs" />
+    <Compile Include="Nodes\Bodies\Rigid\BulletPersistentBodyCreator.cs" />
+    <Compile Include="Nodes\Bodies\Interactions\Rigid\BulletSplitRigidBody.cs" />
+    <Compile Include="Nodes\Bodies\Soft\BulletCreateSoftBodyNode.cs" />
+    <Compile Include="Nodes\Bodies\Soft\BulletGetSoftBodyDetailsNode.cs" />
+    <Compile Include="Nodes\Bodies\Soft\BulletGetSoftBodyMesh.cs" />
+    <Compile Include="Nodes\Constraints\DestroyConstraintNode.cs" />
+    <Compile Include="Nodes\Constraints\Dual\AbstractDualConstraintNode.cs" />
+    <Compile Include="Nodes\Constraints\Dual\CreateDualHingeConstraintNode.cs" />
+    <Compile Include="Nodes\Constraints\Dual\CreateDualP2PConstraintNode.cs" />
+    <Compile Include="Nodes\Constraints\Single\Create\AbstractSingleConstraintNode.cs" />
+    <Compile Include="Nodes\Constraints\Single\Create\CreateSingleHingeConstraintNode.cs" />
+    <Compile Include="Nodes\Constraints\Single\Create\CreateSingleP2PConstraintNode.cs" />
+    <Compile Include="Nodes\Contacts\BulletCollisionCheckNode.cs" />
+    <Compile Include="Nodes\Contacts\BulletGetContactDetailsNode.cs" />
+    <Compile Include="Nodes\Contacts\BulletGetContactPointDetails.cs" />
+    <Compile Include="Nodes\Shapes\Create\Compound\BulletCompoundShapeGroupNode.cs" />
+    <Compile Include="Nodes\Shapes\Create\Compound\BulletCompoundSpreadNode.cs" />
+    <Compile Include="Nodes\Shapes\Create\Rigid\AbstractBulletRigidShapeNode.cs" />
+    <Compile Include="Nodes\Shapes\Create\Rigid\BulletBoxShapeNode.cs" />
+    <Compile Include="Nodes\Shapes\Create\Rigid\BulletConvexHullShapeNode.cs" />
+    <Compile Include="Nodes\Shapes\Create\Rigid\BulletCylinderShapeNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Nodes\Shapes\Create\Rigid\BulletHeightfieldNode.cs" />
+    <Compile Include="Nodes\Shapes\Create\Rigid\BulletSphereShapeNode.cs" />
+    <Compile Include="Nodes\Shapes\Create\Soft\AbstractSoftShapeNode.cs" />
+    <Compile Include="Nodes\Shapes\Create\Soft\BulletConvexHullSoftShape.cs" />
+    <Compile Include="Nodes\Shapes\Create\Soft\BulletEllipsoidShapeNode.cs" />
+    <Compile Include="Nodes\Shapes\Create\Soft\BulletPatchShapeNode.cs" />
+    <Compile Include="Nodes\Shapes\Create\Soft\BulletRopeShapeNode.cs" />
+    <Compile Include="Nodes\Shapes\Create\Soft\BulletTetGenSoftShapeNode.cs" />
+    <Compile Include="Nodes\Shapes\Create\Soft\BulletTriMeshShapeNode.cs" />
+    <Compile Include="Nodes\Shapes\Retrieve\Rigid\GetRigidShapeDetailsNode.cs" />
+    <Compile Include="Nodes\World\BulletRayCastNode.cs" />
+    <Compile Include="Nodes\World\BulletSoftWorldNode.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\ArrayMax.cs" />
+    <Compile Include="Utils\BulletExtensionMethods.cs" />
+    <Compile Include="Utils\BulletUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Nodes\Constraints\Single\Details\" />
+    <Folder Include="Nodes\Shapes\Retrieve\Soft\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
