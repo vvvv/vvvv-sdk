@@ -333,7 +333,10 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		public void BeforeHide(out string comment)
 		{
-			comment = FTagPanel.CommentText;
+			if (string.IsNullOrEmpty(FInitialText))
+				comment = FTagPanel.CommentText;
+			else
+				comment = "";
 			
 			FTagPanel.BeforeHide();
 			FCategoryPanel.BeforeHide();
