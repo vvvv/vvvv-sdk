@@ -417,7 +417,8 @@ namespace VVVV.Nodes.NodeBrowser
 				if (lookInSearchPaths && nodeInfo.Type != NodeType.Patch)
 				{
 					//available if from any of the global paths
-					return NodeBrowser.FNodeCollection.IsInUserDefinedSearchPath(nodeInfo.Factory, dir);
+					bool res = NodeBrowser.FNodeCollection.IsInUserDefinedSearchPath(nodeInfo.Factory, dir);
+                    return res;
 				}
 			}
 			return false;
