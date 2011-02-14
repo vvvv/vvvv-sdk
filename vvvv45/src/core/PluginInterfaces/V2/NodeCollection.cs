@@ -109,7 +109,7 @@ namespace VVVV.PluginInterfaces.V2
 			if (Recursive)
 				return dir.StartsWith(this.Path);
 			else
-				return this.Path == dir;
+				return this.Path.ToLower() == dir.ToLower();
 		}
     }
 	
