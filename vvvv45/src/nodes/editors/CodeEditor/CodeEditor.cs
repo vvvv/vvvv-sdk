@@ -69,6 +69,7 @@ namespace VVVV.HDE.CodeEditor
 		private IToolTipProvider FToolTipProvider;
 		
 		private bool FNeedsKeyUp;
+		private readonly SD.IFormattingStrategy FDefaultFormattingStrategy;
 		#endregion
 		
 		#region Properties
@@ -130,7 +131,11 @@ namespace VVVV.HDE.CodeEditor
 			}
 			set
 			{
-				Document.FormattingStrategy = value;
+			    // Never set it to null. Other stuff depends on it.
+			    if (value == null)
+			        Document.FormattingStrategy = FDefaultFormattingStrategy;
+			    else
+			        Document.FormattingStrategy = value;
 			}
 		}
 		
@@ -236,6 +241,9 @@ namespace VVVV.HDE.CodeEditor
 			TextEditorProperties.ShowMatchingBracket = true;
 			TextEditorProperties.AutoInsertCurlyBracket = true;
 			
+			// Backup some defaults
+			FDefaultFormattingStrategy = Document.FormattingStrategy;
+			
 			// Setup search bar
 			FSearchBar = new SearchBar(this);
 			
@@ -308,13 +316,6 @@ namespace VVVV.HDE.CodeEditor
 					TextChanged -= TextEditorControlTextChangedCB;
 					ActiveTextAreaControl.TextArea.Resize -= FTextEditorControl_ActiveTextAreaControl_TextArea_Resize;
 					ActiveTextAreaControl.SelectionManager.SelectionChanged -= FTextEditorControl_ActiveTextAreaControl_SelectionManager_SelectionChanged;
-					
-					CompletionBinding = null;
-					FoldingStrategy = null;
-					FormattingStrategy = null;
-					LinkDataProvider = null;
-					ToolTipProvider = null;
-					TextDocument = null;
 				}
 			}
 			
