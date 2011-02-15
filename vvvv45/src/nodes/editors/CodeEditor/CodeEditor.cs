@@ -574,13 +574,6 @@ namespace VVVV.HDE.CodeEditor
 				{
 					SyncControlWithDocument();
 					TextDocument.Save();
-					// Trigger a recompile
-					var project = TextDocument.Project;
-					if (project != null)
-					{
-						project.Save();
-						project.CompileAsync();
-					}
 				}
 				return true;
 			}

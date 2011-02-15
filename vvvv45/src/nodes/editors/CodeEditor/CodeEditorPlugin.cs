@@ -261,6 +261,13 @@ namespace VVVV.HDE.CodeEditor
 
         void document_Saved(object sender, EventArgs e)
         {
+            // Trigger a recompile
+            var project = (sender as IDocument).Project;
+			if (project != null)
+			{
+				project.Save();
+				project.CompileAsync();
+			}
             document_ContentChanged(sender as ITextDocument, string.Empty);
         }
 
