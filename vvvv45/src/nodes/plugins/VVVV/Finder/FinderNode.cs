@@ -175,7 +175,6 @@ namespace VVVV.Nodes.Finder
         
         private IWindow2 FActivePatchWindow;
         private IWindow2 FActiveWindow;
-        private INode2 FActivePatchNode;
         private PatchNode FSearchResult;
         
         private Filter FFilter;
@@ -343,13 +342,11 @@ namespace VVVV.Nodes.Finder
                     FSearchTextBox.MouseWheel -= FSearchTextBox_MouseWheel;
                     FHDEHost.WindowSelectionChanged -= FHDEHost_WindowSelectionChanged;
                     FTagsPin.Changed -= FTagsPin_Changed;
-					if (FActivePatchNode.Parent != null)
-						FActivePatchNode.Parent.Removed -= HandleFActivePatchParentRemoved;
                     
                     if (FSearchResult != null)
                         FSearchResult.Dispose();
                     
-                    FActivePatchNode = null;
+                    ActivePatchNode = null;
                     
                     this.FSearchTextBox.TextChanged -= this.FSearchTextBoxTextChanged;
                     this.FSearchTextBox.KeyDown -= this.FSearchTextBoxKeyDown;
@@ -374,6 +371,31 @@ namespace VVVV.Nodes.Finder
         }
         
         #endregion constructor/destructor
+        
+        private INode2 FActivePatchNode;
+        private INode2 ActivePatchNode
+        {
+            get
+            {
+                return FActivePatchNode;
+            }
+            set
+            {
+                if (FActivePatchNode != null)
+                {
+                    if (FActivePatchNode.Parent != null)
+                        FActivePatchNode.Parent.Removed -= HandleFActivePatchParentRemoved;
+                }
+                
+                FActivePatchNode = value;
+                
+                if (FActivePatchNode != null)
+                {
+                    if (FActivePatchNode.Parent != null)
+                        FActivePatchNode.Parent.Removed += HandleFActivePatchParentRemoved;
+                }
+            }
+        }
         
         void FTagsPin_Changed(IDiffSpread<string> spread)
         {
@@ -404,12 +426,7 @@ namespace VVVV.Nodes.Finder
                 if (FHDEHost.ActivePatchWindow == null)
                 {
                     ClearSearch();
-					if (FActivePatchNode != null)
-					{
-						if (FActivePatchNode.Parent != null)
-							FActivePatchNode.Parent.Removed -= HandleFActivePatchParentRemoved;
-                    	FActivePatchNode = null;
-					}
+                    ActivePatchNode = null;
                 }
                 else if (FActivePatchWindow != FHDEHost.ActivePatchWindow)
                     SetActivePatch(FHDEHost.ActivePatchWindow);
@@ -425,19 +442,12 @@ namespace VVVV.Nodes.Finder
         
         private void SetActivePatch(IWindow2 patch)
         {
-            if (FActivePatchNode != null && FActivePatchNode.Parent != null)
-                FActivePatchNode.Parent.Removed -= HandleFActivePatchParentRemoved;
-            
-            FActivePatchNode = patch.Node;
+            ActivePatchNode = patch.Node;
             FActivePatchWindow = patch;
             
             //the hosts window may be null if the plugin is created hidden on startup
             if (FPluginHost.Window != null)
                 FPluginHost.Window.Caption = FActivePatchNode.NodeInfo.Systemname;
-            
-            //if this is not the root
-            if (FActivePatchNode.Parent != null)
-				FActivePatchNode.Parent.Removed += HandleFActivePatchParentRemoved;
             
             UpdateSearch();
         }
