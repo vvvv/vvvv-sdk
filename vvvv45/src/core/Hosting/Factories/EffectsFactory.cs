@@ -192,7 +192,7 @@ namespace VVVV.Hosting.Factories
 			var errorlines = e.Split(new char[1]{'\n'});
 			foreach (var line in errorlines)
 			{
-				string filename = project.Location.LocalPath;
+				string filePath = project.Location.LocalPath;
 				int eLine;
 				string eNumber;
 				string eText = "";
@@ -208,7 +208,26 @@ namespace VVVV.Hosting.Factories
 					continue;
 				
 				if (start > 0)
-					filename = Path.Combine(Path.GetDirectoryName(project.Location.LocalPath), eItems[0].Substring(0, start));
+				{
+				    // we need to guess here. shader compiler outputs relative paths.
+				    // we don't know if the include was local or global
+				    string relativePath = eItems[0].Substring(0, start);
+				    
+				    filePath = Path.Combine(project.Location.GetLocalDir(), relativePath);
+				    if (!File.Exists(filePath))
+				    {
+				        string fileName = Path.GetFileName(relativePath);
+				    
+    				    foreach (var reference in project.References)
+    				    {
+    				        var referenceFileName = Path.GetFileName((reference as FXReference).ReferencedDocument.Location.LocalPath);
+    				        if (referenceFileName.ToLower() == fileName.ToLower())
+    				        {
+    				            filePath = reference.AssemblyLocation;
+    				        }
+    				    }
+				    }
+				}
 				
 				eLine = Convert.ToInt32(eItems[0].Substring(start+1, end-start-1));
 				
@@ -217,7 +236,7 @@ namespace VVVV.Hosting.Factories
 				for (int i = 2; i < eItems.Length; i++)
 					eText += eItems[i];
 				
-				compilerResults.Errors.Add(new CompilerError(filename, eLine, 0, eNumber, eText));
+				compilerResults.Errors.Add(new CompilerError(filePath, eLine, 0, eNumber, eText));
 			}
 			
 			project.CompilerResults = compilerResults;
