@@ -492,7 +492,7 @@ namespace VVVV.Utils.VMath
         }
 
         /// <summary>
-        /// vector == vector, checks if the two vectors are not equal
+        /// vector != vector, checks if the two vectors are not equal
         /// </summary>
         /// <param name="v1"></param>
         /// <param name="v2"></param>
