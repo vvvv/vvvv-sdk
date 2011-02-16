@@ -523,6 +523,28 @@ namespace VVVV.Utils.VMath
 		{
 			return v.x <= a && v.y <= a && v.z <= a && v.w <= a;
 		}
+
+        /// <summary>
+        /// vector == vector, checks if the two vectors are equal
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns>true, if all components of v1 equal the components of v2</returns>
+        public static bool operator ==(Vector4D v1, Vector4D v2)
+        {
+            return v1.x == v2.x && v1.y == v2.y && v1.z == v2.z && v1.w == v2.w;
+        }
+
+        /// <summary>
+        /// vector == vector, checks if the two vectors are not equal
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns>true, if any component of v1 is different from the components of v2</returns>
+        public static bool operator !=(Vector4D v1, Vector4D v2)
+        {
+            return v1.x != v2.x || v1.y != v2.y || v1.z != v2.z || v1.w != v2.w;
+        }
 		
 		#endregion comparison operators
 	}
