@@ -32,6 +32,12 @@ namespace VVVV.Hosting.Pins.Output
 		    FSpreadPin.Updated -= AnyUpdated;
 		    FBinSize.Updated -= AnyUpdated;
 		}
+
+        public virtual void Delete()
+        {
+            FSpreadPin.Delete();
+            FBinSize.Delete();
+        }
 		
 		void AnyUpdated(object sender, EventArgs args)
 		{

@@ -78,6 +78,11 @@ namespace VVVV.PluginInterfaces.V2
 			get;
 			private set;
 		}
+
+        public virtual void Delete()
+        {
+            FHost.DeletePin(PluginIO);
+        }
 		
 		public override int SliceCount 
 		{

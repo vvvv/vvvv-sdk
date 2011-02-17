@@ -49,6 +49,12 @@ namespace VVVV.Hosting.Pins
 		{
 		    FConfigPin.Updated -= UpdatePins;
 		}
+
+        public virtual void Delete()
+        {
+            foreach (var p in FPins)
+                p.Delete();
+        }
 		
 		//pin management
 		protected void UpdatePins(object sender, EventArgs args)

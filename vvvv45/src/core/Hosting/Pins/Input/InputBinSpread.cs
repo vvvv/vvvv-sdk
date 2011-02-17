@@ -40,6 +40,12 @@ namespace VVVV.Hosting.Pins.Input
 		    FSpreadPin.Updated -= AnyPin_Updated;
 		    FBinSizePin.Updated -= AnyPin_Updated;
 		}
+
+        public virtual void Delete()
+        {
+            FSpreadPin.Delete();
+            FBinSizePin.Delete();
+        }
 		
 		protected override void BufferIncreased(ISpread<T>[] oldBuffer, ISpread<T>[] newBuffer)
 		{
