@@ -196,4 +196,22 @@ namespace VVVV.Nodes
 			base.Evaluate(SpreadMax);
 		} 
 	}
+	
+//	[PluginInfo(Name = "Occurrence", 
+//	            Category = "Enumerations",
+//	            Help = "counts the occurrence of equal slices",
+//	            Tags = "count, occurrence, spectral, spread",
+//	           	Author = "woei")]
+//	public class OccurrenceEnum: Occurrence<EnumEntry>
+//	{
+//	}
+	
+	[PluginInfo(Name = "Occurrence", 
+	            Category = "Transform",
+	            Help = "counts the occurrence of equal slices",
+	            Tags = "count, occurrence, spectral, spread",
+	           	Author = "woei")]
+	public class OccurrenceTransform: Occurrence<Matrix4x4>
+	{
+	}
 }
