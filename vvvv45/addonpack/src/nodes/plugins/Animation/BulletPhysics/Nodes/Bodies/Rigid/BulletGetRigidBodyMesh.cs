@@ -21,7 +21,6 @@ namespace VVVV.Nodes.Bullet
 
 		IPluginHost FHost;
 
-		private Mesh FMesh;
 		private Dictionary<int, Mesh> FMeshes = new Dictionary<int, Mesh>();
 
 	
@@ -50,36 +49,35 @@ namespace VVVV.Nodes.Bullet
 
 		public void GetMesh(IDXMeshOut ForPin, int OnDevice, out int Mesh)
 		{
-			if (this.FMesh != null)
-			{
-				Mesh = this.FMesh.ComPointer.ToInt32();
-			}
-			else
-			{
-				Mesh = 0;
-			}		
+            Mesh = 0;
+            if (this.FMeshes.ContainsKey(OnDevice))
+            {
+                Mesh = this.FMeshes[OnDevice].ComPointer.ToInt32();
+            }
 		}
 
 		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
 		{
-			if (this.FMesh != null)
-			{
-				this.FMesh.Dispose();
-				this.FMesh = null;
-			}
+            if (this.FMeshes.ContainsKey(OnDevice))
+            {
+                this.FMeshes[OnDevice].Dispose();
+                this.FMeshes.Remove(OnDevice);// = null;
+            }
 		}
 
 		public void UpdateResource(IPluginOut ForPin, int OnDevice)
 		{
 
 			Device dev = Device.FromPointer(new IntPtr(OnDevice));
+            if (this.FMeshes.ContainsKey(OnDevice))
+            {
+				this.FMeshes[OnDevice].Dispose();
+				this.FMeshes.Remove(OnDevice);// = null;
+			}
+            
+
 			List<Mesh> meshes = new List<Mesh>();
 
-			if (this.FMesh != null)
-			{
-				this.FMesh.Dispose();
-				this.FMesh = null;
-			}
 			if (this.FBodies.SliceCount > 0)
 			{
 				int cnt = this.FBodies.SliceCount;
@@ -94,7 +92,7 @@ namespace VVVV.Nodes.Bullet
 					meshes.AddRange(m.Meshes);
 				}
 
-				this.FMesh = Mesh.Concatenate(dev, meshes.ToArray(), MeshFlags.Use32Bit | MeshFlags.Managed);
+				this.FMeshes.Add(OnDevice,Mesh.Concatenate(dev, meshes.ToArray(), MeshFlags.Use32Bit | MeshFlags.Managed));
 			}
 
 		}
