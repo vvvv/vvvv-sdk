@@ -172,7 +172,7 @@ namespace VVVV.Nodes
         public bool AutoEvaluate
         {
         	//return true if this node needs to calculate every frame even if nobody asks for its output
-        	get {return false;}
+        	get {return true;}
         }
         
         #endregion node name and infos
