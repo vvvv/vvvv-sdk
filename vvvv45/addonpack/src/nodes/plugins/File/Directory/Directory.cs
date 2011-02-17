@@ -252,8 +252,7 @@ namespace VVVV.Nodes
         			
         			string hostPath;
         			FHost.GetHostPath(out hostPath);
-        			
-        			if (curCustomRoot == "")
+        			if (string.IsNullOrEmpty(curCustomRoot))
         			{
         				curCustomRoot = hostPath;
         			}
