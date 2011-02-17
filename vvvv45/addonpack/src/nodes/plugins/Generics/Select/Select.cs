@@ -36,19 +36,22 @@ namespace VVVV.Nodes
 			int sMax = Math.Max(FInput.SliceCount,FSelect.SliceCount);
 			List<int> formerSlice = new List<int>();
 			
-			FOutput.SliceCount = sMax;			
+			FOutput.SliceCount = 0;
+			FFormerSlice.SliceCount=0;
+			
 			for (int i = 0; i < sMax; i++) 
-			{
-				List<T> outList = new List<T>();
+			{		
 				for (int s=0; s<FSelect[i]; s++)
 				{
-					outList.AddRange(FInput[i]);
-					formerSlice.Add(i);
+					if (s==0)
+						FOutput.SliceCount++;
+					
+					FOutput[i].SliceCount=0;
+					FOutput[i].AddRange(FInput[i]);
+					
+					FFormerSlice.Add(i);
 				}
-				FOutput[i].AssignFrom(outList);
 			}
-			FFormerSlice.SliceCount=formerSlice.Count;
-			FFormerSlice.AssignFrom(formerSlice);
 		}
 		
 	}
