@@ -14,7 +14,7 @@ namespace VVVV.DataTypes.Bullet
 	public abstract class AbstractRigidShapeDefinition
 	{
 		private float mass;
-		protected BulletMesh mesh;
+		protected Dictionary<int,BulletMesh> mesh;
 		
 	
 
@@ -26,13 +26,21 @@ namespace VVVV.DataTypes.Bullet
 		public BulletMesh GetMesh(Device device)
 		{
 			//Will handle multi screen later
-			if (this.mesh == null)
+			if (!this.mesh.ContainsKey(device.ComPointer.ToInt32()))
 			{
-				this.mesh = this.CreateMesh(device);
+                this.mesh.Add(device.ComPointer.ToInt32(),this.CreateMesh(device));
 			}
-			return this.mesh;
-
+            return this.mesh[device.ComPointer.ToInt32()];
 		}
+
+        public void DestroyMesh(Device device)
+        {
+            if (!this.mesh.ContainsKey(device.ComPointer.ToInt32()))
+            {
+                this.mesh[device.ComPointer.ToInt32()].Dispose();
+            }
+            this.mesh.Remove(device.ComPointer.ToInt32());
+        }
 
 		public virtual float Mass
 		{
@@ -79,10 +87,9 @@ namespace VVVV.DataTypes.Bullet
 
 		public void Dispose()
 		{
-			if (this.mesh != null)
+            foreach (BulletMesh m in this.mesh.Values)
 			{
-				this.mesh.Dispose();
-				this.mesh = null;
+				m.Dispose();
 			}
 		}
 
