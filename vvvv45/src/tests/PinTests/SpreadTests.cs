@@ -78,6 +78,25 @@ namespace PinTests
         }
         
         [Test]
+        public void TestRemoveRange()
+        {
+            var spread = new Spread<int>(0);
+            spread.AssignFrom(sampleData);
+            
+            var list = spread.ToList();
+            
+            int oldSliceCount = spread.SliceCount;
+            spread.RemoveRange(0, 3);
+            list.RemoveRange(0, 3);
+            Assert.AreEqual(oldSliceCount - 3, spread.SliceCount, "SliceCount after RemoveRange at index 0 doesn't match.");
+            
+            for (int i = 0; i < spread.SliceCount; i++)
+            {
+                Assert.AreEqual(list[i], spread[i], "RemoveRange at index 0 failed.");
+            }
+        }
+        
+        [Test]
         public void TestRemove()
         {
             var spread = new Spread<int>(0);
@@ -100,6 +119,92 @@ namespace PinTests
             Assert.AreEqual(sampleData.Length - 2, spread.SliceCount);
             for (int i = 0; i < spread.SliceCount; i++)
                 Assert.LessOrEqual(spread[i], 10);
+        }
+        
+        [Test]
+        public void TestGetRange()
+        {
+            var spread = new Spread<int>(0);
+            spread.AssignFrom(sampleData);
+            
+            int index = 3;
+            int count = 3;
+            var subSpread = spread.GetRange(index, count);
+            
+            Assert.AreEqual(subSpread.SliceCount, count);
+            for (int i = 0; i < count; i++)
+            {
+                Assert.AreEqual(subSpread[i], spread[i + count]);
+            }
+        }
+        
+        [Test]
+        public void TestIndexAt()
+        {
+            var spread = new Spread<int>(0);
+            spread.AssignFrom(sampleData);
+            
+            Assert.AreEqual(3, spread.IndexOf(sampleData[3]));
+            Assert.AreEqual(5, spread.IndexOf(sampleData[5]));
+        }
+        
+        [Test]
+        public void TestInsert()
+        {
+            var spread = new Spread<int>(0);
+            spread.AssignFrom(sampleData);
+            
+            var list = spread.ToList();
+            
+            int oldSliceCount = spread.SliceCount;
+            spread.Insert(0, 12);
+            list.Insert(0, 12);
+            Assert.AreEqual(oldSliceCount + 1, spread.SliceCount, "SliceCount after insert at index 0 doesn't match.");
+            
+            for (int i = 0; i < spread.SliceCount; i++)
+            {
+                Assert.AreEqual(list[i], spread[i], "Insert at index 0 failed.");
+            }
+            
+            oldSliceCount = spread.SliceCount;
+            spread.Insert(oldSliceCount, 13);
+            list.Insert(oldSliceCount, 13);
+            Assert.AreEqual(oldSliceCount + 1, spread.SliceCount, "SliceCount after insert at end of spread doesn't match.");
+            
+            for (int i = 0; i < spread.SliceCount; i++)
+            {
+                Assert.AreEqual(list[i], spread[i], "Insert at end of spread failed.");
+            }
+        }
+        
+        [Test]
+        public void TestInsertRange()
+        {
+            var spread = new Spread<int>(0);
+            spread.AssignFrom(sampleData);
+            
+            var list = spread.ToList();
+            var listToInsert = list.GetRange(2, 4);
+            
+            int oldSliceCount = spread.SliceCount;
+            spread.InsertRange(0, listToInsert);
+            list.InsertRange(0, listToInsert);
+            Assert.AreEqual(oldSliceCount + listToInsert.Count, spread.SliceCount, "SliceCount after InsertRange at index 0 doesn't match.");
+            
+            for (int i = 0; i < spread.SliceCount; i++)
+            {
+                Assert.AreEqual(list[i], spread[i], "InsertRange at index 0 failed.");
+            }
+            
+            oldSliceCount = spread.SliceCount;
+            spread.InsertRange(oldSliceCount, listToInsert);
+            list.InsertRange(oldSliceCount, listToInsert);
+            Assert.AreEqual(oldSliceCount + listToInsert.Count, spread.SliceCount, "SliceCount after InsertRange at end of spread doesn't match.");
+            
+            for (int i = 0; i < spread.SliceCount; i++)
+            {
+                Assert.AreEqual(list[i], spread[i], "InsertRange at end of spread failed.");
+            }
         }
     }
 }
