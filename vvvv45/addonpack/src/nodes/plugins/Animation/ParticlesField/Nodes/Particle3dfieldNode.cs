@@ -70,7 +70,7 @@ namespace VVVV.Nodes
         #region Auto Evaluate
         public bool AutoEvaluate
         {
-            get { return true; }
+            get { return false; }
         }
         #endregion
 

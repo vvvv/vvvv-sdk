@@ -4,27 +4,11 @@ using System.Text;
 
 namespace VVVV.Lib
 {
-    public class Particle
+    public class ParticleForce
     {
-        protected double px, py, age, devage,devvelx,devvely,prevx,prevy;
+        protected double px, py, age, devage, vx, vy, prevx, prevy,damp;
         protected bool created;
         public Random random;
-        
-
-        public Particle(Random rnd,double positionx, double positiony, double age, double devage, double devx, double devy)
-        {
-            this.random = rnd;
-            this.px = positionx;
-            this.py = positiony;
-            this.prevx = this.px;
-            this.prevy = this.py;        
-            this.created = true;
-            this.devage = (random.NextDouble() * devage);
-            this.age = age;
-            this.devvelx = (random.NextDouble() * devx) - (devx * 0.5);
-            this.devvely = (random.NextDouble() * devy) - (devy * 0.5);
-
-        }
 
         public double PositionX
         {
@@ -55,7 +39,21 @@ namespace VVVV.Lib
             get { return age; }
         }
 
-        public virtual bool Update(double dtage,double dtvel,double vx, double vy)
+        public ParticleForce(Random rnd, double positionx, double positiony, double age, double devage, double vx, double vy,double damp)
+        {
+            this.random = rnd;
+            this.px = positionx;
+            this.py = positiony;       
+            this.created = true;
+            this.devage = (random.NextDouble() * devage);
+            this.age = age;
+            this.vx = vx;
+            this.vy = vy;
+            this.damp = damp;
+
+        }
+
+        public bool Update(double dtage,double dtvel,double fx, double fy)
         {
             if (!this.created)
             {
@@ -63,8 +61,16 @@ namespace VVVV.Lib
 
                 this.prevx = this.px;
                 this.prevy = this.py;
-                this.px += vx * dtvel + devvelx;
-                this.py += vy * dtvel + this.devvely;
+
+
+                this.vx += fx * dtvel;
+                this.vy += fy * dtvel;
+                this.vx *= damp;
+                this.vy *= damp;
+               
+
+                this.px += vx * dtvel;
+                this.py += vy * dtvel;
                 return this.age <= 0.0;
             }
             else

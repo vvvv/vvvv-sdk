@@ -5,9 +5,9 @@ using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.Lib
 {
-    public class ParticleSystem
+    public class ParticleForceSystem
     {
-        private LinkedList<Particle> particles = new LinkedList<Particle>();
+        private LinkedList<ParticleForce> particles = new LinkedList<ParticleForce>();
         private double dtage = 0.01;
         private double dtvelocity = 1.0;
         private Random random = new Random();
@@ -16,12 +16,12 @@ namespace VVVV.Lib
 
         private int max_particles = 7000;
 
-        public ParticleSystem()
+        public ParticleForceSystem()
         {
 
         }
 
-        public ParticleSystem(int maxp)
+        public ParticleForceSystem(int maxp)
         {
             this.max_particles = maxp;
         }
@@ -55,22 +55,23 @@ namespace VVVV.Lib
             this.particles.Clear();
         }
 
-        public void AddParticle(double px, double py, double age, double devage, double devx, double devy)
+        public void AddParticle(double px, double py, double age, double devage, double vx, double vy, double damp)
         {
             if (this.particles.Count < this.max_particles)
             {
-                Particle p = new Particle(new Random(this.random.Next()),px, py, age, devage, devx, devy);
+                //ParticleForce 
+                ParticleForce p = new ParticleForce(new Random(this.random.Next()), px, py, age, devage, vx, vy,damp);
                 this.particles.AddLast(p);
             }
         }
 
-        public List<Particle> Update(IValueFastIn field,int sx, int sy)
+        public List<ParticleForce> Update(IValueFastIn field, int sx, int sy)
         {
-            List<Particle> alive = new List<Particle>();
+            List<ParticleForce> alive = new List<ParticleForce>();
 
             if (this.particles.Count > 0)
             {
-                LinkedListNode<Particle> current = this.particles.First;
+                LinkedListNode<ParticleForce> current = this.particles.First;
 
                 while (current != null)
                 {
@@ -85,7 +86,7 @@ namespace VVVV.Lib
 
                         if (current.Value.Update(this.dtage, this.dtvelocity, dblvx, dblvy))
                         {
-                            LinkedListNode<Particle> next = current.Next;
+                            LinkedListNode<ParticleForce> next = current.Next;
                             current.List.Remove(current);
                             current = next;
                         }
@@ -98,7 +99,7 @@ namespace VVVV.Lib
                     }
                     catch
                     {
-                        LinkedListNode<Particle> next = current.Next;
+                        LinkedListNode<ParticleForce> next = current.Next;
                         current.List.Remove(current);
                         current = next;
                     }
@@ -125,6 +126,5 @@ namespace VVVV.Lib
             return Convert.ToInt32(Math.Truncate(sy));
         }
         #endregion
-        
     }
 }
