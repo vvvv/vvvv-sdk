@@ -44,9 +44,10 @@ namespace VVVV.Nodes
 				for (int s=0; s<FSelect[i]; s++)
 				{
 					if (s==0)
+					{
 						FOutput.SliceCount++;
-					
-					FOutput[i].SliceCount=0;
+						FOutput[i].SliceCount=0;
+					}
 					FOutput[i].AddRange(FInput[i]);
 					
 					FFormerSlice.Add(i);
