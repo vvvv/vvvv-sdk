@@ -31,9 +31,14 @@ namespace VVVV.TodoMap.Lib
         public bool AllowFeedBack { get; set; }
         public TodoTweenMapper Mapper { get; set; }
 
+        public List<AbstractTodoInput> Inputs { get; set; }
+
+        public event TodoVariableChangedDelegate ValueChanged;
+
         public TodoVariable()
         {
             this.Mapper = new TodoTweenMapper();
+            this.Inputs = new List<AbstractTodoInput>();
         }
 
         private double val;
