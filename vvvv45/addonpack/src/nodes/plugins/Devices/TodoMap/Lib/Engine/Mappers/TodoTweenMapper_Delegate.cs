@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VVVV.Utils.VMath;
 
-namespace VVVV.Lib.Engine.Mappers
+namespace VVVV.TodoMap.Lib
 {
 
 	public partial class TodoTweenMapper

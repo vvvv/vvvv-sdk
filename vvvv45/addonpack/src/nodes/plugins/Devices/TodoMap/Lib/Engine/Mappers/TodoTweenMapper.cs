@@ -3,12 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using VVVV.Utils.VMath;
 
-namespace VVVV.Lib.Engine.Mappers
+namespace VVVV.TodoMap.Lib
 {
-	public enum eTweenEaseMode { In, Out, InOut,OutIn }
-
-	public enum eTweenMode { Linear,Quadratic,Cubic,Quartic,Quintic,Sinusoidal,Exponential,Circular,Elastic,Back,Bounce }
-
 	public delegate double TweenerDunctionDelegate(double input);
 
 	public partial class TodoTweenMapper

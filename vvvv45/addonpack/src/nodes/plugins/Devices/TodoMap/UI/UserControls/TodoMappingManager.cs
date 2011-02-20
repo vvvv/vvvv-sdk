@@ -25,6 +25,7 @@ namespace VVVV.TodoMap.UI.UserControls
         {
             this.lvVariables.Columns.Add("Category");
             this.lvVariables.Columns.Add("Name");
+            this.lvVariables.Columns.Add("Default Value");
             this.lvVariables.Columns.Add("Min Value");
             this.lvVariables.Columns.Add("Max Value");
             this.lvVariables.Columns.Add("Tweener");
