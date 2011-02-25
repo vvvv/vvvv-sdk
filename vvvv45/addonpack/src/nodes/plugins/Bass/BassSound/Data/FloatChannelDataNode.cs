@@ -53,13 +53,13 @@ namespace vvvv.Nodes
                 this.FPinInAttribute.GetValue(0, out ms);
 
                 long len = Bass.BASS_ChannelSeconds2Bytes(this.FMyBassHandle, ms / 1000.0);
-                return Convert.ToInt32(len / 4) ;
+                return Convert.ToInt32(len) ;
             }
         }
 
         protected override int DataLength
         {
-            get { return this.DataType ; }
+            get { return this.DataType /4; }
         }
 
         protected override string ErrorMsg
