@@ -399,6 +399,10 @@ namespace VVVV.Nodes.NodeBrowser
 		
 		private bool IsAvailableInActivePatch(INodeInfo nodeInfo, bool lookInSearchPaths)
 		{
+		    string filename = nodeInfo.Filename;
+		    if (string.IsNullOrEmpty(filename))
+		        return true;
+		    
 		    string dir = Path.GetDirectoryName(nodeInfo.Filename);
 			if (string.IsNullOrEmpty(dir))
 			    return true;
