@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Collections.Generic;
+
 using SlimDX;
+
 using VVVV.Hosting.Pins.Config;
 using VVVV.Hosting.Pins.Input;
 using VVVV.Hosting.Pins.Output;
@@ -11,11 +14,33 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins
 {
+
+
 	/// <summary>
 	/// Builds objects of type Pin<T>.
 	/// </summary>
 	public static class PinFactory
 	{
+        private static InputPinRegistry inputPinFactory = new InputPinRegistry();
+        private static DiffInputPinRegistry diffInputPinFactory = new DiffInputPinRegistry();
+        private static ConfigPinRegistry configPinFactory = new ConfigPinRegistry();
+        private static OutputPinRegistry outputPinFactory = new OutputPinRegistry();
+
+        public static void RegisterCustomInputPinType(Type t, InputPinRegistry.PinCreateDelegate creator)
+        {
+            inputPinFactory.RegisterType(t, creator);
+        }
+
+        public static void RegisterCustomDiffInputPinType(Type t, DiffInputPinRegistry.PinCreateDelegate creator)
+        {
+            diffInputPinFactory.RegisterType(t, creator);
+        }
+
+        public static void RegisterCustomOutputPinType(Type t, OutputPinRegistry.PinCreateDelegate creator)
+        {
+            outputPinFactory.RegisterType(t, creator);
+        }
+
 		public static Pin<T> CreatePin<T>(IPluginHost host, Attribute attribute)
 		{
 			return CreatePin(host, attribute, typeof(T)) as Pin<T>;
@@ -75,47 +100,21 @@ namespace VVVV.Hosting.Pins
 					return Activator.CreateInstance(pinType, new object[] { host, attribute });
 				}
 			}
-			
-			if (type == typeof(double))
-				return new DoubleInputPin(host, attribute);
-			else if (type == typeof(float))
-				return new FloatInputPin(host, attribute);
-			else if (type == typeof(int))
-				return new IntInputPin(host, attribute);
-			else if (type == typeof(bool))
-				return new BoolInputPin(host, attribute);
-			else if (type == typeof(string))
-				return new StringInputPin(host, attribute);
-			else if (type == typeof(RGBAColor))
-				return new ColorInputPin(host, attribute);
-			else if (type == typeof(Matrix4x4))
-				return new Matrix4x4InputPin(host, attribute);
-			else if (type == typeof(Matrix))
-				return new SlimDXMatrixInputPin(host, attribute);
-			else if (type == typeof(Vector2D))
-				return new Vector2DInputPin(host, attribute);
-			else if (type == typeof(Vector3D))
-				return new Vector3DInputPin(host, attribute);
-			else if (type == typeof(Vector4D))
-				return new Vector4DInputPin(host, attribute);
-			else if (type == typeof(Vector2))
-				return new Vector2InputPin(host, attribute);
-			else if (type == typeof(Vector3))
-				return new Vector3InputPin(host, attribute);
-			else if (type == typeof(Vector4))
-				return new Vector4InputPin(host, attribute);
-			else if (type.BaseType == typeof(Enum))
-			{
-				var pinType = typeof(EnumInputPin<>).MakeGenericType(type);
-				return Activator.CreateInstance(pinType, new object[] { host, attribute });
-			}
-			else if (type == typeof(EnumEntry))
-				return new DynamicEnumInputPin(host, attribute);
-			else
-			{
-				var pinType = typeof(GenericInputPin<>).MakeGenericType(type);
-				return Activator.CreateInstance(pinType, new object[] { host, attribute });
-			}
+
+            if (inputPinFactory.ContainsType(type))
+            {
+                return inputPinFactory.CreatePin(host, type, attribute);
+            }
+            else if (type.BaseType == typeof(Enum))
+            {
+                var pinType = typeof(EnumInputPin<>).MakeGenericType(type);
+                return Activator.CreateInstance(pinType, new object[] { host, attribute });
+            }
+            else
+            {
+                var pinType = typeof(GenericInputPin<>).MakeGenericType(type);
+                return Activator.CreateInstance(pinType, new object[] { host, attribute });
+            }
 		}
 		
 		public static object CreateDiffPin(IPluginHost host, InputAttribute attribute, Type type)
@@ -135,29 +134,15 @@ namespace VVVV.Hosting.Pins
 					return Activator.CreateInstance(pinType, new object[] { host, attribute });
 				}
 			}
-			
-			if (type == typeof(double))
-				return new DiffDoubleInputPin(host, attribute);
-			else if (type == typeof(float))
-				return new DiffFloatInputPin(host, attribute);
-			else if (type == typeof(int))
-				return new DiffIntInputPin(host, attribute);
-			else if (type == typeof(bool))
-				return new DiffBoolInputPin(host, attribute);
-			else if (type == typeof(Vector2D))
-				return new DiffVector2DInputPin(host, attribute);
-			else if (type == typeof(Vector3D))
-				return new DiffVector3DInputPin(host, attribute);
-			else if (type == typeof(Vector4D))
-				return new DiffVector4DInputPin(host, attribute);
-			else if (type == typeof(Vector2))
-				return new DiffVector2InputPin(host, attribute);
-			else if (type == typeof(Vector3))
-				return new DiffVector3InputPin(host, attribute);
-			else if (type == typeof(Vector4))
-				return new DiffVector4InputPin(host, attribute);
-			else
-				return CreatePin(host, attribute, type);
+
+            if (diffInputPinFactory.ContainsType(type))
+            {
+                return diffInputPinFactory.CreatePin(host, type, attribute);
+            }
+            else
+            {
+                return CreatePin(host, attribute, type);
+            }
 		}
 		
 		public static object CreatePin(IPluginHost host, OutputAttribute attribute, Type type)
@@ -178,85 +163,38 @@ namespace VVVV.Hosting.Pins
 				}
 			}
 			
-			if (type == typeof(double))
-				return new DoubleOutputPin(host, attribute);
-			else if (type == typeof(float))
-				return new FloatOutputPin(host, attribute);
-			else if (type == typeof(int))
-				return new IntOutputPin(host, attribute);
-			else if (type == typeof(bool))
-				return new BoolOutputPin(host, attribute);
-			else if (type == typeof(string))
-				return new StringOutputPin(host, attribute);
-			else if (type == typeof(RGBAColor))
-				return new ColorOutputPin(host, attribute);
-			else if (type == typeof(Matrix4x4))
-				return new Matrix4x4OutputPin(host, attribute);
-			else if (type == typeof(Matrix))
-				return new SlimDXMatrixOutputPin(host, attribute);
-			else if (type == typeof(Vector2D))
-				return new Vector2DOutputPin(host, attribute);
-			else if (type == typeof(Vector3D))
-				return new Vector3DOutputPin(host, attribute);
-			else if (type == typeof(Vector4D))
-				return new Vector4DOutputPin(host, attribute);
-			else if (type == typeof(Vector2))
-				return new Vector2OutputPin(host, attribute);
-			else if (type == typeof(Vector3))
-				return new Vector3OutputPin(host, attribute);
-			else if (type == typeof(Vector4))
-				return new Vector4OutputPin(host, attribute);
-			else if (type.BaseType == typeof(Enum))
-			{
-				var pinType = typeof(EnumOutputPin<>).MakeGenericType(type);
-				return Activator.CreateInstance(pinType, new object[] { host, attribute });
-			}
-			else if (type == typeof(EnumEntry))
-				return new DynamicEnumOutputPin(host, attribute);
-			else
-			{
-				var pinType = typeof(GenericOutputPin<>).MakeGenericType(type);
-				return Activator.CreateInstance(pinType, new object[] { host, attribute });
-			}
+            if (outputPinFactory.ContainsType(type))
+            {
+                return outputPinFactory.CreatePin(host, type, attribute);
+            }
+            else if (type.BaseType == typeof(Enum))
+            {
+                var pinType = typeof(EnumOutputPin<>).MakeGenericType(type);
+                return Activator.CreateInstance(pinType, new object[] { host, attribute });
+                return new DynamicEnumOutputPin(host, attribute);
+            }
+            else
+            {
+                var pinType = typeof(GenericOutputPin<>).MakeGenericType(type);
+                return Activator.CreateInstance(pinType, new object[] { host, attribute });
+            }
 		}
 		
 		public static object CreatePin(IPluginHost host, ConfigAttribute attribute, Type type)
 		{
 			Debug.WriteLine(string.Format("Creating config pin '{0}'.", attribute.Name));
 			
-			if (type == typeof(double))
-				return new DoubleConfigPin(host, attribute);
-			else if (type == typeof(float))
-				return new FloatConfigPin(host, attribute);
-			else if (type == typeof(int))
-				return new IntConfigPin(host, attribute);
-			else if (type == typeof(bool))
-				return new BoolConfigPin(host, attribute);
-			else if (type == typeof(string))
-				return new StringConfigPin(host, attribute);
-			else if (type == typeof(RGBAColor))
-				return new ColorConfigPin(host, attribute);
-			else if (type == typeof(Vector2D))
-				return new Vector2DConfigPin(host, attribute);
-			else if (type == typeof(Vector3D))
-				return new Vector3DConfigPin(host, attribute);
-			else if (type == typeof(Vector4D))
-				return new Vector4DConfigPin(host, attribute);
-			else if (type == typeof(Vector2))
-				return new Vector2ConfigPin(host, attribute);
-			else if (type == typeof(Vector3))
-				return new Vector3ConfigPin(host, attribute);
-			else if (type == typeof(Vector4))
-				return new Vector4ConfigPin(host, attribute);
-			else if (type.BaseType == typeof(Enum))
-			{
-				var pinType = typeof(EnumConfigPin<>).MakeGenericType(type);
-				return Activator.CreateInstance(pinType, new object[] { host, attribute });
-			}
-			else if (type == typeof(EnumEntry))
-				return new DynamicEnumConfigPin(host, attribute);
-			else
-				throw new NotImplementedException(string.Format("ConfigPin of type '{0}' not supported.", type));
+            if (configPinFactory.ContainsType(type))
+            {
+                return configPinFactory.CreatePin(host, type, attribute);
+            }
+            else if (type.BaseType == typeof(Enum))
+            {
+                var pinType = typeof(EnumConfigPin<>).MakeGenericType(type);
+                return Activator.CreateInstance(pinType, new object[] { host, attribute });
+            }
+            else
+                throw new NotImplementedException(string.Format("ConfigPin of type '{0}' not supported.", type));
 		}
 	}
 }
