@@ -21,6 +21,9 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.Factories
 {
+    public delegate void PluginCreatedDelegate(IPluginBase plugin, IPluginHost2 host);
+    public delegate void PluginDeletedDelegate(IPluginBase plugin);
+
     enum PluginVersion
     {
         V1,
@@ -49,6 +52,9 @@ namespace VVVV.Hosting.Factories
         private Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>> FPluginLifetimeContexts;
         private readonly Dictionary<INodeInfo, PluginVersion> FPluginVersion = new Dictionary<INodeInfo, PluginVersion>();
         protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
+
+        public Dictionary<string, IPluginBase> FNodesPath = new Dictionary<string, IPluginBase>();
+        public Dictionary<IPluginBase, IPluginHost2> FNodes = new Dictionary<IPluginBase, IPluginHost2>();
         
         protected HostExportProvider FHostExportProvider;
         public ExportProvider[] ExportProviders
@@ -73,6 +79,9 @@ namespace VVVV.Hosting.Factories
             ExportProviders = new ExportProvider[] { FHostExportProvider, parentContainer };
         }
         #endregion
+
+        public event PluginCreatedDelegate PluginCreated;
+        public event PluginDeletedDelegate PluginDeleted;
         
         #region IAddonFactory
         
@@ -262,6 +271,9 @@ namespace VVVV.Hosting.Factories
 					var plugin = lifetimeContext.Value;
 			
 					FPluginLifetimeContexts [plugin] = lifetimeContext;
+
+                    //Send event
+                    if (this.PluginCreated != null) { this.PluginCreated(plugin, pluginHost); }
 			
 					return plugin;
 				}
@@ -271,7 +283,10 @@ namespace VVVV.Hosting.Factories
 					var plugin = (IPlugin)assembly.CreateInstance (nodeInfo.Arguments);
 			
 					plugin.SetPluginHost (pluginHost);
-			
+
+                    //Send event
+                    if (this.PluginCreated != null) { this.PluginCreated(plugin, pluginHost); }
+
 					return plugin;
 				}
 			}
@@ -281,6 +296,9 @@ namespace VVVV.Hosting.Factories
         
         public void DisposePlugin(IPluginBase plugin)
         {
+            //Send event before delete
+            if (this.PluginDeleted != null) { this.PluginDeleted(plugin); }
+
             if (FPluginLifetimeContexts.ContainsKey(plugin))
             {
                 FPluginLifetimeContexts[plugin].Dispose();
