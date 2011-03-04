@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.Pins.Config
 {
+    [ComVisible(false)]
 	public class FloatConfigPin : ValueConfigPin<float>
 	{
 		public FloatConfigPin(IPluginHost host, ConfigAttribute attribute)

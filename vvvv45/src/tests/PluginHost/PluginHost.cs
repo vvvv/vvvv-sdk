@@ -548,5 +548,10 @@ namespace Hoster
 		{
 			throw new NotImplementedException();
 		}
+	    
+        public IDXTextureOut CreateTextureOutput2(VVVV.Hosting.Interfaces.EX9.IDXTexturePin texturePin, string name, TSliceMode sliceMode, TPinVisibility visibility)
+        {
+            throw new NotImplementedException();
+        }
 	}
 }

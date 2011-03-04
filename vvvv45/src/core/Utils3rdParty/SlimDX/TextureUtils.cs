@@ -13,9 +13,19 @@ namespace VVVV.Utils.SlimDX
 	public unsafe delegate void TextureFillFunction(uint[] oldData, uint* data, int row, int col, int width, int height);
 	
 	/// <summary>
+	/// Method delegate for pixelshader like texture fill functions carrying user defined metadata in its arguments.
+	/// </summary>
+	public unsafe delegate void TextureFillFunction<TMetadata>(uint[] oldData, uint* data, int row, int col, int width, int height, TMetadata metadata);
+	
+	/// <summary>
 	/// Method delegate for pixelshader like in place texture fill functions.
 	/// </summary>
 	public unsafe delegate void TextureFillFunctionInPlace(uint* data, int row, int col, int width, int height);
+	
+	/// <summary>
+	/// Method delegate for pixelshader like in place texture fill functions carrying user defined metadata in its arguments.
+	/// </summary>
+	public unsafe delegate void TextureFillFunctionInPlace<TMetadata>(uint* data, int row, int col, int width, int height, TMetadata metadata);
 	
 	/// <summary>
 	/// Provides some utils to work with DX textures
@@ -143,9 +153,10 @@ namespace VVVV.Utils.SlimDX
 		/// Fill a 32 bit texture with values retrieved from the function fillFunc.
 		/// </summary>
 		/// <param name="tex">The texture to fill.</param>
-		/// <param name="oldData">Array to fill with the old data</param>
+		/// <param name="oldData">Array to fill with the old data.</param>
+		/// <param name="metadata">User defined metadata to hand over to the fillFunc.</param>
 		/// <param name="fillFunc">The function used to fill the texture.</param>
-		public unsafe static void Fill32BitTex(Texture tex, uint[] oldData, TextureFillFunction fillFunc)
+		public unsafe static void Fill32BitTex<TMetadata>(Texture tex, uint[] oldData, TMetadata metadata, TextureFillFunction<TMetadata> fillFunc)
 		{
 			//lock the texture pixel data
 			var rect = tex.LockRectangle(0, LockFlags.None);
@@ -165,10 +176,21 @@ namespace VVVV.Utils.SlimDX
 			//call the given function for each pixel
 			for(int i=0; i<height; i++)
 				for(int j=0; j<width; j++)
-					fillFunc(oldData, data, i, j, width, height);
+					fillFunc(oldData, data, i, j, width, height, metadata);
 			
 			//unlock texture
 			tex.UnlockRectangle(0);
+		}
+		
+		/// <summary>
+		/// Fill a 32 bit texture with values retrieved from the function fillFunc.
+		/// </summary>
+		/// <param name="tex">The texture to fill.</param>
+		/// <param name="oldData">Array to fill with the old data</param>
+		/// <param name="fillFunc">The function used to fill the texture.</param>
+		public unsafe static void Fill32BitTex(Texture tex, uint[] oldData, TextureFillFunction fillFunc)
+		{
+		    Fill32BitTex(tex, oldData, 0, (od, data, row, col, width, height, metadata) => fillFunc(od, data, row, col, width, height));
 		}
 		
 		/// <summary>
@@ -176,8 +198,9 @@ namespace VVVV.Utils.SlimDX
 		/// </summary>
 		/// <param name="tex">The texture to fill.</param>
 		/// <param name="oldData">Array to fill with the old data</param>
+		/// <param name="metadata">User defined metadata to hand over to the fillFunc.</param>
 		/// <param name="fillFunc">The function used to fill the texture.</param>
-		public unsafe static void Fill32BitTexParallel(Texture tex, uint[] oldData, TextureFillFunction fillFunc)
+		public unsafe static void Fill32BitTexParallel<TMetadata>(Texture tex, uint[] oldData, TMetadata metadata, TextureFillFunction<TMetadata> fillFunc)
 		{
 			//lock the texture pixel data
 			var rect = tex.LockRectangle(0, LockFlags.None);
@@ -198,7 +221,7 @@ namespace VVVV.Utils.SlimDX
 			Parallel.For(0, height, i =>
             {
             	for(int j=0; j<width; j++)
-            		fillFunc(oldData, data, i, j, width, height);
+            		fillFunc(oldData, data, i, j, width, height, metadata);
             });
 			
 			//unlock texture
@@ -207,11 +230,23 @@ namespace VVVV.Utils.SlimDX
 		}
 		
 		/// <summary>
+		/// Fill a 32 bit texture in parallel with values retrieved from the function fillFunc.
+		/// </summary>
+		/// <param name="tex">The texture to fill.</param>
+		/// <param name="oldData">Array to fill with the old data</param>
+		/// <param name="fillFunc">The function used to fill the texture.</param>
+		public unsafe static void Fill32BitTexParallel(Texture tex, uint[] oldData, TextureFillFunction fillFunc)
+		{
+			Fill32BitTexParallel(tex, oldData, 0, (od, data, row, col, width, height, metadata) => fillFunc(od, data, row, col, width, height));
+		}
+		
+		/// <summary>
 		/// Fill a 32 bit texture in place with values retrieved from the function fillFunc.
 		/// </summary>
 		/// <param name="tex">The texture to fill.</param>
+		/// <param name="metadata">User defined metadata to hand over to the fillFunc.</param>
 		/// <param name="fillFunc">The function used to fill the texture.</param>
-		public unsafe static void Fill32BitTexInPlace(Texture tex, TextureFillFunctionInPlace fillFunc)
+		public unsafe static void Fill32BitTexInPlace<TMetadata>(Texture tex, TMetadata metadata, TextureFillFunctionInPlace<TMetadata> fillFunc)
 		{
 			//lock the texture pixel data
 			var rect = tex.LockRectangle(0, LockFlags.None);
@@ -227,7 +262,7 @@ namespace VVVV.Utils.SlimDX
 			//call the given function for each pixel
 			for(int i=0; i<height; i++)
 				for(int j=0; j<width; j++)
-					fillFunc(data, i, j, width, height);
+					fillFunc(data, i, j, width, height, metadata);
 			
 			//unlock texture
 			tex.UnlockRectangle(0);
@@ -235,11 +270,22 @@ namespace VVVV.Utils.SlimDX
 		}
 		
 		/// <summary>
-		/// Fill a 32 bit texture parallel in place with values retrieved from the function fillFunc.
+		/// Fill a 32 bit texture in place with values retrieved from the function fillFunc.
 		/// </summary>
 		/// <param name="tex">The texture to fill.</param>
 		/// <param name="fillFunc">The function used to fill the texture.</param>
-		public unsafe static void Fill32BitTexInPlaceParallel(Texture tex, TextureFillFunctionInPlace fillFunc)
+		public unsafe static void Fill32BitTexInPlace(Texture tex, TextureFillFunctionInPlace fillFunc)
+		{
+			Fill32BitTexInPlace(tex, 0, (data, row, col, width, height, metadata) => fillFunc(data, row, col, width, height));
+		}
+		
+		/// <summary>
+		/// Fill a 32 bit texture parallel in place with values retrieved from the function fillFunc.
+		/// </summary>
+		/// <param name="tex">The texture to fill.</param>
+		/// <param name="metadata">User defined metadata to hand over to the fillFunc.</param>
+		/// <param name="fillFunc">The function used to fill the texture.</param>
+		public unsafe static void Fill32BitTexInPlaceParallel<TMetadata>(Texture tex, TMetadata metadata, TextureFillFunctionInPlace<TMetadata> fillFunc)
 		{
 			//lock the texture pixel data
 			var rect = tex.LockRectangle(0, LockFlags.None);
@@ -256,12 +302,22 @@ namespace VVVV.Utils.SlimDX
 			Parallel.For(0, height, i =>
             {
 				for(int j=0; j<width; j++)
-					fillFunc(data, i, j, width, height);
+					fillFunc(data, i, j, width, height, metadata);
 			});
 			
 			//unlock texture
 			tex.UnlockRectangle(0);
 			
+		}
+		
+		/// <summary>
+		/// Fill a 32 bit texture parallel in place with values retrieved from the function fillFunc.
+		/// </summary>
+		/// <param name="tex">The texture to fill.</param>
+		/// <param name="fillFunc">The function used to fill the texture.</param>
+		public unsafe static void Fill32BitTexInPlaceParallel(Texture tex, TextureFillFunctionInPlace fillFunc)
+		{
+			Fill32BitTexInPlaceParallel(tex, 0, (data, row, col, width, height, metadata) => fillFunc(data, row, col, width, height));
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.IO;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
@@ -6,6 +7,7 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.Pins.Config
 {
+    [ComVisible(false)]
 	public class StringConfigPin : ConfigPin<string>
 	{
 		protected IStringConfig FStringConfig;

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.Pins.Output
 {
+    [ComVisible(false)]
 	public class EnumOutputPin<T> : Pin<T>
 	{
 		protected IEnumOut FEnumOutputPin;

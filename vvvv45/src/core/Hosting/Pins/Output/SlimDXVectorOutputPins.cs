@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using SlimDX;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -7,6 +8,7 @@ using VVVV.Utils.SlimDX;
 
 namespace VVVV.Hosting.Pins.Output
 {
+    [ComVisible(false)]
 	public class Vector2OutputPin : VectorOutputPin<Vector2>
 	{
 		public Vector2OutputPin(IPluginHost host, OutputAttribute attribute)
@@ -31,6 +33,7 @@ namespace VVVV.Hosting.Pins.Output
 		}
 	}
 	
+	[ComVisible(false)]
 	public class Vector3OutputPin : VectorOutputPin<Vector3>
 	{
 		public Vector3OutputPin(IPluginHost host, OutputAttribute attribute)
@@ -57,6 +60,7 @@ namespace VVVV.Hosting.Pins.Output
 		}
 	}
 	
+	[ComVisible(false)]
 	public class Vector4OutputPin : VectorOutputPin<Vector4>
 	{
 		public Vector4OutputPin(IPluginHost host, OutputAttribute attribute)

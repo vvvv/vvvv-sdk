@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Config
 {
+    [ComVisible(false)]
 	public abstract class VectorConfigPin<T> : DiffVectorPin<T> where T: struct
 	{
 		protected IValueConfig FValueConfig;
@@ -58,6 +60,7 @@ namespace VVVV.Hosting.Pins.Config
 		}
 	}
 	
+	[ComVisible(false)]
 	public class Vector2DConfigPin : VectorConfigPin<Vector2D>
 	{
 		public Vector2DConfigPin(IPluginHost host, ConfigAttribute attribute)
@@ -80,6 +83,7 @@ namespace VVVV.Hosting.Pins.Config
 		}
 	}
 	
+	[ComVisible(false)]
 	public class Vector3DConfigPin : VectorConfigPin<Vector3D>
 	{
 		public Vector3DConfigPin(IPluginHost host, ConfigAttribute attribute)
@@ -102,6 +106,7 @@ namespace VVVV.Hosting.Pins.Config
 		}
 	}
 		
+	[ComVisible(false)]
 	public class Vector4DConfigPin : VectorConfigPin<Vector4D>
 	{
 		public Vector4DConfigPin(IPluginHost host, ConfigAttribute attribute)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
@@ -19,6 +20,7 @@ namespace VVVV.Hosting.Factories
 	/// <summary>
 	/// Superclass for factories which watch files in a directory
 	/// </summary>
+	[ComVisible(false)]
 	public abstract class AbstractFileFactory<TNodeHost> : IDisposable, IAddonFactory where TNodeHost: INode
 	{
 		#region fields and constructor

@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 using Microsoft.Practices.Unity;
 using VVVV.Core;
@@ -29,6 +30,7 @@ namespace VVVV.Hosting
 {
 	[PartCreationPolicy(CreationPolicy.Shared)]
 	[Export(typeof(IHDEHost))]
+	[ComVisible(false)]
 	class HDEHost : IInternalHDEHost, IHDEHost, IDisposable,
 	IMouseClickListener, INodeSelectionListener, IWindowListener, IWindowSelectionListener
 	{

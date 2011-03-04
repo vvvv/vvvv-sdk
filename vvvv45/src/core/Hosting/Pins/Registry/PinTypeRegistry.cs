@@ -8,23 +8,23 @@ namespace VVVV.Hosting.Pins
 {
     public class PinTypeRegistry<A> where A : Attribute
     {
-        public delegate object PinCreateDelegate(IPluginHost host, A attribute);
+        public delegate object PinCreateDelegate(IPluginHost host, A attribute, Type closedGenericType);
 
         private Dictionary<Type, PinCreateDelegate> delegates = new Dictionary<Type, PinCreateDelegate>();
 
-        public void RegisterType(Type type, PinCreateDelegate creator)
+        public void RegisterType(Type openGenericType, PinCreateDelegate creator)
         {
-            delegates[type] = creator;
+            delegates[openGenericType] = creator;
         }
 
-        public bool ContainsType(Type type)
+        public bool ContainsType(Type openGenericType)
         {
-            return this.delegates.ContainsKey(type);
+            return this.delegates.ContainsKey(openGenericType);
         }
 
-        public object CreatePin(IPluginHost host, Type t, A attribute)
+        public object CreatePin(Type openGenericType, IPluginHost host, Type closedGenericType, A attribute)
         {
-            return delegates[t](host, attribute);
+            return delegates[openGenericType](host, attribute, closedGenericType);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 using VVVV.Hosting;
 using VVVV.PluginInterfaces.V1;
@@ -9,6 +10,7 @@ namespace VVVV.Hosting
 	/// <summary>
 	/// Logs messages to the IVVVVHost.
 	/// </summary>
+	[ComVisible(false)]
 	class VVVVLogger : ILogger
 	{
 		private readonly IVVVVHost FHost;

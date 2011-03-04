@@ -6,6 +6,7 @@ using System.ComponentModel.Composition.Primitives;
 using System.ComponentModel.Composition.ReflectionModel;
 using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 using VVVV.Core;
 using VVVV.Core.Logging;
@@ -15,6 +16,7 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting
 {
+    [ComVisible(false)]
 	public class HostExportProvider: ExportProvider
 	{
 		static Assembly PluginInterfaceAssembly = typeof(IPluginHost).Assembly;

@@ -89,21 +89,29 @@ namespace VVVV.Hosting.Pins
 			
 			if (type.IsGenericType)
 			{
-				// Test if type == ISpread<T>
 				var subSpreadType = type.GetGenericArguments()[0];
 				if (typeof(ISpread<>).MakeGenericType(subSpreadType).IsAssignableFrom(type))
 				{
+					// type == ISpread<T>
 					var pinType = typeof(InputBinSpread<>).MakeGenericType(subSpreadType);
 					if(attribute.IsPinGroup)
 						pinType = typeof(InputSpreadList<>).MakeGenericType(subSpreadType);
 					
 					return Activator.CreateInstance(pinType, new object[] { host, attribute });
 				}
+				else
+				{
+					var openGenericType = type.GetGenericTypeDefinition();
+					if (inputPinFactory.ContainsType(openGenericType))
+					{
+						return inputPinFactory.CreatePin(openGenericType, host, type, attribute);
+					}
+				}
 			}
 
             if (inputPinFactory.ContainsType(type))
             {
-                return inputPinFactory.CreatePin(host, type, attribute);
+                return inputPinFactory.CreatePin(type, host, type, attribute);
             }
             else if (type.BaseType == typeof(Enum))
             {
@@ -133,11 +141,19 @@ namespace VVVV.Hosting.Pins
 					
 					return Activator.CreateInstance(pinType, new object[] { host, attribute });
 				}
+				else
+				{
+					var openGenericType = type.GetGenericTypeDefinition();
+					if (diffInputPinFactory.ContainsType(openGenericType))
+					{
+						return diffInputPinFactory.CreatePin(openGenericType, host, type, attribute);
+					}
+				}
 			}
 
             if (diffInputPinFactory.ContainsType(type))
             {
-                return diffInputPinFactory.CreatePin(host, type, attribute);
+                return diffInputPinFactory.CreatePin(type, host, type, attribute);
             }
             else
             {
@@ -161,11 +177,19 @@ namespace VVVV.Hosting.Pins
 					
 					return Activator.CreateInstance(pinType, new object[] { host, attribute });
 				}
+				else
+				{
+					var openGenericType = type.GetGenericTypeDefinition();
+					if (outputPinFactory.ContainsType(openGenericType))
+					{
+						return outputPinFactory.CreatePin(openGenericType, host, type, attribute);
+					}
+				}
 			}
 			
             if (outputPinFactory.ContainsType(type))
             {
-                return outputPinFactory.CreatePin(host, type, attribute);
+                return outputPinFactory.CreatePin(type, host, type, attribute);
             }
             else if (type.BaseType == typeof(Enum))
             {
@@ -185,7 +209,7 @@ namespace VVVV.Hosting.Pins
 			
             if (configPinFactory.ContainsType(type))
             {
-                return configPinFactory.CreatePin(host, type, attribute);
+                return configPinFactory.CreatePin(type, host, type, attribute);
             }
             else if (type.BaseType == typeof(Enum))
             {

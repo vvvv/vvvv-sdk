@@ -6,6 +6,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Input
 {
+    [ComVisible(false)]
 	public abstract class VectorInputPin<T> : VectorPin<T> where T: struct
 	{
 		protected IValueFastIn FValueFastIn;
@@ -52,6 +53,7 @@ namespace VVVV.Hosting.Pins.Input
 		}
 	}
 	
+	[ComVisible(false)]
 	public abstract class DiffVectorInputPin<T> : DiffVectorPin<T> where T: struct
 	{
 		protected IValueIn FValueIn;
@@ -104,6 +106,7 @@ namespace VVVV.Hosting.Pins.Input
 		}
 	}
 	
+	[ComVisible(false)]
 	public class Vector2DInputPin : VectorInputPin<Vector2D>
 	{
 		public Vector2DInputPin(IPluginHost host, InputAttribute attribute)
@@ -131,6 +134,7 @@ namespace VVVV.Hosting.Pins.Input
 		}
 	}
 	
+	[ComVisible(false)]
 	public class Vector3DInputPin : VectorInputPin<Vector3D>
 	{
 		public Vector3DInputPin(IPluginHost host, InputAttribute attribute)
@@ -159,6 +163,7 @@ namespace VVVV.Hosting.Pins.Input
 		}
 	}
 	
+	[ComVisible(false)]
 	public class Vector4DInputPin : VectorInputPin<Vector4D>
 	{
 		public Vector4DInputPin(IPluginHost host, InputAttribute attribute)
@@ -188,6 +193,7 @@ namespace VVVV.Hosting.Pins.Input
 		}
 	}
 	
+	[ComVisible(false)]
 	public class DiffVector2DInputPin : DiffVectorInputPin<Vector2D>
 	{
 		public DiffVector2DInputPin(IPluginHost host, InputAttribute attribute)
@@ -215,6 +221,7 @@ namespace VVVV.Hosting.Pins.Input
 		}
 	}
 	
+	[ComVisible(false)]
 	public class DiffVector3DInputPin : DiffVectorInputPin<Vector3D>
 	{
 		public DiffVector3DInputPin(IPluginHost host, InputAttribute attribute)
@@ -243,6 +250,7 @@ namespace VVVV.Hosting.Pins.Input
 		}
 	}
 	
+	[ComVisible(false)]
 	public class DiffVector4DInputPin : DiffVectorInputPin<Vector4D>
 	{
 		public DiffVector4DInputPin(IPluginHost host, InputAttribute attribute)

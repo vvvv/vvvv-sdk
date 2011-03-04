@@ -9,6 +9,7 @@ namespace VVVV.Hosting.Pins.Input
 	/// T is one of:
 	/// bool, byte, sbyte, int, uint, short, ushort, long, ulong, float, double
 	/// </summary>
+	[ComVisible(false)]
 	public abstract class DiffValueInputPin<T> : DiffValuePin<T>, IDiffSpread<T> where T: struct
 	{
 		protected IValueIn FValueIn;

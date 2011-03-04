@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.Pins.Output
 {
+    [ComVisible(false)]
 	public class GenericOutputPin<T> : Pin<T>, IGenericIO
 	{
 		protected INodeOut FNodeOut;

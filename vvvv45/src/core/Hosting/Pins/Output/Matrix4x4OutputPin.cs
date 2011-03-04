@@ -9,6 +9,7 @@ using VVVV.Utils.SlimDX;
 
 namespace VVVV.Hosting.Pins.Output
 {
+    [ComVisible(false)]
 	public class Matrix4x4OutputPin : Pin<Matrix4x4>, IPinUpdater
 	{
 		protected ITransformOut FTransformOut;

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using SlimDX;
 using VVVV.PluginInterfaces.V1;
@@ -9,6 +8,7 @@ using VVVV.Utils.SlimDX;
 
 namespace VVVV.Hosting.Pins.Input
 {
+    [ComVisible(false)]
 	public class Matrix4x4InputPin : DiffPin<Matrix4x4>
 	{
 		protected ITransformIn FTransformIn;

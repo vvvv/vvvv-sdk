@@ -6,6 +6,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Input
 {
+    [ComVisible(false)]
 	public class DoubleInputPin : ValueInputPin<double>
 	{
 		public DoubleInputPin(IPluginHost host, InputAttribute attribute)
@@ -31,6 +32,7 @@ namespace VVVV.Hosting.Pins.Input
 		}
 	}
 	
+	[ComVisible(false)]
 	public class DiffDoubleInputPin : DiffValueInputPin<double>
 	{
 		public DiffDoubleInputPin(IPluginHost host, InputAttribute attribute)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting
@@ -6,6 +7,7 @@ namespace VVVV.Hosting
 	/// <summary>
 	/// Ensures that internal INodeInfo is used.
 	/// </summary>
+	[ComVisible(false)]
 	class ProxyNodeBrowserHost : INodeBrowserHost
 	{
 		private INodeBrowserHost FNodeBrowserHost;

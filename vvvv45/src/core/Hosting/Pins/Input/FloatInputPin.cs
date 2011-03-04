@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Input
 {
+    [ComVisible(false)]
 	public class FloatInputPin : ValueInputPin<float>
 	{
 		public FloatInputPin(IPluginHost host, InputAttribute attribute)
@@ -25,6 +27,7 @@ namespace VVVV.Hosting.Pins.Input
 		}
 	}
 	
+	[ComVisible(false)]
 	public class DiffFloatInputPin : DiffValueInputPin<float>
 	{
 		public DiffFloatInputPin(IPluginHost host, InputAttribute attribute)

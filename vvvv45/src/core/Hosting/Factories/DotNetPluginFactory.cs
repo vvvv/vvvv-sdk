@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
@@ -37,6 +38,7 @@ namespace VVVV.Hosting.Factories
     /// </summary>
     [Export(typeof(IAddonFactory))]
     [Export(typeof(DotNetPluginFactory))]
+    [ComVisible(false)]
     public class DotNetPluginFactory : AbstractFileFactory<IInternalPluginHost>
     {
         class PluginImporter

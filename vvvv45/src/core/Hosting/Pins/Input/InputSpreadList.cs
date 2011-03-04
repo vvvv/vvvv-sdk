@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.Pins.Input
 {
+    [ComVisible(false)]
 	public class InputSpreadList<T> : SpreadList<T>
 	{
 		public InputSpreadList(IPluginHost host, InputAttribute attribute)

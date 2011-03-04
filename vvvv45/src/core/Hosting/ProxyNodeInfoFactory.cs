@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Runtime.InteropServices;
 
 using VVVV.Core.Runtime;
 using VVVV.PluginInterfaces.V1;
@@ -13,6 +14,7 @@ namespace VVVV.Hosting
 	#region ProxyNodeInfo
 	
 	[Serializable]
+	[ComVisible(false)]
 	internal class ProxyNodeInfo : INodeInfo
 	{
 		[NonSerialized]
@@ -431,7 +433,7 @@ namespace VVVV.Hosting
 	
 	#endregion
 	
-	
+	[ComVisible(false)]
 	class ProxyNodeInfoFactory : INodeInfoFactory, INodeInfoListener, IDisposable
 	{
 		private IInternalNodeInfoFactory FFactory;

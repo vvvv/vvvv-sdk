@@ -10,6 +10,7 @@ namespace VVVV.Hosting.Pins.Input
 	/// T is one of:
 	/// bool, byte, sbyte, int, uint, short, ushort, long, ulong, float, double
 	/// </summary>
+	[ComVisible(false)]
 	public abstract class ValueInputPin<T> : ValuePin<T> where T: struct
 	{
 		protected IValueFastIn FValueFastIn;
@@ -29,13 +30,13 @@ namespace VVVV.Hosting.Pins.Input
 		unsafe public override void Update()
 		{
 			int length;
-			
 			FValueFastIn.GetValuePointer(out length, out FSource);
-			
 			SliceCount = length;
 			
 			if (!FLazy && FSliceCount > 0)
+			{
 				CopyToBuffer(FBuffer, FSource, 0, length);
+			}
 			
 			base.Update();
 		}

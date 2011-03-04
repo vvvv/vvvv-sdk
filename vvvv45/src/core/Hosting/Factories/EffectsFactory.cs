@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.CodeDom.Compiler;
@@ -18,6 +19,7 @@ namespace VVVV.Hosting.Factories
 	/// </summary>
 	[Export(typeof(IAddonFactory))]
 	[Export(typeof(EffectsFactory))]
+	[ComVisible(false)]
 	public class EffectsFactory : AbstractFileFactory<IEffectHost>
 	{
 

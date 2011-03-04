@@ -7,6 +7,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Output
 {
+    [ComVisible(false)]
 	public class SlimDXMatrixOutputPin : Pin<Matrix>
 	{
 		protected ITransformOut FTransformOut;

@@ -17,18 +17,18 @@ namespace VVVV.Hosting.Pins
         public DiffInputPinRegistry()
         {
             //Register default types
-            this.RegisterType(typeof(double), (host, attribute) => new DiffDoubleInputPin(host, attribute));
-            this.RegisterType(typeof(float), (host, attribute) => new DiffFloatInputPin(host, attribute));
-            this.RegisterType(typeof(int), (host, attribute) => new DiffIntInputPin(host, attribute));
-            this.RegisterType(typeof(bool), (host, attribute) => new DiffBoolInputPin(host, attribute));
+            this.RegisterType(typeof(double), (host, attribute, t) => new DiffDoubleInputPin(host, attribute));
+            this.RegisterType(typeof(float), (host, attribute, t) => new DiffFloatInputPin(host, attribute));
+            this.RegisterType(typeof(int), (host, attribute, t) => new DiffIntInputPin(host, attribute));
+            this.RegisterType(typeof(bool), (host, attribute, t) => new DiffBoolInputPin(host, attribute));
 
-            this.RegisterType(typeof(Vector2D), (host, attribute) => new DiffVector2DInputPin(host, attribute));
-            this.RegisterType(typeof(Vector3D), (host, attribute) => new DiffVector3DInputPin(host, attribute));
-            this.RegisterType(typeof(Vector4D), (host, attribute) => new DiffVector4DInputPin(host, attribute));
+            this.RegisterType(typeof(Vector2D), (host, attribute, t) => new DiffVector2DInputPin(host, attribute));
+            this.RegisterType(typeof(Vector3D), (host, attribute, t) => new DiffVector3DInputPin(host, attribute));
+            this.RegisterType(typeof(Vector4D), (host, attribute, t) => new DiffVector4DInputPin(host, attribute));
 
-            this.RegisterType(typeof(Vector2), (host, attribute) => new DiffVector2InputPin(host, attribute));
-            this.RegisterType(typeof(Vector3), (host, attribute) => new DiffVector3InputPin(host, attribute));
-            this.RegisterType(typeof(Vector4), (host, attribute) => new DiffVector4InputPin(host, attribute));
+            this.RegisterType(typeof(Vector2), (host, attribute, t) => new DiffVector2InputPin(host, attribute));
+            this.RegisterType(typeof(Vector3), (host, attribute, t) => new DiffVector3InputPin(host, attribute));
+            this.RegisterType(typeof(Vector4), (host, attribute, t) => new DiffVector4InputPin(host, attribute));
 
         }
     }

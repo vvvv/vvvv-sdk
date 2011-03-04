@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Output
 {
+    [ComVisible(false)]
 	public class OutputBinSpread<T> : BinSpread<T>, IDisposable
 	{
 		protected Pin<int> FBinSize;

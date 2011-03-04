@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using SlimDX;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -7,6 +8,7 @@ using VVVV.Utils.SlimDX;
 
 namespace VVVV.Hosting.Pins.Config
 {
+    [ComVisible(false)]
 	public class Vector2ConfigPin : VectorConfigPin<Vector2>
 	{
 		public Vector2ConfigPin(IPluginHost host, ConfigAttribute attribute)
@@ -29,6 +31,7 @@ namespace VVVV.Hosting.Pins.Config
 		}
 	}
 	
+	[ComVisible(false)]
 	public class Vector3ConfigPin : VectorConfigPin<Vector3>
 	{
 		public Vector3ConfigPin(IPluginHost host, ConfigAttribute attribute)
@@ -51,6 +54,7 @@ namespace VVVV.Hosting.Pins.Config
 		}
 	}
 	
+	[ComVisible(false)]
 	public class Vector4ConfigPin : VectorConfigPin<Vector4>
 	{
 		public Vector4ConfigPin(IPluginHost host, ConfigAttribute attribute)

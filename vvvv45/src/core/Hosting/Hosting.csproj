@@ -25,8 +25,6 @@
     <BaseAddress>4194304</BaseAddress>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <FileAlignment>4096</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -109,6 +107,10 @@
     <Compile Include="IInternalHDEHost.cs" />
     <Compile Include="IInternalNodeInfoFactory.cs" />
     <Compile Include="IInternalPluginHost.cs" />
+    <Compile Include="Interfaces\EX9\DeviceMarshaler.cs" />
+    <Compile Include="Interfaces\EX9\IDXResourcePin.cs" />
+    <Compile Include="Interfaces\EX9\IDXTexturePin.cs" />
+    <Compile Include="Interfaces\EX9\TextureMarshaler.cs" />
     <Compile Include="IVVVVHost.cs" />
     <Compile Include="Pins\BinSpread.cs" />
     <Compile Include="Pins\Config\BoolConfigPin.cs" />
@@ -158,6 +160,7 @@
     <Compile Include="Pins\Output\SlimDXMatrixOutputPin.cs" />
     <Compile Include="Pins\Output\SlimDXVectorOutputPins.cs" />
     <Compile Include="Pins\Output\StringOutputPin.cs" />
+    <Compile Include="Pins\Output\TextureOutputPin.cs" />
     <Compile Include="Pins\Output\ValueOutputPin.cs" />
     <Compile Include="Pins\Output\VectorOutputPins.cs" />
     <Compile Include="Pins\PinFactory.cs" />
@@ -199,6 +202,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Pins\Registry" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Pins\" />
   </ItemGroup>
 </Project>

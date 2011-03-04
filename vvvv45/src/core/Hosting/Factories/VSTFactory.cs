@@ -1,10 +1,12 @@
 using System;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V2;
 using System.ComponentModel.Composition;
 
 namespace VVVV.Hosting
 {
 	[Export(typeof(IAddonFactory))]
+	[ComVisible(false)]
 	public class VSTFactory : IAddonFactory
 	{
 		[ImportingConstructor]

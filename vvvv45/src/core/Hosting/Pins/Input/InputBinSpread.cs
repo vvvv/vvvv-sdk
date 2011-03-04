@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Input
 {
+    [ComVisible(false)]
 	public class InputBinSpread<T> : BinSpread<T>, IDisposable
 	{
 		protected DiffPin<int> FBinSizePin;
@@ -14,7 +18,7 @@ namespace VVVV.Hosting.Pins.Input
 		protected int FBinSizeSum;
 		protected int FBinSize;
 		
-		private bool[] FCache = new bool[0];
+		private readonly Dictionary<int, bool> FCache = new Dictionary<int, bool>();
 		private int[] FOffset = new int[0];
 		private Spread<int> FNormalizedBinSize = new Spread<int>(0);
 		private int FOldSliceCount;
@@ -47,30 +51,6 @@ namespace VVVV.Hosting.Pins.Input
             FBinSizePin.Delete();
         }
 		
-		protected override void BufferIncreased(ISpread<T>[] oldBuffer, ISpread<T>[] newBuffer)
-		{
-			base.BufferIncreased(oldBuffer, newBuffer);
-			
-			if (FLazy)
-			{
-				var oldCache = FCache;
-				FCache = new bool[newBuffer.Length];
-				Array.Copy(oldCache, FCache, oldCache.Length);
-			}
-		}
-		
-		protected override void BufferDecreased(ISpread<T>[] oldBuffer, ISpread<T>[] newBuffer)
-		{
-			base.BufferDecreased(oldBuffer, newBuffer);
-			
-			if (FLazy)
-			{
-				var oldCache = FCache;
-				FCache = new bool[newBuffer.Length];
-				Array.Copy(oldCache, FCache, FCache.Length);
-			}
-		}
-
 		protected virtual bool NeedToBuildSpread()
 		{
 			return true;
@@ -145,7 +125,7 @@ namespace VVVV.Hosting.Pins.Input
 			if (FLazy)
 			{
 				// We're lazy, simply clear the cache
-				Array.Clear(FCache, 0, FCache.Length);
+				FCache.Clear();
 			}
 			else
 			{
@@ -172,7 +152,7 @@ namespace VVVV.Hosting.Pins.Input
 				if (FLazy)
 				{
 					index = VMath.Zmod(index, FSliceCount);
-					if (!FCache[index])
+					if (!FCache.ContainsKey(index))
 					{
 						var spread = FBuffer[index];
 						int sliceCount = FNormalizedBinSize[index];

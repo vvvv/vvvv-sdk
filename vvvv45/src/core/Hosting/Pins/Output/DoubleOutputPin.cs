@@ -6,6 +6,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Output
 {
+    [ComVisible(false)]
 	public class DoubleOutputPin : ValueOutputPin<double>
 	{
 		public DoubleOutputPin(IPluginHost host, OutputAttribute attribute)
@@ -13,9 +14,9 @@ namespace VVVV.Hosting.Pins.Output
 		{
 		}
 		
-		unsafe protected override void CopyFromBuffer(double[] buffer, double* destination, int length)
+		unsafe protected override void CopyFromBuffer(double[] buffer, double* destination, int startIndex, int length)
 		{
-			Marshal.Copy(buffer, 0, (IntPtr) destination, length);
+			Marshal.Copy(buffer, startIndex, (IntPtr) destination, length);
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
@@ -19,6 +20,7 @@ namespace VVVV.Hosting.Factories
 {
 	[Export(typeof(IAddonFactory))]
 	[Export(typeof(EditorFactory))]
+	[ComVisible(false)]
 	public class EditorFactory : IAddonFactory
 	{
 		[ImportMany(typeof(IEditor), AllowRecomposition = true)]

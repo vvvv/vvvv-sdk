@@ -9,9 +9,12 @@ namespace VVVV.Hosting.Pins.Output
 	/// T is one of:
 	/// bool, byte, sbyte, int, uint, short, ushort, long, ulong, float, double
 	/// </summary>
+	[ComVisible(false)]
 	public abstract class ValueOutputPin<T> : ValuePin<T> where T: struct
 	{
-		protected IValueOut FValueOut;
+		protected readonly IValueOut FValueOut;
+		unsafe private double* FDestination;
+		private bool FChanged = true;
 		
 		public ValueOutputPin(IPluginHost host, OutputAttribute attribute, double minValue, double maxValue, double stepSize)
 			: base(host, attribute, minValue, maxValue, stepSize)
@@ -21,7 +24,7 @@ namespace VVVV.Hosting.Pins.Output
 			base.InitializeInternalPin(FValueOut);
 		}
 		
-		unsafe protected abstract void CopyFromBuffer(T[] buffer, double* destination, int length);
+		unsafe protected abstract void CopyFromBuffer(T[] buffer, double* destination, int startIndex, int length);
 		
 		unsafe public override void Update()
 		{
@@ -30,12 +33,39 @@ namespace VVVV.Hosting.Pins.Output
 			if (FAttribute.SliceMode != SliceMode.Single)
 				FValueOut.SliceCount = FSliceCount;
 			
-			if (FSliceCount > 0)
+			if (FChanged && FSliceCount > 0)
 			{
-				double* destination;
-				FValueOut.GetValuePointer(out destination);
-				CopyFromBuffer(FBuffer, destination, FSliceCount);
+				FValueOut.GetValuePointer(out FDestination);
+				CopyFromBuffer(FBuffer, FDestination, 0, FSliceCount);
 			}
+			
+			FChanged = false;
 		}
+		
+        public override int SliceCount
+        {
+            get 
+            { 
+                return base.SliceCount; 
+            }
+            set 
+            {
+                FChanged = true;
+                base.SliceCount = value; 
+            }
+        }
+        
+        public override T this[int index] 
+        {
+            get
+            { 
+                return base[index]; 
+            }
+            set 
+            { 
+                FChanged = true;
+                base[index]  = value; 
+            }
+        }
 	}
 }

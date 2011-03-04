@@ -7,6 +7,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Input
 {
+    [ComVisible(false)]
 	public class SlimDXMatrixInputPin : DiffPin<Matrix>, IPinUpdater
 	{
 		protected ITransformIn FTransformIn;

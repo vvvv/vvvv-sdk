@@ -6,6 +6,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Output
 {
+    [ComVisible(false)]
 	public abstract class VectorOutputPin<T> : VectorPin<T> where T: struct
 	{
 		protected IValueOut FValueOut;
@@ -48,6 +49,7 @@ namespace VVVV.Hosting.Pins.Output
 		}
 	}
 	
+	[ComVisible(false)]
 	public class Vector2DOutputPin : VectorOutputPin<Vector2D>
 	{
 		public Vector2DOutputPin(IPluginHost host, OutputAttribute attribute)
@@ -68,6 +70,7 @@ namespace VVVV.Hosting.Pins.Output
 		}
 	}
 	
+	[ComVisible(false)]
 	public class Vector3DOutputPin : VectorOutputPin<Vector3D>
 	{
 		public Vector3DOutputPin(IPluginHost host, OutputAttribute attribute)
@@ -88,6 +91,7 @@ namespace VVVV.Hosting.Pins.Output
 		}
 	}
 	
+	[ComVisible(false)]
 	public class Vector4DOutputPin : VectorOutputPin<Vector4D>
 	{
 		public Vector4DOutputPin(IPluginHost host, OutputAttribute attribute)

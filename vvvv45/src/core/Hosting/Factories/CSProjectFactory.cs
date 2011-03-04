@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace VVVV.Hosting.Factories
 {
 	[Export(typeof(IAddonFactory))]
 	[Export(typeof(CSProjectFactory))]
+	[ComVisible(false)]
 	public class CSProjectFactory : DotNetPluginFactory
 	{
 		[Import]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -16,6 +17,7 @@ namespace VVVV.Hosting.Factories
     /// Effects factory, parses and watches the effect directory
     /// </summary>
     [Export(typeof(IAddonFactory))]
+    [ComVisible(false)]
     public class PatchFactory : AbstractFileFactory<INode>
     {
         private string FDTD = "";

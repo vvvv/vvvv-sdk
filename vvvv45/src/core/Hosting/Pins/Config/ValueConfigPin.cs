@@ -9,6 +9,7 @@ namespace VVVV.Hosting.Pins.Config
 	/// T is one of:
 	/// bool, byte, sbyte, int, uint, short, ushort, long, ulong, float, double
 	/// </summary>
+	[ComVisible(false)]
 	public abstract class ValueConfigPin<T> : DiffValuePin<T>, IDiffSpread<T> where T: struct
 	{
 		protected IValueConfig FValueConfig;

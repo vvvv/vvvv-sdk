@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using VVVV.Hosting.Interfaces.EX9;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
@@ -14,5 +15,7 @@ namespace VVVV.Hosting
 			get;
 			set;
 		}
+		
+		IDXTextureOut CreateTextureOutput2(IDXTexturePin texturePin, string name, TSliceMode sliceMode, TPinVisibility visibility);
 	}
 }

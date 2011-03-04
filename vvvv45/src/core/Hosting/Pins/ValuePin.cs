@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
@@ -7,6 +8,7 @@ namespace VVVV.Hosting.Pins
 	/// <summary>
 	/// Base class for ValueInputPin and ValueOutputPin
 	/// </summary>
+	[ComVisible(false)]
 	public abstract class ValuePin<T> : Pin<T> where T: struct
 	{
 		protected double FMinValue;
@@ -45,6 +47,7 @@ namespace VVVV.Hosting.Pins
 	/// <summary>
 	/// Base class for DiffValueInputPin and ValueConfigPin
 	/// </summary>
+	[ComVisible(false)]
 	public abstract class DiffValuePin<T> : DiffPin<T> where T: struct
 	{
 		protected double FMinValue;

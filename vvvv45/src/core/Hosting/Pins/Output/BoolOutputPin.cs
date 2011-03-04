@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Output
 {
+    [ComVisible(false)]
 	public class BoolOutputPin : ValueOutputPin<bool>
 	{
 		public BoolOutputPin(IPluginHost host, OutputAttribute attribute)
@@ -12,9 +14,9 @@ namespace VVVV.Hosting.Pins.Output
 		{
 		}
 		
-		unsafe protected override void CopyFromBuffer(bool[] buffer, double* destination, int length)
+		unsafe protected override void CopyFromBuffer(bool[] buffer, double* destination, int startIndex, int length)
 		{
-			for (int i = 0; i < length; i++)
+			for (int i = startIndex; i < startIndex + length; i++)
 				destination[i] = buffer[i] ? 1.0 : 0.0;
 		}
 	}

@@ -1,10 +1,11 @@
-﻿
-using System;
+﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.Hosting
 {
+    [ComVisible(false)]
 	class PluginLogger : ILogger
 	{
 		private readonly IPluginHost FPluginHost;

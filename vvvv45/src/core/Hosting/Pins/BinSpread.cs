@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Collections;
 using System.Collections.Generic;
 using VVVV.PluginInterfaces.V1;
@@ -9,6 +10,7 @@ namespace VVVV.Hosting.Pins
 	/// <summary>
 	/// Base class of 2d spreads.
 	/// </summary>
+	[ComVisible(false)]
 	public abstract class BinSpread<T> : Spread<ISpread<T>>
 	{
 		protected bool FLazy;

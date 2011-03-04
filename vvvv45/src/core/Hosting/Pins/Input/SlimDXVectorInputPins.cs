@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using SlimDX;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -7,6 +8,7 @@ using VVVV.Utils.SlimDX;
 
 namespace VVVV.Hosting.Pins.Input
 {
+    [ComVisible(false)]
 	public class Vector2InputPin : VectorInputPin<Vector2>
 	{
 		public Vector2InputPin(IPluginHost host, InputAttribute attribute)
@@ -40,6 +42,7 @@ namespace VVVV.Hosting.Pins.Input
 		}
 	}
 	
+	[ComVisible(false)]
 	public class Vector3InputPin : VectorInputPin<Vector3>
 	{
 		public Vector3InputPin(IPluginHost host, InputAttribute attribute)
@@ -76,6 +79,7 @@ namespace VVVV.Hosting.Pins.Input
 		}
 	}
 	
+	[ComVisible(false)]
 	public class Vector4InputPin : VectorInputPin<Vector4>
 	{
 		public Vector4InputPin(IPluginHost host, InputAttribute attribute)
@@ -115,6 +119,7 @@ namespace VVVV.Hosting.Pins.Input
 		}
 	}
 	
+	[ComVisible(false)]
 	public class DiffVector2InputPin : DiffVectorInputPin<Vector2>
 	{
 		public DiffVector2InputPin(IPluginHost host, InputAttribute attribute)
@@ -148,6 +153,7 @@ namespace VVVV.Hosting.Pins.Input
 		}
 	}
 	
+	[ComVisible(false)]
 	public class DiffVector3InputPin : DiffVectorInputPin<Vector3>
 	{
 		public DiffVector3InputPin(IPluginHost host, InputAttribute attribute)
@@ -184,6 +190,7 @@ namespace VVVV.Hosting.Pins.Input
 		}
 	}
 	
+	[ComVisible(false)]
 	public class DiffVector4InputPin : DiffVectorInputPin<Vector4>
 	{
 		public DiffVector4InputPin(IPluginHost host, InputAttribute attribute)
