@@ -19,27 +19,26 @@ namespace VVVV.Hosting.Pins
         public OutputPinRegistry()
         {
             //Register default types
-            this.RegisterType(typeof(double), delegate(IPluginHost host, OutputAttribute attribute) { return new DoubleOutputPin(host, attribute); });
-            this.RegisterType(typeof(float), delegate(IPluginHost host, OutputAttribute attribute) { return new FloatOutputPin(host, attribute); });
-            this.RegisterType(typeof(int), delegate(IPluginHost host, OutputAttribute attribute) { return new IntOutputPin(host, attribute); });
-            this.RegisterType(typeof(bool), delegate(IPluginHost host, OutputAttribute attribute) { return new BoolOutputPin(host, attribute); });
+            this.RegisterType(typeof(double), (host, attribute) => new DoubleOutputPin(host, attribute));
+            this.RegisterType(typeof(float), (host, attribute) => new FloatOutputPin(host, attribute));
+            this.RegisterType(typeof(int), (host, attribute) => new IntOutputPin(host, attribute));
+            this.RegisterType(typeof(bool), (host, attribute) => new BoolOutputPin(host, attribute));
 
-            this.RegisterType(typeof(Matrix4x4), delegate(IPluginHost host, OutputAttribute attribute) { return new Matrix4x4OutputPin(host, attribute); });
-            this.RegisterType(typeof(Matrix), delegate(IPluginHost host, OutputAttribute attribute) { return new SlimDXMatrixOutputPin(host, attribute); });
+            this.RegisterType(typeof(Matrix4x4), (host, attribute) => new Matrix4x4OutputPin(host, attribute));
+            this.RegisterType(typeof(Matrix), (host, attribute) => new SlimDXMatrixOutputPin(host, attribute));
 
-            this.RegisterType(typeof(Vector2D), delegate(IPluginHost host, OutputAttribute attribute) { return new Vector2DOutputPin(host, attribute); });
-            this.RegisterType(typeof(Vector3D), delegate(IPluginHost host, OutputAttribute attribute) { return new Vector3DOutputPin(host, attribute); });
-            this.RegisterType(typeof(Vector4D), delegate(IPluginHost host, OutputAttribute attribute) { return new Vector4DOutputPin(host, attribute); });
+            this.RegisterType(typeof(Vector2D), (host, attribute) => new Vector2DOutputPin(host, attribute));
+            this.RegisterType(typeof(Vector3D), (host, attribute) => new Vector3DOutputPin(host, attribute));
+            this.RegisterType(typeof(Vector4D), (host, attribute) => new Vector4DOutputPin(host, attribute));
 
-            this.RegisterType(typeof(Vector2), delegate(IPluginHost host, OutputAttribute attribute) { return new Vector2OutputPin(host, attribute); });
-            this.RegisterType(typeof(Vector3), delegate(IPluginHost host, OutputAttribute attribute) { return new Vector3OutputPin(host, attribute); });
-            this.RegisterType(typeof(Vector4), delegate(IPluginHost host, OutputAttribute attribute) { return new Vector4OutputPin(host, attribute); });
+            this.RegisterType(typeof(Vector2), (host, attribute) => new Vector2OutputPin(host, attribute));
+            this.RegisterType(typeof(Vector3), (host, attribute) => new Vector3OutputPin(host, attribute));
+            this.RegisterType(typeof(Vector4), (host, attribute) => new Vector4OutputPin(host, attribute));
 
-            this.RegisterType(typeof(string), delegate(IPluginHost host, OutputAttribute attribute) { return new StringOutputPin(host, attribute); });
-            this.RegisterType(typeof(RGBAColor), delegate(IPluginHost host, OutputAttribute attribute) { return new ColorOutputPin(host, attribute); });
+            this.RegisterType(typeof(string), (host, attribute) => new StringOutputPin(host, attribute));
+            this.RegisterType(typeof(RGBAColor), (host, attribute) => new ColorOutputPin(host, attribute));
 
-            this.RegisterType(typeof(EnumEntry), delegate(IPluginHost host, OutputAttribute attribute) { return new DynamicEnumOutputPin(host, attribute); });
-
+            this.RegisterType(typeof(EnumEntry), (host, attribute) => new DynamicEnumOutputPin(host, attribute));
         }
     }
 }
