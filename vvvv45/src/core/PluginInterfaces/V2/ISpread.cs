@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -9,16 +10,16 @@ using VVVV.Utils.VMath;
 namespace VVVV.PluginInterfaces.V2
 {
     /// <summary>
-    /// Common interface to the underlying input/output/config pins.
+    /// Common non-generic interface to the underlying input/output/config pins.
     /// Set/Get, Read/Write methods are only implemented when it makes sense.
     /// </summary>
     [ComVisible(false)]
-    public interface ISpread<T> : IEnumerable<T>
+    public interface ISpread : IEnumerable
     {
         /// <summary>
         /// Provides read/write access to the actual data.
         /// </summary>
-        T this[int index]
+        object this[int index]
         {
             get;
             set;
@@ -28,6 +29,23 @@ namespace VVVV.PluginInterfaces.V2
         /// Get/Set the size of this spread.
         /// </summary>
         int SliceCount
+        {
+            get;
+            set;
+        }
+    }
+    
+    /// <summary>
+    /// Common interface to the underlying input/output/config pins.
+    /// Set/Get, Read/Write methods are only implemented when it makes sense.
+    /// </summary>
+    [ComVisible(false)]
+    public interface ISpread<T> : IEnumerable<T>, ISpread
+    {
+        /// <summary>
+        /// Provides read/write access to the actual data.
+        /// </summary>
+        new T this[int index]
         {
             get;
             set;

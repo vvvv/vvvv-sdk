@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 using VVVV.Hosting.Pins.Config;
 using VVVV.PluginInterfaces.V1;
@@ -9,6 +10,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins
 {
+    [ComVisible(false)]
 	public abstract class SpreadListBase
 	{
 		protected static int FInstanceCounter = 1;
@@ -17,6 +19,7 @@ namespace VVVV.Hosting.Pins
 	/// <summary>
 	/// base class for spread lists
 	/// </summary>
+	[ComVisible(false)]
 	public abstract class SpreadList<T> : SpreadListBase, ISpread<ISpread<T>>, IDisposable
 	{
 		protected Pin<T>[] FPins;
@@ -119,6 +122,18 @@ namespace VVVV.Hosting.Pins
 				
 			}
 		}
+		
+		object ISpread.this[int index]
+        {
+            get 
+            {
+                return this[index];
+            }
+            set
+            {
+                this[index] = (ISpread<T>) value;
+            }
+        }
 		
 		public int SliceCount 
 		{

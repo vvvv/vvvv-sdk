@@ -16,10 +16,25 @@ namespace VVVV.PluginInterfaces.V2
 		
 		public event SpreadChangedEventHander<T> Changed;
 		
+		protected SpreadChangedEventHander FChanged;
+        event SpreadChangedEventHander IDiffSpread.Changed
+        {
+            add
+            {
+                FChanged += value;
+            }
+            remove
+            {
+                FChanged -= value;
+            }
+        }
+		
 		protected virtual void OnChanged()
 		{
 			if (Changed != null)
 				Changed(this);
+			if (FChanged != null)
+			    FChanged(this);
 		}
 		
 		public bool IsChanged

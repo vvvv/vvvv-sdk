@@ -76,6 +76,18 @@ namespace VVVV.PluginInterfaces.V2
 			}
 		}
 		
+		object ISpread.this[int index]
+        {
+            get 
+            {
+                return this[index];
+            }
+            set
+            {
+                this[index] = (T) value;
+            }
+        }
+		
 		public virtual int SliceCount
 		{
 			get

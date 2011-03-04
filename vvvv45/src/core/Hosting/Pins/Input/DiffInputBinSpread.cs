@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins.Input
 {
+    [ComVisible(false)]
 	public class DiffInputBinSpread<T> : InputBinSpread<T>, IDiffSpread<ISpread<T>>, IDisposable
 	{
 		protected DiffPin<T> FDiffSpreadPin;
@@ -38,9 +40,24 @@ namespace VVVV.Hosting.Pins.Input
 		{
 		    if (Changed != null)
 		        Changed(this);
+		    if (FChanged != null)
+		        FChanged(this);
 		}
 
 		public event SpreadChangedEventHander<ISpread<T>> Changed;
+		
+		protected SpreadChangedEventHander FChanged;
+        event SpreadChangedEventHander IDiffSpread.Changed
+        {
+            add
+            {
+                FChanged += value;
+            }
+            remove
+            {
+                FChanged -= value;
+            }
+        }
 		
 		public bool IsChanged 
 		{

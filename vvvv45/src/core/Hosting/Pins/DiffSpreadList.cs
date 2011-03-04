@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 using VVVV.Hosting.Pins.Config;
 using VVVV.PluginInterfaces.V1;
@@ -12,6 +13,7 @@ namespace VVVV.Hosting.Pins
 	/// <summary>
 	/// base class for diff spread lists
 	/// </summary>
+	[ComVisible(false)]
 	public abstract class DiffSpreadList<T> : SpreadListBase, IDiffSpread<ISpread<T>>, IDisposable
 	{
 		protected IDiffSpread<T>[] FPins;
@@ -94,8 +96,8 @@ namespace VVVV.Hosting.Pins
 			FUpdateCounter++;
 			if(FUpdateCounter >= FPins.Length)
 			{
-				if (IsChanged && Changed != null) 
-					Changed(this);
+				if (IsChanged) 
+				    OnChanged();
 				
 				FUpdateCounter = 0;
 			}
@@ -124,6 +126,18 @@ namespace VVVV.Hosting.Pins
 			}
 		}
 		
+		object ISpread.this[int index]
+        {
+            get 
+            {
+                return this[index];
+            }
+            set
+            {
+                this[index] = (ISpread<T>) value;
+            }
+        }
+		
 		public int SliceCount 
 		{
 			get 
@@ -148,6 +162,27 @@ namespace VVVV.Hosting.Pins
 		}
 		
 		public event SpreadChangedEventHander<ISpread<T>> Changed;
+		
+		protected SpreadChangedEventHander FChanged;
+        event SpreadChangedEventHander IDiffSpread.Changed
+        {
+            add
+            {
+                FChanged += value;
+            }
+            remove
+            {
+                FChanged -= value;
+            }
+        }
+        
+        protected virtual void OnChanged()
+        {
+            if (Changed != null)
+                Changed(this);
+            if (FChanged != null)
+                FChanged(this);
+        }
 		
 		public bool IsChanged 
 		{

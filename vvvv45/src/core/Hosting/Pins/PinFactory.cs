@@ -171,7 +171,6 @@ namespace VVVV.Hosting.Pins
             {
                 var pinType = typeof(EnumOutputPin<>).MakeGenericType(type);
                 return Activator.CreateInstance(pinType, new object[] { host, attribute });
-                return new DynamicEnumOutputPin(host, attribute);
             }
             else
             {
