@@ -747,19 +747,13 @@ namespace VVVV.Nodes.NodeBrowser
 		private void RedrawSelection()
 		{
 			//clear old selection
-			FRichTextBox.HideSelection = false;
 			FRichTextBox.SelectionBackColor = Color.Silver;
 
 			if (FHoverLine > -1)
 			{
 				//draw current selection
-				var offset = FRichTextBox.GetFirstCharIndexFromLine(FHoverLine);
-//				int offset = FHoverLine * 200 - 1;
-//				for (int i = 0; i < FHoverLine; i++)
-//					offset += FRichTextBox.Lines[i].Length;
-				
-				FRichTextBox.SelectionStart = offset;
-				FRichTextBox.SelectionLength = CLineLength; //FRichTextBox.Lines[FHoverLine].Length;
+				FRichTextBox.SelectionStart = FRichTextBox.GetFirstCharIndexFromLine(FHoverLine);
+				FRichTextBox.SelectionLength = CLineLength;
 				FRichTextBox.SelectionBackColor = CHoverColor;
 			}
 			
