@@ -411,7 +411,8 @@ namespace VVVV.Nodes.NodeBrowser
 			    return true;
 			
 			// Hack to make it work again 50
-			if (NodeBrowser.FNodeCollection == null)
+			var nodeCollection = NodeBrowser.FNodeCollection;
+			if (nodeCollection == null)
 				return true;
 			
 			if (NodeBrowser.CurrentPatchWindow == null || nodeInfo != NodeBrowser.CurrentPatchWindow.Node.NodeInfo)
@@ -424,7 +425,7 @@ namespace VVVV.Nodes.NodeBrowser
 				if (lookInSearchPaths && nodeInfo.Type != NodeType.Patch)
 				{
 					//available if from any of the global paths
-					bool res = NodeBrowser.FNodeCollection.IsInUserDefinedSearchPath(nodeInfo.Factory, dir);
+					bool res = nodeCollection.IsInUserDefinedSearchPath(nodeInfo.Factory, dir);
                     return res;
 				}
 			}

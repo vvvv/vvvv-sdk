@@ -349,14 +349,14 @@ namespace VVVV.Nodes.NodeBrowser
 			//don't include ignored nodes in the list
 			if (nodeInfo.Ignore) return;
 			
-			if (!FNodeCollection.IsCollecting)
+			if (FNodeCollection == null || !FNodeCollection.IsCollecting)
 				FTagPanel.NeedsUpdate = true;
 			FCategoryPanel.Add(nodeInfo);
 		}
 		
 		public void NodeInfoUpdatedCB(object sender, INodeInfo nodeInfo)
 		{
-			if (!FNodeCollection.IsCollecting)
+			if (FNodeCollection == null || !FNodeCollection.IsCollecting)
 				FTagPanel.NeedsUpdate = true;
 			FCategoryPanel.Update(nodeInfo);
 		}
@@ -366,7 +366,7 @@ namespace VVVV.Nodes.NodeBrowser
 		    //nothing todo if nodeinfo is ignored anyway
 			if (nodeInfo.Ignore) return;
 			
-			if (!FNodeCollection.IsCollecting)
+			if (FNodeCollection == null || !FNodeCollection.IsCollecting)
 				FTagPanel.NeedsUpdate = true;
 			FCategoryPanel.Remove(nodeInfo);
 		}
