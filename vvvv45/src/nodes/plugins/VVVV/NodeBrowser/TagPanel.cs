@@ -302,7 +302,8 @@ namespace VVVV.Nodes.NodeBrowser
 			if (FRichTextBox.Lines.Length == 0)
 				return;
 			
-			int newHoverLine = FRichTextBox.GetLineFromCharIndex(FRichTextBox.GetCharIndexFromPosition(e.Location));
+			var charIndex = FRichTextBox.GetCharIndexFromPosition(e.Location);
+			int newHoverLine = FRichTextBox.GetLineFromCharIndex(charIndex);
 			
 			//avoid some flicker
 			if ((e.Location.X != FLastMouseHoverLocation.X) || (e.Location.Y != FLastMouseHoverLocation.Y))
@@ -655,10 +656,12 @@ namespace VVVV.Nodes.NodeBrowser
 				rtf += FRTFSelectionList[i];
 			}
 			
+			rtf = rtf.TrimEnd(new char[5]{'\\', 'p', 'a', 'r', ' '});// + "}";
+			
 			if (FRichTextBox.InvokeRequired)
-				FRichTextBox.Invoke(new MethodInvoker(() => { FRichTextBox.Rtf = rtf + "}"; }));
+				FRichTextBox.Invoke(new MethodInvoker(() => { FRichTextBox.Rtf = rtf; }));
 			else
-				FRichTextBox.Rtf = rtf + "}";
+				FRichTextBox.Rtf = rtf;
 			
 			FNodeTypePanel.Invalidate();
 		}
@@ -756,6 +759,7 @@ namespace VVVV.Nodes.NodeBrowser
 			}
 			
 			//make sure the selection is also drawn in the NodeTypePanel
+			FRichTextBox.Invalidate();
 			FNodeTypePanel.Invalidate();
 		}
 
