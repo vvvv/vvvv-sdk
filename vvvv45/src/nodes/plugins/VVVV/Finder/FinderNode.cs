@@ -17,139 +17,243 @@ using VVVV.HDE.Viewer.WinFormsViewer;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.Graph;
+using VVVV.Utils.Linq;
 
 #endregion usings
 
 namespace VVVV.Nodes.Finder
 {
-    public enum SearchScope {Local, Downstream, Global};
-    
-    public struct Filter
+    [Flags]
+    public enum FilterFlags
     {
-        public SearchScope Scope;
-        public bool SendReceive;
-        public bool Comments;
-        public bool Labels;
-        public bool Effects;
-        public bool Freeframes;
-        public bool Modules;
-        public bool Plugins;
-        public bool IONodes;
-        public bool Natives;
-        public bool VSTs;
-        public bool Patches;
-        public bool Unknowns;
-        public bool Boygrouped;
-        public bool Addons;
-        public bool Windows;
-        public bool IDs;
-        private List<string> FTags;
-        public List<string> Tags
+        None = 0x0,
+        Send = 0x1,
+        Comment = 0x2,
+        Label = 0x4,
+        Effect = 0x8,
+        Freeframe = 0x10,
+        Module = 0x20,
+        Plugin = 0x40,
+        IONode = 0x80,
+        Native = 0x100,
+        VST = 0x200,
+        Patch = 0x400,
+        Unknown = 0x800,
+        Boygrouped = 0x1000,
+        Name = 0x2000,
+        Window = 0x4000,
+        ID = 0x8000,
+        Dynamic = 0x10000,
+        Text = 0x20000,
+        Receive = 0x40000,
+        Addon = Effect | Freeframe | Module | Plugin | VST | Dynamic,
+        AllNodeTypes = Addon | Send | Comment | IONode | Native | Patch | Unknown | Boygrouped | Window | Dynamic | Text | Receive
+    }
+    
+    public class NodeFilter
+    {
+        public static bool IsGlobalSearchScope(string query)
         {
-            get {return FTags;}
-            set
+            var tags = ParseQuery(query);
+            return tags.Contains("<");
+        }
+        
+        static List<string> ParseQuery(string query)
+        {
+            query += (char) 160;
+            var tags = query.Split(new char[1]{' '}).ToList();
+            for (int i = tags.Count-1; i >= 0; i--)
             {
-                FTags = value;
-                
-                if (FTags.Contains("g"))
-                {
-                    Scope = SearchScope.Global;
-                    FTags.Remove("g");
-                }
-                else if (FTags.Contains("d"))
-                {
-                    Scope = SearchScope.Downstream;
-                    FTags.Remove("d");
-                }
-                if (FTags.Contains("s"))
-                {
-                    SendReceive = true;
-                    FTags.Remove("s");
-                }
-                if (FTags.Contains("/"))
-                {
-                    Comments = true;
-                    FTags.Remove("/");
-                }
-                if (FTags.Contains("l"))
-                {
-                    Labels = true;
-                    FTags.Remove("l");
-                }
-                if (FTags.Contains("x"))
-                {
-                    Effects = true;
-                    FTags.Remove("x");
-                }
-                if (FTags.Contains("f"))
-                {
-                    Freeframes = true;
-                    FTags.Remove("f");
-                }
-                if (FTags.Contains("m"))
-                {
-                    Modules = true;
-                    FTags.Remove("m");
-                }
-                if (FTags.Contains("p"))
-                {
-                    Plugins = true;
-                    FTags.Remove("p");
-                }
-                if (FTags.Contains("i"))
-                {
-                    IONodes = true;
-                    FTags.Remove("i");
-                }
-                if (FTags.Contains("n"))
-                {
-                    Natives = true;
-                    FTags.Remove("n");
-                }
-                if (FTags.Contains("v"))
-                {
-                    VSTs = true;
-                    FTags.Remove("v");
-                }
-                if (FTags.Contains("t"))
-                {
-                    Patches = true;
-                    FTags.Remove("t");
-                }
-                if (FTags.Contains("r"))
-                {
-                    Unknowns = true;
-                    FTags.Remove("r");
-                }
-                if (FTags.Contains("a"))
-                {
-                    Addons = true;
-                    FTags.Remove("a");
-                }
-                if (FTags.Contains("b"))
-                {
-                    Boygrouped = true;
-                    FTags.Remove("b");
-                }
-                if (FTags.Contains("w"))
-                {
-                    Windows = true;
-                    FTags.Remove("w");
-                }
-                if (FTags.Contains("#"))
-                {
-                    IDs = true;
-                    FTags.Remove("#");
-                }
-                
-                for (int i = 0; i < FTags.Count; i++)
-                    FTags[i] = FTags[i].Trim((char) 160);
+                if (string.IsNullOrEmpty(tags[i].Trim()))
+                    tags.RemoveAt(i);
+            }
+            
+            return tags;
+        }
+        
+        public NodeView UpdateFilter(string query, INode2 startNode)
+        {
+            // Parse query
+            Tags = ParseQuery(query);
+
+            // Set filter scope
+            if (Tags.Contains("<"))
+            {
+                MinLevel = int.MinValue;
+                MaxLevel = int.MaxValue;
+                Tags.Remove("<");
+            }
+            else if (Tags.Contains(">"))
+            {
+                MinLevel = 0;
+                MaxLevel = int.MaxValue;
+                Tags.Remove(">");
+            }
+            else
+            {
+                MinLevel = 0;
+                MaxLevel = 1;
+            }
+            
+            // Set filter flags which control what to search
+            Flags = FilterFlags.None;
+            if (Tags.Contains("s"))
+            {
+                Flags |= FilterFlags.Send;
+                Flags |= FilterFlags.Receive;
+                Tags.Remove("s");
+            }
+            if (Tags.Contains("/"))
+            {
+                Flags |= FilterFlags.Comment;
+                Tags.Remove("/");
+            }
+            if (Tags.Contains("x"))
+            {
+                Flags |= FilterFlags.Effect;
+                Tags.Remove("x");
+            }
+            if (Tags.Contains("f"))
+            {
+                Flags |= FilterFlags.Freeframe;
+                Tags.Remove("f");
+            }
+            if (Tags.Contains("m"))
+            {
+                Flags |= FilterFlags.Module;
+                Tags.Remove("m");
+            }
+            if (Tags.Contains("p"))
+            {
+                Flags |= FilterFlags.Plugin;
+                Tags.Remove("p");
+            }
+            if (Tags.Contains("d"))
+            {
+                Flags |= FilterFlags.Dynamic;
+                Tags.Remove("d");
+            }
+            if (Tags.Contains("i"))
+            {
+                Flags |= FilterFlags.IONode;
+                Tags.Remove("i");
+            }
+            if (Tags.Contains("n"))
+            {
+                Flags |= FilterFlags.Native;
+                Tags.Remove("n");
+            }
+            if (Tags.Contains("v"))
+            {
+                Flags |= FilterFlags.VST;
+                Tags.Remove("v");
+            }
+            if (Tags.Contains("t"))
+            {
+                Flags |= FilterFlags.Patch;
+                Tags.Remove("t");
+            }
+            if (Tags.Contains("r"))
+            {
+                Flags |= FilterFlags.Unknown;
+                Tags.Remove("r");
+            }
+            if (Tags.Contains("a"))
+            {
+                Flags |= FilterFlags.Addon;
+                Tags.Remove("a");
+            }
+            if (Tags.Contains("b"))
+            {
+                Flags |= FilterFlags.Boygrouped;
+                Tags.Remove("b");
+            }
+            if (Tags.Contains("w"))
+            {
+                Flags |= FilterFlags.Window;
+                Tags.Remove("w");
+            }
+            
+            // If nothing set look for all kind of nodes
+            if (Flags == FilterFlags.None)
+                Flags = FilterFlags.AllNodeTypes;
+            
+            // Set filter tags which control where to search
+            var wFlags = FilterFlags.None;
+            if (Tags.Contains("l"))
+            {
+                wFlags |= FilterFlags.Label;
+                Tags.Remove("l");
+            }
+            if (Tags.Contains("#"))
+            {
+                wFlags |= FilterFlags.ID;
+                Tags.Remove("#");
+            }
+            
+            // If nothing set search in node name
+            if (wFlags == FilterFlags.None)
+                wFlags = FilterFlags.Name;
+            
+            Flags |= wFlags;
+            
+            // Set filter tags
+            for (int i = 0; i < Tags.Count; i++)
+                Tags[i] = Tags[i].Trim((char) 160);
+            
+            return new NodeView(null, startNode, this, 0);
+        }
+        
+        public int MinLevel
+        {
+            get;
+            private set;
+        }
+        
+        public int MaxLevel
+        {
+            get;
+            private set;
+        }
+        
+        public bool ScopeIsGlobal
+        {
+            get
+            {
+                return MinLevel == int.MinValue && MaxLevel == int.MaxValue;
             }
         }
         
-        public bool QuickTagsUsed()
+        public bool ScopeIsLocal
         {
-            return SendReceive || Comments || Labels || IONodes || Natives || Modules || Effects || Freeframes || VSTs || Plugins || Patches || Unknowns || Addons || Boygrouped || Windows || IDs;
+            get
+            {
+                return MinLevel == 0 && MaxLevel == 1;
+            }
+        }
+        
+        public INode2 StartNode
+        {
+            get;
+            private set;
+        }
+        
+        public IWindow2 ActiveWindow
+        {
+            get;
+            private set;
+        }
+        
+        public FilterFlags Flags
+        {
+            get;
+            private set;
+        }
+        
+        public List<string> Tags
+        {
+            get;
+            private set;
         }
     }
     
@@ -171,15 +275,15 @@ namespace VVVV.Nodes.Finder
         private IPluginHost2 FPluginHost;
         private IHDEHost FHDEHost;
         private MappingRegistry FMappingRegistry;
-        private List<PatchNode> FPlainResultList = new List<PatchNode>();
         
         private IWindow2 FActivePatchWindow;
         private IWindow2 FActiveWindow;
-        private PatchNode FSearchResult;
+        //        private PatchNode FSearchResult;
+        private NodeView FNodeView;
         
-        private Filter FFilter;
-        private int FSearchIndex;
-        
+        //        private Filter FFilter;
+        private readonly NodeFilter FNodeFilter;
+
         // Track whether Dispose has been called.
         private bool FDisposed = false;
         #endregion field declaration
@@ -210,6 +314,8 @@ namespace VVVV.Nodes.Finder
             
             FTagsPin = tagsPin;
             FTagsPin.Changed += FTagsPin_Changed;
+            
+            FNodeFilter = new NodeFilter();
         }
 
         private void InitializeComponent()
@@ -258,7 +364,6 @@ namespace VVVV.Nodes.Finder
             this.FSearchTextBox.TabIndex = 13;
             this.FSearchTextBox.TextChanged += new System.EventHandler(this.FSearchTextBoxTextChanged);
             this.FSearchTextBox.MouseLeave += new System.EventHandler(this.FSearchTextBoxMouseLeave);
-            this.FSearchTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FSearchTextBoxKeyDown);
             this.FSearchTextBox.MouseEnter += new System.EventHandler(this.FSearchTextBoxMouseEnter);
             // 
             // panel2
@@ -343,13 +448,12 @@ namespace VVVV.Nodes.Finder
                     FHDEHost.WindowSelectionChanged -= FHDEHost_WindowSelectionChanged;
                     FTagsPin.Changed -= FTagsPin_Changed;
                     
-                    if (FSearchResult != null)
-                        FSearchResult.Dispose();
+                    //                    if (FSearchResult != null)
+                    //                        FSearchResult.Dispose();
                     
                     ActivePatchNode = null;
                     
                     this.FSearchTextBox.TextChanged -= this.FSearchTextBoxTextChanged;
-                    this.FSearchTextBox.KeyDown -= this.FSearchTextBoxKeyDown;
                     
                     this.FHierarchyViewer.MouseDoubleClick -= this.FHierarchyViewerDoubleClick;
                     this.FHierarchyViewer.MouseClick -= this.FHierarchyViewerClick;
@@ -434,9 +538,9 @@ namespace VVVV.Nodes.Finder
                 updateActiveWindow = true;
             }
             
-            if (updateActiveWindow && FSearchResult != null)
+            if (updateActiveWindow && FNodeView != null)
             {
-                FSearchResult.SetActiveWindow(FActiveWindow);
+                FNodeView.SetActiveWindow(FActiveWindow);
             }
         }
         
@@ -452,20 +556,20 @@ namespace VVVV.Nodes.Finder
             UpdateSearch();
         }
 
-        void HandleFActivePatchParentRemoved (IViewableCollection collection, object item)
+        void HandleFActivePatchParentRemoved(IViewableCollection collection, object item)
         {
-        	var childNode = item as INode2;
-			//if active patch is being deleted detach view
+            var childNode = item as INode2;
+            //if active patch is being deleted detach view
             if (childNode == FActivePatchNode)
             {
-				if (FActivePatchNode.Parent != null)
-					FActivePatchNode.Parent.Removed -= HandleFActivePatchParentRemoved;
-				
+                if (FActivePatchNode.Parent != null)
+                    FActivePatchNode.Parent.Removed -= HandleFActivePatchParentRemoved;
+                
                 FActivePatchNode = null;
                 FActivePatchWindow = null;
                 FActiveWindow = null;
                 
-                if (FFilter.Scope != SearchScope.Global)
+                if (!FNodeFilter.ScopeIsGlobal)
                     ClearSearch();
             }
         }
@@ -474,63 +578,35 @@ namespace VVVV.Nodes.Finder
         #region Search
         private void ClearSearch()
         {
-            if (FSearchResult != null)
-                FSearchResult.Dispose();
-			FSearchResult = null;
-            FPlainResultList.Clear();
-            FSearchIndex = 0;
+            if (FNodeView != null)
+            {
+                FNodeView.Dispose();
+                FNodeView = null;
+            }
         }
         
         private void UpdateSearch()
         {
-            if (FHDEHost.Root == null)
-                return;
-            
             string query = FSearchTextBox.Text.ToLower();
-            query += (char) 160;
-            
-            FFilter = new Filter();
-            var tags = query.Split(new char[1]{' '}).ToList();
-            for (int i = tags.Count-1; i >= 0; i--)
-            {
-                if (string.IsNullOrEmpty(tags[i].Trim()))
-                    tags.RemoveAt(i);
-            }
-            FFilter.Tags = tags;
-            FHierarchyViewer.ShowLinks = FFilter.SendReceive;
             
             FHierarchyViewer.BeginUpdate();
             try
             {
                 ClearSearch();
                 
-                switch (FFilter.Scope)
+                if (NodeFilter.IsGlobalSearchScope(query))
                 {
-                    case SearchScope.Global:
-                        {
-                            FSearchResult = new PatchNode(FHDEHost.RootNode, FFilter, true, true);
-                            FHierarchyViewer.ShowRoot = false;
-                            break;
-                        }
-                    case SearchScope.Local:
-                        {
-                            FSearchResult = new PatchNode(FActivePatchNode, FFilter, true, false);
-                            FHierarchyViewer.ShowRoot = true;
-                            break;
-                        }
-                    case SearchScope.Downstream:
-                        {
-                            FSearchResult = new PatchNode(FActivePatchNode, FFilter, true, true);
-                            FHierarchyViewer.ShowRoot = true;
-                            break;
-                        }
+                    FNodeView = FNodeFilter.UpdateFilter(query, FHDEHost.RootNode);
+                    FHierarchyViewer.ShowRoot = false;
+                }
+                else
+                {
+                    FNodeView = FNodeFilter.UpdateFilter(query, FActivePatchNode);
+                    FHierarchyViewer.ShowRoot = true;
                 }
                 
-                FSearchResult.SetActiveWindow(FActiveWindow);
-
-                FHierarchyViewer.Input = FSearchResult;
-
-                FNodeCountLabel.Text = "Matching Nodes: " + FPlainResultList.Count.ToString();
+                FNodeView.SetActiveWindow(FActiveWindow);
+                FHierarchyViewer.Input = FNodeView;
             }
             finally
             {
@@ -548,34 +624,6 @@ namespace VVVV.Nodes.Finder
             FTagsPin[0] = FSearchTextBox.Text;
         }
         
-        void FSearchTextBoxKeyDown(object sender, KeyEventArgs e)
-        {
-            if (FPlainResultList.Count == 0)
-                return;
-            
-            if (e.KeyCode == Keys.F3 || e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)
-            {
-                FPlainResultList[FSearchIndex].Selected = false;
-                if (e.Shift || e.KeyCode == Keys.Up)
-                {
-                    FSearchIndex -= 1;
-                    if (FSearchIndex < 0)
-                        FSearchIndex = FPlainResultList.Count - 1;
-                }
-                else
-                    FSearchIndex = (FSearchIndex + 1) % FPlainResultList.Count;
-                
-                FPlainResultList[FSearchIndex].Selected = true;
-                
-                //select the node
-                FHDEHost.SelectNodes(new INode2[1]{FPlainResultList[FSearchIndex].Node});
-            }
-            else if (e.KeyCode == Keys.Return || e.KeyCode == Keys.Enter)
-            {
-                OpenPatch(FPlainResultList[FSearchIndex].Node);
-            }
-        }
-        
         void FSearchTextBox_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             FHierarchyViewer.Focus();
@@ -590,12 +638,16 @@ namespace VVVV.Nodes.Finder
         {
             string tip = "Separate tags by <space>:\n\n";
             
-            tip += "g\t Search globally in the whole node graph\n";
-            tip += "d\t Search in patches downstream of the active patch\n";
+            tip += "<\t Search globally in the whole node graph\n";
+            tip += ">\t Search in patches within the active patch\n";
             tip += "----\n";
-            tip += "n\t Nativ nodes\n";
+            tip += "#\t Search in Node IDs\n";
+            tip += "l\t Search in Labels (descriptive names)\n";
+            tip += "----\n";
+            tip += "n\t Native nodes\n";
             tip += "m\t Modules\n";
             tip += "p\t vvvv Plugins\n";
+            tip += "d\t vvvv Dynamic Plugins\n";
             tip += "x\t Effects\n";
             tip += "f\t Freeframes Plugins\n";
             tip += "v\t VST Plugins\n";
@@ -603,11 +655,9 @@ namespace VVVV.Nodes.Finder
             tip += "i\t IOBoxes (Pins of Patches/Modules)\n";
             tip += "s\t Send/Receive Nodes\n";
             tip += "/\t Comments\n";
-            tip += "l\t Labels (descriptive names)\n";
             tip += "t\t Patches\n";
             tip += "r\t Red (missing) Nodes\n";
             tip += "b\t Boygrouped Nodes\n";
-            tip += "#\t Node IDs\n";
             tip += "w\t Windows";
 
             FTooltip.Show(tip, FSearchTextBox, new Point(0, FSearchTextBox.Height));
@@ -621,39 +671,59 @@ namespace VVVV.Nodes.Finder
         void FHierarchyViewerClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (sender == null)
-            {    
+            {
                 if (e.Button == MouseButtons.Middle)
                     FHierarchyViewer.ViewAll();
             }
-            else if (e.Button == MouseButtons.Left && sender.Model != null)
+            else
             {
-                (sender.Model as PatchNode).Selected = true;
-                FHDEHost.SelectNodes(new INode2[1]{(sender.Model as PatchNode).Node});
-                
-                //only fit view to selected node if not in local scope
-                if (FFilter.Scope != SearchScope.Local)
-                    if (sender.CanMap<ICamera>())
+                var nodeView = sender.Model as NodeView;
+                if (e.Button == MouseButtons.Left && nodeView != null)
                 {
-                    var parent = (sender.Model as PatchNode).Node.Parent;
-                    if (parent == null)
-                        parent = FHDEHost.RootNode;
+                    nodeView.Selected = true;
+                    FHDEHost.SelectNodes(new INode2[1] { nodeView.Node});
                     
-                    sender.Map<ICamera>().View(FSearchResult.FindNode(parent));
+                    if (FNodeView != null && !FNodeFilter.ScopeIsLocal)
+                    {
+                        if (sender.CanMap<ICamera>())
+                        {
+                            var camera = sender.Map<ICamera>();
+                            var parent = nodeView.Parent;
+                            if (parent == null)
+                            {
+                                parent = FNodeView;
+                            }
+                            
+                            camera.View(parent);
+                        }
+                    }
                 }
-            }
-            else if (e.Button == MouseButtons.Right && sender.Model != null)
-            {
-                if ((sender.Model as PatchNode).Node == FActivePatchNode)
-                    FHDEHost.ShowEditor(FActivePatchNode.Parent);
-                else
-                    OpenPatch((sender.Model as PatchNode).Node);
+                else if (e.Button == MouseButtons.Right && nodeView != null)
+                {
+                    if (nodeView.Node == FActivePatchNode)
+                    {
+                        FHDEHost.ShowEditor(FActivePatchNode.Parent);
+                    }
+                    else
+                    {
+                        OpenPatch(nodeView.Node);
+                    }
+                }
             }
         }
         
         void FHierarchyViewerDoubleClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-                OpenParentAndSelectNode((sender.Model as PatchNode).Node);
+            if (sender != null)
+            {
+                var nodeView = sender.Model as NodeView;
+                
+                if (nodeView != null)
+                {
+                    if (e.Button == MouseButtons.Left)
+                        OpenParentAndSelectNode(nodeView.Node);
+                }
+            }
         }
         
         void FHierarchyViewerKeyPress(object sender, KeyPressEventArgs e)

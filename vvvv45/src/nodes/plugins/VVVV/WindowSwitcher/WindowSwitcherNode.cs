@@ -1,19 +1,21 @@
 #region usings
 using System;
-using System.IO;
-using System.Windows.Forms;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.IO;
+using System.Windows.Forms;
+using System.Linq;
 
 using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.Core.View;
-using VVVV.PluginInterfaces.V2;
-
 using VVVV.Nodes.Finder;
+using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.Graph;
+using VVVV.Utils.Linq;
+
 #endregion usings
 
 //the vvvv node namespace
@@ -31,14 +33,15 @@ namespace VVVV.Nodes.WindowSwitcher
         protected IWindowSwitcherHost FWindowSwitcherHost;
         
         private IHDEHost FHDEHost;
-        private PatchNode FWindowTree;
+        private NodeView FNodeView;
         private IWindow2 FActiveWindow;
-        private PatchNode FSelectedPatchNode;
+        private NodeView FSelectedNodeView;
         // Track whether Dispose has been called.
         private bool FDisposed = false;
         
         private List<IWindow2> FWindowLIFO = new List<IWindow2>();
         private int FSelectedWindowIndex = 0;
+        private readonly NodeFilter FNodeFilter = new NodeFilter();
         #endregion field declaration
         
         #region constructor/destructor
@@ -53,8 +56,8 @@ namespace VVVV.Nodes.WindowSwitcher
             FHDEHost.WindowRemoved += FHDEHost_WindowRemoved;
             FHDEHost.WindowSelectionChanged += FHDEHost_WindowSelectionChanged;
             FActiveWindow = FHDEHost.ActivePatchWindow;
-			
-			var mappingRegistry = new MappingRegistry();
+            
+            var mappingRegistry = new MappingRegistry();
             mappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
             FHierarchyViewer.Registry = mappingRegistry;
         }
@@ -75,8 +78,8 @@ namespace VVVV.Nodes.WindowSwitcher
                 {
                     // Dispose managed resources.
                     FHDEHost.WindowAdded -= FHDEHost_WindowAdded;
-		            FHDEHost.WindowRemoved -= FHDEHost_WindowRemoved;
-		            FHDEHost.WindowSelectionChanged -= FHDEHost_WindowSelectionChanged;
+                    FHDEHost.WindowRemoved -= FHDEHost_WindowRemoved;
+                    FHDEHost.WindowSelectionChanged -= FHDEHost_WindowSelectionChanged;
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
@@ -135,15 +138,14 @@ namespace VVVV.Nodes.WindowSwitcher
         {
             //make a tree that only contains nodes that have a window
             //mark nodes with hidden windows as inactive
-            if (FWindowTree != null)
-                FWindowTree.Dispose();
+            if (FNodeView != null)
+                FNodeView.Dispose();
             
-            FWindowTree = new PatchNode(FHDEHost.RootNode, new Filter(), false, false);
-            AddWindowNodes(FWindowTree, FHDEHost.RootNode);
-            FWindowTree.SetActiveWindow(FActiveWindow);
+            FNodeView = FNodeFilter.UpdateFilter("< w t ", FHDEHost.RootNode);
+            FNodeView.SetActiveWindow(FActiveWindow);
             
             //mark the incoming window as selected
-            FHierarchyViewer.Input = FWindowTree;
+            FHierarchyViewer.Input = FNodeView;
             
             //always on open the second window from the LIFO is selected
             FSelectedWindowIndex = 0;
@@ -180,79 +182,33 @@ namespace VVVV.Nodes.WindowSwitcher
         
         private void SelectNode(INode2 node)
         {
-            if (FSelectedPatchNode != null)
-                FSelectedPatchNode.Selected = false;
-            
-            FSelectedPatchNode = SelectNodeOfTree(FWindowTree, node);
-        }
-        
-        private PatchNode SelectNodeOfTree(PatchNode patchNode, INode2 node)
-        {
-            PatchNode result = null;
-            if (patchNode.Node == node)
-                result = patchNode;
-            else
-			{
-                foreach (PatchNode pn in patchNode.ChildNodes)
-	            {
-	                result = SelectNodeOfTree(pn, node);
-	                if (result != null)
-	                    break;
-	            }
-			}
-            
-            if (result != null)
-                result.Selected = true;
-            return result;
-        }
-        
-        private void AddWindowNodes(PatchNode result, INode2 sourceTree)
-        {
-            //go through childnodes of sourceTree recursively and copy nodes that have a window
-            foreach (var node in sourceTree)
+            if (FSelectedNodeView != null)
             {
-				if (node.NodeInfo.Type == NodeType.Patch || node.Window != null)
-				{
-					var patchNode = new PatchNode(node, new Filter(), false, false);
-					AddWindowNodes(patchNode, node);
-					result.ChildNodes.Add(patchNode);
-				}
-                /*
-                AddWindowNodes(temp, pn);
-                
-               if (temp.Node.NodeInfo.Type == NodeType.Patch || temp.Node.Window != null)
-                   result.ChildNodes.Add(temp);
-               else
-                   temp.Dispose();
-                   */
-               /*
-               else if (temp.Node.HasCode()) //has code, but editors node is actually in root
-               {
-                   //this is only half a workaround. will be removed once editors are truly windows of their actual nodes again
-                   var title = Path.GetFileNameWithoutExtension(temp.Node.GetNodeInfo().Filename);
-                   FLogger.Log(LogType.Debug, title);
-                   var window = FWindowLIFO.Find(delegate (IWindow w) {return w.Caption.StartsWith(title);});
-                   if (window != null)
-                      result.ChildNodes.Add(temp); 
-               }
-               else if (temp.Node.Window != null && temp.Node.GetNodeInfo().Type != NodeType.Text) //has window but is not editor
-                  result.ChildNodes.Add(temp);   */
+                FSelectedNodeView.Selected = false;
+            }
+            
+            var flatNodeViewTree = FNodeView.AsDepthFirstEnumerable((nv) => nv.Children);
+            FSelectedNodeView = flatNodeViewTree.FirstOrDefault((nv) => nv.Node == node);
+            
+            if (FSelectedNodeView != null)
+            {
+                FSelectedNodeView.Selected = true;
             }
         }
         
         void FHDEHost_WindowAdded(object sender, WindowEventArgs args)
         {
-        	FWindowLIFO.Add(args.Window);
+            FWindowLIFO.Add(args.Window);
         }
         
         void FHDEHost_WindowRemoved(object sender, WindowEventArgs args)
         {
-        	FWindowLIFO.Remove(args.Window);
+            FWindowLIFO.Remove(args.Window);
         }
         
         void FHDEHost_WindowSelectionChanged(object sender, WindowEventArgs args)
         {
-        	FActiveWindow = args.Window;
+            FActiveWindow = args.Window;
             
             //remove it from the index it is now
             FWindowLIFO.Remove(FActiveWindow);
@@ -261,14 +217,18 @@ namespace VVVV.Nodes.WindowSwitcher
             FWindowLIFO.Insert(0, FActiveWindow);
         }
         
-        #region events
         void FHierarchyViewerClick(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (sender != null)
             {
-                FHDEHost.SetComponentMode((sender.Model as PatchNode).Node, ComponentMode.InAWindow);
-                FHierarchyViewer.HideToolTip();
-                FWindowSwitcherHost.HideMe();
+                var nodeView = sender.Model as NodeView;
+                
+                if (nodeView != null)
+                {
+                    FHDEHost.SetComponentMode(nodeView.Node, ComponentMode.InAWindow);
+                    FHierarchyViewer.HideToolTip();
+                    FWindowSwitcherHost.HideMe();
+                }
             }
         }
         
@@ -281,14 +241,13 @@ namespace VVVV.Nodes.WindowSwitcher
                 FHDEHost.SetComponentMode(FWindowLIFO[FSelectedWindowIndex].Node, ComponentMode.InAWindow);
             }
         }
-        #endregion events
         
         void FHierarchyViewerKeyUp(object sender, KeyEventArgs e)
         {
             if ((e.KeyData == Keys.ControlKey) || (e.KeyData == Keys.Control))
             {
                 FHierarchyViewer.HideToolTip();
-                FWindowSwitcherHost.HideMe();                
+                FWindowSwitcherHost.HideMe();
                 FHDEHost.SetComponentMode(FWindowLIFO[FSelectedWindowIndex].Node, ComponentMode.InAWindow);
             }
         }

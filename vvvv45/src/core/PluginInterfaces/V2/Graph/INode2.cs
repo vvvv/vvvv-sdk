@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Linq;
 using VVVV.Core;
 
 namespace VVVV.PluginInterfaces.V2.Graph
@@ -26,6 +27,11 @@ namespace VVVV.PluginInterfaces.V2.Graph
         }
         
         IViewableCollection<IPin2> Pins
+        {
+            get;
+        }
+        
+        IPin2 LabelPin
         {
             get;
         }
@@ -103,7 +109,12 @@ namespace VVVV.PluginInterfaces.V2.Graph
         {
 			return (node.InnerStatus & (StatusCode.IsMissing | StatusCode.HasInvalidData | StatusCode.HasRuntimeError)) > 0;
         }
-
+        
+        
+        public static bool IsConnected(this INode2 node)
+		{
+			return (node.InnerStatus & StatusCode.IsConnected) == StatusCode.IsConnected;
+		}
 
         public static bool IsMissing(this INode2 node)
         {
@@ -118,6 +129,15 @@ namespace VVVV.PluginInterfaces.V2.Graph
         public static bool HasProblem(this INode2 node)
         {
             return (node.Status & (StatusCode.IsMissing | StatusCode.HasInvalidData | StatusCode.HasRuntimeError)) > 0;
+        }
+        
+        public static IPin2 FindPin(this INode2 node, string name)
+        {
+            var query =
+				from pin in node.Pins
+				where pin.Name == name
+				select pin;
+            return query.FirstOrDefault();
         }
     }
 }

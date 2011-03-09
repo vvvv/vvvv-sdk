@@ -20,5 +20,17 @@ namespace VVVV.Utils.Linq
 				}
 			}
 		}
+		
+		public static IEnumerable<T> AsDepthFirstEnumerable<T>(this T parent, Func<T, IEnumerable<T>> childSelector)
+		{
+			yield return parent;
+			foreach (var subTree in childSelector(parent))
+			{
+				foreach (var child in subTree.AsDepthFirstEnumerable(childSelector))
+				{
+					yield return child;
+				}
+			}
+		}
 	}
 }
