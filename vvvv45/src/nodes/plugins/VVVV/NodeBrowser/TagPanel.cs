@@ -27,6 +27,7 @@ namespace VVVV.Nodes.NodeBrowser
 		private Color CHoverColor = Color.FromArgb(255, 216, 216, 216);
 		private const string CRTFHeader = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fnil\fcharset0 Verdana;}}\viewkind4\uc1\pard\f0\fs17 ";
 		private const int CLineHeight = 13;
+		private const int CLineLength = 200;
 		private int FHoverLine;
 		private List<string> FTags;
 		private Point FLastMouseHoverLocation = new Point(0, 0);
@@ -306,7 +307,8 @@ namespace VVVV.Nodes.NodeBrowser
 			int newHoverLine = FRichTextBox.GetLineFromCharIndex(charIndex);
 			
 			//avoid some flicker
-			if ((e.Location.X != FLastMouseHoverLocation.X) || (e.Location.Y != FLastMouseHoverLocation.Y))
+			if (newHoverLine != FHoverLine)
+//			if ((e.Location.X != FLastMouseHoverLocation.X) || (e.Location.Y != FLastMouseHoverLocation.Y))
 			{
 				FLastMouseHoverLocation = e.Location;
 				FHoverLine = newHoverLine;
@@ -642,7 +644,7 @@ namespace VVVV.Nodes.NodeBrowser
 						sb.Append(s[i]);
 				
 				n = sb.ToString();
-				FRTFSelectionList.Add(n.PadRight(200) + "\\par ");
+				FRTFSelectionList.Add(n.PadRight(CLineLength) + "\\par ");
 			}
 		}
 
@@ -656,6 +658,7 @@ namespace VVVV.Nodes.NodeBrowser
 				rtf += FRTFSelectionList[i];
 			}
 			
+			//seems mono adds a \par here automatically, so remove one
 			rtf = rtf.TrimEnd(new char[5]{'\\', 'p', 'a', 'r', ' '});// + "}";
 			
 			if (FRichTextBox.InvokeRequired)
@@ -744,17 +747,19 @@ namespace VVVV.Nodes.NodeBrowser
 		private void RedrawSelection()
 		{
 			//clear old selection
+			FRichTextBox.HideSelection = false;
 			FRichTextBox.SelectionBackColor = Color.Silver;
 
 			if (FHoverLine > -1)
 			{
 				//draw current selection
-				int offset = 0;
-				for (int i = 0; i < FHoverLine; i++)
-					offset += FRichTextBox.Lines[i].Length;
+				var offset = FRichTextBox.GetFirstCharIndexFromLine(FHoverLine);
+//				int offset = FHoverLine * 200 - 1;
+//				for (int i = 0; i < FHoverLine; i++)
+//					offset += FRichTextBox.Lines[i].Length;
 				
 				FRichTextBox.SelectionStart = offset;
-				FRichTextBox.SelectionLength = FRichTextBox.Lines[FHoverLine].Length;
+				FRichTextBox.SelectionLength = CLineLength; //FRichTextBox.Lines[FHoverLine].Length;
 				FRichTextBox.SelectionBackColor = CHoverColor;
 			}
 			
