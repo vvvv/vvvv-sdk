@@ -155,7 +155,9 @@ namespace VVVV.Nodes.NodeBrowser
 				if(disposing)
 				{
 					// Dispose managed resources.
-					HDEHost.WindowSelectionChanged -= HDEHost_WindowSelectionChanged;
+					if (HDEHost != null)
+					   HDEHost.WindowSelectionChanged -= HDEHost_WindowSelectionChanged;
+					
 					if (FNodeCollection != null)
 						FNodeCollection.Collected -= HandleFNodeCollectionCollected;
 				}
