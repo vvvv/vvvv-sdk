@@ -146,9 +146,9 @@ namespace VVVV.Nodes
 			this.TimeBarModeBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.TimeBarModeBox.FormattingEnabled = true;
 			this.TimeBarModeBox.Items.AddRange(new object[] {
-									"Manual",
-									"Jump",
-									"Follow"});
+			                                   	"Manual",
+			                                   	"Jump",
+			                                   	"Follow"});
 			this.TimeBarModeBox.Location = new System.Drawing.Point(454, 2);
 			this.TimeBarModeBox.Name = "TimeBarModeBox";
 			this.TimeBarModeBox.Size = new System.Drawing.Size(93, 21);
@@ -1395,11 +1395,22 @@ namespace VVVV.Nodes
 		{
 			//load current settings
 			string s;
+			var splitterPos = "0";
 			FGUISettings.GetString(0, out s);
-			if (s == null)
+			if (string.IsNullOrEmpty(s))
 				FSettings.RemoveAll();
-			else 
+			else
+			{
 				FSettings.LoadXml(s);
+				
+				//check for legacy settings (SPLITTER was root element)
+				
+				if (FSettings.DocumentElement.Name == "SPLITTER")
+				{
+					splitterPos = FSettings.DocumentElement.Attributes.GetNamedItem("Position").Value;
+					FSettings.RemoveAll();
+				}
+			}
 			
 			//create element if it doesn't exist
 			var guiSettings = FSettings.SelectSingleNode(@"//GUI");
@@ -1407,6 +1418,16 @@ namespace VVVV.Nodes
 			{
 				guiSettings = FSettings.CreateElement("GUI");
 				FSettings.AppendChild(guiSettings);
+			}
+			
+			//add legacy splitter setting if it was there before
+			if (splitterPos != "0")
+			{
+				var e = FSettings.CreateElement("SPLITTER");
+				guiSettings.AppendChild(e);
+				var a = FSettings.CreateAttribute("Position");
+				a.Value = splitterPos;
+				e.Attributes.SetNamedItem(a);
 			}
 			
 			var element = guiSettings.SelectSingleNode(tag);
@@ -1433,9 +1454,9 @@ namespace VVVV.Nodes
 			//load current settings
 			string s;
 			FGUISettings.GetString(0, out s);
-			if (s == null)
+			if (string.IsNullOrEmpty(s))
 				return defaultValue;
-			else 
+			else
 				FSettings.LoadXml(s);
 			
 			//select element
