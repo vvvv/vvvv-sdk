@@ -609,7 +609,7 @@ namespace VVVV.Nodes.NodeBrowser
 			string n;
 			char[] bolded;
 			
-			System.Text.StringBuilder sb = new System.Text.StringBuilder();
+			var sb = new System.Text.StringBuilder();
 			FRTFSelectionList.Clear();
 			
 			foreach (INodeInfo nodeInfo in FSelectionList)
@@ -637,15 +637,19 @@ namespace VVVV.Nodes.NodeBrowser
 				}
 				
 				//now recreate the string including bold markups
+				int markupChars = 0;
 				sb.Remove(0, sb.Length);
 				for (int i=0; i<s.Length; i++)
 					if (bolded[i] == '°')
-						sb.Append("\\b " + s[i] + "\\b0 ");
+				{
+					sb.Append("\\b " + s[i] + "\\b0 ");
+					markupChars += 7;	
+				}
 					else
 						sb.Append(s[i]);
 				
 				n = sb.ToString();
-				FRTFSelectionList.Add(n.PadRight(CLineLength) + "\\par ");
+				FRTFSelectionList.Add(n.PadRight(CLineLength + markupChars) + "\\par ");
 			}
 		}
 
