@@ -7,8 +7,6 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
-using System.Collections.Generic;
-
 using VVVV.Core.Logging;
 #endregion usings
 
@@ -34,7 +32,6 @@ namespace VVVV.Nodes
 		public virtual void Evaluate(int SpreadMax)
 		{
 			int sMax = Math.Max(FInput.SliceCount,FSelect.SliceCount);
-			List<int> formerSlice = new List<int>();
 			
 			FOutput.SliceCount = 0;
 			FFormerSlice.SliceCount=0;
@@ -46,9 +43,9 @@ namespace VVVV.Nodes
 					if (s==0)
 					{
 						FOutput.SliceCount++;
-						FOutput[i].SliceCount=0;
+						FOutput[FOutput.SliceCount-1].SliceCount=0;
 					}
-					FOutput[i].AddRange(FInput[i]);
+					FOutput[FOutput.SliceCount-1].AddRange(FInput[i]);
 					
 					FFormerSlice.Add(i);
 				}
