@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.2.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\AddonsCore\Nodes\VVVV\Kontrolleur\Kontrolleur (VVVV).v4p" filename="C:\Users\Joreg\Desktop\vvvvs\osc\Kontrolleur (VVVV).v4p" systemname="Kontrolleur (VVVV)">
-   <BOUNDS height="9330" left="5970" top="165" type="Window" width="14220">
+   <BOUNDS height="9330" left="6915" top="375" type="Window" width="14220">
    </BOUNDS>
    <INFO author="" description="" tags="">
    </INFO>
@@ -46,36 +46,6 @@
    <PIN pinname="Output String" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="plugins\StringOSC2Patch\StringOSC2Patch.csproj" id="142" nodename="OSC2Patch (String)" systemname="OSC2Patch (String)">
-   <BOUNDS height="270" left="450" top="3270" type="Node" width="1170">
-   </BOUNDS>
-   <PIN pinname="Patch Message" visible="1">
-   </PIN>
-   <PIN pinname="Prefix" visible="1">
-   </PIN>
-   <PIN pinname="Kontrolleur Address" visible="1">
-   </PIN>
-   <PIN pinname="Kontrolleur Arguments" visible="1">
-   </PIN>
-   <PIN pinname="Reset" visible="1">
-   </PIN>
-   <PIN pinname="Kontrolleur TypeTags" visible="1">
-   </PIN>
-   <PIN pinname="OSC Message" visible="1">
-   </PIN>
-   <PIN pinname="Kontrolleur Host" visible="1">
-   </PIN>
-   <PIN pinname="Kontrolleur Port" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Kontrolleur ResolutionXY" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="134" dstpinname="PatchName" srcnodeid="142" srcpinname="Patch">
-   </LINK>
-   <LINK dstnodeid="133" dstpinname="XML Input" srcnodeid="142" srcpinname="Patch Message">
-   <LINKPOINT x="1590" y="4110">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="InABox" id="165" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="285" top="690" type="Node" width="100">
    </BOUNDS>
@@ -85,7 +55,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Target Port|" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Target Port|">
    </PIN>
    </NODE>
    <LINK dstnodeid="130" dstpinname="Local Port" srcnodeid="165" srcpinname="Y Output Value">
@@ -121,7 +91,7 @@
    </BOUNDS>
    <BOUNDS height="300" left="3585" top="3900" type="Box" width="1095">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="/touches" encoded="0">
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="/touches">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -130,10 +100,6 @@
    <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
    </PIN>
    </NODE>
-   <LINK dstnodeid="142" dstpinname="Kontrolleur Host" srcnodeid="154" srcpinname="Output String">
-   </LINK>
-   <LINK dstnodeid="142" dstpinname="Kontrolleur Port" srcnodeid="153" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="Hidden" id="173" nodename="OSCDecoder (Network)" systemname="OSCDecoder (Network)">
    <BOUNDS height="100" left="6975" top="4650" type="Node" width="100">
    </BOUNDS>
@@ -151,7 +117,7 @@
    </BOUNDS>
    <BOUNDS height="315" left="7965" top="3975" type="Box" width="1365">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="/acceleration" encoded="0">
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="/acceleration">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -161,8 +127,6 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="173" dstpinname="Address" srcnodeid="172" srcpinname="Output String">
-   </LINK>
-   <LINK dstnodeid="142" dstpinname="OSC Message" srcnodeid="130" srcpinname="Output">
    </LINK>
    <NODE componentmode="Hidden" id="175" nodename="OSCDecoder (Network)" systemname="OSCDecoder (Network)">
    <BOUNDS height="100" left="9075" top="4650" type="Node" width="100">
@@ -181,7 +145,7 @@
    </BOUNDS>
    <BOUNDS height="315" left="10065" top="4005" type="Box" width="1365">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="/orientation" encoded="0">
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="/orientation">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -209,7 +173,7 @@
    </BOUNDS>
    <BOUNDS height="315" left="12165" top="4035" type="Box" width="1365">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="/magnetism" encoded="0">
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="/magnetism">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -237,7 +201,7 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Acceleration" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Acceleration">
    </PIN>
    </NODE>
    <LINK dstnodeid="180" dstpinname="Y Input Value" srcnodeid="179" srcpinname="Output">
@@ -259,7 +223,7 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Orientation" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Orientation">
    </PIN>
    </NODE>
    <LINK dstnodeid="181" dstpinname="Y Input Value" srcnodeid="182" srcpinname="Output">
@@ -281,7 +245,7 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Magnetic Field|" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Magnetic Field|">
    </PIN>
    </NODE>
    <LINK dstnodeid="183" dstpinname="Y Input Value" srcnodeid="184" srcpinname="Output">
@@ -291,7 +255,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="3855" top="7875" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Touch Pressure|" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Touch Pressure|">
    </PIN>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
@@ -301,7 +265,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="2850" top="7875" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Touch XY|" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Touch XY|">
    </PIN>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
@@ -311,7 +275,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="1950" top="7875" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Touch ID|" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Touch ID|">
    </PIN>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
@@ -470,20 +434,32 @@
    </NODE>
    <LINK dstnodeid="205" dstpinname="Destination Minimum" srcnodeid="212" srcpinname="Y Output Value">
    </LINK>
-   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="213">
-   <BOUNDS type="Node" left="2115" top="720" width="100" height="100">
+   <NODE componentmode="InABox" id="213" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="2115" top="720" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="2115" top="720" width="795" height="240">
+   <BOUNDS height="240" left="2115" top="720" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="." encoded="0">
+   <PIN encoded="0" pinname="Input String" slicecount="1" values=".">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Prefix" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Prefix">
    </PIN>
    </NODE>
-   <LINK srcnodeid="213" srcpinname="Output String" dstnodeid="142" dstpinname="Prefix">
+   <NODE componentmode="Hidden" filename="Kontrolleur.csproj" id="215" nodename="Kontrolleur (Network)" systemname="Kontrolleur (Network)">
+   <BOUNDS height="270" left="450" top="3270" type="Node" width="1170">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="134" dstpinname="PatchName" srcnodeid="215" srcpinname="Patch">
    </LINK>
-   <LINK srcnodeid="142" srcpinname="Kontrolleur ResolutionXY" dstnodeid="205" dstpinname="Source Maximum">
+   <LINK dstnodeid="133" dstpinname="XML Input" srcnodeid="215" srcpinname="Patch Message">
+   <LINKPOINT x="1590" y="4110">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="215" dstpinname="OSC Message" srcnodeid="130" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="215" dstpinname="Prefix" srcnodeid="213" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="205" dstpinname="Source Maximum" srcnodeid="215" srcpinname="Kontrolleur ResolutionXY">
    </LINK>
    </PATCH>

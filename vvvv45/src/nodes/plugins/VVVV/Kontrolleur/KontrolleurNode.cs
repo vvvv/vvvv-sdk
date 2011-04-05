@@ -21,9 +21,9 @@ using VVVV.Utils.OSC;
 namespace VVVV.Nodes
 {	
 	#region PluginInfo
-	[PluginInfo(Name = "OSC2Patch",
-	Category = "String",
-	Help = "Converts OSC messages to vvvv patch messages",
+	[PluginInfo(Name = "Kontrolleur",
+	Category = "Network",
+	Help = "Communicates with the Kontrolleur Android app",
 	Tags = "remote")]
 	#endregion PluginInfo
 	public class StringOSC2PatchNode : IPluginEvaluate
@@ -103,25 +103,26 @@ namespace VVVV.Nodes
 			if (FManualPort > 0)
 				newPort = FManualPort;
 			
-			if (newIP != FTargetIP || newPort != FTargetPort)
+			if (!newIP.Equals(FTargetIP) || newPort != FTargetPort)
 			{
 				FTargetIP = newIP;
 				FTargetPort = newPort;
 				
-				try
-				{
-					if (FOSCTransmitter != null)
-						FOSCTransmitter.Close();
-					FOSCTransmitter = new OSCTransmitter(FTargetIP.ToString(), FTargetPort);
-					FOSCTransmitter.Connect();
-					
-					FLogger.Log(LogType.Debug, "connected to Kontrolleur on: " + FTargetIP.ToString() + ":" + FTargetPort.ToString());
-				}
-				catch (Exception e)
-				{
-					FLogger.Log(LogType.Warning, "Kontrolleur: failed to open port " + FTargetPort.ToString());
-					FLogger.Log(LogType.Warning, "Kontrolleur: " + e.Message);
-				}
+				if (FTargetIP != null)
+					try
+					{
+						if (FOSCTransmitter != null)
+							FOSCTransmitter.Close();
+						FOSCTransmitter = new OSCTransmitter(FTargetIP.ToString(), FTargetPort);
+						FOSCTransmitter.Connect();
+
+						FLogger.Log(LogType.Debug, "connected to Kontrolleur on: " + FTargetIP.ToString() + ":" + FTargetPort.ToString());
+					}
+					catch (Exception e)
+					{
+						FLogger.Log(LogType.Warning, "Kontrolleur: failed to open port " + FTargetPort.ToString());
+						FLogger.Log(LogType.Warning, "Kontrolleur: " + e.Message);
+					}
 			}
 		}
 		
@@ -150,7 +151,7 @@ namespace VVVV.Nodes
 				FMessages.Add(bang.Key, b);
 			}	
 			FBangs.Clear();
-						
+					
 			if (!string.IsNullOrEmpty(message))
 			{
 				FAllowUpdates = false;
@@ -197,7 +198,7 @@ namespace VVVV.Nodes
 				
 				//update targets
 				GetTargetNodes(FRoot);
-				
+			
 				//send targets to kontrolleur
 				OSCBundle bundle = new OSCBundle();
 				foreach (var target in FTargets.Values)
@@ -207,7 +208,7 @@ namespace VVVV.Nodes
 					
 					OSCMessage osc;
 					if (target.State == RemoteValueState.Remove)
-					{FLogger.Log(LogType.Debug, "remove");
+					{
 						osc = new OSCMessage("/k/remove");
 						osc.Append(target.Address);
 						bundle.Append(osc);
@@ -215,7 +216,6 @@ namespace VVVV.Nodes
 					}
 					else if (target.State == RemoteValueState.Add)
 					{
-						FLogger.Log(LogType.Debug, "add");
 						osc = new OSCMessage("/k/add");
 						osc.Append(target.Address);
 						osc.Append(target.Name);
@@ -229,7 +229,6 @@ namespace VVVV.Nodes
 					}	
 					else if (FAllowUpdates && target.State == RemoteValueState.Update)
 					{
-						FLogger.Log(LogType.Debug, "update");
 						osc = new OSCMessage("/k/update");
 						osc.Append(target.Address);
 						osc.Append(target.Name);
@@ -243,14 +242,15 @@ namespace VVVV.Nodes
 					}
 				}
 				
-				try
-				{
-					FOSCTransmitter.Send(bundle);
-				}
-				catch (Exception ex)
-				{
-					FLogger.Log(LogType.Warning, "Kontrolleur: " + ex.Message);
-				}
+				if (FOSCTransmitter != null)
+					try
+					{
+						FOSCTransmitter.Send(bundle);
+					}
+					catch (Exception ex)
+					{
+						FLogger.Log(LogType.Warning, "Kontrolleur: " + ex.Message);
+					}
 				
 				//remove unused targets
 				foreach (var target in FTargets.ToArray())
@@ -270,13 +270,18 @@ namespace VVVV.Nodes
 				if (n.Name == "IOBox (Value Advanced)")
 				{
 					foreach(var p in n.Pins)
-						if ((p.Name == "Descriptive Name") && (!string.IsNullOrEmpty(p[0])))// && p[0].StartsWith(FPrefix[0])))
+						if ((p.Name == "Descriptive Name") && !string.IsNullOrEmpty(p[0]))
 						{
-							FLogger.Log(LogType.Debug, "targets: " + p.Name + "-" + p[0]);
-							var address = "/" + node.NodeInfo.Filename + "/" + n.ID;
 							var name = p[0];
 							if (!String.IsNullOrEmpty(FPrefix[0]))
+							{
+								if (!name.StartsWith(FPrefix[0]))
+									break;
 								name = name.Replace(FPrefix[0], "");
+							}
+							
+							var address = "/" + node.NodeInfo.Filename + "/" + n.ID;
+							
 						    float v = 0;
 							float min = 0;
 							float max = 1;
@@ -284,7 +289,7 @@ namespace VVVV.Nodes
 							string t = "Slider";
 							foreach(var pn in n.Pins)
 							{
-								//todo: minimum, maximum, stepsize
+								//todo: stepsize, default
 								if (pn.Name == "Minimum")
 									min = float.Parse(pn[0]);
 								if (pn.Name == "Maximum")
@@ -293,7 +298,7 @@ namespace VVVV.Nodes
 									t = pn[0];
 								else if (pn.Name == "Y Input Value")
 								{
-									v = float.Parse( pn[0].Replace('.', ','));
+									v = float.Parse(pn[0].Replace('.', ','));
 									break;
 								}
 							}
