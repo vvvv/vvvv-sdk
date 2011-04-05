@@ -177,6 +177,7 @@ namespace VVVV.Nodes
 						osc.Append(target.Address);
 						osc.Append(target.Name);
 						osc.Append(target.Type);
+						osc.Append(target.Default);
 						osc.Append(target.Minimum);
 						osc.Append(target.Maximum);
 						osc.Append(target.Stepsize);
@@ -189,6 +190,7 @@ namespace VVVV.Nodes
 						osc.Append(target.Address);
 						osc.Append(target.Name);
 						osc.Append(target.Type);
+						osc.Append(target.Default);
 						osc.Append(target.Minimum);
 						osc.Append(target.Maximum);
 						osc.Append(target.Stepsize);
@@ -231,10 +233,17 @@ namespace VVVV.Nodes
 						if (!String.IsNullOrEmpty(FPrefix[0]))
 							name = name.Replace(FPrefix[0], "");
 					    float v = 0;
+						float min = 0;
+						float max = 1;
+						float step = 0.01f;
 						string t = "Slider";
 						foreach(var pn in n.Pins)
 						{
 							//todo: minimum, maximum, stepsize
+							if (pn.Name == "Minimum")
+								min = float.Parse(pn[0]);
+							if (pn.Name == "Maximum")
+								max = float.Parse(pn[0]);
 							if (pn.Name == "Slider Behavior")
 								t = pn[0];
 							else if (pn.Name == "Y Input Value")
@@ -244,14 +253,17 @@ namespace VVVV.Nodes
 							}
 						}
 						
+						if (t == "Slider")
+							step = 1;
+						
 						//update
 						if (FTargets.ContainsKey(address))
 						{
-							FTargets[address].Update(name, t, 0, 1, 0.01f, v);
+							FTargets[address].Update(name, t, 0, min, max, step, v);
 						}
 						else //add
 						{
-							var target = new RemoteValue(address, name, t, 0, 1, 0.01f, v);
+							var target = new RemoteValue(address, name, t, 0, min, max, step, v);
 							FTargets.Add(address, target);
 						}
 						
@@ -313,17 +325,19 @@ namespace VVVV.Nodes
 		public string Address;
 		public string Name;
 		public string Type;
+		public float Default;
 		public float Minimum;
 		public float Maximum;
 		public float Stepsize;
 		public float Value;
 		public RemoteValueState State;
 	
-		public RemoteValue(string Address, string Name, string Type, float Minimum, float Maximum, float Stepsize, float Value)
+		public RemoteValue(string Address, string Name, string Type, float Default, float Minimum, float Maximum, float Stepsize, float Value)
 		{
 			this.Address = Address;
 			this.Name = Name;
 			this.Type = Type;
+			this.Default = Default;
 			this.Minimum = Minimum;
 			this.Maximum = Maximum;
 			this.Stepsize = Stepsize;
@@ -331,10 +345,11 @@ namespace VVVV.Nodes
 			State = RemoteValueState.Add;
 		}
 		
-		public void Update(string Name, string Type, float Minimum, float Maximum, float Stepsize, float Value)
+		public void Update(string Name, string Type, float Default, float Minimum, float Maximum, float Stepsize, float Value)
 		{
 			if ((this.Name != Name)
 			|| (this.Type != Type)
+			|| (this.Default != Default)
 			|| (this.Minimum != Minimum)
 			|| (this.Maximum != Maximum)
 			|| (this.Stepsize != Stepsize)
@@ -343,6 +358,7 @@ namespace VVVV.Nodes
 				State = RemoteValueState.Update;
 				this.Name = Name;
 				this.Type = Type;
+				this.Default = Default;
 				this.Minimum = Minimum;
 				this.Maximum = Maximum;
 				this.Stepsize = Stepsize;
