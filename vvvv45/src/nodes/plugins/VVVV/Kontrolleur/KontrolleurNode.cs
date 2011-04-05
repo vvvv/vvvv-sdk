@@ -7,6 +7,7 @@ using System.Text;
 using System.Xml;
 using System.Linq;
 using System.Timers;
+using System.Net;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -28,6 +29,12 @@ namespace VVVV.Nodes
 	public class StringOSC2PatchNode : IPluginEvaluate
 	{
 		#region fields & pins
+		[Config("Kontrolleur IP", IsSingle=true, DefaultString="")]
+		IDiffSpread<string> FKontrolleurIP;
+		
+		[Config("Kontrolleur Port", IsSingle=true, DefaultValue=0)]
+		IDiffSpread<int> FKontrolleurPort;
+		
 		[Input("OSC Message")]
 		ISpread<string> FOSCIn;
 		
@@ -40,15 +47,18 @@ namespace VVVV.Nodes
 		[Output("Patch Message")]
 		ISpread<string> FMessageOut;
 		
-		[Input("Kontrolleur Host", IsSingle=true, DefaultString="192.168.1.255")]
-		IDiffSpread<string> FKontrolleurHost;
-		
-		[Input("Kontrolleur Port", IsSingle=true, DefaultValue=4444)]
-		IDiffSpread<int> FKontrolleurPort;
+		[Output("Kontrolleur Resolution")]
+		ISpread<Vector2D> FKontrolleurResolution;
 		
 		private IHDEHost FHost;
 		private INode2 FRoot;
 		private OSCTransmitter FOSCTransmitter;
+		private IPAddress FTargetIP;
+		private int FTargetPort;
+		private IPAddress FAutoIP;
+		private int FAutoPort;
+		private IPAddress FManualIP;
+		private int FManualPort;
 		
 		[Import()]
 		ILogger FLogger;
@@ -75,24 +85,55 @@ namespace VVVV.Nodes
 			FAllowUpdates = true;
 		}
 		
-		//called when data for any output pin is requested
-		public void Evaluate(int SpreadMax)
+		private void InitNetwork()
 		{
-			//re/init udp
-			if (FKontrolleurHost.IsChanged || FKontrolleurPort.IsChanged)
+			IPAddress newIP = null;
+			int newPort = 0;
+			
+			if (FAutoIP != null)
+				newIP = FAutoIP;
+			
+			if (FAutoPort > 0)
+				newPort = FAutoPort;
+			
+			//manual settings take precedence
+			if (FManualIP != null)
+				newIP = FManualIP;
+			
+			if (FManualPort > 0)
+				newPort = FManualPort;
+			
+			if (newIP != FTargetIP || newPort != FTargetPort)
 			{
+				FTargetIP = newIP;
+				FTargetPort = newPort;
+				
 				try
 				{
 					if (FOSCTransmitter != null)
 						FOSCTransmitter.Close();
-					FOSCTransmitter = new OSCTransmitter(FKontrolleurHost[0], FKontrolleurPort[0]);
+					FOSCTransmitter = new OSCTransmitter(FTargetIP.ToString(), FTargetPort);
 					FOSCTransmitter.Connect();
+					
+					FLogger.Log(LogType.Debug, "connected to Kontrolleur on: " + FTargetIP.ToString() + ":" + FTargetPort.ToString());
 				}
 				catch (Exception e)
 				{
-					FLogger.Log(LogType.Warning, "Kontrolleur: failed to open port " + FKontrolleurPort[0].ToString());
+					FLogger.Log(LogType.Warning, "Kontrolleur: failed to open port " + FTargetPort.ToString());
 					FLogger.Log(LogType.Warning, "Kontrolleur: " + e.Message);
 				}
+			}
+		}
+		
+		//called when data for any output pin is requested
+		public void Evaluate(int SpreadMax)
+		{
+			//re/init udp
+			if (FKontrolleurIP.IsChanged || FKontrolleurPort.IsChanged)
+			{
+				FManualIP = IPAddress.Parse(FKontrolleurIP[0]);
+				FManualPort = FKontrolleurPort[0];
+				InitNetwork();
 			}
 			
 			//convert the incoming oscmessage to vvvv xml patch messages
@@ -100,6 +141,8 @@ namespace VVVV.Nodes
 			//ie. multiple nodes addressed in one patch go to the same slice
 			var message = FOSCIn[0];
 			FMessages.Clear();
+			//special treatment for bangs 
+			//which cause 2 patch messages in consecutive frames to be sent
 			foreach (var bang in FBangs)
 			{
 				//set all the bangs values to 0
@@ -148,7 +191,6 @@ namespace VVVV.Nodes
 			}
 			else 
 			{
-				//send targets to kontrolleur
 				//invalidate targets
 				foreach (var target in FTargets.Values)
 					target.InvalidateState();
@@ -156,7 +198,7 @@ namespace VVVV.Nodes
 				//update targets
 				GetTargetNodes(FRoot);
 				
-				//writeout targets to pins
+				//send targets to kontrolleur
 				OSCBundle bundle = new OSCBundle();
 				foreach (var target in FTargets.Values)
 				{
@@ -165,7 +207,7 @@ namespace VVVV.Nodes
 					
 					OSCMessage osc;
 					if (target.State == RemoteValueState.Remove)
-					{
+					{FLogger.Log(LogType.Debug, "remove");
 						osc = new OSCMessage("/k/remove");
 						osc.Append(target.Address);
 						bundle.Append(osc);
@@ -173,6 +215,7 @@ namespace VVVV.Nodes
 					}
 					else if (target.State == RemoteValueState.Add)
 					{
+						FLogger.Log(LogType.Debug, "add");
 						osc = new OSCMessage("/k/add");
 						osc.Append(target.Address);
 						osc.Append(target.Name);
@@ -186,6 +229,7 @@ namespace VVVV.Nodes
 					}	
 					else if (FAllowUpdates && target.State == RemoteValueState.Update)
 					{
+						FLogger.Log(LogType.Debug, "update");
 						osc = new OSCMessage("/k/update");
 						osc.Append(target.Address);
 						osc.Append(target.Name);
@@ -226,50 +270,53 @@ namespace VVVV.Nodes
 				if (n.Name == "IOBox (Value Advanced)")
 				{
 					foreach(var p in n.Pins)
-					if ((p.Name == "Descriptive Name") && (!string.IsNullOrEmpty(p[0]) && p[0].StartsWith(FPrefix[0])))
-					{
-						var address = "/" + node.NodeInfo.Filename + "/" + n.ID;
-						var name = p[0];
-						if (!String.IsNullOrEmpty(FPrefix[0]))
-							name = name.Replace(FPrefix[0], "");
-					    float v = 0;
-						float min = 0;
-						float max = 1;
-						float step = 0.01f;
-						string t = "Slider";
-						foreach(var pn in n.Pins)
+						if ((p.Name == "Descriptive Name") && (!string.IsNullOrEmpty(p[0])))// && p[0].StartsWith(FPrefix[0])))
 						{
-							//todo: minimum, maximum, stepsize
-							if (pn.Name == "Minimum")
-								min = float.Parse(pn[0]);
-							if (pn.Name == "Maximum")
-								max = float.Parse(pn[0]);
-							if (pn.Name == "Slider Behavior")
-								t = pn[0];
-							else if (pn.Name == "Y Input Value")
+							FLogger.Log(LogType.Debug, "targets: " + p.Name + "-" + p[0]);
+							var address = "/" + node.NodeInfo.Filename + "/" + n.ID;
+							var name = p[0];
+							if (!String.IsNullOrEmpty(FPrefix[0]))
+								name = name.Replace(FPrefix[0], "");
+						    float v = 0;
+							float min = 0;
+							float max = 1;
+							float step = 0.01f;
+							string t = "Slider";
+							foreach(var pn in n.Pins)
 							{
-								v = float.Parse( pn[0].Replace('.', ','));
-								break;
+								//todo: minimum, maximum, stepsize
+								if (pn.Name == "Minimum")
+									min = float.Parse(pn[0]);
+								if (pn.Name == "Maximum")
+									max = float.Parse(pn[0]);
+								if (pn.Name == "Slider Behavior")
+									t = pn[0];
+								else if (pn.Name == "Y Input Value")
+								{
+									v = float.Parse( pn[0].Replace('.', ','));
+									break;
+								}
 							}
-						}
-						
-						if (t == "Slider")
-							step = 1;
-						
-						//update
-						if (FTargets.ContainsKey(address))
-						{
-							FTargets[address].Update(name, t, 0, min, max, step, v);
-						}
-						else //add
-						{
-							var target = new RemoteValue(address, name, t, 0, min, max, step, v);
-							FTargets.Add(address, target);
-						}
-						
-						break;
-					}	
+							
+							if (t == "Slider")
+								step = 1;
+							
+							//update
+							if (FTargets.ContainsKey(address))
+							{
+								FTargets[address].Update(name, t, 0, min, max, step, v);
+							}
+							else //add
+							{
+								var target = new RemoteValue(address, name, t, 0, min, max, step, v);
+								FTargets.Add(address, target);
+							}
+							
+							break;
+						}	
 				}
+				
+				//recurse downwards
 				GetTargetNodes(n);
 			}
 		}
@@ -277,9 +324,16 @@ namespace VVVV.Nodes
 		#region OSC
 		private void ProcessOSCMessage(OSCMessage message)
 		{
-			if (message.Address == "/k/reset")
+			if (message.Address == "/k/init")
 			{
 				FTargets.Clear();
+				
+				FAutoIP = IPAddress.Parse((string)message.Values[0]);
+				FAutoPort = (int) message.Values[1];
+				FKontrolleurResolution[0] = new Vector2D((int) message.Values[2], (int) message.Values[3]);
+				
+				InitNetwork();
+				
 				return;
 			}
 			else if (!message.Address.StartsWith("/k/"))
