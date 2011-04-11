@@ -25,6 +25,11 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		{
 			get;
 		}
+		
+		INode2 ParentNode
+		{
+			get;
+		}
         
         /// <summary>
         /// The changed event occurs when the pin's data changed.

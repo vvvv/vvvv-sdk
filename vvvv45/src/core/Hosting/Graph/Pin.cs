@@ -40,13 +40,15 @@ namespace VVVV.Hosting.Graph
         
         #endregion
         
+        private readonly INode2 FParentNode;
         private readonly IPin FInternalCOMInterf;
         private readonly string FName;
         private PinListener FPinListener;
         private int FObserverCount;
         
-        internal Pin(IPin internalCOMInterf)
+        internal Pin(INode2 node, IPin internalCOMInterf)
         {
+        	FParentNode = node;
             FInternalCOMInterf = internalCOMInterf;
             FName = FInternalCOMInterf.GetName();
         }
@@ -109,6 +111,11 @@ namespace VVVV.Hosting.Graph
             if (Renamed != null) {
                 Renamed(this, newName);
             }
+        }
+        
+        public INode2 ParentNode
+        {
+            get { return FParentNode; }
         }
         
         public string this[int sliceIndex] 

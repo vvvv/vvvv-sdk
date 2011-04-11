@@ -158,7 +158,7 @@ namespace VVVV.Hosting.Graph
         {
             var pins = new ViewableCollection<IPin2>();
             foreach (var internalPin in FInternalCOMInterf.GetPins())
-                pins.Add(new Pin(internalPin));
+                pins.Add(new Pin(this, internalPin));
             return pins;
         }
         
