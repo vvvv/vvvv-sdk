@@ -9,12 +9,14 @@ using System.Linq;
 using System.Timers;
 using System.Net;
 
+using VVVV.Core;
+using VVVV.Core.Logging;
+using VVVV.Core.Collections;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using VVVV.Core.Logging;
 using VVVV.Utils.OSC;
 #endregion usings
 
@@ -59,8 +61,8 @@ namespace VVVV.Nodes
 		private int FAutoPort;
 		private IPAddress FManualIP;
 		private int FManualPort;
+		private bool FFirstFrame = true;
 		
-		[Import()]
 		ILogger FLogger;
 		
 		private Timer FTimer = new Timer(2000);
@@ -72,14 +74,15 @@ namespace VVVV.Nodes
 		#endregion fields & pins
 		
 		[ImportingConstructor]
-		public StringOSC2PatchNode(IHDEHost host)
+		public StringOSC2PatchNode(IHDEHost host, ILogger logger)
 		{
 			FRoot = host.RootNode;
+			FLogger = logger;
+			
 			FTimer.Enabled = true;
 			FTimer.AutoReset = false;
 			FTimer.Elapsed += new ElapsedEventHandler(FTimer_Elapsed);
 		}
-		
 		private void FTimer_Elapsed(object Sender, ElapsedEventArgs e)
 		{
 			FAllowUpdates = true;
@@ -125,6 +128,169 @@ namespace VVVV.Nodes
 					}
 			}
 		}
+	
+		#region IOBoxes
+		private void RegisterPatch(INode2 patch)
+		{
+			foreach (var node in patch)
+			{
+				if (node.HasPatch)
+				{
+					node.Added += new CollectionDelegate<INode2>(NodeAddedCB);
+					node.Removed += NodeRemovedCB;
+					RegisterPatch(node);
+				}					
+				else if (node.Name.Contains("IOBox"))
+					RegisterIOBox(node);
+			}
+		}
+		
+		private void RegisterIOBox(INode2 io)
+		{
+			//for now only accepts value-IOBoxes
+			if (!io.Name.Contains("Value Advanced"))
+				return;
+
+			//now see if this box already wants to be exposed
+			CheckExposePin(io.LabelPin);
+		}
+		
+		private void UnRegisterPatch(INode2 patch)
+		{   
+			foreach (INode2 node in patch)
+			{
+				if (node.HasPatch)
+				{
+					node.Added -= NodeAddedCB;
+					node.Removed -= NodeRemovedCB;
+					UnRegisterPatch(node);
+				}					
+				else if (node.Name.Contains("IOBox"))
+					UnRegisterIOBox(node);
+			}
+		}
+		
+		private void UnRegisterIOBox(INode2 io)
+		{
+			//for now only accepts value-IOBoxes
+			if (!io.Name.Contains("Value Advanced"))
+				return;
+			
+			UnExposePin(io.LabelPin);
+		}
+		
+		private void NodeAddedCB(IViewableCollection collection, object item)
+		{
+			var node = item as INode2;
+			
+			if (node.HasPatch)
+				RegisterPatch(node);
+			else if (node.Name.Contains("IOBox"))
+				RegisterIOBox(node);			
+		}
+		
+		private void NodeRemovedCB(IViewableCollection collection, object item)
+		{
+			var node = item as INode2;
+
+			if (node.HasPatch)
+				UnRegisterPatch(node);
+			else if (node.Name.Contains("IOBox"))
+				UnRegisterIOBox(node);	
+		}
+		
+		private void CheckExposePin(IPin2 pin)
+		{
+			bool unexpose = false;
+			
+			if (string.IsNullOrEmpty(pin[0]))
+				unexpose = true;
+			else
+			{
+				var name = pin[0];
+				if (string.IsNullOrEmpty(FPrefix[0])
+				|| (!string.IsNullOrEmpty(FPrefix[0]) && name.StartsWith(FPrefix[0])))
+				{
+					//remove prefix
+					if (!string.IsNullOrEmpty(FPrefix[0]))
+						name = name.Replace(FPrefix[0], "");
+					
+					var target = new RemoteValue(pin.ParentNode);
+					
+					FTargets.Add(target.Address, target);
+					FLogger.Log(LogType.Debug, "exposed: " + target.Address);
+				}
+				else
+					unexpose = true;
+			}
+			
+			if (unexpose)
+				UnExposePin(pin);
+		}
+		
+		private void UnExposePin(IPin2 pin)
+		{
+			var address = "/" + pin.ParentNode.Parent.NodeInfo.Filename + "/" + pin.ParentNode.ID;
+			
+			if (FTargets.ContainsKey(address))
+			{
+				FTargets[address].State = RemoteValueState.Remove;
+				FLogger.Log(LogType.Debug, "unexposed: " + address);
+			}	
+		}
+		#endregion IOBoxes
+		
+		#region OSC
+		private void ProcessOSCMessage(OSCMessage message)
+		{
+			if (message.Address == "/k/init")
+			{
+				FTargets.Clear();
+				
+				FAutoIP = IPAddress.Parse((string)message.Values[0]);
+				FAutoPort = (int) message.Values[1];
+				FKontrolleurResolution[0] = new Vector2D((int) message.Values[2], (int) message.Values[3]);
+				
+				InitNetwork();
+				
+				RegisterPatch(FRoot);
+				
+				return;
+			}
+			else if (!message.Address.StartsWith("/k/"))
+				return;
+			
+			var address = message.Address.Split('/');
+			if (!FMessages.ContainsKey(address[2]))
+				FMessages.Add(address[2], "<PATCH></PATCH>");
+			
+			var m = FMessages[address[2]];
+			FXML.LoadXml(m);
+			var patch = FXML.SelectSingleNode(@"//PATCH");
+			
+			var node = FXML.CreateElement("NODE");
+			patch.AppendChild(node);
+			var id = FXML.CreateAttribute("id");
+			id.Value = address[3];
+			node.Attributes.Append(id);
+			
+			//var values = string.Join(",", message.Values.ToArray(typeof(string)));
+			var values = "";
+			foreach(var v in message.Values)
+				values += v.ToString().Replace(',', '.') + ",";
+			values = values.TrimEnd(',');
+			
+			if (values == "bang")
+			{
+				node.InnerXml = "<PIN pinname=\"Y Input Value\" values=\"1\" />";
+				FBangs.Add(address[2], patch.OuterXml);
+			}	
+			else
+				node.InnerXml = "<PIN pinname=\"Y Input Value\" values=\"" + values + "\" />";
+			
+			FMessages[address[2]] = patch.OuterXml;
+		}
+		#endregion OSC
 		
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
@@ -135,6 +301,13 @@ namespace VVVV.Nodes
 				FManualIP = IPAddress.Parse(FKontrolleurIP[0]);
 				FManualPort = FKontrolleurPort[0];
 				InitNetwork();
+			}
+			
+			if (FFirstFrame)
+			{
+				//go down recursively and register with every patch and IOBox
+				RegisterPatch(FRoot);
+				FFirstFrame = false;
 			}
 			
 			//convert the incoming oscmessage to vvvv xml patch messages
@@ -192,13 +365,6 @@ namespace VVVV.Nodes
 			}
 			else 
 			{
-				//invalidate targets
-				foreach (var target in FTargets.Values)
-					target.InvalidateState();
-				
-				//update targets
-				GetTargetNodes(FRoot);
-			
 				//send targets to kontrolleur
 				OSCBundle bundle = new OSCBundle();
 				foreach (var target in FTargets.Values)
@@ -240,6 +406,8 @@ namespace VVVV.Nodes
 						osc.Append(target.Value);
 						bundle.Append(osc);
 					}
+					
+					target.InvalidateState();
 				}
 				
 				if (FOSCTransmitter != null)
@@ -261,175 +429,6 @@ namespace VVVV.Nodes
 			//return patch messages
 			FPatchOut.AssignFrom(FMessages.Keys);
 			FMessageOut.AssignFrom(FMessages.Values);
-		}
-		
-		private void GetTargetNodes(INode2 node)
-		{
-			foreach(var n in node)
-			{
-				if (n.Name == "IOBox (Value Advanced)")
-				{
-					foreach(var p in n.Pins)
-						if ((p.Name == "Descriptive Name") && !string.IsNullOrEmpty(p[0]))
-						{
-							var name = p[0];
-							if (!String.IsNullOrEmpty(FPrefix[0]))
-							{
-								if (!name.StartsWith(FPrefix[0]))
-									break;
-								name = name.Replace(FPrefix[0], "");
-							}
-							
-							var address = "/" + node.NodeInfo.Filename + "/" + n.ID;
-							
-						    float v = 0;
-							float min = 0;
-							float max = 1;
-							float step = 0.01f;
-							string t = "Slider";
-							foreach(var pn in n.Pins)
-							{
-								//todo: stepsize, default
-								if (pn.Name == "Minimum")
-									min = float.Parse(pn[0]);
-								if (pn.Name == "Maximum")
-									max = float.Parse(pn[0]);
-								if (pn.Name == "Slider Behavior")
-									t = pn[0];
-								else if (pn.Name == "Y Input Value")
-								{
-									v = float.Parse(pn[0].Replace('.', ','));
-									break;
-								}
-							}
-							
-							if (t == "Slider")
-								step = 1;
-							
-							//update
-							if (FTargets.ContainsKey(address))
-							{
-								FTargets[address].Update(name, t, 0, min, max, step, v);
-							}
-							else //add
-							{
-								var target = new RemoteValue(address, name, t, 0, min, max, step, v);
-								FTargets.Add(address, target);
-							}
-							
-							break;
-						}	
-				}
-				
-				//recurse downwards
-				GetTargetNodes(n);
-			}
-		}
-		
-		#region OSC
-		private void ProcessOSCMessage(OSCMessage message)
-		{
-			if (message.Address == "/k/init")
-			{
-				FTargets.Clear();
-				
-				FAutoIP = IPAddress.Parse((string)message.Values[0]);
-				FAutoPort = (int) message.Values[1];
-				FKontrolleurResolution[0] = new Vector2D((int) message.Values[2], (int) message.Values[3]);
-				
-				InitNetwork();
-				
-				return;
-			}
-			else if (!message.Address.StartsWith("/k/"))
-				return;
-			
-			var address = message.Address.Split('/');
-			if (!FMessages.ContainsKey(address[2]))
-				FMessages.Add(address[2], "<PATCH></PATCH>");
-			
-			var m = FMessages[address[2]];
-			FXML.LoadXml(m);
-			var patch = FXML.SelectSingleNode(@"//PATCH");
-			
-			var node = FXML.CreateElement("NODE");
-			patch.AppendChild(node);
-			var id = FXML.CreateAttribute("id");
-			id.Value = address[3];
-			node.Attributes.Append(id);
-			
-			//var values = string.Join(",", message.Values.ToArray(typeof(string)));
-			var values = "";
-			foreach(var v in message.Values)
-				values += v.ToString().Replace(',', '.') + ",";
-			values = values.TrimEnd(',');
-			
-			if (values == "bang")
-			{
-				node.InnerXml = "<PIN pinname=\"Y Input Value\" values=\"1\" />";
-				FBangs.Add(address[2], patch.OuterXml);
-			}	
-			else
-				node.InnerXml = "<PIN pinname=\"Y Input Value\" values=\"" + values + "\" />";
-			
-			FMessages[address[2]] = patch.OuterXml;
-		}
-		#endregion OSC
-	}
-	
-	enum RemoteValueState {Idle, Add, Update, Remove}
-	
-	class RemoteValue
-	{
-		public string Address;
-		public string Name;
-		public string Type;
-		public float Default;
-		public float Minimum;
-		public float Maximum;
-		public float Stepsize;
-		public float Value;
-		public RemoteValueState State;
-	
-		public RemoteValue(string Address, string Name, string Type, float Default, float Minimum, float Maximum, float Stepsize, float Value)
-		{
-			this.Address = Address;
-			this.Name = Name;
-			this.Type = Type;
-			this.Default = Default;
-			this.Minimum = Minimum;
-			this.Maximum = Maximum;
-			this.Stepsize = Stepsize;
-			this.Value = Value;
-			State = RemoteValueState.Add;
-		}
-		
-		public void Update(string Name, string Type, float Default, float Minimum, float Maximum, float Stepsize, float Value)
-		{
-			if ((this.Name != Name)
-			|| (this.Type != Type)
-			|| (this.Default != Default)
-			|| (this.Minimum != Minimum)
-			|| (this.Maximum != Maximum)
-			|| (this.Stepsize != Stepsize)
-			|| (this.Value != Value))
-			{
-				State = RemoteValueState.Update;
-				this.Name = Name;
-				this.Type = Type;
-				this.Default = Default;
-				this.Minimum = Minimum;
-				this.Maximum = Maximum;
-				this.Stepsize = Stepsize;
-				this.Value = Value;
-			}
-			else
-				State = RemoteValueState.Idle;
-		}
-		
-		public void InvalidateState()
-		{
-			State = RemoteValueState.Remove;
 		}
 	}
 }

@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.2.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\AddonsCore\Nodes\VVVV\Kontrolleur\Kontrolleur (VVVV).v4p" filename="C:\Users\Joreg\Desktop\vvvvs\osc\Kontrolleur (VVVV).v4p" systemname="Kontrolleur (VVVV)">
-   <BOUNDS height="9330" left="6915" top="375" type="Window" width="14220">
+   <BOUNDS height="9330" left="750" top="150" type="Window" width="14220">
    </BOUNDS>
    <INFO author="" description="" tags="">
    </INFO>
@@ -24,6 +24,8 @@
    <PIN pinname="XML Input" visible="1">
    </PIN>
    <PIN pinname="Force Update" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Add to UNDO history" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="134" nodename="PatchAlias (VVVV Name)" systemname="PatchAlias (VVVV Name)">
@@ -446,20 +448,24 @@
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Prefix">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="Kontrolleur.csproj" id="215" nodename="Kontrolleur (Network)" systemname="Kontrolleur (Network)">
+   <NODE componentmode="Hidden" filename="Kontrolleur.csproj" hiddenwhenlocked="0" id="227" managers="" nodename="Kontrolleur (Network)" systemname="Kontrolleur (Network)">
    <BOUNDS height="270" left="450" top="3270" type="Node" width="1170">
    </BOUNDS>
+   <BOUNDS height="1800" left="0" top="0" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="5010" left="0" top="0" type="Window" width="6240">
+   </BOUNDS>
    </NODE>
-   <LINK dstnodeid="134" dstpinname="PatchName" srcnodeid="215" srcpinname="Patch">
+   <LINK dstnodeid="134" dstpinname="PatchName" srcnodeid="227" srcpinname="Patch">
    </LINK>
-   <LINK dstnodeid="133" dstpinname="XML Input" srcnodeid="215" srcpinname="Patch Message">
+   <LINK dstnodeid="133" dstpinname="XML Input" srcnodeid="227" srcpinname="Patch Message">
    <LINKPOINT x="1590" y="4110">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="215" dstpinname="OSC Message" srcnodeid="130" srcpinname="Output">
+   <LINK dstnodeid="227" dstpinname="OSC Message" srcnodeid="130" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="215" dstpinname="Prefix" srcnodeid="213" srcpinname="Output String">
+   <LINK dstnodeid="227" dstpinname="Prefix" srcnodeid="213" srcpinname="Output String">
    </LINK>
-   <LINK dstnodeid="205" dstpinname="Source Maximum" srcnodeid="215" srcpinname="Kontrolleur ResolutionXY">
+   <LINK dstnodeid="205" dstpinname="Source Maximum" srcnodeid="227" srcpinname="Kontrolleur ResolutionXY">
    </LINK>
    </PATCH>
