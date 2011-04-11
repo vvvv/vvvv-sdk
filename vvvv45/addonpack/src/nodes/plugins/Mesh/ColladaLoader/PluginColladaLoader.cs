@@ -215,7 +215,7 @@ namespace VVVV.Nodes
 		
 		void FMeterSourceConfig_Changed(IDiffSpread<double> spread)
 		{
-			FDistanceUnitTarget = FMeterSourceConfig[0];
+			FDistanceUnitSource = FMeterSourceConfig[0];
 			ConfigurateModel();
 		}
 		
