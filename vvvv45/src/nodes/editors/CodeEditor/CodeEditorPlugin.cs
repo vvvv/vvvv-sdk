@@ -167,36 +167,41 @@ namespace VVVV.HDE.CodeEditor
             // BackgroundWorker objects do not return to the GUI (vvvv) thread.
             var syncContext = SynchronizationContext.Current;
             
-            // Check if opened document needs to be saved.
-            var doc = FEditor.TextDocument;
-            if (doc.IsDirty)
+            try 
             {
-                var saveDialog = new SaveDialog(doc.Location.LocalPath);
-                if (saveDialog.ShowDialog(this) == DialogResult.OK)
+                // Check if opened document needs to be saved.
+                var doc = FEditor.TextDocument;
+                if (doc.IsDirty)
                 {
-                    // Resore the old SynchronizationContext.
-                    SynchronizationContext.SetSynchronizationContext(syncContext);
-                    
-                    var result = saveDialog.SaveOptionResult;
-                    
-                    switch (result)
+                    var saveDialog = new SaveDialog(doc.Location.LocalPath);
+                    if (saveDialog.ShowDialog(this) == DialogResult.OK)
                     {
-                        case SaveOption.Save:
-                            doc.Save();
-                            break;
-                        case SaveOption.DontSave:
-                            // Do nothing
-                            break;
-                        default:
-                            // Cancel
-                            return false;
+                        var result = saveDialog.SaveOptionResult;
+                        
+                        switch (result)
+                        {
+                            case SaveOption.Save:
+                                doc.Save();
+                                break;
+                            case SaveOption.DontSave:
+                                // Do nothing
+                                break;
+                            default:
+                                // Cancel
+                                return false;
+                        }
+                    }
+                    else
+                    {
+                        // Cancel
+                        return false;
                     }
                 }
-                else
-                {
-                    // Cancel
-                    return false;
-                }
+            } 
+            finally 
+            {
+                // Resore the old SynchronizationContext.
+                SynchronizationContext.SetSynchronizationContext(syncContext);
             }
             
             return true;
