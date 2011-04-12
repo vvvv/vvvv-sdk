@@ -28,7 +28,7 @@ namespace VVVV.Nodes
 	Help = "Communicates with the Kontrolleur Android app",
 	Tags = "remote")]
 	#endregion PluginInfo
-	public class StringOSC2PatchNode : IPluginEvaluate
+	public class StringOSC2PatchNode: IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
 	{
 		#region fields & pins
 		[Config("Kontrolleur IP", IsSingle=true, DefaultString="")]
@@ -41,7 +41,7 @@ namespace VVVV.Nodes
 		ISpread<string> FOSCIn;
 		
 		[Input("Prefix", IsSingle=true)]
-		ISpread<string> FPrefix;
+		IDiffSpread<string> FPrefix;
 		
 		[Output("Patch")]
 		ISpread<string> FPatchOut;
@@ -62,7 +62,11 @@ namespace VVVV.Nodes
 		private IPAddress FManualIP;
 		private int FManualPort;
 		private bool FFirstFrame = true;
+		private List<string> FPrefixes = new List<string>();
+		// Track whether Dispose has been called.
+        private bool FDisposed = false;
 		
+		[Import]
 		ILogger FLogger;
 		
 		private Timer FTimer = new Timer(2000);
@@ -73,21 +77,67 @@ namespace VVVV.Nodes
 		private Dictionary<string, RemoteValue> FTargets = new Dictionary<string, RemoteValue>();
 		#endregion fields & pins
 		
+		#region constructor/destructor
 		[ImportingConstructor]
-		public StringOSC2PatchNode(IHDEHost host, ILogger logger)
+		public StringOSC2PatchNode(IHDEHost host)
 		{
 			FRoot = host.RootNode;
-			FLogger = logger;
-			
+
 			FTimer.Enabled = true;
 			FTimer.AutoReset = false;
 			FTimer.Elapsed += new ElapsedEventHandler(FTimer_Elapsed);
 		}
+		
+		~StringOSC2PatchNode()
+		{
+			Dispose(false);
+		}
+		
+		public void Dispose()
+	    {
+	        Dispose(true);
+	    }
+		
+        protected void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called.
+            if(!FDisposed)
+            {
+                if(disposing)
+                {
+                    // Dispose managed resources.
+                    FLogger.Log(LogType.Debug, "unregging");
+					UnRegisterPatch(FRoot);
+					FLogger.Log(LogType.Debug, "unregged");
+                }
+                // Release unmanaged resources. If disposing is false,
+                // only the following code is executed.
+                
+            }
+            FDisposed = true;
+        }
+        #endregion constructor/destructor
+		
+		#region events
+		public void OnImportsSatisfied() 
+	    {
+	      FPrefix.Changed += PrefixChangedCB;
+	    } 
+		
+		private void PrefixChangedCB(IDiffSpread spread)
+		{
+			FPrefixes.Clear();
+			foreach (string prefix in spread)
+				FPrefixes.Add(prefix);
+		}
+		
 		private void FTimer_Elapsed(object Sender, ElapsedEventArgs e)
 		{
 			FAllowUpdates = true;
 		}
+		#endregion events
 		
+		#region network
 		private void InitNetwork()
 		{
 			IPAddress newIP = null;
@@ -128,8 +178,9 @@ namespace VVVV.Nodes
 					}
 			}
 		}
-	
-		#region IOBoxes
+		#endregion network
+		
+		#region exposing IOBoxes
 		private void RegisterPatch(INode2 patch)
 		{
 			foreach (var node in patch)
@@ -150,9 +201,12 @@ namespace VVVV.Nodes
 			//for now only accepts value-IOBoxes
 			if (!io.Name.Contains("Value Advanced"))
 				return;
-
+			
 			//now see if this box already wants to be exposed
-			CheckExposePin(io.LabelPin);
+			CheckExposeIOBox(io);
+			
+			//register for labelchanges 
+			io.LabelPin.Changed += LabelChangedCB;
 		}
 		
 		private void UnRegisterPatch(INode2 patch)
@@ -176,7 +230,10 @@ namespace VVVV.Nodes
 			if (!io.Name.Contains("Value Advanced"))
 				return;
 			
-			UnExposePin(io.LabelPin);
+			UnExposeIOBox(io);
+			
+			//unregister from labelchanges 
+			io.LabelPin.Changed -= LabelChangedCB;
 		}
 		
 		private void NodeAddedCB(IViewableCollection collection, object item)
@@ -199,25 +256,26 @@ namespace VVVV.Nodes
 				UnRegisterIOBox(node);	
 		}
 		
-		private void CheckExposePin(IPin2 pin)
+		private void CheckExposeIOBox(INode2 node)
 		{
 			bool unexpose = false;
 			
-			if (string.IsNullOrEmpty(pin[0]))
+			FLogger.Log(LogType.Debug, "checking..." + node.LabelPin[0]);
+			
+			if (string.IsNullOrEmpty(node.LabelPin[0]))
 				unexpose = true;
 			else
 			{
-				var name = pin[0];
-				if (string.IsNullOrEmpty(FPrefix[0])
-				|| (!string.IsNullOrEmpty(FPrefix[0]) && name.StartsWith(FPrefix[0])))
+				var name = node.LabelPin[0];
+				
+				FLogger.Log(LogType.Debug, "checking prefix...");
+				if ((FPrefixes.Count == 0)
+				|| ((FPrefixes.Count > 0) && name.StartsWith(FPrefix[0])))
 				{
-					//remove prefix
-					if (!string.IsNullOrEmpty(FPrefix[0]))
-						name = name.Replace(FPrefix[0], "");
+					var target = new RemoteValue(node, FPrefixes);
 					
-					var target = new RemoteValue(pin.ParentNode);
-					
-					FTargets.Add(target.Address, target);
+					if (!FTargets.ContainsKey(target.Address))
+						FTargets.Add(target.Address, target);
 					FLogger.Log(LogType.Debug, "exposed: " + target.Address);
 				}
 				else
@@ -225,12 +283,13 @@ namespace VVVV.Nodes
 			}
 			
 			if (unexpose)
-				UnExposePin(pin);
+				UnExposeIOBox(node);
 		}
 		
-		private void UnExposePin(IPin2 pin)
+		private void UnExposeIOBox(INode2 node)
 		{
-			var address = "/" + pin.ParentNode.Parent.NodeInfo.Filename + "/" + pin.ParentNode.ID;
+			FLogger.Log(LogType.Debug, "unexpos...");
+			var address = "/" + node.Parent.NodeInfo.Filename + "/" + node.ID;
 			
 			if (FTargets.ContainsKey(address))
 			{
@@ -238,7 +297,19 @@ namespace VVVV.Nodes
 				FLogger.Log(LogType.Debug, "unexposed: " + address);
 			}	
 		}
-		#endregion IOBoxes
+		
+		private void LabelChangedCB(object Sender, EventArgs e)
+		{
+			FLogger.Log(LogType.Debug, "changed...?");
+			var labelPin = Sender as IPin2;
+			if (string.IsNullOrEmpty(labelPin[0]))
+				FLogger.Log(LogType.Debug, "changed...null");
+			else
+			    FLogger.Log(LogType.Debug, "changed..." + labelPin[0]);
+			
+			CheckExposeIOBox(labelPin.ParentNode);
+		}
+		#endregion exposing IOBoxes
 		
 		#region OSC
 		private void ProcessOSCMessage(OSCMessage message)
@@ -253,6 +324,7 @@ namespace VVVV.Nodes
 				
 				InitNetwork();
 				
+				UnRegisterPatch(FRoot);
 				RegisterPatch(FRoot);
 				
 				return;
@@ -292,7 +364,7 @@ namespace VVVV.Nodes
 		}
 		#endregion OSC
 		
-		//called when data for any output pin is requested
+		#region MainLoop
 		public void Evaluate(int SpreadMax)
 		{
 			//re/init udp
@@ -375,6 +447,7 @@ namespace VVVV.Nodes
 					OSCMessage osc;
 					if (target.State == RemoteValueState.Remove)
 					{
+						FLogger.Log(LogType.Warning, "removed: " + target.Address);
 						osc = new OSCMessage("/k/remove");
 						osc.Append(target.Address);
 						bundle.Append(osc);
@@ -406,8 +479,6 @@ namespace VVVV.Nodes
 						osc.Append(target.Value);
 						bundle.Append(osc);
 					}
-					
-					target.InvalidateState();
 				}
 				
 				if (FOSCTransmitter != null)
@@ -423,12 +494,18 @@ namespace VVVV.Nodes
 				//remove unused targets
 				foreach (var target in FTargets.ToArray())
 					if (target.Value.State == RemoteValueState.Remove)
+					{
+						FLogger.Log(LogType.Warning, "removed: " + target.Value.Address);
 						FTargets.Remove(target.Key);
+					}	
+					else
+						target.Value.InvalidateState();
 			}
 			
 			//return patch messages
 			FPatchOut.AssignFrom(FMessages.Keys);
 			FMessageOut.AssignFrom(FMessages.Values);
 		}
+		#endregion MainLoop
 	}
 }

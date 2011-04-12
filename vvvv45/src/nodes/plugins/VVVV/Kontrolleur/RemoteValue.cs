@@ -1,5 +1,6 @@
 #region usings
 using System;
+using System.Collections.Generic;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -15,7 +16,6 @@ namespace VVVV.Nodes
 		private INode2 FNode;
 		private IPin2 FNamePin, FMinimumPin, FMaximumPin, FTypePin, FValuePin;
 		public string Address;
-		public string Name;
 		public string Type;
 		public float Default;
 		public float Minimum;
@@ -23,10 +23,31 @@ namespace VVVV.Nodes
 		public float Stepsize;
 		public float Value;
 		public RemoteValueState State;
+		private List<string> FPrefixes = new List<string>();
 		
-		public RemoteValue(INode2 node)
+		private string FName;
+		public string Name
+		{
+			get
+			{
+				return FName;
+			}
+			set
+			{
+				FName = value;
+				foreach (string prefix in FPrefixes)
+					if (FName.StartsWith(prefix))
+					{
+						FName = FName.Substring(prefix.Length);
+						break;
+					}
+			}
+		}
+		
+		public RemoteValue(INode2 node, List<string> prefixes)
 		{
 			FNode = node;
+			FPrefixes = prefixes;
 			Address = "/" + FNode.Parent.NodeInfo.Filename + "/" + FNode.ID;
 			
 			FNamePin = node.LabelPin;
@@ -60,6 +81,9 @@ namespace VVVV.Nodes
 		
 		private void ValueChangedCB(object sender, EventArgs e)
 		{
+			if (State == RemoteValueState.Remove)
+				return;
+			
 			var pin = sender as IPin2;
 			if (pin == FValuePin)
 				Value = float.Parse(FValuePin[0].Replace('.', ','));
