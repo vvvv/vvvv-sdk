@@ -13,8 +13,11 @@ namespace VVVV.Nodes
 	
 	class RemoteValue
 	{
-		private INode2 FNode;
 		private IPin2 FNamePin, FMinimumPin, FMaximumPin, FTypePin, FValuePin;
+		private List<string> FPrefixes = new List<string>();
+		private string FName;
+		
+		public INode2 Node;
 		public string Address;
 		public string Type;
 		public float Default;
@@ -23,9 +26,7 @@ namespace VVVV.Nodes
 		public float Stepsize;
 		public float Value;
 		public RemoteValueState State;
-		private List<string> FPrefixes = new List<string>();
 		
-		private string FName;
 		public string Name
 		{
 			get
@@ -46,27 +47,27 @@ namespace VVVV.Nodes
 		
 		public RemoteValue(INode2 node, List<string> prefixes)
 		{
-			FNode = node;
+			Node = node;
 			FPrefixes = prefixes;
-			Address = "/" + FNode.Parent.NodeInfo.Filename + "/" + FNode.ID;
+			Address = "/" + Node.Parent.NodeInfo.Filename + "/" + Node.ID;
 			
 			FNamePin = node.LabelPin;
 			FNamePin.Changed += ValueChangedCB;
 			Name = FNamePin[0];
 			
-			FMinimumPin = FNode.FindPin("Minimum");
+			FMinimumPin = Node.FindPin("Minimum");
 			FMinimumPin.Changed += ValueChangedCB;
 			Minimum = float.Parse(FMinimumPin[0]);
 			
-			FMaximumPin = FNode.FindPin("Maximum");
+			FMaximumPin = Node.FindPin("Maximum");
 			FMaximumPin.Changed += ValueChangedCB;
 			Maximum = float.Parse(FMaximumPin[0]);
 			
-			FTypePin = FNode.FindPin("Slider Behavior");
+			FTypePin = Node.FindPin("Slider Behavior");
 			FTypePin.Changed += ValueChangedCB;
 			Type = FTypePin[0];
 			
-			FValuePin = FNode.FindPin("Y Input Value");
+			FValuePin = Node.FindPin("Y Input Value");
 			FValuePin.Changed += ValueChangedCB;
 			Value = float.Parse(FValuePin[0].Replace('.', ','));
 			

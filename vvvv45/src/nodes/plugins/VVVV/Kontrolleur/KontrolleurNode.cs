@@ -106,9 +106,8 @@ namespace VVVV.Nodes
                 if(disposing)
                 {
                     // Dispose managed resources.
-                    FLogger.Log(LogType.Debug, "unregging");
+                    FPrefix.Changed -= PrefixChangedCB;
 					UnRegisterPatch(FRoot);
-					FLogger.Log(LogType.Debug, "unregged");
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
@@ -129,6 +128,9 @@ namespace VVVV.Nodes
 			FPrefixes.Clear();
 			foreach (string prefix in spread)
 				FPrefixes.Add(prefix);
+			
+			UnRegisterPatch(FRoot);
+			RegisterPatch(FRoot);
 		}
 		
 		private void FTimer_Elapsed(object Sender, ElapsedEventArgs e)
@@ -260,15 +262,12 @@ namespace VVVV.Nodes
 		{
 			bool unexpose = false;
 			
-			FLogger.Log(LogType.Debug, "checking..." + node.LabelPin[0]);
-			
 			if (string.IsNullOrEmpty(node.LabelPin[0]))
 				unexpose = true;
 			else
 			{
 				var name = node.LabelPin[0];
 				
-				FLogger.Log(LogType.Debug, "checking prefix...");
 				if ((FPrefixes.Count == 0)
 				|| ((FPrefixes.Count > 0) && name.StartsWith(FPrefix[0])))
 				{
@@ -276,7 +275,6 @@ namespace VVVV.Nodes
 					
 					if (!FTargets.ContainsKey(target.Address))
 						FTargets.Add(target.Address, target);
-					FLogger.Log(LogType.Debug, "exposed: " + target.Address);
 				}
 				else
 					unexpose = true;
@@ -288,25 +286,15 @@ namespace VVVV.Nodes
 		
 		private void UnExposeIOBox(INode2 node)
 		{
-			FLogger.Log(LogType.Debug, "unexpos...");
 			var address = "/" + node.Parent.NodeInfo.Filename + "/" + node.ID;
 			
 			if (FTargets.ContainsKey(address))
-			{
 				FTargets[address].State = RemoteValueState.Remove;
-				FLogger.Log(LogType.Debug, "unexposed: " + address);
-			}	
 		}
 		
 		private void LabelChangedCB(object Sender, EventArgs e)
 		{
-			FLogger.Log(LogType.Debug, "changed...?");
 			var labelPin = Sender as IPin2;
-			if (string.IsNullOrEmpty(labelPin[0]))
-				FLogger.Log(LogType.Debug, "changed...null");
-			else
-			    FLogger.Log(LogType.Debug, "changed..." + labelPin[0]);
-			
 			CheckExposeIOBox(labelPin.ParentNode);
 		}
 		#endregion exposing IOBoxes
@@ -447,7 +435,6 @@ namespace VVVV.Nodes
 					OSCMessage osc;
 					if (target.State == RemoteValueState.Remove)
 					{
-						FLogger.Log(LogType.Warning, "removed: " + target.Address);
 						osc = new OSCMessage("/k/remove");
 						osc.Append(target.Address);
 						bundle.Append(osc);
@@ -494,10 +481,7 @@ namespace VVVV.Nodes
 				//remove unused targets
 				foreach (var target in FTargets.ToArray())
 					if (target.Value.State == RemoteValueState.Remove)
-					{
-						FLogger.Log(LogType.Warning, "removed: " + target.Value.Address);
 						FTargets.Remove(target.Key);
-					}	
 					else
 						target.Value.InvalidateState();
 			}
