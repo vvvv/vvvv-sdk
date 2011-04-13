@@ -89,8 +89,6 @@ namespace VVVV.Hosting
 		
 		public HDEHost()
 		{
-			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssemblyCB;
-			
 			//set vvvv.exe path
 			ExePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName((typeof(HDEHost).Assembly.Location)), @"..\.."));
 			
@@ -723,56 +721,6 @@ namespace VVVV.Hosting
 			}
 			
 			factory_NodeInfoAdded(sender, info);
-		}
-		
-		protected Assembly ResolveAssemblyCB(object sender, ResolveEventArgs args)
-		{
-			AppDomain domain = AppDomain.CurrentDomain;
-			// TODO: Clean this up a little.
-			string fullName = args.Name.Trim();
-			string partialName = fullName;
-			if (fullName.IndexOf(',') >= 0)
-				partialName = fullName.Substring(0, fullName.IndexOf(','));
-			
-			if (partialName == "_PluginInterfaces")
-				partialName = "VVVV.PluginInterfaces";
-			
-			if (partialName == "PluginInterfaces")
-				partialName = "VVVV.PluginInterfaces";
-			
-			if (partialName == "_Utils")
-				partialName = "VVVV.Utils";
-			
-			foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
-			{
-				AssemblyName name = assembly.GetName();
-				if (name.Name == partialName)
-					return assembly;
-			}
-			
-			string path = Path.Combine(Shell.CallerPath, partialName + ".dll");
-			if (File.Exists(path)) {
-				try {
-					return Assembly.LoadFrom(path);
-				} catch (Exception e) {
-					Logger.Log(e);
-					return null;
-				}
-			}
-			else
-			{
-				path = Path.Combine(Shell.CallerPath + "\\..\\..\\plugins", partialName + ".dll");
-				if (File.Exists(path)) {
-					try {
-						return Assembly.LoadFrom(path);
-					} catch (Exception e) {
-						Logger.Log(e);
-						return null;
-					}
-				}
-			}
-			
-			return null;
 		}
 		#endregion
 		
