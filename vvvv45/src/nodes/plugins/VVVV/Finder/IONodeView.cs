@@ -35,6 +35,8 @@ namespace VVVV.Nodes.Finder
         
         public override void Dispose()
         {
+            FNode.LabelPin.Changed -= HandleLabelPinChanged;
+            
             if (FCommentPin != null)
             {
                 FCommentPin.Changed -= HandleCommentPinChanged;

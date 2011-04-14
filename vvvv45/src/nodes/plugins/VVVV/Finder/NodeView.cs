@@ -106,6 +106,7 @@ namespace VVVV.Nodes.Finder
             
             foreach (var nodeView in FChildNodes)
                 nodeView.Dispose();
+            FChildNodes.Dispose();
         }
         
         public INode2 Node
