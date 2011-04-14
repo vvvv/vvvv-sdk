@@ -24,13 +24,13 @@ namespace VVVV.HDE.CodeEditor.ErrorView
 		
 		public IEnumerator<Cell> GetEnumerator()
 		{
-			yield return new Cell("R");
-			yield return new Cell(FError.Line);
-			yield return new Cell(FError.ErrorText, true);
+		    yield return new Cell("R", typeof(string));
+			yield return new Cell(FError.Line, typeof(int));
+			yield return new Cell(FError.ErrorText, typeof(string), true);
 			if (FError.FileName != null && FError.FileName.Length > 0)
 			{
-				yield return new Cell(Path.GetFileName(FError.FileName));
-				yield return new Cell(Path.GetDirectoryName(FError.FileName));
+				yield return new Cell(Path.GetFileName(FError.FileName), typeof(string));
+				yield return new Cell(Path.GetDirectoryName(FError.FileName), typeof(string));
 			}
 		}
 		

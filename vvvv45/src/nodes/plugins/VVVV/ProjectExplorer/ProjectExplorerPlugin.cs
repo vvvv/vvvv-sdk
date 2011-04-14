@@ -72,8 +72,8 @@ namespace VVVV.HDE.ProjectExplorer
 //				FMappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
 				FMappingRegistry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
 				FMappingRegistry.RegisterDefaultMapping<AddMenuEntry, DefaultAddMenuEntry>();
-				FMappingRegistry.RegisterDefaultMapping(logger);
-				FMappingRegistry.RegisterDefaultMapping(FRootNode);
+				FMappingRegistry.RegisterDefaultInstance(FLogger);
+				FMappingRegistry.RegisterDefaultInstance(FRootNode);
 				
 				if (showUnloadedProjectsIn[0])
 					FMappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
@@ -83,7 +83,7 @@ namespace VVVV.HDE.ProjectExplorer
 				
 				FMappingRegistry.RegisterMapping<IProject, ProjectViewProvider>();
 				// Do not enumerate IDocument
-				FMappingRegistry.RegisterMapping<IDocument, IEnumerable>(Empty.Enumerable);
+				FMappingRegistry.RegisterInstance<IDocument, IEnumerable>(Empty.Enumerable);
 				FMappingRegistry.RegisterMapping<MsBuildProject, MsBuildProjectViewProvider>();
 				FMappingRegistry.RegisterMapping<FXProject, FXProjectViewProvider>();
 				FMappingRegistry.RegisterMapping<FXProject, IMenuEntry, FXProjectMenuProvider>();
