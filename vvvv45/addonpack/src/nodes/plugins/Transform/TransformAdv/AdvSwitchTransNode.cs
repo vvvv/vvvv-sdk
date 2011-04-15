@@ -124,14 +124,41 @@ namespace SwitchTransAdv
 
             if (this.FPinInput.PinIsChanged || changed)
             {
-                this.FPinOutput.SliceCount = SpreadMax;
-                for (int i = 0; i < SpreadMax; i++)
+                //Prepass for nil check
+                
+                List<ITransformIn> usedpins = new List<ITransformIn>();
+
+                if (this.FPinInput.SliceCount > 0)
                 {
-                    double dblswitch;
-                    this.FPinInput.GetValue(i, out dblswitch);
-                    Matrix4x4 tr;
-                    this.FPinTransforms[Convert.ToInt32(dblswitch) % this.FPinTransforms.Count].GetMatrix(i, out tr);
-                    this.FPinOutput.SetMatrix(i, tr);
+                    int spmaxnonnil = this.FPinInput.SliceCount;
+                    for (int i = 0; i < this.FPinTransforms.Count; i++)
+                    {
+                        spmaxnonnil = Math.Max(spmaxnonnil, this.FPinTransforms[i].SliceCount);
+                    }
+
+                    this.FPinOutput.SliceCount = spmaxnonnil;
+                    for (int i = 0; i < spmaxnonnil; i++)
+                    {
+                        double dblswitch;
+                        this.FPinInput.GetValue(i, out dblswitch);
+                        Matrix4x4 tr;
+                        int pinidx = Convert.ToInt32(dblswitch) % this.FPinTransforms.Count;
+                        if (this.FPinTransforms[pinidx].SliceCount > 0)
+                        {
+                            this.FPinTransforms[pinidx].GetMatrix(i, out tr);
+                            this.FPinOutput.SetMatrix(i, tr);
+                        }
+                        else
+                        {
+                            this.FPinOutput.SliceCount = 0;
+                            break;
+                        }
+                    }
+
+                }
+                else
+                {
+                    this.FPinOutput.SliceCount = 0;
                 }
             }
 
