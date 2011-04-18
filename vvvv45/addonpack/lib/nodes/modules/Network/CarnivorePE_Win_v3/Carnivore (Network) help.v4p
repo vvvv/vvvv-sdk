@@ -1,0 +1,73 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
+   <PATCH nodename="C:\SVN_ROOT\vvvv\modules\fibos\Network\CarnivorePE_Win_v3\Carnivore (Network) help.v4p" systemname="Carnivore (Network) help" filename="C:\SVN_ROOT\vvvv\modules\fibos\Network\CarnivorePE_Win_v3\Carnivore (Network) help.v4p">
+   <BOUNDS type="Window" left="5100" top="3000" width="9000" height="6000">
+   </BOUNDS>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="0" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="45" top="15" width="1590" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="45" top="15" width="2910" height="420">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Carnivore - Network|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="705" top="6555" width="630" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="705" top="6555" width="630" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|by fibo|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="120" top="615" width="1095" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="120" top="615" width="4305" height="315">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Carnivore client + wrapper - http://r-s-g.org/carnivore/|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="Carnivore" filename="Carnivore.v4p" nodename="C:\SVN_ROOT\vvvv\modules\fibos\Network\CarnivorePE_Win_v3\Carnivore.v4p" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="3645" top="3120" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Do Execute" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="5">
+   <BOUNDS type="Node" left="3210" top="2250" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3210" top="2250" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Do Execute">
+   </LINK>
+   </PATCH>

@@ -1,0 +1,97 @@
+Version 3, January 2011
++ rebuilt for Java 1.6
+
+--------------------------------------------------------------------
+
+Version 2.2.4
++ renamed the preferences file to ".carnivore_preferences.txt"
+
+--------------------------------------------------------------------
+
+Version 2.2.3, October 2007
++ Fixed "20 packet bug" whereby the unlimited packets/second setting was
+really still capping output at 20 packets. now unlimited packets/second
+is really unlimited.
+
+--------------------------------------------------------------------
+
+Version 2.2.2, June 2007
++ Added support for [-playback filename] command line argument. This
+will automagically start CarnivorePE playing back from a file. Example:
+	java org/rsg/carnivore/CarnivorePE -playback Carnivore_Session_example_v2.2.1.ser
++ trying to reinstate Linux support -- seems to be working :) 
+
+--------------------------------------------------------------------
+
+Version 2.2.1, August 2006
++ increased pcap snap length to 65535, following recommendation on pcap
+man page.
++ changed IPAddress.ip to an InetAddress.
++ added getHostName method to IPAddress.
+
+Version 2.2, July 2006
++ moved java class files around so that there is a "core" engine
+responsible for all the sniffing. The Processing and CPE versions now
+simply act as clients for the core.
++ reorganized class files significantly. 
++ CarniPacket class is now called CarnivorePacket
++ the class accessed by Processing is now called CarnivoreP5 (not carnivore)
++ cleaned up format of output string: added milliseconds to packet
+timestamp; changed ip/port separator to ":" which is more standard.
+Clients *will* have to update their parsing routines.
++ reinstated console window
++ got ride of Mac authentication launcher app -- too complicated.
++ added ability to log packets to text file
++ added ability to record and playback capture sessions
++ dropped linux support (which was never really "supported" anyway due
+to difficulty of testing and debugging.) adding linux support again in
+the future should be easy however.
+
+Version 2.1, Sept 2005
++ Added platform specific launcher apps to exec the `java -jar cpe.jar` command
++ Mac launcher app authenticates and launches jvm as root. (this avoids having to 
+chmod devices manually)
+
+Version 2, September 2005
++ ported to Java (to resolve VB/PacketX/Winpcap problems in the windows version)
++ consolidated and reorganized GUI
++ removed splash screen
++ removed debug window
++ removed collapse/expand tab functionality in GUI 
+
+--------------------------------------------------------------------
+
+PREVIOUS CHANGE LOG (Macintosh version)
+
+Version 1.4.0
++ ported application from windows
++ sniffer defaults to whatever network adapter is in use (either en1 or en0) 
++ fixed memory leaks 
++ made output channels more efficient 
+
+----
+
+PREVIOUS CHANGE LOG (Windows version)
+
+Version 1.4.0
++ new gui
++ better adapter support, including ability to switch adapters
++ support for multiple simultaneous clients has been depricated
++ added splash images
++ added debug window
++ output buffering is now done with a fader for better fluidity
++ fixed misc XP bugs 
+
+Version 1.3.3
++ will now scan all adaptors and default to the ethernet one,
++ not simply the first one
++ fixed dorky error that would happen when you stop carni, then close the window
+
+Version 1.3.2
++ moved packet conversions to separate functions to increase performance
++ integrated new packet header parsing features from PacketX version 1.2.2
++ will now accept multiple clients, each with own channel
+
+Version 1.3.1
++ carnivore channel now skips first 54 bytes to increase performance
++ also, packets are only parsed if the client is actually requesting them
