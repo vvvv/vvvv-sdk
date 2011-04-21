@@ -29,7 +29,9 @@ namespace VVVV.Hosting
 			
 			if (contractName == typeof(ILogger).FullName && PluginHost != null)
 			{
-				yield return new Export(contractName, () => new PluginLogger(PluginHost));
+			    var logger = new DefaultLogger();
+			    logger.AddLogger(new PluginLogger(PluginHost));
+				yield return new Export(contractName, () => logger);
 			}
 			else if (contractName.StartsWith("VVVV.PluginInterfaces"))
 			{
