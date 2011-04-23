@@ -199,6 +199,12 @@ namespace VVVV.Hosting.Factories
 		//register all files in a directory
 		public void AddDir(string dir, bool recursive)
 		{
+		    if (!Directory.Exists(dir))
+		    {
+		        FLogger.Log(LogType.Warning, "{0} can't scan non-existent directory: {1}", this, dir);
+		        return;
+		    }
+		    
 			//give subclasses a chance to cleanup before we start to scan.
 			DeleteArtefacts(dir, recursive);
 
