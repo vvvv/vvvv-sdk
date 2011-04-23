@@ -27,7 +27,7 @@ namespace VVVV.PluginInterfaces.V1
 	/// </summary>
 	[Guid("60842D2E-FBA6-456C-A7AE-C3708D06B5C1"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface IPinUpdater : IDisposable
+	public interface IPinUpdater
 	{
 	    //Called by the host before Evaluate for Inputs and after Evaluate for Outputs.
 	    void Update();

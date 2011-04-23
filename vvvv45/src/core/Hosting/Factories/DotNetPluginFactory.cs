@@ -51,19 +51,14 @@ namespace VVVV.Hosting.Factories
         protected IHDEHost FHost;
         
         private PluginImporter FPluginImporter = new PluginImporter();
-        private Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>> FPluginLifetimeContexts;
+        private readonly Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>> FPluginLifetimeContexts;
+        private readonly Dictionary<IPluginBase, HostExportProvider> FPinExportProviders;
         private readonly Dictionary<INodeInfo, PluginVersion> FPluginVersion = new Dictionary<INodeInfo, PluginVersion>();
+        private readonly CompositionContainer FParentContainer;
         protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
 
         public Dictionary<string, IPluginBase> FNodesPath = new Dictionary<string, IPluginBase>();
         public Dictionary<IPluginBase, IPluginHost2> FNodes = new Dictionary<IPluginBase, IPluginHost2>();
-        
-        protected HostExportProvider FHostExportProvider;
-        public ExportProvider[] ExportProviders
-        {
-            get;
-            private set;
-        }
         
         #region Constructor
         [ImportingConstructor]
@@ -76,9 +71,9 @@ namespace VVVV.Hosting.Factories
         protected DotNetPluginFactory(CompositionContainer parentContainer, string fileExtension)
             : base(fileExtension)
         {
+            FParentContainer = parentContainer;
+            FPinExportProviders = new Dictionary<IPluginBase, HostExportProvider>();
             FPluginLifetimeContexts = new Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>>();
-            FHostExportProvider = new HostExportProvider();
-            ExportProviders = new ExportProvider[] { FHostExportProvider, parentContainer };
         }
         #endregion
 
@@ -261,18 +256,19 @@ namespace VVVV.Hosting.Factories
 			{
 				case PluginVersion.V2:
 				{
-					var assembly = Assembly.LoadFrom (assemblyLocation);
-					var type = assembly.GetType (nodeInfo.Arguments);
-					var catalog = new TypeCatalog (type);
-					var container = new CompositionContainer (catalog, ExportProviders);
-					container.ComposeParts (FPluginImporter);
+					var assembly = Assembly.LoadFrom(assemblyLocation);
+					var type = assembly.GetType(nodeInfo.Arguments);
+					var catalog = new TypeCatalog(type);
+					var pinExportProvider = new HostExportProvider(pluginHost);
+					var exportProviders = new ExportProvider[] { pinExportProvider, FParentContainer };
+					var container = new CompositionContainer(catalog, exportProviders);
+					container.ComposeParts(FPluginImporter);
 				
-					FHostExportProvider.PluginHost = pluginHost;
-			
-					var lifetimeContext = FPluginImporter.PluginExportFactory.CreateExport ();
+					var lifetimeContext = FPluginImporter.PluginExportFactory.CreateExport();
 					var plugin = lifetimeContext.Value;
 			
-					FPluginLifetimeContexts [plugin] = lifetimeContext;
+					FPluginLifetimeContexts[plugin] = lifetimeContext;
+					FPinExportProviders[plugin] = pinExportProvider;
 
                     //Send event
                     if (this.PluginCreated != null) { this.PluginCreated(plugin, pluginHost); }
@@ -281,8 +277,8 @@ namespace VVVV.Hosting.Factories
 				}
 				case PluginVersion.V1:
 				{
-					var assembly = Assembly.LoadFrom (assemblyLocation);
-					var plugin = (IPlugin)assembly.CreateInstance (nodeInfo.Arguments);
+					var assembly = Assembly.LoadFrom(assemblyLocation);
+					var plugin = (IPlugin)assembly.CreateInstance(nodeInfo.Arguments);
 			
 					plugin.SetPluginHost (pluginHost);
 
@@ -305,6 +301,8 @@ namespace VVVV.Hosting.Factories
             {
                 FPluginLifetimeContexts[plugin].Dispose();
                 FPluginLifetimeContexts.Remove(plugin);
+                FPinExportProviders[plugin].Dispose();
+                FPinExportProviders.Remove(plugin);
             }
             else if (plugin is IDisposable)
             {
