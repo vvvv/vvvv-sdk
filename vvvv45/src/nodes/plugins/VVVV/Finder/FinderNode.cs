@@ -753,8 +753,11 @@ namespace VVVV.Nodes.Finder
         
         private void OpenParentAndSelectNode(INode2 node)
         {
-            FHDEHost.ShowEditor(node.Parent);
-            FHDEHost.SelectNodes(new INode2[1]{node});
+            if (node != FHDEHost.RootNode)
+            {
+                FHDEHost.ShowEditor(node.Parent);
+                FHDEHost.SelectNodes(new INode2[1]{node});
+            }
         }
     }
 }
