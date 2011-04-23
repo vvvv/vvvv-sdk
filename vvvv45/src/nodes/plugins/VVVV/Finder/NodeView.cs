@@ -217,9 +217,8 @@ namespace VVVV.Nodes.Finder
             nodeView.Dispose();
         }
         
-        void HandleNodeAdded (IViewableCollection collection, object item)
+        void HandleNodeAdded (IViewableCollection<INode2> collection, INode2 node)
         {
-            var node = item as INode2;
             if (!FChildNodes.Any((n) => n.FNode == node))
             {
                 var nodeView = CreateNodeView(node);
@@ -236,9 +235,8 @@ namespace VVVV.Nodes.Finder
             }
         }
         
-        void HandleNodeRemoved (IViewableCollection collection, object item)
+        void HandleNodeRemoved (IViewableCollection<INode2> collection, INode2 node)
         {
-            var node = item as INode2;
             var nodeView = FChildNodes.FirstOrDefault((n) => n.FNode == node);
             if (nodeView != null)
             {
