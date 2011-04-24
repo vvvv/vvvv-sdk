@@ -1,19 +1,17 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using System.Collections.Generic;
-
 using VVVV.Core;
+using VVVV.Core.Collections;
 using VVVV.Core.Menu;
 using VVVV.Core.View;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.NodeBrowser
 {
-    /// <summary>
-    /// Description of CategoryPanel.
-    /// </summary>
     public partial class CategoryPanel : UserControl
     {
         public event PanelChangeHandler OnPanelChange;
@@ -22,21 +20,12 @@ namespace VVVV.Nodes.NodeBrowser
         public event CreateNodeHandler OnShowHelpPatch;
         
         Dictionary<string, string> FCategoryDict = new Dictionary<string, string>();
-        CategoryList FCategoryList = new CategoryList();
+        SortedEditableList<CategoryEntry, string> FCategoryList = new SortedEditableList<CategoryEntry, string>(ce => ce.Name);
         
-        private bool FNeedsUpdate;
-        public bool NeedsUpdate
+        internal bool PendingRedraw
         {
-            get {return FNeedsUpdate;}
-            set
-            {
-                if (FNeedsUpdate != value)
-                {
-                    FNeedsUpdate = value;
-                    if (Visible)
-                        Redraw();
-                }
-            }
+            get;
+            set;
         }
         
         public CategoryPanel()
@@ -88,25 +77,40 @@ namespace VVVV.Nodes.NodeBrowser
             FCategoryTreeViewer.Input = FCategoryList;
         }
         
-        public void Redraw()
+        public NodeBrowserPluginNode NodeBrowser
         {
-            FCategoryTreeViewer.Reload();
-            FNeedsUpdate = false;
+            get;
+            set;
         }
         
-        public void Add(INodeInfo nodeInfo)
+        public void Redraw()
         {
-            if (nodeInfo.Type == NodeType.Patch || nodeInfo.Type == NodeType.Text)
-                return;
+            FCategoryList.BeginUpdate();
+            FCategoryList.Clear();
             
+            var nodeInfos = NodeBrowser.NodeInfoFactory.NodeInfos.Where(ni => ni.Ignore == false && ni.Type != NodeType.Patch && ni.Type != NodeType.Text);
+            foreach (var nodeInfo in nodeInfos)
+            {
+                Add(nodeInfo);
+            }
+            
+            FCategoryList.EndUpdate();
+            
+            PendingRedraw = false;
+        }
+        
+        private void Add(INodeInfo nodeInfo)
+        {
             //insert nodeInfo to FCategoryList
             bool added = false;
             foreach (CategoryEntry ce in FCategoryList)
-                if (ce.Name == nodeInfo.Category)
             {
-                ce.Add(nodeInfo);
-                added = true;
-                break;
+                if (ce.Name == nodeInfo.Category)
+                {
+                    ce.Add(nodeInfo);
+                    added = true;
+                    break;
+                }
             }
             
             //category not yet present. create a new one
@@ -118,34 +122,12 @@ namespace VVVV.Nodes.NodeBrowser
                 else
                     description = "";
                 
-                var catEntry = new CategoryEntry(nodeInfo.Category, description);
-                catEntry.Add(nodeInfo);
-                FCategoryList.Add(catEntry);
+                var ce = new CategoryEntry(nodeInfo.Category, description);
+                ce.Add(nodeInfo);
+                FCategoryList.Add(ce);
             }
             
-            NeedsUpdate = true;
-        }
-        
-        public void Update(INodeInfo nodeInfo)
-        {
-            NeedsUpdate = true;
-        }
-        
-        public void Remove(INodeInfo nodeInfo)
-        {
-            CategoryEntry catEntry = null;
-            foreach (CategoryEntry ce in FCategoryList)
-                if (ce.Name == nodeInfo.Category)
-            {
-                ce.Remove(nodeInfo);
-                catEntry = ce;
-                break;
-            }
-            
-            if ((catEntry != null) && (catEntry.Count == 0))
-                FCategoryList.Remove(catEntry);
-            
-            NeedsUpdate = true;
+            //            NeedsUpdate = true;
         }
 
         public void BeforeHide()
@@ -153,32 +135,23 @@ namespace VVVV.Nodes.NodeBrowser
             FCategoryTreeViewer.HideToolTip();
         }
         
-        void FTopLabelClick(object sender, EventArgs e)
+        void HandleTopLabelClick(object sender, EventArgs e)
         {
             OnPanelChange(NodeBrowserPage.ByTags, null);
         }
         
-        public void Update()
-        {
-            FCategoryTreeViewer.HideToolTip();
-            FCategoryTreeViewer.Focus();
-            if (NeedsUpdate)
-            {
-                FCategoryTreeViewer.Reload();
-                FNeedsUpdate = false;
-            }
-        }
-        
-        void CategoryPanelVisibleChanged(object sender, EventArgs e)
+        void HandlePanelVisibleChanged(object sender, EventArgs e)
         {
             FCategoryTreeViewer.HideToolTip();
             FCategoryTreeViewer.Focus();
             
-            if (Visible && NeedsUpdate)
+            if (PendingRedraw)
+            {
                 Redraw();
+            }
         }
         
-        void FCategoryTreeViewerMouseDown(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
+        void HandleTreeViewerMouseDown(IModelMapper sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (sender.Model is NodeInfoEntry)
             {

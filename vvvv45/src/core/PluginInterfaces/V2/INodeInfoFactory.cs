@@ -58,6 +58,14 @@ namespace VVVV.PluginInterfaces.V2
 			get;
 		}
 		
+		/// <summary>
+		/// Gets the current timestamp. The timestamp increases everytime a nodeinfo gets added, removed or updated.
+		/// </summary>
+		uint Timestamp
+		{
+		    get;
+		}
+		
 		event NodeInfoEventHandler NodeInfoAdded;
 		event NodeInfoEventHandler NodeInfoUpdated;
 		event NodeInfoEventHandler NodeInfoRemoved;

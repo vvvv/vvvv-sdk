@@ -41,7 +41,7 @@
 			this.FTopLabel.Size = new System.Drawing.Size(368, 15);
 			this.FTopLabel.TabIndex = 8;
 			this.FTopLabel.Text = "Click here to browse by tags";
-			this.FTopLabel.Click += new System.EventHandler(this.FTopLabelClick);
+			this.FTopLabel.Click += new System.EventHandler(this.HandleTopLabelClick);
 			// 
 			// FCategoryTreeViewer
 			// 
@@ -56,7 +56,7 @@
 			this.FCategoryTreeViewer.ShowTooltip = true;
 			this.FCategoryTreeViewer.Size = new System.Drawing.Size(368, 383);
 			this.FCategoryTreeViewer.TabIndex = 9;
-			this.FCategoryTreeViewer.MouseDown += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FCategoryTreeViewerMouseDown);
+			this.FCategoryTreeViewer.MouseDown += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.HandleTreeViewerMouseDown);
 			// 
 			// CategoryPanel
 			// 
@@ -66,7 +66,7 @@
 			this.Controls.Add(this.FTopLabel);
 			this.Name = "CategoryPanel";
 			this.Size = new System.Drawing.Size(368, 398);
-			this.VisibleChanged += new System.EventHandler(this.CategoryPanelVisibleChanged);
+			this.VisibleChanged += new System.EventHandler(this.HandlePanelVisibleChanged);
 			this.ResumeLayout(false);
 		}
 		private VVVV.HDE.Viewer.WinFormsViewer.TreeViewer FCategoryTreeViewer;

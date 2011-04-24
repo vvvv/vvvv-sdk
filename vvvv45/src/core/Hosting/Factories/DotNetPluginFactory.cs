@@ -22,7 +22,10 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.Factories
 {
+    [ComVisible(false)]
     public delegate void PluginCreatedDelegate(IPluginBase plugin, IPluginHost2 host);
+    
+    [ComVisible(false)]
     public delegate void PluginDeletedDelegate(IPluginBase plugin);
 
     enum PluginVersion

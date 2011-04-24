@@ -223,6 +223,11 @@ namespace VVVV.PluginInterfaces.V2
 		void DragDrop(bool allow);
 		void AfterShow();
 		void BeforeHide(out string comment);
+		bool IsStandalone
+		{
+		    get;
+		    set;
+		}
 	}
 	
 	/// <summary>

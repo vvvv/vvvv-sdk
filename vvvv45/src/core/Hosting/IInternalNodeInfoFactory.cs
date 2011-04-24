@@ -36,5 +36,9 @@ namespace VVVV.Hosting
 		{
 			get;
 		}
+		uint Timestamp
+		{
+		    get;
+		}
 	}
 }

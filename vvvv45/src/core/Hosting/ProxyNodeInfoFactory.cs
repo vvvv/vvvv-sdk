@@ -614,5 +614,13 @@ namespace VVVV.Hosting
 				NodeInfoRemoved(this, nodeInfo);
 			}
 		}
+		
+		public uint Timestamp
+		{
+		    get
+		    {
+		        return FFactory.Timestamp;
+		    }
+		}
 	}
 }

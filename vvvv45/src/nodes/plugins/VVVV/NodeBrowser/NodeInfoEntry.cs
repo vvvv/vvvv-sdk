@@ -7,9 +7,6 @@ using VVVV.Core.View;
 
 namespace VVVV.Nodes.NodeBrowser
 {
-    /// <summary>
-    /// Description of NodeInfoEntry.
-    /// </summary>
     public class NodeInfoEntry: INamed, IDescripted, IDraggable
     {
         public INodeInfo NodeInfo;
@@ -38,13 +35,13 @@ namespace VVVV.Nodes.NodeBrowser
             switch (NodeInfo.Type)
             {
                     case NodeType.Native: {FTooltip = ""; break;}
-                    case NodeType.Plugin: {FTooltip = "P  "; break;}
-                    case NodeType.Module: {FTooltip = "M  "; break;}
-                    case NodeType.Dynamic: {FTooltip = "D  "; break;}
-                    case NodeType.Patch: {FTooltip = "V4P "; break;}
-                    case NodeType.Effect: {FTooltip = "FX  "; break;}
-                    case NodeType.Freeframe: {FTooltip = "FF  "; break;}
-                    case NodeType.VST: {FTooltip = "VST "; break;}
+                    case NodeType.Plugin: {FTooltip = "p  "; break;}
+                    case NodeType.Module: {FTooltip = "m  "; break;}
+                    case NodeType.Dynamic: {FTooltip = "m  "; break;}
+                    case NodeType.Patch: {FTooltip = "v4p "; break;}
+                    case NodeType.Effect: {FTooltip = "x  "; break;}
+                    case NodeType.Freeframe: {FTooltip = "f  "; break;}
+                    case NodeType.VST: {FTooltip = "v "; break;}
             }
             
             if (!string.IsNullOrEmpty(NodeInfo.Shortcut))
@@ -63,17 +60,26 @@ namespace VVVV.Nodes.NodeBrowser
         
         public string Category
         {
-            get {return FCategory;}
+            get 
+            {
+                return FCategory;
+            }
         }
         
         public string Name
         {
-            get {return FUsername;}
+            get 
+            {
+                return FUsername;
+            }
         }
         
         public string Description
         {
-            get{return FTooltip;}
+            get
+            {
+                return FTooltip;
+            }
         }
         
         public bool AllowDrag()

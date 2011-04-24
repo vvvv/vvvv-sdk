@@ -112,7 +112,6 @@
 			this.FRichTextBox.MouseLeave += new System.EventHandler(this.FRichTextBoxMouseLeave);
 			this.FRichTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseMove);
 			this.FRichTextBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RichTextBoxMouseUp);
-			this.FRichTextBox.Resize += new System.EventHandler(this.FRichTextBoxResize);
 			// 
 			// FToolTip
 			// 

@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.Hosting.Pins
 {
+    [ComVisible(false)]
     public class PinTypeRegistry<A> where A : Attribute
     {
+        [ComVisible(false)]
         public delegate object PinCreateDelegate(IPluginHost host, A attribute, Type closedGenericType);
 
         private Dictionary<Type, PinCreateDelegate> delegates = new Dictionary<Type, PinCreateDelegate>();

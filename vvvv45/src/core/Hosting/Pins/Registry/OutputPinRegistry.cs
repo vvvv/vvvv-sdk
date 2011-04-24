@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
-
 using SlimDX;
 using SlimDX.Direct3D9;
 using VVVV.Hosting.Pins.Output;
@@ -14,6 +14,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Pins
 {
+    [ComVisible(false)]
     public class OutputPinRegistry : PinTypeRegistry<OutputAttribute>
     {
         public OutputPinRegistry()

@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
-
 using VVVV.PluginInterfaces.V2;
 using VVVV.Hosting.Pins.Config;
 using VVVV.Utils.VMath;
 using VVVV.Utils.VColor;
 using VVVV.PluginInterfaces.V1;
-
 using SlimDX;
-
-
 
 namespace VVVV.Hosting.Pins
 {
+    [ComVisible(false)]
     public class ConfigPinRegistry : PinTypeRegistry<ConfigAttribute>
     {
         public ConfigPinRegistry()

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Collections.Generic;
-
+using System.Runtime.InteropServices;
 using SlimDX;
-
 using VVVV.Hosting.Pins.Config;
 using VVVV.Hosting.Pins.Input;
 using VVVV.Hosting.Pins.Output;
@@ -19,6 +18,7 @@ namespace VVVV.Hosting.Pins
 	/// <summary>
 	/// Builds objects of type Pin<T>.
 	/// </summary>
+	[ComVisible(false)]
 	public static class PinFactory
 	{
         private static InputPinRegistry inputPinFactory = new InputPinRegistry();

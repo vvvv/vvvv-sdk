@@ -6,12 +6,13 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-
 using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.Graph;
 
 namespace VVVV.Nodes.NodeBrowser
 {
@@ -37,28 +38,49 @@ namespace VVVV.Nodes.NodeBrowser
         private List<INodeInfo> FSelectionList = new List<INodeInfo>();
         private List<string> FRTFSelectionList = new List<string>();
         
-        public NodeBrowserPluginNode NodeBrowser {get; set;}
-        public bool AndTags {get; set;}
-        public bool AllowDragDrop {get; set;}
-        private bool FNeedsUpdate;
-        public bool NeedsUpdate
+        private NodeBrowserPluginNode FNodeBrowser;
+        public NodeBrowserPluginNode NodeBrowser
         {
-            get {return FNeedsUpdate;}
+            get
+            {
+                return FNodeBrowser;
+            }
             set
             {
-                if (FNeedsUpdate != value)
+                FNodeBrowser = value;
+                
+                if (FNodeBrowser != null && FNodeBrowser.IsStandalone)
                 {
-                    FNeedsUpdate = value;
-                    if (Visible)
-                        Redraw();
+                    this.FRichTextBox.Resize += this.HandleRichTextBoxResize;
                 }
             }
+        }
+        
+        public bool AndTags
+        {
+            get;
+            set;
+        }
+        
+        public bool AllowDragDrop
+        {
+            get;
+            set;
+        }
+        
+        internal bool PendingRedraw
+        {
+            get;
+            set;
         }
         
         private int FScrolledLine;
         private int ScrolledLine
         {
-            get {return FScrolledLine;}
+            get
+            {
+                return FScrolledLine;
+            }
             set
             {
                 FScrolledLine = Math.Max(0, Math.Min(FSelectionList.Count - FVisibleLines, value));
@@ -125,18 +147,20 @@ namespace VVVV.Nodes.NodeBrowser
             FHoverLine = -1;
             ScrolledLine = 0;
             
-            if (NeedsUpdate)
-                Redraw();
+            //            if (NeedsUpdate)
+            //                Redraw();
             RedrawSelection();
         }
         
         public void AfterShow()
         {
+            this.FRichTextBox.Resize += this.HandleRichTextBoxResize;
             FTagsTextBox.Focus();
         }
         
         public void BeforeHide()
         {
+            this.FRichTextBox.Resize -= this.HandleRichTextBoxResize;
             FTagsTextBox.Text = "";
             FToolTip.Hide(FRichTextBox);
         }
@@ -362,38 +386,38 @@ namespace VVVV.Nodes.NodeBrowser
                 FToolTip.Hide(FRichTextBox);
         }
         
-        private List<INodeInfo> ExtractSubList(List<INodeInfo> InputList)
+        private IEnumerable<INodeInfo> ExtractSubList(IEnumerable<INodeInfo> nodeInfos)
         {
             if (FTags.Count == 0)
-                return InputList;
+                return nodeInfos;
             else
-                return InputList.FindAll(delegate(INodeInfo nodeInfo)
-                                         {
-                                             var displayName = NodeInfoToDisplayName(nodeInfo);
-                                             displayName = displayName.ToLower();
-                                             displayName = displayName.Replace('é', 'e');
-                                             bool containsAll = true;
-                                             string t = "";
-                                             foreach (string tag in FTags)
-                                             {
-                                                 t = tag.ToLower();
-                                                 if (displayName.Contains(t))
-                                                 {
-                                                     if (!AndTags)
-                                                         break;
-                                                 }
-                                                 else
-                                                 {
-                                                     containsAll = false;
-                                                     break;
-                                                 }
-                                             }
-                                             
-                                             if (((AndTags) && (containsAll)) || ((!AndTags) && (displayName.Contains(t))))
-                                                 return true;
-                                             else
-                                                 return false;
-                                         });
+                return nodeInfos.Where((nodeInfo) =>
+                                       {
+                                           var displayName = NodeInfoToDisplayName(nodeInfo);
+                                           displayName = displayName.ToLower();
+                                           displayName = displayName.Replace('é', 'e');
+                                           bool containsAll = true;
+                                           string t = "";
+                                           foreach (string tag in FTags)
+                                           {
+                                               t = tag.ToLower();
+                                               if (displayName.Contains(t))
+                                               {
+                                                   if (!AndTags)
+                                                       break;
+                                               }
+                                               else
+                                               {
+                                                   containsAll = false;
+                                                   break;
+                                               }
+                                           }
+                                           
+                                           if (((AndTags) && (containsAll)) || ((!AndTags) && (displayName.Contains(t))))
+                                               return true;
+                                           else
+                                               return false;
+                                       });
         }
         
         private bool IsAvailableInActivePatch(INodeInfo nodeInfo)
@@ -407,7 +431,7 @@ namespace VVVV.Nodes.NodeBrowser
             if (string.IsNullOrEmpty(filename))
                 return true;
             
-            string dir = Path.GetDirectoryName(nodeInfo.Filename);
+            string dir = Path.GetDirectoryName(filename);
             if (string.IsNullOrEmpty(dir))
                 return true;
             
@@ -416,50 +440,56 @@ namespace VVVV.Nodes.NodeBrowser
             if (nodeCollection == null)
                 return true;
             
-            if (NodeBrowser.CurrentPatchWindow == null || nodeInfo != NodeBrowser.CurrentPatchWindow.Node.NodeInfo)
+            if (nodeInfo != FCurrentPatchWindowNodeInfo)
             {
-                if (!string.IsNullOrEmpty(NodeBrowser.CurrentDir))
+                if (!string.IsNullOrEmpty(FCurrentDir))
                     //available if local
-                    if (dir.StartsWith(NodeBrowser.CurrentDir))
+                    if (dir.StartsWith(FCurrentDir))
                         return true;
                 
                 if (lookInSearchPaths && nodeInfo.Type != NodeType.Patch)
                 {
                     //available if from any of the global paths
-                    bool res = nodeCollection.IsInUserDefinedSearchPath(nodeInfo.Factory, dir);
-                    return res;
+                    return nodeCollection.IsInUserDefinedSearchPath(nodeInfo.Factory, dir);
                 }
             }
             return false;
         }
         
+        private INodeInfo FCurrentPatchWindowNodeInfo;
+        private string FCurrentDir;
         private void FilterNodesByTags()
         {
             if (NodeBrowser == null)
                 return;
             
-            FNeedsUpdate = false;
+            //            FNeedsUpdate = false;
             
             FSelectionList.Clear();
 
-            var nodeinfos = NodeBrowser.NodeInfoFactory.NodeInfos.ToList().FindAll((nodeInfo) => nodeInfo.Ignore == false);
+            var nodeInfos = NodeBrowser.NodeInfoFactory.NodeInfos.Where(nodeInfo => nodeInfo.Ignore == false);
+            
+            // Cache current patch window nodeinfo and current dir
+            var currentPatchWindow = NodeBrowser.CurrentPatchWindow;
+            FCurrentPatchWindowNodeInfo = currentPatchWindow != null ? currentPatchWindow.Node.NodeInfo : null;
+            FCurrentDir = NodeBrowser.CurrentDir;
             
             if (FNodeFilter == -1)
-                FSelectionList = nodeinfos.FindAll((nodeInfo) => nodeInfo.Type == NodeType.Native || IsAvailableInActivePatch(nodeInfo));
+                nodeInfos = nodeInfos.Where(nodeInfo => nodeInfo.Type == NodeType.Native || IsAvailableInActivePatch(nodeInfo));
             else if (FNodeFilter == -2)
-                FSelectionList = nodeinfos.FindAll((nodeInfo) => nodeInfo.Type != NodeType.Native && IsAvailableInActivePatch(nodeInfo, false));
+                nodeInfos = nodeInfos.Where(nodeInfo => nodeInfo.Type != NodeType.Native && IsAvailableInActivePatch(nodeInfo, false));
             else if (FNodeFilter == (int) NodeType.Native)
-                FSelectionList = nodeinfos.FindAll((nodeInfo) => nodeInfo.Type == NodeType.Native);
+                nodeInfos = nodeInfos.Where(nodeInfo => nodeInfo.Type == NodeType.Native);
             else
             {
                 NodeType nodeType = (NodeType) FNodeFilter;
-                FSelectionList = nodeinfos.FindAll((nodeInfo) => nodeInfo.Type == nodeType && IsAvailableInActivePatch(nodeInfo));
+                nodeInfos = nodeInfos.Where(nodeInfo => nodeInfo.Type == nodeType && IsAvailableInActivePatch(nodeInfo));
             }
             
-            FSelectionList = ExtractSubList(FSelectionList);
+            FSelectionList = ExtractSubList(nodeInfos).ToList();
             
             FSelectionList.Sort(SortNodeInfo);
-            
+
             if (FNodeCountLabel.InvokeRequired)
                 FNodeCountLabel.Invoke(new MethodInvoker(() =>
                                                          {
@@ -660,15 +690,16 @@ namespace VVVV.Nodes.NodeBrowser
 
         private void UpdateRichTextBox()
         {
-            string rtf = CRTFHeader;
             int maxLine = Math.Min(ScrolledLine + FVisibleLines, FRTFSelectionList.Count);
+            var rtfBuilder = new StringBuilder(CRTFHeader);
             
             for (int i = ScrolledLine; i < maxLine; i++)
             {
-                rtf += FRTFSelectionList[i];
+                rtfBuilder.Append(FRTFSelectionList[i]);
             }
             
             //seems mono adds a \par here automatically, so remove one
+            string rtf = rtfBuilder.ToString();
             rtf = rtf.TrimEnd(new char[5]{'\\', 'p', 'a', 'r', ' '});// + "}";
             
             if (FRichTextBox.InvokeRequired)
@@ -681,6 +712,8 @@ namespace VVVV.Nodes.NodeBrowser
 
         public void Redraw()
         {
+            FVisibleLines = FRichTextBox.Height / CLineHeight;
+            
             string query = FTagsTextBox.Text.ToLower();
             query += (char) 160;
             FTags = query.Split(new char[1]{' '}).ToList();
@@ -752,6 +785,8 @@ namespace VVVV.Nodes.NodeBrowser
             
             //calling UpdateRichTexBox()
             ScrolledLine = 0;
+            
+            PendingRedraw = false;
         }
 
         private void RedrawSelection()
@@ -843,9 +878,8 @@ namespace VVVV.Nodes.NodeBrowser
             }
         }
 
-        void FRichTextBoxResize(object sender, EventArgs e)
+        void HandleRichTextBoxResize(object sender, EventArgs e)
         {
-            FVisibleLines = FRichTextBox.Height / CLineHeight;
             Redraw();
         }
         #endregion RichTextBox
@@ -856,8 +890,10 @@ namespace VVVV.Nodes.NodeBrowser
             FTagsTextBox.Focus();
             FToolTip.Hide(FRichTextBox);
             
-            if (Visible && NeedsUpdate)
+            if (PendingRedraw)
+            {
                 Redraw();
+            }
         }
         
         void FRichTextBoxMouseLeave(object sender, EventArgs e)
