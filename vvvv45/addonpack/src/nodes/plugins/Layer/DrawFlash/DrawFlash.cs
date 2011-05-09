@@ -240,20 +240,17 @@ namespace VVVV.Nodes
 
                     if (FMouseX.IsChanged || FMouseY.IsChanged)
                     {
-                        double x = FMouseX[0];
-                        double y = FMouseY[0];
-
                         FTransformIn.GetRenderWorldMatrix(0, out world);
 
-                        // getting the transformed stage
-                        x = (x - world.m41) / world.m11;
-                        y = (y - world.m42) / world.m22;
-
-                        // scale to swf coordinates
-                        x = (x + 0.5) * _Width / 1.0;
-                        y = (-1 * y + 0.5) * _Height / 1.0;
-
-                        _FNUIFlashPlayer.UpdateMousePosition((int)x, (int)y);
+						var mouse = new Vector3D(FMouseX[0], FMouseY[0],0);
+						//  getting the transformed stage
+						mouse = !world*mouse;
+						
+						// scale to swf coordinates
+						mouse.x = (mouse.x + 0.5) * _Width / 1.0;
+						mouse.y = (-1 * mouse.y + 0.5) * _Height / 1.0;
+						
+						_FNUIFlashPlayer.UpdateMousePosition((int)mouse.x, (int)mouse.y);
                     }
 
                     if (FMouseLeftButton.IsChanged)
