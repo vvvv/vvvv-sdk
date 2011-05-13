@@ -248,7 +248,7 @@ namespace VVVV.Utils.VMath
 		}
 		
 		/// <summary>
-		/// Clamp function, clamps a 2d-vector into the range [min..max]
+		/// Clamp function, clamps a 3d-vector into the range [min..max]
 		/// </summary>
 		/// <param name="v"></param>
 		/// <param name="min"></param>
@@ -260,7 +260,7 @@ namespace VVVV.Utils.VMath
 		}
 		
 		/// <summary>
-		/// Clamp function, clamps a 2d-vector into the range [min..max]
+		/// Clamp function, clamps a 4d-vector into the range [min..max]
 		/// </summary>
 		/// <param name="v"></param>
 		/// <param name="min"></param>
@@ -284,7 +284,7 @@ namespace VVVV.Utils.VMath
 		}
 		
 		/// <summary>
-		/// Clamp function, clamps a 2d-vector into the range [min..max]
+		/// Clamp function, clamps a 3d-vector into the range [min..max]
 		/// </summary>
 		/// <param name="v"></param>
 		/// <param name="min"></param>
@@ -296,7 +296,7 @@ namespace VVVV.Utils.VMath
 		}
 		
 		/// <summary>
-		/// Clamp function, clamps a 2d-vector into the range [min..max]
+		/// Clamp function, clamps a 4d-vector into the range [min..max]
 		/// </summary>
 		/// <param name="v"></param>
 		/// <param name="min"></param>
@@ -907,7 +907,8 @@ namespace VVVV.Utils.VMath
 		#region 3D functions
 		
 		/// <summary>
-		/// Convert polar coordinates (pitch, yaw, lenght) to cartesian coordinates (x, y, z)
+		/// Convert polar coordinates (pitch, yaw, lenght) in radian to cartesian coordinates (x, y, z).
+        /// To convert angles from cycles to radian, multiply them with VMath.CycToDec.
 		/// </summary>
 		/// <param name="pitch"></param>
 		/// <param name="yaw"></param>
@@ -919,9 +920,23 @@ namespace VVVV.Utils.VMath
 			
 			return new Vector3D(sinp * Math.Cos(yaw), sinp * Math.Sin(yaw), length * Math.Cos(pitch));
 		}
+
+        /// <summary>
+        /// Convert polar coordinates (pitch, yaw, lenght) in radian to cartesian coordinates (x, y, z).
+        /// To convert angles from cycles to radian, multiply them with VMath.CycToDec.
+        /// </summary>
+        /// <param name="polar">3d-vector containing the polar coordinates as (pitch, yaw, length)</param>
+        /// <returns></returns>
+        public static Vector3D Cartesian(Vector3D polar)
+        {
+            double sinp = polar.z * Math.Sin(polar.x);
+
+            return new Vector3D(sinp * Math.Cos(polar.y), sinp * Math.Sin(polar.y), polar.z * Math.Cos(polar.x));
+        }
 		
 		/// <summary>
-		/// Convert polar coordinates (pitch, yaw, lenght) to cartesian coordinates (x, y, z) exacly like the vvvv node Cartesian
+		/// Convert polar coordinates (pitch, yaw, lenght) in radian to cartesian coordinates (x, y, z) exacly like the vvvv node Cartesian.
+        /// To convert angles from cycles to radian, multiply them with VMath.CycToDec.
 		/// </summary>
 		/// <param name="pitch"></param>
 		/// <param name="yaw"></param>
@@ -933,9 +948,23 @@ namespace VVVV.Utils.VMath
 			
 			return new Vector3D( cosp * Math.Sin(yaw), length * Math.Sin(pitch), cosp * Math.Cos(yaw));
 		}
+
+        /// <summary>
+        /// Convert polar coordinates (pitch, yaw, lenght) in radian to cartesian coordinates (x, y, z) exacly like the vvvv node Cartesian.
+        /// To convert angles from cycles to radian, multiply them with VMath.CycToDec.
+        /// </summary>
+        /// <param name="polar">3d-vector containing the polar coordinates as (pitch, yaw, length)</param>
+        /// <returns></returns>
+        public static Vector3D CartesianVVVV(Vector3D polar)
+        {
+            double cosp = -polar.z * Math.Cos(polar.x);
+
+            return new Vector3D(cosp * Math.Sin(polar.y), polar.z * Math.Sin(polar.x), cosp * Math.Cos(polar.y));
+        }
 		
 		/// <summary>
-		/// Convert cartesian coordinates (x, y, z) to polar coordinates (pitch, yaw, lenght)
+		/// Convert cartesian coordinates (x, y, z) to polar coordinates (pitch, yaw, lenght) in radian.
+        /// To convert the angles to cycles, multiply them with VMath.DegToCyc.
 		/// </summary>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
@@ -959,7 +988,8 @@ namespace VVVV.Utils.VMath
 		}
 		
 		/// <summary>
-		/// Convert cartesian coordinates (x, y, z) to polar coordinates (pitch, yaw, lenght)
+		/// Convert cartesian coordinates (x, y, z) to polar coordinates (pitch, yaw, lenght) in radian.
+        /// To convert the angles to cycles, multiply them with VMath.DegToCyc.
 		/// </summary>
 		/// <param name="a"></param>
 		/// <returns>Point in polar coordinates</returns>
@@ -979,6 +1009,72 @@ namespace VVVV.Utils.VMath
 			}
 			
 		}
+
+        /// <summary>
+        /// Convert cartesian coordinates (x, y, z) to VVVV style polar coordinates (pitch, yaw, lenght) in radian.
+        /// To convert the angles to cycles, multiply them with VMath.DegToCyc.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <returns>3d-point in polar coordinates</returns>
+        public static Vector3D PolarVVVV(double x, double y, double z)
+        {
+            double length = x * x + y * y + z * z;
+
+
+            if (length > 0)
+            {
+                length = Math.Sqrt(length);
+                var pitch = Math.Asin(y / length);
+                var yaw = 0.0;
+                if (z != 0)
+                    yaw = Math.Atan2(-x, -z);
+                else if (x > 0)
+                    yaw = -Math.PI / 2;
+                else
+                    yaw = Math.PI / 2;
+
+                return new Vector3D(pitch, yaw, length);
+            }
+            else
+            {
+                return new Vector3D(0);
+            }
+
+        }
+
+        /// <summary>
+        /// Convert cartesian coordinates (x, y, z) to polar VVVV style coordinates (pitch, yaw, lenght) in radian.
+        /// To convert the angles to cycles, multiply them with VMath.DegToCyc.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns>Point in polar coordinates</returns>
+        public static Vector3D PolarVVVV(Vector3D a)
+        {
+            double length = a.x * a.x + a.y * a.y + a.z * a.z;
+
+
+            if (length > 0)
+            {
+                length = Math.Sqrt(length);
+                var pitch = Math.Asin(a.y / length);
+                var yaw = 0.0;
+                if(a.z != 0)
+                    yaw = Math.Atan2(-a.x, -a.z);
+                else if (a.x > 0)
+                    yaw = -Math.PI / 2;
+                else 
+                    yaw = Math.PI / 2;
+
+                return new Vector3D(pitch, yaw, length);
+            }
+            else
+            {
+                return new Vector3D(0);
+            }
+
+        }
 		
 		#endregion 3D functions
 		
