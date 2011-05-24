@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.2.dtd" >
-   <PATCH nodename="C:\Users\joreg\Desktop\contributions\modules\TextureFX\_Template (EX9.Texture FX).v4p" filename="C:\Users\joreg\Desktop\contributions\modules\TextureFX\_Template (EX9.Texture FX).v4p" systemname="_Template (EX9.Texture FX)">
-   <BOUNDS height="11235" left="13815" top="195" type="Window" width="10305">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\vake\source\complete\vvvv45\modules\common\TextureFX\_Template (EX9.Texture FX).v4p" filename="C:\Users\joreg\Desktop\contributions\modules\TextureFX\_Template (EX9.Texture FX).v4p" systemname="_Template (EX9.Texture FX)">
+   <BOUNDS height="11235" left="13815" top="195" type="Window" width="11010">
    </BOUNDS>
    <NODE componentmode="InABox" id="11" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="345" top="1575" type="Node" width="0">
@@ -9,7 +9,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="8325" top="7905" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Texture In|" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Texture In|">
    </PIN>
    <PIN pinname="Output Node" visible="1">
    </PIN>
@@ -21,7 +21,7 @@
    </BOUNDS>
    <BOUNDS height="4890" left="7845" top="7320" type="Window" width="6120">
    </BOUNDS>
-   <PIN pinname="Layers" slicecount="1" visible="1" values="||">
+   <PIN pinname="Layers" visible="1">
    </PIN>
    <PIN pinname="Backbuffer Width" visible="1">
    </PIN>
@@ -29,9 +29,11 @@
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
    </PIN>
-   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="View Transform" visible="1">
    </PIN>
    <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="9" nodename="Info (EX9.Texture)" systemname="Info (EX9.Texture)">
@@ -95,7 +97,7 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Enabled">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -121,7 +123,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6945" top="10350" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Out|" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Texture Out|">
    </PIN>
    <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
    </PIN>
@@ -131,7 +133,7 @@
    </BOUNDS>
    <PIN pinname="Input 2" visible="1">
    </PIN>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="||">
+   <PIN pinname="Input 1" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Switch" visible="1">
    </PIN>
@@ -145,9 +147,9 @@
    <LINK dstnodeid="15" dstpinname="Input 1" srcnodeid="11" srcpinname="Output Node">
    </LINK>
    <NODE componentmode="InABox" id="18" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="100" left="4440" top="5910" type="Node" width="100">
+   <BOUNDS height="100" left="5085" top="7785" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="480" left="4440" top="5910" type="Box" width="480">
+   <BOUNDS height="480" left="5085" top="7785" type="Box" width="480">
    </BOUNDS>
    <PIN pinname="Show Value" slicecount="1" values="0">
    </PIN>
@@ -159,9 +161,9 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   <PIN pinname="Y Input Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Compiled" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Compiled">
    </PIN>
    </NODE>
    <LINK dstnodeid="17" dstpinname="Source" srcnodeid="10" srcpinname="EX9 Out">
@@ -170,4 +172,50 @@
    </LINK>
    <LINK dstnodeid="15" dstpinname="Switch" srcnodeid="14" srcpinname="Y Output Value">
    </LINK>
+   <NODE systemname="UniformScale (Transform)" nodename="UniformScale (Transform)" componentmode="Hidden" id="20">
+   <BOUNDS type="Node" left="3210" top="5940" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Transform Out" dstnodeid="10" dstpinname="View Transform">
+   </LINK>
+   <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="21">
+   <BOUNDS type="Node" left="2040" top="4980" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Render State" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Output Node" dstnodeid="21" dstpinname="Render State">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Layer" dstnodeid="10" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="22">
+   <BOUNDS type="Node" left="4770" top="7200" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4770" top="7200" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Y Output Value" dstnodeid="18" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="23" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5715" top="7290" width="6405" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5715" top="7290" width="3195" height="780">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; connect this to an effects &apos;Compiled&apos; output or leave as is if this is not using any effect.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
    </PATCH>
