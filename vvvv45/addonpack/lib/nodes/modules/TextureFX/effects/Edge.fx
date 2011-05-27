@@ -11,6 +11,7 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     float4 cx=q(x,e.xy,v)+q(x,e.xz,v)+q(x,e.xx,v)-q(x,e.yy,v)-q(x,e.yz,v)-q(x,e.yx,v);
     float4 cy=q(x,e.yy,v)+q(x,e.zy,v)+q(x,e.xy,v)-q(x,e.yx,v)-q(x,e.zx,v)-q(x,e.xx,v);
     float4 c=sqrt(cx*cx+cy*cy)*Bright*pow(2,rad/max(R.x,R.y))/sqrt(saturate(rad)+.001);
+    c.a=tex2D(s0,x).a;
     return c;
 }
 

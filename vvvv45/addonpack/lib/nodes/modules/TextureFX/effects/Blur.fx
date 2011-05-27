@@ -1,9 +1,12 @@
 float2 R;
 float Width;
-texture tex0;
+float Mask;
+texture tex0,tex1;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
+sampler s1=sampler_state{Texture=(tex1);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
-    float lod=1+saturate(Width)*log2(max(R.x,R.y));
+    float4 map=tex2D(s1,x);map=max(map.x,max(map.y,map.z))*map.a;if(!Mask)map=1;
+    float lod=1+map.x*saturate(Width)*log2(max(R.x,R.y));
     float4 c=0;
     float2 off=.25/R*pow(2,lod)*saturate(lod-1);
     c+=tex2Dlod(s0,float4(x+float2(0,0)*off,0,lod));
