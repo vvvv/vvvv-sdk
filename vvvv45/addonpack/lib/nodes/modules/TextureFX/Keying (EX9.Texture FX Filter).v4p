@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
-   <PATCH nodename="c:\Program Files\vvvv_40beta23\modules\TextureFX\Keying (EX9.Texture FX Filter).v4p">
-   <BOUNDS height="6000" left="9195" top="6450" type="Window" width="9000">
+   <PATCH nodename="W:\Program Files\vvvv\modules\TextureFX\Keying (EX9.Texture FX Filter).v4p">
+   <BOUNDS height="6000" left="6870" top="5775" type="Window" width="9000">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="effects/Keying.fx" id="27" nodename="effects/Keying.fx" systemname="Keying (EX9.Effect)">
    <BOUNDS height="270" left="2025" top="5415" type="Node" width="5055">
@@ -392,14 +392,6 @@
    </LINK>
    <LINK dstnodeid="27" dstpinname="SmoothInvert" srcnodeid="14" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="Hidden" id="5" nodename="AND (Boolean)">
-   <BOUNDS height="0" left="6975" top="3045" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="4" nodename="IOBox (Enumerations)">
    <BOUNDS height="0" left="8310" top="2175" type="Node" width="0">
    </BOUNDS>
@@ -470,12 +462,28 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="27" dstpinname="Premultiply" srcnodeid="0" srcpinname="Y Output Value">
+   <NODE nodename="AND (Boolean)" componentmode="Hidden" id="28">
+   <BOUNDS type="Node" left="5895" top="2790" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="28" dstpinname="Input 1">
    </LINK>
-   <LINK dstnodeid="27" dstpinname="SourceAlpha" srcnodeid="1" srcpinname="Y Output Value">
+   <LINK srcnodeid="28" srcpinname="Output" dstnodeid="27" dstpinname="SourceAlpha">
    </LINK>
-   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Input 1">
+   <NODE nodename="AND (Boolean)" componentmode="Hidden" id="29">
+   <BOUNDS type="Node" left="7125" top="2370" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Input 1">
    </LINK>
-   <LINK srcnodeid="0" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Input 2">
+   <LINK srcnodeid="29" srcpinname="Output" dstnodeid="27" dstpinname="Premultiply">
    </LINK>
    </PATCH>

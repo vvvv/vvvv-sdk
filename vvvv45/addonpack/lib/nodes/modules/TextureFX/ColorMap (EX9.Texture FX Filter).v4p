@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
-   <PATCH nodename="c:\Program Files\vvvv_40beta23\modules\TextureFX\ColorMap (EX9.Texture FX Filter).v4p">
-   <BOUNDS height="11235" left="13815" top="195" type="Window" width="11310">
+   <PATCH nodename="W:\Program Files\vvvv\modules\TextureFX\ColorMap (EX9.Texture FX Filter).v4p">
+   <BOUNDS height="6000" left="8685" top="4875" type="Window" width="9000">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="effects/ColorMap.fx" id="22" nodename="effects/ColorMap.fx" systemname="ColorMap (EX9.Effect)">
    <BOUNDS height="270" left="2025" top="5790" type="Node" width="5055">
@@ -387,9 +387,19 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="22" dstpinname="Grayscale" srcnodeid="0" srcpinname="Y Output Value">
+   <NODE nodename="AND (Boolean)" componentmode="Hidden" id="23">
+   <BOUNDS type="Node" left="8280" top="3810" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Y Output Value" dstnodeid="23" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Output" dstnodeid="22" dstpinname="Grayscale">
    </LINK>
    </PATCH>
