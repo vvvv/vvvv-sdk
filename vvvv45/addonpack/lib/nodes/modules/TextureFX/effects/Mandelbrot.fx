@@ -5,11 +5,13 @@ float2 Scale;
 float2 XY;
 float2 C;
 float Zoom;
+float Rotate;
 texture tex0;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
+float2 r2d(float2 x,float a){return float2(cos(a)*x.x+sin(a)*x.y,cos(a)*x.y-sin(a)*x.x);}
 float4 p0(float2 vp:vpos,float2 xx:TEXCOORD0):color{float2 x=(vp+.5)/R;
     float4 c=tex2D(s0,x);
-    float2 xy=(xx-.5)*R/R.y;
+    float2 xy=r2d((xx-.5)*R/R.y,Rotate);
     float2 u,z=(xy*Scale/pow(2,Zoom*16)-XY);
     float ss=length(z);
     ss=1;
