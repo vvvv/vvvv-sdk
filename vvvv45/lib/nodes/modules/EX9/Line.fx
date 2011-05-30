@@ -71,7 +71,7 @@ vs2ps VS_ConstantWidth(
     float4 TexCd : TEXCOORD0,
     float depth : TEXCOORD1)
 {
-    Width *= 0.003;
+    float w = Width * 0.003;
 
     //inititalize all fields of output struct with 0
     vs2ps Out = (vs2ps)0;
@@ -102,7 +102,7 @@ vs2ps VS_ConstantWidth(
     float2 normal = normalize(float2(tangent.y, -tangent.x));
 
     // translate point to get a thick curve
-    float2 off = Pos.y * normal * Width * p.w;
+    float2 off = Pos.y * normal * w * p.w;
 
     // correct aspect ratio
     off *= mul(float4(1, 1, 0, 0), tP);
@@ -111,12 +111,12 @@ vs2ps VS_ConstantWidth(
 
     //tangent = normalize(tangent);
     //float3 normal = cross(tangent, float3(0,0,1));
-    //p += Pos.y * float4(normal, 0) * Width * p.w;
+    //p += Pos.y * float4(normal, 0) * w * p.w;
 
     // output pos p
     Out.Pos = p;
 
-    TexCd.x *= .1 * length(tangent)/Width;
+    TexCd.x *= .1 * length(tangent) / w;
 
     //ouput texturecoordinates
     Out.TexCd = mul(TexCd, tTex);
@@ -145,7 +145,7 @@ technique TLine
     pass P0
     {
         //Wrap0 = U;  // useful when mesh is round like a sphere
-        VertexShader = compile vs_1_0 VS_ConstantWidth();
+        VertexShader = compile vs_2_0 VS_ConstantWidth();
         PixelShader = compile ps_2_0 PS();
     }
 }
