@@ -19,7 +19,7 @@ float4x4 tP: PROJECTION;   //projection matrix as set via Renderer (EX9)
 //texture
 texture Tex <string uiname="Texture";>;
 sampler Samp = sampler_state    //sampler for doing the texture-lookup
-{
+{ 
     Texture   = (Tex);          //apply a texture to the sampler
     MipFilter = LINEAR;         //sampler states
     MinFilter = LINEAR;

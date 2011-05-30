@@ -10,7 +10,7 @@ float4 PhongDirectional(float3 NormV, float3 ViewDirV, float3 LightDirV)
 {
     //In.TexCd = In.TexCd / In.TexCd.w; // for perpective texture projections (e.g. shadow maps) ps_2_0
 
-    lAmb.a = 1;
+	float4 amb = float4(lAmb.rgb, 1);
     //halfvector
     float3 H = normalize(ViewDirV + LightDirV);
 
@@ -29,5 +29,5 @@ float4 PhongDirectional(float3 NormV, float3 ViewDirV, float3 LightDirV)
     //calculate specular light
     float4 spec = pow(max(dot(R, V),0), lPower*.2) * lSpec;
 
-    return (lAmb + diff) + spec;
+    return (amb + diff) + spec;
 }

@@ -1,6 +1,6 @@
 //@author: vvvv group
 //@help: draws a mesh with a constant color
-//@tags: template, basic
+//@tags: simple, template, basic
 //@credits:
 
 // --------------------------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ float4x4 tWVP: WORLDVIEWPROJECTION;
 
 //material properties
 float4 cAmb : COLOR <String uiname="Color";>  = {1, 1, 1, 1};
-float Alpha = 1;
+float Alpha <float uimin=0.0; float uimax=1.0;> = 1;
 
 //texture
 texture Tex <string uiname="Texture";>;
@@ -25,9 +25,13 @@ sampler Samp = sampler_state    //sampler for doing the texture-lookup
     MipFilter = LINEAR;         //sampler states
     MinFilter = LINEAR;
     MagFilter = LINEAR;
+    AddressU = Wrap;
+    AddressV = Wrap;
 };
 
 float4x4 tTex: TEXTUREMATRIX <string uiname="Texture Transform";>;
+
+float4x4 tCol <string uiname="Color Transform";>;
 
 //the data structure: vertexshader to pixelshader
 //used as output data with the VS function
@@ -67,7 +71,9 @@ float4 PS(vs2ps In): COLOR
     //In.TexCd = In.TexCd / In.TexCd.w; // for perpective texture projections (e.g. shadow maps) ps_2_0
 
     float4 col = tex2D(Samp, In.TexCd) * cAmb;
+    col = mul(col, tCol);
     col.a *= Alpha;
+
     return col;
 }
 
@@ -81,7 +87,7 @@ technique TConstant
     {
         //Wrap0 = U;  // useful when mesh is round like a sphere
         VertexShader = compile vs_1_1 VS();
-        PixelShader = compile ps_1_0 PS();
+        PixelShader = compile ps_2_0 PS();
     }
 }
 

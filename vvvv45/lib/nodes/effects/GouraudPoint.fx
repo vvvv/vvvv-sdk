@@ -131,7 +131,7 @@ technique TGouraudPoint
     {
         //Wrap0 = U;  // useful when mesh is round like a sphere
         VertexShader = compile vs_1_0 VS();
-        PixelShader = compile ps_1_4 PS();
+        PixelShader = compile ps_2_0 PS();
     }
 }
 

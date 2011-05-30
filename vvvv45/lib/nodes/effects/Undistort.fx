@@ -82,7 +82,7 @@ float4 PSUnDistort(vs2ps In): COLOR
 // --------------------------------------------------------------------------------------------------
 
 
-technique Undistort
+technique TUndistort
 {
     pass P0
     {
