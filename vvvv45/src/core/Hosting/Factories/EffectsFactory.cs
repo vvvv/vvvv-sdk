@@ -195,12 +195,13 @@ namespace VVVV.Hosting.Factories
 			foreach (var line in errorlines)
 			{
 				string filePath = project.Location.LocalPath;
-				int eLine;
+				string eCoords;
+				int eLine, eChar;				
 				string eNumber;
 				string eText = "";
 				
 				//split the line at :
-				var eItems = line.Split(new char[1]{':'});
+				var eItems = line.Split(new string[1]{": "}, StringSplitOptions.None);
 				int start = eItems[0].IndexOf('(');
 				int end = eItems[0].IndexOf(')');
 				
@@ -231,14 +232,17 @@ namespace VVVV.Hosting.Factories
 				    }
 				}
 				
-				eLine = Convert.ToInt32(eItems[0].Substring(start+1, end-start-1));
+				eCoords = eItems[0].Substring(start+1, end-start-1);
+				var eLineChar = eCoords.Split(new char[1]{','});
+				eLine = Convert.ToInt32(eLineChar[0]);
+				eChar = Convert.ToInt32(eLineChar[1]);
 				
-				eNumber = eItems[1].Substring(7, 5);
+				eNumber = eItems[1].Substring(6, 5);
 				
 				for (int i = 2; i < eItems.Length; i++)
 					eText += eItems[i];
 				
-				compilerResults.Errors.Add(new CompilerError(filePath, eLine, 0, eNumber, eText));
+				compilerResults.Errors.Add(new CompilerError(filePath, eLine, eChar, eNumber, eText));
 			}
 			
 			project.CompilerResults = compilerResults;
