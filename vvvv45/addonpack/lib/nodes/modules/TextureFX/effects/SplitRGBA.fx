@@ -64,11 +64,9 @@ struct col2
     float4 c4 : COLOR3;
 };
 
-float4 orgcol; 
-
 col2 PS(vs2ps In)
 {
-	orgcol = tex2D(Samp, In.TexCd);
+	float4 orgcol = tex2D(Samp, In.TexCd);
     col2 c;
 	c.c1 = orgcol.r;
     c.c2 = orgcol.g;

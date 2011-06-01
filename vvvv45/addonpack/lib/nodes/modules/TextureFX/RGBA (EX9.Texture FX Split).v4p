@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\Desktop\TextureFX\TextureFX\RGBA (EX9.Texture FX Split).v4p" filename="C:\Users\alstom\Downloads\TextureFX_02\TextureFX\SplitRGBA (EX9.Texture FX).v4p" systemname="SplitRGBA (EX9.Texture FX)">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.2.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\modules\common\TextureFX\RGBA (EX9.Texture FX Split).v4p" filename="C:\Users\alstom\Downloads\TextureFX_02\TextureFX\SplitRGBA (EX9.Texture FX).v4p" systemname="SplitRGBA (EX9.Texture FX)">
    <BOUNDS height="11220" left="13815" top="195" type="Window" width="10365">
    </BOUNDS>
    <NODE componentmode="InABox" id="11" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -36,7 +36,7 @@
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="9" nodename="Info (EX9.Texture)" systemname="Info (EX9.Texture)">
+   <NODE componentmode="Hidden" id="9" nodename="INFO (EX9.TEXTURE)" systemname="Info (EX9.Texture)">
    <BOUNDS height="0" left="2370" top="2505" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Texture" slicecount="1" visible="1" values="||">
@@ -63,7 +63,7 @@
    <LINK dstnodeid="8" dstpinname="Y" linkstyle="PolyLine" srcnodeid="9" srcpinname="Height">
    </LINK>
    <NODE componentmode="Hidden" id="7" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
-   <BOUNDS height="0" left="2370" top="5910" type="Node" width="0">
+   <BOUNDS height="0" left="2370" top="5925" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -153,9 +153,9 @@
    </PIN>
    <PIN pinname="Compiled" visible="1">
    </PIN>
-   <PIN pinname="Texture" visible="1">
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>
@@ -215,7 +215,7 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Red|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Red|" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="32" dstpinname="Input Node" srcnodeid="27" srcpinname="Output Node">
@@ -227,7 +227,7 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Green|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Green|" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="33" dstpinname="Input Node" srcnodeid="28" srcpinname="Output Node">
@@ -239,7 +239,7 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Blue|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Blue|" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="34" dstpinname="Input Node" srcnodeid="29" srcpinname="Output Node">
@@ -251,12 +251,10 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Alpha|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Alpha|" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="35" dstpinname="Input Node" srcnodeid="30" srcpinname="Output Node">
-   </LINK>
-   <LINK dstnodeid="24" dstpinname="Texture" srcnodeid="11" srcpinname="Output Node">
    </LINK>
    <LINK dstnodeid="10" dstpinname="Backbuffer Width" srcnodeid="7" srcpinname="X">
    </LINK>
@@ -282,8 +280,8 @@
    </LINK>
    <LINK dstnodeid="15" dstpinname="Input 2" srcnodeid="38" srcpinname="Texture Out">
    </LINK>
-   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="39">
-   <BOUNDS type="Node" left="2475" top="5550" width="100" height="100">
+   <NODE componentmode="Hidden" id="39" nodename="AND (Boolean)" systemname="AND (Boolean)">
+   <BOUNDS height="100" left="2430" top="5505" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -292,14 +290,14 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="24" srcpinname="Compiled" dstnodeid="39" dstpinname="Input 1">
+   <LINK dstnodeid="39" dstpinname="Input 1" srcnodeid="24" srcpinname="Compiled">
    </LINK>
-   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="39" dstpinname="Input 2">
+   <LINK dstnodeid="39" dstpinname="Input 2" srcnodeid="14" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="24" dstpinname="Enabled">
+   <LINK dstnodeid="24" dstpinname="Enabled" srcnodeid="14" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="39" srcpinname="Output" dstnodeid="10" dstpinname="Enabled">
+   <LINK dstnodeid="10" dstpinname="Enabled" srcnodeid="39" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="39" srcpinname="Output" dstnodeid="15" dstpinname="Switch">
+   <LINK dstnodeid="15" dstpinname="Switch" srcnodeid="39" srcpinname="Output">
    </LINK>
    </PATCH>
