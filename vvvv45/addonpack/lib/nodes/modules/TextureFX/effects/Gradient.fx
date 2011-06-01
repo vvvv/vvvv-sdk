@@ -1,18 +1,25 @@
 float2 R;
-float2 Direction;
+float2 FromXY;
+float2 ToXY;
+float Extrapolate;
 float4 ColorA:COLOR;
 float4 ColorB:COLOR;
 texture tex0;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 float4 psDir(float2 x:TEXCOORD0):color{
     float4 c0=tex2D(s0,x);
-    float4 c=saturate(lerp(ColorA,ColorB,dot(x-.5,Direction)+.5));
+    float2 gx=dot(x-.5-FromXY/2,float2(-1,1)*(FromXY-ToXY))*2/pow(length(FromXY-ToXY),2);
+    float grad=gx.x;
+    if(!Extrapolate)grad=saturate(grad);
+    float4 c=saturate(lerp(ColorA,ColorB,grad));
     return c;
 }
 float4 psGlow(float2 x:TEXCOORD0):color{
     float4 c0=tex2D(s0,x);
-    float4 c=saturate(lerp(ColorA,ColorB,1-length(x-.5-Direction)));
+    float grad=length(x-.5-FromXY/2)*2/length(FromXY-ToXY);
+    if(!Extrapolate)grad=saturate(grad);
+    float4 c=saturate(lerp(ColorA,ColorB,grad));
     return c;
 }
 technique Linear{pass pp0{vertexshader=null;pixelshader=compile ps_2_0 psDir();}}
-technique Glow{pass pp0{vertexshader=null;pixelshader=compile ps_2_0 psGlow();}}
+technique Radial{pass pp0{vertexshader=null;pixelshader=compile ps_2_0 psGlow();}}
