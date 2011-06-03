@@ -26,14 +26,24 @@ using SlimDX.Direct3D9;
 
 namespace VVVV.Nodes
 {
-	public struct DeviceFont
-	{
-		public SlimDX.Direct3D9.Font Font;
-		public SlimDX.Direct3D9.Sprite Sprite;
-		public SlimDX.Direct3D9.Texture Texture;
-	}
-	
-	[PluginInfo (Name = "Text",
+    public struct FontIdentifier
+    {
+        public Device Device;
+        public string Name;
+        public int Size;
+        public bool Italic;
+        public FontWeight Weight;
+        public Precision Precision;
+        public FontQuality Quality;
+    }
+
+    public struct DeviceHelpers
+    {
+        public Sprite Sprite;
+        public Texture Texture;
+    }
+
+    [PluginInfo(Name = "Text",
 	             Category = "EX9",
 	             Author = "vvvv group",
 	             Help = "Draws flat Text")]
@@ -52,16 +62,22 @@ namespace VVVV.Nodes
 		[Input ("Font", EnumName = "SystemFonts")]
 		protected IDiffSpread<EnumEntry> FFontInput;
 		
-		[Input ("Italic", IsSingle = true)]
+		[Input ("Italic")] //, IsSingle = true)]
 		protected IDiffSpread<bool> FItalicInput;
 		
-		[Input ("Bold", IsSingle = true)]
+		[Input ("Bold")] //, IsSingle = true)]
 		protected IDiffSpread<bool> FBoldInput;
 		
-		[Input ("Size", DefaultValue = 150, MinValue = 0, IsSingle = true)]
+		[Input ("Size", DefaultValue = 150, MinValue = 0)] //, IsSingle = true)]
 		protected IDiffSpread<int> FSizeInput;
-		
-		[Input ("Color", DefaultColor = new double[4]{1, 1, 1, 1})]
+
+        [Input("Precision", DefaultEnumEntry = "Default")]
+        protected ISpread<Precision> FPrecision;
+
+        [Input("Quality", DefaultEnumEntry = "Default")]
+        protected ISpread<FontQuality> FQuality;
+
+        [Input("Color", DefaultColor = new double[4] { 1, 1, 1, 1 })]
 		protected ISpread<RGBAColor> FColorInput;
 		
 		[Input ("Brush Color", DefaultColor = new double[4]{0, 0, 0, 1})]
@@ -96,8 +112,9 @@ namespace VVVV.Nodes
 		private IDXLayerIO FLayerOutput;
 		
 		private int FSpreadMax;
-		private Dictionary<int, DeviceFont> FDeviceFonts = new Dictionary<int, DeviceFont>();
-		#endregion field declarationPL
+        private Dictionary<FontIdentifier, SlimDX.Direct3D9.Font> FFonts = new Dictionary<FontIdentifier, SlimDX.Direct3D9.Font>();
+        private Dictionary<Device, DeviceHelpers> FDeviceHelpers = new Dictionary<Device, DeviceHelpers>();
+        #endregion field declarationPL
 		
 		#region constructur
 		[ImportingConstructor]
@@ -121,70 +138,85 @@ namespace VVVV.Nodes
 		#endregion mainloop
 		
 		#region DXLayer
-		private void RemoveResource(int OnDevice)
+		private void RemoveFont(FontIdentifier id)
 		{
-			DeviceFont df = FDeviceFonts[OnDevice];
-			FDeviceFonts.Remove(OnDevice);
-			
-			df.Font.Dispose();
-			df.Sprite.Dispose();
-			df.Texture.Dispose();
+            var df = FFonts[id];
+			FFonts.Remove(id);			
+			df.Dispose();
 		}
-		
-		public void UpdateResource(IPluginOut ForPin, int OnDevice)
-		{
-			bool needsupdate = false;
-			
-			try
-			{
-				DeviceFont df = FDeviceFonts[OnDevice];
-				if (FFontInput.IsChanged || FSizeInput.IsChanged || FBoldInput.IsChanged || FItalicInput.IsChanged)
-				{
-					RemoveResource(OnDevice);
-					needsupdate = true;
-				}
-			}
-			catch
-			{
-				//if resource is not yet created on given Device, create it now
-				needsupdate = true;
-			}
-			
-			if (needsupdate)
-			{
-				//FHost.Log(TLogType.Debug, "Creating Resource...");
-				Device dev = Device.FromPointer(new IntPtr(OnDevice));
 
-				DeviceFont df = new DeviceFont();
-				
-				FontWeight weight;
-				if (FBoldInput[0])
-					weight = FontWeight.Bold;
-				else
-					weight = FontWeight.Light;
-				
-				df.Font = new SlimDX.Direct3D9.Font(dev, FSizeInput[0], 0, weight, 0, FItalicInput[0], CharacterSet.Default, Precision.Default, FontQuality.Default, PitchAndFamily.Default, FFontInput[0].Name);
-				df.Sprite = new Sprite(dev);
-				
-				df.Texture = new Texture(dev, 1, 1, 1, Usage.None, Format.L8, Pool.Managed);// Format.A8R8G8B8, Pool.Default);
-				//need to fill texture white to be able to set color on sprite later
-				DataRectangle tex = df.Texture.LockRectangle(0, LockFlags.None);
-				tex.Data.WriteByte(255);
-				df.Texture.UnlockRectangle(0);
-				
-				FDeviceFonts.Add(OnDevice, df);
-				
-				//dispose device
-				dev.Dispose();
-			}
+        public FontIdentifier CreateFontIdentifier(Device dev, int slice)
+        {
+            FontIdentifier id = new FontIdentifier();
+            id.Device = dev;
+            id.Name = FFontInput[slice].Name;
+            id.Size = FSizeInput[slice];
+            id.Italic = FItalicInput[slice];            
+
+            if (FBoldInput[slice])
+                id.Weight = FontWeight.Bold;
+            else
+                id.Weight = FontWeight.Light;
+
+            id.Precision = FPrecision[slice];
+            id.Quality = FQuality[slice];
+
+            return id;
+        }
+
+        public SlimDX.Direct3D9.Font CreateFont(FontIdentifier id)
+        {
+            try
+            {
+                return FFonts[id];
+            }
+            catch
+            {
+                var f = new SlimDX.Direct3D9.Font(id.Device, id.Size, 0, id.Weight, 0, id.Italic, CharacterSet.Default, id.Precision, id.Quality, PitchAndFamily.Default, id.Name);
+                FFonts.Add(id, f);
+                return f;
+            }
+        }
+
+        public void UpdateResource(IPluginOut ForPin, int OnDevice)
+		{
+            Device dev = Device.FromPointer(new IntPtr(OnDevice));
+
+			//create device specific helpers on given device if not already present
+            try
+            {
+                var dh = FDeviceHelpers[dev];
+            }
+            catch
+            {
+                var dh = new DeviceHelpers();
+
+                dh.Sprite = new Sprite(dev);
+                dh.Texture = new Texture(dev, 1, 1, 1, Usage.None, Format.L8, Pool.Managed);// Format.A8R8G8B8, Pool.Default);
+
+                //need to fill texture white to be able to set color on sprite later
+                DataRectangle tex = dh.Texture.LockRectangle(0, LockFlags.None);
+                tex.Data.WriteByte(255);
+                dh.Texture.UnlockRectangle(0);
+                
+                FDeviceHelpers.Add(dev, dh);
+            }
 		}
 		
 		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
 		{
-			//dispose resources that were created on given OnDevice
+            Device dev = Device.FromPointer(new IntPtr(OnDevice));
+
+			//dispose resources that were created on given device
 			try
 			{
-				RemoveResource(OnDevice);
+                var dh = FDeviceHelpers[dev];
+                dh.Sprite.Dispose();
+                dh.Texture.Dispose();
+
+                var ids = FFonts.FindAllKeys(df => df.Device == dev);
+                foreach (var id in ids)
+                    RemoveFont(id);
 			}
 			catch
 			{
@@ -215,25 +247,29 @@ namespace VVVV.Nodes
 			Device dev = Device.FromPointer(new IntPtr(DXDevice.DevicePointer()));
 			dev.SetTransform(TransformState.World, Matrix.Identity);
 
-			DeviceFont df = FDeviceFonts[DXDevice.DevicePointer()];
 			FTransformIn.SetRenderSpace();
 
 			//set states that are defined via upstream nodes
 			FRenderStatePin.SetSliceStates(0);
-			
-			try
-			{
-				df.Sprite.Begin(SpriteFlags.ObjectSpace | SpriteFlags.DoNotAddRefTexture);
-				
-				int size = FSizeInput[0];
-				int normalize = FNormalizeInput[0].Index;
-				
-				Matrix4x4 preScale = VMath.Scale(1, -1, 1);
-				switch (normalize)
-				{
-						case 0: preScale = VMath.Scale(1, -1, 1); break;
-						//"off" means that text will be in pixels
-				}
+
+            var currentids = new List<FontIdentifier>();
+            DeviceHelpers dh = FDeviceHelpers[dev];
+            FontIdentifier id = CreateFontIdentifier(dev, 0);
+            currentids.Add(id);
+            SlimDX.Direct3D9.Font f = CreateFont(id);
+
+            dh.Sprite.Begin(SpriteFlags.ObjectSpace | SpriteFlags.DoNotAddRefTexture);
+            try
+			{                				
+                int size = id.Size;
+                int normalize = FNormalizeInput[0].Index;
+
+                Matrix4x4 preScale = VMath.Scale(1, -1, 1);
+                //switch (normalize)
+                //{
+                //        case 0: preScale = VMath.Scale(1, -1, 1); break;
+                //        //"off" means that text will be in pixels
+                //}
 				
 				Matrix4x4 world;
 				string text;
@@ -246,6 +282,16 @@ namespace VVVV.Nodes
 				
 				for (int i=0; i<FSpreadMax; i++)
 				{
+                    FontIdentifier newid = CreateFontIdentifier(dev, i);
+                    if (!newid.Equals(id))
+                    {
+                        if (!currentids.Contains(newid))
+                            currentids.Add(newid);
+                        id = newid;
+                        f = CreateFont(id);
+                        size = id.Size;                    
+                    }                    
+
 					text = FTextInput[i];
 					
 					if (string.IsNullOrEmpty(text))
@@ -285,7 +331,7 @@ namespace VVVV.Nodes
 					tmpRect.Width = (int) rect.x;
 					tmpRect.Height = (int) rect.y;
 					
-					df.Font.MeasureString(df.Sprite, text, dtf, ref tmpRect);
+					f.MeasureString(dh.Sprite, text, dtf, ref tmpRect);
 					FSizeOutput[i] = new Vector2D(tmpRect.Width, tmpRect.Height);
 					
 					FTransformIn.GetRenderWorldMatrix(i, out world);
@@ -302,7 +348,7 @@ namespace VVVV.Nodes
 							//"on" means that the particle will always be a unit quad. independant of texture size
 					}
 					
-					df.Sprite.Transform = (preScale * world).ToSlimDXMatrix();
+					dh.Sprite.Transform = (preScale * world).ToSlimDXMatrix();
 
 					if (FShowBrush[i])
 					{
@@ -320,16 +366,16 @@ namespace VVVV.Nodes
 							y += y;
 						
 						/*workaround for slimdx(august09)
-					Matrix4x4 spriteBugWorkaround = VMath.Translate(-x, -y, 0.001);
-					df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(spriteBugWorkaround * preScale * world);
-					 df.Sprite.Draw(df.Texture, new Rectangle(0, 0, tmpRect.Width, tmpRect.Height), new Color4(brushColor.Color));
-					df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(preScale * world);
-					workaround end*/
+					    Matrix4x4 spriteBugWorkaround = VMath.Translate(-x, -y, 0.001);
+					    df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(spriteBugWorkaround * preScale * world);
+					    df.Sprite.Draw(df.Texture, new Rectangle(0, 0, tmpRect.Width, tmpRect.Height), new Color4(brushColor.Color));
+					    df.Sprite.Transform = VSlimDXUtils.Matrix4x4ToSlimDXMatrix(preScale * world);
+					    workaround end*/
 						
-						df.Sprite.Draw(df.Texture, new Rectangle(0, 0, tmpRect.Width, tmpRect.Height), new Vector3(x, y, -0.001f), null, new Color4(FBrushColor[i].Color.ToArgb()));
+						dh.Sprite.Draw(dh.Texture, new Rectangle(0, 0, tmpRect.Width, tmpRect.Height), new Vector3(x, y, -0.001f), null, new Color4(FBrushColor[i].Color.ToArgb()));
 					}
 					
-					df.Font.DrawString(df.Sprite, text, new Rectangle((int)-rect.x/2, (int)-rect.y/2, (int)rect.x, (int)rect.y), dtf, (Color) FColorInput[i]);
+					f.DrawString(dh.Sprite, text, new Rectangle((int)-rect.x/2, (int)-rect.y/2, (int)rect.x, (int)rect.y), dtf, (Color) FColorInput[i]);
 				}
 			}
 			catch (Exception e)
@@ -338,9 +384,30 @@ namespace VVVV.Nodes
 			}
 			finally
 			{
-				df.Sprite.End();
+				dh.Sprite.End();
 			}
-		}
-		#endregion
-	}
+
+            var keys = FFonts.FindAllKeys( k => k.Device == dev );
+
+            foreach (var k in keys)
+                if (!currentids.Contains(k))
+                    RemoveFont(k);
+        }
+        #endregion
+    }
+
+    public static class DictionaryExtensions
+    {
+        public static IEnumerable<T> FindAll<K, T>(this Dictionary<K, T> dict, Predicate<K> predicate)
+        {
+            foreach (var k in dict.Keys)
+                if (predicate(k)) yield return dict[k];
+        }
+
+        public static IEnumerable<K> FindAllKeys<K, T>(this Dictionary<K, T> dict, Predicate<K> predicate)
+        {
+            foreach (var k in dict.Keys)
+                if (predicate(k)) yield return k;
+        }
+    }
 }
