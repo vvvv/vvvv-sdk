@@ -110,7 +110,6 @@ namespace VVVV.Nodes
         private ITransformIn FTransformIn;
         private IDXRenderStateIn FRenderStatePin;
         private IDXLayerIO FLayerOutput;
-
         private int FSpreadMax;
         private Dictionary<FontIdentifier, SlimDX.Direct3D9.Font> FFonts = new Dictionary<FontIdentifier, SlimDX.Direct3D9.Font>();
         private Dictionary<Device, DeviceHelpers> FDeviceHelpers = new Dictionary<Device, DeviceHelpers>();
@@ -267,7 +266,6 @@ namespace VVVV.Nodes
             {
                 int size = id.Size;
                 int normalize = FNormalizeInput[0].Index;
-
                 Matrix4x4 preScale = VMath.Scale(1, -1, 1);
                 Matrix4x4 world;
                 string text;
@@ -325,7 +323,7 @@ namespace VVVV.Nodes
 
                     tmpRect = new Rectangle(0, 0, FWidth[i], 0);
                     height = f.MeasureString(dh.Sprite, text, format, ref tmpRect);
-                    width = tmpRect.Width; //FWidth[i]
+                    width = tmpRect.Width; 
                     height = tmpRect.Height;
 
                     switch (normalize)
@@ -343,13 +341,6 @@ namespace VVVV.Nodes
                     FTransformIn.GetRenderWorldMatrix(i, out world);
                     dh.Sprite.Transform = (preScale * world).ToSlimDXMatrix();
 
-                    switch (hAlign)
-                    {
-                        case 1: x = width / 2; break;
-                        case 2: x = width; break;
-                        default: x = 0; break;
-                    }
-
                     switch (vAlign)
                     {
                         case 1: y = height / 2; break;
@@ -358,8 +349,16 @@ namespace VVVV.Nodes
                     }
 
                     if (FShowBrush[i])
+                    {
+                        switch (hAlign)
+                        {
+                            case 1: x = width / 2; break;
+                            case 2: x = width; break;
+                            default: x = 0; break;
+                        }
                         dh.Sprite.Draw(dh.Texture, new Rectangle(0, 0, width, height),
                             new Vector3(x, y, -0.001f), null, new Color4(FBrushColor[i].Color.ToArgb()));
+                    }
 
                     width = FWidth[i];
                     switch (hAlign)
