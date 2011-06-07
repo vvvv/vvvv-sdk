@@ -113,6 +113,7 @@ namespace VVVV.Nodes
         private int FSpreadMax;
         private Dictionary<FontIdentifier, SlimDX.Direct3D9.Font> FFonts = new Dictionary<FontIdentifier, SlimDX.Direct3D9.Font>();
         private Dictionary<Device, DeviceHelpers> FDeviceHelpers = new Dictionary<Device, DeviceHelpers>();
+        private List<FontIdentifier> FCurrentids = new List<FontIdentifier>();            
         #endregion field declarationPL
 
         #region constructur
@@ -131,8 +132,16 @@ namespace VVVV.Nodes
         #region mainloop
         public void Evaluate(int SpreadMax)
         {
+            var keys = FFonts.FindAllKeys(k => true);
+
+            foreach (var k in keys)
+                if (!FCurrentids.Contains(k))
+                    RemoveFont(k);
+
             FSpreadMax = SpreadMax;
             FSizeOutput.SliceCount = SpreadMax;
+            FCurrentids.Clear();            
+            
         }
         #endregion mainloop
 
@@ -255,10 +264,9 @@ namespace VVVV.Nodes
             //set states that are defined via upstream nodes
             FRenderStatePin.SetSliceStates(0);
 
-            var currentids = new List<FontIdentifier>();
             DeviceHelpers dh = FDeviceHelpers[dev];
             FontIdentifier id = CreateFontIdentifier(dev, 0);
-            currentids.Add(id);
+            FCurrentids.Add(id);
             SlimDX.Direct3D9.Font f = CreateFont(id);
 
             dh.Sprite.Begin(SpriteFlags.ObjectSpace | SpriteFlags.DoNotAddRefTexture);
@@ -279,8 +287,8 @@ namespace VVVV.Nodes
                     FontIdentifier newid = CreateFontIdentifier(dev, i);
                     if (!newid.Equals(id))
                     {
-                        if (!currentids.Contains(newid))
-                            currentids.Add(newid);
+                        if (!FCurrentids.Contains(newid))
+                            FCurrentids.Add(newid);
                         id = newid;
                         f = CreateFont(id);
                         size = id.Size;
@@ -380,12 +388,6 @@ namespace VVVV.Nodes
             {
                 dh.Sprite.End();
             }
-
-            var keys = FFonts.FindAllKeys(k => k.Device == dev);
-
-            foreach (var k in keys)
-                if (!currentids.Contains(k))
-                    RemoveFont(k);
         }
         #endregion
     }
