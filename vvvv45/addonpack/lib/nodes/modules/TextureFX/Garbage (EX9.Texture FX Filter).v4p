@@ -59,7 +59,7 @@
    </PIN>
    <PIN pinname="Offset XY" visible="1">
    </PIN>
-   <PIN pinname="tex3" visible="1">
+   <PIN pinname="tex3" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="27" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -206,7 +206,7 @@
    </LINK>
    <LINK dstnodeid="20" dstpinname="Input 2" srcnodeid="19" srcpinname="Y Output Value">
    </LINK>
-   <INFO author="unc" description="Color posterize effect" tags="">
+   <INFO author="unc" description="Feedback &quot;garbage&quot;" tags="">
    </INFO>
    <NODE componentmode="Hidden" id="18" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
    <BOUNDS height="0" left="3555" top="5250" type="Node" width="0">
@@ -342,8 +342,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="28" dstpinname="Bright" srcnodeid="10" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="Hidden" id="9" nodename="UniformScale (Transform)">
    <BOUNDS height="0" left="3795" top="4755" type="Node" width="0">
    </BOUNDS>
@@ -488,10 +486,10 @@
    <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="11" srcpinname="Output Node" dstnodeid="28" dstpinname="tex1">
+   <LINK dstnodeid="28" dstpinname="tex1" srcnodeid="11" srcpinname="Output Node">
    </LINK>
-   <LINK srcnodeid="0" srcpinname="Output Node" dstnodeid="28" dstpinname="tex3">
+   <LINK dstnodeid="28" dstpinname="tex3" srcnodeid="0" srcpinname="Output Node">
    </LINK>
-   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="28" dstpinname="Alpha">
+   <LINK dstnodeid="28" dstpinname="Alpha" srcnodeid="10" srcpinname="Y Output Value">
    </LINK>
    </PATCH>
