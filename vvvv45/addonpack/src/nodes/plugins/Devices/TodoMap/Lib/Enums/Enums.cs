@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace VVVV.TodoMap
@@ -8,12 +7,17 @@ namespace VVVV.TodoMap
     /// <summary>
     /// Global takeover mode
     /// </summary>
-    public enum eTodoGlobalTakeOverMode { Immediate, Pickup }
+    public enum eTodoGlobalTakeOverMode { Immediate, Pickup,Scale }
 
     /// <summary>
     /// Local Takeover mode
     /// </summary>
-    public enum eTodoLocalTakeOverMode { Parent, Immediate, Pickup }
+    public enum eTodoLocalTakeOverMode { Parent, Immediate, Pickup, Scale }
+
+    /// <summary>
+    /// Local Takeover mode
+    /// </summary>
+    public enum eTodoLocalFeedBackMode { Parent, False, True }
 
     /// <summary>
     /// Tweener ease mode
