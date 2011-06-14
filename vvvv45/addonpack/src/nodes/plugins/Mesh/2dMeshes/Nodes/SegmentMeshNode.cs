@@ -38,7 +38,7 @@ namespace VVVV.Nodes
         #endregion
 
         #region Fields
-
+        private IValueIn FPinInPhase;
         private IValueIn FPinInInnerRadius;
         private IValueIn FPinInCycles;
         private IValueIn FPinInResolution;
@@ -46,7 +46,10 @@ namespace VVVV.Nodes
 
         #region Set Plugin Host
         protected override void SetInputs()
-        {
+        {         
+            this.FHost.CreateValueInput("Phase", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInPhase);
+            this.FPinInPhase.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
+        
             this.FHost.CreateValueInput("Inner Radius", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInInnerRadius);
             this.FPinInInnerRadius.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
 
@@ -62,24 +65,28 @@ namespace VVVV.Nodes
         #region Evaluate
         public void Evaluate(int SpreadMax)
         {
-            if (this.FPinInInnerRadius.PinIsChanged || this.FPinInResolution.PinIsChanged || this.FPinInCycles.PinIsChanged)
+            if (this.FPinInInnerRadius.PinIsChanged 
+                || this.FPinInResolution.PinIsChanged 
+                || this.FPinInCycles.PinIsChanged
+                || this.FPinInPhase.PinIsChanged)
             {
                 this.FVertex.Clear();
                 this.FIndices.Clear();
 
-                double inner, res,cycles;
+                double inner, res,cycles,phase;
                 for (int j = 0; j < SpreadMax; j++)
                 {
                     this.FPinInInnerRadius.GetValue(j, out inner);
                     this.FPinInResolution.GetValue(j, out res);
                     this.FPinInCycles.GetValue(j, out cycles);
+                    this.FPinInPhase.GetValue(j, out phase);
                     int ires = Convert.ToInt32(res);
 
                     Vertex[] verts = new Vertex[ires * 2];
                     short[] indices = new short[(ires - 1) * 6];
 
                     double inc = ((Math.PI * 2.0 * cycles) / (ires -1.0));
-                    double phi = 0;
+                    double phi = phase * (Math.PI * 2.0) ;
 
                     for (int i = 0; i < ires; i++)
                     {
