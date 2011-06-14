@@ -1,26 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V1;
+using VVVV.TodoMap.Lib;
+using System.ComponentModel.Composition;
+using System.IO;
+using VVVV.TodoMap.Lib.Persist;
 
 namespace VVVV.TodoMap.Nodes
 {
-    [PluginInfo(Name="TodoMap",Category="TodoMap",Author="vux",InitialComponentMode=TComponentMode.InAWindow,InitialWindowWidth=700,InitialWindowHeight=500)]
-    public partial class TodoMapNode : IPluginEvaluate
+    [PluginInfo(Name="TodoMap",Category="TodoMap",Author="vux",InitialComponentMode=TComponentMode.InAWindow,InitialWindowWidth=700,InitialWindowHeight=500,AutoEvaluate=true)]
+    public partial class TodoMapNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
     {
+        [Input("Variable Category",DefaultString="Global")]
+        ISpread<string> FInVariableCategory;
+
         [Input("Variable Name")]
         ISpread<string> FInVariableName;
 
-        [Input("Register Variable")]
+        [Input("Register Variable", IsBang = true)]
         ISpread<bool> FInRegisterVariable;
 
         [Input("Learn Mode",IsSingle=true)]
-        ISpread<bool> FInLearnMode;
+        IDiffSpread<bool> FInLearnMode;
 
-        [Input("Path", IsSingle = true,StringType=StringType.Filename)]
-        ISpread<string> FInFileName;
+        [Input("Path", IsSingle = true,StringType=StringType.Filename,DefaultString="TodoMap.xml")]
+        IDiffSpread<string> FInPath;
 
         [Input("Load", IsSingle = true, IsBang = true)]
         ISpread<bool> FInLoad;
@@ -29,15 +35,136 @@ namespace VVVV.TodoMap.Nodes
         ISpread<bool> FInSave;
 
         [Input("Enabled", IsSingle = true)]
-        ISpread<bool> FInEnabled;
+        IDiffSpread<bool> FInEnabled;
 
-        [Input("Reset",IsSingle = true,IsBang=true)]
+        [Input("Clear Mappings", IsSingle = true, IsBang = true)]
+        ISpread<bool> FInClearMappings;
+
+        [Input("Clear Variables",IsSingle = true,IsBang=true)]
         ISpread<bool> FInReset;
+
+        [Input("Auto Load", IsSingle = true)]
+        ISpread<bool> FInAutoLoad;
+
+        //Outputs
+        [Output("Engine",IsSingle=true)]
+        ISpread<TodoEngine> FOutEngine;
+
+        [Output("Selected Variable")]
+        ISpread<string> FOutSelVarName;
+
+        private TodoEngine FEngine;
+
+        private bool FClearMapNextFrame;
+        private bool FCLearAllNextFrame;
+        private bool FSaveNextFrame;
 
         #region IPluginEvaluate Members
         public void Evaluate(int SpreadMax)
         {
+            if (this.FInClearMappings[0] || this.FClearMapNextFrame)
+            {
+                this.ucMappingManager.ResetMappings();
+                this.FEngine.ClearMappings();
+                this.FClearMapNextFrame = false;
+            }
+
+            if (this.FInReset[0] || this.FCLearAllNextFrame)
+            {
+                this.ucMappingManager.Reset();
+                this.FEngine.ClearVariables();
+                this.FCLearAllNextFrame = false;
+            }
+
+            int maxreg = Math.Max(this.FInVariableName.SliceCount, this.FInRegisterVariable.SliceCount);
+            maxreg = Math.Max(maxreg,this.FInVariableCategory.SliceCount);
+            for (int i = 0; i < maxreg; i++)
+            {
+                if (this.FInRegisterVariable[i])
+                {
+                    TodoVariable var = new TodoVariable(this.FInVariableName[i]);
+                    var.Category = this.FInVariableCategory[i];
+                    this.FEngine.RegisterVariable(var);                   
+                }
+            }
+
+            if (this.FInLearnMode.IsChanged)
+            {
+                this.FEngine.LearnMode = this.FInLearnMode[0];
+                //Also update gui in that case
+                //this.learnModeToolStripMenuItem.Checked = this.FEngine.LearnMode;
+            }
+
+            if (this.FInSave[0] || this.FSaveNextFrame)
+            {
+                string path = this.FInPath[0];
+                try
+                {
+                    StreamWriter sw = new StreamWriter(path);
+                    sw.Write(TodoXmlWrapper.Persist(this.FEngine));
+                    sw.Close();
+                }
+                catch
+                {
+
+                }
+                this.FSaveNextFrame = false;
+            }
+
+            if (this.FInPath.IsChanged) { this.FEngine.SavePath = this.FInPath[0]; }
+
+            if (this.FInLoad[0] || (this.FInPath.IsChanged && this.FInAutoLoad[0]))
+            {
+                string path = this.FInPath[0];
+                
+                if (File.Exists(path))
+                {
+                    this.FEngine.ClearVariables();
+                    this.ucMappingManager.Reset();
+
+                    StreamReader sr = null;
+                    try
+                    {
+                        sr = new StreamReader(path);
+                        string xml = sr.ReadToEnd();
+                        sr.Close();
+
+                        this.FEngine.ClearVariables();
+                        TodoXmlUnwrapper.LoadXml(this.FEngine, xml);
+                    }
+                    catch
+                    {
+                        if (sr != null)
+                        {
+                            sr.Close();
+                        }
+                    }
+                }
+            }
+
+            if (this.FEngine.SelectedVariable != null)
+            {
+                this.FOutSelVarName.SliceCount = 1;
+                this.FOutSelVarName[0] = this.FEngine.SelectedVariable.Name;
+            }
+            else
+            {
+                this.FOutSelVarName.SliceCount = 0;
+            }
         }
         #endregion
+
+        #region IDisposable Members
+        void IDisposable.Dispose()
+        {
+            this.FEngine.Dispose();
+        }
+        #endregion
+
+        public void OnImportsSatisfied()
+        {
+            this.FOutEngine[0] = this.FEngine;
+        }
+
     }
 }

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using VVVV.TodoMap.UI.UserControls;
+using VVVV.TodoMap.Lib;
+using System.IO;
+using VVVV.TodoMap.Lib.Persist;
+using VVVV.TodoMap.UI.UserControls.Osc;
 
 namespace VVVV.TodoMap.Nodes
 {
@@ -14,6 +17,8 @@ namespace VVVV.TodoMap.Nodes
     {
         private TodoDeviceManagerCtrl ucDeviceManager;
         private TodoMappingManager ucMappingManager;
+        private TodoOscManager ucOscManager;
+        private TodoLoggerCtrl ucLogger;
 
         public TodoMapNode()
         {
@@ -26,9 +31,35 @@ namespace VVVV.TodoMap.Nodes
 
             this.ucDeviceManager = new TodoDeviceManagerCtrl();
             this.ucDeviceManager.Dock = DockStyle.Fill;
-            this.tabDevices.Controls.Add(this.ucDeviceManager);
+            this.tabMidi.Controls.Add(this.ucDeviceManager);
+
+            this.ucOscManager = new TodoOscManager();
+            this.ucOscManager.Dock = DockStyle.Fill;
+            this.tabOsc.Controls.Add(this.ucOscManager);
+
+            this.ucLogger = new TodoLoggerCtrl();
+            this.ucLogger.Dock = DockStyle.Fill;
+            this.tabLog.Controls.Add(this.ucLogger);
+
+            this.FEngine = new TodoEngine();
+            //this.FEngine.Osc.SetEnabled(true);
+
+
+            this.ucDeviceManager.Engine = this.FEngine;
+            this.ucMappingManager.Engine = this.FEngine;
+            this.ucOscManager.Engine = this.FEngine;
 
 
         }
+
+
+
+
+
+
+
+
+
+
     }
 }
