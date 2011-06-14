@@ -31,12 +31,10 @@
             this.mainLayout = new System.Windows.Forms.TableLayoutPanel();
             this.grpMidiInput = new System.Windows.Forms.GroupBox();
             this.grpMidiOutput = new System.Windows.Forms.GroupBox();
-            this.grpOsc = new System.Windows.Forms.GroupBox();
-            this.lvMidiInput = new ListViewEx.ListViewEx();
-            this.lvMidiOutput = new ListViewEx.ListViewEx();
+            this.grpClock = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.mainLayout.SuspendLayout();
-            this.grpMidiInput.SuspendLayout();
-            this.grpMidiOutput.SuspendLayout();
+            this.grpClock.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainLayout
@@ -44,9 +42,9 @@
             this.mainLayout.ColumnCount = 1;
             this.mainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.mainLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.mainLayout.Controls.Add(this.grpClock, 0, 2);
             this.mainLayout.Controls.Add(this.grpMidiInput, 0, 0);
             this.mainLayout.Controls.Add(this.grpMidiOutput, 0, 1);
-            this.mainLayout.Controls.Add(this.grpOsc, 0, 2);
             this.mainLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainLayout.Location = new System.Drawing.Point(0, 0);
             this.mainLayout.Name = "mainLayout";
@@ -54,12 +52,12 @@
             this.mainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.mainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.mainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 131F));
+            this.mainLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.mainLayout.Size = new System.Drawing.Size(602, 371);
             this.mainLayout.TabIndex = 0;
             // 
             // grpMidiInput
             // 
-            this.grpMidiInput.Controls.Add(this.lvMidiInput);
             this.grpMidiInput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpMidiInput.Location = new System.Drawing.Point(3, 3);
             this.grpMidiInput.Name = "grpMidiInput";
@@ -70,7 +68,6 @@
             // 
             // grpMidiOutput
             // 
-            this.grpMidiOutput.Controls.Add(this.lvMidiOutput);
             this.grpMidiOutput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpMidiOutput.Location = new System.Drawing.Point(3, 123);
             this.grpMidiOutput.Name = "grpMidiOutput";
@@ -79,41 +76,25 @@
             this.grpMidiOutput.TabStop = false;
             this.grpMidiOutput.Text = "Midi Output Settings";
             // 
-            // grpOsc
+            // grpClock
             // 
-            this.grpOsc.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpOsc.Location = new System.Drawing.Point(3, 243);
-            this.grpOsc.Name = "grpOsc";
-            this.grpOsc.Size = new System.Drawing.Size(596, 125);
-            this.grpOsc.TabIndex = 2;
-            this.grpOsc.TabStop = false;
-            this.grpOsc.Text = "OSC Settings";
+            this.grpClock.Controls.Add(this.label1);
+            this.grpClock.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpClock.Location = new System.Drawing.Point(3, 243);
+            this.grpClock.Name = "grpClock";
+            this.grpClock.Size = new System.Drawing.Size(596, 125);
+            this.grpClock.TabIndex = 2;
+            this.grpClock.TabStop = false;
+            this.grpClock.Text = "Midi Clock Settings";
             // 
-            // lvMidiInput
+            // label1
             // 
-            this.lvMidiInput.AllowColumnReorder = true;
-            this.lvMidiInput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvMidiInput.DoubleClickActivation = false;
-            this.lvMidiInput.FullRowSelect = true;
-            this.lvMidiInput.Location = new System.Drawing.Point(3, 16);
-            this.lvMidiInput.Name = "lvMidiInput";
-            this.lvMidiInput.Size = new System.Drawing.Size(590, 95);
-            this.lvMidiInput.TabIndex = 0;
-            this.lvMidiInput.UseCompatibleStateImageBehavior = false;
-            this.lvMidiInput.View = System.Windows.Forms.View.Details;
-            // 
-            // lvMidiOutput
-            // 
-            this.lvMidiOutput.AllowColumnReorder = true;
-            this.lvMidiOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvMidiOutput.DoubleClickActivation = false;
-            this.lvMidiOutput.FullRowSelect = true;
-            this.lvMidiOutput.Location = new System.Drawing.Point(3, 16);
-            this.lvMidiOutput.Name = "lvMidiOutput";
-            this.lvMidiOutput.Size = new System.Drawing.Size(590, 95);
-            this.lvMidiOutput.TabIndex = 0;
-            this.lvMidiOutput.UseCompatibleStateImageBehavior = false;
-            this.lvMidiOutput.View = System.Windows.Forms.View.Details;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(239, 48);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(70, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Coming Soon";
             // 
             // TodoDeviceManagerCtrl
             // 
@@ -123,8 +104,8 @@
             this.Name = "TodoDeviceManagerCtrl";
             this.Size = new System.Drawing.Size(602, 371);
             this.mainLayout.ResumeLayout(false);
-            this.grpMidiInput.ResumeLayout(false);
-            this.grpMidiOutput.ResumeLayout(false);
+            this.grpClock.ResumeLayout(false);
+            this.grpClock.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -134,8 +115,8 @@
         private System.Windows.Forms.TableLayoutPanel mainLayout;
         private System.Windows.Forms.GroupBox grpMidiInput;
         private System.Windows.Forms.GroupBox grpMidiOutput;
-        private System.Windows.Forms.GroupBox grpOsc;
-        private ListViewEx.ListViewEx lvMidiInput;
-        private ListViewEx.ListViewEx lvMidiOutput;
+        private System.Windows.Forms.GroupBox grpClock;
+        private System.Windows.Forms.Label label1;
+
     }
 }

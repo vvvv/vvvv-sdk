@@ -17,6 +17,9 @@ namespace ListViewEx
 	/// </summary>
 	public delegate void SubItemEndEditingEventHandler(object sender, SubItemEndEditingEventArgs e);
 
+    public delegate void SubItemEditCompleteEventHandler(object sender, int subitemindex);
+
+
 	/// <summary>
 	/// Event Args for SubItemClicked event
 	/// </summary>
@@ -113,6 +116,7 @@ namespace ListViewEx
 		public event SubItemEventHandler SubItemClicked;
 		public event SubItemEventHandler SubItemBeginEditing;
 		public event SubItemEndEditingEventHandler SubItemEndEditing;
+        public event SubItemEditCompleteEventHandler SubItemEditComplete;
 
 		public ListViewEx()
 		{
@@ -439,7 +443,10 @@ namespace ListViewEx
 
 			OnSubItemEndEditing(e);
 
-			_editItem.SubItems[_editSubItem].Text = e.DisplayText;
+            if (!e.Cancel)
+            {
+                _editItem.SubItems[_editSubItem].Text = e.DisplayText;
+            }
 
 			_editingControl.Leave -= new EventHandler(_editControl_Leave);
 			_editingControl.KeyPress -= new KeyPressEventHandler(_editControl_KeyPress);
@@ -448,6 +455,9 @@ namespace ListViewEx
 
 			_editingControl = null;
 			_editItem = null;
+
+            if (this.SubItemEditComplete != null) { this.SubItemEditComplete(this, _editSubItem); }
+
 			_editSubItem = -1;
 		}
 		#endregion
