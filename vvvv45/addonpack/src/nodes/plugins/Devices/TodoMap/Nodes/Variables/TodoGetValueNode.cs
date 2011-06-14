@@ -20,7 +20,7 @@ namespace VVVV.TodoMap.Nodes.Variables
         IDiffSpread<bool> FInRawValue;
 
         [Input("Auto Register",DefaultValue=0,IsSingle=true)]
-        ISpread<bool> FAutoRegister;
+        IDiffSpread<bool> FAutoRegister;
 
         [Output("Output")]
         ISpread<double> FOutput;
@@ -58,7 +58,7 @@ namespace VVVV.TodoMap.Nodes.Variables
 
             if (this.FInEngine.PluginIO.IsConnected)
             {
-                if (this.FInvalidate || this.FInVarName.IsChanged || this.FInRawValue.IsChanged)
+                if (this.FInvalidate || this.FInVarName.IsChanged || this.FInRawValue.IsChanged || this.FAutoRegister.IsChanged)
                 {
                     this.FOutIsFound.SliceCount = this.FInVarName.SliceCount;
                     this.FOutput.SliceCount = this.FInVarName.SliceCount;
@@ -70,12 +70,16 @@ namespace VVVV.TodoMap.Nodes.Variables
                             if (this.FAutoRegister[0])
                             {
                                 TodoVariable nvar = new TodoVariable(this.FInVarName[i]);
-                                var.Category = "Global";
-                                this.FInEngine[0].RegisterVariable(var);
+                                nvar.Category = "Global";
+                                this.FInEngine[0].RegisterVariable(nvar);
+                                this.FOutput[i] = 0;
+                                this.FOutIsFound[i] = true;
                             }
-                            
-                            this.FOutput[i] = 0;
-                            this.FOutIsFound[i] = false;
+                            else
+                            {
+                                this.FOutput[i] = 0;
+                                this.FOutIsFound[i] = false;
+                            }
                         }
                         else
                         {
