@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Text;
 using System.ComponentModel.Composition;
+using System.Linq;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -132,7 +133,7 @@ namespace VVVV.Nodes
         #region mainloop
         public void Evaluate(int SpreadMax)
         {
-            var keys = FFonts.FindAllKeys(k => true);
+            var keys = FFonts.Keys.ToArray();
 
             foreach (var k in keys)
                 if (!FCurrentids.Contains(k))
@@ -226,7 +227,7 @@ namespace VVVV.Nodes
                 dh.Sprite.Dispose();
                 dh.Texture.Dispose();
 
-                var ids = FFonts.FindAllKeys(df => df.Device == dev);
+                var ids = FFonts.FindAllKeys(df => df.Device == dev).ToArray();
                 foreach (var id in ids)
                     RemoveFont(id);
             }
