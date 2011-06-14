@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,23 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Sanford.Collections, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -60,6 +78,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -69,28 +88,18 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="VVVV.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependencies\VVVV.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="VVVV.Hosting, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependencies\VVVV.Hosting.dll</HintPath>
-    </Reference>
     <Reference Include="VVVV.PluginInterfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependencies\VVVV.PluginInterfaces.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\vvvv\beta25.1\bin\managed\VVVV.PluginInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="VVVV.Utils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependencies\VVVV.Utils.dll</HintPath>
-    </Reference>
-    <Reference Include="VVVV.Utils3rdParty, Version=1.0.4010.34603, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependencies\VVVV.Utils3rdParty.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\vvvv\beta25.1\bin\managed\VVVV.Utils.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\TodoVariableDataType.cs" />
+    <Compile Include="Lib\Engine\Filters\TodoCategoryFilter.cs" />
     <Compile Include="Lib\Engine\IO\AbstractTodoInput.cs" />
     <Compile Include="Lib\Engine\Mappers\TodoTweenMapper.cs" />
     <Compile Include="Lib\Engine\Mappers\TodoTweenMapper_Delegate.cs" />
@@ -98,6 +107,20 @@
     <Compile Include="Lib\Engine\TodoEngine.cs" />
     <Compile Include="Lib\Engine\TodoVariable.cs" />
     <Compile Include="Lib\Enums\Enums.cs" />
+    <Compile Include="Lib\Modules\AbstractTodoDevice.cs" />
+    <Compile Include="Lib\Modules\Midi\TodoMidiDevice.cs" />
+    <Compile Include="Lib\Modules\Midi\TodoMidiDeviceManager.cs" />
+    <Compile Include="Lib\Modules\Midi\TodoMidiInput.cs" />
+    <Compile Include="Lib\Modules\Osc\TodoOscDevice.cs" />
+    <Compile Include="Lib\Modules\Osc\TodoOscInput.cs" />
+    <Compile Include="Lib\Persist\TodoXmlUnwrapper.cs" />
+    <Compile Include="Lib\Persist\TodoXmlWrapper.cs" />
+    <Compile Include="Lib\Utils\TodoLogger.cs" />
+    <Compile Include="Lib\Utils\UsbDetector.cs" />
+    <Compile Include="Modules\AdvancedSequencer.cs" />
+    <Compile Include="Modules\Lib\Engine\TimeValuePair.cs" />
+    <Compile Include="Modules\Lib\Engine\Track.cs" />
+    <Compile Include="Modules\Lib\Xml\Serialization\TrackSerializer.cs" />
     <Compile Include="Nodes\TodoMapNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -107,15 +130,38 @@
     <Compile Include="Nodes\TodoMapNode_ctrl.Designer.cs">
       <DependentUpon>TodoMapNode_ctrl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Nodes\Variables\TodoDeleteVariableNode.cs" />
+    <Compile Include="Nodes\Variables\TodoGetValueNode.cs" />
+    <Compile Include="Nodes\Variables\TodoSetValueNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\Controls\ListViewEx.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\VariableFilterCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\VariableFilterCtrl.Designer.cs">
+      <DependentUpon>VariableFilterCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\Osc\TodoOscManager.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\Osc\TodoOscManager.Designer.cs">
+      <DependentUpon>TodoOscManager.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\UserControls\TodoDeviceManagerCtrl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UI\UserControls\TodoDeviceManagerCtrl.Designer.cs">
       <DependentUpon>TodoDeviceManagerCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\TodoLoggerCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\TodoLoggerCtrl.Designer.cs">
+      <DependentUpon>TodoLoggerCtrl.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\UserControls\TodoMappingManager.cs">
       <SubType>UserControl</SubType>
@@ -129,19 +175,26 @@
       <DependentUpon>TodoMapNode_ctrl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\VariableFilterCtrl.resx">
+      <DependentUpon>VariableFilterCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\Osc\TodoOscManager.resx">
+      <DependentUpon>TodoOscManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\UserControls\TodoDeviceManagerCtrl.resx">
       <DependentUpon>TodoDeviceManagerCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\TodoLoggerCtrl.resx">
+      <DependentUpon>TodoLoggerCtrl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\UserControls\TodoMappingManager.resx">
       <DependentUpon>TodoMappingManager.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataTypes\" />
-    <Folder Include="Lib\Modules\Midi\" />
-    <Folder Include="Lib\Modules\Osc\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
