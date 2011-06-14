@@ -124,37 +124,65 @@ namespace SwitchTransAdv
 
             if (this.FPinInput.PinIsChanged || changed)
             {
-                //Prepass for nil check
+
                 
                 List<ITransformIn> usedpins = new List<ITransformIn>();
 
                 if (this.FPinInput.SliceCount > 0)
                 {
+                    //Get spread max
                     int spmaxnonnil = this.FPinInput.SliceCount;
                     for (int i = 0; i < this.FPinTransforms.Count; i++)
                     {
                         spmaxnonnil = Math.Max(spmaxnonnil, this.FPinTransforms[i].SliceCount);
                     }
 
-                    this.FPinOutput.SliceCount = spmaxnonnil;
+                    //Prepass for nil check and slice count
+                    int spmax = this.FPinInput.SliceCount;
+                    bool hasnil = false;
+                    List<int> trpinidx = new List<int>();
+
                     for (int i = 0; i < spmaxnonnil; i++)
                     {
                         double dblswitch;
                         this.FPinInput.GetValue(i, out dblswitch);
-                        Matrix4x4 tr;
-                        int pinidx = Convert.ToInt32(dblswitch) % this.FPinTransforms.Count;
-                        if (this.FPinTransforms[pinidx].SliceCount > 0)
-                        {
-                            this.FPinTransforms[pinidx].GetMatrix(i, out tr);
-                            this.FPinOutput.SetMatrix(i, tr);
-                        }
+                        int sw = Convert.ToInt32(dblswitch)% this.FPinTransforms.Count;
+
+                        int cnt = this.FPinTransforms[sw].SliceCount;
+                        if (cnt == 0) { hasnil = true; break; }
                         else
                         {
-                            this.FPinOutput.SliceCount = 0;
-                            break;
+                            spmax = Math.Max(spmax, cnt);
+                            if (!trpinidx.Contains(sw))
+                            {
+                                trpinidx.Add(sw);
+                                //All pins in use, break
+                                if (trpinidx.Count == this.FPinTransforms.Count) { break; }
+
+                            }
                         }
                     }
 
+                    if (hasnil)
+                    {
+                        this.FPinOutput.SliceCount = 0;
+                    }
+                    else
+                    {
+                        this.FPinOutput.SliceCount = spmax;
+                        for (int i = 0; i < spmax; i++)
+                        {
+                            double dblswitch;
+                            this.FPinInput.GetValue(i, out dblswitch);
+                            Matrix4x4 tr;
+                            int pinidx = Convert.ToInt32(dblswitch) % this.FPinTransforms.Count;
+                            if (this.FPinTransforms[pinidx].SliceCount > 0)
+                            {
+                                this.FPinTransforms[pinidx].GetMatrix(i, out tr);
+                                this.FPinOutput.SetMatrix(i, tr);
+                            }
+                        }
+                    }
                 }
                 else
                 {
