@@ -29,10 +29,11 @@
         private void InitializeComponent()
         {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.cmbCatFilter = new System.Windows.Forms.ComboBox();
-            this.lblnewVar = new System.Windows.Forms.Label();
-            this.lblsave = new System.Windows.Forms.Label();
             this.tbvarname = new System.Windows.Forms.TextBox();
+            this.lblnewVar = new System.Windows.Forms.Label();
+            this.cmbCatFilter = new System.Windows.Forms.ComboBox();
+            this.lblsave = new System.Windows.Forms.Label();
+            this.lblsetdefault = new System.Windows.Forms.Label();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -41,22 +42,20 @@
             this.flowLayoutPanel1.Controls.Add(this.tbvarname);
             this.flowLayoutPanel1.Controls.Add(this.lblnewVar);
             this.flowLayoutPanel1.Controls.Add(this.cmbCatFilter);
+            this.flowLayoutPanel1.Controls.Add(this.lblsetdefault);
             this.flowLayoutPanel1.Controls.Add(this.lblsave);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(467, 30);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(559, 30);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
-            // cmbCatFilter
+            // tbvarname
             // 
-            this.cmbCatFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCatFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbCatFilter.FormattingEnabled = true;
-            this.cmbCatFilter.Location = new System.Drawing.Point(215, 3);
-            this.cmbCatFilter.Name = "cmbCatFilter";
-            this.cmbCatFilter.Size = new System.Drawing.Size(121, 21);
-            this.cmbCatFilter.TabIndex = 0;
+            this.tbvarname.Location = new System.Drawing.Point(3, 3);
+            this.tbvarname.Name = "tbvarname";
+            this.tbvarname.Size = new System.Drawing.Size(100, 20);
+            this.tbvarname.TabIndex = 3;
             // 
             // lblnewVar
             // 
@@ -70,11 +69,21 @@
             this.lblnewVar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblnewVar.Click += new System.EventHandler(this.lblnewVar_Click);
             // 
+            // cmbCatFilter
+            // 
+            this.cmbCatFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCatFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbCatFilter.FormattingEnabled = true;
+            this.cmbCatFilter.Location = new System.Drawing.Point(215, 3);
+            this.cmbCatFilter.Name = "cmbCatFilter";
+            this.cmbCatFilter.Size = new System.Drawing.Size(121, 21);
+            this.cmbCatFilter.TabIndex = 0;
+            // 
             // lblsave
             // 
             this.lblsave.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.lblsave.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblsave.Location = new System.Drawing.Point(342, 0);
+            this.lblsave.Location = new System.Drawing.Point(445, 0);
             this.lblsave.Name = "lblsave";
             this.lblsave.Size = new System.Drawing.Size(56, 23);
             this.lblsave.TabIndex = 2;
@@ -82,12 +91,18 @@
             this.lblsave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblsave.Click += new System.EventHandler(this.lblsave_Click);
             // 
-            // tbvarname
+            // lblsetdefault
             // 
-            this.tbvarname.Location = new System.Drawing.Point(3, 3);
-            this.tbvarname.Name = "tbvarname";
-            this.tbvarname.Size = new System.Drawing.Size(100, 20);
-            this.tbvarname.TabIndex = 3;
+            this.lblsetdefault.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lblsetdefault.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblsetdefault.Location = new System.Drawing.Point(342, 0);
+            this.lblsetdefault.Name = "lblsetdefault";
+            this.lblsetdefault.Size = new System.Drawing.Size(97, 23);
+            this.lblsetdefault.TabIndex = 4;
+            this.lblsetdefault.Text = "Set Default";
+            this.lblsetdefault.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblsetdefault.Visible = false;
+            this.lblsetdefault.Click += new System.EventHandler(this.label1_Click);
             // 
             // VariableFilterCtrl
             // 
@@ -95,7 +110,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "VariableFilterCtrl";
-            this.Size = new System.Drawing.Size(467, 30);
+            this.Size = new System.Drawing.Size(559, 30);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
@@ -109,6 +124,7 @@
         private System.Windows.Forms.Label lblnewVar;
         private System.Windows.Forms.Label lblsave;
         private System.Windows.Forms.TextBox tbvarname;
+        private System.Windows.Forms.Label lblsetdefault;
 
     }
 }

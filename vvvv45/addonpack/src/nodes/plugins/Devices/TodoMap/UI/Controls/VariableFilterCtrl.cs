@@ -104,5 +104,10 @@ namespace VVVV.TodoMap.UI.Controls
                 this.engine.RegisterVariable(var);  
             }           
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

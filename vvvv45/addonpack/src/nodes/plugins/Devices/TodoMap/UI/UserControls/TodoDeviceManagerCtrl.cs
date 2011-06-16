@@ -173,6 +173,8 @@ namespace VVVV.TodoMap.UI.UserControls
         public void RefreshInputDevice()
         {
             this.lvMidiInput.Items.Clear();
+            this.cmbClock.Items.Clear();
+            
 
             for (int i = 0; i < InputDevice.DeviceCount; i++)
             {
@@ -181,6 +183,7 @@ namespace VVVV.TodoMap.UI.UserControls
                 lv.SubItems.Add(InputDevice.GetDeviceCapabilities(i).name);
                 lv.SubItems.Add(new ListViewItem.ListViewSubItem(lv, "False"));
                 lv.SubItems.Add(new ListViewItem.ListViewSubItem(lv, "Connected"));
+                this.cmbClock.Items.Add(InputDevice.GetDeviceCapabilities(i).name);
             }
         }
 

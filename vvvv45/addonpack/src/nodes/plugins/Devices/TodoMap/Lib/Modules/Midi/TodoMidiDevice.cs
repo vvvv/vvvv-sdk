@@ -19,13 +19,13 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
 
         private List<eTodoMidiStatus> inputstatus = new List<eTodoMidiStatus>();
         private Dictionary<int, InputDevice> indevs = new Dictionary<int, InputDevice>();
+        private int clockdevice = -1;
 
         //private List<OutputDevice> outputs;
 
         private List<eTodoMidiStatus> outputstatus = new List<eTodoMidiStatus>();
         private Dictionary<int, OutputDevice> outdevs = new Dictionary<int, OutputDevice>();
         private List<string> outputdevname = new List<string>();
-
 
         private UsbDetector usb;
 
@@ -457,5 +457,23 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
             }          
         }
         #endregion
+
+        public void SetClockDevice(int index)
+        {
+            if (this.indevs.ContainsKey(this.clockdevice))
+            {
+                this.indevs[index].SysRealtimeMessageReceived -= TodoMidiDevice_SysRealtimeMessageReceived;
+            }
+            this.clockdevice = index;
+            if (this.indevs.ContainsKey(this.clockdevice))
+            {
+                this.indevs[index].SysRealtimeMessageReceived += TodoMidiDevice_SysRealtimeMessageReceived;
+            }
+        }
+
+        private void TodoMidiDevice_SysRealtimeMessageReceived(object sender, SysRealtimeMessageEventArgs e)
+        {
+            
+        }
     }
 }

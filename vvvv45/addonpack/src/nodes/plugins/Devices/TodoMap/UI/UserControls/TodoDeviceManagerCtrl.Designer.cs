@@ -29,10 +29,12 @@
         private void InitializeComponent()
         {
             this.mainLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.grpClock = new System.Windows.Forms.GroupBox();
             this.grpMidiInput = new System.Windows.Forms.GroupBox();
             this.grpMidiOutput = new System.Windows.Forms.GroupBox();
-            this.grpClock = new System.Windows.Forms.GroupBox();
+            this.cmbClock = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.mainLayout.SuspendLayout();
             this.grpClock.SuspendLayout();
             this.SuspendLayout();
@@ -56,6 +58,19 @@
             this.mainLayout.Size = new System.Drawing.Size(602, 371);
             this.mainLayout.TabIndex = 0;
             // 
+            // grpClock
+            // 
+            this.grpClock.Controls.Add(this.label2);
+            this.grpClock.Controls.Add(this.label1);
+            this.grpClock.Controls.Add(this.cmbClock);
+            this.grpClock.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpClock.Location = new System.Drawing.Point(3, 243);
+            this.grpClock.Name = "grpClock";
+            this.grpClock.Size = new System.Drawing.Size(596, 125);
+            this.grpClock.TabIndex = 2;
+            this.grpClock.TabStop = false;
+            this.grpClock.Text = "Midi Clock Settings";
+            // 
             // grpMidiInput
             // 
             this.grpMidiInput.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -76,25 +91,31 @@
             this.grpMidiOutput.TabStop = false;
             this.grpMidiOutput.Text = "Midi Output Settings";
             // 
-            // grpClock
+            // cmbClock
             // 
-            this.grpClock.Controls.Add(this.label1);
-            this.grpClock.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpClock.Location = new System.Drawing.Point(3, 243);
-            this.grpClock.Name = "grpClock";
-            this.grpClock.Size = new System.Drawing.Size(596, 125);
-            this.grpClock.TabIndex = 2;
-            this.grpClock.TabStop = false;
-            this.grpClock.Text = "Midi Clock Settings";
+            this.cmbClock.FormattingEnabled = true;
+            this.cmbClock.Location = new System.Drawing.Point(106, 19);
+            this.cmbClock.Name = "cmbClock";
+            this.cmbClock.Size = new System.Drawing.Size(142, 21);
+            this.cmbClock.TabIndex = 0;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(239, 48);
+            this.label1.Location = new System.Drawing.Point(7, 19);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(70, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Coming Soon";
+            this.label1.Size = new System.Drawing.Size(100, 23);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Clock Device:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(254, 19);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(100, 23);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Current Time:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // TodoDeviceManagerCtrl
             // 
@@ -105,7 +126,6 @@
             this.Size = new System.Drawing.Size(602, 371);
             this.mainLayout.ResumeLayout(false);
             this.grpClock.ResumeLayout(false);
-            this.grpClock.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -117,6 +137,8 @@
         private System.Windows.Forms.GroupBox grpMidiOutput;
         private System.Windows.Forms.GroupBox grpClock;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cmbClock;
+        private System.Windows.Forms.Label label2;
 
     }
 }
