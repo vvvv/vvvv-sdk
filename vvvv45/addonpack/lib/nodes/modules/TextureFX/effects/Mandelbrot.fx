@@ -34,4 +34,4 @@ float4 p0(float2 vp:vpos,float2 xx:TEXCOORD0):color{float2 x=(vp+.5)/R;
     return c;
 }
 void vs2d(inout float4 vp:POSITION0,inout float2 xx:TEXCOORD0){vp.xy*=2;}
-technique Posterize{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 p0();}}
+technique Fractal{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 p0();}}

@@ -8,4 +8,4 @@ float4 p0(float2 x:TEXCOORD0):color{
     float4 c=tex2D(s0,floor(vp/sz)*sz/R+.5/R);
     return c;
 }
-technique InvertColor{pass pp0{vertexshader=null;pixelshader=compile ps_2_0 p0();}}
+technique Pixelize{pass pp0{vertexshader=null;pixelshader=compile ps_2_0 p0();}}
