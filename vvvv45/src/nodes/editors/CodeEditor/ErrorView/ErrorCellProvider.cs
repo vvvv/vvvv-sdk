@@ -12,7 +12,7 @@ namespace VVVV.HDE.CodeEditor.ErrorView
 	/// <summary>
 	/// Describes a compiler error.
 	/// </summary>
-	public class ErrorCellProvider : IEnumerable<Cell>
+	public class ErrorCellProvider : IEnumerable<ICell>
 	{
 		protected CompilerError FError;
 		
@@ -21,7 +21,7 @@ namespace VVVV.HDE.CodeEditor.ErrorView
 			FError = error;
 		}
 		
-		public IEnumerator<Cell> GetEnumerator()
+		public IEnumerator<ICell> GetEnumerator()
 		{
 		    yield return new Cell(FError.IsWarning ? "W" : "E", typeof(string));
 			yield return new Cell(FError.Line, typeof(int));

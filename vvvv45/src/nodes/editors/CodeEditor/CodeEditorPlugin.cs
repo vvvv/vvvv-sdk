@@ -125,8 +125,8 @@ namespace VVVV.HDE.CodeEditor
             
             var registry = new MappingRegistry();
             registry.RegisterDefaultMapping<IEnumerable<Column>, ErrorCollectionColumnProvider>();
-            registry.RegisterMapping<CompilerError, IEnumerable<Cell>, ErrorCellProvider>();
-            registry.RegisterMapping<RuntimeError, IEnumerable<Cell>, RuntimeErrorCellProvider>();
+            registry.RegisterMapping<CompilerError, IEnumerable<ICell>, ErrorCellProvider>();
+            registry.RegisterMapping<RuntimeError, IEnumerable<ICell>, RuntimeErrorCellProvider>();
             
             FErrorTableViewer.Registry = registry;
             FErrorTableViewer.Input = FErrorList;

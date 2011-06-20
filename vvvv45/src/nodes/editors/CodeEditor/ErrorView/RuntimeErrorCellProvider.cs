@@ -13,7 +13,7 @@ namespace VVVV.HDE.CodeEditor.ErrorView
 	/// <summary>
 	/// Describes a runtime error.
 	/// </summary>
-	public class RuntimeErrorCellProvider : IEnumerable<Cell>
+	public class RuntimeErrorCellProvider : IEnumerable<ICell>
 	{
 		protected RuntimeError FError;
 		
@@ -22,7 +22,7 @@ namespace VVVV.HDE.CodeEditor.ErrorView
 			FError = error;
 		}
 		
-		public IEnumerator<Cell> GetEnumerator()
+		public IEnumerator<ICell> GetEnumerator()
 		{
 		    yield return new Cell("R", typeof(string));
 			yield return new Cell(FError.Line, typeof(int));
