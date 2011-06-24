@@ -86,7 +86,7 @@ namespace VVVV.Hosting.Factories
 					//effects are actually being compiled by vvvv when nodeinfo is update
 					//so we need to intervere with the doCompile
 					project.DoCompileEvent += project_DoCompileEvent;
-				    //in turn not longer needs the following:
+					//in turn not longer needs the following:
 					//project.ProjectCompiledSuccessfully += project_ProjectCompiledSuccessfully;
 				}
 				else
@@ -103,7 +103,7 @@ namespace VVVV.Hosting.Factories
 
 		void project_DoCompileEvent(object sender, EventArgs e)
 		{
-		    var project = sender as FXProject;
+			var project = sender as FXProject;
 			var filename = project.Location.LocalPath;
 			
 			LoadNodeInfoFromEffect(filename, project);
@@ -113,7 +113,7 @@ namespace VVVV.Hosting.Factories
 //		{
 //			var project = sender as FXProject;
 //			var filename = project.Location.LocalPath;
-//			
+//
 //			LoadNodeInfoFromEffect(filename);
 //		}
 		
@@ -196,40 +196,52 @@ namespace VVVV.Hosting.Factories
 			{
 				string filePath = project.Location.LocalPath;
 				string eCoords;
-				int eLine, eChar;				
+				int eLine, eChar;
 				string eNumber;
 				string eText = "";
 				
-				//split the line at :
+				//split the line at ": "
+				//which results in 3 or 4 lines:
+				//[0] filename (line, character)
+				//[1] error/warning code
+				//[2] (optional) erroneous character
+				//[3] error description
 				var eItems = line.Split(new string[1]{": "}, StringSplitOptions.None);
+				
+				//extract line/char substring
 				int start = eItems[0].IndexOf('(');
 				int end = eItems[0].IndexOf(')');
 				
+				//should not happen with latest compiler used, but
 				//if there is no linenumber in braces continue with the next error
-				//this may be a warning
 				if (start == -1)
 					continue;
 				
 				if (start > 0)
 				{
-				    // we need to guess here. shader compiler outputs relative paths.
-				    // we don't know if the include was local or global
-				    string relativePath = eItems[0].Substring(0, start);
-				    
-				    filePath = Path.Combine(project.Location.GetLocalDir(), relativePath);
-				    if (!File.Exists(filePath))
-				    {
-				        string fileName = Path.GetFileName(relativePath);
-				    
-    				    foreach (var reference in project.References)
-    				    {
-    				        var referenceFileName = Path.GetFileName((reference as FXReference).ReferencedDocument.Location.LocalPath);
-    				        if (referenceFileName.ToLower() == fileName.ToLower())
-    				        {
-    				            filePath = reference.AssemblyLocation;
-    				        }
-    				    }
-				    }
+					string relativePath = eItems[0].Substring(0, start);
+					
+					//if this is a path to an include..
+					if (relativePath != Path.Combine(FHDEHost.ExePath, "memory"))
+					{
+						// we need to guess here. shader compiler outputs relative paths.
+						// we don't know if the include was "local" or <global>
+						
+						filePath = Path.Combine(project.Location.GetLocalDir(), relativePath);
+						if (!File.Exists(filePath))
+						{
+							string fileName = Path.GetFileName(relativePath);
+							
+							foreach (var reference in project.References)
+							{
+								var referenceFileName = Path.GetFileName((reference as FXReference).ReferencedDocument.Location.LocalPath);
+								if (referenceFileName.ToLower() == fileName.ToLower())
+								{
+									filePath = reference.AssemblyLocation;
+								}
+							}
+						}
+					}
 				}
 				
 				eCoords = eItems[0].Substring(start+1, end-start-1);
@@ -237,12 +249,22 @@ namespace VVVV.Hosting.Factories
 				eLine = Convert.ToInt32(eLineChar[0]);
 				eChar = Convert.ToInt32(eLineChar[1]);
 				
-				eNumber = eItems[1].Substring(6, 5);
+				bool isWarning = false;
+				if (eItems[1].StartsWith("warning"))
+				{
+					isWarning = true;
+					eNumber = eItems[1].Substring(8, 5);	
+				}
+				else
+					eNumber = eItems[1].Substring(6, 5);
 				
-				for (int i = 2; i < eItems.Length; i++)
-					eText += eItems[i];
+				eText = eItems[2];
+				if (eItems.Length > 3)
+					eText += ": " + eItems[3];
 				
-				compilerResults.Errors.Add(new CompilerError(filePath, eLine, eChar, eNumber, eText));
+				var error = new CompilerError(filePath, eLine, eChar, eNumber, eText);
+				error.IsWarning = isWarning;
+				compilerResults.Errors.Add(error);
 			}
 			
 			project.CompilerResults = compilerResults;
