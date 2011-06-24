@@ -601,7 +601,7 @@ namespace VVVV.HDE.CodeEditor
 				}
 				return true;
 			}
-			else if (ke.Control && (ke.KeyCode == Keys.NumPad0 || ke.KeyCode == Keys.D0))
+			else if ((ke.Control && !ke.Alt) && (ke.KeyCode == Keys.NumPad0 || ke.KeyCode == Keys.D0))
 			{
 				this.Font = new Font(this.Font.Name, 10);
 				return true;
