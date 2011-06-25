@@ -17,5 +17,5 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     c.rgb=normalize(c.rgb)*sqrt(3)*pow(length(c.rgb)/sqrt(3),pow(2,Contrast))*pow(2,Brightness);
     return c;
 }
-void vs2d(inout float4 vp:POSITION0){vp.xy*=2;}
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
 technique HSCB{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 p0();}}

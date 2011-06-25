@@ -1,5 +1,4 @@
 float2 R;
-int2 PixelSize;
 texture tex0;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 texture tex1;
@@ -15,4 +14,5 @@ float4 p0(float2 x:TEXCOORD0):color{
     c.rgb=normalize(c.rgb)*sqrt(3)*tex2D(s1,(frac(vp/sz)+float2(grey*176,0))/float2(176,1));
     return c;
 }
-technique Ascii{pass pp0{vertexshader=null;pixelshader=compile ps_2_0 p0();}}
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
+technique Ascii{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 p0();}}

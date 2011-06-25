@@ -1,5 +1,5 @@
 float2 R;
-float2 Cells;
+float2 Cells <float uimin=0.0;> = (8.0,8.0);
 bool Mir;
 float Rotate;
 float2 Scale;
@@ -12,5 +12,5 @@ float4 p0(float2 x:TEXCOORD0):color{
     float4 c=tex2D(s0,dx);
     return c;
 }
-
-technique Mosaic{pass pp0{vertexshader=null;pixelshader=compile ps_2_0 p0();}}
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
+technique Mosaic{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 p0();}}

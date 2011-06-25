@@ -17,10 +17,13 @@ float4 p0(float2 x:TEXCOORD0):color{
     diff=mx((abs(c-tex2D(s1,x))*pow(2,Alpha)).xyz);
     float2 off=Offset;
     if(KeepSharp)off=round(off);
-    c=lerp(tex2D(s2,x+off/R),c,saturate(diff));
+	float4 pre=tex2D(s2,x+off/R);
+	//pre.rgb=1-saturate((pre.rgb-.5)*1.1+.5);
+    c=lerp(pre,c,saturate(diff));
     //float4 e=tex2D(s3,x);
     //c=lerp(c,e,e.a);
     //c.a=1;
     return c;
 }
-technique InvertColor{pass pp0{vertexshader=null;pixelshader=compile ps_2_0 p0();}}
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
+technique InvertColor{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 p0();}}

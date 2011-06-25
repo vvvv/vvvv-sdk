@@ -1,5 +1,5 @@
 float2 R;
-float Fader;
+float Fader <float uimin=0.0; float uimax=1.0;> = 0.5;
 float V;
 texture tex0,tex1,tex2,tex3;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
@@ -12,4 +12,5 @@ float4 psJoin(float2 x:TEXCOORD0):color{
     float4 c=lerp(c0,c1,saturate(lerp(Fader,c2,V)));
     return c;
 }
-technique TJoin{pass pp0{vertexshader=null;pixelshader=compile ps_2_0 psJoin();}}
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
+technique TJoin{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 psJoin();}}

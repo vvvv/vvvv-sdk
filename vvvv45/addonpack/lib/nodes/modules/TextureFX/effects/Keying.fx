@@ -1,7 +1,7 @@
 float2 R;
-float Threshold;
-float SmoothInvert;
-float AlphaBlur;
+float Threshold <float uimin=0.0; float uimax=1.0;> = 0.3;
+float SmoothInvert <float uimin=0.0; float uimax=1.0;> = 0.1;
+float AlphaBlur <float uimin=0.0; float uimax=1.0;> = 0.3;
 bool SourceAlpha;
 bool Premultiply;
 texture tex0;
@@ -30,6 +30,6 @@ float4 psSATUR(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     if(SourceAlpha)c.a*=map.a;
     return c;
 }
-void vs2d(inout float4 vp:POSITION0){vp.xy*=2;}
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
 technique Luma{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 psLUMA();}}
 technique Saturation{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 psSATUR();}}

@@ -35,7 +35,7 @@ float4 p0_RED_to_ALPHA(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     c.a=c.r;
     return c;
 }
-void vs2d(inout float4 vp:POSITION0){vp.xy*=2;}
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
 technique RGB_to_HSL{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 p0_RGB_to_HSL();}}
 technique RGB_to_HSV{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 p0_RGB_to_HSV();}}
 technique HSL_to_RGB{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 p0_HSL_to_RGB();}}

@@ -21,5 +21,6 @@ float4 psGlow(float2 x:TEXCOORD0):color{
     float4 c=saturate(lerp(ColorA,ColorB,grad));
     return c;
 }
-technique Linear{pass pp0{vertexshader=null;pixelshader=compile ps_2_0 psDir();}}
-technique Radial{pass pp0{vertexshader=null;pixelshader=compile ps_2_0 psGlow();}}
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
+technique Linear{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 psDir();}}
+technique Radial{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 psGlow();}}

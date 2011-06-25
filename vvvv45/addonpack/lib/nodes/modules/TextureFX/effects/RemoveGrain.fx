@@ -1,14 +1,13 @@
 float2 R;
-float Width;
-float Balance;
-float SharpEdges;
+float Width <float uimin=0.0;>;
+float Balance=0;
+float SharpEdges <float uimin=0.0;>;
 texture tex0,tex1;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 
 float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     float4 c=0;
     float sharp=0;
-    float bal=.5;
     sharp=max(sharp,fwidth(length(tex2Dlod(s0,float4(x,0,5)).xyz)))*pow(2,Balance/1.);
     sharp=max(sharp,fwidth(length(tex2Dlod(s0,float4(x,0,4)).xyz)))*pow(2,Balance/2.);
     sharp=max(sharp,fwidth(length(tex2Dlod(s0,float4(x,0,3)).xyz)))*pow(2,Balance/3.);
@@ -20,5 +19,5 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     return c;
 }
 
-void vs2d(inout float4 vp:POSITION0){vp.xy*=2;}
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
 technique Clamp{pass pp0{AddressU[0]=CLAMP;AddressV[0]=CLAMP;vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 p0();}}

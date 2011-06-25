@@ -2,7 +2,7 @@ float2 R;
 float4 ColorA:COLOR = {0.0, 0.0, 0.0, 1};
 float4 ColorB:COLOR = {1.0, 1.0, 1.0, 1};
 float2 Gamma={-4.0,-4.0};
-float2 ClampBody={0.0,0.0};
+float2 ClampBody <float uimin=0.0; float uimax=1.0;> = {0.0,0.0};
 float2 XY={0.0,0.0};
 float2 Scale={0.0,0.0};
 float Rotate=0;
@@ -13,4 +13,5 @@ float4 p0(float2 x:TEXCOORD0):color{
        c=lerp(ColorA,ColorB,c);
        return c;
 }
-technique Pillow{pass pp0{vertexshader=null;pixelshader=compile ps_2_0 p0();}}
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
+technique Pillow{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 p0();}}

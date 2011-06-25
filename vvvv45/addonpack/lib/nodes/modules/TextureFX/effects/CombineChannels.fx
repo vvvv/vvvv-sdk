@@ -29,7 +29,7 @@ float4 pMin(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     float4 c=lerp(a,b,a*faderA>b*faderB);
     return c;
 }
-void vs2d(inout float4 vp:POSITION0){vp.xy*=2;}
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
 technique Add{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 pAdd();}}
 technique Mul{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 pMul();}}
 technique Max{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 pMax();}}

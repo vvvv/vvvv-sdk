@@ -1,7 +1,7 @@
 float2 R;
-float4 Levels;
+float4 Levels <float uimin=1.0;> = (4.0,4.0,4.0,4.0);
 bool Alpha;
-float Dither;
+float Dither <float uimin=0.0;>;
 texture tex0;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
@@ -10,5 +10,5 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     if(!Alpha)c.a=pa;
     return c;
 }
-void vs2d(inout float4 vp:POSITION0){vp.xy*=2;}
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
 technique Posterize{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 p0();}}

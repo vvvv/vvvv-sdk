@@ -16,7 +16,7 @@ col2 psSplit(float2 x:TEXCOORD0):color{
     return RGBA;
 }
 float4 psJoin(float2 x:TEXCOORD0):color{
-       if(!any(V))return 0;
+       //if(!any(V))return 0;
     float4 c0=tex2D(s0,x)*V.r;
     float4 c1=tex2D(s1,x)*V.g;
     float4 c2=tex2D(s2,x)*V.b;
@@ -27,8 +27,9 @@ float4 psJoin(float2 x:TEXCOORD0):color{
     c0=float4(1,0,0,0)*max(c0.x,max(c0.y,c0.z));
     c1=float4(0,1,0,0)*max(c1.x,max(c1.y,c1.z));
     c2=float4(0,0,1,0)*max(c2.x,max(c2.y,c2.z));
-    float4 c=c0+c1+c2+c3;
+    float4 c=(c0+c1+c2+c3)*any(V);
     return c;
 }
-technique TSplit{pass pp0{vertexshader=null;pixelshader=compile ps_2_0 psSplit();}}
-technique TJoin{pass pp0{vertexshader=null;pixelshader=compile ps_2_0 psJoin();}}
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
+technique TSplit{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 psSplit();}}
+technique TJoin{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 psJoin();}}

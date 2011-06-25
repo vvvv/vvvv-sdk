@@ -62,7 +62,7 @@ float4 p3(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     c.a=tex2Dlod(s1,float4(x,0,1)).a;
     return c;
 }
-void vs2d(inout float4 vp:POSITION0){vp.xy*=2;}
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
 technique tc0{
 //MipLodBias[0]=-1.0;MipLodBias[1]=-1.0;vertexshader=NULL;
     pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 p0();}

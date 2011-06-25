@@ -1,5 +1,5 @@
 float2 R;
-//float Smooth <float uimin=1.0; float uimax=16.0;> = 5.0;
+float Smooth <float uimin=1.0; float uimax=32.0;> = 3.0;
 float Position;
 float Part;
 float Amount;
@@ -24,7 +24,15 @@ float4 fd(float4 c,float k,float2 x,float sm){
        float num=k+Part*15.0;
        //c*=smoothstep(1./80.,0,abs(sm-num/45.));
        //c*=step(abs(sm-num/(Amount-1)),.5/Amount);
-       c*=smoothstep(1./(Amount-1),0,abs(sm-num/(Amount-1)));
+       sm=lerp(.5,sm,1./pow(1.1,Smooth-1));
+       float li=(sm-(num)/(Amount-1));
+       //li=max(0,li);
+       //if(num!=0&&num!=Amount-1)li=abs(li);
+       //()
+       li=abs(li);
+      // if(num==0)c.a=1;
+       c*=smoothstep(Smooth/(Amount-1),0,li)/Smooth;
+      // if(num==0){c*=Smooth/2;}
 
        //c=abs(sm-num/45.)<.45/45.;
        //sm=1;
@@ -53,5 +61,5 @@ float4 p0(float2 x:TEXCOORD0):color{
     //c.a=1;
     return c;
 }
-void vs2d(inout float4 vp:POSITION0,inout float2 xx:TEXCOORD0){vp.xy*=2;}
-technique Posterize{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 p0();}}
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
+technique WarpTime{pass pp0{vertexshader=compile vs_3_0 vs2d();pixelshader=compile ps_3_0 p0();}}
