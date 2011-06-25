@@ -8,11 +8,11 @@ sampler s1=sampler_state{Texture=(tex1);MipFilter=LINEAR;MinFilter=LINEAR;MagFil
 
 float4 p0(float2 x:TEXCOORD0):color{
     float4 c=tex2D(s0,x);float pa=c.a;
-    c=c-tex2D(s1,x);
-    c=abs(c*pow(2,Bright));
-
-    if(!Alpha)c.a=pa;
-
+    float4 p=tex2D(s1,x);
+    float4 diff=float4((c-p).rgb,max(c.a,p.a));
+    
+    c.a=length(diff.xyz*diff.a)*pow(2,Bright);
+    if(!Alpha){c.rgb*=c.a;c.a=pa;}
     return c;
 }
 void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
