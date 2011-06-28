@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace VVVV.PluginInterfaces.V2
 {
+    [ComVisible(false)]
     public abstract class Resource<TDevice, TDeviceKey, TResource, TMetadata> : IDisposable where TResource : IDisposable
     {
         private readonly Func<TMetadata, TDevice, TResource> FCreateResourceFunc;

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System.Runtime.InteropServices;
 
 /// <summary>
 /// Contains helper tools for multithreaded developement.
@@ -12,6 +13,7 @@ namespace VVVV.Utils.Concurrent
 	/// Implementation of BlockingQueue based on
 	/// http://stackoverflow.com/questions/530211/creating-a-blocking-queuet-in-net
 	/// </summary>
+	[ComVisible(false)]
 	public class BlockingQueue<T>
 	{
 	    private readonly Queue<T> FQueue = new Queue<T>();

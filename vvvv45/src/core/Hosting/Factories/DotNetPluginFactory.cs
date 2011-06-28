@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -11,7 +12,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-
 using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.Core.Model;
@@ -19,6 +19,7 @@ using VVVV.Core.Runtime;
 using VVVV.Hosting;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.Collections;
 
 namespace VVVV.Hosting.Factories
 {
@@ -58,12 +59,12 @@ namespace VVVV.Hosting.Factories
         private readonly Dictionary<IPluginBase, HostExportProvider> FPinExportProviders;
         private readonly Dictionary<INodeInfo, PluginVersion> FPluginVersion = new Dictionary<INodeInfo, PluginVersion>();
         private readonly CompositionContainer FParentContainer;
+        private readonly Type FReflectionOnlyPluginBaseType;
         protected Regex FDynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
 
         public Dictionary<string, IPluginBase> FNodesPath = new Dictionary<string, IPluginBase>();
         public Dictionary<IPluginBase, IPluginHost2> FNodes = new Dictionary<IPluginBase, IPluginHost2>();
         
-        #region Constructor
         [ImportingConstructor]
         public DotNetPluginFactory(CompositionContainer parentContainer)
             : this(parentContainer, ".dll")
@@ -77,17 +78,21 @@ namespace VVVV.Hosting.Factories
             FParentContainer = parentContainer;
             FPinExportProviders = new Dictionary<IPluginBase, HostExportProvider>();
             FPluginLifetimeContexts = new Dictionary<IPluginBase, ExportLifetimeContext<IPluginBase>>();
+            
+            AppDomain.CurrentDomain.AssemblyResolve += HandleAssemblyResolve;
+            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += HandleReflectionOnlyAssemblyResolve;
+            
+            var pluginInterfacesAssemblyName = typeof(IPluginBase).Assembly.FullName;
+            var pluginInterfacesAssembly = Assembly.ReflectionOnlyLoad(pluginInterfacesAssemblyName);
+            FReflectionOnlyPluginBaseType = pluginInterfacesAssembly.GetExportedTypes().Where(t => t.Name == typeof(IPluginBase).Name).First();
         }
-        #endregion
 
         public event PluginCreatedDelegate PluginCreated;
         public event PluginDeletedDelegate PluginDeleted;
         
-        #region IAddonFactory
-        
-        public override string JobStdSubPath 
+        public override string JobStdSubPath
         {
-            get 
+            get
             {
                 return "plugins";
             }
@@ -95,8 +100,8 @@ namespace VVVV.Hosting.Factories
         
         protected override void AddSubDir(string dir, bool recursive)
         {
-            // Ignore obj directories used by C# IDEs
-            if (dir.EndsWith(@"\obj\x86") || dir.EndsWith(@"\obj\x64")) return;
+            // Ignore obj directories used by C# IDEs and ignore dynamic bin directories
+            if (dir.EndsWith(@"\obj\x86") || dir.EndsWith(@"\obj\x64") || dir.EndsWith(@"\bin\Dynamic")) return;
             
             base.AddSubDir(dir, recursive);
         }
@@ -111,11 +116,11 @@ namespace VVVV.Hosting.Factories
             pluginHost.Plugin = null;
             
             //create the plugin
-			plugin = CreatePlugin(nodeInfo, pluginHost as IPluginHost2);
-			
-			pluginHost.Plugin = plugin;
-			
-			return true;
+            plugin = CreatePlugin(nodeInfo, pluginHost as IPluginHost2);
+            
+            pluginHost.Plugin = plugin;
+            
+            return true;
         }
         
         protected override bool DeleteNode(INodeInfo nodeInfo, IInternalPluginHost pluginHost)
@@ -146,33 +151,36 @@ namespace VVVV.Hosting.Factories
             return nodeInfos;
         }
         
+        private string FCurrentAssemblyDir = string.Empty;
         protected void LoadNodeInfosFromFile(string filename, string sourcefilename, ref List<INodeInfo> nodeInfos, bool commitUpdates)
         {
             // See if it's a .net assembly
             if (!IsDotNetAssembly(filename)) return;
+
+            bool containsV1Plugins = false;
             
-            var assembly = Assembly.LoadFrom(filename);
+            // Remember the current directory for later assembly resolution
+            FCurrentAssemblyDir = Path.GetDirectoryName(filename);
+            
+            var assembly = Assembly.ReflectionOnlyLoadFrom(filename);
             foreach (var type in assembly.GetExportedTypes())
             {
-                if (!type.IsAbstract && !type.IsGenericTypeDefinition && typeof(IPluginBase).IsAssignableFrom(type))
+                if (!type.IsAbstract && !type.IsGenericTypeDefinition && FReflectionOnlyPluginBaseType.IsAssignableFrom(type))
                 {
-                    var attributes = type.GetCustomAttributes(typeof(PluginInfoAttribute), true);
+                    var attributes = CustomAttributeData.GetCustomAttributes(type).Where(ca => ca.Constructor.DeclaringType.FullName == typeof(PluginInfoAttribute).FullName).ToArray();
                     
                     INodeInfo nodeInfo = null;
                     if (attributes.Length > 0)
                     {
                         // V2
-                        var attribute = attributes[0] as PluginInfoAttribute;
-                        nodeInfo = ExtractNodeInfoFromAttribute(attribute, sourcefilename);
-						if (nodeInfo != null)
-                        	FPluginVersion[nodeInfo] = PluginVersion.V2;
+                        nodeInfo = ExtractNodeInfoFromAttributeData(attributes[0], sourcefilename);
+                        if (nodeInfo != null)
+                            FPluginVersion[nodeInfo] = PluginVersion.V2;
                     }
                     else
                     {
-                        // V1
-                        nodeInfo = ExtractNodeInfoFromType(type, sourcefilename);
-						if (nodeInfo != null)
-                        	FPluginVersion[nodeInfo] = PluginVersion.V1;
+                        // V1. See below.
+                        containsV1Plugins = true;
                     }
                     
                     if (nodeInfo != null)
@@ -183,7 +191,30 @@ namespace VVVV.Hosting.Factories
                     }
                 }
             }
-			
+            
+            // V1 plugins need to be loaded in LoadFrom context in order to instantiate the
+            // static PluginInfo field. Type instantiation is not possible in
+            // ReflectionOnly context.
+            // TODO: This is very slow. Think about caching.
+            if (containsV1Plugins)
+            {
+                assembly = Assembly.LoadFrom(filename);
+                foreach (var type in assembly.GetExportedTypes())
+                {
+                    if (!type.IsAbstract && !type.IsGenericTypeDefinition && typeof(IPluginBase).IsAssignableFrom(type))
+                    {
+                        var nodeInfo = ExtractNodeInfoFromType(type, sourcefilename);
+                        if (nodeInfo != null)
+                        {
+                            FPluginVersion[nodeInfo] = PluginVersion.V1;
+                            nodeInfo.Arguments = type.FullName;
+                            nodeInfo.Type = NodeType.Plugin;
+                            nodeInfos.Add(nodeInfo);
+                        }
+                    }
+                }
+            }
+            
             foreach (var nodeInfo in nodeInfos)
             {
                 nodeInfo.Factory = this;
@@ -192,21 +223,50 @@ namespace VVVV.Hosting.Factories
             }
         }
         
-        private INodeInfo ExtractNodeInfoFromAttribute(PluginInfoAttribute attribute, string filename)
+        private INodeInfo ExtractNodeInfoFromAttributeData(CustomAttributeData attribute, string filename)
         {
-            var nodeInfo = FNodeInfoFactory.CreateNodeInfo(attribute.Name, attribute.Category, attribute.Version, filename, true);
-            nodeInfo.Shortcut = attribute.Shortcut;
-            nodeInfo.Author = attribute.Author;
-            nodeInfo.Help = attribute.Help;
-            nodeInfo.Tags = attribute.Tags;
-            nodeInfo.Bugs = attribute.Bugs;
-            nodeInfo.Credits = attribute.Credits;
-            nodeInfo.Warnings = attribute.Warnings;
-            nodeInfo.InitialWindowSize = new Size(attribute.InitialWindowWidth, attribute.InitialWindowHeight);
-            nodeInfo.InitialBoxSize = new Size(attribute.InitialBoxWidth, attribute.InitialBoxHeight);
-            nodeInfo.InitialComponentMode = attribute.InitialComponentMode;
-            nodeInfo.AutoEvaluate = attribute.AutoEvaluate;
-            nodeInfo.Ignore = attribute.Ignore;
+            var namedArguments = new Dictionary<string, object>();
+            foreach (var namedArgument in attribute.NamedArguments)
+            {
+                namedArguments[namedArgument.MemberInfo.Name] = namedArgument.TypedValue.Value;
+            }
+            
+            var nodeInfo = FNodeInfoFactory.CreateNodeInfo(
+                (string) namedArguments.ValueOrDefault("Name"),
+                (string) namedArguments.ValueOrDefault("Category"),
+                (string) namedArguments.ValueOrDefault("Version"),
+                filename,
+                true);
+            
+            namedArguments.Remove("Name");
+            namedArguments.Remove("Category");
+            namedArguments.Remove("Version");
+            
+            if (namedArguments.ContainsKey("InitialWindowWidth") && namedArguments.ContainsKey("InitialWindowHeight"))
+            {
+                nodeInfo.InitialWindowSize = new Size((int) namedArguments["InitialWindowWidth"], (int) namedArguments["InitialWindowHeight"]);
+                namedArguments.Remove("InitialWindowWidth");
+                namedArguments.Remove("InitialWindowHeight");
+            }
+            
+            if (namedArguments.ContainsKey("InitialBoxWidth") && namedArguments.ContainsKey("InitialBoxHeight"))
+            {
+                nodeInfo.InitialBoxSize = new Size((int) namedArguments["InitialBoxWidth"], (int) namedArguments["InitialBoxHeight"]);
+                namedArguments.Remove("InitialBoxWidth");
+                namedArguments.Remove("InitialBoxHeight");
+            }
+            
+            if (namedArguments.ContainsKey("InitialComponentMode"))
+            {
+                nodeInfo.InitialComponentMode = (TComponentMode) namedArguments["InitialComponentMode"];
+                namedArguments.Remove("InitialComponentMode");
+            }
+            
+            foreach (var entry in namedArguments)
+            {
+                nodeInfo.GetType().InvokeMember((string) entry.Key, BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty, Type.DefaultBinder, nodeInfo, new object[] { entry.Value });
+            }
+
             return nodeInfo;
         }
         
@@ -250,49 +310,48 @@ namespace VVVV.Hosting.Factories
             return nodeInfo;
         }
         
-        #endregion
-        
         public IPluginBase CreatePlugin(INodeInfo nodeInfo, IPluginHost2 pluginHost)
         {
-			var assemblyLocation = GetAssemblyLocation(nodeInfo);
-			switch (FPluginVersion[nodeInfo])
-			{
-				case PluginVersion.V2:
-				{
-					var assembly = Assembly.LoadFrom(assemblyLocation);
-					var type = assembly.GetType(nodeInfo.Arguments);
-					var catalog = new TypeCatalog(type);
-					var pinExportProvider = new HostExportProvider(pluginHost);
-					var exportProviders = new ExportProvider[] { pinExportProvider, FParentContainer };
-					var container = new CompositionContainer(catalog, exportProviders);
-					container.ComposeParts(FPluginImporter);
-				
-					var lifetimeContext = FPluginImporter.PluginExportFactory.CreateExport();
-					var plugin = lifetimeContext.Value;
-			
-					FPluginLifetimeContexts[plugin] = lifetimeContext;
-					FPinExportProviders[plugin] = pinExportProvider;
-
-                    //Send event
-                    if (this.PluginCreated != null) { this.PluginCreated(plugin, pluginHost); }
-			
-					return plugin;
-				}
-				case PluginVersion.V1:
-				{
-					var assembly = Assembly.LoadFrom(assemblyLocation);
-					var plugin = (IPlugin)assembly.CreateInstance(nodeInfo.Arguments);
-			
-					plugin.SetPluginHost (pluginHost);
-
-                    //Send event
-                    if (this.PluginCreated != null) { this.PluginCreated(plugin, pluginHost); }
-
-					return plugin;
-				}
-			}
+            IPluginBase plugin = null;
             
-            throw new InvalidOperationException(string.Format("Can't create plugin '{0}'.", nodeInfo.Systemname));
+            var assemblyLocation = GetAssemblyLocation(nodeInfo);
+            var assembly = Assembly.LoadFrom(assemblyLocation);
+            switch (FPluginVersion[nodeInfo])
+            {
+                case PluginVersion.V2:
+                    {
+                        var type = assembly.GetType(nodeInfo.Arguments);
+                        var catalog = new TypeCatalog(type);
+                        var pinExportProvider = new HostExportProvider(pluginHost);
+                        var exportProviders = new ExportProvider[] { pinExportProvider, FParentContainer };
+                        var container = new CompositionContainer(catalog, exportProviders);
+                        container.ComposeParts(FPluginImporter);
+                        
+                        var lifetimeContext = FPluginImporter.PluginExportFactory.CreateExport();
+                        
+                        plugin = lifetimeContext.Value;
+                        
+                        FPluginLifetimeContexts[plugin] = lifetimeContext;
+                        FPinExportProviders[plugin] = pinExportProvider;
+                        break;
+                    }
+                case PluginVersion.V1:
+                    {
+                        var v1Plugin = (IPlugin)assembly.CreateInstance(nodeInfo.Arguments);
+                        
+                        v1Plugin.SetPluginHost(pluginHost);
+                        
+                        plugin = v1Plugin;
+                        break;
+                    }
+                default:
+                    throw new InvalidOperationException(string.Format("Can't create plugin '{0}'.", nodeInfo.Systemname));
+            }
+            
+            //Send event
+            if (this.PluginCreated != null) { this.PluginCreated(plugin, pluginHost); }
+            
+            return plugin;
         }
         
         public void DisposePlugin(IPluginBase plugin)
@@ -312,13 +371,77 @@ namespace VVVV.Hosting.Factories
                 ((IDisposable) plugin).Dispose();
             }
         }
-		
-		protected virtual string GetAssemblyLocation (INodeInfo nodeInfo)
-		{
-			return nodeInfo.Filename;
-		}
         
-        #region Helper functions
+        protected virtual string GetAssemblyLocation (INodeInfo nodeInfo)
+        {
+            return nodeInfo.Filename;
+        }
+        
+        private Assembly HandleAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            string fullName = args.Name.Trim();
+            string partialName = GetPartialAssemblyName(fullName);
+            
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                AssemblyName name = assembly.GetName();
+                if (name.Name == partialName)
+                    return assembly;
+            }
+            
+            return null;
+        }
+        
+        private Assembly HandleReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            string fullName = args.Name.Trim();
+            string partialName = GetPartialAssemblyName(fullName);
+            
+            foreach (Assembly assembly in AppDomain.CurrentDomain.ReflectionOnlyGetAssemblies())
+            {
+                AssemblyName name = assembly.GetName();
+                if (name.Name == partialName)
+                    return assembly;
+            }
+
+            string fileName = partialName + ".dll";
+            string path = Path.Combine(FCurrentAssemblyDir, fileName);
+            if (File.Exists(path))
+            {
+                return Assembly.ReflectionOnlyLoadFrom(path);
+            }
+            
+            path = Path.Combine(Shell.CallerPath, fileName);
+            if (File.Exists(path))
+            {
+                return Assembly.ReflectionOnlyLoadFrom(path);
+            }
+            
+            return Assembly.ReflectionOnlyLoad(fullName);
+        }
+        
+        private string GetPartialAssemblyName(string fullName)
+        {
+            fullName = fullName.Trim();
+            if (fullName.IndexOf(',') >= 0)
+                return ReplaceLegacyAssemblyNames(fullName.Substring(0, fullName.IndexOf(',')));
+            else
+                return ReplaceLegacyAssemblyNames(fullName);
+        }
+        
+        private string ReplaceLegacyAssemblyNames(string partialName)
+        {
+            switch (partialName)
+            {
+                case "_PluginInterfaces":
+                case "PluginInterfaces":
+                    return "VVVV.PluginInterfaces";
+                case "_Utils":
+                    return "VVVV.Utils";
+                default:
+                    return partialName;
+            }
+        }
         
         // From http://www.anastasiosyal.com/archive/2007/04/17/3.aspx
         private bool IsDotNetAssembly(string fileName)
@@ -372,6 +495,5 @@ namespace VVVV.Hosting.Factories
         {
             return FDynamicRegExp.IsMatch(filename);
         }
-        #endregion
     }
 }

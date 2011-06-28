@@ -510,12 +510,12 @@ namespace VVVV.Hosting
 			return FInternalToProxyMap[nodeInfo];
 		}
 		
-		public bool UpdateNodeInfo(INodeInfo nodeInfo, string name, string category, string version, string filename)
+		public void UpdateNodeInfo(INodeInfo nodeInfo, string name, string category, string version, string filename)
 		{
 			Debug.Assert(FVVVVThread == Thread.CurrentThread);
 			
 			nodeInfo = ToInternal(nodeInfo);
-			return FFactory.UpdateNodeInfo(nodeInfo, name, category, version, filename);
+			FFactory.UpdateNodeInfo(nodeInfo, name, category, version, filename);
 		}
 		
 		public bool ContainsKey(string name, string category, string version, string filename)
@@ -562,16 +562,6 @@ namespace VVVV.Hosting
 		public void NodeInfoUpdatedCB(INodeInfo nodeInfo)
 		{
 			var proxyNodeInfo = FInternalToProxyMap[nodeInfo];
-			
-			// Again a hack. We should really consider moving the cache here.
-			// Problem is a SaveAs operation:
-			// A nodeinfo gets updated with a new filename by this operation and
-			// therefor the cache gets corrupted, since the old filename (which still
-			// exists) points to the updated nodeinfo.
-			// We have to invalidate the cache for the old filename.
-			if (nodeInfo.Filename != proxyNodeInfo.Filename)
-				FHDEHost.InvalidateCache(proxyNodeInfo.Filename);
-			
 			proxyNodeInfo.Reload();
 			OnNodeInfoUpdated(proxyNodeInfo);
 		}

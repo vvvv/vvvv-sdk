@@ -29,7 +29,7 @@ namespace VVVV.Hosting
 		void AddListener(INodeInfoListener listener);
 	    void RemoveListener(INodeInfoListener listener);
 		INodeInfo CreateNodeInfo(string name, string category, string version, string filename, bool beginUpdate);
-		bool UpdateNodeInfo(INodeInfo nodeInfo, string name, string category, string version, string filename);
+		void UpdateNodeInfo(INodeInfo nodeInfo, string name, string category, string version, string filename);
 		void DestroyNodeInfo(INodeInfo nodeInfo);
 		bool ContainsKey(string name, string category, string version, string filename);
 		INodeInfo[] NodeInfos

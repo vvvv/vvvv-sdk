@@ -61,12 +61,12 @@ namespace VVVV.Hosting.Factories
 			FHDEHost.MouseDown += FHDEHost_MouseDown;
 		}
 
-		public IEnumerable<INodeInfo> ExtractNodeInfos(string filename, string arguments)
+		public INodeInfo[] ExtractNodeInfos(string filename, string arguments)
 		{
 			// Present the user with all files associated with this filename.
 			var nodeInfo = CreateNodeInfo(filename);
 			if (nodeInfo != null)
-				yield return nodeInfo;
+			    return new INodeInfo[] { nodeInfo };
 			
 			if (FInOpen)
 			{
@@ -88,12 +88,14 @@ namespace VVVV.Hosting.Factories
 							{
 								nodeInfo = CreateNodeInfo(doc.Location.LocalPath);
 								if (nodeInfo != null)
-									yield return nodeInfo;
+									return new INodeInfo[] { nodeInfo };
 							}
 						}
 					}
 				}
 			}
+			
+			return new INodeInfo[0];
 		}
 		
 		private INodeInfo CreateNodeInfo(string filename)
@@ -485,7 +487,6 @@ namespace VVVV.Hosting.Factories
 				    FNodeToAttach = null;
 				FInOpen = true;
 				
-				hdeHost.InvalidateCache(filename);
 				FHDEHost.AddonFactories.Clear();
 				FHDEHost.AddonFactories.Add(this);
 				FHDEHost.Open(filename, false, window);

@@ -22,9 +22,9 @@ namespace VVVV.Hosting
 		}
 
 		#region IAddonFactory implementation
-		public System.Collections.Generic.IEnumerable<INodeInfo> ExtractNodeInfos (string filename, string arguments)
+		public INodeInfo[] ExtractNodeInfos (string filename, string arguments)
 		{
-			yield break;
+		    return new INodeInfo[0];
 		}
 
 		public bool Create (INodeInfo nodeInfo, INode host)

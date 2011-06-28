@@ -25,10 +25,18 @@ namespace VVVV.Hosting.Factories
         [Import]
         protected ILogger Logger { get; set; }
         
-        public PatchFactory()
-            : base(".v4p;.v4x")
-        {
-        }
+        [ImportingConstructor]
+		public PatchFactory (INodeInfoFactory nodeInfoFactory)
+		    : base(".v4p;.v4x")
+		{
+			nodeInfoFactory.NodeInfoAdded += HandleNodeInfoFactoryNodeInfoAdded;
+		}
+
+		void HandleNodeInfoFactoryNodeInfoAdded (object sender, INodeInfo nodeInfo)
+		{
+			if (nodeInfo.Type == NodeType.Patch || nodeInfo.Type == NodeType.Module)
+				nodeInfo.Factory = this;
+		}
         
         public override string JobStdSubPath {
             get {

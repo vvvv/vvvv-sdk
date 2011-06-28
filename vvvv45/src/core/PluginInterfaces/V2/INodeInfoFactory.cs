@@ -31,8 +31,7 @@ namespace VVVV.PluginInterfaces.V2
 		/// <param name="category">The new category.</param>
 		/// <param name="version">The new version.</param>
 		/// <param name="filename">The new absolute path to source file which contains this <see cref="INodeInfo">node info</see>.</param>
-		/// <returns>Whether the update was successful or not.</returns>
-		bool UpdateNodeInfo(INodeInfo nodeInfo, string name, string category, string version, string filename);
+		void UpdateNodeInfo(INodeInfo nodeInfo, string name, string category, string version, string filename);
 		
 		/// <summary>
 		/// Destroy given node info.
