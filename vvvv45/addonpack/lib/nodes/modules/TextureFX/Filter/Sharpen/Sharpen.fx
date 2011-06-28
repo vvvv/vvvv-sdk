@@ -1,16 +1,22 @@
 float2 R;
 float Sharp <float uimin=0.0;>;
 float Radius <float uimin=0.0; float uimax=1.0;> = 0.1;
+float Saturation <float uimin=0.0; float uimax=1.0;> = 0.2;
+float Gamma <float uimin=-1.0; float uimax=1.0;> = 0.2;
 texture tex0;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     float4 c=0;
     c=tex2Dlod(s0,float4(x,0,1));
     float maxl=log2(max(R.x,R.y))*saturate(Radius)+.5;
+	float4 sh=0;
     for (float i=0;i<7;i++){
-        c+=(tex2Dlod(s0,float4(x,0,1+i*maxl))-tex2Dlod(s0,float4(x,0,1+(i+1)*maxl)))*Sharp*8/sqrt(Radius*4+.5)/pow(4,i*2);
+        sh+=(tex2Dlod(s0,float4(x,0,1+i*maxl))-tex2Dlod(s0,float4(x,0,1+(i+1)*maxl)))*Sharp*8/sqrt(Radius*4+.5)/pow(4,i*2);
     }
-
+	sh.rgb=lerp(dot(sh.rgb,1.)/3.,sh.rgb,Saturation);
+	sh.rgb=sign(sh.rgb)*pow(abs(sh.rgb)*5,pow(2,Gamma*2))/5;
+	sh/=1+c;
+	c+=sh;
     return c;
 }
 
