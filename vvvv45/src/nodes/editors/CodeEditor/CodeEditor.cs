@@ -568,7 +568,7 @@ namespace VVVV.HDE.CodeEditor
 			KeyEventArgs ke = new KeyEventArgs((Keys)m.WParam.ToInt32() | ModifierKeys);
 			FNeedsKeyUp = !(m.Msg == 0x101);
 			
-			if (ke.Control && ke.KeyCode == Keys.S)
+			if (ke.Control && ke.KeyCode == Keys.S && m.Msg == 0x100)
 			{
 				if (!TextDocument.IsReadOnly)
 				{
@@ -577,7 +577,7 @@ namespace VVVV.HDE.CodeEditor
 				}
 				return true;
 			}
-			else if (ke.Control && ke.KeyCode == Keys.F)
+			else if (ke.Control && ke.KeyCode == Keys.F && m.Msg == 0x100)
 			{
 				// Show search bar
 				FSearchBar.ShowSearchBar();
