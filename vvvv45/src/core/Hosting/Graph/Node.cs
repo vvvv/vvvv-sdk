@@ -151,6 +151,8 @@ namespace VVVV.Hosting.Graph
             
             FNodes.Remove(FInternalCOMInterf);
             
+            FNodeInfoFactory.NodeInfoUpdated -= HandleNodeInfoUpdated;
+            
             base.Dispose();
         }
         
@@ -221,6 +223,8 @@ namespace VVVV.Hosting.Graph
                 if (FName == null)
                 {
                     FName = ComputeName();
+                    // Watch node infos
+                    FNodeInfoFactory.NodeInfoUpdated += HandleNodeInfoUpdated;
                 }
                 
                 return FName;
@@ -232,6 +236,14 @@ namespace VVVV.Hosting.Graph
                     OnRenamed(value);
                     FName = value;
                 }
+            }
+        }
+
+        void HandleNodeInfoUpdated(object sender, INodeInfo nodeInfo)
+        {
+            if (nodeInfo == FNodeInfo)
+            {
+                Name = ComputeName();
             }
         }
         
