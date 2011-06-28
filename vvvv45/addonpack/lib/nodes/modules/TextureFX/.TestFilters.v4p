@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.2.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\modules\common\TextureFX\.TestFilters.v4p" filename="C:\Users\joreg\Desktop\contributions\modules\TextureFX\_Tester.v4p" systemname="_Tester">
-   <BOUNDS height="8550" left="0" top="7095" type="Window" width="13710">
+   <BOUNDS height="8550" left="0" top="7095" type="Window" width="13755">
    </BOUNDS>
    <NODE componentmode="Hidden" id="1" nodename="FileTexture (EX9.Texture)" systemname="FileTexture (EX9.Texture)">
    <BOUNDS height="100" left="3735" top="1050" type="Node" width="100">
@@ -61,7 +61,7 @@
    </PIN>
    <PIN pinname="Input Count" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Input 3" visible="1" slicecount="1" values="||">
+   <PIN pinname="Input 3" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="16" dstpinname="Input 1" srcnodeid="1" srcpinname="Texture Out">
@@ -129,13 +129,15 @@
    </PIN>
    <PIN pinname="Input 26" visible="1">
    </PIN>
+   <PIN pinname="Input 27" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="465" top="5580" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="555" left="465" top="5580" type="Box" width="540">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="24">
+   <PIN pinname="Y Input Value" slicecount="1" values="20">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -185,7 +187,7 @@
    </BOUNDS>
    <BOUNDS height="1800" left="11460" top="7275" type="Box" width="2400">
    </BOUNDS>
-   <BOUNDS height="2250" left="3240" top="15300" type="Window" width="10335">
+   <BOUNDS height="1890" left="0" top="15660" type="Window" width="13785">
    </BOUNDS>
    </NODE>
    <NODE componentmode="InAWindow" id="27" nodename="Inspektor (VVVV)" systemname="Inspektor (VVVV)">
@@ -848,14 +850,6 @@
    </LINK>
    <LINK dstnodeid="18" dstpinname="Input 20" srcnodeid="60" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="18" dstpinname="Input 21" srcnodeid="63" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="18" dstpinname="Input 22" srcnodeid="68" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="18" dstpinname="Input 23" srcnodeid="58" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="18" dstpinname="Input 24" srcnodeid="57" srcpinname="Output">
-   </LINK>
    <NODE componentmode="InABox" id="72" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="10635" top="2400" type="Node" width="480">
    </BOUNDS>
@@ -868,10 +862,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="18" dstpinname="Input 25" srcnodeid="59" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="18" dstpinname="Input 26" srcnodeid="66" srcpinname="Output">
-   </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Filter\Garbage\Garbage (EX9.Texture Filter).v4p" id="73" nodename="Garbage (EX9.Texture Filter)" systemname="Garbage (EX9.Texture Filter)">
    <BOUNDS height="100" left="10245" top="4920" type="Node" width="100">
    </BOUNDS>
@@ -882,4 +872,32 @@
    <BOUNDS height="11220" left="13815" top="195" type="Window" width="10950">
    </BOUNDS>
    </NODE>
+   <NODE systemname="Displace (EX9.Texture Filter)" filename="%VVVV%\modules\common\TextureFX\Filter\Displace\Displace (EX9.Texture Filter).v4p" nodename="Displace (EX9.Texture Filter)" componentmode="Hidden" id="74">
+   <BOUNDS type="Node" left="7200" top="4140" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Control" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="74" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="74" srcpinname="Output" dstnodeid="18" dstpinname="Input 21">
+   </LINK>
+   <LINK srcnodeid="63" srcpinname="Output" dstnodeid="18" dstpinname="Input 22">
+   </LINK>
+   <LINK srcnodeid="68" srcpinname="Output" dstnodeid="18" dstpinname="Input 23">
+   </LINK>
+   <LINK srcnodeid="58" srcpinname="Output" dstnodeid="18" dstpinname="Input 24">
+   </LINK>
+   <LINK srcnodeid="57" srcpinname="Output" dstnodeid="18" dstpinname="Input 25">
+   </LINK>
+   <LINK srcnodeid="59" srcpinname="Output" dstnodeid="18" dstpinname="Input 26">
+   </LINK>
+   <LINK srcnodeid="66" srcpinname="Output" dstnodeid="18" dstpinname="Input 27">
+   </LINK>
+   <LINK srcnodeid="41" srcpinname="Output" dstnodeid="74" dstpinname="Control">
+   </LINK>
    </PATCH>
