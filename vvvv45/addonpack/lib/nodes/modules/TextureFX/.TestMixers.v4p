@@ -83,9 +83,9 @@
    </PIN>
    <PIN pinname="Switch" visible="1">
    </PIN>
-   <PIN pinname="Input 4" visible="1">
+   <PIN pinname="Input 4" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Input 5" visible="1" slicecount="1" values="||">
+   <PIN pinname="Input 5" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Input 6" slicecount="1" visible="1" values="||">
    </PIN>
@@ -111,7 +111,7 @@
    </BOUNDS>
    <BOUNDS height="555" left="465" top="4680" type="Box" width="540">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="3">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -297,37 +297,7 @@
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Filter\Displace\Displace (EX9.Texture Filter).v4p" id="37" nodename="Displace (EX9.Texture Filter)" systemname="Displace (EX9.Texture Filter)">
-   <BOUNDS height="100" left="3420" top="3720" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="6000" left="13830" top="3960" type="Window" width="9000">
-   </BOUNDS>
-   <PIN pinname="Texture A" visible="1">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <PIN pinname="Texture B" visible="1">
-   </PIN>
-   <PIN pinname="Width" slicecount="1" values="0.2">
-   </PIN>
-   <PIN pinname="Map Smooth" slicecount="1" values="0.4">
-   </PIN>
-   <PIN pinname="Normalize Map" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Height / Green-Blue" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Mode" slicecount="1" values="| Clamp|">
-   </PIN>
-   <BOUNDS left="3420" top="3720" type="Box">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Control" visible="1" slicecount="1" values="||">
+   <PIN pinname="Input 2" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -353,17 +323,17 @@
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
+   <PIN pinname="Input 2" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Group (EX9.Texture Mixer)" filename="%VVVV%\modules\common\TextureFX\Mixer\Group\Group (EX9.Texture Mixer).v4p" nodename="Group (EX9.Texture Mixer)" componentmode="Hidden" id="60">
-   <BOUNDS type="Node" left="6915" top="3720" width="100" height="100">
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Mixer\Group\Group (EX9.Texture Mixer).v4p" id="60" nodename="Group (EX9.Texture Mixer)" systemname="Group (EX9.Texture Mixer)">
+   <BOUNDS height="100" left="3330" top="3735" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
+   <PIN pinname="Input 2" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -388,31 +358,23 @@
    </LINK>
    <LINK dstnodeid="46" dstpinname="Show PerfMeter" srcnodeid="48" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="18" srcpinname="Output" dstnodeid="46" dstpinname="Input">
+   <LINK dstnodeid="46" dstpinname="Input" srcnodeid="18" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="53" dstpinname="Input 1">
+   <LINK dstnodeid="53" dstpinname="Input 1" srcnodeid="16" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="57" srcpinname="Output" dstnodeid="53" dstpinname="Input 2">
+   <LINK dstnodeid="53" dstpinname="Input 2" srcnodeid="57" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="37" dstpinname="Input">
+   <LINK dstnodeid="43" dstpinname="Input 1" srcnodeid="16" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="57" srcpinname="Output" dstnodeid="37" dstpinname="Control">
+   <LINK dstnodeid="43" dstpinname="Input 2" srcnodeid="57" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="43" dstpinname="Input 1">
+   <LINK dstnodeid="60" dstpinname="Input 1" srcnodeid="16" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="57" srcpinname="Output" dstnodeid="43" dstpinname="Input 2">
+   <LINK dstnodeid="60" dstpinname="Input 2" srcnodeid="57" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="60" dstpinname="Input 1">
+   <LINK dstnodeid="18" dstpinname="Input 1" srcnodeid="53" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="57" srcpinname="Output" dstnodeid="60" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="53" srcpinname="Output" dstnodeid="18" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="37" srcpinname="Output" dstnodeid="18" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="43" srcpinname="Output" dstnodeid="18" dstpinname="Input 3">
-   </LINK>
-   <LINK srcnodeid="60" srcpinname="Output" dstnodeid="18" dstpinname="Input 4">
+   <LINK dstnodeid="18" dstpinname="Input 3" srcnodeid="43" srcpinname="Output">
    </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Source\Perlin\Perlin (EX9.Texture Source).v4p" id="41" nodename="Perlin (EX9.Texture Source)" systemname="Perlin (EX9.Texture Source)">
    <BOUNDS height="100" left="5730" top="1125" type="Node" width="100">
@@ -424,8 +386,10 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="41" srcpinname="Output" dstnodeid="57" dstpinname="Input 3">
+   <LINK dstnodeid="57" dstpinname="Input 3" srcnodeid="41" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="41" srcpinname="Output" dstnodeid="16" dstpinname="Input 3">
+   <LINK dstnodeid="16" dstpinname="Input 3" srcnodeid="41" srcpinname="Output">
+   </LINK>
+   <LINK srcnodeid="60" srcpinname="Output" dstnodeid="18" dstpinname="Input 2">
    </LINK>
    </PATCH>
