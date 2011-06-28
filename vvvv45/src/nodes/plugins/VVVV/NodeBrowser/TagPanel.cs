@@ -361,8 +361,8 @@ namespace VVVV.Nodes.NodeBrowser
         
         private void ShowToolTip()
         {
-            if (FHoverLine == -1)
-                return;
+            var selectionIndex = FHoverLine + FScrolledLine;
+            if (selectionIndex < 0 || selectionIndex >= FSelectionList.Count) return;
             
             var ni = FSelectionList[FHoverLine + ScrolledLine];
 
