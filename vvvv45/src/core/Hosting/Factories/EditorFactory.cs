@@ -63,10 +63,12 @@ namespace VVVV.Hosting.Factories
 
 		public INodeInfo[] ExtractNodeInfos(string filename, string arguments)
 		{
+		    var result = new List<INodeInfo>();
+		    
 			// Present the user with all files associated with this filename.
 			var nodeInfo = CreateNodeInfo(filename);
 			if (nodeInfo != null)
-			    return new INodeInfo[] { nodeInfo };
+			    result.Add(nodeInfo);
 			
 			if (FInOpen)
 			{
@@ -88,14 +90,14 @@ namespace VVVV.Hosting.Factories
 							{
 								nodeInfo = CreateNodeInfo(doc.Location.LocalPath);
 								if (nodeInfo != null)
-									return new INodeInfo[] { nodeInfo };
+									result.Add(nodeInfo);
 							}
 						}
 					}
 				}
 			}
 			
-			return new INodeInfo[0];
+			return result.ToArray();
 		}
 		
 		private INodeInfo CreateNodeInfo(string filename)
