@@ -294,6 +294,8 @@ namespace VVVV.Nodes.NodeBrowser
         #region RichTextBox
         void RichTextBoxMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
+            if (FHoverLine < 0 || FHoverLine >= FRichTextBox.Lines.Length) return;
+            
             string username = FRichTextBox.Lines[FHoverLine].Trim();
             FRichTextBox.SelectionStart = FRichTextBox.GetFirstCharIndexFromLine(FHoverLine)+1;
             FTagsTextBox.Focus();
