@@ -77,15 +77,15 @@
    </PIN>
    <PIN pinname="Input Count" slicecount="1" values="5">
    </PIN>
-   <PIN pinname="Input 3" visible="1" slicecount="1" values="||">
+   <PIN pinname="Input 3" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    <PIN pinname="Switch" visible="1">
    </PIN>
-   <PIN pinname="Input 4" visible="1" slicecount="1" values="||">
+   <PIN pinname="Input 4" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Input 5" visible="1" slicecount="1" values="||">
+   <PIN pinname="Input 5" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Input 6" slicecount="1" visible="1" values="||">
    </PIN>
@@ -111,7 +111,7 @@
    </BOUNDS>
    <BOUNDS height="555" left="465" top="4080" type="Box" width="540">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -314,13 +314,13 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="33" srcpinname="Red" dstnodeid="51" dstpinname="Red">
+   <LINK dstnodeid="51" dstpinname="Red" srcnodeid="33" srcpinname="Red">
    </LINK>
-   <LINK srcnodeid="33" srcpinname="Green" dstnodeid="51" dstpinname="Green">
+   <LINK dstnodeid="51" dstpinname="Green" srcnodeid="33" srcpinname="Green">
    </LINK>
-   <LINK srcnodeid="33" srcpinname="Blue" dstnodeid="51" dstpinname="Blue">
+   <LINK dstnodeid="51" dstpinname="Blue" srcnodeid="33" srcpinname="Blue">
    </LINK>
-   <LINK srcnodeid="33" srcpinname="Alpha" dstnodeid="51" dstpinname="Alpha">
+   <LINK dstnodeid="51" dstpinname="Alpha" srcnodeid="33" srcpinname="Alpha">
    </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\SplitJoin\RGBA2\RGBA2 (EX9.Texture Split).v4p" id="54" nodename="RGBA2 (EX9.Texture Split)" systemname="RGBA2 (EX9.Texture Split)">
    <BOUNDS height="100" left="3315" top="2580" type="Node" width="100">
@@ -339,7 +339,7 @@
    </PIN>
    <PIN pinname="Input" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="3315" top="2580">
+   <BOUNDS left="3315" top="2580" type="Box">
    </BOUNDS>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\SplitJoin\RGBA2\RGBA2 (EX9.Texture Join).v4p" id="52" nodename="RGBA2 (EX9.Texture Join)" systemname="RGBA2 (EX9.Texture Join)">
@@ -388,16 +388,38 @@
    </LINK>
    <LINK dstnodeid="46" dstpinname="Show PerfMeter" srcnodeid="48" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="18" srcpinname="Output" dstnodeid="46" dstpinname="Input">
+   <LINK dstnodeid="46" dstpinname="Input" srcnodeid="18" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="33" dstpinname="Input">
+   <LINK dstnodeid="33" dstpinname="Input" srcnodeid="16" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="54" dstpinname="Input">
+   <LINK dstnodeid="54" dstpinname="Input" srcnodeid="16" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="51" srcpinname="Output" dstnodeid="18" dstpinname="Input 1">
+   <LINK dstnodeid="18" dstpinname="Input 1" srcnodeid="51" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="52" srcpinname="Output" dstnodeid="18" dstpinname="Input 2">
+   <LINK dstnodeid="18" dstpinname="Input 2" srcnodeid="52" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="41" srcpinname="Output" dstnodeid="16" dstpinname="Input 3">
+   <LINK dstnodeid="16" dstpinname="Input 3" srcnodeid="41" srcpinname="Output">
+   </LINK>
+   <NODE systemname="SetAlpha (EX9.Texture Join)" filename="%VVVV%\modules\common\TextureFX\SplitJoin\SetAlpha\SetAlpha (EX9.Texture Join).v4p" nodename="SetAlpha (EX9.Texture Join)" componentmode="Hidden" id="59">
+   <BOUNDS type="Node" left="5055" top="2685" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="| Alpha_Channel|">
+   </PIN>
+   <PIN pinname="Composite with original" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Invert" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="59" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="41" srcpinname="Output" dstnodeid="59" dstpinname="Alpha">
+   </LINK>
+   <LINK srcnodeid="59" srcpinname="Output" dstnodeid="18" dstpinname="Input 3">
    </LINK>
    </PATCH>
