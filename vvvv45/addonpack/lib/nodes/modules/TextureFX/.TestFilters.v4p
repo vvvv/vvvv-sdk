@@ -1,0 +1,619 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha25.2.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\modules\common\TextureFX\.TestFilters.v4p" filename="C:\Users\joreg\Desktop\contributions\modules\TextureFX\_Tester.v4p" systemname="_Tester">
+   <BOUNDS height="8130" left="0" top="7095" type="Window" width="13710">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="1" nodename="FileTexture (EX9.Texture)" systemname="FileTexture (EX9.Texture)">
+   <BOUNDS height="100" left="5040" top="1050" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="2" nodename="SystemFolder (File)" systemname="SystemFolder (File)">
+   <BOUNDS height="100" left="5040" top="195" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="3" nodename="Add (String)" systemname="Add (String)">
+   <BOUNDS height="100" left="5040" top="645" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Input 2" slicecount="1" values="girlpower\images\earth_512x512.jpg">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input 1" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Filename" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="14" nodename="VideoIn (DShow9)" systemname="VideoIn (DShow9)">
+   <BOUNDS height="100" left="6465" top="510" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Video Format" slicecount="1" values="RGB24">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="15" nodename="VideoTexture (EX9.Texture VMR9)" systemname="VideoTexture (EX9.Texture VMR9)">
+   <BOUNDS height="100" left="6465" top="1035" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Video" srcnodeid="14" srcpinname="Video">
+   </LINK>
+   <NODE componentmode="Hidden" id="16" nodename="Switch (Node Input)" systemname="Switch (Node Input)">
+   <BOUNDS height="270" left="4755" top="1635" type="Node" width="2625">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Input 1" srcnodeid="1" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Input 2" srcnodeid="15" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="18" nodename="Switch (Node Input)" systemname="Switch (Node Input)">
+   <BOUNDS height="270" left="2340" top="5790" type="Node" width="6060">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="15">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Input 5" visible="1">
+   </PIN>
+   <PIN pinname="Input 6" visible="1">
+   </PIN>
+   <PIN pinname="Input 7" visible="1">
+   </PIN>
+   <PIN pinname="Input 8" visible="1">
+   </PIN>
+   <PIN pinname="Input 9" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Input 10" visible="1">
+   </PIN>
+   <PIN pinname="Input 11" visible="1">
+   </PIN>
+   <PIN pinname="Input 12" visible="1">
+   </PIN>
+   <PIN pinname="Input 13" visible="1">
+   </PIN>
+   <PIN pinname="Input 14" visible="1">
+   </PIN>
+   <PIN pinname="Input 15" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="465" top="5280" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="555" left="465" top="5280" type="Box" width="540">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="14">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="20">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Switch" srcnodeid="19" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2745" top="2310" type="Node" width="1080">
+   </BOUNDS>
+   <BOUNDS height="270" left="2745" top="2310" type="Box" width="1080">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|kernel fx|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="4740" top="2310" type="Node" width="705">
+   </BOUNDS>
+   <BOUNDS height="270" left="4740" top="2310" type="Box" width="705">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|color fx|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6645" top="2310" type="Node" width="780">
+   </BOUNDS>
+   <BOUNDS height="270" left="6645" top="2310" type="Box" width="780">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|keying fx|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="23" nodename="Renderer (TTY)" systemname="Renderer (TTY)">
+   <BOUNDS height="100" left="11520" top="6405" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1800" left="11520" top="6405" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="3105" left="13800" top="11430" type="Window" width="10335">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InAWindow" id="27" nodename="Inspektor (VVVV)" systemname="Inspektor (VVVV)">
+   <BOUNDS height="100" left="11535" top="5955" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3195" left="11535" top="5955" type="Box" width="2595">
+   </BOUNDS>
+   <BOUNDS height="6840" left="8670" top="210" type="Window" width="5100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" filename="_Template (EX9.Texture FX).v4p" id="29" nodename="_Template (EX9.Texture FX)" systemname="_Template (EX9.Texture FX)">
+   <BOUNDS height="100" left="255" top="360" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="11220" left="13815" top="195" type="Window" width="10950">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="31" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="8505" top="2310" type="Node" width="975">
+   </BOUNDS>
+   <BOUNDS height="270" left="8505" top="2310" type="Box" width="975">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|texcoord fx|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="32" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="1395" top="375" type="Node" width="2550">
+   </BOUNDS>
+   <BOUNDS height="270" left="1395" top="375" type="Box" width="2550">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; for a new effect start from here.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Sharpen (EX9.Texture FX Filter).v4p" id="8" nodename="Sharpen (EX9.Texture FX Filter)" systemname="Sharpen (EX9.Texture FX Filter)">
+   <BOUNDS height="100" left="2745" top="3270" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <BOUNDS left="2745" top="3270" type="Box">
+   </BOUNDS>
+   <PIN pinname="Texture OUt" visible="1">
+   </PIN>
+   <PIN pinname="Amount" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Radius" slicecount="1" values="0.00999999999999898">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="| Clamp|">
+   </PIN>
+   <BOUNDS height="11235" left="13815" top="195" type="Window" width="10305">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Texture In" hiddenwhenlocked="1" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 2" hiddenwhenlocked="1" srcnodeid="8" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Edge (EX9.Texture FX Filter).v4p" id="0" nodename="Edge (EX9.Texture FX Filter)" systemname="Edge (EX9.Texture FX Filter)">
+   <BOUNDS height="100" left="2745" top="3675" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <BOUNDS height="11235" left="13815" top="195" type="Window" width="10305">
+   </BOUNDS>
+   <BOUNDS left="2745" top="3675" type="Box">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Texture In" hiddenwhenlocked="1" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 3" hiddenwhenlocked="1" srcnodeid="0" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\ColorMap (EX9.Texture FX Filter).v4p" id="9" nodename="ColorMap (EX9.Texture FX Filter)" systemname="ColorMap (EX9.Texture FX Filter)">
+   <BOUNDS height="100" left="4740" top="2880" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <BOUNDS left="4740" top="2880" type="Box">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="From Black" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="From White" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <BOUNDS height="11235" left="13815" top="195" type="Window" width="11310">
+   </BOUNDS>
+   <PIN pinname="To Black" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="To White" slicecount="1" values="|0.00167,0.00167,0.00167,1.00000|">
+   </PIN>
+   <PIN pinname="Grayscale" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Texture In" hiddenwhenlocked="1" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\HSCB (EX9.Texture FX Filter).v4p" id="7" nodename="HSCB (EX9.Texture FX Filter)" systemname="HSCB (EX9.Texture FX Filter)">
+   <BOUNDS height="100" left="4740" top="3270" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Brightness" slicecount="1" values="0">
+   </PIN>
+   <BOUNDS left="4740" top="3270" type="Box">
+   </BOUNDS>
+   <BOUNDS height="11235" left="13815" top="195" type="Window" width="10305">
+   </BOUNDS>
+   <PIN pinname="Hue" slicecount="1" values="0.09">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Texture In" hiddenwhenlocked="1" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Posterize (EX9.Texture FX Filter).v4p" id="11" nodename="Posterize (EX9.Texture FX Filter)" systemname="Posterize (EX9.Texture FX Filter)">
+   <BOUNDS height="100" left="4740" top="3675" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <BOUNDS left="4740" top="3675" type="Box">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <BOUNDS height="11235" left="13815" top="195" type="Window" width="10305">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Texture In" hiddenwhenlocked="1" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\LumaKey (EX9.Texture FX Filter).v4p" id="12" nodename="LumaKey (EX9.Texture FX Filter)" systemname="LumaKey (EX9.Texture FX Filter)">
+   <BOUNDS height="100" left="6585" top="2880" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="11235" left="13815" top="195" type="Window" width="10305">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <BOUNDS left="6585" top="2880" type="Box">
+   </BOUNDS>
+   <PIN pinname="output1" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <PIN pinname="Luma" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Invert" slicecount="1" values="-4.75314232417645E-016">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Texture In" hiddenwhenlocked="1" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\ChromaKey (EX9.Texture FX Filter).v4p" id="13" nodename="ChromaKey (EX9.Texture FX Filter)" systemname="ChromaKey (EX9.Texture FX Filter)">
+   <BOUNDS height="100" left="6585" top="3270" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <BOUNDS left="6585" top="3270" type="Box">
+   </BOUNDS>
+   <PIN pinname="output1" visible="1">
+   </PIN>
+   <BOUNDS height="11235" left="13815" top="195" type="Window" width="10305">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Range" slicecount="1" values="0.1">
+   </PIN>
+   <PIN pinname="Hue" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Texture In" hiddenwhenlocked="1" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Stripes (EX9.Texture FX Filter).v4p" id="30" nodename="Stripes (EX9.Texture FX Filter)" systemname="Stripes (EX9.Texture FX Filter)">
+   <BOUNDS height="270" left="8505" top="2880" type="Node" width="1200">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Roll" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" values="23">
+   </PIN>
+   <BOUNDS height="11220" left="13815" top="195" type="Window" width="10950">
+   </BOUNDS>
+   <PIN pinname="Speed" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Stripe Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Horizontal" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Border Mode" slicecount="1" values="Wrap">
+   </PIN>
+   <BOUNDS left="8505" top="2880" type="Box">
+   </BOUNDS>
+   <PIN pinname="Shift" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="30" dstpinname="Texture In" hiddenwhenlocked="1" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" filename="Perlin (EX9.Texture FX Source).v4p" id="41" nodename="Perlin (EX9.Texture FX Source)" systemname="Perlin (EX9.Texture FX Source)">
+   <BOUNDS height="100" left="8475" top="1095" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="42" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="3585" top="1125" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="555" left="3585" top="1125" type="Box" width="540">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="20">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Switch" srcnodeid="42" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Input 3" srcnodeid="41" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="Hidden" filename="ConvertColor (EX9.Texture FX Filter).v4p" id="44" nodename="ConvertColor (EX9.Texture FX Filter)" systemname="ConvertColor (EX9.Texture FX Filter)">
+   <BOUNDS height="100" left="4740" top="4095" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="| RGB_to_HSL|">
+   </PIN>
+   <BOUNDS left="4740" top="4095" type="Box">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="44" dstpinname="Texture In" hiddenwhenlocked="1" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" filename="Renderer (EX9.Texture FX Sink).v4p" id="46" nodename="Renderer (EX9.Texture FX Sink).v4p" systemname="Renderer (EX9.Texture FX Sink)">
+   <BOUNDS height="270" left="2340" top="6990" type="Node" width="1125">
+   </BOUNDS>
+   <BOUNDS height="3600" left="2340" top="6990" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="6000" left="14070" top="7665" type="Window" width="9000">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <PIN pinname="Show Chess Pattern" visible="1">
+   </PIN>
+   <PIN pinname="Show PerfMeter" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="46" dstpinname="Texture In" srcnodeid="18" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="47" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="2445" top="6180" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="315" left="2445" top="6180" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="46" dstpinname="Show Chess Pattern" srcnodeid="47" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="48" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="2985" top="6510" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="300" left="2985" top="6510" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="46" dstpinname="Show PerfMeter" srcnodeid="48" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="49" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2940" top="6180" type="Node" width="1260">
+   </BOUNDS>
+   <BOUNDS height="270" left="2940" top="6180" type="Box" width="1260">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; chess pattern|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="50" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="3495" top="6525" type="Node" width="1005">
+   </BOUNDS>
+   <BOUNDS height="270" left="3495" top="6525" type="Box" width="1005">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; perfmeter|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="-7" nodename="MainLoop (VVVV)" systemname="MainLoop (VVVV)">
+   <BOUNDS height="100" left="11535" top="5490" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Maximum forground fps" slicecount="1" values="99999">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Blur (EX9.Texture FX Filter).v4p" id="10" nodename="Blur (EX9.Texture FX Filter)" systemname="Blur (EX9.Texture FX Filter)">
+   <BOUNDS height="100" left="2745" top="2880" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="0.5">
+   </PIN>
+   <BOUNDS left="2745" top="2880" type="Box">
+   </BOUNDS>
+   <BOUNDS height="11235" left="13815" top="195" type="Window" width="10305">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Texture In" hiddenwhenlocked="1" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 1" hiddenwhenlocked="1" srcnodeid="10" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="Hidden" filename="Keying (EX9.Texture FX Filter).v4p" id="52" nodename="Keying (EX9.Texture FX Filter)" systemname="Keying (EX9.Texture FX Filter)">
+   <BOUNDS height="100" left="6585" top="3675" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <BOUNDS left="6585" top="3675" type="Box">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="52" dstpinname="Texture In" hiddenwhenlocked="1" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" filename="Glow (EX9.Texture FX Filter).v4p" id="53" nodename="Glow (EX9.Texture FX Filter)" systemname="Glow (EX9.Texture FX Filter)">
+   <BOUNDS height="100" left="2745" top="4545" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <BOUNDS left="2745" top="4545" type="Box">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Glow Power" slicecount="1" values="2.00000000000001">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="Invert (EX9.Texture FX Filter).v4p" id="54" nodename="Invert (EX9.Texture FX Filter)" systemname="Invert (EX9.Texture FX Filter)">
+   <BOUNDS height="100" left="4740" top="4995" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <BOUNDS left="4740" top="4995" type="Box">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="AutoColor (EX9.Texture FX Filter).v4p" id="55" nodename="AutoColor (EX9.Texture FX Filter)" systemname="AutoColor (EX9.Texture FX Filter)">
+   <BOUNDS height="100" left="4740" top="4545" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <BOUNDS left="4740" top="4545" type="Box">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="RemoveGrain (EX9.Texture FX Filter).v4p" id="56" nodename="RemoveGrain (EX9.Texture FX Filter)" systemname="RemoveGrain (EX9.Texture FX Filter)">
+   <BOUNDS height="100" left="2745" top="4095" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="8280" left="13215" top="5400" type="Window" width="10320">
+   </BOUNDS>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <BOUNDS left="2745" top="4095" type="Box">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="56" dstpinname="Texture In" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="55" dstpinname="Texture In" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="54" dstpinname="Texture In" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="53" dstpinname="Texture In" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 4" srcnodeid="56" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 5" srcnodeid="53" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 6" srcnodeid="9" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 7" srcnodeid="7" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 8" srcnodeid="11" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 9" srcnodeid="44" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 10" srcnodeid="55" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 11" srcnodeid="54" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 12" srcnodeid="12" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 13" srcnodeid="13" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 14" srcnodeid="52" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 15" srcnodeid="30" srcpinname="Texture Out">
+   </LINK>
+   </PATCH>
