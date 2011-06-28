@@ -81,7 +81,7 @@ namespace VVVV.Nodes
 
         public bool AutoEvaluate
         {
-            get { return false; }
+            get { return true; }
         }
 
         /// <summary>
