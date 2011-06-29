@@ -256,6 +256,9 @@ namespace VVVV.Hosting.Factories
 		
 		public void AddDir(string dir, bool recursive)
 		{
+		    // Ignore non editor directories to save performance.
+		    if (!dir.EndsWith(JobStdSubPath)) return;
+		    
 			try
 			{
 				var catalog = new DirectoryCatalog(dir);

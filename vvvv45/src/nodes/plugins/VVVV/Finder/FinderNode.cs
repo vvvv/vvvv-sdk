@@ -317,8 +317,11 @@ namespace VVVV.Nodes.Finder
             //the hosts window may be null if the plugin is created hidden on startup
             if (FPluginHost.Window != null)
                 FPluginHost.Window.Caption = FActivePatchNode.NodeInfo.Systemname;
+        
+            if (!FNodeFilter.ScopeIsGlobal)
+                UpdateSearch();
             
-            UpdateSearch();
+            FNodeView.SetActiveWindow(FActiveWindow);
         }
 
         void HandleFActivePatchParentRemoved(IViewableCollection collection, object item)
@@ -370,7 +373,6 @@ namespace VVVV.Nodes.Finder
                     FHierarchyViewer.ShowRoot = true;
                 }
                 
-                FNodeView.SetActiveWindow(FActiveWindow);
                 FHierarchyViewer.Input = FNodeView;
             }
             finally
