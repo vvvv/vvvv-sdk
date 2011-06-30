@@ -1075,6 +1075,40 @@ namespace VVVV.Utils.VMath
             }
 
         }
+
+        public static Vector3D QuaternionToEulerVVVV(Vector4D q)
+        {
+            double sqw = q.w * q.w;
+            double sqx = q.x * q.x;
+            double sqy = q.y * q.y;
+            double sqz = q.z * q.z;
+            double unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
+            double test = q.x * q.y + q.z * q.w;
+
+            Vector3D ret;
+
+            if (test > 0.49999 * unit)
+            { // singularity at north pole
+                ret.x = 0;
+                ret.y = 2 * Math.Atan2(q.y, q.w);
+                ret.z = Math.PI / 2;
+                return ret;
+            }
+
+            if (test < -0.49999 * unit)
+            { // singularity at south pole
+                ret.x = 0;
+                ret.y = -2 * Math.Atan2(q.y, q.w);
+                ret.z = -Math.PI / 2;
+                return ret;
+            }
+
+            ret.x = Math.Asin(2 * (q.w * q.x - q.y * q.z) / unit);
+            ret.y = Math.Atan2(2 * (q.w * q.y + q.x * q.z), 1 - 2 * (sqy + sqx));
+            ret.z = Math.Atan2(2 * (q.w * q.z + q.y * q.x), 1 - 2 * (sqx + sqz));
+
+            return ret;
+        }
 		
 		#endregion 3D functions
 		
