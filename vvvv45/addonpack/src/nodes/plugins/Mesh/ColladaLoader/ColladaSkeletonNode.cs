@@ -29,10 +29,10 @@ namespace VVVV.Nodes
                 Author = "vvvv group",
                 Help = "Loads a skeleton from a COLLADA document.",
                 Tags = "dae")]
-	public class ColladaSkeletonNode: IPluginEvaluate
-    {		          	
-    	#region pins & fields
-    	[Input("COLLADA Model", IsSingle = true)]
+    public class ColladaSkeletonNode: IPluginEvaluate
+    {
+        #region pins & fields
+        [Input("COLLADA Model", IsSingle = true)]
         protected IDiffSpread<Model> FColladaModelIn;
 
         [Input("Time", IsSingle = true)]
@@ -41,121 +41,116 @@ namespace VVVV.Nodes
         [Input("Index", IsSingle = true)]
         protected IDiffSpread<int> FIndex;
         
-//        [Output("Skeleton", IsSingle = true)]
-//        protected ISpread<Skeleton> FSkeletonOut;
-		private INodeOut FSkeletonOutput;
+        //        [Output("Skeleton", IsSingle = true)]
+        //        protected ISpread<Skeleton> FSkeletonOut;
+        private INodeOut FSkeletonOutput;
         
         [Import]
-    	protected ILogger FLogger;   
-    	    	
-   		private Skeleton FSkeleton;
-   		private Model FColladaModel;
-   		private Model.SkinnedInstanceMesh FSelectedMesh;
-    	#endregion pins & fields
-       
-    	#region constructor
-    	[ImportingConstructor]
+        protected ILogger FLogger;
+        
+        private Skeleton FSkeleton;
+        private Model FColladaModel;
+        private Model.SkinnedInstanceMesh FSelectedMesh;
+        #endregion pins & fields
+        
+        #region constructor
+        [ImportingConstructor]
         public ColladaSkeletonNode(IPluginHost host)
         {
-			FSkeleton = new Skeleton();
-	    	
-	    	System.Guid[] guids = new System.Guid[1];
-	    	guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
-	    	
-	    	host.CreateNodeOutput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonOutput);
-	    	FSkeletonOutput.SetSubType(guids, "Skeleton");
-		}
+            FSkeleton = new Skeleton();
+            
+            System.Guid[] guids = new System.Guid[1];
+            guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
+            
+            host.CreateNodeOutput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonOutput);
+            FSkeletonOutput.SetSubType(guids, "Skeleton");
+        }
         #endregion constructor
         
         #region mainloop
         public void Evaluate(int SpreadMax)
-        {     	
-        	//if any of the inputs has changed
-        	//recompute the outputs
-        	FColladaModel = FColladaModelIn[0];
-        	if (FColladaModel == null)
-    			return;
-        	
-        	if (FColladaModelIn.IsChanged || FIndex.IsChanged)
-        	{
-        	    int index = FIndex[0];
-        		
-        		List<Model.SkinnedInstanceMesh> skinnedMeshes = new List<Model.SkinnedInstanceMesh>();
-        		foreach (Model.InstanceMesh mesh in FColladaModel.InstanceMeshes)
-        		{
-        			if (mesh is Model.SkinnedInstanceMesh)
-        			{
-        				skinnedMeshes.Add((Model.SkinnedInstanceMesh) mesh);
-        			}
-        		}
-        		
-        		if (skinnedMeshes.Count > 0)
-        		{
-        			if (FSelectedMesh != skinnedMeshes[index % skinnedMeshes.Count])
-        			{
-        				FSelectedMesh = skinnedMeshes[index % skinnedMeshes.Count];
-        			}
-        		}
-        		else
-        		{
-        			FSelectedMesh = null;
-        		}
-        	}
-        	
-        	if (FSelectedMesh == null)
-        	{
-    			return;
-        	}
-        	
-        	if (FColladaModelIn.IsChanged || FIndex.IsChanged || FTimeInput.IsChanged)
-        	{
-        	    float time = FTimeInput[0];
-        		
-        		FSelectedMesh.ApplyAnimations(time);
-        		
-        		if (FColladaModelIn.IsChanged || FIndex.IsChanged)
-        		{
-        			FSkeleton.ClearAll();
-        			CreateSkeleton(ref FSkeleton, FSelectedMesh.SkeletonRootBone);
-        			// Set the IDs
-        			int id = 0;
-        			foreach (Model.Bone bone in FSelectedMesh.Bones)
-        			{
-        				FSkeleton.JointTable[bone.Name].Id = id;
-        				id++;
-        			}
-        		}
-        		else
-        		{
-        			foreach (Model.Bone bone in FSelectedMesh.Bones)
-        			{
-        				FSkeleton.JointTable[bone.Name].BaseTransform = bone.TransformMatrix.ToMatrix4x4();
-        			}
-        		}
-        		
-//        		FSkeletonOut[0] = FSkeleton;
-				FSkeletonOutput.SetInterface(FSkeleton);
-				FSkeletonOutput.MarkPinAsChanged();
-        	}
+        {
+            //if any of the inputs has changed
+            //recompute the outputs
+            FColladaModel = FColladaModelIn[0];
+            if (FColladaModel == null)
+                return;
+            
+            if (FColladaModelIn.IsChanged || FIndex.IsChanged)
+            {
+                int index = FIndex[0];
+                
+                List<Model.SkinnedInstanceMesh> skinnedMeshes = new List<Model.SkinnedInstanceMesh>();
+                foreach (Model.InstanceMesh mesh in FColladaModel.InstanceMeshes)
+                {
+                    if (mesh is Model.SkinnedInstanceMesh)
+                    {
+                        skinnedMeshes.Add((Model.SkinnedInstanceMesh) mesh);
+                    }
+                }
+                
+                if (skinnedMeshes.Count > 0)
+                {
+                    if (FSelectedMesh != skinnedMeshes[index % skinnedMeshes.Count])
+                    {
+                        FSelectedMesh = skinnedMeshes[index % skinnedMeshes.Count];
+                    }
+                }
+                else
+                {
+                    FSelectedMesh = null;
+                }
+            }
+            
+            if (FSelectedMesh == null)
+            {
+                return;
+            }
+            
+            if (FColladaModelIn.IsChanged || FIndex.IsChanged || FTimeInput.IsChanged)
+            {
+                float time = FTimeInput[0];
+                
+                if (FColladaModelIn.IsChanged || FIndex.IsChanged)
+                {
+                    FSkeleton.ClearAll();
+                    CreateSkeleton(ref FSkeleton, FSelectedMesh.SkeletonRootBone);
+                    // Set the IDs
+                    int id = 0;
+                    foreach (Model.Bone bone in FSelectedMesh.Bones)
+                    {
+                        FSkeleton.JointTable[bone.Name].Id = id;
+                        id++;
+                    }
+                }
+                
+                foreach (Model.Bone bone in FSelectedMesh.Bones)
+                {
+                    FSkeleton.JointTable[bone.Name].BaseTransform = bone.GetTransformMatrix(time).ToMatrix4x4();
+                }
+                
+                FSkeletonOutput.SetInterface(FSkeleton);
+                FSkeletonOutput.MarkPinAsChanged();
+            }
         }
-             
-        #endregion mainloop  
+        
+        #endregion mainloop
         
         #region helper
         private void CreateSkeleton(ref Skeleton skeleton, Model.Bone bone)
         {
-        	IJoint joint = new BoneWrapper(bone);
-        	joint.Id = -1;
-        	if (skeleton.Root == null)
-        		skeleton.InsertJoint("", joint);
-        	else
-        		skeleton.InsertJoint(bone.Parent.Name, joint);
-        	
-        	foreach (Model.Bone child in bone.Children)
-        	{
-        		CreateSkeleton(ref skeleton, child);
-        	}
+            IJoint joint = new BoneWrapper(bone);
+            joint.Id = -1;
+            if (skeleton.Root == null)
+                skeleton.InsertJoint("", joint);
+            else
+                skeleton.InsertJoint(bone.Parent.Name, joint);
+            
+            foreach (Model.Bone child in bone.Children)
+            {
+                CreateSkeleton(ref skeleton, child);
+            }
         }
         #endregion
-	}
+    }
 }

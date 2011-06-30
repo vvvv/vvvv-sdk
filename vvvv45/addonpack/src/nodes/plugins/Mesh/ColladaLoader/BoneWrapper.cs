@@ -43,7 +43,7 @@ namespace VVVV.Nodes
 		
 		public BoneWrapper(Model.Bone bone) : this(bone.Index, bone.Name)
 		{
-			FBaseTransform = bone.TransformMatrix.ToMatrix4x4();
+		    FBaseTransform = bone.GetTransformMatrix(0).ToMatrix4x4();
 		}
 		
 		public string Name

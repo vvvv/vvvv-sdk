@@ -5,25 +5,24 @@
 
 #region usings
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel.Composition;
-
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
-
 using ColladaSlimDX.ColladaDocument;
 using ColladaSlimDX.ColladaPipeline;
 using ColladaSlimDX.ColladaModel;
 using ColladaSlimDX.Utils;
-
 using SlimDX;
 using SlimDX.Direct3D9;
+
 #endregion usings
 
 //the vvvv node namespace
@@ -323,6 +322,8 @@ namespace VVVV.Nodes
 		
 		public void Evaluate(int SpreadMax)
 		{
+		    COLLADAUtil.Logger = new LoggerWrapper(FLogger);
+		    
 			//if any of the inputs has changed
 			//recompute the outputs
 			if (FFileNameInput.IsChanged)
@@ -333,8 +334,7 @@ namespace VVVV.Nodes
 				FInfoOutput.SliceCount = 0;
 				
 				string filename = FFileNameInput[0];
-				if (filename.Length == 0)
-					return;
+				if (string.IsNullOrEmpty(filename) || !File.Exists(filename)) return;
 				
 				FLogger.Log(LogType.Message, "Loading " + filename);
 				try

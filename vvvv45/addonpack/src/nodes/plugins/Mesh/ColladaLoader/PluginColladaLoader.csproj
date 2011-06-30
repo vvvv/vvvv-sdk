@@ -1,4 +1,5 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.Nodes</RootNamespace>
@@ -14,9 +15,8 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <SourceAnalysisOverrideSettingsFile>C:\Dokumente und Einstellungen\Elias\Anwendungsdaten\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
-    <StartArguments>d</StartArguments>
     <ReferencePath>$(VVVV45)\bin\managed\</ReferencePath>
-    <OutputPath>$(VVVV45)\plugins\</OutputPath>
+    <OutputPath>$(VVVV45)\addonpack\plugins\</OutputPath>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -45,9 +45,6 @@
     <FileAlignment>4096</FileAlignment>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ColladaSlimDX">
-      <HintPath>dependencies\ColladaSlimDX.dll</HintPath>
-    </Reference>
     <Reference Include="SkeletonInterfaces">
       <HintPath>dependencies\SkeletonInterfaces.dll</HintPath>
     </Reference>
@@ -85,6 +82,8 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="BoneWrapper.cs" />
     <Compile Include="ColladaSkeletonNode.cs" />
+    <Compile Include="LoggerWrapper.cs" />
+    <Compile Include="PluginColladaCamera.cs" />
     <Compile Include="PluginColladaLoader.cs" />
     <Compile Include="PluginColladaMesh.cs" />
     <None Include="astroBoy_walk.dae">
@@ -96,6 +95,12 @@
     <None Include="Mesh %28EX9.Geometry Collada%29 help.v4p">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\misc\ColladaSlimDX\ColladaSlimDX.csproj">
+      <Project>{2C3DD320-A532-11DD-AD8B-0800200C9A66}</Project>
+      <Name>ColladaSlimDX</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

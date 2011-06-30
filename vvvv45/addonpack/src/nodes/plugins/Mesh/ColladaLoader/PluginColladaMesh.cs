@@ -121,6 +121,8 @@ namespace VVVV.Nodes
         #region mainloop
         public void Evaluate(int SpreadMax)
         {     	
+            COLLADAUtil.Logger = new LoggerWrapper(FLogger);
+            
         	try
         	{
 	        	//if any of the inputs has changed
@@ -239,7 +241,7 @@ namespace VVVV.Nodes
 						Model.InstanceMesh instanceMesh = FSelectedInstanceMeshes[meshIndex];
 						
 						float time = FTimeInput[i];
-						Matrix m = FColladaModel.GetAbsoluteTransformMatrix(instanceMesh, time);
+						Matrix m = instanceMesh.ParentBone.GetAbsoluteTransformMatrix(time) * FColladaModel.ConversionMatrix;
 						
 						for (int j = 0; j < instanceMesh.Mesh.Primitives.Count; j++) {
 							transforms.Add(m);
@@ -248,8 +250,7 @@ namespace VVVV.Nodes
 						// Skinning
 						if (instanceMesh is Model.SkinnedInstanceMesh) {
 							Model.SkinnedInstanceMesh skinnedInstanceMesh = (Model.SkinnedInstanceMesh) instanceMesh;							
-							skinnedInstanceMesh.ApplyAnimations(time);
-							skinningTransforms.AddRange(skinnedInstanceMesh.GetSkinningMatrices());  // am i right, that this whole thing will only work with 1 selected mesh?
+							skinningTransforms.AddRange(skinnedInstanceMesh.GetSkinningMatrices(time));  // am i right, that this whole thing will only work with 1 selected mesh?
 							bindShapeTransforms.Add(skinnedInstanceMesh.BindShapeMatrix);
 							for (int j = 0; j<skinnedInstanceMesh.InvBindMatrixList.Count; j++)
 								invBindPoseTransforms.Add(skinnedInstanceMesh.InvBindMatrixList[j]);
