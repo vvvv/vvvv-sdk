@@ -58,10 +58,8 @@ namespace VVVV.Hosting.Pins.Output
 			}
 			set 
 			{ 
-				if (value != FSliceCount)
-					FChanged = true;
-				
-				base.SliceCount = value; 
+				base.SliceCount = value;
+                FChanged = true;
 			}
 		}
 		
