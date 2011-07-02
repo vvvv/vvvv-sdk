@@ -46,6 +46,9 @@ namespace VVVV.TodoMap.Nodes
         [Input("Auto Load", IsSingle = true)]
         ISpread<bool> FInAutoLoad;
 
+        [Input("Save On Exit", IsSingle = true)]
+        ISpread<bool> FInSaveExit;
+
         //Outputs
         [Output("Engine",IsSingle=true)]
         ISpread<TodoEngine> FOutEngine;
@@ -58,10 +61,15 @@ namespace VVVV.TodoMap.Nodes
         private bool FClearMapNextFrame;
         private bool FCLearAllNextFrame;
         private bool FSaveNextFrame;
+        private bool FSaveExit;
+        private string FPath;
 
         #region IPluginEvaluate Members
         public void Evaluate(int SpreadMax)
         {
+            this.FSaveExit = this.FInSaveExit[0];
+            this.FPath = this.FInPath[0];
+
             if (this.FInClearMappings[0] || this.FClearMapNextFrame)
             {
                 this.ucMappingManager.ResetMappings();
@@ -157,6 +165,20 @@ namespace VVVV.TodoMap.Nodes
         #region IDisposable Members
         void IDisposable.Dispose()
         {
+            if (this.FSaveExit)
+            {
+                try
+                {
+                    StreamWriter sw = new StreamWriter(this.FPath);
+                    sw.Write(TodoXmlWrapper.Persist(this.FEngine));
+                    sw.Close();
+                }
+                catch
+                {
+
+                }
+            }
+
             this.FEngine.Dispose();
         }
         #endregion
