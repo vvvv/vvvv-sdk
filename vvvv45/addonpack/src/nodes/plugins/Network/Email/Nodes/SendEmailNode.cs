@@ -51,6 +51,7 @@ namespace VVVV.Nodes
         //private IStringIn FPinInCC;
         private IStringIn FPinInSubject;
         private IStringIn FPinInMessage;
+        private IValueIn FPinInSSL;
         private IValueIn FPinInDoSend;
         private IValueOut FPinOutSuccess;
         #endregion
@@ -92,8 +93,10 @@ namespace VVVV.Nodes
 
             this.FHost.CreateStringInput("Message", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInMessage);
             this.FPinInMessage.SetSubType("", false);
-
-            
+        
+            this.FHost.CreateValueInput("Use SSL", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInSSL);
+            this.FPinInSSL.SetSubType(0, 1, 1, 0, false, true, false);
+        
             this.FHost.CreateValueInput("Send", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDoSend);
             this.FPinInDoSend.SetSubType(0, 1, 1, 0, true, false, false);
 
@@ -118,16 +121,18 @@ namespace VVVV.Nodes
             if (dblsend >= 0.5)
             {
                 string host, username, pwd ;
-                double dblport;
+                double dblport,dblssl;
                 this.FPinInHost.GetString(0, out host);
                 this.FPinInPort.GetValue(0, out dblport);
                 this.FPinInUsername.GetString(0, out username);
                 this.FPinInPassword.GetString(0, out pwd);
+                this.FPinInSSL.GetValue(0, out dblssl);
 
                 if (username == null) { username = ""; }
                 if (pwd == null) { pwd = ""; }
 
                 SmtpClient emailClient = new SmtpClient(host, Convert.ToInt32(dblport));
+                emailClient.EnableSsl = dblssl > 0.5;
                 if (username.Length > 0 && pwd.Length > 0)
                 {
                     NetworkCredential SMTPUserInfo = new NetworkCredential(username, pwd);
