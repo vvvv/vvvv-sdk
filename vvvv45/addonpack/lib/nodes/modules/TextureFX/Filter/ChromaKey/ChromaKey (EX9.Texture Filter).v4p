@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
-   <PATCH nodename="c:\Program Files\vvvv_45beta25.1\modules\Texture FX\_done\Filter\ChromaKey\ChromaKey (EX9.Texture Filter).v4p" componentmode="InAWindow" filename="C:\Users\cat\Desktop\New folder\ChromaKey (EX9.TextureFX).v4p" systemname="ChromaKey (EX9.TextureFX)">
+   <PATCH nodename="X:\ChromaKey\ChromaKey (EX9.Texture Filter).v4p" componentmode="InAWindow" filename="C:\Users\cat\Desktop\New folder\ChromaKey (EX9.TextureFX).v4p" systemname="ChromaKey (EX9.TextureFX)">
    <BOUNDS height="11235" left="13815" top="195" type="Window" width="10305">
    </BOUNDS>
    <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -275,6 +275,12 @@
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="17475" height="12000">
+   </BOUNDS>
+   <PIN pinname="tex0" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="R XY" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="0" dstpinname="Mesh" srcnodeid="13" srcpinname="Mesh">
    </LINK>
@@ -291,5 +297,9 @@
    <LINK dstnodeid="0" dstpinname="Texture" srcnodeid="4" srcpinname="Output Node">
    </LINK>
    <LINK dstnodeid="0" dstpinname="Enabled" srcnodeid="10" srcpinname="Y Output Value">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Output Node" dstnodeid="0" dstpinname="tex0">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="XY" dstnodeid="0" dstpinname="R XY">
    </LINK>
    </PATCH>

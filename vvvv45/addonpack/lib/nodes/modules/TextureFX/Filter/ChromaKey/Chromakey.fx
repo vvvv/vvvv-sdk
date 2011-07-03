@@ -1,55 +1,14 @@
-//@author: catweasel
-//@help: draws a mesh with a constant color
-//@tags: 
-//@credits:
+float2 R;
+texture tex0;
+sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 
-// --------------------------------------------------------------------------------------------------
-// PARAMETERS:
 float hue;
 float range;
 float brightclip;
-// --------------------------------------------------------------------------------------------------
 
-//material properties
-float4 cAmb : COLOR <String uiname="Color";>  = {1, 1, 1, 1};
-float Alpha <float uimin=0.0; float uimax=1.0;> = 1;
-
-//texture
-texture Tex <string uiname="Texture";>;
-sampler Samp = sampler_state    //sampler for doing the texture-lookup
+float4 PS(float2 x:TEXCOORD0): COLOR
 {
-	Texture   = (Tex);          //apply a texture to the sampler
-	MipFilter = LINEAR;         //sampler states
-	MinFilter = LINEAR;
-	MagFilter = LINEAR;
-	AddressU = Wrap;
-	AddressV = Wrap;
-};
-
-float4x4 tTex: TEXTUREMATRIX <string uiname="Texture Transform";>;
-
-float4x4 tCol <string uiname="Color Transform";>;
-
-//the data structure: vertexshader to pixelshader
-//used as output data with the VS function
-//and as input data with the PS function
-struct vs2ps
-{
-	float4 Pos : POSITION;
-	float4 TexCd : TEXCOORD0;
-};
-
-// --------------------------------------------------------------------------------------------------
-// PIXELSHADERS:
-// --------------------------------------------------------------------------------------------------
-
-float4 PS(vs2ps In): COLOR
-{
-	//In.TexCd = In.TexCd / In.TexCd.w; // for perpective texture projections (e.g. shadow maps) ps_2_0
-	
-	float4 col = tex2D(Samp, In.TexCd) * cAmb;
-	col = mul(col, tCol);
-	col.a *= Alpha;
+	float4 col = tex2D(s0, x);
 	float r,g,b,delta;
 	float colorMax, colorMin;
 	float h=0,s=0,v=0;
@@ -112,18 +71,5 @@ float4 PS(vs2ps In): COLOR
 	
 	return col;
 }
-
-// --------------------------------------------------------------------------------------------------
-// TECHNIQUES:
-// --------------------------------------------------------------------------------------------------
-
-technique ChromaKey
-{
-	pass P0
-	{
-		//Wrap0 = U;  // useful when mesh is round like a sphere
-		VertexShader = null;
-		PixelShader = compile ps_2_0 PS();
-	}
-}
-
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
+technique ChromaKey{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 PS();}}

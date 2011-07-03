@@ -1,58 +1,23 @@
-//@author: catweasel
-//@help: draws a mesh with a constant color
-//@tags: 
-//@credits:
-// -------------------------------------------------------------------------------------------------------------------------------------
-// PARAMETERS:
-// -------------------------------------------------------------------------------------------------------------------------------------
 
-//texture
-texture Tex1 <string uiname="Texture1";>;
+float2 R;
+texture tex0;
+sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 
-float4x4 tTex <string uiname="Texture Transform";>;                  //Texture Transform
-sampler2D Samp = sampler_state    //sampler for doing the texture-lookup
+float invert <float uimin=0.0; float uimax=1.0;> = 0.0;
+float luma <float uimin=0.0; float uimax=1.0;> = 0.5;
+
+float4 PS(float2 x:TEXCOORD0): COLOR
 {
-	Texture   = (Tex1);          //apply a texture to the sampler
-	MipFilter = LINEAR;         //set the sampler states
-	MinFilter = LINEAR;
-	MagFilter = LINEAR;
-};
-
-float4x4 tColor  <string uiname="Color Transform";>;
-
-//Parameters
-
-float invert;
-
-float luma=0.5;
-
-// -------------------------------------------------------------------------------------------------------------------------------------
-// PIXELSHADERS:
-// -------------------------------------------------------------------------------------------------------------------------------------
-
-float4 PS_lumakey(float2 TexC: TEXCOORD0): COLOR
-{
-	float4 col = tex2D(Samp, TexC) ;
+	float4 col = tex2D(s0,x) ;
 	col.a=1;
 	float temp= (col.r*.33)+(col.g*.59)+(col.b*.11);
-	
-	if (temp<luma) 
+
+	if (temp<luma)
 		col.a = invert;
-	else 
+	else
 		col.a = 1-invert;//col.a-lumaswitch ;     // Luma
-	
+
 	return col;
 }
-
-// -------------------------------------------------------------------------------------------------------------------------------------
-// TECHNIQUES:
-// -------------------------------------------------------------------------------------------------------------------------------------
-
-technique TSimpleShader
-{
-	pass P0
-	{
-		VertexShader = null;
-		PixelShader  = compile ps_2_0 PS_lumakey();
-	}
-}
+void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
+technique LumaKey{pass pp0{vertexshader=compile vs_2_0 vs2d();pixelshader=compile ps_2_0 PS();}}

@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
-   <PATCH nodename="c:\Program Files\vvvv_45beta25.1\modules\Texture FX\_done\Filter\LumaKey\LumaKey (EX9.Texture Filter).v4p" componentmode="InAWindow" filename="C:\Users\cat\Desktop\New folder\LumaKey (EX9.TextureFX).v4p" systemname="LumaKey (EX9.TextureFX)">
+   <PATCH nodename="X:\LumaKey\LumaKey (EX9.Texture Filter).v4p" componentmode="InAWindow" filename="C:\Users\cat\Desktop\New folder\LumaKey (EX9.TextureFX).v4p" systemname="LumaKey (EX9.TextureFX)">
    <BOUNDS height="11235" left="9825" top="1215" type="Window" width="10305">
    </BOUNDS>
    <NODE id="15" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
@@ -127,7 +127,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="3810" top="4095" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="-4.75314232417645E-016">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -243,7 +243,7 @@
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Texture1" visible="1" slicecount="1" values="||">
+   <PIN pinname="Texture1" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Compiled" visible="1">
    </PIN>
@@ -259,6 +259,12 @@
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>
+   <BOUNDS height="12720" left="0" top="0" type="Window" width="16395">
+   </BOUNDS>
+   <PIN pinname="R XY" visible="1">
+   </PIN>
+   <PIN pinname="tex0" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="0" dstpinname="Mesh" srcnodeid="15" srcpinname="Mesh">
    </LINK>
@@ -270,8 +276,10 @@
    </LINK>
    <LINK dstnodeid="0" dstpinname="invert" srcnodeid="8" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="0" dstpinname="Texture1" srcnodeid="7" srcpinname="Output Node">
-   </LINK>
    <LINK dstnodeid="0" dstpinname="Enabled" srcnodeid="11" srcpinname="Y Output Value">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="XY" dstnodeid="0" dstpinname="R XY">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Output Node" dstnodeid="0" dstpinname="tex0">
    </LINK>
    </PATCH>
