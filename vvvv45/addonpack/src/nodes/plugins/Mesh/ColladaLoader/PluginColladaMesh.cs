@@ -218,6 +218,7 @@ namespace VVVV.Nodes
 						}
 						
 						FMyMeshOutput.SliceCount = materialList.Count;
+						FMyMeshOutput.MarkPinAsChanged();
 						
 						foreach (Mesh m in FDeviceMeshes.Values)
 						{
