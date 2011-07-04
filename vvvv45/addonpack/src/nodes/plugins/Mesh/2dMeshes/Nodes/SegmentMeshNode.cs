@@ -57,7 +57,7 @@ namespace VVVV.Nodes
             this.FPinInCycles.SetSubType(double.MinValue, double.MaxValue, 0.01, 1.0, false, false, false);
         
             this.FHost.CreateValueInput("Resolution", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInResolution);
-            this.FPinInResolution.SetSubType(2, double.MaxValue, 1, 2, false, false, true);
+            this.FPinInResolution.SetSubType(2, double.MaxValue, 1, 20, false, false, true);
         
         }
         #endregion
