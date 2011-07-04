@@ -12,7 +12,7 @@ float3 rgb2hsl(float3 c){float cmax=max(c.r,max(c.g,c.b)),cmin=min(c.r,min(c.g,c
 col2 hslSplit(float2 x:TEXCOORD0):color{
     float4 c=tex2D(s0,x);
     c.rgb=rgb2hsl(c.rgb);
-    col2 HSLA=(col2)1;
+    col2 HSLA=(col2)c.a;
     HSLA.c0.rgb=c.r;
     HSLA.c1.rgb=c.g;
     HSLA.c2.rgb=c.b;
@@ -24,7 +24,9 @@ float4 hslJoin(float2 x:TEXCOORD0):color{
     float4 c1=tex2D(s1,x);
     float4 c2=tex2D(s2,x);
     float4 c3=tex2D(s3,x);
-    float4 c=float4(c0.r,c1.r,c2.r,c3.r);
+    float4 c=float4(c0.r,c1.r,c2.r,sqrt(c3.a)*sqrt(c3.r));
+    float3 alp=float3(c0.a,c1.a,c2.a);
+    c.rgb=lerp(float3(1,1,.5),c.rgb,alp<c.a?alp/c.a:1);
     c.rgb=hsl2rgb(c.rgb);
     return c;
 }
