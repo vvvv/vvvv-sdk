@@ -9,7 +9,8 @@ float4 psJoin(float2 x:TEXCOORD0):color{
     float4 c0=tex2D(s0,x);
     float4 c1=tex2D(s1,x);
     float4 c2=tex2D(s2,x);
-    float4 c=lerp(c0,c1,saturate(lerp(Fader,c2,V)));
+    //float4 c=lerp(c0,c1,saturate(c2-1+2*Fader));
+    float4 c=lerp(c0,c1,lerp(lerp(0,c2,saturate(Fader*2)),1,saturate(Fader*2-1)));
     return c;
 }
 void vs2d(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0){vp.xy*=2;uv+=.5/R;}
