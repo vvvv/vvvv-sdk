@@ -1076,7 +1076,15 @@ namespace VVVV.Utils.VMath
 
         }
 
-        public static Vector3D QuaternionToEulerVVVV(Vector4D q)
+        /// <summary>
+        /// Converts a quaternion into euler angles, assuming that the euler angle multiplication to create the quaternion was yaw*pitch*roll.
+        /// All angles in radian.
+        /// </summary>
+        /// <param name="q">A quaternion, can be non normalized</param>
+        /// <param name="pitch"></param>
+        /// <param name="yaw"></param>
+        /// <param name="roll"></param>
+        public static void QuaternionToEulerYawPitchRoll(Vector4D q, out double pitch, out double yaw, out double roll)
         {
             double sqw = q.w * q.w;
             double sqx = q.x * q.x;
@@ -1085,27 +1093,36 @@ namespace VVVV.Utils.VMath
             double unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
             double test = q.x * q.y + q.z * q.w;
 
-            Vector3D ret;
-
             if (test > 0.49999 * unit)
             { // singularity at north pole
-                ret.x = 0;
-                ret.y = 2 * Math.Atan2(q.y, q.w);
-                ret.z = Math.PI / 2;
-                return ret;
+                pitch = 0;
+                yaw = 2 * Math.Atan2(q.y, q.w);
+                roll = Math.PI / 2;
             }
 
             if (test < -0.49999 * unit)
             { // singularity at south pole
-                ret.x = 0;
-                ret.y = -2 * Math.Atan2(q.y, q.w);
-                ret.z = -Math.PI / 2;
-                return ret;
+                pitch = 0;
+                yaw = -2 * Math.Atan2(q.y, q.w);
+                roll = -Math.PI / 2;
             }
 
-            ret.x = Math.Asin(2 * (q.w * q.x - q.y * q.z) / unit);
-            ret.y = Math.Atan2(2 * (q.w * q.y + q.x * q.z), 1 - 2 * (sqy + sqx));
-            ret.z = Math.Atan2(2 * (q.w * q.z + q.y * q.x), 1 - 2 * (sqx + sqz));
+            pitch = Math.Asin(2 * (q.w * q.x - q.y * q.z) / unit);
+            yaw = Math.Atan2(2 * (q.w * q.y + q.x * q.z), 1 - 2 * (sqy + sqx));
+            roll = Math.Atan2(2 * (q.w * q.z + q.y * q.x), 1 - 2 * (sqx + sqz));
+        }
+
+        /// <summary>
+        /// Converts a quaternion into euler angles, assuming that the euler angle multiplication to create the quaternion was yaw*pitch*roll.
+        /// All angles in radian.
+        /// </summary>
+        /// <param name="q">A quaternion, can be non normalized</param>
+        /// <returns>3d-vector with x=pitch, y=yaw, z=roll</returns>
+        public static Vector3D QuaternionToEulerYawPitchRoll(Vector4D q)
+        {
+            Vector3D ret;
+
+            QuaternionToEulerYawPitchRoll(q, out ret.x, out ret.y, out ret.z);
 
             return ret;
         }
