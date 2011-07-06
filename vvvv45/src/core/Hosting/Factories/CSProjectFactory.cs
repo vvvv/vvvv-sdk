@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.CodeDom.Compiler;
 using System.Collections;
@@ -9,7 +11,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Ast;
 using ICSharpCode.NRefactory.PrettyPrinter;
@@ -20,6 +21,7 @@ using VVVV.Core.Logging;
 using VVVV.Core.Model;
 using VVVV.Core.Model.CS;
 using VVVV.Core.Runtime;
+using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.Factories
@@ -31,6 +33,9 @@ namespace VVVV.Hosting.Factories
     {
         [Import]
         protected ISolution FSolution;
+        
+        [Import]
+        protected ILogger FLogger;
         
         private readonly Dictionary<string, CSProject> FProjects;
         
@@ -53,11 +58,15 @@ namespace VVVV.Hosting.Factories
             // Do we need to compile it?
             if (!IsAssemblyUpToDate(project))
             {
+                FLogger.Log(LogType.Message, "Assembly of {0} is not up to date. Need to recompile ...", filename);
+                
                 var isLoaded = project.IsLoaded;
                 if (!isLoaded)
                     project.Load();
                 
+                project.ProjectCompiledSuccessfully -= project_ProjectCompiled;
                 project.Compile();
+                project.ProjectCompiledSuccessfully += project_ProjectCompiled;
                 
                 if (!isLoaded)
                     project.Unload();
@@ -125,46 +134,6 @@ namespace VVVV.Hosting.Factories
             base.DoRemoveFile(filename);
         }
         
-        protected override bool CreateNode(INodeInfo nodeInfo, IInternalPluginHost pluginHost)
-        {
-            try
-            {
-                return base.CreateNode(nodeInfo, pluginHost);
-            }
-            catch (Exception)
-            {
-                // Try a recompile.
-                var project = nodeInfo.UserData as CSProject;
-                bool isLoaded = project.IsLoaded;
-                if (!isLoaded)
-                    project.Load();
-                
-                project.Compile();
-                
-                if (!isLoaded)
-                    project.Unload();
-                
-                if (project.CompilerResults.Errors.HasErrors)
-                {
-                    var errorLog = GetCompileErrorsLog(project, project.CompilerResults);
-                    throw new Exception(errorLog);
-                }
-                
-                
-                var nodeInfos = new List<INodeInfo>();
-                LoadNodeInfosFromFile(project.AssemblyLocation, project.Location.LocalPath, ref nodeInfos, false);
-                
-                foreach (var ni in nodeInfos)
-                {
-                    ni.Type = NodeType.Dynamic;
-                    ni.UserData = project;
-                    ni.CommitUpdate();
-                }
-                
-                return base.CreateNode(nodeInfo, pluginHost);
-            }
-        }
-        
         void project_ProjectCompiled(object sender, CompilerEventArgs args)
         {
             var project = sender as IProject;
@@ -184,7 +153,24 @@ namespace VVVV.Hosting.Factories
                 projectTime = now - TimeSpan.FromSeconds(10.0);
             }
             
-            return File.Exists(project.AssemblyLocation) && (projectTime <= assemblyTime);
+            if (File.Exists(project.AssemblyLocation) && (projectTime <= assemblyTime))
+            {
+                // We also need to check if the version info of the referenced assemblies
+                // is the same as the one referenced by the project file.
+                // We only check the PluginInterfaces assembly here to save performance.
+                var assembly = Assembly.ReflectionOnlyLoadFrom(project.AssemblyLocation);
+                var piAssembly = assembly.GetReferencedAssemblies().Where(assemblyName => assemblyName.Name == typeof(IPluginBase).Assembly.GetName().Name).FirstOrDefault();
+                
+                if (piAssembly != null)
+                {
+                    return piAssembly.Version == typeof(IPluginBase).Assembly.GetName().Version;
+                }
+
+                // PluginInterfaces wasn't referenced. Simply return true.                
+                return true;
+            }
+            
+            return false;
         }
         
         protected override void DeleteArtefacts(string dir, bool recursive)

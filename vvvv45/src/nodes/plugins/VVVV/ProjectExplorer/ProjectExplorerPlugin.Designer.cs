@@ -17,11 +17,14 @@ namespace VVVV.HDE.ProjectExplorer
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing) {
+		        FHideUnusedProjectsIn.Changed -= FHideUnusedProjectsIn_Changed;
+				FBuildConfigIn.Changed -= FBuildConfigIn_Changed;
+				FHideUnusedProjectsCheckBox.CheckedChanged -= FHideUnusedProjectsCheckBox_CheckedChanged;
+				FTreeViewer.DoubleClick -= FTreeViewer_DoubleClick;
+		        
 				if (components != null) {
 					components.Dispose();
 				}
-				
-				FHideUnusedProjectsIn.Changed -= FHideUnusedProjectsIn_Changed;
 			}
 			base.Dispose(disposing);
 		}

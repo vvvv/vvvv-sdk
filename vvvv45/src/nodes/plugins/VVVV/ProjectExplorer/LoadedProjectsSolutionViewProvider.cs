@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using VVVV.Core;
+using VVVV.Core.Collections;
+using VVVV.Core.Collections.Sync;
 using VVVV.Core.Model;
 using VVVV.Core.View;
 using VVVV.Hosting.Graph;
@@ -11,16 +12,35 @@ using VVVV.Utils.Linq;
 
 namespace VVVV.HDE.ProjectExplorer
 {
-	public class LoadedProjectsSolutionViewProvider : SolutionViewProvider
+	public class LoadedProjectsSolutionViewProvider : IParent, IDisposable
 	{
-		private INode2 FRootNode;
+		private readonly INode2 FRootNode;
+		private readonly EditableList<IProject> FLoadedProjects;
+//		private readonly SortedViewableList<IProject, string> FSortedLoadedProjects;
+		private readonly Synchronizer<IProject, IProject> FSynchronizer;
 		
 		public LoadedProjectsSolutionViewProvider(ISolution solution, INode2 rootNode, ModelMapper mapper)
-			: base(solution, mapper)
+//			: base(solution, mapper)
 		{
 			FRootNode = rootNode;
+			FLoadedProjects = new EditableList<IProject>();
+			FSynchronizer = FLoadedProjects.SyncWith(solution.Projects, p => p, p => {}, IsProjectInUse);
+			Childs = new SortedViewableList<IProject, string>(FLoadedProjects, project => project.Name);
 			
 			node_Added(null, FRootNode);
+		}
+		
+		public void Dispose()
+		{
+			foreach (var node in FRootNode.AsDepthFirstEnumerable())
+			{
+				node.Added -= node_Added;
+				node.Removed -= node_Removed;
+			}
+			
+			((SortedViewableList<IProject, string>) Childs).Dispose();
+			FSynchronizer.Dispose();
+			FLoadedProjects.Dispose();
 		}
 		
 		void node_Added(IViewableCollection<INode2> collection, INode2 item)
@@ -32,8 +52,10 @@ namespace VVVV.HDE.ProjectExplorer
 				node_Added(item, node);
 			
 			var project = item.NodeInfo.UserData as IProject;
-			if (project != null)
-				OnOrderChanged();
+			if (project != null && !FLoadedProjects.Contains(project))
+			{
+			    FLoadedProjects.Add(project);
+			}
 		}
 
 		void node_Removed(IViewableCollection<INode2> collection, INode2 item)
@@ -45,26 +67,12 @@ namespace VVVV.HDE.ProjectExplorer
 				node_Removed(item, node);
 			
 			var project = item.NodeInfo.UserData as IProject;
-			if (project != null)
-				OnOrderChanged();
+			if (project != null && !IsProjectInUse(project))
+			{
+				FLoadedProjects.Remove(project);
+			}
 		}
 
-		public override void Dispose()
-		{
-			foreach (var node in FRootNode.AsDepthFirstEnumerable())
-			{
-				node.Added -= node_Added;
-				node.Removed -= node_Removed;
-			}
-			base.Dispose();
-		}
-		
-		public override void Add(IProject item)
-		{
-			if (IsProjectInUse(item))
-				base.Add(item);
-		}
-		
 		protected bool IsProjectInUse(IProject project)
 		{
 			var query =
@@ -74,30 +82,11 @@ namespace VVVV.HDE.ProjectExplorer
 			
 			return query.Any();
 		}
-
-		public override IEnumerator<IProject> GetEnumerator()
-		{
-			foreach (var project in FSolution.Projects)
-			{
-				if (IsProjectInUse(project))
-					yield return project;
-			}
-		}
-		
-		public override IProject this[int index] 
-		{
-			get 
-			{
-				return FSolution.Projects.Where(project => IsProjectInUse(project)).ToList()[index];
-			}
-		}
-		
-		public override int Count 
-		{
-			get 
-			{ 
-				return FSolution.Projects.Count(project => IsProjectInUse(project));
-			}
-		}
+	    
+        public System.Collections.IEnumerable Childs
+        {
+            get;
+            private set;
+        }
 	}
 }
