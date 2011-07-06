@@ -194,7 +194,7 @@ namespace VVVV.Nodes
 	    	
 	    	//create outputs	    	
 	    	FHost.CreateValueOutput("Output", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FOutput);
-	    	FOutput.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
+	    	FOutput.SetSubType(double.MinValue, double.MaxValue, 0.01, 1, false, false, false);
 	    	
         }
 
@@ -220,26 +220,43 @@ namespace VVVV.Nodes
 	        	FVecSize.GetValue(0, out tmpVec);
 	        	int vecSize = (int)Math.Round(tmpVec);
 	        	
-	        	VecBin spread = new VecBin(FInput, FBinSize, vecSize);
-	        	List<double> outList = new List<double>();
-	        	
-	        	for (int i=0; i<spread.BinCount; i++)
+	        	if (FInput.SliceCount>0)
 	        	{
-	        		for (int j=0; j<vecSize; j++)
-	        		{
-	        			double curSum=1;
-	        			for (int k=0; k<spread.GetBin(i).Count/vecSize; k++)
-	        			{
-	        				curSum*=spread.GetBinVector(i,k)[j];
-	        			}	        			
-	        			outList.Add(curSum);
-	        		}
+		        	VecBin spread = new VecBin(FInput, FBinSize, vecSize);
+		        	List<double> outList = new List<double>();
+		        	
+		        	for (int i=0; i<spread.BinCount; i++)
+		        	{
+		        		for (int j=0; j<vecSize; j++)
+		        		{
+		        			double curSum=1;
+		        			for (int k=0; k<spread.GetBin(i).Count/vecSize; k++)
+		        			{
+		        				curSum*=spread.GetBinVector(i,k)[j];
+		        			}	        			
+		        			outList.Add(curSum);
+		        		}
+		        	}
+	        		
+		        	FOutput.SliceCount=outList.Count;
+		        	for (int i=0; i<outList.Count; i++)
+		        	{
+		        		FOutput.SetValue(i, outList[i]);
+		        	}
 	        	}
-        		
-	        	FOutput.SliceCount=outList.Count;
-	        	for (int i=0; i<outList.Count; i++)
+	        	else
 	        	{
-	        		FOutput.SetValue(i, outList[i]);
+	        		FOutput.SliceCount=FBinSize.SliceCount*vecSize;
+	        		for (int i=0; i<FBinSize.SliceCount; i++)
+	        		{
+	        			double curBinSize;
+	        			FBinSize.GetValue(i, out curBinSize);
+	        			if (curBinSize>0)
+	        			{
+	        				FOutput.SliceCount=0;
+	        				break;
+	        			}
+	        		}
 	        	}
         	}      	
         }

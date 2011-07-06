@@ -187,7 +187,7 @@ namespace VVVV.Nodes
 
 	    	//create inputs
 	    	FHost.CreateValueInput("Input", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FInput);
-	    	FInput.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.5, false, false, false);
+	    	FInput.SetSubType(double.MinValue, double.MaxValue, 0.01, 0.0, false, false, false);
 	    	
 	    	FHost.CreateValueInput("Vector Size", 1, null, TSliceMode.Single, TPinVisibility.Hidden, out FVecSize);
 	    	FVecSize.SetSubType(1, double.MaxValue, 1,1, false, false, true);
@@ -200,13 +200,13 @@ namespace VVVV.Nodes
 	    	FCenter.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
 	    	
 	    	FHost.CreateValueOutput("Width", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FWidth);
-	    	FWidth.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
+	    	FWidth.SetSubType(double.MinValue, double.MaxValue, 0.01, double.NegativeInfinity, false, false, false);
 	    	
 	    	FHost.CreateValueOutput("Minimum", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMin);
-	    	FMin.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
+	    	FMin.SetSubType(double.MinValue, double.MaxValue, 0.01, double.PositiveInfinity, false, false, false);
 	    	
 	    	FHost.CreateValueOutput("Maximum", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FMax);
-	    	FMax.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
+	    	FMax.SetSubType(double.MinValue, double.MaxValue, 0.01, double.NegativeInfinity, false, false, false);
 	    	
         }
 
@@ -232,45 +232,67 @@ namespace VVVV.Nodes
 	        	FVecSize.GetValue(0, out tmpVec);
 	        	int vecSize = (int)Math.Round(tmpVec);
 	        	
-	        	VecBin spread = new VecBin(FInput, FBinSize, vecSize);
-	        	List<double> center = new List<double>();
-	        	List<double> width = new List<double>();
-	        	List<double> min = new List<double>();
-	        	List<double> max = new List<double>();
-	        	
-	        	for (int i=0; i<spread.BinCount; i++)
+	        	if (FInput.SliceCount>0)
 	        	{
-	        		for (int j=0; j<vecSize; j++)
+		        	VecBin spread = new VecBin(FInput, FBinSize, vecSize);
+		        	List<double> center = new List<double>();
+		        	List<double> width = new List<double>();
+		        	List<double> min = new List<double>();
+		        	List<double> max = new List<double>();
+		        	
+		        	for (int i=0; i<spread.BinCount; i++)
+		        	{
+		        		for (int j=0; j<vecSize; j++)
+		        		{
+		        			List<double> curSpread = new List<double>();
+		        			
+		        			for (int k=0; k<spread.GetBin(i).Count/vecSize; k++)
+		        			{
+		        				curSpread.Add(spread.GetBinVector(i,k)[j]);
+		        			}
+		        			curSpread.Sort();
+		        			double curMin = curSpread[0];
+		        			min.Add(curMin);
+		        			double curMax = curSpread[curSpread.Count-1];
+		        			max.Add(curMax);
+		        			double curWidth = curMax-curMin;
+		        			width.Add(curWidth);
+		        			center.Add(curMax-(curWidth/2));
+		        		}
+		        	}
+	        		
+		        	FCenter.SliceCount=center.Count;
+		        	FWidth.SliceCount=center.Count;
+		        	FMin.SliceCount=center.Count;
+		        	FMax.SliceCount=center.Count;
+		        	for (int i=0; i<center.Count; i++)
+		        	{
+		        		FCenter.SetValue(i, center[i]);
+		        		FWidth.SetValue(i, width[i]);
+		        		FMin.SetValue(i, min[i]);
+		        		FMax.SetValue(i, max[i]);
+		        	}
+	        	}
+	        	else
+	        	{
+	        		FCenter.SliceCount=FBinSize.SliceCount*vecSize;
+	        		FWidth.SliceCount=FBinSize.SliceCount*vecSize;
+	        		FMin.SliceCount=FBinSize.SliceCount*vecSize;
+	        		FMax.SliceCount=FBinSize.SliceCount*vecSize;
+	        		for (int i=0; i<FBinSize.SliceCount; i++)
 	        		{
-	        			List<double> curSpread = new List<double>();
-	        			
-	        			for (int k=0; k<spread.GetBin(i).Count/vecSize; k++)
+	        			double curBinSize;
+	        			FBinSize.GetValue(i, out curBinSize);
+	        			if (curBinSize>0)
 	        			{
-	        				curSpread.Add(spread.GetBinVector(i,k)[j]);
+	        				FCenter.SliceCount=0;
+	        				FWidth.SliceCount=0;
+	        				FMin.SliceCount=0;
+	        				FMax.SliceCount=0;
+	        				break;
 	        			}
-	        			curSpread.Sort();
-	        			double curMin = curSpread[0];
-	        			min.Add(curMin);
-	        			double curMax = curSpread[curSpread.Count-1];
-	        			max.Add(curMax);
-	        			double curWidth = curMax-curMin;
-	        			width.Add(curWidth);
-	        			center.Add(curMax-(curWidth/2));
 	        		}
 	        	}
-        		
-	        	FCenter.SliceCount=center.Count;
-	        	FWidth.SliceCount=center.Count;
-	        	FMin.SliceCount=center.Count;
-	        	FMax.SliceCount=center.Count;
-	        	for (int i=0; i<center.Count; i++)
-	        	{
-	        		FCenter.SetValue(i, center[i]);
-	        		FWidth.SetValue(i, width[i]);
-	        		FMin.SetValue(i, min[i]);
-	        		FMax.SetValue(i, max[i]);
-	        	}
-	        	
 	        	
         	}      	
         }

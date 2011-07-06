@@ -220,26 +220,43 @@ namespace VVVV.Nodes
 	        	FVecSize.GetValue(0, out tmpVec);
 	        	int vecSize = (int)Math.Round(tmpVec);
 	        	
-	        	VecBin spread = new VecBin(FInput, FBinSize, vecSize);
-	        	List<double> outList = new List<double>();
-	        	
-	        	for (int i=0; i<spread.BinCount; i++)
+	        	if (FInput.SliceCount>0)
 	        	{
-	        		for (int j=0; j<vecSize; j++)
+	        		VecBin spread = new VecBin(FInput, FBinSize, vecSize);
+	        		List<double> outList = new List<double>();
+	        		
+	        		for (int i=0; i<spread.BinCount; i++)
 	        		{
-	        			double curSum=0;
-	        			for (int k=0; k<spread.GetBin(i).Count/vecSize; k++)
+	        			for (int j=0; j<vecSize; j++)
 	        			{
-	        				curSum+=spread.GetBinVector(i,k)[j];
-	        			}	        			
-	        			outList.Add(curSum);
+	        				double curSum=0;
+	        				for (int k=0; k<spread.GetBin(i).Count/vecSize; k++)
+	        				{
+	        					curSum+=spread.GetBinVector(i,k)[j];
+	        				}
+	        				outList.Add(curSum);
+	        			}
+	        		}
+	        		
+	        		FOutput.SliceCount=outList.Count;
+	        		for (int i=0; i<outList.Count; i++)
+	        		{
+	        			FOutput.SetValue(i, outList[i]);
 	        		}
 	        	}
-        		
-	        	FOutput.SliceCount=outList.Count;
-	        	for (int i=0; i<outList.Count; i++)
+	        	else
 	        	{
-	        		FOutput.SetValue(i, outList[i]);
+	        		FOutput.SliceCount=FBinSize.SliceCount*vecSize;
+	        		for (int i=0; i<FBinSize.SliceCount; i++)
+	        		{
+	        			double curBinSize;
+	        			FBinSize.GetValue(i, out curBinSize);
+	        			if (curBinSize>0)
+	        			{
+	        				FOutput.SliceCount=0;
+	        				break;
+	        			}
+	        		}
 	        	}
         	}      	
         }
