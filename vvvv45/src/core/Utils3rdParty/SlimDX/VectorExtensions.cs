@@ -51,5 +51,20 @@ namespace VVVV.Utils.SlimDX
 			Result.w = Input.W;
 			return Result;
 		}
+
+        /// <summary>
+        /// Converts a <see cref="Quaternion">Quaternion</see> to a <see cref="Vector4D">Vector4D</see>.
+        /// </summary>
+        /// <param name="Input">The <see cref="Quaternion">Quaternion</see> to convert.</param>
+        /// <returns>The converted <see cref="Vector4D">Vector4D</see>.</returns>
+        public static Vector4D ToVector4D(this Quaternion Input)
+        {
+            Vector4D Result;
+            Result.x = Input.X;
+            Result.y = Input.Y;
+            Result.z = Input.Z;
+            Result.w = Input.W;
+            return Result;
+        }
 	}
 }
