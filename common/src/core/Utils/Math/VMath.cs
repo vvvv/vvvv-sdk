@@ -46,6 +46,26 @@ namespace VVVV.Utils.VMath
 	public sealed class VMath
 	{
 		#region constants
+
+        /// <summary>
+        /// Pi, as you know it
+        /// </summary>
+        public const double Pi = 3.1415926535897932384626433832795;
+
+        /// <summary>
+        /// Pi * 2
+        /// </summary>
+        public const double TwoPi = 6.283185307179586476925286766559;
+
+        /// <summary>
+        /// 1 / Pi, multiply by this if you have to divide by Pi
+        /// </summary>
+        public const double PiRez = 0.31830988618379067153776752674503;
+
+        /// <summary>
+        /// 2 / Pi, multiply by this if you have to divide by 2*Pi
+        /// </summary>
+        public const double TwoPiRez = 0.15915494309189533576888376337251;
 		
 		/// <summary>
 		/// Conversion factor from cycles to radians, (2 * Pi)
@@ -1098,6 +1118,7 @@ namespace VVVV.Utils.VMath
                 pitch = 0;
                 yaw = 2 * Math.Atan2(q.y, q.w);
                 roll = Math.PI / 2;
+                return;
             }
 
             if (test < -0.49999 * unit)
@@ -1105,6 +1126,7 @@ namespace VVVV.Utils.VMath
                 pitch = 0;
                 yaw = -2 * Math.Atan2(q.y, q.w);
                 roll = -Math.PI / 2;
+                return;
             }
 
             pitch = Math.Asin(2 * (q.w * q.x - q.y * q.z) / unit);
