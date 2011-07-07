@@ -82,6 +82,7 @@ namespace VVVV.Nodes.Finder
             FTagsPin.Changed += FTagsPin_Changed;
             
             FNodeFilter = new NodeFilter();
+            FNodeView = FNodeFilter.UpdateFilter(string.Empty, FHDEHost.RootNode);
         }
 
         private void InitializeComponent()
@@ -318,8 +319,9 @@ namespace VVVV.Nodes.Finder
             if (FPluginHost.Window != null)
                 FPluginHost.Window.Caption = FActivePatchNode.NodeInfo.Systemname;
         
+            //only redraw if in local scope
             if (!FNodeFilter.ScopeIsGlobal)
-                UpdateSearch();
+                UpdateView();
             
             FNodeView.SetActiveWindow(FActiveWindow);
         }
@@ -353,7 +355,12 @@ namespace VVVV.Nodes.Finder
             }
         }
         
-        private void UpdateSearch()
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+        }
+        
+        private void UpdateView()
         {
             string query = FSearchTextBox.Text.ToLower();
             
@@ -385,7 +392,7 @@ namespace VVVV.Nodes.Finder
         #region GUI events
         void FSearchTextBoxTextChanged(object sender, EventArgs e)
         {
-            UpdateSearch();
+            UpdateView();
             
             //save tags in config pin
             FTagsPin[0] = FSearchTextBox.Text;
