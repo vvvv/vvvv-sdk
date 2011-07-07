@@ -19,7 +19,7 @@ namespace VVVV.Nodes
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "Decompose";							//use CamelCaps and no spaces
                 Info.Category = "Transform";						//try to use an existing one
-                Info.Version = "";						//versions are optional. leave blank if not needed
+                Info.Version = "Quaternion";						//versions are optional. leave blank if not needed
                 Info.Help = "Decompose a transform into translate/scale/rotate";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
