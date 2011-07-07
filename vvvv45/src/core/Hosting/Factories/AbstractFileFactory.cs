@@ -73,36 +73,27 @@ namespace VVVV.Hosting.Factories
         //return nodeinfos from systemname
         public INodeInfo[] ExtractNodeInfos(string filename, string arguments)
         {
-            try
+            if (!FileExtension.Contains(Path.GetExtension(filename)))
+                return new INodeInfo[0];
+            
+            // Regardless of the arguments, we need to load the node infos first.
+            var nodeInfos = LoadNodeInfos(filename).ToArray();
+            
+            // If additional arguments are present vvvv is only interested in one specific
+            // NodeInfo -> look for it.
+            if ((arguments != null) && (arguments != ""))
             {
-                if (!FileExtension.Contains(Path.GetExtension(filename)))
-                    return new INodeInfo[0];
-                
-                // Regardless of the arguments, we need to load the node infos first.
-                var nodeInfos = LoadNodeInfos(filename).ToArray();
-                
-                // If additional arguments are present vvvv is only interested in one specific
-                // NodeInfo -> look for it.
-                if ((arguments != null) && (arguments != ""))
+                foreach (var nodeInfo in nodeInfos)
                 {
-                    foreach (var nodeInfo in nodeInfos)
-                    {
-                        if (nodeInfo.Arguments != null && nodeInfo.Arguments == arguments)
-                            return new INodeInfo[] { nodeInfo };
-                    }
-                    
-                    // give back nothing if not found
-                    return new INodeInfo[0];
+                    if (nodeInfo.Arguments != null && nodeInfo.Arguments == arguments)
+                        return new INodeInfo[] { nodeInfo };
                 }
                 
-                return nodeInfos;
+                // give back nothing if not found
+                return new INodeInfo[0];
             }
-            catch (Exception ex)
-            {
-                FLogger.Log(ex);
-                // Rethrow
-                throw ex;
-            }
+            
+            return nodeInfos;
         }
         
         protected abstract IEnumerable<INodeInfo> LoadNodeInfos(string filename);
@@ -184,11 +175,11 @@ namespace VVVV.Hosting.Factories
                 {
                     if (!(subDir.EndsWith(".svn") || subDir.EndsWith(".cache")))
                     {
-                        try 
+                        try
                         {
                             AddSubDir(subDir, recursive);
                         }
-                        catch (Exception e) 
+                        catch (Exception e)
                         {
                             FLogger.Log(e);
                         }
