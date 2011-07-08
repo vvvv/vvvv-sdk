@@ -15,7 +15,7 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     c=sharp*4;
     c=saturate(1-pow(sharp*SharpEdges,.5));
     c=tex2Dlod(s0,float4(x,0,1+saturate(Width)*.6*pow(c.x,1./(1+max(0,Width-1)))*log2(max(R.x,R.y))));
-    c.a=1;
+    c.a=tex2D(s0,x).a;
     return c;
 }
 
