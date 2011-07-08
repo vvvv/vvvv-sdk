@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{6A0AFB1F-8219-4A08-85F7-B7F19B66AC16}</ProjectGuid>
+    <Configuration>Debug</Configuration>
+    <Platform>x86</Platform>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VVVV.Nodes</RootNamespace>
+    <AssemblyName>DeCons</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ReferencePath>D:\vvvv\vvvv_45alpha25.2-5005\\bin\managed\</ReferencePath>
+    <StartProgram>$(VVVV45)\vvvv.exe</StartProgram>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <SignAssembly>False</SignAssembly>
+    <DelaySign>False</DelaySign>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <NoStdLib>False</NoStdLib>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <RunCodeAnalysis>False</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <BaseAddress>4194304</BaseAddress>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <FileAlignment>4096</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <StartAction>Project</StartAction>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="VVVV.Core" />
+    <Reference Include="VVVV.PluginInterfaces" />
+    <Reference Include="VVVV.Utils" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DeCons.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>
