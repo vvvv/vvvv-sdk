@@ -188,7 +188,7 @@ namespace VVVV.Nodes
 	    	FSource.SetSubType("c:", true);	
 	    	
 	    	FHost.CreateStringInput("Destination", TSliceMode.Dynamic, TPinVisibility.True, out FDestination);
-	    	FDestination.SetSubType("c:/self", false);	
+	    	FDestination.SetSubType(@"c:\self", false);	
 
 	    	FHost.CreateValueInput("Save", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDo);
 	    	FDo.SetSubType(0, 1, 1, 0, true, false, false);
@@ -408,7 +408,7 @@ namespace VVVV.Nodes
 
 	    	//create inputs
 	    	FHost.CreateStringInput("Shortcut", TSliceMode.Dynamic, TPinVisibility.True, out FShortcut);
-	    	FShortcut.SetSubType("c:/dummy.lnk", false);	
+	    	FShortcut.SetSubType(@"c:\dummy.lnk", false);	
 	    	
 	    	//create outputs	    	
 	    	FHost.CreateStringOutput("Destination", TSliceMode.Dynamic, TPinVisibility.True, out FDestination);
