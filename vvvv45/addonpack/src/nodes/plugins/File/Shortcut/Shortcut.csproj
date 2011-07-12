@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -20,6 +20,7 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <OutputPath>bin\</OutputPath>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <ReferencePath>$(VVVV45)\bin\managed\</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <Optimize>False</Optimize>
@@ -40,12 +41,8 @@
       <HintPath>Dependencies\Interop.IWshRuntimeLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="VVVV.PluginInterfaces">
-      <HintPath>..\..\..\..\vvvv_45alpha25.2-5012\bin\managed\VVVV.PluginInterfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="VVVV.Utils">
-      <HintPath>..\..\..\..\vvvv_45alpha25.2-5012\bin\managed\VVVV.Utils.dll</HintPath>
-    </Reference>
+    <Reference Include="VVVV.PluginInterfaces" />
+    <Reference Include="VVVV.Utils" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
