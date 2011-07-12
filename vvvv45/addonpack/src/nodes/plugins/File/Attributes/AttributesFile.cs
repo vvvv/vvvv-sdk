@@ -148,7 +148,7 @@ namespace VVVV.Nodes
 					//describe the nodes function
 					FPluginInfo.Help = "gets and sets file attributes: hidden, readonly, system";
 					//specify a comma separated list of tags that describe the node
-					FPluginInfo.Tags = "file, directory, attribute, woei";
+					FPluginInfo.Tags = "file, directory, attribute";
 					
 					//give credits to thirdparty code used
 					FPluginInfo.Credits = "";
