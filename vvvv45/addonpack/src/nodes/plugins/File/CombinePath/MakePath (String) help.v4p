@@ -1,15 +1,15 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.1.dtd" >
-   <PATCH nodename="D:\vvvv\sourceforge\plugins\wrk\CombinePath\Combine (String Path) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha25.2.dtd" >
+   <PATCH nodename="D:\vvvv\sourceforge\plugins\__upld\CombinePath\MakePath (String) help.v4p">
    <BOUNDS height="6315" left="1125" top="1125" type="Window" width="5760">
    </BOUNDS>
-   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="270" top="210" type="Node" width="3660">
    </BOUNDS>
    <BOUNDS height="420" left="270" top="210" type="Box" width="3705">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Combine (File Path)|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|MakePath (String)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -18,51 +18,33 @@
    <PIN pinname="Size" slicecount="1" values="14">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="330" top="720" type="Node" width="3015">
    </BOUNDS>
    <BOUNDS height="300" left="330" top="720" type="Box" width="3255">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|tries to combine the strings to a useful path|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|tries to combine the strings to a useful path|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="4" nodename=":PLUGINS:\CombinePath.dll|VVVV.Nodes.CombinePath">
-   <BOUNDS height="270" left="345" top="3165" type="Node" width="3315">
-   </BOUNDS>
-   <BOUNDS left="345" top="3165" type="Box">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Input Count" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Input 3" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="0" left="330" top="1485" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="330" top="1485" type="Box" width="1590">
    </BOUNDS>
    <BOUNDS height="160" left="3210" top="3405" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="c:/whatever/works">
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="c:/whatever/works">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="3" srcpinname="Output String">
-   </LINK>
-   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="0" left="360" top="3585" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="615" left="360" top="3585" type="Box" width="3300">
@@ -74,28 +56,26 @@
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
    </NODE>
-   <LINK dstnodeid="1" dstpinname="Input String" srcnodeid="4" srcpinname="Output">
-   </LINK>
-   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="0" left="1965" top="1485" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="1965" top="1485" type="Box" width="1590">
    </BOUNDS>
    <BOUNDS height="160" left="3210" top="3405" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="..\might\be\the">
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="..\might\be\the">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="0" left="3600" top="1485" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="615" left="3600" top="1485" type="Box" width="1590">
    </BOUNDS>
    <BOUNDS height="160" left="3210" top="3405" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="2" values="..\vvvv,path.here">
+   <PIN encoded="0" pinname="Input String" slicecount="2" values="..\vvvv,path.here">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -104,22 +84,40 @@
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
    </NODE>
-   <LINK srcnodeid="13" srcpinname="Output String" dstnodeid="4" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="14" srcpinname="Output String" dstnodeid="4" dstpinname="Input 3">
-   </LINK>
-   <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="4215" top="5220" type="Node" width="3015">
    </BOUNDS>
    <BOUNDS height="270" left="4215" top="5220" type="Box" width="945">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|2010, woei|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|2010, woei|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
+   <NODE componentmode="Hidden" filename="bin\MakePath.dll" id="16" nodename="MakePath (File Path)" systemname="MakePath (File Path)">
+   <BOUNDS height="270" left="345" top="3195" type="Node" width="3315">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Input 1" srcnodeid="3" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Input 2" srcnodeid="13" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Input 3" srcnodeid="14" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Input String" srcnodeid="16" srcpinname="Output">
+   </LINK>
    </PATCH>

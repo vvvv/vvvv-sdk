@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 // change them to the information which is associated with the assembly
 // you compile.
 
-[assembly: AssemblyTitle("CombinePath")]
+[assembly: AssemblyTitle("MakePath")]
 [assembly: AssemblyDescription("combines strings to a path")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("woei")]
-[assembly: AssemblyProduct("CombinePath")]
+[assembly: AssemblyProduct("MakePath")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -28,4 +28,4 @@ using System.Runtime.InteropServices;
 // You can specify all values by your own or you can build default build and revision
 // numbers with the '*' character (the default):
 
-[assembly: AssemblyVersion("1.0.0")]
+[assembly: AssemblyVersion("1.1.0")]

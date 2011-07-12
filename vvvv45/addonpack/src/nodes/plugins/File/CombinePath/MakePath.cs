@@ -1,7 +1,7 @@
 #region licence/info
 
 //////project name
-//CombinePath
+//MakePath
 
 //////description
 //combines strings to a path
@@ -33,7 +33,7 @@ namespace VVVV.Nodes
 {
 	
 	//class definition
-	public class CombinePath: IPlugin, IDisposable
+	public class MakePath: IPlugin, IDisposable
     {	          	
     	#region field declaration
     	
@@ -46,6 +46,7 @@ namespace VVVV.Nodes
    		private IValueConfig FInCount;
    		
     	//input pin declaration
+    	private IValueIn FPrepend;
     	private IStringIn FIn1;
     	
 		//output pin declaration
@@ -59,7 +60,7 @@ namespace VVVV.Nodes
        
     	#region constructor/destructor
     	
-        public CombinePath()
+        public MakePath()
         {
 			//the nodes constructor
 			FInList = new List<IStringIn>();
@@ -97,7 +98,7 @@ namespace VVVV.Nodes
         		// Release unmanaged resources. If disposing is false,
         		// only the following code is executed.
 	        	
-        		FHost.Log(TLogType.Debug, "Combine (File Path) is being deleted");
+        		FHost.Log(TLogType.Debug, "MakePath (File Path) is being deleted");
         		
         		// Note that this is not thread safe.
         		// Another thread could start disposing the object
@@ -114,7 +115,7 @@ namespace VVVV.Nodes
         // does not get called.
         // It gives your base class the opportunity to finalize.
         // Do not provide destructors in types derived from this class.
-        ~CombinePath()
+        ~MakePath()
         {
         	// Do not re-create Dispose clean-up code here.
         	// Calling Dispose(false) is optimal in terms of
@@ -138,7 +139,7 @@ namespace VVVV.Nodes
 					FPluginInfo = new PluginInfo();
 					
 					//the nodes main name: use CamelCaps and no spaces
-					FPluginInfo.Name = "Combine";
+					FPluginInfo.Name = "MakePath";
 					//the nodes category: try to use an existing one
 					FPluginInfo.Category = "File";
 					//the nodes version: optional. leave blank if not
@@ -150,7 +151,7 @@ namespace VVVV.Nodes
 					//describe the nodes function
 					FPluginInfo.Help = "combines strings to a path";
 					//specify a comma separated list of tags that describe the node
-					FPluginInfo.Tags = "path, filename, directory, combine, string, woei";
+					FPluginInfo.Tags = "file, directory, folder";
 					
 					//give credits to thirdparty code used
 					FPluginInfo.Credits = "";
@@ -192,6 +193,9 @@ namespace VVVV.Nodes
 	    	FInCount.SetSubType(1, double.MaxValue, 1, 1, false, false, true);
 
 	    	//create inputs
+	    	FHost.CreateValueInput("Prepend Patch Path", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPrepend);
+	    	FPrepend.SetSubType(0, 1, 1, 1, false, true, false);
+	    	
 	    	FHost.CreateStringInput("Input 1", TSliceMode.Dynamic, TPinVisibility.True, out FIn1);
 	    	FIn1.SetSubType("", false);
 	    	
@@ -254,18 +258,24 @@ namespace VVVV.Nodes
         			maxSlice = Math.Max(maxSlice, p.SliceCount);
         		}
         		
-        		if (evaluate)
+        		if (evaluate || FPrepend.PinIsChanged)
         		{
         			evaluate = false;
         			string root;
         			FHost.GetHostPath(out root);
         			root = Path.GetDirectoryName(root);
         			
+        			double tmpPrepend;
+        			FPrepend.GetValue(0, out tmpPrepend);
+        			bool prepend = tmpPrepend>0.5;
+        			
         			FOutput.SliceCount=maxSlice;
         			for (int s=0; s<maxSlice; s++)
         			{
         				string builder;
         				FInList[0].GetString(s, out builder);
+        				if (string.IsNullOrEmpty(builder))
+        						builder="";
         				bool isRooted = Path.IsPathRooted(builder);
         				if (!isRooted)
         				    builder = Path.Combine(root,builder);
@@ -280,7 +290,7 @@ namespace VVVV.Nodes
         				}
 
         				builder = Path.GetFullPath(builder);
-        				if (!isRooted)
+        				if (!(isRooted || prepend))
         					builder = builder.Replace(root+"\\", string.Empty);
         				FOutput.SetString(s, builder);
         			}
