@@ -71,7 +71,7 @@ namespace VVVV.Nodes
 	
 	#region PluginInfo
 	[PluginInfo(Name = "DeCons",
-	            Category = "Enumeration",
+	            Category = "Enumerations",
 	            Help = "Reverse Function to the Cons Node",
 	            Tags = "split",
 	            Author = "woei")]
