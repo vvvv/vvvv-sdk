@@ -1,7 +1,7 @@
 #region licence/info
 
 //////project name
-//OccurrenceValue
+//Occurrence
 
 //////description
 //counts the occurrence of equal slices
@@ -28,7 +28,6 @@
 //use what you need
 using System;
 using System.ComponentModel.Composition;
-using System.Collections.Generic;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -42,7 +41,7 @@ namespace VVVV.Nodes
     {	          	
     	#region fields & pins
     	[Input("Input")]
-    	IDiffSpread<T> FInput;
+    	IDiffSpread<ISpread<T>> FInput;
     	
     	
     	[Output("Count")]
@@ -54,15 +53,27 @@ namespace VVVV.Nodes
     	[Output("Unique")]
     	ISpread<T> FUniques;
     	
-    	[Output("Unique Index", Visibility = PinVisibility.OnlyInspector)]
+    	[Output("Bin Size")]
+    	ISpread<int> FBinSize;
+    
+    	
+    	[Output("Former Index")]//, Visibility = PinVisibility.OnlyInspector)]
+    	ISpread<ISpread<int>> FFormerIndex;
+    
+    	
+    	[Output("Unique Index")]//, Visibility = PinVisibility.OnlyInspector)]
     	ISpread<int> FUniIds;
     	
     	[Output("Occurrence Index", Visibility = PinVisibility.OnlyInspector)]
     	ISpread<int> FOccIndex;
+    
     	
     	public bool eval = false;
     	#endregion fields & pins
-
+    	
+    	
+    	
+    
     	public virtual bool Equals<T>(T a, T b)
     	{
     		return a.Equals(b);
@@ -73,41 +84,49 @@ namespace VVVV.Nodes
         	if (FInput.IsChanged || eval)
         	{	
         		eval = false;
-        		FUniIds.SliceCount=FInput.SliceCount;
-        		FOccIndex.SliceCount=FInput.SliceCount;
-
-       			List<UniqueObj<T>> uniqueList = new List<UniqueObj<T>>();
-	        	for (int i=0; i<FInput.SliceCount; i++)
-	        	{
-	        		bool isUnique = true;
-	        		 	for (int j=0; j<uniqueList.Count; j++)
-	        		 	{
-	        		 		if (Equals(FInput[i], uniqueList[j].Unique))
-	        		 		{
-	        		 			isUnique=false;
-	        		 			FUniIds[i] = j;
-	        		 			FOccIndex[i] = uniqueList[j].AddMember(i);
-	        		 			break;
-	        		 		}
-	        		 	}
-	        		 	if (isUnique)
-	        		 	{
-	        		 		uniqueList.Add(new UniqueObj<T>(FInput[i], i));
-	        		 		FUniIds[i] = uniqueList.Count-1;
-	        		 		FOccIndex[i] = 0;
-	        		 	}
-	        	}
+        		FCountOut.SliceCount=0;
+        		FFirstOcc.SliceCount=0;
+        		FUniques.SliceCount=0;
+        		FBinSize.SliceCount=0;
         		
+        		FFormerIndex.SliceCount=0;
         		
-        		FCountOut.SliceCount=uniqueList.Count;
-        		FFirstOcc.SliceCount=uniqueList.Count;
-        		FUniques.SliceCount=uniqueList.Count;
-        		for (int i=0; i<uniqueList.Count; i++)
+        		FUniIds.SliceCount=0;
+        		FOccIndex.SliceCount=0;
+        		int oIncr = 0;
+        		for (int b=0; b<FInput.SliceCount; b++)
         		{
-        			FCountOut[i] = uniqueList[i].Count;
-        			FFirstOcc[i] = uniqueList[i].FirstOccurred;
-        			FUniques[i] = uniqueList[i].Unique;
-        		}
+        			for (int s=0; s<FInput[b].SliceCount; s++)
+        			{
+        				bool isUnique = true;
+        				for (int o=oIncr; o<FUniques.SliceCount; o++)
+        				{
+	        				if (Equals(FInput[b][s],FUniques[o]))
+	        				{
+	        					isUnique=false;
+	        					FUniIds.Add(o);
+	        					FFormerIndex[o].Add(s);
+	        					FOccIndex.Add(FCountOut[o]);
+	        					
+	        					FCountOut[o]++;
+	        					break;
+	        				}	
+        				}
+        				if (isUnique)
+        				{
+        					FUniIds.Add(FUniques.SliceCount);
+	        				FOccIndex.Add(0);
+	        				FFormerIndex.Add(new Spread<int>(0));
+	        				FFormerIndex[FFormerIndex.SliceCount-1].Add(s);
+	        					
+	        				FUniques.Add(FInput[b][s]);
+	        				FCountOut.Add(1);
+	        				FFirstOcc.Add(s);
+        				}
+        			}
+        			FBinSize.Add(FUniques.SliceCount-oIncr);
+        			oIncr=FUniques.SliceCount;
+        		}   		
         	}      	
         }
 	
@@ -120,9 +139,9 @@ namespace VVVV.Nodes
 	           	Author = "woei")]
 	public class OccurrenceValue: Occurrence<double>
 	{
-		[Input("Epsilon", IsSingle = true, Order = 1)]
+		[Input("Epsilon", IsSingle = true, MinValue=0, Order = 1)]
     	IDiffSpread<double> FEps;
-    	
+		
 		public override bool Equals<T>(T a, T b)
 		{
 			double _a = (double)(a as object);
@@ -202,16 +221,12 @@ namespace VVVV.Nodes
 	            Help = "counts the occurrence of equal slices",
 	            Tags = "count, occurrence, spectral, spread",
 	           	Author = "woei")]
-	public class OccurrenceEnum: Occurrence<EnumEntry>
-	{
-	}
+	public class OccurrenceEnum: Occurrence<EnumEntry> {}
 	
 	[PluginInfo(Name = "Occurrence", 
 	            Category = "Transform",
 	            Help = "counts the occurrence of equal slices",
 	            Tags = "count, occurrence, spectral, spread",
 	           	Author = "woei")]
-	public class OccurrenceTransform: Occurrence<Matrix4x4>
-	{
-	}
+	public class OccurrenceTransform: Occurrence<Matrix4x4> {}
 }

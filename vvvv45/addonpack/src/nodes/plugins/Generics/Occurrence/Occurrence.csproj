@@ -1,57 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+    <ProjectGuid>{BE8F0188-A22A-4ED6-B94D-963F37F114AD}</ProjectGuid>
+    <Configuration>Debug</Configuration>
+    <Platform>x86</Platform>
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.Nodes</RootNamespace>
     <AssemblyName>Occurrence</AssemblyName>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BE8F0188-A22A-4ED6-B94D-963F37F114AD}</ProjectGuid>
-    <SignAssembly>False</SignAssembly>
-    <DelaySign>False</DelaySign>
-    <ReferencePath>$(VVVV45)\bin\managed\</ReferencePath>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <NoStdLib>False</NoStdLib>
-    <RegisterForComInterop>False</RegisterForComInterop>
-    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-    <BaseAddress>4194304</BaseAddress>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <FileAlignment>4096</FileAlignment>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <OutputPath>bin\</OutputPath>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <Optimize>False</Optimize>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugSymbols>true</DebugSymbols>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>True</DebugSymbols>
     <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <Optimize>True</Optimize>
-    <DefineConstants>TRACE</DefineConstants>
-    <DebugSymbols>False</DebugSymbols>
-    <DebugType>None</DebugType>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ReferencePath>$(VVVV45)\bin\managed\</ReferencePath>
+    <StartProgram>$(VVVV45)\vvvv.exe</StartProgram>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition">
-      <HintPath>..\..\..\..\vvvv_45beta25.1\bin\managed\System.ComponentModel.Composition.dll</HintPath>
-    </Reference>
-    <Reference Include="VVVV.PluginInterfaces">
-      <HintPath>..\..\..\..\vvvv_45beta25.1\bin\managed\VVVV.PluginInterfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="VVVV.Utils">
-      <HintPath>..\..\..\..\vvvv_45beta25.1\bin\managed\VVVV.Utils.dll</HintPath>
-    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="VVVV.Hosting" />
+    <Reference Include="VVVV.PluginInterfaces" />
+    <Reference Include="VVVV.Utils" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Occurrence.cs" />
-    <Compile Include="unique.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
