@@ -1,8 +1,8 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
-   <PATCH nodename="X:\LensDistort\LensDistort (EX9.Texture Filter).v4p">
-   <BOUNDS height="8550" left="19215" top="2850" type="Window" width="8925">
+   <PATCH nodename="W:\Program Files\vvvv_45beta25.1\modules\common\TextureFX\Filter\LensDistort\LensDistort (EX9.Texture Filter).v4p">
+   <BOUNDS height="8550" left="7680" top="4275" type="Window" width="8925">
    </BOUNDS>
-   <NODE componentmode="InAWindow" filename="LensDistort.fx" id="22" nodename="LensDistort.fx" systemname="LensDistort (EX9.Effect)">
+   <NODE componentmode="Hidden" filename="LensDistort.fx" id="22" nodename="LensDistort.fx" systemname="LensDistort (EX9.Effect)">
    <BOUNDS height="270" left="2025" top="3915" type="Node" width="5055">
    </BOUNDS>
    <BOUNDS height="10920" left="10980" top="3330" type="Window" width="20055">
@@ -55,7 +55,7 @@
    </PIN>
    <PIN pinname="Y" visible="1">
    </PIN>
-   <PIN pinname="Rotate" visible="1">
+   <PIN pinname="Zoom" visible="1">
    </PIN>
    <PIN pinname="Radius" visible="1">
    </PIN>
@@ -258,7 +258,7 @@
    </LINK>
    <LINK dstnodeid="20" dstpinname="Enabled" srcnodeid="14" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" id="9" nodename="UniformScale (Transform)">
+   <NODE componentmode="Hidden" id="9" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
    <BOUNDS height="0" left="4095" top="4845" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="XYZ" slicecount="1" values="2">
@@ -268,7 +268,7 @@
    </NODE>
    <LINK dstnodeid="20" dstpinname="View Transform" srcnodeid="9" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="4305" top="375" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="4305" top="375" type="Box" width="795">
@@ -279,10 +279,10 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.55">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="5205" top="405" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="5205" top="405" type="Box" width="795">
@@ -296,7 +296,7 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="6990" top="390" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="6990" top="390" type="Box" width="795">
@@ -310,29 +310,29 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0.610000000000001">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="6090" top="390" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="6090" top="390" type="Box" width="795">
    </BOUNDS>
    <BOUNDS height="160" left="20355" top="3735" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Rotate">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Zoom">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="-1.04">
+   <PIN pinname="Y Input Value" slicecount="1" values="-0.42">
    </PIN>
    </NODE>
    <LINK dstnodeid="22" dstpinname="X" srcnodeid="8" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="22" dstpinname="Y" srcnodeid="7" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="22" dstpinname="Rotate" srcnodeid="5" srcpinname="Y Output Value">
+   <LINK dstnodeid="22" dstpinname="Zoom" srcnodeid="5" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="22" dstpinname="Radius" srcnodeid="6" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="Hidden" id="4" nodename="RGB (Color Join)">
+   <NODE componentmode="Hidden" id="4" nodename="RGB (Color Join)" systemname="RGB (Color Join)">
    <BOUNDS height="0" left="7770" top="1890" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Red" visible="1">
@@ -352,7 +352,7 @@
    </LINK>
    <LINK dstnodeid="4" dstpinname="Alpha" srcnodeid="6" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="Hidden" id="3" nodename="DynamicTexture (EX9.Texture Color)">
+   <NODE componentmode="Hidden" id="3" nodename="DynamicTexture (EX9.Texture Color)" systemname="DynamicTexture (EX9.Texture Color)">
    <BOUNDS height="0" left="4650" top="2190" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Color" visible="1">
@@ -370,7 +370,7 @@
    </LINK>
    <LINK dstnodeid="22" dstpinname="tData" srcnodeid="3" srcpinname="Texture Out">
    </LINK>
-   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="8460" top="345" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="480" left="8460" top="345" type="Box" width="480">
@@ -396,7 +396,7 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="1" nodename="OR (Boolean)">
+   <NODE componentmode="Hidden" id="1" nodename="OR (Boolean)" systemname="OR (Boolean)">
    <BOUNDS height="0" left="8520" top="1125" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -408,7 +408,7 @@
    </LINK>
    <LINK dstnodeid="22" dstpinname="Aspect" srcnodeid="1" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" id="0" nodename="Count (Color)">
+   <NODE componentmode="Hidden" id="0" nodename="Count (Color)" systemname="Count (Color)">
    <BOUNDS height="0" left="7440" top="2850" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">

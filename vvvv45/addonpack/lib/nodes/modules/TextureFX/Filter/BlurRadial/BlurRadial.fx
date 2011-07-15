@@ -3,7 +3,7 @@ bool Aspect;
 float BlurX <float uimin=-1.0; float uimax=1.0;> = 0.2;
 float BlurY <float uimin=-1.0; float uimax=1.0;> = 0.0;
 float BlurZ <float uimin=0.0; float uimax=1.0;> = 0.0;
-float BlurR <float uimin=0.0; float uimax=1.0;> = 0.0;
+float BlurR <float uimin=-1.0; float uimax=1.0;> = 0.0;
 float Width=1;
 texture tex0,tex1;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};

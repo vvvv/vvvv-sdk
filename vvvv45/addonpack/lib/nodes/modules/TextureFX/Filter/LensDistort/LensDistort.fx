@@ -1,7 +1,7 @@
 float2 R;
 float X;
 float Y;
-float Rotate;
+float Zoom;
 float Radius;
 float Count;
 bool Aspect=true;
