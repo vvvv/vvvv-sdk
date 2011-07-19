@@ -263,7 +263,10 @@ namespace VVVV.Nodes
         			evaluate = false;
         			string root;
         			FHost.GetHostPath(out root);
-        			root = Path.GetDirectoryName(root);
+        			if (Path.IsPathRooted(root))
+        				root = Path.GetDirectoryName(root);
+        			else
+        				root = Path.GetDirectoryName(Path.GetFullPath(Path.GetDirectoryName(root)));
         			
         			double tmpPrepend;
         			FPrepend.GetValue(0, out tmpPrepend);
@@ -288,7 +291,7 @@ namespace VVVV.Nodes
         						curPath="";
         					builder=Path.Combine(builder, curPath);
         				}
-
+						
         				builder = Path.GetFullPath(builder);
         				if (!(isRooted || prepend))
         					builder = builder.Replace(root+"\\", string.Empty);
