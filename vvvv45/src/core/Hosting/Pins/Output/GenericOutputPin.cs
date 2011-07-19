@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.Reflection;
 
 namespace VVVV.Hosting.Pins.Output
 {
@@ -30,8 +31,8 @@ namespace VVVV.Hosting.Pins.Output
 				guids.Add(typeT.GUID);
 				typeT = typeT.BaseType;
 			}
-			
-			FNodeOut.SetSubType(guids.ToArray(), typeof(T).FullName);
+
+            FNodeOut.SetSubType(guids.ToArray(), typeof(T).GetCSharpName());
 			FNodeOut.SetInterface(this);
 			
 			base.InitializeInternalPin(FNodeOut);

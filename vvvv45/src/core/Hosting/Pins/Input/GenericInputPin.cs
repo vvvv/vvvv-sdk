@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.Reflection;
 
 namespace VVVV.Hosting.Pins.Input
 {
@@ -14,7 +15,7 @@ namespace VVVV.Hosting.Pins.Input
 			: base(host, attribute)
 		{
 			host.CreateNodeInput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FNodeIn);
-			FNodeIn.SetSubType(new Guid[] { typeof(T).GUID }, typeof(T).FullName);
+			FNodeIn.SetSubType(new Guid[] { typeof(T).GUID }, typeof(T).GetCSharpName());
 			
 			base.InitializeInternalPin(FNodeIn);
 		}
