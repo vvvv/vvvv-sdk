@@ -14,6 +14,22 @@ namespace VVVV.Hosting
 		{
 			nodeInfoFactory.NodeInfoAdded += HandleNodeInfoFactoryNodeInfoAdded;
 		}
+		
+		public string Name
+		{
+		    get
+		    {
+		        return ToString();
+		    }
+		}
+		
+		public bool AllowCaching
+        {
+            get
+            {
+                return true;
+            }
+        }
 
 		void HandleNodeInfoFactoryNodeInfoAdded (object sender, INodeInfo nodeInfo)
 		{

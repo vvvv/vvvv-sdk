@@ -34,16 +34,20 @@ namespace VVVV.Hosting.Factories
         [Import]
         protected ISolution FSolution;
         
-        [Import]
-        protected ILogger FLogger;
-        
-        private readonly Dictionary<string, CSProject> FProjects;
-        
         [ImportingConstructor]
-        public CSProjectFactory(CompositionContainer parentContainer)
+        public CSProjectFactory(CompositionContainer parentContainer, INodeInfoFactory nodeInfoFactory)
             : base(parentContainer, ".csproj")
         {
-            FProjects = new Dictionary<string, CSProject>();
+            // Listen to stuff added by nodelist.xml
+            nodeInfoFactory.NodeInfoAdded += HandleNodeInfoAdded;
+        }
+
+        void HandleNodeInfoAdded(object sender, INodeInfo nodeInfo)
+        {
+            if (nodeInfo.Type == NodeType.Dynamic)
+            {
+                nodeInfo.UserData = CreateProject(nodeInfo.Filename);
+            }
         }
         
         protected override IEnumerable<INodeInfo> LoadNodeInfos(string filename)
@@ -56,27 +60,7 @@ namespace VVVV.Hosting.Factories
             var project = CreateProject(filename);
             
             // Do we need to compile it?
-            if (!IsAssemblyUpToDate(project))
-            {
-                FLogger.Log(LogType.Message, "Assembly of {0} is not up to date. Need to recompile ...", filename);
-                
-                var isLoaded = project.IsLoaded;
-                if (!isLoaded)
-                    project.Load();
-                
-                project.ProjectCompiledSuccessfully -= project_ProjectCompiled;
-                project.Compile();
-                project.ProjectCompiledSuccessfully += project_ProjectCompiled;
-                
-                if (!isLoaded)
-                    project.Unload();
-                
-                if (project.CompilerResults.Errors.HasErrors)
-                {
-                    var errorLog = GetCompileErrorsLog(project, project.CompilerResults);
-                    throw new Exception(errorLog);
-                }
-            }
+            RecompileIfNeeded(project);
             
             LoadNodeInfosFromFile(project.AssemblyLocation, filename, ref nodeInfos, false);
             
@@ -92,23 +76,38 @@ namespace VVVV.Hosting.Factories
         
         private CSProject CreateProject(string filename)
         {
-            CSProject project;
-            if (!FProjects.TryGetValue(filename, out project))
+            var project = FSolution.Projects[filename] as CSProject;
+            if (project == null)
             {
                 project = new CSProject(filename, new Uri(filename));
-                if (FSolution.Projects.CanAdd(project))
-                {
-                    FSolution.Projects.Add(project);
-                    project.ProjectCompiledSuccessfully += project_ProjectCompiled;
-                }
-                else
-                {
-                    // Project was renamed
-                    project = FSolution.Projects[project.Name] as CSProject;
-                }
-                FProjects[filename] = project;
+                FSolution.Projects.Add(project);
+                project.ProjectCompiledSuccessfully += project_ProjectCompiled;
             }
             return project;
+        }
+        
+        private void RecompileIfNeeded(CSProject project)
+        {
+            if (!IsAssemblyUpToDate(project))
+            {
+                FLogger.Log(LogType.Message, "Assembly of {0} is not up to date. Need to recompile ...", project.Name);
+                
+                var isLoaded = project.IsLoaded;
+                if (!isLoaded)
+                    project.Load();
+                
+                project.ProjectCompiledSuccessfully -= project_ProjectCompiled;
+                project.Compile();
+                project.ProjectCompiledSuccessfully += project_ProjectCompiled;
+                
+                if (!isLoaded)
+                    project.Unload();
+                
+                if (project.CompilerResults.Errors.HasErrors)
+                {
+                    throw new Exception(GetCompileErrorsLog(project, project.CompilerResults));
+                }
+            }
         }
         
         protected override void DoAddFile(string filename)
@@ -119,16 +118,12 @@ namespace VVVV.Hosting.Factories
         
         protected override void DoRemoveFile(string filename)
         {
-            CSProject project;
-            if (FProjects.TryGetValue(filename, out project))
+            var project = FSolution.Projects[filename];
+            if (project != null)
             {
-                if (FSolution.Projects.CanRemove(project))
-                {
-                    FSolution.Projects.Remove(project);
-                    project.ProjectCompiledSuccessfully -= project_ProjectCompiled;
-                    project.Dispose();
-                }
-                FProjects.Remove(filename);
+                FSolution.Projects.Remove(project);
+                project.ProjectCompiledSuccessfully -= project_ProjectCompiled;
+                project.Dispose();
             }
             
             base.DoRemoveFile(filename);
@@ -166,7 +161,7 @@ namespace VVVV.Hosting.Factories
                     return piAssembly.Version == typeof(IPluginBase).Assembly.GetName().Version;
                 }
 
-                // PluginInterfaces wasn't referenced. Simply return true.                
+                // PluginInterfaces wasn't referenced. Simply return true.
                 return true;
             }
             
@@ -239,103 +234,95 @@ namespace VVVV.Hosting.Factories
         
         protected override string GetAssemblyLocation (INodeInfo nodeInfo)
         {
-            CSProject project;
-            if (FProjects.TryGetValue(nodeInfo.Filename, out project))
-                return project.AssemblyLocation;
-            else
-                return base.GetAssemblyLocation (nodeInfo);
+            var project = CreateProject(nodeInfo.Filename);
+            return project.AssemblyLocation;
         }
         
         protected override bool CloneNode(INodeInfo nodeInfo, string path, string name, string category, string version, out string newFilename)
         {
             // See if this nodeInfo belongs to us.
             var filename = nodeInfo.Filename;
-            if (FProjects.ContainsKey(filename))
+            var project = CreateProject(filename);
+            
+            if (!project.IsLoaded)
+                project.Load();
+            
+            string className = string.Format("{0}{1}{2}Node", version, category, name);
+            className = Regex.Replace(className, @"[^a-zA-Z0-9]+", "_");
+            var regexp = new Regex(@"^[0-9]+");
+            if (regexp.IsMatch(className))
+                className = string.Format("C{0}", className);
+            
+            // Find a suitable project name
+            var newProjectName = string.Format("{0}{1}{2}", version, category, name);;
+            var newProjectPath = path.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
+            
+            int i = 1;
+            string tmpNewProjectName = newProjectName;
+            string tmpClassName = className;
+            while (File.Exists(newProjectPath))
             {
-                var project = FProjects[filename];
-                
-                if (!project.IsLoaded)
-                    project.Load();
-                
-                string className = string.Format("{0}{1}{2}Node", version, category, name);
-                className = Regex.Replace(className, @"[^a-zA-Z0-9]+", "_");
-                var regexp = new Regex(@"^[0-9]+");
-                if (regexp.IsMatch(className))
-                    className = string.Format("C{0}", className);
-                
-                // Find a suitable project name
-                var newProjectName = string.Format("{0}{1}{2}", version, category, name);;
-                var newProjectPath = path.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
-                
-                int i = 1;
-                string tmpNewProjectName = newProjectName;
-                string tmpClassName = className;
-                while (File.Exists(newProjectPath))
-                {
-                    newProjectName = tmpNewProjectName + i;
-                    className = tmpClassName + i++;
-                    newProjectPath = path.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
-                }
-                
-                var newLocation = new Uri(newProjectPath);
-                project.SaveTo(newLocation);
-                
-                var newProject = new CSProject(newProjectPath, newLocation);
-                newProject.Load();
-                
-                var newLocationDir = newLocation.GetLocalDir();
-                var foundContainingDocument = false;
-                foreach (var doc in newProject.Documents)
-                {
-                    // Now scan the document for possible plugin infos.
-                    // If we find one, update its properties and rename the class and document.
-                    var csDoc = doc as CSDocument;
-                    if (csDoc != null)
-                    {
-                        // Rename the CSDocument
-                        if (!foundContainingDocument && ContainsNodeInfo(csDoc, nodeInfo))
-                        {
-                            foundContainingDocument = true;
-                            csDoc.Name = string.Format("{0}.cs", Path.GetFileNameWithoutExtension(className));
-                        }
-                        
-                        var parserResults = csDoc.ParserResults;
-                        var compilationUnit = parserResults.CompilationUnit;
-                        
-                        // Write new values to plugin info and remove all other plugin infos.
-                        var pluginInfoTransformer = new PluginClassTransformer(nodeInfo, name, category, version, className);
-                        compilationUnit.AcceptVisitor(pluginInfoTransformer, null);
-                        
-                        var outputVisitor = new CSharpOutputVisitor();
-                        var specials = parserResults.Specials;
-                        
-                        using (SpecialNodesInserter.Install(specials, outputVisitor))
-                        {
-                            outputVisitor.VisitCompilationUnit(compilationUnit, null);
-                        }
-                        
-                        csDoc.TextContent = outputVisitor.Text;
-                    }
-                }
-                
-                // Save all the documents.
-                foreach (var doc in newProject.Documents)
-                    doc.Save();
-                
-                // Save the project.
-                newProject.Save();
-                
-                // Unload it.
-                newProject.Unload();
-                
-                // Dispose it.
-                newProject.Dispose();
-                
-                newFilename = newLocation.LocalPath;
-                return true;
+                newProjectName = tmpNewProjectName + i;
+                className = tmpClassName + i++;
+                newProjectPath = path.ConcatPath(newProjectName).ConcatPath(newProjectName + ".csproj");
             }
             
-            return base.CloneNode(nodeInfo, path, name, category, version, out newFilename);
+            var newLocation = new Uri(newProjectPath);
+            project.SaveTo(newLocation);
+            
+            var newProject = new CSProject(newProjectPath, newLocation);
+            newProject.Load();
+            
+            var newLocationDir = newLocation.GetLocalDir();
+            var foundContainingDocument = false;
+            foreach (var doc in newProject.Documents)
+            {
+                // Now scan the document for possible plugin infos.
+                // If we find one, update its properties and rename the class and document.
+                var csDoc = doc as CSDocument;
+                if (csDoc != null)
+                {
+                    // Rename the CSDocument
+                    if (!foundContainingDocument && ContainsNodeInfo(csDoc, nodeInfo))
+                    {
+                        foundContainingDocument = true;
+                        csDoc.Name = string.Format("{0}.cs", Path.GetFileNameWithoutExtension(className));
+                    }
+                    
+                    var parserResults = csDoc.ParserResults;
+                    var compilationUnit = parserResults.CompilationUnit;
+                    
+                    // Write new values to plugin info and remove all other plugin infos.
+                    var pluginInfoTransformer = new PluginClassTransformer(nodeInfo, name, category, version, className);
+                    compilationUnit.AcceptVisitor(pluginInfoTransformer, null);
+                    
+                    var outputVisitor = new CSharpOutputVisitor();
+                    var specials = parserResults.Specials;
+                    
+                    using (SpecialNodesInserter.Install(specials, outputVisitor))
+                    {
+                        outputVisitor.VisitCompilationUnit(compilationUnit, null);
+                    }
+                    
+                    csDoc.TextContent = outputVisitor.Text;
+                }
+            }
+            
+            // Save all the documents.
+            foreach (var doc in newProject.Documents)
+                doc.Save();
+            
+            // Save the project.
+            newProject.Save();
+            
+            // Unload it.
+            newProject.Unload();
+            
+            // Dispose it.
+            newProject.Dispose();
+            
+            newFilename = newLocation.LocalPath;
+            return true;
         }
         
         private bool ContainsNodeInfo(CSDocument document, INodeInfo nodeInfo)

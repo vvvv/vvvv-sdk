@@ -188,7 +188,7 @@ namespace VVVV.Hosting
             
             foreach (var factory in AddonFactories)
                 if (factory is PatchFactory)
-                    NodeCollection.Add(ExePath.ConcatPath(@"help\"), factory, true, false);
+                    NodeCollection.Add(string.Empty, ExePath.ConcatPath(@"help\"), factory, true, false);
             
             //now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
             var nodeInfoFactory = FVVVVHost.NodeInfoFactory;
@@ -231,34 +231,16 @@ namespace VVVV.Hosting
         public bool CreateNode(INode node)
         {
             var nodeInfo = NodeInfoFactory.ToProxy(node.GetNodeInfo());
-            
-            try
-            {
-                return nodeInfo.Factory.Create(nodeInfo, node);
-            }
-            catch (Exception e)
-            {
-                Logger.Log(e);
-                node.LastRuntimeError = e.Message;
-                return true;
-            }
+            return nodeInfo.Factory.Create(nodeInfo, node);
         }
         
         public bool DestroyNode(INode node)
         {
             var nodeInfo = NodeInfoFactory.ToProxy(node.GetNodeInfo());
             
-            try
-            {
-                var factory = nodeInfo.Factory;
-                if (factory.Delete(nodeInfo, node))
-                    return true;
-            }
-            catch (Exception e)
-            {
-                Logger.Log(e);
-                throw e;
-            }
+            var factory = nodeInfo.Factory;
+            if (factory.Delete(nodeInfo, node))
+                return true;
             
             return false;
         }

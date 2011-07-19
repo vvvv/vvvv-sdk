@@ -56,6 +56,22 @@ namespace VVVV.Hosting.Factories
             get;
         }
         
+        public string Name
+        {
+            get
+            {
+                return ToString();
+            }
+        }
+        
+        public bool AllowCaching
+        {
+            get
+            {
+                return true;
+            }
+        }
+        
         public List<string> DirectoriesToWatch
         {
             get; private set;
@@ -306,19 +322,12 @@ namespace VVVV.Hosting.Factories
         
         protected virtual void DoAddFile(string filename)
         {
-            var host = (HDEHost) FHDEHost;
             ExtractNodeInfos(filename, null);
         }
         
         //allow subclasses to react to a filechange
         protected void FileChanged(string filename)
         {
-            if (!FFiles.Contains(filename))
-            {
-                AddFile(filename);
-                return;
-            }
-            
             //compare those new nodeinfos
             //with nodeinfos so far associated with this filename
             //add nodeinfos that are new in this filename
