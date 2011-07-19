@@ -40,6 +40,9 @@ namespace VVVV.Nodes
     	[Output("Output")]
     	protected ISpread<T> FOut;
     	
+		
+		[Import()]
+		ILogger FLogger;
 		#endregion fields & pins
 
 		
@@ -98,8 +101,9 @@ namespace VVVV.Nodes
 				buffer.RemoveAt(FId[i]);
 			if (FInsert[i])
 			{
-				if (buffer.SliceCount>0)				
-					buffer.Insert(FId[i],(Spread<T>)FIn.GetRange(incr,binSize));
+				int id = VMath.Zmod(FId[i], buffer.SliceCount+1);				
+				if (buffer.SliceCount>0 || id<buffer.SliceCount)
+					buffer.Insert(id,(Spread<T>)FIn.GetRange(incr,binSize));	
 				else
 					buffer.Add((Spread<T>)FIn.GetRange(incr,binSize));		
 			}
