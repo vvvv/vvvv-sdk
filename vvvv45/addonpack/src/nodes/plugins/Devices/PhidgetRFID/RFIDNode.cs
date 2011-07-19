@@ -29,7 +29,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "PhidgetRFID", Category = "Devices", Help = "Plugin for managing multiple Phidget RFID", Tags = "phidget rfid velcrome")]
 	#endregion PluginInfo
-	public class DevicesRFIDNode : IPluginEvaluate
+	public class DevicesRFIDNode : IPluginEvaluate, IDisposable
 	{
 		#region fields & pins
 		[Input("EnablePhidget", DefaultValue = 1)]
@@ -74,7 +74,7 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		~DevicesRFIDNode()
+		public void Dispose()
 		{
 			Disable();
 		}
