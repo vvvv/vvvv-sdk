@@ -1,166 +1,155 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-
-using VVVV.PluginInterfaces.V1;
-using System.Net.Mail;
+using System.ComponentModel.Composition;
 using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
+
+using VVVV.Core.Logging;
+using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
+using System.Text;
 
 namespace VVVV.Nodes
 {
-    
-    public class SendEmailNode : IPlugin, IDisposable
+
+    #region PluginInfo
+    [PluginInfo(Name = "SendEmail",
+                Category = "Network",
+                Help = "Send an email via smtp",
+                Author = "phlegma",
+                Credits = "vux",
+                Tags = "email,Smtp",
+                AutoEvaluate = true)]
+    #endregion PluginInfo
+    public class SendEmailNode : IPluginEvaluate
     {
-        #region Plugin Info
-        public static IPluginInfo PluginInfo
-        {
-            get
-            {
-                IPluginInfo Info = new PluginInfo();
-                Info.Name = "SendEmail";							//use CamelCaps and no spaces
-                Info.Category = "Network";						//try to use an existing one
-                Info.Version = "";						//versions are optional. leave blank if not needed
-                Info.Help = "Send an email via smtp";
-                Info.Bugs = "";
-                Info.Credits = "";								//give credits to thirdparty code used
-                Info.Warnings = "";
-                Info.Author = "vux";
-                Info.Tags = "smtp,email";
 
-                //leave below as is
-                System.Diagnostics.StackTrace st = new System.Diagnostics.StackTrace(true);
-                System.Diagnostics.StackFrame sf = st.GetFrame(0);
-                System.Reflection.MethodBase method = sf.GetMethod();
-                Info.Namespace = method.DeclaringType.Namespace;
-                Info.Class = method.DeclaringType.Name;
-                return Info;
-                //leave above as is
-            }
-        }
-        #endregion
+        [Input("Host", IsSingle = true, DefaultString = "smtp.googlemail.com")]
+        ISpread<string> FPinInHost;
 
-        #region Fields
-        private IPluginHost FHost;
+        [Input("Port", IsSingle = true, MinValue = 0, MaxValue = 49151, AsInt = true, DefaultValue=587)]
+        IDiffSpread<int> FPinInPort;
 
-        private IStringIn FPinInHost;
-        private IValueIn FPinInPort;
-        private IStringIn FPinInUsername;
-        private IStringIn FPinInPassword;
-        private IStringIn FPinInFrom;
-        private IStringIn FPinInTo;
-        //private IStringIn FPinInCC;
-        private IStringIn FPinInSubject;
-        private IStringIn FPinInMessage;
-        private IValueIn FPinInSSL;
-        private IValueIn FPinInDoSend;
-        private IValueOut FPinOutSuccess;
-        #endregion
+        [Input("Username", IsSingle = true, DefaultString="User@gmail.com")]
+        IDiffSpread<string> FPinInUsername;
 
-        #region Auto Evaluate
-        public bool AutoEvaluate
-        {
-            get { return true; }
-        }
-        #endregion
+        [Input("Password", IsSingle = true , DefaultString="password")]
+        IDiffSpread<string> FPinInPassword;
 
-        #region Set Plugin Host
-        public void SetPluginHost(IPluginHost Host)
-        {
-            //assign host
-            this.FHost = Host;
+        [Input("Use SSL", IsSingle= true, DefaultValue=1)]
+        IDiffSpread<bool> FPinInSSL;
 
-            
-            this.FHost.CreateStringInput("Host", TSliceMode.Single, TPinVisibility.True, out this.FPinInHost);
-            this.FPinInHost.SetSubType("", false);
+        [Input("From", DefaultString="User@gmail.com")]
+        IDiffSpread<string> FPinInFrom;
 
-            this.FHost.CreateValueInput("Port", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInPort);
-            this.FPinInPort.SetSubType(0, 65000, 1, 25, false, false, true);
+        [Input("To", DefaultString = "User@gmail.com")]
+        IDiffSpread<string> FPinInTo;
 
-            this.FHost.CreateStringInput("Username", TSliceMode.Single, TPinVisibility.True, out this.FPinInUsername);
-            this.FPinInUsername.SetSubType("", false);
+        [Input("Subject")]
+        IDiffSpread<string> FPinInSubject;
 
-            this.FHost.CreateStringInput("Password", TSliceMode.Single, TPinVisibility.True, out this.FPinInPassword);
-            this.FPinInPassword.SetSubType("", false);
-            
-            this.FHost.CreateStringInput("From", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInFrom);
-            this.FPinInFrom.SetSubType("", false);
+        [Input("Message")]
+        IDiffSpread<string> FPinInMessage;
 
-            this.FHost.CreateStringInput("To", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInTo);
-            this.FPinInTo.SetSubType("", false);
+        [Input("EmailEncoding", EnumName = "EmailEncoding")]
+        IDiffSpread<EnumEntry> FEmailEncoding;
 
-            this.FHost.CreateStringInput("Subject", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInSubject);
-            this.FPinInSubject.SetSubType("", false);
+        [Input("AsHtml")]
+        IDiffSpread<bool> FPinInIsHtml;
 
-            this.FHost.CreateStringInput("Message", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInMessage);
-            this.FPinInMessage.SetSubType("", false);
-        
-            this.FHost.CreateValueInput("Use SSL", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInSSL);
-            this.FPinInSSL.SetSubType(0, 1, 1, 0, false, true, false);
-        
-            this.FHost.CreateValueInput("Send", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDoSend);
-            this.FPinInDoSend.SetSubType(0, 1, 1, 0, true, false, false);
+        [Input("Attachment", StringType = StringType.Filename)]
+        IDiffSpread<string> FPinInAttachment;
 
-            this.FHost.CreateValueOutput("Success", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutSuccess);
-            this.FPinOutSuccess.SetSubType(0, 1, 1, 0, false, true, false);
-    
-        }
-        #endregion
+        [Output("Success")]
+        ISpread<bool> FPinOutSuccess;
 
-        #region Configurate
-        public void Configurate(IPluginConfig Input)
-        {
-        }
-        #endregion
+        [Input("Send", IsBang = true, IsSingle=true)]
+        IDiffSpread<bool> FPinInDoSend;
+
+        [Import()]
+        ILogger FLogger;
+
+        [ImportingConstructor]
+        public SendEmailNode()
+		{ 
+			var s = new string[]{"US-ASCII","UTF8", "UTF32","Unicode"};
+			//Please rename your Enum Type to avoid 
+			//numerous "MyDynamicEnum"s in the system
+		    EnumManager.UpdateEnum("EmailEncoding", "US-ASCII", s);  
+		}
 
         #region Evaluate
         public void Evaluate(int SpreadMax)
         {
-            double dblsend;
-            this.FPinInDoSend.GetValue(0, out dblsend);
-
-            if (dblsend >= 0.5)
+            if (FPinInDoSend.IsChanged && FPinInDoSend[0])
             {
-                string host, username, pwd ;
-                double dblport,dblssl;
-                this.FPinInHost.GetString(0, out host);
-                this.FPinInPort.GetValue(0, out dblport);
-                this.FPinInUsername.GetString(0, out username);
-                this.FPinInPassword.GetString(0, out pwd);
-                this.FPinInSSL.GetValue(0, out dblssl);
+                string Username = FPinInUsername[0];
+                string Pwd = FPinInPassword[0];
+                if (Username == null) { Username = ""; }
+                if (Pwd == null) { Pwd = ""; }
 
-                if (username == null) { username = ""; }
-                if (pwd == null) { pwd = ""; }
+                SmtpClient EmailClient = new SmtpClient(FPinInHost[0], FPinInPort[0]);
+                EmailClient.EnableSsl = FPinInSSL[0];
 
-                SmtpClient emailClient = new SmtpClient(host, Convert.ToInt32(dblport));
-                emailClient.EnableSsl = dblssl > 0.5;
-                if (username.Length > 0 && pwd.Length > 0)
+                if (Username.Length > 0 && Pwd.Length > 0)
                 {
-                    NetworkCredential SMTPUserInfo = new NetworkCredential(username, pwd);
-                    emailClient.Credentials = SMTPUserInfo;
+                    NetworkCredential SMTPUserInfo = new NetworkCredential(Username, Pwd);
+                    EmailClient.Credentials = SMTPUserInfo;
                 }
 
-                this.FPinOutSuccess.SliceCount = SpreadMax;
+                FPinOutSuccess.SliceCount = SpreadMax;
 
                 for (int i = 0; i < SpreadMax; i++)
                 {
-                    string from, to, subject, msg;
-
-
-                    this.FPinInFrom.GetString(i, out from);
-                    this.FPinInTo.GetString(i, out  to);
-                    this.FPinInSubject.GetString(i, out  subject);
-                    this.FPinInMessage.GetString(i, out msg);
-
                     try
                     {
-                        MailMessage mail = new MailMessage(from, to, subject, msg);
-                        emailClient.Send(mail);
-                        this.FPinOutSuccess.SetValue(i, 1);
+                        string message = FPinInMessage[i];
+
+
+                        UTF8Encoding utf8 = new UTF8Encoding();
+                        byte[] byteArray = Encoding.Unicode.GetBytes(FPinInMessage[i]);
+                        byte[] utf8Array = Encoding.Convert(Encoding.Unicode, Encoding.UTF8, byteArray);
+                        string finalString = utf8.GetString(utf8Array);
+
+
+                        MailMessage mail = new MailMessage(FPinInFrom[i], FPinInTo[i], FPinInSubject[i], finalString);
+                        mail.IsBodyHtml = FPinInIsHtml[i];
+
+                        switch (FEmailEncoding[i].Index)
+                        {
+                            case (0):
+                                mail.BodyEncoding = Encoding.ASCII;
+                                break;
+                            case (1):
+                                mail.BodyEncoding = Encoding.UTF8;
+                                break;
+                            case (2):
+                                mail.BodyEncoding = Encoding.UTF32;
+                                break;
+                            case (3):
+                                mail.BodyEncoding = Encoding.Unicode;
+                                break;
+                            default:
+                                mail.BodyEncoding = Encoding.ASCII;
+                                break;
+                        }
+
+                        if (!String.IsNullOrEmpty(FPinInAttachment[i]))
+                        {
+                            Attachment Attachment = new Attachment(FPinInAttachment[i]);
+                            ContentDisposition Disposition = Attachment.ContentDisposition;
+                            Disposition.Inline = false;
+                            mail.Attachments.Add(Attachment);
+                        }
+
+
+                        EmailClient.Send(mail);
+                        FPinOutSuccess[i] = true;
                     }
                     catch (Exception ex)
                     {
-                        this.FHost.Log(TLogType.Error, ex.Message);
-                        this.FPinOutSuccess.SetValue(i, 0);
+                        FLogger.Log(LogType.Error, ex.Message);
+                        FPinOutSuccess[i] = false;
                     }
 
                 }
@@ -172,12 +161,7 @@ namespace VVVV.Nodes
         }
         #endregion
 
-        #region Dispose
-        public void Dispose()
-        {
-        }
-        #endregion
     }
-        
-        
+
+
 }
