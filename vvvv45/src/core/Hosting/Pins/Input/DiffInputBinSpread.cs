@@ -59,6 +59,14 @@ namespace VVVV.Hosting.Pins.Input
             }
         }
 		
+		public DiffPin<T> SpreadPin 
+		{ 
+			get 
+			{ 
+				return this.FDiffSpreadPin; 
+			} 
+		}
+		
 		public bool IsChanged 
 		{
 			get 

@@ -39,6 +39,14 @@ namespace VVVV.Hosting.Pins.Input
 			FBinSizePin.Updated += AnyPin_Updated;
 		}
 		
+		public Pin<T> SpreadPin 
+		{ 
+			get 
+			{ 
+				return this.FSpreadPin; 
+			} 
+		}
+		
 		public virtual void Dispose()
 		{
 		    FSpreadPin.Updated -= AnyPin_Updated;
