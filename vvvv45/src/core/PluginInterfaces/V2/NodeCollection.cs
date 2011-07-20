@@ -149,8 +149,8 @@ namespace VVVV.PluginInterfaces.V2
                         
                         var nodeInfo = FNodeInfoFactory.CreateNodeInfo(name, category, version, filename, true);
                         nodeInfo.Factory = Factory;
-                        nodeInfo.Ignore = int.Parse(xmlReader.GetAttribute("ignore")) == 1 ? true : false;
-                        nodeInfo.AutoEvaluate = int.Parse(xmlReader.GetAttribute("autoevaluate")) == 1 ? true : false;
+                        nodeInfo.Ignore = int.Parse(xmlReader.GetAttribute("ignore")) == 0 ? false : true;
+                        nodeInfo.AutoEvaluate = int.Parse(xmlReader.GetAttribute("autoevaluate")) == 0 ? false : true;
                         nodeInfo.Type = (NodeType) NodeType.Parse(typeof(NodeType), xmlReader.GetAttribute("type"));
                         nodeInfo.Arguments = xmlReader.GetAttribute("arguments");
                         
