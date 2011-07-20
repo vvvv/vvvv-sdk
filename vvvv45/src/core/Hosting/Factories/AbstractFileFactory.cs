@@ -214,9 +214,6 @@ namespace VVVV.Hosting.Factories
                 return;
             }
             
-            //give subclasses a chance to cleanup before we start to scan.
-            DeleteArtefacts(dir, recursive);
-
             AddSubDir(dir, recursive);
 
             var dirWatcher = new FileSystemWatcher(dir, @"*" + FFileExtension[0]);
@@ -368,20 +365,6 @@ namespace VVVV.Hosting.Factories
         protected virtual void DirectoryChanged(string path)
         {
             //nothing to do here
-        }
-        
-        //allow subclasses to cleanup before directory scan.
-        protected virtual void DeleteArtefacts(string dir, bool recursive)
-        {
-            if (recursive)
-                foreach (string subDir in Directory.GetDirectories(dir))
-            {
-                try {
-                    DeleteArtefacts(subDir, recursive);
-                } catch (Exception e) {
-                    FLogger.Log(e);
-                }
-            }
         }
         
         #endregion file handling

@@ -82,6 +82,9 @@ namespace VVVV.Hosting.Factories
                 project = new CSProject(filename, new Uri(filename));
                 FSolution.Projects.Add(project);
                 project.ProjectCompiledSuccessfully += project_ProjectCompiled;
+                
+                var binDir = Path.GetDirectoryName(filename).ConcatPath("bin").ConcatPath("Dynamic");
+                DeleteArtefacts(binDir);
             }
             return project;
         }
@@ -168,7 +171,7 @@ namespace VVVV.Hosting.Factories
             return false;
         }
         
-        protected override void DeleteArtefacts(string dir, bool recursive)
+        protected void DeleteArtefacts(string dir)
         {
             // Dynamic plugins generate a new assembly everytime they are compiled.
             // Cleanup old assemblies.
@@ -212,8 +215,6 @@ namespace VVVV.Hosting.Factories
                     FLogger.Log(e);
                 }
             }
-            
-            base.DeleteArtefacts(dir, recursive);
         }
         
         string GetCompileErrorsLog(IProject project, CompilerResults results)
