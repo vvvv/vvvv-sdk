@@ -230,6 +230,8 @@ namespace VVVV.Nodes
                 var ids = FFonts.FindAllKeys(df => df.Device == dev).ToArray();
                 foreach (var id in ids)
                     RemoveFont(id);
+                
+                FDeviceHelpers.Remove(dev);
             }
             catch
             {
