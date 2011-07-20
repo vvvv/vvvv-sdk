@@ -31,6 +31,8 @@ namespace VVVV.Hosting.Factories
     [ComVisible(false)]
     public class CSProjectFactory : DotNetPluginFactory
     {
+        private readonly Version FPluginInterfacesVersion = typeof(IPluginBase).Assembly.GetName().Version;
+        
         [Import]
         protected ISolution FSolution;
         
@@ -161,7 +163,7 @@ namespace VVVV.Hosting.Factories
                 
                 if (piAssembly != null)
                 {
-                    return piAssembly.Version == typeof(IPluginBase).Assembly.GetName().Version;
+                    return piAssembly.Version == FPluginInterfacesVersion;
                 }
 
                 // PluginInterfaces wasn't referenced. Simply return true.

@@ -8,8 +8,6 @@ namespace VVVV.Hosting.Pins.Config
 	[ComVisible(false)]
     public abstract class ConfigPin<T> : DiffPin<T>
 	{
-		protected bool FIsChanged;
-		
 		public ConfigPin(IPluginHost host, PinAttribute attribute)
 			: base(host, attribute)
 		{
@@ -45,6 +43,15 @@ namespace VVVV.Hosting.Pins.Config
 			}
 		}
 		
+		public override bool IsChanged 
+        {
+            get 
+            { 
+                return PluginConfig.PinIsChanged; 
+            }
+        }
+		
+		// Only called by ConfigurateCB
 		protected override void DoUpdate()
 		{
 			// Config pins read from internal pin directly

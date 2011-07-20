@@ -37,6 +37,15 @@ namespace VVVV.Hosting.Pins.Config
 			}
 		}
 		
+        public override bool IsChanged 
+        {
+            get 
+            { 
+                return FValueConfig.PinIsChanged; 
+            }
+        }
+		
+        // Only called by ConfigurateCB
 		protected override void DoUpdate()
 		{
 			// Config pins read from internal pin directly
