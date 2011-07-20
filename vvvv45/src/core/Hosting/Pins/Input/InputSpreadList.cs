@@ -12,6 +12,11 @@ namespace VVVV.Hosting.Pins.Input
 			: base(host, attribute)
 		{
 		}
+
+        public Pin<T>[] Pins
+        {
+            get { return this.FPins; }
+        }
 		
 		//create a pin at position
 		protected override Pin<T> CreatePin(int pos)
@@ -27,6 +32,7 @@ namespace VVVV.Hosting.Pins.Input
 			FAttribute.Name = origName;
 			
 			return ret;
+           
 		}
 		
 	}
