@@ -63,7 +63,18 @@ namespace VVVV.TodoMap.UI.UserControls
                 this.engine = value;
                 this.engine.Midi.DeviceInputStatusChanged += Midi_DeviceInputStatusChanged;
                 this.engine.Midi.DeviceOutputStatusChanged += Midi_DeviceOutputStatusChanged;
+                this.engine.Midi.ClockValueChanged += Midi_ClockValueChangedDelegate;
             }
+        }
+
+        void Midi_ClockValueChangedDelegate(int ticks)
+        {
+            BeginInvoke((MethodInvoker)delegate()
+            {
+                double dbl = Convert.ToDouble(ticks) / 24.0;
+                dbl = Math.Round(dbl, 3);
+                this.lbltime.Text = dbl.ToString();
+            });
         }
 
         private void Midi_DeviceInputStatusChanged(int index, eTodoMidiStatus status)
@@ -246,5 +257,20 @@ namespace VVVV.TodoMap.UI.UserControls
             }
         }
         #endregion
+
+        private void chkenableclock_CheckedChanged(object sender, EventArgs e)
+        {
+            this.cmbClock.Enabled = !chkenableclock.Checked;
+
+            if (this.chkenableclock.Checked)
+            {
+                this.engine.Midi.SetClockDevice(this.cmbClock.SelectedIndex);
+            }
+            else
+            {
+                this.engine.Midi.SetClockDevice(-1);
+                this.lbltime.Text = "N/A";
+            }
+        }
     }
 }

@@ -30,11 +30,13 @@
         {
             this.mainLayout = new System.Windows.Forms.TableLayoutPanel();
             this.grpClock = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cmbClock = new System.Windows.Forms.ComboBox();
             this.grpMidiInput = new System.Windows.Forms.GroupBox();
             this.grpMidiOutput = new System.Windows.Forms.GroupBox();
-            this.cmbClock = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.chkenableclock = new System.Windows.Forms.CheckBox();
+            this.lbltime = new System.Windows.Forms.Label();
             this.mainLayout.SuspendLayout();
             this.grpClock.SuspendLayout();
             this.SuspendLayout();
@@ -60,6 +62,8 @@
             // 
             // grpClock
             // 
+            this.grpClock.Controls.Add(this.lbltime);
+            this.grpClock.Controls.Add(this.chkenableclock);
             this.grpClock.Controls.Add(this.label2);
             this.grpClock.Controls.Add(this.label1);
             this.grpClock.Controls.Add(this.cmbClock);
@@ -70,6 +74,33 @@
             this.grpClock.TabIndex = 2;
             this.grpClock.TabStop = false;
             this.grpClock.Text = "Midi Clock Settings";
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(331, 19);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(118, 23);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Current Time:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(7, 19);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(100, 23);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Clock Device:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cmbClock
+            // 
+            this.cmbClock.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbClock.FormattingEnabled = true;
+            this.cmbClock.Location = new System.Drawing.Point(106, 19);
+            this.cmbClock.Name = "cmbClock";
+            this.cmbClock.Size = new System.Drawing.Size(142, 21);
+            this.cmbClock.TabIndex = 0;
             // 
             // grpMidiInput
             // 
@@ -91,31 +122,24 @@
             this.grpMidiOutput.TabStop = false;
             this.grpMidiOutput.Text = "Midi Output Settings";
             // 
-            // cmbClock
+            // chkenableclock
             // 
-            this.cmbClock.FormattingEnabled = true;
-            this.cmbClock.Location = new System.Drawing.Point(106, 19);
-            this.cmbClock.Name = "cmbClock";
-            this.cmbClock.Size = new System.Drawing.Size(142, 21);
-            this.cmbClock.TabIndex = 0;
+            this.chkenableclock.Location = new System.Drawing.Point(254, 18);
+            this.chkenableclock.Name = "chkenableclock";
+            this.chkenableclock.Size = new System.Drawing.Size(104, 24);
+            this.chkenableclock.TabIndex = 3;
+            this.chkenableclock.Text = "Enabled";
+            this.chkenableclock.UseVisualStyleBackColor = true;
+            this.chkenableclock.CheckedChanged += new System.EventHandler(this.chkenableclock_CheckedChanged);
             // 
-            // label1
+            // lbltime
             // 
-            this.label1.Location = new System.Drawing.Point(7, 19);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(100, 23);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Clock Device:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label2
-            // 
-            this.label2.Location = new System.Drawing.Point(254, 19);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(100, 23);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Current Time:";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbltime.Location = new System.Drawing.Point(429, 19);
+            this.lbltime.Name = "lbltime";
+            this.lbltime.Size = new System.Drawing.Size(78, 23);
+            this.lbltime.TabIndex = 4;
+            this.lbltime.Text = "N/A";
+            this.lbltime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // TodoDeviceManagerCtrl
             // 
@@ -139,6 +163,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmbClock;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox chkenableclock;
+        private System.Windows.Forms.Label lbltime;
 
     }
 }
