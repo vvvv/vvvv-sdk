@@ -11,6 +11,8 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
     public enum eTodoMidiStatus { Connected, Disconnected, Started, Error }
 
     public delegate void DeviceStatusChangedDelegate(int index, eTodoMidiStatus status);
+    public delegate void ClockDeviceChangedDelegate();
+    public delegate void ClockChangedDelegate(int ticks);
 
     public class TodoMidiDevice : AbstractTodoDevice<TodoMidiInput>
     {
@@ -28,9 +30,42 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
         private List<string> outputdevname = new List<string>();
 
         private UsbDetector usb;
+        private int FTicks = 0;
 
         public event DeviceStatusChangedDelegate DeviceInputStatusChanged;
         public event DeviceStatusChangedDelegate DeviceOutputStatusChanged;
+        public event ClockChangedDelegate ClockValueChanged;
+        public event ClockDeviceChangedDelegate ClockDeviceChanged;
+
+        public bool ClockEnabled
+        {
+            get
+            {
+                if (this.clockdevice > -1)
+                {
+                    return this.inputstatus[this.clockdevice] == eTodoMidiStatus.Started;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public double ClockTime
+        {
+            get
+            {
+                if (this.ClockEnabled)
+                {
+                    return Convert.ToDouble(this.FTicks) / 24.0;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
 
         #region Constructor
         public TodoMidiDevice(TodoEngine engine) : base(engine)
@@ -462,18 +497,39 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
         {
             if (this.indevs.ContainsKey(this.clockdevice))
             {
-                this.indevs[index].SysRealtimeMessageReceived -= TodoMidiDevice_SysRealtimeMessageReceived;
+                this.indevs[this.clockdevice].SysRealtimeMessageReceived -= TodoMidiDevice_SysRealtimeMessageReceived;
             }
             this.clockdevice = index;
             if (this.indevs.ContainsKey(this.clockdevice))
             {
                 this.indevs[index].SysRealtimeMessageReceived += TodoMidiDevice_SysRealtimeMessageReceived;
             }
+
+            if (this.ClockDeviceChanged != null)
+            {
+                this.ClockDeviceChanged();
+            }
         }
 
         private void TodoMidiDevice_SysRealtimeMessageReceived(object sender, SysRealtimeMessageEventArgs e)
         {
-            
+            if (e.Message.SysRealtimeType == SysRealtimeType.Start)
+            {
+                this.FTicks = 0;
+            }
+            if (e.Message.SysRealtimeType == SysRealtimeType.Reset)
+            {
+                this.FTicks = 0;
+            }
+            if (e.Message.SysRealtimeType == SysRealtimeType.Clock)
+            {
+                this.FTicks++;
+            }
+
+            if (ClockValueChanged != null)
+            {
+                this.ClockValueChanged(this.FTicks);
+            }
         }
     }
 }
