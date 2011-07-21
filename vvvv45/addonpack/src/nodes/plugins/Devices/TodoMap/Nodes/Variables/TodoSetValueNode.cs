@@ -7,7 +7,7 @@ using System.ComponentModel.Composition;
 
 namespace VVVV.TodoMap.Nodes.Variables
 {
-    [PluginInfo(Name="TodoSetValue",Author="vux",Category="TodoMap")]
+    [PluginInfo(Name="TodoSetValue",Author="vux",Category="TodoMap",AutoEvaluate=true)]
     public class TodoSetValueNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         [Input("Engine",IsSingle=true)]
