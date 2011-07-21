@@ -61,7 +61,7 @@ namespace VVVV.Nodes
     	ISpread<ISpread<int>> FFormerIndex;
     
     	
-    	[Output("Unique Index")]//, Visibility = PinVisibility.OnlyInspector)]
+    	[Output("Unique Index", Visibility = PinVisibility.OnlyInspector)]
     	ISpread<int> FUniIds;
     	
     	[Output("Occurrence Index", Visibility = PinVisibility.OnlyInspector)]
