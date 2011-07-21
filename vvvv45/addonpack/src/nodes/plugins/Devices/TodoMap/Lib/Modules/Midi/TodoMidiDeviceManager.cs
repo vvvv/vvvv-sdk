@@ -6,7 +6,6 @@ using Sanford.Multimedia.Midi;
 
 namespace VVVV.TodoMap.Lib.Modules.Midi
 {
-    //Abstraction for a midi device, some can have same name so also provide an index
     public class MidiDevice
     {
         /// <summary>
@@ -37,7 +36,43 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
 
     public class MidiDeviceList : List<MidiDevice>
     {
-        
+        public bool Contains(string name, int index)
+        {
+            foreach (MidiDevice dev in this)
+            {
+                if (dev.Name == name && dev.Index == index)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public MidiDevice GetDevice(string name, int index)
+        {
+            foreach (MidiDevice dev in this)
+            {
+                if (dev.Name == name && dev.Index == index)
+                {
+                    return dev;
+                }
+            }
+            return null;
+        }
+
+        public int GetIndex(string name)
+        {
+            int idx = -1;
+            foreach (MidiDevice dev in this)
+            {
+                if (dev.Name == name)
+                {
+                    idx++;
+                }
+            }
+            return idx;
+        }
+
     }
 
     public class TodoMidiDeviceManager
@@ -49,12 +84,41 @@ namespace VVVV.TodoMap.Lib.Modules.Midi
 
         public void AddDevice(string name, int index,bool autostart)
         {
-            
+           
         }
 
         public void ReScan()
         {
+            MidiDeviceList mdlinput = new MidiDeviceList();
 
+            //Relist devices
+            for (int i = 0; i < InputDevice.DeviceCount; i++)
+            {
+                MidiDevice md = new MidiDevice();
+                md.Name = InputDevice.GetDeviceCapabilities(i).name;
+                md.DeviceIndex = i;
+                md.Index = mdlinput.GetIndex(md.Name);
+                mdlinput.Add(md);
+            }
+
+            MidiDeviceList newinput = new MidiDeviceList();
+
+            //Now cross match
+            foreach (MidiDevice input in this.inputs)
+            {
+                //Device been disconnected
+                if (!mdlinput.Contains(input.Name, input.Index))
+                {
+                    input.DeviceIndex = -1;
+                    input.Status = eTodoMidiStatus.Disconnected;
+                    newinput.Add(input);
+                }
+            }
+
+            foreach (MidiDevice input in mdlinput)
+            {
+
+            }
         }
 
         private int CountInputByName(string name)
