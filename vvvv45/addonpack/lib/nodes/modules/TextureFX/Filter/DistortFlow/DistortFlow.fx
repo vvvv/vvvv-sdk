@@ -4,19 +4,19 @@ float NormalizeMap;
 float Direction;
 float Width;
 float MapSmooth <float uimin=0.0; float uimax=1.0;> = 0.1;
-float Twirl <float uimin=0.0; float uimax=1.0;> = 0.25;
 texture tex0,tex1;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 sampler s1=sampler_state{Texture=(tex1);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
+float2 r2d(float2 x,float a){a*=acos(-1)*2;return float2(cos(a)*x.x+sin(a)*x.y,cos(a)*x.y-sin(a)*x.x);}
 float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     float lod=1+saturate(MapSmooth)*log2(max(R.x,R.y));
     float4 c=0;
-    float2 off=.25/R*pow(2,lod)*saturate(lod-1)+1./R;
-    float4 map=tex2Dlod(s1,float4(x,0,lod));
-    float ang=abs(map.x-.5)*Twirl*4;
-    float2 dir=sin((ang+Direction+float2(0,.25))*acos(-1)*2);
-
+    float2 dir;
+     float2 off=pow(2,MapSmooth*6)*R/R.x;
+    dir=float2(tex2Dlod(s1,float4(x-off*float2(1,0)/R,0,lod)).g-tex2Dlod(s1,float4(x+off*float2(1,0)/R,0,lod)).g,tex2Dlod(s1,float4(x-off*float2(0,1)/R,0,lod)).g-tex2Dlod(s1,float4(x+off*float2(0,1)/R,0,lod)).g);
+     dir=normalize(r2d(dir,Direction/2+.25))*pow(length(dir.xy),1)*pow(2,MapSmooth*6);
     c=tex2D(s0,x+dir*R.x/R*.1*Width);
+    c.a=1;
     return c;
 }
 

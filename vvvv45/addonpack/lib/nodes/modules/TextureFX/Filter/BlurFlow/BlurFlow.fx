@@ -2,9 +2,8 @@ float2 R;
 bool Aspect;
 float BlurWidth <float uimin=-1.0; float uimax=1.0;> = 0.2;
 float BlurDir <float uimin=-1.0; float uimax=1.0;> = 0.0;
-float Width=1;
 float MapSmooth <float uimin=0.0; float uimax=1.0;> = 0.1;
-float Twirl <float uimin=0.0; float uimax=1.0;> = 0.25;
+float Width=1;
 texture tex0,tex1;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;AddressU=CLAMP;AddressV=CLAMP;};
 sampler s1=sampler_state{Texture=(tex1);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;AddressU=CLAMP;AddressV=CLAMP;};
@@ -15,8 +14,12 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;float2 asp=lerp(1,R.x/R,Aspec
     float4 c=0;
     float kk=0;
     float wd=pow(Width,.1)*.25*BlurWidth;//*tex2D(s1,x);
-    float ang=abs(tex2Dlod(s1,float4(x,0,lod)).x-.5)*Twirl*4;
+    float ang=abs(tex2D(s1,x).x-.5);
     float2 dir=sin((ang+BlurDir+float2(0,.25))*acos(-1)*2);
+    float2 off=pow(2,MapSmooth*6)*R/R.x;
+    dir=float2(tex2Dlod(s1,float4(x-off*float2(1,0)/R,0,lod)).g-tex2Dlod(s1,float4(x+off*float2(1,0)/R,0,lod)).g,tex2Dlod(s1,float4(x-off*float2(0,1)/R,0,lod)).g-tex2Dlod(s1,float4(x+off*float2(0,1)/R,0,lod)).g);
+
+    dir=normalize(r2d(dir,BlurDir/2+.25))*pow(length(dir.xy),1)*158*pow(2,MapSmooth*6);
     for (float i=0;i<1;i+=1./16){
         float k=1;
         c+=tex2D(s0,((x-.5)/asp+wd*dir*wd*(i))*asp+.5)*k;
