@@ -137,11 +137,11 @@ namespace VVVV.Nodes.Finder
             else
             {
                 IsActive = false;
-                
-                foreach (var nodeView in FChildNodes)
-                {
-                    nodeView.SetActiveWindow(window);
-                }
+            }
+            
+            foreach (var nodeView in FChildNodes)
+            {
+                nodeView.SetActiveWindow(window);
             }
         }
         

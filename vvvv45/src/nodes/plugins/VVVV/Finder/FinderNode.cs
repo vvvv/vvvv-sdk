@@ -72,14 +72,14 @@ namespace VVVV.Nodes.Finder
             FMappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
             FHierarchyViewer.Registry = FMappingRegistry;
             
-            FHDEHost.WindowSelectionChanged += FHDEHost_WindowSelectionChanged;
+            FHDEHost.WindowSelectionChanged += HandleWindowSelectionChanged;
             //defer setting the active patch window as
             //this will trigger the initial WindowSelectionChangeCB
             //which will want to access this windows caption which is not yet available
-            SynchronizationContext.Current.Post((object state) => FHDEHost_WindowSelectionChanged(FHDEHost, new WindowEventArgs(FHDEHost.ActivePatchWindow)), null);
+            SynchronizationContext.Current.Post((object state) => HandleWindowSelectionChanged(FHDEHost, new WindowEventArgs(FHDEHost.ActivePatchWindow)), null);
             
             FTagsPin = tagsPin;
-            FTagsPin.Changed += FTagsPin_Changed;
+            FTagsPin.Changed += HandleTagsPinChanged;
             
             FNodeFilter = new NodeFilter();
             FNodeView = FNodeFilter.UpdateFilter(string.Empty, FHDEHost.RootNode);
@@ -212,8 +212,8 @@ namespace VVVV.Nodes.Finder
                     // Dispose managed resources.
                     FSearchTextBox.ContextMenu.Popup -= FSearchTextBox_ContextMenu_Popup;
                     FSearchTextBox.MouseWheel -= FSearchTextBox_MouseWheel;
-                    FHDEHost.WindowSelectionChanged -= FHDEHost_WindowSelectionChanged;
-                    FTagsPin.Changed -= FTagsPin_Changed;
+                    FHDEHost.WindowSelectionChanged -= HandleWindowSelectionChanged;
+                    FTagsPin.Changed -= HandleTagsPinChanged;
                     
                     //                    if (FSearchResult != null)
                     //                        FSearchResult.Dispose();
@@ -268,13 +268,13 @@ namespace VVVV.Nodes.Finder
             }
         }
         
-        void FTagsPin_Changed(IDiffSpread<string> spread)
+        void HandleTagsPinChanged(IDiffSpread<string> spread)
         {
             FSearchTextBox.Text = spread[0];
         }
         
         #region IWindowSelectionListener
-        void FHDEHost_WindowSelectionChanged(object sender, WindowEventArgs args)
+        void HandleWindowSelectionChanged(object sender, WindowEventArgs args)
         {
             var window = args.Window;
             
