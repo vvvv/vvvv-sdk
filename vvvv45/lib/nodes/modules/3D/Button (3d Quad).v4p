@@ -1,42 +1,10 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="C:\dev\vvvv\vvvv45\modules\vvvv group\3D\Button (3d Quad).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.2.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv45\modules\vvvv group\3D\Button (3d Quad).v4p">
    <BOUNDS height="9195" left="1140" top="1695" type="Window" width="9000">
    </BOUNDS>
-   <NODE id="16" nodename="Intersect (3d Quad Line)" systemname="Intersect (3d Quad Line)">
-   <BOUNDS height="270" left="1005" top="3120" type="Node" width="1815">
-   </BOUNDS>
-   <PIN pinname="Transform Line" visible="1">
-   </PIN>
-   <PIN pinname="Transform Quad" slicecount="1" visible="1" values="||">
-   </PIN>
-   <PIN pinname="Intersection Point XYZ" visible="1">
-   </PIN>
-   <PIN pinname="Quad Alpha" visible="1">
-   </PIN>
-   <PIN pinname="Quad Beta" visible="1">
-   </PIN>
-   <PIN pinname="Position Quad X" visible="1">
-   </PIN>
-   <PIN pinname="Position Quad Y" visible="1">
-   </PIN>
-   <PIN pinname="Intersects Quad" visible="1">
-   </PIN>
-   <PIN pinname="Intersects Plane" visible="1">
-   </PIN>
-   <PIN pinname="Position on Line" visible="1">
-   </PIN>
-   <PIN pinname="Intersects Line Segment" visible="1">
-   </PIN>
-   <PIN pinname="Position on Quad X" visible="1">
-   </PIN>
-   <PIN pinname="Position on Quad Y" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="15" nodename="Translate (Transform)" systemname="Translate (Transform)">
    <BOUNDS height="0" left="2910" top="2130" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
    <PIN pinname="X" visible="1">
    </PIN>
    <PIN pinname="Y" visible="1">
@@ -45,23 +13,9 @@
    </PIN>
    <PIN pinname="Z" slicecount="1" values="0">
    </PIN>
-   </NODE>
-   <NODE id="14" nodename="Rotate (Transform)" systemname="Rotate (Transform)">
-   <BOUNDS height="0" left="2820" top="2685" type="Node" width="0">
-   </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="Y" slicecount="1" values="0.25">
-   </PIN>
-   <PIN pinname="Transform In" visible="1">
-   </PIN>
    </NODE>
-   <LINK dstnodeid="16" dstpinname="Transform Line" linkstyle="Bezier" srcnodeid="14" srcpinname="Transform Out">
-   <LINKPOINT x="2850" y="3030">
-   </LINKPOINT>
-   <LINKPOINT x="2790" y="3030">
-   </LINKPOINT>
-   </LINK>
    <NODE id="13" nodename="Inverse (Transform)" systemname="Inverse (Transform)">
    <BOUNDS height="0" left="3660" top="1515" type="Node" width="0">
    </BOUNDS>
@@ -76,12 +30,6 @@
    <LINKPOINT x="2940" y="1950">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="14" dstpinname="Transform In" linkstyle="Bezier" srcnodeid="15" srcpinname="Transform Out">
-   <LINKPOINT x="2940" y="2535">
-   </LINKPOINT>
-   <LINKPOINT x="2850" y="2535">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="InABox" id="12" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="1005" top="2415" type="Node" width="0">
    </BOUNDS>
@@ -91,15 +39,9 @@
    </BOUNDS>
    <PIN pinname="Output Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Transform Quad|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Transform Quad|" encoded="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="16" dstpinname="Transform Quad" linkstyle="Bezier" srcnodeid="12" srcpinname="Output Node">
-   <LINKPOINT x="1035" y="2880">
-   </LINKPOINT>
-   <LINKPOINT x="1035" y="2880">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="570" top="5775" type="Node" width="0">
    </BOUNDS>
@@ -107,17 +49,11 @@
    </BOUNDS>
    <BOUNDS height="240" left="570" top="5775" type="Box" width="795">
    </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse Over|" encoded="0">
+   </PIN>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse Over|">
-   </PIN>
    </NODE>
-   <LINK dstnodeid="11" dstpinname="Y Input Value" linkstyle="Bezier" srcnodeid="16" srcpinname="Intersects Quad">
-   <LINKPOINT x="2490" y="4575">
-   </LINKPOINT>
-   <LINKPOINT x="1335" y="4575">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="InABox" id="10" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="5025" top="825" type="Node" width="0">
    </BOUNDS>
@@ -127,7 +63,7 @@
    </BOUNDS>
    <PIN pinname="Output Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|View Projection|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|View Projection|" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="13" dstpinname="Source" linkstyle="Bezier" srcnodeid="10" srcpinname="Output Node">
@@ -145,7 +81,7 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse X|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse X|" encoded="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -157,7 +93,7 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse Y|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse Y|" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="15" dstpinname="X" linkstyle="Bezier" srcnodeid="9" srcpinname="Y Output Value">
@@ -175,11 +111,11 @@
    <NODE id="7" nodename="Multiply (3d Vector)" systemname="Multiply (3d Vector)">
    <BOUNDS height="0" left="5025" top="4170" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="XYZ UnTransformed" visible="1">
-   </PIN>
    <PIN pinname="Transform" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="XYZ Transformed" visible="1">
+   </PIN>
+   <PIN pinname="XYZ UnTransformed" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="7" dstpinname="Transform" linkstyle="Bezier" srcnodeid="10" srcpinname="Output Node">
@@ -197,7 +133,7 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Cursor Transform|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Cursor Transform|" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="6" dstpinname="Input Node" linkstyle="Bezier" srcnodeid="15" srcpinname="Transform Out">
@@ -238,12 +174,6 @@
    <PIN pinname="First Slice" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="7" dstpinname="XYZ UnTransformed" linkstyle="Bezier" srcnodeid="16" srcpinname="Intersection Point XYZ">
-   <LINKPOINT x="1035" y="3780">
-   </LINKPOINT>
-   <LINKPOINT x="5295" y="3780">
-   </LINKPOINT>
-   </LINK>
    <LINK dstnodeid="4" dstpinname="Input" linkstyle="Bezier" srcnodeid="5" srcpinname="Z">
    <LINKPOINT x="5625" y="4935">
    </LINKPOINT>
@@ -279,7 +209,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Index of Nearest|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Index of Nearest|" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="1" dstpinname="Y Input Value" linkstyle="Bezier" srcnodeid="3" srcpinname="First Slice">
@@ -291,19 +221,13 @@
    <NODE id="0" nodename="GetSlice (Spreads)" systemname="GetSlice (Spreads)">
    <BOUNDS height="0" left="5340" top="5790" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
    <PIN pinname="Index" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="0" dstpinname="Input" linkstyle="Bezier" srcnodeid="16" srcpinname="Intersects Quad">
-   <LINKPOINT x="2490" y="4590">
-   </LINKPOINT>
-   <LINKPOINT x="5370" y="4590">
-   </LINKPOINT>
-   </LINK>
    <LINK dstnodeid="0" dstpinname="Index" linkstyle="Bezier" srcnodeid="4" srcpinname="Former Index">
    <LINKPOINT x="6045" y="5520">
    </LINKPOINT>
@@ -318,4 +242,60 @@
    </LINK>
    <INFO author="vvvv group" description="Checks if the cursor if over a quad (in 3d space)." tags="GUI, intersect">
    </INFO>
+   <NODE id="16" nodename="Intersect (EX9.Geometry Quad)" systemname="Intersect (EX9.Geometry Quad)">
+   <BOUNDS height="270" left="1005" top="3120" type="Node" width="1815">
+   </BOUNDS>
+   <PIN pinname="Transform Quad" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Intersection Point XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Quad Alpha" visible="1">
+   </PIN>
+   <PIN pinname="Quad Beta" visible="1">
+   </PIN>
+   <PIN pinname="Position Quad X" visible="1">
+   </PIN>
+   <PIN pinname="Position Quad Y" visible="1">
+   </PIN>
+   <PIN pinname="Intersects Quad" visible="1">
+   </PIN>
+   <PIN pinname="Intersects Plane" visible="1">
+   </PIN>
+   <PIN pinname="Position on Line" visible="1">
+   </PIN>
+   <PIN pinname="Intersects Line Segment" visible="1">
+   </PIN>
+   <PIN pinname="Position on Quad X" visible="1">
+   </PIN>
+   <PIN pinname="Position on Quad Y" visible="1">
+   </PIN>
+   <PIN pinname="Transform Line" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Transform Quad" linkstyle="Bezier" srcnodeid="12" srcpinname="Output Node">
+   <LINKPOINT x="1035" y="2880">
+   </LINKPOINT>
+   <LINKPOINT x="1035" y="2880">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Y Input Value" linkstyle="Bezier" srcnodeid="16" srcpinname="Intersects Quad">
+   <LINKPOINT x="2490" y="4575">
+   </LINKPOINT>
+   <LINKPOINT x="1335" y="4575">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="XYZ UnTransformed" linkstyle="Bezier" srcnodeid="16" srcpinname="Intersection Point XYZ">
+   <LINKPOINT x="1035" y="3780">
+   </LINKPOINT>
+   <LINKPOINT x="5295" y="3780">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Input" linkstyle="Bezier" srcnodeid="16" srcpinname="Intersects Quad">
+   <LINKPOINT x="2490" y="4590">
+   </LINKPOINT>
+   <LINKPOINT x="5370" y="4590">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Transform Out" dstnodeid="16" dstpinname="Transform Line">
+   </LINK>
    </PATCH>

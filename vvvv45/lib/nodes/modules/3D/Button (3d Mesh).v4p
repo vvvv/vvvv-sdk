@@ -1,12 +1,10 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="C:\dev\vvvv\vvvv45\modules\vvvv group\3D\Button (3d Mesh).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.2.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv45\modules\vvvv group\3D\Button (3d Mesh).v4p">
    <BOUNDS height="9195" left="7410" top="3570" type="Window" width="9000">
    </BOUNDS>
    <NODE id="17" nodename="Translate (Transform)" systemname="Translate (Transform)">
    <BOUNDS height="0" left="2910" top="2115" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
    <PIN pinname="X" visible="1">
    </PIN>
    <PIN pinname="Y" visible="1">
@@ -15,15 +13,7 @@
    </PIN>
    <PIN pinname="Z" slicecount="1" values="0">
    </PIN>
-   </NODE>
-   <NODE id="16" nodename="Rotate (Transform)" systemname="Rotate (Transform)">
-   <BOUNDS height="0" left="2820" top="2670" type="Node" width="0">
-   </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="Y" slicecount="1" values="-0.25">
-   </PIN>
-   <PIN pinname="Transform In" visible="1">
    </PIN>
    </NODE>
    <NODE id="15" nodename="Inverse (Transform)" systemname="Inverse (Transform)">
@@ -40,12 +30,6 @@
    <LINKPOINT x="2940" y="1950">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="16" dstpinname="Transform In" linkstyle="Bezier" srcnodeid="17" srcpinname="Transform Out">
-   <LINKPOINT x="2940" y="2535">
-   </LINKPOINT>
-   <LINKPOINT x="2850" y="2535">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="InABox" id="14" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="1050" top="2385" type="Node" width="0">
    </BOUNDS>
@@ -55,7 +39,7 @@
    </BOUNDS>
    <PIN pinname="Output Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Transform Mesh|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Transform Mesh|" encoded="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -65,9 +49,9 @@
    </BOUNDS>
    <BOUNDS height="240" left="570" top="5760" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Y Input Value" visible="1">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse Over|" encoded="0">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse Over|">
+   <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="12" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -79,7 +63,7 @@
    </BOUNDS>
    <PIN pinname="Output Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|View Projection|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|View Projection|" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="15" dstpinname="Source" linkstyle="Bezier" srcnodeid="12" srcpinname="Output Node">
@@ -97,7 +81,7 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse X|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse X|" encoded="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -109,7 +93,7 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse Y|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse Y|" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="17" dstpinname="X" linkstyle="Bezier" srcnodeid="11" srcpinname="Y Output Value">
@@ -127,11 +111,11 @@
    <NODE id="9" nodename="Multiply (3d Vector)" systemname="Multiply (3d Vector)">
    <BOUNDS height="0" left="5025" top="4155" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="XYZ UnTransformed" visible="1">
-   </PIN>
    <PIN pinname="Transform" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="XYZ Transformed" visible="1">
+   </PIN>
+   <PIN pinname="XYZ UnTransformed" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="9" dstpinname="Transform" linkstyle="Bezier" srcnodeid="12" srcpinname="Output Node">
@@ -149,7 +133,7 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Cursor Transform|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Cursor Transform|" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="8" dstpinname="Input Node" linkstyle="Bezier" srcnodeid="17" srcpinname="Transform Out">
@@ -225,7 +209,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Index of Nearest|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Index of Nearest|" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="3" dstpinname="Y Input Value" linkstyle="Bezier" srcnodeid="5" srcpinname="First Slice">
@@ -237,11 +221,11 @@
    <NODE id="2" nodename="GetSlice (Spreads)" systemname="GetSlice (Spreads)">
    <BOUNDS height="0" left="5340" top="5775" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
    <PIN pinname="Index" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="2" dstpinname="Index" linkstyle="Bezier" srcnodeid="6" srcpinname="Former Index">
@@ -256,11 +240,23 @@
    <LINKPOINT x="5370" y="6180">
    </LINKPOINT>
    </LINK>
-   <NODE id="1" nodename="Intersect (3d Mesh Ray)" systemname="Intersect (3d Mesh Ray)">
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="0" left="195" top="2400" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2310" top="5640" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="195" top="2400" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Mesh" encoded="0">
+   </PIN>
+   </NODE>
+   <INFO author="vvvv group" description="Checks if the cursor if over a mesh (in 3d space)." tags="GUI, intersect">
+   </INFO>
+   <NODE id="1" nodename="Intersect (EX9.Geometry Mesh)" systemname="Intersect (EX9.Geometry Mesh)">
    <BOUNDS height="270" left="1005" top="3105" type="Node" width="1815">
    </BOUNDS>
-   <PIN pinname="Transform Line" visible="1">
-   </PIN>
    <PIN pinname="Transform Quad" visible="1">
    </PIN>
    <PIN pinname="Intersection Point XYZ" visible="1">
@@ -291,13 +287,9 @@
    </PIN>
    <PIN pinname="Mesh" slicecount="1" visible="1" values="||">
    </PIN>
+   <PIN pinname="Transform Line" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="1" dstpinname="Transform Line" linkstyle="Bezier" srcnodeid="16" srcpinname="Transform Out">
-   <LINKPOINT x="2850" y="3030">
-   </LINKPOINT>
-   <LINKPOINT x="2790" y="3030">
-   </LINKPOINT>
-   </LINK>
    <LINK dstnodeid="9" dstpinname="XYZ UnTransformed" linkstyle="Bezier" srcnodeid="1" srcpinname="Intersection Point XYZ">
    <LINKPOINT x="1035" y="3780">
    </LINKPOINT>
@@ -318,20 +310,8 @@
    </LINK>
    <LINK dstnodeid="1" dstpinname="Transform Mesh" srcnodeid="14" srcpinname="Output Node">
    </LINK>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (Node)" systemname="IOBox (Node)">
-   <BOUNDS height="0" left="195" top="2400" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="2310" top="5640" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="240" left="195" top="2400" type="Box" width="795">
-   </BOUNDS>
-   <PIN pinname="Output Node" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Mesh">
-   </PIN>
-   </NODE>
    <LINK dstnodeid="1" dstpinname="Mesh" srcnodeid="0" srcpinname="Output Node">
    </LINK>
-   <INFO author="vvvv group" description="Checks if the cursor if over a mesh (in 3d space)." tags="GUI, intersect">
-   </INFO>
+   <LINK srcnodeid="17" srcpinname="Transform Out" dstnodeid="1" dstpinname="Transform Line">
+   </LINK>
    </PATCH>
