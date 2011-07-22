@@ -11,7 +11,6 @@ namespace VVVV.Hosting.Pins.Input
 	public class StringInputPin : DiffPin<string>
 	{
 		protected IStringIn FStringIn;
-		protected bool FIsPath;
 		
 		public StringInputPin(IPluginHost host, InputAttribute attribute)
 			: base(host, attribute)
