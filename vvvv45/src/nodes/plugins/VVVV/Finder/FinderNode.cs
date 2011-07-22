@@ -222,11 +222,15 @@ namespace VVVV.Nodes.Finder
                     
                     this.FSearchTextBox.TextChanged -= this.FSearchTextBoxTextChanged;
                     
+                    // Shutdown viewer layer
                     this.FHierarchyViewer.MouseDoubleClick -= this.FHierarchyViewerDoubleClick;
                     this.FHierarchyViewer.MouseClick -= this.FHierarchyViewerClick;
                     this.FHierarchyViewer.KeyPress -= this.FHierarchyViewerKeyPress;
                     this.FHierarchyViewer.Dispose();
                     this.FHierarchyViewer = null;
+                    
+                    // Shutdown view layer
+                    ClearSearch();
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.

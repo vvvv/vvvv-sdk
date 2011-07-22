@@ -283,16 +283,8 @@ namespace VVVV.Hosting
         
         protected virtual void OnNodeSelectionChanged(NodeSelectionEventArgs args)
         {
-            try
-            {
-                if (NodeSelectionChanged != null) {
-                    NodeSelectionChanged(this, args);
-                }
-            }
-            catch (Exception e)
-            {
-                Logger.Log(e);
-                throw e;
+            if (NodeSelectionChanged != null) {
+                NodeSelectionChanged(this, args);
             }
         }
         
@@ -300,16 +292,8 @@ namespace VVVV.Hosting
         
         protected virtual void OnMouseUp(VVVV.PluginInterfaces.V2.MouseEventArgs args)
         {
-            try
-            {
-                if (MouseUp != null) {
-                    MouseUp(this, args);
-                }
-            }
-            catch (Exception e)
-            {
-                Logger.Log(e);
-                throw e;
+            if (MouseUp != null) {
+                MouseUp(this, args);
             }
         }
         
@@ -317,16 +301,8 @@ namespace VVVV.Hosting
         
         protected virtual void OnMouseDown(VVVV.PluginInterfaces.V2.MouseEventArgs args)
         {
-            try
-            {
-                if (MouseDown != null) {
-                    MouseDown(this, args);
-                }
-            }
-            catch (Exception e)
-            {
-                Logger.Log(e);
-                throw e;
+            if (MouseDown != null) {
+                MouseDown(this, args);
             }
         }
         
@@ -334,16 +310,8 @@ namespace VVVV.Hosting
         
         protected virtual void OnWindowSelectionChanged(WindowEventArgs args)
         {
-            try
-            {
-                if (WindowSelectionChanged != null) {
-                    WindowSelectionChanged(this, args);
-                }
-            }
-            catch (Exception e)
-            {
-                Logger.Log(e);
-                throw e;
+            if (WindowSelectionChanged != null) {
+                WindowSelectionChanged(this, args);
             }
         }
         
@@ -364,16 +332,8 @@ namespace VVVV.Hosting
         
         protected virtual void OnWindowAdded(WindowEventArgs args)
         {
-            try
-            {
-                if (FWindowAdded != null) {
-                    FWindowAdded(this, args);
-                }
-            }
-            catch (Exception e)
-            {
-                Logger.Log(e);
-                throw e;
+            if (FWindowAdded != null) {
+                FWindowAdded(this, args);
             }
         }
         
@@ -381,16 +341,8 @@ namespace VVVV.Hosting
         
         protected virtual void OnWindowRemoved(WindowEventArgs args)
         {
-            try
-            {
-                if (WindowRemoved != null) {
-                    WindowRemoved(this, args);
-                }
-            }
-            catch (Exception e)
-            {
-                Logger.Log(e);
-                throw e;
+            if (WindowRemoved != null) {
+                WindowRemoved(this, args);
             }
         }
         

@@ -26,7 +26,9 @@ namespace VVVV.Hosting.Graph
             {
                 var childNode = Node.Create(FObservedNode, internalChildNode, FObservedNode.FNodeInfoFactory);
                 
-                FObservedNode.Add(childNode);
+                // HACK: We need to check if node not already in collection from Node.ctor -> GetChildren
+                if (!FObservedNode.Contains(childNode))
+                    FObservedNode.Add(childNode);
             }
             
             public void RemovedCB(INode internalChildNode)
