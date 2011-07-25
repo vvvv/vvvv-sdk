@@ -37,6 +37,7 @@ namespace VVVV.Nodes.NodeBrowser
 
         private List<INodeInfo> FSelectionList = new List<INodeInfo>();
         private List<string> FRTFSelectionList = new List<string>();
+        private readonly Regex FVVVVGroupRegex = new Regex(@"vvvv\s+group", RegexOptions.IgnoreCase | RegexOptions.Multiline);
         
         private NodeBrowserPluginNode FNodeBrowser;
         public NodeBrowserPluginNode NodeBrowser
@@ -121,9 +122,8 @@ namespace VVVV.Nodes.NodeBrowser
         
         private string NodeInfoToDisplayName(INodeInfo nodeInfo)
         {
-            
             string tags = nodeInfo.Tags;
-            if ((!string.IsNullOrEmpty(nodeInfo.Author)) && (nodeInfo.Author != "vvvv group"))
+            if ((!string.IsNullOrEmpty(nodeInfo.Author)) && (!FVVVVGroupRegex.IsMatch(nodeInfo.Author)))
                 if (string.IsNullOrEmpty(tags))
                     tags = nodeInfo.Author;
                 else
