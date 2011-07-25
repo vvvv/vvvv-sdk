@@ -26,6 +26,21 @@ namespace VVVV.Nodes
         protected abstract void SetInputPins();
         protected abstract void SetOutputPins();
         protected abstract bool OnEvaluate(int SpreadMax, bool inputchanged);
+        
+        protected virtual bool ObjectChanged()
+        {
+            return this.FPinInTransform.PinIsChanged;
+        }
+
+        protected virtual int GetSpreadPoint()
+        {
+            return this.FPinInPoint.SliceCount;
+        }
+
+        protected virtual int GetSpreadObject()
+        {
+            return this.FPinInTransform.SliceCount;
+        }
         #endregion
 
         #region Auto Evaluate
@@ -48,10 +63,10 @@ namespace VVVV.Nodes
 
             this.SetInputPins();
            
-            this.FHost.CreateValueOutput("Point ID", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPointId);
+            this.FHost.CreateValueOutput("Point Id", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPointId);
             this.FPinOutPointId.SetSubType(0, double.MaxValue, 0.01, 0, false, false, true);
 
-            this.FHost.CreateValueOutput("Object ID", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutObjectId);
+            this.FHost.CreateValueOutput("Object Id", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutObjectId);
             this.FPinOutObjectId.SetSubType(0, double.MaxValue, 0.01, 0, false, false, true);
 
             this.FHost.CreateValueOutput("Point Hit", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPointHit);
@@ -70,7 +85,7 @@ namespace VVVV.Nodes
             this.FPointHit.Clear();
             this.FObjectHit.Clear();
 
-            for (int i = 0; i < this.FPinInPoint.SliceCount; i++)
+            for (int i = 0; i < this.GetSpreadPoint(); i++)
             {
                 this.FPointHit.Add(false);
             }
@@ -85,7 +100,7 @@ namespace VVVV.Nodes
         #region Evaluate
         public void Evaluate(int SpreadMax)
         {
-            if (this.OnEvaluate(SpreadMax, this.FPinInPoint.PinIsChanged || this.FPinInTransform.PinIsChanged))
+            if (this.OnEvaluate(SpreadMax, this.FPinInPoint.PinIsChanged || this.ObjectChanged()))
             {
 
                 this.FPinOutObjectHit.SliceCount = this.FObjectHit.Count;
