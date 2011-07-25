@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace VVVV.PluginInterfaces.V2.Graph
 {
     [ComVisible(false)]
-    public interface IWindow2
+    public interface IWindow2 : IEquatable<IWindow2>
     {
         /// <summary>
 		/// Gets/sets the window's caption.

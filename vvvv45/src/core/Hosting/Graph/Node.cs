@@ -127,8 +127,6 @@ namespace VVVV.Hosting.Graph
         public override void Dispose()
         {
             FInternalNodeListener.Dispose();
-            if (FWindow != null)
-                FWindow.Dispose();
             
             if (FPins.IsValueCreated)
             {
@@ -297,14 +295,11 @@ namespace VVVV.Hosting.Graph
         {
             get
             {
-                if (FWindow == null)
-                {
-                    var internalWindow = FInternalCOMInterf.Window;
-                    if (internalWindow != null)
-                        FWindow = VVVV.Hosting.Graph.Window.Create(internalWindow);
-                }
-                
-                return FWindow;
+                var internalWindow = FInternalCOMInterf.Window;
+                if (internalWindow != null)
+                    return VVVV.Hosting.Graph.Window.Create(internalWindow);
+                else
+                    return null;
             }
         }
         

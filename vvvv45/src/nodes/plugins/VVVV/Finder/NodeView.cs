@@ -130,7 +130,7 @@ namespace VVVV.Nodes.Finder
         {
             FLastActiveWindow = window;
             
-            if (FNode.Window == window)
+            if (window.Equals(FNode.Window))
             {
                 IsActive = true;
             }
@@ -146,7 +146,7 @@ namespace VVVV.Nodes.Finder
         }
         
         private bool FIsActive;
-        private bool IsActive
+        protected virtual bool IsActive
         {
             get
             {
@@ -181,21 +181,28 @@ namespace VVVV.Nodes.Finder
             NodeView nodeView = null;
             
             var nodeInfo = node.NodeInfo;
-            if (nodeInfo.Name == "IOBox")
+            switch (nodeInfo.Name) 
             {
-                nodeView = new IONodeView(this, node, FFilter, FDepth + 1);
-            }
-            else if (nodeInfo.Name == "S")
-            {
-                nodeView = new SNodeView(this, node, FFilter, FDepth + 1);
-            }
-            else if (nodeInfo.Name == "R")
-            {
-                nodeView = new RNodeView(this, node, FFilter, FDepth + 1);
-            }
-            else
-            {
-                nodeView = new NodeView(this, node, FFilter, FDepth + 1);
+                case "IOBox":
+                    nodeView = new IONodeView(this, node, FFilter, FDepth + 1);
+                    break;
+                case "S":
+                    nodeView = new SNodeView(this, node, FFilter, FDepth + 1);
+                    break;
+                case "R":
+                    nodeView = new RNodeView(this, node, FFilter, FDepth + 1);
+                    break;
+                default:
+                    switch (nodeInfo.Type)
+                    {
+                        case NodeType.Module:
+                            nodeView = new ModuleNodeView(this, node, FFilter, FDepth + 1);
+                            break;
+                        default:
+                            nodeView = new NodeView(this, node, FFilter, FDepth + 1);
+                            break;
+                    }
+                	break;
             }
             
             if (FLastActiveWindow != null)
@@ -269,7 +276,7 @@ namespace VVVV.Nodes.Finder
             OnDecorationChanged();
         }
         
-        internal void ReloadChildren()
+        protected void ReloadChildren()
         {
             if (FNode.Count > 0 && IsInFilterScope())
             {

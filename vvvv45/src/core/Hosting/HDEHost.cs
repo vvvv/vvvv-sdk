@@ -43,6 +43,7 @@ namespace VVVV.Hosting
         private IVVVVHost FVVVVHost;
         private INodeBrowser FNodeBrowser;
         private IPluginBase FWindowSwitcher, FKommunikator;
+        private readonly List<Window> FWindows = new List<Window>();
         
         [Export]
         public CompositionContainer Container { get; protected set; }
@@ -321,7 +322,7 @@ namespace VVVV.Hosting
             add
             {
                 FWindowAdded += value;
-                foreach (var window in Window.Windows)
+                foreach (var window in FWindows)
                     value.Invoke(this, new WindowEventArgs(window));
             }
             remove
@@ -498,16 +499,6 @@ namespace VVVV.Hosting
             return propertyList.ToArray();
         }
         
-        protected INode2 FindNode(IWindow internalWindow)
-        {
-            var query =
-                from node in RootNode.AsDepthFirstEnumerable()
-                let window = node.Window as Window
-                where window != null && window.InternalCOMInterf == internalWindow
-                select node;
-            return query.First();
-        }
-        
         protected INode2 FindNode(INode internalNode)
         {
             var query =
@@ -584,14 +575,15 @@ namespace VVVV.Hosting
         public void WindowAddedCB(IWindow internalWindow)
         {
             var window = Window.Create(internalWindow);
+            FWindows.Add(window);
             OnWindowAdded(new WindowEventArgs(window));
         }
         
         public void WindowRemovedCB(IWindow internalWindow)
         {
             var window = Window.Create(internalWindow);
+            FWindows.Remove(window);
             OnWindowRemoved(new WindowEventArgs(window));
-            window.Dispose();
         }
         
         public void WindowSelectionChangeCB(IWindow internalWindow)

@@ -254,7 +254,7 @@ namespace VVVV.Nodes.NodeBrowser
         
         private void RedrawIfNeeded()
         {
-            bool isRedrawNeeded = NodeInfoFactory.Timestamp != FLastTimestamp || CurrentPatchWindow != FLastPatchWindow;
+            bool isRedrawNeeded = NodeInfoFactory.Timestamp != FLastTimestamp || !CurrentPatchWindow.Equals(FLastPatchWindow);
             if (isRedrawNeeded)
             {
                 if (FTagPanel.Visible)

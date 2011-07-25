@@ -1,98 +1,131 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Runtime.InteropServices;
+
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.Graph;
-using System.Collections.Generic;
 using VVVV.Utils;
 
 namespace VVVV.Hosting.Graph
 {
-    internal class Window : Disposable, IWindow2
+    // TODO: Move this somewhere else.
+    public abstract class WrapperBase : MarshalByRefObject
     {
-		#region factory methods
-		static private Dictionary<IWindow, Window> FWindows = new Dictionary<IWindow, Window>();
-		static internal Window Create(IWindow internalCOMInterf)
-		{
-			Window window = null;
-			if (!FWindows.TryGetValue(internalCOMInterf, out window))
-			{
-				window = new Window(internalCOMInterf);
-				FWindows.Add(internalCOMInterf, window);
-			}
-			return window;
-		}
-		
-		static internal IEnumerable<Window> Windows
-		{
-		    get
-		    {
-		        return FWindows.Values;
-		    }
-		}
-		#endregion
-		
-        private readonly IWindow FInternalCOMInterf;
-		
+        private readonly object m_comObject;
+        
+        protected WrapperBase(object value)
+        {
+            Debug.Assert(value != null);
+            m_comObject = value;
+        }
+        
+        public override bool Equals(object obj)
+        {
+            WrapperBase other = obj as WrapperBase;
+            if (other == null)
+                return false;
+            return object.Equals(this.m_comObject, other.m_comObject);
+        }
+        
+        public override int GetHashCode()
+        {
+            return m_comObject.GetHashCode();
+        }
+        
+        public static bool operator ==(WrapperBase lhs, WrapperBase rhs)
+        {
+            if (ReferenceEquals(lhs, rhs))
+                return true;
+            if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+                return false;
+            return lhs.Equals(rhs);
+        }
+        
+        public static bool operator !=(WrapperBase lhs, WrapperBase rhs)
+        {
+            return !(lhs == rhs);
+        }
+    }
+    
+    internal class Window : WrapperBase, IWindow2
+    {
+        #region factory methods
+        static internal Window Create(IWindow internalCOMInterf)
+        {
+            return new Window(internalCOMInterf);
+        }
+        #endregion
+        
+        private readonly IWindow FNativeWindow;
+        
         private Window(IWindow internalCOMInterf)
+            : base(internalCOMInterf)
         {
-			FInternalCOMInterf = internalCOMInterf;
+            FNativeWindow = internalCOMInterf;
         }
-		
-		protected override void DisposeManaged ()
-		{
-			FWindows.Remove(FInternalCOMInterf);
-		}
         
-        public string Caption 
+        public string Caption
         {
-            get 
+            get
             {
-                return FInternalCOMInterf.Caption;
+                return FNativeWindow.Caption;
             }
-            set 
+            set
             {
-                FInternalCOMInterf.Caption = value;
+                FNativeWindow.Caption = value;
             }
         }
         
-        public WindowType WindowType 
+        public WindowType WindowType
         {
-            get 
+            get
             {
-                return FInternalCOMInterf.GetWindowType();
+                return FNativeWindow.GetWindowType();
             }
         }
         
-        public INode2 Node 
+        public INode2 Node
         {
-            get 
+            get
             {
-                return VVVV.Hosting.Graph.Node.Create(null, FInternalCOMInterf.GetNode(), ProxyNodeInfoFactory.Instance);
+                return VVVV.Hosting.Graph.Node.Create(null, FNativeWindow.GetNode(), ProxyNodeInfoFactory.Instance);
             }
         }
         
-        public bool IsVisible 
+        public bool IsVisible
         {
-            get 
+            get
             {
-                return FInternalCOMInterf.IsVisible();
+                return FNativeWindow.IsVisible();
             }
         }
         
         public Rectangle Bounds
         {
-            get 
+            get
             {
-                return new Rectangle(FInternalCOMInterf.Left, FInternalCOMInterf.Top, FInternalCOMInterf.Width, FInternalCOMInterf.Height);
+                return new Rectangle(FNativeWindow.Left, FNativeWindow.Top, FNativeWindow.Width, FNativeWindow.Height);
             }
         }
-		
-		public IWindow InternalCOMInterf
-		{
-            get 
+        
+        public IWindow InternalCOMInterf
+        {
+            get
             {
-                return FInternalCOMInterf;
+                return FNativeWindow;
             }
+        }
+        
+        public override string ToString()
+        {
+            return Caption;
+        }
+        
+        public bool Equals(IWindow2 other)
+        {
+            return base.Equals(other);
         }
     }
 }

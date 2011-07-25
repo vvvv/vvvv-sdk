@@ -188,18 +188,6 @@ namespace VVVV.Nodes.Finder
             }
         }
         
-        public INode2 StartNode
-        {
-            get;
-            private set;
-        }
-        
-        public IWindow2 ActiveWindow
-        {
-            get;
-            private set;
-        }
-        
         public FilterFlags Flags
         {
             get;

@@ -5,7 +5,7 @@ using VVVV.PluginInterfaces.V2.Graph;
 
 namespace VVVV.Nodes.Finder
 {
-    public abstract class SRNodeView : NodeView
+    abstract class SRNodeView : NodeView
     {
         private readonly IPin2 FChannelPin;
         protected string FSRChannel;
@@ -62,7 +62,7 @@ namespace VVVV.Nodes.Finder
         }
     }
     
-    public class SNodeView : SRNodeView, ILinkSource
+    class SNodeView : SRNodeView, ILinkSource
     {
         public SNodeView(NodeView parentNodeView, INode2 node, NodeFilter filter, int depth)
             : base(parentNodeView, node, filter, depth)
@@ -95,7 +95,7 @@ namespace VVVV.Nodes.Finder
         }
     }
     
-    public class RNodeView : SRNodeView, ILinkSink
+    class RNodeView : SRNodeView, ILinkSink
     {
         public RNodeView(NodeView parentNodeView, INode2 node, NodeFilter filter, int depth)
             : base(parentNodeView, node, filter, depth)

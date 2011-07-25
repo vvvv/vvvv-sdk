@@ -4,7 +4,7 @@ using VVVV.PluginInterfaces.V2.Graph;
 
 namespace VVVV.Nodes.Finder
 {
-    public class IONodeView : NodeView
+    class IONodeView : NodeView
     {
         #region enum IOType
         enum IOTypeCode
