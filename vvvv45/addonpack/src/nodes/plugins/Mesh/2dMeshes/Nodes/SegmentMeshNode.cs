@@ -42,6 +42,7 @@ namespace VVVV.Nodes
         private IValueIn FPinInInnerRadius;
         private IValueIn FPinInCycles;
         private IValueIn FPinInResolution;
+        private IValueIn FPinInFlatTexture;
         #endregion
 
         #region Set Plugin Host
@@ -55,7 +56,10 @@ namespace VVVV.Nodes
 
             this.FHost.CreateValueInput("Cycles", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInCycles);
             this.FPinInCycles.SetSubType(double.MinValue, double.MaxValue, 0.01, 1.0, false, false, false);
-        
+    
+            this.FHost.CreateValueInput("Flat Texture", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInFlatTexture);
+            this.FPinInFlatTexture.SetSubType(0, 1, 1, 1, false, true, false);
+               
             this.FHost.CreateValueInput("Resolution", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInResolution);
             this.FPinInResolution.SetSubType(2, double.MaxValue, 1, 20, false, false, true);
         
@@ -68,18 +72,22 @@ namespace VVVV.Nodes
             if (this.FPinInInnerRadius.PinIsChanged 
                 || this.FPinInResolution.PinIsChanged 
                 || this.FPinInCycles.PinIsChanged
-                || this.FPinInPhase.PinIsChanged)
+                || this.FPinInPhase.PinIsChanged
+                || this.FPinInFlatTexture.PinIsChanged)
             {
                 this.FVertex.Clear();
                 this.FIndices.Clear();
 
-                double inner, res,cycles,phase;
+                double inner, res,cycles,phase,flat;
+                this.FPinInFlatTexture.GetValue(0, out flat);
+
                 for (int j = 0; j < SpreadMax; j++)
                 {
                     this.FPinInInnerRadius.GetValue(j, out inner);
                     this.FPinInResolution.GetValue(j, out res);
                     this.FPinInCycles.GetValue(j, out cycles);
                     this.FPinInPhase.GetValue(j, out phase);
+
                     int ires = Convert.ToInt32(res);
 
                     Vertex[] verts = new Vertex[ires * 2];
@@ -96,8 +104,17 @@ namespace VVVV.Nodes
                         Vertex innerv = new Vertex();
                         innerv.pv = new Vector3(x,y, 0.0f);
                         innerv.nv = new Vector3(0.0f, 0.0f, 1.0f);
-                        innerv.tu1 = 0.5f - x;
-                        innerv.tv1 = 0.5f - y;
+
+                        if (flat > 0.5)
+                        {
+                            innerv.tu1 = 0.5f - x;
+                            innerv.tv1 = 0.5f - y;
+                        }
+                        else
+                        {
+                            innerv.tu1 = (1.0f * (float)i) / ((float)ires - 1.0f);
+                            innerv.tv1 = 0.0f;
+                        }
 
                         verts[i] = innerv;
 
@@ -107,8 +124,17 @@ namespace VVVV.Nodes
                         Vertex outerv = new Vertex();
                         outerv.pv = new Vector3(x,y, 0.0f);
                         outerv.nv = new Vector3(0.0f, 0.0f, 1.0f);
-                        outerv.tu1 = 0.5f - x;
-                        outerv.tv1 = 0.5f - y;
+                        if (flat > 0.5)
+                        {
+                            outerv.tu1 = 0.5f - x;
+                            outerv.tv1 = 0.5f - y;
+                        }
+                        else
+                        {
+                            outerv.tu1 = (1.0f * (float)i) / ((float)ires -1.0f);
+                            outerv.tv1 = 1.0f;
+                        }
+
 
                         verts[i] = innerv;
                         verts[i + ires] = outerv;
