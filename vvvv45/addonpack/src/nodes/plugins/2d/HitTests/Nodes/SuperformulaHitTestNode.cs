@@ -55,6 +55,20 @@ namespace VVVV.Nodes
             
         }
 
+        protected override int GetSpreadObject()
+        {
+            int ret = Math.Max(base.GetSpreadObject(), this.FPinInAB.SliceCount);
+            ret = Math.Max(ret, this.FPinInMN.SliceCount);
+            return ret;
+        }
+
+        protected override bool ObjectChanged()
+        {
+            return this.FPinInMN.PinIsChanged
+                || this.FPinInAB.PinIsChanged
+                || this.FPinInTransform.PinIsChanged;
+        }
+
         protected override bool OnEvaluate(int SpreadMax, bool inputchanged)
         {
             if (this.FPinInMN.PinIsChanged || this.FPinInAB.PinIsChanged || inputchanged)
