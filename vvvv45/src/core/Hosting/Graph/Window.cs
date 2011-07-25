@@ -21,6 +21,14 @@ namespace VVVV.Hosting.Graph
 			}
 			return window;
 		}
+		
+		static internal IEnumerable<Window> Windows
+		{
+		    get
+		    {
+		        return FWindows.Values;
+		    }
+		}
 		#endregion
 		
         private readonly IWindow FInternalCOMInterf;

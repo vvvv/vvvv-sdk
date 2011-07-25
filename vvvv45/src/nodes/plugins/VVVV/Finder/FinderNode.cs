@@ -42,12 +42,8 @@ namespace VVVV.Nodes.Finder
         private IHDEHost FHDEHost;
         private MappingRegistry FMappingRegistry;
         
-        private IWindow2 FActivePatchWindow;
-        private IWindow2 FActiveWindow;
-        //        private PatchNode FSearchResult;
         private NodeView FNodeView;
         
-        //        private Filter FFilter;
         private readonly NodeFilter FNodeFilter;
 
         // Track whether Dispose has been called.
@@ -195,16 +191,8 @@ namespace VVVV.Nodes.Finder
         private System.Windows.Forms.TextBox FSearchTextBox;
         private System.Windows.Forms.Panel panel1;
         
-        // Dispose(bool disposing) executes in two distinct scenarios.
-        // If disposing equals true, the method has been called directly
-        // or indirectly by a user's code. Managed and unmanaged resources
-        // can be disposed.
-        // If disposing equals false, the method has been called by the
-        // runtime from inside the finalizer and you should not reference
-        // other objects. Only unmanaged resources can be disposed.
         protected override void Dispose(bool disposing)
         {
-            // Check to see if Dispose has already been called.
             if(!FDisposed)
             {
                 if(disposing)
@@ -230,17 +218,8 @@ namespace VVVV.Nodes.Finder
                     this.FHierarchyViewer = null;
                     
                     // Shutdown view layer
-                    ClearSearch();
+                    FNodeView.Dispose();
                 }
-                // Release unmanaged resources. If disposing is false,
-                // only the following code is executed.
-                
-                // Note that this is not thread safe.
-                // Another thread could start disposing the object
-                // after the managed resources are disposed,
-                // but before the disposed flag is set to true.
-                // If thread safety is necessary, it must be
-                // implemented by the client.
             }
             FDisposed = true;
         }
@@ -259,7 +238,7 @@ namespace VVVV.Nodes.Finder
                 if (FActivePatchNode != null)
                 {
                     if (FActivePatchNode.Parent != null)
-                        FActivePatchNode.Parent.Removed -= HandleFActivePatchParentRemoved;
+                        FActivePatchNode.Parent.Removed -= HandleActivePatchParentRemoved;
                 }
                 
                 FActivePatchNode = value;
@@ -267,7 +246,7 @@ namespace VVVV.Nodes.Finder
                 if (FActivePatchNode != null)
                 {
                     if (FActivePatchNode.Parent != null)
-                        FActivePatchNode.Parent.Removed += HandleFActivePatchParentRemoved;
+                        FActivePatchNode.Parent.Removed += HandleActivePatchParentRemoved;
                 }
             }
         }
@@ -277,91 +256,39 @@ namespace VVVV.Nodes.Finder
             FSearchTextBox.Text = spread[0];
         }
         
-        #region IWindowSelectionListener
         void HandleWindowSelectionChanged(object sender, WindowEventArgs args)
         {
             var window = args.Window;
             
-            if (window == FActiveWindow) return;
-            
-            FActiveWindow = window;
-            var windowType = window.WindowType;
-            var updateActiveWindow = false;
-            
-            if (windowType == WindowType.Module || windowType == WindowType.Patch)
+            switch (window.WindowType)
             {
-                if (window != FActivePatchWindow)
-                    SetActivePatch(window);
-                else
-                    updateActiveWindow = true;
-            }
-            else
-            {
-                if (FHDEHost.ActivePatchWindow == null)
-                {
-                    ClearSearch();
-                    ActivePatchNode = null;
-                }
-                else if (FActivePatchWindow != FHDEHost.ActivePatchWindow)
-                    SetActivePatch(FHDEHost.ActivePatchWindow);
-                
-                updateActiveWindow = true;
+                case WindowType.Patch:
+                case WindowType.Module:
+                    ActivePatchNode = window.Node;
+                    //the hosts window may be null if the plugin is created hidden on startup
+                    if (FPluginHost.Window != null)
+                        FPluginHost.Window.Caption = FActivePatchNode.NodeInfo.Systemname;
+                    
+                    //only redraw if in local scope
+                    if (!FNodeFilter.ScopeIsGlobal)
+                        UpdateView();
+                    break;
             }
             
-            if (updateActiveWindow && FNodeView != null)
-            {
-                FNodeView.SetActiveWindow(FActiveWindow);
-            }
-        }
-        
-        private void SetActivePatch(IWindow2 patch)
-        {
-            ActivePatchNode = patch.Node;
-            FActivePatchWindow = patch;
-            
-            //the hosts window may be null if the plugin is created hidden on startup
-            if (FPluginHost.Window != null)
-                FPluginHost.Window.Caption = FActivePatchNode.NodeInfo.Systemname;
-        
-            //only redraw if in local scope
-            if (!FNodeFilter.ScopeIsGlobal)
-                UpdateView();
-            
-            FNodeView.SetActiveWindow(FActiveWindow);
+            FNodeView.SetActiveWindow(window);
         }
 
-        void HandleFActivePatchParentRemoved(IViewableCollection collection, object item)
+        void HandleActivePatchParentRemoved(IViewableCollection collection, object item)
         {
             var childNode = item as INode2;
             //if active patch is being deleted detach view
-            if (childNode == FActivePatchNode)
+            if (childNode == ActivePatchNode)
             {
-                if (FActivePatchNode.Parent != null)
-                    FActivePatchNode.Parent.Removed -= HandleFActivePatchParentRemoved;
-                
-                FActivePatchNode = null;
-                FActivePatchWindow = null;
-                FActiveWindow = null;
+                ActivePatchNode = childNode.Parent;
                 
                 if (!FNodeFilter.ScopeIsGlobal)
-                    ClearSearch();
+                    UpdateView();
             }
-        }
-        #endregion IWindowSelectionListener
-        
-        #region Search
-        private void ClearSearch()
-        {
-            if (FNodeView != null)
-            {
-                FNodeView.Dispose();
-                FNodeView = null;
-            }
-        }
-        
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
         }
         
         private void UpdateView()
@@ -371,7 +298,7 @@ namespace VVVV.Nodes.Finder
             FHierarchyViewer.BeginUpdate();
             try
             {
-                ClearSearch();
+                FNodeView.Dispose();
                 
                 if (NodeFilter.IsGlobalSearchScope(query))
                 {
@@ -391,7 +318,6 @@ namespace VVVV.Nodes.Finder
                 FHierarchyViewer.EndUpdate();
             }
         }
-        #endregion Search
         
         #region GUI events
         void FSearchTextBoxTextChanged(object sender, EventArgs e)

@@ -321,7 +321,7 @@ namespace VVVV.Hosting
             add
             {
                 FWindowAdded += value;
-                foreach (var window in FWindows)
+                foreach (var window in Window.Windows)
                     value.Invoke(this, new WindowEventArgs(window));
             }
             remove
@@ -452,12 +452,7 @@ namespace VVVV.Hosting
             {
                 var internalWindow = FVVVVHost.ActivePatchWindow;
                 if (internalWindow != null)
-                {
-                    if (FActivePatchWindow == null)
-                        FActivePatchWindow = FindWindow(internalWindow);
-                    else if (FActivePatchWindow.InternalCOMInterf != FVVVVHost.ActivePatchWindow)
-                        FActivePatchWindow = FindWindow(internalWindow);
-                }
+                    FActivePatchWindow = Window.Create(internalWindow);
                 else
                     FActivePatchWindow = null;
                 
@@ -519,16 +514,6 @@ namespace VVVV.Hosting
                 from node in RootNode.AsDepthFirstEnumerable()
                 where node.InternalCOMInterf == internalNode
                 select node;
-            return query.First();
-        }
-        
-        protected Window FindWindow(IWindow internalWindow)
-        {
-            var query =
-                from w in FWindows
-                let window = w as Window
-                where window.InternalCOMInterf == internalWindow
-                select window;
             return query.First();
         }
         
@@ -596,25 +581,22 @@ namespace VVVV.Hosting
                 OnNodeSelectionChanged(new NodeSelectionEventArgs(new INode2[0]));
         }
         
-        private List<IWindow2> FWindows = new List<IWindow2>();
         public void WindowAddedCB(IWindow internalWindow)
         {
             var window = Window.Create(internalWindow);
-            FWindows.Add(window);
             OnWindowAdded(new WindowEventArgs(window));
         }
         
         public void WindowRemovedCB(IWindow internalWindow)
         {
-            var window = FindWindow(internalWindow);
-            FWindows.Remove(window);
+            var window = Window.Create(internalWindow);
             OnWindowRemoved(new WindowEventArgs(window));
             window.Dispose();
         }
         
         public void WindowSelectionChangeCB(IWindow internalWindow)
         {
-            OnWindowSelectionChanged(new WindowEventArgs(FindWindow(internalWindow)));
+            OnWindowSelectionChanged(new WindowEventArgs(Window.Create(internalWindow)));
         }
         
         #endregion
