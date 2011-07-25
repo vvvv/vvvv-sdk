@@ -35,9 +35,10 @@ namespace VVVV.Nodes
         }
         #endregion
 
+        private IValueIn FPinInInnerRadius;
+       
         protected override void SetInputPins()
-        {
-            
+        {     
         }
 
         protected override void SetOutputPins()
