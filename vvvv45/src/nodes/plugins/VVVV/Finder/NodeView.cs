@@ -276,7 +276,7 @@ namespace VVVV.Nodes.Finder
             OnDecorationChanged();
         }
         
-        protected void ReloadChildren()
+        protected virtual void ReloadChildren()
         {
             if (FNode.Count > 0 && IsInFilterScope())
             {

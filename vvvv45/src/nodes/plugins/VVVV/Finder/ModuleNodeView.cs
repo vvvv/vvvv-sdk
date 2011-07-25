@@ -10,6 +10,14 @@ namespace VVVV.Nodes.Finder
         {
         }
         
+        protected override void ReloadChildren()
+        {
+            if (IsActive)
+            {
+               base.ReloadChildren();
+            }
+        }
+        
         protected override bool IsActive 
         {
             get 
@@ -20,13 +28,13 @@ namespace VVVV.Nodes.Finder
             { 
                 if (value != IsActive)
                 {
+                    base.IsActive = value;
+                    
                     if (value)
                         ReloadChildren();
                     else
                         Children.Clear();
                 }
-                
-                base.IsActive = value;
             }
         }
     }
