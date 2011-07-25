@@ -25,7 +25,7 @@ namespace VVVV.Nodes
 		IDiffSpread<int> FPinInStackSize;
 
         [Input("Default")]
-        ISpread<T> FPinDefault;
+        ISpread<ISpread<T>> FPinDefault;
 
         [Input("Reset", IsBang = true, IsSingle = true)]
         ISpread<bool> FPinInReset;
@@ -63,7 +63,10 @@ namespace VVVV.Nodes
                 FStack.Clear();
                 if (FPinDefault.SliceCount > 0)
                 {
-                    FStack.Push(FPinDefault.ToList());
+                    for (int i = 0; i < this.FPinDefault.SliceCount; i++)
+                    {
+                        FStack.Push(FPinDefault[i].ToList());
+                    }
                 }
             }
             else
