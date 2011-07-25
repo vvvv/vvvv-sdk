@@ -42,6 +42,7 @@ namespace VVVV.Nodes
         private IStringIn FPinInDefaultDir;
         private IStringIn FPinInFilter;
         private IValueFastIn FPinInAllowMultiple;
+        private IValueFastIn FCheckPathExists;
         private IValueFastIn FPinInOpen;
         private IStringOut FPinOutPath;
         private Thread FThread;
@@ -77,6 +78,9 @@ namespace VVVV.Nodes
             
             this.FHost.CreateValueFastInput("Multi Select", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInAllowMultiple);
             this.FPinInAllowMultiple.SetSubType(0, 1, 1, 0, false, true, false);
+            
+            this.FHost.CreateValueFastInput("Check Path Exists", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FCheckPathExists);
+            this.FCheckPathExists.SetSubType(0, 1, 1, 0, false, true, false);
         
             this.FHost.CreateValueFastInput("Do Open", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInOpen);
             this.FPinInOpen.SetSubType(0, 1, 1, 0, true, false, false);
@@ -104,16 +108,19 @@ namespace VVVV.Nodes
             if (doopen >= 0.5 && !this.FOpened)
             {
                 string defaultdir, filter;
-                double allowmultiple;
+                double allowmultiple, checkPath;
 
                 this.FPinInDefaultDir.GetString(0, out defaultdir);
                 this.FPinInFilter.GetString(0, out filter);
 
                 this.FPinInAllowMultiple.GetValue(0, out allowmultiple);
+                this.FCheckPathExists.GetValue(0, out checkPath);
 
                 odlg.Multiselect = allowmultiple >= 0.5;
                 odlg.InitialDirectory = defaultdir;
                 odlg.Filter = filter;
+                odlg.CheckPathExists = checkPath >= 0.5;
+                odlg.CheckFileExists = odlg.CheckPathExists;
                 
                 this.OnSelect -= new EventHandler(FileDialogNode_OnSelect);
                 this.OnSelect += new EventHandler(FileDialogNode_OnSelect);
