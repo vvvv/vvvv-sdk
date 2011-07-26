@@ -263,10 +263,7 @@ namespace VVVV.Nodes
         			evaluate = false;
         			string root;
         			FHost.GetHostPath(out root);
-        			if (Path.IsPathRooted(root))
-        				root = Path.GetDirectoryName(root);
-        			else
-        				root = Path.GetDirectoryName(Path.GetFullPath(Path.GetDirectoryName(root)));
+        			root = Path.GetDirectoryName(root);
         			
         			double tmpPrepend;
         			FPrepend.GetValue(0, out tmpPrepend);
@@ -292,9 +289,9 @@ namespace VVVV.Nodes
         					builder=Path.Combine(builder, curPath);
         				}
 						
-        				builder = Path.GetFullPath(builder);
-        				if (!(isRooted || prepend))
-        					builder = builder.Replace(root+"\\", string.Empty);
+        				builder = Path.GetFullPath(builder);  // combines c:\foo\bar + ..\fighters -> c:\foo\figthers
+        				if (!(isRooted || prepend))           // but Path.GetFullPath needs a rooted path.     
+        					builder = builder.Replace(root+"\\", string.Empty); //want it relative, subtract root again
         				FOutput.SetString(s, builder);
         			}
         		}
