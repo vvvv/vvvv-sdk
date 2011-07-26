@@ -20,7 +20,7 @@ using System.ComponentModel.Composition;
 using System.Collections.Generic;
 using System.Reflection;
 using System.IO;
-using System.Linq;
+
 
 using IrrKlang;
 using IrrVec3D = IrrKlang.Vector3D;
@@ -303,6 +303,9 @@ namespace VVVV.Nodes
         List<string> FLoadedFiles = new List<string>();
         List<ISound> FPlayedSounds = new List<ISound>();
         List<int> FFinishedSounds = new List<int>();
+        List<string> FilePath = new List<string>();
+        Dictionary<int, ISoundSource> SoundSources = new Dictionary<int, ISoundSource>();
+        List<string> DeleteList = new List<string>();
 
         int FPreviousSpreadMax = -1;
 
@@ -315,8 +318,15 @@ namespace VVVV.Nodes
             var s = new string[FDevice.DeviceCount];
             for (int a = 0; a < FDevice.DeviceCount; ++a)
             {
-                FDeviceSelect.Add(FDevice.getDeviceDescription(a), a);
-                s[a] = FDevice.getDeviceDescription(a);
+                try
+                {
+                    FDeviceSelect.Add(FDevice.getDeviceDescription(a), a);
+                    s[a] = FDevice.getDeviceDescription(a);
+                }
+                catch (Exception ex)
+                {
+                    FLogger.Log(ex);
+                }
             }
             EnumManager.UpdateEnum("DeviceName", s[0], s);
             EnumManager.UpdateEnum("PlayMode", "3D", FPlayModeArray);
@@ -382,8 +392,8 @@ namespace VVVV.Nodes
             #region File IO
             if (FFile.IsChanged || ChangedSpreadSize)
             {
-                List<string> FilePath = new List<string>();
-                Dictionary<int, ISoundSource> SoundSources = new Dictionary<int, ISoundSource>();
+                FilePath.Clear();
+                SoundSources.Clear();
 
                 if (FLoadedFiles.Count < SpreadMax)
                 {
@@ -448,11 +458,7 @@ namespace VVVV.Nodes
                     }
                 }
 
-
-
-
-
-                List<string> DeleteList = new List<string>();
+                DeleteList.Clear();
 
                 if (FLoadedFiles.Count > SpreadMax)
                 {
