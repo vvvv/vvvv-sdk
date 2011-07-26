@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.2.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\modules\common\TextureFX\.TestJoinSplit.v4p" filename="C:\Users\joreg\Desktop\contributions\modules\TextureFX\_Tester.v4p" systemname="_Tester">
-   <BOUNDS height="7035" left="0" top="7095" type="Window" width="13650">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\work\textureFX\.TestJoinSplit.v4p" filename="C:\Users\joreg\Desktop\contributions\modules\TextureFX\_Tester.v4p" systemname="_Tester">
+   <BOUNDS height="7035" left="0" top="7035" type="Window" width="13770">
    </BOUNDS>
    <NODE componentmode="Hidden" id="1" nodename="FileTexture (EX9.Texture)" systemname="FileTexture (EX9.Texture)">
    <BOUNDS height="100" left="2295" top="1080" type="Node" width="100">
@@ -8,6 +8,8 @@
    <PIN pinname="Filename" visible="1">
    </PIN>
    <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Format" slicecount="1" values="A8R8G8B8">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="2" nodename="SystemFolder (File)" systemname="SystemFolder (File)">
@@ -38,12 +40,14 @@
    <PIN pinname="Video Format" slicecount="1" values="RGB24">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="15" nodename="VideoTexture (EX9.Texture VMR9)" systemname="VideoTexture (EX9.Texture VMR9)">
+   <NODE componentmode="Hidden" id="15" nodename="VIDEOTEXTURE (EX9.TEXTURE VMR9)" systemname="VideoTexture (EX9.Texture VMR9)">
    <BOUNDS height="100" left="3720" top="1065" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Video" visible="1">
    </PIN>
    <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Texture Mode" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="15" dstpinname="Video" srcnodeid="14" srcpinname="Video">
@@ -55,13 +59,13 @@
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
    <PIN pinname="Switch" visible="1">
    </PIN>
    <PIN pinname="Input Count" slicecount="1" values="3">
    </PIN>
    <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="16" dstpinname="Input 1" srcnodeid="1" srcpinname="Texture Out">
@@ -69,21 +73,11 @@
    <LINK dstnodeid="16" dstpinname="Input 2" srcnodeid="15" srcpinname="Texture Out">
    </LINK>
    <NODE componentmode="Hidden" id="18" nodename="Switch (Node Input)" systemname="Switch (Node Input)">
-   <BOUNDS height="270" left="2340" top="4590" type="Node" width="4680">
-   </BOUNDS>
    <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Input Count" slicecount="1" values="5">
-   </PIN>
-   <PIN pinname="Input 3" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    <PIN pinname="Switch" visible="1">
-   </PIN>
-   <PIN pinname="Input 4" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Input 5" slicecount="1" visible="1" values="||">
    </PIN>
@@ -105,17 +99,27 @@
    </PIN>
    <PIN pinname="Input 14" slicecount="1" visible="1" values="||">
    </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="4">
+   </PIN>
+   <BOUNDS height="270" left="2340" top="4590" type="Node" width="3525">
+   </BOUNDS>
    </NODE>
    <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="465" top="4080" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="555" left="465" top="4080" type="Box" width="540">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="2">
-   </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="18" dstpinname="Switch" srcnodeid="19" srcpinname="Y Output Value">
@@ -133,7 +137,7 @@
    </BOUNDS>
    <BOUNDS height="3195" left="11535" top="5355" type="Box" width="2595">
    </BOUNDS>
-   <BOUNDS height="6840" left="8670" top="210" type="Window" width="5100">
+   <BOUNDS height="6810" left="8670" top="210" type="Window" width="5100">
    </BOUNDS>
    </NODE>
    <NODE componentmode="InABox" id="42" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -141,11 +145,11 @@
    </BOUNDS>
    <BOUNDS height="555" left="840" top="1155" type="Box" width="540">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
-   </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="16" dstpinname="Switch" srcnodeid="42" srcpinname="Y Output Value">
@@ -243,10 +247,10 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
+   <BOUNDS height="13830" left="11760" top="825" type="Window" width="15255">
+   </BOUNDS>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\SplitJoin\RGBA\RGBA (EX9.Texture Split).v4p" id="33" nodename="RGBA (EX9.Texture Split)" systemname="RGBA (EX9.Texture Split)">
-   <BOUNDS height="100" left="2010" top="2580" type="Node" width="100">
-   </BOUNDS>
    <PIN pinname="Texture In" visible="1">
    </PIN>
    <PIN pinname="Texture.r" visible="1">
@@ -257,8 +261,6 @@
    </PIN>
    <PIN pinname="Texture.a" visible="1">
    </PIN>
-   <BOUNDS left="2010" top="2580" type="Box">
-   </BOUNDS>
    <PIN pinname="Texture Red" visible="1">
    </PIN>
    <PIN pinname="Texture Green" visible="1">
@@ -283,10 +285,12 @@
    </PIN>
    <PIN pinname="Input" visible="1">
    </PIN>
+   <BOUNDS height="100" left="2010" top="2580" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="2010" top="2580" type="Box">
+   </BOUNDS>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\SplitJoin\RGBA\RGBA (EX9.Texture Join).v4p" id="51" nodename="RGBA (EX9.Texture Join)" systemname="RGBA (EX9.Texture Join)">
-   <BOUNDS height="100" left="2250" top="3210" type="Node" width="100">
-   </BOUNDS>
    <PIN pinname="Texture Red" visible="1">
    </PIN>
    <PIN pinname="Texture Green" visible="1">
@@ -301,8 +305,6 @@
    </PIN>
    <BOUNDS height="11220" left="13815" top="195" type="Window" width="10365">
    </BOUNDS>
-   <BOUNDS left="2250" top="3210" type="Box">
-   </BOUNDS>
    <PIN pinname="Red" visible="1">
    </PIN>
    <PIN pinname="Green" visible="1">
@@ -313,6 +315,10 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
+   <BOUNDS height="100" left="2010" top="3210" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="2010" top="3210" type="Box">
+   </BOUNDS>
    </NODE>
    <LINK dstnodeid="51" dstpinname="Red" srcnodeid="33" srcpinname="Red">
    </LINK>
@@ -321,52 +327,6 @@
    <LINK dstnodeid="51" dstpinname="Blue" srcnodeid="33" srcpinname="Blue">
    </LINK>
    <LINK dstnodeid="51" dstpinname="Alpha" srcnodeid="33" srcpinname="Alpha">
-   </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\SplitJoin\RGBA2\RGBA2 (EX9.Texture Split).v4p" id="54" nodename="RGBA2 (EX9.Texture Split)" systemname="RGBA2 (EX9.Texture Split)">
-   <BOUNDS height="100" left="3315" top="2580" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Texture In" visible="1">
-   </PIN>
-   <PIN pinname="Red" visible="1">
-   </PIN>
-   <PIN pinname="Green" visible="1">
-   </PIN>
-   <PIN pinname="Blue" visible="1">
-   </PIN>
-   <PIN pinname="Alpha" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <BOUNDS left="3315" top="2580" type="Box">
-   </BOUNDS>
-   </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\SplitJoin\RGBA2\RGBA2 (EX9.Texture Join).v4p" id="52" nodename="RGBA2 (EX9.Texture Join)" systemname="RGBA2 (EX9.Texture Join)">
-   <BOUNDS height="100" left="3375" top="3210" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <PIN pinname="Green" visible="1">
-   </PIN>
-   <PIN pinname="Blue" visible="1">
-   </PIN>
-   <PIN pinname="Alpha" visible="1">
-   </PIN>
-   <PIN pinname="Red" visible="1">
-   </PIN>
-   <BOUNDS left="3375" top="3210" type="Box">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="52" dstpinname="Alpha" srcnodeid="54" srcpinname="Alpha">
-   </LINK>
-   <LINK dstnodeid="52" dstpinname="Blue" srcnodeid="54" srcpinname="Blue">
-   </LINK>
-   <LINK dstnodeid="52" dstpinname="Green" srcnodeid="54" srcpinname="Green">
-   </LINK>
-   <LINK dstnodeid="52" dstpinname="Red" srcnodeid="54" srcpinname="Red">
    </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\misc\Preview (EX9.Texture).v4p" id="46" nodename="Preview (EX9.Texture)" systemname="Preview (EX9.Texture)">
    <BOUNDS height="270" left="2340" top="5790" type="Node" width="1125">
@@ -392,34 +352,120 @@
    </LINK>
    <LINK dstnodeid="33" dstpinname="Input" srcnodeid="16" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="54" dstpinname="Input" srcnodeid="16" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="18" dstpinname="Input 1" srcnodeid="51" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="18" dstpinname="Input 2" srcnodeid="52" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="16" dstpinname="Input 3" srcnodeid="41" srcpinname="Output">
    </LINK>
-   <NODE systemname="SetAlpha (EX9.Texture Join)" filename="%VVVV%\modules\common\TextureFX\SplitJoin\SetAlpha\SetAlpha (EX9.Texture Join).v4p" nodename="SetAlpha (EX9.Texture Join)" componentmode="Hidden" id="59">
-   <BOUNDS type="Node" left="5055" top="2685" width="100" height="100">
-   </BOUNDS>
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\SplitJoin\SetAlpha\SetAlpha (EX9.Texture Join).v4p" id="59" nodename="SetAlpha (EX9.Texture Join)" systemname="SetAlpha (EX9.Texture Join)">
    <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="Alpha" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Mode" slicecount="1" values="| Alpha_Channel|">
+   <BOUNDS height="100" left="5805" top="2580" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="5805" top="2580" type="Box">
+   </BOUNDS>
+   <PIN pinname="Invert" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Composite with original" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Invert" slicecount="1" values="0">
+   <PIN pinname="Mode" slicecount="1" values="| Alpha_Channel|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="59" dstpinname="Input">
+   <LINK dstnodeid="59" dstpinname="Input" srcnodeid="16" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="41" srcpinname="Output" dstnodeid="59" dstpinname="Alpha">
+   <LINK dstnodeid="59" dstpinname="Alpha" srcnodeid="41" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="59" srcpinname="Output" dstnodeid="18" dstpinname="Input 3">
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\SplitJoin\HSLA\HSLA (EX9.Texture Join).v4p" id="60" nodename="HSLA (EX9.Texture Join)" systemname="HSLA (EX9.Texture Join)">
+   <PIN pinname="Hue" visible="1">
+   </PIN>
+   <PIN pinname="Saturation" visible="1">
+   </PIN>
+   <PIN pinname="Lightness" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="3465" top="3210" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="3465" top="3210" type="Box">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\SplitJoin\HSLA\HSLA (EX9.Texture Split).v4p" id="61" nodename="HSLA (EX9.Texture Split)" systemname="HSLA (EX9.Texture Split)">
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Hue" visible="1">
+   </PIN>
+   <PIN pinname="Saturation" visible="1">
+   </PIN>
+   <PIN pinname="Lightness" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="3465" top="2580" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="3465" top="2580" type="Box">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\SplitJoin\HSVA\HSVA (EX9.Texture Split).v4p" id="62" nodename="HSVA (EX9.Texture Split)" systemname="HSVA (EX9.Texture Split)">
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Hue" visible="1">
+   </PIN>
+   <PIN pinname="Saturation" visible="1">
+   </PIN>
+   <PIN pinname="Value" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="4680" top="2580" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="4680" top="2580" type="Box">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\SplitJoin\HSVA\HSVA (EX9.Texture Join).v4p" id="63" nodename="HSVA (EX9.Texture Join)" systemname="HSVA (EX9.Texture Join)">
+   <PIN pinname="Hue" visible="1">
+   </PIN>
+   <PIN pinname="Saturation" visible="1">
+   </PIN>
+   <PIN pinname="Value" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="4770" top="3210" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="4770" top="3210" type="Box">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="61" dstpinname="Input" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="62" dstpinname="Input" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="60" dstpinname="Hue" srcnodeid="61" srcpinname="Hue">
+   </LINK>
+   <LINK dstnodeid="60" dstpinname="Saturation" srcnodeid="61" srcpinname="Saturation">
+   </LINK>
+   <LINK dstnodeid="60" dstpinname="Lightness" srcnodeid="61" srcpinname="Lightness">
+   </LINK>
+   <LINK dstnodeid="60" dstpinname="Alpha" srcnodeid="61" srcpinname="Alpha">
+   </LINK>
+   <LINK dstnodeid="63" dstpinname="Hue" srcnodeid="62" srcpinname="Hue">
+   </LINK>
+   <LINK dstnodeid="63" dstpinname="Saturation" srcnodeid="62" srcpinname="Saturation">
+   </LINK>
+   <LINK dstnodeid="63" dstpinname="Value" srcnodeid="62" srcpinname="Value">
+   </LINK>
+   <LINK dstnodeid="63" dstpinname="Alpha" srcnodeid="62" srcpinname="Alpha">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 2" srcnodeid="60" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 3" srcnodeid="63" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 4" srcnodeid="59" srcpinname="Output">
    </LINK>
    </PATCH>

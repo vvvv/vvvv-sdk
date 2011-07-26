@@ -1,35 +1,11 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.2.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\modules\common\TextureFX\.TestSources.v4p" filename="C:\Users\joreg\dev\vake\source\complete\vvvv45\modules\common\TextureFX\.SourceTester.v4p" systemname=".SourceTester">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha25.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\work\textureFX\.TestSources.v4p" filename="C:\Users\joreg\dev\vake\source\complete\vvvv45\modules\common\TextureFX\.SourceTester.v4p" systemname=".SourceTester">
    <BOUNDS height="5460" left="0" top="7095" type="Window" width="13725">
    </BOUNDS>
    <NODE componentmode="Hidden" id="18" nodename="Switch (Node Input)" systemname="Switch (Node Input)">
-   <BOUNDS height="270" left="2580" top="2565" type="Node" width="2325">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Input Count" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Input 3" visible="1">
-   </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    <PIN pinname="Switch" visible="1">
-   </PIN>
-   <PIN pinname="Input 4" slicecount="1" visible="1" values="||">
-   </PIN>
-   <PIN pinname="Input 5" slicecount="1" visible="1" values="||">
-   </PIN>
-   <PIN pinname="Input 6" slicecount="1" visible="1" values="||">
-   </PIN>
-   <PIN pinname="Input 7" slicecount="1" visible="1" values="||">
-   </PIN>
-   <PIN pinname="Input 8" slicecount="1" visible="1" values="||">
-   </PIN>
-   <PIN pinname="Input 9" slicecount="1" visible="1" values="||">
-   </PIN>
-   <PIN pinname="Input 10" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Input 11" slicecount="1" visible="1" values="||">
    </PIN>
@@ -39,35 +15,59 @@
    </PIN>
    <PIN pinname="Input 14" slicecount="1" visible="1" values="||">
    </PIN>
+   <PIN pinname="Input 3" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="270" left="2580" top="2565" type="Node" width="7665">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Input 4" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Input 5" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Input 6" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Input 7" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Input 8" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input 9" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Input 10" visible="1" slicecount="1" values="||">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="705" top="2055" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="555" left="705" top="2055" type="Box" width="540">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="2">
-   </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="18" dstpinname="Switch" srcnodeid="19" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InAWindow" id="23" nodename="Renderer (TTY)" systemname="Renderer (TTY)">
-   <BOUNDS height="100" left="10050" top="3990" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="1800" left="10050" top="3990" type="Box" width="2400">
-   </BOUNDS>
    <BOUNDS height="3105" left="10005" top="12300" type="Window" width="10335">
+   </BOUNDS>
+   <BOUNDS height="100" left="11655" top="4440" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1800" left="11655" top="4440" type="Box" width="2400">
    </BOUNDS>
    </NODE>
    <NODE componentmode="InAWindow" id="27" nodename="Inspektor (VVVV)" systemname="Inspektor (VVVV)">
-   <BOUNDS height="100" left="10065" top="3540" type="Node" width="100">
+   <BOUNDS height="6795" left="8640" top="285" type="Window" width="5100">
    </BOUNDS>
-   <BOUNDS height="3195" left="10065" top="3540" type="Box" width="2595">
+   <BOUNDS height="100" left="11670" top="3990" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="6840" left="8670" top="210" type="Window" width="5100">
+   <BOUNDS height="3195" left="11670" top="3990" type="Box" width="2595">
    </BOUNDS>
    </NODE>
    <NODE componentmode="InABox" id="47" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -135,99 +135,37 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="-7" nodename="MainLoop (VVVV)" systemname="MainLoop (VVVV)">
-   <BOUNDS height="100" left="10065" top="3075" type="Node" width="100">
-   </BOUNDS>
    <PIN pinname="Maximum forground fps" slicecount="1" values="99999">
    </PIN>
+   <BOUNDS height="100" left="11670" top="3525" type="Node" width="100">
+   </BOUNDS>
    </NODE>
-   <NODE componentmode="InABox" id="57" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="100" left="1770" top="330" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="480" left="1770" top="330" type="Box" width="795">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="2" values="-1,0">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="58" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="100" left="2655" top="345" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="480" left="2655" top="345" type="Box" width="795">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="2" values="1,0">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Source\Gradient\Gradient (EX9.Texture Source).v4p" id="52" nodename="Gradient (EX9.Texture Source)" systemname="Gradient (EX9.Texture Source)">
-   <BOUNDS height="100" left="2250" top="1230" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <BOUNDS left="2250" top="1230" type="Box">
-   </BOUNDS>
-   <PIN pinname="Mode" slicecount="1" values="| Linear|">
-   </PIN>
-   <PIN pinname="DirectionXY" visible="1">
-   </PIN>
-   <PIN pinname="Color B" slicecount="1" values="|1.00000,1.00000,1.00000,0.99666|">
-   </PIN>
-   <PIN pinname="Color A" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
-   </PIN>
-   <BOUNDS height="9750" left="7515" top="7305" type="Window" width="12150">
-   </BOUNDS>
-   <PIN pinname="From XY" visible="1">
-   </PIN>
-   <PIN pinname="To XY" visible="1">
-   </PIN>
-   <PIN pinname="Extrapolate" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="52" dstpinname="From XY" srcnodeid="57" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="52" dstpinname="To XY" srcnodeid="58" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Source\Mandelbrot\Mandelbrot (EX9.Texture Source).v4p" id="56" nodename="Mandelbrot (EX9.Texture Source)" systemname="Mandelbrot (EX9.Texture Source)">
-   <BOUNDS height="100" left="3960" top="1230" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS left="3960" top="1230" type="Box">
-   </BOUNDS>
    <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="3960" top="960" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="3960" top="960" type="Box">
+   </BOUNDS>
+   <PIN pinname="Mandelbrot/Julia" slicecount="1" values="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Source\Perlin\Perlin (EX9.Texture Source).v4p" id="41" nodename="Perlin (EX9.Texture Source)" systemname="Perlin (EX9.Texture Source)">
-   <BOUNDS height="100" left="5925" top="1215" type="Node" width="100">
-   </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
    <PIN pinname="Enabled" slicecount="1" values="1">
    </PIN>
-   <BOUNDS left="5925" top="1215" type="Box">
-   </BOUNDS>
    <PIN pinname="Seed" slicecount="1" values="0.8695">
    </PIN>
    <PIN pinname="Octaves" slicecount="1" values="4">
    </PIN>
+   <BOUNDS height="100" left="6165" top="1455" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="6165" top="1455" type="Box">
+   </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="52" srcpinname="Output" dstnodeid="18" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="56" srcpinname="Output" dstnodeid="18" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="41" srcpinname="Output" dstnodeid="18" dstpinname="Input 3">
-   </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\misc\Preview (EX9.Texture).v4p" id="46" nodename="Preview (EX9.Texture)" systemname="Preview (EX9.Texture)">
    <BOUNDS height="270" left="2580" top="3915" type="Node" width="1125">
    </BOUNDS>
@@ -248,6 +186,98 @@
    </LINK>
    <LINK dstnodeid="46" dstpinname="Show PerfMeter" srcnodeid="48" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="18" srcpinname="Output" dstnodeid="46" dstpinname="Input">
+   <LINK dstnodeid="46" dstpinname="Input" srcnodeid="18" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\Source\Text\Text (EX9.Texture Source).v4p" id="59" nodename="Text (EX9.Texture Source)" systemname="Text (EX9.Texture Source)">
+   <BOUNDS height="100" left="8670" top="1455" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="8670" top="1455" type="Box">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\Source\Noise\Noise (EX9.Texture Source).v4p" id="60" nodename="Noise (EX9.Texture Source)" systemname="Noise (EX9.Texture Source)">
+   <BOUNDS height="100" left="6165" top="960" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="6165" top="960" type="Box">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\Source\Assets\Assets (EX9.Texture Source).v4p" id="61" nodename="Assets (EX9.Texture Source)" systemname="Assets (EX9.Texture Source)">
+   <PIN pinname="Include Win7 Wallpapers" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Include Desktop" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Index" slicecount="1" values="0">
+   </PIN>
+   <BOUNDS height="100" left="8295" top="960" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="8295" top="960" type="Box">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\Source\Voronoi\Voronoi (EX9.Texture Source).v4p" id="63" nodename="Voronoi (EX9.Texture Source)" systemname="Voronoi (EX9.Texture Source)">
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="3990" top="1455" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="3990" top="1455" type="Box">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\Source\MediaPlayer\MediaPlayer (EX9.Texture Source).v4p" id="65" nodename="MediaPlayer (EX9.Texture Source)" systemname="MediaPlayer (EX9.Texture Source)">
+   <BOUNDS height="100" left="9435" top="1905" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\Source\DisplacementMap\DisplacementMap (EX9.Texture Source).v4p" id="66" nodename="DisplacementMap (EX9.Texture Source)" systemname="DisplacementMap (EX9.Texture Source)">
+   <BOUNDS height="100" left="13620" top="795" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Input 3" srcnodeid="56" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\Source\Pillow\Pillow (EX9.Texture Source).v4p" id="67" nodename="Pillow (EX9.Texture Source)" systemname="Pillow (EX9.Texture Source)">
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="1995" top="1455" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="1995" top="1455" type="Box">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Input 2" srcnodeid="67" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Source\Gradient\Gradient (EX9.Texture Source).v4p" id="68" nodename="Gradient (EX9.Texture Source)" systemname="Gradient (EX9.Texture Source)">
+   <BOUNDS height="9750" left="7515" top="7305" type="Window" width="12150">
+   </BOUNDS>
+   <PIN pinname="From XY" slicecount="2" values="-1,0">
+   </PIN>
+   <BOUNDS height="100" left="2010" top="960" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="2010" top="960" type="Box">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Input 1" srcnodeid="68" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 4" srcnodeid="63" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 6" srcnodeid="41" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\Source\DisplacementMap\DisplacementMap (EX9.Texture Source).v4p" id="69" nodename="DisplacementMap (EX9.Texture Source)" systemname="DisplacementMap (EX9.Texture Source)">
+   <BOUNDS height="100" left="6225" top="1905" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Input 5" srcnodeid="60" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 7" srcnodeid="69" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 8" srcnodeid="61" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 9" srcnodeid="59" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Input 10" srcnodeid="65" srcpinname="Output">
    </LINK>
    </PATCH>
