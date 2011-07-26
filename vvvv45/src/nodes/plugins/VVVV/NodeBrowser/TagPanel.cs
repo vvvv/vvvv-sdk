@@ -24,7 +24,7 @@ namespace VVVV.Nodes.NodeBrowser
         public event CreateNodeHandler OnShowHelpPatch;
         public event CreateNodeFromStringHandler OnCreateNodeFromString;
         
-        private int FVisibleLines = 16;
+        private int FVisibleLines = 20;
         private Color CLabelColor = Color.FromArgb(255, 154, 154, 154);
         private Color CHoverColor = Color.FromArgb(255, 216, 216, 216);
         private const string CRTFHeader = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fnil\fcharset0 Verdana;}}\viewkind4\uc1\pard\f0\fs17 ";
@@ -714,8 +714,6 @@ namespace VVVV.Nodes.NodeBrowser
 
         public void Redraw()
         {
-            FVisibleLines = FRichTextBox.Height / CLineHeight;
-            
             string query = FTagsTextBox.Text.ToLower();
             query += (char) 160;
             FTags = query.Split(new char[1]{' '}).ToList();
@@ -882,6 +880,7 @@ namespace VVVV.Nodes.NodeBrowser
 
         void HandleRichTextBoxResize(object sender, EventArgs e)
         {
+        	FVisibleLines = FRichTextBox.Height / CLineHeight;
             Redraw();
         }
         #endregion RichTextBox
