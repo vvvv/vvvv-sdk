@@ -57,6 +57,7 @@ namespace VVVV.Nodes
 		// INPUT PINS
 		///////////////////////
 		private IValueIn FPlayInput;
+		private IValueIn FSpeedInput;
 		private IValueIn FSetTime;
 		private IValueFastIn FTimeInput;
 		
@@ -522,33 +523,37 @@ namespace VVVV.Nodes
 			FPlayInput.SetSubType(0, 1, 1, 0, false, true, true);
 			FPlayInput.Order = -99999;
 			
+			FHost.CreateValueInput("Speed", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FSpeedInput);
+			FSpeedInput.SetSubType(Double.MinValue, Double.MaxValue, 0.01D, 1, false, false, false);
+			FSpeedInput.Order = -99998;
+			
 			FHost.CreateValueFastInput("Time In", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FTimeInput);
 			FTimeInput.SetSubType(Double.MinValue, Double.MaxValue, 0.01D, 0, false, false, false);
-			FTimeInput.Order = -99998;
+			FTimeInput.Order = -99997;
 			
 			FHost.CreateValueInput("Set Time", 1, null, TSliceMode.Single, TPinVisibility.True, out FSetTime);
-			FSetTime.SetSubType(0, 1, 1, 0, false, false, true);
-			FSetTime.Order = -99997;
+			FSetTime.SetSubType(0, 1, 1, 0, false, true, true);
+			FSetTime.Order = -99996;
 			
 			FHost.CreateValueConfig("Translate", 1, null, TSliceMode.Single, TPinVisibility.True, out FTranslateInput);
 			FTranslateInput.SetSubType(Double.MinValue, Double.MaxValue, 0.1, 0, false, false, false);
-			FTranslateInput.Order = -99996;
+			FTranslateInput.Order = -99995;
 			
 			FHost.CreateValueConfig("Scale", 1, null, TSliceMode.Single, TPinVisibility.True, out FScaleInput);
 			FScaleInput.SetSubType(0.1, 1000, 0.1, 50, false, false, false);
-			FScaleInput.Order = -99995;
+			FScaleInput.Order = -99994;
 			
 			
 			// ONLY VISIBLE IN INSPECTOR
 			FHost.CreateStringConfig("GUI Settings", TSliceMode.Dynamic, TPinVisibility.Hidden, out FGUISettings);
 			//FGUISettings.SliceCount = 0;
 			FGUISettings.SetSubType("", false);
-			FGUISettings.Order = -99994;
+			FGUISettings.Order = -99993;
 			
 			FHost.CreateStringConfig("Pin Settings", TSliceMode.Dynamic, TPinVisibility.Hidden, out FPinSettings);
 			FPinSettings.SliceCount = 0;
 			FPinSettings.SetSubType("", false);
-			FPinSettings.Order = -99993;
+			FPinSettings.Order = -99992;
 		}
 
 		private void createOutputPins()
@@ -698,6 +703,9 @@ namespace VVVV.Nodes
 				FTimer.TimeCount = 1;
 				FHost.GetCurrentTime(out hosttime);
 				FTimer.HostTime = hosttime;
+				double speed;
+				FSpeedInput.GetValue(0, out speed);
+				FTimer.Speed = speed;
 			}
 			
 			//update time

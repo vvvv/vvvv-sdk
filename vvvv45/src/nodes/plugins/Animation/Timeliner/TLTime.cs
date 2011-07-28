@@ -11,7 +11,8 @@ namespace VVVV.Nodes.Timeliner
 		private bool[] FTimeChanged = new bool[0];
 		private double FStartTime;
 		private double FHostTime;
-		private double FOffset;
+		private double FSpeed;
+		private double FOldTime;
 		
 		private bool FIsRunning;
 		private bool FForceCurrentTime = false;
@@ -78,6 +79,12 @@ namespace VVVV.Nodes.Timeliner
 			set { FHostTime = value;}
 		}
 		
+		public double Speed
+		{
+			get { return FSpeed;}
+			set { FSpeed = value;}
+		}
+		
 		public bool IsRunning
 		{
 			get { return FIsRunning;}
@@ -97,14 +104,16 @@ namespace VVVV.Nodes.Timeliner
 		{
 			//execute user/gui-forced time
 			if (FForceCurrentTime)
-			{
-				FOffset = FCurrentTimes[0];
 				FStartTime = FHostTime;
-			}
 			
 			if (FIsRunning)
-				FCurrentTimes[0] = FHostTime - FStartTime + FOffset;
+			{
+				double deltaTime = (FHostTime - FOldTime) * FSpeed;
+				FCurrentTimes[0] += deltaTime;
+			}
 			
+			FOldTime = FHostTime;
+
 			if (Automata != null)
 			{
 				if (FForceCurrentTime)
@@ -129,10 +138,7 @@ namespace VVVV.Nodes.Timeliner
 					{
 						//nothing to do
 						if (!FIsRunning)
-						{
-							FOffset = FCurrentTimes[0];
 							FStartTime = FHostTime;
-						}
 						break;
 					}
 				case TLAutomataCommand.Play:
@@ -158,7 +164,6 @@ namespace VVVV.Nodes.Timeliner
 			//execute automata-forced time
 			if (FForceCurrentTime)
 			{
-				FOffset = FCurrentTimes[0];
 				FStartTime = FHostTime;
 				FForceCurrentTime = false;
 			}
