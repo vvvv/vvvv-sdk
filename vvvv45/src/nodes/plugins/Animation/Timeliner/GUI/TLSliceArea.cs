@@ -314,7 +314,7 @@ namespace VVVV.Nodes.Timeliner
 					first = false;
 					newtime = k.Time;
 					
-					//when aligning other keys to a state make, we want to align them to the start of the next state
+					//when aligning other keys to a state, we want to align them to the start of the next state
 					if (k is TLStateKeyFrame)
 						newtime += TLTime.MinTimeStep;
 				}
@@ -694,7 +694,7 @@ namespace VVVV.Nodes.Timeliner
 							Cursor.Hide();
 							
 							if (e.Button == MouseButtons.Left)	//mouse is hovering a keyframe -> go drag
-								FMouseState = TLMouseState.msDragging;
+								FMouseState = TLMouseState.msDraggingXOnly;
 							else if (e.Button == MouseButtons.Right)	//mouse is hovering a keyframe -> go drag Y only
 							{
 								//if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
@@ -705,7 +705,7 @@ namespace VVVV.Nodes.Timeliner
 							{
 								//if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
 								//	FExpandToRight = CheckExpansionToRight(e.Location);
-								FMouseState = TLMouseState.msDraggingXOnly;
+								FMouseState = TLMouseState.msDragging;
 							}
 							
 							//if ctrl is pressed toggle selection of only this keyframe
@@ -1183,7 +1183,8 @@ namespace VVVV.Nodes.Timeliner
 					if (nextState == null)
 						return result;
 					
-					snapTime = nextState.Time; // + TLTime.MinTimeStep; //not sure what this was for..
+					//when snapping keys to a state, we want to align them to the start of the next state
+					snapTime = nextState.Time + TLTime.MinTimeStep; 
 				}
 				
 				var slice = PosPinToSlice(pt, PosToPin(pt));
