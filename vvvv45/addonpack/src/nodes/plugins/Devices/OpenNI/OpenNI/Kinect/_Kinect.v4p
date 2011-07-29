@@ -1,0 +1,483 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
+   <PATCH nodename="d:\BMW TP\Kinect\OpenNI\Kinect\_Kinect.v4p" filename="D:\BMW TP\Kinect\OpenNI\HelpPatches\Gesture (Kinect).v4p" systemname="Gesture (Kinect)">
+   <BOUNDS height="15870" left="0" top="0" type="Window" width="19725">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="5055" top="2775" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="300" left="5055" top="2775" type="Box" width="1305">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Status">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="8" nodename="SystemFolder (File)" systemname="SystemFolder (File)">
+   <BOUNDS height="270" left="690" top="825" type="Node" width="1080">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Folder" slicecount="1" values="CurrentPatch">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="9" nodename="Add (String)" systemname="Add (String)">
+   <BOUNDS height="270" left="690" top="1590" type="Node" width="600">
+   </BOUNDS>
+   <PIN pinname="Input 1" slicecount="1" visible="1" values="text">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="Data\SamplesConfig.xml">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input 1" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="50" nodename="Timing (Debug)" systemname="Timing (Debug)">
+   <BOUNDS height="100" left="10800" top="930" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="frames per second" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="51" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="10065" top="2040" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="10065" top="2040" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="52" nodename="Damper (Animation)" systemname="Damper (Animation)">
+   <BOUNDS height="100" left="10785" top="1455" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Go To Position" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="FilterTime" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="52" dstpinname="Go To Position" srcnodeid="50" srcpinname="frames per second">
+   </LINK>
+   <LINK dstnodeid="51" dstpinname="Y Input Value" srcnodeid="52" srcpinname="Position Out">
+   </LINK>
+   <NODE componentmode="InAWindow" filename="Helppatches\Gesture (Kinect OpenNI) help.v4p" id="99" nodename="Helppatches\Gesture (Kinect OpenNI) help.v4p" systemname="Gesture (Kinect OpenNI) help" path="d:\BMW TP\Kinect\OpenNI\Kinect\Helppatches\">
+   <BOUNDS height="270" left="3735" top="4665" type="Node" width="3810">
+   </BOUNDS>
+   <PIN pinname="Context" visible="1">
+   </PIN>
+   <PIN pinname="EndPositionXYZ" visible="1">
+   </PIN>
+   <BOUNDS left="3735" top="4665" type="Box">
+   </BOUNDS>
+   <PIN pinname="Output" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="10740" left="0" top="0" type="Window" width="14895">
+   </BOUNDS>
+   <PIN pinname="PositionXYZ" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="UserId" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Count" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Smoothing" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Mapped PositionXYZ" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Position (m) XYZ" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Enable" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Recognized Gestures" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="Helppatches\Depth (EX9.Texture Kinect) help.v4p" id="102" nodename="Helppatches\Depth (EX9.Texture Kinect) help.v4p" systemname="Depth (EX9.Texture Kinect) help" path="d:\BMW TP\Kinect\OpenNI\Kinect\Helppatches\">
+   <BOUNDS height="100" left="705" top="4725" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Context" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <BOUNDS left="705" top="4725" type="Box">
+   </BOUNDS>
+   <BOUNDS height="10740" left="0" top="0" type="Window" width="14850">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="103" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="2205" top="4905" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3165" left="2205" top="4905" type="Box" width="1245">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="109" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="5310" top="5250" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1740" left="5310" top="5250" type="Box" width="720">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="UserId">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" filename="Helppatches\Users (Kinect OpenNI) help.v4p" id="112" nodename="Helppatches\Users (Kinect OpenNI) help.v4p" systemname="Users (Kinect OpenNI) help" path="d:\BMW TP\Kinect\OpenNI\Kinect\Helppatches\">
+   <BOUNDS height="270" left="9255" top="4665" type="Node" width="3300">
+   </BOUNDS>
+   <BOUNDS height="3600" left="9255" top="4665" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="10740" left="4215" top="435" type="Window" width="14850">
+   </BOUNDS>
+   <PIN pinname="Context" visible="1">
+   </PIN>
+   <PIN pinname="PositionXYZ" visible="1">
+   </PIN>
+   <PIN pinname="UserId" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Texture Out" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Users" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="113" nodename="Count (Value)" systemname="Count (Value)">
+   <BOUNDS height="100" left="6750" top="5175" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="113" dstpinname="Input" srcnodeid="99" srcpinname="UserId">
+   </LINK>
+   <NODE componentmode="Hidden" id="114" nodename="GT (Value)" systemname="GT (Value)">
+   <BOUNDS height="100" left="6765" top="5505" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="114" dstpinname="Input 1" srcnodeid="113" srcpinname="Count">
+   </LINK>
+   <NODE componentmode="InABox" id="125" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="3075" top="1290" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="3075" top="1290" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Reload">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="126" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="5895" top="1215" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="5895" top="1215" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Update">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Update" srcnodeid="126" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InAWindow" id="131" nodename="Renderer (TTY)" systemname="Renderer (TTY)">
+   <BOUNDS height="100" left="13335" top="930" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1800" left="13335" top="930" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="2235" left="0" top="15840" type="Window" width="14925">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\plugins\Kinect\Kinect.dll" id="12" nodename="Configuration (Kinect)" systemname="Configuration (Kinect)">
+   <BOUNDS height="270" left="690" top="2325" type="Node" width="5685">
+   </BOUNDS>
+   <PIN pinname="Config File" visible="1">
+   </PIN>
+   <PIN pinname="Context" visible="1">
+   </PIN>
+   <PIN pinname="GlobalErrorState" visible="1">
+   </PIN>
+   <PIN pinname="NodeList" visible="1">
+   </PIN>
+   <PIN pinname="Error" visible="1">
+   </PIN>
+   <PIN pinname="Upload" visible="1">
+   </PIN>
+   <PIN pinname="Reload" visible="1">
+   </PIN>
+   <PIN pinname="Update" visible="1">
+   </PIN>
+   <PIN pinname="n Frames" visible="1">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   <PIN pinname="Node List" visible="1">
+   </PIN>
+   <PIN pinname="Default Values" visible="1">
+   </PIN>
+   <PIN pinname="Configuration File" visible="1">
+   </PIN>
+   <PIN pinname="Reload Configuration" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input String" srcnodeid="12" srcpinname="Status">
+   </LINK>
+   <NODE componentmode="InABox" id="133" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="3720" top="2850" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="3720" top="2850" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="133" dstpinname="Input String" srcnodeid="12" srcpinname="Node List">
+   </LINK>
+   <NODE componentmode="InABox" id="134" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="2145" top="2715" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="2145" top="2715" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Default Values|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="134" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Default Values">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Reload Configuration" srcnodeid="125" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Configuration File" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="109" dstpinname="Y Input Value" srcnodeid="99" srcpinname="Position (m) XYZ">
+   </LINK>
+   <LINK dstnodeid="103" dstpinname="Input String" srcnodeid="99" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="102" dstpinname="Context" srcnodeid="12" srcpinname="Context">
+   </LINK>
+   <LINK dstnodeid="99" dstpinname="Context" srcnodeid="12" srcpinname="Context">
+   </LINK>
+   <NODE componentmode="InABox" id="152" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="3735" top="5325" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="3735" top="5325" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Recognized Gestures|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="152" dstpinname="Input String" srcnodeid="99" srcpinname="Recognized Gestures">
+   </LINK>
+   <LINK dstnodeid="112" dstpinname="Context" srcnodeid="12" srcpinname="Context">
+   </LINK>
+   <NODE componentmode="InAWindow" filename="Helppatches\Skeleton (Kinect OpenNI) help.v4p" id="153" nodename="Helppatches\Skeleton (Kinect OpenNI) help.v4p" systemname="Skeleton (Kinect OpenNI) help" path="d:\BMW TP\Kinect\OpenNI\Kinect\Helppatches\">
+   <BOUNDS height="270" left="14355" top="4665" type="Node" width="3150">
+   </BOUNDS>
+   <PIN pinname="Users" visible="1">
+   </PIN>
+   <BOUNDS height="15870" left="0" top="0" type="Window" width="19725">
+   </BOUNDS>
+   <PIN pinname="Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Orientation X XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Orientation Y XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Orientation Z XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Position (m) XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   <PIN pinname="Load" slicecount="1" visible="1" values="1">
+   </PIN>
+   <BOUNDS left="14355" top="4665" type="Box">
+   </BOUNDS>
+   <PIN pinname="File Path" slicecount="1" values="Helppatches\Skeleton\test">
+   </PIN>
+   <PIN pinname="Reset" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="153" dstpinname="Users" srcnodeid="112" srcpinname="Users">
+   <LINKPOINT x="13065" y="5850">
+   </LINKPOINT>
+   <LINKPOINT x="14070" y="4320">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" filename="Helppatches\Map (Vector3D Kinect).v4p" id="154" nodename="Helppatches\Map (Vector3D Kinect).v4p" systemname="Map (Vector3D Kinect)">
+   <BOUNDS height="100" left="1350" top="10725" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1350" top="10725" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="6000" left="8205" top="6030" type="Window" width="9000">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Mapped PositionXYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="154" dstpinname="XYZ" srcnodeid="99" srcpinname="PositionXYZ">
+   </LINK>
+   <NODE componentmode="Hidden" filename="Helppatches\Map (Vector3D Kinect).v4p" id="157" nodename="Helppatches\Map (Vector3D Kinect).v4p" systemname="Map (Vector3D Kinect)">
+   <BOUNDS height="270" left="10215" top="5670" type="Node" width="705">
+   </BOUNDS>
+   <BOUNDS height="3600" left="10215" top="5670" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="6000" left="8205" top="6030" type="Window" width="9000">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Mapped PositionXYZ" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="Helppatches\2D Preview.v4p" id="158" nodename="Helppatches\2D Preview.v4p" systemname="2D Preview" path="d:\BMW TP\Kinect\OpenNI\Kinect\Helppatches\">
+   <BOUNDS height="270" left="675" top="11415" type="Node" width="2835">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="UserId" visible="1">
+   </PIN>
+   <PIN pinname="PositionXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Position Skelet XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="158" dstpinname="Texture" srcnodeid="102" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="157" dstpinname="XYZ" srcnodeid="112" srcpinname="PositionXYZ">
+   </LINK>
+   <LINK dstnodeid="158" dstpinname="UserId" srcnodeid="112" srcpinname="UserId">
+   </LINK>
+   <LINK dstnodeid="158" dstpinname="PositionXYZ" srcnodeid="157" srcpinname="Mapped PositionXYZ">
+   </LINK>
+   <LINK dstnodeid="158" dstpinname="Position Skelet XYZ" srcnodeid="153" srcpinname="Position XYZ">
+   </LINK>
+   <NODE componentmode="Hidden" filename="Helppatches\3D Preview.v4p" id="159" nodename="Helppatches\3D Preview.v4p" systemname="3D Preview" path="d:\BMW TP\Kinect\OpenNI\Kinect\Helppatches\">
+   <BOUNDS height="270" left="9795" top="11160" type="Node" width="6285">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="PositionXYZ" visible="1">
+   </PIN>
+   <PIN pinname="UserId" visible="1">
+   </PIN>
+   <PIN pinname="Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Position (m) XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Orientation X XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Orientation Y XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Orientation Z XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   <BOUNDS height="9645" left="4440" top="5640" type="Window" width="13545">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="159" dstpinname="Texture" srcnodeid="102" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="158" dstpinname="Input" srcnodeid="154" srcpinname="Mapped PositionXYZ">
+   </LINK>
+   <LINK dstnodeid="159" dstpinname="UserId" srcnodeid="112" srcpinname="UserId">
+   </LINK>
+   <LINK dstnodeid="159" dstpinname="Position XYZ" srcnodeid="153" srcpinname="Position XYZ">
+   </LINK>
+   <LINK dstnodeid="159" dstpinname="Position (m) XYZ" srcnodeid="153" srcpinname="Position (m) XYZ">
+   </LINK>
+   <LINK dstnodeid="159" dstpinname="Orientation X XYZ" srcnodeid="153" srcpinname="Orientation X XYZ">
+   </LINK>
+   <LINK dstnodeid="159" dstpinname="Orientation Y XYZ" srcnodeid="153" srcpinname="Orientation Y XYZ">
+   </LINK>
+   <LINK dstnodeid="159" dstpinname="Orientation Z XYZ" srcnodeid="153" srcpinname="Orientation Z XYZ">
+   </LINK>
+   <LINK dstnodeid="159" dstpinname="PositionXYZ" srcnodeid="157" srcpinname="Mapped PositionXYZ">
+   </LINK>
+   <LINK dstnodeid="159" dstpinname="Status" srcnodeid="153" srcpinname="Status">
+   </LINK>
+   <LINK dstnodeid="158" dstpinname="Status" srcnodeid="153" srcpinname="Status">
+   </LINK>
+   <NODE componentmode="Hidden" id="-7" nodename="MainLoop (VVVV)" systemname="MainLoop (VVVV)">
+   <BOUNDS height="100" left="13095" top="1710" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Time Mode" slicecount="1" values="Filtered">
+   </PIN>
+   <PIN pinname="Maximum background fpsS" slicecount="1" values="120">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="160">
+   <BOUNDS type="Node" left="4590" top="10995" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4590" top="10995" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="160" srcpinname="Y Output Value" dstnodeid="158" dstpinname="Enabled">
+   </LINK>
+   </PATCH>
