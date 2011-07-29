@@ -220,7 +220,7 @@ namespace CoreTests
 					// Test if same content.
 					var expectedDir = new DirectoryInfo(SourceTemplateProject.Location.GetLocalDir());
 					var actualDir = new DirectoryInfo(project.Location.GetLocalDir());
-					DirectoriesContainSameFiles(expectedDir, actualDir);
+					DirectoriesContainSameFiles(expectedDir, actualDir, false);
 				}
 			}
 			finally
@@ -380,7 +380,7 @@ namespace CoreTests
 			}
 		}
 		
-		private void DirectoriesContainSameFiles(DirectoryInfo expected, DirectoryInfo actual)
+		private void DirectoriesContainSameFiles(DirectoryInfo expected, DirectoryInfo actual, bool checkFileContent)
 		{
 			var expectedDirs = expected.GetDirectories();
 			var actualDirs = actual.GetDirectories();
@@ -390,7 +390,7 @@ namespace CoreTests
 			for (int i = 0; i < expectedDirs.Length; i++)
 			{
 				Assert.AreEqual(expectedDirs[i].Name, actualDirs[i].Name, "{0} doesn't contain same subdirectories as {1}.", actual, expected);
-				DirectoriesContainSameFiles(expectedDirs[i], actualDirs[i]);
+				DirectoriesContainSameFiles(expectedDirs[i], actualDirs[i], checkFileContent);
 			}
 			
 			var expectedFiles = expected.GetFiles();
@@ -402,7 +402,8 @@ namespace CoreTests
 			{
 				Assert.AreEqual(expectedFiles[i].Name, actualFiles[i].Name);
 				Assert.IsFalse(actualFiles[i].IsReadOnly, "Copied files should not be read-only.");
-				FileAssert.AreEqual(expectedFiles[i], actualFiles[i], "File content of {0} differs from {1}.", actualFiles[i], expectedFiles[i]);
+				if (checkFileContent)
+				    FileAssert.AreEqual(expectedFiles[i], actualFiles[i], "File content of {0} differs from {1}.", actualFiles[i], expectedFiles[i]);
 			}
 		}
 	}

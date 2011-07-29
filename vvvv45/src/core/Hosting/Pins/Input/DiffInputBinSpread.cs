@@ -75,9 +75,9 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 
-		protected override void CreateDataPin(IPluginHost host, InputAttribute attribute)
+		protected override Pin<T> CreateDataPin(IPluginHost host, InputAttribute attribute)
 		{
-			FSpreadPin = PinFactory.CreateDiffPin<T>(host, attribute);
+			return PinFactory.CreateDiffPin<T>(host, attribute);
 		}
 		
 		protected override bool NeedToBuildSpread()

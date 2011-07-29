@@ -37,12 +37,6 @@ namespace VVVV.Hosting.Pins.Output
 		    FBinSize.Dispose();
 		}
 
-        public virtual void Delete()
-        {
-            FSpreadPin.Delete();
-            FBinSize.Delete();
-        }
-		
 		void AnyUpdated(object sender, EventArgs args)
 		{
 			if (FUpdateCount == 0)

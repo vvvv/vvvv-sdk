@@ -29,7 +29,7 @@ namespace VVVV.Hosting.Pins.Input
 			FBinSize = attribute.BinSize;
 			
 			//data pin
-			CreateDataPin(host, attribute);
+			FSpreadPin = CreateDataPin(host, attribute);
 			FSpreadPin.Updated += AnyPin_Updated;
 			
 			//bin size pin
@@ -51,22 +51,18 @@ namespace VVVV.Hosting.Pins.Input
 		{
 		    FSpreadPin.Updated -= AnyPin_Updated;
 		    FBinSizePin.Updated -= AnyPin_Updated;
+		    FSpreadPin.Dispose();
+            FBinSizePin.Dispose();
 		}
 
-        public virtual void Delete()
-        {
-            FSpreadPin.Delete();
-            FBinSizePin.Delete();
-        }
-		
 		protected virtual bool NeedToBuildSpread()
 		{
 			return true;
 		}
 		
-		protected virtual void CreateDataPin(IPluginHost host, InputAttribute attribute)
+		protected virtual Pin<T> CreateDataPin(IPluginHost host, InputAttribute attribute)
 		{
-			FSpreadPin = PinFactory.CreatePin<T>(host, attribute);
+			return PinFactory.CreatePin<T>(host, attribute);
 		}
 		
 		void AnyPin_Updated(object sender, EventArgs args)

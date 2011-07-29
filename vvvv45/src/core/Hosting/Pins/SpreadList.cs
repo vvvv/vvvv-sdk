@@ -51,14 +51,11 @@ namespace VVVV.Hosting.Pins
 		public virtual void Dispose()
 		{
 		    FConfigPin.Updated -= UpdatePins;
+		    FConfigPin.Dispose();
+		    foreach (var p in FPins)
+		        p.Dispose();
 		}
 
-        public virtual void Delete()
-        {
-            foreach (var p in FPins)
-                p.Delete();
-        }
-		
 		//pin management
 		protected void UpdatePins(object sender, EventArgs args)
 		{
@@ -97,19 +94,13 @@ namespace VVVV.Hosting.Pins
 					if (i < FPins.Length)
 						FPins[i] = oldPins[i];
 					else	
-						DeletePin(oldPins[i].PluginIO);
+					    oldPins[i].Dispose();
 				}
 			}
 		}
 		
 		//the actual pin creation
 		protected abstract Pin<T> CreatePin(int pos);
-		
-		//delete a specific pin
-		protected void DeletePin(IPluginIO pin)
-		{
-			FHost.DeletePin(pin);
-		}
 		
 		public ISpread<T> this[int index]
 		{

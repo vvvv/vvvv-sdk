@@ -363,12 +363,6 @@ namespace PinTests
 		}
 		
 		[Test]
-		public void TestConfigPinMatrix4x4()
-		{
-			TestConfigPin<Matrix4x4>(SampleDataMatrix4x4);
-		}
-		
-		[Test]
 		public void TestConfigPinVector2D()
 		{
 			TestConfigPin<Vector2D>(SampleDataVector2D);
@@ -384,12 +378,6 @@ namespace PinTests
 		public void TestConfigPinVector4D()
 		{
 			TestConfigPin<Vector4D>(SampleDataVector4D);
-		}
-		
-		[Test]
-		public void TestConfigPinMatrix()
-		{
-			TestConfigPin<Matrix>(SampleDataMatrix);
 		}
 		
 		[Test]

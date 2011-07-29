@@ -79,11 +79,6 @@ namespace VVVV.PluginInterfaces.V2
 			private set;
 		}
 
-        public virtual void Delete()
-        {
-            FHost.DeletePin(this.PluginIO);
-        }
-		
 		public override int SliceCount 
 		{
 			get 
@@ -211,6 +206,7 @@ namespace VVVV.PluginInterfaces.V2
 		protected virtual void DisposeManaged()
 		{
 			Updated = null;
+			FHost.DeletePin(this.PluginIO);
 		}
 		
 		protected virtual void DisposeUnmanaged()
