@@ -201,7 +201,7 @@ namespace VVVV.Nodes
 		private void RegisterIOBox(INode2 io)
 		{
 			//for now only accepts value-IOBoxes
-			if (!io.Name.Contains("Value Advanced"))
+			if (!io.Name.Contains("Value"))
 				return;
 			
 			//now see if this box already wants to be exposed
@@ -229,7 +229,7 @@ namespace VVVV.Nodes
 		private void UnRegisterIOBox(INode2 io)
 		{
 			//for now only accepts value-IOBoxes
-			if (!io.Name.Contains("Value Advanced"))
+			if (!io.Name.Contains("Value"))
 				return;
 			
 			UnExposeIOBox(io);
