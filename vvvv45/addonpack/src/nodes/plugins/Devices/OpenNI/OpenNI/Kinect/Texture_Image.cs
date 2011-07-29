@@ -36,7 +36,7 @@ namespace VVVV.Nodes
     #endregion PluginInfo
 
 
-    public class Texture_Image : DXTextureOutPluginBase, IPluginEvaluate
+    public class Texture_Image : DXTextureOutPluginBase, IPluginEvaluate, IDisposable
     {
         #region fields & pins
         [Input("Context", IsSingle = true)]
@@ -59,6 +59,8 @@ namespace VVVV.Nodes
         private IntPtr FDataRGB = new IntPtr();
 
         private Thread FReadThread;
+        private bool FActiveThread = false;
+        private bool disposed = false;
         private bool FInit = true;
 
 
@@ -66,10 +68,11 @@ namespace VVVV.Nodes
 
         // import host and hand it to base constructor
         [ImportingConstructor()]
-        public Texture_Image(IPluginHost host)
-            : base(host)
+        public Texture_Image(IPluginHost host): base(host)
         {
         }
+
+        #region Evaluate
 
         //called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
@@ -89,57 +92,94 @@ namespace VVVV.Nodes
                     this.FDataRGB = Marshal.AllocCoTaskMem(FTexWidth * FTexHeight * 4);
 
                     //Start the Thread for reading the Rgb Imag
+                    FActiveThread = true;
                     FReadThread = new Thread(ReadRGBImage);
                     FReadThread.Start();
-                }
-                else
-                {
-                    if (FEnableIn[0] == true)
-                        Update();
-                }
 
-                FInit = false;
+                    FInit = false;
+                }
+            }
+            else
+            {
+                FInit = true;
+                FActiveThread = false;
             }
 
-
-            Update();
+            if (FEnableIn[0] == true)
+                Update();
         }
 
+        #endregion
 
+
+        #region Dispose
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    // Free other state (managed objects).
+                }
+                // Free your own state (unmanaged objects).
+                // Set large fields to null.
+                
+                FActiveThread = false;
+                disposed = true;
+            }
+        }
+
+        ~Texture_Image()
+        {
+            Dispose(false);
+        }
+
+        #endregion 
+
+
+        #region ReadImage Thread
 
         private unsafe void ReadRGBImage()
         {
 
-            while (true)
+            while (FActiveThread)
             {
-                lock (this)
+                if (FInit == false && FImageGenerator.IsDataNew)
                 {
-                    if (FInit == false && FImageGenerator.IsDataNew)
+                    //create a pointer where the information for the vvvv texture lies
+                    byte* RGB32 = (byte*)FDataRGB.ToPointer();
+
+                    //get the pointer to the Rgb Image
+                    byte* RGB24 = (byte*)FImageGenerator.ImageMapPtr;
+
+                    try
                     {
-                        //create a pointer where the information for the vvvv texture lies
-                        byte* RGB32 = (byte*)FDataRGB.ToPointer();
-
-                        //get the pointer to the Rgb Image
-                        byte* RGB24 = (byte*)FImageGenerator.ImageMapPtr;
-
-                        try
+                        //write the pixels
+                        for (int i = 0; i < FTexWidth * FTexHeight; i++, RGB24 += 3, RGB32 += 4)
                         {
-                            //write the pixels
-                            for (int i = 0; i < FTexWidth * FTexHeight; i++, RGB24 += 3, RGB32 += 4)
-                            {
-                                RGB32[0] = RGB24[2];
-                                RGB32[1] = RGB24[1];
-                                RGB32[2] = RGB24[0];
-                            }
+                            RGB32[0] = RGB24[2];
+                            RGB32[1] = RGB24[1];
+                            RGB32[2] = RGB24[0];
                         }
-                        catch (AccessViolationException)
-                        { }
                     }
+                    catch (AccessViolationException)
+                    { }
+                }
+                else
+                {
+                    Thread.Sleep(3);
                 }
             }
         }
 
-      
+        #endregion
 
 
         #region IPluginDXTexture Members
@@ -165,7 +205,7 @@ namespace VVVV.Nodes
 
             if (FDataRGB != null)
             {
-                if (FDataRGB.ToInt32() != 0 && FInit == false)
+                if (FEnableIn[0] == true && FContextIn[0] != null && FInit == false)
                 {
                     //lock the vvv texture
                     var rect = texture.LockRectangle(0, LockFlags.Discard).Data;

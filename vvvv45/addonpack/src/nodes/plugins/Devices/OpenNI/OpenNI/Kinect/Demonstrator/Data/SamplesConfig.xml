@@ -4,33 +4,64 @@
 		<License vendor="vendor" key="key"/>
 		-->
 	</Licenses>
-	<Log writeToConsole="false" writeToFile="false">
+	<Log writeToConsole="false" writeToFile="true">
 		<!-- 0 - Verbose, 1 - Info, 2 - Warning, 3 - Error (default) -->
-		<LogLevel value="1"/>
+		<LogLevel value="3"/>
 		<Masks>
 			<Mask name="ALL" on="true"/>
 		</Masks>
 		<Dumps>
 		</Dumps>
 	</Log>
-	<ProductionNodes>
+	<ProductionNodes>	
+		<!-- Normal Depth -->	
+		<Node type="Depth" name="Depth1">
+			<Configuration>
+				<Mirror on="true"/>
+			</Configuration>
+		</Node>	
+	
+		<!-- Normal Image -->
+		<Node type="Image" name="Image1" stopOnError="false"> 
+			<Configuration>
+				<Mirror on="true"/>
+			</Configuration>
+		</Node>	
+	
     
-		<Node type="Image" name="Image1">
+        <Node type="Gesture" />
+         
+        <Node type="Hands" />
+		<!-- HighRes Image -->
+		<!--
+		<Node type="Image" name="Image1" stopOnError="false"> 
+			<Configuration>
+				<MapOutputMode xRes="1280" yRes="1024" FPS="15"/>
+				<Mirror on="true"/>
+			</Configuration>
+		</Node>
+		-->
+		
+		<!-- Normal IR -->
+		<!--
+		<Node type="IR" name="IR1">
 			<Configuration>
 				<MapOutputMode xRes="640" yRes="480" FPS="30"/>
 				<Mirror on="true"/>
 			</Configuration>
 		</Node>
-		<Node type="Depth">
+		-->
+		
+		<!-- HighRes IR -->
+		<!--
+		<Node type="IR" name="IR1">
 			<Configuration>
-				<MapOutputMode xRes="640" yRes="480" FPS="30"/>
+				<MapOutputMode xRes="1280" yRes="1024" FPS="15"/>
 				<Mirror on="true"/>
 			</Configuration>
-    </Node>
-        <Node type="Gesture" />
-		<Node type="Hands">
-          
-        </Node> 
+		</Node>		
+		-->	
+
 		<!--
 		<Node type="Audio" name="Audio1">
 		</Node>

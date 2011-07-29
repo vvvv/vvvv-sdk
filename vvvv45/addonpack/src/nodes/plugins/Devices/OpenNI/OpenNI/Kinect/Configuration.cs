@@ -61,10 +61,12 @@ namespace VVVV.Nodes
         private Thread Updater;
         private bool FInit = true;
         private Object FLockObject = new Object();
-
+        private bool FActiveThread = false;
+        private bool disposed = false;
         #endregion fields & pins
 
 
+        #region Evaluate
 
         //called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
@@ -78,13 +80,11 @@ namespace VVVV.Nodes
                 LoadContext(FConfigPinIn[0]);
                 
                 //Thread for updating the Generators
+                FActiveThread = true;
                 Updater = new Thread(Update);
                 Updater.Start();
-            }
-             
-
-            //check every frame if the Input Pins are changed
-            if(FContext != null && FInit == false)
+                
+            }else
             {
 
                 //check if Filepath or Relaod Pin is changed 
@@ -111,12 +111,14 @@ namespace VVVV.Nodes
                     {
                         if (Updater == null)
                         {
+                            FActiveThread = true;
                             Updater = new Thread(Update);
                             Updater.Start();
                         }
                     }
                     else
                     {
+                        FActiveThread = false;
                         Updater = null;
                     }
                 }
@@ -125,11 +127,13 @@ namespace VVVV.Nodes
                 //is required for other generators
                 FContextOut[0] = FContext;
             }
-
-            FInit = false;
         }
 
-       
+        #endregion
+
+
+        #region Open and close Context
+
         /// <summary>
         /// Aborts the Update Thread and disposes the Context Object
         /// </summary>
@@ -137,25 +141,14 @@ namespace VVVV.Nodes
         {
             if (Updater.IsAlive)
             {
-                try
-                {
-                    Updater.Abort();
-                }
-                catch (ThreadAbortException ex)
-                {
-                    FLogger.Log(ex);
-                }
-                finally
-                {
-                    Updater = null;
-                }
+               FActiveThread = false;
             }
 
             if (FContext != null)
             {
                 Thread.Sleep(100);
                 //FContext.StopGeneratingAll();
-                FContext.Shutdown();
+                FContext.Release();
                 FContext.Dispose();
                 FContext = null;
             }
@@ -171,7 +164,8 @@ namespace VVVV.Nodes
             //ty to open Kinect Context with given ConfigFilePath
             try
             {
-                FContext = new Context(FilePath);
+                ScriptNode Node;
+                FContext =new Context(FConfigPinIn[0]);
                 FDefaultValuesOut[0] = false;
             }
             catch (StatusException ex)
@@ -186,6 +180,7 @@ namespace VVVV.Nodes
             //try to OpenOpenNi Cofig File
             if (FContext == null)
             {
+                FStatus[0] = "Error loading SampleConfig.xml. Try to load Default Values.";
                 try
                 {
                     FContext = new Context();
@@ -202,12 +197,12 @@ namespace VVVV.Nodes
             }
 
             if (FContext == null)
-                FStatus[0] = "No Kinect Context found.";
+                FStatus[0] = "Could no create Context.";
             else
             {
                 FContext.ErrorStateChanged += new EventHandler<ErrorStateEventArgs>(FContext_ErrorStateChanged);
 
-                FStatus[0] = "Kinect found.";
+                FStatus[0] = "Created Context.";
 
                 //write all found Nodes in the config xml to the Output Pin
                 List<string> NodeNames = ReadNodeList();
@@ -216,8 +211,15 @@ namespace VVVV.Nodes
                 {
                     FNodeListOut[i] = NodeNames[i];
                 }
+
+                FInit = false;
             }
         }
+
+        #endregion
+
+
+        #region Error Event
 
         /// <summary>
         /// callback Function for the Error Changed Event 
@@ -247,12 +249,16 @@ namespace VVVV.Nodes
             return NodeNames;
         }
 
+        #endregion
+
+
+        #region Update Thread
         /// <summary>
         /// Thread for updating all Generators
         /// </summary>
         private void Update()
         {
-            while (FUpdateIn[0] == true && FInit == false)
+            while (FUpdateIn[0]&& FInit == false && FActiveThread)
             {
                 try
                 {   
@@ -274,5 +280,39 @@ namespace VVVV.Nodes
                 }
             }
         }
+
+        #endregion
+
+
+        #region Dispose
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    // Free other state (managed objects).
+                }
+                // Free your own state (unmanaged objects).
+                // Set large fields to null.
+                
+                FActiveThread = false;
+                disposed = true;
+            }
+        }
+
+        ~Configuration()
+        {
+            Dispose(false);
+        }
+
+        #endregion Dispose
     }
 }

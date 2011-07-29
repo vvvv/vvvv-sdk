@@ -1,8 +1,12 @@
-﻿#region usings
+﻿//if this line is uncomment the debug information will be written to the output view an will be include to the compiling
+//#define Debug
+
+#region usings
 using System;
 using System.ComponentModel.Composition;
 using System.Threading;
-
+using System.Diagnostics;
+using System.IO;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -32,7 +36,7 @@ namespace VVVV.Nodes
     #endregion PluginInfo
 
 
-    public class Texture_Depth : DXTextureOutPluginBase, IPluginEvaluate
+    public class Texture_Depth : DXTextureOutPluginBase, IPluginEvaluate, IDisposable
     {
         #region fields & pins
         [Input("Context", IsSingle = true)]
@@ -55,8 +59,15 @@ namespace VVVV.Nodes
         private int FDataSize;
 
         private Thread FReadThread;
+        private bool FActiveThread = false;
+       
         private bool FInit = true;
         private int FCurrentSlice;
+
+        private bool disposed = false;
+        private int FCounter = 0;
+        private bool FNewTeture = false;
+        IPluginHost FHost;
 
         #endregion fields & pins
 
@@ -65,11 +76,19 @@ namespace VVVV.Nodes
         public Texture_Depth(IPluginHost host)
             : base(host)
         {
+            FHost = host;
         }
+
+        #region Evaluate
 
         //called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
         {
+            //Debug.WriteLine("Enter Frame");
+            #if (Debug)
+            DateTime EvaluateStart = DateTime.Now;
+            #endif
+
             if (FInput[0] != null)
             {
                 if (FInit == true)
@@ -86,7 +105,7 @@ namespace VVVV.Nodes
                         //Set the resolution of the texture
                         FTexWidth = MapMode.XRes;
                         FTexHeight = MapMode.YRes;
-                        
+
 
                         //create an texture where the kinect image is written to
                         FDepthTexture = new System.Drawing.Bitmap(FTexWidth, FTexHeight, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
@@ -94,91 +113,179 @@ namespace VVVV.Nodes
                         //Reinitalie the vvvv texture
                         Reinitialize();
 
-                        //start generating data
-                        FDepthGenerator.StartGenerating();
-
-                        //create a image reader thread
+                        FActiveThread = true;
                         FReadThread = new Thread(ReadDepthImage);
                         FReadThread.Start();
+
+                        FDepthGenerator.StartGenerating();
+                        FInit = false;
                     }
                 }
                 else
                 {
                     //update the vvvv texture
-                    if(FEnableIn[0] == true)
+                    if (FEnableIn[0] && FNewTeture)
+                    {
                         Update();
+                    }
                 }
+            }
+            else
+            {
+                FActiveThread = false;
+                if (FDepthGenerator != null)
+                {
+                    //FDepthGenerator.StopGenerating();
+                    FDepthGenerator = null;
+                    FInit = true;
+                }
+            }
 
-                FInit = false;
+            //Debug.WriteLine("End Frame");
+            #if (Debug)
+            FCounter++;
+            #endif
+
+        }
+
+        #endregion
+
+
+        #region Dispose
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    // Free other state (managed objects).
+                }
+                // Free your own state (unmanaged objects).
+                // Set large fields to null.
+
+                FActiveThread = false;
+                disposed = true;
             }
         }
+
+        ~Texture_Depth()
+        {
+            Dispose(false);
+        }
+
+        #endregion
+
+
+        #region Read Image Thread
 
         //reade the kinect image data and write it to the holder FDepthTexture
         private unsafe void ReadDepthImage()
         {
 
-            while (true)
+            while (FActiveThread)
             {
-                if (FInit == false || FDepthGenerator.IsDataNew)
+
+                if (FInit == false && FNewTeture == false)
                 {
-                    lock (this)
+                    #if (Debug)
+                    Debug.WriteLine(String.Format("Calc Texture in Frame {0}", FCounter));
+                    DateTime startWhile = DateTime.Now;
+                    DateTime WriteTex = DateTime.Now;
+                    #endif 
+
+                    BitmapData data = null;
+                    try
                     {
-                        BitmapData data = null;
-                        try
+                        DepthMetaData DepthMD = FDepthGenerator.GetMetaData();
+
+
+                        CalculateHistogram(DepthMD);
+
+                        #if(Debug)
+                        DateTime CalcHist = DateTime.Now;
+                        WriteTime(startWhile, CalcHist, "Calc Hist");
+                        #endif
+
+                        //lock the FDepth texture to wrtie the depth image data to the texture
+                        Rectangle rect = new Rectangle(0, 0, FDepthTexture.Width, FDepthTexture.Height);
+                        data = FDepthTexture.LockBits(rect, ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+                        #if(Debug)
+                        DateTime CreateTex = DateTime.Now;
+                        WriteTime(CalcHist, CreateTex, "CreateTex");
+                        #endif
+
+                        // get the Pointer to the depth image
+                        ushort* pDepth = (ushort*)FDepthGenerator.DepthMapPtr;
+
+                        // write the Depth pointer to Destination pointer
+                        for (int y = 0; y < FTexHeight; ++y)
                         {
-                            DepthMetaData DepthMD = FDepthGenerator.GetMetaData();
 
+                            byte* pDest = (byte*)data.Scan0.ToPointer() + y * data.Stride;
 
-                            CalculateHistogram(DepthMD);
-
-                            //lock the FDepth texture to wrtie the depth image data to the texture
-                            Rectangle rect = new Rectangle(0, 0, FDepthTexture.Width, FDepthTexture.Height);
-                            data = FDepthTexture.LockBits(rect, ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-                            // get the Pointer to the depth image
-
-                            ushort* pDepth = (ushort*)FDepthGenerator.DepthMapPtr;
-
-                            // write the Depth pointer to Destination pointer
-                            for (int y = 0; y < FTexHeight; ++y)
+                            for (int x = 0; x < FTexWidth; ++x, ++pDepth, pDest += 4)
                             {
+                                pDest[0] = pDest[1] = pDest[2] = 128;
+                                pDest[3] = 255;
 
-                                byte* pDest = (byte*)data.Scan0.ToPointer() + y * data.Stride;
-
-                                for (int x = 0; x < FTexWidth; ++x, ++pDepth, pDest += 4)
-                                {
-                                    pDest[0] = pDest[1] = pDest[2] = 128;
-                                    pDest[3] = 255;
-
-                                    byte pixel = (byte)FHistogram[*pDepth];
-                                    pDest[0] = (byte)(pixel);
-                                    pDest[1] = (byte)(pixel);
-                                    pDest[2] = (byte)(pixel);
-                                }
-                            }
-                        }
-                        catch (ObjectDisposedException)
-                        {
-                            return;
-                        }
-                        catch (AccessViolationException)
-                        {
-                            return;
-                        }
-                        finally
-                        {
-                            if (data != null)
-                            {
-                                //Unlock the Depthtexture
-                                FDepthTexture.UnlockBits(data);
-
-                                //set the pointer for vvvv
-                                FDepthPointer = data.Scan0;
+                                byte pixel = (byte)FHistogram[*pDepth];
+                                pDest[0] = (byte)(pixel);
+                                pDest[1] = (byte)(pixel);
+                                pDest[2] = (byte)(pixel);
                             }
                         }
 
+                        #if(Debug)
+                        WriteTex = DateTime.Now;
+                        WriteTime(CreateTex, WriteTex, "Write Tex");
+                        #endif
                     }
+                    catch (ObjectDisposedException)
+                    {
+                        return;
+                    }
+                    catch (AccessViolationException)
+                    {
+                        return;
+                    }
+                    finally
+                    {
+                        if (data != null)
+                        {
+                            //Unlock the Depthtexture
+                            FDepthTexture.UnlockBits(data);
+
+                            //set the pointer for vvvv
+                            FDepthPointer = data.Scan0;
+                            
+                        }
+                    }
+
+                    #if(Debug)
+                    DateTime EndThreat = DateTime.Now;
+                    WriteTime(WriteTex, EndThreat, "While End");
+                    WriteTime(startWhile,EndThreat, "Create Depth Texture process");
+                    #endif
+
+                    FNewTeture = true;
+                    
                 }
+                else
+                {
+                    #if(Debug)
+                    WriteTime(DateTime.Now, DateTime.Now, "Empty While run");
+                    #endif
+                    Thread.Sleep(3);
+                }
+
             }
         }
 
@@ -232,6 +339,20 @@ namespace VVVV.Nodes
             }
         }
 
+        #endregion
+
+
+        #region Debug
+
+        [Conditional("Debug")]
+        private void WriteTime(DateTime Start, DateTime Now, string name)
+        {
+            TimeSpan ElapsedTime = Now - Start;
+            //Debug.WriteLine(String.Format("{0}: {1} ticks in frame {2}", name, ElapsedTime.Ticks, FCounter));
+            Debug.WriteLine(String.Format("{0}: {1} ms in frame {2}", name, ElapsedTime.Milliseconds, FCounter));
+        }
+
+        #endregion
 
 
         #region IPluginDXTexture Members
@@ -250,27 +371,50 @@ namespace VVVV.Nodes
         //calculate the pixels in evaluate and just copy the data to the device texture here
         unsafe protected override void UpdateTexture(int Slice, Texture texture)
         {
-
+            
             FCurrentSlice = Slice;
-            try
+            if (FNewTeture)
             {
-                if (FEnableIn[0] == true && FInput[0] != null)
+                try
                 {
-                    //lock the vvvv texture
-                    var rect = texture.LockRectangle(0, LockFlags.Discard).Data;
+                    if (FEnableIn[0] == true && FInput[0] != null)
+                    {
+                        #if(Debug)
+                            Debug.WriteLine("Update Texture in Frame: " + FCounter.ToString());
+                        #endif
 
-                    // tell the vvvv texture where the pointer to the depth image lies
-                    if (FDepthPointer.ToInt32() != 0)
-                        rect.WriteRange(FDepthPointer,FTexHeight * FTexWidth * 4);
-                    //unlock the vvvv texture
-                    texture.UnlockRectangle(0);
+
+                        //lock the vvvv texture
+                        var rect = texture.LockRectangle(0, LockFlags.Discard).Data;
+
+                        // tell the vvvv texture where the pointer to the depth image lies
+                        if (FDepthPointer.ToInt32() != 0)
+                            rect.WriteRange(FDepthPointer, FTexHeight * FTexWidth * 4);
+                        //unlock the vvvv texture
+                        texture.UnlockRectangle(0);
+
+                        #if(Debug)
+                             Debug.WriteLine("End Texture Update");
+                        #endif
+                    }
+                }
+                catch (Direct3D9Exception ex)
+                {
+                    FLogger.Log(ex);
+                }
+                finally
+                {
+                    FNewTeture = false;
                 }
             }
-            catch (Direct3D9Exception ex)
+            #if(Debug)
+            else
             {
-                FLogger.Log(ex);
+
+                Debug.WriteLine("No Texture update");
             }
-            
+            #endif
+             
         }
 
         #endregion IPluginDXResource Members
