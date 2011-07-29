@@ -514,7 +514,8 @@ namespace VVVV.Nodes
 			createOutputPins();
 			
 			//add one Ruler for sure
-			AddPin(TLPinType.Ruler);
+			FPinSettingsList.Add("<PIN Name=\"Ruler0\" Type=\"Ruler\" SliceCount=\"0\" Height=\"40\" Parent=\"0\" />");
+			Configurate(FPinSettings);
 		}
 
 		private void createInputPins()
@@ -551,8 +552,7 @@ namespace VVVV.Nodes
 			FGUISettings.Order = -99993;
 			
 			FHost.CreateStringConfig("Pin Settings", TSliceMode.Dynamic, TPinVisibility.Hidden, out FPinSettings);
-			FPinSettings.SliceCount = 0;
-			FPinSettings.SetSubType("", false);
+			FPinSettings.SetSubType("<PIN Name=\"Ruler0\" Type=\"Ruler\" SliceCount=\"0\" Height=\"40\" Parent=\"0\" />", false);
 			FPinSettings.Order = -99992;
 		}
 
