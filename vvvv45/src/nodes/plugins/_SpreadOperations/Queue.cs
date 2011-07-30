@@ -19,11 +19,14 @@ namespace VVVV.Nodes
 		[Input("Input")]
 		protected ISpread<T> FInput;
 		
-		[Input("do Insert", IsSingle = true)]
+		[Input("Insert", IsSingle = true)]
 		protected ISpread<bool> FDoInsert;
 		
 		[Input("Frame Count", IsSingle = true, MinValue = 0, DefaultValue = 1)]
 		protected ISpread<int> FFrameCount;
+
+        [Input("Reset", IsSingle = true, IsBang = true)]
+        protected ISpread<bool> FReset;
 
 		[Output("Output")]
 		protected ISpread<ISpread<T>> FOutput;
@@ -32,6 +35,9 @@ namespace VVVV.Nodes
 		
 		public void Evaluate(int SpreadMax)
 		{
+            if (FReset[0])
+                FBuffer.Clear();
+
         	if (FDoInsert[0])
         		FBuffer.Insert(0, FInput.Clone());
 			
