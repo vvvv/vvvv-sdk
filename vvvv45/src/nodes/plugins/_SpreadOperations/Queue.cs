@@ -22,7 +22,7 @@ namespace VVVV.Nodes
 		[Input("Insert", IsSingle = true)]
 		protected ISpread<bool> FDoInsert;
 		
-		[Input("Frame Count", IsSingle = true, MinValue = 0, DefaultValue = 1)]
+		[Input("Frame Count", IsSingle = true, MinValue = -1, DefaultValue = 1)]
 		protected ISpread<int> FFrameCount;
 
         [Input("Reset", IsSingle = true, IsBang = true)]
@@ -42,7 +42,7 @@ namespace VVVV.Nodes
         		FBuffer.Insert(0, FInput.Clone());
 			
         	var frameCount = FFrameCount[0];
-        	if (FBuffer.Count > frameCount)
+        	if (frameCount >= 0 && FBuffer.Count > frameCount)
         		FBuffer.RemoveRange(frameCount, FBuffer.Count - frameCount);
 			
 			FOutput.AssignFrom(FBuffer);
