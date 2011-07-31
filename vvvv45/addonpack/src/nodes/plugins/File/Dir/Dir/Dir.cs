@@ -197,7 +197,7 @@ namespace VVVV.Nodes
 
             //INPUT-PINS
             FHost.CreateStringInput("Directory", TSliceMode.Single, TPinVisibility.True, out FDirectory);
-            FDirectory.SetSubType("C:\\", false);
+            FDirectory.SetSubType2("C:\\",int.MaxValue,"*.*",TStringType.Directory);
 
             FHost.CreateValueInput("Include Subdirectories", 1, null, TSliceMode.Single, TPinVisibility.True, out FSubdirectories);
             FSubdirectories.SetSubType(0, 1, 1, 0, false, true, true);
