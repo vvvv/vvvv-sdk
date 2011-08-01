@@ -78,7 +78,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Buffer",
 	            Category = "Spreads",
-	            Version = "",
+	            Help = "Inserts the input at the given index and returns the whole Buffer as spread",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
@@ -88,7 +88,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Buffer",
 	            Category = "Color",
-	            Version = "",
+	            Help = "Inserts the input at the given index and returns the whole Buffer as spread",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
@@ -98,7 +98,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Buffer",
 	            Category = "String",
-	            Version = "",
+	            Help = "Inserts the input at the given index and returns the whole Buffer as spread",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
@@ -108,7 +108,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Buffer",
 	            Category = "Transform",
-	            Version = "",
+	            Help = "Inserts the input at the given index and returns the whole Buffer as spread",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
@@ -118,7 +118,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Buffer",
 	            Category = "Enumerations",
-	            Version = "",
+	            Help = "Inserts the input at the given index and returns the whole Buffer as spread",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]

@@ -36,49 +36,49 @@ namespace VVVV.Nodes
 		}
 	}
 	
-	[PluginInfo(Name = "Unzip", Category = "Spreads", Help = "unzips a spread into two spreads", Tags = "")]
+	[PluginInfo(Name = "Unzip", Category = "Spreads", Help = "Unzips a spread into two spreads", Tags = "")]
 	public class SpreadsUnzipNode : UnzipNode<double>
 	{
 		
 	}
 	
-	[PluginInfo(Name = "Unzip", Category = "2d", Help = "unzips a spread into two spreads", Tags = "")]
+	[PluginInfo(Name = "Unzip", Category = "2d", Help = "Unzips a spread into two spreads", Tags = "")]
 	public class Vector2DUnzipNode : UnzipNode<Vector2D>
 	{
 		
 	}
 	
-	[PluginInfo(Name = "Unzip", Category = "3d", Help = "unzips a spread into two spreads", Tags = "")]
+	[PluginInfo(Name = "Unzip", Category = "3d", Help = "Unzips a spread into two spreads", Tags = "")]
 	public class Vector3DUnzipNode : UnzipNode<Vector3D>
 	{
 		
 	}
 	
-	[PluginInfo(Name = "Unzip", Category = "4d", Help = "unzips a spread into two spreads", Tags = "")]
+	[PluginInfo(Name = "Unzip", Category = "4d", Help = "Unzips a spread into two spreads", Tags = "")]
 	public class Vector4DUnzipNode : UnzipNode<Vector4D>
 	{
 		
 	}
 	
-	[PluginInfo(Name = "Unzip", Category = "Color", Help = "unzips a spread into two spreads", Tags = "")]
+	[PluginInfo(Name = "Unzip", Category = "Color", Help = "Unzips a spread into two spreads", Tags = "")]
 	public class ColorUnzipNode : UnzipNode<RGBAColor>
 	{
 		
 	}
 	
-	[PluginInfo(Name = "Unzip", Category = "String", Help = "unzips a spread into two spreads", Tags = "")]
+	[PluginInfo(Name = "Unzip", Category = "String", Help = "Unzips a spread into two spreads", Tags = "")]
 	public class StringUnzipNode : UnzipNode<string>
 	{
 		
 	}
 	
-	[PluginInfo(Name = "Unzip", Category = "Transform", Help = "unzips a spread into two spreads", Tags = "")]
+	[PluginInfo(Name = "Unzip", Category = "Transform", Help = "Unzips a spread into two spreads", Tags = "")]
 	public class TransformUnzipNode : UnzipNode<Matrix4x4>
 	{
 		
 	}
 	
-	[PluginInfo(Name = "Unzip", Category = "Enumerations", Help = "unzips a spread into two spreads", Tags = "")]
+	[PluginInfo(Name = "Unzip", Category = "Enumerations", Help = "Unzips a spread into two spreads", Tags = "")]
 	public class EnumUnzipNode : UnzipNode<EnumEntry>
 	{
 		

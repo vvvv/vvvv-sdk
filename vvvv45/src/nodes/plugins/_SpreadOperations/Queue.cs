@@ -52,7 +52,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Queue",
 	            Category = "Spreads",
-	            Version = "",
+	            Help = "Inserts the input at index 0 and drops the oldest slice in a FIFO fashion",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
@@ -62,7 +62,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Queue",
 	            Category = "Color",
-	            Version = "",
+	            Help = "Inserts the input at index 0 and drops the oldest slice in a FIFO fashion",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
@@ -72,7 +72,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Queue",
 	            Category = "String",
-	            Version = "",
+	            Help = "Inserts the input at index 0 and drops the oldest slice in a FIFO fashion",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
@@ -82,7 +82,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Queue",
 	            Category = "Transform",
-	            Version = "",
+	            Help = "Inserts the input at index 0 and drops the oldest slice in a FIFO fashion",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
@@ -92,7 +92,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Queue",
 	            Category = "Enumerations",
-	            Version = "",
+	            Help = "Inserts the input at index 0 and drops the oldest slice in a FIFO fashion",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]

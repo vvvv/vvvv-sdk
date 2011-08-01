@@ -79,7 +79,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "RingBuffer",
 	            Category = "Spreads",
-	            Version = "",
+	            Help = "Inserts the input at the ringbuffer position and returns the whole Buffer as spread",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
@@ -89,7 +89,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "RingBuffer",
 	            Category = "Color",
-	            Version = "",
+	            Help = "Inserts the input at the ringbuffer position and returns the whole Buffer as spread",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
@@ -99,7 +99,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "RingBuffer",
 	            Category = "String",
-	            Version = "",
+	            Help = "Inserts the input at the ringbuffer position and returns the whole Buffer as spread",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
@@ -109,7 +109,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "RingBuffer",
 	            Category = "Transform",
-	            Version = "",
+	            Help = "Inserts the input at the ringbuffer position and returns the whole Buffer as spread",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
@@ -119,7 +119,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "RingBuffer",
 	            Category = "Enumerations",
-	            Version = "",
+	            Help = "Inserts the input at the ringbuffer position and returns the whole Buffer as spread",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]

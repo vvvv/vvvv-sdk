@@ -50,7 +50,7 @@ namespace VVVV.Nodes
     
     [PluginInfo(Name = "Pairwise",
                 Category = "Spreads",
-                Version = "",
+                Help = "",
                 Tags = ""
                 )]
     public class ValuePairwise : Pairwise<double>
@@ -59,7 +59,7 @@ namespace VVVV.Nodes
         
     [PluginInfo(Name = "Pairwise",
                 Category = "2d",
-                Version = "",
+                Help = "Returns all combinations of successive slices. From an input ABCD returns AB, BC, CD",
                 Tags = ""
                 )]
     public class Vector2DPairwise : Pairwise<Vector2D>
@@ -68,7 +68,7 @@ namespace VVVV.Nodes
         
     [PluginInfo(Name = "Pairwise",
                 Category = "3d",
-                Version = "",
+                Help = "Returns all combinations of successive slices. From an input ABCD returns AB, BC, CD",
                 Tags = ""
                 )]
     public class Vector3DPairwise : Pairwise<Vector3D>
@@ -77,7 +77,7 @@ namespace VVVV.Nodes
         
     [PluginInfo(Name = "Pairwise",
                 Category = "4d",
-                Version = "",
+                Help = "Returns all combinations of successive slices. From an input ABCD returns AB, BC, CD",
                 Tags = ""
                 )]
     public class Vector4DPairwise : Pairwise<Vector4D>
@@ -86,7 +86,7 @@ namespace VVVV.Nodes
         
     [PluginInfo(Name = "Pairwise",
                 Category = "Color",
-                Version = "",
+                Help = "Returns all combinations of successive slices. From an input ABCD returns AB, BC, CD",
                 Tags = ""
                 )]
     public class ColorPairwise : Pairwise<RGBAColor>
@@ -95,7 +95,7 @@ namespace VVVV.Nodes
     
     [PluginInfo(Name = "Pairwise",
                 Category = "String",
-                Version = "",
+                Help = "Returns all combinations of successive slices. From an input ABCD returns AB, BC, CD",
                 Tags = ""
                 )]
     public class StringPairwise : Pairwise<string>
@@ -104,7 +104,7 @@ namespace VVVV.Nodes
     
     [PluginInfo(Name = "Pairwise",
                 Category = "Transform",
-                Version = "",
+                Help = "Returns all combinations of successive slices. From an input ABCD returns AB, BC, CD",
                 Tags = ""
                 )]
     public class TransformPairwise : Pairwise<Matrix4x4>
@@ -113,7 +113,7 @@ namespace VVVV.Nodes
     
     [PluginInfo(Name = "Pairwise",
                 Category = "Enumerations",
-                Version = "",
+                Help = "Returns all combinations of successive slices. From an input ABCD returns AB, BC, CD",
                 Tags = ""
                 )]
     public class EnumPairwise : Pairwise<EnumEntry>

@@ -31,49 +31,49 @@ namespace VVVV.Nodes
 		}
 	}
 	
-	[PluginInfo(Name = "Zip", Category = "Spreads", Help = "zips two spreads together", Tags = "")]
+	[PluginInfo(Name = "Zip", Category = "Spreads", Help = "Zips two spreads together", Tags = "")]
 	public class SpreadsZipNode : ZipNode<double>
 	{
 		
 	}
 	
-	[PluginInfo(Name = "Zip", Category = "2d", Help = "zips two spreads together", Tags = "")]
+	[PluginInfo(Name = "Zip", Category = "2d", Help = "Zips two spreads together", Tags = "")]
 	public class Vector2DZipNode : ZipNode<Vector2D>
 	{
 		
 	}
 	
-	[PluginInfo(Name = "Zip", Category = "3d", Help = "zips two spreads together", Tags = "")]
+	[PluginInfo(Name = "Zip", Category = "3d", Help = "Zips two spreads together", Tags = "")]
 	public class Vector3DZipNode : ZipNode<Vector3D>
 	{
 		
 	}
 	
-	[PluginInfo(Name = "Zip", Category = "4d", Help = "zips two spreads together", Tags = "")]
+	[PluginInfo(Name = "Zip", Category = "4d", Help = "Zips two spreads together", Tags = "")]
 	public class Vector4DZipNode : ZipNode<Vector4D>
 	{
 		
 	}
 	
-	[PluginInfo(Name = "Zip", Category = "Color", Help = "zips two spreads together", Tags = "")]
+	[PluginInfo(Name = "Zip", Category = "Color", Help = "Zips two spreads together", Tags = "")]
 	public class ColorZipNode : ZipNode<RGBAColor>
 	{
 		
 	}
 	
-	[PluginInfo(Name = "Zip", Category = "String", Help = "zips two spreads together", Tags = "")]
+	[PluginInfo(Name = "Zip", Category = "String", Help = "Zips two spreads together", Tags = "")]
 	public class StringZipNode : ZipNode<string>
 	{
 		
 	}
 	
-	[PluginInfo(Name = "Zip", Category = "Transform", Help = "zips two spreads together", Tags = "")]
+	[PluginInfo(Name = "Zip", Category = "Transform", Help = "Zips two spreads together", Tags = "")]
 	public class TransformZipNode : ZipNode<Matrix4x4>
 	{
 		
 	}
 	
-	[PluginInfo(Name = "Zip", Category = "Enumerations", Help = "zips two spreads together", Tags = "")]
+	[PluginInfo(Name = "Zip", Category = "Enumerations", Help = "Zips two spreads together", Tags = "")]
 	public class EnumZipNode : ZipNode<EnumEntry>
 	{
 		
