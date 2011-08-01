@@ -224,7 +224,7 @@ namespace VVVV.Nodes.NodeBrowser
                 }
                 
                 RedrawSelection();
-                ShowToolTip();
+                ShowToolTip(0);
             }
             else if ((FTagsTextBox.Lines.Length < 2) && (e.KeyCode == Keys.Up))
             {
@@ -243,7 +243,7 @@ namespace VVVV.Nodes.NodeBrowser
                 }
                 
                 RedrawSelection();
-                ShowToolTip();
+                ShowToolTip(0);
             }
             else if ((e.KeyCode == Keys.Left) || (e.KeyCode == Keys.Right))
             {
@@ -340,7 +340,7 @@ namespace VVVV.Nodes.NodeBrowser
                 FLastMouseHoverLocation = e.Location;
                 FHoverLine = newHoverLine;
                 if (sender != FNodeTypePanel)
-                    ShowToolTip();
+                    ShowToolTip(e.X + 15);
                 RedrawSelection();
             }
         }
@@ -359,7 +359,7 @@ namespace VVVV.Nodes.NodeBrowser
             }
         }
         
-        private void ShowToolTip()
+        private void ShowToolTip(int x)
         {
             var selectionIndex = FHoverLine + FScrolledLine;
             if (selectionIndex < 0 || selectionIndex >= FSelectionList.Count) return;
@@ -373,17 +373,17 @@ namespace VVVV.Nodes.NodeBrowser
             if (!string.IsNullOrEmpty(ni.Shortcut))
                 tip = "(" + ni.Shortcut + ") " ;
             if (!string.IsNullOrEmpty(ni.Help))
-                tip += ni.Help;
+            	tip += ni.Help.Trim();
             if (!string.IsNullOrEmpty(ni.Warnings))
-                tip += "\n WARNINGS: " + ni.Warnings;
+                tip += "\n WARNINGS: " + ni.Warnings.Trim();
             if (!string.IsNullOrEmpty(ni.Bugs))
-                tip += "\n BUGS: " + ni.Bugs;
+                tip += "\n BUGS: " + ni.Bugs.Trim();
             if ((!string.IsNullOrEmpty(ni.Author)) && (ni.Author != "vvvv group"))
-                tip += "\n AUTHOR: " + ni.Author;
+                tip += "\n AUTHOR: " + ni.Author.Trim();
             if (!string.IsNullOrEmpty(ni.Credits))
-                tip += "\n CREDITS: " + ni.Credits;
+                tip += "\n CREDITS: " + ni.Credits.Trim();
             if (!string.IsNullOrEmpty(tip))
-                FToolTip.Show(tip, FRichTextBox, 0, y + 30);
+                FToolTip.Show(tip, FRichTextBox, x, y + 15);
             else
                 FToolTip.Hide(FRichTextBox);
         }
