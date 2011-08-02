@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha25.2.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\plugins\Mesh\ColladaLoader\ColladaFile (EX9.Geometry) help.v4p" filename="C:\Users\joreg\Desktop\vvvvs\vvvv_45alpha25.2-4940\help\XFile (EX9.Geometry Load) help.v4p" systemname="XFile (EX9.Geometry Load) help">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.4.dtd" >
+   <PATCH nodename="C:\Users\joreg\Desktop\vvvvs\vvvv_45alpha25.4-5270\addonpack\plugins\ColladaFile (EX9.Geometry) help.v4p" filename="C:\Users\joreg\Desktop\vvvvs\vvvv_45alpha25.2-4940\help\XFile (EX9.Geometry Load) help.v4p" systemname="XFile (EX9.Geometry Load) help">
    <BOUNDS height="6165" left="2745" top="5700" type="Window" width="11625">
    </BOUNDS>
    <NODE id="21" nodename="Count (EX9.Geometry Mesh)" systemname="Count (EX9.Geometry Mesh)">
@@ -24,16 +24,16 @@
    <PIN pinname="Mesh" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" hiddenwhenlocked="0" id="19" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" hiddenwhenlocked="0" id="19" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="300" top="4980" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4800" left="2790" top="855" type="Window" width="6120">
    </BOUNDS>
    <BOUNDS height="1800" left="300" top="4980" type="Box" width="2400">
    </BOUNDS>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="Projection" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Depth Buffer" slicecount="1" values="1.00000">
    </PIN>
@@ -60,7 +60,7 @@
    <PIN pinname="Mip Map Count" slicecount="1" values="All">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4095" top="4065" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="10590" top="10275" type="Window" width="215">
@@ -72,7 +72,7 @@
    </NODE>
    <LINK dstnodeid="17" dstpinname="Y Input Value" srcnodeid="21" srcpinname="SubsetCount">
    </LINK>
-   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4380" top="4335" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="11130" top="10260" type="Window" width="215">
@@ -84,7 +84,7 @@
    </NODE>
    <LINK dstnodeid="16" dstpinname="Y Input Value" srcnodeid="21" srcpinname="FaceCount">
    </LINK>
-   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4650" top="4620" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="11655" top="10245" type="Window" width="215">
@@ -221,13 +221,13 @@
    </PIN>
    <PIN pinname="Technique" slicecount="1" values="| TGouraudDirectional|">
    </PIN>
-   <PIN pinname="Diffuse Color" slicecount="1" values="|0.34264,0.73214,0.81667,1.00000|">
-   </PIN>
-   <PIN pinname="Ambient Color" slicecount="1" values="|0.06775,0.00000,0.22848,1.00000|">
-   </PIN>
-   <PIN pinname="Specular Color" slicecount="1" values="|0.44200,0.44200,0.44200,1.00000|">
-   </PIN>
    <PIN pinname="Light Direction XYZ" slicecount="3" values="0,-5,2">
+   </PIN>
+   <PIN pinname="Diffuse Color" slicecount="1" values="|0.85098,0.85098,0.85098,1.00000|">
+   </PIN>
+   <PIN pinname="Ambient Color" slicecount="1" values="|0.14902,0.14902,0.14902,1.00000|">
+   </PIN>
+   <PIN pinname="Specular Color" slicecount="1" values="|0.34902,0.34902,0.34902,1.00000|">
    </PIN>
    </NODE>
    <LINK dstnodeid="3" dstpinname="Texture" srcnodeid="18" srcpinname="Texture Out">
@@ -257,8 +257,6 @@
    <LINK dstnodeid="2" dstpinname="Y" srcnodeid="1" srcpinname="Output">
    </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\plugins\ColladaLoader.dll" id="23" nodename="ColladaFile (EX9.Geometry)" systemname="ColladaFile (EX9.Geometry)">
-   <PIN pinname="Coordinate system of source" slicecount="1" values="RightHanded">
-   </PIN>
    <BOUNDS height="0" left="450" top="1455" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="450" top="1455" type="Box" width="0">
@@ -268,6 +266,8 @@
    <PIN pinname="COLLADA Model" visible="1">
    </PIN>
    <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Coordinate system of source" slicecount="1" values="RightHanded">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\plugins\ColladaLoader.dll" id="24" nodename="Mesh (EX9.Geometry Collada)" systemname="Mesh (EX9.Geometry Collada)">
@@ -316,7 +316,7 @@
    </LINK>
    <LINK dstnodeid="20" dstpinname="Mesh" srcnodeid="24" srcpinname="Mesh">
    </LINK>
-   <NODE componentmode="InABox" id="26" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="26" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="1380" top="3195" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="240" left="1380" top="3195" type="Box" width="630">
@@ -336,7 +336,7 @@
    <PIN pinname="Y" slicecount="1" values="-0.5">
    </PIN>
    </NODE>
-   <LINK dstnodeid="19" dstpinname="View Transform" srcnodeid="0" srcpinname="Transform Out">
+   <LINK dstnodeid="19" dstpinname="View" srcnodeid="0" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\plugins\ColladaLoader.dll" id="27" nodename="Mesh (EX9.Geometry Collada)" systemname="Mesh (EX9.Geometry Collada)">
    <BOUNDS height="0" left="7575" top="2760" type="Node" width="0">
@@ -372,8 +372,8 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE systemname="XFile (EX9.Geometry Load)" nodename="XFile (EX9.Geometry Load)" componentmode="Hidden" id="29">
-   <BOUNDS type="Node" left="9465" top="2745" width="100" height="100">
+   <NODE componentmode="Hidden" id="29" nodename="XFile (EX9.Geometry Load)" systemname="XFile (EX9.Geometry Load)">
+   <BOUNDS height="100" left="9465" top="2745" type="Node" width="100">
    </BOUNDS>
    </NODE>
    </PATCH>
