@@ -98,7 +98,6 @@ namespace VVVV.Hosting.Graph
         private readonly ProxyNodeInfoFactory FNodeInfoFactory;
         private readonly Lazy<ViewableCollection<IPin2>> FPins;
         private readonly Lazy<IPin2> FLabelPin;
-        private Window FWindow;
         
         private Node(INode2 parent, INode internalCOMInterf, ProxyNodeInfoFactory nodeInfoFactory)
         {
