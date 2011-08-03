@@ -81,7 +81,7 @@ namespace VVVV.Nodes
 			var s = new string[]{"Ansi","Ascii","UTF8", "UTF32","Unicode"};
 			//Please rename your Enum Type to avoid 
 			//numerous "MyDynamicEnum"s in the system
-		    EnumManager.UpdateEnum("EmailEncoding", "Default", s);  
+		    EnumManager.UpdateEnum("EmailEncoding", "Ansi", s);  
 		}
 
         #region Evaluate
