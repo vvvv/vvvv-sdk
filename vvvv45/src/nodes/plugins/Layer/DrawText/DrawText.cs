@@ -355,7 +355,6 @@ namespace VVVV.Nodes
             dh.Sprite.Begin(SpriteFlags.ObjectSpace | SpriteFlags.DoNotAddRefTexture);
             try
             {
-                int size = id.Size;
                 int normalize = FNormalizeInput[0].Index;
                 Matrix4x4 preScale = VMath.Scale(1, -1, 1);
                 Matrix4x4 world;
@@ -374,7 +373,6 @@ namespace VVVV.Nodes
                             FCurrentids.Add(newid);
                         id = newid;
                         f = CreateFont(id);
-                        size = id.Size;
                     }
 
                     text = FTextInput[i];
