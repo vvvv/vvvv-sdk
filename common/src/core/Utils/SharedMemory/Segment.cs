@@ -59,11 +59,10 @@ namespace VVVV.Utils.SharedMemory
 		private IntPtr	nativePointer = IntPtr.Zero;
 		private Mutex	guard = null;
 		private int		currentSize = 0;
-		private string  segmentName = string.Empty;
 
 		public Segment(string name, SharedMemoryCreationFlag creationFlag, int size )
 		{
-			if( name == null || name == string.Empty )
+		    if( string.IsNullOrEmpty(name) )
 			{
 				throw new SharedMemoryException("You must supply a segment name");
 			}
@@ -112,7 +111,6 @@ namespace VVVV.Utils.SharedMemory
 			}
 
 			this.currentSize = size;
-			this.segmentName = name;
 		}
 
 		/// <summary>

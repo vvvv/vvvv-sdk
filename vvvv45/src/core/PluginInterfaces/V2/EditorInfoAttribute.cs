@@ -11,7 +11,7 @@ namespace VVVV.PluginInterfaces.V2
 	[MetadataAttribute]
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false)]
 	[ComVisible(false)]
-	public class EditorInfoAttribute: ExportAttribute
+	public sealed class EditorInfoAttribute: ExportAttribute
 	{
 		public EditorInfoAttribute(params string[] fileExtensions)
 			: base(typeof(IEditor)) 

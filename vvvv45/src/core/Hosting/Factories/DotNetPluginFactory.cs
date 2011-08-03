@@ -214,7 +214,7 @@ namespace VVVV.Hosting.Factories
             }
         }
         
-        private CustomAttributeData GetPluginInfoAttributeData(Type type)
+        private static CustomAttributeData GetPluginInfoAttributeData(Type type)
         {
             var attributes = CustomAttributeData.GetCustomAttributes(type).Where(ca => ca.Constructor.DeclaringType.FullName == typeof(PluginInfoAttribute).FullName).ToArray();
             return attributes.Length > 0 ? attributes[0] : null;
@@ -350,6 +350,7 @@ namespace VVVV.Hosting.Factories
             //Send event before delete
             if (this.PluginDeleted != null) { this.PluginDeleted(plugin); }
 
+            var disposablePlugin = plugin as IDisposable;
             if (FPluginLifetimeContexts.ContainsKey(plugin))
             {
                 FPluginLifetimeContexts[plugin].Dispose();
@@ -357,9 +358,9 @@ namespace VVVV.Hosting.Factories
                 FPinExportProviders[plugin].Dispose();
                 FPinExportProviders.Remove(plugin);
             }
-            else if (plugin is IDisposable)
+            else if (disposablePlugin != null)
             {
-                ((IDisposable) plugin).Dispose();
+                disposablePlugin.Dispose();
             }
         }
         
@@ -411,7 +412,7 @@ namespace VVVV.Hosting.Factories
             return Assembly.ReflectionOnlyLoad(fullName);
         }
         
-        private string GetPartialAssemblyName(string fullName)
+        private static string GetPartialAssemblyName(string fullName)
         {
             fullName = fullName.Trim();
             if (fullName.IndexOf(',') >= 0)
@@ -420,7 +421,7 @@ namespace VVVV.Hosting.Factories
                 return ReplaceLegacyAssemblyNames(fullName);
         }
         
-        private string ReplaceLegacyAssemblyNames(string partialName)
+        private static string ReplaceLegacyAssemblyNames(string partialName)
         {
             switch (partialName)
             {
@@ -435,7 +436,7 @@ namespace VVVV.Hosting.Factories
         }
         
         // From http://www.anastasiosyal.com/archive/2007/04/17/3.aspx
-        private bool IsDotNetAssembly(string fileName)
+        private static bool IsDotNetAssembly(string fileName)
         {
             using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             {
@@ -457,7 +458,7 @@ namespace VVVV.Hosting.Factories
                                     case 0x010B: dictionaryOffset = 0x60; break;
                                     case 0x020B: dictionaryOffset = 0x70; break;
                                 default:
-                                    throw new Exception("Invalid Image Format");
+                                    throw new BadImageFormatException("Invalid Image Format");
                             }
 
                             //position to RVA 15

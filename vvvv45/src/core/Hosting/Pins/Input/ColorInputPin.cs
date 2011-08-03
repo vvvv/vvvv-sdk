@@ -41,7 +41,7 @@ namespace VVVV.Hosting.Pins.Input
 				CopyToBuffer(FBuffer, source, length * 4);
 		}
 		
-		unsafe protected void CopyToBuffer(RGBAColor[] buffer, double* source, int length)
+		unsafe protected static void CopyToBuffer(RGBAColor[] buffer, double* source, int length)
 		{
 			fixed (RGBAColor* destination = buffer)
 			{

@@ -52,7 +52,6 @@ namespace VVVV.Hosting.Pins
 		protected void UpdatePins(object sender, EventArgs args)
 		{
 			var count = FConfigPin[0];
-			var diff = count - FPins.Length;
 			
 			if (count > FPins.Length)
 			{

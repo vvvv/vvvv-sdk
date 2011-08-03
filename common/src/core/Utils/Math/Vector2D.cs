@@ -418,6 +418,29 @@ namespace VVVV.Utils.VMath
         }
 		
 		#endregion comparison operators
+		
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+        {
+            return (obj is Vector2D) && Equals((Vector2D)obj);
+        }
+		
+        public bool Equals(Vector2D other)
+        {
+            return this.x == other.x && this.y == other.y;
+        }
+		
+        public override int GetHashCode()
+        {
+            int hashCode = 0;
+            unchecked {
+                hashCode += 1000000007 * x.GetHashCode();
+                hashCode += 1000000009 * y.GetHashCode();
+            }
+            return hashCode;
+        }
+		#endregion
+
 	}
 }
 

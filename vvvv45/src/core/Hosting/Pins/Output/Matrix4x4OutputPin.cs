@@ -21,7 +21,7 @@ namespace VVVV.Hosting.Pins.Output
 			base.InitializeInternalPin(FTransformOut);
 		}
 		
-		unsafe protected void CopyFromBuffer(Matrix4x4[] buffer, float* destination, int length)
+		unsafe protected static void CopyFromBuffer(Matrix4x4[] buffer, float* destination, int length)
 		{
 			fixed (Matrix4x4* source = buffer)
 			{

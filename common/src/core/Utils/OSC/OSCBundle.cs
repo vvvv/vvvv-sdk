@@ -64,9 +64,10 @@ namespace VVVV.Utils.OSC
 			
 			foreach(object value in this.Values)
 			{
-				if(value is OSCPacket)
+			    var oscPacket = value as OSCPacket;
+				if (oscPacket != null)
 				{
-					byte[] bs = ((OSCPacket)value).BinaryData;
+					byte[] bs = oscPacket.BinaryData;
 					addBytes(data, packInt(bs.Length));
 					addBytes(data, bs);
 				}

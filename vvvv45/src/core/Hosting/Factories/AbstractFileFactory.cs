@@ -97,7 +97,7 @@ namespace VVVV.Hosting.Factories
             
             // If additional arguments are present vvvv is only interested in one specific
             // NodeInfo -> look for it.
-            if ((arguments != null) && (arguments != ""))
+            if (!string.IsNullOrEmpty(arguments))
             {
                 foreach (var nodeInfo in nodeInfos)
                 {

@@ -14,7 +14,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// </summary>
 	[Guid("581998D6-ED08-4E73-821A-46AFF59C78BD"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface INodeInfo : IDisposable
+	public interface INodeInfo
 	{
 		/// <summary>
 		/// The nodes main visible name. Use CamelCaps and no spaces.

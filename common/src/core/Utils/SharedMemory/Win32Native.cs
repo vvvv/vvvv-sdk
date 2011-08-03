@@ -29,7 +29,7 @@ namespace VVVV.Utils.SharedMemory
 	/// </summary>
 	/// 
 	[SuppressUnmanagedCodeSecurity]
-	internal class Win32Native
+	internal static class Win32Native
 	{
 		internal enum FileMap
 		{

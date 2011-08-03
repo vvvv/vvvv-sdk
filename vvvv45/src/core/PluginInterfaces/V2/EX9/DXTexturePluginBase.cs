@@ -54,21 +54,6 @@ namespace VVVV.PluginInterfaces.V2.EX9
 			foreach(var t in deviceData.Data) t.Dispose();
 		}
 		
-		public void Connect()
-		{
-			
-		}
-		
-		public void Disconnect()
-		{
-			
-		}
-		
-		public void Dispose()
-		{
-			
-		}
-		
 		public void SetSliceCount(int SliceCount)
 		{
 			if(FOldSliceCount != SliceCount)

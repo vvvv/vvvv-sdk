@@ -35,7 +35,7 @@ namespace VVVV.Hosting.Pins.Output
 			}
 		}
 		
-		unsafe protected void CopyFromBuffer(RGBAColor[] buffer, double* dst, int length)
+		unsafe protected static void CopyFromBuffer(RGBAColor[] buffer, double* dst, int length)
 		{
 			fixed (RGBAColor* source = buffer)
 			{

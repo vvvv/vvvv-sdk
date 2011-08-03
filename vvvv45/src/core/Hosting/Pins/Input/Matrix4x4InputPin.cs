@@ -28,7 +28,7 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 		
-		unsafe protected void CopyToBuffer(Matrix4x4[] buffer, float* source, int length)
+		unsafe protected static void CopyToBuffer(Matrix4x4[] buffer, float* source, int length)
 		{
 			fixed (Matrix4x4* destination = buffer)
 			{

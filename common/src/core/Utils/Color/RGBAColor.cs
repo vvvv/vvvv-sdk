@@ -268,6 +268,41 @@ namespace VVVV.Utils.VColor
 			return new RGBAColor(C1.R * C2.R, C1.G * C2.G, C1.B * C2.B, C1.A * C2.A);
 		}
 		
+		public static bool operator ==(RGBAColor lhs, RGBAColor rhs)
+        {
+            return lhs.Equals(rhs);
+        }
+		
+        public static bool operator !=(RGBAColor lhs, RGBAColor rhs)
+        {
+            return !(lhs == rhs);
+        }
+		
 		#endregion binary operators
+		
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+        {
+            return (obj is RGBAColor) && Equals((RGBAColor)obj);
+        }
+		
+        public bool Equals(RGBAColor other)
+        {
+            return this.R == other.R && this.G == other.G && this.B == other.B && this.A == other.A;
+        }
+		
+        public override int GetHashCode()
+        {
+            int hashCode = 0;
+            unchecked {
+                hashCode += 1000000007 * R.GetHashCode();
+                hashCode += 1000000009 * G.GetHashCode();
+                hashCode += 1000000021 * B.GetHashCode();
+                hashCode += 1000000033 * A.GetHashCode();
+            }
+            return hashCode;
+        }
+		#endregion
+
 	}
 }

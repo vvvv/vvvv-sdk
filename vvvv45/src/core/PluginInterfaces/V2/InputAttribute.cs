@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 namespace VVVV.PluginInterfaces.V2
 {
     [ComVisible(false)]
-	public class InputAttribute : PinAttribute
+	public sealed class InputAttribute : PinAttribute
 	{
 		public static readonly int DefaultBinSize = -1;
 		

@@ -222,7 +222,7 @@ namespace VVVV.Hosting.Factories
             }
         }
         
-        string GetCompileErrorsLog(IProject project, CompilerResults results)
+        private static string GetCompileErrorsLog(IProject project, CompilerResults results)
         {
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(string.Format("Compilation of {0} failed. See errors below:\n", project));
@@ -280,7 +280,6 @@ namespace VVVV.Hosting.Factories
             var newProject = new CSProject(newProjectPath, newLocation);
             newProject.Load();
             
-            var newLocationDir = newLocation.GetLocalDir();
             var foundContainingDocument = false;
             foreach (var doc in newProject.Documents)
             {
@@ -332,7 +331,7 @@ namespace VVVV.Hosting.Factories
             return true;
         }
         
-        private bool ContainsNodeInfo(CSDocument document, INodeInfo nodeInfo)
+        private static bool ContainsNodeInfo(CSDocument document, INodeInfo nodeInfo)
         {
             var parseInfo = document.ParseInfo;
             var compilationUnit = parseInfo.MostRecentCompilationUnit;
@@ -471,7 +470,7 @@ namespace VVVV.Hosting.Factories
             return base.VisitTypeDeclaration(typeDeclaration, data);
         }
         
-        private PluginInfoAttribute ConvertAttributeToPluginInfo(ICSharpCode.NRefactory.Ast.Attribute attribute)
+        private static PluginInfoAttribute ConvertAttributeToPluginInfo(ICSharpCode.NRefactory.Ast.Attribute attribute)
         {
             Debug.Assert(attribute.Name == PLUGIN_INFO);
             

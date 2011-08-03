@@ -11,7 +11,7 @@ namespace VVVV.PluginInterfaces.V2
 	[MetadataAttribute]
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false)]
 	[ComVisible(false)]
-	public class PluginInfoAttribute: ExportAttribute
+	public sealed class PluginInfoAttribute: ExportAttribute
 	{
 		public PluginInfoAttribute() : base(typeof(IPluginBase)) { }
 		public string Name { get; set; }

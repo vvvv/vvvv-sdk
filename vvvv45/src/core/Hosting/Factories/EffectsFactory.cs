@@ -30,14 +30,12 @@ namespace VVVV.Hosting.Factories
         protected ILogger Logger { get; set; }
         
         private readonly Dictionary<string, FXProject> FProjects;
-        private readonly Dictionary<FXProject, INodeInfo> FProjectNodeInfo;
         
         [ImportingConstructor]
         public EffectsFactory(INodeInfoFactory nodeInfoFactory)
             : base(".fx;.xx")
         {
             FProjects = new Dictionary<string, FXProject>();
-            FProjectNodeInfo = new Dictionary<FXProject, INodeInfo>();
             // Listen to stuff added by nodelist.xml
             nodeInfoFactory.NodeInfoAdded += HandleNodeInfoAdded;
         }

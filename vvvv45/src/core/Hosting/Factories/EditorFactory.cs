@@ -58,7 +58,7 @@ namespace VVVV.Hosting.Factories
             FMoveToLine = -1;
             FMoveToColumn = -1;
             
-            FHDEHost.MouseDown += FHDEHost_MouseDown;
+            FHDEHost.MouseDown += HandleMouseDown;
         }
         
         public string Name
@@ -296,7 +296,7 @@ namespace VVVV.Hosting.Factories
             }
         }
         
-        void FHDEHost_MouseDown(object sender, MouseEventArgs args)
+        void HandleMouseDown(object sender, MouseEventArgs args)
         {
             var node = args.Node;
             if (node == null) return;
@@ -481,7 +481,6 @@ namespace VVVV.Hosting.Factories
             
             // The following Open will trigger a call by vvvv to IInternalHDEHost.ExtractNodeInfos()
             // Force the hde host to collect node infos from us only.
-            var hdeHost = FHDEHost as HDEHost;
             var addonFactories = new List<IAddonFactory>(FHDEHost.AddonFactories);
             try
             {
@@ -517,11 +516,7 @@ namespace VVVV.Hosting.Factories
             }
         }
         
-        public void MouseUpCB(INode node, Mouse_Buttons button, Modifier_Keys keys)
-        {
-        }
-        
-        protected CSDocument FindDefiningDocument(CSProject project, INodeInfo nodeInfo)
+        protected static CSDocument FindDefiningDocument(CSProject project, INodeInfo nodeInfo)
         {
             foreach (var doc in project.Documents)
             {
@@ -535,7 +530,7 @@ namespace VVVV.Hosting.Factories
             return null;
         }
         
-        protected int FindDefiningLine(CSDocument document, INodeInfo nodeInfo)
+        protected static int FindDefiningLine(CSDocument document, INodeInfo nodeInfo)
         {
             var parseInfo = document.ParseInfo;
             var compilationUnit = parseInfo.MostRecentCompilationUnit;

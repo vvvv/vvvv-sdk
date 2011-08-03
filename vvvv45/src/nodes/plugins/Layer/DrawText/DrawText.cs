@@ -27,29 +27,119 @@ using SlimDX.Direct3D9;
 
 namespace VVVV.Nodes
 {
-    public struct FontIdentifier
-    {
-        public Device Device;
-        public string Name;
-        public int Size;
-        public bool Italic;
-        public FontWeight Weight;
-        //public Precision Precision;
-        public FontQuality Quality;
-    }
-
-    public struct DeviceHelpers
-    {
-        public Sprite Sprite;
-        public Texture Texture;
-    }
-
     [PluginInfo(Name = "Text",
-                 Category = "EX9",
-                 Author = "vvvv group",
-                 Help = "Draws flat Text")]
+                Category = "EX9",
+                Author = "vvvv group",
+                Help = "Draws flat Text")]
     public class DrawText : IPluginEvaluate, IPluginDXLayer
     {
+        class FontIdentifier
+        {
+            public Device Device;
+            public string Name;
+            public int Size;
+            public bool Italic;
+            public FontWeight Weight;
+            //public Precision Precision;
+            public FontQuality Quality;
+            
+            #region Equals and GetHashCode implementation
+            public override bool Equals(object obj)
+            {
+                var other = obj as FontIdentifier;
+                if (other == null)
+                    return false;
+                return object.Equals(this.Device, other.Device) && this.Name == other.Name && this.Size == other.Size && this.Italic == other.Italic && this.Weight == other.Weight && this.Quality == other.Quality;
+            }
+            
+            public override int GetHashCode()
+            {
+                int hashCode = 0;
+                unchecked {
+                    if (Device != null)
+                        hashCode += 1000000007 * Device.GetHashCode();
+                    if (Name != null)
+                        hashCode += 1000000009 * Name.GetHashCode();
+                    hashCode += 1000000021 * Size.GetHashCode();
+                    hashCode += 1000000033 * Italic.GetHashCode();
+                    hashCode += 1000000087 * Weight.GetHashCode();
+                    hashCode += 1000000093 * Quality.GetHashCode();
+                }
+                return hashCode;
+            }
+            
+            public static bool operator ==(FontIdentifier lhs, FontIdentifier rhs)
+            {
+                if (ReferenceEquals(lhs, rhs))
+                    return true;
+                if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+                    return false;
+                return lhs.Equals(rhs);
+            }
+            
+            public static bool operator !=(FontIdentifier lhs, FontIdentifier rhs)
+            {
+                return !(lhs == rhs);
+            }
+            #endregion
+
+        }
+
+        class DeviceHelpers : IDisposable
+        {
+            public readonly Sprite Sprite;
+            public readonly Texture Texture;
+            
+            public DeviceHelpers(Sprite sprite, Texture texture)
+            {
+                Sprite = sprite;
+                Texture = texture;
+            }
+            
+            public void Dispose()
+            {
+                Sprite.Dispose();
+                Texture.Dispose();
+            }
+            
+            #region Equals and GetHashCode implementation
+            public override bool Equals(object obj)
+            {
+                var other = obj as DeviceHelpers;
+                if (other == null)
+                    return false;
+                return object.Equals(this.Sprite, other.Sprite) && object.Equals(this.Texture, other.Texture);
+            }
+            
+            public override int GetHashCode()
+            {
+                int hashCode = 0;
+                unchecked {
+                    if (Sprite != null)
+                        hashCode += 1000000007 * Sprite.GetHashCode();
+                    if (Texture != null)
+                        hashCode += 1000000009 * Texture.GetHashCode();
+                }
+                return hashCode;
+            }
+            
+            public static bool operator ==(DeviceHelpers lhs, DeviceHelpers rhs)
+            {
+                if (ReferenceEquals(lhs, rhs))
+                    return true;
+                if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+                    return false;
+                return lhs.Equals(rhs);
+            }
+            
+            public static bool operator !=(DeviceHelpers lhs, DeviceHelpers rhs)
+            {
+                return !(lhs == rhs);
+            }
+            #endregion
+
+        }
+        
         #region fields & pins
         [Input("Text", DefaultString = "vvvv")]
         protected ISpread<string> FTextInput;
@@ -114,7 +204,7 @@ namespace VVVV.Nodes
         private int FSpreadMax;
         private Dictionary<FontIdentifier, SlimDX.Direct3D9.Font> FFonts = new Dictionary<FontIdentifier, SlimDX.Direct3D9.Font>();
         private Dictionary<Device, DeviceHelpers> FDeviceHelpers = new Dictionary<Device, DeviceHelpers>();
-        private List<FontIdentifier> FCurrentids = new List<FontIdentifier>();            
+        private List<FontIdentifier> FCurrentids = new List<FontIdentifier>();
         #endregion field declarationPL
 
         #region constructur
@@ -141,7 +231,7 @@ namespace VVVV.Nodes
 
             FSpreadMax = SpreadMax;
             FSizeOutput.SliceCount = SpreadMax;
-            FCurrentids.Clear();            
+            FCurrentids.Clear();
             
         }
         #endregion mainloop
@@ -154,7 +244,7 @@ namespace VVVV.Nodes
             df.Dispose();
         }
 
-        public FontIdentifier CreateFontIdentifier(Device dev, int slice)
+        private FontIdentifier CreateFontIdentifier(Device dev, int slice)
         {
             FontIdentifier id = new FontIdentifier();
             id.Device = dev;
@@ -173,7 +263,7 @@ namespace VVVV.Nodes
             return id;
         }
 
-        public SlimDX.Direct3D9.Font CreateFont(FontIdentifier id)
+        private SlimDX.Direct3D9.Font CreateFont(FontIdentifier id)
         {
             try
             {
@@ -182,7 +272,7 @@ namespace VVVV.Nodes
             catch
             {
                 var f = new SlimDX.Direct3D9.Font(
-                    id.Device, id.Size, 0, id.Weight, 0, id.Italic, CharacterSet.Default, Precision.Default, //id.Precision, 
+                    id.Device, id.Size, 0, id.Weight, 0, id.Italic, CharacterSet.Default, Precision.Default, //id.Precision,
                     id.Quality, PitchAndFamily.Default, id.Name);
                 f.PreloadCharacters(0, 255);
                 f.PreloadGlyphs(0, 255);
@@ -196,17 +286,12 @@ namespace VVVV.Nodes
             Device dev = Device.FromPointer(new IntPtr(OnDevice));
 
             //create device specific helpers on given device if not already present
-            try
+            if (!FDeviceHelpers.ContainsKey(dev))
             {
-                var dh = FDeviceHelpers[dev];
-            }
-            catch
-            {
-                var dh = new DeviceHelpers();
-
-                dh.Sprite = new Sprite(dev);
-                dh.Texture = new Texture(dev, 1, 1, 1, Usage.None, Format.L8, Pool.Managed);// Format.A8R8G8B8, Pool.Default);
-
+                var dh = new DeviceHelpers(
+                    new Sprite(dev),
+                    new Texture(dev, 1, 1, 1, Usage.None, Format.L8, Pool.Managed)); // Format.A8R8G8B8, Pool.Default)
+                   
                 //need to fill texture white to be able to set color on sprite later
                 DataRectangle tex = dh.Texture.LockRectangle(0, LockFlags.None);
                 tex.Data.WriteByte(255);
@@ -221,21 +306,16 @@ namespace VVVV.Nodes
             Device dev = Device.FromPointer(new IntPtr(OnDevice));
 
             //dispose resources that were created on given device
-            try
+            DeviceHelpers dh = null;
+            if (FDeviceHelpers.TryGetValue(dev, out dh))
             {
-                var dh = FDeviceHelpers[dev];
-                dh.Sprite.Dispose();
-                dh.Texture.Dispose();
+                dh.Dispose();
 
                 var ids = FFonts.FindAllKeys(df => df.Device == dev).ToArray();
                 foreach (var id in ids)
                     RemoveFont(id);
                 
                 FDeviceHelpers.Remove(dev);
-            }
-            catch
-            {
-                //resource is not available for this device. good. nothing to do then.
             }
         }
 
@@ -313,40 +393,40 @@ namespace VVVV.Nodes
                     hAlign = FHorizontalAlignInput[i].Index;
                     switch (hAlign)
                     {
-                        case 0: format |= DrawTextFormat.Left; break;
-                        case 1: format |= DrawTextFormat.Center; break;
-                        case 2: format |= DrawTextFormat.Right; break;
+                            case 0: format |= DrawTextFormat.Left; break;
+                            case 1: format |= DrawTextFormat.Center; break;
+                            case 2: format |= DrawTextFormat.Right; break;
                     }
 
                     vAlign = FVerticalAlignInput[i].Index;
                     switch (vAlign)
                     {
-                        case 0: format |= DrawTextFormat.Top; break;
-                        case 1: format |= DrawTextFormat.VerticalCenter; break;
-                        case 2: format |= DrawTextFormat.Bottom; break;
+                            case 0: format |= DrawTextFormat.Top; break;
+                            case 1: format |= DrawTextFormat.VerticalCenter; break;
+                            case 2: format |= DrawTextFormat.Bottom; break;
                     }
 
                     switch (FTextRenderingModeInput[i].Index)
                     {
-                        case 0: format |= DrawTextFormat.SingleLine; break;
-                        case 2: format |= DrawTextFormat.WordBreak; break;
+                            case 0: format |= DrawTextFormat.SingleLine; break;
+                            case 2: format |= DrawTextFormat.WordBreak; break;
                     }
 
                     tmpRect = new Rectangle(0, 0, FWidth[i], 0);
                     height = f.MeasureString(dh.Sprite, text, format, ref tmpRect);
-                    width = tmpRect.Width; 
+                    width = tmpRect.Width;
                     height = tmpRect.Height;
 
                     switch (normalize)
                     {
-                        case 1: preScale = VMath.Scale(1f / width, -1f / width, 1); break;
-                        //"width" means that the texture width will have no influence on the width of the sprite. Width will be always 1.
+                            case 1: preScale = VMath.Scale(1f / width, -1f / width, 1); break;
+                            //"width" means that the texture width will have no influence on the width of the sprite. Width will be always 1.
 
-                        case 2: preScale = VMath.Scale(1f / height, -1f / height, 1); break;
-                        //"height" means that the texture height will have no influence on the height of the sprite. Height will be always 1.
+                            case 2: preScale = VMath.Scale(1f / height, -1f / height, 1); break;
+                            //"height" means that the texture height will have no influence on the height of the sprite. Height will be always 1.
 
-                        case 3: preScale = VMath.Scale(1f / width, -1f / height, 1); break;
-                        //"on" means that the particle will always be a unit quad. independant of texture size
+                            case 3: preScale = VMath.Scale(1f / width, -1f / height, 1); break;
+                            //"on" means that the particle will always be a unit quad. independant of texture size
                     }
 
                     FTransformIn.GetRenderWorldMatrix(i, out world);
@@ -354,29 +434,29 @@ namespace VVVV.Nodes
 
                     switch (vAlign)
                     {
-                        case 1: y = height / 2; break;
-                        case 2: y = height; break;
-                        default: y = 0; break;
+                            case 1: y = height / 2; break;
+                            case 2: y = height; break;
+                            default: y = 0; break;
                     }
 
                     if (FShowBrush[i])
                     {
                         switch (hAlign)
                         {
-                            case 1: x = width / 2; break;
-                            case 2: x = width; break;
-                            default: x = 0; break;
+                                case 1: x = width / 2; break;
+                                case 2: x = width; break;
+                                default: x = 0; break;
                         }
                         dh.Sprite.Draw(dh.Texture, new Rectangle(0, 0, width, height),
-                            new Vector3(x, y, -0.001f), null, new Color4(FBrushColor[i].Color.ToArgb()));
+                                       new Vector3(x, y, -0.001f), null, new Color4(FBrushColor[i].Color.ToArgb()));
                     }
 
                     width = FWidth[i];
                     switch (hAlign)
                     {
-                        case 1: x = width / 2; break;
-                        case 2: x = width; break;
-                        default: x = 0; break;
+                            case 1: x = width / 2; break;
+                            case 2: x = width; break;
+                            default: x = 0; break;
                     }
                     f.DrawString(dh.Sprite, text, new Rectangle((int)-x, (int)-y, width, height), format, (Color)FColorInput[i]);
 

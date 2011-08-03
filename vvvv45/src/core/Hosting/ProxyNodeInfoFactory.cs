@@ -398,11 +398,6 @@ namespace VVVV.Hosting
 		
 		public void CommitUpdate()
 		{
-			string name = FSystemname;
-			if (FDisposed)
-			{
-				
-			}
 			try
 			{
 				if (FInUpdate)
@@ -418,13 +413,6 @@ namespace VVVV.Hosting
 			}
 		}
 		
-		private bool FDisposed;
-		public void Dispose()
-		{
-			FDisposed = true;
-			FNodeInfo = null;
-		}
-		
 		public override string ToString()
 		{
 			return Systemname;
@@ -437,7 +425,6 @@ namespace VVVV.Hosting
 	class ProxyNodeInfoFactory : INodeInfoFactory, INodeInfoListener, IDisposable
 	{
 		private IInternalNodeInfoFactory FFactory;
-		private HDEHost FHDEHost;
 		private Dictionary<INodeInfo, ProxyNodeInfo> FInternalToProxyMap;
 		private Dictionary<INodeInfo, INodeInfo> FProxyToInternalMap;
 		
@@ -449,10 +436,9 @@ namespace VVVV.Hosting
 			private set;
 		}
 		
-		public ProxyNodeInfoFactory(IInternalNodeInfoFactory nodeInfoFactory, HDEHost hdeHost)
+		public ProxyNodeInfoFactory(IInternalNodeInfoFactory nodeInfoFactory)
 		{
 			FFactory = nodeInfoFactory;
-			FHDEHost = hdeHost;
 			FInternalToProxyMap = new Dictionary<INodeInfo, ProxyNodeInfo>();
 			FProxyToInternalMap = new Dictionary<INodeInfo, INodeInfo>();
 			
@@ -574,8 +560,6 @@ namespace VVVV.Hosting
 			
 			if (!FInDestroyNodeInfo)
 				OnNodeInfoRemoved(proxyNodeInfo);
-			
-			proxyNodeInfo.Dispose();
 		}
 		
 		public event NodeInfoEventHandler NodeInfoAdded;

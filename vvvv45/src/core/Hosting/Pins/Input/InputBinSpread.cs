@@ -191,7 +191,7 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 		
-		private int NormalizeBinSize(int binSize, int sliceCount)
+		private static int NormalizeBinSize(int binSize, int sliceCount)
 		{
 			if (binSize < 0)
 			{

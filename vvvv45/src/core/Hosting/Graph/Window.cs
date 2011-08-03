@@ -110,14 +110,6 @@ namespace VVVV.Hosting.Graph
             }
         }
         
-        public IWindow InternalCOMInterf
-        {
-            get
-            {
-                return FNativeWindow;
-            }
-        }
-        
         public override string ToString()
         {
             return Caption;

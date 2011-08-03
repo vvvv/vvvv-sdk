@@ -503,6 +503,30 @@ namespace VVVV.Utils.VMath
         }
 
 		#endregion comparison operators
+		
+		#region Equals and GetHashCode implementation
+		public override bool Equals(object obj)
+        {
+            return (obj is Vector3D) && Equals((Vector3D)obj);
+        }
+		
+        public bool Equals(Vector3D other)
+        {
+            return this.x == other.x && this.y == other.y && this.z == other.z;
+        }
+		
+        public override int GetHashCode()
+        {
+            int hashCode = 0;
+            unchecked {
+                hashCode += 1000000007 * x.GetHashCode();
+                hashCode += 1000000009 * y.GetHashCode();
+                hashCode += 1000000021 * z.GetHashCode();
+            }
+            return hashCode;
+        }
+		#endregion
+
 	}
 
 }

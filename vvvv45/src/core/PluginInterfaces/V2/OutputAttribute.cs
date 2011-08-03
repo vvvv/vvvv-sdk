@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 namespace VVVV.PluginInterfaces.V2
 {
     [ComVisible(false)]
-	public class OutputAttribute : PinAttribute
+	public sealed class OutputAttribute : PinAttribute
 	{
 		public OutputAttribute(string name)
 			:base(name)

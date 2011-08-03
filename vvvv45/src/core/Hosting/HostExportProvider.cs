@@ -41,8 +41,6 @@ namespace VVVV.Hosting
         }
         #endregion
         
-        static Assembly PluginInterfaceAssembly = typeof(IPluginHost).Assembly;
-        
         private readonly List<IDisposable> FDisposableExports = new List<IDisposable>();
         
         public HostExportProvider()
@@ -208,7 +206,7 @@ namespace VVVV.Hosting
             }
         }
         
-        private PropertyInfo FindProperty(LazyMemberInfo member)
+        private static PropertyInfo FindProperty(LazyMemberInfo member)
         {
             var accessor = member.GetAccessors()[0];
             var declaringType = accessor.DeclaringType;

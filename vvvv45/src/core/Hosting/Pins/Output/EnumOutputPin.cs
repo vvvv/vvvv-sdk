@@ -17,7 +17,7 @@ namespace VVVV.Hosting.Pins.Output
 			FEnumType = typeof(T);
 			
 			var entrys = Enum.GetNames(FEnumType);
-			var defEntry = (attribute.DefaultEnumEntry != "") ? attribute.DefaultEnumEntry : entrys[0];	
+			var defEntry = !string.IsNullOrEmpty(attribute.DefaultEnumEntry) ? attribute.DefaultEnumEntry : entrys[0];
 			host.UpdateEnum(FEnumType.FullName, defEntry, entrys);
 			
 			host.CreateEnumOutput(attribute.Name, (TSliceMode)attribute.SliceMode, (TPinVisibility)attribute.Visibility, out FEnumOutputPin);

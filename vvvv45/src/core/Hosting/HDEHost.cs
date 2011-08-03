@@ -89,15 +89,6 @@ namespace VVVV.Hosting
             //set vvvv.exe path
             ExePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName((typeof(HDEHost).Assembly.Location)), @"..\.."));
             
-            //set cache file name
-            var filepath = Path.Combine(Path.GetTempPath(), "vvvv");
-            
-            uint hash;
-            unchecked
-            {
-                hash = (uint)ExePath.GetHashCode();
-            }
-            
             // Set name to vvvv thread for easier debugging.
             Thread.CurrentThread.Name = "vvvv";
             
@@ -148,7 +139,7 @@ namespace VVVV.Hosting
             Environment.SetEnvironmentVariable(ENV_VVVV, Path.GetFullPath(Shell.CallerPath.ConcatPath("..").ConcatPath("..")));
             
             FVVVVHost = vvvvHost;
-            NodeInfoFactory = new ProxyNodeInfoFactory(vvvvHost.NodeInfoFactory, this);
+            NodeInfoFactory = new ProxyNodeInfoFactory(vvvvHost.NodeInfoFactory);
             
             FVVVVHost.AddMouseClickListener(this);
             FVVVVHost.AddNodeSelectionListener(this);
@@ -192,7 +183,6 @@ namespace VVVV.Hosting
                     NodeCollection.Add(string.Empty, ExePath.ConcatPath(@"help\"), factory, true, false);
             
             //now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
-            var nodeInfoFactory = FVVVVHost.NodeInfoFactory;
             FWindowSwitcher = PluginFactory.CreatePlugin(windowSwitcherNodeInfo, null);
             FKommunikator = PluginFactory.CreatePlugin(kommunikatorNodeInfo, null);
             FNodeBrowser = (INodeBrowser) PluginFactory.CreatePlugin(nodeBrowserNodeInfo, null);
@@ -469,34 +459,6 @@ namespace VVVV.Hosting
                 from node in RootNode.AsDepthFirstEnumerable()
                 where nodeInfo == node.NodeInfo
                 select node;
-        }
-        
-        /// <summary>
-        /// From http://beaucrawford.net/post/Using-Reflection-to-get-inherited-properties-for-an-interface.aspx
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns>Returns all the inherited properties of an interface type.</returns>
-        protected static PropertyInfo[] GetAllProperties(Type type)
-        {
-            List<Type> typeList = new List<Type>();
-            typeList.Add(type);
-            
-            if (type.IsInterface)
-            {
-                typeList.AddRange(type.GetInterfaces());
-            }
-            
-            List<PropertyInfo> propertyList = new List<PropertyInfo>();
-            
-            foreach (Type interfaceType in typeList)
-            {
-                foreach (PropertyInfo property in interfaceType.GetProperties())
-                {
-                    propertyList.Add(property);
-                }
-            }
-            
-            return propertyList.ToArray();
         }
         
         protected INode2 FindNode(INode internalNode)

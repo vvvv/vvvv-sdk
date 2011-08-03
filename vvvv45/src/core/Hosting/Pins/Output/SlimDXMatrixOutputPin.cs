@@ -19,7 +19,7 @@ namespace VVVV.Hosting.Pins.Output
 			base.InitializeInternalPin(FTransformOut);
 		}
 		
-		unsafe protected void CopyFromBuffer(Matrix[] buffer, float* destination, int length)
+		unsafe protected static void CopyFromBuffer(Matrix[] buffer, float* destination, int length)
 		{
 			fixed (Matrix* source = buffer)
 			{

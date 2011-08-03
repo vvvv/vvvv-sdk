@@ -723,7 +723,55 @@ namespace VVVV.Utils.VMath
 			                     a / B.m41, a / B.m42, a / B.m43, a / B.m44);
 		}
 		
+		public static bool operator ==(Matrix4x4 lhs, Matrix4x4 rhs)
+        {
+            return lhs.Equals(rhs);
+        }
+		
+        public static bool operator !=(Matrix4x4 lhs, Matrix4x4 rhs)
+        {
+            return !(lhs == rhs);
+        }
+		
 		#endregion binary operators
+		
+		#region Equals and GetHashCode implementation
+		
+		public override bool Equals(object obj)
+        {
+            return (obj is Matrix4x4) && Equals((Matrix4x4)obj);
+        }
+		
+        public bool Equals(Matrix4x4 other)
+        {
+            return this.m11 == other.m11 && this.m12 == other.m12 && this.m13 == other.m13 && this.m14 == other.m14 && this.m21 == other.m21 && this.m22 == other.m22 && this.m23 == other.m23 && this.m24 == other.m24 && this.m31 == other.m31 && this.m32 == other.m32 && this.m33 == other.m33 && this.m34 == other.m34 && this.m41 == other.m41 && this.m42 == other.m42 && this.m43 == other.m43 && this.m44 == other.m44;
+        }
+		
+        public override int GetHashCode()
+        {
+            int hashCode = 0;
+            unchecked {
+                hashCode += 1000000007 * m11.GetHashCode();
+                hashCode += 1000000009 * m12.GetHashCode();
+                hashCode += 1000000021 * m13.GetHashCode();
+                hashCode += 1000000033 * m14.GetHashCode();
+                hashCode += 1000000087 * m21.GetHashCode();
+                hashCode += 1000000093 * m22.GetHashCode();
+                hashCode += 1000000097 * m23.GetHashCode();
+                hashCode += 1000000103 * m24.GetHashCode();
+                hashCode += 1000000123 * m31.GetHashCode();
+                hashCode += 1000000181 * m32.GetHashCode();
+                hashCode += 1000000207 * m33.GetHashCode();
+                hashCode += 1000000223 * m34.GetHashCode();
+                hashCode += 1000000241 * m41.GetHashCode();
+                hashCode += 1000000271 * m42.GetHashCode();
+                hashCode += 1000000289 * m43.GetHashCode();
+                hashCode += 1000000297 * m44.GetHashCode();
+            }
+            return hashCode;
+        }
+		#endregion
+
 		
 		public override string ToString()
 		{

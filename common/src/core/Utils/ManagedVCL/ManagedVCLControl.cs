@@ -73,14 +73,14 @@ namespace VVVV.Utils.ManagedVCL
 			if (ctl == null || !ctl.CanSelect)
 				return false;
 
-			Control ctrlActive = ctl.ActiveControl;
-			if (ctrlActive != null && ctrlActive is ContainerControl)
+			var activeControl = ctl.ActiveControl as ContainerControl;
+			if (activeControl != null)
 			{
-				if (ChildSelectNextControl((ContainerControl)ctrlActive, forward, tabStopOnly, nested, wrap))
+				if (ChildSelectNextControl(activeControl, forward, tabStopOnly, nested, wrap))
 					return true;
 			}
 
-			return ctl.SelectNextControl(ctrlActive, forward, tabStopOnly, nested, wrap);
+			return ctl.SelectNextControl(ctl.ActiveControl, forward, tabStopOnly, nested, wrap);
 		}
 
 		protected override bool ProcessTabKey(bool forward)
@@ -89,10 +89,11 @@ namespace VVVV.Utils.ManagedVCL
 				return base.ProcessTabKey(forward);
 
 			Control ctrl = ActiveControl;
+			var containerControl = ctrl as ContainerControl;
 
-			if (ctrl != null && ctrl is ContainerControl)
+			if (containerControl != null)
 			{
-				if (ChildSelectNextControl((ContainerControl)ctrl, forward, true, true, false))
+				if (ChildSelectNextControl(containerControl, forward, true, true, false))
 					return true;
 			}
 			
@@ -109,8 +110,9 @@ namespace VVVV.Utils.ManagedVCL
 			while (act != null)
 			{
 				ActiveControls.Add(act);
-				if (act is ContainerControl)
-					act = ((ContainerControl)act).ActiveControl;
+				var containerControl = act as ContainerControl;
+				if (containerControl != null)
+					act = containerControl.ActiveControl;
 				else
 					act = null;
 			}
@@ -186,7 +188,7 @@ namespace VVVV.Utils.ManagedVCL
 			}
 		}
 		
-		private bool IsDialogKey(KeyEventArgs key)
+		private static bool IsDialogKey(KeyEventArgs key)
 		{
 			if (key.Control)
 				return true;
