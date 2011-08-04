@@ -1,13 +1,13 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.4.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.5.dtd" >
    <PATCH nodename="C:\Dev\vvvv\AddonsCore\Nodes\_SpreadOperations\Queue (Enumerations) help.v4p" filename="C:\Dev\vvvv\AddonsCore\Nodes\_SpreadOperations\Queue (Enumerations) help.v4p" locked="0" systemname="Queue (Enumerations) help">
-   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="14" srcpinname="Output X">
+   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="14" srcpinname="Output X">
    </LINK>
    <NODE componentmode="InABox" id="16" nodename="IOBOX (STRING)" systemname="IOBox (String)">
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input" slicecount="1" visible="0" values="|x coordinates|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|x coordinates|">
    </PIN>
-   <PIN pinname="Output" visible="0">
+   <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
@@ -19,9 +19,9 @@
    <NODE componentmode="InABox" id="15" nodename="IOBOX (STRING)" systemname="IOBox (String)">
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input" slicecount="1" visible="0" values="|make up a &cr;&lf;smooth &cr;&lf;pseudorandom&cr;&lf;motion|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|make up a &cr;&lf;smooth &cr;&lf;pseudorandom&cr;&lf;motion|">
    </PIN>
-   <PIN pinname="Output" visible="0">
+   <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
@@ -55,9 +55,9 @@
    <NODE componentmode="InABox" id="12" nodename="IOBOX (STRING)" systemname="IOBox (String)">
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Output" visible="0">
+   <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN encoded="0" pinname="Input" slicecount="1" visible="0" values="|see also|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|see also|">
    </PIN>
    <BOUNDS height="160" left="300" top="300" type="Window" width="215">
    </BOUNDS>
@@ -92,12 +92,12 @@
    <PIN pinname="Y" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="9" nodename="IOBox (Value)" systemname="IOBox (Value)">
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="160" left="8374" top="3900" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input" slicecount="1" visible="1" values="400">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="400">
    </PIN>
-   <PIN pinname="Output" visible="1">
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
@@ -111,7 +111,7 @@
    <NODE componentmode="InABox" id="8" nodename="IOBOX (STRING)" systemname="IOBox (String)">
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Output" visible="0">
+   <PIN pinname="Output String" visible="0">
    </PIN>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -119,17 +119,17 @@
    </BOUNDS>
    <BOUNDS height="750" left="4290" top="825" type="Box" width="3105">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input" slicecount="1" visible="0" values="|number of slices, a negative number means infinite size, the queue will then grow as long as your computer can take it.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|number of slices, a negative number means infinite size, the queue will then grow as long as your computer can take it.|">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="7" nodename="IOBOX (STRING)" systemname="IOBox (String)">
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Output" visible="0">
+   <PIN pinname="Output String" visible="0">
    </PIN>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input" slicecount="1" visible="0" values="|If  the Insert pin is 1, the Queue appends input values to the start of the queue, shifts the queue, and drops the oldest values at the end of the queue. Technically this setup is called a LIFO-Queue (Last In, First Out) &cr;&lf;&cr;&lf;All values of the buffer are output in parallel as a spread. |">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|If  the Insert pin is 1, the Queue appends input values to the start of the queue, shifts the queue, and drops the oldest values at the end of the queue. Technically this setup is called a LIFO-Queue (Last In, First Out) &cr;&lf;&cr;&lf;All values of the buffer are output in parallel as a spread. |">
    </PIN>
    <BOUNDS height="2085" left="3660" top="1860" type="Box" width="3075">
    </BOUNDS>
@@ -168,14 +168,14 @@
    </NODE>
    <LINK dstnodeid="10" dstpinname="X" srcnodeid="5" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="5" dstpinname="Spread Count" srcnodeid="9" srcpinname="Output">
+   <LINK dstnodeid="5" dstpinname="Spread Count" srcnodeid="9" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="4" nodename="IOBox (Value)" systemname="IOBox (Value)">
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="160" left="2460" top="3784" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Output" visible="1">
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Y Input Value" visible="1">
    </PIN>
    <BOUNDS height="240" left="1575" top="1950" type="Box" width="795">
    </BOUNDS>
@@ -189,9 +189,9 @@
    </BOUNDS>
    <BOUNDS height="160" left="9960" top="47160" type="Window" width="215">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input" slicecount="1" visible="0" values="|generates a spread with the last n input values|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|generates a spread with the last n input values|">
    </PIN>
-   <PIN pinname="Output" visible="0">
+   <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
@@ -201,13 +201,13 @@
    </BOUNDS>
    <BOUNDS height="160" left="9960" top="47160" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Output" visible="0">
+   <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
-   <PIN encoded="0" pinname="Input" slicecount="1" visible="0" values="|Queue - Different Types|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Queue - Different Types|">
    </PIN>
    <BOUNDS height="390" left="15" top="15" type="Box" width="3465">
    </BOUNDS>
@@ -242,9 +242,9 @@
    <PIN pinname="Insert" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="0" dstpinname="Input" srcnodeid="4" srcpinname="Output">
+   <LINK dstnodeid="0" dstpinname="Input" srcnodeid="4" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="0" dstpinname="Frame Count" srcnodeid="9" srcpinname="Output">
+   <LINK dstnodeid="0" dstpinname="Frame Count" srcnodeid="9" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="10" dstpinname="Y" srcnodeid="0" srcpinname="Output">
    </LINK>
@@ -253,7 +253,7 @@
    </BOUNDS>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\plugins\SpreadOperations.dll" id="17" nodename="Buffer (Spreads)" systemname="Buffer (Spreads)">
-   <BOUNDS height="100" left="4155" top="6405" type="Node" width="100">
+   <BOUNDS height="100" left="4170" top="6405" type="Node" width="100">
    </BOUNDS>
    </NODE>
    </PATCH>
