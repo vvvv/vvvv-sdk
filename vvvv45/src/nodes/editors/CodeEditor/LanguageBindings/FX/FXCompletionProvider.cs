@@ -20,6 +20,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
         protected ILogger FLogger;
         protected Dictionary<string, string> FHLSLReference;
         protected Dictionary<string, string> FTypeReference;
+        private bool FAllowCodeCompletion;
         
         public FXCompletionProvider(CodeEditor editor)
         {
@@ -29,13 +30,20 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
             FHLSLReference = new Dictionary<string, string>();
             FTypeReference = new Dictionary<string, string>();
             
-            ParseHLSLFunctionReference();
+            //check for presence of functionreference
+            var filename = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), @"..\bin\hlsl.fnr"));
+            //if not present, prevent codecompletion 
+            FAllowCodeCompletion = File.Exists(filename);
+            if (FAllowCodeCompletion)
+            {
+	            ParseHLSLFunctionReference(filename);
             
-            AddTypeToReference("float");
-            AddTypeToReference("int");
-            AddTypeToReference("bool");
-            FTypeReference.Add("float3x4", "");
-            FTypeReference.Add("float4x3", "");
+	            AddTypeToReference("float");
+	            AddTypeToReference("int");
+	            AddTypeToReference("bool");
+	            FTypeReference.Add("float3x4", "");
+	            FTypeReference.Add("float4x3", "");
+            }
         }
         
         private void AddTypeToReference(string type)
@@ -49,12 +57,11 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
             }
         }
         
-        private void ParseHLSLFunctionReference()
+        private void ParseHLSLFunctionReference(string filename)
         {
             try
             {
                 var functionReference = new XmlDocument();
-                var filename = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetCallingAssembly().Location), @"..\bin\hlsl.fnr"));
                 functionReference.Load(filename);
                 foreach (XmlNode function in functionReference.DocumentElement.ChildNodes)
                 {
@@ -77,6 +84,12 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
         
         public override ICompletionData[] GenerateCompletionData(string fileName, TextArea textArea, char charTyped)
         {
+        	if (!FAllowCodeCompletion) 
+        	{
+        		var noData = new ICompletionData[0];
+        		return noData;
+        	}
+        	
             // We can return code-completion items like this:
             
             //return new ICompletionData[] {
