@@ -17,16 +17,19 @@ namespace VVVV.Nodes
 	public class BufferNode<T> : IPluginEvaluate
 	{
 		[Input("Input")]
-		protected ISpread<T> FInput;
+		protected ISpread<ISpread<T>> FInput;
 
-        [Input("Index", IsSingle = true)]
+        [Input("Index")]
         protected ISpread<int> FIndex;
 		
-		[Input("Set", IsSingle = true)]
+		[Input("Set")]
 		protected ISpread<bool> FDoInsert;
 		
 		[Input("Frame Count", IsSingle = true, MinValue = 0, DefaultValue = 1)]
 		protected ISpread<int> FFrameCount;
+
+        [Input("Default")]
+        protected ISpread<ISpread<T>> FDefault;
 
         [Input("Reset", IsSingle = true, IsBang = true)]
         protected ISpread<bool> FReset;
@@ -34,25 +37,27 @@ namespace VVVV.Nodes
 		[Output("Output")]
 		protected ISpread<ISpread<T>> FOutput;
 
-        [Output("Phase", IsSingle = true)]
+        [Output("Phase")]
         protected ISpread<double> FPhase;
 
         bool FFirstFrame = true;
 
 		public void Evaluate(int SpreadMax)
 		{
+            //create new buffer on startup
             if (FFirstFrame) FOutput[0] = new Spread<T>(1);
+
+            //get buffer size
+            var frameCount = FFrameCount[0];
 
             if (FReset[0]) //set all slices to default
             {
-                for (int i = 0; i < FOutput.SliceCount; i++)
-                    FOutput[i] = new Spread<T>(1);
+                FOutput.SliceCount = frameCount;
+                for (int i = 0; i < frameCount; i++)
+                    FOutput[i] = FDefault[i].Clone();
             }
-
-            var frameCount = FFrameCount[0];
-            var bufferCounter = FIndex[0];
-
-            //remove slices
+      
+            //set slice count
             if (FOutput.SliceCount > frameCount)
             {
                 FOutput.RemoveRange(frameCount, FOutput.SliceCount - frameCount);
@@ -63,12 +68,22 @@ namespace VVVV.Nodes
                     FOutput.Add(new Spread<T>(1));
             }
 
-            bufferCounter %= Math.Max(frameCount, 1);
+            SpreadMax = Math.Max(Math.Max(FInput.SliceCount, FIndex.SliceCount), FDoInsert.SliceCount);
+            
+            //set phase slice count
+            FPhase.SliceCount = SpreadMax;
 
-            if (FDoInsert[0])
+            //per slice
+            for (int i = 0; i < SpreadMax; i++)
             {
-                FOutput[bufferCounter] = FInput.Clone();
-                FPhase[0] = frameCount > 1 ? bufferCounter / (double)(frameCount-1) : 0;
+                var bufferCounter = FIndex[i];
+                bufferCounter %= Math.Max(frameCount, 1);
+
+                if (FDoInsert[i])
+                {
+                    FOutput[bufferCounter] = FInput[i].Clone();
+                    FPhase[i] = frameCount > 1 ? bufferCounter / (double)(frameCount - 1) : 0;
+                }  
             }
 
             FFirstFrame = false;

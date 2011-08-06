@@ -38,9 +38,14 @@ namespace VVVV.Nodes
         protected ISpread<int> FCurrentFrame;
 
         int FBufferCounter = 0;
+
+        bool FFirstFrame = true;
 		
 		public void Evaluate(int SpreadMax)
 		{
+            //create new buffer on startup
+            if (FFirstFrame) FOutput[0] = new Spread<T>(1);
+
             if (FReset[0])
             {
                 FOutput.SliceCount = 0;
@@ -73,6 +78,8 @@ namespace VVVV.Nodes
                 FCurrentFrame[0] = FBufferCounter;
                 FBufferCounter++;
             }
+
+            FFirstFrame = false;
 		}
 	}
 	
