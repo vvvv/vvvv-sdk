@@ -75,7 +75,7 @@ public class WriterAdvancedNode : IPlugin, IDisposable
         this.FPinInEmpty.SetSubType(0, 1, 1, 1, false, true, false);
 
         this.FHost.CreateStringInput("Filename", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInPath);
-        this.FPinInPath.SetSubType("file.txt", false);
+        this.FPinInPath.SetSubType("file.txt", true);
   
         this.FHost.CreateValueInput("Create Directory", 1, null, TSliceMode.Dynamic, TPinVisibility.OnlyInspector, out this.FPinInCreateDir);
         this.FPinInCreateDir.SetSubType(0, 1, 1, 0, false, true, false);
