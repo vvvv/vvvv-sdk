@@ -1,9 +1,9 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
-   <PATCH nodename="ColorKey (EX9.Texture Filter).v4p">
+   <PATCH nodename="X:\ColorKey\ColorKey (EX9.Texture Filter).v4p">
    <BOUNDS height="9000" left="6870" top="5775" type="Window" width="16560">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="ColorKey.fx" id="31" nodename="ColorKey.fx" systemname="ColorKey (EX9.Effect)">
-   <BOUNDS height="270" left="2025" top="5415" type="Node" width="5055">
+   <BOUNDS height="270" left="2025" top="5415" type="Node" width="12360">
    </BOUNDS>
    <BOUNDS height="6090" left="12180" top="315" type="Window" width="15405">
    </BOUNDS>
@@ -72,6 +72,8 @@
    <PIN pinname="sSaturation" visible="1">
    </PIN>
    <PIN pinname="sHue" visible="1">
+   </PIN>
+   <PIN pinname="Invert" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="30" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -477,7 +479,7 @@
    </PIN>
    <PIN pinname="Color Output" visible="1">
    </PIN>
-   <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.68868,0.29503,0.06510,1.00000|">
+   <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.78890,0.37483,0.04136,1.00000|">
    </PIN>
    </NODE>
    <LINK dstnodeid="31" dstpinname="Col" srcnodeid="6" srcpinname="Color Output">
@@ -577,5 +579,39 @@
    <LINK dstnodeid="31" dstpinname="tSaturation" srcnodeid="1" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="31" dstpinname="tLightness" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="32">
+   <BOUNDS type="Node" left="13920" top="570" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13920" top="570" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Window" left="21420" top="6855" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Invert">
+   </PIN>
+   </NODE>
+   <NODE nodename="AND (Boolean)" componentmode="Hidden" id="33">
+   <BOUNDS type="Node" left="14040" top="1410" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="Y Output Value" dstnodeid="33" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="Output" dstnodeid="31" dstpinname="Invert">
    </LINK>
    </PATCH>

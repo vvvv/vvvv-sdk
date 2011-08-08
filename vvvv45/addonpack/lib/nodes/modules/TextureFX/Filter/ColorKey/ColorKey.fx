@@ -9,6 +9,7 @@ float tSaturation <float uimin=0.0; float uimax=1.0;> = 0.05;
 float tLightness <float uimin=0.0; float uimax=1.0;> = 0.05;
 bool SourceAlpha;
 bool Premultiply;
+bool Invert;
 texture tex0;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 float3 hsv2rgb(float3 h){h.z+=max(0,h.y-1);float3 c=saturate((abs(frac(-h.x+float3(3,1,2)/3)*6-3)-1))*h.z;c=lerp(c,max(c.r,max(c.g,c.b)),1-h.y);return c;}
@@ -26,7 +27,7 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     c.a*=saturate(.5+256/pow(2,sHue*10)*(tHue*.504-min(abs(h.x-k.x),min(abs(h.x-k.x-1),abs(h.x-k.x+1)))));
     c.a*=saturate(.5+256./pow(2,sSaturation*10)*(tSaturation*.504-abs(h.y-k.y)));
     c.a*=saturate(.5+256./pow(2,sLightness*10)*(tLightness*.504-abs(h.z-k.z)));
-	c.a=1-c.a;
+    if(Invert)c.a=1-c.a;
     if(Premultiply)c.rgb*=sqrt(1./c.a);
     return c;
 }

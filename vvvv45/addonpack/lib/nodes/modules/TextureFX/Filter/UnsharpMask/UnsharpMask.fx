@@ -1,8 +1,10 @@
 float2 R;
 float Sharp <float uimin=0.0;>;
-float Radius <float uimin=0.0; float uimax=1.0;> = 0.1;
+float MinRadius <float uimin=0.0; float uimax=1.0;> = 0.1;
+float Radius <float uimin=0.0; float uimax=1.0;> = 0.6;
 float Saturation <float uimin=0.0; float uimax=1.0;> = 0.2;
 float Gamma <float uimin=-1.0; float uimax=1.0;> = 0.2;
+float Balance;
 texture tex0;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
@@ -10,12 +12,17 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     c=tex2Dlod(s0,float4(x,0,1));
     float maxl=log2(max(R.x,R.y))+.5;
     float4 sh=0;
-        //sh.rgb+=(tex2Dlod(s0,float4(x,0,1+maxl))-tex2Dlod(s0,float4(x,0,2+maxl)))*128*Sharp/pow(2,Radius/max(R.x,R.y)*pow(2,maxl*Radius));
-	sh.rgb+=(tex2Dlod(s0,float4(x,0,1+maxl*saturate(Radius)))-tex2Dlod(s0,float4(x,0,2+maxl*saturate(Radius))))*128*Sharp/pow(2,Radius/max(R.x,R.y)*pow(2,maxl*Radius));
-	sh.rgb=lerp(dot(sh.rgb,1.)/3.,sh.rgb,Saturation);
-	sh.rgb=sign(sh.rgb)*pow(abs(sh.rgb)*5,pow(2,Gamma*2))/5;
-	sh/=1+c;
-	c.rgb*=pow(2,sh);
+
+    for (float i=0;i<7;i++){
+    sh.rgb+=(tex2Dlod(s0,float4(x,0,1+maxl*saturate(Radius*lerp(i,7,MinRadius)/7)))-tex2Dlod(s0,float4(x,0,1+maxl*saturate(Radius*(lerp(i,7,MinRadius)+1)/7))))/pow(2,lerp(i,7,MinRadius)*Balance)*32*Sharp/pow(2,Radius/max(R.x,R.y)*pow(2,maxl*Radius));
+    }
+    sh.rgb=lerp(dot(sh.rgb,1.)/3.,sh.rgb,Saturation);
+    //sh.rgb*=pow(2,Balance*7);
+    //sh.rgb/=pow(2,lerp(Balance*0,-Balance*6,Balance<0));
+    sh.rgb=sign(sh.rgb)*pow(abs(sh.rgb)*5,pow(2,Gamma*2))/5;
+    sh/=1+c;
+    //c.rgb*=pow(2,sh);
+    c.rgb+=sh.rgb;
     return c;
 }
 

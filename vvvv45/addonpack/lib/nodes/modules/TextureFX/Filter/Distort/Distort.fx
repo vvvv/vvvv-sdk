@@ -1,6 +1,4 @@
 float2 R;
-float DistortType;
-float NormalizeMap;
 float Width;
 float MapSmooth <float uimin=0.0; float uimax=1.0;> = 0.1;
 texture tex0,tex1;
@@ -12,8 +10,6 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     float2 off=.25/R*pow(2,lod)*saturate(lod-1)+1./R;
     float4 map=tex2Dlod(s1,float4(x,0,lod));
     float2 ht=float2((tex2Dlod(s1,float4(x-off*float2(1,0),0,lod))-tex2Dlod(s1,float4(x+off*float2(1,0),0,lod))).x,(tex2Dlod(s1,float4(x-off*float2(0,1),0,lod))-tex2Dlod(s1,float4(x+off*float2(0,1),0,lod))).x);
-    if(DistortType)ht=map.yz-.5;
-    if(NormalizeMap)ht=lerp(ht,normalize(ht),saturate(NormalizeMap));
     c=tex2Dlod(s0,float4(x+ht*Width,0,1));
     return c;
 }
