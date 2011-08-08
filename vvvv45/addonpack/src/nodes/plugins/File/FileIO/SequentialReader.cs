@@ -64,7 +64,7 @@ namespace VVVV.Nodes
             this.FHost = Host;
 
             
-            this.FHost.CreateStringInput("Path", TSliceMode.Single, TPinVisibility.True, out this.FPinInFile);
+            this.FHost.CreateStringInput("Filename", TSliceMode.Single, TPinVisibility.True, out this.FPinInFile);
             this.FPinInFile.SetSubType("", true);
 
             this.FHost.CreateValueInput("Do Read", 1, null, TSliceMode.Single, TPinVisibility.True, out this.FPinInDoRead);
