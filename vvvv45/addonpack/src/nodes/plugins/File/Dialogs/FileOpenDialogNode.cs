@@ -70,7 +70,7 @@ namespace VVVV.Nodes
 
             
             this.FHost.CreateStringInput("Default Directory", TSliceMode.Single, TPinVisibility.True, out this.FPinInDefaultDir);
-            this.FPinInDefaultDir.SetSubType("", false);
+            this.FPinInDefaultDir.SetSubType2(string.Empty, int.MaxValue, string.Empty, TStringType.Directory);
        
             this.FHost.CreateStringInput("Filter", TSliceMode.Single, TPinVisibility.True, out this.FPinInFilter);
             this.FPinInFilter.SetSubType("All files (*.*)|*.*", false);
@@ -87,7 +87,7 @@ namespace VVVV.Nodes
 
             //Output 
             this.FHost.CreateStringOutput("Path", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutPath);
-            this.FPinOutPath.SetSubType("", true);
+            this.FPinOutPath.SetSubType2(string.Empty, int.MaxValue, string.Empty, TStringType.Directory);
             
         }
 
