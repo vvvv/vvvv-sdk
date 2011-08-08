@@ -14,12 +14,12 @@
 	
   <assemblyfileset id="project.references">
    	<include name="${lib.dir}/**/*.dll" />
-   	<include name="dependencies/*.dll" />
+   	<include name="Dependencies/*.dll" />
  	</assemblyfileset>
  	
  	<target name="post-build">
    	<copy todir="${plugin.path}">
-     	<fileset basedir="dependencies">
+     	<fileset basedir="Dependencies">
      	  <include name="**/*" />
      	</fileset>
    	</copy>
