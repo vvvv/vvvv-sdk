@@ -95,11 +95,11 @@ namespace VVVV.Nodes
                 if (disposing)
                 {
                     // Dispose managed resources.
+                    if (FHost != null)
+                        FHost.Log(TLogType.Message, PluginInfo.Name + " has been deleted");
                 }
                 // Release unmanaged resources. If disposing is false,
                 // only the following code is executed.
-
-                //FHost.Log(TLogType.Message, FPluginInfo.Name + " has been deleted");
 
                 // Note that this is not thread safe.
                 // Another thread could start disposing the object
@@ -197,7 +197,7 @@ namespace VVVV.Nodes
 
             //INPUT-PINS
             FHost.CreateStringInput("Directory", TSliceMode.Single, TPinVisibility.True, out FDirectory);
-            FDirectory.SetSubType2("C:\\",int.MaxValue,"*.*",TStringType.Directory);
+            FDirectory.SetSubType2("C:\\", int.MaxValue, string.Empty, TStringType.Directory);
 
             FHost.CreateValueInput("Include Subdirectories", 1, null, TSliceMode.Single, TPinVisibility.True, out FSubdirectories);
             FSubdirectories.SetSubType(0, 1, 1, 0, false, true, true);
@@ -224,7 +224,7 @@ namespace VVVV.Nodes
 
 
             // OUTPUT-PINS
-            FHost.CreateStringOutput("Files", TSliceMode.Dynamic, TPinVisibility.True, out FFiles);
+            FHost.CreateStringOutput("Filenames", TSliceMode.Dynamic, TPinVisibility.True, out FFiles);
             FFiles.SetSubType("", true);
 
             FHost.CreateStringOutput("Short Filenames", TSliceMode.Dynamic, TPinVisibility.True, out FShortFilenameOut);
