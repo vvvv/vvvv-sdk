@@ -107,14 +107,15 @@ namespace VVVV.Hosting.Factories
         
         protected override bool CreateNode(INodeInfo nodeInfo, IInternalPluginHost pluginHost)
         {
-            //dispose previous plugin
             var plugin = pluginHost.Plugin;
-            if (plugin != null) DisposePlugin(plugin);
             
             //make the host mark all its pins for possible deletion
             pluginHost.Plugin = null;
             
-            //create the plugin
+            //dispose previous plugin
+            if (plugin != null) DisposePlugin(plugin);
+            
+            //create the new plugin
             plugin = CreatePlugin(nodeInfo, pluginHost as IPluginHost2);
             
             pluginHost.Plugin = plugin;
