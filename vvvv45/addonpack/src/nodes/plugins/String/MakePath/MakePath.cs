@@ -141,10 +141,10 @@ namespace VVVV.Nodes
 					//the nodes main name: use CamelCaps and no spaces
 					FPluginInfo.Name = "MakePath";
 					//the nodes category: try to use an existing one
-					FPluginInfo.Category = "File";
+					FPluginInfo.Category = "String";
 					//the nodes version: optional. leave blank if not
 					//needed to distinguish two nodes of the same name and category
-					FPluginInfo.Version = "Path";
+					FPluginInfo.Version = "";
 					
 					//the nodes author: your sign
 					FPluginInfo.Author = "woei";
