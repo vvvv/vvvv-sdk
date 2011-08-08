@@ -187,7 +187,8 @@ namespace VVVV.Nodes
 
 	    	//create inputs
 	    	FHost.CreateStringInput("Directory", TSliceMode.Dynamic, TPinVisibility.True, out FDir);
-	    	FDir.SetSubType("C:", false);
+	    	//FDir.SetSubType("C:", false);
+	    	FDir.SetSubType2(@"C:\", int.MaxValue, string.Empty, TStringType.Directory);
 	    	
 	    	FHost.CreateStringInput("Custom Root", TSliceMode.Dynamic, TPinVisibility.Hidden, out FCustomRoot);
 	    	FCustomRoot.SetSubType("", false);
@@ -199,7 +200,7 @@ namespace VVVV.Nodes
 	    	FDelete.SetSubType(0,1,1,0,true,false, false);
 	    	
 	    	FHost.CreateStringInput("New Name", TSliceMode.Dynamic, TPinVisibility.True, out FNewDir);
-	    	FNewDir.SetSubType("C:", false);
+	    	FNewDir.SetSubType2(@"C:\", -1, string.Empty, TStringType.Directory);
 	    	
 	    	FHost.CreateValueInput("Rename", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FRename);
 	    	FRename.SetSubType(0,1,1,0,true,false, false);
