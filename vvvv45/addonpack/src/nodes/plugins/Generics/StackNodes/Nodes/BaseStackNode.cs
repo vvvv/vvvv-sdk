@@ -80,8 +80,7 @@ namespace VVVV.Nodes
                 {
                     if (this.FOutputFull != null)
                     {
-                        //this.FOutputFull.Dispose();
-                        this.FOutputFull.Delete();
+                        this.FOutputFull.Dispose();
                         this.FOutputFull = null;
                     }
                 }
