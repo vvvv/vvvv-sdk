@@ -71,7 +71,7 @@ namespace VVVV.Nodes
             //this.FHost.UpdateEnum(WATCHER_ENUM,"All",Enum.GetNames(typeof(WatcherChangeTypes)));
       
             this.FHost.CreateStringInput("Path", TSliceMode.Single, TPinVisibility.True, out this.FPinInPath);
-            this.FPinInPath.SetSubType("C:\\", false);
+            this.FPinInPath.SetSubType2(string.Empty, int.MaxValue, string.Empty, TStringType.Directory);
    
             this.FHost.CreateStringInput("Filter", TSliceMode.Single, TPinVisibility.True, out this.FPinInFilter);
             this.FPinInFilter.SetSubType("*.*", false);
@@ -80,7 +80,7 @@ namespace VVVV.Nodes
             this.FPinInRecurse.SetSubType(0, 1, 1, 0, false, true, false);
         
             this.FHost.CreateStringOutput("Path", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutName);
-            this.FPinOutName.SetSubType("", false);
+            this.FPinOutName.SetSubType2(string.Empty, int.MaxValue, string.Empty, TStringType.Directory);
          
             this.FHost.CreateStringOutput("Event Type", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinOutEventType);
             this.FPinOutEventType.SetSubType("", false);
