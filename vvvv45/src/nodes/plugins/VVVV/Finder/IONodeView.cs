@@ -24,12 +24,13 @@ namespace VVVV.Nodes.Finder
         {
             FNode.LabelPin.Changed += HandleLabelPinChanged;
             FLabel = FNode.LabelPin[0];
+            FComment = string.Empty;
             
             if (FNode.NodeInfo.Category == "String")
             {
                 FCommentPin = FNode.FindPin("Input String");
                 FCommentPin.Changed += HandleCommentPinChanged;
-                FComment = FCommentPin[0];
+                FComment = FCommentPin[0] ?? string.Empty;
             }
         }
         
@@ -76,7 +77,7 @@ namespace VVVV.Nodes.Finder
         
         void HandleCommentPinChanged(object sender, EventArgs e)
         {
-            FComment = FCommentPin[0];
+            FComment = FCommentPin[0] ?? string.Empty;
             
             if (IOType == IOTypeCode.Comment)
             {
