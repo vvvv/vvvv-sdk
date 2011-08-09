@@ -23,23 +23,20 @@ namespace VVVV.Nodes
 	public class DecomposeNode : IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("Transform")]
-		IDiffSpread<Matrix> FInput;
+		[Input("Transform In")]
+		protected IDiffSpread<Matrix> FInput;
 
-		[Output("Translate ")]
-		ISpread<Vector3> FTransOut;
+		[Output("Translate")]
+		protected ISpread<Vector3> FTransOut;
 		
-		[Output("Scale ")]
-		ISpread<Vector3> FScaleOut;
+		[Output("Scale")]
+		protected ISpread<Vector3> FScaleOut;
 		
-		[Output("Rotate ")]
-		ISpread<Vector3D> FRotOut;
+		[Output("Rotate")]
+		protected ISpread<Vector3D> FRotOut;
 
-        [Output("OK")]
-        ISpread<bool> FOKOut;
-
-		[Import()]
-		ILogger FLogger;
+        [Output("Success")]
+        protected ISpread<bool> FOKOut;
 		#endregion fields & pins
 
 		//called when data for any output pin is requested
@@ -63,8 +60,6 @@ namespace VVVV.Nodes
 					FRotOut[i] = VMath.QuaternionToEulerYawPitchRoll(q.ToVector4D()) * VMath.RadToCyc;
 				}	
 			}
-
-			//FLogger.Log(LogType.Debug, "Logging to Renderer (TTY)");
 		}
 	}
 }
