@@ -339,8 +339,7 @@ namespace VVVV.Nodes.NodeBrowser
             {
                 FLastMouseHoverLocation = e.Location;
                 FHoverLine = newHoverLine;
-                if (sender != FNodeTypePanel)
-                    ShowToolTip(e.X + 15);
+                ShowToolTip(e.X + 15);
                 RedrawSelection();
             }
         }
