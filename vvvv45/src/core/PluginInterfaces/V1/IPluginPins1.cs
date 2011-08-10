@@ -658,7 +658,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// Alternative version to <see cref="SetSubType(string, bool)">IStringConfig.SetSubType()</see> with more options.
 		/// </summary>
 		/// <param name="Default">The String the pin is initialized with and can be reset to at any time</param>
-		/// <param name="MaxCharacters">Constrains the string to a given number of characters</param>
+		/// <param name="MaxCharacters">Constrains the string to a given number of characters. Use -1 for unlimited characters</param>
 		/// <param name="FileMask">Filemask in the form of: Audio File (*.wav, *.mp3)|*.wav;*.mp3</param>
 		/// <param name="StringType">Enum specifying the type of string more precisely.</param>
 		void SetSubType2(string Default, int MaxCharacters, string FileMask, TStringType StringType);
