@@ -2,12 +2,12 @@
 using System;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.Nodes.Spreads
+namespace VVVV.Nodes.Value
 {
 	[PluginInfo(Name = "Differential", 
 				Category = "Spreads", 
 				Help = "Calculates the differences between one slice and the next. The output spread has one slice less than the input.")]
-	public class PluginValueDifferentialNode : IPluginEvaluate
+	public class ValueDifferentialNode : IPluginEvaluate
 	{
 		[Input("Input")]
 		protected ISpread<ISpread<double>> FInput;

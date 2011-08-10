@@ -2,12 +2,12 @@
 using System;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.Nodes.Spreads
+namespace VVVV.Nodes.Value
 {
 	[PluginInfo(Name = "Integral", 
 				Category = "Spreads", 
 				Help = "Sums up a spread of values and output the partial sums. The output spread has one slice more than the input.")]
-	public class PluginValueIntegralNode : IPluginEvaluate
+	public class ValueIntegralNode : IPluginEvaluate
 	{
 		[Input("Input")]
 		protected ISpread<ISpread<double>> FInput;
