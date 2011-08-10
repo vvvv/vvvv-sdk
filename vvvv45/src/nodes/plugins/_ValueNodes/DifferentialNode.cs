@@ -12,19 +12,25 @@ namespace VVVV.Nodes.Value
 		[Input("Input")]
 		protected ISpread<ISpread<double>> FInput;
 
-		[Output("Output")]
-		protected ISpread<ISpread<double>> FOutput;
+        [Output("Output")]
+        protected ISpread<ISpread<double>> FOutput;
 
-		//called when data for any output pin is requested
+        [Output("Offset")]
+        protected ISpread<double> FOffset;
+
+        //called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			FOutput.SliceCount = FInput.SliceCount;
+            FOutput.SliceCount = FInput.SliceCount;
+            FOffset.SliceCount = FInput.SliceCount;
 			
 			for (int i = 0; i < FInput.SliceCount; i++)
 			{
 				var input = FInput[i];
 				var output = FOutput[i];
-				
+
+                FOffset[i] = input[0];
+
 				output.SliceCount = input.SliceCount - 1;
 				for (int j = 1; j < input.SliceCount; j++)
 				{
