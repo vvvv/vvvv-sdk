@@ -1,15 +1,15 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
-   <PATCH nodename="K:\plugins\File\Directory\Directory (File) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha25.4.dtd" >
+   <PATCH nodename="D:\vvvv\sourceforge\plugins\__upld\Directory\Directory (File) help.v4p">
    <BOUNDS height="5640" left="1125" top="1125" type="Window" width="4830">
    </BOUNDS>
-   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="180" top="195" type="Node" width="3660">
    </BOUNDS>
    <BOUNDS height="420" left="180" top="195" type="Box" width="4245">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Directory (file) help|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Directory (File) help|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -18,10 +18,10 @@
    <PIN pinname="Size" slicecount="1" values="14">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="3" nodename=":PLUGINS:\Directory.dll">
-   <BOUNDS height="100" left="345" top="4005" type="Node" width="100">
+   <NODE componentmode="InAWindow" id="3" nodename="Directory.dll" systemname="Directory (File)" filename="Directory.dll">
+   <BOUNDS height="270" left="270" top="3225" type="Node" width="2370">
    </BOUNDS>
-   <BOUNDS left="345" top="4005" type="Box">
+   <BOUNDS left="270" top="3225" type="Box">
    </BOUNDS>
    <PIN pinname="Directory" visible="1">
    </PIN>
@@ -33,75 +33,117 @@
    </PIN>
    <PIN pinname="Remove" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="New Name" slicecount="1" values="newDir">
+   <PIN pinname="New Name">
    </PIN>
-   <PIN pinname="Rename" slicecount="1" values="0">
+   <PIN pinname="Rename">
    </PIN>
    <PIN pinname="Full Path" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
-   <BOUNDS height="0" left="330" top="2430" type="Node" width="0">
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="255" top="1500" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="3510" top="3915" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="375" left="330" top="2430" type="Box" width="4035">
+   <BOUNDS height="375" left="255" top="1500" type="Box" width="4035">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="c:\vvvv_tmp">
+   <PIN pinname="Input String" slicecount="1" values="c:\vvvv_tmp" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Directory" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="3" dstpinname="Directory" srcnodeid="2" srcpinname="Output String">
    </LINK>
-   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="345" top="4545" type="Node" width="0">
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="225" top="945" type="Node" width="2790">
    </BOUNDS>
-   <BOUNDS height="160" left="2535" top="4860" type="Window" width="215">
+   <BOUNDS height="375" left="225" top="945" type="Box" width="4080">
    </BOUNDS>
-   <BOUNDS height="240" left="345" top="4545" type="Box" width="795">
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Y Input Value" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="exists">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="1" dstpinname="Y Input Value" srcnodeid="3" srcpinname="Exists">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="5">
-   <BOUNDS type="Node" left="225" top="945" width="2790" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="225" top="945" width="4200" height="1320">
-   </BOUNDS>
-   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|create, delete and rename directories&cr;&lf;&cr;&lf;note: inserting a relative path results in having the path, where the plugin is located as root. so if workin with relative paths, specify a custom root.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|create, delete and rename directories|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6">
-   <BOUNDS type="Node" left="615" top="3090" width="0" height="0">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="270" top="3615" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="3255" top="4845" width="215" height="160">
+   <BOUNDS type="Box" left="270" top="3615" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="615" top="3090" width="615" height="525">
-   </BOUNDS>
-   <PIN pinname="Minimum" slicecount="1" values="0">
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
    </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1">
+   <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
-   <PIN pinname="Show Value" slicecount="1" values="0">
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Show Slider" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Exists" encoded="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Create">
+   <LINK srcnodeid="3" srcpinname="Exists" dstnodeid="7" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="8" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="855" top="2025" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="855" top="2025" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Create" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Create">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="9" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1995" top="2280" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1995" top="2280" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="newDir" encoded="0">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="C:" encoded="0">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|New Name|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Output String" dstnodeid="3" dstpinname="New Name">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2565" top="2775" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2565" top="2775" width="345" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Rename" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Rename">
    </LINK>
    </PATCH>

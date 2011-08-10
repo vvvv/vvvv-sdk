@@ -25,8 +25,6 @@
 //use what you need
 using System;
 using System.IO;
-using System.Drawing;
-using System.Reflection;
 using VVVV.PluginInterfaces.V1;
 
 //the vvvv node namespace
@@ -45,7 +43,6 @@ namespace VVVV.Nodes
     	
     	//input pin declaration
     	private IStringIn FDir;
-    	private IStringIn FCustomRoot;
     	private IValueIn FCreate;
     	private IValueIn FDelete;
     	private IStringIn FNewDir;
@@ -187,11 +184,7 @@ namespace VVVV.Nodes
 
 	    	//create inputs
 	    	FHost.CreateStringInput("Directory", TSliceMode.Dynamic, TPinVisibility.True, out FDir);
-	    	//FDir.SetSubType("C:", false);
-	    	FDir.SetSubType2(@"C:\", int.MaxValue, string.Empty, TStringType.Directory);
-	    	
-	    	FHost.CreateStringInput("Custom Root", TSliceMode.Dynamic, TPinVisibility.Hidden, out FCustomRoot);
-	    	FCustomRoot.SetSubType("", false);
+	    	FDir.SetSubType2(@"C:\", -1, string.Empty, TStringType.Directory);
 	    	
 	    	FHost.CreateValueInput("Create", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FCreate);
 	    	FCreate.SetSubType(0,1,1,0,true,false, false);
@@ -226,14 +219,12 @@ namespace VVVV.Nodes
         {     	
         	//compute only on refresh	
         	if (FDir.PinIsChanged ||
-        	    FCustomRoot.PinIsChanged ||
         	    FCreate.PinIsChanged ||
         	    FDelete.PinIsChanged ||
         	    FNewDir.PinIsChanged ||
         	    FRename.PinIsChanged)
         	{	    
         		string currentDir;
-        		string curCustomRoot;
         		double currentCreate;
         		double currentDelete;
         		string curNewDir;
@@ -245,7 +236,6 @@ namespace VVVV.Nodes
         		for (int i=0; i<=SpreadMax; i++)
         		{		
         			FDir.GetString(i, out currentDir);
-        			FCustomRoot.GetString(i, out curCustomRoot);
         			FCreate.GetValue(i, out currentCreate);
         			FDelete.GetValue(i, out currentDelete);
         			FNewDir.GetString(i, out curNewDir);
@@ -253,25 +243,12 @@ namespace VVVV.Nodes
         			
         			string hostPath;
         			FHost.GetHostPath(out hostPath);
-        			if (string.IsNullOrEmpty(curCustomRoot))
-        			{
-        				curCustomRoot = hostPath;
-        			}
-        			else
-        			{
-        				if (!Path.IsPathRooted(curCustomRoot))
-        				    {
-        				    	string message = "\'";
-        				    	message+=curCustomRoot;
-        				    	message+= "\' is not a valid root-path";
-        				    	FHost.Log(TLogType.Warning, message);
-        				    	curCustomRoot=hostPath;
-        				    }
-        			}
+        			hostPath = Path.GetDirectoryName(hostPath);
+
         			
         			if (!Path.IsPathRooted(currentDir))
         			{
-        				currentDir = Path.Combine(curCustomRoot, currentDir);
+        				currentDir = Path.Combine(hostPath, currentDir);
         			}
         			
         			System.IO.DirectoryInfo curDirectory = new System.IO.DirectoryInfo(currentDir);
@@ -301,7 +278,7 @@ namespace VVVV.Nodes
         					{
         						if (!Path.IsPathRooted(curNewDir))
         						{
-        							curNewDir = Path.Combine(curCustomRoot, curNewDir);
+        							curNewDir = Path.Combine(hostPath, curNewDir);
         						}
         						curDirectory.MoveTo(curNewDir);
         						FExists.SetValue(i, 0.0);
