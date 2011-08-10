@@ -157,7 +157,7 @@ namespace VVVV.PluginInterfaces.V2
                         var ibs = xmlReader.GetAttribute("ibs");
                         nodeInfo.InitialBoxSize = new System.Drawing.Size(int.Parse(ibs.Split(',')[0]), int.Parse(ibs.Split(',')[1]));
                         var iws = xmlReader.GetAttribute("iws");
-                        nodeInfo.InitialWindowSize = new System.Drawing.Size(int.Parse(iws.Split(',')[0]), int.Parse(ibs.Split(',')[1]));
+                        nodeInfo.InitialWindowSize = new System.Drawing.Size(int.Parse(iws.Split(',')[0]), int.Parse(iws.Split(',')[1]));
                         nodeInfo.InitialComponentMode = (TComponentMode) NodeType.Parse(typeof(TComponentMode), xmlReader.GetAttribute("icm"));
                         
                         using (var nodeReader = xmlReader.ReadSubtree())
@@ -167,25 +167,25 @@ namespace VVVV.PluginInterfaces.V2
                                 switch (nodeReader.Name)
                                 {
                                     case "TAGS":
-                                        nodeInfo.Tags = nodeReader.ReadString();
+                                        nodeInfo.Tags = nodeReader.ReadString().TrimEnd();
                                         break;
                                     case "SHORTCUT":
-                                        nodeInfo.Shortcut = nodeReader.ReadString();
+                                        nodeInfo.Shortcut = nodeReader.ReadString().TrimEnd();
                                         break;
                                     case "HELP":
-                                        nodeInfo.Help = nodeReader.ReadString();
+                                        nodeInfo.Help = nodeReader.ReadString().TrimEnd();
                                         break;
                                     case "WARNINGS":
-                                        nodeInfo.Warnings = nodeReader.ReadString();
+                                        nodeInfo.Warnings = nodeReader.ReadString().TrimEnd();
                                         break;
                                     case "BUGS":
-                                        nodeInfo.Bugs = nodeReader.ReadString();
+                                        nodeInfo.Bugs = nodeReader.ReadString().TrimEnd();
                                         break;
                                     case "AUTHOR":
-                                        nodeInfo.Author = nodeReader.ReadString();
+                                        nodeInfo.Author = nodeReader.ReadString().TrimEnd();
                                         break;
                                     case "CREDITS":
-                                        nodeInfo.Credits = nodeReader.ReadString();
+                                        nodeInfo.Credits = nodeReader.ReadString().TrimEnd();
                                         break;
                                 }
                             }
