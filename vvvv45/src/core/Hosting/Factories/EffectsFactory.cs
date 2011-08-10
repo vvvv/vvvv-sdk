@@ -218,8 +218,8 @@ namespace VVVV.Hosting.Factories
                 var eItems = line.Split(new string[1]{": "}, StringSplitOptions.None);
                 
                 //extract line/char substring
-                int start = eItems[0].IndexOf('(');
-                int end = eItems[0].IndexOf(')');
+                int start = eItems[0].LastIndexOf('(');
+                int end = eItems[0].LastIndexOf(')');
                 
                 //should not happen with latest compiler used, but
                 //if there is no linenumber in braces continue with the next error
