@@ -43,7 +43,11 @@ namespace VVVV.Nodes
 		
 		public void Evaluate(int SpreadMax)
 		{
-            if ((FFirstFrame) || (FReset[0])) FOutput.SliceCount = 0;
+            if (FFirstFrame || FReset[0])
+            {
+                FOutput.SliceCount = 0;
+                FCurrentPos = 0;
+            }
 
             var frameCount = FFrameCount[0];
             var oldframecount = FOutput.SliceCount;
