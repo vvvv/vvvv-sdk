@@ -69,7 +69,7 @@ namespace VVVV.Nodes
                 FCurrentPos++;
             }
 
-            FPhase[0] = frameCount > 0 ? FCurrentPos / (double)(frameCount - 1) : 0;
+            FPhase[0] = frameCount > 1 ? FCurrentPos / (double)(frameCount - 1) : 0;
             FFirstFrame = false;
 		}
 	}
