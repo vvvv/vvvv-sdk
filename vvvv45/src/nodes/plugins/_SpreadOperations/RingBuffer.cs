@@ -19,8 +19,8 @@ namespace VVVV.Nodes
 		[Input("Input")]
 		protected ISpread<T> FInput;
 
-        [Input("Insert", IsSingle = true)]
-		protected ISpread<bool> FDoInsert;
+        [Input("Set", IsSingle = true)]
+		protected ISpread<bool> FDoSet;
 		
 		[Input("Frame Count", IsSingle = true, MinValue = 0, DefaultValue = 1)]
 		protected ISpread<int> FFrameCount;
@@ -37,48 +37,33 @@ namespace VVVV.Nodes
         [Output("Current Frame", IsSingle = true)]
         protected ISpread<int> FCurrentFrame;
 
-        int FBufferCounter = 0;
+        int FCurrentPos = 0;
 
         bool FFirstFrame = true;
 		
 		public void Evaluate(int SpreadMax)
 		{
-            //create new buffer on startup
-            if (FFirstFrame) FOutput[0] = new Spread<T>(1);
-
-            if (FReset[0])
-            {
-                FOutput.SliceCount = 0;
-                FBufferCounter = 0;
-            }
+            if ((FFirstFrame) || (FReset[0])) FOutput.SliceCount = 0;
 
             var frameCount = FFrameCount[0];
+            var oldframecount = FOutput.SliceCount;
 
-            //remove slices
-            if (FOutput.SliceCount > frameCount)
+            FOutput.SliceCount = frameCount;
+
+            if (oldframecount < frameCount)
+                for (int i = oldframecount; i < frameCount; i++)
+                    FOutput[i] = new Spread<T>(0);
+
+            if (FDoSet[0])
             {
-                FOutput.RemoveRange(frameCount, FOutput.SliceCount - frameCount);
+                FCurrentPos++;
+                FCurrentPos %= Math.Max(frameCount, 1);
+
+                FOutput[FCurrentPos] = FInput.Clone();
+                FCurrentFrame[0] = FCurrentPos;
             }
 
-            FBufferCounter %= Math.Max(frameCount, 1);
-
-            if (FDoInsert[0])
-            {
-                //add slice, or put into place
-                if (FOutput.SliceCount < frameCount && FBufferCounter >= FOutput.SliceCount)
-                {
-                    FOutput.Add(FInput.Clone());
-                }
-                else
-                {
-                    FOutput[FBufferCounter] = FInput.Clone();
-                }
-
-                FPhase[0] = frameCount > 0 ? FBufferCounter / (double)(frameCount-1) : 0;
-                FCurrentFrame[0] = FBufferCounter;
-                FBufferCounter++;
-            }
-
+            FPhase[0] = frameCount > 0 ? FCurrentPos / (double)(frameCount - 1) : 0;
             FFirstFrame = false;
 		}
 	}
