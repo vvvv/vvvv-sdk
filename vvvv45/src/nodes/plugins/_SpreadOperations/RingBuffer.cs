@@ -37,7 +37,7 @@ namespace VVVV.Nodes
         [Output("Current Frame", IsSingle = true)]
         protected ISpread<int> FCurrentFrame;
 
-        int FCurrentPos = 0;
+        int FCurrentPos = -1;
 
         bool FFirstFrame = true;
 		
@@ -46,7 +46,7 @@ namespace VVVV.Nodes
             if ((FFirstFrame) || (FReset[0]))
             {
                 FOutput.SliceCount = 0;
-                FCurrentPos = 0;
+                FCurrentPos = -1;
             }
 
             var frameCount = FFrameCount[0];
@@ -60,16 +60,15 @@ namespace VVVV.Nodes
 
             if (FDoSet[0])
             {
+                FCurrentPos++;
                 if (FCurrentPos > frameCount - 1)
                     FCurrentPos = 0;
-
                 FOutput[FCurrentPos] = FInput.Clone();
-                FCurrentFrame[0] = FCurrentPos;
-
-                FCurrentPos++;
             }
 
-            FPhase[0] = frameCount > 1 ? FCurrentPos / (double)(frameCount - 1) : 0;
+            FCurrentFrame[0] = Math.Min(Math.Max(FCurrentPos, 0), frameCount - 1);
+            FPhase[0] = frameCount > 1 ? FCurrentFrame[0] / (double)(frameCount - 1) : 1;
+
             FFirstFrame = false;
 		}
 	}
