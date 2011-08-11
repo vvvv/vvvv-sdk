@@ -108,14 +108,18 @@ namespace VVVV.Hosting.Pins.Input
 			
 			FOldSliceCount = FSpreadPin.SliceCount;
 			
-			if (FBinSizeSum > 0)
+			if (FNormalizedBinSize.SliceCount > 0)
 			{
-				int remainder = 0;
-				int binTimes = Math.DivRem(FSpreadPin.SliceCount, FBinSizeSum, out remainder);
-				if (remainder > 0)
-					binTimes = FSpreadPin.SliceCount / FBinSizeSum + 1;
+			    int binTimes = 1;
+				if (FBinSizeSum > 0)
+				{
+				    int remainder = 0;
+				    binTimes = Math.DivRem(FSpreadPin.SliceCount, FBinSizeSum, out remainder);
+				    if (remainder > 0)
+					   binTimes++;
+				}
 				
-				SliceCount = binTimes * FBinSizePin.SliceCount;
+				SliceCount = binTimes * FNormalizedBinSize.SliceCount;
 				
 				CopyToBuffer(FBuffer, FSpreadPin, FNormalizedBinSize);
 			}
