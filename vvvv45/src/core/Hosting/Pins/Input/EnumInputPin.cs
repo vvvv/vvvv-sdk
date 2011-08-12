@@ -42,7 +42,14 @@ namespace VVVV.Hosting.Pins.Input
 			{
 				string entry;
 				FEnumInputPin.GetString(i, out entry);
-				FBuffer[i] = (T)Enum.Parse(FEnumType, entry);
+                try
+                {
+                    FBuffer[i] = (T)Enum.Parse(FEnumType, entry);
+                }
+                catch (Exception)
+                {
+                    FBuffer[i] = default(T);
+                }
 			}
 		}
 	}
