@@ -25,9 +25,9 @@ texture TexEnvironment <string uiname="Environment CubeMap";>;
 samplerCUBE SampEnvironment = sampler_state    //sampler for doing the texture-lookup
 {
     Texture   = (TexEnvironment);       //apply a texture to the sampler
-    MipFilter = ANISOTROPIC;         //sampler states
-    MinFilter = ANISOTROPIC;
-    MagFilter = ANISOTROPIC;
+    MipFilter = LINEAR;         //sampler states
+    MinFilter = LINEAR;
+    MagFilter = LINEAR;
 };
 
 texture TexRefract <string uiname="Refraction CubeMap";>;
