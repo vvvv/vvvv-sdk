@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SystemNodes")]
 [assembly: AssemblyDescription("Some windows system nodes")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("vux & woei")]
+[assembly: AssemblyCompany("vux & woei & u7angel")]
 [assembly: AssemblyProduct("SystemNodes")]
-[assembly: AssemblyCopyright("Copyright © vux & woei 2009")]
+[assembly: AssemblyCopyright("Copyright © vux & woei & u7angel 2009-2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
