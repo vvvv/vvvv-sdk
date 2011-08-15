@@ -16,7 +16,7 @@ float mx(float3 p){return max(p.x,max(p.y,p.z));}
 float2 r2d(float2 x,float a){a*=acos(-1)*2;return float2(cos(a)*x.x+sin(a)*x.y,cos(a)*x.y-sin(a)*x.x);}
 
 float4 p0(float2 x:TEXCOORD0):color{float2 asp=lerp(1,R.x/R,Aspect);
-    float4 c=tex2D(s0,x)*float4(1,1,1,Alpha);
+    float4 c=tex2D(s0,x);
     float2 dx=r2d((x-.5)/asp,Rotate)*asp*pow(2,Zoom)+.5+Offset/R;
     float4 pre=tex2D(s2p,dx);if(Filter)pre=tex2D(s2,dx);
     c=float4(lerp(pre,c,lerp(1,c.a,Alpha)).rgb,pre.a+c.a);
