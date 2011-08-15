@@ -151,7 +151,7 @@ namespace VVVV.Hosting.Factories
             return nodeInfos;
         }
         
-        private string FCurrentAssemblyDir = string.Empty;
+        private static string FCurrentAssemblyDir = string.Empty;
         protected void LoadNodeInfosFromFile(string filename, string sourcefilename, ref List<INodeInfo> nodeInfos, bool commitUpdates)
         {
             // See if it's a .net assembly
