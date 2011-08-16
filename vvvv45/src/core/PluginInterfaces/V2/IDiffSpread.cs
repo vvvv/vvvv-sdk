@@ -47,5 +47,13 @@ namespace VVVV.PluginInterfaces.V2
         /// If you access data from another spread, don't expect it to be valid.
         /// </remarks>
         new event SpreadChangedEventHander<T> Changed;
+        
+        /// <summary>
+        /// Is true if the spread data has changed in this frame.
+        /// </summary>
+        new bool IsChanged
+        {
+            get;
+        }
     }
 }

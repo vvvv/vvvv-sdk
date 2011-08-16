@@ -50,6 +50,15 @@ namespace VVVV.PluginInterfaces.V2
             get;
             set;
         }
+        
+        /// <summary>
+        /// Get/Set the size of this spread.
+        /// </summary>
+        new int SliceCount
+        {
+            get;
+            set;
+        }
     }
 
     [ComVisible(false)]
