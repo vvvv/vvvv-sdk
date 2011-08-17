@@ -68,17 +68,17 @@ namespace VVVV.Nodes.Finder
             FMappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
             FHierarchyViewer.Registry = FMappingRegistry;
             
-            FHDEHost.WindowSelectionChanged += HandleWindowSelectionChanged;
-            //defer setting the active patch window as
-            //this will trigger the initial WindowSelectionChangeCB
-            //which will want to access this windows caption which is not yet available
-            SynchronizationContext.Current.Post((object state) => HandleWindowSelectionChanged(FHDEHost, new WindowEventArgs(FHDEHost.ActivePatchWindow)), null);
-            
             FTagsPin = tagsPin;
             FTagsPin.Changed += HandleTagsPinChanged;
             
             FNodeFilter = new NodeFilter();
             FNodeView = FNodeFilter.UpdateFilter(string.Empty, FHDEHost.RootNode);
+            
+            FHDEHost.WindowSelectionChanged += HandleWindowSelectionChanged;
+            //defer setting the active patch window as
+            //this will trigger the initial WindowSelectionChangeCB
+            //which will want to access this windows caption which is not yet available
+            SynchronizationContext.Current.Post((object state) => HandleWindowSelectionChanged(FHDEHost, new WindowEventArgs(FHDEHost.ActivePatchWindow)), null);
         }
 
         private void InitializeComponent()
@@ -259,6 +259,7 @@ namespace VVVV.Nodes.Finder
         void HandleWindowSelectionChanged(object sender, WindowEventArgs args)
         {
             var window = args.Window;
+            if (window == null) return; // Might happen during node list creation
             
             switch (window.WindowType)
             {
