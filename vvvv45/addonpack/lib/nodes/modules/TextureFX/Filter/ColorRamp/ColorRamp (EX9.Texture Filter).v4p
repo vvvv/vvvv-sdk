@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
-   <PATCH nodename="C:\Program Files (x86)\vvvv_45beta25.1\addonpack\modules\common\TextureFX\Filter\ColorRamp\ColorRamp (EX9.Texture Filter).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
+   <PATCH nodename="X:\ColorRamp\ColorRamp (EX9.Texture Filter).v4p">
    <BOUNDS height="10260" left="14055" top="2115" type="Window" width="10875">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="ColorRamp.fx" id="19" nodename="ColorRamp.fx" systemname="ColorRamp (EX9.Effect)">
@@ -41,13 +41,11 @@
    </PIN>
    <PIN pinname="sourceRGB" visible="1">
    </PIN>
-   <PIN pinname="Grayscale" slicecount="1" visible="1" values="0">
+   <PIN pinname="Grayscale" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="ToXY XY" visible="1">
    </PIN>
    <PIN pinname="FromXY XY" visible="1">
-   </PIN>
-   <PIN pinname="Alpha" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="18" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -284,7 +282,7 @@
    </LINK>
    <LINK dstnodeid="19" dstpinname="tex1" srcnodeid="6" srcpinname="Output Node">
    </LINK>
-   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="2700" top="390" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="2700" top="390" type="Box" width="795">
@@ -298,7 +296,7 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
    <BOUNDS height="0" left="3870" top="1035" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="3870" top="1035" type="Box" width="795">
@@ -316,12 +314,12 @@
    </LINK>
    <LINK dstnodeid="19" dstpinname="FromXY XY" srcnodeid="1" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="21" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
-   <BOUNDS height="0" left="6900" top="2010" type="Node" width="0">
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="21">
+   <BOUNDS type="Node" left="6900" top="2010" width="0" height="0">
    </BOUNDS>
-   <BOUNDS height="300" left="6900" top="2010" type="Box" width="1230">
+   <BOUNDS type="Box" left="6900" top="2010" width="1230" height="300">
    </BOUNDS>
-   <BOUNDS height="160" left="22005" top="4785" type="Window" width="215">
+   <BOUNDS type="Window" left="22005" top="4785" width="215" height="160">
    </BOUNDS>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
@@ -330,38 +328,6 @@
    <PIN pinname="Input Enum" slicecount="1" values="| ColorRamp|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="19" dstpinname="Technique" srcnodeid="21" srcpinname="Output Enum">
-   </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="22">
-   <BOUNDS type="Node" left="5850" top="510" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="5850" top="510" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Show Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Show Slider" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Alpha">
-   </PIN>
-   </NODE>
-   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="23">
-   <BOUNDS type="Node" left="6120" top="1305" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="22" srcpinname="Y Output Value" dstnodeid="23" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="23" srcpinname="Output" dstnodeid="19" dstpinname="Alpha">
+   <LINK srcnodeid="21" srcpinname="Output Enum" dstnodeid="19" dstpinname="Technique">
    </LINK>
    </PATCH>
