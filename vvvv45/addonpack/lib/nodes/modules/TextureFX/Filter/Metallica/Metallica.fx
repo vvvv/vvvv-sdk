@@ -27,7 +27,7 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
 	for (float i=0;i<11&&i<maxlod;i++)
 	{
 		float lod=i+1;
-		float2 off=pow(2,lod)/R;
+		float2 off=pow(2,lod)/R/2;
 		float DH=mx(tex2Dlod(s0,float4(x-float2(1,0)*off,0,lod)).xyz)-mx(tex2Dlod(s0,float4(x+float2(1,0)*off,0,lod)).xyz);
 		float DV=mx(tex2Dlod(s0,float4(x-float2(0,1)*off,0,lod)).xyz)-mx(tex2Dlod(s0,float4(x+float2(0,1)*off,0,lod)).xyz);
 		dir+=float2(DH,DV)*0.5;
