@@ -138,7 +138,26 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "Store", Category = "String", Help = "Stores a spread and sets/removes/inserts slices", Tags = "spread, set, remove, insert", Author = "woei")]
 	#endregion PluginInfo
-	public class StoreString: Store<string> {}
+	public class StoreString: Store<string> 
+	{
+		[Input("Increment", IsBang = true, Order=1)]
+    	private IDiffSpread<bool> FIncrement;
+    	
+    	public override bool PinChanged()
+		{
+			return base.PinChanged() || FIncrement.Any(x => x == true);
+		}
+    	
+    	public override void Alter(int i, int incr, int binSize, ref Spread<Spread<string>> buffer)
+		{
+			if (FIncrement[i])
+			{
+				for (int s=0; s<binSize; s++)
+					buffer[FId[i]][s]+=FIn[incr+s];
+			}
+			base.Alter(i, incr, binSize, ref buffer);
+		}
+	}
 	
 	#region PluginInfo
 	[PluginInfo(Name = "Store", Category = "Color", Help = "Stores a spread and sets/removes/inserts slices", Tags = "spread, set, remove, insert", Author = "woei")]
