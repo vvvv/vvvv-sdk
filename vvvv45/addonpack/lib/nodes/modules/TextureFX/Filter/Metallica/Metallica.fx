@@ -35,7 +35,7 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
 	}
 	float ang=atan2(dir.y,dir.x);
 	float rad=length(dir);
-	dir=gam(dir,pow(2,BumpGamma*.25))*BumpAmount/2;
+	dir=gam(dir,pow(2,BumpGamma*.25*sqrt(smoothstep(0,1,1*abs(dir)))))*BumpAmount/2;
 
 	c+=lerp(ColA*pow(2,Brightness.x),0,r2d(dir,Angle.x).x+.5);
 	c+=lerp(ColB*pow(2,Brightness.y),0,r2d(dir,Angle.y+.25).x+.5)*(1-abs(r2d(dir,Angle.x).x));
