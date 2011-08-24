@@ -54,7 +54,7 @@ void v0(inout float4 vp:POSITION0,inout float2 uv:TEXCOORD0, out float ps:PSIZE,
 	//ps=pow(2,(pow(saturate(1-ln)*.98,pow(2,max(0,Balance)))-.51)*23)*pow(2,min(0,Balance));
 	//ps=pow(ln,2)*110;
 	float bal=Balance;
-	ps=pow(ln,pow(2,bal))*(R.x*R.y/pow(2,16))*pow(2,bal*.7)*1;
+	ps=pow(ln,pow(2,bal))*(sqrt(R.x*R.y)/pow(2,5))*pow(2,bal*.7)*1;
 	//ps=6;
 	ps=min(ps,2048)*Scale;
 	//if(Balance<1)ps=8;
