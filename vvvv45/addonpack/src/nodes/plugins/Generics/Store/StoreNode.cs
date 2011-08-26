@@ -111,7 +111,7 @@ namespace VVVV.Nodes
 	}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Store", Category = "Spreads", Help = "Stores a spread and sets/removes/inserts slices", Tags = "spread, set, remove, insert", Author = "woei")]
+	[PluginInfo(Name = "Store", Category = "Spreads", Help = "Stores a spread and sets/removes/inserts slices", Tags = "spread, set, remove, insert", Author = "woei", AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class StoreValue: Store<double> 
 	{
@@ -136,7 +136,7 @@ namespace VVVV.Nodes
 	}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Store", Category = "String", Help = "Stores a spread and sets/removes/inserts slices", Tags = "spread, set, remove, insert", Author = "woei")]
+	[PluginInfo(Name = "Store", Category = "String", Help = "Stores a spread and sets/removes/inserts slices", Tags = "spread, set, remove, insert", Author = "woei", AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class StoreString: Store<string> 
 	{
@@ -160,17 +160,17 @@ namespace VVVV.Nodes
 	}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Store", Category = "Color", Help = "Stores a spread and sets/removes/inserts slices", Tags = "spread, set, remove, insert", Author = "woei")]
+	[PluginInfo(Name = "Store", Category = "Color", Help = "Stores a spread and sets/removes/inserts slices", Tags = "spread, set, remove, insert", Author = "woei", AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class StoreColor: Store<RGBAColor> {}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Store", Category = "Transform", Help = "Stores a spread and sets/removes/inserts slices", Tags = "spread, set, remove, insert", Author = "woei")]
+	[PluginInfo(Name = "Store", Category = "Transform", Help = "Stores a spread and sets/removes/inserts slices", Tags = "spread, set, remove, insert", Author = "woei", AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class StoreTransform: Store<Matrix4x4> {}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Store", Category = "Enumerations", Help = "Stores a spread and sets/removes/inserts slices", Tags = "spread, set, remove, insert", Author = "woei")]
+	[PluginInfo(Name = "Store", Category = "Enumerations", Help = "Stores a spread and sets/removes/inserts slices", Tags = "spread, set, remove, insert", Author = "woei", AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class StoreEnum: Store<EnumEntry> {}
 }
