@@ -8,7 +8,7 @@ float2 Scale={0.0,0.0};
 float Rotate=0;
 float2 r2d(float2 x,float a){return float2(cos(a)*x.x+sin(a)*x.y,cos(a)*x.y-sin(a)*x.x);}
 float4 p0(float2 x:TEXCOORD0):color{
-       x=r2d((x-.5)/Scale-XY,Rotate*acos(-1)*2)+.5;
+       x=r2d((x-.5-XY)/Scale,Rotate*acos(-1)*2)+.5;
        float4 c=pow(smoothstep(.5,.4999*saturate(ClampBody.x),abs(x.x-.5)),pow(2,Gamma.x))*pow(smoothstep(.5,.4999*saturate(ClampBody.y),abs(x.y-.5)),pow(2,Gamma.y));
        c=lerp(ColorA,ColorB,c);
        return c;
