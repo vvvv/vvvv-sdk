@@ -12,7 +12,6 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-using Microsoft.Practices.Unity;
 using VVVV.Core;
 using VVVV.Core.Commands;
 using VVVV.Core.Logging;
@@ -108,7 +107,7 @@ namespace VVVV.Hosting
             var mappingRegistry = new MappingRegistry();
             mappingRegistry.RegisterMapping<ISolution, ICommandHistory, CommandHistory>(MapInstantiation.PerInstanceAndItsChilds);
             
-            var location = new Uri(Shell.CallerPath.ConcatPath(@"..\..\plugins").ConcatPath("Solution.sln"));
+            var location = new Uri(Shell.CallerPath.ConcatPath(@"..\..\lib\nodes\plugins").ConcatPath("Solution.sln"));
             Solution = new Solution(location, mappingRegistry);
             
             EnumManager.SetHDEHost(this);
@@ -167,11 +166,11 @@ namespace VVVV.Hosting
             Container.ComposeParts(this);
             
             //NodeCollection.AddJob(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
-            PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\Finder.dll"));
-            PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\Kommunikator.dll"));
-            PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\NodeBrowser.dll"));
-            PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\NodeCollector.dll"));
-            PluginFactory.AddFile(ExePath.ConcatPath(@"plugins\WindowSwitcher.dll"));
+            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\VVVV.Nodes.dll"));
+//            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\Kommunikator.dll"));
+//            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\NodeBrowser.dll"));
+//            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\NodeCollector.dll"));
+//            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\WindowSwitcher.dll"));
             
             //Get node infos from core plugins here to avoid looping all node infos
             var windowSwitcherNodeInfo = GetNodeInfo(WINDOW_SWITCHER);

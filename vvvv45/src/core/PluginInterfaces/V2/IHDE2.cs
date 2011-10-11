@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-using Microsoft.Practices.Unity;
 using VVVV.Core;
 using VVVV.Core.Model;
 using VVVV.PluginInterfaces.V1;

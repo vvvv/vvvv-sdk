@@ -79,7 +79,7 @@ namespace VVVV.HDE.CodeEditor
                 CompletionIcons.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.NameSpace"));
                 CompletionIcons.Images.Add((System.Drawing.Bitmap) resources.GetObject("Icons.16x16.Event"));
                 
-                var path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\bin"));
+                var path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"..\..\thirdparty"));
                 var provider = new SD.FileSyntaxModeProvider(path);
                 SD.HighlightingManager.Manager.AddSyntaxModeFileProvider(provider);
             }
@@ -238,7 +238,7 @@ namespace VVVV.HDE.CodeEditor
                 {
                     FEditor.CompletionBinding = new FXCompletionBinding(FEditor);
                     FEditor.FormattingStrategy = new FXFormattingStrategy(FEditor);
-                    FEditor.LinkDataProvider = new FXLinkDataProvider(Path.GetDirectoryName(filename), FHDEHost.ExePath);
+                    FEditor.LinkDataProvider = new FXLinkDataProvider(Path.GetDirectoryName(filename), Path.Combine(FHDEHost.ExePath, "lib", "nodes"));
                 }
                 
                 document.ContentChanged += document_ContentChanged;

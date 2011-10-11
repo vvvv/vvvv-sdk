@@ -1,0 +1,117 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\girlpower\unscharf.v4p">
+   <BOUNDS height="4950" left="2250" top="7125" type="Window" width="6105">
+   </BOUNDS>
+   <NODE id="5" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="2865" top="3690" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|1.00000,1.00000,1.00000,0.15600|">
+   </PIN>
+   <PIN pinname="Texture Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="3180" top="2610" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" values="images\wimp.jpg">
+   </PIN>
+   <PIN pinname="Texture State In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="3600" top="2040" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="3765" top="1395" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="9">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="TranslateX" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Texture" srcnodeid="4" srcpinname="Texture Out">
+   </LINK>
+   <NODE id="1" nodename="Scale (Transform)">
+   <BOUNDS height="0" left="1995" top="3060" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Transform" srcnodeid="1" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1575" top="2370" type="Node" width="1815">
+   </BOUNDS>
+   <BOUNDS height="315" left="1575" top="2370" type="Box" width="1530">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|your file here ----&gt;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Texture Transform" srcnodeid="3" srcpinname="Transform Out">
+   </LINK>
+   <NODE nodename="Renderer (EX9)" id="7" componentmode="InAWindow">
+   <BOUNDS type="Node" left="2865" top="4050" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="2235" top="2250" width="6120" height="4860">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2865" top="4050" width="2400" height="1800">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Layer" dstnodeid="7" dstpinname="Layers">
+   </LINK>
+   <NODE nodename="LFO (Animation)" id="8">
+   <BOUNDS type="Node" left="4035" top="630" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE nodename="WaveShaper (Value)" id="9">
+   <BOUNDS type="Node" left="4020" top="945" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Shape" slicecount="1" values="Sine">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Output" dstnodeid="9" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Output" dstnodeid="2" dstpinname="Width">
+   </LINK>
+   </PATCH>

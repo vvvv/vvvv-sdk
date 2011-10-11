@@ -1,0 +1,105 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\HLine (GDI) help.v4p">
+   <BOUNDS height="7050" left="5445" top="2715" type="Window" width="4545">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="5" nodename="Renderer (GDI)">
+   <BOUNDS height="0" left="450" top="3375" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="14625" top="6405" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="3105" left="450" top="3375" type="Box" width="3480">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="465" top="1020" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4965" top="1920" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1020" left="465" top="1020" type="Box" width="3525">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="100">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="42.597159787234">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Alignment" slicecount="1" values="None">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="HLine (GDI)">
+   <BOUNDS height="0" left="465" top="2955" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="R" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="480" top="2535" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1" values="Block">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Spread Count" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Y" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="3255">
+   </BOUNDS>
+   <BOUNDS height="160" left="4230" top="12090" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Draws a horizontal line in the gdi window|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="4230" top="12090" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|HLine - GDI|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Layer" dstnodeid="5" dstpinname="Layers">
+   </LINK>
+   </PATCH>
