@@ -1,0 +1,97 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.10.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\IOBox (Node) help.v4p">
+   <BOUNDS height="3360" left="3120" top="1905" type="Window" width="4200">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Node)">
+   <BOUNDS height="0" left="1905" top="1620" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13080" top="8445" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1905" top="1620" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="transform">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="Transform (Transform 3d)">
+   <BOUNDS height="0" left="1920" top="960" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input Node" srcnodeid="6" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="5" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="1725" top="2565" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Transform" srcnodeid="7" srcpinname="Output Node">
+   </LINK>
+   <NODE id="4" nodename="AudioIn (DShow9)">
+   <BOUNDS height="0" left="75" top="960" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Node)">
+   <BOUNDS height="0" left="60" top="1620" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13380" top="8745" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="60" top="1620" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="audio">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input Node" srcnodeid="4" srcpinname="Audio">
+   </LINK>
+   <NODE id="2" nodename="AudioOut (DShow9)">
+   <BOUNDS height="0" left="75" top="2565" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Audio" srcnodeid="3" srcpinname="Output Node">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="480" left="15" top="390" type="Box" width="4305">
+   </BOUNDS>
+   <BOUNDS height="160" left="90" top="10560" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Interface element to connect nodes&cr;&lf;Useful to create in/outlets for subpatches/modules|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="90" top="10560" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|IOBox - Node|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>
