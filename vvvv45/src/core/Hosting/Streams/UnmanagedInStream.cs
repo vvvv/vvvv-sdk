@@ -275,7 +275,7 @@ namespace VVVV.Hosting.Streams
 		
 		public override bool Read(int stepSize)
 		{
-			Debug.Assert(ReadPosition < Length);
+			Debug.Assert(ReadPosition < Length, string.Format("ReadPosition: {0}, Length: {0}", ReadPosition, Length));
 			var result = FUnmanagedArray[ReadPosition] >= 0.5;
 			ReadPosition += stepSize;
 			return result;

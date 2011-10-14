@@ -24,6 +24,7 @@ namespace VVVV.Hosting.Streams
 		{
 			FResizeUnmanagedArrayFunc = resizeUnmanagedArrayFunc;
 			FInStream = UnmanagedInStream<T>.Create(() => Tuple.Create(FUnmanagedArrayPtr, FLength), () => {});
+			Resize(1);
 		}
 		
 		public int WritePosition
@@ -48,12 +49,17 @@ namespace VVVV.Hosting.Streams
 			{
 				if (value != FLength)
 				{
-					FUnmanagedArrayPtr = FResizeUnmanagedArrayFunc(value);
-					FLength = value;
-					FInStream.Sync();
-					Resized(FUnmanagedArrayPtr, FLength);
+					Resize(value);
 				}
 			}
+		}
+		
+		private void Resize(int newSize)
+		{
+			FUnmanagedArrayPtr = FResizeUnmanagedArrayFunc(newSize);
+			FLength = newSize;
+			FInStream.Sync();
+			Resized(FUnmanagedArrayPtr, FLength);
 		}
 		
 		public bool Eof

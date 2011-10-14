@@ -213,9 +213,7 @@ namespace VVVV.Utils.VMath
 		/// <returns>Remainder of division z / d.</returns>
 		public static int Zmod(int z, int d)
 		{
-            if (d == 0)
-                return 0;
-			else if (z >= d)
+            if (z >= d)
 				return z % d;
 			else if (z < 0)
 			{
