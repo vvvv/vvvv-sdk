@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Cci.PeWriter</name>
+    </assembly>
+    <members>
+        <member name="M:Microsoft.Cci.PeWriter.FoldStrings">
+            <summary>
+            Fills in stringIndexMap with data from stringIndex and write to stringWriter.  
+            Releases stringIndex as the stringTable is sealed after this point.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.PeWriter.ComputeSizeOfVersionString(System.Byte[])">
+            <summary>
+            returns a multiple 4 that is at least 12 and at most 256 and that is just big enough to hold the version string.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Cci.PeWriter.GetDefiningUnitReference(Microsoft.Cci.ITypeReference)">
+            <summary>
+            Returns a reference to the unit that defines the given referenced type. If the referenced type is a structural type, such as a pointer or a generic type instance,
+            then the result is null.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.PeWriter.StringIdx">
+            <summary>
+            Wraps a virtual string table index.
+            An override to SerializeIndex does the resolving at the right time.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Cci.PeWriter.SuffixSort">
+            <summary>
+            Sorts strings such that a string is followed immediately by all strings
+            that are a suffix of it.  
+            </summary>
+        </member>
+        <member name="F:Microsoft.Cci.ReferenceIndexer.typeReferenceNeedsToken">
+            <summary>
+            True if the type reference is traversed from a location that needs a token for the type reference.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,215 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\Sphere (DX9) help.v4p">
+   <BOUNDS height="6465" left="960" top="1425" type="Window" width="8250">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="12" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="2730" top="780" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="7380" left="11160" top="1425" type="Window" width="7080">
+   </BOUNDS>
+   <BOUNDS height="4485" left="2730" top="780" type="Box" width="5190">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.49571,0.49571,0.49571,1.00000|">
+   </PIN>
+   <PIN pinname="Global Visual Range" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="675" top="1815" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Z" slicecount="1" visible="1" values="0.12">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1" values="0.11">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1" values="0.87000">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="UniformScale (Transform)">
+   <BOUNDS height="0" left="690" top="840" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="1.74">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Transform In" srcnodeid="10" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="255" left="465" top="5280" type="Node" width="825">
+   </BOUNDS>
+   <BOUNDS height="720" left="465" top="5280" type="Box" width="5325">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|- adjust the resolution to change the appearance and quality of the mesh.&cr;&lf;- switch between the Fill modes&cr;&lf;- play arround with Cycles U and V |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="1080" top="1245" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="20">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Y" linkstyle="Bezier" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <NODE id="7" nodename="Sphere (DX9)">
+   <BOUNDS height="0" left="510" top="4950" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Closed">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Resolution" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Thickness" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Inner Radius" visible="1">
+   </PIN>
+   <PIN pinname="Resolution X" slicecount="1" values="18">
+   </PIN>
+   <PIN pinname="Resolution Y" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Cycles U" visible="1">
+   </PIN>
+   <PIN pinname="Cycles V" slicecount="1" visible="1" values="0.50000">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Transform" srcnodeid="11" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="6" nodename="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="150" top="1815" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Render State" linkstyle="VHV" srcnodeid="6" srcpinname="Render State Out">
+   <LINKPOINT x="180" y="3510">
+   </LINKPOINT>
+   <LINKPOINT x="540" y="3510">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1035" top="4320" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2460" top="5490" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1035" top="4320" type="Box" width="615">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Cycles U" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="4" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="1065" top="3585" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="20">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="WaveShaper (Value)">
+   <BOUNDS height="0" left="1050" top="3960" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Shape" slicecount="1" values="Sine">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1755" top="4305" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2760" top="5790" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1755" top="4305" type="Box" width="615">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Cycles V" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="270" left="15" top="390" type="Box" width="3135">
+   </BOUNDS>
+   <BOUNDS height="160" left="12510" top="38520" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Renders a Sphere in the dx window|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="12510" top="38520" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sphere - DX9|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Layer" dstnodeid="12" dstpinname="Layers">
+   <LINKPOINT x="525" y="5235">
+   </LINKPOINT>
+   <LINKPOINT x="2520" y="5235">
+   </LINKPOINT>
+   <LINKPOINT x="2520" y="750">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>

@@ -1,0 +1,243 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.dtd" >
+   <PATCH nodename="D:\helppatches\Group (HTTP GUI) help.v4p">
+   <BOUNDS height="5880" left="7410" top="210" type="Window" width="6690">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="825" left="255" top="525" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The Group node is like an addition for Layers. It make it possible to add a lot of Gui Elements to one Page. The Priority of the Depth can be set by the Translate Z Value of the Element |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Group - Http Gui|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="10" nodename=":PLUGINS:\WebInterface.dll|VVVV.Nodes.Http.Renderer">
+   <BOUNDS height="270" left="2910" top="4635" type="Node" width="900">
+   </BOUNDS>
+   <BOUNDS height="0" left="2910" top="4635" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="21210" top="17835" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Input1" visible="1">
+   </PIN>
+   <PIN pinname="Enable" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Port" slicecount="1" values="64006">
+   </PIN>
+   <PIN pinname="Open Browser" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Link" pintype="Input" slicecount="1" visible="1" values="http://localhost:64006/GroupHelp.html">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="9" nodename=":PLUGINS:\WebInterface.dll|VVVV.Nodes.Http.RendererHtmlPage">
+   <BOUNDS height="0" left="405" top="4425" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="405" top="4425" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="21360" top="17970" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Url" slicecount="1" visible="1" values="GroupHelp.html">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Input1" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2685" top="3555" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="735" left="2685" top="3555" type="Box" width="780">
+   </BOUNDS>
+   <BOUNDS height="160" left="23580" top="18705" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Open Browser" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="390" left="3615" top="3555" type="Node" width="1995">
+   </BOUNDS>
+   <BOUNDS height="720" left="3615" top="3555" type="Box" width="2280">
+   </BOUNDS>
+   <BOUNDS height="160" left="20310" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Press to see the Page in your Browser|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="6" nodename=":PLUGINS:\WebInterface.dll|VVVV.Nodes.Http.GUI.Button">
+   <BOUNDS height="0" left="390" top="2265" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="390" top="2265" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="4830" top="5355" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Input CSS" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Response" visible="1">
+   </PIN>
+   <PIN pinname="ButtonMode" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1245" top="2685" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="1245" top="2685" type="Box" width="480">
+   </BOUNDS>
+   <BOUNDS height="160" left="5715" top="4620" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="6" srcpinname="Response">
+   </LINK>
+   <NODE componentmode="Hidden" id="4" nodename=":PLUGINS:\WebInterface.dll|VVVV.Nodes.Http.CSS.BackgroundColor">
+   <BOUNDS height="0" left="1035" top="1755" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1035" top="1755" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="5370" top="3105" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.55926,0.55926,0.55926,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input CSS" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="3" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="570" top="1395" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Transform" srcnodeid="3" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="2" nodename=":PLUGINS:\WebInterface.dll|VVVV.Nodes.Http.GUI.Group">
+   <BOUNDS height="270" left="390" top="3630" type="Node" width="2010">
+   </BOUNDS>
+   <BOUNDS height="0" left="390" top="3630" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="8430" top="5190" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="NodePin Out" visible="1">
+   </PIN>
+   <PIN pinname="Input1" visible="1">
+   </PIN>
+   <PIN pinname="Input2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="2" srcpinname="NodePin Out">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Input1" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="1" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="2490" top="2325" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="0.8">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="0.2">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="0" nodename=":PLUGINS:\WebInterface.dll|VVVV.Nodes.Http.GUI.Text">
+   <BOUNDS height="0" left="2340" top="2865" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2340" top="2865" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="10245" top="3645" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Text" slicecount="1" values="|I&apos;m a Button and a Label|">
+   </PIN>
+   <PIN pinname="Input CSS" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Transform" srcnodeid="1" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Input2" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   <NODE nodename=":PLUGINS:\WebInterface.dll|VVVV.Nodes.Http.CSS.Font" componentmode="InAWindow" id="13">
+   <BOUNDS type="Node" left="3000" top="1695" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3000" top="1695" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10695" top="2205" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Font Size" slicecount="1" values="1.5">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Output" dstnodeid="0" dstpinname="Input CSS">
+   </LINK>
+   </PATCH>

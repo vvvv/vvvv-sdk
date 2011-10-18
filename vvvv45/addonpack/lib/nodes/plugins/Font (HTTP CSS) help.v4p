@@ -1,0 +1,257 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.dtd" >
+   <PATCH nodename="D:\helppatches\Font (HTTP CSS) help.v4p">
+   <BOUNDS height="7080" left="165" top="15" type="Window" width="6525">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="405" left="255" top="525" type="Box" width="4410">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sets the Font Properties of a HTTP Gui Element|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Font - HTTP CSS|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input1" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="6" managers="" nodename=":PLUGINS:\WebInterface.dll|VVVV.Nodes.Http.RendererHtmlPage">
+   <PIN pinname="Output" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Url" pintype="Input" slicecount="1" visible="1" values="FontHelp.html">
+   </PIN>
+   <BOUNDS height="0" left="615" top="3690" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="615" top="3690" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="22215" top="15570" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Titel" pintype="Input" slicecount="1" visible="1" values="|VVVV Webinterface|">
+   </PIN>
+   <PIN pinname="CSS" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Browser Width" pintype="Input" slicecount="1" visible="1" values="-1">
+   </PIN>
+   <PIN pinname="Browser Height" pintype="Input" slicecount="1" visible="1" values="-1">
+   </PIN>
+   <PIN pinname="Reload Browser" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Communication" pintype="Input" slicecount="1" visible="1" values="Manual">
+   </PIN>
+   <PIN pinname="HTML Head" pintype="Input" slicecount="1" visible="-1" values="||">
+   </PIN>
+   <PIN pinname="HTML Body" pintype="Input" slicecount="1" visible="-1" values="||">
+   </PIN>
+   <PIN pinname="File Path" pintype="Input" slicecount="1" visible="-1" values="D:\Programme\vvvv\vvvv_40beta21\plugins\webinterface">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" hiddenwhenlocked="0" id="5" managers="" nodename=":PLUGINS:\WebInterface.dll|VVVV.Nodes.Http.Renderer">
+   <PIN pinname="Input1" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Link" pintype="Input" slicecount="1" visible="1" values="http://localhost:64005/FontHelp.html">
+   </PIN>
+   <PIN pinname="Open Browser" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="270" left="3465" top="3900" type="Node" width="900">
+   </BOUNDS>
+   <BOUNDS height="0" left="3465" top="3900" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="22065" top="15435" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Enable" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Port" pintype="Configuration" slicecount="1" values="64005">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="PageCount" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Directories" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Save" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="POST Filename" pintype="Input" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="POST Message" pintype="Input" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="TimeOut" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Files" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="GET" pintype="Output" visible="0">
+   </PIN>
+   <PIN pinname="POST" pintype="Output" visible="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Open Browser" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="4" managers="" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="3240" top="2820" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="735" left="3240" top="2820" type="Box" width="780">
+   </BOUNDS>
+   <BOUNDS height="160" left="24435" top="16305" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="Arial">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="3" managers="" nodename="IOBox (String)">
+   <BOUNDS height="390" left="4065" top="2820" type="Node" width="1995">
+   </BOUNDS>
+   <BOUNDS height="975" left="4065" top="2820" type="Box" width="1980">
+   </BOUNDS>
+   <BOUNDS height="160" left="21165" top="10470" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="0" values="|Press to see the Page in your &cr;&lf;Browser|">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="Arial">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Character Encoding" pintype="Configuration" slicecount="1" values="ANSI">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="2" nodename=":PLUGINS:\WebInterface.dll|VVVV.Nodes.Http.GUI.Text">
+   <BOUNDS height="0" left="615" top="3015" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="615" top="3015" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1050" top="3165" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Text" slicecount="1" values="|Hello VVVV|">
+   </PIN>
+   <PIN pinname="Input CSS" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="1" nodename=":PLUGINS:\WebInterface.dll|VVVV.Nodes.Http.CSS.Font">
+   <BOUNDS height="0" left="1260" top="2430" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1260" top="2430" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2265" top="2475" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Font Size" slicecount="1" values="1.5">
+   </PIN>
+   <PIN pinname="FontStyle" slicecount="1" values="|oblique |">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input CSS" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="Renderer (HTML URL)">
+   <BOUNDS height="0" left="615" top="4785" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1680" left="615" top="4785" type="Box" width="2610">
+   </BOUNDS>
+   <BOUNDS height="4890" left="10020" top="2025" type="Window" width="6120">
+   </BOUNDS>
+   <PIN pinname="Input URL" slicecount="1" values="http://localhost:64005/FontHelp.html">
+   </PIN>
+   </NODE>
+   </PATCH>
