@@ -73,6 +73,15 @@ namespace VVVV.Core
         /// </summary>
         string Filename { get; }
 
+        /// <summary>
+        /// the Name of the Node (when referenced in textual code)
+        /// </summary>
+        string NameInTextualCode { get; }
+        /// <summary>
+        /// the Namespace
+        /// </summary>
+        string Namespace { get; }
+
 
         /// <summary>
         /// Creates a node reference defined by this node definition; typically used to build up patches
@@ -194,108 +203,34 @@ namespace VVVV.Core
     }
 
 
-    class InletConstructor : INodeDefinition
-    {
-        public string Name
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public string Category
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public string Version
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public string Help
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public string Username
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public string Systemname
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public INodeReference CreateReference()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    class Inlet : INodeReference, IInputPinDefinition, IDataflowSource
-    {
-        public string Name
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public INodeDefinition Definition
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public bool HasDefaultValue
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public IMetadataConstant DefaultValue
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public ITypeReference Type
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public string NameInTextualCode
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public IDataFlowNodeDefinition Node
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public IDataFlowPinReference CreateReference()
-        {
-            throw new NotImplementedException();
-        }
 
 
-        public IEnumerable<IDataFlowLink> Links
-        {
-            get { throw new NotImplementedException(); }
-        }
+    //class InletConstructor : INodeDefinition  //can be visualized in a node browser, can create the inlet
+    //{
+    //    public string Name
+    //    public string Category
+    //    public string Version
+    //    public string Help
+    //    public string Username
+    //    public string Systemname
+    //    public INodeReference CreateReference()
+    //}
 
-        public IDataflowPatch Patch
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-
-        public bool StrikedOutByDefault
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public IEnumerable<IDataflowLocation> AllUpstreamLocations
-        {
-            get { throw new NotImplementedException(); }
-        }
-    }
+    //class Inlet : INodeReference, IInputPinDefinition, IDataflowSource //is an inlet in a patch with name, type and links, but also defines a pin
+    //{
+    //    public string Name //the name the user gave to the inlet
+    //    public INodeDefinition Definition //the inlet constructor
+    //    public bool HasDefaultValue //we could always return true, its not like in code where default values of parameters are something special
+    //    public IMetadataConstant DefaultValue //a value specified by the user, initialized with default(T)
+    //    public ITypeReference Type //T, can even by a generic type parameter
+    //    public string NameInTextualCode //the name of the pin definition without spaces, camelcapsed
+    //    public IDataFlowNodeDefinition Node // the patch
+    //    public IDataFlowPinReference CreateReference() //typically used by a node reference to get its pins, will create a pin that reflects the properties of this inlet
+    //    public IEnumerable<IDataFlowLink> Links //outgoing links
+    //    public IDataflowPatch Patch // the patch
+    //    public bool StrikedOutByDefault //false for now
+    //    public IEnumerable<IDataflowLocation> AllUpstreamLocations //returns an empty list
+    //}
 
     //class Outlet : INodeReference, IOutputPinDefinition, IDataflowSink
     //{ }
