@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="C:\dev\vvvv\vvvv45\modules\vvvv group\EX9.Texture\Pipet (EX9.Texture Simple) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\EX9.Texture\Pipet (EX9.Texture Simple) help.v4p">
    <BOUNDS height="10035" left="7755" top="330" type="Window" width="11175">
    </BOUNDS>
    <NODE id="19" nodename="FileTexture (EX9.Texture)" systemname="FileTexture (EX9.Texture)">
@@ -7,7 +7,7 @@
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
-   <PIN pinname="Filename" slicecount="1" values="..\..\..\girlpower\images\earth_512x512.jpg">
+   <PIN pinname="Filename" slicecount="1" values="..\..\..\assets\images\earth_512x512.jpg" encoded="0">
    </PIN>
    <PIN pinname="Mip Map Count" slicecount="1" values="All">
    </PIN>
@@ -19,7 +19,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="2430" top="44340" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Get the color of the specified pixel|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Get the color of the specified pixel|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -33,7 +33,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="2430" top="44340" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Pipet - EX9.Texture Simple|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Pipet - EX9.Texture Simple|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -49,7 +49,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|works like the classic pipet, but uses the same coordinate system as other nodes. so (0,0) is in the middle and the texture goes from (-0.5 to +0.5) |">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|works like the classic pipet, but uses the same coordinate system as other nodes. so (0,0) is in the middle and the texture goes from (-0.5 to +0.5) |" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -76,7 +76,7 @@
    <PIN pinname="Layer 2" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="13" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="13" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="3240" top="8775" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4860" left="1005" top="4920" type="Window" width="6120">
@@ -85,7 +85,17 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="Projection" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <LINK dstnodeid="13" dstpinname="Layers" srcnodeid="14" srcpinname="Layer">
@@ -153,7 +163,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|draw a crosshair cursor. &cr;&lf;note that objects with height=0 will be drawn in wireframe mode as a nice one pixel line|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|draw a crosshair cursor. &cr;&lf;note that objects with height=0 will be drawn in wireframe mode as a nice one pixel line|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -213,7 +223,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|try working with other textures here|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|try working with other textures here|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -227,7 +237,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|the color at that position|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the color at that position|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -241,7 +251,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="background">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="background" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -255,14 +265,14 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|try changing the spread count here|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|try changing the spread count here|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="22" nodename="Pipet (EX9.Texture Simple)" systemname="Pipet (EX9.Texture Simple)" filename="%VVVV%\modules\vvvv group\EX9.Texture\Pipet (EX9.Texture Simple).v4p">
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\EX9.Texture\Pipet (EX9.Texture Simple).v4p" id="22" nodename="Pipet (EX9.Texture Simple)" systemname="Pipet (EX9.Texture Simple)">
    <PIN pinname="Texture" visible="1">
    </PIN>
    <PIN pinname="X" visible="1">
