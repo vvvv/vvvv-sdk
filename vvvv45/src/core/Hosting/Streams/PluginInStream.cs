@@ -41,6 +41,7 @@ namespace VVVV.Hosting.Streams
 		
 		public void ReadCyclic(T[] buffer, int index, int length, int stepSize)
 		{
+			// No need to optimize here as slow as it is already.
 			StreamUtils.ReadCyclic(this, buffer, index, length, stepSize);
 		}
 		

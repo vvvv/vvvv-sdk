@@ -98,18 +98,18 @@ namespace VVVV.Utils.Streams
 			}
 		}
 		
-		public T Read(int stepSize)
+		public T Read(int stride)
 		{
 			var result = FBuffer[FReadPosition];
-			FReadPosition += stepSize;
+			FReadPosition += stride;
 			return result;
 		}
 		
-		public int Read(T[] buffer, int index, int length, int stepSize = 1)
+		public int Read(T[] buffer, int index, int length, int stride = 1)
 		{
-			int slicesToRead = StreamUtils.GetNumSlicesToRead(this, index, length, stepSize);
+			int slicesToRead = StreamUtils.GetNumSlicesToRead(this, index, length, stride);
 			
-			switch (stepSize)
+			switch (stride)
 			{
 				case 0:
 					if (index == 0 && slicesToRead == buffer.Length)
@@ -124,7 +124,7 @@ namespace VVVV.Utils.Streams
 				default:
 					for (int i = index; i < index + slicesToRead; i++)
 					{
-						buffer[i] = Read(stepSize);
+						buffer[i] = Read(stride);
 					}
 					break;
 			}
@@ -132,22 +132,81 @@ namespace VVVV.Utils.Streams
 			return slicesToRead;
 		}
 		
-		public void ReadCyclic(T[] buffer, int index, int length, int stepSize)
+		public void ReadCyclic(T[] buffer, int index, int length, int stride)
 		{
-			StreamUtils.ReadCyclic(this, buffer, index, length, stepSize);
+			// Exception handling
+			if (Length == 0) throw new ArgumentOutOfRangeException("Can't read from an empty stream.");
+			
+			// Normalize the stride
+			stride %= Length;
+			
+			switch (Length)
+			{
+				case 1:
+					// Special treatment for streams of length one
+					if (Eof) Reset();
+					
+					if (index == 0 && length == buffer.Length)
+						buffer.Init(Read(stride)); // Slightly faster
+					else
+						buffer.Fill(index, length, Read(stride));
+					break;
+				default:
+					int numSlicesRead = 0;
+					
+					// Read till end
+					while ((numSlicesRead < length) && (ReadPosition %= Length) > 0)
+					{
+						numSlicesRead += Read(buffer, index, length, stride);
+					}
+					
+					// Save start of possible block
+					int startIndex = index + numSlicesRead;
+					
+					// Read one block
+					while (numSlicesRead < length)
+					{
+						numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
+						// Exit the loop once ReadPosition is back at beginning
+						if ((ReadPosition %= Length) == 0) break;
+					}
+					
+					// Save end of possible block
+					int endIndex = index + numSlicesRead;
+					
+					// Calculate block size
+					int blockSize = endIndex - startIndex;
+					
+					// Now see if the block can be replicated to fill up the buffer
+					if (blockSize > 0)
+					{
+						int times = (length - numSlicesRead) / blockSize;
+						buffer.Replicate(startIndex, endIndex, times);
+						numSlicesRead += blockSize * times;
+					}
+					
+					// Read the rest
+					while (numSlicesRead < length)
+					{
+						if (Eof) ReadPosition %= Length;
+						numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
+					}
+					
+					break;
+			}
 		}
 		
-		public void Write(T value, int stepSize = 1)
+		public void Write(T value, int stride = 1)
 		{
 			FBuffer[FWritePosition] = value;
-			FWritePosition += stepSize;
+			FWritePosition += stride;
 		}
 		
-		public int Write(T[] buffer, int index, int length, int stepSize = 1)
+		public int Write(T[] buffer, int index, int length, int stride = 1)
 		{
-			int slicesToWrite = StreamUtils.GetNumSlicesToWrite(this, index, length, stepSize);
+			int slicesToWrite = StreamUtils.GetNumSlicesToWrite(this, index, length, stride);
 			
-			switch (stepSize)
+			switch (stride)
 			{
 				case 0:
 					FBuffer[FWritePosition] = buffer[index + slicesToWrite - 1];
@@ -160,7 +219,7 @@ namespace VVVV.Utils.Streams
 					for (int i = index; i < index + slicesToWrite; i++)
 					{
 						FBuffer[FWritePosition] = buffer[i];
-						FWritePosition += stepSize;
+						FWritePosition += stride;
 					}
 					break;
 			}

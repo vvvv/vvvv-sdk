@@ -5,9 +5,9 @@ namespace VVVV.Utils.Streams
 {
 	public interface IOutStream<T> : IStream
 	{
-		void Write(T value, int stepSize = 1);
+		void Write(T value, int stride = 1);
 		
-		int Write(T[] buffer, int index, int length, int stepSize = 1);
+		int Write(T[] buffer, int index, int length, int stride = 1);
 		
 		void Flush();
 		
@@ -31,7 +31,7 @@ namespace VVVV.Utils.Streams
 			return new T[Math.Max(8, Math.Min(inStream.Length, 512))];
 		}
 		
-		public static void CyclicWrite<T>(this IOutStream<T> outStream, T[] buffer, int index, int length, int stepSize = 1)
+		internal static void CyclicWrite<T>(this IOutStream<T> outStream, T[] buffer, int index, int length, int stepSize = 1)
 		{
 			int numSlicesWritten = outStream.Write(buffer, index, length, stepSize);
 			

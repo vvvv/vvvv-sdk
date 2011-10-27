@@ -29,6 +29,7 @@ namespace VVVV.Hosting.Pins.Output
 	{
 		private readonly IIOStream<T> FIOStream;
 		private readonly IOutStream<T> FOutStream;
+		private readonly T[] FBuffer = new T[512];
 		private bool FNeedsFlush;
 		
 		public OutputIOStream(IOutStream<T> outStream)
@@ -137,12 +138,11 @@ namespace VVVV.Hosting.Pins.Output
 				// Write the buffered data to the out stream.
 				FOutStream.Length = FIOStream.Length;
 				
-				var buffer = FOutStream.CreateWriteBuffer();
 				FIOStream.Reset();
 				while (!FIOStream.Eof)
 				{
-					int n = FIOStream.Read(buffer, 0, buffer.Length);
-					FOutStream.Write(buffer, 0, n);
+					int n = FIOStream.Read(FBuffer, 0, FBuffer.Length);
+					FOutStream.Write(FBuffer, 0, n);
 				}
 			}
 		}

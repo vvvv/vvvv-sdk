@@ -1,6 +1,7 @@
 ﻿
 using System;
 using SlimDX;
+using VVVV.Utils;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
@@ -63,7 +64,66 @@ namespace VVVV.Hosting.Streams
 		
 		public void ReadCyclic(T[] buffer, int index, int length, int stepSize)
 		{
-			StreamUtils.ReadCyclic(this, buffer, index, length, stepSize);
+			// Exception handling
+			if (Length == 0) throw new ArgumentOutOfRangeException("Can't read from an empty stream.");
+			
+			// Normalize the stride
+			stepSize %= Length;
+			
+			switch (Length)
+			{
+				case 1:
+					// Special treatment for streams of length one
+					if (Eof) Reset();
+					
+					if (index == 0 && length == buffer.Length)
+						buffer.Init(Read(stepSize)); // Slightly faster
+					else
+						buffer.Fill(index, length, Read(stepSize));
+					break;
+				default:
+					int numSlicesRead = 0;
+					
+					// Read till end
+					while ((numSlicesRead < length) && (ReadPosition %= Length) > 0)
+					{
+						numSlicesRead += Read(buffer, index, length, stepSize);
+					}
+					
+					// Save start of possible block
+					int startIndex = index + numSlicesRead;
+					
+					// Read one block
+					while (numSlicesRead < length)
+					{
+						numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stepSize);
+						// Exit the loop once ReadPosition is back at beginning
+						if ((ReadPosition %= Length) == 0) break;
+					}
+					
+					// Save end of possible block
+					int endIndex = index + numSlicesRead;
+					
+					// Calculate block size
+					int blockSize = endIndex - startIndex;
+					
+					// Now see if the block can be replicated to fill up the buffer
+					if (blockSize > 0)
+					{
+						int times = (length - numSlicesRead) / blockSize;
+						buffer.Replicate(startIndex, endIndex, times);
+						numSlicesRead += blockSize * times;
+					}
+					
+					// Read the rest
+					while (numSlicesRead < length)
+					{
+						if (Eof) ReadPosition %= Length;
+						numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stepSize);
+					}
+					
+					break;
+			}
 		}
 		
 		public void Reset()
