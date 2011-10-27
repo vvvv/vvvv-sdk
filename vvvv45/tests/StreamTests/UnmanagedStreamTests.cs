@@ -63,7 +63,7 @@ namespace StreamTests
 		[Test]
 		public void TestRead()
 		{
-			var stream = new DoubleInStream(GetUnmanagedArray, Validate);
+			var stream = UnmanagedInStream<double>.Create(GetUnmanagedArray, Validate);
 			
 			for (int stepSize = 1; stepSize < FDoubleArray.Length; stepSize++)
 			{
@@ -80,7 +80,7 @@ namespace StreamTests
 		[Test]
 		public void TestBufferedRead()
 		{
-			var stream = new DoubleInStream(GetUnmanagedArray, Validate);
+			var stream = UnmanagedInStream<double>.Create(GetUnmanagedArray, Validate);
 			
 			int startIndex = 2;
 			int length = 2;
@@ -106,7 +106,7 @@ namespace StreamTests
 		[Test]
 		public void TestWrite()
 		{
-			var stream = new DoubleOutStream(ResizeUnmanagedArray);
+			var stream = UnmanagedOutStream<double>.Create(ResizeUnmanagedArray);
 			
 			var buffer = stream.CreateWriteBuffer();
 			for (int stepSize = 1; stepSize < FDoubleArray.Length; stepSize++)
@@ -123,7 +123,7 @@ namespace StreamTests
 		[Test]
 		public void TestBufferedWrite()
 		{
-			var stream = new DoubleOutStream(ResizeUnmanagedArray);
+			var stream = UnmanagedOutStream<double>.Create(ResizeUnmanagedArray);
 			
 			var buffer = stream.CreateWriteBuffer();
 			buffer[1] = 3.0;

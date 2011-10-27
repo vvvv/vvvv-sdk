@@ -14,6 +14,41 @@ namespace VVVV.Hosting.Streams
 	/// </summary>
 	unsafe abstract class UnmanagedOutStream<T> : IIOStream<T>
 	{
+		public static IOutStream<T> Create(Func<int, IntPtr> resizeUnmanagedArrayFunc)
+		{
+			object result = null;
+			
+			var type = typeof(T);
+			if (type == typeof(double))
+				result = new DoubleOutStream(resizeUnmanagedArrayFunc);
+			else if (type == typeof(float))
+				result = new FloatOutStream(resizeUnmanagedArrayFunc);
+			else if (type == typeof(int))
+				result = new IntOutStream(resizeUnmanagedArrayFunc);
+			else if (type == typeof(bool))
+				result = new BoolOutStream(resizeUnmanagedArrayFunc);
+			else if (type == typeof(Vector2))
+				result = new Vector2OutStream(resizeUnmanagedArrayFunc);
+			else if (type == typeof(Vector3))
+				result = new Vector3OutStream(resizeUnmanagedArrayFunc);
+			else if (type == typeof(Vector4))
+				result = new Vector4OutStream(resizeUnmanagedArrayFunc);
+			else if (type == typeof(Vector2D))
+				result = new Vector2DOutStream(resizeUnmanagedArrayFunc);
+			else if (type == typeof(Vector3D))
+				result = new Vector3DOutStream(resizeUnmanagedArrayFunc);
+			else if (type == typeof(Vector4D))
+				result = new Vector4DOutStream(resizeUnmanagedArrayFunc);
+			else if (type == typeof(Matrix))
+				result = new MatrixOutStream(resizeUnmanagedArrayFunc);
+			else if (type == typeof(Matrix4x4))
+				result = new Matrix4x4OutStream(resizeUnmanagedArrayFunc);
+			else
+				throw new NotSupportedException(string.Format("UnmanagedOutStream of type '{0}' is not supported.", type));
+			
+			return result as IOutStream<T>;
+		}
+		
 		private readonly Func<int, IntPtr> FResizeUnmanagedArrayFunc;
 		private readonly IInStream<T> FInStream;
 		protected IntPtr FUnmanagedArrayPtr;
