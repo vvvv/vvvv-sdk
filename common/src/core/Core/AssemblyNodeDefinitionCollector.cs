@@ -69,7 +69,7 @@ namespace VVVV.Core
 
         public static string ParamNameToPinName(string paramname)
         {
-            //pin names can have spaces, all individual word starting with a upper case letter
+            //pin names can have spaces, all individual words starting with an upper case letter
             //inputs and outputs can have same names
 
             //param names start with a lower case letter, after that are camelcaps
@@ -181,10 +181,10 @@ namespace VVVV.Core
                 node.Name = namearg.ValueIsString() ? namearg.Value() : methodDefinition.Name.Value;
 
                 var categoryarg = nodeattribute.GetArgument("Category");
-                node.Category = categoryarg.ValueIsString() ? categoryarg.Value() : FullTypeNameToCategory(methodDefinition.Type.TypeName());
+                node.Category = categoryarg.ValueIsString() ? categoryarg.Value() : FullTypeNameToCategory(methodDefinition.Type.TypeName(true));
 
                 var versionarg = nodeattribute.GetArgument("Version");
-                node.Version = versionarg.ValueIsString() ? versionarg.Value() : FullTypeNameToVersion(methodDefinition.Type.TypeName(), node);
+                node.Version = versionarg.ValueIsString() ? versionarg.Value() : FullTypeNameToVersion(methodDefinition.Type.TypeName(true), node);
 
                 var helparg = nodeattribute.GetArgument("Help");
                 node.Help = helparg.ValueIsString() ? helparg.Value() : ExtractXMLHelpSnippet(methodDefinition);

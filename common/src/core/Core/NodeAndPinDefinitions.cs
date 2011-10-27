@@ -207,13 +207,13 @@ namespace VVVV.Core
 
     //class InletConstructor : INodeDefinition  //can be visualized in a node browser, can create the inlet
     //{
-    //    public string Name
-    //    public string Category
-    //    public string Version
-    //    public string Help
-    //    public string Username
-    //    public string Systemname
-    //    public INodeReference CreateReference()
+    //    public string Name // "Inlet"
+    //    public string Category // "Primitives"
+    //    public string Version // ""
+    //    public string Help // "defines an input pin for the node defined ba this patch"
+    //    public string Username // "Inlet (Primitives)"
+    //    public string Systemname // "Inlet (Primitives)"
+    //    public INodeReference CreateReference() // creates an Inlet
     //}
 
     //class Inlet : INodeReference, IInputPinDefinition, IDataflowSource //is an inlet in a patch with name, type and links, but also defines a pin
