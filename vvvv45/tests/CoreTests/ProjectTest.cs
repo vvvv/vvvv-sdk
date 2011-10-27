@@ -12,17 +12,11 @@ namespace CoreTests
 {
 	public abstract class ProjectTest
 	{
-		public string VVVV_PATH;
-		
 		[TestFixtureSetUp]
 		public void Init()
 		{
 			SynchronizationContext.SetSynchronizationContext(new WindowsFormsSynchronizationContext());
 			SourceTemplateProject = CreateTemplateProject(SourceTemplateDir);
-			
-			VVVV_PATH = Environment.GetEnvironmentVariable("VVVV45");
-			if (VVVV_PATH == null)
-				throw new Exception("Environment variable 'VVVV45' must be set to run these tests.");
 		}
 		
 		[TestFixtureTearDown]

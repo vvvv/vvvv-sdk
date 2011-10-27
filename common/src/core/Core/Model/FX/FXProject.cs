@@ -136,7 +136,7 @@ namespace VVVV.Core.Model.FX
 			
 			foreach (var reference in References)
 			{
-			    reference.Dispose();
+				reference.Dispose();
 			}
 			
 			References.Clear();
@@ -152,9 +152,12 @@ namespace VVVV.Core.Model.FX
 		private void TryToAddReference(string path, string filename, bool isLocal, ref List<FXReference> refs)
 		{
 			var include = path.ConcatPath(filename.Replace("/", @"\"));
-			var doc = DocumentFactory.CreateDocumentFromFile(include) as FXDocument;
-			if (doc != null)
-				refs.Add(new FXReference(doc, isLocal));
+			if (File.Exists(include))
+			{
+				var doc = DocumentFactory.CreateDocumentFromFile(include) as FXDocument;
+				if (doc != null)
+					refs.Add(new FXReference(doc, isLocal));
+			}
 		}
 	}
 }

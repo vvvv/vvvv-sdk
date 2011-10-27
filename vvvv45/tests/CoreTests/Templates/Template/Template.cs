@@ -28,7 +28,7 @@ namespace VVVV.Nodes
 		ISpread<double> FOutput;
 
 		[Import()]
-		ILogger Flogger;
+		ILogger FLogger;
 		#endregion fields & pins
  
 		//called when data for any output pin is requested
@@ -38,8 +38,8 @@ namespace VVVV.Nodes
 
 			for (int i = 0; i < SpreadMax; i++)
 				FOutput[i] = FInput[i] * 2;
-				
-			Flogger.Log(LogType.Debug, "Logging to Renderer (TTY)");
+				 
+			//FLogger.Log(LogType.Debug, "hi tty!");
 		}
 	}
 }
