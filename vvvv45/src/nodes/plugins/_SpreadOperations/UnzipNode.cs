@@ -32,7 +32,7 @@ namespace VVVV.Nodes
 				inputStream.ReadPosition = i;
 				while (!outputStream.Eof)
 				{
-					inputStream.CyclicRead(FBuffer, 0, numSlicesToWrite, outputSpreadCount);
+					inputStream.ReadCyclic(FBuffer, 0, numSlicesToWrite, outputSpreadCount);
 					outputStream.Write(FBuffer, 0, numSlicesToWrite);
 				}
 			}

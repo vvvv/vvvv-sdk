@@ -25,7 +25,7 @@ namespace VVVV.Nodes.Bullet
 			int maxslice = int.MinValue;
 			for (int i = 0; i < this.FShapesIn.SliceCount; i++)
 			{
-				if (((GenericInputPin<AbstractRigidShapeDefinition>)this.FShapesIn[0]).PluginIO.IsConnected)
+				if (((InputPin<AbstractRigidShapeDefinition>)this.FShapesIn[0]).PluginIO.IsConnected)
 				{
 					maxslice = this.FShapesIn[i].SliceCount > maxslice ? this.FShapesIn[i].SliceCount : maxslice;
 					if (this.FShapesIn[i].SliceCount == 0) { allconnected = false; }
