@@ -16,7 +16,6 @@ using VVVV.PluginInterfaces.V2.EX9;
 
 using OpenNI;
 using SlimDX.Direct3D9;
-using VVVV.Utils.SlimDX;
 using System.Drawing;
 using System.Drawing.Imaging;
 
@@ -85,6 +84,7 @@ namespace VVVV.Nodes
                         // add the Callback function to the Events
                         FUsers.NewUser += new EventHandler<NewUserEventArgs>(FUsers_NewUser);
                         FUsers.LostUser += new EventHandler<UserLostEventArgs>(FUsers_LostUser);
+                        FInit = false;
                         
                     }
                     catch (StatusException ex)
@@ -96,7 +96,7 @@ namespace VVVV.Nodes
                     {
                         FLogger.Log(e);
                         return;
-                    }
+                    } 
                 }
 
                 //writes the user Object to the ouputs
@@ -104,48 +104,49 @@ namespace VVVV.Nodes
                 if (FInit == false)
                 {
                     FUserOut[0] = FUsers;
-                }
 
-                //write the joint position and orientation to the output
-                if (FUsers.NumberOfUsers > 0 && FInit == false)
-                {
-                    //copies a list of all users and sort them
-                    int[] tUsers = FUsers.GetUsers();
-                    int[] Users = (int[])tUsers.Clone();
-                    Array.Sort(Users);
 
-                    FUserIdOut.SliceCount = Users.Length;
-                    FPositionOut.SliceCount = Users.Length;
-                    FMappedPositionOut.SliceCount = Users.Length;
-
-                    for (int i = 0; i < Users.Length; i++)
+                    //write the joint position and orientation to the output
+                    if (FUsers.NumberOfUsers > 0 && FInit == false)
                     {
-                        FUserIdOut[i] = Users[i];
-                        try
-                        {
-                            //middle point of the User
-                            Point3D Point = FUsers.GetCoM(Users[i]);
-                            Vector3D Position = new Vector3D(Point.X, Point.Y, Point.Z);
-                            FPositionOut[i] = Position / 1000;
+                        //copies a list of all users and sort them
+                        int[] tUsers = FUsers.GetUsers();
+                        int[] Users = (int[])tUsers.Clone();
+                        Array.Sort(Users);
 
-                            //map postion values to vvvv coordinates
-                            FMappedPositionOut[i] = VMath.Map(Position, new Vector3D((FMappingIn[0].x / 2) * -1, (FMappingIn[0].y / 2), 0), new Vector3D(FMappingIn[0].x / 2, (FMappingIn[0].y / 2) * -1, FMappingIn[0].z), new Vector3D(-1, 1, 0), new Vector3D(1, -1, 1), TMapMode.Float);
-                            FPositionOut[i] = Position / 1000;
-                        }
-                        catch (StatusException ex)
+                        FUserIdOut.SliceCount = Users.Length;
+                        FPositionOut.SliceCount = Users.Length;
+                        FMappedPositionOut.SliceCount = Users.Length;
+
+                        for (int i = 0; i < Users.Length; i++)
                         {
-                            FLogger.Log(ex);
+                            FUserIdOut[i] = Users[i];
+                            try
+                            {
+                                //middle point of the User
+                                Point3D Point = FUsers.GetCoM(Users[i]);
+                                Vector3D Position = new Vector3D(Point.X, Point.Y, Point.Z);
+                                FPositionOut[i] = Position / 1000;
+
+                                //map postion values to vvvv coordinates
+                                FMappedPositionOut[i] = VMath.Map(Position, new Vector3D((FMappingIn[0].x / 2) * -1, (FMappingIn[0].y / 2), 0), new Vector3D(FMappingIn[0].x / 2, (FMappingIn[0].y / 2) * -1, FMappingIn[0].z), new Vector3D(-1, 1, 0), new Vector3D(1, -1, 1), TMapMode.Float);
+                                FPositionOut[i] = Position / 1000;
+                            }
+                            catch (StatusException ex)
+                            {
+                                FLogger.Log(ex);
+                            }
                         }
                     }
-                }
-                else
-                {
-                    FUserIdOut.SliceCount = 0;
-                    FPositionOut.SliceCount = 0;
-                    FMappedPositionOut.SliceCount = 0;
+                    else
+                    {
+                        FUserIdOut.SliceCount = 0;
+                        FPositionOut.SliceCount = 0;
+                        FMappedPositionOut.SliceCount = 0;
+                    }
                 }
 
-                FInit = false;
+                
             }
             else
             {
@@ -153,6 +154,9 @@ namespace VVVV.Nodes
                 FUserIdOut.SliceCount = 0;
                 FPositionOut.SliceCount = 0;
                 FMappedPositionOut.SliceCount = 0;
+
+                FUsers = null;
+                FInit = true;
             }
         }
 

@@ -14,7 +14,6 @@ using VVVV.PluginInterfaces.V2.EX9;
 
 using OpenNI;
 using SlimDX.Direct3D9;
-using VVVV.Utils.SlimDX;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
@@ -82,21 +81,28 @@ namespace VVVV.Nodes
                 if (FInit == true)
                 {
                     //Create an Image Generator
-                    FImageGenerator = new ImageGenerator(FContextIn[0]);
-                    FImageMetaData = FImageGenerator.GetMetaData();
+                    try
+                    {
+                        FImageGenerator = new ImageGenerator(FContextIn[0]);
+                        FImageMetaData = FImageGenerator.GetMetaData();
 
-                    FTexWidth = FImageMetaData.XRes;
-                    FTexHeight = FImageMetaData.YRes;
+                        FTexWidth = FImageMetaData.XRes;
+                        FTexHeight = FImageMetaData.YRes;
 
-                    //allocate data for the RGB Image
-                    this.FDataRGB = Marshal.AllocCoTaskMem(FTexWidth * FTexHeight * 4);
+                        //allocate data for the RGB Image
+                        this.FDataRGB = Marshal.AllocCoTaskMem(FTexWidth * FTexHeight * 4);
 
-                    //Start the Thread for reading the Rgb Imag
-                    FActiveThread = true;
-                    FReadThread = new Thread(ReadRGBImage);
-                    FReadThread.Start();
+                        //Start the Thread for reading the Rgb Imag
+                        FActiveThread = true;
+                        FReadThread = new Thread(ReadRGBImage);
+                        FReadThread.Start();
 
-                    FInit = false;
+                        FInit = false;
+                    }
+                    catch (StatusException ex)
+                    {
+                        FLogger.Log(ex);
+                    }
                 }
             }
             else

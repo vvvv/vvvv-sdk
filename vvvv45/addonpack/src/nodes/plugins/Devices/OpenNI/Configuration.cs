@@ -98,28 +98,32 @@ namespace VVVV.Nodes
                     FInit = true;
                 }
 
-                //Spits out the Global Error Massage
-                if (!String.IsNullOrEmpty(FContext.GlobalErrorState))
-                {
-                    FStatus[0] = FContext.GlobalErrorState;
-                }
 
-                //Close and restart the Update Thread
-                if (FUpdateIn.IsChanged)
+                if (FContext != null)
                 {
-                    if (FUpdateIn[0] == true)
+                    //Spits out the Global Error Massage
+                    if (!String.IsNullOrEmpty(FContext.GlobalErrorState))
                     {
-                        if (Updater == null)
-                        {
-                            FActiveThread = true;
-                            Updater = new Thread(Update);
-                            Updater.Start();
-                        }
+                        FStatus[0] = FContext.GlobalErrorState;
                     }
-                    else
+
+                    //Close and restart the Update Thread
+                    if (FUpdateIn.IsChanged)
                     {
-                        FActiveThread = false;
-                        Updater = null;
+                        if (FUpdateIn[0] == true)
+                        {
+                            if (Updater == null)
+                            {
+                                FActiveThread = true;
+                                Updater = new Thread(Update);
+                                Updater.Start();
+                            }
+                        }
+                        else
+                        {
+                            FActiveThread = false;
+                            Updater = null;
+                        }
                     }
                 }
 
