@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 using Microsoft.Cci;
 
 namespace VVVV.Core
@@ -15,6 +16,11 @@ namespace VVVV.Core
         /// The name of the node refernce. either given by the user or computed on creation (e.g. "damper7")
         /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// the 2d position within the patch.
+        /// </summary>
+        PointF Position { get; }
 
         /// <summary>
         /// gets the node definition that this refernce was made of
@@ -51,7 +57,7 @@ namespace VVVV.Core
         /// <summary>
         /// gets the node definition that this refernce was made of
         /// </summary>
-        new IDataFlowNodeDefinition Definition { get; }
+        new IDataflowNodeDefinition Definition { get; }
     }
 
 
@@ -68,7 +74,7 @@ namespace VVVV.Core
         /// <summary>
         /// gets the pin definition that this refernce was made of
         /// </summary>
-        IDataFlowPinDefinition Definition { get; }
+        IDataflowPinDefinition Definition { get; }
     }
 
     /// <summary>

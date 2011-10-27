@@ -93,7 +93,7 @@ namespace VVVV.Core
     /// <summary>
     /// dataflow node defintions can result from a patch or from an assembly
     /// </summary>
-    public interface IDataFlowNodeDefinition : IRichNodeDefinition
+    public interface IDataflowNodeDefinition : IRichNodeDefinition
     {
         /// <summary>
         /// inputs defined by the node
@@ -121,14 +121,14 @@ namespace VVVV.Core
     /// <summary>
     /// a function node definition defines a pure dataflow node with nothing but inputs and outputs
     /// </summary>
-    public interface IFunctionNodeDefinition : IDataFlowNodeDefinition
+    public interface IFunctionNodeDefinition : IDataflowNodeDefinition
     {
     }
 
     /// <summary>
     /// a functors node definition refers to a node that needs a state to run on
     /// </summary>
-    public interface IFunctorNodeDefinition : IDataFlowNodeDefinition
+    public interface IFunctorNodeDefinition : IDataflowNodeDefinition
     {
         /// <summary>
         /// the type of the state
@@ -144,7 +144,7 @@ namespace VVVV.Core
     /// <summary>
     /// a pin as defined by source code (textually via an method parameter or visually via a hub (inlet,outlet))
     /// </summary>
-    public interface IDataFlowPinDefinition
+    public interface IDataflowPinDefinition
     {
         /// <summary>
         /// the type of values that can be stored in that pin
@@ -164,7 +164,7 @@ namespace VVVV.Core
         /// <summary>
         /// the node that defined the pin as one of its pins
         /// </summary>
-        IDataFlowNodeDefinition Node { get; }
+        IDataflowNodeDefinition Node { get; }
 
         /// <summary>
         /// Creates a pin reference defined by this pin definition; typically used to build up dataflow node references used in patches
@@ -177,7 +177,7 @@ namespace VVVV.Core
     /// <summary>
     /// defines an input pin
     /// </summary>
-    public interface IInputPinDefinition : IDataFlowPinDefinition
+    public interface IInputPinDefinition : IDataflowPinDefinition
     {
         /// <summary>
         /// returns if the pin has a default value
@@ -198,7 +198,7 @@ namespace VVVV.Core
     /// <summary>
     /// defines an output pin
     /// </summary>
-    public interface IOutputPinDefinition : IDataFlowPinDefinition
+    public interface IOutputPinDefinition : IDataflowPinDefinition
     {
     }
 

@@ -49,7 +49,7 @@ namespace VVVV.Core
         IDataflowSink Sink { get; }
     }
 
-    public interface IDataflowPatch : IDataFlowNodeDefinition
+    public interface IDataflowPatch : IDataflowNodeDefinition
     {
         IEnumerable<IDataFlowLink> Links { get; }
     }
