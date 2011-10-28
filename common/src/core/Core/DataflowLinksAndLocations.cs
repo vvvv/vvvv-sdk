@@ -63,11 +63,8 @@ namespace VVVV.Core
 
     public static class DataflowHelpers
     {
-        //IMetadataHost FHost;
-
         static DataflowHelpers()
         {
-            //FHost = new MetadataHostEnvironment
         }
 
         public static IEnumerable<IDataflowSink> GetSinks(this IDataflowSource source)
@@ -99,9 +96,9 @@ namespace VVVV.Core
             return sink.GetSources().Any();
         }
 
-        public static bool IsClonable(this ITypeReference type, IPlatformType plattformtype)
+        public static bool IsClonable(this ITypeReference type)
         {
-            return (type.IsValueType || TypeHelper.Type1ImplementsType2(type.ResolvedType, plattformtype.SystemICloneable));                
+            return (type.IsValueType || TypeHelper.Type1ImplementsType2(type.ResolvedType, type.PlatformType.SystemICloneable)); //type.PlatformType.SystemICloneable: oki?             
         }
 
         public static bool CanFlowTo(this ITypeReference sourceType, ITypeReference sinkType)
@@ -127,7 +124,7 @@ namespace VVVV.Core
             return a is IDataflowSink ? a as IDataflowSink : b as IDataflowSink;
         }
 
-        public static bool IsConnectable(this IDataflowSource source, IDataflowSink sink, IPlatformType plattformtype)
+        public static bool IsConnectable(this IDataflowSource source, IDataflowSink sink)
         {
             // we can connect 
             // a) if values are welcome by the sink type and 
@@ -137,19 +134,19 @@ namespace VVVV.Core
             // we don't need to check if the sink is free: in the next snapshot of the source code the new source would just replace the old
             return (
                 source.Type.CanFlowTo(sink.Type) &&
-                (source.Type.IsClonable(plattformtype) || !source.HasSinks()) &&
+                (source.Type.IsClonable() || !source.HasSinks()) &&
                 !source.AllUpstreamLocations.Contains(sink)
                 );
         }
 
-        public static bool IsConnectable(this IDataflowSink sink, IDataflowSource source, IPlatformType plattformtype)
+        public static bool IsConnectable(this IDataflowSink sink, IDataflowSource source)
         {
-            return source.IsConnectable(sink, plattformtype);
+            return source.IsConnectable(sink);
         }
 
-        public static bool IsConnectable(this IDataflowLocation a, IDataflowLocation b, IPlatformType plattformtype)
+        public static bool IsConnectable(this IDataflowLocation a, IDataflowLocation b)
         {
-            return SelectSource(a, b).IsConnectable(SelectSink(a, b), plattformtype);
+            return SelectSource(a, b).IsConnectable(SelectSink(a, b));
         }
 
     }

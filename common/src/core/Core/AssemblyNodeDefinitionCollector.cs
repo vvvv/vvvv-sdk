@@ -58,14 +58,38 @@ namespace VVVV.Core
         {
             return (attribute != null) ? attribute.NamedArguments.FirstOrDefault(arg => arg.ArgumentName.Value == attributename) : null;
         }
+
+        public static bool HasDefaultConstructor(this ITypeDefinition type, IName ctorName)
+        {
+            //ELIAS: PLEASE HELP::: both is not working:
+
+            //return TypeHelper.GetMethod(type, ctorName) != Dummy.Method;
+            
+            return type.GetMatchingMembers(member => member.Name == ctorName).Any();
+        }
     }
 
-    public class AssemblyNodeDefinitionCollector
+    public class AssemblyNodeDefinitionCollector : IDisposable
     {
-        public bool NodeAttributesNeedToBeSet = true;        
-        public bool SearchForFunctionNodes = true;
+        // PLAY AROUND WITH THOSE:
+        public bool NodeAttributesNeedToBeSet = false;        
+        public bool SearchForFunctionNodes = false;
         public bool SearchForFunctorNodes = true;
 
+        private PeReader.DefaultHost FHost;
+        private IName FctorName;
+
+        public void Dispose()
+        {
+            FHost.Dispose();
+        }
+
+        public AssemblyNodeDefinitionCollector()
+        {
+            FHost = new PeReader.DefaultHost();
+            FctorName = FHost.NameTable.GetNameFor(".ctor");
+            Console.WriteLine(FctorName.Value);
+        }
 
         public static string ParamNameToPinName(string paramname)
         {
@@ -122,14 +146,14 @@ namespace VVVV.Core
             else
             {
                 var input = new InputPinDefinition();
-                
+
                 input.HasDefaultValue = param.HasDefaultValue;
                 if (input.HasDefaultValue)
                     input.DefaultValue = param.DefaultValue;
-                
+
                 var strikearg = pinattribute.GetArgument("StrikedOutByDefault");
                 input.StrikedOutByDefault = strikearg.ValueIsBool() ? strikearg.ValueAsBool() : false;
-                
+
                 pin = input;
             }
 
@@ -145,12 +169,40 @@ namespace VVVV.Core
             yield return pin;
         }
 
+        private IEnumerable<IDataflowPinDefinition> ReturnValueToOutputDefinition(DataflowNodeDefinition node)
+        {
+            if (!TypeHelper.TypesAreEquivalent(node.MethodDefinition.Type, FHost.PlatformType.SystemVoid))
+            {
+                var pin = new OutputPinDefinition();
+
+                var pinattribute = node.MethodDefinition.ReturnValueAttributes.FirstOrDefault(attribute => attribute.Type.TypeName() == "PinAttribute");
+                var namearg = pinattribute.GetArgument("Name");
+
+                var returnvaluename =
+                    namearg.ValueIsString() ? namearg.Value() :
+                    (node.MethodDefinition.ReturnValueName != Dummy.Name ? node.MethodDefinition.ReturnValueName.Value : null);
+
+                pin.Name = returnvaluename != null ? returnvaluename : "Return Value";
+
+                pin.NameInTextualCode = returnvaluename != null ? returnvaluename : "returnValue";
+
+                pin.Type = node.MethodDefinition.Type;
+
+                pin.Node = node as IDataflowNodeDefinition;
+
+                yield return pin;
+            }            
+        }
+
         public void CollectInputsAndOutpus(IMethodDefinition methodDefinition, DataflowNodeDefinition node)
         {
-            IEnumerable<IDataflowPinDefinition> allpindefs =
+            IEnumerable<IDataflowPinDefinition> stdpindefs =
                 from param in methodDefinition.Parameters
                 from pindef in Collect(param, node)                
                 select pindef;
+
+            IEnumerable<IDataflowPinDefinition> allpindefs =
+                stdpindefs.Concat(ReturnValueToOutputDefinition(node));
 
             node.Inputs = allpindefs.Where(pindef => pindef is IInputPinDefinition).Cast<IInputPinDefinition>();
             node.Outputs = allpindefs.Where(pindef => pindef is IOutputPinDefinition).Cast<IOutputPinDefinition>();
@@ -158,24 +210,24 @@ namespace VVVV.Core
 
         public IEnumerable<INodeDefinition> Collect(IMethodDefinition methodDefinition)
         {
-            var nodeattribute = methodDefinition.Attributes.FirstOrDefault(attribute => attribute.Type.TypeName() == "NodeAttribute"); 
-            
-            if (!NodeAttributesNeedToBeSet || nodeattribute!=null)
+            //is there any way of instancing the attribute? that ease the access of the properties - think Attribute.GetCustomAttribute(
+            var nodeattribute = methodDefinition.Attributes.FirstOrDefault(attribute => attribute.Type.TypeName() == "NodeAttribute");
+
+            if (!NodeAttributesNeedToBeSet || nodeattribute != null)
             {
                 DataflowNodeDefinition node;
                 if (methodDefinition.IsStatic)
                     node = new FunctionNodeDefinition();
                 else
-                    //todo: only create functor nodes if the containing type has a default constructor
-                    if (methodDefinition.ContainingTypeDefinition.IsValueType /*|| methodDefinition.ContainingTypeDefinition.*/ )
+                    if (methodDefinition.ContainingTypeDefinition.IsValueType || methodDefinition.ContainingTypeDefinition.HasDefaultConstructor(FctorName))
                         node = new FunctorNodeDefinition()
                         {
                             StateType = methodDefinition.ContainingTypeDefinition
                         };
                     else
                         yield break;
-                    
-                //is there any way of instancing the attribute? that ease the access of the properties - think Attribute.GetCustomAttribute(
+
+                node.MethodDefinition = methodDefinition;
 
                 var namearg = nodeattribute.GetArgument("Name");
                 node.Name = namearg.ValueIsString() ? namearg.Value() : methodDefinition.Name.Value;
@@ -208,12 +260,8 @@ namespace VVVV.Core
 
                 node.Namespace = methodDefinition.ContainingTypeDefinition.NameSpaceName();
 
-                node.MethodDefinition = methodDefinition;
+                node.Filename = methodDefinition.Locations.First().Document.Location; // how could any methoddefinition exist in 2 locations?
 
-                //todo: add return value as output pin if not void
-
-                //todo: set filename property of node definition
-                
                 CollectInputsAndOutpus(methodDefinition, node);
 
                 yield return node;
@@ -234,5 +282,6 @@ namespace VVVV.Core
                 from node in Collect(method)
                 select node;
         }
+
     }
 }
