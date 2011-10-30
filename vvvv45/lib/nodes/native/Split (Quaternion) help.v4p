@@ -1,0 +1,239 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Split (Quaternion) help.v4p">
+   <BOUNDS height="6270" left="4380" top="2100" type="Window" width="5535">
+   </BOUNDS>
+   <NODE id="12" nodename="Join (Quaternion)">
+   <BOUNDS height="0" left="1830" top="1950" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Quaternion Out XYZW" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion In X" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Quaternion In Y" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Quaternion In W" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Quaternion In Z" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="Split (Quaternion)">
+   <BOUNDS height="0" left="1830" top="4035" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Quaternion In XYZW" slicecount="4" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion Out X" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion Out Y" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion Out Z" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion Out W" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1080" top="810" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6855" top="3975" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1080" top="810" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="X">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1950" top="810" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7155" top="4275" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1950" top="810" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Y">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2820" top="810" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8025" top="4290" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2820" top="810" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Z">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3690" top="810" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8895" top="4305" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3690" top="810" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="W">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Quaternion In X" srcnodeid="10" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Quaternion In Y" linkstyle="PolyLine" srcnodeid="9" srcpinname="Y Output Value">
+   <LINKPOINT x="2715" y="1395">
+   </LINKPOINT>
+   <LINKPOINT x="2040" y="1395">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Quaternion In Z" linkstyle="PolyLine" srcnodeid="8" srcpinname="Y Output Value">
+   <LINKPOINT x="3585" y="1650">
+   </LINKPOINT>
+   <LINKPOINT x="2220" y="1650">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Quaternion In W" linkstyle="PolyLine" srcnodeid="7" srcpinname="Y Output Value">
+   <LINKPOINT x="4455" y="1800">
+   </LINKPOINT>
+   <LINKPOINT x="2400" y="1800">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1065" top="2475" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7650" top="6060" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1350" left="1065" top="2475" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Quaternion Out XYZW">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1080" top="5475" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7155" top="4275" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1080" top="5475" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="X">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1950" top="5475" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7455" top="4575" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1950" top="5475" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Y">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2820" top="5475" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8325" top="4590" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2820" top="5475" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Z">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3690" top="5475" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9195" top="4605" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3690" top="5475" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="W">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Quaternion In XYZW" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="11" srcpinname="Quaternion Out X">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" linkstyle="PolyLine" srcnodeid="11" srcpinname="Quaternion Out Y">
+   <LINKPOINT x="2040" y="5310">
+   </LINKPOINT>
+   <LINKPOINT x="2715" y="5310">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Y Input Value" linkstyle="PolyLine" srcnodeid="11" srcpinname="Quaternion Out Z">
+   <LINKPOINT x="2220" y="5100">
+   </LINKPOINT>
+   <LINKPOINT x="3585" y="5100">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Y Input Value" linkstyle="PolyLine" srcnodeid="11" srcpinname="Quaternion Out W">
+   <LINKPOINT x="2400" y="4905">
+   </LINKPOINT>
+   <LINKPOINT x="4455" y="4905">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="300" left="15" top="390" type="Box" width="4155">
+   </BOUNDS>
+   <BOUNDS height="160" left="930" top="8670" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|split a quaternion 4dvector into its components x,y,z,w.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="2670">
+   </BOUNDS>
+   <BOUNDS height="160" left="930" top="8670" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Split - Quaternion|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   <NODE id="5" componentmode="InABox" nodename="IOBox (String)">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|join x,y,z,w to a quaternion 4dvector. (just a convenient stallone)|">
+   </PIN>
+   <BOUNDS type="Node" left="2490" top="1950" height="255" width="810">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2490" top="1950" height="525" width="2985">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="0" top="0" width="215">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

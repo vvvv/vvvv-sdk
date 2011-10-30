@@ -1,0 +1,213 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.1.dtd" >
+   <PATCH nodename="X:\vvvv33\help\Compress (DShow9) help.v4p">
+   <BOUNDS height="6960" left="2235" top="2040" type="Window" width="5040">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="240" left="15" top="390" type="Box" width="4035">
+   </BOUNDS>
+   <BOUNDS height="160" left="2700" top="42000" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Compresses a DirectShow video stream|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="15" top="15" type="Box" width="3045">
+   </BOUNDS>
+   <BOUNDS height="160" left="2700" top="42000" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Compress - DShow9|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="VideoIn (DShow9)">
+   <BOUNDS height="0" left="930" top="1845" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="270" left="1890" top="1425" type="Node" width="2340">
+   </BOUNDS>
+   <BOUNDS height="330" left="1890" top="1425" type="Box" width="2355">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|choose a video capture input|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="Writer (DShow9)">
+   <BOUNDS height="0" left="930" top="5520" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video Input" visible="1">
+   </PIN>
+   <PIN pinname="Record" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1185" top="4095" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5280" top="7695" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="585" left="1185" top="4095" type="Box" width="555">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Record" srcnodeid="9" srcpinname="X Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="0" left="8970" top="810" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3510" top="4110" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="8970" top="810" type="Box" width="1845">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="writer.txt">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="0" left="9270" top="1110" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3810" top="4410" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="9270" top="1110" type="Box" width="1845">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="writer.txt">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="9570" top="1410" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4110" top="4710" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="9570" top="1410" type="Box" width="1845">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="writer.txt">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="0" left="8970" top="810" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3510" top="4110" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="8970" top="810" type="Box" width="1845">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="writer.txt">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1425" top="4950" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7230" top="5025" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="255" left="1425" top="4950" type="Box" width="1680">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="c:\testfile.avi">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Filename" srcnodeid="4" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="270" left="1890" top="5310" type="Node" width="2340">
+   </BOUNDS>
+   <BOUNDS height="300" left="1890" top="5310" type="Box" width="1395">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|filename to write|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="1890" top="4245" type="Node" width="2340">
+   </BOUNDS>
+   <BOUNDS height="300" left="1890" top="4245" type="Box" width="1395">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="900" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|record on/off|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="Compress (DShow9)">
+   <BOUNDS height="0" left="930" top="3000" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video Input" visible="1">
+   </PIN>
+   <PIN pinname="Video Output" visible="1">
+   </PIN>
+   <PIN pinname="Video Codec" slicecount="1" values="|Microsoft Video 1|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Video Input" srcnodeid="12" srcpinname="Video">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Video Input" srcnodeid="1" srcpinname="Video Output">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="1890" top="2985" type="Node" width="2340">
+   </BOUNDS>
+   <BOUNDS height="330" left="1890" top="2985" type="Box" width="2355">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|choose a video codec|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

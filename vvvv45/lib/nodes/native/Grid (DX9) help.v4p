@@ -1,0 +1,149 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\Grid (DX9) help.v4p">
+   <BOUNDS height="4830" left="435" top="630" type="Window" width="7335">
+   </BOUNDS>
+   <NODE id="10" nodename="Grid (DX9)">
+   <BOUNDS height="0" left="195" top="2820" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Resolution X" slicecount="1" visible="1" values="10.00000">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Resolution Y" slicecount="1" visible="1" values="10.00000">
+   </PIN>
+   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="3570" top="405" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="6840" top="5640" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="3240" left="3570" top="405" type="Box" width="3345">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="210" top="1560" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Render State" srcnodeid="8" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1395" top="2325" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8370" top="5385" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1395" top="2325" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="13">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1905" top="2340" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8670" top="5685" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1905" top="2340" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="13">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="420" left="1380" top="1830" type="Node" width="1020">
+   </BOUNDS>
+   <BOUNDS height="495" left="1380" top="1830" type="Box" width="990">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Resolution &cr;&lf;X and Y|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Resolution X" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Resolution Y" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="210" top="4035" type="Node" width="855">
+   </BOUNDS>
+   <BOUNDS height="240" left="210" top="4035" type="Box" width="750">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="GridPick (2d)">
+   <BOUNDS height="0" left="1080" top="4035" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="2" nodename="GridSegment (DX9)">
+   <BOUNDS height="0" left="2175" top="4035" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Enabled" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="705" left="15" top="390" type="Box" width="3120">
+   </BOUNDS>
+   <BOUNDS height="160" left="11520" top="17820" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Renders a rectangle with the given number of sub-rectangles the dx window&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="3435">
+   </BOUNDS>
+   <BOUNDS height="160" left="11520" top="17820" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Grid - DX9|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Layer" dstnodeid="9" dstpinname="Layers">
+   <LINKPOINT x="210" y="3510">
+   </LINKPOINT>
+   <LINKPOINT x="3405" y="3510">
+   </LINKPOINT>
+   <LINKPOINT x="3405" y="345">
+   </LINKPOINT>
+   <LINKPOINT x="3615" y="345">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>
