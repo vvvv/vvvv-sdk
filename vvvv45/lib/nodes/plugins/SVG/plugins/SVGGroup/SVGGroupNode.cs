@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Drawing;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -16,6 +17,128 @@ using SlimDX;
 
 namespace VVVV.Nodes
 {	
+	public enum StrokeMode
+	{
+		Color,
+		None
+	}
+
+	public abstract class SVGVisualElementNode<T> : IPluginEvaluate where T : SvgVisualElement
+	{
+		#region fields & pins
+		[Input("Transform", Order = 0)]
+		IDiffSpread<Matrix> FTransformIn;
+		
+		[Input("Stroke", Order = 10, DefaultColor = new double[] { 0, 0, 0, 1 })]
+		IDiffSpread<RGBAColor> FStrokeIn;
+		
+		[Input("Stroke Mode", Order = 11, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<StrokeMode> FStrokeModeIn;
+		
+		[Input("Stroke Width", Order = 12)]
+		IDiffSpread<float> FStrokeWidthIn;
+		
+		[Input("Enabled", Order = 30, DefaultValue = 1)]
+		IDiffSpread<bool> FEnabledIn;
+		
+		[Output("Layer")]
+		ISpread<SvgVisualElement> FOutput;
+		
+		bool FFirstFrame = true;
+		
+		#endregion fields & pins
+		
+		public void Evaluate(int SpreadMax)
+		{
+			if (FFirstFrame) FOutput[0] = CreateElement();
+			
+			//set slice count
+            if (FOutput.SliceCount > SpreadMax)
+            {
+                FOutput.RemoveRange(SpreadMax, FOutput.SliceCount - SpreadMax);
+            }
+            else if (FOutput.SliceCount < SpreadMax)
+            {
+                for (int i = FOutput.SliceCount; i < SpreadMax; i++)
+                    FOutput.Add(CreateElement());
+            }
+			
+			
+			for(int i=0; i<SpreadMax; i++)
+			{
+				var elem = FOutput[i];
+				SetTransform(elem, i);
+				SetFill(elem, i);
+				SetStroke(elem, i);
+				elem.Visible = FEnabledIn[i];
+			}
+			
+			FFirstFrame = false;
+		}
+		
+		protected void SetTransform(SvgVisualElement elem, int slice)
+		{
+			var m = FTransformIn[slice];
+			var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
+			
+			elem.Transforms.Add(mat);
+		}
+		
+		protected void SetStroke(SvgVisualElement elem, int slice)
+		{
+			if(FStrokeModeIn[slice] != StrokeMode.None)
+			{
+				elem.Stroke = new SvgColourServer(FStrokeIn[slice].Color);
+				elem.StrokeOpacity = (float)FStrokeIn[slice].A;
+				elem.StrokeWidth = FStrokeWidthIn[slice];
+			}
+			else
+			{
+				elem.Stroke = null;
+			}
+		}
+		
+		protected virtual void SetFill(SvgVisualElement elem, int slice)
+		{
+		}
+		
+		protected abstract T CreateElement();
+	}
+	
+	public abstract class SVGVisualElementFillNode<T> : SVGVisualElementNode<T> where T : SvgVisualElement
+	{
+		#region fields & pins
+		
+		[Input("Fill", Order = 20, DefaultColor = new double[] { 1, 1, 1, 1 })]
+		IDiffSpread<RGBAColor> FFillIn;
+		
+		[Input("Fill Mode", Order = 21, Visibility = PinVisibility.OnlyInspector)]
+		IDiffSpread<SvgFillRule> FFillModeIn;
+		
+		protected override void SetFill(SvgVisualElement elem, int index)
+		{
+			elem.Fill = new SvgColourServer(FFillIn[index].Color);
+			elem.FillOpacity = (float)FFillIn[index].A;
+			elem.FillRule = FFillModeIn[index];
+		}
+		
+		#endregion fields & pins
+	}
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Quad", Category = "SVG", Help = "Svg Quad", Tags = "")]
+	#endregion PluginInfo
+	public class SvgRect : SVGVisualElementFillNode<SvgRectangle>
+	{
+		protected override SvgRectangle CreateElement()
+		{
+			var elem = new SvgRectangle();
+			elem.Transforms = new SvgTransformCollection();
+			elem.Transforms.Add(new SvgTranslate(-0.5f, -0.5f));
+			return elem;
+		}
+	}
+	
 	#region PluginInfo
 	[PluginInfo(Name = "Group", Category = "SVG", Help = "Groups multiple SVG Layers into one", Tags = "")]
 	#endregion PluginInfo
