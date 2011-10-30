@@ -1,0 +1,313 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.dtd" >
+   <PATCH nodename="D:\vvvv\sourceforge\plugins\wrk\TangentSpreads\Tangent (Spreads) help.v4p">
+   <BOUNDS height="9885" left="1125" top="1125" type="Window" width="6315">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="16" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="4065" top="1485" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="-0.34">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="15" nodename=":PLUGINS:\TangentSpreads.dll">
+   <BOUNDS height="100" left="3000" top="2280" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS left="3000" top="2280" type="Box">
+   </BOUNDS>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="Renderer (GDI)">
+   <BOUNDS height="0" left="735" top="5325" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="3510" left="735" top="5325" type="Box" width="4485">
+   </BOUNDS>
+   <BOUNDS height="4860" left="9315" top="1095" type="Window" width="6120">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="13" nodename="Point (GDI)">
+   <BOUNDS height="0" left="735" top="4620" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Type" slicecount="1" values="Circle">
+   </PIN>
+   <PIN pinname="Pen Color" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="12" nodename="Vector (2d Split)">
+   <BOUNDS height="0" left="720" top="2640" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="X" srcnodeid="12" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Y" srcnodeid="12" srcpinname="Y">
+   </LINK>
+   <NODE componentmode="Hidden" id="11" nodename="Line (GDI)">
+   <BOUNDS height="0" left="1650" top="4620" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X1" visible="1">
+   </PIN>
+   <PIN pinname="Y1" visible="1">
+   </PIN>
+   <PIN pinname="X2" visible="1">
+   </PIN>
+   <PIN pinname="Y2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pen Color" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="10" nodename="Vector (2d Split)">
+   <BOUNDS height="0" left="3000" top="2640" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="9" nodename="Group (GDI)">
+   <BOUNDS height="270" left="735" top="4950" type="Node" width="975">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Layer 1" srcnodeid="13" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Layers" srcnodeid="9" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Layer 2" srcnodeid="11" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="8" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="3000" top="1485" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1.09">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="7" nodename="Vector (2d Join)">
+   <BOUNDS height="270" left="3000" top="1905" type="Node" width="1110">
+   </BOUNDS>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Y" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="X" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="XY" srcnodeid="7" srcpinname="XY">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Input" srcnodeid="7" srcpinname="XY">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="XY" srcnodeid="15" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="6" nodename="Add (Value)">
+   <BOUNDS height="0" left="2775" top="3150" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input 1" srcnodeid="12" srcpinname="X">
+   </LINK>
+   <NODE componentmode="Hidden" id="5" nodename="Add (Value)">
+   <BOUNDS height="0" left="3330" top="3150" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input 1" srcnodeid="12" srcpinname="Y">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4455" top="1065" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="4455" top="1065" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="4680" top="1800" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Spread Count" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Spread Count" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="3" nodename="Points2Vector (2d)">
+   <BOUNDS height="270" left="1665" top="3465" type="Node" width="1725">
+   </BOUNDS>
+   <PIN pinname="X1" visible="1">
+   </PIN>
+   <PIN pinname="Y1" visible="1">
+   </PIN>
+   <PIN pinname="X2" visible="1">
+   </PIN>
+   <PIN pinname="Y2" visible="1">
+   </PIN>
+   <PIN pinname="Length" visible="1">
+   </PIN>
+   <PIN pinname="Angle" visible="1">
+   </PIN>
+   <PIN pinname="X" pintype="Output" visible="0">
+   </PIN>
+   <PIN pinname="Y" pintype="Output" visible="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="X1" srcnodeid="12" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Y1" srcnodeid="12" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="X2" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Y2" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="2" nodename="Vector2Points (2d)">
+   <BOUNDS height="270" left="1665" top="4095" type="Node" width="1725">
+   </BOUNDS>
+   <PIN pinname="Length" visible="1">
+   </PIN>
+   <PIN pinname="Angle" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="X1" visible="1">
+   </PIN>
+   <PIN pinname="Y1" visible="1">
+   </PIN>
+   <PIN pinname="X2" visible="1">
+   </PIN>
+   <PIN pinname="Y2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Length" srcnodeid="3" srcpinname="Length">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Angle" srcnodeid="3" srcpinname="Angle">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Y" srcnodeid="12" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="X" srcnodeid="12" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="X1" srcnodeid="2" srcpinname="X1">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Y1" srcnodeid="2" srcpinname="Y1">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="X2" srcnodeid="2" srcpinname="X2">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Y2" srcnodeid="2" srcpinname="Y2">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="3660">
+   </BOUNDS>
+   <BOUNDS height="420" left="15" top="15" type="Box" width="3705">
+   </BOUNDS>
+   <BOUNDS height="160" left="615" top="285" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Tangent (Spreads) help|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="510" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="540" left="15" top="510" type="Box" width="4560">
+   </BOUNDS>
+   <BOUNDS height="160" left="615" top="285" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|calculates the weighted tangents of the incoming points&cr;&lf;(the mean of the direction to the previous and the next point)&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input 2" srcnodeid="10" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Input 2" srcnodeid="10" srcpinname="X">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="17">
+   <BOUNDS type="Node" left="60" top="9090" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="60" top="9090" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="Differential (Spreads)" componentmode="Hidden" id="18">
+   <BOUNDS type="Node" left="975" top="9090" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="19">
+   <BOUNDS type="Node" left="4950" top="9120" width="915" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4950" top="9120" width="915" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|2009, woei|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

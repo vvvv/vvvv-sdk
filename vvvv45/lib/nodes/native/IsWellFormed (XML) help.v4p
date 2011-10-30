@@ -1,0 +1,123 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.1.dtd" >
+   <PATCH nodename="X:\vvvv33\help\IsWellFormed (XML) help.v4p">
+   <BOUNDS type="Window" left="1995" top="1650" width="7440" height="6480">
+   </BOUNDS>
+   <NODE nodename="IsWellFormed (XML)" id="3">
+   <BOUNDS type="Node" left="1590" top="1860" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="270" left="360" top="285" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="450" left="360" top="285" type="Box" width="2625">
+   </BOUNDS>
+   <BOUNDS height="160" left="10530" top="40530" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|IsWellFormed (XML)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="270" left="330" top="945" type="Node" width="6870">
+   </BOUNDS>
+   <BOUNDS height="2745" left="330" top="945" type="Box" width="3315">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Indicates whether XML is well formed or not.&cr;&lf;&cr;&lf;To run this node, you need to have MSXML installed on your System. &cr;&lf;&cr;&lf;A well-formed XML document conforms to all of XML&apos;s syntax rules. For example, if a non-empty element has an opening tag with no closing tag, it is not well-formed. A document that is not well-formed is not considered to be XML; The parser is required to refuse to process it.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="1320" left="375" top="4095" type="Node" width="10035">
+   </BOUNDS>
+   <BOUNDS height="960" left="375" top="4095" type="Box" width="2055">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|A good site to learn everything about the X-Stuff is&cr;&lf;www.w3schools.com&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="25">
+   <BOUNDS type="Node" left="3930" top="960" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7125" top="2865" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3930" top="960" width="2760" height="2040">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="2" values="|&lt;program&gt;&cr;&lf;  &lt;name&gt;vvvv&lt;/name&gt;&cr;&lf;  &lt;developer&gt;meso&lt;/developer&gt;&cr;&lf;&lt;/program&gt;&tab;|,|&lt;program&gt;&cr;&lf;  &lt;name&gt;vvvv&lt;/name&gt;&cr;&lf;  &lt;developer&gt;meso&lt;/developer&gt;&cr;&lf;&tab;|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IsWellFormed (XML)" id="26">
+   <BOUNDS type="Node" left="3930" top="3345" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="Is well formed" visible="1">
+   </PIN>
+   <PIN pinname="Message" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Output String" dstnodeid="26" dstpinname="XML Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="27">
+   <BOUNDS type="Node" left="2730" top="4095" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6945" top="5655" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2730" top="4095" width="1260" height="1485">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="26" srcpinname="Is well formed" dstnodeid="27" dstpinname="Y Input Value" linkstyle="VHV">
+   <LINKPOINT x="3960" y="4155">
+   </LINKPOINT>
+   <LINKPOINT x="3960" y="4155">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="28">
+   <BOUNDS type="Node" left="4050" top="4065" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7425" top="3165" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4050" top="4065" width="2760" height="1530">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="26" srcpinname="Message" dstnodeid="28" dstpinname="Input String" linkstyle="VHV">
+   <LINKPOINT x="4965" y="4035">
+   </LINKPOINT>
+   <LINKPOINT x="6780" y="4035">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>

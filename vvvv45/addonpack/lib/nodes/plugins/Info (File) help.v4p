@@ -1,0 +1,199 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.5.dtd" >
+   <PATCH nodename="D:\work\personal\builds\vvvv\special\dlls\Ready\EnvironmentNodes\Info (File) help.v4p">
+   <BOUNDS height="6660" left="5670" top="2535" type="Window" width="4560">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="315" top="3930" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2535" top="4860" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1440" left="315" top="3930" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="exists">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="270" left="225" top="795" type="Node" width="2790">
+   </BOUNDS>
+   <BOUNDS height="1320" left="225" top="795" type="Box" width="4200">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|reads some file attributes&cr;&lf;&cr;&lf;custom root: working with relative paths you need to specify a rootpath, default is the patch path.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Dir (File)">
+   <BOUNDS height="0" left="1065" top="2865" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filenames" visible="1">
+   </PIN>
+   <PIN pinname="Directory" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="930" top="3945" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7635" top="6675" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1440" left="930" top="3945" type="Box" width="1095">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Filesize">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="210" top="210" type="Node" width="3660">
+   </BOUNDS>
+   <BOUNDS height="420" left="210" top="210" type="Box" width="3705">
+   </BOUNDS>
+   <BOUNDS height="160" left="3540" top="825" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Info (File)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="1" nodename="SystemFolder (File)">
+   <BOUNDS height="0" left="1230" top="2535" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Directory" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="3105" top="5745" type="Node" width="735">
+   </BOUNDS>
+   <BOUNDS height="255" left="3105" top="5745" type="Box" width="885">
+   </BOUNDS>
+   <BOUNDS height="160" left="-1320" top="-1755" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|2009, woei|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="SystemNodes.dll|VVVV.Nodes.InfoFile" componentmode="Hidden" id="8">
+   <BOUNDS type="Node" left="1050" top="3300" width="1980" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1050" top="3300" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6825" top="6645" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Exists" visible="1">
+   </PIN>
+   <PIN pinname="Filesize" visible="1">
+   </PIN>
+   <PIN pinname="Update" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Filenames" dstnodeid="8" dstpinname="Filename">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Exists" dstnodeid="7" dstpinname="Y Input Value" linkstyle="VHV">
+   <LINKPOINT x="1035" y="3743">
+   </LINKPOINT>
+   <LINKPOINT x="765" y="3743">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Filesize" dstnodeid="3" dstpinname="Y Input Value" linkstyle="VHV">
+   <LINKPOINT x="1755" y="3758">
+   </LINKPOINT>
+   <LINKPOINT x="1965" y="3758">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6180" top="3600" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="6180" top="3600" type="Box" width="480">
+   </BOUNDS>
+   <BOUNDS height="160" left="11400" top="4515" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Update">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6195" top="3780" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="6195" top="3780" type="Box" width="480">
+   </BOUNDS>
+   <BOUNDS height="160" left="11415" top="4695" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Update">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12">
+   <BOUNDS type="Node" left="2550" top="2340" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2550" top="2340" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Window" left="8550" top="5190" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Update">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Update">
+   </LINK>
+   </PATCH>

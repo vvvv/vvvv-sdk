@@ -1,0 +1,117 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\M3UParser (File) help.v4p">
+   <BOUNDS height="8070" left="435" top="615" type="Window" width="9405">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="240" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5790" top="7275" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="5370" left="240" top="1905" type="Box" width="1245">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="16">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|m3u File|" encoded="0">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="M3UParser (File)" systemname="M3UParser (File)">
+   <BOUNDS height="0" left="1410" top="1290" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" slicecount="1" visible="1" values="example.m3u">
+   </PIN>
+   <PIN pinname="M3UFile" visible="1">
+   </PIN>
+   <PIN pinname="MP3File" visible="1">
+   </PIN>
+   <PIN pinname="ExtInf" visible="1">
+   </PIN>
+   <PIN pinname="doRead" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input String" srcnodeid="3" srcpinname="M3UFile">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1575" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6090" top="7575" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="5370" left="1575" top="1905" type="Box" width="3480">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="16">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="mp3file" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input String" srcnodeid="3" srcpinname="MP3File">
+   <LINKPOINT x="1860" y="1710">
+   </LINKPOINT>
+   <LINKPOINT x="5025" y="1710">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="5235" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6390" top="7875" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="5385" left="5235" top="1905" type="Box" width="3795">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="16">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|extended info|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input String" srcnodeid="3" srcpinname="ExtInf">
+   <LINKPOINT x="9000" y="1530">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1395" top="765" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3465" top="6495" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="1395" top="765" type="Box" width="3885">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="..\..\assets\texts\sample_playlist.m3u" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Filename" srcnodeid="0" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="3885">
+   </BOUNDS>
+   <BOUNDS height="160" left="750" top="12120" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|retrieves information out of m3u (winamp) playlists|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="750" top="12120" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|M3UParser - File|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>
