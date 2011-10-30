@@ -34,7 +34,7 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 
-		[Input("XML")]
+		[Input("SVG Layer")]
 		IDiffSpread<SvgElement> FSVGIn;
 		
 		[Input("Transform")]
@@ -65,7 +65,7 @@ namespace VVVV.Nodes
 		}
 		
 		//memcopy method
-		[DllImport("msvcrt.dll", EntryPoint="memcpy", SetLastError=false)]
+		[DllImport("Kernel32.dll", EntryPoint="RtlMoveMemory", SetLastError=false)]
         static extern void CopyMemory(IntPtr dest, IntPtr src, int size);
 
 		//called when data for any output pin is requested
@@ -92,19 +92,12 @@ namespace VVVV.Nodes
 				
 				FSVGDoc.Transforms = new SvgTransformCollection();
 
-			    var sx = FWidthIn[0] / (float)FOriginalDim.Width;
-				var sy = FHeightIn[0] / (float)FOriginalDim.Height;
+			    var sx = FWidthIn[0];
+				var sy = FHeightIn[0]; 
 				
 				sx = Math.Max(sx, sy);
 				
-				var c = new SvgCircle();
-				c.CenterX = 50;
-				c.CenterY = 50;
-				c.Radius = 100;
-				
-				//FSVGDoc.Children.Add(c);
-				
-                FSVGDoc.Transforms.Add(new SvgScale(sx, sx));
+                //FSVGDoc.Transforms.Add(new SvgScale(sx, sx));
 				var m = FTransformIn[0];
 				var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
 				FSVGDoc.Transforms.Add(mat);

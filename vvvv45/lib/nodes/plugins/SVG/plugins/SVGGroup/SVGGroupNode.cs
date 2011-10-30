@@ -46,38 +46,52 @@ namespace VVVV.Nodes
 		
 		bool FFirstFrame = true;
 		
+		List<SvgVisualElement> FElements = new List<SvgVisualElement>();
+		
 		#endregion fields & pins
 		
 		public void Evaluate(int SpreadMax)
 		{
-			if (FFirstFrame) FOutput[0] = CreateElement();
+			if (FFirstFrame) FElements.Add(CreateElement());
+			FOutput.SliceCount = SpreadMax;
 			
 			//set slice count
-            if (FOutput.SliceCount > SpreadMax)
+            if (FElements.Count > SpreadMax)
             {
-                FOutput.RemoveRange(SpreadMax, FOutput.SliceCount - SpreadMax);
+                FElements.RemoveRange(SpreadMax, FOutput.SliceCount - SpreadMax);
             }
             else if (FOutput.SliceCount < SpreadMax)
             {
-                for (int i = FOutput.SliceCount; i < SpreadMax; i++)
-                    FOutput.Add(CreateElement());
+                for (int i = FElements.Count; i < SpreadMax; i++)
+                    FElements.Add(CreateElement());
             }
 			
-			
-			for(int i=0; i<SpreadMax; i++)
+			if(PinsChanged())
 			{
-				var elem = FOutput[i];
-				SetTransform(elem, i);
-				SetFill(elem, i);
-				SetStroke(elem, i);
-				elem.Visible = FEnabledIn[i];
+				for(int i=0; i<SpreadMax; i++)
+				{
+					var elem = FElements[i];
+					SetTransform(elem, i);
+					SetFill(elem, i);
+					SetStroke(elem, i);
+					elem.Visible = FEnabledIn[i];
+					FOutput.AssignFrom(FElements);
+				}
 			}
 			
 			FFirstFrame = false;
 		}
 		
+		protected virtual bool PinsChanged()
+		{
+			return FTransformIn.IsChanged || FStrokeIn.IsChanged || FStrokeWidthIn.IsChanged
+				|| FStrokeModeIn.IsChanged || FEnabledIn.IsChanged;
+		}
+		
 		protected void SetTransform(SvgVisualElement elem, int slice)
 		{
+			elem.Transforms = new SvgTransformCollection();
+			elem.Transforms.Add(new SvgTranslate(-0.5f, -0.5f));
 			var m = FTransformIn[slice];
 			var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
 			
@@ -115,14 +129,19 @@ namespace VVVV.Nodes
 		[Input("Fill Mode", Order = 21, Visibility = PinVisibility.OnlyInspector)]
 		IDiffSpread<SvgFillRule> FFillModeIn;
 		
-		protected override void SetFill(SvgVisualElement elem, int index)
+		#endregion fields & pins
+		
+		protected override bool PinsChanged()
+		{
+			return base.PinsChanged() || FFillIn.IsChanged || FFillModeIn.IsChanged;
+		}
+		
+				protected override void SetFill(SvgVisualElement elem, int index)
 		{
 			elem.Fill = new SvgColourServer(FFillIn[index].Color);
 			elem.FillOpacity = (float)FFillIn[index].A;
 			elem.FillRule = FFillModeIn[index];
 		}
-		
-		#endregion fields & pins
 	}
 	
 	#region PluginInfo
@@ -133,8 +152,8 @@ namespace VVVV.Nodes
 		protected override SvgRectangle CreateElement()
 		{
 			var elem = new SvgRectangle();
-			elem.Transforms = new SvgTransformCollection();
-			elem.Transforms.Add(new SvgTranslate(-0.5f, -0.5f));
+			elem.Width = 1;
+			elem.Height = 1;
 			return elem;
 		}
 	}
@@ -189,9 +208,6 @@ namespace VVVV.Nodes
 					
 					FGroups.Add(g);
 				}
-				
-				//write groups to output
-				FOutput.AssignFrom(FGroups);
 			}
 			
 			//add all elements to each group
@@ -212,6 +228,8 @@ namespace VVVV.Nodes
 					}
 					
 				}
+				//write groups to output
+				FOutput.AssignFrom(FGroups);
 			}
 		}
 	}
