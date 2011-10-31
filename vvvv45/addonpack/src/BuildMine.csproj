@@ -12,15 +12,17 @@
     <CoreDestFolder>..\..\lib\core\</CoreDestFolder>
     <PluginsDestFolder>..\lib\nodes\plugins\</PluginsDestFolder>
   </PropertyGroup>
-  <ItemGroup>
-    <!--<CoreProjectsToBuild Include="core\**\*.csproj;gui\**\*.csproj" />-->
-    <!--<PluginProjectsToBuild Include="nodes\plugins\*\*\*.csproj" />-->
-  </ItemGroup>
   <PropertyGroup>
     <BuildDependsOn>$(BuildDependsOn)</BuildDependsOn>
     <RebuildDependsOn>Clean;Build</RebuildDependsOn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
+  <ItemGroup>
+    <ProjectReference Include="nodes\plugins\Devices\PhidgetsIO\PhidgetInterface.csproj">
+      <Project>{85FE76AA-FFE0-4F89-84F2-F63E5EB9E704}</Project>
+      <Name>PhidgetInterface</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
     <MSBuild Projects="@(CoreProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" />
     <!--<MSBuild Projects="@(PluginProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU">

@@ -90,11 +90,11 @@ namespace VVVV.Nodes
 
                 if (FLed.Attached)
                 {
-                    //if (FVoltageIn.IsChanged || FInit)
-                    //    FLed.SetVoltage(FVoltageIn[0]);
+                    if (FVoltageIn.IsChanged || FInit)
+                        FLed.SetVoltage(FVoltageIn[0]);
 
-                    //if (FCurrentLimitIn.IsChanged || FInit)
-                    //    FLed.SetCurrentLimit(FCurrentLimitIn[0]);
+                    if (FCurrentLimitIn.IsChanged || FInit)
+                        FLed.SetCurrentLimit(FCurrentLimitIn[0]);
 
                     if (FBrightness.IsChanged || FInit)
                     {
