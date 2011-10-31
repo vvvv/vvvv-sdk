@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.Nodes</RootNamespace>
@@ -18,14 +17,13 @@
     <FileAlignment>4096</FileAlignment>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <OutputPath>bin\Release</OutputPath>
+    <OutputPath>..\..\..\Programme\vvvv_40beta17\vst\Phidget\</OutputPath>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <TargetFrameworkProfile />
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -41,6 +39,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <Optimize>False</Optimize>
@@ -49,7 +48,7 @@
     <DebugType>Full</DebugType>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <StartAction>Project</StartAction>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <Optimize>True</Optimize>
@@ -57,69 +56,90 @@
     <DebugSymbols>False</DebugSymbols>
     <DebugType>None</DebugType>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'vvvv Debug' ">
     <DebugSymbols>false</DebugSymbols>
-    <OutputPath>bin\Debug</OutputPath>
+    <OutputPath>..\..\..\..\-= vvvv =-\Develop\vvvv_45beta25.1\addonpack\plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <DebugType>PdbOnly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <Optimize>False</Optimize>
+    <Optimize>false</Optimize>
     <StartAction>Program</StartAction>
     <StartProgram>..\..\..\Programme\vvvv_40beta17\vvvv.exe</StartProgram>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Phidget21.NET">
-      <HintPath>Dependencies\Phidget21.NET.dll</HintPath>
+    <Reference Include="Phidget21.NET, Version=2.1.7.44, Culture=neutral, PublicKeyToken=c2b1f2a3594bce52, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Phidget21.NET.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\-= vvvv =-\Develop\vvvv_45beta25.1\bin\managed\System.ComponentModel.Composition.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="VVVV.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\-= vvvv =-\Develop\vvvv_45beta25.1\bin\managed\VVVV.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VVVV.PluginInterfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\-= vvvv =-\Develop\vvvv_45beta25.1\bin\managed\VVVV.PluginInterfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VVVV.Utils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\-= vvvv =-\Develop\vvvv_45beta25.1\bin\managed\VVVV.Utils.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Accelerometer\GetAccelerometerData.cs" />
-    <Compile Include="EncoderHighSpeed\GetEncoderData.cs" />
-    <Compile Include="EncoderHighSpeed\PhidgetEncoder.cs" />
-    <Compile Include="Interface888\GetInterfaceData.cs" />
-    <Compile Include="CircularTouch\GetTouchData.cs" />
-    <Compile Include="Manager\ManagePhidgets.cs" />
-    <Compile Include="CircularTouch\PhidgetCircularTouch.cs" />
-    <Compile Include="Interface888\PhidgetInterface.cs" />
-    <Compile Include="Manager\PhidgetManager.cs" />
-    <Compile Include="Accelerometer\Phidget_Accelerometer.cs" />
+    <Compile Include="Accelerometer\AccelerometerNode.cs" />
+    <Compile Include="Accelerometer\WrapperAccelerometer.cs" />
+    <Compile Include="AdvancedServoMotor\ServoMotorNode.cs" />
+    <Compile Include="AdvancedServoMotor\WrapperServoMotor.cs" />
+    <Compile Include="Encoder\EncoderNode.cs" />
+    <Compile Include="Encoder\WrapperEncoder.cs" />
+    <Compile Include="IOBoard\IOBoardNode.cs" />
+    <Compile Include="IOBoard\WrapperIOBoards.cs" />
+    <Compile Include="IPhidgetsWrapper.cs" />
+    <Compile Include="LED64Advanced\LED64AdvancedNode.cs" />
+    <Compile Include="LED64Advanced\WrapperLED64Advanced.cs" />
+    <Compile Include="Manager\ManagerNode.cs" />
+    <Compile Include="Manager\WrapperManager.cs" />
+    <Compile Include="Phidgets.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StepperUnipolar4Motors\StepperUnipolar4MotorsNode.cs" />
+    <Compile Include="StepperUnipolar4Motors\WrapperStepperUnipolar4Motors.cs" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
       <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
       <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
     </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\core\PluginInterfaces\PluginInterfaces.csproj">
-      <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
-      <Name>PluginInterfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\core\Utils\Utils.csproj">
-      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
-      <Name>Utils</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
