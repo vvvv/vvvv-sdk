@@ -27,6 +27,8 @@ using Svg.Transforms;
 
 namespace VVVV.Nodes
 {
+	
+	
 	#region PluginInfo
 	[PluginInfo(Name = "SVGTexture", Category = "EX9.Texture", Help = "Renders a SVG graphic into a texture with a given size", Tags = "")]
 	#endregion PluginInfo
@@ -54,6 +56,12 @@ namespace VVVV.Nodes
 
 		[Input("Height", DefaultValue = 128)]
 		IDiffSpread<int> FHeightIn;
+		
+		[Input("Filename", DefaultString = "file.svg", FileMask = "*.svg", StringType = StringType.Filename)]
+		ISpread<string> FFilenameIn;
+		
+		[Input("Write", IsBang = true)]
+		ISpread<bool> FDoWriteIn;
 
 		[Import()]
 		ILogger FLogger;
@@ -125,6 +133,12 @@ namespace VVVV.Nodes
                 FSVGDoc.Draw(FBitmap);
 				
 				Update();
+				
+				if(FDoWriteIn[0])
+				{
+					FSVGDoc.Write(FFilenameIn[0]);
+				}
+				
 			}
 
 		}

@@ -63,7 +63,7 @@ namespace VVVV.Nodes
 			//set slice count
             if (FElements.Count > SpreadMax)
             {
-                FElements.RemoveRange(SpreadMax, FOutput.SliceCount - SpreadMax);
+                FElements.RemoveRange(SpreadMax, FElements.Count - SpreadMax);
             }
             else if (FElements.Count < SpreadMax)
             {
@@ -115,8 +115,6 @@ namespace VVVV.Nodes
 			elem.Transforms = new SvgTransformCollection();
 			elem.Transforms.Add(new SvgTranslate(trans.X, trans.Y));
 			elem.Transforms.Add(new SvgRotate((float)(rotvec.z*VMath.RadToDeg)));
-			
-			
 			
 			//calc geometry
 			CalcGeometry(elem, new Vector2(trans.X, trans.Y), new Vector2(scale.X, scale.Y), slice);
@@ -237,7 +235,7 @@ namespace VVVV.Nodes
 	
 	//POLYGON-------------------------------------------------------------------
 	#region PluginInfo
-	[PluginInfo(Name = "Polygon", Category = "SVG", Help = "Svg Polygon from a list or vertices", Tags = "")]
+	[PluginInfo(Name = "Polygon", Category = "SVG", Help = "Svg Polygon from a list of vertices", Tags = "")]
 	#endregion PluginInfo
 	public class SvgPolygonNode : SVGVisualElementFillNode<SvgPolygon>
 	{
@@ -271,7 +269,7 @@ namespace VVVV.Nodes
 		protected override void CalcGeometry(SvgPolygon elem, Vector2 trans, Vector2 scale, int slice)
 		{
 			var verts = FVerticesIn[slice];
-			elem.Points.Clear();
+			elem.Points = new SvgUnitCollection();
 			foreach(var v in verts)
 			{
 				elem.Points.Add(v.X * scale.X);
