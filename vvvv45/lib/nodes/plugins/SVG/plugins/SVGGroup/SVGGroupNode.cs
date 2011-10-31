@@ -278,6 +278,33 @@ namespace VVVV.Nodes
 		}
 	}
 	
+	//TEXT----------------------------------------------------------------------
+	#region PluginInfo
+	[PluginInfo(Name = "Text", Category = "SVG", Help = "Svg Text", Tags = "")]
+	#endregion PluginInfo
+	public class SvgTextNode : SVGVisualElementFillNode<SvgText>
+	{
+		[Input("Text", Order = -1)]
+		IDiffSpread<string> FTextIn;
+		
+		protected override SvgText CreateElement()
+		{
+			return new SvgText();
+		}
+		
+		protected override bool PinsChanged()
+		{
+			return base.PinsChanged() || FTextIn.IsChanged;
+		}
+		
+		protected override void CalcGeometry(SvgText elem, Vector2 trans, Vector2 scale, int slice)
+		{
+			elem.Text = FTextIn[slice];
+			elem.Content = elem.Text;
+			elem.FontSize = scale.Length();
+		}
+	}
+	
 	//GROUP---------------------------------------------------------------------
 	
 	#region PluginInfo
