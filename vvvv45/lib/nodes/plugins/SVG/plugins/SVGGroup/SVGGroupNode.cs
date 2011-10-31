@@ -91,11 +91,11 @@ namespace VVVV.Nodes
 		protected void SetTransform(SvgVisualElement elem, int slice)
 		{
 			elem.Transforms = new SvgTransformCollection();
-			elem.Transforms.Add(new SvgTranslate(-0.5f, -0.5f));
+			//
 			var m = FTransformIn[slice];
 			var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
-			
 			elem.Transforms.Add(mat);
+			elem.Transforms.Add(new SvgTranslate(-0.5f, -0.5f));
 		}
 		
 		protected void SetStroke(SvgVisualElement elem, int slice)
