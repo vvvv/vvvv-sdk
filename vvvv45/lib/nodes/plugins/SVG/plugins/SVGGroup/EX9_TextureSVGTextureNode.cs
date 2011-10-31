@@ -39,6 +39,15 @@ namespace VVVV.Nodes
 		
 		[Input("Transform")]
 		IDiffSpread<Matrix> FTransformIn;
+		
+		[Input("Background Color", DefaultColor = new double[] { 0, 0, 0, 0 }, IsSingle = true)]
+		IDiffSpread<RGBAColor> FBackgroundIn;
+		
+		[Input("View Box Center ")]
+		IDiffSpread<Vector2> FViewCenterIn;
+		
+		[Input("View Box Size ", DefaultValues = new double[] {2, 2})]
+		IDiffSpread<Vector2> FViewSizeIn;
 
 		[Input("Width", DefaultValue = 128)]
 		IDiffSpread<int> FWidthIn;
@@ -77,11 +86,13 @@ namespace VVVV.Nodes
 			if (FWidthIn.IsChanged || FHeightIn.IsChanged) {
 				//set new texture size
 				Reinitialize();
+				if(FBitmap != null) FBitmap.Dispose();
+				FBitmap = new Bitmap(FWidthIn[0], FHeightIn[0]);
 			}
 			
 			if (FSVGIn.IsChanged)
 			{
-				FSVGDoc.Children.Clear();
+				FSVGDoc = new SvgDocument();
 				foreach(var elem in FSVGIn)
 					FSVGDoc.Children.Add(elem);
 			}
@@ -92,18 +103,26 @@ namespace VVVV.Nodes
 				
 				FSVGDoc.Transforms = new SvgTransformCollection();
 
-			    var sx = FWidthIn[0];
-				var sy = FHeightIn[0]; 
+				var view = new SvgViewBox();
+				view.MinX = (float)(FViewCenterIn[0].X - FViewSizeIn[0].X * 0.5);
+				view.MinY = (float)(FViewCenterIn[0].Y - FViewSizeIn[0].Y * 0.5);
+				view.Width = (float)FViewSizeIn[0].X;
+				view.Height = (float)FViewSizeIn[0].Y;
 				
-				sx = Math.Max(sx, sy);
-				
-                //FSVGDoc.Transforms.Add(new SvgScale(sx, sx));
+			    FSVGDoc.ViewBox = view; 
 				var m = FTransformIn[0];
 				var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
 				FSVGDoc.Transforms.Add(mat);
                 FSVGDoc.Width = new SvgUnit(SvgUnitType.Pixel, FWidthIn[0]);
                 FSVGDoc.Height = new SvgUnit(SvgUnitType.Pixel, FHeightIn[0]);
-                FBitmap = FSVGDoc.Draw();
+				
+				//clear bitmap
+				var g = Graphics.FromImage(FBitmap);
+				g.Clear(FBackgroundIn[0].Color);
+				g.Dispose();
+				
+				//draw into bitmap
+                FSVGDoc.Draw(FBitmap);
 				
 				Update();
 			}
@@ -174,7 +193,7 @@ namespace VVVV.Nodes
 		}
 		
 		//memcopy method
-		[DllImport("Kernel32.dll", EntryPoint="RtlMoveMemory", SetLastError=false)]
+		[DllImport("msvcrt.dll", EntryPoint="memcpy", SetLastError=false)]
         static extern void CopyMemory(IntPtr dest, IntPtr src, int size);
 
 		//called when data for any output pin is requested
