@@ -48,9 +48,6 @@ namespace VVVV.Nodes
         [Output("Attached")]
         ISpread<bool> FAttached;
 
-        [Output("Digital Output Count", DefaultValue = 0)]
-        ISpread<int> FDigitalOutputCountOut;
-
         [Output("Sensor")]
         ISpread<double> FSensorOut;
 

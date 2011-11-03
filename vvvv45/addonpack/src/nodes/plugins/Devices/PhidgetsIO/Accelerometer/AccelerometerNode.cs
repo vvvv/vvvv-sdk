@@ -42,13 +42,13 @@ namespace VVVV.Nodes
         ISpread<bool> FAttached;
 
         [Output("Acceleration")]
-        ISpread<Vector3D> FAcceleration;
+        ISpread<Vector2D> FAcceleration;
 
         [Output("Acceleration Minimum")]
-        ISpread<Vector3D> FAccelerationMin;
+        ISpread<Vector2D> FAccelerationMin;
 
         [Output("Acceleration Maximum")]
-        ISpread<Vector3D> FAccelerationMax;
+        ISpread<Vector2D> FAccelerationMax;
 
 
         //Logger
@@ -79,9 +79,9 @@ namespace VVVV.Nodes
                 {
                     if (FAccelerometer.Changed)
                     {
-                        FAcceleration[0] = new Vector3D(FAccelerometer.GetAccelerationCollection()[0].Acceleration, FAccelerometer.GetAccelerationCollection()[1].Acceleration, FAccelerometer.GetAccelerationCollection()[2].Acceleration);
-                        FAccelerationMin[0] = new Vector3D(FAccelerometer.GetAccelerationCollection()[0].AccelerationMin, FAccelerometer.GetAccelerationCollection()[1].AccelerationMin, FAccelerometer.GetAccelerationCollection()[2].AccelerationMin);
-                        FAccelerationMax[0] = new Vector3D(FAccelerometer.GetAccelerationCollection()[0].AccelerationMax, FAccelerometer.GetAccelerationCollection()[1].AccelerationMax, FAccelerometer.GetAccelerationCollection()[2].AccelerationMax);
+                        FAcceleration[0] = new Vector2D(FAccelerometer.GetAccelerationCollection()[0].Acceleration, FAccelerometer.GetAccelerationCollection()[1].Acceleration);
+                        FAccelerationMin[0] = new Vector2D(FAccelerometer.GetAccelerationCollection()[0].AccelerationMin, FAccelerometer.GetAccelerationCollection()[1].AccelerationMin);
+                        FAccelerationMax[0] = new Vector2D(FAccelerometer.GetAccelerationCollection()[0].AccelerationMax, FAccelerometer.GetAccelerationCollection()[1].AccelerationMax);
                     }
                 }
 

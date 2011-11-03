@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha26.1.dtd" >
-   <PATCH nodename="D:\vvvv-sdk\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Accelerometer (Devices Phidget) help.v4p" filename="D:\-= Plugins =-\Devices\PhidgetsIO\HelpPatches\Accelerometer (Devices Phidget) help.v4p" systemname="Accelerometer (Devices Phidget) help">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+   <PATCH nodename="D:\_vvvv\Develop\vvvv_45beta26\addonpack\plugins\PhidgetDeploy\Helppatches\Accelerometer (Devices Phidget) help.v4p" filename="D:\-= Plugins =-\Devices\PhidgetsIO\HelpPatches\Accelerometer (Devices Phidget) help.v4p" systemname="Accelerometer (Devices Phidget) help">
    <BOUNDS height="6075" left="900" top="5340" type="Window" width="9105">
    </BOUNDS>
    <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -15,7 +15,7 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Attached" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Attached">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -31,7 +31,7 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="AccelerationXYZ" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="AccelerationXYZ">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -47,7 +47,7 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Acceleration MinimumXYZ|" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Acceleration MinimumXYZ|">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -63,7 +63,7 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Acceleration MaximumXYZ|" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Acceleration MaximumXYZ|">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -75,33 +75,9 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Serial" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Serial">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\plugins\Phidgets.dll" id="7" nodename="Accelerometer (Devices Phidget)" systemname="Accelerometer (Devices Phidget)">
-   <BOUNDS height="270" left="1860" top="2595" type="Node" width="4380">
-   </BOUNDS>
-   <PIN pinname="Serial" visible="1">
-   </PIN>
-   <PIN pinname="Attached" visible="1">
-   </PIN>
-   <PIN pinname="AccelerationXYZ" visible="1">
-   </PIN>
-   <PIN pinname="Acceleration MinimumXYZ" visible="1">
-   </PIN>
-   <PIN pinname="Acceleration MaximumXYZ" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="7" dstpinname="Serial" srcnodeid="6" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="2" dstpinname="Y Input Value" srcnodeid="7" srcpinname="Attached">
-   </LINK>
-   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="7" srcpinname="AccelerationXYZ">
-   </LINK>
-   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="7" srcpinname="Acceleration MinimumXYZ">
-   </LINK>
-   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="7" srcpinname="Acceleration MaximumXYZ">
-   </LINK>
    <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="255" top="165" type="Node" width="915">
    </BOUNDS>
@@ -109,7 +85,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Accelerometer (Devices Phidget)&cr;&lf;|" encoded="0">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Accelerometer (Devices Phidget)&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -125,11 +101,41 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|vvvv integration of the 1059 - PhidgetAccelerometer 3-Axis|" encoded="0">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|vvvv integration of the 1059 - PhidgetAccelerometer 3-Axis|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\plugins\PhidgetDeploy\PhidgetDevices.dll" id="7" nodename="Accelerometer (Devices Phidget)" systemname="Accelerometer (Devices Phidget)">
+   <BOUNDS height="270" left="1860" top="2595" type="Node" width="4380">
+   </BOUNDS>
+   <PIN pinname="Serial" visible="1">
+   </PIN>
+   <PIN pinname="Attached" visible="1">
+   </PIN>
+   <PIN pinname="AccelerationXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Acceleration MinimumXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Acceleration MaximumXYZ" visible="1">
+   </PIN>
+   <PIN pinname="AccelerationXY" visible="1">
+   </PIN>
+   <PIN pinname="Acceleration MinimumXY" visible="1">
+   </PIN>
+   <PIN pinname="Acceleration MaximumXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Serial" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Y Input Value" srcnodeid="7" srcpinname="Attached">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="AccelerationXY" dstnodeid="3" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Acceleration MinimumXY" dstnodeid="4" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Acceleration MaximumXY" dstnodeid="5" dstpinname="Y Input Value">
+   </LINK>
    </PATCH>
