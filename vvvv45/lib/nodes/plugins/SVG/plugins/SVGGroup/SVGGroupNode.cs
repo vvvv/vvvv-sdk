@@ -284,8 +284,14 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SvgTextNode : SVGVisualElementFillNode<SvgText>
 	{
-		[Input("Text", Order = -1)]
+		[Input("Text", Order = -10)]
 		IDiffSpread<string> FTextIn;
+		
+		[Input("Text Size", Order = -9)]
+		IDiffSpread<float> FTextSizeIn;
+		
+		[Input("Font", EnumName = "SystemFonts")]
+        IDiffSpread<EnumEntry> FFontIn;
 		
 		protected override SvgText CreateElement()
 		{
@@ -294,14 +300,14 @@ namespace VVVV.Nodes
 		
 		protected override bool PinsChanged()
 		{
-			return base.PinsChanged() || FTextIn.IsChanged;
+			return base.PinsChanged() || FTextIn.IsChanged || FTextSizeIn.IsChanged || FFontIn.IsChanged;
 		}
 		
 		protected override void CalcGeometry(SvgText elem, Vector2 trans, Vector2 scale, int slice)
 		{
 			elem.Text = FTextIn[slice];
-			elem.Content = elem.Text;
-			elem.FontSize = scale.Length();
+			elem.FontSize = FTextSizeIn[slice];
+			elem.FontFamily = (new Font(FFontIn[slice].Name, 1)).FontFamily.Name;
 		}
 	}
 	

@@ -1,17 +1,17 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
    <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\SVG\_root_SVG.v4p" filename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\SVG\_root_SVG.v4p" systemname="_root_SVG">
-   <BOUNDS height="9975" left="10560" top="765" type="Window" width="10530">
+   <BOUNDS height="9975" left="10485" top="1530" type="Window" width="10530">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="1" nodename="Renderer (TTY)" systemname="Renderer (TTY)">
-   <BOUNDS height="100" left="5250" top="7770" type="Node" width="100">
+   <BOUNDS height="100" left="5175" top="9270" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="1800" left="5250" top="7770" type="Box" width="2400">
+   <BOUNDS height="1800" left="5175" top="9270" type="Box" width="2400">
    </BOUNDS>
    <BOUNDS height="10395" left="12195" top="5505" type="Window" width="15360">
    </BOUNDS>
    </NODE>
    <NODE componentmode="Hidden" id="25" nodename="Quad (DX9)" systemname="Quad (DX9)">
-   <BOUNDS height="100" left="540" top="8055" type="Node" width="100">
+   <BOUNDS height="100" left="555" top="8445" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Texture" visible="1">
    </PIN>
@@ -25,7 +25,7 @@
    </BOUNDS>
    <BOUNDS height="1800" left="570" top="10275" type="Box" width="2400">
    </BOUNDS>
-   <BOUNDS height="9735" left="285" top="3510" type="Window" width="7650">
+   <BOUNDS height="9720" left="285" top="3510" type="Window" width="8040">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -49,7 +49,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="46" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
-   <BOUNDS height="100" left="705" top="6960" type="Node" width="100">
+   <BOUNDS height="100" left="720" top="7380" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -115,19 +115,21 @@
    <LINK dstnodeid="58" dstpinname="Layer 2" srcnodeid="59" srcpinname="Layer">
    </LINK>
    <NODE componentmode="Hidden" filename="plugins\SVGGroup\SVGGroup.csproj" id="60" nodename="Group (SVG)" systemname="Group (SVG)">
-   <BOUNDS height="100" left="2250" top="6540" type="Node" width="100">
+   <BOUNDS height="100" left="3300" top="7095" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
+   <PIN pinname="Input 2" visible="1">
    </PIN>
    <PIN pinname="Transform" visible="1">
    </PIN>
-   <PIN pinname="Input Count" slicecount="1" values="3">
+   <PIN pinname="Input Count" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Input 3" visible="1" slicecount="1" values="||">
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="70" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -183,7 +185,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="119" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
-   <BOUNDS height="100" left="1230" top="2340" type="Node" width="100">
+   <BOUNDS height="100" left="1245" top="2595" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="ScaleX" slicecount="1" values="1.77">
    </PIN>
@@ -215,11 +217,11 @@
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Spread Count" slicecount="1" values="13">
+   <PIN pinname="Spread Count" slicecount="1" values="28">
    </PIN>
-   <PIN pinname="Width" slicecount="1" values="7.4">
+   <PIN pinname="Width" slicecount="1" values="19.9">
    </PIN>
-   <PIN pinname="Random Seed" slicecount="1" values="53">
+   <PIN pinname="Random Seed" slicecount="1" values="60">
    </PIN>
    <PIN pinname="Input" slicecount="1" values="0.39">
    </PIN>
@@ -280,8 +282,6 @@
    </NODE>
    <LINK dstnodeid="111" dstpinname="Transform" srcnodeid="119" srcpinname="Transform Out">
    </LINK>
-   <LINK dstnodeid="60" dstpinname="Input 1" srcnodeid="111" srcpinname="Layer">
-   </LINK>
    <NODE componentmode="Hidden" hiddenwhenlocked="0" id="132" managers="" nodename="RandomSpread (Spreads)" systemname="RandomSpread (Spreads)">
    <PIN pinname="Output" pintype="Output" visible="1">
    </PIN>
@@ -309,9 +309,9 @@
    </PIN>
    <PIN pinname="Fill" pintype="Input" visible="1">
    </PIN>
-   <BOUNDS height="270" left="2265" top="5490" type="Node" width="750">
+   <BOUNDS height="270" left="2295" top="5340" type="Node" width="750">
    </BOUNDS>
-   <BOUNDS height="1800" left="510" top="4425" type="Box" width="2400">
+   <BOUNDS height="1800" left="540" top="4275" type="Box" width="2400">
    </BOUNDS>
    <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="1" values="1">
    </PIN>
@@ -336,14 +336,12 @@
    </LINK>
    <LINK dstnodeid="110" dstpinname="Stroke Width" srcnodeid="51" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="110" dstpinname="Transform" srcnodeid="119" srcpinname="Transform Out">
-   </LINK>
    <NODE componentmode="Hidden" filename="plugins\SVGGroup\SVGGroup.csproj" hiddenwhenlocked="0" id="139" managers="" nodename="Polygon (SVG)" systemname="Polygon (SVG)">
    <PIN pinname="Fill" pintype="Input" visible="1">
    </PIN>
    <PIN pinname="Stroke" pintype="Input" visible="1">
    </PIN>
-   <PIN pinname="Transform" pintype="Input" visible="1" slicecount="1" values="||">
+   <PIN pinname="Transform" pintype="Input" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Vertices XY" pintype="Input" visible="1">
    </PIN>
@@ -374,42 +372,6 @@
    </LINK>
    <LINK dstnodeid="139" dstpinname="Fill" srcnodeid="135" srcpinname="Color Output">
    </LINK>
-   <NODE componentmode="Hidden" filename="plugins\EX9.TextureSVGTexture\EX9.TextureSVGTexture.csproj" hiddenwhenlocked="0" id="61" managers="" nodename="SVGTexture (EX9.Texture)" systemname="SVGTexture (EX9.Texture)">
-   <PIN pinname="SVG Layer" pintype="Input" visible="1">
-   </PIN>
-   <PIN pinname="Height" pintype="Input" visible="1">
-   </PIN>
-   <PIN pinname="Width" pintype="Input" visible="1">
-   </PIN>
-   <BOUNDS height="270" left="2265" top="7245" type="Node" width="1350">
-   </BOUNDS>
-   <PIN pinname="Write" slicecount="1" values="0">
-   </PIN>
-   <BOUNDS height="1800" left="195" top="4425" type="Box" width="2400">
-   </BOUNDS>
-   <BOUNDS height="5010" left="0" top="0" type="Window" width="6240">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Transform" pintype="Input" slicecount="1" visible="1" values="||">
-   </PIN>
-   <PIN pinname="Background Color" pintype="Input" slicecount="1" visible="1" values="|0.00000,0.00000,0.00000,0.00000|">
-   </PIN>
-   <PIN pinname="Texture Out" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="ID" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="View Box Size XY" slicecount="1" visible="1" values="11.22">
-   </PIN>
-   <PIN pinname="View Box Center XY" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="25" dstpinname="Texture" srcnodeid="61" srcpinname="Texture Out">
-   </LINK>
-   <LINK dstnodeid="61" dstpinname="Width" srcnodeid="26" srcpinname="Actual Backbuffer Width">
-   </LINK>
-   <LINK dstnodeid="61" dstpinname="Height" srcnodeid="26" srcpinname="Actual Backbuffer Height">
-   </LINK>
    <NODE componentmode="InABox" id="140" nodename="IOBox (Color)" systemname="IOBox (Color)">
    <BOUNDS height="0" left="7905" top="0" type="Node" width="0">
    </BOUNDS>
@@ -420,68 +382,24 @@
    </NODE>
    <LINK dstnodeid="111" dstpinname="Fill" srcnodeid="140" srcpinname="Color Output">
    </LINK>
-   <NODE componentmode="InABox" id="142" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="5055" top="6195" type="Node" width="555">
-   </BOUNDS>
-   <BOUNDS height="270" left="5055" top="6195" type="Box" width="465">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="109">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE id="143" systemname="Text (SVG)" filename="plugins\SVGGroup\SVGGroup.csproj" nodename="Text (SVG)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
-   <PIN pinname="Stroke Width" slicecount="1" pintype="Input" visible="1" values="0.02">
-   </PIN>
-   <PIN pinname="Transform" visible="1" slicecount="1" pintype="Input" values="||">
-   </PIN>
-   <BOUNDS type="Node" left="7050" top="5520" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Text" slicecount="1" pintype="Input" visible="1" values="vvvv" encoded="0">
-   </PIN>
-   <PIN pinname="Layer" visible="1" pintype="Output">
-   </PIN>
-   <BOUNDS type="Box" left="1860" top="180" width="2400" height="1800">
-   </BOUNDS>
-   <BOUNDS type="Window" left="0" top="0" width="6240" height="5010">
-   </BOUNDS>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
-   </PIN>
-   <PIN pinname="Stroke" pintype="Input" visible="1" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
-   </PIN>
-   <PIN pinname="Stroke Mode" pintype="Input" visible="-1" slicecount="1" values="Color">
-   </PIN>
-   <PIN pinname="Fill" pintype="Input" visible="1" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
-   </PIN>
-   <PIN pinname="Fill Mode" pintype="Input" visible="-1" slicecount="1" values="NonZero">
-   </PIN>
-   <PIN pinname="Enabled" pintype="Input" visible="1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="ID" pintype="Output" visible="-1">
-   </PIN>
-   </NODE>
    <NODE componentmode="Hidden" id="144" nodename="RandomSpread (Spreads)" systemname="RandomSpread (Spreads)">
    <BOUNDS height="100" left="1005" top="1320" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Spread Count" slicecount="1" values="9">
+   <PIN pinname="Spread Count" slicecount="1" values="23">
    </PIN>
-   <PIN pinname="Width" slicecount="1" values="7.4">
+   <PIN pinname="Width" slicecount="1" values="36">
    </PIN>
-   <PIN pinname="Random Seed" slicecount="1" values="70">
+   <PIN pinname="Random Seed" slicecount="1" values="25">
    </PIN>
    <PIN pinname="Input" slicecount="1" values="0.39">
    </PIN>
    </NODE>
-   <LINK srcnodeid="144" srcpinname="Output" dstnodeid="119" dstpinname="TranslateX">
+   <LINK dstnodeid="119" dstpinname="TranslateX" srcnodeid="144" srcpinname="Output">
    </LINK>
-   <NODE systemname="Rectangle (2D.Geometry)" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\2D.GeometryRectangle\2D.GeometryRectangle.csproj" nodename="Rectangle (2D.Geometry)" componentmode="Hidden" id="145">
-   <BOUNDS type="Node" left="7530" top="3615" width="100" height="100">
+   <NODE componentmode="Hidden" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\2D.GeometryRectangle\2D.GeometryRectangle.csproj" id="145" nodename="Rectangle (2D.Geometry)" systemname="Rectangle (2D.Geometry)">
+   <BOUNDS height="100" left="7530" top="3615" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Path" visible="1">
    </PIN>
@@ -498,8 +416,8 @@
    <PIN pinname="Resolution" slicecount="1" values="0.124">
    </PIN>
    </NODE>
-   <NODE systemname="Split (2D.Geometry)" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\2D.GeometrySplit\2D.GeometrySplit.csproj" nodename="Split (2D.Geometry)" componentmode="Hidden" id="146">
-   <BOUNDS type="Node" left="6540" top="4950" width="100" height="100">
+   <NODE componentmode="Hidden" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\2D.GeometrySplit\2D.GeometrySplit.csproj" id="146" nodename="Split (2D.Geometry)" systemname="Split (2D.Geometry)">
+   <BOUNDS height="100" left="6540" top="4950" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Path" visible="1">
    </PIN>
@@ -508,22 +426,22 @@
    <PIN pinname="Vertices Bin Size" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="146" srcpinname="VerticesXY" dstnodeid="139" dstpinname="Vertices XY">
+   <LINK dstnodeid="139" dstpinname="Vertices XY" srcnodeid="146" srcpinname="VerticesXY">
    </LINK>
-   <LINK srcnodeid="146" srcpinname="Vertices Bin Size" dstnodeid="139" dstpinname="Vertices  Bin Size">
+   <LINK dstnodeid="139" dstpinname="Vertices  Bin Size" srcnodeid="146" srcpinname="Vertices Bin Size">
    </LINK>
-   <NODE systemname="Intersect (2D.Geometry)" nodename="Intersect (2D.Geometry)" componentmode="Hidden" id="147" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\2D.GeometryIntersect\2D.GeometryIntersect.csproj">
-   <BOUNDS type="Node" left="8820" top="3900" width="100" height="100">
+   <NODE componentmode="Hidden" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\2D.GeometryIntersect\2D.GeometryIntersect.csproj" id="147" nodename="Intersect (2D.Geometry)" systemname="Intersect (2D.Geometry)">
+   <BOUNDS height="100" left="8820" top="3900" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="145" srcpinname="Path" dstnodeid="147" dstpinname="Input 1">
+   <LINK dstnodeid="147" dstpinname="Input 1" srcnodeid="145" srcpinname="Path">
    </LINK>
-   <LINK srcnodeid="134" srcpinname="Output" dstnodeid="145" dstpinname="CenterXY">
+   <LINK dstnodeid="145" dstpinname="CenterXY" srcnodeid="134" srcpinname="Output">
    </LINK>
-   <NODE systemname="Unify (2D.Geometry)" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\2D.GeometryUnify\2D.GeometryUnify.csproj" nodename="Unify (2D.Geometry)" componentmode="Hidden" id="148">
-   <BOUNDS type="Node" left="6855" top="4440" width="100" height="100">
+   <NODE componentmode="Hidden" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\2D.GeometryUnify\2D.GeometryUnify.csproj" id="148" nodename="Unify (2D.Geometry)" systemname="Unify (2D.Geometry)">
+   <BOUNDS height="100" left="6855" top="4440" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -532,10 +450,10 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="145" srcpinname="Path" dstnodeid="148" dstpinname="Input 1">
+   <LINK dstnodeid="148" dstpinname="Input 1" srcnodeid="145" srcpinname="Path">
    </LINK>
-   <NODE systemname="GetSlice (2D.Geometry)" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\2D.GeometryGetSlice\2D.GeometryGetSlice.csproj" nodename="GetSlice (2D.Geometry)" componentmode="Hidden" id="149">
-   <BOUNDS type="Node" left="8100" top="4230" width="100" height="100">
+   <NODE componentmode="Hidden" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\2D.GeometryGetSlice\2D.GeometryGetSlice.csproj" id="149" nodename="GetSlice (2D.Geometry)" systemname="GetSlice (2D.Geometry)">
+   <BOUNDS height="100" left="8100" top="4230" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
@@ -544,16 +462,14 @@
    <PIN pinname="Index" slicecount="1" values="68">
    </PIN>
    </NODE>
-   <LINK srcnodeid="145" srcpinname="Path" dstnodeid="149" dstpinname="Input Node">
+   <LINK dstnodeid="149" dstpinname="Input Node" srcnodeid="145" srcpinname="Path">
    </LINK>
-   <LINK srcnodeid="149" srcpinname="Output" dstnodeid="148" dstpinname="Input 2">
+   <LINK dstnodeid="148" dstpinname="Input 2" srcnodeid="149" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="148" srcpinname="Output" dstnodeid="146" dstpinname="Path">
+   <LINK dstnodeid="146" dstpinname="Path" srcnodeid="148" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="60" srcpinname="Layer" dstnodeid="61" dstpinname="SVG Layer">
-   </LINK>
-   <NODE systemname="Vector (2d Join)" nodename="Vector (2d Join)" componentmode="Hidden" id="150">
-   <BOUNDS type="Node" left="4770" top="4860" width="100" height="100">
+   <NODE componentmode="Hidden" id="150" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
+   <BOUNDS height="100" left="4770" top="4860" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="XY" visible="1">
    </PIN>
@@ -562,10 +478,188 @@
    <PIN pinname="Y" slicecount="1" values="0.05">
    </PIN>
    </NODE>
-   <LINK srcnodeid="150" srcpinname="XY" dstnodeid="111" dstpinname="Corner Radius XY">
+   <LINK dstnodeid="111" dstpinname="Corner Radius XY" srcnodeid="150" srcpinname="XY">
    </LINK>
-   <NODE systemname="PathContainsPoint (2D.Geometry)" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\2D.GeometryPathContainsPoint\2D.GeometryPathContainsPoint.csproj" nodename="PathContainsPoint (2D.Geometry)" componentmode="Hidden" id="151">
-   <BOUNDS type="Node" left="5655" top="6645" width="100" height="100">
+   <NODE componentmode="Hidden" filename="plugins\SVGGroup\SVGGroup.csproj" hiddenwhenlocked="0" id="143" managers="" nodename="Text (SVG)" systemname="Text (SVG)">
+   <PIN pinname="Stroke Width" pintype="Input" slicecount="1" visible="1" values="0.02">
+   </PIN>
+   <PIN pinname="Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="100" left="4290" top="6000" type="Node" width="100">
    </BOUNDS>
+   <PIN encoded="0" pinname="Text" pintype="Input" slicecount="1" visible="1" values="Vvvv">
+   </PIN>
+   <PIN pinname="Layer" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="1800" left="0" top="660" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="5010" left="0" top="0" type="Window" width="6240">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Stroke" pintype="Input" slicecount="1" visible="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Stroke Mode" pintype="Input" slicecount="1" visible="-1" values="Color">
+   </PIN>
+   <PIN pinname="Fill" pintype="Input" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Fill Mode" pintype="Input" slicecount="1" visible="-1" values="NonZero">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Text Size" slicecount="1" values="6.39">
+   </PIN>
+   <PIN pinname="Font" slicecount="1" values="Vani">
+   </PIN>
    </NODE>
+   <LINK dstnodeid="60" dstpinname="Input 3" srcnodeid="143" srcpinname="Layer">
+   </LINK>
+   <NODE id="158" componentmode="Hidden" filename="plugins\SVGGroup\SVGGroup.csproj" nodename="SVGTexture (SVG)" systemname="SVGTexture (SVG)" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Height" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Width" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Document" visible="1" pintype="Input">
+   </PIN>
+   <BOUNDS type="Node" height="100" left="3315" top="8265" width="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="750" top="870" width="2400" height="1800">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1" pintype="Output">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Transform" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Background Color" pintype="Input" visible="1" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="158" srcpinname="Texture Out" dstnodeid="25" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Actual Backbuffer Width" dstnodeid="158" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Actual Backbuffer Height" dstnodeid="158" dstpinname="Height">
+   </LINK>
+   <NODE id="161" systemname="Document (SVG Split)" filename="plugins\SVGGroup\SVGGroup.csproj" nodename="Document (SVG Split)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Document" visible="1" pintype="Input">
+   </PIN>
+   <BOUNDS type="Node" left="6150" top="7650" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="720" top="840" width="2400" height="1800">
+   </BOUNDS>
+   <PIN pinname="SVG Layer" visible="1" pintype="Output">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Former Index" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="163">
+   <BOUNDS type="Node" left="6705" top="6075" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6705" top="6075" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.05">
+   </PIN>
+   </NODE>
+   <NODE systemname="Document (SVG Join)" filename="plugins\SVGGroup\SVGGroup.csproj" nodename="Document (SVG Join)" componentmode="Hidden" id="164">
+   <BOUNDS type="Node" left="3315" top="7665" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="SVG Layer" visible="1">
+   </PIN>
+   <PIN pinname="View Box Size XY" slicecount="2" values="50,50">
+   </PIN>
+   <PIN pinname="Document" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1" slicecount="1" values="128">
+   </PIN>
+   <PIN pinname="Width" visible="1" slicecount="1" values="128">
+   </PIN>
+   <PIN pinname="View Box Center XY" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="60" srcpinname="Layer" dstnodeid="164" dstpinname="SVG Layer">
+   </LINK>
+   <NODE id="160" systemname="Reader (SVG)" filename="plugins\SVGGroup\SVGGroup.csproj" nodename="Reader (SVG)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="6150" top="7095" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="735" top="750" width="2400" height="1800">
+   </BOUNDS>
+   <PIN pinname="Document" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" pintype="Input" visible="1" values="Test.svg" encoded="0">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="160" srcpinname="Document" dstnodeid="161" dstpinname="Document">
+   </LINK>
+   <NODE systemname="Group (SVG)" filename="plugins\SVGGroup\SVGGroup.csproj" nodename="Group (SVG)" componentmode="Hidden" id="166">
+   <BOUNDS type="Node" left="5400" top="8190" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="161" srcpinname="SVG Layer" dstnodeid="166" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="164" srcpinname="Document" dstnodeid="158" dstpinname="Document">
+   </LINK>
+   <NODE systemname="Transform (Transform 2d)" nodename="Transform (Transform 2d)" componentmode="Hidden" id="167">
+   <BOUNDS type="Node" left="5415" top="6510" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="TranslateX" slicecount="1" values="-21.32">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="-7.23">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="163" srcpinname="Y Output Value" dstnodeid="167" dstpinname="ScaleX">
+   </LINK>
+   <LINK srcnodeid="163" srcpinname="Y Output Value" dstnodeid="167" dstpinname="ScaleY">
+   </LINK>
+   <LINK srcnodeid="167" srcpinname="Transform Out" dstnodeid="166" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="166" srcpinname="Layer" dstnodeid="60" dstpinname="Input 4">
+   </LINK>
+   <LINK srcnodeid="110" srcpinname="Layer" dstnodeid="60" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="111" srcpinname="Layer" dstnodeid="60" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="Translate (Transform)" nodename="Translate (Transform)" componentmode="Hidden" id="168">
+   <BOUNDS type="Node" left="1215" top="4290" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0.69">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="119" srcpinname="Transform Out" dstnodeid="168" dstpinname="Transform In">
+   </LINK>
+   <LINK srcnodeid="168" srcpinname="Transform Out" dstnodeid="110" dstpinname="Transform">
+   </LINK>
    </PATCH>
