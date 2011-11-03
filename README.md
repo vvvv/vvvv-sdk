@@ -3,8 +3,7 @@ Please check the [vvvv sdk](http://vvvv.org/documentation/vvvv-sdk) page for ins
 
 LICENSING
 ---------
-The following parts of this repository are released under the GPLv2
-https://www.gnu.org/licenses/gpl-2.0.html
+The following parts of this repository are released under the [GPLv2](https://www.gnu.org/licenses/gpl-2.0.html)
 
 * Core      common\src\core\Core
 * GUI       common\src\gui
@@ -12,9 +11,8 @@ https://www.gnu.org/licenses/gpl-2.0.html
 * Plugins   vvvv45\src\nodes\plugins
 
 Please note individual licensing terms in individual subdirectories, especially:
-vvvv45\addonpack\src\nodes\plugins\*\*
+vvvv45\addonpack\src\nodes\plugins\*\\*
 
-If not stated otherwise all other sourcecode in this repository is licensed under the LPGLv2.1
-https://www.gnu.org/licenses/lgpl-2.1.html
+If not stated otherwise all other sourcecode in this repository is licensed under the [LPGLv2.1](https://www.gnu.org/licenses/lgpl-2.1.html)
 
 Note that commercial use of vvvv is independent of these source-code licensing terms and is discussed on the [vvvv licensing](http://vvvv.org/licensing) page. 
