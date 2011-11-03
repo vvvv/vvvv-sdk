@@ -13,7 +13,7 @@
     <PluginsDestFolder>..\lib\nodes\plugins\</PluginsDestFolder>
   </PropertyGroup>
   <ItemGroup>
-    <!--<CoreProjectsToBuild Include="core\**\*.csproj;gui\**\*.csproj" />-->
+    <CoreProjectsToBuild Include="core\**\*.csproj;gui\**\*.csproj" />
     <!--<PluginProjectsToBuild Include="nodes\plugins\*\*\*.csproj" />-->
   </ItemGroup>
   <PropertyGroup>
@@ -23,9 +23,9 @@
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
   <Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
     <MSBuild Projects="@(CoreProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" />
-    <!--<MSBuild Projects="@(PluginProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU">
+    <MSBuild Projects="@(ProjectReference)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU">
       <Output TaskParameter="TargetOutputs" ItemName="PluginsOutputFiles" />
-    </MSBuild>-->
+    </MSBuild>
     <CreateItem Include="core\**\bin\$(Configuration)\*;gui\**\bin\$(Configuration)\*">
       <Output TaskParameter="Include" ItemName="CoreOutputFiles" />
     </CreateItem>
