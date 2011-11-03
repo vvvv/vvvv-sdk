@@ -9,6 +9,8 @@ namespace CoreTests
 	[TestFixture]
 	public class FXProjectTest : ProjectTest
 	{
+		private readonly string FIncludePath = Path.GetFullPath(@"..\..\..\..\lib\nodes\");
+		
 		protected override Uri TestLocation 
 		{
 			get 
@@ -27,12 +29,12 @@ namespace CoreTests
 		
 		protected override IProject CreateTemplateProject(string baseDir)
 		{
-			return new FXProject("fx_project", new Uri(baseDir + "/EffectTemplate/Attractor3d.fx"), string.Empty);
+			return new FXProject("fx_project", new Uri(baseDir + "/EffectTemplate/Attractor3d.fx"), FIncludePath);
 		}
 		
 		protected override IProject CreateProject(Uri location)
 		{
-			return new FXProject("fx_project", location, string.Empty);
+			return new FXProject("fx_project", location, FIncludePath);
 		}
 	}
 }
