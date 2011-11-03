@@ -197,14 +197,6 @@ namespace VVVV.Nodes
             get { return FPhidget.servos.Count; }
         }
 
-        #endregion
-
-        #region IPhidgetsWrapper Members
-
-
-        #endregion
-
-        #region IPhidgetsWrapper Members
 
 
         public bool Changed

@@ -91,7 +91,6 @@ namespace VVVV.Nodes
                 {
                     if (FStepper != null)
                     {
-                        FStepper.Close();
                         FStepper = null;
                     }
                     FStepper = new WrapperStepperUnipolar4Motors(FSerial[0]);

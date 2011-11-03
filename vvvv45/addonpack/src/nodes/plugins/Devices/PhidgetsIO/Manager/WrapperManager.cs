@@ -144,7 +144,7 @@ namespace VVVV.Nodes
                 if (disposing)
                 {
                     // Dispose managed resources.
-
+                    FPhidget.close();
                 }
                 // Release unmanaged resources. If disposing is false, 
                 // only the following code is executed.
@@ -155,7 +155,7 @@ namespace VVVV.Nodes
                 // but before the disposed flag is set to true.
                 // If thread safety is necessary, it must be
                 // implemented by the client.
-                FPhidget.close();
+                
             }
             disposed = true;
         }
