@@ -232,6 +232,50 @@ namespace VVVV.Nodes
 		}
 	}
 	
+	//POLYLINE------------------------------------------------------------------
+	#region PluginInfo
+	[PluginInfo(Name = "Polyline", Category = "SVG", Help = "Svg Polyline from a list of vertices", Tags = "")]
+	#endregion PluginInfo
+	public class SvgPolylineNode : SVGVisualElementFillNode<SvgPolyline>
+	{
+		[Input("Vertices ", Order = -1)]
+		IDiffSpread<ISpread<Vector2>> FVerticesIn;
+		
+		protected override SvgPolyline CreateElement()
+		{
+			var p = new SvgPolyline();
+			p.Points = new SvgUnitCollection();
+			return p;
+		}
+		
+		protected override int CalcSpreadMax(int max)
+		{
+			max = Math.Max(FTransformIn.SliceCount, FStrokeIn.SliceCount);
+			max = Math.Max(max, FStrokeWidthIn.SliceCount);
+			max = Math.Max(max, FEnabledIn.SliceCount);
+			max = Math.Max(max, FFillIn.SliceCount);
+			max = Math.Max(max, FFillModeIn.SliceCount);
+			max = Math.Max(max, FVerticesIn.SliceCount);
+			return max;
+		}
+		
+		protected override bool PinsChanged()
+		{
+			return base.PinsChanged() || FVerticesIn.IsChanged;
+		}
+		
+		protected override void CalcGeometry(SvgPolyline elem, Vector2 trans, Vector2 scale, int slice)
+		{
+			var verts = FVerticesIn[slice];
+			elem.Points = new SvgUnitCollection();
+			foreach(var v in verts)
+			{
+				elem.Points.Add(v.X * scale.X);
+				elem.Points.Add(v.Y * scale.Y);
+			}
+		}
+	}
+	
 	//POLYGON-------------------------------------------------------------------
 	#region PluginInfo
 	[PluginInfo(Name = "Polygon", Category = "SVG", Help = "Svg Polygon from a list of vertices", Tags = "")]
@@ -306,6 +350,7 @@ namespace VVVV.Nodes
 			elem.Text = FTextIn[slice];
 			elem.FontSize = FTextSizeIn[slice];
 			elem.FontFamily = (new Font(FFontIn[slice].Name, 1)).FontFamily.Name;
+			elem.Transforms.Add(new SvgScale(scale.X, scale.Y));
 		}
 	}
 	
