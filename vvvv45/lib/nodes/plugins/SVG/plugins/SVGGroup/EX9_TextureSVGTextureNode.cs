@@ -102,13 +102,16 @@ namespace VVVV.Nodes
 				for(int i=0; i<SpreadMax; i++)
 				{
 					var doc = FDocIn[i];
-					FWidthOut[i] = doc.Width;
-					FHeightOut[i] = doc.Height;
-					foreach(var c in doc.Children)
+					if(doc != null)
 					{
-						FOutput.Add(c);
-						FFormerIndexOut.Add(i);
-					}	
+						FWidthOut[i] = doc.Width;
+						FHeightOut[i] = doc.Height;
+						foreach(var c in doc.Children)
+						{
+							FOutput.Add(c);
+							FFormerIndexOut.Add(i);
+						}					
+					}
 				}
 			}
 				 
