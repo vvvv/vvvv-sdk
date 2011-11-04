@@ -18,12 +18,6 @@ using SlimDX;
 
 namespace VVVV.Nodes
 {	
-	public enum StrokeMode
-	{
-		Color,
-		None
-	}
-
 	#region Base Nodes
 	public abstract class SVGVisualElementNode<T> : IPluginEvaluate where T : SvgVisualElement
 	{
@@ -33,9 +27,6 @@ namespace VVVV.Nodes
 		
 		[Input("Stroke", Order = 10, DefaultColor = new double[] { 0, 0, 0, 1 })]
 		protected IDiffSpread<RGBAColor> FStrokeIn;
-		
-		[Input("Stroke Mode", Order = 11, Visibility = PinVisibility.OnlyInspector)]
-		protected IDiffSpread<StrokeMode> FStrokeModeIn;
 		
 		[Input("Stroke Width", Order = 12)]
 		protected IDiffSpread<float> FStrokeWidthIn;
@@ -96,8 +87,7 @@ namespace VVVV.Nodes
 		//check if any pin is changed
 		protected virtual bool PinsChanged()
 		{
-			return FTransformIn.IsChanged || FStrokeIn.IsChanged || FStrokeWidthIn.IsChanged
-				|| FStrokeModeIn.IsChanged || FEnabledIn.IsChanged;
+			return FTransformIn.IsChanged || FStrokeIn.IsChanged || FStrokeWidthIn.IsChanged || FEnabledIn.IsChanged;
 		}
 		
 		
@@ -123,7 +113,7 @@ namespace VVVV.Nodes
 		//stroke color
 		protected void SetStroke(T elem, int slice)
 		{
-			if(FStrokeModeIn[slice] != StrokeMode.None)
+			if(FStrokeIn[slice].A != 0)
 			{
 				elem.Stroke = new SvgColourServer(GetRGB(FStrokeIn[slice]));
 				elem.StrokeOpacity = (float)FStrokeIn[slice].A;
@@ -132,6 +122,7 @@ namespace VVVV.Nodes
 			else
 			{
 				elem.Stroke = null;
+				elem.StrokeOpacity = 0;
 			}
 		}
 		
@@ -174,9 +165,17 @@ namespace VVVV.Nodes
 		
 		protected override void SetFill(T elem, int index)
 		{
-			elem.Fill = new SvgColourServer(GetRGB(FFillIn[index]));
-			elem.FillOpacity = (float)FFillIn[index].A;
 			elem.FillRule = FFillModeIn[index];
+			if(FFillIn[index].A != 0)
+			{
+				elem.Fill = new SvgColourServer(GetRGB(FFillIn[index]));
+				elem.FillOpacity = (float)FFillIn[index].A;
+			}
+			else
+			{
+				elem.Fill = null;
+				elem.FillOpacity = 0;
+			}
 		}
 	}
 	#endregion Base Nodes
@@ -252,7 +251,6 @@ namespace VVVV.Nodes
 		protected override int CalcSpreadMax(int max)
 		{
 			max = Math.Max(FTransformIn.SliceCount, FStrokeIn.SliceCount);
-			max = Math.Max(max, FStrokeModeIn.SliceCount);
 			max = Math.Max(max, FStrokeWidthIn.SliceCount);
 			max = Math.Max(max, FEnabledIn.SliceCount);
 			max = Math.Max(max, FFillIn.SliceCount);
