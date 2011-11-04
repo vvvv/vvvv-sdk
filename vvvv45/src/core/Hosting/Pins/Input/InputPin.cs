@@ -83,19 +83,19 @@ namespace VVVV.Hosting.Pins.Input
 			}
 		}
 		
-		public T Read(int stepSize)
+		public T Read(int stride)
 		{
-			return FCurrentInStream.Read(stepSize);
+			return FCurrentInStream.Read(stride);
 		}
 		
-		public int Read(T[] buffer, int index, int length, int stepSize)
+		public int Read(T[] buffer, int index, int length, int stride)
 		{
-			return FCurrentInStream.Read(buffer, index, length, stepSize);
+			return FCurrentInStream.Read(buffer, index, length, stride);
 		}
 		
-		public void ReadCyclic(T[] buffer, int index, int length, int stepSize)
+		public void ReadCyclic(T[] buffer, int index, int length, int stride)
 		{
-			StreamUtils.ReadCyclic(FCurrentInStream, buffer, index, length, stepSize);
+			FCurrentInStream.ReadCyclic(buffer, index, length, stride);
 		}
 		
 		public void Sync()
@@ -115,16 +115,16 @@ namespace VVVV.Hosting.Pins.Input
 			throw new NotImplementedException();
 		}
 		
-		public void Write(T value, int stepSize)
+		public void Write(T value, int stride)
 		{
 			CopyOnWrite();
-			FIOStream.Write(value, stepSize);
+			FIOStream.Write(value, stride);
 		}
 		
-		public int Write(T[] buffer, int index, int length, int stepSize)
+		public int Write(T[] buffer, int index, int length, int stride)
 		{
 			CopyOnWrite();
-			return FIOStream.Write(buffer, index, length, stepSize);
+			return FIOStream.Write(buffer, index, length, stride);
 		}
 		
 		private void CopyOnWrite()

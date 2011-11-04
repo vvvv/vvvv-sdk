@@ -22,27 +22,27 @@ namespace VVVV.Hosting.Streams
 		
 		protected abstract T GetSlice(int index);
 		
-		public T Read(int stepSize)
+		public T Read(int stride)
 		{
 			var result = GetSlice(ReadPosition);
-			ReadPosition += stepSize;
+			ReadPosition += stride;
 			return result;
 		}
 		
-		public int Read(T[] buffer, int index, int length, int stepSize)
+		public int Read(T[] buffer, int index, int length, int stride)
 		{
-			var numSlicesToRead = StreamUtils.GetNumSlicesToRead(this, index, length, stepSize);
+			var numSlicesToRead = StreamUtils.GetNumSlicesToRead(this, index, length, stride);
 			for (int i = index; i < index + numSlicesToRead; i++)
 			{
-				buffer[i] = Read(stepSize);
+				buffer[i] = Read(stride);
 			}
 			return numSlicesToRead;
 		}
 		
-		public void ReadCyclic(T[] buffer, int index, int length, int stepSize)
+		public void ReadCyclic(T[] buffer, int index, int length, int stride)
 		{
 			// No need to optimize here as slow as it is already.
-			StreamUtils.ReadCyclic(this, buffer, index, length, stepSize);
+			StreamUtils.ReadCyclic(this, buffer, index, length, stride);
 		}
 		
 		public void Reset()

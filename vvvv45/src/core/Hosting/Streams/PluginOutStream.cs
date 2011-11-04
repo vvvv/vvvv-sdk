@@ -23,18 +23,18 @@ namespace VVVV.Hosting.Streams
 		
 		protected abstract void SetSlice(int index, T value);
 		
-		public void Write(T value, int stepSize)
+		public void Write(T value, int stride)
 		{
 			SetSlice(WritePosition, value);
-			WritePosition += stepSize;
+			WritePosition += stride;
 		}
 		
-		public int Write(T[] buffer, int index, int length, int stepSize)
+		public int Write(T[] buffer, int index, int length, int stride)
 		{
-			var numSlicesToWrite = StreamUtils.GetNumSlicesToWrite(this, index, length, stepSize);
+			var numSlicesToWrite = StreamUtils.GetNumSlicesToWrite(this, index, length, stride);
 			for (int i = index; i < index + numSlicesToWrite; i++)
 			{
-				Write(buffer[i], stepSize);
+				Write(buffer[i], stride);
 			}
 			return numSlicesToWrite;
 		}

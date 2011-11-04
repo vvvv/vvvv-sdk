@@ -78,15 +78,15 @@ namespace VVVV.Hosting.Streams
 			}
 		}
 		
-		public abstract T Read(int stepSize);
+		public abstract T Read(int stride);
 		
-		public void ReadCyclic(T[] buffer, int index, int length, int stepSize)
+		public void ReadCyclic(T[] buffer, int index, int length, int stride)
 		{
 			// Exception handling
 			if (Length == 0) throw new ArgumentOutOfRangeException("Can't read from an empty stream.");
 			
 			// Normalize the stride
-			stepSize %= Length;
+			stride %= Length;
 			
 			switch (Length)
 			{
@@ -95,9 +95,9 @@ namespace VVVV.Hosting.Streams
 					if (Eof) Reset();
 					
 					if (index == 0 && length == buffer.Length)
-						buffer.Init(Read(stepSize)); // Slightly faster
+						buffer.Init(Read(stride)); // Slightly faster
 					else
-						buffer.Fill(index, length, Read(stepSize));
+						buffer.Fill(index, length, Read(stride));
 					break;
 				default:
 					int numSlicesRead = 0;
@@ -105,7 +105,7 @@ namespace VVVV.Hosting.Streams
 					// Read till end
 					while ((numSlicesRead < length) && (ReadPosition %= Length) > 0)
 					{
-						numSlicesRead += Read(buffer, index, length, stepSize);
+						numSlicesRead += Read(buffer, index, length, stride);
 					}
 					
 					// Save start of possible block
@@ -114,7 +114,7 @@ namespace VVVV.Hosting.Streams
 					// Read one block
 					while (numSlicesRead < length)
 					{
-						numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stepSize);
+						numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
 						// Exit the loop once ReadPosition is back at beginning
 						if ((ReadPosition %= Length) == 0) break;
 					}
@@ -137,43 +137,43 @@ namespace VVVV.Hosting.Streams
 					while (numSlicesRead < length)
 					{
 						if (Eof) ReadPosition %= Length;
-						numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stepSize);
+						numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
 					}
 					
 					break;
 			}
 		}
 		
-		protected abstract void Copy(T[] destination, int destinationIndex, int length, int stepSize);
+		protected abstract void Copy(T[] destination, int destinationIndex, int length, int stride);
 		
 		protected abstract void Synced(IntPtr unmanagedArray, int unmanagedArrayLength);
 		
-		public int Read(T[] buffer, int index, int length, int stepSize)
+		public int Read(T[] buffer, int index, int length, int stride)
 		{
 			int slicesAhead = Length - ReadPosition;
 			
-			if (stepSize > 0)
+			if (stride > 0)
 			{
 				int r = 0;
-				slicesAhead = Math.DivRem(slicesAhead, stepSize, out r);
+				slicesAhead = Math.DivRem(slicesAhead, stride, out r);
 				if (r > 0)
 					slicesAhead++;
 			}
 			
 			int numSlicesToRead = Math.Max(Math.Min(length, slicesAhead), 0);
 			
-			switch (stepSize)
+			switch (stride)
 			{
 				case 0:
 					if (index == 0 && numSlicesToRead == buffer.Length)
-						buffer.Init(Read(stepSize)); // Slightly faster
+						buffer.Init(Read(stride)); // Slightly faster
 					else
-						buffer.Fill(index, numSlicesToRead, Read(stepSize));
+						buffer.Fill(index, numSlicesToRead, Read(stride));
 					break;
 				default:
 					Debug.Assert(ReadPosition + numSlicesToRead <= Length);
-					Copy(buffer, index, numSlicesToRead, stepSize);
-					ReadPosition += numSlicesToRead * stepSize;
+					Copy(buffer, index, numSlicesToRead, stride);
+					ReadPosition += numSlicesToRead * stride;
 					break;
 			}
 			
@@ -216,17 +216,17 @@ namespace VVVV.Hosting.Streams
 			FUnmanagedArray = (double*) unmanagedArray.ToPointer();
 		}
 		
-		public override double Read(int stepSize)
+		public override double Read(int stride)
 		{
 			Debug.Assert(ReadPosition < Length);
 			var result = FUnmanagedArray[ReadPosition];
-			ReadPosition += stepSize;
+			ReadPosition += stride;
 			return result;
 		}
 		
-		protected override void Copy(double[] destination, int destinationIndex, int length, int stepSize)
+		protected override void Copy(double[] destination, int destinationIndex, int length, int stride)
 		{
-			switch (stepSize)
+			switch (stride)
 			{
 				case 1:
 					Marshal.Copy(FUnmanagedArrayPtr + ReadPosition * sizeof(double), destination, destinationIndex, length);
@@ -240,7 +240,7 @@ namespace VVVV.Hosting.Streams
 						for (int i = 0; i < length; i++)
 						{
 							*(dst++) = *src;
-							src += stepSize;
+							src += stride;
 						}
 					}
 					break;
@@ -263,15 +263,15 @@ namespace VVVV.Hosting.Streams
 			FUnmanagedArray = (double*) unmanagedArray.ToPointer();
 		}
 		
-		public override float Read(int stepSize)
+		public override float Read(int stride)
 		{
 			Debug.Assert(ReadPosition < Length);
 			var result = (float) FUnmanagedArray[ReadPosition];
-			ReadPosition += stepSize;
+			ReadPosition += stride;
 			return result;
 		}
 		
-		protected override void Copy(float[] destination, int destinationIndex, int length, int stepSize)
+		protected override void Copy(float[] destination, int destinationIndex, int length, int stride)
 		{
 			fixed (float* destinationPtr = destination)
 			{
@@ -281,7 +281,7 @@ namespace VVVV.Hosting.Streams
 				for (int i = 0; i < length; i++)
 				{
 					*(dst++) = (float) *src;
-					src += stepSize;
+					src += stride;
 				}
 			}
 		}
@@ -302,15 +302,15 @@ namespace VVVV.Hosting.Streams
 			FUnmanagedArray = (double*) unmanagedArray.ToPointer();
 		}
 		
-		public override int Read(int stepSize)
+		public override int Read(int stride)
 		{
 			Debug.Assert(ReadPosition < Length);
 			var result = (int) Math.Round(FUnmanagedArray[ReadPosition]);
-			ReadPosition += stepSize;
+			ReadPosition += stride;
 			return result;
 		}
 		
-		protected override void Copy(int[] destination, int destinationIndex, int length, int stepSize)
+		protected override void Copy(int[] destination, int destinationIndex, int length, int stride)
 		{
 			fixed (int* destinationPtr = destination)
 			{
@@ -320,7 +320,7 @@ namespace VVVV.Hosting.Streams
 				for (int i = 0; i < length; i++)
 				{
 					*(dst++) = (int) Math.Round(*src);
-					src += stepSize;
+					src += stride;
 				}
 			}
 		}
@@ -341,15 +341,15 @@ namespace VVVV.Hosting.Streams
 			FUnmanagedArray = (double*) unmanagedArray.ToPointer();
 		}
 		
-		public override bool Read(int stepSize)
+		public override bool Read(int stride)
 		{
 			Debug.Assert(ReadPosition < Length, string.Format("ReadPosition: {0}, Length: {0}", ReadPosition, Length));
 			var result = FUnmanagedArray[ReadPosition] >= 0.5;
-			ReadPosition += stepSize;
+			ReadPosition += stride;
 			return result;
 		}
 		
-		protected override void Copy(bool[] destination, int destinationIndex, int length, int stepSize)
+		protected override void Copy(bool[] destination, int destinationIndex, int length, int stride)
 		{
 			fixed (bool* destinationPtr = destination)
 			{
@@ -359,7 +359,7 @@ namespace VVVV.Hosting.Streams
 				for (int i = 0; i < length; i++)
 				{
 					*(dst++) = *src >= 0.5;
-					src += stepSize;
+					src += stride;
 				}
 			}
 		}
@@ -380,15 +380,15 @@ namespace VVVV.Hosting.Streams
 			FUnmanagedArray = (Matrix*) unmanagedArray.ToPointer();
 		}
 		
-		public override Matrix Read(int stepSize)
+		public override Matrix Read(int stride)
 		{
 			Debug.Assert(ReadPosition < Length);
 			var result = FUnmanagedArray[ReadPosition];
-			ReadPosition += stepSize;
+			ReadPosition += stride;
 			return result;
 		}
 		
-		protected override void Copy(Matrix[] destination, int destinationIndex, int length, int stepSize)
+		protected override void Copy(Matrix[] destination, int destinationIndex, int length, int stride)
 		{
 			fixed (Matrix* destinationPtr = destination)
 			{
@@ -398,7 +398,7 @@ namespace VVVV.Hosting.Streams
 				for (int i = 0; i < length; i++)
 				{
 					*(dst++) = *src;
-					src += stepSize;
+					src += stride;
 				}
 			}
 		}
@@ -419,15 +419,15 @@ namespace VVVV.Hosting.Streams
 			FUnmanagedArray = (Matrix*) unmanagedArray.ToPointer();
 		}
 		
-		public override Matrix4x4 Read(int stepSize)
+		public override Matrix4x4 Read(int stride)
 		{
 			Debug.Assert(ReadPosition < Length);
 			var result = FUnmanagedArray[ReadPosition].ToMatrix4x4();
-			ReadPosition += stepSize;
+			ReadPosition += stride;
 			return result;
 		}
 		
-		protected override void Copy(Matrix4x4[] destination, int destinationIndex, int length, int stepSize)
+		protected override void Copy(Matrix4x4[] destination, int destinationIndex, int length, int stride)
 		{
 			fixed (Matrix4x4* destinationPtr = destination)
 			{
@@ -437,7 +437,7 @@ namespace VVVV.Hosting.Streams
 				for (int i = 0; i < length; i++)
 				{
 					*(dst++) = (*src).ToMatrix4x4();
-					src += stepSize;
+					src += stride;
 				}
 			}
 		}

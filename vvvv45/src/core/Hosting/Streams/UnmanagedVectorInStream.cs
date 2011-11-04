@@ -58,17 +58,17 @@ namespace VVVV.Hosting.Streams
 			}
 		}
 		
-		public abstract T Read(int stepSize = 1);
+		public abstract T Read(int stride = 1);
 		
-		public abstract int Read(T[] buffer, int index, int length, int stepSize);
+		public abstract int Read(T[] buffer, int index, int length, int stride);
 		
-		public void ReadCyclic(T[] buffer, int index, int length, int stepSize)
+		public void ReadCyclic(T[] buffer, int index, int length, int stride)
 		{
 			// Exception handling
 			if (Length == 0) throw new ArgumentOutOfRangeException("Can't read from an empty stream.");
 			
 			// Normalize the stride
-			stepSize %= Length;
+			stride %= Length;
 			
 			switch (Length)
 			{
@@ -77,9 +77,9 @@ namespace VVVV.Hosting.Streams
 					if (Eof) Reset();
 					
 					if (index == 0 && length == buffer.Length)
-						buffer.Init(Read(stepSize)); // Slightly faster
+						buffer.Init(Read(stride)); // Slightly faster
 					else
-						buffer.Fill(index, length, Read(stepSize));
+						buffer.Fill(index, length, Read(stride));
 					break;
 				default:
 					int numSlicesRead = 0;
@@ -87,7 +87,7 @@ namespace VVVV.Hosting.Streams
 					// Read till end
 					while ((numSlicesRead < length) && (ReadPosition %= Length) > 0)
 					{
-						numSlicesRead += Read(buffer, index, length, stepSize);
+						numSlicesRead += Read(buffer, index, length, stride);
 					}
 					
 					// Save start of possible block
@@ -96,7 +96,7 @@ namespace VVVV.Hosting.Streams
 					// Read one block
 					while (numSlicesRead < length)
 					{
-						numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stepSize);
+						numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
 						// Exit the loop once ReadPosition is back at beginning
 						if ((ReadPosition %= Length) == 0) break;
 					}
@@ -119,7 +119,7 @@ namespace VVVV.Hosting.Streams
 					while (numSlicesRead < length)
 					{
 						if (Eof) ReadPosition %= Length;
-						numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stepSize);
+						numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
 					}
 					
 					break;
@@ -158,9 +158,9 @@ namespace VVVV.Hosting.Streams
 			
 		}
 		
-		public override int Read(Vector2D[] buffer, int index, int length, int stepSize)
+		public override int Read(Vector2D[] buffer, int index, int length, int stride)
 		{
-			int numSlicesToRead = StreamUtils.GetNumSlicesToRead(this, index, length, stepSize);
+			int numSlicesToRead = StreamUtils.GetNumSlicesToRead(this, index, length, stride);
 			
 			fixed (Vector2D* destination = buffer)
 			{
@@ -178,7 +178,7 @@ namespace VVVV.Hosting.Streams
 				for (int i = 0; i < numSlicesToReadAtFullSpeed; i++)
 				{
 					*(dst++) = *src;
-					src += stepSize;
+					src += stride;
 				}
 				
 				if (numSlicesToReadAtFullSpeed < numSlicesToRead)
@@ -189,13 +189,13 @@ namespace VVVV.Hosting.Streams
 				}
 			}
 			
-			FReadPosition += numSlicesToRead * stepSize;
-			FReadPointer += numSlicesToRead * stepSize * FDimension;
+			FReadPosition += numSlicesToRead * stride;
+			FReadPointer += numSlicesToRead * stride * FDimension;
 			
 			return numSlicesToRead;
 		}
 		
-		public override Vector2D Read(int stepSize)
+		public override Vector2D Read(int stride)
 		{
 			Vector2D result;
 			
@@ -210,8 +210,8 @@ namespace VVVV.Hosting.Streams
 				result = *((Vector2D*) FReadPointer);
 			}
 			
-			FReadPosition += stepSize;
-			FReadPointer += stepSize * FDimension;
+			FReadPosition += stride;
+			FReadPointer += stride * FDimension;
 			
 			return result;
 		}
@@ -225,9 +225,9 @@ namespace VVVV.Hosting.Streams
 			
 		}
 		
-		public override int Read(Vector3D[] buffer, int index, int length, int stepSize)
+		public override int Read(Vector3D[] buffer, int index, int length, int stride)
 		{
-			int numSlicesToRead = StreamUtils.GetNumSlicesToRead(this, index, length, stepSize);
+			int numSlicesToRead = StreamUtils.GetNumSlicesToRead(this, index, length, stride);
 			
 			fixed (Vector3D* destination = buffer)
 			{
@@ -245,7 +245,7 @@ namespace VVVV.Hosting.Streams
 				for (int i = 0; i < numSlicesToReadAtFullSpeed; i++)
 				{
 					*(dst++) = *src;
-					src += stepSize;
+					src += stride;
 				}
 				
 				if (numSlicesToReadAtFullSpeed < numSlicesToRead)
@@ -257,13 +257,13 @@ namespace VVVV.Hosting.Streams
 				}
 			}
 			
-			FReadPosition += numSlicesToRead * stepSize;
-			FReadPointer += numSlicesToRead * stepSize * FDimension;
+			FReadPosition += numSlicesToRead * stride;
+			FReadPointer += numSlicesToRead * stride * FDimension;
 			
 			return numSlicesToRead;
 		}
 		
-		public override Vector3D Read(int stepSize)
+		public override Vector3D Read(int stride)
 		{
 			Vector3D result;
 			
@@ -279,8 +279,8 @@ namespace VVVV.Hosting.Streams
 				result = *((Vector3D*) FReadPointer);
 			}
 			
-			FReadPosition += stepSize;
-			FReadPointer += stepSize * FDimension;
+			FReadPosition += stride;
+			FReadPointer += stride * FDimension;
 			
 			return result;
 		}
@@ -294,9 +294,9 @@ namespace VVVV.Hosting.Streams
 			
 		}
 		
-		public override int Read(Vector4D[] buffer, int index, int length, int stepSize)
+		public override int Read(Vector4D[] buffer, int index, int length, int stride)
 		{
-			int numSlicesToRead = StreamUtils.GetNumSlicesToRead(this, index, length, stepSize);
+			int numSlicesToRead = StreamUtils.GetNumSlicesToRead(this, index, length, stride);
 			
 			fixed (Vector4D* destination = buffer)
 			{
@@ -314,7 +314,7 @@ namespace VVVV.Hosting.Streams
 				for (int i = 0; i < numSlicesToReadAtFullSpeed; i++)
 				{
 					*(dst++) = *src;
-					src += stepSize;
+					src += stride;
 				}
 				
 				if (numSlicesToReadAtFullSpeed < numSlicesToRead)
@@ -327,13 +327,13 @@ namespace VVVV.Hosting.Streams
 				}
 			}
 			
-			FReadPosition += numSlicesToRead * stepSize;
-			FReadPointer += numSlicesToRead * stepSize * FDimension;
+			FReadPosition += numSlicesToRead * stride;
+			FReadPointer += numSlicesToRead * stride * FDimension;
 			
 			return numSlicesToRead;
 		}
 		
-		public override Vector4D Read(int stepSize)
+		public override Vector4D Read(int stride)
 		{
 			Vector4D result;
 			
@@ -350,8 +350,8 @@ namespace VVVV.Hosting.Streams
 				result = *((Vector4D*) FReadPointer);
 			}
 			
-			FReadPosition += stepSize;
-			FReadPointer += stepSize * FDimension;
+			FReadPosition += stride;
+			FReadPointer += stride * FDimension;
 			
 			return result;
 		}
@@ -365,9 +365,9 @@ namespace VVVV.Hosting.Streams
 			
 		}
 		
-		public override int Read(RGBAColor[] buffer, int index, int length, int stepSize)
+		public override int Read(RGBAColor[] buffer, int index, int length, int stride)
 		{
-			int numSlicesToRead = StreamUtils.GetNumSlicesToRead(this, index, length, stepSize);
+			int numSlicesToRead = StreamUtils.GetNumSlicesToRead(this, index, length, stride);
 			
 			fixed (RGBAColor* destination = buffer)
 			{
@@ -385,7 +385,7 @@ namespace VVVV.Hosting.Streams
 				for (int i = 0; i < numSlicesToReadAtFullSpeed; i++)
 				{
 					*(dst++) = *src;
-					src += stepSize;
+					src += stride;
 				}
 				
 				if (numSlicesToReadAtFullSpeed < numSlicesToRead)
@@ -398,13 +398,13 @@ namespace VVVV.Hosting.Streams
 				}
 			}
 			
-			FReadPosition += numSlicesToRead * stepSize;
-			FReadPointer += numSlicesToRead * stepSize * FDimension;
+			FReadPosition += numSlicesToRead * stride;
+			FReadPointer += numSlicesToRead * stride * FDimension;
 			
 			return numSlicesToRead;
 		}
 		
-		public override RGBAColor Read(int stepSize)
+		public override RGBAColor Read(int stride)
 		{
 			RGBAColor result;
 			
@@ -421,8 +421,8 @@ namespace VVVV.Hosting.Streams
 				result = *((RGBAColor*) FReadPointer);
 			}
 			
-			FReadPosition += stepSize;
-			FReadPointer += stepSize * FDimension;
+			FReadPosition += stride;
+			FReadPointer += stride * FDimension;
 			
 			return result;
 		}
@@ -436,9 +436,9 @@ namespace VVVV.Hosting.Streams
 			
 		}
 		
-		public override int Read(Vector2[] buffer, int index, int length, int stepSize)
+		public override int Read(Vector2[] buffer, int index, int length, int stride)
 		{
-			int numSlicesToRead = StreamUtils.GetNumSlicesToRead(this, index, length, stepSize);
+			int numSlicesToRead = StreamUtils.GetNumSlicesToRead(this, index, length, stride);
 			
 			fixed (Vector2* destination = buffer)
 			{
@@ -456,7 +456,7 @@ namespace VVVV.Hosting.Streams
 				for (int i = 0; i < numSlicesToReadAtFullSpeed; i++)
 				{
 					*(dst++) = (*src).ToSlimDXVector();
-					src += stepSize;
+					src += stride;
 				}
 				
 				if (numSlicesToReadAtFullSpeed < numSlicesToRead)
@@ -467,13 +467,13 @@ namespace VVVV.Hosting.Streams
 				}
 			}
 			
-			FReadPosition += numSlicesToRead * stepSize;
-			FReadPointer += numSlicesToRead * stepSize * FDimension;
+			FReadPosition += numSlicesToRead * stride;
+			FReadPointer += numSlicesToRead * stride * FDimension;
 			
 			return numSlicesToRead;
 		}
 		
-		public override Vector2 Read(int stepSize)
+		public override Vector2 Read(int stride)
 		{
 			Vector2 result;
 			
@@ -488,8 +488,8 @@ namespace VVVV.Hosting.Streams
 				result = (*((Vector2D*) FReadPointer)).ToSlimDXVector();
 			}
 			
-			FReadPosition += stepSize;
-			FReadPointer += stepSize * FDimension;
+			FReadPosition += stride;
+			FReadPointer += stride * FDimension;
 			
 			return result;
 		}
@@ -503,12 +503,12 @@ namespace VVVV.Hosting.Streams
 			
 		}
 		
-		public override int Read(Vector3[] buffer, int index, int length, int stepSize)
+		public override int Read(Vector3[] buffer, int index, int length, int stride)
 		{
 			throw new NotImplementedException();
 		}
 		
-		public override Vector3 Read(int stepSize)
+		public override Vector3 Read(int stride)
 		{
 			throw new NotImplementedException();
 		}
@@ -522,12 +522,12 @@ namespace VVVV.Hosting.Streams
 			
 		}
 		
-		public override int Read(Vector4[] buffer, int index, int length, int stepSize)
+		public override int Read(Vector4[] buffer, int index, int length, int stride)
 		{
 			throw new NotImplementedException();
 		}
 		
-		public override Vector4 Read(int stepSize)
+		public override Vector4 Read(int stride)
 		{
 			throw new NotImplementedException();
 		}

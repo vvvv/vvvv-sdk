@@ -69,9 +69,9 @@ namespace VVVV.Hosting.Streams
 			}
 		}
 		
-		public abstract void Write(T value, int stepSize = 1);
+		public abstract void Write(T value, int stride = 1);
 		
-		public abstract int Write(T[] buffer, int index, int length, int stepSize = 1);
+		public abstract int Write(T[] buffer, int index, int length, int stride = 1);
 		
 		public void Reset()
 		{
@@ -98,9 +98,9 @@ namespace VVVV.Hosting.Streams
 			
 		}
 		
-		public override int Write(Vector2D[] buffer, int index, int length, int stepSize)
+		public override int Write(Vector2D[] buffer, int index, int length, int stride)
 		{
-			int numSlicesToWrite = StreamUtils.GetNumSlicesToWrite(this, index, length, stepSize);
+			int numSlicesToWrite = StreamUtils.GetNumSlicesToWrite(this, index, length, stride);
 			
 			fixed (Vector2D* source = buffer)
 			{
@@ -118,7 +118,7 @@ namespace VVVV.Hosting.Streams
 				for (int i = 0; i < numSlicesToWriteAtFullSpeed; i++)
 				{
 					*dst = *(src++);
-					dst += stepSize;
+					dst += stride;
 				}
 				
 				if (numSlicesToWriteAtFullSpeed < numSlicesToWrite)
@@ -129,13 +129,13 @@ namespace VVVV.Hosting.Streams
 				}
 			}
 			
-			FWritePosition += numSlicesToWrite * stepSize;
-			FWritePointer += numSlicesToWrite * stepSize * FDimension;
+			FWritePosition += numSlicesToWrite * stride;
+			FWritePointer += numSlicesToWrite * stride * FDimension;
 			
 			return numSlicesToWrite;
 		}
 		
-		public override void Write(Vector2D value, int stepSize)
+		public override void Write(Vector2D value, int stride)
 		{
 			if (IsOutOfBounds(1))
 			{
@@ -148,8 +148,8 @@ namespace VVVV.Hosting.Streams
 				*((Vector2D*) FWritePointer) = value;
 			}
 			
-			FWritePosition += stepSize;
-			FWritePointer += stepSize * FDimension;
+			FWritePosition += stride;
+			FWritePointer += stride * FDimension;
 		}
 	}
 	
@@ -161,9 +161,9 @@ namespace VVVV.Hosting.Streams
 			
 		}
 		
-		public override int Write(Vector3D[] buffer, int index, int length, int stepSize)
+		public override int Write(Vector3D[] buffer, int index, int length, int stride)
 		{
-			int numSlicesToWrite = StreamUtils.GetNumSlicesToWrite(this, index, length, stepSize);
+			int numSlicesToWrite = StreamUtils.GetNumSlicesToWrite(this, index, length, stride);
 			
 			fixed (Vector3D* source = buffer)
 			{
@@ -181,7 +181,7 @@ namespace VVVV.Hosting.Streams
 				for (int i = 0; i < numSlicesToWriteAtFullSpeed; i++)
 				{
 					*dst = *(src++);
-					dst += stepSize;
+					dst += stride;
 				}
 				
 				if (numSlicesToWriteAtFullSpeed < numSlicesToWrite)
@@ -193,13 +193,13 @@ namespace VVVV.Hosting.Streams
 				}
 			}
 			
-			FWritePosition += numSlicesToWrite * stepSize;
-			FWritePointer += numSlicesToWrite * stepSize * FDimension;
+			FWritePosition += numSlicesToWrite * stride;
+			FWritePointer += numSlicesToWrite * stride * FDimension;
 			
 			return numSlicesToWrite;
 		}
 		
-		public override void Write(Vector3D value, int stepSize)
+		public override void Write(Vector3D value, int stride)
 		{
 			if (IsOutOfBounds(1))
 			{
@@ -213,8 +213,8 @@ namespace VVVV.Hosting.Streams
 				*((Vector3D*) FWritePointer) = value;
 			}
 			
-			FWritePosition += stepSize;
-			FWritePointer += stepSize * FDimension;
+			FWritePosition += stride;
+			FWritePointer += stride * FDimension;
 		}
 	}
 	
@@ -226,9 +226,9 @@ namespace VVVV.Hosting.Streams
 			
 		}
 		
-		public override int Write(Vector4D[] buffer, int index, int length, int stepSize)
+		public override int Write(Vector4D[] buffer, int index, int length, int stride)
 		{
-			int numSlicesToWrite = StreamUtils.GetNumSlicesToWrite(this, index, length, stepSize);
+			int numSlicesToWrite = StreamUtils.GetNumSlicesToWrite(this, index, length, stride);
 			
 			fixed (Vector4D* source = buffer)
 			{
@@ -246,7 +246,7 @@ namespace VVVV.Hosting.Streams
 				for (int i = 0; i < numSlicesToWriteAtFullSpeed; i++)
 				{
 					*dst = *(src++);
-					dst += stepSize;
+					dst += stride;
 				}
 				
 				if (numSlicesToWriteAtFullSpeed < numSlicesToWrite)
@@ -259,13 +259,13 @@ namespace VVVV.Hosting.Streams
 				}
 			}
 			
-			FWritePosition += numSlicesToWrite * stepSize;
-			FWritePointer += numSlicesToWrite * stepSize * FDimension;
+			FWritePosition += numSlicesToWrite * stride;
+			FWritePointer += numSlicesToWrite * stride * FDimension;
 			
 			return numSlicesToWrite;
 		}
 		
-		public override void Write(Vector4D value, int stepSize)
+		public override void Write(Vector4D value, int stride)
 		{
 			if (IsOutOfBounds(1))
 			{
@@ -280,8 +280,8 @@ namespace VVVV.Hosting.Streams
 				*((Vector4D*) FWritePointer) = value;
 			}
 			
-			FWritePosition += stepSize;
-			FWritePointer += stepSize * FDimension;
+			FWritePosition += stride;
+			FWritePointer += stride * FDimension;
 		}
 	}
 	
@@ -293,9 +293,9 @@ namespace VVVV.Hosting.Streams
 			
 		}
 		
-		public override int Write(RGBAColor[] buffer, int index, int length, int stepSize)
+		public override int Write(RGBAColor[] buffer, int index, int length, int stride)
 		{
-			int numSlicesToWrite = StreamUtils.GetNumSlicesToWrite(this, index, length, stepSize);
+			int numSlicesToWrite = StreamUtils.GetNumSlicesToWrite(this, index, length, stride);
 			
 			fixed (RGBAColor* source = buffer)
 			{
@@ -313,7 +313,7 @@ namespace VVVV.Hosting.Streams
 				for (int i = 0; i < numSlicesToWriteAtFullSpeed; i++)
 				{
 					*dst = *(src++);
-					dst += stepSize;
+					dst += stride;
 				}
 				
 				if (numSlicesToWriteAtFullSpeed < numSlicesToWrite)
@@ -326,13 +326,13 @@ namespace VVVV.Hosting.Streams
 				}
 			}
 			
-			FWritePosition += numSlicesToWrite * stepSize;
-			FWritePointer += numSlicesToWrite * stepSize * FDimension;
+			FWritePosition += numSlicesToWrite * stride;
+			FWritePointer += numSlicesToWrite * stride * FDimension;
 			
 			return numSlicesToWrite;
 		}
 		
-		public override void Write(RGBAColor value, int stepSize)
+		public override void Write(RGBAColor value, int stride)
 		{
 			if (IsOutOfBounds(1))
 			{
@@ -347,8 +347,8 @@ namespace VVVV.Hosting.Streams
 				*((RGBAColor*) FWritePointer) = value;
 			}
 			
-			FWritePosition += stepSize;
-			FWritePointer += stepSize * FDimension;
+			FWritePosition += stride;
+			FWritePointer += stride * FDimension;
 		}
 	}
 	
@@ -360,9 +360,9 @@ namespace VVVV.Hosting.Streams
 			
 		}
 		
-		public override int Write(Vector2[] buffer, int index, int length, int stepSize)
+		public override int Write(Vector2[] buffer, int index, int length, int stride)
 		{
-			int numSlicesToWrite = StreamUtils.GetNumSlicesToWrite(this, index, length, stepSize);
+			int numSlicesToWrite = StreamUtils.GetNumSlicesToWrite(this, index, length, stride);
 			
 			fixed (Vector2* source = buffer)
 			{
@@ -380,7 +380,7 @@ namespace VVVV.Hosting.Streams
 				for (int i = 0; i < numSlicesToWriteAtFullSpeed; i++)
 				{
 					*dst = (*(src++)).ToVector2D();
-					dst += stepSize;
+					dst += stride;
 				}
 				
 				if (numSlicesToWriteAtFullSpeed < numSlicesToWrite)
@@ -391,13 +391,13 @@ namespace VVVV.Hosting.Streams
 				}
 			}
 			
-			FWritePosition += numSlicesToWrite * stepSize;
-			FWritePointer += numSlicesToWrite * stepSize * FDimension;
+			FWritePosition += numSlicesToWrite * stride;
+			FWritePointer += numSlicesToWrite * stride * FDimension;
 			
 			return numSlicesToWrite;
 		}
 		
-		public override void Write(Vector2 value, int stepSize)
+		public override void Write(Vector2 value, int stride)
 		{
 			if (IsOutOfBounds(1))
 			{
@@ -410,8 +410,8 @@ namespace VVVV.Hosting.Streams
 				*((Vector2D*) FWritePointer) = value.ToVector2D();
 			}
 			
-			FWritePosition += stepSize;
-			FWritePointer += stepSize * FDimension;
+			FWritePosition += stride;
+			FWritePointer += stride * FDimension;
 		}
 	}
 	
@@ -423,12 +423,12 @@ namespace VVVV.Hosting.Streams
 			
 		}
 		
-		public override int Write(Vector3[] buffer, int index, int length, int stepSize)
+		public override int Write(Vector3[] buffer, int index, int length, int stride)
 		{
 			throw new NotImplementedException();
 		}
 		
-		public override void Write(Vector3 value, int stepSize)
+		public override void Write(Vector3 value, int stride)
 		{
 			throw new NotImplementedException();
 		}
@@ -442,12 +442,12 @@ namespace VVVV.Hosting.Streams
 			
 		}
 		
-		public override int Write(Vector4[] buffer, int index, int length, int stepSize)
+		public override int Write(Vector4[] buffer, int index, int length, int stride)
 		{
 			throw new NotImplementedException();
 		}
 		
-		public override void Write(Vector4 value, int stepSize)
+		public override void Write(Vector4 value, int stride)
 		{
 			throw new NotImplementedException();
 		}

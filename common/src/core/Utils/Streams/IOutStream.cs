@@ -31,14 +31,14 @@ namespace VVVV.Utils.Streams
 			return new T[Math.Max(8, Math.Min(inStream.Length, 512))];
 		}
 		
-		internal static void CyclicWrite<T>(this IOutStream<T> outStream, T[] buffer, int index, int length, int stepSize = 1)
+		internal static void CyclicWrite<T>(this IOutStream<T> outStream, T[] buffer, int index, int length, int stride = 1)
 		{
-			int numSlicesWritten = outStream.Write(buffer, index, length, stepSize);
+			int numSlicesWritten = outStream.Write(buffer, index, length, stride);
 			
 			for (int i = numSlicesWritten; i < length; i++)
 			{
 				outStream.WritePosition %= outStream.Length;
-				numSlicesWritten += outStream.Write(buffer, index + i, length - numSlicesWritten, stepSize);
+				numSlicesWritten += outStream.Write(buffer, index + i, length - numSlicesWritten, stride);
 			}
 		}
 	}
