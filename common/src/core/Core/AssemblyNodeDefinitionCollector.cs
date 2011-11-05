@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Cci;
+using System.Text.RegularExpressions;
 
 namespace VVVV.Core
 {
@@ -11,7 +12,7 @@ namespace VVVV.Core
         public static string NameSpaceName(this ITypeDefinition type)
         {
             if (type is INamespaceTypeDefinition)
-                return (type as INamespaceTypeDefinition).ContainingNamespace.Name.Value;
+                return (type as INamespaceTypeDefinition).ContainingNamespace.Name.Value; //TypeHelper.GetNamespaceName(
             else if (type is INestedTypeDefinition)
                 //todo: check what we need to do for nested types
                 return "fullname retrieval not implemented for nested types";
@@ -21,19 +22,10 @@ namespace VVVV.Core
 
         public static string TypeName(this ITypeReference type, bool fullname = false)
         {
-            return type.ResolvedType.TypeName(fullname);
-        }
-
-        public static string TypeName(this ITypeDefinition type, bool fullname = false)
-        {
-            if (type is INamedTypeDefinition)
-                if (fullname)
-                    // find a fast way to retrive the full name: NamespaceName.TypeName. do we need to add those manually?
-                    return type.NameSpaceName() + "." + (type as INamedTypeDefinition).Name.Value;
-                else
-                    return (type as INamedTypeDefinition).Name.Value;
+            if (fullname)
+                return TypeHelper.GetTypeName(type);
             else
-                return null;
+                return TypeHelper.GetTypeName(type, NameFormattingOptions.OmitContainingNamespace);            
         }
 
         public static bool ValueIsString(this IMetadataNamedArgument arg)
@@ -59,36 +51,29 @@ namespace VVVV.Core
             return (attribute != null) ? attribute.NamedArguments.FirstOrDefault(arg => arg.ArgumentName.Value == attributename) : null;
         }
 
-        public static bool HasDefaultConstructor(this ITypeDefinition type, IName ctorName)
+        public static bool HasDefaultConstructor(this ITypeDefinition type, MetadataReaderHost host)
         {
-            //ELIAS: PLEASE HELP::: both is not working:
-
-            //return TypeHelper.GetMethod(type, ctorName) != Dummy.Method;
-            
-            return type.GetMatchingMembers(member => member.Name == ctorName).Any();
+            return TypeHelper.GetMethod(type, host.NameTable.Ctor) != Dummy.Method;
         }
     }
 
-    public class AssemblyNodeDefinitionCollector : IDisposable
+    public class AssemblyNodeDefinitionCollector
     {
         // PLAY AROUND WITH THOSE:
-        public bool NodeAttributesNeedToBeSet = false;        
-        public bool SearchForFunctionNodes = false;
-        public bool SearchForFunctorNodes = true;
+        public bool AcceptFunctionNodes = false;
+        public bool AcceptFunctorNodes = true;
+        public bool AcceptNodesWithoutNodeAttribute = false;        // why not import everything that can be worked with(?)
+        public bool AcceptNodesThatHaveRefParams = false;           // not supported yet 
+        public bool AcceptNodesThatWorkWithUnclonableTypes = true;  // in the best case patch view will take care that only one connection is allowed when values aren't clonable
+        public bool AcceptConstructorsAsFunctors = false;           // keep it like that
 
-        private PeReader.DefaultHost FHost;
+        private MetadataReaderHost FHost;
         private IName FctorName;
 
-        public void Dispose()
+        public AssemblyNodeDefinitionCollector(MetadataReaderHost host)
         {
-            FHost.Dispose();
-        }
-
-        public AssemblyNodeDefinitionCollector()
-        {
-            FHost = new PeReader.DefaultHost();
-            FctorName = FHost.NameTable.GetNameFor(".ctor");
-            Console.WriteLine(FctorName.Value);
+            FHost = host;
+            FctorName = FHost.NameTable.Ctor; 
         }
 
         public static string ParamNameToPinName(string paramname)
@@ -99,28 +84,28 @@ namespace VVVV.Core
             //param names start with a lower case letter, after that are camelcaps
             //out params that need to have the same name as another (in) param, can be named param_Out, resulting in a pin name "Param"
 
-            //todo: automatically convert:
-            //- remove an "_Out" at the end of the string
-            //- put a space in front of every first uppercase letter in a row
-            //- uppercase the first letter
-            return paramname;
+            var pinname = paramname;
+            if (pinname.EndsWith("_Out"))
+                pinname = pinname.Remove(pinname.LastIndexOf("_Out"));
+
+            pinname = Regex.Replace(pinname, "[A-Z]+", match => " "+match.Value);
+            pinname = char.ToUpper(pinname[0]) + pinname.Substring(1);
+            return pinname;
         }
 
         public static string FullTypeNameToCategory(string fulltypename)
         {
-            //todo:
-            //if uppercase(fulltypename) starts with "VVVV.NODES." remove that 
-            //return the rest of the string
+            if (fulltypename.ToUpper().StartsWith("VVVV.NODES."))
+                return fulltypename.Substring(11);
 
-            //optionally just set category to "unsorted"
-            return "unsorted";
+            return "uncategorized";
         }
 
         public static string FullTypeNameToVersion(string fulltypename, INodeDefinition node)
         {
             // in case of an unsorted category we need to ensure a unique systemname otherwise 
             // (by putting the name of the containing type into the version)
-            if (node.Category == "unsorted")
+            if (node.Category == "uncategorized")
                 return fulltypename;
             else
                 return "";
@@ -135,7 +120,7 @@ namespace VVVV.Core
         {
             var pinattribute = param.Attributes.FirstOrDefault(attribute => attribute.Type.TypeName() == "PinAttribute");
 
-            // todo: ref params should result in both in and output pins(?), for now only input is created
+            // todo: ref params should result in both in and output pins or in a ref pin(?), for now only input is created
 
             DataflowPinDefinition pin;
             if (param.IsOut)
@@ -171,7 +156,7 @@ namespace VVVV.Core
 
         private IEnumerable<IDataflowPinDefinition> ReturnValueToOutputDefinition(DataflowNodeDefinition node)
         {
-            if (!TypeHelper.TypesAreEquivalent(node.MethodDefinition.Type, FHost.PlatformType.SystemVoid))
+            if (node.MethodDefinition.Type.TypeCode != PrimitiveTypeCode.Void)
             {
                 var pin = new OutputPinDefinition();
 
@@ -182,9 +167,9 @@ namespace VVVV.Core
                     namearg.ValueIsString() ? namearg.Value() :
                     (node.MethodDefinition.ReturnValueName != Dummy.Name ? node.MethodDefinition.ReturnValueName.Value : null);
 
-                pin.Name = returnvaluename != null ? returnvaluename : "Return Value";
+                pin.Name = returnvaluename != null ? returnvaluename : "Output";
 
-                pin.NameInTextualCode = returnvaluename != null ? returnvaluename : "returnValue";
+                pin.NameInTextualCode = returnvaluename != null ? returnvaluename : "";
 
                 pin.Type = node.MethodDefinition.Type;
 
@@ -202,7 +187,7 @@ namespace VVVV.Core
                 select pindef;
 
             IEnumerable<IDataflowPinDefinition> allpindefs =
-                stdpindefs.Concat(ReturnValueToOutputDefinition(node));
+                stdpindefs.Concat(ReturnValueToOutputDefinition(node)).ToArray(); // cache before looking at it twice
 
             node.Inputs = allpindefs.Where(pindef => pindef is IInputPinDefinition).Cast<IInputPinDefinition>();
             node.Outputs = allpindefs.Where(pindef => pindef is IOutputPinDefinition).Cast<IOutputPinDefinition>();
@@ -210,22 +195,30 @@ namespace VVVV.Core
 
         public IEnumerable<INodeDefinition> Collect(IMethodDefinition methodDefinition)
         {
-            //is there any way of instancing the attribute? that ease the access of the properties - think Attribute.GetCustomAttribute(
+            if (!AcceptConstructorsAsFunctors && methodDefinition.IsConstructor)
+                yield break;
+
+            if (!AcceptNodesThatHaveRefParams && methodDefinition.Parameters.Any(param => param.IsByReference))
+                yield break;
+
+            if (!AcceptNodesThatWorkWithUnclonableTypes && !(
+                    methodDefinition.Type.IsClonable() &&
+                    methodDefinition.Parameters.Any(param => param.Type.IsClonable()))
+                )
+                yield break;
+
             var nodeattribute = methodDefinition.Attributes.FirstOrDefault(attribute => attribute.Type.TypeName() == "NodeAttribute");
 
-            if (!NodeAttributesNeedToBeSet || nodeattribute != null)
+            if (!AcceptNodesWithoutNodeAttribute || nodeattribute != null)
             {
                 DataflowNodeDefinition node;
                 if (methodDefinition.IsStatic)
                     node = new FunctionNodeDefinition();
                 else
-                    if (methodDefinition.ContainingTypeDefinition.IsValueType || methodDefinition.ContainingTypeDefinition.HasDefaultConstructor(FctorName))
-                        node = new FunctorNodeDefinition()
-                        {
-                            StateType = methodDefinition.ContainingTypeDefinition
-                        };
-                    else
-                        yield break;
+                    node = new FunctorNodeDefinition()
+                    {
+                        StateType = methodDefinition.ContainingTypeDefinition                            
+                    };
 
                 node.MethodDefinition = methodDefinition;
 
@@ -233,10 +226,10 @@ namespace VVVV.Core
                 node.Name = namearg.ValueIsString() ? namearg.Value() : methodDefinition.Name.Value;
 
                 var categoryarg = nodeattribute.GetArgument("Category");
-                node.Category = categoryarg.ValueIsString() ? categoryarg.Value() : FullTypeNameToCategory(methodDefinition.Type.TypeName(true));
+                node.Category = categoryarg.ValueIsString() ? categoryarg.Value() : FullTypeNameToCategory(methodDefinition.ContainingTypeDefinition.TypeName(true));
 
                 var versionarg = nodeattribute.GetArgument("Version");
-                node.Version = versionarg.ValueIsString() ? versionarg.Value() : FullTypeNameToVersion(methodDefinition.Type.TypeName(true), node);
+                node.Version = versionarg.ValueIsString() ? versionarg.Value() : FullTypeNameToVersion(methodDefinition.ContainingTypeDefinition.TypeName(true), node);
 
                 var helparg = nodeattribute.GetArgument("Help");
                 node.Help = helparg.ValueIsString() ? helparg.Value() : ExtractXMLHelpSnippet(methodDefinition);
@@ -273,12 +266,18 @@ namespace VVVV.Core
             return
                 from type in assembly.GetAllTypes()
                 where
-                    (type.IsStatic && SearchForFunctionNodes) ||
-                    (!type.IsStatic && (SearchForFunctionNodes || SearchForFunctorNodes))
+                    (!type.IsInterface) && 
+                    (
+                        (type.IsStatic && AcceptFunctionNodes) ||
+                        (!type.IsStatic && (AcceptFunctionNodes || AcceptFunctorNodes))
+                    )
+                let functortype = 
+                    (type.IsValueType || type.HasDefaultConstructor(FHost)) &&
+                    (AcceptNodesThatWorkWithUnclonableTypes || type.IsClonable())
                 from method in type.Methods
                 where
-                    (method.IsStatic && SearchForFunctionNodes) ||
-                    (!method.IsStatic && SearchForFunctorNodes)
+                    (method.IsStatic && AcceptFunctionNodes) ||
+                    (!method.IsStatic && AcceptFunctorNodes && functortype)
                 from node in Collect(method)
                 select node;
         }

@@ -25,7 +25,7 @@ namespace CCIAssembliesNodesCollector
                 
                 using (var host = new PeReader.DefaultHost()) 
                 {
-                    var x = new VVVV.Core.AssemblyNodeDefinitionCollector();
+                    var x = new VVVV.Core.AssemblyNodeDefinitionCollector(host);
 
                     foreach (string assemblyName in dialog.FileNames) 
                     {
@@ -39,15 +39,14 @@ namespace CCIAssembliesNodesCollector
 
                         foreach (var n in x.Collect(assembly))
                         {
-                            Console.WriteLine(n.Name);
+                            Console.WriteLine(n.Systemname);
                             if (n is IDataflowNodeDefinition)
                             {
-                                Console.WriteLine(" Inputs:");
                                 foreach (var p in (n as IDataflowNodeDefinition).Inputs)
-                                    Console.WriteLine("  " + p.Name);
-                                Console.WriteLine(" Outputs:");
+                                    Console.WriteLine("  " + TypeHelper.GetTypeName(p.Type, NameFormattingOptions.SmartTypeName) + " " + p.Name + 
+                                        (p.HasDefaultValue ? " = " + p.DefaultValue.Value.ToString() : ""));
                                 foreach (var p in (n as IDataflowNodeDefinition).Outputs)
-                                    Console.WriteLine("  " + p.Name);
+                                    Console.WriteLine("  out " + TypeHelper.GetTypeName(p.Type, NameFormattingOptions.SmartTypeName) + " " + p.Name);
                             }
                         }
                     }                
