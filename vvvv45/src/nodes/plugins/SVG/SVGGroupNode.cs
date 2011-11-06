@@ -183,7 +183,10 @@ namespace VVVV.Nodes
 	//QUAD----------------------------------------------------------------------
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Quad", Category = "SVG", Help = "Svg Quad", Tags = "")]
+	[PluginInfo(Name = "Quad", 
+	            Category = "SVG", 
+	            Help = "Renders a rectangle into an SVGTexture", 
+	            Tags = "rectangle, square, primitive, 2d, vector")]
 	#endregion PluginInfo
 	public class SvgRectNode : SVGVisualElementFillNode<SvgRectangle>
 	{
@@ -214,11 +217,13 @@ namespace VVVV.Nodes
 	//ELLIPSE-------------------------------------------------------------------
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Circle", Category = "SVG", Help = "Svg Ellipse", Tags = "Circle")]
+	[PluginInfo(Name = "Circle", 
+	            Category = "SVG", 
+	            Help = "Renders an ellipse into an SVGTexture", 
+	            Tags = "ellipse, primitive, 2d, vector")]
 	#endregion PluginInfo
 	public class SvgEllipseNode : SVGVisualElementFillNode<SvgEllipse>
 	{
-		
 		protected override SvgEllipse CreateElement()
 		{
 			return new SvgEllipse();
@@ -234,7 +239,10 @@ namespace VVVV.Nodes
 	
 	//POLYLINE------------------------------------------------------------------
 	#region PluginInfo
-	[PluginInfo(Name = "Polyline", Category = "SVG", Help = "Svg Polyline from a list of vertices", Tags = "")]
+	[PluginInfo(Name = "Polyline", 
+	            Category = "SVG", 
+	            Help = "Renders an open polyline from a list of vertices into an SVGTexture", 
+	            Tags = "primitive, 2d, vector")]
 	#endregion PluginInfo
 	public class SvgPolylineNode : SVGVisualElementFillNode<SvgPolyline>
 	{
@@ -278,7 +286,10 @@ namespace VVVV.Nodes
 	
 	//POLYGON-------------------------------------------------------------------
 	#region PluginInfo
-	[PluginInfo(Name = "Polygon", Category = "SVG", Help = "Svg Polygon from a list of vertices", Tags = "")]
+	[PluginInfo(Name = "Polygon", 
+	            Category = "SVG", 
+	            Help = "Renders a closed polygon from a list of vertices into an SVGTexture", 
+	            Tags = "primitive, 2d, vector")]
 	#endregion PluginInfo
 	public class SvgPolygonNode : SVGVisualElementFillNode<SvgPolygon>
 	{
@@ -322,7 +333,10 @@ namespace VVVV.Nodes
 	
 	//TEXT----------------------------------------------------------------------
 	#region PluginInfo
-	[PluginInfo(Name = "Text", Category = "SVG", Help = "Svg Text", Tags = "")]
+	[PluginInfo(Name = "Text", 
+	            Category = "SVG", 
+	            Help = "Renders text into an SVGTexture", 
+	            Tags = "primitive, 2d, vector")]
 	#endregion PluginInfo
 	public class SvgTextNode : SVGVisualElementFillNode<SvgText>
 	{
@@ -357,7 +371,10 @@ namespace VVVV.Nodes
 	//GROUP---------------------------------------------------------------------
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Group", Category = "SVG", Help = "Groups multiple SVG Layers into one", Tags = "")]
+	[PluginInfo(Name = "Group", 
+	            Category = "SVG", 
+	            Help = "Groups multiple SVG layers to be rendered one after the other", 
+	            Tags = "")]
 	#endregion PluginInfo
 	public class SVGGroupNode : IPluginEvaluate
 	{

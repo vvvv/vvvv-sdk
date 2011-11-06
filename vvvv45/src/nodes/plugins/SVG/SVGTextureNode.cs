@@ -30,8 +30,8 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "Reader",
 	            Category = "SVG",
-	            Help = "Reads a SVG Document and outputs it",
-	            Tags = "")]
+	            Help = "Reads and returns an SVG Document",
+	            Tags = "xml")]
 	#endregion PluginInfo
 	public class ReaderSvgNode : IPluginEvaluate
 	{
@@ -64,9 +64,10 @@ namespace VVVV.Nodes
 	
 	#region PluginInfo
 	[PluginInfo(Name = "Document",
-	            Category = "SVG Split",
-	            Help = "Outputs the SVG elements in a SVG document",
-	            Tags = "")]
+	            Category = "SVG",
+	            Version = "Split",
+	            Help = "Takes an SVG document and returns its elements (layers) and other properties",
+	            Tags = "xml")]
 	#endregion PluginInfo
 	public class DucumentSvgSplitNode : IPluginEvaluate
 	{
@@ -121,9 +122,10 @@ namespace VVVV.Nodes
 	
 	#region PluginInfo
 	[PluginInfo(Name = "Document",
-	            Category = "SVG Join",
-	            Help = "Outputs the SVG Layers in a SVG document",
-	            Tags = "")]
+	            Category = "SVG",
+				Version = "Join",
+	            Help = "Creates an SVG document from given SVG layers and other properties",
+	            Tags = "xml")]
 	#endregion PluginInfo
 	public class DucumentSvgJoinNode : IPluginEvaluate
 	{
@@ -204,7 +206,10 @@ namespace VVVV.Nodes
 	
 	
 	#region PluginInfo
-	[PluginInfo(Name = "SVGTexture", Category = "SVG", Help = "Creates a SVG Document and renders a SVG graphic into a texture with a given size", Tags = "texture")]
+	[PluginInfo(Name = "SVGTexture", 
+	            Category = "EX9.Texture", 
+	            Help = "Renders an SVG document into a texture with a given size", 
+	            Tags = "")]
 	#endregion PluginInfo
 	public class EX9_TextureSVGTextureNode : DXTextureOutPluginBase, IPluginEvaluate
 	{
@@ -341,7 +346,10 @@ namespace VVVV.Nodes
 	}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "SVGTexture", Category = "EX9.Texture XML", Help = "Renders a SVG graphic into a texture with a given size", Tags = "")]
+//	[PluginInfo(Name = "SVGTexture", 
+//	            Category = "EX9.Texture", 
+//	            Help = "Renders an SVG xml-string into a texture with a given size", 
+//	            Tags = "xml")]
 	#endregion PluginInfo
 	public class EX9_TextureSVGTextureXMLNode : DXTextureOutPluginBase, IPluginEvaluate
 	{
