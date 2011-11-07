@@ -112,7 +112,6 @@
       <Output ItemName="GeneratedFiles" TaskParameter="Include" />
     </CreateItem>
     <Delete Files="@(GeneratedFiles)" />
-    <MSBuild Projects="@(CoreProjectsToBuild);@(PluginProjectsToBuild);@(CorePluginsToBuild);@(CoreEditorsToBuild" Targets="Clean" Properties="Configuration=$(Configuration);" />
   </Target>
   <!-- Will simply print all of the project files to be built -->
   <!--
