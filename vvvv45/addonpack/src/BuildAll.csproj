@@ -83,10 +83,10 @@
       <Output TaskParameter="Include" ItemName="CoreEditorsOutputFiles" />
     </CreateItem>
 
-    <Copy SourceFiles="@(CoreOutputFiles)" DestinationFiles="@(CoreOutputFiles->'$(CoreDestFolder)%(Filename)%(Extension)')" />
-    <Copy SourceFiles="@(PluginsOutputFiles)" DestinationFiles="@(PluginsOutputFiles->'$(PluginsDestFolder)%(Filename)%(Extension)')" />
-	  <Copy SourceFiles="@(CorePluginsOutputFiles)" DestinationFiles="@(CorePluginsOutputFiles->'$(CorePluginsDestFolder)%(Filename)%(Extension)')" />
-	  <Copy SourceFiles="@(CoreEditorsOutputFiles)" DestinationFiles="@(CoreEditorsOutputFiles->'$(CoreEditorsDestFolder)%(Filename)%(Extension)')" />
+    <Copy Retries="10" SourceFiles="@(CoreOutputFiles)" DestinationFiles="@(CoreOutputFiles->'$(CoreDestFolder)%(Filename)%(Extension)')" />
+    <Copy Retries="10" SourceFiles="@(PluginsOutputFiles)" DestinationFiles="@(PluginsOutputFiles->'$(PluginsDestFolder)%(Filename)%(Extension)')" />
+	<Copy Retries="10" SourceFiles="@(CorePluginsOutputFiles)" DestinationFiles="@(CorePluginsOutputFiles->'$(CorePluginsDestFolder)%(Filename)%(Extension)')" />
+	<Copy Retries="10" SourceFiles="@(CoreEditorsOutputFiles)" DestinationFiles="@(CoreEditorsOutputFiles->'$(CoreEditorsDestFolder)%(Filename)%(Extension)')" />
     <!-- Copy everything in Dependencies -->
     <ItemGroup>
       <EditorDependencies Include="..\..\src\nodes\editors\**\Dependencies\*" />
@@ -95,10 +95,10 @@
       <PluginLicenses Include="nodes\plugins\**\license*.txt" />
       <PluginGirlpowers Include="nodes\plugins\**\girlpower\*" />
     </ItemGroup>
-  	<Copy SourceFiles="@(EditorDependencies)" DestinationFiles="@(EditorDependencies->'$(CoreEditorsDestFolder)%(Filename)%(Extension)')" />
-    <Copy SourceFiles="@(PluginDependencies)" DestinationFiles="@(PluginDependencies->'$(PluginsDestFolder)%(Filename)%(Extension)')" Condition="!Exists('%(PluginDependencies.RootDir)%(PluginDependencies.Directory)..\ignore')" />
-	  <Copy SourceFiles="@(CorePluginDependencies)" DestinationFiles="@(CorePluginDependencies->'$(CorePluginsDestFolder)%(Filename)%(Extension)')" Condition="!Exists('%(PluginDependencies.RootDir)%(PluginDependencies.Directory)..\ignore')" />	
-    <Copy SourceFiles="@(PluginLicenses)" DestinationFiles="@(PluginLicenses->'$(PluginsDestFolder)..\..\..\licenses\%(Filename)%(Extension)')" Condition="!Exists('%(PluginLicenses.RootDir)%(PluginLicenses.Directory)ignore')" />
+  	<Copy Retries="10" SourceFiles="@(EditorDependencies)" DestinationFiles="@(EditorDependencies->'$(CoreEditorsDestFolder)%(Filename)%(Extension)')" />
+    <Copy Retries="10" SourceFiles="@(PluginDependencies)" DestinationFiles="@(PluginDependencies->'$(PluginsDestFolder)%(Filename)%(Extension)')" Condition="!Exists('%(PluginDependencies.RootDir)%(PluginDependencies.Directory)..\ignore')" />
+	<Copy Retries="10" SourceFiles="@(CorePluginDependencies)" DestinationFiles="@(CorePluginDependencies->'$(CorePluginsDestFolder)%(Filename)%(Extension)')" Condition="!Exists('%(PluginDependencies.RootDir)%(PluginDependencies.Directory)..\ignore')" />	
+    <Copy Retries="10" SourceFiles="@(PluginLicenses)" DestinationFiles="@(PluginLicenses->'$(PluginsDestFolder)..\..\..\licenses\%(Filename)%(Extension)')" Condition="!Exists('%(PluginLicenses.RootDir)%(PluginLicenses.Directory)ignore')" />
   </Target>
   <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />
   <!--
