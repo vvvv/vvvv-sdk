@@ -91,11 +91,13 @@
     <ItemGroup>
       <EditorDependencies Include="..\..\src\nodes\editors\**\Dependencies\*" />
       <PluginDependencies Include="nodes\plugins\**\Dependencies\*" />
+	  <CorePluginDependencies Include="..\..\src\nodes\plugins\**\Dependencies\*" />
       <PluginLicenses Include="nodes\plugins\**\license*.txt" />
       <PluginGirlpowers Include="nodes\plugins\**\girlpower\*" />
     </ItemGroup>
   	<Copy SourceFiles="@(EditorDependencies)" DestinationFiles="@(EditorDependencies->'$(CoreEditorsDestFolder)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(PluginDependencies)" DestinationFiles="@(PluginDependencies->'$(PluginsDestFolder)%(Filename)%(Extension)')" Condition="!Exists('%(PluginDependencies.RootDir)%(PluginDependencies.Directory)..\ignore')" />
+	<Copy SourceFiles="@(CorePluginDependencies)" DestinationFiles="@(CorePluginDependencies->'$(CorePluginsDestFolder)%(Filename)%(Extension)')" Condition="!Exists('%(PluginDependencies.RootDir)%(PluginDependencies.Directory)..\ignore')" />	
     <Copy SourceFiles="@(PluginLicenses)" DestinationFiles="@(PluginLicenses->'$(PluginsDestFolder)..\..\..\licenses\%(Filename)%(Extension)')" Condition="!Exists('%(PluginLicenses.RootDir)%(PluginLicenses.Directory)ignore')" />
   </Target>
   <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />
