@@ -10,14 +10,14 @@
   </PropertyGroup>
   <PropertyGroup>
     <CoreDestFolder>..\..\lib\core\</CoreDestFolder>
-	<CorePluginsDestFolder>..\..\lib\nodes\plugins\</CorePluginsDestFolder>
-	<CoreEditorsDestFolder>..\..\lib\nodes\editors\</CoreEditorsDestFolder>
+	  <CorePluginsDestFolder>..\..\lib\nodes\plugins\</CorePluginsDestFolder>
+	  <CoreEditorsDestFolder>..\..\lib\nodes\editors\</CoreEditorsDestFolder>
     <PluginsDestFolder>..\lib\nodes\plugins\</PluginsDestFolder>
   </PropertyGroup>
   <ItemGroup>
     <CoreProjectsToBuild Include="core\**\*.csproj;gui\**\*.csproj" />
-	<CorePluginsToBuild Include="..\..\src\nodes\plugins\**\*.csproj" />
-	<CoreEditorsToBuild Include="..\..\src\nodes\editors\*\*.csproj" />
+	  <CorePluginsToBuild Include="..\..\src\nodes\plugins\**\*.csproj" />
+	  <CoreEditorsToBuild Include="..\..\src\nodes\editors\*\*.csproj" />
     <PluginProjectsToBuild Include="nodes\plugins\*\*\*.csproj;nodes\plugins\Network\Databases\*\*.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -60,11 +60,11 @@
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
   <Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
     <MSBuild Projects="@(CoreProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" />
-	<MSBuild Projects="@(CorePluginsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" >
-		<Output TaskParameter="TargetOutputs" ItemName="CorePluginsOutputFiles" />
+	  <MSBuild Projects="@(CorePluginsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" >
+		  <Output TaskParameter="TargetOutputs" ItemName="CorePluginsOutputFiles" />
     </MSBuild>
-	<MSBuild Projects="@(CoreEditorsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" >
-		<Output TaskParameter="TargetOutputs" ItemName="CoreEditorsOutputFiles" />
+	  <MSBuild Projects="@(CoreEditorsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" >
+		  <Output TaskParameter="TargetOutputs" ItemName="CoreEditorsOutputFiles" />
     </MSBuild>
     <MSBuild Projects="@(PluginProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" Condition="!Exists('%(PluginProjectsToBuild.RootDir)%(PluginProjectsToBuild.Directory)ignore')">
       <Output TaskParameter="TargetOutputs" ItemName="PluginsOutputFiles" />
@@ -76,7 +76,7 @@
     <CreateItem Include="@(PluginsOutputFiles->'%(RootDir)%(Directory)%(Filename).*')">
       <Output TaskParameter="Include" ItemName="PluginsOutputFiles" />
     </CreateItem>
-	<CreateItem Include="@(CorePluginsOutputFiles->'%(RootDir)%(Directory)%(Filename).*')">
+	  <CreateItem Include="@(CorePluginsOutputFiles->'%(RootDir)%(Directory)%(Filename).*')">
       <Output TaskParameter="Include" ItemName="CorePluginsOutputFiles" />
     </CreateItem>
     <CreateItem Include="@(CoreEditorsOutputFiles->'%(RootDir)%(Directory)%(Filename).*')">
@@ -85,8 +85,8 @@
 
     <Copy SourceFiles="@(CoreOutputFiles)" DestinationFiles="@(CoreOutputFiles->'$(CoreDestFolder)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(PluginsOutputFiles)" DestinationFiles="@(PluginsOutputFiles->'$(PluginsDestFolder)%(Filename)%(Extension)')" />
-	<Copy SourceFiles="@(CorePluginsOutputFiles)" DestinationFiles="@(CorePluginsOutputFiles->'$(CorePluginsDestFolder)%(Filename)%(Extension)')" />
-	<Copy SourceFiles="@(CoreEditorsOutputFiles)" DestinationFiles="@(CoreEditorsOutputFiles->'$(CoreEditorsDestFolder)%(Filename)%(Extension)')" />
+	  <Copy SourceFiles="@(CorePluginsOutputFiles)" DestinationFiles="@(CorePluginsOutputFiles->'$(CorePluginsDestFolder)%(Filename)%(Extension)')" />
+	  <Copy SourceFiles="@(CoreEditorsOutputFiles)" DestinationFiles="@(CoreEditorsOutputFiles->'$(CoreEditorsDestFolder)%(Filename)%(Extension)')" />
     <!-- Copy everything in Dependencies -->
     <ItemGroup>
       <EditorDependencies Include="..\..\src\nodes\editors\**\Dependencies\*" />
