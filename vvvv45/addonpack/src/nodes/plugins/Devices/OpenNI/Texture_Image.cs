@@ -48,6 +48,7 @@ namespace VVVV.Nodes
         ILogger FLogger;
 
         private ImageGenerator FImageGenerator;
+        private ImageMetaData FImageMetaData;
 
         private int FTexWidth;
         private int FTexHeight;
@@ -75,6 +76,7 @@ namespace VVVV.Nodes
                     try
                     {
                         FImageGenerator = new ImageGenerator(FContextIn[0]);
+                        FImageMetaData = FImageGenerator.GetMetaData();
 
                         FTexWidth = FImageMetaData.XRes;
                         FTexHeight = FImageMetaData.YRes;
@@ -93,7 +95,6 @@ namespace VVVV.Nodes
             else
             {
                 FInit = true;
-                FActiveThread = false;
             }
 
             if (FEnableIn[0] == true)
