@@ -62,7 +62,7 @@ namespace VVVV.Utils.Streams
 					// Read till end
 					while ((numSlicesRead < length) && (inStream.ReadPosition %= inStream.Length) > 0)
 					{
-						numSlicesRead += inStream.Read(buffer, index, length, stride);
+						numSlicesRead += inStream.Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
 					}
 					
 					// Save start of possible block

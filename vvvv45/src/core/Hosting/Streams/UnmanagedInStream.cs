@@ -105,7 +105,7 @@ namespace VVVV.Hosting.Streams
 					// Read till end
 					while ((numSlicesRead < length) && (ReadPosition %= Length) > 0)
 					{
-						numSlicesRead += Read(buffer, index, length, stride);
+						numSlicesRead += Read(buffer, index + numSlicesRead, length - numSlicesRead, stride);
 					}
 					
 					// Save start of possible block
