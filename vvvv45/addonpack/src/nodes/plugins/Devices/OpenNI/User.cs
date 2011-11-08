@@ -24,15 +24,13 @@ using System.Drawing.Imaging;
 namespace VVVV.Nodes
 {
     #region PluginInfo
-    [PluginInfo(Name = "Users",
+    [PluginInfo(Name = "User",
                 Category = "Kinect",
                 Version = "OpenNI",
-                Help = "Person recognition from the Kinect",
-                Tags = "Kinect, OpenNI, Person",
+                Help = "Returns a 16bit texture per recognized user with pixels activated for areas occupied by the user plus center of mass and ID per user",
+                Tags = "ex9, texture, tracking, person, people",
                 Author = "Phlegma, joreg")]
     #endregion PluginInfo
-
-
     public class Users: DXTextureOutPluginBase, IPluginEvaluate
     {
     	//memcopy method
@@ -43,17 +41,17 @@ namespace VVVV.Nodes
         [Input("Context", IsSingle=true)]
         ISpread<Context> FContextIn;
 
-        [Input("Enable", IsSingle = true, DefaultValue = 1)]
+        [Input("Enabled", IsSingle = true, DefaultValue = 1)]
         ISpread<bool> FEnableIn;
 
         [Output("Users", IsSingle = true)]
         ISpread<UserGenerator> FUserOut;
 
-        [Output("Position")]
-        ISpread<Vector3D> FPositionOut;
-
-        [Output("User ID")]
+        [Output("User ID", Order = int.MaxValue-1)]
         ISpread<int> FUserIdOut;
+        
+        [Output("Position", Order = int.MaxValue)]
+        ISpread<Vector3D> FPositionOut;
 
         [Import()]
         ILogger FLogger;

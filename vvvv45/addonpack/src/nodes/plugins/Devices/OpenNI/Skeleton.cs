@@ -28,12 +28,10 @@ namespace VVVV.Nodes
     [PluginInfo(Name = "Skeleton",
                 Category = "Kinect",
                 Version = "OpenNI",
-                Help = "Skelet recognition from the Kinect",
-                Tags = "Kinect, OpenNI, Person",
+                Help = "Returns skeleton information for each recognized user",
+                Tags = "tracking, person, people",
                 Author = "Phlegma")]
     #endregion PluginInfo
-
-
     public class Skeleton : IPluginEvaluate
     {
         #region fields & pins
@@ -70,11 +68,8 @@ namespace VVVV.Nodes
         [Input("Reset", IsBang = true)]
         IDiffSpread<bool> FResetIn;
 
-        [Input("Enable", IsSingle = true, DefaultValue = 1)]
+        [Input("Enabled", IsSingle = true, DefaultValue = 1)]
         ISpread<bool> FEnableIn;
-
-        [Input("Map Values", Visibility = PinVisibility.OnlyInspector, DefaultValues = new double[] { 3812, 2764, 3500 })]
-        IDiffSpread<Vector3D> FMappingIn;
 
         [Output("User ID")]
         ISpread<int> FUserIdOut;
@@ -82,13 +77,10 @@ namespace VVVV.Nodes
         [Output("Joint")]
         ISpread<ISpread<string>> FJointOut;
 
-        [Output("Position ")]
-        ISpread<ISpread<Vector3D>> FJointsPositionMappedOut;
-
         [Output("Confidence")]
         ISpread<ISpread<float>> FConfidenceOut;
 
-        [Output("Position (m) ")]
+        [Output("Position")]
         ISpread<ISpread<Vector3D>> FJointsPositionOut;
 
         [Output("Orientation X ")]
@@ -126,11 +118,9 @@ namespace VVVV.Nodes
                 {
                     try
                     {
-
                         //Get Pose and Skeleton Capabilities from the Users Generator
                         FPoseDecetionCapability = FUsersIn[0].PoseDetectionCapability;
                         FSkeletonCapability = FUsersIn[0].SkeletonCapability;
-
 
                         //add the Callback function to the Events
                         FSkeletonCapability.CalibrationStart += new EventHandler<CalibrationStartEventArgs>(FSkeletonCapability_CalibrationStart);
@@ -182,7 +172,6 @@ namespace VVVV.Nodes
                             FUserIdOut.SliceCount = Users.Length;
                             FJointOut.SliceCount = Users.Length;
                             FJointsPositionOut.SliceCount = Users.Length;
-                            FJointsPositionMappedOut.SliceCount = Users.Length;
                             FJointOrientationXOut.SliceCount = Users.Length;
                             FJointOrientationYOut.SliceCount = Users.Length;
                             FJointOrientationZOut.SliceCount = Users.Length;
@@ -241,7 +230,7 @@ namespace VVVV.Nodes
                                     else
                                     {
                                         //if there is a users but he is not tracked delete the position data
-                                        FJointOut[i].SliceCount = FJointsPositionOut[i].SliceCount = FJointsPositionMappedOut[i].SliceCount = 0;
+                                        FJointOut[i].SliceCount = FJointsPositionOut[i].SliceCount = 0;
                                         FJointOrientationXOut[i].SliceCount = FJointOrientationYOut[i].SliceCount = FJointOrientationZOut[i].SliceCount = 0;
                                         FConfidenceOut[i].SliceCount = 0;
 
@@ -288,7 +277,6 @@ namespace VVVV.Nodes
                                 FJointOut.SliceCount = 0;
                                 FUserIdOut.SliceCount = 0;
                                 FJointsPositionOut.SliceCount = 0;
-                                FJointsPositionMappedOut.SliceCount = 0;
                                 FJointOrientationXOut.SliceCount = 0;
                                 FJointOrientationYOut.SliceCount = 0;
                                 FJointOrientationZOut.SliceCount = 0;
@@ -315,7 +303,6 @@ namespace VVVV.Nodes
                             FJointOut.SliceCount = 0;
                             FUserIdOut.SliceCount = 0;
                             FJointsPositionOut.SliceCount = 0;
-                            FJointsPositionMappedOut.SliceCount = 0;
                             FJointOrientationXOut.SliceCount = 0;
                             FJointOrientationYOut.SliceCount = 0;
                             FJointOrientationZOut.SliceCount = 0;
@@ -403,10 +390,9 @@ namespace VVVV.Nodes
         /// <param name="Users">Array of all Users</param>
         private void WriteJointValuesToOutput(int Index, int[] Users)
         {
-
             int BinSize = FJointIn[Index].SliceCount;
 
-            FJointOut[Index].SliceCount = FJointsPositionOut[Index].SliceCount = FJointsPositionMappedOut[Index].SliceCount = BinSize;
+            FJointOut[Index].SliceCount = FJointsPositionOut[Index].SliceCount = BinSize;
             FJointOrientationXOut[Index].SliceCount = FJointOrientationYOut[Index].SliceCount = FJointOrientationZOut[Index].SliceCount = BinSize;
             FConfidenceOut[Index].SliceCount = BinSize;
 
@@ -431,7 +417,6 @@ namespace VVVV.Nodes
                     FConfidenceOut[Index][i] = Confidence;
                     Vector3D Position = new Vector3D(Point.X, Point.Y, Point.Z);
                     FJointsPositionOut[Index][i] = Position / 1000;
-                    FJointsPositionMappedOut[Index][i] = VMath.Map(Position, new Vector3D((FMappingIn[0].x / 2) * -1, (FMappingIn[0].y / 2), 0), new Vector3D(FMappingIn[0].x / 2, (FMappingIn[0].y / 2) * -1, FMappingIn[0].z), new Vector3D(-1, 1, 0), new Vector3D(1, -1, 1), TMapMode.Float);
 
                     SkeletonJointOrientation Orientation = GetJointOrientation(Users[Index], FJointIn[Index][i]);
                     FJointOrientationXOut[Index][i] = new Vector3D(Orientation.X1, Orientation.Y1, Orientation.Z1);

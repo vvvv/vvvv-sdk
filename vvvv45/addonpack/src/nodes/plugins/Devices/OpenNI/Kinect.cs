@@ -17,14 +17,12 @@ using OpenNI;
 namespace VVVV.Nodes
 {
     #region PluginInfo
-    [PluginInfo(Name = "Configuration",
-                Category = "Kinect",
-                Help = "Configuration Node for the Kinect",
-                Tags = "Kinect, OpenNI",
+    [PluginInfo(Name = "Kinect",
+                Category = "Devices",
+                Version = "OpenNI",
+                Help = "Provides access to a Kinect through the OpenNI API",
                 Author = "Phlegma")]
     #endregion PluginInfo
-
-
     public class Configuration : IPluginEvaluate
     {
         #region fields & pins

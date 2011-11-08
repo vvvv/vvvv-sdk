@@ -27,21 +27,19 @@ namespace VVVV.Nodes
 {
     #region PluginInfo
     [PluginInfo(Name = "RGB",
-                Category = "EX9.Texture",
-                Version = "Kinect",
-                Help = "Gesture recognition from the Kinect",
-                Tags = "Kinect, OpenNI,",
-                Author = "Phlegma")]
+                Category = "Kinect",
+                Version = "OpenNI",
+                Help = "Returns an X8R8G8B8 formatted texture from the kinects RGB camera",
+                Tags = "ex9, texture",
+                Author = "Phlegma, joreg")]
     #endregion PluginInfo
-
-
     public class Texture_Image : DXTextureOutPluginBase, IPluginEvaluate, IDisposable
     {
         #region fields & pins
         [Input("Context", IsSingle = true)]
         ISpread<Context> FContextIn;
 
-        [Input("Enable", IsSingle = true, DefaultValue = 1)]
+        [Input("Enabled", IsSingle = true, DefaultValue = 1)]
         IDiffSpread<bool> FEnableIn;
 
         [Import()]
@@ -133,7 +131,6 @@ namespace VVVV.Nodes
         }
 
         #endregion 
-
 
         #region IPluginDXTexture Members
 

@@ -44,9 +44,6 @@ namespace VVVV.Nodes
         [Input("Enable", IsSingle = true, DefaultValue=1)]
         IDiffSpread<bool> FEnableIn;
 
-        [Input("Map Values", Visibility = PinVisibility.OnlyInspector, DefaultValues = new double[]{3812,2764,3500})]
-        IDiffSpread<Vector3D> FMappingIn;
-
         [Output("Possible Gestures")]
         ISpread<string> FGesturesPosOut;
 
@@ -57,18 +54,12 @@ namespace VVVV.Nodes
         ISpread<string> FGesturesRegOut;
 
         [Output("Gesture Position")]
-        ISpread<Vector3D> FGesturePositionMappedOut;
-
-        [Output("Gesture Position (m)")]
         ISpread<Vector3D> FGesturePositionOut;
 
         [Output("Hand ID")]
         ISpread<int> FUserIdOut;
 
         [Output("Tracking Position")]
-        ISpread<Vector3D> FMappedPositionOut;
-
-        [Output("Tracking Position (m) ")]
         ISpread<Vector3D> FPositionOut;
 
         [Output("Position Moving Hands")]
@@ -223,9 +214,6 @@ namespace VVVV.Nodes
                             {
                                 FGesturesRegOut[Slice] = item.Value;
                                 FGesturePositionOut[Slice] = item.Key / 1000;
-
-                                //Map the Position from milimeter to vvvv coordinates 
-                                FGesturePositionMappedOut[Slice] = VMath.Map(item.Key, new Vector3D((FMappingIn[0].x / 2) * -1, (FMappingIn[0].y / 2), 0), new Vector3D(FMappingIn[0].x / 2, (FMappingIn[0].y / 2) * -1, FMappingIn[0].z), new Vector3D(-1, 1, 0), new Vector3D(1, -1, 1), TMapMode.Float);
                                 Slice++;
                             }
 
@@ -245,7 +233,6 @@ namespace VVVV.Nodes
                             IList<Vector3D> Vectors = FPositions.Values;
                             IList<int> UserIds = FPositions.Keys;
 
-                            FPositionOut.SliceCount = FMappedPositionOut.SliceCount = Vectors.Count;
                             FUserIdOut.SliceCount = UserIds.Count;
 
                             for (int i = 0; i < Vectors.Count; i++)
@@ -253,8 +240,6 @@ namespace VVVV.Nodes
                                 try
                                 {
                                     FPositionOut[i] = Vectors[i] / 1000;
-                                    //Map the Position from milimeter to vvvv coordinates 
-                                    FMappedPositionOut[i] = VMath.Map(Vectors[i], new Vector3D((FMappingIn[0].x / 2) * -1, (FMappingIn[0].y / 2), 0), new Vector3D(FMappingIn[0].x / 2, (FMappingIn[0].y / 2) * -1, FMappingIn[0].z), new Vector3D(-1, 1, 0), new Vector3D(1, -1, 1), TMapMode.Float);
                                     FUserIdOut[i] = UserIds[i];
                                 }
                                 catch (ArgumentOutOfRangeException Exception)
@@ -268,7 +253,6 @@ namespace VVVV.Nodes
                     {
                         FUserIdOut.SliceCount = 0;
                         FPositionOut.SliceCount = 0;
-                        FMappedPositionOut.SliceCount = 0;
                     }
 
                     //write the position from moving hands to the output
@@ -290,7 +274,7 @@ namespace VVVV.Nodes
             }
             else
             {
-                FGesturesRegOut.SliceCount = FPositionOut.SliceCount = FMappedPositionOut.SliceCount = FUserIdOut.SliceCount = 0;
+                FGesturesRegOut.SliceCount = FPositionOut.SliceCount = FUserIdOut.SliceCount = 0;
             }
         }
 

@@ -35,11 +35,11 @@ namespace VVVV.Nodes
 	
 	#region PluginInfo
 	[PluginInfo(Name = "Depth",
-	            Category = "EX9.Texture",
-	            Version ="Kinect Pure",
+	            Category = "Kinect",
+	            Version ="OpenNI",
 	            Help = "Returns a 16bit depthmap in two flavors: histogram or depth in mm (where only the first 13bit are being used).",
-	            Tags = "OpenNI",
-	            Author = "joreg")]
+	            Tags = "ex9, texture",
+	            Author = "Phlegma, joreg")]
 	#endregion PluginInfo
 	
 	public class Texture_Depth: DXTextureOutPluginBase, IPluginEvaluate, IDisposable
@@ -58,7 +58,7 @@ namespace VVVV.Nodes
 		[Input("Depth Mode")]
 		IDiffSpread<DepthMode> FDepthMode;
 
-		[Input("Enable", IsSingle = true, DefaultValue = 1)]
+		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
 		ISpread<bool> FEnableIn;
 		
 		[Output("FOV", Order = int.MaxValue)]
