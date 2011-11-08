@@ -108,8 +108,10 @@ namespace VVVV.Core.Model
 			var setupInformation = AppDomain.CurrentDomain.SetupInformation;
 			// Always null, why? probing path is set in vvvv.exe.config
 			// var searchPath = AppDomain.CurrentDomain.RelativeSearchPath;
-			var searchPath = Path.Combine(setupInformation.ApplicationBase, "lib", "core");
-			ReferencePaths = searchPath.Split(splitChars, splitOptions);
+			ReferencePaths = new string[] {
+				Path.Combine(setupInformation.ApplicationBase, "lib", "core"),
+				setupInformation.ApplicationBase
+			};
 			
 			var referencePathProperty = msBuildProject.GetEvaluatedProperty("ReferencePath");
 			if (!string.IsNullOrEmpty(referencePathProperty))
@@ -167,7 +169,7 @@ namespace VVVV.Core.Model
 								}
 								catch (Exception)
 								{
-									reference = new AssemblyReference(item.Include, true);
+									reference = new AssemblyReference(string.Format("{0}.dll", item.Include), true);
 								}
 							}
 							

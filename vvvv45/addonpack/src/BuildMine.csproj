@@ -14,7 +14,6 @@
   </PropertyGroup>
   <ItemGroup>
     <CoreProjectsToBuild Include="core\**\*.csproj;gui\**\*.csproj" />
-    <!--<PluginProjectsToBuild Include="nodes\plugins\*\*\*.csproj" />-->
     <ProjectReference Include="nodes\plugins\Devices\OpenNI\Kinect.csproj">
       <Project>{7C53C43F-300D-4767-A2C6-502A108D6964}</Project>
       <Name>Kinect</Name>
@@ -57,7 +56,6 @@
       <Output ItemName="GeneratedFiles" TaskParameter="Include" />
     </CreateItem>
     <Delete Files="@(GeneratedFiles)" />
-    <!--<MSBuild Projects="@(CoreProjectsToBuild);@(PluginProjectsToBuild)" Targets="Clean" Properties="Configuration=$(Configuration);" />-->
   </Target>
   <!-- Will simply print all of the project files to be built -->
   <!--

@@ -10,11 +10,34 @@
   </PropertyGroup>
   <PropertyGroup>
     <CoreDestFolder>..\..\lib\core\</CoreDestFolder>
+	  <CorePluginsDestFolder>..\..\lib\nodes\plugins\</CorePluginsDestFolder>
+	  <CoreEditorsDestFolder>..\..\lib\nodes\editors\</CoreEditorsDestFolder>
     <PluginsDestFolder>..\lib\nodes\plugins\</PluginsDestFolder>
   </PropertyGroup>
   <ItemGroup>
-    <!--<CoreProjectsToBuild Include="core\**\*.csproj;gui\**\*.csproj" />-->
-    <!--<PluginProjectsToBuild Include="nodes\plugins\*\*\*.csproj" />-->
+    <CoreProjectsToBuild Include="core\**\*.csproj;gui\**\*.csproj" />
+	  <CorePluginsToBuild Include="..\..\src\nodes\plugins\**\*.csproj" />
+	  <CoreEditorsToBuild Include="..\..\src\nodes\editors\*\*.csproj" />
+    <PluginProjectsToBuild Include="nodes\plugins\*\*\*.csproj;nodes\plugins\Network\Databases\*\*.csproj" />
+  </ItemGroup>
+  <PropertyGroup>
+    <BuildDependsOn>$(BuildDependsOn)</BuildDependsOn>
+    <RebuildDependsOn>Clean;Build</RebuildDependsOn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\nodes\editors\CodeEditor\CodeEditor.csproj">
+      <Project>{A63D2EA4-D87C-459B-B57F-19A76A7ADAF0}</Project>
+      <Name>CodeEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\nodes\plugins\Animation\Timeliner\Timeliner.csproj">
+      <Project>{639A1C44-DA07-4F08-8A90-8B8845515BF4}</Project>
+      <Name>Timeliner</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\nodes\plugins\NativePlugins.csproj">
+      <Project>{716F4773-5590-4DD6-A9BC-3FE905D22DA5}</Project>
+      <Name>NativePlugins</Name>
+    </ProjectReference>
     <ProjectReference Include="core\Core\Core.csproj">
       <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
       <Name>Core %28core\Core%29</Name>
@@ -167,10 +190,6 @@
       <Project>{66568B67-6B25-4ECB-A928-8E40BA1226EC}</Project>
       <Name>NextWindow</Name>
     </ProjectReference>
-    <ProjectReference Include="nodes\plugins\Devices\OpenNI\Kinect.csproj">
-      <Project>{7C53C43F-300D-4767-A2C6-502A108D6964}</Project>
-      <Name>Kinect</Name>
-    </ProjectReference>
     <ProjectReference Include="nodes\plugins\Devices\PhidgetRFID\PhidgetRFID.csproj">
       <Project>{6A0AFB1F-8219-4A08-85F7-B7F19B66AC16}</Project>
       <Name>PhidgetRFID</Name>
@@ -190,10 +209,6 @@
     <ProjectReference Include="nodes\plugins\Devices\Tablet\Tablet.csproj">
       <Project>{EB187BB3-4681-405E-80FF-00F4F285A4B3}</Project>
       <Name>Tablet</Name>
-    </ProjectReference>
-    <ProjectReference Include="nodes\plugins\Devices\Tablet\VBTablet.Net\VBTablet.Net 2.0.vbproj">
-      <Project>{DD68142C-B1B5-4A07-8989-50F9E9580B26}</Project>
-      <Name>VBTablet.Net 2.0</Name>
     </ProjectReference>
     <ProjectReference Include="nodes\plugins\Devices\TodoMap\TodoMap.csproj">
       <Project>{DCBD6A7E-AFA0-4A4F-941E-F80471714701}</Project>
@@ -263,10 +278,6 @@
       <Project>{851991EE-283C-4447-A60D-9631202DDD76}</Project>
       <Name>Store</Name>
     </ProjectReference>
-    <ProjectReference Include="nodes\plugins\Http\Webinterface\WebInterface.csproj">
-      <Project>{939FA7D5-4077-4FEF-8902-B50CDADF1616}</Project>
-      <Name>WebInterface</Name>
-    </ProjectReference>
     <ProjectReference Include="nodes\plugins\Layer\DrawFlash\DrawFlash.csproj">
       <Project>{4025CBC3-C978-4FC7-A9F0-69F7F5E10811}</Project>
       <Name>DrawFlash</Name>
@@ -274,10 +285,6 @@
     <ProjectReference Include="nodes\plugins\Mesh\2dMeshes\2dMeshNodes.csproj">
       <Project>{8890B94E-A57A-494D-B859-ECC54609221A}</Project>
       <Name>2dMeshNodes</Name>
-    </ProjectReference>
-    <ProjectReference Include="nodes\plugins\Mesh\ColladaLoader\PluginColladaLoader.csproj">
-      <Project>{8B9D2C28-4394-4C86-A14C-B0021EC29089}</Project>
-      <Name>PluginColladaLoader</Name>
     </ProjectReference>
     <ProjectReference Include="nodes\plugins\Mesh\MetaballsMesh\MetaballsMesh.csproj">
       <Project>{4BE79EAF-9F10-424F-845F-5325CAD1A15F}</Project>
@@ -351,6 +358,14 @@
       <Project>{820B958A-9071-4539-8BCF-5C36F39579BE}</Project>
       <Name>IrrklangClean</Name>
     </ProjectReference>
+    <ProjectReference Include="nodes\plugins\Sound\SpeechSynthesis\SpeechSynthesis.csproj">
+      <Project>{D4F3BD2E-6A35-4E56-81A2-E90F47925460}</Project>
+      <Name>SpeechSynthesis %28nodes\Sound\SpeechSynthesis%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="nodes\plugins\Sound\Speech\Speech.csproj">
+      <Project>{8A20A573-E97C-4F4F-99BE-887E45C7F9E7}</Project>
+      <Name>Speech %28nodes\Sound\Speech%29</Name>
+    </ProjectReference>
     <ProjectReference Include="nodes\plugins\Spreads\BezierNodes\BezierNodes.csproj">
       <Project>{391FA291-7B0E-4E72-9E3A-DA2C8B8A4E07}</Project>
       <Name>BezierNodes</Name>
@@ -415,14 +430,6 @@
       <Project>{1D81571F-BC6D-4596-9E91-76D732F2D5F2}</Project>
       <Name>RegExprNodes</Name>
     </ProjectReference>
-    <ProjectReference Include="nodes\plugins\String\Speech\SpeechSynthesis\SpeechSynthesis.csproj">
-      <Project>{8A5A4517-B5CE-493E-B493-CD8FE16BDA17}</Project>
-      <Name>SpeechSynthesis</Name>
-    </ProjectReference>
-    <ProjectReference Include="nodes\plugins\String\Speech\Speech\Speech.csproj">
-      <Project>{379FB616-F7A0-4F89-BC60-FA2259CCDF5F}</Project>
-      <Name>Speech</Name>
-    </ProjectReference>
     <ProjectReference Include="nodes\plugins\String\XQuery\XQueryNode.csproj">
       <Project>{378875C5-A603-4280-A29C-C05C09FAC197}</Project>
       <Name>XQueryNode</Name>
@@ -476,16 +483,17 @@
       <Name>ScreenInfo</Name>
     </ProjectReference>
   </ItemGroup>
-  <PropertyGroup>
-    <BuildDependsOn>$(BuildDependsOn)</BuildDependsOn>
-    <RebuildDependsOn>Clean;Build</RebuildDependsOn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
   <Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
     <MSBuild Projects="@(CoreProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" />
-    <!--<MSBuild Projects="@(PluginProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU">
+	  <MSBuild Projects="@(CorePluginsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" >
+		  <Output TaskParameter="TargetOutputs" ItemName="CorePluginsOutputFiles" />
+    </MSBuild>
+	  <MSBuild Projects="@(CoreEditorsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" >
+		  <Output TaskParameter="TargetOutputs" ItemName="CoreEditorsOutputFiles" />
+    </MSBuild>
+    <MSBuild Projects="@(PluginProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" Condition="!Exists('%(PluginProjectsToBuild.RootDir)%(PluginProjectsToBuild.Directory)ignore')">
       <Output TaskParameter="TargetOutputs" ItemName="PluginsOutputFiles" />
-    </MSBuild>-->
+    </MSBuild>
     <CreateItem Include="core\**\bin\$(Configuration)\*;gui\**\bin\$(Configuration)\*">
       <Output TaskParameter="Include" ItemName="CoreOutputFiles" />
     </CreateItem>
@@ -493,13 +501,29 @@
     <CreateItem Include="@(PluginsOutputFiles->'%(RootDir)%(Directory)%(Filename).*')">
       <Output TaskParameter="Include" ItemName="PluginsOutputFiles" />
     </CreateItem>
+	  <CreateItem Include="@(CorePluginsOutputFiles->'%(RootDir)%(Directory)%(Filename).*')">
+      <Output TaskParameter="Include" ItemName="CorePluginsOutputFiles" />
+    </CreateItem>
+    <CreateItem Include="@(CoreEditorsOutputFiles->'%(RootDir)%(Directory)%(Filename).*')">
+      <Output TaskParameter="Include" ItemName="CoreEditorsOutputFiles" />
+    </CreateItem>
+
     <Copy SourceFiles="@(CoreOutputFiles)" DestinationFiles="@(CoreOutputFiles->'$(CoreDestFolder)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(PluginsOutputFiles)" DestinationFiles="@(PluginsOutputFiles->'$(PluginsDestFolder)%(Filename)%(Extension)')" />
+	  <Copy SourceFiles="@(CorePluginsOutputFiles)" DestinationFiles="@(CorePluginsOutputFiles->'$(CorePluginsDestFolder)%(Filename)%(Extension)')" />
+	  <Copy SourceFiles="@(CoreEditorsOutputFiles)" DestinationFiles="@(CoreEditorsOutputFiles->'$(CoreEditorsDestFolder)%(Filename)%(Extension)')" />
     <!-- Copy everything in Dependencies -->
     <ItemGroup>
+      <EditorDependencies Include="..\..\src\nodes\editors\**\Dependencies\*" />
       <PluginDependencies Include="nodes\plugins\**\Dependencies\*" />
+	  <CorePluginDependencies Include="..\..\src\nodes\plugins\**\Dependencies\*" />
+      <PluginLicenses Include="nodes\plugins\**\license*.txt" />
+      <PluginGirlpowers Include="nodes\plugins\**\girlpower\*" />
     </ItemGroup>
-    <Copy SourceFiles="@(PluginDependencies)" DestinationFiles="@(PluginDependencies->'$(PluginsDestFolder)%(Filename)%(Extension)')" />
+  	<Copy SourceFiles="@(EditorDependencies)" DestinationFiles="@(EditorDependencies->'$(CoreEditorsDestFolder)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(PluginDependencies)" DestinationFiles="@(PluginDependencies->'$(PluginsDestFolder)%(Filename)%(Extension)')" Condition="!Exists('%(PluginDependencies.RootDir)%(PluginDependencies.Directory)..\ignore')" />
+	  <Copy SourceFiles="@(CorePluginDependencies)" DestinationFiles="@(CorePluginDependencies->'$(CorePluginsDestFolder)%(Filename)%(Extension)')" Condition="!Exists('%(PluginDependencies.RootDir)%(PluginDependencies.Directory)..\ignore')" />	
+    <Copy SourceFiles="@(PluginLicenses)" DestinationFiles="@(PluginLicenses->'$(PluginsDestFolder)..\..\..\licenses\%(Filename)%(Extension)')" Condition="!Exists('%(PluginLicenses.RootDir)%(PluginLicenses.Directory)ignore')" />
   </Target>
   <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />
   <!--
@@ -509,11 +533,10 @@
   -->
   <Target Name="Clean">
     <!-- Delete any files this process may have created from a previous execution -->
-    <CreateItem Include="$(CoreDestFolder)\**\*exe;$(CoreDestFolder)\**\*dll;$(CoreDestFolder)\**\*xml;$(CoreDestFolder)\**\*pdb;$(PluginsDestFolder)\**\*exe;$(PluginsDestFolder)\**\*dll;$(PluginsDestFolder)\**\*xml;$(PluginsDestFolder)\**\*pdb">
+    <CreateItem Include="$(CoreDestFolder)\**\*exe;$(CoreDestFolder)\**\*dll;$(CoreDestFolder)\**\*xml;$(CoreDestFolder)\**\*pdb;$(PluginsDestFolder)\**\*exe;$(PluginsDestFolder)\**\*dll;$(PluginsDestFolder)\**\*xml;$(PluginsDestFolder)\**\*pdb;$(CorePluginsDestFolder)\**\*exe;$(CorePluginsDestFolder)\**\*dll;$(CorePluginsDestFolder)\**\*xml;$(CorePluginsDestFolder)\**\*pdb;$(CoreEditorsDestFolder)\**\*exe;$(CoreEditorsDestFolder)\**\*dll;$(CoreEditorsDestFolder)\**\*xml;$(CoreEditorsDestFolder)\**\*pdb">
       <Output ItemName="GeneratedFiles" TaskParameter="Include" />
     </CreateItem>
     <Delete Files="@(GeneratedFiles)" />
-    <!--<MSBuild Projects="@(CoreProjectsToBuild);@(PluginProjectsToBuild)" Targets="Clean" Properties="Configuration=$(Configuration);" />-->
   </Target>
   <!-- Will simply print all of the project files to be built -->
   <!--
