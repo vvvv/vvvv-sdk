@@ -2,30 +2,10 @@
    <PATCH nodename="C:\Users\joreg\dev\github\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Kinect (Devices OpenNI) help.v4p" filename="D:\BMW TP\Kinect\OpenNI\Kinect\Demonstrator\_root.v4p" systemname="_root">
    <BOUNDS height="7230" left="0" top="0" type="Window" width="17340">
    </BOUNDS>
-   <NODE componentmode="Hidden" filename="subpatches\Users (Kinect OpenNI) help.v4p" id="112" nodename="subpatches\Users (Kinect OpenNI) help.v4p" systemname="Users (Kinect OpenNI) help" path="C:\Users\joreg\dev\github\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\">
-   <BOUNDS height="270" left="465" top="1395" type="Node" width="1620">
-   </BOUNDS>
-   <BOUNDS height="3600" left="465" top="1395" type="Box" width="4800">
-   </BOUNDS>
-   <BOUNDS height="10740" left="4215" top="435" type="Window" width="14850">
-   </BOUNDS>
-   <PIN pinname="Context" visible="1">
-   </PIN>
-   <PIN pinname="PositionXYZ" visible="1">
-   </PIN>
-   <PIN pinname="UserId" slicecount="1" visible="1" values="0">
-   </PIN>
-   <PIN pinname="Texture Out" slicecount="1" visible="1" values="||">
-   </PIN>
-   <PIN pinname="Users" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="User ID" visible="1" slicecount="1" values="0">
-   </PIN>
-   </NODE>
    <NODE componentmode="Hidden" filename="..\Helppatches\Skeleton (Kinect OpenNI) help.v4p" id="153" nodename="..\Helppatches\Skeleton (Kinect OpenNI) help.v4p" systemname="Skeleton (Kinect OpenNI) help" path="C:\Users\joreg\dev\github\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\">
    <BOUNDS height="270" left="3645" top="4200" type="Node" width="4905">
    </BOUNDS>
-   <PIN pinname="Users" visible="1" slicecount="1" values="||">
+   <PIN pinname="Users" slicecount="1" visible="1" values="||">
    </PIN>
    <BOUNDS height="10770" left="2745" top="3765" type="Window" width="20160">
    </BOUNDS>
@@ -54,8 +34,6 @@
    <PIN pinname="Joint Bin Size" slicecount="1" visible="1" values="15">
    </PIN>
    </NODE>
-   <LINK dstnodeid="153" dstpinname="Users" linkstyle="Bezier" srcnodeid="112" srcpinname="Users">
-   </LINK>
    <NODE componentmode="InABox" id="160" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="2175" top="1380" type="Node" width="2820">
    </BOUNDS>
@@ -97,11 +75,13 @@
    </PIN>
    <PIN pinname="Status" visible="1">
    </PIN>
-   <PIN pinname="UserId" visible="1">
+   <PIN pinname="UserId" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="PositionXYZ" visible="1">
+   <PIN pinname="PositionXYZ" visible="1" slicecount="1" values="0">
    </PIN>
    <BOUNDS left="1200" top="5385" type="Box">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4440" top="5640" width="21345" height="11205">
    </BOUNDS>
    </NODE>
    <LINK dstnodeid="162" dstpinname="Orientation Z XYZ" srcnodeid="153" srcpinname="Orientation Z XYZ">
@@ -122,20 +102,16 @@
    <LINKPOINT x="2880" y="4780">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="162" dstpinname="UserId" srcnodeid="112" srcpinname="User ID">
-   </LINK>
-   <LINK dstnodeid="162" dstpinname="PositionXYZ" srcnodeid="112" srcpinname="PositionXYZ">
-   </LINK>
    <NODE componentmode="Hidden" filename="subpatches\2D Preview.v4p" id="163" nodename="subpatches\2D Preview.v4p" systemname="2D Preview" path="C:\Users\joreg\dev\github\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\">
    <BOUNDS height="270" left="9555" top="5385" type="Node" width="6015">
    </BOUNDS>
    <PIN pinname="RGB Texture" visible="1">
    </PIN>
-   <PIN pinname="Depth Texture" visible="1">
+   <PIN pinname="Depth Texture" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Input" visible="1">
    </PIN>
-   <PIN pinname="User PositionXYZ" visible="1">
+   <PIN pinname="User PositionXYZ" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Status" visible="1">
    </PIN>
@@ -145,7 +121,7 @@
    </PIN>
    <PIN pinname="Recognized Gestures" visible="1">
    </PIN>
-   <PIN pinname="UserId" visible="1">
+   <PIN pinname="UserId" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Hand ID" visible="1">
    </PIN>
@@ -154,34 +130,6 @@
    <BOUNDS left="9555" top="5385" type="Box">
    </BOUNDS>
    </NODE>
-   <NODE componentmode="Hidden" filename="subpatches\RGB (EX9.Texture Kinect) help.v4p" id="164" nodename="subpatches\RGB (EX9.Texture Kinect) help.v4p" systemname="RGB (EX9.Texture Kinect) help" path="C:\Users\joreg\dev\github\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\">
-   <BOUNDS height="100" left="9540" top="1335" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Context" visible="1">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <BOUNDS left="9540" top="1335" type="Box">
-   </BOUNDS>
-   <BOUNDS height="6000" left="150" top="6930" type="Window" width="9000">
-   </BOUNDS>
-   </NODE>
-   <LINK dstnodeid="163" dstpinname="RGB Texture" srcnodeid="164" srcpinname="Texture Out">
-   </LINK>
-   <NODE componentmode="Hidden" filename="subpatches\Depth (EX9.Texture Kinect) help.v4p" id="165" nodename="subpatches\Depth (EX9.Texture Kinect) help.v4p" systemname="Depth (EX9.Texture Kinect) help" path="C:\Users\joreg\dev\github\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\">
-   <BOUNDS height="100" left="10320" top="1335" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Context" visible="1">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <BOUNDS left="10320" top="1335" type="Box">
-   </BOUNDS>
-   <BOUNDS height="7455" left="0" top="0" type="Window" width="11025">
-   </BOUNDS>
-   </NODE>
-   <LINK dstnodeid="163" dstpinname="Depth Texture" srcnodeid="165" srcpinname="Texture Out">
-   </LINK>
    <NODE componentmode="Hidden" filename="subpatches\Gesture (Kinect OpenNI) help.v4p" id="166" nodename="subpatches\Gesture (Kinect OpenNI) help.v4p" systemname="Gesture (Kinect OpenNI) help" path="C:\Users\joreg\dev\github\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\">
    <BOUNDS height="270" left="11430" top="1335" type="Node" width="4380">
    </BOUNDS>
@@ -199,13 +147,9 @@
    </PIN>
    <PIN pinname="Tracking PositionXYZ" visible="1">
    </PIN>
+   <BOUNDS type="Box" left="11430" top="1335">
+   </BOUNDS>
    </NODE>
-   <LINK dstnodeid="163" dstpinname="User PositionXYZ" linkstyle="Bezier" srcnodeid="112" srcpinname="PositionXYZ">
-   <LINKPOINT x="1310" y="3525">
-   </LINKPOINT>
-   <LINKPOINT x="11035" y="3570">
-   </LINKPOINT>
-   </LINK>
    <LINK dstnodeid="163" dstpinname="Status" linkstyle="Bezier" srcnodeid="153" srcpinname="Status">
    <LINKPOINT x="8555" y="4913">
    </LINKPOINT>
@@ -215,12 +159,6 @@
    <LINK dstnodeid="163" dstpinname="Gesture PositionXYZ" srcnodeid="166" srcpinname="Gesture PositionXYZ">
    </LINK>
    <LINK dstnodeid="163" dstpinname="Recognized Gestures" srcnodeid="166" srcpinname="Recognized Gestures">
-   </LINK>
-   <LINK dstnodeid="163" dstpinname="UserId" linkstyle="Bezier" srcnodeid="112" srcpinname="User ID">
-   <LINKPOINT x="2090" y="3525">
-   </LINKPOINT>
-   <LINKPOINT x="12535" y="3570">
-   </LINKPOINT>
    </LINK>
    <LINK dstnodeid="163" dstpinname="Hand ID" srcnodeid="166" srcpinname="Hand ID">
    </LINK>
@@ -266,12 +204,46 @@
    <PIN encoded="0" pinname="Configuration File" slicecount="1" values="OpenNI\SamplesConfig.xml">
    </PIN>
    </NODE>
-   <LINK dstnodeid="164" dstpinname="Context" srcnodeid="169" srcpinname="Context">
-   </LINK>
-   <LINK dstnodeid="112" dstpinname="Context" srcnodeid="169" srcpinname="Context">
-   </LINK>
-   <LINK dstnodeid="165" dstpinname="Context" srcnodeid="169" srcpinname="Context">
-   </LINK>
    <LINK dstnodeid="166" dstpinname="Context" srcnodeid="169" srcpinname="Context">
+   </LINK>
+   <NODE systemname="User (Kinect OpenNI) help" filename="%VVVV%\addonpack\lib\nodes\plugins\User (Kinect OpenNI) help.v4p" nodename="%VVVV%\addonpack\lib\nodes\plugins\User (Kinect OpenNI) help.v4p" componentmode="InAWindow" id="170">
+   <BOUNDS type="Node" left="465" top="1365" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Context" visible="1">
+   </PIN>
+   <PIN pinname="Users" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="169" srcpinname="Context" dstnodeid="170" dstpinname="Context">
+   </LINK>
+   <LINK srcnodeid="170" srcpinname="Users" dstnodeid="153" dstpinname="Users">
+   </LINK>
+   <NODE systemname="RGB (Kinect OpenNI) help" filename="%VVVV%\addonpack\lib\nodes\plugins\RGB (Kinect OpenNI) help.v4p" nodename="%VVVV%\addonpack\lib\nodes\plugins\RGB (Kinect OpenNI) help.v4p" componentmode="Hidden" id="171">
+   <BOUNDS type="Node" left="9555" top="1335" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Context" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="9555" top="1335">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Depth (Kinect OpenNI) help" filename="%VVVV%\addonpack\lib\nodes\plugins\Depth (Kinect OpenNI) help.v4p" nodename="%VVVV%\addonpack\lib\nodes\plugins\Depth (Kinect OpenNI) help.v4p" componentmode="Hidden" id="172">
+   <BOUNDS type="Node" left="10335" top="1335" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Context" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="10335" top="1335">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="169" srcpinname="Context" dstnodeid="171" dstpinname="Context">
+   </LINK>
+   <LINK srcnodeid="171" srcpinname="Texture Out" dstnodeid="163" dstpinname="RGB Texture">
+   </LINK>
+   <LINK srcnodeid="169" srcpinname="Context" dstnodeid="172" dstpinname="Context">
+   </LINK>
+   <LINK srcnodeid="172" srcpinname="Texture Out" dstnodeid="163" dstpinname="Depth Texture">
    </LINK>
    </PATCH>

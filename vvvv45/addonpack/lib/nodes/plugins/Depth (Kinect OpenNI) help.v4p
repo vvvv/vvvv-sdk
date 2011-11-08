@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha26.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Depth (EX9.Texture Kinect) help.v4p" filename="D:\BMW TP\Kinect\OpenNI\Kinect\Demonstrator\subpatches\Depth (EX9.Texture Kinect) help.v4p" systemname="Depth (EX9.Texture Kinect) help">
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Depth (Kinect OpenNI) help.v4p" filename="D:\BMW TP\Kinect\OpenNI\Kinect\Demonstrator\subpatches\Depth (EX9.Texture Kinect) help.v4p" systemname="Depth (EX9.Texture Kinect) help">
    <BOUNDS height="7455" left="0" top="0" type="Window" width="11025">
    </BOUNDS>
    <NODE componentmode="InABox" id="1" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -11,7 +11,7 @@
    </PIN>
    <PIN pinname="Output Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Context" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Context">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="2" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -21,7 +21,7 @@
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Out|" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Texture Out|">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -45,7 +45,7 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Enable" encoded="0">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Enabled">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="10" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -55,7 +55,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Creates a  depth texture from the Kinect IR Camera|" encoded="0">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Creates a  depth texture from the Kinect IR Camera|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -69,7 +69,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Depth - EX9.Texture Kinect|" encoded="0">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Depth - EX9.Texture Kinect|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -129,13 +129,15 @@
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="7" dstpinname="Context" srcnodeid="1" srcpinname="Output Node">
    </LINK>
    <LINK dstnodeid="2" dstpinname="Input Node" srcnodeid="7" srcpinname="Texture Out">
    </LINK>
-   <LINK dstnodeid="7" dstpinname="Enable" srcnodeid="8" srcpinname="Y Output Value">
-   </LINK>
    <LINK dstnodeid="12" dstpinname="Texture" srcnodeid="7" srcpinname="Texture Out">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Enabled">
    </LINK>
    </PATCH>

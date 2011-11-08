@@ -34,7 +34,7 @@ namespace VVVV.Nodes
         [Input("Reload Configuration", IsSingle = true, IsBang = true)]
         IDiffSpread<bool> FReloadIn;
 
-        [Input("Update", IsSingle = true, DefaultValue = 1)]
+        [Input("Enabled", IsSingle = true, DefaultValue = 1)]
         IDiffSpread<bool> FUpdateIn;
 
         [Output("Context")]
