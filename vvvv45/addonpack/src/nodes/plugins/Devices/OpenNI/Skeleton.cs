@@ -40,10 +40,8 @@ namespace VVVV.Nodes
         [Import()]
         ILogger FLogger;
 
-
         [Import()]
         IHDEHost FHost;
-
 
         [Input("Users", IsSingle = true)]
         ISpread<UserGenerator> FUsersIn;
@@ -426,7 +424,7 @@ namespace VVVV.Nodes
                 else
                     Confidence = -1;
                 
-                Debug.WriteLine(String.Format("Confidence {0} for User {1} and Joint {2}", Confidence, Users[Index], FJointIn[Index][i]));
+//                Debug.WriteLine(String.Format("Confidence {0} for User {1} and Joint {2}", Confidence, Users[Index], FJointIn[Index][i]));
 
                 if (Confidence != 0 || Confidence == -1)
                 {
@@ -443,7 +441,7 @@ namespace VVVV.Nodes
                 else
                 {
                     FConfidenceOut[Index][i] = Confidence;
-                    Debug.WriteLine("Out of Confidence");
+//                    Debug.WriteLine("Out of Confidence");
                 }
             }
 
