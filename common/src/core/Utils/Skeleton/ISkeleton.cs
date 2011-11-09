@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using VVVV.Utils.VMath;
 
 namespace VVVV.SkeletonInterfaces
 {
-	/// <summary>
-	/// Description of MyClass.
-	/// </summary>
+	[ComVisible(false)]
 	public interface IJoint
 	{
 		string Name
@@ -80,6 +79,7 @@ namespace VVVV.SkeletonInterfaces
 		
 	}
 	
+	[ComVisible(false)]
 	public interface ISkeleton
 	{
 		IJoint Root

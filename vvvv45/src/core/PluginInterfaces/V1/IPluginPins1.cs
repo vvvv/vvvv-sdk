@@ -942,6 +942,7 @@ namespace VVVV.PluginInterfaces.V1
 	/// </summary>
 	[Guid("AB312E34-8025-40F2-8241-1958793F3D39"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Obsolete("Not needed anymore in beta>26.")]
 	public interface INodeIOBase
 	{}
 	
@@ -963,7 +964,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// Used to retrieve a reference of an interface offered by the upstream connected node.
 		/// </summary>
 		/// <param name="UpstreamInterface">The retrieved interface.</param>
-		void GetUpstreamInterface(out object UpstreamInterface);
+		void GetUpstreamInterface([MarshalAs(UnmanagedType.IUnknown)] out object UpstreamInterface);
 		/// <summary>
 		/// Used to set the SubType of a node pin, which is a more detailed specification of the node type via a set of Guids that identifiy the interfaces accepted on this pin.
 		/// The SubType is used by the GUI to guide the user to make only links between pins that understand the same interfaces.
@@ -985,7 +986,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// Used to set the interface this
 		/// </summary>
 		/// <param name="TheInterface"></param>
-		void SetInterface(object TheInterface);
+		void SetInterface([MarshalAs(UnmanagedType.IUnknown)] object TheInterface);
 		/// <summary>
 		/// Used to set the SubType of a node pin, which is a more detailed specification of the node type via a set of Guids that identifiy the interfaces offered on this pin.
 		/// The SubType is used by the GUI to guide the user to make only links between pins that understand the same interfaces.
