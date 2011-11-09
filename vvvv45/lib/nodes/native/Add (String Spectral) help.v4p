@@ -1,0 +1,155 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.6.dtd" >
+   <PATCH nodename="X:\vvvv33\help\Add (String Spectral) help.v4p">
+   <BOUNDS height="9945" left="1875" top="885" type="Window" width="6690">
+   </BOUNDS>
+   <NODE id="8" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="540" top="4785" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="10" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="Comma">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" values="-1.00000">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="SpellValue (String)">
+   <BOUNDS height="0" left="540" top="1605" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="10" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="English">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="480" top="6390" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4929" top="7573" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2805" left="480" top="6390" type="Box" width="5460">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input String" srcnodeid="8" srcpinname="Output">
+   <LINKPOINT x="1350" y="6015">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="0" left="525" top="2070" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4214" top="4656" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2160" left="525" top="2070" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="10.00000">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input String" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="4" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1485" top="1560" type="Node" width="3030">
+   </BOUNDS>
+   <BOUNDS height="375" left="1485" top="1560" type="Box" width="3510">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|create a spread with the numbers from 1 to 10|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1380" top="4770" type="Node" width="3705">
+   </BOUNDS>
+   <BOUNDS height="255" left="1380" top="4770" type="Box" width="4155">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|merge all slices to one slice and put commas inbetween|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1395" top="5160" type="Node" width="6900">
+   </BOUNDS>
+   <BOUNDS height="600" left="1395" top="5160" type="Box" width="4635">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|try out the different intersperse modes - you can insert some classic separator characters between the parts|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="I (Spreads)">
+   <BOUNDS height="0" left="540" top="1200" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Max" slicecount="1">
+   </PIN>
+   <PIN pinname="Min" slicecount="1">
+   </PIN>
+   <PIN pinname="Integer" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="[ From .." slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname=".. To [" slicecount="1" values="11.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="375" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="720" left="15" top="375" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6360" top="12570" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|concatenates all slices in a string|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="15" top="15" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6360" top="12570" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Add - String Spectral|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

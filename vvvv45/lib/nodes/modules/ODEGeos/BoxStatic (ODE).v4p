@@ -1,0 +1,267 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40debug23.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv40_DynamicNodes\modules\tonfilms\ODEGeos\BoxStatic (ODE).v4p">
+   <BOUNDS height="6000" left="14265" top="6555" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="12" managers="" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Output Value" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="3" visible="1" values="3,3,3">
+   </PIN>
+   <BOUNDS height="0" left="3345" top="420" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="690" left="3345" top="420" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="8010" top="7710" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="Size">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="1000">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="3" visible="0" values="0,0,0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="0">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="11" managers="" nodename="Box (ODE)">
+   <PIN pinname="Size XYZ" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Position In XYZ" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion In XYZW" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="2625" top="3930" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Density" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Geom" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="ODE">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="10" managers="" nodename="Rotate (Quaternion Vector)">
+   <PIN pinname="Quaternion XYZW" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1635" top="3915" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="9" managers="" nodename="Translate (Transform Vector)">
+   <PIN pinname="XYZ" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1185" top="3540" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Transform In" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="8" managers="" nodename="Box (EX9.Geometry)">
+   <PIN pinname="Width " pintype="Input" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Heigth " pintype="Input" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Depth " pintype="Input" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Mesh" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="390" top="3135" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="display">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Transform In" linkstyle="Bezier" srcnodeid="9" srcpinname="Transform Out">
+   <LINKPOINT x="1260" y="4095">
+   </LINKPOINT>
+   <LINKPOINT x="1665" y="4095">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4305" top="855" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4485" top="3450" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4305" top="855" type="Box" width="765">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Density">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Density" linkstyle="Bezier" srcnodeid="7" srcpinname="Y Output Value">
+   <LINKPOINT x="4365" y="1695">
+   </LINKPOINT>
+   <LINKPOINT x="3195" y="1695">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Node)">
+   <BOUNDS height="0" left="405" top="4635" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="1980" top="7170" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="405" top="4635" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Mesh">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input Node" linkstyle="Bezier" srcnodeid="8" srcpinname="Mesh">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Node)">
+   <BOUNDS height="0" left="1620" top="4725" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2280" top="7470" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1620" top="4725" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Transform">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Multiply (Value)">
+   <BOUNDS height="0" left="3255" top="2115" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input 2" srcnodeid="12" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="3" nodename="DecodeODETransform (Value ODE).v4p" path="C:\Users\joreg\dev\vake\source\complete\vvvv40_DynamicNodes\modules\tonfilms\ODEGeos\">
+   <BOUNDS height="0" left="630" top="1365" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="8085" top="4050" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="630" top="1365" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="TranslateXYZ" visible="1">
+   </PIN>
+   <PIN pinname="ScaleXYZ" visible="1">
+   </PIN>
+   <PIN pinname="QuaternionXYZW" visible="1">
+   </PIN>
+   <PIN pinname="ODETransform In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="XYZ" srcnodeid="3" srcpinname="TranslateXYZ">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Position In XYZ" srcnodeid="3" srcpinname="TranslateXYZ">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Input 1" linkstyle="Bezier" srcnodeid="3" srcpinname="ScaleXYZ">
+   <LINKPOINT x="1545" y="1875">
+   </LINKPOINT>
+   <LINKPOINT x="3225" y="1635">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Quaternion In XYZW" srcnodeid="3" srcpinname="QuaternionXYZW">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Quaternion XYZW" srcnodeid="3" srcpinname="QuaternionXYZW">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="11" values="1,0,0,0,1,1,1,0,0,0,1">
+   </PIN>
+   <BOUNDS height="990" left="45" top="15" type="Box" width="2940">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   <BOUNDS height="0" left="45" top="15" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X Output Value" visible="1">
+   </PIN>
+   <BOUNDS height="160" left="6330" top="7200" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|ODETransform In|">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="ODETransform In" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="1" nodename="Sign (Value)">
+   <BOUNDS height="0" left="2835" top="2460" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Absolute Part" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Size XYZ" srcnodeid="1" srcpinname="Absolute Part">
+   </LINK>
+   <NODE id="0" nodename="Scale (Transform Vector)">
+   <BOUNDS height="0" left="1635" top="4320" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Transform In" srcnodeid="10" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Input Node" srcnodeid="0" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="XYZ" srcnodeid="1" srcpinname="Absolute Part">
+   </LINK>
+   <INFO author="tonfilm" description="static ode box" tags="physics, mesh">
+   </INFO>
+   </PATCH>
