@@ -39,6 +39,9 @@ namespace VVVV.Nodes.Bullet
 		[Input("Activate", IsBang = true)]
 		IDiffSpread<bool> FSetActive;
 
+        [Input("Disable", IsBang = true)]
+        IDiffSpread<bool> FSetDisabled;
+
 		[Input("Mass")]
 		ISpread<float> FMass;
 
@@ -64,22 +67,15 @@ namespace VVVV.Nodes.Bullet
 					//rb.MotionState.WorldTransform = m;
 					Matrix tr = Matrix.Translation(v);
 					Matrix rot = Matrix.RotationQuaternion(this.FRotation[i].ToBulletQuaternion());
-					rb.MotionState.WorldTransform = Matrix.Multiply(rot, tr);
-
-					//rb.MotionState.WorldTransform.M = m;
-					//rb.MotionState.WorldTransform.M42 = v.Y;
-					////rb.MotionState.WorldTransform.M43 = v.Z;
-					//Quaternion q = rb.Orientation;
-					//body.MotionState.WorldTransform.M41,
-					//	body.MotionState.WorldTransform.M42, body.MotionState.WorldTransform.M43);
-					//rb.WorldTransform.
-					//Vector3 pos = rb.MotionState.
+					rb.WorldTransform  = Matrix.Multiply(rot, tr);
+                    rb.MotionState.WorldTransform = Matrix.Multiply(rot, tr); ;
 					}
 				if (this.FSetLinVel[i]) { rb.LinearVelocity = this.FLinVel[i].ToBulletVector(); }
 				if (this.FSetAngVel[i]) { rb.AngularVelocity = this.FAngVel[i].ToBulletVector(); }
 				if (this.FSetMass[i]) { rb.SetMassProps(FMass[i], Vector3.Zero); }
-				if (this.FSetActive[i]) { rb.Activate(true); }
-
+                if (this.FSetActive[i]) { rb.ForceActivationState(ActivationState.ActiveTag); }
+                if (this.FSetDisabled[i]) { rb.ForceActivationState(ActivationState.DisableSimulation); }
+                //rb.
 				//rb.SetMassProps(
 				
 			}
