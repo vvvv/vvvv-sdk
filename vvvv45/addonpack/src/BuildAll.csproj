@@ -58,6 +58,9 @@
     <RebuildDependsOn>Clean;Build</RebuildDependsOn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' " />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
   <Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
     <MSBuild Projects="@(CoreProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" />
 	  <MSBuild Projects="@(CorePluginsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" >

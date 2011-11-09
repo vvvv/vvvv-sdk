@@ -11,9 +11,7 @@ using BassSound.Internals;
 
 namespace vvvv.Nodes
 {
-
-
-    internal class BassAsioAudioInNode : IPlugin, IDisposable
+    public class BassAsioAudioInNode : IPlugin, IDisposable
     {
         #region Plugin Information
         public static IPluginInfo PluginInfo
@@ -22,8 +20,8 @@ namespace vvvv.Nodes
             {
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "AudioIn";
-                Info.Category = "BassAsio";
-                Info.Version = "";
+                Info.Category = "Bass";
+                Info.Version = "Asio";
                 Info.Help = "Input node for bass asio";
                 Info.Bugs = "";
                 Info.Credits = "";
