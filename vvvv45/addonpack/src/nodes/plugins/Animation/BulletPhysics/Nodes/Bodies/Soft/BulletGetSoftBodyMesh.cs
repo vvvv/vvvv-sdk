@@ -122,7 +122,8 @@ namespace VVVV.Nodes.Bullet
 							{
 								NodePtrArray nodes = faces[j].N;
 								verts.Write(nodes[0].X);
-								verts.Position += 12;
+                                verts.Write(nodes[0].Normal);
+								//verts.Position += 12;
 
 								if (sc.HasUV)
 								{
@@ -133,7 +134,9 @@ namespace VVVV.Nodes.Bullet
 								}
 
 								verts.Write(nodes[1].X);
-								verts.Position += 12;
+                                verts.Write(nodes[1].Normal);
+
+								//verts.Position += 12;
 
 								if (sc.HasUV)
 								{
@@ -144,7 +147,8 @@ namespace VVVV.Nodes.Bullet
 								}
 
 								verts.Write(nodes[2].X);
-								verts.Position += 12;
+                                verts.Write(nodes[2].Normal);
+								//verts.Position += 12;
 
 								if (sc.HasUV)
 								{
@@ -162,7 +166,7 @@ namespace VVVV.Nodes.Bullet
 
 							mesh.UnlockVertexBuffer();
 							mesh.UnlockIndexBuffer();
-							mesh.ComputeNormals();
+							//mesh.ComputeNormals();
 
 							soft.Add(mesh);
 							#endregion
@@ -197,37 +201,49 @@ namespace VVVV.Nodes.Bullet
 								NodePtrArray nodes = t.Nodes;
 
 								verts.Write(nodes[2].X);
-								verts.Position += 12;
+                                verts.Write(nodes[2].Normal);
+								//verts.Position += 12;
 								verts.Write(nodes[1].X);
-								verts.Position += 12;
+                                verts.Write(nodes[1].Normal);
+								//verts.Position += 12;
 								verts.Write(nodes[0].X);
-								verts.Position += 12;
+                                verts.Write(nodes[0].Normal);
+								//verts.Position += 12;
 
 								verts.Write(nodes[0].X);
-								verts.Position += 12;
+                                verts.Write(nodes[0].Normal);
+								//verts.Position += 12;
 								verts.Write(nodes[1].X);
-								verts.Position += 12;
+                                verts.Write(nodes[1].Normal);
+								//verts.Position += 12;
 								verts.Write(nodes[3].X);
-								verts.Position += 12;
+                                verts.Write(nodes[3].Normal);
+								//verts.Position += 12;
 
 								verts.Write(nodes[2].X);
-								verts.Position += 12;
+                                verts.Write(nodes[2].Normal);
+								//verts.Position += 12;
 								verts.Write(nodes[3].X);
-								verts.Position += 12;
+                                verts.Write(nodes[3].Normal);
+								//verts.Position += 12;
 								verts.Write(nodes[1].X);
-								verts.Position += 12;
+                                verts.Write(nodes[1].Normal);
+								//verts.Position += 12;
 
 								verts.Write(nodes[2].X);
-								verts.Position += 12;
+                                verts.Write(nodes[2].Normal);
+								//verts.Position += 12;
 								verts.Write(nodes[0].X);
-								verts.Position += 12;
+                                verts.Write(nodes[0].Normal);
+								//verts.Position += 12;
 								verts.Write(nodes[3].X);
-								verts.Position += 12;
+                                verts.Write(nodes[3].Normal);
+								//verts.Position += 12;
 							}
 
 							mesh.UnlockVertexBuffer();
 							mesh.UnlockIndexBuffer();
-							mesh.ComputeNormals();
+							//mesh.ComputeNormals();
 
 							soft.Add(mesh);
 							#endregion
