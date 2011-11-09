@@ -31,7 +31,7 @@ namespace VVVV.Nodes
                 Tags = "ex9, texture, tracking, person, people",
                 Author = "Phlegma, joreg")]
     #endregion PluginInfo
-    public class Users: DXTextureOutPluginBase, IPluginEvaluate
+    public class Users: DXTextureOutPluginBase, IPluginEvaluate, IDisposable
     {
     	//memcopy method
 		[DllImport("Kernel32.dll", EntryPoint="RtlMoveMemory", SetLastError=false)]
@@ -181,6 +181,16 @@ namespace VVVV.Nodes
         {
             Debug.WriteLine(String.Format("User found. ID: {0}", e.ID));
         }
+        
+        #region Dispose
+
+        public void Dispose()
+        {
+        	if (FUserGenerator != null)
+        		FUserGenerator.Dispose();
+        }
+
+        #endregion 
         
         #region IPluginDXTexture Members
 

@@ -26,7 +26,7 @@ namespace VVVV.Nodes
     #endregion PluginInfo
 
 
-    public class GestureOpenNI : IPluginEvaluate
+    public class GestureOpenNI: IPluginEvaluate, IDisposable
     {
         #region fields & pins
         [Input("Context", IsSingle=true)]
@@ -75,7 +75,6 @@ namespace VVVV.Nodes
         private SortedList<int,Vector3D> FPositions = new SortedList<int,Vector3D>();
         private Dictionary<Vector3D,string> FGestureRecognized = new Dictionary<Vector3D,string>();
         private List<Vector3D> FMovingHands = new List<Vector3D>();
-
 
         #endregion fields & pins
 
@@ -278,12 +277,6 @@ namespace VVVV.Nodes
             }
         }
 
-        void FHands_HandDestroy(ProductionNode node, uint id, float fTime)
-        {
-            throw new NotImplementedException();
-        }
-
-
         /// <summary>
         /// Callback for Gesture Prograss Event. Regonized Moving Hands a store theire Position.
         /// </summary>
@@ -295,7 +288,33 @@ namespace VVVV.Nodes
                 FMovingHands.Add(new Vector3D(e.Position.X, e.Position.Y, e.Position.Z));
         }
 
- 
+ 		/// <summary>
+        /// Callback function for the Gesture Recognized Event. 
+        /// Takes the endposition of the gesture and try to track the hand from 
+        /// this position.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void FGesture_GestureRecognized(object sender, GestureRecognizedEventArgs e)
+        {
+            try
+            {
+                lock (FGestureRecognized)
+                {
+                    Vector3D Vector = new Vector3D(e.EndPosition.X, e.EndPosition.Y, e.EndPosition.Z);
+                    FGestureRecognized.Add(Vector, e.Gesture);
+                }
+            }
+            catch (ArgumentException)
+            {
+            }
+            catch (InvalidOperationException)
+            {
+            }
+
+            FHands.StartTracking(e.EndPosition);
+        }
+        
         /// <summary>
         /// Callback function for the HandUpdate Event
         /// </summary>
@@ -350,32 +369,22 @@ namespace VVVV.Nodes
 
         }
 
-
-        /// <summary>
-        /// Callback function for the Gesture Recognized Event. 
-        /// Takes the endposition of the gesture and try to track the hand from 
-        /// this position.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void FGesture_GestureRecognized(object sender, GestureRecognizedEventArgs e)
+        void FHands_HandDestroy(ProductionNode node, uint id, float fTime)
         {
-            try
-            {
-                lock (FGestureRecognized)
-                {
-                    Vector3D Vector = new Vector3D(e.EndPosition.X, e.EndPosition.Y, e.EndPosition.Z);
-                    FGestureRecognized.Add(Vector, e.Gesture);
-                }
-            }
-            catch (ArgumentException)
-            {
-            }
-            catch (InvalidOperationException)
-            {
-            }
-
-            FHands.StartTracking(e.EndPosition);
+            throw new NotImplementedException();
         }
+        
+        #region Dispose
+
+        public void Dispose()
+        {
+        	if (FHands != null)
+        		FHands.Dispose();
+        	
+        	if (FGesture != null)
+        		FGesture.Dispose();
+        }
+
+        #endregion 
     }
 }

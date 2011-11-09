@@ -41,7 +41,6 @@ namespace VVVV.Nodes
 	            Tags = "ex9, texture",
 	            Author = "Phlegma, joreg")]
 	#endregion PluginInfo
-	
 	public class Texture_Depth: DXTextureOutPluginBase, IPluginEvaluate, IDisposable
 	{
 		//memcopy method
@@ -72,8 +71,6 @@ namespace VVVV.Nodes
 		private int FTexHeight;
 		private DepthGenerator FDepthGenerator;
 		private bool FInit = true;
-
-		private bool disposed = false;
 		IPluginHost FHost;
 
 		#endregion fields & pins
@@ -138,28 +135,8 @@ namespace VVVV.Nodes
 
 		public void Dispose()
 		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!disposed)
-			{
-				if (disposing)
-				{
-					// Free other state (managed objects).
-				}
-				// Free your own state (unmanaged objects).
-				// Set large fields to null.
-
-				disposed = true;
-			}
-		}
-
-		~Texture_Depth()
-		{
-			Dispose(false);
+			if (FDepthGenerator != null)
+				FDepthGenerator.Dispose();
 		}
 
 		#endregion
