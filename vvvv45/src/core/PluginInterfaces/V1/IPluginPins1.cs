@@ -964,7 +964,8 @@ namespace VVVV.PluginInterfaces.V1
 		/// Used to retrieve a reference of an interface offered by the upstream connected node.
 		/// </summary>
 		/// <param name="UpstreamInterface">The retrieved interface.</param>
-		void GetUpstreamInterface([MarshalAs(UnmanagedType.IUnknown)] out object UpstreamInterface);
+		[Obsolete("Replaced by GetUpstreamInterface(object UpstreamInterface).")]
+		void GetUpstreamInterface(out INodeIOBase UpstreamInterface);
 		/// <summary>
 		/// Used to set the SubType of a node pin, which is a more detailed specification of the node type via a set of Guids that identifiy the interfaces accepted on this pin.
 		/// The SubType is used by the GUI to guide the user to make only links between pins that understand the same interfaces.
@@ -973,6 +974,11 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Guids">An array of Guids (typically only one) that specifies the interfaces that this input accepts.</param>
 		/// <param name="FriendlyName">A user readable name specifying the type of the node connection.</param>
 		void SetSubType(Guid[] Guids, string FriendlyName);
+		/// <summary>
+		/// Used to retrieve a reference of an interface offered by the upstream connected node.
+		/// </summary>
+		/// <param name="UpstreamInterface">The retrieved interface.</param>
+		void GetUpstreamInterface([MarshalAs(UnmanagedType.IUnknown)] out object UpstreamInterface);
 	}
 	
 	/// <summary>
@@ -986,7 +992,8 @@ namespace VVVV.PluginInterfaces.V1
 		/// Used to set the interface this
 		/// </summary>
 		/// <param name="TheInterface"></param>
-		void SetInterface([MarshalAs(UnmanagedType.IUnknown)] object TheInterface);
+		[Obsolete("Replaced by SetInterface(object TheInterface).")]
+		void SetInterface(INodeIOBase TheInterface);
 		/// <summary>
 		/// Used to set the SubType of a node pin, which is a more detailed specification of the node type via a set of Guids that identifiy the interfaces offered on this pin.
 		/// The SubType is used by the GUI to guide the user to make only links between pins that understand the same interfaces.
@@ -999,6 +1006,11 @@ namespace VVVV.PluginInterfaces.V1
 		/// Used to mark this pin as being changed compared to the last frame. 
 		/// </summary>
 		void MarkPinAsChanged();
+		/// <summary>
+		/// Used to set the interface this
+		/// </summary>
+		/// <param name="TheInterface"></param>
+		void SetInterface([MarshalAs(UnmanagedType.IUnknown)] object TheInterface);
 	}
 	
 	/// <summary>

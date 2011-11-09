@@ -309,7 +309,7 @@ namespace VVVV.Nodes
 	        			FSkeletonOutput.MarkPinAsChanged();
 	        			if (childPins[i].IsConnected)
 	        			{
-	        				INodeIOBase currInterface;
+	        				object currInterface;
 	        				childPins[i].GetUpstreamInterface(out currInterface);
 	        				ISkeleton subSkeleton = (ISkeleton)currInterface;
 	        				IJoint child = subSkeleton.Root.DeepCopy();
