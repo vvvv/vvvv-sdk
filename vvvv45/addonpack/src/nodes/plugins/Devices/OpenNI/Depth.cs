@@ -95,6 +95,7 @@ namespace VVVV.Nodes
 					if (FDepthGenerator == null)
 					{
 						FDepthGenerator = new DepthGenerator(FContext[0]);
+						
 						FFov[0] = new Vector2D(FDepthGenerator.FieldOfView.HorizontalAngle, FDepthGenerator.FieldOfView.VerticalAngle);
 						FHistogram = new int[FDepthGenerator.DeviceMaxDepth];
 						

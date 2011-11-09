@@ -33,6 +33,9 @@ namespace VVVV.Nodes
 
 		[Input("Reload Configuration", IsSingle = true, IsBang = true)]
 		IDiffSpread<bool> FReloadIn;
+		
+		[Input("Mirrored", IsSingle = true, DefaultValue = 1)]
+        ISpread<bool> FMirrored;
 
 		[Input("Enabled", IsSingle = true, DefaultValue = 1)]
 		IDiffSpread<bool> FUpdateIn;
@@ -117,6 +120,8 @@ namespace VVVV.Nodes
 							FUpdater = null;
 						}
 					}
+					
+					FContext.GlobalMirror = FMirrored[0];
 				}
 
 				//writes the Context Object to the Output for
