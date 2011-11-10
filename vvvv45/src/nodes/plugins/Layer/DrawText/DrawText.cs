@@ -27,6 +27,9 @@ using SlimDX.Direct3D9;
 
 namespace VVVV.Nodes
 {
+	// TODO: Implement device handling properly for plugins. They should be able to work with
+	// the Device object directly instead of dealing with IntPtr and Dispose.
+	
 	[PluginInfo(Name = "Text",
 	            Category = "EX9",
 	            Author = "vvvv group",
@@ -123,7 +126,7 @@ namespace VVVV.Nodes
 		private IDXLayerIO FLayerOutput;
 		private int FSpreadMax;
 		private Dictionary<int, SlimDX.Direct3D9.Font> FFonts = new Dictionary<int, SlimDX.Direct3D9.Font>();
-		private Dictionary<Device, DeviceHelpers> FDeviceHelpers = new Dictionary<Device, DeviceHelpers>();
+		private Dictionary<IntPtr, DeviceHelpers> FDeviceHelpers = new Dictionary<IntPtr, DeviceHelpers>();
 		#endregion field declarationPL
 
 		#region constructur
@@ -161,6 +164,7 @@ namespace VVVV.Nodes
 		{
 			var df = FFonts[id];
 			FFonts.Remove(id);
+			df.OnLostDevice();
 			df.Dispose();
 		}
 
@@ -170,7 +174,7 @@ namespace VVVV.Nodes
 			
 			unchecked
 			{
-				hashCode += 1000000007 * dev.GetHashCode();
+				hashCode += 1000000007 * dev.ComPointer.GetHashCode();
 				hashCode += 1000000009 * name.GetHashCode();
 				hashCode += 1000000021 * size.GetHashCode();
 				hashCode += 1000000033 * italic.GetHashCode();
@@ -216,7 +220,7 @@ namespace VVVV.Nodes
 			var dev = Device.FromPointer(new IntPtr(OnDevice));
 
 			//create device specific helpers on given device if not already present
-			if (!FDeviceHelpers.ContainsKey(dev))
+			if (!FDeviceHelpers.ContainsKey(dev.ComPointer))
 			{
 				var dh = new DeviceHelpers(
 					new Sprite(dev),
@@ -227,8 +231,10 @@ namespace VVVV.Nodes
 				tex.Data.WriteByte(255);
 				dh.Texture.UnlockRectangle(0);
 
-				FDeviceHelpers.Add(dev, dh);
+				FDeviceHelpers.Add(dev.ComPointer, dh);
 			}
+			
+			dev.Dispose();
 		}
 
 		public void DestroyResource(IPluginOut ForPin, int OnDevice, bool OnlyUnManaged)
@@ -237,7 +243,7 @@ namespace VVVV.Nodes
 
 			//dispose resources that were created on given device
 			DeviceHelpers dh = null;
-			if (FDeviceHelpers.TryGetValue(dev, out dh))
+			if (FDeviceHelpers.TryGetValue(dev.ComPointer, out dh))
 			{
 				dh.Dispose();
 
@@ -245,7 +251,7 @@ namespace VVVV.Nodes
 				foreach (var id in ids)
 					RemoveFont(id);
 				
-				FDeviceHelpers.Remove(dev);
+				FDeviceHelpers.Remove(dev.ComPointer);
 			}
 			
 			dev.Dispose();
@@ -279,7 +285,7 @@ namespace VVVV.Nodes
 			//set states that are defined via upstream nodes
 			FRenderStatePin.SetSliceStates(0);
 
-			DeviceHelpers dh = FDeviceHelpers[dev];
+			DeviceHelpers dh = FDeviceHelpers[dev.ComPointer];
 
 			dh.Sprite.Begin(SpriteFlags.ObjectSpace | SpriteFlags.DoNotAddRefTexture);
 			try
@@ -391,6 +397,7 @@ namespace VVVV.Nodes
 			finally
 			{
 				dh.Sprite.End();
+				dev.Dispose();
 			}
 		}
 		#endregion
