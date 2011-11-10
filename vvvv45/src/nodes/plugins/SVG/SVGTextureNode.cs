@@ -38,6 +38,9 @@ namespace VVVV.Nodes
 		#region fields & pins
 		[Input("Filename", StringType = StringType.Filename, FileMask = "SVG Files (*.svg)|*.svg")]
 		IDiffSpread<string> FFilenameIn;
+		
+		[Input("Reload", IsBang = true)]
+		ISpread<bool> FReloadIn;
 
 		[Output("Document")]
 		ISpread<SvgDocument> FOutput;
@@ -49,7 +52,7 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if(FFilenameIn.IsChanged)
+			if(FFilenameIn.IsChanged || FReloadIn[0])
 			{
 				FOutput.SliceCount = SpreadMax;
 				for(int i=0; i<SpreadMax; i++)
@@ -125,7 +128,8 @@ namespace VVVV.Nodes
 	            Category = "SVG",
 				Version = "Join",
 	            Help = "Creates an SVG document from given SVG layers and other properties",
-	            Tags = "xml")]
+	            Tags = "xml",
+	            AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class DucumentSvgJoinNode : IPluginEvaluate
 	{

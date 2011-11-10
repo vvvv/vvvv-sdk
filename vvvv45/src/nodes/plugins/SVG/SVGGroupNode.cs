@@ -25,10 +25,10 @@ namespace VVVV.Nodes
 		[Input("Transform", Order = 0)]
 		protected IDiffSpread<Matrix> FTransformIn;
 		
-		[Input("Stroke", Order = 10, DefaultColor = new double[] { 0, 0, 0, 1 })]
+		[Input("Stroke", Order = 20, DefaultColor = new double[] { 0, 0, 0, 1 })]
 		protected IDiffSpread<RGBAColor> FStrokeIn;
 		
-		[Input("Stroke Width", Order = 12)]
+		[Input("Stroke Width", DefaultValue = 0.1, Order = 22)]
 		protected IDiffSpread<float> FStrokeWidthIn;
 		
 		[Input("Enabled", Order = 30, DefaultValue = 1)]
@@ -61,7 +61,7 @@ namespace VVVV.Nodes
                 for (int i = FElements.Count; i < SpreadMax; i++)
                     FElements.Add(CreateElement());
             }
-			
+            
 			if(PinsChanged())
 			{
 				for(int i=0; i<SpreadMax; i++)
@@ -71,7 +71,7 @@ namespace VVVV.Nodes
 					SetFill(elem, i);
 					SetStroke(elem, i);
 					elem.Visible = FEnabledIn[i];
-					FOutput.AssignFrom(FElements);
+					FOutput[i] = elem;
 				}
 			}
 			
@@ -150,10 +150,10 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		
-		[Input("Fill", Order = 20, DefaultColor = new double[] { 1, 1, 1, 1 })]
+		[Input("Fill", Order = 10, DefaultColor = new double[] { 1, 1, 1, 1 })]
 		protected IDiffSpread<RGBAColor> FFillIn;
 		
-		[Input("Fill Mode", Order = 21, Visibility = PinVisibility.OnlyInspector)]
+		[Input("Fill Mode", Order = 12, Visibility = PinVisibility.OnlyInspector)]
 		protected IDiffSpread<SvgFillRule> FFillModeIn;
 		
 		#endregion fields & pins
@@ -190,7 +190,7 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SvgRectNode : SVGVisualElementFillNode<SvgRectangle>
 	{
-		[Input("Corner Radius ", Order = 22)]
+		[Input("Corner Radius ", Order = 23)]
 		IDiffSpread<Vector2> FCornerRadiusIn;
 		
 		protected override SvgRectangle CreateElement()
@@ -340,14 +340,14 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class SvgTextNode : SVGVisualElementFillNode<SvgText>
 	{
-		[Input("Text", Order = -10)]
+		[Input("Text", Order = 1)]
 		IDiffSpread<string> FTextIn;
 		
-		[Input("Text Size", Order = -9)]
-		IDiffSpread<float> FTextSizeIn;
-		
-		[Input("Font", EnumName = "SystemFonts")]
+		[Input("Font", EnumName = "SystemFonts", Order = 2)]
         IDiffSpread<EnumEntry> FFontIn;
+		
+		[Input("Size", DefaultValue = 1, Order = 3)]
+		IDiffSpread<float> FTextSizeIn;
 		
 		protected override SvgText CreateElement()
 		{
