@@ -122,7 +122,14 @@ namespace VVVV.Hosting.Graph
         {
             get 
             {
-                return FInternalCOMInterf.GetValue(sliceIndex);
+            	try
+            	{
+                	return FInternalCOMInterf.GetValue(sliceIndex);
+            	}
+            	catch
+            	{
+            		return string.Empty;
+            	}
             }
         }
         
