@@ -94,20 +94,23 @@ namespace VVVV.Nodes
 		protected void SetTransform(T elem, int slice)
 		{
 			//decompose matrix
-			Vector3 trans;
-			Vector3 scale;
-			Quaternion rot;
-			FTransformIn[slice].Decompose(out scale, out rot, out trans);
-
-			var rotvec = VMath.QuaternionToEulerYawPitchRoll(rot.ToVector4D());
+			Vector2 trans;
+			Vector2D scale;
+			double rotate;
+				
+			var m = FTransformIn[slice];
+			trans.X = m.M41;
+			trans.Y = m.M42;
+			
+			new Matrix2x2(m.ToMatrix4x4()).Decompose(out scale, out rotate);
 			
 			//add rotation
 			elem.Transforms = new SvgTransformCollection();
 			elem.Transforms.Add(new SvgTranslate(trans.X, trans.Y));
-			elem.Transforms.Add(new SvgRotate((float)(rotvec.z*VMath.RadToDeg)));
+			elem.Transforms.Add(new SvgRotate((float)(rotate*VMath.RadToDeg)));
 			
 			//calc geometry
-			CalcGeometry(elem, new Vector2(trans.X, trans.Y), new Vector2(scale.X, scale.Y), slice);
+			CalcGeometry(elem, trans, scale.ToSlimDXVector(), slice);
 		}
 		
 		//stroke color
