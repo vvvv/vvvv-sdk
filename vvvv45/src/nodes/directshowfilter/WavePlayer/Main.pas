@@ -1477,38 +1477,62 @@ begin
 
   // Open the file for reading with buffered I/O. Let windows use its default internal buffer
   hmm := mmioOpen(pchar(AFileName), nil, MMIO_READ + MMIO_ALLOCBUF);
-  if (hmm = NULL) then begin OutputDebugString('waveplayer open error'); Exit; end;
+  if (hmm = NULL) then
+  begin
+    OutputDebugString('waveplayer open error');
+    MMIOClose(hmm, 0);
+    Exit;
+  end;
 
   // Locate a "RIFF" chunk with a "WAVE" form type to make sure the file is a waveform-audio file.
   fcc := MAKEFOURCC('W', 'A', 'V', 'E');
   mmres := mmioDescend(hmm, @mmiParent, nil, 0);
-  if mmres <> MMSYSERR_NOERROR then begin OutputDebugString('waveplayer error 1'); Exit; end;
-  if mmiParent.ckid <> FOURCC_RIFF then begin OutputDebugString('waveplayer error 2'); Exit; end;
-  if mmiParent.fccType <> fcc  then begin OutputDebugString('waveplayer error 3'); Exit; end;
+  if mmres <> MMSYSERR_NOERROR then
+  begin
+    OutputDebugString('waveplayer error 1');
+    MMIOClose(hmm, 0);
+    Exit;
+  end;
+  if mmiParent.ckid <> FOURCC_RIFF then
+  begin
+    OutputDebugString('waveplayer error 2');
+    MMIOClose(hmm, 0);
+    Exit;
+  end;
+  if mmiParent.fccType <> fcc then
+  begin
+    OutputDebugString('waveplayer error 3');
+    MMIOClose(hmm, 0);
+    Exit;
+  end;
 
   mmiSub.ckid := MAKEFOURCC('f', 'm', 't', ' ');
   mmres := mmioDescend(hmm, @mmiSub, @mmiParent, MMIO_FINDCHUNK);
 
-  if mmres <> MMSYSERR_NOERROR then begin OutputDebugString('waveplayer error 4'); Exit; end;
-
+  if mmres <> MMSYSERR_NOERROR then
+  begin
+    OutputDebugString('waveplayer error 4');
+    MMIOClose(hmm, 0);
+    Exit;
+  end;
 
   if mmiSub.cksize < sizeof(PCMWAVEFORMAT) then
   begin
    OutputDebugString('waveplayer error 5');
+   MMIOClose(hmm, 0);
    Exit;
   end;
 
   if mmiSub.cksize = sizeof(PCMWAVEFORMAT) then
   begin
-
    mmioRead(hmm, @FFWaveFormat, sizeof(PCMWAVEFORMAT));
 
    if FFWaveFormat.Format.wFormatTag <> WAVE_FORMAT_PCM then
    begin
      OutputDebugString('WavePlayer: unknown format');
+     MMIOClose(hmm, 0);
      Exit;
    end;
-
   end;
 
   if mmiSub.cksize > sizeof(PCMWAVEFORMAT) then
@@ -1519,26 +1543,37 @@ begin
    if FFWaveFormat.Format.wFormatTag <> WAVE_FORMAT_EXTENSIBLE then
    begin
      OutputDebugString('WavePlayer: unknown format');
+     MMIOClose(hmm, 0);
      Exit;
    end;
    
   end;
 
   mmres := mmioAscend(hmm, @mmiSub, 0);
-  if mmres <> MMSYSERR_NOERROR then begin OutputDebugString('waveplayer error 8'); Exit; end;
+  if mmres <> MMSYSERR_NOERROR then
+  begin
+    OutputDebugString('waveplayer error 8');
+    MMIOClose(hmm, 0);
+    Exit;
+  end;
 
   mmioSeek(hmm, mmiParent.dwDataOffset + sizeof(FOURCC), SEEK_SET);
   //if mmres < 0 then begin OutputDebugString('waveplayer error 9'); Exit; end;
 
   mmiSub.ckid := MAKEFOURCC('d', 'a', 't', 'a');
   mmres := mmioDescend(hmm, @mmiSub, @mmiParent, MMIO_FINDCHUNK);
-  if mmres <> MMSYSERR_NOERROR then    begin OutputDebugString('error 10'); Exit; end;
+  if mmres <> MMSYSERR_NOERROR then
+  begin
+    OutputDebugString('error 10');
+    MMIOClose(hmm, 0);
+    Exit;
+  end;
 
   _Mem := CoTaskMemAlloc(mmiSub.ckSize);
   if (_Mem = nil) then
   begin
     OutputDebugString('waveplayer: out of memory');
-    MMIOClose(hmm,0);
+    MMIOClose(hmm, 0);
     Exit;
   end;
 
@@ -1645,12 +1680,11 @@ begin
   end;
 
   //Close the file----
-  MMIOClose(hmm,0);
+  MMIOClose(hmm, 0);
 
   Result       := true;
   FInitialized := true;
   FReload      := true;
-
 end;
 
 procedure TMVoice.Clone(other: PBCVoice);

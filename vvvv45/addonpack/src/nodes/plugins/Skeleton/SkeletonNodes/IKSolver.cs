@@ -277,7 +277,7 @@ namespace VVVV.Nodes
         		chainRangeChanged = true;
         	}
 
-        	INodeIOBase currInterface;
+        	object currInterface;
         	if (FPoseInput.PinIsChanged || chainRangeChanged)
         	{
         		if (FPoseInput.IsConnected)

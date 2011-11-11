@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\help\BoundingBox (EX9.Geometry Mesh) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\BoundingBox (EX9.Geometry Mesh) help.v4p">
    <BOUNDS height="7455" left="7020" top="2220" type="Window" width="9000">
    </BOUNDS>
-   <NODE componentmode="Hidden" id="10" nodename=":EFFECTS:\GouraudDirectional.fx" systemname="GouraudDirectional (EX9.Effect)" filename="%VVVV%\effects\GouraudDirectional.fx">
+   <NODE componentmode="Hidden" filename="%VVVV%\effects\GouraudDirectional.fx" id="10" nodename=":EFFECTS:\GouraudDirectional.fx" systemname="GouraudDirectional (EX9.Effect)">
    <BOUNDS height="0" left="735" top="4575" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="12000" left="12285" top="9930" type="Window" width="12000">
@@ -16,7 +16,7 @@
    <PIN pinname="Enabled" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="9" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="9" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="735" top="6255" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4860" left="585" top="2115" type="Window" width="6120">
@@ -25,14 +25,22 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="8" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" systemname="Camera (Transform Softimage)" filename="%VVVV%\modules\vvvv group\Transform\Camera (Transform Softimage).v4p">
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\Transform\Camera (Transform Softimage).v4p" id="8" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" systemname="Camera (Transform Softimage)">
    <BOUNDS height="0" left="1785" top="5700" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6000" left="13545" top="10695" type="Window" width="9000">
@@ -46,9 +54,9 @@
    <PIN pinname="Inital Distance" slicecount="1" values="30">
    </PIN>
    </NODE>
-   <LINK dstnodeid="9" dstpinname="View Transform" srcnodeid="8" srcpinname="View">
+   <LINK dstnodeid="9" dstpinname="View" srcnodeid="8" srcpinname="View">
    </LINK>
-   <LINK dstnodeid="9" dstpinname="Projection Transform" srcnodeid="8" srcpinname="Projection">
+   <LINK dstnodeid="9" dstpinname="Projection" srcnodeid="8" srcpinname="Projection">
    </LINK>
    <NODE id="7" nodename="Group (EX9)" systemname="Group (EX9)">
    <BOUNDS height="270" left="735" top="5175" type="Node" width="6060">
@@ -103,7 +111,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="12885" top="45060" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Outputs bounding box of a mesh|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Outputs bounding box of a mesh|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -117,7 +125,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="12885" top="45060" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|BoundingBox - EX9.Geometry Mesh|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|BoundingBox - EX9.Geometry Mesh|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -129,7 +137,7 @@
    <NODE id="4" nodename="Transform (Transform 3d Vector)" systemname="Transform (Transform 3d Vector)">
    <BOUNDS height="0" left="4140" top="3780" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -150,8 +158,8 @@
    </NODE>
    <LINK dstnodeid="10" dstpinname="Mesh" srcnodeid="18" srcpinname="Mesh">
    </LINK>
-   <NODE systemname="GetSlice (Node)" nodename="GetSlice (Node)" componentmode="Hidden" id="19">
-   <BOUNDS type="Node" left="4125" top="4215" width="100" height="100">
+   <NODE componentmode="Hidden" id="19" nodename="GetSlice (Node)" systemname="GetSlice (Node)">
+   <BOUNDS height="100" left="4125" top="4215" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
@@ -160,21 +168,21 @@
    <PIN pinname="Index" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="4" srcpinname="Transform Out" dstnodeid="19" dstpinname="Input Node">
+   <LINK dstnodeid="19" dstpinname="Input Node" srcnodeid="4" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="19" srcpinname="Output Node" dstnodeid="6" dstpinname="Transform">
+   <LINK dstnodeid="6" dstpinname="Transform" srcnodeid="19" srcpinname="Output Node">
    </LINK>
-   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="20">
-   <BOUNDS type="Node" left="885" top="1560" width="100" height="100">
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="885" top="1560" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="885" top="1560" width="5205" height="330">
+   <BOUNDS height="330" left="885" top="1560" type="Box" width="5205">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="resources\v.x">
+   <PIN pinname="Input String" slicecount="1" values="..\..\assets\geometries\v.x" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="Output String" dstnodeid="18" dstpinname="Filename">
+   <LINK dstnodeid="18" dstpinname="Filename" srcnodeid="20" srcpinname="Output String">
    </LINK>
    <NODE id="21" nodename="BoundingBox (EX9.Geometry Mesh)" systemname="BoundingBox (EX9.Geometry Mesh)">
    <BOUNDS height="270" left="3465" top="3180" type="Node" width="1200">
@@ -182,8 +190,8 @@
    </NODE>
    <LINK dstnodeid="21" dstpinname="Mesh" srcnodeid="18" srcpinname="Mesh">
    </LINK>
-   <LINK srcnodeid="21" srcpinname="Center - SubsetsXYZ" dstnodeid="4" dstpinname="Translate XYZ">
+   <LINK dstnodeid="4" dstpinname="Translate XYZ" srcnodeid="21" srcpinname="Center - SubsetsXYZ">
    </LINK>
-   <LINK srcnodeid="21" srcpinname="Scale - SubsetsXYZ" dstnodeid="4" dstpinname="Scale XYZ">
+   <LINK dstnodeid="4" dstpinname="Scale XYZ" srcnodeid="21" srcpinname="Scale - SubsetsXYZ">
    </LINK>
    </PATCH>

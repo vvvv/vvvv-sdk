@@ -13,19 +13,21 @@
     <PluginsDestFolder>..\lib\nodes\plugins\</PluginsDestFolder>
   </PropertyGroup>
   <ItemGroup>
-    <!--<CoreProjectsToBuild Include="core\**\*.csproj;gui\**\*.csproj" />-->
-    <!--<PluginProjectsToBuild Include="nodes\plugins\*\*\*.csproj" />-->
+    <CoreProjectsToBuild Include="core\**\*.csproj;gui\**\*.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <BuildDependsOn>$(BuildDependsOn)</BuildDependsOn>
     <RebuildDependsOn>Clean;Build</RebuildDependsOn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' " />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
   <Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
     <MSBuild Projects="@(CoreProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" />
-    <!--<MSBuild Projects="@(PluginProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU">
+    <MSBuild Projects="@(ProjectReference)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU">
       <Output TaskParameter="TargetOutputs" ItemName="PluginsOutputFiles" />
-    </MSBuild>-->
+    </MSBuild>
     <CreateItem Include="core\**\bin\$(Configuration)\*;gui\**\bin\$(Configuration)\*">
       <Output TaskParameter="Include" ItemName="CoreOutputFiles" />
     </CreateItem>
@@ -53,7 +55,6 @@
       <Output ItemName="GeneratedFiles" TaskParameter="Include" />
     </CreateItem>
     <Delete Files="@(GeneratedFiles)" />
-    <!--<MSBuild Projects="@(CoreProjectsToBuild);@(PluginProjectsToBuild)" Targets="Clean" Properties="Configuration=$(Configuration);" />-->
   </Target>
   <!-- Will simply print all of the project files to be built -->
   <!--

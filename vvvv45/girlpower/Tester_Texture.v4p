@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="D:\vvvv_dev\vvvv\vvvv45\girlpower\Tester_Texture.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\Tester_Texture.v4p">
    <BOUNDS height="9135" left="765" top="5355" type="Window" width="15645">
    </BOUNDS>
    <NODE id="60" nodename="Memory (Debug ex9)" systemname="Memory (Debug ex9)">
@@ -8,7 +8,7 @@
    <PIN pinname="Available Texture Memory on automatic Devices" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="59" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="59" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="135" top="645" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="21825" top="16485" type="Window" width="215">
@@ -20,7 +20,7 @@
    </NODE>
    <LINK dstnodeid="59" dstpinname="Y Input Value" srcnodeid="60" srcpinname="Available Texture Memory on automatic Devices">
    </LINK>
-   <NODE id="58" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" systemname="Camera (Transform Softimage)" filename="%VVVV%\modules\vvvv group\Transform\Camera (Transform Softimage).v4p">
+   <NODE filename="%VVVV%\modules\vvvv group\Transform\Camera (Transform Softimage).v4p" id="58" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" systemname="Camera (Transform Softimage)">
    <BOUNDS height="0" left="1515" top="6945" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6000" left="23655" top="13500" type="Window" width="9000">
@@ -36,7 +36,7 @@
    <PIN pinname="Distortion" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="57" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="57" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="675" top="2775" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="2280" left="8625" top="360" type="Window" width="2040">
@@ -50,6 +50,16 @@
    <PIN pinname="Background Color" slicecount="1" values="|0.10563,0.20455,0.55546,1.00000|">
    </PIN>
    <PIN pinname="Presentation Interval" slicecount="1" values="immediately">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="56" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
@@ -72,7 +82,7 @@
    <PIN pinname="Type" slicecount="1" values="Texture">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="55" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="55" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="540" top="7470" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="2280" left="810" top="360" type="Window" width="7800">
@@ -81,11 +91,21 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
    </PIN>
    <PIN pinname="Presentation Interval" slicecount="1" values="immediately">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="54" nodename="Quad (DX9)" systemname="Quad (DX9)">
@@ -98,9 +118,9 @@
    </NODE>
    <LINK dstnodeid="57" dstpinname="Layers" srcnodeid="54" srcpinname="Layer">
    </LINK>
-   <LINK dstnodeid="55" dstpinname="View Transform" srcnodeid="58" srcpinname="View">
+   <LINK dstnodeid="55" dstpinname="View" srcnodeid="58" srcpinname="View">
    </LINK>
-   <LINK dstnodeid="55" dstpinname="Projection Transform" srcnodeid="58" srcpinname="Projection">
+   <LINK dstnodeid="55" dstpinname="Projection" srcnodeid="58" srcpinname="Projection">
    </LINK>
    <NODE id="53" nodename="LFO (Animation)" systemname="LFO (Animation)">
    <BOUNDS height="0" left="1650" top="1380" type="Node" width="0">
@@ -116,7 +136,7 @@
    </LINK>
    <LINK dstnodeid="52" dstpinname="Rotate" srcnodeid="53" srcpinname="Output">
    </LINK>
-   <NODE id="51" nodename="Info (EX9.Texture)" systemname="Info (EX9.Texture)">
+   <NODE id="51" nodename="Info (EX9.Texture)" systemname="INFO (EX9.TEXTURE)">
    <BOUNDS height="270" left="4185" top="5130" type="Node" width="1890">
    </BOUNDS>
    <PIN pinname="Texture" visible="1">
@@ -192,7 +212,7 @@
    <PIN pinname="frames per second" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="45" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="45" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="1830" top="645" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="24015" top="12225" type="Window" width="215">
@@ -278,7 +298,7 @@
    </LINK>
    <LINK dstnodeid="51" dstpinname="Texture" srcnodeid="44" srcpinname="Texture Out">
    </LINK>
-   <NODE componentmode="InABox" id="40" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="40" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3705" top="5700" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="6465" top="13605" type="Window" width="215">
@@ -292,7 +312,7 @@
    </NODE>
    <LINK dstnodeid="40" dstpinname="Y Input Value" srcnodeid="51" srcpinname="Width">
    </LINK>
-   <NODE componentmode="InABox" id="39" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="39" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4305" top="5700" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="6765" top="13905" type="Window" width="215">
@@ -306,7 +326,7 @@
    </NODE>
    <LINK dstnodeid="39" dstpinname="Y Input Value" srcnodeid="51" srcpinname="Height">
    </LINK>
-   <NODE componentmode="InABox" id="38" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="38" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4920" top="5700" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7065" top="14205" type="Window" width="215">
@@ -320,7 +340,7 @@
    </NODE>
    <LINK dstnodeid="38" dstpinname="Y Input Value" srcnodeid="51" srcpinname="Depth">
    </LINK>
-   <NODE componentmode="InABox" id="37" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="37" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="5535" top="5700" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7680" top="14205" type="Window" width="215">
@@ -380,7 +400,7 @@
    <PIN pinname="Apply" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="33" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="33" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3720" top="2610" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="4725" top="11820" type="Window" width="215">
@@ -395,7 +415,7 @@
    <NODE id="32" nodename="Expr (Value Legacy)" systemname="Expr (Value Legacy)">
    <BOUNDS height="0" left="3735" top="2925" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Term" slicecount="1" values="1/a*512">
+   <PIN pinname="Term" slicecount="1" values="1/a*512" encoded="0">
    </PIN>
    <PIN pinname="A" visible="1">
    </PIN>
@@ -406,7 +426,7 @@
    </LINK>
    <LINK dstnodeid="43" dstpinname="Width" srcnodeid="32" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="31" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="31" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4920" top="2595" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="5025" top="12120" type="Window" width="215">
@@ -421,7 +441,7 @@
    <NODE id="30" nodename="Expr (Value Legacy)" systemname="Expr (Value Legacy)">
    <BOUNDS height="0" left="4935" top="2910" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Term" slicecount="1" values="1/a*512">
+   <PIN pinname="Term" slicecount="1" values="1/a*512" encoded="0">
    </PIN>
    <PIN pinname="A" visible="1">
    </PIN>
@@ -516,12 +536,14 @@
    <PIN pinname="Mip Map Count" slicecount="1" values="All">
    </PIN>
    </NODE>
-   <NODE id="24" nodename="VideoTexture (EX9.Texture VMR9)" systemname="VideoTexture (EX9.Texture VMR9)">
+   <NODE id="24" nodename="VideoTexture (EX9.Texture VMR9)" systemname="VIDEOTEXTURE (EX9.TEXTURE VMR9)">
    <BOUNDS height="0" left="12465" top="3375" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
    <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Texture Size Mode" slicecount="1" values="Pow2Stretched">
    </PIN>
    </NODE>
    <NODE id="23" nodename="AsVideo (EX9.Texture)" systemname="AsVideo (EX9.Texture)">
@@ -543,12 +565,12 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="E:\Triko_DV.avi">
+   <PIN pinname="Input String" slicecount="1" values="E:\Triko_DV.avi" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="25" dstpinname="Filename" srcnodeid="22" srcpinname="Output String">
    </LINK>
-   <NODE componentmode="InABox" id="21" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="21" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="7830" top="2265" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="9705" top="11400" type="Window" width="215">
@@ -626,7 +648,7 @@
    <PIN pinname="Texture Out" visible="1">
    </PIN>
    </NODE>
-   <NODE id="17" nodename="PIPET (EX9.TEXTURE)" systemname="Pipet (EX9.Texture)">
+   <NODE id="17" nodename="PIPET (EX9.TEXTURE)" systemname="Pipet (EX9.Texture Legacy)">
    <BOUNDS height="0" left="7995" top="6285" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Texture" visible="1">
@@ -638,12 +660,12 @@
    <PIN pinname="Y" visible="1">
    </PIN>
    </NODE>
-   <NODE id="16" nodename="Buffer (EX9.Texture)" systemname="Buffer (EX9.Texture)">
+   <NODE id="16" nodename="Buffer (EX9.Texture)" systemname="BUFFER (EX9.TEXTURE)">
    <BOUNDS height="0" left="12855" top="6315" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Texture In" visible="1">
    </PIN>
-   <PIN pinname="Insert" slicecount="1" values="1">
+   <PIN pinname="Set" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Frame Count" visible="1">
    </PIN>
@@ -733,7 +755,7 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="images\earth_512x512.jpg">
+   <PIN pinname="Input String" slicecount="1" values="..\lib\assets\images\earth_512x512.jpg" encoded="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="19" dstpinname="Filename" srcnodeid="9" srcpinname="Output String">
@@ -778,7 +800,7 @@
    </LINK>
    <LINK dstnodeid="6" dstpinname="Texture" srcnodeid="16" srcpinname="Texture Out">
    </LINK>
-   <NODE componentmode="InAWindow" id="5" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="5" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="11160" top="8085" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4860" left="12735" top="345" type="Window" width="6120">
@@ -786,6 +808,16 @@
    <BOUNDS height="1800" left="11160" top="8085" type="Box" width="2400">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="4" nodename="Group (EX9)" systemname="Group (EX9)">
@@ -848,7 +880,7 @@
    </NODE>
    <LINK dstnodeid="3" dstpinname="TranslateY" srcnodeid="1" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="12015" top="4980" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="13620" top="9615" type="Window" width="215">
@@ -874,12 +906,12 @@
    </LINK>
    <INFO author="" description="" tags="">
    </INFO>
-   <NODE systemname="Renderer (TTY)" nodename="Renderer (TTY)" componentmode="InAWindow" id="61">
-   <BOUNDS type="Node" left="13905" top="8085" width="100" height="100">
+   <NODE componentmode="InAWindow" id="61" nodename="Renderer (TTY)" systemname="Renderer (TTY)">
+   <BOUNDS height="100" left="13905" top="8085" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="13905" top="8085" width="2400" height="1800">
+   <BOUNDS height="1800" left="13905" top="8085" type="Box" width="2400">
    </BOUNDS>
-   <BOUNDS type="Window" left="780" top="2835" width="11910" height="2370">
+   <BOUNDS height="2370" left="780" top="2835" type="Window" width="11910">
    </BOUNDS>
    </NODE>
    </PATCH>

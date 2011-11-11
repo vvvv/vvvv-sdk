@@ -292,7 +292,7 @@ namespace VVVV.Nodes
         	
         	
         	bool recalculate = false;
-            INodeIOBase currInterface;
+            object currInterface;
             
             for (int i=0; i<poseNodes.Count; i++)
             {
