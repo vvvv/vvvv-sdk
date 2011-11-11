@@ -31,6 +31,10 @@ namespace VVVV.DataTypes.Bullet
 		protected override CollisionShape CreateShape()
 		{
 			ConvexHullShape shape = new ConvexHullShape(this.vertices);
+            //BvhTriangleMeshShape bvh = new BvhTriangleMeshShape(
+            //StridingMeshInterface smi = new StridingMeshInterface();
+            //TriangleIndexVertexArray tiv = new TriangleIndexVertexArray(
+            //StridingMeshInterface
 			return shape;
 		}
 
