@@ -102,7 +102,8 @@ namespace VVVV.Nodes
 			trans.X = m.M41;
 			trans.Y = m.M42;
 			
-			new Matrix2x2(m.ToMatrix4x4()).Decompose(out scale, out rotate);
+			var m2d = new Matrix2x2(m.ToMatrix4x4());
+			m2d.Decompose(out scale, out rotate);
 			
 			//add rotation
 			elem.Transforms = new SvgTransformCollection();

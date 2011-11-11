@@ -1,18 +1,18 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
    <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\SVG\_root_SVG.v4p" filename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\SVG\_root_SVG.v4p" systemname="_root_SVG">
-   <BOUNDS height="12705" left="6900" top="420" type="Window" width="12150">
+   <BOUNDS height="12705" left="12870" top="1365" type="Window" width="12150">
    </BOUNDS>
    <NODE componentmode="Hidden" id="25" nodename="Quad (DX9)" systemname="Quad (DX9)">
    <BOUNDS height="100" left="600" top="8925" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Texture" visible="1">
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
    <PIN pinname="Transform" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="26" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="26" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="100" left="615" top="10755" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="1800" left="615" top="10755" type="Box" width="2400">
@@ -26,6 +26,16 @@
    <PIN pinname="Actual Backbuffer Height" visible="1">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="46" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
@@ -113,7 +123,7 @@
    </PIN>
    <PIN pinname="Write">
    </PIN>
-   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="164" dstpinname="Width" srcnodeid="26" srcpinname="Actual Backbuffer Width">
@@ -129,37 +139,37 @@
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
-   <NODE systemname="Document (SVG Split)" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\SVG\SVGNodes.dll" nodename="Document (SVG Split)" componentmode="Hidden" id="178">
-   <BOUNDS type="Node" left="6960" top="5730" width="100" height="100">
+   <NODE componentmode="Hidden" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\SVG\SVGNodes.dll" id="178" nodename="Document (SVG Split)" systemname="Document (SVG Split)">
+   <BOUNDS height="100" left="6960" top="5730" type="Node" width="100">
    </BOUNDS>
    </NODE>
-   <NODE systemname="Reader (SVG)" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\SVG\SVGNodes.dll" nodename="Reader (SVG)" componentmode="Hidden" id="179">
-   <BOUNDS type="Node" left="4890" top="6240" width="100" height="100">
+   <NODE componentmode="Hidden" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\SVG\SVGNodes.dll" id="179" nodename="Reader (SVG)" systemname="Reader (SVG)">
+   <BOUNDS height="100" left="4890" top="6240" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Filename" slicecount="1" values="Test.svg" encoded="0">
+   <PIN encoded="0" pinname="Filename" slicecount="1" values="Test.svg">
    </PIN>
    <PIN pinname="Document" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="176" srcpinname="Layer" dstnodeid="164" dstpinname="SVG Layer">
+   <LINK dstnodeid="164" dstpinname="SVG Layer" srcnodeid="176" srcpinname="Layer">
    </LINK>
-   <NODE systemname="Renderer (TTY)" nodename="Renderer (TTY)" componentmode="InAWindow" id="186">
-   <BOUNDS type="Node" left="5460" top="9225" width="100" height="100">
+   <NODE componentmode="InAWindow" id="186" nodename="Renderer (TTY)" systemname="Renderer (TTY)">
+   <BOUNDS height="100" left="5460" top="9225" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="5460" top="9225" width="2400" height="1800">
+   <BOUNDS height="1800" left="5460" top="9225" type="Box" width="2400">
    </BOUNDS>
-   <BOUNDS type="Window" left="7485" top="4950" width="11715" height="5370">
+   <BOUNDS height="5100" left="7485" top="4950" type="Window" width="19905">
    </BOUNDS>
    </NODE>
-   <NODE systemname="SVGTexture (EX9.Texture)" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\SVG\SVGNodes.dll" nodename="SVGTexture (EX9.Texture)" componentmode="Hidden" id="187">
-   <BOUNDS type="Node" left="4875" top="7740" width="100" height="100">
+   <NODE componentmode="Hidden" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\SVG\SVGNodes.dll" id="187" nodename="SVGTexture (EX9.Texture)" systemname="SVGTexture (EX9.Texture)">
+   <BOUNDS height="100" left="4875" top="7740" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Document" visible="1">
    </PIN>
-   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
@@ -170,16 +180,14 @@
    <PIN pinname="Background Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="187" srcpinname="Texture Out" dstnodeid="25" dstpinname="Texture">
-   </LINK>
-   <NODE systemname="Transform (Transform 2d)" nodename="Transform (Transform 2d)" componentmode="Hidden" id="188">
-   <BOUNDS type="Node" left="6810" top="6900" width="100" height="100">
+   <NODE componentmode="Hidden" id="188" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
+   <BOUNDS height="100" left="6810" top="6900" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Transform (Transform 2d)" nodename="Transform (Transform 2d)" componentmode="Hidden" id="189">
-   <BOUNDS type="Node" left="1800" top="2805" width="100" height="100">
+   <NODE componentmode="Hidden" id="189" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
+   <BOUNDS height="100" left="1800" top="2805" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -198,8 +206,8 @@
    <PIN pinname="Transform In" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="CircularSpread (Spreads)" nodename="CircularSpread (Spreads)" componentmode="Hidden" id="190">
-   <BOUNDS type="Node" left="1320" top="1920" width="100" height="100">
+   <NODE componentmode="Hidden" id="190" nodename="CircularSpread (Spreads)" systemname="CircularSpread (Spreads)">
+   <BOUNDS height="100" left="1320" top="1920" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Output X" visible="1">
    </PIN>
@@ -216,12 +224,12 @@
    <PIN pinname="Phase" slicecount="1" values="0.59">
    </PIN>
    </NODE>
-   <LINK srcnodeid="190" srcpinname="Output X" dstnodeid="189" dstpinname="TranslateX">
+   <LINK dstnodeid="189" dstpinname="TranslateX" srcnodeid="190" srcpinname="Output X">
    </LINK>
-   <LINK srcnodeid="190" srcpinname="Output Y" dstnodeid="189" dstpinname="TranslateY">
+   <LINK dstnodeid="189" dstpinname="TranslateY" srcnodeid="190" srcpinname="Output Y">
    </LINK>
-   <NODE systemname="HSL (Color Join)" nodename="HSL (Color Join)" componentmode="Hidden" id="191">
-   <BOUNDS type="Node" left="3885" top="2550" width="100" height="100">
+   <NODE componentmode="Hidden" id="191" nodename="HSL (Color Join)" systemname="HSL (Color Join)">
+   <BOUNDS height="100" left="3885" top="2550" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -234,8 +242,8 @@
    <PIN pinname="Alpha" slicecount="1" values="0.73">
    </PIN>
    </NODE>
-   <NODE systemname="LinearSpread (Spreads)" nodename="LinearSpread (Spreads)" componentmode="Hidden" id="192">
-   <BOUNDS type="Node" left="3780" top="1890" width="100" height="100">
+   <NODE componentmode="Hidden" id="192" nodename="LinearSpread (Spreads)" systemname="LinearSpread (Spreads)">
+   <BOUNDS height="100" left="3780" top="1890" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -244,10 +252,10 @@
    <PIN pinname="Input" slicecount="1" values="-0.86">
    </PIN>
    </NODE>
-   <LINK srcnodeid="192" srcpinname="Output" dstnodeid="191" dstpinname="Hue">
+   <LINK dstnodeid="191" dstpinname="Hue" srcnodeid="192" srcpinname="Output">
    </LINK>
-   <NODE systemname="Transform (Transform 2d)" nodename="Transform (Transform 2d)" componentmode="Hidden" id="193">
-   <BOUNDS type="Node" left="1125" top="4485" width="100" height="100">
+   <NODE componentmode="Hidden" id="193" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
+   <BOUNDS height="100" left="1125" top="4485" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -256,32 +264,32 @@
    <PIN pinname="ScaleX" slicecount="1" values="2.48">
    </PIN>
    </NODE>
-   <NODE systemname="Formulor_Artboard " filename="Formulor_Artboard .v4p" nodename="Formulor_Artboard .v4p" componentmode="Hidden" id="194">
-   <BOUNDS type="Node" left="5685" top="4560" width="100" height="100">
+   <NODE componentmode="Hidden" filename="Formulor_Artboard .v4p" id="194" nodename="Formulor_Artboard .v4p" systemname="Formulor_Artboard " path="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\SVG\">
+   <BOUNDS height="100" left="5685" top="4560" type="Node" width="100">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="164" srcpinname="Document" dstnodeid="187" dstpinname="Document">
+   <LINK dstnodeid="187" dstpinname="Document" srcnodeid="164" srcpinname="Document">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="195" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="3075" top="2040" width="0" height="0">
+   <NODE componentmode="InABox" id="195" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3075" top="2040" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="3075" top="2040" width="795" height="240">
+   <BOUNDS height="240" left="3075" top="2040" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="195" srcpinname="Y Output Value" dstnodeid="189" dstpinname="ScaleX">
+   <LINK dstnodeid="189" dstpinname="ScaleX" srcnodeid="195" srcpinname="Y Output Value">
    </LINK>
-   <LINK srcnodeid="195" srcpinname="Y Output Value" dstnodeid="189" dstpinname="ScaleY">
+   <LINK dstnodeid="189" dstpinname="ScaleY" srcnodeid="195" srcpinname="Y Output Value">
    </LINK>
-   <NODE systemname="Quad (SVG)" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\SVG\SVGNodes.dll" nodename="Quad (SVG)" componentmode="Hidden" id="180">
-   <BOUNDS type="Node" left="2370" top="3870" width="100" height="100">
+   <NODE componentmode="Hidden" filename="..\..\..\..\..\..\..\..\..\vvvv\_externals\plugins\SVG\SVGNodes.dll" id="180" nodename="Quad (SVG)" systemname="Quad (SVG)">
+   <BOUNDS height="100" left="2370" top="3870" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -296,22 +304,22 @@
    <PIN pinname="Corner Radius XY" slicecount="2" values="0,0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="180" srcpinname="Layer" dstnodeid="176" dstpinname="Input 1">
+   <LINK dstnodeid="180" dstpinname="Transform" srcnodeid="189" srcpinname="Transform Out">
    </LINK>
-   <LINK srcnodeid="189" srcpinname="Transform Out" dstnodeid="180" dstpinname="Transform">
+   <LINK dstnodeid="180" dstpinname="Fill" srcnodeid="191" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="191" srcpinname="Output" dstnodeid="180" dstpinname="Fill">
+   <LINK dstnodeid="187" dstpinname="Width" srcnodeid="26" srcpinname="Actual Backbuffer Width">
    </LINK>
-   <LINK srcnodeid="26" srcpinname="Actual Backbuffer Width" dstnodeid="187" dstpinname="Width">
+   <LINK dstnodeid="187" dstpinname="Height" srcnodeid="26" srcpinname="Actual Backbuffer Height">
    </LINK>
-   <LINK srcnodeid="26" srcpinname="Actual Backbuffer Height" dstnodeid="187" dstpinname="Height">
-   </LINK>
-   <NODE systemname="Scale (Transform)" nodename="Scale (Transform)" componentmode="Hidden" id="196">
-   <BOUNDS type="Node" left="165" top="915" width="100" height="100">
+   <NODE componentmode="Hidden" id="196" nodename="Scale (Transform)" systemname="Scale (Transform)">
+   <BOUNDS height="100" left="165" top="915" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="196" srcpinname="Transform Out" dstnodeid="189" dstpinname="Transform In">
+   <LINK dstnodeid="189" dstpinname="Transform In" srcnodeid="196" srcpinname="Transform Out">
+   </LINK>
+   <LINK srcnodeid="180" srcpinname="Layer" dstnodeid="176" dstpinname="Input 1">
    </LINK>
    </PATCH>
