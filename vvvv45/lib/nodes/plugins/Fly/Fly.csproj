@@ -1,0 +1,35 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{EE52D677-5216-499E-9AB0-F59C756E86E8}</ProjectGuid>
+    <Configuration>Debug</Configuration>
+    <Platform>x86</Platform>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VVVV.Nodes</RootNamespace>
+    <AssemblyName>Fly</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ReferencePath>$(VVVV45)\bin\managed\</ReferencePath>
+    <StartProgram>$(VVVV45)\vvvv.exe</StartProgram>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="VVVV.PluginInterfaces" />
+    <Reference Include="VVVV.Utils" />
+	<Reference Include="System.Core" />
+	<Reference Include="SlimDX" />
+	<Reference Include="VVVV.Utils3rdParty" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Fly.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>

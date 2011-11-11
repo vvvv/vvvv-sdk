@@ -1,0 +1,189 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.10.dtd" >
+   <PATCH nodename="Y:\vvvv33\help\Clip (EX9.RenderState) help.v4p">
+   <BOUNDS height="5640" left="4650" top="3375" type="Window" width="7455">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="10" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="3705" top="105" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="5820" left="9150" top="2925" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="3135" left="3705" top="105" type="Box" width="3480">
+   </BOUNDS>
+   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Depth Buffer" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="2085" top="1545" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="7">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="1500" top="1995" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Z" linkstyle="PolyLine" srcnodeid="9" srcpinname="Output">
+   <LINKPOINT x="2115" y="1710">
+   </LINKPOINT>
+   <LINKPOINT x="2115" y="1710">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Y" linkstyle="PolyLine" srcnodeid="9" srcpinname="Output">
+   <LINKPOINT x="2115" y="1905">
+   </LINKPOINT>
+   <LINKPOINT x="1920" y="1905">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="7" nodename="Teapot (EX9.Geometry)">
+   <BOUNDS height="0" left="600" top="2325" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="6" managers="" nodename="UniformScale (Transform)">
+   <PIN pinname="Transform In" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" pintype="Input" slicecount="1" visible="1" values="1.07">
+   </PIN>
+   <PIN pinname="Transform Out" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="1500" top="2445" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Transform In" srcnodeid="8" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="855" top="1020" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6420" top="5955" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="510" left="855" top="1020" type="Box" width="435">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="True">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Clip (EX9.RenderState)">
+   <BOUNDS height="0" left="450" top="1680" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Alpha Test">
+   </PIN>
+   <PIN pinname="Compare Function">
+   </PIN>
+   <PIN pinname="Alpha Blending">
+   </PIN>
+   <PIN pinname="Source Blend Mode">
+   </PIN>
+   <PIN pinname="Destination Blend Mode">
+   </PIN>
+   <PIN pinname="Draw Mode" visible="1">
+   </PIN>
+   <PIN pinname="Clipping" visible="1">
+   </PIN>
+   <PIN pinname="Render State In" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Clipping" srcnodeid="5" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="585" left="15" top="3555" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="1560" left="15" top="3555" type="Box" width="7200">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|vvvv can clip primitives that render partially outside the viewport. Direct3D clipping is controlled by the Clip render state node. Set this render state to 1 (the default value) to enable primitive clipping. Set it to 0 to disable Direct3D clipping services.&cr;&lf;&cr;&lf;The primitive clipping render state is entirely independent of clipping operations that can be performed on vertices within a vertex buffer. The Direct3DDevice9.ProcessVertices method accepts its own flags to control primitive clipping during vertex processing.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="DrawFixed (EX9.Effect)">
+   <BOUNDS height="0" left="450" top="3165" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Ambient Color">
+   </PIN>
+   <PIN pinname="Diffuse Color">
+   </PIN>
+   <BOUNDS left="3300" top="5115" type="Box">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Mesh" srcnodeid="7" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Transform" linkstyle="PolyLine" srcnodeid="6" srcpinname="Transform Out">
+   <LINKPOINT x="1530" y="3015">
+   </LINKPOINT>
+   <LINKPOINT x="945" y="3015">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Render State" srcnodeid="4" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="465" left="15" top="390" type="Box" width="3525">
+   </BOUNDS>
+   <BOUNDS height="160" left="90" top="14880" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Use this node to control the behaviour of nodes that render partially outside the viewport.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3450">
+   </BOUNDS>
+   <BOUNDS height="160" left="90" top="14880" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Clip - EX9.RenderState|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Layers" srcnodeid="2" srcpinname="Layer">
+   <LINKPOINT x="465" y="3540">
+   </LINKPOINT>
+   <LINKPOINT x="3345" y="3540">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>
