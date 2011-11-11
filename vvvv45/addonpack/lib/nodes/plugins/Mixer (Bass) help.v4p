@@ -1,0 +1,359 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta19.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Bass\trunk\help\Mixer (Bass) help.v4p">
+   <BOUNDS height="8505" left="2430" top="1710" type="Window" width="13455">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="12" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassFileStreamNode">
+   <BOUNDS height="0" left="1515" top="3270" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="7230" top="5220" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1515" top="3270" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Play" visible="1">
+   </PIN>
+   <PIN pinname="Mono" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Pitch" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Tempo" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="File End" visible="1">
+   </PIN>
+   <PIN pinname="CurrentPosition" visible="1">
+   </PIN>
+   <PIN pinname="Is Decoding" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Handle Out" visible="1">
+   </PIN>
+   <PIN pinname="File Name" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="11" nodename=":PLUGINS:\BassSound.dll|BassSound.BassAudioOutNode">
+   <BOUNDS height="0" left="1275" top="7080" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="7530" top="7035" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1275" top="7080" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="HandleIn" visible="1">
+   </PIN>
+   <PIN pinname="Device" slicecount="1" visible="1" values="-1">
+   </PIN>
+   <PIN pinname="Handles In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2640" top="2190" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9480" top="5625" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2640" top="2190" type="Box" width="2985">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\..\..\..\..\Music\Tipper\Tip hop\01 - tepid bile.mp3|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|File Name|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="600" top="2295" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7095" top="5835" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="600" top="2295" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Play">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Play" srcnodeid="9" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="8" nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.MixerNode">
+   <BOUNDS height="270" left="3345" top="6180" type="Node" width="2835">
+   </BOUNDS>
+   <BOUNDS height="0" left="8640" top="7380" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="3345" top="6180" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Inputs Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Channel Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Handle 1" visible="1">
+   </PIN>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   <PIN pinname="Levels 1" visible="1">
+   </PIN>
+   <PIN pinname="Handle 2" visible="1">
+   </PIN>
+   <PIN pinname="Levels 2" visible="1">
+   </PIN>
+   <PIN pinname="Handle In 1" visible="1">
+   </PIN>
+   <PIN pinname="Volume 1" visible="1">
+   </PIN>
+   <PIN pinname="Volume 2" visible="1">
+   </PIN>
+   <PIN pinname="Handle In 2" visible="1">
+   </PIN>
+   <PIN pinname="Play" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3465" top="4020" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9075" top="7395" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1395" left="3465" top="4020" type="Box" width="1980">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Volume 1|">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="4" values="0.0151515151515151,0,0,0.166666666666667">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" values="1,0,0,0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="7755" top="2250" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13290" top="6615" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="7755" top="2250" type="Box" width="2985">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\..\..\..\..\Music\Tipper\Tip hop\17 - cycleswithincycleswithin.mp3|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|File Name|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6060" top="2250" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9765" top="6945" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="6060" top="2250" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Play">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="4" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassFileStreamNode">
+   <BOUNDS height="0" left="6900" top="3270" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="13380" top="5220" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="6900" top="3270" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Play" visible="1">
+   </PIN>
+   <PIN pinname="Mono" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Pitch" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Tempo" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="File End" visible="1">
+   </PIN>
+   <PIN pinname="CurrentPosition" visible="1">
+   </PIN>
+   <PIN pinname="Is Decoding" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Handle Out" visible="1">
+   </PIN>
+   <PIN pinname="File Name" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Play" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7170" top="3735" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="14130" top="8700" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1395" left="7170" top="3735" type="Box" width="1980">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Volume 1|">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="4" values="0.0151515151515151,0,0,0.0151515151515151">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" values="0,0,0,0.818181818181818">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="0" left="6495" top="6180" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12975" top="9300" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1170" left="6495" top="6180" type="Box" width="4545">
+   </BOUNDS>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="|You can add/remove channels by going to the inspector, and set the Inputs Count pin.&cr;&lf;&cr;&lf;To output mixer to Bass AudioOut, the Is Decoding config pin must be equal to 0|">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3120" top="3105" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10185" top="6570" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="525" left="3120" top="3105" type="Box" width="3675">
+   </BOUNDS>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="|To attach a FileStream to a Mixer, the Is Decoding Pin (Inspector) must be set to 1|">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Handle In 1" srcnodeid="12" srcpinname="Handle Out">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Volume 1" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Volume 2" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Handle In 2" srcnodeid="4" srcpinname="Handle Out">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="File Name" srcnodeid="6" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="File Name" srcnodeid="10" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Handles In" srcnodeid="8" srcpinname="Handle">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2010" top="5145" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8250" top="8880" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="465" left="2010" top="5145" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Play">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Play" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="255" left="570" top="795" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="330" left="570" top="795" type="Box" width="2895">
+   </BOUNDS>
+   <BOUNDS height="160" left="11640" top="16905" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Channel Mixer for Bass streams|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="270" left="570" top="420" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="570" top="420" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="11640" top="16905" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Mixer - Bass|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>
