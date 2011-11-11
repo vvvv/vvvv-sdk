@@ -1,7 +1,7 @@
 ﻿using System;
 using VVVV.Core;
 
-namespace VVVV.Tests.Core
+namespace CoreTests
 {
     [Serializable]
     class TestIDItem : IIDItem

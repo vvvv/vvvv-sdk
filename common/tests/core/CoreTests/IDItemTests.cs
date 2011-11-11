@@ -4,7 +4,7 @@ using VVVV.Core;
 using VVVV.Core.Collections;
 using VVVV.Core.Model;
 
-namespace VVVV.Tests.Core
+namespace CoreTests
 {
     [TestFixture]
     public class IDItemTests

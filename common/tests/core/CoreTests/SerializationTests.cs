@@ -10,7 +10,7 @@ using VVVV.Core.Commands;
 using VVVV.Core.Model;
 using VVVV.Core.Serialization;
 
-namespace VVVV.Tests.Core
+namespace CoreTests
 {
     [TestFixture]
     public class SerializationTests
