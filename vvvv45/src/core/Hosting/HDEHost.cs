@@ -350,7 +350,7 @@ namespace VVVV.Hosting
             get
             {
                 if (FRootNode == null)
-                    FRootNode = Node.Create(null, FVVVVHost.Root, NodeInfoFactory);
+                    FRootNode = Node.Create(FVVVVHost.Root, NodeInfoFactory);
                 return FRootNode;
             }
         }
