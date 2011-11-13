@@ -1045,6 +1045,13 @@ namespace VVVV.PluginInterfaces.V1
 		/// This sets view and projection matrices.
 		/// </summary>
 		void SetRenderSpace();
+		/// <summary>
+		/// Used to retrieve a World Matrix from the pin at the specified slice. 
+		/// You should call this method only from within your Render method when supporting the IPluginDXLayer interface.
+		/// </summary>
+		/// <param name="Index">The index of the slice to retrieve the Matrix from.</param>
+		/// <param name="Value">The retrieved Matrix.</param>
+		void GetRenderWorldMatrix(int Index, out Matrix Value);
 	}
 	
 	/// <summary>
