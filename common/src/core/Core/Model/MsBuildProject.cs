@@ -95,7 +95,7 @@ namespace VVVV.Core.Model
             protected set;
         }
 		
-		public override void Load()
+		protected override void DoLoad()
 		{
 			var projectPath = Location.LocalPath;
 			var projectDir = Path.GetDirectoryName(projectPath);
@@ -194,9 +194,7 @@ namespace VVVV.Core.Model
 				}
 			}
 			
-			IsDirty = false;
-
-			base.Load();
+			base.DoLoad();
 		}
 
         //tries to combine the given path and reference name with the reference paths

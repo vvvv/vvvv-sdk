@@ -44,7 +44,6 @@ namespace VVVV.Core.View
                                 command.Append(Command.Add(FReferences, reference));
                             }
                         }
-                        command.Append(Command.Save(FProject));
                         CommandHistory.Insert(command);
                     }
                 }
