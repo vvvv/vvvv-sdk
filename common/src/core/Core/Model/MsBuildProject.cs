@@ -1,13 +1,15 @@
 ﻿using System;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
 using VVVV.Core.Logging;
 using VVVV.Core.Runtime;
-using MsBuild = Microsoft.Build.BuildEngine;
 using VVVV.Core.Utils;
+using VVVV.Utils;
+using MsBuild = Microsoft.Build.BuildEngine;
 
 namespace VVVV.Core.Model
 {
@@ -89,13 +91,13 @@ namespace VVVV.Core.Model
 			set;
 		}
 
-        public string[] ReferencePaths
-        {
-            get;
-            protected set;
-        }
+		public List<string> ReferencePaths
+		{
+			get;
+			protected set;
+		}
 		
-		public override void Load()
+		protected override void DoLoad()
 		{
 			var projectPath = Location.LocalPath;
 			var projectDir = Path.GetDirectoryName(projectPath);
@@ -108,14 +110,22 @@ namespace VVVV.Core.Model
 			var setupInformation = AppDomain.CurrentDomain.SetupInformation;
 			// Always null, why? probing path is set in vvvv.exe.config
 			// var searchPath = AppDomain.CurrentDomain.RelativeSearchPath;
-			ReferencePaths = new string[] {
-				Path.Combine(setupInformation.ApplicationBase, "lib", "core"),
-				setupInformation.ApplicationBase
+			ReferencePaths = new List<string>() 
+			{
+				Path.Combine(setupInformation.ApplicationBase, "lib", "core") 
 			};
 			
 			var referencePathProperty = msBuildProject.GetEvaluatedProperty("ReferencePath");
 			if (!string.IsNullOrEmpty(referencePathProperty))
-				ReferencePaths = referencePathProperty.Split(splitChars, splitOptions).Concat(ReferencePaths).ToArray();
+			{
+				foreach (var refPath in referencePathProperty.Split(splitChars, splitOptions))
+				{
+					if (!ReferencePaths.Contains(refPath.Trim()))
+					{
+						ReferencePaths.Add(refPath);
+					}
+				}
+			}
 			
 			// Iterate through the various itemgroups
 			// and subsequently through the items
@@ -142,8 +152,8 @@ namespace VVVV.Core.Model
 								
 								if (!File.Exists(assemblyLocation))
 								{
-                                    //search in reference paths
-                                    assemblyLocation = TryAddReferencePath(assemblyLocation, item.Include);
+									//search in reference paths
+									assemblyLocation = TryAddReferencePath(assemblyLocation, item.Include);
 								}
 								
 								if (File.Exists(assemblyLocation))
@@ -151,14 +161,14 @@ namespace VVVV.Core.Model
 								
 								reference = new AssemblyReference(assemblyLocation);
 							}
-                            else
+							else
 							{
 								var assemblyLocation = TryAddReferencePath("", item.Include);
 								if (File.Exists(assemblyLocation))
 									reference = new AssemblyReference(assemblyLocation, true);
 							}
-						
-						
+							
+							
 							// Reference couldn't be found, try GAC
 							if (reference == null)
 							{
@@ -194,33 +204,31 @@ namespace VVVV.Core.Model
 				}
 			}
 			
-			IsDirty = false;
-
-			base.Load();
+			base.DoLoad();
 		}
 
-        //tries to combine the given path and reference name with the reference paths
-        protected string TryAddReferencePath(string path, string referenceName)
-        {
-            foreach (var refPath in ReferencePaths)
-            {
-                var pathToTest = string.Format("{0}.dll", refPath.ConcatPath(referenceName));
-                if (File.Exists(pathToTest))
-                {
-                    path = pathToTest;
-                    break;
-                }
-            }
+		//tries to combine the given path and reference name with the reference paths
+		protected string TryAddReferencePath(string path, string referenceName)
+		{
+			foreach (var refPath in ReferencePaths)
+			{
+				var pathToTest = string.Format("{0}.dll", refPath.ConcatPath(referenceName));
+				if (File.Exists(pathToTest))
+				{
+					path = pathToTest;
+					break;
+				}
+			}
 
-            return path;
-        }
+			return path;
+		}
 
-        //tests if a reference name is in the reference paths
-        private bool InReferencePaths(string refName)
-        {
-            var testPath = TryAddReferencePath("", refName);
-            return testPath != "";
-        }
+		//tests if a reference name is in the reference paths
+		private bool InReferencePaths(string refName)
+		{
+			var testPath = TryAddReferencePath("", refName);
+			return testPath != "";
+		}
 		
 		public override void SaveTo(Uri location)
 		{
@@ -247,19 +255,26 @@ namespace VVVV.Core.Model
 			propertyGroup.AddNewProperty("DefineConstants", "DEBUG;TRACE");
 			propertyGroup.AddNewProperty("AllowUnsafeBlocks", "True");
 
-            //add loaded reference paths
-            var expandedVVVV45Path =  msBuildProject.GetEvaluatedProperty("ReferencePath");
-            foreach (var refPath in ReferencePaths)
-            {
-                if (refPath != expandedVVVV45Path)
-                {
-                    propertyGroup.AddNewProperty("ReferencePath", refPath);
-                }
-            }
+			//add loaded reference paths
+			var expandedVVVV45Path =  msBuildProject.GetEvaluatedProperty("ReferencePath");
+			foreach (var refPath in ReferencePaths)
+			{
+				if (refPath != expandedVVVV45Path)
+				{
+					if (Path.IsPathRooted(refPath))
+					{
+						propertyGroup.AddNewProperty("ReferencePath", PathUtils.MakeRelativePath(projectDir + @"\", refPath + @"\"));
+					}
+					else
+					{
+						propertyGroup.AddNewProperty("ReferencePath", refPath);
+					}
+				}
+			}
 			
 			msBuildProject.AddNewImport("$(MSBuildBinPath)\\Microsoft.CSharp.Targets", null);
 			
-            //add reference items
+			//add reference items
 			foreach (var reference in References)
 			{
 				var item = msBuildProject.AddNewItem("Reference", reference.Name);

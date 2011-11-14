@@ -13,14 +13,14 @@ namespace VVVV.Core.Model
 			// If the location doesn't exist, set IsLoaded property to true
 			if (!File.Exists(Location.LocalPath))
 			{
-			    IsLoaded = true;
+				IsLoaded = true;
 			}
 		}
 		
 		public PersistentIDContainer(string name, Uri location)
 			: this(name, location, false)
 		{
-		    
+			
 		}
 		
 		public event EventHandler Loaded;
@@ -82,29 +82,37 @@ namespace VVVV.Core.Model
 			}
 		}
 		
-		// Should be called by subclass.
-		public virtual void Load()
+		public void Load()
 		{
+			DoLoad();
+			
 			IsLoaded = true;
 			IsDirty = false;
+			
 			OnLoaded(EventArgs.Empty);
 		}
 		
-		// Should be called by subclass.
-		public virtual void Unload()
+		protected abstract void DoLoad();
+		
+		public void Unload()
 		{
 			IsLoaded = false;
 			IsDirty = false;
+			
+			DoUnload();
+			
 			OnUnloaded(EventArgs.Empty);
 		}
 		
+		protected abstract void DoUnload();
+		
 		public void Save()
 		{
-		    if (!IsLoaded)
-		    {
-		        throw new InvalidOperationException(string.Format("{0} is not loaded. Save() not allowed.", this));
-		    }
-		    
+			if (!IsLoaded)
+			{
+				throw new InvalidOperationException(string.Format("{0} is not loaded. Save() not allowed.", this));
+			}
+			
 			SaveTo(Location);
 			IsLoaded = true;
 			IsDirty = false;

@@ -57,7 +57,7 @@ namespace VVVV.Core.Model.FX
 		
 		public string ParameterDescription { get; set; }
 
-		public override void Load()
+		protected override void DoLoad()
 		{
 			var projectPath = Location.LocalPath;
 			Document = DocumentFactory.CreateDocumentFromFile(projectPath) as FXDocument;
@@ -67,7 +67,7 @@ namespace VVVV.Core.Model.FX
 			
 			UpdateReferences();
 			
-			base.Load();
+			base.DoLoad();
 		}
 		
 		protected override CompilerResults DoCompile()

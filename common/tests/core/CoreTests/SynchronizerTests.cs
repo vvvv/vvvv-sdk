@@ -7,7 +7,7 @@ using VVVV.Core.Collections;
 using VVVV.Core.Collections.Sync;
 using VVVV.Core.Model;
 
-namespace Core
+namespace CoreTests
 {
     [TestFixture]
     public class SynchronizerTests
