@@ -71,7 +71,7 @@ namespace VVVV.Hosting
 
 		public string JobStdSubPath {
 			get {
-				return "freeframe";
+				return "freeframes";
 			}
 		}
 		#endregion
