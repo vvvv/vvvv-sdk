@@ -85,6 +85,7 @@
       <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
     </Script>
     <Copy SourceFiles="vvvv45.dtd" DestinationFiles="..\lib\$(VersionInfo).dtd" />
+    <Exec Command="attrib +H ..\vvvv.exe.config" />
   </Target>
   <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />
   <!--
