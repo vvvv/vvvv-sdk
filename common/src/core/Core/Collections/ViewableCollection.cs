@@ -208,17 +208,11 @@ namespace VVVV.Core.Collections
             FInternalCollection.Cleared -= InternalCollection_Cleared;
             FInternalCollection.UpdateBegun -= InternalCollection_UpdateBegun;
             FInternalCollection.Updated -= InternalCollection_Updated;
-            Added = null;
-            FAdded = null;
-            Removed = null;
-            FRemoved = null;
-            Cleared = null;
-            FCleared = null;
-            Updated = null;
-            UpdateBegun = null;
             
             if (FOwnerOfInternalCollection)
                 (FInternalCollection as EditableCollection<T>).Dispose();
+            else
+            	OnCleared();
         }
         
         #endregion

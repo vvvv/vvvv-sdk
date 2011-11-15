@@ -46,6 +46,7 @@ namespace VVVV.Nodes.Bullet
 				
 				SoftBody sb = this.FBodies[i];
 				this.FOutNodes[i].SliceCount = sb.Nodes.Count;
+                //sb.Nodes[0].
 
 				for (int j = 0; j < sb.Nodes.Count; j++)
 				{

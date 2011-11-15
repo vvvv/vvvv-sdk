@@ -72,16 +72,16 @@ namespace VVVV.Core.Model.CS
 			}
 		}
 		
-		public override void Load()
+		protected override void DoLoad()
 		{
 		    FCancelLoading = false;
 		    
-			base.Load();
+			base.DoLoad();
 			References.Added += References_Added;
 			References.Removed += References_Removed;
 		}
 		
-		public override void Unload()
+		protected override void DoUnload()
 		{
 			References.Added -= References_Added;
 			References.Removed -= References_Removed;
@@ -89,7 +89,7 @@ namespace VVVV.Core.Model.CS
 			FCancelLoading = true;
 			
 			FPCLoadingIsDone.WaitOne();
-			base.Unload();
+			base.DoUnload();
 		}
 		
 		void SetupProjectContent(object state)

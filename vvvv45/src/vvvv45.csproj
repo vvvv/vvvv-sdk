@@ -32,6 +32,27 @@
     <RebuildDependsOn>Clean;Build</RebuildDependsOn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
+  <PropertyGroup>
+    <VersionInfoCode>
+      <![CDATA[
+        public static string ScriptMain() {
+          var vi = FileVersionInfo.GetVersionInfo(Path.Combine(Environment.CurrentDirectory, "..", "vvvv.exe"));
+          string version = string.Format("{0}{1}{2}", vi.FileMajorPart, vi.FileMinorPart, vi.ProductVersion );
+          if (vi.FilePrivatePart > 0)
+          {
+            return version + vi.FileBuildPart + "." + vi.FilePrivatePart;
+          }
+          else
+          {
+            return version + vi.FileBuildPart;
+          }
+        }
+      ]]>
+    </VersionInfoCode>
+  </PropertyGroup>
+  
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
+  
   <Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
     <MSBuild Projects="@(CoreProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" />
     <MSBuild Projects="@(PluginProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU">
@@ -60,6 +81,11 @@
     </ItemGroup>
     <Copy SourceFiles="@(PluginDependencies)" DestinationFiles="@(PluginDependencies->'$(PluginsDestFolder)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(EditorDependencies)" DestinationFiles="@(EditorDependencies->'$(EditorsDestFolder)%(Filename)%(Extension)')" />
+    <Script Language="C#" Code="$(VersionInfoCode)" Imports="System;System.Diagnostics">
+      <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
+    </Script>
+    <Copy SourceFiles="vvvv45.dtd" DestinationFiles="..\lib\$(VersionInfo).dtd" />
+    <Exec Command="attrib +H ..\vvvv.exe.config" />
   </Target>
   <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />
   <!--
@@ -80,4 +106,15 @@
     <Message Text="Project files:%0d%0a@(ProjectsToBuild,'%0d%0a')" Importance="high" />
   </Target>
   -->
+
+
+  <ItemGroup>
+    <ZipFiles Include="..\**\*.*" Exclude="..\*.rsm;..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\addonpack\**\*.*" />
+  </ItemGroup>
+  <Target Name="Zip">
+    <Script Language="C#" Code="$(VersionInfoCode)" Imports="System;System.Diagnostics">
+      <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
+    </Script>
+    <Zip Files="@(ZipFiles)" WorkingDirectory="..\" ZipFileName="..\..\vvvv_$(VersionInfo).zip" />
+  </Target>
 </Project>
