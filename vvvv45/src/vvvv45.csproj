@@ -84,8 +84,8 @@
     <Script Language="C#" Code="$(VersionInfoCode)" Imports="System;System.Diagnostics">
       <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
     </Script>
+    <Delete Files="..\lib\*.dtd" />
     <Copy SourceFiles="vvvv45.dtd" DestinationFiles="..\lib\$(VersionInfo).dtd" />
-    <Exec Command="attrib +H ..\vvvv.exe.config" />
   </Target>
   <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />
   <!--
@@ -95,7 +95,7 @@
   -->
   <Target Name="Clean">
     <!-- Delete any files this process may have created from a previous execution -->
-    <CreateItem Include="$(CoreDestFolder)\**\*exe;$(CoreDestFolder)\**\*dll;$(CoreDestFolder)\**\*xml;$(CoreDestFolder)\**\*pdb;$(PluginsDestFolder)\**\*exe;$(PluginsDestFolder)\**\*dll;$(PluginsDestFolder)\**\*xml;$(PluginsDestFolder)\**\*pdb;$(EditorsDestFolder)\**\*exe;$(EditorsDestFolder)\**\*dll;$(EditorsDestFolder)\**\*xml;$(EditorsDestFolder)\**\*pdb">
+    <CreateItem Include="$(CoreDestFolder)\**\*exe;$(CoreDestFolder)\**\*dll;$(CoreDestFolder)\**\*xml;$(CoreDestFolder)\**\*pdb;$(PluginsDestFolder)\**\*exe;$(PluginsDestFolder)\**\*dll;$(PluginsDestFolder)\**\*xml;$(PluginsDestFolder)\**\*pdb;$(EditorsDestFolder)\**\*exe;$(EditorsDestFolder)\**\*dll;$(EditorsDestFolder)\**\*xml;$(EditorsDestFolder)\**\*pdb;..\lib\*.dtd">
       <Output ItemName="GeneratedFiles" TaskParameter="Include" />
     </CreateItem>
     <Delete Files="@(GeneratedFiles)" />
@@ -106,14 +106,38 @@
     <Message Text="Project files:%0d%0a@(ProjectsToBuild,'%0d%0a')" Importance="high" />
   </Target>
   -->
-
+  
+  <PropertyGroup>
+    <ZipSteps>PreZip;_Zip_;PostZip</ZipSteps>
+    <ZipOutputDir>..\..\</ZipOutputDir>
+    <TempBaseDir>$(ZipOutputDir)temp\</TempBaseDir>
+  </PropertyGroup>
   <Target Name="Zip">
-    <CreateItem Include="..\**\*.*" Exclude="..\*.rsm;..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\addonpack\**\*.*">
-      <Output ItemName="ZipFiles" TaskParameter="Include" />
-    </CreateItem>
+    <CallTarget Targets="$(ZipSteps)" RunEachTargetSeparately="True" />
+  </Target>
+  <Target Name="PreZip">
+    <RemoveDir Directories="$(TempBaseDir)" />
+  </Target>
+  <Target Name="_Zip_">
     <Script Language="C#" Code="$(VersionInfoCode)" Imports="System;System.Diagnostics">
       <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
     </Script>
-    <Zip Files="@(ZipFiles)" WorkingDirectory="..\" ZipFileName="..\..\vvvv_$(VersionInfo).zip" />
+    <PropertyGroup>
+      <TempDir>$(TempBaseDir)vvvv_$(VersionInfo)\</TempDir>
+      <ZipFileName>$(ZipOutputDir)vvvv_$(VersionInfo).zip</ZipFileName>
+    </PropertyGroup>
+    <CreateItem Include="..\**\*.*" Exclude="..\*.rsm;..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\addonpack\**\*.*;..\lib\nodes\plugins\*\bin\**\*.*">
+      <Output ItemName="OutputFiles" TaskParameter="Include" />
+    </CreateItem>
+    <Copy SourceFiles="@(OutputFiles)" DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Exec Command="attrib +H $(TempDir)vvvv.exe.config" />
+    <Exec Command="vvvv.exe /nodelist" WorkingDirectory="$(TempDir)" />
+    <CreateItem Include="$(TempDir)\**\*.*">
+      <Output ItemName="ZipFiles" TaskParameter="Include" />
+    </CreateItem>
+    <Zip Files="@(ZipFiles)" WorkingDirectory="$(TempBaseDir)" ZipFileName="$(ZipFileName)" ZipLevel="9" />
+  </Target>
+  <Target Name="PostZip">
+    <RemoveDir Directories="$(TempBaseDir)" />
   </Target>
 </Project>
