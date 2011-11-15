@@ -8,8 +8,8 @@ if [ $(uname -s) == 'MINGW32_NT-5.1' ]; then
 
     cd $TMP > /dev/null
 
-    if [ ! -f rktools.exe ]; then
-      curl -O http://download.microsoft.com/download/8/e/c/8ec3a7d8-05b4-440a-a71e-ca3ee25fe057/rktools.exe
+    if [ ! -f "rktools.exe" ]; then
+      curl -O "http://download.microsoft.com/download/8/e/c/8ec3a7d8-05b4-440a-a71e-ca3ee25fe057/rktools.exe"
     fi
 
     rm -rf rktools
@@ -25,6 +25,18 @@ if [ $(uname -s) == 'MINGW32_NT-5.1' ]; then
     fi
     exit 0
   fi
+fi
+
+if [ ! -d "$PROGRAMFILES/MSBuild/MSBuildCommunityTasks" ]; then
+  echo "Installing MSBuild Community Tasks ..."
+
+  cd $TMP > /dev/null
+  
+  curl -O "http://msbuildtasks.tigris.org/MSBuild.Community.Tasks.Nightly.msi"
+  
+  cmd //C "msiexec /qn /i MSBuild.Community.Tasks.Nightly.msi"
+  
+  cd - > /dev/null
 fi
 
 cp scripts/* .git/hooks
