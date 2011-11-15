@@ -57,9 +57,11 @@
     <ItemGroup>
       <PluginDependencies Include="nodes\plugins\**\Dependencies\*" />
       <EditorDependencies Include="nodes\editors\**\Dependencies\*" />
+	  <SharedDependencies Include="thirdparty\Sanford*" />
     </ItemGroup>
     <Copy SourceFiles="@(PluginDependencies)" DestinationFiles="@(PluginDependencies->'$(PluginsDestFolder)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(EditorDependencies)" DestinationFiles="@(EditorDependencies->'$(EditorsDestFolder)%(Filename)%(Extension)')" />
+	<Copy SourceFiles="@(SharedDependencies)" DestinationFiles="@(SharedDependencies->'$(CoreDestFolder)%(Filename)%(Extension)')" />
   </Target>
   <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />
   <!--
