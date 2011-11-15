@@ -31,7 +31,10 @@
     <BuildDependsOn>$(BuildDependsOn)</BuildDependsOn>
     <RebuildDependsOn>Clean;Build</RebuildDependsOn>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' " />
   <PropertyGroup>
     <VersionInfoCode>
       <![CDATA[
