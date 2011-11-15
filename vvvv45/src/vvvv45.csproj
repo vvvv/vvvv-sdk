@@ -107,11 +107,10 @@
   </Target>
   -->
 
-
-  <ItemGroup>
-    <ZipFiles Include="..\**\*.*" Exclude="..\*.rsm;..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\addonpack\**\*.*" />
-  </ItemGroup>
   <Target Name="Zip">
+    <CreateItem Include="..\**\*.*" Exclude="..\*.rsm;..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\addonpack\**\*.*">
+      <Output ItemName="ZipFiles" TaskParameter="Include" />
+    </CreateItem>
     <Script Language="C#" Code="$(VersionInfoCode)" Imports="System;System.Diagnostics">
       <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
     </Script>
