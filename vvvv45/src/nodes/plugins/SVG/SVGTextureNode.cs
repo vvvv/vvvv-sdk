@@ -124,14 +124,14 @@ namespace VVVV.Nodes
 	}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Document",
+	[PluginInfo(Name = "Renderer",
 	            Category = "SVG",
-				Version = "Join",
-	            Help = "Creates an SVG document from given SVG layers and other properties",
+	            Help = "Renders svg layers into a window",
 	            Tags = "xml",
-	            AutoEvaluate = true)]
+	            AutoEvaluate = true,
+	            InitialComponentMode = TComponentMode.InAWindow)]
 	#endregion PluginInfo
-	public class DucumentSvgJoinNode : IPluginEvaluate
+	public class SvgRendererNode : UserControl, IPluginEvaluate
 	{
 		#region fields & pins
 		[Input("SVG Layer")]
@@ -140,11 +140,11 @@ namespace VVVV.Nodes
 		[Input("Transform")]
 		IDiffSpread<Matrix> FTransformIn;
 		
-		[Input("View Box Center ")]
-		IDiffSpread<Vector2> FViewCenterIn;
+		[Input("View Box ")]
+		IDiffSpread<SvgViewBox> FViewIn;
 		
-		[Input("View Box Size ", DefaultValues = new double[] {2, 2})]
-		IDiffSpread<Vector2> FViewSizeIn;
+		[Input("Background Color", DefaultColor = new double[] { 0, 0, 0, 1 }, IsSingle = true)]
+		IDiffSpread<RGBAColor> FBackgroundIn;
 
 		[Input("Width", DefaultValue = 128)]
 		IDiffSpread<int> FWidthIn;
@@ -163,7 +163,23 @@ namespace VVVV.Nodes
 		
 		SvgDocument FSVGDoc = new SvgDocument();
 		
+		Bitmap FBitMap;
+		PictureBox FPicBox = new PictureBox();
+		
+		[Import]
+		INode FThisNode;
+		
 		#endregion fields & pins
+		
+		public SvgRendererNode()
+		{
+			//clear controls in case init is called multiple times
+			Controls.Clear();
+			FPicBox.Dock = DockStyle.Fill;
+			
+			Controls.Add(FPicBox);
+			
+		}
  
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
@@ -177,27 +193,41 @@ namespace VVVV.Nodes
 
 			//update texture
 			if (FSVGIn.IsChanged || FWidthIn.IsChanged || FHeightIn.IsChanged || 
-				FTransformIn.IsChanged || FViewCenterIn.IsChanged || FViewSizeIn.IsChanged)
+				FTransformIn.IsChanged || FViewIn.IsChanged)
 			{
 							
 				FSVGDoc.Transforms = new SvgTransformCollection();
-
-				var view = new SvgViewBox();
-				view.MinX = (float)(FViewCenterIn[0].X - FViewSizeIn[0].X * 0.5);
-				view.MinY = (float)(FViewCenterIn[0].Y - FViewSizeIn[0].Y * 0.5);
-				view.Width = (float)FViewSizeIn[0].X;
-				view.Height = (float)FViewSizeIn[0].Y;
-				
-			    FSVGDoc.ViewBox = view; 
+				FSVGDoc.ViewBox = FViewIn[0];
 				var m = FTransformIn[0];
 				var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
 				FSVGDoc.Transforms.Add(mat);
-                FSVGDoc.Width = new SvgUnit(SvgUnitType.Pixel, FWidthIn[0]);
-                FSVGDoc.Height = new SvgUnit(SvgUnitType.Pixel, FHeightIn[0]);
+				FSVGDoc.Width = new SvgUnit(SvgUnitType.Pixel, Math.Max(this.Width, 1));
+				FSVGDoc.Height = new SvgUnit(SvgUnitType.Pixel, Math.Max(this.Height, 1));
 				 
 				FOutput[0] = FSVGDoc;
 			
 				//FLogger.Log(LogType.Debug, "hi tty!");
+			}
+			
+			if(FThisNode.Window != null)
+			{
+				if(FBitMap == null)
+				{
+					FBitMap = new Bitmap((int)Math.Ceiling(FSVGDoc.Width), (int)Math.Ceiling(FSVGDoc.Height));
+				}
+				else if(FBitMap.Height != FSVGDoc.Height || FBitMap.Width != FSVGDoc.Width)
+				{
+					FBitMap.Dispose();
+					FBitMap = new Bitmap((int)Math.Ceiling(FSVGDoc.Width), (int)Math.Ceiling(FSVGDoc.Height));
+				}
+				
+				//clear bitmap
+				var g = Graphics.FromImage(FBitMap);
+				g.Clear(FBackgroundIn[0].Color);
+				g.Dispose();
+				
+				FSVGDoc.Draw(FBitMap);
+				FPicBox.Image = FBitMap;
 			}
 			
 			//save to disc

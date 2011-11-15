@@ -372,6 +372,51 @@ namespace VVVV.Nodes
 		}
 	}
 	
+	//VIEWBOX---------------------------------------------------------------------------------------
+	
+	#region PluginInfo
+	[PluginInfo(Name = "Camera", 
+	            Category = "SVG", 
+	            Help = "Sets the visible rectangle of a SVG scene", 
+	            Tags = "viewbox")]
+	#endregion PluginInfo
+	public class SVGCameraNode : IPluginEvaluate
+	{
+		#region fields & pins
+		[Input("Center ")]
+		IDiffSpread<Vector2> FViewCenterIn;
+		
+		[Input("Size ", DefaultValues = new double[] {2, 2})]
+		IDiffSpread<Vector2> FViewSizeIn;
+
+		[Output("View Box")]
+		ISpread<SvgViewBox> FOutput;
+
+		[Import()]
+		ILogger FLogger;
+		
+		#endregion fields & pins
+
+		//called when data for any output pin is requested
+		public void Evaluate(int SpreadMax)
+		{
+			FOutput.SliceCount = SpreadMax;
+			
+			if(FViewCenterIn.IsChanged || FViewSizeIn.IsChanged)
+			{
+				//create groups and add matrix to it
+				for(int i=0; i<SpreadMax; i++)
+				{
+					FOutput[i] = new SvgViewBox(FViewCenterIn[0].X - FViewSizeIn[0].X * 0.5f,
+					                            FViewCenterIn[0].Y - FViewSizeIn[0].Y * 0.5f,
+					                            FViewSizeIn[0].X,
+					                            FViewSizeIn[0].Y);
+				}
+			}
+			
+		}
+	}
+	
 	//GROUP---------------------------------------------------------------------
 	
 	#region PluginInfo
