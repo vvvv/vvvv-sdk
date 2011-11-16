@@ -113,6 +113,24 @@
   -->
   
   <PropertyGroup>
+    <CodeBlocks Condition=" '$(CodeBlocks)' == '' ">$(ProgramFiles)\CodeBlocks\codeblocks.exe</CodeBlocks>
+    <Git Condition=" '$(Git)' == '' ">$(ProgramFiles)\Git\cmd\git.cmd</Git>
+  </PropertyGroup>
+  <ItemGroup>
+    <FreeframeProjects Include="nodes\freeframes\**\*.cbp" Exclude="nodes\freeframes\Template*\**\*.cbp" />
+  </ItemGroup>
+  <Target Name="BuildFreeframe">    
+    <Exec Command="$(CodeBlocks) --no-splash-screen --rebuild --target=Release %(FreeframeProjects.FullPath)" />
+    <CreateItem Include="%(FreeframeProjects.RelativeDir)*.dll">
+      <Output ItemName="FreeframeOutputFiles" TaskParameter="Include" />
+    </CreateItem>
+    <Copy SourceFiles="@(FreeframeOutputFiles)" DestinationFolder="..\lib\nodes\freeframe"/>
+  </Target>
+  <Target Name="CleanFreeframe">
+    <Exec Command="$(Git) clean -f -d -x -- %(FreeframeProjects.RelativeDir)" />
+  </Target>
+  
+  <PropertyGroup>
     <ZipSteps>PreZip;_Zip_;PostZip</ZipSteps>
     <ZipOutputDir>..\..\</ZipOutputDir>
     <TempBaseDir>$(ZipOutputDir)temp\</TempBaseDir>
