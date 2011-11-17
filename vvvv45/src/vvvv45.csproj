@@ -6,31 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <StartAction>Program</StartAction>
-    <StartProgram>$(MSBuildProjectDirectory)\..\vvvv.exe</StartProgram>
+    <StartProgram>$(MSBuildThisFileDirectory)..\vvvv.exe</StartProgram>
   </PropertyGroup>
-  
-  <PropertyGroup>
-    <CoreOutputDir>..\lib\core\</CoreOutputDir>
-    <PluginsOutputDir>..\lib\nodes\plugins\</PluginsOutputDir>
-    <EditorsOutputDir>..\lib\nodes\editors\</EditorsOutputDir>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectsToBuild Include="core\**\*.csproj;
-                              gui\**\*.csproj">
-      <OutputDir>$(MSBuildProjectDirectory)\$(CoreOutputDir)</OutputDir>
-    </ProjectsToBuild>
-    <ProjectsToBuild Include="nodes\plugins\**\*.csproj">
-      <OutputDir>$(MSBuildProjectDirectory)\$(PluginsOutputDir)</OutputDir>
-    </ProjectsToBuild>
-    <ProjectsToBuild Include="nodes\editors\**\*.csproj">
-      <OutputDir>$(MSBuildProjectDirectory)\$(EditorsOutputDir)</OutputDir>
-    </ProjectsToBuild>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="@(ProjectsToBuild)" />
-  </ItemGroup>
   
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
@@ -38,28 +15,65 @@
   <PropertyGroup Condition=" '$(Platform)' == 'x86' " />
   
   <PropertyGroup>
-    <BuildDependsOn>$(BuildDependsOn)</BuildDependsOn>
+    <CoreOutputDir>$(MSBuildThisFileDirectory)..\lib\core\</CoreOutputDir>
+    <PluginsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\plugins\</PluginsOutputDir>
+    <EditorsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\editors\</EditorsOutputDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectsToBuild Include="$(MSBuildThisFileDirectory)core\**\*.csproj;
+                              $(MSBuildThisFileDirectory)gui\**\*.csproj">
+      <OutputDir>$(CoreOutputDir)</OutputDir>
+    </ProjectsToBuild>
+    <ProjectsToBuild Include="$(MSBuildThisFileDirectory)nodes\plugins\**\*.csproj">
+      <OutputDir>$(PluginsOutputDir)</OutputDir>
+    </ProjectsToBuild>
+    <ProjectsToBuild Include="$(MSBuildThisFileDirectory)nodes\editors\**\*.csproj">
+      <OutputDir>$(EditorsOutputDir)</OutputDir>
+    </ProjectsToBuild>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="@(ProjectsToBuild)" />
+  </ItemGroup>
+  
+  <PropertyGroup>
+    <BuildDependsOn>CoreBuild</BuildDependsOn>
     <RebuildDependsOn>Clean;Build</RebuildDependsOn>
     <CleanDependsOn>$(CleanDependsOn)</CleanDependsOn>
   </PropertyGroup>
   
-  <Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
+  
+  <Target Name="PrintProjectsToBuild">
+    <Message Text="@(ProjectsToBuild, '&#10;')" />
+  </Target>
+  
+  <Target Name="Build" DependsOnTargets="$(BuildDependsOn)" />
+  <Target Name="CoreBuild">
     <MSBuild Projects="@(ProjectsToBuild)" 
              Properties="OutputPath=%(ProjectsToBuild.OutputDir);
-                         BuildingInsideVisualStudio=false" />
+                         BuildingInsideVisualStudio=false"
+             Condition=" !Exists('%(ProjectsToBuild.RootDir)%(PluginProjectsToBuild.Directory)ignore') " />
+    <!-- Copy shared dependencies to lib/core -->
+    <CreateItem Include="$(PluginsOutputDir)Sanford*">
+      <Output TaskParameter="Include" ItemName="_SharedDependencies_" />
+    </CreateItem>
+    <Copy SourceFiles="@(_SharedDependencies_)"
+          DestinationFolder="$(CoreOutputDir)" />
     <!-- Delete all files which are already in lib/core -->
     <CreateItem Include="$(CoreOutputDir)**\*.*">
-      <Output TaskParameter="Include" ItemName="_CoreOutputFiles_" />
+      <Output TaskParameter="Include" ItemName="CoreOutputFiles" />
     </CreateItem>
-    <Delete Files="@(_CoreOutputFiles_->'$(PluginsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
-    <Delete Files="@(_CoreOutputFiles_->'$(EditorsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Delete Files="@(CoreOutputFiles->'$(PluginsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Delete Files="@(CoreOutputFiles->'$(EditorsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
     
     <!-- Create lib/*.dtd file -->
-    <GetVersionInfo File="..\vvvv.exe">
+    <GetVersionInfo File="$(MSBuildThisFileDirectory)..\vvvv.exe">
       <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
     </GetVersionInfo>
-    <Delete Files="..\lib\*.dtd" />
-    <Copy SourceFiles="vvvv45.dtd" DestinationFiles="..\lib\$(VersionInfo).dtd" />
+    <Delete Files="$(MSBuildThisFileDirectory)..\lib\*.dtd" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)vvvv45.dtd" 
+          DestinationFiles="$(MSBuildThisFileDirectory)..\lib\$(VersionInfo).dtd" />
   </Target>
   
   <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />
@@ -68,21 +82,22 @@
     <MSBuild Projects="@(ProjectsToBuild)" 
              Targets="Clean" 
              Properties="OutputPath=%(ProjectsToBuild.OutputDir)" 
-             Condition=" '$(BuildingInsideVisualStudio)' == 'false' "/>
+             Condition=" '$(BuildingInsideVisualStudio)' == '' OR '$(BuildingInsideVisualStudio)' == 'false' "/>
     <CreateItem Include="%(ProjectsToBuild.OutputDir)*.dll;%(ProjectsToBuild.OutputDir)*.xml;%(ProjectsToBuild.OutputDir)*.pdb">
       <Output ItemName="GeneratedFiles" TaskParameter="Include" />
     </CreateItem>
     <Delete Files="@(GeneratedFiles)" />
   </Target>
   
-  <!-- Freeframe -->
-  <PropertyGroup>
-    <FreeframeOutputDir>..\lib\nodes\freeframes\</FreeframeOutputDir>
-    <DirectShowFilterOutputDir>..\lib\nodes\directshowfilter\</DirectShowFilterOutputDir>
-  </PropertyGroup>
+  <!-- Freeframe and DirectShow -->
   <ItemGroup>
-    <FreeframeProjects Include="nodes\freeframes\**\*.cbp" Exclude="nodes\freeframes\Template*\**\*.cbp" />
-    <DirectShowFilterProjects Include="nodes\directshowfilter\**\*.dproj" />
+    <FreeframeProjects Include="$(MSBuildThisFileDirectory)nodes\freeframes\**\*.cbp" 
+                       Exclude="$(MSBuildThisFileDirectory)nodes\freeframes\Template*\**\*.cbp">
+      <OutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\freeframes\</OutputDir>
+    </FreeframeProjects>
+    <DirectShowFilterProjects Include="$(MSBuildThisFileDirectory)nodes\directshowfilter\**\*.dproj">
+      <OutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\directshowfilter\</OutputDir>
+    </DirectShowFilterProjects>
   </ItemGroup>
   
   <PropertyGroup>
@@ -97,7 +112,7 @@
     <RemoveDir Directories="$(TempBaseDir)" />
   </Target>
   <Target Name="_Zip_">
-    <GetVersionInfo File="..\vvvv.exe">
+    <GetVersionInfo File="$(StartProgram)">
       <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
     </GetVersionInfo>
     <PropertyGroup>

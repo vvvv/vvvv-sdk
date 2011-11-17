@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
-  <UsingTask AssemblyFile="$(MSBuildProjectDirectory)\..\..\tools\VersionInfo.exe" TaskName="VVVV.Tools.MSBuild.GetVersionInfo" />
+  <UsingTask AssemblyFile="$(MSBuildThisFileDirectory)\..\..\tools\VersionInfo.exe" TaskName="VVVV.Tools.MSBuild.GetVersionInfo" />
   
   <!-- Build Core -->
   <Target Name="BuildCore">
@@ -66,11 +66,11 @@
           
   <Target Name="BuildFreeframe"
           Inputs="@(FreeframeProjects)"
-          Outputs="@(FreeframeProjects->'$(FreeframeOutputDir)%(Filename).dll')"
+          Outputs="@(FreeframeProjects->'%(OutputDir)%(Filename).dll')"
           DependsOnTargets="_CheckFreeframeDependencies_">
     <Exec Command="$(CodeBlocks) --no-splash-screen --rebuild --target=Release %(FreeframeProjects.FullPath)" 
           EnvironmentVariables="OpenCV=$(OpenCV)\" />
-    <Copy SourceFiles="@(FreeframeProjects->'%(RootDir)%(Directory)%(Filename).dll')" DestinationFolder="$(FreeframeOutputDir)"/>
+    <Copy SourceFiles="@(FreeframeProjects->'%(RootDir)%(Directory)%(Filename).dll')" DestinationFiles="@(FreeframeProjects->'%(OutputDir)%(Filename).dll')"/>
   </Target>
   
   <Target Name="CleanFreeframe"
@@ -87,19 +87,14 @@
     <Error Text="The DSPACK property must be set on the command line."
            Condition="'$(DSPACK)' == ''" />
   </Target>
-  
-  <ItemGroup>
-    <_DelphiDirectShowFilterProjects_ Include="@(DirectShowFilterProjects->'%(RootDir)%(Directory)%(Filename).dproj')" />
-    <_DelphiDirectShowFilterOutputFiles_ Include="@(_DelphiDirectShowFilterProjects_->'%(RootDir)%(Directory)%(Filename).ax')" />
-  </ItemGroup>
 
   <Target Name="BuildDirectShowFilter"
-          Inputs="@(_DelphiDirectShowFilterProjects_)"
-          Outputs="@(_DelphiDirectShowFilterProjects_->'%(RootDir)%(Directory)%(Filename).ax')"
+          Inputs="@(DirectShowFilterProjects)"
+          Outputs="@(DirectShowFilterProjects->'%(OutputDir)%(Filename).ax')"
           DependsOnTargets="_CheckBDS_;_CheckDSPACK_">
-    <Exec Command="$(MSBuildBinPath)\MSBuild.exe %(_DelphiDirectShowFilterProjects_.FullPath) /p:Configuration=Release"
+    <Exec Command="$(MSBuildBinPath)\MSBuild.exe %(DirectShowFilterProjects.FullPath) /p:Configuration=Release"
           EnvironmentVariables="BDS=$(BDS);DSPACK=$(DSPACK)" />
-    <Copy SourceFiles="@(_DelphiDirectShowFilterOutputFiles_)" DestinationFolder="$(DirectShowFilterOutputDir)"/>
+    <Copy SourceFiles="@(DirectShowFilterProjects->'%(RootDir)%(Directory)%(Filename).ax')" DestinationFiles="@(DirectShowFilterProjects->'%(OutputDir)%(Filename).ax')"/>
   </Target>
   <Target Name="CleanDirectShowFilter"
           DependsOnTargets="_CheckGit_">
