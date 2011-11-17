@@ -28,6 +28,7 @@ namespace VVVV.Core.Model
 						break;
 					case ".fx":
 					case ".fxh":
+					case ".xx":
 						document = new FXDocument(filename, location);
 						break;
 					default:

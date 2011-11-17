@@ -85,13 +85,6 @@ namespace VVVV.Core.Commands
                         {
                             return serializer.Deserialize<CompoundCommand>(data);
                         }
-                    case "SAVE":
-                        {
-                            var itemAttribute = data.Attribute("Item");
-                            var item = itemResolver.GetIDItem(itemAttribute.Value);
-                            var cmdType = typeof(SaveCommand<>).MakeGenericType(item.GetType());
-                            return Activator.CreateInstance(cmdType, item) as Command;
-                        }
                     default:
                         throw new NotSupportedException(string.Format("Can't deserialize command '{0}'.", cmdName));
                 }
@@ -160,12 +153,6 @@ namespace VVVV.Core.Commands
             moveCommand.Append(new RemoveCommand<TSource, TItem>(source, item));
             moveCommand.Append(new AddCommand<TDestination, TItem>(destination, item));
             return moveCommand;
-        }
-        
-        public static Command Save<TPersistent>(TPersistent persistentItem)
-            where TPersistent : IPersistent, IIDItem
-        {
-            return new SaveCommand<TPersistent>(persistentItem);
         }
     }
 }

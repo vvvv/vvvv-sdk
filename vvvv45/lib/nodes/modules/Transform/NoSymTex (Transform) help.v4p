@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="C:\dev\vvvv\vvvv45\modules\vvvv group\Transform\NoSymTex (Transform) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Transform\NoSymTex (Transform) help.v4p">
    <BOUNDS height="7830" left="705" top="375" type="Window" width="7200">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="21" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="21" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="3480" top="6675" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4860" left="10605" top="495" type="Window" width="6120">
@@ -10,6 +10,16 @@
    <BOUNDS height="1800" left="3480" top="6675" type="Box" width="2400">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="20" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
@@ -21,7 +31,7 @@
    <NODE id="19" nodename="FileTexture (EX9.Texture)" systemname="FileTexture (EX9.Texture)">
    <BOUNDS height="0" left="4260" top="3390" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Filename" slicecount="1" values="..\..\..\girlpower\images\dot.bmp">
+   <PIN pinname="Filename" slicecount="1" values="..\..\..\assets\images\dot.bmp" encoded="0">
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
@@ -46,7 +56,7 @@
    </NODE>
    <LINK dstnodeid="18" dstpinname="Z" srcnodeid="17" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" id="10" nodename="Constant (EX9.Effect)" systemname="Constant (EX9.Effect)" filename="%VVVV%\effects\Constant.fx">
+   <NODE componentmode="Hidden" filename="%VVVV%\effects\Constant.fx" id="10" nodename="Constant (EX9.Effect)" systemname="Constant (EX9.Effect)">
    <BOUNDS height="0" left="3465" top="5610" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="12000" left="8250" top="285" type="Window" width="12000">
@@ -75,7 +85,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|undoes the vvvv style smmetric texture transformation.&cr;&lf;&cr;&lf;texture now scales and rotates around the texture coords origin: 0, 0 which is in the upper left corner&cr;&lf;|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|undoes the vvvv style smmetric texture transformation.&cr;&lf;&cr;&lf;texture now scales and rotates around the texture coords origin: 0, 0 which is in the upper left corner&cr;&lf;|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -89,7 +99,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|NoSymTex - Transform|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|NoSymTex - Transform|" encoded="0">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -100,7 +110,7 @@
    </NODE>
    <LINK dstnodeid="21" dstpinname="Layers" srcnodeid="10" srcpinname="Layer">
    </LINK>
-   <NODE componentmode="Hidden" id="24" nodename="Info (EX9.Texture)" systemname="Info (EX9.Texture)">
+   <NODE componentmode="Hidden" id="24" nodename="Info (EX9.Texture)" systemname="INFO (EX9.TEXTURE)">
    <BOUNDS height="0" left="2325" top="3780" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Texture" visible="1">
@@ -142,7 +152,7 @@
    </LINK>
    <LINK dstnodeid="10" dstpinname="Transform" srcnodeid="25" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="Hidden" id="27" nodename="NoSymTex (Transform)" systemname="NoSymTex (Transform)" filename="%VVVV%\modules\vvvv group\Transform\NoSymTex (Transform).v4p">
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\Transform\NoSymTex (Transform).v4p" id="27" nodename="NoSymTex (Transform)" systemname="NoSymTex (Transform)">
    <BOUNDS height="100" left="4410" top="4215" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="3600" left="4410" top="4215" type="Box" width="4800">

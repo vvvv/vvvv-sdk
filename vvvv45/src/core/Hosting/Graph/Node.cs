@@ -24,7 +24,7 @@ namespace VVVV.Hosting.Graph
             
             public void AddedCB(INode internalChildNode)
             {
-                var childNode = Node.Create(FObservedNode, internalChildNode, FObservedNode.FNodeInfoFactory);
+                var childNode = Node.Create(internalChildNode, FObservedNode.FNodeInfoFactory);
                 
                 // HACK: We need to check if node not already in collection from Node.ctor -> GetChildren
                 if (!FObservedNode.Contains(childNode))
@@ -72,17 +72,14 @@ namespace VVVV.Hosting.Graph
         
         #region factory methods
         static private Dictionary<INode, Node> FNodes = new Dictionary<INode, Node>();
-        static internal Node Create(INode2 parent, INode internalCOMInterf, ProxyNodeInfoFactory nodeInfoFactory)
+        static internal Node Create(INode internalCOMInterf, ProxyNodeInfoFactory nodeInfoFactory)
         {
             Node node = null;
             if (!FNodes.TryGetValue(internalCOMInterf, out node))
             {
-                node = new Node(parent, internalCOMInterf, nodeInfoFactory);
+                node = new Node(internalCOMInterf, nodeInfoFactory);
                 FNodes.Add(internalCOMInterf, node);
             }
-            
-            if (node.Parent == null && parent != null)
-                node.Parent = parent;
             
             return node;
         }
@@ -99,9 +96,8 @@ namespace VVVV.Hosting.Graph
         private readonly Lazy<ViewableCollection<IPin2>> FPins;
         private readonly Lazy<IPin2> FLabelPin;
         
-        private Node(INode2 parent, INode internalCOMInterf, ProxyNodeInfoFactory nodeInfoFactory)
+        private Node(INode internalCOMInterf, ProxyNodeInfoFactory nodeInfoFactory)
         {
-            Parent = parent;
             FInternalCOMInterf = internalCOMInterf;
             FNodeInfoFactory = nodeInfoFactory;
             
@@ -115,7 +111,7 @@ namespace VVVV.Hosting.Graph
             {
                 foreach (var internalChildNode in children)
                 {
-                    var childNode = Node.Create(this, internalChildNode, nodeInfoFactory);
+                    var childNode = Node.Create(internalChildNode, nodeInfoFactory);
                     Add(childNode);
                 }
             }
@@ -159,7 +155,7 @@ namespace VVVV.Hosting.Graph
         {
             var pins = new ViewableCollection<IPin2>();
             foreach (var internalPin in FInternalCOMInterf.GetPins())
-                pins.Add(new Pin(this, internalPin));
+                pins.Add(new Pin(this, internalPin, FNodeInfoFactory));
             return pins;
         }
         
@@ -314,9 +310,12 @@ namespace VVVV.Hosting.Graph
             }
         }
         
-        public INode2 Parent {
-            get;
-            private set;
+        public INode2 Parent
+        {
+            get
+            {
+            	return Node.Create(FInternalCOMInterf.ParentNode, FNodeInfoFactory);
+            }
         }
         
         public bool HasPatch

@@ -38,30 +38,17 @@ namespace VVVV.Core.Model
 		{
 		}
 		
-		public override void Load()
+		protected override void DoLoad()
 		{
 			string path = Location.LocalPath;
-			try
-			{
-				FTextContent = File.ReadAllText(path);
-				FHashCodeOnDisk = FTextContent.GetHashCode();
-				IsDirty = false;
-				
-				base.Load();
-			}
-			catch (Exception)
-			{
-				FTextContent = "";
-				IsDirty = true;
-			}
+
+			FTextContent = File.ReadAllText(path);
+			FHashCodeOnDisk = FTextContent.GetHashCode();
 		}
 		
-		public override void Unload()
+		protected override void DoUnload()
 		{
 			FTextContent = string.Empty;
-			IsDirty = false;
-			
-			base.Unload();
 		}
 		
 		public override void SaveTo(Uri location)

@@ -553,5 +553,11 @@ namespace Hoster
         {
             throw new NotImplementedException();
         }
+		
+		public INode ParentNode {
+			get {
+				throw new NotImplementedException();
+			}
+		}
 	}
 }

@@ -285,7 +285,7 @@ namespace VVVV.Nodes
         		recalculate = true;
         	}
         	
-            INodeIOBase currInterface;
+            object currInterface;
             for (int i=0; i<poseNodes.Count; i++)
             {
             	if (poseNodes[i].PinIsChanged)

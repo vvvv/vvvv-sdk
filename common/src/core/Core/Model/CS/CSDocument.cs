@@ -13,6 +13,7 @@ using ICSharpCode.SharpDevelop.Dom.CSharp;
 using ICSharpCode.SharpDevelop.Dom.NRefactoryResolver;
 using VVVV.Core.Model;
 using VVVV.Core.Runtime.CS;
+using VVVV.Core.Logging;
 
 namespace VVVV.Core.Model.CS
 {
@@ -83,19 +84,19 @@ namespace VVVV.Core.Model.CS
 			return base.CanRenameTo(value) && Path.GetExtension(value) == ".cs";
 		}
 		
-		public override void Load()
+		protected override void OnLoaded(EventArgs e)
 		{
-			base.Load();
 			ParseAsync(true);
+			base.OnLoaded(e);
 		}
-		
-		public override void Unload()
+
+		protected override void DoUnload()
 		{
 			FParsingDone.WaitOne();
 			
 			lock (FParseLock)
 			{
-				base.Unload();
+				base.DoUnload();
 			}
 		}
 		
@@ -154,34 +155,40 @@ namespace VVVV.Core.Model.CS
 		
 		public void Parse(bool parseMethodBodies)
 		{
-			if (!IsLoaded)
-				throw new InvalidOperationException("Document is not loaded.");
-			
-			lock (FParseLock)
+			try 
 			{
-				FParserResults = CSParser.Parse(TextContent, parseMethodBodies);
-				
-				var filename = Location.LocalPath;
-				var oldCompilationUnit = FParseInfo.MostRecentCompilationUnit;
-				var projectContent = GetProjectContent();
-				
-				var visitor = new NRefactoryASTConvertVisitor(projectContent);
-				visitor.Specials = FParserResults.Specials;
-				visitor.VisitCompilationUnit(FParserResults.CompilationUnit, null);
-				
-				var newCompilationUnit =  visitor.Cu;
-				newCompilationUnit.ErrorsDuringCompile = FParserResults.HasErrors;
-				newCompilationUnit.FileName = filename;
-				
-				UpdateFoldingRegions(newCompilationUnit, FParserResults);
-				AddCommentTags(newCompilationUnit, FParserResults);
-				
-				// Remove information from lastCompilationUnit and add information from newCompilationUnit.
-				projectContent.UpdateCompilationUnit(oldCompilationUnit, newCompilationUnit, filename);
-				FParseInfo.SetCompilationUnit(newCompilationUnit);
+				lock (FParseLock)
+				{
+					FParserResults = CSParser.Parse(TextContent, parseMethodBodies);
+					
+					var filename = Location.LocalPath;
+					var oldCompilationUnit = FParseInfo.MostRecentCompilationUnit;
+					var projectContent = GetProjectContent();
+					
+					var visitor = new NRefactoryASTConvertVisitor(projectContent);
+					visitor.Specials = FParserResults.Specials;
+					visitor.VisitCompilationUnit(FParserResults.CompilationUnit, null);
+					
+					var newCompilationUnit =  visitor.Cu;
+					newCompilationUnit.ErrorsDuringCompile = FParserResults.HasErrors;
+					newCompilationUnit.FileName = filename;
+					
+					UpdateFoldingRegions(newCompilationUnit, FParserResults);
+					AddCommentTags(newCompilationUnit, FParserResults);
+					
+					// Remove information from lastCompilationUnit and add information from newCompilationUnit.
+					projectContent.UpdateCompilationUnit(oldCompilationUnit, newCompilationUnit, filename);
+					FParseInfo.SetCompilationUnit(newCompilationUnit);
+				}
 			}
-			
-			FParsingDone.Set();
+			catch (Exception e)
+			{
+				Shell.Instance.Logger.Log(e);
+				
+			} finally 
+			{
+				FParsingDone.Set();
+			}
 		}
 		
 		public void ParseAsync()

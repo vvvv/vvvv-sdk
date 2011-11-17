@@ -31,7 +31,31 @@
     <BuildDependsOn>$(BuildDependsOn)</BuildDependsOn>
     <RebuildDependsOn>Clean;Build</RebuildDependsOn>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' " />
+  <PropertyGroup>
+    <VersionInfoCode>
+      <![CDATA[
+        public static string ScriptMain() {
+          var vi = FileVersionInfo.GetVersionInfo(Path.Combine(Environment.CurrentDirectory, "..", "vvvv.exe"));
+          string version = string.Format("{0}{1}{2}", vi.FileMajorPart, vi.FileMinorPart, vi.ProductVersion );
+          if (vi.FilePrivatePart > 0)
+          {
+            return version + vi.FileBuildPart + "." + vi.FilePrivatePart;
+          }
+          else
+          {
+            return version + vi.FileBuildPart;
+          }
+        }
+      ]]>
+    </VersionInfoCode>
+  </PropertyGroup>
+  
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
+  
   <Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
     <MSBuild Projects="@(CoreProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" />
     <MSBuild Projects="@(PluginProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU">
@@ -57,9 +81,16 @@
     <ItemGroup>
       <PluginDependencies Include="nodes\plugins\**\Dependencies\*" />
       <EditorDependencies Include="nodes\editors\**\Dependencies\*" />
+	  <SharedDependencies Include="thirdparty\Sanford*" />
     </ItemGroup>
     <Copy SourceFiles="@(PluginDependencies)" DestinationFiles="@(PluginDependencies->'$(PluginsDestFolder)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(EditorDependencies)" DestinationFiles="@(EditorDependencies->'$(EditorsDestFolder)%(Filename)%(Extension)')" />
+	<Copy SourceFiles="@(SharedDependencies)" DestinationFiles="@(SharedDependencies->'$(CoreDestFolder)%(Filename)%(Extension)')" />
+    <Script Language="C#" Code="$(VersionInfoCode)" Imports="System;System.Diagnostics">
+      <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
+    </Script>
+    <Delete Files="..\lib\*.dtd" />
+    <Copy SourceFiles="vvvv45.dtd" DestinationFiles="..\lib\$(VersionInfo).dtd" />
   </Target>
   <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />
   <!--
@@ -69,11 +100,10 @@
   -->
   <Target Name="Clean">
     <!-- Delete any files this process may have created from a previous execution -->
-    <CreateItem Include="$(CoreDestFolder)\**\*exe;$(CoreDestFolder)\**\*dll;$(CoreDestFolder)\**\*xml;$(CoreDestFolder)\**\*pdb;$(PluginsDestFolder)\**\*exe;$(PluginsDestFolder)\**\*dll;$(PluginsDestFolder)\**\*xml;$(PluginsDestFolder)\**\*pdb;$(EditorsDestFolder)\**\*exe;$(EditorsDestFolder)\**\*dll;$(EditorsDestFolder)\**\*xml;$(EditorsDestFolder)\**\*pdb">
+    <CreateItem Include="$(CoreDestFolder)\**\*exe;$(CoreDestFolder)\**\*dll;$(CoreDestFolder)\**\*xml;$(CoreDestFolder)\**\*pdb;$(PluginsDestFolder)\**\*exe;$(PluginsDestFolder)\**\*dll;$(PluginsDestFolder)\**\*xml;$(PluginsDestFolder)\**\*pdb;$(EditorsDestFolder)\**\*exe;$(EditorsDestFolder)\**\*dll;$(EditorsDestFolder)\**\*xml;$(EditorsDestFolder)\**\*pdb;..\lib\*.dtd">
       <Output ItemName="GeneratedFiles" TaskParameter="Include" />
     </CreateItem>
     <Delete Files="@(GeneratedFiles)" />
-    <MSBuild Projects="@(CoreProjectsToBuild);@(PluginProjectsToBuild);@(EditorProjectsToBuild)" Targets="Clean" Properties="Configuration=$(Configuration);" />
   </Target>
   <!-- Will simply print all of the project files to be built -->
   <!--
@@ -81,4 +111,56 @@
     <Message Text="Project files:%0d%0a@(ProjectsToBuild,'%0d%0a')" Importance="high" />
   </Target>
   -->
+  
+  <PropertyGroup>
+    <CodeBlocks Condition=" '$(CodeBlocks)' == '' ">$(ProgramFiles)\CodeBlocks\codeblocks.exe</CodeBlocks>
+    <Git Condition=" '$(Git)' == '' ">$(ProgramFiles)\Git\cmd\git.cmd</Git>
+  </PropertyGroup>
+  <ItemGroup>
+    <FreeframeProjects Include="nodes\freeframes\**\*.cbp" Exclude="nodes\freeframes\Template*\**\*.cbp" />
+  </ItemGroup>
+  <Target Name="BuildFreeframe">    
+    <Exec Command="$(CodeBlocks) --no-splash-screen --rebuild --target=Release %(FreeframeProjects.FullPath)" />
+    <CreateItem Include="%(FreeframeProjects.RelativeDir)*.dll">
+      <Output ItemName="FreeframeOutputFiles" TaskParameter="Include" />
+    </CreateItem>
+    <Copy SourceFiles="@(FreeframeOutputFiles)" DestinationFolder="..\lib\nodes\freeframe"/>
+  </Target>
+  <Target Name="CleanFreeframe">
+    <Exec Command="$(Git) clean -f -d -x -- %(FreeframeProjects.RelativeDir)" />
+  </Target>
+  
+  <PropertyGroup>
+    <ZipSteps>PreZip;_Zip_;PostZip</ZipSteps>
+    <ZipOutputDir>..\..\</ZipOutputDir>
+    <TempBaseDir>$(ZipOutputDir)temp\</TempBaseDir>
+  </PropertyGroup>
+  <Target Name="Zip">
+    <CallTarget Targets="$(ZipSteps)" RunEachTargetSeparately="True" />
+  </Target>
+  <Target Name="PreZip">
+    <RemoveDir Directories="$(TempBaseDir)" />
+  </Target>
+  <Target Name="_Zip_">
+    <Script Language="C#" Code="$(VersionInfoCode)" Imports="System;System.Diagnostics">
+      <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
+    </Script>
+    <PropertyGroup>
+      <TempDir>$(TempBaseDir)vvvv_$(VersionInfo)\</TempDir>
+      <ZipFileName>$(ZipOutputDir)vvvv_$(VersionInfo).zip</ZipFileName>
+    </PropertyGroup>
+    <CreateItem Include="..\**\*.*" Exclude="..\*.rsm;..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\addonpack\**\*.*;..\lib\nodes\plugins\*\bin\**\*.*">
+      <Output ItemName="OutputFiles" TaskParameter="Include" />
+    </CreateItem>
+    <Copy SourceFiles="@(OutputFiles)" DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Exec Command="attrib +H $(TempDir)vvvv.exe.config" />
+    <Exec Command="vvvv.exe /nodelist" WorkingDirectory="$(TempDir)" />
+    <CreateItem Include="$(TempDir)\**\*.*">
+      <Output ItemName="ZipFiles" TaskParameter="Include" />
+    </CreateItem>
+    <Zip Files="@(ZipFiles)" WorkingDirectory="$(TempBaseDir)" ZipFileName="$(ZipFileName)" ZipLevel="9" />
+  </Target>
+  <Target Name="PostZip">
+    <RemoveDir Directories="$(TempBaseDir)" />
+  </Target>
 </Project>
