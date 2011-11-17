@@ -35,26 +35,6 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
   <PropertyGroup Condition=" '$(Platform)' == 'x86' " />
-  <PropertyGroup>
-    <VersionInfoCode>
-      <![CDATA[
-        public static string ScriptMain() {
-          var vi = FileVersionInfo.GetVersionInfo(Path.Combine(Environment.CurrentDirectory, "..", "vvvv.exe"));
-          string version = string.Format("{0}{1}{2}", vi.FileMajorPart, vi.FileMinorPart, vi.ProductVersion );
-          if (vi.FilePrivatePart > 0)
-          {
-            return version + vi.FileBuildPart + "." + vi.FilePrivatePart;
-          }
-          else
-          {
-            return version + vi.FileBuildPart;
-          }
-        }
-      ]]>
-    </VersionInfoCode>
-  </PropertyGroup>
-  
-  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
   
   <Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
     <MSBuild Projects="@(CoreProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" />
@@ -86,9 +66,9 @@
     <Copy SourceFiles="@(PluginDependencies)" DestinationFiles="@(PluginDependencies->'$(PluginsDestFolder)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(EditorDependencies)" DestinationFiles="@(EditorDependencies->'$(EditorsDestFolder)%(Filename)%(Extension)')" />
 	<Copy SourceFiles="@(SharedDependencies)" DestinationFiles="@(SharedDependencies->'$(CoreDestFolder)%(Filename)%(Extension)')" />
-    <Script Language="C#" Code="$(VersionInfoCode)" Imports="System;System.Diagnostics">
+    <GetVersionInfo File="..\vvvv.exe">
       <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
-    </Script>
+    </GetVersionInfo>
     <Delete Files="..\lib\*.dtd" />
     <Copy SourceFiles="vvvv45.dtd" DestinationFiles="..\lib\$(VersionInfo).dtd" />
   </Target>
@@ -105,30 +85,18 @@
     </CreateItem>
     <Delete Files="@(GeneratedFiles)" />
   </Target>
-  <!-- Will simply print all of the project files to be built -->
-  <!--
-  <Target Name="PrintAll">
-    <Message Text="Project files:%0d%0a@(ProjectsToBuild,'%0d%0a')" Importance="high" />
-  </Target>
-  -->
   
+  <!-- Freeframe -->
   <PropertyGroup>
-    <CodeBlocks Condition=" '$(CodeBlocks)' == '' ">$(ProgramFiles)\CodeBlocks\codeblocks.exe</CodeBlocks>
-    <Git Condition=" '$(Git)' == '' ">$(ProgramFiles)\Git\cmd\git.cmd</Git>
+    <FreeframeOutputDir>..\lib\nodes\freeframes\</FreeframeOutputDir>
+    <DirectShowFilterOutputDir>..\lib\nodes\directshowfilter\</DirectShowFilterOutputDir>
   </PropertyGroup>
   <ItemGroup>
     <FreeframeProjects Include="nodes\freeframes\**\*.cbp" Exclude="nodes\freeframes\Template*\**\*.cbp" />
+    <DirectShowFilterProjects Include="nodes\directshowfilter\**\*.dproj" />
   </ItemGroup>
-  <Target Name="BuildFreeframe">    
-    <Exec Command="$(CodeBlocks) --no-splash-screen --rebuild --target=Release %(FreeframeProjects.FullPath)" />
-    <CreateItem Include="%(FreeframeProjects.RelativeDir)*.dll">
-      <Output ItemName="FreeframeOutputFiles" TaskParameter="Include" />
-    </CreateItem>
-    <Copy SourceFiles="@(FreeframeOutputFiles)" DestinationFolder="..\lib\nodes\freeframe"/>
-  </Target>
-  <Target Name="CleanFreeframe">
-    <Exec Command="$(Git) clean -f -d -x -- %(FreeframeProjects.RelativeDir)" />
-  </Target>
+  
+  <Import Project="vvvv45.targets"/>
   
   <PropertyGroup>
     <ZipSteps>PreZip;_Zip_;PostZip</ZipSteps>
@@ -142,9 +110,9 @@
     <RemoveDir Directories="$(TempBaseDir)" />
   </Target>
   <Target Name="_Zip_">
-    <Script Language="C#" Code="$(VersionInfoCode)" Imports="System;System.Diagnostics">
+    <GetVersionInfo File="..\vvvv.exe">
       <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
-    </Script>
+    </GetVersionInfo>
     <PropertyGroup>
       <TempDir>$(TempBaseDir)vvvv_$(VersionInfo)\</TempDir>
       <ZipFileName>$(ZipOutputDir)vvvv_$(VersionInfo).zip</ZipFileName>
