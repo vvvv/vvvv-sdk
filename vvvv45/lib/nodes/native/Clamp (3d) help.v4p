@@ -1,0 +1,187 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Clamp (3d) help.v4p">
+   <BOUNDS height="5100" left="375" top="855" type="Window" width="9915">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1665" top="3480" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10485" top="7350" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="885" left="1665" top="3480" type="Box" width="855">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="0.26726,0.53452,0.80178">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Clamped Vector|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="90" top="1005" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10785" top="7650" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="885" left="90" top="1005" type="Box" width="855">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="-2.00000,0.50000,3.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Input Vector|">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Clamp (3d)">
+   <BOUNDS height="0" left="2475" top="2835" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Min XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Max XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Output XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Topology" slicecount="1" visible="1" values="|Keep Inside|">
+   </PIN>
+   <PIN pinname="Clamp / Project" slicecount="1" visible="1" values="|Clamp each dimensions separately|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input XYZ" linkstyle="PolyLine" srcnodeid="6" srcpinname="Y Output Value">
+   <LINKPOINT x="915" y="2565">
+   </LINKPOINT>
+   <LINKPOINT x="2505" y="2565">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1050" top="1005" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11085" top="7950" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="885" left="1050" top="1005" type="Box" width="855">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="-1.00000,-1.00000,-1.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Min">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Min XYZ" linkstyle="PolyLine" srcnodeid="4" srcpinname="Y Output Value">
+   <LINKPOINT x="1875" y="2340">
+   </LINKPOINT>
+   <LINKPOINT x="2670" y="2340">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2025" top="1005" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12180" top="7950" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="885" left="2025" top="1005" type="Box" width="855">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="1.00000,1.00000,1.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Max">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Max XYZ" linkstyle="VHV" srcnodeid="3" srcpinname="Y Output Value">
+   <LINKPOINT x="2850" y="2355">
+   </LINKPOINT>
+   <LINKPOINT x="2850" y="2355">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Y Input Value" srcnodeid="5" srcpinname="Output XYZ">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="3270" top="2835" type="Node" width="810">
+   </BOUNDS>
+   <BOUNDS height="675" left="3270" top="2835" type="Box" width="1530">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|If &quot;Keep Inside&quot;:&cr;&lf;Value &gt; Max = Max&cr;&lf;Value &lt; Min = Min|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="3000" top="1005" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9180" top="5475" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="915" left="3000" top="1005" type="Box" width="2025">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Topology">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="5160" top="1005" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9480" top="5775" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="915" left="5160" top="1005" type="Box" width="4455">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Clamp / Project|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Topology" linkstyle="VHV" srcnodeid="1" srcpinname="Output Enum">
+   <LINKPOINT x="3030" y="2370">
+   </LINKPOINT>
+   <LINKPOINT x="3030" y="2370">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Clamp / Project" linkstyle="PolyLine" srcnodeid="0" srcpinname="Output Enum">
+   <LINKPOINT x="5190" y="2370">
+   </LINKPOINT>
+   <LINKPOINT x="3195" y="2370">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="3015">
+   </BOUNDS>
+   <BOUNDS height="160" left="180" top="9390" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Clamps points into a box or out of a box|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="180" top="9390" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Clamp - 3d|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

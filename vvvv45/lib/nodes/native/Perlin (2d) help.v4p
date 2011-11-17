@@ -1,0 +1,139 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha8.3.dtd" >
+   <PATCH nodename="X:\vvvv33\help\Perlin (2d) help.v4p">
+   <BOUNDS height="10575" left="60" top="75" type="Window" width="7050">
+   </BOUNDS>
+   <NODE id="14" nodename="Cross (2d)">
+   <BOUNDS height="0" left="4980" top="1785" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X Out" visible="1">
+   </PIN>
+   <PIN pinname="Y Out" visible="1">
+   </PIN>
+   <PIN pinname="X In" visible="1">
+   </PIN>
+   <PIN pinname="Y In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="4965" top="1170" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="30">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="X In" srcnodeid="13" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Y In" srcnodeid="13" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="1110" top="4875" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3345" top="5910" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="4125" left="1110" top="4875" type="Box" width="4095">
+   </BOUNDS>
+   <PIN pinname="Columns" slicecount="1" values="30">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="30">
+   </PIN>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="HSV (Color Join)">
+   <BOUNDS height="0" left="5160" top="3225" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Saturation" visible="1">
+   </PIN>
+   <PIN pinname="Hue" visible="1">
+   </PIN>
+   <PIN pinname="Lightness" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Color Input" srcnodeid="11" srcpinname="Output">
+   </LINK>
+   <NODE id="10" nodename="Perlin (2d)">
+   <BOUNDS height="0" left="5505" top="2370" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Random Seed" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Octaves" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Persistence" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Frequency" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="X" srcnodeid="14" srcpinname="X Out">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Y" srcnodeid="14" srcpinname="Y Out">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Hue" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Saturation" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Value" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="180" top="240" type="Node" width="1215">
+   </BOUNDS>
+   <BOUNDS height="480" left="180" top="240" type="Box" width="2505">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Perlin Noise 2d|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="270" left="225" top="975" type="Node" width="4230">
+   </BOUNDS>
+   <BOUNDS height="3480" left="225" top="975" type="Box" width="4065">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|this node outputs a random value corresponding to a position. the main difference to an ordinary random function is, that positions which are close together get values which are close together, hence it&apos;s a smooth random function.&cr;&lf;&cr;&lf;- octaves&cr;&lf;an octave is the same function, but scaled and added to the original. every octave must be calculated, so be careful. it&apos;s limited to 10.&cr;&lf;&cr;&lf;- frequency&cr;&lf;proportional scaling of the octaves&cr;&lf;&cr;&lf;- persistence &cr;&lf;how strong the octaves are added to the original|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15">
+   <BOUNDS type="Node" left="210" top="9525" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="210" top="9525" width="750" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="Perlin (3d)" id="16">
+   <BOUNDS type="Node" left="1020" top="9525" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="3d">
+   </PIN>
+   </NODE>
+   </PATCH>
