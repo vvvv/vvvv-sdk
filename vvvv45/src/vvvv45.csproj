@@ -8,79 +8,68 @@
     <StartAction>Program</StartAction>
     <StartProgram>..\vvvv.exe</StartProgram>
   </PropertyGroup>
+  
   <PropertyGroup>
-    <CoreDestFolder>..\lib\core\</CoreDestFolder>
-    <PluginsDestFolder>..\lib\nodes\plugins\</PluginsDestFolder>
-    <EditorsDestFolder>..\lib\nodes\editors\</EditorsDestFolder>
+    <CoreOutputDir>..\lib\core\</CoreOutputDir>
+    <PluginsOutputDir>..\lib\nodes\plugins\</PluginsOutputDir>
+    <EditorsOutputDir>..\lib\nodes\editors\</EditorsOutputDir>
   </PropertyGroup>
+
   <ItemGroup>
-    <CoreProjectsToBuild Include="core\**\*.csproj;gui\**\*.csproj" />
-    <PluginProjectsToBuild Include="nodes\plugins\**\*.csproj" />
-    <EditorProjectsToBuild Include="nodes\editors\**\*.csproj" />
+    <ProjectsToBuild Include="core\**\*.csproj;
+                              gui\**\*.csproj">
+      <OutputDir>$(MSBuildProjectDirectory)\$(CoreOutputDir)</OutputDir>
+    </ProjectsToBuild>
+    <ProjectsToBuild Include="nodes\plugins\**\*.csproj">
+      <OutputDir>$(MSBuildProjectDirectory)\$(PluginsOutputDir)</OutputDir>
+    </ProjectsToBuild>
+    <ProjectsToBuild Include="nodes\editors\**\*.csproj">
+      <OutputDir>$(MSBuildProjectDirectory)\$(EditorsOutputDir)</OutputDir>
+    </ProjectsToBuild>
   </ItemGroup>
+  
   <ItemGroup>
-    <ProjectReference Include="@(CoreProjectsToBuild)" />
-    <ProjectReference Include="nodes\plugins\Animation\Timeliner\Timeliner.csproj" />
-    <ProjectReference Include="@(EditorProjectsToBuild)" />
-    <ProjectReference Include="nodes\plugins\NativePlugins.csproj">
-      <Project>{716F4773-5590-4DD6-A9BC-3FE905D22DA5}</Project>
-      <Name>NativePlugins</Name>
-    </ProjectReference>
+    <ProjectReference Include="@(ProjectsToBuild)" />
   </ItemGroup>
-  <PropertyGroup>
-    <BuildDependsOn>$(BuildDependsOn)</BuildDependsOn>
-    <RebuildDependsOn>Clean;Build</RebuildDependsOn>
-  </PropertyGroup>
+  
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
   <PropertyGroup Condition=" '$(Platform)' == 'x86' " />
   
+  <PropertyGroup>
+    <BuildDependsOn>$(BuildDependsOn)</BuildDependsOn>
+    <RebuildDependsOn>Clean;Build</RebuildDependsOn>
+    <CleanDependsOn>$(CleanDependsOn)</CleanDependsOn>
+  </PropertyGroup>
+  
   <Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
-    <MSBuild Projects="@(CoreProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" />
-    <MSBuild Projects="@(PluginProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU">
-      <Output TaskParameter="TargetOutputs" ItemName="PluginsOutputFiles" />
-    </MSBuild>
-    <MSBuild Projects="@(EditorProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU">
-      <Output TaskParameter="TargetOutputs" ItemName="EditorsOutputFiles" />
-    </MSBuild>
-    <CreateItem Include="core\**\bin\$(Configuration)\*;gui\**\bin\$(Configuration)\*">
-      <Output TaskParameter="Include" ItemName="CoreOutputFiles" />
+    <MSBuild Projects="@(ProjectsToBuild)" 
+             Properties="OutputPath=%(ProjectsToBuild.OutputDir);
+                         BuildingInsideVisualStudio=false" />
+    <!-- Delete all files which are already in lib/core -->
+    <CreateItem Include="$(CoreOutputDir)**\*.*">
+      <Output TaskParameter="Include" ItemName="_CoreOutputFiles_" />
     </CreateItem>
-    <!-- Make sure *.pdb files are included -->
-    <CreateItem Include="@(PluginsOutputFiles->'%(RootDir)%(Directory)%(Filename).*')">
-      <Output TaskParameter="Include" ItemName="PluginsOutputFiles" />
-    </CreateItem>
-    <CreateItem Include="@(EditorsOutputFiles->'%(RootDir)%(Directory)%(Filename).*')">
-      <Output TaskParameter="Include" ItemName="EditorsOutputFiles" />
-    </CreateItem>
-    <Copy SourceFiles="@(CoreOutputFiles)" DestinationFiles="@(CoreOutputFiles->'$(CoreDestFolder)%(Filename)%(Extension)')" />
-    <Copy SourceFiles="@(PluginsOutputFiles)" DestinationFiles="@(PluginsOutputFiles->'$(PluginsDestFolder)%(Filename)%(Extension)')" />
-    <Copy SourceFiles="@(EditorsOutputFiles)" DestinationFiles="@(EditorsOutputFiles->'$(EditorsDestFolder)%(Filename)%(Extension)')" />
-    <!-- Copy everything in Dependencies -->
-    <ItemGroup>
-      <PluginDependencies Include="nodes\plugins\**\Dependencies\*" />
-      <EditorDependencies Include="nodes\editors\**\Dependencies\*" />
-	  <SharedDependencies Include="thirdparty\Sanford*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(PluginDependencies)" DestinationFiles="@(PluginDependencies->'$(PluginsDestFolder)%(Filename)%(Extension)')" />
-    <Copy SourceFiles="@(EditorDependencies)" DestinationFiles="@(EditorDependencies->'$(EditorsDestFolder)%(Filename)%(Extension)')" />
-	<Copy SourceFiles="@(SharedDependencies)" DestinationFiles="@(SharedDependencies->'$(CoreDestFolder)%(Filename)%(Extension)')" />
+    <Delete Files="@(_CoreOutputFiles_->'$(PluginsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Delete Files="@(_CoreOutputFiles_->'$(EditorsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    
+    <!-- Create lib/*.dtd file -->
     <GetVersionInfo File="..\vvvv.exe">
       <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
     </GetVersionInfo>
     <Delete Files="..\lib\*.dtd" />
     <Copy SourceFiles="vvvv45.dtd" DestinationFiles="..\lib\$(VersionInfo).dtd" />
   </Target>
+  
   <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />
-  <!--
-  This target can be used to clean all of the projects before you build them.
-  It will also delete any dll & exe files located in the the Deploy folder. This could be accomplished
-  much better than this, but this is quick and easy.
-  -->
-  <Target Name="Clean">
-    <!-- Delete any files this process may have created from a previous execution -->
-    <CreateItem Include="$(CoreDestFolder)\**\*exe;$(CoreDestFolder)\**\*dll;$(CoreDestFolder)\**\*xml;$(CoreDestFolder)\**\*pdb;$(PluginsDestFolder)\**\*exe;$(PluginsDestFolder)\**\*dll;$(PluginsDestFolder)\**\*xml;$(PluginsDestFolder)\**\*pdb;$(EditorsDestFolder)\**\*exe;$(EditorsDestFolder)\**\*dll;$(EditorsDestFolder)\**\*xml;$(EditorsDestFolder)\**\*pdb;..\lib\*.dtd">
+
+  <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)">
+    <MSBuild Projects="@(ProjectsToBuild)" 
+             Targets="Clean" 
+             Properties="OutputPath=%(ProjectsToBuild.OutputDir)" 
+             Condition=" '$(BuildingInsideVisualStudio)' == 'false' "/>
+    <CreateItem Include="%(ProjectsToBuild.OutputDir)*.dll;%(ProjectsToBuild.OutputDir)*.xml;%(ProjectsToBuild.OutputDir)*.pdb">
       <Output ItemName="GeneratedFiles" TaskParameter="Include" />
     </CreateItem>
     <Delete Files="@(GeneratedFiles)" />
@@ -96,17 +85,15 @@
     <DirectShowFilterProjects Include="nodes\directshowfilter\**\*.dproj" />
   </ItemGroup>
   
-  <Import Project="vvvv45.targets"/>
-  
   <PropertyGroup>
-    <ZipSteps>PreZip;_Zip_;PostZip</ZipSteps>
+    <ZipSteps>_PreZip_;_Zip_;_PostZip_</ZipSteps>
     <ZipOutputDir>..\..\</ZipOutputDir>
     <TempBaseDir>$(ZipOutputDir)temp\</TempBaseDir>
   </PropertyGroup>
   <Target Name="Zip">
     <CallTarget Targets="$(ZipSteps)" RunEachTargetSeparately="True" />
   </Target>
-  <Target Name="PreZip">
+  <Target Name="_PreZip_">
     <RemoveDir Directories="$(TempBaseDir)" />
   </Target>
   <Target Name="_Zip_">
@@ -117,18 +104,31 @@
       <TempDir>$(TempBaseDir)vvvv_$(VersionInfo)\</TempDir>
       <ZipFileName>$(ZipOutputDir)vvvv_$(VersionInfo).zip</ZipFileName>
     </PropertyGroup>
-    <CreateItem Include="..\**\*.*" Exclude="..\*.rsm;..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\addonpack\**\*.*;..\lib\nodes\plugins\*\bin\**\*.*">
+    <CreateItem Include="..\**\*.*" 
+                Exclude="..\*.rsm;
+                         ..\**\.gitignore;
+                         ..\**\*.pdb;
+                         ..\src\**\*.*;
+                         ..\tests\**\*.*;
+                         ..\addonpack\**\*.*;
+                         ..\lib\nodes\plugins\*\bin\**\*.*">
       <Output ItemName="OutputFiles" TaskParameter="Include" />
     </CreateItem>
-    <Copy SourceFiles="@(OutputFiles)" DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(OutputFiles)" 
+          DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
     <Exec Command="attrib +H $(TempDir)vvvv.exe.config" />
     <Exec Command="vvvv.exe /nodelist" WorkingDirectory="$(TempDir)" />
     <CreateItem Include="$(TempDir)\**\*.*">
       <Output ItemName="ZipFiles" TaskParameter="Include" />
     </CreateItem>
-    <Zip Files="@(ZipFiles)" WorkingDirectory="$(TempBaseDir)" ZipFileName="$(ZipFileName)" ZipLevel="9" />
+    <Zip Files="@(ZipFiles)" 
+         WorkingDirectory="$(TempBaseDir)" 
+         ZipFileName="$(ZipFileName)" 
+         ZipLevel="9" />
   </Target>
-  <Target Name="PostZip">
+  <Target Name="_PostZip_">
     <RemoveDir Directories="$(TempBaseDir)" />
   </Target>
+  
+  <Import Project="vvvv45.targets"/>
 </Project>
