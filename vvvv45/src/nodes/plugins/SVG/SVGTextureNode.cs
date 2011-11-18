@@ -27,23 +27,48 @@ using Svg.Transforms;
 
 namespace VVVV.Nodes
 {
+	//struct to store a doc and its background color
+	public struct SvgDoc
+	{
+		public SvgDocument Document;
+		public Color BackgroundColor;
+		
+		public SvgDoc(SvgDocument doc, Color col)
+		{
+			Document = doc;
+			BackgroundColor = col;
+		}
+	}
+	
 	#region PluginInfo
 	[PluginInfo(Name = "Reader",
 	            Category = "SVG",
-	            Help = "Reads and returns an SVG Document",
+	            Help = "Reads and returns an SVG Document, its elements (layer) and other properties",
 	            Tags = "xml")]
 	#endregion PluginInfo
-	public class ReaderSvgNode : IPluginEvaluate
+	public class DucumentSvgReaderNode : IPluginEvaluate
 	{
 		#region fields & pins
 		[Input("Filename", StringType = StringType.Filename, FileMask = "SVG Files (*.svg)|*.svg")]
 		IDiffSpread<string> FFilenameIn;
 		
+		[Input("Background Color", DefaultColor = new double[] { 0, 0, 0, 0 }, IsSingle = true)]
+		IDiffSpread<RGBAColor> FBackgroundIn;
+		
 		[Input("Reload", IsBang = true)]
 		ISpread<bool> FReloadIn;
-
+		
 		[Output("Document")]
-		ISpread<SvgDocument> FOutput;
+		ISpread<SvgDoc> FDocOut;
+
+		[Output("Layer")]
+		ISpread<SvgElement> FLayerOut;
+		
+		[Output("View")]
+		ISpread<SvgViewBox> FViewOut;
+		
+		[Output("Size")]
+		ISpread<Vector2D> FSizeOut;
 
 		[Import()]
 		ILogger FLogger;
@@ -52,69 +77,23 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if(FFilenameIn.IsChanged || FReloadIn[0])
+			if(FFilenameIn.IsChanged || FBackgroundIn.IsChanged || FReloadIn[0])
 			{
-				FOutput.SliceCount = SpreadMax;
+				FDocOut.SliceCount = SpreadMax;				
+				FLayerOut.SliceCount = SpreadMax;
+				FSizeOut.SliceCount = SpreadMax;
+				FViewOut.SliceCount = SpreadMax;
+				
 				for(int i=0; i<SpreadMax; i++)
 				{
-					FOutput[i] = SvgDocument.Open(FFilenameIn[i]);
-				}
-			}
-				 
-			//FLogger.Log(LogType.Debug, "hi tty!");
-		}
-	}
-	
-	#region PluginInfo
-	[PluginInfo(Name = "Document",
-	            Category = "SVG",
-	            Version = "Split",
-	            Help = "Takes an SVG document and returns its elements (layers) and other properties",
-	            Tags = "xml")]
-	#endregion PluginInfo
-	public class DucumentSvgSplitNode : IPluginEvaluate
-	{
-		#region fields & pins
-		[Input("Document")]
-		IDiffSpread<SvgDocument> FDocIn;
-
-		[Output("SVG Layer")]
-		ISpread<SvgElement> FOutput;
-		
-		[Output("Former Index")]
-		ISpread<int> FFormerIndexOut;
-		
-		[Output("Width")]
-		ISpread<float> FWidthOut;
-		
-		[Output("Height")]
-		ISpread<float> FHeightOut;
-
-		[Import()]
-		ILogger FLogger;
-		#endregion fields & pins
- 
-		//called when data for any output pin is requested
-		public void Evaluate(int SpreadMax)
-		{
-			if(FDocIn.IsChanged)
-			{
-				FOutput.SliceCount = 0;
-				FFormerIndexOut.SliceCount = 0;
-				FWidthOut.SliceCount = SpreadMax;
-				FHeightOut.SliceCount = SpreadMax;
-				for(int i=0; i<SpreadMax; i++)
-				{
-					var doc = FDocIn[i];
+					var doc = SvgDocument.Open(FFilenameIn[i]);
 					if(doc != null)
 					{
-						FWidthOut[i] = doc.Width;
-						FHeightOut[i] = doc.Height;
-						foreach(var c in doc.Children)
-						{
-							FOutput.Add(c);
-							FFormerIndexOut.Add(i);
-						}					
+						FDocOut[i] = new SvgDoc(doc, FBackgroundIn[i].Color);
+						FLayerOut[i] = (SvgElement)doc.Children[0].Clone();
+						FViewOut[i] = doc.ViewBox;
+						var size = doc.GetDimensions();
+						FSizeOut[i] = new Vector2D(size.Width, size.Height);
 					}
 				}
 			}
@@ -124,9 +103,38 @@ namespace VVVV.Nodes
 	}
 	
 	#region PluginInfo
+	[PluginInfo(Name = "Writer",
+	            Category = "SVG",
+	            Help = "Writes an SVG Document to disc",
+	            Tags = "xml",
+	            AutoEvaluate = true)]
+	#endregion PluginInfo
+	public class DucumentSvgWriterNode : IPluginEvaluate
+	{
+		[Input("Document")]
+		ISpread<SvgDocument> FDocIn;
+		
+		[Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename)]
+		ISpread<string> FFilenameIn;
+		
+		[Input("Write", IsBang = true)]
+		ISpread<bool> FDoWriteIn;
+		
+		//called when data for any output pin is requested
+		public void Evaluate(int SpreadMax)
+		{
+			//save to disc
+			if(FDoWriteIn[0])
+			{
+				FDocIn[0].Write(FFilenameIn[0]);
+			}	
+		}
+	}
+	
+	#region PluginInfo
 	[PluginInfo(Name = "Renderer",
 	            Category = "SVG",
-	            Help = "Renders svg layers into a window",
+	            Help = "Renders svg layers into a window and outputs the document",
 	            Tags = "xml",
 	            AutoEvaluate = true,
 	            InitialComponentMode = TComponentMode.InAWindow)]
@@ -134,7 +142,7 @@ namespace VVVV.Nodes
 	public class SvgRendererNode : UserControl, IPluginEvaluate
 	{
 		#region fields & pins
-		[Input("SVG Layer")]
+		[Input("Layer")]
 		IDiffSpread<SvgElement> FSVGIn;
 		
 		[Input("Transform")]
@@ -146,22 +154,16 @@ namespace VVVV.Nodes
 		[Input("Background Color", DefaultColor = new double[] { 0, 0, 0, 1 }, IsSingle = true)]
 		IDiffSpread<RGBAColor> FBackgroundIn;
 
-		[Input("Width", DefaultValue = 128)]
-		IDiffSpread<int> FWidthIn;
-
-		[Input("Height", DefaultValue = 128)]
-		IDiffSpread<int> FHeightIn;
-		
-		[Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename)]
-		ISpread<string> FFilenameIn;
-		
-		[Input("Write", IsBang = true)]
-		ISpread<bool> FDoWriteIn;
+		[Input("Size", StepSize = 1)]
+		IDiffSpread<Vector2> FSizeIn;
 		
 		[Output("Document")]
-		ISpread<SvgDocument> FOutput;
+		ISpread<SvgDoc> FOutput;
 		
 		SvgDocument FSVGDoc = new SvgDocument();
+		
+		SizeF FSize = new SizeF();
+		bool FResized = false;
 		
 		Bitmap FBitMap;
 		PictureBox FPicBox = new PictureBox();
@@ -179,34 +181,57 @@ namespace VVVV.Nodes
 			
 			Controls.Add(FPicBox);
 			
+			this.Resize	+= new EventHandler(SvgRendererNode_Resize);
+			
+		}
+
+		void SvgRendererNode_Resize(object sender, EventArgs e)
+		{
+			FResized = true;
 		}
  
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-			if (FSVGIn.IsChanged)
+
+			//update
+			if (FSVGIn.IsChanged || FSizeIn.IsChanged || FBackgroundIn.IsChanged ||
+				FTransformIn.IsChanged || FViewIn.IsChanged || FResized)
 			{
+				FResized = false;
+				
 				FSVGDoc = new SvgDocument();
 				foreach(var elem in FSVGIn)
-					FSVGDoc.Children.Add(elem);
-			}
-
-			//update texture
-			if (FSVGIn.IsChanged || FWidthIn.IsChanged || FHeightIn.IsChanged || 
-				FTransformIn.IsChanged || FViewIn.IsChanged)
-			{
-							
+				{
+					if(elem != null) FSVGDoc.Children.Add(elem);
+				}			
+				
 				FSVGDoc.Transforms = new SvgTransformCollection();
-				FSVGDoc.ViewBox = FViewIn[0];
+				
+				var view = FViewIn[0];
+				
+				if(view.Equals(SvgViewBox.Empty))
+				{
+					view =  new SvgViewBox(-1, -1, 2, 2);
+				}
+				
+				FSVGDoc.ViewBox = view;
 				var m = FTransformIn[0];
 				var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
 				FSVGDoc.Transforms.Add(mat);
-				FSVGDoc.Width = new SvgUnit(SvgUnitType.Pixel, Math.Max(this.Width, 1));
-				FSVGDoc.Height = new SvgUnit(SvgUnitType.Pixel, Math.Max(this.Height, 1));
+				
+				FSize.Width = FSizeIn[0].X;
+				FSize.Height = FSizeIn[0].Y;
+				
+				if(FSize == SizeF.Empty)
+				{
+					FSize = new SizeF(this.Width, this.Height);
+				}
+				
+				FSVGDoc.Width = new SvgUnit(SvgUnitType.User, Math.Max(FSize.Width, 1));
+				FSVGDoc.Height = new SvgUnit(SvgUnitType.User, Math.Max(FSize.Height, 1));
 				 
-				FOutput[0] = FSVGDoc;
-			
-				//FLogger.Log(LogType.Debug, "hi tty!");
+				FOutput[0] = new SvgDoc(FSVGDoc, FBackgroundIn[0].Color);
 			}
 			
 			if(FThisNode.Window != null)
@@ -230,11 +255,6 @@ namespace VVVV.Nodes
 				FPicBox.Image = FBitMap;
 			}
 			
-			//save to disc
-			if(FDoWriteIn[0])
-			{
-				FSVGDoc.Write(FFilenameIn[0]);
-			}
 		}
 	}
 	
@@ -250,25 +270,19 @@ namespace VVVV.Nodes
 		#region fields & pins
 
 		[Input("Document")]
-		IDiffSpread<SvgDocument> FSVGIn;
+		IDiffSpread<SvgDoc> FSVGIn;
 		
 		[Input("Transform")]
 		IDiffSpread<Matrix> FTransformIn;
 		
-		[Input("Background Color", DefaultColor = new double[] { 0, 0, 0, 0 }, IsSingle = true)]
-		IDiffSpread<RGBAColor> FBackgroundIn;
-		
-		[Input("Width", DefaultValue = 128)]
-		IDiffSpread<int> FWidthIn;
-
-		[Input("Height", DefaultValue = 128)]
-		IDiffSpread<int> FHeightIn;
+		[Input("Size", StepSize = 1)]
+		IDiffSpread<Vector2> FSizeIn;
 
 		[Import()]
 		ILogger FLogger;
 		
 		List<Bitmap> FBitmaps = new List<Bitmap>();
-		RectangleF FOriginalDim;
+		List<Size> FSizes = new List<Size>();
 
 		//track the current texture slice
 		int FCurrentSlice;
@@ -289,37 +303,56 @@ namespace VVVV.Nodes
 		public void Evaluate(int SpreadMax)
 		{
 			SetSliceCount(SpreadMax);
-
-			//recreate texture if doc was changed
-			if (FWidthIn.IsChanged || FHeightIn.IsChanged) 
-			{
-				//set new texture size
-				Reinitialize();
-				
-				//dispose bitmaps
-				foreach(var bm in FBitmaps)
-					if(bm != null) bm.Dispose();
-				
-				FBitmaps.Clear();
-				//create new bitmaps
-				for(int i=0; i<SpreadMax; i++)
-				{
-					FBitmaps.Add(new Bitmap(FWidthIn[i], FHeightIn[i]));
-				}
-			}
 			
-			if(FSVGIn.IsChanged || FTransformIn.IsChanged || FBackgroundIn.IsChanged || FWidthIn.IsChanged || FHeightIn.IsChanged)
+			if(FSVGIn.IsChanged || FTransformIn.IsChanged || FSizeIn.IsChanged)
 			{
+				FSizes.Clear();
+				
+				if(FBitmaps.Count > SpreadMax)
+				{
+					FBitmaps.RemoveRange(SpreadMax, FBitmaps.Count - SpreadMax);
+				}
+				
 				for(int i=0; i<SpreadMax; i++)
 				{
-					var doc = FSVGIn[i];
+					var doc = FSVGIn[i].Document;
+					
+					//calc size
+					var size = new Size((int)FSizeIn[0].X, (int)FSizeIn[0].Y);
+					if(size == Size.Empty && doc != null)
+					{
+						var s = doc.GetDimensions();
+						size =  new Size((int)s.Width, (int)s.Height);
+					}
+					
+					//store size for texture creation
+					FSizes.Add(size);
+					
 					if(doc != null)
 					{
-						var bm = FBitmaps[i];
+						//get bitmap
+						Bitmap bm;
+						if(FBitmaps.Count > i)
+						{
+							bm = FBitmaps[i];
+							if(bm.Size != size)
+							{
+								bm.Dispose();
+								bm = new Bitmap(size.Width, size.Height);
+								FBitmaps[i] = bm;
+								Reinitialize();
+							}
+						}
+						else //create a new bm
+						{
+							bm = new Bitmap(size.Width, size.Height);
+							FBitmaps.Add(bm);
+							Reinitialize();
+						}
 						
 						//clear bitmap
 						var g = Graphics.FromImage(bm);
-						g.Clear(FBackgroundIn[i].Color);
+						g.Clear(FSVGIn[i].BackgroundColor);
 						g.Dispose();
 						
 						//save old values
@@ -334,11 +367,11 @@ namespace VVVV.Nodes
 						var m = FTransformIn[i];
 						var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
 						doc.Transforms.Add(mat);
-						doc.Width = new SvgUnit(SvgUnitType.Pixel, FWidthIn[0]);
-						doc.Height = new SvgUnit(SvgUnitType.Pixel, FHeightIn[0]);
+						doc.Width = new SvgUnit(SvgUnitType.Pixel, size.Width);
+						doc.Height = new SvgUnit(SvgUnitType.Pixel, size.Height);
 						
 						//draw into bitmap
-						FSVGIn[i].Draw(bm);
+						doc.Draw(bm);
 						
 						doc.Width = oldW;
 						doc.Height = oldH;
@@ -357,7 +390,7 @@ namespace VVVV.Nodes
 		protected override Texture CreateTexture(int Slice, Device device)
 		{
 			FLogger.Log(LogType.Debug, "Creating new texture at slice: " + Slice);
-			return TextureUtils.CreateTexture(device, Math.Max(FWidthIn[Slice], 1), Math.Max(FHeightIn[Slice], 1));
+			return TextureUtils.CreateTexture(device, Math.Max(FSizes[Slice].Width, 1), Math.Max(FSizes[Slice].Height, 1));
 		}
 
 		//this method gets called, when Update() was called in evaluate,

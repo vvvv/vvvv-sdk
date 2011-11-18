@@ -3,17 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
-using VVVV.PluginInterfaces.V1;
-using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.VColor;
-using VVVV.Utils.VMath;
-using VVVV.Utils.SlimDX;
-
-using VVVV.Core.Logging;
+using SlimDX;
 using Svg;
 using Svg.Transforms;
-using SlimDX;
+using VVVV.Core.Logging;
+using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.SlimDX;
+using VVVV.Utils.VColor;
+using VVVV.Utils.VMath;
+
 #endregion usings
 
 namespace VVVV.Nodes
@@ -23,7 +24,7 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Input("Transform", Order = 0)]
-		protected IDiffSpread<Matrix> FTransformIn;
+		protected IDiffSpread<SlimDX.Matrix> FTransformIn;
 		
 		[Input("Stroke", Order = 20, DefaultColor = new double[] { 0, 0, 0, 1 })]
 		protected IDiffSpread<RGBAColor> FStrokeIn;
@@ -71,7 +72,7 @@ namespace VVVV.Nodes
 					SetFill(elem, i);
 					SetStroke(elem, i);
 					elem.Visible = FEnabledIn[i];
-					FOutput[i] = elem;
+					FOutput[i] = elem;	
 				}
 			}
 			
@@ -399,11 +400,11 @@ namespace VVVV.Nodes
 
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
-		{
-			FOutput.SliceCount = SpreadMax;
-			
+		{	
 			if(FViewCenterIn.IsChanged || FViewSizeIn.IsChanged)
 			{
+				FOutput.SliceCount = SpreadMax;
+				
 				//create groups and add matrix to it
 				for(int i=0; i<SpreadMax; i++)
 				{
@@ -414,6 +415,63 @@ namespace VVVV.Nodes
 				}
 			}
 			
+		}
+	}
+	
+	//GETPATH-------------------------------------------------------------------
+	#region PluginInfo
+	[PluginInfo(Name = "GetPath", 
+	            Category = "SVG", 
+	            Help = "Returns the path data from SVG layers", 
+	            Tags = "")]
+	#endregion PluginInfo
+	public class SVGGetPathNode : IPluginEvaluate
+	{
+		[Input("Layer")]
+		IDiffSpread<SvgElement> FInput;
+		
+		[Output("Path ")]
+		ISpread<ISpread<Vector2D>> FPathOutput;
+		
+		[Output("Path Type")]
+		ISpread<ISpread<int>> FPathTypeOutput;
+		
+		public void Evaluate(int SpreadMax)
+		{
+			if(FInput.IsChanged)
+			{
+				FPathOutput.SliceCount = SpreadMax;
+				FPathTypeOutput.SliceCount = SpreadMax;
+				
+				for(int i=0; i<SpreadMax; i++)
+				{
+					
+					var elem = FInput[i];
+					var po = FPathOutput[i];
+					var pto = FPathTypeOutput[i];
+					
+					if(elem is SvgVisualElement || elem is SvgFragment)
+					{
+						GraphicsPath p;
+						if(elem is SvgVisualElement) p = ((SvgVisualElement)elem).Path;
+						else p = ((SvgFragment)elem).Path;
+						   
+						po.SliceCount = p.PointCount;
+						pto.SliceCount = p.PointCount;
+						
+						for(int j=0; j<p.PointCount; j++)
+						{
+							po[j] = new Vector2D(p.PathPoints[j].X, p.PathPoints[j].Y);
+							pto[j] = p.PathTypes[j];
+						}
+					}
+					else
+					{
+						po.SliceCount = 0;
+						pto.SliceCount = 0;
+					}
+				}
+			}
 		}
 	}
 	
@@ -429,7 +487,7 @@ namespace VVVV.Nodes
 	{
 		#region fields & pins
 		[Input("Transform", IsSingle = true)]
-		IDiffSpread<Matrix> FTransformIn;
+		IDiffSpread<SlimDX.Matrix> FTransformIn;
 		
 		[Input("Input", IsPinGroup=true)]
 		IDiffSpread<ISpread<SvgElement>> FInput;
