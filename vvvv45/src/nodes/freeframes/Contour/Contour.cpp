@@ -25,7 +25,7 @@
 
 //includes
 #include "Contour.h"
-#include "cvmoments_mod.h"
+#include "moments_mod.h"
 #include <string.h>
 #include <stdio.h>
 
