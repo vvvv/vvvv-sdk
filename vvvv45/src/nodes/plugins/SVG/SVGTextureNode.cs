@@ -112,7 +112,7 @@ namespace VVVV.Nodes
 	public class DucumentSvgWriterNode : IPluginEvaluate
 	{
 		[Input("Document")]
-		ISpread<SvgDocument> FDocIn;
+		ISpread<SvgDoc> FDocIn;
 		
 		[Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename)]
 		ISpread<string> FFilenameIn;
@@ -126,7 +126,7 @@ namespace VVVV.Nodes
 			//save to disc
 			if(FDoWriteIn[0])
 			{
-				FDocIn[0].Write(FFilenameIn[0]);
+				FDocIn[0].Document.Write(FFilenameIn[0]);
 			}	
 		}
 	}
@@ -145,13 +145,13 @@ namespace VVVV.Nodes
 		[Input("Layer")]
 		IDiffSpread<SvgElement> FSVGIn;
 		
-		[Input("Transform")]
-		IDiffSpread<Matrix> FTransformIn;
-		
-		[Input("View Box ")]
+		[Input("View Box", IsSingle = true)]
 		IDiffSpread<SvgViewBox> FViewIn;
 		
-		[Input("Background Color", DefaultColor = new double[] { 0, 0, 0, 1 }, IsSingle = true)]
+		[Input("Ignore View", IsSingle = true)]
+		IDiffSpread<bool> FIgnoreView;
+		
+		[Input("Background Color, IsSingle = true", DefaultColor = new double[] { 0, 0, 0, 1 }, IsSingle = true)]
 		IDiffSpread<RGBAColor> FBackgroundIn;
 
 		[Input("Size", StepSize = 1)]
@@ -196,7 +196,7 @@ namespace VVVV.Nodes
 
 			//update
 			if (FSVGIn.IsChanged || FSizeIn.IsChanged || FBackgroundIn.IsChanged ||
-				FTransformIn.IsChanged || FViewIn.IsChanged || FResized)
+			   FIgnoreView.IsChanged || FViewIn.IsChanged || FResized)
 			{
 				FResized = false;
 				
@@ -204,22 +204,24 @@ namespace VVVV.Nodes
 				foreach(var elem in FSVGIn)
 				{
 					if(elem != null) FSVGDoc.Children.Add(elem);
-				}			
+				}
 				
 				FSVGDoc.Transforms = new SvgTransformCollection();
 				
-				var view = FViewIn[0];
-				
-				if(view.Equals(SvgViewBox.Empty))
+				//set view
+				if(!FIgnoreView[0])
 				{
-					view =  new SvgViewBox(-1, -1, 2, 2);
+					var view = FViewIn[0];
+					
+					if(view.Equals(SvgViewBox.Empty))
+					{
+						view =  new SvgViewBox(-1, -1, 2, 2);
+					}
+					
+					FSVGDoc.ViewBox = view;
 				}
 				
-				FSVGDoc.ViewBox = view;
-				var m = FTransformIn[0];
-				var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
-				FSVGDoc.Transforms.Add(mat);
-				
+				//calc size
 				FSize.Width = FSizeIn[0].X;
 				FSize.Height = FSizeIn[0].Y;
 				
@@ -228,12 +230,14 @@ namespace VVVV.Nodes
 					FSize = new SizeF(this.Width, this.Height);
 				}
 				
+				//set size and output doc
 				FSVGDoc.Width = new SvgUnit(SvgUnitType.User, Math.Max(FSize.Width, 1));
 				FSVGDoc.Height = new SvgUnit(SvgUnitType.User, Math.Max(FSize.Height, 1));
 				 
 				FOutput[0] = new SvgDoc(FSVGDoc, FBackgroundIn[0].Color);
 			}
 			
+			//render to window
 			if(FThisNode.Window != null)
 			{
 				if(FBitMap == null)
