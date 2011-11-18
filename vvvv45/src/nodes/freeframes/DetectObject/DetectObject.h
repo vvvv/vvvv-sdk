@@ -12,11 +12,11 @@
 //german: http://www.gnu.de/lgpl-ger.html
 
 //////language/ide
-//dev-c++ 5
+//c++/CodeBlocks 10.05
 
 //////dependencies
-//opencv beta5 libraries:
-//http://sourceforge.net/projects/opencvlibrary
+//opencv v2.31
+//http://opencv.willowgarage.com/wiki
 
 //////initiative stressing to do it + editing
 //benedikt -> benedikt@looksgood.de
