@@ -31,6 +31,7 @@
 
 //opencv includes
 #include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 
 #include <string.h>
 #include <string>
@@ -133,8 +134,8 @@ private:
 
     CRITICAL_SECTION CriticalSection;
     CvSize FImageSize;
-    string Filename;
-    bool newCascade;
+    string FFilename;
+    bool FNewCascade;
 
     Obj* FFaces_new;
     Obj* FFaces_old;

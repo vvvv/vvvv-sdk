@@ -38,7 +38,7 @@
 // the use of this software, even if advised of the possibility of such damage.
 //
 //M*/
-#include "_cv.h"
+#include <opencv/cv.h>
 
 /* The function calculates center of gravity and central second order moments */
 static void icvCompleteMomentState( CvMoments* moments )
@@ -108,7 +108,7 @@ icvContourMoments_mod( CvSeq* contour, CvMoments* moments, float width, float he
             else
                {
                 xi_1 = ((CvPoint*)(reader.ptr))->x ;
-                yi_1 = ((CvPoint*)(reader.ptr))->y ; 
+                yi_1 = ((CvPoint*)(reader.ptr))->y ;
                }
             /* MOD end */
         }
@@ -118,7 +118,7 @@ icvContourMoments_mod( CvSeq* contour, CvMoments* moments, float width, float he
             yi_1 = ((CvPoint2D32f*)(reader.ptr))->y  ;
         }
         CV_NEXT_SEQ_ELEM( contour->elem_size, reader );
-        
+
         xi_12 = xi_1 * xi_1;
         yi_12 = yi_1 * yi_1;
 
@@ -138,7 +138,7 @@ icvContourMoments_mod( CvSeq* contour, CvMoments* moments, float width, float he
                     yi = ((CvPoint*)(reader.ptr))->y ;
                    }
                 /* MOD end */
-                
+
             }
             else
             {
@@ -418,7 +418,7 @@ void cvMoments_mod( const void* array, CvMoments* moments, float width, float he
         icvInitMomentsInTileBinCnCRTable( &mombin_tab );
         inittab = 1;
     }
-    
+
     if( !moments )
         CV_ERROR( CV_StsNullPtr, "" );
 
@@ -499,7 +499,7 @@ void cvMoments_mod( const void* array, CvMoments* moments, float width, float he
         CvSize cur_tile_size = tile_size;
         if( y + cur_tile_size.height > size.height )
             cur_tile_size.height = size.height - y;
-        
+
         for( x = 0; x < size.width; x += tile_size.width, k++ )
         {
             if( x + cur_tile_size.width > size.width )
@@ -623,7 +623,7 @@ cvGetSpatialMoment( CvMoments * moments, int x_order, int y_order )
 //    Purpose:  Returns central moment(x_order, y_order) which is determined as:
 //              mu(x_o,y_o) = sum ((x - xc)^ x_o)*((y - yc) ^ y_o)*I(x,y)
 //              0 <= x_o, y_o; x_o + y_o <= 3,
-//              (xc, yc) = (m10/m00,m01/m00) - center of gravity 
+//              (xc, yc) = (m10/m00,m01/m00) - center of gravity
 //    Context:
 //    Parameters:
 //      mom  - moment structure filled by one of the icvMoments[Binary]*** function
@@ -666,7 +666,7 @@ cvGetCentralMoment( CvMoments * moments, int x_order, int y_order )
 //    Purpose: Returns normalized central moment(x_order,y_order) which is determined as:
 //             nu(x_o,y_o) = mu(x_o, y_o)/(m00 ^ (((x_o + y_o)/2) + 1))
 //             0 <= x_o, y_o; x_o + y_o <= 3,
-//             (xc, yc) = (m10/m00,m01/m00) - center of gravity 
+//             (xc, yc) = (m10/m00,m01/m00) - center of gravity
 //    Context:
 //    Parameters:
 //      mom  - moment structure filled by one of the icvMoments[Binary]*** function

@@ -29,6 +29,7 @@
 
 //opencv includes
 #include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 
 #include <string.h>
 #include <string>
@@ -129,8 +130,8 @@ private:
 
     CRITICAL_SECTION CriticalSection;
     CvSize FImageSize;
-    string Filename;
-    bool newMask;
+    string FFilename;
+    bool FNewMask;
 
     IplImage* FCurrentImage;
     IplImage* FGrayImage;

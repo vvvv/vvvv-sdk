@@ -28,8 +28,7 @@
 #include "FreeFrame.h"
 
 //opencv includes
-#include "cv.h"
-#include "highgui.h"
+#include <opencv/cv.h>
 
 //pin constants
 #define NUM_PARAMS 9

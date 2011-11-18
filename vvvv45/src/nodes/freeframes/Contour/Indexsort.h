@@ -1,5 +1,7 @@
 // indexsort.h
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {float x; float y; } Obj;
 typedef struct {int o1n; int o2n; } Highscore;
@@ -15,5 +17,5 @@ int adaptindex(Obj* Objlist1, Obj* Objlist2, int NUMOBS1, int NUMOBS2, int* IDs_
 // IDs_old  : List of Object IDs from last frame
 // IDs_new  : Empty list of Object IDs from this frame ( to be filled by adaptindex )
 // Sortlist : List with position every object had in the object list from last frame
-// inc      : Highest object index 
+// inc      : Highest object index
 // DoInc    : Flag for using incremented object IDs
