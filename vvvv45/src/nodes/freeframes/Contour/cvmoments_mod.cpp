@@ -39,6 +39,7 @@
 //
 //M*/
 #include <opencv/cv.h>
+#include <opencv2/opencv.hpp>
 
 /* The function calculates center of gravity and central second order moments */
 static void icvCompleteMomentState( CvMoments* moments )

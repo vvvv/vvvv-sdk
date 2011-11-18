@@ -1,7 +1,6 @@
 // -> cvcamshift_mod.h
 #include <opencv/cv.h>
 
-
 int cvMeanShift_mod( const void* imgProb,
                      CvRect windowIn,
                      CvTermCriteria criteria, CvConnectedComp* comp );

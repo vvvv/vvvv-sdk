@@ -1,6 +1,5 @@
 // cvmoments_mod.h
-#include "cv.h"
-
+#include <opencv/cv.h>
 
 static void icvContourMoments_mod( CvSeq* contour, CvMoments* moments, float width, float height );
 

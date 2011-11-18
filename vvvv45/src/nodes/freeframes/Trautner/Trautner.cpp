@@ -235,7 +235,6 @@ DWORD plugClass::setParameter(SetParameterStruct* pParam)
 	    float f = pParam->value;
 	    int* ip = (int*)&f;
 	    char* cp = (char*)*ip;
-        int length = strlen(cp) + 1;
 
         FFilename = cp;
         /*	char buffer[100];
