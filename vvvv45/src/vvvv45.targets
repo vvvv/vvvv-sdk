@@ -68,7 +68,7 @@
           Inputs="@(FreeframeProjects)"
           Outputs="@(FreeframeProjects->'%(OutputDir)%(Filename).dll')"
           DependsOnTargets="_CheckFreeframeDependencies_">
-    <Exec Command="$(CodeBlocks) --no-splash-screen --rebuild --target=Release &quot;%(FreeframeProjects.FullPath)&quot;" 
+    <Exec Command="&quot;$(CodeBlocks)&quot; --no-splash-screen --rebuild --target=Release &quot;%(FreeframeProjects.FullPath)&quot;" 
           EnvironmentVariables="OpenCV=$(OpenCV)\" />
     <Copy SourceFiles="@(FreeframeProjects->'%(RootDir)%(Directory)%(Filename).dll')" DestinationFiles="@(FreeframeProjects->'%(OutputDir)%(Filename).dll')"/>
   </Target>
