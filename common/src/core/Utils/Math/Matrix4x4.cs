@@ -734,23 +734,51 @@ namespace VVVV.Utils.VMath
         }
 		
 		#endregion binary operators
-		
-		#region Equals and GetHashCode implementation
-		
-		public override bool Equals(object obj)
+
+        #region methods
+
+        /// <summary>
+        /// Transpose thi 4x4 matrix
+        /// </summary>
+        /// <param name="A"></param>
+        /// <returns>Transpose of this matrix</returns>
+        public Matrix4x4 Transpose()
+        {
+            return new Matrix4x4(m11, m21, m31, m41,
+                                 m12, m22, m32, m42,
+                                 m13, m23, m33, m43,
+                                 m14, m24, m34, m44);
+        }
+
+        public override string ToString()
+		{
+			string row1 = m11.ToString("f4") + " " + m12.ToString("f4") + " " + m13.ToString("f4") + " " + m14.ToString("f4");
+			string row2 = m21.ToString("f4") + " " + m22.ToString("f4") + " " + m23.ToString("f4") + " " + m24.ToString("f4");
+			string row3 = m31.ToString("f4") + " " + m32.ToString("f4") + " " + m33.ToString("f4") + " " + m34.ToString("f4");
+			string row4 = m41.ToString("f4") + " " + m42.ToString("f4") + " " + m43.ToString("f4") + " " + m44.ToString("f4");
+			
+			return "\n" + row1 + "\n" + row2 + "\n" + row3 + "\n" + row4;
+        }
+
+        #endregion methods
+
+        #region Equals and GetHashCode implementation
+
+        public override bool Equals(object obj)
         {
             return (obj is Matrix4x4) && Equals((Matrix4x4)obj);
         }
-		
+
         public bool Equals(Matrix4x4 other)
         {
             return this.m11 == other.m11 && this.m12 == other.m12 && this.m13 == other.m13 && this.m14 == other.m14 && this.m21 == other.m21 && this.m22 == other.m22 && this.m23 == other.m23 && this.m24 == other.m24 && this.m31 == other.m31 && this.m32 == other.m32 && this.m33 == other.m33 && this.m34 == other.m34 && this.m41 == other.m41 && this.m42 == other.m42 && this.m43 == other.m43 && this.m44 == other.m44;
         }
-		
+
         public override int GetHashCode()
         {
             int hashCode = 0;
-            unchecked {
+            unchecked
+            {
                 hashCode += 1000000007 * m11.GetHashCode();
                 hashCode += 1000000009 * m12.GetHashCode();
                 hashCode += 1000000021 * m13.GetHashCode();
@@ -770,18 +798,6 @@ namespace VVVV.Utils.VMath
             }
             return hashCode;
         }
-		#endregion
-
-		
-		public override string ToString()
-		{
-			string row1 = m11.ToString("f4") + " " + m12.ToString("f4") + " " + m13.ToString("f4") + " " + m14.ToString("f4");
-			string row2 = m21.ToString("f4") + " " + m22.ToString("f4") + " " + m23.ToString("f4") + " " + m24.ToString("f4");
-			string row3 = m31.ToString("f4") + " " + m32.ToString("f4") + " " + m33.ToString("f4") + " " + m34.ToString("f4");
-			string row4 = m41.ToString("f4") + " " + m42.ToString("f4") + " " + m43.ToString("f4") + " " + m44.ToString("f4");
-			
-			return "\n" + row1 + "\n" + row2 + "\n" + row3 + "\n" + row4;
-		}
-		
-	}
+        #endregion Equals and GetHashCode implementation
+    }
 }

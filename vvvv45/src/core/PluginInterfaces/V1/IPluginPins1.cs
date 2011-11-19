@@ -942,6 +942,7 @@ namespace VVVV.PluginInterfaces.V1
 	/// </summary>
 	[Guid("AB312E34-8025-40F2-8241-1958793F3D39"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Obsolete("Not needed anymore in beta>26.")]
 	public interface INodeIOBase
 	{}
 	
@@ -963,6 +964,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// Used to retrieve a reference of an interface offered by the upstream connected node.
 		/// </summary>
 		/// <param name="UpstreamInterface">The retrieved interface.</param>
+		[Obsolete("Replaced by GetUpstreamInterface(object UpstreamInterface).")]
 		void GetUpstreamInterface(out INodeIOBase UpstreamInterface);
 		/// <summary>
 		/// Used to set the SubType of a node pin, which is a more detailed specification of the node type via a set of Guids that identifiy the interfaces accepted on this pin.
@@ -972,6 +974,11 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Guids">An array of Guids (typically only one) that specifies the interfaces that this input accepts.</param>
 		/// <param name="FriendlyName">A user readable name specifying the type of the node connection.</param>
 		void SetSubType(Guid[] Guids, string FriendlyName);
+		/// <summary>
+		/// Used to retrieve a reference of an interface offered by the upstream connected node.
+		/// </summary>
+		/// <param name="UpstreamInterface">The retrieved interface.</param>
+		void GetUpstreamInterface([MarshalAs(UnmanagedType.IUnknown)] out object UpstreamInterface);
 	}
 	
 	/// <summary>
@@ -985,6 +992,7 @@ namespace VVVV.PluginInterfaces.V1
 		/// Used to set the interface this
 		/// </summary>
 		/// <param name="TheInterface"></param>
+		[Obsolete("Replaced by SetInterface(object TheInterface).")]
 		void SetInterface(INodeIOBase TheInterface);
 		/// <summary>
 		/// Used to set the SubType of a node pin, which is a more detailed specification of the node type via a set of Guids that identifiy the interfaces offered on this pin.
@@ -998,6 +1006,11 @@ namespace VVVV.PluginInterfaces.V1
 		/// Used to mark this pin as being changed compared to the last frame. 
 		/// </summary>
 		void MarkPinAsChanged();
+		/// <summary>
+		/// Used to set the interface this
+		/// </summary>
+		/// <param name="TheInterface"></param>
+		void SetInterface([MarshalAs(UnmanagedType.IUnknown)] object TheInterface);
 	}
 	
 	/// <summary>

@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Runtime.InteropServices;
 
 using SlimDX;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.VMath;
 
 namespace VVVV.PluginInterfaces.V2

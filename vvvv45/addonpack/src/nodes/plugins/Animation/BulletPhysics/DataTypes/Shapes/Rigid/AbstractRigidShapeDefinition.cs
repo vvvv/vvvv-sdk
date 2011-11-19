@@ -14,7 +14,7 @@ namespace VVVV.DataTypes.Bullet
 	public abstract class AbstractRigidShapeDefinition
 	{
 		private float mass;
-		protected Dictionary<int,BulletMesh> mesh;
+        protected Dictionary<int, BulletMesh> mesh = new Dictionary<int, BulletMesh>();
 		
 	
 

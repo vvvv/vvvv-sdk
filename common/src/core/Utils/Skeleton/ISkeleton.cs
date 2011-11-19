@@ -1,21 +1,11 @@
-/*
- * Erstellt mit SharpDevelop.
- * Benutzer: Matthias Zauner, Elias
- * Datum: 18.09.2009
- * Zeit: 20:42
- * 
- * Sie können diese Vorlage unter Extras > Optionen > Codeerstellung > Standardheader ändern.
- */
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using VVVV.Utils.VMath;
-using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.SkeletonInterfaces
 {
-	/// <summary>
-	/// Description of MyClass.
-	/// </summary>
+	[ComVisible(false)]
 	public interface IJoint
 	{
 		string Name
@@ -89,7 +79,8 @@ namespace VVVV.SkeletonInterfaces
 		
 	}
 	
-	public interface ISkeleton : INodeIOBase
+	[ComVisible(false)]
+	public interface ISkeleton
 	{
 		IJoint Root
 		{

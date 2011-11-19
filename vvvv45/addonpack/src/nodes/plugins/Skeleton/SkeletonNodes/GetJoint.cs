@@ -238,7 +238,7 @@ namespace VVVV.Nodes
         	{
         		if (FSkeletonInput.IsConnected)
         		{
-	        		INodeIOBase currInterface;
+	        		object currInterface;
 	        		FSkeletonInput.GetUpstreamInterface(out currInterface);
 	        		inputSkeleton = (Skeleton)currInterface;
         		}
