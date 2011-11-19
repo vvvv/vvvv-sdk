@@ -32,7 +32,7 @@ namespace VVVV.Nodes
                 Tags = "tracking, person, people",
                 Author = "Phlegma")]
     #endregion PluginInfo
-    public class Skeleton : IPluginEvaluate
+    public class Skeleton: IPluginEvaluate, IDisposable
     {
         #region fields & pins
         [Import()]
@@ -95,8 +95,6 @@ namespace VVVV.Nodes
         [Output("Status")]
         ISpread<string> FStatusOut;
 
-
-
         PoseDetectionCapability FPoseDecetionCapability;
         SkeletonCapability FSkeletonCapability;
 
@@ -105,8 +103,6 @@ namespace VVVV.Nodes
         private List<string> FErrorMessages = new List<string>();
 
         private Object LockObject = new Object();
-
-
         #endregion fields & pins
 
         //called when data for any output pin is requested
@@ -432,7 +428,6 @@ namespace VVVV.Nodes
 
         }
 
-
         private Point3D GetJointPoint(int User, SkeletonJoint Joint)
         {
             Point3D Point = new Point3D();
@@ -466,8 +461,6 @@ namespace VVVV.Nodes
 
             return Orientation;
         }
-
-
 
         void FPoseDecetionCapability_PoseEnded(object sender, PoseEndedEventArgs e)
         {
@@ -508,12 +501,22 @@ namespace VVVV.Nodes
                 FErrorMessages.Add(String.Format("Calibration for User {0} started", e.ID));
             //Debug.WriteLine(String.Format("Calibration Start. ID: {0} ", e.ID));
         }
+        
+        #region Dispose
+
+        public void Dispose()
+        {
+        	if (FSkeletonCapability != null)
+        		FSkeletonCapability.Dispose();
+        	
+        	if (FPoseDecetionCapability != null)
+        		FPoseDecetionCapability.Dispose();
+        	
+        	//dispose backgroundworkers of sortedlist?!
+        }
+
+        #endregion 
     }
-
-
-
-
-
 
     class LoadingValues
     {

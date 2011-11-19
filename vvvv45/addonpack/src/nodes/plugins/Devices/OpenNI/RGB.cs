@@ -33,14 +33,14 @@ namespace VVVV.Nodes
                 Tags = "ex9, texture",
                 Author = "Phlegma, joreg")]
     #endregion PluginInfo
-    public class Texture_Image : DXTextureOutPluginBase, IPluginEvaluate, IDisposable
+    public class Texture_Image: DXTextureOutPluginBase, IPluginEvaluate, IDisposable
     {
         #region fields & pins
         [Input("Context", IsSingle = true)]
         ISpread<Context> FContextIn;
 
         [Input("Enabled", IsSingle = true, DefaultValue = 1)]
-        IDiffSpread<bool> FEnableIn;
+        IDiffSpread<bool> FEnabledIn;
 
         [Import()]
         ILogger FLogger;
@@ -51,7 +51,6 @@ namespace VVVV.Nodes
         private int FTexWidth;
         private int FTexHeight;
 
-        private bool disposed = false;
         private bool FInit = true;
         #endregion fields & pins
 
@@ -95,39 +94,18 @@ namespace VVVV.Nodes
                 FInit = true;
             }
 
-            if (FEnableIn[0] == true)
+            if (FEnabledIn[0])
                 Update();
         }
 
         #endregion
 
-
         #region Dispose
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                if (disposing)
-                {
-                    // Free other state (managed objects).
-                }
-                // Free your own state (unmanaged objects).
-                // Set large fields to null.
-                
-                disposed = true;
-            }
-        }
-
-        ~Texture_Image()
-        {
-            Dispose(false);
+        	if (FImageGenerator != null)
+        		FImageGenerator.Dispose();
         }
 
         #endregion 

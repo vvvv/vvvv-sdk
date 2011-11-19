@@ -31,7 +31,7 @@ namespace VVVV.Nodes
                 Tags = "ex9, texture, tracking, person, people",
                 Author = "Phlegma, joreg")]
     #endregion PluginInfo
-    public class Users: DXTextureOutPluginBase, IPluginEvaluate
+    public class Users: DXTextureOutPluginBase, IPluginEvaluate, IDisposable
     {
     	//memcopy method
 		[DllImport("Kernel32.dll", EntryPoint="RtlMoveMemory", SetLastError=false)]
@@ -40,9 +40,9 @@ namespace VVVV.Nodes
         #region fields & pins
         [Input("Context", IsSingle=true)]
         ISpread<Context> FContextIn;
-
+        
         [Input("Enabled", IsSingle = true, DefaultValue = 1)]
-        ISpread<bool> FEnableIn;
+        ISpread<bool> FEnabledIn;
 
         [Output("Users", IsSingle = true)]
         ISpread<UserGenerator> FUserOut;
@@ -85,10 +85,11 @@ namespace VVVV.Nodes
                     {
                         // Creates the User Generator from the Context Object
                         FUserGenerator = new UserGenerator(FContextIn[0]);
+                         
                         // add the Callback function to the Events
                         FUserGenerator.NewUser += new EventHandler<NewUserEventArgs>(FUsers_NewUser);
                         FUserGenerator.LostUser += new EventHandler<UserLostEventArgs>(FUsers_LostUser);
-
+                        
                         //Set the resolution of the texture
                         FTexWidth = FUserGenerator.GetUserPixels(0).FullXRes;
                         FTexHeight = FUserGenerator.GetUserPixels(0).FullYRes;
@@ -121,7 +122,7 @@ namespace VVVV.Nodes
                     //write the joint position and orientation to the output
                     if (FUserGenerator.NumberOfUsers > 0)
                     {
-                    	if (FEnableIn[0])
+                    	if (FEnabledIn[0])
                     	{
                     		//copies a list of all users and sort them
 	                        int[] tUsers = FUserGenerator.GetUsers();
@@ -181,6 +182,16 @@ namespace VVVV.Nodes
         {
             Debug.WriteLine(String.Format("User found. ID: {0}", e.ID));
         }
+        
+        #region Dispose
+
+        public void Dispose()
+        {
+        	if (FUserGenerator != null)
+        		FUserGenerator.Dispose();
+        }
+
+        #endregion 
         
         #region IPluginDXTexture Members
 
