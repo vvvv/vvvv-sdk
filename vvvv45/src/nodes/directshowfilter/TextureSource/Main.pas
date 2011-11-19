@@ -29,7 +29,7 @@ interface
 
 uses
   Windows, ActiveX,
-  BaseClass, DirectShow9, DSUtil;
+  BaseClass, DirectShow9, DXSUtil;
 
 const
   CLSID_TextureSource: TGUID = '{E446D455-7C13-492A-9C96-38F948687E8B}';

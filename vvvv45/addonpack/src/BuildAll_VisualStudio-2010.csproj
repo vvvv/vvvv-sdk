@@ -10,14 +10,14 @@
   </PropertyGroup>
   <PropertyGroup>
     <CoreDestFolder>..\..\lib\core\</CoreDestFolder>
-	  <CorePluginsDestFolder>..\..\lib\nodes\plugins\</CorePluginsDestFolder>
-	  <CoreEditorsDestFolder>..\..\lib\nodes\editors\</CoreEditorsDestFolder>
+    <CorePluginsDestFolder>..\..\lib\nodes\plugins\</CorePluginsDestFolder>
+    <CoreEditorsDestFolder>..\..\lib\nodes\editors\</CoreEditorsDestFolder>
     <PluginsDestFolder>..\lib\nodes\plugins\</PluginsDestFolder>
   </PropertyGroup>
   <ItemGroup>
     <CoreProjectsToBuild Include="core\**\*.csproj;gui\**\*.csproj" />
-	  <CorePluginsToBuild Include="..\..\src\nodes\plugins\**\*.csproj" />
-	  <CoreEditorsToBuild Include="..\..\src\nodes\editors\*\*.csproj" />
+    <CorePluginsToBuild Include="..\..\src\nodes\plugins\**\*.csproj" />
+    <CoreEditorsToBuild Include="..\..\src\nodes\editors\*\*.csproj" />
     <PluginProjectsToBuild Include="nodes\plugins\*\*\*.csproj;nodes\plugins\Network\Databases\*\*.csproj" />
   </ItemGroup>
   <PropertyGroup>
@@ -25,6 +25,9 @@
     <RebuildDependsOn>Clean;Build</RebuildDependsOn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' " />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
   <ItemGroup>
     <ProjectReference Include="..\..\src\nodes\editors\CodeEditor\CodeEditor.csproj">
       <Project>{A63D2EA4-D87C-459B-B57F-19A76A7ADAF0}</Project>
@@ -346,10 +349,6 @@
       <Project>{82C7F62E-F977-4903-B309-703A01A91975}</Project>
       <Name>TUIODecoder</Name>
     </ProjectReference>
-    <ProjectReference Include="nodes\plugins\Skeleton\SkeletonInterfaces\SkeletonInterfaces.csproj">
-      <Project>{0813E570-CB1C-49F3-BB7E-7048C115ED05}</Project>
-      <Name>SkeletonInterfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="nodes\plugins\Skeleton\SkeletonNodes\Skeleton.csproj">
       <Project>{53CFF0FE-29AB-482B-B7BC-F60A733D6A45}</Project>
       <Name>Skeleton %28nodes\Skeleton\Skeleton%29</Name>
@@ -485,11 +484,11 @@
   </ItemGroup>
   <Target Name="Build" DependsOnTargets="$(BuildDependsOn)">
     <MSBuild Projects="@(CoreProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" />
-	  <MSBuild Projects="@(CorePluginsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" >
-		  <Output TaskParameter="TargetOutputs" ItemName="CorePluginsOutputFiles" />
+    <MSBuild Projects="@(CorePluginsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU">
+      <Output TaskParameter="TargetOutputs" ItemName="CorePluginsOutputFiles" />
     </MSBuild>
-	  <MSBuild Projects="@(CoreEditorsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" >
-		  <Output TaskParameter="TargetOutputs" ItemName="CoreEditorsOutputFiles" />
+    <MSBuild Projects="@(CoreEditorsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU">
+      <Output TaskParameter="TargetOutputs" ItemName="CoreEditorsOutputFiles" />
     </MSBuild>
     <MSBuild Projects="@(PluginProjectsToBuild)" ContinueOnError="false" Properties="Configuration=$(Configuration);Platform=AnyCPU" Condition="!Exists('%(PluginProjectsToBuild.RootDir)%(PluginProjectsToBuild.Directory)ignore')">
       <Output TaskParameter="TargetOutputs" ItemName="PluginsOutputFiles" />
@@ -501,28 +500,27 @@
     <CreateItem Include="@(PluginsOutputFiles->'%(RootDir)%(Directory)%(Filename).*')">
       <Output TaskParameter="Include" ItemName="PluginsOutputFiles" />
     </CreateItem>
-	  <CreateItem Include="@(CorePluginsOutputFiles->'%(RootDir)%(Directory)%(Filename).*')">
+    <CreateItem Include="@(CorePluginsOutputFiles->'%(RootDir)%(Directory)%(Filename).*')">
       <Output TaskParameter="Include" ItemName="CorePluginsOutputFiles" />
     </CreateItem>
     <CreateItem Include="@(CoreEditorsOutputFiles->'%(RootDir)%(Directory)%(Filename).*')">
       <Output TaskParameter="Include" ItemName="CoreEditorsOutputFiles" />
     </CreateItem>
-
     <Copy SourceFiles="@(CoreOutputFiles)" DestinationFiles="@(CoreOutputFiles->'$(CoreDestFolder)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(PluginsOutputFiles)" DestinationFiles="@(PluginsOutputFiles->'$(PluginsDestFolder)%(Filename)%(Extension)')" />
-	  <Copy SourceFiles="@(CorePluginsOutputFiles)" DestinationFiles="@(CorePluginsOutputFiles->'$(CorePluginsDestFolder)%(Filename)%(Extension)')" />
-	  <Copy SourceFiles="@(CoreEditorsOutputFiles)" DestinationFiles="@(CoreEditorsOutputFiles->'$(CoreEditorsDestFolder)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(CorePluginsOutputFiles)" DestinationFiles="@(CorePluginsOutputFiles->'$(CorePluginsDestFolder)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(CoreEditorsOutputFiles)" DestinationFiles="@(CoreEditorsOutputFiles->'$(CoreEditorsDestFolder)%(Filename)%(Extension)')" />
     <!-- Copy everything in Dependencies -->
     <ItemGroup>
       <EditorDependencies Include="..\..\src\nodes\editors\**\Dependencies\*" />
       <PluginDependencies Include="nodes\plugins\**\Dependencies\*" />
-	  <CorePluginDependencies Include="..\..\src\nodes\plugins\**\Dependencies\*" />
+      <CorePluginDependencies Include="..\..\src\nodes\plugins\**\Dependencies\*" />
       <PluginLicenses Include="nodes\plugins\**\license*.txt" />
       <PluginGirlpowers Include="nodes\plugins\**\girlpower\*" />
     </ItemGroup>
-  	<Copy SourceFiles="@(EditorDependencies)" DestinationFiles="@(EditorDependencies->'$(CoreEditorsDestFolder)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(EditorDependencies)" DestinationFiles="@(EditorDependencies->'$(CoreEditorsDestFolder)%(Filename)%(Extension)')" />
     <Copy SourceFiles="@(PluginDependencies)" DestinationFiles="@(PluginDependencies->'$(PluginsDestFolder)%(Filename)%(Extension)')" Condition="!Exists('%(PluginDependencies.RootDir)%(PluginDependencies.Directory)..\ignore')" />
-	  <Copy SourceFiles="@(CorePluginDependencies)" DestinationFiles="@(CorePluginDependencies->'$(CorePluginsDestFolder)%(Filename)%(Extension)')" Condition="!Exists('%(PluginDependencies.RootDir)%(PluginDependencies.Directory)..\ignore')" />	
+    <Copy SourceFiles="@(CorePluginDependencies)" DestinationFiles="@(CorePluginDependencies->'$(CorePluginsDestFolder)%(Filename)%(Extension)')" Condition="!Exists('%(PluginDependencies.RootDir)%(PluginDependencies.Directory)..\ignore')" />
     <Copy SourceFiles="@(PluginLicenses)" DestinationFiles="@(PluginLicenses->'$(PluginsDestFolder)..\..\..\licenses\%(Filename)%(Extension)')" Condition="!Exists('%(PluginLicenses.RootDir)%(PluginLicenses.Directory)ignore')" />
   </Target>
   <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />

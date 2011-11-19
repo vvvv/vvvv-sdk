@@ -126,7 +126,6 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
         public override void Reload()
         {
             FTreeView.BeginUpdate();
-            FTreeView.Nodes.Clear();
             
             if (FRootMapper != null)
                 FRootMapper.Dispose();

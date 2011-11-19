@@ -33,9 +33,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\src\thirdparty\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\src\thirdparty\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
   </ItemGroup>
@@ -46,16 +56,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections.cs" />
+    <Compile Include="CSProjectTest.cs" />
+    <Compile Include="FXProjectTest.cs" />
+    <Compile Include="IDItemTests.cs" />
+    <Compile Include="ProjectTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerializationTests.cs" />
+    <Compile Include="SynchronizerTests.cs" />
+    <Compile Include="TestIDItem.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\AddonsCore\Utils\Utils.csproj">
-      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
-      <Name>Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\Core.csproj">
+    <ProjectReference Include="..\..\src\core\Core\Core.csproj">
       <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\core\Utils\Utils.csproj">
+      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
+      <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
