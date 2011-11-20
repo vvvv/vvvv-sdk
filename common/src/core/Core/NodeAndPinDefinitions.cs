@@ -127,9 +127,10 @@ namespace VVVV.Core
     }
 
     /// <summary>
-    /// a functors node definition refers to a node that needs a state to run on
+    /// a step node definition refers to a node that needs a state to run on. 
+    /// the step node is part of a stepper that also defines the type of the state
     /// </summary>
-    public interface IFunctorNodeDefinition : IDataflowNodeDefinition
+    public interface IStepNodeDefinition : IDataflowNodeDefinition
     {
         /// <summary>
         /// the type of the state

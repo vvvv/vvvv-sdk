@@ -78,7 +78,7 @@ namespace VVVV.Core
     {
     }
 
-    public interface IFunctorSymbol : IDataflowPatchSymbol, IFunctorNodeDefinition
+    public interface IStepSymbol : IDataflowPatchSymbol, IStepNodeDefinition
     {
     }
 

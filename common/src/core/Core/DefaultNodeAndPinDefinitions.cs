@@ -31,7 +31,7 @@ namespace VVVV.Core
             get
             {
                 //todo: caching of get property
-                if (Version != "")
+                if (Version != "" && Version != null)
                     return Name + " (" + Category + " " + Version + ")"; //todo: more performatant string creation
                 else
                     return Name + " (" + Category + ")"; //todo: more performatant string creation
@@ -92,7 +92,7 @@ namespace VVVV.Core
         }
     }
 
-    public class DefaultFunctorNodeDefinition : DefaultDataflowNodeDefinition, IFunctorNodeDefinition
+    public class DefaultStepNodeDefinition : DefaultDataflowNodeDefinition, IStepNodeDefinition
     {
         public Microsoft.Cci.ITypeReference StateType { get; set; }
     }

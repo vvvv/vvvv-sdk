@@ -61,11 +61,11 @@ namespace VVVV.Core
     {
         // PLAY AROUND WITH THOSE:
         public bool AcceptFunctionNodes = false;
-        public bool AcceptFunctorNodes = true;
+        public bool AcceptStepNodes = true;
         public bool AcceptNodesWithoutNodeAttribute = false;        // why not import everything that can be worked with(?)
         public bool AcceptNodesThatHaveRefParams = false;           // not supported yet 
         public bool AcceptNodesThatWorkWithUnclonableTypes = true;  // in the best case patch view will take care that only one connection is allowed when values aren't clonable
-        public bool AcceptConstructorsAsFunctors = false;           // keep it like that
+        public bool AcceptConstructorsAsSteps = false;           // keep it like that
 
         private MetadataReaderHost FHost;
         private IName FctorName;
@@ -195,7 +195,7 @@ namespace VVVV.Core
 
         public IEnumerable<INodeDefinition> Collect(IMethodDefinition methodDefinition)
         {
-            if (!AcceptConstructorsAsFunctors && methodDefinition.IsConstructor)
+            if (!AcceptConstructorsAsSteps && methodDefinition.IsConstructor)
                 yield break;
 
             if (!AcceptNodesThatHaveRefParams && methodDefinition.Parameters.Any(param => param.IsByReference))
@@ -215,7 +215,7 @@ namespace VVVV.Core
                 if (methodDefinition.IsStatic)
                     node = new DefaultFunctionNodeDefinition();
                 else
-                    node = new DefaultFunctorNodeDefinition()
+                    node = new DefaultStepNodeDefinition()
                     {
                         StateType = methodDefinition.ContainingTypeDefinition                            
                     };
@@ -269,15 +269,15 @@ namespace VVVV.Core
                     (!type.IsInterface) && 
                     (
                         (type.IsStatic && AcceptFunctionNodes) ||
-                        (!type.IsStatic && (AcceptFunctionNodes || AcceptFunctorNodes))
+                        (!type.IsStatic && (AcceptFunctionNodes || AcceptStepNodes))
                     )
-                let functortype = 
+                let steppertype = 
                     (type.IsValueType || type.HasDefaultConstructor(FHost)) &&
                     (AcceptNodesThatWorkWithUnclonableTypes || type.IsClonable())
                 from method in type.Methods
                 where
                     (method.IsStatic && AcceptFunctionNodes) ||
-                    (!method.IsStatic && AcceptFunctorNodes && functortype)
+                    (!method.IsStatic && AcceptStepNodes && steppertype)
                 from node in Collect(method)
                 select node;
         }

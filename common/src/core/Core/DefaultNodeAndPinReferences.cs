@@ -58,6 +58,17 @@ namespace VVVV.Core
         }
     }
 
+    public class DefaultStepNodeReference : DefaultDataflowNodeReference, IStepNodeReference
+    {
+        public new IStepNodeDefinition Definition { get; private set; }
+
+        public DefaultStepNodeReference(IStepNodeDefinition definition, string name, IEnumerable<IInputPinReference> inputs, IEnumerable<IOutputPinReference> outputs)
+            : base(definition, name, inputs, outputs)
+        {
+            Definition = definition;
+        }
+    }
+
     public class DefaultDataflowPinReference : IDataflowPinReference
     {
         public IDataflowPinDefinition Definition { get; private set; }
