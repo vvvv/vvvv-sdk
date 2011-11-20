@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -306,9 +306,9 @@ namespace VVVV.PluginInterfaces.V2
         {
             var result = new Spread<T>(count);
             
-            for (int i = 0; i < count; i++)
+            for (int i = index; i < index + count; i++)
             {
-                result[i] = spread[index + i];
+                result[i] = spread[i];
             }
             
             return result;
