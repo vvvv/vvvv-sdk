@@ -1,0 +1,165 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Icon (Windows) help.v4p">
+   <BOUNDS height="4065" left="4110" top="3795" type="Window" width="3585">
+   </BOUNDS>
+   <NODE id="7" nodename="Icon (Windows)">
+   <BOUNDS height="0" left="1110" top="2415" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Icon Index" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Number of Icons" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1155" top="1335" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6870" top="3030" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1155" top="1335" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Icon Index" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="75" top="750" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4983" top="4466" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="825" left="75" top="750" type="Box" width="990">
+   </BOUNDS>
+   <PIN pinname="Slider Constraints" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="0" values="0.00000">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Slider Alignment" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Show Connections" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1.00000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Y" linkstyle="PolyLine" srcnodeid="5" srcpinname="Y Output Value">
+   <LINKPOINT x="1035" y="1815">
+   </LINKPOINT>
+   <LINKPOINT x="1350" y="1815">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="X" linkstyle="PolyLine" srcnodeid="5" srcpinname="X Output Value">
+   <LINKPOINT x="105" y="2040">
+   </LINKPOINT>
+   <LINKPOINT x="1140" y="2040">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1140" top="3225" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7170" top="3330" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1140" top="3225" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="7" srcpinname="Number of Icons">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1620" top="3240" type="Node" width="1935">
+   </BOUNDS>
+   <BOUNDS height="300" left="1620" top="3240" type="Box" width="2130">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|icons on your desktop|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1665" top="1320" type="Node" width="1935">
+   </BOUNDS>
+   <BOUNDS height="300" left="1665" top="1320" type="Box" width="2130">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|selected icon|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1095" top="765" type="Node" width="1935">
+   </BOUNDS>
+   <BOUNDS height="300" left="1095" top="765" type="Box" width="2130">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|rightclick and move|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="300" left="15" top="390" type="Box" width="2505">
+   </BOUNDS>
+   <BOUNDS height="160" left="360" top="1680" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Mess around with desktop icons|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="360" top="1680" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Icon - Windows|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

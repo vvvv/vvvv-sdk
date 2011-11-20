@@ -1,0 +1,205 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\WaveShaper (Value) help.v4p">
+   <BOUNDS height="7425" left="4380" top="4260" type="Window" width="6420">
+   </BOUNDS>
+   <NODE id="10" nodename="WaveShaper (Value)">
+   <BOUNDS height="0" left="2100" top="2835" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Shape" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="2100" top="1320" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="3.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="765" top="4500" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5466" top="4385" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2085" left="765" top="4500" type="Box" width="5430">
+   </BOUNDS>
+   <PIN pinname="Show Connections" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="180.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="180" visible="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="0" values="0.00000">
+   </PIN>
+   <PIN pinname="Slider Constraints" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Sticky Slider" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="waveshaped">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="2.00000">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Queue (Spreads)">
+   <BOUNDS height="0" left="2100" top="3645" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="do Insert" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Frame Count" slicecount="1" values="180.00000">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="7" srcpinname="Output">
+   <LINKPOINT x="2130" y="4200">
+   </LINKPOINT>
+   <LINKPOINT x="6165" y="4200">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="3030" top="1095" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8025" top="5715" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1530" left="3030" top="1095" type="Box" width="975">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="Sine">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Shape" srcnodeid="6" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1380" top="2055" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5145" top="6285" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1380" top="2055" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Input" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1365" top="3270" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5445" top="6585" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1365" top="3270" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2745" top="3645" type="Node" width="2505">
+   </BOUNDS>
+   <BOUNDS height="300" left="2745" top="3645" type="Box" width="2985">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|queue is for demonstration only|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="30" top="1290" type="Node" width="4725">
+   </BOUNDS>
+   <BOUNDS height="690" left="30" top="1290" type="Box" width="2040">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|lfo produces values from 0 to 1 and jumps back to zero when 1 is reached|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="255" left="4050" top="1125" type="Node" width="1440">
+   </BOUNDS>
+   <BOUNDS height="330" left="4050" top="1125" type="Box" width="1500">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|select a shape|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="5445">
+   </BOUNDS>
+   <BOUNDS height="160" left="10770" top="45420" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Applies one of some classic wave shaping functions to the value (range 0..1)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="405" left="15" top="15" type="Box" width="5835">
+   </BOUNDS>
+   <BOUNDS height="160" left="10770" top="45420" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|WaveShaper - Value|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
