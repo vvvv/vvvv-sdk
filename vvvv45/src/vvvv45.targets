@@ -2,11 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
   <UsingTask AssemblyFile="$(MSBuildThisFileDirectory)\..\..\tools\VersionInfo.exe" TaskName="VVVV.Tools.MSBuild.GetVersionInfo" />
-  
-  <!-- Build Core -->
-  <Target Name="BuildCore">
-    <MSBuild Projects="@(CoreProjects)" ContinueOnError="false" />
-  </Target>
 
   <!-- ARToolKitPlus -->
   <PropertyGroup>

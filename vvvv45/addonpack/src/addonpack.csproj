@@ -72,7 +72,7 @@
       <Output ItemName="OutputFiles" TaskParameter="Include" />
     </CreateItem>
     <Copy SourceFiles="@(OutputFiles)" DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
-    <Exec Command="$(StartProgram) /nodelist $(TempDir)lib\nodes" />
+    <Exec Command="&quot;$(StartProgram)&quot; /nodelist &quot;$(TempDir)lib\nodes&quot;" />
     <CreateItem Include="$(TempDir)\**\*.*">
       <Output ItemName="ZipFiles" TaskParameter="Include" />
     </CreateItem>
