@@ -331,6 +331,7 @@ namespace VVVV.PluginInterfaces.V2
 		StatusCode Status
 		{
 			get;
+			set;
 		}
 		
 		StatusCode InnerStatus
