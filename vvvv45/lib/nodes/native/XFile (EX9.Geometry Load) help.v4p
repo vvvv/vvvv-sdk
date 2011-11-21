@@ -1,0 +1,369 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\XFile (EX9.Geometry Load) help.v4p">
+   <BOUNDS height="6225" left="1005" top="5460" type="Window" width="11925">
+   </BOUNDS>
+   <NODE id="22" nodename="XFile (EX9.Geometry Load)" systemname="XFile (EX9.Geometry Load)">
+   <BOUNDS height="0" left="450" top="1200" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Filename">
+   </PIN>
+   <PIN pinname="TextureFileName" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="21" nodename="Count (EX9.Geometry Mesh)" systemname="Count (EX9.Geometry Mesh)">
+   <BOUNDS height="0" left="5025" top="3180" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="SubsetCount" visible="1">
+   </PIN>
+   <PIN pinname="FaceCount" visible="1">
+   </PIN>
+   <PIN pinname="VertexCount" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="20" nodename="VertexDeclaration (EX9.Geometry Mesh)" systemname="VertexDeclaration (EX9.Geometry Mesh)">
+   <BOUNDS height="0" left="5850" top="3180" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh Out" visible="1">
+   </PIN>
+   <PIN pinname="Declaration" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" hiddenwhenlocked="0" id="19" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="0" left="300" top="4980" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4800" left="1005" top="645" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="300" top="4980" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Depth Buffer" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Global Visual Range" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.43699,0.43699,0.43699,1.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <NODE id="18" nodename="FILETEXTURE (EX9.TEXTURE)" systemname="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="1725" top="3750" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" slicecount="1" visible="1" values="..\..\assets\images\wimp.jpg" encoded="0">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Reload" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="4275" top="3645" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10590" top="10275" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4275" top="3645" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Y Input Value" srcnodeid="21" srcpinname="SubsetCount">
+   </LINK>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="4560" top="3915" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11130" top="10260" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4560" top="3915" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Y Input Value" srcnodeid="21" srcpinname="FaceCount">
+   </LINK>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="4830" top="4200" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11655" top="10245" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4830" top="4200" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Y Input Value" srcnodeid="21" srcpinname="VertexCount">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="5865" top="3480" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12465" top="9675" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="945" left="5865" top="3480" type="Box" width="6510">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="3525" top="3645" type="Node" width="885">
+   </BOUNDS>
+   <BOUNDS height="240" left="3525" top="3645" type="Box" width="705">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="SubSets:">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="3465" top="3915" type="Node" width="885">
+   </BOUNDS>
+   <BOUNDS height="255" left="3465" top="3915" type="Box" width="885">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="| Faces:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="3525" top="4200" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="255" left="3525" top="4200" type="Box" width="840">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Vertices">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1920" top="2895" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4350" top="7545" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="270" left="1920" top="2895" type="Box" width="1020">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="X:\vvvv33\girlpower\xfiles\..imageswimp.jpg">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Add (String)" systemname="Add (String)">
+   <BOUNDS height="270" left="1725" top="3300" type="Node" width="450">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input 2" srcnodeid="10" srcpinname="Output String">
+   </LINK>
+   <NODE id="8" nodename="FileName (File Split)" systemname="FileName (File Split)">
+   <BOUNDS height="0" left="1725" top="2445" type="Node" width="0">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Path" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input 1" srcnodeid="8" srcpinname="Path">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="6705" top="105" type="Node" width="3690">
+   </BOUNDS>
+   <BOUNDS height="1590" left="6705" top="105" type="Box" width="4740">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|XFile is the DirectX file format for 3D geometry. It can consist of different subsets (parts). Textures, transformations and even effects can be applied to each subset individually. &cr;&lf;&cr;&lf;The VertexDeclaration Node returns the different components contained in the vertexbuffer of a mesh, that is properties like position, normal, texture coordinates, describing the geomerty. |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Input String" linkstyle="PolyLine" srcnodeid="22" srcpinname="TextureFileName">
+   <LINKPOINT x="2835" y="2100">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Mesh" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="22" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Input String" srcnodeid="20" srcpinname="Declaration">
+   <LINKPOINT x="5865" y="3765">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="270" left="15" top="390" type="Box" width="5565">
+   </BOUNDS>
+   <BOUNDS height="160" left="10740" top="45240" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|loads a XFile and returns a mesh + texture-filename(s), if included in the file&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="405" left="15" top="15" type="Box" width="5835">
+   </BOUNDS>
+   <BOUNDS height="160" left="10740" top="45240" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|XFile - EX9.Geometry Load|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
+   <BOUNDS height="0" left="510" top="3375" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="0.0699999999999999">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Mesh" srcnodeid="22" srcpinname="Mesh">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\effects\GouraudDirectional.fx" id="3" nodename=":EFFECTS:\GouraudDirectional.fx" systemname="GouraudDirectional (EX9.Effect)">
+   <BOUNDS height="0" left="300" top="4230" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Technique" slicecount="1" values="| TGouraudDirectional|">
+   </PIN>
+   <PIN pinname="Diffuse Color" slicecount="1" values="|0.34264,0.73214,0.81667,1.00000|">
+   </PIN>
+   <PIN pinname="Ambient Color" slicecount="1" values="|0.06775,0.00000,0.22848,1.00000|">
+   </PIN>
+   <PIN pinname="Specular Color" slicecount="1" values="|0.44200,0.44200,0.44200,1.00000|">
+   </PIN>
+   <PIN pinname="Light Direction XYZ" slicecount="3" values="0,-5,2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Mesh" srcnodeid="22" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Texture" srcnodeid="18" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Transform" hiddenwhenlocked="0" linkstyle="PolyLine" srcnodeid="4" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Layers" srcnodeid="3" srcpinname="Layer">
+   </LINK>
+   <NODE id="2" nodename="Rotate (Transform)" systemname="Rotate (Transform)">
+   <BOUNDS height="0" left="510" top="2850" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Transform In" srcnodeid="2" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="1" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="0" left="915" top="2445" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Y" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE id="0" nodename="Translate (Transform)" systemname="Translate (Transform)">
+   <BOUNDS height="0" left="2250" top="4740" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="-0.53">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6750" top="2220" type="Node" width="750">
+   </BOUNDS>
+   <BOUNDS height="270" left="6750" top="2220" type="Box" width="750">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\plugins\ColladaLoader.dll" id="24" nodename="ColladaFile (EX9.Geometry)" systemname="ColladaFile (EX9.Geometry)">
+   <PIN pinname="Coordinate system of source" slicecount="1" values="RightHanded">
+   </PIN>
+   <BOUNDS height="100" left="7530" top="2220" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="25" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="450" top="780" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="450" top="780" type="Box" width="795">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="..\..\assets\geometries\v.x">
+   </PIN>
+   <PIN encoded="0" pinname="Default" slicecount="1" values="file.x">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" slicecount="1" values="|X Files (*.x)||*.x|">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Filename" srcnodeid="25" srcpinname="Output String">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Transform Out" dstnodeid="19" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Output" dstnodeid="18" dstpinname="Filename">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="TextureFileName" dstnodeid="8" dstpinname="Filename">
+   </LINK>
+   </PATCH>

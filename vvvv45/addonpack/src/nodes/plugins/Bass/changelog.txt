@@ -1,0 +1,60 @@
+Version 0.5.2
+-Added threaded beat scanner node.
+-Added FFT Node for non real time retrieval.
+-Small bug fixes.
+-Added VST Effect DSP Node.
+
+
+Version 0.5
+-Added base encoder node.
+-Added Ogg, WMA, WAV encoder nodes.
+-Added IceCast broadcast node (Works with Ogg as Lame doesn't work with 32bit floating point data).
+-Added lot of DSP.
+-RMS Node now returns the normalized float value (between 0 and 1), instead of decibels version.
+-Individual access to channels on the AudioIn asio.
+-Merged Asio and Bass in the same library.
+
+
+Version 0.4
+
+New Features:
+-New Mixer Node has config pin for inputs, and deals with matrix level too.
+-Merged both FileStream (Asio and Bass) into a single filestream.
+-Loads of refresh bugs
+-AudioOut for both Asio and WDM
+-Added Dynamic Channel, so you can feed whatever you want in it :)
+-Added Beat detector node.
+-Added WaveForm gui node
+
+Bug Fixes:
+-Fixed loop refresh issue
+-Fixed filename and mono pin refresh issue (any of those reset the track).
+-Data Nodes (ChannelData,FFT,RMS) detect if we conntect to a mixer for better performances.
+-Lot of Pin renaming to be consistent between nodes
+
+Version 0.3.1
+
+Bug Fixes
+-Fixed Mixer which had wrong sample rate (Temporary fix, need further update)
+
+New Node(s)
+SetMixerLevel
+-Allow Matrix Level on Mixer, update each channel the way you want :)
+
+Version 0.3
+
+Updated Nodes:
+
+FileStream
+-Added Loop Input pin
+-Added Play Input Pin
+-Changing the Mono Input Pin now resets the channel
+-Added a Channel count Output Pin (1: Mono, 2: Stereo...)
+
+AudioOut
+-The AudioOut channel checks the play status of a FileStream to decide if it streams it or not.
+
+New Node(s):
+
+Mixer
+-Added new Mixer Node, so we can play back multiple files on same channel.

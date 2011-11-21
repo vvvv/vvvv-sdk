@@ -1,0 +1,247 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.5.dtd" >
+   <PATCH nodename="D:\work\personal\builds\vvvv\special\dlls\Ready\EmailNodes\ListEmails (Network POP3) help.v4p">
+   <BOUNDS height="9240" left="420" top="855" type="Window" width="12375">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="945" left="255" top="525" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|List emails from your inbox :)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|ListEmails - Network POP3|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="270" left="10125" top="8100" type="Node" width="615">
+   </BOUNDS>
+   <BOUNDS height="270" left="10125" top="8100" type="Box" width="615">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="10155" top="8460" type="Node" width="1785">
+   </BOUNDS>
+   <BOUNDS height="270" left="10155" top="8460" type="Box" width="1785">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="8" nodename="EmailNodes.dll|VVVV.Nodes.Pop3ListEmailNode">
+   <BOUNDS height="270" left="2310" top="3555" type="Node" width="4950">
+   </BOUNDS>
+   <BOUNDS height="0" left="2310" top="3555" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1215" top="2880" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Host" visible="1">
+   </PIN>
+   <PIN pinname="From" visible="1">
+   </PIN>
+   <PIN pinname="Username" visible="1">
+   </PIN>
+   <PIN pinname="Password" visible="1">
+   </PIN>
+   <PIN pinname="Do Refresh" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   <PIN pinname="Subject" visible="1">
+   </PIN>
+   <PIN pinname="Body" visible="1">
+   </PIN>
+   <PIN pinname="Update" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="0" left="240" top="4485" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="2130" left="240" top="4485" type="Box" width="2745">
+   </BOUNDS>
+   <BOUNDS height="160" left="2730" top="5535" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="From">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input String" linkstyle="VHV" srcnodeid="8" srcpinname="From">
+   <LINKPOINT x="2370" y="4148">
+   </LINKPOINT>
+   <LINKPOINT x="2925" y="4148">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2310" top="1995" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="2310" top="1995" type="Box" width="2160">
+   </BOUNDS>
+   <BOUNDS height="160" left="2355" top="3045" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Host">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Host" srcnodeid="6" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="0" left="4260" top="1485" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="4260" top="1485" type="Box" width="2250">
+   </BOUNDS>
+   <BOUNDS height="160" left="3720" top="2835" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|User Name|">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Username" srcnodeid="5" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="0" left="5235" top="2700" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="5235" top="2700" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="5445" top="3105" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Password">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Password" srcnodeid="4" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6765" top="2055" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="6765" top="2055" type="Box" width="480">
+   </BOUNDS>
+   <BOUNDS height="160" left="7770" top="3330" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Do Refresh|">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5490" top="2085" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="5490" top="2085" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="5220" top="2880" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Count">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Count" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3315" top="4500" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="2130" left="3315" top="4500" type="Box" width="2415">
+   </BOUNDS>
+   <BOUNDS height="160" left="4275" top="6045" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Subject">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input String" linkstyle="VHV" srcnodeid="8" srcpinname="Subject">
+   <LINKPOINT x="4815" y="4148">
+   </LINKPOINT>
+   <LINKPOINT x="5655" y="4148">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="0" left="6735" top="4410" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="2220" left="6735" top="4410" type="Box" width="3045">
+   </BOUNDS>
+   <BOUNDS height="160" left="6090" top="5460" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Body">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Input String" linkstyle="VHV" srcnodeid="8" srcpinname="Body">
+   <LINKPOINT x="7260" y="4148">
+   </LINKPOINT>
+   <LINKPOINT x="10320" y="4148">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Update">
+   </LINK>
+   </PATCH>
