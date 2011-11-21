@@ -134,7 +134,7 @@ namespace PinTests
             Assert.AreEqual(subSpread.SliceCount, count);
             for (int i = 0; i < count; i++)
             {
-                Assert.AreEqual(subSpread[i], spread[i + count]);
+                Assert.AreEqual(subSpread[i], spread[i + index]);
             }
             
             
@@ -154,7 +154,7 @@ namespace PinTests
             Assert.AreEqual(subSpread.SliceCount, count);
             for (int i = 0; i < count; i++)
             {
-                Assert.AreEqual(subSpread[i], spread[i + count]);
+                Assert.AreEqual(subSpread[i], spread[i + index]);
             }
         }
         
