@@ -32,6 +32,13 @@
           DestinationFiles="@(PluginLicenses->'$(AddonPluginsOutputDir)..\..\..\licenses\%(Filename)%(Extension)')" 
           SkipUnchangedFiles="true"
           Condition="!Exists('%(PluginLicenses.RootDir)%(PluginLicenses.Directory)ignore')" />
+	<!-- Flash plugin is special -->
+	<ItemGroup>
+      <_FlashPluginDependencies_ Include="$(MSBuildThisFileDirectory)nodes\plugins\Layer\DrawFlash\Dependencies\*.*" />
+    </ItemGroup>
+	<Copy SourceFiles="@(_FlashPluginDependencies_)"
+		  DestinationFolder="$(AddonPluginsOutputDir)" 
+		  SkipUnchangedFiles="true" />
   </Target>
   
   <!-- Freeframe and DirectShow -->
