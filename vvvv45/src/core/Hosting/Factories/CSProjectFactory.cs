@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,8 +6,12 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Ast;
 using ICSharpCode.NRefactory.PrettyPrinter;
@@ -23,6 +24,7 @@ using VVVV.Core.Model.CS;
 using VVVV.Core.Runtime;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.Linq;
 
 namespace VVVV.Hosting.Factories
 {
@@ -84,14 +86,40 @@ namespace VVVV.Hosting.Factories
                 project = new CSProject(filename, new Uri(filename));
                 FSolution.Projects.Add(project);
                 project.ProjectCompiledSuccessfully += project_ProjectCompiled;
+                project.CompileCompleted += project_CompileCompleted;
                 
                 var binDir = Path.GetDirectoryName(filename).ConcatPath("bin").ConcatPath("Dynamic");
                 DeleteArtefacts(binDir);
             }
             return project;
         }
+
+        void project_CompileCompleted(object sender, CompilerEventArgs args)
+        {
+            bool hasErrors = false;
+            
+            var compilerResults = args.CompilerResults;
+            if (compilerResults != null)
+            {
+                var errors = compilerResults.Errors ?? new CompilerErrorCollection();
+                hasErrors = errors.HasErrors;
+            }
+            
+            var affectedNodes =
+                from node in FHDEHost.RootNode.AsDepthFirstEnumerable()
+                where sender == node.NodeInfo.UserData
+                select node;
+            
+            foreach (var node in affectedNodes)
+            {
+                if (hasErrors)
+                    node.Status |= StatusCode.HasInvalidData;
+                else
+                    node.Status &= ~StatusCode.HasInvalidData;
+            }
+        }
         
-        private void RecompileIfNeeded(CSProject project)
+        private bool RecompileIfNeeded(CSProject project)
         {
             if (!IsAssemblyUpToDate(project))
             {
@@ -110,9 +138,11 @@ namespace VVVV.Hosting.Factories
                 
                 if (project.CompilerResults.Errors.HasErrors)
                 {
-                    throw new Exception(GetCompileErrorsLog(project, project.CompilerResults));
+                    FLogger.Log(LogType.Error, GetCompileErrorsLog(project, project.CompilerResults));
+                    return false;
                 }
             }
+            return true;
         }
         
         protected override void DoAddFile(string filename)
@@ -128,6 +158,7 @@ namespace VVVV.Hosting.Factories
             {
                 FSolution.Projects.Remove(project);
                 project.ProjectCompiledSuccessfully -= project_ProjectCompiled;
+                project.CompileCompleted -= project_CompileCompleted;
                 project.Dispose();
             }
             
@@ -238,11 +269,12 @@ namespace VVVV.Hosting.Factories
             return stringBuilder.ToString();
         }
         
-        protected override string GetAssemblyLocation (INodeInfo nodeInfo)
+        protected override bool GetAssemblyLocation (INodeInfo nodeInfo, out string assemblyLocation)
         {
             var project = CreateProject(nodeInfo.Filename);
-            RecompileIfNeeded(project);
-            return project.AssemblyLocation;
+            var isUpToData = RecompileIfNeeded(project);
+            assemblyLocation = project.AssemblyLocation;
+            return isUpToData;
         }
         
         protected override bool CloneNode(INodeInfo nodeInfo, string path, string name, string category, string version, out string newFilename)

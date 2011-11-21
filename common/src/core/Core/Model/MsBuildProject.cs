@@ -61,6 +61,12 @@ namespace VVVV.Core.Model
 			
 			ProjectCompiledSuccessfully += this_ProjectCompiledSuccessfully;
 		}
+		
+		protected override void DisposeManaged()
+		{
+			ProjectCompiledSuccessfully -= this_ProjectCompiledSuccessfully;
+			base.DisposeManaged();
+		}
 
 		void this_ProjectCompiledSuccessfully(object sender, CompilerEventArgs args)
 		{
@@ -110,9 +116,9 @@ namespace VVVV.Core.Model
 			var setupInformation = AppDomain.CurrentDomain.SetupInformation;
 			// Always null, why? probing path is set in vvvv.exe.config
 			// var searchPath = AppDomain.CurrentDomain.RelativeSearchPath;
-			ReferencePaths = new List<string>() 
+			ReferencePaths = new List<string>()
 			{
-				Path.Combine(setupInformation.ApplicationBase, "lib", "core") 
+				Path.Combine(setupInformation.ApplicationBase, "lib", "core")
 			};
 			
 			var referencePathProperty = msBuildProject.GetEvaluatedProperty("ReferencePath");
