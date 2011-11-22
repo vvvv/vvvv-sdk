@@ -2,7 +2,12 @@
 
 namespace VVVV.Utils.Streams
 {
-	public interface IIOStream<T> : IInStream<T>, IOutStream<T>
+	public interface IIOStream : IInStream, IOutStream
+	{
+		
+	}
+	
+	public interface IIOStream<T> : IIOStream, IInStream<T>, IOutStream<T>
 	{
 		
 	}

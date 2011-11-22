@@ -3,14 +3,8 @@ using System;
 
 namespace VVVV.Utils.Streams
 {
-	public interface IInStream<T> : IStream
+	public interface IInStream : IStream
 	{
-		T Read(int stride = 1);
-		
-		int Read(T[] buffer, int index, int length, int stride = 1);
-		
-		void ReadCyclic(T[] buffer, int index, int length, int stride = 1);
-		
 		/// <summary>
 		/// Synchronize the input buffer with the source.
 		/// </summary>
@@ -26,6 +20,15 @@ namespace VVVV.Utils.Streams
 			get;
 			set;
 		}
+	}
+	
+	public interface IInStream<T> : IInStream
+	{
+		T Read(int stride = 1);
+		
+		int Read(T[] buffer, int index, int length, int stride = 1);
+		
+		void ReadCyclic(T[] buffer, int index, int length, int stride = 1);
 	}
 	
 	public static class InStreamExtensions

@@ -1,54 +1,91 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-
 using SlimDX;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Streams
 {
-	/// <summary>
-	/// Description of UnmanagedOutStream.
-	/// </summary>
-	unsafe abstract class UnmanagedOutStream<T> : IIOStream<T>
+	static class UnmanagedOutStream
 	{
-		public static IOutStream<T> Create(Func<int, IntPtr> resizeUnmanagedArrayFunc)
+		private static readonly Dictionary<Type, Func<Func<int, IntPtr>, object>> FStreamCreators;
+		
+		static UnmanagedOutStream()
 		{
-			object result = null;
-			
-			var type = typeof(T);
-			if (type == typeof(double))
-				result = new DoubleOutStream(resizeUnmanagedArrayFunc);
-			else if (type == typeof(float))
-				result = new FloatOutStream(resizeUnmanagedArrayFunc);
-			else if (type == typeof(int))
-				result = new IntOutStream(resizeUnmanagedArrayFunc);
-			else if (type == typeof(bool))
-				result = new BoolOutStream(resizeUnmanagedArrayFunc);
-			else if (type == typeof(Vector2))
-				result = new Vector2OutStream(resizeUnmanagedArrayFunc);
-			else if (type == typeof(Vector3))
-				result = new Vector3OutStream(resizeUnmanagedArrayFunc);
-			else if (type == typeof(Vector4))
-				result = new Vector4OutStream(resizeUnmanagedArrayFunc);
-			else if (type == typeof(Vector2D))
-				result = new Vector2DOutStream(resizeUnmanagedArrayFunc);
-			else if (type == typeof(Vector3D))
-				result = new Vector3DOutStream(resizeUnmanagedArrayFunc);
-			else if (type == typeof(Vector4D))
-				result = new Vector4DOutStream(resizeUnmanagedArrayFunc);
-			else if (type == typeof(Matrix))
-				result = new MatrixOutStream(resizeUnmanagedArrayFunc);
-			else if (type == typeof(Matrix4x4))
-				result = new Matrix4x4OutStream(resizeUnmanagedArrayFunc);
-			else
-				throw new NotSupportedException(string.Format("UnmanagedOutStream of type '{0}' is not supported.", type));
-			
-			return result as IOutStream<T>;
+			FStreamCreators = new Dictionary<Type, Func<Func<int, IntPtr>, object>>();
+			FStreamCreators[typeof(double)] = (resizeUnmanagedArrayFunc) =>
+			{
+				return new DoubleOutStream(resizeUnmanagedArrayFunc);
+			};
+			FStreamCreators[typeof(float)] = (resizeUnmanagedArrayFunc) =>
+			{
+				return new FloatOutStream(resizeUnmanagedArrayFunc);
+			};
+			FStreamCreators[typeof(int)] = (resizeUnmanagedArrayFunc) =>
+			{
+				return new IntOutStream(resizeUnmanagedArrayFunc);
+			};
+			FStreamCreators[typeof(bool)] = (resizeUnmanagedArrayFunc) =>
+			{
+				return new BoolOutStream(resizeUnmanagedArrayFunc);
+			};
+			FStreamCreators[typeof(Vector2)] = (resizeUnmanagedArrayFunc) =>
+			{
+				return new Vector2OutStream(resizeUnmanagedArrayFunc);
+			};
+			FStreamCreators[typeof(Vector3)] = (resizeUnmanagedArrayFunc) =>
+			{
+				return new Vector3OutStream(resizeUnmanagedArrayFunc);
+			};
+			FStreamCreators[typeof(Vector4)] = (resizeUnmanagedArrayFunc) =>
+			{
+				return new Vector4OutStream(resizeUnmanagedArrayFunc);
+			};
+			FStreamCreators[typeof(Vector2D)] = (resizeUnmanagedArrayFunc) =>
+			{
+				return new Vector2DOutStream(resizeUnmanagedArrayFunc);
+			};
+			FStreamCreators[typeof(Vector3D)] = (resizeUnmanagedArrayFunc) =>
+			{
+				return new Vector3DOutStream(resizeUnmanagedArrayFunc);
+			};
+			FStreamCreators[typeof(Vector4D)] = (resizeUnmanagedArrayFunc) =>
+			{
+				return new Vector4DOutStream(resizeUnmanagedArrayFunc);
+			};
+			FStreamCreators[typeof(Matrix)] = (resizeUnmanagedArrayFunc) =>
+			{
+				return new MatrixOutStream(resizeUnmanagedArrayFunc);
+			};
+			FStreamCreators[typeof(Matrix4x4)] = (resizeUnmanagedArrayFunc) =>
+			{
+				return new Matrix4x4OutStream(resizeUnmanagedArrayFunc);
+			};
 		}
 		
+		public static IOutStream<T> Create<T>(Func<int, IntPtr> resizeUnmanagedArrayFunc)
+		{
+			Func<Func<int, IntPtr>, object> streamCreator = null;
+			
+			if (FStreamCreators.TryGetValue(typeof(T), out streamCreator))
+			{
+				return streamCreator(resizeUnmanagedArrayFunc) as IOutStream<T>;
+			}
+			
+			throw new NotSupportedException(string.Format("UnmanagedOutStream of type '{0}' is not supported.", typeof(T)));
+		}
+		
+		public static bool CanCreate(Type type)
+		{
+			return FStreamCreators.ContainsKey(type);
+		}
+	}
+	
+	unsafe abstract class UnmanagedOutStream<T> : IIOStream<T>
+	{
 		private readonly Func<int, IntPtr> FResizeUnmanagedArrayFunc;
 		private readonly IInStream<T> FInStream;
 		protected IntPtr FUnmanagedArrayPtr;
@@ -58,7 +95,7 @@ namespace VVVV.Hosting.Streams
 		public UnmanagedOutStream(Func<int, IntPtr> resizeUnmanagedArrayFunc)
 		{
 			FResizeUnmanagedArrayFunc = resizeUnmanagedArrayFunc;
-			FInStream = UnmanagedInStream<T>.Create(() => Tuple.Create(FUnmanagedArrayPtr, FLength), () => { return true; });
+			FInStream = UnmanagedInStream.Create<T>(() => Tuple.Create(FUnmanagedArrayPtr, FLength), () => { return true; });
 			Resize(1);
 		}
 		

@@ -34,6 +34,18 @@ namespace VVVV.PluginInterfaces.V2
 			set;
 		}
 		
+		/// <summary>
+		/// Whether or not vvvv should check if the data changed from previous frame.
+		/// This is by default disabled for numeric data as their spread counts are
+		/// typically high and doing this check might have a negative impact on 
+		/// performance.
+		/// </summary>
+		public bool CheckIfChanged
+		{
+			get;
+			set;
+		}
+		
 		public override object Clone()
 		{
 			var clonedInstance = new InputAttribute(Name);

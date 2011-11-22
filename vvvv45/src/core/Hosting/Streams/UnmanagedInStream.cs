@@ -1,8 +1,8 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-
 using SlimDX;
 using VVVV.Utils;
 using VVVV.Utils.SlimDX;
@@ -11,43 +11,83 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.Streams
 {
-	unsafe abstract class UnmanagedInStream<T> : IInStream<T>
+	static class UnmanagedInStream
 	{
-		public static IInStream<T> Create(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
+		private static readonly Dictionary<Type, Func<Func<Tuple<IntPtr, int>>, Func<bool>, object>> FStreamCreators;
+		
+		static UnmanagedInStream()
 		{
-			object result = null;
-			
-			var type = typeof(T);
-			if (type == typeof(double))
-				result = new DoubleInStream(getUnmanagedArrayFunc, validateFunc);
-			else if (type == typeof(float))
-				result = new FloatInStream(getUnmanagedArrayFunc, validateFunc);
-			else if (type == typeof(int))
-				result = new IntInStream(getUnmanagedArrayFunc, validateFunc);
-			else if (type == typeof(bool))
-				result = new BoolInStream(getUnmanagedArrayFunc, validateFunc);
-			else if (type == typeof(Vector2))
-				result = new Vector2InStream(getUnmanagedArrayFunc, validateFunc);
-			else if (type == typeof(Vector3))
-				result = new Vector3InStream(getUnmanagedArrayFunc, validateFunc);
-			else if (type == typeof(Vector4))
-				result = new Vector4InStream(getUnmanagedArrayFunc, validateFunc);
-			else if (type == typeof(Vector2D))
-				result = new Vector2DInStream(getUnmanagedArrayFunc, validateFunc);
-			else if (type == typeof(Vector3D))
-				result = new Vector3DInStream(getUnmanagedArrayFunc, validateFunc);
-			else if (type == typeof(Vector4D))
-				result = new Vector4DInStream(getUnmanagedArrayFunc, validateFunc);
-			else if (type == typeof(Matrix))
-				result = new MatrixInStream(getUnmanagedArrayFunc, validateFunc);
-			else if (type == typeof(Matrix4x4))
-				result = new Matrix4x4InStream(getUnmanagedArrayFunc, validateFunc);
-			else
-				throw new NotSupportedException(string.Format("UnmanagedInStream of type '{0}' is not supported.", type));
-			
-			return result as IInStream<T>;
+			FStreamCreators = new Dictionary<Type, Func<Func<Tuple<IntPtr, int>>, Func<bool>, object>>();
+			FStreamCreators[typeof(double)] = (getUnmanagedArrayFunc, validateFunc) =>
+			{
+				return new DoubleInStream(getUnmanagedArrayFunc, validateFunc);
+			};
+			FStreamCreators[typeof(float)] = (getUnmanagedArrayFunc, validateFunc) =>
+			{
+				return new FloatInStream(getUnmanagedArrayFunc, validateFunc);
+			};
+			FStreamCreators[typeof(int)] = (getUnmanagedArrayFunc, validateFunc) =>
+			{
+				return new IntInStream(getUnmanagedArrayFunc, validateFunc);
+			};
+			FStreamCreators[typeof(bool)] = (getUnmanagedArrayFunc, validateFunc) =>
+			{
+				return new BoolInStream(getUnmanagedArrayFunc, validateFunc);
+			};
+			FStreamCreators[typeof(Vector2)] = (getUnmanagedArrayFunc, validateFunc) =>
+			{
+				return new Vector2InStream(getUnmanagedArrayFunc, validateFunc);
+			};
+			FStreamCreators[typeof(Vector3)] = (getUnmanagedArrayFunc, validateFunc) =>
+			{
+				return new Vector3InStream(getUnmanagedArrayFunc, validateFunc);
+			};
+			FStreamCreators[typeof(Vector4)] = (getUnmanagedArrayFunc, validateFunc) =>
+			{
+				return new Vector4InStream(getUnmanagedArrayFunc, validateFunc);
+			};
+			FStreamCreators[typeof(Vector2D)] = (getUnmanagedArrayFunc, validateFunc) =>
+			{
+				return new Vector2DInStream(getUnmanagedArrayFunc, validateFunc);
+			};
+			FStreamCreators[typeof(Vector3D)] = (getUnmanagedArrayFunc, validateFunc) =>
+			{
+				return new Vector3DInStream(getUnmanagedArrayFunc, validateFunc);
+			};
+			FStreamCreators[typeof(Vector4D)] = (getUnmanagedArrayFunc, validateFunc) =>
+			{
+				return new Vector4DInStream(getUnmanagedArrayFunc, validateFunc);
+			};
+			FStreamCreators[typeof(Matrix)] = (getUnmanagedArrayFunc, validateFunc) =>
+			{
+				return new MatrixInStream(getUnmanagedArrayFunc, validateFunc);
+			};
+			FStreamCreators[typeof(Matrix4x4)] = (getUnmanagedArrayFunc, validateFunc) =>
+			{
+				return new Matrix4x4InStream(getUnmanagedArrayFunc, validateFunc);
+			};
 		}
 		
+		public static IInStream<T> Create<T>(Func<Tuple<IntPtr, int>> getUnmanagedArrayFunc, Func<bool> validateFunc)
+		{
+			Func<Func<Tuple<IntPtr, int>>, Func<bool>, object> streamCreator = null;
+			
+			if (FStreamCreators.TryGetValue(typeof(T), out streamCreator))
+			{
+				return streamCreator(getUnmanagedArrayFunc, validateFunc) as IInStream<T>;
+			}
+			
+			throw new NotSupportedException(string.Format("UnmanagedInStream of type '{0}' is not supported.", typeof(T)));
+		}
+		
+		public static bool CanCreate(Type type)
+		{
+			return FStreamCreators.ContainsKey(type);
+		}
+	}
+	
+	unsafe abstract class UnmanagedInStream<T> : IInStream<T>
+	{
 		private readonly Func<Tuple<IntPtr, int>> FGetUnmanagedArrayFunc;
 		private readonly Func<bool> FValidateFunc;
 		protected IntPtr FUnmanagedArrayPtr;

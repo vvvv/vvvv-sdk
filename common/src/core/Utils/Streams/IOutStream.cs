@@ -3,12 +3,8 @@ using System;
 
 namespace VVVV.Utils.Streams
 {
-	public interface IOutStream<T> : IStream
+	public interface IOutStream : IStream
 	{
-		void Write(T value, int stride = 1);
-		
-		int Write(T[] buffer, int index, int length, int stride = 1);
-		
 		void Flush();
 		
 		int WritePosition
@@ -22,6 +18,13 @@ namespace VVVV.Utils.Streams
 			get;
 			set;
 		}
+	}
+	
+	public interface IOutStream<T> : IOutStream
+	{
+		void Write(T value, int stride = 1);
+		
+		int Write(T[] buffer, int index, int length, int stride = 1);
 	}
 	
 	public static class OutStreamExtensions
