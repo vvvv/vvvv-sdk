@@ -2,11 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
   <UsingTask AssemblyFile="$(MSBuildThisFileDirectory)\..\..\tools\VersionInfo.exe" TaskName="VVVV.Tools.MSBuild.GetVersionInfo" />
-  
-  <!-- Build Core -->
-  <Target Name="BuildCore">
-    <MSBuild Projects="@(CoreProjects)" ContinueOnError="false" />
-  </Target>
 
   <!-- ARToolKitPlus -->
   <PropertyGroup>
@@ -68,7 +63,7 @@
           Inputs="@(FreeframeProjects)"
           Outputs="@(FreeframeProjects->'%(OutputDir)%(Filename).dll')"
           DependsOnTargets="_CheckFreeframeDependencies_">
-    <Exec Command="$(CodeBlocks) --no-splash-screen --rebuild --target=Release %(FreeframeProjects.FullPath)" 
+    <Exec Command="&quot;$(CodeBlocks)&quot; --no-splash-screen --rebuild --target=Release &quot;%(FreeframeProjects.FullPath)&quot;" 
           EnvironmentVariables="OpenCV=$(OpenCV)\" />
     <Copy SourceFiles="@(FreeframeProjects->'%(RootDir)%(Directory)%(Filename).dll')" DestinationFiles="@(FreeframeProjects->'%(OutputDir)%(Filename).dll')"/>
   </Target>
@@ -92,7 +87,7 @@
           Inputs="@(DirectShowFilterProjects)"
           Outputs="@(DirectShowFilterProjects->'%(OutputDir)%(Filename).ax')"
           DependsOnTargets="_CheckBDS_;_CheckDSPACK_">
-    <Exec Command="$(MSBuildBinPath)\MSBuild.exe %(DirectShowFilterProjects.FullPath) /p:Configuration=Release"
+    <Exec Command="$(MSBuildBinPath)\MSBuild.exe &quot;%(DirectShowFilterProjects.FullPath)&quot; /p:Configuration=Release"
           EnvironmentVariables="BDS=$(BDS);DSPACK=$(DSPACK)" />
     <Copy SourceFiles="@(DirectShowFilterProjects->'%(RootDir)%(Directory)%(Filename).ax')" DestinationFiles="@(DirectShowFilterProjects->'%(OutputDir)%(Filename).ax')"/>
   </Target>

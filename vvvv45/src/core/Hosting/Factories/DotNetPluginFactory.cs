@@ -312,7 +312,24 @@ namespace VVVV.Hosting.Factories
         {
             IPluginBase plugin = null;
             
-            var assemblyLocation = GetAssemblyLocation(nodeInfo);
+            string assemblyLocation = string.Empty;
+            var isUpToDate = GetAssemblyLocation(nodeInfo, out assemblyLocation);
+            
+            // HACK: pluginHost is null in case of WindowSwitcher/NodeBrowser/etc. Fix this.
+            if (pluginHost != null)
+            {
+                // Mark the node if old assembly was loaded and log warning.
+                if (!isUpToDate)
+                {
+                    pluginHost.Status |= StatusCode.HasInvalidData;
+                    FLogger.Log(LogType.Warning, string.Format("Plugin of node '{0}' (ID: {1}) is out of date and couldn't be recompiled. Check its source code for errors.", nodeInfo.Username, pluginHost.GetID()));
+                }
+                else
+                {
+                    pluginHost.Status &= ~StatusCode.HasInvalidData;
+                }
+            }
+            
             var assembly = Assembly.LoadFrom(assemblyLocation);
             var type = assembly.GetType(nodeInfo.Arguments);
             var attribute = GetPluginInfoAttributeData(type);
@@ -365,9 +382,10 @@ namespace VVVV.Hosting.Factories
             }
         }
         
-        protected virtual string GetAssemblyLocation (INodeInfo nodeInfo)
+        protected virtual bool GetAssemblyLocation (INodeInfo nodeInfo, out string assemblyLocation)
         {
-            return nodeInfo.Filename;
+            assemblyLocation = nodeInfo.Filename;
+            return true;
         }
         
         private Assembly HandleAssemblyResolve(object sender, ResolveEventArgs args)
